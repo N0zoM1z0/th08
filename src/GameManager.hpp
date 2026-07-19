@@ -286,7 +286,8 @@ struct GameManager
     i32 difficultyMask;
     u32 unk38;
     i32 unk3c;
-    Catk catkData[SPELLCARD_COUNT_SPELLCARDS * 2];
+    Catk catkData[SPELLCARD_COUNT_SPELLCARDS];
+    Catk catkData2[SPELLCARD_COUNT_SPELLCARDS];
     Clrd clrdData[SHOT_ALL + 1];
     Pscr pscrData[SHOT_ALL];
     Plst plst;
