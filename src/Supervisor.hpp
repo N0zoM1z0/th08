@@ -88,7 +88,7 @@ struct SupervisorFlags
     u32 usingHardwareTL : 1;
     u32 unk1 : 1; // Unconditionally set in InitD3DRendering. Never cleared?
     u32 using32BitGraphics : 1;
-    u32 unk3 : 1;
+    u32 speedhackDetected : 1; // Leftover from PCB. Is never set in IN, but is used.
     u32 d3dDevDisconnectFlag : 1;
     u32 unk5 : 1;
     u32 unk6 : 1; // Set if LPTITLE is NULL in the startup info, which seems to never be true?
@@ -174,6 +174,11 @@ struct Supervisor
     ZunBool IsShotSlowEnabled()
     {
         return this->cfg.shotSlow;
+    }
+
+    ZunBool IsSpeedhackDetected()
+    {
+        return this->flags.speedhackDetected;
     }
 
     ZunBool ShouldForceBackbufferClear()
