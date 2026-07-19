@@ -13,7 +13,9 @@
 #define SCORE_DAT_MAX_BYTES             0xc00
 
 #define TH8K_MAGIC MAKE_FOURCC('T', 'H', '8', 'K')
+
 #define VRSM_MAGIC MAKE_FOURCC('V', 'R', 'S', 'M')
+#define VRSM_VERSION 1
 
 #define CATK_MAGIC MAKE_FOURCC('C', 'A', 'T', 'K')
 #define CATK_VERSION 3
@@ -78,7 +80,8 @@ enum Stage
     STAGE6B,
     EXTRASTAGE,
     MAX_STAGES,
-    STAGE_LAST_WORD = MAX_STAGES
+    STAGE_LAST_WORD = MAX_STAGES,
+    MAX_STAGES_AND_LAST_WORD
 };
 
 struct Th8k
@@ -87,14 +90,14 @@ struct Th8k
     u16 th8kLen;
     u16 unkLen;
     u8 version;
-    unknown_fields(0x9, 0x3);
+    u8 unk_9;
 };
 C_ASSERT(sizeof(Th8k) == 0xC);
 
 struct PlstPlayCounts
 {
     u32 attemptsTotal;
-    i32 attemptsPerCharacter[12];
+    i32 attemptsPerCharacter[SHOT_ALL];
     unknown_fields(0x34, 0x4);
     i32 clears;
     i32 continues;
@@ -113,7 +116,7 @@ struct Plst
     u32 gameMinutes;
     u32 gameSeconds;
     u32 gameMilliseconds;
-    PlstPlayCounts playDataByDifficulty[6];
+    PlstPlayCounts playDataByDifficulty[MAX_DIFFICULTIES + 1];
     PlstPlayCounts playDataTotals;
     i8 bgmUnlocked[32];
 };
@@ -139,7 +142,8 @@ struct Catk
 {
     Th8k base;
     u16 spellcardNumber;
-    u16 unk0xe;
+    u8 unk0xe;
+    u8 difficulty;
 
     char spellName[48];
     char spellOwnerName[48];
@@ -207,7 +211,7 @@ C_ASSERT(sizeof(Hscr) == 0x168);
 struct Lsnm
 {
     Th8k base;
-    unknown_fields(0xc, 0xc);
+    char name[9];
 };
 
 C_ASSERT(sizeof(Lsnm) == 0x18);
@@ -225,6 +229,13 @@ struct ScoreListNode
     ScoreListNode *prev;
     ScoreListNode *next;
     Hscr *data;
+
+    ScoreListNode()
+    {
+        this->prev = NULL;
+        this->next = NULL;
+        this->data = NULL;
+    }
 };
 
 C_ASSERT(sizeof(ScoreListNode) == 0xc);
@@ -243,9 +254,11 @@ struct ScoreDat
     static i32 ParsePLST(ScoreDat *score, Plst *outPlst);
     static void ReleaseScore(ScoreDat *score);
 
-    u16 unk0x0;
+    u8 unk0x0;
+    u8 rngValue1;
     u16 checksum;
     u16 version;
+    u8 rngValue2;
     u32 headerSize;
     ScoreListNode *scores;
     u32 decompressedFileSize;

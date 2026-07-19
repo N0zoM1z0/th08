@@ -1164,16 +1164,16 @@ void Supervisor::SetRenderState(D3DRENDERSTATETYPE renderStateType, int value)
 }
 
 #pragma var_order(gameTime, difference)
-void Supervisor::UpdateGameTime(Supervisor *s)
+void Supervisor::UpdateGameTime()
 {
     DWORD gameTime = timeGetTime();
 
-    if (gameTime < s->systemTime)
+    if (gameTime < this->systemTime)
     {
-        s->systemTime = 0;
+        this->systemTime = 0;
     }
 
-    DWORD difference = gameTime - s->systemTime;
+    DWORD difference = gameTime - this->systemTime;
 
     g_GameManager.plst.gameHours += (difference / 3600000);
     difference %= 3600000;
@@ -1202,20 +1202,20 @@ void Supervisor::UpdateGameTime(Supervisor *s)
         g_GameManager.plst.gameMinutes = (g_GameManager.plst.gameMinutes % 60);
     }
 
-    s->systemTime = gameTime;
+    this->systemTime = gameTime;
 }
 
 #pragma var_order(playTime, difference)
-void Supervisor::UpdatePlayTime(Supervisor *s)
+void Supervisor::UpdatePlayTime()
 {
     DWORD playTime = timeGetTime();
 
-    if (playTime < s->totalPlayTime)
+    if (playTime < this->totalPlayTime)
     {
-        s->totalPlayTime = playTime;
+        this->totalPlayTime = playTime;
     }
 
-    DWORD difference = playTime - s->totalPlayTime;
+    DWORD difference = playTime - this->totalPlayTime;
 
     g_GameManager.plst.totalHours += (difference / 3600000);
     difference %= 3600000;
@@ -1244,7 +1244,7 @@ void Supervisor::UpdatePlayTime(Supervisor *s)
         g_GameManager.plst.totalMinutes = (g_GameManager.plst.totalMinutes % 60);
     }
 
-    s->totalPlayTime = playTime;
+    this->totalPlayTime = playTime;
 }
 
 #pragma var_order(versionData, versionDataExeChecksum, versionDataSize, oldPos, versionDataExeSize)

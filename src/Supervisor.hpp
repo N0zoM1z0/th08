@@ -157,8 +157,8 @@ struct Supervisor
     void SetRenderState(D3DRENDERSTATETYPE renderStateType, int value);
     i32 DisableFog();
     i32 EnableFog();
-    static void UpdatePlayTime(Supervisor *s);
-    static void UpdateGameTime(Supervisor *s);
+    void UpdatePlayTime();
+    void UpdateGameTime();
 
     ZunResult ThreadStart(LPTHREAD_START_ROUTINE startFunction, void *startParam);
 

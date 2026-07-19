@@ -160,7 +160,7 @@ ScoreDat *ScoreDat::OpenScore(const char *filename)
             hasFoundTH8K = TRUE;
             th8kChapter = chapter;
         }
-        if (chapter->magic == VRSM_MAGIC && chapter->version == 1)
+        if (chapter->magic == VRSM_MAGIC && chapter->version == VRSM_VERSION)
         {
             vrsm = (Vrsm *)chapter;
             if (g_Supervisor.CheckVersion(vrsm->version, vrsm->exeSize, vrsm->exeChecksum) != ZUN_SUCCESS)
