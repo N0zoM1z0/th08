@@ -94,6 +94,16 @@ struct GameManager
         return this->globals->bombsRemaining;
     }
 
+    i32 GetDeaths()
+    {
+        return this->globals->deaths;
+    }
+
+    i32 GetBombsUsed()
+    {
+        return this->globals->bombsUsed;
+    }
+
     void UpdateAntiTamper()
     {
         this->globals->rng1[2] = g_Rng.GetRandomU32InRange(ANTITAMPER_RNG_RANGE) + ANTITAMPER_RNG_ADD;
@@ -292,11 +302,11 @@ struct GameManager
     Pscr pscrData[SHOT_ALL];
     Plst plst;
     Hscr hscr;
-    i32 unk3D294;
-    i32 unk3D298;
-    i32 unk3D29C;
-    i32 unk3D2A0;
-    i32 unk3D2A4;
+    i32 unk3DB94;
+    i32 unk3DB98;
+    i32 unk3DB9C;
+    i32 unk3DBA0;
+    i32 unk3DBA4;
     u8 character;
     u8 shotType;
     u8 fullShotType;
@@ -331,7 +341,7 @@ struct GameManager
     i16 youkaiGaugeHumanTintThreshold;
     i16 youkaiGaugeYoukaiTintThreshold;
 
-    u32 unk3de04;
+    i32 unk3de04;
     u32 unk3de08;
     u32 unk3de0c;
     u32 unk3de10;

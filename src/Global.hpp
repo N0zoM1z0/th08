@@ -320,9 +320,9 @@ struct ZunGlobals
     i32 graze;
     i32 unk0x10;
     u32 displayedHighScore;
-    u8 ontinuesUsedInHighScore;
+    u8 continuesUsedInHighScore;
     /* 3 bytes pad */
-    u32 unk1C;
+    i32 spellcardsCaptured;
     i16 youkaiGaugeCopy;
     i16 youkaiGauge;
     i32 pointItemValue;
