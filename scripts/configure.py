@@ -16,7 +16,6 @@ class BuildType(Enum):
     OBJDIFFBUILD = 6
 
 
-
 def configure(build_type):
     with (SCRIPTS_DIR.parent / "build.ninja").open("w") as f:
         writer = Writer(f, width=120)
@@ -49,8 +48,6 @@ def configure(build_type):
             "th08_link_flags",
             "/subsystem:windows /machine:X86 /filealign:512 /incremental:no /opt:noref /map /mapinfo:exports /mapinfo:lines",
         )
-
-
 
         writer.variable("msvc_deps_prefix", "Note: including file:")
         writer.rule(

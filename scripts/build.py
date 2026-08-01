@@ -46,7 +46,9 @@ def main():
         "--build-type",
         choices=["normal", "bugfix", "diffbuild", "tests", "dllbuild", "objdiffbuild"],
         default="normal",
-        help=textwrap.dedent("""Note: the bugfix build contains bugfixes that would otherwise make the build non-functional."""),
+        help=textwrap.dedent(
+            """Note: the bugfix build contains bugfixes that would otherwise make the build non-functional."""
+        ),
     )
     parser.add_argument(
         "-j",
