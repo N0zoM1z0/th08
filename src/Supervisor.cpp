@@ -1286,15 +1286,26 @@ ZunResult Supervisor::CheckVersion(const char *version, i32 exeSize, i32 exeChec
     {
         if (strncmp(version, versionData, CONFIG_VERSION_STRING_LENGTH) == 0)
         {
+            // As long as we do not have a fully matching binary, we cannot
+            // get the same binary size and checksum of any of the valid
+            // versions in the version data file. Also, the original logic
+            // would be totally broken on any ports of this decompilation.
+            // So if the version string matches, just take it.
+#ifdef FIX_REALLY_BAD_BUGS
+
+            return ZUN_SUCCESS;
+#else
             /* ZUN bloat: the format string could have been "%*s %d %d", with
              * the %*s meaning ignore the first string.
              */
             versionData += CONFIG_VERSION_STRING_LENGTH + 1;
             sscanf(versionData, "%d %d", &versionDataExeSize, &versionDataExeChecksum);
+
             if (versionDataExeSize == exeSize && versionDataExeChecksum == exeChecksum)
             {
                 return ZUN_SUCCESS;
             }
+#endif
         }
 
         oldPos = versionData;

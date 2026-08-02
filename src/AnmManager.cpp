@@ -1482,8 +1482,12 @@ AnmLoaded *AnmManager::LoadAnm(i32 anmIdx, const char *filename)
     {
         anmLoaded->numberEntriesToBeLoaded = 1;
 
+#ifdef FIX_REALLY_BAD_BUGS
+        while (anmLoaded != NULL && anmLoaded->numberEntriesToBeLoaded != 0)
+#else
         /* ZUN bug: no NULL check! */
         while (anmLoaded->numberEntriesToBeLoaded != 0)
+#endif
         {
             anmLoaded = this->PostloadAnmEntry(anmLoaded);
         }
