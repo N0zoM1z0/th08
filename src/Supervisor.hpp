@@ -8,10 +8,10 @@
 #include "Global.hpp"
 #include "Midi.hpp"
 #include "ZunBool.hpp"
+#include "ZunMath.hpp"
 #include "diffbuild.hpp"
 #include "inttypes.hpp"
 #include "utils.hpp"
-#include "ZunMath.hpp"
 
 namespace th08
 {

@@ -88,7 +88,6 @@ void AsciiManager::InitializeVms()
     this->SetGaugeInterrupt(this->GetGaugeInterrupt());
 }
 
-
 ZunResult AsciiManager::RegisterChain()
 {
     AsciiManager *ascii = &g_AsciiManager;
@@ -609,6 +608,5 @@ void AsciiManager::OnDrawHighPrioImpl()
 void AsciiManager::DrawPercentage(Float3 *position, i32 percentage, D3DCOLOR color)
 {
 }
-
 
 } /* namespace th08 */

@@ -93,7 +93,6 @@ void Rotate(Float3 *outVector, Float3 *point, f32 angle);
 
 } // namespace th08
 
-
 #define sincos(in, out_sine, out_cosine)                                                                               \
     {                                                                                                                  \
         __asm { \

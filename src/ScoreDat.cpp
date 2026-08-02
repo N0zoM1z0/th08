@@ -1,7 +1,7 @@
 #include "th_pch.h"
 
-#include "ScoreDat.hpp"
 #include "GameManager.hpp"
+#include "ScoreDat.hpp"
 #include "SpellCard.hpp"
 #include "pbg/Lzss.hpp"
 

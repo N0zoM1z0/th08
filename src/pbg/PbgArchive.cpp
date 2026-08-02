@@ -1,9 +1,9 @@
 #include "th_pch.h"
 
-#include "pbg/PbgArchive.hpp"
 #include "Global.hpp"
 #include "i18n.hpp"
 #include "pbg/Lzss.hpp"
+#include "pbg/PbgArchive.hpp"
 #include "utils.hpp"
 
 namespace th08

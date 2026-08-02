@@ -1,7 +1,7 @@
 #include "th_pch.h"
 
-#include "ReplayManager.hpp"
 #include "Global.hpp"
+#include "ReplayManager.hpp"
 
 #include "pbg/Lzss.hpp"
 

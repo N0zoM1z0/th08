@@ -1,7 +1,7 @@
 #pragma once
-#include "ZunMath.hpp"
 #include "Supervisor.hpp"
 #include "ZunColor.hpp"
+#include "ZunMath.hpp"
 #include "ZunResult.hpp"
 #include "diffbuild.hpp"
 #include "dxutil.hpp"

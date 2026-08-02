@@ -1,6 +1,5 @@
 #include "th_pch.h"
 
-#include "Supervisor.hpp"
 #include "AnmManager.hpp"
 #include "AsciiManager.hpp"
 #include "Config.hpp"
@@ -13,6 +12,7 @@
 #include "ScoreDat.hpp"
 #include "ScreenEffect.hpp"
 #include "SoundPlayer.hpp"
+#include "Supervisor.hpp"
 #include "TextHelper.hpp"
 #include "TitleScreen.hpp"
 #include "i18n.hpp"

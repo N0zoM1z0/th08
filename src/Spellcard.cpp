@@ -1,7 +1,7 @@
 #include "th_pch.h"
 
-#include "Spellcard.hpp"
 #include "ScoreDat.hpp"
+#include "Spellcard.hpp"
 #include "utils.hpp"
 
 namespace th08

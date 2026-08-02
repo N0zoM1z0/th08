@@ -726,7 +726,7 @@ ZunBool GameWindow::InitD3DRendering()
     halfHeight = GAME_WINDOW_HEIGHT / 2.0f;
     aspectRatio = (f32)GAME_WINDOW_WIDTH / (f32)GAME_WINDOW_HEIGHT;
     fov = ZUN_PI / 6;
-    cameraDistance = halfHeight / (f32) tan(fov / 2.0f);
+    cameraDistance = halfHeight / (f32)tan(fov / 2.0f);
 
     D3DXMatrixLookAtLH(&g_Supervisor.viewMatrix, &D3DXVECTOR3(halfWidth, -halfHeight, -cameraDistance),
                        &D3DXVECTOR3(halfWidth, -halfHeight, 0.0f), &D3DXVECTOR3(0.0f, 1.0f, 0.0f));
