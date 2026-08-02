@@ -564,10 +564,10 @@ ZunBool GameWindow::InitD3DRendering()
     g_Supervisor.d3dIface->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &displayMode);
     if (!g_Supervisor.cfg.windowed)
     {
-        if (g_Supervisor.Is16bitColorMode() == true)
+        if (g_Supervisor.Is16bitColorMode() == TRUE)
         {
             presentParams.BackBufferFormat = D3DFMT_R5G6B5;
-            g_Supervisor.cfg.colorMode16bit = 1;
+            g_Supervisor.cfg.colorMode16bit = TRUE;
         }
         // Used in cases of corrupt or missing config files in earlier games. Dead code in IN
         else if (g_Supervisor.cfg.colorMode16bit == 0xff)
