@@ -2,11 +2,13 @@
 
 #include <d3d8.h>
 #include <d3dx8math.h>
+#define DIRECTINPUT_VERSION 0x800
 #include <dinput.h>
 
 #include "Global.hpp"
 #include "Midi.hpp"
 #include "ZunBool.hpp"
+#include "ZunMath.hpp"
 #include "diffbuild.hpp"
 #include "inttypes.hpp"
 #include "utils.hpp"

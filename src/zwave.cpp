@@ -8,10 +8,13 @@
 // Copyright (c) 1999-2000 Microsoft Corp. All rights reserved.
 //-----------------------------------------------------------------------------
 #define STRICT
-#include "zwave.hpp"
+
+#include "th_pch.h"
+
 #include "SoundPlayer.hpp"
 #include "dxutil.hpp"
 #include "utils.hpp"
+#include "zwave.hpp"
 #include <dsound.h>
 #include <dxerr8.h>
 #include <mmsystem.h>

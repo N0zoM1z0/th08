@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "EnemyManager.hpp"
 
 namespace th08

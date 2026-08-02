@@ -1,5 +1,7 @@
 #define _WIN32_WINNT 0x0500
 
+#include "th_pch.h"
+
 #include "AnmManager.hpp"
 #include "Background.hpp"
 #include "GameManager.hpp"
@@ -562,10 +564,10 @@ ZunBool GameWindow::InitD3DRendering()
     g_Supervisor.d3dIface->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &displayMode);
     if (!g_Supervisor.cfg.windowed)
     {
-        if (g_Supervisor.Is16bitColorMode() == true)
+        if (g_Supervisor.Is16bitColorMode() == TRUE)
         {
             presentParams.BackBufferFormat = D3DFMT_R5G6B5;
-            g_Supervisor.cfg.colorMode16bit = 1;
+            g_Supervisor.cfg.colorMode16bit = TRUE;
         }
         // Used in cases of corrupt or missing config files in earlier games. Dead code in IN
         else if (g_Supervisor.cfg.colorMode16bit == 0xff)
@@ -724,7 +726,7 @@ ZunBool GameWindow::InitD3DRendering()
     halfHeight = GAME_WINDOW_HEIGHT / 2.0f;
     aspectRatio = (f32)GAME_WINDOW_WIDTH / (f32)GAME_WINDOW_HEIGHT;
     fov = ZUN_PI / 6;
-    cameraDistance = halfHeight / ZUN_TAN(fov / 2.0f);
+    cameraDistance = halfHeight / (f32)tan(fov / 2.0f);
 
     D3DXMatrixLookAtLH(&g_Supervisor.viewMatrix, &D3DXVECTOR3(halfWidth, -halfHeight, -cameraDistance),
                        &D3DXVECTOR3(halfWidth, -halfHeight, 0.0f), &D3DXVECTOR3(0.0f, 1.0f, 0.0f));

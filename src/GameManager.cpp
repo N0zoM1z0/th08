@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "GameManager.hpp"
 #include "Global.hpp"
 #include "Gui.hpp"

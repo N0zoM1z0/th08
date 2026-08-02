@@ -1,5 +1,7 @@
-#include "Ending.hpp"
+#include "th_pch.h"
+
 #include "AnmManager.hpp"
+#include "Ending.hpp"
 #include "GameManager.hpp"
 #include "ZunColor.hpp"
 #include "i18n.hpp"

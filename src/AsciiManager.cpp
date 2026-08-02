@@ -1,6 +1,4 @@
-#include "AsciiManager.hpp"
-#include "AnmManager.hpp"
-#include "GameManager.hpp"
+#include "th_pch.h"
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -57,7 +55,7 @@ void AsciiManager::Reset()
     this->nextPlayerPointPopupIndex = 0;
     /* nextTimePopupIndex is not set to 0?  */
     this->unk0x829c = 0;
-    this->color = 0xffffffff;
+    this->color.d3dColor = 0xffffffff;
     this->scaleX = 1.0f;
     this->scaleY = 1.0f;
     this->smallScoreText.prefix.anchor = 3;
@@ -168,7 +166,7 @@ void AsciiManager::AddString(Float3 *position, const char *string)
 
     nextString->position = *position;
 
-    nextString->color = this->color;
+    nextString->color = this->color.d3dColor;
     nextString->scaleX = this->scaleX;
     nextString->scaleY = this->scaleY;
     nextString->isGui = this->isGui;
@@ -609,37 +607,6 @@ void AsciiManager::OnDrawHighPrioImpl()
 // STUB: th08 0x405e10
 void AsciiManager::DrawPercentage(Float3 *position, i32 percentage, D3DCOLOR color)
 {
-}
-
-// STUB: th08 0x406fd0
-void AsciiManager::UpdateVms()
-{
-}
-
-// STUB: th08 0x4070b0
-void AsciiManager::SetGaugeInterrupt(i32 interrupt)
-{
-    this->youkaiGauge.SetInterrupt(interrupt);
-    this->youkaiGaugeHumanIcon.SetInterrupt(interrupt);
-    this->youkaiGaugeYoukaiIcon.SetInterrupt(interrupt);
-    this->youkaiGaugeCursor.SetInterrupt(interrupt);
-
-    this->gaugeInterrupt = interrupt;
-}
-
-i32 AsciiManager::GetGaugeInterrupt()
-{
-    return this->gaugeInterrupt;
-}
-
-void AsciiManager::ResetStrings()
-{
-    this->numStrings = 0;
-}
-
-void AsciiManager::SetSpaceWidth(i32 spaceWidth)
-{
-    this->spaceWidth = spaceWidth;
 }
 
 } /* namespace th08 */

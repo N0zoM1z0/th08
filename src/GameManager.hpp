@@ -3,6 +3,7 @@
 #include "ScoreDat.hpp"
 #include "Spellcard.hpp"
 #include "Supervisor.hpp"
+#include "ZunMath.hpp"
 #include "ZunResult.hpp"
 #include "diffbuild.hpp"
 #include "inttypes.hpp"

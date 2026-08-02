@@ -1,7 +1,7 @@
 #pragma once
-#include "Global.hpp"
 #include "Supervisor.hpp"
 #include "ZunColor.hpp"
+#include "ZunMath.hpp"
 #include "ZunResult.hpp"
 #include "diffbuild.hpp"
 #include "dxutil.hpp"
@@ -370,7 +370,7 @@ struct AnmVm
     u8 fontHeight;
     unknown_fields(0x29a, 0xa);
 
-    AnmVm::AnmVm()
+    AnmVm()
     {
         memset(this, 0, sizeof(AnmVm));
         this->activeSpriteIndex = -1;
@@ -431,11 +431,9 @@ struct AnmLoaded
         this->SetAndExecuteScript(vm, this->scripts[scriptIdx]);
     }
 
-    void SetAndExecuteScriptIdx(AnmVm *vm, int scriptIdx)
+    AnmLoadedSprite *GetSprite(int sprite)
     {
-        vm->prefix.anmFile = this;
-        vm->scriptIndex = scriptIdx;
-        this->SetAndExecuteScript(vm, this->scripts[scriptIdx]);
+        return &this->sprites[sprite];
     }
 
     void InitializeAndSetSprite(AnmVm *vm, i32 sprite)
@@ -445,9 +443,11 @@ struct AnmLoaded
         this->SetSprite(vm, sprite);
     }
 
-    AnmLoadedSprite *GetSprite(int sprite)
+    void SetAndExecuteScriptIdx(AnmVm *vm, int scriptIdx)
     {
-        return &this->sprites[sprite];
+        vm->prefix.anmFile = this;
+        vm->scriptIndex = scriptIdx;
+        this->SetAndExecuteScript(vm, this->scripts[scriptIdx]);
     }
 
     void ExecuteAnmIdxArray(AnmVm *vm, i32 scriptIdx, i32 count);

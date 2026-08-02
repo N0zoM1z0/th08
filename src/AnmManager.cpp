@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "AnmManager.hpp"
 #include "TextHelper.hpp"
 #include "ZunMath.hpp"

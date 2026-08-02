@@ -1,6 +1,8 @@
-#include "ItemManager.hpp"
+#include "th_pch.h"
+
 #include "BulletManager.hpp"
 #include "GameManager.hpp"
+#include "ItemManager.hpp"
 #include "Player.hpp"
 
 namespace th08

@@ -1,10 +1,12 @@
-#include "TitleScreen.hpp"
+#include "th_pch.h"
+
 #include "AsciiManager.hpp"
 #include "GameManager.hpp"
 #include "ScoreDat.hpp"
 #include "ScreenEffect.hpp"
 #include "SoundPlayer.hpp"
 #include "Spellcard.hpp"
+#include "TitleScreen.hpp"
 #include "ZunMath.hpp"
 #include "i18n.hpp"
 

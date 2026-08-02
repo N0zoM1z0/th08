@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "pbg/PbgFile.hpp"
 
 namespace th08

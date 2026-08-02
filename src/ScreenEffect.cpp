@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "ScreenEffect.hpp"
 
 namespace th08
