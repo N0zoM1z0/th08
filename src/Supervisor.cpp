@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "Supervisor.hpp"
 #include "AnmManager.hpp"
 #include "AsciiManager.hpp"

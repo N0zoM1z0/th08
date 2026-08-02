@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "Spellcard.hpp"
 #include "ScoreDat.hpp"
 #include "utils.hpp"

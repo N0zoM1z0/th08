@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "TitleScreen.hpp"
 #include "AsciiManager.hpp"
 #include "GameManager.hpp"

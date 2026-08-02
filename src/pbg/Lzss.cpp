@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "pbg/Lzss.hpp"
 #include "pbg/PbgMemory.hpp"
 

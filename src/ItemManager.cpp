@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "ItemManager.hpp"
 #include "BulletManager.hpp"
 #include "GameManager.hpp"

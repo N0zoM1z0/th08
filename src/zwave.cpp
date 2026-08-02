@@ -8,6 +8,9 @@
 // Copyright (c) 1999-2000 Microsoft Corp. All rights reserved.
 //-----------------------------------------------------------------------------
 #define STRICT
+
+#include "th_pch.h"
+
 #include "zwave.hpp"
 #include "SoundPlayer.hpp"
 #include "dxutil.hpp"

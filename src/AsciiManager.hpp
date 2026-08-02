@@ -77,8 +77,6 @@ struct AsciiManager
     static ChainCallbackResult OnUpdate(AsciiManager *mgr);
     static ChainCallbackResult OnDrawLowPrio(AsciiManager *mgr);
     static ChainCallbackResult OnDrawHighPrio(AsciiManager *mgr);
-    void Reset();
-    void InitializeVms();
     static ZunResult RegisterChain();
     static ZunResult AddedCallback(AsciiManager *mgr);
     static ZunResult DeletedCallback(AsciiManager *mgr);
@@ -93,15 +91,13 @@ struct AsciiManager
     void CreateFamiliarPopup(Float3 *position, i32 number, i32 param3, D3DCOLOR color);
     void OnDrawHighPrioImpl();
     void DrawPercentage(Float3 *position, i32 percentage, D3DCOLOR color);
-    void UpdateVms();
-    void SetGaugeInterrupt(i32 interrupt);
-    i32 GetGaugeInterrupt();
-    void ResetStrings();
-    void SetSpaceWidth(i32 spaceWidth);
+
+    void Reset();
+    void InitializeVms();
 
     void SetColor(D3DCOLOR color)
     {
-        this->color = color;
+        this->color.d3dColor = color;
     }
 
     void SetIsSelected(ZunBool selected)
@@ -113,6 +109,45 @@ struct AsciiManager
     {
         this->scaleX = scaleX;
         this->scaleY = scaleY;
+    }
+
+    void UpdateVms()
+    {
+        g_AnmManager->ExecuteScript(&this->youkaiGauge);
+        g_AnmManager->ExecuteScript(&this->youkaiGaugeHumanIcon);
+        g_AnmManager->ExecuteScript(&this->youkaiGaugeYoukaiIcon);
+        g_AnmManager->ExecuteScript(&this->youkaiGaugeCursor);
+        g_AnmManager->ExecuteScript(&this->percentageText);
+        g_AnmManager->ExecuteScript(&this->bossMarkers[0]);
+        g_AnmManager->ExecuteScript(&this->bossMarkers[1]);
+        g_AnmManager->ExecuteScript(&this->bossMarkers[2]);
+        g_AnmManager->ExecuteScript(&this->bossMarkers[3]);
+        g_AnmManager->ExecuteScript(&this->unk_1520);
+    }
+
+    void SetGaugeInterrupt(i32 interrupt)
+    {
+        this->youkaiGauge.SetInterrupt(interrupt);
+        this->youkaiGaugeHumanIcon.SetInterrupt(interrupt);
+        this->youkaiGaugeYoukaiIcon.SetInterrupt(interrupt);
+        this->youkaiGaugeCursor.SetInterrupt(interrupt);
+
+        this->gaugeInterrupt = interrupt;
+    }
+
+    i32 GetGaugeInterrupt()
+    {
+        return this->gaugeInterrupt;
+    }
+
+    void ResetStrings()
+    {
+        this->numStrings = 0;
+    }
+
+    void SetSpaceWidth(i32 spaceWidth)
+    {
+        this->spaceWidth = spaceWidth;
     }
 
     AnmVm largeText;
@@ -131,7 +166,7 @@ struct AsciiManager
     AsciiManagerString strings[ASCII_MAX_STRINGS];
     i32 numStrings;
 
-    D3DCOLOR color;
+    ZunColor color;
     f32 scaleX;
     f32 scaleY;
     ZunBool isGui;

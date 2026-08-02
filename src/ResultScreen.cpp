@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "ResultScreen.hpp"
 
 namespace th08

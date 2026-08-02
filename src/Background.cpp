@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "Background.hpp"
 
 namespace th08

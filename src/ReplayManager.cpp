@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "ReplayManager.hpp"
 #include "Global.hpp"
 

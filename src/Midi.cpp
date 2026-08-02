@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "inttypes.hpp"
 #include <Windows.h>
 #include <mmreg.h>

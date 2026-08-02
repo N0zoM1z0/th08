@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "Global.hpp"
 #include "Supervisor.hpp"
 #include "ZunMath.hpp"
@@ -1195,25 +1197,6 @@ f32 Rng::GetRandomF32Signed(void)
     return (f32)GetRandomU32() / (f32)INT_MAX - 1.0f;
 }
 
-ZunMemory::ZunMemory()
-{
-    this->bRegistryInUse = FALSE;
-}
-
-ZunMemory::~ZunMemory()
-{
-    if (this->bRegistryInUse)
-    {
-        for (i32 i = 0; i < ARRAY_SIZE_SIGNED(this->registry); i++)
-        {
-            if (this->registry[i] != NULL)
-            {
-                free(this->registry[i]);
-            }
-        }
-    }
-}
-
 f32 AddNormalizeAngle(f32 a, f32 b)
 {
     i32 i;
@@ -1244,6 +1227,25 @@ void Rotate(Float3 *outVector, Float3 *point, f32 angle)
     outVector->y = cosOut * point->y + sinOut * point->x;
 }
 
+ZunMemory::ZunMemory()
+{
+    this->bRegistryInUse = FALSE;
+}
+
+ZunMemory::~ZunMemory()
+{
+    if (this->bRegistryInUse)
+    {
+        for (i32 i = 0; i < ARRAY_SIZE_SIGNED(this->registry); i++)
+        {
+            if (this->registry[i] != NULL)
+            {
+                free(this->registry[i]);
+            }
+        }
+    }
+}
+
 GameErrorContext::GameErrorContext()
 {
     this->bufferEnd = this->buffer;
@@ -1254,4 +1256,5 @@ GameErrorContext::GameErrorContext()
 GameErrorContext::~GameErrorContext()
 {
 }
+
 }; // namespace th08

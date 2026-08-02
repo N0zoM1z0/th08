@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "MusicRoom.hpp"
 #include "AsciiManager.hpp"
 #include "GameManager.hpp"

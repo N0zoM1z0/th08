@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "Ending.hpp"
 #include "AnmManager.hpp"
 #include "GameManager.hpp"

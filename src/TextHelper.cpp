@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "TextHelper.hpp"
 #include "Supervisor.hpp"
 #include "dxutil.hpp"

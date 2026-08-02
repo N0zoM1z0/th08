@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #include "pbg/PbgArchive.hpp"
 #include "Global.hpp"
 #include "i18n.hpp"

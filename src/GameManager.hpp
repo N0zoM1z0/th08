@@ -7,6 +7,7 @@
 #include "diffbuild.hpp"
 #include "inttypes.hpp"
 #include "utils.hpp"
+#include "ZunMath.hpp"
 #include <stddef.h>
 #include <windows.h>
 

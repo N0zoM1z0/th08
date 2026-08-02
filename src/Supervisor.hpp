@@ -10,6 +10,7 @@
 #include "diffbuild.hpp"
 #include "inttypes.hpp"
 #include "utils.hpp"
+#include "ZunMath.hpp"
 
 namespace th08
 {

@@ -1,3 +1,5 @@
+#include "th_pch.h"
+
 #ifdef DEBUG
 #include <cstdarg>
 #include <stdio.h>
