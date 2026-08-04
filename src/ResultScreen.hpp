@@ -2,43 +2,43 @@
 
 #include "AnmManager.hpp"
 #include "Global.hpp"
+#include "ReplayManager.hpp"
+#include "ScoreDat.hpp"
 #include "ZunResult.hpp"
 #include "inttypes.hpp"
 #include "utils.hpp"
-#include "ReplayManager.hpp"
-#include "ScoreDat.hpp"
 
 namespace th08
 {
 
 enum ResultScreenState
 {
-    RESULT_SCREEN_STATE_INIT                            = 0,
-    RESULT_SCREEN_STATE_CHOOSING_CATEGORY               = 1,
-    RESULT_SCREEN_STATE_EXITING                         = 2,
+    RESULT_SCREEN_STATE_INIT = 0,
+    RESULT_SCREEN_STATE_CHOOSING_CATEGORY = 1,
+    RESULT_SCREEN_STATE_EXITING = 2,
     RESULT_SCREEN_STATE_BEST_SCORES_CHOOSING_DIFFICULTY = 3,
-    RESULT_SCREEN_STATE_BEST_SCORES_CHOOSING_CHARACTER  = 4,
-    RESULT_SCREEN_STATE_BEST_SCORES                     = 5,
-    RESULT_SCREEN_STATE_SPELLCARDS_CHOOSING_DIFFICULTY  = 6,
-    RESULT_SCREEN_STATE_SPELLCARDS_CHOOSING_CHARACTER   = 7,
-    RESULT_SCREEN_STATE_SPELLCARDS                      = 8,
-    RESULT_SCREEN_STATE_WRITING_HIGHSCORE_NAME          = 9,
-    RESULT_SCREEN_STATE_SAVE_REPLAY_QUESTION            = 10,
-    RESULT_SCREEN_STATE_CANT_SAVE_REPLAY                = 11,
-    RESULT_SCREEN_STATE_CHOOSING_REPLAY_FILE            = 12,
-    RESULT_SCREEN_STATE_WRITING_REPLAY_NAME             = 13,
-    RESULT_SCREEN_STATE_OVERWRITE_REPLAY_FILE           = 14,
-    RESULT_SCREEN_STATE_STATS_SCREEN                    = 15,
-    RESULT_SCREEN_STATE_STATS_TO_SAVE_TRANSITION        = 16,
-    RESULT_SCREEN_STATE_PRACTICE                        = 17,
-    RESULT_SCREEN_STATE_INITIAL_SCORE_SAVE              = 18,
-    RESULT_SCREEN_STATE_OTHER_STATS_SCREEN_INIT         = 19,
-    RESULT_SCREEN_STATE_OTHER_STATS_SCREEN              = 20,
-    RESULT_SCREEN_STATE_OTHER_STATS_TO_INIT_TRANSITION  = 21,
-    RESULT_SCREEN_STATE_SPELL_PRACTICE                  = 22,
+    RESULT_SCREEN_STATE_BEST_SCORES_CHOOSING_CHARACTER = 4,
+    RESULT_SCREEN_STATE_BEST_SCORES = 5,
+    RESULT_SCREEN_STATE_SPELLCARDS_CHOOSING_DIFFICULTY = 6,
+    RESULT_SCREEN_STATE_SPELLCARDS_CHOOSING_CHARACTER = 7,
+    RESULT_SCREEN_STATE_SPELLCARDS = 8,
+    RESULT_SCREEN_STATE_WRITING_HIGHSCORE_NAME = 9,
+    RESULT_SCREEN_STATE_SAVE_REPLAY_QUESTION = 10,
+    RESULT_SCREEN_STATE_CANT_SAVE_REPLAY = 11,
+    RESULT_SCREEN_STATE_CHOOSING_REPLAY_FILE = 12,
+    RESULT_SCREEN_STATE_WRITING_REPLAY_NAME = 13,
+    RESULT_SCREEN_STATE_OVERWRITE_REPLAY_FILE = 14,
+    RESULT_SCREEN_STATE_STATS_SCREEN = 15,
+    RESULT_SCREEN_STATE_STATS_TO_SAVE_TRANSITION = 16,
+    RESULT_SCREEN_STATE_PRACTICE = 17,
+    RESULT_SCREEN_STATE_INITIAL_SCORE_SAVE = 18,
+    RESULT_SCREEN_STATE_OTHER_STATS_SCREEN_INIT = 19,
+    RESULT_SCREEN_STATE_OTHER_STATS_SCREEN = 20,
+    RESULT_SCREEN_STATE_OTHER_STATS_TO_INIT_TRANSITION = 21,
+    RESULT_SCREEN_STATE_SPELL_PRACTICE = 22,
 };
 
-#define RESULT_REPLAY_MAX_RESULTS                           15
+#define RESULT_REPLAY_MAX_RESULTS 15
 
 struct ResultScreen
 {
@@ -105,8 +105,8 @@ struct ResultScreen
     ResultScreenState previousState;
     i32 frameTimer2;
     i32 cursor;
-    i32 unk0x20;                        // is set to 0 when loading the score, never used
-    i32 unk0x24;                        // unused
+    i32 unk0x20; // is set to 0 when loading the score, never used
+    i32 unk0x24; // unused
     i32 selectedReplay;
     i32 selectedCharacter;
     i32 shotTypeCursor;
@@ -130,13 +130,13 @@ struct ResultScreen
 
     AnmVm spriteVms[72];
     AnmVm textVms[30];
-    AnmVm unk_10ef8;            // unused here and in PCB
+    AnmVm unk_10ef8; // unused here and in PCB
     AnmVm listingDividerSprite;
 
     AnmLoaded *resultAnm;
     AnmLoaded *resultTextAnm;
 
-    u32 unk0x11448;             // unused
+    u32 unk0x11448; // unused
 
     ScoreListNode scores[MAX_DIFFICULTIES][SHOT_ALL];
     Hscr defaultScore[MAX_DIFFICULTIES][SHOT_ALL][MAX_STAGES_AND_LAST_WORD];

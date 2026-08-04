@@ -53,7 +53,7 @@ struct Float3
     // FUNCTION: th08 0x40b460 FOLDED
     operator float *()
     {
-        return (float *) this;
+        return (float *)this;
     }
 
     Float3 *operator+=(const Float3 &other)

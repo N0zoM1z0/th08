@@ -7,10 +7,10 @@
 
 #define SCORE_DAT_VERSION 1
 
-#define SCORE_DAT_XOR_VALUE             0x59
-#define SCORE_DAT_XOR_VALUE_INCREMENT   0x79
-#define SCORE_DAT_CHUNK_SIZE            0x100
-#define SCORE_DAT_MAX_BYTES             0xc00
+#define SCORE_DAT_XOR_VALUE 0x59
+#define SCORE_DAT_XOR_VALUE_INCREMENT 0x79
+#define SCORE_DAT_CHUNK_SIZE 0x100
+#define SCORE_DAT_MAX_BYTES 0xc00
 
 #define TH8K_MAGIC MAKE_FOURCC('T', 'H', '8', 'K')
 
