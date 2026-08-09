@@ -288,7 +288,7 @@ struct AnmVmBase
         this->scale.y = 1.0f;
         this->color1.d3dColor = COLOR_WHITE;
         D3DXMatrixIdentity(&this->matrix1);
-        this->flagsAsU16 = 7;
+        this->flags = 7;
         this->currentTimeInScript.Initialize();
     }
 
@@ -330,8 +330,7 @@ struct AnmVmBase
     ZunColor color1;
     ZunColor color2;
     union {
-        u32 flags;
-        u16 flagsAsU16;
+        u16 flags;
         struct
         {
             u32 visible : 1;
