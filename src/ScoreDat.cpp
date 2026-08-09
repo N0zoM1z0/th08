@@ -96,7 +96,9 @@ ScoreDat *ScoreDat::OpenScore(const char *filename)
         goto recreate_score_file;
     }
 
-    scoreDecrypted = (ScoreDat *)FileSystem::Decrypt((u8 *)scoreDat, fileSize, 0x59, 121, 0x100, 0xc00);
+    scoreDecrypted =
+        (ScoreDat *)FileSystem::Decrypt((u8 *)scoreDat, fileSize, SCORE_DAT_XOR_VALUE, SCORE_DAT_XOR_VALUE_INCREMENT,
+                                        SCORE_DAT_CHUNK_SIZE, SCORE_DAT_MAX_BYTES);
     g_ZunMemory.Free(scoreDat);
     scoreDat = scoreDecrypted;
     bytesToShift = fileSize - 2;
@@ -160,7 +162,7 @@ ScoreDat *ScoreDat::OpenScore(const char *filename)
             hasFoundTH8K = TRUE;
             th8kChapter = chapter;
         }
-        if (chapter->magic == VRSM_MAGIC && chapter->version == 1)
+        if (chapter->magic == VRSM_MAGIC && chapter->version == VRSM_VERSION)
         {
             vrsm = (Vrsm *)chapter;
             if (g_Supervisor.CheckVersion(vrsm->version, vrsm->exeSize, vrsm->exeChecksum) != ZUN_SUCCESS)
