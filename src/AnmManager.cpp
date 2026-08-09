@@ -383,9 +383,9 @@ ZunBool AnmManager::ExecuteScript(AnmVm *vm)
         handleInterrupt:
             nextInstruction = NULL;
             instruction = vm->beginningOfScript;
-            while (!(instruction->opcode == AnmOpcode_InterruptLabel &&
-                     vm->pendingInterrupt == instruction->intArgs[0]) &&
-                   instruction->opcode != AnmOpcode_EndOfScript)
+            while (
+                !(instruction->opcode == AnmOpcode_InterruptLabel && vm->pendingInterrupt == instruction->intArgs[0]) &&
+                instruction->opcode != AnmOpcode_EndOfScript)
             {
                 if (instruction->opcode == AnmOpcode_InterruptLabel && instruction->intArgs[0] == -1)
                 {
@@ -740,22 +740,19 @@ ZunBool AnmManager::ExecuteScript(AnmVm *vm)
 stop:
     if (vm->angleVel.x != 0.0f)
     {
-        vm->rotation.x =
-            AddNormalizeAngle(vm->rotation.x, g_Supervisor.framerateMultiplier * vm->angleVel.x);
+        vm->rotation.x = AddNormalizeAngle(vm->rotation.x, g_Supervisor.framerateMultiplier * vm->angleVel.x);
         vm->updateRotation = true;
     }
 
     if (vm->angleVel.y != 0.0f)
     {
-        vm->rotation.y =
-            AddNormalizeAngle(vm->rotation.y, g_Supervisor.framerateMultiplier * vm->angleVel.y);
+        vm->rotation.y = AddNormalizeAngle(vm->rotation.y, g_Supervisor.framerateMultiplier * vm->angleVel.y);
         vm->updateRotation = true;
     }
 
     if (vm->angleVel.z != 0.0f)
     {
-        vm->rotation.z =
-            AddNormalizeAngle(vm->rotation.z, g_Supervisor.framerateMultiplier * vm->angleVel.z);
+        vm->rotation.z = AddNormalizeAngle(vm->rotation.z, g_Supervisor.framerateMultiplier * vm->angleVel.z);
         vm->updateRotation = true;
     }
 
@@ -1030,14 +1027,10 @@ ZunResult AnmManager::DrawInner(AnmVm *vm, i32 flags)
         }
     }
 
-    g_QuadVertices[0].textureUV.x = g_QuadVertices[2].textureUV.x =
-        vm->loadedSprite->uvStart.x + vm->uvScrollPos.x;
-    g_QuadVertices[1].textureUV.x = g_QuadVertices[3].textureUV.x =
-        vm->loadedSprite->uvEnd.x + vm->uvScrollPos.x;
-    g_QuadVertices[0].textureUV.y = g_QuadVertices[1].textureUV.y =
-        vm->loadedSprite->uvStart.y + vm->uvScrollPos.y;
-    g_QuadVertices[2].textureUV.y = g_QuadVertices[3].textureUV.y =
-        vm->loadedSprite->uvEnd.y + vm->uvScrollPos.y;
+    g_QuadVertices[0].textureUV.x = g_QuadVertices[2].textureUV.x = vm->loadedSprite->uvStart.x + vm->uvScrollPos.x;
+    g_QuadVertices[1].textureUV.x = g_QuadVertices[3].textureUV.x = vm->loadedSprite->uvEnd.x + vm->uvScrollPos.x;
+    g_QuadVertices[0].textureUV.y = g_QuadVertices[1].textureUV.y = vm->loadedSprite->uvStart.y + vm->uvScrollPos.y;
+    g_QuadVertices[2].textureUV.y = g_QuadVertices[3].textureUV.y = vm->loadedSprite->uvEnd.y + vm->uvScrollPos.y;
 
     triangleX1 = max(g_QuadVertices[0].pos.x, g_QuadVertices[1].pos.x);
     triangleX1 = max(g_QuadVertices[2].pos.x, triangleX1);

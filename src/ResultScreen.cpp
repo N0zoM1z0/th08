@@ -1047,11 +1047,11 @@ i32 ResultScreen::HandleSpellCardScreen()
                     RESULT_INTERRUPT_CHARACTER_DISAPPEAR;
             }
 #else
-            this->spriteVms[this->previousShotType + RESULT_SCRIPT_SPELLCARD_CHARACTER_REIMU_YUKARI]
-                .pendingInterrupt = RESULT_INTERRUPT_CHARACTER_DISAPPEAR;
+            this->spriteVms[this->previousShotType + RESULT_SCRIPT_SPELLCARD_CHARACTER_REIMU_YUKARI].pendingInterrupt =
+                RESULT_INTERRUPT_CHARACTER_DISAPPEAR;
 #endif
-            this->spriteVms[this->shotTypeCursor + RESULT_SCRIPT_SPELLCARD_CHARACTER_REIMU_YUKARI]
-                .pendingInterrupt = RESULT_INTERRUPT_CHARACTER_APPEAR;
+            this->spriteVms[this->shotTypeCursor + RESULT_SCRIPT_SPELLCARD_CHARACTER_REIMU_YUKARI].pendingInterrupt =
+                RESULT_INTERRUPT_CHARACTER_APPEAR;
         }
     }
 
