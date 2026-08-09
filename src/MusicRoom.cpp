@@ -179,12 +179,12 @@ i32 MusicRoom::ProcessInput()
 
             if (buf1[0] != '\0')
             {
-                this->descriptionVms[i].prefix.flag1 = true;
+                this->descriptionVms[i].flag1 = true;
                 g_AnmManager->DrawTextLeft(&this->descriptionVms[i], 0xffe0c0, 0x300000, buf1);
             }
             else
             {
-                this->descriptionVms[i].prefix.flag1 = false;
+                this->descriptionVms[i].flag1 = false;
             }
         }
     }
@@ -334,7 +334,7 @@ ChainCallbackResult MusicRoom::OnDraw(MusicRoom *musicRoom)
             break;
         }
 
-        g_AsciiManager.SetColor(musicRoom->songNameVms[i].prefix.color1.d3dColor);
+        g_AsciiManager.SetColor(musicRoom->songNameVms[i].color1.d3dColor);
 
         musicRoom->songNameVms[i].pos.x = 93.0f;
         musicRoom->songNameVms[i].pos.y = (((i + 1 - musicRoom->listingOffset) * 18) + 104.0f) - 20.0f;
@@ -371,17 +371,17 @@ ChainCallbackResult MusicRoom::OnDraw(MusicRoom *musicRoom)
     g_AsciiManager.AddFormatText(&position, "Now Playing");
 
     position = musicRoom->descriptionVms[7].pos;
-    color = musicRoom->descriptionVms[7].prefix.color1.d3dColor;
+    color = musicRoom->descriptionVms[7].color1.d3dColor;
 
     musicRoom->descriptionVms[7].pos.x = 320.0f;
     musicRoom->descriptionVms[7].pos.y = 52.0f;
     musicRoom->descriptionVms[7].pos.z = 0.0f;
-    musicRoom->descriptionVms[7].prefix.color1.d3dColor = 0xffffffff;
+    musicRoom->descriptionVms[7].color1.d3dColor = 0xffffffff;
 
     g_AnmManager->DrawNoRotation(&musicRoom->descriptionVms[7]);
 
     musicRoom->descriptionVms[7].pos = position;
-    musicRoom->descriptionVms[7].prefix.color1.d3dColor = color;
+    musicRoom->descriptionVms[7].color1.d3dColor = color;
 
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
@@ -542,7 +542,7 @@ out:
         musicRoom->songNameVms[i].pos.x = 93.0f;
         musicRoom->songNameVms[i].pos.y = (((i + 1) * 18) + 104.0f) - 20.0f;
         musicRoom->songNameVms[i].pos.z = 0.0f;
-        musicRoom->songNameVms[i].prefix.anchor = 3;
+        musicRoom->songNameVms[i].anchor = 3;
     }
 
     g_ZunMemory.Free(musicCmtFile);

@@ -58,8 +58,8 @@ void AsciiManager::Reset()
     this->color.d3dColor = 0xffffffff;
     this->scaleX = 1.0f;
     this->scaleY = 1.0f;
-    this->smallScoreText.prefix.anchor = 3;
-    this->popupText.prefix.anchor = 3;
+    this->smallScoreText.anchor = 3;
+    this->popupText.anchor = 3;
     this->asciiAnm->InitializeAndSetSprite(&this->smallScoreText, 0);
     this->asciiAnm->InitializeAndSetSprite(&this->popupText, 136);
     this->asciiAnm->InitializeAndSetSprite(&this->largeText, 32);
@@ -218,8 +218,8 @@ void AsciiManager::OnDrawLowPrioImpl()
     u8 *text;
     float spaceWidth;
 
-    this->largeText.prefix.visible = true;
-    this->largeText.prefix.anchor = 3;
+    this->largeText.visible = true;
+    this->largeText.anchor = 3;
 
     for (i = 0; i < this->numStrings; i++, curString++)
     {
@@ -227,8 +227,8 @@ void AsciiManager::OnDrawLowPrioImpl()
 
         text = (u8 *)curString->text;
 
-        this->largeText.prefix.scale.x = curString->scaleX;
-        this->largeText.prefix.scale.y = curString->scaleY;
+        this->largeText.scale.x = curString->scaleX;
+        this->largeText.scale.y = curString->scaleY;
         spaceWidth = this->spaceWidth * curString->scaleX;
 
         if (isGui != curString->isGui)
@@ -271,12 +271,12 @@ void AsciiManager::OnDrawLowPrioImpl()
                 if (!curString->isSelected)
                 {
                     this->largeText.loadedSprite = this->asciiAnm->GetSprite(*text + (31 - ' '));
-                    this->largeText.prefix.color1.d3dColor = curString->color;
+                    this->largeText.color1.d3dColor = curString->color;
                 }
                 else
                 {
                     this->largeText.loadedSprite = this->asciiAnm->GetSprite(*text + (170 - ' '));
-                    this->largeText.prefix.color1.d3dColor = 0xffffffff;
+                    this->largeText.color1.d3dColor = 0xffffffff;
                 }
 
                 g_AnmManager->DrawNoRotation(&this->largeText);
@@ -310,32 +310,32 @@ void AsciiManager::OnDrawLowPrioImpl()
             {
             case 0:
             no_flicker:
-                this->bossMarkers[i].prefix.color1.r = 255;
-                this->bossMarkers[i].prefix.color1.g = 255;
-                this->bossMarkers[i].prefix.color1.b = 255;
+                this->bossMarkers[i].color1.r = 255;
+                this->bossMarkers[i].color1.g = 255;
+                this->bossMarkers[i].color1.b = 255;
                 if (spaceWidth < 64.0f)
                 {
-                    this->bossMarkers[i].prefix.color1.a = (spaceWidth * 64.0f) / 64.0f + 96.0f;
+                    this->bossMarkers[i].color1.a = (spaceWidth * 64.0f) / 64.0f + 96.0f;
                 }
                 else
                 {
-                    this->bossMarkers[i].prefix.color1.a = 160;
+                    this->bossMarkers[i].color1.a = 160;
                 }
                 break;
             case 1:
-                this->bossMarkers[i].prefix.color1.a = 128;
-                this->bossMarkers[i].prefix.color1.r = 255;
-                this->bossMarkers[i].prefix.color1.g = 64;
-                this->bossMarkers[i].prefix.color1.b = 64;
+                this->bossMarkers[i].color1.a = 128;
+                this->bossMarkers[i].color1.r = 255;
+                this->bossMarkers[i].color1.g = 64;
+                this->bossMarkers[i].color1.b = 64;
                 break;
             case 2:
                 if (this->unk_8284 % 8 == 0)
                 {
                     this->bossMarkers[i].loadedSprite = this->asciiAnm->GetSprite(158);
-                    this->bossMarkers[i].prefix.color1.a = 255;
-                    this->bossMarkers[i].prefix.color1.r = 255;
-                    this->bossMarkers[i].prefix.color1.g = 255;
-                    this->bossMarkers[i].prefix.color1.b = 255;
+                    this->bossMarkers[i].color1.a = 255;
+                    this->bossMarkers[i].color1.r = 255;
+                    this->bossMarkers[i].color1.g = 255;
+                    this->bossMarkers[i].color1.b = 255;
                 }
                 else
                 {
@@ -346,10 +346,10 @@ void AsciiManager::OnDrawLowPrioImpl()
                 if (this->unk_8284 % 4 == 0)
                 {
                     this->bossMarkers[i].loadedSprite = this->asciiAnm->GetSprite(158);
-                    this->bossMarkers[i].prefix.color1.a = 255;
-                    this->bossMarkers[i].prefix.color1.r = 255;
-                    this->bossMarkers[i].prefix.color1.g = 255;
-                    this->bossMarkers[i].prefix.color1.b = 255;
+                    this->bossMarkers[i].color1.a = 255;
+                    this->bossMarkers[i].color1.r = 255;
+                    this->bossMarkers[i].color1.g = 255;
+                    this->bossMarkers[i].color1.b = 255;
                 }
                 else
                 {
@@ -360,10 +360,10 @@ void AsciiManager::OnDrawLowPrioImpl()
                 if (this->unk_8284 % 2 == 0)
                 {
                     this->bossMarkers[i].loadedSprite = this->asciiAnm->GetSprite(158);
-                    this->bossMarkers[i].prefix.color1.a = 255;
-                    this->bossMarkers[i].prefix.color1.r = 255;
-                    this->bossMarkers[i].prefix.color1.g = 255;
-                    this->bossMarkers[i].prefix.color1.b = 255;
+                    this->bossMarkers[i].color1.a = 255;
+                    this->bossMarkers[i].color1.r = 255;
+                    this->bossMarkers[i].color1.g = 255;
+                    this->bossMarkers[i].color1.b = 255;
                 }
                 else
                 {

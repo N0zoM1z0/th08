@@ -111,8 +111,8 @@ Item *ItemManager::SpawnItem(Float3 *position, ItemType itemType, i32 state)
         // TODO: Uncomment this when BulletManager is actually done
         // g_BulletManager.bulletAnm->SetAndExecuteScriptIdx(&item->sprite, itemType + 61);
 
-        item->sprite.prefix.color1.d3dColor = 0xFFFFFFFF;
-        item->sprite.prefix.zWriteDisabled = true;
+        item->sprite.color1.d3dColor = 0xFFFFFFFF;
+        item->sprite.zWriteDisabled = true;
         item->isMaxValue = false;
         item->isOnscreen = true;
         this->itemListTail->next = item;
