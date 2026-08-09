@@ -278,8 +278,30 @@ struct AnmRawInstr
     };
 };
 
-struct AnmPrefix
+struct AnmVmBase
 {
+    void Initialize()
+    {
+        memset(this, 0, sizeof(AnmVmBase));
+
+        this->scale.x = 1.0f;
+        this->scale.y = 1.0f;
+        this->color1.d3dColor = COLOR_WHITE;
+        D3DXMatrixIdentity(&this->matrix1);
+        this->flags = 7;
+        this->currentTimeInScript.Initialize();
+    }
+
+    ZunBool IsVisible()
+    {
+        return this->visible;
+    }
+
+    void SetInterrupt(i16 interrupt)
+    {
+        this->pendingInterrupt = interrupt;
+    }
+
     Float3 rotation;
     Float3 angleVel;
     Float2 scale;
@@ -308,8 +330,7 @@ struct AnmPrefix
     ZunColor color1;
     ZunColor color2;
     union {
-        u32 flags;
-        u16 flagsAsU16;
+        u16 flags;
         struct
         {
             u32 visible : 1;
@@ -337,11 +358,10 @@ struct AnmPrefix
     AnmLoaded *anmFile;
 };
 
-C_ASSERT(sizeof(AnmPrefix) == 0x208);
+C_ASSERT(sizeof(AnmVmBase) == 0x208);
 
-struct AnmVm
+struct AnmVm : AnmVmBase
 {
-    AnmPrefix prefix;
     Float3 pos;
     i16 activeSpriteIndex;
     i16 anmFileIndex;
@@ -376,32 +396,10 @@ struct AnmVm
         this->activeSpriteIndex = -1;
     }
 
-    ZunBool IsVisible()
-    {
-        return this->prefix.visible;
-    }
-
-    void SetInterrupt(i16 interrupt)
-    {
-        this->prefix.pendingInterrupt = interrupt;
-    }
-
     f32 GetFloatVar(f32 varId);
     i32 GetIntVar(i32 varId);
     f32 *GetFloatVarPtr(f32 *varPtr, u16 varMask, u32 variableNumber);
     i32 *GetIntVarPtr(i32 *varPtr, u16 varMask, u32 variableNumber);
-
-    void Initialize()
-    {
-        memset(&this->prefix, 0, sizeof(AnmPrefix));
-
-        this->prefix.scale.x = 1.0f;
-        this->prefix.scale.y = 1.0f;
-        this->prefix.color1.d3dColor = COLOR_WHITE;
-        D3DXMatrixIdentity(&this->prefix.matrix1);
-        this->prefix.flagsAsU16 = 7;
-        this->prefix.currentTimeInScript.Initialize();
-    }
 };
 
 C_ASSERT(sizeof(AnmVm) == 0x2a4);
@@ -439,13 +437,13 @@ struct AnmLoaded
     void InitializeAndSetSprite(AnmVm *vm, i32 sprite)
     {
         vm->Initialize();
-        vm->prefix.anmFile = this;
+        vm->anmFile = this;
         this->SetSprite(vm, sprite);
     }
 
     void SetAndExecuteScriptIdx(AnmVm *vm, int scriptIdx)
     {
-        vm->prefix.anmFile = this;
+        vm->anmFile = this;
         vm->scriptIndex = scriptIdx;
         this->SetAndExecuteScript(vm, this->scripts[scriptIdx]);
     }

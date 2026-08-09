@@ -335,20 +335,20 @@ i32 ResultScreen::HandleCategorySelectScreen()
 
             for (i = 0; i < ARRAY_SIZE_SIGNED(this->spriteVms); i++, vm++)
             {
-                vm->prefix.pendingInterrupt = RESULT_INTERRUPT_HIDE;
+                vm->pendingInterrupt = RESULT_INTERRUPT_HIDE;
             }
 
             for (i = RESULT_SCRIPT_CATEGORY_HIGHSCORE; i <= RESULT_SCRIPT_CATEGORY_BACK_TO_TITLE; i++)
             {
-                this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_APPEAR;
+                this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_APPEAR;
                 g_AnmManager->ExecuteScript(&this->spriteVms[i]);
                 if (i == this->cursor)
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
                 }
                 else
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
                 }
             }
         }
@@ -367,11 +367,11 @@ i32 ResultScreen::HandleCategorySelectScreen()
             {
                 if (i == this->cursor)
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
                 }
                 else
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
                 }
             }
         }
@@ -394,11 +394,11 @@ i32 ResultScreen::HandleCategorySelectScreen()
             {
                 if (i == this->cursor)
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
                 }
                 else
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
                 }
             }
         }
@@ -416,11 +416,11 @@ i32 ResultScreen::HandleCategorySelectScreen()
                 {
                     if (i == this->cursor)
                     {
-                        this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_CHOSEN;
+                        this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_CHOSEN;
                     }
                     else
                     {
-                        this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_HIDE;
+                        this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_HIDE;
                     }
                 }
                 break;
@@ -430,11 +430,11 @@ i32 ResultScreen::HandleCategorySelectScreen()
                 {
                     if (i == this->cursor)
                     {
-                        this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_CHOSEN;
+                        this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_CHOSEN;
                     }
                     else
                     {
-                        this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_HIDE;
+                        this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_HIDE;
                     }
                 }
                 break;
@@ -443,11 +443,11 @@ i32 ResultScreen::HandleCategorySelectScreen()
                 {
                     if (i == this->cursor)
                     {
-                        this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_CHOSEN;
+                        this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_CHOSEN;
                     }
                     else
                     {
-                        this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_HIDE;
+                        this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_HIDE;
                     }
                 }
                 this->SetState(RESULT_SCREEN_STATE_OTHER_STATS_SCREEN_INIT);
@@ -487,15 +487,15 @@ i32 ResultScreen::HandleHighScoreDifficultySelect()
 
             for (i = RESULT_SCRIPT_HIGHSCORE_DIFFICULTY_EASY; i <= RESULT_SCRIPT_HIGHSCORE_DIFFICULTY_EXTRA; i++)
             {
-                this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_APPEAR;
+                this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_APPEAR;
                 g_AnmManager->ExecuteScript(&this->spriteVms[i]);
                 if ((i - RESULT_SCRIPT_HIGHSCORE_DIFFICULTY_EASY) == this->cursor)
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
                 }
                 else
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
                 }
             }
         }
@@ -514,11 +514,11 @@ i32 ResultScreen::HandleHighScoreDifficultySelect()
             {
                 if ((i - RESULT_SCRIPT_HIGHSCORE_DIFFICULTY_EASY) == this->cursor)
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
                 }
                 else
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
                 }
             }
         }
@@ -541,11 +541,11 @@ i32 ResultScreen::HandleHighScoreDifficultySelect()
             {
                 if ((i - RESULT_SCRIPT_HIGHSCORE_DIFFICULTY_EASY) == this->cursor)
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_CHOSEN;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_CHOSEN;
                 }
                 else
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_HIDE;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_HIDE;
                 }
             }
 
@@ -654,15 +654,15 @@ i32 ResultScreen::HandleHighScoreCharacterSelect()
 
             for (i = RESULT_SCRIPT_HIGHSCORE_CHARACTER_REIMU_YUKARI; i <= RESULT_SCRIPT_HIGHSCORE_CHARACTER_YUYUKO; i++)
             {
-                this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_APPEAR;
+                this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_APPEAR;
                 g_AnmManager->ExecuteScript(&this->spriteVms[i]);
                 if ((i - RESULT_SCRIPT_HIGHSCORE_CHARACTER_REIMU_YUKARI) == this->cursor)
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
                 }
                 else
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
                 }
             }
         }
@@ -681,11 +681,11 @@ i32 ResultScreen::HandleHighScoreCharacterSelect()
             {
                 if ((i - RESULT_SCRIPT_HIGHSCORE_CHARACTER_REIMU_YUKARI) == this->cursor)
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
                 }
                 else
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
                 }
             }
         }
@@ -698,7 +698,7 @@ i32 ResultScreen::HandleHighScoreCharacterSelect()
 
             for (i = RESULT_SCRIPT_HIGHSCORE_CHARACTER_REIMU_YUKARI; i <= RESULT_SCRIPT_HIGHSCORE_CHARACTER_YUYUKO; i++)
             {
-                this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_HIDE;
+                this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_HIDE;
             }
 
             return 1;
@@ -714,15 +714,15 @@ i32 ResultScreen::HandleHighScoreCharacterSelect()
             {
                 if ((i - RESULT_SCRIPT_HIGHSCORE_CHARACTER_REIMU_YUKARI) == this->cursor)
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_CHOSEN;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_CHOSEN;
                 }
                 else
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_HIDE;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_HIDE;
                 }
             }
 
-            this->spriteVms[RESULT_SCRIPT_LISTING].prefix.pendingInterrupt = RESULT_INTERRUPT_LISTING_APPEAR;
+            this->spriteVms[RESULT_SCRIPT_LISTING].pendingInterrupt = RESULT_INTERRUPT_LISTING_APPEAR;
             this->selectedHighScoreCharacter = -1;
             this->SetState(RESULT_SCREEN_STATE_BEST_SCORES);
             g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
@@ -757,11 +757,11 @@ i32 ResultScreen::HandleHighScoreScreen()
     if (ResultScreen::MoveCursorHorizontally(this, SHOT_ALL) != 0)
     {
         this->frameTimer = 0;
-        this->spriteVms[RESULT_SCRIPT_LISTING].prefix.pendingInterrupt =
+        this->spriteVms[RESULT_SCRIPT_LISTING].pendingInterrupt =
             this->selectedDifficulty + RESULT_INTERRUPT_LISTING_APPEAR;
-        this->spriteVms[oldCursor + RESULT_SCRIPT_HIGHSCORE_CHARACTER_REIMU_YUKARI].prefix.pendingInterrupt =
+        this->spriteVms[oldCursor + RESULT_SCRIPT_HIGHSCORE_CHARACTER_REIMU_YUKARI].pendingInterrupt =
             RESULT_INTERRUPT_CHARACTER_DISAPPEAR;
-        this->spriteVms[this->cursor + RESULT_SCRIPT_HIGHSCORE_CHARACTER_REIMU_YUKARI].prefix.pendingInterrupt =
+        this->spriteVms[this->cursor + RESULT_SCRIPT_HIGHSCORE_CHARACTER_REIMU_YUKARI].pendingInterrupt =
             RESULT_INTERRUPT_CHARACTER_APPEAR;
     }
 
@@ -769,7 +769,7 @@ i32 ResultScreen::HandleHighScoreScreen()
     {
         this->selectedHighScoreCharacter = this->cursor;
         this->SetState(RESULT_SCREEN_STATE_BEST_SCORES_CHOOSING_CHARACTER);
-        this->spriteVms[RESULT_SCRIPT_LISTING].prefix.pendingInterrupt = RESULT_INTERRUPT_HIDE;
+        this->spriteVms[RESULT_SCRIPT_LISTING].pendingInterrupt = RESULT_INTERRUPT_HIDE;
         g_SoundPlayer.PlaySoundByIdx(SOUND_BACK, 0);
 
         return 1;
@@ -794,15 +794,15 @@ i32 ResultScreen::HandleSpellCardDifficultySelect()
 
             for (i = RESULT_SCRIPT_SPELLCARD_DIFFICULTY_EASY; i <= RESULT_SCRIPT_SPELLCARD_DIFFICULTY_ALL; i++)
             {
-                this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_APPEAR;
+                this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_APPEAR;
                 g_AnmManager->ExecuteScript(&this->spriteVms[i]);
                 if ((i - RESULT_SCRIPT_SPELLCARD_DIFFICULTY_EASY) == this->cursor)
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
                 }
                 else
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
                 }
             }
         }
@@ -821,11 +821,11 @@ i32 ResultScreen::HandleSpellCardDifficultySelect()
             {
                 if ((i - RESULT_SCRIPT_SPELLCARD_DIFFICULTY_EASY) == this->cursor)
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
                 }
                 else
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
                 }
             }
         }
@@ -848,11 +848,11 @@ i32 ResultScreen::HandleSpellCardDifficultySelect()
             {
                 if ((i - RESULT_SCRIPT_SPELLCARD_DIFFICULTY_EASY) == this->cursor)
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_CHOSEN;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_CHOSEN;
                 }
                 else
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_HIDE;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_HIDE;
                 }
             }
 
@@ -885,15 +885,15 @@ i32 ResultScreen::HandleSpellCardCharacterSelect()
 
             for (i = RESULT_SCRIPT_SPELLCARD_CHARACTER_REIMU_YUKARI; i <= RESULT_SCRIPT_SPELLCARD_CHARACTER_ALL; i++)
             {
-                this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_APPEAR;
+                this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_APPEAR;
                 g_AnmManager->ExecuteScript(&this->spriteVms[i]);
                 if ((i - RESULT_SCRIPT_SPELLCARD_CHARACTER_REIMU_YUKARI) == this->cursor)
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
                 }
                 else
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
                 }
             }
         }
@@ -912,11 +912,11 @@ i32 ResultScreen::HandleSpellCardCharacterSelect()
             {
                 if ((i - RESULT_SCRIPT_SPELLCARD_CHARACTER_REIMU_YUKARI) == this->cursor)
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_SELECTED;
                 }
                 else
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_NOT_SELECTED;
                 }
             }
         }
@@ -929,7 +929,7 @@ i32 ResultScreen::HandleSpellCardCharacterSelect()
 
             for (i = RESULT_SCRIPT_SPELLCARD_CHARACTER_REIMU_YUKARI; i <= RESULT_SCRIPT_SPELLCARD_CHARACTER_ALL; i++)
             {
-                this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_HIDE;
+                this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_HIDE;
             }
 
             return 1;
@@ -943,11 +943,11 @@ i32 ResultScreen::HandleSpellCardCharacterSelect()
             {
                 if ((i - RESULT_SCRIPT_SPELLCARD_CHARACTER_REIMU_YUKARI) == this->cursor)
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_SPRITE_CHOSEN;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_SPRITE_CHOSEN;
                 }
                 else
                 {
-                    this->spriteVms[i].prefix.pendingInterrupt = RESULT_INTERRUPT_HIDE;
+                    this->spriteVms[i].pendingInterrupt = RESULT_INTERRUPT_HIDE;
                 }
             }
 
@@ -956,7 +956,7 @@ i32 ResultScreen::HandleSpellCardCharacterSelect()
 
             g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
 
-            this->spriteVms[RESULT_SCRIPT_LISTING].prefix.pendingInterrupt = RESULT_INTERRUPT_LISTING_APPEAR;
+            this->spriteVms[RESULT_SCRIPT_LISTING].pendingInterrupt = RESULT_INTERRUPT_LISTING_APPEAR;
             this->cursor = 0;
             this->spellcardPage = -1;
 
@@ -1011,14 +1011,14 @@ i32 ResultScreen::HandleSpellCardScreen()
                                            g_GameManager.catkData[spellCardNumber].spellName);
             }
 
-            this->textVms[i % 10].prefix.color1.a = 255;
+            this->textVms[i % 10].color1.a = 255;
         }
 
         g_AnmManager->DrawTextLeft(&this->textVms[10], COLOR_TEXT_WHITE, 0, TH_RESULT_SPELLCARD_NAME,
                                    this->capturedSpellCards[this->selectedSpellcardDifficulty][this->shotTypeCursor],
                                    spellCardCount);
 
-        this->textVms[10].prefix.color1.a = 255;
+        this->textVms[10].color1.a = 255;
     }
 
     if (this->frameTimer < 6)
@@ -1029,7 +1029,7 @@ i32 ResultScreen::HandleSpellCardScreen()
     if (ResultScreen::MoveCursorHorizontally(this, (spellCardCount + 9) / 10) != 0)
     {
         this->frameTimer = 0;
-        this->spriteVms[RESULT_SCRIPT_LISTING].prefix.pendingInterrupt = RESULT_INTERRUPT_LISTING_MOVE_PAGE;
+        this->spriteVms[RESULT_SCRIPT_LISTING].pendingInterrupt = RESULT_INTERRUPT_LISTING_MOVE_PAGE;
     }
     else
     {
@@ -1043,15 +1043,15 @@ i32 ResultScreen::HandleSpellCardScreen()
 #ifdef FIX_REALLY_BAD_BUGS
             for (i = 0; i < SHOT_ALL + 1; i++)
             {
-                this->spriteVms[i + RESULT_SCRIPT_SPELLCARD_CHARACTER_REIMU_YUKARI].prefix.pendingInterrupt =
+                this->spriteVms[i + RESULT_SCRIPT_SPELLCARD_CHARACTER_REIMU_YUKARI].pendingInterrupt =
                     RESULT_INTERRUPT_CHARACTER_DISAPPEAR;
             }
 #else
-            this->spriteVms[this->previousShotType + RESULT_SCRIPT_SPELLCARD_CHARACTER_REIMU_YUKARI]
-                .prefix.pendingInterrupt = RESULT_INTERRUPT_CHARACTER_DISAPPEAR;
+            this->spriteVms[this->previousShotType + RESULT_SCRIPT_SPELLCARD_CHARACTER_REIMU_YUKARI].pendingInterrupt =
+                RESULT_INTERRUPT_CHARACTER_DISAPPEAR;
 #endif
-            this->spriteVms[this->shotTypeCursor + RESULT_SCRIPT_SPELLCARD_CHARACTER_REIMU_YUKARI]
-                .prefix.pendingInterrupt = RESULT_INTERRUPT_CHARACTER_APPEAR;
+            this->spriteVms[this->shotTypeCursor + RESULT_SCRIPT_SPELLCARD_CHARACTER_REIMU_YUKARI].pendingInterrupt =
+                RESULT_INTERRUPT_CHARACTER_APPEAR;
         }
     }
 
@@ -1060,7 +1060,7 @@ i32 ResultScreen::HandleSpellCardScreen()
         this->exitingSpellcardResults = 1;
         this->frameTimer = 0;
         g_SoundPlayer.PlaySoundByIdx(SOUND_BACK, 0);
-        this->spriteVms[RESULT_SCRIPT_LISTING].prefix.pendingInterrupt = RESULT_INTERRUPT_HIDE;
+        this->spriteVms[RESULT_SCRIPT_LISTING].pendingInterrupt = RESULT_INTERRUPT_HIDE;
 
         return 1;
     }
@@ -1093,13 +1093,13 @@ i32 ResultScreen::HandleResultKeyboard()
 
         for (i = 0; i < ARRAY_SIZE_SIGNED(this->spriteVms); i++, vm++)
         {
-            vm->prefix.pendingInterrupt = this->selectedDifficulty + RESULT_INTERRUPT_LISTING_APPEAR;
+            vm->pendingInterrupt = this->selectedDifficulty + RESULT_INTERRUPT_LISTING_APPEAR;
         }
 
         g_AnmManager->DrawTextCentered(&this->textVms[0], COLOR_TEXT_WHITE, 0,
                                        g_CharacterList[this->selectedHighScoreCharacter]);
 
-        this->textVms[0].prefix.color1.a = 255;
+        this->textVms[0].color1.a = 255;
 
         g_GameManager.hscr.playtimeFrames = g_GameManager.unk3DB94;
 
@@ -1288,7 +1288,7 @@ i32 ResultScreen::HandleResultKeyboard()
 
         for (i = 0; i < ARRAY_SIZE_SIGNED(this->spriteVms); i++, vm++)
         {
-            vm->prefix.pendingInterrupt = RESULT_INTERRUPT_EXITING;
+            vm->pendingInterrupt = RESULT_INTERRUPT_EXITING;
         }
 
         strcpy(this->lastName, this->hscr.name);
@@ -1345,7 +1345,7 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
 
             for (i = 0; i < ARRAY_SIZE_SIGNED(this->spriteVms); i++, vm++)
             {
-                vm->prefix.pendingInterrupt = interrupt;
+                vm->pendingInterrupt = interrupt;
             }
 
             if (interrupt != RESULT_INTERRUPT_QUESTION_SAVE_REPLAY)
@@ -1360,13 +1360,13 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
 
         if (this->cursor == 0)
         {
-            vm[0].prefix.color1.d3dColor = COLOR_COMBINE_ALPHA(0xff6060, vm[0].prefix.color1.d3dColor);
-            vm[1].prefix.color1.d3dColor = COLOR_COMBINE_ALPHA(0x606060, vm[1].prefix.color1.d3dColor);
+            vm[0].color1.d3dColor = COLOR_COMBINE_ALPHA(0xff6060, vm[0].color1.d3dColor);
+            vm[1].color1.d3dColor = COLOR_COMBINE_ALPHA(0x606060, vm[1].color1.d3dColor);
         }
         else
         {
-            vm[0].prefix.color1.d3dColor = COLOR_COMBINE_ALPHA(0x606060, vm[0].prefix.color1.d3dColor);
-            vm[1].prefix.color1.d3dColor = COLOR_COMBINE_ALPHA(0xff6060, vm[1].prefix.color1.d3dColor);
+            vm[0].color1.d3dColor = COLOR_COMBINE_ALPHA(0x606060, vm[0].color1.d3dColor);
+            vm[1].color1.d3dColor = COLOR_COMBINE_ALPHA(0xff6060, vm[1].color1.d3dColor);
         }
 
         if (this->frameTimer < 12)
@@ -1395,7 +1395,7 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
 
                 for (vm = this->spriteVms, i = 0; i < ARRAY_SIZE_SIGNED(this->spriteVms); i++, vm++)
                 {
-                    vm->prefix.pendingInterrupt = RESULT_INTERRUPT_REPLAY_APPEAR;
+                    vm->pendingInterrupt = RESULT_INTERRUPT_REPLAY_APPEAR;
                 }
 
                 this->frameTimer = 0;
@@ -1412,7 +1412,7 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
 
             for (vm = this->spriteVms, i = 0; i < ARRAY_SIZE_SIGNED(this->spriteVms); i++, vm++)
             {
-                vm->prefix.pendingInterrupt = RESULT_INTERRUPT_EXITING;
+                vm->pendingInterrupt = RESULT_INTERRUPT_EXITING;
             }
         }
 
@@ -1432,7 +1432,7 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
 
             for (vm = this->spriteVms, i = 0; i < ARRAY_SIZE_SIGNED(this->spriteVms); i++, vm++)
             {
-                vm->prefix.pendingInterrupt = RESULT_INTERRUPT_EXITING;
+                vm->pendingInterrupt = RESULT_INTERRUPT_EXITING;
             }
         }
         break;
@@ -1489,11 +1489,11 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
             {
                 for (vm = this->spriteVms, i = 0; i < ARRAY_SIZE_SIGNED(this->spriteVms); i++, vm++)
                 {
-                    vm->prefix.pendingInterrupt = RESULT_INTERRUPT_HIDE_REPLAY;
+                    vm->pendingInterrupt = RESULT_INTERRUPT_HIDE_REPLAY;
                 }
 
                 vm = &this->spriteVms[RESULT_SCRIPT_REPLAY_LISTING_START + this->selectedReplay];
-                vm->prefix.pendingInterrupt = RESULT_INTERRUPT_SELECT_REPLAY;
+                vm->pendingInterrupt = RESULT_INTERRUPT_SELECT_REPLAY;
 
                 this->currentState = RESULT_SCREEN_STATE_WRITING_REPLAY_NAME;
             }
@@ -1501,11 +1501,11 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
             {
                 for (vm = this->spriteVms, i = 0; i < ARRAY_SIZE_SIGNED(this->spriteVms); i++, vm++)
                 {
-                    vm->prefix.pendingInterrupt = RESULT_INTERRUPT_REPLAY_OVERWRITE;
+                    vm->pendingInterrupt = RESULT_INTERRUPT_REPLAY_OVERWRITE;
                 }
 
                 vm = &this->spriteVms[RESULT_SCRIPT_REPLAY_LISTING_START + this->selectedReplay];
-                vm->prefix.pendingInterrupt = RESULT_INTERRUPT_SELECT_REPLAY;
+                vm->pendingInterrupt = RESULT_INTERRUPT_SELECT_REPLAY;
 
                 this->currentState = RESULT_SCREEN_STATE_OVERWRITE_REPLAY_FILE;
             }
@@ -1526,7 +1526,7 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
 
             for (vm = this->spriteVms, i = 0; i < ARRAY_SIZE_SIGNED(this->spriteVms); i++, vm++)
             {
-                vm->prefix.pendingInterrupt = RESULT_INTERRUPT_EXITING;
+                vm->pendingInterrupt = RESULT_INTERRUPT_EXITING;
             }
 
             this->frameTimer = 0;
@@ -1642,7 +1642,7 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
                 vm = this->spriteVms;
                 for (i = 0; i < ARRAY_SIZE_SIGNED(this->spriteVms); i++, vm++)
                 {
-                    vm->prefix.pendingInterrupt = RESULT_INTERRUPT_EXITING;
+                    vm->pendingInterrupt = RESULT_INTERRUPT_EXITING;
                 }
 
                 strcpy(this->lsnm.name, this->lastName);
@@ -1683,13 +1683,13 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
 
         if (this->cursor == 0)
         {
-            vm[0].prefix.color1.d3dColor = COLOR_COMBINE_ALPHA(0xff6060, vm[0].prefix.color1.d3dColor);
-            vm[1].prefix.color1.d3dColor = COLOR_COMBINE_ALPHA(0x606060, vm[1].prefix.color1.d3dColor);
+            vm[0].color1.d3dColor = COLOR_COMBINE_ALPHA(0xff6060, vm[0].color1.d3dColor);
+            vm[1].color1.d3dColor = COLOR_COMBINE_ALPHA(0x606060, vm[1].color1.d3dColor);
         }
         else
         {
-            vm[0].prefix.color1.d3dColor = COLOR_COMBINE_ALPHA(0x606060, vm[0].prefix.color1.d3dColor);
-            vm[1].prefix.color1.d3dColor = COLOR_COMBINE_ALPHA(0xff6060, vm[1].prefix.color1.d3dColor);
+            vm[0].color1.d3dColor = COLOR_COMBINE_ALPHA(0x606060, vm[0].color1.d3dColor);
+            vm[1].color1.d3dColor = COLOR_COMBINE_ALPHA(0xff6060, vm[1].color1.d3dColor);
         }
 
         if (this->frameTimer < 20)
@@ -1712,11 +1712,11 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
             {
                 for (vm = this->spriteVms, i = 0; i < ARRAY_SIZE_SIGNED(this->spriteVms); i++, vm++)
                 {
-                    vm->prefix.pendingInterrupt = RESULT_INTERRUPT_HIDE_REPLAY;
+                    vm->pendingInterrupt = RESULT_INTERRUPT_HIDE_REPLAY;
                 }
 
                 vm = &this->spriteVms[this->selectedReplay + RESULT_SCRIPT_REPLAY_LISTING_START];
-                vm->prefix.pendingInterrupt = RESULT_INTERRUPT_SELECT_REPLAY;
+                vm->pendingInterrupt = RESULT_INTERRUPT_SELECT_REPLAY;
 
                 this->currentState = RESULT_SCREEN_STATE_WRITING_REPLAY_NAME;
             }
@@ -1743,12 +1743,12 @@ ZunResult ResultScreen::CheckConfirmButton()
         if (this->frameTimer <= 30)
         {
             vm = &this->spriteVms[RESULT_SCRIPT_PLAYER_RESULTS];
-            vm->prefix.pendingInterrupt = RESULT_INTERRUPT_PLAYER_RESULTS_SHOW;
+            vm->pendingInterrupt = RESULT_INTERRUPT_PLAYER_RESULTS_SHOW;
         }
         if (this->frameTimer >= 90 && WAS_PRESSED(TH_BUTTON_SELECTMENU))
         {
             vm = &this->spriteVms[RESULT_SCRIPT_PLAYER_RESULTS];
-            vm->prefix.pendingInterrupt = RESULT_INTERRUPT_EXITING;
+            vm->pendingInterrupt = RESULT_INTERRUPT_EXITING;
             this->frameTimer = 0;
             this->currentState = RESULT_SCREEN_STATE_STATS_TO_SAVE_TRANSITION;
         }
@@ -1877,7 +1877,7 @@ i32 ResultScreen::HandleOtherStatsScreen()
 
             for (vm = this->textVms, i = 0; i < 20; i++, vm++)
             {
-                vm->prefix.color1.a = (this->frameTimer * 255) / 40;
+                vm->color1.a = (this->frameTimer * 255) / 40;
             }
         }
         else
@@ -1914,7 +1914,7 @@ i32 ResultScreen::HandleOtherStatsScreen()
 
             for (vm = this->textVms, i = 0; i < 20; i++, vm++)
             {
-                vm->prefix.color1.a = 255 - (this->frameTimer * 255) / 20;
+                vm->color1.a = 255 - (this->frameTimer * 255) / 20;
             }
         }
         else
@@ -1946,7 +1946,7 @@ i32 ResultScreen::DrawFinalStats()
     case RESULT_SCREEN_STATE_STATS_SCREEN:
     case RESULT_SCREEN_STATE_STATS_TO_SAVE_TRANSITION:
         vm = &this->spriteVms[RESULT_SCRIPT_PLAYER_RESULTS];
-        g_AsciiManager.SetColor(vm->prefix.color1.d3dColor);
+        g_AsciiManager.SetColor(vm->color1.d3dColor);
         unknownFloat = 0.0f;
 
         completion =
@@ -2148,7 +2148,7 @@ ChainCallbackResult ResultScreen::OnUpdate(ResultScreen *result)
 
             for (vm1 = result->spriteVms, i = 0; i < ARRAY_SIZE_SIGNED(result->spriteVms); i++, vm1++)
             {
-                vm1->prefix.pendingInterrupt = RESULT_INTERRUPT_EXITING;
+                vm1->pendingInterrupt = RESULT_INTERRUPT_EXITING;
             }
         }
 
@@ -2361,7 +2361,7 @@ ChainCallbackResult ResultScreen::OnDraw(ResultScreen *result)
                 pos[1] += 16.0f;
 
                 result->listingDividerSprite.pos = pos;
-                result->listingDividerSprite.prefix.scale.x = 2.375f;
+                result->listingDividerSprite.scale.x = 2.375f;
                 g_AnmManager->DrawNoRotation(&result->listingDividerSprite);
 
                 pos[1] -= 16.0f;
@@ -2694,7 +2694,7 @@ ZunResult ResultScreen::AddedCallback(ResultScreen *result)
             g_Supervisor.textAnm->InitializeAndSetSprite(vm, i + 21);
 
             vm->pos = Float3(0.0f, 0.0f, 0.0f);
-            vm->prefix.anchor = 3;
+            vm->anchor = 3;
             vm->fontWidth = 15;
             vm->fontHeight = 15;
         }
@@ -2703,7 +2703,7 @@ ZunResult ResultScreen::AddedCallback(ResultScreen *result)
         {
             result->resultTextAnm->InitializeAndSetSprite(vm, i + 2);
             vm->pos = Float3(0.0f, 0.0f, 0.0f);
-            vm->prefix.anchor = 3;
+            vm->anchor = 3;
             vm->fontWidth = 15;
             vm->fontHeight = 15;
         }

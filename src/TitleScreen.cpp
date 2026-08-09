@@ -326,13 +326,13 @@ ChainCallbackResult TitleScreen::OnUpdateStartMenu()
             /* Mark the "Spell Practice" button as grayed out. */
             if (!g_GameManager.IsSpellPracticeUnlocked())
             {
-                this->vms[3].prefix.color1.d3dColor = 0xff404040;
+                this->vms[3].color1.d3dColor = 0xff404040;
             }
 
             /* Mark the "Extra Start" button as grayed out. */
             if (!g_GameManager.IsExtraUnlocked())
             {
-                this->vms[2].prefix.color1.d3dColor = 0xff404040;
+                this->vms[2].color1.d3dColor = 0xff404040;
             }
         }
 
@@ -386,13 +386,13 @@ ChainCallbackResult TitleScreen::OnUpdateStartMenu()
             /* Mark the "Spell Practice" button as grayed out. */
             if (!g_GameManager.IsSpellPracticeUnlocked())
             {
-                this->vms[3].prefix.color1.d3dColor = 0xff404040;
+                this->vms[3].color1.d3dColor = 0xff404040;
             }
 
             /* Mark the "Extra Start" button as grayed out. */
             if (!g_GameManager.IsExtraUnlocked())
             {
-                this->vms[2].prefix.color1.d3dColor = 0xff404040;
+                this->vms[2].color1.d3dColor = 0xff404040;
             }
         }
 
@@ -668,12 +668,12 @@ ChainCallbackResult TitleScreen::OnUpdateOptions()
 
         if (g_GameManager.plst.playDataTotals.attemptsTotal < 30)
         {
-            this->vms[25].prefix.flag1 = FALSE;
+            this->vms[25].flag1 = FALSE;
         }
 
         if (g_GameManager.plst.playDataTotals.attemptsTotal < 60)
         {
-            this->vms[26].prefix.flag1 = FALSE;
+            this->vms[26].flag1 = FALSE;
         }
 
         i = TITLE_SPRITE_OPTION_PLAYER_START + g_Supervisor.cfg.lifeCount;
@@ -706,11 +706,11 @@ ChainCallbackResult TitleScreen::OnUpdateOptions()
         {
             this->titleAnm->SetSprite(&this->vms[TITLE_SPRITE_OPTION_MUSIC_VOLUME_DIGIT3],
                                       this->vms[TITLE_SPRITE_OPTION_MUSIC_VOLUME_DIGIT3].baseSpriteIndex);
-            this->vms[TITLE_SPRITE_OPTION_MUSIC_VOLUME_DIGIT3].prefix.color1.a = 255;
+            this->vms[TITLE_SPRITE_OPTION_MUSIC_VOLUME_DIGIT3].color1.a = 255;
         }
         else
         {
-            this->vms[TITLE_SPRITE_OPTION_MUSIC_VOLUME_DIGIT3].prefix.color1.a = 0;
+            this->vms[TITLE_SPRITE_OPTION_MUSIC_VOLUME_DIGIT3].color1.a = 0;
         }
 
         /* 2nd digit */
@@ -719,11 +719,11 @@ ChainCallbackResult TitleScreen::OnUpdateOptions()
             this->titleAnm->SetSprite(&this->vms[TITLE_SPRITE_OPTION_MUSIC_VOLUME_DIGIT2],
                                       this->vms[TITLE_SPRITE_OPTION_MUSIC_VOLUME_DIGIT2].baseSpriteIndex +
                                           ((g_Supervisor.cfg.musicVolume / 10) % 10) * 2);
-            this->vms[TITLE_SPRITE_OPTION_MUSIC_VOLUME_DIGIT2].prefix.color1.a = 255;
+            this->vms[TITLE_SPRITE_OPTION_MUSIC_VOLUME_DIGIT2].color1.a = 255;
         }
         else
         {
-            this->vms[TITLE_SPRITE_OPTION_MUSIC_VOLUME_DIGIT2].prefix.color1.a = 0;
+            this->vms[TITLE_SPRITE_OPTION_MUSIC_VOLUME_DIGIT2].color1.a = 0;
         }
 
         this->titleAnm->SetSprite(&this->vms[TITLE_SPRITE_OPTION_MUSIC_VOLUME_DIGIT1],
@@ -739,11 +739,11 @@ ChainCallbackResult TitleScreen::OnUpdateOptions()
         {
             this->titleAnm->SetSprite(&this->vms[TITLE_SPRITE_OPTION_SFX_VOLUME_DIGIT3],
                                       this->vms[TITLE_SPRITE_OPTION_SFX_VOLUME_DIGIT3].baseSpriteIndex);
-            this->vms[TITLE_SPRITE_OPTION_SFX_VOLUME_DIGIT3].prefix.color1.a = 255;
+            this->vms[TITLE_SPRITE_OPTION_SFX_VOLUME_DIGIT3].color1.a = 255;
         }
         else
         {
-            this->vms[TITLE_SPRITE_OPTION_SFX_VOLUME_DIGIT3].prefix.color1.a = 0;
+            this->vms[TITLE_SPRITE_OPTION_SFX_VOLUME_DIGIT3].color1.a = 0;
         }
 
         /* 2nd digit */
@@ -752,11 +752,11 @@ ChainCallbackResult TitleScreen::OnUpdateOptions()
             this->titleAnm->SetSprite(&this->vms[TITLE_SPRITE_OPTION_SFX_VOLUME_DIGIT2],
                                       this->vms[TITLE_SPRITE_OPTION_SFX_VOLUME_DIGIT2].baseSpriteIndex +
                                           ((g_Supervisor.cfg.sfxVolume / 10) % 10) * 2);
-            this->vms[TITLE_SPRITE_OPTION_SFX_VOLUME_DIGIT2].prefix.color1.a = 255;
+            this->vms[TITLE_SPRITE_OPTION_SFX_VOLUME_DIGIT2].color1.a = 255;
         }
         else
         {
-            this->vms[TITLE_SPRITE_OPTION_SFX_VOLUME_DIGIT2].prefix.color1.a = 0;
+            this->vms[TITLE_SPRITE_OPTION_SFX_VOLUME_DIGIT2].color1.a = 0;
         }
 
         this->titleAnm->SetSprite(&this->vms[TITLE_SPRITE_OPTION_SFX_VOLUME_DIGIT1],
@@ -1600,19 +1600,19 @@ ChainCallbackResult TitleScreen::OnUpdateCharacterSelect()
 
             for (vmIdx1 = TITLE_SPRITE_CHARACTER_START; vmIdx1 <= TITLE_SPRITE_CHARACTER_END; vmIdx1++)
             {
-                this->vms[vmIdx1].prefix.flag1 = FALSE;
+                this->vms[vmIdx1].flag1 = FALSE;
                 this->vms[vmIdx1].SetInterrupt(8);
                 for (i1 = 0; i1 < ARRAY_SIZE(g_TitleCharacterSpriteIndices[0]) - 1; i1++)
                 {
                     if (g_TitleCharacterSpriteIndices[this->cursor][i1] == vmIdx1)
                     {
-                        this->vms[vmIdx1].prefix.flag1 = TRUE;
+                        this->vms[vmIdx1].flag1 = TRUE;
                         this->vms[vmIdx1].SetInterrupt(9);
                     }
                 }
                 if (g_TitleCharacterSpriteIndices[this->cursor][i1] == vmIdx1)
                 {
-                    this->vms[vmIdx1].prefix.flag1 = TRUE;
+                    this->vms[vmIdx1].flag1 = TRUE;
                     this->vms[vmIdx1].SetInterrupt(23);
                 }
             }
@@ -1686,7 +1686,7 @@ ChainCallbackResult TitleScreen::OnUpdateCharacterSelect()
             }
             for (vmIdx2 = TITLE_SPRITE_CHARACTER_START; vmIdx2 <= TITLE_SPRITE_CHARACTER_END; vmIdx2++)
             {
-                this->vms[vmIdx2].prefix.flag1 = TRUE;
+                this->vms[vmIdx2].flag1 = TRUE;
                 this->vms[vmIdx2].SetInterrupt(8);
                 for (i2 = 0; i2 < ARRAY_SIZE(g_TitleCharacterSpriteIndices[0]) - 1; i2++)
                 {
@@ -1819,19 +1819,19 @@ ChainCallbackResult TitleScreen::OnUpdatePracticeStageSelect()
             this->practiceState = 0;
             for (vmIdx = TITLE_SPRITE_CHARACTER_START; vmIdx <= TITLE_SPRITE_CHARACTER_END; vmIdx++)
             {
-                this->vms[vmIdx].prefix.flag1 = FALSE;
+                this->vms[vmIdx].flag1 = FALSE;
                 this->vms[vmIdx].SetInterrupt(8);
                 for (i = 1; i < ARRAY_SIZE(g_TitleCharacterSpriteIndices[0]) - 1; i++)
                 {
                     if (g_TitleCharacterSpriteIndices[g_GameManager.shotType][i] == vmIdx)
                     {
-                        this->vms[vmIdx].prefix.flag1 = TRUE;
+                        this->vms[vmIdx].flag1 = TRUE;
                         this->vms[vmIdx].SetInterrupt(9);
                     }
                 }
                 if (g_TitleCharacterSpriteIndices[g_GameManager.shotType][i] == vmIdx)
                 {
-                    this->vms[vmIdx].prefix.flag1 = TRUE;
+                    this->vms[vmIdx].flag1 = TRUE;
                     this->vms[vmIdx].SetInterrupt(23);
                 }
             }
@@ -1970,53 +1970,53 @@ ChainCallbackResult TitleScreen::OnUpdateSpellStageSelect()
 
             for (vmIdx1 = TITLE_SPRITE_CHARACTER_START; vmIdx1 <= TITLE_SPRITE_CHARACTER_END; vmIdx1++)
             {
-                this->vms[vmIdx1].prefix.flag1 = FALSE;
+                this->vms[vmIdx1].flag1 = FALSE;
                 this->vms[vmIdx1].SetInterrupt(8);
                 for (i1 = 1; i1 < ARRAY_SIZE(g_TitleCharacterSpriteIndices[0]) - 1; i1++)
                 {
                     if (g_TitleCharacterSpriteIndices[g_GameManager.shotType][i1] == vmIdx1)
                     {
-                        this->vms[vmIdx1].prefix.flag1 = TRUE;
+                        this->vms[vmIdx1].flag1 = TRUE;
                         this->vms[vmIdx1].SetInterrupt(9);
                     }
                 }
                 if (g_TitleCharacterSpriteIndices[g_GameManager.shotType][i1] == vmIdx1)
                 {
-                    this->vms[vmIdx1].prefix.flag1 = TRUE;
+                    this->vms[vmIdx1].flag1 = TRUE;
                     this->vms[vmIdx1].SetInterrupt(23);
                 }
             }
 
             this->resultTextAnm->InitializeAndSetSprite(&this->spellCardNameVms[0], 2);
             this->spellCardNameVms[0].pos = Float3(0, 0, 0);
-            this->spellCardNameVms[0].prefix.anchor = 3;
+            this->spellCardNameVms[0].anchor = 3;
             this->spellCardNameVms[0].fontWidth = 15;
             this->spellCardNameVms[0].fontHeight = 15;
-            this->spellCardNameVms[0].prefix.color1.a = 255;
-            this->spellCardNameVms[0].prefix.color1.r = 255;
-            this->spellCardNameVms[0].prefix.color1.g = 255;
-            this->spellCardNameVms[0].prefix.color1.b = 255;
+            this->spellCardNameVms[0].color1.a = 255;
+            this->spellCardNameVms[0].color1.r = 255;
+            this->spellCardNameVms[0].color1.g = 255;
+            this->spellCardNameVms[0].color1.b = 255;
             g_AnmManager->DrawTextLeft(&this->spellCardNameVms[0], COLOR_TEXT_WHITE, 0, TH_TITLE_SPELL_STAGE_INFO);
 
             this->resultTextAnm->InitializeAndSetSprite(&this->spellCardNameVms[1], 3);
             this->spellCardNameVms[1].pos = Float3(0, 0, 0);
-            this->spellCardNameVms[1].prefix.anchor = 3;
+            this->spellCardNameVms[1].anchor = 3;
             this->spellCardNameVms[1].fontWidth = 15;
             this->spellCardNameVms[1].fontHeight = 15;
-            this->spellCardNameVms[1].prefix.color1.a = 255;
-            this->spellCardNameVms[1].prefix.color1.r = 255;
-            this->spellCardNameVms[1].prefix.color1.g = 255;
-            this->spellCardNameVms[1].prefix.color1.b = 255;
+            this->spellCardNameVms[1].color1.a = 255;
+            this->spellCardNameVms[1].color1.r = 255;
+            this->spellCardNameVms[1].color1.g = 255;
+            this->spellCardNameVms[1].color1.b = 255;
             g_AnmManager->DrawTextLeft(&this->spellCardNameVms[1], COLOR_TEXT_WHITE, 0,
                                        TH_TITLE_SPELL_CAPTURE_PERCENTAGE);
 
             /* ZUN bug: possible copy paste mistake? */
             this->titleAnm->InitializeAndSetSprite(&this->spellCardNameVms[2], 144);
-            this->spellCardNameVms[1].prefix.anchor = 3;
-            this->spellCardNameVms[1].prefix.color1.a = 255;
-            this->spellCardNameVms[1].prefix.color1.r = 255;
-            this->spellCardNameVms[1].prefix.color1.g = 255;
-            this->spellCardNameVms[1].prefix.color1.b = 255;
+            this->spellCardNameVms[1].anchor = 3;
+            this->spellCardNameVms[1].color1.a = 255;
+            this->spellCardNameVms[1].color1.r = 255;
+            this->spellCardNameVms[1].color1.g = 255;
+            this->spellCardNameVms[1].color1.b = 255;
 
             this->currentScreenState = TitleCurrentScreenState_Init;
             this->stateTimer = 0;
@@ -2068,19 +2068,19 @@ ChainCallbackResult TitleScreen::OnUpdateSpellStageSelect()
 
             for (vmIdx2 = TITLE_SPRITE_CHARACTER_START; vmIdx2 <= TITLE_SPRITE_CHARACTER_END; vmIdx2++)
             {
-                this->vms[vmIdx2].prefix.flag1 = FALSE;
+                this->vms[vmIdx2].flag1 = FALSE;
                 this->vms[vmIdx2].SetInterrupt(8);
                 for (i2 = 1; i2 < ARRAY_SIZE(g_TitleCharacterSpriteIndices[0]) - 1; i2++)
                 {
                     if (g_TitleCharacterSpriteIndices[this->cursor][i2] == vmIdx2)
                     {
-                        this->vms[vmIdx2].prefix.flag1 = TRUE;
+                        this->vms[vmIdx2].flag1 = TRUE;
                         this->vms[vmIdx2].SetInterrupt(9);
                     }
                 }
                 if (g_TitleCharacterSpriteIndices[this->cursor][i2] == vmIdx2)
                 {
-                    this->vms[vmIdx2].prefix.flag1 = TRUE;
+                    this->vms[vmIdx2].flag1 = TRUE;
                     this->vms[vmIdx2].SetInterrupt(23);
                 }
             }
@@ -2194,7 +2194,7 @@ ChainCallbackResult TitleScreen::OnUpdateSpellCardSelect()
 
                 this->resultTextAnm->InitializeAndSetSprite(&this->spellCardNameVms[i], i + 2);
                 this->spellCardNameVms[i].pos = Float3(0, 0, 0);
-                this->spellCardNameVms[i].prefix.anchor = 3;
+                this->spellCardNameVms[i].anchor = 3;
                 /* Copy paste mistake? */
                 this->spellCardNameVms[0].fontWidth = 15;
                 this->spellCardNameVms[i].fontHeight = 15;
@@ -2220,30 +2220,30 @@ ChainCallbackResult TitleScreen::OnUpdateSpellCardSelect()
                                                g_GameManager.catkData[spellCardNumber].spellName);
                 }
 
-                this->spellCardNameVms[i].prefix.color1.a = 255;
-                this->spellCardNameVms[i].prefix.color1.r = 96;
-                this->spellCardNameVms[i].prefix.color1.g = 96;
-                this->spellCardNameVms[i].prefix.color1.b = 96;
+                this->spellCardNameVms[i].color1.a = 255;
+                this->spellCardNameVms[i].color1.r = 96;
+                this->spellCardNameVms[i].color1.g = 96;
+                this->spellCardNameVms[i].color1.b = 96;
             }
 
             i = TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE;
             this->resultTextAnm->InitializeAndSetSprite(&this->spellCardNameVms[i], i + 2);
             this->spellCardNameVms[i].pos = Float3(0, 0, 0);
-            this->spellCardNameVms[i].prefix.anchor = 3;
+            this->spellCardNameVms[i].anchor = 3;
             this->spellCardNameVms[i].fontWidth = 15;
             this->spellCardNameVms[i].fontHeight = 15;
 
             g_AnmManager->DrawTextLeft(&this->spellCardNameVms[i], COLOR_TEXT_WHITE, 0, TH_TITLE_SPELL_CARD_INFO);
 
-            this->spellCardNameVms[i].prefix.color1.a = 255;
-            this->spellCardNameVms[i].prefix.color1.r = 255;
-            this->spellCardNameVms[i].prefix.color1.g = 255;
-            this->spellCardNameVms[i].prefix.color1.b = 255;
+            this->spellCardNameVms[i].color1.a = 255;
+            this->spellCardNameVms[i].color1.r = 255;
+            this->spellCardNameVms[i].color1.g = 255;
+            this->spellCardNameVms[i].color1.b = 255;
 
             i = this->cursor - (this->currentPageSpellCardSelect * TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE);
-            this->spellCardNameVms[i].prefix.color1.r = 255;
-            this->spellCardNameVms[i].prefix.color1.g = 255;
-            this->spellCardNameVms[i].prefix.color1.b = 255;
+            this->spellCardNameVms[i].color1.r = 255;
+            this->spellCardNameVms[i].color1.g = 255;
+            this->spellCardNameVms[i].color1.b = 255;
 
             for (i = 0; i < 7; i++)
             {
@@ -2258,10 +2258,10 @@ ChainCallbackResult TitleScreen::OnUpdateSpellCardSelect()
                     this->spellCardInfoVms[i].pos = Float3(64.0f, (i * 16) + 344.0f + 8.0f, 0.0f);
                 }
 
-                this->spellCardInfoVms[i].prefix.anchor = 3;
+                this->spellCardInfoVms[i].anchor = 3;
                 this->spellCardInfoVms[i].fontWidth = 15;
                 this->spellCardInfoVms[i].fontHeight = 15;
-                this->spellCardInfoVms[i].prefix.color1.d3dColor = COLOR_WHITE;
+                this->spellCardInfoVms[i].color1.d3dColor = COLOR_WHITE;
             }
 
             this->FormatSpellCardInfo();
@@ -2334,7 +2334,7 @@ ChainCallbackResult TitleScreen::OnUpdateSpellCardSelect()
 
                 this->resultTextAnm->InitializeAndSetSprite(&this->spellCardNameVms[i2], i2 + 2);
                 this->spellCardNameVms[i2].pos = Float3(0, 0, 0);
-                this->spellCardNameVms[i2].prefix.anchor = 3;
+                this->spellCardNameVms[i2].anchor = 3;
                 /* Similar copy paste mistake as before? */
                 this->spellCardInfoVms[0].fontWidth = 15;
                 this->spellCardNameVms[i2].fontHeight = 15;
@@ -2364,10 +2364,10 @@ ChainCallbackResult TitleScreen::OnUpdateSpellCardSelect()
                     }
                 }
 
-                this->spellCardNameVms[i2].prefix.color1.a = 255;
-                this->spellCardNameVms[i2].prefix.color1.r = 96;
-                this->spellCardNameVms[i2].prefix.color1.g = 96;
-                this->spellCardNameVms[i2].prefix.color1.b = 96;
+                this->spellCardNameVms[i2].color1.a = 255;
+                this->spellCardNameVms[i2].color1.r = 96;
+                this->spellCardNameVms[i2].color1.g = 96;
+                this->spellCardNameVms[i2].color1.b = 96;
             }
         }
 
@@ -2375,19 +2375,19 @@ ChainCallbackResult TitleScreen::OnUpdateSpellCardSelect()
         {
             for (i2 = 0; i2 < TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE; i2++)
             {
-                this->spellCardNameVms[i2].prefix.color1.r = 96;
-                this->spellCardNameVms[i2].prefix.color1.g = 96;
-                this->spellCardNameVms[i2].prefix.color1.b = 96;
+                this->spellCardNameVms[i2].color1.r = 96;
+                this->spellCardNameVms[i2].color1.g = 96;
+                this->spellCardNameVms[i2].color1.b = 96;
             }
 
             i2 = this->cursor - (this->currentPageSpellCardSelect * TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE);
-            this->spellCardNameVms[i2].prefix.color1.r = 255;
-            this->spellCardNameVms[i2].prefix.color1.g = 255;
-            this->spellCardNameVms[i2].prefix.color1.b = 255;
+            this->spellCardNameVms[i2].color1.r = 255;
+            this->spellCardNameVms[i2].color1.g = 255;
+            this->spellCardNameVms[i2].color1.b = 255;
 
             for (i2 = 0; i2 < 7; i2++)
             {
-                this->spellCardInfoVms[i2].prefix.color1.a = 0;
+                this->spellCardInfoVms[i2].color1.a = 0;
             }
 
             this->unk0xc29c = 21;
@@ -2950,10 +2950,10 @@ void DrawPieChart(Float3 *position, D3DCOLOR color, float param_3, float param_4
     float angle;
     i32 i;
 
-    vm.prefix.blendMode = AnmBlendMode_Normal;
-    vm.prefix.color1.d3dColor = COLOR_WHITE;
-    vm.prefix.zWriteDisabled = TRUE;
-    vm.prefix.flag15 = FALSE;
+    vm.blendMode = AnmBlendMode_Normal;
+    vm.color1.d3dColor = COLOR_WHITE;
+    vm.zWriteDisabled = TRUE;
+    vm.flag15 = FALSE;
 
     vertices[0].diffuse = color;
     vertices[0].pos = *position;
@@ -3013,7 +3013,7 @@ ChainCallbackResult TitleScreen::DrawSpellCardSelect()
             break;
         }
 
-        g_AsciiManager.SetColor(this->spellCardNameVms[i].prefix.color1.d3dColor);
+        g_AsciiManager.SetColor(this->spellCardNameVms[i].color1.d3dColor);
 
         spellCardNumber =
             g_SpellcardNumbersPerStage[g_GameManager.currentStage]
@@ -3331,17 +3331,17 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
             this->resultTextAnm->InitializeAndSetSprite(&this->spellCardNameVms[0], i + 2);
 
             this->spellCardNameVms[0].pos = Float3(0.0, 0.0, 0.0);
-            this->spellCardNameVms[0].prefix.anchor = 3;
+            this->spellCardNameVms[0].anchor = 3;
             this->spellCardNameVms[0].fontWidth = 15;
             this->spellCardNameVms[0].fontHeight = 15;
 
             g_AnmManager->DrawTextLeft(&this->spellCardNameVms[0], COLOR_TEXT_WHITE, 0,
                                        this->replays[this->selectedReplay].spellcardName);
 
-            this->spellCardNameVms[0].prefix.color1.a = 255;
-            this->spellCardNameVms[0].prefix.color1.r = 255;
-            this->spellCardNameVms[0].prefix.color1.g = 255;
-            this->spellCardNameVms[0].prefix.color1.b = 255;
+            this->spellCardNameVms[0].color1.a = 255;
+            this->spellCardNameVms[0].color1.r = 255;
+            this->spellCardNameVms[0].color1.g = 255;
+            this->spellCardNameVms[0].color1.b = 255;
             break;
         }
 
@@ -3389,17 +3389,17 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
             this->currentScreenState = (TitleCurrentScreenState)3;
             this->cursor = 0;
 
-            this->vms[108].prefix.pendingInterrupt = 21;
-            this->vms[109].prefix.pendingInterrupt = 21;
+            this->vms[108].pendingInterrupt = 21;
+            this->vms[109].pendingInterrupt = 21;
             if (this->currentReplay->spellcardNumber < 0)
             {
-                this->vms[110].prefix.pendingInterrupt = 21;
+                this->vms[110].pendingInterrupt = 21;
             }
             else
             {
-                this->vms[110].prefix.color1.a = 0;
+                this->vms[110].color1.a = 0;
             }
-            this->vms[this->cursor + 108].prefix.pendingInterrupt = 20;
+            this->vms[this->cursor + 108].pendingInterrupt = 20;
             break;
         }
 
@@ -3418,17 +3418,17 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
         i = this->MoveCursorVertical((this->currentReplay->spellcardNumber < 0) ? 3 : 2);
         if (i != 0)
         {
-            this->vms[108].prefix.pendingInterrupt = 21;
-            this->vms[109].prefix.pendingInterrupt = 21;
+            this->vms[108].pendingInterrupt = 21;
+            this->vms[109].pendingInterrupt = 21;
             if (this->currentReplay->spellcardNumber < 0)
             {
-                this->vms[110].prefix.pendingInterrupt = 21;
+                this->vms[110].pendingInterrupt = 21;
             }
             else
             {
-                this->vms[110].prefix.color1.a = 0;
+                this->vms[110].color1.a = 0;
             }
-            this->vms[this->cursor + 108].prefix.pendingInterrupt = 20;
+            this->vms[this->cursor + 108].pendingInterrupt = 20;
         }
         if (WAS_PRESSED(TH_BUTTON_SHOOT | TH_BUTTON_ENTER))
         {
@@ -3525,12 +3525,12 @@ ChainCallbackResult TitleScreen::DrawCompletionStatusText()
 
     if (showVm)
     {
-        this->spellCardNameVms[0].prefix.anchor = 3;
+        this->spellCardNameVms[0].anchor = 3;
 
-        this->spellCardNameVms[0].prefix.color1.a = 255;
-        this->spellCardNameVms[0].prefix.color1.r = 255;
-        this->spellCardNameVms[0].prefix.color1.g = 255;
-        this->spellCardNameVms[0].prefix.color1.b = 255;
+        this->spellCardNameVms[0].color1.a = 255;
+        this->spellCardNameVms[0].color1.r = 255;
+        this->spellCardNameVms[0].color1.g = 255;
+        this->spellCardNameVms[0].color1.b = 255;
 
         this->spellCardNameVms[0].pos.x = 400.0f;
         this->spellCardNameVms[0].pos.y = 170.0f;
@@ -3564,7 +3564,7 @@ ChainCallbackResult TitleScreen::OnDraw(TitleScreen *titleScreen)
             position = vm->pos;
             vm->pos += vm->pos2;
 
-            if (vm->prefix.rotation.z != 0.0f)
+            if (vm->rotation.z != 0.0f)
             {
                 g_AnmManager->Draw2D(vm);
             }
@@ -3765,10 +3765,10 @@ void TitleScreen::TitleSetupThread(TitleScreen *titleScreen)
             g_TitleScreen->spellCardInfoVms[i].pos = Float3(64.0f, (i * 16.0f) + 352.0f + 10.0f, 0.0f);
         }
 
-        g_TitleScreen->spellCardInfoVms[i].prefix.anchor = 3;
+        g_TitleScreen->spellCardInfoVms[i].anchor = 3;
         g_TitleScreen->spellCardInfoVms[i].fontWidth = 15;
         g_TitleScreen->spellCardInfoVms[i].fontHeight = 15;
-        g_TitleScreen->spellCardInfoVms[i].prefix.flag1 = TRUE;
+        g_TitleScreen->spellCardInfoVms[i].flag1 = TRUE;
     }
 
     if (g_Supervisor.subthreadCloseRequestActive)

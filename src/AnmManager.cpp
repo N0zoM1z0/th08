@@ -25,14 +25,14 @@ ZunResult AnmLoaded::SetSprite(AnmVm *vm, int spriteIdx)
         return ZUN_ERROR;
     }
 
-    vm->prefix.anmFile = this;
+    vm->anmFile = this;
     vm->activeSpriteIndex = spriteIdx;
     vm->loadedSprite = &this->sprites[spriteIdx];
-    vm->prefix.spriteSize.x = vm->loadedSprite->widthPx;
-    vm->prefix.spriteSize.y = vm->loadedSprite->heightPx;
+    vm->spriteSize.x = vm->loadedSprite->widthPx;
+    vm->spriteSize.y = vm->loadedSprite->heightPx;
 
-    D3DXMatrixIdentity(&vm->prefix.matrix1);
-    D3DXMatrixIdentity(&vm->prefix.matrix3);
+    D3DXMatrixIdentity(&vm->matrix1);
+    D3DXMatrixIdentity(&vm->matrix3);
 
     /* ZUN bloat: what does this do? */
     if (vm->loadedSprite->scaleFactor.x < 1.0f)
@@ -40,13 +40,13 @@ ZunResult AnmLoaded::SetSprite(AnmVm *vm, int spriteIdx)
         spriteIdx = 0;
     }
 
-    vm->prefix.matrix1.m[0][0] = vm->prefix.spriteSize.x / 256.0f;
-    vm->prefix.matrix1.m[1][1] = vm->prefix.spriteSize.y / 256.0f;
+    vm->matrix1.m[0][0] = vm->spriteSize.x / 256.0f;
+    vm->matrix1.m[1][1] = vm->spriteSize.y / 256.0f;
 
-    vm->prefix.matrix3.m[0][0] = (vm->prefix.spriteSize.x / vm->loadedSprite->width) * vm->loadedSprite->scaleFactor.x;
-    vm->prefix.matrix3.m[1][1] = (vm->prefix.spriteSize.y / vm->loadedSprite->height) * vm->loadedSprite->scaleFactor.y;
+    vm->matrix3.m[0][0] = (vm->spriteSize.x / vm->loadedSprite->width) * vm->loadedSprite->scaleFactor.x;
+    vm->matrix3.m[1][1] = (vm->spriteSize.y / vm->loadedSprite->height) * vm->loadedSprite->scaleFactor.y;
 
-    vm->prefix.matrix2 = vm->prefix.matrix1;
+    vm->matrix2 = vm->matrix1;
 
     return ZUN_SUCCESS;
 }
@@ -61,12 +61,12 @@ void AnmLoaded::SetAndExecuteScript(AnmVm *vm, AnmRawInstr *beginningOfScript)
     {
         vm->Initialize();
         vm->anmFileIndex = this->anmIdx;
-        vm->prefix.anmFile = this;
-        vm->prefix.flags &= 0xfffff9ff;
+        vm->anmFile = this;
+        vm->flip = 0;
         vm->beginningOfScript = beginningOfScript;
         vm->currentInstruction = vm->beginningOfScript;
-        vm->prefix.currentTimeInScript = 0;
-        vm->prefix.flags &= 0xfffffffe;
+        vm->currentTimeInScript = 0;
+        vm->visible = FALSE;
         g_AnmManager->ExecuteScript(vm);
         g_AnmManager->unk0xc++;
     }
@@ -77,25 +77,25 @@ f32 AnmVm::GetFloatVar(f32 varId)
     switch ((int)varId)
     {
     case AnmVariable_I0:
-        return this->prefix.intVar0;
+        return this->intVar0;
     case AnmVariable_I1:
-        return this->prefix.intVar1;
+        return this->intVar1;
     case AnmVariable_I2:
-        return this->prefix.intVar2;
+        return this->intVar2;
     case AnmVariable_I3:
-        return this->prefix.intVar3;
+        return this->intVar3;
     case AnmVariable_F0:
-        return this->prefix.floatVar0;
+        return this->floatVar0;
     case AnmVariable_F1:
-        return this->prefix.floatVar1;
+        return this->floatVar1;
     case AnmVariable_F2:
-        return this->prefix.floatVar2;
+        return this->floatVar2;
     case AnmVariable_F3:
-        return this->prefix.floatVar3;
+        return this->floatVar3;
     case AnmVariable_IC0:
-        return this->prefix.counterVar0;
+        return this->counterVar0;
     case AnmVariable_IC1:
-        return this->prefix.counterVar1;
+        return this->counterVar1;
     default:
         return varId;
     }
@@ -106,25 +106,25 @@ i32 AnmVm::GetIntVar(i32 varId)
     switch (varId)
     {
     case AnmVariable_I0:
-        return this->prefix.intVar0;
+        return this->intVar0;
     case AnmVariable_I1:
-        return this->prefix.intVar1;
+        return this->intVar1;
     case AnmVariable_I2:
-        return this->prefix.intVar2;
+        return this->intVar2;
     case AnmVariable_I3:
-        return this->prefix.intVar3;
+        return this->intVar3;
     case AnmVariable_F0:
-        return this->prefix.floatVar0;
+        return this->floatVar0;
     case AnmVariable_F1:
-        return this->prefix.floatVar1;
+        return this->floatVar1;
     case AnmVariable_F2:
-        return this->prefix.floatVar2;
+        return this->floatVar2;
     case AnmVariable_F3:
-        return this->prefix.floatVar3;
+        return this->floatVar3;
     case AnmVariable_IC0:
-        return this->prefix.counterVar0;
+        return this->counterVar0;
     case AnmVariable_IC1:
-        return this->prefix.counterVar1;
+        return this->counterVar1;
     default:
         return varId;
     }
@@ -140,13 +140,13 @@ f32 *AnmVm::GetFloatVarPtr(f32 *varPtr, u16 varMask, u32 variableNumber)
     switch ((int)*varPtr)
     {
     case AnmVariable_F0:
-        return &this->prefix.floatVar0;
+        return &this->floatVar0;
     case AnmVariable_F1:
-        return &this->prefix.floatVar1;
+        return &this->floatVar1;
     case AnmVariable_F2:
-        return &this->prefix.floatVar2;
+        return &this->floatVar2;
     case AnmVariable_F3:
-        return &this->prefix.floatVar3;
+        return &this->floatVar3;
     }
 
     return varPtr;
@@ -162,17 +162,17 @@ i32 *AnmVm::GetIntVarPtr(i32 *varPtr, u16 varMask, u32 variableNumber)
     switch (*varPtr)
     {
     case AnmVariable_I0:
-        return &this->prefix.intVar0;
+        return &this->intVar0;
     case AnmVariable_I1:
-        return &this->prefix.intVar1;
+        return &this->intVar1;
     case AnmVariable_I2:
-        return &this->prefix.intVar2;
+        return &this->intVar2;
     case AnmVariable_I3:
-        return &this->prefix.intVar3;
+        return &this->intVar3;
     case AnmVariable_IC0:
-        return &this->prefix.counterVar0;
+        return &this->counterVar0;
     case AnmVariable_IC1:
-        return &this->prefix.counterVar1;
+        return &this->counterVar1;
     }
 
     return varPtr;
@@ -191,17 +191,17 @@ ZunBool AnmManager::ExecuteScript(AnmVm *vm)
         return TRUE;
     }
 
-    if (vm->prefix.flag19 != 0)
+    if (vm->flag19 != 0)
     {
         return FALSE;
     }
 
-    if (vm->prefix.pendingInterrupt != 0)
+    if (vm->pendingInterrupt != 0)
     {
         goto handleInterrupt;
     }
 
-    while (instruction = vm->currentInstruction, instruction->time <= (int)vm->prefix.currentTimeInScript)
+    while (instruction = vm->currentInstruction, instruction->time <= (int)vm->currentTimeInScript)
     {
 #define GET_INT_VAR(argNumber)                                                                                         \
     ((instruction->varMask & (1 << argNumber)) ? vm->GetIntVar(instruction->intArgs[argNumber])                        \
@@ -218,40 +218,40 @@ ZunBool AnmManager::ExecuteScript(AnmVm *vm)
         {
         case AnmOpcode_EndOfScript:
         case AnmOpcode_Delete:
-            vm->prefix.visible = false;
+            vm->visible = false;
         case AnmOpcode_Static:
             vm->currentInstruction = NULL;
             return TRUE;
         case AnmOpcode_Sprite:
-            vm->prefix.visible = true;
+            vm->visible = true;
 
-            vm->prefix.anmFile->SetSprite(vm, GET_INT_VAR(0));
-            vm->timeOfLastSpriteSet = (int)vm->prefix.currentTimeInScript;
+            vm->anmFile->SetSprite(vm, GET_INT_VAR(0));
+            vm->timeOfLastSpriteSet = (int)vm->currentTimeInScript;
             break;
         case AnmOpcode_Scale:
-            vm->prefix.scale.x = GET_FLOAT_VAR(0);
-            vm->prefix.scale.y = GET_FLOAT_VAR(1);
+            vm->scale.x = GET_FLOAT_VAR(0);
+            vm->scale.y = GET_FLOAT_VAR(1);
 
-            vm->prefix.updateScale = true;
+            vm->updateScale = true;
             break;
         case AnmOpcode_Alpha:
-            vm->prefix.color1.a = GET_INT_VAR(0);
+            vm->color1.a = GET_INT_VAR(0);
             break;
         case AnmOpcode_Color:
-            vm->prefix.color1.r = GET_INT_VAR(0);
-            vm->prefix.color1.g = GET_INT_VAR(1);
-            vm->prefix.color1.b = GET_INT_VAR(2);
+            vm->color1.r = GET_INT_VAR(0);
+            vm->color1.g = GET_INT_VAR(1);
+            vm->color1.b = GET_INT_VAR(2);
             break;
         case AnmOpcode_Alpha2:
-            vm->prefix.color2.a = GET_INT_VAR(0);
+            vm->color2.a = GET_INT_VAR(0);
             break;
         case AnmOpcode_Color2:
-            vm->prefix.color2.r = GET_INT_VAR(0);
-            vm->prefix.color2.g = GET_INT_VAR(1);
-            vm->prefix.color2.b = GET_INT_VAR(2);
+            vm->color2.r = GET_INT_VAR(0);
+            vm->color2.g = GET_INT_VAR(1);
+            vm->color2.b = GET_INT_VAR(2);
             break;
         case AnmOpcode_Jmp:
-            vm->prefix.currentTimeInScript = instruction->intArgs[1];
+            vm->currentTimeInScript = instruction->intArgs[1];
             vm->currentInstruction = (AnmRawInstr *)(((u8 *)vm->beginningOfScript) + instruction->intArgs[0]);
             continue;
         case AnmOpcode_JmpDec:
@@ -259,69 +259,69 @@ ZunBool AnmManager::ExecuteScript(AnmVm *vm)
 
             if (GET_INT_VAR(0) > 0)
             {
-                vm->prefix.currentTimeInScript = instruction->intArgs[2];
+                vm->currentTimeInScript = instruction->intArgs[2];
                 vm->currentInstruction = (AnmRawInstr *)(((u8 *)vm->beginningOfScript) + instruction->intArgs[1]);
                 continue;
             }
             break;
         case AnmOpcode_FlipX:
-            vm->prefix.flip ^= (1 << 0);
-            vm->prefix.scale.x *= -1.0f;
-            vm->prefix.updateScale = true;
+            vm->flip ^= (1 << 0);
+            vm->scale.x *= -1.0f;
+            vm->updateScale = true;
             break;
         case AnmOpcode_PosMode:
-            vm->prefix.usePosOffset = instruction->intArgs[0];
+            vm->usePosOffset = instruction->intArgs[0];
             break;
         case AnmOpcode_FlipY:
-            vm->prefix.flip ^= (1 << 1);
-            vm->prefix.scale.y *= -1.0f;
-            vm->prefix.updateScale = true;
+            vm->flip ^= (1 << 1);
+            vm->scale.y *= -1.0f;
+            vm->updateScale = true;
             break;
         case AnmOpcode_Rotate:
-            vm->prefix.rotation.x = GET_FLOAT_VAR(0);
-            vm->prefix.rotation.y = GET_FLOAT_VAR(1);
-            vm->prefix.rotation.z = GET_FLOAT_VAR(2);
+            vm->rotation.x = GET_FLOAT_VAR(0);
+            vm->rotation.y = GET_FLOAT_VAR(1);
+            vm->rotation.z = GET_FLOAT_VAR(2);
 
-            vm->prefix.updateRotation = true;
+            vm->updateRotation = true;
             break;
         case AnmOpcode_AngularVelocity:
-            vm->prefix.angleVel.x = GET_FLOAT_VAR(0);
-            vm->prefix.angleVel.y = GET_FLOAT_VAR(1);
-            vm->prefix.angleVel.z = GET_FLOAT_VAR(2);
+            vm->angleVel.x = GET_FLOAT_VAR(0);
+            vm->angleVel.y = GET_FLOAT_VAR(1);
+            vm->angleVel.z = GET_FLOAT_VAR(2);
 
-            vm->prefix.updateRotation = true;
+            vm->updateRotation = true;
             break;
         case AnmOpcode_ScaleGrowth:
-            vm->prefix.scaleGrowth.x = GET_FLOAT_VAR(0);
-            vm->prefix.scaleGrowth.y = GET_FLOAT_VAR(1);
+            vm->scaleGrowth.x = GET_FLOAT_VAR(0);
+            vm->scaleGrowth.y = GET_FLOAT_VAR(1);
             break;
         case AnmOpcode_ScaleTimeLinear:
-            vm->prefix.interpCurrentTimers[AnmInterp_Scale] = 0;
+            vm->interpCurrentTimers[AnmInterp_Scale] = 0;
 
-            vm->prefix.interpEndTimers[AnmInterp_Scale] = GET_INT_VAR(2);
+            vm->interpEndTimers[AnmInterp_Scale] = GET_INT_VAR(2);
 
-            vm->prefix.interpModes[AnmInterp_Scale] = AnmInterpMode_Linear;
-            vm->scaleInitial = vm->prefix.scale;
+            vm->interpModes[AnmInterp_Scale] = AnmInterpMode_Linear;
+            vm->scaleInitial = vm->scale;
 
             vm->scaleFinal.x = GET_FLOAT_VAR(0);
             vm->scaleFinal.y = GET_FLOAT_VAR(1);
             break;
         case AnmOpcode_AlphaTimeLinear:
-            vm->color1Initial.a = vm->prefix.color1.a;
+            vm->color1Initial.a = vm->color1.a;
             vm->color1Final.a = instruction->intArgs[0];
 
-            vm->prefix.interpCurrentTimers[AnmInterp_Alpha1] = 0;
-            vm->prefix.interpEndTimers[AnmInterp_Alpha1] = GET_INT_VAR(1);
-            vm->prefix.interpModes[AnmInterp_Alpha1] = AnmInterpMode_Linear;
+            vm->interpCurrentTimers[AnmInterp_Alpha1] = 0;
+            vm->interpEndTimers[AnmInterp_Alpha1] = GET_INT_VAR(1);
+            vm->interpModes[AnmInterp_Alpha1] = AnmInterpMode_Linear;
             break;
         case AnmOpcode_AdditiveBlendMode:
-            vm->prefix.blendMode = instruction->intArgs[0] != 0;
+            vm->blendMode = instruction->intArgs[0] != 0;
             break;
         case AnmOpcode_BlendMode:
-            vm->prefix.blendMode = instruction->intArgs[0];
+            vm->blendMode = instruction->intArgs[0];
             break;
         case AnmOpcode_Pos:
-            if (!vm->prefix.usePosOffset)
+            if (!vm->usePosOffset)
             {
                 vm->pos = Float3(GET_FLOAT_VAR(0), GET_FLOAT_VAR(1), GET_FLOAT_VAR(2));
             }
@@ -331,15 +331,15 @@ ZunBool AnmManager::ExecuteScript(AnmVm *vm)
             }
             break;
         case AnmOpcode_PosTimeDecel2:
-            vm->prefix.interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOutQuartic;
+            vm->interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOutQuartic;
             goto posTime;
         case AnmOpcode_PosTimeDecel:
-            vm->prefix.interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOut;
+            vm->interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOut;
             goto posTime;
         case AnmOpcode_PosTimeLinear:
-            vm->prefix.interpModes[AnmInterp_Pos] = AnmInterpMode_Linear;
+            vm->interpModes[AnmInterp_Pos] = AnmInterpMode_Linear;
         posTime:
-            if (!vm->prefix.usePosOffset)
+            if (!vm->usePosOffset)
             {
                 vm->posInitial = vm->pos;
             }
@@ -350,42 +350,42 @@ ZunBool AnmManager::ExecuteScript(AnmVm *vm)
 
             vm->posFinal = Float3(GET_FLOAT_VAR(0), GET_FLOAT_VAR(1), GET_FLOAT_VAR(2));
 
-            vm->prefix.interpEndTimers[AnmInterp_Pos] = GET_INT_VAR(3);
-            vm->prefix.interpCurrentTimers[AnmInterp_Pos] = 0;
+            vm->interpEndTimers[AnmInterp_Pos] = GET_INT_VAR(3);
+            vm->interpCurrentTimers[AnmInterp_Pos] = 0;
             break;
         case AnmOpcode_Wait:
-            if (vm->prefix.waitTimer == 0)
+            if (vm->waitTimer == 0)
             {
-                vm->prefix.waitTimer = GET_INT_VAR(0);
+                vm->waitTimer = GET_INT_VAR(0);
             }
             else
             {
-                vm->prefix.waitTimer--;
+                vm->waitTimer--;
             }
 
-            if (vm->prefix.waitTimer <= 0)
+            if (vm->waitTimer <= 0)
             {
-                vm->prefix.waitTimer = 0;
+                vm->waitTimer = 0;
                 break;
             }
-            vm->prefix.currentTimeInScript--;
+            vm->currentTimeInScript--;
             goto stop;
         case AnmOpcode_StopHide:
-            vm->prefix.visible = false;
+            vm->visible = false;
         case AnmOpcode_Stop:
-            if (vm->prefix.pendingInterrupt == 0)
+            if (vm->pendingInterrupt == 0)
             {
-                vm->prefix.stopped = true;
-                vm->prefix.currentTimeInScript--;
+                vm->stopped = true;
+                vm->currentTimeInScript--;
                 goto stop;
             }
 
         handleInterrupt:
             nextInstruction = NULL;
             instruction = vm->beginningOfScript;
-            while (!(instruction->opcode == AnmOpcode_InterruptLabel &&
-                     vm->prefix.pendingInterrupt == instruction->intArgs[0]) &&
-                   instruction->opcode != AnmOpcode_EndOfScript)
+            while (
+                !(instruction->opcode == AnmOpcode_InterruptLabel && vm->pendingInterrupt == instruction->intArgs[0]) &&
+                instruction->opcode != AnmOpcode_EndOfScript)
             {
                 if (instruction->opcode == AnmOpcode_InterruptLabel && instruction->intArgs[0] == -1)
                 {
@@ -394,86 +394,86 @@ ZunBool AnmManager::ExecuteScript(AnmVm *vm)
                 instruction = (AnmRawInstr *)((u8 *)instruction + instruction->instructionSize);
             }
 
-            vm->prefix.pendingInterrupt = 0;
-            vm->prefix.stopped = false;
+            vm->pendingInterrupt = 0;
+            vm->stopped = false;
 
             if (instruction->opcode != AnmOpcode_InterruptLabel)
             {
                 if (nextInstruction == NULL)
                 {
-                    vm->prefix.currentTimeInScript--;
+                    vm->currentTimeInScript--;
                     goto stop;
                 }
                 instruction = nextInstruction;
             }
 
-            vm->interruptReturnTime = vm->prefix.currentTimeInScript;
+            vm->interruptReturnTime = vm->currentTimeInScript;
             vm->interruptReturnInstruction = vm->currentInstruction;
             instruction = (AnmRawInstr *)((u8 *)instruction + instruction->instructionSize);
             vm->currentInstruction = instruction;
-            vm->prefix.currentTimeInScript = vm->currentInstruction->time;
-            vm->prefix.visible = true;
+            vm->currentTimeInScript = vm->currentInstruction->time;
+            vm->visible = true;
             continue;
         case AnmOpcode_ReturnFromInterrupt:
-            vm->prefix.currentTimeInScript = vm->interruptReturnTime;
+            vm->currentTimeInScript = vm->interruptReturnTime;
             vm->currentInstruction = vm->interruptReturnInstruction;
             continue;
         case AnmOpcode_Visible:
-            vm->prefix.visible = instruction->intArgs[0];
+            vm->visible = instruction->intArgs[0];
             break;
         case AnmOpcode_AnchorTopLeft:
-            vm->prefix.anchor = 3;
+            vm->anchor = 3;
             break;
         case AnmOpcode_Ins25:
-            vm->prefix.type = instruction->intArgs[0];
+            vm->type = instruction->intArgs[0];
             break;
         case AnmOpcode_AddU:
-            vm->prefix.uvScrollPos.x += GET_FLOAT_VAR(0);
+            vm->uvScrollPos.x += GET_FLOAT_VAR(0);
             ;
-            if (vm->prefix.uvScrollPos.x >= 1.0f)
+            if (vm->uvScrollPos.x >= 1.0f)
             {
-                vm->prefix.uvScrollPos.x -= 1.0f;
+                vm->uvScrollPos.x -= 1.0f;
             }
             else
             {
-                if (vm->prefix.uvScrollPos.x < 0.0f)
+                if (vm->uvScrollPos.x < 0.0f)
                 {
-                    vm->prefix.uvScrollPos.x += 1.0f;
+                    vm->uvScrollPos.x += 1.0f;
                 }
             }
             break;
         case AnmOpcode_AddV:
-            vm->prefix.uvScrollPos.y += GET_FLOAT_VAR(0);
-            if (vm->prefix.uvScrollPos.y >= 1.0f)
+            vm->uvScrollPos.y += GET_FLOAT_VAR(0);
+            if (vm->uvScrollPos.y >= 1.0f)
             {
-                vm->prefix.uvScrollPos.y -= 1.0f;
+                vm->uvScrollPos.y -= 1.0f;
             }
             else
             {
-                if (vm->prefix.uvScrollPos.y < 0.0f)
+                if (vm->uvScrollPos.y < 0.0f)
                 {
-                    vm->prefix.uvScrollPos.y += 1.0f;
+                    vm->uvScrollPos.y += 1.0f;
                 }
             }
             break;
         case AnmOpcode_UScroll:
-            vm->prefix.uvScrollVel.x = GET_FLOAT_VAR(0);
+            vm->uvScrollVel.x = GET_FLOAT_VAR(0);
             break;
         case AnmOpcode_VScroll:
-            vm->prefix.uvScrollVel.y = GET_FLOAT_VAR(0);
+            vm->uvScrollVel.y = GET_FLOAT_VAR(0);
             break;
         case AnmOpcode_ZWriteDisable:
-            vm->prefix.zWriteDisabled = instruction->intArgs[0];
+            vm->zWriteDisabled = instruction->intArgs[0];
             break;
         case AnmOpcode_Ins31:
-            vm->prefix.flag15 = instruction->intArgs[0];
+            vm->flag15 = instruction->intArgs[0];
             break;
         case AnmOpcode_PosTime:
-            vm->prefix.interpCurrentTimers[AnmInterp_Pos] = 0;
-            vm->prefix.interpEndTimers[AnmInterp_Pos] = GET_INT_VAR(0);
-            vm->prefix.interpModes[AnmInterp_Pos] = instruction->intArgs[1];
+            vm->interpCurrentTimers[AnmInterp_Pos] = 0;
+            vm->interpEndTimers[AnmInterp_Pos] = GET_INT_VAR(0);
+            vm->interpModes[AnmInterp_Pos] = instruction->intArgs[1];
 
-            if (!vm->prefix.usePosOffset)
+            if (!vm->usePosOffset)
             {
                 vm->posInitial = vm->pos;
             }
@@ -487,76 +487,76 @@ ZunBool AnmManager::ExecuteScript(AnmVm *vm)
             vm->posFinal.z = GET_FLOAT_VAR(4);
             break;
         case AnmOpcode_ColorTime:
-            vm->prefix.interpCurrentTimers[AnmInterp_RGB1] = 0;
+            vm->interpCurrentTimers[AnmInterp_RGB1] = 0;
 
-            vm->prefix.interpEndTimers[AnmInterp_RGB1] = GET_INT_VAR(0);
+            vm->interpEndTimers[AnmInterp_RGB1] = GET_INT_VAR(0);
 
-            vm->prefix.interpModes[AnmInterp_RGB1] = instruction->intArgs[1];
-            vm->color1Initial.r = vm->prefix.color1.r;
-            vm->color1Initial.g = vm->prefix.color1.g;
-            vm->color1Initial.b = vm->prefix.color1.b;
+            vm->interpModes[AnmInterp_RGB1] = instruction->intArgs[1];
+            vm->color1Initial.r = vm->color1.r;
+            vm->color1Initial.g = vm->color1.g;
+            vm->color1Initial.b = vm->color1.b;
 
             vm->color1Final.r = GET_INT_VAR(2);
             vm->color1Final.g = GET_INT_VAR(3);
             vm->color1Final.b = GET_INT_VAR(4);
             break;
         case AnmOpcode_AlphaTime:
-            vm->prefix.interpCurrentTimers[AnmInterp_Alpha1] = 0;
-            vm->prefix.interpEndTimers[AnmInterp_Alpha1] = GET_INT_VAR(0);
-            vm->prefix.interpModes[AnmInterp_Alpha1] = instruction->intArgs[1];
+            vm->interpCurrentTimers[AnmInterp_Alpha1] = 0;
+            vm->interpEndTimers[AnmInterp_Alpha1] = GET_INT_VAR(0);
+            vm->interpModes[AnmInterp_Alpha1] = instruction->intArgs[1];
 
-            vm->color1Initial.a = vm->prefix.color1.a;
+            vm->color1Initial.a = vm->color1.a;
             vm->color1Final.a = GET_INT_VAR(2);
             break;
         case AnmOpcode_Color2Time:
-            vm->prefix.interpCurrentTimers[AnmInterp_RGB2] = 0;
+            vm->interpCurrentTimers[AnmInterp_RGB2] = 0;
 
-            vm->prefix.interpEndTimers[AnmInterp_RGB2] = GET_INT_VAR(0);
+            vm->interpEndTimers[AnmInterp_RGB2] = GET_INT_VAR(0);
 
-            vm->prefix.interpModes[AnmInterp_RGB2] = instruction->intArgs[1];
-            vm->color2Initial.r = vm->prefix.color2.r;
-            vm->color2Initial.g = vm->prefix.color2.g;
-            vm->color2Initial.b = vm->prefix.color2.b;
+            vm->interpModes[AnmInterp_RGB2] = instruction->intArgs[1];
+            vm->color2Initial.r = vm->color2.r;
+            vm->color2Initial.g = vm->color2.g;
+            vm->color2Initial.b = vm->color2.b;
 
             vm->color2Final.r = GET_INT_VAR(2);
             vm->color2Final.g = GET_INT_VAR(3);
             vm->color2Final.b = GET_INT_VAR(4);
             break;
         case AnmOpcode_Alpha2Time:
-            vm->prefix.interpCurrentTimers[AnmInterp_Alpha2] = 0;
-            vm->prefix.interpEndTimers[AnmInterp_Alpha2] = GET_INT_VAR(0);
-            vm->prefix.interpModes[AnmInterp_Alpha2] = instruction->intArgs[1];
+            vm->interpCurrentTimers[AnmInterp_Alpha2] = 0;
+            vm->interpEndTimers[AnmInterp_Alpha2] = GET_INT_VAR(0);
+            vm->interpModes[AnmInterp_Alpha2] = instruction->intArgs[1];
 
-            vm->color2Initial.a = vm->prefix.color2.a;
+            vm->color2Initial.a = vm->color2.a;
             vm->color2Final.a = GET_INT_VAR(2);
             break;
         case AnmOpcode_RotateTime:
-            vm->prefix.interpCurrentTimers[AnmInterp_Rotate] = 0;
+            vm->interpCurrentTimers[AnmInterp_Rotate] = 0;
 
-            vm->prefix.interpEndTimers[AnmInterp_Rotate] = GET_INT_VAR(0);
+            vm->interpEndTimers[AnmInterp_Rotate] = GET_INT_VAR(0);
 
-            vm->prefix.interpModes[AnmInterp_Rotate] = instruction->intArgs[1];
-            vm->rotateInitial = vm->prefix.rotation;
+            vm->interpModes[AnmInterp_Rotate] = instruction->intArgs[1];
+            vm->rotateInitial = vm->rotation;
 
             vm->rotateFinal.x = GET_FLOAT_VAR(2);
             vm->rotateFinal.y = GET_FLOAT_VAR(3);
             vm->rotateFinal.z = GET_FLOAT_VAR(4);
 
-            vm->prefix.updateRotation = true;
+            vm->updateRotation = true;
             break;
         case AnmOpcode_ScaleTime:
-            vm->prefix.interpCurrentTimers[AnmInterp_Scale] = 0;
-            vm->prefix.interpEndTimers[AnmInterp_Scale] = GET_INT_VAR(0);
+            vm->interpCurrentTimers[AnmInterp_Scale] = 0;
+            vm->interpEndTimers[AnmInterp_Scale] = GET_INT_VAR(0);
 
-            vm->prefix.interpModes[AnmInterp_Scale] = instruction->intArgs[1];
-            vm->scaleInitial = vm->prefix.scale;
+            vm->interpModes[AnmInterp_Scale] = instruction->intArgs[1];
+            vm->scaleInitial = vm->scale;
 
             vm->scaleFinal.x = GET_FLOAT_VAR(2);
             vm->scaleFinal.y = GET_FLOAT_VAR(3);
-            vm->prefix.updateScale = true;
+            vm->updateScale = true;
             break;
         case AnmOpcode_Ins83:
-            vm->prefix.playerBulletHitAnimationType = instruction->intArgs[0];
+            vm->playerBulletHitAnimationType = instruction->intArgs[0];
             break;
         case AnmOpcode_ISet:
             *GET_INT_VAR_PTR(0) = GET_INT_VAR(1);
@@ -721,10 +721,10 @@ ZunBool AnmManager::ExecuteScript(AnmVm *vm)
             }
             break;
         case AnmOpcode_Ins88:
-            vm->prefix.flag17 = instruction->byteArgs[1];
+            vm->flag17 = instruction->byteArgs[1];
             break;
         jump:
-            vm->prefix.currentTimeInScript = instruction->intArgs[3];
+            vm->currentTimeInScript = instruction->intArgs[3];
             vm->currentInstruction = (AnmRawInstr *)(((u8 *)vm->beginningOfScript) + instruction->intArgs[2]);
             continue;
         default:
@@ -738,43 +738,40 @@ ZunBool AnmManager::ExecuteScript(AnmVm *vm)
         vm->currentInstruction = (AnmRawInstr *)((u8 *)instruction + instruction->instructionSize);
     }
 stop:
-    if (vm->prefix.angleVel.x != 0.0f)
+    if (vm->angleVel.x != 0.0f)
     {
-        vm->prefix.rotation.x =
-            AddNormalizeAngle(vm->prefix.rotation.x, g_Supervisor.framerateMultiplier * vm->prefix.angleVel.x);
-        vm->prefix.updateRotation = true;
+        vm->rotation.x = AddNormalizeAngle(vm->rotation.x, g_Supervisor.framerateMultiplier * vm->angleVel.x);
+        vm->updateRotation = true;
     }
 
-    if (vm->prefix.angleVel.y != 0.0f)
+    if (vm->angleVel.y != 0.0f)
     {
-        vm->prefix.rotation.y =
-            AddNormalizeAngle(vm->prefix.rotation.y, g_Supervisor.framerateMultiplier * vm->prefix.angleVel.y);
-        vm->prefix.updateRotation = true;
+        vm->rotation.y = AddNormalizeAngle(vm->rotation.y, g_Supervisor.framerateMultiplier * vm->angleVel.y);
+        vm->updateRotation = true;
     }
 
-    if (vm->prefix.angleVel.z != 0.0f)
+    if (vm->angleVel.z != 0.0f)
     {
-        vm->prefix.rotation.z =
-            AddNormalizeAngle(vm->prefix.rotation.z, g_Supervisor.framerateMultiplier * vm->prefix.angleVel.z);
-        vm->prefix.updateRotation = true;
+        vm->rotation.z = AddNormalizeAngle(vm->rotation.z, g_Supervisor.framerateMultiplier * vm->angleVel.z);
+        vm->updateRotation = true;
     }
 
     for (i = 0; i < AnmInterp_Last; i++)
     {
-        if (vm->prefix.interpEndTimers[i] > 0)
+        if (vm->interpEndTimers[i] > 0)
         {
-            vm->prefix.interpCurrentTimers[i]++;
-            if (vm->prefix.interpCurrentTimers[i] >= (int)vm->prefix.interpEndTimers[i])
+            vm->interpCurrentTimers[i]++;
+            if (vm->interpCurrentTimers[i] >= (int)vm->interpEndTimers[i])
             {
                 interp = 1.0f;
-                vm->prefix.interpEndTimers[i] = 0;
+                vm->interpEndTimers[i] = 0;
             }
             else
             {
-                interp = (float)vm->prefix.interpCurrentTimers[i] / (float)vm->prefix.interpEndTimers[i];
+                interp = (float)vm->interpCurrentTimers[i] / (float)vm->interpEndTimers[i];
             }
 
-            switch (vm->prefix.interpModes[i])
+            switch (vm->interpModes[i])
             {
             case AnmInterpMode_EaseIn:
                 interp = interp * interp;
@@ -807,7 +804,7 @@ stop:
             switch (i)
             {
             case AnmInterp_Pos:
-                if (!vm->prefix.usePosOffset)
+                if (!vm->usePosOffset)
                 {
                     vm->pos.x = interp * (vm->posFinal.x - vm->posInitial.x) + vm->posInitial.x;
                     vm->pos.y = interp * (vm->posFinal.y - vm->posInitial.y) + vm->posInitial.y;
@@ -821,80 +818,80 @@ stop:
                 }
                 break;
             case AnmInterp_RGB1:
-                vm->prefix.color1.r = interp * ((float)vm->color1Final.r - vm->color1Initial.r) + vm->color1Initial.r;
-                vm->prefix.color1.g = interp * ((float)vm->color1Final.g - vm->color1Initial.g) + vm->color1Initial.g;
-                vm->prefix.color1.b = interp * ((float)vm->color1Final.b - vm->color1Initial.b) + vm->color1Initial.b;
+                vm->color1.r = interp * ((float)vm->color1Final.r - vm->color1Initial.r) + vm->color1Initial.r;
+                vm->color1.g = interp * ((float)vm->color1Final.g - vm->color1Initial.g) + vm->color1Initial.g;
+                vm->color1.b = interp * ((float)vm->color1Final.b - vm->color1Initial.b) + vm->color1Initial.b;
                 break;
             case AnmInterp_Alpha1:
-                vm->prefix.color1.a = interp * ((float)vm->color1Final.a - vm->color1Initial.a) + vm->color1Initial.a;
+                vm->color1.a = interp * ((float)vm->color1Final.a - vm->color1Initial.a) + vm->color1Initial.a;
                 break;
             case AnmInterp_RGB2:
-                vm->prefix.color2.r = interp * ((float)vm->color2Final.r - vm->color2Initial.r) + vm->color2Initial.r;
-                vm->prefix.color2.g = interp * ((float)vm->color2Final.g - vm->color2Initial.g) + vm->color2Initial.g;
-                vm->prefix.color2.b = interp * ((float)vm->color2Final.b - vm->color2Initial.b) + vm->color2Initial.b;
+                vm->color2.r = interp * ((float)vm->color2Final.r - vm->color2Initial.r) + vm->color2Initial.r;
+                vm->color2.g = interp * ((float)vm->color2Final.g - vm->color2Initial.g) + vm->color2Initial.g;
+                vm->color2.b = interp * ((float)vm->color2Final.b - vm->color2Initial.b) + vm->color2Initial.b;
                 break;
             case AnmInterp_Alpha2:
-                vm->prefix.color2.a = interp * ((float)vm->color2Final.a - vm->color2Initial.a) + vm->color2Initial.a;
+                vm->color2.a = interp * ((float)vm->color2Final.a - vm->color2Initial.a) + vm->color2Initial.a;
                 break;
             case AnmInterp_Rotate:
-                vm->prefix.rotation.x =
+                vm->rotation.x =
                     AddNormalizeAngle((vm->rotateFinal.x - vm->rotateInitial.x) * interp, vm->rotateInitial.x);
-                vm->prefix.rotation.y =
+                vm->rotation.y =
                     AddNormalizeAngle((vm->rotateFinal.y - vm->rotateInitial.y) * interp, vm->rotateInitial.y);
-                vm->prefix.rotation.z =
+                vm->rotation.z =
                     AddNormalizeAngle((vm->rotateFinal.z - vm->rotateInitial.z) * interp, vm->rotateInitial.z);
-                vm->prefix.updateRotation = true;
+                vm->updateRotation = true;
                 break;
             case AnmInterp_Scale:
-                vm->prefix.scale.x = interp * (vm->scaleFinal.x - vm->scaleInitial.x) + vm->scaleInitial.x;
-                vm->prefix.scale.y = interp * (vm->scaleFinal.y - vm->scaleInitial.y) + vm->scaleInitial.y;
-                vm->prefix.updateScale = true;
+                vm->scale.x = interp * (vm->scaleFinal.x - vm->scaleInitial.x) + vm->scaleInitial.x;
+                vm->scale.y = interp * (vm->scaleFinal.y - vm->scaleInitial.y) + vm->scaleInitial.y;
+                vm->updateScale = true;
                 break;
             }
         }
     }
 
-    if (vm->prefix.scaleGrowth.y != 0.0f)
+    if (vm->scaleGrowth.y != 0.0f)
     {
-        vm->prefix.scale.y += g_Supervisor.framerateMultiplier * vm->prefix.scaleGrowth.y;
-        vm->prefix.updateScale = true;
+        vm->scale.y += g_Supervisor.framerateMultiplier * vm->scaleGrowth.y;
+        vm->updateScale = true;
     }
 
-    if (vm->prefix.scaleGrowth.x != 0.0f)
+    if (vm->scaleGrowth.x != 0.0f)
     {
-        vm->prefix.scale.x += g_Supervisor.framerateMultiplier * vm->prefix.scaleGrowth.x;
-        vm->prefix.updateScale = true;
-        vm->prefix.updateRotation = true;
+        vm->scale.x += g_Supervisor.framerateMultiplier * vm->scaleGrowth.x;
+        vm->updateScale = true;
+        vm->updateRotation = true;
     }
 
-    vm->prefix.uvScrollPos.x += vm->prefix.uvScrollVel.x;
+    vm->uvScrollPos.x += vm->uvScrollVel.x;
 
-    if (vm->prefix.uvScrollPos.x >= 1.0f)
+    if (vm->uvScrollPos.x >= 1.0f)
     {
-        vm->prefix.uvScrollPos.x -= 1.0f;
+        vm->uvScrollPos.x -= 1.0f;
     }
     else
     {
-        if (vm->prefix.uvScrollPos.x < 0.0f)
+        if (vm->uvScrollPos.x < 0.0f)
         {
-            vm->prefix.uvScrollPos.x += 1.0f;
+            vm->uvScrollPos.x += 1.0f;
         }
     }
 
-    vm->prefix.uvScrollPos.y += vm->prefix.uvScrollVel.y;
-    if (vm->prefix.uvScrollPos.y >= 1.0f)
+    vm->uvScrollPos.y += vm->uvScrollVel.y;
+    if (vm->uvScrollPos.y >= 1.0f)
     {
-        vm->prefix.uvScrollPos.y -= 1.0f;
+        vm->uvScrollPos.y -= 1.0f;
     }
     else
     {
-        if (vm->prefix.uvScrollPos.y < 0.0f)
+        if (vm->uvScrollPos.y < 0.0f)
         {
-            vm->prefix.uvScrollPos.y += 1.0f;
+            vm->uvScrollPos.y += 1.0f;
         }
     }
 
-    vm->prefix.currentTimeInScript++;
+    vm->currentTimeInScript++;
     this->scriptsExecutedThisFrame++;
 
     return FALSE;
@@ -953,10 +950,10 @@ u8 MixColors(u8 color1, u8 color2)
 
 void AnmManager::SetRenderStateForVm(AnmVm *vm)
 {
-    if (this->currentBlendMode != vm->prefix.blendMode)
+    if (this->currentBlendMode != vm->blendMode)
     {
         this->FlushVertexBuffer();
-        this->currentBlendMode = vm->prefix.blendMode;
+        this->currentBlendMode = vm->blendMode;
 
         switch (this->currentBlendMode)
         {
@@ -969,9 +966,9 @@ void AnmManager::SetRenderStateForVm(AnmVm *vm)
         }
     }
 
-    if (!g_Supervisor.IsDepthTestDisabled() && this->disableZWrite != vm->prefix.zWriteDisabled)
+    if (!g_Supervisor.IsDepthTestDisabled() && this->disableZWrite != vm->zWriteDisabled)
     {
-        this->disableZWrite = vm->prefix.zWriteDisabled;
+        this->disableZWrite = vm->zWriteDisabled;
         if (!this->disableZWrite)
         {
             g_Supervisor.SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
@@ -1030,14 +1027,10 @@ ZunResult AnmManager::DrawInner(AnmVm *vm, i32 flags)
         }
     }
 
-    g_QuadVertices[0].textureUV.x = g_QuadVertices[2].textureUV.x =
-        vm->loadedSprite->uvStart.x + vm->prefix.uvScrollPos.x;
-    g_QuadVertices[1].textureUV.x = g_QuadVertices[3].textureUV.x =
-        vm->loadedSprite->uvEnd.x + vm->prefix.uvScrollPos.x;
-    g_QuadVertices[0].textureUV.y = g_QuadVertices[1].textureUV.y =
-        vm->loadedSprite->uvStart.y + vm->prefix.uvScrollPos.y;
-    g_QuadVertices[2].textureUV.y = g_QuadVertices[3].textureUV.y =
-        vm->loadedSprite->uvEnd.y + vm->prefix.uvScrollPos.y;
+    g_QuadVertices[0].textureUV.x = g_QuadVertices[2].textureUV.x = vm->loadedSprite->uvStart.x + vm->uvScrollPos.x;
+    g_QuadVertices[1].textureUV.x = g_QuadVertices[3].textureUV.x = vm->loadedSprite->uvEnd.x + vm->uvScrollPos.x;
+    g_QuadVertices[0].textureUV.y = g_QuadVertices[1].textureUV.y = vm->loadedSprite->uvStart.y + vm->uvScrollPos.y;
+    g_QuadVertices[2].textureUV.y = g_QuadVertices[3].textureUV.y = vm->loadedSprite->uvEnd.y + vm->uvScrollPos.y;
 
     triangleX1 = max(g_QuadVertices[0].pos.x, g_QuadVertices[1].pos.x);
     triangleX1 = max(g_QuadVertices[2].pos.x, triangleX1);
@@ -1077,7 +1070,7 @@ ZunResult AnmManager::DrawInner(AnmVm *vm, i32 flags)
 
     if ((flags & 2) == 0)
     {
-        color.d3dColor = vm->prefix.flag17 ? vm->prefix.color2.d3dColor : vm->prefix.color1.d3dColor;
+        color.d3dColor = vm->flag17 ? vm->color2.d3dColor : vm->color1.d3dColor;
 
         if (this->useMixColor)
         {
@@ -1152,20 +1145,20 @@ ZunResult AnmManager::DrawNoRotation(AnmVm *vm)
         return ZUN_ERROR;
     }
 
-    if (!vm->prefix.flag1)
+    if (!vm->flag1)
     {
         return ZUN_ERROR;
     }
 
-    if (vm->prefix.color1.a == 0)
+    if (vm->color1.a == 0)
     {
         return ZUN_ERROR;
     }
 
-    spriteHalfWidth = (vm->prefix.spriteSize.x * vm->prefix.scale.x) / 2.0f;
-    spriteHalfHeight = (vm->prefix.spriteSize.y * vm->prefix.scale.y) / 2.0f;
+    spriteHalfWidth = (vm->spriteSize.x * vm->scale.x) / 2.0f;
+    spriteHalfHeight = (vm->spriteSize.y * vm->scale.y) / 2.0f;
 
-    if ((vm->prefix.anchor & 1) == 0)
+    if ((vm->anchor & 1) == 0)
     {
         g_QuadVertices[0].pos.x = g_QuadVertices[2].pos.x = vm->pos.x - spriteHalfWidth;
         g_QuadVertices[1].pos.x = g_QuadVertices[3].pos.x = spriteHalfWidth + vm->pos.x;
@@ -1176,7 +1169,7 @@ ZunResult AnmManager::DrawNoRotation(AnmVm *vm)
         g_QuadVertices[1].pos.x = g_QuadVertices[3].pos.x = spriteHalfWidth + vm->pos.x + spriteHalfWidth;
     }
 
-    if ((vm->prefix.anchor & 2) == 0)
+    if ((vm->anchor & 2) == 0)
     {
         g_QuadVertices[0].pos.y = g_QuadVertices[1].pos.y = vm->pos.y - spriteHalfHeight;
         g_QuadVertices[2].pos.y = g_QuadVertices[3].pos.y = spriteHalfHeight + vm->pos.y;
@@ -1204,7 +1197,7 @@ ZunResult AnmManager::Draw2D(AnmVm *vm)
 {
     float sine, cosine, rotation, xOffset, yOffset, x, y;
 
-    if (vm->prefix.rotation.z == 0.0f)
+    if (vm->rotation.z == 0.0f)
     {
         return this->DrawNoRotation(vm);
     }
@@ -1214,25 +1207,25 @@ ZunResult AnmManager::Draw2D(AnmVm *vm)
         return ZUN_ERROR;
     }
 
-    if (!vm->prefix.flag1)
+    if (!vm->flag1)
     {
         return ZUN_ERROR;
     }
 
-    if (vm->prefix.color1.a == 0)
+    if (vm->color1.a == 0)
     {
         return ZUN_ERROR;
     }
 
-    rotation = vm->prefix.rotation.z;
+    rotation = vm->rotation.z;
 
     sincos(rotation, sine, cosine);
 
     xOffset = vm->pos.x;
     yOffset = vm->pos.y;
 
-    x = (vm->prefix.spriteSize.x * vm->prefix.scale.x) / 2.0f;
-    y = (vm->prefix.spriteSize.y * vm->prefix.scale.y) / 2.0f;
+    x = (vm->spriteSize.x * vm->scale.x) / 2.0f;
+    y = (vm->spriteSize.y * vm->scale.y) / 2.0f;
 
     this->TranslateRotation(&g_QuadVertices[0], -x, -y, sine, cosine, xOffset, yOffset);
     this->TranslateRotation(&g_QuadVertices[1], x, -y, sine, cosine, xOffset, yOffset);
@@ -1241,7 +1234,7 @@ ZunResult AnmManager::Draw2D(AnmVm *vm)
 
     g_QuadVertices[0].pos.z = g_QuadVertices[1].pos.z = g_QuadVertices[2].pos.z = g_QuadVertices[3].pos.z = vm->pos.z;
 
-    if (vm->prefix.anchor & 1)
+    if (vm->anchor & 1)
     {
         g_QuadVertices[0].pos.x += x;
         g_QuadVertices[1].pos.x += x;
@@ -1249,7 +1242,7 @@ ZunResult AnmManager::Draw2D(AnmVm *vm)
         g_QuadVertices[3].pos.x += x;
     }
 
-    if (vm->prefix.anchor & 2)
+    if (vm->anchor & 2)
     {
         g_QuadVertices[0].pos.y += y;
         g_QuadVertices[1].pos.y += y;
@@ -1274,20 +1267,20 @@ ZunResult AnmManager::DrawNoRotationNoRound(AnmVm *vm)
         return ZUN_ERROR;
     }
 
-    if (!vm->prefix.flag1)
+    if (!vm->flag1)
     {
         return ZUN_ERROR;
     }
 
-    if (vm->prefix.color1.a == 0)
+    if (vm->color1.a == 0)
     {
         return ZUN_ERROR;
     }
 
-    spriteHalfWidth = (vm->prefix.spriteSize.x * vm->prefix.scale.x) / 2.0f;
-    spriteHalfHeight = (vm->prefix.spriteSize.y * vm->prefix.scale.y) / 2.0f;
+    spriteHalfWidth = (vm->spriteSize.x * vm->scale.x) / 2.0f;
+    spriteHalfHeight = (vm->spriteSize.y * vm->scale.y) / 2.0f;
 
-    if ((vm->prefix.anchor & 1) == 0)
+    if ((vm->anchor & 1) == 0)
     {
         g_QuadVertices[0].pos.x = g_QuadVertices[2].pos.x = vm->pos.x - spriteHalfWidth;
         g_QuadVertices[1].pos.x = g_QuadVertices[3].pos.x = spriteHalfWidth + vm->pos.x;
@@ -1298,7 +1291,7 @@ ZunResult AnmManager::DrawNoRotationNoRound(AnmVm *vm)
         g_QuadVertices[1].pos.x = g_QuadVertices[3].pos.x = spriteHalfWidth + vm->pos.x + spriteHalfWidth;
     }
 
-    if ((vm->prefix.anchor & 2) == 0)
+    if ((vm->anchor & 2) == 0)
     {
         g_QuadVertices[0].pos.y = g_QuadVertices[1].pos.y = vm->pos.y - spriteHalfHeight;
         g_QuadVertices[2].pos.y = g_QuadVertices[3].pos.y = spriteHalfHeight + vm->pos.y;
@@ -1861,7 +1854,7 @@ void AnmManager::DrawTextLeft(AnmVm *vm, COLORREF textColor, COLORREF shadowColo
                         fontWidth, vm->fontHeight, textColor, shadowColor, buf, vm->loadedSprite->scaleFactor.x,
                         vm->loadedSprite->scaleFactor.y);
 
-    vm->prefix.visible = true;
+    vm->visible = true;
 }
 
 // STUB: th08 0x466650

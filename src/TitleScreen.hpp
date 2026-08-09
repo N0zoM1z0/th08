@@ -109,16 +109,16 @@ struct TitleScreen
     {
         if (key < 0)
         {
-            vms[0].prefix.flag1 = FALSE;
-            vms[1].prefix.flag1 = FALSE;
+            vms[0].flag1 = FALSE;
+            vms[1].flag1 = FALSE;
         }
         else
         {
             this->titleAnm->SetSprite(&vms[0], vms[0].baseSpriteIndex + (key / 10) * 2);
             this->titleAnm->SetSprite(&vms[1], vms[1].baseSpriteIndex + (key % 10) * 2);
 
-            vms[0].prefix.flag1 = TRUE;
-            vms[1].prefix.flag1 = TRUE;
+            vms[0].flag1 = TRUE;
+            vms[1].flag1 = TRUE;
         }
 
         return ZUN_SUCCESS;
