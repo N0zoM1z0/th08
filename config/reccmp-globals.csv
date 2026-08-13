@@ -100,6 +100,7 @@ th08::g_EffectManagerCalcChain,0x577ebc,global
 th08::g_EffectManagerDrawChain,0x577edc,global
 th08::g_EnemyManagerDrawChainHighPrio,0x577f00,global
 th08::g_EnemyManager,0x577f20,global
+th08::EclRunLowProposal::g_EclEnemyTableF54CC0,0xf54cc0,global
 th08::g_EnemyManagerCalcChain,0xf54e30,global
 th08::g_EnemyManagerDrawChainLowPrio,0xf54e50,global
 th08::g_BulletManagerDrawChain,0xf54e70,global

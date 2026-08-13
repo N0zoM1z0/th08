@@ -281,10 +281,10 @@ th08::AsciiManager::FUN_00422bb0,0x422bb0,function
 th08::AsciiManager::SetBossMarkerPosition,0x422be0,function
 th08::Gui::FUN_00422c20,0x422c20,function
 th08::Enemy::FUN_00422c40,0x422c40,function
-FUN_004230c0,0x4230c0,function
+th08::Gui::FUN_004230c0,0x4230c0,function
 FUN_004230e0,0x4230e0,function
 FUN_00423110,0x423110,function
-FUN_00423130,0x423130,function
+th08::Gui::FUN_00423130,0x423130,function
 th08::Enemy::FUN_00423150,0x423150,function
 th08::EclExIns::MystiaNightBlindness,0x423390,function
 FUN_004233d0,0x4233d0,function

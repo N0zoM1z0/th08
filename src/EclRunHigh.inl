@@ -525,30 +525,33 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         break;
     case 163: TH08_ECL_CONTEXT_API(ctx)->Global00F54CEC() = TH08_ECL_READ_I(ctx, 0); break;
     case 127:
-        lhsInt = TH08_ECL_READ_I(ctx, 0);
-        if (lhsInt < 0)
+        if (TH08_ECL_READ_I(ctx, 0) < 0)
         {
-            u8 bossSlot = TH08_ECL_AT(ctx, u8, 0x3313);
-            if (bossSlot < 4)
-                TH08_ECL_CONTEXT_API(ctx)->SetBossPresence(0);
-            TH08_ECL_CONTEXT_API(ctx)->SetBossSlot(bossSlot, 0);
+            if (TH08_ECL_AT(ctx, u8, 0x3313) < 4)
+                g_Gui.FUN_00422c20(0);
+            EclRunLowProposal::g_EclEnemyTableF54CC0[
+                TH08_ECL_AT(ctx, u8, 0x3313)] = 0;
             TH08_ECL_AT(ctx, u32, 0x3324) &= ~2U;
-            TH08_ECL_CONTEXT_API(ctx)->SetBossUiState(bossSlot, 2);
-            TH08_ECL_CONTEXT_API(ctx)->UnregisterBoss(TH08_ECL_CONTEXT_ENEMY(ctx));
-            Vec3 offscreen = {-999.0f, -999.0f, 0.0f};
-            TH08_ECL_CONTEXT_API(ctx)->SetBossMarker(bossSlot, &offscreen);
+            g_AsciiManager.FUN_00422bb0(
+                TH08_ECL_AT(ctx, u8, 0x3313), 2);
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->FUN_0042a820();
+            D3DXVECTOR3 offscreen(-999.0f, -999.0f, 0.0f);
+            g_AsciiManager.SetBossMarkerPosition(
+                TH08_ECL_AT(ctx, u8, 0x3313), &offscreen);
         }
         else
         {
-            TH08_ECL_CONTEXT_API(ctx)->SetBossSlot(TH08_ECL_READ_I(ctx, 0), TH08_ECL_CONTEXT_ENEMY(ctx));
+            EclRunLowProposal::g_EclEnemyTableF54CC0[TH08_ECL_READ_I(ctx, 0)] =
+                reinterpret_cast<EclOperands::EnemyOverlay *>(
+                    TH08_ECL_CONTEXT_ENEMY(ctx));
             if (TH08_ECL_READ_I(ctx, 0) == 0)
             {
-                TH08_ECL_CONTEXT_API(ctx)->SetBossPresence(1);
-                TH08_ECL_CONTEXT_API(ctx)->SetBossHealth(1.0f);
+                g_Gui.FUN_00422c20(1);
+                g_Gui.FUN_004230c0(1.0f);
             }
             TH08_ECL_AT(ctx, u32, 0x3324) |= 2;
             TH08_ECL_AT(ctx, u8, 0x3313) = (u8)TH08_ECL_READ_I(ctx, 0);
-            TH08_ECL_CONTEXT_API(ctx)->SetBossUiState(TH08_ECL_AT(ctx, u8, 0x3313), 1);
+            g_AsciiManager.FUN_00422bb0(TH08_ECL_AT(ctx, u8, 0x3313), 1);
             TH08_ECL_AT(ctx, i32, 0x3350) = 0;
         }
         break;
@@ -736,8 +739,7 @@ enter_subroutine:
     case 141: TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&TH08_ECL_AT(ctx, Vec3, 0x2D34), TH08_ECL_READ_I(ctx, 0), 0); break;
     case 147: TH08_ECL_CONTEXT_API(ctx)->Global004EA290() = TH08_ECL_READ_I(ctx, 0); break;
     case 148:
-        reinterpret_cast<GameManager *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x320)->
-            FUN_00423130(TH08_ECL_READ_I(ctx, 0));
+        g_Gui.FUN_00423130(TH08_ECL_READ_I(ctx, 0));
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3E04) += 0x708;
         break;
     case 93:
