@@ -1,0 +1,71 @@
+schema_version = 1
+
+[[units]]
+name = "item-auto-collect"
+object = "build/ItemManager.obj"
+symbol = "?AutoCollectAllItems@ItemManager@th08@@QAEXXZ"
+target_address = 0x004413E0
+size = 0x61
+
+[[units.relocations]]
+offset = 0x32
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units]]
+name = "item-cancel-auto-collect"
+object = "build/ItemManager.obj"
+symbol = "?CancelAutoCollect@ItemManager@th08@@QAEXXZ"
+target_address = 0x00441530
+size = 0x6D
+
+[[units]]
+name = "screen-effect-added"
+object = "build/ScreenEffect.obj"
+symbol = "?AddedCallback@ScreenEffect@th08@@SI?AW4ZunResult@@PAU12@@Z"
+target_address = 0x0045C0E0
+size = 0x1A
+
+[[units.relocations]]
+offset = 0x10
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units]]
+name = "screen-effect-deleted"
+object = "build/ScreenEffect.obj"
+symbol = "?DeletedCallback@ScreenEffect@th08@@SI?AW4ZunResult@@PAU12@@Z"
+target_address = 0x0045C100
+size = 0x5E
+
+[[units.relocations]]
+offset = 0x1E
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0x23
+type = "REL32"
+symbol = "?Cut@Chain@th08@@QAEXPAVChainElem@2@@Z"
+target = 0x0043CF10
+
+[[units.relocations]]
+offset = 0x36
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x3B
+type = "REL32"
+symbol = "?RemoveFromRegistry@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x00429DF0
+
+[[units.relocations]]
+offset = 0x4A
+type = "REL32"
+symbol = "??3@YAXPAX@Z"
+target = 0x004A43CF

@@ -1,2 +1,18 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+*.c text eol=crlf
+*.cpp text eol=crlf
+*.hpp text eol=crlf
+*.h text eol=crlf
+*.rc text eol=crlf
+*.py text eol=lf
+*.sh text eol=lf
+*.csv text eol=lf
+*.toml text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+*.svg text eol=lf
+
+# Preserve vendored upstream release bytes exactly.
+3rdparty/** -text

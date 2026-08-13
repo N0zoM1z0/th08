@@ -1,0 +1,4 @@
+interface:
+  display_name: "TH08 Parallel Reconstruction"
+  short_description: "Coordinate safe parallel TH08 reconstruction"
+  default_prompt: "Use $th08-parallel to assign non-overlapping TH08 reconstruction lanes."

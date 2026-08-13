@@ -66,15 +66,19 @@ ChainCallbackResult ScreenEffect::CalcShake(ScreenEffect *screenEffect)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-// STUB: th08 0x45c0e0
 ZunResult ScreenEffect::AddedCallback(ScreenEffect *screenEffect)
 {
+    screenEffect->timer = 0;
     return ZUN_SUCCESS;
 }
 
-// STUB: th08 0x45c100
 ZunResult ScreenEffect::DeletedCallback(ScreenEffect *screenEffect)
 {
+    screenEffect->calcChainElement->deletedCallback = NULL;
+    g_Chain.Cut(screenEffect->drawChainElement);
+    screenEffect->drawChainElement = NULL;
+    ZUN_DELETE(screenEffect);
+
     return ZUN_SUCCESS;
 }
 

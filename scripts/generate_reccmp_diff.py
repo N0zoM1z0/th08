@@ -4,18 +4,15 @@ import tempfile
 
 
 def main():
-    report_filename = tempfile.mktemp()
-
-    subprocess.run(
-        ["reccmp-reccmp", "--target", "th08", "--json", report_filename],
-        check=True,
-        stdout=subprocess.DEVNULL,
-    )
-
-    reccmp_data = ""
-
-    with open(report_filename, "r") as f:
-        reccmp_data = json.load(f)
+    with tempfile.TemporaryDirectory() as tempdir:
+        report_filename = f"{tempdir}/reccmp.json"
+        subprocess.run(
+            ["reccmp-reccmp", "--target", "th08", "--json", report_filename],
+            check=True,
+            stdout=subprocess.DEVNULL,
+        )
+        with open(report_filename, "r") as f:
+            reccmp_data = json.load(f)
 
     print("# Report")
     print()

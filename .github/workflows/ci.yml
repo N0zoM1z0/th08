@@ -1,91 +1,22 @@
-name: Build binary
+name: reconstruction-ledger
 
 on:
   push:
-    branches: [ "master", "main" ]
   pull_request:
-    branches: [ "master", "main" ]
 
 jobs:
-  devenv:
-    runs-on: windows-latest
+  validate:
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Get toolchain from cache
-      id: cache-toolchain
-      uses: actions/cache/restore@v3
-      with:
-        # A directory to store and save the cache
-        path: scripts/prefix
-        # An explicit key for restoring and saving the cache
-        key: prefix-${{hashFiles('scripts/create_devenv.py')}}
-        # No need to download here.
-        lookup-only: true
-    - if: ${{ steps.cache-toolchain.outputs.cache-hit != 'true' }}
-      name: Install prefix
-      id: install_prefix
-      run: python scripts/create_devenv.py scripts/dls scripts/prefix
-    - if: always() && steps.cache-toolchain.outputs.cache-hit != 'true' && steps.install_prefix.outcome == 'success'
-      name: Save toolchain to cache
-      uses: actions/cache/save@v3
-      with:
-        # A directory to store and save the cache
-        path: scripts/prefix
-        # An explicit key for restoring and saving the cache
-        key: ${{ steps.cache-toolchain.outputs.cache-primary-key }}
-
-  build:
-    needs: ['devenv']
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v5
-      with:
-        python-version: '3.4'
-    - name: Get toolchain from cache
-      id: cache-toolchain
-      uses: actions/cache/restore@v3
-      with:
-        # A directory to store and save the cache
-        path: scripts/prefix
-        # An explicit key for restoring and saving the cache
-        key: prefix-${{hashFiles('scripts/create_devenv.py')}}
-        # This should never happen, as the devenv step plays before us.
-        fail-on-cache-miss: true
-    - name: Build binary
-      run: python scripts/build.py -j1
-    - uses: actions/upload-artifact@v4
-      with:
-        name: th08
-        path: |
-          build/th08.exe
-          build/th08.pdb
-
-#  build-dll:
-#    needs: ['devenv']
-#    runs-on: windows-latest
-#    steps:
-#    - uses: actions/checkout@v3
-#      with:
-#        submodules: true
-#    - uses: actions/setup-python@v5
-#      with:
-#        python-version: '3.4'
-#    - name: Get toolchain from cache
-#      id: cache-toolchain
-#      uses: actions/cache/restore@v3
-#      with:
-#        # A directory to store and save the cache
-#        path: scripts/prefix
-#        # An explicit key for restoring and saving the cache
-#        key: prefix-${{hashFiles('scripts/create_devenv.py')}}
-#        # This should never happen, as the devenv step plays before us.
-#        fail-on-cache-miss: true
-#    - name: Build binary
-#      run: python scripts/build.py -j0 --build-type dllbuild
-#    - uses: actions/upload-artifact@v4
-#      with:
-#        name: th08-dll
-#        path: |
-#          build/th08.dll
-#          build/th08.pdb
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate tracked reconstruction state
+        run: |
+          python3 -m py_compile scripts/*.py scripts/typed_re/*.py
+          bash -n scripts/create_th08_prefix scripts/wineth08
+          python3 scripts/validate-tracking.py
+          python3 scripts/check-match-config.py
+          python3 scripts/progress.py --check
+          git diff --check

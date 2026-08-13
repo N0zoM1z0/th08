@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Global.hpp"
+#include "Supervisor.hpp"
 #include "inttypes.hpp"
 #include "utils.hpp"
 #include <d3dx8.h>
@@ -42,8 +43,14 @@ struct ScreenEffect
     static ZunResult AddedCallback(ScreenEffect *screenEffect);
     static ZunResult DeletedCallback(ScreenEffect *screenEffect);
 
-    unknown_fields(0x0, 0x34);
+    unknown_fields(0x0, 0x4);
+    ChainElem *calcChainElement;
+    ChainElem *drawChainElement;
+    unknown_fields(0xc, 0x1c);
+    ZunTimer timer;
 };
+
+C_ASSERT(sizeof(ScreenEffect) == 0x34);
 
 DIFFABLE_EXTERN(i32, g_ScreenEffectCounter);
 

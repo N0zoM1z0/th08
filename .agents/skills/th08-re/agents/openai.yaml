@@ -1,0 +1,4 @@
+interface:
+  display_name: "TH08 Reconstruction"
+  short_description: "Reconstruct TH08 from exact target evidence"
+  default_prompt: "Use $th08-re to recover one bounded TH08 1.00d function from verified target evidence."

@@ -1,112 +1,106 @@
-# 東方永夜抄　～ Imperishable Night
+# 東方永夜抄 ～ Imperishable Night
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="resources/progress_dark.svg">
-  <img alt="Decomp Progress" src="resources/progress.svg">
-</picture>
+<p align="center">
+  <img
+    src="resources/title-screen.png"
+    width="640"
+    alt="Original Japanese TH08 1.00d title screen">
+</p>
 
-[![Discord][discord-badge]][discord] <- click here to join discord server.
+<p align="center">
+  <img src="resources/progress.svg" alt="TH08 source reconstruction progress">
+</p>
 
-[discord]: https://discord.gg/VyGwAjrh9a
-[discord-badge]: https://img.shields.io/discord/1147558514840064030?color=%237289DA&logo=discord&logoColor=%23FFFFFF
+This project aims to reconstruct the source code of the original Japanese
+`東方永夜抄 ～ Imperishable Night` version 1.00d executable, with reproducible
+binary comparison as the acceptance criterion.
 
-This project aims to perfectly reconstruct the source code of [Touhou Eiyashou ~ Imperishable Night 1.00d](https://en.touhouwiki.net/wiki/Imperishable_Night) by Team Shanghai Alice.
+The repository continues the work of
+[GensokyoClub/th08](https://github.com/GensokyoClub/th08). Its complete Git
+history was imported rather than squashed, preserving the authorship and
+contribution record of the original project. New infrastructure and
+reconstruction work build on that baseline.
 
-**This project is still highly work in progress and in its early stages.**
+The project remains active reverse-engineering work. Existing source, symbol
+mappings, or generated progress artwork must not be interpreted as a new exact
+matching percentage without a reproducible report against the target binary.
+Current source-presence inventory is generated in
+[docs/PROGRESS.md](docs/PROGRESS.md) and is deliberately labeled separately
+from strict exact-match coverage.
 
+## Target executable
 
-## Installation
+Supply your own original executable as `resources/th08.exe`:
 
-### Executable
+| Property | Required value |
+| --- | --- |
+| Version | Original Japanese 1.00d |
+| Size | `840,704` bytes |
+| SHA-256 | `330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924` |
+| PE image base | `0x00400000` |
+| Entry point | `0x004A619E` |
 
-This project requires the original `th08.exe` version 1.00d (SHA256 hashsum 330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924, you can check hashsum on windows with command `certutil -hashfile <path-to-your-file> SHA256`.)
+Localized or patched executables are different binaries and are intentionally
+out of scope. The executable and game data are copyrighted assets and are not
+included.
 
-Copy `th08.exe` to `resources/`.
-
-### Dependencies
-
-The build system has the following package requirements:
-
-- `python3` >= 3.4
-- `msiextract` (On linux/macos only)
-- `wine` (on linux/macos only, prefer CrossOver on macOS to avoid possible CL.EXE heap issues)
-- `aria2c` (optional, allows for torrent downloads, will automatically install on Windows if selected.)
-
-The rest of the build system is constructed out of Visual Studio 2002 and DirectX 8.0 from the Web Archive.
-
-#### Configure devenv
-
-This will download and install compiler, libraries, and other tools.
-
-If you are on windows, and for some reason want to download dependencies manually,
-run this command to get the list of files to download:
-
-```
-python scripts/create_devenv.py scripts/dls scripts/prefix --no-download
-```
-
-But if you want everything to be downloaded automatically, run it like this instead:
-
-```
-python scripts/create_devenv.py scripts/dls scripts/prefix
-```
-
-And if you want to use torrent to download those dependencies, use this:
-
-```
-python scripts/create_devenv.py scripts/dls scripts/prefix --torrent
-```
-
-On linux and mac, run the following script:
 ```bash
-# NOTE: On macOS if you use CrossOver.
-# export WINE=<CrossOverPath>/wine
+python3 scripts/verify-target.py
+```
+
+## Build
+
+Initialize the third-party submodules, then create the upstream Visual Studio
+.NET 2002/DirectX 8 environment. On Linux or macOS:
+
+```bash
+git submodule update --init --recursive
 ./scripts/create_th08_prefix
-```
-
-#### Building
-
-Run the following script:
-
-```
 python3 ./scripts/build.py
 ```
 
-This will automatically generate a ninja build script `build.ninja`, and run
-ninja on it.
+The prefix helper uses Wine by default; set `WINE` before invoking it when a
+different compatible runner is required. On Windows, use the upstream setup
+script directly:
 
-### Diffing
-
-In order to contribute to the decompilation, you are going to need reccmp
-([Instructions](https://github.com/isledecomp/reccmp/tree/master?tab=readme-ov-file#getting-started)).
-
-In the project root, run:
-
-```bash
-reccmp-project detect --search-path resources/
+```text
+python scripts/create_devenv.py scripts/dls scripts/prefix
+python scripts/build.py
 ```
 
-Build the recompiled executable if you have not done so (see
-the above section). Then, in the `build/` directory, run:
+See [Build and exact matching](docs/BUILD_MATCHING.md) for dependency,
+build-mode, reccmp, and objdiff details.
 
-```bash
-reccmp-project detect --what recompiled
-```
+## Analysis status
 
-To generate a report of the differences between the original and recompiled
-binaries, again in the `build/` directory, run:
+The currently available IDA MCP session is attached to TH07. It must not be
+used as TH08 evidence. Until an exact TH08 1.00d IDB is open and the metadata
+preflight passes, use target-side `objdump`/`llvm-objdump`, a correctly imported
+Ghidra project, and the inherited upstream mappings. See
+[IDA and analysis safety](docs/IDA_MCP.md).
 
-```bash
-reccmp-reccmp --target th08 --html report.html
-```
+## Project map
 
-This will display a report of the accuracy to the original binary, and export
-this report to a HTML file `report.html`.
+- [Architecture and binary inventory](docs/ARCHITECTURE.md)
+- [Reverse-engineering workflow](docs/RE_WORKFLOW.md)
+- [IDA and analysis safety](docs/IDA_MCP.md)
+- [Build and exact matching](docs/BUILD_MATCHING.md)
+- [Generated reconstruction progress](docs/PROGRESS.md)
+- [Agent operating rules](AGENTS.md)
 
-# Credits
+## Credits and provenance
 
-We would like to extend our thanks to the following individuals for their
-invaluable contributions:
+This continuation exists because of the reconstruction and tooling work by
+the contributors to [GensokyoClub/th08](https://github.com/GensokyoClub/th08).
+Their commits retain their original author/committer metadata in this
+repository. The upstream project also credits @EstexNT for porting its
+`var_order` pragma to MSVC7.
 
-- @EstexNT for porting the [`var_order` pragma](scripts/pragma_var_order.cpp) to
-  MSVC7.
+[GensokyoClub/th06](https://github.com/GensokyoClub/th06) and the local TH07
+reconstruction provide adjacent-engine and workflow references. They are
+corroborating evidence, not substitutes for TH08 target instructions.
+
+## License
+
+Repository code and documentation are provided under the included MIT License.
+This does not grant rights to the original game, executable, or game data.

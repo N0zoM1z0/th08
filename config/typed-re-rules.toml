@@ -1,0 +1,33 @@
+schema_version = 1
+target_sha256 = "330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924"
+
+# Recommendations are compiler-shaping hypotheses only. They never mutate
+# source or tracking state and never substitute for strict function comparison.
+
+[[rules]]
+id = "vc7-explicit-unsigned-narrowing"
+requires = ["movzx"]
+confidence = "instruction_semantics"
+recommendation = "Preserve an unsigned byte/word source or explicit narrowing when a VC7 probe must retain target movzx behavior."
+evidence = "x86 movzx operand width in the hash-attested TH08 target"
+
+[[rules]]
+id = "vc7-explicit-signed-narrowing"
+requires = ["movsx"]
+confidence = "instruction_semantics"
+recommendation = "Preserve a signed byte/word source or explicit narrowing when a VC7 probe must retain target movsx behavior."
+evidence = "x86 movsx operand width in the hash-attested TH08 target"
+
+[[rules]]
+id = "vc7-debug-register-home"
+requires = ["register_home"]
+confidence = "target_observation"
+recommendation = "Keep receiver/register argument order and local lifetimes stable before changing behavior; validate any shaping change with the canonical comparator."
+evidence = "TH08 ItemManager::AutoCollectAllItems 0x004413E0 exact 97/97 comparison"
+
+[[rules]]
+id = "vc7-nonfolded-idiv"
+requires = ["idiv"]
+confidence = "probe_hypothesis"
+recommendation = "If a literal division folds away in VC7, probe a semantically real local or field source; accept only an exact comparator result."
+evidence = "VC7 code-generation hypothesis constrained by a target-observed idiv"

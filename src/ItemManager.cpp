@@ -187,9 +187,16 @@ void Item::CollectTimeOrb()
 {
 }
 
-// STUB: th08 0x4413e0
+// FUNCTION: th08 0x4413e0
 void ItemManager::AutoCollectAllItems()
 {
+    Item *item = this->itemListHead.next;
+    while (item != NULL)
+    {
+        item->state = ITEM_STATE_AUTOCOLLECT;
+        item->startPositionOrVelocity = Float3(0.0f, -0.5f, 0.0f);
+        item = item->next;
+    }
 }
 
 // STUB: th08 0x441450
@@ -198,6 +205,7 @@ void ItemManager::ConvertAllPowerItemsToTimeOrbs(Item *item)
     // TODO: NEEDS WORK ON EffectManager
 }
 
+// FUNCTION: th08 0x441530
 void ItemManager::CancelAutoCollect()
 {
     Item *item = this->itemListHead.next;

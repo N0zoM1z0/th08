@@ -8,6 +8,11 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # variable.
 WINE=${WINE:-wine}
 
+# Toolchain setup is headless.  Prevent Wine/WSLg integration from opening
+# windows or installing desktop/menu entries on the host.
+unset DISPLAY WAYLAND_DISPLAY
+export WINEDLLOVERRIDES="winemenubuilder.exe=d;${WINEDLLOVERRIDES:-}"
+
 # Use a brand new prefix to avoid issues.
 export WINEPREFIX=$HOME/.wineth08
 # For use by crossover wine if crossover is used.

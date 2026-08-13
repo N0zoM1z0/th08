@@ -38,6 +38,8 @@ th08::ZunMemory::AddToRegistry
 th08::ZunMemory::RemoveFromRegistry
 th08::GameErrorContext::GameErrorContext
 th08::MidiTimer::OnTimerElapsed
+th08::ScreenEffect::AddedCallback
+th08::ScreenEffect::DeletedCallback
 th08::Supervisor::RegisterChain
 th08::Supervisor::IsSoftwareTexturing
 th08::Supervisor::IsFogDisabled
@@ -126,3 +128,5 @@ th08::PbgArchive::FindEntry
 th08::PbgArchive::ParseHeader
 th08::PbgArchive::AllocEntries
 th08::PbgArchive::CopyFileName
+th08::ItemManager::AutoCollectAllItems
+th08::ItemManager::CancelAutoCollect

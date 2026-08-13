@@ -1,0 +1,4 @@
+interface:
+  display_name: "TH08 Exact Matching"
+  short_description: "Compile and strictly compare TH08 functions"
+  default_prompt: "Use $th08-matching to compile and compare one configured TH08 match unit."

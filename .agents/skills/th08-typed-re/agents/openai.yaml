@@ -1,0 +1,4 @@
+interface:
+  display_name: "TH08 Typed Reconstruction"
+  short_description: "Route typed TH08 reconstruction evidence"
+  default_prompt: "Use $th08-typed-re to route compiler-aware TH08 evidence recovery safely."

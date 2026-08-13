@@ -11,3 +11,22 @@ __pycache__
 
 reccmp-user.yml
 reccmp-build.yml
+
+# Original game files are never distributed by this project.
+/resources/th08.exe
+/resources/*.dat
+/resources/*.zip
+/resources/*.rar
+
+# Local adjacent-version sources and reverse-engineering state.
+/_references/
+/.analysis/
+/.tools/
+/local/
+/.venv/
+/compile_commands.json
+*.gpr
+*.rep/
+*.idb
+*.i64
+*.pyc

@@ -4,80 +4,63 @@
 import argparse
 import os
 from pathlib import Path
+import subprocess
+import sys
 import tempfile
-import urllib.request
+import tomllib
 
 import ghidra_helpers
 
 SCRIPT_PATH = Path(os.path.realpath(__file__)).parent
+ROOT = SCRIPT_PATH.parent
+
+
+def load_target_filename():
+    with (ROOT / "config" / "target.toml").open("rb") as stream:
+        return str(tomllib.load(stream)["target"]["filename"])
+
+
+def verify_target(path):
+    subprocess.run(
+        [sys.executable, str(SCRIPT_PATH / "verify-target.py"), str(path)],
+        check=True,
+    )
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Export a ghidra database history to git",
+        description="Export TH08 original objects from a verified local executable",
     )
-    parser.add_argument("--local-project-dir", help="Path to the local ghidra project")
-    parser.add_argument("--local-project-name", help="Path to the local ghidra project")
-    parser.add_argument("--import-xml", action="store_true", help="Use the XML export")
     parser.add_argument(
-        "--import-csv", action="store_true", help="Use the mapping.csv file"
+        "--import-csv",
+        action="store_true",
+        help="import the verified resources/th08.exe and apply mapping.csv",
     )
-    parser.add_argument("--program", help="Program to export", default="th06_102h.exe")
     args = parser.parse_args()
+    if not args.import_csv:
+        parser.error(
+            "--import-csv is required; existing Ghidra databases are not attested"
+        )
 
-    os.makedirs(str(SCRIPT_PATH.parent / "build" / "objdiff" / "orig"), exist_ok=True)
-
-    if args.import_xml:
-        with tempfile.TemporaryDirectory() as tempdir:
-            filename, _ = urllib.request.urlretrieve(
-                "https://raw.githubusercontent.com/happyhavoc/th06-re/xml/th06_102h.exe.xml"
-            )
-            ghidra_helpers.runAnalyze(
-                str(tempdir),
-                "Touhou 06",
-                import_file=str(SCRIPT_PATH.parent / "resources" / "game.exe"),
-                analysis=True,
-                post_scripts=[
-                    ["ImportFromXml.java", filename],
-                    [
-                        "ExportDelinker.java",
-                        str(SCRIPT_PATH.parent / "config" / "ghidra_ns_to_obj.csv"),
-                        str(SCRIPT_PATH.parent / "build" / "objdiff" / "orig"),
-                    ],
-                ],
-            )
-    elif args.import_csv:
-        with tempfile.TemporaryDirectory() as tempdir:
-            mapping_csv = SCRIPT_PATH.parent / "config" / "mapping.csv"
-            ghidra_helpers.runAnalyze(
-                str(tempdir),
-                "Touhou 06",
-                import_file=str(SCRIPT_PATH.parent / "resources" / "game.exe"),
-                analysis=True,
-                post_scripts=[
-                    ["ImportFromCsv.java", str(mapping_csv)],
-                    [
-                        "ExportDelinker.java",
-                        str(SCRIPT_PATH.parent / "config" / "ghidra_ns_to_obj.csv"),
-                        str(SCRIPT_PATH.parent / "build" / "objdiff" / "orig"),
-                    ],
-                ],
-            )
-    else:
-        repo = args.local_project_dir
-        project_name = args.local_project_name
-        program = args.program
-
+    target_filename = load_target_filename()
+    target = ROOT / "resources" / target_filename
+    verify_target(target)
+    output_dir = ROOT / "build" / "objdiff" / "orig"
+    os.makedirs(str(output_dir), exist_ok=True)
+    with tempfile.TemporaryDirectory() as tempdir:
+        mapping_csv = SCRIPT_PATH.parent / "config" / "mapping.csv"
         ghidra_helpers.runAnalyze(
-            repo,
-            project_name,
-            process=program,
-            pre_scripts=[
+            str(tempdir),
+            "TH08",
+            import_file=str(target),
+            analysis=True,
+            post_scripts=[
+                ["ImportFromCsv.java", str(mapping_csv)],
                 [
                     "ExportDelinker.java",
                     str(SCRIPT_PATH.parent / "config" / "ghidra_ns_to_obj.csv"),
-                    str(SCRIPT_PATH.parent / "build" / "objdiff" / "orig"),
-                ]
+                    str(output_dir),
+                ],
             ],
         )
 

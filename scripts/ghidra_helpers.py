@@ -48,16 +48,20 @@ def runAnalyze(
     process=None,
     import_file=None,
     analysis=False,
-    username=None,
-    ssh_key=None,
-    pre_scripts=[],
-    post_scripts=[],
+    pre_scripts=None,
+    post_scripts=None,
 ):
-    commonAnalyzeHeadlessArgs = [findAnalyzeHeadless(), ghidra_repo_name]
+    pre_scripts = pre_scripts or []
+    post_scripts = post_scripts or []
+    if re.match("^ghidra://", ghidra_repo_name):
+        raise ValueError(
+            "remote Ghidra servers are not supported by this local exporter"
+        )
+    if project_name is None:
+        raise ValueError("a local Ghidra project name is required")
 
-    if not re.match("^ghidra://", ghidra_repo_name):
-        # Set a project name
-        commonAnalyzeHeadlessArgs += [project_name]
+    commonAnalyzeHeadlessArgs = [findAnalyzeHeadless(), ghidra_repo_name]
+    commonAnalyzeHeadlessArgs += [project_name]
 
     if process and import_file:
         raise Exception("Cannot provide both import and process")
@@ -75,9 +79,6 @@ def runAnalyze(
     if not analysis:
         commonAnalyzeHeadlessArgs += ["-noanalysis"]
 
-    if ssh_key:
-        commonAnalyzeHeadlessArgs += ["-keystore", ssh_key]
-
     for pre_script in pre_scripts:
         if isinstance(pre_script, list):
             commonAnalyzeHeadlessArgs += ["-prescript"] + pre_script
@@ -90,13 +91,5 @@ def runAnalyze(
         elif isinstance(post_script, str):
             commonAnalyzeHeadlessArgs += ["-postscript", post_script]
 
-    commonAnalyzeHeadlessEnv = os.environ.copy()
-    if username is not None:
-        commonAnalyzeHeadlessEnv["_JAVA_OPTIONS"] = (
-            f"-Duser.name={username} " + os.environ.get("_JAVA_OPTIONS", "")
-        )
-
     print("Running " + " ".join(shlex.quote(x) for x in commonAnalyzeHeadlessArgs))
-    return subprocess.run(
-        commonAnalyzeHeadlessArgs, env=commonAnalyzeHeadlessEnv, check=True
-    )
+    return subprocess.run(commonAnalyzeHeadlessArgs, env=os.environ.copy(), check=True)
