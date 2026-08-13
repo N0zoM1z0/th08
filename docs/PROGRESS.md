@@ -12,5 +12,8 @@ and `config/implemented.csv`.
 - Exact authored bytes: **3,256 / 459,958 (0.71%)**
 - Inventory-classified library functions: **1,103**
 
+The public SVG follows the TH07 convention and visualizes exact bytes only;
+source presence never fills the progress bar.
+
 Function sizes and library classification are imported analysis seeds and
 must be reconciled against the hash-attested target before exact acceptance.

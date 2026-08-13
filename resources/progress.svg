@@ -4,6 +4,6 @@
   <text x="536" y="32" fill="#f4f4f5" text-anchor="end" font-family="monospace" font-size="14">0.71% exact bytes</text>
   <rect x="24" y="48" width="440" height="14" rx="7" fill="#3b4058"/>
   <rect x="24" y="48" width="3.11" height="14" rx="7" fill="#9b6de3"/>
-  <text x="24" y="88" fill="#c8cad2" font-family="sans-serif" font-size="13">Exact: 71 / 1,117 functions · 3,256 / 459,958 authored bytes</text>
-  <text x="24" y="108" fill="#c8cad2" font-family="sans-serif" font-size="13">Source present: 230 functions · 92,086 mapped bytes</text>
+  <text x="24" y="88" fill="#c8cad2" font-family="sans-serif" font-size="13">Authored exact: 71 / 1,117 functions · 3,256 / 459,958 bytes</text>
+  <text x="24" y="108" fill="#c8cad2" font-family="sans-serif" font-size="13">Library exact: not counted until TH08-specific archives are attested</text>
 </svg>

@@ -94,6 +94,9 @@ def render() -> tuple[str, str]:
             f"- Exact authored bytes: **{exact_bytes:,} / {total_bytes:,} ({exact_byte_pct:.2f}%)**",
             f"- Inventory-classified library functions: **{library_count:,}**",
             "",
+            "The public SVG follows the TH07 convention and visualizes exact bytes only;",
+            "source presence never fills the progress bar.",
+            "",
             "Function sizes and library classification are imported analysis seeds and",
             "must be reconciled against the hash-attested target before exact acceptance.",
             "",
@@ -107,8 +110,8 @@ def render() -> tuple[str, str]:
   <text x="536" y="32" fill="#f4f4f5" text-anchor="end" font-family="monospace" font-size="14">{exact_byte_pct:.2f}% exact bytes</text>
   <rect x="24" y="48" width="440" height="14" rx="7" fill="#3b4058"/>
   <rect x="24" y="48" width="{filled:.2f}" height="14" rx="7" fill="#9b6de3"/>
-  <text x="24" y="88" fill="#c8cad2" font-family="sans-serif" font-size="13">Exact: {len(exact_rows):,} / {len(authored):,} functions · {exact_bytes:,} / {total_bytes:,} authored bytes</text>
-  <text x="24" y="108" fill="#c8cad2" font-family="sans-serif" font-size="13">Source present: {len(source_rows):,} functions · {source_bytes:,} mapped bytes</text>
+  <text x="24" y="88" fill="#c8cad2" font-family="sans-serif" font-size="13">Authored exact: {len(exact_rows):,} / {len(authored):,} functions · {exact_bytes:,} / {total_bytes:,} bytes</text>
+  <text x="24" y="108" fill="#c8cad2" font-family="sans-serif" font-size="13">Library exact: not counted until TH08-specific archives are attested</text>
 </svg>
 '''
     return markdown, svg

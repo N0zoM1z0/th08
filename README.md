@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <img src="resources/progress.svg" alt="TH08 source reconstruction progress">
+  <img src="resources/progress.svg" alt="TH08 exact source reconstruction progress">
 </p>
 
 This project aims to reconstruct the source code of the original Japanese
