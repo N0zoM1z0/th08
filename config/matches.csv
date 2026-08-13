@@ -293,3 +293,10 @@ address,name,size,status,match_percent,unit,evidence
 0x004733E0,th08::CWaveFile::ResetFile,328,matching,100.00,zwave-unlocked-exact-004733e0,python3 scripts/compare-function.py zwave-unlocked-exact-004733e0 --json
 0x00473530,th08::CWaveFile::Read,328,matching,100.00,zwave-unlocked-exact-00473530,python3 scripts/compare-function.py zwave-unlocked-exact-00473530 --json
 0x00473680,th08::CWaveFile::Close,51,matching,100.00,zwave-unlocked-exact-00473680,python3 scripts/compare-function.py zwave-unlocked-exact-00473680 --json
+0x00462FF0,th08::AnmManager::DrawNoRotation,469,matching,100.00,anm-manager-unblocked-exact-00462ff0,python3 scripts/compare-function.py anm-manager-unblocked-exact-00462ff0 --json
+0x00465800,th08::AnmManager::LoadAnm,96,matching,100.00,anm-manager-unblocked-exact-00465800,python3 scripts/compare-function.py anm-manager-unblocked-exact-00465800 --json
+0x00465860,th08::AnmManager::ReadAnmEntries,473,matching,100.00,anm-manager-unblocked-exact-00465860,python3 scripts/compare-function.py anm-manager-unblocked-exact-00465860 --json
+0x00465A40,th08::AnmManager::PreloadAnm,115,matching,100.00,anm-manager-unblocked-exact-00465a40,python3 scripts/compare-function.py anm-manager-unblocked-exact-00465a40 --json
+0x00465BA0,th08::AnmManager::PostloadAnmEntry,284,matching,100.00,anm-manager-unblocked-exact-00465ba0,python3 scripts/compare-function.py anm-manager-unblocked-exact-00465ba0 --json
+0x00465CC0,th08::AnmManager::LoadTextureData,829,matching,100.00,anm-manager-unblocked-exact-00465cc0,python3 scripts/compare-function.py anm-manager-unblocked-exact-00465cc0 --json
+0x004667C0,th08::AnmManager::LoadSurface,670,matching,100.00,anm-manager-unblocked-exact-004667c0,python3 scripts/compare-function.py anm-manager-unblocked-exact-004667c0 --json

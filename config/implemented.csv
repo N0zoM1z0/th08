@@ -308,6 +308,13 @@ th08::CWaveFile::Open
 th08::CWaveFile::ResetFile
 th08::CWaveFile::Read
 th08::CWaveFile::Close
+th08::AnmManager::DrawNoRotation
+th08::AnmManager::LoadAnm
+th08::AnmManager::ReadAnmEntries
+th08::AnmManager::PreloadAnm
+th08::AnmManager::PostloadAnmEntry
+th08::AnmManager::LoadTextureData
+th08::AnmManager::LoadSurface
 th08::Rng::GetRandomU32InRange
 th08::AnmLoaded::SetAndExecuteScript
 th08::AnmLoaded::ExecuteAnmIdxArray
