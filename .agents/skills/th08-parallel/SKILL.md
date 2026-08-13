@@ -28,8 +28,10 @@ Before dispatch:
 
 1. Run `python3 scripts/verify-target.py` and
    `python3 scripts/validate-tracking.py`.
-2. Fail closed on the current TH07 IDA session. Prepare evidence with verified
-   target `objdump` or the repository's verified disposable TH08 headless
+2. Fail closed on IDA until the active TH08 database passes
+   `docs/IDA_MCP.md`. A database/loader hash differing from the canonical PE
+   hash requires the documented mapped-byte samples; otherwise prepare evidence
+   with verified-target `objdump` or the repository's disposable TH08 headless
    Ghidra import.
 3. Reconcile the exact function boundary and check `config/claims.csv`.
 4. Add one canonical claim row with the assigned address, owner, UTC start,

@@ -1,34 +1,44 @@
 # IDA and analysis safety
 
-## Current hard stop
+## Session boundary
 
-The IDA MCP bridge is attached to the file open in the IDA GUI. The current GUI
-database is TH07, not TH08. There is no program selector that safely redirects
-a request to another IDB, so TH08 IDA analysis is presently **fail-closed**:
+The IDA MCP bridge is attached to the file open in the IDA GUI; it has no
+program selector. Fail closed until the active database is established as TH08.
+Never reinterpret a response from another game database as TH08, and never
+patch bytes with IDA, MCP, Ghidra, or another tool.
 
-- do not use current MCP disassembly/decompilation as TH08 evidence;
-- do not rename, retype, comment, or otherwise write TH08 findings into TH07;
-- do not patch bytes with IDA, MCP, Ghidra, or another tool.
-
-The absence of a TH08 IDA session is an analysis limitation, not permission to
-weaken target verification or claim a match.
+IDA decompilation, names, types, and function extents are semantic/navigation
+evidence only. They never establish an exact match; that remains a reproducible
+comparison against the canonical `resources/th08.exe`.
 
 ## Required IDA preflight
 
-IDA MCP may be used for TH08 only after the exact executable is open and every
-item below is confirmed from the active database and original file:
+IDA MCP may be used for TH08 only after the canonical file is verified and the
+active database's mapped image passes one of the two attestation paths below.
+The bridge may report an IDB/loader input hash rather than the canonical PE
+file hash, so a different reported database hash is not automatically a
+different mapped image.
 
 | Gate | Required value |
 | --- | --- |
 | Version | original Japanese 1.00d |
-| SHA-256 | `330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924` |
+| Canonical file SHA-256 | `330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924` |
 | File size | `840704` bytes |
 | Image base | `0x00400000` |
 | Entry point | `0x004A619E` |
 | `.text` range | `0x00402000`–`0x004B3B77` |
 
-If any value is missing or differs, stop. Re-run this preflight for each new
-IDA session and after any GUI file/database switch. IDA's function boundaries,
+First run `python3 scripts/verify-target.py`. Then either confirm the active
+database reports the canonical file SHA-256 and size, or, when its reported
+hash is a database/loader artifact, compare read-only IDA bytes against the
+canonical file at all of: `.text` start (`0x00402000`), entry
+(`0x004A619E`), the function under study, and at least two separated `.text`
+locations. The samples must agree byte-for-byte and the active image base,
+entry point, and `.text` extent must match the table. Record the sample
+addresses in the analysis handoff.
+
+If either attestation path fails, stop. Re-run this preflight for each new IDA
+session and after any GUI file/database switch. IDA's function boundaries,
 types, and decompiler output remain hypotheses even after the gate passes.
 
 ## Read-only fallback

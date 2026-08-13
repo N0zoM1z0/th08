@@ -44,9 +44,11 @@ other non-inventory relocation destinations. Do not add those addresses to
 
 ## Current analysis backends
 
-The current IDA MCP session is TH07 and is therefore unavailable for TH08
-work. Do not query it and reinterpret the response as TH08. Until the exact
-TH08 database is open, use headless tools only:
+IDA MCP is usable only for an active TH08 database that passes the session
+attestation in `docs/IDA_MCP.md`. The canonical file hash belongs to
+`resources/th08.exe`; where an IDB reports a different loader/container hash,
+use the documented multi-point mapped-byte comparison before accepting IDA as
+semantic evidence. Until that gate passes, use headless tools only:
 
 - `objdump` or `llvm-objdump` for PE headers, sections, imports, and disassembly;
 - a headless local Ghidra project imported from the verified `resources/th08.exe`;

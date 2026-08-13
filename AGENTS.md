@@ -38,9 +38,16 @@ analyze or substitute a localized, patched, trial, or earlier executable.
 ## Analysis database safety
 
 IDA MCP is attached to whichever file is open in the GUI and has no reliable
-program selector. The currently attached IDA database is TH07, not TH08. Treat
-all TH08 IDA queries as blocked until the GUI is switched to the exact TH08
-1.00d target and all metadata gates in `docs/IDA_MCP.md` pass.
+program selector. Treat all TH08 IDA queries as blocked until the GUI is
+switched to TH08 and the database is attested under `docs/IDA_MCP.md`.
+The canonical SHA-256 applies to `resources/th08.exe`; an IDB or its loader
+metadata can report a different input/container hash. That difference is not
+itself evidence of a different mapped image. In that case, verify the
+canonical file first, then compare IDA bytes at `.text` start, entry point,
+the function being edited, and at least two separated `.text` locations
+against `resources/th08.exe`. Only byte-for-byte agreement plus matching image
+base/entry/.text extent permits IDA semantic evidence. Exact-match claims
+remain reproducible comparisons against the canonical file only.
 
 Until then, use read-only `objdump`/`llvm-objdump`, a correctly imported local
 Ghidra project, and the upstream mappings. Do not write TH08 names or types into

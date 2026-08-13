@@ -22,9 +22,12 @@ image base `0x00400000`, entry `0x004A619E`, and `.text`
    python3 scripts/validate-tracking.py
    ```
 
-3. Fail closed on IDA. The current IDA MCP session is TH07, not TH08. Do not
-   query or mutate it for TH08 work. Use verified-target `objdump` or the
-   dedicated headless Ghidra import described in `docs/IDA_MCP.md`.
+3. Fail closed on IDA until its active TH08 database passes
+   `docs/IDA_MCP.md`. The canonical SHA belongs to `resources/th08.exe`; if
+   IDA reports a different loader/database hash, establish mapped-image
+   identity with the required metadata and multi-point read-only byte samples.
+   Use verified-target `objdump` or the dedicated headless Ghidra import until
+   then. Never use IDA semantic evidence as a matching claim.
 4. Ensure the coordinator assigned the address and exclusive writable files.
    Reconcile mapping/Ghidra boundaries against complete target control flow.
 
