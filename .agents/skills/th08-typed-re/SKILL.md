@@ -113,6 +113,11 @@ review the unit before claiming exactness.
   shared/default handlers) without treating Ghidra/IDA extents as compiler
   boundaries. It is a diagnostic fact map, not a matching claim; retain full
   relocation replay and canonical comparison as the acceptance gate.
+- When a target passes a raw float operand with `mov`/`push` but VC7 emits an
+  `fld`/`fstp` argument shuffle, changing only a byte-tail reinterpret cast
+  into an overlay union can leave the COFF completely unchanged. Reject that
+  no-op probe; investigate the resolver call expression or ABI instead. TH08
+  `RunEcl` opcodes 34 and 39 are the corpus case.
 
 ## Improve the model
 
