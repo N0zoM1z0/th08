@@ -27,13 +27,25 @@
 // so: jump times/displacements, opcode 36's slot selector, opcode 52's sub-id,
 // and opcode 88's remote sub-id.
 
-#pragma once
+#ifndef TH08_ECL_RUN_LOW_DECLARATIONS
+#define TH08_ECL_RUN_LOW_DECLARATIONS
 
+#include "AnmManager.hpp"
 #include "EclManager.hpp"
 #include "EclOperands.hpp"
+#include "EnemyManager.hpp"
+
+#include <math.h>
 
 namespace th08
 {
+
+namespace EclHelpers
+{
+void __fastcall ConfigureRelativeMotion(
+    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction);
+}
+
 namespace EclRunLowProposal
 {
 
@@ -51,12 +63,16 @@ struct LowResult
 {
     LowControl control;
     EclRawInstruction *nextInstruction;
-
-    LowResult(LowControl control_, EclRawInstruction *nextInstruction_ = 0)
-        : control(control_), nextInstruction(nextInstruction_)
-    {
-    }
 };
+
+inline LowResult MakeLowResult(LowControl control,
+                               EclRawInstruction *nextInstruction = 0)
+{
+    LowResult result;
+    result.control = control;
+    result.nextInstruction = nextInstruction;
+    return result;
+}
 
 enum ChildConstructor
 {
@@ -64,79 +80,90 @@ enum ChildConstructor
     CHILD_ALTERNATE_41F280
 };
 
+// Target pointer table at 0x00F54CC0, indexed by the ECL enemy selector.
+extern EclOperands::EnemyOverlay *g_EclEnemyTableF54CC0[];
+
+void __fastcall ApplyInterpolationOperation(
+    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction);
+void __fastcall InstallInterpolationSlot(
+    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction);
+void __fastcall CallSubOnEnemy(EclOperands::EnemyOverlay *enemy,
+                               EclRawInstruction *instruction, i32 rawSubId);
+i32 __fastcall PopEclContext(EclOperands::EnemyOverlay *enemy,
+                             EclRawInstruction *instruction);
+void __fastcall SetPrimaryAnmScripts(
+    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction,
+    i32 script0, i32 script1, i32 script2, i32 script3, i32 script4,
+    i32 script5);
+void __fastcall SetExtraAnmScript(EclOperands::EnemyOverlay *enemy,
+                                  EclRawInstruction *instruction);
+// Provisional semantic name for target FUN_00422020.  Caller and callee both
+// establish Enemy in ECX and the current ECL instruction in EDX.
+void __fastcall BeginBoundaryAwareMove(
+    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction);
+
 // Adapter boundary for target helpers whose owned layouts live outside the
 // RunEcl lane.  Implementations must preserve the stated target behavior.
 struct Services
 {
-    virtual ~Services() {}
-
-    virtual u32 RandomU32() = 0; // target RNG call at 0x0043ECC0
-    virtual f32 Remainder(f32 lhs, f32 rhs) = 0; // 0x0041F090
-    virtual f32 Sin(f32 angle) = 0;              // 0x00409060
-    virtual f32 Cos(f32 angle) = 0;              // 0x00408D40
-    virtual f32 Atan2(f32 y, f32 x) = 0;         // 0x0040C7B0
-    virtual f32 Sqrt(f32 value) = 0;              // 0x0040B440
-    virtual f32 NormalizeAngle(f32 angle, f32 base) = 0; // 0x0043EDB0
+    f32 Sin(f32 angle);              // 0x00409060
+    f32 Cos(f32 angle);              // 0x00408D40
+    f32 Atan2(f32 y, f32 x);         // 0x0040C7B0
+    f32 Sqrt(f32 value);              // 0x0040B440
+    f32 NormalizeAngle(f32 angle, f32 base); // 0x0043EDB0
 
     // ZunTimer::operator=(i32), target 0x004065F0.
-    virtual void AssignTimer(void *timer, i32 value) = 0;
+    void AssignTimer(void *timer, i32 value);
 
-    // Opcode 36 / 0x004213F0.  selector is deliberately raw.  The target
-    // installs one of eight 0x30-byte interpolation records at context+0x9C.
-    virtual void InstallInterpolationSlot(EclOperands::EnemyOverlay *enemy,
-                                          f32 selector,
-                                          i32 duration,
-                                          i32 callbackIndex,
-                                          i32 easingMode,
-                                          f32 value0,
-                                          f32 value1,
-                                          f32 value2,
-                                          f32 value3) = 0;
+    // Opcodes 35 and 36 call target helpers 0x00421300 and 0x004213F0.  Both
+    // helpers own all operand resolution; RunEcl only supplies Enemy and the
+    // current instruction.
+    void ApplyInterpolationOperation(EclOperands::EnemyOverlay *enemy,
+                                             EclRawInstruction *instruction);
+    void InstallInterpolationSlot(EclOperands::EnemyOverlay *enemy,
+                                          EclRawInstruction *instruction);
 
     // Opcode 53 / 0x00421CB0.  Returns nonzero when the primary context was
     // restored, zero when a saved nested context was popped in place.
-    virtual i32 PopEclContext(EclOperands::EnemyOverlay *enemy,
-                              const EclRawInstruction *instruction) = 0;
+    i32 PopEclContext(EclOperands::EnemyOverlay *enemy,
+                              const EclRawInstruction *instruction);
 
-    virtual void SetPrimaryAnmScript(EclOperands::EnemyOverlay *enemy, i32 script) = 0;
+    void SetPrimaryAnmScript(EclOperands::EnemyOverlay *enemy, i32 script);
     // 0x00421DE0 stores the six low words at +3332, +3338, +333A, +3334,
     // +3336, +333C respectively, then writes 0xFF at +332E.
-    virtual void SetPrimaryAnmScripts(EclOperands::EnemyOverlay *enemy,
+    void SetPrimaryAnmScripts(EclOperands::EnemyOverlay *enemy,
                                       i32 script0, i32 script1, i32 script2,
-                                      i32 script3, i32 script4, i32 script5) = 0;
-    virtual void SetExtraAnmScript(EclOperands::EnemyOverlay *enemy,
-                                   i32 slot, i32 script) = 0; // 0x00421E50
-    virtual void RefreshBaseVector(EclOperands::EnemyOverlay *enemy) = 0; // 0x0042C180
+                                      i32 script3, i32 script4, i32 script5);
+    void SetExtraAnmScript(EclOperands::EnemyOverlay *enemy,
+                                   EclRawInstruction *instruction); // 0x00421E50
+    void RefreshBaseVector(EclOperands::EnemyOverlay *enemy); // 0x0042C180
 
     // Opcode 64 / 0x00420F40: begin an interpolated move toward (x,y).
     // The helper snapshots target/current vectors, resets the movement timer,
     // installs (mode & 7), selects movement state 2, and honors mirror bit 18.
-    virtual void BeginPointMove(EclOperands::EnemyOverlay *enemy,
-                                i32 duration, i32 mode, f32 x, f32 y) = 0;
+    void BeginPointMove(EclOperands::EnemyOverlay *enemy,
+                                EclRawInstruction *instruction);
 
-    // First half of opcode 67 / 0x00422020.  This computes only the
-    // boundary-aware random angle; the switch below owns every ECL operand
-    // resolution and the state transition selected by operand 0.
-    virtual f32 ChooseBoundaryAwareAngle(EclOperands::EnemyOverlay *enemy) = 0;
-    virtual f32 AngleToPlayer(const void *vector) = 0;                       // 0x0044C1B0
-
-    // Global active-enemy table at 0x00F54CC0.
-    virtual EclOperands::EnemyOverlay *EnemyByIndex(i32 index) = 0;
+    // Opcode 67 is wholly owned by 0x00422020, including its operand reads,
+    // boundary-aware angle, and movement-state selection.
+    void BeginBoundaryAwareMove(EclOperands::EnemyOverlay *enemy,
+                                        EclRawInstruction *instruction);
+    f32 AngleToPlayer(const void *vector);                       // 0x0044C1B0
 
     // 0x00421BD0.  It advances targetEnemy's current instruction, snapshots
     // its context when required, and invokes CallEclSub with rawSubId.
-    virtual void CallSubOnEnemy(EclOperands::EnemyOverlay *targetEnemy,
-                                i16 rawSubId) = 0;
+    void CallSubOnEnemy(EclOperands::EnemyOverlay *targetEnemy,
+                                i16 rawSubId);
 
     // Opcodes 90..92.  The implementation owns the 0x0041EFC0 linked-list
     // tail lookup, the selected constructor, disabled-spawn check, child flag
     // initialization, ANM creation, parent/child links, parent child-count,
     // and the unconditional sound request.  inheritParentPosition additionally
     // copies +0x2D34 to child +0x2D40, rebuilds child +0x2D88, and sets bit 9.
-    virtual void SpawnLinkedChild(EclOperands::EnemyOverlay *parent,
+    void SpawnLinkedChild(EclOperands::EnemyOverlay *parent,
                                   const EclRawInstruction *instruction,
                                   ChildConstructor constructor,
-                                  i32 inheritParentPosition) = 0;
+                                  i32 inheritParentPosition);
 };
 
 inline u8 *Bytes(EclOperands::EnemyOverlay *enemy)
@@ -211,20 +238,48 @@ inline f32 *WriteFloat(EclOperands::EnemyOverlay *enemy,
                                            instruction->operandFlags, index);
 }
 
-inline LowResult Jump(EnemyEclContext *context, EclRawInstruction *instruction,
-                      i32 timeOperand, i32 displacementOperand)
+// FUNCTION: th08 0x004215F0
+// The twelve comparison opcodes share this target fastcall helper.  Keeping
+// their resolver calls here is essential: RunEcl itself has one direct call
+// per opcode and receives either the branch destination or NULL.
+static EclRawInstruction *__fastcall CompareOperands(
+    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction)
 {
-    context->time.current = RawInt(instruction, timeOperand);
-    return LowResult(LOW_REDISPATCH,
-                     reinterpret_cast<EclRawInstruction *>(
-                         reinterpret_cast<u8 *>(instruction) +
-                         RawInt(instruction, displacementOperand)));
-}
+    bool takeBranch = false;
+    const i32 operation = instruction->opcode - 40;
+    if (operation == 0)
+        takeBranch = ReadInt(enemy, instruction, 0) == ReadInt(enemy, instruction, 1);
+    else if (operation == 1)
+        takeBranch = ReadFloat(enemy, instruction, 0) == ReadFloat(enemy, instruction, 1);
+    else if (operation == 2)
+        takeBranch = ReadInt(enemy, instruction, 0) != ReadInt(enemy, instruction, 1);
+    else if (operation == 3)
+        takeBranch = ReadFloat(enemy, instruction, 0) != ReadFloat(enemy, instruction, 1);
+    else if (operation == 4)
+        takeBranch = ReadInt(enemy, instruction, 0) < ReadInt(enemy, instruction, 1);
+    else if (operation == 5)
+        takeBranch = ReadFloat(enemy, instruction, 0) < ReadFloat(enemy, instruction, 1);
+    else if (operation == 6)
+        takeBranch = ReadInt(enemy, instruction, 0) <= ReadInt(enemy, instruction, 1);
+    else if (operation == 7)
+        takeBranch = ReadFloat(enemy, instruction, 0) <= ReadFloat(enemy, instruction, 1);
+    else if (operation == 8)
+        takeBranch = ReadInt(enemy, instruction, 0) > ReadInt(enemy, instruction, 1);
+    else if (operation == 9)
+        takeBranch = ReadFloat(enemy, instruction, 0) > ReadFloat(enemy, instruction, 1);
+    else if (operation == 10)
+        takeBranch = ReadInt(enemy, instruction, 0) >= ReadInt(enemy, instruction, 1);
+    else if (operation == 11)
+        takeBranch = ReadFloat(enemy, instruction, 0) >= ReadFloat(enemy, instruction, 1);
 
-inline LowResult ConditionalJump(EnemyEclContext *context,
-                                 EclRawInstruction *instruction)
-{
-    return Jump(context, instruction, 2, 3);
+    if (!takeBranch)
+        return NULL;
+
+    EnemyEclContext *context =
+        *reinterpret_cast<EnemyEclContext **>(Bytes(enemy) + 0x2CA0);
+    context->time.current = RawInt(instruction, 2);
+    return reinterpret_cast<EclRawInstruction *>(
+        reinterpret_cast<u8 *>(instruction) + RawInt(instruction, 3));
 }
 
 inline void SetMovementState1(EclOperands::EnemyOverlay *enemy)
@@ -276,40 +331,111 @@ inline void BeginTimedMove(EclOperands::EnemyOverlay *enemy,
                           3);
 }
 
+} // namespace EclRunLowProposal
+} // namespace th08
+
+#endif // TH08_ECL_RUN_LOW_DECLARATIONS
+
+#if !defined(TH08_ECL_RUN_DECLARATIONS_ONLY)
+
+#ifdef TH08_ECL_RUN_LOW_BODY
+#define TH08_ECL_RUN_LOW_YIELD_SELECT_I(controlValue) \
+    TH08_ECL_RUN_LOW_YIELD_##controlValue
+#define TH08_ECL_RUN_LOW_YIELD_SELECT(controlValue) \
+    TH08_ECL_RUN_LOW_YIELD_SELECT_I(controlValue)
+#define TH08_ECL_RUN_LOW_YIELD_LOW_RETURN_MINUS_ONE(instructionValue) \
+    do { return ZUN_ERROR; } while (0)
+#define TH08_ECL_RUN_LOW_YIELD_LOW_REDISPATCH(instructionValue) \
+    do { instruction = (instructionValue); goto low_redispatch_instruction; } while (0)
+#define TH08_ECL_RUN_LOW_YIELD_LOW_RESTART_RUN_LOOP(instructionValue) \
+    do { goto restart_context; } while (0)
+#define TH08_ECL_RUN_LOW_YIELD_LOW_SELECT_NEXT_CONTEXT(instructionValue) \
+    do { goto low_select_next_context; } while (0)
+#define TH08_ECL_RUN_LOW_YIELD_LOW_ADVANCE(instructionValue) \
+    do { goto low_advance_instruction; } while (0)
+#define TH08_ECL_RUN_LOW_YIELD_LOW_NOT_HANDLED(instructionValue) \
+    do { goto low_advance_instruction; } while (0)
+#define TH08_ECL_RUN_LOW_YIELD(controlValue, instructionValue) \
+    TH08_ECL_RUN_LOW_YIELD_SELECT(controlValue)(instructionValue)
+
+// The target RunEcl body performs these byte-overlay accesses directly.  VC7
+// /Ob0 emits even __forceinline helpers as separate COMDAT calls, so the
+// lexical fragment uses expression macros while the standalone proposal keeps
+// the readable helper functions above.
+#define Bytes(owner) (reinterpret_cast<u8 *>(owner))
+#define U32At(owner, offset) (*reinterpret_cast<u32 *>(Bytes(owner) + (offset)))
+#define I32At(owner, offset) (*reinterpret_cast<i32 *>(Bytes(owner) + (offset)))
+#define I16At(owner, offset) (*reinterpret_cast<i16 *>(Bytes(owner) + (offset)))
+#define F32At(owner, offset) (*reinterpret_cast<f32 *>(Bytes(owner) + (offset)))
+#define PointerAt(owner, offset) (*reinterpret_cast<void **>(Bytes(owner) + (offset)))
+#define RawInt(insn, index) \
+    (*reinterpret_cast<i32 *>((insn)->operands + (index) * 4))
+#define RawFloat(insn, index) \
+    (*reinterpret_cast<f32 *>((insn)->operands + (index) * 4))
+#define ReadInt(owner, insn, index) \
+    (((insn)->operandFlags & (1U << (index))) \
+         ? EclOperands::ResolveInt((owner), RawInt((insn), (index))) \
+         : RawInt((insn), (index)))
+#define ReadFloat(owner, insn, index) \
+    (((insn)->operandFlags & (1U << (index))) \
+         ? (owner)->ResolveFloat(RawFloat((insn), (index))) \
+         : RawFloat((insn), (index)))
+#define WriteInt(owner, insn, index) \
+    EclOperands::ResolveIntLValue((owner), &RawInt((insn), (index)), \
+                                  (insn)->operandFlags, (index))
+#define WriteFloat(owner, insn, index) \
+    EclOperands::ResolveFloatLValue((owner), &RawFloat((insn), (index)), \
+                                    (insn)->operandFlags, (index))
+#else
+
+namespace th08
+{
+namespace EclRunLowProposal
+{
+
+#define TH08_ECL_RUN_LOW_YIELD(controlValue, instructionValue) \
+    return MakeLowResult((controlValue), (instructionValue))
+
 inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                           EnemyEclContext *context,
                           EclRawInstruction *instruction,
                           Services &services)
 {
+#endif
+
+#ifndef TH08_ECL_RUN_LOW_BODY
     i32 lhsInt;
-    i32 rhsInt;
+#endif
     f32 lhsFloat;
     f32 rhsFloat;
     f32 angle;
     f32 magnitude;
-    i32 mode;
-    EclOperands::EnemyOverlay *targetEnemy;
 
+#if !defined(TH08_ECL_RUN_SHARED_SWITCH)
     switch (instruction->opcode)
     {
+#endif
     case 1:
-        return LowResult(LOW_RETURN_MINUS_ONE);
+        TH08_ECL_RUN_LOW_YIELD(LOW_RETURN_MINUS_ONE, 0);
 
     case 2:
-        services.AssignTimer(&context->secondaryTime, ReadInt(enemy, instruction, 0));
+        context->secondaryTime = ReadInt(enemy, instruction, 0);
         break;
 
     case 3:
         break; // dispatch-table entry is the ordinary advance path
 
-    case 4:
-        return Jump(context, instruction, 0, 1);
-
     case 5:
         --*WriteInt(enemy, instruction, 2);
-        if (ReadInt(enemy, instruction, 2) > 0)
-            return Jump(context, instruction, 0, 1);
-        break;
+        if (ReadInt(enemy, instruction, 2) <= 0)
+            TH08_ECL_RUN_LOW_YIELD(LOW_ADVANCE, 0);
+
+    case 4:
+        context->time.current = RawInt(instruction, 0);
+        TH08_ECL_RUN_LOW_YIELD(
+            LOW_REDISPATCH,
+            reinterpret_cast<EclRawInstruction *>(
+                reinterpret_cast<u8 *>(instruction) + RawInt(instruction, 1)));
 
     case 6:
         *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1);
@@ -319,148 +445,123 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
     case 8:
         *WriteInt(enemy, instruction, 0) =
-            (services.RandomU32() & 1U ? 1 : -1) * ReadInt(enemy, instruction, 1);
+            (g_Rng.GetRandomU16() & 1U ? 1 : -1) * ReadInt(enemy, instruction, 1);
         break;
     case 9:
         *WriteFloat(enemy, instruction, 0) =
-            (services.RandomU32() & 1U ? 1.0f : -1.0f) * ReadFloat(enemy, instruction, 1);
+            (g_Rng.GetRandomU16() & 1U ? 1.0f : -1.0f) * ReadFloat(enemy, instruction, 1);
         break;
 
     case 10: *WriteInt(enemy, instruction, 0) += ReadInt(enemy, instruction, 1); break;
-    case 11: *WriteInt(enemy, instruction, 0) -= ReadInt(enemy, instruction, 1); break;
-    case 12: *WriteInt(enemy, instruction, 0) *= ReadInt(enemy, instruction, 1); break;
-    case 13: *WriteInt(enemy, instruction, 0) /= ReadInt(enemy, instruction, 1); break;
-    case 14: *WriteInt(enemy, instruction, 0) %= ReadInt(enemy, instruction, 1); break;
     case 15: *WriteFloat(enemy, instruction, 0) += ReadFloat(enemy, instruction, 1); break;
+    case 11: *WriteInt(enemy, instruction, 0) -= ReadInt(enemy, instruction, 1); break;
     case 16: *WriteFloat(enemy, instruction, 0) -= ReadFloat(enemy, instruction, 1); break;
+    case 12: *WriteInt(enemy, instruction, 0) *= ReadInt(enemy, instruction, 1); break;
     case 17: *WriteFloat(enemy, instruction, 0) *= ReadFloat(enemy, instruction, 1); break;
+    case 13: *WriteInt(enemy, instruction, 0) /= ReadInt(enemy, instruction, 1); break;
     case 18: *WriteFloat(enemy, instruction, 0) /= ReadFloat(enemy, instruction, 1); break;
+    case 14: *WriteInt(enemy, instruction, 0) %= ReadInt(enemy, instruction, 1); break;
     case 19:
         *WriteFloat(enemy, instruction, 0) =
-            services.Remainder(ReadFloat(enemy, instruction, 0),
-                               ReadFloat(enemy, instruction, 1));
+            fmodf(ReadFloat(enemy, instruction, 0),
+                  ReadFloat(enemy, instruction, 1));
         break;
 
     case 20: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) + ReadInt(enemy, instruction, 2); break;
-    case 21: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) - ReadInt(enemy, instruction, 2); break;
-    case 22: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) * ReadInt(enemy, instruction, 2); break;
-    case 23: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) / ReadInt(enemy, instruction, 2); break;
-    case 24: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) % ReadInt(enemy, instruction, 2); break;
     case 25: *WriteFloat(enemy, instruction, 0) = ReadFloat(enemy, instruction, 1) + ReadFloat(enemy, instruction, 2); break;
+    case 21: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) - ReadInt(enemy, instruction, 2); break;
     case 26: *WriteFloat(enemy, instruction, 0) = ReadFloat(enemy, instruction, 1) - ReadFloat(enemy, instruction, 2); break;
+    case 22: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) * ReadInt(enemy, instruction, 2); break;
     case 27: *WriteFloat(enemy, instruction, 0) = ReadFloat(enemy, instruction, 1) * ReadFloat(enemy, instruction, 2); break;
+    case 23: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) / ReadInt(enemy, instruction, 2); break;
     case 28: *WriteFloat(enemy, instruction, 0) = ReadFloat(enemy, instruction, 1) / ReadFloat(enemy, instruction, 2); break;
+    case 24: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) % ReadInt(enemy, instruction, 2); break;
     case 29:
         *WriteFloat(enemy, instruction, 0) =
-            services.Remainder(ReadFloat(enemy, instruction, 1),
-                               ReadFloat(enemy, instruction, 2));
+            fmodf(ReadFloat(enemy, instruction, 1),
+                  ReadFloat(enemy, instruction, 2));
         break;
     case 30: ++*WriteInt(enemy, instruction, 0); break;
     case 31: --*WriteInt(enemy, instruction, 0); break;
-    case 32: *WriteFloat(enemy, instruction, 0) = services.Sin(ReadFloat(enemy, instruction, 1)); break;
-    case 33: *WriteFloat(enemy, instruction, 0) = services.Cos(ReadFloat(enemy, instruction, 1)); break;
+    case 32: *WriteFloat(enemy, instruction, 0) = sinf(ReadFloat(enemy, instruction, 1)); break;
+    case 33: *WriteFloat(enemy, instruction, 0) = cosf(ReadFloat(enemy, instruction, 1)); break;
     case 34:
         *WriteFloat(enemy, instruction, 0) =
-            services.Atan2(ReadFloat(enemy, instruction, 4) - ReadFloat(enemy, instruction, 2),
-                           ReadFloat(enemy, instruction, 3) - ReadFloat(enemy, instruction, 1));
-        break;
-
-    case 35:
-        lhsFloat = ReadFloat(enemy, instruction, 1);
-        rhsFloat = ReadFloat(enemy, instruction, 2);
-        magnitude = ReadFloat(enemy, instruction, 3);
-        // The target resolves operand 2 a second time for the final add.
-        *WriteFloat(enemy, instruction, 0) =
-            (lhsFloat - rhsFloat) * magnitude + ReadFloat(enemy, instruction, 2);
-        break;
-
-    case 36:
-        services.InstallInterpolationSlot(enemy, RawFloat(instruction, 0),
-                                          ReadInt(enemy, instruction, 1),
-                                          ReadInt(enemy, instruction, 2),
-                                          ReadInt(enemy, instruction, 3),
-                                          ReadFloat(enemy, instruction, 4),
-                                          ReadFloat(enemy, instruction, 5),
-                                          ReadFloat(enemy, instruction, 6),
-                                          ReadFloat(enemy, instruction, 7));
+            atan2f(ReadFloat(enemy, instruction, 4) - ReadFloat(enemy, instruction, 2),
+                   ReadFloat(enemy, instruction, 3) - ReadFloat(enemy, instruction, 1));
         break;
 
     case 37:
         *WriteFloat(enemy, instruction, 0) =
-            services.NormalizeAngle(ReadFloat(enemy, instruction, 0), 0.0f);
+            AddNormalizeAngle(ReadFloat(enemy, instruction, 0), 0.0f);
+        break;
+
+    case 35:
+        ApplyInterpolationOperation(enemy, instruction);
+        break;
+
+    case 36:
+        InstallInterpolationSlot(enemy, instruction);
         break;
 
     case 38:
-        angle = services.NormalizeAngle(ReadFloat(enemy, instruction, 2), 0.0f);
+        angle = AddNormalizeAngle(ReadFloat(enemy, instruction, 2), 0.0f);
         magnitude = ReadFloat(enemy, instruction, 3);
-        *WriteFloat(enemy, instruction, 0) = services.Cos(angle) * magnitude;
-        *WriteFloat(enemy, instruction, 1) = services.Sin(angle) * magnitude;
+        *WriteFloat(enemy, instruction, 0) = cosf(angle) * magnitude;
+        *WriteFloat(enemy, instruction, 1) = sinf(angle) * magnitude;
         break;
 
     case 39:
         lhsFloat = ReadFloat(enemy, instruction, 1) - ReadFloat(enemy, instruction, 3);
         rhsFloat = ReadFloat(enemy, instruction, 2) - ReadFloat(enemy, instruction, 4);
         *WriteFloat(enemy, instruction, 0) =
-            services.Sqrt(lhsFloat * lhsFloat + rhsFloat * rhsFloat);
+            sqrtf(lhsFloat * lhsFloat + rhsFloat * rhsFloat);
         break;
 
     // 0x004215F0 comparison order is ==, !=, <, <=, >, >=, with integer
     // and float variants interleaved.  Successful branches use raw operands
     // 2 and 3 for the replacement time and signed bytecode displacement.
     case 40:
-        lhsInt = ReadInt(enemy, instruction, 0); rhsInt = ReadInt(enemy, instruction, 1);
-        if (lhsInt == rhsInt) return ConditionalJump(context, instruction); break;
     case 41:
-        lhsFloat = ReadFloat(enemy, instruction, 0); rhsFloat = ReadFloat(enemy, instruction, 1);
-        if (lhsFloat == rhsFloat) return ConditionalJump(context, instruction); break;
     case 42:
-        lhsInt = ReadInt(enemy, instruction, 0); rhsInt = ReadInt(enemy, instruction, 1);
-        if (lhsInt != rhsInt) return ConditionalJump(context, instruction); break;
     case 43:
-        lhsFloat = ReadFloat(enemy, instruction, 0); rhsFloat = ReadFloat(enemy, instruction, 1);
-        if (lhsFloat != rhsFloat) return ConditionalJump(context, instruction); break;
     case 44:
-        lhsInt = ReadInt(enemy, instruction, 0); rhsInt = ReadInt(enemy, instruction, 1);
-        if (lhsInt < rhsInt) return ConditionalJump(context, instruction); break;
     case 45:
-        lhsFloat = ReadFloat(enemy, instruction, 0); rhsFloat = ReadFloat(enemy, instruction, 1);
-        if (lhsFloat < rhsFloat) return ConditionalJump(context, instruction); break;
     case 46:
-        lhsInt = ReadInt(enemy, instruction, 0); rhsInt = ReadInt(enemy, instruction, 1);
-        if (lhsInt <= rhsInt) return ConditionalJump(context, instruction); break;
     case 47:
-        lhsFloat = ReadFloat(enemy, instruction, 0); rhsFloat = ReadFloat(enemy, instruction, 1);
-        if (lhsFloat <= rhsFloat) return ConditionalJump(context, instruction); break;
     case 48:
-        lhsInt = ReadInt(enemy, instruction, 0); rhsInt = ReadInt(enemy, instruction, 1);
-        if (lhsInt > rhsInt) return ConditionalJump(context, instruction); break;
     case 49:
-        lhsFloat = ReadFloat(enemy, instruction, 0); rhsFloat = ReadFloat(enemy, instruction, 1);
-        if (lhsFloat > rhsFloat) return ConditionalJump(context, instruction); break;
     case 50:
-        lhsInt = ReadInt(enemy, instruction, 0); rhsInt = ReadInt(enemy, instruction, 1);
-        if (lhsInt >= rhsInt) return ConditionalJump(context, instruction); break;
     case 51:
-        lhsFloat = ReadFloat(enemy, instruction, 0); rhsFloat = ReadFloat(enemy, instruction, 1);
-        if (lhsFloat >= rhsFloat) return ConditionalJump(context, instruction); break;
+    {
+        EclRawInstruction *branch = CompareOperands(enemy, instruction);
+        if (branch)
+            TH08_ECL_RUN_LOW_YIELD(LOW_REDISPATCH, branch);
+        break;
+    }
 
     case 52:
-        services.CallSubOnEnemy(enemy, static_cast<i16>(RawInt(instruction, 0)));
-        return LowResult(LOW_RESTART_RUN_LOOP);
+        CallSubOnEnemy(enemy, instruction, RawInt(instruction, 0));
+        TH08_ECL_RUN_LOW_YIELD(LOW_RESTART_RUN_LOOP, 0);
 
     case 53:
-        return LowResult(services.PopEclContext(enemy, instruction)
-                             ? LOW_SELECT_NEXT_CONTEXT
-                             : LOW_RESTART_RUN_LOOP);
+        if (!PopEclContext(enemy, instruction))
+            TH08_ECL_RUN_LOW_YIELD(LOW_RESTART_RUN_LOOP, 0);
+        TH08_ECL_RUN_LOW_YIELD(LOW_SELECT_NEXT_CONTEXT, 0);
 
     case 54:
-        services.SetPrimaryAnmScript(enemy, ReadInt(enemy, instruction, 0));
+        (*reinterpret_cast<AnmLoaded **>(
+            reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCEEC))
+            ->SetAndExecuteScriptIdx(
+            reinterpret_cast<AnmVm *>(Bytes(enemy) + 0xC),
+            ReadInt(enemy, instruction, 0));
         U32At(enemy, 0x3328) &= ~4U;
         break;
     case 55:
         lhsInt = ReadInt(enemy, instruction, 0);
-        services.SetPrimaryAnmScripts(enemy, lhsInt, lhsInt + 1, lhsInt + 2,
-                                     lhsInt + 3, lhsInt + 4, lhsInt + 5);
+        SetPrimaryAnmScripts(enemy, instruction, lhsInt, lhsInt + 1,
+                             lhsInt + 2, lhsInt + 3, lhsInt + 4,
+                             lhsInt + 5);
         U32At(enemy, 0x3328) &= ~4U;
         break;
     case 56:
@@ -474,12 +575,15 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         U32At(enemy, 0x3328) &= ~4U;
         break;
     case 57:
-        services.SetExtraAnmScript(enemy, ReadInt(enemy, instruction, 0),
-                                  ReadInt(enemy, instruction, 1));
+        SetExtraAnmScript(enemy, instruction);
         U32At(enemy, 0x3328) &= ~4U;
         break;
     case 58:
-        services.SetPrimaryAnmScript(enemy, ReadInt(enemy, instruction, 0));
+        (*reinterpret_cast<AnmLoaded **>(
+            reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCEF0))
+            ->SetAndExecuteScriptIdx(
+            reinterpret_cast<AnmVm *>(Bytes(enemy) + 0xC),
+            ReadInt(enemy, instruction, 0));
         U32At(enemy, 0x3328) |= 4U;
         break;
     case 59:
@@ -500,11 +604,25 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
     case 61:
         U32At(enemy, 0x3328) |= 4U;
-        services.SetExtraAnmScript(enemy, ReadInt(enemy, instruction, 0),
-                                  ReadInt(enemy, instruction, 1));
+        SetExtraAnmScript(enemy, instruction);
         break;
     case 62:
-        services.SetPrimaryAnmScript(enemy, I16At(enemy, 0x333C));
+        if (((U32At(enemy, 0x3328) >> 2) & 1U) == 0)
+        {
+            (*reinterpret_cast<AnmLoaded **>(
+                reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCEEC))
+                ->SetAndExecuteScriptIdx(
+                reinterpret_cast<AnmVm *>(Bytes(enemy) + 0xC),
+                I16At(enemy, 0x333C));
+        }
+        else
+        {
+            (*reinterpret_cast<AnmLoaded **>(
+                reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCEF0))
+                ->SetAndExecuteScriptIdx(
+                reinterpret_cast<AnmVm *>(Bytes(enemy) + 0xC),
+                I16At(enemy, 0x333C));
+        }
         break;
 
     case 63:
@@ -514,23 +632,19 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         services.RefreshBaseVector(enemy);
         break;
     case 64:
-        services.BeginPointMove(enemy,
-                                ReadInt(enemy, instruction, 0),
-                                ReadInt(enemy, instruction, 1),
-                                ReadFloat(enemy, instruction, 2),
-                                ReadFloat(enemy, instruction, 3));
+        EclHelpers::ConfigureRelativeMotion(enemy, instruction);
         break;
     case 65:
-        F32At(enemy, 0x2D94) = services.NormalizeAngle(ReadFloat(enemy, instruction, 0), 0.0f);
+        F32At(enemy, 0x2D94) = AddNormalizeAngle(ReadFloat(enemy, instruction, 0), 0.0f);
         F32At(enemy, 0x2DA8) = ReadFloat(enemy, instruction, 1);
         SetMovementState1(enemy);
         ResetMovementTimer(enemy, services, 0);
         break;
     case 66:
-        mode = ReadInt(enemy, instruction, 0);
-        if (mode < 1)
+        lhsInt = ReadInt(enemy, instruction, 0);
+        if (lhsInt < 1)
         {
-            F32At(enemy, 0x2D94) = services.NormalizeAngle(ReadFloat(enemy, instruction, 2), 0.0f);
+            F32At(enemy, 0x2D94) = AddNormalizeAngle(ReadFloat(enemy, instruction, 2), 0.0f);
             F32At(enemy, 0x2DA8) = ReadFloat(enemy, instruction, 3);
             SetMovementState1(enemy);
             ResetMovementTimer(enemy, services, 0);
@@ -541,33 +655,21 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         }
         break;
     case 67:
-        angle = services.ChooseBoundaryAwareAngle(enemy);
-        mode = ReadInt(enemy, instruction, 0);
-        if (mode <= 0)
-        {
-            F32At(enemy, 0x2D94) = angle;
-            F32At(enemy, 0x2DA8) = ReadFloat(enemy, instruction, 2);
-            SetMovementState1(enemy);
-            ResetMovementTimer(enemy, services, 0);
-        }
-        else
-        {
-            BeginTimedMoveAtAngle(enemy, instruction, services, angle, 2);
-        }
+        BeginBoundaryAwareMove(enemy, instruction);
         break;
     case 68:
         F32At(enemy, 0x2D94) =
-            services.NormalizeAngle(ReadFloat(enemy, instruction, 0),
-                                    services.AngleToPlayer(Bytes(enemy) + 0x2D34));
+            AddNormalizeAngle(ReadFloat(enemy, instruction, 0),
+                              services.AngleToPlayer(Bytes(enemy) + 0x2D34));
         F32At(enemy, 0x2DA8) = ReadFloat(enemy, instruction, 1);
         break;
     case 69:
-        mode = ReadInt(enemy, instruction, 0);
-        if (mode < 1)
+        lhsInt = ReadInt(enemy, instruction, 0);
+        if (lhsInt < 1)
         {
             F32At(enemy, 0x2D94) =
-                services.NormalizeAngle(ReadFloat(enemy, instruction, 2),
-                                        services.AngleToPlayer(Bytes(enemy) + 0x2D34));
+                AddNormalizeAngle(ReadFloat(enemy, instruction, 2),
+                                  services.AngleToPlayer(Bytes(enemy) + 0x2D34));
             F32At(enemy, 0x2DA8) = ReadFloat(enemy, instruction, 3);
             SetMovementState1(enemy);
             // The target resolves operand 0 again before timer assignment.
@@ -634,43 +736,43 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
 
     case 79:
-        mode = ReadInt(enemy, instruction, 0);
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x40U) | ((mode & 1) == 0 ? 0x40U : 0);
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x4U) | ((mode & 2) == 0 ? 0x4U : 0);
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x8U) | ((mode & 4) == 0 ? 0x8U : 0);
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x10U) | ((mode & 8) ? 0x10U : 0);
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x10000000U) | ((mode & 0x10) ? 0x10000000U : 0);
-        U32At(enemy, 0x3328) = (U32At(enemy, 0x3328) & ~0x40U) | ((mode & 0x20) ? 0x40U : 0);
+        lhsInt = ReadInt(enemy, instruction, 0);
+        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x40U) | ((lhsInt & 1) == 0 ? 0x40U : 0);
+        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x4U) | ((lhsInt & 2) == 0 ? 0x4U : 0);
+        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x8U) | ((lhsInt & 4) == 0 ? 0x8U : 0);
+        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x10U) | ((lhsInt & 8) ? 0x10U : 0);
+        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x10000000U) | ((lhsInt & 0x10) ? 0x10000000U : 0);
+        U32At(enemy, 0x3328) = (U32At(enemy, 0x3328) & ~0x40U) | ((lhsInt & 0x20) ? 0x40U : 0);
         break;
 
     case 80:
-        mode = ReadInt(enemy, instruction, 0);
-        if (mode & 1) U32At(enemy, 0x3324) &= ~0x40U;
-        if (mode & 2)
+        lhsInt = ReadInt(enemy, instruction, 0);
+        if (lhsInt & 1) U32At(enemy, 0x3324) &= ~0x40U;
+        if (lhsInt & 2)
         {
             U32At(enemy, 0x3324) &= ~0x4U;
             if (PointerAt(enemy, 0x53C8))
                 *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(PointerAt(enemy, 0x53C8)) + 0x1F8) &= ~0x20000U;
         }
-        if (mode & 4) U32At(enemy, 0x3324) &= ~0x8U;
-        if (mode & 8) U32At(enemy, 0x3324) |= 0x10U;
-        if (mode & 0x10) U32At(enemy, 0x3324) |= 0x10000000U;
-        if (mode & 0x20) U32At(enemy, 0x3328) |= 0x40U;
+        if (lhsInt & 4) U32At(enemy, 0x3324) &= ~0x8U;
+        if (lhsInt & 8) U32At(enemy, 0x3324) |= 0x10U;
+        if (lhsInt & 0x10) U32At(enemy, 0x3324) |= 0x10000000U;
+        if (lhsInt & 0x20) U32At(enemy, 0x3328) |= 0x40U;
         break;
 
     case 81:
-        mode = ReadInt(enemy, instruction, 0);
-        if (mode & 1) U32At(enemy, 0x3324) |= 0x40U;
-        if (mode & 2)
+        lhsInt = ReadInt(enemy, instruction, 0);
+        if (lhsInt & 1) U32At(enemy, 0x3324) |= 0x40U;
+        if (lhsInt & 2)
         {
             U32At(enemy, 0x3324) |= 0x4U;
             if (PointerAt(enemy, 0x53C8))
                 *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(PointerAt(enemy, 0x53C8)) + 0x1F8) |= 0x20000U;
         }
-        if (mode & 4) U32At(enemy, 0x3324) |= 0x8U;
-        if (mode & 8) U32At(enemy, 0x3324) &= ~0x10U;
-        if (mode & 0x10) U32At(enemy, 0x3324) &= ~0x10000000U;
-        if (mode & 0x20) U32At(enemy, 0x3328) &= ~0x40U;
+        if (lhsInt & 4) U32At(enemy, 0x3324) |= 0x8U;
+        if (lhsInt & 8) U32At(enemy, 0x3324) &= ~0x10U;
+        if (lhsInt & 0x10) U32At(enemy, 0x3324) &= ~0x10000000U;
+        if (lhsInt & 0x20) U32At(enemy, 0x3328) &= ~0x40U;
         break;
 
     case 82:
@@ -691,8 +793,9 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         {
             // Operand 2 selects the Enemy whose register namespace resolves
             // operand 1.  The destination remains in the current Enemy.
-            targetEnemy = services.EnemyByIndex(ReadInt(enemy, instruction, 2));
-            lhsInt = EclOperands::ResolveInt(targetEnemy, RawInt(instruction, 1));
+            lhsInt = EclOperands::ResolveInt(
+                g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)],
+                RawInt(instruction, 1));
         }
         else
         {
@@ -702,15 +805,15 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
 
     case 87:
-        targetEnemy = services.EnemyByIndex(ReadInt(enemy, instruction, 2));
-        if (targetEnemy)
+        if (g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)])
         {
             if (instruction->operandFlags & 2U)
             {
                 // 0x0041ADC1 resolves operand 2 again before selecting the
                 // foreign register namespace for operand 1.
-                targetEnemy = services.EnemyByIndex(ReadInt(enemy, instruction, 2));
-                lhsFloat = targetEnemy->ResolveFloat(RawFloat(instruction, 1));
+                lhsFloat = g_EclEnemyTableF54CC0[
+                    ReadInt(enemy, instruction, 2)]->ResolveFloat(
+                        RawFloat(instruction, 1));
             }
             else
             {
@@ -721,18 +824,18 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
 
     case 88:
-        targetEnemy = services.EnemyByIndex(ReadInt(enemy, instruction, 0));
-        services.CallSubOnEnemy(targetEnemy, static_cast<i16>(RawInt(instruction, 1)));
+        lhsInt = ReadInt(enemy, instruction, 0);
+        services.CallSubOnEnemy(g_EclEnemyTableF54CC0[lhsInt],
+                                static_cast<i16>(RawInt(instruction, 1)));
         break;
 
     case 89:
-        targetEnemy = services.EnemyByIndex(ReadInt(enemy, instruction, 0));
-        if (targetEnemy)
+        if (g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 0)])
         {
             const i16 callbackSub = static_cast<i16>(ReadInt(enemy, instruction, 1));
             // Target resolves operand 0 a second time before the store.
-            targetEnemy = services.EnemyByIndex(ReadInt(enemy, instruction, 0));
-            I16At(targetEnemy, 0x2D30) = callbackSub;
+            I16At(g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 0)],
+                  0x2D30) = callbackSub;
         }
         break;
 
@@ -746,12 +849,48 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         services.SpawnLinkedChild(enemy, instruction, CHILD_STANDARD_41F110, 1);
         break;
 
+#if !defined(TH08_ECL_RUN_SHARED_SWITCH)
     default:
-        return LowResult(LOW_NOT_HANDLED);
+        TH08_ECL_RUN_LOW_YIELD(LOW_NOT_HANDLED, 0);
     }
 
-    return LowResult(LOW_ADVANCE);
+    TH08_ECL_RUN_LOW_YIELD(LOW_ADVANCE, 0);
+#endif
+
+#ifdef TH08_ECL_RUN_LOW_BODY
+#if !defined(TH08_ECL_RUN_SHARED_SWITCH)
+low_dispatch_complete: ;
+#endif
+#else
 }
 
 } // namespace EclRunLowProposal
 } // namespace th08
+#endif
+
+#undef TH08_ECL_RUN_LOW_YIELD
+
+#ifdef TH08_ECL_RUN_LOW_BODY
+#undef TH08_ECL_RUN_LOW_YIELD_LOW_NOT_HANDLED
+#undef TH08_ECL_RUN_LOW_YIELD_LOW_ADVANCE
+#undef TH08_ECL_RUN_LOW_YIELD_LOW_SELECT_NEXT_CONTEXT
+#undef TH08_ECL_RUN_LOW_YIELD_LOW_RESTART_RUN_LOOP
+#undef TH08_ECL_RUN_LOW_YIELD_LOW_REDISPATCH
+#undef TH08_ECL_RUN_LOW_YIELD_LOW_RETURN_MINUS_ONE
+#undef TH08_ECL_RUN_LOW_YIELD_SELECT
+#undef TH08_ECL_RUN_LOW_YIELD_SELECT_I
+#undef WriteFloat
+#undef WriteInt
+#undef ReadFloat
+#undef ReadInt
+#undef RawFloat
+#undef RawInt
+#undef PointerAt
+#undef F32At
+#undef I16At
+#undef I32At
+#undef U32At
+#undef Bytes
+#endif
+
+#endif // !TH08_ECL_RUN_DECLARATIONS_ONLY
