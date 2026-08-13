@@ -9,6 +9,7 @@ main,WinMain,th08::GameWindow,th08::GameErrorContext::ResetContext,th08::GameErr
 Midi,th08::MidiDevice,th08::MidiTimer,th08::MidiOutput
 PbgArchive,th08::PbgArchive,th08::PbgArchiveEntry
 PbgFile,th08::IPbgFile,th08::CPbgFile
+Player,th08::Player
 ScreenEffect,th08::ScreenEffect
 SoundPlayer,th08::SoundPlayer
 Supervisor,th08::Supervisor,th08::SoundPlayer::UpdateFades

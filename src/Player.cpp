@@ -48,9 +48,45 @@ void PlayerUnkStruct0x40::Reset()
     this->collisionInterval = 1;
 }
 
-// STUB: th08 0x44c230
-ZunResult Player::RegisterChain(u32 param)
+#pragma var_order(primaryShtFile, player, secondaryShtFile)
+// FUNCTION: th08 0x44c230
+ZunResult Player::RegisterChain(u32 playerType)
 {
+    Player *player = &g_Player;
+    PlayerRawShtFile *secondaryShtFile;
+    PlayerRawShtFile *primaryShtFile;
+
+    if (IsResourceReloadDisabled())
+    {
+        primaryShtFile = player->primaryShtFile;
+        secondaryShtFile = player->secondaryShtFile;
+    }
+
+    memset(player, 0, sizeof(*player));
+
+    if (IsResourceReloadDisabled())
+    {
+        player->primaryShtFile = primaryShtFile;
+        player->secondaryShtFile = secondaryShtFile;
+    }
+
+    player->timer = 0;
+    player->playerType = playerType;
+
+    player->calcChain = g_Chain.CreateElem((ChainCallback)Player::OnUpdate);
+    player->calcChain->arg = player;
+    player->calcChain->addedCallback = (ChainLifetimeCallback)Player::AddedCallback;
+    player->calcChain->deletedCallback = (ChainLifetimeCallback)Player::DeletedCallback;
+    if (g_Chain.AddToCalcChain(player->calcChain, 9))
+        return ZUN_ERROR;
+
+    player->drawChainHighPrio = g_Chain.CreateElem((ChainCallback)Player::OnDrawHighPrio);
+    player->drawChainLowPrio = g_Chain.CreateElem((ChainCallback)Player::OnDrawLowPrio);
+    player->drawChainHighPrio->arg = player;
+    player->drawChainLowPrio->arg = player;
+    g_Chain.AddToDrawChain(player->drawChainHighPrio, 9);
+    g_Chain.AddToDrawChain(player->drawChainLowPrio, 10);
+
     return ZUN_SUCCESS;
 }
 

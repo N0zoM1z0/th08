@@ -101,6 +101,7 @@ th08::IsDisableResourceReload
 th08::Background::DeletedCallback
 th08::GameManager::SetYoukaiGauge
 th08::Player::CutChain
+th08::Player::RegisterChain
 th08::PlayerUnkStruct0x40::Deactivate
 th08::PlayerUnkStruct0x40::Reset
 th08::AnmVmBase::SetBlendModeAdditive

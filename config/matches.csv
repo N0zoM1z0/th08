@@ -18,6 +18,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00445BC0,th08::Supervisor::DrawFpsCounter,20,matching,100.00,supervisor-draw-fps-counter,python3 scripts/compare-function.py supervisor-draw-fps-counter --json
 0x00448A2F,th08::Supervisor::DeleteCriticalSections,54,matching,100.00,supervisor-delete-critical-sections,python3 scripts/compare-function.py supervisor-delete-critical-sections --json
 0x0044DD10,th08::Player::CutChain,85,matching,100.00,player-cut-chain,python3 scripts/compare-function.py player-cut-chain --json
+0x0044C230,th08::Player::RegisterChain,351,matching,100.00,player-register-chain,python3 scripts/compare-function.py player-register-chain --json
 0x0044E0E0,th08::IsResourceReloadDisabled,15,matching,100.00,resource-reload-disabled,python3 scripts/compare-function.py resource-reload-disabled --json
 0x0044E0F0,th08::AnmVmBase::SetBlendModeAdditive,35,matching,100.00,anm-vm-base-blend-additive,python3 scripts/compare-function.py anm-vm-base-blend-additive --json
 0x0044E120,th08::AnmVmBase::SetBlendModeNormal,32,matching,100.00,anm-vm-base-blend-normal,python3 scripts/compare-function.py anm-vm-base-blend-normal --json

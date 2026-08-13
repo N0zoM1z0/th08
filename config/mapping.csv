@@ -759,7 +759,7 @@ FUN_0044a930,0x44a930,0x209,unknown,,u8,u8,u8
 FUN_0044ab40,0x44ab40,0x378,unknown,,u8
 FUN_0044aec0,0x44aec0,0x12a1,unknown,,u8
 FUN_0044c1b0,0x44c1b0,0x76,unknown,,u8,u8
-th08::Player::RegisterChain,0x44c230,0x15f,__fastcall,,ZunResult,u8
+th08::Player::RegisterChain,0x44c230,0x15f,__fastcall,,ZunResult,u32
 th08::Player::OnUpdate,0x44c390,0x211,unknown,,u8
 FUN_0044c5b0,0x44c5b0,0x9f,unknown,,u8
 FUN_0044c650,0x44c650,0x548,unknown,,u8

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Global.hpp"
+#include "Supervisor.hpp"
 
 namespace th08
 {
@@ -42,13 +43,24 @@ enum PlayerState
 struct Player
 {
     i8 playerState;
-    unknown_fields(0x1, 0xfdb);
+    u8 playerType;
+    unknown_fields(0x2, 0xfda);
 
     // Observed as g_Player + 0xFDC and through Player receivers at +0xFDC.
     // The target uses it to pause/alter gameplay updates.
     i32 frameStop;
+    unknown_fields(0xfe0, 0xe1a94);
+    PlayerRawShtFile *primaryShtFile;
+    PlayerRawShtFile *secondaryShtFile;
+    unknown_fields(0xe2a7c, 0x78);
+    ZunTimer timer;
+    unknown_fields(0xe2b00, 0x10);
+    ChainElem *calcChain;
+    ChainElem *drawChainHighPrio;
+    ChainElem *drawChainLowPrio;
+    unknown_fields(0xe2b1c, 0x14);
 
-    static ZunResult RegisterChain(u32 param);
+    static ZunResult RegisterChain(u32 playerType);
     static ChainCallbackResult OnUpdate(Player *player);
     static ChainCallbackResult OnDrawHighPrio(Player *player);
     static ChainCallbackResult OnDrawLowPrio(Player *player);
@@ -59,6 +71,7 @@ struct Player
     static ZunResult LoadShtFile(PlayerRawShtFile **header, const char *path);
     i32 IsYoukai();
 };
+C_ASSERT(sizeof(Player) == 0xe2b30);
 
 DIFFABLE_EXTERN(Player, g_Player);
 

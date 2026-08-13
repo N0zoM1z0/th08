@@ -48,7 +48,13 @@ review the unit before claiming exactness.
 - Under the repository's VC7 `#pragma var_order` wrapper, local identifiers
   can affect allocation. After a stack layout is proven, treat a rename as a
   code-generation change and recompare it; prefer a semantic comment over a
-  readability-only rename while tuning exact stack homes.
+  readability-only rename while tuning exact stack homes.  Use the pragma only
+  to express an already-observed lifetime/order: `Player::RegisterChain` at
+  `0x0044C230` has the resource pointers at `EBP-4` and `EBP-0xC`, with the
+  `g_Player` local at `EBP-8`; the natural preserve-reset-restore flow plus
+  `#pragma var_order(primaryShtFile, player, secondaryShtFile)` exactly
+  reproduces that target layout.  It is not a license for inert locals or
+  arbitrary stack shaping.
 - When a target resolves one value into a stack home and then uses that same
   value both to write a field and to call a setter, first test the natural
   chained assignment `setter = (field = ReadValue(...))`. It preserves the
