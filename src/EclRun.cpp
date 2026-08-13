@@ -129,10 +129,10 @@ low_select_next_context:
     // the observed in-function easing switch and child-context back edge.
     if (TH08_ECL_AT(unusedContext, i32, 0x2DFC) > 0)
     {
+        i32 restorePosition = 0;
         Interpolator *entry = reinterpret_cast<Interpolator *>(
             TH08_ECL_CURRENT_CONTEXT(unusedContext) + 0x9C);
         Vec3 savedPosition = TH08_ECL_AT(unusedContext, Vec3, 0x2D34);
-        i32 restorePosition = 0;
 
         if (*reinterpret_cast<EclContextCallback *>(
                 TH08_ECL_CURRENT_CONTEXT(unusedContext) + 0x10))
