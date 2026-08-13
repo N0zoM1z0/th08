@@ -329,3 +329,5 @@ address,name,size,status,match_percent,unit,evidence
 0x0045AE00,th08::ScoreDat::ParsePSCR,295,matching,100.00,score-dat-roi-exact-0045ae00,python3 scripts/compare-function.py score-dat-roi-exact-0045ae00 --json
 0x0045AF30,th08::ScoreDat::ParsePLST,129,matching,100.00,score-dat-roi-exact-0045af30,python3 scripts/compare-function.py score-dat-roi-exact-0045af30 --json
 0x004436A0,th08::GameWindow::ActivateWindow,143,matching,100.00,activate-window-unlocked-exact-004436a0,python3 scripts/compare-function.py activate-window-unlocked-exact-004436a0 --json
+0x0043F31C,th08::TextHelper::InvertAlpha,1292,matching,100.00,text-helper-roi-exact-0043f31c,python3 scripts/compare-function.py text-helper-roi-exact-0043f31c --json
+0x0043F898,th08::TextHelper::CopyTextToSurface,232,matching,100.00,text-helper-roi-exact-0043f898,python3 scripts/compare-function.py text-helper-roi-exact-0043f898 --json

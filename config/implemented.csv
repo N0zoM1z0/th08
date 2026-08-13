@@ -354,3 +354,5 @@ th08::ScoreDat::ParseFLSP
 th08::ScoreDat::ParseCLRD
 th08::ScoreDat::ParsePSCR
 th08::ScoreDat::ParsePLST
+th08::TextHelper::InvertAlpha
+th08::TextHelper::CopyTextToSurface
