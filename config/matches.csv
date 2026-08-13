@@ -65,3 +65,8 @@ address,name,size,status,match_percent,unit,evidence
 0x00453CC0,th08::ReplayManager::IsDemo,17,matching,100.00,replay-manager-is-demo,python3 scripts/compare-function.py replay-manager-is-demo --json
 0x0045E430,th08::AnmLoaded::SetSprite,333,matching,100.00,anm-loaded-set-sprite,python3 scripts/compare-function.py anm-loaded-set-sprite --json
 0x00462310,th08::AnmManager::ExecuteScriptArray,70,matching,100.00,anm-manager-execute-script-array,python3 scripts/compare-function.py anm-manager-execute-script-array --json
+0x004182E0,th08::EclManager::EclManager,25,matching,100.00,ecl-manager-ctor,python3 scripts/compare-function.py ecl-manager-ctor --json
+0x00418300,th08::EclTimelineState::EclTimelineState,37,matching,100.00,ecl-timeline-state-ctor,python3 scripts/compare-function.py ecl-timeline-state-ctor --json
+0x00418330,th08::EclManager::Load,239,matching,100.00,ecl-manager-load,python3 scripts/compare-function.py ecl-manager-load --json
+0x00418420,th08::EclManager::Unload,44,matching,100.00,ecl-manager-unload,python3 scripts/compare-function.py ecl-manager-unload --json
+0x00418450,th08::EclManager::CallEclSub,88,matching,100.00,ecl-manager-call-sub,python3 scripts/compare-function.py ecl-manager-call-sub --json

@@ -49,6 +49,10 @@ image base `0x00400000`, entry `0x004A619E`, and `.text`
    destination multiset with the built function's `REL32` multiset; and
    reconcile returns, fallthroughs, field offsets, and access widths. This can
    justify `implemented.csv`, never `matches.csv`.
+   For TH08 ECL, run `python3 scripts/audit-ecl-dispatch.py` after changing
+   `EclRunLow.inl` or `EclRunHigh.inl`. Its primary table uses `opcode - 1`;
+   retain the public 1..184 numbering and reconstruct integer/float rvalue and
+   lvalue tables independently because their writable offsets can differ.
 5. Implement the smallest coherent function in its existing module. Do not
    manufacture behavior, paste decompiler output, patch target bytes, or use
    assembly/byte arrays/padding to force code shape.

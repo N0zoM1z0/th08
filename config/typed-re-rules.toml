@@ -59,3 +59,24 @@ requires = ["jump_table_dispatch", "large_direct_call_surface"]
 confidence = "workflow_guardrail"
 recommendation = "Before marking a non-exact large dispatcher source-present, reconcile every primary and nested jump-table slot, compare the target direct-call destination multiset with the built function REL32 multiset, and verify returns, fallthroughs, field offsets, and access widths. Keep exact status gated on the canonical comparator."
 evidence = "TH08 AnmManager::ExecuteScript at 0x0045EA00: 91 opcode slots and identical 228-call target/COFF multisets with a non-exact 0x1A0 size delta"
+
+[[rules]]
+id = "ecl-indirect-context-overlay"
+requires = ["ecl_context_indirection"]
+confidence = "target_observation"
+recommendation = "Keep TH08 ECL variable access behind the active context pointer at Enemy+0x2CA0. The default context is Enemy+0x7F8, child contexts use allocation+8, and the paired stack base is selected through Enemy+0x2CA4; do not port TH07 direct Enemy offsets."
+evidence = "TH08 RunEcl 0x004184B0 and four resolver functions 0x0041F420/0x0041FE10/0x00420120/0x00420950"
+
+[[rules]]
+id = "ecl-rvalue-lvalue-asymmetry"
+requires = ["ecl_operand_resolver"]
+confidence = "target_observation"
+recommendation = "Derive rvalue and lvalue tables independently. In TH08, float IDs 0x273A..0x273C read Enemy+0x2D88/+0x2D8C/+0x2D90 but write Enemy+0x2D34/+0x2D38/+0x2D3C; semantic symmetry is not evidence of identical offsets."
+evidence = "TH08 float resolver tables at 0x00420120 and 0x00420950"
+
+[[rules]]
+id = "ecl-opcode-minus-one-dispatch"
+requires = ["ecl_dispatch_table"]
+confidence = "target_observation"
+recommendation = "The RunEcl primary jump table indexes opcode-1. Normalize decompiler case labels back to actual opcodes 1..184, then audit each source case once with scripts/audit-ecl-dispatch.py."
+evidence = "TH08 RunEcl dispatch at 0x00418623 and 184-slot table at 0x0041ECBE"

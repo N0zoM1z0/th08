@@ -215,3 +215,16 @@ th08::AnmVm::GetFloatVarPtr
 th08::AnmVm::GetIntVarPtr
 th08::AnmManager::ExecuteScript
 th08::AnmManager::ExecuteScriptArray
+th08::EclManager::EclManager
+th08::EclTimelineState::EclTimelineState
+th08::EclManager::Load
+th08::EclManager::Unload
+th08::EclManager::CallEclSub
+th08::EclManager::RunEcl
+th08::EclOperands::ResolveInt
+th08::EclOperands::ResolveIntLValue
+th08::EclOperands::EnemyOverlay::ResolveFloat
+th08::EclOperands::ResolveFloatLValue
+th08::EclHelpers::ConfigurePolarMotion
+th08::EclHelpers::ConfigureRelativeMotion
+th08::EnemyManager::OnUpdate

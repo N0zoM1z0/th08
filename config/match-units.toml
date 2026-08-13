@@ -319,6 +319,125 @@ symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
 target = 0x0040B8A0
 
 [[units]]
+name = "ecl-manager-ctor"
+object = "build/probes/EclManager.obj"
+symbol = "??0EclManager@th08@@QAE@XZ"
+target_address = 0x004182E0
+size = 0x19
+
+[[units.relocations]]
+offset = 0xE
+type = "REL32"
+symbol = "??0EclTimelineState@th08@@QAE@XZ"
+target = 0x00418300
+
+[[units]]
+name = "ecl-timeline-state-ctor"
+object = "build/probes/EclManager.obj"
+symbol = "??0EclTimelineState@th08@@QAE@XZ"
+target_address = 0x00418300
+size = 0x25
+
+[[units.relocations]]
+offset = 0x8
+type = "DIR32"
+symbol = "??0D3DXVECTOR3@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x1A
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units]]
+name = "ecl-manager-load"
+object = "build/probes/EclManager.obj"
+symbol = "?Load@EclManager@th08@@QAE?AW4ZunResult@@PAD@Z"
+target_address = 0x00418330
+size = 0xEF
+
+[[units.relocations]]
+offset = 0x11
+type = "REL32"
+symbol = "?OpenFile@FileSystem@th08@@YIPAEPBDPAHH@Z"
+target = 0x0043E660
+
+[[units.relocations]]
+offset = 0x23
+type = "DIR32"
+symbol = "??_C@_0EF@FDGCHHHK@?$JDG?$IDf?$IB?$FL?$ID?$FO?$IC?L?$JD?G?$IC?$NN?$IN?$JO?$IC?$NN?$IC?I?$IO?$LI?$JEs?$IC?$LF?$IC?$NM?$IC?$LF?$IC?$LN@"
+target = 0x004B4830
+
+[[units.relocations]]
+offset = 0x28
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x2D
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00
+
+[[units.relocations]]
+offset = 0x4A
+type = "DIR32"
+symbol = "??_C@_0CB@LDCFEELP@?$JDG?$IDf?$IB?$FL?$ID?$FO?$IC?L?$IDo?$IB?$FL?$IDW?$ID?$IH?$ID?$JD?$IC?$KK?$II?a?$IC?$KC?$IC?$NM?$IC?$LH?$AN?6@"
+target = 0x004B4808
+
+[[units.relocations]]
+offset = 0x4F
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x54
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00
+
+[[units]]
+name = "ecl-manager-unload"
+object = "build/probes/EclManager.obj"
+symbol = "?Unload@EclManager@th08@@QAEXXZ"
+target_address = 0x00418420
+size = 0x2C
+
+[[units.relocations]]
+offset = 0x16
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x1B
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+[[units]]
+name = "ecl-manager-call-sub"
+object = "build/probes/EclManager.obj"
+symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
+target_address = 0x00418450
+size = 0x58
+
+[[units.relocations]]
+offset = 0x2E
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x3E
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units]]
 name = "game-manager-is-replay-practice"
 object = "build/GameManager.obj"
 symbol = "?IsReplayPractice@GameManager@th08@@QAEIXZ"

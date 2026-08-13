@@ -95,6 +95,13 @@ Prefer dependency work that turns a giant dispatcher into bounded units:
 - Large dispatchers: use the jump-table/call-multiset audit in `$th08-re` to
   establish source presence, while retaining strict comparator-only exactness.
 
+The ECL dependency-first pass now has exact lifecycle units, complete four
+resolver tables, source coverage for all 184 `RunEcl` opcodes, and a typed
+`EnemyManager::OnUpdate` overlay. Re-audit the dispatcher with
+`python3 scripts/audit-ecl-dispatch.py`. Remaining work is service/global
+binding and compiler-shape convergence; source-present status does not imply
+that the giant dispatcher or update loop is byte-matching.
+
 ## Parallel handoff
 
 A bounded handoff contains:
