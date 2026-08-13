@@ -9118,3 +9118,1640 @@ offset = 0x2D9
 type = "DIR32"
 symbol = "?m_Dict@Lzss@th08@@0PAEA"
 target = 0x018D5F68
+# Ledger name: th08::ZunMemory::Alloc
+# Extent: 0x0040B880..0x0040B899 (0x19 bytes)
+# Next trusted start: 0x0040B8A0; gap 0x7 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           1 relocations; 1 direct calls matched
+[[units]]
+name = "global-exact-0040b880"
+object = "build/Global.obj"
+symbol = "?Alloc@ZunMemory@th08@@QAEPAXIPBD@Z"
+target_address = 0x0040B880
+size = 0x19
+
+[[units.relocations]]
+offset = 0xC
+type = "REL32"
+symbol = "_malloc"
+target = 0x004A4269
+
+# Ledger name: th08::ZunMemory::Free
+# Extent: 0x0040B8A0..0x0040B8B9 (0x19 bytes)
+# Next trusted start: 0x0040B8C0; gap 0x7 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           1 relocations; 1 direct calls matched
+[[units]]
+name = "global-exact-0040b8a0"
+object = "build/Global.obj"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target_address = 0x0040B8A0
+size = 0x19
+
+[[units.relocations]]
+offset = 0xC
+type = "REL32"
+symbol = "_free"
+target = 0x004A427B
+
+# Ledger name: th08::ZunMemory::AddToRegistry
+# Extent: 0x00429DE0..0x00429DF0 (0x10 bytes)
+# Next trusted start: 0x00429DF0; gap 0x0 (contiguous)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           0 relocations; 0 direct calls matched
+[[units]]
+name = "global-exact-00429de0"
+object = "build/Global.obj"
+symbol = "?AddToRegistry@ZunMemory@th08@@QAEPAXPAXIPAD@Z"
+target_address = 0x00429DE0
+size = 0x10
+
+# Ledger name: th08::ZunMemory::RemoveFromRegistry
+# Extent: 0x00429DF0..0x00429DFD (0xd bytes)
+# Next trusted start: 0x00429E00; gap 0x3 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           0 relocations; 0 direct calls matched
+[[units]]
+name = "global-exact-00429df0"
+object = "build/Global.obj"
+symbol = "?RemoveFromRegistry@ZunMemory@th08@@QAEXPAX@Z"
+target_address = 0x00429DF0
+size = 0xD
+
+# Ledger name: th08::Chain::~Chain
+# Extent: 0x0043C710..0x0043C75B (0x4b bytes)
+# Next trusted start: 0x0043C760; gap 0x5 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           6 relocations; 2 direct calls matched
+[[units]]
+name = "global-exact-0043c710"
+object = "build/Global.obj"
+symbol = "??1Chain@th08@@QAE@XZ"
+target_address = 0x0043C710
+size = 0x4B
+
+[[units.relocations]]
+offset = 0x6
+type = "DIR32"
+symbol = "$L*"
+target = 0x004B2FC8
+
+[[units.relocations]]
+offset = 0xC
+type = "DIR32"
+symbol = "__except_list"
+target = 0x00000000
+
+[[units.relocations]]
+offset = 0x14
+type = "DIR32"
+symbol = "__except_list"
+target = 0x00000000
+
+[[units.relocations]]
+offset = 0x2A
+type = "REL32"
+symbol = "??1ChainElem@th08@@QAE@XZ"
+target = 0x0043C7D0
+
+[[units.relocations]]
+offset = 0x39
+type = "REL32"
+symbol = "??1ChainElem@th08@@QAE@XZ"
+target = 0x0043C7D0
+
+[[units.relocations]]
+offset = 0x43
+type = "DIR32"
+symbol = "__except_list"
+target = 0x00000000
+
+# Ledger name: th08::ChainElem::ChainElem
+# Extent: 0x0043C760..0x0043C7C3 (0x63 bytes)
+# Next trusted start: 0x0043C7D0; gap 0xd (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           0 relocations; 0 direct calls matched
+[[units]]
+name = "global-exact-0043c760"
+object = "build/Global.obj"
+symbol = "??0ChainElem@th08@@QAE@XZ"
+target_address = 0x0043C760
+size = 0x63
+
+# Ledger name: th08::ChainElem::~ChainElem
+# Extent: 0x0043C7D0..0x0043C822 (0x52 bytes)
+# Next trusted start: 0x0043C830; gap 0xe (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           0 relocations; 0 direct calls matched
+[[units]]
+name = "global-exact-0043c7d0"
+object = "build/Global.obj"
+symbol = "??1ChainElem@th08@@QAE@XZ"
+target_address = 0x0043C7D0
+size = 0x52
+
+# Ledger name: th08::Chain::Chain
+# Extent: 0x0043C830..0x0043C87E (0x4e bytes)
+# Next trusted start: 0x0043C880; gap 0x2 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           6 relocations; 2 direct calls matched
+[[units]]
+name = "global-exact-0043c830"
+object = "build/Global.obj"
+symbol = "??0Chain@th08@@QAE@XZ"
+target_address = 0x0043C830
+size = 0x4E
+
+[[units.relocations]]
+offset = 0x6
+type = "DIR32"
+symbol = "$L*"
+target = 0x004B2FC8
+
+[[units.relocations]]
+offset = 0xC
+type = "DIR32"
+symbol = "__except_list"
+target = 0x00000000
+
+[[units.relocations]]
+offset = 0x14
+type = "DIR32"
+symbol = "__except_list"
+target = 0x00000000
+
+[[units.relocations]]
+offset = 0x20
+type = "REL32"
+symbol = "??0ChainElem@th08@@QAE@XZ"
+target = 0x0043C760
+
+[[units.relocations]]
+offset = 0x32
+type = "REL32"
+symbol = "??0ChainElem@th08@@QAE@XZ"
+target = 0x0043C760
+
+[[units.relocations]]
+offset = 0x46
+type = "DIR32"
+symbol = "__except_list"
+target = 0x00000000
+
+# Ledger name: th08::Chain::AddToCalcChain
+# Extent: 0x0043C880..0x0043C960 (0xe0 bytes)
+# Next trusted start: 0x0043C960; gap 0x0 (contiguous)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           4 relocations; 2 direct calls matched
+[[units]]
+name = "global-exact-0043c880"
+object = "build/Global.obj"
+symbol = "?AddToCalcChain@Chain@th08@@QAEHPAVChainElem@2@H@Z"
+target_address = 0x0043C880
+size = 0xE0
+
+[[units.relocations]]
+offset = 0x3B
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x40
+type = "REL32"
+symbol = "?EnterCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EF70
+
+[[units.relocations]]
+offset = 0xCE
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xD3
+type = "REL32"
+symbol = "?LeaveCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EFB0
+
+# Ledger name: th08::Chain::AddToDrawChain
+# Extent: 0x0043C960..0x0043CA43 (0xe3 bytes)
+# Next trusted start: 0x0043CA50; gap 0xd (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           4 relocations; 2 direct calls matched
+[[units]]
+name = "global-exact-0043c960"
+object = "build/Global.obj"
+symbol = "?AddToDrawChain@Chain@th08@@QAEHPAVChainElem@2@H@Z"
+target_address = 0x0043C960
+size = 0xE3
+
+[[units.relocations]]
+offset = 0x3E
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x43
+type = "REL32"
+symbol = "?EnterCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EF70
+
+[[units.relocations]]
+offset = 0xD1
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xD6
+type = "REL32"
+symbol = "?LeaveCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EFB0
+
+# Ledger name: th08::Chain::ReleaseSingleChain
+# Extent: 0x0043CC60..0x0043CDF8 (0x198 bytes)
+# Next trusted start: 0x0043CE00; gap 0x8 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           20 relocations; 11 direct calls matched
+[[units]]
+name = "global-exact-0043cc60"
+object = "build/Global.obj"
+symbol = "?ReleaseSingleChain@Chain@th08@@AAEXPAVChainElem@2@@Z"
+target_address = 0x0043CC60
+size = 0x198
+
+[[units.relocations]]
+offset = 0x6
+type = "DIR32"
+symbol = "$L*"
+target = 0x004B2FFE
+
+[[units.relocations]]
+offset = 0xC
+type = "DIR32"
+symbol = "__except_list"
+target = 0x00000000
+
+[[units.relocations]]
+offset = 0x14
+type = "DIR32"
+symbol = "__except_list"
+target = 0x00000000
+
+[[units.relocations]]
+offset = 0x22
+type = "REL32"
+symbol = "??0ChainElem@th08@@QAE@XZ"
+target = 0x0043C760
+
+[[units.relocations]]
+offset = 0x30
+type = "REL32"
+symbol = "??2@YAPAXI@Z"
+target = 0x004A43D4
+
+[[units.relocations]]
+offset = 0x48
+type = "REL32"
+symbol = "??0ChainElem@th08@@QAE@XZ"
+target = 0x0043C760
+
+[[units.relocations]]
+offset = 0x63
+type = "DIR32"
+symbol = "??_C@_0N@INNNCBMI@funcChainInf?$AA@"
+target = 0x004B59A0
+
+[[units.relocations]]
+offset = 0x6E
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x73
+type = "REL32"
+symbol = "?AddToRegistry@ZunMemory@th08@@QAEPAXPAXIPAD@Z"
+target = 0x00429DE0
+
+[[units.relocations]]
+offset = 0x98
+type = "REL32"
+symbol = "??2@YAPAXI@Z"
+target = 0x004A43D4
+
+[[units.relocations]]
+offset = 0xB0
+type = "REL32"
+symbol = "??0ChainElem@th08@@QAE@XZ"
+target = 0x0043C760
+
+[[units.relocations]]
+offset = 0xCB
+type = "DIR32"
+symbol = "??_C@_0N@INNNCBMI@funcChainInf?$AA@"
+target = 0x004B59A0
+
+[[units.relocations]]
+offset = 0xD6
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0xDB
+type = "REL32"
+symbol = "?AddToRegistry@ZunMemory@th08@@QAEPAXPAXIPAD@Z"
+target = 0x00429DE0
+
+[[units.relocations]]
+offset = 0x110
+type = "REL32"
+symbol = "?Cut@Chain@th08@@QAEXPAVChainElem@2@@Z"
+target = 0x0043CF10
+
+[[units.relocations]]
+offset = 0x139
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x13E
+type = "REL32"
+symbol = "?RemoveFromRegistry@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x00429DF0
+
+[[units.relocations]]
+offset = 0x15A
+type = "REL32"
+symbol = "??_GChainElem@th08@@QAEPAXI@Z"
+target = 0x0043CE00
+
+[[units.relocations]]
+offset = 0x184
+type = "REL32"
+symbol = "??1ChainElem@th08@@QAE@XZ"
+target = 0x0043C7D0
+
+[[units.relocations]]
+offset = 0x18E
+type = "DIR32"
+symbol = "__except_list"
+target = 0x00000000
+
+# Ledger name: th08::Chain::Release
+# Extent: 0x0043CE30..0x0043CE60 (0x30 bytes)
+# Next trusted start: 0x0043CE60; gap 0x0 (contiguous)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           4 relocations; 3 direct calls matched
+[[units]]
+name = "global-exact-0043ce30"
+object = "build/Global.obj"
+symbol = "?Release@Chain@th08@@QAEXXZ"
+target_address = 0x0043CE30
+size = 0x30
+
+[[units.relocations]]
+offset = 0x8
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xD
+type = "REL32"
+symbol = "?ThreadClose@Supervisor@th08@@QAEXXZ"
+target = 0x0044871B
+
+[[units.relocations]]
+offset = 0x19
+type = "REL32"
+symbol = "?ReleaseSingleChain@Chain@th08@@AAEXPAVChainElem@2@@Z"
+target = 0x0043CC60
+
+[[units.relocations]]
+offset = 0x28
+type = "REL32"
+symbol = "?ReleaseSingleChain@Chain@th08@@AAEXPAVChainElem@2@@Z"
+target = 0x0043CC60
+
+# Ledger name: th08::Chain::CreateElem
+# Extent: 0x0043CE60..0x0043CF02 (0xa2 bytes)
+# Next trusted start: 0x0043CF10; gap 0xe (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           10 relocations; 4 direct calls matched
+[[units]]
+name = "global-exact-0043ce60"
+object = "build/Global.obj"
+symbol = "?CreateElem@Chain@th08@@QAEPAVChainElem@2@P6I?AW4ChainCallbackResult@2@PAX@Z@Z"
+target_address = 0x0043CE60
+size = 0xA2
+
+[[units.relocations]]
+offset = 0x6
+type = "DIR32"
+symbol = "$L*"
+target = 0x004B301B
+
+[[units.relocations]]
+offset = 0xC
+type = "DIR32"
+symbol = "__except_list"
+target = 0x00000000
+
+[[units.relocations]]
+offset = 0x14
+type = "DIR32"
+symbol = "__except_list"
+target = 0x00000000
+
+[[units.relocations]]
+offset = 0x21
+type = "REL32"
+symbol = "??2@YAPAXI@Z"
+target = 0x004A43D4
+
+[[units.relocations]]
+offset = 0x3C
+type = "REL32"
+symbol = "??0ChainElem@th08@@QAE@XZ"
+target = 0x0043C760
+
+[[units.relocations]]
+offset = 0x5A
+type = "DIR32"
+symbol = "??_C@_0N@INNNCBMI@funcChainInf?$AA@"
+target = 0x004B59A0
+
+[[units.relocations]]
+offset = 0x65
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x6A
+type = "REL32"
+symbol = "?AddToRegistry@ZunMemory@th08@@QAEPAXPAXIPAD@Z"
+target = 0x00429DE0
+
+[[units.relocations]]
+offset = 0x79
+type = "REL32"
+symbol = "?SetCallback@ChainElem@th08@@QAEXP6I?AW4ChainCallbackResult@2@PAX@Z@Z"
+target = 0x00406520
+
+[[units.relocations]]
+offset = 0x98
+type = "DIR32"
+symbol = "__except_list"
+target = 0x00000000
+
+# Ledger name: th08::Chain::Cut
+# Extent: 0x0043CF10..0x0043CF41 (0x31 bytes)
+# Next trusted start: 0x0043CF50; gap 0xf (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           5 relocations; 3 direct calls matched
+[[units]]
+name = "global-exact-0043cf10"
+object = "build/Global.obj"
+symbol = "?Cut@Chain@th08@@QAEXPAVChainElem@2@@Z"
+target_address = 0x0043CF10
+size = 0x31
+
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xF
+type = "REL32"
+symbol = "?EnterCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EF70
+
+[[units.relocations]]
+offset = 0x1B
+type = "REL32"
+symbol = "?CutImpl@Chain@th08@@AAEXPAVChainElem@2@@Z"
+target = 0x0043CF50
+
+[[units.relocations]]
+offset = 0x22
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x27
+type = "REL32"
+symbol = "?LeaveCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EFB0
+
+# Ledger name: th08::Chain::CutImpl
+# Extent: 0x0043CF50..0x0043D0BA (0x16a bytes)
+# Next trusted start: 0x0043D0C0; gap 0x6 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           11 relocations; 6 direct calls matched
+[[units]]
+name = "global-exact-0043cf50"
+object = "build/Global.obj"
+symbol = "?CutImpl@Chain@th08@@AAEXPAVChainElem@2@@Z"
+target_address = 0x0043CF50
+size = 0x16A
+
+[[units.relocations]]
+offset = 0xD3
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xD8
+type = "REL32"
+symbol = "?LeaveCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EFB0
+
+[[units.relocations]]
+offset = 0xE1
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0xE6
+type = "REL32"
+symbol = "?RemoveFromRegistry@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x00429DF0
+
+[[units.relocations]]
+offset = 0x102
+type = "REL32"
+symbol = "??_GChainElem@th08@@QAEPAXI@Z"
+target = 0x0043CE00
+
+[[units.relocations]]
+offset = 0x11C
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x121
+type = "REL32"
+symbol = "?EnterCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EF70
+
+[[units.relocations]]
+offset = 0x146
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x14B
+type = "REL32"
+symbol = "?LeaveCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EFB0
+
+[[units.relocations]]
+offset = 0x15B
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x160
+type = "REL32"
+symbol = "?EnterCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EF70
+
+# Ledger name: th08::Controller::GetJoystickCaps
+# Extent: 0x0043D0C0..0x0043D115 (0x55 bytes)
+# Next trusted start: 0x0043D120; gap 0xb (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           6 relocations; 1 direct calls matched
+[[units]]
+name = "global-exact-0043d0c0"
+object = "build/Global.obj"
+symbol = "?GetJoystickCaps@Controller@th08@@YIGXZ"
+target_address = 0x0043D0C0
+size = 0x55
+
+[[units.relocations]]
+offset = 0x1C
+type = "DIR32"
+symbol = "__imp__joyGetPosEx@8"
+target = 0x004B423C
+
+[[units.relocations]]
+offset = 0x25
+type = "DIR32"
+symbol = "??_C@_0CJ@KCBEENJD@?$IOg?$IC?$KG?$IC?i?$IDp?$IDb?$IDh?$IC?$KK?$JB?$LG?$IN?$NN?$IC?$LF?$IC?H?$IC?$KC?$IC?f?$IC?$KE?$IC?E?$IC?$LH@"
+target = 0x004B59B0
+
+[[units.relocations]]
+offset = 0x2A
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x2F
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00
+
+[[units.relocations]]
+offset = 0x42
+type = "DIR32"
+symbol = "?g_JoystickCaps@th08@@3UtagJOYCAPSA@@A"
+target = 0x0164D388
+
+[[units.relocations]]
+offset = 0x4A
+type = "DIR32"
+symbol = "__imp__joyGetDevCapsA@12"
+target = 0x004B4270
+
+# Ledger name: th08::Controller::SetButtonFromDirectInputJoystate
+# Extent: 0x0043D6E0..0x0043D75A (0x7a bytes)
+# Next trusted start: 0x0043D760; gap 0x6 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           0 relocations; 0 direct calls matched
+[[units]]
+name = "global-exact-0043d6e0"
+object = "build/Global.obj"
+symbol = "?SetButtonFromDirectInputJoystate@Controller@th08@@YIIPAGFGPAE@Z"
+target_address = 0x0043D6E0
+size = 0x7A
+
+# Ledger name: th08::Controller::SetButtonFromControllerInputs
+# Extent: 0x0043D760..0x0043D7D3 (0x73 bytes)
+# Next trusted start: 0x0043D7E0; gap 0xd (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           0 relocations; 0 direct calls matched
+[[units]]
+name = "global-exact-0043d760"
+object = "build/Global.obj"
+symbol = "?SetButtonFromControllerInputs@Controller@th08@@YIIPAGFGI@Z"
+target_address = 0x0043D760
+size = 0x73
+
+# Ledger name: th08::Controller::GetControllerState
+# Extent: 0x0043D7E0..0x0043D968 (0x188 bytes)
+# Next trusted start: 0x0043D970; gap 0x8 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           23 relocations; 2 direct calls matched
+[[units]]
+name = "global-exact-0043d7e0"
+object = "build/Global.obj"
+symbol = "?GetControllerState@Controller@th08@@YIPAEXZ"
+target_address = 0x0043D7E0
+size = 0x188
+
+[[units.relocations]]
+offset = 0x13
+type = "DIR32"
+symbol = "?g_ControllerData@th08@@3PAEA"
+target = 0x016535A0
+
+[[units.relocations]]
+offset = 0x1B
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x44
+type = "DIR32"
+symbol = "__imp__joyGetPosEx@8"
+target = 0x004B423C
+
+[[units.relocations]]
+offset = 0x4D
+type = "DIR32"
+symbol = "?g_ControllerData@th08@@3PAEA"
+target = 0x016535A0
+
+[[units.relocations]]
+offset = 0x8B
+type = "DIR32"
+symbol = "?g_ControllerData@th08@@3PAEA"
+target = 0x016535A0
+
+[[units.relocations]]
+offset = 0x93
+type = "DIR32"
+symbol = "?g_ControllerData@th08@@3PAEA"
+target = 0x016535A0
+
+[[units.relocations]]
+offset = 0x9D
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xA5
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xC5
+type = "DIR32"
+symbol = "??_C@_0BK@BJPCNFPG@error?5?3?5DIERR_INPUTLOST?$AN?6?$AA@"
+target = 0x004B59FC
+
+[[units.relocations]]
+offset = 0xCA
+type = "REL32"
+symbol = "?DebugPrint@utils@th08@@YAXPADZZ"
+target = 0x00421DD0
+
+[[units.relocations]]
+offset = 0xD2
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xDA
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xEF
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xF7
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x125
+type = "DIR32"
+symbol = "??_C@_0BN@KAGFBIKB@error?5?3?5DIERR_INPUTLOST?5?$CFd?$AN?6?$AA@"
+target = 0x004B59DC
+
+[[units.relocations]]
+offset = 0x12A
+type = "REL32"
+symbol = "?DebugPrint@utils@th08@@YAXPADZZ"
+target = 0x00421DD0
+
+[[units.relocations]]
+offset = 0x132
+type = "DIR32"
+symbol = "?g_ControllerData@th08@@3PAEA"
+target = 0x016535A0
+
+[[units.relocations]]
+offset = 0x13B
+type = "DIR32"
+symbol = "?g_ControllerData@th08@@3PAEA"
+target = 0x016535A0
+
+[[units.relocations]]
+offset = 0x14E
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x156
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x165
+type = "DIR32"
+symbol = "?g_ControllerData@th08@@3PAEA"
+target = 0x016535A0
+
+[[units.relocations]]
+offset = 0x177
+type = "DIR32"
+symbol = "?g_ControllerData@th08@@3PAEA"
+target = 0x016535A0
+
+[[units.relocations]]
+offset = 0x17E
+type = "DIR32"
+symbol = "?g_ControllerData@th08@@3PAEA"
+target = 0x016535A0
+
+# Ledger name: th08::Controller::ResetKeyboard
+# Extent: 0x0043E160..0x0043E1CE (0x6e bytes)
+# Next trusted start: 0x0043E1D0; gap 0x2 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           2 relocations; 0 direct calls matched
+[[units]]
+name = "global-exact-0043e160"
+object = "build/Global.obj"
+symbol = "?ResetKeyboard@Controller@th08@@YIXXZ"
+target_address = 0x0043E160
+size = 0x6E
+
+[[units.relocations]]
+offset = 0x12
+type = "DIR32"
+symbol = "__imp__GetKeyboardState@4"
+target = 0x004B41CC
+
+[[units.relocations]]
+offset = 0x66
+type = "DIR32"
+symbol = "__imp__SetKeyboardState@4"
+target = 0x004B41D0
+
+# Ledger name: th08::FileSystem::Decrypt
+# Extent: 0x0043E1D0..0x0043E390 (0x1c0 bytes)
+# Next trusted start: 0x0043E390; gap 0x0 (contiguous)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           3 relocations; 1 direct calls matched
+[[units]]
+name = "global-exact-0043e1d0"
+object = "build/Global.obj"
+symbol = "?Decrypt@FileSystem@th08@@YIPAEPAEHEEHH@Z"
+target_address = 0x0043E1D0
+size = 0x1C0
+
+[[units.relocations]]
+offset = 0x4E
+type = "DIR32"
+symbol = "??_C@_0CG@LNCKAIFE@d?3?2cygwin?2home?2zun?2prog?2th08?2glo@"
+target = 0x004B5A18
+
+[[units.relocations]]
+offset = 0x57
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x5C
+type = "REL32"
+symbol = "?Alloc@ZunMemory@th08@@QAEPAXIPBD@Z"
+target = 0x0040B880
+
+# Ledger name: th08::FileSystem::TryDecryptFromTable
+# Extent: 0x0043E390..0x0043E496 (0x106 bytes)
+# Next trusted start: 0x0043E4A0; gap 0xa (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           11 relocations; 2 direct calls matched
+[[units]]
+name = "global-exact-0043e390"
+object = "build/Global.obj"
+symbol = "?TryDecryptFromTable@FileSystem@th08@@YIPAEPAEPAHH@Z"
+target_address = 0x0043E390
+size = 0x106
+
+[[units.relocations]]
+offset = 0x1B
+type = "DIR32"
+symbol = "?g_CryptSignature@th08@@3PAEA"
+target = 0x004C7940
+
+[[units.relocations]]
+offset = 0x34
+type = "DIR32"
+symbol = "?g_CryptSignature@th08@@3PAEA"
+target = 0x004C7940
+
+[[units.relocations]]
+offset = 0x4D
+type = "DIR32"
+symbol = "?g_CryptSignature@th08@@3PAEA"
+target = 0x004C7940
+
+[[units.relocations]]
+offset = 0x73
+type = "DIR32"
+symbol = "?g_DecryptParams@th08@@3PAUDecryptParams@1@A"
+target = 0x004C78E0
+
+[[units.relocations]]
+offset = 0xAA
+type = "DIR32"
+symbol = "?g_DecryptParams@th08@@3PAUDecryptParams@1@A"
+target = 0x004C78E0
+
+[[units.relocations]]
+offset = 0xB7
+type = "DIR32"
+symbol = "?g_DecryptParams@th08@@3PAUDecryptParams@1@A"
+target = 0x004C78E0
+
+[[units.relocations]]
+offset = 0xC4
+type = "DIR32"
+symbol = "?g_DecryptParams@th08@@3PAUDecryptParams@1@A"
+target = 0x004C78E0
+
+[[units.relocations]]
+offset = 0xD1
+type = "DIR32"
+symbol = "?g_DecryptParams@th08@@3PAUDecryptParams@1@A"
+target = 0x004C78E0
+
+[[units.relocations]]
+offset = 0xE3
+type = "REL32"
+symbol = "?Decrypt@FileSystem@th08@@YIPAEPAEHEEHH@Z"
+target = 0x0043E1D0
+
+[[units.relocations]]
+offset = 0xEF
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0xF4
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+# Ledger name: th08::FileSystem::Encrypt
+# Extent: 0x0043E4A0..0x0043E660 (0x1c0 bytes)
+# Next trusted start: 0x0043E660; gap 0x0 (contiguous)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           3 relocations; 1 direct calls matched
+[[units]]
+name = "global-exact-0043e4a0"
+object = "build/Global.obj"
+symbol = "?Encrypt@FileSystem@th08@@YIPAEPAEHEEHH@Z"
+target_address = 0x0043E4A0
+size = 0x1C0
+
+[[units.relocations]]
+offset = 0x4E
+type = "DIR32"
+symbol = "??_C@_0CG@LNCKAIFE@d?3?2cygwin?2home?2zun?2prog?2th08?2glo@"
+target = 0x004B5A18
+
+[[units.relocations]]
+offset = 0x57
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x5C
+type = "REL32"
+symbol = "?Alloc@ZunMemory@th08@@QAEPAXIPBD@Z"
+target = 0x0040B880
+
+# Ledger name: th08::FileSystem::OpenFile
+# Extent: 0x0043E660..0x0043E873 (0x213 bytes)
+# Next trusted start: 0x0043E880; gap 0xd (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           34 relocations; 16 direct calls matched
+[[units]]
+name = "global-exact-0043e660"
+object = "build/Global.obj"
+symbol = "?OpenFile@FileSystem@th08@@YIPAEPBDPAHH@Z"
+target_address = 0x0043E660
+size = 0x213
+
+[[units.relocations]]
+offset = 0x16
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x1B
+type = "REL32"
+symbol = "?EnterCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EF70
+
+[[units.relocations]]
+offset = 0x30
+type = "REL32"
+symbol = "_strrchr"
+target = 0x004A48B0
+
+[[units.relocations]]
+offset = 0x58
+type = "REL32"
+symbol = "_strrchr"
+target = 0x004A48B0
+
+[[units.relocations]]
+offset = 0x7E
+type = "DIR32"
+symbol = "?g_PbgArchive@th08@@3VPbgArchive@1@A"
+target = 0x0164F588
+
+[[units.relocations]]
+offset = 0x83
+type = "REL32"
+symbol = "?GetEntryDecompressedSize@PbgArchive@th08@@QAEKPBD@Z"
+target = 0x00474C40
+
+[[units.relocations]]
+offset = 0xA3
+type = "DIR32"
+symbol = "??_C@_0CG@PJBLPAAL@error?5?3?5?$CFs?5is?5not?5found?5in?5arcfi@"
+target = 0x004B5AA0
+
+[[units.relocations]]
+offset = 0xA8
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0xAD
+type = "REL32"
+symbol = "?Fatal@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EB60
+
+[[units.relocations]]
+offset = 0xC4
+type = "DIR32"
+symbol = "??_C@_0BB@PMABEFFC@?$CFs?5Decode?5?4?4?4?5?$AN?6?$AA@"
+target = 0x004B5A8C
+
+[[units.relocations]]
+offset = 0xC9
+type = "REL32"
+symbol = "?DebugPrint@utils@th08@@YAXPADZZ"
+target = 0x00421DD0
+
+[[units.relocations]]
+offset = 0xD9
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0xDE
+type = "REL32"
+symbol = "?Alloc@ZunMemory@th08@@QAEPAXIPBD@Z"
+target = 0x0040B880
+
+[[units.relocations]]
+offset = 0xF9
+type = "DIR32"
+symbol = "?g_PbgArchive@th08@@3VPbgArchive@1@A"
+target = 0x0164F588
+
+[[units.relocations]]
+offset = 0xFE
+type = "REL32"
+symbol = "?ReadDecompressEntry@PbgArchive@th08@@QAEPAEPBDPAE@Z"
+target = 0x00474AF0
+
+[[units.relocations]]
+offset = 0x10D
+type = "REL32"
+symbol = "?TryDecryptFromTable@FileSystem@th08@@YIPAEPAEPAHH@Z"
+target = 0x0043E390
+
+[[units.relocations]]
+offset = 0x11E
+type = "DIR32"
+symbol = "??_C@_0P@IFHIHFM@?$CFs?5Load?5?4?4?4?5?$AN?6?$AA@"
+target = 0x004B5A7C
+
+[[units.relocations]]
+offset = 0x123
+type = "REL32"
+symbol = "?DebugPrint@utils@th08@@YAXPADZZ"
+target = 0x00421DD0
+
+[[units.relocations]]
+offset = 0x142
+type = "DIR32"
+symbol = "__imp__CreateFileA@28"
+target = 0x004B4064
+
+[[units.relocations]]
+offset = 0x154
+type = "DIR32"
+symbol = "??_C@_0BL@GMPHOEEC@error?5?3?5?$CFs?5is?5not?5found?4?$AN?6?$AA@"
+target = 0x004B5A60
+
+[[units.relocations]]
+offset = 0x159
+type = "REL32"
+symbol = "?DebugPrint@utils@th08@@YAXPADZZ"
+target = 0x00421DD0
+
+[[units.relocations]]
+offset = 0x16D
+type = "DIR32"
+symbol = "__imp__GetFileSize@8"
+target = 0x004B4060
+
+[[units.relocations]]
+offset = 0x17D
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x182
+type = "REL32"
+symbol = "?Alloc@ZunMemory@th08@@QAEPAXIPBD@Z"
+target = 0x0040B880
+
+[[units.relocations]]
+offset = 0x194
+type = "DIR32"
+symbol = "??_C@_0BP@MOEMMACF@error?5?3?5?$CFs?5allocation?5error?4?$AN?6?$AA@"
+target = 0x004B5A40
+
+[[units.relocations]]
+offset = 0x199
+type = "REL32"
+symbol = "?DebugPrint@utils@th08@@YAXPADZZ"
+target = 0x00421DD0
+
+[[units.relocations]]
+offset = 0x1A6
+type = "DIR32"
+symbol = "__imp__CloseHandle@4"
+target = 0x004B405C
+
+[[units.relocations]]
+offset = 0x1C0
+type = "DIR32"
+symbol = "__imp__ReadFile@20"
+target = 0x004B4058
+
+[[units.relocations]]
+offset = 0x1D8
+type = "DIR32"
+symbol = "__imp__CloseHandle@4"
+target = 0x004B405C
+
+[[units.relocations]]
+offset = 0x1E7
+type = "REL32"
+symbol = "?TryDecryptFromTable@FileSystem@th08@@YIPAEPAEPAHH@Z"
+target = 0x0043E390
+
+[[units.relocations]]
+offset = 0x1F1
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x1F6
+type = "REL32"
+symbol = "?LeaveCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EFB0
+
+[[units.relocations]]
+offset = 0x202
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x207
+type = "REL32"
+symbol = "?LeaveCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EFB0
+
+# Ledger name: th08::FileSystem::CheckIfFileAlreadyExists
+# Extent: 0x0043E880..0x0043E8E9 (0x69 bytes)
+# Next trusted start: 0x0043E8F0; gap 0x7 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           8 relocations; 3 direct calls matched
+[[units]]
+name = "global-exact-0043e880"
+object = "build/Global.obj"
+symbol = "?CheckIfFileAlreadyExists@FileSystem@th08@@YIHPBD@Z"
+target_address = 0x0043E880
+size = 0x69
+
+[[units.relocations]]
+offset = 0xC
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x11
+type = "REL32"
+symbol = "?EnterCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EF70
+
+[[units.relocations]]
+offset = 0x2D
+type = "DIR32"
+symbol = "__imp__CreateFileA@28"
+target = 0x004B4064
+
+[[units.relocations]]
+offset = 0x40
+type = "DIR32"
+symbol = "__imp__CloseHandle@4"
+target = 0x004B405C
+
+[[units.relocations]]
+offset = 0x47
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x4C
+type = "REL32"
+symbol = "?LeaveCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EFB0
+
+[[units.relocations]]
+offset = 0x5A
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x5F
+type = "REL32"
+symbol = "?LeaveCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EFB0
+
+# Ledger name: th08::FileSystem::WriteDataToFile
+# Extent: 0x0043E8F0..0x0043E9FB (0x10b bytes)
+# Next trusted start: 0x0043EA00; gap 0x5 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           21 relocations; 7 direct calls matched
+[[units]]
+name = "global-exact-0043e8f0"
+object = "build/Global.obj"
+symbol = "?WriteDataToFile@FileSystem@th08@@YIHPBDPAXI@Z"
+target_address = 0x0043E8F0
+size = 0x10B
+
+[[units.relocations]]
+offset = 0xF
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x14
+type = "REL32"
+symbol = "?EnterCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EF70
+
+[[units.relocations]]
+offset = 0x30
+type = "DIR32"
+symbol = "__imp__CreateFileA@28"
+target = 0x004B4064
+
+[[units.relocations]]
+offset = 0x4C
+type = "DIR32"
+symbol = "__imp__GetLastError@0"
+target = 0x004B4074
+
+[[units.relocations]]
+offset = 0x5A
+type = "DIR32"
+symbol = "__imp__FormatMessageA@28"
+target = 0x004B4070
+
+[[units.relocations]]
+offset = 0x67
+type = "DIR32"
+symbol = "??_C@_0BM@GDAEBABJ@error?5?3?5?$CFs?5write?5error?5?$CFs?$AN?6?$AA@"
+target = 0x004B5AF4
+
+[[units.relocations]]
+offset = 0x6C
+type = "REL32"
+symbol = "?DebugPrint@utils@th08@@YAXPADZZ"
+target = 0x00421DD0
+
+[[units.relocations]]
+offset = 0x79
+type = "DIR32"
+symbol = "__imp__LocalFree@4"
+target = 0x004B406C
+
+[[units.relocations]]
+offset = 0x80
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x85
+type = "REL32"
+symbol = "?LeaveCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EFB0
+
+[[units.relocations]]
+offset = 0xA2
+type = "DIR32"
+symbol = "__imp__WriteFile@20"
+target = 0x004B4068
+
+[[units.relocations]]
+offset = 0xB4
+type = "DIR32"
+symbol = "__imp__CloseHandle@4"
+target = 0x004B405C
+
+[[units.relocations]]
+offset = 0xBD
+type = "DIR32"
+symbol = "??_C@_0BJ@LJJJFIIO@error?5?3?5?$CFs?5write?5error?$AN?6?$AA@"
+target = 0x004B5AD8
+
+[[units.relocations]]
+offset = 0xC2
+type = "REL32"
+symbol = "?DebugPrint@utils@th08@@YAXPADZZ"
+target = 0x00421DD0
+
+[[units.relocations]]
+offset = 0xCC
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xD1
+type = "REL32"
+symbol = "?LeaveCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EFB0
+
+[[units.relocations]]
+offset = 0xE2
+type = "DIR32"
+symbol = "__imp__CloseHandle@4"
+target = 0x004B405C
+
+[[units.relocations]]
+offset = 0xEB
+type = "DIR32"
+symbol = "??_C@_0P@GGAEFOPI@?$CFs?5write?5?4?4?4?$AN?6?$AA@"
+target = 0x004B5AC8
+
+[[units.relocations]]
+offset = 0xF0
+type = "REL32"
+symbol = "?DebugPrint@utils@th08@@YAXPADZZ"
+target = 0x00421DD0
+
+[[units.relocations]]
+offset = 0xFA
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xFF
+type = "REL32"
+symbol = "?LeaveCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EFB0
+
+# Ledger name: th08::GameErrorContext::Log
+# Extent: 0x0043EA00..0x0043EB51 (0x151 bytes)
+# Next trusted start: 0x0043EB60; gap 0xf (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           6 relocations; 4 direct calls matched
+[[units]]
+name = "global-exact-0043ea00"
+object = "build/Global.obj"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target_address = 0x0043EA00
+size = 0x151
+
+[[units.relocations]]
+offset = 0x9
+type = "REL32"
+symbol = "__chkstk"
+target = 0x004A48E0
+
+[[units.relocations]]
+offset = 0x16
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x1B
+type = "REL32"
+symbol = "?EnterCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EF70
+
+[[units.relocations]]
+offset = 0x2F
+type = "REL32"
+symbol = "_vsprintf"
+target = 0x004A3E17
+
+[[units.relocations]]
+offset = 0x141
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x146
+type = "REL32"
+symbol = "?LeaveCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EFB0
+
+# Ledger name: th08::GameErrorContext::Fatal
+# Extent: 0x0043EB60..0x0043ECB7 (0x157 bytes)
+# Next trusted start: 0x0043ECC0; gap 0x9 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           5 relocations; 3 direct calls matched
+[[units]]
+name = "global-exact-0043eb60"
+object = "build/Global.obj"
+symbol = "?Fatal@GameErrorContext@th08@@QAAPBDPBDZZ"
+target_address = 0x0043EB60
+size = 0x157
+
+[[units.relocations]]
+offset = 0x12
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x17
+type = "REL32"
+symbol = "?EnterCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EF70
+
+[[units.relocations]]
+offset = 0x2B
+type = "REL32"
+symbol = "_vsprintf"
+target = 0x004A3E17
+
+[[units.relocations]]
+offset = 0x147
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x14C
+type = "REL32"
+symbol = "?LeaveCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target = 0x0043EFB0
+
+# Ledger name: th08::Rng::GetRandomU16
+# Extent: 0x0043ECC0..0x0043ED18 (0x58 bytes)
+# Next trusted start: 0x0043ED20; gap 0x8 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           0 relocations; 0 direct calls matched
+[[units]]
+name = "global-exact-0043ecc0"
+object = "build/Global.obj"
+symbol = "?GetRandomU16@Rng@th08@@QAEGXZ"
+target_address = 0x0043ECC0
+size = 0x58
+
+# Ledger name: th08::Rng::GetRandomU32
+# Extent: 0x0043ED20..0x0043ED48 (0x28 bytes)
+# Next trusted start: 0x0043ED50; gap 0x8 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           2 relocations; 2 direct calls matched
+[[units]]
+name = "global-exact-0043ed20"
+object = "build/Global.obj"
+symbol = "?GetRandomU32@Rng@th08@@QAEIXZ"
+target_address = 0x0043ED20
+size = 0x28
+
+[[units.relocations]]
+offset = 0xC
+type = "REL32"
+symbol = "?GetRandomU16@Rng@th08@@QAEGXZ"
+target = 0x0043ECC0
+
+[[units.relocations]]
+offset = 0x1A
+type = "REL32"
+symbol = "?GetRandomU16@Rng@th08@@QAEGXZ"
+target = 0x0043ECC0
+
+# Ledger name: th08::Rng::GetRandomF32
+# Extent: 0x0043ED50..0x0043ED78 (0x28 bytes)
+# Next trusted start: 0x0043ED80; gap 0x8 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           2 relocations; 1 direct calls matched
+[[units]]
+name = "global-exact-0043ed50"
+object = "build/Global.obj"
+symbol = "?GetRandomF32@Rng@th08@@QAEMXZ"
+target_address = 0x0043ED50
+size = 0x28
+
+[[units.relocations]]
+offset = 0xD
+type = "REL32"
+symbol = "?GetRandomU32@Rng@th08@@QAEIXZ"
+target = 0x0043ED20
+
+[[units.relocations]]
+offset = 0x20
+type = "DIR32"
+symbol = "__real@4f800000"
+target = 0x004B5B10
+
+# Ledger name: th08::Rng::GetRandomF32Signed
+# Extent: 0x0043ED80..0x0043EDAE (0x2e bytes)
+# Next trusted start: 0x0043EDB0; gap 0x2 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           3 relocations; 1 direct calls matched
+[[units]]
+name = "global-exact-0043ed80"
+object = "build/Global.obj"
+symbol = "?GetRandomF32Signed@Rng@th08@@QAEMXZ"
+target_address = 0x0043ED80
+size = 0x2E
+
+[[units.relocations]]
+offset = 0xD
+type = "REL32"
+symbol = "?GetRandomU32@Rng@th08@@QAEIXZ"
+target = 0x0043ED20
+
+[[units.relocations]]
+offset = 0x20
+type = "DIR32"
+symbol = "__real@4f000000"
+target = 0x004B5B14
+
+[[units.relocations]]
+offset = 0x26
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+# Ledger name: th08::GameErrorContext::GameErrorContext
+# Extent: 0x0043EF10..0x0043EF40 (0x30 bytes)
+# Next trusted start: 0x0043EF40; gap 0x0 (contiguous)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           0 relocations; 0 direct calls matched
+[[units]]
+name = "global-exact-0043ef10"
+object = "build/Global.obj"
+symbol = "??0GameErrorContext@th08@@QAE@XZ"
+target_address = 0x0043EF10
+size = 0x30
+
+# Ledger name: th08::Supervisor::EnterCriticalSectionWrapper
+# Extent: 0x0043EF70..0x0043EFAF (0x3f bytes)
+# Next trusted start: 0x0043EFB0; gap 0x1 (all CC)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           1 relocations; 0 direct calls matched
+[[units]]
+name = "global-exact-0043ef70"
+object = "build/Global.obj"
+symbol = "?EnterCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target_address = 0x0043EF70
+size = 0x3F
+
+[[units.relocations]]
+offset = 0x1A
+type = "DIR32"
+symbol = "__imp__EnterCriticalSection@4"
+target = 0x004B407C
+
+# Ledger name: th08::Supervisor::LeaveCriticalSectionWrapper
+# Extent: 0x0043EFB0..0x0043EFEF (0x3f bytes)
+# Next trusted start: 0x0043EFEF; gap 0x0 (contiguous)
+# Evidence: full decode ends in ret; 0 non-relocation/replay differences;
+#           1 relocations; 0 direct calls matched
+[[units]]
+name = "global-exact-0043efb0"
+object = "build/Global.obj"
+symbol = "?LeaveCriticalSectionWrapper@Supervisor@th08@@QAEXH@Z"
+target_address = 0x0043EFB0
+size = 0x3F
+
+[[units.relocations]]
+offset = 0x1A
+type = "DIR32"
+symbol = "__imp__LeaveCriticalSection@4"
+target = 0x004B4080
