@@ -91,6 +91,14 @@ review the unit before claiming exactness.
   all table-entry relocations in the canonical manifest, and require exact
   relocation replay over the full COFF auxiliary extent. `AnmManager::ExecuteScript`
   is the corpus example: `0x366D` code plus `0x1A0` bytes of 91+6+7 entries.
+- Do not infer a local vector type solely from matching three `f32` fields.
+  An observed default-constructor call is a type/translation-unit fact: test
+  the candidate type in the affected handler and retain it only if the span
+  crosswalk improves. In particular, TH08 `RunEcl` opcode 140's
+  `0x0040B460` construction is not reproduced by substituting SDK
+  `D3DXVECTOR3` or the project `Float3`: both probes grew the handler by 11
+  bytes because they moved the vector home from the target's `EBP-0x60` to
+  the object's `EBP-0x90`. Reconcile the dispatcher stack layout first.
 - When a dispatcher’s COFF extent grows or shrinks, make a read-only span
   crosswalk before changing source: resolve every target jump-table slot and
   every COFF table `DIR32` relocation to its handler start, deduplicate and
