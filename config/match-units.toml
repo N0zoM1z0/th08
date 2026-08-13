@@ -36697,3 +36697,17 @@ object = "build/main.obj"
 symbol = "?SetClockTime@GameManager@th08@@QAEXE@Z"
 target_address = 0x00453C60
 size = 0x19
+
+[[units]]
+name = "zun-timer-less-than"
+object = "build/main.obj"
+symbol = "??MZunTimer@th08@@QAEIH@Z"
+target_address = 0x004066A0
+size = 0x1B
+
+[[units]]
+name = "zun-timer-greater-than"
+object = "build/main.obj"
+symbol = "??OZunTimer@th08@@QAEIH@Z"
+target_address = 0x004066C0
+size = 0x1B

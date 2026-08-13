@@ -436,3 +436,5 @@ address,name,size,status,match_percent,unit,evidence
 0x00406CF0,th08::GameManager::GetYoukaiGauge,21,matching,100.00,game-manager-get-youkai-gauge,python3 scripts/compare-function.py game-manager-get-youkai-gauge --json
 0x00406DD0,th08::GameManager::GetClockTime,20,matching,100.00,game-manager-get-clock-time,python3 scripts/compare-function.py game-manager-get-clock-time --json
 0x00453C60,th08::GameManager::SetClockTime,25,matching,100.00,game-manager-set-clock-time,python3 scripts/compare-function.py game-manager-set-clock-time --json
+0x004066A0,th08::ZunTimer::operator<,27,matching,100.00,zun-timer-less-than,python3 scripts/compare-function.py zun-timer-less-than --json
+0x004066C0,th08::ZunTimer::operator>,27,matching,100.00,zun-timer-greater-than,python3 scripts/compare-function.py zun-timer-greater-than --json
