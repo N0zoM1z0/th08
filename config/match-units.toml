@@ -36683,3 +36683,17 @@ object = "build/main.obj"
 symbol = "?GetYoukaiGauge@GameManager@th08@@QAEHXZ"
 target_address = 0x00406CF0
 size = 0x15
+
+[[units]]
+name = "game-manager-get-clock-time"
+object = "build/main.obj"
+symbol = "?GetClockTime@GameManager@th08@@QAEEXZ"
+target_address = 0x00406DD0
+size = 0x14
+
+[[units]]
+name = "game-manager-set-clock-time"
+object = "build/main.obj"
+symbol = "?SetClockTime@GameManager@th08@@QAEXE@Z"
+target_address = 0x00453C60
+size = 0x19

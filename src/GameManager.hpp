@@ -168,15 +168,8 @@ struct GameManager
     ZunBool GaugeIsExtremelyYoukai();
     ZunBool GaugeIsModeratelyYoukai();
 
-    u8 GetClockTime()
-    {
-        return this->globals->clockTime;
-    }
-
-    void SetClockTime(u8 value)
-    {
-        this->globals->clockTime = value;
-    }
+    u8 GetClockTime();
+    void SetClockTime(u8 value);
 
     ZunBool IsStageClearedWithRetries(i32 stage, i32 character, i32 difficulty)
     {

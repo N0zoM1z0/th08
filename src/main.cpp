@@ -1196,3 +1196,15 @@ i32 GameManager::GetYoukaiGauge()
 {
     return this->globals->youkaiGauge;
 }
+
+// FUNCTION: th08 0x406dd0
+u8 GameManager::GetClockTime()
+{
+    return this->globals->clockTime;
+}
+
+// FUNCTION: th08 0x453c60
+void GameManager::SetClockTime(u8 value)
+{
+    this->globals->clockTime = value;
+}
