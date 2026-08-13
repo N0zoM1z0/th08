@@ -137,6 +137,22 @@ object emits the function naturally. Do not add dummy callers, artificial
 function-pointer references, or `noinline` solely to satisfy the comparator;
 defer exact acceptance when natural emission is not yet available.
 
+Conversely, when a mapped member has an observed target body and target callers
+use a direct `REL32` call to it, do not leave its recovered definition header-
+inline. Move the same natural, side-effect-free body to the target-proven
+translation unit, rebuild its owner object, and compare the independent body
+before recording it. This restores real object partitioning and can unblock
+caller relocations; it is not permission to add `noinline`, dummy references,
+or a forwarding shim. The four `Supervisor` option predicates at
+`0x00438A29..0x00438A71` are the corpus example.
+
+This VC7 build can retain obsolete inline definitions in `build/th_pch.pch`
+after a header-only member becomes out-of-line. If a full link reports a
+duplicate that is absent from the edited header, rebuild the generated PCH and
+then the normal target before diagnosing source ownership. Keep this recovery
+limited to reproducible `build/` artifacts; never delete source, target, or
+analysis data to clear a compiler cache.
+
 ## Acceptance
 
 An `exact` JSON result proves only the configured function bytes after the

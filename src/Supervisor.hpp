@@ -201,25 +201,16 @@ struct Supervisor
         return this->cfg.opts.force16bitTextures;
     }
 
-    ZunBool IsDepthTestDisabled()
-    {
-        return this->cfg.opts.disableDepthTest;
-    }
+    ZunBool IsDepthTestDisabled();
 
-    ZunBool IsColorCompositingDisabled()
-    {
-        return this->cfg.opts.disableColorCompositing;
-    }
+    ZunBool IsColorCompositingDisabled();
 
     ZunBool IsFogDisabled()
     {
         return this->cfg.opts.disableFog;
     }
 
-    ZunBool IsHUDRedrawEnabled()
-    {
-        return this->cfg.opts.redrawHUDEveryFrame;
-    }
+    ZunBool IsHUDRedrawEnabled();
 
     ZunBool IsReferenceRasterizerMode()
     {
@@ -241,10 +232,7 @@ struct Supervisor
         return this->cfg.opts.disableColorCompositing | this->cfg.opts.useSwTextureBlending;
     }
 
-    ZunBool IsMinimumGraphicsMode()
-    {
-        return this->cfg.opts.displayMinimumGraphics;
-    }
+    ZunBool IsMinimumGraphicsMode();
 
     ZunBool IsSubthreadRunning()
     {

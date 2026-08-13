@@ -1,6 +1,34 @@
 schema_version = 1
 
 [[units]]
+name = "supervisor-minimum-graphics-mode"
+object = "build/Supervisor.obj"
+symbol = "?IsMinimumGraphicsMode@Supervisor@th08@@QAEIXZ"
+target_address = 0x00438A29
+size = 0x18
+
+[[units]]
+name = "supervisor-depth-test-disabled"
+object = "build/Supervisor.obj"
+symbol = "?IsDepthTestDisabled@Supervisor@th08@@QAEIXZ"
+target_address = 0x00438A41
+size = 0x18
+
+[[units]]
+name = "supervisor-color-compositing-disabled"
+object = "build/Supervisor.obj"
+symbol = "?IsColorCompositingDisabled@Supervisor@th08@@QAEIXZ"
+target_address = 0x00438A59
+size = 0x18
+
+[[units]]
+name = "supervisor-hud-redraw-enabled"
+object = "build/Supervisor.obj"
+symbol = "?IsHUDRedrawEnabled@Supervisor@th08@@QAEIXZ"
+target_address = 0x00438A71
+size = 0x18
+
+[[units]]
 name = "background-cut-chain"
 object = "build/Background.obj"
 symbol = "?CutChain@Background@th08@@SIXXZ"

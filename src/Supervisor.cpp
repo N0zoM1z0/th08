@@ -29,6 +29,30 @@ DIFFABLE_STATIC(ScreenEffect *, g_SupervisorScreenEffect);
 DIFFABLE_STATIC(Supervisor, g_Supervisor);
 DIFFABLE_STATIC_ARRAY(AnmVm, 3, g_SupervisorLoadingVms);
 
+// FUNCTION: th08 0x438a29
+ZunBool Supervisor::IsMinimumGraphicsMode()
+{
+    return this->cfg.opts.displayMinimumGraphics;
+}
+
+// FUNCTION: th08 0x438a41
+ZunBool Supervisor::IsDepthTestDisabled()
+{
+    return this->cfg.opts.disableDepthTest;
+}
+
+// FUNCTION: th08 0x438a59
+ZunBool Supervisor::IsColorCompositingDisabled()
+{
+    return this->cfg.opts.disableColorCompositing;
+}
+
+// FUNCTION: th08 0x438a71
+ZunBool Supervisor::IsHUDRedrawEnabled()
+{
+    return this->cfg.opts.redrawHUDEveryFrame;
+}
+
 ChainCallbackResult Supervisor::OnUpdate(Supervisor *s)
 {
     if (s->flags.receivedCloseMsg && !s->IsSubthreadRunning())

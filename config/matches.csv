@@ -393,6 +393,10 @@ address,name,size,status,match_percent,unit,evidence
 0x00443B60,th08::AnmManager::TakeScreencaptures,248,matching,100.00,anm-manager-take-screencaptures-main,python3 scripts/compare-function.py anm-manager-take-screencaptures-main --json
 0x00440470,th08::ItemManager::UpdatePointItemExtendThreshold,137,matching,100.00,item-manager-update-point-item-extend-threshold,python3 scripts/compare-function.py item-manager-update-point-item-extend-threshold --json
 0x00445400,th08::DummyMidiTimer::OnTimerElapsed,22,matching,100.00,midi-exact-00445400,python3 scripts/compare-function.py midi-exact-00445400 --json
+0x00438A29,th08::Supervisor::IsMinimumGraphicsMode,24,matching,100.00,supervisor-minimum-graphics-mode,python3 scripts/compare-function.py supervisor-minimum-graphics-mode --json
+0x00438A41,th08::Supervisor::IsDepthTestDisabled,24,matching,100.00,supervisor-depth-test-disabled,python3 scripts/compare-function.py supervisor-depth-test-disabled --json
+0x00438A59,th08::Supervisor::IsColorCompositingDisabled,24,matching,100.00,supervisor-color-compositing-disabled,python3 scripts/compare-function.py supervisor-color-compositing-disabled --json
+0x00438A71,th08::Supervisor::IsHUDRedrawEnabled,24,matching,100.00,supervisor-hud-redraw-enabled,python3 scripts/compare-function.py supervisor-hud-redraw-enabled --json
 0x0043EDB0,th08::AddNormalizeAngle,127,matching,100.00,discovered-exact-0043edb0,python3 scripts/compare-function.py discovered-exact-0043edb0 --json
 0x0043C5E1,th08::GameManager::GameManager,96,matching,100.00,discovered-exact-0043c5e1,python3 scripts/compare-function.py discovered-exact-0043c5e1 --json
 0x0043F0AE,th08::TextHelper::AllocateBufferWithFallback,95,matching,100.00,discovered-exact-0043f0ae,python3 scripts/compare-function.py discovered-exact-0043f0ae --json
