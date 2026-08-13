@@ -66,6 +66,11 @@ functions missing from `implemented.csv`; it never updates tracking. Inspect
 the source and target, add a reviewed unit, and obtain this skill's canonical
 `compare-function.py` `exact` result before entering either ledger.
 
+For a scanner batch, reject same-address multi-owner candidates and run the
+canonical comparator once for every remaining unit before adding any
+`implemented.csv` or `matches.csv` rows. Aggregate replay evidence is a
+prioritization result, not a substitute for per-unit acceptance.
+
 The scanner includes ordinary and `build/probes/` VC7 objects.  Use
 `--allow-unnamed-mapping` only to diagnose a one-to-one exact body whose
 target row is still `FUN_*`; it is review-only.  Reconcile the target name and
