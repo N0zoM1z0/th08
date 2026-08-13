@@ -152,6 +152,9 @@ th08::PbgArchive::FindEntry
 th08::PbgArchive::ParseHeader
 th08::PbgArchive::AllocEntries
 th08::PbgArchive::CopyFileName
+th08::PbgArchive::SeekPastInt
+th08::PbgArchive::SeekPastString
+th08::PbgArchiveEntry::~PbgArchiveEntry
 th08::ItemManager::AutoCollectAllItems
 th08::ItemManager::CancelAutoCollect
 th08::AsciiManagerString::AsciiManagerString

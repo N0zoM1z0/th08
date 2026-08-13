@@ -165,3 +165,17 @@ address,name,size,status,match_percent,unit,evidence
 0x00445340,th08::MidiOutput::FadeOutSetVolume,187,matching,100.00,midi-exact-00445340,python3 scripts/compare-function.py midi-exact-00445340 --json
 0x00445420,th08::MidiTimer::StartTimer,25,matching,100.00,midi-exact-00445420,python3 scripts/compare-function.py midi-exact-00445420 --json
 0x00445440,th08::MidiTimer::StopTimer,19,matching,100.00,midi-exact-00445440,python3 scripts/compare-function.py midi-exact-00445440 --json
+0x00474860,th08::PbgArchive::PbgArchive,53,matching,100.00,pbg-archive-exact-00474860,python3 scripts/compare-function.py pbg-archive-exact-00474860 --json
+0x004748A0,th08::PbgArchive::~PbgArchive,19,matching,100.00,pbg-archive-exact-004748a0,python3 scripts/compare-function.py pbg-archive-exact-004748a0 --json
+0x004748C0,th08::PbgArchive::Load,229,matching,100.00,pbg-archive-exact-004748c0,python3 scripts/compare-function.py pbg-archive-exact-004748c0 --json
+0x004749B0,th08::PbgArchive::Release,208,matching,100.00,pbg-archive-exact-004749b0,python3 scripts/compare-function.py pbg-archive-exact-004749b0 --json
+0x00474AF0,th08::PbgArchive::ReadDecompressEntry,321,matching,100.00,pbg-archive-exact-00474af0,python3 scripts/compare-function.py pbg-archive-exact-00474af0 --json
+0x00474C40,th08::PbgArchive::GetEntryDecompressedSize,46,matching,100.00,pbg-archive-exact-00474c40,python3 scripts/compare-function.py pbg-archive-exact-00474c40 --json
+0x00474C70,th08::PbgArchive::FindEntry,101,matching,100.00,pbg-archive-exact-00474c70,python3 scripts/compare-function.py pbg-archive-exact-00474c70 --json
+0x00474CE0,th08::PbgArchive::ParseHeader,701,matching,100.00,pbg-archive-exact-00474ce0,python3 scripts/compare-function.py pbg-archive-exact-00474ce0 --json
+0x00474FA0,th08::PbgArchive::AllocEntries,420,matching,100.00,pbg-archive-exact-00474fa0,python3 scripts/compare-function.py pbg-archive-exact-00474fa0 --json
+0x00475150,th08::PbgArchive::CopyFileName,139,matching,100.00,pbg-archive-exact-00475150,python3 scripts/compare-function.py pbg-archive-exact-00475150 --json
+0x004751E0,th08::CPbgFile::ReadInt,30,matching,100.00,pbg-archive-exact-004751e0,python3 scripts/compare-function.py pbg-archive-exact-004751e0 --json
+0x00475200,th08::PbgArchive::SeekPastInt,31,matching,100.00,pbg-archive-exact-00475200,python3 scripts/compare-function.py pbg-archive-exact-00475200 --json
+0x00475220,th08::PbgArchive::SeekPastString,76,matching,100.00,pbg-archive-exact-00475220,python3 scripts/compare-function.py pbg-archive-exact-00475220 --json
+0x00475270,th08::PbgArchiveEntry::~PbgArchiveEntry,40,matching,100.00,pbg-archive-exact-00475270,python3 scripts/compare-function.py pbg-archive-exact-00475270 --json
