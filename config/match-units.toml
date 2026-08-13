@@ -36655,3 +36655,31 @@ object = "build/main.obj"
 symbol = "?GaugeIsModeratelyYoukai@GameManager@th08@@QAEIXZ"
 target_address = 0x00406DA0
 size = 0x26
+
+[[units]]
+name = "game-manager-is-spell-practice"
+object = "build/main.obj"
+symbol = "?IsSpellPractice@GameManager@th08@@QAEIXZ"
+target_address = 0x00406C70
+size = 0x1A
+
+[[units]]
+name = "game-manager-is-replay"
+object = "build/main.obj"
+symbol = "?IsReplay@GameManager@th08@@QAEIXZ"
+target_address = 0x00406C90
+size = 0x1A
+
+[[units]]
+name = "game-manager-is-demo-mode"
+object = "build/main.obj"
+symbol = "?IsDemoMode@GameManager@th08@@QAEIXZ"
+target_address = 0x00406CB0
+size = 0x19
+
+[[units]]
+name = "game-manager-get-youkai-gauge"
+object = "build/main.obj"
+symbol = "?GetYoukaiGauge@GameManager@th08@@QAEHXZ"
+target_address = 0x00406CF0
+size = 0x15

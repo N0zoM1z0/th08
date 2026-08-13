@@ -430,3 +430,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00406D40,th08::GameManager::GaugeIsModeratelyHuman,38,matching,100.00,game-manager-gauge-moderately-human,python3 scripts/compare-function.py game-manager-gauge-moderately-human --json
 0x00406D70,th08::GameManager::GaugeIsExtremelyYoukai,38,matching,100.00,game-manager-gauge-extremely-youkai,python3 scripts/compare-function.py game-manager-gauge-extremely-youkai --json
 0x00406DA0,th08::GameManager::GaugeIsModeratelyYoukai,38,matching,100.00,game-manager-gauge-moderately-youkai,python3 scripts/compare-function.py game-manager-gauge-moderately-youkai --json
+0x00406C70,th08::GameManager::IsSpellPractice,26,matching,100.00,game-manager-is-spell-practice,python3 scripts/compare-function.py game-manager-is-spell-practice --json
+0x00406C90,th08::GameManager::IsReplay,26,matching,100.00,game-manager-is-replay,python3 scripts/compare-function.py game-manager-is-replay --json
+0x00406CB0,th08::GameManager::IsDemoMode,25,matching,100.00,game-manager-is-demo-mode,python3 scripts/compare-function.py game-manager-is-demo-mode --json
+0x00406CF0,th08::GameManager::GetYoukaiGauge,21,matching,100.00,game-manager-get-youkai-gauge,python3 scripts/compare-function.py game-manager-get-youkai-gauge --json

@@ -158,25 +158,10 @@ struct GameManager
         return this->flags.isPracticeMode;
     }
 
-    ZunBool IsReplay()
-    {
-        return this->flags.isReplay;
-    }
-
-    ZunBool IsSpellPractice()
-    {
-        return this->flags.isSpellPractice;
-    }
-
-    ZunBool IsDemoMode()
-    {
-        return this->flags.isDemoMode;
-    }
-
-    i32 GetYoukaiGauge()
-    {
-        return this->globals->youkaiGauge;
-    }
+    ZunBool IsReplay();
+    ZunBool IsSpellPractice();
+    ZunBool IsDemoMode();
+    i32 GetYoukaiGauge();
 
     ZunBool GaugeIsExtremelyHuman();
     ZunBool GaugeIsModeratelyHuman();

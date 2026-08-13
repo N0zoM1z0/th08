@@ -1172,3 +1172,27 @@ ZunBool GameManager::GaugeIsModeratelyYoukai()
 {
     return this->globals->youkaiGauge >= this->youkaiGaugeYoukaiTintThreshold;
 }
+
+// FUNCTION: th08 0x406c70
+ZunBool GameManager::IsSpellPractice()
+{
+    return this->flags.isSpellPractice;
+}
+
+// FUNCTION: th08 0x406c90
+ZunBool GameManager::IsReplay()
+{
+    return this->flags.isReplay;
+}
+
+// FUNCTION: th08 0x406cb0
+ZunBool GameManager::IsDemoMode()
+{
+    return this->flags.isDemoMode;
+}
+
+// FUNCTION: th08 0x406cf0
+i32 GameManager::GetYoukaiGauge()
+{
+    return this->globals->youkaiGauge;
+}
