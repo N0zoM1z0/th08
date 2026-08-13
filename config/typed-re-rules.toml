@@ -94,3 +94,17 @@ requires = ["ecl_dispatch_table"]
 confidence = "target_observation"
 recommendation = "The RunEcl primary jump table indexes opcode-1. Normalize decompiler case labels back to actual opcodes 1..184, then audit each source case once with scripts/audit-ecl-dispatch.py."
 evidence = "TH08 RunEcl dispatch at 0x00418623 and 184-slot table at 0x0041ECBE"
+
+[[rules]]
+id = "vc7-large-branch-lexical-nesting"
+requires = ["jump_table_dispatch"]
+confidence = "target_observation_with_probe"
+recommendation = "When a dispatcher target uses one near conditional branch around a very large body but the object emits a short inverse branch plus a near jump, preserve the positive source condition and lexically nest the entire dispatcher body inside it. A goto or early break can be semantically equivalent while forcing the two-branch shape."
+evidence = "TH08 RunEcl 0x004184B0: nesting the complete dispatch under the timer-equality condition changed object +0x106 from 75 05 / E9 to the target-observed single 0F 84 without changing the opcode or resolver call audit"
+
+[[rules]]
+id = "vc7-dispatcher-scratch-home-reuse"
+requires = ["jump_table_dispatch"]
+confidence = "target_observation_with_probe"
+recommendation = "Recover dispatcher scratch storage from target EBP homes across handlers before declaring switch-wide locals. If unrelated scalar or index handlers consistently reuse an existing outer home, reuse that semantic local; if target code performs a table lookup directly and has no stable pointer home, keep the lookup expression direct. Change one proven slot at a time and verify the expected four-byte movement of later homes."
+evidence = "TH08 RunEcl 0x004184B0: target handlers reuse lhsInt at EBP-4 and have no fixed targetEnemy/high object-index-value homes; five single-slot probes moved the saved this home from object EBP-0x158 to target EBP-0x144 in exact four-byte steps"

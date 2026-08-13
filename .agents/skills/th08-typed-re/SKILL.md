@@ -36,6 +36,15 @@ review the unit before claiming exactness.
   them.
 - Diagnose frame differences through declaration order and real lifetimes;
   never add anonymous filler, inert locals, fake behavior, or ABI lies.
+- For a large dispatcher, derive switch-wide scratch locals from stable target
+  EBP homes across several handlers. Reuse a real outer scalar/index home when
+  the target does, and keep a table lookup direct when the target has no stable
+  pointer home. Probe one slot at a time so movement of later homes remains
+  attributable.
+- If a target branches once around an entire large dispatch but VC7 emits a
+  short inverse branch followed by a near jump, test the positive condition
+  with the whole dispatch lexically nested inside it. Equivalent early exits
+  and gotos can produce a different branch shape.
 - Under the repository's VC7 `#pragma var_order` wrapper, local identifiers
   can affect allocation. After a stack layout is proven, treat a rename as a
   code-generation change and recompare it; prefer a semantic comment over a
