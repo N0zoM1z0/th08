@@ -675,7 +675,7 @@ th08::MidiOutput::ReadFileData,0x4441a0,0x72,__thiscall,,u32,MidiOutput*,i32,cha
 th08::MidiOutput::ReleaseFileData,0x444220,0x36,__thiscall,,void,MidiOutput*,i32
 th08::MidiOutput::ClearTracks,0x444260,0x7b,__thiscall,,void,MidiOutput*
 th08::MidiOutput::ParseFile,0x4442e0,0x1ff,__thiscall,,u32,MidiOutput*,i32
-th08::MidiOutput::Ntohl,0x4444e0,0x28,unknown,,u8
+th08::MidiOutput::Ntohl,0x4444e0,0x28,__fastcall,,u32,u32
 th08::MidiOutput::LoadFile,0x444510,0x3a,__thiscall,,u32,MidiOutput*,char*
 th08::MidiOutput::LoadTracks,0x444550,0xcb,__thiscall,,void,MidiOutput*
 th08::MidiOutput::Play,0x444620,0x51,__thiscall,,u32,MidiOutput*
