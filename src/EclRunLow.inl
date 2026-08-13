@@ -34,6 +34,8 @@
 #include "EclManager.hpp"
 #include "EclOperands.hpp"
 #include "EnemyManager.hpp"
+#include "Player.hpp"
+#include "SoundPlayer.hpp"
 
 #include <math.h>
 
@@ -45,6 +47,28 @@ namespace EclHelpers
 void __fastcall ConfigureRelativeMotion(
     EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction);
 }
+
+// Private resolver overlay already used by EclOperandsInt.cpp and
+// EclOperandsFloat.cpp.  Reusing its IsYoukai symbol keeps the direct target
+// call at 0x0040BC40 distinct from the still-incomplete public Player layout.
+namespace EclOperands
+{
+struct TargetVector3;
+struct TargetPlayerOverlay
+{
+    f32 AngleToPlayer(const TargetVector3 *position);
+    i32 IsYoukai();
+};
+}
+
+// Target 0x00425B70 is an EffectManager thiscall.  Its exact overload name is
+// not yet recovered, so this lane exposes only the observed signature.
+struct EffectManager
+{
+    AnmVm *SpawnEffect00425B70(i32 id, D3DXVECTOR3 *position,
+                               i32 count, i32 color);
+};
+extern EffectManager g_EffectManager;
 
 namespace EclRunLowProposal
 {
@@ -74,14 +98,37 @@ inline LowResult MakeLowResult(LowControl control,
     return result;
 }
 
-enum ChildConstructor
-{
-    CHILD_STANDARD_41F110,
-    CHILD_ALTERNATE_41F280
-};
-
 // Target pointer table at 0x00F54CC0, indexed by the ECL enemy selector.
 extern EclOperands::EnemyOverlay *g_EclEnemyTableF54CC0[];
+
+// Observed helper ABIs for opcodes 90..92.  Both constructors receive the
+// parent in ECX and the current instruction in EDX; the list-tail lookup uses
+// only ECX.  Names remain provisional until the owning Enemy layout lands.
+EclOperands::EnemyOverlay *__fastcall FindLinkedChildTail0041EFC0(
+    EclOperands::EnemyOverlay *parent);
+EclOperands::EnemyOverlay *__fastcall SpawnChildStandard0041F110(
+    EclOperands::EnemyOverlay *parent, EclRawInstruction *instruction);
+EclOperands::EnemyOverlay *__fastcall SpawnChildAlternate0041F280(
+    EclOperands::EnemyOverlay *parent, EclRawInstruction *instruction);
+
+// The returned effect begins with an ANM VM.  Keep the call out-of-line: the
+// target dispatch calls AnmVm::SetInterrupt at 0x00407120 rather than inlining
+// the public header's convenience setter.
+struct SpawnedEffectAnmVm
+{
+    void SetInterrupt(i16 interrupt);
+};
+
+// Observed first flag word at Enemy +0x3324.  Opcode 90..92 assign bit 11
+// from Player::IsYoukai through VC7's bitfield-assignment path; preserving the
+// bitfield is necessary both for semantics and for the call-result stack home.
+struct LinkedChildFlags1
+{
+    u32 unknown00 : 11;
+    u32 isYoukai : 1;
+    u32 unknown0C : 20;
+};
+C_ASSERT(sizeof(LinkedChildFlags1) == 4);
 
 void __fastcall ApplyInterpolationOperation(
     EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction);
@@ -160,15 +207,6 @@ struct Services
     void CallSubOnEnemy(EclOperands::EnemyOverlay *targetEnemy,
                                 i16 rawSubId);
 
-    // Opcodes 90..92.  The implementation owns the 0x0041EFC0 linked-list
-    // tail lookup, the selected constructor, disabled-spawn check, child flag
-    // initialization, ANM creation, parent/child links, parent child-count,
-    // and the unconditional sound request.  inheritParentPosition additionally
-    // copies +0x2D34 to child +0x2D40, rebuilds child +0x2D88, and sets bit 9.
-    void SpawnLinkedChild(EclOperands::EnemyOverlay *parent,
-                                  const EclRawInstruction *instruction,
-                                  ChildConstructor constructor,
-                                  i32 inheritParentPosition);
 };
 
 inline u8 *Bytes(EclOperands::EnemyOverlay *enemy)
@@ -853,15 +891,186 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         }
         break;
 
+    // Target fact map for the linked-child cluster:
+    //   90: 0x0041AF5B..0x0041B10A, standard constructor 0x0041F110
+    //   91: 0x0041B10B..0x0041B2BA, alternate constructor 0x0041F280
+    //   92: 0x0041B2BB..0x0041B4DB, standard constructor 0x0041F110
+    // Each case calls 0x0041EFC0, its constructor, IsYoukai three times when
+    // initialization is enabled, 0x00425B70 and 0x00407120 when no effect is
+    // attached, and unconditionally plays sound 0x24 through 0x0045D660.
+    // Case 92 additionally calls D3DXVECTOR3::operator+ at 0x00409080.
     case 90:
-        services.SpawnLinkedChild(enemy, instruction, CHILD_STANDARD_41F110, 0);
+    {
+        EclOperands::EnemyOverlay *tail = FindLinkedChildTail0041EFC0(enemy);
+        EclOperands::EnemyOverlay *child =
+            SpawnChildStandard0041F110(enemy, instruction);
+
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_EnemyManager) +
+                                    0x9DCEF8) == 0)
+        {
+            U32At(child, 0x3324) |= 0x100;
+            reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
+                isYoukai =
+                reinterpret_cast<EclOperands::TargetPlayerOverlay *>(&g_Player)->
+                    IsYoukai();
+            *reinterpret_cast<u8 *>(Bytes(child) + 0x332F) =
+                reinterpret_cast<EclOperands::TargetPlayerOverlay *>(&g_Player)->
+                        IsYoukai()
+                    ? 1
+                    : 2;
+            U32At(child, 0x3324) &= ~4U;
+
+            if (PointerAt(child, 0x53C8) == 0)
+            {
+                PointerAt(child, 0x53C8) = g_EffectManager.SpawnEffect00425B70(
+                    0x20,
+                    reinterpret_cast<D3DXVECTOR3 *>(Bytes(child) + 0x2D34),
+                    1, -1);
+                reinterpret_cast<SpawnedEffectAnmVm *>(
+                    PointerAt(child, 0x53C8))
+                    ->SetInterrupt(
+                        (i16)((reinterpret_cast<EclOperands::TargetPlayerOverlay *>(
+                                   &g_Player)
+                                   ->IsYoukai() != 0) +
+                              1));
+                reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))->flag17 =
+                    ((U32At(child, 0x3324) >> 2) & 1) != 0;
+                if (U32At(child, 0x2E0C) & 1)
+                {
+                    reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
+                        ->angleVel.z =
+                        -reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
+                             ->angleVel.z;
+                }
+            }
+
+            PointerAt(child, 0x2DA4) = enemy;
+            PointerAt(tail, 8) = child;
+            PointerAt(child, 4) = tail;
+            ++I32At(enemy, 0x3380);
+        }
+
+        g_SoundPlayer.PlaySoundPositionedByIdx(
+            SOUND_FAMILIAR_SPAWN, F32At(enemy, 0x2D34));
         break;
+    }
     case 91:
-        services.SpawnLinkedChild(enemy, instruction, CHILD_ALTERNATE_41F280, 0);
+    {
+        EclOperands::EnemyOverlay *tail = FindLinkedChildTail0041EFC0(enemy);
+        EclOperands::EnemyOverlay *child =
+            SpawnChildAlternate0041F280(enemy, instruction);
+
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_EnemyManager) +
+                                    0x9DCEF8) == 0)
+        {
+            U32At(child, 0x3324) |= 0x100;
+            reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
+                isYoukai =
+                reinterpret_cast<EclOperands::TargetPlayerOverlay *>(&g_Player)->
+                    IsYoukai();
+            *reinterpret_cast<u8 *>(Bytes(child) + 0x332F) =
+                reinterpret_cast<EclOperands::TargetPlayerOverlay *>(&g_Player)->
+                        IsYoukai()
+                    ? 1
+                    : 2;
+            U32At(child, 0x3324) &= ~4U;
+
+            if (PointerAt(child, 0x53C8) == 0)
+            {
+                PointerAt(child, 0x53C8) = g_EffectManager.SpawnEffect00425B70(
+                    0x20,
+                    reinterpret_cast<D3DXVECTOR3 *>(Bytes(child) + 0x2D34),
+                    1, -1);
+                reinterpret_cast<SpawnedEffectAnmVm *>(
+                    PointerAt(child, 0x53C8))
+                    ->SetInterrupt(
+                        (i16)((reinterpret_cast<EclOperands::TargetPlayerOverlay *>(
+                                   &g_Player)
+                                   ->IsYoukai() != 0) +
+                              1));
+                reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))->flag17 =
+                    ((U32At(child, 0x3324) >> 2) & 1) != 0;
+                if (U32At(child, 0x2E0C) & 1)
+                {
+                    reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
+                        ->angleVel.z =
+                        -reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
+                             ->angleVel.z;
+                }
+            }
+
+            PointerAt(child, 0x2DA4) = enemy;
+            PointerAt(tail, 8) = child;
+            PointerAt(child, 4) = tail;
+            ++I32At(enemy, 0x3380);
+        }
+
+        g_SoundPlayer.PlaySoundPositionedByIdx(
+            SOUND_FAMILIAR_SPAWN, F32At(enemy, 0x2D34));
         break;
+    }
     case 92:
-        services.SpawnLinkedChild(enemy, instruction, CHILD_STANDARD_41F110, 1);
+    {
+        EclOperands::EnemyOverlay *tail = FindLinkedChildTail0041EFC0(enemy);
+        EclOperands::EnemyOverlay *child =
+            SpawnChildStandard0041F110(enemy, instruction);
+
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_EnemyManager) +
+                                    0x9DCEF8) == 0)
+        {
+            U32At(child, 0x3324) |= 0x100;
+            reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
+                isYoukai =
+                reinterpret_cast<EclOperands::TargetPlayerOverlay *>(&g_Player)->
+                    IsYoukai();
+            *reinterpret_cast<u8 *>(Bytes(child) + 0x332F) =
+                reinterpret_cast<EclOperands::TargetPlayerOverlay *>(&g_Player)->
+                        IsYoukai()
+                    ? 1
+                    : 2;
+
+            *reinterpret_cast<D3DXVECTOR3 *>(Bytes(child) + 0x2D40) =
+                *reinterpret_cast<D3DXVECTOR3 *>(Bytes(enemy) + 0x2D34);
+            *reinterpret_cast<D3DXVECTOR3 *>(Bytes(child) + 0x2D88) =
+                *reinterpret_cast<D3DXVECTOR3 *>(Bytes(child) + 0x2D40) +
+                *reinterpret_cast<D3DXVECTOR3 *>(Bytes(child) + 0x2D34);
+            U32At(child, 0x3324) &= ~4U;
+
+            if (PointerAt(child, 0x53C8) == 0)
+            {
+                PointerAt(child, 0x53C8) = g_EffectManager.SpawnEffect00425B70(
+                    0x20,
+                    reinterpret_cast<D3DXVECTOR3 *>(Bytes(child) + 0x2D88),
+                    1, -1);
+                reinterpret_cast<SpawnedEffectAnmVm *>(
+                    PointerAt(child, 0x53C8))
+                    ->SetInterrupt(
+                        (i16)((reinterpret_cast<EclOperands::TargetPlayerOverlay *>(
+                                   &g_Player)
+                                   ->IsYoukai() != 0) +
+                              1));
+                reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))->flag17 =
+                    ((U32At(child, 0x3324) >> 2) & 1) != 0;
+                if (U32At(child, 0x2E0C) & 1)
+                {
+                    reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
+                        ->angleVel.z =
+                        -reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
+                             ->angleVel.z;
+                }
+            }
+
+            U32At(child, 0x3324) |= 0x200;
+            PointerAt(child, 0x2DA4) = enemy;
+            PointerAt(tail, 8) = child;
+            PointerAt(child, 4) = tail;
+            ++I32At(enemy, 0x3380);
+        }
+
+        g_SoundPlayer.PlaySoundPositionedByIdx(
+            SOUND_FAMILIAR_SPAWN, F32At(enemy, 0x2D34));
         break;
+    }
 
 #if !defined(TH08_ECL_RUN_SHARED_SWITCH)
     default:
