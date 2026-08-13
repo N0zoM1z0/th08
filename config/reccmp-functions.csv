@@ -402,7 +402,7 @@ FUN_0042bc50,0x42bc50,function
 th08::Enemy::FUN_0042bc90,0x42bc90,function
 th08::Enemy::FUN_0042bcf0,0x42bcf0,function
 th08::Enemy::FUN_0042bea0,0x42bea0,function
-th08::Enemy::FUN_0042c180,0x42c180,function
+th08::Enemy::ClampPosition,0x42c180,function
 th08::Enemy::FUN_0042c290,0x42c290,function
 th08::EnemyManager::FUN_0042c3b0,0x42c3b0,function
 th08::Enemy::FUN_0042c420,0x42c420,function

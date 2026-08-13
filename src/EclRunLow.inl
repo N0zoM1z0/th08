@@ -97,6 +97,11 @@ void __fastcall SetPrimaryAnmScripts(
     i32 script5);
 void __fastcall SetExtraAnmScript(EclOperands::EnemyOverlay *enemy,
                                   EclRawInstruction *instruction);
+
+// Target Enemy::ClampPosition @ 0x0042C180 is an ECX-only member call.  This
+// lane-local adapter preserves that ABI without inventing a complete Enemy
+// layout in the dispatcher overlay.
+void __fastcall ClampEnemyPosition(EclOperands::EnemyOverlay *enemy);
 // Provisional semantic name for target FUN_00422020.  Caller and callee both
 // establish Enemy in ECX and the current ECL instruction in EDX.
 void __fastcall BeginBoundaryAwareMove(
@@ -629,7 +634,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         F32At(enemy, 0x2D34) = ReadFloat(enemy, instruction, 0);
         F32At(enemy, 0x2D38) = ReadFloat(enemy, instruction, 1);
         F32At(enemy, 0x2D3C) = 0.0f;
-        services.RefreshBaseVector(enemy);
+        ClampEnemyPosition(enemy);
         break;
     case 64:
         EclHelpers::ConfigureRelativeMotion(enemy, instruction);

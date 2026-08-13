@@ -1315,6 +1315,61 @@ target_address = 0x004184B0
 size = 0x680E
 
 [[units]]
+name = "enemy-clamp-position"
+object = "build/probes/EnemyManagerUpdate.obj"
+symbol = "?ClampPosition@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+target_address = 0x0042C180
+size = 0x10E
+
+[[units.relocations]]
+offset = 0x28
+type = "REL32"
+symbol = "??BD3DXVECTOR3@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x48
+type = "REL32"
+symbol = "??BD3DXVECTOR3@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x63
+type = "REL32"
+symbol = "??BD3DXVECTOR3@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x83
+type = "REL32"
+symbol = "??BD3DXVECTOR3@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x9C
+type = "REL32"
+symbol = "??BD3DXVECTOR3@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xBD
+type = "REL32"
+symbol = "??BD3DXVECTOR3@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xD9
+type = "REL32"
+symbol = "??BD3DXVECTOR3@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xFA
+type = "REL32"
+symbol = "??BD3DXVECTOR3@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units]]
 name = "ecl-resolve-int"
 object = "build/probes/EclOperandsInt.obj"
 symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"

@@ -254,6 +254,7 @@ th08::EclOperands::ResolveFloatLValue
 th08::EclHelpers::ConfigurePolarMotion
 th08::EclHelpers::ConfigureRelativeMotion
 th08::EnemyManager::OnUpdate
+th08::Enemy::ClampPosition
 th08::CSoundManager::CSoundManager
 th08::ResultScreen::GetCharacterName
 th08::ResultScreen::LinkScoreEx

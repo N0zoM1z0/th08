@@ -401,7 +401,7 @@ FUN_0042bc50,0x42bc50,0x32,unknown,,u8
 FUN_0042bc90,0x42bc90,0x60,unknown,,u8
 FUN_0042bcf0,0x42bcf0,0x1b0,unknown,,u8
 FUN_0042bea0,0x42bea0,0x2de,unknown,,u8,u8
-FUN_0042c180,0x42c180,0x10e,unknown,,u8
+th08::Enemy::ClampPosition,0x42c180,0x10e,__thiscall,,void,Enemy*
 FUN_0042c290,0x42c290,0x11c,unknown,,u8,u8,u8
 FUN_0042c3b0,0x42c3b0,0x6e,unknown,,u8
 FUN_0042c420,0x42c420,0x16f,unknown,,u8

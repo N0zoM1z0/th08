@@ -127,6 +127,22 @@ struct EnemyManagerUpdateEnemy
 };
 typedef char EnemyManagerUpdateEnemySizeCheck[sizeof(EnemyManagerUpdateEnemy) == 0x53D0 ? 1 : -1];
 
+void EnemyManagerUpdateEnemy::ClampPosition()
+{
+    if ((*reinterpret_cast<u32 *>(raw + 0x3324) >> 19) & 1)
+    {
+        if ((*reinterpret_cast<D3DXVECTOR3 *>(raw + 0x2D34))[0] < *reinterpret_cast<f32 *>(raw + 0x3340))
+            (*reinterpret_cast<D3DXVECTOR3 *>(raw + 0x2D34))[0] = *reinterpret_cast<f32 *>(raw + 0x3340);
+        else if ((*reinterpret_cast<D3DXVECTOR3 *>(raw + 0x2D34))[0] > *reinterpret_cast<f32 *>(raw + 0x3348))
+            (*reinterpret_cast<D3DXVECTOR3 *>(raw + 0x2D34))[0] = *reinterpret_cast<f32 *>(raw + 0x3348);
+
+        if ((*reinterpret_cast<D3DXVECTOR3 *>(raw + 0x2D34))[1] < *reinterpret_cast<f32 *>(raw + 0x3344))
+            (*reinterpret_cast<D3DXVECTOR3 *>(raw + 0x2D34))[1] = *reinterpret_cast<f32 *>(raw + 0x3344);
+        else if ((*reinterpret_cast<D3DXVECTOR3 *>(raw + 0x2D34))[1] > *reinterpret_cast<f32 *>(raw + 0x334C))
+            (*reinterpret_cast<D3DXVECTOR3 *>(raw + 0x2D34))[1] = *reinterpret_cast<f32 *>(raw + 0x334C);
+    }
+}
+
 struct EnemyManagerUpdateTimelineLane
 {
     EnemyManagerUpdateTimer timer;

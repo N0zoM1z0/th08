@@ -270,3 +270,4 @@ address,name,size,status,match_percent,unit,evidence
 0x00473300,th08::CWaveFile::Reopen,84,matching,100.00,zwave-remaining-exact-00473300,python3 scripts/compare-function.py zwave-remaining-exact-00473300 --json
 0x00473360,th08::CWaveFile::OpenFromMemory,92,matching,100.00,zwave-remaining-exact-00473360,python3 scripts/compare-function.py zwave-remaining-exact-00473360 --json
 0x004733C0,th08::CWaveFile::GetSize,17,matching,100.00,zwave-remaining-exact-004733c0,python3 scripts/compare-function.py zwave-remaining-exact-004733c0 --json
+0x0042C180,th08::Enemy::ClampPosition,270,matching,100.00,enemy-clamp-position,python3 scripts/compare-function.py enemy-clamp-position --json
