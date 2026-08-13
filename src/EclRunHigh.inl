@@ -181,9 +181,6 @@ struct TargetApi
     i32 &Global00F54CEC();
     i32 &Global00F54E2C();
     i32 &Global0164D30C();
-    u32 &GameFlags0164D0B4();
-    i32 GameStage0164D2CC();
-    i32 GameStateIndex0164D0B8();
 
     void RunContextCallback(void *callback, u8 *enemy,
                                     void *callbackArg);
@@ -860,17 +857,19 @@ enter_subroutine:
         break;
     case 176:
     {
-        u32 base = TH08_ECL_CONTEXT_API(ctx)->GameFlags0164D0B4() & 0xFFFFDE7F;
-        u32 flags = base | 0x80;
-        if (!(TH08_ECL_CONTEXT_API(ctx)->GameFlags0164D0B4() & 0x4000))
+        *reinterpret_cast<u32 *>(&g_GameManager.flags) =
+            (*reinterpret_cast<u32 *>(&g_GameManager.flags) & ~0x180U) | 0x80U;
+        *reinterpret_cast<u32 *>(&g_GameManager.flags) &= ~0x2000U;
+        if (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 14) & 1) == 0)
         {
-            if (TH08_ECL_CONTEXT_API(ctx)->GameStage0164D2CC() == 6 || TH08_ECL_CONTEXT_API(ctx)->GameStage0164D2CC() == 7)
-                flags = base | 0x2080;
+            if (g_GameManager.currentStage == 6 || g_GameManager.currentStage == 7)
+                *reinterpret_cast<u32 *>(&g_GameManager.flags) |= 0x2000U;
         }
-        else if ((TH08_ECL_CONTEXT_API(ctx)->GameStateIndex0164D0B8() > 0x8E && TH08_ECL_CONTEXT_API(ctx)->GameStateIndex0164D0B8() < 0x93) ||
-                 (TH08_ECL_CONTEXT_API(ctx)->GameStateIndex0164D0B8() > 0xAA && TH08_ECL_CONTEXT_API(ctx)->GameStateIndex0164D0B8() < 0xBF))
-            flags = base | 0x2080;
-        TH08_ECL_CONTEXT_API(ctx)->GameFlags0164D0B4() = flags;
+        else if ((g_GameManager.currentSpellCardNumber >= 0x8F &&
+                  g_GameManager.currentSpellCardNumber <= 0x92) ||
+                 (g_GameManager.currentSpellCardNumber >= 0xAB &&
+                  g_GameManager.currentSpellCardNumber <= 0xBE))
+            *reinterpret_cast<u32 *>(&g_GameManager.flags) |= 0x2000U;
         TH08_ECL_AT(ctx, u32, 0x3324) |= 0x40000000;
         break;
     }

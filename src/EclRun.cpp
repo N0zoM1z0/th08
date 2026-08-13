@@ -1,5 +1,6 @@
 #include "EclManager.hpp"
 #include "EclOperands.hpp"
+#include "GameManager.hpp"
 
 #include <string.h>
 
