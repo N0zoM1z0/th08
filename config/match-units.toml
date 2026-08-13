@@ -4024,3 +4024,2237 @@ object = "build/zwave.obj"
 symbol = "??0CSoundManager@th08@@QAE@XZ"
 target_address = 0x004716E0
 size = 0x17
+
+[[units]]
+name = "anm-manager-execute-script"
+object = "build/AnmManager.obj"
+symbol = "?ExecuteScript@AnmManager@th08@@QAEIPAUAnmVm@2@@Z"
+target_address = 0x0045EA00
+size = 0x366D
+compare_size = 0x380D
+
+[[units.relocations]]
+offset = 0x6A
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0x98
+type = "DIR32"
+symbol = "$L*"
+target = 0x0046206D
+
+[[units.relocations]]
+offset = 0xF6
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x11A
+type = "REL32"
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
+
+[[units.relocations]]
+offset = 0x125
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0x150
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x184
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x1D2
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x20E
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x245
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x27C
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x2B8
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x2F4
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x32B
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x362
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x393
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x3C9
+type = "REL32"
+symbol = "?GetIntVarPtr@AnmVm@th08@@QAEPAHPAHGI@Z"
+target = 0x0045E8A0
+
+[[units.relocations]]
+offset = 0x3F6
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x41C
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x47C
+type = "DIR32"
+symbol = "__real@bf800000"
+target = 0x004B438C
+
+[[units.relocations]]
+offset = 0x505
+type = "DIR32"
+symbol = "__real@bf800000"
+target = 0x004B438C
+
+[[units.relocations]]
+offset = 0x542
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x575
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x5A9
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x5F7
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x62B
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x668
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x6BF
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x6FC
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x731
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x74E
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x777
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x7B6
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x7F6
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x84C
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x869
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x892
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x92B
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x95C
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x98D
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x9BE
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x9F9
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0xA2A
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0xA5B
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0xA8C
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0xB41
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0xB72
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0xBA3
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0xBD4
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0xC0A
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0xC33
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0xC40
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0xC52
+type = "REL32"
+symbol = "??8ZunTimer@th08@@QAEIH@Z"
+target = 0x0040D3F0
+
+[[units.relocations]]
+offset = 0xC73
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0xC99
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0xCA8
+type = "REL32"
+symbol = "??FZunTimer@th08@@QAEXH@Z"
+target = 0x00418110
+
+[[units.relocations]]
+offset = 0xCB5
+type = "REL32"
+symbol = "??NZunTimer@th08@@QAEIH@Z"
+target = 0x0040E390
+
+[[units.relocations]]
+offset = 0xCC6
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0xCD8
+type = "REL32"
+symbol = "??FZunTimer@th08@@QAEXH@Z"
+target = 0x00418110
+
+[[units.relocations]]
+offset = 0xD24
+type = "REL32"
+symbol = "??FZunTimer@th08@@QAEXH@Z"
+target = 0x00418110
+
+[[units.relocations]]
+offset = 0xDD1
+type = "REL32"
+symbol = "??FZunTimer@th08@@QAEXH@Z"
+target = 0x00418110
+
+[[units.relocations]]
+offset = 0xE41
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0xF06
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0xF38
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0xF4B
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0xF5F
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0xF72
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0xF9A
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0xFCC
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0xFDF
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0xFF3
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x1006
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x102E
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x1073
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x10FD
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x111A
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x1143
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x11C7
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x1207
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x1247
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x127C
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x1299
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x12C2
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x1324
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x1364
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x13A4
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x13D9
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x13F6
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x141F
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x145D
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x1495
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x14B2
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x14DB
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x153D
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x157D
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x15BD
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x15F5
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x1612
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x163B
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x1679
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x16AE
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x16CB
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x16F4
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x173C
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x177C
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x17BC
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x1809
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x1826
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x184F
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x1893
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x18D3
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x1941
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x196E
+type = "REL32"
+symbol = "?GetIntVarPtr@AnmVm@th08@@QAEPAHPAHGI@Z"
+target = 0x0045E8A0
+
+[[units.relocations]]
+offset = 0x1998
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x19C5
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x19EF
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x1A20
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x1A59
+type = "REL32"
+symbol = "?GetIntVarPtr@AnmVm@th08@@QAEPAHPAHGI@Z"
+target = 0x0045E8A0
+
+[[units.relocations]]
+offset = 0x1A7D
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x1AAE
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x1AED
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x1B17
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x1B48
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x1B81
+type = "REL32"
+symbol = "?GetIntVarPtr@AnmVm@th08@@QAEPAHPAHGI@Z"
+target = 0x0045E8A0
+
+[[units.relocations]]
+offset = 0x1BA5
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x1BD6
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x1C15
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x1C3F
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x1C70
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x1CAA
+type = "REL32"
+symbol = "?GetIntVarPtr@AnmVm@th08@@QAEPAHPAHGI@Z"
+target = 0x0045E8A0
+
+[[units.relocations]]
+offset = 0x1CCE
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x1CFF
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x1D3E
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x1D68
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x1D99
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x1DD5
+type = "REL32"
+symbol = "?GetIntVarPtr@AnmVm@th08@@QAEPAHPAHGI@Z"
+target = 0x0045E8A0
+
+[[units.relocations]]
+offset = 0x1DF9
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x1E2A
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x1E69
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x1E93
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x1EC4
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x1F00
+type = "REL32"
+symbol = "?GetIntVarPtr@AnmVm@th08@@QAEPAHPAHGI@Z"
+target = 0x0045E8A0
+
+[[units.relocations]]
+offset = 0x1F24
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x1F55
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x1F7C
+type = "REL32"
+symbol = "@fmodf@8"
+target = 0x0041F090
+
+[[units.relocations]]
+offset = 0x1F9B
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x1FC5
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x1FF2
+type = "REL32"
+symbol = "?GetIntVarPtr@AnmVm@th08@@QAEPAHPAHGI@Z"
+target = 0x0045E8A0
+
+[[units.relocations]]
+offset = 0x2030
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x205D
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x209B
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x20C8
+type = "REL32"
+symbol = "?GetIntVarPtr@AnmVm@th08@@QAEPAHPAHGI@Z"
+target = 0x0045E8A0
+
+[[units.relocations]]
+offset = 0x2106
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x2133
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x2171
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x219E
+type = "REL32"
+symbol = "?GetIntVarPtr@AnmVm@th08@@QAEPAHPAHGI@Z"
+target = 0x0045E8A0
+
+[[units.relocations]]
+offset = 0x21DD
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x220A
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x2248
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x2275
+type = "REL32"
+symbol = "?GetIntVarPtr@AnmVm@th08@@QAEPAHPAHGI@Z"
+target = 0x0045E8A0
+
+[[units.relocations]]
+offset = 0x22B4
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x22E1
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x231F
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x234C
+type = "REL32"
+symbol = "?GetIntVarPtr@AnmVm@th08@@QAEPAHPAHGI@Z"
+target = 0x0045E8A0
+
+[[units.relocations]]
+offset = 0x238B
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x23BC
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x23E3
+type = "REL32"
+symbol = "@fmodf@8"
+target = 0x0041F090
+
+[[units.relocations]]
+offset = 0x2402
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x242C
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x244C
+type = "DIR32"
+symbol = "?g_Rng@th08@@3VRng@1@A"
+target = 0x0164D520
+
+[[units.relocations]]
+offset = 0x2451
+type = "REL32"
+symbol = "?GetRandomU32InRange@Rng@th08@@QAEII@Z"
+target = 0x00406EF0
+
+[[units.relocations]]
+offset = 0x246C
+type = "REL32"
+symbol = "?GetIntVarPtr@AnmVm@th08@@QAEPAHPAHGI@Z"
+target = 0x0045E8A0
+
+[[units.relocations]]
+offset = 0x2490
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x24B0
+type = "DIR32"
+symbol = "?g_Rng@th08@@3VRng@1@A"
+target = 0x0164D520
+
+[[units.relocations]]
+offset = 0x24B5
+type = "REL32"
+symbol = "?GetRandomF32InRange@Rng@th08@@QAEMM@Z"
+target = 0x0040D390
+
+[[units.relocations]]
+offset = 0x24D4
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x24FE
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x251E
+type = "REL32"
+symbol = "@sinf@4"
+target = 0x00409060
+
+[[units.relocations]]
+offset = 0x253D
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x2567
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x2587
+type = "REL32"
+symbol = "@cosf@4"
+target = 0x00408D40
+
+[[units.relocations]]
+offset = 0x25A6
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x25D0
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x25F0
+type = "REL32"
+symbol = "@tanf@4"
+target = 0x00462250
+
+[[units.relocations]]
+offset = 0x260F
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x2639
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x2659
+type = "REL32"
+symbol = "@acosf@4"
+target = 0x00462210
+
+[[units.relocations]]
+offset = 0x2678
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x26A2
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x26C2
+type = "REL32"
+symbol = "@atanf@4"
+target = 0x00462230
+
+[[units.relocations]]
+offset = 0x26E1
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x270B
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x272D
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0x274C
+type = "REL32"
+symbol = "?GetFloatVarPtr@AnmVm@th08@@QAEPAMPAMGI@Z"
+target = 0x0045E810
+
+[[units.relocations]]
+offset = 0x2776
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x27A7
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x27F0
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x2821
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x286F
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x28A0
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x28E9
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x291A
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x2968
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x2999
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x29E2
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x2A13
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x2A61
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x2A92
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x2ADB
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x2B0C
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x2B5A
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x2B8B
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x2BD4
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x2C05
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x2C53
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x2C84
+type = "REL32"
+symbol = "?GetIntVar@AnmVm@th08@@QAEHH@Z"
+target = 0x0045E720
+
+[[units.relocations]]
+offset = 0x2CCD
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x2CFE
+type = "REL32"
+symbol = "?GetFloatVar@AnmVm@th08@@QAEMM@Z"
+target = 0x0045E650
+
+[[units.relocations]]
+offset = 0x2D64
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x2DA7
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x2DB7
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x2DC9
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0x2DEF
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x2DFF
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x2E12
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0x2E39
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x2E49
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x2E5C
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0x2EAA
+type = "REL32"
+symbol = "??OZunTimer@th08@@QAEIH@Z"
+target = 0x004066C0
+
+[[units.relocations]]
+offset = 0x2EC6
+type = "REL32"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
+target = 0x00406640
+
+[[units.relocations]]
+offset = 0x2EDB
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0x2EEE
+type = "REL32"
+symbol = "??PZunTimer@th08@@QAEIH@Z"
+target = 0x0040B8E0
+
+[[units.relocations]]
+offset = 0x2F10
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x2F24
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 0x2F3F
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 0x2F84
+type = "DIR32"
+symbol = "$L*"
+target = 0x004621D9
+
+[[units.relocations]]
+offset = 0x2FB7
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x2FC9
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x2FD7
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x2FEC
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x2FFA
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x3012
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x303B
+type = "DIR32"
+symbol = "$L*"
+target = 0x004621F1
+
+[[units.relocations]]
+offset = 0x3189
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x31DC
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x322F
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x3287
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x32DF
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x3332
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x3385
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x33DD
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x3413
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0x3440
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0x346E
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0x34F9
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x3509
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x3539
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x3549
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x35A3
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x35B6
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x35CA
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x35DD
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x3604
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x3617
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x362B
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x363E
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x3651
+type = "REL32"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
+target = 0x00406640
+
+[[units.relocations]]
+offset = 0x366D
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045EA9C
+
+[[units.relocations]]
+offset = 0x3671
+type = "DIR32"
+symbol = "$L*"
+target = 0x00461785
+
+[[units.relocations]]
+offset = 0x3675
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045EA9C
+
+[[units.relocations]]
+offset = 0x3679
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045EAB1
+
+[[units.relocations]]
+offset = 0x367D
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045EAC8
+
+[[units.relocations]]
+offset = 0x3681
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045ED85
+
+[[units.relocations]]
+offset = 0x3685
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045EDB4
+
+[[units.relocations]]
+offset = 0x3689
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F2FB
+
+[[units.relocations]]
+offset = 0x368D
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045EB37
+
+[[units.relocations]]
+offset = 0x3691
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045EBB9
+
+[[units.relocations]]
+offset = 0x3695
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045EBF5
+
+[[units.relocations]]
+offset = 0x3699
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045EE42
+
+[[units.relocations]]
+offset = 0x369D
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045EECB
+
+[[units.relocations]]
+offset = 0x36A1
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045EF29
+
+[[units.relocations]]
+offset = 0x36A5
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045EFDE
+
+[[units.relocations]]
+offset = 0x36A9
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F0A6
+
+[[units.relocations]]
+offset = 0x36AD
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F222
+
+[[units.relocations]]
+offset = 0x36B1
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F2A5
+
+[[units.relocations]]
+offset = 0x36B5
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F4C6
+
+[[units.relocations]]
+offset = 0x36B9
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F4BA
+
+[[units.relocations]]
+offset = 0x36BD
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F4AE
+
+[[units.relocations]]
+offset = 0x36C1
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F6F6
+
+[[units.relocations]]
+offset = 0x36C5
+type = "DIR32"
+symbol = "$L*"
+target = 0x00461785
+
+[[units.relocations]]
+offset = 0x36C9
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F8BA
+
+[[units.relocations]]
+offset = 0x36CD
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F6E1
+
+[[units.relocations]]
+offset = 0x36D1
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045EEA0
+
+[[units.relocations]]
+offset = 0x36D5
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F8D7
+
+[[units.relocations]]
+offset = 0x36D9
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F8ED
+
+[[units.relocations]]
+offset = 0x36DD
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F981
+
+[[units.relocations]]
+offset = 0x36E1
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F895
+
+[[units.relocations]]
+offset = 0x36E5
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F125
+
+[[units.relocations]]
+offset = 0x36E9
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045FA9F
+
+[[units.relocations]]
+offset = 0x36ED
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045FAC9
+
+[[units.relocations]]
+offset = 0x36F1
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045FAF4
+
+[[units.relocations]]
+offset = 0x36F5
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045FC73
+
+[[units.relocations]]
+offset = 0x36F9
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045FDD0
+
+[[units.relocations]]
+offset = 0x36FD
+type = "DIR32"
+symbol = "$L*"
+target = 0x004600A5
+
+[[units.relocations]]
+offset = 0x3701
+type = "DIR32"
+symbol = "$L*"
+target = 0x004601FD
+
+[[units.relocations]]
+offset = 0x3705
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460328
+
+[[units.relocations]]
+offset = 0x3709
+type = "DIR32"
+symbol = "$L*"
+target = 0x0046037F
+
+[[units.relocations]]
+offset = 0x370D
+type = "DIR32"
+symbol = "$L*"
+target = 0x004609AC
+
+[[units.relocations]]
+offset = 0x3711
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460A17
+
+[[units.relocations]]
+offset = 0x3715
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460A82
+
+[[units.relocations]]
+offset = 0x3719
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460AED
+
+[[units.relocations]]
+offset = 0x371D
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460B58
+
+[[units.relocations]]
+offset = 0x3721
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460BC4
+
+[[units.relocations]]
+offset = 0x3725
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460C2F
+
+[[units.relocations]]
+offset = 0x3729
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460C9B
+
+[[units.relocations]]
+offset = 0x372D
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460D06
+
+[[units.relocations]]
+offset = 0x3731
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460D72
+
+[[units.relocations]]
+offset = 0x3735
+type = "DIR32"
+symbol = "$L*"
+target = 0x004603D6
+
+[[units.relocations]]
+offset = 0x3739
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460464
+
+[[units.relocations]]
+offset = 0x373D
+type = "DIR32"
+symbol = "$L*"
+target = 0x004604FE
+
+[[units.relocations]]
+offset = 0x3741
+type = "DIR32"
+symbol = "$L*"
+target = 0x0046058C
+
+[[units.relocations]]
+offset = 0x3745
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460626
+
+[[units.relocations]]
+offset = 0x3749
+type = "DIR32"
+symbol = "$L*"
+target = 0x004606B5
+
+[[units.relocations]]
+offset = 0x374D
+type = "DIR32"
+symbol = "$L*"
+target = 0x0046074F
+
+[[units.relocations]]
+offset = 0x3751
+type = "DIR32"
+symbol = "$L*"
+target = 0x004607E0
+
+[[units.relocations]]
+offset = 0x3755
+type = "DIR32"
+symbol = "$L*"
+target = 0x0046087A
+
+[[units.relocations]]
+offset = 0x3759
+type = "DIR32"
+symbol = "$L*"
+target = 0x0046090B
+
+[[units.relocations]]
+offset = 0x375D
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460E13
+
+[[units.relocations]]
+offset = 0x3761
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460E77
+
+[[units.relocations]]
+offset = 0x3765
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460EE5
+
+[[units.relocations]]
+offset = 0x3769
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460F4E
+
+[[units.relocations]]
+offset = 0x376D
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460FB7
+
+[[units.relocations]]
+offset = 0x3771
+type = "DIR32"
+symbol = "$L*"
+target = 0x00461020
+
+[[units.relocations]]
+offset = 0x3775
+type = "DIR32"
+symbol = "$L*"
+target = 0x00461089
+
+[[units.relocations]]
+offset = 0x3779
+type = "DIR32"
+symbol = "$L*"
+target = 0x004610F2
+
+[[units.relocations]]
+offset = 0x377D
+type = "DIR32"
+symbol = "$L*"
+target = 0x0046115D
+
+[[units.relocations]]
+offset = 0x3781
+type = "DIR32"
+symbol = "$L*"
+target = 0x004611D7
+
+[[units.relocations]]
+offset = 0x3785
+type = "DIR32"
+symbol = "$L*"
+target = 0x00461256
+
+[[units.relocations]]
+offset = 0x3789
+type = "DIR32"
+symbol = "$L*"
+target = 0x004612D0
+
+[[units.relocations]]
+offset = 0x378D
+type = "DIR32"
+symbol = "$L*"
+target = 0x0046134F
+
+[[units.relocations]]
+offset = 0x3791
+type = "DIR32"
+symbol = "$L*"
+target = 0x004613C9
+
+[[units.relocations]]
+offset = 0x3795
+type = "DIR32"
+symbol = "$L*"
+target = 0x00461448
+
+[[units.relocations]]
+offset = 0x3799
+type = "DIR32"
+symbol = "$L*"
+target = 0x004614C2
+
+[[units.relocations]]
+offset = 0x379D
+type = "DIR32"
+symbol = "$L*"
+target = 0x00461541
+
+[[units.relocations]]
+offset = 0x37A1
+type = "DIR32"
+symbol = "$L*"
+target = 0x004615BB
+
+[[units.relocations]]
+offset = 0x37A5
+type = "DIR32"
+symbol = "$L*"
+target = 0x0046163A
+
+[[units.relocations]]
+offset = 0x37A9
+type = "DIR32"
+symbol = "$L*"
+target = 0x004616B4
+
+[[units.relocations]]
+offset = 0x37AD
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F649
+
+[[units.relocations]]
+offset = 0x37B1
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045FA15
+
+[[units.relocations]]
+offset = 0x37B5
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045FA5A
+
+[[units.relocations]]
+offset = 0x37B9
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F2D3
+
+[[units.relocations]]
+offset = 0x37BD
+type = "DIR32"
+symbol = "$L*"
+target = 0x00460314
+
+[[units.relocations]]
+offset = 0x37C1
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045ECDB
+
+[[units.relocations]]
+offset = 0x37C5
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045EC9F
+
+[[units.relocations]]
+offset = 0x37C9
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045FE89
+
+[[units.relocations]]
+offset = 0x37CD
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045FFE9
+
+[[units.relocations]]
+offset = 0x37D1
+type = "DIR32"
+symbol = "$L*"
+target = 0x0046172D
+
+[[units.relocations]]
+offset = 0x37D5
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045F85F
+
+[[units.relocations]]
+offset = 0x37D9
+type = "DIR32"
+symbol = "$L*"
+target = 0x00461988
+
+[[units.relocations]]
+offset = 0x37DD
+type = "DIR32"
+symbol = "$L*"
+target = 0x00461996
+
+[[units.relocations]]
+offset = 0x37E1
+type = "DIR32"
+symbol = "$L*"
+target = 0x004619A4
+
+[[units.relocations]]
+offset = 0x37E5
+type = "DIR32"
+symbol = "$L*"
+target = 0x004619B5
+
+[[units.relocations]]
+offset = 0x37E9
+type = "DIR32"
+symbol = "$L*"
+target = 0x004619D5
+
+[[units.relocations]]
+offset = 0x37ED
+type = "DIR32"
+symbol = "$L*"
+target = 0x004619F8
+
+[[units.relocations]]
+offset = 0x37F1
+type = "DIR32"
+symbol = "$L*"
+target = 0x00461A3F
+
+[[units.relocations]]
+offset = 0x37F5
+type = "DIR32"
+symbol = "$L*"
+target = 0x00461B43
+
+[[units.relocations]]
+offset = 0x37F9
+type = "DIR32"
+symbol = "$L*"
+target = 0x00461C41
+
+[[units.relocations]]
+offset = 0x37FD
+type = "DIR32"
+symbol = "$L*"
+target = 0x00461DEF
+
+[[units.relocations]]
+offset = 0x3801
+type = "DIR32"
+symbol = "$L*"
+target = 0x00461E8F
+
+[[units.relocations]]
+offset = 0x3805
+type = "DIR32"
+symbol = "$L*"
+target = 0x00461C99
+
+[[units.relocations]]
+offset = 0x3809
+type = "DIR32"
+symbol = "$L*"
+target = 0x00461D97

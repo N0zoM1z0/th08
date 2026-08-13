@@ -76,3 +76,4 @@ address,name,size,status,match_percent,unit,evidence
 0x0041FE10,th08::EclOperands::ResolveIntLValue,548,matching,100.00,ecl-resolve-int-lvalue,python3 scripts/compare-function.py ecl-resolve-int-lvalue --json
 0x00420120,th08::EclOperands::EnemyOverlay::ResolveFloat,1687,matching,100.00,ecl-resolve-float,python3 scripts/compare-function.py ecl-resolve-float --json
 0x00420950,th08::EclOperands::ResolveFloatLValue,696,matching,100.00,ecl-resolve-float-lvalue,python3 scripts/compare-function.py ecl-resolve-float-lvalue --json
+0x0045EA00,th08::AnmManager::ExecuteScript,13933,matching,100.00,anm-manager-execute-script,python3 scripts/compare-function.py anm-manager-execute-script --json

@@ -47,6 +47,11 @@ review the unit before claiming exactness.
   size continues through switch tables, compare the complete associated extent
   while reporting authored coverage from the code extent only. A size error is
   a boundary question before it is a source-shaping instruction.
+- Large dispatchers may own several adjacent compiler tables. Prove each table
+  boundary from code-local pointers and the next trusted function start, keep
+  all table-entry relocations in the canonical manifest, and require exact
+  relocation replay over the full COFF auxiliary extent. `AnmManager::ExecuteScript`
+  is the corpus example: `0x366D` code plus `0x1A0` bytes of 91+6+7 entries.
 
 ## Improve the model
 
