@@ -85,6 +85,17 @@ This exposes the responsible handler even when slots share a default body. It
 is only a source-shaping aid; it does not establish a boundary or an exact
 match without the canonical full-range comparison.
 
+For `EclManager::RunEcl`, use the checked-in implementation rather than
+rebuilding this bookkeeping ad hoc:
+
+```bash
+python3 scripts/crosswalk-ecl-dispatch.py --object build/probes/EclRun.obj --top 20
+```
+
+Its reported `physical_handler_delta` must be read alongside the target's
+separate code and jump-table extents.  It identifies a local source-shaping
+candidate only; it cannot be used to count unmatched bytes as authored.
+
 ## Relocation integrity
 
 Add a `[[units.relocations]]` entry only after proving its byte offset, COFF
