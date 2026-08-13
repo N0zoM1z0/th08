@@ -96,6 +96,14 @@ Its reported `physical_handler_delta` must be read alongside the target's
 separate code and jump-table extents.  It identifies a local source-shaping
 candidate only; it cannot be used to count unmatched bytes as authored.
 
+When a dispatcher target loads ECX from an absolute address immediately before
+a `__thiscall`, resolve that address through `config/reccmp-globals.csv` before
+choosing the C++ owner.  Bind the observed global and an evidence-backed member
+declaration rather than retaining a dispatcher facade or guessing an adjacent
+subobject with pointer arithmetic.  Record a new global/function ledger name
+only after target disassembly establishes its address, access width, and ABI;
+cross-version class ownership is not sufficient evidence.
+
 ## Relocation integrity
 
 Add a `[[units.relocations]]` entry only after proving its byte offset, COFF
