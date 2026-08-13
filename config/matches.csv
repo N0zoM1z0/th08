@@ -318,3 +318,4 @@ address,name,size,status,match_percent,unit,evidence
 0x0045D550,th08::SoundPlayer::PlaySoundByIdx,267,matching,100.00,sound-player-roi-exact-0045d550,python3 scripts/compare-function.py sound-player-roi-exact-0045d550 --json
 0x0045D660,th08::SoundPlayer::PlaySoundPositionedByIdx,296,matching,100.00,sound-player-roi-exact-0045d660,python3 scripts/compare-function.py sound-player-roi-exact-0045d660 --json
 0x0045E1E0,th08::SoundPlayer::QueueCommand,225,matching,100.00,sound-player-roi-exact-0045e1e0,python3 scripts/compare-function.py sound-player-roi-exact-0045e1e0 --json
+0x004418C0,WinMain,1354,matching,100.00,winmain-unlocked-exact-004418c0,python3 scripts/compare-function.py winmain-unlocked-exact-004418c0 --json
