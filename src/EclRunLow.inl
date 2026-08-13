@@ -662,6 +662,13 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     case 67:
         BeginBoundaryAwareMove(enemy, instruction);
         break;
+#ifdef TH08_ECL_RUN_LOW_BODY
+    // Target physical order places opcode 178 between opcodes 67 and 68.
+    case 178:
+        TH08_ECL_CONTEXT_API(ctx)->Call004224A0(
+            TH08_ECL_CONTEXT_ENEMY(ctx));
+        break;
+#endif
     case 68:
         F32At(enemy, 0x2D94) =
             AddNormalizeAngle(ReadFloat(enemy, instruction, 0),
@@ -780,6 +787,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         if (lhsInt & 0x20) U32At(enemy, 0x3328) &= ~0x40U;
         break;
 
+#if !defined(TH08_ECL_RUN_LOW_BODY)
     case 82:
         F32At(enemy, 0x3350) = ReadFloat(enemy, instruction, 0);
         F32At(enemy, 0x3350) *= F32At(enemy, 0x3350);
@@ -788,6 +796,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         U32At(enemy, 0x3328) =
             (U32At(enemy, 0x3328) & ~2U) | ((ReadInt(enemy, instruction, 0) & 1) << 1);
         break;
+#endif
 
     case 84:
     case 85:

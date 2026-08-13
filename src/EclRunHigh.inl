@@ -352,43 +352,6 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
     switch (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->opcode)
     {
 #endif
-    case 93:
-        if (TH08_ECL_AT(ctx, i32, 0x2DFC) > 0)
-        {
-            SpawnPacket packet;
-            memcpy(packet.values, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet.values));
-
-            Vec3 position;
-            position.x = TH08_ECL_READ_F(ctx, 1);
-            position.y = TH08_ECL_READ_F(ctx, 2);
-            position.z = TH08_ECL_READ_F(ctx, 3);
-            TH08_ECL_CONTEXT_API(ctx)->SpawnFromPacket(packet.values[0], &position,
-                                     TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
-                                     TH08_ECL_READ_I(ctx, 6),
-                                     (i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18));
-        }
-        break;
-    case 94:
-        if (TH08_ECL_AT(ctx, i32, 0x2DFC) > 0)
-        {
-            SpawnPacket packet;
-            memcpy(packet.values, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet.values));
-
-            Vec3 position;
-            position.x = TH08_ECL_READ_F(ctx, 1);
-            position.y = TH08_ECL_READ_F(ctx, 2);
-            position.z = TH08_ECL_READ_F(ctx, 3);
-            TH08_ECL_CONTEXT_API(ctx)->TransformSpawnVector(&position, &TH08_ECL_AT(ctx, Vec3, 0x2D34));
-            TH08_ECL_CONTEXT_API(ctx)->SpawnFromPacket(packet.values[0], &position,
-                                     TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
-                                     TH08_ECL_READ_I(ctx, 6),
-                                     (i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18));
-        }
-        break;
-    case 95:
-        TH08_ECL_CONTEXT_API(ctx)->ClearOrLimitBullets(8000, 0);
-        break;
-
     case 96:
     case 97:
     case 98:
@@ -406,6 +369,23 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
                 DispatchShotInstruction(TH08_ECL_CONTEXT_ENEMY(ctx),
                                         TH08_ECL_CONTEXT_INSTRUCTION(ctx));
         }
+        break;
+
+    case 111:
+    {
+        f32 *entry = (f32 *)(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E44 + TH08_ECL_READ_I(ctx, 0) * 0x18);
+        entry[4] = (f32)TH08_ECL_READ_I(ctx, 1);
+        entry[5] = (f32)TH08_ECL_READ_I(ctx, 2);
+        entry[2] = (f32)TH08_ECL_READ_I(ctx, 3);
+        entry[3] = (f32)TH08_ECL_READ_I(ctx, 4);
+        entry[0] = TH08_ECL_READ_F(ctx, 5);
+        entry[1] = TH08_ECL_READ_F(ctx, 6);
+        break;
+    }
+    case 138:
+        TH08_ECL_AT(ctx, u8, 0x3310) = TH08_ECL_RAW_BYTE(ctx, 0);
+        TH08_ECL_AT(ctx, u8, 0x3311) = TH08_ECL_RAW_BYTE(ctx, 1);
+        TH08_ECL_AT(ctx, u8, 0x3312) = TH08_ECL_RAW_BYTE(ctx, 2);
         break;
 
     case 105:
@@ -443,30 +423,6 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         TH08_ECL_AT(ctx, f32, 0x2DBC) = TH08_ECL_READ_F(ctx, 1);
         TH08_ECL_AT(ctx, i32, 0x2DC0) = 0;
         break;
-    case 111:
-    {
-        f32 *entry = (f32 *)(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E44 + TH08_ECL_READ_I(ctx, 0) * 0x18);
-        entry[4] = (f32)TH08_ECL_READ_I(ctx, 1);
-        entry[5] = (f32)TH08_ECL_READ_I(ctx, 2);
-        entry[2] = (f32)TH08_ECL_READ_I(ctx, 3);
-        entry[3] = (f32)TH08_ECL_READ_I(ctx, 4);
-        entry[0] = TH08_ECL_READ_F(ctx, 5);
-        entry[1] = TH08_ECL_READ_F(ctx, 6);
-        break;
-    }
-    case 112: TH08_ECL_CONTEXT_API(ctx)->Call00415C60(); break;
-
-    case 113:
-        lhsInt = TH08_ECL_READ_I(ctx, 0);
-        if (lhsInt < 0)
-            TH08_ECL_AT(ctx, u32, 0x3020) &= ~0x200;
-        else
-        {
-            TH08_ECL_AT(ctx, i32, 0x3024) = TH08_ECL_READ_I(ctx, 0);
-            TH08_ECL_AT(ctx, u32, 0x3020) |= 0x200;
-        }
-        TH08_ECL_AT(ctx, i32, 0x3028) = TH08_ECL_READ_I(ctx, 1);
-        break;
 
     case 114:
     case 115:
@@ -502,6 +458,12 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
                     *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x554),
                     TH08_ECL_READ_F(ctx, 1));
         break;
+    case 167:
+        lhsInt = TH08_ECL_READ_I(ctx, 0);
+        if (TH08_ECL_OBJECT(ctx, lhsInt))
+            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x554) =
+                TH08_ECL_READ_F(ctx, 1);
+        break;
     case 118:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
@@ -518,6 +480,12 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x54C) = TH08_ECL_AT(ctx, f32, 0x2D8C) + TH08_ECL_READ_F(ctx, 2);
             *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x550) = TH08_ECL_AT(ctx, f32, 0x2D90) + TH08_ECL_READ_F(ctx, 3);
         }
+        break;
+    case 170:
+        lhsInt = TH08_ECL_READ_I(ctx, 0);
+        if (TH08_ECL_OBJECT(ctx, lhsInt))
+            *(u8 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x599) =
+                (u8)TH08_ECL_READ_I(ctx, 1);
         break;
     case 120:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
@@ -539,42 +507,27 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
                 *(i32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x568);
         }
         break;
-    case 122: TH08_ECL_CONTEXT_API(ctx)->Call00421280(TH08_ECL_CONTEXT_ENEMY(ctx)); break;
-    case 123: TH08_ECL_CONTEXT_API(ctx)->Call004212E0(TH08_ECL_CONTEXT_ENEMY(ctx)); break;
-    case 124: TH08_ECL_CONTEXT_API(ctx)->PlayPositioned(TH08_ECL_READ_I(ctx, 0), TH08_ECL_AT(ctx, i32, 0x2D34)); break;
-    case 125:
-        TH08_ECL_AT(ctx, i16, 0x2D30) = (i16)TH08_ECL_READ_I(ctx, 0);
-#ifdef TH08_ECL_RUN_HIGH_BODY
-enter_subroutine:
-        // Target 0x0041C88A is shared by opcode 125 and the pending-subroutine
-        // check at the top of RunEcl's dispatch loop.  Keeping it lexical at
-        // this case preserves the target's handler ordering.
-        *(RawInstruction **)TH08_ECL_CURRENT_CONTEXT(ctx) =
-            (RawInstruction *)((u8 *)instruction + instruction->nextOffset);
-
-        if (((TH08_ECL_AT(ctx, u32, 0x3324) >> 26) & 1) == 0)
-        {
-            memcpy(TH08_ECL_AT(ctx, u8 *, 0x2CA4) +
-                       TH08_ECL_AT(ctx, i16, 0x2CEA) * 0x228,
-                   TH08_ECL_CONTEXT_ENEMY(ctx) + 0x7F8,
-                   0x8A * sizeof(i32));
-        }
-
-        TH08_ECL_CONTEXT_API(ctx)->InitializeEclContext(
-            TH08_ECL_CONTEXT_ENEMY(ctx) + 0x7F8,
-            TH08_ECL_AT(ctx, u16, 0x2CF0 +
-                TH08_ECL_AT(ctx, i16, 0x2D30) * 2));
-        if (TH08_ECL_AT(ctx, i16, 0x2CEA) < 15)
-            ++TH08_ECL_AT(ctx, i16, 0x2CEA);
-        TH08_ECL_AT(ctx, i16, 0x2D30) = -1;
-        goto restart_context;
-#else
-        TH08_ECL_RUN_HIGH_YIELD(DISPATCH_ENTER_SUBROUTINE);
-#endif
-    case 126:
-        TH08_ECL_AT(ctx, i16, 0x2CF0 + TH08_ECL_READ_I(ctx, 1) * 2) = (i16)TH08_ECL_READ_I(ctx, 0);
+    case 154:
+        for (i32 i = 0; i < 0x20; ++i)
+            TH08_ECL_AT(ctx, void *, 0x3280 + i * 4) = 0;
         break;
-
+    case 171:
+        lhsInt = TH08_ECL_READ_I(ctx, 0);
+        if (TH08_ECL_OBJECT(ctx, lhsInt))
+            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x560) =
+                TH08_ECL_READ_F(ctx, 1);
+        break;
+    case 172:
+        lhsInt = TH08_ECL_READ_I(ctx, 0);
+        if (TH08_ECL_OBJECT(ctx, lhsInt))
+        {
+            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x558) =
+                TH08_ECL_READ_F(ctx, 1);
+            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x55C) =
+                TH08_ECL_READ_F(ctx, 2);
+        }
+        break;
+    case 163: TH08_ECL_CONTEXT_API(ctx)->Global00F54CEC() = TH08_ECL_READ_I(ctx, 0); break;
     case 127:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (lhsInt < 0)
@@ -617,6 +570,8 @@ enter_subroutine:
         TH08_ECL_AT(ctx, i32, 0x53C0) = slot + 1;
         break;
     }
+    case 159: TH08_ECL_AT(ctx, u8, 0x332F) = (u8)TH08_ECL_READ_I(ctx, 0); break;
+    case 124: TH08_ECL_CONTEXT_API(ctx)->PlayPositioned(TH08_ECL_READ_I(ctx, 0), TH08_ECL_AT(ctx, i32, 0x2D34)); break;
     case 129:
         if (TH08_ECL_CONTEXT_API(ctx)->PresentationWritesAllowed())
             TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFF8FFFFF) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 7) << 20);
@@ -625,6 +580,38 @@ enter_subroutine:
         if (TH08_ECL_CONTEXT_API(ctx)->PresentationWritesAllowed())
             TH08_ECL_AT(ctx, u16, 0x2CEE) = TH08_ECL_RAW_U16(ctx, 0);
         break;
+    case 126:
+        TH08_ECL_AT(ctx, i16, 0x2CF0 + TH08_ECL_READ_I(ctx, 1) * 2) = (i16)TH08_ECL_READ_I(ctx, 0);
+        break;
+    case 125:
+        TH08_ECL_AT(ctx, i16, 0x2D30) = (i16)TH08_ECL_READ_I(ctx, 0);
+#ifdef TH08_ECL_RUN_HIGH_BODY
+enter_subroutine:
+        // Target 0x0041C88A is shared by opcode 125 and the pending-subroutine
+        // check at the top of RunEcl's dispatch loop.  Keeping it lexical at
+        // this case preserves the target's handler ordering.
+        *(RawInstruction **)TH08_ECL_CURRENT_CONTEXT(ctx) =
+            (RawInstruction *)((u8 *)instruction + instruction->nextOffset);
+
+        if (((TH08_ECL_AT(ctx, u32, 0x3324) >> 26) & 1) == 0)
+        {
+            memcpy(TH08_ECL_AT(ctx, u8 *, 0x2CA4) +
+                       TH08_ECL_AT(ctx, i16, 0x2CEA) * 0x228,
+                   TH08_ECL_CONTEXT_ENEMY(ctx) + 0x7F8,
+                   0x8A * sizeof(i32));
+        }
+
+        TH08_ECL_CONTEXT_API(ctx)->InitializeEclContext(
+            TH08_ECL_CONTEXT_ENEMY(ctx) + 0x7F8,
+            TH08_ECL_AT(ctx, u16, 0x2CF0 +
+                TH08_ECL_AT(ctx, i16, 0x2D30) * 2));
+        if (TH08_ECL_AT(ctx, i16, 0x2CEA) < 15)
+            ++TH08_ECL_AT(ctx, i16, 0x2CEA);
+        TH08_ECL_AT(ctx, i16, 0x2D30) = -1;
+        goto restart_context;
+#else
+        TH08_ECL_RUN_HIGH_YIELD(DISPATCH_ENTER_SUBROUTINE);
+#endif
     case 131:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         TH08_ECL_AT(ctx, i32, 0x2E00) = lhsInt;
@@ -634,6 +621,14 @@ enter_subroutine:
             for (i32 i = 0; i < 8; ++i)
                 TH08_ECL_CONTEXT_API(ctx)->SetBossGaugeSlot(i, 0.0f, 0.0f);
         break;
+    case 158:
+        lhsInt = TH08_ECL_READ_I(ctx, 0);
+        TH08_ECL_CONTEXT_API(ctx)->SetBossGaugeSlot(lhsInt, (f32)TH08_ECL_READ_I(ctx, 1) / (f32)TH08_ECL_AT(ctx, i32, 0x2E00),
+                                                     (f32)TH08_ECL_READ_I(ctx, 2) / (f32)TH08_ECL_AT(ctx, i32, 0x2E00));
+        TH08_ECL_CONTEXT_API(ctx)->SetBossGaugeValue(lhsInt, TH08_ECL_READ_I(ctx, 3));
+        break;
+    case 122: TH08_ECL_CONTEXT_API(ctx)->Call00421280(TH08_ECL_CONTEXT_ENEMY(ctx)); break;
+    case 123: TH08_ECL_CONTEXT_API(ctx)->Call004212E0(TH08_ECL_CONTEXT_ENEMY(ctx)); break;
     case 132: TH08_ECL_CONTEXT_API(ctx)->SetTimer(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E14, TH08_ECL_READ_I(ctx, 0)); break;
     case 133:
         if (TH08_ECL_CONTEXT_API(ctx)->PresentationWritesAllowed())
@@ -694,11 +689,6 @@ enter_subroutine:
             *(RawInstruction **)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x14) = TH08_ECL_CONTEXT_INSTRUCTION(ctx);
         }
         break;
-    case 138:
-        TH08_ECL_AT(ctx, u8, 0x3310) = TH08_ECL_RAW_BYTE(ctx, 0);
-        TH08_ECL_AT(ctx, u8, 0x3311) = TH08_ECL_RAW_BYTE(ctx, 1);
-        TH08_ECL_AT(ctx, u8, 0x3312) = TH08_ECL_RAW_BYTE(ctx, 2);
-        break;
     case 139:
         TH08_ECL_CONTEXT_API(ctx)->SpawnEffect00425430(TH08_ECL_READ_I(ctx, 0), &TH08_ECL_AT(ctx, Vec3, 0x2D34),
                                      TH08_ECL_READ_I(ctx, 1), *TH08_ECL_WRITE_I(ctx, 2));
@@ -741,9 +731,58 @@ enter_subroutine:
         TH08_ECL_CONTEXT_API(ctx)->Call00423130(TH08_ECL_READ_I(ctx, 0));
         TH08_ECL_CONTEXT_API(ctx)->Global0164D30C() += 0x708;
         break;
+    case 93:
+        if (TH08_ECL_AT(ctx, i32, 0x2DFC) > 0)
+        {
+            SpawnPacket packet;
+            memcpy(packet.values, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet.values));
+
+            Vec3 position;
+            position.x = TH08_ECL_READ_F(ctx, 1);
+            position.y = TH08_ECL_READ_F(ctx, 2);
+            position.z = TH08_ECL_READ_F(ctx, 3);
+            TH08_ECL_CONTEXT_API(ctx)->SpawnFromPacket(packet.values[0], &position,
+                                     TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
+                                     TH08_ECL_READ_I(ctx, 6),
+                                     (i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18));
+        }
+        break;
+    case 94:
+        if (TH08_ECL_AT(ctx, i32, 0x2DFC) > 0)
+        {
+            SpawnPacket packet;
+            memcpy(packet.values, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet.values));
+
+            Vec3 position;
+            position.x = TH08_ECL_READ_F(ctx, 1);
+            position.y = TH08_ECL_READ_F(ctx, 2);
+            position.z = TH08_ECL_READ_F(ctx, 3);
+            TH08_ECL_CONTEXT_API(ctx)->TransformSpawnVector(&position, &TH08_ECL_AT(ctx, Vec3, 0x2D34));
+            TH08_ECL_CONTEXT_API(ctx)->SpawnFromPacket(packet.values[0], &position,
+                                     TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
+                                     TH08_ECL_READ_I(ctx, 6),
+                                     (i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18));
+        }
+        break;
+    case 95:
+        TH08_ECL_CONTEXT_API(ctx)->ClearOrLimitBullets(8000, 0);
+        break;
     case 149: TH08_ECL_AT(ctx, u16, 0x20A) = (u16)TH08_ECL_READ_I(ctx, 0); break;
     case 150:
         TH08_ECL_AT(ctx, u16, 0x4AE + TH08_ECL_RAW_I(ctx, 0) * 0x2A4) = TH08_ECL_RAW_U16(ctx, 4);
+        break;
+    case 112: TH08_ECL_CONTEXT_API(ctx)->Call00415C60(); break;
+
+    case 113:
+        lhsInt = TH08_ECL_READ_I(ctx, 0);
+        if (lhsInt < 0)
+            TH08_ECL_AT(ctx, u32, 0x3020) &= ~0x200;
+        else
+        {
+            TH08_ECL_AT(ctx, i32, 0x3024) = TH08_ECL_READ_I(ctx, 0);
+            TH08_ECL_AT(ctx, u32, 0x3020) |= 0x200;
+        }
+        TH08_ECL_AT(ctx, i32, 0x3028) = TH08_ECL_READ_I(ctx, 1);
         break;
     case 151:
         TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFBFFFFFF) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 26);
@@ -759,10 +798,6 @@ enter_subroutine:
     case 153:
         TH08_ECL_AT(ctx, i32, 0x337C) = (i32)TH08_ECL_AT(ctx, i16, 0x2CEE);
         TH08_ECL_CONTEXT_API(ctx)->SetTimer(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E14, 0);
-        break;
-    case 154:
-        for (i32 i = 0; i < 0x20; ++i)
-            TH08_ECL_AT(ctx, void *, 0x3280 + i * 4) = 0;
         break;
     case 155:
         TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xF7FFFFFF) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 27);
@@ -781,17 +816,9 @@ enter_subroutine:
             TH08_ECL_CONTEXT_API(ctx)->ConfigureBoss(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x0C, TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3E14,
                                    (TH08_ECL_AT(ctx, i16, 0x534E) / TH08_ECL_AT(ctx, i16, 0x5352)) << 1);
         break;
-    case 158:
-        lhsInt = TH08_ECL_READ_I(ctx, 0);
-        TH08_ECL_CONTEXT_API(ctx)->SetBossGaugeSlot(lhsInt, (f32)TH08_ECL_READ_I(ctx, 1) / (f32)TH08_ECL_AT(ctx, i32, 0x2E00),
-                                                     (f32)TH08_ECL_READ_I(ctx, 2) / (f32)TH08_ECL_AT(ctx, i32, 0x2E00));
-        TH08_ECL_CONTEXT_API(ctx)->SetBossGaugeValue(lhsInt, TH08_ECL_READ_I(ctx, 3));
-        break;
-    case 159: TH08_ECL_AT(ctx, u8, 0x332F) = (u8)TH08_ECL_READ_I(ctx, 0); break;
     case 160: TH08_ECL_CONTEXT_API(ctx)->SetTimer(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x5354, TH08_ECL_READ_I(ctx, 0)); break;
     case 161: TH08_ECL_CONTEXT_API(ctx)->SetAngleFromPosition(&TH08_ECL_AT(ctx, Vec3, 0x2D88), TH08_ECL_READ_F(ctx, 0)); break;
     case 162: TH08_ECL_CONTEXT_API(ctx)->Call00430830(4); break;
-    case 163: TH08_ECL_CONTEXT_API(ctx)->Global00F54CEC() = TH08_ECL_READ_I(ctx, 0); break;
     case 164:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         TH08_ECL_CONTEXT_API(ctx)->Call0041F0B0(lhsInt);
@@ -804,12 +831,6 @@ enter_subroutine:
             TH08_ECL_CONTEXT_API(ctx)->Sin(TH08_ECL_READ_F(ctx, 2)) * TH08_ECL_READ_F(ctx, 3);
         *TH08_ECL_WRITE_F(ctx, 0) =
             TH08_ECL_CONTEXT_API(ctx)->Cos(TH08_ECL_READ_F(ctx, 2)) * TH08_ECL_READ_F(ctx, 3);
-        break;
-    case 167:
-        lhsInt = TH08_ECL_READ_I(ctx, 0);
-        if (TH08_ECL_OBJECT(ctx, lhsInt))
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x554) =
-                TH08_ECL_READ_F(ctx, 1);
         break;
     case 168:
     {
@@ -831,45 +852,12 @@ enter_subroutine:
         else
             *TH08_ECL_WRITE_F(ctx, 0) = TH08_ECL_CONTEXT_API(ctx)->RandomFloatInRange(1.5707964f) - 0.78539819f;
         break;
-    case 170:
-        lhsInt = TH08_ECL_READ_I(ctx, 0);
-        if (TH08_ECL_OBJECT(ctx, lhsInt))
-            *(u8 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x599) =
-                (u8)TH08_ECL_READ_I(ctx, 1);
-        break;
-    case 171:
-        lhsInt = TH08_ECL_READ_I(ctx, 0);
-        if (TH08_ECL_OBJECT(ctx, lhsInt))
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x560) =
-                TH08_ECL_READ_F(ctx, 1);
-        break;
-    case 172:
-        lhsInt = TH08_ECL_READ_I(ctx, 0);
-        if (TH08_ECL_OBJECT(ctx, lhsInt))
-        {
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x558) =
-                TH08_ECL_READ_F(ctx, 1);
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x55C) =
-                TH08_ECL_READ_F(ctx, 2);
-        }
-        break;
     case 173:
         TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xBFFFFFFF) | ((TH08_ECL_READ_I(ctx, 0) & 1) << 30);
         break;
-    case 174:
-    {
-        u8 *oldEffect = TH08_ECL_AT(ctx, u8 *, 0x53C8);
-        if (oldEffect)
-            *(u8 *)(oldEffect + 0x350) = 0;
-        u8 *effect = (u8 *)TH08_ECL_CONTEXT_API(ctx)->SpawnEffect00425B70(TH08_ECL_READ_I(ctx, 0) + 0x20,
-                                                        &TH08_ECL_AT(ctx, Vec3, 0x2D88), 1, -1);
-        TH08_ECL_AT(ctx, u8 *, 0x53C8) = effect;
-        TH08_ECL_CONTEXT_API(ctx)->SelectPlayerMode(TH08_ECL_CONTEXT_API(ctx)->IsYoukai() ? 2 : 1);
-        if (TH08_ECL_AT(ctx, u32, 0x2E0C) & 1)
-            *(f32 *)(effect + 0x14) = -*(f32 *)(effect + 0x14);
+    case 183:
+        TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0x7FFFFFFF) | ((u32)TH08_ECL_READ_I(ctx, 0) << 31);
         break;
-    }
-    case 175: TH08_ECL_CONTEXT_API(ctx)->Global00F54E2C() = TH08_ECL_READ_I(ctx, 0); break;
     case 176:
     {
         u32 base = TH08_ECL_CONTEXT_API(ctx)->GameFlags0164D0B4() & 0xFFFFDE7F;
@@ -886,8 +874,38 @@ enter_subroutine:
         TH08_ECL_AT(ctx, u32, 0x3324) |= 0x40000000;
         break;
     }
+#ifdef TH08_ECL_RUN_HIGH_BODY
+    // Opcodes 82 and 83 are emitted here in integrated RunEcl to reproduce
+    // the target's late physical handler order.  Their standalone low-opcode
+    // forms remain in EclRunLow.inl for source ownership and audit coverage.
+    case 82:
+        TH08_ECL_AT(ctx, f32, 0x3350) = TH08_ECL_READ_F(ctx, 0);
+        TH08_ECL_AT(ctx, f32, 0x3350) *= TH08_ECL_AT(ctx, f32, 0x3350);
+        break;
+    case 83:
+        TH08_ECL_AT(ctx, u32, 0x3328) =
+            (TH08_ECL_AT(ctx, u32, 0x3328) & ~2U) |
+            ((TH08_ECL_READ_I(ctx, 0) & 1) << 1);
+        break;
+#endif
+    case 174:
+    {
+        u8 *oldEffect = TH08_ECL_AT(ctx, u8 *, 0x53C8);
+        if (oldEffect)
+            *(u8 *)(oldEffect + 0x350) = 0;
+        u8 *effect = (u8 *)TH08_ECL_CONTEXT_API(ctx)->SpawnEffect00425B70(TH08_ECL_READ_I(ctx, 0) + 0x20,
+                                                        &TH08_ECL_AT(ctx, Vec3, 0x2D88), 1, -1);
+        TH08_ECL_AT(ctx, u8 *, 0x53C8) = effect;
+        TH08_ECL_CONTEXT_API(ctx)->SelectPlayerMode(TH08_ECL_CONTEXT_API(ctx)->IsYoukai() ? 2 : 1);
+        if (TH08_ECL_AT(ctx, u32, 0x2E0C) & 1)
+            *(f32 *)(effect + 0x14) = -*(f32 *)(effect + 0x14);
+        break;
+    }
+    case 175: TH08_ECL_CONTEXT_API(ctx)->Global00F54E2C() = TH08_ECL_READ_I(ctx, 0); break;
     case 177: TH08_ECL_AT(ctx, i32, 0x2E04) = TH08_ECL_READ_I(ctx, 0); break;
+#if !defined(TH08_ECL_RUN_HIGH_BODY)
     case 178: TH08_ECL_CONTEXT_API(ctx)->Call004224A0(TH08_ECL_CONTEXT_ENEMY(ctx)); break;
+#endif
     case 179: TH08_ECL_CONTEXT_API(ctx)->Call00439007(); break;
     case 180: TH08_ECL_CONTEXT_API(ctx)->Call004390D6(); break;
     case 181:
@@ -903,9 +921,6 @@ enter_subroutine:
         break;
     case 182:
         TH08_ECL_AT(ctx, u32, 0x3328) = (TH08_ECL_AT(ctx, u32, 0x3328) & 0xFFFFFEFF) | ((TH08_ECL_READ_I(ctx, 0) & 1) << 8);
-        break;
-    case 183:
-        TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0x7FFFFFFF) | ((u32)TH08_ECL_READ_I(ctx, 0) << 31);
         break;
     case 184: TH08_ECL_CONTEXT_API(ctx)->Call0041F0E0(TH08_ECL_READ_I(ctx, 0)); break;
 #if !defined(TH08_ECL_RUN_SHARED_SWITCH)
