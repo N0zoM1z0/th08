@@ -49,6 +49,12 @@ review the unit before claiming exactness.
   can affect allocation. After a stack layout is proven, treat a rename as a
   code-generation change and recompare it; prefer a semantic comment over a
   readability-only rename while tuning exact stack homes.
+- When a target resolves one value into a stack home and then uses that same
+  value both to write a field and to call a setter, first test the natural
+  chained assignment `setter = (field = ReadValue(...))`. It preserves the
+  C++ value flow while allowing VC7 to retain one temporary; a separately
+  named local can move fastcall parameter homes. Verify the whole function,
+  since this is a source-shaping hypothesis rather than a byte-forcing device.
 - If an inlined fixed-size structure-tail `memcpy` has the correct semantics,
   size, and `rep movsd` but schedules its count and source setup differently,
   probe the typed address of the first copied field instead of byte-pointer
