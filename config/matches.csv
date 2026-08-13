@@ -342,3 +342,5 @@ address,name,size,status,match_percent,unit,evidence
 0x0043BFC3,th08::GameManager::IncreaseSubrank,124,matching,100.00,game-manager-roi-exact-0043bfc3,python3 scripts/compare-function.py game-manager-roi-exact-0043bfc3 --json
 0x0043C03F,th08::GameManager::DecreaseSubrank,124,matching,100.00,game-manager-roi-exact-0043c03f,python3 scripts/compare-function.py game-manager-roi-exact-0043c03f --json
 0x0043C686,th08::GameManager::InitArcadeRegionParams,129,matching,100.00,game-manager-roi-exact-0043c686,python3 scripts/compare-function.py game-manager-roi-exact-0043c686 --json
+0x0043CA50,th08::Chain::RunCalcChain,232,matching,100.00,chain-run-tail-exact-0043ca50,python3 scripts/compare-function.py chain-run-tail-exact-0043ca50 --json
+0x0043CB60,th08::Chain::RunDrawChain,230,matching,100.00,chain-run-tail-exact-0043cb60,python3 scripts/compare-function.py chain-run-tail-exact-0043cb60 --json
