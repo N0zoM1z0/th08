@@ -309,3 +309,12 @@ address,name,size,status,match_percent,unit,evidence
 0x0045964D,th08::ResultScreen::AddedCallback,2437,matching,100.00,result-screen-roi-exact-0045964d,python3 scripts/compare-function.py result-screen-roi-exact-0045964d --json
 0x00421DD0,th08::utils::DebugPrint,5,matching,100.00,utils-remaining-exact-00421dd0,python3 scripts/compare-function.py utils-remaining-exact-00421dd0 --json
 0x00437CDD,th08::utils::GuiDebugPrint,5,matching,100.00,utils-remaining-exact-00437cdd,python3 scripts/compare-function.py utils-remaining-exact-00437cdd --json
+0x0045C6B0,th08::SoundPlayer::GetFmtIndexByName,523,matching,100.00,sound-player-roi-exact-0045c6b0,python3 scripts/compare-function.py sound-player-roi-exact-0045c6b0 --json
+0x0045C8C0,th08::SoundPlayer::LoadSound,766,matching,100.00,sound-player-roi-exact-0045c8c0,python3 scripts/compare-function.py sound-player-roi-exact-0045c8c0 --json
+0x0045CBC0,th08::SoundPlayer::GetWavFormatData,100,matching,100.00,sound-player-roi-exact-0045cbc0,python3 scripts/compare-function.py sound-player-roi-exact-0045cbc0 --json
+0x0045CE00,th08::SoundPlayer::ReopenBGM,103,matching,100.00,sound-player-roi-exact-0045ce00,python3 scripts/compare-function.py sound-player-roi-exact-0045ce00 --json
+0x0045CE70,th08::SoundPlayer::PreloadBGM,626,matching,100.00,sound-player-roi-exact-0045ce70,python3 scripts/compare-function.py sound-player-roi-exact-0045ce70 --json
+0x0045D3F0,th08::SoundPlayer::InitSoundBuffers,342,matching,100.00,sound-player-roi-exact-0045d3f0,python3 scripts/compare-function.py sound-player-roi-exact-0045d3f0 --json
+0x0045D550,th08::SoundPlayer::PlaySoundByIdx,267,matching,100.00,sound-player-roi-exact-0045d550,python3 scripts/compare-function.py sound-player-roi-exact-0045d550 --json
+0x0045D660,th08::SoundPlayer::PlaySoundPositionedByIdx,296,matching,100.00,sound-player-roi-exact-0045d660,python3 scripts/compare-function.py sound-player-roi-exact-0045d660 --json
+0x0045E1E0,th08::SoundPlayer::QueueCommand,225,matching,100.00,sound-player-roi-exact-0045e1e0,python3 scripts/compare-function.py sound-player-roi-exact-0045e1e0 --json

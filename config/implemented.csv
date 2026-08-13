@@ -336,3 +336,12 @@ th08::ResultScreen::FormatDate
 th08::ResultScreen::HandleReplaySaveKeyboard
 th08::ResultScreen::HandleOtherStatsScreen
 th08::ResultScreen::AddedCallback
+th08::SoundPlayer::GetFmtIndexByName
+th08::SoundPlayer::LoadSound
+th08::SoundPlayer::GetWavFormatData
+th08::SoundPlayer::ReopenBGM
+th08::SoundPlayer::PreloadBGM
+th08::SoundPlayer::InitSoundBuffers
+th08::SoundPlayer::PlaySoundByIdx
+th08::SoundPlayer::PlaySoundPositionedByIdx
+th08::SoundPlayer::QueueCommand
