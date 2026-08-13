@@ -4,12 +4,16 @@ _WINNLSEnableIME@8,0x004A3CD0,ff2510424b00,0x0,PE USER32 import thunk for WINNLS
 __imp__Sleep@4,0x004B4054,ca480c00,0x0,PE KERNEL32 import table entry for Sleep,literal
 __imp__QueryPerformanceFrequency@4,0x004B4084,82490c00,0x0,PE KERNEL32 import table entry for QueryPerformanceFrequency,literal
 __imp__ShowWindow@8,0x004B41C8,ba4b0c00,0x0,PE USER32 import table entry for ShowWindow,literal
+__imp__GetForegroundWindow@0,0x004B41EC,de4c0c00,0x0,PE USER32 import table entry for GetForegroundWindow,literal
+__imp__GetWindowThreadProcessId@8,0x004B41F0,c24c0c00,0x0,PE USER32 import table entry for GetWindowThreadProcessId,literal
+__imp__SetActiveWindow@4,0x004B41F4,9c4c0c00,0x0,PE USER32 import table entry for SetActiveWindow,literal
 __imp__SystemParametersInfoA@16,0x004B420C,2c4c0c00,0x0,PE USER32 import table entry for SystemParametersInfoA,literal
 __imp__ShowCursor@4,0x004B4214,0c4c0c00,0x0,PE USER32 import table entry for ShowCursor,literal
 __imp__SetCursor@4,0x004B4218,004c0c00,0x0,PE USER32 import table entry for SetCursor,literal
 __imp__PeekMessageA@20,0x004B421C,f04b0c00,0x0,PE USER32 import table entry for PeekMessageA,literal
 __imp__TranslateMessage@4,0x004B4220,dc4b0c00,0x0,PE USER32 import table entry for TranslateMessage,literal
 __imp__DispatchMessageA@4,0x004B4224,c84b0c00,0x0,PE USER32 import table entry for DispatchMessageA,literal
+__imp__AttachThreadInput@12,0x004B4228,ae4c0c00,0x0,PE USER32 import table entry for AttachThreadInput,literal
 __imp__MoveWindow@24,0x004B422C,ac4b0c00,0x0,PE USER32 import table entry for MoveWindow,literal
 __imp__DestroyWindow@4,0x004B4230,9c4b0c00,0x0,PE USER32 import table entry for DestroyWindow,literal
 __imp__ReadFile@20,0x004B4058,d2480c00,0x0,PE KERNEL32 import table entry for ReadFile,literal

@@ -328,3 +328,4 @@ address,name,size,status,match_percent,unit,evidence
 0x0045AC90,th08::ScoreDat::ParseCLRD,368,matching,100.00,score-dat-roi-exact-0045ac90,python3 scripts/compare-function.py score-dat-roi-exact-0045ac90 --json
 0x0045AE00,th08::ScoreDat::ParsePSCR,295,matching,100.00,score-dat-roi-exact-0045ae00,python3 scripts/compare-function.py score-dat-roi-exact-0045ae00 --json
 0x0045AF30,th08::ScoreDat::ParsePLST,129,matching,100.00,score-dat-roi-exact-0045af30,python3 scripts/compare-function.py score-dat-roi-exact-0045af30 --json
+0x004436A0,th08::GameWindow::ActivateWindow,143,matching,100.00,activate-window-unlocked-exact-004436a0,python3 scripts/compare-function.py activate-window-unlocked-exact-004436a0 --json
