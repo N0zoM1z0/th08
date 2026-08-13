@@ -6258,3 +6258,599 @@ offset = 0x3809
 type = "DIR32"
 symbol = "$L*"
 target = 0x00461D97
+
+[[units]]
+name = "controller-get-controller-input"
+object = "build/Global.obj"
+symbol = "?GetControllerInput@Controller@th08@@YIGG@Z"
+target_address = 0x0043D120
+size = 0x5B1
+
+[[units.relocations]]
+offset = 0x13
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x40
+type = "DIR32"
+symbol = "__imp__joyGetPosEx@8"
+target = 0x004B423C
+
+[[units.relocations]]
+offset = 0x5D
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x68
+type = "REL32"
+symbol = "?SetButtonFromControllerInputs@Controller@th08@@YIIPAGFGI@Z"
+target = 0x0043D760
+
+[[units.relocations]]
+offset = 0x70
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x75
+type = "REL32"
+symbol = "?IsShotSlowEnabled@Supervisor@th08@@QAEIXZ"
+target = 0x0043EF50
+
+[[units.relocations]]
+offset = 0x86
+type = "DIR32"
+symbol = "?g_FocusButtonConflictState@th08@@3GA"
+target = 0x0164D51C
+
+[[units.relocations]]
+offset = 0x91
+type = "DIR32"
+symbol = "?g_FocusButtonConflictState@th08@@3GA"
+target = 0x0164D51C
+
+[[units.relocations]]
+offset = 0x9B
+type = "DIR32"
+symbol = "?g_FocusButtonConflictState@th08@@3GA"
+target = 0x0164D51C
+
+[[units.relocations]]
+offset = 0xA2
+type = "DIR32"
+symbol = "?g_FocusButtonConflictState@th08@@3GA"
+target = 0x0164D51C
+
+[[units.relocations]]
+offset = 0xC1
+type = "DIR32"
+symbol = "?g_FocusButtonConflictState@th08@@3GA"
+target = 0x0164D51C
+
+[[units.relocations]]
+offset = 0xCD
+type = "DIR32"
+symbol = "?g_FocusButtonConflictState@th08@@3GA"
+target = 0x0164D51C
+
+[[units.relocations]]
+offset = 0xD7
+type = "DIR32"
+symbol = "?g_FocusButtonConflictState@th08@@3GA"
+target = 0x0164D51C
+
+[[units.relocations]]
+offset = 0xF1
+type = "DIR32"
+symbol = "?g_FocusButtonConflictState@th08@@3GA"
+target = 0x0164D51C
+
+[[units.relocations]]
+offset = 0x100
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x10B
+type = "REL32"
+symbol = "?SetButtonFromControllerInputs@Controller@th08@@YIIPAGFGI@Z"
+target = 0x0043D760
+
+[[units.relocations]]
+offset = 0x118
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x123
+type = "REL32"
+symbol = "?SetButtonFromControllerInputs@Controller@th08@@YIIPAGFGI@Z"
+target = 0x0043D760
+
+[[units.relocations]]
+offset = 0x130
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x13B
+type = "REL32"
+symbol = "?SetButtonFromControllerInputs@Controller@th08@@YIIPAGFGI@Z"
+target = 0x0043D760
+
+[[units.relocations]]
+offset = 0x148
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x153
+type = "REL32"
+symbol = "?SetButtonFromControllerInputs@Controller@th08@@YIIPAGFGI@Z"
+target = 0x0043D760
+
+[[units.relocations]]
+offset = 0x160
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x16B
+type = "REL32"
+symbol = "?SetButtonFromControllerInputs@Controller@th08@@YIIPAGFGI@Z"
+target = 0x0043D760
+
+[[units.relocations]]
+offset = 0x178
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x183
+type = "REL32"
+symbol = "?SetButtonFromControllerInputs@Controller@th08@@YIIPAGFGI@Z"
+target = 0x0043D760
+
+[[units.relocations]]
+offset = 0x193
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x19E
+type = "REL32"
+symbol = "?SetButtonFromControllerInputs@Controller@th08@@YIIPAGFGI@Z"
+target = 0x0043D760
+
+[[units.relocations]]
+offset = 0x1AE
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x1B9
+type = "REL32"
+symbol = "?SetButtonFromControllerInputs@Controller@th08@@YIIPAGFGI@Z"
+target = 0x0043D760
+
+[[units.relocations]]
+offset = 0x1BF
+type = "DIR32"
+symbol = "?g_JoystickCaps@th08@@3UtagJOYCAPSA@@A"
+target = 0x0164D388
+
+[[units.relocations]]
+offset = 0x1C5
+type = "DIR32"
+symbol = "?g_JoystickCaps@th08@@3UtagJOYCAPSA@@A"
+target = 0x0164D388
+
+[[units.relocations]]
+offset = 0x1D1
+type = "DIR32"
+symbol = "?g_JoystickCaps@th08@@3UtagJOYCAPSA@@A"
+target = 0x0164D388
+
+[[units.relocations]]
+offset = 0x1D7
+type = "DIR32"
+symbol = "?g_JoystickCaps@th08@@3UtagJOYCAPSA@@A"
+target = 0x0164D388
+
+[[units.relocations]]
+offset = 0x1FC
+type = "DIR32"
+symbol = "?g_JoystickCaps@th08@@3UtagJOYCAPSA@@A"
+target = 0x0164D388
+
+[[units.relocations]]
+offset = 0x202
+type = "DIR32"
+symbol = "?g_JoystickCaps@th08@@3UtagJOYCAPSA@@A"
+target = 0x0164D388
+
+[[units.relocations]]
+offset = 0x224
+type = "DIR32"
+symbol = "?g_JoystickCaps@th08@@3UtagJOYCAPSA@@A"
+target = 0x0164D388
+
+[[units.relocations]]
+offset = 0x22A
+type = "DIR32"
+symbol = "?g_JoystickCaps@th08@@3UtagJOYCAPSA@@A"
+target = 0x0164D388
+
+[[units.relocations]]
+offset = 0x237
+type = "DIR32"
+symbol = "?g_JoystickCaps@th08@@3UtagJOYCAPSA@@A"
+target = 0x0164D388
+
+[[units.relocations]]
+offset = 0x23D
+type = "DIR32"
+symbol = "?g_JoystickCaps@th08@@3UtagJOYCAPSA@@A"
+target = 0x0164D388
+
+[[units.relocations]]
+offset = 0x260
+type = "DIR32"
+symbol = "?g_JoystickCaps@th08@@3UtagJOYCAPSA@@A"
+target = 0x0164D388
+
+[[units.relocations]]
+offset = 0x266
+type = "DIR32"
+symbol = "?g_JoystickCaps@th08@@3UtagJOYCAPSA@@A"
+target = 0x0164D388
+
+[[units.relocations]]
+offset = 0x295
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x29C
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x2BC
+type = "DIR32"
+symbol = "??_C@_0BK@BJPCNFPG@error?5?3?5DIERR_INPUTLOST?$AN?6?$AA@"
+target = 0x004B59FC
+
+[[units.relocations]]
+offset = 0x2C1
+type = "REL32"
+symbol = "?DebugPrint@utils@th08@@YAXPADZZ"
+target = 0x00421DD0
+
+[[units.relocations]]
+offset = 0x2CA
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x2D1
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x2E7
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x2EE
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x301
+type = "DIR32"
+symbol = "??_C@_0BN@KAGFBIKB@error?5?3?5DIERR_INPUTLOST?5?$CFd?$AN?6?$AA@"
+target = 0x004B59DC
+
+[[units.relocations]]
+offset = 0x306
+type = "REL32"
+symbol = "?DebugPrint@utils@th08@@YAXPADZZ"
+target = 0x00421DD0
+
+[[units.relocations]]
+offset = 0x35F
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x366
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x38F
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x39A
+type = "REL32"
+symbol = "?SetButtonFromDirectInputJoystate@Controller@th08@@YIIPAGFGPAE@Z"
+target = 0x0043D6E0
+
+[[units.relocations]]
+offset = 0x3A2
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x3A7
+type = "REL32"
+symbol = "?IsShotSlowEnabled@Supervisor@th08@@QAEIXZ"
+target = 0x0043EF50
+
+[[units.relocations]]
+offset = 0x3B8
+type = "DIR32"
+symbol = "?g_FocusButtonConflictState@th08@@3GA"
+target = 0x0164D51C
+
+[[units.relocations]]
+offset = 0x3C3
+type = "DIR32"
+symbol = "?g_FocusButtonConflictState@th08@@3GA"
+target = 0x0164D51C
+
+[[units.relocations]]
+offset = 0x3CD
+type = "DIR32"
+symbol = "?g_FocusButtonConflictState@th08@@3GA"
+target = 0x0164D51C
+
+[[units.relocations]]
+offset = 0x3D4
+type = "DIR32"
+symbol = "?g_FocusButtonConflictState@th08@@3GA"
+target = 0x0164D51C
+
+[[units.relocations]]
+offset = 0x3F3
+type = "DIR32"
+symbol = "?g_FocusButtonConflictState@th08@@3GA"
+target = 0x0164D51C
+
+[[units.relocations]]
+offset = 0x3FF
+type = "DIR32"
+symbol = "?g_FocusButtonConflictState@th08@@3GA"
+target = 0x0164D51C
+
+[[units.relocations]]
+offset = 0x409
+type = "DIR32"
+symbol = "?g_FocusButtonConflictState@th08@@3GA"
+target = 0x0164D51C
+
+[[units.relocations]]
+offset = 0x423
+type = "DIR32"
+symbol = "?g_FocusButtonConflictState@th08@@3GA"
+target = 0x0164D51C
+
+[[units.relocations]]
+offset = 0x435
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x440
+type = "REL32"
+symbol = "?SetButtonFromDirectInputJoystate@Controller@th08@@YIIPAGFGPAE@Z"
+target = 0x0043D6E0
+
+[[units.relocations]]
+offset = 0x450
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x45B
+type = "REL32"
+symbol = "?SetButtonFromDirectInputJoystate@Controller@th08@@YIIPAGFGPAE@Z"
+target = 0x0043D6E0
+
+[[units.relocations]]
+offset = 0x46B
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x476
+type = "REL32"
+symbol = "?SetButtonFromDirectInputJoystate@Controller@th08@@YIIPAGFGPAE@Z"
+target = 0x0043D6E0
+
+[[units.relocations]]
+offset = 0x486
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x491
+type = "REL32"
+symbol = "?SetButtonFromDirectInputJoystate@Controller@th08@@YIIPAGFGPAE@Z"
+target = 0x0043D6E0
+
+[[units.relocations]]
+offset = 0x4A1
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x4AC
+type = "REL32"
+symbol = "?SetButtonFromDirectInputJoystate@Controller@th08@@YIIPAGFGPAE@Z"
+target = 0x0043D6E0
+
+[[units.relocations]]
+offset = 0x4BC
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x4C7
+type = "REL32"
+symbol = "?SetButtonFromDirectInputJoystate@Controller@th08@@YIIPAGFGPAE@Z"
+target = 0x0043D6E0
+
+[[units.relocations]]
+offset = 0x4DA
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x4E5
+type = "REL32"
+symbol = "?SetButtonFromDirectInputJoystate@Controller@th08@@YIIPAGFGPAE@Z"
+target = 0x0043D6E0
+
+[[units.relocations]]
+offset = 0x4F8
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x503
+type = "REL32"
+symbol = "?SetButtonFromDirectInputJoystate@Controller@th08@@YIIPAGFGPAE@Z"
+target = 0x0043D6E0
+
+[[units.relocations]]
+offset = 0x50A
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x532
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x55A
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x580
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units]]
+name = "controller-get-input"
+object = "build/Global.obj"
+symbol = "?GetInput@Controller@th08@@YIGXZ"
+target_address = 0x0043D970
+size = 0x7ED
+
+[[units.relocations]]
+offset = 0x14
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x28
+type = "DIR32"
+symbol = "__imp__GetKeyboardState@4"
+target = 0x004B41CC
+
+[[units.relocations]]
+offset = 0x3B6
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x3BE
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x3E3
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x3EB
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x3FA
+type = "REL32"
+symbol = "?GetControllerInput@Controller@th08@@YIGG@Z"
+target = 0x0043D120
+
+[[units.relocations]]
+offset = 0x40E
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x416
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x425
+type = "REL32"
+symbol = "?GetControllerInput@Controller@th08@@YIGG@Z"
+target = 0x0043D120
+
+[[units.relocations]]
+offset = 0x7E5
+type = "REL32"
+symbol = "?GetControllerInput@Controller@th08@@YIGG@Z"
+target = 0x0043D120

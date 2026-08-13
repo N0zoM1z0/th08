@@ -77,3 +77,5 @@ address,name,size,status,match_percent,unit,evidence
 0x00420120,th08::EclOperands::EnemyOverlay::ResolveFloat,1687,matching,100.00,ecl-resolve-float,python3 scripts/compare-function.py ecl-resolve-float --json
 0x00420950,th08::EclOperands::ResolveFloatLValue,696,matching,100.00,ecl-resolve-float-lvalue,python3 scripts/compare-function.py ecl-resolve-float-lvalue --json
 0x0045EA00,th08::AnmManager::ExecuteScript,13933,matching,100.00,anm-manager-execute-script,python3 scripts/compare-function.py anm-manager-execute-script --json
+0x0043D120,th08::Controller::GetControllerInput,1457,matching,100.00,controller-get-controller-input,python3 scripts/compare-function.py controller-get-controller-input --json
+0x0043D970,th08::Controller::GetInput,2029,matching,100.00,controller-get-input,python3 scripts/compare-function.py controller-get-input --json
