@@ -115,3 +115,10 @@ requires = ["absolute_memory"]
 confidence = "target_observation_with_probe"
 recommendation = "Do not promote an absolute target operand to a standalone global from a read alone. Reconcile write-side and lifetime xrefs against known global objects; when the address is base+member_offset and construction or destruction uses [this+member_offset], express the source through that owner so COFF emits the base DIR32 relocation with the natural addend."
 evidence = "TH08 EnemyManager fields observed at absolute 0x00F54E0C/0x00F54E10 in RunEcl and as g_EnemyManager+0x9DCEEC/+0x9DCEF0 in AddedCallback; the corrected VC7 probe emits g_EnemyManager DIR32 relocations with those addends instead of false zero-addend globals"
+
+[[rules]]
+id = "target-relocation-ledger-ownership"
+requires = ["ledgered_relocation_destination"]
+confidence = "exact_match_corpus"
+recommendation = "Resolve relocation destinations through each CSV's named address column, not a fixed column index. Keep functions, globals, floats, strings, and relocation-only imports or thunks in their owning ledgers; never create a fake function/global row to satisfy replay. Promote exact status only after the isolated COFF extent and every relocation replay to zero differences."
+evidence = "TH08 zwave and AnmManager unlock corpus: header-aware destination lookup exposed 15 already-exact functions totaling 5,259 authored bytes; six attested import/thunk rows remained relocation-only while complete replay verified 146 relocations"

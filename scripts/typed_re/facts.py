@@ -121,7 +121,11 @@ def load_target(path: Path) -> tuple[PeImage, dict[str, Any]]:
     return PeImage(path), target
 
 
-def load_ledgers() -> tuple[dict[int, dict[str, Any]], dict[int, dict[str, str]]]:
+def load_ledgers() -> tuple[
+    dict[int, dict[str, Any]],
+    dict[int, dict[str, str]],
+    dict[int, list[dict[str, str]]],
+]:
     mapping: dict[int, dict[str, Any]] = {}
     with MAPPING.open(newline="", encoding="utf-8") as stream:
         for line, row in enumerate(csv.reader(stream), 1):
@@ -159,7 +163,25 @@ def load_ledgers() -> tuple[dict[int, dict[str, Any]], dict[int, dict[str, str]]
                 "address": canonical(address),
                 "kind": row[2],
             }
-    return mapping, reccmp
+    destinations: dict[int, list[dict[str, str]]] = defaultdict(list)
+    for path in sorted((ROOT / "config").glob("reccmp-*.csv")):
+        with path.open(newline="", encoding="utf-8") as stream:
+            reader = csv.DictReader(stream)
+            if reader.fieldnames is None or "address" not in reader.fieldnames:
+                raise ValueError(f"{path.name}: missing named address column")
+            for line, row in enumerate(reader, 2):
+                try:
+                    address = int(row["address"], 0)
+                except (KeyError, TypeError, ValueError) as error:
+                    raise ValueError(
+                        f"{path.name}:{line}: invalid named address"
+                    ) from error
+                record = {"ledger": path.name}
+                for field in ("name", "coff_symbol", "type", "validation"):
+                    if row.get(field):
+                        record[field] = row[field]
+                destinations[address].append(record)
+    return mapping, reccmp, destinations
 
 
 def access_name(access: int) -> str:
@@ -249,7 +271,7 @@ def run_compare(address: int, size: int, target_path: Path) -> dict[str, Any]:
 
 def analyze(address: str, target_path: Path, compare: bool) -> dict[str, Any]:
     image, target_config = load_target(target_path)
-    mapping, reccmp = load_ledgers()
+    mapping, reccmp, destinations = load_ledgers()
     start = int(address, 0)
     row = mapping.get(start)
     if row is None:
@@ -359,6 +381,8 @@ def analyze(address: str, target_path: Path, compare: bool) -> dict[str, Any]:
                     kind = "image_immediate"
             if absolute is not None and image.contains(absolute):
                 features.add("absolute_memory")
+                if absolute in destinations:
+                    features.add("ledgered_relocation_destination")
                 key = (absolute, kind, operand.size)
                 record = absolute_operands.setdefault(
                     key,
@@ -366,6 +390,7 @@ def analyze(address: str, target_path: Path, compare: bool) -> dict[str, Any]:
                         "address": canonical(absolute),
                         "kind": kind,
                         "operand_width": width_name(operand.size),
+                        "destination_ledgers": destinations.get(absolute, []),
                         "uses": [],
                     },
                 )
@@ -376,12 +401,15 @@ def analyze(address: str, target_path: Path, compare: bool) -> dict[str, Any]:
 
         if mnemonic == "call" and insn.operands and insn.operands[0].type == X86_OP_IMM:
             destination = int(insn.operands[0].imm) & 0xFFFFFFFF
+            if destination in destinations:
+                features.add("ledgered_relocation_destination")
             calls.append(
                 {
                     "instruction": canonical(insn.address),
                     "destination": canonical(destination),
                     "mapping_name": mapping.get(destination, {}).get("name"),
                     "reccmp_name": reccmp.get(destination, {}).get("name"),
+                    "destination_ledgers": destinations.get(destination, []),
                 }
             )
         if mnemonic == "ret":
@@ -463,6 +491,13 @@ def self_check(target_path: Path) -> None:
         failures.append("ECX-home regression")
     if [item["destination"] for item in observed["direct_calls"]] != ["0x00404720"]:
         failures.append("direct-call regression")
+    if "ledgered_relocation_destination" not in report["inferences"]["features"]:
+        failures.append("header-aware relocation-ledger regression")
+    if not any(
+        rule["id"] == "target-relocation-ledger-ownership"
+        for rule in report["inferences"]["compiler_recommendations"]
+    ):
+        failures.append("relocation-ledger recommendation regression")
     comparison = report["comparison"]
     if comparison.get("state") != "compared" or comparison.get("report", {}).get("result") != "exact":
         failures.append("canonical comparator regression")

@@ -69,6 +69,14 @@ review the unit before claiming exactness.
   it resolves to the same runtime address.  RunEcl's enemy ANM pointers at
   `0x00F54E0C` and `0x00F54E10` are the corpus example: both are members of
   `g_EnemyManager`, not independent globals.
+- Resolve comparison destinations by each CSV header's named `address` column;
+  the function/global ledgers place it differently from float/string ledgers.
+  Keep attested IAT slots, import thunks, and other non-inventory symbols in
+  `config/reccmp-relocations.csv`. Never add a fake function or global merely
+  to make relocation replay pass. A destination being ledgered only removes an
+  evidence gap: require exact isolated extent and full zero-difference replay
+  before adding a match. The zwave and AnmManager unblocked batches are the
+  corpus example (15 functions, 5,259 authored bytes, 146 relocations).
 - Test every source-shaping change through `$th08-matching`.
 - If target code ends before the next mapped function but the COFF auxiliary
   size continues through switch tables, compare the complete associated extent
