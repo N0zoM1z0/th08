@@ -179,3 +179,16 @@ address,name,size,status,match_percent,unit,evidence
 0x00475200,th08::PbgArchive::SeekPastInt,31,matching,100.00,pbg-archive-exact-00475200,python3 scripts/compare-function.py pbg-archive-exact-00475200 --json
 0x00475220,th08::PbgArchive::SeekPastString,76,matching,100.00,pbg-archive-exact-00475220,python3 scripts/compare-function.py pbg-archive-exact-00475220 --json
 0x00475270,th08::PbgArchiveEntry::~PbgArchiveEntry,40,matching,100.00,pbg-archive-exact-00475270,python3 scripts/compare-function.py pbg-archive-exact-00475270 --json
+0x004736C0,th08::CPbgFile::CPbgFile,51,matching,100.00,pbg-file-exact-004736c0,python3 scripts/compare-function.py pbg-file-exact-004736c0 --json
+0x00473730,th08::CPbgFile::~CPbgFile,81,matching,100.00,pbg-file-exact-00473730,python3 scripts/compare-function.py pbg-file-exact-00473730 --json
+0x00473790,th08::CPbgFile::Open,330,matching,100.00,pbg-file-exact-00473790,python3 scripts/compare-function.py pbg-file-exact-00473790 --json
+0x004738E0,th08::CPbgFile::Close,53,matching,100.00,pbg-file-exact-004738e0,python3 scripts/compare-function.py pbg-file-exact-004738e0 --json
+0x00473920,th08::CPbgFile::Read,68,matching,100.00,pbg-file-exact-00473920,python3 scripts/compare-function.py pbg-file-exact-00473920 --json
+0x00473970,th08::CPbgFile::Write,74,matching,100.00,pbg-file-exact-00473970,python3 scripts/compare-function.py pbg-file-exact-00473970 --json
+0x004739C0,th08::CPbgFile::Tell,43,matching,100.00,pbg-file-exact-004739c0,python3 scripts/compare-function.py pbg-file-exact-004739c0 --json
+0x004739F0,th08::CPbgFile::GetSize,39,matching,100.00,pbg-file-exact-004739f0,python3 scripts/compare-function.py pbg-file-exact-004739f0 --json
+0x00473A20,th08::CPbgFile::Seek,51,matching,100.00,pbg-file-exact-00473a20,python3 scripts/compare-function.py pbg-file-exact-00473a20 --json
+0x00473A60,th08::CPbgFile::ReadWholeFile,210,matching,100.00,pbg-file-exact-00473a60,python3 scripts/compare-function.py pbg-file-exact-00473a60 --json
+0x00473B40,th08::CPbgFile::GetFullFilePath,253,matching,100.00,pbg-file-exact-00473b40,python3 scripts/compare-function.py pbg-file-exact-00473b40 --json
+0x00473C40,th08::IPbgFile::IPbgFile,23,matching,100.00,pbg-file-exact-00473c40,python3 scripts/compare-function.py pbg-file-exact-00473c40 --json
+0x00473C60,th08::IPbgFile::~IPbgFile,20,matching,100.00,pbg-file-exact-00473c60,python3 scripts/compare-function.py pbg-file-exact-00473c60 --json

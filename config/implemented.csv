@@ -133,6 +133,8 @@ th08::CPbgFile::Seek
 th08::CPbgFile::ReadWholeFile
 th08::CPbgFile::GetFullFilePath
 th08::CPbgFile::ReadInt
+th08::IPbgFile::IPbgFile
+th08::IPbgFile::~IPbgFile
 th08::Lzss::Encode
 th08::Lzss::Decode
 th08::Lzss::InitTree
