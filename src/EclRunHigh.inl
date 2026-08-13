@@ -119,8 +119,6 @@ struct TargetApi
     f32 AddNormalizeAngle(f32 a, f32 b);                        // 0x0043EDB0
     f32 AngleToPlayer(const Vec3 *position);                    // 0x0044C1B0
     f32 VectorAngle(f32 y, f32 x);                              // 0x0040C7B0
-    f32 Sin(f32 angle);                                        // 0x00409060
-    f32 Cos(f32 angle);                                        // 0x00408D40
 
     void AddVectors(Vec3 *out, const Vec3 *left,
                             const Vec3 *right);                          // 0x00409080
@@ -838,17 +836,21 @@ enter_subroutine:
     case 165: TH08_ECL_AT(ctx, f32, 0x14) = TH08_ECL_READ_F(ctx, 0); break;
     case 166:
         *TH08_ECL_WRITE_F(ctx, 1) =
-            TH08_ECL_CONTEXT_API(ctx)->Sin(TH08_ECL_READ_F(ctx, 2)) * TH08_ECL_READ_F(ctx, 3);
+            sinf(TH08_ECL_READ_F(ctx, 2)) * TH08_ECL_READ_F(ctx, 3);
         *TH08_ECL_WRITE_F(ctx, 0) =
-            TH08_ECL_CONTEXT_API(ctx)->Cos(TH08_ECL_READ_F(ctx, 2)) * TH08_ECL_READ_F(ctx, 3);
+            cosf(TH08_ECL_READ_F(ctx, 2)) * TH08_ECL_READ_F(ctx, 3);
         break;
     case 169:
-        if ((TH08_ECL_CONTEXT_API(ctx)->PlayerX() < TH08_ECL_AT(ctx, f32, 0x2D34) && 96.0f < TH08_ECL_AT(ctx, f32, 0x2D34)) ||
+        if (
+            TH08_ECL_AT(ctx, f32, 0x2D34) >
+                (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(&g_Player) + 0x2B4)) &&
+            96.0f < TH08_ECL_AT(ctx, f32, 0x2D34) ||
             288.0f < TH08_ECL_AT(ctx, f32, 0x2D34))
-            *TH08_ECL_WRITE_F(ctx, 0) = TH08_ECL_CONTEXT_API(ctx)->AddNormalizeAngle(
-                TH08_ECL_CONTEXT_API(ctx)->RandomFloatInRange(1.5707964f) + 2.3561945f, 0.0f);
+            *TH08_ECL_WRITE_F(ctx, 0) = AddNormalizeAngle(
+                g_Rng.GetRandomF32InRange(1.5707964f) + 2.3561945f, 0.0f);
         else
-            *TH08_ECL_WRITE_F(ctx, 0) = TH08_ECL_CONTEXT_API(ctx)->RandomFloatInRange(1.5707964f) - 0.78539819f;
+            *TH08_ECL_WRITE_F(ctx, 0) =
+                g_Rng.GetRandomF32InRange(1.5707964f) - 0.78539819f;
         break;
     case 173:
         TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xBFFFFFFF) | ((TH08_ECL_READ_I(ctx, 0) & 1) << 30);
