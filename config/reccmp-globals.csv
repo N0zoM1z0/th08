@@ -128,6 +128,7 @@ th08::g_TextBufferSurface,0x1653620,global
 th08::g_ItemManager,0x1653648,global
 th08::g_ExclusiveMutex,0x17ce6fc,global
 th08::g_GameWindow,0x17ce700,global
+th08::g_DummyMidiTimerPerformanceCounter,0x17ce744,global
 th08::g_SupervisorScreenEffect,0x17ce750,global
 th08::g_Supervisor,0x17ce758,global
 th08::g_SupervisorLoadingVms,0x17ceac0,global

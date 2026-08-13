@@ -16109,6 +16109,28 @@ target = 0x004B40C0
 # has no canonical public global-ledger row yet.
 # __except_list=0 is a compiler pseudo-symbol in SEH prologue relocations.
 
+# Ledger name: th08::DummyMidiTimer::OnTimerElapsed
+# Extent: 0x00445400..0x00445416 (0x16 bytes)
+# Evidence: target-pinned full relocation replay; 2 relocations; no calls.
+[[units]]
+name = "midi-exact-00445400"
+object = "build/Midi.obj"
+symbol = "?OnTimerElapsed@DummyMidiTimer@th08@@UAEXXZ"
+target_address = 0x00445400
+size = 0x16
+
+[[units.relocations]]
+offset = 0x8
+type = "DIR32"
+symbol = "?g_DummyMidiTimerPerformanceCounter@th08@@3T_LARGE_INTEGER@@A"
+target = 0x017CE744
+
+[[units.relocations]]
+offset = 0xE
+type = "DIR32"
+symbol = "__imp__QueryPerformanceCounter@4"
+target = 0x004B4088
+
 # Ledger name: th08::MidiDevice::MidiDevice
 # Mapping boundary name: th08::MidiDevice::MidiDevice
 # implemented.csv: present

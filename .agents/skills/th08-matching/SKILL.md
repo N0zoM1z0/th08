@@ -72,6 +72,13 @@ target row is still `FUN_*`; it is review-only.  Reconcile the target name and
 ABI in the ledgers before creating a canonical unit, rather than accepting a
 placeholder name.
 
+If a fully replayable leaf is blocked only by a source-emitted static global,
+decode that relocation against the target and add its canonical global-ledger
+row before acceptance.  Then add the function mapping/implementation record,
+write the unit's explicit relocation, and require the canonical comparator to
+replay it.  Do not treat a private static name or a successful object build as
+an implicit target address.
+
 For a VC7 switch function whose COFF auxiliary `total_size` includes compiler-
 owned jump tables, keep `size` as the authored code coverage and set
 `compare_size` to the complete code-plus-table extent. Prove the extent ends at

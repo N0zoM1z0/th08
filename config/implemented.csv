@@ -411,3 +411,4 @@ th08::Ending::OnDraw
 th08::Ending::DeletedCallback
 th08::AnmManager::TakeScreencaptures
 th08::ItemManager::UpdatePointItemExtendThreshold
+th08::DummyMidiTimer::OnTimerElapsed
