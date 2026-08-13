@@ -285,3 +285,11 @@ address,name,size,status,match_percent,unit,evidence
 0x00466AE0,th08::AnmManager::ReleaseSurface,200,matching,100.00,anm-manager-remaining-exact-00466ae0,python3 scripts/compare-function.py anm-manager-remaining-exact-00466ae0 --json
 0x00466BB0,th08::AnmManager::CopySurfaceToBackbuffer,445,matching,100.00,anm-manager-remaining-exact-00466bb0,python3 scripts/compare-function.py anm-manager-remaining-exact-00466bb0 --json
 0x00467180,th08::AnmManager::CaptureToSurface,537,matching,100.00,anm-manager-remaining-exact-00467180,python3 scripts/compare-function.py anm-manager-remaining-exact-00467180 --json
+0x00471730,th08::CSoundManager::Initialize,142,matching,100.00,zwave-unlocked-exact-00471730,python3 scripts/compare-function.py zwave-unlocked-exact-00471730 --json
+0x004725A0,th08::CSound::RestoreBuffer,163,matching,100.00,zwave-unlocked-exact-004725a0,python3 scripts/compare-function.py zwave-unlocked-exact-004725a0 --json
+0x00472840,th08::CSound::SetVolume,148,matching,100.00,zwave-unlocked-exact-00472840,python3 scripts/compare-function.py zwave-unlocked-exact-00472840 --json
+0x00472D30,th08::CStreamingSound::HandleWaveStreamNotification,1000,matching,100.00,zwave-unlocked-exact-00472d30,python3 scripts/compare-function.py zwave-unlocked-exact-00472d30 --json
+0x00473250,th08::CWaveFile::Open,163,matching,100.00,zwave-unlocked-exact-00473250,python3 scripts/compare-function.py zwave-unlocked-exact-00473250 --json
+0x004733E0,th08::CWaveFile::ResetFile,328,matching,100.00,zwave-unlocked-exact-004733e0,python3 scripts/compare-function.py zwave-unlocked-exact-004733e0 --json
+0x00473530,th08::CWaveFile::Read,328,matching,100.00,zwave-unlocked-exact-00473530,python3 scripts/compare-function.py zwave-unlocked-exact-00473530 --json
+0x00473680,th08::CWaveFile::Close,51,matching,100.00,zwave-unlocked-exact-00473680,python3 scripts/compare-function.py zwave-unlocked-exact-00473680 --json

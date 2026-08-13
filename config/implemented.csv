@@ -300,6 +300,14 @@ th08::CWaveFile::~CWaveFile
 th08::CWaveFile::Reopen
 th08::CWaveFile::OpenFromMemory
 th08::CWaveFile::GetSize
+th08::CSoundManager::Initialize
+th08::CSound::RestoreBuffer
+th08::CSound::SetVolume
+th08::CStreamingSound::HandleWaveStreamNotification
+th08::CWaveFile::Open
+th08::CWaveFile::ResetFile
+th08::CWaveFile::Read
+th08::CWaveFile::Close
 th08::Rng::GetRandomU32InRange
 th08::AnmLoaded::SetAndExecuteScript
 th08::AnmLoaded::ExecuteAnmIdxArray
