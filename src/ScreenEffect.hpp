@@ -46,7 +46,11 @@ struct ScreenEffect
     unknown_fields(0x0, 0x4);
     ChainElem *calcChainElement;
     ChainElem *drawChainElement;
-    unknown_fields(0xc, 0x1c);
+    unknown_fields(0xc, 0x4);
+    i32 arcadeFadeAlpha;
+    unknown_fields(0x14, 0x4);
+    D3DCOLOR arcadeFadeColor;
+    unknown_fields(0x1c, 0xc);
     ZunTimer timer;
 };
 

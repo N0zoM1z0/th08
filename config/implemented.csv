@@ -94,6 +94,7 @@ th08::AnmVmBase::SetBlendModeAdditive
 th08::AnmVmBase::SetBlendModeNormal
 th08::ScreenEffect::AddedCallback
 th08::ScreenEffect::DeletedCallback
+th08::ScreenEffect::DrawArcadeFade
 th08::Supervisor::OnUpdate
 th08::Supervisor::Supervisor
 th08::Supervisor::DrawFpsCounter
@@ -121,6 +122,7 @@ th08::Supervisor::ThreadStart
 th08::Supervisor::ThreadClose
 th08::Supervisor::SetupLoadingVms
 th08::Supervisor::InitializeCriticalSections
+th08::Supervisor::DeleteCriticalSections
 th08::Supervisor::UpdateGameTime
 th08::Supervisor::UpdatePlayTime
 WinMain

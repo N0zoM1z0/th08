@@ -16,6 +16,7 @@ address,name,size,status,match_percent,unit,evidence
 0x004413E0,th08::ItemManager::AutoCollectAllItems,97,matching,100.00,item-auto-collect,python3 scripts/compare-function.py item-auto-collect --json
 0x00441530,th08::ItemManager::CancelAutoCollect,109,matching,100.00,item-cancel-auto-collect,python3 scripts/compare-function.py item-cancel-auto-collect --json
 0x00445BC0,th08::Supervisor::DrawFpsCounter,20,matching,100.00,supervisor-draw-fps-counter,python3 scripts/compare-function.py supervisor-draw-fps-counter --json
+0x00448A2F,th08::Supervisor::DeleteCriticalSections,54,matching,100.00,supervisor-delete-critical-sections,python3 scripts/compare-function.py supervisor-delete-critical-sections --json
 0x0044DD10,th08::Player::CutChain,85,matching,100.00,player-cut-chain,python3 scripts/compare-function.py player-cut-chain --json
 0x0044E0E0,th08::IsResourceReloadDisabled,15,matching,100.00,resource-reload-disabled,python3 scripts/compare-function.py resource-reload-disabled --json
 0x0044E0F0,th08::AnmVmBase::SetBlendModeAdditive,35,matching,100.00,anm-vm-base-blend-additive,python3 scripts/compare-function.py anm-vm-base-blend-additive --json
@@ -25,6 +26,7 @@ address,name,size,status,match_percent,unit,evidence
 0x0044E370,th08::PlayerUnkStruct0x40::Reset,35,matching,100.00,player-region-reset,python3 scripts/compare-function.py player-region-reset --json
 0x0045C0E0,th08::ScreenEffect::AddedCallback,26,matching,100.00,screen-effect-added,python3 scripts/compare-function.py screen-effect-added --json
 0x0045C100,th08::ScreenEffect::DeletedCallback,94,matching,100.00,screen-effect-deleted,python3 scripts/compare-function.py screen-effect-deleted --json
+0x0045BC40,th08::ScreenEffect::DrawArcadeFade,69,matching,100.00,screen-effect-draw-arcade-fade,python3 scripts/compare-function.py screen-effect-draw-arcade-fade --json
 0x00402130,th08::AsciiManagerString::AsciiManagerString,25,matching,100.00,ascii-manager-string-constructor,python3 scripts/compare-function.py ascii-manager-string-constructor --json
 0x00402150,th08::PauseMenu::PauseMenu,52,matching,100.00,pause-menu-constructor,python3 scripts/compare-function.py pause-menu-constructor --json
 0x00402190,th08::RetryMenu::RetryMenu,52,matching,100.00,retry-menu-constructor,python3 scripts/compare-function.py retry-menu-constructor --json
