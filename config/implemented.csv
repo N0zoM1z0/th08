@@ -363,3 +363,16 @@ th08::GameManager::InitializeAntiTamper
 th08::GameManager::IncreaseSubrank
 th08::GameManager::DecreaseSubrank
 th08::GameManager::InitArcadeRegionParams
+th08::AsciiManager::OnDrawLowPrio
+th08::AsciiManager::RegisterChain
+th08::AsciiManager::AddedCallback
+th08::AsciiManager::AddString
+th08::AsciiManager::AddFormatText
+th08::AsciiManager::AddFormatText2
+th08::AsciiManager::SetSpaceWidth
+th08::AnmManager::ClearSprite
+th08::Ending::LoadEnding
+th08::Ending::Ending
+th08::Ending::OnUpdate
+th08::Ending::OnDraw
+th08::Ending::DeletedCallback

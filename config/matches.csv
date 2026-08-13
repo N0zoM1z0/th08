@@ -344,3 +344,16 @@ address,name,size,status,match_percent,unit,evidence
 0x0043C686,th08::GameManager::InitArcadeRegionParams,129,matching,100.00,game-manager-roi-exact-0043c686,python3 scripts/compare-function.py game-manager-roi-exact-0043c686 --json
 0x0043CA50,th08::Chain::RunCalcChain,232,matching,100.00,chain-run-tail-exact-0043ca50,python3 scripts/compare-function.py chain-run-tail-exact-0043ca50 --json
 0x0043CB60,th08::Chain::RunDrawChain,230,matching,100.00,chain-run-tail-exact-0043cb60,python3 scripts/compare-function.py chain-run-tail-exact-0043cb60 --json
+0x004023D0,th08::AsciiManager::OnDrawLowPrio,95,matching,100.00,ascii-ending-roi-exact-004023d0,python3 scripts/compare-function.py ascii-ending-roi-exact-004023d0 --json
+0x00402780,th08::AsciiManager::RegisterChain,168,matching,100.00,ascii-ending-roi-exact-00402780,python3 scripts/compare-function.py ascii-ending-roi-exact-00402780 --json
+0x00402830,th08::AsciiManager::AddedCallback,131,matching,100.00,ascii-ending-roi-exact-00402830,python3 scripts/compare-function.py ascii-ending-roi-exact-00402830 --json
+0x00402920,th08::AsciiManager::AddString,265,matching,100.00,ascii-ending-roi-exact-00402920,python3 scripts/compare-function.py ascii-ending-roi-exact-00402920 --json
+0x00402A30,th08::AsciiManager::AddFormatText,68,matching,100.00,ascii-ending-roi-exact-00402a30,python3 scripts/compare-function.py ascii-ending-roi-exact-00402a30 --json
+0x00402A80,th08::AsciiManager::AddFormatText2,146,matching,100.00,ascii-ending-roi-exact-00402a80,python3 scripts/compare-function.py ascii-ending-roi-exact-00402a80 --json
+0x00407180,th08::AsciiManager::SetSpaceWidth,25,matching,100.00,ascii-ending-roi-exact-00407180,python3 scripts/compare-function.py ascii-ending-roi-exact-00407180 --json
+0x0040BA50,th08::AnmManager::ClearSprite,24,matching,100.00,ascii-ending-roi-exact-0040ba50,python3 scripts/compare-function.py ascii-ending-roi-exact-0040ba50 --json
+0x004295E0,th08::Ending::LoadEnding,180,matching,100.00,ascii-ending-roi-exact-004295e0,python3 scripts/compare-function.py ascii-ending-roi-exact-004295e0 --json
+0x004297B0,th08::Ending::Ending,169,matching,100.00,ascii-ending-roi-exact-004297b0,python3 scripts/compare-function.py ascii-ending-roi-exact-004297b0 --json
+0x00429860,th08::Ending::OnUpdate,141,matching,100.00,ascii-ending-roi-exact-00429860,python3 scripts/compare-function.py ascii-ending-roi-exact-00429860 --json
+0x004298F0,th08::Ending::OnDraw,131,matching,100.00,ascii-ending-roi-exact-004298f0,python3 scripts/compare-function.py ascii-ending-roi-exact-004298f0 --json
+0x00429D40,th08::Ending::DeletedCallback,147,matching,100.00,ascii-ending-roi-exact-00429d40,python3 scripts/compare-function.py ascii-ending-roi-exact-00429d40 --json
