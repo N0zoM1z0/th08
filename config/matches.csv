@@ -307,3 +307,5 @@ address,name,size,status,match_percent,unit,evidence
 0x0045696F,th08::ResultScreen::HandleReplaySaveKeyboard,3699,matching,100.00,result-screen-roi-exact-0045696f,python3 scripts/compare-function.py result-screen-roi-exact-0045696f --json
 0x004578AA,th08::ResultScreen::HandleOtherStatsScreen,1366,matching,100.00,result-screen-roi-exact-004578aa,python3 scripts/compare-function.py result-screen-roi-exact-004578aa --json
 0x0045964D,th08::ResultScreen::AddedCallback,2437,matching,100.00,result-screen-roi-exact-0045964d,python3 scripts/compare-function.py result-screen-roi-exact-0045964d --json
+0x00421DD0,th08::utils::DebugPrint,5,matching,100.00,utils-remaining-exact-00421dd0,python3 scripts/compare-function.py utils-remaining-exact-00421dd0 --json
+0x00437CDD,th08::utils::GuiDebugPrint,5,matching,100.00,utils-remaining-exact-00437cdd,python3 scripts/compare-function.py utils-remaining-exact-00437cdd --json
