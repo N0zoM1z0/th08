@@ -914,10 +914,11 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                 reinterpret_cast<EclOperands::TargetPlayerOverlay *>(&g_Player)->
                     IsYoukai();
             *reinterpret_cast<u8 *>(Bytes(child) + 0x332F) =
-                reinterpret_cast<EclOperands::TargetPlayerOverlay *>(&g_Player)->
-                        IsYoukai()
-                    ? 1
-                    : 2;
+                (u8)((-(reinterpret_cast<EclOperands::TargetPlayerOverlay *>(
+                             &g_Player)
+                             ->IsYoukai() != 0) &
+                      0xFEU) +
+                     2);
             U32At(child, 0x3324) &= ~4U;
 
             if (PointerAt(child, 0x53C8) == 0)
@@ -951,7 +952,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         }
 
         g_SoundPlayer.PlaySoundPositionedByIdx(
-            SOUND_FAMILIAR_SPAWN, F32At(enemy, 0x2D34));
+            SOUND_FAMILIAR_SPAWN,
+            *reinterpret_cast<f32 *>(Bytes(enemy) + 0x2D34));
         break;
     }
     case 91:
@@ -969,10 +971,11 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                 reinterpret_cast<EclOperands::TargetPlayerOverlay *>(&g_Player)->
                     IsYoukai();
             *reinterpret_cast<u8 *>(Bytes(child) + 0x332F) =
-                reinterpret_cast<EclOperands::TargetPlayerOverlay *>(&g_Player)->
-                        IsYoukai()
-                    ? 1
-                    : 2;
+                (u8)((-(reinterpret_cast<EclOperands::TargetPlayerOverlay *>(
+                             &g_Player)
+                             ->IsYoukai() != 0) &
+                      0xFEU) +
+                     2);
             U32At(child, 0x3324) &= ~4U;
 
             if (PointerAt(child, 0x53C8) == 0)
@@ -1006,7 +1009,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         }
 
         g_SoundPlayer.PlaySoundPositionedByIdx(
-            SOUND_FAMILIAR_SPAWN, F32At(enemy, 0x2D34));
+            SOUND_FAMILIAR_SPAWN,
+            *reinterpret_cast<f32 *>(Bytes(enemy) + 0x2D34));
         break;
     }
     case 92:
@@ -1024,10 +1028,11 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                 reinterpret_cast<EclOperands::TargetPlayerOverlay *>(&g_Player)->
                     IsYoukai();
             *reinterpret_cast<u8 *>(Bytes(child) + 0x332F) =
-                reinterpret_cast<EclOperands::TargetPlayerOverlay *>(&g_Player)->
-                        IsYoukai()
-                    ? 1
-                    : 2;
+                (u8)((-(reinterpret_cast<EclOperands::TargetPlayerOverlay *>(
+                             &g_Player)
+                             ->IsYoukai() != 0) &
+                      0xFEU) +
+                     2);
 
             *reinterpret_cast<D3DXVECTOR3 *>(Bytes(child) + 0x2D40) =
                 *reinterpret_cast<D3DXVECTOR3 *>(Bytes(enemy) + 0x2D34);
@@ -1068,7 +1073,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         }
 
         g_SoundPlayer.PlaySoundPositionedByIdx(
-            SOUND_FAMILIAR_SPAWN, F32At(enemy, 0x2D34));
+            SOUND_FAMILIAR_SPAWN,
+            *reinterpret_cast<f32 *>(Bytes(enemy) + 0x2D34));
         break;
     }
 
