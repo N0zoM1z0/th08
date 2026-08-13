@@ -7755,3 +7755,89 @@ offset = 0x983
 type = "REL32"
 symbol = "?Cut@Chain@th08@@QAEXPAVChainElem@2@@Z"
 target = 0x0043CF10
+
+[[units]]
+name = "lzss-encode"
+object = "build/Lzss.obj"
+symbol = "?Encode@Lzss@th08@@SIPAEPAEHPAH@Z"
+target_address = 0x00473CB0
+size = 0x429
+
+[[units.relocations]]
+offset = 0x28
+type = "DIR32"
+symbol = "__imp__GlobalAlloc@8"
+target = 0x004B40CC
+
+[[units.relocations]]
+offset = 0x52
+type = "REL32"
+symbol = "?InitEncoderState@Lzss@th08@@SIXXZ"
+target = 0x004744A0
+
+[[units.relocations]]
+offset = 0xAE
+type = "DIR32"
+symbol = "?m_Dict@Lzss@th08@@0PAEA"
+target = 0x018D5F68
+
+[[units.relocations]]
+offset = 0xBE
+type = "REL32"
+symbol = "?InitTree@Lzss@th08@@SIXH@Z"
+target = 0x00474450
+
+[[units.relocations]]
+offset = 0x156
+type = "DIR32"
+symbol = "?m_Dict@Lzss@th08@@0PAEA"
+target = 0x018D5F68
+
+[[units.relocations]]
+offset = 0x2F4
+type = "REL32"
+symbol = "?DeleteString@Lzss@th08@@SIXH@Z"
+target = 0x00474640
+
+[[units.relocations]]
+offset = 0x340
+type = "DIR32"
+symbol = "?m_Dict@Lzss@th08@@0PAEA"
+target = 0x018D5F68
+
+[[units.relocations]]
+offset = 0x35F
+type = "REL32"
+symbol = "?AddString@Lzss@th08@@SIHHPAH@Z"
+target = 0x00474520
+
+[[units]]
+name = "lzss-decode"
+object = "build/Lzss.obj"
+symbol = "?Decode@Lzss@th08@@SIPAEPAEH0H@Z"
+target_address = 0x004740E0
+size = 0x364
+
+[[units.relocations]]
+offset = 0x32
+type = "DIR32"
+symbol = "__imp__GlobalAlloc@8"
+target = 0x004B40CC
+
+[[units.relocations]]
+offset = 0x15A
+type = "DIR32"
+symbol = "?m_Dict@Lzss@th08@@0PAEA"
+target = 0x018D5F68
+
+[[units.relocations]]
+offset = 0x2B9
+type = "DIR32"
+symbol = "?m_Dict@Lzss@th08@@0PAEA"
+target = 0x018D5F68
+
+[[units.relocations]]
+offset = 0x2D9
+type = "DIR32"
+symbol = "?m_Dict@Lzss@th08@@0PAEA"
+target = 0x018D5F68
