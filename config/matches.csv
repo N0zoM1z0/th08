@@ -192,3 +192,10 @@ address,name,size,status,match_percent,unit,evidence
 0x00473B40,th08::CPbgFile::GetFullFilePath,253,matching,100.00,pbg-file-exact-00473b40,python3 scripts/compare-function.py pbg-file-exact-00473b40 --json
 0x00473C40,th08::IPbgFile::IPbgFile,23,matching,100.00,pbg-file-exact-00473c40,python3 scripts/compare-function.py pbg-file-exact-00473c40 --json
 0x00473C60,th08::IPbgFile::~IPbgFile,20,matching,100.00,pbg-file-exact-00473c60,python3 scripts/compare-function.py pbg-file-exact-00473c60 --json
+0x00474450,th08::Lzss::InitTree,67,matching,100.00,lzss-helper-exact-00474450,python3 scripts/compare-function.py lzss-helper-exact-00474450 --json
+0x004744A0,th08::Lzss::InitEncoderState,124,matching,100.00,lzss-helper-exact-004744a0,python3 scripts/compare-function.py lzss-helper-exact-004744a0 --json
+0x00474520,th08::Lzss::AddString,284,matching,100.00,lzss-helper-exact-00474520,python3 scripts/compare-function.py lzss-helper-exact-00474520 --json
+0x00474640,th08::Lzss::DeleteString,134,matching,100.00,lzss-helper-exact-00474640,python3 scripts/compare-function.py lzss-helper-exact-00474640 --json
+0x004746D0,th08::Lzss::ContractNode,132,matching,100.00,lzss-helper-exact-004746d0,python3 scripts/compare-function.py lzss-helper-exact-004746d0 --json
+0x00474760,th08::Lzss::ReplaceNode,183,matching,100.00,lzss-helper-exact-00474760,python3 scripts/compare-function.py lzss-helper-exact-00474760 --json
+0x00474820,th08::Lzss::FindNextNode,63,matching,100.00,lzss-helper-exact-00474820,python3 scripts/compare-function.py lzss-helper-exact-00474820 --json
