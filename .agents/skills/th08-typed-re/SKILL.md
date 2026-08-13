@@ -36,6 +36,12 @@ review the unit before claiming exactness.
   them.
 - Diagnose frame differences through declaration order and real lifetimes;
   never add anonymous filler, inert locals, fake behavior, or ABI lies.
+- If an inlined fixed-size structure-tail `memcpy` has the correct semantics,
+  size, and `rep movsd` but schedules its count and source setup differently,
+  probe the typed address of the first copied field instead of byte-pointer
+  arithmetic from the parent object. This is a source-shape hypothesis, not a
+  shortcut around full relocation replay; `ReplayManager::SaveReplay` at
+  `0x004531F0` is the exact corpus example.
 - An ECX home proves only that incoming ECX was saved to a stack slot. Decide
   whether it is a C++ receiver or fastcall argument zero from the decorated
   symbol, ledger convention, and call sites; never create inert code merely to

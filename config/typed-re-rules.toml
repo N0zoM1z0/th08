@@ -54,6 +54,13 @@ recommendation = "When target and object perform the same independent field assi
 evidence = "TH08 ZunTimer::SetCurrent at 0x00406610: current, subFrame, then previous"
 
 [[rules]]
+id = "vc7-structured-memcpy-source-address"
+requires = ["memcpy_setup_order_mismatch"]
+confidence = "exact_match_corpus"
+recommendation = "When an inlined fixed-size structure-tail memcpy differs only in ECX/ESI setup order, prefer the typed address of the first copied field over byte-pointer arithmetic from the enclosing object. Preserve the same extent and validate that the canonical comparator, not instruction count alone, reaches exactness."
+evidence = "TH08 ReplayManager::SaveReplay at 0x004531F0: &replayCopy.unk0x68 reproduces target mov ecx, lea esi, mov edi, rep movsd ordering where (u8 *)&replayCopy + sizeof(ReplayDataHeader) schedules lea esi first"
+
+[[rules]]
 id = "large-dispatcher-source-presence-audit"
 requires = ["jump_table_dispatch", "large_direct_call_surface"]
 confidence = "exact_match_corpus"

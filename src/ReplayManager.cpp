@@ -48,9 +48,9 @@ void ReplayManager::StopRecording()
     }
 }
 
-#pragma var_order(i, mgr, tempBuffer, replayCopy, currentOffset, stageSize, slowDownRate, infoHeader, infoBuffer,       \
-                  infoCursor, currentTime, localTime, dateBuffer, compressedData, compressedSize, checksumCursor,   \
-                  checksum, obfuscateCursor, obfuscateOffset, file, bytesWritten)
+#pragma var_order(i, mgr, infoCursor, bytesWritten, compressedData, slowDownRate, compressedSize, stageSize,          \
+                  tempBuffer, replayCopy, infoBuffer, file, infoHeader, currentOffset, localTime, currentTime,      \
+                  dateBuffer, checksum, checksumCursor, obfuscateOffset, obfuscateCursor)
 void ReplayManager::SaveReplay(const char *replayPath, const char *replayName)
 {
     ReplayManager *mgr;
@@ -61,7 +61,7 @@ void ReplayManager::SaveReplay(const char *replayPath, const char *replayName)
     float slowDownRate;
     ReplayUserDataHeader infoHeader;
     char infoBuffer[1024];
-    char dateBuffer[260];
+    char dateBuffer[252];
     char *infoCursor;
     time_t currentTime;
     tm *localTime;
@@ -75,39 +75,37 @@ void ReplayManager::SaveReplay(const char *replayPath, const char *replayName)
     DWORD bytesWritten;
     i32 i;
 
-    if (g_ReplayManager == NULL)
+    if (g_ReplayManager != NULL)
     {
-        return;
-    }
+        mgr = g_ReplayManager;
 
-    mgr = g_ReplayManager;
+        if (!mgr->IsDemo())
+        {
+            if (!g_GameManager.IsPracticeMode() && g_GameManager.difficulty < LUNATIC + 1 &&
+                memcmp(&g_Supervisor.cfg, &mgr->replayData->gameConfiguration, sizeof(GameConfiguration)) != 0)
+            {
+                goto release_stage_data;
+            }
 
-    if (mgr->IsDemo())
-    {
-        goto cut_chain;
-    }
+            if (mgr->replayData->gameConfiguration.slowMode != 0)
+            {
+                goto release_stage_data;
+            }
 
-    if (!g_GameManager.IsPracticeMode() && g_GameManager.difficulty < LUNATIC + 1 &&
-        memcmp(&mgr->replayData->gameConfiguration, &g_Supervisor.cfg, sizeof(GameConfiguration)) != 0)
-    {
-        goto release_stage_data;
-    }
-
-    if (mgr->replayData->gameConfiguration.slowMode != 0 || replayPath == NULL)
-    {
-        goto release_stage_data;
-    }
-
-    utils::DebugPrint("info : Replay File write %s\r\n", replayPath);
+            if (replayPath != NULL)
+            {
+                utils::DebugPrint("info : Replay File write %s\r\n", replayPath);
 
     tempBuffer = (u8 *)g_ZunMemory.Alloc(0x400000, "rep tmp");
     replayCopy = *mgr->replayData;
 
     ReplayManager::StopRecording();
 
-    mgr->replayData->header.stageReplayData[g_GameManager.currentStage2]->score = g_GameManager.globals->score;
+    i = g_GameManager.currentStage2;
+    mgr->replayData->header.stageReplayData[i]->score = g_GameManager.globals->score;
 
-    currentOffset = sizeof(ReplayData);
+    currentOffset = sizeof(ReplayDataHeader);
+    currentOffset += sizeof(ReplayData) - sizeof(ReplayDataHeader);
 
     for (i = 0; i < MAX_STAGES; i++)
     {
@@ -154,7 +152,7 @@ void ReplayManager::SaveReplay(const char *replayPath, const char *replayName)
 
     replayCopy.slowDownRate = (1.0f - slowDownRate) * 100.0f;
 
-    infoHeader.magic = MAKE_FOURCC('U', 'S', 'E', 'R');
+    infoHeader.magic = *(u32 *)"USER";
     infoHeader.unk0x8 = 0;
     memset(infoBuffer, 0, sizeof(infoBuffer));
     infoCursor = infoBuffer;
@@ -203,7 +201,7 @@ void ReplayManager::SaveReplay(const char *replayPath, const char *replayName)
     replayCopy.slowDownRate2 = replayCopy.slowDownRate + 1.12f;
     replayCopy.unk0x120 = 30;
 
-    memcpy(tempBuffer, (u8 *)&replayCopy + sizeof(ReplayDataHeader), sizeof(ReplayData) - sizeof(ReplayDataHeader));
+    memcpy(tempBuffer, &replayCopy.unk0x68, sizeof(ReplayData) - sizeof(ReplayDataHeader));
 
     utils::DebugPrint("info : original size %d\r\n", currentOffset);
 
@@ -212,8 +210,8 @@ void ReplayManager::SaveReplay(const char *replayPath, const char *replayName)
     g_ZunMemory.Free(tempBuffer);
     compressedSize = replayCopy.header.compressedSize;
 
-    checksum = REPLAY_OBFUSCATION_VALUE;
     checksumCursor = &replayCopy.header.value1;
+    checksum = REPLAY_OBFUSCATION_VALUE;
 
     for (i = 0; i < sizeof(ReplayDataHeader) - offsetof(ReplayDataHeader, value1); i++, checksumCursor++)
     {
@@ -228,8 +226,8 @@ void ReplayManager::SaveReplay(const char *replayPath, const char *replayName)
     }
 
     replayCopy.header.checksum = checksum;
-    obfuscateOffset = replayCopy.header.value1;
     obfuscateCursor = (u8 *)&replayCopy.header.compressedSize;
+    obfuscateOffset = replayCopy.header.value1;
 
     for (i = 0; i < sizeof(ReplayDataHeader) - offsetof(ReplayDataHeader, compressedSize); i++, obfuscateCursor++)
     {
@@ -249,7 +247,11 @@ void ReplayManager::SaveReplay(const char *replayPath, const char *replayName)
 
     file = CreateFileA(replayPath, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
-    if (file != INVALID_HANDLE_VALUE)
+    if (file == INVALID_HANDLE_VALUE)
+    {
+        goto release_stage_data;
+    }
+
     {
         WriteFile(file, &replayCopy.header, sizeof(ReplayDataHeader), &bytesWritten, NULL);
         WriteFile(file, compressedData, compressedSize, &bytesWritten, NULL);
@@ -257,10 +259,10 @@ void ReplayManager::SaveReplay(const char *replayPath, const char *replayName)
         WriteFile(file, infoBuffer, infoHeader.size - sizeof(infoHeader), &bytesWritten, NULL);
         CloseHandle(file);
 
-        utils::DebugPrint("info : Size %d -> %d\r\n", currentOffset, replayCopy.header.fileSize);
+        utils::DebugPrint("info : Size %d -> %d\r\n", currentOffset, compressedSize + sizeof(ReplayDataHeader));
         GlobalFree(compressedData);
     }
-
+            }
 release_stage_data:
     for (i = 0; i < MAX_STAGES; i++)
     {
@@ -274,9 +276,10 @@ release_stage_data:
             g_ZunMemory.Free(g_ReplayManager->replayData->header.stageReplayData2[i]);
         }
     }
+        }
 
-cut_chain:
-    g_Chain.Cut(g_ReplayManager->calcChain);
+        g_Chain.Cut(g_ReplayManager->calcChain);
+    }
 }
 
 namespace
