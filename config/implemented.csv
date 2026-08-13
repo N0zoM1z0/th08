@@ -189,6 +189,7 @@ th08::GameManager::IsSpellPractice
 th08::GameManager::IsReplay
 th08::GameManager::IsDemoMode
 th08::GameManager::IsPracticeMode
+th08::Rng::GetRandomU16InRange
 th08::GameManager::GetYoukaiGauge
 th08::GameManager::GaugeIsExtremelyHuman
 th08::GameManager::GaugeIsModeratelyHuman
