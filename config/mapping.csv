@@ -565,11 +565,11 @@ th08::Chain::CreateElem,0x43ce60,0xa2,__thiscall,,ChainElem*,Chain*,u32
 th08::Chain::Cut,0x43cf10,0x31,__thiscall,,void,Chain*,ChainElem*
 th08::Chain::CutImpl,0x43cf50,0x16a,__thiscall,,void,Chain*,ChainElem*
 th08::Controller::GetJoystickCaps,0x43d0c0,0x55,__fastcall,,u16
-th08::Controller::GetControllerInput,0x43d120,0x5b1,unknown,,u8
-th08::Controller::SetButtonFromDirectInputJoystate,0x43d6e0,0x7a,__fastcall,,u8,u32,u16,u16,uchar*
-th08::Controller::SetButtonFromControllerInputs,0x43d760,0x73,__fastcall,,u8,u32,u16,u16,u32
-th08::Controller::GetControllerState,0x43d7e0,0x188,unknown,,uchar*
-th08::Controller::GetInput,0x43d970,0x7ed,unknown,,u8
+th08::Controller::GetControllerInput,0x43d120,0x5b1,__fastcall,,u16,u16
+th08::Controller::SetButtonFromDirectInputJoystate,0x43d6e0,0x7a,__fastcall,,u32,u16*,i16,u16,uchar*
+th08::Controller::SetButtonFromControllerInputs,0x43d760,0x73,__fastcall,,u32,u16*,i16,u16,u32
+th08::Controller::GetControllerState,0x43d7e0,0x188,__fastcall,,uchar*
+th08::Controller::GetInput,0x43d970,0x7ed,__fastcall,,u16
 th08::Controller::ResetKeyboard,0x43e160,0x6e,__fastcall,,void
 th08::FileSystem::Decrypt,0x43e1d0,0x1c0,__fastcall,,u8*,u8*,u32,u8,char,i32,i32
 th08::FileSystem::TryDecryptFromTable,0x43e390,0x106,unknown,,u8,u8
