@@ -756,9 +756,10 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
     case 73:
         ResetMovementTimer(enemy, services, ReadInt(enemy, instruction, 0));
-        F32At(enemy, 0x2DD0) = F32At(enemy, 0x2D34);
-        F32At(enemy, 0x2DD4) = F32At(enemy, 0x2D38);
-        F32At(enemy, 0x2DD8) = F32At(enemy, 0x2D3C);
+        *reinterpret_cast<D3DXVECTOR3 *>(
+            reinterpret_cast<u8 *>(enemy) + 0x2DD0) =
+            *reinterpret_cast<D3DXVECTOR3 *>(
+                reinterpret_cast<u8 *>(enemy) + 0x2D34);
         F32At(enemy, 0x2D9C) = ReadFloat(enemy, instruction, 1);
         F32At(enemy, 0x2DA0) = ReadFloat(enemy, instruction, 2);
         F32At(enemy, 0x2DB0) = 0.0f;
