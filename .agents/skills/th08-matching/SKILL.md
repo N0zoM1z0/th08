@@ -52,6 +52,12 @@ supported by evidence.
 6. Change one source-plausible expression or declaration, rebuild the same
    object, and rerun the same unit.
 
+For a VC7 switch function whose COFF auxiliary `total_size` includes compiler-
+owned jump tables, keep `size` as the authored code coverage and set
+`compare_size` to the complete code-plus-table extent. Prove the extent ends at
+a target boundary, list every code and table relocation, and require the whole
+`compare_size` range to match. Never count table bytes as authored progress.
+
 ## Relocation integrity
 
 Add a `[[units.relocations]]` entry only after proving its byte offset, COFF
@@ -61,6 +67,9 @@ the wrong target hash. Never wildcard an unresolved relocation or borrow a
 TH06/TH07 address. A zero-addend `DIR32` function pointer accepts only the
 canonical TH08 function start supported by the ledgers; an address merely
 falling inside the image is not evidence for a function, global, or literal.
+Compiler-local `$L` numeric suffixes may change when an earlier function in the
+same translation unit changes; their offset, kind, addend, and resolved target
+must still agree exactly.
 
 ## Translation-unit emission
 

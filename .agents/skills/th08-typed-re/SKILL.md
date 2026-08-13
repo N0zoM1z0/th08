@@ -43,6 +43,10 @@ review the unit before claiming exactness.
 - Keep target facts separate from field names, calling-convention guesses,
   compiler recommendations, and TH06/TH07 hypotheses.
 - Test every source-shaping change through `$th08-matching`.
+- If target code ends before the next mapped function but the COFF auxiliary
+  size continues through switch tables, compare the complete associated extent
+  while reporting authored coverage from the code extent only. A size error is
+  a boundary question before it is a source-shaping instruction.
 
 ## Improve the model
 

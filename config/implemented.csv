@@ -228,3 +228,4 @@ th08::EclOperands::ResolveFloatLValue
 th08::EclHelpers::ConfigurePolarMotion
 th08::EclHelpers::ConfigureRelativeMotion
 th08::EnemyManager::OnUpdate
+th08::CSoundManager::CSoundManager

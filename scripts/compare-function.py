@@ -127,6 +127,12 @@ def apply_relocations(
     target_address: int,
     target_code: bytes,
 ) -> list[dict[str, object]]:
+    def stable_symbol(name: str) -> str:
+        # VC7 renumbers compiler-owned local labels when an earlier function in
+        # the same translation unit changes. Their relocation offset and
+        # resolved target are stable evidence; the numeric $L suffix is not.
+        return "$L*" if name.startswith("$L") else name
+
     normalized_expected = []
     for relocation in expected:
         kind = str(relocation["type"])
@@ -142,11 +148,15 @@ def apply_relocations(
             }
         )
     actual_key = sorted(
-        (int(row["offset"]), int(row["type_id"]), str(row["symbol"]))
+        (
+            int(row["offset"]),
+            int(row["type_id"]),
+            stable_symbol(str(row["symbol"])),
+        )
         for row in actual
     )
     expected_key = sorted(
-        (row["offset"], row["type_id"], row["symbol"])
+        (row["offset"], row["type_id"], stable_symbol(row["symbol"]))
         for row in normalized_expected
     )
     if actual_key != expected_key:
@@ -188,13 +198,20 @@ def compare(unit: dict[str, object], target_path: Path) -> dict[str, object]:
     target_data = verify_target(target_path)
     object_path = repository_path(str(unit["object"]))
     code, actual_relocations = object_function(object_path, str(unit["symbol"]))
-    expected_size = int(unit["size"])
-    if len(code) != expected_size:
+    coverage_size = int(unit["size"])
+    compare_size = int(unit.get("compare_size", coverage_size))
+    if compare_size < coverage_size:
         raise ValueError(
-            f"object function size {len(code):#x} differs from manifest {expected_size:#x}"
+            f"comparison extent {compare_size:#x} is smaller than coverage "
+            f"size {coverage_size:#x}"
+        )
+    if len(code) != compare_size:
+        raise ValueError(
+            f"object function size {len(code):#x} differs from manifest "
+            f"comparison extent {compare_size:#x}"
         )
     target_address = int(unit["target_address"])
-    target = pe_bytes_at(target_data, target_address, expected_size)
+    target = pe_bytes_at(target_data, target_address, compare_size)
     relocations = apply_relocations(
         code,
         actual_relocations,
@@ -207,12 +224,17 @@ def compare(unit: dict[str, object], target_path: Path) -> dict[str, object]:
         for index, (left, right) in enumerate(zip(code, target))
         if left != right
     ]
+    coverage_differences = sum(
+        int(row["offset"], 0) < coverage_size for row in differences
+    )
     return {
         "unit": unit["name"],
         "result": "exact" if not differences else "mismatch",
         "target_address": f"0x{target_address:08X}",
-        "size": expected_size,
-        "matched_bytes": expected_size - len(differences),
+        "size": coverage_size,
+        "matched_bytes": coverage_size - coverage_differences,
+        "compared_size": compare_size,
+        "matched_compared_bytes": compare_size - len(differences),
         "object": str(object_path.relative_to(ROOT)),
         "symbol": unit["symbol"],
         "relocations": relocations,

@@ -70,3 +70,9 @@ address,name,size,status,match_percent,unit,evidence
 0x00418330,th08::EclManager::Load,239,matching,100.00,ecl-manager-load,python3 scripts/compare-function.py ecl-manager-load --json
 0x00418420,th08::EclManager::Unload,44,matching,100.00,ecl-manager-unload,python3 scripts/compare-function.py ecl-manager-unload --json
 0x00418450,th08::EclManager::CallEclSub,88,matching,100.00,ecl-manager-call-sub,python3 scripts/compare-function.py ecl-manager-call-sub --json
+0x0043EF40,th08::MidiTimer::OnTimerElapsed,11,matching,100.00,midi-timer-elapsed,python3 scripts/compare-function.py midi-timer-elapsed --json
+0x004716E0,th08::CSoundManager::CSoundManager,23,matching,100.00,sound-manager-constructor,python3 scripts/compare-function.py sound-manager-constructor --json
+0x0041F420,th08::EclOperands::ResolveInt,1899,matching,100.00,ecl-resolve-int,python3 scripts/compare-function.py ecl-resolve-int --json
+0x0041FE10,th08::EclOperands::ResolveIntLValue,548,matching,100.00,ecl-resolve-int-lvalue,python3 scripts/compare-function.py ecl-resolve-int-lvalue --json
+0x00420120,th08::EclOperands::EnemyOverlay::ResolveFloat,1687,matching,100.00,ecl-resolve-float,python3 scripts/compare-function.py ecl-resolve-float --json
+0x00420950,th08::EclOperands::ResolveFloatLValue,696,matching,100.00,ecl-resolve-float-lvalue,python3 scripts/compare-function.py ecl-resolve-float-lvalue --json

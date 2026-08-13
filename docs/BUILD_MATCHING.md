@@ -123,6 +123,11 @@ relocation to agree with `config/match-units.toml`. Missing or extra
 relocations fail closed. It reports exactness only for that configured function
 range; it does not imply an object- or executable-wide match.
 
+VC7 may include compiler-owned switch tables in a function's COFF auxiliary
+extent. Such units keep `size` as authored code coverage and use `compare_size`
+for the complete code-plus-table range. Exact acceptance still compares every
+associated byte and relocation; table bytes do not increase authored progress.
+
 For stack, register-home, direct-call, absolute-reference, and return-cleanup
 facts, install Python Capstone and generate a read-only target packet:
 

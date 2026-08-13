@@ -202,6 +202,12 @@ def load_match_units(errors: list[str]) -> dict[str, tuple[int, int]]:
             size = int(unit["size"])
             if size <= 0:
                 fail(f"match-units.toml: unit {name!r} has a non-positive size")
+            compare_size = int(unit.get("compare_size", size))
+            if compare_size < size:
+                fail(
+                    f"match-units.toml: unit {name!r} has comparison extent "
+                    f"smaller than its coverage size"
+                )
             units[name] = (address, size)
     except (OSError, KeyError, TypeError, ValueError, tomllib.TOMLDecodeError) as exc:
         errors.append(str(exc))
