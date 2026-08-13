@@ -1,0 +1,7 @@
+coff_symbol,address,data_hex,addends,evidence,validation
+_DirectSoundCreate8@12,0x00476CE6,ff2518404b00,0x0,PE DSOUND ordinal-11 IAT thunk,address
+__imp__Sleep@4,0x004B4054,ca480c00,0x0,PE KERNEL32 import table entry for Sleep,literal
+__imp__ReadFile@20,0x004B4058,d2480c00,0x0,PE KERNEL32 import table entry for ReadFile,literal
+__imp__CloseHandle@4,0x004B405C,de480c00,0x0,PE KERNEL32 import table entry for CloseHandle,literal
+__imp__CreateFileA@28,0x004B4064,fa480c00,0x0,PE KERNEL32 import table entry for CreateFileA,literal
+__imp__SetFilePointer@16,0x004B40C8,ce4a0c00,0x0,PE KERNEL32 import table entry for SetFilePointer,literal

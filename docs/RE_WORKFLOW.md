@@ -35,6 +35,13 @@ regenerate both progress views with `python3 scripts/progress.py`. Source
 presence remains inventory reporting; an exact row may be added only after the
 strict function comparator succeeds against the verified target.
 
+Relocation destinations use schema-aware ledgers. Function/global CSVs place
+`address` in their second column, while float/string CSVs place it first; read
+the header instead of assuming a column number. Use
+`config/reccmp-relocations.csv` for hash-attested IAT slots, import thunks, or
+other non-inventory relocation destinations. Do not add those addresses to
+`mapping.csv` or `reccmp-functions.csv` merely to make a comparison pass.
+
 ## Current analysis backends
 
 The current IDA MCP session is TH07 and is therefore unavailable for TH08

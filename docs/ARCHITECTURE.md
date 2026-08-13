@@ -48,6 +48,9 @@ boundaries.
 - `src/`: reconstructed C++ and ABI-facing headers.
 - `config/mapping.csv`: address/type mapping used by upstream analysis tools.
 - `config/reccmp-*.csv`: function, global, float, string, and comparison maps.
+  `reccmp-relocations.csv` is a relocation-only allowlist for attested IAT
+  slots, import thunks, and data symbols; its rows are not function inventory
+  and never contribute authored progress.
 - `config/implemented.csv`: symbols with authored source; inclusion is not
   itself an exact-match result.
 - `config/match-units.toml` and `config/matches.csv`: strict function-level

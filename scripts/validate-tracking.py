@@ -7,6 +7,7 @@ import csv
 from dataclasses import dataclass
 from pathlib import Path
 import re
+import struct
 import tomllib
 
 
@@ -29,6 +30,14 @@ MATCH_FIELDS = [
     "match_percent",
     "unit",
     "evidence",
+]
+RELOCATION_FIELDS = [
+    "coff_symbol",
+    "address",
+    "data_hex",
+    "addends",
+    "evidence",
+    "validation",
 ]
 HEX_DIGEST = re.compile(r"^[0-9a-f]+$")
 RECCMP_SHA256 = re.compile(
@@ -85,6 +94,81 @@ def validate_reccmp_hash(target: dict[str, object] | None, errors: list[str]) ->
             fail("th08 sha256 differs from config/target.toml")
     except (OSError, ValueError) as exc:
         errors.append(f"reccmp-project.yml: {exc}")
+
+
+def target_bytes_at(data: bytes, address: int, size: int) -> bytes:
+    pe_offset = struct.unpack_from("<I", data, 0x3C)[0]
+    if data[:2] != b"MZ" or data[pe_offset : pe_offset + 4] != b"PE\0\0":
+        fail("resources/th08.exe is not a PE image")
+    section_count, optional_size = struct.unpack_from("<H12xH", data, pe_offset + 6)
+    optional = pe_offset + 24
+    image_base = struct.unpack_from("<I", data, optional + 28)[0]
+    section_table = optional + optional_size
+    rva = address - image_base
+    for index in range(section_count):
+        offset = section_table + index * 40
+        virtual_size, section_rva, raw_size, raw_offset = struct.unpack_from(
+            "<IIII", data, offset + 8
+        )
+        if section_rva <= rva and rva + size <= section_rva + max(virtual_size, raw_size):
+            relative = rva - section_rva
+            if relative + size > raw_size:
+                fail("relocation ledger range extends beyond PE raw data")
+            return data[raw_offset + relative : raw_offset + relative + size]
+    fail(f"relocation ledger range 0x{address:08X}+0x{size:X} is outside the PE")
+
+
+def validate_relocation_ledger(errors: list[str]) -> int:
+    count = 0
+    seen_symbols: set[str] = set()
+    seen_addresses: set[int] = set()
+    try:
+        target = (ROOT / "resources" / "th08.exe").read_bytes()
+        with (CONFIG / "reccmp-relocations.csv").open(
+            newline="", encoding="utf-8"
+        ) as stream:
+            reader = csv.DictReader(stream)
+            if reader.fieldnames != RELOCATION_FIELDS:
+                fail(
+                    "reccmp-relocations.csv: unexpected columns: "
+                    f"{reader.fieldnames}"
+                )
+            for line, row in enumerate(reader, start=2):
+                symbol = row["coff_symbol"]
+                address = parse_address(row["address"])
+                canonical = f"0x{address:08X}"
+                if not symbol or symbol in seen_symbols:
+                    fail(
+                        f"reccmp-relocations.csv:{line}: empty or duplicate COFF symbol"
+                    )
+                if address in seen_addresses or row["address"] != canonical:
+                    fail(
+                        f"reccmp-relocations.csv:{line}: duplicate or noncanonical "
+                        f"address {row['address']!r}"
+                    )
+                literal = bytes.fromhex(row["data_hex"])
+                addends = [
+                    int(value, 0)
+                    for value in row["addends"].split(";")
+                    if value
+                ]
+                validation = row["validation"]
+                if not literal or not addends or validation not in {"literal", "address"}:
+                    fail(f"reccmp-relocations.csv:{line}: invalid row")
+                if not row["evidence"]:
+                    fail(f"reccmp-relocations.csv:{line}: evidence is required")
+                actual = target_bytes_at(target, address, len(literal))
+                if actual != literal:
+                    fail(
+                        f"reccmp-relocations.csv:{line}: target bytes differ at "
+                        f"{canonical}"
+                    )
+                seen_symbols.add(symbol)
+                seen_addresses.add(address)
+                count += 1
+    except (OSError, KeyError, TypeError, ValueError, struct.error) as exc:
+        errors.append(str(exc))
+    return count
 
 
 def load_mapping(errors: list[str]) -> tuple[list[MappingRow], set[str], set[int]]:
@@ -301,6 +385,7 @@ def main() -> int:
     errors: list[str] = []
     target = load_target(errors)
     validate_reccmp_hash(target, errors)
+    relocations = validate_relocation_ledger(errors)
     mapping, names, addresses = load_mapping(errors)
     implemented, implemented_names = validate_implemented(names, errors)
     claims = validate_claims(addresses, errors)
@@ -316,7 +401,7 @@ def main() -> int:
     print(
         f"tracking data OK: {len(mapping):,} mapping rows, "
         f"{implemented:,} implemented symbols, {matches:,} exact matches, "
-        f"{claims:,} active claims"
+        f"{claims:,} active claims, {relocations:,} relocation-only symbols"
     )
     return 0
 
