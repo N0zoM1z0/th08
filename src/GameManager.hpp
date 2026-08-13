@@ -69,6 +69,7 @@ struct GameManager
     static void GameplaySetupThread();
 
     void InitRankParams();
+    void FUN_00423130(i32 value);
 
     static void InitializeAntiTamper();
 

@@ -736,8 +736,9 @@ enter_subroutine:
     case 141: TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&TH08_ECL_AT(ctx, Vec3, 0x2D34), TH08_ECL_READ_I(ctx, 0), 0); break;
     case 147: TH08_ECL_CONTEXT_API(ctx)->Global004EA290() = TH08_ECL_READ_I(ctx, 0); break;
     case 148:
-        TH08_ECL_CONTEXT_API(ctx)->Call00423130(TH08_ECL_READ_I(ctx, 0));
-        TH08_ECL_CONTEXT_API(ctx)->Global0164D30C() += 0x708;
+        reinterpret_cast<GameManager *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x320)->
+            FUN_00423130(TH08_ECL_READ_I(ctx, 0));
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3E04) += 0x708;
         break;
     case 93:
         if (TH08_ECL_AT(ctx, i32, 0x2DFC) > 0)
