@@ -127,30 +127,28 @@ low_select_next_context:
     // the observed in-function easing switch and child-context back edge.
     if (TH08_ECL_AT(unusedContext, i32, 0x2DFC) > 0)
     {
-        bool restorePosition = false;
+        Interpolator *entry = reinterpret_cast<Interpolator *>(
+            TH08_ECL_CURRENT_CONTEXT(unusedContext) + 0x9C);
         Vec3 savedPosition = TH08_ECL_AT(unusedContext, Vec3, 0x2D34);
-        u8 *eclContext = TH08_ECL_CURRENT_CONTEXT(unusedContext);
+        i32 restorePosition = 0;
 
-        if (*(void **)(eclContext + 0x10))
-            TH08_ECL_CONTEXT_API(unusedContext)->RunContextCallback(
-                *(void **)(eclContext + 0x10), reinterpret_cast<u8 *>(enemy),
-                *(void **)(eclContext + 0x14));
+        if (*reinterpret_cast<EclContextCallback *>(
+                TH08_ECL_CURRENT_CONTEXT(unusedContext) + 0x10))
+            (*reinterpret_cast<EclContextCallback *>(
+                TH08_ECL_CURRENT_CONTEXT(unusedContext) + 0x10))(
+                enemy, *reinterpret_cast<void **>(
+                    TH08_ECL_CURRENT_CONTEXT(unusedContext) + 0x14));
 
-        Interpolator *entry = (Interpolator *)(eclContext + 0x9C);
         for (i32 i = 0; i < 8; ++i, ++entry)
         {
             if (!entry->callback)
                 continue;
 
-            TH08_ECL_CONTEXT_API(unusedContext)->ResetTimer(entry->timer, 0);
-            if (TH08_ECL_CONTEXT_API(unusedContext)->TimerDone(
-                    entry->timer, entry->duration))
-                TH08_ECL_CONTEXT_API(unusedContext)->SetTimer(
-                    entry->timer, entry->duration);
+            entry->timer++;
+            if (entry->timer >= entry->duration)
+                entry->timer = entry->duration;
 
-            f32 progress =
-                TH08_ECL_CONTEXT_API(unusedContext)->TimerValue(entry->timer) /
-                entry->duration;
+            f32 progress = static_cast<f32>(entry->timer) / entry->duration;
             f32 inverse;
             switch (entry->easing)
             {
@@ -171,16 +169,14 @@ low_select_next_context:
                 break;
             }
 
-            TH08_ECL_CONTEXT_API(unusedContext)->RunInterpolatorCallback(
-                entry->callback, reinterpret_cast<u8 *>(enemy), entry, progress);
-            if (TH08_ECL_CONTEXT_API(unusedContext)->TimerDone(
-                    entry->timer, entry->duration))
+            (enemy->*entry->callback)(progress);
+            if (entry->timer >= entry->duration)
                 entry->callback = 0;
 
             if (entry->affectedVariable == 10042.0f ||
                 entry->affectedVariable == 10043.0f ||
                 entry->affectedVariable == 10044.0f)
-                restorePosition = true;
+                restorePosition = 1;
         }
 
         if (restorePosition)
@@ -205,8 +201,7 @@ low_select_next_context:
 
     *(RawInstruction **)TH08_ECL_CURRENT_CONTEXT(unusedContext) =
         reinterpret_cast<RawInstruction *>(instruction);
-    TH08_ECL_CONTEXT_API(unusedContext)->ResetTimer(
-        TH08_ECL_CURRENT_CONTEXT(unusedContext) + 4, 0);
+    reinterpret_cast<ZunTimer *>(TH08_ECL_CURRENT_CONTEXT(unusedContext) + 4)->operator++(0);
 
     for (i32 next = activeChildContext + 1; next < 4; ++next)
     {
@@ -227,10 +222,8 @@ low_select_next_context:
         reinterpret_cast<u8 *>(enemy) + 0xA20;
     TH08_ECL_AT(unusedContext, u8 *, 0x2CA0) =
         reinterpret_cast<u8 *>(enemy) + 0x7F8;
-    TH08_ECL_CONTEXT_API(unusedContext)->ResetEnemyAfterRun(
-        reinterpret_cast<u8 *>(enemy));
-    TH08_ECL_CONTEXT_API(unusedContext)->FinalizeEnemyAfterRun(
-        reinterpret_cast<u8 *>(enemy));
+    enemy->FUN_00422c40();
+    enemy->FUN_00423150();
 
     return ZUN_SUCCESS;
 }

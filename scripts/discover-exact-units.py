@@ -134,7 +134,9 @@ def owner_index(paths: list[Path]) -> dict[str, set[str]]:
             continue
         for symbol in module.symbols:
             if symbol.section_number > 0:
-                owners[symbol_name(module, symbol)].add(path.name)
+                owners[symbol_name(module, symbol)].add(
+                    path.relative_to(ROOT).as_posix()
+                )
     return owners
 
 
@@ -154,7 +156,11 @@ def evaluate(
     target_data: bytes,
     known_starts: set[int],
 ) -> tuple[list[dict[str, int | str]], int] | None:
-    if symbol.section_number <= 0 or not symbol.aux_records:
+    if (
+        symbol.section_number <= 0
+        or not symbol.aux_records
+        or not hasattr(symbol.aux_records[0], "total_size")
+    ):
         return None
     section = module.sections[symbol.section_number - 1]
     emitted_size = int(symbol.aux_records[0].total_size)
@@ -202,6 +208,44 @@ def evaluate(
     return sorted(rows, key=lambda row: int(row["offset"])), sum(target_calls.values())
 
 
+def unnamed_mapping_candidate(
+    module: ObjectModule,
+    symbol,
+    target_data: bytes,
+    mapping_rows: list[tuple[int, int, str]],
+    functions: set[tuple[str, int]],
+    known_starts: set[int],
+) -> tuple[int, int, str, list[dict[str, int | str]], int] | None:
+    """Find one exact placeholder mapping, or fail closed on ambiguity.
+
+    A source symbol can predate reconciliation of imported ``FUN_`` mapping
+    names.  This diagnostic path never accepts it: it requires one exact
+    target extent with a placeholder mapping name and leaves the later naming
+    decision to coordinator review.
+    """
+    if (
+        symbol.section_number <= 0
+        or not symbol.aux_records
+        or not hasattr(symbol.aux_records[0], "total_size")
+    ):
+        return None
+    size = int(symbol.aux_records[0].total_size)
+    possible = [
+        (address, mapped_size, name)
+        for address, mapped_size, name in mapping_rows
+        if mapped_size == size and name.startswith("FUN_") and (name, address) in functions
+    ]
+    exact = []
+    for address, mapped_size, name in possible:
+        result = evaluate(
+            module, "", symbol, name, address, mapped_size, target_data, known_starts
+        )
+        if result is not None:
+            rows, calls = result
+            exact.append((address, mapped_size, name, rows, calls))
+    return exact[0] if len(exact) == 1 else None
+
+
 def render(candidates: list[dict[str, object]], target_sha: str) -> str:
     lines = [
         "# REVIEW ARTIFACT: candidates only; do not count or accept without canonical comparison.",
@@ -212,7 +256,8 @@ def render(candidates: list[dict[str, object]], target_sha: str) -> str:
     ]
     for candidate in candidates:
         lines.extend((
-            f"# Ledger name: {candidate['logical']}",
+            f"# Mapping name: {candidate['logical']}",
+            f"# Source symbol name: {candidate['source_logical']}",
             f"# Evidence: {len(candidate['relocations'])} relocations; {candidate['calls']} direct calls; full replay exact; implemented ledger={candidate['implemented']}.",
             "[[units]]",
             f"name = \"discovered-exact-{int(candidate['address']):08x}\"",
@@ -240,6 +285,7 @@ def main() -> int:
     parser.add_argument("--min-size", type=lambda value: int(value, 0), default=1)
     parser.add_argument("--include-implemented", action="store_true", help="also print existing exact entries (for scanner validation)")
     parser.add_argument("--allow-unimplemented", action="store_true", help="emit source-built candidates absent from implemented.csv for coordinator review")
+    parser.add_argument("--allow-unnamed-mapping", action="store_true", help="diagnose one-to-one exact source bodies currently mapped only as FUN_*; review-only")
     parser.add_argument("--output", type=Path, help="write a review-only TOML artifact")
     args = parser.parse_args()
     if args.min_size <= 0:
@@ -247,7 +293,12 @@ def main() -> int:
     target_path = ROOT / "resources" / "th08.exe"
     target_data = verify_target(target_path)
     target_sha = hashlib.sha256(target_data).hexdigest()
-    paths = [ROOT / value if not Path(value).is_absolute() else Path(value) for value in args.objects] if args.objects else sorted((ROOT / "build").glob("*.obj"))
+    all_objects = sorted(
+        path
+        for path in (ROOT / "build").rglob("*.obj")
+        if "objdiff" not in path.relative_to(ROOT / "build").parts
+    )
+    paths = [ROOT / value if not Path(value).is_absolute() else Path(value) for value in args.objects] if args.objects else all_objects
     paths = [path.resolve() for path in paths if path.is_file()]
     if not paths:
         fail("no usable objects")
@@ -256,10 +307,11 @@ def main() -> int:
     known_starts = relocation_starts(mapping_rows)
     implemented = read_single_column("implemented.csv")
     matched_addresses, matched_names = matched()
-    owners = owner_index(sorted((ROOT / "build").glob("*.obj")))
+    owners = owner_index(all_objects)
     candidates: list[dict[str, object]] = []
     skipped = Counter()
     for path in paths:
+        relative_path = path.relative_to(ROOT).as_posix()
         module = ObjectModule()
         try:
             module.unpack(path.read_bytes())
@@ -274,26 +326,34 @@ def main() -> int:
             if logical is None:
                 continue
             pairs = mapping.get(logical, [])
-            if len(pairs) != 1:
+            mapped_logical = logical
+            if len(pairs) == 1:
+                address, size = pairs[0]
+            elif args.allow_unnamed_mapping:
+                inferred = unnamed_mapping_candidate(module, symbol, target_data, mapping_rows, functions, known_starts)
+                if inferred is None:
+                    skipped["no_unique_mapping"] += 1
+                    continue
+                address, size, mapped_logical, inferred_rows, inferred_calls = inferred
+            else:
                 skipped["no_unique_mapping"] += 1
                 continue
-            address, size = pairs[0]
-            if size < args.min_size or (logical, address) not in functions:
+            if size < args.min_size or (mapped_logical, address) not in functions:
                 continue
-            if not args.include_implemented and (address in matched_addresses or logical in matched_names):
+            if not args.include_implemented and (address in matched_addresses or mapped_logical in matched_names):
                 continue
             if logical not in implemented and not args.allow_unimplemented:
                 skipped["not_implemented"] += 1
                 continue
-            if owners.get(decorated) != {path.name}:
+            if owners.get(decorated) != {relative_path}:
                 skipped["non_unique_owner"] += 1
                 continue
-            result = evaluate(module, path.name, symbol, logical, address, size, target_data, known_starts)
+            result = (inferred_rows, inferred_calls) if len(pairs) != 1 else evaluate(module, relative_path, symbol, mapped_logical, address, size, target_data, known_starts)
             if result is None:
                 skipped["evidence_gate"] += 1
                 continue
             relocations, calls = result
-            candidates.append({"object": f"build/{path.name}", "symbol": decorated, "logical": logical, "address": address, "size": size, "relocations": relocations, "calls": calls, "implemented": logical in implemented})
+            candidates.append({"object": relative_path, "symbol": decorated, "logical": mapped_logical, "source_logical": logical, "address": address, "size": size, "relocations": relocations, "calls": calls, "implemented": logical in implemented})
     candidates.sort(key=lambda row: (-int(row["size"]), int(row["address"])))
     report = render(candidates, target_sha)
     if args.output:

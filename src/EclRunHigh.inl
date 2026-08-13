@@ -71,10 +71,16 @@ struct SpawnPacket
     i32 values[7];
 };
 
+// RunEcl invokes the per-context callback with Enemy in ECX and its opaque
+// context argument in EDX.  Interpolator callbacks receive Enemy in ECX and
+// their progress value on the stack.
+typedef void (__fastcall *EclContextCallback)(Enemy *enemy, void *argument);
+typedef void (Enemy::*EclInterpolatorCallback)(f32 progress);
+
 struct Interpolator
 {
-    void *callback;       // +0x00, target calls with Enemy in ECX
-    u8 timer[0x0C];       // +0x04
+    EclInterpolatorCallback callback; // +0x00, target calls with Enemy in ECX
+    ZunTimer timer;                 // +0x04
     i32 duration;         // +0x10
     i32 unknown14;        // +0x14
     i32 easing;           // +0x18, accepted values 1..6
@@ -84,6 +90,7 @@ struct Interpolator
     i32 unknown28;
     f32 affectedVariable; // +0x2C; 10042..10044 mean position motion
 };
+typedef char InterpolatorSizeCheck[sizeof(Interpolator) == 0x30 ? 1 : -1];
 
 enum DispatchResult
 {
@@ -182,12 +189,6 @@ struct TargetApi
     i32 &Global00F54E2C();
     i32 &Global0164D30C();
 
-    void RunContextCallback(void *callback, u8 *enemy,
-                                    void *callbackArg);
-    void RunInterpolatorCallback(void *callback, u8 *enemy,
-                                         Interpolator *entry, f32 value);
-    void ResetEnemyAfterRun(u8 *enemy);                         // 0x00422C40
-    void FinalizeEnemyAfterRun(u8 *enemy);                      // 0x00423150
 };
 
 struct Context

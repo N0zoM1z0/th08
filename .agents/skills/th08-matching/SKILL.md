@@ -66,6 +66,12 @@ functions missing from `implemented.csv`; it never updates tracking. Inspect
 the source and target, add a reviewed unit, and obtain this skill's canonical
 `compare-function.py` `exact` result before entering either ledger.
 
+The scanner includes ordinary and `build/probes/` VC7 objects.  Use
+`--allow-unnamed-mapping` only to diagnose a one-to-one exact body whose
+target row is still `FUN_*`; it is review-only.  Reconcile the target name and
+ABI in the ledgers before creating a canonical unit, rather than accepting a
+placeholder name.
+
 For a VC7 switch function whose COFF auxiliary `total_size` includes compiler-
 owned jump tables, keep `size` as the authored code coverage and set
 `compare_size` to the complete code-plus-table extent. Prove the extent ends at

@@ -8,6 +8,10 @@ namespace th08
 
 struct Enemy
 {
+    // Target-observed RunEcl post-dispatch calls.  Both receive the current
+    // enemy in ECX and take no explicit arguments.
+    void FUN_00422c40();
+    void FUN_00423150();
 };
 
 struct EnemyManager
