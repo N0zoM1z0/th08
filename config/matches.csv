@@ -331,3 +331,7 @@ address,name,size,status,match_percent,unit,evidence
 0x004436A0,th08::GameWindow::ActivateWindow,143,matching,100.00,activate-window-unlocked-exact-004436a0,python3 scripts/compare-function.py activate-window-unlocked-exact-004436a0 --json
 0x0043F31C,th08::TextHelper::InvertAlpha,1292,matching,100.00,text-helper-roi-exact-0043f31c,python3 scripts/compare-function.py text-helper-roi-exact-0043f31c --json
 0x0043F898,th08::TextHelper::CopyTextToSurface,232,matching,100.00,text-helper-roi-exact-0043f898,python3 scripts/compare-function.py text-helper-roi-exact-0043f898 --json
+0x0045E650,th08::AnmVm::GetFloatVar,166,matching,100.00,anm-vm-accessor-tail-exact-0045e650,python3 scripts/compare-function.py anm-vm-accessor-tail-exact-0045e650 --json
+0x0045E720,th08::AnmVm::GetIntVar,186,matching,100.00,anm-vm-accessor-tail-exact-0045e720,python3 scripts/compare-function.py anm-vm-accessor-tail-exact-0045e720 --json
+0x0045E810,th08::AnmVm::GetFloatVarPtr,124,matching,100.00,anm-vm-accessor-tail-exact-0045e810,python3 scripts/compare-function.py anm-vm-accessor-tail-exact-0045e810 --json
+0x0045E8A0,th08::AnmVm::GetIntVarPtr,139,matching,100.00,anm-vm-accessor-tail-exact-0045e8a0,python3 scripts/compare-function.py anm-vm-accessor-tail-exact-0045e8a0 --json
