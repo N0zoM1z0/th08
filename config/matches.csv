@@ -335,3 +335,10 @@ address,name,size,status,match_percent,unit,evidence
 0x0045E720,th08::AnmVm::GetIntVar,186,matching,100.00,anm-vm-accessor-tail-exact-0045e720,python3 scripts/compare-function.py anm-vm-accessor-tail-exact-0045e720 --json
 0x0045E810,th08::AnmVm::GetFloatVarPtr,124,matching,100.00,anm-vm-accessor-tail-exact-0045e810,python3 scripts/compare-function.py anm-vm-accessor-tail-exact-0045e810 --json
 0x0045E8A0,th08::AnmVm::GetIntVarPtr,139,matching,100.00,anm-vm-accessor-tail-exact-0045e8a0,python3 scripts/compare-function.py anm-vm-accessor-tail-exact-0045e8a0 --json
+0x00439A2E,th08::GameManager::CalcAntiTamperChecksum,151,matching,100.00,game-manager-roi-exact-00439a2e,python3 scripts/compare-function.py game-manager-roi-exact-00439a2e --json
+0x00439AC5,th08::GameManager::CalcChecksum,100,matching,100.00,game-manager-roi-exact-00439ac5,python3 scripts/compare-function.py game-manager-roi-exact-00439ac5 --json
+0x00439B29,th08::GameManager::CollectExtend,158,matching,100.00,game-manager-roi-exact-00439b29,python3 scripts/compare-function.py game-manager-roi-exact-00439b29 --json
+0x0043B984,th08::GameManager::InitializeAntiTamper,605,matching,100.00,game-manager-roi-exact-0043b984,python3 scripts/compare-function.py game-manager-roi-exact-0043b984 --json
+0x0043BFC3,th08::GameManager::IncreaseSubrank,124,matching,100.00,game-manager-roi-exact-0043bfc3,python3 scripts/compare-function.py game-manager-roi-exact-0043bfc3 --json
+0x0043C03F,th08::GameManager::DecreaseSubrank,124,matching,100.00,game-manager-roi-exact-0043c03f,python3 scripts/compare-function.py game-manager-roi-exact-0043c03f --json
+0x0043C686,th08::GameManager::InitArcadeRegionParams,129,matching,100.00,game-manager-roi-exact-0043c686,python3 scripts/compare-function.py game-manager-roi-exact-0043c686 --json
