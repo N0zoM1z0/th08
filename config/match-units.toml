@@ -364,6 +364,82 @@ symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units]]
+name = "game-manager-extra-unlocked-for-character"
+object = "build/GameManager.obj"
+symbol = "?IsExtraUnlockedForCharacter@GameManager@th08@@QAEIH@Z"
+target_address = 0x0043C15F
+size = 0x8A
+
+[[units]]
+name = "game-manager-extra-unlocked"
+object = "build/GameManager.obj"
+symbol = "?IsExtraUnlocked@GameManager@th08@@QAEIXZ"
+target_address = 0x0043C1E9
+size = 0x52
+
+[[units.relocations]]
+offset = 0xE
+type = "REL32"
+symbol = "?IsExtraUnlockedForCharacter@GameManager@th08@@QAEIH@Z"
+target = 0x0043C15F
+
+[[units.relocations]]
+offset = 0x1C
+type = "REL32"
+symbol = "?IsExtraUnlockedForCharacter@GameManager@th08@@QAEIH@Z"
+target = 0x0043C15F
+
+[[units.relocations]]
+offset = 0x2A
+type = "REL32"
+symbol = "?IsExtraUnlockedForCharacter@GameManager@th08@@QAEIH@Z"
+target = 0x0043C15F
+
+[[units.relocations]]
+offset = 0x38
+type = "REL32"
+symbol = "?IsExtraUnlockedForCharacter@GameManager@th08@@QAEIH@Z"
+target = 0x0043C15F
+
+[[units]]
+name = "game-manager-spell-practice-unlocked-for-character"
+object = "build/GameManager.obj"
+symbol = "?IsSpellPracticeUnlockedForCharacter@GameManager@th08@@QAEIH@Z"
+target_address = 0x0043C23B
+size = 0x8A
+
+[[units]]
+name = "game-manager-spell-practice-unlocked"
+object = "build/GameManager.obj"
+symbol = "?IsSpellPracticeUnlocked@GameManager@th08@@QAEIXZ"
+target_address = 0x0043C2C5
+size = 0x52
+
+[[units.relocations]]
+offset = 0xE
+type = "REL32"
+symbol = "?IsSpellPracticeUnlockedForCharacter@GameManager@th08@@QAEIH@Z"
+target = 0x0043C23B
+
+[[units.relocations]]
+offset = 0x1C
+type = "REL32"
+symbol = "?IsSpellPracticeUnlockedForCharacter@GameManager@th08@@QAEIH@Z"
+target = 0x0043C23B
+
+[[units.relocations]]
+offset = 0x2A
+type = "REL32"
+symbol = "?IsSpellPracticeUnlockedForCharacter@GameManager@th08@@QAEIH@Z"
+target = 0x0043C23B
+
+[[units.relocations]]
+offset = 0x38
+type = "REL32"
+symbol = "?IsSpellPracticeUnlockedForCharacter@GameManager@th08@@QAEIH@Z"
+target = 0x0043C23B
+
+[[units]]
 name = "ecl-manager-ctor"
 object = "build/probes/EclManager.obj"
 symbol = "??0EclManager@th08@@QAE@XZ"

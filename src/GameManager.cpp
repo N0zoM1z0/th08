@@ -359,6 +359,44 @@ void GameManager::AddToYoukaiGauge(i32 amount, i32 forceUpdate)
     this->globals->youkaiGaugeCopy = this->globals->youkaiGauge;
 }
 
+// FUNCTION: th08 0x43c15f
+ZunBool GameManager::IsExtraUnlockedForCharacter(i32 character)
+{
+    return (character > SHOT_YOUMU_YUYUKO) ||
+           (this->clrdData[character].difficultiesClearedWithoutRetries[EASY] & EXTRA_UNLOCKED_FLAG ||
+            this->clrdData[character].difficultiesClearedWithoutRetries[NORMAL] & EXTRA_UNLOCKED_FLAG ||
+            this->clrdData[character].difficultiesClearedWithoutRetries[HARD] & EXTRA_UNLOCKED_FLAG ||
+            this->clrdData[character].difficultiesClearedWithoutRetries[LUNATIC] & EXTRA_UNLOCKED_FLAG);
+}
+
+// FUNCTION: th08 0x43c1e9
+ZunBool GameManager::IsExtraUnlocked()
+{
+    return this->IsExtraUnlockedForCharacter(SHOT_REIMU_YUKARI) ||
+           this->IsExtraUnlockedForCharacter(SHOT_MARISA_ALICE) ||
+           this->IsExtraUnlockedForCharacter(SHOT_SAKUYA_REMILIA) ||
+           this->IsExtraUnlockedForCharacter(SHOT_YOUMU_YUYUKO);
+}
+
+// FUNCTION: th08 0x43c23b
+ZunBool GameManager::IsSpellPracticeUnlockedForCharacter(i32 character)
+{
+    return (character > SHOT_YOUMU_YUYUKO) ||
+           (this->clrdData[character].difficultiesClearedWithRetries[EASY] & SPELL_PRACTICE_UNLOCKED_FLAG ||
+            this->clrdData[character].difficultiesClearedWithRetries[NORMAL] & SPELL_PRACTICE_UNLOCKED_FLAG ||
+            this->clrdData[character].difficultiesClearedWithRetries[HARD] & SPELL_PRACTICE_UNLOCKED_FLAG ||
+            this->clrdData[character].difficultiesClearedWithRetries[LUNATIC] & SPELL_PRACTICE_UNLOCKED_FLAG);
+}
+
+// FUNCTION: th08 0x43c2c5
+ZunBool GameManager::IsSpellPracticeUnlocked()
+{
+    return this->IsSpellPracticeUnlockedForCharacter(SHOT_REIMU_YUKARI) ||
+           this->IsSpellPracticeUnlockedForCharacter(SHOT_MARISA_ALICE) ||
+           this->IsSpellPracticeUnlockedForCharacter(SHOT_SAKUYA_REMILIA) ||
+           this->IsSpellPracticeUnlockedForCharacter(SHOT_YOUMU_YUYUKO);
+}
+
 // Leftover from PCB.
 // FUNCTION: th08 0x43c317
 ZunBool GameManager::IsPhantasmUnlocked()

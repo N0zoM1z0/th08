@@ -539,10 +539,10 @@ th08::GameManager::CutChain,0x43bf6e,0x55,unknown,,u8
 th08::GameManager::IncreaseSubrank,0x43bfc3,0x7c,__thiscall,,void,GameManager*,i32
 th08::GameManager::DecreaseSubrank,0x43c03f,0x7c,__thiscall,,void,GameManager*,i32
 th08::GameManager::AddToYoukaiGauge,0x43c0bb,0xa4,__thiscall,,void,GameManager*,i32,i32
-th08::GameManager::FinalBCleared,0x43c15f,0x8a,__thiscall,,i32,GameManager*,i32
-th08::GameManager::FinalBClearedWithAnyTeam,0x43c1e9,0x52,__thiscall,,i32,GameManager*
-th08::GameManager::FinalACleared,0x43c23b,0x8a,__thiscall,,i32,GameManager*,i32
-th08::GameManager::FinalAClearedWithAnyTeam,0x43c2c5,0x52,__thiscall,,i32,GameManager*
+th08::GameManager::IsExtraUnlockedForCharacter,0x43c15f,0x8a,__thiscall,,ZunBool,GameManager*,i32
+th08::GameManager::IsExtraUnlocked,0x43c1e9,0x52,__thiscall,,ZunBool,GameManager*
+th08::GameManager::IsSpellPracticeUnlockedForCharacter,0x43c23b,0x8a,__thiscall,,ZunBool,GameManager*,i32
+th08::GameManager::IsSpellPracticeUnlocked,0x43c2c5,0x52,__thiscall,,ZunBool,GameManager*
 th08::GameManager::IsPhantasmUnlocked,0x43c317,0xb,__thiscall,,ZunBool,GameManager*
 th08::GameManager::IsReplayPractice,0x43c322,0x3d,__thiscall,,ZunBool,GameManager*
 th08::GameManager::FUN_0043c35f,0x43c35f,0x134,__thiscall,,u32,GameManager*

@@ -181,39 +181,10 @@ struct GameManager
         return IS_STAGE_CLEARED(this->clrdData[character].difficultiesClearedWithoutRetries[difficulty], stage);
     }
 
-    ZunBool IsExtraUnlockedForCharacter(i32 character)
-    {
-        return (character > SHOT_YOUMU_YUYUKO) ||
-               (this->clrdData[character].difficultiesClearedWithoutRetries[EASY] & EXTRA_UNLOCKED_FLAG ||
-                this->clrdData[character].difficultiesClearedWithoutRetries[NORMAL] & EXTRA_UNLOCKED_FLAG ||
-                this->clrdData[character].difficultiesClearedWithoutRetries[HARD] & EXTRA_UNLOCKED_FLAG ||
-                this->clrdData[character].difficultiesClearedWithoutRetries[LUNATIC] & EXTRA_UNLOCKED_FLAG);
-    }
-
-    ZunBool IsExtraUnlocked()
-    {
-        return this->IsExtraUnlockedForCharacter(SHOT_REIMU_YUKARI) ||
-               this->IsExtraUnlockedForCharacter(SHOT_MARISA_ALICE) ||
-               this->IsExtraUnlockedForCharacter(SHOT_SAKUYA_REMILIA) ||
-               this->IsExtraUnlockedForCharacter(SHOT_YOUMU_YUYUKO);
-    }
-
-    ZunBool IsSpellPracticeUnlockedForCharacter(i32 character)
-    {
-        return (character > SHOT_YOUMU_YUYUKO) ||
-               (this->clrdData[character].difficultiesClearedWithRetries[EASY] & SPELL_PRACTICE_UNLOCKED_FLAG ||
-                this->clrdData[character].difficultiesClearedWithRetries[NORMAL] & SPELL_PRACTICE_UNLOCKED_FLAG ||
-                this->clrdData[character].difficultiesClearedWithRetries[HARD] & SPELL_PRACTICE_UNLOCKED_FLAG ||
-                this->clrdData[character].difficultiesClearedWithRetries[LUNATIC] & SPELL_PRACTICE_UNLOCKED_FLAG);
-    }
-
-    ZunBool IsSpellPracticeUnlocked()
-    {
-        return this->IsSpellPracticeUnlockedForCharacter(SHOT_REIMU_YUKARI) ||
-               this->IsSpellPracticeUnlockedForCharacter(SHOT_MARISA_ALICE) ||
-               this->IsSpellPracticeUnlockedForCharacter(SHOT_SAKUYA_REMILIA) ||
-               this->IsSpellPracticeUnlockedForCharacter(SHOT_YOUMU_YUYUKO);
-    }
+    ZunBool IsExtraUnlockedForCharacter(i32 character);
+    ZunBool IsExtraUnlocked();
+    ZunBool IsSpellPracticeUnlockedForCharacter(i32 character);
+    ZunBool IsSpellPracticeUnlocked();
 
     ZunBool IsExtraUnlockedWithAllTeams()
     {
