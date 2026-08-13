@@ -2,10 +2,12 @@
 
 #include "ScoreDat.hpp"
 #include "Spellcard.hpp"
+#include "Global.hpp"
 #include "utils.hpp"
 
 namespace th08
 {
+DIFFABLE_STATIC(ChainElem *, g_SpellcardCalcChain);
 // clang-format off
 // TODO: stop clang-format from fucking with whitespace formatting
 
@@ -366,5 +368,14 @@ i32 Spellcard::GetDifficultyFromSpellCard(i32 spellCardNumber)
         }
     }
     return MAX_DIFFICULTIES;
+}
+
+// FUNCTION: th08 0x4180f0
+void Spellcard::CutChain()
+{
+    if (g_SpellcardCalcChain != NULL)
+    {
+        g_Chain.Cut(g_SpellcardCalcChain);
+    }
 }
 } /* namespace th08 */

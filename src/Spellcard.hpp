@@ -254,12 +254,14 @@ enum SpellcardNumber
 struct Spellcard
 {
     static i32 GetDifficultyFromSpellCard(i32 spellcardNumber);
+    static void CutChain();
 };
 
 DIFFABLE_EXTERN_ARRAY(i32 *, 6, g_SpellcardNumbersPerDifficulty);
 DIFFABLE_EXTERN_ARRAY(i32, 6, g_SpellcardCountsPerDifficulty);
 DIFFABLE_EXTERN_ARRAY(i32, 43, g_LastSpellNumbers);
 DIFFABLE_EXTERN(i32, g_LastSpellCount);
+DIFFABLE_EXTERN(ChainElem *, g_SpellcardCalcChain);
 DIFFABLE_EXTERN_ARRAY(i32 *, 10, g_SpellcardNumbersPerStage)
 DIFFABLE_EXTERN_ARRAY(i32, 10, g_SpellcardCountPerStage)
 

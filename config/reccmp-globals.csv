@@ -95,6 +95,7 @@ th08::g_Background,0x4e4030,global
 th08::g_BackgroundDrawChainLowPrio,0x4ea630,global
 th08::g_BackgroundCalcChain,0x4ea650,global
 th08::g_Spellcard,0x4ea670,global
+th08::g_SpellcardCalcChain,0x4eccac,global
 th08::g_EffectManager,0x4ece60,global
 th08::g_EffectManagerCalcChain,0x577ebc,global
 th08::g_EffectManagerDrawChain,0x577edc,global
@@ -136,6 +137,7 @@ th08::g_MusicRoom,0x17cf4c8,global
 th08::g_Player,0x17d5ef8,global
 th08::g_ReplayManager,0x18b8a28,global
 th08::g_ScreenEffectCounter,0x18b8a2c,global
+th08::g_EclCallbackPublishedEnemyField24,0x4e3d28,global
 th08::g_ScreenEffect,0x18b8a30,global
 th08::g_SoundPlayer,0x18b8a68,global
 th08::g_AnmManager,0x18bdc90,global

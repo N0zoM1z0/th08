@@ -10,6 +10,23 @@ namespace th08
 {
 
 struct Enemy;
+struct AnmVm;
+
+// Target-observed effect-manager entry points used by ECL and game teardown.
+// The full manager layout remains outside the recovered public ABI.
+struct EffectManager
+{
+    static void CutChain();
+    AnmVm *SpawnEffect00425B70(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
+};
+extern EffectManager g_EffectManager;
+DIFFABLE_EXTERN(ChainElem, g_EffectManagerCalcChain);
+DIFFABLE_EXTERN(ChainElem, g_EffectManagerDrawChain);
+
+// A dword published by an ECL enemy callback from the target object's +0x18
+// field.  Its consumer semantics are still unknown; this name records only
+// the observed callback ownership and width.
+DIFFABLE_EXTERN(i32, g_EclCallbackPublishedEnemyField24);
 
 struct EclRawInstruction
 {

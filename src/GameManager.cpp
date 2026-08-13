@@ -1,9 +1,16 @@
 #include "th_pch.h"
 
 #include "GameManager.hpp"
+#include "AsciiManager.hpp"
+#include "Background.hpp"
+#include "BulletManager.hpp"
+#include "EclManager.hpp"
+#include "EnemyManager.hpp"
 #include "Global.hpp"
 #include "Gui.hpp"
+#include "Player.hpp"
 #include "ReplayManager.hpp"
+#include "ScreenEffect.hpp"
 #include "SoundPlayer.hpp"
 
 namespace th08
@@ -251,9 +258,61 @@ void GameManager::InitializeAntiTamper()
     g_GameManager.antiTamperExpectedValue = (f32)sum + (f32)g_GameManager.globals->rng7[3];
 }
 
-// STUB: th08 0x43be2c
+// FUNCTION: th08 0x43be2c
 ZunResult GameManager::DeletedCallback(GameManager *gameManager)
 {
+    g_ScreenEffectCounter = 1;
+    g_EclCallbackPublishedEnemyField24 = 0;
+
+    if (g_Supervisor.curState != SupervisorState_GameManagerReInit &&
+        g_Supervisor.curState != SupervisorState_SpellcardPracticeRestart &&
+        g_Supervisor.curState != SupervisorState_GameManagerNextStageWeird)
+    {
+        g_Supervisor.unk168 = TRUE;
+    }
+    else
+    {
+        g_Supervisor.unk168 = FALSE;
+    }
+
+    if (!g_GameManager.flags.isSpellPractice || g_Supervisor.unk168)
+    {
+        g_Supervisor.StopAudio();
+        if (g_Supervisor.cfg.musicMode == MIDI && g_Supervisor.midiOutput != NULL)
+        {
+            MidiOutput *midiOutput = g_Supervisor.midiOutput;
+
+            midiOutput->StopPlayback();
+            midiOutput->ParseFile(30);
+            midiOutput->Play();
+        }
+    }
+
+    while (g_SoundPlayer.ProcessQueues())
+    {
+    }
+    Spellcard::CutChain();
+    Background::CutChain();
+    BulletManager::CutChain();
+    Player::CutChain();
+    EnemyManager::CutChain();
+    EffectManager::CutChain();
+    Gui::CutChain();
+
+    if (!g_GameManager.flags.isReplay)
+    {
+        ReplayManager::StopRecording();
+    }
+    if (!g_GameManager.flags.isReplay)
+    {
+        g_Supervisor.UpdateGameTime();
+    }
+    g_Supervisor.systemTime = 0;
+    g_Supervisor.UpdatePlayTime();
+    gameManager->flags.unk2 = FALSE;
+    g_AsciiManager.Reset();
+    g_GameManager.unk2D = FALSE;
+    g_GameManager.unk3ddc0 = 0;
     return ZUN_SUCCESS;
 }
 

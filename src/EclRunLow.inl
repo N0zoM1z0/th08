@@ -61,15 +61,6 @@ struct TargetPlayerOverlay
 };
 }
 
-// Target 0x00425B70 is an EffectManager thiscall.  Its exact overload name is
-// not yet recovered, so this lane exposes only the observed signature.
-struct EffectManager
-{
-    AnmVm *SpawnEffect00425B70(i32 id, D3DXVECTOR3 *position,
-                               i32 count, i32 color);
-};
-extern EffectManager g_EffectManager;
-
 namespace EclRunLowProposal
 {
 

@@ -37010,3 +37010,312 @@ offset = 0xDB
 type = "REL32"
 symbol = "?ThreadStart@Supervisor@th08@@QAE?AW4ZunResult@@P6GKPAX@Z0@Z"
 target = 0x004486BA
+
+[[units]]
+name = "game-manager-deleted-callback"
+object = "build/GameManager.obj"
+symbol = "?DeletedCallback@GameManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
+target_address = 0x0043BE2C
+size = 0x142
+
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "?g_ScreenEffectCounter@th08@@3HA"
+target = 0x018B8A2C
+
+[[units.relocations]]
+offset = 0x14
+type = "DIR32"
+symbol = "?g_EclCallbackPublishedEnemyField24@th08@@3HA"
+target = 0x004E3D28
+
+[[units.relocations]]
+offset = 0x1B
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x24
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x2D
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x36
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x42
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x48
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x58
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x60
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x65
+type = "REL32"
+symbol = "?StopAudio@Supervisor@th08@@QAE?AW4ZunResult@@XZ"
+target = 0x00448081
+
+[[units.relocations]]
+offset = 0x6C
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x77
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x7F
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x8A
+type = "REL32"
+symbol = "?StopPlayback@MidiOutput@th08@@QAE?AW4ZunResult@@XZ"
+target = 0x00444680
+
+[[units.relocations]]
+offset = 0x94
+type = "REL32"
+symbol = "?ParseFile@MidiOutput@th08@@QAE?AW4ZunResult@@H@Z"
+target = 0x004442E0
+
+[[units.relocations]]
+offset = 0x9C
+type = "REL32"
+symbol = "?Play@MidiOutput@th08@@QAE?AW4ZunResult@@XZ"
+target = 0x00444620
+
+[[units.relocations]]
+offset = 0xA1
+type = "DIR32"
+symbol = "?g_SoundPlayer@th08@@3VSoundPlayer@1@A"
+target = 0x018B8A68
+
+[[units.relocations]]
+offset = 0xA6
+type = "REL32"
+symbol = "?ProcessQueues@SoundPlayer@th08@@QAEHXZ"
+target = 0x0045D790
+
+[[units.relocations]]
+offset = 0xB1
+type = "REL32"
+symbol = "?CutChain@Spellcard@th08@@SIXXZ"
+target = 0x004180F0
+
+[[units.relocations]]
+offset = 0xB6
+type = "REL32"
+symbol = "?CutChain@Background@th08@@SIXXZ"
+target = 0x00409CA0
+
+[[units.relocations]]
+offset = 0xBB
+type = "REL32"
+symbol = "?CutChain@BulletManager@th08@@SIXXZ"
+target = 0x00433850
+
+[[units.relocations]]
+offset = 0xC0
+type = "REL32"
+symbol = "?CutChain@Player@th08@@SIXXZ"
+target = 0x0044DD10
+
+[[units.relocations]]
+offset = 0xC5
+type = "REL32"
+symbol = "?CutChain@EnemyManager@th08@@SIXXZ"
+target = 0x0042EF70
+
+[[units.relocations]]
+offset = 0xCA
+type = "REL32"
+symbol = "?CutChain@EffectManager@th08@@SIXXZ"
+target = 0x004286B0
+
+[[units.relocations]]
+offset = 0xCF
+type = "REL32"
+symbol = "?CutChain@Gui@th08@@SIXXZ"
+target = 0x00437D64
+
+[[units.relocations]]
+offset = 0xD4
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xE3
+type = "REL32"
+symbol = "?StopRecording@ReplayManager@th08@@SIXXZ"
+target = 0x004531A0
+
+[[units.relocations]]
+offset = 0xE8
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xF7
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xFC
+type = "REL32"
+symbol = "?UpdateGameTime@Supervisor@th08@@QAEXXZ"
+target = 0x00448418
+
+[[units.relocations]]
+offset = 0x102
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x108
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x10D
+type = "REL32"
+symbol = "?UpdatePlayTime@Supervisor@th08@@QAEXXZ"
+target = 0x004482A1
+
+[[units.relocations]]
+offset = 0x127
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x12C
+type = "REL32"
+symbol = "?Reset@AsciiManager@th08@@QAEXXZ"
+target = 0x00402450
+
+[[units.relocations]]
+offset = 0x132
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x139
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units]]
+name = "effect-manager-cut-chain"
+object = "build/EffectManager.obj"
+symbol = "?CutChain@EffectManager@th08@@SIXXZ"
+target_address = 0x004286B0
+size = 0x23
+
+[[units.relocations]]
+offset = 0x4
+type = "DIR32"
+symbol = "?g_EffectManagerCalcChain@th08@@3VChainElem@1@A"
+target = 0x00577EBC
+
+[[units.relocations]]
+offset = 0x9
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0xE
+type = "REL32"
+symbol = "?Cut@Chain@th08@@QAEXPAVChainElem@2@@Z"
+target = 0x0043CF10
+
+[[units.relocations]]
+offset = 0x13
+type = "DIR32"
+symbol = "?g_EffectManagerDrawChain@th08@@3VChainElem@1@A"
+target = 0x00577EDC
+
+[[units.relocations]]
+offset = 0x18
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "?Cut@Chain@th08@@QAEXPAVChainElem@2@@Z"
+target = 0x0043CF10
+
+[[units]]
+name = "spellcard-cut-chain"
+object = "build/SpellCard.obj"
+symbol = "?CutChain@Spellcard@th08@@SIXXZ"
+target_address = 0x004180F0
+size = 0x1E
+
+[[units.relocations]]
+offset = 0x5
+type = "DIR32"
+symbol = "?g_SpellcardCalcChain@th08@@3PAVChainElem@1@A"
+target = 0x004ECCAC
+
+[[units.relocations]]
+offset = 0xD
+type = "DIR32"
+symbol = "?g_SpellcardCalcChain@th08@@3PAVChainElem@1@A"
+target = 0x004ECCAC
+
+[[units.relocations]]
+offset = 0x13
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0x18
+type = "REL32"
+symbol = "?Cut@Chain@th08@@QAEXPAVChainElem@2@@Z"
+target = 0x0043CF10
