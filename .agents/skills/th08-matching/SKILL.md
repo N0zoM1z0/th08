@@ -58,6 +58,13 @@ owned jump tables, keep `size` as the authored code coverage and set
 a target boundary, list every code and table relocation, and require the whole
 `compare_size` range to match. Never count table bytes as authored progress.
 
+For a nonmatching dispatcher, diagnose size movement with a read-only span
+crosswalk: map each target table slot and each COFF table `DIR32` relocation to
+handler starts, sort unique physical starts, and compare neighboring spans.
+This exposes the responsible handler even when slots share a default body. It
+is only a source-shaping aid; it does not establish a boundary or an exact
+match without the canonical full-range comparison.
+
 ## Relocation integrity
 
 Add a `[[units.relocations]]` entry only after proving its byte offset, COFF

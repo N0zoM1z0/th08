@@ -91,6 +91,14 @@ review the unit before claiming exactness.
   all table-entry relocations in the canonical manifest, and require exact
   relocation replay over the full COFF auxiliary extent. `AnmManager::ExecuteScript`
   is the corpus example: `0x366D` code plus `0x1A0` bytes of 91+6+7 entries.
+- When a dispatcher’s COFF extent grows or shrinks, make a read-only span
+  crosswalk before changing source: resolve every target jump-table slot and
+  every COFF table `DIR32` relocation to its handler start, deduplicate and
+  sort starts in physical order, then compare adjacent target and object
+  handler spans. This attributes a size delta to a bounded handler (including
+  shared/default handlers) without treating Ghidra/IDA extents as compiler
+  boundaries. It is a diagnostic fact map, not a matching claim; retain full
+  relocation replay and canonical comparison as the acceptance gate.
 
 ## Improve the model
 
