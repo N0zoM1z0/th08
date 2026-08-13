@@ -92,6 +92,8 @@ th08::GameManager::DeletedCallback
 th08::GameManager::IsReplayPractice
 th08::Spellcard::CutChain
 th08::EffectManager::CutChain
+th08::IsDisableResourceReload
+th08::Background::DeletedCallback
 th08::GameManager::SetYoukaiGauge
 th08::Player::CutChain
 th08::PlayerUnkStruct0x40::Deactivate

@@ -1,6 +1,8 @@
 #include "th_pch.h"
 
+#include "AnmManager.hpp"
 #include "Background.hpp"
+#include "Supervisor.hpp"
 
 namespace th08
 {
@@ -44,10 +46,30 @@ ZunResult Background::RegisterChain()
     return ZUN_ERROR;
 }
 
-// STUB: th08 0x409c20
-ZunResult Background::DeletedCallback()
+// FUNCTION: th08 0x40b900
+ZunBool IsDisableResourceReload()
 {
-    return ZUN_ERROR;
+    return g_Supervisor.unk16c;
+}
+
+// FUNCTION: th08 0x409c20
+ZunResult Background::DeletedCallback(Background *background)
+{
+    if (!IsDisableResourceReload())
+    {
+        g_AnmManager->ReleaseAnm(4);
+    }
+    if (background->stageAnm != NULL)
+    {
+        g_ZunMemory.Free(background->stageAnm);
+        background->stageAnm = NULL;
+    }
+    if (!IsDisableResourceReload() && background->stageAnmSecondary != NULL)
+    {
+        g_ZunMemory.Free(background->stageAnmSecondary);
+        background->stageAnmSecondary = NULL;
+    }
+    return ZUN_SUCCESS;
 }
 
 // FUNCTION: th08 0x409ca0

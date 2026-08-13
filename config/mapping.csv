@@ -116,7 +116,7 @@ th08::ZunMemory::Alloc,0x40b880,0x19,__thiscall,,void*,ZunMemory*,u32,char*
 th08::ZunMemory::Free,0x40b8a0,0x19,__thiscall,,u8,ZunMemory*,void*
 th08::ZunTimer::AsFramesFloat,0x40b8c0,0x17,__thiscall,,float10,ZunTimer*
 FUN_0040b8e0,0x40b8e0,0x1b,unknown,,u8,u8
-FUN_0040b900,0x40b900,0xa,unknown,,u8
+th08::IsDisableResourceReload,0x40b900,0xa,__fastcall,,ZunBool
 th08::AnmFileDesc::ExecuteAnmIdx,0x40b910,0x98,__thiscall,,void,AnmFileDesc*,AnmVm*,i32
 th08::AnmManager::ClearBlendMode,0x40b9b0,0x15,__thiscall,,void,AnmManager*
 th08::AnmManager::ClearColorOp,0x40b9d0,0x15,__thiscall,,void,AnmManager*

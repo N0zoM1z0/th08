@@ -503,7 +503,7 @@ th08::Gui::FUN_00438a89,0x438a89,function
 th08::Gui::FUN_00438f58,0x438f58,function
 FUN_00438fe9,0x438fe9,function
 FUN_00438ff3,0x438ff3,function
-th08::IsDisableResourceReload,0x438ffd,function
+FUN_00438ffd,0x438ffd,function
 FUN_00439007,0x439007,function
 FUN_00439050,0x439050,function
 FUN_00439093,0x439093,function

@@ -37319,3 +37319,71 @@ offset = 0x18
 type = "REL32"
 symbol = "?Cut@Chain@th08@@QAEXPAVChainElem@2@@Z"
 target = 0x0043CF10
+
+[[units]]
+name = "background-resource-reload-disabled"
+object = "build/Background.obj"
+symbol = "?IsDisableResourceReload@th08@@YIIXZ"
+target_address = 0x0040B900
+size = 0xA
+
+[[units.relocations]]
+offset = 0x4
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units]]
+name = "background-deleted-callback"
+object = "build/Background.obj"
+symbol = "?DeletedCallback@Background@th08@@SI?AW4ZunResult@@PAU12@@Z"
+target_address = 0x00409C20
+size = 0x7A
+
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "?IsDisableResourceReload@th08@@YIIXZ"
+target = 0x0040B900
+
+[[units.relocations]]
+offset = 0x14
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x19
+type = "REL32"
+symbol = "?ReleaseAnm@AnmManager@th08@@QAEXH@Z"
+target = 0x00466060
+
+[[units.relocations]]
+offset = 0x2C
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x31
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+[[units.relocations]]
+offset = 0x3F
+type = "REL32"
+symbol = "?IsDisableResourceReload@th08@@YIIXZ"
+target = 0x0040B900
+
+[[units.relocations]]
+offset = 0x5E
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x63
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
