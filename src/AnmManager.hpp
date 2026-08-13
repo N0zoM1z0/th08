@@ -300,6 +300,11 @@ struct AnmVmBase
         return this->visible;
     }
 
+    void ClearVisible()
+    {
+        this->visible = false;
+    }
+
     void SetInterrupt(i16 interrupt)
     {
         this->pendingInterrupt = interrupt;

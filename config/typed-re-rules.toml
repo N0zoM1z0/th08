@@ -45,3 +45,10 @@ requires = ["missing_inline_comdat", "target_tu_evidence"]
 confidence = "workflow_guardrail"
 recommendation = "Restore a target-proven caller and let its translation unit emit a header-inline COMDAT naturally. Do not add dummy callers, artificial function-pointer references, or noinline annotations solely to create a comparator symbol."
 evidence = "TH08 GameManager inline cluster 0x00406C70-0x00406DD0 and Rng accessor cluster 0x00453BE0-0x00453C20"
+
+[[rules]]
+id = "vc7-preserve-independent-store-order"
+requires = ["store_order_mismatch"]
+confidence = "exact_match_corpus"
+recommendation = "When target and object perform the same independent field assignments in a different order, preserve the target-observed source assignment order before changing types, ABI, or compiler settings."
+evidence = "TH08 ZunTimer::SetCurrent at 0x00406610: current, subFrame, then previous"

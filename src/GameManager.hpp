@@ -203,6 +203,11 @@ struct GameManager
         return this->globals->clockTime;
     }
 
+    void SetClockTime(u8 value)
+    {
+        this->globals->clockTime = value;
+    }
+
     ZunBool IsStageClearedWithRetries(i32 stage, i32 character, i32 difficulty)
     {
         return IS_STAGE_CLEARED(this->clrdData[character].difficultiesClearedWithRetries[difficulty], stage);

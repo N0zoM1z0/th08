@@ -216,7 +216,7 @@ struct Supervisor
         return this->cfg.opts.disableFog;
     }
 
-    ZunBool Supervisor::IsHUDRedrawEnabled()
+    ZunBool IsHUDRedrawEnabled()
     {
         return this->cfg.opts.redrawHUDEveryFrame;
     }
@@ -239,6 +239,11 @@ struct Supervisor
     ZunBool IsSoftwareTexturing()
     {
         return this->cfg.opts.disableColorCompositing | this->cfg.opts.useSwTextureBlending;
+    }
+
+    ZunBool IsMinimumGraphicsMode()
+    {
+        return this->cfg.opts.displayMinimumGraphics;
     }
 
     ZunBool IsSubthreadRunning()
@@ -365,10 +370,11 @@ struct ZunTimer
         Tick();
     }
 
-    void Tick()
+    i32 Tick()
     {
         this->previous = this->current;
         g_Supervisor.TickTimer(&this->current, &this->subFrame);
+        return this->current;
     }
 
     void operator--(int)
@@ -422,8 +428,8 @@ struct ZunTimer
     void SetCurrent(i32 value)
     {
         this->current = value;
-        this->previous = -999;
         this->subFrame = 0.0;
+        this->previous = -999;
     }
 };
 }; // namespace th08
