@@ -3,10 +3,28 @@
 #include "GameManager.hpp"
 #include "Global.hpp"
 #include "Gui.hpp"
+#include "ReplayManager.hpp"
 #include "SoundPlayer.hpp"
 
 namespace th08
 {
+
+struct RankParams
+{
+    i32 rank;
+    i32 minRank;
+    i32 maxRank;
+};
+C_ASSERT(sizeof(RankParams) == 0xc);
+
+DIFFABLE_STATIC_ARRAY_ASSIGN(RankParams, 6, g_RankParams) = {
+    {10, 8, 16},
+    {10, 8, 16},
+    {8, 8, 12},
+    {8, 8, 12},
+    {16, 15, 16},
+    {16, 15, 16},
+};
 
 DIFFABLE_STATIC(GameManager, g_GameManager);
 DIFFABLE_STATIC(ChainElem, g_GameManagerCalcChain);
@@ -81,6 +99,14 @@ void GameManager::CollectExtend()
         this->IncreaseSubrank(200);
         g_Gui.flags.bombDisplayUpdateFrames = 2;
     }
+}
+
+// FUNCTION: th08 0x43b936
+void GameManager::InitRankParams()
+{
+    this->rank = g_RankParams[g_GameManager.difficulty].rank;
+    this->minRank = g_RankParams[g_GameManager.difficulty].minRank;
+    this->maxRank = g_RankParams[g_GameManager.difficulty].maxRank;
 }
 
 // STUB: th08 0x439bc7
@@ -192,16 +218,16 @@ void GameManager::AddToYoukaiGauge(u16 param_1, i32 param_2)
 {
 }
 
-// FUNCTION: th08 0x44e140
-void GameManager::SetYoukaiGauge(u16 value)
-{
-    this->globals->youkaiGauge = value;
-}
-
 // Leftover from PCB.
 ZunBool GameManager::IsPhantasmUnlocked()
 {
     return FALSE;
+}
+
+// FUNCTION: th08 0x43c322
+ZunBool GameManager::IsReplayPractice()
+{
+    return this->flags.isReplay && g_ReplayManager->replayData->isPractice;
 }
 
 void GameManager::CutChain()

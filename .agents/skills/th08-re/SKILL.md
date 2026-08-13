@@ -46,6 +46,11 @@ image base `0x00400000`, entry `0x004A619E`, and `.text`
 5. Implement the smallest coherent function in its existing module. Do not
    manufacture behavior, paste decompiler output, patch target bytes, or use
    assembly/byte arrays/padding to force code shape.
+   If a semantically exact leaf differs only by compiler profile or epilogue,
+   inspect its address cluster and callers before reshaping the body: a member
+   defined for one subsystem may have been emitted in another subsystem's
+   translation unit. Preserve the class owner while testing the target-proven
+   TU/profile, as with `GameManager::SetYoukaiGauge` in `Player.obj`.
 6. Ask the coordinator to review shared layouts, canonical mapping names,
    `config/implemented.csv`, and `config/match-units.toml` changes.
 7. Use `$th08-matching` for the focused VC7 build and strict comparison.

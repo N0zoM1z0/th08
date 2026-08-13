@@ -101,6 +101,9 @@ C_ASSERT(sizeof(ReplayData) == 0x134);
 
 struct ReplayManager
 {
+    unknown_fields(0x0, 0x8);
+    ReplayData *replayData;
+
     static void SaveReplay(const char *replayPath, const char *replayName);
     static ReplayData *LoadReplayData(void *replayData, int fileSize);
 };

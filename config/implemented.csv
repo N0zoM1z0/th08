@@ -42,6 +42,8 @@ th08::Background::CutChain
 th08::BulletManager::DeletedCallback
 th08::BulletManager::CutChain
 th08::IsBulletManagerAnmReleaseRequired
+th08::IsResourceReloadEnabled
+th08::IsResourceReloadDisabled
 th08::EnemyManager::OnDrawHighPrio
 th08::EnemyManager::OnDrawLowPrio
 th08::EnemyManager::CutChain
@@ -49,7 +51,14 @@ th08::Gui::AddedCallback
 th08::Gui::CutChain
 th08::Gui::FreeMsgFile
 th08::GameManager::IsWithinPlayfield
+th08::GameManager::InitRankParams
+th08::GameManager::IsReplayPractice
 th08::GameManager::SetYoukaiGauge
+th08::Player::CutChain
+th08::PlayerUnkStruct0x40::Deactivate
+th08::PlayerUnkStruct0x40::Reset
+th08::AnmVmBase::SetBlendModeAdditive
+th08::AnmVmBase::SetBlendModeNormal
 th08::ScreenEffect::AddedCallback
 th08::ScreenEffect::DeletedCallback
 th08::Supervisor::DrawFpsCounter

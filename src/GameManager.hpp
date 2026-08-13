@@ -68,9 +68,7 @@ struct GameManager
     static ZunResult AddedCallback(GameManager *gameManager);
     static void GameplaySetupThread();
 
-    void InitRankParams()
-    {
-    }
+    void InitRankParams();
 
     static void InitializeAntiTamper();
 
@@ -145,6 +143,7 @@ struct GameManager
     void SetYoukaiGauge(u16 value);
 
     ZunBool IsPhantasmUnlocked();
+    ZunBool IsReplayPractice();
 
     /* I know it's dumb but this is the only way to get it matching */
     void SetIsReplayWeird(ZunBool value)

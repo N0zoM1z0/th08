@@ -9,6 +9,29 @@ struct PlayerRawShtFile
 {
 };
 
+struct PlayerUnkStruct0x40
+{
+    void Deactivate();
+    void Reset();
+
+    Float2 center;
+    f32 radius;
+    f32 radiusGrowth;
+    Float2 size;
+    Float2 sizeGrowth;
+    f32 angle;
+    i32 lifetime;
+    i32 collisionValue;
+    i32 damage;
+    i32 hitAccumulator;
+    i32 hitCap;
+    i32 collisionInterval;
+    u8 active;
+    u8 mode;
+    unknown_fields(0x3e, 2);
+};
+C_ASSERT(sizeof(PlayerUnkStruct0x40) == 0x40);
+
 enum PlayerState
 {
     PLAYER_STATE_ALIVE,

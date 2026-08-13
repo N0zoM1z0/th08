@@ -8,7 +8,14 @@ namespace th08
 DIFFABLE_STATIC(BulletManager, g_BulletManager);
 DIFFABLE_STATIC(ChainElem, g_BulletManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_BulletManagerDrawChain);
+DIFFABLE_STATIC(i32, g_ResourceReloadEnabled);
 DIFFABLE_STATIC(i32, g_BulletManagerAnmReleaseRequired);
+
+// FUNCTION: th08 0x4338b0
+i32 IsResourceReloadEnabled()
+{
+    return g_ResourceReloadEnabled;
+}
 
 // FUNCTION: th08 0x4338c0
 i32 IsBulletManagerAnmReleaseRequired()

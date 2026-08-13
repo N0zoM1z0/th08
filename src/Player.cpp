@@ -10,6 +10,44 @@ DIFFABLE_STATIC(ChainElem *, g_PlayerCalcChain);
 DIFFABLE_STATIC(ChainElem *, g_PlayerDrawChainHighPrio);
 DIFFABLE_STATIC(ChainElem *, g_PlayerDrawChainLowPrio);
 
+// FUNCTION: th08 0x44e0e0
+ZunBool IsResourceReloadDisabled()
+{
+    return !IsResourceReloadEnabled();
+}
+
+/* The target emits these cross-subsystem definitions in the Player translation unit. */
+// FUNCTION: th08 0x44e0f0
+void AnmVmBase::SetBlendModeAdditive()
+{
+    this->blendMode = AnmBlendMode_Additive;
+}
+
+// FUNCTION: th08 0x44e120
+void AnmVmBase::SetBlendModeNormal()
+{
+    this->blendMode = AnmBlendMode_Normal;
+}
+
+// FUNCTION: th08 0x44e140
+void GameManager::SetYoukaiGauge(u16 value)
+{
+    this->globals->youkaiGauge = value;
+}
+
+// FUNCTION: th08 0x44e350
+void PlayerUnkStruct0x40::Deactivate()
+{
+    this->active = false;
+}
+
+// FUNCTION: th08 0x44e370
+void PlayerUnkStruct0x40::Reset()
+{
+    memset(this, 0, sizeof(*this));
+    this->collisionInterval = 1;
+}
+
 // STUB: th08 0x44c230
 ZunResult Player::RegisterChain(u32 param)
 {

@@ -280,6 +280,9 @@ struct AnmRawInstr
 
 struct AnmVmBase
 {
+    void SetBlendModeAdditive();
+    void SetBlendModeNormal();
+
     void Initialize()
     {
         memset(this, 0, sizeof(AnmVmBase));
