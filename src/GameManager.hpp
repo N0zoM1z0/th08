@@ -178,25 +178,10 @@ struct GameManager
         return this->globals->youkaiGauge;
     }
 
-    bool GaugeIsExtremelyHuman()
-    {
-        return this->globals->youkaiGauge <= this->youkaiGaugeHumanEffectsThreshold;
-    }
-
-    bool GaugeIsModeratelyHuman()
-    {
-        return this->globals->youkaiGauge <= this->youkaiGaugeHumanTintThreshold;
-    }
-
-    bool GaugeIsExtremelyYoukai()
-    {
-        return this->globals->youkaiGauge >= this->youkaiGaugeYoukaiEffectsThreshold;
-    }
-
-    bool GaugeIsModeratelyYoukai()
-    {
-        return this->globals->youkaiGauge >= this->youkaiGaugeYoukaiTintThreshold;
-    }
+    ZunBool GaugeIsExtremelyHuman();
+    ZunBool GaugeIsModeratelyHuman();
+    ZunBool GaugeIsExtremelyYoukai();
+    ZunBool GaugeIsModeratelyYoukai();
 
     u8 GetClockTime()
     {

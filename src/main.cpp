@@ -1148,3 +1148,27 @@ ZunBool GameWindow::ResolveIt(char *shortcutPath, char *dstPath, i32 maxPathLen)
     CoUninitialize();
     return retValue;
 }
+
+// FUNCTION: th08 0x406d10
+ZunBool GameManager::GaugeIsExtremelyHuman()
+{
+    return this->globals->youkaiGauge <= this->youkaiGaugeHumanEffectsThreshold;
+}
+
+// FUNCTION: th08 0x406d40
+ZunBool GameManager::GaugeIsModeratelyHuman()
+{
+    return this->globals->youkaiGauge <= this->youkaiGaugeHumanTintThreshold;
+}
+
+// FUNCTION: th08 0x406d70
+ZunBool GameManager::GaugeIsExtremelyYoukai()
+{
+    return this->globals->youkaiGauge >= this->youkaiGaugeYoukaiEffectsThreshold;
+}
+
+// FUNCTION: th08 0x406da0
+ZunBool GameManager::GaugeIsModeratelyYoukai()
+{
+    return this->globals->youkaiGauge >= this->youkaiGaugeYoukaiTintThreshold;
+}

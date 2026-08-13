@@ -65,10 +65,10 @@ th08::GameManager::IsReplay,0x406c90,0x1a,__thiscall,,ZunBool,GameManager*
 th08::GameManager::IsDemoMode,0x406cb0,0x19,__thiscall,,ZunBool,GameManager*
 th08::GameManager::IsPracticeMode,0x406cd0,0x17,__thiscall,,ZunBool,GameManager*
 th08::GameManager::GetYoukaiGauge,0x406cf0,0x15,__thiscall,,i32,GameManager*
-th08::GameManager::GaugeIsExtremelyHuman,0x406d10,0x26,__thiscall,,bool,GameManager*
-th08::GameManager::GaugeIsModeratelyHuman,0x406d40,0x26,__thiscall,,bool,GameManager*
-th08::GameManager::GaugeIsExtremelyYoukai,0x406d70,0x26,__thiscall,,bool,GameManager*
-th08::GameManager::GaugeIsModeratelyYoukai,0x406da0,0x26,__thiscall,,bool,GameManager*
+th08::GameManager::GaugeIsExtremelyHuman,0x406d10,0x26,__thiscall,,ZunBool,GameManager*
+th08::GameManager::GaugeIsModeratelyHuman,0x406d40,0x26,__thiscall,,ZunBool,GameManager*
+th08::GameManager::GaugeIsExtremelyYoukai,0x406d70,0x26,__thiscall,,ZunBool,GameManager*
+th08::GameManager::GaugeIsModeratelyYoukai,0x406da0,0x26,__thiscall,,ZunBool,GameManager*
 th08::GameManager::GetClockTime,0x406dd0,0x14,__thiscall,,u8,GameManager*
 th08::GameManager::AddToClockTime,0x406df0,0x26,__thiscall,,void,GameManager*,char
 th08::GameManager::SetLives,0x406e20,0x21,__thiscall,,void,GameManager*,i32

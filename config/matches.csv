@@ -426,3 +426,7 @@ address,name,size,status,match_percent,unit,evidence
 0x0043F02B,th08::TextHelper::~TextHelper,17,matching,100.00,discovered-exact-0043f02b,python3 scripts/compare-function.py discovered-exact-0043f02b --json
 0x0045E300,th08::CSound::GetWaveFile,17,matching,100.00,discovered-exact-0045e300,python3 scripts/compare-function.py discovered-exact-0045e300 --json
 0x0045E2F0,th08::CSoundManager::GetDirectSound,16,matching,100.00,discovered-exact-0045e2f0,python3 scripts/compare-function.py discovered-exact-0045e2f0 --json
+0x00406D10,th08::GameManager::GaugeIsExtremelyHuman,38,matching,100.00,game-manager-gauge-extremely-human,python3 scripts/compare-function.py game-manager-gauge-extremely-human --json
+0x00406D40,th08::GameManager::GaugeIsModeratelyHuman,38,matching,100.00,game-manager-gauge-moderately-human,python3 scripts/compare-function.py game-manager-gauge-moderately-human --json
+0x00406D70,th08::GameManager::GaugeIsExtremelyYoukai,38,matching,100.00,game-manager-gauge-extremely-youkai,python3 scripts/compare-function.py game-manager-gauge-extremely-youkai --json
+0x00406DA0,th08::GameManager::GaugeIsModeratelyYoukai,38,matching,100.00,game-manager-gauge-moderately-youkai,python3 scripts/compare-function.py game-manager-gauge-moderately-youkai --json
