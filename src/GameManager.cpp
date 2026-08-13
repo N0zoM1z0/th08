@@ -115,21 +115,93 @@ ChainCallbackResult GameManager::OnUpdate(GameManager *gameManager)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-// STUB: th08 0x43aa03
+// FUNCTION: th08 0x43aa03
 ChainCallbackResult GameManager::OnDraw(GameManager *gameManager)
 {
+    if (gameManager->isInGameMenu)
+    {
+        gameManager->isInGameMenu = 2;
+    }
+    if (g_Supervisor.curState != SupervisorState_GameManager)
+    {
+        return CHAIN_CALLBACK_RESULT_BREAK;
+    }
+    if (gameManager->flags.unk5_6 == 1)
+    {
+        return CHAIN_CALLBACK_RESULT_BREAK;
+    }
+    if (gameManager->unk38)
+    {
+        return CHAIN_CALLBACK_RESULT_BREAK;
+    }
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-// STUB: th08 0x43aa5c
+// FUNCTION: th08 0x43aa5c
 ZunResult GameManager::RegisterChain()
 {
+    GameManager *mgr = &g_GameManager;
+
+    g_GameManagerCalcChain.callback = (ChainCallback)GameManager::OnUpdate;
+    g_GameManagerCalcChain.addedCallback = NULL;
+    g_GameManagerCalcChain.deletedCallback = NULL;
+    g_GameManagerCalcChain.addedCallback = (ChainLifetimeCallback)GameManager::AddedCallback;
+    g_GameManagerCalcChain.deletedCallback = (ChainLifetimeCallback)GameManager::DeletedCallback;
+    g_GameManagerCalcChain.arg = mgr;
+    mgr->unk3ddc0 = 0;
+    if (g_Chain.AddToCalcChain(&g_GameManagerCalcChain, 2))
+    {
+        return ZUN_ERROR;
+    }
+
+    g_GameManagerDrawChain.callback = (ChainCallback)GameManager::OnDraw;
+    g_GameManagerDrawChain.addedCallback = NULL;
+    g_GameManagerDrawChain.deletedCallback = NULL;
+    g_GameManagerDrawChain.arg = mgr;
+    g_Chain.AddToDrawChain(&g_GameManagerDrawChain, 5);
     return ZUN_SUCCESS;
 }
 
-// STUB: th08 0x43aaf4
+// FUNCTION: th08 0x43aaf4
 ZunResult GameManager::AddedCallback(GameManager *gameManager)
 {
+    if (g_Supervisor.curState != SupervisorState_GameManagerReInit &&
+        g_Supervisor.curState != SupervisorState_SpellcardPracticeRestart &&
+        g_Supervisor.curState != SupervisorState_GameManagerNextStageWeird)
+    {
+        g_Supervisor.unk164 = TRUE;
+    }
+    else
+    {
+        g_Supervisor.unk164 = FALSE;
+    }
+    g_GameManager.unk38 = 1;
+
+    if (g_Supervisor.wantedState2 == SupervisorState_TitleScreen)
+    {
+        Float3 position;
+
+        position.x = 500.0f;
+        position.y = 440.0f;
+        position.z = 0.0f;
+        g_Supervisor.SetupLoadingVmsAndInitCapture(&position);
+        g_Supervisor.StartEffect(0);
+    }
+    else
+    {
+        Float3 position;
+
+        position.x = 280.0f;
+        position.y = 430.0f;
+        position.z = 0.0f;
+        g_Supervisor.SetupLoadingVmsAndInitCapture(&position);
+    }
+
+    if (gameManager->flags.unk5_6 >= 2)
+    {
+        gameManager->flags.unk5_6 = 1;
+    }
+    g_Supervisor.ThreadStart((LPTHREAD_START_ROUTINE)GameManager::GameplaySetupThread, NULL);
     return ZUN_SUCCESS;
 }
 

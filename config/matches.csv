@@ -440,3 +440,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00453C60,th08::GameManager::SetClockTime,25,matching,100.00,game-manager-set-clock-time,python3 scripts/compare-function.py game-manager-set-clock-time --json
 0x004066A0,th08::ZunTimer::operator<,27,matching,100.00,zun-timer-less-than,python3 scripts/compare-function.py zun-timer-less-than --json
 0x004066C0,th08::ZunTimer::operator>,27,matching,100.00,zun-timer-greater-than,python3 scripts/compare-function.py zun-timer-greater-than --json
+0x0043AA03,th08::GameManager::OnDraw,89,matching,100.00,game-manager-on-draw,python3 scripts/compare-function.py game-manager-on-draw --json
+0x0043AA5C,th08::GameManager::RegisterChain,152,matching,100.00,game-manager-register-chain,python3 scripts/compare-function.py game-manager-register-chain --json
+0x0043AAF4,th08::GameManager::AddedCallback,227,matching,100.00,game-manager-added-callback,python3 scripts/compare-function.py game-manager-added-callback --json

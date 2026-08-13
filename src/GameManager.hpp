@@ -29,8 +29,8 @@ struct GameManagerFlags
     u32 unk2 : 1;
     u32 isReplay : 1;
     u32 unk4 : 1;
-    u32 unk5 : 1;
-    u32 unk6 : 1;
+    // Observed as a two-bit state at bits 5..6 by GameManager::OnDraw.
+    u32 unk5_6 : 2;
     u32 unk7 : 1;
     u32 unk8 : 1;
     u32 unk9 : 1;
