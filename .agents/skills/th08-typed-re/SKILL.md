@@ -36,6 +36,10 @@ review the unit before claiming exactness.
   them.
 - Diagnose frame differences through declaration order and real lifetimes;
   never add anonymous filler, inert locals, fake behavior, or ABI lies.
+- Under the repository's VC7 `#pragma var_order` wrapper, local identifiers
+  can affect allocation. After a stack layout is proven, treat a rename as a
+  code-generation change and recompare it; prefer a semantic comment over a
+  readability-only rename while tuning exact stack homes.
 - If an inlined fixed-size structure-tail `memcpy` has the correct semantics,
   size, and `rep movsd` but schedules its count and source setup differently,
   probe the typed address of the first copied field instead of byte-pointer

@@ -61,6 +61,13 @@ recommendation = "When an inlined fixed-size structure-tail memcpy differs only 
 evidence = "TH08 ReplayManager::SaveReplay at 0x004531F0: &replayCopy.unk0x68 reproduces target mov ecx, lea esi, mov edi, rep movsd ordering where (u8 *)&replayCopy + sizeof(ReplayDataHeader) schedules lea esi first"
 
 [[rules]]
+id = "vc7-var-order-identifier-stability"
+requires = ["var_order_identifier_sensitive"]
+confidence = "exact_match_corpus"
+recommendation = "Treat local identifiers governed by the repository VC7 var_order pragma as code-generation inputs. A readability-only rename can change stack allocation even when declaration order, types, and expressions are unchanged; preserve a proven identifier during matching and document its semantic role in a comment instead of renaming it."
+evidence = "TH08 EnemyManager::OnUpdate at 0x0042C660: renaming the proven bounds locals changed the first non-relocation difference from 0x89B back to 0xD6 without changing their types, values, declaration order, or call order"
+
+[[rules]]
 id = "large-dispatcher-source-presence-audit"
 requires = ["jump_table_dispatch", "large_direct_call_surface"]
 confidence = "exact_match_corpus"
