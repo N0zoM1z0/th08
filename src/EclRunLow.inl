@@ -124,7 +124,12 @@ struct SpawnedEffectAnmVm
 // bitfield is necessary both for semantics and for the call-result stack home.
 struct LinkedChildFlags1
 {
-    u32 unknown00 : 11;
+    u32 unknown00 : 2;
+    u32 effectMirrored : 1;
+    u32 unknown03 : 5;
+    u32 linkedChild : 1;
+    u32 inheritParentPosition : 1;
+    u32 unknown0A : 1;
     u32 isYoukai : 1;
     u32 unknown0C : 20;
 };
@@ -908,7 +913,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_EnemyManager) +
                                     0x9DCEF8) == 0)
         {
-            U32At(child, 0x3324) |= 0x100;
+            reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
+                linkedChild = 1;
             reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
                 isYoukai =
                 reinterpret_cast<EclOperands::TargetPlayerOverlay *>(&g_Player)->
@@ -930,12 +936,15 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                 reinterpret_cast<SpawnedEffectAnmVm *>(
                     PointerAt(child, 0x53C8))
                     ->SetInterrupt(
-                        (i16)((reinterpret_cast<EclOperands::TargetPlayerOverlay *>(
-                                   &g_Player)
-                                   ->IsYoukai() != 0) +
-                              1));
+                        static_cast<bool>(
+                            reinterpret_cast<EclOperands::TargetPlayerOverlay *>(
+                                &g_Player)
+                                ->IsYoukai()) +
+                        1);
                 reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))->flag17 =
-                    ((U32At(child, 0x3324) >> 2) & 1) != 0;
+                    reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) +
+                                                          0x3324)->
+                            effectMirrored != 0;
                 if (U32At(child, 0x2E0C) & 1)
                 {
                     reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
@@ -965,7 +974,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_EnemyManager) +
                                     0x9DCEF8) == 0)
         {
-            U32At(child, 0x3324) |= 0x100;
+            reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
+                linkedChild = 1;
             reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
                 isYoukai =
                 reinterpret_cast<EclOperands::TargetPlayerOverlay *>(&g_Player)->
@@ -987,12 +997,15 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                 reinterpret_cast<SpawnedEffectAnmVm *>(
                     PointerAt(child, 0x53C8))
                     ->SetInterrupt(
-                        (i16)((reinterpret_cast<EclOperands::TargetPlayerOverlay *>(
-                                   &g_Player)
-                                   ->IsYoukai() != 0) +
-                              1));
+                        static_cast<bool>(
+                            reinterpret_cast<EclOperands::TargetPlayerOverlay *>(
+                                &g_Player)
+                                ->IsYoukai()) +
+                        1);
                 reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))->flag17 =
-                    ((U32At(child, 0x3324) >> 2) & 1) != 0;
+                    reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) +
+                                                          0x3324)->
+                            effectMirrored != 0;
                 if (U32At(child, 0x2E0C) & 1)
                 {
                     reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
@@ -1022,7 +1035,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_EnemyManager) +
                                     0x9DCEF8) == 0)
         {
-            U32At(child, 0x3324) |= 0x100;
+            reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
+                linkedChild = 1;
             reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
                 isYoukai =
                 reinterpret_cast<EclOperands::TargetPlayerOverlay *>(&g_Player)->
@@ -1050,12 +1064,15 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                 reinterpret_cast<SpawnedEffectAnmVm *>(
                     PointerAt(child, 0x53C8))
                     ->SetInterrupt(
-                        (i16)((reinterpret_cast<EclOperands::TargetPlayerOverlay *>(
-                                   &g_Player)
-                                   ->IsYoukai() != 0) +
-                              1));
+                        static_cast<bool>(
+                            reinterpret_cast<EclOperands::TargetPlayerOverlay *>(
+                                &g_Player)
+                                ->IsYoukai()) +
+                        1);
                 reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))->flag17 =
-                    ((U32At(child, 0x3324) >> 2) & 1) != 0;
+                    reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) +
+                                                          0x3324)->
+                            effectMirrored != 0;
                 if (U32At(child, 0x2E0C) & 1)
                 {
                     reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
@@ -1065,7 +1082,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                 }
             }
 
-            U32At(child, 0x3324) |= 0x200;
+            reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
+                inheritParentPosition = 1;
             PointerAt(child, 0x2DA4) = enemy;
             PointerAt(tail, 8) = child;
             PointerAt(child, 4) = tail;
