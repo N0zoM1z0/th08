@@ -345,3 +345,12 @@ th08::SoundPlayer::InitSoundBuffers
 th08::SoundPlayer::PlaySoundByIdx
 th08::SoundPlayer::PlaySoundPositionedByIdx
 th08::SoundPlayer::QueueCommand
+th08::ScoreDat::LinkScore
+th08::ScoreDat::OpenScore
+th08::ScoreDat::GetHighScore
+th08::ScoreDat::ParseCATK
+th08::ScoreDat::ParseLSNM
+th08::ScoreDat::ParseFLSP
+th08::ScoreDat::ParseCLRD
+th08::ScoreDat::ParsePSCR
+th08::ScoreDat::ParsePLST

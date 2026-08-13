@@ -319,3 +319,12 @@ address,name,size,status,match_percent,unit,evidence
 0x0045D660,th08::SoundPlayer::PlaySoundPositionedByIdx,296,matching,100.00,sound-player-roi-exact-0045d660,python3 scripts/compare-function.py sound-player-roi-exact-0045d660 --json
 0x0045E1E0,th08::SoundPlayer::QueueCommand,225,matching,100.00,sound-player-roi-exact-0045e1e0,python3 scripts/compare-function.py sound-player-roi-exact-0045e1e0 --json
 0x004418C0,WinMain,1354,matching,100.00,winmain-unlocked-exact-004418c0,python3 scripts/compare-function.py winmain-unlocked-exact-004418c0 --json
+0x0045A500,th08::ScoreDat::LinkScore,159,matching,100.00,score-dat-roi-exact-0045a500,python3 scripts/compare-function.py score-dat-roi-exact-0045a500 --json
+0x0045A5E0,th08::ScoreDat::OpenScore,865,matching,100.00,score-dat-roi-exact-0045a5e0,python3 scripts/compare-function.py score-dat-roi-exact-0045a5e0 --json
+0x0045A950,th08::ScoreDat::GetHighScore,362,matching,100.00,score-dat-roi-exact-0045a950,python3 scripts/compare-function.py score-dat-roi-exact-0045a950 --json
+0x0045AAC0,th08::ScoreDat::ParseCATK,175,matching,100.00,score-dat-roi-exact-0045aac0,python3 scripts/compare-function.py score-dat-roi-exact-0045aac0 --json
+0x0045AB70,th08::ScoreDat::ParseLSNM,136,matching,100.00,score-dat-roi-exact-0045ab70,python3 scripts/compare-function.py score-dat-roi-exact-0045ab70 --json
+0x0045AC00,th08::ScoreDat::ParseFLSP,136,matching,100.00,score-dat-roi-exact-0045ac00,python3 scripts/compare-function.py score-dat-roi-exact-0045ac00 --json
+0x0045AC90,th08::ScoreDat::ParseCLRD,368,matching,100.00,score-dat-roi-exact-0045ac90,python3 scripts/compare-function.py score-dat-roi-exact-0045ac90 --json
+0x0045AE00,th08::ScoreDat::ParsePSCR,295,matching,100.00,score-dat-roi-exact-0045ae00,python3 scripts/compare-function.py score-dat-roi-exact-0045ae00 --json
+0x0045AF30,th08::ScoreDat::ParsePLST,129,matching,100.00,score-dat-roi-exact-0045af30,python3 scripts/compare-function.py score-dat-roi-exact-0045af30 --json
