@@ -61,6 +61,14 @@ review the unit before claiming exactness.
   reproduce the home.
 - Keep target facts separate from field names, calling-convention guesses,
   compiler recommendations, and TH06/TH07 hypotheses.
+- Do not name an absolute memory operand as a standalone global from read-side
+  evidence alone.  Search write, construction, and destruction xrefs for a
+  known global owner.  If the target address is `global + member_offset`, keep
+  that ownership in source so VC7 emits a `DIR32` relocation to the base symbol
+  with the real addend; a zero-addend alias records the wrong layout even when
+  it resolves to the same runtime address.  RunEcl's enemy ANM pointers at
+  `0x00F54E0C` and `0x00F54E10` are the corpus example: both are members of
+  `g_EnemyManager`, not independent globals.
 - Test every source-shaping change through `$th08-matching`.
 - If target code ends before the next mapped function but the COFF auxiliary
   size continues through switch tables, compare the complete associated extent

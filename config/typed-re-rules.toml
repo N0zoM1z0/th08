@@ -108,3 +108,10 @@ requires = ["jump_table_dispatch"]
 confidence = "target_observation_with_probe"
 recommendation = "Recover dispatcher scratch storage from target EBP homes across handlers before declaring switch-wide locals. If unrelated scalar or index handlers consistently reuse an existing outer home, reuse that semantic local; if target code performs a table lookup directly and has no stable pointer home, keep the lookup expression direct. Change one proven slot at a time and verify the expected four-byte movement of later homes."
 evidence = "TH08 RunEcl 0x004184B0: target handlers reuse lhsInt at EBP-4 and have no fixed targetEnemy/high object-index-value homes; five single-slot probes moved the saved this home from object EBP-0x158 to target EBP-0x144 in exact four-byte steps"
+
+[[rules]]
+id = "target-absolute-member-addend"
+requires = ["absolute_memory"]
+confidence = "target_observation_with_probe"
+recommendation = "Do not promote an absolute target operand to a standalone global from a read alone. Reconcile write-side and lifetime xrefs against known global objects; when the address is base+member_offset and construction or destruction uses [this+member_offset], express the source through that owner so COFF emits the base DIR32 relocation with the natural addend."
+evidence = "TH08 EnemyManager fields observed at absolute 0x00F54E0C/0x00F54E10 in RunEcl and as g_EnemyManager+0x9DCEEC/+0x9DCEF0 in AddedCallback; the corrected VC7 probe emits g_EnemyManager DIR32 relocations with those addends instead of false zero-addend globals"

@@ -358,6 +358,7 @@ def analyze(address: str, target_path: Path, compare: bool) -> dict[str, Any]:
                     absolute = value
                     kind = "image_immediate"
             if absolute is not None and image.contains(absolute):
+                features.add("absolute_memory")
                 key = (absolute, kind, operand.size)
                 record = absolute_operands.setdefault(
                     key,
