@@ -677,18 +677,6 @@ enter_subroutine:
         }
         break;
     }
-    case 136: TH08_ECL_CONTEXT_API(ctx)->CallFunctionTable(TH08_ECL_READ_I(ctx, 0)); break;
-    case 137:
-        lhsInt = TH08_ECL_READ_I(ctx, 0);
-        if (lhsInt < 0)
-            *(void **)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x10) = 0;
-        else
-        {
-            *(void **)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x10) =
-                TH08_ECL_CONTEXT_API(ctx)->FunctionTableEntry(TH08_ECL_READ_I(ctx, 0));
-            *(RawInstruction **)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x14) = TH08_ECL_CONTEXT_INSTRUCTION(ctx);
-        }
-        break;
     case 139:
         TH08_ECL_CONTEXT_API(ctx)->SpawnEffect00425430(TH08_ECL_READ_I(ctx, 0), &TH08_ECL_AT(ctx, Vec3, 0x2D34),
                                      TH08_ECL_READ_I(ctx, 1), *TH08_ECL_WRITE_I(ctx, 2));
@@ -703,7 +691,11 @@ enter_subroutine:
                                        TH08_ECL_READ_I(ctx, 1), *TH08_ECL_WRITE_I(ctx, 2));
         break;
     }
-    case 141: TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&TH08_ECL_AT(ctx, Vec3, 0x2D34), TH08_ECL_READ_I(ctx, 0), 0); break;
+    case 143: TH08_ECL_AT(ctx, i32, 0x3304) = TH08_ECL_READ_I(ctx, 0); break;
+    case 144:
+        TH08_ECL_AT(ctx, i32, 0x3308) = TH08_ECL_READ_I(ctx, 0);
+        TH08_ECL_AT(ctx, i32, 0x330C) = TH08_ECL_READ_I(ctx, 1);
+        break;
     case 142:
     {
         i32 count = TH08_ECL_READ_I(ctx, 0);
@@ -717,15 +709,35 @@ enter_subroutine:
         }
         break;
     }
-    case 143: TH08_ECL_AT(ctx, i32, 0x3304) = TH08_ECL_READ_I(ctx, 0); break;
-    case 144:
-        TH08_ECL_AT(ctx, i32, 0x3308) = TH08_ECL_READ_I(ctx, 0);
-        TH08_ECL_AT(ctx, i32, 0x330C) = TH08_ECL_READ_I(ctx, 1);
+    case 168:
+    {
+        i32 count = TH08_ECL_READ_I(ctx, 0);
+        for (i32 i = 0; i < count; ++i)
+        {
+            Vec3 position = TH08_ECL_AT(ctx, Vec3, 0x2D34);
+            position.x += TH08_ECL_CONTEXT_API(ctx)->RandomFloat() * 128.0f - 64.0f;
+            position.y += TH08_ECL_CONTEXT_API(ctx)->RandomFloat() * 128.0f - 64.0f;
+            TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&position, 1, 0);
+        }
         break;
+    }
     case 145:
         TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFDFFFFFF) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 25);
         break;
+    case 136: TH08_ECL_CONTEXT_API(ctx)->CallFunctionTable(TH08_ECL_READ_I(ctx, 0)); break;
+    case 137:
+        lhsInt = TH08_ECL_READ_I(ctx, 0);
+        if (lhsInt < 0)
+            *(void **)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x10) = 0;
+        else
+        {
+            *(void **)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x10) =
+                TH08_ECL_CONTEXT_API(ctx)->FunctionTableEntry(TH08_ECL_READ_I(ctx, 0));
+            *(RawInstruction **)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x14) = TH08_ECL_CONTEXT_INSTRUCTION(ctx);
+        }
+        break;
     case 146: TH08_ECL_CONTEXT_API(ctx)->Call0041FDF0(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_READ_I(ctx, 0)); break;
+    case 141: TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&TH08_ECL_AT(ctx, Vec3, 0x2D34), TH08_ECL_READ_I(ctx, 0), 0); break;
     case 147: TH08_ECL_CONTEXT_API(ctx)->Global004EA290() = TH08_ECL_READ_I(ctx, 0); break;
     case 148:
         TH08_ECL_CONTEXT_API(ctx)->Call00423130(TH08_ECL_READ_I(ctx, 0));
@@ -832,18 +844,6 @@ enter_subroutine:
         *TH08_ECL_WRITE_F(ctx, 0) =
             TH08_ECL_CONTEXT_API(ctx)->Cos(TH08_ECL_READ_F(ctx, 2)) * TH08_ECL_READ_F(ctx, 3);
         break;
-    case 168:
-    {
-        i32 count = TH08_ECL_READ_I(ctx, 0);
-        for (i32 i = 0; i < count; ++i)
-        {
-            Vec3 position = TH08_ECL_AT(ctx, Vec3, 0x2D34);
-            position.x += TH08_ECL_CONTEXT_API(ctx)->RandomFloat() * 128.0f - 64.0f;
-            position.y += TH08_ECL_CONTEXT_API(ctx)->RandomFloat() * 128.0f - 64.0f;
-            TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&position, 1, 0);
-        }
-        break;
-    }
     case 169:
         if ((TH08_ECL_CONTEXT_API(ctx)->PlayerX() < TH08_ECL_AT(ctx, f32, 0x2D34) && 96.0f < TH08_ECL_AT(ctx, f32, 0x2D34)) ||
             288.0f < TH08_ECL_AT(ctx, f32, 0x2D34))
