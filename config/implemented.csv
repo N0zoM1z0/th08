@@ -88,6 +88,8 @@ th08::GameWindow::CheckForRunningGameInstance
 th08::GameWindow::ActivateWindow
 th08::GameWindow::CalcExecutableChecksum
 th08::GameWindow::ResolveIt
+th08::GameErrorContext::ResetContext
+th08::AnmManager::ReleaseSurfaces
 th08::MidiDevice::MidiDevice
 th08::MidiDevice::~MidiDevice
 th08::MidiDevice::OpenDevice
