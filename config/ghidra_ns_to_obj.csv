@@ -1,6 +1,8 @@
 Background,th08::Background
+EnemyManager,th08::EnemyManager,th08::Enemy
 Global,th08::Chain,th08::ChainElem,th08::Controller,th08::FileSystem,th08::GameErrorContext,th08::Rng,th08::ZunMemory,th08::Rotate,th08::AddNormalizeAngle
 GameManager,th08::GameManager
+Gui,th08::Gui
 ItemManager,th08::ItemManager,th08::Item
 Lzss,th08::Lzss
 main,WinMain,th08::GameWindow,th08::GameErrorContext::ResetContext,th08::GameErrorContext::Flush,th08::Supervisor::IsHardwareBlendingDisabled,th08::Supervisor::IsVertexBufferDisabled,th08::Supervisor::Is16bitColorMode,th08::Supervisor::IsReferenceRasterizerMode,th08::Supervisor::IsWindowed,th08::AnmManager::`scalar_deleting_destructor',th08::AnmManager::ReleaseSurfaces,th08::AnmManager::TakeScreencaptures

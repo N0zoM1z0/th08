@@ -325,9 +325,10 @@ Supervisor::Supervisor()
     this->flags.unk8 = true;
 }
 
-// STUB: th08 0x445bc0
+// FUNCTION: th08 0x445bc0
 ChainCallbackResult Supervisor::DrawFpsCounter(Supervisor *s)
 {
+    Supervisor::CalculateFps(TRUE);
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 

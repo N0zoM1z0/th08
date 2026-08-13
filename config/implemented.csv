@@ -38,8 +38,15 @@ th08::ZunMemory::AddToRegistry
 th08::ZunMemory::RemoveFromRegistry
 th08::GameErrorContext::GameErrorContext
 th08::MidiTimer::OnTimerElapsed
+th08::Background::CutChain
+th08::EnemyManager::OnDrawHighPrio
+th08::EnemyManager::OnDrawLowPrio
+th08::EnemyManager::CutChain
+th08::Gui::AddedCallback
+th08::Gui::CutChain
 th08::ScreenEffect::AddedCallback
 th08::ScreenEffect::DeletedCallback
+th08::Supervisor::DrawFpsCounter
 th08::Supervisor::RegisterChain
 th08::Supervisor::IsSoftwareTexturing
 th08::Supervisor::IsFogDisabled

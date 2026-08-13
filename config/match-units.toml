@@ -1,6 +1,246 @@
 schema_version = 1
 
 [[units]]
+name = "background-cut-chain"
+object = "build/Background.obj"
+symbol = "?CutChain@Background@th08@@SIXXZ"
+target_address = 0x00409CA0
+size = 0x32
+
+[[units.relocations]]
+offset = 0x4
+type = "DIR32"
+symbol = "?g_BackgroundCalcChain@th08@@3VChainElem@1@A"
+target = 0x004EA650
+
+[[units.relocations]]
+offset = 0x9
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0xE
+type = "REL32"
+symbol = "?Cut@Chain@th08@@QAEXPAVChainElem@2@@Z"
+target = 0x0043CF10
+
+[[units.relocations]]
+offset = 0x13
+type = "DIR32"
+symbol = "?g_BackgroundDrawChainHighPrio@th08@@3VChainElem@1@A"
+target = 0x004E4010
+
+[[units.relocations]]
+offset = 0x18
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "?Cut@Chain@th08@@QAEXPAVChainElem@2@@Z"
+target = 0x0043CF10
+
+[[units.relocations]]
+offset = 0x22
+type = "DIR32"
+symbol = "?g_BackgroundDrawChainLowPrio@th08@@3VChainElem@1@A"
+target = 0x004EA630
+
+[[units.relocations]]
+offset = 0x27
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0x2C
+type = "REL32"
+symbol = "?Cut@Chain@th08@@QAEXPAVChainElem@2@@Z"
+target = 0x0043CF10
+
+[[units]]
+name = "enemy-manager-draw-high"
+object = "build/EnemyManager.obj"
+symbol = "?OnDrawHighPrio@EnemyManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target_address = 0x0042E120
+size = 0x17
+
+[[units.relocations]]
+offset = 0xF
+type = "REL32"
+symbol = "?OnDrawImpl@EnemyManager@th08@@QAI?AW4ChainCallbackResult@2@HH@Z"
+target = 0x0042E140
+
+[[units]]
+name = "enemy-manager-draw-low"
+object = "build/EnemyManager.obj"
+symbol = "?OnDrawLowPrio@EnemyManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target_address = 0x0042EB90
+size = 0x5C
+
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x24
+type = "REL32"
+symbol = "?SetMixColor@AnmManager@th08@@QAEXK@Z"
+target = 0x0040BAD0
+
+[[units.relocations]]
+offset = 0x33
+type = "REL32"
+symbol = "?OnDrawImpl@EnemyManager@th08@@QAI?AW4ChainCallbackResult@2@HH@Z"
+target = 0x0042E140
+
+[[units.relocations]]
+offset = 0x3C
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x4C
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x51
+type = "REL32"
+symbol = "?SetMixColorDefault@AnmManager@th08@@QAEXXZ"
+target = 0x0040BAB0
+
+[[units]]
+name = "enemy-manager-cut-chain"
+object = "build/EnemyManager.obj"
+symbol = "?CutChain@EnemyManager@th08@@SIXXZ"
+target_address = 0x0042EF70
+size = 0x32
+
+[[units.relocations]]
+offset = 0x4
+type = "DIR32"
+symbol = "?g_EnemyManagerCalcChain@th08@@3VChainElem@1@A"
+target = 0x00F54E30
+
+[[units.relocations]]
+offset = 0x9
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0xE
+type = "REL32"
+symbol = "?Cut@Chain@th08@@QAEXPAVChainElem@2@@Z"
+target = 0x0043CF10
+
+[[units.relocations]]
+offset = 0x13
+type = "DIR32"
+symbol = "?g_EnemyManagerDrawChainHighPrio@th08@@3VChainElem@1@A"
+target = 0x00577F00
+
+[[units.relocations]]
+offset = 0x18
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "?Cut@Chain@th08@@QAEXPAVChainElem@2@@Z"
+target = 0x0043CF10
+
+[[units.relocations]]
+offset = 0x22
+type = "DIR32"
+symbol = "?g_EnemyManagerDrawChainLowPrio@th08@@3VChainElem@1@A"
+target = 0x00F54E50
+
+[[units.relocations]]
+offset = 0x27
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0x2C
+type = "REL32"
+symbol = "?Cut@Chain@th08@@QAEXPAVChainElem@2@@Z"
+target = 0x0043CF10
+
+[[units]]
+name = "gui-added-callback"
+object = "build/Gui.obj"
+symbol = "?AddedCallback@Gui@th08@@SI?AW4ZunResult@@PAU12@@Z"
+target_address = 0x00437A2F
+size = 0x11
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "?ActualAddedCallback@Gui@th08@@QAE?AW4ZunResult@@XZ"
+target = 0x004390EE
+
+[[units]]
+name = "gui-cut-chain"
+object = "build/Gui.obj"
+symbol = "?CutChain@Gui@th08@@SIXXZ"
+target_address = 0x00437D64
+size = 0x23
+
+[[units.relocations]]
+offset = 0x4
+type = "DIR32"
+symbol = "?g_GuiCalcChain@th08@@3VChainElem@1@A"
+target = 0x0160F4E4
+
+[[units.relocations]]
+offset = 0x9
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0xE
+type = "REL32"
+symbol = "?Cut@Chain@th08@@QAEXPAVChainElem@2@@Z"
+target = 0x0043CF10
+
+[[units.relocations]]
+offset = 0x13
+type = "DIR32"
+symbol = "?g_GuiDrawChain@th08@@3VChainElem@1@A"
+target = 0x0160F4C4
+
+[[units.relocations]]
+offset = 0x18
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "?Cut@Chain@th08@@QAEXPAVChainElem@2@@Z"
+target = 0x0043CF10
+
+[[units]]
 name = "item-auto-collect"
 object = "build/ItemManager.obj"
 symbol = "?AutoCollectAllItems@ItemManager@th08@@QAEXXZ"
@@ -19,6 +259,19 @@ object = "build/ItemManager.obj"
 symbol = "?CancelAutoCollect@ItemManager@th08@@QAEXXZ"
 target_address = 0x00441530
 size = 0x6D
+
+[[units]]
+name = "supervisor-draw-fps-counter"
+object = "build/Supervisor.obj"
+symbol = "?DrawFpsCounter@Supervisor@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target_address = 0x00445BC0
+size = 0x14
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "?CalculateFps@Supervisor@th08@@SIXI@Z"
+target = 0x00446F53
 
 [[units]]
 name = "screen-effect-added"

@@ -5,6 +5,9 @@
 namespace th08
 {
 DIFFABLE_STATIC(Background, g_Background);
+DIFFABLE_STATIC(ChainElem, g_BackgroundCalcChain);
+DIFFABLE_STATIC(ChainElem, g_BackgroundDrawChainHighPrio);
+DIFFABLE_STATIC(ChainElem, g_BackgroundDrawChainLowPrio);
 
 // STUB: th08 0x4071a0
 Background::Background()
@@ -47,9 +50,12 @@ ZunResult Background::DeletedCallback()
     return ZUN_ERROR;
 }
 
-// STUB: th08 0x409ca0
+// FUNCTION: th08 0x409ca0
 void Background::CutChain()
 {
+    g_Chain.Cut(&g_BackgroundCalcChain);
+    g_Chain.Cut(&g_BackgroundDrawChainHighPrio);
+    g_Chain.Cut(&g_BackgroundDrawChainLowPrio);
 }
 
 // STUB: th08 0x409ce0

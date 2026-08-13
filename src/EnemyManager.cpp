@@ -27,22 +27,36 @@ ChainCallbackResult EnemyManager::OnUpdate()
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-// STUB: th08 0x42e120
+// FUNCTION: th08 0x42e120
 ChainCallbackResult EnemyManager::OnDrawHighPrio(EnemyManager *enemyManager)
 {
-    return CHAIN_CALLBACK_RESULT_CONTINUE;
+    return enemyManager->OnDrawImpl(0, 2);
 }
 
 // STUB: th08 0x42e140
-ChainCallbackResult EnemyManager::OnDrawImpl()
+ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chainPriority)
 {
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-// STUB: th08 0x42eb90
+// FUNCTION: th08 0x42eb90
 ChainCallbackResult EnemyManager::OnDrawLowPrio(EnemyManager *enemyManager)
 {
-    return CHAIN_CALLBACK_RESULT_CONTINUE;
+    ChainCallbackResult result;
+
+    if (g_GameManager.flags.unk10)
+    {
+        g_AnmManager->SetMixColor(0xfff01010);
+    }
+
+    result = enemyManager->OnDrawImpl(2, 4);
+
+    if (g_GameManager.flags.unk10)
+    {
+        g_AnmManager->SetMixColorDefault();
+    }
+
+    return result;
 }
 
 // STUB: th08 0x42ebf0
@@ -57,9 +71,12 @@ ZunResult EnemyManager::DeletedCallback(EnemyManager *enemyManager)
     return ZUN_ERROR;
 }
 
-// STUB: th08 0x42ef70
+// FUNCTION: th08 0x42ef70
 void EnemyManager::CutChain()
 {
+    g_Chain.Cut(&g_EnemyManagerCalcChain);
+    g_Chain.Cut(&g_EnemyManagerDrawChainHighPrio);
+    g_Chain.Cut(&g_EnemyManagerDrawChainLowPrio);
 }
 
 } /* namespace th08 */

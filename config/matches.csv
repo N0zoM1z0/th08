@@ -1,5 +1,12 @@
 address,name,size,status,match_percent,unit,evidence
+0x00409CA0,th08::Background::CutChain,50,matching,100.00,background-cut-chain,python3 scripts/compare-function.py background-cut-chain --json
+0x0042E120,th08::EnemyManager::OnDrawHighPrio,23,matching,100.00,enemy-manager-draw-high,python3 scripts/compare-function.py enemy-manager-draw-high --json
+0x0042EB90,th08::EnemyManager::OnDrawLowPrio,92,matching,100.00,enemy-manager-draw-low,python3 scripts/compare-function.py enemy-manager-draw-low --json
+0x0042EF70,th08::EnemyManager::CutChain,50,matching,100.00,enemy-manager-cut-chain,python3 scripts/compare-function.py enemy-manager-cut-chain --json
+0x00437A2F,th08::Gui::AddedCallback,17,matching,100.00,gui-added-callback,python3 scripts/compare-function.py gui-added-callback --json
+0x00437D64,th08::Gui::CutChain,35,matching,100.00,gui-cut-chain,python3 scripts/compare-function.py gui-cut-chain --json
 0x004413E0,th08::ItemManager::AutoCollectAllItems,97,matching,100.00,item-auto-collect,python3 scripts/compare-function.py item-auto-collect --json
 0x00441530,th08::ItemManager::CancelAutoCollect,109,matching,100.00,item-cancel-auto-collect,python3 scripts/compare-function.py item-cancel-auto-collect --json
+0x00445BC0,th08::Supervisor::DrawFpsCounter,20,matching,100.00,supervisor-draw-fps-counter,python3 scripts/compare-function.py supervisor-draw-fps-counter --json
 0x0045C0E0,th08::ScreenEffect::AddedCallback,26,matching,100.00,screen-effect-added,python3 scripts/compare-function.py screen-effect-added --json
 0x0045C100,th08::ScreenEffect::DeletedCallback,94,matching,100.00,screen-effect-deleted,python3 scripts/compare-function.py screen-effect-deleted --json

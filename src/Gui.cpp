@@ -21,10 +21,10 @@ ChainCallbackResult Gui::OnDraw(Gui *gui)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-// STUB: th08 0x437a2f
+// FUNCTION: th08 0x437a2f
 ZunResult Gui::AddedCallback(Gui *gui)
 {
-    return ZUN_SUCCESS;
+    return gui->ActualAddedCallback();
 }
 
 // STUB: th08 0x437a40
@@ -39,9 +39,11 @@ ZunResult Gui::RegisterChain()
     return ZUN_SUCCESS;
 }
 
-// STUB: th08 0x437d64
+// FUNCTION: th08 0x437d64
 void Gui::CutChain()
 {
+    g_Chain.Cut(&g_GuiCalcChain);
+    g_Chain.Cut(&g_GuiDrawChain);
 }
 
 // STUB: th08 0x4390ee

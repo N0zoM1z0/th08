@@ -6,10 +6,10 @@ and `config/implemented.csv`.
 > `implemented.csv` records source presence only. Exact figures below
 > count only reproducible 100% comparisons tracked in `config/matches.csv`.
 
-- Source-present authored functions: **132 / 1,117 (11.82%)**
-- Source-present authored bytes: **33,014 / 459,958 (7.18%)**
-- Exact authored functions: **4 / 1,117 (0.36%)**
-- Exact authored bytes: **326 / 459,958 (0.07%)**
+- Source-present authored functions: **139 / 1,117 (12.44%)**
+- Source-present authored bytes: **33,301 / 459,958 (7.24%)**
+- Exact authored functions: **11 / 1,117 (0.98%)**
+- Exact authored bytes: **613 / 459,958 (0.13%)**
 - Inventory-classified library functions: **1,103**
 
 Function sizes and library classification are imported analysis seeds and

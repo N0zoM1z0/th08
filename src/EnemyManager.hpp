@@ -16,7 +16,7 @@ struct EnemyManager
     static ZunResult RegisterChain();
     static ChainCallbackResult OnUpdate();
     static ChainCallbackResult OnDrawHighPrio(EnemyManager *enemyManager);
-    ChainCallbackResult OnDrawImpl();
+    ChainCallbackResult __fastcall OnDrawImpl(i32 drawGroup, i32 chainPriority);
     static ChainCallbackResult OnDrawLowPrio(EnemyManager *enemyManager);
     static ZunResult AddedCallback(EnemyManager *enemyManager);
     static ZunResult DeletedCallback(EnemyManager *enemyManager);
