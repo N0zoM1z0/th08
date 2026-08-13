@@ -52,8 +52,10 @@ the TH07 database. Never patch target bytes.
   class layout, vtable order, exception behavior, static initialization, and
   translation-unit boundaries.
 - Prefer source expressions that plausibly produced the target. Do not use
-  copied machine-code arrays, naked-assembly byte dumps, fake returns, empty
-  behavior, ABI lies, or arbitrary padding to force a comparison.
+  copied machine-code arrays, native assembly, inline assembly, naked-assembly
+  byte dumps, fake returns, empty behavior, ABI lies, or arbitrary padding to
+  force a comparison. Exact matching must come from natural VC7 emission of
+  evidence-backed C/C++ behavior.
 - Keep generated files under `build/` and private analysis under `.analysis/`.
 - Do not commit original executables, game archives, IDA/Ghidra databases,
   downloaded toolchains, generated reports, credentials, or private keys.

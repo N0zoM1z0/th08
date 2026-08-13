@@ -52,6 +52,20 @@ supported by evidence.
 6. Change one source-plausible expression or declaration, rebuild the same
    object, and rerun the same unit.
 
+For a read-only search of already built, source-emitted leaves, use the
+conservative discovery gate:
+
+```bash
+nice -n 15 python3 scripts/discover-exact-units.py --min-size 0x80
+```
+
+It emits review-only candidates only when the target-pinned isolated extent,
+full relocation replay, direct-call multiset, named destination ledgers, and
+unique object ownership agree. `--allow-unimplemented` may reveal source-built
+functions missing from `implemented.csv`; it never updates tracking. Inspect
+the source and target, add a reviewed unit, and obtain this skill's canonical
+`compare-function.py` `exact` result before entering either ledger.
+
 For a VC7 switch function whose COFF auxiliary `total_size` includes compiler-
 owned jump tables, keep `size` as the authored code coverage and set
 `compare_size` to the complete code-plus-table extent. Prove the extent ends at

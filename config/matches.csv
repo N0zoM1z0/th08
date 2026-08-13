@@ -390,3 +390,5 @@ address,name,size,status,match_percent,unit,evidence
 0x0045C4B0,th08::SoundPlayer::Release,506,matching,100.00,import-unlock-exact-0045c4b0,python3 scripts/compare-function.py import-unlock-exact-0045c4b0 --json
 0x0045D2D0,th08::SoundPlayer::StopBGM,287,matching,100.00,import-unlock-exact-0045d2d0,python3 scripts/compare-function.py import-unlock-exact-0045d2d0 --json
 0x0045E0F0,th08::SoundPlayer::BGMPlayerThread,226,matching,100.00,import-unlock-exact-0045e0f0,python3 scripts/compare-function.py import-unlock-exact-0045e0f0 --json
+0x00443B60,th08::AnmManager::TakeScreencaptures,248,matching,100.00,anm-manager-take-screencaptures-main,python3 scripts/compare-function.py anm-manager-take-screencaptures-main --json
+0x00440470,th08::ItemManager::UpdatePointItemExtendThreshold,137,matching,100.00,item-manager-update-point-item-extend-threshold,python3 scripts/compare-function.py item-manager-update-point-item-extend-threshold --json
