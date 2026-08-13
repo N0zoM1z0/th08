@@ -225,3 +225,4 @@ address,name,size,status,match_percent,unit,evidence
 0x004489F9,th08::Supervisor::InitializeCriticalSections,54,matching,100.00,supervisor-exact-004489f9,python3 scripts/compare-function.py supervisor-exact-004489f9 --json
 0x00406CD0,th08::GameManager::IsPracticeMode,23,matching,100.00,replay-remaining-exact-00406cd0,python3 scripts/compare-function.py replay-remaining-exact-00406cd0 --json
 0x00410C00,th08::Rng::GetRandomU16InRange,57,matching,100.00,replay-remaining-exact-00410c00,python3 scripts/compare-function.py replay-remaining-exact-00410c00 --json
+0x00451D90,th08::ReplayManager::LoadReplayData,511,matching,100.00,replay-manager-load-replay-data,python3 scripts/compare-function.py replay-manager-load-replay-data --json

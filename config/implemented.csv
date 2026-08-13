@@ -231,6 +231,7 @@ th08::GameManager::GetDeaths
 th08::GameManager::GetBombsUsed
 th08::ReplayManager::StopRecording
 th08::ReplayManager::SaveReplay
+th08::ReplayManager::LoadReplayData
 th08::AppendFormat
 th08::ReplayManager::IsDemo
 th08::AnmLoaded::SetSprite

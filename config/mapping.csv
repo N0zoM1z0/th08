@@ -823,7 +823,7 @@ FUN_00451640,0x451640,0x2d,unknown,,u8
 FUN_00451670,0x451670,0x66e,unknown,,u8,u8,u8,u8,u8
 FUN_00451ce0,0x451ce0,0x6c,unknown,,u8,u8,u8
 FUN_00451d50,0x451d50,0x38,unknown,,u8
-FUN_00451d90,0x451d90,0x1ff,unknown,,u8
+th08::ReplayManager::LoadReplayData,0x451d90,0x1ff,__fastcall,,ReplayData*,void*,i32
 FUN_00451f90,0x451f90,0x309,unknown,,u8
 FUN_004522a0,0x4522a0,0x66,unknown,,u8
 FUN_00452310,0x452310,0x174,unknown,,u8
