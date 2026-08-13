@@ -4011,6 +4011,1283 @@ symbol = "?OnUpdate@EnemyManagerUpdateOverlay@th08@@QAEHXZ"
 target_address = 0x0042C660
 size = 0x1836
 compare_size = 0x1846
+[[units.relocations]]
+offset = 0x1C
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x24
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x2C
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x38
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGui@th08@@3UEnemyManagerUpdateGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x3D
+type = "REL32"
+symbol = "?IsDialogPresent@EnemyManagerUpdateGui@th08@@QAEHXZ"
+target = 0x004358BB
+
+[[units.relocations]]
+offset = 0x46
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateFrameCounter@th08@@3HA"
+target = 0x0164D30C
+
+[[units.relocations]]
+offset = 0x4E
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateFrameCounter@th08@@3HA"
+target = 0x0164D30C
+
+[[units.relocations]]
+offset = 0x5F
+type = "REL32"
+symbol = "??BEnemyManagerUpdateTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0x6A
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateHumanCounter@th08@@3HA"
+target = 0x0164D0AC
+
+[[units.relocations]]
+offset = 0x73
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateHumanCounter@th08@@3HA"
+target = 0x0164D0AC
+
+[[units.relocations]]
+offset = 0x7A
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x83
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateYoukaiCounter@th08@@3HA"
+target = 0x0164D0A8
+
+[[units.relocations]]
+offset = 0x8B
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateYoukaiCounter@th08@@3HA"
+target = 0x0164D0A8
+
+[[units.relocations]]
+offset = 0x91
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateManagerFlags@th08@@3IA"
+target = 0x0164D0B4
+
+[[units.relocations]]
+offset = 0xAB
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateManagerFlags@th08@@3IA"
+target = 0x0164D0B4
+
+[[units.relocations]]
+offset = 0xD8
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0xEC
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x10F
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x114
+type = "REL32"
+symbol = "?CalcDamageToEnemy@EnemyManagerUpdatePlayer@th08@@QAEHPAUD3DXVECTOR3@@0PAXPAH@Z"
+target = 0x00451670
+
+[[units.relocations]]
+offset = 0x11F
+type = "REL32"
+symbol = "?PrepareFrame@EnemyManagerUpdateOverlay@th08@@QAEXXZ"
+target = 0x0042C3B0
+
+[[units.relocations]]
+offset = 0x176
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateEclManager@th08@@3UEnemyManagerUpdateEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
+offset = 0x17B
+type = "REL32"
+symbol = "?GetTimelineCount@EnemyManagerUpdateEclManager@th08@@QAEHXZ"
+target = 0x0042DFB0
+
+[[units.relocations]]
+offset = 0x19F
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateEclManager@th08@@3UEnemyManagerUpdateEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
+offset = 0x1A4
+type = "REL32"
+symbol = "?GetTimeline@EnemyManagerUpdateEclManager@th08@@QAEPAXH@Z"
+target = 0x0042DFD0
+
+[[units.relocations]]
+offset = 0x1CF
+type = "REL32"
+symbol = "?Run@EnemyManagerUpdateTimelineLane@th08@@QAEXXZ"
+target = 0x0042A8A0
+
+[[units.relocations]]
+offset = 0x231
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateTrackedEnemy@th08@@3PAUEnemyManagerUpdateEnemy@1@A"
+target = 0x018B89B4
+
+[[units.relocations]]
+offset = 0x23C
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateTrackedEnemy@th08@@3PAUEnemyManagerUpdateEnemy@1@A"
+target = 0x018B89B4
+
+[[units.relocations]]
+offset = 0x27B
+type = "REL32"
+symbol = "??HD3DXVECTOR3@@QBE?AU0@ABU0@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 0x2DA
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateFrameStop@th08@@3HA"
+target = 0x017D6ED4
+
+[[units.relocations]]
+offset = 0x2E4
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x30B
+type = "REL32"
+symbol = "??FEnemyManagerUpdateTimer@th08@@QAEXH@Z"
+target = 0x00418110
+
+[[units.relocations]]
+offset = 0x32B
+type = "REL32"
+symbol = "?PauseUpdate@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+target = 0x0042C420
+
+[[units.relocations]]
+offset = 0x334
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateEclManager@th08@@3UEnemyManagerUpdateEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
+offset = 0x339
+type = "REL32"
+symbol = "?RunEcl@EnemyManagerUpdateEclManager@th08@@QAEHPAUEnemyManagerUpdateEnemy@2@@Z"
+target = 0x004184B0
+
+[[units.relocations]]
+offset = 0x35B
+type = "REL32"
+symbol = "?Despawn@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+target = 0x0042BCF0
+
+[[units.relocations]]
+offset = 0x37F
+type = "REL32"
+symbol = "?ClampPosition@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+target = 0x0042C180
+
+[[units.relocations]]
+offset = 0x387
+type = "REL32"
+symbol = "?Move@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+target = 0x0042DEB0
+
+[[units.relocations]]
+offset = 0x38F
+type = "REL32"
+symbol = "?ClampPosition@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+target = 0x0042C180
+
+[[units.relocations]]
+offset = 0x3F5
+type = "REL32"
+symbol = "??HD3DXVECTOR3@@QBE?AU0@ABU0@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 0x43C
+type = "REL32"
+symbol = "??HD3DXVECTOR3@@QBE?AU0@ABU0@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 0x61E
+type = "REL32"
+symbol = "??BD3DXVECTOR3@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x630
+type = "REL32"
+symbol = "??BD3DXVECTOR3@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x638
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x63D
+type = "REL32"
+symbol = "?IsWithinPlayfield@EnemyManagerUpdateGameManager@th08@@QAEHMMMM@Z"
+target = 0x004399AC
+
+[[units.relocations]]
+offset = 0x6CE
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x6D3
+type = "REL32"
+symbol = "?IsWithinPlayfield@EnemyManagerUpdateGameManager@th08@@QAEHMMMM@Z"
+target = 0x004399AC
+
+[[units.relocations]]
+offset = 0x720
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x725
+type = "REL32"
+symbol = "?IsWithinPlayfield@EnemyManagerUpdateGameManager@th08@@QAEHMMMM@Z"
+target = 0x004399AC
+
+[[units.relocations]]
+offset = 0x782
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x787
+type = "REL32"
+symbol = "?IsWithinPlayfield@EnemyManagerUpdateGameManager@th08@@QAEHMMMM@Z"
+target = 0x004399AC
+
+[[units.relocations]]
+offset = 0x7A8
+type = "REL32"
+symbol = "?Despawn@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+target = 0x0042BCF0
+
+[[units.relocations]]
+offset = 0x7B5
+type = "REL32"
+symbol = "?HandleLifeCallback@EnemyManagerUpdateEnemy@th08@@QAEHXZ"
+target = 0x0042B490
+
+[[units.relocations]]
+offset = 0x7D2
+type = "REL32"
+symbol = "?HandleTimerCallback@EnemyManagerUpdateEnemy@th08@@QAEHXZ"
+target = 0x0042B930
+
+[[units.relocations]]
+offset = 0x7FA
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateAnmManager@th08@@3PAUEnemyManagerUpdateAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x7FF
+type = "REL32"
+symbol = "?ExecuteScript@EnemyManagerUpdateAnmManager@th08@@QAEHPAUEnemyManagerUpdateAnmVm@2@@Z"
+target = 0x0045EA00
+
+[[units.relocations]]
+offset = 0x85B
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateAnmManager@th08@@3PAUEnemyManagerUpdateAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x860
+type = "REL32"
+symbol = "?ExecuteScript@EnemyManagerUpdateAnmManager@th08@@QAEHPAUEnemyManagerUpdateAnmVm@2@@Z"
+target = 0x0045EA00
+
+[[units.relocations]]
+offset = 0x881
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateFrameStop@th08@@3HA"
+target = 0x017D6ED4
+
+[[units.relocations]]
+offset = 0x8E2
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateFrameStop@th08@@3HA"
+target = 0x017D6ED4
+
+[[units.relocations]]
+offset = 0x91B
+type = "REL32"
+symbol = "?CheckPlayerCollision@EnemyManagerUpdateEnemy@th08@@QAEXPAUD3DXVECTOR3@@0@Z"
+target = 0x0042C290
+
+[[units.relocations]]
+offset = 0x9B9
+type = "REL32"
+symbol = "??DD3DXVECTOR3@@QBE?AU0@M@Z"
+target = 0x00409120
+
+[[units.relocations]]
+offset = 0x9C0
+type = "REL32"
+symbol = "??KD3DXVECTOR3@@QBE?AU0@M@Z"
+target = 0x0040C7D0
+
+[[units.relocations]]
+offset = 0x9D6
+type = "REL32"
+symbol = "??GD3DXVECTOR3@@QBE?AU0@ABU0@@Z"
+target = 0x004090D0
+
+[[units.relocations]]
+offset = 0xA04
+type = "REL32"
+symbol = "?CheckPlayerCollision@EnemyManagerUpdateEnemy@th08@@QAEXPAUD3DXVECTOR3@@0@Z"
+target = 0x0042C290
+
+[[units.relocations]]
+offset = 0xA32
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateSpellcard@th08@@3UEnemyManagerUpdateSpellcard@1@A"
+target = 0x004EA670
+
+[[units.relocations]]
+offset = 0xA37
+type = "REL32"
+symbol = "?IsActive@EnemyManagerUpdateSpellcard@th08@@QAEHXZ"
+target = 0x004178A0
+
+[[units.relocations]]
+offset = 0xA43
+type = "REL32"
+symbol = "?IsBossPart@EnemyManagerUpdateEnemy@th08@@QAEHXZ"
+target = 0x0041FD20
+
+[[units.relocations]]
+offset = 0xA4D
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateFrameStop@th08@@3HA"
+target = 0x017D6ED4
+
+[[units.relocations]]
+offset = 0xA76
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0xA7B
+type = "REL32"
+symbol = "?CalcDamageToEnemy@EnemyManagerUpdatePlayer@th08@@QAEHPAUD3DXVECTOR3@@0PAXPAH@Z"
+target = 0x00451670
+
+[[units.relocations]]
+offset = 0xA96
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0xAC3
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0xAC8
+type = "REL32"
+symbol = "?CalcDamageToEnemy@EnemyManagerUpdatePlayer@th08@@QAEHPAUD3DXVECTOR3@@0PAXPAH@Z"
+target = 0x00451670
+
+[[units.relocations]]
+offset = 0xAD8
+type = "DIR32"
+symbol = "?g_TargetByte0164D0B1@th08@@3EA"
+target = 0x0164D0B1
+
+[[units.relocations]]
+offset = 0xAE4
+type = "DIR32"
+symbol = "?g_TargetByte0164D0B1@th08@@3EA"
+target = 0x0164D0B1
+
+[[units.relocations]]
+offset = 0xAF5
+type = "DIR32"
+symbol = "__real@40d00000"
+target = 0x004B4AC0
+
+[[units.relocations]]
+offset = 0xAFC
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0xB0D
+type = "DIR32"
+symbol = "__real@3fd9999a"
+target = 0x004B4ABC
+
+[[units.relocations]]
+offset = 0xB14
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0xB3A
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0xB48
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateFrameStop@th08@@3HA"
+target = 0x017D6ED4
+
+[[units.relocations]]
+offset = 0xB68
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0xBBA
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0xBCC
+type = "REL32"
+symbol = "??BEnemyManagerUpdateTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0xBFB
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xC00
+type = "REL32"
+symbol = "?AddScore@EnemyManagerUpdateGameManager@th08@@QAEXH@Z"
+target = 0x004181F0
+
+[[units.relocations]]
+offset = 0xC1C
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateSpellcard@th08@@3UEnemyManagerUpdateSpellcard@1@A"
+target = 0x004EA670
+
+[[units.relocations]]
+offset = 0xC21
+type = "REL32"
+symbol = "?IsActive@EnemyManagerUpdateSpellcard@th08@@QAEHXZ"
+target = 0x004178A0
+
+[[units.relocations]]
+offset = 0xC55
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateSpellcard@th08@@3UEnemyManagerUpdateSpellcard@1@A"
+target = 0x004EA670
+
+[[units.relocations]]
+offset = 0xC5A
+type = "REL32"
+symbol = "?AllowsBombDamage@EnemyManagerUpdateSpellcard@th08@@QAEHXZ"
+target = 0x0042DFF0
+
+[[units.relocations]]
+offset = 0xC66
+type = "REL32"
+symbol = "?IsBossPart@EnemyManagerUpdateEnemy@th08@@QAEHXZ"
+target = 0x0041FD20
+
+[[units.relocations]]
+offset = 0xC79
+type = "DIR32"
+symbol = "__real@40200000"
+target = 0x004B4AB8
+
+[[units.relocations]]
+offset = 0xC7E
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0xCA9
+type = "REL32"
+symbol = "??OEnemyManagerUpdateTimer@th08@@QAEHH@Z"
+target = 0x004066C0
+
+[[units.relocations]]
+offset = 0xD03
+type = "REL32"
+symbol = "?ApplyDamage@EnemyManagerUpdateEnemy@th08@@QAEXH@Z"
+target = 0x0042B370
+
+[[units.relocations]]
+offset = 0xD25
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateReferencePosition@th08@@3UD3DXVECTOR3@@A"
+target = 0x017D61AC
+
+[[units.relocations]]
+offset = 0xD31
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateTrackedPosition@th08@@3UD3DXVECTOR3@@A"
+target = 0x018B899C
+
+[[units.relocations]]
+offset = 0xD36
+type = "REL32"
+symbol = "??GD3DXVECTOR3@@QBE?AU0@ABU0@@Z"
+target = 0x004090D0
+
+[[units.relocations]]
+offset = 0xD4C
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateReferencePosition@th08@@3UD3DXVECTOR3@@A"
+target = 0x017D61AC
+
+[[units.relocations]]
+offset = 0xD61
+type = "REL32"
+symbol = "??GD3DXVECTOR3@@QBE?AU0@ABU0@@Z"
+target = 0x004090D0
+
+[[units.relocations]]
+offset = 0xD78
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateTrackedPositionValid@th08@@3HA"
+target = 0x018B89B8
+
+[[units.relocations]]
+offset = 0xD84
+type = "REL32"
+symbol = "_EnemyManagerUpdateFabs@4"
+target = 0x004031E0
+
+[[units.relocations]]
+offset = 0xD93
+type = "REL32"
+symbol = "_EnemyManagerUpdateFabs@4"
+target = 0x004031E0
+
+[[units.relocations]]
+offset = 0xDB0
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateTrackedPosition@th08@@3UD3DXVECTOR3@@A"
+target = 0x018B899C
+
+[[units.relocations]]
+offset = 0xDB9
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateTrackedPosition@th08@@3UD3DXVECTOR3@@A"
+target = 0x018B899C
+
+[[units.relocations]]
+offset = 0xDC1
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateTrackedPosition@th08@@3UD3DXVECTOR3@@A"
+target = 0x018B899C
+
+[[units.relocations]]
+offset = 0xDC7
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateTrackedPositionValid@th08@@3HA"
+target = 0x018B89B8
+
+[[units.relocations]]
+offset = 0xDD1
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateTrackedPositionValid@th08@@3HA"
+target = 0x018B89B8
+
+[[units.relocations]]
+offset = 0xDD9
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateTrackedPosition@th08@@3UD3DXVECTOR3@@A"
+target = 0x018B899C
+
+[[units.relocations]]
+offset = 0xDDE
+type = "REL32"
+symbol = "??BD3DXVECTOR3@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xDEE
+type = "REL32"
+symbol = "??BD3DXVECTOR3@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xE0C
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateTrackedPosition@th08@@3UD3DXVECTOR3@@A"
+target = 0x018B899C
+
+[[units.relocations]]
+offset = 0xE14
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateTrackedPosition@th08@@3UD3DXVECTOR3@@A"
+target = 0x018B899C
+
+[[units.relocations]]
+offset = 0xE1D
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateTrackedPosition@th08@@3UD3DXVECTOR3@@A"
+target = 0x018B899C
+
+[[units.relocations]]
+offset = 0xE2C
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateReferencePosition@th08@@3UD3DXVECTOR3@@A"
+target = 0x017D61AC
+
+[[units.relocations]]
+offset = 0xE35
+type = "REL32"
+symbol = "_EnemyManagerUpdateFabs@4"
+target = 0x004031E0
+
+[[units.relocations]]
+offset = 0xE3B
+type = "DIR32"
+symbol = "__real@42800000"
+target = 0x004B42C8
+
+[[units.relocations]]
+offset = 0xE4A
+type = "REL32"
+symbol = "?IsBossPart@EnemyManagerUpdateEnemy@th08@@QAEHXZ"
+target = 0x0041FD20
+
+[[units.relocations]]
+offset = 0xE54
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateTrackedEnemy@th08@@3PAUEnemyManagerUpdateEnemy@1@A"
+target = 0x018B89B4
+
+[[units.relocations]]
+offset = 0xE5C
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateTrackedEnemy@th08@@3PAUEnemyManagerUpdateEnemy@1@A"
+target = 0x018B89B4
+
+[[units.relocations]]
+offset = 0xE7B
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateTrackedEnemy@th08@@3PAUEnemyManagerUpdateEnemy@1@A"
+target = 0x018B89B4
+
+[[units.relocations]]
+offset = 0xF0A
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xF18
+type = "REL32"
+symbol = "??BEnemyManagerUpdateTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0xFA9
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateMemory@th08@@3UEnemyManagerUpdateMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0xFAE
+type = "REL32"
+symbol = "?Free@EnemyManagerUpdateMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+[[units.relocations]]
+offset = 0xFC9
+type = "REL32"
+symbol = "?IsBossPart@EnemyManagerUpdateEnemy@th08@@QAEHXZ"
+target = 0x0041FD20
+
+[[units.relocations]]
+offset = 0xFF8
+type = "REL32"
+symbol = "?ReleaseEffects@EnemyManagerUpdateEnemy@th08@@QAEXH@Z"
+target = 0x0042ADB0
+
+[[units.relocations]]
+offset = 0xFFF
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x101E
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x1023
+type = "REL32"
+symbol = "?AddToYoukaiGauge@EnemyManagerUpdateGameManager@th08@@QAEXHH@Z"
+target = 0x0043C0BB
+
+[[units.relocations]]
+offset = 0x1052
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042DE96
+
+[[units.relocations]]
+offset = 0x1092
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGui@th08@@3UEnemyManagerUpdateGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x1097
+type = "REL32"
+symbol = "?ResetBossUi@EnemyManagerUpdateGui@th08@@QAEXH@Z"
+target = 0x00422C20
+
+[[units.relocations]]
+offset = 0x109D
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateReplayManager@th08@@3PAUEnemyManagerUpdateReplayManager@1@A"
+target = 0x018B8A28
+
+[[units.relocations]]
+offset = 0x10AD
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateReplayManager@th08@@3PAUEnemyManagerUpdateReplayManager@1@A"
+target = 0x018B8A28
+
+[[units.relocations]]
+offset = 0x10E0
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateEffectManager@th08@@3UEnemyManagerUpdateEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0x10E5
+type = "REL32"
+symbol = "?SpawnEffect@EnemyManagerUpdateEffectManager@th08@@QAEXHPAUD3DXVECTOR3@@HH@Z"
+target = 0x00425430
+
+[[units.relocations]]
+offset = 0x1103
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateEffectManager@th08@@3UEnemyManagerUpdateEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0x1108
+type = "REL32"
+symbol = "?SpawnEffect@EnemyManagerUpdateEffectManager@th08@@QAEXHPAUD3DXVECTOR3@@HH@Z"
+target = 0x00425430
+
+[[units.relocations]]
+offset = 0x1126
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateEffectManager@th08@@3UEnemyManagerUpdateEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0x112B
+type = "REL32"
+symbol = "?SpawnEffect@EnemyManagerUpdateEffectManager@th08@@QAEXHPAUD3DXVECTOR3@@HH@Z"
+target = 0x00425430
+
+[[units.relocations]]
+offset = 0x1147
+type = "REL32"
+symbol = "?SetInterrupt@EnemyManagerUpdateAnmVm@th08@@QAEXH@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x115B
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x1166
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdatePlayerTimer@th08@@3UEnemyManagerUpdateTimer@1@A"
+target = 0x018B89EC
+
+[[units.relocations]]
+offset = 0x116B
+type = "REL32"
+symbol = "??4EnemyManagerUpdateTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x1171
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x11B4
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x11B9
+type = "REL32"
+symbol = "?AddScore@EnemyManagerUpdateGameManager@th08@@QAEXH@Z"
+target = 0x004181F0
+
+[[units.relocations]]
+offset = 0x1221
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x1226
+type = "REL32"
+symbol = "?AddScore@EnemyManagerUpdateGameManager@th08@@QAEXH@Z"
+target = 0x004181F0
+
+[[units.relocations]]
+offset = 0x1257
+type = "REL32"
+symbol = "?SetInterrupt@EnemyManagerUpdateAnmVm@th08@@QAEXH@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x127D
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGui@th08@@3UEnemyManagerUpdateGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x1282
+type = "REL32"
+symbol = "?ResetBossUi@EnemyManagerUpdateGui@th08@@QAEXH@Z"
+target = 0x00422C20
+
+[[units.relocations]]
+offset = 0x128A
+type = "REL32"
+symbol = "?SpecialBossDeath@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+target = 0x0042A820
+
+[[units.relocations]]
+offset = 0x1296
+type = "REL32"
+symbol = "?FinalizeDeath@EnemyManagerUpdateEnemy@th08@@QAEXH@Z"
+target = 0x0042BEA0
+
+[[units.relocations]]
+offset = 0x12AD
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateSpellcard@th08@@3UEnemyManagerUpdateSpellcard@1@A"
+target = 0x004EA670
+
+[[units.relocations]]
+offset = 0x12B2
+type = "REL32"
+symbol = "?IsActive@EnemyManagerUpdateSpellcard@th08@@QAEHXZ"
+target = 0x004178A0
+
+[[units.relocations]]
+offset = 0x12C2
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateBulletManager@th08@@3UEnemyManagerUpdateBulletManager@1@A"
+target = 0x00F54E90
+
+[[units.relocations]]
+offset = 0x12C7
+type = "REL32"
+symbol = "?DespawnBullets@EnemyManagerUpdateBulletManager@th08@@QAEHHH@Z"
+target = 0x00430AA0
+
+[[units.relocations]]
+offset = 0x12D8
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManagerUpdateOverlay@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x12DD
+type = "REL32"
+symbol = "?ConvertBulletBonus@EnemyManagerUpdateOverlay@th08@@QAEHHH@Z"
+target = 0x0042EFB0
+
+[[units.relocations]]
+offset = 0x12EF
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x12F4
+type = "REL32"
+symbol = "?AddScore@EnemyManagerUpdateGameManager@th08@@QAEXH@Z"
+target = 0x004181F0
+
+[[units.relocations]]
+offset = 0x12FD
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGui@th08@@3UEnemyManagerUpdateGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x1302
+type = "REL32"
+symbol = "?ShowBonus@EnemyManagerUpdateGui@th08@@QAEXH@Z"
+target = 0x00437DDD
+
+[[units.relocations]]
+offset = 0x1314
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateReplayManager@th08@@3PAUEnemyManagerUpdateReplayManager@1@A"
+target = 0x018B8A28
+
+[[units.relocations]]
+offset = 0x1324
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateReplayManager@th08@@3PAUEnemyManagerUpdateReplayManager@1@A"
+target = 0x018B8A28
+
+[[units.relocations]]
+offset = 0x1365
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateSoundPlayer@th08@@3UEnemyManagerUpdateSoundPlayer@1@A"
+target = 0x018B8A68
+
+[[units.relocations]]
+offset = 0x136A
+type = "REL32"
+symbol = "?PlaySoundPositionedByIdx@EnemyManagerUpdateSoundPlayer@th08@@QAEXHM@Z"
+target = 0x0045D660
+
+[[units.relocations]]
+offset = 0x1396
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateEffectManager@th08@@3UEnemyManagerUpdateEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0x139B
+type = "REL32"
+symbol = "?SpawnEffect@EnemyManagerUpdateEffectManager@th08@@QAEXHPAUD3DXVECTOR3@@HH@Z"
+target = 0x00425430
+
+[[units.relocations]]
+offset = 0x13BC
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateEffectManager@th08@@3UEnemyManagerUpdateEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0x13C1
+type = "REL32"
+symbol = "?SpawnEffect@EnemyManagerUpdateEffectManager@th08@@QAEXHPAUD3DXVECTOR3@@HH@Z"
+target = 0x00425430
+
+[[units.relocations]]
+offset = 0x13C6
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x13CB
+type = "REL32"
+symbol = "?GaugeIsExtremelyHuman@EnemyManagerUpdateGameManager@th08@@QAEHXZ"
+target = 0x00406D10
+
+[[units.relocations]]
+offset = 0x13D4
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x13D9
+type = "REL32"
+symbol = "?GaugeIsExtremelyYoukai@EnemyManagerUpdateGameManager@th08@@QAEHXZ"
+target = 0x00406D70
+
+[[units.relocations]]
+offset = 0x13F0
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateItemManager@th08@@3UEnemyManagerUpdateItemManager@1@A"
+target = 0x01653648
+
+[[units.relocations]]
+offset = 0x13F5
+type = "REL32"
+symbol = "?SpawnItem@EnemyManagerUpdateItemManager@th08@@QAEXPAUD3DXVECTOR3@@HH@Z"
+target = 0x004400A0
+
+[[units.relocations]]
+offset = 0x140F
+type = "REL32"
+symbol = "?PrepareDeathCallback@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+target = 0x00415C80
+
+[[units.relocations]]
+offset = 0x145B
+type = "REL32"
+symbol = "?ResetForDeathCallback@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+target = 0x0042BC90
+
+[[units.relocations]]
+offset = 0x146E
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateCombatTemplate@th08@@3PAEA"
+target = 0x0057AD44
+
+[[units.relocations]]
+offset = 0x1496
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateEclManager@th08@@3UEnemyManagerUpdateEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
+offset = 0x149B
+type = "REL32"
+symbol = "?CallEclSub@EnemyManagerUpdateEclManager@th08@@QAEHPAXF@Z"
+target = 0x00418450
+
+[[units.relocations]]
+offset = 0x152D
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateSoundPlayer@th08@@3UEnemyManagerUpdateSoundPlayer@1@A"
+target = 0x018B8A68
+
+[[units.relocations]]
+offset = 0x1532
+type = "REL32"
+symbol = "?PlaySoundPositionedByIdx@EnemyManagerUpdateSoundPlayer@th08@@QAEXHM@Z"
+target = 0x0045D660
+
+[[units.relocations]]
+offset = 0x1545
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateSoundPlayer@th08@@3UEnemyManagerUpdateSoundPlayer@1@A"
+target = 0x018B8A68
+
+[[units.relocations]]
+offset = 0x154A
+type = "REL32"
+symbol = "?PlaySoundPositionedByIdx@EnemyManagerUpdateSoundPlayer@th08@@QAEXHM@Z"
+target = 0x0045D660
+
+[[units.relocations]]
+offset = 0x1627
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x162C
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGui@th08@@3UEnemyManagerUpdateGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x1631
+type = "REL32"
+symbol = "?IsDialogPresent@EnemyManagerUpdateGui@th08@@QAEHXZ"
+target = 0x004358BB
+
+[[units.relocations]]
+offset = 0x165E
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGui@th08@@3UEnemyManagerUpdateGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x1663
+type = "REL32"
+symbol = "?SetBossHealth@EnemyManagerUpdateGui@th08@@QAEXM@Z"
+target = 0x004230C0
+
+[[units.relocations]]
+offset = 0x169C
+type = "DIR32"
+symbol = "__real@42000000"
+target = 0x004B42CC
+
+[[units.relocations]]
+offset = 0x16D3
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateAsciiManager@th08@@3UEnemyManagerUpdateAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x16D8
+type = "REL32"
+symbol = "?SetBossMarkerPosition@EnemyManagerUpdateAsciiManager@th08@@QAEXHPAUD3DXVECTOR3@@@Z"
+target = 0x00422BE0
+
+[[units.relocations]]
+offset = 0x1711
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateAsciiManager@th08@@3UEnemyManagerUpdateAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x1716
+type = "REL32"
+symbol = "?SetBossMarkerState@EnemyManagerUpdateAsciiManager@th08@@QAEXHH@Z"
+target = 0x0042F2D0
+
+[[units.relocations]]
+offset = 0x173B
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateAsciiManager@th08@@3UEnemyManagerUpdateAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x1740
+type = "REL32"
+symbol = "?SetBossMarkerState@EnemyManagerUpdateAsciiManager@th08@@QAEXHH@Z"
+target = 0x0042F2D0
+
+[[units.relocations]]
+offset = 0x1748
+type = "REL32"
+symbol = "?UpdateEffects@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+target = 0x0042E010
+
+[[units.relocations]]
+offset = 0x174F
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGamePaused@th08@@3DA"
+target = 0x0160F534
+
+[[units.relocations]]
+offset = 0x1763
+type = "REL32"
+symbol = "??EEnemyManagerUpdateTimer@th08@@QAEXH@Z"
+target = 0x00406640
+
+[[units.relocations]]
+offset = 0x1773
+type = "REL32"
+symbol = "??OEnemyManagerUpdateTimer@th08@@QAEHH@Z"
+target = 0x004066C0
+
+[[units.relocations]]
+offset = 0x1787
+type = "REL32"
+symbol = "??FEnemyManagerUpdateTimer@th08@@QAEXH@Z"
+target = 0x00418110
+
+[[units.relocations]]
+offset = 0x17FB
+type = "REL32"
+symbol = "??LEnemyManagerUpdateTimer@th08@@QAEHH@Z"
+target = 0x0040D410
+
+[[units.relocations]]
+offset = 0x1804
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x1809
+type = "REL32"
+symbol = "?IsTampered@EnemyManagerUpdateGameManager@th08@@QAEHXZ"
+target = 0x0040BB80
+
+[[units.relocations]]
+offset = 0x1827
+type = "REL32"
+symbol = "??EEnemyManagerUpdateTimer@th08@@QAEXH@Z"
+target = 0x00406640
+
+[[units.relocations]]
+offset = 0x1836
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042D876
+
+[[units.relocations]]
+offset = 0x183A
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042D809
+
+[[units.relocations]]
+offset = 0x183E
+type = "DIR32"
+symbol = "$common_death_mode$61497"
+target = 0x0042D8EE
+
+[[units.relocations]]
+offset = 0x1842
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042D6B6
 
 [[units]]
 name = "midi-timer-elapsed"

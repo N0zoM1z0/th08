@@ -83,3 +83,4 @@ address,name,size,status,match_percent,unit,evidence
 0x004531F0,th08::ReplayManager::SaveReplay,2445,matching,100.00,replay-manager-save-replay,python3 scripts/compare-function.py replay-manager-save-replay --json
 0x00473CB0,th08::Lzss::Encode,1065,matching,100.00,lzss-encode,python3 scripts/compare-function.py lzss-encode --json
 0x004740E0,th08::Lzss::Decode,868,matching,100.00,lzss-decode,python3 scripts/compare-function.py lzss-decode --json
+0x0042C660,th08::EnemyManager::OnUpdate,6198,matching,100.00,enemy-manager-on-update,python3 scripts/compare-function.py enemy-manager-on-update --json

@@ -4,8 +4,6 @@
 #include <math.h>
 #include <string.h>
 
-#pragma intrinsic(fabs)
-
 namespace th08
 {
 
@@ -165,7 +163,7 @@ struct EnemyManagerUpdateGameManager
 
 struct EnemyManagerUpdatePlayer
 {
-    u8 playerType;
+    i8 playerType;
     u8 unknown01[2];
     u8 mode;
 
@@ -221,6 +219,8 @@ struct EnemyManagerUpdateMemory
     void Free(void *ptr);
 };
 
+extern "C" f32 __stdcall EnemyManagerUpdateFabs(f32 value);
+
 extern EnemyManagerUpdateEclManager g_EnemyManagerUpdateEclManager;
 extern EnemyManagerUpdateGui g_EnemyManagerUpdateGui;
 extern EnemyManagerUpdateGameManager g_EnemyManagerUpdateGameManager;
@@ -236,6 +236,7 @@ extern EnemyManagerUpdateReplayManager *g_EnemyManagerUpdateReplayManager;
 extern EnemyManagerUpdateMemory g_EnemyManagerUpdateMemory;
 
 extern u32 g_EnemyManagerUpdateManagerFlags;
+extern u8 g_TargetByte0164D0B1;
 extern i32 g_EnemyManagerUpdateFrameCounter;
 extern i32 g_EnemyManagerUpdateHumanCounter;
 extern i32 g_EnemyManagerUpdateYoukaiCounter;
@@ -281,6 +282,8 @@ struct EnemyManagerUpdateOverlay
     i32 OnUpdate();
 };
 
+extern EnemyManagerUpdateOverlay g_EnemyManager;
+
 enum EnemyManagerUpdateFlag1
 {
     EMUF1_ACTIVE = 1U << 0,
@@ -311,124 +314,72 @@ enum EnemyManagerUpdateFlag2
     EMUF2_FORCE_PAUSE = 1U << 7
 };
 
-static __forceinline D3DXVECTOR3 *TrailPosition(EnemyManagerUpdateEnemy *enemy, i32 index)
+struct EnemyManagerUpdateManagerFlagBits
 {
-    return reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x3394 + 0x1C * index);
-}
+    u32 unknown00_09 : 10;
+    u32 skipUpdate : 1;
+    u32 unknown11_12 : 2;
+    u32 damageBoss : 1;
+    u32 unknown14_31 : 18;
+};
 
-static __forceinline D3DXVECTOR3 *TrailVelocity(EnemyManagerUpdateEnemy *enemy, i32 index)
+struct EnemyManagerUpdateFlag1Bits
 {
-    return reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x33A0 + 0x1C * index);
-}
+    u32 active : 1;
+    u32 boss : 1;
+    u32 collision : 1;
+    u32 damageable : 1;
+    u32 noSprite : 1;
+    u32 skipCombatA : 1;
+    u32 acceptsDamage : 1;
+    u32 unknown07 : 1;
+    u32 preEclUpdate : 1;
+    u32 copyFollowVelocity : 1;
+    u32 suppressDeathEffects : 1;
+    u32 skipCombatB : 1;
+    u32 unknown12_19 : 8;
+    u32 deathMode : 3;
+    u32 persistAfterDeath : 1;
+    u32 hasBeenInBounds : 1;
+    u32 unknown25_27 : 3;
+    u32 allowOffscreen : 1;
+    u32 skipMovement : 1;
+    u32 pauseTimer : 1;
+    u32 noDamageDuringStop : 1;
+};
 
-static __forceinline u32 &TrailValue(EnemyManagerUpdateEnemy *enemy, i32 index)
+struct EnemyManagerUpdateFlag2Bits
 {
-    return *reinterpret_cast<u32 *>(enemy->raw + 0x33AC + 0x1C * index);
-}
+    u32 unknown00_02 : 3;
+    u32 deathLatch : 1;
+    u32 bossMarker : 2;
+    u32 noDeath : 1;
+    u32 forcePause : 1;
+    u32 unknown08_31 : 24;
+};
 
-static __forceinline void PushTrailSample(EnemyManagerUpdateEnemy *enemy)
-{
-    i32 index;
-
-    if (!enemy->TrailFlags())
-        return;
-
-    for (index = enemy->TrailHistoryCount() - 1; index > 0; --index)
-    {
-        *TrailPosition(enemy, index) = *TrailPosition(enemy, index - 1);
-        *TrailVelocity(enemy, index) = *TrailVelocity(enemy, index - 1);
-        TrailValue(enemy, index) = TrailValue(enemy, index - 1);
-    }
-
-    *TrailPosition(enemy, 0) = *enemy->Position();
-    *TrailVelocity(enemy, 0) = *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D4C);
-    TrailValue(enemy, 0) = *reinterpret_cast<u32 *>(enemy->raw + 0x2D94);
-}
-
-static __forceinline i32 EnemyIsInBounds(EnemyManagerUpdateEnemy *enemy)
-{
-    EnemyManagerUpdateSprite *sprite = enemy->PrimaryVm()->sprite;
-    return g_EnemyManagerUpdateGameManager.IsWithinPlayfield(
-        enemy->Position()->x, enemy->Position()->y, sprite->width, sprite->height);
-}
-
-static __forceinline i32 EnemyTrailIsInBounds(EnemyManagerUpdateEnemy *enemy)
-{
-    EnemyManagerUpdateSprite *sprite = enemy->PrimaryVm()->sprite;
-    D3DXVECTOR3 *sample = TrailPosition(enemy, enemy->TrailHistoryCount() - 1);
-    return g_EnemyManagerUpdateGameManager.IsWithinPlayfield(
-        sample->x, sample->y, sprite->width, sprite->height);
-}
-
-static __forceinline void ResetEnemyCombatState(EnemyManagerUpdateEnemy *enemy)
-{
-    i32 index;
-
-    enemy->Unknown2CEA() = 0;
-    for (index = 0; index < 4; ++index)
-        enemy->LifeCallbacks()[index] = -1;
-    enemy->TimerCallbackThreshold() = -1;
-    enemy->ResetForDeathCallback();
-    memcpy(enemy->raw + 0x2E24, g_EnemyManagerUpdateCombatTemplate, 0x210);
-    *reinterpret_cast<i32 *>(enemy->raw + 0x3060) = 0;
-}
-
-static __forceinline void TrackBossTarget(EnemyManagerUpdateEnemy *enemy)
-{
-    D3DXVECTOR3 previousDelta;
-    D3DXVECTOR3 currentDelta;
-
-    if (enemy->Flags1() & EMUF1_BOSS)
-    {
-        previousDelta = g_EnemyManagerUpdateTrackedPosition - g_EnemyManagerUpdateReferencePosition;
-        currentDelta = *enemy->Position() - g_EnemyManagerUpdateReferencePosition;
-        if (!g_EnemyManagerUpdateTrackedPositionValid ||
-            fabs(previousDelta.x) > fabs(currentDelta.x))
-        {
-            g_EnemyManagerUpdateTrackedPosition = *enemy->Position();
-        }
-        g_EnemyManagerUpdateTrackedPositionValid = 1;
-    }
-
-    if (!g_EnemyManagerUpdateTrackedPositionValid &&
-        g_EnemyManagerUpdateTrackedPosition.y < enemy->Position()->y)
-    {
-        g_EnemyManagerUpdateTrackedPosition = *enemy->Position();
-    }
-
-    if (fabs(enemy->Position()->x - g_EnemyManagerUpdateReferencePosition.x) <= 64.0f &&
-        !enemy->IsBossPart() &&
-        (g_EnemyManagerUpdateTrackedEnemy == 0 ||
-         g_EnemyManagerUpdateTrackedEnemy->VelocityA()->y <= enemy->Position()->y))
-    {
-        g_EnemyManagerUpdateTrackedEnemy = enemy;
-    }
-}
-
-#pragma var_order(bombHit, difficultyScale, enemyIndex, damage, extraDamage, vmIndex, trailIndex, enemy)
+#pragma var_order(currentTargetDelta, difficultyScale, bombHit, damage, enemyIndex, secondaryHitbox, extraDamage, trailIndex, damageOccurred, enemy, rankAmount, previousTargetDelta)
 i32 EnemyManagerUpdateOverlay::OnUpdate()
 {
+    i32 bombHit = 0;
     EnemyManagerUpdateEnemy *enemy;
     D3DXVECTOR3 secondaryHitbox;
-    D3DXVECTOR3 markerPosition;
-    D3DXVECTOR3 lowerBounds;
-    D3DXVECTOR3 upperBounds;
+    D3DXVECTOR3 previousTargetDelta;
+    D3DXVECTOR3 currentTargetDelta;
     i32 damageOccurred;
     i32 trailIndex;
-    i32 vmIndex;
     i32 extraDamage;
     i32 damage;
     i32 enemyIndex;
     i32 difficultyScale;
-    i32 bombHit;
+    i32 rankAmount;
 
-    bombHit = 0;
     difficultyScale = 10;
 
     if (!g_EnemyManagerUpdateGui.IsDialogPresent())
     {
         ++g_EnemyManagerUpdateFrameCounter;
-        if ((i32)*Timer() >= 16)
+        if ((i32)*reinterpret_cast<EnemyManagerUpdateTimer *>(raw + 0x9DCED0) >= 16)
         {
             ++g_EnemyManagerUpdateHumanCounter;
             if (!g_EnemyManagerUpdatePlayer.mode)
@@ -436,34 +387,47 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
         }
     }
 
-    if (g_EnemyManagerUpdateManagerFlags & (1U << 10))
+    if (reinterpret_cast<EnemyManagerUpdateManagerFlagBits *>(
+            &g_EnemyManagerUpdateManagerFlags)->skipUpdate)
         return 1;
 
-    if ((g_EnemyManagerUpdateManagerFlags & (1U << 13)) && SpecialEnemy() != 0)
+    if (reinterpret_cast<EnemyManagerUpdateManagerFlagBits *>(
+            &g_EnemyManagerUpdateManagerFlags)->damageBoss &&
+        *reinterpret_cast<EnemyManagerUpdateEnemy **>(raw + 0x9DCDA0) != 0)
     {
-        lowerBounds = D3DXVECTOR3(192.0f, 224.0f, 0.0f);
-        upperBounds = D3DXVECTOR3(384.0f, 448.0f, 0.0f);
+        // These target-pinned identifiers preserve VC7's block-local hash
+        // order.  The initializer values and argument order carry the actual
+        // outer/inner semantics.
+        D3DXVECTOR3 lowerBounds(384.0f, 448.0f, 0.0f);
+        D3DXVECTOR3 upperBounds(192.0f, 224.0f, 0.0f);
         g_EnemyManagerUpdatePlayer.CalcDamageToEnemy(
-            &lowerBounds, &upperBounds, SpecialEnemy()->DamageData(), &bombHit);
+            &upperBounds, &lowerBounds,
+            (*reinterpret_cast<EnemyManagerUpdateEnemy **>(raw + 0x9DCDA0))->raw + 0x2E10,
+            &bombHit);
     }
 
     PrepareFrame();
 
-    for (enemyIndex = 0; enemyIndex < 4; ++enemyIndex)
-        DrawHeads()[enemyIndex] = 0;
+    reinterpret_cast<EnemyManagerUpdateEnemy **>(raw + 0x9DCEDC)[3] = 0;
+    reinterpret_cast<EnemyManagerUpdateEnemy **>(raw + 0x9DCEDC)[2] = 0;
+    reinterpret_cast<EnemyManagerUpdateEnemy **>(raw + 0x9DCEDC)[1] = 0;
+    reinterpret_cast<EnemyManagerUpdateEnemy **>(raw + 0x9DCEDC)[0] = 0;
 
     for (enemyIndex = 0; enemyIndex < g_EnemyManagerUpdateEclManager.GetTimelineCount(); ++enemyIndex)
     {
-        if (TimelineLanes()[enemyIndex].instruction == 0)
-            TimelineLanes()[enemyIndex].instruction = g_EnemyManagerUpdateEclManager.GetTimeline(enemyIndex);
-        TimelineLanes()[enemyIndex].Run();
+        if (reinterpret_cast<EnemyManagerUpdateTimelineLane *>(raw + 0x9DCDD0)[enemyIndex].instruction == 0)
+        {
+            reinterpret_cast<EnemyManagerUpdateTimelineLane *>(raw + 0x9DCDD0)[enemyIndex].instruction =
+                g_EnemyManagerUpdateEclManager.GetTimeline(enemyIndex);
+        }
+        reinterpret_cast<EnemyManagerUpdateTimelineLane *>(raw + 0x9DCDD0)[enemyIndex].Run();
     }
 
-    enemy = Enemies();
-    EnemyCount() = 0;
+    enemy = reinterpret_cast<EnemyManagerUpdateEnemy *>(raw + 0x53D0);
+    *reinterpret_cast<i32 *>(raw + 0x9DCDC4) = 0;
     for (enemyIndex = 0; enemyIndex < 480; ++enemyIndex, ++enemy)
     {
-        if (!enemy->IsActive())
+        if ((*reinterpret_cast<u32 *>(enemy->raw + 0x3324) & EMUF1_ACTIVE) == 0)
         {
             if (g_EnemyManagerUpdateTrackedEnemy == enemy)
                 g_EnemyManagerUpdateTrackedEnemy = 0;
@@ -472,163 +436,230 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
 
         damageOccurred = 0;
 
-        if (enemy->Flags1() & EMUF1_SUPPRESS_DEATH_EFFECTS)
+        if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->suppressDeathEffects)
         {
-            *enemy->Position() = *enemy->VelocityA() + *enemy->VelocityB();
-            enemy->Position()->z = 0.0f;
+            *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88) = *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D34) + *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D40);
+            reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88)->z = 0.0f;
             goto process_enemy_death;
         }
 
-        ++EnemyCount();
+        ++*reinterpret_cast<i32 *>(raw + 0x9DCDC4);
 
-        if (((enemy->Flags1() & EMUF1_PAUSE_TIMER) &&
+        if ((reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->pauseTimer &&
              (g_EnemyManagerUpdateFrameStop || g_EnemyManagerUpdatePlayer.playerType)) ||
-            (enemy->Flags2() & EMUF2_FORCE_PAUSE))
+            reinterpret_cast<EnemyManagerUpdateFlag2Bits *>(enemy->raw + 0x3328)->forcePause)
         {
-            (*enemy->BossTimer())--;
+            (*reinterpret_cast<EnemyManagerUpdateTimer *>(enemy->raw + 0x2E14))--;
             goto update_damage_flash;
         }
 
     run_enemy_ecl:
-        if (enemy->Flags1() & EMUF1_PRE_ECL_UPDATE)
+        if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->preEclUpdate)
             enemy->PauseUpdate();
 
+    run_enemy_ecl_after_pause:
         if (g_EnemyManagerUpdateEclManager.RunEcl(enemy) == -1)
         {
-            enemy->ClearActive();
+            *reinterpret_cast<u32 *>(enemy->raw + 0x3324) &= ~1U;
             enemy->Despawn();
             continue;
         }
 
-        if ((enemy->Flags1() & EMUF1_SKIP_MOVEMENT) == 0)
+        if (!reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->skipMovement)
         {
             enemy->ClampPosition();
             enemy->Move();
             enemy->ClampPosition();
-        }
 
-        if (*reinterpret_cast<void **>(enemy->raw + 0x2DA4) != 0 &&
-            (enemy->Flags1() & EMUF1_COPY_FOLLOW_VELOCITY))
-        {
-            EnemyManagerUpdateEnemy *follow =
-                *reinterpret_cast<EnemyManagerUpdateEnemy **>(enemy->raw + 0x2DA4);
-            *follow->VelocityA() = *enemy->VelocityB();
-        }
-
-        *enemy->Position() = *enemy->VelocityA() + *enemy->VelocityB();
-        enemy->Position()->z = 0.0f;
-
-        if (enemy->DeathVm() != 0)
-        {
-            u8 *follow = reinterpret_cast<u8 *>(enemy->DeathVm());
-            *reinterpret_cast<D3DXVECTOR3 *>(follow + 0x2A4) = *enemy->Position();
-        }
-
-        PushTrailSample(enemy);
-
-        if (enemy->PrimaryVm()->sprite == 0)
-            enemy->Flags1() |= EMUF1_NO_SPRITE;
-
-        if ((enemy->Flags1() & EMUF1_NO_SPRITE) == 0 &&
-            (enemy->Flags1() & EMUF1_HAS_BEEN_IN_BOUNDS) == 0 &&
-            EnemyIsInBounds(enemy))
-        {
-            enemy->Flags1() |= EMUF1_HAS_BEEN_IN_BOUNDS;
-        }
-
-        if ((enemy->Flags1() & EMUF1_HAS_BEEN_IN_BOUNDS) &&
-            (enemy->Flags1() & EMUF1_ALLOW_OFFSCREEN) == 0)
-        {
-            if ((!enemy->TrailFlags() && !EnemyIsInBounds(enemy)) ||
-                (enemy->TrailFlags() && !EnemyIsInBounds(enemy) && !EnemyTrailIsInBounds(enemy)))
+            if (*reinterpret_cast<void **>(enemy->raw + 0x2DA4) != 0 &&
+                reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(
+                    enemy->raw + 0x3324)->copyFollowVelocity)
             {
-                enemy->ClearActive();
+                *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D40) =
+                    *reinterpret_cast<D3DXVECTOR3 *>(
+                        (*reinterpret_cast<EnemyManagerUpdateEnemy **>(
+                            enemy->raw + 0x2DA4))->raw + 0x2D34);
+            }
+
+            *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88) =
+                *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D34) +
+                *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D40);
+            reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88)->z = 0.0f;
+        }
+        else
+        {
+            *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88) =
+                *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D34) +
+                *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D40);
+            reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88)->z = 0.0f;
+        }
+
+        if (*reinterpret_cast<EnemyManagerUpdateAnmVm **>(enemy->raw + 0x53C8) != 0)
+        {
+            *reinterpret_cast<D3DXVECTOR3 *>(
+                reinterpret_cast<u8 *>(*reinterpret_cast<EnemyManagerUpdateAnmVm **>(
+                    enemy->raw + 0x53C8)) + 0x2A4) =
+                *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88);
+        }
+
+        if (*reinterpret_cast<u8 *>(enemy->raw + 0x534C))
+        {
+            for (trailIndex = *reinterpret_cast<i16 *>(enemy->raw + 0x534E) - 1;
+                 trailIndex > 0; --trailIndex)
+            {
+                *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x3394 + 0x1C * trailIndex) =
+                    *reinterpret_cast<D3DXVECTOR3 *>(
+                        enemy->raw + 0x3394 + 0x1C * (trailIndex - 1));
+                *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x33A0 + 0x1C * trailIndex) =
+                    *reinterpret_cast<D3DXVECTOR3 *>(
+                        enemy->raw + 0x33A0 + 0x1C * (trailIndex - 1));
+                *reinterpret_cast<u32 *>(enemy->raw + 0x33AC + 0x1C * trailIndex) =
+                    *reinterpret_cast<u32 *>(
+                        enemy->raw + 0x33AC + 0x1C * (trailIndex - 1));
+            }
+
+            *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x3394) =
+                *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88);
+            *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x33A0) =
+                *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D4C);
+            *reinterpret_cast<u32 *>(enemy->raw + 0x33AC) =
+                *reinterpret_cast<u32 *>(enemy->raw + 0x2D94);
+        }
+
+        if (reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->sprite == 0)
+            *reinterpret_cast<u32 *>(enemy->raw + 0x3324) |= EMUF1_NO_SPRITE;
+
+        if (!reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->noSprite &&
+            !reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->hasBeenInBounds &&
+            g_EnemyManagerUpdateGameManager.IsWithinPlayfield(
+                (*reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88))[0],
+                (*reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88))[1],
+                reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->sprite->width,
+                reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->sprite->height))
+        {
+            *reinterpret_cast<u32 *>(enemy->raw + 0x3324) |= EMUF1_HAS_BEEN_IN_BOUNDS;
+        }
+
+        else if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->hasBeenInBounds == 1 &&
+            !reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->allowOffscreen)
+        {
+            if ((!*reinterpret_cast<u8 *>(enemy->raw + 0x534C) &&
+                 !g_EnemyManagerUpdateGameManager.IsWithinPlayfield(
+                     reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88)->x,
+                     reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88)->y,
+                     reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->sprite->width,
+                     reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->sprite->height)) ||
+                (*reinterpret_cast<u8 *>(enemy->raw + 0x534C) &&
+                 !g_EnemyManagerUpdateGameManager.IsWithinPlayfield(
+                     reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88)->x,
+                     reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88)->y,
+                     reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->sprite->width,
+                     reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->sprite->height) &&
+                 !g_EnemyManagerUpdateGameManager.IsWithinPlayfield(
+                     reinterpret_cast<D3DXVECTOR3 *>(
+                         enemy->raw + 0x3394 + 0x1C *
+                         (*reinterpret_cast<i16 *>(enemy->raw + 0x534E) - 1))->x,
+                     reinterpret_cast<D3DXVECTOR3 *>(
+                         enemy->raw + 0x3394 + 0x1C *
+                         (*reinterpret_cast<i16 *>(enemy->raw + 0x534E) - 1))->y,
+                     reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->sprite->width,
+                     reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->sprite->height)))
+            {
+                *reinterpret_cast<u32 *>(enemy->raw + 0x3324) &= ~1U;
                 enemy->Despawn();
                 continue;
             }
         }
 
         if (enemy->HandleLifeCallback())
-            goto run_enemy_ecl;
-        if (enemy->TimerCallbackThreshold() >= 0 && enemy->HandleTimerCallback())
-            goto run_enemy_ecl;
+            goto run_enemy_ecl_after_pause;
+        if (*reinterpret_cast<i32 *>(enemy->raw + 0x3378) >= 0 && enemy->HandleTimerCallback())
+            goto run_enemy_ecl_after_pause;
 
-        enemy->PrimaryVm()->color = enemy->DisplayColor();
-        g_EnemyManagerUpdateAnmManager->ExecuteScript(enemy->PrimaryVm());
-        enemy->DisplayColor() = enemy->PrimaryVm()->color;
-        for (vmIndex = 0; vmIndex < 2; ++vmIndex)
+        reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->color = *reinterpret_cast<u32 *>(enemy->raw + 0x2E20);
+        g_EnemyManagerUpdateAnmManager->ExecuteScript(reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC));
+        *reinterpret_cast<u32 *>(enemy->raw + 0x2E20) = reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->color;
+        for (trailIndex = 0; trailIndex < 2; ++trailIndex)
         {
-            if (enemy->ExtraVm(vmIndex)->scriptIndex >= 0 &&
-                g_EnemyManagerUpdateAnmManager->ExecuteScript(enemy->ExtraVm(vmIndex)))
+            if (reinterpret_cast<EnemyManagerUpdateAnmVm *>(
+                    enemy->raw + 0x2B0 + 0x2A4 * trailIndex)->scriptIndex >= 0 &&
+                g_EnemyManagerUpdateAnmManager->ExecuteScript(
+                    reinterpret_cast<EnemyManagerUpdateAnmVm *>(
+                        enemy->raw + 0x2B0 + 0x2A4 * trailIndex)))
             {
-                enemy->ExtraVm(vmIndex)->scriptIndex = -1;
+                reinterpret_cast<EnemyManagerUpdateAnmVm *>(
+                    enemy->raw + 0x2B0 + 0x2A4 * trailIndex)->scriptIndex = -1;
             }
         }
 
         bombHit = g_EnemyManagerUpdateFrameStop;
-        if ((enemy->Flags1() & (EMUF1_NO_SPRITE | EMUF1_SKIP_COMBAT_A | EMUF1_SKIP_COMBAT_B)) == 0 &&
-            ((enemy->Flags1() & EMUF1_NO_DAMAGE_DURING_STOP) == 0 || !g_EnemyManagerUpdateFrameStop))
+        if (!reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->noSprite &&
+            !reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->skipCombatA &&
+            !reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->skipCombatB &&
+            (!reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->noDamageDuringStop || !g_EnemyManagerUpdateFrameStop))
         {
-            if (enemy->Flags1() & EMUF1_COLLISION)
+            if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->collision)
             {
-                enemy->CheckPlayerCollision(enemy->Position(), enemy->Hitbox());
-                if (enemy->TrailFlags())
+                enemy->CheckPlayerCollision(reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88), reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D70));
+                if (*reinterpret_cast<u8 *>(enemy->raw + 0x534C))
                 {
-                    secondaryHitbox = *enemy->Hitbox();
-                    for (trailIndex = 1; trailIndex < enemy->TrailSampleCount(); trailIndex += 6)
+                    secondaryHitbox = *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D70);
+                    for (trailIndex = 1; trailIndex < *reinterpret_cast<i16 *>(enemy->raw + 0x5350); trailIndex += 6)
                     {
-                        if (enemy->TrailFlags() & 2)
+                        if (*reinterpret_cast<u8 *>(enemy->raw + 0x534C) & 2)
                         {
-                            secondaryHitbox = *enemy->Hitbox() -
-                                (*enemy->Hitbox() * (f32)trailIndex / (f32)enemy->TrailSampleCount());
+                            secondaryHitbox = *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D70) -
+                                (*reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D70) * (f32)trailIndex / (f32)*reinterpret_cast<i16 *>(enemy->raw + 0x5350));
                         }
-                        enemy->CheckPlayerCollision(TrailPosition(enemy, trailIndex), &secondaryHitbox);
+                        enemy->CheckPlayerCollision(
+                            reinterpret_cast<D3DXVECTOR3 *>(
+                                enemy->raw + 0x3394 + 0x1C * trailIndex),
+                            &secondaryHitbox);
                     }
                 }
             }
 
-            enemy->LastDamage() = 0;
-            if (enemy->Flags1() & EMUF1_ACCEPTS_DAMAGE)
+            *reinterpret_cast<i32 *>(enemy->raw + 0x3354) = 0;
+            if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->acceptsDamage)
             {
                 if (!g_EnemyManagerUpdateSpellcard.IsActive() || !enemy->IsBossPart() ||
                     !g_EnemyManagerUpdateFrameStop)
                 {
                     damage = g_EnemyManagerUpdatePlayer.CalcDamageToEnemy(
-                        enemy->Position(), enemy->Hitbox(), enemy->DamageData(), &bombHit);
+                        reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88), reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D70), reinterpret_cast<void *>(enemy->raw + 0x2E10), &bombHit);
                 }
                 else
                 {
                     damage = 0;
                 }
 
-                if (enemy->SecondaryHitbox()->x > 0.0f)
+                if (reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D7C)->x > 0.0f)
                 {
                     extraDamage = g_EnemyManagerUpdatePlayer.CalcDamageToEnemy(
-                        enemy->Position(), enemy->SecondaryHitbox(), enemy->DamageData(), &bombHit);
+                        reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88), reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D7C), reinterpret_cast<void *>(enemy->raw + 0x2E10), &bombHit);
                     if (!bombHit)
                     {
-                        if (g_EnemyManagerUpdatePlayer.playerType == 3 ||
-                            g_EnemyManagerUpdatePlayer.playerType == 11)
-                            damage += (i32)((f32)extraDamage / 6.5f);
+                        if (g_TargetByte0164D0B1 == 3 ||
+                            g_TargetByte0164D0B1 == 11)
+                            damage = (i32)((f32)damage + (f32)extraDamage / 6.5f);
                         else
-                            damage += (i32)((f32)extraDamage / 1.7f);
+                            damage = (i32)((f32)damage + (f32)extraDamage / 1.7f);
                     }
                 }
 
                 if (damage > 0)
                 {
-                    i32 rankAmount = 0;
-                    if (((enemy->Flags1() & EMUF1_BOSS) || !g_EnemyManagerUpdatePlayer.mode) &&
+                    if ((reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->boss || !g_EnemyManagerUpdatePlayer.mode) &&
                         !g_EnemyManagerUpdateFrameStop)
                     {
-                        if ((enemy->Flags1() & EMUF1_BOSS) && !g_EnemyManagerUpdatePlayer.mode)
+                        if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->boss && !g_EnemyManagerUpdatePlayer.mode)
                             rankAmount = 10 * (damage / (10 - difficultyScale / 3));
                         else
                             rankAmount = 10 * (damage / (30 - difficultyScale));
                         if (rankAmount > 70)
                             rankAmount = 70;
                         if (!rankAmount &&
-                            (!g_EnemyManagerUpdatePlayer.mode || ((i32)*enemy->BossTimer() & 1)))
+                            (!g_EnemyManagerUpdatePlayer.mode || ((i32)*reinterpret_cast<EnemyManagerUpdateTimer *>(enemy->raw + 0x2E14) & 1)))
                             rankAmount = 10;
                     }
 
@@ -636,237 +667,318 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                         damage = 70;
                     g_EnemyManagerUpdateGameManager.AddScore(10 * (damage / 5));
 
-                    if (enemy->Flags1() & EMUF1_DAMAGEABLE)
+                    if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->damageable)
                     {
                         if (g_EnemyManagerUpdateSpellcard.IsActive())
                         {
                             if (!bombHit)
-                                damage = damage > 7 ? damage / 7 : (damage != 0);
+                            {
+                                if (damage > 7)
+                                    damage /= 7;
+                                else if (damage != 0)
+                                    damage = 1;
+                            }
                             else if (g_EnemyManagerUpdateSpellcard.AllowsBombDamage() && !enemy->IsBossPart())
-                                damage = damage > 2 ? (i32)((f32)damage / 2.5f) : (damage != 0);
+                            {
+                                if (damage > 2)
+                                    damage = (i32)((f32)damage / 2.5f);
+                                else if (damage != 0)
+                                    damage = 1;
+                            }
                             else
                                 damage = 0;
                         }
 
-                        if (*enemy->FreezeTimer() > 0)
-                            damage = (enemy->Flags1() & EMUF1_BOSS) ? damage / 9 : 0;
+                        if (*reinterpret_cast<EnemyManagerUpdateTimer *>(enemy->raw + 0x5354) > 0)
+                        {
+                            if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->boss)
+                                damage /= 9;
+                            else
+                                damage = 0;
+                        }
 
-                        enemy->Life() -= damage;
-                        enemy->LastDamage() = damage;
+                        *reinterpret_cast<i32 *>(enemy->raw + 0x2DFC) -= damage;
+                        *reinterpret_cast<i32 *>(enemy->raw + 0x3354) = damage;
                         enemy->ApplyDamage(damage);
                     }
                     damageOccurred = 1;
                 }
+
+                if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->boss)
+                {
+                    previousTargetDelta =
+                        g_EnemyManagerUpdateTrackedPosition - g_EnemyManagerUpdateReferencePosition;
+                    currentTargetDelta = *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88) - g_EnemyManagerUpdateReferencePosition;
+                    if (!g_EnemyManagerUpdateTrackedPositionValid ||
+                        EnemyManagerUpdateFabs(previousTargetDelta.x) >
+                            EnemyManagerUpdateFabs(currentTargetDelta.x))
+                    {
+                        g_EnemyManagerUpdateTrackedPosition = *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88);
+                    }
+                    g_EnemyManagerUpdateTrackedPositionValid = 1;
+                }
+
+                if (!g_EnemyManagerUpdateTrackedPositionValid &&
+                    g_EnemyManagerUpdateTrackedPosition[1] <
+                        (*reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88))[1])
+                {
+                    g_EnemyManagerUpdateTrackedPosition = *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88);
+                }
+
+                if (EnemyManagerUpdateFabs(
+                        reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88)->x -
+                        g_EnemyManagerUpdateReferencePosition.x) < 64.0f &&
+                    !enemy->IsBossPart() &&
+                    (g_EnemyManagerUpdateTrackedEnemy == 0 ||
+                     reinterpret_cast<D3DXVECTOR3 *>(
+                         g_EnemyManagerUpdateTrackedEnemy->raw + 0x2D34)->y >
+                         reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88)->y))
+                {
+                    g_EnemyManagerUpdateTrackedEnemy = enemy;
+                }
             }
         }
 
-        TrackBossTarget(enemy);
+        if (reinterpret_cast<EnemyManagerUpdateFlag2Bits *>(enemy->raw + 0x3328)->deathLatch &&
+            *reinterpret_cast<i32 *>(enemy->raw + 0x2DFC) > 0)
+            *reinterpret_cast<u32 *>(enemy->raw + 0x3328) &= ~EMUF2_DEATH_LATCH;
 
-        if ((enemy->Flags2() & EMUF2_DEATH_LATCH) && enemy->Life() > 0)
-            enemy->Flags2() &= ~EMUF2_DEATH_LATCH;
-
-        if (enemy->Life() <= 0 &&
-            (enemy->Flags2() & (EMUF2_DEATH_LATCH | EMUF2_NO_DEATH)) == 0)
+        if (*reinterpret_cast<i32 *>(enemy->raw + 0x2DFC) <= 0 &&
+            !reinterpret_cast<EnemyManagerUpdateFlag2Bits *>(enemy->raw + 0x3328)->deathLatch &&
+            !reinterpret_cast<EnemyManagerUpdateFlag2Bits *>(enemy->raw + 0x3328)->noDeath)
         {
         process_enemy_death:
             ;
-            i32 deathMode;
-            i32 bullets;
-            i32 bonus;
+            // VC7 hashes nested locals by identifier.  These target-pinned
+            // spellings carry, respectively, the bonus value, the otherwise
+            // unused death-position vector, and the VM loop/gauge value.
+            i32 deathVmIndex;
 
-            enemy->Flags2() |= EMUF2_DEATH_LATCH;
-            enemy->DeathTimeSeconds() =
-                (enemy->TimerCallbackThreshold() - (i32)*enemy->BossTimer()) / 60;
-            enemy->TimerCallbackThreshold() = -1;
-            for (vmIndex = 0; vmIndex < 4; ++vmIndex)
-                enemy->LifeCallbacks()[vmIndex] = -1;
-            for (vmIndex = 0; vmIndex < 4; ++vmIndex)
+            *reinterpret_cast<u32 *>(enemy->raw + 0x3328) |= EMUF2_DEATH_LATCH;
+            D3DXVECTOR3 bonus;
+            i32 deathPosition;
+            *reinterpret_cast<i32 *>(enemy->raw + 0x53CC) =
+                (*reinterpret_cast<i32 *>(enemy->raw + 0x3378) - (i32)*reinterpret_cast<EnemyManagerUpdateTimer *>(enemy->raw + 0x2E14)) / 60;
+            *reinterpret_cast<i32 *>(enemy->raw + 0x3378) = -1;
+            for (deathPosition = 0; deathPosition < 4; ++deathPosition)
+                reinterpret_cast<i32 *>(enemy->raw + 0x3358)[deathPosition] = -1;
+            for (deathPosition = 0; deathPosition < 4; ++deathPosition)
             {
-                if (enemy->Effects()[vmIndex] != 0)
+                if (reinterpret_cast<void **>(enemy->raw + 0x3384)[deathPosition] != 0)
                 {
-                    g_EnemyManagerUpdateMemory.Free(enemy->Effects()[vmIndex]);
-                    enemy->Effects()[vmIndex] = 0;
+                    g_EnemyManagerUpdateMemory.Free(reinterpret_cast<void **>(enemy->raw + 0x3384)[deathPosition]);
+                    reinterpret_cast<void **>(enemy->raw + 0x3384)[deathPosition] = 0;
                 }
             }
 
             if (enemy->IsBossPart())
             {
-                EnemyManagerUpdateEnemy *owner =
-                    *reinterpret_cast<EnemyManagerUpdateEnemy **>(enemy->raw + 0x2DA4);
-                --*reinterpret_cast<i32 *>(owner->raw + 0x3380);
+                --*reinterpret_cast<i32 *>(
+                    (*reinterpret_cast<EnemyManagerUpdateEnemy **>(
+                        enemy->raw + 0x2DA4))->raw + 0x3380);
             }
 
             enemy->ReleaseEffects(1);
-            g_EnemyManagerUpdateGameManager.AddToYoukaiGauge(
-                g_EnemyManagerUpdatePlayer.mode ? 200 : -200, 0);
+            if (!g_EnemyManagerUpdatePlayer.mode)
+                deathPosition = -200;
+            else
+                deathPosition = 200;
+            g_EnemyManagerUpdateGameManager.AddToYoukaiGauge(deathPosition, 0);
 
-            deathMode = (enemy->Flags1() & EMUF1_DEATH_MODE_MASK) >> 20;
-            switch (deathMode)
+            switch ((*reinterpret_cast<u32 *>(enemy->raw + 0x3324) >> 20) & 7)
             {
             case 3:
-                enemy->Life() = 1;
-                enemy->Flags1() &= ~EMUF1_DAMAGEABLE;
-                enemy->Flags1() &= ~EMUF1_DEATH_MODE_MASK;
+                *reinterpret_cast<i32 *>(enemy->raw + 0x2DFC) = 1;
+                *reinterpret_cast<u32 *>(enemy->raw + 0x3324) &= ~EMUF1_DAMAGEABLE;
+                *reinterpret_cast<u32 *>(enemy->raw + 0x3324) &= ~EMUF1_DEATH_MODE_MASK;
                 g_EnemyManagerUpdateGui.ResetBossUi(0);
                 g_EnemyManagerUpdateReplayManager->flags |= 0x20;
-                if (enemy->DeathAnm1() >= 0)
+                if (*reinterpret_cast<i8 *>(enemy->raw + 0x3310) >= 0)
                 {
-                    g_EnemyManagerUpdateEffectManager.SpawnEffect(enemy->DeathAnm1(), enemy->Position(), 1, -1);
-                    g_EnemyManagerUpdateEffectManager.SpawnEffect(enemy->DeathAnm1(), enemy->Position(), 1, -1);
-                    g_EnemyManagerUpdateEffectManager.SpawnEffect(enemy->DeathAnm1(), enemy->Position(), 1, -1);
+                    g_EnemyManagerUpdateEffectManager.SpawnEffect(*reinterpret_cast<i8 *>(enemy->raw + 0x3310), reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88), 1, -1);
+                    g_EnemyManagerUpdateEffectManager.SpawnEffect(*reinterpret_cast<i8 *>(enemy->raw + 0x3310), reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88), 1, -1);
+                    g_EnemyManagerUpdateEffectManager.SpawnEffect(*reinterpret_cast<i8 *>(enemy->raw + 0x3310), reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88), 1, -1);
                 }
-                if (enemy->DeathVm() != 0)
+                if (*reinterpret_cast<EnemyManagerUpdateAnmVm **>(enemy->raw + 0x53C8) != 0)
                 {
-                    enemy->DeathVm()->SetInterrupt(3);
-                    enemy->DeathVm() = 0;
+                    (*reinterpret_cast<EnemyManagerUpdateAnmVm **>(
+                        enemy->raw + 0x53C8))->SetInterrupt(3);
+                    *reinterpret_cast<EnemyManagerUpdateAnmVm **>(enemy->raw + 0x53C8) = 0;
                 }
                 if (!g_EnemyManagerUpdatePlayer.playerType)
                 {
                     g_EnemyManagerUpdatePlayerTimer = 90;
                     g_EnemyManagerUpdatePlayer.playerType = 3;
                 }
-                enemy->Flags1() &= ~EMUF1_PAUSE_TIMER;
-                enemy->Flags1() &= ~EMUF1_NO_DAMAGE_DURING_STOP;
+                *reinterpret_cast<u32 *>(enemy->raw + 0x3324) &= ~EMUF1_PAUSE_TIMER;
+                *reinterpret_cast<u32 *>(enemy->raw + 0x3324) &= ~EMUF1_NO_DAMAGE_DURING_STOP;
                 goto death_audio_and_callback;
 
             case 1:
-                g_EnemyManagerUpdateGameManager.AddScore(enemy->Score());
-                enemy->Flags1() |= EMUF1_PERSIST_AFTER_DEATH;
-                enemy->Flags1() &= ~(EMUF1_COLLISION | EMUF1_DAMAGEABLE | EMUF1_ACCEPTS_DAMAGE);
+                g_EnemyManagerUpdateGameManager.AddScore(*reinterpret_cast<i32 *>(enemy->raw + 0x2E08));
+                *reinterpret_cast<u32 *>(enemy->raw + 0x3324) |= EMUF1_PERSIST_AFTER_DEATH;
+                *reinterpret_cast<u32 *>(enemy->raw + 0x3324) &= ~EMUF1_COLLISION;
+                *reinterpret_cast<u32 *>(enemy->raw + 0x3324) &= ~EMUF1_DAMAGEABLE;
+                *reinterpret_cast<u32 *>(enemy->raw + 0x3324) &= ~EMUF1_ACCEPTS_DAMAGE;
                 goto common_death_mode;
 
             case 0:
-                g_EnemyManagerUpdateGameManager.AddScore(enemy->Score());
-                enemy->ClearActive();
-                if (enemy->DeathVm() != 0)
+                g_EnemyManagerUpdateGameManager.AddScore(*reinterpret_cast<i32 *>(enemy->raw + 0x2E08));
+                *reinterpret_cast<u32 *>(enemy->raw + 0x3324) &= ~1U;
+                if (*reinterpret_cast<EnemyManagerUpdateAnmVm **>(enemy->raw + 0x53C8) != 0)
                 {
-                    enemy->DeathVm()->SetInterrupt(3);
-                    enemy->DeathVm() = 0;
+                    (*reinterpret_cast<EnemyManagerUpdateAnmVm **>(
+                        enemy->raw + 0x53C8))->SetInterrupt(3);
+                    *reinterpret_cast<EnemyManagerUpdateAnmVm **>(enemy->raw + 0x53C8) = 0;
                 }
                 goto common_death_mode;
 
             case 2:
             common_death_mode:
-                if (enemy->Flags1() & EMUF1_BOSS)
+                if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->boss)
                 {
                     g_EnemyManagerUpdateGui.ResetBossUi(0);
                     enemy->SpecialBossDeath();
                 }
                 enemy->FinalizeDeath(bombHit);
-                if ((enemy->Flags1() & EMUF1_BOSS) && !g_EnemyManagerUpdateSpellcard.IsActive())
+                if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->boss &&
+                    !g_EnemyManagerUpdateSpellcard.IsActive())
                 {
-                    bullets = g_EnemyManagerUpdateBulletManager.DespawnBullets(8000, 1);
-                    bonus = ConvertBulletBonus(8000, bullets);
-                    if (bonus)
+                    deathVmIndex = g_EnemyManagerUpdateBulletManager.DespawnBullets(8000, 1);
+                    deathVmIndex = g_EnemyManager.ConvertBulletBonus(8000, deathVmIndex);
+                    if (deathVmIndex)
                     {
-                        g_EnemyManagerUpdateGameManager.AddScore(bonus);
-                        g_EnemyManagerUpdateGui.ShowBonus(bonus);
+                        g_EnemyManagerUpdateGameManager.AddScore(deathVmIndex);
+                        g_EnemyManagerUpdateGui.ShowBonus(deathVmIndex);
                     }
                 }
-                enemy->Life() = 0;
+                *reinterpret_cast<i32 *>(enemy->raw + 0x2DFC) = 0;
                 g_EnemyManagerUpdateReplayManager->flags |= 0x20;
                 break;
             }
 
         death_audio_and_callback:
-            if ((enemy->Flags1() & EMUF1_SUPPRESS_DEATH_EFFECTS) == 0)
+            if (!reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->suppressDeathEffects)
             {
                 g_EnemyManagerUpdateSoundPlayer.PlaySoundPositionedByIdx(
-                    enemyIndex % 2 + 2, enemy->Position()->x);
-                if (enemy->DeathAnm1() >= 0)
+                    enemyIndex % 2 + 2, reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88)->x);
+                if (*reinterpret_cast<i8 *>(enemy->raw + 0x3310) >= 0)
                 {
-                    g_EnemyManagerUpdateEffectManager.SpawnEffect(enemy->DeathAnm1(), enemy->Position(), 1, -1);
-                    g_EnemyManagerUpdateEffectManager.SpawnEffect(enemy->DeathAnm2() + 4, enemy->Position(), 4, -1);
+                    g_EnemyManagerUpdateEffectManager.SpawnEffect(*reinterpret_cast<i8 *>(enemy->raw + 0x3310), reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88), 1, -1);
+                    g_EnemyManagerUpdateEffectManager.SpawnEffect(*reinterpret_cast<u8 *>(enemy->raw + 0x3311) + 4, reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88), 4, -1);
                 }
                 if (g_EnemyManagerUpdateGameManager.GaugeIsExtremelyHuman() ||
                     g_EnemyManagerUpdateGameManager.GaugeIsExtremelyYoukai())
                 {
-                    g_EnemyManagerUpdateItemManager.SpawnItem(enemy->Position(), 7, 1);
+                    g_EnemyManagerUpdateItemManager.SpawnItem(reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88), 7, 1);
                 }
             }
 
-            if (enemy->DeathCallbackSub() >= 0)
+            if (*reinterpret_cast<i16 *>(enemy->raw + 0x2CEE) >= 0)
             {
+                i32 callbackVmIndex;
+
                 enemy->PrepareDeathCallback();
-                ResetEnemyCombatState(enemy);
-                g_EnemyManagerUpdateEclManager.CallEclSub(enemy->EclContext(), enemy->DeathCallbackSub());
-                enemy->DeathCallbackSub() = -1;
+                *reinterpret_cast<i16 *>(enemy->raw + 0x2CEA) = 0;
+                for (callbackVmIndex = 0; callbackVmIndex < 4; ++callbackVmIndex)
+                    reinterpret_cast<i32 *>(enemy->raw + 0x3358)[callbackVmIndex] = -1;
+                *reinterpret_cast<i32 *>(enemy->raw + 0x3378) = -1;
+                enemy->ResetForDeathCallback();
+                memcpy(enemy->raw + 0x2E24, g_EnemyManagerUpdateCombatTemplate, 0x210);
+                *reinterpret_cast<i32 *>(enemy->raw + 0x3060) = 0;
+                g_EnemyManagerUpdateEclManager.CallEclSub(reinterpret_cast<void *>(enemy->raw + 0x7F8), *reinterpret_cast<i16 *>(enemy->raw + 0x2CEE));
+                *reinterpret_cast<i16 *>(enemy->raw + 0x2CEE) = -1;
             }
         }
 
     update_damage_flash:
-        if ((enemy->Flags1() & EMUF1_SKIP_COMBAT_B) == 0)
+        if (!reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->skipCombatB)
         {
-            if (enemy->DamageFlashTimer())
+            if (*reinterpret_cast<u8 *>(enemy->raw + 0x3314))
             {
-                --enemy->DamageFlashTimer();
-                enemy->PrimaryVm()->flags &= ~0x20000U;
+                --*reinterpret_cast<u8 *>(enemy->raw + 0x3314);
+                reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->flags &= ~0x20000U;
             }
             else if (damageOccurred)
             {
-                if (((enemy->Flags2() & EMUF2_BOSS_MARKER_MASK) >> 4) < 2)
-                    g_EnemyManagerUpdateSoundPlayer.PlaySoundPositionedByIdx(20, enemy->Position()->x);
+                if (reinterpret_cast<EnemyManagerUpdateFlag2Bits *>(enemy->raw + 0x3328)->bossMarker < 2)
+                    g_EnemyManagerUpdateSoundPlayer.PlaySoundPositionedByIdx(20, reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88)->x);
                 else
-                    g_EnemyManagerUpdateSoundPlayer.PlaySoundPositionedByIdx(37, enemy->Position()->x);
+                    g_EnemyManagerUpdateSoundPlayer.PlaySoundPositionedByIdx(37, reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88)->x);
 
-                reinterpret_cast<u8 *>(&enemy->PrimaryVm()->color)[2] = 0xFF;
-                reinterpret_cast<u8 *>(&enemy->PrimaryVm()->color)[1] = 0x60;
-                reinterpret_cast<u8 *>(&enemy->PrimaryVm()->color)[0] = 0x80;
-                reinterpret_cast<u8 *>(&enemy->PrimaryVm()->color)[3] =
-                    reinterpret_cast<u8 *>(&enemy->DisplayColor())[3];
-                enemy->PrimaryVm()->flags |= 0x20000U;
-                enemy->DamageFlashTimer() = 1;
+                reinterpret_cast<u8 *>(&reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->unknown1F4)[2] = 0xFF;
+                reinterpret_cast<u8 *>(&reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->unknown1F4)[1] = 0x60;
+                reinterpret_cast<u8 *>(&reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->unknown1F4)[0] = 0x80;
+                reinterpret_cast<u8 *>(&reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->unknown1F4)[3] =
+                    reinterpret_cast<u8 *>(&reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->color)[3];
+                reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->flags |= 0x20000U;
+                *reinterpret_cast<u8 *>(enemy->raw + 0x3314) = 1;
             }
             else
             {
-                enemy->PrimaryVm()->flags &= ~0x20000U;
+                reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->flags &= ~0x20000U;
             }
         }
         else
         {
-            reinterpret_cast<u8 *>(&enemy->PrimaryVm()->color)[2] = 0x20;
-            reinterpret_cast<u8 *>(&enemy->PrimaryVm()->color)[1] = 0x20;
-            reinterpret_cast<u8 *>(&enemy->PrimaryVm()->color)[0] = 0xC0;
-            reinterpret_cast<u8 *>(&enemy->PrimaryVm()->color)[3] =
-                reinterpret_cast<u8 *>(&enemy->DisplayColor())[3] / 2;
-            enemy->PrimaryVm()->flags |= 0x20000U;
+            reinterpret_cast<u8 *>(&reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->unknown1F4)[2] = 0x20;
+            reinterpret_cast<u8 *>(&reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->unknown1F4)[1] = 0x20;
+            reinterpret_cast<u8 *>(&reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->unknown1F4)[0] = 0xC0;
+            reinterpret_cast<u8 *>(&reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->unknown1F4)[3] =
+                reinterpret_cast<u8 *>(&reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->color)[3] / 2;
+            reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->flags |= 0x20000U;
         }
 
-        if (enemy->Flags1() & EMUF1_BOSS)
+        if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->boss)
         {
-            if (!g_EnemyManagerUpdateGui.IsDialogPresent() && !enemy->BossSlot())
-                g_EnemyManagerUpdateGui.SetBossHealth((f32)enemy->Life() / (f32)enemy->MaxLife());
+            D3DXVECTOR3 markerPosition;
 
-            markerPosition.x = (enemy->Flags1() & EMUF1_NO_SPRITE) ? -999.0f : enemy->Position()->x + 32.0f;
-            markerPosition.y = 472.0f;
-            markerPosition.z = 0.0f;
-            g_EnemyManagerUpdateAsciiManager.SetBossMarkerPosition(enemy->BossSlot(), &markerPosition);
+            if (!g_EnemyManagerUpdateGui.IsDialogPresent() && !*reinterpret_cast<u8 *>(enemy->raw + 0x3313))
+                g_EnemyManagerUpdateGui.SetBossHealth((f32)*reinterpret_cast<i32 *>(enemy->raw + 0x2DFC) / (f32)*reinterpret_cast<i32 *>(enemy->raw + 0x2E00));
 
-            if ((enemy->Flags2() & EMUF2_BOSS_MARKER_MASK) == 0)
-                g_EnemyManagerUpdateAsciiManager.SetBossMarkerState(
-                    enemy->BossSlot(), (enemy->PrimaryVm()->flags & 0x20000U) != 0);
-            else
-                g_EnemyManagerUpdateAsciiManager.SetBossMarkerState(
-                    enemy->BossSlot(), ((enemy->Flags2() & EMUF2_BOSS_MARKER_MASK) >> 4) + 1);
+            if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->boss < 4)
+            {
+                if (!reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->noSprite)
+                    markerPosition.x = reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88)->x + 32.0f;
+                else
+                    markerPosition.x = -999.0f;
+                markerPosition.y = 472.0f;
+                markerPosition.z = 0.0f;
+                g_EnemyManagerUpdateAsciiManager.SetBossMarkerPosition(*reinterpret_cast<u8 *>(enemy->raw + 0x3313), &markerPosition);
+
+                if (reinterpret_cast<EnemyManagerUpdateFlag2Bits *>(enemy->raw + 0x3328)->bossMarker == 0)
+                    g_EnemyManagerUpdateAsciiManager.SetBossMarkerState(
+                        *reinterpret_cast<u8 *>(enemy->raw + 0x3313),
+                        ((reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->flags >> 17) & 1) != 0);
+                else
+                    g_EnemyManagerUpdateAsciiManager.SetBossMarkerState(
+                        *reinterpret_cast<u8 *>(enemy->raw + 0x3313),
+                        reinterpret_cast<EnemyManagerUpdateFlag2Bits *>(enemy->raw + 0x3328)->bossMarker + 1);
+            }
         }
 
         enemy->UpdateEffects();
         if (!g_EnemyManagerUpdateGamePaused)
-            (*enemy->BossTimer())++;
-        if (*enemy->FreezeTimer() > 0)
-            (*enemy->FreezeTimer())--;
+            (*reinterpret_cast<EnemyManagerUpdateTimer *>(enemy->raw + 0x2E14))++;
+        if (*reinterpret_cast<EnemyManagerUpdateTimer *>(enemy->raw + 0x5354) > 0)
+            (*reinterpret_cast<EnemyManagerUpdateTimer *>(enemy->raw + 0x5354))--;
 
-        if ((enemy->Flags1() & EMUF1_NO_SPRITE) == 0 && enemy->IsActive())
+        if (!reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->noSprite &&
+            reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->active)
         {
-            enemy->DrawNext() = DrawHeads()[enemy->DrawGroup()];
-            DrawHeads()[enemy->DrawGroup()] = enemy;
+            *reinterpret_cast<EnemyManagerUpdateEnemy **>(enemy->raw) =
+                reinterpret_cast<EnemyManagerUpdateEnemy **>(
+                    raw + 0x9DCEDC)[*reinterpret_cast<u8 *>(enemy->raw + 0x332F)];
+            reinterpret_cast<EnemyManagerUpdateEnemy **>(
+                raw + 0x9DCEDC)[*reinterpret_cast<u8 *>(enemy->raw + 0x332F)] = enemy;
         }
     }
 
-    if ((*Timer() % 200) == 0 && g_EnemyManagerUpdateGameManager.IsTampered())
+    if ((*reinterpret_cast<EnemyManagerUpdateTimer *>(raw + 0x9DCED0) % 200) == 0 &&
+        g_EnemyManagerUpdateGameManager.IsTampered())
         return 4;
 
-    (*Timer())++;
+    (*reinterpret_cast<EnemyManagerUpdateTimer *>(raw + 0x9DCED0))++;
     return 1;
 }
 
