@@ -4010,6 +4010,7 @@ object = "build/probes/EnemyManagerUpdate.obj"
 symbol = "?OnUpdate@EnemyManagerUpdateOverlay@th08@@QAEHXZ"
 target_address = 0x0042C660
 size = 0x1836
+compare_size = 0x1846
 
 [[units]]
 name = "midi-timer-elapsed"
@@ -6854,3 +6855,267 @@ offset = 0x7E5
 type = "REL32"
 symbol = "?GetControllerInput@Controller@th08@@YIGG@Z"
 target = 0x0043D120
+
+[[units]]
+name = "midi-output-process-msg"
+object = "build/Midi.obj"
+symbol = "?ProcessMsg@MidiOutput@th08@@QAEXPAUMidiTrack@2@@Z"
+target_address = 0x00444A90
+size = 0x74F
+compare_size = 0x8A3
+[[units.relocations]]
+offset = 0x74
+type = "DIR32"
+symbol = "$L*"
+target = 0x004451EF
+
+[[units.relocations]]
+offset = 0x7B
+type = "DIR32"
+symbol = "$L*"
+target = 0x004451DF
+
+[[units.relocations]]
+offset = 0xB6
+type = "REL32"
+symbol = "?UnprepareHeader@MidiOutput@th08@@QAE?AW4ZunResult@@PAUmidihdr_tag@@@Z"
+target = 0x00444700
+
+[[units.relocations]]
+offset = 0xBB
+type = "DIR32"
+symbol = "??_C@_07GJOEKOKC@midiHDR?$AA@"
+target = 0x004B6604
+
+[[units.relocations]]
+offset = 0xC2
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0xC7
+type = "REL32"
+symbol = "?Alloc@ZunMemory@th08@@QAEPAXIPBD@Z"
+target = 0x0040B880
+
+[[units.relocations]]
+offset = 0xF5
+type = "REL32"
+symbol = "?SkipVariableLength@MidiOutput@th08@@SIIPAPAE@Z"
+target = 0x00443F50
+
+[[units.relocations]]
+offset = 0x109
+type = "DIR32"
+symbol = "??_C@_0BA@EDDBPPAE@midiHDR?9?$DOlpData?$AA@"
+target = 0x004B65F4
+
+[[units.relocations]]
+offset = 0x115
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x11A
+type = "REL32"
+symbol = "?Alloc@ZunMemory@th08@@QAEPAXIPBD@Z"
+target = 0x0040B880
+
+[[units.relocations]]
+offset = 0x18E
+type = "REL32"
+symbol = "?SendLongMsg@MidiDevice@th08@@QAEHPAUmidihdr_tag@@@Z"
+target = 0x00443D50
+
+[[units.relocations]]
+offset = 0x19D
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x1A2
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+[[units.relocations]]
+offset = 0x1AB
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x1B0
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+[[units.relocations]]
+offset = 0x232
+type = "REL32"
+symbol = "?SkipVariableLength@MidiOutput@th08@@SIIPAPAE@Z"
+target = 0x00443F50
+
+[[units.relocations]]
+offset = 0x27B
+type = "REL32"
+symbol = "__allmul"
+target = 0x004A5130
+
+[[units.relocations]]
+offset = 0x289
+type = "REL32"
+symbol = "__allmul"
+target = 0x004A5130
+
+[[units.relocations]]
+offset = 0x2A0
+type = "REL32"
+symbol = "__aulldiv"
+target = 0x004A50C0
+
+[[units.relocations]]
+offset = 0x3D9
+type = "DIR32"
+symbol = "$L*"
+target = 0x00445274
+
+[[units.relocations]]
+offset = 0x3E0
+type = "DIR32"
+symbol = "$L*"
+target = 0x00445260
+
+[[units.relocations]]
+offset = 0x4E2
+type = "DIR32"
+symbol = "$L*"
+target = 0x004452D5
+
+[[units.relocations]]
+offset = 0x4E9
+type = "DIR32"
+symbol = "$L*"
+target = 0x004452B5
+
+[[units.relocations]]
+offset = 0x52E
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x71C
+type = "REL32"
+symbol = "?SendShortMsg@MidiDevice@th08@@QAEHEEE@Z"
+target = 0x00443DA0
+
+[[units.relocations]]
+offset = 0x730
+type = "REL32"
+symbol = "?SkipVariableLength@MidiOutput@th08@@SIIPAPAE@Z"
+target = 0x00443F50
+
+[[units.relocations]]
+offset = 0x74F
+type = "DIR32"
+symbol = "$L*"
+target = 0x00444DF3
+
+[[units.relocations]]
+offset = 0x753
+type = "DIR32"
+symbol = "$L*"
+target = 0x00444E29
+
+[[units.relocations]]
+offset = 0x757
+type = "DIR32"
+symbol = "$L*"
+target = 0x00444B0F
+
+[[units.relocations]]
+offset = 0x75B
+type = "DIR32"
+symbol = "$L*"
+target = 0x00444E47
+
+[[units.relocations]]
+offset = 0x7D0
+type = "DIR32"
+symbol = "$L*"
+target = 0x00444EDE
+
+[[units.relocations]]
+offset = 0x7D4
+type = "DIR32"
+symbol = "$L*"
+target = 0x00444E74
+
+[[units.relocations]]
+offset = 0x7D8
+type = "DIR32"
+symbol = "$L*"
+target = 0x00444F5B
+
+[[units.relocations]]
+offset = 0x7DC
+type = "DIR32"
+symbol = "$L*"
+target = 0x00444F42
+
+[[units.relocations]]
+offset = 0x7E0
+type = "DIR32"
+symbol = "$L*"
+target = 0x0044518A
+[[units.relocations]]
+offset = 0x825
+type = "DIR32"
+symbol = "$L*"
+target = 0x00444F7D
+
+[[units.relocations]]
+offset = 0x829
+type = "DIR32"
+symbol = "$L*"
+target = 0x0044504B
+
+[[units.relocations]]
+offset = 0x82D
+type = "DIR32"
+symbol = "$L*"
+target = 0x004450ED
+
+[[units.relocations]]
+offset = 0x831
+type = "DIR32"
+symbol = "$L*"
+target = 0x00444F96
+
+[[units.relocations]]
+offset = 0x835
+type = "DIR32"
+symbol = "$L*"
+target = 0x00445032
+
+[[units.relocations]]
+offset = 0x839
+type = "DIR32"
+symbol = "$L*"
+target = 0x00445000
+
+[[units.relocations]]
+offset = 0x83D
+type = "DIR32"
+symbol = "$L*"
+target = 0x00445019
+
+[[units.relocations]]
+offset = 0x841
+type = "DIR32"
+symbol = "$L*"
+target = 0x0044518A
