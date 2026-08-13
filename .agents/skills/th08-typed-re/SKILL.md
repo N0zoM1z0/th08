@@ -118,6 +118,14 @@ review the unit before claiming exactness.
   into an overlay union can leave the COFF completely unchanged. Reject that
   no-op probe; investigate the resolver call expression or ABI instead. TH08
   `RunEcl` opcodes 34 and 39 are the corpus case.
+- For a dispatcher handler, do not accept a lower total COFF size as evidence
+  that a source-shape probe is closer. Crosswalk the handler itself. In TH08
+  `RunEcl` opcode 39, fusing the two subtraction operands into each resolver
+  branch shortened the whole object by 42 bytes, yet disagreed with the
+  target's four independent resolved-value homes followed by two subtractions.
+  Restore such a probe unless its target handler sequence improves. TH07 may
+  suggest an expression form, but it is corroboration only; modelling TH08's
+  operand tail as `i32[1]` rather than a byte tail did not alter this COFF.
 
 ## Improve the model
 
