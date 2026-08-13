@@ -219,6 +219,7 @@ void GameManager::AddToYoukaiGauge(u16 param_1, i32 param_2)
 }
 
 // Leftover from PCB.
+// FUNCTION: th08 0x43c317
 ZunBool GameManager::IsPhantasmUnlocked()
 {
     return FALSE;

@@ -19,6 +19,8 @@ namespace th08
 
 struct PauseMenu
 {
+    PauseMenu();
+
     i32 OnUpdate();
     i32 OnDraw();
 
@@ -32,6 +34,8 @@ C_ASSERT(sizeof(PauseMenu) == 0x1d14);
 
 struct RetryMenu
 {
+    RetryMenu();
+
     i32 OnUpdate();
     i32 OnDraw();
 
@@ -46,6 +50,8 @@ C_ASSERT(sizeof(RetryMenu) == 0x1284);
 
 struct AsciiManagerString
 {
+    AsciiManagerString();
+
     char text[64];
     Float3 position;
     D3DCOLOR color;
@@ -59,6 +65,8 @@ C_ASSERT(sizeof(AsciiManagerString) == 0x60);
 
 struct AsciiManagerPopup
 {
+    AsciiManagerPopup();
+
     char text[12];
     Float3 position;
     D3DCOLOR color;

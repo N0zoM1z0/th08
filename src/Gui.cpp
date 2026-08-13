@@ -9,6 +9,11 @@ DIFFABLE_STATIC(Gui, g_Gui);
 DIFFABLE_STATIC(ChainElem, g_GuiCalcChain);
 DIFFABLE_STATIC(ChainElem, g_GuiDrawChain);
 
+// FUNCTION: th08 0x437d45
+GuiFormattedText::GuiFormattedText()
+{
+}
+
 // STUB: th08 0x4338ca
 ChainCallbackResult Gui::OnUpdate(Gui *gui)
 {

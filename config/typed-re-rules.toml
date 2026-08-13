@@ -31,3 +31,17 @@ requires = ["idiv"]
 confidence = "probe_hypothesis"
 recommendation = "If a literal division folds away in VC7, probe a semantically real local or field source; accept only an exact comparator result."
 evidence = "VC7 code-generation hypothesis constrained by a target-observed idiv"
+
+[[rules]]
+id = "vc7-explicit-empty-constructor-definition"
+requires = ["implicit_constructor", "missing_function_aux"]
+confidence = "exact_match_corpus"
+recommendation = "When natural implicit member construction already produces the target bytes but the COFF symbol lacks a function-definition auxiliary record, use a declared out-of-line empty constructor so the comparator can track the function without replacing compiler-driven member initialization."
+evidence = "Exact TH08 constructors at 0x00402130, 0x00402150, 0x00402190, and 0x004021D0"
+
+[[rules]]
+id = "vc7-natural-inline-comdat-emission"
+requires = ["missing_inline_comdat", "target_tu_evidence"]
+confidence = "workflow_guardrail"
+recommendation = "Restore a target-proven caller and let its translation unit emit a header-inline COMDAT naturally. Do not add dummy callers, artificial function-pointer references, or noinline annotations solely to create a comparator symbol."
+evidence = "TH08 GameManager inline cluster 0x00406C70-0x00406DD0 and Rng accessor cluster 0x00453BE0-0x00453C20"

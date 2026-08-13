@@ -11,6 +11,26 @@ DIFFABLE_STATIC(AsciiManager, g_AsciiManager);
 DIFFABLE_STATIC(ChainElem, g_AsciiManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_AsciiManagerDrawChainHighPrio);
 
+// FUNCTION: th08 0x402130
+AsciiManagerString::AsciiManagerString()
+{
+}
+
+// FUNCTION: th08 0x402150
+PauseMenu::PauseMenu()
+{
+}
+
+// FUNCTION: th08 0x402190
+RetryMenu::RetryMenu()
+{
+}
+
+// FUNCTION: th08 0x4021d0
+AsciiManagerPopup::AsciiManagerPopup()
+{
+}
+
 ChainCallbackResult AsciiManager::OnUpdate(AsciiManager *ascii)
 {
     return CHAIN_CALLBACK_RESULT_CONTINUE;
@@ -30,6 +50,7 @@ ChainCallbackResult AsciiManager::OnDrawLowPrio(AsciiManager *ascii)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
+// FUNCTION: th08 0x402430
 ChainCallbackResult AsciiManager::OnDrawHighPrio(AsciiManager *ascii)
 {
     ascii->OnDrawHighPrioImpl();
@@ -134,6 +155,7 @@ ZunResult AsciiManager::AddedCallback(AsciiManager *ascii)
     return ZUN_SUCCESS;
 }
 
+// FUNCTION: th08 0x4028c0
 ZunResult AsciiManager::DeletedCallback(AsciiManager *ascii)
 {
     g_AnmManager->ReleaseAnm(1);
@@ -142,6 +164,7 @@ ZunResult AsciiManager::DeletedCallback(AsciiManager *ascii)
     return ZUN_SUCCESS;
 }
 
+// FUNCTION: th08 0x4028f0
 void AsciiManager::CutChain()
 {
     g_Chain.Cut(&g_AsciiManagerCalcChain);

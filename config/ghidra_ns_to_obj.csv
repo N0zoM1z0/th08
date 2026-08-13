@@ -15,5 +15,6 @@ Supervisor,th08::Supervisor,th08::SoundPlayer::UpdateFades
 TextHelper,th08::TextHelper
 Supervisor,th08::Supervisor
 AnmManager,th08::AnmManager,th08::AnmVm
+AsciiManager,th08::AsciiManager,th08::AsciiManagerString,th08::AsciiManagerPopup,th08::PauseMenu,th08::RetryMenu
 utils,th08::utils
 zwave,th08::CSoundManager,th08::CSound,th08::CStreamingSound,th08::CWaveFile

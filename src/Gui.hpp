@@ -7,6 +7,17 @@
 namespace th08
 {
 
+struct GuiFormattedText
+{
+    GuiFormattedText();
+
+    Float3 position;
+    u32 value;
+    i32 isShown;
+    ZunTimer timer;
+};
+C_ASSERT(sizeof(GuiFormattedText) == 0x20);
+
 struct GuiImpl
 {
     unknown_fields(0x0, 0x21814);

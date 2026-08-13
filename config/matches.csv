@@ -25,3 +25,12 @@ address,name,size,status,match_percent,unit,evidence
 0x0044E370,th08::PlayerUnkStruct0x40::Reset,35,matching,100.00,player-region-reset,python3 scripts/compare-function.py player-region-reset --json
 0x0045C0E0,th08::ScreenEffect::AddedCallback,26,matching,100.00,screen-effect-added,python3 scripts/compare-function.py screen-effect-added --json
 0x0045C100,th08::ScreenEffect::DeletedCallback,94,matching,100.00,screen-effect-deleted,python3 scripts/compare-function.py screen-effect-deleted --json
+0x00402130,th08::AsciiManagerString::AsciiManagerString,25,matching,100.00,ascii-manager-string-constructor,python3 scripts/compare-function.py ascii-manager-string-constructor --json
+0x00402150,th08::PauseMenu::PauseMenu,52,matching,100.00,pause-menu-constructor,python3 scripts/compare-function.py pause-menu-constructor --json
+0x00402190,th08::RetryMenu::RetryMenu,52,matching,100.00,retry-menu-constructor,python3 scripts/compare-function.py retry-menu-constructor --json
+0x004021D0,th08::AsciiManagerPopup::AsciiManagerPopup,36,matching,100.00,ascii-manager-popup-constructor,python3 scripts/compare-function.py ascii-manager-popup-constructor --json
+0x00402430,th08::AsciiManager::OnDrawHighPrio,24,matching,100.00,ascii-manager-draw-high,python3 scripts/compare-function.py ascii-manager-draw-high --json
+0x004028C0,th08::AsciiManager::DeletedCallback,39,matching,100.00,ascii-manager-deleted-callback,python3 scripts/compare-function.py ascii-manager-deleted-callback --json
+0x004028F0,th08::AsciiManager::CutChain,35,matching,100.00,ascii-manager-cut-chain,python3 scripts/compare-function.py ascii-manager-cut-chain --json
+0x00437D45,th08::GuiFormattedText::GuiFormattedText,31,matching,100.00,gui-formatted-text-constructor,python3 scripts/compare-function.py gui-formatted-text-constructor --json
+0x0043C317,th08::GameManager::IsPhantasmUnlocked,11,matching,100.00,game-manager-is-phantasm-unlocked,python3 scripts/compare-function.py game-manager-is-phantasm-unlocked --json

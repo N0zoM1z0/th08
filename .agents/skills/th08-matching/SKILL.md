@@ -34,6 +34,11 @@ supported by evidence.
    python3 scripts/build.py --build-type=objdiffbuild --object-name ScreenEffect.obj
    ```
 
+   If VC7 emits the right implicit constructor bytes but omits a COFF function-
+   definition auxiliary record, declare and define the natural empty constructor
+   explicitly, rebuild, and compare again. Do not synthesize behavior; member
+   construction must remain compiler-driven.
+
 4. Compare the configured function:
 
    ```bash
@@ -56,6 +61,14 @@ the wrong target hash. Never wildcard an unresolved relocation or borrow a
 TH06/TH07 address. A zero-addend `DIR32` function pointer accepts only the
 canonical TH08 function start supported by the ledgers; an address merely
 falling inside the image is not evidence for a function, global, or literal.
+
+## Translation-unit emission
+
+Treat a missing header-inline COMDAT as a caller/TU question, not a license to
+manufacture a symbol. Prefer restoring a target-proven caller so the configured
+object emits the function naturally. Do not add dummy callers, artificial
+function-pointer references, or `noinline` solely to satisfy the comparator;
+defer exact acceptance when natural emission is not yet available.
 
 ## Acceptance
 

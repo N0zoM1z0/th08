@@ -173,6 +173,36 @@ struct GameManager
         return this->flags.isDemoMode;
     }
 
+    i32 GetYoukaiGauge()
+    {
+        return this->globals->youkaiGauge;
+    }
+
+    bool GaugeIsExtremelyHuman()
+    {
+        return this->globals->youkaiGauge <= this->youkaiGaugeHumanEffectsThreshold;
+    }
+
+    bool GaugeIsModeratelyHuman()
+    {
+        return this->globals->youkaiGauge <= this->youkaiGaugeHumanTintThreshold;
+    }
+
+    bool GaugeIsExtremelyYoukai()
+    {
+        return this->globals->youkaiGauge >= this->youkaiGaugeYoukaiEffectsThreshold;
+    }
+
+    bool GaugeIsModeratelyYoukai()
+    {
+        return this->globals->youkaiGauge >= this->youkaiGaugeYoukaiTintThreshold;
+    }
+
+    u8 GetClockTime()
+    {
+        return this->globals->clockTime;
+    }
+
     ZunBool IsStageClearedWithRetries(i32 stage, i32 character, i32 difficulty)
     {
         return IS_STAGE_CLEARED(this->clrdData[character].difficultiesClearedWithRetries[difficulty], stage);
