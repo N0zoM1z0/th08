@@ -344,9 +344,19 @@ void GameManager::DecreaseSubrank(int amount)
     }
 }
 
-// STUB: th08 0x43c0bb
-void GameManager::AddToYoukaiGauge(u16 param_1, i32 param_2)
+// FUNCTION: th08 0x43c0bb
+void GameManager::AddToYoukaiGauge(i32 amount, i32 forceUpdate)
 {
+    if (g_Player.frameStop && !forceUpdate)
+        return;
+
+    this->globals->youkaiGauge += amount;
+    if (this->globals->youkaiGauge < this->youkaiGaugeHumanLimit)
+        this->globals->youkaiGauge = this->youkaiGaugeHumanLimit;
+    else if (this->globals->youkaiGauge > this->youkaiGaugeYoukaiLimit)
+        this->globals->youkaiGauge = this->youkaiGaugeYoukaiLimit;
+
+    this->globals->youkaiGaugeCopy = this->globals->youkaiGauge;
 }
 
 // Leftover from PCB.

@@ -74,7 +74,11 @@ review the unit before claiming exactness.
   with the real addend; a zero-addend alias records the wrong layout even when
   it resolves to the same runtime address.  RunEcl's enemy ANM pointers at
   `0x00F54E0C` and `0x00F54E10` are the corpus example: both are members of
-  `g_EnemyManager`, not independent globals.
+  `g_EnemyManager`, not independent globals.  Likewise,
+  `GameManager::AddToYoukaiGauge` at `0x0043C0BB` reads `0x017D6ED4`; Player
+  receiver reads and writes establish it as `g_Player + 0xFDC`.  Modelling it
+  as `Player::frameStop` produces the required `g_Player` DIR32 relocation with
+  addend `0xFDC`, whereas a standalone symbol cannot faithfully replay it.
 - Resolve comparison destinations by each CSV header's named `address` column;
   the function/global ledgers place it differently from float/string ledgers.
   Keep attested IAT slots, import thunks, and other non-inventory symbols in

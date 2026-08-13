@@ -139,7 +139,7 @@ struct GameManager
 
     void IncreaseSubrank(int amount);
     void DecreaseSubrank(int amount);
-    void AddToYoukaiGauge(u16 param_1, i32 param_2);
+    void AddToYoukaiGauge(i32 amount, i32 forceUpdate);
     void SetYoukaiGauge(u16 value);
 
     ZunBool IsPhantasmUnlocked();

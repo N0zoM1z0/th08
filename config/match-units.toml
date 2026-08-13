@@ -346,6 +346,23 @@ type = "REL32"
 symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
 target = 0x0040B8A0
 
+# th08::GameManager::AddToYoukaiGauge
+# Target extent: 0x0043C0BB..0x0043C15F (0xA4 bytes).
+# The absolute target operand 0x017D6ED4 is g_Player + 0xFDC, verified from
+# Player receiver reads and writes at the same offset.
+[[units]]
+name = "game-manager-add-to-youkai-gauge"
+object = "build/GameManager.obj"
+symbol = "?AddToYoukaiGauge@GameManager@th08@@QAEXHH@Z"
+target_address = 0x0043C0BB
+size = 0xA4
+
+[[units.relocations]]
+offset = 0x9
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
 [[units]]
 name = "ecl-manager-ctor"
 object = "build/probes/EclManager.obj"

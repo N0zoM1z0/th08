@@ -538,7 +538,7 @@ th08::GameManager::DeletedCallback,0x43be2c,0x142,__fastcall,,u32,MidiOutput*
 th08::GameManager::CutChain,0x43bf6e,0x55,unknown,,u8
 th08::GameManager::IncreaseSubrank,0x43bfc3,0x7c,__thiscall,,void,GameManager*,i32
 th08::GameManager::DecreaseSubrank,0x43c03f,0x7c,__thiscall,,void,GameManager*,i32
-th08::GameManager::AddToYoukaiGauge,0x43c0bb,0xa4,__thiscall,,void,GameManager*,i16,i32
+th08::GameManager::AddToYoukaiGauge,0x43c0bb,0xa4,__thiscall,,void,GameManager*,i32,i32
 th08::GameManager::FinalBCleared,0x43c15f,0x8a,__thiscall,,i32,GameManager*,i32
 th08::GameManager::FinalBClearedWithAnyTeam,0x43c1e9,0x52,__thiscall,,i32,GameManager*
 th08::GameManager::FinalACleared,0x43c23b,0x8a,__thiscall,,i32,GameManager*,i32

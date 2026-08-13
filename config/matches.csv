@@ -444,6 +444,7 @@ address,name,size,status,match_percent,unit,evidence
 0x0043AA5C,th08::GameManager::RegisterChain,152,matching,100.00,game-manager-register-chain,python3 scripts/compare-function.py game-manager-register-chain --json
 0x0043AAF4,th08::GameManager::AddedCallback,227,matching,100.00,game-manager-added-callback,python3 scripts/compare-function.py game-manager-added-callback --json
 0x0043BE2C,th08::GameManager::DeletedCallback,322,matching,100.00,game-manager-deleted-callback,python3 scripts/compare-function.py game-manager-deleted-callback --json
+0x0043C0BB,th08::GameManager::AddToYoukaiGauge,164,matching,100.00,game-manager-add-to-youkai-gauge,python3 scripts/compare-function.py game-manager-add-to-youkai-gauge --json
 0x004180F0,th08::Spellcard::CutChain,30,matching,100.00,spellcard-cut-chain,python3 scripts/compare-function.py spellcard-cut-chain --json
 0x004286B0,th08::EffectManager::CutChain,35,matching,100.00,effect-manager-cut-chain,python3 scripts/compare-function.py effect-manager-cut-chain --json
 0x0040B900,th08::IsDisableResourceReload,10,matching,100.00,background-resource-reload-disabled,python3 scripts/compare-function.py background-resource-reload-disabled --json

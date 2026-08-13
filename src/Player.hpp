@@ -42,6 +42,11 @@ enum PlayerState
 struct Player
 {
     i8 playerState;
+    unknown_fields(0x1, 0xfdb);
+
+    // Observed as g_Player + 0xFDC and through Player receivers at +0xFDC.
+    // The target uses it to pause/alter gameplay updates.
+    i32 frameStop;
 
     static ZunResult RegisterChain(u32 param);
     static ChainCallbackResult OnUpdate(Player *player);

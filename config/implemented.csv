@@ -89,6 +89,7 @@ th08::GameManager::OnDraw
 th08::GameManager::RegisterChain
 th08::GameManager::AddedCallback
 th08::GameManager::DeletedCallback
+th08::GameManager::AddToYoukaiGauge
 th08::GameManager::IsReplayPractice
 th08::Spellcard::CutChain
 th08::EffectManager::CutChain
