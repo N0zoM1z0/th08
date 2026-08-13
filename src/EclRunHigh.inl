@@ -895,15 +895,18 @@ enter_subroutine:
 #endif
     case 174:
     {
-        u8 *oldEffect = TH08_ECL_AT(ctx, u8 *, 0x53C8);
-        if (oldEffect)
-            *(u8 *)(oldEffect + 0x350) = 0;
-        u8 *effect = (u8 *)TH08_ECL_CONTEXT_API(ctx)->SpawnEffect00425B70(TH08_ECL_READ_I(ctx, 0) + 0x20,
-                                                        &TH08_ECL_AT(ctx, Vec3, 0x2D88), 1, -1);
-        TH08_ECL_AT(ctx, u8 *, 0x53C8) = effect;
-        TH08_ECL_CONTEXT_API(ctx)->SelectPlayerMode(TH08_ECL_CONTEXT_API(ctx)->IsYoukai() ? 2 : 1);
+        if (TH08_ECL_AT(ctx, u8 *, 0x53C8))
+            *(u8 *)(TH08_ECL_AT(ctx, u8 *, 0x53C8) + 0x350) = 0;
+        TH08_ECL_AT(ctx, u8 *, 0x53C8) =
+            reinterpret_cast<u8 *>(g_EffectManager.SpawnEffect00425B70(
+                TH08_ECL_READ_I(ctx, 0) + 0x20,
+                reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D88)),
+                1, -1));
+        reinterpret_cast<EclRunLowProposal::SpawnedEffectAnmVm *>(
+            TH08_ECL_AT(ctx, u8 *, 0x53C8))->SetInterrupt(g_Player.IsYoukai() ? 2 : 1);
         if (TH08_ECL_AT(ctx, u32, 0x2E0C) & 1)
-            *(f32 *)(effect + 0x14) = -*(f32 *)(effect + 0x14);
+            *(f32 *)(TH08_ECL_AT(ctx, u8 *, 0x53C8) + 0x14) =
+                -*(f32 *)(TH08_ECL_AT(ctx, u8 *, 0x53C8) + 0x14);
         break;
     }
     case 175: TH08_ECL_CONTEXT_API(ctx)->Global00F54E2C() = TH08_ECL_READ_I(ctx, 0); break;

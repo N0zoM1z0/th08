@@ -52,6 +52,7 @@ struct Player
     static void CutChain();
 
     static ZunResult LoadShtFile(PlayerRawShtFile **header, const char *path);
+    i32 IsYoukai();
 };
 
 DIFFABLE_EXTERN(Player, g_Player);

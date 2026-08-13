@@ -326,7 +326,7 @@ th08::EffectManager::SpawnEffect,0x425430,function
 th08::EffectManager::SpawnEffectAngle,0x425650,function
 th08::EffectManager::FUN_00425870,0x425870,function
 FUN_004259e0,0x4259e0,function
-FUN_00425b70,0x425b70,function
+th08::EffectManager::SpawnEffect00425B70,0x425b70,function
 FUN_00425d70,0x425d70,function
 FUN_00425e60,0x425e60,function
 FUN_00425ea0,0x425ea0,function
