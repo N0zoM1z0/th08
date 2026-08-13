@@ -300,3 +300,10 @@ address,name,size,status,match_percent,unit,evidence
 0x00465BA0,th08::AnmManager::PostloadAnmEntry,284,matching,100.00,anm-manager-unblocked-exact-00465ba0,python3 scripts/compare-function.py anm-manager-unblocked-exact-00465ba0 --json
 0x00465CC0,th08::AnmManager::LoadTextureData,829,matching,100.00,anm-manager-unblocked-exact-00465cc0,python3 scripts/compare-function.py anm-manager-unblocked-exact-00465cc0 --json
 0x004667C0,th08::AnmManager::LoadSurface,670,matching,100.00,anm-manager-unblocked-exact-004667c0,python3 scripts/compare-function.py anm-manager-unblocked-exact-004667c0 --json
+0x00453CD1,th08::ResultScreen::GetStageName,41,matching,100.00,result-screen-roi-exact-00453cd1,python3 scripts/compare-function.py result-screen-roi-exact-00453cd1 --json
+0x00455F6B,th08::ResultScreen::HandleSpellCardScreen,691,matching,100.00,result-screen-roi-exact-00455f6b,python3 scripts/compare-function.py result-screen-roi-exact-00455f6b --json
+0x0045621E,th08::ResultScreen::HandleResultKeyboard,1818,matching,100.00,result-screen-roi-exact-0045621e,python3 scripts/compare-function.py result-screen-roi-exact-0045621e --json
+0x00456938,th08::ResultScreen::FormatDate,55,matching,100.00,result-screen-roi-exact-00456938,python3 scripts/compare-function.py result-screen-roi-exact-00456938 --json
+0x0045696F,th08::ResultScreen::HandleReplaySaveKeyboard,3699,matching,100.00,result-screen-roi-exact-0045696f,python3 scripts/compare-function.py result-screen-roi-exact-0045696f --json
+0x004578AA,th08::ResultScreen::HandleOtherStatsScreen,1366,matching,100.00,result-screen-roi-exact-004578aa,python3 scripts/compare-function.py result-screen-roi-exact-004578aa --json
+0x0045964D,th08::ResultScreen::AddedCallback,2437,matching,100.00,result-screen-roi-exact-0045964d,python3 scripts/compare-function.py result-screen-roi-exact-0045964d --json

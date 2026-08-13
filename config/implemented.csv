@@ -329,3 +329,10 @@ th08::AnmManager::ReleaseAnm
 th08::AnmManager::ReleaseSurface
 th08::AnmManager::CopySurfaceToBackbuffer
 th08::AnmManager::CaptureToSurface
+th08::ResultScreen::GetStageName
+th08::ResultScreen::HandleSpellCardScreen
+th08::ResultScreen::HandleResultKeyboard
+th08::ResultScreen::FormatDate
+th08::ResultScreen::HandleReplaySaveKeyboard
+th08::ResultScreen::HandleOtherStatsScreen
+th08::ResultScreen::AddedCallback
