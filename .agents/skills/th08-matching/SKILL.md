@@ -146,6 +146,15 @@ caller relocations; it is not permission to add `noinline`, dummy references,
 or a forwarding shim. The four `Supervisor` option predicates at
 `0x00438A29..0x00438A71` are the corpus example.
 
+A mapping and an external target body establish ABI, not the original
+translation-unit profile. Before moving an inline member, compare the natural
+candidate object(s): a target-only `mov esp, ebp; pop ebp` epilogue or a
+different receiver/member access sequence is evidence that the assumed TU or
+layout is wrong. Stop short of a match and retain the existing source form
+until that difference is explained; do not tune it with inert locals, padding,
+or assembly. The `GameManager` query cluster at `0x00406C70..0x00406DE3` is
+the corpus counterexample.
+
 This VC7 build can retain obsolete inline definitions in `build/th_pch.pch`
 after a header-only member becomes out-of-line. If a full link reports a
 duplicate that is absent from the edited header, rebuild the generated PCH and
