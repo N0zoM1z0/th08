@@ -122,3 +122,10 @@ requires = ["ledgered_relocation_destination"]
 confidence = "exact_match_corpus"
 recommendation = "Resolve relocation destinations through each CSV's named address column, not a fixed column index. Keep functions, globals, floats, strings, and relocation-only imports or thunks in their owning ledgers; never create a fake function/global row to satisfy replay. Promote exact status only after the isolated COFF extent and every relocation replay to zero differences."
 evidence = "TH08 zwave and AnmManager unlock corpus: header-aware destination lookup exposed 15 already-exact functions totaling 5,259 authored bytes; six attested import/thunk rows remained relocation-only while complete replay verified 146 relocations"
+
+[[rules]]
+id = "compiler-local-tail-authored-coverage"
+requires = ["jump_table_dispatch"]
+confidence = "exact_match_corpus"
+recommendation = "When mapping size ends at the authored return but the isolated COFF auxiliary extent owns adjacent compiler-local tables, keep size equal to authored coverage and set compare_size to the full owned extent. Normalize compiler-local symbols by relocation offset and resolved target, replay every table entry, and never count associated table bytes as authored progress."
+evidence = "Exact TH08 AnmVm accessor corpus at 0x0045E650/0x0045E720/0x0045E810/0x0045E8A0: 615 authored bytes plus 136 associated jump-table bytes; all 751 compared bytes and 44 relocations replay exactly"

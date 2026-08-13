@@ -80,8 +80,12 @@ review the unit before claiming exactness.
 - Test every source-shaping change through `$th08-matching`.
 - If target code ends before the next mapped function but the COFF auxiliary
   size continues through switch tables, compare the complete associated extent
-  while reporting authored coverage from the code extent only. A size error is
-  a boundary question before it is a source-shaping instruction.
+  with `compare_size` while keeping `size` at the authored code extent. Report
+  and count authored coverage from `size` only. Normalize compiler-local table
+  symbols by relocation offset and resolved target, and replay every entry. A
+  size error is a boundary question before it is a source-shaping instruction.
+  The four exact AnmVm accessors at `0x0045E650..0x0045E953` are the compact
+  corpus: 615 authored bytes plus 136 associated table bytes, all 751 compared.
 - Large dispatchers may own several adjacent compiler tables. Prove each table
   boundary from code-local pointers and the next trusted function start, keep
   all table-entry relocations in the canonical manifest, and require exact
