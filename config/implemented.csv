@@ -204,3 +204,14 @@ th08::Supervisor::IsWindowed
 th08::GameManager::SetClockTime
 th08::GameManager::GetDeaths
 th08::GameManager::GetBombsUsed
+th08::ReplayManager::StopRecording
+th08::ReplayManager::SaveReplay
+th08::AppendFormat
+th08::ReplayManager::IsDemo
+th08::AnmLoaded::SetSprite
+th08::AnmVm::GetFloatVar
+th08::AnmVm::GetIntVar
+th08::AnmVm::GetFloatVarPtr
+th08::AnmVm::GetIntVarPtr
+th08::AnmManager::ExecuteScript
+th08::AnmManager::ExecuteScriptArray

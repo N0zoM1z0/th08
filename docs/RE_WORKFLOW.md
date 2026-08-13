@@ -78,6 +78,23 @@ small units and verify each against TH08. Prefer instruction-level evidence
 over semantic resemblance, and re-check all absolute addresses and structure
 offsets. Do not bulk-copy a module and mark it reconstructed.
 
+## High-leverage lanes
+
+Prefer dependency work that turns a giant dispatcher into bounded units:
+
+- ECL: establish `EclManager` lifecycle and the target-observed `0x228` ECL
+  context, then reconstruct the four integer/float rvalue/lvalue resolvers at
+  `0x0041F420`, `0x0041FE10`, `0x00420120`, and `0x00420950`. Together they
+  cover 4,830 target bytes and 290 of `RunEcl`'s 463 direct-call sites. Port
+  the TH07 private-overlay method, not its offsets or opcode numbers.
+- GUI: recover constructor-proven `GuiImpl`/`GuiMsgVm` layout before the hard
+  bodies. `Gui::DrawGameScene` is the first large target because restoring its
+  real callers naturally emits four `/Os` Supervisor graphics predicates;
+  defer the 23-case `RunMsg` until its raw instruction and trailing state are
+  named.
+- Large dispatchers: use the jump-table/call-multiset audit in `$th08-re` to
+  establish source presence, while retaining strict comparator-only exactness.
+
 ## Parallel handoff
 
 A bounded handoff contains:

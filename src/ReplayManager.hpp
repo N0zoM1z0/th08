@@ -15,6 +15,8 @@
 namespace th08
 {
 
+struct ChainElem;
+
 struct StageReplayData
 {
     u32 score;
@@ -86,7 +88,9 @@ struct ReplayData
 
     GameConfiguration gameConfiguration;
 
-    unknown_fields(0xf0, 0x28);
+    unknown_fields(0xf0, 0x24);
+
+    float slowDownRate2;
 
     float slowDownRate;
     u8 clearState;
@@ -104,9 +108,37 @@ struct ReplayManager
     unknown_fields(0x0, 0x8);
     ReplayData *replayData;
 
+    unknown_fields(0xc, 0x4);
+
+    i32 isDemo;
+
+    unknown_fields(0x14, 0x3c);
+
+    u8 *replayInputs;
+    u8 *replayInputStageBookmarks[MAX_STAGES];
+
+    unknown_fields(0x78, 0x2c);
+
+    u8 *replayInputStageBookmarks2[MAX_STAGES];
+
+    ChainElem *calcChain;
+
     static void SaveReplay(const char *replayPath, const char *replayName);
     static ReplayData *LoadReplayData(void *replayData, int fileSize);
+
+    static void StopRecording();
+
+    i32 IsDemo()
+    {
+        return this->isDemo;
+    }
 };
+
+C_ASSERT(offsetof(ReplayManager, replayData) == 0x8);
+C_ASSERT(offsetof(ReplayManager, replayInputs) == 0x50);
+C_ASSERT(offsetof(ReplayManager, replayInputStageBookmarks) == 0x54);
+C_ASSERT(offsetof(ReplayManager, replayInputStageBookmarks2) == 0xa4);
+C_ASSERT(offsetof(ReplayManager, calcChain) == 0xc8);
 
 DIFFABLE_EXTERN(ReplayManager *, g_ReplayManager);
 

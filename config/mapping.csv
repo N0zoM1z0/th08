@@ -834,9 +834,9 @@ FUN_00452830,0x452830,0x523,unknown,,u8
 FUN_00452d60,0x452d60,0x313,unknown,,u8
 FUN_00453080,0x453080,0xd1,unknown,,u8
 FUN_00453160,0x453160,0x3a,unknown,,u8
-FUN_004531a0,0x4531a0,0x4d,unknown,,u8
+th08::ReplayManager::StopRecording,0x4531a0,0x4d,__fastcall,,void
 th08::ReplayManager::SaveReplay,0x4531f0,0x98d,__fastcall,,void,char*,char*
-_sprintf,0x453b80,0x58,__cdecl,varargs,char*,char*,char*
+th08::AppendFormat,0x453b80,0x58,__cdecl,varargs,char*,char*,char*
 th08::Rng::SetSeed,0x453be0,0x17,__thiscall,,void,Rng*,u16
 th08::Rng::ResetGenerationCount,0x453c00,0x15,__thiscall,,void,Rng*
 th08::Rng::GetSeed,0x453c20,0x11,__thiscall,,u16,Rng*
@@ -844,7 +844,7 @@ th08::Supervisor::IsClearBackBufferOnRefreshEnabled,0x453c40,0x1a,__thiscall,,u3
 th08::GameManager::SetClockTime,0x453c60,0x19,__thiscall,,void,GameManager*,u8
 th08::GameManager::GetDeaths,0x453c80,0x19,__thiscall,,i32,GameManager*
 th08::GameManager::GetBombsUsed,0x453ca0,0x1c,__thiscall,,i32,GameManager*
-FUN_00453cc0,0x453cc0,0x11,unknown,,u8
+th08::ReplayManager::IsDemo,0x453cc0,0x11,__thiscall,,i32,ReplayManager*
 th08::ResultScreen::GetStageName,0x453cd1,0x29,__fastcall,,u8,u32
 th08::ResultScreen::GetCharacterName,0x453cfa,0x13,__fastcall,,u8,u32
 th08::ResultScreen::WriteScore,0x453d0d,0x55c,__fastcall,,void,ResultScreen*
@@ -935,8 +935,8 @@ th08::SoundPlayer::SoundPlayer,0x45e320,0x4c,__thiscall,,SoundPlayer*,SoundPlaye
 th08::SoundPlayer::FreePreloadedBGM,0x45e370,0x46,__thiscall,,void,SoundPlayer*,i32
 th08::SoundPlayer::FadeOut,0x45e3c0,0x2b,__thiscall,,void,SoundPlayer*,f32
 th08::CStreamingSound::FadeOut,0x45e3f0,0x37,__thiscall,,void,CStreamingSound*,f32
-th08::AnmFileDesc::SetSprite,0x45e430,0x14d,__thiscall,,u32,AnmFileDesc*,AnmVm*,i32
-th08::AnmFileDesc::SetAndExecuteScript,0x45e580,0xce,__thiscall,,void,AnmFileDesc*,AnmVm*,AnmRawInstr*
+th08::AnmLoaded::SetSprite,0x45e430,0x14d,__thiscall,,ZunResult,AnmLoaded*,AnmVm*,i32
+th08::AnmLoaded::SetAndExecuteScript,0x45e580,0xce,__thiscall,,void,AnmLoaded*,AnmVm*,AnmRawInstr*
 th08::AnmVm::GetFloatVar,0x45e650,0xa6,__thiscall,,float10,AnmVm*,f32
 th08::AnmVm::GetIntVar,0x45e720,0xba,__thiscall,,i32,AnmVm*,u32
 th08::AnmVm::GetFloatVarPtr,0x45e810,0x7c,__thiscall,,f32*,i32,f32*,u16,u8
@@ -948,8 +948,8 @@ FUN_00462230,0x462230,0x15,unknown,,u8,u8
 FUN_00462250,0x462250,0x15,unknown,,u8,u8
 FUN_00462270,0x462270,0x4a,unknown,,u8,u8,u8,u8
 th08::AnmManager::FUN_004622c0,0x4622c0,0x4c,__thiscall,,bool,AnmManager*,AnmVm*
-th08::AnmManager::ExecuteScriptOnVmArray,0x462310,0x46,__thiscall,,void,AnmManager*,AnmVm*,i32
-FUN_00462360,0x462360,0x56,unknown,,u8,u8,u8,u8
+th08::AnmManager::ExecuteScriptArray,0x462310,0x46,__thiscall,,void,AnmManager*,AnmVm*,i32
+th08::AnmLoaded::ExecuteAnmIdxArray,0x462360,0x56,__thiscall,,void,AnmLoaded*,AnmVm*,i32,i32
 th08::AnmManager::FUN_004623c0,0x4623c0,0x390,__thiscall,,void,AnmManager*,AnmVm*
 FUN_00462750,0x462750,0x34,__fastcall,,u8,uchar,uchar
 th08::AnmManager::SetRenderStateForVm,0x462790,0x116,__thiscall,,u8,AnmManager*,AnmVm*

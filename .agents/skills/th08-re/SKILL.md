@@ -43,6 +43,12 @@ image base `0x00400000`, entry `0x004A619E`, and `.text`
    incomplete. Use TH06 and TH07 only as semantic or compiler corroboration.
 4. Recover calling convention, return behavior, field offsets, side effects,
    and exceptional paths before shaping source.
+   For a large switch dispatcher that is not exact yet, audit source presence
+   with three independent surfaces: enumerate every primary and nested jump-
+   table slot including shared/default handlers; compare the target direct-call
+   destination multiset with the built function's `REL32` multiset; and
+   reconcile returns, fallthroughs, field offsets, and access widths. This can
+   justify `implemented.csv`, never `matches.csv`.
 5. Implement the smallest coherent function in its existing module. Do not
    manufacture behavior, paste decompiler output, patch target bytes, or use
    assembly/byte arrays/padding to force code shape.

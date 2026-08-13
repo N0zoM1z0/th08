@@ -280,6 +280,13 @@ def analyze(address: str, target_path: Path, compare: bool) -> dict[str, Any]:
             features.add(mnemonic)
         if mnemonic.startswith("set"):
             features.add("setcc")
+        if (
+            mnemonic == "jmp"
+            and insn.operands
+            and insn.operands[0].type == X86_OP_MEM
+            and insn.operands[0].mem.index != 0
+        ):
+            features.add("jump_table_dispatch")
         if index < 16 and mnemonic == "sub" and len(insn.operands) == 2:
             left, right = insn.operands
             if left.type == X86_OP_REG and left.reg == X86_REG_ESP and right.type == X86_OP_IMM:
@@ -378,6 +385,9 @@ def analyze(address: str, target_path: Path, compare: bool) -> dict[str, Any]:
             )
         if mnemonic == "ret":
             returns.append(int(insn.operands[0].imm) if insn.operands else 0)
+
+    if len(calls) >= 32:
+        features.add("large_direct_call_surface")
 
     stack_rows = []
     for displacement in sorted(stack):

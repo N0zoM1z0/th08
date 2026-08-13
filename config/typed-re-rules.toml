@@ -52,3 +52,10 @@ requires = ["store_order_mismatch"]
 confidence = "exact_match_corpus"
 recommendation = "When target and object perform the same independent field assignments in a different order, preserve the target-observed source assignment order before changing types, ABI, or compiler settings."
 evidence = "TH08 ZunTimer::SetCurrent at 0x00406610: current, subFrame, then previous"
+
+[[rules]]
+id = "large-dispatcher-source-presence-audit"
+requires = ["jump_table_dispatch", "large_direct_call_surface"]
+confidence = "workflow_guardrail"
+recommendation = "Before marking a non-exact large dispatcher source-present, reconcile every primary and nested jump-table slot, compare the target direct-call destination multiset with the built function REL32 multiset, and verify returns, fallthroughs, field offsets, and access widths. Keep exact status gated on the canonical comparator."
+evidence = "TH08 AnmManager::ExecuteScript at 0x0045EA00: 91 opcode slots and identical 228-call target/COFF multisets with a non-exact 0x1A0 size delta"

@@ -58,3 +58,10 @@ address,name,size,status,match_percent,unit,evidence
 0x00443A90,th08::Supervisor::Is16bitColorMode,26,matching,100.00,supervisor-16bit-color-mode-main,python3 scripts/compare-function.py supervisor-16bit-color-mode-main --json
 0x00443AB0,th08::Supervisor::IsReferenceRasterizerMode,26,matching,100.00,supervisor-reference-rasterizer-mode-main,python3 scripts/compare-function.py supervisor-reference-rasterizer-mode-main --json
 0x00443AD0,th08::Supervisor::IsWindowed,21,matching,100.00,supervisor-windowed-main,python3 scripts/compare-function.py supervisor-windowed-main --json
+0x004531A0,th08::ReplayManager::StopRecording,77,matching,100.00,replay-manager-stop-recording,python3 scripts/compare-function.py replay-manager-stop-recording --json
+0x00453B80,th08::AppendFormat,88,matching,100.00,replay-append-format,python3 scripts/compare-function.py replay-append-format --json
+0x00453C80,th08::GameManager::GetDeaths,25,matching,100.00,game-manager-get-deaths-replay,python3 scripts/compare-function.py game-manager-get-deaths-replay --json
+0x00453CA0,th08::GameManager::GetBombsUsed,28,matching,100.00,game-manager-get-bombs-used-replay,python3 scripts/compare-function.py game-manager-get-bombs-used-replay --json
+0x00453CC0,th08::ReplayManager::IsDemo,17,matching,100.00,replay-manager-is-demo,python3 scripts/compare-function.py replay-manager-is-demo --json
+0x0045E430,th08::AnmLoaded::SetSprite,333,matching,100.00,anm-loaded-set-sprite,python3 scripts/compare-function.py anm-loaded-set-sprite --json
+0x00462310,th08::AnmManager::ExecuteScriptArray,70,matching,100.00,anm-manager-execute-script-array,python3 scripts/compare-function.py anm-manager-execute-script-array --json
