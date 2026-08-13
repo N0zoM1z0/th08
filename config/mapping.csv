@@ -462,11 +462,11 @@ FUN_00432b50,0x432b50,0x3c9,unknown,,u8
 FUN_00432f20,0x432f20,0x140,unknown,,u8
 FUN_00433070,0x433070,0x67e,unknown,,u8
 FUN_004337f0,0x4337f0,0x2a,unknown,,u8
-FUN_00433820,0x433820,0x23,unknown,,u8
+th08::BulletManager::DeletedCallback,0x433820,0x23,__fastcall,,ZunResult,BulletManager*
 th08::BulletManager::CutChain,0x433850,0x23,__stdcall,,void
 FUN_00433880,0x433880,0x21,unknown,,u8,u8
 FUN_004338b0,0x4338b0,0xa,unknown,,u8
-FUN_004338c0,0x4338c0,0xa,unknown,,u8
+th08::IsBulletManagerAnmReleaseRequired,0x4338c0,0xa,__fastcall,,i32
 FUN_004338ca,0x4338ca,0x5d,unknown,,u8
 FUN_00433927,0x433927,0x46,unknown,,u8
 FUN_0043396d,0x43396d,0x446,unknown,,u8,u8

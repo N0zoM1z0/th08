@@ -34,6 +34,11 @@ image base `0x00400000`, entry `0x004A619E`, and `.text`
    imports, relocations, and directly decoded accesses are observations.
 2. Inspect the full function plus callers, callees, adjacent code, strings,
    globals, access widths, stack cleanup, and saved registers.
+   Prioritize coherent high-ROI clusters in one translation unit: a sub-0x20
+   getter or predicate may unlock a nearby callback's `REL32`, and a neighboring
+   `CutChain` often shares the same object profile and chain globals. Investigate
+   getter, callback, then `CutChain`; adjacency is a prioritization signal, not
+   proof of boundaries, ownership, or semantics.
 3. Use the inherited TH08 source as a hypothesis when it is stubbed or
    incomplete. Use TH06 and TH07 only as semantic or compiler corroboration.
 4. Recover calling convention, return behavior, field offsets, side effects,

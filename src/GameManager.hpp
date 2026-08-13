@@ -55,7 +55,7 @@ struct GameManager
 {
     GameManager();
 
-    ZunBool IsWithinPlayfield();
+    ZunBool IsWithinPlayfield(f32 x, f32 y, f32 width, f32 height);
     i32 CalcAntiTamperChecksum();
     static i32 CalcChecksum(u8 *address, i32 size);
     void CollectExtend();
@@ -142,6 +142,7 @@ struct GameManager
     void IncreaseSubrank(int amount);
     void DecreaseSubrank(int amount);
     void AddToYoukaiGauge(u16 param_1, i32 param_2);
+    void SetYoukaiGauge(u16 value);
 
     ZunBool IsPhantasmUnlocked();
 

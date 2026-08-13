@@ -24,8 +24,10 @@ analyze or substitute a localized, patched, trial, or earlier executable.
 - [GensokyoClub/th08](https://github.com/GensokyoClub/th08) is the imported
   reconstruction baseline. Its complete Git history and original contributor
   attribution must remain intact.
-- TH06 and the local TH07 reconstruction are supporting evidence only. Confirm
-  names, ABI, field offsets, side effects, and boundaries against TH08 1.00d.
+- The [N0zoM1z0/th07 reconstruction](https://github.com/N0zoM1z0/th07)
+  supplies this repository's workflow and structure. TH07 source and TH06 are
+  supporting evidence only: confirm names, ABI, field offsets, side effects,
+  and boundaries against TH08 1.00d.
 - Never mechanically paste decompiler output as source.
 - `config/implemented.csv` selects upstream implementations; it is not proof of
   an exact match. Likewise, an entry in `config/mapping.csv` or

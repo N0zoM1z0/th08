@@ -8,6 +8,13 @@ namespace th08
 DIFFABLE_STATIC(BulletManager, g_BulletManager);
 DIFFABLE_STATIC(ChainElem, g_BulletManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_BulletManagerDrawChain);
+DIFFABLE_STATIC(i32, g_BulletManagerAnmReleaseRequired);
+
+// FUNCTION: th08 0x4338c0
+i32 IsBulletManagerAnmReleaseRequired()
+{
+    return g_BulletManagerAnmReleaseRequired;
+}
 
 // STUB: th08 0x42f360
 void BulletManager::Initialize()
@@ -38,10 +45,22 @@ ZunResult BulletManager::AddedCallback(BulletManager *bulletManager)
     return ZUN_SUCCESS;
 }
 
-// STUB: th08 0x433820
+// FUNCTION: th08 0x433820
 ZunResult BulletManager::DeletedCallback(BulletManager *bulletManager)
 {
+    if (IsBulletManagerAnmReleaseRequired())
+    {
+        g_AnmManager->ReleaseAnm(6);
+    }
+
     return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x433850
+void BulletManager::CutChain()
+{
+    g_Chain.Cut(&g_BulletManagerCalcChain);
+    g_Chain.Cut(&g_BulletManagerDrawChain);
 }
 
 } /* namespace th08 */

@@ -125,6 +125,7 @@ def apply_relocations(
     actual: list[dict[str, object]],
     expected: list[dict[str, object]],
     target_address: int,
+    target_code: bytes,
 ) -> list[dict[str, object]]:
     normalized_expected = []
     for relocation in expected:
@@ -159,7 +160,8 @@ def apply_relocations(
         offset = relocation["offset"]
         if offset < 0 or offset + 4 > len(code):
             raise ValueError(f"relocation offset outside function: {offset:#x}")
-        addend = struct.unpack_from("<I", code, offset)[0]
+        object_field_before = struct.unpack_from("<I", code, offset)[0]
+        addend = object_field_before
         if relocation["type"] == "DIR32":
             value = relocation["target"] + addend
         else:
@@ -172,6 +174,11 @@ def apply_relocations(
                 "type": relocation["type"],
                 "symbol": relocation["symbol"],
                 "target": f"0x{relocation['target']:08X}",
+                "addend": f"0x{addend:08X}",
+                "addend_signed": struct.unpack("<i", struct.pack("<I", addend))[0],
+                "object_field_before": f"0x{object_field_before:08X}",
+                "resolved_value": f"0x{value & 0xFFFFFFFF:08X}",
+                "target_field": f"0x{struct.unpack_from('<I', target_code, offset)[0]:08X}",
             }
         )
     return report
@@ -187,13 +194,14 @@ def compare(unit: dict[str, object], target_path: Path) -> dict[str, object]:
             f"object function size {len(code):#x} differs from manifest {expected_size:#x}"
         )
     target_address = int(unit["target_address"])
+    target = pe_bytes_at(target_data, target_address, expected_size)
     relocations = apply_relocations(
         code,
         actual_relocations,
         list(unit.get("relocations", [])),
         target_address,
+        target,
     )
-    target = pe_bytes_at(target_data, target_address, expected_size)
     differences = [
         {"offset": f"0x{index:X}", "object": left, "target": right}
         for index, (left, right) in enumerate(zip(code, target))

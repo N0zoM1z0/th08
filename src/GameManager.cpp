@@ -12,10 +12,27 @@ DIFFABLE_STATIC(GameManager, g_GameManager);
 DIFFABLE_STATIC(ChainElem, g_GameManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_GameManagerDrawChain);
 
-// STUB: th08 0x4399ac
-ZunBool GameManager::IsWithinPlayfield()
+// FUNCTION: th08 0x4399ac
+ZunBool GameManager::IsWithinPlayfield(f32 x, f32 y, f32 width, f32 height)
 {
-    return FALSE;
+    if (width / 2.0f + x < 0.0f)
+    {
+        return FALSE;
+    }
+    if (x - width / 2.0f > 384.0f)
+    {
+        return FALSE;
+    }
+    if (height / 2.0f + y < 0.0f)
+    {
+        return FALSE;
+    }
+    if (y - height / 2.0f > 448.0f)
+    {
+        return FALSE;
+    }
+
+    return TRUE;
 }
 
 i32 GameManager::CalcAntiTamperChecksum()
@@ -173,6 +190,12 @@ void GameManager::DecreaseSubrank(int amount)
 // STUB: th08 0x43c0bb
 void GameManager::AddToYoukaiGauge(u16 param_1, i32 param_2)
 {
+}
+
+// FUNCTION: th08 0x44e140
+void GameManager::SetYoukaiGauge(u16 value)
+{
+    this->globals->youkaiGauge = value;
 }
 
 // Leftover from PCB.

@@ -58,9 +58,13 @@ ZunResult Gui::LoadMsg(const char *path)
     return ZUN_SUCCESS;
 }
 
-// STUB: th08 0x4397d5
+// FUNCTION: th08 0x4397d5
 void Gui::FreeMsgFile(void)
 {
+    if (this->impl->msgFile != NULL)
+    {
+        ZUN_FREE(this->impl->msgFile);
+    }
 }
 
 } /* namespace th08 */

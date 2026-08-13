@@ -36,6 +36,10 @@ review the unit before claiming exactness.
   them.
 - Diagnose frame differences through declaration order and real lifetimes;
   never add anonymous filler, inert locals, fake behavior, or ABI lies.
+- An ECX home proves only that incoming ECX was saved to a stack slot. Decide
+  whether it is a C++ receiver or fastcall argument zero from the decorated
+  symbol, ledger convention, and call sites; never create inert code merely to
+  reproduce the home.
 - Keep target facts separate from field names, calling-convention guesses,
   compiler recommendations, and TH06/TH07 hypotheses.
 - Test every source-shaping change through `$th08-matching`.

@@ -39,14 +39,15 @@ strict function comparator succeeds against the verified target.
 
 The current IDA MCP session is TH07 and is therefore unavailable for TH08
 work. Do not query it and reinterpret the response as TH08. Until the exact
-TH08 database is open, use:
+TH08 database is open, use headless tools only:
 
 - `objdump` or `llvm-objdump` for PE headers, sections, imports, and disassembly;
-- a local Ghidra project imported from the verified `resources/th08.exe`;
+- a headless local Ghidra project imported from the verified `resources/th08.exe`;
 - `scripts/typed-re.py` for hash-attested instruction and ABI facts when
   Capstone is installed;
 - `config/mapping.csv` and `config/reccmp-*.csv` as inherited upstream leads;
-- TH06/TH07 source and binaries for explicitly labeled cross-version clues.
+- [N0zoM1z0/th07](https://github.com/N0zoM1z0/th07) source and TH06 source or
+  binaries for explicitly labeled cross-version clues.
 
 See `docs/IDA_MCP.md` before changing analysis databases or running inherited
 Ghidra export helpers.
@@ -69,8 +70,10 @@ matching percentage unless it is generated from a current reproducible report.
 
 ## Adjacent-version acceleration
 
-Compare the inherited TH08 source first, then TH06 and the local TH07 tree for
-matching subsystem names, constants, ABI shapes, and compiler idioms. Migrate
+Apply the workflow and structure from
+[N0zoM1z0/th07](https://github.com/N0zoM1z0/th07), compare the inherited TH08
+source first, and use TH06 only as adjacent-engine corroboration for matching
+subsystem names, constants, ABI shapes, and compiler idioms. Migrate
 small units and verify each against TH08. Prefer instruction-level evidence
 over semantic resemblance, and re-check all absolute addresses and structure
 offsets. Do not bulk-copy a module and mark it reconstructed.

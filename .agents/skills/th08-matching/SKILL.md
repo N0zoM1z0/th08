@@ -53,7 +53,9 @@ Add a `[[units.relocations]]` entry only after proving its byte offset, COFF
 symbol, relocation kind, exact TH08 target address, and addend behavior. The
 comparator rejects actual relocations that differ from the manifest and rejects
 the wrong target hash. Never wildcard an unresolved relocation or borrow a
-TH06/TH07 address.
+TH06/TH07 address. A zero-addend `DIR32` function pointer accepts only the
+canonical TH08 function start supported by the ledgers; an address merely
+falling inside the image is not evidence for a function, global, or literal.
 
 ## Acceptance
 

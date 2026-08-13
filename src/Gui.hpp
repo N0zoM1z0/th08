@@ -9,7 +9,11 @@ namespace th08
 
 struct GuiImpl
 {
+    unknown_fields(0x0, 0x21814);
+    void *msgFile;
+    unknown_fields(0x21818, 0x18a0);
 };
+C_ASSERT(sizeof(GuiImpl) == 0x230b8);
 
 struct GuiFlags
 {

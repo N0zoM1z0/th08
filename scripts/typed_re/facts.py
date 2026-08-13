@@ -386,6 +386,15 @@ def analyze(address: str, target_path: Path, compare: bool) -> dict[str, Any]:
         stack_rows.append(item)
 
     comparison = run_compare(start, size, target_path) if compare else {"state": "not_requested"}
+    ecx_role_hint = None
+    if any(item["register"] == "ecx" for item in register_homes):
+        convention = row.get("calling_convention")
+        if convention == "__thiscall":
+            ecx_role_hint = "this_receiver"
+        elif convention == "__fastcall":
+            ecx_role_hint = "fastcall_argument_zero"
+        else:
+            ecx_role_hint = "unknown"
     return {
         "schema_version": 1,
         "address": canonical(start),
@@ -410,6 +419,7 @@ def analyze(address: str, target_path: Path, compare: bool) -> dict[str, Any]:
         },
         "inferences": {
             "features": sorted(features),
+            "ecx_role_hint": ecx_role_hint,
             "compiler_recommendations": load_rules(str(target_config["sha256"]), features),
             "warning": "Recommendations are probe hints; only compare-function.py exact output is acceptance evidence.",
         },
@@ -445,6 +455,15 @@ def self_check(target_path: Path) -> None:
     comparison = report["comparison"]
     if comparison.get("state") != "compared" or comparison.get("report", {}).get("result") != "exact":
         failures.append("canonical comparator regression")
+    callback = analyze("0x00437A2F", target_path, True)
+    if callback["inferences"]["ecx_role_hint"] != "fastcall_argument_zero":
+        failures.append("fastcall ECX-role regression")
+    callback_comparison = callback["comparison"]
+    if (
+        callback_comparison.get("state") != "compared"
+        or callback_comparison.get("report", {}).get("result") != "exact"
+    ):
+        failures.append("fastcall callback comparator regression")
     if failures:
         raise ValueError("; ".join(failures))
 
@@ -461,7 +480,7 @@ def main() -> int:
     try:
         if args.check:
             self_check(target_path)
-            print("typed reconstruction facts OK: 0x004413E0 target facts and strict comparator")
+            print("typed reconstruction facts OK: thiscall and fastcall ECX-role corpus plus strict comparators")
             return 0
         if not args.address:
             parser.error("address is required unless --check is selected")

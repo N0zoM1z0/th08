@@ -96,9 +96,11 @@ Their commits retain their original author/committer metadata in this
 repository. The upstream project also credits @EstexNT for porting its
 `var_order` pragma to MSVC7.
 
-[GensokyoClub/th06](https://github.com/GensokyoClub/th06) and the local TH07
-reconstruction provide adjacent-engine and workflow references. They are
-corroborating evidence, not substitutes for TH08 target instructions.
+The [N0zoM1z0/th07 reconstruction](https://github.com/N0zoM1z0/th07) supplies
+this repository's workflow, structure, target gates, claims, matching, and
+documentation model. [GensokyoClub/th06](https://github.com/GensokyoClub/th06)
+is adjacent-engine corroboration only; neither reference overrides TH08 target
+evidence.
 
 ## License
 

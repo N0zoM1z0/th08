@@ -467,7 +467,7 @@ th08::BulletManager::DeletedCallback,0x433820,function
 th08::BulletManager::CutChain,0x433850,function
 fsincos,0x433880,function
 FUN_004338b0,0x4338b0,function
-FUN_004338c0,0x4338c0,function
+th08::IsBulletManagerAnmReleaseRequired,0x4338c0,function
 th08::Gui::OnUpdate,0x4338ca,function
 th08::Gui::OnDraw,0x433927,function
 th08::GuiImpl::FUN_0043396d,0x43396d,function

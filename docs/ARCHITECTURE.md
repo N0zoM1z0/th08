@@ -70,8 +70,10 @@ target comparisons.
 
 ## Evidence relationship to adjacent games
 
-TH06 and TH07 share engine concepts, compiler idioms, and many subsystem names
-with TH08. They can quickly suggest candidates for source migration, but TH08
+The [N0zoM1z0/th07 reconstruction](https://github.com/N0zoM1z0/th07) supplies
+this repository's workflow and structure. TH07 and TH06 share engine concepts,
+compiler idioms, and many subsystem names with TH08, so their source can
+quickly suggest candidates for migration, but TH08
 changed gameplay systems, layouts, control flow, globals, and translation-unit
 boundaries. Treat every migrated declaration or implementation as an
 unverified hypothesis until TH08 1.00d disassembly and comparison confirm it.

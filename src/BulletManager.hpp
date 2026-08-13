@@ -27,6 +27,7 @@ struct BulletManager
     static ChainCallbackResult OnDraw(BulletManager *bulletManager);
     static ZunResult AddedCallback(BulletManager *bulletManager);
     static ZunResult DeletedCallback(BulletManager *bulletManager);
+    static void CutChain();
 };
 
 DIFFABLE_EXTERN(BulletManager, g_BulletManager);
