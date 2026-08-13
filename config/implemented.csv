@@ -300,3 +300,17 @@ th08::CWaveFile::~CWaveFile
 th08::CWaveFile::Reopen
 th08::CWaveFile::OpenFromMemory
 th08::CWaveFile::GetSize
+th08::Rng::GetRandomU32InRange
+th08::AnmLoaded::SetAndExecuteScript
+th08::AnmLoaded::ExecuteAnmIdxArray
+th08::AnmManager::SetRenderStateForVm
+th08::AnmManager::ClearVertexBuffer
+th08::AnmManager::FlushVertexBuffer
+th08::AnmManager::AddSpriteToDrawBuffer
+th08::AnmManager::CreateTextureFromAnm
+th08::AnmManager::CreateEmptyTexture
+th08::AnmManager::ServicePreloadedAnims
+th08::AnmManager::ReleaseAnm
+th08::AnmManager::ReleaseSurface
+th08::AnmManager::CopySurfaceToBackbuffer
+th08::AnmManager::CaptureToSurface

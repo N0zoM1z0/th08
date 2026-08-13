@@ -271,3 +271,17 @@ address,name,size,status,match_percent,unit,evidence
 0x00473360,th08::CWaveFile::OpenFromMemory,92,matching,100.00,zwave-remaining-exact-00473360,python3 scripts/compare-function.py zwave-remaining-exact-00473360 --json
 0x004733C0,th08::CWaveFile::GetSize,17,matching,100.00,zwave-remaining-exact-004733c0,python3 scripts/compare-function.py zwave-remaining-exact-004733c0 --json
 0x0042C180,th08::Enemy::ClampPosition,270,matching,100.00,enemy-clamp-position,python3 scripts/compare-function.py enemy-clamp-position --json
+0x00406EF0,th08::Rng::GetRandomU32InRange,49,matching,100.00,anm-manager-remaining-exact-00406ef0,python3 scripts/compare-function.py anm-manager-remaining-exact-00406ef0 --json
+0x0045E580,th08::AnmLoaded::SetAndExecuteScript,206,matching,100.00,anm-manager-remaining-exact-0045e580,python3 scripts/compare-function.py anm-manager-remaining-exact-0045e580 --json
+0x00462360,th08::AnmLoaded::ExecuteAnmIdxArray,86,matching,100.00,anm-manager-remaining-exact-00462360,python3 scripts/compare-function.py anm-manager-remaining-exact-00462360 --json
+0x00462790,th08::AnmManager::SetRenderStateForVm,278,matching,100.00,anm-manager-remaining-exact-00462790,python3 scripts/compare-function.py anm-manager-remaining-exact-00462790 --json
+0x00462E00,th08::AnmManager::ClearVertexBuffer,60,matching,100.00,anm-manager-remaining-exact-00462e00,python3 scripts/compare-function.py anm-manager-remaining-exact-00462e00 --json
+0x00462E40,th08::AnmManager::FlushVertexBuffer,198,matching,100.00,anm-manager-remaining-exact-00462e40,python3 scripts/compare-function.py anm-manager-remaining-exact-00462e40 --json
+0x00462F10,th08::AnmManager::AddSpriteToDrawBuffer,211,matching,100.00,anm-manager-remaining-exact-00462f10,python3 scripts/compare-function.py anm-manager-remaining-exact-00462f10 --json
+0x004655E0,th08::AnmManager::CreateTextureFromAnm,476,matching,100.00,anm-manager-remaining-exact-004655e0,python3 scripts/compare-function.py anm-manager-remaining-exact-004655e0 --json
+0x004657C0,th08::AnmManager::CreateEmptyTexture,56,matching,100.00,anm-manager-remaining-exact-004657c0,python3 scripts/compare-function.py anm-manager-remaining-exact-004657c0 --json
+0x00466000,th08::AnmManager::ServicePreloadedAnims,91,matching,100.00,anm-manager-remaining-exact-00466000,python3 scripts/compare-function.py anm-manager-remaining-exact-00466000 --json
+0x00466060,th08::AnmManager::ReleaseAnm,243,matching,100.00,anm-manager-remaining-exact-00466060,python3 scripts/compare-function.py anm-manager-remaining-exact-00466060 --json
+0x00466AE0,th08::AnmManager::ReleaseSurface,200,matching,100.00,anm-manager-remaining-exact-00466ae0,python3 scripts/compare-function.py anm-manager-remaining-exact-00466ae0 --json
+0x00466BB0,th08::AnmManager::CopySurfaceToBackbuffer,445,matching,100.00,anm-manager-remaining-exact-00466bb0,python3 scripts/compare-function.py anm-manager-remaining-exact-00466bb0 --json
+0x00467180,th08::AnmManager::CaptureToSurface,537,matching,100.00,anm-manager-remaining-exact-00467180,python3 scripts/compare-function.py anm-manager-remaining-exact-00467180 --json
