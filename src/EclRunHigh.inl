@@ -44,6 +44,7 @@ extern u32 g_EnemyManagerUpdateManagerFlags;
 extern void *g_EclExInsn[];
 extern i32 g_EclGlobal004EA290; // target 0x004EA290
 extern i32 g_EclGlobal00F54E2C; // target 0x00F54E2C
+extern i32 g_EclGlobal004ECCA8; // target 0x004ECCA8
 
 namespace EclRunHighProposal
 {
@@ -655,7 +656,7 @@ enter_subroutine:
         break;
     case 122: TH08_ECL_CONTEXT_API(ctx)->Call00421280(TH08_ECL_CONTEXT_ENEMY(ctx)); break;
     case 123: TH08_ECL_CONTEXT_API(ctx)->Call004212E0(TH08_ECL_CONTEXT_ENEMY(ctx)); break;
-    case 132: TH08_ECL_CONTEXT_API(ctx)->SetTimer(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E14, TH08_ECL_READ_I(ctx, 0)); break;
+    case 132: *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E14) = TH08_ECL_READ_I(ctx, 0); break;
     case 133:
         if (TH08_ECL_CONTEXT_API(ctx)->PresentationWritesAllowed())
         {
@@ -669,7 +670,7 @@ enter_subroutine:
                 TH08_ECL_READ_I(ctx, 1);
         break;
     case 134:
-        if (TH08_ECL_CONTEXT_API(ctx)->PresentationWritesAllowed())
+        if (TH08_ECL_PRESENTATION_WRITES_ALLOWED())
         {
             TH08_ECL_AT(ctx, i32, 0x3378) = TH08_ECL_READ_I(ctx, 0);
             TH08_ECL_AT(ctx, i32, 0x337C) = TH08_ECL_READ_I(ctx, 1);
@@ -838,7 +839,7 @@ enter_subroutine:
         break;
     case 155:
         TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xF7FFFFFF) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 27);
-        TH08_ECL_CONTEXT_API(ctx)->Global004ECCA8() = 0x05F5E0F6;
+        g_EclGlobal004ECCA8 = 0x05F5E0F6;
         break;
     case 156:
         TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFFFFFF7F) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 7);
@@ -940,7 +941,7 @@ enter_subroutine:
 #if !defined(TH08_ECL_RUN_HIGH_BODY)
     case 178: TH08_ECL_CONTEXT_API(ctx)->Call004224A0(TH08_ECL_CONTEXT_ENEMY(ctx)); break;
 #endif
-    case 179: g_Gui.FUN_00439007(); break;
+    case 179: TH08_ECL_CONTEXT_API(ctx)->Call00439007(); break;
     case 180: g_Gui.FUN_004390d6(); break;
     case 181:
         if (TH08_ECL_CONTEXT_API(ctx)->GetGameState() < 12)
