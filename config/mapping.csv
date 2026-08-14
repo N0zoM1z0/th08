@@ -1018,12 +1018,12 @@ FUN_0046cbbb,0x46cbbb,0xba8,unknown,,u8
 FUN_0046d763,0x46d763,0x96,unknown,,u8
 FUN_0046d7f9,0x46d7f9,0x93d,unknown,,u8
 FUN_0046e136,0x46e136,0xe57,unknown,,u8
-FUN_0046ef8d,0x46ef8d,0x49c,unknown,,u8
+th08::TitleScreen::DrawReplayMenu,0x46ef8d,0x49c,__thiscall,,ChainCallbackResult,TitleScreen*
 th08::TitleScreen::DrawPracticeStageSelect,0x46f429,0x1a2,unknown,,u8
-FUN_0046f5cb,0x46f5cb,0x794,unknown,,u8
+th08::TitleScreen::DrawSpellStageSelect,0x46f5cb,0x794,__thiscall,,ChainCallbackResult,TitleScreen*
 th08::GameManager::IsLastWordSpellCardAttempted,0x46fd5f,0x63,__thiscall,,u32,GameManager*,u32
 FUN_0046fdc2,0x46fdc2,0x1fe,unknown,,u8,u8,u8
-FUN_0046ffc0,0x46ffc0,0x34b,unknown,,u8
+th08::TitleScreen::DrawSpellCardSelect,0x46ffc0,0x34b,__thiscall,,ChainCallbackResult,TitleScreen*
 th08::TitleScreen::MoveCursorVertical,0x47030b,0x119,unknown,,u8,u8
 th08::TitleScreen::MoveCursorHorizontal,0x470424,0x109,unknown,,u8,u8
 FUN_0047052d,0x47052d,0x352,unknown,,u8
