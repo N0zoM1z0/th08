@@ -42,6 +42,8 @@ namespace th08
 {
 extern u32 g_EnemyManagerUpdateManagerFlags;
 extern void *g_EclExInsn[];
+extern i32 g_EclGlobal004EA290; // target 0x004EA290
+extern i32 g_EclGlobal00F54E2C; // target 0x00F54E2C
 
 namespace EclRunHighProposal
 {
@@ -384,14 +386,13 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
     case 103:
     case 104:
         lhsInt = TH08_ECL_AT(ctx, i32, 0x2DFC);
-        if (lhsInt > 0)
-        {
-            if (((TH08_ECL_AT(ctx, u32, 0x3324) >> 17) & 1) == 1)
-                memcpy(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3034, TH08_ECL_CONTEXT_INSTRUCTION(ctx), 11 * sizeof(i32));
-            else
-                DispatchShotInstruction(TH08_ECL_CONTEXT_ENEMY(ctx),
-                                        TH08_ECL_CONTEXT_INSTRUCTION(ctx));
-        }
+        if (lhsInt <= 0)
+            break;
+        if (((TH08_ECL_AT(ctx, u32, 0x3324) >> 17) & 1) == 1)
+            memcpy(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3034, TH08_ECL_CONTEXT_INSTRUCTION(ctx), 11 * sizeof(i32));
+        else
+            DispatchShotInstruction(TH08_ECL_CONTEXT_ENEMY(ctx),
+                                    TH08_ECL_CONTEXT_INSTRUCTION(ctx));
         break;
 
     case 111:
@@ -425,9 +426,9 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         if (TH08_ECL_AT(ctx, i32, 0x3060) != 0)
         {
             lhsInt = TH08_ECL_AT(ctx, i32, 0x3060);
-            TH08_ECL_AT(ctx, i32, 0x3060) += TH08_ECL_CONTEXT_API(ctx)->RandomInt(lhsInt / 5, -lhsInt / 5);
-            TH08_ECL_CONTEXT_API(ctx)->SetTimer(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3064,
-                              TH08_ECL_CONTEXT_API(ctx)->ConvertTime(TH08_ECL_AT(ctx, i32, 0x3060)));
+            TH08_ECL_AT(ctx, i32, 0x3060) += g_GameManager.ScaleIntBasedOnRank(lhsInt / 5, -lhsInt / 5);
+            *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3064) =
+                g_Rng.GetRandomU32InRange(TH08_ECL_AT(ctx, i32, 0x3060));
         }
         break;
     case 107: TH08_ECL_AT(ctx, u32, 0x3324) |= 0x00020000; break;
@@ -538,7 +539,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
             *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x560) =
-                TH08_ECL_READ_F(ctx, 1);
+                TH08_ECL_READ_F_RAWARG(ctx, 1);
         break;
     case 172:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
@@ -764,7 +765,7 @@ enter_subroutine:
         reinterpret_cast<TargetZunTimerOverlay *>(TH08_ECL_CURRENT_CONTEXT(ctx) + 4)->AddAssign0041FDF0(TH08_ECL_READ_I(ctx, 0));
         break;
     case 141: TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&TH08_ECL_AT(ctx, Vec3, 0x2D34), TH08_ECL_READ_I(ctx, 0), 0); break;
-    case 147: TH08_ECL_CONTEXT_API(ctx)->Global004EA290() = TH08_ECL_READ_I(ctx, 0); break;
+    case 147: g_EclGlobal004EA290 = TH08_ECL_READ_I(ctx, 0); break;
     case 148:
         g_Gui.FUN_00423130(TH08_ECL_READ_I(ctx, 0));
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3E04) += 0x708;
@@ -935,12 +936,12 @@ enter_subroutine:
                 -*(f32 *)(TH08_ECL_AT(ctx, u8 *, 0x53C8) + 0x14);
         break;
     }
-    case 175: TH08_ECL_CONTEXT_API(ctx)->Global00F54E2C() = TH08_ECL_READ_I(ctx, 0); break;
+    case 175: g_EclGlobal00F54E2C = TH08_ECL_READ_I(ctx, 0); break;
     case 177: TH08_ECL_AT(ctx, i32, 0x2E04) = TH08_ECL_READ_I(ctx, 0); break;
 #if !defined(TH08_ECL_RUN_HIGH_BODY)
     case 178: TH08_ECL_CONTEXT_API(ctx)->Call004224A0(TH08_ECL_CONTEXT_ENEMY(ctx)); break;
 #endif
-    case 179: TH08_ECL_CONTEXT_API(ctx)->Call00439007(); break;
+    case 179: g_Gui.FUN_00439007(); break;
     case 180: g_Gui.FUN_004390d6(); break;
     case 181:
         if (TH08_ECL_CONTEXT_API(ctx)->GetGameState() < 12)
