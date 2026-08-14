@@ -19,6 +19,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00448A2F,th08::Supervisor::DeleteCriticalSections,54,matching,100.00,supervisor-delete-critical-sections,python3 scripts/compare-function.py supervisor-delete-critical-sections --json
 0x0044DD10,th08::Player::CutChain,85,matching,100.00,player-cut-chain,python3 scripts/compare-function.py player-cut-chain --json
 0x0044C230,th08::Player::RegisterChain,351,matching,100.00,player-register-chain,python3 scripts/compare-function.py player-register-chain --json
+0x0044DC60,th08::Player::DeletedCallback,164,matching,100.00,player-deleted-callback,python3 scripts/compare-function.py player-deleted-callback --json
 0x0044E0E0,th08::IsResourceReloadDisabled,15,matching,100.00,resource-reload-disabled,python3 scripts/compare-function.py resource-reload-disabled --json
 0x0044E0F0,th08::AnmVmBase::SetBlendModeAdditive,35,matching,100.00,anm-vm-base-blend-additive,python3 scripts/compare-function.py anm-vm-base-blend-additive --json
 0x0044E120,th08::AnmVmBase::SetBlendModeNormal,32,matching,100.00,anm-vm-base-blend-normal,python3 scripts/compare-function.py anm-vm-base-blend-normal --json
@@ -33,6 +34,8 @@ address,name,size,status,match_percent,unit,evidence
 0x00402190,th08::RetryMenu::RetryMenu,52,matching,100.00,retry-menu-constructor,python3 scripts/compare-function.py retry-menu-constructor --json
 0x004021D0,th08::AsciiManagerPopup::AsciiManagerPopup,36,matching,100.00,ascii-manager-popup-constructor,python3 scripts/compare-function.py ascii-manager-popup-constructor --json
 0x00402430,th08::AsciiManager::OnDrawHighPrio,24,matching,100.00,ascii-manager-draw-high,python3 scripts/compare-function.py ascii-manager-draw-high --json
+0x004070B0,th08::AsciiManager::SetGaugeInterrupt,101,matching,100.00,ascii-manager-set-gauge-interrupt,python3 scripts/compare-function.py ascii-manager-set-gauge-interrupt --json
+0x00422BB0,th08::AsciiManager::FUN_00422bb0,42,matching,100.00,ascii-manager-boss-marker-interrupt,python3 scripts/compare-function.py ascii-manager-boss-marker-interrupt --json
 0x004028C0,th08::AsciiManager::DeletedCallback,39,matching,100.00,ascii-manager-deleted-callback,python3 scripts/compare-function.py ascii-manager-deleted-callback --json
 0x004028F0,th08::AsciiManager::CutChain,35,matching,100.00,ascii-manager-cut-chain,python3 scripts/compare-function.py ascii-manager-cut-chain --json
 0x00437D45,th08::GuiFormattedText::GuiFormattedText,31,matching,100.00,gui-formatted-text-constructor,python3 scripts/compare-function.py gui-formatted-text-constructor --json

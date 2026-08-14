@@ -77,7 +77,7 @@ th08::Rng::GetRandomU32InRange,0x406ef0,0x31,__thiscall,,u32,Rng*,u32
 th08::GameManager::SetBombCount,0x406f30,0x6e,__thiscall,,void,GameManager*,i32
 th08::GameManager::SetPower,0x406fa0,0x24,unknown,,u8,u8
 th08::AsciiManager::FUN_00406fd0,0x406fd0,0xd9,__thiscall,,void,AsciiManager*
-th08::AsciiManager::SetInterrupt,0x4070b0,0x65,__thiscall,,void,AsciiManager*,i32
+th08::AsciiManager::SetGaugeInterrupt,0x4070b0,0x65,__thiscall,,void,AsciiManager*,i32
 th08::AnmVm::SetInterrupt,0x407120,0x1b,__thiscall,,void,AnmVm*,i16
 th08::AsciiManager::GetInterrupt,0x407140,0x14,__thiscall,,u32,AsciiManager*
 th08::AsciiManager::FUN_00407160,0x407160,0x18,__thiscall,,void,AsciiManager*

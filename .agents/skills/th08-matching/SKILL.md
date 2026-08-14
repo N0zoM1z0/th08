@@ -146,6 +146,14 @@ caller relocations; it is not permission to add `noinline`, dummy references,
 or a forwarding shim. The four `Supervisor` option predicates at
 `0x00438A29..0x00438A71` are the corpus example.
 
+After converting a header-inline or declaration-only member into a target-
+observed direct callee, run the serial normal link in addition to the focused
+object comparisons.  A focused caller object can exactly replay an unresolved
+`REL32`, while the normal link correctly exposes a declaration with no emitted
+definition. Recover and compare the real target body instead of adding a dummy
+definition or a linker-only workaround. `Player::DeletedCallback` and
+`AsciiManager::FUN_00422bb0` are the TH08 corpus example.
+
 A mapping and an external target body establish ABI, not the original
 translation-unit profile. Before moving an inline member, compare the natural
 candidate object(s): a target-only `mov esp, ebp; pop ebp` epilogue or a

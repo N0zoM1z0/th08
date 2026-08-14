@@ -363,6 +363,183 @@ symbol = "?AddToDrawChain@Chain@th08@@QAEHPAVChainElem@2@H@Z"
 target = 0x0043C960
 
 [[units]]
+name = "player-deleted-callback"
+object = "build/Player.obj"
+symbol = "?DeletedCallback@Player@th08@@SI?AW4ZunResult@@PAU12@@Z"
+target_address = 0x0044DC60
+size = 0xA4
+
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "?IsBulletManagerAnmReleaseRequired@th08@@YIHXZ"
+target = 0x004338C0
+
+[[units.relocations]]
+offset = 0x18
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "?ReleaseAnm@AnmManager@th08@@QAEXH@Z"
+target = 0x00466060
+
+[[units.relocations]]
+offset = 0x24
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x29
+type = "REL32"
+symbol = "?SetGaugeInterrupt@AsciiManager@th08@@QAEXH@Z"
+target = 0x004070B0
+
+[[units.relocations]]
+offset = 0x32
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x37
+type = "REL32"
+symbol = "?FUN_00422bb0@AsciiManager@th08@@QAEXHF@Z"
+target = 0x00422BB0
+
+[[units.relocations]]
+offset = 0x40
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x45
+type = "REL32"
+symbol = "?FUN_00422bb0@AsciiManager@th08@@QAEXHF@Z"
+target = 0x00422BB0
+
+[[units.relocations]]
+offset = 0x4E
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x53
+type = "REL32"
+symbol = "?FUN_00422bb0@AsciiManager@th08@@QAEXHF@Z"
+target = 0x00422BB0
+
+[[units.relocations]]
+offset = 0x59
+type = "DIR32"
+symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
+target = 0x018B896C
+
+[[units.relocations]]
+offset = 0x61
+type = "DIR32"
+symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
+target = 0x018B896C
+
+[[units.relocations]]
+offset = 0x67
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x6C
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+[[units.relocations]]
+offset = 0x72
+type = "DIR32"
+symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
+target = 0x018B896C
+
+[[units.relocations]]
+offset = 0x7C
+type = "DIR32"
+symbol = "?g_PlayerSecondaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
+target = 0x018B8970
+
+[[units.relocations]]
+offset = 0x85
+type = "DIR32"
+symbol = "?g_PlayerSecondaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
+target = 0x018B8970
+
+[[units.relocations]]
+offset = 0x8B
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x90
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+[[units.relocations]]
+offset = 0x96
+type = "DIR32"
+symbol = "?g_PlayerSecondaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
+target = 0x018B8970
+
+[[units]]
+name = "ascii-manager-set-gauge-interrupt"
+object = "build/AsciiManager.obj"
+symbol = "?SetGaugeInterrupt@AsciiManager@th08@@QAEXH@Z"
+target_address = 0x004070B0
+size = 0x65
+
+[[units.relocations]]
+offset = 0x16
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x29
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x3C
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x4F
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units]]
+name = "ascii-manager-boss-marker-interrupt"
+object = "build/AsciiManager.obj"
+symbol = "?FUN_00422bb0@AsciiManager@th08@@QAEXHF@Z"
+target_address = 0x00422BB0
+size = 0x2A
+
+[[units.relocations]]
+offset = 0x20
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units]]
 name = "game-manager-is-within-playfield"
 object = "build/GameManager.obj"
 symbol = "?IsWithinPlayfield@GameManager@th08@@QAEIMMMM@Z"

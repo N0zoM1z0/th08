@@ -140,6 +140,8 @@ th08::g_ScreenEffectCounter,0x18b8a2c,global
 th08::g_EclCallbackPublishedEnemyField24,0x4e3d28,global
 th08::g_ScreenEffect,0x18b8a30,global
 th08::g_SoundPlayer,0x18b8a68,global
+th08::g_PlayerPrimaryShtFile,0x18b896c,global
+th08::g_PlayerSecondaryShtFile,0x18b8970,global
 th08::g_AnmManager,0x18bdc90,global
 th08::g_QuadVertices,0x18bdc98,global
 g_BackgroundQuadVertices,0x18bdd68,global

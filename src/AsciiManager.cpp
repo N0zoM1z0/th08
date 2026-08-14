@@ -129,6 +129,23 @@ void AsciiManager::InitializeVms()
     this->SetGaugeInterrupt(this->GetGaugeInterrupt());
 }
 
+// FUNCTION: th08 0x4070b0
+void AsciiManager::SetGaugeInterrupt(i32 interrupt)
+{
+    this->youkaiGauge.SetInterrupt(interrupt);
+    this->youkaiGaugeHumanIcon.SetInterrupt(interrupt);
+    this->youkaiGaugeYoukaiIcon.SetInterrupt(interrupt);
+    this->youkaiGaugeCursor.SetInterrupt(interrupt);
+
+    this->gaugeInterrupt = interrupt;
+}
+
+// FUNCTION: th08 0x422bb0
+void AsciiManager::FUN_00422bb0(i32 slot, i16 state)
+{
+    this->bossMarkers[slot].SetInterrupt(state);
+}
+
 ZunResult AsciiManager::RegisterChain()
 {
     AsciiManager *ascii = &g_AsciiManager;

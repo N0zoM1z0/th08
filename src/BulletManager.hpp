@@ -6,6 +6,8 @@
 namespace th08
 {
 
+i32 IsBulletManagerAnmReleaseRequired();
+
 struct BulletTypeSprites
 {
 };
