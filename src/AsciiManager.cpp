@@ -3,8 +3,28 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+#include "Player.hpp"
+#include "ScreenEffect.hpp"
+
 namespace th08
 {
+
+// Placeholder for the unledgered global AnmLoaded* observed at 0x00577eb4.
+DIFFABLE_STATIC(AnmLoaded *, g_AsciiManagerDemoAnm0577EB4);
+
+namespace EclOperands
+{
+struct Vector3
+{
+    f32 x;
+    f32 y;
+    f32 z;
+
+    Vector3 operator-(const Vector3 &other) const;
+    f32 Length() const;
+};
+Vector3 g_TargetPlayerPosition017D61AC;
+} // namespace EclOperands
 
 DIFFABLE_STATIC(ChainElem, g_AsciiManagerDrawChainLowPrio);
 DIFFABLE_STATIC(AsciiManager, g_AsciiManager);
@@ -537,8 +557,8 @@ void AsciiManager::CreateTimePopup(Float3 *position, i32 number, i32 param3, D3D
     popup->position = *position;
     popup->position.x += g_GameManager.arcadeRegionTopLeftPos.x;
     popup->position.y += g_GameManager.arcadeRegionTopLeftPos.y;
-    popup->scaleX = this->scaleX;
-    popup->scaleY = this->scaleY;
+    popup->scale.x = this->scaleX;
+    popup->scale.y = this->scaleY;
     this->nextTimePopupIndex++;
 }
 
@@ -593,8 +613,8 @@ void AsciiManager::CreateFamiliarPopup(Float3 *position, i32 number, i32 param3,
     popup->position = *position;
     popup->position.x += g_GameManager.arcadeRegionTopLeftPos.x + 3.5f * characterCount;
     popup->position.y += g_GameManager.arcadeRegionTopLeftPos.y;
-    popup->scaleX = this->scaleX;
-    popup->scaleY = this->scaleY;
+    popup->scale.x = this->scaleX;
+    popup->scale.y = this->scaleY;
     this->nextTimePopupIndex++;
 }
 
@@ -622,9 +642,259 @@ i32 RetryMenu::OnDraw()
     return 0;
 }
 
-// STUB: th08 0x405420
+#pragma var_order(popup, alpha, dy, dx, i, j, charPtr, unused, rect, alphaColor, divisor)
+// FUNCTION: th08 0x405420
 void AsciiManager::OnDrawHighPrioImpl()
 {
+    AsciiManagerPopup *popup;
+    u8 *charPtr;
+    i32 alpha;
+    f32 dx, dy;
+    i32 i, j;
+    ZunRect rect;
+    ZunColor alphaColor;
+    i32 divisor;
+
+    popup = this->scorePopups;
+    Float3 unused;
+
+    if (!g_Supervisor.IsFogDisabled())
+    {
+        g_Supervisor.DisableFog();
+    }
+    g_Supervisor.SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
+
+    for (j = 0; j < ASCII_MAX_SCORE_POPUPS + ASCII_MAX_PLAYER_POPUPS; j++, popup++)
+    {
+        if (!popup->inUse)
+        {
+            continue;
+        }
+
+        this->smallScoreText.pos.x = popup->position.x - (f32)(popup->characterCount * 4);
+        this->smallScoreText.pos.y = popup->position.y;
+        this->smallScoreText.color1.d3dColor = popup->color;
+
+        dx = EclOperands::g_TargetPlayerPosition017D61AC.x - popup->position.x;
+        dy = EclOperands::g_TargetPlayerPosition017D61AC.y - popup->position.y;
+        alpha = (i32)(dx * dx + dy * dy);
+        if (alpha > 4096)
+        {
+            alpha = 208;
+        }
+        else if (alpha > 1024)
+        {
+            alpha = ((alpha - 1024) << 7) / 3072 + 80;
+        }
+        else
+        {
+            alpha = 80;
+        }
+
+        this->smallScoreText.scale.x = this->scaleX;
+        this->smallScoreText.scale.y = this->scaleY;
+
+        charPtr = (u8 *)&popup->text[popup->characterCount - 1];
+        for (i = popup->characterCount; i > 0; i--)
+        {
+            if (popup->timer < 52)
+            {
+                this->smallScoreText.loadedSprite = this->asciiAnm->GetSprite(*charPtr);
+                this->smallScoreText.color1.a = alpha;
+            }
+            else if (popup->timer < 56)
+            {
+                this->smallScoreText.loadedSprite = this->asciiAnm->GetSprite(*charPtr + 11);
+                this->smallScoreText.color1.a = alpha;
+            }
+            else
+            {
+                this->smallScoreText.loadedSprite = this->asciiAnm->GetSprite(*charPtr + 21);
+                this->smallScoreText.color1.a = alpha;
+            }
+            this->smallScoreText.spriteSize.x = this->smallScoreText.loadedSprite->widthPx;
+            g_AnmManager->DrawNoRotation(&this->smallScoreText);
+            this->smallScoreText.pos.x += 8.0f;
+            charPtr--;
+        }
+    }
+
+    if (this->unk_16f08 > 0)
+    {
+        alphaColor.a = this->unk_16f08;
+        alphaColor.r = 0;
+        alphaColor.g = 0;
+        alphaColor.b = 0;
+
+        rect.left = 32.0f;
+        rect.top = 16.0f;
+        rect.right = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f - this->unk_16f04 + g_AnmManager->screenShakeOffset.x;
+        rect.bottom = 464.0f;
+        if (rect.right > rect.left)
+        {
+            ScreenEffect::DrawSquare(&rect, alphaColor.d3dColor);
+        }
+
+        rect.left = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f + this->unk_16f04 + g_AnmManager->screenShakeOffset.x;
+        rect.top = 16.0f;
+        rect.right = 416.0f;
+        rect.bottom = 464.0f;
+        if (rect.right > rect.left)
+        {
+            ScreenEffect::DrawSquare(&rect, alphaColor.d3dColor);
+        }
+
+        rect.left = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f - this->unk_16f04 + g_AnmManager->screenShakeOffset.x;
+        if (rect.left < 32.0f)
+        {
+            rect.left = 32.0f;
+        }
+        rect.top = 16.0f;
+        rect.right = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f + this->unk_16f04 + g_AnmManager->screenShakeOffset.x;
+        if (rect.right > 416.0f)
+        {
+            rect.right = 416.0f;
+        }
+        rect.bottom = EclOperands::g_TargetPlayerPosition017D61AC.y + 16.0f - this->unk_16f04 + g_AnmManager->screenShakeOffset.y;
+        if (rect.bottom > rect.top)
+        {
+            ScreenEffect::DrawSquare(&rect, alphaColor.d3dColor);
+        }
+
+        rect.top = EclOperands::g_TargetPlayerPosition017D61AC.y + 16.0f + this->unk_16f04 + g_AnmManager->screenShakeOffset.y;
+        rect.bottom = 464.0f;
+        if (rect.bottom > rect.top)
+        {
+            ScreenEffect::DrawSquare(&rect, alphaColor.d3dColor);
+        }
+
+        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(&this->unk_16f0c, 105);
+        this->unk_16f0c.scale.y = this->unk_16f04 / 63.0f;
+        this->unk_16f0c.scale.x = this->unk_16f0c.scale.y;
+        this->unk_16f0c.pos = *(Float3 *)&EclOperands::g_TargetPlayerPosition017D61AC;
+        this->unk_16f0c.pos.x += 32.0f;
+        this->unk_16f0c.pos.y += 16.0f;
+        this->unk_16f0c.color1.a = this->unk_16f08;
+        g_AnmManager->DrawNoRotation(&this->unk_16f0c);
+    }
+
+    popup = this->timePopups;
+    for (j = 0; j < ASCII_MAX_TIME_POPUPS; j++, popup++)
+    {
+        if (!popup->inUse)
+        {
+            continue;
+        }
+
+        this->popupText.pos.x = popup->position.x - 3.5f * popup->characterCount;
+        this->popupText.pos.y = popup->position.y;
+        this->popupText.color1.d3dColor = popup->color;
+
+        dx = EclOperands::g_TargetPlayerPosition017D61AC.x - popup->position.x;
+        dy = EclOperands::g_TargetPlayerPosition017D61AC.y - popup->position.y;
+        alpha = (i32)(dx * dx + dy * dy);
+        if (alpha > 4096)
+        {
+            alpha = 208;
+        }
+        else if (alpha > 1024)
+        {
+            alpha = ((alpha - 1024) << 7) / 3072 + 80;
+        }
+        else
+        {
+            alpha = 80;
+        }
+
+        this->popupText.scale.x = popup->scale.x;
+        this->popupText.scale.y = popup->scale.y;
+
+        charPtr = (u8 *)&popup->text[popup->characterCount - 1];
+        for (i = popup->characterCount; i > 0; i--)
+        {
+            this->popupText.loadedSprite = this->asciiAnm->GetSprite(*charPtr + 136);
+            this->popupText.color1.a = alpha;
+            this->popupText.spriteSize.x = this->popupText.loadedSprite->widthPx;
+            g_AnmManager->DrawNoRotation(&this->popupText);
+            this->popupText.pos.x += 7.0f * popup->scale.x;
+            charPtr--;
+        }
+    }
+
+    g_AnmManager->screenShakeOffset.y = 0.0f;
+    g_AnmManager->screenShakeOffset.x = 0.0f;
+
+    if (this->youkaiGauge.IsVisible())
+    {
+        this->youkaiGaugeCursor.pos.x =
+            (f32)g_GameManager.GetYoukaiGauge() * 112.0f / 2.0f / 10000.0f + this->youkaiGauge.pos.x + 64.0f;
+        g_AnmManager->FUN_00463470(&this->youkaiGaugeCursor);
+
+        this->percentageText.pos.x =
+            (f32)g_GameManager.GetYoukaiGauge() * 80.0f / 2.0f / 10000.0f + this->youkaiGauge.pos.x + 64.0f;
+        this->percentageText.pos.y = this->youkaiGaugeCursor.pos.y - 7.0f;
+        this->percentageText.pos.z = this->youkaiGaugeCursor.pos.z;
+        this->percentageText.color1.a = this->youkaiGauge.color1.a;
+
+        if (g_GameManager.GaugeIsExtremelyHuman())
+        {
+            this->percentageText.color1.r = 112;
+            this->percentageText.color1.g = 112;
+            this->percentageText.color1.b = 255;
+        }
+        else if (g_GameManager.GaugeIsModeratelyHuman())
+        {
+            this->percentageText.color1.r = 176;
+            this->percentageText.color1.g = 176;
+            this->percentageText.color1.b = 255;
+        }
+        else if (g_GameManager.GaugeIsExtremelyYoukai())
+        {
+            this->percentageText.color1.r = 255;
+            this->percentageText.color1.g = 112;
+            this->percentageText.color1.b = 112;
+        }
+        else if (g_GameManager.GaugeIsModeratelyYoukai())
+        {
+            this->percentageText.color1.r = 255;
+            this->percentageText.color1.g = 176;
+            this->percentageText.color1.b = 176;
+        }
+        else
+        {
+            this->percentageText.color1.r = 255;
+            this->percentageText.color1.g = 255;
+            this->percentageText.color1.b = 255;
+        }
+
+        this->youkaiGauge.color1.d3dColor = this->percentageText.color1.d3dColor;
+
+        g_AnmManager->DrawNoRotation(&this->youkaiGauge);
+        g_AnmManager->DrawNoRotation(&this->youkaiGaugeHumanIcon);
+        g_AnmManager->DrawNoRotation(&this->youkaiGaugeYoukaiIcon);
+
+        this->DrawPercentage(&this->percentageText.pos, g_GameManager.GetYoukaiGauge(),
+                             this->percentageText.color1.d3dColor);
+
+        divisor = 10000000;
+        i = g_GameManager.globals->pointItemValue;
+        alpha = 0;
+        this->percentageText.pos.x = this->youkaiGauge.pos.x + 62.0f - 14.0f;
+        this->percentageText.pos.y = this->youkaiGauge.pos.y + 3.0f + 8.0f;
+
+        for (j = 0; j < 8; j++)
+        {
+            alpha += i / divisor;
+            if (alpha != 0)
+            {
+                this->asciiAnm->SetSprite(&this->percentageText, i / divisor + 136);
+                g_AnmManager->DrawNoRotation(&this->percentageText);
+                this->percentageText.pos.x += 7.0f;
+            }
+            i %= divisor;
+            divisor /= 10;
+        }
+    }
 }
 
 #pragma var_order(xOffset, numDigits, absPercentage)

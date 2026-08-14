@@ -205,10 +205,7 @@ struct Supervisor
 
     ZunBool IsColorCompositingDisabled();
 
-    ZunBool IsFogDisabled()
-    {
-        return this->cfg.opts.disableFog;
-    }
+    ZunBool IsFogDisabled();
 
     ZunBool IsHUDRedrawEnabled();
 

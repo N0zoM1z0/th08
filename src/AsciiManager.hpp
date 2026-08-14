@@ -71,8 +71,7 @@ struct AsciiManagerPopup
     Float3 position;
     D3DCOLOR color;
     ZunTimer timer;
-    f32 scaleX;
-    f32 scaleY;
+    Float2 scale;
     bool inUse;
     BYTE characterCount;
     u32 unk0x34;

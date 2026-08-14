@@ -458,3 +458,4 @@ th08::TextHelper::~TextHelper
 th08::CSound::GetWaveFile
 th08::CSoundManager::GetDirectSound
 th08::AsciiManager::DrawPercentage
+th08::AsciiManager::OnDrawHighPrioImpl

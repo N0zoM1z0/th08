@@ -1134,6 +1134,12 @@ ZunResult AnmManager::AddSpriteToDrawBuffer(VertexTex1DiffuseXyzrhw *vertices)
     return ZUN_SUCCESS;
 }
 
+// FUNCTION: th08 0x00463470
+u8 AnmManager::FUN_00463470(AnmVm *vm)
+{
+    return 0;
+}
+
 #pragma var_order(spriteHalfWidth, spriteHalfHeight)
 ZunResult AnmManager::DrawNoRotation(AnmVm *vm)
 {
