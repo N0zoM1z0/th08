@@ -587,7 +587,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFF8FFFFF) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 7) << 20);
         break;
     case 130:
-        if (TH08_ECL_CONTEXT_API(ctx)->PresentationWritesAllowed())
+        if (TH08_ECL_PRESENTATION_WRITES_ALLOWED())
             TH08_ECL_AT(ctx, u16, 0x2CEE) = TH08_ECL_RAW_U16(ctx, 0);
         break;
     case 126:
@@ -895,7 +895,7 @@ enter_subroutine:
     // the target's late physical handler order.  Their standalone low-opcode
     // forms remain in EclRunLow.inl for source ownership and audit coverage.
     case 82:
-        TH08_ECL_AT(ctx, f32, 0x3350) = TH08_ECL_READ_F(ctx, 0);
+        TH08_ECL_AT(ctx, f32, 0x3350) = TH08_ECL_READ_F_RAWARG(ctx, 0);
         TH08_ECL_AT(ctx, f32, 0x3350) *= TH08_ECL_AT(ctx, f32, 0x3350);
         break;
     case 83:

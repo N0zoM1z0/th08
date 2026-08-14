@@ -556,8 +556,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
 
     case 39:
-        lhsFloat = ReadFloat(enemy, instruction, 1) - ReadFloat(enemy, instruction, 3);
-        rhsFloat = ReadFloat(enemy, instruction, 2) - ReadFloat(enemy, instruction, 4);
+        lhsFloat = ReadFloatRawArg(enemy, instruction, 1) - ReadFloatRawArg(enemy, instruction, 3);
+        rhsFloat = ReadFloatRawArg(enemy, instruction, 2) - ReadFloatRawArg(enemy, instruction, 4);
         *WriteFloat(enemy, instruction, 0) =
             sqrtf(lhsFloat * lhsFloat + rhsFloat * rhsFloat);
         break;
