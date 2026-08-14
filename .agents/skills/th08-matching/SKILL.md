@@ -102,11 +102,16 @@ rebuilding this bookkeeping ad hoc:
 
 ```bash
 python3 scripts/crosswalk-ecl-dispatch.py --object build/probes/EclRun.obj --top 20
+python3 scripts/ecl-shape-score.py --top 20
 ```
 
-Its reported `physical_handler_delta` must be read alongside the target's
-separate code and jump-table extents.  It identifies a local source-shaping
-candidate only; it cannot be used to count unmatched bytes as authored.
+`crosswalk-ecl-dispatch.py` reports the physical handler movement.  The score
+helper is a non-mutating guardrail for probes: it checks the required
+code-plus-table extent, sums all positive/absolute handler deltas, and lists
+focus opcodes.  Prefer changes that preserve the `0x6B06` associated extent and
+improve the global score; do not commit a swap that merely moves bytes from one
+handler to another unless a later bounded probe depends on that exact shape.
+Neither script can be used to count unmatched bytes as authored.
 
 When a dispatcher target loads ECX from an absolute address immediately before
 a `__thiscall`, resolve that address through `config/reccmp-globals.csv` before
