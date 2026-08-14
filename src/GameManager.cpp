@@ -90,24 +90,25 @@ i32 GameManager::CalcChecksum(u8 *address, i32 size)
     return sum;
 }
 
+#pragma optimize("t", on)
 void GameManager::SetPower(i32 power)
 {
     this->globals->playerPower = (f32)power;
     this->UpdateAntiTamper();
 }
+#pragma optimize("", on)
 
+#pragma optimize("t", on)
 void GameManager::AddScore(i32 score)
 {
     this->globals->score += score / 10;
 }
+#pragma optimize("", on)
 
+#pragma optimize("t", on)
 void GameManager::AddTimeOrbs(i32 amount)
 {
-    if (amount < 0 && this->globals->currentTimeOrbs < -amount)
-    {
-        this->globals->currentTimeOrbs = 0;
-    }
-    else
+    if (amount >= 0 || this->globals->currentTimeOrbs >= -amount)
     {
         this->globals->currentTimeOrbs += amount;
         this->globals->totalTimeOrbs += amount;
@@ -115,10 +116,16 @@ void GameManager::AddTimeOrbs(i32 amount)
         this->UpdateAntiTamper();
         if (amount > 0)
         {
-            this->globals->pointItemValue += 10 * (((this->globals->totalTimeOrbs & 1) + amount) / 2);
+            amount = amount + (this->globals->totalTimeOrbs & 1);
+            this->globals->pointItemValue += 10 * (amount / 2);
         }
     }
+    else
+    {
+        this->globals->currentTimeOrbs = 0;
+    }
 }
+#pragma optimize("", on)
 
 void GameManager::CollectExtend()
 {

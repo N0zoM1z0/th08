@@ -543,3 +543,6 @@ address,name,size,status,match_percent,unit,evidence
 0x004718D0,th08::CSoundManager::CreateStreaming,819,matching,100.00,accepted-demangle-exact-004718d0,python3 scripts/compare-function.py accepted-demangle-exact-004718d0 --json
 0x00471C40,th08::CSoundManager::CreateStreamingFromMemory,795,matching,100.00,accepted-demangle-exact-00471c40,python3 scripts/compare-function.py accepted-demangle-exact-00471c40 --json
 0x00428890,th08::Ending::ReadEndFileParameter,115,matching,100.00,accepted-demangle-exact-00428890,python3 scripts/compare-function.py accepted-demangle-exact-00428890 --json
+0x004181F0,th08::GameManager::AddScore,44,matching,100.00,game-manager-add-score,python3 scripts/compare-function.py game-manager-add-score --json
+0x00418220,th08::GameManager::AddTimeOrbs,180,matching,100.00,game-manager-add-time-orbs,python3 scripts/compare-function.py game-manager-add-time-orbs --json
+0x00406FA0,th08::GameManager::SetPower,36,matching,100.00,game-manager-set-power,python3 scripts/compare-function.py game-manager-set-power --json

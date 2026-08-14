@@ -48476,3 +48476,44 @@ offset = 0x14
 type = "REL32"
 symbol = "_atol"
 target = 0x004A43CA
+
+
+
+# Ledger name: th08::GameManager::AddScore
+# Evidence: source-emitted member in GameManager.cpp.
+[[units]]
+name = "game-manager-add-score"
+object = "build/objdiff/reimpl/GameManager.obj"
+symbol = "th08::GameManager::AddScore"
+target_address = 0x004181F0
+size = 0x2C
+
+# Ledger name: th08::GameManager::AddTimeOrbs
+# Evidence: source-emitted member in GameManager.cpp.
+[[units]]
+name = "game-manager-add-time-orbs"
+object = "build/objdiff/reimpl/GameManager.obj"
+symbol = "th08::GameManager::AddTimeOrbs"
+target_address = 0x00418220
+size = 0xB4
+
+[[units.relocations]]
+offset = 0x64
+type = "REL32"
+symbol = "th08::GameManager::UpdateAntiTamper"
+target = 0x00406e50
+
+# Ledger name: th08::GameManager::SetPower
+# Evidence: source-emitted member in GameManager.cpp.
+[[units]]
+name = "game-manager-set-power"
+object = "build/objdiff/reimpl/GameManager.obj"
+symbol = "th08::GameManager::SetPower"
+target_address = 0x00406FA0
+size = 0x24
+
+[[units.relocations]]
+offset = 0x1a
+type = "REL32"
+symbol = "th08::GameManager::UpdateAntiTamper"
+target = 0x00406e50
