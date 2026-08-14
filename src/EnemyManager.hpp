@@ -25,6 +25,8 @@ struct EnemyManager
     static ChainCallbackResult OnDrawLowPrio(EnemyManager *enemyManager);
     static ZunResult AddedCallback(EnemyManager *enemyManager);
     static ZunResult DeletedCallback(EnemyManager *enemyManager);
+    void *SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i32 b, i32 c, i32 *outContext);
+    void FUN_0042efb0(i32 count, i32 mode);
     static void CutChain();
 };
 

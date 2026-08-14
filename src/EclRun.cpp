@@ -2,6 +2,7 @@
 #include "EclOperands.hpp"
 #include "AsciiManager.hpp"
 #include "Gui.hpp"
+#include "BulletManager.hpp"
 #include "GameManager.hpp"
 
 #include <string.h>

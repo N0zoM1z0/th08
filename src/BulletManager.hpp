@@ -24,6 +24,8 @@ struct Bullet
 struct BulletManager
 {
     void Initialize();
+    void bulletmanager_fun_00415c60();
+    void RemoveAllBullets(i32 mode);
 
     static ZunResult RegisterChain();
     static ChainCallbackResult OnUpdate(BulletManager *bulletManager);
