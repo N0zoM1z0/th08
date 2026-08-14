@@ -6,8 +6,8 @@ th08::AsciiManagerPopup::AsciiManagerPopup,0x4021d0,0x24,__thiscall,,AsciiManage
 th08::AsciiManager::OnUpdate,0x402200,0x1cc,__fastcall,,ChainCallbackResult,AsciiManager*
 th08::AsciiManager::OnDrawLowPrio,0x4023d0,0x5f,__fastcall,,ChainCallbackResult,AsciiManager*
 th08::AsciiManager::OnDrawHighPrio,0x402430,0x18,__fastcall,,ChainCallbackResult,AsciiManager*
-FUN_00402450,0x402450,0x1aa,unknown,,u8
-FUN_00402600,0x402600,0x174,unknown,,u8
+th08::AsciiManager::Reset,0x402450,0x1aa,__thiscall,,void,AsciiManager*
+th08::AsciiManager::InitializeVms,0x402600,0x174,__thiscall,,void,AsciiManager*
 th08::AsciiManager::RegisterChain,0x402780,0xa8,__fastcall,,ZunResult
 th08::AsciiManager::AddedCallback,0x402830,0x83,__fastcall,,ZunResult,AsciiManager*
 th08::AsciiManager::DeletedCallback,0x4028c0,0x27,__fastcall,,ZunResult,AsciiManager*
@@ -17,10 +17,10 @@ th08::AsciiManager::AddFormatText,0x402a30,0x44,__cdecl,varargs,u8,u32,u32,u32,u
 th08::AsciiManager::AddFormatText2,0x402a80,0x92,__cdecl,varargs,u8,u32,u32,u32,u8
 th08::AsciiManager::DrawStrings,0x402b20,0x6a2,__thiscall,,u8,AsciiManager*
 FUN_004031e0,0x4031e0,0x12,unknown,,u8,u8
-th08::AsciiManager::CreatePopup1,0x403200,0x127,__thiscall,,void,AsciiManager*,_D3DVECTOR*,i32,unsigned long
-th08::AsciiManager::CreatePopup2,0x403330,0x129,__thiscall,,void,AsciiManager*,_D3DVECTOR*,i32,unsigned long
-th08::AsciiManager::CreatePopup3,0x403460,0x19b,__thiscall,,void,AsciiManager*,_D3DVECTOR*,i32,u32,unsigned long
-th08::AsciiManager::CreatePopup4,0x403600,0x1a4,__thiscall,,void,AsciiManager*,i32,i32,u32
+th08::AsciiManager::CreateScorePopup,0x403200,0x127,__thiscall,,void,AsciiManager*,Float3*,i32,D3DCOLOR
+th08::AsciiManager::CreatePlayerPointPopup,0x403330,0x129,__thiscall,,void,AsciiManager*,Float3*,i32,D3DCOLOR
+th08::AsciiManager::CreateTimePopup,0x403460,0x19b,__thiscall,,void,AsciiManager*,Float3*,i32,i32,D3DCOLOR
+th08::AsciiManager::CreateFamiliarPopup,0x403600,0x1a4,__thiscall,,void,AsciiManager*,Float3*,i32,i32,D3DCOLOR
 th08::PauseMenu::OnUpdatePauseMenu,0x4037b0,0xf3a,__thiscall,,u32,PauseMenu*
 D3DXVECTOR3::D3DXVECTOR3,0x404720,0x2a,__thiscall,,_D3DVECTOR*,_D3DVECTOR*,f32,f32,f32
 th08::PauseMenu::OnDrawPauseMenu,0x404750,0x135,__thiscall,,void,PauseMenu*
@@ -46,7 +46,7 @@ th08::AnmVm::ClearVisible,0x406700,0x20,__thiscall,,void,AnmVm*
 th08::AnmVm::AnmVm,0x406720,0x92,__thiscall,,AnmVm*,AnmVm*
 th08::AnmPrefix::AnmPrefix,0x4067c0,0x8e,__thiscall,,AnmPrefix*,AnmPrefix*
 `eh_vector_constructor_iterator',0x406850,0x27,unknown,,u8,u8,u8,u8,u8
-th08::AnmFileDesc::GetSprite,0x406880,0x19,__thiscall,,AnmLoadedSprite*,AnmFileDesc*,i32
+th08::AnmLoaded::GetSprite,0x406880,0x19,__thiscall,,AnmLoadedSprite*,AnmLoaded*,i32
 th08::AnmFileDesc::InitializeAndSetSprite,0x4068a0,0x31,__thiscall,,void,AnmFileDesc*,AnmVm*,i32
 th08::AnmVm::Initialize,0x4068e0,0x5f,__thiscall,,void,AnmVm*
 D3DXMatrixIdentity,0x406940,0xad,__fastcall,,_D3DMATRIX*,_D3DMATRIX*
@@ -79,8 +79,8 @@ th08::GameManager::SetPower,0x406fa0,0x24,unknown,,u8,u8
 th08::AsciiManager::FUN_00406fd0,0x406fd0,0xd9,__thiscall,,void,AsciiManager*
 th08::AsciiManager::SetGaugeInterrupt,0x4070b0,0x65,__thiscall,,void,AsciiManager*,i32
 th08::AnmVm::SetInterrupt,0x407120,0x1b,__thiscall,,void,AnmVm*,i16
-th08::AsciiManager::GetInterrupt,0x407140,0x14,__thiscall,,u32,AsciiManager*
-th08::AsciiManager::FUN_00407160,0x407160,0x18,__thiscall,,void,AsciiManager*
+th08::AsciiManager::GetGaugeInterrupt,0x407140,0x14,__thiscall,,i32,AsciiManager*
+th08::AsciiManager::ResetStrings,0x407160,0x18,__thiscall,,void,AsciiManager*
 th08::AsciiManager::SetSpaceWidth,0x407180,0x19,__thiscall,,void,AsciiManager*,i32
 th08::Background::Background,0x4071a0,0x201,__thiscall,,Background*,Background*
 FUN_004073b0,0x4073b0,0x4d,unknown,,u8
@@ -122,12 +122,12 @@ th08::AnmManager::ClearBlendMode,0x40b9b0,0x15,__thiscall,,void,AnmManager*
 th08::AnmManager::ClearColorOp,0x40b9d0,0x15,__thiscall,,void,AnmManager*
 th08::AnmManager::ClearVertexShader,0x40b9f0,0x15,__thiscall,,void,AnmManager*
 th08::AnmManager::ClearTexture,0x40ba10,0x18,__thiscall,,void,AnmManager*
-th08::AnmManager::ClearZWriteSetting,0x40ba30,0x15,__thiscall,,void,AnmManager*
+th08::AnmManager::ClearZWrite,0x40ba30,0x15,__thiscall,,void,AnmManager*
 th08::AnmManager::ClearSprite,0x40ba50,0x18,__thiscall,,u8,AnmManager*
 th08::AnmManager::ClearCameraSettings,0x40ba70,0x15,__thiscall,,void,AnmManager*
 th08::AnmManager::SetCameraMode,0x40ba90,0x19,__thiscall,,u8,AnmManager*,u8
-FUN_0040bab0,0x40bab0,0x1e,unknown,,u8
-FUN_0040bad0,0x40bad0,0x1f,unknown,,u8,u8
+th08::AnmManager::SetMixColorDefault,0x40bab0,0x1e,__thiscall,,void,AnmManager*
+th08::AnmManager::SetMixColor,0x40bad0,0x1f,__thiscall,,void,AnmManager*,D3DCOLOR
 FUN_0040baf0,0x40baf0,0x21,unknown,,u8,u8
 Concurrency::details::ContextBase::ClearCancel,0x40bb20,0x33,__thiscall,,u8,ContextBase*
 FUN_0040bb60,0x40bb60,0x1a,unknown,,u8,u8
@@ -692,7 +692,7 @@ th08::Supervisor::OnUpdate,0x445453,0x727,__fastcall,,ChainCallbackResult,Superv
 th08::Supervisor::Supervisor,0x445b7a,0x46,__thiscall,,u32*,Supervisor*
 th08::Supervisor::DrawFpsCounter,0x445bc0,0x14,__fastcall,,ChainCallbackResult,Supervisor*
 th08::Supervisor::OnDraw2,0x445bd4,0x16a,__fastcall,,ChainCallbackResult,Supervisor*
-th08::Supervisor::OnDraw3,0x445d3e,0xff,__fastcall,,ChainCallbackResult,Supervisor*
+th08::Supervisor::DrawLoadingVms,0x445d3e,0xff,__fastcall,,ChainCallbackResult,Supervisor*
 FUN_00445e3d,0x445e3d,0x6a,unknown,,u8,u8,u8
 th08::Supervisor::RegisterChain,0x445ea7,0xfc,__fastcall,,ZunResult
 th08::Supervisor::AddedCallback,0x445fa3,0x1fd,__fastcall,,ZunResult,Supervisor*
@@ -702,7 +702,7 @@ th08::Supervisor::StartupThread,0x4464c8,0x56f,__cdecl,,void
 th08::Supervisor::SetupDInput,0x446a37,0x290,__thiscall,,ZunResult,Supervisor*
 FUN_00446cc7,0x446cc7,0x3f,__stdcall,,i32,i32
 th08::Supervisor::DeletedCallback,0x446d06,0x205,__fastcall,,ZunResult,Supervisor*
-th08::AnmManager::FUN_00446f0b,0x446f0b,0x37,__thiscall,,u8,AnmManager*
+th08::AnmManager::ReleaseVertexBuffer,0x446f0b,0x37,__thiscall,,void,AnmManager*
 FUN_00446f42,0x446f42,0x11,__fastcall,,void,u32
 th08::Supervisor::CalculateFps,0x446f53,0x342,__fastcall,,void,ZunBool
 th08::ZunTimer::Increment,0x447295,0xc6,__thiscall,,void,ZunTimer*,i32
@@ -723,12 +723,12 @@ th08::Supervisor::DisableFog,0x448229,0x47,__thiscall,,u32,Supervisor*
 th08::Supervisor::SetRenderState,0x448270,0x31,__thiscall,,void,Supervisor*,_D3DRENDERSTATETYPE,unsigned long
 th08::Supervisor::UpdatePlayTime,0x4482a1,0x177,__thiscall,,void,Supervisor*
 th08::Supervisor::UpdateGameTime,0x448418,0x175,__thiscall,,void,Supervisor*
-th08::Supervisor::VerifyExeIntegrity,0x44858d,0x12d,__thiscall,,ZunResult,Supervisor*,char*,i32,i32
+th08::Supervisor::CheckVersion,0x44858d,0x12d,__thiscall,,ZunResult,Supervisor*,const char*,i32,i32
 th08::Supervisor::ThreadStart,0x4486ba,0x61,__thiscall,,ZunResult,Supervisor*,PTHREAD_START_ROUTINE*,void*
 th08::Supervisor::ThreadClose,0x44871b,0x75,__thiscall,,void,Supervisor*
 th08::Supervisor::SetupLoadingVms,0x448790,0x8a,__thiscall,,void,Supervisor*,_D3DVECTOR*
 th08::Supervisor::FUN_0044881a,0x44881a,0x55,__thiscall,,void,Supervisor*
-th08::Supervisor::FUN_0044886f,0x44886f,0x103,__thiscall,,void,Supervisor*,u32*
+th08::Supervisor::SetupLoadingVmsAndInitCapture,0x44886f,0x103,__thiscall,,void,Supervisor*,Float3*
 th08::Supervisor::FUN_00448972,0x448972,0x58,__thiscall,,void,Supervisor*
 th08::Supervisor::FUN_004489ca,0x4489ca,0x2f,__thiscall,,u8,Supervisor*,u8
 th08::Supervisor::InitializeCriticalSections,0x4489f9,0x36,__thiscall,,void,Supervisor*
@@ -946,22 +946,22 @@ th08::AnmManager::ExecuteScript,0x45ea00,0x366d,__thiscall,,u32,AnmManager*,AnmV
 FUN_00462210,0x462210,0x15,unknown,,u8,u8
 FUN_00462230,0x462230,0x15,unknown,,u8,u8
 FUN_00462250,0x462250,0x15,unknown,,u8,u8
-FUN_00462270,0x462270,0x4a,unknown,,u8,u8,u8,u8
-th08::AnmManager::FUN_004622c0,0x4622c0,0x4c,__thiscall,,bool,AnmManager*,AnmVm*
+th08::AnmManager::SetInterruptArray,0x462270,0x4a,__thiscall,,void,AnmManager*,AnmVm*,i32,i16
+th08::AnmManager::SpriteHasTexture,0x4622c0,0x4c,__thiscall,,ZunBool,AnmManager*,AnmVm*
 th08::AnmManager::ExecuteScriptArray,0x462310,0x46,__thiscall,,void,AnmManager*,AnmVm*,i32
 th08::AnmLoaded::ExecuteAnmIdxArray,0x462360,0x56,__thiscall,,void,AnmLoaded*,AnmVm*,i32,i32
 th08::AnmManager::FUN_004623c0,0x4623c0,0x390,__thiscall,,void,AnmManager*,AnmVm*
-FUN_00462750,0x462750,0x34,__fastcall,,u8,uchar,uchar
+th08::MixColors,0x462750,0x34,__fastcall,,u8,u8,u8
 th08::AnmManager::SetRenderStateForVm,0x462790,0x116,__thiscall,,u8,AnmManager*,AnmVm*
 th08::AnmManager::FUN_004628b0,0x4628b0,0x54f,__thiscall,,u8,AnmManager*,AnmVm*,u32
 th08::AnmManager::ClearVertexBuffer,0x462e00,0x3c,__thiscall,,void,AnmManager*
 th08::AnmManager::FlushVertexBuffer,0x462e40,0xc6,__thiscall,,void,AnmManager*
 th08::AnmManager::AddSpriteToDrawBuffer,0x462f10,0xd3,__thiscall,,u8,AnmManager*,void*
 th08::AnmManager::DrawNoRotation,0x462ff0,0x1d5,__thiscall,,u32,AnmManager*,AnmVm*
-FUN_004631d0,0x4631d0,0x3a,unknown,,u8,u8,u8,u8,u8,u8,u8,u8
+th08::AnmManager::TranslateRotation,0x4631d0,0x3a,__thiscall,,void,AnmManager*,VertexTex1DiffuseXyzrhw*,f32,f32,f32,f32,f32,f32
 th08::AnmManager::FUN_00463210,0x463210,0x258,__thiscall,,u8,AnmManager*,AnmVm*
 th08::AnmManager::FUN_00463470,0x463470,0x390,__thiscall,,u8,AnmManager*,AnmVm*
-th08::AnmManager::FUN_00463800,0x463800,0x1d5,__thiscall,,u8,AnmManager*,AnmVm*
+th08::AnmManager::DrawNoRotationNoRound,0x463800,0x1d5,__thiscall,,ZunResult,AnmManager*,AnmVm*
 FUN_004639e0,0x4639e0,0x303,unknown,,u8,u8
 th08::AnmManager::FUN_00463cf0,0x463cf0,0x6b,__thiscall,,u8,AnmManager*,AnmVm*
 FUN_00463d60,0x463d60,0x30b,unknown,,u8,u8
@@ -973,7 +973,7 @@ FUN_004649a0,0x4649a0,0x160,unknown,,u8,u8,u8,u8
 FUN_00464b00,0x464b00,0x160,unknown,,u8,u8,u8,u8
 FUN_00464c60,0x464c60,0x16f,unknown,,u8,u8,u8,u8
 th08::AnmManager::FUN_00464dd0,0x464dd0,0xe1,__thiscall,,u8,AnmManager*,u8,u8
-FUN_00464ec0,0x464ec0,0x1ab,unknown,,u8,u8,u8,u8
+th08::AnmManager::DrawTriangleFan,0x464ec0,0x1ab,__thiscall,,ZunResult,AnmManager*,AnmVm*,VertexDiffuseXyzrhw*,i32
 th08::AnmManager::AnmManager,0x465070,0x1d2,__thiscall,,AnmManager*,AnmManager*
 th08::AnmManager::SetupVertexBuffer,0x465250,0x2bc,__thiscall,,void,AnmManager*
 th08::GetAnmFormat,0x465510,0x53,__fastcall,,i32,i32
@@ -988,17 +988,17 @@ th08::AnmManager::PostloadAnmEntry,0x465ba0,0x11c,__thiscall,,AnmFileDesc*,AnmMa
 th08::AnmManager::LoadTextureData,0x465cc0,0x33d,__thiscall,,u32,AnmManager*,AnmFileDesc*,u32,u32,u32,AnmRawEntry*
 th08::AnmManager::ServicePreloadedAnims,0x466000,0x5b,__thiscall,,ZunResult,AnmManager*
 th08::AnmManager::ReleaseAnm,0x466060,0xf3,__thiscall,,void,AnmManager*,i32
-ReleaseAnmEntry,0x466160,0x48,__thiscall,,u8,void*,AnmEntry*
-th08::AnmFileDesc::LoadSprite,0x4661b0,0x155,__thiscall,,u8,AnmFileDesc*,i32,AnmLoadedSprite*
-FUN_00466310,0x466310,0x91,unknown,,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8
-th08::AnmManager::DrawVmTextFmt,0x4663b0,0xee,__cdecl,varargs,u8,AnmManager*,u32,u32,u32,u32
+th08::AnmManager::ReleaseAnmEntry,0x466160,0x48,__thiscall,,void,AnmManager*,AnmEntry*
+th08::AnmLoaded::LoadSprite,0x4661b0,0x155,__thiscall,,void,AnmLoaded*,i32,AnmLoadedSprite*
+th08::AnmManager::DrawTextInner,0x466310,0x91,__thiscall,,void,AnmManager*,IDirect3DTexture8*,i32,i32,i32,i32,i32,i32,COLORREF,COLORREF,const char*,f32,f32
+th08::AnmManager::DrawTextLeft,0x4663b0,0xee,__cdecl,varargs,void,AnmManager*,AnmVm*,COLORREF,COLORREF,const char*
 FUN_004664a0,0x4664a0,0x1b0,unknown,,u8,u8,u8,u8,u8,u8,u8
 FUN_00466650,0x466650,0x16e,unknown,,u8,u8,u8,u8,u8,u8,u8
 th08::AnmManager::LoadSurface,0x4667c0,0x29e,__thiscall,,ZunResult,AnmManager*,i32,char*
-FUN_00466a60,0x466a60,0x7e,unknown,,u8,u8,u8
+th08::AnmManager::PreloadSurface,0x466a60,0x7e,__thiscall,,ZunResult,AnmManager*,i32,const char*
 th08::AnmManager::ReleaseSurface,0x466ae0,0xc8,__thiscall,,void,AnmManager*,i32
 th08::AnmManager::CopySurfaceToBackbuffer,0x466bb0,0x1bd,__thiscall,,u8,AnmManager*,i32,i32,i32,i32,i32
-FUN_00466d70,0x466d70,0x1a8,unknown,,u8,u8,u8,u8,u8,u8,u8,u8
+th08::AnmManager::CopySurfaceToBackbuffer2,0x466d70,0x1a8,__thiscall,,void,AnmManager*,i32,i32,i32,i32,i32,i32,i32
 th08::AnmManager::CaptureToTexture,0x466f20,0x11e,__thiscall,,void,AnmManager*,i32,i32,i32,i32,i32,i32,i32,i32,i32
 FUN_00467040,0x467040,0x133,unknown,,u8,u8,u8,u8,u8,u8,u8
 th08::AnmManager::CaptureToSurface,0x467180,0x219,__thiscall,,void,AnmManager*,i32,i32,i32,i32,i32,i32,i32,i32,i32
