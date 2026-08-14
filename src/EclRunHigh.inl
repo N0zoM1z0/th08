@@ -83,6 +83,11 @@ struct SpawnPacketTyped
     i32 arg6;
 };
 
+struct TargetZunTimerOverlay
+{
+    ZunBool AddAssign0041FDF0(i32 value);
+};
+
 // RunEcl invokes the per-context callback with Enemy in ECX and its opaque
 // context argument in EDX.  Interpolator callbacks receive Enemy in ECX and
 // their progress value on the stack.
@@ -755,7 +760,9 @@ enter_subroutine:
         else
             *(void **)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x10) = 0;
         break;
-    case 146: TH08_ECL_CONTEXT_API(ctx)->Call0041FDF0(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_READ_I(ctx, 0)); break;
+    case 146:
+        reinterpret_cast<TargetZunTimerOverlay *>(TH08_ECL_CURRENT_CONTEXT(ctx) + 4)->AddAssign0041FDF0(TH08_ECL_READ_I(ctx, 0));
+        break;
     case 141: TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&TH08_ECL_AT(ctx, Vec3, 0x2D34), TH08_ECL_READ_I(ctx, 0), 0); break;
     case 147: TH08_ECL_CONTEXT_API(ctx)->Global004EA290() = TH08_ECL_READ_I(ctx, 0); break;
     case 148:

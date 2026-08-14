@@ -769,10 +769,10 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         U32At(enemy, 0x3324) |= 0x3000U;
         break;
     case 75:
-        F32At(enemy, 0x3340) = ReadFloat(enemy, instruction, 0);
-        F32At(enemy, 0x3344) = ReadFloat(enemy, instruction, 1);
-        F32At(enemy, 0x3348) = ReadFloat(enemy, instruction, 2);
-        F32At(enemy, 0x334C) = ReadFloat(enemy, instruction, 3);
+        F32At(enemy, 0x3340) = ReadFloatRawArg(enemy, instruction, 0);
+        F32At(enemy, 0x3344) = ReadFloatRawArg(enemy, instruction, 1);
+        F32At(enemy, 0x3348) = ReadFloatRawArg(enemy, instruction, 2);
+        F32At(enemy, 0x334C) = ReadFloatRawArg(enemy, instruction, 3);
         U32At(enemy, 0x3324) |= 0x80000U;
         break;
     case 76:
@@ -878,8 +878,11 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
 
     case 88:
         lhsInt = ReadInt(enemy, instruction, 0);
-        services.CallSubOnEnemy(g_EclEnemyTableF54CC0[lhsInt],
-                                static_cast<i16>(RawInt(instruction, 1)));
+        CallSubOnEnemy(
+            g_EclEnemyTableF54CC0[lhsInt],
+            *reinterpret_cast<EclRawInstruction **>(
+                *reinterpret_cast<u8 **>(Bytes(g_EclEnemyTableF54CC0[lhsInt]) + 0x2CA0)),
+            RawInt(instruction, 1));
         break;
 
     case 89:
