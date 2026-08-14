@@ -22,6 +22,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00448A2F,th08::Supervisor::DeleteCriticalSections,54,matching,100.00,supervisor-delete-critical-sections,python3 scripts/compare-function.py supervisor-delete-critical-sections --json
 0x0044DD10,th08::Player::CutChain,85,matching,100.00,player-cut-chain,python3 scripts/compare-function.py player-cut-chain --json
 0x0044C230,th08::Player::RegisterChain,351,matching,100.00,player-register-chain,python3 scripts/compare-function.py player-register-chain --json
+0x0044C5B0,th08::Player::FUN_0044c5b0,159,matching,100.00,player-slot-pool-update,python3 scripts/compare-function.py player-slot-pool-update --json
 0x0044D2C0,th08::Player::FUN_0044d2c0,338,matching,100.00,player-state-timer-update,python3 scripts/compare-function.py player-state-timer-update --json
 0x0044DC60,th08::Player::DeletedCallback,164,matching,100.00,player-deleted-callback,python3 scripts/compare-function.py player-deleted-callback --json
 0x0044DE60,th08::Player::FUN_0044de60,153,matching,100.00,player-slot-allocate-c,python3 scripts/compare-function.py player-slot-allocate-c --json

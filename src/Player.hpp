@@ -95,6 +95,7 @@ struct Player
     PlayerUnkStruct0x40 *FUN_0044df00(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
     PlayerUnkStruct0x40 *FUN_0044dfa0(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
     PlayerUnkStruct0x40 *FUN_0044e040(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
+    void FUN_0044c5b0();
     void FUN_0044d2c0();
 
     static ZunResult LoadShtFile(PlayerRawShtFile **header, const char *path);

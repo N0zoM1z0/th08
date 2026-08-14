@@ -101,6 +101,28 @@ ChainCallbackResult Player::OnUpdate(Player *player)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
+#pragma var_order(index, slot)
+// FUNCTION: th08 0x44c5b0
+void Player::FUN_0044c5b0()
+{
+    PlayerUnkStruct0x40 *slot = this->playerSlotsB;
+    i32 index;
+
+    for (index = 0; index < 384; index++, slot++)
+    {
+        if (slot->lifetime < 0)
+            continue;
+
+        slot->lifetime--;
+        slot->radius += slot->radiusGrowth;
+        slot->size.x += slot->sizeGrowth.x;
+        slot->size.y += slot->sizeGrowth.y;
+
+        if (slot->lifetime <= 0)
+            slot->Deactivate();
+    }
+}
+
 // STUB: th08 0x44d530
 ChainCallbackResult Player::OnDrawHighPrio(Player *player)
 {

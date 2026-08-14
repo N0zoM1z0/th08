@@ -76,6 +76,11 @@ review the unit before claiming exactness.
   Update the mapping signature and decorated match-unit symbol together, then
   re-run every affected comparator. `Player::FUN_0044de60` reads only x/y but
   is called with `Player::position` (`Float3`) by exact `0x0044D2C0`.
+- In a VC7 `/Od` counted loop, an early `continue` can preserve a target's
+  explicit fall-through body and separate jump back to the increment block
+  where a positive `if` scope emits a shorter inverse branch. Use it only when
+  the target's condition and the skipped work establish the same semantics;
+  `Player::FUN_0044c5b0` at `0x0044C5B0` is the exact corpus example.
 - If an inlined fixed-size structure-tail `memcpy` has the correct semantics,
   size, and `rep movsd` but schedules its count and source setup differently,
   probe the typed address of the first copied field instead of byte-pointer
