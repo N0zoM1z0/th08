@@ -846,19 +846,23 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break; // both target entries are 0x0041E7E4 (ordinary advance)
 
     case 86:
+    {
+        i32 remoteValue;
         if (instruction->operandFlags & 2U)
         {
             // Operand 2 selects the Enemy whose register namespace resolves
             // operand 1.  The destination remains in the current Enemy.
-            *WriteInt(enemy, instruction, 0) = EclOperands::ResolveInt(
+            remoteValue = EclOperands::ResolveInt(
                 g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)],
                 RawInt(instruction, 1));
         }
         else
         {
-            *WriteInt(enemy, instruction, 0) = RawInt(instruction, 1);
+            remoteValue = RawInt(instruction, 1);
         }
+        *WriteInt(enemy, instruction, 0) = remoteValue;
         break;
+    }
 
     case 87:
         if (g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)])

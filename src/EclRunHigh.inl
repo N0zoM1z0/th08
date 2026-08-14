@@ -643,7 +643,7 @@ enter_subroutine:
         TH08_ECL_AT(ctx, i32, 0x2E00) = lhsInt;
         TH08_ECL_AT(ctx, i32, 0x2DFC) = lhsInt;
         TH08_ECL_AT(ctx, i32, 0x2E04) = lhsInt;
-        if (TH08_ECL_AT(ctx, i8, 0x3313) == 0 && (TH08_ECL_AT(ctx, u32, 0x3324) & 2))
+        if (TH08_ECL_AT(ctx, i8, 0x3313) == 0 && (((TH08_ECL_AT(ctx, u32, 0x3324) >> 1) & 1) == 1))
             for (i32 i = 0; i < 8; ++i)
                 TH08_ECL_CONTEXT_API(ctx)->SetBossGaugeSlot(i, 0.0f, 0.0f);
         break;
