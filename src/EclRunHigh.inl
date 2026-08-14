@@ -810,8 +810,8 @@ enter_subroutine:
         TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFBFFFFFF) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 26);
         break;
     case 152:
-        TH08_ECL_AT(ctx, f32, 0x2DEC) = TH08_ECL_READ_F_RAWARG(ctx, 0);
-        TH08_ECL_AT(ctx, f32, 0x2DF0) = TH08_ECL_READ_F_RAWARG(ctx, 1);
+        TH08_ECL_AT(ctx, f32, 0x2DEC) = TH08_ECL_READ_F(ctx, 0);
+        TH08_ECL_AT(ctx, f32, 0x2DF0) = TH08_ECL_READ_F(ctx, 1);
         TH08_ECL_AT(ctx, u16, 0x2DF4) = (u16)TH08_ECL_READ_I(ctx, 2);
         TH08_ECL_AT(ctx, u16, 0x2DF6) = (u16)TH08_ECL_READ_I(ctx, 3);
         TH08_ECL_AT(ctx, u16, 0x2DF8) = (u16)TH08_ECL_READ_I(ctx, 4);
@@ -838,7 +838,7 @@ enter_subroutine:
             TH08_ECL_CONTEXT_API(ctx)->ConfigureBoss(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x0C, TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3E14,
                                    (TH08_ECL_AT(ctx, i16, 0x534E) / TH08_ECL_AT(ctx, i16, 0x5352)) << 1);
         break;
-    case 160: TH08_ECL_CONTEXT_API(ctx)->SetTimer(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x5354, TH08_ECL_READ_I(ctx, 0)); break;
+    case 160: *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x5354) = TH08_ECL_READ_I(ctx, 0); break;
     case 161: TH08_ECL_CONTEXT_API(ctx)->SetAngleFromPosition(&TH08_ECL_AT(ctx, Vec3, 0x2D88), TH08_ECL_READ_F(ctx, 0)); break;
     case 162: TH08_ECL_CONTEXT_API(ctx)->Call00430830(4); break;
     case 164:
