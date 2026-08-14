@@ -127,6 +127,40 @@ void GameManager::AddTimeOrbs(i32 amount)
 }
 #pragma optimize("", on)
 
+#pragma optimize("t", on)
+i32 GameManager::GetTimeOrbs()
+{
+    return this->globals->currentTimeOrbs;
+}
+
+i32 GameManager::GetLastSpellTimeOrbThreshold()
+{
+    return this->globals->lastSpellTimeOrbThreshold;
+}
+
+i32 GameManager::GetLives()
+{
+    return this->globals->livesRemaining;
+}
+#pragma optimize("", on)
+
+i32 GameManager::GetBombsRemaining()
+{
+    return this->globals->bombsRemaining;
+}
+
+#pragma optimize("t", on)
+i32 GameManager::GetDeaths()
+{
+    return this->globals->deaths;
+}
+
+i32 GameManager::GetBombsUsed()
+{
+    return this->globals->bombsUsed;
+}
+#pragma optimize("", on)
+
 void GameManager::CollectExtend()
 {
     if (this->GetLives() < 8)

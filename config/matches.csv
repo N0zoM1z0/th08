@@ -77,8 +77,8 @@ address,name,size,status,match_percent,unit,evidence
 0x00443AD0,th08::Supervisor::IsWindowed,21,matching,100.00,supervisor-windowed-main,python3 scripts/compare-function.py supervisor-windowed-main --json
 0x004531A0,th08::ReplayManager::StopRecording,77,matching,100.00,replay-manager-stop-recording,python3 scripts/compare-function.py replay-manager-stop-recording --json
 0x00453B80,th08::AppendFormat,88,matching,100.00,replay-append-format,python3 scripts/compare-function.py replay-append-format --json
-0x00453C80,th08::GameManager::GetDeaths,25,matching,100.00,game-manager-get-deaths-replay,python3 scripts/compare-function.py game-manager-get-deaths-replay --json
-0x00453CA0,th08::GameManager::GetBombsUsed,28,matching,100.00,game-manager-get-bombs-used-replay,python3 scripts/compare-function.py game-manager-get-bombs-used-replay --json
+0x00453C80,th08::GameManager::GetDeaths,25,matching,100.00,game-manager-get-deaths,python3 scripts/compare-function.py game-manager-get-deaths --json
+0x00453CA0,th08::GameManager::GetBombsUsed,28,matching,100.00,game-manager-get-bombs-used,python3 scripts/compare-function.py game-manager-get-bombs-used --json
 0x00453CC0,th08::ReplayManager::IsDemo,17,matching,100.00,replay-manager-is-demo,python3 scripts/compare-function.py replay-manager-is-demo --json
 0x0045E430,th08::AnmLoaded::SetSprite,333,matching,100.00,anm-loaded-set-sprite,python3 scripts/compare-function.py anm-loaded-set-sprite --json
 0x00462310,th08::AnmManager::ExecuteScriptArray,70,matching,100.00,anm-manager-execute-script-array,python3 scripts/compare-function.py anm-manager-execute-script-array --json
@@ -546,3 +546,8 @@ address,name,size,status,match_percent,unit,evidence
 0x004181F0,th08::GameManager::AddScore,44,matching,100.00,game-manager-add-score,python3 scripts/compare-function.py game-manager-add-score --json
 0x00418220,th08::GameManager::AddTimeOrbs,180,matching,100.00,game-manager-add-time-orbs,python3 scripts/compare-function.py game-manager-add-time-orbs --json
 0x00406FA0,th08::GameManager::SetPower,36,matching,100.00,game-manager-set-power,python3 scripts/compare-function.py game-manager-set-power --json
+0x0040BC40,th08::Player::IsYoukai,18,matching,100.00,player-is-youkai,python3 scripts/compare-function.py player-is-youkai --json
+0x00421B60,th08::GameManager::GetTimeOrbs,20,matching,100.00,game-manager-get-time-orbs,python3 scripts/compare-function.py game-manager-get-time-orbs --json
+0x00421B80,th08::GameManager::GetLastSpellTimeOrbThreshold,20,matching,100.00,game-manager-get-last-spell-time-orb-threshold,python3 scripts/compare-function.py game-manager-get-last-spell-time-orb-threshold --json
+0x0042F2B0,th08::GameManager::GetLives,25,matching,100.00,game-manager-get-lives,python3 scripts/compare-function.py game-manager-get-lives --json
+0x004398CE,th08::GameManager::GetBombsRemaining,26,matching,100.00,game-manager-get-bombs-remaining,python3 scripts/compare-function.py game-manager-get-bombs-remaining --json

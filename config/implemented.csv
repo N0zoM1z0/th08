@@ -5,6 +5,7 @@ th08::Player::FUN_0044dfa0
 th08::Player::FUN_0044e040
 th08::Player::FUN_0044d2c0
 th08::Player::FUN_0044c5b0
+th08::Player::IsYoukai
 th08::utils::GuiDebugPrint
 th08::Chain::~Chain
 th08::ChainElem::ChainElem
@@ -550,3 +551,7 @@ th08::Ending::AddedCallback
 th08::CSoundManager::CreateStreaming
 th08::CSoundManager::CreateStreamingFromMemory
 th08::Ending::ReadEndFileParameter
+th08::GameManager::GetTimeOrbs
+th08::GameManager::GetLastSpellTimeOrbThreshold
+th08::GameManager::GetLives
+th08::GameManager::GetBombsRemaining

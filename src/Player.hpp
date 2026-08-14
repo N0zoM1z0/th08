@@ -56,7 +56,8 @@ struct Player
     u8 playerType;
     unknown_fields(0x2, 0x2);
     i8 stateFlag;
-    unknown_fields(0x5, 0x1fb);
+    u8 isYoukai;
+    unknown_fields(0x6, 0x1fa);
     i32 stateColor;
     unknown_fields(0x204, 0xb0);
     Float3 position;

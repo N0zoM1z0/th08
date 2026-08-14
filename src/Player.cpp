@@ -53,6 +53,12 @@ void PlayerUnkStruct0x40::Reset()
     this->collisionInterval = 1;
 }
 
+// FUNCTION: th08 0x40bc40
+i32 Player::IsYoukai()
+{
+    return this->isYoukai;
+}
+
 #pragma var_order(primaryShtFile, player, secondaryShtFile)
 // FUNCTION: th08 0x44c230
 ZunResult Player::RegisterChain(u32 playerType)
