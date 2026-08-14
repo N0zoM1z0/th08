@@ -531,8 +531,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     case 33: *WriteFloat(enemy, instruction, 0) = cosf(ReadFloat(enemy, instruction, 1)); break;
     case 34:
         *WriteFloat(enemy, instruction, 0) =
-            atan2f(ReadFloat(enemy, instruction, 4) - ReadFloat(enemy, instruction, 2),
-                   ReadFloat(enemy, instruction, 3) - ReadFloat(enemy, instruction, 1));
+            atan2f(ReadFloatRawArg(enemy, instruction, 4) - ReadFloatRawArg(enemy, instruction, 2),
+                   ReadFloatRawArg(enemy, instruction, 3) - ReadFloatRawArg(enemy, instruction, 1));
         break;
 
     case 37:

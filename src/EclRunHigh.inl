@@ -40,6 +40,8 @@
 
 namespace th08
 {
+extern u32 g_EnemyManagerUpdateManagerFlags;
+
 namespace EclRunHighProposal
 {
 
@@ -322,6 +324,9 @@ struct Context
         &TH08_ECL_RAW_F((ctx), (index)), TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags, (index))
 #define TH08_ECL_CURRENT_CONTEXT(ctx) TH08_ECL_AT((ctx), u8 *, 0x2CA0)
 #define TH08_ECL_OBJECT(ctx, index) TH08_ECL_AT((ctx), u8 *, 0x3280 + (index) * 4)
+#define TH08_ECL_PRESENTATION_WRITES_ALLOWED() \
+    ((((g_EnemyManagerUpdateManagerFlags >> 14) & 1) == 0) || \
+     (((g_EnemyManagerUpdateManagerFlags >> 7) & 3) == 0))
 
 } // namespace EclRunHighProposal
 } // namespace th08
@@ -365,7 +370,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
     case 104:
         if (TH08_ECL_AT(ctx, i32, 0x2DFC) > 0)
         {
-            if (TH08_ECL_AT(ctx, u32, 0x3324) & 0x00020000)
+            if (((TH08_ECL_AT(ctx, u32, 0x3324) >> 17) & 1) == 1)
                 memcpy(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3034, TH08_ECL_CONTEXT_INSTRUCTION(ctx), 11 * sizeof(i32));
             else
                 DispatchShotInstruction(TH08_ECL_CONTEXT_ENEMY(ctx),
@@ -578,7 +583,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
     case 159: TH08_ECL_AT(ctx, u8, 0x332F) = (u8)TH08_ECL_READ_I(ctx, 0); break;
     case 124: TH08_ECL_CONTEXT_API(ctx)->PlayPositioned(TH08_ECL_READ_I(ctx, 0), TH08_ECL_AT(ctx, i32, 0x2D34)); break;
     case 129:
-        if (TH08_ECL_CONTEXT_API(ctx)->PresentationWritesAllowed())
+        if (TH08_ECL_PRESENTATION_WRITES_ALLOWED())
             TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFF8FFFFF) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 7) << 20);
         break;
     case 130:
