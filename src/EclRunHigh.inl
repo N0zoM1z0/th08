@@ -45,6 +45,7 @@ extern void *g_EclExInsn[];
 extern i32 g_EclGlobal004EA290; // target 0x004EA290
 extern i32 g_EclGlobal00F54E2C; // target 0x00F54E2C
 extern i32 g_EclGlobal004ECCA8; // target 0x004ECCA8
+extern i32 g_EclGlobal00F54CEC; // target 0x00F54CEC
 void __fastcall StartEnemySpell(u8 *enemy, void *instruction);
 void __fastcall EndEnemySpell(u8 *enemy, void *instruction);
 
@@ -553,7 +554,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
                 TH08_ECL_READ_F(ctx, 2);
         }
         break;
-    case 163: TH08_ECL_CONTEXT_API(ctx)->Global00F54CEC() = TH08_ECL_READ_I(ctx, 0); break;
+    case 163: g_EclGlobal00F54CEC = TH08_ECL_READ_I(ctx, 0); break;
     case 127:
         if (TH08_ECL_READ_I(ctx, 0) < 0)
         {
@@ -733,8 +734,10 @@ enter_subroutine:
             Vec3 position = TH08_ECL_AT(ctx, Vec3, 0x2D34);
             position.x += TH08_ECL_CONTEXT_API(ctx)->RandomFloat() * 128.0f - 64.0f;
             position.y += TH08_ECL_CONTEXT_API(ctx)->RandomFloat() * 128.0f - 64.0f;
-            i32 type = TH08_ECL_CONTEXT_API(ctx)->PlayerItemCount() < 0x80 ? (i == 0 ? 2 : 0) : 1;
-            TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&position, type, 0);
+            if (TH08_ECL_CONTEXT_API(ctx)->PlayerItemCount() < 0x80)
+                TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&position, i == 0 ? 2 : 0, 0);
+            else
+                TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&position, 1, 0);
         }
         break;
     }
@@ -743,17 +746,20 @@ enter_subroutine:
         i32 count = TH08_ECL_READ_I(ctx, 0);
         for (i32 i = 0; i < count; ++i)
         {
-            Vec3 position = TH08_ECL_AT(ctx, Vec3, 0x2D34);
+            Float3 position;
+            position.x = TH08_ECL_AT(ctx, Vec3, 0x2D34).x;
+            position.y = TH08_ECL_AT(ctx, Vec3, 0x2D34).y;
+            position.z = TH08_ECL_AT(ctx, Vec3, 0x2D34).z;
             position.x += TH08_ECL_CONTEXT_API(ctx)->RandomFloat() * 128.0f - 64.0f;
             position.y += TH08_ECL_CONTEXT_API(ctx)->RandomFloat() * 128.0f - 64.0f;
-            TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&position, 1, 0);
+            TH08_ECL_CONTEXT_API(ctx)->SpawnItem(reinterpret_cast<Vec3 *>(&position), 1, 0);
         }
         break;
     }
     case 145:
         TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFDFFFFFF) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 25);
         break;
-    case 136: TH08_ECL_CONTEXT_API(ctx)->CallFunctionTable(TH08_ECL_READ_I(ctx, 0)); break;
+    case 136: reinterpret_cast<void (__fastcall *)(u8 *, RawInstruction *)>(g_EclExInsn[TH08_ECL_READ_I(ctx, 0)])(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_CONTEXT_INSTRUCTION(ctx)); break;
     case 137:
         if (TH08_ECL_READ_I(ctx, 0) >= 0)
         {
