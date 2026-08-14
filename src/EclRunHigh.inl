@@ -538,7 +538,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
             *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x560) =
-                TH08_ECL_READ_F_RAWARG(ctx, 1);
+                TH08_ECL_READ_F(ctx, 1);
         break;
     case 172:
         lhsInt = TH08_ECL_READ_I(ctx, 0);

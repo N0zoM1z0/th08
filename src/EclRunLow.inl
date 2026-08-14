@@ -767,7 +767,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         lhsInt = ReadInt(enemy, instruction, 0);
         I32At(enemy, 0x2DE8) = lhsInt;
         *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) = lhsInt;
-        F32At(enemy, 0x2DA0) = ReadFloat(enemy, instruction, 1);
+        F32At(enemy, 0x2DA0) = ReadFloatRawArg(enemy, instruction, 1);
         F32At(enemy, 0x2DB4) = ReadFloat(enemy, instruction, 2);
         U32At(enemy, 0x3324) |= 0x3000U;
         break;
