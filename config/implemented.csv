@@ -81,8 +81,11 @@ th08::EnemyManager::OnDrawHighPrio
 th08::EnemyManager::OnDrawLowPrio
 th08::EnemyManager::CutChain
 th08::Gui::AddedCallback
+th08::Gui::DeletedCallback
 th08::Gui::CutChain
 th08::Gui::FreeMsgFile
+FUN_00438ff3
+FUN_00438ffd
 th08::GameManager::IsWithinPlayfield
 th08::GameManager::InitRankParams
 th08::GameManager::OnDraw

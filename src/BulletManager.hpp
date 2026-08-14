@@ -7,6 +7,7 @@ namespace th08
 {
 
 i32 IsBulletManagerAnmReleaseRequired();
+DIFFABLE_EXTERN(i32, g_BulletManagerAnmReleaseRequired);
 
 struct BulletTypeSprites
 {

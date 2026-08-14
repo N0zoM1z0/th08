@@ -1,5 +1,6 @@
 #include "th_pch.h"
 
+#include "BulletManager.hpp"
 #include "Gui.hpp"
 
 namespace th08
@@ -8,6 +9,19 @@ namespace th08
 DIFFABLE_STATIC(Gui, g_Gui);
 DIFFABLE_STATIC(ChainElem, g_GuiCalcChain);
 DIFFABLE_STATIC(ChainElem, g_GuiDrawChain);
+DIFFABLE_STATIC(i32, g_GuiAnmReleaseRequired);
+
+// FUNCTION: th08 0x438ff3
+i32 FUN_00438ff3()
+{
+    return g_BulletManagerAnmReleaseRequired;
+}
+
+// FUNCTION: th08 0x438ffd
+i32 FUN_00438ffd()
+{
+    return g_GuiAnmReleaseRequired;
+}
 
 // FUNCTION: th08 0x437d45
 GuiFormattedText::GuiFormattedText()
@@ -32,9 +46,25 @@ ZunResult Gui::AddedCallback(Gui *gui)
     return gui->ActualAddedCallback();
 }
 
-// STUB: th08 0x437a40
+// FUNCTION: th08 0x437a40
 ZunResult Gui::DeletedCallback(Gui *gui)
 {
+    if (!FUN_00438ffd())
+    {
+        g_AnmManager->ReleaseAnm(13);
+    }
+
+    gui->FreeMsgFile();
+
+    if (FUN_00438ff3())
+    {
+        g_AnmManager->ReleaseAnm(10);
+        g_AnmManager->ReleaseAnm(12);
+        g_AnmManager->ReleaseAnm(11);
+        g_AnmManager->ReleaseAnm(14);
+        ZUN_DELETE(gui->impl);
+    }
+
     return ZUN_SUCCESS;
 }
 

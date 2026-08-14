@@ -7,7 +7,10 @@ address,name,size,status,match_percent,unit,evidence
 0x00433850,th08::BulletManager::CutChain,35,matching,100.00,bullet-manager-cut-chain,python3 scripts/compare-function.py bullet-manager-cut-chain --json
 0x004338B0,th08::IsResourceReloadEnabled,10,matching,100.00,resource-reload-enabled,python3 scripts/compare-function.py resource-reload-enabled --json
 0x004338C0,th08::IsBulletManagerAnmReleaseRequired,10,matching,100.00,bullet-manager-anm-release-required,python3 scripts/compare-function.py bullet-manager-anm-release-required --json
+0x00438FF3,FUN_00438ff3,10,matching,100.00,gui-bullet-anm-release-required,python3 scripts/compare-function.py gui-bullet-anm-release-required --json
+0x00438FFD,FUN_00438ffd,10,matching,100.00,gui-anm-release-required,python3 scripts/compare-function.py gui-anm-release-required --json
 0x00437A2F,th08::Gui::AddedCallback,17,matching,100.00,gui-added-callback,python3 scripts/compare-function.py gui-added-callback --json
+0x00437A40,th08::Gui::DeletedCallback,144,matching,100.00,gui-deleted-callback,python3 scripts/compare-function.py gui-deleted-callback --json
 0x00437D64,th08::Gui::CutChain,35,matching,100.00,gui-cut-chain,python3 scripts/compare-function.py gui-cut-chain --json
 0x004397D5,th08::Gui::FreeMsgFile,59,matching,100.00,gui-free-msg-file,python3 scripts/compare-function.py gui-free-msg-file --json
 0x004399AC,th08::GameManager::IsWithinPlayfield,130,matching,100.00,game-manager-is-within-playfield,python3 scripts/compare-function.py game-manager-is-within-playfield --json
