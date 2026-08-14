@@ -847,15 +847,14 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         {
             // Operand 2 selects the Enemy whose register namespace resolves
             // operand 1.  The destination remains in the current Enemy.
-            lhsInt = EclOperands::ResolveInt(
+            *WriteInt(enemy, instruction, 0) = EclOperands::ResolveInt(
                 g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)],
                 RawInt(instruction, 1));
         }
         else
         {
-            lhsInt = RawInt(instruction, 1);
+            *WriteInt(enemy, instruction, 0) = RawInt(instruction, 1);
         }
-        *WriteInt(enemy, instruction, 0) = lhsInt;
         break;
 
     case 87:
