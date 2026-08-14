@@ -681,8 +681,9 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     case 65:
         F32At(enemy, 0x2D94) = AddNormalizeAngle(ReadFloat(enemy, instruction, 0), 0.0f);
         F32At(enemy, 0x2DA8) = ReadFloat(enemy, instruction, 1);
-        SetMovementState1(enemy);
-        ResetMovementTimer(enemy, services, 0);
+        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x3000U) | 0x1000U;
+        I32At(enemy, 0x2DE8) = 0;
+        *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) = 0;
         break;
     case 66:
         lhsInt = ReadInt(enemy, instruction, 0);
@@ -890,10 +891,9 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     case 89:
         if (g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 0)])
         {
-            const i16 callbackSub = static_cast<i16>(ReadInt(enemy, instruction, 1));
             // Target resolves operand 0 a second time before the store.
             I16At(g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 0)],
-                  0x2D30) = callbackSub;
+                  0x2D30) = static_cast<i16>(ReadInt(enemy, instruction, 1));
         }
         break;
 

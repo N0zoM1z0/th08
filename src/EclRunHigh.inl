@@ -525,8 +525,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             *(u8 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x598) < 2)
         {
             *(u8 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x598) = 2;
-            TH08_ECL_CONTEXT_API(ctx)->SetTimer(
-                TH08_ECL_OBJECT(ctx, lhsInt) + 0x588, 0);
+            *reinterpret_cast<ZunTimer *>(TH08_ECL_OBJECT(ctx, lhsInt) + 0x588) = 0;
             *(i32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x564) =
                 *(i32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x568);
         }
