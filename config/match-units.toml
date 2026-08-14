@@ -38694,3 +38694,1558 @@ offset = 0x9bc
 type = "DIR32"
 symbol = "__real@40e00000"
 target = 0x004b42f4
+[[units]]
+name = "result-screen-on-draw"
+object = "build/ResultScreen.obj"
+symbol = "?OnDraw@ResultScreen@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target_address = 0x004586b4
+size = 0xf99
+
+[[units.relocations]]
+offset = 0x1d
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x25
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x2b
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018bdc90
+
+[[units.relocations]]
+offset = 0x30
+type = "REL32"
+symbol = "?FlushVertexBuffer@AnmManager@th08@@QAEXXZ"
+target = 0x00462e40
+
+[[units.relocations]]
+offset = 0x36
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017ce758
+
+[[units.relocations]]
+offset = 0x3d
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017ce758
+
+[[units.relocations]]
+offset = 0x44
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017ce758
+
+[[units.relocations]]
+offset = 0x4e
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017ce758
+
+[[units.relocations]]
+offset = 0x57
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017ce758
+
+[[units.relocations]]
+offset = 0x5c
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017ce758
+
+[[units.relocations]]
+offset = 0x64
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017ce758
+
+[[units.relocations]]
+offset = 0x7a
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018bdc90
+
+[[units.relocations]]
+offset = 0x7f
+type = "REL32"
+symbol = "?CopySurfaceToBackbuffer@AnmManager@th08@@QAEXHHHHH@Z"
+target = 0x00466bb0
+
+[[units.relocations]]
+offset = 0xc3
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410a70
+
+[[units.relocations]]
+offset = 0xcc
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018bdc90
+
+[[units.relocations]]
+offset = 0xd1
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462ff0
+
+[[units.relocations]]
+offset = 0xfb
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x103
+type = "DIR32"
+symbol = "__real@44200000"
+target = 0x004b4c80
+
+[[units.relocations]]
+offset = 0x132
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x143
+type = "DIR32"
+symbol = "__real@41900000"
+target = 0x004b7d00
+
+[[units.relocations]]
+offset = 0x150
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x164
+type = "DIR32"
+symbol = "__real@41c00000"
+target = 0x004b44bc
+
+[[units.relocations]]
+offset = 0x176
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x17b
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 0x004398e8
+
+[[units.relocations]]
+offset = 0x180
+type = "DIR32"
+symbol = "??_C@_0CK@CNJAOMOC@No?5?5Name?5?5?5?5?5?5?5Score?$CIStage?$CJ?5?5?5Da@"
+target = 0x004b7cd4
+
+[[units.relocations]]
+offset = 0x189
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x18e
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 0x00402a30
+
+[[units.relocations]]
+offset = 0x199
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x1b0
+type = "DIR32"
+symbol = "__real@41900000"
+target = 0x004b7d00
+
+[[units.relocations]]
+offset = 0x216
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x21b
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 0x004398e8
+
+[[units.relocations]]
+offset = 0x227
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x22c
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 0x004398e8
+
+[[units.relocations]]
+offset = 0x238
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x23d
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 0x004398e8
+
+[[units.relocations]]
+offset = 0x247
+type = "DIR32"
+symbol = "??_C@_03GPCJOALC@?$CF2d?$AA@"
+target = 0x004b692c
+
+[[units.relocations]]
+offset = 0x250
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x255
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 0x00402a30
+
+[[units.relocations]]
+offset = 0x261
+type = "DIR32"
+symbol = "__real@42400000"
+target = 0x004b48c8
+
+[[units.relocations]]
+offset = 0x280
+type = "DIR32"
+symbol = "??_C@_04PFOHOKJK@?5?5?5?5?$AA@"
+target = 0x004b7ccc
+
+[[units.relocations]]
+offset = 0x288
+type = "DIR32"
+symbol = "??_C@_04PFOHOKJK@?5?5?5?5?$AA@"
+target = 0x004b7ccc
+
+[[units.relocations]]
+offset = 0x2c4
+type = "DIR32"
+symbol = "??_C@_03GHDNOBPC@?$CF8s?$AA@"
+target = 0x004b7cc8
+
+[[units.relocations]]
+offset = 0x2cd
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x2d2
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 0x00402a30
+
+[[units.relocations]]
+offset = 0x320
+type = "DIR32"
+symbol = "?g_ResultStageNumbers@th08@@3PAHA"
+target = 0x004c7f80
+
+[[units.relocations]]
+offset = 0x33e
+type = "DIR32"
+symbol = "??_C@_0P@DHGOPPLE@?$CF8s?5?$CF9d?$CF1d?$CI?$CFd?$CJ?$AA@"
+target = 0x004b7cb8
+
+[[units.relocations]]
+offset = 0x347
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x34c
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 0x00402a30
+
+[[units.relocations]]
+offset = 0x39a
+type = "DIR32"
+symbol = "??_C@_0O@PNPLFKFN@?$CF8s?5?$CF9d?$CF1d?$CIC?$CJ?$AA@"
+target = 0x004b7ca8
+
+[[units.relocations]]
+offset = 0x3a3
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x3a8
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 0x00402a30
+
+[[units.relocations]]
+offset = 0x3b4
+type = "DIR32"
+symbol = "__real@43a00000"
+target = 0x004b4550
+
+[[units.relocations]]
+offset = 0x3d4
+type = "DIR32"
+symbol = "??_C@_0N@NGFLCNMN@?5?$CF5s?5?5?5?$CF3?42f?$AA@"
+target = 0x004b7c98
+
+[[units.relocations]]
+offset = 0x3dd
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x3e2
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 0x00402a30
+
+[[units.relocations]]
+offset = 0x3ed
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x404
+type = "DIR32"
+symbol = "__real@41900000"
+target = 0x004b7d00
+
+[[units.relocations]]
+offset = 0x414
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x428
+type = "DIR32"
+symbol = "__real@43b80000"
+target = 0x004b4cf4
+
+[[units.relocations]]
+offset = 0x44a
+type = "DIR32"
+symbol = "??_C@_01DDCIFGEA@E?$AA@"
+target = 0x004b7c94
+
+[[units.relocations]]
+offset = 0x451
+type = "DIR32"
+symbol = "??_C@_01NANMIPIL@N?$AA@"
+target = 0x004b7c90
+
+[[units.relocations]]
+offset = 0x458
+type = "DIR32"
+symbol = "??_C@_01IGIGCIAN@H?$AA@"
+target = 0x004b7c8c
+
+[[units.relocations]]
+offset = 0x45f
+type = "DIR32"
+symbol = "??_C@_01OCOKONAJ@L?$AA@"
+target = 0x004b7c88
+
+[[units.relocations]]
+offset = 0x466
+type = "DIR32"
+symbol = "??_C@_01JOAMLHOP@?9?$AA@"
+target = 0x004b7c84
+
+[[units.relocations]]
+offset = 0x493
+type = "DIR32"
+symbol = "__real@43a00000"
+target = 0x004b4550
+
+[[units.relocations]]
+offset = 0x4ab
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004b42d4
+
+[[units.relocations]]
+offset = 0x4c3
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018bdc90
+
+[[units.relocations]]
+offset = 0x4c8
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462ff0
+
+[[units.relocations]]
+offset = 0x4d0
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x4e7
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004b42d4
+
+[[units.relocations]]
+offset = 0x525
+type = "DIR32"
+symbol = "?g_SpellcardCountsPerDifficulty@th08@@3PAHA"
+target = 0x004c67e8
+
+[[units.relocations]]
+offset = 0x534
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x541
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x555
+type = "DIR32"
+symbol = "__real@43a00000"
+target = 0x004b4550
+
+[[units.relocations]]
+offset = 0x565
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x57c
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004b42d4
+
+[[units.relocations]]
+offset = 0x59c
+type = "DIR32"
+symbol = "__real@40180000"
+target = 0x004b7c80
+
+[[units.relocations]]
+offset = 0x5b1
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018bdc90
+
+[[units.relocations]]
+offset = 0x5b6
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462ff0
+
+[[units.relocations]]
+offset = 0x5be
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x5d5
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004b42d4
+
+[[units.relocations]]
+offset = 0x5e5
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x610
+type = "DIR32"
+symbol = "?g_SpellcardNumbersPerDifficulty@th08@@3PAPAHA"
+target = 0x004c67d0
+
+[[units.relocations]]
+offset = 0x62f
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160f508
+
+[[units.relocations]]
+offset = 0x63c
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x641
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 0x004398e8
+
+[[units.relocations]]
+offset = 0x659
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160f508
+
+[[units.relocations]]
+offset = 0x666
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x66b
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 0x004398e8
+
+[[units.relocations]]
+offset = 0x683
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x688
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 0x004398e8
+
+[[units.relocations]]
+offset = 0x692
+type = "DIR32"
+symbol = "??_C@_07IJCAEPCH@No?4?$CF?42d?$AA@"
+target = 0x004b7c78
+
+[[units.relocations]]
+offset = 0x69b
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x6a0
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 0x00402a30
+
+[[units.relocations]]
+offset = 0x6bb
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x6cf
+type = "DIR32"
+symbol = "__real@429c0000"
+target = 0x004b7c74
+
+[[units.relocations]]
+offset = 0x6f1
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018bdc90
+
+[[units.relocations]]
+offset = 0x6f6
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462ff0
+
+[[units.relocations]]
+offset = 0x6fe
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x712
+type = "DIR32"
+symbol = "__real@43df0000"
+target = 0x004b7c70
+
+[[units.relocations]]
+offset = 0x73d
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160f508
+
+[[units.relocations]]
+offset = 0x745
+type = "DIR32"
+symbol = "??_C@_0L@NGHHJCF@?9?9?9?1?9?9?9?$CI?9?$CJ?$AA@"
+target = 0x004b7c64
+
+[[units.relocations]]
+offset = 0x74e
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x753
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 0x00402a30
+
+[[units.relocations]]
+offset = 0x768
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160f508
+
+[[units.relocations]]
+offset = 0x782
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160f508
+
+[[units.relocations]]
+offset = 0x798
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160f508
+
+[[units.relocations]]
+offset = 0x79d
+type = "DIR32"
+symbol = "??_C@_0M@PPKALNIH@?$CF3d?1?$CF3d?$CI?$CFs?$CJ?$AA@"
+target = 0x004b7c58
+
+[[units.relocations]]
+offset = 0x7a6
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x7ab
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 0x00402a30
+
+[[units.relocations]]
+offset = 0x7c9
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160f508
+
+[[units.relocations]]
+offset = 0x7d1
+type = "DIR32"
+symbol = "??_C@_0L@NGHHJCF@?9?9?9?1?9?9?9?$CI?9?$CJ?$AA@"
+target = 0x004b7c64
+
+[[units.relocations]]
+offset = 0x7da
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x7df
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 0x00402a30
+
+[[units.relocations]]
+offset = 0x7f4
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160f508
+
+[[units.relocations]]
+offset = 0x80e
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160f508
+
+[[units.relocations]]
+offset = 0x824
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160f508
+
+[[units.relocations]]
+offset = 0x829
+type = "DIR32"
+symbol = "??_C@_0M@PPKALNIH@?$CF3d?1?$CF3d?$CI?$CFs?$CJ?$AA@"
+target = 0x004b7c58
+
+[[units.relocations]]
+offset = 0x832
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x837
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 0x00402a30
+
+[[units.relocations]]
+offset = 0x842
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x856
+type = "DIR32"
+symbol = "__real@43df0000"
+target = 0x004b7c70
+
+[[units.relocations]]
+offset = 0x866
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x87a
+type = "DIR32"
+symbol = "__real@43d40000"
+target = 0x004b7c54
+
+[[units.relocations]]
+offset = 0x88a
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x8a1
+type = "DIR32"
+symbol = "__real@41500000"
+target = 0x004b4804
+
+[[units.relocations]]
+offset = 0x8b3
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x8b8
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 0x004398e8
+
+[[units.relocations]]
+offset = 0x8be
+type = "DIR32"
+symbol = "__real@3f4ccccd"
+target = 0x004b6934
+
+[[units.relocations]]
+offset = 0x8c8
+type = "DIR32"
+symbol = "__real@3f4ccccd"
+target = 0x004b6934
+
+[[units.relocations]]
+offset = 0x8d1
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x8d6
+type = "REL32"
+symbol = "?SetScale@AsciiManager@th08@@QAEXMM@Z"
+target = 0x0042f2f0
+
+[[units.relocations]]
+offset = 0x8ec
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160f508
+
+[[units.relocations]]
+offset = 0x905
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160f508
+
+[[units.relocations]]
+offset = 0x90a
+type = "DIR32"
+symbol = "??_C@_0N@GPOKBKHI@MaxBonus?5?$CF8d?$AA@"
+target = 0x004b7c44
+
+[[units.relocations]]
+offset = 0x913
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x918
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 0x00402a30
+
+[[units.relocations]]
+offset = 0x923
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x937
+type = "DIR32"
+symbol = "__real@43d40000"
+target = 0x004b7c54
+
+[[units.relocations]]
+offset = 0x947
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x95e
+type = "DIR32"
+symbol = "__real@41500000"
+target = 0x004b4804
+
+[[units.relocations]]
+offset = 0x977
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0x97c
+type = "REL32"
+symbol = "?SetScale@AsciiManager@th08@@QAEXMM@Z"
+target = 0x0042f2f0
+
+[[units.relocations]]
+offset = 0x98d
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0x9a4
+type = "DIR32"
+symbol = "__real@42040000"
+target = 0x004b4974
+
+[[units.relocations]]
+offset = 0x9c2
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0xa05
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0xa73
+type = "DIR32"
+symbol = "__real@43b20000"
+target = 0x004b7c40
+
+[[units.relocations]]
+offset = 0xa7d
+type = "DIR32"
+symbol = "__real@43200000"
+target = 0x004b4554
+
+[[units.relocations]]
+offset = 0xa89
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0xae5
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0xaea
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 0x004398e8
+
+[[units.relocations]]
+offset = 0xb19
+type = "DIR32"
+symbol = "__real@3f4ccccd"
+target = 0x004b6934
+
+[[units.relocations]]
+offset = 0xb1f
+type = "DIR32"
+symbol = "__real@42000000"
+target = 0x004b42cc
+
+[[units.relocations]]
+offset = 0xb25
+type = "DIR32"
+symbol = "__real@3f99999a"
+target = 0x004b43b8
+
+[[units.relocations]]
+offset = 0xb48
+type = "DIR32"
+symbol = "__real@3f4ccccd"
+target = 0x004b6934
+
+[[units.relocations]]
+offset = 0xb4e
+type = "DIR32"
+symbol = "__real@42000000"
+target = 0x004b42cc
+
+[[units.relocations]]
+offset = 0xb54
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004b42ec
+
+[[units.relocations]]
+offset = 0xb6a
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0xb6f
+type = "REL32"
+symbol = "?SetScale@AsciiManager@th08@@QAEXMM@Z"
+target = 0x0042f2f0
+
+[[units.relocations]]
+offset = 0xb78
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004b4338
+
+[[units.relocations]]
+offset = 0xb80
+type = "DIR32"
+symbol = "__real@41000000"
+target = 0x004b4300
+
+[[units.relocations]]
+offset = 0xb92
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0xb97
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 0x004398e8
+
+[[units.relocations]]
+offset = 0xba8
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0xbad
+type = "REL32"
+symbol = "?SetScale@AsciiManager@th08@@QAEXMM@Z"
+target = 0x0042f2f0
+
+[[units.relocations]]
+offset = 0xbd7
+type = "DIR32"
+symbol = "?g_AlphabetList@th08@@3PBDB"
+target = 0x004c7f48
+
+[[units.relocations]]
+offset = 0xc0a
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0xc0f
+type = "REL32"
+symbol = "?AddString@AsciiManager@th08@@QAEXPAUFloat3@2@PBD@Z"
+target = 0x00402920
+
+[[units.relocations]]
+offset = 0xc17
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0xc2b
+type = "DIR32"
+symbol = "__real@41a00000"
+target = 0x004b6e98
+
+[[units.relocations]]
+offset = 0xc40
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0xc70
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040b460
+
+[[units.relocations]]
+offset = 0xc87
+type = "DIR32"
+symbol = "__real@41900000"
+target = 0x004b7d00
+
+[[units.relocations]]
+offset = 0xca5
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0xcaa
+type = "REL32"
+symbol = "?SetScale@AsciiManager@th08@@QAEXMM@Z"
+target = 0x0042f2f0
+
+[[units.relocations]]
+offset = 0xcf6
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018bdc90
+
+[[units.relocations]]
+offset = 0xcfb
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462ff0
+
+[[units.relocations]]
+offset = 0xd27
+type = "DIR32"
+symbol = "??_C@_0CD@JCJKGKIM@No?4?5?5?5Name?5?5?5?5?5Date?5?5?5Player?5Sco@"
+target = 0x004b7c1c
+
+[[units.relocations]]
+offset = 0xd30
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0xd35
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 0x00402a30
+
+[[units.relocations]]
+offset = 0xd7e
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0xd83
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 0x004398e8
+
+[[units.relocations]]
+offset = 0xd8f
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0xd94
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 0x004398e8
+
+[[units.relocations]]
+offset = 0xdb1
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160f508
+
+[[units.relocations]]
+offset = 0xdb8
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160f508
+
+[[units.relocations]]
+offset = 0xdc1
+type = "DIR32"
+symbol = "?g_ResultsCharacterNames@th08@@3PAPBDA"
+target = 0x004c8010
+
+[[units.relocations]]
+offset = 0xddb
+type = "DIR32"
+symbol = "??_C@_0BK@HGILINKB@No?4?$CF?42d?5?$CF8s?5?$CF5s?5?5?$CF7s?5?$CF9d0?$AA@"
+target = 0x004b7c00
+
+[[units.relocations]]
+offset = 0xde4
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0xde9
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 0x00402a30
+
+[[units.relocations]]
+offset = 0xdf6
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0xdfb
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 0x004398e8
+
+[[units.relocations]]
+offset = 0xe00
+type = "DIR32"
+symbol = "??_C@_04PFOHOKJK@?5?5?5?5?$AA@"
+target = 0x004b7ccc
+
+[[units.relocations]]
+offset = 0xe08
+type = "DIR32"
+symbol = "??_C@_04PFOHOKJK@?5?5?5?5?$AA@"
+target = 0x004b7ccc
+
+[[units.relocations]]
+offset = 0xe44
+type = "DIR32"
+symbol = "??_C@_09JIPJKGBD@?5?5?5?5?5?5?$CF8s?$AA@"
+target = 0x004b7bf4
+
+[[units.relocations]]
+offset = 0xe4d
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0xe52
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 0x00402a30
+
+[[units.relocations]]
+offset = 0xe73
+type = "DIR32"
+symbol = "??_C@_04BEFCBGCN@T8RP?$AA@"
+target = 0x004b6fe8
+
+[[units.relocations]]
+offset = 0xe9d
+type = "DIR32"
+symbol = "??_C@_0CL@JLCJHBHE@No?4?$CF?42d?5?9?9?9?9?9?9?9?9?5?9?9?1?9?9?5?5?9?9?9?9?9?9?9?5@"
+target = 0x004b7bc8
+
+[[units.relocations]]
+offset = 0xea6
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0xeab
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 0x00402a30
+
+[[units.relocations]]
+offset = 0xede
+type = "DIR32"
+symbol = "?g_ResultsCharacterNames@th08@@3PAPBDA"
+target = 0x004c8010
+
+[[units.relocations]]
+offset = 0xf10
+type = "DIR32"
+symbol = "??_C@_0BK@HGILINKB@No?4?$CF?42d?5?$CF8s?5?$CF5s?5?5?$CF7s?5?$CF9d0?$AA@"
+target = 0x004b7c00
+
+[[units.relocations]]
+offset = 0xf19
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0xf1e
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 0x00402a30
+
+[[units.relocations]]
+offset = 0xf2d
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004cce20
+
+[[units.relocations]]
+offset = 0xf32
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 0x004398e8
+
+[[units.relocations]]
+offset = 0xf3a
+type = "REL32"
+symbol = "?DrawFinalStats@ResultScreen@th08@@QAEHXZ"
+target = 0x00457e00
+
+[[units.relocations]]
+offset = 0xf87
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018bdc90
+
+[[units.relocations]]
+offset = 0xf8c
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462ff0
+[[units]]
+name = "result-screen-on-update"
+object = "build/ResultScreen.obj"
+symbol = "?OnUpdate@ResultScreen@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target_address = 0x004584b0
+size = 0x1a8
+compare_size = 0x204
+
+[[units.relocations]]
+offset = 0x22
+type = "DIR32"
+symbol = "$L*"
+target = 0x00458658
+
+[[units.relocations]]
+offset = 0x28
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017ce758
+
+[[units.relocations]]
+offset = 0x39
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017ce758
+
+[[units.relocations]]
+offset = 0x55
+type = "REL32"
+symbol = "?SetState@ResultScreen@th08@@QAEXW4ResultScreenState@2@@Z"
+target = 0x004550b7
+
+[[units.relocations]]
+offset = 0x5d
+type = "REL32"
+symbol = "?HandleCategorySelectScreen@ResultScreen@th08@@QAEHXZ"
+target = 0x00454cb2
+
+[[units.relocations]]
+offset = 0x77
+type = "DIR32"
+symbol = "__real@43dc0000"
+target = 0x004b581c
+
+[[units.relocations]]
+offset = 0x81
+type = "DIR32"
+symbol = "__real@43fa0000"
+target = 0x004b4570
+
+[[units.relocations]]
+offset = 0x8d
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x96
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017ce758
+
+[[units.relocations]]
+offset = 0x9b
+type = "REL32"
+symbol = "?SetupLoadingVms@Supervisor@th08@@QAEXPAUFloat3@2@@Z"
+target = 0x00448790
+
+[[units.relocations]]
+offset = 0xe3
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017ce758
+
+[[units.relocations]]
+offset = 0xf6
+type = "REL32"
+symbol = "?HandleHighScoreCharacterSelect@ResultScreen@th08@@QAEHXZ"
+target = 0x0045567d
+
+[[units.relocations]]
+offset = 0x100
+type = "REL32"
+symbol = "?HandleHighScoreDifficultySelect@ResultScreen@th08@@QAEHXZ"
+target = 0x004550fc
+
+[[units.relocations]]
+offset = 0x10a
+type = "REL32"
+symbol = "?HandleHighScoreScreen@ResultScreen@th08@@QAEHXZ"
+target = 0x00455925
+
+[[units.relocations]]
+offset = 0x114
+type = "REL32"
+symbol = "?HandleSpellCardCharacterSelect@ResultScreen@th08@@QAEHXZ"
+target = 0x00455cb0
+
+[[units.relocations]]
+offset = 0x11e
+type = "REL32"
+symbol = "?HandleSpellCardDifficultySelect@ResultScreen@th08@@QAEHXZ"
+target = 0x00455a33
+
+[[units.relocations]]
+offset = 0x128
+type = "REL32"
+symbol = "?HandleSpellCardScreen@ResultScreen@th08@@QAEHXZ"
+target = 0x00455f6b
+
+[[units.relocations]]
+offset = 0x132
+type = "REL32"
+symbol = "?HandleResultKeyboard@ResultScreen@th08@@QAEHXZ"
+target = 0x0045621e
+
+[[units.relocations]]
+offset = 0x13c
+type = "REL32"
+symbol = "?HandleReplaySaveKeyboard@ResultScreen@th08@@QAEHXZ"
+target = 0x0045696f
+
+[[units.relocations]]
+offset = 0x146
+type = "REL32"
+symbol = "?CheckConfirmButton@ResultScreen@th08@@QAE?AW4ZunResult@@XZ"
+target = 0x004577e2
+
+[[units.relocations]]
+offset = 0x150
+type = "REL32"
+symbol = "?HandleOtherStatsScreen@ResultScreen@th08@@QAEHXZ"
+target = 0x004578aa
+
+[[units.relocations]]
+offset = 0x18b
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018bdc90
+
+[[units.relocations]]
+offset = 0x190
+type = "REL32"
+symbol = "?ExecuteScript@AnmManager@th08@@QAEIPAUAnmVm@2@@Z"
+target = 0x0045ea00
+
+[[units.relocations]]
+offset = 0x1a8
+type = "DIR32"
+symbol = "$result_init$69585"
+target = 0x004584ff
+
+[[units.relocations]]
+offset = 0x1ac
+type = "DIR32"
+symbol = "$L*"
+target = 0x00458509
+
+[[units.relocations]]
+offset = 0x1b0
+type = "DIR32"
+symbol = "$L*"
+target = 0x00458516
+
+[[units.relocations]]
+offset = 0x1b4
+type = "DIR32"
+symbol = "$L*"
+target = 0x004585ac
+
+[[units.relocations]]
+offset = 0x1b8
+type = "DIR32"
+symbol = "$L*"
+target = 0x004585a2
+
+[[units.relocations]]
+offset = 0x1bc
+type = "DIR32"
+symbol = "$L*"
+target = 0x004585b6
+
+[[units.relocations]]
+offset = 0x1c0
+type = "DIR32"
+symbol = "$L*"
+target = 0x004585ca
+
+[[units.relocations]]
+offset = 0x1c4
+type = "DIR32"
+symbol = "$L*"
+target = 0x004585c0
+
+[[units.relocations]]
+offset = 0x1c8
+type = "DIR32"
+symbol = "$L*"
+target = 0x004585d4
+
+[[units.relocations]]
+offset = 0x1cc
+type = "DIR32"
+symbol = "$L*"
+target = 0x004585de
+
+[[units.relocations]]
+offset = 0x1d0
+type = "DIR32"
+symbol = "$L*"
+target = 0x004585e8
+
+[[units.relocations]]
+offset = 0x1d4
+type = "DIR32"
+symbol = "$L*"
+target = 0x004585e8
+
+[[units.relocations]]
+offset = 0x1d8
+type = "DIR32"
+symbol = "$L*"
+target = 0x004585e8
+
+[[units.relocations]]
+offset = 0x1dc
+type = "DIR32"
+symbol = "$L*"
+target = 0x004585e8
+
+[[units.relocations]]
+offset = 0x1e0
+type = "DIR32"
+symbol = "$L*"
+target = 0x004585e8
+
+[[units.relocations]]
+offset = 0x1e4
+type = "DIR32"
+symbol = "$L*"
+target = 0x004585f2
+
+[[units.relocations]]
+offset = 0x1e8
+type = "DIR32"
+symbol = "$L*"
+target = 0x004585f2
+
+[[units.relocations]]
+offset = 0x1ec
+type = "DIR32"
+symbol = "$L*"
+target = 0x004584d6
+
+[[units.relocations]]
+offset = 0x1f0
+type = "DIR32"
+symbol = "$L*"
+target = 0x004584f8
+
+[[units.relocations]]
+offset = 0x1f4
+type = "DIR32"
+symbol = "$L*"
+target = 0x004585fc
+
+[[units.relocations]]
+offset = 0x1f8
+type = "DIR32"
+symbol = "$L*"
+target = 0x004585fc
+
+[[units.relocations]]
+offset = 0x1fc
+type = "DIR32"
+symbol = "$L*"
+target = 0x004585fc
+
+[[units.relocations]]
+offset = 0x200
+type = "DIR32"
+symbol = "$L*"
+target = 0x004584e7

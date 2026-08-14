@@ -385,6 +385,8 @@ th08::ResultScreen::FormatDate
 th08::ResultScreen::HandleReplaySaveKeyboard
 th08::ResultScreen::HandleOtherStatsScreen
 th08::ResultScreen::AddedCallback
+th08::ResultScreen::OnUpdate
+th08::ResultScreen::OnDraw
 th08::SoundPlayer::GetFmtIndexByName
 th08::SoundPlayer::LoadSound
 th08::SoundPlayer::GetWavFormatData

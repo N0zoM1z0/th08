@@ -456,3 +456,5 @@ address,name,size,status,match_percent,unit,evidence
 0x00409C20,th08::Background::DeletedCallback,122,matching,100.00,background-deleted-callback,python3 scripts/compare-function.py background-deleted-callback --json
 0x00405E10,th08::AsciiManager::DrawPercentage,1803,matching,100.00,ascii-manager-draw-percentage,python3 scripts/compare-function.py ascii-manager-draw-percentage --json
 0x00405420,th08::AsciiManager::OnDrawHighPrioImpl,2538,matching,100.00,ascii-manager-on-draw-high-prio-impl,python3 scripts/compare-function.py ascii-manager-on-draw-high-prio-impl --json
+0x004584B0,th08::ResultScreen::OnUpdate,424,matching,100.00,result-screen-on-update,python3 scripts/compare-function.py result-screen-on-update --json
+0x004586B4,th08::ResultScreen::OnDraw,3993,matching,100.00,result-screen-on-draw,python3 scripts/compare-function.py result-screen-on-draw --json
