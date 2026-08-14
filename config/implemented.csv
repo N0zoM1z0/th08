@@ -520,3 +520,11 @@ th08::GameManager::AddScore
 th08::GameManager::AddTimeOrbs
 th08::Item::CollectPoint
 th08::Item::CollectPointSmall
+th08::SoundPlayer::FadeIn
+th08::CStreamingSound::FadeIn
+th08::SoundPlayer::PartialFadeOut
+th08::CStreamingSound::PartialFadeOut
+th08::SoundPlayer::PartialFadeIn
+th08::CStreamingSound::PartialFadeIn
+th08::SoundPlayer::Pause
+th08::SoundPlayer::UnPause

@@ -512,3 +512,11 @@ address,name,size,status,match_percent,unit,evidence
 0x004398E8,th08::AsciiManager::SetColor,23,matching,100.00,manual-comdat-exact-004398e8,python3 scripts/compare-function.py manual-comdat-exact-004398e8 --json
 0x00447D04,th08::GameManager::IsExtraUnlockedWithAllTeams,82,matching,100.00,manual-comdat-exact-00447d04,python3 scripts/compare-function.py manual-comdat-exact-00447d04 --json
 0x00449C79,th08::Supervisor::IsMusicPreloadEnabled,24,matching,100.00,manual-comdat-exact-00449c79,python3 scripts/compare-function.py manual-comdat-exact-00449c79 --json
+0x00406AC0,th08::SoundPlayer::FadeIn,43,matching,100.00,soundplayer-fade-exact-00406ac0,python3 scripts/compare-function.py soundplayer-fade-exact-00406ac0 --json
+0x00406AF0,th08::CStreamingSound::FadeIn,68,matching,100.00,soundplayer-fade-exact-00406af0,python3 scripts/compare-function.py soundplayer-fade-exact-00406af0 --json
+0x00406B40,th08::SoundPlayer::PartialFadeOut,43,matching,100.00,soundplayer-fade-exact-00406b40,python3 scripts/compare-function.py soundplayer-fade-exact-00406b40 --json
+0x00406B70,th08::CStreamingSound::PartialFadeOut,55,matching,100.00,soundplayer-fade-exact-00406b70,python3 scripts/compare-function.py soundplayer-fade-exact-00406b70 --json
+0x00406BB0,th08::SoundPlayer::PartialFadeIn,43,matching,100.00,soundplayer-fade-exact-00406bb0,python3 scripts/compare-function.py soundplayer-fade-exact-00406bb0 --json
+0x00406BE0,th08::CStreamingSound::PartialFadeIn,68,matching,100.00,soundplayer-fade-exact-00406be0,python3 scripts/compare-function.py soundplayer-fade-exact-00406be0 --json
+0x00406C30,th08::SoundPlayer::Pause,28,matching,100.00,soundplayer-command-exact-00406c30,python3 scripts/compare-function.py soundplayer-command-exact-00406c30 --json
+0x00406C50,th08::SoundPlayer::UnPause,28,matching,100.00,soundplayer-command-exact-00406c50,python3 scripts/compare-function.py soundplayer-command-exact-00406c50 --json

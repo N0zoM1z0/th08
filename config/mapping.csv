@@ -57,7 +57,7 @@ th08::CStreamingSound::FadeIn,0x406af0,0x44,__thiscall,,void,CStreamingSound*,f3
 th08::SoundPlayer::PartialFadeOut,0x406b40,0x2b,__thiscall,,void,SoundPlayer*,f32
 th08::CStreamingSound::PartialFadeOut,0x406b70,0x37,__thiscall,,void,CStreamingSound*,f32
 th08::SoundPlayer::PartialFadeIn,0x406bb0,0x2b,__thiscall,,void,SoundPlayer*,f32
-th08::CStreamingSound::PartialFadeIn,0x406be0,0x44,__thiscall,,void,CStreamingSound*,u32
+th08::CStreamingSound::PartialFadeIn,0x406be0,0x44,__thiscall,,void,CStreamingSound*,f32
 th08::SoundPlayer::Pause,0x406c30,0x1c,__thiscall,,void,SoundPlayer*
 th08::SoundPlayer::UnPause,0x406c50,0x1c,__thiscall,,void,SoundPlayer*
 th08::GameManager::IsSpellPractice,0x406c70,0x1a,__thiscall,,ZunBool,GameManager*

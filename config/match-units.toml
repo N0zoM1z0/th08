@@ -42998,3 +42998,165 @@ object = "build/MusicRoom.obj"
 symbol = "?IsMusicPreloadEnabled@Supervisor@th08@@QAEIXZ"
 target_address = 0x00449C79
 size = 0x18
+
+# Ledger name: th08::SoundPlayer::FadeIn
+# Evidence: IDA-attested TH08 body forwards to active BGM stream when present; exact COFF replay from SoundPlayer.obj.
+[[units]]
+name = "soundplayer-fade-exact-00406ac0"
+object = "build/SoundPlayer.obj"
+symbol = "?FadeIn@SoundPlayer@th08@@QAEXM@Z"
+target_address = 0x00406AC0
+size = 0x2B
+
+[[units.relocations]]
+offset = 0x21
+type = "REL32"
+symbol = "?FadeIn@CStreamingSound@th08@@QAEXM@Z"
+target = 0x00406AF0
+
+# Ledger name: th08::CStreamingSound::FadeIn
+# Evidence: IDA-attested TH08 body sets fade type 2, converts seconds to frames, and starts at silent volume; exact COFF replay from SoundPlayer.obj.
+[[units]]
+name = "soundplayer-fade-exact-00406af0"
+object = "build/SoundPlayer.obj"
+symbol = "?FadeIn@CStreamingSound@th08@@QAEXM@Z"
+target_address = 0x00406AF0
+size = 0x44
+
+[[units.relocations]]
+offset = 0x16
+type = "DIR32"
+symbol = "__real@42700000"
+target = 0x004B430C
+
+[[units.relocations]]
+offset = 0x1B
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x3A
+type = "REL32"
+symbol = "?SetVolume@CSound@th08@@QAEJH@Z"
+target = 0x00472840
+
+# Ledger name: th08::SoundPlayer::PartialFadeOut
+# Evidence: IDA-attested TH08 body forwards to active BGM stream when present; exact COFF replay from SoundPlayer.obj.
+[[units]]
+name = "soundplayer-fade-exact-00406b40"
+object = "build/SoundPlayer.obj"
+symbol = "?PartialFadeOut@SoundPlayer@th08@@QAEXM@Z"
+target_address = 0x00406B40
+size = 0x2B
+
+[[units.relocations]]
+offset = 0x21
+type = "REL32"
+symbol = "?PartialFadeOut@CStreamingSound@th08@@QAEXM@Z"
+target = 0x00406B70
+
+# Ledger name: th08::CStreamingSound::PartialFadeOut
+# Evidence: IDA-attested TH08 body sets fade type 4 and converts seconds to frames; exact COFF replay from SoundPlayer.obj.
+[[units]]
+name = "soundplayer-fade-exact-00406b70"
+object = "build/SoundPlayer.obj"
+symbol = "?PartialFadeOut@CStreamingSound@th08@@QAEXM@Z"
+target_address = 0x00406B70
+size = 0x37
+
+[[units.relocations]]
+offset = 0x16
+type = "DIR32"
+symbol = "__real@42700000"
+target = 0x004B430C
+
+[[units.relocations]]
+offset = 0x1B
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+# Ledger name: th08::SoundPlayer::PartialFadeIn
+# Evidence: IDA-attested TH08 body forwards to active BGM stream when present; exact COFF replay from SoundPlayer.obj.
+[[units]]
+name = "soundplayer-fade-exact-00406bb0"
+object = "build/SoundPlayer.obj"
+symbol = "?PartialFadeIn@SoundPlayer@th08@@QAEXM@Z"
+target_address = 0x00406BB0
+size = 0x2B
+
+[[units.relocations]]
+offset = 0x21
+type = "REL32"
+symbol = "?PartialFadeIn@CStreamingSound@th08@@QAEXM@Z"
+target = 0x00406BE0
+
+# Ledger name: th08::CStreamingSound::PartialFadeIn
+# Evidence: IDA-attested TH08 body sets fade type 3, converts seconds to frames, and starts at partial-muted volume; exact COFF replay from SoundPlayer.obj.
+[[units]]
+name = "soundplayer-fade-exact-00406be0"
+object = "build/SoundPlayer.obj"
+symbol = "?PartialFadeIn@CStreamingSound@th08@@QAEXM@Z"
+target_address = 0x00406BE0
+size = 0x44
+
+[[units.relocations]]
+offset = 0x16
+type = "DIR32"
+symbol = "__real@42700000"
+target = 0x004B430C
+
+[[units.relocations]]
+offset = 0x1B
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x3A
+type = "REL32"
+symbol = "?SetVolume@CSound@th08@@QAEJH@Z"
+target = 0x00472840
+
+# Ledger name: th08::SoundPlayer::Pause
+# Evidence: IDA-attested TH08 body enqueues opcode 6 with "Pause"; exact COFF replay from SoundPlayer.obj.
+[[units]]
+name = "soundplayer-command-exact-00406c30"
+object = "build/SoundPlayer.obj"
+symbol = "?Pause@SoundPlayer@th08@@QAEXXZ"
+target_address = 0x00406C30
+size = 0x1C
+
+[[units.relocations]]
+offset = 0x8
+type = "DIR32"
+symbol = "??_C@_05PEDNBBBD@Pause?$AA@"
+target = 0x004B4310
+
+[[units.relocations]]
+offset = 0x14
+type = "REL32"
+symbol = "?QueueCommand@SoundPlayer@th08@@QAEXHHPAD@Z"
+target = 0x0045E1E0
+
+# Ledger name: th08::SoundPlayer::UnPause
+# Evidence: IDA-attested TH08 body enqueues opcode 7 with "UnPause"; exact COFF replay from SoundPlayer.obj.
+[[units]]
+name = "soundplayer-command-exact-00406c50"
+object = "build/SoundPlayer.obj"
+symbol = "?UnPause@SoundPlayer@th08@@QAEXXZ"
+target_address = 0x00406C50
+size = 0x1C
+
+[[units.relocations]]
+offset = 0x8
+type = "DIR32"
+symbol = "??_C@_07OGJCKFMD@UnPause?$AA@"
+target = 0x004B4318
+
+[[units.relocations]]
+offset = 0x14
+type = "REL32"
+symbol = "?QueueCommand@SoundPlayer@th08@@QAEXHHPAD@Z"
+target = 0x0045E1E0

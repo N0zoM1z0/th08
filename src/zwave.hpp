@@ -172,6 +172,9 @@ class CStreamingSound : public CSound
         m_iFadeType = 1;
         m_iTotalFade = m_iCurFadeProgress = seconds * 60;
     }
+    void FadeIn(f32 seconds);
+    void PartialFadeOut(f32 seconds);
+    void PartialFadeIn(f32 seconds);
 };
 
 //-----------------------------------------------------------------------------

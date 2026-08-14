@@ -109,6 +109,11 @@ class SoundPlayer
     void FreePreloadedBGM(i32 idx);
     void StopBGM();
     void FadeOut(f32 seconds);
+    void FadeIn(f32 seconds);
+    void PartialFadeOut(f32 seconds);
+    void PartialFadeIn(f32 seconds);
+    void Pause();
+    void UnPause();
 
     void UpdateFades()
     {
