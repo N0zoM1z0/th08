@@ -139,6 +139,7 @@ struct GameManager
 
     void IncreaseSubrank(int amount);
     void DecreaseSubrank(int amount);
+    i32 ScaleIntBasedOnRank(i32 upper, i32 lower);
     void AddToYoukaiGauge(i32 amount, i32 forceUpdate);
     void SetYoukaiGauge(u16 value);
 
