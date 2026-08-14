@@ -306,6 +306,12 @@ struct Context
          ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat( \
                TH08_ECL_RAW_F((ctx), (index))) \
          : TH08_ECL_RAW_F((ctx), (index)))
+#define TH08_ECL_READ_F_RAWARG(ctx, index) \
+    ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << (index))) \
+         ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat( \
+               *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I((ctx), (index)))) \
+         : TH08_ECL_RAW_F((ctx), (index)))
+
 #define TH08_ECL_WRITE_I(ctx, index) \
     EclOperands::ResolveIntLValue( \
         reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx)), \
@@ -374,8 +380,8 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         entry[5] = (f32)TH08_ECL_READ_I(ctx, 2);
         entry[2] = (f32)TH08_ECL_READ_I(ctx, 3);
         entry[3] = (f32)TH08_ECL_READ_I(ctx, 4);
-        entry[0] = TH08_ECL_READ_F(ctx, 5);
-        entry[1] = TH08_ECL_READ_F(ctx, 6);
+        entry[0] = TH08_ECL_READ_F_RAWARG(ctx, 5);
+        entry[1] = TH08_ECL_READ_F_RAWARG(ctx, 6);
         break;
     }
     case 138:
@@ -415,8 +421,8 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         break;
     }
     case 110:
-        TH08_ECL_AT(ctx, f32, 0x2DB8) = TH08_ECL_READ_F(ctx, 0);
-        TH08_ECL_AT(ctx, f32, 0x2DBC) = TH08_ECL_READ_F(ctx, 1);
+        TH08_ECL_AT(ctx, f32, 0x2DB8) = TH08_ECL_READ_F_RAWARG(ctx, 0);
+        TH08_ECL_AT(ctx, f32, 0x2DBC) = TH08_ECL_READ_F_RAWARG(ctx, 1);
         TH08_ECL_AT(ctx, i32, 0x2DC0) = 0;
         break;
 
@@ -466,15 +472,15 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x554) =
                 TH08_ECL_CONTEXT_API(ctx)->AngleToPlayer(
                     (Vec3 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x548)) +
-                TH08_ECL_READ_F(ctx, 1);
+                TH08_ECL_READ_F_RAWARG(ctx, 1);
         break;
     case 119:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
         {
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x548) = TH08_ECL_AT(ctx, f32, 0x2D88) + TH08_ECL_READ_F(ctx, 1);
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x54C) = TH08_ECL_AT(ctx, f32, 0x2D8C) + TH08_ECL_READ_F(ctx, 2);
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x550) = TH08_ECL_AT(ctx, f32, 0x2D90) + TH08_ECL_READ_F(ctx, 3);
+            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x548) = TH08_ECL_AT(ctx, f32, 0x2D88) + TH08_ECL_READ_F_RAWARG(ctx, 1);
+            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x54C) = TH08_ECL_AT(ctx, f32, 0x2D8C) + TH08_ECL_READ_F_RAWARG(ctx, 2);
+            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x550) = TH08_ECL_AT(ctx, f32, 0x2D90) + TH08_ECL_READ_F_RAWARG(ctx, 3);
         }
         break;
     case 170:
@@ -511,7 +517,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
             *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x560) =
-                TH08_ECL_READ_F(ctx, 1);
+                TH08_ECL_READ_F_RAWARG(ctx, 1);
         break;
     case 172:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
@@ -799,8 +805,8 @@ enter_subroutine:
         TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFBFFFFFF) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 26);
         break;
     case 152:
-        TH08_ECL_AT(ctx, f32, 0x2DEC) = TH08_ECL_READ_F(ctx, 0);
-        TH08_ECL_AT(ctx, f32, 0x2DF0) = TH08_ECL_READ_F(ctx, 1);
+        TH08_ECL_AT(ctx, f32, 0x2DEC) = TH08_ECL_READ_F_RAWARG(ctx, 0);
+        TH08_ECL_AT(ctx, f32, 0x2DF0) = TH08_ECL_READ_F_RAWARG(ctx, 1);
         TH08_ECL_AT(ctx, u16, 0x2DF4) = (u16)TH08_ECL_READ_I(ctx, 2);
         TH08_ECL_AT(ctx, u16, 0x2DF6) = (u16)TH08_ECL_READ_I(ctx, 3);
         TH08_ECL_AT(ctx, u16, 0x2DF8) = (u16)TH08_ECL_READ_I(ctx, 4);
@@ -839,9 +845,9 @@ enter_subroutine:
     case 165: TH08_ECL_AT(ctx, f32, 0x14) = TH08_ECL_READ_F(ctx, 0); break;
     case 166:
         *TH08_ECL_WRITE_F(ctx, 1) =
-            sinf(TH08_ECL_READ_F(ctx, 2)) * TH08_ECL_READ_F(ctx, 3);
+            sinf(TH08_ECL_READ_F_RAWARG(ctx, 2)) * TH08_ECL_READ_F_RAWARG(ctx, 3);
         *TH08_ECL_WRITE_F(ctx, 0) =
-            cosf(TH08_ECL_READ_F(ctx, 2)) * TH08_ECL_READ_F(ctx, 3);
+            cosf(TH08_ECL_READ_F_RAWARG(ctx, 2)) * TH08_ECL_READ_F_RAWARG(ctx, 3);
         break;
     case 169:
         if (

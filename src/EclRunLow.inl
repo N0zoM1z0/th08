@@ -419,6 +419,11 @@ inline void BeginTimedMove(EclOperands::EnemyOverlay *enemy,
     (((insn)->operandFlags & (1U << (index))) \
          ? (owner)->ResolveFloat(RawFloat((insn), (index))) \
          : RawFloat((insn), (index)))
+#define ReadFloatRawArg(owner, insn, index) \
+    (((insn)->operandFlags & (1U << (index))) \
+         ? (owner)->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt((insn), (index)))) \
+         : RawFloat((insn), (index)))
+
 #define WriteInt(owner, insn, index) \
     EclOperands::ResolveIntLValue((owner), &RawInt((insn), (index)), \
                                   (insn)->operandFlags, (index))
@@ -480,7 +485,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1);
         break;
     case 7:
-        *WriteFloat(enemy, instruction, 0) = ReadFloat(enemy, instruction, 1);
+        *WriteFloat(enemy, instruction, 0) = ReadFloatRawArg(enemy, instruction, 1);
         break;
     case 8:
         *WriteInt(enemy, instruction, 0) =
@@ -705,9 +710,9 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
 #endif
     case 68:
         F32At(enemy, 0x2D94) =
-            AddNormalizeAngle(ReadFloat(enemy, instruction, 0),
+            AddNormalizeAngle(ReadFloatRawArg(enemy, instruction, 0),
                               services.AngleToPlayer(Bytes(enemy) + 0x2D34));
-        F32At(enemy, 0x2DA8) = ReadFloat(enemy, instruction, 1);
+        F32At(enemy, 0x2DA8) = ReadFloatRawArg(enemy, instruction, 1);
         break;
     case 69:
         lhsInt = ReadInt(enemy, instruction, 0);

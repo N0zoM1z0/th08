@@ -2001,6 +2001,7 @@ object = "build/probes/EclRun.obj"
 symbol = "?RunEcl@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemy@2@@Z"
 target_address = 0x004184B0
 size = 0x680E
+compare_size = 0x6B06
 
 [[units]]
 name = "enemy-clamp-position"
