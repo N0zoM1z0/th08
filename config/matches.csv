@@ -58,6 +58,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00406640,th08::ZunTimer::operator++(int),21,matching,100.00,zun-timer-post-increment,python3 scripts/compare-function.py zun-timer-post-increment --json
 0x00406660,th08::ZunTimer::Tick,52,matching,100.00,zun-timer-tick,python3 scripts/compare-function.py zun-timer-tick --json
 0x004066E0,th08::AnmVm::IsVisible,23,matching,100.00,anm-vm-base-is-visible,python3 scripts/compare-function.py anm-vm-base-is-visible --json
+0x00406700,th08::AnmVm::ClearVisible,32,matching,100.00,anm-vm-clear-visible,python3 scripts/compare-function.py anm-vm-clear-visible --json
 0x0040EC00,th08::AnmVm::SetZRotation,43,matching,100.00,anm-vm-set-z-rotation,python3 scripts/compare-function.py anm-vm-set-z-rotation --json
 0x0040B9B0,th08::AnmManager::ClearBlendMode,21,matching,100.00,anm-manager-clear-blend-mode,python3 scripts/compare-function.py anm-manager-clear-blend-mode --json
 0x0040B9D0,th08::AnmManager::ClearColorOp,21,matching,100.00,anm-manager-clear-color-op,python3 scripts/compare-function.py anm-manager-clear-color-op --json

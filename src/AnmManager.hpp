@@ -300,10 +300,7 @@ struct AnmVmBase
         return this->visible;
     }
 
-    void ClearVisible()
-    {
-        this->visible = false;
-    }
+    void ClearVisible();
 
     void SetInterrupt(i16 interrupt)
     {
@@ -371,6 +368,7 @@ C_ASSERT(sizeof(AnmVmBase) == 0x208);
 struct AnmVm : AnmVmBase
 {
     void SetZRotation(f32 z);
+    void ClearVisible();
 
     Float3 pos;
     i16 activeSpriteIndex;
