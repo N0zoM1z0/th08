@@ -113,6 +113,50 @@ ChainCallbackResult Player::OnDrawLowPrio(Player *player)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
+// FUNCTION: th08 0x44d2c0
+void Player::FUN_0044d2c0()
+{
+    if (this->playerStateSlotCooldown != 0)
+    {
+        this->playerStateSlotCooldown--;
+        this->FUN_0044de60(&this->position, 768.0f, 896.0f, -1, 0);
+    }
+
+    if (this->playerState == PLAYER_STATE_DEAD)
+    {
+        this->stateFlag = false;
+
+        if (this->stateEffect != NULL)
+            this->stateEffect->position = this->position;
+
+        this->timer--;
+        if ((i32)this->timer <= 0)
+        {
+            if (this->stateEffect != NULL)
+            {
+                this->stateEffect->active = false;
+                this->stateEffect = NULL;
+            }
+
+            this->playerState = PLAYER_STATE_ALIVE;
+            this->timer = 0;
+            this->stateColor = -1;
+        }
+        else if ((i32)this->timer % 8 < 2)
+        {
+            this->stateColor = 0xfff02020;
+        }
+        else
+        {
+            this->stateColor = -1;
+        }
+    }
+    else
+    {
+        this->timer++;
+    }
+}
+
 // STUB: th08 0x44d650
 ZunResult Player::AddedCallback(Player *player)
 {
@@ -148,7 +192,7 @@ ZunResult Player::DeletedCallback(Player *player)
 
 #pragma var_order(slot, index)
 // FUNCTION: th08 0x44de60
-PlayerUnkStruct0x40 *Player::FUN_0044de60(const Float2 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+PlayerUnkStruct0x40 *Player::FUN_0044de60(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
 {
     PlayerUnkStruct0x40 *slot = this->playerSlotsC;
     i32 index;
@@ -173,7 +217,7 @@ PlayerUnkStruct0x40 *Player::FUN_0044de60(const Float2 *center, f32 value1, f32 
 
 #pragma var_order(slot, index)
 // FUNCTION: th08 0x44df00
-PlayerUnkStruct0x40 *Player::FUN_0044df00(const Float2 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+PlayerUnkStruct0x40 *Player::FUN_0044df00(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
 {
     PlayerUnkStruct0x40 *slot = this->playerSlotsC;
     i32 index;
@@ -198,7 +242,7 @@ PlayerUnkStruct0x40 *Player::FUN_0044df00(const Float2 *center, f32 value1, f32 
 
 #pragma var_order(slot, index)
 // FUNCTION: th08 0x44dfa0
-PlayerUnkStruct0x40 *Player::FUN_0044dfa0(const Float2 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+PlayerUnkStruct0x40 *Player::FUN_0044dfa0(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
 {
     PlayerUnkStruct0x40 *slot = this->playerSlotsB;
     i32 index;
@@ -223,7 +267,7 @@ PlayerUnkStruct0x40 *Player::FUN_0044dfa0(const Float2 *center, f32 value1, f32 
 
 #pragma var_order(slot, index)
 // FUNCTION: th08 0x44e040
-PlayerUnkStruct0x40 *Player::FUN_0044e040(const Float2 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+PlayerUnkStruct0x40 *Player::FUN_0044e040(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
 {
     PlayerUnkStruct0x40 *slot = this->playerSlotsB;
     i32 index;

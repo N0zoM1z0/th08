@@ -767,7 +767,7 @@ FUN_0044cba0,0x44cba0,0x45,unknown,,u8
 FUN_0044cbf0,0x44cbf0,0x55d,unknown,,u8
 FUN_0044d150,0x44d150,0x25,unknown,,u8
 FUN_0044d180,0x44d180,0x13a,unknown,,u8
-FUN_0044d2c0,0x44d2c0,0x152,unknown,,u8
+th08::Player::FUN_0044d2c0,0x44d2c0,0x152,__thiscall,,void,Player*
 FUN_0044d420,0x44d420,0x10b,unknown,,u8
 FUN_0044d530,0x44d530,0xf1,unknown,,u8
 FUN_0044d630,0x44d630,0x18,unknown,,u8
@@ -775,10 +775,10 @@ th08::Player::AddedCallback,0x44d650,0x601,__fastcall,,ZunResult,Player*
 th08::Player::DeletedCallback,0x44dc60,0xa4,__fastcall,,ZunResult,u32
 th08::Player::CutChain,0x44dd10,0x55,__stdcall,,void
 FUN_0044dd70,0x44dd70,0xe9,unknown,,u8
-th08::Player::FUN_0044de60,0x44de60,0x99,__thiscall,,PlayerUnkStruct0x40*,Player*,const Float2*,f32,f32,i32,i32
-th08::Player::FUN_0044df00,0x44df00,0x99,__thiscall,,PlayerUnkStruct0x40*,Player*,const Float2*,f32,f32,i32,i32
-th08::Player::FUN_0044dfa0,0x44dfa0,0x99,__thiscall,,PlayerUnkStruct0x40*,Player*,const Float2*,f32,f32,i32,i32
-th08::Player::FUN_0044e040,0x44e040,0x99,__thiscall,,PlayerUnkStruct0x40*,Player*,const Float2*,f32,f32,i32,i32
+th08::Player::FUN_0044de60,0x44de60,0x99,__thiscall,,PlayerUnkStruct0x40*,Player*,const Float3*,f32,f32,i32,i32
+th08::Player::FUN_0044df00,0x44df00,0x99,__thiscall,,PlayerUnkStruct0x40*,Player*,const Float3*,f32,f32,i32,i32
+th08::Player::FUN_0044dfa0,0x44dfa0,0x99,__thiscall,,PlayerUnkStruct0x40*,Player*,const Float3*,f32,f32,i32,i32
+th08::Player::FUN_0044e040,0x44e040,0x99,__thiscall,,PlayerUnkStruct0x40*,Player*,const Float3*,f32,f32,i32,i32
 th08::IsResourceReloadDisabled,0x44e0e0,0xf,__fastcall,,ZunBool
 th08::AnmVmBase::SetBlendModeAdditive,0x44e0f0,0x23,__thiscall,,void,AnmVmBase*
 th08::AnmVmBase::SetBlendModeNormal,0x44e120,0x20,__thiscall,,void,AnmVmBase*

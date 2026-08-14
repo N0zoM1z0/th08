@@ -70,6 +70,12 @@ review the unit before claiming exactness.
   for reusable allocator semantics, not permission to copy the limit, stride,
   offsets, or field meanings into another subsystem. TH08 Player slot allocators
   at `0x0044DE60..0x0044E0D8` are the exact corpus example.
+- When a recovered leaf accepts a pointer to a prefix of a larger aggregate,
+  inspect its target callers before freezing the parameter type: a caller may
+  prove the owning aggregate even when the leaf reads only a smaller prefix.
+  Update the mapping signature and decorated match-unit symbol together, then
+  re-run every affected comparator. `Player::FUN_0044de60` reads only x/y but
+  is called with `Player::position` (`Float3`) by exact `0x0044D2C0`.
 - If an inlined fixed-size structure-tail `memcpy` has the correct semantics,
   size, and `rep movsd` but schedules its count and source setup differently,
   probe the typed address of the first copied field instead of byte-pointer
