@@ -478,9 +478,9 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
         {
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x548) = TH08_ECL_AT(ctx, f32, 0x2D88) + TH08_ECL_READ_F_RAWARG(ctx, 1);
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x54C) = TH08_ECL_AT(ctx, f32, 0x2D8C) + TH08_ECL_READ_F_RAWARG(ctx, 2);
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x550) = TH08_ECL_AT(ctx, f32, 0x2D90) + TH08_ECL_READ_F_RAWARG(ctx, 3);
+            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x548) = TH08_ECL_AT(ctx, f32, 0x2D88) + TH08_ECL_READ_F(ctx, 1);
+            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x54C) = TH08_ECL_AT(ctx, f32, 0x2D8C) + TH08_ECL_READ_F(ctx, 2);
+            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x550) = TH08_ECL_AT(ctx, f32, 0x2D90) + TH08_ECL_READ_F(ctx, 3);
         }
         break;
     case 170:
@@ -689,9 +689,9 @@ enter_subroutine:
     case 140:
     {
         Vec3 vector;
-        vector.x = TH08_ECL_READ_F(ctx, 3);
-        vector.y = TH08_ECL_READ_F(ctx, 4);
-        vector.z = TH08_ECL_READ_F(ctx, 5);
+        vector.x = TH08_ECL_READ_F_RAWARG(ctx, 3);
+        vector.y = TH08_ECL_READ_F_RAWARG(ctx, 4);
+        vector.z = TH08_ECL_READ_F_RAWARG(ctx, 5);
         TH08_ECL_CONTEXT_API(ctx)->SpawnEffectWithVector(TH08_ECL_READ_I(ctx, 0), &TH08_ECL_AT(ctx, Vec3, 0x2D34), &vector,
                                        TH08_ECL_READ_I(ctx, 1), *TH08_ECL_WRITE_I(ctx, 2));
         break;
