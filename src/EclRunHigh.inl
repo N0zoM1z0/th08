@@ -41,6 +41,7 @@
 namespace th08
 {
 extern u32 g_EnemyManagerUpdateManagerFlags;
+extern void *g_EclExInsn[];
 
 namespace EclRunHighProposal
 {
@@ -71,6 +72,15 @@ void __fastcall DispatchShotInstruction(u8 *enemy,
 struct SpawnPacket
 {
     i32 values[7];
+};
+
+struct SpawnPacketTyped
+{
+    i32 type;
+    D3DXVECTOR3 position;
+    i32 arg4;
+    i32 arg5;
+    i32 arg6;
 };
 
 // RunEcl invokes the per-context callback with Enemy in ECX and its opaque
@@ -462,9 +472,9 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
             *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x554) =
-                TH08_ECL_CONTEXT_API(ctx)->AddNormalizeAngle(
+                AddNormalizeAngle(
                     *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x554),
-                    TH08_ECL_READ_F(ctx, 1));
+                    TH08_ECL_READ_F_RAWARG(ctx, 1));
         break;
     case 167:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
@@ -737,15 +747,13 @@ enter_subroutine:
         break;
     case 136: TH08_ECL_CONTEXT_API(ctx)->CallFunctionTable(TH08_ECL_READ_I(ctx, 0)); break;
     case 137:
-        lhsInt = TH08_ECL_READ_I(ctx, 0);
-        if (lhsInt < 0)
-            *(void **)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x10) = 0;
-        else
+        if (TH08_ECL_READ_I(ctx, 0) >= 0)
         {
-            *(void **)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x10) =
-                TH08_ECL_CONTEXT_API(ctx)->FunctionTableEntry(TH08_ECL_READ_I(ctx, 0));
+            *(void **)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x10) = g_EclExInsn[TH08_ECL_READ_I(ctx, 0)];
             *(RawInstruction **)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x14) = TH08_ECL_CONTEXT_INSTRUCTION(ctx);
         }
+        else
+            *(void **)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x10) = 0;
         break;
     case 146: TH08_ECL_CONTEXT_API(ctx)->Call0041FDF0(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_READ_I(ctx, 0)); break;
     case 141: TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&TH08_ECL_AT(ctx, Vec3, 0x2D34), TH08_ECL_READ_I(ctx, 0), 0); break;
@@ -757,44 +765,43 @@ enter_subroutine:
     case 93:
         if (TH08_ECL_AT(ctx, i32, 0x2DFC) > 0)
         {
-            SpawnPacket packet;
-            memcpy(packet.values, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet.values));
-
-            Vec3 position;
-            position.x = TH08_ECL_READ_F(ctx, 1);
-            position.y = TH08_ECL_READ_F(ctx, 2);
-            position.z = TH08_ECL_READ_F(ctx, 3);
-            TH08_ECL_CONTEXT_API(ctx)->SpawnFromPacket(packet.values[0], &position,
-                                     TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
-                                     TH08_ECL_READ_I(ctx, 6),
-                                     (i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18));
+            SpawnPacketTyped packet;
+            memcpy(&packet, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet));
+            D3DXVECTOR3 position;
+            position.x = TH08_ECL_READ_F_RAWARG(ctx, 1);
+            position.y = TH08_ECL_READ_F_RAWARG(ctx, 2);
+            position.z = TH08_ECL_READ_F_RAWARG(ctx, 3);
+            void *spawned = g_EnemyManager.SpawnEnemy2(packet.type, &position,
+                                      TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
+                                      TH08_ECL_READ_I(ctx, 6),
+                                      (i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18));
+            (void)spawned;
         }
         break;
     case 94:
         if (TH08_ECL_AT(ctx, i32, 0x2DFC) > 0)
         {
-            SpawnPacket packet;
-            memcpy(packet.values, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet.values));
-
-            Vec3 position;
-            position.x = TH08_ECL_READ_F(ctx, 1);
-            position.y = TH08_ECL_READ_F(ctx, 2);
-            position.z = TH08_ECL_READ_F(ctx, 3);
-            TH08_ECL_CONTEXT_API(ctx)->TransformSpawnVector(&position, &TH08_ECL_AT(ctx, Vec3, 0x2D34));
-            TH08_ECL_CONTEXT_API(ctx)->SpawnFromPacket(packet.values[0], &position,
-                                     TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
-                                     TH08_ECL_READ_I(ctx, 6),
-                                     (i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18));
+            SpawnPacketTyped packet;
+            memcpy(&packet, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet));
+            D3DXVECTOR3 position;
+            position.x = TH08_ECL_READ_F_RAWARG(ctx, 1);
+            position.y = TH08_ECL_READ_F_RAWARG(ctx, 2);
+            position.z = TH08_ECL_READ_F_RAWARG(ctx, 3);
+            TH08_ECL_CONTEXT_API(ctx)->TransformSpawnVector(reinterpret_cast<Vec3 *>(&position), &TH08_ECL_AT(ctx, Vec3, 0x2D34));
+            g_EnemyManager.SpawnEnemy2(packet.type, &position,
+                                      TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
+                                      TH08_ECL_READ_I(ctx, 6),
+                                      (i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18));
         }
         break;
     case 95:
-        TH08_ECL_CONTEXT_API(ctx)->ClearOrLimitBullets(8000, 0);
+        g_EnemyManager.FUN_0042efb0(8000, 0);
         break;
     case 149: TH08_ECL_AT(ctx, u16, 0x20A) = (u16)TH08_ECL_READ_I(ctx, 0); break;
     case 150:
         TH08_ECL_AT(ctx, u16, 0x4AE + TH08_ECL_RAW_I(ctx, 0) * 0x2A4) = TH08_ECL_RAW_U16(ctx, 4);
         break;
-    case 112: TH08_ECL_CONTEXT_API(ctx)->Call00415C60(); break;
+    case 112: g_BulletManager.bulletmanager_fun_00415c60(); break;
 
     case 113:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
@@ -820,7 +827,7 @@ enter_subroutine:
         break;
     case 153:
         TH08_ECL_AT(ctx, i32, 0x337C) = (i32)TH08_ECL_AT(ctx, i16, 0x2CEE);
-        TH08_ECL_CONTEXT_API(ctx)->SetTimer(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E14, 0);
+        *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E14) = 0;
         break;
     case 155:
         TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xF7FFFFFF) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 27);
@@ -841,7 +848,7 @@ enter_subroutine:
         break;
     case 160: *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x5354) = TH08_ECL_READ_I(ctx, 0); break;
     case 161: TH08_ECL_CONTEXT_API(ctx)->SetAngleFromPosition(&TH08_ECL_AT(ctx, Vec3, 0x2D88), TH08_ECL_READ_F(ctx, 0)); break;
-    case 162: TH08_ECL_CONTEXT_API(ctx)->Call00430830(4); break;
+    case 162: g_BulletManager.RemoveAllBullets(4); break;
     case 164:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         TH08_ECL_CONTEXT_API(ctx)->Call0041F0B0(lhsInt);
@@ -871,7 +878,7 @@ enter_subroutine:
         TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xBFFFFFFF) | ((TH08_ECL_READ_I(ctx, 0) & 1) << 30);
         break;
     case 183:
-        TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0x7FFFFFFF) | ((u32)TH08_ECL_READ_I(ctx, 0) << 31);
+        TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0x7FFFFFFF) | ((u32)(TH08_ECL_READ_I(ctx, 0) & 1) << 31);
         break;
     case 176:
     {
@@ -927,7 +934,7 @@ enter_subroutine:
     case 178: TH08_ECL_CONTEXT_API(ctx)->Call004224A0(TH08_ECL_CONTEXT_ENEMY(ctx)); break;
 #endif
     case 179: TH08_ECL_CONTEXT_API(ctx)->Call00439007(); break;
-    case 180: TH08_ECL_CONTEXT_API(ctx)->Call004390D6(); break;
+    case 180: g_Gui.FUN_004390d6(); break;
     case 181:
         if (TH08_ECL_CONTEXT_API(ctx)->GetGameState() < 12)
         {
