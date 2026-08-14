@@ -2,6 +2,7 @@
 
 #include "BulletManager.hpp"
 #include "GameManager.hpp"
+#include "Gui.hpp"
 #include "ItemManager.hpp"
 #include "Player.hpp"
 
@@ -9,6 +10,8 @@ namespace th08
 {
 
 DIFFABLE_STATIC(ItemManager, g_ItemManager);
+DIFFABLE_STATIC(i32, g_MaxValuePointItemsCollected);
+
 
 #pragma var_order(i, item)
 Item *ItemManager::SpawnItem(Float3 *position, ItemType itemType, i32 state)
@@ -167,14 +170,138 @@ void Item::CollectPowerSmall()
 {
 }
 
-// STUB: th08 0x440e40
+// FUNCTION: th08 0x440e40
 void Item::CollectPoint()
 {
+    i32 currentPointItemValue;
+    i32 isAbovePointLine;
+    i32 pointItemValue;
+    i32 pointItemValueBase = g_GameManager.globals->pointItemValue;
+
+    if (this->currentPosition.y < g_PlayerPrimaryShtFile->pointItemValueLine)
+    {
+        isAbovePointLine = true;
+    }
+    else
+    {
+        isAbovePointLine = false;
+    }
+
+    if (isAbovePointLine)
+    {
+        pointItemValue = pointItemValueBase;
+    }
+    else
+    {
+        pointItemValue =
+            pointItemValueBase / 2 -
+            (i32)(this->currentPosition.y - g_PlayerPrimaryShtFile->pointItemValueLine) *
+                (g_GameManager.globals->pointItemValue / 1000);
+    }
+
+    currentPointItemValue = pointItemValue;
+    if (this->isMaxValue == 1)
+    {
+        currentPointItemValue = pointItemValueBase;
+    }
+
+    currentPointItemValue -= currentPointItemValue % 10;
+    if (g_GameManager.GaugeIsExtremelyHuman())
+    {
+        currentPointItemValue += currentPointItemValue;
+    }
+
+    g_AsciiManager.CreateScorePopup(&this->currentPosition, currentPointItemValue,
+                                    currentPointItemValue >= pointItemValueBase ? 0xffffff00 : 0xffffffff);
+    if (currentPointItemValue >= pointItemValueBase)
+    {
+        this->isMaxValue = true;
+    }
+
+    g_GameManager.AddScore(currentPointItemValue);
+    g_GameManager.globals->pointItemsCollectedInStage++;
+    g_GameManager.globals->pointItemsCollected++;
+    g_Gui.flags.pointDisplayUpdateFrames = 2;
+
+    if (currentPointItemValue >= pointItemValueBase)
+    {
+        g_GameManager.IncreaseSubrank(10);
+    }
+    else
+    {
+        g_GameManager.IncreaseSubrank(3);
+    }
+
+    if ((i32)g_GameManager.globals->pointItemExtendsSoFar >= 0)
+    {
+        for (;;)
+        {
+            ItemManager::UpdatePointItemExtendThreshold();
+            if (g_GameManager.globals->pointItemsCollected < g_GameManager.globals->nextPointItemExtendThreshold)
+            {
+                break;
+            }
+            g_GameManager.CollectExtend();
+            g_GameManager.globals->pointItemExtendsSoFar++;
+        }
+    }
+
+    g_MaxValuePointItemsCollected++;
+    g_GameManager.UpdateAntiTamper();
 }
 
-// STUB: th08 0x441020
+// FUNCTION: th08 0x441020
+#pragma var_order(pointItemValueBase, currentPointItemValue, pointItemValue, isAbovePointLine, this)
 void Item::CollectPointSmall()
 {
+    i32 pointItemValueBase = g_GameManager.globals->pointItemValue;
+    i32 pointItemValue;
+    i32 currentPointItemValue;
+    i32 isAbovePointLine;
+
+    if (this->currentPosition.y < g_PlayerPrimaryShtFile->pointItemValueLine)
+    {
+        isAbovePointLine = true;
+    }
+    else
+    {
+        isAbovePointLine = false;
+    }
+
+    if (isAbovePointLine)
+    {
+        pointItemValue = pointItemValueBase;
+    }
+    else
+    {
+        pointItemValue =
+            pointItemValueBase / 2 -
+            (i32)(this->currentPosition.y - g_PlayerPrimaryShtFile->pointItemValueLine) *
+                (g_GameManager.globals->pointItemValue / 1000);
+    }
+
+    currentPointItemValue = pointItemValue;
+    if (this->isMaxValue == 1)
+    {
+        currentPointItemValue = pointItemValueBase;
+    }
+
+    pointItemValueBase /= 10;
+    pointItemValueBase -= pointItemValueBase % 10;
+    currentPointItemValue /= 10;
+    currentPointItemValue -= currentPointItemValue % 10;
+    if (g_GameManager.GaugeIsExtremelyHuman())
+    {
+        currentPointItemValue += currentPointItemValue;
+    }
+
+    g_AsciiManager.CreateScorePopup(&this->currentPosition, currentPointItemValue,
+                                    currentPointItemValue >= pointItemValueBase ? 0xffffff00 : 0xffffffff);
+    g_GameManager.AddScore(currentPointItemValue);
+    if (currentPointItemValue >= pointItemValueBase)
+    {
+        this->isMaxValue = true;
+    }
 }
 
 // STUB: th08 0x441170

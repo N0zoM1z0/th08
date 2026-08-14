@@ -90,6 +90,36 @@ i32 GameManager::CalcChecksum(u8 *address, i32 size)
     return sum;
 }
 
+void GameManager::SetPower(i32 power)
+{
+    this->globals->playerPower = (f32)power;
+    this->UpdateAntiTamper();
+}
+
+void GameManager::AddScore(i32 score)
+{
+    this->globals->score += score / 10;
+}
+
+void GameManager::AddTimeOrbs(i32 amount)
+{
+    if (amount < 0 && this->globals->currentTimeOrbs < -amount)
+    {
+        this->globals->currentTimeOrbs = 0;
+    }
+    else
+    {
+        this->globals->currentTimeOrbs += amount;
+        this->globals->totalTimeOrbs += amount;
+        this->hscr.numTimeOrbsCollected += amount;
+        this->UpdateAntiTamper();
+        if (amount > 0)
+        {
+            this->globals->pointItemValue += 10 * (((this->globals->totalTimeOrbs & 1) + amount) / 2);
+        }
+    }
+}
+
 void GameManager::CollectExtend()
 {
     if (this->GetLives() < 8)

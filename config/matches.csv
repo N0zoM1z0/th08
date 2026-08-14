@@ -499,3 +499,16 @@ address,name,size,status,match_percent,unit,evidence
 0x004663B0,th08::AnmManager::DrawTextLeft,238,matching,100.00,accepted-exact-004663b0,python3 scripts/compare-function.py accepted-exact-004663b0 --json
 0x00466A60,th08::AnmManager::PreloadSurface,126,matching,100.00,accepted-exact-00466a60,python3 scripts/compare-function.py accepted-exact-00466a60 --json
 0x00466D70,th08::AnmManager::CopySurfaceToBackbuffer2,424,matching,100.00,accepted-exact-00466d70,python3 scripts/compare-function.py accepted-exact-00466d70 --json
+0x00441770,th08::Item::Delete,106,matching,100.00,accepted-reccmp-exact-00441770,python3 scripts/compare-function.py accepted-reccmp-exact-00441770 --json
+0x004417E0,th08::ItemManager::GetTimeOrbCount,79,matching,100.00,accepted-reccmp-exact-004417e0,python3 scripts/compare-function.py accepted-reccmp-exact-004417e0 --json
+0x004628B0,th08::AnmManager::DrawInner,1359,matching,100.00,accepted-reccmp-exact-004628b0,python3 scripts/compare-function.py accepted-reccmp-exact-004628b0 --json
+0x00463210,th08::AnmManager::Draw2D,600,matching,100.00,accepted-reccmp-exact-00463210,python3 scripts/compare-function.py accepted-reccmp-exact-00463210 --json
+0x00406720,th08::AnmVm::AnmVm,146,matching,100.00,manual-comdat-exact-00406720,python3 scripts/compare-function.py manual-comdat-exact-00406720 --json
+0x004068A0,th08::AnmLoaded::InitializeAndSetSprite,49,matching,100.00,manual-comdat-exact-004068a0,python3 scripts/compare-function.py manual-comdat-exact-004068a0 --json
+0x004069F0,th08::AnmLoaded::SetAndExecuteScriptIdx,64,matching,100.00,manual-comdat-exact-004069f0,python3 scripts/compare-function.py manual-comdat-exact-004069f0 --json
+0x0040B910,th08::AnmLoaded::ExecuteAnmIdx,152,matching,100.00,manual-comdat-exact-0040b910,python3 scripts/compare-function.py manual-comdat-exact-0040b910 --json
+0x0040BA10,th08::AnmManager::ClearTexture,24,matching,100.00,manual-comdat-exact-0040ba10,python3 scripts/compare-function.py manual-comdat-exact-0040ba10 --json
+0x0040D390,th08::Rng::GetRandomF32InRange,24,matching,100.00,manual-comdat-exact-0040d390,python3 scripts/compare-function.py manual-comdat-exact-0040d390 --json
+0x004398E8,th08::AsciiManager::SetColor,23,matching,100.00,manual-comdat-exact-004398e8,python3 scripts/compare-function.py manual-comdat-exact-004398e8 --json
+0x00447D04,th08::GameManager::IsExtraUnlockedWithAllTeams,82,matching,100.00,manual-comdat-exact-00447d04,python3 scripts/compare-function.py manual-comdat-exact-00447d04 --json
+0x00449C79,th08::Supervisor::IsMusicPreloadEnabled,24,matching,100.00,manual-comdat-exact-00449c79,python3 scripts/compare-function.py manual-comdat-exact-00449c79 --json

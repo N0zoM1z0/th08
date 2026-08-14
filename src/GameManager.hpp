@@ -216,6 +216,9 @@ struct GameManager
 
     i32 GetClockTimeIncrement();
     void AdvanceToNextStage();
+    void SetPower(i32 power);
+    void AddScore(i32 score);
+    void AddTimeOrbs(i32 amount);
 
     void AddLives(int lives)
     {

@@ -41927,3 +41927,1074 @@ offset = 0x18E
 type = "DIR32"
 symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
 target = 0x017CE758
+
+# 2026-08 reccmp-name driven exact candidates accepted after canonical comparison.
+# REVIEW ARTIFACT: reccmp-name driven candidates; canonical compare-function acceptance still required.
+# Target: Japanese TH08 1.00d SHA-256 330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924
+# Gates: reccmp function row, mapping size agreement, isolated COFF extent, exact target replay, direct-call multiset, unique owner.
+# Candidates: 4 functions / 2144 authored bytes.
+
+# Ledger name: th08::AnmManager::DrawInner
+# Source symbol name: th08::AnmManager::DrawInner; mapping seed=th08::AnmManager::FUN_004628b0
+# Evidence: 97 relocations; 8 direct calls; full replay exact; implemented ledger=False.
+[[units]]
+name = "accepted-reccmp-exact-004628b0"
+object = "build/AnmManager.obj"
+symbol = "?DrawInner@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target_address = 0x004628B0
+size = 0x54F
+
+[[units.relocations]]
+offset = 0xE
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x17
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x20
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x29
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x32
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x3B
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x44
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x4D
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x56
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x5F
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x68
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x71
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x7A
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x83
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x8C
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x95
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0xA5
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0xAD
+type = "DIR32"
+symbol = "_g_ZeroPointFive"
+target = 0x004B847C
+
+[[units.relocations]]
+offset = 0xB3
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0xBB
+type = "DIR32"
+symbol = "_g_ZeroPointFive"
+target = 0x004B847C
+
+[[units.relocations]]
+offset = 0xC1
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0xC9
+type = "DIR32"
+symbol = "_g_ZeroPointFive"
+target = 0x004B847C
+
+[[units.relocations]]
+offset = 0xCF
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0xD7
+type = "DIR32"
+symbol = "_g_ZeroPointFive"
+target = 0x004B847C
+
+[[units.relocations]]
+offset = 0xDD
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0xE3
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0xE9
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0xEF
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0xF5
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0xFB
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x101
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x107
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x11F
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x124
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x129
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x141
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x147
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x14D
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x165
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x16B
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x171
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x189
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x18E
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x193
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x199
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x19F
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1AC
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1B7
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1C6
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1D6
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1ED
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1FD
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x214
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x21A
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x227
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x232
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x241
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x251
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x268
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x278
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x28F
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x295
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x2A2
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x2AD
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x2BC
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x2CC
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x2E3
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x2F3
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x30A
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x310
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x31D
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x328
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x337
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x347
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x35E
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x36E
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x385
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x3A2
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x3BE
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x3C4
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x3E1
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x3E7
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x439
+type = "REL32"
+symbol = "?FlushVertexBuffer@AnmManager@th08@@QAEXXZ"
+target = 0x00462E40
+
+[[units.relocations]]
+offset = 0x44A
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x452
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x470
+type = "REL32"
+symbol = "?FlushVertexBuffer@AnmManager@th08@@QAEXXZ"
+target = 0x00462E40
+
+[[units.relocations]]
+offset = 0x4D2
+type = "REL32"
+symbol = "?MixColors@th08@@YIEEE@Z"
+target = 0x00462750
+
+[[units.relocations]]
+offset = 0x4E3
+type = "REL32"
+symbol = "?MixColors@th08@@YIEEE@Z"
+target = 0x00462750
+
+[[units.relocations]]
+offset = 0x4F3
+type = "REL32"
+symbol = "?MixColors@th08@@YIEEE@Z"
+target = 0x00462750
+
+[[units.relocations]]
+offset = 0x504
+type = "REL32"
+symbol = "?MixColors@th08@@YIEEE@Z"
+target = 0x00462750
+
+[[units.relocations]]
+offset = 0x510
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x519
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x521
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x52A
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x536
+type = "REL32"
+symbol = "?SetRenderStateForVm@AnmManager@th08@@QAEXPAUAnmVm@2@@Z"
+target = 0x00462790
+
+[[units.relocations]]
+offset = 0x53B
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x543
+type = "REL32"
+symbol = "?AddSpriteToDrawBuffer@AnmManager@th08@@QAE?AW4ZunResult@@PAUVertexTex1DiffuseXyzrhw@2@@Z"
+target = 0x00462F10
+
+# Ledger name: th08::AnmManager::Draw2D
+# Source symbol name: th08::AnmManager::Draw2D; mapping seed=th08::AnmManager::FUN_00463210
+# Evidence: 37 relocations; 7 direct calls; full replay exact; implemented ledger=False.
+[[units]]
+name = "accepted-reccmp-exact-00463210"
+object = "build/AnmManager.obj"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target_address = 0x00463210
+size = 0x258
+
+[[units.relocations]]
+offset = 0x11
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x24
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462FF0
+
+[[units.relocations]]
+offset = 0x31
+type = "REL32"
+symbol = "?IsVisible@AnmVmBase@th08@@QAEIXZ"
+target = 0x004066E0
+
+[[units.relocations]]
+offset = 0xAB
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0xC0
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0xEA
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0xF2
+type = "REL32"
+symbol = "?TranslateRotation@AnmManager@th08@@QAEXPAUVertexTex1DiffuseXyzrhw@2@MMMMMM@Z"
+target = 0x004631D0
+
+[[units.relocations]]
+offset = 0x114
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x11C
+type = "REL32"
+symbol = "?TranslateRotation@AnmManager@th08@@QAEXPAUVertexTex1DiffuseXyzrhw@2@MMMMMM@Z"
+target = 0x004631D0
+
+[[units.relocations]]
+offset = 0x13E
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x146
+type = "REL32"
+symbol = "?TranslateRotation@AnmManager@th08@@QAEXPAUVertexTex1DiffuseXyzrhw@2@MMMMMM@Z"
+target = 0x004631D0
+
+[[units.relocations]]
+offset = 0x163
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x16B
+type = "REL32"
+symbol = "?TranslateRotation@AnmManager@th08@@QAEXPAUVertexTex1DiffuseXyzrhw@2@MMMMMM@Z"
+target = 0x004631D0
+
+[[units.relocations]]
+offset = 0x17A
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x180
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x186
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x18B
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x190
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x196
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x19C
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1B8
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1C1
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1C7
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1D0
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1D6
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1DF
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1E5
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1EE
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x20A
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x213
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x219
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x222
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x228
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x231
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x237
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x240
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x24E
+type = "REL32"
+symbol = "?DrawInner@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x004628B0
+
+# Ledger name: th08::Item::Delete
+# Source symbol name: th08::Item::Delete; mapping seed=th08::Item::FUN_00441770
+# Evidence: 2 relocations; 0 direct calls; full replay exact; implemented ledger=False.
+[[units]]
+name = "accepted-reccmp-exact-00441770"
+object = "build/ItemManager.obj"
+symbol = "?Delete@Item@th08@@QAEXXZ"
+target_address = 0x00441770
+size = 0x6A
+
+[[units.relocations]]
+offset = 0x4F
+type = "DIR32"
+symbol = "?g_ItemManager@th08@@3UItemManager@1@A"
+target = 0x01653648
+
+[[units.relocations]]
+offset = 0x62
+type = "DIR32"
+symbol = "?g_ItemManager@th08@@3UItemManager@1@A"
+target = 0x01653648
+
+# Ledger name: th08::ItemManager::GetTimeOrbCount
+# Source symbol name: th08::ItemManager::GetTimeOrbCount; mapping seed=th08::ItemManager::FUN_004417e0
+# Evidence: 0 relocations; 0 direct calls; full replay exact; implemented ledger=False.
+[[units]]
+name = "accepted-reccmp-exact-004417e0"
+object = "build/ItemManager.obj"
+symbol = "?GetTimeOrbCount@ItemManager@th08@@QAEHXZ"
+target_address = 0x004417E0
+size = 0x4F
+
+# 2026-08 manually reviewed COMDAT exact leaf batch.
+# REVIEW ARTIFACT: manually selected COMDAT/exact leaf candidates; canonical compare-function acceptance required.
+# Target: Japanese TH08 1.00d SHA-256 330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924
+# Owner choices are source-owner/TU review selections from exact nonunique scanner and IDA caller evidence.
+
+# Ledger name: th08::AnmVm::AnmVm
+# Mapping seed name: th08::AnmVm::AnmVm
+# Evidence: manually selected exact COMDAT body; 8 relocations; 8 direct calls; IDA callers/source owner reviewed.
+[[units]]
+name = "manual-comdat-exact-00406720"
+object = "build/AnmManager.obj"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target_address = 0x00406720
+size = 0x92
+
+[[units.relocations]]
+offset = 0xC
+type = "REL32"
+symbol = "??0AnmVmBase@th08@@QAE@XZ"
+target = 0x004067C0
+
+[[units.relocations]]
+offset = 0x1A
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x28
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x36
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x44
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x52
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x60
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x6E
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+# Ledger name: th08::AnmLoaded::InitializeAndSetSprite
+# Mapping seed name: th08::AnmFileDesc::InitializeAndSetSprite
+# Evidence: manually selected exact COMDAT body; 2 relocations; 2 direct calls; IDA callers/source owner reviewed.
+[[units]]
+name = "manual-comdat-exact-004068a0"
+object = "build/AsciiManager.obj"
+symbol = "?InitializeAndSetSprite@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target_address = 0x004068A0
+size = 0x31
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "?Initialize@AnmVmBase@th08@@QAEXXZ"
+target = 0x004068E0
+
+[[units.relocations]]
+offset = 0x27
+type = "REL32"
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
+
+# Ledger name: th08::AnmLoaded::SetAndExecuteScriptIdx
+# Mapping seed name: th08::AnmFileDesc::SetAndExecuteScriptIdx
+# Evidence: manually selected exact COMDAT body; 1 relocations; 1 direct calls; IDA callers/source owner reviewed.
+[[units]]
+name = "manual-comdat-exact-004069f0"
+object = "build/AsciiManager.obj"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target_address = 0x004069F0
+size = 0x40
+
+[[units.relocations]]
+offset = 0x36
+type = "REL32"
+symbol = "?SetAndExecuteScript@AnmLoaded@th08@@QAEXPAUAnmVm@2@PAUAnmRawInstr@2@@Z"
+target = 0x0045E580
+
+# Ledger name: th08::AnmLoaded::ExecuteAnmIdx
+# Mapping seed name: th08::AnmFileDesc::ExecuteAnmIdx
+# Evidence: manually selected exact COMDAT body; 3 relocations; 3 direct calls; IDA callers/source owner reviewed.
+[[units]]
+name = "manual-comdat-exact-0040b910"
+object = "build/AnmManager.obj"
+symbol = "?ExecuteAnmIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target_address = 0x0040B910
+size = 0x98
+
+[[units.relocations]]
+offset = 0x21
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x48
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x8E
+type = "REL32"
+symbol = "?SetAndExecuteScript@AnmLoaded@th08@@QAEXPAUAnmVm@2@PAUAnmRawInstr@2@@Z"
+target = 0x0045E580
+
+# Ledger name: th08::AnmManager::ClearTexture
+# Mapping seed name: th08::AnmManager::ClearTexture
+# Evidence: manually selected exact COMDAT body; 0 relocations; 0 direct calls; IDA callers/source owner reviewed.
+[[units]]
+name = "manual-comdat-exact-0040ba10"
+object = "build/main.obj"
+symbol = "?ClearTexture@AnmManager@th08@@QAEXXZ"
+target_address = 0x0040BA10
+size = 0x18
+
+# Ledger name: th08::Rng::GetRandomF32InRange
+# Mapping seed name: th08::Rng::GetRandomF32InRange
+# Evidence: manually selected exact COMDAT body; 1 relocations; 1 direct calls; IDA callers/source owner reviewed.
+[[units]]
+name = "manual-comdat-exact-0040d390"
+object = "build/ItemManager.obj"
+symbol = "?GetRandomF32InRange@Rng@th08@@QAEMM@Z"
+target_address = 0x0040D390
+size = 0x18
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "?GetRandomF32@Rng@th08@@QAEMXZ"
+target = 0x0043ED50
+
+# Ledger name: th08::AsciiManager::SetColor
+# Mapping seed name: th08::AsciiManager::SetColor
+# Evidence: manually selected exact COMDAT body; 0 relocations; 0 direct calls; IDA callers/source owner reviewed.
+[[units]]
+name = "manual-comdat-exact-004398e8"
+object = "build/MusicRoom.obj"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target_address = 0x004398E8
+size = 0x17
+
+# Ledger name: th08::GameManager::IsExtraUnlockedWithAllTeams
+# Mapping seed name: th08::GameManager::FinalBClearedWithAllTeams
+# Evidence: manually selected exact COMDAT body; 4 relocations; 4 direct calls; IDA callers/source owner reviewed.
+[[units]]
+name = "manual-comdat-exact-00447d04"
+object = "build/Supervisor.obj"
+symbol = "?IsExtraUnlockedWithAllTeams@GameManager@th08@@QAEIXZ"
+target_address = 0x00447D04
+size = 0x52
+
+[[units.relocations]]
+offset = 0xE
+type = "REL32"
+symbol = "?IsExtraUnlockedForCharacter@GameManager@th08@@QAEIH@Z"
+target = 0x0043C15F
+
+[[units.relocations]]
+offset = 0x1C
+type = "REL32"
+symbol = "?IsExtraUnlockedForCharacter@GameManager@th08@@QAEIH@Z"
+target = 0x0043C15F
+
+[[units.relocations]]
+offset = 0x2A
+type = "REL32"
+symbol = "?IsExtraUnlockedForCharacter@GameManager@th08@@QAEIH@Z"
+target = 0x0043C15F
+
+[[units.relocations]]
+offset = 0x38
+type = "REL32"
+symbol = "?IsExtraUnlockedForCharacter@GameManager@th08@@QAEIH@Z"
+target = 0x0043C15F
+
+# Ledger name: th08::Supervisor::IsMusicPreloadEnabled
+# Mapping seed name: th08::Supervisor::IsMusicPreloadEnabled
+# Evidence: manually selected exact COMDAT body; 0 relocations; 0 direct calls; IDA callers/source owner reviewed.
+[[units]]
+name = "manual-comdat-exact-00449c79"
+object = "build/MusicRoom.obj"
+symbol = "?IsMusicPreloadEnabled@Supervisor@th08@@QAEIXZ"
+target_address = 0x00449C79
+size = 0x18

@@ -8,6 +8,8 @@ namespace th08
 
 struct PlayerRawShtFile
 {
+    unknown_fields(0x0, 0x1c);
+    f32 pointItemValueLine;
 };
 
 struct PlayerUnkStruct0x40
@@ -104,5 +106,6 @@ struct Player
 C_ASSERT(sizeof(Player) == 0xe2b30);
 
 DIFFABLE_EXTERN(Player, g_Player);
+DIFFABLE_EXTERN(PlayerRawShtFile *, g_PlayerPrimaryShtFile);
 
 } /* namespace th08 */
