@@ -1,3 +1,4 @@
 address,owner,started_utc,branch,notes
 0x004184B0,run_ecl_match,2026-08-13T05:35:49Z,main,EclManager::RunEcl lexical-integration exact lane; EclRun.cpp and private inl files only
-0x004480F8,kimi_code,2026-08-13T14:09:50Z,main,Supervisor small functions 0x4480f8-0x448a65 (FadeOutMusic/DeleteCriticalSections); src/Supervisor.cpp only
+0x00439BC7,kimi_code,2026-08-13T13:55:28Z,main,GameManager::OnUpdate 0x439bc7-0x43aa03; src/GameManager.cpp only
+0x004037B0,kimi_code,2026-08-13T14:09:50Z,main,PauseMenu/RetryMenu/AsciiManager cluster 0x4037b0-0x405e10; src/PauseMenu.cpp/RetryMenu.cpp/AsciiManager.cpp

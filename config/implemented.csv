@@ -457,3 +457,4 @@ th08::CWaveFile::GetFormat
 th08::TextHelper::~TextHelper
 th08::CSound::GetWaveFile
 th08::CSoundManager::GetDirectSound
+th08::AsciiManager::DrawPercentage

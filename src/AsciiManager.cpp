@@ -627,9 +627,138 @@ void AsciiManager::OnDrawHighPrioImpl()
 {
 }
 
-// STUB: th08 0x405e10
+#pragma var_order(xOffset, numDigits, absPercentage)
+// FUNCTION: th08 0x405e10
 void AsciiManager::DrawPercentage(Float3 *position, i32 percentage, D3DCOLOR color)
 {
+    f32 xOffset;
+    i32 absPercentage;
+    i32 numDigits;
+
+    numDigits = 4;
+    if (percentage < 0)
+    {
+        numDigits++;
+    }
+
+    absPercentage = abs(percentage);
+    if (absPercentage >= 10000)
+    {
+        numDigits += 3;
+    }
+    else
+    {
+        if (absPercentage >= 1000)
+        {
+            numDigits += 2;
+        }
+        else
+        {
+            numDigits++;
+        }
+    }
+
+    xOffset = (f32)numDigits * 3.5f - 3.5f - 4.0f;
+
+    this->percentageText.pos = *position;
+    this->percentageText.pos.x -= xOffset;
+    this->percentageText.color1.d3dColor = color;
+
+    if (percentage < 0)
+    {
+        this->asciiAnm->SetSprite(&this->percentageText, 148);
+        g_AnmManager->DrawNoRotation(&this->percentageText);
+        this->percentageText.pos.x += 7.0f;
+    }
+
+    if (absPercentage >= 10000)
+    {
+        this->asciiAnm->SetSprite(&this->percentageText, 137);
+        g_AnmManager->DrawNoRotation(&this->percentageText);
+        this->percentageText.pos.x += 7.0f;
+
+        this->asciiAnm->SetSprite(&this->percentageText, 136);
+        g_AnmManager->DrawNoRotation(&this->percentageText);
+        this->percentageText.pos.x += 7.0f;
+
+        this->asciiAnm->SetSprite(&this->percentageText, 136);
+        g_AnmManager->DrawNoRotation(&this->percentageText);
+        this->percentageText.pos.x += 7.0f;
+
+        this->asciiAnm->SetSprite(&this->percentageText, 147);
+        g_AnmManager->DrawNoRotation(&this->percentageText);
+        this->percentageText.pos.x += 5.0f;
+        this->percentageText.scale.y = 0.8f;
+        this->percentageText.scale.x = 0.8f;
+        this->percentageText.pos.y += 2.0f;
+
+        this->asciiAnm->SetSprite(&this->percentageText, 136);
+        g_AnmManager->DrawNoRotation(&this->percentageText);
+        this->percentageText.pos.x += 5.0f;
+
+        this->asciiAnm->SetSprite(&this->percentageText, 136);
+        g_AnmManager->DrawNoRotation(&this->percentageText);
+        this->percentageText.pos.x += 7.0f;
+    }
+    else if (absPercentage >= 1000)
+    {
+        numDigits = absPercentage;
+        this->asciiAnm->SetSprite(&this->percentageText, numDigits / 1000 + 136);
+        numDigits = numDigits % 1000;
+        g_AnmManager->DrawNoRotation(&this->percentageText);
+        this->percentageText.pos.x += 7.0f;
+
+        this->asciiAnm->SetSprite(&this->percentageText, numDigits / 100 + 136);
+        numDigits = numDigits % 100;
+        g_AnmManager->DrawNoRotation(&this->percentageText);
+        this->percentageText.pos.x += 7.0f;
+
+        this->asciiAnm->SetSprite(&this->percentageText, 147);
+        g_AnmManager->DrawNoRotation(&this->percentageText);
+        this->percentageText.pos.x += 5.0f;
+        this->percentageText.scale.y = 0.8f;
+        this->percentageText.scale.x = 0.8f;
+        this->percentageText.pos.y += 2.0f;
+
+        this->asciiAnm->SetSprite(&this->percentageText, numDigits / 10 + 136);
+        numDigits = numDigits % 10;
+        g_AnmManager->DrawNoRotation(&this->percentageText);
+        this->percentageText.pos.x += 5.0f;
+
+        this->asciiAnm->SetSprite(&this->percentageText, numDigits + 136);
+        g_AnmManager->DrawNoRotation(&this->percentageText);
+        this->percentageText.pos.x += 7.0f;
+    }
+    else
+    {
+        numDigits = absPercentage;
+        this->asciiAnm->SetSprite(&this->percentageText, numDigits / 100 + 136);
+        numDigits = numDigits % 100;
+        g_AnmManager->DrawNoRotation(&this->percentageText);
+        this->percentageText.pos.x += 7.0f;
+
+        this->asciiAnm->SetSprite(&this->percentageText, 147);
+        g_AnmManager->DrawNoRotation(&this->percentageText);
+        this->percentageText.pos.x += 5.0f;
+        this->percentageText.scale.y = 0.8f;
+        this->percentageText.scale.x = 0.8f;
+        this->percentageText.pos.y += 2.0f;
+
+        this->asciiAnm->SetSprite(&this->percentageText, numDigits / 10 + 136);
+        numDigits = numDigits % 10;
+        g_AnmManager->DrawNoRotation(&this->percentageText);
+        this->percentageText.pos.x += 5.0f;
+
+        this->asciiAnm->SetSprite(&this->percentageText, numDigits + 136);
+        g_AnmManager->DrawNoRotation(&this->percentageText);
+        this->percentageText.pos.x += 7.0f;
+    }
+
+    this->percentageText.scale.y = 1.0f;
+    this->percentageText.scale.x = 1.0f;
+    this->percentageText.pos.y -= 2.0f;
+    this->asciiAnm->SetSprite(&this->percentageText, 146);
+    g_AnmManager->DrawNoRotation(&this->percentageText);
 }
 
 } /* namespace th08 */
