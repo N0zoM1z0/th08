@@ -146,6 +146,106 @@ ZunResult Player::DeletedCallback(Player *player)
     return ZUN_SUCCESS;
 }
 
+#pragma var_order(slot, index)
+// FUNCTION: th08 0x44de60
+PlayerUnkStruct0x40 *Player::FUN_0044de60(const Float2 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+{
+    PlayerUnkStruct0x40 *slot = this->playerSlotsC;
+    i32 index;
+
+    for (index = 0; index < 191; index++, slot++)
+    {
+        if (!slot->active)
+            break;
+    }
+
+    slot->Reset();
+    slot->active = true;
+    slot->center.x = center->x;
+    slot->center.y = center->y;
+    slot->size.x = value1;
+    slot->size.y = value2;
+    slot->lifetime = value4;
+    slot->collisionValue = value3;
+
+    return slot;
+}
+
+#pragma var_order(slot, index)
+// FUNCTION: th08 0x44df00
+PlayerUnkStruct0x40 *Player::FUN_0044df00(const Float2 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+{
+    PlayerUnkStruct0x40 *slot = this->playerSlotsC;
+    i32 index;
+
+    for (index = 0; index < 191; index++, slot++)
+    {
+        if (!slot->active)
+            break;
+    }
+
+    slot->Reset();
+    slot->active = true;
+    slot->center.x = center->x;
+    slot->center.y = center->y;
+    slot->radius = value1;
+    slot->radiusGrowth = value2;
+    slot->lifetime = value3;
+    slot->collisionValue = value4;
+
+    return slot;
+}
+
+#pragma var_order(slot, index)
+// FUNCTION: th08 0x44dfa0
+PlayerUnkStruct0x40 *Player::FUN_0044dfa0(const Float2 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+{
+    PlayerUnkStruct0x40 *slot = this->playerSlotsB;
+    i32 index;
+
+    for (index = 0; index < 191; index++, slot++)
+    {
+        if (!slot->active)
+            break;
+    }
+
+    slot->Reset();
+    slot->active = true;
+    slot->center.x = center->x;
+    slot->center.y = center->y;
+    slot->size.x = value1;
+    slot->size.y = value2;
+    slot->lifetime = value4;
+    slot->damage = value3;
+
+    return slot;
+}
+
+#pragma var_order(slot, index)
+// FUNCTION: th08 0x44e040
+PlayerUnkStruct0x40 *Player::FUN_0044e040(const Float2 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+{
+    PlayerUnkStruct0x40 *slot = this->playerSlotsB;
+    i32 index;
+
+    for (index = 0; index < 191; index++, slot++)
+    {
+        if (!slot->active)
+            break;
+    }
+
+    slot->Reset();
+    slot->active = true;
+    slot->center.x = center->x;
+    slot->center.y = center->y;
+    slot->radius = value1;
+    slot->radiusGrowth = value2;
+    slot->lifetime = value4;
+    slot->damage = value3;
+
+    return slot;
+}
+
 void Player::CutChain()
 {
     g_Chain.Cut(g_PlayerCalcChain);

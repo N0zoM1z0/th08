@@ -776,10 +776,10 @@ th08::Player::AddedCallback,0x44d650,function
 th08::Player::DeletedCallback,0x44dc60,function
 th08::Player::CutChain,0x44dd10,function
 th08::Player::LoadShtFile,0x44dd70,function
-FUN_0044de60,0x44de60,function
-FUN_0044df00,0x44df00,function
-FUN_0044dfa0,0x44dfa0,function
-FUN_0044e040,0x44e040,function
+th08::Player::FUN_0044de60,0x44de60,function
+th08::Player::FUN_0044df00,0x44df00,function
+th08::Player::FUN_0044dfa0,0x44dfa0,function
+th08::Player::FUN_0044e040,0x44e040,function
 th08::IsResourceReloadDisabled,0x44e0e0,function
 th08::AnmVmBase::SetBlendModeAdditive,0x44e0f0,function
 th08::AnmVmBase::SetBlendModeNormal,0x44e120,function

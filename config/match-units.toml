@@ -118,6 +118,58 @@ target_address = 0x0044E370
 size = 0x23
 
 [[units]]
+name = "player-slot-allocate-c"
+object = "build/Player.obj"
+symbol = "?FUN_0044de60@Player@th08@@QAEPAUPlayerUnkStruct0x40@2@PBUFloat2@2@MMHH@Z"
+target_address = 0x0044DE60
+size = 0x99
+
+[[units.relocations]]
+offset = 0x4B
+type = "REL32"
+symbol = "?Reset@PlayerUnkStruct0x40@th08@@QAEXXZ"
+target = 0x0044E370
+
+[[units]]
+name = "player-slot-allocate-c-radius"
+object = "build/Player.obj"
+symbol = "?FUN_0044df00@Player@th08@@QAEPAUPlayerUnkStruct0x40@2@PBUFloat2@2@MMHH@Z"
+target_address = 0x0044DF00
+size = 0x99
+
+[[units.relocations]]
+offset = 0x4B
+type = "REL32"
+symbol = "?Reset@PlayerUnkStruct0x40@th08@@QAEXXZ"
+target = 0x0044E370
+
+[[units]]
+name = "player-slot-allocate-b"
+object = "build/Player.obj"
+symbol = "?FUN_0044dfa0@Player@th08@@QAEPAUPlayerUnkStruct0x40@2@PBUFloat2@2@MMHH@Z"
+target_address = 0x0044DFA0
+size = 0x99
+
+[[units.relocations]]
+offset = 0x4B
+type = "REL32"
+symbol = "?Reset@PlayerUnkStruct0x40@th08@@QAEXXZ"
+target = 0x0044E370
+
+[[units]]
+name = "player-slot-allocate-b-radius"
+object = "build/Player.obj"
+symbol = "?FUN_0044e040@Player@th08@@QAEPAUPlayerUnkStruct0x40@2@PBUFloat2@2@MMHH@Z"
+target_address = 0x0044E040
+size = 0x99
+
+[[units.relocations]]
+offset = 0x4B
+type = "REL32"
+symbol = "?Reset@PlayerUnkStruct0x40@th08@@QAEXXZ"
+target = 0x0044E370
+
+[[units]]
 name = "game-manager-set-youkai-gauge"
 object = "build/Player.obj"
 symbol = "?SetYoukaiGauge@GameManager@th08@@QAEXG@Z"

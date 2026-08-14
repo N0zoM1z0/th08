@@ -61,6 +61,15 @@ review the unit before claiming exactness.
   C++ value flow while allowing VC7 to retain one temporary; a separately
   named local can move fastcall parameter homes. Verify the whole function,
   since this is a source-shaping hypothesis rather than a byte-forcing device.
+- For a fixed-size slot allocator, retain the target-observed aggregate layout
+  and express the scan as a real `for` loop over the active member. Under this
+  VC7 `/Od` profile, `for (index = 0; index < limit; index++, slot++)` with
+  `if (!slot->active) break;` preserves the target's initial jump, increment
+  block, and split false/continue branches; assigning `Float2::x` and `y`
+  separately preserves two source-address loads and stores. This is evidence
+  for reusable allocator semantics, not permission to copy the limit, stride,
+  offsets, or field meanings into another subsystem. TH08 Player slot allocators
+  at `0x0044DE60..0x0044E0D8` are the exact corpus example.
 - If an inlined fixed-size structure-tail `memcpy` has the correct semantics,
   size, and `rep movsd` but schedules its count and source setup differently,
   probe the typed address of the first copied field instead of byte-pointer

@@ -1,4 +1,8 @@
 th08::utils::DebugPrint
+th08::Player::FUN_0044de60
+th08::Player::FUN_0044df00
+th08::Player::FUN_0044dfa0
+th08::Player::FUN_0044e040
 th08::utils::GuiDebugPrint
 th08::Chain::~Chain
 th08::ChainElem::ChainElem

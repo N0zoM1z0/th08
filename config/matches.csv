@@ -23,6 +23,10 @@ address,name,size,status,match_percent,unit,evidence
 0x0044DD10,th08::Player::CutChain,85,matching,100.00,player-cut-chain,python3 scripts/compare-function.py player-cut-chain --json
 0x0044C230,th08::Player::RegisterChain,351,matching,100.00,player-register-chain,python3 scripts/compare-function.py player-register-chain --json
 0x0044DC60,th08::Player::DeletedCallback,164,matching,100.00,player-deleted-callback,python3 scripts/compare-function.py player-deleted-callback --json
+0x0044DE60,th08::Player::FUN_0044de60,153,matching,100.00,player-slot-allocate-c,python3 scripts/compare-function.py player-slot-allocate-c --json
+0x0044DF00,th08::Player::FUN_0044df00,153,matching,100.00,player-slot-allocate-c-radius,python3 scripts/compare-function.py player-slot-allocate-c-radius --json
+0x0044DFA0,th08::Player::FUN_0044dfa0,153,matching,100.00,player-slot-allocate-b,python3 scripts/compare-function.py player-slot-allocate-b --json
+0x0044E040,th08::Player::FUN_0044e040,153,matching,100.00,player-slot-allocate-b-radius,python3 scripts/compare-function.py player-slot-allocate-b-radius --json
 0x0044E0E0,th08::IsResourceReloadDisabled,15,matching,100.00,resource-reload-disabled,python3 scripts/compare-function.py resource-reload-disabled --json
 0x0044E0F0,th08::AnmVmBase::SetBlendModeAdditive,35,matching,100.00,anm-vm-base-blend-additive,python3 scripts/compare-function.py anm-vm-base-blend-additive --json
 0x0044E120,th08::AnmVmBase::SetBlendModeNormal,32,matching,100.00,anm-vm-base-blend-normal,python3 scripts/compare-function.py anm-vm-base-blend-normal --json
