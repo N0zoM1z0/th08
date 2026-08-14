@@ -165,7 +165,7 @@ FUN_0040e610,0x40e610,0x16a,unknown,,u8
 FUN_0040e780,0x40e780,0x3c8,unknown,,u8
 FUN_0040eb50,0x40eb50,0x70,unknown,,u8
 FUN_0040ebc0,0x40ebc0,0x3d,unknown,,u8,u8
-FUN_0040ec00,0x40ec00,0x2b,unknown,,u8,u8
+th08::AnmVm::SetZRotation,0x40ec00,0x2b,__thiscall,,void,AnmVm*,f32
 FUN_0040ec30,0x40ec30,0x70,unknown,,u8,u8,u8,u8,u8
 FUN_0040eca0,0x40eca0,0xae,unknown,,u8,u8,u8,u8,u8
 FUN_0040ed50,0x40ed50,0x50,unknown,,u8,u8,u8,u8,u8

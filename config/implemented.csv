@@ -428,6 +428,7 @@ th08::AsciiManager::FUN_00422bb0
 th08::AsciiManager::SetGaugeInterrupt
 th08::AsciiManager::SetSpaceWidth
 th08::AnmManager::ClearSprite
+th08::AnmVm::SetZRotation
 th08::Ending::LoadEnding
 th08::Ending::Ending
 th08::Ending::OnUpdate

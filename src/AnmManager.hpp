@@ -338,7 +338,7 @@ struct AnmVmBase
     ZunColor color1;
     ZunColor color2;
     union {
-        u16 flags;
+        u32 flags;
         struct
         {
             u32 visible : 1;
@@ -370,6 +370,8 @@ C_ASSERT(sizeof(AnmVmBase) == 0x208);
 
 struct AnmVm : AnmVmBase
 {
+    void SetZRotation(f32 z);
+
     Float3 pos;
     i16 activeSpriteIndex;
     i16 anmFileIndex;

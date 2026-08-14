@@ -10,6 +10,13 @@
 
 namespace th08
 {
+
+// FUNCTION: th08 0x40ec00
+void AnmVm::SetZRotation(f32 z)
+{
+    this->rotation.z = z;
+    this->flags |= 4;
+}
 DIFFABLE_STATIC(AnmManager *, g_AnmManager);
 DIFFABLE_STATIC_ARRAY(VertexTex1DiffuseXyzrhw, 4, g_QuadVertices);
 
