@@ -595,8 +595,9 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             reinterpret_cast<u8 *>(g_EffectManager.SpawnEffect(
                 13, reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)),
                 1, 0xFF6060D0));
-        u8 *effect = TH08_ECL_AT(ctx, u8 *, 0x5360 + TH08_ECL_AT(ctx, i32, 0x53C0) * 4);
-        *reinterpret_cast<Vec3 *>(effect + 0x2EC) = *reinterpret_cast<Vec3 *>(operands + 4);
+        *reinterpret_cast<Vec3 *>(
+            TH08_ECL_AT(ctx, u8 *, 0x5360 + TH08_ECL_AT(ctx, i32, 0x53C0) * 4) +
+            0x2EC) = *reinterpret_cast<Vec3 *>(operands + 4);
         TH08_ECL_AT(ctx, i32, 0x53C4) = *reinterpret_cast<i32 *>(operands + 0x10);
         TH08_ECL_AT(ctx, i32, 0x53C0)++;
         break;
@@ -698,8 +699,9 @@ enter_subroutine:
             TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) = child;
             if (child)
             {
-                for (i32 i = 0; i < 0x92C; ++i)
-                    ((i32 *)child)[i] = 0;
+                for (i32 *clear = (i32 *)child, *end = (i32 *)child + 0x92C;
+                     clear < end; ++clear)
+                    *clear = 0;
                 *(i32 *)child = TH08_ECL_READ_I(ctx, 1);
                 TH08_ECL_CONTEXT_API(ctx)->InitializeEclContext(child + 8, *(u16 *)child);
                 memcpy(child + 0x20, TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18,
