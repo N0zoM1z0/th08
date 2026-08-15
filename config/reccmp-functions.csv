@@ -139,7 +139,7 @@ FUN_0040bc60,0x40bc60,function
 FUN_0040be30,0x40be30,function
 FUN_0040bf00,0x40bf00,function
 FUN_0040c010,0x40c010,function
-FUN_0040c7b0,0x40c7b0,function
+th08::VectorAngle,0x40c7b0,function
 th08::Float3::operator/,0x40c7d0,function
 FUN_0040c820,0x40c820,function
 FUN_0040c910,0x40c910,function
@@ -759,7 +759,7 @@ th08::Player::CalcLaserHitbox,0x44a6a0,function
 FUN_0044a930,0x44a930,function
 th08::Player::Die,0x44ab40,function
 th08::Player::FUN_0044aec0,0x44aec0,function
-FUN_0044c1b0,0x44c1b0,function
+th08::Player::FUN_0044c1b0,0x44c1b0,function
 th08::Player::RegisterChain,0x44c230,function
 th08::Player::OnUpdate,0x44c390,function
 th08::Player::FUN_0044c5b0,0x44c5b0,function

@@ -56,6 +56,7 @@ struct Bullet
     void FUN_004326e0();
     void FUN_00432460();
     void FUN_00432210();
+    void FUN_004322b0();
     void FUN_00432aa0();
     void FUN_004329f0();
 

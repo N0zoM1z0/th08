@@ -185,6 +185,34 @@ void Bullet::FUN_00432210()
     (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xF80))++;
 }
 
+
+// FUNCTION: th08 0x4322b0
+#pragma var_order(delta, this)
+void Bullet::FUN_004322b0()
+{
+    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFAC) >=
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFCC))
+    {
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) &= ~0x10;
+    }
+    else
+    {
+        *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xD50) +=
+            *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xFC0) *
+            *reinterpret_cast<f32 *>(0x17CE8E0);
+
+        if (fabsf(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD50)) > 0.0001f ||
+            fabsf(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD54)) > 0.0001f)
+        {
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74) =
+                VectorAngle(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD54),
+                            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD50));
+        }
+    }
+
+    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFAC))++;
+}
+
 // FUNCTION: th08 0x432390
 void Bullet::FUN_00432390()
 {

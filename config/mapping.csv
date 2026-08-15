@@ -22,7 +22,7 @@ th08::AsciiManager::CreatePlayerPointPopup,0x403330,0x129,__thiscall,,void,Ascii
 th08::AsciiManager::CreateTimePopup,0x403460,0x19b,__thiscall,,void,AsciiManager*,Float3*,i32,i32,D3DCOLOR
 th08::AsciiManager::CreateFamiliarPopup,0x403600,0x1a4,__thiscall,,void,AsciiManager*,Float3*,i32,i32,D3DCOLOR
 th08::PauseMenu::OnUpdatePauseMenu,0x4037b0,0xf3a,__thiscall,,u32,PauseMenu*
-D3DXVECTOR3::D3DXVECTOR3,0x404720,0x2a,__thiscall,,_D3DVECTOR*,_D3DVECTOR*,f32,f32,f32
+th08::Float3::Float3,0x404720,0x2a,__thiscall,,Float3*,Float3*,f32,f32,f32
 th08::PauseMenu::OnDrawPauseMenu,0x404750,0x135,__thiscall,,void,PauseMenu*
 th08::RetryMenu::OnUpdateRetryMenu,0x404890,0x9b2,__thiscall,,u32,RetryMenu*
 th08::Spellcard::GetInactiveState,0x405260,0x16,__thiscall,,i32,Spellcard*
@@ -89,9 +89,9 @@ _cosf,0x408d40,0x15,__stdcall,,f32,f32
 FUN_00408d60,0x408d60,0x241,__fastcall,,u32,Background*,u32,u32,u32,u32,u32,u32
 FUN_00408fc0,0x408fc0,0x98,unknown,,u8,u8,u8,u8,u8,u8
 _sinf,0x409060,0x15,__stdcall,,f32,f32
-D3DXVECTOR3::operator+,0x409080,0x46,__thiscall,,_D3DVECTOR*,_D3DVECTOR*,_D3DVECTOR*,_D3DVECTOR*
-D3DXVECTOR3::operator-,0x4090d0,0x46,__thiscall,,_D3DVECTOR*,_D3DVECTOR*,_D3DVECTOR*,_D3DVECTOR*
-D3DXVECTOR3::OperatorMult,0x409120,0x3e,__thiscall,,_D3DVECTOR*,_D3DVECTOR*,_D3DVECTOR*,f32
+th08::Float3::operator+,0x409080,0x46,__thiscall,,Float3*,Float3*,const Float3*
+th08::Float3::operator-,0x4090d0,0x46,__thiscall,,Float3*,Float3*,const Float3*
+th08::Float3::operator*,0x409120,0x3e,__thiscall,,Float3*,Float3*,f32
 th08::Background::FUN_00409160,0x409160,0x9d,__thiscall,,void,Background*,unsigned long
 th08::Background::OnDrawHighPrio,0x409200,0x43f,__fastcall,,u32,Background*
 th08::Background::OnDrawLowPrio,0x409640,0x210,__fastcall,,ChainCallbackResult,Background*
@@ -138,8 +138,8 @@ FUN_0040bc60,0x40bc60,0x1c2,unknown,,u8
 FUN_0040be30,0x40be30,0xc2,__thiscall,,u8,void*,u8,u8,u8,u8
 FUN_0040bf00,0x40bf00,0x108,unknown,,u8
 FUN_0040c010,0x40c010,0x795,unknown,,u8
-FUN_0040c7b0,0x40c7b0,0x18,unknown,,u8,u8,u8
-D3DXVECTOR3::operator/,0x40c7d0,0x4c,__thiscall,,_D3DVECTOR*,_D3DVECTOR*,_D3DVECTOR*,f32
+th08::VectorAngle,0x40c7b0,0x18,__fastcall,,f32,f32,f32
+th08::Float3::operator/,0x40c7d0,0x4c,__thiscall,,Float3*,Float3*,f32
 FUN_0040c820,0x40c820,0xe6,unknown,,u8
 FUN_0040c910,0x40c910,0x6fe,unknown,,u8
 FUN_0040d010,0x40d010,0xe9,unknown,,u8
@@ -450,7 +450,7 @@ FUN_00431240,0x431240,0xf16,unknown,,u8
 th08::Bullet::FUN_00432170,0x432170,0x37,__thiscall,,void,Bullet*
 th08::BulletManager::FUN_004321b0,0x4321b0,0x59,__thiscall,,void,BulletManager*
 th08::Bullet::FUN_00432210,0x432210,0x99,__thiscall,,void,Bullet*
-FUN_004322b0,0x4322b0,0xd5,unknown,,u8
+th08::Bullet::FUN_004322b0,0x4322b0,0xd5,__thiscall,,void,Bullet*
 th08::Bullet::FUN_00432390,0x432390,0xc5,__thiscall,,void,Bullet*
 th08::Bullet::FUN_00432460,0x432460,0x139,__thiscall,,void,Bullet*
 th08::Bullet::FUN_004325a0,0x4325a0,0x132,__thiscall,,void,Bullet*
@@ -758,7 +758,7 @@ th08::Player::CalcLaserHitbox,0x44a6a0,0x28b,__thiscall,,u32,Player*,_D3DVECTOR*
 FUN_0044a930,0x44a930,0x209,unknown,,u8,u8,u8
 FUN_0044ab40,0x44ab40,0x378,unknown,,u8
 FUN_0044aec0,0x44aec0,0x12a1,unknown,,u8
-FUN_0044c1b0,0x44c1b0,0x76,unknown,,u8,u8
+th08::Player::FUN_0044c1b0,0x44c1b0,0x76,__thiscall,,f32,Player*,Float3*
 th08::Player::RegisterChain,0x44c230,0x15f,__fastcall,,ZunResult,u32
 th08::Player::OnUpdate,0x44c390,0x211,unknown,,u8
 th08::Player::FUN_0044c5b0,0x44c5b0,0x9f,__thiscall,,void,Player*

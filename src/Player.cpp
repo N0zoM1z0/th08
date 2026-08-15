@@ -61,10 +61,22 @@ i32 Player::IsYoukai()
     return this->isYoukai;
 }
 
-// STUB: th08 0x44c1b0
+// FUNCTION: th08 0x44c1b0
+#pragma var_order(yDelta, xDelta, this)
 f32 Player::FUN_0044c1b0(Float3 *position)
 {
-    return 0.0f;
+    f32 yDelta;
+    f32 xDelta;
+
+    xDelta = reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2B4)->operator float *()[0] - position->x;
+    yDelta = reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2B4)->operator float *()[1] - position->y;
+
+    if (yDelta == 0.0f && xDelta == 0.0f)
+    {
+        return ZUN_PI / 2.0f;
+    }
+
+    return VectorAngle(yDelta, xDelta);
 }
 
 // STUB: th08 0x449ff0

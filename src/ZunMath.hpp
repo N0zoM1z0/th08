@@ -56,6 +56,11 @@ struct Float3
         return (float *)this;
     }
 
+    Float3 operator+(const Float3 &other) const;
+    Float3 operator-(const Float3 &other) const;
+    Float3 operator*(f32 scalar) const;
+    Float3 operator/(f32 scalar) const;
+
     Float3 *operator+=(const Float3 &other)
     {
         this->x += other.x;
@@ -95,6 +100,7 @@ struct ZunRect
 };
 
 f32 AddNormalizeAngle(f32 a, f32 b);
+f32 VectorAngle(f32 y, f32 x);
 void Rotate(Float3 *outVector, Float3 *point, f32 angle);
 
 } // namespace th08

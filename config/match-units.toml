@@ -56049,3 +56049,178 @@ offset = 0x12A
 type = "REL32"
 symbol = "??EZunTimer@th08@@QAEXH@Z"
 target = 0x00406640
+
+[[units]]
+name = "float3-operator-plus"
+object = "build/Global.obj"
+symbol = "??HFloat3@th08@@QBE?AU01@ABU01@@Z"
+target_address = 0x00409080
+size = 0x46
+
+[[units.relocations]]
+offset = 0x39
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units]]
+name = "float3-operator-minus"
+object = "build/Global.obj"
+symbol = "??GFloat3@th08@@QBE?AU01@ABU01@@Z"
+target_address = 0x004090D0
+size = 0x46
+
+[[units.relocations]]
+offset = 0x39
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units]]
+name = "float3-operator-mul"
+object = "build/Global.obj"
+symbol = "??DFloat3@th08@@QBE?AU01@M@Z"
+target_address = 0x00409120
+size = 0x3E
+
+[[units.relocations]]
+offset = 0x31
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units]]
+name = "float3-operator-div"
+object = "build/Global.obj"
+symbol = "??KFloat3@th08@@QBE?AU01@M@Z"
+target_address = 0x0040C7D0
+size = 0x4C
+
+[[units.relocations]]
+offset = 0x0B
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x3F
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units]]
+name = "vector-angle"
+object = "build/Global.obj"
+symbol = "?VectorAngle@th08@@YIMMM@Z"
+target_address = 0x0040C7B0
+size = 0x18
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "__CIatan2"
+target = 0x004A42FA
+
+[[units]]
+name = "player-fun-0044c1b0"
+object = "build/Player.obj"
+symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
+target_address = 0x0044C1B0
+size = 0x76
+
+[[units.relocations]]
+offset = 0x13
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x2B
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x40
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x50
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x5D
+type = "DIR32"
+symbol = "__real@3fc90fdb"
+target = 0x004B4468
+
+[[units.relocations]]
+offset = 0x6C
+type = "REL32"
+symbol = "?VectorAngle@th08@@YIMMM@Z"
+target = 0x0040C7B0
+
+[[units]]
+name = "bullet-fun-004322b0"
+object = "build/BulletManager.obj"
+symbol = "?FUN_004322b0@Bullet@th08@@QAEXXZ"
+target_address = 0x004322B0
+size = 0xD5
+
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "??PZunTimer@th08@@QAEIH@Z"
+target = 0x0040B8E0
+
+[[units.relocations]]
+offset = 0x54
+type = "REL32"
+symbol = "??DFloat3@th08@@QBE?AU01@M@Z"
+target = 0x00409120
+
+[[units.relocations]]
+offset = 0x63
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 0x72
+type = "REL32"
+symbol = "@fabsf@4"
+target = 0x004031E0
+
+[[units.relocations]]
+offset = 0x78
+type = "DIR32"
+symbol = "__real@38d1b717"
+target = 0x004B456C
+
+[[units.relocations]]
+offset = 0x8E
+type = "REL32"
+symbol = "@fabsf@4"
+target = 0x004031E0
+
+[[units.relocations]]
+offset = 0x94
+type = "DIR32"
+symbol = "__real@38d1b717"
+target = 0x004B456C
+
+[[units.relocations]]
+offset = 0xB4
+type = "REL32"
+symbol = "?VectorAngle@th08@@YIMMM@Z"
+target = 0x0040C7B0
+
+[[units.relocations]]
+offset = 0xCD
+type = "REL32"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
+target = 0x00406640

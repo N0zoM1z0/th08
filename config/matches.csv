@@ -662,3 +662,10 @@ address,name,size,status,match_percent,unit,evidence
 0x00432460,th08::Bullet::FUN_00432460,313,matching,100.00,bullet-fun-00432460,python3 scripts/compare-function.py bullet-fun-00432460 --json
 0x004325A0,th08::Bullet::FUN_004325a0,306,matching,100.00,bullet-fun-004325a0,python3 scripts/compare-function.py bullet-fun-004325a0 --json
 0x004326E0,th08::Bullet::FUN_004326e0,336,matching,100.00,bullet-fun-004326e0,python3 scripts/compare-function.py bullet-fun-004326e0 --json
+0x00409080,th08::Float3::operator+,70,matching,100.00,float3-operator-plus,python3 scripts/compare-function.py float3-operator-plus --json
+0x004090D0,th08::Float3::operator-,70,matching,100.00,float3-operator-minus,python3 scripts/compare-function.py float3-operator-minus --json
+0x00409120,th08::Float3::operator*,62,matching,100.00,float3-operator-mul,python3 scripts/compare-function.py float3-operator-mul --json
+0x0040C7D0,th08::Float3::operator/,76,matching,100.00,float3-operator-div,python3 scripts/compare-function.py float3-operator-div --json
+0x0040C7B0,th08::VectorAngle,24,matching,100.00,vector-angle,python3 scripts/compare-function.py vector-angle --json
+0x0044C1B0,th08::Player::FUN_0044c1b0,118,matching,100.00,player-fun-0044c1b0,python3 scripts/compare-function.py player-fun-0044c1b0 --json
+0x004322B0,th08::Bullet::FUN_004322b0,213,matching,100.00,bullet-fun-004322b0,python3 scripts/compare-function.py bullet-fun-004322b0 --json
