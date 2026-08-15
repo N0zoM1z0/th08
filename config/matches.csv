@@ -560,3 +560,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00439093,th08::Gui::FUN_00439093,67,matching,100.00,gui-fun-00439093,python3 scripts/compare-function.py gui-fun-00439093 --json
 0x00415C60,th08::BulletManager::bulletmanager_fun_00415c60,21,matching,100.00,bullet-manager-clear-all-wrapper,python3 scripts/compare-function.py bullet-manager-clear-all-wrapper --json
 0x0041F040,th08::Spellcard::SetStoredVector,67,matching,100.00,spellcard-set-stored-vector,python3 scripts/compare-function.py spellcard-set-stored-vector --json
+0x004178A0,th08::Spellcard::IsActive,19,matching,100.00,spellcard-is-active,python3 scripts/compare-function.py spellcard-is-active --json
+0x00405260,th08::Spellcard::GetInactiveState,22,matching,100.00,spellcard-get-inactive-state,python3 scripts/compare-function.py spellcard-get-inactive-state --json
+0x0041FDD0,th08::Spellcard::GetTimerFrames,25,matching,100.00,spellcard-get-timer-frames,python3 scripts/compare-function.py spellcard-get-timer-frames --json

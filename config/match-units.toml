@@ -49186,3 +49186,30 @@ object = "build/SpellCard.obj"
 symbol = "?SetStoredVector@Spellcard@th08@@QAEXMMM@Z"
 target_address = 0x0041F040
 size = 0x43
+
+[[units]]
+name = "spellcard-is-active"
+object = "build/SpellCard.obj"
+symbol = "?IsActive@Spellcard@th08@@QAEHXZ"
+target_address = 0x004178A0
+size = 0x13
+
+[[units]]
+name = "spellcard-get-inactive-state"
+object = "build/SpellCard.obj"
+symbol = "?GetInactiveState@Spellcard@th08@@QAEHXZ"
+target_address = 0x00405260
+size = 0x16
+
+[[units]]
+name = "spellcard-get-timer-frames"
+object = "build/SpellCard.obj"
+symbol = "?GetTimerFrames@Spellcard@th08@@QAEHXZ"
+target_address = 0x0041FDD0
+size = 0x19
+
+[[units.relocations]]
+offset = 0x11
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0

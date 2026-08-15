@@ -259,6 +259,9 @@ struct Spellcard
     u8 *activeEnemy;
 
     void SetStoredVector(f32 x, f32 y, f32 z);
+    i32 IsActive();
+    i32 GetInactiveState();
+    i32 GetTimerFrames();
 
     static i32 GetDifficultyFromSpellCard(i32 spellcardNumber);
     static void CutChain();

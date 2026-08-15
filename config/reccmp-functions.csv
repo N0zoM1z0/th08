@@ -26,7 +26,7 @@ th08::PauseMenu::OnUpdate,0x4037b0,function
 th08::Float3::Float3,0x404720,function
 th08::PauseMenu::OnDraw,0x404750,function
 th08::RetryMenu::OnUpdate,0x404890,function
-th08::Spellcard::FUN_00405260,0x405260,function
+th08::Spellcard::GetInactiveState,0x405260,function
 th08::PlstPlayCounts::IncrementTotalAttempts,0x405280,function
 th08::RetryMenu::OnDraw,0x4052b0,function
 th08::AsciiManager::OnDrawHighPrioImpl,0x405420,function
@@ -218,7 +218,7 @@ th08::Spellcard::spellcard_fun_00416af0,0x416af0,function
 th08::Spellcard::spellcard_fun_00416b10,0x416b10,function
 th08::Spellcard::OnUpdateImpl,0x416b90,function
 th08::Spellcard::spellcard_fun_00417860,0x417860,function
-th08::Spellcard::spellcard_fun_004178a0,0x4178a0,function
+th08::Spellcard::IsActive,0x4178a0,function
 th08::Spellcard::OnDrawImpl,0x4178c0,function
 th08::Spellcard::RegisterChain,0x417f60,function
 th08::Spellcard::OnUpdate,0x418010,function
@@ -249,7 +249,7 @@ th08::EclOperands::ResolveInt,0x41f420,function
 th08::Enemy::FUN_0041fd20,0x41fd20,function
 FUN_0041fd40,0x41fd40,function
 FUN_0041fd90,0x41fd90,function
-th08::Spellcard::FUN_0041fdd0,0x41fdd0,function
+th08::Spellcard::GetTimerFrames,0x41fdd0,function
 th08::ZunTimer::operator+=,0x41fdf0,function
 th08::EclOperands::ResolveIntLValue,0x41fe10,function
 th08::EclOperands::EnemyOverlay::ResolveFloat,0x420120,function

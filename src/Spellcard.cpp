@@ -362,6 +362,26 @@ void Spellcard::SetStoredVector(f32 x, f32 y, f32 z)
 }
 
 
+
+// FUNCTION: th08 0x004178A0
+i32 Spellcard::IsActive()
+{
+    return this->flags & 1;
+}
+
+// FUNCTION: th08 0x00405260
+i32 Spellcard::GetInactiveState()
+{
+    return (this->flags >> 9) & 1;
+}
+
+
+// FUNCTION: th08 0x0041FDD0
+i32 Spellcard::GetTimerFrames()
+{
+    return *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x108);
+}
+
 // FUNCTION: th08 0x4144d0
 #pragma var_order(difficulty, i)
 i32 Spellcard::GetDifficultyFromSpellCard(i32 spellCardNumber)
