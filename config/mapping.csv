@@ -716,7 +716,7 @@ th08::Supervisor::LoadMusic,0x447d56,0xf1,__thiscall,,u32,Supervisor*,char*
 th08::Supervisor::PlayMusic,0x447e47,0xda,__thiscall,,ZunBool,Supervisor*,i32,char*
 th08::Supervisor::PlayAudio,0x447f21,0x160,__thiscall,,ZunResult,Supervisor*,char*,i32
 th08::Supervisor::StopAudio,0x448081,0x77,__thiscall,,u32,Supervisor*
-th08::Supervisor::FadeOutMusic,0x4480f8,0xb7,__thiscall,,u32,Supervisor*,f32
+th08::Supervisor::FadeOutMusic,0x4480f8,0xb7,__thiscall,,ZunResult,Supervisor*,f32
 th08::Supervisor::IsSlowModeEnabled,0x4481af,0x30,__thiscall,,u8,Supervisor*
 th08::Supervisor::EnableFog,0x4481df,0x4a,__thiscall,,u32,Supervisor*
 th08::Supervisor::DisableFog,0x448229,0x47,__thiscall,,u32,Supervisor*
@@ -983,7 +983,7 @@ th08::AnmManager::CreateEmptyTexture,0x4657c0,0x38,__thiscall,,u32,AnmManager*,I
 th08::AnmManager::LoadAnm,0x465800,0x60,__thiscall,,AnmFileDesc*,AnmManager*,i32,char*
 th08::AnmManager::ReadAnmEntries,0x465860,0x1d9,__thiscall,,AnmFileDesc*,AnmManager*,i32,char*
 th08::AnmManager::PreloadAnm,0x465a40,0x73,__thiscall,,AnmFileDesc*,AnmManager*,i32,char*
-th08::AnmManager::LoadExternalTextureData,0x465ac0,0xdb,__thiscall,,ZunResult,AnmManager*,AnmFileDesc*,i32,i32*,i32*,AnmRawEntry*
+th08::AnmManager::LoadExternalTextureData,0x465ac0,0xdb,__thiscall,,i32,AnmManager*,AnmLoaded*,i32,i32*,i32*,AnmRawEntry*
 th08::AnmManager::PostloadAnmEntry,0x465ba0,0x11c,__thiscall,,AnmFileDesc*,AnmManager*,AnmFileDesc*
 th08::AnmManager::LoadTextureData,0x465cc0,0x33d,__thiscall,,u32,AnmManager*,AnmFileDesc*,u32,u32,u32,AnmRawEntry*
 th08::AnmManager::ServicePreloadedAnims,0x466000,0x5b,__thiscall,,ZunResult,AnmManager*

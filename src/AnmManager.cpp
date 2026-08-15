@@ -1647,10 +1647,46 @@ AnmLoaded *AnmManager::PreloadAnm(i32 anmIdx, const char *filename)
 }
 
 // STUB: th08 0x465ac0
+#pragma var_order(result, startOfEntry, path, fileSize, fileData)
 i32 AnmManager::LoadExternalTextureData(AnmLoaded *anmLoaded, i32 entryNumber, i32 *sprites, i32 *scripts,
                                         AnmRawEntry *rawEntry)
 {
-    return 0;
+    i32 result = 0;
+    AnmRawEntry *startOfEntry;
+    const char *path;
+    i32 fileSize;
+    u8 *fileData;
+
+    if (rawEntry == NULL)
+    {
+        g_GameErrorContext.Fatal(TH_ERR_ANMMANAGER_ANIMATION_CORRUPTED);
+        return ZUN_ERROR;
+    }
+
+    startOfEntry = rawEntry;
+    if (startOfEntry->version != 3)
+    {
+        g_GameErrorContext.Fatal(TH_ERR_ANMMANAGER_ANIMATION_WRONG_VERSION);
+        return ZUN_ERROR;
+    }
+
+    if (!startOfEntry->hasData)
+    {
+        path = (const char *)((u8 *)startOfEntry + startOfEntry->nameOffset);
+        if (path[0] != '@')
+        {
+            fileData = FileSystem::OpenFile(path, &fileSize, TRUE);
+            if (fileData == NULL)
+            {
+                g_GameErrorContext.Fatal(TH_ERR_ANMMANAGER_EXTERN_TEXTURE_CORRUPTED, path);
+                return ZUN_ERROR;
+            }
+            anmLoaded->textures[entryNumber].size = fileSize;
+            anmLoaded->textures[entryNumber].rawData = fileData;
+        }
+    }
+
+    return result + 1;
 }
 
 #pragma var_order(currentEntryNumber, currentNumSprites, entryLoadNumber, data, result, currentNumScripts, rawEntry)

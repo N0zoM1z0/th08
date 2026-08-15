@@ -615,3 +615,5 @@ address,name,size,status,match_percent,unit,evidence
 0x0042C590,th08::EnemyManager::RegisterChain,203,matching,100.00,enemy-manager-register-chain,python3 scripts/compare-function.py enemy-manager-register-chain --json
 0x00447F21,th08::Supervisor::PlayAudio,352,matching,100.00,supervisor-play-audio,python3 scripts/compare-function.py supervisor-play-audio --json
 0x00447E47,th08::Supervisor::PlayMusic,218,matching,100.00,supervisor-play-music,python3 scripts/compare-function.py supervisor-play-music --json
+0x004480F8,th08::Supervisor::FadeOutMusic,183,matching,100.00,supervisor-fade-out-music,python3 scripts/compare-function.py supervisor-fade-out-music --json
+0x00465AC0,th08::AnmManager::LoadExternalTextureData,219,matching,100.00,anm-load-external-texture-data,python3 scripts/compare-function.py anm-load-external-texture-data --json

@@ -52256,3 +52256,159 @@ type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 addend = 0x3DBAC
+
+[[units]]
+name = "supervisor-fade-out-music"
+object = "build/Supervisor.obj"
+symbol = "?FadeOutMusic@Supervisor@th08@@QAE?AW4ZunResult@@M@Z"
+target_address = 0x004480F8
+size = 0xB7
+
+[[units.relocations]]
+offset = 0x0B
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x137
+
+[[units.relocations]]
+offset = 0x16
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x18C
+
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "__real@447a0000"
+target = 0x004B6778
+
+[[units.relocations]]
+offset = 0x27
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x2E
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x18C
+
+[[units.relocations]]
+offset = 0x33
+type = "REL32"
+symbol = "?SetFadeOut@MidiOutput@th08@@QAE?AW4ZunResult@@I@Z"
+target = 0x004447D0
+
+[[units.relocations]]
+offset = 0x3C
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x137
+
+[[units.relocations]]
+offset = 0x50
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x6E
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x91
+type = "DIR32"
+symbol = "??_C@_00CNPNBAHC@?$AA@"
+target = 0x004B6CFF
+
+[[units.relocations]]
+offset = 0x99
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0xA1
+type = "DIR32"
+symbol = "?g_SoundPlayer@th08@@3VSoundPlayer@1@A"
+target = 0x018B8A68
+
+[[units.relocations]]
+offset = 0xA6
+type = "REL32"
+symbol = "?QueueCommand@SoundPlayer@th08@@QAEXHHPAD@Z"
+target = 0x0045E1E0
+
+[[units]]
+name = "anm-load-external-texture-data"
+object = "build/AnmManager.obj"
+symbol = "?LoadExternalTextureData@AnmManager@th08@@QAEHPAUAnmLoaded@2@HPAH1PAUAnmRawEntry@2@@Z"
+target_address = 0x00465AC0
+size = 0xDB
+
+[[units.relocations]]
+offset = 0x17
+type = "DIR32"
+symbol = "??_C@_0DL@DMPDJCAB@?$IDA?$IDj?$ID?$IB?$IC?$KK?$JD?G?$IC?$NN?$IN?$JO?$IC?$NP?$IC?$NM?$IC?$LJ?$IC?q?$IBB?$IDf?$IB?$FL?$ID?$FO?$IC?$KK@"
+target = 0x004B8574
+
+[[units.relocations]]
+offset = 0x1C
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x21
+type = "REL32"
+symbol = "?Fatal@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EB60
+
+[[units.relocations]]
+offset = 0x40
+type = "DIR32"
+symbol = "??_C@_0BP@JIJGIFBO@?$IDA?$IDj?$ID?$IB?$IC?L?$IDo?$IB?$FL?$IDW?$ID?$IH?$ID?$JD?$IC?$KK?$II?a?$IC?$KC?$IC?$NM?$IC?$LH?$AN?6?$AA@"
+target = 0x004B8554
+
+[[units.relocations]]
+offset = 0x45
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x4A
+type = "REL32"
+symbol = "?Fatal@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EB60
+
+[[units.relocations]]
+offset = 0x81
+type = "REL32"
+symbol = "?OpenFile@FileSystem@th08@@YIPAEPBDPAHH@Z"
+target = 0x0043E660
+
+[[units.relocations]]
+offset = 0x93
+type = "DIR32"
+symbol = "??_C@_0ED@DLLGBJLB@?$IDe?$IDN?$IDX?$ID?$GA?$ID?$ID?5?$CFs?5?$IC?$KK?$IN?l?$JA?$KM?$IC?E?$IC?$KL?$IC?$NM?$IC?$LJ?$IC?q?$IBB@"
+target = 0x004B8510
+
+[[units.relocations]]
+offset = 0x98
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x9D
+type = "REL32"
+symbol = "?Fatal@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EB60

@@ -177,3 +177,6 @@ When a structure begins with the field required by an API, VC7 may pass the stru
 
 - **MIDI/WAV supervisor audio wrappers:** target code may use `param[0x164CF14] = 1` with callers passing `0` to write an absolute global byte. Preserve that odd pointer-plus-absolute-source shape instead of replacing it with a named global until ownership is proven.
 - **WAV path rewrite:** VC7 can inline `strcpy` into a byte-copy loop before `strrchr`; writing natural `strcpy(buf, path); period = strrchr(buf, '.')` matches the target shape.
+
+- For x87 range clamps, exact `test ah, ...` masks can require source that mirrors the target's real condition, not an algebraic equivalent. Example: `Supervisor::FadeOutMusic` needs `if (framerateMultiplier == 0.0f) ... else if (framerateMultiplier > 1.0f) ...` to emit target `test ah,0x44` then `test ah,0x41`.
+- External ANM texture entries store file bytes in the `AnmEntry` table (`rawData` and `size`) before later texture creation. Keep the loader's result local and `return result + 1;` when the target returns success as 1 rather than a named `ZUN_SUCCESS` expression.

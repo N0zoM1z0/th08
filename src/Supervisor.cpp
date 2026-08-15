@@ -1193,9 +1193,32 @@ ZunResult Supervisor::StopAudio()
     return ZUN_SUCCESS;
 }
 
-// STUB: th08 0x4480f8
+// FUNCTION: th08 0x4480f8
+#pragma var_order(fadeTime, this)
 ZunResult Supervisor::FadeOutMusic(float param_1)
 {
+    f32 fadeTime;
+
+    if (g_Supervisor.cfg.musicMode == MIDI)
+    {
+        if (g_Supervisor.midiOutput != NULL)
+            g_Supervisor.midiOutput->SetFadeOut((u32)(1000.0f * param_1));
+    }
+    else if (g_Supervisor.cfg.musicMode == WAV)
+    {
+        if (this->framerateMultiplier == 0.0f)
+            fadeTime = param_1;
+        else if (this->framerateMultiplier > 1.0f)
+            fadeTime = param_1;
+        else
+            fadeTime = param_1 / this->framerateMultiplier;
+
+        g_SoundPlayer.QueueCommand(5, (i32)fadeTime, "");
+    }
+    else
+    {
+        return ZUN_ERROR;
+    }
     return ZUN_SUCCESS;
 }
 
