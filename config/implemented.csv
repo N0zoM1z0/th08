@@ -605,3 +605,4 @@ th08::ScreenEffect::DrawSquareShaded
 th08::ScreenEffect::CalcPartialFadeOut
 th08::ScreenEffect::DrawPartialFade
 th08::ScreenEffect::FUN_0045bd70
+th08::ItemManager::SpawnItem

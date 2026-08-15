@@ -97,7 +97,7 @@ Item *ItemManager::SpawnItem(Float3 *position, ItemType itemType, i32 state)
             item->startPositionOrVelocity.y = -2.0f - g_Rng.GetRandomF32InRange(0.2f);
             item->startPositionOrVelocity.x = g_Rng.GetRandomF32SignedInRange(0.6f);
 
-            if (g_Player.playerState == PLAYER_STATE_DEAD)
+            if (g_Player.playerState == PLAYER_STATE_DYING)
             {
                 item->state = ITEM_STATE_DEFAULT;
                 item->startPositionOrVelocity.x = 0.0f;
@@ -111,7 +111,7 @@ Item *ItemManager::SpawnItem(Float3 *position, ItemType itemType, i32 state)
             item->startPositionOrVelocity.y = -2.0f - g_Rng.GetRandomF32InRange(0.2f);
             item->startPositionOrVelocity.x = g_Rng.GetRandomF32SignedInRange(0.6f);
 
-            if (g_Player.playerState == PLAYER_STATE_DEAD)
+            if (g_Player.playerState == PLAYER_STATE_DYING)
             {
                 item->state = ITEM_STATE_DEFAULT;
                 item->startPositionOrVelocity.x = 0.0f;
@@ -120,8 +120,7 @@ Item *ItemManager::SpawnItem(Float3 *position, ItemType itemType, i32 state)
             }
         }
 
-        // TODO: Uncomment this when BulletManager is actually done
-        // g_BulletManager.bulletAnm->SetAndExecuteScriptIdx(&item->sprite, itemType + 61);
+        g_BulletManager.bulletAnm->SetAndExecuteScriptIdx(&item->sprite, itemType + 61);
 
         item->sprite.color1.d3dColor = 0xFFFFFFFF;
         item->sprite.zWriteDisabled = true;
@@ -132,8 +131,10 @@ Item *ItemManager::SpawnItem(Float3 *position, ItemType itemType, i32 state)
         item->next = NULL;
         this->itemListTail = item;
 
-        return i < MAX_ITEMS ? item : &this->items[MAX_ITEMS];
+        break;
     }
+
+    return i < MAX_ITEMS ? item : &this->items[MAX_ITEMS];
 }
 
 DIFFABLE_STATIC_ARRAY_ASSIGN(i32, 6, g_PointItemExtendThresholds) = {100, 250, 500, 800, 1100, 9999};

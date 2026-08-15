@@ -39,6 +39,7 @@ enum PlayerState
 {
     PLAYER_STATE_ALIVE,
     PLAYER_STATE_SPAWNING,
+    PLAYER_STATE_DYING = 2,
     PLAYER_STATE_DEAD = 3,
 };
 

@@ -141,3 +141,7 @@ Verified with `ScreenEffect::CalcPartialFadeOut` and `ScreenEffect::FUN_0045bd70
 `ScreenEffect` reuses parameter slots differently for different effect types, so avoid renaming a field globally from a single callback. For effect-specific callbacks, raw offset access can be clearer and safer until all variants are understood.
 
 When target uses `fild qword`, cast the integer multiplicand to a 64-bit integer before the floating expression. Otherwise VC7 may generate `fild dword` or a shorter float-only sequence.
+
+## Large struct tail fields via target-relative offsets
+
+Verified with `ItemManager::SpawnItem`: a field access may point far inside a large global object, such as `g_BulletManager + 0x6BA574` for `BulletManager::bulletAnm`. Prefer adding a minimal typed tail field with `unknown_fields` instead of treating it as an unrelated global, then validate the relocation addend in `match-units.toml`.

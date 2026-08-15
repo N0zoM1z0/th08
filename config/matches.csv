@@ -601,3 +601,4 @@ address,name,size,status,match_percent,unit,evidence
 0x0045B800,th08::ScreenEffect::CalcPartialFadeOut,169,matching,100.00,screen-effect-calc-partial-fade-out,python3 scripts/compare-function.py screen-effect-calc-partial-fade-out --json
 0x0045BBF0,th08::ScreenEffect::DrawPartialFade,69,matching,100.00,screen-effect-draw-partial-fade,python3 scripts/compare-function.py screen-effect-draw-partial-fade --json
 0x0045BD70,th08::ScreenEffect::FUN_0045bd70,76,matching,100.00,screen-effect-fun-0045bd70,python3 scripts/compare-function.py screen-effect-fun-0045bd70 --json
+0x004400A0,th08::ItemManager::SpawnItem,970,matching,100.00,item-manager-spawn-item,python3 scripts/compare-function.py item-manager-spawn-item --json

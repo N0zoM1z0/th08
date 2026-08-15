@@ -23,6 +23,9 @@ struct Bullet
 
 struct BulletManager
 {
+    unknown_fields(0x0, 0x6BA574);
+    AnmLoaded *bulletAnm;
+
     void Initialize();
     void bulletmanager_fun_00415c60();
     void RemoveAllBullets(i32 mode);
