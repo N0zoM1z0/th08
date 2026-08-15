@@ -967,9 +967,9 @@ th08::AnmManager::FUN_00463470,0x463470,function
 th08::AnmManager::DrawNoRotationNoRound,0x463800,function
 th08::AnmManager::FUN_004639e0,0x4639e0,function
 th08::AnmManager::FUN_00463cf0,0x463cf0,function
-th08::AnmManager::TransformVerticesWorld,0x463d60,function
+th08::AnmManager::FUN_00463d60,0x463d60,function
 th08::AnmManager::FUN_00464070,0x464070,function
-th08::AnmManager::TransformVerticesWorld,0x4640e0,function
+th08::AnmManager::FUN_004640e0,0x4640e0,function
 th08::AnmManager::DrawWithCallback,0x464400,function
 th08::AnmManager::Draw3D,0x464470,function
 th08::AnmManager::FUN_004649a0,0x4649a0,function

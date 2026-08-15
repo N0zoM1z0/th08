@@ -493,6 +493,9 @@ struct AnmManager
     ZunBool ExecuteScript(AnmVm *vm);
     void ExecuteScriptArray(AnmVm *sprites, int count);
     void SetRenderStateForVm(AnmVm *vm);
+    ZunResult FUN_004639e0(AnmVm *vm);
+    ZunResult FUN_00463d60(AnmVm *vm);
+    ZunResult FUN_004640e0(AnmVm *vm, void *callback);
     ZunResult DrawInner(AnmVm *vm, i32 flags);
     ZunResult AddSpriteToDrawBuffer(VertexTex1DiffuseXyzrhw *vertices);
     ZunResult DrawNoRotation(AnmVm *vm);

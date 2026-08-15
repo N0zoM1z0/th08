@@ -962,11 +962,11 @@ th08::AnmManager::TranslateRotation,0x4631d0,0x3a,__thiscall,,void,AnmManager*,V
 th08::AnmManager::Draw2D,0x463210,0x258,__thiscall,,ZunResult,AnmManager*,AnmVm*
 th08::AnmManager::FUN_00463470,0x463470,0x390,__thiscall,,u8,AnmManager*,AnmVm*
 th08::AnmManager::DrawNoRotationNoRound,0x463800,0x1d5,__thiscall,,ZunResult,AnmManager*,AnmVm*
-FUN_004639e0,0x4639e0,0x303,unknown,,u8,u8
-th08::AnmManager::FUN_00463cf0,0x463cf0,0x6b,__thiscall,,u8,AnmManager*,AnmVm*
-FUN_00463d60,0x463d60,0x30b,unknown,,u8,u8
-th08::AnmManager::FUN_00464070,0x464070,0x62,__thiscall,,u8,AnmManager*,AnmVm*
-FUN_004640e0,0x4640e0,0x312,unknown,,u8,u8,u8
+th08::AnmManager::FUN_004639e0,0x4639e0,0x303,__thiscall,,ZunResult,AnmManager*,AnmVm*
+th08::AnmManager::FUN_00463cf0,0x463cf0,0x6b,__thiscall,,ZunResult,AnmManager*,AnmVm*
+th08::AnmManager::FUN_00463d60,0x463d60,0x30b,__thiscall,,ZunResult,AnmManager*,AnmVm*
+th08::AnmManager::FUN_00464070,0x464070,0x62,__thiscall,,ZunResult,AnmManager*,AnmVm*
+th08::AnmManager::FUN_004640e0,0x4640e0,0x312,__thiscall,,ZunResult,AnmManager*,AnmVm*,void*
 th08::AnmManager::DrawWithCallback,0x464400,0x6f,__thiscall,,ZunResult,AnmManager*,AnmVm*,void*
 FUN_00464470,0x464470,0x526,unknown,,u8,u8
 FUN_004649a0,0x4649a0,0x160,unknown,,u8,u8,u8,u8

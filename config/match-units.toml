@@ -54157,3 +54157,79 @@ offset = 0x104
 type = "REL32"
 symbol = "?FUN_00464070@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00464070
+
+
+[[units]]
+name = "anm-manager-fun-00463cf0"
+object = "build/AnmManager.obj"
+symbol = "?FUN_00463cf0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target_address = 0x00463CF0
+size = 0x6B
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "?IsVisible@AnmVmBase@th08@@QAEIXZ"
+target = 0x004066E0
+
+[[units.relocations]]
+offset = 0x4A
+type = "REL32"
+symbol = "?FUN_004639e0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x004639E0
+
+[[units.relocations]]
+offset = 0x61
+type = "REL32"
+symbol = "?DrawInner@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x004628B0
+
+[[units]]
+name = "anm-manager-fun-00464070"
+object = "build/AnmManager.obj"
+symbol = "?FUN_00464070@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target_address = 0x00464070
+size = 0x62
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "?IsVisible@AnmVmBase@th08@@QAEIXZ"
+target = 0x004066E0
+
+[[units.relocations]]
+offset = 0x4A
+type = "REL32"
+symbol = "?FUN_00463d60@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463D60
+
+[[units.relocations]]
+offset = 0x58
+type = "REL32"
+symbol = "?DrawInner@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x004628B0
+
+[[units]]
+name = "anm-manager-draw-with-callback"
+object = "build/AnmManager.obj"
+symbol = "?DrawWithCallback@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAX@Z"
+target_address = 0x00464400
+size = 0x6F
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "?IsVisible@AnmVmBase@th08@@QAEIXZ"
+target = 0x004066E0
+
+[[units.relocations]]
+offset = 0x4E
+type = "REL32"
+symbol = "?FUN_004640e0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAX@Z"
+target = 0x004640E0
+
+[[units.relocations]]
+offset = 0x65
+type = "REL32"
+symbol = "?DrawInner@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x004628B0

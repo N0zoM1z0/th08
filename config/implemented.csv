@@ -637,3 +637,6 @@ th08::Background::OnDrawLowPrio
 th08::AnmManager::SetCameraMode
 th08::AnmManager::Draw2DAndFlush
 th08::EffectManager::FUN_004281e0
+th08::AnmManager::FUN_00463cf0
+th08::AnmManager::FUN_00464070
+th08::AnmManager::DrawWithCallback

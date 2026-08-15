@@ -1243,22 +1243,63 @@ void AnmManager::TranslateRotation(VertexTex1DiffuseXyzrhw *vertex, float x, flo
 }
 
 
-// STUB: th08 0x463cf0
+// STUB: th08 0x4639e0
+ZunResult AnmManager::FUN_004639e0(AnmVm *vm)
+{
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x463cf0
 ZunResult AnmManager::FUN_00463cf0(AnmVm *vm)
 {
+    if (!vm->IsVisible())
+        return ZUN_ERROR;
+    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(vm) + 0x1F8) >> 1) & 1) == 0)
+        return ZUN_ERROR;
+    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(vm) + 0x1F3) == 0)
+        return ZUN_ERROR;
+    if (this->FUN_004639e0(vm) != ZUN_SUCCESS)
+        return ZUN_ERROR;
+    return this->DrawInner(vm, 0);
+}
+
+// STUB: th08 0x463d60
+ZunResult AnmManager::FUN_00463d60(AnmVm *vm)
+{
     return ZUN_SUCCESS;
 }
 
-// STUB: th08 0x464070
+// FUNCTION: th08 0x464070
 ZunResult AnmManager::FUN_00464070(AnmVm *vm)
 {
+    if (!vm->IsVisible())
+        return ZUN_ERROR;
+    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(vm) + 0x1F8) >> 1) & 1) == 0)
+        return ZUN_ERROR;
+    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(vm) + 0x1F3) == 0)
+        return ZUN_ERROR;
+    this->FUN_00463d60(vm);
+    return this->DrawInner(vm, 0);
+}
+
+// STUB: th08 0x4640e0
+ZunResult AnmManager::FUN_004640e0(AnmVm *vm, void *callback)
+{
     return ZUN_SUCCESS;
 }
 
-// STUB: th08 0x464400
+// FUNCTION: th08 0x464400
 ZunResult AnmManager::DrawWithCallback(AnmVm *vm, void *callback)
 {
-    return ZUN_SUCCESS;
+    if (!vm->IsVisible())
+        return ZUN_ERROR;
+    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(vm) + 0x1F8) >> 1) & 1) == 0)
+        return ZUN_ERROR;
+    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(vm) + 0x1F3) == 0)
+        return ZUN_ERROR;
+    if (this->FUN_004640e0(vm, callback) != ZUN_SUCCESS)
+        return ZUN_ERROR;
+    return this->DrawInner(vm, 0);
 }
 
 #pragma var_order(sine, rotation, cosine, x, y, yOffset, xOffset)

@@ -633,3 +633,6 @@ address,name,size,status,match_percent,unit,evidence
 0x0040BA90,th08::AnmManager::SetCameraMode,25,matching,100.00,anm-manager-set-camera-mode,python3 scripts/compare-function.py anm-manager-set-camera-mode --json
 0x0040BAF0,th08::AnmManager::Draw2DAndFlush,33,matching,100.00,anm-manager-draw2d-and-flush,python3 scripts/compare-function.py anm-manager-draw2d-and-flush --json
 0x004281E0,th08::EffectManager::FUN_004281e0,290,matching,100.00,effect-manager-fun-004281e0,python3 scripts/compare-function.py effect-manager-fun-004281e0 --json
+0x00463CF0,th08::AnmManager::FUN_00463cf0,107,matching,100.00,anm-manager-fun-00463cf0,python3 scripts/compare-function.py anm-manager-fun-00463cf0 --json
+0x00464070,th08::AnmManager::FUN_00464070,98,matching,100.00,anm-manager-fun-00464070,python3 scripts/compare-function.py anm-manager-fun-00464070 --json
+0x00464400,th08::AnmManager::DrawWithCallback,111,matching,100.00,anm-manager-draw-with-callback,python3 scripts/compare-function.py anm-manager-draw-with-callback --json
