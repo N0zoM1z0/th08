@@ -199,3 +199,4 @@ When a structure begins with the field required by an API, VC7 may pass the stru
 - Thin AnmManager draw wrappers can stay exact by calling unrecovered transform helpers as stubs; keep the gate sequence as `IsVisible`, raw dword flag bit 1, raw byte +0x1F3, then the transform helper and `DrawInner(vm, 0)`.
 - Candidate scans can be polluted by stale probe objects; use `scripts/find_exact_candidates.py --clean-rebuild ...` after temporary source-shape experiments so object sizes reflect current sources, not the last probe build.
 - For local D3DXVECTOR3 temporaries copied into fields, prefer direct temporary assignment (`dst = D3DXVECTOR3(...)`) over a named local; VC7 then copies from the constructor return pointer in `eax`, matching ZUN camera/background setup code.
+- For lifecycle reload callbacks, raw target global tables can be used for still-unnamed indexed resources, but keep them isolated and verify with compare-function before naming wider data structures.

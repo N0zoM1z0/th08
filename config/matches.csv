@@ -638,3 +638,4 @@ address,name,size,status,match_percent,unit,evidence
 0x00464400,th08::AnmManager::DrawWithCallback,111,matching,100.00,anm-manager-draw-with-callback,python3 scripts/compare-function.py anm-manager-draw-with-callback --json
 0x00409850,th08::Background::AddedCallback,706,matching,100.00,background-added-callback,python3 scripts/compare-function.py background-added-callback --json
 0x0040BB60,th08::AnmManager::GetAnm,26,matching,100.00,anm-manager-get-anm,python3 scripts/compare-function.py anm-manager-get-anm --json
+0x0042EBF0,th08::EnemyManager::AddedCallback,642,matching,100.00,enemy-manager-added-callback,python3 scripts/compare-function.py enemy-manager-added-callback --json

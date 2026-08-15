@@ -642,3 +642,4 @@ th08::AnmManager::FUN_00464070
 th08::AnmManager::DrawWithCallback
 th08::Background::AddedCallback
 th08::AnmManager::GetAnm
+th08::EnemyManager::AddedCallback

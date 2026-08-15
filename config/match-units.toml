@@ -54390,3 +54390,244 @@ object = "build/AnmManager.obj"
 symbol = "?GetAnm@AnmManager@th08@@QAEPAUAnmLoaded@2@H@Z"
 target_address = 0x0040BB60
 size = 0x1A
+
+[[units]]
+name = "enemy-manager-added-callback"
+object = "build/EnemyManager.obj"
+symbol = "?AddedCallback@EnemyManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
+target_address = 0x0042EBF0
+size = 0x282
+
+[[units.relocations]]
+offset = 0x16
+type = "REL32"
+symbol = "?IsResourceReloadEnabled@th08@@YIHXZ"
+target = 0x004338B0
+
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "??_C@_09IOCMCPLL@enemy?4anm?$AA@"
+target = 0x004B4AC8
+
+[[units.relocations]]
+offset = 0x27
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x2C
+type = "REL32"
+symbol = "?PreloadAnm@AnmManager@th08@@QAEPAUAnmLoaded@2@HPBD@Z"
+target = 0x00465A40
+
+[[units.relocations]]
+offset = 0x53
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x58
+type = "REL32"
+symbol = "?GetAnm@AnmManager@th08@@QAEPAUAnmLoaded@2@H@Z"
+target = 0x0040BB60
+
+[[units.relocations]]
+offset = 0x66
+type = "REL32"
+symbol = "?IsDisableResourceReload@th08@@YIIXZ"
+target = 0x0040B900
+
+[[units.relocations]]
+offset = 0x74
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x85
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x92
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xA2
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xA7
+type = "REL32"
+symbol = "?PreloadAnm@AnmManager@th08@@QAEPAUAnmLoaded@2@HPBD@Z"
+target = 0x00465A40
+
+[[units.relocations]]
+offset = 0xCD
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xDD
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xE2
+type = "REL32"
+symbol = "?PreloadAnm@AnmManager@th08@@QAEPAUAnmLoaded@2@HPBD@Z"
+target = 0x00465A40
+
+[[units.relocations]]
+offset = 0x109
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x10E
+type = "REL32"
+symbol = "?GetAnm@AnmManager@th08@@QAEPAUAnmLoaded@2@H@Z"
+target = 0x0040BB60
+
+[[units.relocations]]
+offset = 0x11C
+type = "REL32"
+symbol = "?IsDisableResourceReload@th08@@YIIXZ"
+target = 0x0040B900
+
+[[units.relocations]]
+offset = 0x138
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x147
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x159
+type = "REL32"
+symbol = "?Load@EclManager@th08@@QAE?AW4ZunResult@@PAD@Z"
+target = 0x00418330
+
+[[units.relocations]]
+offset = 0x16E
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x17D
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x18F
+type = "REL32"
+symbol = "?Load@EclManager@th08@@QAE?AW4ZunResult@@PAD@Z"
+target = 0x00418330
+
+[[units.relocations]]
+offset = 0x1A3
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x1B5
+type = "REL32"
+symbol = "?Load@EclManager@th08@@QAE?AW4ZunResult@@PAD@Z"
+target = 0x00418330
+
+[[units.relocations]]
+offset = 0x1FB
+type = "DIR32"
+symbol = "?g_Rng@th08@@3VRng@1@A"
+target = 0x0164D520
+
+[[units.relocations]]
+offset = 0x200
+type = "REL32"
+symbol = "?GetRandomU16InRange@Rng@th08@@QAEGG@Z"
+target = 0x00410C00
+
+[[units.relocations]]
+offset = 0x211
+type = "DIR32"
+symbol = "?g_Rng@th08@@3VRng@1@A"
+target = 0x0164D520
+
+[[units.relocations]]
+offset = 0x216
+type = "REL32"
+symbol = "?GetRandomU16InRange@Rng@th08@@QAEGG@Z"
+target = 0x00410C00
+
+[[units.relocations]]
+offset = 0x237
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x242
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x247
+type = "REL32"
+symbol = "?SetBossMarkerPosition@AsciiManager@th08@@QAEXHPAUD3DXVECTOR3@@@Z"
+target = 0x00422BE0
+
+[[units.relocations]]
+offset = 0x252
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x257
+type = "REL32"
+symbol = "?SetBossMarkerPosition@AsciiManager@th08@@QAEXHPAUD3DXVECTOR3@@@Z"
+target = 0x00422BE0
+
+[[units.relocations]]
+offset = 0x262
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x267
+type = "REL32"
+symbol = "?SetBossMarkerPosition@AsciiManager@th08@@QAEXHPAUD3DXVECTOR3@@@Z"
+target = 0x00422BE0
+
+[[units.relocations]]
+offset = 0x272
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x277
+type = "REL32"
+symbol = "?SetBossMarkerPosition@AsciiManager@th08@@QAEXHPAUD3DXVECTOR3@@@Z"
+target = 0x00422BE0
