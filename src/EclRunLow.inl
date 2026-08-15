@@ -494,17 +494,17 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
     case 9:
         *WriteFloat(enemy, instruction, 0) =
-            (g_Rng.GetRandomU16() & 1U ? 1.0f : -1.0f) * ReadFloat(enemy, instruction, 1);
+            (g_Rng.GetRandomU16() & 1U ? 1.0f : -1.0f) * ReadFloatRawArg(enemy, instruction, 1);
         break;
 
     case 10: *WriteInt(enemy, instruction, 0) += ReadInt(enemy, instruction, 1); break;
-    case 15: *WriteFloat(enemy, instruction, 0) += ReadFloat(enemy, instruction, 1); break;
+    case 15: *WriteFloat(enemy, instruction, 0) += ReadFloatRawArg(enemy, instruction, 1); break;
     case 11: *WriteInt(enemy, instruction, 0) -= ReadInt(enemy, instruction, 1); break;
-    case 16: *WriteFloat(enemy, instruction, 0) -= ReadFloat(enemy, instruction, 1); break;
+    case 16: *WriteFloat(enemy, instruction, 0) -= ReadFloatRawArg(enemy, instruction, 1); break;
     case 12: *WriteInt(enemy, instruction, 0) *= ReadInt(enemy, instruction, 1); break;
-    case 17: *WriteFloat(enemy, instruction, 0) *= ReadFloat(enemy, instruction, 1); break;
+    case 17: *WriteFloat(enemy, instruction, 0) *= ReadFloatRawArg(enemy, instruction, 1); break;
     case 13: *WriteInt(enemy, instruction, 0) /= ReadInt(enemy, instruction, 1); break;
-    case 18: *WriteFloat(enemy, instruction, 0) /= ReadFloat(enemy, instruction, 1); break;
+    case 18: *WriteFloat(enemy, instruction, 0) /= ReadFloatRawArg(enemy, instruction, 1); break;
     case 14: *WriteInt(enemy, instruction, 0) %= ReadInt(enemy, instruction, 1); break;
     case 19:
         *WriteFloat(enemy, instruction, 0) =
@@ -528,8 +528,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
     case 30: ++*WriteInt(enemy, instruction, 0); break;
     case 31: --*WriteInt(enemy, instruction, 0); break;
-    case 32: *WriteFloat(enemy, instruction, 0) = sinf(ReadFloat(enemy, instruction, 1)); break;
-    case 33: *WriteFloat(enemy, instruction, 0) = cosf(ReadFloat(enemy, instruction, 1)); break;
+    case 32: *WriteFloat(enemy, instruction, 0) = sinf(ReadFloatRawArg(enemy, instruction, 1)); break;
+    case 33: *WriteFloat(enemy, instruction, 0) = cosf(ReadFloatRawArg(enemy, instruction, 1)); break;
     case 34:
         *WriteFloat(enemy, instruction, 0) =
             atan2f(ReadFloatRawArg(enemy, instruction, 4) - ReadFloatRawArg(enemy, instruction, 2),
@@ -538,7 +538,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
 
     case 37:
         *WriteFloat(enemy, instruction, 0) =
-            AddNormalizeAngle(ReadFloat(enemy, instruction, 0), 0.0f);
+            AddNormalizeAngle(ReadFloatRawArg(enemy, instruction, 0), 0.0f);
         break;
 
     case 35:
@@ -734,7 +734,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
 
     case 70:
-        F32At(enemy, 0x2D98) = ReadFloat(enemy, instruction, 0);
+        F32At(enemy, 0x2D98) = ReadFloatRawArg(enemy, instruction, 0);
         U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & 0xFFFFCFFFU) | 0x1000U;
         break;
     case 71:
@@ -743,7 +743,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
     case 72:
         ResetMovementTimer(enemy, services, ReadInt(enemy, instruction, 0));
-        F32At(enemy, 0x2DD0) = ReadFloat(enemy, instruction, 1);
+        F32At(enemy, 0x2DD0) = ReadFloatRawArg(enemy, instruction, 1);
         F32At(enemy, 0x2DD4) = ReadFloat(enemy, instruction, 2);
         F32At(enemy, 0x2D9C) = ReadFloat(enemy, instruction, 3);
         F32At(enemy, 0x2DA0) = ReadFloat(enemy, instruction, 4);

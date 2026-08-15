@@ -389,8 +389,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
     case 102:
     case 103:
     case 104:
-        lhsInt = TH08_ECL_AT(ctx, i32, 0x2DFC);
-        if (lhsInt <= 0)
+        if (TH08_ECL_AT(ctx, i32, 0x2DFC) <= 0)
             break;
         if (((TH08_ECL_AT(ctx, u32, 0x3324) >> 17) & 1) == 1)
             memcpy(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3034, TH08_ECL_CONTEXT_INSTRUCTION(ctx), 11 * sizeof(i32));
@@ -443,7 +442,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         Vec3 transformed;
         TH08_ECL_CONTEXT_API(ctx)->AddVectors(&transformed, &TH08_ECL_AT(ctx, Vec3, 0x2D34), &TH08_ECL_AT(ctx, Vec3, 0x2DB8));
         TH08_ECL_AT(ctx, Vec3, 0x2E28) = transformed;
-        TH08_ECL_CONTEXT_API(ctx)->FinalizeVectorState(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E24);
+        reinterpret_cast<TargetApi *>(&g_BulletManager)->FinalizeVectorState(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E24);
         break;
     }
     case 110:
@@ -490,7 +489,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
             *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x554) =
-                TH08_ECL_READ_F(ctx, 1);
+                TH08_ECL_READ_F_RAWARG(ctx, 1);
         break;
     case 118:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
@@ -543,7 +542,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
             *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x560) =
-                TH08_ECL_READ_F(ctx, 1);
+                TH08_ECL_READ_F_RAWARG(ctx, 1);
         break;
     case 172:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
@@ -864,7 +863,7 @@ enter_subroutine:
                                    (TH08_ECL_AT(ctx, i16, 0x534E) / TH08_ECL_AT(ctx, i16, 0x5352)) << 1);
         break;
     case 160: *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x5354) = TH08_ECL_READ_I(ctx, 0); break;
-    case 161: TH08_ECL_CONTEXT_API(ctx)->SetAngleFromPosition(&TH08_ECL_AT(ctx, Vec3, 0x2D88), TH08_ECL_READ_F(ctx, 0)); break;
+    case 161: TH08_ECL_CONTEXT_API(ctx)->SetAngleFromPosition(&TH08_ECL_AT(ctx, Vec3, 0x2D88), TH08_ECL_READ_F_RAWARG(ctx, 0)); break;
     case 162: g_BulletManager.RemoveAllBullets(4); break;
     case 164:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
@@ -872,7 +871,7 @@ enter_subroutine:
         if (lhsInt == 0)
             reinterpret_cast<TargetApi *>(&g_Spellcard)->Call0041F040(TH08_ECL_READ_F_RAWARG(ctx, 1), TH08_ECL_READ_F_RAWARG(ctx, 2), TH08_ECL_READ_F_RAWARG(ctx, 3));
         break;
-    case 165: TH08_ECL_AT(ctx, f32, 0x14) = TH08_ECL_READ_F(ctx, 0); break;
+    case 165: TH08_ECL_AT(ctx, f32, 0x14) = TH08_ECL_READ_F_RAWARG(ctx, 0); break;
     case 166:
         *TH08_ECL_WRITE_F(ctx, 1) =
             sinf(TH08_ECL_READ_F_RAWARG(ctx, 2)) * TH08_ECL_READ_F_RAWARG(ctx, 3);
