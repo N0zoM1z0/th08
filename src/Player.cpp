@@ -146,9 +146,58 @@ void Player::FUN_0044d180()
 void Player::FUN_0044aec0()
 {
 }
-// STUB: th08 0x451150
+// FUNCTION: th08 0x451150
+#pragma var_order(i, slot, this)
 void Player::FUN_00451150()
 {
+    u8 *slot;
+    i32 i;
+
+    if ((*reinterpret_cast<u32 *>(0x164D0B4) >> 10) & 1)
+    {
+        return;
+    }
+
+    slot = reinterpret_cast<u8 *>(this) + 0xBE838;
+    for (i = 0; i < 0x80; i++, slot += 0x484)
+    {
+        if (*reinterpret_cast<i16 *>(slot + 0x462) == 0)
+        {
+            continue;
+        }
+
+        if (*reinterpret_cast<u32 *>(slot + 0x474) != 0)
+        {
+            if (reinterpret_cast<i32 (__fastcall *)(Player *, u8 *)>(*reinterpret_cast<u32 *>(slot + 0x474))(this, slot) != 0)
+            {
+                *reinterpret_cast<i16 *>(slot + 0x462) = 0;
+                continue;
+            }
+        }
+
+        reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[0] +=
+            *reinterpret_cast<f32 *>(0x17CE8E0) * *reinterpret_cast<f32 *>(slot + 0x43C);
+        reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[1] +=
+            *reinterpret_cast<f32 *>(0x17CE8E0) * *reinterpret_cast<f32 *>(slot + 0x440);
+
+        if (*reinterpret_cast<i16 *>(slot + 0x464) != 4 && *reinterpret_cast<i16 *>(slot + 0x464) != 5)
+        {
+            if (!g_GameManager.IsWithinPlayfield(
+                    reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[0],
+                    reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[1],
+                    *reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(slot + 0x224) + 0x34),
+                    *reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(slot + 0x224) + 0x30)))
+            {
+                *reinterpret_cast<i16 *>(slot + 0x462) = 0;
+            }
+        }
+
+        if (g_AnmManager->ExecuteScript(reinterpret_cast<AnmVm *>(slot)) != ZUN_SUCCESS)
+        {
+            *reinterpret_cast<i16 *>(slot + 0x462) = 0;
+        }
+        (*reinterpret_cast<ZunTimer *>(slot + 0x454))++;
+    }
 }
 // FUNCTION: th08 0x451400
 #pragma var_order(i, slot, this)
