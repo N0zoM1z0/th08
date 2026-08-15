@@ -354,9 +354,79 @@ i32 __fastcall Player::FUN_0044fd80(u8 *slot, i32 value, u8 *entry)
     return 0;
 }
 
-// STUB: th08 0x450f60
+// FUNCTION: th08 0x450f60
+#pragma var_order(i, table, slot, result, entry, this, value)
 void __fastcall Player::FUN_00450f60(i32 value)
 {
+    unsigned __int64 *table;
+    u8 *entry;
+    u8 *slot;
+    i32 result;
+    i32 i;
+
+    table = (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) == 0)
+                ? reinterpret_cast<unsigned __int64 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2A74) + 0x38)
+                : reinterpret_cast<unsigned __int64 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2A78) + 0x38);
+
+    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) != 0 &&
+        ((*reinterpret_cast<u8 *>(0x164D0B1) == 2 &&
+          (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) & 1) != 0) ||
+         *reinterpret_cast<u8 *>(0x164D0B1) == 9) &&
+        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4) >= 60)
+    {
+        table += ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) & 2) ? 7 : 6);
+    }
+    else
+    {
+        while (g_GameManager.GetPower() >= *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(table) + 4))
+        {
+            table++;
+        }
+    }
+
+    entry = *reinterpret_cast<u8 **>(table);
+    slot = reinterpret_cast<u8 *>(this) + 0xBE838;
+    for (i = 0; i < 0x80; i++, slot += 0x484)
+    {
+        if (*reinterpret_cast<i16 *>(slot + 0x462) != 0)
+        {
+            continue;
+        }
+
+processEntry:
+        if (*reinterpret_cast<u32 *>(entry + 0x28) != 0)
+        {
+            result = reinterpret_cast<i32 (__fastcall *)(Player *, u8 *, i32, u8 *)>(
+                *reinterpret_cast<u32 *>(entry + 0x28))(this, slot, value, entry);
+        }
+        else
+        {
+            result = this->FUN_0044fd80(slot, value, entry);
+        }
+
+        if (result == 1)
+        {
+            *reinterpret_cast<u32 *>(slot + 0x1F8) |= 0x2000;
+            *reinterpret_cast<i16 *>(slot + 0x462) = 1;
+            *reinterpret_cast<u8 **>(slot + 0x480) = entry;
+            *reinterpret_cast<u32 *>(slot + 0x474) =
+                *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(slot + 0x480) + 0x2C);
+            *reinterpret_cast<u32 *>(slot + 0x478) =
+                *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(slot + 0x480) + 0x30);
+            *reinterpret_cast<u32 *>(slot + 0x47C) =
+                *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(slot + 0x480) + 0x34);
+        }
+
+        entry += 0x38;
+        if (*reinterpret_cast<i16 *>(entry) < 0)
+        {
+            return;
+        }
+        if (result == 0)
+        {
+            goto processEntry;
+        }
+    }
 }
 
 // STUB: th08 0x451d50

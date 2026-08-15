@@ -694,3 +694,4 @@ th08::ZunTimer::FUN_0040d3d0
 th08::Player::FUN_0044fd80
 th08::Supervisor::ControllerCallback
 th08::Player::FUN_0044fb70
+th08::Player::FUN_00450f60
