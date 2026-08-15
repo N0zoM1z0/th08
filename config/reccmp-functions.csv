@@ -799,7 +799,7 @@ FUN_0044ee70,0x44ee70,function
 FUN_0044f2d0,0x44f2d0,function
 FUN_0044f5e0,0x44f5e0,function
 FUN_0044f930,0x44f930,function
-FUN_0044fb70,0x44fb70,function
+th08::Player::FUN_0044fb70,0x44fb70,function
 th08::Player::FUN_0044fd80,0x44fd80,function
 FUN_0044fdd0,0x44fdd0,function
 FUN_0044fe20,0x44fe20,function

@@ -798,7 +798,7 @@ FUN_0044ee70,0x44ee70,0x423,unknown,,u8
 FUN_0044f2d0,0x44f2d0,0x2e1,unknown,,u8
 FUN_0044f5e0,0x44f5e0,0x32a,unknown,,u8
 FUN_0044f930,0x44f930,0x23a,unknown,,u8
-FUN_0044fb70,0x44fb70,0x20c,unknown,,u8,u8
+th08::Player::FUN_0044fb70,0x44fb70,0x20c,__fastcall,,void,Player*,u8*,u8*
 th08::Player::FUN_0044fd80,0x44fd80,0x41,__fastcall,,i32,Player*,u8*,i32,u8*
 FUN_0044fdd0,0x44fdd0,0x4d,unknown,,u8,u8,u8
 FUN_0044fe20,0x44fe20,0x177,unknown,,u8,u8,u8

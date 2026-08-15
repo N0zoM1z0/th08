@@ -6,6 +6,7 @@
 #include "ItemManager.hpp"
 #include "AnmManager.hpp"
 #include "Player.hpp"
+#include "SoundPlayer.hpp"
 
 namespace th08
 {
@@ -289,9 +290,55 @@ i32 Player::FUN_00451500()
     return 0;
 }
 
-// STUB: th08 0x44fb70
+// FUNCTION: th08 0x44fb70
 void __fastcall Player::FUN_0044fb70(u8 *slot, u8 *entry)
 {
+    if (*reinterpret_cast<i16 *>(entry + 0x20) == 0)
+    {
+        *reinterpret_cast<Float3 *>(slot + 0x2A4) =
+            *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2B4);
+    }
+    else
+    {
+        *reinterpret_cast<Float3 *>(slot + 0x2A4) = *reinterpret_cast<Float3 *>(
+            reinterpret_cast<u8 *>(this) + ((*reinterpret_cast<i16 *>(entry + 0x20) - 1) * 0x2F4) + 0x6B0);
+    }
+
+    reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[0] += *reinterpret_cast<f32 *>(entry + 0x4);
+    reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[1] += *reinterpret_cast<f32 *>(entry + 0x8);
+    reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[2] = 0.495f;
+
+    *reinterpret_cast<u32 *>(slot + 0x430) = *reinterpret_cast<u32 *>(entry + 0x0C);
+    *reinterpret_cast<u32 *>(slot + 0x434) = *reinterpret_cast<u32 *>(entry + 0x10);
+    *reinterpret_cast<f32 *>(slot + 0x438) = 1.0f;
+    *reinterpret_cast<u32 *>(slot + 0x450) = *reinterpret_cast<u32 *>(entry + 0x14);
+    *reinterpret_cast<u32 *>(slot + 0x44C) = *reinterpret_cast<u32 *>(entry + 0x18);
+    *reinterpret_cast<f32 *>(slot + 0x43C) = cosf(*reinterpret_cast<f32 *>(entry + 0x14)) * *reinterpret_cast<f32 *>(entry + 0x18);
+    *reinterpret_cast<f32 *>(slot + 0x440) = sinf(*reinterpret_cast<f32 *>(entry + 0x14)) * *reinterpret_cast<f32 *>(entry + 0x18);
+
+    *reinterpret_cast<ZunTimer *>(slot + 0x454) = 0;
+    *reinterpret_cast<u8 *>(slot + 0x46C) = *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3);
+    *reinterpret_cast<i16 *>(slot + 0x464) = *reinterpret_cast<i16 *>(entry + 0x22);
+    *reinterpret_cast<i16 *>(slot + 0x460) = *reinterpret_cast<i16 *>(entry + 0x1C);
+    *reinterpret_cast<i16 *>(slot + 0x46E) = *reinterpret_cast<i16 *>(entry + 0x24);
+
+    if (*reinterpret_cast<i16 *>(entry + 0x26) >= 0)
+    {
+        g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(*reinterpret_cast<i16 *>(entry + 0x26)),
+                                               *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2B4));
+    }
+
+    reinterpret_cast<AnmLoaded *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xC))
+        ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(slot), *reinterpret_cast<i16 *>(entry + 0x24) + 10);
+
+    *reinterpret_cast<u8 *>(slot + 0x470) = 0;
+    if (g_GameManager.GaugeIsExtremelyYoukai())
+    {
+        if (*reinterpret_cast<i16 *>(entry + 0x1E) > 0)
+        {
+            *reinterpret_cast<u8 *>(slot + 0x470) = 1;
+        }
+    }
 }
 
 // FUNCTION: th08 0x44fd80
