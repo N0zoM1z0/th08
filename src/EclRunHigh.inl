@@ -590,14 +590,14 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
 
     case 128:
     {
-        i32 slot = TH08_ECL_AT(ctx, i32, 0x53C0);
-        u8 *effect = (u8 *)TH08_ECL_CONTEXT_API(ctx)->SpawnEffect00425430(13, &TH08_ECL_AT(ctx, Vec3, 0x2D34), 1,
-                                                        0xFF6060D0);
-        TH08_ECL_AT(ctx, u8 *, 0x5360 + TH08_ECL_AT(ctx, i32, 0x53C0) * 4) = effect;
-        *(i32 *)(effect + 0x2EC) = TH08_ECL_RAW_I(ctx, 1);
-        *(i32 *)(effect + 0x2F0) = TH08_ECL_RAW_I(ctx, 2);
-        *(i32 *)(effect + 0x2F4) = TH08_ECL_RAW_I(ctx, 3);
-        TH08_ECL_AT(ctx, i32, 0x53C4) = TH08_ECL_RAW_I(ctx, 4);
+        u8 *operands = TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands;
+        TH08_ECL_AT(ctx, u8 *, 0x5360 + TH08_ECL_AT(ctx, i32, 0x53C0) * 4) =
+            reinterpret_cast<u8 *>(g_EffectManager.SpawnEffect(
+                13, reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)),
+                1, 0xFF6060D0));
+        u8 *effect = TH08_ECL_AT(ctx, u8 *, 0x5360 + TH08_ECL_AT(ctx, i32, 0x53C0) * 4);
+        *reinterpret_cast<Vec3 *>(effect + 0x2EC) = *reinterpret_cast<Vec3 *>(operands + 4);
+        TH08_ECL_AT(ctx, i32, 0x53C4) = *reinterpret_cast<i32 *>(operands + 0x10);
         TH08_ECL_AT(ctx, i32, 0x53C0)++;
         break;
     }
@@ -718,7 +718,7 @@ enter_subroutine:
         vector.x = TH08_ECL_READ_F_RAWARG(ctx, 3);
         vector.y = TH08_ECL_READ_F_RAWARG(ctx, 4);
         vector.z = TH08_ECL_READ_F_RAWARG(ctx, 5);
-        reinterpret_cast<TargetApi *>(&g_EffectManager)->SpawnEffectWithVector(TH08_ECL_READ_I(ctx, 0), &TH08_ECL_AT(ctx, Vec3, 0x2D34), &vector,
+        g_EffectManager.SpawnEffectAngle(TH08_ECL_READ_I(ctx, 0), reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)), reinterpret_cast<D3DXVECTOR3 *>(&vector),
                                        TH08_ECL_READ_I(ctx, 1), *TH08_ECL_WRITE_I(ctx, 2));
         break;
     }
@@ -733,13 +733,13 @@ enter_subroutine:
         for (i32 i = 0; i < count; ++i)
         {
             Vec3 position = TH08_ECL_AT(ctx, Vec3, 0x2D34);
-            position.x += TH08_ECL_CONTEXT_API(ctx)->RandomFloat() * 128.0f - 64.0f;
-            position.y += TH08_ECL_CONTEXT_API(ctx)->RandomFloat() * 128.0f - 64.0f;
+            position.x += g_Rng.GetRandomF32() * 128.0f - 64.0f;
+            position.y += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             i32 playerItemCount = TH08_ECL_CONTEXT_API(ctx)->PlayerItemCount();
             if (playerItemCount < 0x80)
-                TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&position, i == 0 ? 2 : 0, 0);
+                g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&position), static_cast<ItemType>(i == 0 ? 2 : 0), 0);
             else
-                TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&position, 1, 0);
+                g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&position), static_cast<ItemType>(1), 0);
         }
         break;
     }
@@ -752,9 +752,9 @@ enter_subroutine:
             position.x = TH08_ECL_AT(ctx, Vec3, 0x2D34).x;
             position.y = TH08_ECL_AT(ctx, Vec3, 0x2D34).y;
             position.z = TH08_ECL_AT(ctx, Vec3, 0x2D34).z;
-            ((f32 *)position)[0] += TH08_ECL_CONTEXT_API(ctx)->RandomFloat() * 128.0f - 64.0f;
-            position.y += TH08_ECL_CONTEXT_API(ctx)->RandomFloat() * 128.0f - 64.0f;
-            TH08_ECL_CONTEXT_API(ctx)->SpawnItem(reinterpret_cast<Vec3 *>(&position), 1, 0);
+            ((f32 *)position)[0] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
+            position.y += g_Rng.GetRandomF32() * 128.0f - 64.0f;
+            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&position), static_cast<ItemType>(1), 0);
         }
         break;
     }

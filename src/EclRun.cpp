@@ -4,6 +4,7 @@
 #include "Gui.hpp"
 #include "BulletManager.hpp"
 #include "GameManager.hpp"
+#include "ItemManager.hpp"
 #include "Spellcard.hpp"
 
 #include <string.h>
