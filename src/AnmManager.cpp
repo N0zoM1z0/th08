@@ -1242,6 +1242,25 @@ void AnmManager::TranslateRotation(VertexTex1DiffuseXyzrhw *vertex, float x, flo
     vertex->pos.y = x * sine + y * cosine + yOffset;
 }
 
+
+// STUB: th08 0x463cf0
+ZunResult AnmManager::FUN_00463cf0(AnmVm *vm)
+{
+    return ZUN_SUCCESS;
+}
+
+// STUB: th08 0x464070
+ZunResult AnmManager::FUN_00464070(AnmVm *vm)
+{
+    return ZUN_SUCCESS;
+}
+
+// STUB: th08 0x464400
+ZunResult AnmManager::DrawWithCallback(AnmVm *vm, void *callback)
+{
+    return ZUN_SUCCESS;
+}
+
 #pragma var_order(sine, rotation, cosine, x, y, yOffset, xOffset)
 ZunResult AnmManager::Draw2D(AnmVm *vm)
 {
@@ -1403,15 +1422,17 @@ ZunResult AnmManager::DrawTriangleFan(AnmVm *vm, VertexDiffuseXyzrhw *vertices, 
 }
 
 
-// STUB: th08 0x40baf0
-ZunResult AnmManager::Draw2DAndFlush(AnmVm *vm)
+// FUNCTION: th08 0x40baf0
+void AnmManager::Draw2DAndFlush(AnmVm *vm)
 {
-    return ZUN_SUCCESS;
+    this->Draw2D(vm);
+    this->FlushVertexBuffer();
 }
 
-// STUB: th08 0x40ba90
+// FUNCTION: th08 0x40ba90
 void AnmManager::SetCameraMode(i32 mode)
 {
+    this->cameraMode = mode;
 }
 
 // FUNCTION: th08 0x465070

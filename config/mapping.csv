@@ -128,7 +128,7 @@ th08::AnmManager::ClearCameraSettings,0x40ba70,0x15,__thiscall,,void,AnmManager*
 th08::AnmManager::SetCameraMode,0x40ba90,0x19,__thiscall,,void,AnmManager*,i32
 th08::AnmManager::SetMixColorDefault,0x40bab0,0x1e,__thiscall,,void,AnmManager*
 th08::AnmManager::SetMixColor,0x40bad0,0x1f,__thiscall,,void,AnmManager*,D3DCOLOR
-th08::AnmManager::Draw2DAndFlush,0x40baf0,0x21,__thiscall,,ZunResult,AnmManager*,AnmVm*
+th08::AnmManager::Draw2DAndFlush,0x40baf0,0x21,__thiscall,,void,AnmManager*,AnmVm*
 Concurrency::details::ContextBase::ClearCancel,0x40bb20,0x33,__thiscall,,u8,ContextBase*
 FUN_0040bb60,0x40bb60,0x1a,unknown,,u8,u8
 th08::GameManager::IsTampered,0x40bb80,0x91,__thiscall,,ZunBool,GameManager*
@@ -358,8 +358,8 @@ FUN_00427b50,0x427b50,0x9e,unknown,,u8
 FUN_00427bf0,0x427bf0,0x30a,unknown,,u8
 FUN_00427f00,0x427f00,0x1f5,unknown,,u8
 FUN_00428100,0x428100,0xdb,unknown,,u8
-th08::EffectManager::FUN_004281e0,0x4281e0,0x122,__thiscall,,void,EffectManager*
-FUN_00428310,0x428310,0x19b,unknown,,u8
+th08::EffectManager::FUN_004281e0,0x4281e0,0x122,__thiscall,,i32,EffectManager*
+th08::FUN_00428310,0x428310,0x19b,__cdecl,,void
 FUN_004284b0,0x4284b0,0xd8,unknown,,u8
 FUN_00428590,0x428590,0x84,unknown,,u8
 FUN_00428620,0x428620,0x87,unknown,,u8
@@ -967,7 +967,7 @@ th08::AnmManager::FUN_00463cf0,0x463cf0,0x6b,__thiscall,,u8,AnmManager*,AnmVm*
 FUN_00463d60,0x463d60,0x30b,unknown,,u8,u8
 th08::AnmManager::FUN_00464070,0x464070,0x62,__thiscall,,u8,AnmManager*,AnmVm*
 FUN_004640e0,0x4640e0,0x312,unknown,,u8,u8,u8
-FUN_00464400,0x464400,0x6f,unknown,,u8,u8,u8
+th08::AnmManager::DrawWithCallback,0x464400,0x6f,__thiscall,,ZunResult,AnmManager*,AnmVm*,void*
 FUN_00464470,0x464470,0x526,unknown,,u8,u8
 FUN_004649a0,0x4649a0,0x160,unknown,,u8,u8,u8,u8
 FUN_00464b00,0x464b00,0x160,unknown,,u8,u8,u8,u8

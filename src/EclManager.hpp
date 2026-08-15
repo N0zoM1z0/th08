@@ -20,7 +20,7 @@ struct EffectManager
     AnmVm *SpawnEffect00425B70(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
     AnmVm *SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
     AnmVm *SpawnEffectAngle(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 count, i32 color);
-    void FUN_004281e0();
+    i32 FUN_004281e0();
 };
 extern EffectManager g_EffectManager;
 DIFFABLE_EXTERN(ChainElem, g_EffectManagerCalcChain);

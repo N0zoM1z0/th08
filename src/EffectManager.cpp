@@ -7,13 +7,58 @@
 namespace th08
 {
 
+void FUN_00428310()
+{
+}
+
 DIFFABLE_STATIC(EffectManager, g_EffectManager);
 DIFFABLE_STATIC(ChainElem, g_EffectManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_EffectManagerDrawChain);
 
-// STUB: th08 0x4281e0
-void EffectManager::FUN_004281e0()
+// FUNCTION: th08 0x4281e0
+#pragma var_order(effect, i, this)
+i32 EffectManager::FUN_004281e0()
 {
+    u8 *effect = *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x8A618);
+    i32 i = 0;
+
+    if (*reinterpret_cast<u8 *>((u8 *)&g_Supervisor + 0x13C) == 0)
+    {
+        return 1;
+    }
+
+    while (effect != NULL)
+    {
+        i++;
+        if (*reinterpret_cast<u8 *>((u8 *)&g_Supervisor + 0x13C) == 1 && (i & 1) != 0)
+        {
+            return 1;
+        }
+
+        *reinterpret_cast<Float3 *>(effect + 0x208) = *reinterpret_cast<Float3 *>(effect + 0x2A4);
+        if (*reinterpret_cast<i8 *>(effect + 0x354) == 4)
+        {
+            g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(effect));
+        }
+        else if (*reinterpret_cast<i8 *>(effect + 0x354) == 1)
+        {
+            if (*reinterpret_cast<i8 *>(effect + 0x351) == 0x33 || *reinterpret_cast<i8 *>(effect + 0x351) == 0x3F)
+            {
+                g_AnmManager->DrawWithCallback(reinterpret_cast<AnmVm *>(effect), (void *)FUN_00428310);
+            }
+            else
+            {
+                g_AnmManager->FUN_00463cf0(reinterpret_cast<AnmVm *>(effect));
+            }
+        }
+        else
+        {
+            g_AnmManager->FUN_00464070(reinterpret_cast<AnmVm *>(effect));
+        }
+
+        effect = *reinterpret_cast<u8 **>(effect + 0x35C);
+    }
+    return 1;
 }
 
 // FUNCTION: th08 0x4286b0

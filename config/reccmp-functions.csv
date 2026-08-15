@@ -360,7 +360,7 @@ th08::EffectManager::OnUpdate,0x427bf0,function
 th08::EffectManager::OnDraw,0x427f00,function
 th08::EffectManager::DrawUnkTypeEffects,0x428100,function
 th08::EffectManager::FUN_004281e0,0x4281e0,function
-FUN_00428310,0x428310,function
+th08::FUN_00428310,0x428310,function
 th08::EffectManager::AddedCallback,0x4284b0,function
 th08::EffectManager::DeletedCallback,0x428590,function
 th08::EffectManager::RegisterChain,0x428620,function

@@ -634,3 +634,6 @@ th08::EffectManager::SpawnEffect00425B70
 th08::BulletManager::RemoveAllBullets
 th08::Background::Background
 th08::Background::OnDrawLowPrio
+th08::AnmManager::SetCameraMode
+th08::AnmManager::Draw2DAndFlush
+th08::EffectManager::FUN_004281e0

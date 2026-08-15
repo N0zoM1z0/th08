@@ -630,3 +630,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00430830,th08::BulletManager::RemoveAllBullets,620,matching,100.00,bullet-manager-remove-all-bullets,python3 scripts/compare-function.py bullet-manager-remove-all-bullets --json
 0x004071A0,th08::Background::Background,513,matching,100.00,background-constructor,python3 scripts/compare-function.py background-constructor --json
 0x00409640,th08::Background::OnDrawLowPrio,528,matching,100.00,background-ondraw-low-prio,python3 scripts/compare-function.py background-ondraw-low-prio --json
+0x0040BA90,th08::AnmManager::SetCameraMode,25,matching,100.00,anm-manager-set-camera-mode,python3 scripts/compare-function.py anm-manager-set-camera-mode --json
+0x0040BAF0,th08::AnmManager::Draw2DAndFlush,33,matching,100.00,anm-manager-draw2d-and-flush,python3 scripts/compare-function.py anm-manager-draw2d-and-flush --json
+0x004281E0,th08::EffectManager::FUN_004281e0,290,matching,100.00,effect-manager-fun-004281e0,python3 scripts/compare-function.py effect-manager-fun-004281e0 --json

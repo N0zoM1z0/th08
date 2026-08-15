@@ -53869,7 +53869,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x5D
 type = "REL32"
-symbol = "?FUN_004281e0@EffectManager@th08@@QAEXXZ"
+symbol = "?FUN_004281e0@EffectManager@th08@@QAEHXZ"
 target = 0x004281E0
 
 [[units.relocations]]
@@ -53983,7 +53983,7 @@ target = 0x018BDC90
 [[units.relocations]]
 offset = 0x15E
 type = "REL32"
-symbol = "?Draw2DAndFlush@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+symbol = "?Draw2DAndFlush@AnmManager@th08@@QAEXPAUAnmVm@2@@Z"
 target = 0x0040BAF0
 
 [[units.relocations]]
@@ -54057,3 +54057,103 @@ offset = 0x1E9
 type = "REL32"
 symbol = "?SetMixColorDefault@AnmManager@th08@@QAEXXZ"
 target = 0x0040BAB0
+
+
+[[units]]
+name = "anm-manager-set-camera-mode"
+object = "build/AnmManager.obj"
+symbol = "?SetCameraMode@AnmManager@th08@@QAEXH@Z"
+target_address = 0x0040BA90
+size = 0x19
+
+[[units]]
+name = "anm-manager-draw2d-and-flush"
+object = "build/AnmManager.obj"
+symbol = "?Draw2DAndFlush@AnmManager@th08@@QAEXPAUAnmVm@2@@Z"
+target_address = 0x0040BAF0
+size = 0x21
+
+[[units.relocations]]
+offset = 0xF
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units.relocations]]
+offset = 0x17
+type = "REL32"
+symbol = "?FlushVertexBuffer@AnmManager@th08@@QAEXXZ"
+target = 0x00462E40
+
+[[units]]
+name = "effect-manager-fun-004281e0"
+object = "build/EffectManager.obj"
+symbol = "?FUN_004281e0@EffectManager@th08@@QAEHXZ"
+target_address = 0x004281E0
+size = 0x122
+
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x47
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x9A
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x9F
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units.relocations]]
+offset = 0xD3
+type = "DIR32"
+symbol = "?FUN_00428310@th08@@YIXXZ"
+target = 0x00428310
+
+[[units.relocations]]
+offset = 0xDD
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xE2
+type = "REL32"
+symbol = "?DrawWithCallback@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAX@Z"
+target = 0x00464400
+
+[[units.relocations]]
+offset = 0xEE
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xF3
+type = "REL32"
+symbol = "?FUN_00463cf0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463CF0
+
+[[units.relocations]]
+offset = 0xFF
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x104
+type = "REL32"
+symbol = "?FUN_00464070@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00464070
