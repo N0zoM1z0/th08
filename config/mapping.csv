@@ -245,7 +245,7 @@ FUN_0041f110,0x41f110,0x16d,unknown,,u8
 FUN_0041f280,0x41f280,0x17f,unknown,,u8
 FUN_0041f400,0x41f400,0x19,unknown,,u8
 th08::EclOperands::ResolveInt,0x41f420,0x76b,__fastcall,,i32,EnemyOverlay*,i32
-FUN_0041fd20,0x41fd20,0x1c,unknown,,u8
+th08::EclOperands::TargetEnemyHelpersOverlay::HasAttachedEnemy,0x41fd20,0x1c,__thiscall,,i32,TargetEnemyHelpersOverlay*
 FUN_0041fd40,0x41fd40,0x46,unknown,,u8
 FUN_0041fd90,0x41fd90,0x3b,unknown,,u8
 th08::Spellcard::GetTimerFrames,0x41fdd0,0x19,__thiscall,,i32,Spellcard*

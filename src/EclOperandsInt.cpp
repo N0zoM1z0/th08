@@ -91,6 +91,14 @@ extern f32 g_TargetFloat004ECE3C;
 #define CONTEXT_FLOAT(offset) (*(f32 *)(ECL_CONTEXT + (offset)))
 #define ENEMY_HELPERS ((TargetEnemyHelpersOverlay *)enemy)
 
+
+
+// FUNCTION: th08 0x0041FD20
+i32 TargetEnemyHelpersOverlay::HasAttachedEnemy()
+{
+    return *(void **)((u8 *)this + 0x2DA4) != 0;
+}
+
 // Observed: 0x0041F420 is __fastcall, with Enemy in ECX and the raw integer
 // operand in EDX. The primary table covers 0x2710 through 0x2774 inclusive.
 // Values 0x275f..0x2762 deliberately share the raw-operand default handler.

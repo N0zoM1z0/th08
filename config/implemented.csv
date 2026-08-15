@@ -567,3 +567,4 @@ th08::Spellcard::SetStoredVector
 th08::Spellcard::IsActive
 th08::Spellcard::GetInactiveState
 th08::Spellcard::GetTimerFrames
+th08::EclOperands::TargetEnemyHelpersOverlay::HasAttachedEnemy

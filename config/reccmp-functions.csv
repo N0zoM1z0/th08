@@ -246,7 +246,7 @@ FUN_0041f110,0x41f110,function
 FUN_0041f280,0x41f280,function
 FUN_0041f400,0x41f400,function
 th08::EclOperands::ResolveInt,0x41f420,function
-th08::Enemy::FUN_0041fd20,0x41fd20,function
+th08::EclOperands::TargetEnemyHelpersOverlay::HasAttachedEnemy,0x41fd20,function
 FUN_0041fd40,0x41fd40,function
 FUN_0041fd90,0x41fd90,function
 th08::Spellcard::GetTimerFrames,0x41fdd0,function

@@ -49213,3 +49213,10 @@ offset = 0x11
 type = "REL32"
 symbol = "??BZunTimer@th08@@QAEHXZ"
 target = 0x0040D3B0
+
+[[units]]
+name = "ecl-enemy-has-attached-enemy"
+object = "build/probes/EclOperandsInt.obj"
+symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+target_address = 0x0041FD20
+size = 0x1C
