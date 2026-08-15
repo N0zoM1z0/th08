@@ -520,8 +520,8 @@ th08::GameManager::AddToBombCount,0x439883,function
 th08::GameManager::GetBombsRemaining,0x4398ce,function
 th08::AsciiManager::SetColor,0x4398e8,function
 th08::AsciiManager::SetIsGuiMode,0x4398ff,function
-FUN_00439916,0x439916,function
-FUN_00439961,0x439961,function
+th08::FUN_00439916,0x439916,function
+th08::FUN_00439961,0x439961,function
 th08::GameManager::IsWithinPlayfield,0x4399ac,function
 th08::GameManager::CalcAntiTamperChecksum,0x439a2e,function
 th08::GameManager::CalcChecksum,0x439ac5,function

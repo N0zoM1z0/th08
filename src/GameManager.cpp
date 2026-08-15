@@ -37,6 +37,43 @@ DIFFABLE_STATIC(GameManager, g_GameManager);
 DIFFABLE_STATIC(ChainElem, g_GameManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_GameManagerDrawChain);
 
+
+// FUNCTION: th08 0x439916
+i32 FUN_00439916(i32 unused)
+{
+    i32 i;
+
+    i = 0;
+    while (*reinterpret_cast<i32 *>(0x4C7670 + i * 0x14) >= 0)
+    {
+        if (static_cast<i32>(*reinterpret_cast<i16 *>(0x164D0B8)) <=
+            *reinterpret_cast<i32 *>(0x4C7670 + i * 0x14))
+        {
+            return *reinterpret_cast<i32 *>(0x4C7680 + i * 0x14);
+        }
+        i++;
+    }
+    return 0;
+}
+
+// FUNCTION: th08 0x439961
+i32 FUN_00439961(i32 unused)
+{
+    i32 i;
+
+    i = 0;
+    while (*reinterpret_cast<i32 *>(0x4C7670 + i * 0x14) >= 0)
+    {
+        if (static_cast<i32>(*reinterpret_cast<i16 *>(0x164D0B8)) <=
+            *reinterpret_cast<i32 *>(0x4C7670 + i * 0x14))
+        {
+            return *reinterpret_cast<i32 *>(0x4C767C + i * 0x14);
+        }
+        i++;
+    }
+    return 0;
+}
+
 // FUNCTION: th08 0x4399ac
 ZunBool GameManager::IsWithinPlayfield(f32 x, f32 y, f32 width, f32 height)
 {

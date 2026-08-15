@@ -683,3 +683,5 @@ th08::IncrementTruncate
 th08::GameManager::IsStageClearedWithoutRetries
 th08::GameManager::IsStageClearedWithRetries
 th08::Gui::FUN_00439810
+th08::FUN_00439916
+th08::FUN_00439961

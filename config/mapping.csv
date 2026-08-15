@@ -519,8 +519,8 @@ th08::GameManager::AddToBombCount,0x439883,0x4b,__thiscall,,void,GameManager*,i3
 th08::GameManager::GetBombsRemaining,0x4398ce,0x1a,__thiscall,,ulonglong,GameManager*
 th08::AsciiManager::SetColor,0x4398e8,0x17,__thiscall,,void,AsciiManager*,D3DCOLOR
 th08::AsciiManager::SetIsGuiMode,0x4398ff,0x17,__thiscall,,void,AsciiManager*,u32
-FUN_00439916,0x439916,0x4b,unknown,,u8
-FUN_00439961,0x439961,0x4b,unknown,,u8
+th08::FUN_00439916,0x439916,0x4b,__fastcall,,i32,i32
+th08::FUN_00439961,0x439961,0x4b,__fastcall,,i32,i32
 th08::GameManager::IsWithinPlayfield,0x4399ac,0x82,__thiscall,,u32,GameManager*,f32,f32,f32,f32
 th08::GameManager::CalcAntiTamperChecksum,0x439a2e,0x97,__thiscall,,i32,GameManager*
 th08::GameManager::CalcChecksum,0x439ac5,0x64,__fastcall,,i32,u8*,i32

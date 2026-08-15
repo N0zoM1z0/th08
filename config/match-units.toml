@@ -56431,3 +56431,17 @@ offset = 0x11
 type = "REL32"
 symbol = "?FUN_0043396d@GuiImpl@th08@@QAEXH@Z"
 target = 0x0043396D
+
+[[units]]
+name = "fun-00439916"
+object = "build/GameManager.obj"
+symbol = "?FUN_00439916@th08@@YIHH@Z"
+target_address = 0x00439916
+size = 0x4B
+
+[[units]]
+name = "fun-00439961"
+object = "build/GameManager.obj"
+symbol = "?FUN_00439961@th08@@YIHH@Z"
+target_address = 0x00439961
+size = 0x4B

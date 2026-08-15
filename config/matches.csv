@@ -679,3 +679,5 @@ address,name,size,status,match_percent,unit,evidence
 0x00439829,th08::GameManager::IsStageClearedWithoutRetries,45,matching,100.00,game-manager-stage-cleared-without-retries,python3 scripts/compare-function.py game-manager-stage-cleared-without-retries --json
 0x00439856,th08::GameManager::IsStageClearedWithRetries,45,matching,100.00,game-manager-stage-cleared-with-retries,python3 scripts/compare-function.py game-manager-stage-cleared-with-retries --json
 0x00439810,th08::Gui::FUN_00439810,25,matching,100.00,gui-fun-00439810,python3 scripts/compare-function.py gui-fun-00439810 --json
+0x00439916,th08::FUN_00439916,75,matching,100.00,fun-00439916,python3 scripts/compare-function.py fun-00439916 --json
+0x00439961,th08::FUN_00439961,75,matching,100.00,fun-00439961,python3 scripts/compare-function.py fun-00439961 --json
