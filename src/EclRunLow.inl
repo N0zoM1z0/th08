@@ -680,7 +680,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         EclHelpers::ConfigureRelativeMotion(enemy, instruction);
         break;
     case 65:
-        F32At(enemy, 0x2D94) = AddNormalizeAngle(ReadFloat(enemy, instruction, 0), 0.0f);
+        F32At(enemy, 0x2D94) = AddNormalizeAngle(ReadFloatRawArg(enemy, instruction, 0), 0.0f);
         F32At(enemy, 0x2DA8) = ReadFloat(enemy, instruction, 1);
         U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x3000U) | 0x1000U;
         I32At(enemy, 0x2DE8) = 0;
@@ -734,7 +734,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
 
     case 70:
-        F32At(enemy, 0x2D98) = ReadFloatRawArg(enemy, instruction, 0);
+        F32At(enemy, 0x2D98) = ReadFloat(enemy, instruction, 0);
         U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & 0xFFFFCFFFU) | 0x1000U;
         break;
     case 71:

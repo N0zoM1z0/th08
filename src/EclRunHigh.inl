@@ -604,7 +604,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
     case 124: TH08_ECL_CONTEXT_API(ctx)->PlayPositioned(TH08_ECL_READ_I(ctx, 0), TH08_ECL_AT(ctx, i32, 0x2D34)); break;
     case 129:
         if (TH08_ECL_PRESENTATION_WRITES_ALLOWED())
-            TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFF8FFFFF) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 7) << 20);
+            TH08_ECL_AT(ctx, u32, 0x3324) = ((TH08_ECL_RAW_BYTE(ctx, 0) & 7) << 20) | (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFF8FFFFF);
         break;
     case 130:
         if ((((g_EnemyManagerUpdateManagerFlags >> 14) & 1) != 1) || (((g_EnemyManagerUpdateManagerFlags >> 7) & 3) == 0))
