@@ -615,3 +615,5 @@ th08::GameManager::IsTampered
 th08::GameManager::AddPower
 th08::Catk::WasAttemptedWithShot
 th08::AnmManager::CreateTextureFromFile
+th08::Background::RegisterChain
+th08::EnemyManager::RegisterChain

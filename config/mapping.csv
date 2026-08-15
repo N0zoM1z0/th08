@@ -96,7 +96,7 @@ th08::Background::FUN_00409160,0x409160,0x9d,__thiscall,,void,Background*,unsign
 th08::Background::OnDrawHighPrio,0x409200,0x43f,__fastcall,,u32,Background*
 th08::Background::OnDrawLowPrio,0x409640,0x210,unknown,,u8
 th08::Background::AddedCallback,0x409850,0x2c2,__fastcall,,u32,Background*
-th08::Background::RegisterChain,0x409b20,0xfe,unknown,,u8
+th08::Background::RegisterChain,0x409b20,0xfe,__fastcall,,ZunResult,i32
 th08::Background::DeletedCallback,0x409c20,0x7a,__fastcall,,u32,Background*
 th08::Background::CutChain,0x409ca0,0x32,__cdecl,,void
 th08::Background::LoadStageData,0x409ce0,0x256,__thiscall,,u32,Background*,char*
@@ -405,7 +405,7 @@ th08::Enemy::ClampPosition,0x42c180,0x10e,__thiscall,,void,Enemy*
 FUN_0042c290,0x42c290,0x11c,unknown,,u8,u8,u8
 FUN_0042c3b0,0x42c3b0,0x6e,unknown,,u8
 FUN_0042c420,0x42c420,0x16f,unknown,,u8
-th08::EnemyManager::RegisterChain,0x42c590,0xcb,__stdcall,,ZunResult
+th08::EnemyManager::RegisterChain,0x42c590,0xcb,__fastcall,,ZunResult
 th08::EnemyManager::OnUpdate,0x42c660,0x1836,__thiscall,,u32,EnemyManager*
 FUN_0042deb0,0x42deb0,0xfc,unknown,,u8
 FUN_0042dfb0,0x42dfb0,0x14,unknown,,u8

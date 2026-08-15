@@ -51686,3 +51686,349 @@ offset = 0x4D
 type = "REL32"
 symbol = "_D3DXCreateTextureFromFileInMemoryEx@60"
 target = 0x0047B72E
+
+
+[[units]]
+name = "enemy-manager-register-chain"
+object = "build/EnemyManager.obj"
+symbol = "?RegisterChain@EnemyManager@th08@@SI?AW4ZunResult@@XZ"
+target_address = 0x0042C590
+size = 0xCB
+
+[[units.relocations]]
+offset = 0x9
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x18
+type = "REL32"
+symbol = "?Initialize@EnemyManager@th08@@QAEXXZ"
+target = 0x00429E00
+
+[[units.relocations]]
+offset = 0x1D
+type = "DIR32"
+symbol = "?OnUpdate@EnemyManager@th08@@SI?AW4ChainCallbackResult@2@XZ"
+target = 0x0042C660
+
+[[units.relocations]]
+offset = 0x22
+type = "DIR32"
+symbol = "?g_EnemyManagerCalcChain@th08@@3VChainElem@1@A"
+target = 0x00F54E30
+
+[[units.relocations]]
+offset = 0x27
+type = "REL32"
+symbol = "?SetCallback@ChainElem@th08@@QAEXP6I?AW4ChainCallbackResult@2@PAX@Z@Z"
+target = 0x00406520
+
+[[units.relocations]]
+offset = 0x2D
+type = "DIR32"
+symbol = "?g_EnemyManagerCalcChain@th08@@3VChainElem@1@A"
+target = 0x00F54E30
+
+[[units.relocations]]
+offset = 0x31
+type = "DIR32"
+symbol = "?AddedCallback@EnemyManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
+target = 0x0042EBF0
+
+[[units.relocations]]
+offset = 0x37
+type = "DIR32"
+symbol = "?g_EnemyManagerCalcChain@th08@@3VChainElem@1@A"
+target = 0x00F54E30
+
+[[units.relocations]]
+offset = 0x3B
+type = "DIR32"
+symbol = "?DeletedCallback@EnemyManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
+target = 0x0042EE80
+
+[[units.relocations]]
+offset = 0x43
+type = "DIR32"
+symbol = "?g_EnemyManagerCalcChain@th08@@3VChainElem@1@A"
+target = 0x00F54E30
+
+[[units.relocations]]
+offset = 0x4A
+type = "DIR32"
+symbol = "?g_EnemyManagerCalcChain@th08@@3VChainElem@1@A"
+target = 0x00F54E30
+
+[[units.relocations]]
+offset = 0x4F
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0x54
+type = "REL32"
+symbol = "?AddToCalcChain@Chain@th08@@QAEHPAVChainElem@2@H@Z"
+target = 0x0043C880
+
+[[units.relocations]]
+offset = 0x62
+type = "DIR32"
+symbol = "?OnDrawHighPrio@EnemyManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target = 0x0042E120
+
+[[units.relocations]]
+offset = 0x67
+type = "DIR32"
+symbol = "?g_EnemyManagerDrawChainHighPrio@th08@@3VChainElem@1@A"
+target = 0x00577F00
+
+[[units.relocations]]
+offset = 0x6C
+type = "REL32"
+symbol = "?SetCallback@ChainElem@th08@@QAEXP6I?AW4ChainCallbackResult@2@PAX@Z@Z"
+target = 0x00406520
+
+[[units.relocations]]
+offset = 0x75
+type = "DIR32"
+symbol = "?g_EnemyManagerDrawChainHighPrio@th08@@3VChainElem@1@A"
+target = 0x00577F00
+
+[[units.relocations]]
+offset = 0x7C
+type = "DIR32"
+symbol = "?g_EnemyManagerDrawChainHighPrio@th08@@3VChainElem@1@A"
+target = 0x00577F00
+
+[[units.relocations]]
+offset = 0x81
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0x86
+type = "REL32"
+symbol = "?AddToDrawChain@Chain@th08@@QAEHPAVChainElem@2@H@Z"
+target = 0x0043C960
+
+[[units.relocations]]
+offset = 0x94
+type = "DIR32"
+symbol = "?OnDrawLowPrio@EnemyManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target = 0x0042EB90
+
+[[units.relocations]]
+offset = 0x99
+type = "DIR32"
+symbol = "?g_EnemyManagerDrawChainLowPrio@th08@@3VChainElem@1@A"
+target = 0x00F54E50
+
+[[units.relocations]]
+offset = 0x9E
+type = "REL32"
+symbol = "?SetCallback@ChainElem@th08@@QAEXP6I?AW4ChainCallbackResult@2@PAX@Z@Z"
+target = 0x00406520
+
+[[units.relocations]]
+offset = 0xA7
+type = "DIR32"
+symbol = "?g_EnemyManagerDrawChainLowPrio@th08@@3VChainElem@1@A"
+target = 0x00F54E50
+
+[[units.relocations]]
+offset = 0xAE
+type = "DIR32"
+symbol = "?g_EnemyManagerDrawChainLowPrio@th08@@3VChainElem@1@A"
+target = 0x00F54E50
+
+[[units.relocations]]
+offset = 0xB3
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0xB8
+type = "REL32"
+symbol = "?AddToDrawChain@Chain@th08@@QAEHPAVChainElem@2@H@Z"
+target = 0x0043C960
+
+
+[[units]]
+name = "background-register-chain"
+object = "build/Background.obj"
+symbol = "?RegisterChain@Background@th08@@SI?AW4ZunResult@@H@Z"
+target_address = 0x00409B20
+size = 0xFE
+
+[[units.relocations]]
+offset = 0x0D
+type = "DIR32"
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+
+[[units.relocations]]
+offset = 0x12
+type = "REL32"
+symbol = "?IsDisableResourceReload@th08@@YIIXZ"
+target = 0x0040B900
+
+[[units.relocations]]
+offset = 0x33
+type = "REL32"
+symbol = "?IsDisableResourceReload@th08@@YIIXZ"
+target = 0x0040B900
+
+[[units.relocations]]
+offset = 0x61
+type = "DIR32"
+symbol = "?OnUpdate@Background@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target = 0x00407400
+
+[[units.relocations]]
+offset = 0x66
+type = "DIR32"
+symbol = "?g_BackgroundCalcChain@th08@@3VChainElem@1@A"
+target = 0x004EA650
+
+[[units.relocations]]
+offset = 0x6B
+type = "REL32"
+symbol = "?SetCallback@ChainElem@th08@@QAEXP6I?AW4ChainCallbackResult@2@PAX@Z@Z"
+target = 0x00406520
+
+[[units.relocations]]
+offset = 0x71
+type = "DIR32"
+symbol = "?g_BackgroundCalcChain@th08@@3VChainElem@1@A"
+target = 0x004EA650
+
+[[units.relocations]]
+offset = 0x75
+type = "DIR32"
+symbol = "?AddedCallback@Background@th08@@SI?AW4ZunResult@@PAU12@@Z"
+target = 0x00409850
+
+[[units.relocations]]
+offset = 0x7B
+type = "DIR32"
+symbol = "?g_BackgroundCalcChain@th08@@3VChainElem@1@A"
+target = 0x004EA650
+
+[[units.relocations]]
+offset = 0x7F
+type = "DIR32"
+symbol = "?DeletedCallback@Background@th08@@SI?AW4ZunResult@@PAU12@@Z"
+target = 0x00409C20
+
+[[units.relocations]]
+offset = 0x88
+type = "DIR32"
+symbol = "?g_BackgroundCalcChain@th08@@3VChainElem@1@A"
+target = 0x004EA650
+
+[[units.relocations]]
+offset = 0x8F
+type = "DIR32"
+symbol = "?g_BackgroundCalcChain@th08@@3VChainElem@1@A"
+target = 0x004EA650
+
+[[units.relocations]]
+offset = 0x94
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0x99
+type = "REL32"
+symbol = "?AddToCalcChain@Chain@th08@@QAEHPAVChainElem@2@H@Z"
+target = 0x0043C880
+
+[[units.relocations]]
+offset = 0xA7
+type = "DIR32"
+symbol = "?OnDrawHighPrio@Background@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target = 0x00409200
+
+[[units.relocations]]
+offset = 0xAC
+type = "DIR32"
+symbol = "?g_BackgroundDrawChainHighPrio@th08@@3VChainElem@1@A"
+target = 0x004E4010
+
+[[units.relocations]]
+offset = 0xB1
+type = "REL32"
+symbol = "?SetCallback@ChainElem@th08@@QAEXP6I?AW4ChainCallbackResult@2@PAX@Z@Z"
+target = 0x00406520
+
+[[units.relocations]]
+offset = 0xBA
+type = "DIR32"
+symbol = "?g_BackgroundDrawChainHighPrio@th08@@3VChainElem@1@A"
+target = 0x004E4010
+
+[[units.relocations]]
+offset = 0xC1
+type = "DIR32"
+symbol = "?g_BackgroundDrawChainHighPrio@th08@@3VChainElem@1@A"
+target = 0x004E4010
+
+[[units.relocations]]
+offset = 0xC6
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0xCB
+type = "REL32"
+symbol = "?AddToDrawChain@Chain@th08@@QAEHPAVChainElem@2@H@Z"
+target = 0x0043C960
+
+[[units.relocations]]
+offset = 0xD0
+type = "DIR32"
+symbol = "?OnDrawLowPrio@Background@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target = 0x00409640
+
+[[units.relocations]]
+offset = 0xD5
+type = "DIR32"
+symbol = "?g_BackgroundDrawChainLowPrio@th08@@3VChainElem@1@A"
+target = 0x004EA630
+
+[[units.relocations]]
+offset = 0xDA
+type = "REL32"
+symbol = "?SetCallback@ChainElem@th08@@QAEXP6I?AW4ChainCallbackResult@2@PAX@Z@Z"
+target = 0x00406520
+
+[[units.relocations]]
+offset = 0xE2
+type = "DIR32"
+symbol = "?g_BackgroundDrawChainLowPrio@th08@@3VChainElem@1@A"
+target = 0x004EA630
+
+[[units.relocations]]
+offset = 0xE9
+type = "DIR32"
+symbol = "?g_BackgroundDrawChainLowPrio@th08@@3VChainElem@1@A"
+target = 0x004EA630
+
+[[units.relocations]]
+offset = 0xEE
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 0xF3
+type = "REL32"
+symbol = "?AddToDrawChain@Chain@th08@@QAEHPAVChainElem@2@H@Z"
+target = 0x0043C960

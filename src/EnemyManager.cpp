@@ -15,10 +15,33 @@ void EnemyManager::Initialize()
 {
 }
 
-// STUB: th08 0x42c590
+// FUNCTION: th08 0x42c590
+#pragma var_order(result, enemyManager)
 ZunResult EnemyManager::RegisterChain()
 {
-    return ZUN_ERROR;
+    EnemyManager *enemyManager = &g_EnemyManager;
+    i32 result = 0;
+
+    enemyManager->Initialize();
+
+    g_EnemyManagerCalcChain.SetCallback((ChainCallback)EnemyManager::OnUpdate);
+    g_EnemyManagerCalcChain.addedCallback = (ChainLifetimeCallback)EnemyManager::AddedCallback;
+    g_EnemyManagerCalcChain.deletedCallback = (ChainLifetimeCallback)EnemyManager::DeletedCallback;
+    g_EnemyManagerCalcChain.arg = enemyManager;
+    if (g_Chain.AddToCalcChain(&g_EnemyManagerCalcChain, 11) != ZUN_SUCCESS)
+        return ZUN_ERROR;
+
+    g_EnemyManagerDrawChainHighPrio.SetCallback((ChainCallback)EnemyManager::OnDrawHighPrio);
+    g_EnemyManagerDrawChainHighPrio.arg = enemyManager;
+    if (g_Chain.AddToDrawChain(&g_EnemyManagerDrawChainHighPrio, 8) != ZUN_SUCCESS)
+        return ZUN_ERROR;
+
+    g_EnemyManagerDrawChainLowPrio.SetCallback((ChainCallback)EnemyManager::OnDrawLowPrio);
+    g_EnemyManagerDrawChainLowPrio.arg = enemyManager;
+    if (g_Chain.AddToDrawChain(&g_EnemyManagerDrawChainLowPrio, 11) != ZUN_SUCCESS)
+        return ZUN_ERROR;
+
+    return ZUN_SUCCESS;
 }
 
 // STUB: th08 0x42c660

@@ -172,3 +172,5 @@ Some inline GameManager helpers emit byte-exact code only from a caller object c
 ### First-field pointer equivalence for wrappers
 
 When a structure begins with the field required by an API, VC7 may pass the structure pointer directly instead of materializing `&field`.  `AnmEntry` starts with `IDirect3DTexture8 *texture`, so `D3DXCreateTextureFromFileInMemoryEx(..., &entry->texture)` is emitted as `push entry`.  Prefer the real owner argument (`AnmEntry *`) when target code also reads sibling fields like `entry->rawData` and `entry->size`.
+
+- **Chain registration with fastcall/static parameters:** TH08 chain registration helpers often compile as static `__fastcall` (`SI` decorated symbols). If target saves incoming `ecx` into a local and later stores it into the owner object, reflect it as an explicit parameter even if older headers declared `RegisterChain()` with no arguments. Preserve assignment order and use `#pragma var_order` only for stack slot layout, e.g. `param@[ebp-0C] / owner@[ebp-8] / saved@[ebp-4]`.

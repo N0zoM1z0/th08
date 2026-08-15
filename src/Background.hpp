@@ -16,7 +16,7 @@ struct Background
     static ChainCallbackResult OnDrawHighPrio(Background *background);
     static ChainCallbackResult OnDrawLowPrio(Background *background);
     static ZunResult AddedCallback(Background *background);
-    static ZunResult RegisterChain();
+    static ZunResult RegisterChain(i32 param);
     static ZunResult DeletedCallback(Background *background);
     static void CutChain();
     ZunResult LoadStageData();
