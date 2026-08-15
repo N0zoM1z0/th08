@@ -23,6 +23,17 @@ i32 IsBulletManagerAnmReleaseRequired()
     return g_BulletManagerAnmReleaseRequired;
 }
 
+// FUNCTION: th08 0x415c60
+void BulletManager::bulletmanager_fun_00415c60()
+{
+    this->RemoveAllBullets(1);
+}
+
+// STUB: th08 0x430830
+void BulletManager::RemoveAllBullets(i32 mode)
+{
+}
+
 // STUB: th08 0x42f360
 void BulletManager::Initialize()
 {

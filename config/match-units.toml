@@ -49165,3 +49165,17 @@ offset = 0x3B
 type = "REL32"
 symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
 target = 0x00407120
+# Ledger name: th08::BulletManager::bulletmanager_fun_00415c60
+# Evidence: source-emitted wrapper in BulletManager.cpp; exact 21-byte thiscall that forwards mode 1 to RemoveAllBullets.
+[[units]]
+name = "bullet-manager-clear-all-wrapper"
+object = "build/BulletManager.obj"
+symbol = "?bulletmanager_fun_00415c60@BulletManager@th08@@QAEXXZ"
+target_address = 0x00415C60
+size = 0x15
+
+[[units.relocations]]
+offset = 0x0D
+type = "REL32"
+symbol = "?RemoveAllBullets@BulletManager@th08@@QAEXH@Z"
+target = 0x00430830

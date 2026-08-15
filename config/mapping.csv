@@ -203,7 +203,7 @@ FUN_004144d0,0x4144d0,0x69,unknown,,u8
 FUN_00414540,0x414540,0x44,unknown,,u8
 FUN_00414590,0x414590,0xca5,unknown,,u8
 FUN_004152a0,0x4152a0,0x9b3,unknown,,u8,u8,u8,u8,u8,u8,u8,u8,u8
-FUN_00415c60,0x415c60,0x15,unknown,,u8
+th08::BulletManager::bulletmanager_fun_00415c60,0x415c60,0x15,__thiscall,,void,BulletManager*
 FUN_00415c80,0x415c80,0x55,unknown,,u8
 FUN_00415ce0,0x415ce0,0x25,unknown,,u8
 FUN_00415d10,0x415d10,0x47,__thiscall,,u8,void*,u8
@@ -439,7 +439,7 @@ FUN_0042fe70,0x42fe70,0x21,unknown,,u8
 FUN_0042fea0,0x42fea0,0xcc,unknown,,u8,u8,u8
 FUN_0042ff70,0x42ff70,0x43,unknown,,u8,u8
 FUN_0042ffc0,0x42ffc0,0x81b,unknown,,u8
-FUN_00430830,0x430830,0x26c,unknown,,u8,u8
+th08::BulletManager::RemoveAllBullets,0x430830,0x26c,__thiscall,,void,BulletManager*,i32
 FUN_00430aa0,0x430aa0,0x10,unknown,,u8,u8,u8
 FUN_00430ab0,0x430ab0,0x27b,unknown,,u8
 FUN_00430d30,0x430d30,0xd6,unknown,,u8,u8,u8
