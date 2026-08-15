@@ -1431,10 +1431,17 @@ static i32 GetAnmFormat(i32 format)
     return format;
 }
 
-// STUB: th08 0x465570
-ZunResult AnmManager::CreateTextureFromFile(IDirect3DTexture8 **outTexture, i32 format, i32 colorKey)
+// FUNCTION: th08 0x465570
+ZunResult AnmManager::CreateTextureFromFile(AnmEntry *entry, i32 format, i32 colorKey)
 {
-    return ZUN_ERROR;
+    format = GetAnmFormat(format);
+    if (D3DXCreateTextureFromFileInMemoryEx(g_Supervisor.d3dDevice, entry->rawData, entry->size, 0, 0, 0, 0,
+                                            g_TextureFormatD3D8Mapping[format], D3DPOOL_MANAGED, 3, -1, colorKey,
+                                            NULL, NULL, &entry->texture) != D3D_OK)
+    {
+        return ZUN_ERROR;
+    }
+    return ZUN_SUCCESS;
 }
 
 #pragma var_order(surface, textureSurfaceLevel, header, lockedRect, currentY, textureSrc, textureDest)
@@ -1732,7 +1739,7 @@ int AnmManager::LoadTextureData(AnmLoaded *anmLoaded, i32 entryNumber, i32 curre
         }
         else
         {
-            if (this->CreateTextureFromFile(&anmLoaded->textures[entryNumber].texture, startOfEntry->format,
+            if (this->CreateTextureFromFile(&anmLoaded->textures[entryNumber], startOfEntry->format,
                                             startOfEntry->colorKey) != ZUN_SUCCESS)
             {
                 g_GameErrorContext.Fatal(TH_ERR_ANMMANAGER_EXTERN_TEXTURE_CORRUPTED, path);

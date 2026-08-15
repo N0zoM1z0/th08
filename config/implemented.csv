@@ -613,3 +613,5 @@ th08::ItemManager::ConvertAllPowerItemsToTimeOrbs
 th08::ItemManager::OnDraw
 th08::GameManager::IsTampered
 th08::GameManager::AddPower
+th08::Catk::WasAttemptedWithShot
+th08::AnmManager::CreateTextureFromFile

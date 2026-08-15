@@ -609,3 +609,5 @@ address,name,size,status,match_percent,unit,evidence
 0x004415A0,th08::ItemManager::OnDraw,451,matching,100.00,item-manager-on-draw,python3 scripts/compare-function.py item-manager-on-draw --json
 0x0040BB80,th08::GameManager::IsTampered,145,matching,100.00,game-manager-is-tampered-item-comdat,python3 scripts/compare-function.py game-manager-is-tampered-item-comdat --json
 0x00441850,th08::GameManager::AddPower,77,matching,100.00,game-manager-add-power-item-comdat,python3 scripts/compare-function.py game-manager-add-power-item-comdat --json
+0x0045A4A0,th08::Catk::WasAttemptedWithShot,60,matching,100.00,catk-was-attempted-with-shot,python3 scripts/compare-function.py catk-was-attempted-with-shot --json
+0x00465570,th08::AnmManager::CreateTextureFromFile,98,matching,100.00,anm-manager-create-texture-from-file,python3 scripts/compare-function.py anm-manager-create-texture-from-file --json

@@ -8,26 +8,13 @@
 namespace th08
 {
 
+#pragma optimize("s", on)
 // FUNCTION: th08 0x45a4a0
 ZunBool Catk::WasAttemptedWithShot(i32 shotType)
 {
-    ZunBool result;
-
-    if (this->inGameHistory.attempts[shotType] > 0)
-    {
-        result = TRUE;
-    }
-    else if (this->spellPracticeHistory.attempts[shotType] != 0)
-    {
-        result = TRUE;
-    }
-    else
-    {
-        result = FALSE;
-    }
-
-    return result;
+    return this->inGameHistory.attempts[shotType] > 0 || this->spellPracticeHistory.attempts[shotType] != 0;
 }
+#pragma optimize("", on)
 
 i32 ScoreDat::LinkScore(ScoreListNode *node, Hscr *newScore)
 {

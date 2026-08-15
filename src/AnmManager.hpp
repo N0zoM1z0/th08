@@ -493,7 +493,7 @@ struct AnmManager
     ZunResult Draw2D(AnmVm *vm);
     ZunResult DrawNoRotationNoRound(AnmVm *vm);
     ZunResult DrawTriangleFan(AnmVm *vm, VertexDiffuseXyzrhw *vertices, i32 vertexCount);
-    ZunResult CreateTextureFromFile(IDirect3DTexture8 **outTexture, i32 format, i32 colorKey);
+    ZunResult CreateTextureFromFile(AnmEntry *entry, i32 format, i32 colorKey);
     ZunResult CreateTextureFromAnm(IDirect3DTexture8 **outTexture, AnmTextureHeader *textureData, i32 format);
     ZunResult CreateEmptyTexture(IDirect3DTexture8 **outTexture, i32 width, i32 height, i32 format);
     AnmLoaded *LoadAnm(i32 anmIdx, const char *filename);

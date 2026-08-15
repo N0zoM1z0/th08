@@ -167,3 +167,8 @@ When target code uses an absolute field inside a statically allocated manager ob
 ### Inline COMDAT owner choice
 
 Some inline GameManager helpers emit byte-exact code only from a caller object compiled with the same option profile as the target COMDAT instance.  For example, `GameManager::IsTampered` is exact from `ItemManager.obj` while the owner TU emission has a different prologue/register shape.  In these cases, keep the source single and point the match unit at the exact COMDAT object instead of forcing unrelated owner-TU codegen.
+
+
+### First-field pointer equivalence for wrappers
+
+When a structure begins with the field required by an API, VC7 may pass the structure pointer directly instead of materializing `&field`.  `AnmEntry` starts with `IDirect3DTexture8 *texture`, so `D3DXCreateTextureFromFileInMemoryEx(..., &entry->texture)` is emitted as `push entry`.  Prefer the real owner argument (`AnmEntry *`) when target code also reads sibling fields like `entry->rawData` and `entry->size`.

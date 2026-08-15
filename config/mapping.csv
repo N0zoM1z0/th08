@@ -977,7 +977,7 @@ th08::AnmManager::DrawTriangleFan,0x464ec0,0x1ab,__thiscall,,ZunResult,AnmManage
 th08::AnmManager::AnmManager,0x465070,0x1d2,__thiscall,,AnmManager*,AnmManager*
 th08::AnmManager::SetupVertexBuffer,0x465250,0x2bc,__thiscall,,void,AnmManager*
 th08::GetAnmFormat,0x465510,0x53,__fastcall,,i32,i32
-th08::AnmManager::CreateTextureFromFile,0x465570,0x62,__thiscall,,ZunResult,AnmManager*,IDirect3DTexture8**,u32,i32
+th08::AnmManager::CreateTextureFromFile,0x465570,0x62,__thiscall,,ZunResult,AnmManager*,AnmEntry*,i32,i32
 th08::AnmManager::CreateTextureFromAnm,0x4655e0,0x1dc,__thiscall,,ZunResult,AnmManager*,IDirect3DTexture8**,AnmTextureHeader*,i32
 th08::AnmManager::CreateEmptyTexture,0x4657c0,0x38,__thiscall,,u32,AnmManager*,IDirect3DTexture8**,i32,i32,i32
 th08::AnmManager::LoadAnm,0x465800,0x60,__thiscall,,AnmFileDesc*,AnmManager*,i32,char*
