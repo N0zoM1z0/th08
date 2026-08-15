@@ -91,6 +91,19 @@ i32 GameManager::CalcChecksum(u8 *address, i32 size)
 }
 
 
+
+// FUNCTION: th08 0x439829
+ZunBool GameManager::IsStageClearedWithoutRetries(i32 stage, i32 character, i32 difficulty)
+{
+    return IS_STAGE_CLEARED(this->clrdData[character].difficultiesClearedWithoutRetries[difficulty], stage);
+}
+
+// FUNCTION: th08 0x439856
+ZunBool GameManager::IsStageClearedWithRetries(i32 stage, i32 character, i32 difficulty)
+{
+    return IS_STAGE_CLEARED(this->clrdData[character].difficultiesClearedWithRetries[difficulty], stage);
+}
+
 #pragma optimize("t", on)
 f32 GameManager::ScaleFloatBasedOnRank(f32 upper, f32 lower)
 {

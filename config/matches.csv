@@ -676,3 +676,6 @@ address,name,size,status,match_percent,unit,evidence
 0x0044E2E0,th08::GameManager::AddToBombsUsed,104,matching,100.00,game-manager-add-to-bombs-used,python3 scripts/compare-function.py game-manager-add-to-bombs-used --json
 0x00422B80,th08::GameManager::ScaleFloatBasedOnRank,39,matching,100.00,game-manager-scale-float-based-on-rank,python3 scripts/compare-function.py game-manager-scale-float-based-on-rank --json
 0x0043BE09,th08::IncrementTruncate,35,matching,100.00,increment-truncate,python3 scripts/compare-function.py increment-truncate --json
+0x00439829,th08::GameManager::IsStageClearedWithoutRetries,45,matching,100.00,game-manager-stage-cleared-without-retries,python3 scripts/compare-function.py game-manager-stage-cleared-without-retries --json
+0x00439856,th08::GameManager::IsStageClearedWithRetries,45,matching,100.00,game-manager-stage-cleared-with-retries,python3 scripts/compare-function.py game-manager-stage-cleared-with-retries --json
+0x00439810,th08::Gui::FUN_00439810,25,matching,100.00,gui-fun-00439810,python3 scripts/compare-function.py gui-fun-00439810 --json

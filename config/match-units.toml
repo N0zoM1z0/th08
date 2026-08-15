@@ -56404,3 +56404,30 @@ object = "build/GameManager.obj"
 symbol = "?IncrementTruncate@th08@@YIXPAIH@Z"
 target_address = 0x0043BE09
 size = 0x23
+
+[[units]]
+name = "game-manager-stage-cleared-without-retries"
+object = "build/GameManager.obj"
+symbol = "?IsStageClearedWithoutRetries@GameManager@th08@@QAEIHHH@Z"
+target_address = 0x00439829
+size = 0x2D
+
+[[units]]
+name = "game-manager-stage-cleared-with-retries"
+object = "build/GameManager.obj"
+symbol = "?IsStageClearedWithRetries@GameManager@th08@@QAEIHHH@Z"
+target_address = 0x00439856
+size = 0x2D
+
+[[units]]
+name = "gui-fun-00439810"
+object = "build/Gui.obj"
+symbol = "?FUN_00439810@Gui@th08@@QAEXH@Z"
+target_address = 0x00439810
+size = 0x19
+
+[[units.relocations]]
+offset = 0x11
+type = "REL32"
+symbol = "?FUN_0043396d@GuiImpl@th08@@QAEXH@Z"
+target = 0x0043396D

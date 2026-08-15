@@ -157,15 +157,8 @@ struct GameManager
     void AddToClockTime(i8 value);
     void SetClockTime(u8 value);
 
-    ZunBool IsStageClearedWithRetries(i32 stage, i32 character, i32 difficulty)
-    {
-        return IS_STAGE_CLEARED(this->clrdData[character].difficultiesClearedWithRetries[difficulty], stage);
-    }
-
-    ZunBool IsStageClearedWithoutRetries(i32 stage, i32 character, i32 difficulty)
-    {
-        return IS_STAGE_CLEARED(this->clrdData[character].difficultiesClearedWithoutRetries[difficulty], stage);
-    }
+    ZunBool IsStageClearedWithRetries(i32 stage, i32 character, i32 difficulty);
+    ZunBool IsStageClearedWithoutRetries(i32 stage, i32 character, i32 difficulty);
 
     ZunBool IsExtraUnlockedForCharacter(i32 character);
     ZunBool IsExtraUnlocked();

@@ -19,6 +19,18 @@ i32 FUN_00438fe9()
     return g_GuiResourceReloadEnabled;
 }
 
+
+// STUB: th08 0x43396d
+void GuiImpl::FUN_0043396d(i32 value)
+{
+}
+
+// FUNCTION: th08 0x439810
+void Gui::FUN_00439810(i32 value)
+{
+    this->impl->FUN_0043396d(value);
+}
+
 // FUNCTION: th08 0x439050
 ZunResult Gui::FUN_00439050()
 {

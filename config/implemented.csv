@@ -680,3 +680,6 @@ th08::GameManager::AddToDeaths
 th08::GameManager::AddToBombsUsed
 th08::GameManager::ScaleFloatBasedOnRank
 th08::IncrementTruncate
+th08::GameManager::IsStageClearedWithoutRetries
+th08::GameManager::IsStageClearedWithRetries
+th08::Gui::FUN_00439810

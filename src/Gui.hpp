@@ -58,6 +58,7 @@ struct GuiImpl
     AnmVm vm22e14;
 
     GuiImpl();
+    void FUN_0043396d(i32 value);
 };
 C_ASSERT(sizeof(GuiImpl) == 0x230b8);
 
@@ -97,6 +98,7 @@ struct Gui
     ZunResult FUN_00439050();
     ZunResult FUN_00439093();
     void FUN_004390d6();
+    void FUN_00439810(i32 value);
 
     u32 unk_0;
     GuiFlags flags;

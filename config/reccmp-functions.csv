@@ -515,7 +515,7 @@ th08::Gui::LoadMsg,0x439710,function
 th08::Gui::FreeMsgFile,0x4397d5,function
 th08::Gui::FUN_00439810,0x439810,function
 th08::GameManager::IsStageClearedWithoutRetries,0x439829,function
-th08::GameManager::FUN_00439856,0x439856,function
+th08::GameManager::IsStageClearedWithRetries,0x439856,function
 th08::GameManager::AddToBombCount,0x439883,function
 th08::GameManager::GetBombsRemaining,0x4398ce,function
 th08::AsciiManager::SetColor,0x4398e8,function
