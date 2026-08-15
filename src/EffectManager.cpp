@@ -11,6 +11,11 @@ DIFFABLE_STATIC(EffectManager, g_EffectManager);
 DIFFABLE_STATIC(ChainElem, g_EffectManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_EffectManagerDrawChain);
 
+// STUB: th08 0x4281e0
+void EffectManager::FUN_004281e0()
+{
+}
+
 // FUNCTION: th08 0x4286b0
 void EffectManager::CutChain()
 {

@@ -2,6 +2,9 @@
 
 #include "AnmManager.hpp"
 #include "Background.hpp"
+#include "Gui.hpp"
+#include "ScreenEffect.hpp"
+#include "EclManager.hpp"
 #include "Supervisor.hpp"
 
 namespace th08
@@ -36,9 +39,74 @@ ChainCallbackResult Background::OnDrawHighPrio(Background *background)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-// STUB: th08 0x409640
+
+// FUNCTION: th08 0x409640
+#pragma var_order(zValue, alpha, rect, i, background)
 ChainCallbackResult Background::OnDrawLowPrio(Background *background)
 {
+    ZunRect rect;
+    i32 i;
+    i32 alpha;
+    f32 zValue;
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + 0xB24) <= 1 && !g_Gui.IsDialogPresent())
+    {
+        background->RenderObjects(2);
+        background->RenderObjects(3);
+        if (!g_Supervisor.IsFogDisabled())
+        {
+            g_Supervisor.DisableFog();
+        }
+        g_EffectManager.FUN_004281e0();
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + 0xB24) == 1)
+        {
+            rect.left = 32.0f;
+            rect.top = 16.0f;
+            rect.right = 416.0f;
+            rect.bottom = 464.0f;
+            alpha = (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + 0xB28) * 255) / 60;
+            g_AnmManager->FlushVertexBuffer();
+            g_Supervisor.SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
+            if (!g_Supervisor.IsFogDisabled())
+            {
+                g_Supervisor.SetRenderState(D3DRS_FOGENABLE, FALSE);
+            }
+            ScreenEffect::DrawSquare(&rect, alpha << 24);
+        }
+    }
+
+    g_AnmManager->FlushVertexBuffer();
+    g_Supervisor.SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
+    if (!g_Supervisor.IsFogDisabled())
+    {
+        g_Supervisor.DisableFog();
+    }
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + 0xB24) >= 1)
+    {
+        for (i = 0; i < *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + 0xB30); i++)
+        {
+            g_AnmManager->Draw2DAndFlush(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(background) + 0xB38 + i * sizeof(AnmVm)));
+        }
+        if (background->onDrawLowPrioCallback != NULL)
+        {
+            background->onDrawLowPrioCallback();
+        }
+    }
+
+    g_AnmManager->SetCameraMode(0);
+    background->SetCamera1();
+    g_Supervisor.d3dDevice->SetViewport(&g_Supervisor.viewport);
+    zValue = 1000.0f;
+    g_Supervisor.SetRenderState(D3DRS_FOGSTART, *reinterpret_cast<u32 *>(&zValue));
+    zValue = 2000.0f;
+    g_Supervisor.SetRenderState(D3DRS_FOGEND, *reinterpret_cast<u32 *>(&zValue));
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + 0x646C) == 0)
+    {
+        g_AnmManager->SetMixColorDefault();
+    }
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + 0x646C) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + 0x647C) = 0;
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
@@ -120,6 +188,11 @@ void Background::CutChain()
     g_Chain.Cut(&g_BackgroundCalcChain);
     g_Chain.Cut(&g_BackgroundDrawChainHighPrio);
     g_Chain.Cut(&g_BackgroundDrawChainLowPrio);
+}
+
+// STUB: th08 0x40a1b0
+void Background::RenderObjects(i32 mode)
+{
 }
 
 // STUB: th08 0x409ce0

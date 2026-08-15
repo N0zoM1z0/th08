@@ -633,3 +633,4 @@ th08::EffectManager::SpawnEffectAngle
 th08::EffectManager::SpawnEffect00425B70
 th08::BulletManager::RemoveAllBullets
 th08::Background::Background
+th08::Background::OnDrawLowPrio

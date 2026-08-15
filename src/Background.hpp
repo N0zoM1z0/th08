@@ -28,6 +28,7 @@ struct Background
     static ZunResult DeletedCallback(Background *background);
     static void CutChain();
     ZunResult LoadStageData();
+    void RenderObjects(i32 mode);
 
     void SetCamera1()
     {
@@ -60,7 +61,8 @@ struct Background
     unknown_fields(0xb21, 0x17);
     AnmVm anmVmArray[0x20];
     AnmVm anmVm5fb8;
-    unknown_fields(0x625c, 0x8);
+    void (*onDrawLowPrioCallback)();
+    i32 unk6260;
     BackgroundUnkVectors unk6264;
     BackgroundUnkVectors unk62b0;
     BackgroundUnkVectors unk62fc;

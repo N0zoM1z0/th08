@@ -1402,6 +1402,18 @@ ZunResult AnmManager::DrawTriangleFan(AnmVm *vm, VertexDiffuseXyzrhw *vertices, 
     return ZUN_SUCCESS;
 }
 
+
+// STUB: th08 0x40baf0
+ZunResult AnmManager::Draw2DAndFlush(AnmVm *vm)
+{
+    return ZUN_SUCCESS;
+}
+
+// STUB: th08 0x40ba90
+void AnmManager::SetCameraMode(i32 mode)
+{
+}
+
 // FUNCTION: th08 0x465070
 AnmManager::AnmManager()
 {

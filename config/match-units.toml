@@ -53804,3 +53804,256 @@ offset = 0x19C
 type = "REL32"
 symbol = "??0D3DXVECTOR3@@QAE@MMM@Z"
 target = 0x00404720
+
+[[units]]
+name = "background-ondraw-low-prio"
+object = "build/Background.obj"
+symbol = "?OnDrawLowPrio@Background@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target_address = 0x00409640
+size = 0x210
+
+[[units.relocations]]
+offset = 0x1A
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x1F
+type = "REL32"
+symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+target = 0x00437D87
+
+[[units.relocations]]
+offset = 0x31
+type = "REL32"
+symbol = "?RenderObjects@Background@th08@@QAEXH@Z"
+target = 0x0040A1B0
+
+[[units.relocations]]
+offset = 0x3B
+type = "REL32"
+symbol = "?RenderObjects@Background@th08@@QAEXH@Z"
+target = 0x0040A1B0
+
+[[units.relocations]]
+offset = 0x40
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x45
+type = "REL32"
+symbol = "?IsFogDisabled@Supervisor@th08@@QAEIXZ"
+target = 0x00406580
+
+[[units.relocations]]
+offset = 0x4E
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x53
+type = "REL32"
+symbol = "?DisableFog@Supervisor@th08@@QAEHXZ"
+target = 0x00448229
+
+[[units.relocations]]
+offset = 0x58
+type = "DIR32"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0x5D
+type = "REL32"
+symbol = "?FUN_004281e0@EffectManager@th08@@QAEXXZ"
+target = 0x004281E0
+
+[[units.relocations]]
+offset = 0xA5
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xAA
+type = "REL32"
+symbol = "?FlushVertexBuffer@AnmManager@th08@@QAEXXZ"
+target = 0x00462E40
+
+[[units.relocations]]
+offset = 0xB3
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xB8
+type = "REL32"
+symbol = "?SetRenderState@Supervisor@th08@@QAEXW4_D3DRENDERSTATETYPE@@H@Z"
+target = 0x00448270
+
+[[units.relocations]]
+offset = 0xBD
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xC2
+type = "REL32"
+symbol = "?IsFogDisabled@Supervisor@th08@@QAEIXZ"
+target = 0x00406580
+
+[[units.relocations]]
+offset = 0xCF
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xD4
+type = "REL32"
+symbol = "?SetRenderState@Supervisor@th08@@QAEXW4_D3DRENDERSTATETYPE@@H@Z"
+target = 0x00448270
+
+[[units.relocations]]
+offset = 0xE2
+type = "REL32"
+symbol = "?DrawSquare@ScreenEffect@th08@@SIXPAUZunRect@2@K@Z"
+target = 0x0045B1E0
+
+[[units.relocations]]
+offset = 0xE8
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xED
+type = "REL32"
+symbol = "?FlushVertexBuffer@AnmManager@th08@@QAEXXZ"
+target = 0x00462E40
+
+[[units.relocations]]
+offset = 0xF6
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xFB
+type = "REL32"
+symbol = "?SetRenderState@Supervisor@th08@@QAEXW4_D3DRENDERSTATETYPE@@H@Z"
+target = 0x00448270
+
+[[units.relocations]]
+offset = 0x100
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x105
+type = "REL32"
+symbol = "?IsFogDisabled@Supervisor@th08@@QAEIXZ"
+target = 0x00406580
+
+[[units.relocations]]
+offset = 0x10E
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x113
+type = "REL32"
+symbol = "?DisableFog@Supervisor@th08@@QAEHXZ"
+target = 0x00448229
+
+[[units.relocations]]
+offset = 0x159
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x15E
+type = "REL32"
+symbol = "?Draw2DAndFlush@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x0040BAF0
+
+[[units.relocations]]
+offset = 0x17D
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x182
+type = "REL32"
+symbol = "?SetCameraMode@AnmManager@th08@@QAEXH@Z"
+target = 0x0040BA90
+
+[[units.relocations]]
+offset = 0x18A
+type = "REL32"
+symbol = "?SetCamera1@Background@th08@@QAEXXZ"
+target = 0x0040B5A0
+
+[[units.relocations]]
+offset = 0x18F
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x195
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x19D
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x1B6
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x1BB
+type = "REL32"
+symbol = "?SetRenderState@Supervisor@th08@@QAEXW4_D3DRENDERSTATETYPE@@H@Z"
+target = 0x00448270
+
+[[units.relocations]]
+offset = 0x1CD
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x1D2
+type = "REL32"
+symbol = "?SetRenderState@Supervisor@th08@@QAEXW4_D3DRENDERSTATETYPE@@H@Z"
+target = 0x00448270
+
+[[units.relocations]]
+offset = 0x1E4
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x1E9
+type = "REL32"
+symbol = "?SetMixColorDefault@AnmManager@th08@@QAEXXZ"
+target = 0x0040BAB0

@@ -500,6 +500,7 @@ struct AnmManager
     void TranslateRotation(VertexTex1DiffuseXyzrhw *vertex, float x, float y, float sine, float cosine, float xOffset,
                            float yOffset);
     ZunResult Draw2D(AnmVm *vm);
+    ZunResult Draw2DAndFlush(AnmVm *vm);
     ZunResult DrawNoRotationNoRound(AnmVm *vm);
     ZunResult DrawTriangleFan(AnmVm *vm, VertexDiffuseXyzrhw *vertices, i32 vertexCount);
     ZunResult CreateTextureFromFile(AnmEntry *entry, i32 format, i32 colorKey);
@@ -515,6 +516,7 @@ struct AnmManager
     ZunResult ServicePreloadedAnims();
     void ReleaseAnm(i32 anmIdx);
     void ReleaseAnmEntry(AnmEntry *anmEntry);
+    void SetCameraMode(i32 mode);
 
     void DrawTextInner(IDirect3DTexture8 *outTexture, i32 x, i32 y, i32 width, i32 height, i32 fontWidth,
                        i32 fontHeight, COLORREF textColor, COLORREF outlineColor, const char *buffer,

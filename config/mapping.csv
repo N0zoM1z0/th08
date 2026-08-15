@@ -94,14 +94,14 @@ D3DXVECTOR3::operator-,0x4090d0,0x46,__thiscall,,_D3DVECTOR*,_D3DVECTOR*,_D3DVEC
 D3DXVECTOR3::OperatorMult,0x409120,0x3e,__thiscall,,_D3DVECTOR*,_D3DVECTOR*,_D3DVECTOR*,f32
 th08::Background::FUN_00409160,0x409160,0x9d,__thiscall,,void,Background*,unsigned long
 th08::Background::OnDrawHighPrio,0x409200,0x43f,__fastcall,,u32,Background*
-th08::Background::OnDrawLowPrio,0x409640,0x210,unknown,,u8
+th08::Background::OnDrawLowPrio,0x409640,0x210,__fastcall,,ChainCallbackResult,Background*
 th08::Background::AddedCallback,0x409850,0x2c2,__fastcall,,u32,Background*
 th08::Background::RegisterChain,0x409b20,0xfe,__fastcall,,ZunResult,i32
 th08::Background::DeletedCallback,0x409c20,0x7a,__fastcall,,u32,Background*
 th08::Background::CutChain,0x409ca0,0x32,__cdecl,,void
 th08::Background::LoadStageData,0x409ce0,0x256,__thiscall,,u32,Background*,char*
 th08::Background::FUN_00409f40,0x409f40,0x262,__thiscall,,u32,Background*
-th08::Background::FUN_0040a1b0,0x40a1b0,0x128a,__thiscall,,u8,Background*,u32
+th08::Background::RenderObjects,0x40a1b0,0x128a,__thiscall,,void,Background*,i32
 _sqrtf,0x40b440,0x15,__fastcall,,f32,f32
 D3DXVECTOR3::D3DXVECTOR3,0x40b460,0xe,__thiscall,,_D3DVECTOR*,_D3DVECTOR*
 FUN_0040b470,0x40b470,0x49,unknown,,u8,u8
@@ -125,10 +125,10 @@ th08::AnmManager::ClearTexture,0x40ba10,0x18,__thiscall,,void,AnmManager*
 th08::AnmManager::ClearZWrite,0x40ba30,0x15,__thiscall,,void,AnmManager*
 th08::AnmManager::ClearSprite,0x40ba50,0x18,__thiscall,,u8,AnmManager*
 th08::AnmManager::ClearCameraSettings,0x40ba70,0x15,__thiscall,,void,AnmManager*
-th08::AnmManager::SetCameraMode,0x40ba90,0x19,__thiscall,,u8,AnmManager*,u8
+th08::AnmManager::SetCameraMode,0x40ba90,0x19,__thiscall,,void,AnmManager*,i32
 th08::AnmManager::SetMixColorDefault,0x40bab0,0x1e,__thiscall,,void,AnmManager*
 th08::AnmManager::SetMixColor,0x40bad0,0x1f,__thiscall,,void,AnmManager*,D3DCOLOR
-FUN_0040baf0,0x40baf0,0x21,unknown,,u8,u8
+th08::AnmManager::Draw2DAndFlush,0x40baf0,0x21,__thiscall,,ZunResult,AnmManager*,AnmVm*
 Concurrency::details::ContextBase::ClearCancel,0x40bb20,0x33,__thiscall,,u8,ContextBase*
 FUN_0040bb60,0x40bb60,0x1a,unknown,,u8,u8
 th08::GameManager::IsTampered,0x40bb80,0x91,__thiscall,,ZunBool,GameManager*
@@ -358,7 +358,7 @@ FUN_00427b50,0x427b50,0x9e,unknown,,u8
 FUN_00427bf0,0x427bf0,0x30a,unknown,,u8
 FUN_00427f00,0x427f00,0x1f5,unknown,,u8
 FUN_00428100,0x428100,0xdb,unknown,,u8
-FUN_004281e0,0x4281e0,0x122,unknown,,u8
+th08::EffectManager::FUN_004281e0,0x4281e0,0x122,__thiscall,,void,EffectManager*
 FUN_00428310,0x428310,0x19b,unknown,,u8
 FUN_004284b0,0x4284b0,0xd8,unknown,,u8
 FUN_00428590,0x428590,0x84,unknown,,u8
