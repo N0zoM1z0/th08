@@ -362,10 +362,7 @@ struct ZunTimer
         return this->current;
     }
 
-    void operator--(int)
-    {
-        this->Decrement(1);
-    }
+    void operator--(int);
 
     ZunBool operator==(int value)
     {

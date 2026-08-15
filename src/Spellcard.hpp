@@ -261,6 +261,7 @@ struct Spellcard
     void SetStoredVector(f32 x, f32 y, f32 z);
     i32 IsActive();
     i32 GetInactiveState();
+    i32 GetActiveState();
     i32 GetTimerFrames();
 
     static i32 GetDifficultyFromSpellCard(i32 spellcardNumber);

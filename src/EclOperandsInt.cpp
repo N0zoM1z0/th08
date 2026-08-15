@@ -93,10 +93,33 @@ extern f32 g_TargetFloat004ECE3C;
 
 
 
+// FUNCTION: th08 0x0041F000
+i32 TargetEnemyHelpersOverlay::HasParentChain()
+{
+    return *(void **)((u8 *)this + 0x2DA4) == 0 &&
+           *(void **)((u8 *)this + 8) != 0;
+}
+
 // FUNCTION: th08 0x0041FD20
 i32 TargetEnemyHelpersOverlay::HasAttachedEnemy()
 {
     return *(void **)((u8 *)this + 0x2DA4) != 0;
+}
+
+// FUNCTION: th08 0x0041FD40
+i32 TargetEnemyHelpersOverlay::CountParentChain()
+{
+    TargetEnemyHelpersOverlay *cursor = this;
+    i32 count = 0;
+    if (this->HasParentChain())
+    {
+        while (*(void **)((u8 *)cursor + 8) != 0)
+        {
+            cursor = *(TargetEnemyHelpersOverlay **)((u8 *)cursor + 8);
+            count++;
+        }
+    }
+    return count;
 }
 
 // Observed: 0x0041F420 is __fastcall, with Enemy in ECX and the raw integer

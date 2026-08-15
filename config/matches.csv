@@ -7,8 +7,8 @@ address,name,size,status,match_percent,unit,evidence
 0x00433850,th08::BulletManager::CutChain,35,matching,100.00,bullet-manager-cut-chain,python3 scripts/compare-function.py bullet-manager-cut-chain --json
 0x004338B0,th08::IsResourceReloadEnabled,10,matching,100.00,resource-reload-enabled,python3 scripts/compare-function.py resource-reload-enabled --json
 0x004338C0,th08::IsBulletManagerAnmReleaseRequired,10,matching,100.00,bullet-manager-anm-release-required,python3 scripts/compare-function.py bullet-manager-anm-release-required --json
-0x00438FF3,FUN_00438ff3,10,matching,100.00,gui-bullet-anm-release-required,python3 scripts/compare-function.py gui-bullet-anm-release-required --json
-0x00438FFD,FUN_00438ffd,10,matching,100.00,gui-anm-release-required,python3 scripts/compare-function.py gui-anm-release-required --json
+0x00438FF3,th08::FUN_00438ff3,10,matching,100.00,gui-bullet-anm-release-required,python3 scripts/compare-function.py gui-bullet-anm-release-required --json
+0x00438FFD,th08::FUN_00438ffd,10,matching,100.00,gui-anm-release-required,python3 scripts/compare-function.py gui-anm-release-required --json
 0x00437A2F,th08::Gui::AddedCallback,17,matching,100.00,gui-added-callback,python3 scripts/compare-function.py gui-added-callback --json
 0x00437A40,th08::Gui::DeletedCallback,144,matching,100.00,gui-deleted-callback,python3 scripts/compare-function.py gui-deleted-callback --json
 0x00437D64,th08::Gui::CutChain,35,matching,100.00,gui-cut-chain,python3 scripts/compare-function.py gui-cut-chain --json
@@ -58,7 +58,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00406640,th08::ZunTimer::operator++(int),21,matching,100.00,zun-timer-post-increment,python3 scripts/compare-function.py zun-timer-post-increment --json
 0x00406660,th08::ZunTimer::Tick,52,matching,100.00,zun-timer-tick,python3 scripts/compare-function.py zun-timer-tick --json
 0x004068E0,th08::AnmVmBase::Initialize,95,matching,100.00,anm-vm-base-initialize,python3 scripts/compare-function.py anm-vm-base-initialize --json
-0x004066E0,th08::AnmVm::IsVisible,23,matching,100.00,anm-vm-base-is-visible,python3 scripts/compare-function.py anm-vm-base-is-visible --json
+0x004066E0,th08::AnmVmBase::IsVisible,23,matching,100.00,anm-vm-base-is-visible,python3 scripts/compare-function.py anm-vm-base-is-visible --json
 0x00406700,th08::AnmVm::ClearVisible,32,matching,100.00,anm-vm-clear-visible,python3 scripts/compare-function.py anm-vm-clear-visible --json
 0x0040EC00,th08::AnmVm::SetZRotation,43,matching,100.00,anm-vm-set-z-rotation,python3 scripts/compare-function.py anm-vm-set-z-rotation --json
 0x0040B9B0,th08::AnmManager::ClearBlendMode,21,matching,100.00,anm-manager-clear-blend-mode,python3 scripts/compare-function.py anm-manager-clear-blend-mode --json
@@ -77,7 +77,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00443AB0,th08::Supervisor::IsReferenceRasterizerMode,26,matching,100.00,supervisor-reference-rasterizer-mode-main,python3 scripts/compare-function.py supervisor-reference-rasterizer-mode-main --json
 0x00443AD0,th08::Supervisor::IsWindowed,21,matching,100.00,supervisor-windowed-main,python3 scripts/compare-function.py supervisor-windowed-main --json
 0x004531A0,th08::ReplayManager::StopRecording,77,matching,100.00,replay-manager-stop-recording,python3 scripts/compare-function.py replay-manager-stop-recording --json
-0x00453B80,th08::AppendFormat,88,matching,100.00,replay-append-format,python3 scripts/compare-function.py replay-append-format --json
+0x00453B80,th08::?A0xb3f6a42d::AppendFormat,88,matching,100.00,replay-append-format,python3 scripts/compare-function.py replay-append-format --json
 0x00453C80,th08::GameManager::GetDeaths,25,matching,100.00,game-manager-get-deaths,python3 scripts/compare-function.py game-manager-get-deaths --json
 0x00453CA0,th08::GameManager::GetBombsUsed,28,matching,100.00,game-manager-get-bombs-used,python3 scripts/compare-function.py game-manager-get-bombs-used --json
 0x00453CC0,th08::ReplayManager::IsDemo,17,matching,100.00,replay-manager-is-demo,python3 scripts/compare-function.py replay-manager-is-demo --json
@@ -565,3 +565,7 @@ address,name,size,status,match_percent,unit,evidence
 0x0041FDD0,th08::Spellcard::GetTimerFrames,25,matching,100.00,spellcard-get-timer-frames,python3 scripts/compare-function.py spellcard-get-timer-frames --json
 0x0041FD20,th08::EclOperands::TargetEnemyHelpersOverlay::HasAttachedEnemy,28,matching,100.00,ecl-enemy-has-attached-enemy,python3 scripts/compare-function.py ecl-enemy-has-attached-enemy --json
 0x0041FDF0,th08::ZunTimer::operator+=,25,matching,100.00,zun-timer-plus-equals,python3 scripts/compare-function.py zun-timer-plus-equals --json
+0x0041F000,th08::EclOperands::TargetEnemyHelpersOverlay::HasParentChain,53,matching,100.00,ecl-enemy-has-parent-chain,python3 scripts/compare-function.py ecl-enemy-has-parent-chain --json
+0x0041FD40,th08::EclOperands::TargetEnemyHelpersOverlay::CountParentChain,70,matching,100.00,ecl-enemy-count-parent-chain,python3 scripts/compare-function.py ecl-enemy-count-parent-chain --json
+0x0041FD90,th08::Spellcard::GetActiveState,59,matching,100.00,spellcard-get-active-state,python3 scripts/compare-function.py spellcard-get-active-state --json
+0x00418110,th08::ZunTimer::operator--(int),23,matching,100.00,zun-timer-post-decrement,python3 scripts/compare-function.py zun-timer-post-decrement --json

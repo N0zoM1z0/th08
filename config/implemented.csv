@@ -91,8 +91,8 @@ th08::Gui::AddedCallback
 th08::Gui::DeletedCallback
 th08::Gui::CutChain
 th08::Gui::FreeMsgFile
-FUN_00438ff3
-FUN_00438ffd
+th08::FUN_00438ff3
+th08::FUN_00438ffd
 th08::GameManager::IsWithinPlayfield
 th08::GameManager::InitRankParams
 th08::GameManager::OnDraw
@@ -266,7 +266,7 @@ th08::ZunTimer::operator++(int)
 th08::ZunTimer::Tick
 th08::ZunTimer::operator<
 th08::ZunTimer::operator>
-th08::AnmVm::IsVisible
+th08::AnmVmBase::IsVisible
 th08::AnmVm::ClearVisible
 th08::TextHelper::GetBuffer
 th08::TextHelper::GetImageWidthInBytes
@@ -293,7 +293,7 @@ th08::GameManager::GetBombsUsed
 th08::ReplayManager::StopRecording
 th08::ReplayManager::SaveReplay
 th08::ReplayManager::LoadReplayData
-th08::AppendFormat
+th08::?A0xb3f6a42d::AppendFormat
 th08::ReplayManager::IsDemo
 th08::AnmLoaded::SetSprite
 th08::AnmVm::GetFloatVar
@@ -569,3 +569,7 @@ th08::Spellcard::GetInactiveState
 th08::Spellcard::GetTimerFrames
 th08::EclOperands::TargetEnemyHelpersOverlay::HasAttachedEnemy
 th08::ZunTimer::operator+=
+th08::EclOperands::TargetEnemyHelpersOverlay::HasParentChain
+th08::EclOperands::TargetEnemyHelpersOverlay::CountParentChain
+th08::Spellcard::GetActiveState
+th08::ZunTimer::operator--(int)

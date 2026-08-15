@@ -42,7 +42,7 @@ th08::ZunTimer::operator++(int),0x406640,function
 th08::ZunTimer::Tick,0x406660,function
 th08::ZunTimer::operator<,0x4066a0,function
 th08::ZunTimer::operator>,0x4066c0,function
-th08::AnmVm::IsVisible,0x4066e0,function
+th08::AnmVmBase::IsVisible,0x4066e0,function
 th08::AnmVm::ClearVisible,0x406700,function
 th08::AnmVm::AnmVm,0x406720,function
 th08::AnmPrefix::AnmPrefix,0x4067c0,function
@@ -237,7 +237,7 @@ th08::EclManager::Unload,0x418420,function
 th08::EclManager::CallEclSub,0x418450,function
 th08::EclManager::RunEcl,0x4184b0,function
 FUN_0041efc0,0x41efc0,function
-FUN_0041f000,0x41f000,function
+th08::EclOperands::TargetEnemyHelpersOverlay::HasParentChain,0x41f000,function
 th08::Spellcard::SetStoredVector,0x41f040,function
 fmodf,0x41f090,function
 FUN_0041f0b0,0x41f0b0,function
@@ -247,8 +247,8 @@ FUN_0041f280,0x41f280,function
 FUN_0041f400,0x41f400,function
 th08::EclOperands::ResolveInt,0x41f420,function
 th08::EclOperands::TargetEnemyHelpersOverlay::HasAttachedEnemy,0x41fd20,function
-FUN_0041fd40,0x41fd40,function
-FUN_0041fd90,0x41fd90,function
+th08::EclOperands::TargetEnemyHelpersOverlay::CountParentChain,0x41fd40,function
+th08::Spellcard::GetActiveState,0x41fd90,function
 th08::Spellcard::GetTimerFrames,0x41fdd0,function
 th08::ZunTimer::operator+=,0x41fdf0,function
 th08::EclOperands::ResolveIntLValue,0x41fe10,function
@@ -502,8 +502,8 @@ th08::Supervisor::IsHUDRedrawEnabled,0x438a71,function
 th08::Gui::FUN_00438a89,0x438a89,function
 th08::Gui::FUN_00438f58,0x438f58,function
 FUN_00438fe9,0x438fe9,function
-FUN_00438ff3,0x438ff3,function
-FUN_00438ffd,0x438ffd,function
+th08::FUN_00438ff3,0x438ff3,function
+th08::FUN_00438ffd,0x438ffd,function
 FUN_00439007,0x439007,function
 th08::Gui::FUN_00439050,0x439050,function
 th08::Gui::FUN_00439093,0x439093,function
@@ -837,7 +837,7 @@ th08::ReplayManager::DeletedCallback,0x453080,function
 th08::ReplayManager::ReplayManager,0x453160,function
 th08::ReplayManager::StopRecording,0x4531a0,function
 th08::ReplayManager::SaveReplay,0x4531f0,function
-th08::AppendFormat,0x453b80,function
+th08::?A0xb3f6a42d::AppendFormat,0x453b80,function
 th08::Rng::SetSeed,0x453be0,function
 th08::Rng::ResetGenerationCount,0x453c00,function
 th08::Rng::GetSeed,0x453c20,function

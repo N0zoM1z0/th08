@@ -49233,3 +49233,52 @@ offset = 0x0F
 type = "REL32"
 symbol = "?Increment@ZunTimer@th08@@QAEXH@Z"
 target = 0x00447295
+
+
+[[units]]
+name = "ecl-enemy-has-parent-chain"
+object = "build/probes/EclOperandsInt.obj"
+symbol = "?HasParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+target_address = 0x0041F000
+size = 0x35
+
+[[units]]
+name = "ecl-enemy-count-parent-chain"
+object = "build/probes/EclOperandsInt.obj"
+symbol = "?CountParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+target_address = 0x0041FD40
+size = 0x46
+
+[[units.relocations]]
+offset = 0x1A
+type = "REL32"
+symbol = "?HasParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+target = 0x0041F000
+
+
+[[units]]
+name = "spellcard-get-active-state"
+object = "build/SpellCard.obj"
+symbol = "?GetActiveState@Spellcard@th08@@QAEHXZ"
+target_address = 0x0041FD90
+size = 0x3B
+
+[[units.relocations]]
+offset = 0x0D
+type = "REL32"
+symbol = "?IsActive@Spellcard@th08@@QAEHXZ"
+target = 0x004178A0
+
+
+[[units]]
+name = "zun-timer-post-decrement"
+object = "build/main.obj"
+symbol = "??FZunTimer@th08@@QAEXH@Z"
+target_address = 0x00418110
+size = 0x17
+
+[[units.relocations]]
+offset = 0x0D
+type = "REL32"
+symbol = "?Decrement@ZunTimer@th08@@QAEXH@Z"
+target = 0x0044735B

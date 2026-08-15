@@ -382,6 +382,12 @@ i32 Spellcard::GetTimerFrames()
     return *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x108);
 }
 
+// FUNCTION: th08 0x0041FD90
+i32 Spellcard::GetActiveState()
+{
+    return this->IsActive() && ((this->flags >> 2) & 1);
+}
+
 // FUNCTION: th08 0x4144d0
 #pragma var_order(difficulty, i)
 i32 Spellcard::GetDifficultyFromSpellCard(i32 spellCardNumber)

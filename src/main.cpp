@@ -1216,6 +1216,12 @@ void GameManager::SetClockTime(u8 value)
 }
 
 
+// FUNCTION: th08 0x418110
+void ZunTimer::operator--(int)
+{
+    this->Decrement(1);
+}
+
 // FUNCTION: th08 0x41fdf0
 void ZunTimer::operator+=(int value)
 {
