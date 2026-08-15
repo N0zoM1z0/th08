@@ -452,9 +452,9 @@ th08::BulletManager::FUN_004321b0,0x4321b0,0x59,__thiscall,,void,BulletManager*
 th08::Bullet::FUN_00432210,0x432210,0x99,__thiscall,,void,Bullet*
 FUN_004322b0,0x4322b0,0xd5,unknown,,u8
 th08::Bullet::FUN_00432390,0x432390,0xc5,__thiscall,,void,Bullet*
-FUN_00432460,0x432460,0x139,unknown,,u8
-FUN_004325a0,0x4325a0,0x132,unknown,,u8
-FUN_004326e0,0x4326e0,0x150,unknown,,u8
+th08::Bullet::FUN_00432460,0x432460,0x139,__thiscall,,void,Bullet*
+th08::Bullet::FUN_004325a0,0x4325a0,0x132,__thiscall,,void,Bullet*
+th08::Bullet::FUN_004326e0,0x4326e0,0x150,__thiscall,,void,Bullet*
 FUN_00432830,0x432830,0x1b4,unknown,,u8
 th08::Bullet::FUN_004329f0,0x4329f0,0xa7,__thiscall,,void,Bullet*
 th08::Bullet::FUN_00432aa0,0x432aa0,0xa7,__thiscall,,void,Bullet*

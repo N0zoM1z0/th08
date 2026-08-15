@@ -55878,3 +55878,174 @@ offset = 0x91
 type = "REL32"
 symbol = "??EZunTimer@th08@@QAEXH@Z"
 target = 0x00406640
+
+[[units]]
+name = "bullet-fun-004326e0"
+object = "build/BulletManager.obj"
+symbol = "?FUN_004326e0@Bullet@th08@@QAEXXZ"
+target_address = 0x004326E0
+size = 0x150
+
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "??PZunTimer@th08@@QAEIH@Z"
+target = 0x0040B8E0
+
+[[units.relocations]]
+offset = 0x42
+type = "DIR32"
+symbol = "?g_SoundPlayer@th08@@3VSoundPlayer@1@A"
+target = 0x018B8A68
+
+[[units.relocations]]
+offset = 0x47
+type = "REL32"
+symbol = "?PlaySoundByIdx@SoundPlayer@th08@@QAEXW4SoundIdx@2@H@Z"
+target = 0x0045D550
+
+[[units.relocations]]
+offset = 0xA0
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0xA5
+type = "REL32"
+symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
+target = 0x0044C1B0
+
+[[units.relocations]]
+offset = 0xAE
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0xE5
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0xF5
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 0x138
+type = "REL32"
+symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
+target = 0x004286E0
+
+[[units.relocations]]
+offset = 0x148
+type = "REL32"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
+target = 0x00406640
+
+# Mapping name: th08::Bullet::FUN_00432460
+# Source symbol name: th08::Bullet::FUN_00432460
+# Evidence: 7 relocations; 6 direct calls; full replay exact; implemented ledger=False.
+[[units]]
+name = "bullet-fun-00432460"
+object = "build/BulletManager.obj"
+symbol = "?FUN_00432460@Bullet@th08@@QAEXXZ"
+target_address = 0x00432460
+size = 0x139
+
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "??PZunTimer@th08@@QAEIH@Z"
+target = 0x0040B8E0
+
+[[units.relocations]]
+offset = 0x42
+type = "DIR32"
+symbol = "?g_SoundPlayer@th08@@3VSoundPlayer@1@A"
+target = 0x018B8A68
+
+[[units.relocations]]
+offset = 0x47
+type = "REL32"
+symbol = "?PlaySoundByIdx@SoundPlayer@th08@@QAEXW4SoundIdx@2@H@Z"
+target = 0x0045D550
+
+[[units.relocations]]
+offset = 0xCE
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0xDE
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 0x121
+type = "REL32"
+symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
+target = 0x004286E0
+
+[[units.relocations]]
+offset = 0x131
+type = "REL32"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
+target = 0x00406640
+
+# Mapping name: th08::Bullet::FUN_004325a0
+# Source symbol name: th08::Bullet::FUN_004325a0
+# Evidence: 7 relocations; 6 direct calls; full replay exact; implemented ledger=False.
+[[units]]
+name = "bullet-fun-004325a0"
+object = "build/BulletManager.obj"
+symbol = "?FUN_004325a0@Bullet@th08@@QAEXXZ"
+target_address = 0x004325A0
+size = 0x132
+
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "??PZunTimer@th08@@QAEIH@Z"
+target = 0x0040B8E0
+
+[[units.relocations]]
+offset = 0x42
+type = "DIR32"
+symbol = "?g_SoundPlayer@th08@@3VSoundPlayer@1@A"
+target = 0x018B8A68
+
+[[units.relocations]]
+offset = 0x47
+type = "REL32"
+symbol = "?PlaySoundByIdx@SoundPlayer@th08@@QAEXW4SoundIdx@2@H@Z"
+target = 0x0045D550
+
+[[units.relocations]]
+offset = 0xC7
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0xD7
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 0x11A
+type = "REL32"
+symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
+target = 0x004286E0
+
+[[units.relocations]]
+offset = 0x12A
+type = "REL32"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
+target = 0x00406640

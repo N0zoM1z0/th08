@@ -61,6 +61,12 @@ i32 Player::IsYoukai()
     return this->isYoukai;
 }
 
+// STUB: th08 0x44c1b0
+f32 Player::FUN_0044c1b0(Float3 *position)
+{
+    return 0.0f;
+}
+
 // STUB: th08 0x449ff0
 i32 Player::FUN_00449ff0(Float3 *position, Float3 *position2)
 {

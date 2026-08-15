@@ -659,3 +659,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00432AA0,th08::Bullet::FUN_00432aa0,167,matching,100.00,bullet-fun-00432aa0,python3 scripts/compare-function.py bullet-fun-00432aa0 --json
 0x00432210,th08::Bullet::FUN_00432210,153,matching,100.00,bullet-fun-00432210,python3 scripts/compare-function.py bullet-fun-00432210 --json
 0x00432390,th08::Bullet::FUN_00432390,197,matching,100.00,bullet-fun-00432390,python3 scripts/compare-function.py bullet-fun-00432390 --json
+0x00432460,th08::Bullet::FUN_00432460,313,matching,100.00,bullet-fun-00432460,python3 scripts/compare-function.py bullet-fun-00432460 --json
+0x004325A0,th08::Bullet::FUN_004325a0,306,matching,100.00,bullet-fun-004325a0,python3 scripts/compare-function.py bullet-fun-004325a0 --json
+0x004326E0,th08::Bullet::FUN_004326e0,336,matching,100.00,bullet-fun-004326e0,python3 scripts/compare-function.py bullet-fun-004326e0 --json
