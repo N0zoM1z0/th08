@@ -749,7 +749,7 @@ FUN_00449ea0,0x449ea0,0x42,unknown,,u8
 FUN_00449ef0,0x449ef0,0x57,unknown,,u8
 FUN_00449f50,0x449f50,0x16,unknown,,u8
 FUN_00449f70,0x449f70,0x73,unknown,,u8
-FUN_00449ff0,0x449ff0,0x233,unknown,,u8,u8
+th08::Player::FUN_00449ff0,0x449ff0,0x233,__thiscall,,i32,Player*,Float3*,Float3*
 FUN_0044a230,0x44a230,0x12e,unknown,,u8,u8,u8
 FUN_0044a360,0x44a360,0x110,unknown,,u8,u8,u8
 FUN_0044a470,0x44a470,0x12f,unknown,,u8,u8,u8

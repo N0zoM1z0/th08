@@ -627,3 +627,4 @@ address,name,size,status,match_percent,unit,evidence
 0x00425430,th08::EffectManager::SpawnEffect,529,matching,100.00,effect-manager-spawn-effect,python3 scripts/compare-function.py effect-manager-spawn-effect --json
 0x00425650,th08::EffectManager::SpawnEffectAngle,533,matching,100.00,effect-manager-spawn-effect-angle,python3 scripts/compare-function.py effect-manager-spawn-effect-angle --json
 0x00425B70,th08::EffectManager::SpawnEffect00425B70,509,matching,100.00,effect-manager-spawn-effect-00425b70,python3 scripts/compare-function.py effect-manager-spawn-effect-00425b70 --json
+0x00430830,th08::BulletManager::RemoveAllBullets,620,matching,100.00,bullet-manager-remove-all-bullets,python3 scripts/compare-function.py bullet-manager-remove-all-bullets --json

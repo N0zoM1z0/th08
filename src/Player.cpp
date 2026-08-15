@@ -59,6 +59,12 @@ i32 Player::IsYoukai()
     return this->isYoukai;
 }
 
+// STUB: th08 0x449ff0
+i32 Player::FUN_00449ff0(Float3 *position, Float3 *position2)
+{
+    return 0;
+}
+
 #pragma var_order(primaryShtFile, player, secondaryShtFile)
 // FUNCTION: th08 0x44c230
 ZunResult Player::RegisterChain(u32 playerType)

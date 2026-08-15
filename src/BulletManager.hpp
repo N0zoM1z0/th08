@@ -23,7 +23,8 @@ struct Bullet
 
 struct BulletManager
 {
-    unknown_fields(0x0, 0x6BA574);
+    unknown_fields(0x0, 0x6BA570);
+    i32 unk6ba570;
     AnmLoaded *bulletAnm;
 
     void Initialize();

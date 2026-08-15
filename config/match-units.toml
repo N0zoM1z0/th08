@@ -53544,3 +53544,106 @@ offset = 0x1CC
 type = "DIR32"
 symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
 target = 0x018B8A28
+
+[[units]]
+name = "bullet-manager-remove-all-bullets"
+object = "build/BulletManager.obj"
+symbol = "?RemoveAllBullets@BulletManager@th08@@QAEXH@Z"
+target_address = 0x00430830
+size = 0x26C
+
+[[units.relocations]]
+offset = 0xD
+type = "DIR32"
+symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
+target = 0x00F54E90
+
+[[units.relocations]]
+offset = 0x6F
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x74
+type = "REL32"
+symbol = "?FUN_00449ff0@Player@th08@@QAEHPAUFloat3@2@0@Z"
+target = 0x00449FF0
+
+[[units.relocations]]
+offset = 0x8F
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x94
+type = "REL32"
+symbol = "?FUN_00449ff0@Player@th08@@QAEHPAUFloat3@2@0@Z"
+target = 0x00449FF0
+
+[[units.relocations]]
+offset = 0xA1
+type = "DIR32"
+symbol = "?g_BulletCancelItemType@th08@@3HA"
+target = 0x018B8988
+
+[[units.relocations]]
+offset = 0xB1
+type = "DIR32"
+symbol = "?g_ItemManager@th08@@3UItemManager@1@A"
+target = 0x01653648
+
+[[units.relocations]]
+offset = 0xB6
+type = "REL32"
+symbol = "?SpawnItem@ItemManager@th08@@QAEPAUItem@2@PAUFloat3@2@W4ItemType@2@H@Z"
+target = 0x004400A0
+
+[[units.relocations]]
+offset = 0xE6
+type = "DIR32"
+symbol = "?g_ItemManager@th08@@3UItemManager@1@A"
+target = 0x01653648
+
+[[units.relocations]]
+offset = 0xEB
+type = "REL32"
+symbol = "?SpawnItem@ItemManager@th08@@QAEPAUItem@2@PAUFloat3@2@W4ItemType@2@H@Z"
+target = 0x004400A0
+
+[[units.relocations]]
+offset = 0x11E
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x19D
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x1DA
+type = "REL32"
+symbol = "?fsincos@th08@@YIXPAM0M@Z"
+target = 0x00433880
+
+[[units.relocations]]
+offset = 0x22F
+type = "DIR32"
+symbol = "?g_ItemManager@th08@@3UItemManager@1@A"
+target = 0x01653648
+
+[[units.relocations]]
+offset = 0x234
+type = "REL32"
+symbol = "?SpawnItem@ItemManager@th08@@QAEPAUItem@2@PAUFloat3@2@W4ItemType@2@H@Z"
+target = 0x004400A0
+
+[[units.relocations]]
+offset = 0x23D
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B42CC

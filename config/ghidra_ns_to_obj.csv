@@ -23,7 +23,7 @@ ResultScreen,th08::ResultScreen
 ScoreDat,th08::ScoreDat,th08::Catk
 utils,th08::utils
 zwave,th08::CSoundManager,th08::CSound,th08::CStreamingSound,th08::CWaveFile
-BulletManager,th08::BulletManager,th08::g_BulletManager,th08::g_BulletManagerCalcChain,th08::g_BulletManagerDrawChain,th08::g_BulletManagerAnmReleaseRequired,th08::IsBulletManagerAnmReleaseRequired
+BulletManager,th08::BulletManager,th08::g_BulletManager,th08::g_BulletManagerCalcChain,th08::g_BulletManagerDrawChain,th08::g_BulletManagerAnmReleaseRequired,th08::IsBulletManagerAnmReleaseRequired,th08::g_BulletCancelItemType
 EclManager,th08::EclManager,th08::EclTimelineState
 EclGlobals,th08::g_EclCallbackPublishedEnemyField24
 EffectManager,th08::EffectManager,th08::g_EffectManager,th08::g_EffectTemplates
