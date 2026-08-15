@@ -57005,3 +57005,101 @@ offset = 0x103
 type = "REL32"
 symbol = "?SetGaugeInterrupt@AsciiManager@th08@@QAEXH@Z"
 target = 0x004070B0
+
+[[units]]
+name = "player-fun-0044d180"
+target_address = 0x0044D180
+size = 0x13A
+object = "build/Player.obj"
+symbol = "?FUN_0044d180@Player@th08@@QAEXXZ"
+
+[[units.relocations]]
+offset = 0x20
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 0x26
+type = "DIR32"
+symbol = "__real@42700000"
+target = 0x004B4534
+
+[[units.relocations]]
+offset = 0x2C
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x35
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x3E
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x4A
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x53
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x64
+type = "REL32"
+symbol = "?SetBlendModeAdditive@AnmVmBase@th08@@QAEXXZ"
+target = 0x0044E0F0
+
+[[units.relocations]]
+offset = 0x8C
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0xC6
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0xFD
+type = "REL32"
+symbol = "?SetBlendModeNormal@AnmVmBase@th08@@QAEXXZ"
+target = 0x0044E120
+
+[[units.relocations]]
+offset = 0x120
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x129
+type = "DIR32"
+symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
+target = 0x018B896C
+
+[[units]]
+name = "player-load-sht-file"
+target_address = 0x0044DD70
+size = 0xE9
+object = "build/Player.obj"
+symbol = "?LoadShtFile@Player@th08@@SI?AW4ZunResult@@PAPAUPlayerRawShtFile@2@PBD@Z"
+
+[[units.relocations]]
+offset = 0x14
+type = "REL32"
+symbol = "?OpenFile@FileSystem@th08@@YIPAEPBDPAHH@Z"
+target = 0x0043E660

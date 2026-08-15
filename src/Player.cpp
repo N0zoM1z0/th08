@@ -145,9 +145,37 @@ i32 Player::FUN_0044cbf0()
 {
     return 0;
 }
-// STUB: th08 0x44d180
+// FUNCTION: th08 0x44d180
+#pragma var_order(value, this)
 void Player::FUN_0044d180()
 {
+    f32 value;
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A70) = 60;
+    value = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) / 60.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 2.0f * value + 1.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 1.0f - 1.0f * value;
+    reinterpret_cast<AnmVmBase *>(reinterpret_cast<u8 *>(this) + 0x10)->SetBlendModeAdditive();
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x408) = 1.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x404) = 1.0f;
+    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x200) =
+        (((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) * 0xFF) / 30 << 24) | 0xFFFFFF;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) = 0;
+
+    if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) >= 30)
+    {
+        *reinterpret_cast<i8 *>(this) = 3;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 1.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 1.0f;
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x200) = 0xFFFFFFFF;
+        reinterpret_cast<AnmVmBase *>(reinterpret_cast<u8 *>(this) + 0x10)->SetBlendModeNormal();
+        if (((*reinterpret_cast<u32 *>(0x164D0B4) >> 14) & 1) == 0)
+        {
+            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) = 240;
+        }
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) =
+            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x8);
+    }
 }
 // STUB: th08 0x44aec0
 void Player::FUN_0044aec0()
@@ -825,9 +853,39 @@ void Player::CutChain()
     g_PlayerDrawChainLowPrio = NULL;
 }
 
-// STUB: th08 0x44dd70
+// FUNCTION: th08 0x44dd70
+#pragma var_order(i, entry, header, path)
 ZunResult Player::LoadShtFile(PlayerRawShtFile **header, const char *path)
 {
+    i32 i;
+    u8 *entry;
+
+    *header = reinterpret_cast<PlayerRawShtFile *>(FileSystem::OpenFile(path, NULL, 0));
+    if (*header == NULL)
+    {
+        return ZUN_ERROR;
+    }
+
+    for (i = 0; i < *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(*header) + 0x2); i++)
+    {
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(*header) + i * 8 + 0x38) +=
+            reinterpret_cast<u32>(*header);
+        entry = *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(*header) + i * 8 + 0x38);
+
+        while (*reinterpret_cast<i16 *>(entry) >= 0)
+        {
+            *reinterpret_cast<u32 *>(entry + 0x28) =
+                *reinterpret_cast<u32 *>(0x4C7EE0 + *reinterpret_cast<u32 *>(entry + 0x28) * 4);
+            *reinterpret_cast<u32 *>(entry + 0x2C) =
+                *reinterpret_cast<u32 *>(0x4C7F04 + *reinterpret_cast<u32 *>(entry + 0x2C) * 4);
+            *reinterpret_cast<u32 *>(entry + 0x30) =
+                *reinterpret_cast<u32 *>(0x4C7F1C + *reinterpret_cast<u32 *>(entry + 0x30) * 4);
+            *reinterpret_cast<u32 *>(entry + 0x34) =
+                *reinterpret_cast<u32 *>(0x4C7F24 + *reinterpret_cast<u32 *>(entry + 0x34) * 4);
+            entry += 0x38;
+        }
+    }
+
     return ZUN_SUCCESS;
 }
 

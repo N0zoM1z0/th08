@@ -698,3 +698,5 @@ th08::Player::FUN_00450f60
 th08::Player::FUN_0044d420
 th08::Player::OnDrawHighPrio
 th08::Player::FUN_004512f0
+th08::Player::FUN_0044d180
+th08::Player::LoadShtFile
