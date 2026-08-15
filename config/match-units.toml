@@ -55343,3 +55343,16 @@ offset = 0x204
 type = "REL32"
 symbol = "?AddScore@GameManager@th08@@QAEXH@Z"
 target = 0x004181F0
+
+[[units]]
+name = "bullet-manager-initialize"
+object = "build/BulletManager.obj"
+symbol = "?Initialize@BulletManager@th08@@QAEXXZ"
+target_address = 0x0042F360
+size = 0xB1
+
+[[units.relocations]]
+offset = 0x43
+type = "DIR32"
+symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
+target = 0x00F54E90

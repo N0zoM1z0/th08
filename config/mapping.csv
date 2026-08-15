@@ -428,7 +428,7 @@ th08::AsciiManager::FUN_0042f2d0,0x42f2d0,0x1d,__thiscall,,void,AsciiManager*,i3
 th08::AsciiManager::SetScale,0x42f2f0,0x25,__thiscall,,void,AsciiManager*,f32,f32
 FUN_0042f320,0x42f320,0x11,unknown,,u8
 FUN_0042f340,0x42f340,0x16,unknown,,u8,u8
-FUN_0042f360,0x42f360,0xb1,unknown,,u8
+th08::BulletManager::Initialize,0x42f360,0xb1,__thiscall,,void,BulletManager*
 th08::BulletManager::BulletManager,0x42f420,0x75,unknown,,u8
 FUN_0042f4a0,0x42f4a0,0x5c,unknown,,u8
 FUN_0042f500,0x42f500,0x73,unknown,,u8

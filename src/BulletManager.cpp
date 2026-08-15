@@ -115,9 +115,27 @@ void BulletManager::RemoveAllBullets(i32 mode)
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA53C) = 10;
 }
 
-// STUB: th08 0x42f360
+// FUNCTION: th08 0x42f360
+#pragma var_order(i, bullet, this)
 void BulletManager::Initialize()
 {
+    u8 *bullet;
+    i32 i;
+
+    memset(this, 0, sizeof(BulletManager));
+    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x6BA56C) = reinterpret_cast<u8 *>(this) + 0x1A880;
+    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(this) + 0x660638) = 6;
+    this->unk6ba570 = 6;
+
+    bullet = reinterpret_cast<u8 *>(&g_BulletManager) + 0x1A880;
+    for (i = 0; i < 0x600; i++, bullet += 0x10B8)
+    {
+        *reinterpret_cast<u16 *>(bullet + 0x21A) = 0xFFFF;
+        *reinterpret_cast<u16 *>(bullet + 0xCAA) = 0xFFFF;
+        *reinterpret_cast<u16 *>(bullet + 0x4BE) = 0xFFFF;
+        *reinterpret_cast<u16 *>(bullet + 0x762) = 0xFFFF;
+        *reinterpret_cast<u16 *>(bullet + 0xA06) = 0xFFFF;
+    }
 }
 
 // STUB: th08 0x4311a0

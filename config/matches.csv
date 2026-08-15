@@ -646,3 +646,4 @@ address,name,size,status,match_percent,unit,evidence
 0x0044748F,th08::Supervisor::TakeSnapshot,725,matching,100.00,supervisor-take-snapshot,python3 scripts/compare-function.py supervisor-take-snapshot --json
 0x00446A37,th08::Supervisor::SetupDInput,656,matching,100.00,supervisor-setup-dinput,python3 scripts/compare-function.py supervisor-setup-dinput --json
 0x0044C390,th08::Player::OnUpdate,529,matching,100.00,player-onupdate,python3 scripts/compare-function.py player-onupdate --json
+0x0042F360,th08::BulletManager::Initialize,177,matching,100.00,bullet-manager-initialize,python3 scripts/compare-function.py bullet-manager-initialize --json
