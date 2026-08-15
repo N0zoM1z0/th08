@@ -896,7 +896,12 @@ enter_subroutine:
         *TH08_ECL_WRITE_F(ctx, 1) =
             sinf(TH08_ECL_READ_F_RAWARG(ctx, 2)) * TH08_ECL_READ_F_RAWARG(ctx, 3);
         *TH08_ECL_WRITE_F(ctx, 0) =
-            cosf(TH08_ECL_READ_F_RAWARG(ctx, 2)) * TH08_ECL_READ_F_RAWARG(ctx, 3);
+            cosf(TH08_ECL_READ_F_RAWARG(ctx, 2)) *
+            ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
+                 ? reinterpret_cast<EclOperands::EnemyOverlay *>(
+                       TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
+                       *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)))
+                 : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)));
         break;
     case 169:
         if (
@@ -939,7 +944,12 @@ enter_subroutine:
     // the target's late physical handler order.  Their standalone low-opcode
     // forms remain in EclRunLow.inl for source ownership and audit coverage.
     case 82:
-        TH08_ECL_AT(ctx, f32, 0x3350) = TH08_ECL_READ_F_RAWARG(ctx, 0);
+        TH08_ECL_AT(ctx, f32, 0x3350) =
+            (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & 1U)
+                ? reinterpret_cast<EclOperands::EnemyOverlay *>(
+                      TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
+                      *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0)))
+                : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0));
         TH08_ECL_AT(ctx, f32, 0x3350) *= TH08_ECL_AT(ctx, f32, 0x3350);
         break;
     case 83:
