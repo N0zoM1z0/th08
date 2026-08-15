@@ -618,3 +618,4 @@ address,name,size,status,match_percent,unit,evidence
 0x004480F8,th08::Supervisor::FadeOutMusic,183,matching,100.00,supervisor-fade-out-music,python3 scripts/compare-function.py supervisor-fade-out-music --json
 0x00465AC0,th08::AnmManager::LoadExternalTextureData,219,matching,100.00,anm-load-external-texture-data,python3 scripts/compare-function.py anm-load-external-texture-data --json
 0x00466F20,th08::AnmManager::CaptureToTexture,286,matching,100.00,anm-manager-capture-to-texture,python3 scripts/compare-function.py anm-manager-capture-to-texture --json
+0x00445BD4,th08::Supervisor::OnDraw2,362,matching,100.00,supervisor-ondraw2,python3 scripts/compare-function.py supervisor-ondraw2 --json

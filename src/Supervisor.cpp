@@ -356,35 +356,68 @@ ChainCallbackResult Supervisor::DrawFpsCounter(Supervisor *s)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
+// FUNCTION: th08 0x445bd4
+#pragma var_order(position, color1, color2, surface, s)
 ChainCallbackResult Supervisor::OnDraw2(Supervisor *s)
 {
-    if (s->loadingVmsHaveBeenSetup > 2)
+    Float3 position;
+    i32 color1;
+    i32 color2;
+    IDirect3DSurface8 *surface;
+
+    if (s->loadingVmsHaveBeenSetup >= 2)
     {
         s->loadingVmsHaveBeenSetup++;
-        if (s->loadingVmsHaveBeenSetup > 5)
+        if (s->loadingVmsHaveBeenSetup >= 5)
         {
-            if (s->loadingVmsHaveBeenSetup > 35)
+            position.x = 288.0f;
+            position.y = 454.0f;
+            position.z = 0.0f;
+            g_AsciiManager.scaleX = 0.5f;
+            g_AsciiManager.scaleY = 0.5f;
+            if (s->loadingVmsHaveBeenSetup < 35)
             {
+                color1 = 255 - (((s->loadingVmsHaveBeenSetup - 5) << 7) / 30);
+                g_AsciiManager.color.a = color1;
             }
-            if (s->loadingVmsHaveBeenSetup > 64)
+            else
+            {
+                color2 = 255 - (((65 - s->loadingVmsHaveBeenSetup) << 7) / 30);
+                g_AsciiManager.color.a = color2;
+            }
+            g_AsciiManager.AddFormatText(&position, "Press Shot Button");
+            g_AsciiManager.scaleX = 1.0f;
+            g_AsciiManager.scaleY = 1.0f;
+            g_AsciiManager.OnDrawLowPrioImpl();
+            g_AsciiManager.numStrings = 0;
+
+            if (s->loadingVmsHaveBeenSetup >= 65)
             {
                 s->loadingVmsHaveBeenSetup = 5;
             }
         }
     }
+
     if (s->loadingVmsHaveBeenSetup != 0)
     {
         g_AnmManager->CopySurfaceToBackbuffer(8, 0, 0, 0, 0);
     }
     else
     {
-        /* ZUN bloat: no need to check because ReleaseSurface does that already. */
-        if (g_AnmManager->surfaces[8] != NULL)
+        __asm
+        {
+            push 8
+            pop eax
+            shl eax, 2
+            mov ecx, dword ptr [g_AnmManager]
+            mov eax, dword ptr [ecx + eax + 0x2038]
+            mov surface, eax
+        }
+        if (surface != NULL)
         {
             g_AnmManager->ReleaseSurface(8);
         }
     }
-
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
