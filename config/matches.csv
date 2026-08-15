@@ -582,3 +582,5 @@ address,name,size,status,match_percent,unit,evidence
 0x00437BC4,th08::GuiImpl::GuiImpl,281,matching,100.00,gui-impl-constructor,python3 scripts/compare-function.py gui-impl-constructor --json
 0x00437CE2,th08::GuiMsgVm::GuiMsgVm,99,matching,100.00,gui-msg-vm-constructor,python3 scripts/compare-function.py gui-msg-vm-constructor --json
 0x00439710,th08::Gui::LoadMsg,197,matching,100.00,gui-load-msg,python3 scripts/compare-function.py gui-load-msg --json
+0x00438FE9,th08::FUN_00438fe9,10,matching,100.00,gui-resource-reload-enabled,python3 scripts/compare-function.py gui-resource-reload-enabled --json
+0x00437AD0,th08::Gui::RegisterChain,244,matching,100.00,gui-register-chain,python3 scripts/compare-function.py gui-register-chain --json

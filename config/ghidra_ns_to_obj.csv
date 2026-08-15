@@ -2,7 +2,7 @@ Background,th08::Background
 EnemyManager,th08::EnemyManager,th08::Enemy
 Global,th08::Chain,th08::ChainElem,th08::Controller,th08::FileSystem,th08::GameErrorContext,th08::Rng,th08::ZunMemory,th08::Rotate,th08::AddNormalizeAngle
 GameManager,th08::GameManager
-Gui,th08::Gui
+Gui,th08::Gui,th08::g_Gui,th08::g_GuiCalcChain,th08::g_GuiDrawChain,th08::g_GuiAnmReleaseRequired,th08::g_GuiResourceReloadEnabled
 SpellCard,th08::Spellcard
 ItemManager,th08::ItemManager,th08::Item
 Lzss,th08::Lzss

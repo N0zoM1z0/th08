@@ -586,3 +586,5 @@ th08::Gui::IsDialogPresent
 th08::GuiImpl::GuiImpl
 th08::GuiMsgVm::GuiMsgVm
 th08::Gui::LoadMsg
+th08::FUN_00438fe9
+th08::Gui::RegisterChain

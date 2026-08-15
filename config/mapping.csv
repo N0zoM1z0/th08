@@ -480,7 +480,7 @@ th08::Gui::DrawGameScene,0x43625d,0x11c0,__thiscall,,void,Gui*
 th08::Gui::FUN_0043741d,0x43741d,0x612,__thiscall,,u8,Gui*
 th08::Gui::AddedCallback,0x437a2f,0x11,__fastcall,,ZunResult,Gui*
 th08::Gui::DeletedCallback,0x437a40,0x90,unknown,,u8
-th08::Gui::RegisterChain,0x437ad0,0xf4,unknown,,u8
+th08::Gui::RegisterChain,0x437ad0,0xf4,__fastcall,,ZunResult
 th08::GuiImpl::GuiImpl,0x437bc4,0x119,__thiscall,,GuiImpl*,GuiImpl*
 th08::utils::GuiDebugPrint,0x437cdd,0x5,__cdecl,varargs,void,char*
 th08::GuiMsgVm::GuiMsgVm,0x437ce2,0x63,__thiscall,,GuiMsgVm*,GuiMsgVm*
@@ -500,7 +500,7 @@ th08::Supervisor::IsColorCompositingDisabled,0x438a59,0x18,__thiscall,,u32,Super
 th08::Supervisor::IsHUDRedrawEnabled,0x438a71,0x18,__thiscall,,u32,Supervisor*
 FUN_00438a89,0x438a89,0x4cf,unknown,,u8
 th08::Gui::FUN_00438f58,0x438f58,0x91,unknown,,u8
-FUN_00438fe9,0x438fe9,0xa,unknown,,u8
+th08::FUN_00438fe9,0x438fe9,0xa,__fastcall,,i32
 th08::FUN_00438ff3,0x438ff3,0xa,unknown,,u8
 th08::FUN_00438ffd,0x438ffd,0xa,unknown,,u8
 FUN_00439007,0x439007,0x49,unknown,,u8

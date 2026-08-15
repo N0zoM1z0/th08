@@ -10,6 +10,13 @@ DIFFABLE_STATIC(Gui, g_Gui);
 DIFFABLE_STATIC(ChainElem, g_GuiCalcChain);
 DIFFABLE_STATIC(ChainElem, g_GuiDrawChain);
 DIFFABLE_STATIC(i32, g_GuiAnmReleaseRequired);
+DIFFABLE_STATIC(i32, g_GuiResourceReloadEnabled);
+
+// FUNCTION: th08 0x438fe9
+i32 FUN_00438fe9()
+{
+    return g_GuiResourceReloadEnabled;
+}
 
 // FUNCTION: th08 0x439050
 ZunResult Gui::FUN_00439050()
@@ -116,9 +123,27 @@ i32 Gui::IsDialogPresent()
     return *(i32 *)((u8 *)this->impl + 0x2181C) >= 0 || *(i32 *)((u8 *)this->impl + 0x2181C) == -2;
 }
 
-// STUB: th08 0x437ad0
+// FUNCTION: th08 0x437ad0
 ZunResult Gui::RegisterChain()
 {
+    Gui *gui = &g_Gui;
+
+    if (FUN_00438fe9())
+    {
+        memset(gui, 0, sizeof(Gui));
+        gui->impl = ZUN_NEW(GuiImpl, "GUI");
+    }
+
+    g_GuiCalcChain.SetCallback((ChainCallback)Gui::OnUpdate);
+    g_GuiCalcChain.addedCallback = (ChainLifetimeCallback)Gui::AddedCallback;
+    g_GuiCalcChain.deletedCallback = (ChainLifetimeCallback)Gui::DeletedCallback;
+    g_GuiCalcChain.arg = gui;
+    if (g_Chain.AddToCalcChain(&g_GuiCalcChain, 15) != ZUN_SUCCESS)
+        return ZUN_ERROR;
+
+    g_GuiDrawChain.SetCallback((ChainCallback)Gui::OnDraw);
+    g_GuiDrawChain.arg = gui;
+    g_Chain.AddToDrawChain(&g_GuiDrawChain, 17);
     return ZUN_SUCCESS;
 }
 
