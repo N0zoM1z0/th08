@@ -77,7 +77,7 @@ th08::GameManager::UpdateAntiTamper,0x406e50,function
 th08::Rng::GetRandomU32InRange,0x406ef0,function
 th08::GameManager::SetBombCount,0x406f30,function
 th08::GameManager::SetPower,0x406fa0,function
-th08::AsciiManager::UpdateVms,0x406fd0,function
+th08::AsciiManager::FUN_00406fd0,0x406fd0,function
 th08::AsciiManager::SetGaugeInterrupt,0x4070b0,function
 th08::AnmVmBase::SetInterrupt,0x407120,function
 th08::AsciiManager::GetGaugeInterrupt,0x407140,function

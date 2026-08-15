@@ -91,6 +91,7 @@ struct AsciiManager
     void AddString(Float3 *position, const char *string);
     void AddFormatText(Float3 *position, const char *fmt, ...);
     int AddFormatText2(Float3 *position, const char *fmt, ...);
+    void FUN_00406fd0();
     void OnDrawLowPrioImpl();
     void CreateScorePopup(Float3 *position, i32 number, D3DCOLOR color);
     void CreatePlayerPointPopup(Float3 *position, i32 number, D3DCOLOR color);

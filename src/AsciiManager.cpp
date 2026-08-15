@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include "Player.hpp"
+#include "GameManager.hpp"
 #include "ScreenEffect.hpp"
 
 namespace th08
@@ -51,8 +52,72 @@ AsciiManagerPopup::AsciiManagerPopup()
 {
 }
 
+// FUNCTION: th08 0x402200
+#pragma var_order(i, popup, ascii)
 ChainCallbackResult AsciiManager::OnUpdate(AsciiManager *ascii)
 {
+    AsciiManagerPopup *popup;
+    i32 i;
+
+    if (g_GameManager.isInGameMenu == 0 && g_GameManager.showRetryMenu == 0)
+    {
+        popup = &ascii->scorePopups[0];
+        if (((*(u32 *)&g_GameManager.flags >> 10) & 1) == 0)
+        {
+            for (i = 0; i < ASCII_MAX_SCORE_POPUPS + ASCII_MAX_PLAYER_POPUPS; i++, popup++)
+            {
+                if (!popup->inUse)
+                {
+                    continue;
+                }
+                popup->position.y -= 0.5f * g_Supervisor.framerateMultiplier;
+                popup->timer++;
+                if (popup->timer > 60)
+                {
+                    popup->inUse = false;
+                }
+            }
+
+            popup = &ascii->timePopups[0];
+            for (i = 0; i < ASCII_MAX_TIME_POPUPS; i++, popup++)
+            {
+                if (!popup->inUse)
+                {
+                    continue;
+                }
+                popup->timer++;
+                if (popup->timer > 90)
+                {
+                    popup->inUse = false;
+                }
+            }
+        }
+    }
+    else if (g_GameManager.isInGameMenu != 0)
+    {
+        ascii->pauseMenu.OnUpdate();
+    }
+
+    if (g_GameManager.showRetryMenu != 0)
+    {
+        ascii->retryMenu.OnUpdate();
+    }
+
+    ascii->FUN_00406fd0();
+    if (g_GameManager.IsDemoMode())
+    {
+        if (ascii->demoIcon.scriptIndex == 0)
+        {
+            ascii->asciiAnm->SetAndExecuteScriptIdx(&ascii->demoIcon, 11);
+        }
+        g_AnmManager->ExecuteScript(&ascii->demoIcon);
+    }
+    else
+    {
+        ascii->demoIcon.scriptIndex = 0;
+    }
+    ascii->unk_8284++;
+
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
@@ -127,6 +192,21 @@ void AsciiManager::InitializeVms()
     this->youkaiGaugeYoukaiIcon.pos.x += (g_GameManager.youkaiGaugeYoukaiLimit * 56.0f) / 10000.0f;
 
     this->SetGaugeInterrupt(this->GetGaugeInterrupt());
+}
+
+// FUNCTION: th08 0x406fd0
+void AsciiManager::FUN_00406fd0()
+{
+    g_AnmManager->ExecuteScript(&this->youkaiGauge);
+    g_AnmManager->ExecuteScript(&this->youkaiGaugeHumanIcon);
+    g_AnmManager->ExecuteScript(&this->youkaiGaugeYoukaiIcon);
+    g_AnmManager->ExecuteScript(&this->youkaiGaugeCursor);
+    g_AnmManager->ExecuteScript(&this->percentageText);
+    g_AnmManager->ExecuteScript(&this->bossMarkers[0]);
+    g_AnmManager->ExecuteScript(&this->bossMarkers[1]);
+    g_AnmManager->ExecuteScript(&this->bossMarkers[2]);
+    g_AnmManager->ExecuteScript(&this->bossMarkers[3]);
+    g_AnmManager->ExecuteScript(&this->unk_1520);
 }
 
 // FUNCTION: th08 0x4070b0

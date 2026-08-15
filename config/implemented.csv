@@ -626,3 +626,5 @@ th08::Supervisor::OnDraw2
 th08::EnemyManager::DeletedCallback
 th08::AnmManager::AnmManager
 th08::AnmManager::SetupVertexBuffer
+th08::AsciiManager::OnUpdate
+th08::AsciiManager::FUN_00406fd0

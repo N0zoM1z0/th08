@@ -622,3 +622,5 @@ address,name,size,status,match_percent,unit,evidence
 0x0042EE80,th08::EnemyManager::DeletedCallback,225,matching,100.00,enemy-manager-deleted-callback,python3 scripts/compare-function.py enemy-manager-deleted-callback --json
 0x00465070,th08::AnmManager::AnmManager,466,matching,100.00,anm-manager-constructor,python3 scripts/compare-function.py anm-manager-constructor --json
 0x00465250,th08::AnmManager::SetupVertexBuffer,700,matching,100.00,anm-manager-setup-vertex-buffer,python3 scripts/compare-function.py anm-manager-setup-vertex-buffer --json
+0x00402200,th08::AsciiManager::OnUpdate,460,matching,100.00,ascii-manager-on-update,python3 scripts/compare-function.py ascii-manager-on-update --json
+0x00406FD0,th08::AsciiManager::FUN_00406fd0,217,matching,100.00,ascii-manager-fun-00406fd0,python3 scripts/compare-function.py ascii-manager-fun-00406fd0 --json
