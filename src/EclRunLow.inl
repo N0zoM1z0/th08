@@ -633,18 +633,18 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
     case 59:
         lhsInt = ReadInt(enemy, instruction, 0);
-        services.SetPrimaryAnmScripts(enemy, lhsInt, lhsInt + 1, lhsInt + 2,
-                                     lhsInt + 3, lhsInt + 4, lhsInt + 5);
+        SetPrimaryAnmScripts(enemy, instruction, lhsInt, lhsInt + 1, lhsInt + 2,
+                             lhsInt + 3, lhsInt + 4, lhsInt + 5);
         U32At(enemy, 0x3328) |= 4U;
         break;
     case 60:
-        services.SetPrimaryAnmScripts(enemy,
-                                     ReadInt(enemy, instruction, 0),
-                                     ReadInt(enemy, instruction, 1),
-                                     ReadInt(enemy, instruction, 2),
-                                     ReadInt(enemy, instruction, 3),
-                                     ReadInt(enemy, instruction, 4),
-                                     ReadInt(enemy, instruction, 5));
+        SetPrimaryAnmScripts(enemy, instruction,
+                             ReadInt(enemy, instruction, 0),
+                             ReadInt(enemy, instruction, 1),
+                             ReadInt(enemy, instruction, 2),
+                             ReadInt(enemy, instruction, 3),
+                             ReadInt(enemy, instruction, 4),
+                             ReadInt(enemy, instruction, 5));
         U32At(enemy, 0x3328) |= 4U;
         break;
     case 61:

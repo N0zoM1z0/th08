@@ -734,7 +734,8 @@ enter_subroutine:
             Vec3 position = TH08_ECL_AT(ctx, Vec3, 0x2D34);
             position.x += TH08_ECL_CONTEXT_API(ctx)->RandomFloat() * 128.0f - 64.0f;
             position.y += TH08_ECL_CONTEXT_API(ctx)->RandomFloat() * 128.0f - 64.0f;
-            if (TH08_ECL_CONTEXT_API(ctx)->PlayerItemCount() < 0x80)
+            i32 playerItemCount = TH08_ECL_CONTEXT_API(ctx)->PlayerItemCount();
+            if (playerItemCount < 0x80)
                 TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&position, i == 0 ? 2 : 0, 0);
             else
                 TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&position, 1, 0);
