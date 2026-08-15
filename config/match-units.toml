@@ -49358,3 +49358,230 @@ object = "build/AnmManager.obj"
 symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
 target_address = 0x00407120
 size = 0x1B
+
+[[units]]
+name = "gui-msg-wait"
+object = "build/Gui.obj"
+symbol = "?MsgWait@Gui@th08@@QAEHXZ"
+target_address = 0x0043587E
+size = 0x3D
+
+[[units]]
+name = "gui-is-dialog-present"
+object = "build/Gui.obj"
+symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+target_address = 0x004358BB
+size = 0x45
+
+[[units]]
+name = "gui-impl-constructor"
+object = "build/Gui.obj"
+symbol = "??0GuiImpl@th08@@QAE@XZ"
+target_address = 0x00437BC4
+size = 0x119
+
+[[units.relocations]]
+offset = 0x8
+type = "DIR32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x17
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x1C
+type = "DIR32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x31
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x3F
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x4D
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x5B
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x69
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x6E
+type = "DIR32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x83
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x91
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x96
+type = "DIR32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0xAE
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0xBC
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0xCA
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0xD8
+type = "REL32"
+symbol = "??0GuiMsgVm@th08@@QAE@XZ"
+target = 0x00437CE2
+
+[[units.relocations]]
+offset = 0xE6
+type = "REL32"
+symbol = "??0GuiFormattedText@th08@@QAE@XZ"
+target = 0x00437D45
+
+[[units.relocations]]
+offset = 0xF4
+type = "REL32"
+symbol = "??0GuiFormattedText@th08@@QAE@XZ"
+target = 0x00437D45
+
+[[units.relocations]]
+offset = 0x102
+type = "REL32"
+symbol = "??0GuiFormattedText@th08@@QAE@XZ"
+target = 0x00437D45
+
+[[units.relocations]]
+offset = 0x110
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units]]
+name = "gui-msg-vm-constructor"
+object = "build/Gui.obj"
+symbol = "??0GuiMsgVm@th08@@QAE@XZ"
+target_address = 0x00437CE2
+size = 0x63
+
+[[units.relocations]]
+offset = 0xE
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x13
+type = "DIR32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x26
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x2B
+type = "DIR32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x40
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x45
+type = "DIR32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x5A
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units]]
+name = "gui-load-msg"
+object = "build/Gui.obj"
+symbol = "?LoadMsg@Gui@th08@@QAE?AW4ZunResult@@PBD@Z"
+target_address = 0x00439710
+size = 0xC5
+
+[[units.relocations]]
+offset = 0xC
+type = "REL32"
+symbol = "?FreeMsgFile@Gui@th08@@QAEXXZ"
+target = 0x004397D5
+
+[[units.relocations]]
+offset = 0x18
+type = "REL32"
+symbol = "?OpenFile@FileSystem@th08@@YIPAEPBDPAHH@Z"
+target = 0x0043E660
+
+[[units.relocations]]
+offset = 0x3B
+type = "DIR32"
+symbol = "??_C@_0DH@NMBJKMLP@error?5?3?5?$ID?$IB?$IDb?$IDZ?$IB?$FL?$IDW?$IDt?$ID?$EA?$IDC?$ID?$IL?5?$CFs?5?$IC?$KK@"
+target = 0x004B50AC
+
+[[units.relocations]]
+offset = 0x40
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x45
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00

@@ -474,7 +474,7 @@ th08::GuiImpl::RunMsg,0x433db3,0x15dd,unknown,,u8
 FUN_004353ec,0x4353ec,0x3f,unknown,,u8
 th08::GuiImpl::DrawDialogue,0x43542b,0x453,__thiscall,,u8,GuiImpl*
 th08::Gui::MsgWait,0x43587e,0x3d,__thiscall,,bool,Gui*
-th08::Gui::FUN_004358bb,0x4358bb,0x45,unknown,,u8
+th08::Gui::IsDialogPresent,0x4358bb,0x45,__thiscall,,i32
 th08::Gui::FUN_00435900,0x435900,0x95d,__thiscall,,void,Gui*
 th08::Gui::DrawGameScene,0x43625d,0x11c0,__thiscall,,void,Gui*
 th08::Gui::FUN_0043741d,0x43741d,0x612,__thiscall,,u8,Gui*

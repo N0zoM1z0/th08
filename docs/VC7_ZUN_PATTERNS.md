@@ -60,3 +60,19 @@ Verified example: `AnmVm::FUN_004396f8`.  If target reads a flags word as a
 bitfield or narrower typed member, use an explicit raw-width access in the
 small helper.  Typed access may emit `movzx`/`sar` and miss the target even when
 the C++ value is equivalent.
+
+
+## Member-constructor layout can recover large ctor batches
+
+Verified with `GuiImpl::GuiImpl` and `GuiMsgVm::GuiMsgVm`: when target code is a
+sequence of `ZunTimer` / `AnmVm` / small aggregate constructor calls, model the
+real object layout with typed members and arrays instead of writing placement
+`new` calls.  VC7 emits `eh_vector_constructor_iterator` for typed arrays and
+plain member constructor calls for single objects, matching the target exactly.
+
+## Signedness controls conditional branch opcodes
+
+Verified with `Gui::MsgWait`: a raw state field compared against zero needed an
+unsigned `u32` load to emit target `jbe`; using `i32` emitted signed `jle` with
+otherwise identical bytes.  For raw flag/counter fields, infer signedness from
+the target conditional jump before choosing field type.

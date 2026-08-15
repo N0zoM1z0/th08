@@ -43,6 +43,16 @@ i32 FUN_00438ffd()
     return g_GuiAnmReleaseRequired;
 }
 
+// FUNCTION: th08 0x437bc4
+GuiImpl::GuiImpl()
+{
+}
+
+// FUNCTION: th08 0x437ce2
+GuiMsgVm::GuiMsgVm()
+{
+}
+
 // FUNCTION: th08 0x437d45
 GuiFormattedText::GuiFormattedText()
 {
@@ -88,6 +98,24 @@ ZunResult Gui::DeletedCallback(Gui *gui)
     return ZUN_SUCCESS;
 }
 
+// FUNCTION: th08 0x43587e
+i32 Gui::MsgWait()
+{
+    if (this->impl == NULL)
+        return 0;
+    if (*(u32 *)((u8 *)this->impl + 0x22D78) > 0)
+        return 0;
+    return *(i32 *)((u8 *)this->impl + 0x2181C) >= 0;
+}
+
+// FUNCTION: th08 0x4358bb
+i32 Gui::IsDialogPresent()
+{
+    if (this->impl == NULL)
+        return 0;
+    return *(i32 *)((u8 *)this->impl + 0x2181C) >= 0 || *(i32 *)((u8 *)this->impl + 0x2181C) == -2;
+}
+
 // STUB: th08 0x437ad0
 ZunResult Gui::RegisterChain()
 {
@@ -107,18 +135,31 @@ ZunResult Gui::ActualAddedCallback()
     return ZUN_SUCCESS;
 }
 
-// STUB: th08 0x439710
+// FUNCTION: th08 0x439710
 ZunResult Gui::LoadMsg(const char *path)
 {
+    this->FreeMsgFile();
+    this->impl->msgVm.msgFile = FileSystem::OpenFile(path, NULL, 0);
+    if (this->impl->msgVm.msgFile == NULL)
+    {
+        g_GameErrorContext.Log("\x65\x72\x72\x6f\x72\x20\x3a\x20\x83\x81\x83\x62\x83\x5a\x81\x5b\x83\x57\x83\x74\x83\x40\x83\x43\x83\x8b\x20\x25\x73\x20\x82\xaa\x93\xc7\x82\xdd\x8d\x9e\x82\xdf\x82\xdc\x82\xb9\x82\xf1\x82\xc5\x82\xb5\x82\xbd\x0d\x0a", path);
+        return ZUN_ERROR;
+    }
+    *(i32 *)((u8 *)this->impl + 0x2181C) = -1;
+    *(i32 *)((u8 *)this->impl + 0x21818) = 0;
+    for (i32 i = 0; i < *(i32 *)this->impl->msgVm.msgFile; ++i)
+    {
+        ((i32 *)this->impl->msgVm.msgFile)[i + 1] += (i32)this->impl->msgVm.msgFile;
+    }
     return ZUN_SUCCESS;
 }
 
 // FUNCTION: th08 0x4397d5
 void Gui::FreeMsgFile(void)
 {
-    if (this->impl->msgFile != NULL)
+    if (this->impl->msgVm.msgFile != NULL)
     {
-        ZUN_FREE(this->impl->msgFile);
+        ZUN_FREE(this->impl->msgVm.msgFile);
     }
 }
 

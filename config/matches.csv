@@ -577,3 +577,8 @@ address,name,size,status,match_percent,unit,evidence
 0x004398FF,th08::AsciiManager::SetIsGuiMode,23,matching,100.00,ascii-set-is-gui-mode,python3 scripts/compare-function.py ascii-set-is-gui-mode --json
 0x004396F8,th08::AnmVm::FUN_004396f8,24,matching,100.00,anm-vm-fun-004396f8,python3 scripts/compare-function.py anm-vm-fun-004396f8 --json
 0x00407120,th08::AnmVmBase::SetInterrupt,27,matching,100.00,anm-vm-base-set-interrupt,python3 scripts/compare-function.py anm-vm-base-set-interrupt --json
+0x0043587E,th08::Gui::MsgWait,61,matching,100.00,gui-msg-wait,python3 scripts/compare-function.py gui-msg-wait --json
+0x004358BB,th08::Gui::IsDialogPresent,69,matching,100.00,gui-is-dialog-present,python3 scripts/compare-function.py gui-is-dialog-present --json
+0x00437BC4,th08::GuiImpl::GuiImpl,281,matching,100.00,gui-impl-constructor,python3 scripts/compare-function.py gui-impl-constructor --json
+0x00437CE2,th08::GuiMsgVm::GuiMsgVm,99,matching,100.00,gui-msg-vm-constructor,python3 scripts/compare-function.py gui-msg-vm-constructor --json
+0x00439710,th08::Gui::LoadMsg,197,matching,100.00,gui-load-msg,python3 scripts/compare-function.py gui-load-msg --json

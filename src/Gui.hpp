@@ -18,11 +18,46 @@ struct GuiFormattedText
 };
 C_ASSERT(sizeof(GuiFormattedText) == 0x20);
 
+struct GuiMsgVm
+{
+    void *msgFile;
+    i32 currentMsgIdx;
+    i32 currentLineIdx;
+    ZunTimer timer;
+    i32 linesCount;
+    i32 unused1c;
+    AnmVm dialogueLines[4];
+    AnmVm portraits[2];
+    AnmVm portraitEffects[2];
+    unknown_fields(0x1540, 0x38);
+
+    GuiMsgVm();
+};
+C_ASSERT(sizeof(GuiMsgVm) == 0x1578);
+
 struct GuiImpl
 {
-    unknown_fields(0x0, 0x21814);
-    void *msgFile;
-    unknown_fields(0x21818, 0x18a0);
+    AnmVm vm0000[16];
+    unknown_fields(0x2a40, 0x4);
+    AnmVm vm2a44[4];
+    AnmVm vm34d4;
+    AnmVm vm3778;
+    AnmVm vm3a1c;
+    AnmVm vm3cc0;
+    AnmVm vm3f64[8];
+    AnmVm vm5484;
+    AnmVm vm5728[0xA8];
+    AnmVm vm212c8;
+    AnmVm vm2156c;
+    unknown_fields(0x21810, 0x4);
+    GuiMsgVm msgVm;
+    GuiFormattedText formatted0;
+    GuiFormattedText formatted1;
+    GuiFormattedText formatted2;
+    unknown_fields(0x22dec, 0x28);
+    AnmVm vm22e14;
+
+    GuiImpl();
 };
 C_ASSERT(sizeof(GuiImpl) == 0x230b8);
 
@@ -51,6 +86,8 @@ struct Gui
 
     ZunResult ActualAddedCallback();
     ZunResult LoadMsg(const char *path);
+    i32 MsgWait();
+    i32 IsDialogPresent();
     void FreeMsgFile();
     void FUN_00422c20(i32 value);
     void FUN_004230c0(f32 value);

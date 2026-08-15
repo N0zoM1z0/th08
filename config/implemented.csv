@@ -581,3 +581,8 @@ th08::AsciiManager::SetScale
 th08::AsciiManager::SetIsGuiMode
 th08::AnmVm::FUN_004396f8
 th08::AnmVmBase::SetInterrupt
+th08::Gui::MsgWait
+th08::Gui::IsDialogPresent
+th08::GuiImpl::GuiImpl
+th08::GuiMsgVm::GuiMsgVm
+th08::Gui::LoadMsg
