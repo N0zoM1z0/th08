@@ -155,3 +155,10 @@ Verified with `Item::CollectPowerSmall` and `Item::CollectPowerBig`: VC7 emits t
 ## Linked-list conversion helpers
 
 Verified with `ItemManager::ConvertAllPowerItemsToTimeOrbs`: when a target walks an intrusive linked list by repeatedly loading `node->next` at the bottom, a plain `while (current != NULL) { ...; current = current->next; }` matches.  Keep the excluded current item as an explicit parameter comparison instead of pre-filtering the list head.
+
+### Raw dword flags and static-field aliases
+
+Some structs declare narrow flag fields for convenience, but target code may load and store the containing dword.
+For item sprite visibility updates, `AnmVmBase::flags` must be updated through raw `u32` access at `AnmVm+0x1F8`; using the typed `u16 flags` field emits `movzx`/word stores and is 2 bytes larger per update.
+
+When target code uses an absolute field inside a statically allocated manager object, model it as a narrow alias global first rather than forcing the public manager pointer path. `ItemManager::OnDraw` reads the screen-shake `Float2` at `0x164D2DC` directly, so `g_ItemAnmManagerScreenShakeOffset` is a field alias used for exact codegen.

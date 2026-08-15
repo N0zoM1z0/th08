@@ -606,3 +606,4 @@ address,name,size,status,match_percent,unit,evidence
 0x00440CF0,th08::Item::CollectPowerSmall,334,matching,100.00,item-collect-power-small,python3 scripts/compare-function.py item-collect-power-small --json
 0x00441170,th08::Item::CollectPowerBig,315,matching,100.00,item-collect-power-big,python3 scripts/compare-function.py item-collect-power-big --json
 0x00441450,th08::ItemManager::ConvertAllPowerItemsToTimeOrbs,209,matching,100.00,item-convert-power-to-time-orbs,python3 scripts/compare-function.py item-convert-power-to-time-orbs --json
+0x004415A0,th08::ItemManager::OnDraw,451,matching,100.00,item-manager-on-draw,python3 scripts/compare-function.py item-manager-on-draw --json

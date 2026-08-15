@@ -162,3 +162,4 @@ FLOAT_near_0_018da22c,0x18da22c,global
 FLOAT_0.5_018da230,0x18da230,global
 FLOAT_3.0_018da234,0x18da234,global
 th08::g_GuiResourceReloadEnabled,0x17ce8bc,global
+th08::g_ItemAnmManagerScreenShakeOffset,0x164d2dc,global

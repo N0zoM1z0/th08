@@ -13,6 +13,7 @@ namespace th08
 
 DIFFABLE_STATIC(ItemManager, g_ItemManager);
 DIFFABLE_STATIC(i32, g_MaxValuePointItemsCollected);
+DIFFABLE_STATIC(Float2, g_ItemAnmManagerScreenShakeOffset);
 DIFFABLE_STATIC_ARRAY_ASSIGN(i32, 6, g_PowerUpThresholds) = {8, 24, 48, 80, 128, 999};
 
 // FUNCTION: th08 0x440010
@@ -475,9 +476,50 @@ void ItemManager::CancelAutoCollect()
     }
 }
 
-// STUB: th08 0x4415a0
+// FUNCTION: th08 0x4415a0
+#pragma var_order(alpha, item, this)
 void ItemManager::OnDraw()
 {
+    i32 alpha;
+    Item *item = this->itemListHead.next;
+
+    while (item != NULL)
+    {
+        item->sprite.pos.x = g_ItemAnmManagerScreenShakeOffset.x + item->currentPosition.x;
+        item->sprite.pos.y = g_ItemAnmManagerScreenShakeOffset.y + item->currentPosition.y;
+        item->sprite.pos.z = 0.15f;
+
+        if (((f32 *)item->currentPosition)[1] < -8.0f)
+        {
+            item->sprite.pos.y = 8.0f + g_ItemAnmManagerScreenShakeOffset.y;
+            if (item->isOnscreen)
+            {
+                g_BulletManager.bulletAnm->SetSprite(&item->sprite, item->itemType + 0xb6);
+                item->isOnscreen = false;
+                *(u32 *)((u8 *)&item->sprite + 0x1f8) |= 0x2000;
+            }
+
+            alpha = 255 - (i32)(((8.0f - ((f32 *)item->currentPosition)[1]) * 255.0f) / 128.0f);
+            if (alpha < 0x40)
+            {
+                alpha = 0x40;
+            }
+            item->sprite.color1.d3dColor = (item->sprite.color1.d3dColor & 0xffffff) | (alpha << 24);
+        }
+        else
+        {
+            if (!item->isOnscreen)
+            {
+                g_BulletManager.bulletAnm->SetSprite(&item->sprite, item->itemType + 0xac);
+                item->isOnscreen = true;
+                item->sprite.color1.d3dColor = 0xffffffff;
+                *(u32 *)((u8 *)&item->sprite + 0x1f8) |= 0x2000;
+            }
+        }
+
+        g_AnmManager->Draw2D(&item->sprite);
+        item = item->next;
+    }
 }
 
 void Item::Delete()
