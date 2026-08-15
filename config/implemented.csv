@@ -648,3 +648,4 @@ th08::GameManager::IsSoloHuman
 th08::GameManager::IsSoloYoukai
 th08::FUN_00428310
 th08::Supervisor::TakeSnapshot
+th08::Supervisor::SetupDInput

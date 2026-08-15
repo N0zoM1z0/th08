@@ -54958,3 +54958,178 @@ offset = 0x2C9
 type = "REL32"
 symbol = "_free"
 target = 0x004A427B
+
+[[units]]
+name = "supervisor-setup-dinput"
+object = "build/Supervisor.obj"
+symbol = "?SetupDInput@Supervisor@th08@@QAE?AW4ZunResult@@XZ"
+target_address = 0x00446A37
+size = 0x290
+
+[[units.relocations]]
+offset = 0x12
+type = "DIR32"
+symbol = "__imp__GetWindowLongA@8"
+target = 0x004B41E4
+
+[[units.relocations]]
+offset = 0x3E
+type = "DIR32"
+symbol = "_IID_IDirectInput8A"
+target = 0x004BD6C0
+
+[[units.relocations]]
+offset = 0x4B
+type = "REL32"
+symbol = "_DirectInput8Create@20"
+target = 0x00476CE0
+
+[[units.relocations]]
+offset = 0x5B
+type = "DIR32"
+symbol = "??_C@_0BL@EJHIKJBE@DirectInput?5create?5error?$AN?6?$AA@"
+target = 0x004B6904
+
+[[units.relocations]]
+offset = 0x60
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x65
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00
+
+[[units.relocations]]
+offset = 0x7D
+type = "DIR32"
+symbol = "_GUID_SysKeyboard"
+target = 0x004BD620
+
+[[units.relocations]]
+offset = 0xBA
+type = "DIR32"
+symbol = "??_C@_0BL@EJHIKJBE@DirectInput?5create?5error?$AN?6?$AA@"
+target = 0x004B6904
+
+[[units.relocations]]
+offset = 0xBF
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0xC4
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00
+
+[[units.relocations]]
+offset = 0xD3
+type = "DIR32"
+symbol = "_c_dfDIKeyboard"
+target = 0x004B9D9C
+
+[[units.relocations]]
+offset = 0x132
+type = "DIR32"
+symbol = "??_C@_0BN@CIGCLFJI@keyboard?5data?5format?5error?$AN?6?$AA@"
+target = 0x004B68D4
+
+[[units.relocations]]
+offset = 0x137
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x13C
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00
+
+[[units.relocations]]
+offset = 0x1AD
+type = "DIR32"
+symbol = "??_C@_0CD@IGDEOCJO@keyboard?5cooperative?5level?5error@"
+target = 0x004B68A0
+
+[[units.relocations]]
+offset = 0x1B2
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x1B7
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00
+
+[[units.relocations]]
+offset = 0x1D8
+type = "DIR32"
+symbol = "??_C@_0O@JNILGCGI@KeyBoard?5OK?$AN?6?$AA@"
+target = 0x004B6878
+
+[[units.relocations]]
+offset = 0x1DD
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x1E2
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00
+
+[[units.relocations]]
+offset = 0x1ED
+type = "DIR32"
+symbol = "?EnumGameControllersCb@Supervisor@th08@@SGHPBUDIDEVICEINSTANCEA@@PAX@Z"
+target = 0x00446CC7
+
+[[units.relocations]]
+offset = 0x20F
+type = "DIR32"
+symbol = "_c_dfDIJoystick"
+target = 0x004B9B94
+
+[[units.relocations]]
+offset = 0x241
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x24A
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x265
+type = "DIR32"
+symbol = "?ControllerCallback@Supervisor@th08@@SGHPBUDIDEVICEOBJECTINSTANCEA@@PAX@Z"
+target = 0x00445E3D
+
+[[units.relocations]]
+offset = 0x27C
+type = "DIR32"
+symbol = "??_C@_0O@HHGMGHGI@JoyStick?5OK?$AN?6?$AA@"
+target = 0x004B6858
+
+[[units.relocations]]
+offset = 0x281
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x286
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00

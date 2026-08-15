@@ -759,10 +759,81 @@ err:
     g_Supervisor.flags.receivedCloseMsg = true;
 }
 
-// STUB: th08 0x446a37
+// FUNCTION: th08 0x446a37
 ZunResult Supervisor::SetupDInput()
 {
-    return ZUN_ERROR;
+    HINSTANCE instance = (HINSTANCE)GetWindowLongA(this->hwndGameWindow, GWL_HINSTANCE);
+
+    if (this->cfg.opts.dontUseDirectInput != 0)
+    {
+        return ZUN_ERROR;
+    }
+
+    if (DirectInput8Create(instance, DIRECTINPUT_VERSION, IID_IDirectInput8A, (void **)&this->dInputIface, NULL) < 0)
+    {
+        this->dInputIface = NULL;
+        g_GameErrorContext.Log("DirectInput create error\r\n");
+        return ZUN_ERROR;
+    }
+
+    if (this->dInputIface->CreateDevice(GUID_SysKeyboard, &this->keyboard, NULL) < 0)
+    {
+        if (this->dInputIface != NULL)
+        {
+            this->dInputIface->Release();
+            this->dInputIface = NULL;
+        }
+        g_GameErrorContext.Log("DirectInput create error\r\n");
+        return ZUN_ERROR;
+    }
+
+    if (this->keyboard->SetDataFormat(&c_dfDIKeyboard) < 0)
+    {
+        if (this->keyboard != NULL)
+        {
+            this->keyboard->Release();
+            this->keyboard = NULL;
+        }
+        if (this->dInputIface != NULL)
+        {
+            this->dInputIface->Release();
+            this->dInputIface = NULL;
+        }
+        g_GameErrorContext.Log("keyboard data format error\r\n");
+        return ZUN_ERROR;
+    }
+
+    if (this->keyboard->SetCooperativeLevel(this->hwndGameWindow, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY) < 0)
+    {
+        if (this->keyboard != NULL)
+        {
+            this->keyboard->Release();
+            this->keyboard = NULL;
+        }
+        if (this->dInputIface != NULL)
+        {
+            this->dInputIface->Release();
+            this->dInputIface = NULL;
+        }
+        g_GameErrorContext.Log("keyboard cooperative level error\r\n");
+        return ZUN_ERROR;
+    }
+
+    this->keyboard->Acquire();
+    g_GameErrorContext.Log("KeyBoard OK\r\n");
+    this->dInputIface->EnumDevices(4, Supervisor::EnumGameControllersCb, NULL, DIEDFL_ATTACHEDONLY);
+
+    if (this->controller != NULL)
+    {
+        this->controller->SetDataFormat(&c_dfDIJoystick);
+        this->controller->SetCooperativeLevel(this->hwndGameWindow, DISCL_BACKGROUND | DISCL_NONEXCLUSIVE);
+        g_Supervisor.controllerCaps.dwSize = sizeof(DIDEVCAPS);
+        this->controller->GetCapabilities(&g_Supervisor.controllerCaps);
+        this->controller->EnumObjects(Supervisor::ControllerCallback, NULL, NULL);
+        g_GameErrorContext.Log("JoyStick OK\r\n");
+    }
+
+    return ZUN_SUCCESS;
 }
 
 // STUB: th08 0x446cc7
