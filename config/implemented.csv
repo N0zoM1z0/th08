@@ -646,3 +646,4 @@ th08::EnemyManager::AddedCallback
 th08::EnemyManager::Initialize
 th08::GameManager::IsSoloHuman
 th08::GameManager::IsSoloYoukai
+th08::FUN_00428310

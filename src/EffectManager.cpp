@@ -7,8 +7,40 @@
 namespace th08
 {
 
-void FUN_00428310()
+// FUNCTION: th08 0x428310
+#pragma var_order(delta, point)
+void __fastcall FUN_00428310(AnmVm *effect, D3DXVECTOR3 *base)
 {
+    D3DXVECTOR3 delta;
+    D3DXVECTOR3 point;
+
+    if (*(u8 *)0x164D0BA == 0 && *(u8 *)0x164D0BB == 0)
+    {
+        point = *base + *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x244);
+        delta = *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x288) - point;
+        if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x288) > -9999.0f)
+        {
+            delta.x += 32.0f;
+            delta.y += 16.0f;
+            delta.z = 0.0f;
+            if (D3DXVec3LengthSq(&delta) < 25600.0f)
+            {
+                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x238) += 0.0005000000237487257f;
+                *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x244) +=
+                    delta * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x238);
+            }
+        }
+
+        delta = point - *reinterpret_cast<D3DXVECTOR3 *>(0x17D61AC);
+        delta.x -= 32.0f;
+        delta.y -= 16.0f;
+        delta.z = 0.0f;
+        if (D3DXVec3LengthSq(&delta) < 7744.0f)
+        {
+            *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x244) += delta * 0.019999999552965164f;
+        }
+    }
+    *base += *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x244);
 }
 
 DIFFABLE_STATIC(EffectManager, g_EffectManager);

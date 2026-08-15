@@ -642,3 +642,4 @@ address,name,size,status,match_percent,unit,evidence
 0x00429E00,th08::EnemyManager::Initialize,1029,matching,100.00,enemy-manager-initialize,python3 scripts/compare-function.py enemy-manager-initialize --json
 0x0042F230,th08::GameManager::IsSoloHuman,64,matching,100.00,game-manager-is-solo-human,python3 scripts/compare-function.py game-manager-is-solo-human --json
 0x0042F270,th08::GameManager::IsSoloYoukai,64,matching,100.00,game-manager-is-solo-youkai,python3 scripts/compare-function.py game-manager-is-solo-youkai --json
+0x00428310,th08::FUN_00428310,411,matching,100.00,effect-fun-00428310,python3 scripts/compare-function.py effect-fun-00428310 --json

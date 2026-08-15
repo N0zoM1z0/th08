@@ -54119,7 +54119,7 @@ target = 0x00463210
 [[units.relocations]]
 offset = 0xD3
 type = "DIR32"
-symbol = "?FUN_00428310@th08@@YIXXZ"
+symbol = "?FUN_00428310@th08@@YIXPAUAnmVm@1@PAUD3DXVECTOR3@@@Z"
 target = 0x00428310
 
 [[units.relocations]]
@@ -54668,3 +54668,130 @@ offset = 0x248
 type = "REL32"
 symbol = "??0D3DXVECTOR3@@QAE@MMM@Z"
 target = 0x00404720
+
+[[units]]
+name = "effect-fun-00428310"
+object = "build/EffectManager.obj"
+symbol = "?FUN_00428310@th08@@YIXPAUAnmVm@1@PAUD3DXVECTOR3@@@Z"
+target_address = 0x00428310
+size = 0x19B
+
+[[units.relocations]]
+offset = 0x10
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x18
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x4C
+type = "REL32"
+symbol = "??HD3DXVECTOR3@@QBE?AU0@ABU0@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 0x73
+type = "REL32"
+symbol = "??GD3DXVECTOR3@@QBE?AU0@ABU0@@Z"
+target = 0x004090D0
+
+[[units.relocations]]
+offset = 0x93
+type = "DIR32"
+symbol = "__real@c61c3c00"
+target = 0x004B4984
+
+[[units.relocations]]
+offset = 0xA3
+type = "DIR32"
+symbol = "__real@42000000"
+target = 0x004B42CC
+
+[[units.relocations]]
+offset = 0xAF
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004B42D4
+
+[[units.relocations]]
+offset = 0xC1
+type = "REL32"
+symbol = "?D3DXVec3LengthSq@@YIMPBUD3DXVECTOR3@@@Z"
+target = 0x0040B500
+
+[[units.relocations]]
+offset = 0xC7
+type = "DIR32"
+symbol = "__real@46c80000"
+target = 0x004B49BC
+
+[[units.relocations]]
+offset = 0xDD
+type = "DIR32"
+symbol = "__real@3a03126f"
+target = 0x004B49B8
+
+[[units.relocations]]
+offset = 0xFC
+type = "REL32"
+symbol = "??DD3DXVECTOR3@@QBE?AU0@M@Z"
+target = 0x00409120
+
+[[units.relocations]]
+offset = 0x10B
+type = "REL32"
+symbol = "??YD3DXVECTOR3@@QAEAAU0@ABU0@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 0x11C
+type = "REL32"
+symbol = "??GD3DXVECTOR3@@QBE?AU0@ABU0@@Z"
+target = 0x004090D0
+
+[[units.relocations]]
+offset = 0x136
+type = "DIR32"
+symbol = "__real@42000000"
+target = 0x004B42CC
+
+[[units.relocations]]
+offset = 0x142
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004B42D4
+
+[[units.relocations]]
+offset = 0x154
+type = "REL32"
+symbol = "?D3DXVec3LengthSq@@YIMPBUD3DXVECTOR3@@@Z"
+target = 0x0040B500
+
+[[units.relocations]]
+offset = 0x15A
+type = "DIR32"
+symbol = "__real@45f20000"
+target = 0x004B49B4
+
+[[units.relocations]]
+offset = 0x172
+type = "REL32"
+symbol = "??DD3DXVECTOR3@@QBE?AU0@M@Z"
+target = 0x00409120
+
+[[units.relocations]]
+offset = 0x181
+type = "REL32"
+symbol = "??YD3DXVECTOR3@@QAEAAU0@ABU0@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 0x193
+type = "REL32"
+symbol = "??YD3DXVECTOR3@@QAEAAU0@ABU0@@Z"
+target = 0x00410A70

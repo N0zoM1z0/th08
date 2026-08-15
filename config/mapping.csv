@@ -359,7 +359,7 @@ FUN_00427bf0,0x427bf0,0x30a,unknown,,u8
 FUN_00427f00,0x427f00,0x1f5,unknown,,u8
 FUN_00428100,0x428100,0xdb,unknown,,u8
 th08::EffectManager::FUN_004281e0,0x4281e0,0x122,__thiscall,,i32,EffectManager*
-th08::FUN_00428310,0x428310,0x19b,__cdecl,,void
+th08::FUN_00428310,0x428310,0x19b,__fastcall,,void,AnmVm*,_D3DVECTOR*
 FUN_004284b0,0x4284b0,0xd8,unknown,,u8
 FUN_00428590,0x428590,0x84,unknown,,u8
 FUN_00428620,0x428620,0x87,unknown,,u8
