@@ -449,9 +449,9 @@ th08::BulletManager::RegisterChain,0x4311a0,0x98,__fastcall,,ZunResult,char*
 FUN_00431240,0x431240,0xf16,unknown,,u8
 th08::Bullet::FUN_00432170,0x432170,0x37,__thiscall,,void,Bullet*
 th08::BulletManager::FUN_004321b0,0x4321b0,0x59,__thiscall,,void,BulletManager*
-FUN_00432210,0x432210,0x99,unknown,,u8
+th08::Bullet::FUN_00432210,0x432210,0x99,__thiscall,,void,Bullet*
 FUN_004322b0,0x4322b0,0xd5,unknown,,u8
-FUN_00432390,0x432390,0xc5,unknown,,u8
+th08::Bullet::FUN_00432390,0x432390,0xc5,__thiscall,,void,Bullet*
 FUN_00432460,0x432460,0x139,unknown,,u8
 FUN_004325a0,0x4325a0,0x132,unknown,,u8
 FUN_004326e0,0x4326e0,0x150,unknown,,u8

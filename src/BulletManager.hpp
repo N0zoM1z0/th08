@@ -51,6 +51,8 @@ struct Bullet
 {
     Bullet();
     void FUN_00432170();
+    void FUN_00432390();
+    void FUN_00432210();
     void FUN_00432aa0();
     void FUN_004329f0();
 

@@ -55798,3 +55798,83 @@ offset = 0x9F
 type = "REL32"
 symbol = "??FZunTimer@th08@@QAEXH@Z"
 target = 0x00418110
+
+[[units]]
+name = "bullet-fun-00432390"
+object = "build/BulletManager.obj"
+symbol = "?FUN_00432390@Bullet@th08@@QAEXXZ"
+target_address = 0x00432390
+size = 0xC5
+
+[[units.relocations]]
+offset = 0x1B
+type = "REL32"
+symbol = "??PZunTimer@th08@@QAEIH@Z"
+target = 0x0040B8E0
+
+[[units.relocations]]
+offset = 0x58
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0xAD
+type = "REL32"
+symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
+target = 0x004286E0
+
+[[units.relocations]]
+offset = 0xBD
+type = "REL32"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
+target = 0x00406640
+
+[[units]]
+name = "bullet-fun-00432210"
+object = "build/BulletManager.obj"
+symbol = "?FUN_00432210@Bullet@th08@@QAEXXZ"
+target_address = 0x00432210
+size = 0x99
+
+[[units.relocations]]
+offset = 0x15
+type = "REL32"
+symbol = "??NZunTimer@th08@@QAEIH@Z"
+target = 0x0040E390
+
+[[units.relocations]]
+offset = 0x27
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 0x2D
+type = "DIR32"
+symbol = "__real@40a00000"
+target = 0x004B4304
+
+[[units.relocations]]
+offset = 0x33
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004B42D4
+
+[[units.relocations]]
+offset = 0x39
+type = "DIR32"
+symbol = "__real@40a00000"
+target = 0x004B4304
+
+[[units.relocations]]
+offset = 0x6A
+type = "REL32"
+symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
+target = 0x004286E0
+
+[[units.relocations]]
+offset = 0x91
+type = "REL32"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
+target = 0x00406640

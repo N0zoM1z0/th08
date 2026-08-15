@@ -161,6 +161,54 @@ void BulletManager::FUN_004321b0()
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA554) = 0;
 }
 
+// FUNCTION: th08 0x432210
+#pragma var_order(magnitude, this)
+void Bullet::FUN_00432210()
+{
+    f32 magnitude;
+
+    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xF80) <= 16)
+    {
+        magnitude =
+            5.0f - ((f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xF80) * 5.0f) / 16.0f;
+        reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xD50)
+            ->FromAngleMagnitude(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74),
+                                 (magnitude + *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68)) *
+                                     *reinterpret_cast<f32 *>(0x17CE8E0));
+    }
+    else
+    {
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) ^= 0x1;
+    }
+
+    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xF80))++;
+}
+
+// FUNCTION: th08 0x432390
+void Bullet::FUN_00432390()
+{
+    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFD8) >=
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFF8))
+    {
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) &= ~0x20;
+    }
+    else
+    {
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74) =
+            AddNormalizeAngle(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74),
+                              *reinterpret_cast<f32 *>(0x17CE8E0) *
+                                  *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFE8));
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68) +=
+            *reinterpret_cast<f32 *>(0x17CE8E0) * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFE4);
+        reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xD50)
+            ->FromAngleMagnitude(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74),
+                                 *reinterpret_cast<f32 *>(0x17CE8E0) *
+                                     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68));
+    }
+
+    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFD8))++;
+}
+
 // FUNCTION: th08 0x4329f0
 void Bullet::FUN_004329f0()
 {
