@@ -1081,25 +1081,67 @@ ZunBool Supervisor::LoadMusic(int param_1, char *path)
     return TRUE;
 }
 
+// FUNCTION: th08 0x447e47
+#pragma var_order(midiOutput, this)
 ZunBool Supervisor::PlayMusic(int param_1, char *param_2)
 {
     if (g_Supervisor.cfg.musicMode == MIDI)
     {
+        if (g_Supervisor.midiOutput != NULL)
+        {
+            MidiOutput *midiOutput = g_Supervisor.midiOutput;
+            midiOutput->StopPlayback();
+            midiOutput->ParseFile(param_1);
+            midiOutput->Play();
+        }
+
+        if (((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 3) & 1) == 0 &&
+            ((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 1) & 1) == 0)
+        {
+            param_2[0x164CF14] = 1;
+        }
+        return FALSE;
     }
     else if (g_Supervisor.cfg.musicMode == WAV)
     {
+        if (g_Supervisor.cfg.opts.preloadMusic)
+        {
+            g_SoundPlayer.QueueCommand(4, 0, "dummy");
+        }
         g_SoundPlayer.QueueCommand(2, param_1, "dummy");
+        if (((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 3) & 1) == 0 &&
+            ((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 1) & 1) == 0)
+        {
+            param_2[0x164CF14] = 1;
+        }
     }
 
-    return 0;
+    return FALSE;
 }
 
+// FUNCTION: th08 0x447f21
+#pragma var_order(periodLoc, wavPathBuf, midiOutput, this)
 ZunResult Supervisor::PlayAudio(char *path, int param_2)
 {
     char wavPathBuf[256];
     char *periodLoc;
 
-    if (g_Supervisor.cfg.musicMode == WAV)
+    if (g_Supervisor.cfg.musicMode == MIDI)
+    {
+        if (g_Supervisor.midiOutput != NULL)
+        {
+            MidiOutput *midiOutput = g_Supervisor.midiOutput;
+            midiOutput->StopPlayback();
+            midiOutput->LoadFile(path);
+            midiOutput->Play();
+        }
+        if (((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 3) & 1) == 0 &&
+            ((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 1) & 1) == 0)
+        {
+            ((char *)param_2)[0x164CF14] = 1;
+        }
+    }
+    else if (g_Supervisor.cfg.musicMode == WAV)
     {
         strcpy(wavPathBuf, path);
 
@@ -1109,6 +1151,15 @@ ZunResult Supervisor::PlayAudio(char *path, int param_2)
         periodLoc[3] = 'v';
 
         g_SoundPlayer.QueueCommand(2, -1, wavPathBuf);
+        if (((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 3) & 1) == 0 &&
+            ((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 1) & 1) == 0)
+        {
+            ((char *)param_2)[0x164CF14] = 1;
+        }
+    }
+    else
+    {
+        return ZUN_ERROR;
     }
 
     return ZUN_SUCCESS;
