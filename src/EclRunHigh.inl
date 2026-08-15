@@ -602,7 +602,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         break;
     }
     case 159: TH08_ECL_AT(ctx, u8, 0x332F) = (u8)TH08_ECL_READ_I(ctx, 0); break;
-    case 124: TH08_ECL_CONTEXT_API(ctx)->PlayPositioned(TH08_ECL_READ_I(ctx, 0), TH08_ECL_AT(ctx, i32, 0x2D34)); break;
+    case 124: reinterpret_cast<TargetApi *>(&g_SoundPlayer)->PlayPositioned(TH08_ECL_READ_I(ctx, 0), TH08_ECL_AT(ctx, i32, 0x2D34)); break;
     case 129:
         if (TH08_ECL_PRESENTATION_WRITES_ALLOWED())
             TH08_ECL_AT(ctx, u32, 0x3324) = ((TH08_ECL_RAW_BYTE(ctx, 0) & 7) << 20) | (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFF8FFFFF);
@@ -709,7 +709,7 @@ enter_subroutine:
         break;
     }
     case 139:
-        TH08_ECL_CONTEXT_API(ctx)->SpawnEffect00425430(TH08_ECL_READ_I(ctx, 0), &TH08_ECL_AT(ctx, Vec3, 0x2D34),
+        g_EffectManager.SpawnEffect(TH08_ECL_READ_I(ctx, 0), reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)),
                                      TH08_ECL_READ_I(ctx, 1), *TH08_ECL_WRITE_I(ctx, 2));
         break;
     case 140:
@@ -735,8 +735,8 @@ enter_subroutine:
             Vec3 position = TH08_ECL_AT(ctx, Vec3, 0x2D34);
             position.x += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             position.y += g_Rng.GetRandomF32() * 128.0f - 64.0f;
-            i32 playerItemCount = TH08_ECL_CONTEXT_API(ctx)->PlayerItemCount();
-            if (playerItemCount < 0x80)
+            i32 playerPower = g_GameManager.GetPower();
+            if (playerPower < 0x80)
                 g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&position), static_cast<ItemType>(i == 0 ? 2 : 0), 0);
             else
                 g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&position), static_cast<ItemType>(1), 0);
@@ -774,7 +774,7 @@ enter_subroutine:
     case 146:
         reinterpret_cast<TargetZunTimerOverlay *>(TH08_ECL_CURRENT_CONTEXT(ctx) + 4)->AddAssign0041FDF0(TH08_ECL_READ_I(ctx, 0));
         break;
-    case 141: TH08_ECL_CONTEXT_API(ctx)->SpawnItem(&TH08_ECL_AT(ctx, Vec3, 0x2D34), TH08_ECL_READ_I(ctx, 0), 0); break;
+    case 141: g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)), static_cast<ItemType>(TH08_ECL_READ_I(ctx, 0)), 0); break;
     case 147: g_EclGlobal004EA290 = TH08_ECL_READ_I(ctx, 0); break;
     case 148:
         g_Gui.FUN_00423130(TH08_ECL_READ_I(ctx, 0));
@@ -967,7 +967,7 @@ enter_subroutine:
     case 182:
         TH08_ECL_AT(ctx, u32, 0x3328) = (TH08_ECL_AT(ctx, u32, 0x3328) & 0xFFFFFEFF) | ((TH08_ECL_READ_I(ctx, 0) & 1) << 8);
         break;
-    case 184: TH08_ECL_CONTEXT_API(ctx)->Call0041F0E0(TH08_ECL_READ_I(ctx, 0)); break;
+    case 184: reinterpret_cast<TargetApi *>(&g_Spellcard)->Call0041F0E0(TH08_ECL_READ_I(ctx, 0)); break;
 #if !defined(TH08_ECL_RUN_SHARED_SWITCH)
     }
 
