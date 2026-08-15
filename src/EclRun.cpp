@@ -146,42 +146,42 @@ low_select_next_context:
 
         for (i32 i = 0; i < 8; ++i, ++entry)
         {
-            if (!entry->callback)
-                continue;
-
-            entry->timer++;
-            if (entry->timer >= entry->duration)
-                entry->timer = entry->duration;
-
-            f32 progress = static_cast<f32>(entry->timer) / entry->duration;
-            f32 inverse;
-            switch (entry->easing)
+            if (entry->callback)
             {
-            case 1: progress = progress * progress; break;
-            case 2: progress = progress * progress * progress; break;
-            case 3: progress = progress * progress * progress * progress; break;
-            case 4:
-                inverse = 1.0f - progress;
-                progress = 1.0f - inverse * inverse;
-                break;
-            case 5:
-                inverse = 1.0f - progress;
-                progress = 1.0f - inverse * inverse * inverse;
-                break;
-            case 6:
-                inverse = 1.0f - progress;
-                progress = 1.0f - inverse * inverse * inverse * inverse;
-                break;
+                entry->timer++;
+                if (entry->timer >= entry->duration)
+                    entry->timer = entry->duration;
+
+                f32 progress = static_cast<f32>(entry->timer) / entry->duration;
+                f32 inverse;
+                switch (entry->easing)
+                {
+                case 1: progress = progress * progress; break;
+                case 2: progress = progress * progress * progress; break;
+                case 3: progress = progress * progress * progress * progress; break;
+                case 4:
+                    inverse = 1.0f - progress;
+                    progress = 1.0f - inverse * inverse;
+                    break;
+                case 5:
+                    inverse = 1.0f - progress;
+                    progress = 1.0f - inverse * inverse * inverse;
+                    break;
+                case 6:
+                    inverse = 1.0f - progress;
+                    progress = 1.0f - inverse * inverse * inverse * inverse;
+                    break;
+                }
+
+                (enemy->*entry->callback)(progress);
+                if (entry->timer >= entry->duration)
+                    entry->callback = 0;
+
+                if (entry->affectedVariable == 10042.0f ||
+                    entry->affectedVariable == 10043.0f ||
+                    entry->affectedVariable == 10044.0f)
+                    restorePosition = 1;
             }
-
-            (enemy->*entry->callback)(progress);
-            if (entry->timer >= entry->duration)
-                entry->callback = 0;
-
-            if (entry->affectedVariable == 10042.0f ||
-                entry->affectedVariable == 10043.0f ||
-                entry->affectedVariable == 10044.0f)
-                restorePosition = 1;
         }
 
         if (restorePosition)
@@ -210,17 +210,20 @@ low_select_next_context:
 
     for (i32 next = activeChildContext + 1; next < 4; ++next)
     {
-        u8 *child = TH08_ECL_AT(unusedContext, u8 *, 0x3384 + next * 4);
-        if (!child)
-            continue;
-
-        TH08_ECL_AT(unusedContext, u8 *, 0x2CA4) = child + 0x230;
-        TH08_ECL_AT(unusedContext, u8 *, 0x2CA0) = child + 8;
-        instruction = reinterpret_cast<EclRawInstruction *>(*(RawInstruction **)(child + 8));
-        *(i32 *)(child + 0x228) = next + 1;
-        TH08_ECL_AT(unusedContext, i16, 0x2CEA) = *(i16 *)(child + 6);
-        activeChildContext = next;
-        goto restart_context;
+        if (TH08_ECL_AT(unusedContext, u8 *, 0x3384 + next * 4))
+        {
+            TH08_ECL_AT(unusedContext, u8 *, 0x2CA4) =
+                TH08_ECL_AT(unusedContext, u8 *, 0x3384 + next * 4) + 0x230;
+            TH08_ECL_AT(unusedContext, u8 *, 0x2CA0) =
+                TH08_ECL_AT(unusedContext, u8 *, 0x3384 + next * 4) + 8;
+            instruction = reinterpret_cast<EclRawInstruction *>(
+                *(RawInstruction **)(TH08_ECL_AT(unusedContext, u8 *, 0x3384 + next * 4) + 8));
+            *(i32 *)(TH08_ECL_AT(unusedContext, u8 *, 0x3384 + next * 4) + 0x228) = next + 1;
+            TH08_ECL_AT(unusedContext, i16, 0x2CEA) =
+                *(i16 *)(TH08_ECL_AT(unusedContext, u8 *, 0x3384 + next * 4) + 6);
+            activeChildContext = next;
+            goto restart_context;
+        }
     }
 
     TH08_ECL_AT(unusedContext, u8 *, 0x2CA4) =
