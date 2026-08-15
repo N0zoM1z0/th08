@@ -700,7 +700,7 @@ th08::Supervisor::LoadDat,0x4461a0,0x92,__stdcall,,ZunResult
 th08::Supervisor::CheckFps,0x446232,0x296,__cdecl,,i32
 th08::Supervisor::StartupThread,0x4464c8,0x56f,__cdecl,,void
 th08::Supervisor::SetupDInput,0x446a37,0x290,__thiscall,,ZunResult,Supervisor*
-FUN_00446cc7,0x446cc7,0x3f,__stdcall,,i32,i32
+th08::Supervisor::EnumGameControllersCb,0x446cc7,0x3f,__stdcall,,BOOL,LPCDIDEVICEINSTANCE,LPVOID
 th08::Supervisor::DeletedCallback,0x446d06,0x205,__fastcall,,ZunResult,Supervisor*
 th08::AnmManager::ReleaseVertexBuffer,0x446f0b,0x37,__thiscall,,void,AnmManager*
 FUN_00446f42,0x446f42,0x11,__fastcall,,void,u32
@@ -770,7 +770,7 @@ FUN_0044d180,0x44d180,0x13a,unknown,,u8
 th08::Player::FUN_0044d2c0,0x44d2c0,0x152,__thiscall,,void,Player*
 FUN_0044d420,0x44d420,0x10b,unknown,,u8
 FUN_0044d530,0x44d530,0xf1,unknown,,u8
-FUN_0044d630,0x44d630,0x18,unknown,,u8
+th08::Player::OnDrawLowPrio,0x44d630,0x18,__fastcall,,ChainCallbackResult,Player*
 th08::Player::AddedCallback,0x44d650,0x601,__fastcall,,ZunResult,Player*
 th08::Player::DeletedCallback,0x44dc60,0xa4,__fastcall,,ZunResult,u32
 th08::Player::CutChain,0x44dd10,0x55,__stdcall,,void
@@ -817,7 +817,7 @@ FUN_00450ee0,0x450ee0,0x80,unknown,,u8,u8
 FUN_00450f60,0x450f60,0x1e7,unknown,,u8
 FUN_00451150,0x451150,0x194,unknown,,u8
 FUN_004512f0,0x4512f0,0x10c,unknown,,u8
-FUN_00451400,0x451400,0xf1,unknown,,u8
+th08::Player::FUN_00451400,0x451400,0xf1,__thiscall,,void,Player*
 FUN_00451500,0x451500,0x137,unknown,,u8
 FUN_00451640,0x451640,0x2d,unknown,,u8
 FUN_00451670,0x451670,0x66e,unknown,,u8,u8,u8,u8,u8

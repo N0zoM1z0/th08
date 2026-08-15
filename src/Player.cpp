@@ -149,6 +149,10 @@ void Player::FUN_0044aec0()
 void Player::FUN_00451150()
 {
 }
+// STUB: th08 0x451400
+void Player::FUN_00451400()
+{
+}
 // STUB: th08 0x451500
 void Player::FUN_00451500()
 {
@@ -251,9 +255,10 @@ ChainCallbackResult Player::OnDrawHighPrio(Player *player)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-// STUB: th08 0x44d630
+// FUNCTION: th08 0x44d630
 ChainCallbackResult Player::OnDrawLowPrio(Player *player)
 {
+    player->FUN_00451400();
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 

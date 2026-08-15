@@ -836,9 +836,20 @@ ZunResult Supervisor::SetupDInput()
     return ZUN_SUCCESS;
 }
 
-// STUB: th08 0x446cc7
+// FUNCTION: th08 0x446cc7
 BOOL CALLBACK Supervisor::EnumGameControllersCb(LPCDIDEVICEINSTANCE pdidInstance, LPVOID pContext)
 {
+    HRESULT result;
+
+    if (g_Supervisor.controller == NULL)
+    {
+        result = g_Supervisor.dInputIface->CreateDevice(pdidInstance->guidInstance, &g_Supervisor.controller, NULL);
+        if (result < 0)
+        {
+            return TRUE;
+        }
+    }
+
     return FALSE;
 }
 

@@ -108,6 +108,7 @@ struct Player
     void FUN_0044aec0();
     void FUN_0044d420();
     void FUN_00451150();
+    void FUN_00451400();
     void FUN_00451500();
 
     static ZunResult LoadShtFile(PlayerRawShtFile **header, const char *path);

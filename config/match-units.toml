@@ -56445,3 +56445,51 @@ object = "build/GameManager.obj"
 symbol = "?FUN_00439961@th08@@YIHH@Z"
 target_address = 0x00439961
 size = 0x4B
+
+[[units]]
+name = "player-on-draw-low-prio"
+object = "build/Player.obj"
+symbol = "?OnDrawLowPrio@Player@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target_address = 0x0044D630
+size = 0x18
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "?FUN_00451400@Player@th08@@QAEXXZ"
+target = 0x00451400
+
+[[units]]
+name = "supervisor-enum-game-controllers-cb"
+object = "build/Supervisor.obj"
+symbol = "?EnumGameControllersCb@Supervisor@th08@@SGHPBUDIDEVICEINSTANCEA@@PAX@Z"
+target_address = 0x00446CC7
+size = 0x3F
+
+[[units.relocations]]
+offset = 0x6
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x14
+
+[[units.relocations]]
+offset = 0x10
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x14
+
+[[units.relocations]]
+offset = 0x1C
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x0C
+
+[[units.relocations]]
+offset = 0x24
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x0C
