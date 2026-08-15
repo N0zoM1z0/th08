@@ -439,10 +439,12 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
 
     case 109:
     {
-        Vec3 transformed;
-        TH08_ECL_CONTEXT_API(ctx)->AddVectors(&transformed, &TH08_ECL_AT(ctx, Vec3, 0x2D34), &TH08_ECL_AT(ctx, Vec3, 0x2DB8));
-        TH08_ECL_AT(ctx, Vec3, 0x2E28) = transformed;
-        reinterpret_cast<TargetApi *>(&g_BulletManager)->FinalizeVectorState(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E24);
+        D3DXVECTOR3 sum =
+            *reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)) +
+            *reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2DB8));
+        TH08_ECL_AT(ctx, Vec3, 0x2E28) = *reinterpret_cast<Vec3 *>(&sum);
+        reinterpret_cast<TargetApi *>(&g_BulletManager)->FinalizeVectorState(
+            TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E24);
         break;
     }
     case 110:
@@ -699,9 +701,10 @@ enter_subroutine:
             TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) = child;
             if (child)
             {
-                for (i32 *clear = (i32 *)child, *end = (i32 *)child + 0x92C;
-                     clear < end; ++clear)
-                    *clear = 0;
+                i32 clearCount = 0x92C;
+                i32 *clear = (i32 *)child;
+                while (clearCount--)
+                    *clear++ = 0;
                 *(i32 *)child = TH08_ECL_READ_I(ctx, 1);
                 TH08_ECL_CONTEXT_API(ctx)->InitializeEclContext(child + 8, *(u16 *)child);
                 memcpy(child + 0x20, TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18,
@@ -717,7 +720,12 @@ enter_subroutine:
     case 140:
     {
         Vec3 vector;
-        vector.x = TH08_ECL_READ_F_RAWARG(ctx, 3);
+        if (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
+            vector.x = reinterpret_cast<EclOperands::EnemyOverlay *>(
+                TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
+                    *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)));
+        else
+            *reinterpret_cast<i32 *>(&vector.x) = TH08_ECL_RAW_I(ctx, 3);
         vector.y = TH08_ECL_READ_F_RAWARG(ctx, 4);
         vector.z = TH08_ECL_READ_F_RAWARG(ctx, 5);
         g_EffectManager.SpawnEffectAngle(TH08_ECL_READ_I(ctx, 0), reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)), reinterpret_cast<D3DXVECTOR3 *>(&vector),
@@ -751,9 +759,8 @@ enter_subroutine:
         i32 count = TH08_ECL_READ_I(ctx, 0);
         for (i32 i = 0; i < count; ++i)
         {
-            position.x = TH08_ECL_AT(ctx, Vec3, 0x2D34).x;
-            position.y = TH08_ECL_AT(ctx, Vec3, 0x2D34).y;
-            position.z = TH08_ECL_AT(ctx, Vec3, 0x2D34).z;
+            position = *reinterpret_cast<Float3 *>(
+                &TH08_ECL_AT(ctx, Vec3, 0x2D34));
             ((f32 *)position)[0] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             position.y += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&position), static_cast<ItemType>(1), 0);
