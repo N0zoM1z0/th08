@@ -162,3 +162,8 @@ Some structs declare narrow flag fields for convenience, but target code may loa
 For item sprite visibility updates, `AnmVmBase::flags` must be updated through raw `u32` access at `AnmVm+0x1F8`; using the typed `u16 flags` field emits `movzx`/word stores and is 2 bytes larger per update.
 
 When target code uses an absolute field inside a statically allocated manager object, model it as a narrow alias global first rather than forcing the public manager pointer path. `ItemManager::OnDraw` reads the screen-shake `Float2` at `0x164D2DC` directly, so `g_ItemAnmManagerScreenShakeOffset` is a field alias used for exact codegen.
+
+
+### Inline COMDAT owner choice
+
+Some inline GameManager helpers emit byte-exact code only from a caller object compiled with the same option profile as the target COMDAT instance.  For example, `GameManager::IsTampered` is exact from `ItemManager.obj` while the owner TU emission has a different prologue/register shape.  In these cases, keep the source single and point the match unit at the exact COMDAT object instead of forcing unrelated owner-TU codegen.

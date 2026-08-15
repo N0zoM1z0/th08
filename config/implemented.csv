@@ -611,3 +611,5 @@ th08::Item::CollectPowerSmall
 th08::Item::CollectPowerBig
 th08::ItemManager::ConvertAllPowerItemsToTimeOrbs
 th08::ItemManager::OnDraw
+th08::GameManager::IsTampered
+th08::GameManager::AddPower

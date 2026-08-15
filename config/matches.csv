@@ -607,3 +607,5 @@ address,name,size,status,match_percent,unit,evidence
 0x00441170,th08::Item::CollectPowerBig,315,matching,100.00,item-collect-power-big,python3 scripts/compare-function.py item-collect-power-big --json
 0x00441450,th08::ItemManager::ConvertAllPowerItemsToTimeOrbs,209,matching,100.00,item-convert-power-to-time-orbs,python3 scripts/compare-function.py item-convert-power-to-time-orbs --json
 0x004415A0,th08::ItemManager::OnDraw,451,matching,100.00,item-manager-on-draw,python3 scripts/compare-function.py item-manager-on-draw --json
+0x0040BB80,th08::GameManager::IsTampered,145,matching,100.00,game-manager-is-tampered-item-comdat,python3 scripts/compare-function.py game-manager-is-tampered-item-comdat --json
+0x00441850,th08::GameManager::AddPower,77,matching,100.00,game-manager-add-power-item-comdat,python3 scripts/compare-function.py game-manager-add-power-item-comdat --json
