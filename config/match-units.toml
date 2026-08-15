@@ -55356,3 +55356,206 @@ offset = 0x43
 type = "DIR32"
 symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
 target = 0x00F54E90
+
+[[units]]
+name = "bullet-manager-constructor"
+object = "build/BulletManager.obj"
+symbol = "??0BulletManager@th08@@QAE@XZ"
+target_address = 0x0042F420
+size = 0x75
+
+[[units.relocations]]
+offset = 0x8
+type = "DIR32"
+symbol = "??0BulletTypeSprites@th08@@QAE@XZ"
+target = 0x0042F4A0
+
+[[units.relocations]]
+offset = 0x18
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x1D
+type = "DIR32"
+symbol = "??0Bullet@th08@@QAE@XZ"
+target = 0x0042F500
+
+[[units.relocations]]
+offset = 0x36
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x3B
+type = "DIR32"
+symbol = "??0Laser@th08@@QAE@XZ"
+target = 0x0042F580
+
+[[units.relocations]]
+offset = 0x54
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x62
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x6A
+type = "REL32"
+symbol = "?Initialize@BulletManager@th08@@QAEXXZ"
+target = 0x0042F360
+
+[[units]]
+name = "bullet-type-sprites-constructor"
+object = "build/BulletManager.obj"
+symbol = "??0BulletTypeSprites@th08@@QAE@XZ"
+target_address = 0x0042F4A0
+size = 0x5C
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x19
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x27
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x35
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x43
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x51
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units]]
+name = "bullet-constructor"
+object = "build/BulletManager.obj"
+symbol = "??0Bullet@th08@@QAE@XZ"
+target_address = 0x0042F500
+size = 0x73
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "??0BulletTypeSprites@th08@@QAE@XZ"
+target = 0x0042F4A0
+
+[[units.relocations]]
+offset = 0x19
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x27
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x35
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x43
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x51
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x56
+type = "DIR32"
+symbol = "??0BulletExState@th08@@QAE@XZ"
+target = 0x0042F5C0
+
+[[units.relocations]]
+offset = 0x68
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units]]
+name = "laser-constructor"
+object = "build/BulletManager.obj"
+symbol = "??0Laser@th08@@QAE@XZ"
+target_address = 0x0042F580
+size = 0x40
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x19
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x27
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x35
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units]]
+name = "bullet-ex-state-constructor"
+object = "build/BulletManager.obj"
+symbol = "??0BulletExState@th08@@QAE@XZ"
+target_address = 0x0042F5C0
+size = 0x21
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x16
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460

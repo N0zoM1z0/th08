@@ -429,11 +429,11 @@ th08::AsciiManager::SetScale,0x42f2f0,0x25,__thiscall,,void,AsciiManager*,f32,f3
 FUN_0042f320,0x42f320,0x11,unknown,,u8
 FUN_0042f340,0x42f340,0x16,unknown,,u8,u8
 th08::BulletManager::Initialize,0x42f360,0xb1,__thiscall,,void,BulletManager*
-th08::BulletManager::BulletManager,0x42f420,0x75,unknown,,u8
-FUN_0042f4a0,0x42f4a0,0x5c,unknown,,u8
-FUN_0042f500,0x42f500,0x73,unknown,,u8
-FUN_0042f580,0x42f580,0x40,unknown,,u8
-SafeSQueue<>,0x42f5c0,0x21,unknown,,u8
+th08::BulletManager::BulletManager,0x42f420,0x75,__thiscall,,BulletManager*,BulletManager*
+th08::BulletTypeSprites::BulletTypeSprites,0x42f4a0,0x5c,__thiscall,,BulletTypeSprites*,BulletTypeSprites*
+th08::Bullet::Bullet,0x42f500,0x73,__thiscall,,Bullet*,Bullet*
+th08::Laser::Laser,0x42f580,0x40,__thiscall,,Laser*,Laser*
+th08::BulletExState::BulletExState,0x42f5c0,0x21,__thiscall,,BulletExState*,BulletExState*
 FUN_0042f5f0,0x42f5f0,0x85a,unknown,,u8,u8,u8,u8,u8
 FUN_0042fe70,0x42fe70,0x21,unknown,,u8
 FUN_0042fea0,0x42fea0,0xcc,unknown,,u8,u8,u8

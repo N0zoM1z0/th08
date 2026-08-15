@@ -115,6 +115,33 @@ void BulletManager::RemoveAllBullets(i32 mode)
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA53C) = 10;
 }
 
+
+// FUNCTION: th08 0x42f420
+BulletManager::BulletManager()
+{
+    this->Initialize();
+}
+
+// FUNCTION: th08 0x42f4a0
+BulletTypeSprites::BulletTypeSprites()
+{
+}
+
+// FUNCTION: th08 0x42f500
+Bullet::Bullet()
+{
+}
+
+// FUNCTION: th08 0x42f580
+Laser::Laser()
+{
+}
+
+// FUNCTION: th08 0x42f5c0
+BulletExState::BulletExState()
+{
+}
+
 // FUNCTION: th08 0x42f360
 #pragma var_order(i, bullet, this)
 void BulletManager::Initialize()

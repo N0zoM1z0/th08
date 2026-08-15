@@ -647,3 +647,8 @@ address,name,size,status,match_percent,unit,evidence
 0x00446A37,th08::Supervisor::SetupDInput,656,matching,100.00,supervisor-setup-dinput,python3 scripts/compare-function.py supervisor-setup-dinput --json
 0x0044C390,th08::Player::OnUpdate,529,matching,100.00,player-onupdate,python3 scripts/compare-function.py player-onupdate --json
 0x0042F360,th08::BulletManager::Initialize,177,matching,100.00,bullet-manager-initialize,python3 scripts/compare-function.py bullet-manager-initialize --json
+0x0042F420,th08::BulletManager::BulletManager,117,matching,100.00,bullet-manager-constructor,python3 scripts/compare-function.py bullet-manager-constructor --json
+0x0042F4A0,th08::BulletTypeSprites::BulletTypeSprites,92,matching,100.00,bullet-type-sprites-constructor,python3 scripts/compare-function.py bullet-type-sprites-constructor --json
+0x0042F500,th08::Bullet::Bullet,115,matching,100.00,bullet-constructor,python3 scripts/compare-function.py bullet-constructor --json
+0x0042F580,th08::Laser::Laser,64,matching,100.00,laser-constructor,python3 scripts/compare-function.py laser-constructor --json
+0x0042F5C0,th08::BulletExState::BulletExState,33,matching,100.00,bullet-ex-state-constructor,python3 scripts/compare-function.py bullet-ex-state-constructor --json

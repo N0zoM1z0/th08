@@ -651,3 +651,8 @@ th08::Supervisor::TakeSnapshot
 th08::Supervisor::SetupDInput
 th08::Player::OnUpdate
 th08::BulletManager::Initialize
+th08::BulletManager::BulletManager
+th08::BulletTypeSprites::BulletTypeSprites
+th08::Bullet::Bullet
+th08::Laser::Laser
+th08::BulletExState::BulletExState
