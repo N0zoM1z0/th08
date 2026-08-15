@@ -51483,7 +51483,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x9B
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEXHPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -53339,3 +53339,208 @@ offset = 0xD1
 type = "REL32"
 symbol = "?ExecuteScript@AnmManager@th08@@QAEIPAUAnmVm@2@@Z"
 target = 0x0045EA00
+
+
+[[units]]
+name = "effect-manager-spawn-effect"
+object = "build/EffectManager.obj"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+target_address = 0x00425430
+size = 0x211
+
+[[units.relocations]]
+offset = 0xA5
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0xAA
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+[[units.relocations]]
+offset = 0xF4
+type = "DIR32"
+symbol = "?g_EffectTemplates@th08@@3PAUEffectTemplate@1@A"
+target = 0x004C6D30
+
+[[units.relocations]]
+offset = 0x107
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x160
+type = "DIR32"
+symbol = "?g_EffectTemplates@th08@@3PAUEffectTemplate@1@A"
+target = 0x004C6D30
+addend = 0x4
+
+[[units.relocations]]
+offset = 0x172
+type = "DIR32"
+symbol = "?g_EffectTemplates@th08@@3PAUEffectTemplate@1@A"
+target = 0x004C6D30
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x184
+type = "DIR32"
+symbol = "?g_EffectTemplates@th08@@3PAUEffectTemplate@1@A"
+target = 0x004C6D30
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x1CD
+type = "DIR32"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
+target = 0x018B8A28
+
+[[units.relocations]]
+offset = 0x1DF
+type = "DIR32"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
+target = 0x018B8A28
+
+[[units]]
+name = "effect-manager-spawn-effect-angle"
+object = "build/EffectManager.obj"
+symbol = "?SpawnEffectAngle@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@0HH@Z"
+target_address = 0x00425650
+size = 0x215
+
+[[units.relocations]]
+offset = 0xA5
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0xAA
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+[[units.relocations]]
+offset = 0xF4
+type = "DIR32"
+symbol = "?g_EffectTemplates@th08@@3PAUEffectTemplate@1@A"
+target = 0x004C6D30
+
+[[units.relocations]]
+offset = 0x107
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x149
+type = "DIR32"
+symbol = "?g_EffectTemplates@th08@@3PAUEffectTemplate@1@A"
+target = 0x004C6D30
+addend = 0x4
+
+[[units.relocations]]
+offset = 0x177
+type = "DIR32"
+symbol = "?g_EffectTemplates@th08@@3PAUEffectTemplate@1@A"
+target = 0x004C6D30
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x189
+type = "DIR32"
+symbol = "?g_EffectTemplates@th08@@3PAUEffectTemplate@1@A"
+target = 0x004C6D30
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x1D1
+type = "DIR32"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
+target = 0x018B8A28
+
+[[units.relocations]]
+offset = 0x1E4
+type = "DIR32"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
+target = 0x018B8A28
+
+[[units]]
+name = "effect-manager-spawn-effect-00425b70"
+object = "build/EffectManager.obj"
+symbol = "?SpawnEffect00425B70@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+target_address = 0x00425B70
+size = 0x1FD
+
+[[units.relocations]]
+offset = 0x66
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x6B
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+[[units.relocations]]
+offset = 0xCC
+type = "DIR32"
+symbol = "?g_EffectTemplates@th08@@3PAUEffectTemplate@1@A"
+target = 0x004C6D30
+
+[[units.relocations]]
+offset = 0xDF
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x121
+type = "DIR32"
+symbol = "?g_EffectTemplates@th08@@3PAUEffectTemplate@1@A"
+target = 0x004C6D30
+addend = 0x4
+
+[[units.relocations]]
+offset = 0x137
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x159
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x17E
+type = "DIR32"
+symbol = "?g_EffectTemplates@th08@@3PAUEffectTemplate@1@A"
+target = 0x004C6D30
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x190
+type = "DIR32"
+symbol = "?g_EffectTemplates@th08@@3PAUEffectTemplate@1@A"
+target = 0x004C6D30
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x1BA
+type = "DIR32"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
+target = 0x018B8A28
+
+[[units.relocations]]
+offset = 0x1CC
+type = "DIR32"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
+target = 0x018B8A28

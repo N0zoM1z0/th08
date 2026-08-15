@@ -26,7 +26,7 @@ zwave,th08::CSoundManager,th08::CSound,th08::CStreamingSound,th08::CWaveFile
 BulletManager,th08::BulletManager,th08::g_BulletManager,th08::g_BulletManagerCalcChain,th08::g_BulletManagerDrawChain,th08::g_BulletManagerAnmReleaseRequired,th08::IsBulletManagerAnmReleaseRequired
 EclManager,th08::EclManager,th08::EclTimelineState
 EclGlobals,th08::g_EclCallbackPublishedEnemyField24
-EffectManager,th08::EffectManager,th08::g_EffectManager
+EffectManager,th08::EffectManager,th08::g_EffectManager,th08::g_EffectTemplates
 MusicRoom,th08::MusicRoom,th08::g_MusicRoom
 ReplayManager,th08::ReplayManager,th08::g_ReplayManager
 TitleScreen,th08::TitleScreen,th08::g_TitleScreen

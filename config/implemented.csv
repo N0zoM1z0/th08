@@ -628,3 +628,6 @@ th08::AnmManager::AnmManager
 th08::AnmManager::SetupVertexBuffer
 th08::AsciiManager::OnUpdate
 th08::AsciiManager::FUN_00406fd0
+th08::EffectManager::SpawnEffect
+th08::EffectManager::SpawnEffectAngle
+th08::EffectManager::SpawnEffect00425B70
