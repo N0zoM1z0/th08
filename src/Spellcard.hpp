@@ -263,6 +263,10 @@ struct Spellcard
     i32 GetInactiveState();
     i32 GetActiveState();
     i32 GetTimerFrames();
+    i32 FUN_00417860();
+    i32 FUN_0042DFF0();
+
+    static i32 __fastcall IsLastSpell(i32 spellCardNumber);
 
     static i32 GetDifficultyFromSpellCard(i32 spellcardNumber);
     static void CutChain();

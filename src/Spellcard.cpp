@@ -9,6 +9,7 @@ namespace th08
 {
 DIFFABLE_STATIC(Spellcard, g_Spellcard);
 DIFFABLE_STATIC(ChainElem *, g_SpellcardCalcChain);
+DIFFABLE_STATIC(i32, g_LastSpellCount);
 // clang-format off
 // TODO: stop clang-format from fucking with whitespace formatting
 
@@ -386,6 +387,29 @@ i32 Spellcard::GetTimerFrames()
 i32 Spellcard::GetActiveState()
 {
     return this->IsActive() && ((this->flags >> 2) & 1);
+}
+
+// FUNCTION: th08 0x00417860
+i32 Spellcard::FUN_00417860()
+{
+    return this->IsActive() && ((this->flags >> 5) & 1);
+}
+
+// FUNCTION: th08 0x0042DFF0
+i32 Spellcard::FUN_0042DFF0()
+{
+    return (this->flags >> 7) & 1;
+}
+
+// FUNCTION: th08 0x00414540
+i32 __fastcall Spellcard::IsLastSpell(i32 spellCardNumber)
+{
+    for (i32 i = 0; i < g_LastSpellCount; ++i)
+    {
+        if (g_LastSpellNumbers[i] == spellCardNumber)
+            return TRUE;
+    }
+    return FALSE;
 }
 
 // FUNCTION: th08 0x4144d0

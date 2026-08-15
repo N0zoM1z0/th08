@@ -569,3 +569,6 @@ address,name,size,status,match_percent,unit,evidence
 0x0041FD40,th08::EclOperands::TargetEnemyHelpersOverlay::CountParentChain,70,matching,100.00,ecl-enemy-count-parent-chain,python3 scripts/compare-function.py ecl-enemy-count-parent-chain --json
 0x0041FD90,th08::Spellcard::GetActiveState,59,matching,100.00,spellcard-get-active-state,python3 scripts/compare-function.py spellcard-get-active-state --json
 0x00418110,th08::ZunTimer::operator--(int),23,matching,100.00,zun-timer-post-decrement,python3 scripts/compare-function.py zun-timer-post-decrement --json
+0x00414540,th08::Spellcard::IsLastSpell,68,matching,100.00,spellcard-is-last-spell,python3 scripts/compare-function.py spellcard-is-last-spell --json
+0x00417860,th08::Spellcard::FUN_00417860,59,matching,100.00,spellcard-fun-00417860,python3 scripts/compare-function.py spellcard-fun-00417860 --json
+0x0042DFF0,th08::Spellcard::FUN_0042DFF0,22,matching,100.00,spellcard-fun-0042dff0,python3 scripts/compare-function.py spellcard-fun-0042dff0 --json

@@ -200,7 +200,7 @@ FUN_004142c0,0x4142c0,0xf4,unknown,,u8
 th08::Rng::GetRandomF32SignedInRange,0x4143c0,0x18,__thiscall,,float10,Rng*,f32
 th08::Spellcard::Spellcard,0x4143e0,0xee,unknown,,u8
 FUN_004144d0,0x4144d0,0x69,unknown,,u8
-FUN_00414540,0x414540,0x44,unknown,,u8
+th08::Spellcard::IsLastSpell,0x414540,0x44,__fastcall,,i32,i32
 FUN_00414590,0x414590,0xca5,unknown,,u8
 FUN_004152a0,0x4152a0,0x9b3,unknown,,u8,u8,u8,u8,u8,u8,u8,u8,u8
 th08::BulletManager::bulletmanager_fun_00415c60,0x415c60,0x15,__thiscall,,void,BulletManager*
@@ -216,7 +216,7 @@ FUN_00416ad0,0x416ad0,0x18,unknown,,u8
 FUN_00416af0,0x416af0,0x20,unknown,,u8
 FUN_00416b10,0x416b10,0x76,unknown,,u8,u8
 FUN_00416b90,0x416b90,0xcc5,unknown,,u8
-FUN_00417860,0x417860,0x3b,unknown,,u8
+th08::Spellcard::FUN_00417860,0x417860,0x3b,__thiscall,,i32,Spellcard*
 th08::Spellcard::IsActive,0x4178a0,0x13,__thiscall,,i32,Spellcard*
 FUN_004178c0,0x4178c0,0x695,unknown,,u8
 FUN_00417f60,0x417f60,0xaf,unknown,,u8
@@ -410,7 +410,7 @@ th08::EnemyManager::OnUpdate,0x42c660,0x1836,__thiscall,,u32,EnemyManager*
 FUN_0042deb0,0x42deb0,0xfc,unknown,,u8
 FUN_0042dfb0,0x42dfb0,0x14,unknown,,u8
 FUN_0042dfd0,0x42dfd0,0x19,unknown,,u8,u8
-FUN_0042dff0,0x42dff0,0x16,unknown,,u8
+th08::Spellcard::FUN_0042DFF0,0x42dff0,0x16,__thiscall,,i32,Spellcard*
 FUN_0042e010,0x42e010,0x101,unknown,,u8
 th08::EnemyManager::OnDrawHighPrio,0x42e120,0x17,__fastcall,,ChainCallbackResult,EnemyManager*
 th08::EnemyManager::OnDrawImpl,0x42e140,0x9c8,__fastcall,,ChainCallbackResult,EnemyManager*,i32,i32

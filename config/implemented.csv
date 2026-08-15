@@ -573,3 +573,6 @@ th08::EclOperands::TargetEnemyHelpersOverlay::HasParentChain
 th08::EclOperands::TargetEnemyHelpersOverlay::CountParentChain
 th08::Spellcard::GetActiveState
 th08::ZunTimer::operator--(int)
+th08::Spellcard::IsLastSpell
+th08::Spellcard::FUN_00417860
+th08::Spellcard::FUN_0042DFF0

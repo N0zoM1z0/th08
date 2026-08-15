@@ -49282,3 +49282,43 @@ offset = 0x0D
 type = "REL32"
 symbol = "?Decrement@ZunTimer@th08@@QAEXH@Z"
 target = 0x0044735B
+
+
+[[units]]
+name = "spellcard-is-last-spell"
+object = "build/SpellCard.obj"
+symbol = "?IsLastSpell@Spellcard@th08@@SIHH@Z"
+target_address = 0x00414540
+size = 0x44
+
+[[units.relocations]]
+offset = 0x20
+type = "DIR32"
+symbol = "?g_LastSpellCount@th08@@3HA"
+target = 0x004C6C3C
+
+[[units.relocations]]
+offset = 0x2C
+type = "DIR32"
+symbol = "?g_LastSpellNumbers@th08@@3PAHA"
+target = 0x004C6B90
+
+[[units]]
+name = "spellcard-fun-00417860"
+object = "build/SpellCard.obj"
+symbol = "?FUN_00417860@Spellcard@th08@@QAEHXZ"
+target_address = 0x00417860
+size = 0x3B
+
+[[units.relocations]]
+offset = 0x0D
+type = "REL32"
+symbol = "?IsActive@Spellcard@th08@@QAEHXZ"
+target = 0x004178A0
+
+[[units]]
+name = "spellcard-fun-0042dff0"
+object = "build/SpellCard.obj"
+symbol = "?FUN_0042DFF0@Spellcard@th08@@QAEHXZ"
+target_address = 0x0042DFF0
+size = 0x16
