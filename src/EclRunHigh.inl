@@ -594,11 +594,11 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
 
     case 128:
     {
-        u8 *operands = TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands;
         TH08_ECL_AT(ctx, u8 *, 0x5360 + TH08_ECL_AT(ctx, i32, 0x53C0) * 4) =
             reinterpret_cast<u8 *>(g_EffectManager.SpawnEffect(
                 13, reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)),
                 1, 0xFF6060D0));
+        u8 *operands = TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands;
         *reinterpret_cast<Vec3 *>(
             TH08_ECL_AT(ctx, u8 *, 0x5360 + TH08_ECL_AT(ctx, i32, 0x53C0) * 4) +
             0x2EC) = *reinterpret_cast<Vec3 *>(operands + 4);
