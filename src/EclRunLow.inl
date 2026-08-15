@@ -101,6 +101,7 @@ EclOperands::EnemyOverlay *__fastcall SpawnChildStandard0041F110(
     EclOperands::EnemyOverlay *parent, EclRawInstruction *instruction);
 EclOperands::EnemyOverlay *__fastcall SpawnChildAlternate0041F280(
     EclOperands::EnemyOverlay *parent, EclRawInstruction *instruction);
+void __fastcall FUN_004224a0(u8 *enemy, void *instruction);
 
 // The returned effect begins with an ANM VM.  Keep the call out-of-line: the
 // target dispatch calls AnmVm::SetInterrupt at 0x00407120 rather than inlining
@@ -512,18 +513,18 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
 
     case 20: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) + ReadInt(enemy, instruction, 2); break;
-    case 25: *WriteFloat(enemy, instruction, 0) = ReadFloat(enemy, instruction, 1) + ReadFloat(enemy, instruction, 2); break;
+    case 25: *WriteFloat(enemy, instruction, 0) = ReadFloatRawArg(enemy, instruction, 1) + ReadFloatRawArg(enemy, instruction, 2); break;
     case 21: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) - ReadInt(enemy, instruction, 2); break;
-    case 26: *WriteFloat(enemy, instruction, 0) = ReadFloat(enemy, instruction, 1) - ReadFloat(enemy, instruction, 2); break;
+    case 26: *WriteFloat(enemy, instruction, 0) = ReadFloatRawArg(enemy, instruction, 1) - ReadFloatRawArg(enemy, instruction, 2); break;
     case 22: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) * ReadInt(enemy, instruction, 2); break;
-    case 27: *WriteFloat(enemy, instruction, 0) = ReadFloat(enemy, instruction, 1) * ReadFloat(enemy, instruction, 2); break;
+    case 27: *WriteFloat(enemy, instruction, 0) = ReadFloatRawArg(enemy, instruction, 1) * ReadFloatRawArg(enemy, instruction, 2); break;
     case 23: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) / ReadInt(enemy, instruction, 2); break;
-    case 28: *WriteFloat(enemy, instruction, 0) = ReadFloat(enemy, instruction, 1) / ReadFloat(enemy, instruction, 2); break;
+    case 28: *WriteFloat(enemy, instruction, 0) = ReadFloatRawArg(enemy, instruction, 1) / ReadFloatRawArg(enemy, instruction, 2); break;
     case 24: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) % ReadInt(enemy, instruction, 2); break;
     case 29:
         *WriteFloat(enemy, instruction, 0) =
-            fmodf(ReadFloat(enemy, instruction, 1),
-                  ReadFloat(enemy, instruction, 2));
+            fmodf(ReadFloatRawArg(enemy, instruction, 1),
+                  ReadFloatRawArg(enemy, instruction, 2));
         break;
     case 30: ++*WriteInt(enemy, instruction, 0); break;
     case 31: --*WriteInt(enemy, instruction, 0); break;
@@ -549,8 +550,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
 
     case 38:
-        angle = AddNormalizeAngle(ReadFloat(enemy, instruction, 2), 0.0f);
-        magnitude = ReadFloat(enemy, instruction, 3);
+        angle = AddNormalizeAngle(ReadFloatRawArg(enemy, instruction, 2), 0.0f);
+        magnitude = ReadFloatRawArg(enemy, instruction, 3);
         *WriteFloat(enemy, instruction, 0) = cosf(angle) * magnitude;
         *WriteFloat(enemy, instruction, 1) = sinf(angle) * magnitude;
         break;
@@ -705,8 +706,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
 #ifdef TH08_ECL_RUN_LOW_BODY
     // Target physical order places opcode 178 between opcodes 67 and 68.
     case 178:
-        TH08_ECL_CONTEXT_API(ctx)->Call004224A0(
-            TH08_ECL_CONTEXT_ENEMY(ctx));
+        FUN_004224a0(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_CONTEXT_INSTRUCTION(ctx));
         break;
 #endif
     case 68:
@@ -734,12 +734,12 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
 
     case 70:
-        F32At(enemy, 0x2D98) = ReadFloat(enemy, instruction, 0);
-        SetMovementState1(enemy);
+        F32At(enemy, 0x2D98) = ReadFloatRawArg(enemy, instruction, 0);
+        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & 0xFFFFCFFFU) | 0x1000U;
         break;
     case 71:
-        F32At(enemy, 0x2DAC) = ReadFloat(enemy, instruction, 0);
-        SetMovementState1(enemy);
+        F32At(enemy, 0x2DAC) = ReadFloatRawArg(enemy, instruction, 0);
+        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & 0xFFFFCFFFU) | 0x1000U;
         break;
     case 72:
         ResetMovementTimer(enemy, services, ReadInt(enemy, instruction, 0));

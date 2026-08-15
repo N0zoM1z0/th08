@@ -554,7 +554,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
                 TH08_ECL_READ_F(ctx, 2);
         }
         break;
-    case 163: g_EclGlobal00F54CEC = TH08_ECL_READ_I(ctx, 0); break;
+    case 163: g_EclGlobal00F54CEC = (lhsInt = TH08_ECL_READ_I(ctx, 0)); break;
     case 127:
         if (TH08_ECL_READ_I(ctx, 0) < 0)
         {
@@ -949,7 +949,7 @@ enter_subroutine:
 #if !defined(TH08_ECL_RUN_HIGH_BODY)
     case 178: TH08_ECL_CONTEXT_API(ctx)->Call004224A0(TH08_ECL_CONTEXT_ENEMY(ctx)); break;
 #endif
-    case 179: TH08_ECL_CONTEXT_API(ctx)->Call00439007(); break;
+    case 179: g_Gui.FUN_00439007(); break;
     case 180: g_Gui.FUN_004390d6(); break;
     case 181:
         if (TH08_ECL_CONTEXT_API(ctx)->GetGameState() < 12)
