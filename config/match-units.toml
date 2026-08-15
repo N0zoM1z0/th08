@@ -56321,3 +56321,16 @@ offset = 0x17
 type = "REL32"
 symbol = "?UpdateAntiTamper@GameManager@th08@@QAEXXZ"
 target = 0x00406E50
+
+[[units]]
+name = "game-manager-set-bomb-count"
+object = "build/GameManager.obj"
+symbol = "?SetBombCount@GameManager@th08@@QAEXH@Z"
+target_address = 0x00406F30
+size = 0x6E
+
+[[units.relocations]]
+offset = 0x31
+type = "REL32"
+symbol = "?CalcAntiTamperChecksum@GameManager@th08@@QAEHXZ"
+target = 0x00439A2E

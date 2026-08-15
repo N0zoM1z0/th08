@@ -675,3 +675,4 @@ th08::Player::FUN_0044c1b0
 th08::Bullet::FUN_004322b0
 th08::Bullet::FUN_00432830
 th08::GameManager::SetLives
+th08::GameManager::SetBombCount

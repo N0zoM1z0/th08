@@ -90,11 +90,22 @@ i32 GameManager::CalcChecksum(u8 *address, i32 size)
     return sum;
 }
 
+
 #pragma optimize("t", on)
 void GameManager::SetLives(i32 lives)
 {
     this->globals->livesRemaining = (f32)lives;
     this->UpdateAntiTamper();
+}
+#pragma optimize("", on)
+
+#pragma optimize("t", on)
+void GameManager::SetBombCount(i32 bombs)
+{
+    this->globals->bombsRemaining = (f32)bombs;
+    this->globals->antiTamperValue = this->globals->rng1[2];
+    this->globals->antiTamperChecksum = this->CalcAntiTamperChecksum();
+    this->antiTamperExpectedValue = (f32)(this->globals->antiTamperChecksum + this->globals->rng7[3]);
 }
 #pragma optimize("", on)
 
@@ -134,6 +145,7 @@ void GameManager::AddTimeOrbs(i32 amount)
     }
 }
 #pragma optimize("", on)
+
 
 #pragma optimize("t", on)
 i32 GameManager::GetTimeOrbs()
@@ -475,6 +487,7 @@ ZunBool GameManager::IsSpellPracticeUnlocked()
            this->IsSpellPracticeUnlockedForCharacter(SHOT_SAKUYA_REMILIA) ||
            this->IsSpellPracticeUnlockedForCharacter(SHOT_YOUMU_YUYUKO);
 }
+
 
 // Leftover from PCB.
 // FUNCTION: th08 0x43c317
