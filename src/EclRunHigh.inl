@@ -392,10 +392,12 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         if (TH08_ECL_AT(ctx, i32, 0x2DFC) <= 0)
             break;
         if (((TH08_ECL_AT(ctx, u32, 0x3324) >> 17) & 1) == 1)
+        {
             memcpy(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3034, TH08_ECL_CONTEXT_INSTRUCTION(ctx), 11 * sizeof(i32));
-        else
-            DispatchShotInstruction(TH08_ECL_CONTEXT_ENEMY(ctx),
-                                    TH08_ECL_CONTEXT_INSTRUCTION(ctx));
+            break;
+        }
+        DispatchShotInstruction(TH08_ECL_CONTEXT_ENEMY(ctx),
+                                TH08_ECL_CONTEXT_INSTRUCTION(ctx));
         break;
 
     case 111:

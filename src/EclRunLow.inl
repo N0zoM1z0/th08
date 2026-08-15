@@ -694,7 +694,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
             F32At(enemy, 0x2D94) = AddNormalizeAngle(ReadFloat(enemy, instruction, 2), 0.0f);
             F32At(enemy, 0x2DA8) = ReadFloat(enemy, instruction, 3);
             SetMovementState1(enemy);
-            ResetMovementTimer(enemy, services, 0);
+            I32At(enemy, 0x2DE8) = 0;
+            *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) = 0;
         }
         else
         {
@@ -729,7 +730,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
             F32At(enemy, 0x2DA8) = ReadFloat(enemy, instruction, 3);
             SetMovementState1(enemy);
             // The target resolves operand 0 again before timer assignment.
-            ResetMovementTimer(enemy, services, ReadInt(enemy, instruction, 0));
+            *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) =
+                (I32At(enemy, 0x2DE8) = ReadInt(enemy, instruction, 0));
         }
         else
         {
@@ -798,9 +800,9 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x40U) | ((lhsInt & 1) == 0 ? 0x40U : 0);
         U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x4U) | ((lhsInt & 2) == 0 ? 0x4U : 0);
         U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x8U) | ((lhsInt & 4) == 0 ? 0x8U : 0);
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x10U) | ((lhsInt & 8) ? 0x10U : 0);
+        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x10U) | (((lhsInt & 8) != 0) << 4);
         U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x10000000U) | ((lhsInt & 0x10) ? 0x10000000U : 0);
-        U32At(enemy, 0x3328) = (U32At(enemy, 0x3328) & ~0x40U) | ((lhsInt & 0x20) ? 0x40U : 0);
+        U32At(enemy, 0x3328) = (U32At(enemy, 0x3328) & ~0x40U) | (((lhsInt & 0x20) != 0) << 6);
         break;
 
     case 80:
@@ -855,8 +857,9 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         {
             // Operand 2 selects the Enemy whose register namespace resolves
             // operand 1.  The destination remains in the current Enemy.
+            lhsInt = ReadInt(enemy, instruction, 2);
             remoteValue = EclOperands::ResolveInt(
-                g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)],
+                g_EclEnemyTableF54CC0[lhsInt],
                 RawInt(instruction, 1));
         }
         else
@@ -868,7 +871,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     }
 
     case 87:
-        if (g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)])
+        lhsInt = ReadInt(enemy, instruction, 2);
+        if (g_EclEnemyTableF54CC0[lhsInt])
         {
             if (instruction->operandFlags & 2U)
             {
