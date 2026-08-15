@@ -643,3 +643,4 @@ th08::AnmManager::DrawWithCallback
 th08::Background::AddedCallback
 th08::AnmManager::GetAnm
 th08::EnemyManager::AddedCallback
+th08::EnemyManager::Initialize

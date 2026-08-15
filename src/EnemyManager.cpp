@@ -22,9 +22,72 @@ void Enemy::FUN_0042bc90()
 {
 }
 
-// STUB: th08 0x429e00
+// FUNCTION: th08 0x429e00
+#pragma var_order(i, enemy, this)
 void EnemyManager::Initialize()
 {
+    u8 *enemy = reinterpret_cast<u8 *>(this) + 0x53D0;
+    i32 i;
+
+    memset(this, 0, 0x9DCF10);
+    for (i = 0; (u32)i < 4; i++)
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x9DCEFC + i * 4) = -1;
+
+    enemy = reinterpret_cast<u8 *>(this);
+    memset(enemy, 0, 0x53D0);
+    for (i = 0; i < 2; i++)
+        *reinterpret_cast<i16 *>(enemy + i * 0x2A4 + 0x4CA) = -1;
+    for (i = 0; i < 0x60; i++)
+        *reinterpret_cast<i32 *>(enemy + i * 0x1C + 0x3394) = 0xC479C000;
+
+    *reinterpret_cast<u32 *>(enemy + 0x3324) |= 1;
+    *reinterpret_cast<ZunTimer *>(enemy + 0x2E14) = 0;
+    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFEFFFFFF;
+
+    *reinterpret_cast<D3DXVECTOR3 *>(enemy + 0x2D70) = D3DXVECTOR3(24.0f, 24.0f, 24.0f);
+    *reinterpret_cast<D3DXVECTOR3 *>(enemy + 0x2D4C) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+    *reinterpret_cast<i32 *>(enemy + 0x2D98) = 0;
+    *reinterpret_cast<i32 *>(enemy + 0x2D94) = 0;
+    *reinterpret_cast<i32 *>(enemy + 0x2DAC) = 0;
+    *reinterpret_cast<i32 *>(enemy + 0x2DA8) = 0;
+    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFFCFFF;
+    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFDFFFF;
+    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFBFFFF;
+    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFFFFFD;
+    *reinterpret_cast<i16 *>(enemy + 0x2CEA) = 0;
+    *reinterpret_cast<i32 *>(enemy + 0x2DFC) = 1;
+    *reinterpret_cast<i32 *>(enemy + 0x2E08) = 100;
+    *reinterpret_cast<u8 *>(enemy + 0x3310) = 0;
+    *reinterpret_cast<u8 *>(enemy + 0x3311) = 0;
+    *reinterpret_cast<u8 *>(enemy + 0x3312) = 0;
+    *reinterpret_cast<i32 *>(enemy + 0x3060) = 0;
+    *reinterpret_cast<ZunTimer *>(enemy + 0x3064) = 0;
+    *reinterpret_cast<D3DXVECTOR3 *>(enemy + 0x2DB8) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+    *reinterpret_cast<i16 *>(enemy + 0x3338) = -1;
+    *reinterpret_cast<i16 *>(enemy + 0x333A) = -1;
+    *reinterpret_cast<i16 *>(enemy + 0x3332) = -1;
+    *reinterpret_cast<u32 *>(enemy + 0x3324) |= 4;
+    *reinterpret_cast<u32 *>(enemy + 0x3324) |= 8;
+    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFFFFEF;
+    *reinterpret_cast<u32 *>(enemy + 0x3324) |= 0x40;
+    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFFFF7F;
+    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFF8FFFFF;
+    *reinterpret_cast<i16 *>(enemy + 0x2CEE) = -1;
+    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFF7FFFF;
+    *reinterpret_cast<i32 *>(enemy + 0x53C0) = 0;
+    *reinterpret_cast<i16 *>(enemy + 0x2D30) = -1;
+    for (i = 0; i < 4; i++)
+        *reinterpret_cast<i32 *>(enemy + 0x3358 + i * 4) = -1;
+    *reinterpret_cast<i32 *>(enemy + 0x3378) = -1;
+    *reinterpret_cast<i32 *>(enemy + 0x3300) = 0;
+    *reinterpret_cast<u8 *>(enemy + 0x3314) = 0;
+    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFDFFFFFF;
+    *reinterpret_cast<u32 *>(enemy + 0x2DEC) = 0xBE19999A;
+    *reinterpret_cast<u32 *>(enemy + 0x2DF0) = 0x3E19999A;
+    *reinterpret_cast<i32 *>(enemy + 0x3024) = 7;
+    *reinterpret_cast<i32 *>(enemy + 0x3028) = 25;
+    *reinterpret_cast<u32 *>(enemy + 0x3350) = 0x44800000;
+    *reinterpret_cast<i32 *>(enemy + 0x2E10) = *reinterpret_cast<i32 *>(0x18B8A24);
 }
 
 // FUNCTION: th08 0x42c590
