@@ -653,3 +653,7 @@ address,name,size,status,match_percent,unit,evidence
 0x0042F580,th08::Laser::Laser,64,matching,100.00,laser-constructor,python3 scripts/compare-function.py laser-constructor --json
 0x0042F5C0,th08::BulletExState::BulletExState,33,matching,100.00,bullet-ex-state-constructor,python3 scripts/compare-function.py bullet-ex-state-constructor --json
 0x004311A0,th08::BulletManager::RegisterChain,152,matching,100.00,bullet-manager-register-chain,python3 scripts/compare-function.py bullet-manager-register-chain --json
+0x00432170,th08::Bullet::FUN_00432170,55,matching,100.00,bullet-fun-00432170,python3 scripts/compare-function.py bullet-fun-00432170 --json
+0x004321B0,th08::BulletManager::FUN_004321b0,89,matching,100.00,bullet-manager-fun-004321b0,python3 scripts/compare-function.py bullet-manager-fun-004321b0 --json
+0x004329F0,th08::Bullet::FUN_004329f0,167,matching,100.00,bullet-fun-004329f0,python3 scripts/compare-function.py bullet-fun-004329f0 --json
+0x00432AA0,th08::Bullet::FUN_00432aa0,167,matching,100.00,bullet-fun-00432aa0,python3 scripts/compare-function.py bullet-fun-00432aa0 --json

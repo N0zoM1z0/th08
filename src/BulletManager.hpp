@@ -50,6 +50,9 @@ C_ASSERT(sizeof(Laser) == 0x59c);
 struct Bullet
 {
     Bullet();
+    void FUN_00432170();
+    void FUN_00432aa0();
+    void FUN_004329f0();
 
     BulletTypeSprites sprites;
     Float3 position0;
@@ -83,6 +86,7 @@ struct BulletManager
     void Initialize();
     void bulletmanager_fun_00415c60();
     void RemoveAllBullets(i32 mode);
+    void FUN_004321b0();
 
     static ZunResult RegisterChain(char *bulletAnmPath);
     static ChainCallbackResult OnUpdate(BulletManager *bulletManager);

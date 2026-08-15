@@ -657,3 +657,7 @@ th08::Bullet::Bullet
 th08::Laser::Laser
 th08::BulletExState::BulletExState
 th08::BulletManager::RegisterChain
+th08::Bullet::FUN_00432170
+th08::BulletManager::FUN_004321b0
+th08::Bullet::FUN_004329f0
+th08::Bullet::FUN_00432aa0

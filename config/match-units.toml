@@ -55686,3 +55686,115 @@ offset = 0x8E
 type = "REL32"
 symbol = "?AddToDrawChain@Chain@th08@@QAEHPAVChainElem@2@H@Z"
 target = 0x0043C960
+
+[[units]]
+name = "bullet-fun-00432170"
+object = "build/BulletManager.obj"
+symbol = "?FUN_00432170@Bullet@th08@@QAEXXZ"
+target_address = 0x00432170
+size = 0x37
+
+[[units.relocations]]
+offset = 0x1F
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x2F
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units]]
+name = "bullet-manager-fun-004321b0"
+object = "build/BulletManager.obj"
+symbol = "?FUN_004321b0@BulletManager@th08@@QAEXXZ"
+target_address = 0x004321B0
+size = 0x59
+
+[[units]]
+name = "bullet-fun-004329f0"
+object = "build/BulletManager.obj"
+symbol = "?FUN_004329f0@Bullet@th08@@QAEXXZ"
+target_address = 0x004329F0
+size = 0xA7
+
+[[units.relocations]]
+offset = 0x12
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target = 0x004B4C90
+
+[[units.relocations]]
+offset = 0x28
+type = "DIR32"
+symbol = "__real@43c00000"
+target = 0x004B4528
+
+[[units.relocations]]
+offset = 0x42
+type = "DIR32"
+symbol = "__real@4078000000000000"
+target = 0x004B4C88
+
+[[units.relocations]]
+offset = 0x58
+type = "DIR32"
+symbol = "__real@43c00000"
+target = 0x004B4528
+
+[[units.relocations]]
+offset = 0x71
+type = "REL32"
+symbol = "??NZunTimer@th08@@QAEIH@Z"
+target = 0x0040E390
+
+[[units.relocations]]
+offset = 0x9F
+type = "REL32"
+symbol = "??FZunTimer@th08@@QAEXH@Z"
+target = 0x00418110
+
+[[units]]
+name = "bullet-fun-00432aa0"
+object = "build/BulletManager.obj"
+symbol = "?FUN_00432aa0@Bullet@th08@@QAEXXZ"
+target_address = 0x00432AA0
+size = 0xA7
+
+[[units.relocations]]
+offset = 0x12
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target = 0x004B4C90
+
+[[units.relocations]]
+offset = 0x28
+type = "DIR32"
+symbol = "__real@43e00000"
+target = 0x004B4940
+
+[[units.relocations]]
+offset = 0x42
+type = "DIR32"
+symbol = "__real@407c000000000000"
+target = 0x004B4C98
+
+[[units.relocations]]
+offset = 0x58
+type = "DIR32"
+symbol = "__real@43e00000"
+target = 0x004B4940
+
+[[units.relocations]]
+offset = 0x71
+type = "REL32"
+symbol = "??NZunTimer@th08@@QAEIH@Z"
+target = 0x0040E390
+
+[[units.relocations]]
+offset = 0x9F
+type = "REL32"
+symbol = "??FZunTimer@th08@@QAEXH@Z"
+target = 0x00418110
