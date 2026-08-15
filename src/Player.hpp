@@ -109,7 +109,9 @@ struct Player
     void FUN_0044d420();
     void FUN_00451150();
     void FUN_00451400();
-    void FUN_00451500();
+    i32 FUN_00451500();
+    void __fastcall FUN_00450f60(i32 value);
+    i32 FUN_00451d50();
 
     static ZunResult LoadShtFile(PlayerRawShtFile **header, const char *path);
     i32 IsYoukai();

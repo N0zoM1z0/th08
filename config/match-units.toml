@@ -56590,3 +56590,95 @@ offset = 0x187
 type = "REL32"
 symbol = "??EZunTimer@th08@@QAEXH@Z"
 target = 0x00406640
+
+[[units]]
+name = "player-fun-00451500"
+object = "build/Player.obj"
+symbol = "?FUN_00451500@Player@th08@@QAEHXZ"
+target_address = 0x00451500
+size = 0x137
+
+[[units.relocations]]
+offset = 0x21
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0x34
+type = "REL32"
+symbol = "?FUN_00451d50@Player@th08@@QAEHXZ"
+target = 0x00451D50
+
+[[units.relocations]]
+offset = 0x4D
+type = "REL32"
+symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+target = 0x0040D3D0
+
+[[units.relocations]]
+offset = 0x8C
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0x96
+type = "REL32"
+symbol = "?FUN_00450f60@Player@th08@@QAIXH@Z"
+target = 0x00450F60
+
+[[units.relocations]]
+offset = 0xA6
+type = "REL32"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
+target = 0x00406640
+
+[[units.relocations]]
+offset = 0xB4
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0xC9
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0xE5
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0xEE
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0xF3
+type = "REL32"
+symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+target = 0x004358BB
+
+[[units.relocations]]
+offset = 0x107
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x12D
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units]]
+name = "zun-timer-fun-0040d3d0"
+object = "build/Player.obj"
+symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+target_address = 0x0040D3D0
+size = 0x1B

@@ -148,7 +148,7 @@ FUN_0040d100,0x40d100,function
 FUN_0040d310,0x40d310,function
 th08::Rng::GetRandomF32InRange,0x40d390,function
 th08::ZunTimer::operator_int,0x40d3b0,function
-FUN_0040d3d0,0x40d3d0,function
+th08::ZunTimer::FUN_0040d3d0,0x40d3d0,function
 th08::ZunTimer::operator==,0x40d3f0,function
 th08::ZunTimer::operator%,0x40d410,function
 FUN_0040d430,0x40d430,function
@@ -815,7 +815,7 @@ FUN_00450840,0x450840,function
 FUN_00450ad0,0x450ad0,function
 FUN_00450c50,0x450c50,function
 FUN_00450ee0,0x450ee0,function
-FUN_00450f60,0x450f60,function
+th08::Player::FUN_00450f60,0x450f60,function
 th08::Player::FUN_00451150,0x451150,function
 FUN_004512f0,0x4512f0,function
 th08::Player::FUN_00451400,0x451400,function

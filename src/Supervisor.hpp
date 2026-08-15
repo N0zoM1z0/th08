@@ -345,6 +345,8 @@ struct ZunTimer
         return this->current;
     }
 
+    ZunBool FUN_0040d3d0();
+
     operator float()
     {
         return (float)this->current + (float)this->subFrame;

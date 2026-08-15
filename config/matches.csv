@@ -685,3 +685,5 @@ address,name,size,status,match_percent,unit,evidence
 0x00446CC7,th08::Supervisor::EnumGameControllersCb,63,matching,100.00,supervisor-enum-game-controllers-cb,python3 scripts/compare-function.py supervisor-enum-game-controllers-cb --json
 0x00451400,th08::Player::FUN_00451400,241,matching,100.00,player-fun-00451400,python3 scripts/compare-function.py player-fun-00451400 --json
 0x00451150,th08::Player::FUN_00451150,404,matching,100.00,player-fun-00451150,python3 scripts/compare-function.py player-fun-00451150 --json
+0x00451500,th08::Player::FUN_00451500,311,matching,100.00,player-fun-00451500,python3 scripts/compare-function.py player-fun-00451500 --json
+0x0040D3D0,th08::ZunTimer::FUN_0040d3d0,27,matching,100.00,zun-timer-fun-0040d3d0,python3 scripts/compare-function.py zun-timer-fun-0040d3d0 --json

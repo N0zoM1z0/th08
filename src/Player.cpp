@@ -56,6 +56,12 @@ void PlayerUnkStruct0x40::Reset()
     this->collisionInterval = 1;
 }
 
+// FUNCTION: th08 0x40d3d0
+ZunBool ZunTimer::FUN_0040d3d0()
+{
+    return this->current != this->previous;
+}
+
 // FUNCTION: th08 0x40bc40
 i32 Player::IsYoukai()
 {
@@ -229,9 +235,69 @@ void Player::FUN_00451400()
         g_AnmManager->DrawPlayerBullet(reinterpret_cast<AnmVm *>(slot));
     }
 }
-// STUB: th08 0x451500
-void Player::FUN_00451500()
+// FUNCTION: th08 0x451500
+i32 Player::FUN_00451500()
 {
+    if (*reinterpret_cast<i32 *>(0x164D2C8) < 20)
+    {
+        return 0;
+    }
+
+    if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) < 0)
+    {
+        return 0;
+    }
+
+    if (this->FUN_00451d50())
+    {
+        return 0;
+    }
+
+    if (reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4)->FUN_0040d3d0())
+    {
+        if (*reinterpret_cast<i32 *>(0x17D6ED4) == 0 ||
+            (*reinterpret_cast<u8 *>(0x164D0B1) != 1 && *reinterpret_cast<u8 *>(0x164D0B1) != 7 &&
+             *reinterpret_cast<u8 *>(0x164D0B1) != 6))
+        {
+            this->FUN_00450f60((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4));
+        }
+    }
+
+    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4))++;
+
+    if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) >= 20)
+    {
+        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) = -1;
+    }
+
+    if ((*reinterpret_cast<u16 *>(0x164D52C) & 1) != 0)
+    {
+        if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) < 0)
+        {
+            if (!g_Gui.IsDialogPresent())
+            {
+                *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) = 0;
+            }
+        }
+    }
+
+    if (*reinterpret_cast<i8 *>(this) == 2 || *reinterpret_cast<i8 *>(this) == 1)
+    {
+        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) = -1;
+    }
+
+    return 0;
+}
+
+// STUB: th08 0x450f60
+void __fastcall Player::FUN_00450f60(i32 value)
+{
+}
+
+// STUB: th08 0x451d50
+i32 Player::FUN_00451d50()
+{
+    return 0;
 }
 // STUB: th08 0x44d420
 void Player::FUN_0044d420()
