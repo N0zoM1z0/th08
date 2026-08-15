@@ -694,19 +694,18 @@ enter_subroutine:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         u8 *oldContext = TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4);
         if (oldContext)
-            TH08_ECL_CONTEXT_API(ctx)->Free(oldContext);
+            g_ZunMemory.Free(oldContext);
         TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) = 0;
 
         if (TH08_ECL_READ_I(ctx, 1) >= 0)
         {
-            u8 *child = (u8 *)TH08_ECL_CONTEXT_API(ctx)->Allocate(0x24B0, "ECLInt");
+            u8 *child = (u8 *)g_ZunMemory.Alloc(0x24B0, "ECLInt");
             TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) = child;
             if (child)
             {
-                i32 clearCount = 0x92C;
-                i32 *clear = (i32 *)child;
-                while (clearCount--)
-                    *clear++ = 0;
+                for (i32 *clear = (i32 *)child, *end = (i32 *)child + 0x92C;
+                     clear < end; ++clear)
+                    *clear = 0;
                 *(i32 *)child = TH08_ECL_READ_I(ctx, 1);
                 TH08_ECL_CONTEXT_API(ctx)->InitializeEclContext(child + 8, *(u16 *)child);
                 memcpy(child + 0x20, TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18,

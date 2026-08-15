@@ -796,14 +796,16 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
 
     case 79:
-        lhsInt = ReadInt(enemy, instruction, 0);
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x40U) | ((lhsInt & 1) == 0 ? 0x40U : 0);
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x4U) | ((lhsInt & 2) == 0 ? 0x4U : 0);
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x8U) | ((lhsInt & 4) == 0 ? 0x8U : 0);
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x10U) | (((lhsInt & 8) != 0) << 4);
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x10000000U) | ((lhsInt & 0x10) ? 0x10000000U : 0);
-        U32At(enemy, 0x3328) = (U32At(enemy, 0x3328) & ~0x40U) | (((lhsInt & 0x20) != 0) << 6);
+    {
+        i32 flags = (lhsInt = ReadInt(enemy, instruction, 0));
+        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x40U) | ((1 - ((flags & 1) != 0)) << 6);
+        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x4U) | ((flags & 2) == 0 ? 0x4U : 0);
+        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x8U) | ((flags & 4) == 0 ? 0x8U : 0);
+        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x10U) | (((flags & 8) != 0) << 4);
+        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x10000000U) | ((flags & 0x10) ? 0x10000000U : 0);
+        U32At(enemy, 0x3328) = (U32At(enemy, 0x3328) & ~0x40U) | (((flags & 0x20) != 0) << 6);
         break;
+    }
 
     case 80:
         lhsInt = ReadInt(enemy, instruction, 0);
