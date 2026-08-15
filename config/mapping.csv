@@ -504,8 +504,8 @@ FUN_00438fe9,0x438fe9,0xa,unknown,,u8
 FUN_00438ff3,0x438ff3,0xa,unknown,,u8
 FUN_00438ffd,0x438ffd,0xa,unknown,,u8
 FUN_00439007,0x439007,0x49,unknown,,u8
-FUN_00439050,0x439050,0x43,unknown,,u8
-FUN_00439093,0x439093,0x43,unknown,,u8
+th08::Gui::FUN_00439050,0x439050,0x43,__thiscall,,ZunResult,Gui*
+th08::Gui::FUN_00439093,0x439093,0x43,__thiscall,,ZunResult,Gui*
 FUN_004390d6,0x4390d6,0x18,unknown,,u8
 th08::Gui::ActualAddedCallback,0x4390ee,0x5ca,__thiscall,,u32,Gui*
 FUN_004396b8,0x4396b8,0x40,unknown,,u8

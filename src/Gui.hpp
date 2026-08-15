@@ -56,6 +56,8 @@ struct Gui
     void FUN_004230c0(f32 value);
     void FUN_00423130(i32 value);
     void FUN_00439007();
+    ZunResult FUN_00439050();
+    ZunResult FUN_00439093();
     void FUN_004390d6();
 
     u32 unk_0;

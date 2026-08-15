@@ -29842,8 +29842,8 @@ target = 0x00404720
 [[units.relocations]]
 offset = 0x424
 type = "REL32"
-symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
-target = 0x004069F0
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
 
 [[units.relocations]]
 offset = 0x43F
@@ -35986,8 +35986,8 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0x3A9
 type = "REL32"
-symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
-target = 0x004069F0
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
 
 [[units.relocations]]
 offset = 0x3C6
@@ -36082,8 +36082,8 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0x58C
 type = "REL32"
-symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
-target = 0x004069F0
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
 
 [[units.relocations]]
 offset = 0x59F
@@ -38775,7 +38775,7 @@ target = 0x00577eb4
 [[units.relocations]]
 offset = 0x43c
 type = "REL32"
-symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
 target = 0x004069f0
 
 [[units.relocations]]
@@ -40745,62 +40745,62 @@ size = 0x174
 [[units.relocations]]
 offset = 0x1E
 type = "REL32"
-symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
-target = 0x004069F0
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
 
 [[units.relocations]]
 offset = 0x38
 type = "REL32"
-symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
-target = 0x004069F0
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
 
 [[units.relocations]]
 offset = 0x52
 type = "REL32"
-symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
-target = 0x004069F0
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
 
 [[units.relocations]]
 offset = 0x6B
 type = "REL32"
-symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
-target = 0x004069F0
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
 
 [[units.relocations]]
 offset = 0x85
 type = "REL32"
-symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
-target = 0x004069F0
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
 
 [[units.relocations]]
 offset = 0x9F
 type = "REL32"
-symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
-target = 0x004069F0
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
 
 [[units.relocations]]
 offset = 0xB8
 type = "REL32"
-symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
-target = 0x004069F0
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
 
 [[units.relocations]]
 offset = 0xD2
 type = "REL32"
-symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
-target = 0x004069F0
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
 
 [[units.relocations]]
 offset = 0xEC
 type = "REL32"
-symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
-target = 0x004069F0
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
 
 [[units.relocations]]
 offset = 0x105
 type = "REL32"
-symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
-target = 0x004069F0
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
 
 [[units.relocations]]
 offset = 0x10C
@@ -42903,7 +42903,7 @@ target = 0x0045E430
 [[units]]
 name = "manual-comdat-exact-004069f0"
 object = "build/AsciiManager.obj"
-symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
 target_address = 0x004069F0
 size = 0x40
 
@@ -49096,3 +49096,72 @@ offset = 0x43
 type = "REL32"
 symbol = "??0ZunTimer@th08@@QAE@XZ"
 target = 0x004065A0
+
+[[units]]
+name = "game-manager-add-to-clock-time"
+object = "build/main.obj"
+symbol = "?AddToClockTime@GameManager@th08@@QAEXD@Z"
+target_address = 0x00406DF0
+size = 0x26
+
+[[units]]
+name = "gui-fun-00439050"
+object = "build/Gui.obj"
+symbol = "?FUN_00439050@Gui@th08@@QAE?AW4ZunResult@@XZ"
+target_address = 0x00439050
+size = 0x43
+
+[[units.relocations]]
+offset = 0x08
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x0D
+type = "REL32"
+symbol = "?GetClockTime@GameManager@th08@@QAEEXZ"
+target = 0x00406DD0
+
+[[units.relocations]]
+offset = 0x28
+type = "REL32"
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
+
+[[units.relocations]]
+offset = 0x3B
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units]]
+name = "gui-fun-00439093"
+object = "build/Gui.obj"
+symbol = "?FUN_00439093@Gui@th08@@QAE?AW4ZunResult@@XZ"
+target_address = 0x00439093
+size = 0x43
+
+[[units.relocations]]
+offset = 0x08
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x0D
+type = "REL32"
+symbol = "?GetClockTime@GameManager@th08@@QAEEXZ"
+target = 0x00406DD0
+
+[[units.relocations]]
+offset = 0x28
+type = "REL32"
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
+
+[[units.relocations]]
+offset = 0x3B
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120

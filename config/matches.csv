@@ -555,3 +555,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00422BE0,th08::AsciiManager::SetBossMarkerPosition,51,matching,100.00,ascii-manager-set-boss-marker-position,python3 scripts/compare-function.py ascii-manager-set-boss-marker-position --json
 0x00440010,th08::ItemManager::ItemManager,52,matching,100.00,item-manager-constructor,python3 scripts/compare-function.py item-manager-constructor --json
 0x00440050,th08::Item::Item,78,matching,100.00,item-constructor,python3 scripts/compare-function.py item-constructor --json
+0x00406DF0,th08::GameManager::AddToClockTime,38,matching,100.00,game-manager-add-to-clock-time,python3 scripts/compare-function.py game-manager-add-to-clock-time --json
+0x00439050,th08::Gui::FUN_00439050,67,matching,100.00,gui-fun-00439050,python3 scripts/compare-function.py gui-fun-00439050 --json
+0x00439093,th08::Gui::FUN_00439093,67,matching,100.00,gui-fun-00439093,python3 scripts/compare-function.py gui-fun-00439093 --json

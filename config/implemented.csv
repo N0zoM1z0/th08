@@ -559,3 +559,6 @@ th08::GameManager::GetLives
 th08::GameManager::GetBombsRemaining
 th08::ItemManager::ItemManager
 th08::Item::Item
+th08::GameManager::AddToClockTime
+th08::Gui::FUN_00439050
+th08::Gui::FUN_00439093

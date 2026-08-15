@@ -11,6 +11,26 @@ DIFFABLE_STATIC(ChainElem, g_GuiCalcChain);
 DIFFABLE_STATIC(ChainElem, g_GuiDrawChain);
 DIFFABLE_STATIC(i32, g_GuiAnmReleaseRequired);
 
+// FUNCTION: th08 0x439050
+ZunResult Gui::FUN_00439050()
+{
+    this->timesAnm->SetSprite(
+        reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this->impl) + 0x2156C),
+        static_cast<i8>(g_GameManager.GetClockTime()));
+    reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this->impl) + 0x2156C)->SetInterrupt(1);
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x439093
+ZunResult Gui::FUN_00439093()
+{
+    this->timesAnm->SetSprite(
+        reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this->impl) + 0x2156C),
+        static_cast<i8>(g_GameManager.GetClockTime()));
+    reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this->impl) + 0x2156C)->SetInterrupt(2);
+    return ZUN_SUCCESS;
+}
+
 // FUNCTION: th08 0x438ff3
 i32 FUN_00438ff3()
 {

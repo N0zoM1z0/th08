@@ -151,6 +151,7 @@ struct GameManager
     ZunBool GaugeIsModeratelyYoukai();
 
     u8 GetClockTime();
+    void AddToClockTime(i8 value);
     void SetClockTime(u8 value);
 
     ZunBool IsStageClearedWithRetries(i32 stage, i32 character, i32 difficulty)

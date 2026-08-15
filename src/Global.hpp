@@ -326,7 +326,7 @@ struct ZunGlobals
     i16 youkaiGaugeCopy;
     i16 youkaiGauge;
     i32 pointItemValue;
-    u8 clockTime;
+    i8 clockTime;
     u8 numRetries;
     /* 2 bytes pad */
     i32 pointItemsCollectedInStage;
