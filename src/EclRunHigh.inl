@@ -517,10 +517,11 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         break;
     case 120:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
-        *(i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x60) =
-            TH08_ECL_OBJECT(ctx, lhsInt) &&
-                    *(i32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x584)
-                ? 1 : 0;
+        if (TH08_ECL_OBJECT(ctx, lhsInt) &&
+            *(i32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x584))
+            *(i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x60) = 1;
+        else
+            *(i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x60) = 0;
         break;
     case 121:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
@@ -592,12 +593,12 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         i32 slot = TH08_ECL_AT(ctx, i32, 0x53C0);
         u8 *effect = (u8 *)TH08_ECL_CONTEXT_API(ctx)->SpawnEffect00425430(13, &TH08_ECL_AT(ctx, Vec3, 0x2D34), 1,
                                                         0xFF6060D0);
-        TH08_ECL_AT(ctx, u8 *, 0x5360 + slot * 4) = effect;
+        TH08_ECL_AT(ctx, u8 *, 0x5360 + TH08_ECL_AT(ctx, i32, 0x53C0) * 4) = effect;
         *(i32 *)(effect + 0x2EC) = TH08_ECL_RAW_I(ctx, 1);
         *(i32 *)(effect + 0x2F0) = TH08_ECL_RAW_I(ctx, 2);
         *(i32 *)(effect + 0x2F4) = TH08_ECL_RAW_I(ctx, 3);
         TH08_ECL_AT(ctx, i32, 0x53C4) = TH08_ECL_RAW_I(ctx, 4);
-        TH08_ECL_AT(ctx, i32, 0x53C0) = slot + 1;
+        TH08_ECL_AT(ctx, i32, 0x53C0)++;
         break;
     }
     case 159: TH08_ECL_AT(ctx, u8, 0x332F) = (u8)TH08_ECL_READ_I(ctx, 0); break;
@@ -649,13 +650,13 @@ enter_subroutine:
         TH08_ECL_AT(ctx, i32, 0x2E04) = lhsInt;
         if (TH08_ECL_AT(ctx, i8, 0x3313) == 0 && (((TH08_ECL_AT(ctx, u32, 0x3324) >> 1) & 1) == 1))
             for (i32 i = 0; i < 8; ++i)
-                TH08_ECL_CONTEXT_API(ctx)->SetBossGaugeSlot(i, 0.0f, 0.0f);
+                reinterpret_cast<TargetApi *>(&g_Gui)->SetBossGaugeSlot(i, 0.0f, 0.0f);
         break;
     case 158:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
-        TH08_ECL_CONTEXT_API(ctx)->SetBossGaugeSlot(lhsInt, (f32)TH08_ECL_READ_I(ctx, 1) / (f32)TH08_ECL_AT(ctx, i32, 0x2E00),
+        reinterpret_cast<TargetApi *>(&g_Gui)->SetBossGaugeSlot(lhsInt, (f32)TH08_ECL_READ_I(ctx, 1) / (f32)TH08_ECL_AT(ctx, i32, 0x2E00),
                                                      (f32)TH08_ECL_READ_I(ctx, 2) / (f32)TH08_ECL_AT(ctx, i32, 0x2E00));
-        TH08_ECL_CONTEXT_API(ctx)->SetBossGaugeValue(lhsInt, TH08_ECL_READ_I(ctx, 3));
+        reinterpret_cast<TargetApi *>(&g_Gui)->SetBossGaugeValue(lhsInt, TH08_ECL_READ_I(ctx, 3));
         break;
     case 122: StartEnemySpell(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_CONTEXT_INSTRUCTION(ctx)); break;
     case 123: EndEnemySpell(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_CONTEXT_INSTRUCTION(ctx)); break;
@@ -717,7 +718,7 @@ enter_subroutine:
         vector.x = TH08_ECL_READ_F_RAWARG(ctx, 3);
         vector.y = TH08_ECL_READ_F_RAWARG(ctx, 4);
         vector.z = TH08_ECL_READ_F_RAWARG(ctx, 5);
-        TH08_ECL_CONTEXT_API(ctx)->SpawnEffectWithVector(TH08_ECL_READ_I(ctx, 0), &TH08_ECL_AT(ctx, Vec3, 0x2D34), &vector,
+        reinterpret_cast<TargetApi *>(&g_EffectManager)->SpawnEffectWithVector(TH08_ECL_READ_I(ctx, 0), &TH08_ECL_AT(ctx, Vec3, 0x2D34), &vector,
                                        TH08_ECL_READ_I(ctx, 1), *TH08_ECL_WRITE_I(ctx, 2));
         break;
     }
@@ -758,7 +759,7 @@ enter_subroutine:
         break;
     }
     case 145:
-        TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFDFFFFFF) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 25);
+        TH08_ECL_AT(ctx, u32, 0x3324) = ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 25) | (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFDFFFFFF);
         break;
     case 136: reinterpret_cast<void (__fastcall *)(u8 *, RawInstruction *)>(g_EclExInsn[TH08_ECL_READ_I(ctx, 0)])(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_CONTEXT_INSTRUCTION(ctx)); break;
     case 137:
@@ -868,9 +869,9 @@ enter_subroutine:
     case 162: g_BulletManager.RemoveAllBullets(4); break;
     case 164:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
-        TH08_ECL_CONTEXT_API(ctx)->Call0041F0B0(lhsInt);
+        reinterpret_cast<TargetApi *>(&g_Spellcard)->Call0041F0B0(lhsInt);
         if (lhsInt == 0)
-            TH08_ECL_CONTEXT_API(ctx)->Call0041F040(TH08_ECL_READ_F_RAWARG(ctx, 1), TH08_ECL_READ_F_RAWARG(ctx, 2), TH08_ECL_READ_F_RAWARG(ctx, 3));
+            reinterpret_cast<TargetApi *>(&g_Spellcard)->Call0041F040(TH08_ECL_READ_F_RAWARG(ctx, 1), TH08_ECL_READ_F_RAWARG(ctx, 2), TH08_ECL_READ_F_RAWARG(ctx, 3));
         break;
     case 165: TH08_ECL_AT(ctx, f32, 0x14) = TH08_ECL_READ_F(ctx, 0); break;
     case 166:
