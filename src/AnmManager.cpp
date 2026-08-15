@@ -55,6 +55,7 @@ void AnmVm::ClearVisible()
 DIFFABLE_STATIC(AnmManager *, g_AnmManager);
 DIFFABLE_STATIC_ARRAY(VertexTex1DiffuseXyzrhw, 4, g_QuadVertices);
 DIFFABLE_STATIC_ARRAY(VertexTex0Xyzrhw, 4, g_AnmManagerUntexturedQuadVertices);
+DIFFABLE_STATIC_ARRAY(VertexTex0Xyzrhw, 4, g_BackgroundQuadVertices);
 
 D3DFORMAT g_TextureFormatD3D8Mapping[] = {D3DFMT_UNKNOWN, D3DFMT_A8R8G8B8, D3DFMT_A1R5G5B5,
                                           D3DFMT_R5G6B5,  D3DFMT_R8G8B8,   D3DFMT_A4R4G4B4};
@@ -1439,9 +1440,54 @@ AnmManager::AnmManager()
     this->captureSurfaceIdx = -1;
 }
 
-// STUB: th08 0x465250
+// FUNCTION: th08 0x465250
 void AnmManager::SetupVertexBuffer()
 {
+    void *lockedVertexBuffer;
+
+    this->untexturedVector[2].pos.x = -128.0f;
+    this->untexturedVector[0].pos.x = -128.0f;
+    this->untexturedVector[3].pos.x = 128.0f;
+    this->untexturedVector[1].pos.x = 128.0f;
+    this->untexturedVector[1].pos.y = -128.0f;
+    this->untexturedVector[0].pos.y = -128.0f;
+    this->untexturedVector[3].pos.y = 128.0f;
+    this->untexturedVector[2].pos.y = 128.0f;
+    this->untexturedVector[3].pos.z = 0.0f;
+    this->untexturedVector[2].pos.z = 0.0f;
+    this->untexturedVector[1].pos.z = 0.0f;
+    this->untexturedVector[0].pos.z = 0.0f;
+    this->untexturedVector[2].w = 0.0f;
+    this->untexturedVector[0].w = 0.0f;
+    this->untexturedVector[3].w = 1.0f;
+    this->untexturedVector[1].w = 1.0f;
+    *(u32 *)&this->untexturedVector[1].diffuse = 0;
+    *(u32 *)&this->untexturedVector[0].diffuse = 0;
+    *(u32 *)&this->untexturedVector[3].diffuse = 0x3f800000;
+    *(u32 *)&this->untexturedVector[2].diffuse = 0x3f800000;
+
+    g_BackgroundQuadVertices[0].pos = this->untexturedVector[0].pos;
+    g_BackgroundQuadVertices[1].pos = this->untexturedVector[1].pos;
+    g_BackgroundQuadVertices[2].pos = this->untexturedVector[2].pos;
+    g_BackgroundQuadVertices[3].pos = this->untexturedVector[3].pos;
+    *(u32 *)&g_BackgroundQuadVertices[0].textureUV.x = *(u32 *)&this->untexturedVector[0].w;
+    *(u32 *)&g_BackgroundQuadVertices[0].textureUV.y = *(u32 *)&this->untexturedVector[0].diffuse;
+    *(u32 *)&g_BackgroundQuadVertices[1].textureUV.x = *(u32 *)&this->untexturedVector[1].w;
+    *(u32 *)&g_BackgroundQuadVertices[1].textureUV.y = *(u32 *)&this->untexturedVector[1].diffuse;
+    *(u32 *)&g_BackgroundQuadVertices[2].textureUV.x = *(u32 *)&this->untexturedVector[2].w;
+    *(u32 *)&g_BackgroundQuadVertices[2].textureUV.y = *(u32 *)&this->untexturedVector[2].diffuse;
+    *(u32 *)&g_BackgroundQuadVertices[3].textureUV.x = *(u32 *)&this->untexturedVector[3].w;
+    *(u32 *)&g_BackgroundQuadVertices[3].textureUV.y = *(u32 *)&this->untexturedVector[3].diffuse;
+
+    if (!g_Supervisor.IsVertexBufferDisabled())
+    {
+        g_Supervisor.d3dDevice->CreateVertexBuffer(sizeof(this->untexturedVector), 0, D3DFVF_XYZ | D3DFVF_TEX1,
+                                                   D3DPOOL_MANAGED, &this->quadVertexBuffer);
+        this->quadVertexBuffer->Lock(0, 0, (BYTE **)&lockedVertexBuffer, 0);
+        memcpy(lockedVertexBuffer, this->untexturedVector, sizeof(this->untexturedVector));
+        this->quadVertexBuffer->Unlock();
+        g_Supervisor.d3dDevice->SetStreamSource(0, g_AnmManager->quadVertexBuffer, sizeof(VertexDiffuseXyzrhw));
+    }
 }
 
 static i32 GetAnmFormat(i32 format)

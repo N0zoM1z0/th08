@@ -52922,3 +52922,172 @@ offset = 0x152
 type = "DIR32"
 symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
 target = 0x018BDC98
+
+[[units]]
+name = "anm-manager-setup-vertex-buffer"
+object = "build/AnmManager.obj"
+symbol = "?SetupVertexBuffer@AnmManager@th08@@QAEXXZ"
+target_address = 0x00465250
+size = 0x2BC
+
+[[units.relocations]]
+offset = 0x11B
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x124
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x12D
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x13D
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x146
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x14E
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x15F
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x167
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x170
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x180
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x189
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x192
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x1A1
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x1AF
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x1BE
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x1CD
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x1DB
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x1EA
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x1F9
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x207
+type = "DIR32"
+symbol = "?g_BackgroundQuadVertices@th08@@3PAUVertexTex0Xyzrhw@1@A"
+target = 0x018BDD68
+
+[[units.relocations]]
+offset = 0x20C
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x211
+type = "REL32"
+symbol = "?IsVertexBufferDisabled@Supervisor@th08@@QAEIXZ"
+target = 0x00443A70
+
+[[units.relocations]]
+offset = 0x234
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x23C
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x295
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x2A3
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x2AB
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758

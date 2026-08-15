@@ -625,3 +625,4 @@ th08::AnmManager::CaptureToTexture
 th08::Supervisor::OnDraw2
 th08::EnemyManager::DeletedCallback
 th08::AnmManager::AnmManager
+th08::AnmManager::SetupVertexBuffer
