@@ -599,3 +599,6 @@ th08::ZunTimer::operator>=
 th08::ZunTimer::operator_int
 th08::ZunTimer::operator==
 th08::ZunTimer::operator<=
+th08::VertexDiffuseXyzrhw::VertexDiffuseXyzrhw
+th08::ScreenEffect::DrawSquare
+th08::ScreenEffect::DrawSquareShaded

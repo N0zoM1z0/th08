@@ -123,3 +123,13 @@ whole nearby operator family when possible.  `ScreenEffect` exposed missing
 `ZunTimer` conversion/comparison emissions, so the exact batch now records
 `operator_float`, `operator_int`, `operator==`, `operator<=`, and `operator>=`
 together instead of leaving one-off helpers scattered across future work.
+
+
+## D3D8 screen-effect quads use triangle strips
+
+Verified with `ScreenEffect::DrawSquare` and `ScreenEffect::DrawSquareShaded`.
+The four `VertexDiffuseXyzrhw` corners are laid out top-left, top-right,
+bottom-left, bottom-right, then drawn with `D3DPT_TRIANGLESTRIP`, not
+`D3DPT_TRIANGLEFAN`.  Declare the local vertex array after any preceding
+statements that target emits first, because VC7 constructs typed local arrays at
+the declaration point.

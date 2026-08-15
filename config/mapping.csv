@@ -108,7 +108,7 @@ FUN_0040b470,0x40b470,0x49,unknown,,u8,u8
 FUN_0040b4c0,0x40b4c0,0x3a,unknown,,u8
 FUN_0040b500,0x40b500,0x31,unknown,,u8
 FUN_0040b540,0x40b540,0x36,unknown,,u8
-th08::VertexDiffuseXyzrhw::VertexDiffuseXyzrhw,0x40b580,0x16,unknown,,u8
+th08::VertexDiffuseXyzrhw::VertexDiffuseXyzrhw,0x40b580,0x16,__thiscall,,VertexDiffuseXyzrhw*,VertexDiffuseXyzrhw*
 th08::Background::SetCamera1,0x40b5a0,0x124,__thiscall,,u8,Background*
 th08::Background::SetCamera2,0x40b6d0,0x11b,__thiscall,,void,Background*
 FUN_0040b7f0,0x40b7f0,0x84,unknown,,u8,u8
@@ -895,8 +895,8 @@ th08::ScreenEffect::ScreenEffect,0x45b000,0x19,__thiscall,,ScreenEffect*,ScreenE
 th08::ScreenEffect::Clear,0x45b020,0xbe,__fastcall,,void,D3DCOLOR
 th08::ScreenEffect::SetViewport,0x45b0e0,0x7c,__fastcall,,void,D3DCOLOR
 th08::ScreenEffect::CalcFadeIn,0x45b160,0x7b,__fastcall,,ChainCallbackResult,ScreenEffect*
-th08::ScreenEffect::DrawSquare,0x45b1e0,0x2af,__fastcall,,void,ZunRect*,unsigned long
-th08::ScreenEffect::DrawSquareShaded,0x45b490,0x2cd,__fastcall,,void,ZunRect*,unsigned long,unsigned long,unsigned long,unsigned long
+th08::ScreenEffect::DrawSquare,0x45b1e0,0x2af,__fastcall,,void,ZunRect*,D3DCOLOR
+th08::ScreenEffect::DrawSquareShaded,0x45b490,0x2cd,__fastcall,,void,ZunRect*,D3DCOLOR,D3DCOLOR,D3DCOLOR,D3DCOLOR
 th08::ScreenEffect::CalcFadeOut,0x45b760,0x9b,__fastcall,,ChainCallbackResult,ScreenEffect*
 FUN_0045b800,0x45b800,0xa9,unknown,,u8
 th08::ScreenEffect::RegisterChain,0x45b8b0,0x274,__fastcall,,u8,ScreenEffects,i32,i32,i32,i32,i32

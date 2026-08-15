@@ -595,3 +595,6 @@ address,name,size,status,match_percent,unit,evidence
 0x0040D3B0,th08::ZunTimer::operator_int,17,matching,100.00,zun-timer-operator-int,python3 scripts/compare-function.py zun-timer-operator-int --json
 0x0040D3F0,th08::ZunTimer::operator==,27,matching,100.00,zun-timer-equal,python3 scripts/compare-function.py zun-timer-equal --json
 0x0040E390,th08::ZunTimer::operator<=,27,matching,100.00,zun-timer-less-equal,python3 scripts/compare-function.py zun-timer-less-equal --json
+0x0040B580,th08::VertexDiffuseXyzrhw::VertexDiffuseXyzrhw,22,matching,100.00,vertex-diffuse-ctor,python3 scripts/compare-function.py vertex-diffuse-ctor --json
+0x0045B1E0,th08::ScreenEffect::DrawSquare,687,matching,100.00,screen-effect-draw-square,python3 scripts/compare-function.py screen-effect-draw-square --json
+0x0045B490,th08::ScreenEffect::DrawSquareShaded,717,matching,100.00,screen-effect-draw-square-shaded,python3 scripts/compare-function.py screen-effect-draw-square-shaded --json

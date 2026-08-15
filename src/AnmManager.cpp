@@ -11,6 +11,12 @@
 namespace th08
 {
 
+// FUNCTION: th08 0x40b580
+VertexDiffuseXyzrhw::VertexDiffuseXyzrhw()
+{
+}
+
+
 #pragma optimize("s", on)
 // FUNCTION: th08 0x004396F8
 u32 AnmVm::FUN_004396f8()

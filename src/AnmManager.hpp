@@ -16,6 +16,8 @@ namespace th08
 {
 struct VertexDiffuseXyzrhw
 {
+    VertexDiffuseXyzrhw();
+
     Float3 pos;
     f32 w;
     D3DCOLOR diffuse;
