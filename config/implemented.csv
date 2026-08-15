@@ -676,3 +676,6 @@ th08::Bullet::FUN_004322b0
 th08::Bullet::FUN_00432830
 th08::GameManager::SetLives
 th08::GameManager::SetBombCount
+th08::GameManager::AddToDeaths
+th08::GameManager::AddToBombsUsed
+th08::GameManager::ScaleFloatBasedOnRank

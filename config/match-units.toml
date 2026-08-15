@@ -56334,3 +56334,66 @@ offset = 0x31
 type = "REL32"
 symbol = "?CalcAntiTamperChecksum@GameManager@th08@@QAEHXZ"
 target = 0x00439A2E
+
+[[units]]
+name = "game-manager-add-to-deaths"
+object = "build/GameManager.obj"
+symbol = "?AddToDeaths@GameManager@th08@@QAEXH@Z"
+target_address = 0x0044E260
+size = 0x71
+
+[[units.relocations]]
+offset = 0xC
+type = "REL32"
+symbol = "?IsTampered@GameManager@th08@@QAEIXZ"
+target = 0x0040BB80
+
+[[units.relocations]]
+offset = 0x1D
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x66
+type = "REL32"
+symbol = "?UpdateAntiTamper@GameManager@th08@@QAEXXZ"
+target = 0x00406E50
+
+[[units]]
+name = "game-manager-add-to-bombs-used"
+object = "build/GameManager.obj"
+symbol = "?AddToBombsUsed@GameManager@th08@@QAEXH@Z"
+target_address = 0x0044E2E0
+size = 0x68
+
+[[units.relocations]]
+offset = 0xC
+type = "REL32"
+symbol = "?IsTampered@GameManager@th08@@QAEIXZ"
+target = 0x0040BB80
+
+[[units.relocations]]
+offset = 0x1D
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x5D
+type = "REL32"
+symbol = "?UpdateAntiTamper@GameManager@th08@@QAEXXZ"
+target = 0x00406E50
+
+[[units]]
+name = "game-manager-scale-float-based-on-rank"
+object = "build/GameManager.obj"
+symbol = "?ScaleFloatBasedOnRank@GameManager@th08@@QAEMMM@Z"
+target_address = 0x00422B80
+size = 0x27
+
+[[units.relocations]]
+offset = 0x1A
+type = "DIR32"
+symbol = "__real@42000000"
+target = 0x004B42CC

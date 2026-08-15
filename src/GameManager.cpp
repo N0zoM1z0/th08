@@ -92,6 +92,13 @@ i32 GameManager::CalcChecksum(u8 *address, i32 size)
 
 
 #pragma optimize("t", on)
+f32 GameManager::ScaleFloatBasedOnRank(f32 upper, f32 lower)
+{
+    return upper + ((f32)this->rank * (lower - upper)) / 32.0f;
+}
+#pragma optimize("", on)
+
+#pragma optimize("t", on)
 void GameManager::SetLives(i32 lives)
 {
     this->globals->livesRemaining = (f32)lives;
@@ -121,6 +128,33 @@ void GameManager::SetPower(i32 power)
 void GameManager::AddScore(i32 score)
 {
     this->globals->score += score / 10;
+}
+#pragma optimize("", on)
+
+#pragma optimize("t", on)
+void GameManager::AddToDeaths(i32 amount)
+{
+    if (this->IsTampered())
+    {
+        CRASH_GAME();
+    }
+    this->globals->deaths += (f32)amount;
+    this->globals->deathInStage += (f32)amount;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3DA9C) += 1;
+    this->UpdateAntiTamper();
+}
+#pragma optimize("", on)
+
+#pragma optimize("t", on)
+void GameManager::AddToBombsUsed(i32 amount)
+{
+    if (this->IsTampered())
+    {
+        CRASH_GAME();
+    }
+    this->globals->bombsUsed += (f32)amount;
+    this->globals->bombsUsedInStage += (f32)amount;
+    this->UpdateAntiTamper();
 }
 #pragma optimize("", on)
 

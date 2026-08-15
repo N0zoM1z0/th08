@@ -672,3 +672,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00432830,th08::Bullet::FUN_00432830,436,matching,100.00,bullet-fun-00432830,python3 scripts/compare-function.py bullet-fun-00432830 --json
 0x00406E20,th08::GameManager::SetLives,33,matching,100.00,game-manager-set-lives,python3 scripts/compare-function.py game-manager-set-lives --json
 0x00406F30,th08::GameManager::SetBombCount,110,matching,100.00,game-manager-set-bomb-count,python3 scripts/compare-function.py game-manager-set-bomb-count --json
+0x0044E260,th08::GameManager::AddToDeaths,113,matching,100.00,game-manager-add-to-deaths,python3 scripts/compare-function.py game-manager-add-to-deaths --json
+0x0044E2E0,th08::GameManager::AddToBombsUsed,104,matching,100.00,game-manager-add-to-bombs-used,python3 scripts/compare-function.py game-manager-add-to-bombs-used --json
+0x00422B80,th08::GameManager::ScaleFloatBasedOnRank,39,matching,100.00,game-manager-scale-float-based-on-rank,python3 scripts/compare-function.py game-manager-scale-float-based-on-rank --json

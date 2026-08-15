@@ -117,6 +117,7 @@ struct GameManager
     void IncreaseSubrank(int amount);
     void DecreaseSubrank(int amount);
     i32 ScaleIntBasedOnRank(i32 upper, i32 lower);
+    f32 ScaleFloatBasedOnRank(f32 upper, f32 lower);
     void AddToYoukaiGauge(i32 amount, i32 forceUpdate);
     void SetYoukaiGauge(u16 value);
 
@@ -204,6 +205,8 @@ struct GameManager
     void SetPower(i32 power);
     void AddScore(i32 score);
     void AddTimeOrbs(i32 amount);
+    void AddToDeaths(i32 amount);
+    void AddToBombsUsed(i32 amount);
 
     void AddLives(int lives)
     {
