@@ -594,3 +594,8 @@ th08::ScreenEffect::CalcFadeOut
 th08::ScreenEffect::DrawFullFade
 th08::ScreenEffect::Clear
 th08::ScreenEffect::SetViewport
+th08::ZunTimer::operator_float
+th08::ZunTimer::operator>=
+th08::ZunTimer::operator_int
+th08::ZunTimer::operator==
+th08::ZunTimer::operator<=

@@ -50159,3 +50159,38 @@ offset = 0x74
 type = "REL32"
 symbol = "?Clear@ScreenEffect@th08@@SIXK@Z"
 target = 0x0045B020
+
+[[units]]
+name = "zun-timer-operator-float"
+object = "build/ScreenEffect.obj"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target_address = 0x0040B8C0
+size = 0x17
+
+[[units]]
+name = "zun-timer-greater-equal"
+object = "build/ScreenEffect.obj"
+symbol = "??PZunTimer@th08@@QAEIH@Z"
+target_address = 0x0040B8E0
+size = 0x1B
+
+[[units]]
+name = "zun-timer-operator-int"
+object = "build/AnmManager.obj"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target_address = 0x0040D3B0
+size = 0x11
+
+[[units]]
+name = "zun-timer-equal"
+object = "build/AnmManager.obj"
+symbol = "??8ZunTimer@th08@@QAEIH@Z"
+target_address = 0x0040D3F0
+size = 0x1B
+
+[[units]]
+name = "zun-timer-less-equal"
+object = "build/AnmManager.obj"
+symbol = "??NZunTimer@th08@@QAEIH@Z"
+target_address = 0x0040E390
+size = 0x1B

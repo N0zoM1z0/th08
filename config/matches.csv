@@ -590,3 +590,8 @@ address,name,size,status,match_percent,unit,evidence
 0x0045BB50,th08::ScreenEffect::DrawFullFade,145,matching,100.00,screen-effect-draw-full-fade,python3 scripts/compare-function.py screen-effect-draw-full-fade --json
 0x0045B020,th08::ScreenEffect::Clear,190,matching,100.00,screen-effect-clear,python3 scripts/compare-function.py screen-effect-clear --json
 0x0045B0E0,th08::ScreenEffect::SetViewport,124,matching,100.00,screen-effect-set-viewport,python3 scripts/compare-function.py screen-effect-set-viewport --json
+0x0040B8C0,th08::ZunTimer::operator_float,23,matching,100.00,zun-timer-operator-float,python3 scripts/compare-function.py zun-timer-operator-float --json
+0x0040B8E0,th08::ZunTimer::operator>=,27,matching,100.00,zun-timer-greater-equal,python3 scripts/compare-function.py zun-timer-greater-equal --json
+0x0040D3B0,th08::ZunTimer::operator_int,17,matching,100.00,zun-timer-operator-int,python3 scripts/compare-function.py zun-timer-operator-int --json
+0x0040D3F0,th08::ZunTimer::operator==,27,matching,100.00,zun-timer-equal,python3 scripts/compare-function.py zun-timer-equal --json
+0x0040E390,th08::ZunTimer::operator<=,27,matching,100.00,zun-timer-less-equal,python3 scripts/compare-function.py zun-timer-less-equal --json

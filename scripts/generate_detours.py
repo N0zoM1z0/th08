@@ -29,6 +29,17 @@ def get_path_of_mangled_symbol(symbol):
             elif first_elem[1] == "1":
                 cls = first_elem[2:]
                 path[0] = cls + "::~" + cls
+            elif first_elem[1] == "B":
+                cls = first_elem[2:]
+                if symbol.endswith("QAEHXZ"):
+                    path[0] = cls + "::operator_int"
+                elif symbol.endswith("QAEMXZ"):
+                    path[0] = cls + "::operator_float"
+                elif symbol.endswith("QAEPAMXZ"):
+                    path[0] = cls + "::operator_float_ptr"
+                else:
+                    print("WARNING: Unknown conversion symbol " + symbol)
+                    path[0] = cls + "::operator_conversion"
             elif first_elem[1] == "4":
                 cls = first_elem[2:]
                 path[0] = cls + "::operator="

@@ -114,8 +114,8 @@ th08::Background::SetCamera2,0x40b6d0,0x11b,__thiscall,,void,Background*
 FUN_0040b7f0,0x40b7f0,0x84,unknown,,u8,u8
 th08::ZunMemory::Alloc,0x40b880,0x19,__thiscall,,void*,ZunMemory*,u32,char*
 th08::ZunMemory::Free,0x40b8a0,0x19,__thiscall,,u8,ZunMemory*,void*
-th08::ZunTimer::AsFramesFloat,0x40b8c0,0x17,__thiscall,,float10,ZunTimer*
-FUN_0040b8e0,0x40b8e0,0x1b,unknown,,u8,u8
+th08::ZunTimer::operator_float,0x40b8c0,0x17,__thiscall,,float10,ZunTimer*
+th08::ZunTimer::operator>=,0x40b8e0,0x1b,__thiscall,,ZunBool,ZunTimer*,i32
 th08::IsDisableResourceReload,0x40b900,0xa,__fastcall,,ZunBool
 th08::AnmLoaded::ExecuteAnmIdx,0x40b910,0x98,__thiscall,,void,AnmLoaded*,AnmVm*,i32
 th08::AnmManager::ClearBlendMode,0x40b9b0,0x15,__thiscall,,void,AnmManager*
@@ -146,9 +146,9 @@ FUN_0040d010,0x40d010,0xe9,unknown,,u8
 FUN_0040d100,0x40d100,0x209,unknown,,u8
 FUN_0040d310,0x40d310,0x79,unknown,,u8
 th08::Rng::GetRandomF32InRange,0x40d390,0x18,__thiscall,,f32,Rng*,f32
-th08::ZunTimer::AsFrames,0x40d3b0,0x11,__thiscall,,i32,ZunTimer*
+th08::ZunTimer::operator_int,0x40d3b0,0x11,__thiscall,,i32,ZunTimer*
 FUN_0040d3d0,0x40d3d0,0x1b,unknown,,u8
-FUN_0040d3f0,0x40d3f0,0x1b,unknown,,u8,u8
+th08::ZunTimer::operator==,0x40d3f0,0x1b,__thiscall,,ZunBool,ZunTimer*,i32
 FUN_0040d410,0x40d410,0x19,unknown,,u8,u8
 FUN_0040d430,0x40d430,0x517,unknown,,u8
 FUN_0040d950,0x40d950,0x18,unknown,,u8
@@ -159,7 +159,7 @@ FUN_0040e120,0x40e120,0xd1,unknown,,u8
 FUN_0040e200,0x40e200,0xc4,unknown,,u8
 FUN_0040e2d0,0x40e2d0,0x77,unknown,,u8
 FUN_0040e350,0x40e350,0x3a,unknown,,u8,u8
-FUN_0040e390,0x40e390,0x1b,unknown,,u8,u8
+th08::ZunTimer::operator<=,0x40e390,0x1b,__thiscall,,ZunBool,ZunTimer*,i32
 FUN_0040e3b0,0x40e3b0,0x258,unknown,,u8
 FUN_0040e610,0x40e610,0x16a,unknown,,u8
 FUN_0040e780,0x40e780,0x3c8,unknown,,u8

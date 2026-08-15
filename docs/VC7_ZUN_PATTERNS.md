@@ -100,3 +100,26 @@ Direct3DDevice8 call order: `Clear`, `Present`, fallback `Reset`, and
 `SetViewport`.  Once the SDK call sequence is identified, natural C++ method
 calls can match the target exactly; the remaining work is usually relocation
 manifest offsets/addends for `g_Supervisor` fields.
+
+
+## MSVC conversion operator names in config
+
+VC7 mangles conversion operators as `??B...`; the return type is encoded near the
+end of the decorated name, not in the `??B` operator token itself.  The detour
+name normalizer now maps verified common cases to stable config names:
+
+- `??BZunTimer@@...QAEMXZ` -> `ZunTimer::operator_float`
+- `??BZunTimer@@...QAEHXZ` -> `ZunTimer::operator_int`
+- `??BFloat3@@...QAEPAMXZ` -> `Float3::operator_float_ptr`
+
+This avoids treating conversion operators as unknown symbols during full detour
+builds and keeps `implemented.csv` names stable.
+
+
+## Complete small operator batches before resuming larger owners
+
+When a larger function exposes compiler-emitted inline operators, promote the
+whole nearby operator family when possible.  `ScreenEffect` exposed missing
+`ZunTimer` conversion/comparison emissions, so the exact batch now records
+`operator_float`, `operator_int`, `operator==`, `operator<=`, and `operator>=`
+together instead of leaving one-off helpers scattered across future work.
