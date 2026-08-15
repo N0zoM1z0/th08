@@ -417,6 +417,93 @@ i32 __fastcall Player::FUN_0044fd80(u8 *slot, i32 value, u8 *entry)
     return 0;
 }
 
+
+// FUNCTION: th08 0x44fdd0
+#pragma var_order(slot, this)
+i32 __fastcall Player::FUN_0044fdd0(u8 *slot, i32 value, u8 *entry)
+{
+    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) == 0 &&
+        value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
+    {
+        this->FUN_0044fb70(slot, entry);
+        return 1;
+    }
+
+    return 0;
+}
+
+// FUNCTION: th08 0x44fe20
+#pragma var_order(index, i, this, slot)
+i32 __fastcall Player::FUN_0044fe20(u8 *slot, i32 value, u8 *entry)
+{
+    i32 index;
+    i32 i;
+
+    index = *reinterpret_cast<i16 *>(entry + 2);
+    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) != 0)
+    {
+        return 0;
+    }
+    if ((*reinterpret_cast<u32 *>(0x164D0B4) >> 13) & 1)
+    {
+        return 0;
+    }
+
+    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xE2A44 + (index << 4)) != 0)
+    {
+        if (*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2A80 + index * 4) != entry)
+        {
+            *reinterpret_cast<i16 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2A44 + (index << 4)) + 0x1FE) = 1;
+            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xE2A44 + (index << 4)) = 0;
+        }
+        return 0;
+    }
+
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2A38 + (index << 4)) = 999;
+    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2A44 + (index << 4)) = slot;
+    *reinterpret_cast<i16 *>(slot + 0x466) = index;
+    *reinterpret_cast<i16 *>(slot + 0x468) = *reinterpret_cast<i16 *>(entry + 0x20);
+    *reinterpret_cast<u32 *>(slot + 0x444) = *reinterpret_cast<u32 *>(entry + 4);
+    *reinterpret_cast<u32 *>(slot + 0x448) = *reinterpret_cast<u32 *>(entry + 8);
+    *reinterpret_cast<i16 *>(slot + 0x46A) = *reinterpret_cast<i16 *>(entry);
+    this->FUN_0044fb70(slot, entry);
+
+    for (i = 31; i >= 0; i--)
+    {
+        *reinterpret_cast<u32 *>(slot + i * 0xC + 0x2B0) = 0xC479C000;
+    }
+    *reinterpret_cast<u32 *>(slot + 0x2A4) = 0xC479C000;
+    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2A80 + index * 4) = entry;
+
+    return 1;
+}
+
+// FUNCTION: th08 0x44ffa0
+#pragma var_order(magnitude, angle, this, slot)
+i32 __fastcall Player::FUN_0044ffa0(u8 *slot, i32 value, u8 *entry)
+{
+    f32 angle;
+    f32 magnitude;
+
+    if (value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
+    {
+        this->FUN_0044fb70(slot, entry);
+        if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2AB0) > -100.0f)
+        {
+            angle = AddNormalizeAngle(
+                VectorAngle(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2AB4) - *reinterpret_cast<f32 *>(slot + 0x2A8),
+                            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2AB0) - *reinterpret_cast<f32 *>(slot + 0x2A4)),
+                *reinterpret_cast<f32 *>(entry + 0x14) + ZUN_PI / 2.0f);
+            magnitude = *reinterpret_cast<f32 *>(entry + 0x18) * 1.5f;
+            reinterpret_cast<Float3 *>(slot + 0x43C)->FromAngleMagnitude(angle, magnitude);
+            *reinterpret_cast<u32 *>(slot + 0x450) = *reinterpret_cast<u32 *>(&angle);
+        }
+        return 1;
+    }
+
+    return 0;
+}
+
 // FUNCTION: th08 0x450f60
 #pragma var_order(i, table, slot, result, entry, this, value)
 void __fastcall Player::FUN_00450f60(i32 value)

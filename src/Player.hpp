@@ -109,6 +109,9 @@ struct Player
     void FUN_0044d420();
     i32 __fastcall FUN_0044fd80(u8 *slot, i32 value, u8 *entry);
     void __fastcall FUN_0044fb70(u8 *slot, u8 *entry);
+    i32 __fastcall FUN_0044fdd0(u8 *slot, i32 value, u8 *entry);
+    i32 __fastcall FUN_0044fe20(u8 *slot, i32 value, u8 *entry);
+    i32 __fastcall FUN_0044ffa0(u8 *slot, i32 value, u8 *entry);
     void FUN_00451150();
     void FUN_004512f0();
     void FUN_00451400();

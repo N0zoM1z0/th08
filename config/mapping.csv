@@ -800,9 +800,9 @@ FUN_0044f5e0,0x44f5e0,0x32a,unknown,,u8
 FUN_0044f930,0x44f930,0x23a,unknown,,u8
 th08::Player::FUN_0044fb70,0x44fb70,0x20c,__fastcall,,void,Player*,u8*,u8*
 th08::Player::FUN_0044fd80,0x44fd80,0x41,__fastcall,,i32,Player*,u8*,i32,u8*
-FUN_0044fdd0,0x44fdd0,0x4d,unknown,,u8,u8,u8
-FUN_0044fe20,0x44fe20,0x177,unknown,,u8,u8,u8
-FUN_0044ffa0,0x44ffa0,0xd9,unknown,,u8,u8,u8
+th08::Player::FUN_0044fdd0,0x44fdd0,0x4d,__fastcall,,i32,Player*,u8*,i32,u8*
+th08::Player::FUN_0044fe20,0x44fe20,0x177,__fastcall,,i32,Player*,u8*,i32,u8*
+th08::Player::FUN_0044ffa0,0x44ffa0,0xd9,__fastcall,,i32,Player*,u8*,i32,u8*
 FUN_00450080,0x450080,0x8e,unknown,,u8,u8,u8
 FUN_00450110,0x450110,0x91,unknown,,u8,u8,u8
 FUN_004501b0,0x4501b0,0x85,unknown,,u8,u8,u8

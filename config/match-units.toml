@@ -57103,3 +57103,84 @@ offset = 0x14
 type = "REL32"
 symbol = "?OpenFile@FileSystem@th08@@YIPAEPBDPAHH@Z"
 target = 0x0043E660
+
+[[units]]
+name = "player-fun-0044fdd0"
+object = "build/Player.obj"
+symbol = "?FUN_0044fdd0@Player@th08@@QAIHPAEH0@Z"
+target_address = 0x0044FDD0
+size = 0x4D
+
+[[units.relocations]]
+offset = 0x3A
+type = "REL32"
+symbol = "?FUN_0044fb70@Player@th08@@QAIXPAE0@Z"
+target = 0x0044FB70
+
+[[units]]
+name = "player-fun-0044fe20"
+object = "build/Player.obj"
+symbol = "?FUN_0044fe20@Player@th08@@QAIHPAEH0@Z"
+target_address = 0x0044FE20
+size = 0x177
+
+[[units.relocations]]
+offset = 0xAE
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x11D
+type = "REL32"
+symbol = "?FUN_0044fb70@Player@th08@@QAIXPAE0@Z"
+target = 0x0044FB70
+
+[[units]]
+name = "player-fun-0044ffa0"
+object = "build/Player.obj"
+symbol = "?FUN_0044ffa0@Player@th08@@QAIHPAEH0@Z"
+target_address = 0x0044FFA0
+size = 0xD9
+
+[[units.relocations]]
+offset = 0x32
+type = "REL32"
+symbol = "?FUN_0044fb70@Player@th08@@QAIXPAE0@Z"
+target = 0x0044FB70
+
+[[units.relocations]]
+offset = 0x41
+type = "DIR32"
+symbol = "__real@c2c80000"
+target = 0x004B4394
+
+[[units.relocations]]
+offset = 0x54
+type = "DIR32"
+symbol = "__real@3fc90fdb"
+target = 0x004B4468
+
+[[units.relocations]]
+offset = 0x89
+type = "REL32"
+symbol = "?VectorAngle@th08@@YIMMM@Z"
+target = 0x0040C7B0
+
+[[units.relocations]]
+offset = 0x92
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0xA1
+type = "DIR32"
+symbol = "__real@3fc00000"
+target = 0x004B4438
+
+[[units.relocations]]
+offset = 0xBA
+type = "REL32"
+symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
+target = 0x004286E0
