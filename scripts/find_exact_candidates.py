@@ -7,8 +7,10 @@ logic used by objdiff generation, and reports symbols that:
   * are not in config/implemented.csv,
   * have a COFF function size equal to the mapping extent.
 
-It does not modify files and does not prove exactness.  Use it to choose a
-small batch, then add normal match-units and run compare-function.py.
+It does not prove exactness. Use it to choose a small batch, then add
+normal match-units and run compare-function.py. Pass --clean-rebuild to
+delete scanned objects and rebuild them first; this avoids stale probe
+objects after temporary source-shape experiments.
 """
 
 from __future__ import annotations
@@ -16,6 +18,7 @@ from __future__ import annotations
 import argparse
 import csv
 from pathlib import Path
+import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -61,6 +64,28 @@ def iter_defined_symbols(object_path: Path):
         yield demangled, raw.decode("latin1", errors="ignore"), size
 
 
+
+def clean_rebuild_objects(objects: list[Path]) -> None:
+    """Force scanned objects to reflect the current source tree."""
+
+    normalized: list[Path] = []
+    for object_path in objects:
+        object_path = object_path if object_path.is_absolute() else ROOT / object_path
+        if not object_path.name.endswith("-stripped.obj"):
+            normalized.append(object_path)
+
+    for object_path in normalized:
+        try:
+            object_path.unlink()
+        except FileNotFoundError:
+            pass
+
+    if not normalized:
+        return
+
+    build_args = [str(path.relative_to(ROOT)) for path in normalized]
+    subprocess.run(["./scripts/wineth08", "./scripts/th08run.bat", "ninja", "-j1", *build_args], cwd=ROOT, check=True)
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("objects", nargs="*", type=Path, default=sorted((ROOT / "build").glob("*.obj")))
@@ -69,9 +94,12 @@ def main() -> int:
     parser.add_argument("--limit", type=int, default=0, help="maximum rows to print; 0 means all")
     parser.add_argument("--near", action="store_true", help="also show source symbols whose size differs from mapping")
     parser.add_argument("--max-delta", type=lambda x: int(x, 0), default=0x40, help="maximum absolute size delta for --near")
+    parser.add_argument("--clean-rebuild", action="store_true", help="delete scanned objects and rebuild them before scanning")
     args = parser.parse_args()
 
     args.objects = [obj for obj in args.objects if not obj.name.endswith("-stripped.obj")]
+    if args.clean_rebuild:
+        clean_rebuild_objects(args.objects)
 
     mapping = load_mapping()
     implemented = load_implemented()

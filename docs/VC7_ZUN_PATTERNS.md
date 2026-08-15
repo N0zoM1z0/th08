@@ -197,3 +197,4 @@ When a structure begins with the field required by an API, VC7 may pass the stru
 - For target callback fields that are invoked as `mov ecx, owner; call [ecx+field]`, type the field as a no-argument function pointer and call `owner->callback()`; adding an explicit owner argument forces an extra register move.
 - Target draw helper wrappers may be semantically void even if an earlier guess used `ZunResult`; match the target epilogue/register behavior, then update all relocation manifests to the new decorated symbol.
 - Thin AnmManager draw wrappers can stay exact by calling unrecovered transform helpers as stubs; keep the gate sequence as `IsVisible`, raw dword flag bit 1, raw byte +0x1F3, then the transform helper and `DrawInner(vm, 0)`.
+- Candidate scans can be polluted by stale probe objects; use `scripts/find_exact_candidates.py --clean-rebuild ...` after temporary source-shape experiments so object sizes reflect current sources, not the last probe build.
