@@ -417,7 +417,7 @@ th08::EnemyManager::OnDrawImpl,0x42e140,0x9c8,__fastcall,,ChainCallbackResult,En
 FUN_0042eb10,0x42eb10,0x72,unknown,,u8,u8,u8,u8
 th08::EnemyManager::OnDrawLowPrio,0x42eb90,0x5c,__fastcall,,ChainCallbackResult,EnemyManager*
 th08::EnemyManager::AddedCallback,0x42ebf0,0x282,__thiscall,,u32,EnemyManager*
-th08::EnemyManager::DeletedCallback,0x42ee80,0xe1,unknown,,u8
+th08::EnemyManager::DeletedCallback,0x42ee80,0xe1,__fastcall,,ZunResult,EnemyManager*
 th08::EnemyManager::CutChain,0x42ef70,0x32,__cdecl,,void
 FUN_0042efb0,0x42efb0,0x23f,unknown,,u8,u8,u8
 FUN_0042f1f0,0x42f1f0,0x40,unknown,,u8

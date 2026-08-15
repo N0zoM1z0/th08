@@ -13,6 +13,7 @@ struct Enemy
     void FUN_0042a820();
     void FUN_00422c40();
     void FUN_00423150();
+    void FUN_0042bc90();
 };
 
 struct EnemyManager

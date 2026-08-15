@@ -1,14 +1,25 @@
 #include "th_pch.h"
 
 #include "EnemyManager.hpp"
+#include "AnmManager.hpp"
+#include "AsciiManager.hpp"
+#include "BulletManager.hpp"
+#include "EclManager.hpp"
 
 namespace th08
 {
+
+ZunBool IsDisableResourceReload();
 
 DIFFABLE_STATIC(EnemyManager, g_EnemyManager);
 DIFFABLE_STATIC(ChainElem, g_EnemyManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_EnemyManagerDrawChainHighPrio);
 DIFFABLE_STATIC(ChainElem, g_EnemyManagerDrawChainLowPrio);
+
+// STUB: th08 0x42bc90
+void Enemy::FUN_0042bc90()
+{
+}
 
 // STUB: th08 0x429e00
 void EnemyManager::Initialize()
@@ -88,10 +99,37 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
     return ZUN_ERROR;
 }
 
-// STUB: th08 0x42ee80
+// FUNCTION: th08 0x42ee80
+#pragma var_order(i, enemy, markerPosition, enemyManager)
 ZunResult EnemyManager::DeletedCallback(EnemyManager *enemyManager)
 {
-    return ZUN_ERROR;
+    Enemy *enemy = reinterpret_cast<Enemy *>(reinterpret_cast<u8 *>(enemyManager) + 0x53D0);
+    i32 i = 0;
+
+    for (; i < 0x1E0; ++i, enemy = reinterpret_cast<Enemy *>(reinterpret_cast<u8 *>(enemy) + 0x53D0))
+    {
+        enemy->FUN_0042bc90();
+    }
+
+    if (!IsDisableResourceReload())
+    {
+        g_AnmManager->ReleaseAnm(8);
+    }
+    if (IsBulletManagerAnmReleaseRequired())
+    {
+        g_AnmManager->ReleaseAnm(7);
+    }
+    if (!IsDisableResourceReload())
+    {
+        reinterpret_cast<EclManager *>(0x4ECCB8)->Unload();
+    }
+
+    D3DXVECTOR3 markerPosition(-999.0f, -999.0f, -999.0f);
+    g_AsciiManager.SetBossMarkerPosition(0, &markerPosition);
+    g_AsciiManager.SetBossMarkerPosition(1, &markerPosition);
+    g_AsciiManager.SetBossMarkerPosition(2, &markerPosition);
+    g_AsciiManager.SetBossMarkerPosition(3, &markerPosition);
+    return ZUN_SUCCESS;
 }
 
 // FUNCTION: th08 0x42ef70

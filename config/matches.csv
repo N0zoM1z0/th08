@@ -619,3 +619,4 @@ address,name,size,status,match_percent,unit,evidence
 0x00465AC0,th08::AnmManager::LoadExternalTextureData,219,matching,100.00,anm-load-external-texture-data,python3 scripts/compare-function.py anm-load-external-texture-data --json
 0x00466F20,th08::AnmManager::CaptureToTexture,286,matching,100.00,anm-manager-capture-to-texture,python3 scripts/compare-function.py anm-manager-capture-to-texture --json
 0x00445BD4,th08::Supervisor::OnDraw2,362,matching,100.00,supervisor-ondraw2,python3 scripts/compare-function.py supervisor-ondraw2 --json
+0x0042EE80,th08::EnemyManager::DeletedCallback,225,matching,100.00,enemy-manager-deleted-callback,python3 scripts/compare-function.py enemy-manager-deleted-callback --json

@@ -101,6 +101,7 @@ def configure(build_type):
             "Background": debug_codegen,
             "SpellCard": debug_codegen,
             "Ending": debug_codegen,
+            "EclManager": debug_codegen,
             "EclGlobals": debug_codegen,
             "EffectManager": debug_codegen,
             "EnemyManager": debug_codegen,
@@ -138,6 +139,7 @@ def configure(build_type):
             "Background",
             "SpellCard",  # card.obj
             "Ending",
+            "EclManager",
             "EclGlobals",
             "EffectManager",
             "EnemyManager",
