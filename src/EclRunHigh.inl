@@ -495,8 +495,9 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
             *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x554) =
-                TH08_ECL_CONTEXT_API(ctx)->AngleToPlayer(
-                    (Vec3 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x548)) +
+                EclOperands::g_TargetPlayer017D5EF8.AngleToPlayer(
+                    reinterpret_cast<EclOperands::TargetVector3 *>(
+                        TH08_ECL_OBJECT(ctx, lhsInt) + 0x548)) +
                 TH08_ECL_READ_F_RAWARG(ctx, 1);
         break;
     case 119:
@@ -607,7 +608,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             TH08_ECL_AT(ctx, u32, 0x3324) = ((TH08_ECL_RAW_BYTE(ctx, 0) & 7) << 20) | (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFF8FFFFF);
         break;
     case 130:
-        if ((((g_EnemyManagerUpdateManagerFlags >> 14) & 1) != 1) || (((g_EnemyManagerUpdateManagerFlags >> 7) & 3) == 0))
+        if (TH08_ECL_PRESENTATION_WRITES_ALLOWED())
             TH08_ECL_AT(ctx, u16, 0x2CEE) = TH08_ECL_RAW_U16(ctx, 0);
         break;
     case 126:
@@ -631,7 +632,7 @@ enter_subroutine:
                    0x8A * sizeof(i32));
         }
 
-        TH08_ECL_CONTEXT_API(ctx)->InitializeEclContext(
+        reinterpret_cast<TargetApi *>(0x004ECCB8)->InitializeEclContext(
             TH08_ECL_CONTEXT_ENEMY(ctx) + 0x7F8,
             TH08_ECL_AT(ctx, u16, 0x2CF0 +
                 TH08_ECL_AT(ctx, i16, 0x2D30) * 2));
@@ -647,7 +648,7 @@ enter_subroutine:
         TH08_ECL_AT(ctx, i32, 0x2E00) = lhsInt;
         TH08_ECL_AT(ctx, i32, 0x2DFC) = lhsInt;
         TH08_ECL_AT(ctx, i32, 0x2E04) = lhsInt;
-        if (TH08_ECL_AT(ctx, i8, 0x3313) == 0 && (((TH08_ECL_AT(ctx, u32, 0x3324) >> 1) & 1) == 1))
+        if (TH08_ECL_AT(ctx, u8, 0x3313) == 0 && (((TH08_ECL_AT(ctx, u32, 0x3324) >> 1) & 1) != 0))
             for (i32 i = 0; i < 8; ++i)
                 reinterpret_cast<TargetApi *>(&g_Gui)->SetBossGaugeSlot(i, 0.0f, 0.0f);
         break;
@@ -744,10 +745,10 @@ enter_subroutine:
     }
     case 168:
     {
+        Float3 position;
         i32 count = TH08_ECL_READ_I(ctx, 0);
         for (i32 i = 0; i < count; ++i)
         {
-            Float3 position;
             position.x = TH08_ECL_AT(ctx, Vec3, 0x2D34).x;
             position.y = TH08_ECL_AT(ctx, Vec3, 0x2D34).y;
             position.z = TH08_ECL_AT(ctx, Vec3, 0x2D34).z;
@@ -863,7 +864,10 @@ enter_subroutine:
                                    (TH08_ECL_AT(ctx, i16, 0x534E) / TH08_ECL_AT(ctx, i16, 0x5352)) << 1);
         break;
     case 160: *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x5354) = TH08_ECL_READ_I(ctx, 0); break;
-    case 161: TH08_ECL_CONTEXT_API(ctx)->SetAngleFromPosition(&TH08_ECL_AT(ctx, Vec3, 0x2D88), TH08_ECL_READ_F_RAWARG(ctx, 0)); break;
+    case 161:
+        reinterpret_cast<TargetApi *>(&g_BulletManager)->SetAngleFromPosition(
+            &TH08_ECL_AT(ctx, Vec3, 0x2D88), TH08_ECL_READ_F_RAWARG(ctx, 0));
+        break;
     case 162: g_BulletManager.RemoveAllBullets(4); break;
     case 164:
         lhsInt = TH08_ECL_READ_I(ctx, 0);

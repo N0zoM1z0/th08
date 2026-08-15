@@ -59,6 +59,7 @@ struct TargetPlayerOverlay
     f32 AngleToPlayer(const TargetVector3 *position);
     i32 IsYoukai();
 };
+extern TargetPlayerOverlay g_TargetPlayer017D5EF8;
 }
 
 namespace EclRunLowProposal
@@ -681,7 +682,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
     case 65:
         F32At(enemy, 0x2D94) = AddNormalizeAngle(ReadFloatRawArg(enemy, instruction, 0), 0.0f);
-        F32At(enemy, 0x2DA8) = ReadFloat(enemy, instruction, 1);
+        F32At(enemy, 0x2DA8) = ReadFloatRawArg(enemy, instruction, 1);
         U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x3000U) | 0x1000U;
         I32At(enemy, 0x2DE8) = 0;
         *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) = 0;
@@ -711,8 +712,11 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
 #endif
     case 68:
         F32At(enemy, 0x2D94) =
-            AddNormalizeAngle(ReadFloatRawArg(enemy, instruction, 0),
-                              services.AngleToPlayer(Bytes(enemy) + 0x2D34));
+            AddNormalizeAngle(
+                ReadFloatRawArg(enemy, instruction, 0),
+                EclOperands::g_TargetPlayer017D5EF8.AngleToPlayer(
+                    reinterpret_cast<EclOperands::TargetVector3 *>(
+                        Bytes(enemy) + 0x2D34)));
         F32At(enemy, 0x2DA8) = ReadFloatRawArg(enemy, instruction, 1);
         break;
     case 69:
@@ -764,9 +768,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         U32At(enemy, 0x3324) |= 0x3000U;
         break;
     case 74:
-        lhsInt = ReadInt(enemy, instruction, 0);
-        I32At(enemy, 0x2DE8) = lhsInt;
-        *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) = lhsInt;
+        *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) =
+            (I32At(enemy, 0x2DE8) = ReadInt(enemy, instruction, 0));
         F32At(enemy, 0x2DA0) = ReadFloatRawArg(enemy, instruction, 1);
         F32At(enemy, 0x2DB4) = ReadFloatRawArg(enemy, instruction, 2);
         U32At(enemy, 0x3324) |= 0x3000U;
