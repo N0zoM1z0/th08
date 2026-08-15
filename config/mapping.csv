@@ -768,8 +768,8 @@ FUN_0044cbf0,0x44cbf0,0x55d,unknown,,u8
 FUN_0044d150,0x44d150,0x25,unknown,,u8
 FUN_0044d180,0x44d180,0x13a,unknown,,u8
 th08::Player::FUN_0044d2c0,0x44d2c0,0x152,__thiscall,,void,Player*
-FUN_0044d420,0x44d420,0x10b,unknown,,u8
-FUN_0044d530,0x44d530,0xf1,unknown,,u8
+th08::Player::FUN_0044d420,0x44d420,0x10b,__thiscall,,void,Player*
+th08::Player::OnDrawHighPrio,0x44d530,0xf1,__fastcall,,ChainCallbackResult,Player*
 th08::Player::OnDrawLowPrio,0x44d630,0x18,__fastcall,,ChainCallbackResult,Player*
 th08::Player::AddedCallback,0x44d650,0x601,__fastcall,,ZunResult,Player*
 th08::Player::DeletedCallback,0x44dc60,0xa4,__fastcall,,ZunResult,u32
@@ -816,7 +816,7 @@ FUN_00450c50,0x450c50,0x263,unknown,,u8,u8
 FUN_00450ee0,0x450ee0,0x80,unknown,,u8,u8
 th08::Player::FUN_00450f60,0x450f60,0x1e7,__fastcall,,void,Player*,i32
 th08::Player::FUN_00451150,0x451150,0x194,__thiscall,,void,Player*
-FUN_004512f0,0x4512f0,0x10c,unknown,,u8
+th08::Player::FUN_004512f0,0x4512f0,0x10c,__thiscall,,void,Player*
 th08::Player::FUN_00451400,0x451400,0xf1,__thiscall,,void,Player*
 th08::Player::FUN_00451500,0x451500,0x137,__thiscall,,i32,Player*
 FUN_00451640,0x451640,0x2d,unknown,,u8

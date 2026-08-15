@@ -56820,3 +56820,188 @@ offset = 0x142
 type = "REL32"
 symbol = "?FUN_0044fd80@Player@th08@@QAIHPAEH0@Z"
 target = 0x0044FD80
+
+[[units]]
+name = "player-on-draw-high-prio"
+object = "build/Player.obj"
+symbol = "?OnDrawHighPrio@Player@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target_address = 0x0044D530
+size = 0xF1
+
+[[units.relocations]]
+offset = 0x0E
+type = "REL32"
+symbol = "?FUN_004512f0@Player@th08@@QAEXXZ"
+target = 0x004512F0
+
+[[units.relocations]]
+offset = 0x44
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x5C
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+addend = 0x4
+
+[[units.relocations]]
+offset = 0x85
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x8A
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462FF0
+
+[[units]]
+name = "player-fun-004512f0"
+object = "build/Player.obj"
+symbol = "?FUN_004512f0@Player@th08@@QAEXXZ"
+target_address = 0x004512F0
+size = 0x10C
+
+[[units.relocations]]
+offset = 0x6C
+type = "REL32"
+symbol = "?SetZRotation@AnmVm@th08@@QAEXM@Z"
+target = 0x0040EC00
+
+[[units.relocations]]
+offset = 0x75
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x8D
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+addend = 0x4
+
+[[units.relocations]]
+offset = 0xDF
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xE4
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units]]
+name = "player-fun-0044d420"
+object = "build/Player.obj"
+symbol = "?FUN_0044d420@Player@th08@@QAEXXZ"
+target_address = 0x0044D420
+size = 0x10B
+
+[[units.relocations]]
+offset = 0x19
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x46
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x7B
+type = "DIR32"
+symbol = "__real@43c80000"
+target = 0x004B4AA8
+
+[[units.relocations]]
+offset = 0x87
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x8C
+type = "REL32"
+symbol = "?GetGaugeInterrupt@AsciiManager@th08@@QAEHXZ"
+target = 0x00407140
+
+[[units.relocations]]
+offset = 0xA0
+type = "DIR32"
+symbol = "__real@43200000"
+target = 0x004B4554
+
+[[units.relocations]]
+offset = 0xAE
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0xB3
+type = "REL32"
+symbol = "?SetGaugeInterrupt@AsciiManager@th08@@QAEXH@Z"
+target = 0x004070B0
+
+[[units.relocations]]
+offset = 0xBA
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0xBF
+type = "REL32"
+symbol = "?GetGaugeInterrupt@AsciiManager@th08@@QAEHXZ"
+target = 0x00407140
+
+[[units.relocations]]
+offset = 0xD3
+type = "DIR32"
+symbol = "__real@43200000"
+target = 0x004B4554
+
+[[units.relocations]]
+offset = 0xE1
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0xE6
+type = "REL32"
+symbol = "?SetGaugeInterrupt@AsciiManager@th08@@QAEXH@Z"
+target = 0x004070B0
+
+[[units.relocations]]
+offset = 0xED
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0xF2
+type = "REL32"
+symbol = "?GetGaugeInterrupt@AsciiManager@th08@@QAEHXZ"
+target = 0x00407140
+
+[[units.relocations]]
+offset = 0xFE
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x103
+type = "REL32"
+symbol = "?SetGaugeInterrupt@AsciiManager@th08@@QAEXH@Z"
+target = 0x004070B0

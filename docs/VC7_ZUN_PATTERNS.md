@@ -229,3 +229,7 @@ When a structure begins with the field required by an API, VC7 may pass the stru
 - Player slot initialization helpers should update `Float3::operator float *()[0/1]` directly instead of naming `f32 *xPtr/yPtr`; explicit pointer locals shift fastcall `this`/`slot` homes, while direct expressions preserve target `this@-4`, `slot@-8` and synthesize component pointer temporaries. Verified by `Player::FUN_0044fb70`.
 
 - Player shot-table pointer indexing can require a ternary table index rather than boolean arithmetic: `table += ((flags & 2) ? 7 : 6)` keeps VC7 from folding the `+6` into `lea [base+index*8+0x30]` and instead emits the target `add ecx, 6; lea eax, [edx+ecx*8]`. Verified by `Player::FUN_00450f60`.
+
+- Player high-priority draw callbacks that index a callback table should call the table entry as a single-argument `__fastcall` function; adding a dummy second argument zeroes `edx` and breaks the target where `edx` remains the table index. Verified by `Player::OnDrawHighPrio`.
+
+- For gauge-interrupt position gates, explicit `goto` structure can be required to force repeated reads and x87 comparison masks. `Player::FUN_0044d420` matches with `x < 160.0f` setting interrupt 2, a second `GetGaugeInterrupt()` read, and `x > 160.0f` setting interrupt 3.

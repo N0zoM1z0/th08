@@ -691,3 +691,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00445E3D,th08::Supervisor::ControllerCallback,106,matching,100.00,supervisor-controller-callback,python3 scripts/compare-function.py supervisor-controller-callback --json
 0x0044FB70,th08::Player::FUN_0044fb70,524,matching,100.00,player-fun-0044fb70,python3 scripts/compare-function.py player-fun-0044fb70 --json
 0x00450F60,th08::Player::FUN_00450f60,487,matching,100.00,player-fun-00450f60,python3 scripts/compare-function.py player-fun-00450f60 --json
+0x0044D420,th08::Player::FUN_0044d420,267,matching,100.00,player-fun-0044d420,python3 scripts/compare-function.py player-fun-0044d420 --json
+0x0044D530,th08::Player::OnDrawHighPrio,241,matching,100.00,player-on-draw-high-prio,python3 scripts/compare-function.py player-on-draw-high-prio --json
+0x004512F0,th08::Player::FUN_004512f0,268,matching,100.00,player-fun-004512f0,python3 scripts/compare-function.py player-fun-004512f0 --json

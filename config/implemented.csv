@@ -695,3 +695,6 @@ th08::Player::FUN_0044fd80
 th08::Supervisor::ControllerCallback
 th08::Player::FUN_0044fb70
 th08::Player::FUN_00450f60
+th08::Player::FUN_0044d420
+th08::Player::OnDrawHighPrio
+th08::Player::FUN_004512f0

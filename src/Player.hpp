@@ -110,6 +110,7 @@ struct Player
     i32 __fastcall FUN_0044fd80(u8 *slot, i32 value, u8 *entry);
     void __fastcall FUN_0044fb70(u8 *slot, u8 *entry);
     void FUN_00451150();
+    void FUN_004512f0();
     void FUN_00451400();
     i32 FUN_00451500();
     void __fastcall FUN_00450f60(i32 value);

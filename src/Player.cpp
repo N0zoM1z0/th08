@@ -206,6 +206,41 @@ void Player::FUN_00451150()
         (*reinterpret_cast<ZunTimer *>(slot + 0x454))++;
     }
 }
+// FUNCTION: th08 0x4512f0
+#pragma var_order(i, slot, this)
+void Player::FUN_004512f0()
+{
+    u8 *slot;
+    i32 i;
+
+    slot = reinterpret_cast<u8 *>(this) + 0xBE838;
+    for (i = 0; i < 0x80; i++, slot += 0x484)
+    {
+        if (*reinterpret_cast<i16 *>(slot + 0x462) != 1)
+        {
+            continue;
+        }
+        if (*reinterpret_cast<i16 *>(slot + 0x1FC) != 0)
+        {
+            reinterpret_cast<AnmVm *>(slot)->SetZRotation(*reinterpret_cast<f32 *>(slot + 0x450));
+        }
+        *reinterpret_cast<f32 *>(slot + 0x208) = g_ItemAnmManagerScreenShakeOffset.x + *reinterpret_cast<f32 *>(slot + 0x2A4);
+        *reinterpret_cast<f32 *>(slot + 0x20C) = g_ItemAnmManagerScreenShakeOffset.y + *reinterpret_cast<f32 *>(slot + 0x2A8);
+        *reinterpret_cast<f32 *>(slot + 0x210) = 0.4f;
+        if (*reinterpret_cast<i8 *>(slot + 0x470) != 0)
+        {
+            *reinterpret_cast<u8 *>(slot + 0x1F2) = 0xff;
+            *reinterpret_cast<u8 *>(slot + 0x1F1) = 0x40;
+            *reinterpret_cast<u8 *>(slot + 0x1F0) = 0x40;
+        }
+        g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(slot));
+        if (*reinterpret_cast<u32 *>(slot + 0x478) != 0)
+        {
+            reinterpret_cast<void (__fastcall *)(Player *, u8 *)>(*reinterpret_cast<u32 *>(slot + 0x478))(this, slot);
+        }
+    }
+}
+
 // FUNCTION: th08 0x451400
 #pragma var_order(i, slot, this)
 void Player::FUN_00451400()
@@ -434,9 +469,40 @@ i32 Player::FUN_00451d50()
 {
     return 0;
 }
-// STUB: th08 0x44d420
+// FUNCTION: th08 0x44d420
 void Player::FUN_0044d420()
 {
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xE2AA4) = Float3(-999.0f, -999.0f, 0.0f);
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xE2AB0) = Float3(-999.0f, -999.0f, 0.0f);
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2AC0) = 0;
+
+    if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2B8) >= 400.0f)
+    {
+        if (g_AsciiManager.GetGaugeInterrupt() != 2)
+        {
+            if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2B4) < 160.0f)
+            {
+                g_AsciiManager.SetGaugeInterrupt(2);
+                goto doneTop;
+            }
+        }
+
+        if (g_AsciiManager.GetGaugeInterrupt() == 2)
+        {
+            if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2B4) > 160.0f)
+            {
+                g_AsciiManager.SetGaugeInterrupt(3);
+            }
+        }
+
+doneTop:
+        return;
+    }
+
+    if (g_AsciiManager.GetGaugeInterrupt() == 2)
+    {
+        g_AsciiManager.SetGaugeInterrupt(3);
+    }
 }
 // FUNCTION: th08 0x44c390
 ChainCallbackResult Player::OnUpdate(Player *player)
@@ -526,9 +592,42 @@ void Player::FUN_0044c5b0()
     }
 }
 
-// STUB: th08 0x44d530
+// FUNCTION: th08 0x44d530
+#pragma var_order(i, this)
 ChainCallbackResult Player::OnDrawHighPrio(Player *player)
 {
+    u32 i;
+
+    player->FUN_004512f0();
+
+    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xFDC) != 0)
+    {
+        reinterpret_cast<void (__fastcall *)(Player *)>(
+            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) +
+                                      (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xFE0) * 4) +
+                                      0x1014))(player);
+    }
+
+    if (*reinterpret_cast<u8 *>(0x164D0BB) == 0)
+    {
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x218) =
+            g_ItemAnmManagerScreenShakeOffset.x + *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x2B4);
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x21C) =
+            g_ItemAnmManagerScreenShakeOffset.y + *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x2B8);
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x220) = 0.1f;
+        g_AnmManager->DrawNoRotation(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(player) + 0x10));
+    }
+
+    for (i = 0; i < 4; i++)
+    {
+        if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + i * 0x2F4 + 0x6FC) != 0)
+        {
+            reinterpret_cast<void (__fastcall *)(Player *, u8 *)>(
+                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + i * 0x2F4 + 0x6FC))(
+                player, reinterpret_cast<u8 *>(player) + i * 0x2F4 + 0x40C);
+        }
+    }
+
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
