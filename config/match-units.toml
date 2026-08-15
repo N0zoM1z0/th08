@@ -51459,3 +51459,42 @@ offset = 0x133
 type = "REL32"
 symbol = "?CreateScorePopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z"
 target = 0x00403200
+
+
+[[units]]
+name = "item-convert-power-to-time-orbs"
+object = "build/ItemManager.obj"
+symbol = "?ConvertAllPowerItemsToTimeOrbs@ItemManager@th08@@QAEXPAUItem@2@@Z"
+target_address = 0x00441450
+size = 0xD1
+
+[[units.relocations]]
+offset = 0x53
+type = "DIR32"
+symbol = "__real@bf000000"
+target = 0x004B5B3C
+
+[[units.relocations]]
+offset = 0x96
+type = "DIR32"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0x9B
+type = "REL32"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEXHPAUD3DXVECTOR3@@HH@Z"
+target = 0x00425430
+
+[[units.relocations]]
+offset = 0xB1
+type = "DIR32"
+symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
+target = 0x00F54E90
+addend = 0x6BA574
+
+[[units.relocations]]
+offset = 0xB6
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0

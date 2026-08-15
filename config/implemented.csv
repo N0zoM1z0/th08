@@ -609,3 +609,4 @@ th08::ItemManager::SpawnItem
 th08::Gui::FUN_00437e5d
 th08::Item::CollectPowerSmall
 th08::Item::CollectPowerBig
+th08::ItemManager::ConvertAllPowerItemsToTimeOrbs

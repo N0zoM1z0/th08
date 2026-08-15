@@ -150,3 +150,8 @@ Verified with `ItemManager::SpawnItem`: a field access may point far inside a la
 ## Power item bucket loops
 
 Verified with `Item::CollectPowerSmall` and `Item::CollectPowerBig`: VC7 emits the target top-tested loop when the source is written as `value = 0; while (condition) { value++; }`.  A `for (value = 0; condition; value++)` can add an initial jump and miss by one byte.  Use `#pragma var_order` when the old bucket and current bucket locals must occupy specific stack slots.
+
+
+## Linked-list conversion helpers
+
+Verified with `ItemManager::ConvertAllPowerItemsToTimeOrbs`: when a target walks an intrusive linked list by repeatedly loading `node->next` at the bottom, a plain `while (current != NULL) { ...; current = current->next; }` matches.  Keep the excluded current item as an explicit parameter comparison instead of pre-filtering the list head.

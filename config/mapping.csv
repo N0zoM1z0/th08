@@ -321,7 +321,7 @@ FUN_00425290,0x425290,0xff,unknown,,u8
 FUN_00425390,0x425390,0x4a,unknown,,u8
 FUN_004253e0,0x4253e0,0x22,unknown,,u8,u8
 FUN_00425410,0x425410,0x19,unknown,,u8
-FUN_00425430,0x425430,0x211,__thiscall,,u8,void*,u8,u8,u8,u8
+th08::EffectManager::SpawnEffect,0x425430,0x211,__thiscall,,void,EffectManager*,i32,D3DXVECTOR3*,i32,i32
 FUN_00425650,0x425650,0x215,unknown,,u8,u8,u8,u8,u8,u8
 FUN_00425870,0x425870,0x16d,unknown,,u8,u8,u8,u8,u8,u8
 FUN_004259e0,0x4259e0,0x18a,unknown,,u8,u8,u8,u8,u8,u8,u8
@@ -622,7 +622,7 @@ th08::Item::CollectPointSmall,0x441020,0x14e,__thiscall,,void,Item*
 th08::Item::CollectPowerBig,0x441170,0x13b,__thiscall,,void,Item*
 th08::Item::FUN_00412b0,0x4412b0,0x125,__thiscall,,void,Item*
 th08::ItemManager::AutoCollectAllItems,0x4413e0,0x61,__thiscall,,void,ItemManager*
-th08::ItemManager::FUN_00441450,0x441450,0xd1,__thiscall,,void,ItemManager*,i32
+th08::ItemManager::ConvertAllPowerItemsToTimeOrbs,0x441450,0xd1,__thiscall,,void,ItemManager*,Item*
 th08::ItemManager::CancelAutoCollect,0x441530,0x6d,__thiscall,,void,ItemManager*
 th08::ItemManager::OnDraw,0x4415a0,0x1c3,__thiscall,,void,ItemManager*
 th08::Item::Delete,0x441770,0x6a,__thiscall,,void,Item*

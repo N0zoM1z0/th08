@@ -1,6 +1,7 @@
 #include "th_pch.h"
 
 #include "BulletManager.hpp"
+#include "EclManager.hpp"
 #include "GameManager.hpp"
 #include "Gui.hpp"
 #include "ItemManager.hpp"
@@ -434,10 +435,27 @@ void ItemManager::AutoCollectAllItems()
     }
 }
 
-// STUB: th08 0x441450
+// FUNCTION: th08 0x441450
 void ItemManager::ConvertAllPowerItemsToTimeOrbs(Item *item)
 {
-    // TODO: NEEDS WORK ON EffectManager
+    Item *current = this->itemListHead.next;
+
+    while (current != NULL)
+    {
+        if (current != item && (current->itemType == ITEM_POWER_SMALL || current->itemType == ITEM_POWER_BIG))
+        {
+            if (current->startPositionOrVelocity.y > -0.5f)
+            {
+                current->startPositionOrVelocity.x = 0.0f;
+                current->startPositionOrVelocity.y = -0.5f;
+                current->startPositionOrVelocity.z = 0.0f;
+            }
+            g_EffectManager.SpawnEffect(0, reinterpret_cast<D3DXVECTOR3 *>(&current->currentPosition), 1, -1);
+            current->itemType = ITEM_POINT_SMALL;
+            g_BulletManager.bulletAnm->SetAndExecuteScriptIdx(&current->sprite, ITEM_POINT_SMALL + 61);
+        }
+        current = current->next;
+    }
 }
 
 // FUNCTION: th08 0x441530
