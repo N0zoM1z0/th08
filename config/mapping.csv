@@ -249,7 +249,7 @@ th08::EclOperands::TargetEnemyHelpersOverlay::HasAttachedEnemy,0x41fd20,0x1c,__t
 FUN_0041fd40,0x41fd40,0x46,unknown,,u8
 FUN_0041fd90,0x41fd90,0x3b,unknown,,u8
 th08::Spellcard::GetTimerFrames,0x41fdd0,0x19,__thiscall,,i32,Spellcard*
-th08::ZunTimer::operator+=,0x41fdf0,0x19,__thiscall,,u8,ZunTimer*,i32
+th08::ZunTimer::operator+=,0x41fdf0,0x19,__thiscall,,void,ZunTimer*,i32
 th08::EclOperands::ResolveIntLValue,0x41fe10,0x224,__fastcall,,i32*,EnemyOverlay*,i32*,u16,i32
 th08::EclOperands::EnemyOverlay::ResolveFloat,0x420120,0x697,__thiscall,,f32,EnemyOverlay*,f32
 th08::EclOperands::ResolveFloatLValue,0x420950,0x2b8,__fastcall,,f32*,EnemyOverlay*,f32*,u16,i32

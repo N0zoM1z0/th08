@@ -49220,3 +49220,16 @@ object = "build/probes/EclOperandsInt.obj"
 symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
 target_address = 0x0041FD20
 size = 0x1C
+
+[[units]]
+name = "zun-timer-plus-equals"
+object = "build/main.obj"
+symbol = "??YZunTimer@th08@@QAEXH@Z"
+target_address = 0x0041FDF0
+size = 0x19
+
+[[units.relocations]]
+offset = 0x0F
+type = "REL32"
+symbol = "?Increment@ZunTimer@th08@@QAEXH@Z"
+target = 0x00447295

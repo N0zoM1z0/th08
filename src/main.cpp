@@ -1215,6 +1215,13 @@ void GameManager::SetClockTime(u8 value)
     this->globals->clockTime = value;
 }
 
+
+// FUNCTION: th08 0x41fdf0
+void ZunTimer::operator+=(int value)
+{
+    this->Increment(value);
+}
+
 // FUNCTION: th08 0x4066a0
 ZunBool ZunTimer::operator<(int value)
 {
