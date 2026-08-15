@@ -425,7 +425,6 @@ FUN_0042f1f0,0x42f1f0,function
 th08::GameManager::IsSoloHuman,0x42f230,function
 th08::GameManager::IsSoloYoukai,0x42f270,function
 th08::GameManager::GetLives,0x42f2b0,function
-th08::AsciiManager::SetBossMarkerState,0x42f2d0,function
 th08::AsciiManager::FUN_0042f2d0,0x42f2d0,function
 th08::AsciiManager::SetScale,0x42f2f0,function
 th08::Gui::IsBossPresent,0x42f320,function
@@ -511,7 +510,6 @@ th08::Gui::FUN_00439093,0x439093,function
 th08::Gui::FUN_004390d6,0x4390d6,function
 th08::Gui::ActualAddedCallback,0x4390ee,function
 th08::Gui::FUN_004396b8,0x4396b8,function
-th08::AnmVm::IsStopped,0x4396f8,function
 th08::AnmVm::FUN_004396f8,0x4396f8,function
 th08::Gui::LoadMsg,0x439710,function
 th08::Gui::FreeMsgFile,0x4397d5,function

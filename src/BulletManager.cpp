@@ -165,9 +165,28 @@ void BulletManager::Initialize()
     }
 }
 
-// STUB: th08 0x4311a0
-ZunResult BulletManager::RegisterChain()
+// FUNCTION: th08 0x4311a0
+#pragma var_order(bulletManager, bulletAnmPath)
+ZunResult BulletManager::RegisterChain(char *bulletAnmPath)
 {
+    BulletManager *bulletManager = &g_BulletManager;
+
+    bulletManager->Initialize();
+    bulletManager->bulletAnmPath = bulletAnmPath;
+
+    g_BulletManagerCalcChain.SetCallback((ChainCallback)BulletManager::OnUpdate);
+    g_BulletManagerCalcChain.addedCallback = (ChainLifetimeCallback)BulletManager::AddedCallback;
+    g_BulletManagerCalcChain.deletedCallback = (ChainLifetimeCallback)BulletManager::DeletedCallback;
+    g_BulletManagerCalcChain.arg = bulletManager;
+    if (g_Chain.AddToCalcChain(&g_BulletManagerCalcChain, 14))
+    {
+        return ZUN_ERROR;
+    }
+
+    g_BulletManagerDrawChain.SetCallback((ChainCallback)BulletManager::OnDraw);
+    g_BulletManagerDrawChain.arg = bulletManager;
+    g_Chain.AddToDrawChain(&g_BulletManagerDrawChain, 13);
+
     return ZUN_SUCCESS;
 }
 

@@ -656,3 +656,4 @@ th08::BulletTypeSprites::BulletTypeSprites
 th08::Bullet::Bullet
 th08::Laser::Laser
 th08::BulletExState::BulletExState
+th08::BulletManager::RegisterChain

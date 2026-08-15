@@ -445,7 +445,7 @@ FUN_00430ab0,0x430ab0,0x27b,unknown,,u8
 FUN_00430d30,0x430d30,0xd6,unknown,,u8,u8,u8
 FUN_00430e10,0x430e10,0x103,unknown,,u8,u8
 FUN_00430f20,0x430f20,0x27f,unknown,,u8,u8
-FUN_004311a0,0x4311a0,0x98,unknown,,u8
+th08::BulletManager::RegisterChain,0x4311a0,0x98,__fastcall,,ZunResult,char*
 FUN_00431240,0x431240,0xf16,unknown,,u8
 FUN_00432170,0x432170,0x37,unknown,,u8
 FUN_004321b0,0x4321b0,0x59,unknown,,u8

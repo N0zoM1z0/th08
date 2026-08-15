@@ -71,7 +71,9 @@ struct BulletManager
     Laser lasers[0x100];
     unknown_fields(0x6ba538, 8);
     ZunTimer timer;
-    unknown_fields(0x6ba54c, 0x20);
+    unknown_fields(0x6ba54c, 4);
+    char *bulletAnmPath;
+    unknown_fields(0x6ba554, 0x18);
     u8 *bulletCursor;
     i32 unk6ba570;
     AnmLoaded *bulletAnm;
@@ -82,7 +84,7 @@ struct BulletManager
     void bulletmanager_fun_00415c60();
     void RemoveAllBullets(i32 mode);
 
-    static ZunResult RegisterChain();
+    static ZunResult RegisterChain(char *bulletAnmPath);
     static ChainCallbackResult OnUpdate(BulletManager *bulletManager);
     static ChainCallbackResult OnDraw(BulletManager *bulletManager);
     static ZunResult AddedCallback(BulletManager *bulletManager);
