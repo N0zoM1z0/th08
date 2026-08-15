@@ -508,8 +508,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     case 14: *WriteInt(enemy, instruction, 0) %= ReadInt(enemy, instruction, 1); break;
     case 19:
         *WriteFloat(enemy, instruction, 0) =
-            fmodf(ReadFloat(enemy, instruction, 0),
-                  ReadFloat(enemy, instruction, 1));
+            fmodf(ReadFloatRawArg(enemy, instruction, 0),
+                  ReadFloatRawArg(enemy, instruction, 1));
         break;
 
     case 20: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) + ReadInt(enemy, instruction, 2); break;
@@ -610,13 +610,13 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         U32At(enemy, 0x3328) &= ~4U;
         break;
     case 56:
-        services.SetPrimaryAnmScripts(enemy,
-                                     ReadInt(enemy, instruction, 0),
-                                     ReadInt(enemy, instruction, 1),
-                                     ReadInt(enemy, instruction, 2),
-                                     ReadInt(enemy, instruction, 3),
-                                     ReadInt(enemy, instruction, 4),
-                                     ReadInt(enemy, instruction, 5));
+        SetPrimaryAnmScripts(enemy, instruction,
+                             ReadInt(enemy, instruction, 0),
+                             ReadInt(enemy, instruction, 1),
+                             ReadInt(enemy, instruction, 2),
+                             ReadInt(enemy, instruction, 3),
+                             ReadInt(enemy, instruction, 4),
+                             ReadInt(enemy, instruction, 5));
         U32At(enemy, 0x3328) &= ~4U;
         break;
     case 57:
@@ -671,8 +671,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
 
     case 63:
-        F32At(enemy, 0x2D34) = ReadFloat(enemy, instruction, 0);
-        F32At(enemy, 0x2D38) = ReadFloat(enemy, instruction, 1);
+        F32At(enemy, 0x2D34) = ReadFloatRawArg(enemy, instruction, 0);
+        F32At(enemy, 0x2D38) = ReadFloatRawArg(enemy, instruction, 1);
         F32At(enemy, 0x2D3C) = 0.0f;
         ClampEnemyPosition(enemy);
         break;
@@ -782,12 +782,12 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         U32At(enemy, 0x3324) &= ~0x80000U;
         break;
     case 77:
-        F32At(enemy, 0x2D70) = ReadFloat(enemy, instruction, 0);
-        F32At(enemy, 0x2D74) = ReadFloat(enemy, instruction, 1);
+        F32At(enemy, 0x2D70) = ReadFloatRawArg(enemy, instruction, 0);
+        F32At(enemy, 0x2D74) = ReadFloatRawArg(enemy, instruction, 1);
         break;
     case 78:
-        F32At(enemy, 0x2D7C) = ReadFloat(enemy, instruction, 0);
-        F32At(enemy, 0x2D80) = ReadFloat(enemy, instruction, 1);
+        F32At(enemy, 0x2D7C) = ReadFloatRawArg(enemy, instruction, 0);
+        F32At(enemy, 0x2D80) = ReadFloatRawArg(enemy, instruction, 1);
         break;
 
     case 79:

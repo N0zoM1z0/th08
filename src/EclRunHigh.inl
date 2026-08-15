@@ -607,7 +607,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFF8FFFFF) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 7) << 20);
         break;
     case 130:
-        if (TH08_ECL_PRESENTATION_WRITES_ALLOWED())
+        if ((((g_EnemyManagerUpdateManagerFlags >> 14) & 1) != 1) || (((g_EnemyManagerUpdateManagerFlags >> 7) & 3) == 0))
             TH08_ECL_AT(ctx, u16, 0x2CEE) = TH08_ECL_RAW_U16(ctx, 0);
         break;
     case 126:
@@ -750,7 +750,7 @@ enter_subroutine:
             position.x = TH08_ECL_AT(ctx, Vec3, 0x2D34).x;
             position.y = TH08_ECL_AT(ctx, Vec3, 0x2D34).y;
             position.z = TH08_ECL_AT(ctx, Vec3, 0x2D34).z;
-            position.x += TH08_ECL_CONTEXT_API(ctx)->RandomFloat() * 128.0f - 64.0f;
+            ((f32 *)position)[0] += TH08_ECL_CONTEXT_API(ctx)->RandomFloat() * 128.0f - 64.0f;
             position.y += TH08_ECL_CONTEXT_API(ctx)->RandomFloat() * 128.0f - 64.0f;
             TH08_ECL_CONTEXT_API(ctx)->SpawnItem(reinterpret_cast<Vec3 *>(&position), 1, 0);
         }
