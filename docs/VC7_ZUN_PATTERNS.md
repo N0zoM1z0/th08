@@ -90,3 +90,13 @@ Verified with `ScreenEffect::CalcFadeIn` at `0x0045B160`.  The target computes
 Writing the algebraically equivalent `255 - (i32)scaledTimer` emits an integer
 subtraction after `__ftol2` and misses both instruction shape and relocation
 offsets.
+
+
+## D3D8 API wrappers can be reconstructed from vtable order
+
+Verified with `ScreenEffect::Clear` (`0x0045B020`) and
+`ScreenEffect::SetViewport` (`0x0045B0E0`).  The target follows the standard
+Direct3DDevice8 call order: `Clear`, `Present`, fallback `Reset`, and
+`SetViewport`.  Once the SDK call sequence is identified, natural C++ method
+calls can match the target exactly; the remaining work is usually relocation
+manifest offsets/addends for `g_Supervisor` fields.

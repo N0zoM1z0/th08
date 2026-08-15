@@ -15,14 +15,37 @@ ScreenEffect::ScreenEffect()
 {
 }
 
-// STUB: th08 0x45b020
+// FUNCTION: th08 0x45b020
 void ScreenEffect::Clear(D3DCOLOR color)
 {
+    g_Supervisor.d3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, color, 1.0f, 0);
+    if (g_Supervisor.d3dDevice->Present(NULL, NULL, NULL, NULL) < 0)
+    {
+        g_Supervisor.d3dDevice->Reset(&g_Supervisor.presentParameters);
+    }
+    g_Supervisor.d3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, color, 1.0f, 0);
+    if (g_Supervisor.d3dDevice->Present(NULL, NULL, NULL, NULL) < 0)
+    {
+        g_Supervisor.d3dDevice->Reset(&g_Supervisor.presentParameters);
+    }
 }
 
-// STUB: th08 0x45b0e0
+// FUNCTION: th08 0x45b0e0
 void ScreenEffect::SetViewport(D3DCOLOR clearColor)
 {
+    if (g_AnmManager != NULL)
+    {
+        g_AnmManager->FlushVertexBuffer();
+    }
+
+    g_Supervisor.viewport.X = 0;
+    g_Supervisor.viewport.Y = 0;
+    g_Supervisor.viewport.Width = 640;
+    g_Supervisor.viewport.Height = 480;
+    g_Supervisor.viewport.MinZ = 0.0f;
+    g_Supervisor.viewport.MaxZ = 1.0f;
+    g_Supervisor.d3dDevice->SetViewport(&g_Supervisor.viewport);
+    ScreenEffect::Clear(clearColor);
 }
 
 // FUNCTION: th08 0x45b160

@@ -892,8 +892,8 @@ th08::ScoreDat::ParsePSCR,0x45ae00,0x127,__fastcall,,ZunResult,ScoreDat*,Pscr*
 th08::ScoreDat::ParsePLST,0x45af30,0x81,__fastcall,,ZunResult,ScoreDat*,Plst*
 th08::ScoreDat::ReleaseScore,0x45afc0,0x35,__fastcall,,void,ScoreDat*
 th08::ScreenEffect::ScreenEffect,0x45b000,0x19,__thiscall,,ScreenEffect*,ScreenEffect*
-th08::ScreenEffect::Clear,0x45b020,0xbe,__fastcall,,u8,unsigned long
-th08::ScreenEffect::SetViewport,0x45b0e0,0x7c,__fastcall,,void,unsigned long
+th08::ScreenEffect::Clear,0x45b020,0xbe,__fastcall,,void,D3DCOLOR
+th08::ScreenEffect::SetViewport,0x45b0e0,0x7c,__fastcall,,void,D3DCOLOR
 th08::ScreenEffect::CalcFadeIn,0x45b160,0x7b,__fastcall,,ChainCallbackResult,ScreenEffect*
 th08::ScreenEffect::DrawSquare,0x45b1e0,0x2af,__fastcall,,void,ZunRect*,unsigned long
 th08::ScreenEffect::DrawSquareShaded,0x45b490,0x2cd,__fastcall,,void,ZunRect*,unsigned long,unsigned long,unsigned long,unsigned long

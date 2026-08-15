@@ -49960,3 +49960,202 @@ offset = 0x84
 type = "REL32"
 symbol = "?DrawSquare@ScreenEffect@th08@@SIXPAUZunRect@2@K@Z"
 target = 0x0045B1E0
+
+[[units]]
+name = "screen-effect-clear"
+object = "build/ScreenEffect.obj"
+symbol = "?Clear@ScreenEffect@th08@@SIXK@Z"
+target_address = 0x0045B020
+size = 0xBE
+
+[[units.relocations]]
+offset = 0x1A
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x21
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x36
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x3D
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x4A
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0xE0
+
+[[units.relocations]]
+offset = 0x50
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x57
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x72
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x7A
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x8F
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x97
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x8
+
+[[units.relocations]]
+offset = 0xA4
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0xE0
+
+[[units.relocations]]
+offset = 0xAA
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x8
+
+[[units.relocations]]
+offset = 0xB2
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x8
+
+[[units]]
+name = "screen-effect-set-viewport"
+object = "build/ScreenEffect.obj"
+symbol = "?SetViewport@ScreenEffect@th08@@SIXK@Z"
+target_address = 0x0045B0E0
+size = 0x7C
+
+[[units.relocations]]
+offset = 0x9
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x12
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x17
+type = "REL32"
+symbol = "?FlushVertexBuffer@AnmManager@th08@@QAEXXZ"
+target = 0x00462E40
+
+[[units.relocations]]
+offset = 0x1D
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0xC8
+
+[[units.relocations]]
+offset = 0x27
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0xCC
+
+[[units.relocations]]
+offset = 0x31
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0xD0
+
+[[units.relocations]]
+offset = 0x3B
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0xD4
+
+[[units.relocations]]
+offset = 0x45
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0xD8
+
+[[units.relocations]]
+offset = 0x4F
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0xDC
+
+[[units.relocations]]
+offset = 0x58
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0xC8
+
+[[units.relocations]]
+offset = 0x5D
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x65
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x74
+type = "REL32"
+symbol = "?Clear@ScreenEffect@th08@@SIXK@Z"
+target = 0x0045B020

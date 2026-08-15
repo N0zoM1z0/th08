@@ -592,3 +592,5 @@ th08::ScreenEffect::ScreenEffect
 th08::ScreenEffect::CalcFadeIn
 th08::ScreenEffect::CalcFadeOut
 th08::ScreenEffect::DrawFullFade
+th08::ScreenEffect::Clear
+th08::ScreenEffect::SetViewport
