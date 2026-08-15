@@ -283,17 +283,7 @@ struct AnmVmBase
     void SetBlendModeAdditive();
     void SetBlendModeNormal();
 
-    void Initialize()
-    {
-        memset(this, 0, sizeof(AnmVmBase));
-
-        this->scale.x = 1.0f;
-        this->scale.y = 1.0f;
-        this->color1.d3dColor = COLOR_WHITE;
-        D3DXMatrixIdentity(&this->matrix1);
-        this->flags = 7;
-        this->currentTimeInScript.Initialize();
-    }
+    void Initialize();
 
     ZunBool IsVisible()
     {
@@ -335,7 +325,7 @@ struct AnmVmBase
     ZunColor color1;
     ZunColor color2;
     union {
-        u32 flags;
+        u16 flags;
         struct
         {
             u32 visible : 1;

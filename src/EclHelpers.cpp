@@ -44,10 +44,10 @@ void __fastcall ConfigurePolarMotion(EnemyOverlay *enemy, EclRawInstruction *ins
     *(ZunTimer *)(enemy->bytes + 0x2DDC) =
         (*(i32 *)(enemy->bytes + 0x2DE8) = ReadInt(enemy, instruction, 0));
 
-    *Flags(enemy) = (*Flags(enemy) & 0xFFFE3FFF) |
-                    ((ReadInt(enemy, instruction, 1) & 7) << 14);
+    const i32 mode = ReadInt(enemy, instruction, 1);
+    *Flags(enemy) = (*Flags(enemy) & 0xFFFE3FFF) | ((mode & 7) << 14);
     *Flags(enemy) = (*Flags(enemy) & 0xFFFFCFFF) | 0x2000;
-    if (*Flags(enemy) & (1 << 18))
+    if (((*Flags(enemy)) >> 18) & 1)
         *FloatField(enemy, 0x2DC4) = -*FloatField(enemy, 0x2DC4);
 }
 
@@ -71,9 +71,9 @@ void __fastcall ConfigureRelativeMotion(EnemyOverlay *enemy, EclRawInstruction *
     *Flags(enemy) = (*Flags(enemy) & 0xFFFE3FFF) |
                     ((ReadInt(enemy, instruction, 1) & 7) << 14);
     *Flags(enemy) = (*Flags(enemy) & 0xFFFFCFFF) | 0x2000;
-    D3DXVECTOR3 zero(0.0f, 0.0f, 0.0f);
-    *reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2D4C) = zero;
-    if (*Flags(enemy) & (1 << 18))
+    *reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2D4C) =
+        D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+    if (((*Flags(enemy)) >> 18) & 1)
         *FloatField(enemy, 0x2DC4) = -*FloatField(enemy, 0x2DC4);
 }
 

@@ -117,6 +117,7 @@ th08::PlayerUnkStruct0x40::Deactivate
 th08::PlayerUnkStruct0x40::Reset
 th08::AnmVmBase::SetBlendModeAdditive
 th08::AnmVmBase::SetBlendModeNormal
+th08::AnmVmBase::Initialize
 th08::ScreenEffect::AddedCallback
 th08::ScreenEffect::DeletedCallback
 th08::ScreenEffect::DrawArcadeFade
@@ -432,6 +433,7 @@ th08::AsciiManager::AddString
 th08::AsciiManager::AddFormatText
 th08::AsciiManager::AddFormatText2
 th08::AsciiManager::FUN_00422bb0
+th08::AsciiManager::SetBossMarkerPosition
 th08::AsciiManager::SetGaugeInterrupt
 th08::AsciiManager::SetSpaceWidth
 th08::AnmManager::ClearSprite
@@ -555,3 +557,5 @@ th08::GameManager::GetTimeOrbs
 th08::GameManager::GetLastSpellTimeOrbThreshold
 th08::GameManager::GetLives
 th08::GameManager::GetBombsRemaining
+th08::ItemManager::ItemManager
+th08::Item::Item

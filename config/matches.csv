@@ -57,6 +57,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00406610,th08::ZunTimer::SetCurrent,41,matching,100.00,zun-timer-set-current-ascii,python3 scripts/compare-function.py zun-timer-set-current-ascii --json
 0x00406640,th08::ZunTimer::operator++(int),21,matching,100.00,zun-timer-post-increment,python3 scripts/compare-function.py zun-timer-post-increment --json
 0x00406660,th08::ZunTimer::Tick,52,matching,100.00,zun-timer-tick,python3 scripts/compare-function.py zun-timer-tick --json
+0x004068E0,th08::AnmVmBase::Initialize,95,matching,100.00,anm-vm-base-initialize,python3 scripts/compare-function.py anm-vm-base-initialize --json
 0x004066E0,th08::AnmVm::IsVisible,23,matching,100.00,anm-vm-base-is-visible,python3 scripts/compare-function.py anm-vm-base-is-visible --json
 0x00406700,th08::AnmVm::ClearVisible,32,matching,100.00,anm-vm-clear-visible,python3 scripts/compare-function.py anm-vm-clear-visible --json
 0x0040EC00,th08::AnmVm::SetZRotation,43,matching,100.00,anm-vm-set-z-rotation,python3 scripts/compare-function.py anm-vm-set-z-rotation --json
@@ -551,3 +552,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00421B80,th08::GameManager::GetLastSpellTimeOrbThreshold,20,matching,100.00,game-manager-get-last-spell-time-orb-threshold,python3 scripts/compare-function.py game-manager-get-last-spell-time-orb-threshold --json
 0x0042F2B0,th08::GameManager::GetLives,25,matching,100.00,game-manager-get-lives,python3 scripts/compare-function.py game-manager-get-lives --json
 0x004398CE,th08::GameManager::GetBombsRemaining,26,matching,100.00,game-manager-get-bombs-remaining,python3 scripts/compare-function.py game-manager-get-bombs-remaining --json
+0x00422BE0,th08::AsciiManager::SetBossMarkerPosition,51,matching,100.00,ascii-manager-set-boss-marker-position,python3 scripts/compare-function.py ascii-manager-set-boss-marker-position --json
+0x00440010,th08::ItemManager::ItemManager,52,matching,100.00,item-manager-constructor,python3 scripts/compare-function.py item-manager-constructor --json
+0x00440050,th08::Item::Item,78,matching,100.00,item-constructor,python3 scripts/compare-function.py item-constructor --json

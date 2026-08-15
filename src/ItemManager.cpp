@@ -12,6 +12,15 @@ namespace th08
 DIFFABLE_STATIC(ItemManager, g_ItemManager);
 DIFFABLE_STATIC(i32, g_MaxValuePointItemsCollected);
 
+// FUNCTION: th08 0x440010
+ItemManager::ItemManager()
+{
+}
+
+// FUNCTION: th08 0x440050
+Item::Item()
+{
+}
 
 #pragma var_order(i, item)
 Item *ItemManager::SpawnItem(Float3 *position, ItemType itemType, i32 state)

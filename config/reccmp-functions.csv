@@ -49,7 +49,7 @@ th08::AnmPrefix::AnmPrefix,0x4067c0,function
 `vector constructor iterator',0x406850,function
 th08::AnmLoaded::GetSprite,0x406880,function
 th08::AnmLoaded::InitializeAndSetSprite,0x4068a0,function
-th08::AnmVm::Initialize,0x4068e0,function
+th08::AnmVmBase::Initialize,0x4068e0,function
 D3DXMatrixIdentity,0x406940,function
 th08::AnmLoaded::SetAndExecuteScriptIdx,0x4069f0,function
 th08::AnmManager::SetTextureCaptureParams,0x406a30,function

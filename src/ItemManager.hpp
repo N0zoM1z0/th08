@@ -33,6 +33,8 @@ enum ItemState
 
 struct Item
 {
+    Item();
+
     AnmVm sprite;
 
     Float3 currentPosition;
@@ -64,6 +66,8 @@ C_ASSERT(sizeof(Item) == 0x2e4);
 
 struct ItemManager
 {
+    ItemManager();
+
     Item items[MAX_ITEMS + 1];
 
     i32 nextIndex;

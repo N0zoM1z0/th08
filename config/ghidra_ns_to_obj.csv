@@ -19,5 +19,6 @@ AnmManager,th08::AnmManager,th08::AnmVm
 AsciiManager,th08::AsciiManager,th08::AsciiManagerString,th08::AsciiManagerPopup,th08::PauseMenu,th08::RetryMenu
 Ending,th08::Ending
 ResultScreen,th08::ResultScreen
+ScoreDat,th08::ScoreDat,th08::Catk
 utils,th08::utils
 zwave,th08::CSoundManager,th08::CSound,th08::CStreamingSound,th08::CWaveFile

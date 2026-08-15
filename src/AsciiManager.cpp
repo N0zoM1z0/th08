@@ -146,6 +146,12 @@ void AsciiManager::FUN_00422bb0(i32 slot, i16 state)
     this->bossMarkers[slot].SetInterrupt(state);
 }
 
+// FUNCTION: th08 0x422be0
+void AsciiManager::SetBossMarkerPosition(i32 slot, D3DXVECTOR3 *position)
+{
+    this->bossMarkers[slot].pos = *(Float3 *)position;
+}
+
 ZunResult AsciiManager::RegisterChain()
 {
     AsciiManager *ascii = &g_AsciiManager;

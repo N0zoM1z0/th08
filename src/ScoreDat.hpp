@@ -152,6 +152,8 @@ struct Catk
     CatkHistory inGameHistory;
     CatkHistory spellPracticeHistory;
     i32 unk0x228;
+
+    ZunBool WasAttemptedWithShot(i32 shotType);
 };
 
 C_ASSERT(sizeof(Catk) == 0x22c);

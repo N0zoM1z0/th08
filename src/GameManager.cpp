@@ -481,6 +481,54 @@ ZunBool GameManager::IsReplayPractice()
     return this->flags.isReplay && g_ReplayManager->replayData->isPractice;
 }
 
+// FUNCTION: th08 0x42f230
+ZunBool GameManager::IsSoloHuman()
+{
+    ZunBool result;
+
+    if (this->shotType >= 4)
+    {
+        if ((this->shotType & 1) != 0)
+        {
+            result = FALSE;
+        }
+        else
+        {
+            result = TRUE;
+        }
+    }
+    else
+    {
+        result = FALSE;
+    }
+
+    return result;
+}
+
+// FUNCTION: th08 0x42f270
+ZunBool GameManager::IsSoloYoukai()
+{
+    ZunBool result;
+
+    if (this->shotType >= 4)
+    {
+        if ((this->shotType & 1) == 0)
+        {
+            result = FALSE;
+        }
+        else
+        {
+            result = TRUE;
+        }
+    }
+    else
+    {
+        result = FALSE;
+    }
+
+    return result;
+}
+
 void GameManager::CutChain()
 {
     g_Chain.Cut(&g_GameManagerCalcChain);

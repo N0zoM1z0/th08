@@ -139,6 +139,10 @@ struct GameManager
     ZunBool IsReplay();
     ZunBool IsSpellPractice();
     ZunBool IsDemoMode();
+
+    ZunBool IsSoloHuman();
+    ZunBool IsSoloYoukai();
+
     i32 GetYoukaiGauge();
 
     ZunBool GaugeIsExtremelyHuman();
