@@ -3,6 +3,7 @@
 #include "ZunBool.hpp"
 #include "diffbuild.hpp"
 #include "inttypes.hpp"
+#include "ZunMath.hpp"
 
 namespace th08
 {
@@ -253,6 +254,12 @@ enum SpellcardNumber
 
 struct Spellcard
 {
+    u32 flags;
+    u8 unknown_04[0xF0];
+    u8 *activeEnemy;
+
+    void SetStoredVector(f32 x, f32 y, f32 z);
+
     static i32 GetDifficultyFromSpellCard(i32 spellcardNumber);
     static void CutChain();
 };
@@ -261,6 +268,7 @@ DIFFABLE_EXTERN_ARRAY(i32 *, 6, g_SpellcardNumbersPerDifficulty);
 DIFFABLE_EXTERN_ARRAY(i32, 6, g_SpellcardCountsPerDifficulty);
 DIFFABLE_EXTERN_ARRAY(i32, 43, g_LastSpellNumbers);
 DIFFABLE_EXTERN(i32, g_LastSpellCount);
+DIFFABLE_EXTERN(Spellcard, g_Spellcard);
 DIFFABLE_EXTERN(ChainElem *, g_SpellcardCalcChain);
 DIFFABLE_EXTERN_ARRAY(i32 *, 10, g_SpellcardNumbersPerStage)
 DIFFABLE_EXTERN_ARRAY(i32, 10, g_SpellcardCountPerStage)

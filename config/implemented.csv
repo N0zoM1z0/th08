@@ -563,3 +563,4 @@ th08::GameManager::AddToClockTime
 th08::Gui::FUN_00439050
 th08::Gui::FUN_00439093
 th08::BulletManager::bulletmanager_fun_00415c60
+th08::Spellcard::SetStoredVector

@@ -237,7 +237,7 @@ th08::EclManager::CallEclSub,0x418450,0x58,__thiscall,,u32,EclManager*,EnemyEclC
 th08::EclManager::RunEcl,0x4184b0,0x680e,__thiscall,,u32,EclManager*,void*
 FUN_0041efc0,0x41efc0,0x36,unknown,,u8
 FUN_0041f000,0x41f000,0x35,unknown,,u8
-FUN_0041f040,0x41f040,0x43,unknown,,u8,u8,u8,u8
+th08::Spellcard::SetStoredVector,0x41f040,0x43,__thiscall,,void,Spellcard*,f32,f32,f32
 FUN_0041f090,0x41f090,0x18,unknown,,u8,u8,u8
 FUN_0041f0b0,0x41f0b0,0x25,unknown,,u8,u8
 FUN_0041f0e0,0x41f0e0,0x28,unknown,,u8,u8

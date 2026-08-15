@@ -7,6 +7,7 @@
 
 namespace th08
 {
+DIFFABLE_STATIC(Spellcard, g_Spellcard);
 DIFFABLE_STATIC(ChainElem *, g_SpellcardCalcChain);
 // clang-format off
 // TODO: stop clang-format from fucking with whitespace formatting
@@ -350,6 +351,16 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(i32, 10, g_SpellcardCountPerStage) = {
 
 // clang-format on
 // TODO: stop clang-format from fucking with whitespace formatting
+
+
+// FUNCTION: th08 0x0041F040
+void Spellcard::SetStoredVector(f32 x, f32 y, f32 z)
+{
+    *(f32 *)(this->activeEnemy + 0x2A4) = x;
+    *(f32 *)(this->activeEnemy + 0x2A8) = y;
+    *(f32 *)(this->activeEnemy + 0x2AC) = z;
+}
+
 
 // FUNCTION: th08 0x4144d0
 #pragma var_order(difficulty, i)

@@ -49179,3 +49179,10 @@ offset = 0x0D
 type = "REL32"
 symbol = "?RemoveAllBullets@BulletManager@th08@@QAEXH@Z"
 target = 0x00430830
+
+[[units]]
+name = "spellcard-set-stored-vector"
+object = "build/SpellCard.obj"
+symbol = "?SetStoredVector@Spellcard@th08@@QAEXMMM@Z"
+target_address = 0x0041F040
+size = 0x43
