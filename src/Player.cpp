@@ -3,6 +3,7 @@
 #include "AsciiManager.hpp"
 #include "BulletManager.hpp"
 #include "Gui.hpp"
+#include "ItemManager.hpp"
 #include "AnmManager.hpp"
 #include "Player.hpp"
 
@@ -149,9 +150,35 @@ void Player::FUN_0044aec0()
 void Player::FUN_00451150()
 {
 }
-// STUB: th08 0x451400
+// FUNCTION: th08 0x451400
+#pragma var_order(i, slot, this)
 void Player::FUN_00451400()
 {
+    u8 *slot;
+    i32 i;
+
+    slot = reinterpret_cast<u8 *>(this) + 0xBE838;
+    for (i = 0; i < 0x80; i++, slot += 0x484)
+    {
+        if (*reinterpret_cast<i16 *>(slot + 0x462) != 2)
+        {
+            continue;
+        }
+        if (*reinterpret_cast<i16 *>(slot + 0x1FC) != 0)
+        {
+            reinterpret_cast<AnmVm *>(slot)->SetZRotation(*reinterpret_cast<f32 *>(slot + 0x450));
+        }
+        *reinterpret_cast<f32 *>(slot + 0x208) = g_ItemAnmManagerScreenShakeOffset.x + *reinterpret_cast<f32 *>(slot + 0x2A4);
+        *reinterpret_cast<f32 *>(slot + 0x20C) = g_ItemAnmManagerScreenShakeOffset.y + *reinterpret_cast<f32 *>(slot + 0x2A8);
+        *reinterpret_cast<f32 *>(slot + 0x210) = 0.2f;
+        if (*reinterpret_cast<i8 *>(slot + 0x470) != 0)
+        {
+            *reinterpret_cast<u8 *>(slot + 0x1F2) = 0xff;
+            *reinterpret_cast<u8 *>(slot + 0x1F1) = 0x40;
+            *reinterpret_cast<u8 *>(slot + 0x1F0) = 0x40;
+        }
+        g_AnmManager->DrawPlayerBullet(reinterpret_cast<AnmVm *>(slot));
+    }
 }
 // STUB: th08 0x451500
 void Player::FUN_00451500()

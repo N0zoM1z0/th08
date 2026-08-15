@@ -687,3 +687,4 @@ th08::FUN_00439916
 th08::FUN_00439961
 th08::Player::OnDrawLowPrio
 th08::Supervisor::EnumGameControllersCb
+th08::Player::FUN_00451400

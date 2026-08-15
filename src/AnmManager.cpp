@@ -2455,4 +2455,10 @@ out:
     SAFE_RELEASE(backbuffer);
 }
 
+
+// STUB: th08 0x45e960
+void AnmManager::DrawPlayerBullet(AnmVm *vm)
+{
+}
+
 }; // Namespace th08

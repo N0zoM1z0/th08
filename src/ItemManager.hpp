@@ -88,5 +88,6 @@ struct ItemManager
 C_ASSERT(sizeof(ItemManager) == 0x17b094);
 
 DIFFABLE_EXTERN(ItemManager, g_ItemManager);
+DIFFABLE_EXTERN(Float2, g_ItemAnmManagerScreenShakeOffset);
 
 }; // namespace th08

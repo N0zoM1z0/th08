@@ -56493,3 +56493,40 @@ type = "DIR32"
 symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
 target = 0x017CE758
 addend = 0x0C
+
+[[units]]
+name = "player-fun-00451400"
+object = "build/Player.obj"
+symbol = "?FUN_00451400@Player@th08@@QAEXXZ"
+target_address = 0x00451400
+size = 0xF1
+
+[[units.relocations]]
+offset = 0x6C
+type = "REL32"
+symbol = "?SetZRotation@AnmVm@th08@@QAEXM@Z"
+target = 0x0040EC00
+
+[[units.relocations]]
+offset = 0x75
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x8D
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0xDF
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xE4
+type = "REL32"
+symbol = "?DrawPlayerBullet@AnmManager@th08@@QAEXPAUAnmVm@2@@Z"
+target = 0x0045E960

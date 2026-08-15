@@ -941,7 +941,7 @@ th08::AnmVm::GetFloatVar,0x45e650,0xa6,__thiscall,,float10,AnmVm*,f32
 th08::AnmVm::GetIntVar,0x45e720,0xba,__thiscall,,i32,AnmVm*,u32
 th08::AnmVm::GetFloatVarPtr,0x45e810,0x7c,__thiscall,,f32*,i32,f32*,u16,u8
 th08::AnmVm::GetIntVarPtr,0x45e8a0,0x8b,__thiscall,,i32*,AnmVm*,i32*,u16,u8
-th08::AnmManager::FUN_0045e960,0x45e960,0x7d,__thiscall,,void,AnmManager*,AnmVm*
+th08::AnmManager::DrawPlayerBullet,0x45e960,0x7d,__thiscall,,void,AnmManager*,AnmVm*
 th08::AnmManager::ExecuteScript,0x45ea00,0x366d,__thiscall,,u32,AnmManager*,AnmVm*
 FUN_00462210,0x462210,0x15,unknown,,u8,u8
 FUN_00462230,0x462230,0x15,unknown,,u8,u8

@@ -503,6 +503,7 @@ struct AnmManager
     void TranslateRotation(VertexTex1DiffuseXyzrhw *vertex, float x, float y, float sine, float cosine, float xOffset,
                            float yOffset);
     ZunResult Draw2D(AnmVm *vm);
+    void DrawPlayerBullet(AnmVm *vm);
     ZunResult FUN_00463cf0(AnmVm *vm);
     ZunResult FUN_00464070(AnmVm *vm);
     ZunResult DrawWithCallback(AnmVm *vm, void *callback);
