@@ -550,12 +550,12 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         if (TH08_ECL_OBJECT(ctx, lhsInt))
         {
             *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x558) =
-                TH08_ECL_READ_F(ctx, 1);
+                TH08_ECL_READ_F_RAWARG(ctx, 1);
             *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x55C) =
-                TH08_ECL_READ_F(ctx, 2);
+                TH08_ECL_READ_F_RAWARG(ctx, 2);
         }
         break;
-    case 163: g_EclGlobal00F54CEC = (lhsInt = TH08_ECL_READ_I(ctx, 0)); break;
+    case 163: g_EclGlobal00F54CEC = TH08_ECL_READ_I(ctx, 0); break;
     case 127:
         if (TH08_ECL_READ_I(ctx, 0) < 0)
         {
@@ -822,8 +822,7 @@ enter_subroutine:
     case 112: g_BulletManager.bulletmanager_fun_00415c60(); break;
 
     case 113:
-        lhsInt = TH08_ECL_READ_I(ctx, 0);
-        if (lhsInt < 0)
+        if (TH08_ECL_READ_I(ctx, 0) < 0)
             TH08_ECL_AT(ctx, u32, 0x3020) &= ~0x200;
         else
         {
@@ -836,8 +835,8 @@ enter_subroutine:
         TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFBFFFFFF) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 26);
         break;
     case 152:
-        TH08_ECL_AT(ctx, f32, 0x2DEC) = TH08_ECL_READ_F(ctx, 0);
-        TH08_ECL_AT(ctx, f32, 0x2DF0) = TH08_ECL_READ_F(ctx, 1);
+        TH08_ECL_AT(ctx, f32, 0x2DEC) = TH08_ECL_READ_F_RAWARG(ctx, 0);
+        TH08_ECL_AT(ctx, f32, 0x2DF0) = TH08_ECL_READ_F_RAWARG(ctx, 1);
         TH08_ECL_AT(ctx, u16, 0x2DF4) = (u16)TH08_ECL_READ_I(ctx, 2);
         TH08_ECL_AT(ctx, u16, 0x2DF6) = (u16)TH08_ECL_READ_I(ctx, 3);
         TH08_ECL_AT(ctx, u16, 0x2DF8) = (u16)TH08_ECL_READ_I(ctx, 4);
@@ -954,14 +953,14 @@ enter_subroutine:
     case 179: g_Gui.FUN_00439007(); break;
     case 180: g_Gui.FUN_004390d6(); break;
     case 181:
-        if (TH08_ECL_CONTEXT_API(ctx)->GetGameState() < 12)
+        if (g_GameManager.GetClockTime() < 12)
         {
-            TH08_ECL_CONTEXT_API(ctx)->PlaySound(0x2D, 0);
-            TH08_ECL_CONTEXT_API(ctx)->SetGameState(1);
-            if (TH08_ECL_CONTEXT_API(ctx)->GetGameState() == 12)
-                TH08_ECL_CONTEXT_API(ctx)->Call00439093();
+            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(0x2D), 0);
+            g_GameManager.AddToClockTime(1);
+            if (g_GameManager.GetClockTime() == 12)
+                g_Gui.FUN_00439093();
             else
-                TH08_ECL_CONTEXT_API(ctx)->Call00439050();
+                g_Gui.FUN_00439050();
         }
         break;
     case 182:
