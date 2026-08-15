@@ -588,3 +588,7 @@ th08::GuiMsgVm::GuiMsgVm
 th08::Gui::LoadMsg
 th08::FUN_00438fe9
 th08::Gui::RegisterChain
+th08::ScreenEffect::ScreenEffect
+th08::ScreenEffect::CalcFadeIn
+th08::ScreenEffect::CalcFadeOut
+th08::ScreenEffect::DrawFullFade

@@ -1,12 +1,19 @@
 #include "th_pch.h"
 
 #include "ScreenEffect.hpp"
+#include "AnmManager.hpp"
+#include "GameManager.hpp"
 
 namespace th08
 {
 
 DIFFABLE_STATIC(i32, g_ScreenEffectCounter);
 DIFFABLE_STATIC(ScreenEffect, g_ScreenEffect);
+
+// FUNCTION: th08 0x45b000
+ScreenEffect::ScreenEffect()
+{
+}
 
 // STUB: th08 0x45b020
 void ScreenEffect::Clear(D3DCOLOR color)
@@ -18,9 +25,25 @@ void ScreenEffect::SetViewport(D3DCOLOR clearColor)
 {
 }
 
-// STUB: th08 0x45b160
+// FUNCTION: th08 0x45b160
 ChainCallbackResult ScreenEffect::CalcFadeIn(ScreenEffect *screenEffect)
 {
+    if (screenEffect->duration != 0)
+    {
+        screenEffect->arcadeFadeAlpha =
+            (i32)(255.0f - ((255.0f * (f32)screenEffect->timer) / screenEffect->duration));
+        if (screenEffect->arcadeFadeAlpha < 0)
+        {
+            screenEffect->arcadeFadeAlpha = 0;
+        }
+    }
+
+    if (screenEffect->timer >= screenEffect->duration)
+    {
+        return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
+    }
+
+    screenEffect->timer++;
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
@@ -35,9 +58,33 @@ void ScreenEffect::DrawSquareShaded(ZunRect *rect, D3DCOLOR topLeft, D3DCOLOR to
 {
 }
 
-// STUB: th08 0x45b760
+// FUNCTION: th08 0x45b760
 ChainCallbackResult ScreenEffect::CalcFadeOut(ScreenEffect *screenEffect)
 {
+    if (g_ScreenEffectCounter != 0)
+    {
+        return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
+    }
+
+    if (screenEffect->duration != 0)
+    {
+        screenEffect->arcadeFadeAlpha = (i32)((255.0f * (f32)screenEffect->timer) / screenEffect->duration);
+        if (screenEffect->arcadeFadeAlpha < 0)
+        {
+            screenEffect->arcadeFadeAlpha = 0;
+        }
+    }
+
+    if (screenEffect->timer >= screenEffect->duration)
+    {
+        return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
+    }
+
+    if (g_GameManager.isInGameMenu == 0 && g_GameManager.showRetryMenu == 0)
+    {
+        screenEffect->timer++;
+    }
+
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
@@ -48,9 +95,24 @@ ScreenEffect *ScreenEffect::RegisterChain(ScreenEffectType effect, i32 ticks, i3
     return NULL;
 }
 
-// STUB: th08 0x45bb50
+// FUNCTION: th08 0x45bb50
 ChainCallbackResult ScreenEffect::DrawFullFade(ScreenEffect *screenEffect)
 {
+    ZunRect rect;
+
+    rect.left = 0.0f;
+    rect.top = 0.0f;
+    rect.right = 640.0f;
+    rect.bottom = 480.0f;
+
+    g_AnmManager->FlushVertexBuffer();
+    g_Supervisor.viewport.X = 0;
+    g_Supervisor.viewport.Y = 0;
+    g_Supervisor.viewport.Width = 640;
+    g_Supervisor.viewport.Height = 480;
+    g_Supervisor.d3dDevice->SetViewport(&g_Supervisor.viewport);
+
+    ScreenEffect::DrawSquare(&rect, (screenEffect->arcadeFadeAlpha << 24) | screenEffect->arcadeFadeColor);
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 

@@ -23,6 +23,8 @@ enum ScreenEffectType
 
 struct ScreenEffect
 {
+    ScreenEffect();
+
     static void Clear(D3DCOLOR color);
     static void SetViewport(D3DCOLOR clearColor);
 
@@ -43,14 +45,16 @@ struct ScreenEffect
     static ZunResult AddedCallback(ScreenEffect *screenEffect);
     static ZunResult DeletedCallback(ScreenEffect *screenEffect);
 
-    unknown_fields(0x0, 0x4);
+    i32 type;
     ChainElem *calcChainElement;
     ChainElem *drawChainElement;
-    unknown_fields(0xc, 0x4);
+    i32 unk0c;
     i32 arcadeFadeAlpha;
-    unknown_fields(0x14, 0x4);
+    i32 duration;
     D3DCOLOR arcadeFadeColor;
-    unknown_fields(0x1c, 0xc);
+    i32 shakeStart;
+    i32 shakeEnd;
+    i32 unk24;
     ZunTimer timer;
 };
 

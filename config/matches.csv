@@ -584,3 +584,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00439710,th08::Gui::LoadMsg,197,matching,100.00,gui-load-msg,python3 scripts/compare-function.py gui-load-msg --json
 0x00438FE9,th08::FUN_00438fe9,10,matching,100.00,gui-resource-reload-enabled,python3 scripts/compare-function.py gui-resource-reload-enabled --json
 0x00437AD0,th08::Gui::RegisterChain,244,matching,100.00,gui-register-chain,python3 scripts/compare-function.py gui-register-chain --json
+0x0045B000,th08::ScreenEffect::ScreenEffect,25,matching,100.00,screen-effect-constructor,python3 scripts/compare-function.py screen-effect-constructor --json
+0x0045B160,th08::ScreenEffect::CalcFadeIn,123,matching,100.00,screen-effect-calc-fade-in,python3 scripts/compare-function.py screen-effect-calc-fade-in --json
+0x0045B760,th08::ScreenEffect::CalcFadeOut,155,matching,100.00,screen-effect-calc-fade-out,python3 scripts/compare-function.py screen-effect-calc-fade-out --json
+0x0045BB50,th08::ScreenEffect::DrawFullFade,145,matching,100.00,screen-effect-draw-full-fade,python3 scripts/compare-function.py screen-effect-draw-full-fade --json

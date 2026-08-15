@@ -891,16 +891,16 @@ th08::ScoreDat::ParseCLRD,0x45ac90,0x170,__fastcall,,ZunResult,ScoreDat*,Clrd*
 th08::ScoreDat::ParsePSCR,0x45ae00,0x127,__fastcall,,ZunResult,ScoreDat*,Pscr*
 th08::ScoreDat::ParsePLST,0x45af30,0x81,__fastcall,,ZunResult,ScoreDat*,Plst*
 th08::ScoreDat::ReleaseScore,0x45afc0,0x35,__fastcall,,void,ScoreDat*
-th08::ScreenEffect::ScreenEffect,0x45b000,0x19,unknown,,u8
+th08::ScreenEffect::ScreenEffect,0x45b000,0x19,__thiscall,,ScreenEffect*,ScreenEffect*
 th08::ScreenEffect::Clear,0x45b020,0xbe,__fastcall,,u8,unsigned long
 th08::ScreenEffect::SetViewport,0x45b0e0,0x7c,__fastcall,,void,unsigned long
-th08::ScreenEffect::CalcFadeIn,0x45b160,0x7b,__fastcall,,bool,ScreenEffect*
+th08::ScreenEffect::CalcFadeIn,0x45b160,0x7b,__fastcall,,ChainCallbackResult,ScreenEffect*
 th08::ScreenEffect::DrawSquare,0x45b1e0,0x2af,__fastcall,,void,ZunRect*,unsigned long
 th08::ScreenEffect::DrawSquareShaded,0x45b490,0x2cd,__fastcall,,void,ZunRect*,unsigned long,unsigned long,unsigned long,unsigned long
-th08::ScreenEffect::CalcFadeOut,0x45b760,0x9b,__fastcall,,u32,ScreenEffect*
+th08::ScreenEffect::CalcFadeOut,0x45b760,0x9b,__fastcall,,ChainCallbackResult,ScreenEffect*
 FUN_0045b800,0x45b800,0xa9,unknown,,u8
 th08::ScreenEffect::RegisterChain,0x45b8b0,0x274,__fastcall,,u8,ScreenEffects,i32,i32,i32,i32,i32
-th08::ScreenEffect::DrawFullFade,0x45bb50,0x91,__fastcall,,u32,ScreenEffect*
+th08::ScreenEffect::DrawFullFade,0x45bb50,0x91,__fastcall,,ChainCallbackResult,ScreenEffect*
 FUN_0045bbf0,0x45bbf0,0x45,unknown,,u8
 th08::ScreenEffect::DrawArcadeFade,0x45bc40,0x45,__fastcall,,u32,ScreenEffect*
 FUN_0045bc90,0x45bc90,0xd2,unknown,,u8

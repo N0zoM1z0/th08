@@ -76,3 +76,17 @@ Verified with `Gui::MsgWait`: a raw state field compared against zero needed an
 unsigned `u32` load to emit target `jbe`; using `i32` emitted signed `jle` with
 otherwise identical bytes.  For raw flag/counter fields, infer signedness from
 the target conditional jump before choosing field type.
+
+
+## Cast placement changes x87 code shape before `__ftol2`
+
+Verified with `ScreenEffect::CalcFadeIn` at `0x0045B160`.  The target computes
+`255.0f - scaledTimer` in x87 and only then converts through `__ftol2`:
+
+```cpp
+(i32)(255.0f - ((255.0f * (f32)timer) / duration))
+```
+
+Writing the algebraically equivalent `255 - (i32)scaledTimer` emits an integer
+subtraction after `__ftol2` and misses both instruction shape and relocation
+offsets.
