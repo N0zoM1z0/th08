@@ -514,6 +514,7 @@ struct AnmManager
     ZunResult CreateEmptyTexture(IDirect3DTexture8 **outTexture, i32 width, i32 height, i32 format);
     AnmLoaded *LoadAnm(i32 anmIdx, const char *filename);
     AnmLoaded *ReadAnmEntries(i32 anmIdx, const char *filename);
+    AnmLoaded *GetAnm(i32 anmIdx);
     AnmLoaded *PreloadAnm(i32 anmIdx, const char *filename);
     i32 LoadExternalTextureData(AnmLoaded *anmLoaded, i32 entryNumber, i32 *sprites, i32 *scripts,
                                 AnmRawEntry *rawEntry);

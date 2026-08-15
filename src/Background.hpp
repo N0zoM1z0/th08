@@ -27,7 +27,7 @@ struct Background
     static ZunResult RegisterChain(i32 param);
     static ZunResult DeletedCallback(Background *background);
     static void CutChain();
-    ZunResult LoadStageData();
+    ZunResult LoadStageData(const char *path);
     void RenderObjects(i32 mode);
 
     void SetCamera1()

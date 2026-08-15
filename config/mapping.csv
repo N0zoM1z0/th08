@@ -130,7 +130,7 @@ th08::AnmManager::SetMixColorDefault,0x40bab0,0x1e,__thiscall,,void,AnmManager*
 th08::AnmManager::SetMixColor,0x40bad0,0x1f,__thiscall,,void,AnmManager*,D3DCOLOR
 th08::AnmManager::Draw2DAndFlush,0x40baf0,0x21,__thiscall,,void,AnmManager*,AnmVm*
 Concurrency::details::ContextBase::ClearCancel,0x40bb20,0x33,__thiscall,,u8,ContextBase*
-FUN_0040bb60,0x40bb60,0x1a,unknown,,u8,u8
+th08::AnmManager::GetAnm,0x40bb60,0x1a,__thiscall,,AnmLoaded*,AnmManager*,i32
 th08::GameManager::IsTampered,0x40bb80,0x91,__thiscall,,ZunBool,GameManager*
 FUN_0040bc20,0x40bc20,0x17,unknown,,u8
 th08::Player::IsYoukai,0x40bc40,0x12,__thiscall,,i32,Player*

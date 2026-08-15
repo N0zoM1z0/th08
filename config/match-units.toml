@@ -54233,3 +54233,160 @@ offset = 0x65
 type = "REL32"
 symbol = "?DrawInner@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
 target = 0x004628B0
+[[units]]
+name = "background-added-callback"
+object = "build/Background.obj"
+symbol = "?AddedCallback@Background@th08@@SI?AW4ZunResult@@PAU12@@Z"
+target_address = 0x00409850
+size = 0x2C2
+
+[[units.relocations]]
+offset = 0x17
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x6A
+type = "REL32"
+symbol = "?IsDisableResourceReload@th08@@YIIXZ"
+target = 0x0040B900
+
+[[units.relocations]]
+offset = 0x73
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x7A
+type = "DIR32"
+symbol = "?g_StageAnmFiles@th08@@3PAPBDA"
+target = 0x004C72F8
+
+[[units.relocations]]
+offset = 0x83
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x88
+type = "REL32"
+symbol = "?PreloadAnm@AnmManager@th08@@QAEPAUAnmLoaded@2@HPBD@Z"
+target = 0x00465A40
+
+[[units.relocations]]
+offset = 0xAF
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xB4
+type = "REL32"
+symbol = "?GetAnm@AnmManager@th08@@QAEPAUAnmLoaded@2@H@Z"
+target = 0x0040BB60
+
+[[units.relocations]]
+offset = 0xC2
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xC7
+type = "REL32"
+symbol = "?IsSpellPractice@GameManager@th08@@QAEIXZ"
+target = 0x00406C70
+
+[[units.relocations]]
+offset = 0xD1
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xD8
+type = "DIR32"
+symbol = "?g_StageStdFiles@th08@@3PAPBDA"
+target = 0x004C731C
+
+[[units.relocations]]
+offset = 0xE1
+type = "REL32"
+symbol = "?LoadStageData@Background@th08@@QAE?AW4ZunResult@@PBD@Z"
+target = 0x00409CE0
+
+[[units.relocations]]
+offset = 0xF5
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xFC
+type = "DIR32"
+symbol = "?g_StageStdFilesSpell@th08@@3PAPBDA"
+target = 0x004C7340
+
+[[units.relocations]]
+offset = 0x105
+type = "REL32"
+symbol = "?LoadStageData@Background@th08@@QAE?AW4ZunResult@@PBD@Z"
+target = 0x00409CE0
+
+[[units.relocations]]
+offset = 0x149
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x170
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x197
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x1C1
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x263
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x285
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x29D
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x2A6
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units]]
+name = "anm-manager-get-anm"
+object = "build/AnmManager.obj"
+symbol = "?GetAnm@AnmManager@th08@@QAEPAUAnmLoaded@2@H@Z"
+target_address = 0x0040BB60
+size = 0x1A

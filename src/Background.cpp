@@ -5,6 +5,7 @@
 #include "Gui.hpp"
 #include "ScreenEffect.hpp"
 #include "EclManager.hpp"
+#include "GameManager.hpp"
 #include "Supervisor.hpp"
 
 namespace th08
@@ -14,6 +15,16 @@ DIFFABLE_STATIC(Background, g_Background);
 DIFFABLE_STATIC(ChainElem, g_BackgroundCalcChain);
 DIFFABLE_STATIC(ChainElem, g_BackgroundDrawChainHighPrio);
 DIFFABLE_STATIC(ChainElem, g_BackgroundDrawChainLowPrio);
+
+DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 9, g_StageAnmFiles) = {
+    "stg1bg.anm", "stg2bg.anm", "stg3bg.anm", "stg4abg.anm", "stg4abg.anm",
+    "stg5bg.anm", "stg6bg.anm", "stg7bg.anm", "stg8bg.anm"};
+DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 9, g_StageStdFiles) = {
+    "stage1.std", "stage2.std", "stage3.std", "stage4a.std", "stage4b.std",
+    "stage5.std", "stage6.std", "stage7.std", "stage8.std"};
+DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 9, g_StageStdFilesSpell) = {
+    "stage1_s.std", "stage2_s.std", "stage3_s.std", "stage4a_s.std", "stage4b_s.std",
+    "stage5_s.std", "stage6_s.std", "stage7_s.std", "stage8_s.std"};
 
 // FUNCTION: th08 0x4071a0
 Background::Background()
@@ -110,10 +121,79 @@ ChainCallbackResult Background::OnDrawLowPrio(Background *background)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-// STUB: th08 0x409850
+// FUNCTION: th08 0x409850
+#pragma var_order(i, vector0, vector1, vector2, vector3, background)
 ZunResult Background::AddedCallback(Background *background)
 {
-    return ZUN_ERROR;
+    i32 i;
+
+    background->timer80c = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + 0x818) = 0;
+    background->vector824.x = 0.0f;
+    background->vector824.y = 0.0f;
+    background->vector824.z = 0.0f;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + 0xB24) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + 0xB10) = 0;
+
+    if (!IsDisableResourceReload())
+    {
+        background->stageAnmFile = g_AnmManager->PreloadAnm(4, g_StageAnmFiles[g_GameManager.currentStage]);
+        if (background->stageAnmFile == NULL)
+        {
+            return ZUN_ERROR;
+        }
+    }
+    else
+    {
+        background->stageAnmFile = g_AnmManager->GetAnm(4);
+    }
+
+    if (!g_GameManager.IsSpellPractice())
+    {
+        if (background->LoadStageData(g_StageStdFiles[g_GameManager.currentStage]) != ZUN_SUCCESS)
+        {
+            return ZUN_ERROR;
+        }
+    }
+    else
+    {
+        if (background->LoadStageData(g_StageStdFilesSpell[g_GameManager.currentStage]) != ZUN_SUCCESS)
+        {
+            return ZUN_ERROR;
+        }
+    }
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + 0xAF4) = 0xFF000000;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(background) + 0xAEC) = 200.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(background) + 0xAF0) = 500.0f;
+
+    *reinterpret_cast<D3DXVECTOR3 *>(&background->unk6394.vectors[0]) = D3DXVECTOR3(0.0f, 0.0f, 1000.0f);
+    *reinterpret_cast<D3DXVECTOR3 *>(&background->unk6394.vectors[1]) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+    *reinterpret_cast<D3DXVECTOR3 *>(&background->unk6394.vectors[5]) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+    *reinterpret_cast<D3DXVECTOR3 *>(&background->unk6394.vectors[2]) = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+    background->unk6394.unk48 = 0.5235987901687622f;
+    background->unk6264 = background->unk6394;
+    background->unk62b0 = background->unk6394;
+
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(background) + 0x6474) = 0;
+    for (i = 0; i < 4; i++)
+    {
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + i * 4 + 0x63E0) = 0;
+        background->timers63f4[i] = 0;
+    }
+
+    background->unk6260 = 0;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(background) + 0x6470) = 1322500.0f;
+    if (g_GameManager.currentStage == 5)
+    {
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(background) + 0x6470) = 1822500.0f;
+    }
+    else if (g_GameManager.currentStage == 6 || g_GameManager.currentStage == 7)
+    {
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(background) + 0x6470) = 3240000.0f;
+    }
+
+    return ZUN_SUCCESS;
 }
 
 // FUNCTION: th08 0x409b20
@@ -196,7 +276,7 @@ void Background::RenderObjects(i32 mode)
 }
 
 // STUB: th08 0x409ce0
-ZunResult Background::LoadStageData()
+ZunResult Background::LoadStageData(const char *path)
 {
     return ZUN_ERROR;
 }

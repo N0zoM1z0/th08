@@ -49,6 +49,7 @@ th08::g_EclExInsn,0x4c6cb0,global
 th08::g_EffectTemplates,0x4c6d30,global
 th08::g_StageAnmFiles,0x4c72f8,global
 th08::g_StageStdFiles,0x4c731c,global
+th08::g_StageStdFilesSpell,0x4c7340,global
 g_StageEnemyAnms,0x4c7364,global
 th08::g_EffectAnms,0x4c7480,global
 g_TimeRequirementParams,0x4c77f0,global

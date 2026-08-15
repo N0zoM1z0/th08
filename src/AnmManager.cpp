@@ -1476,6 +1476,12 @@ void AnmManager::SetCameraMode(i32 mode)
     this->cameraMode = mode;
 }
 
+// FUNCTION: th08 0x40bb60
+AnmLoaded *AnmManager::GetAnm(i32 anmIdx)
+{
+    return &this->anmFiles[anmIdx];
+}
+
 // FUNCTION: th08 0x465070
 AnmManager::AnmManager()
 {
