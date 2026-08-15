@@ -56682,3 +56682,37 @@ object = "build/Player.obj"
 symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
 target_address = 0x0040D3D0
 size = 0x1B
+
+[[units]]
+name = "player-fun-0044fd80"
+object = "build/Player.obj"
+symbol = "?FUN_0044fd80@Player@th08@@QAIHPAEH0@Z"
+target_address = 0x0044FD80
+size = 0x41
+
+[[units.relocations]]
+offset = 0x2E
+type = "REL32"
+symbol = "?FUN_0044fb70@Player@th08@@QAIXPAE0@Z"
+target = 0x0044FB70
+
+[[units]]
+name = "supervisor-controller-callback"
+object = "build/Supervisor.obj"
+symbol = "?ControllerCallback@Supervisor@th08@@SGHPBUDIDEVICEOBJECTINSTANCEA@@PAX@Z"
+target_address = 0x00445E3D
+size = 0x6A
+
+[[units.relocations]]
+offset = 0x4C
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x14
+
+[[units.relocations]]
+offset = 0x54
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x14

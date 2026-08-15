@@ -693,7 +693,7 @@ th08::Supervisor::Supervisor,0x445b7a,0x46,__thiscall,,u32*,Supervisor*
 th08::Supervisor::DrawFpsCounter,0x445bc0,0x14,__fastcall,,ChainCallbackResult,Supervisor*
 th08::Supervisor::OnDraw2,0x445bd4,0x16a,__fastcall,,ChainCallbackResult,Supervisor*
 th08::Supervisor::DrawLoadingVms,0x445d3e,0xff,__fastcall,,ChainCallbackResult,Supervisor*
-FUN_00445e3d,0x445e3d,0x6a,unknown,,u8,u8,u8
+th08::Supervisor::ControllerCallback,0x445e3d,0x6a,__stdcall,,BOOL,LPCDIDEVICEOBJECTINSTANCEA,LPVOID
 th08::Supervisor::RegisterChain,0x445ea7,0xfc,__fastcall,,ZunResult
 th08::Supervisor::AddedCallback,0x445fa3,0x1fd,__fastcall,,ZunResult,Supervisor*
 th08::Supervisor::LoadDat,0x4461a0,0x92,__stdcall,,ZunResult
@@ -799,7 +799,7 @@ FUN_0044f2d0,0x44f2d0,0x2e1,unknown,,u8
 FUN_0044f5e0,0x44f5e0,0x32a,unknown,,u8
 FUN_0044f930,0x44f930,0x23a,unknown,,u8
 FUN_0044fb70,0x44fb70,0x20c,unknown,,u8,u8
-FUN_0044fd80,0x44fd80,0x41,unknown,,u8,u8,u8
+th08::Player::FUN_0044fd80,0x44fd80,0x41,__fastcall,,i32,Player*,u8*,i32,u8*
 FUN_0044fdd0,0x44fdd0,0x4d,unknown,,u8,u8,u8
 FUN_0044fe20,0x44fe20,0x177,unknown,,u8,u8,u8
 FUN_0044ffa0,0x44ffa0,0xd9,unknown,,u8,u8,u8

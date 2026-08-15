@@ -687,3 +687,5 @@ address,name,size,status,match_percent,unit,evidence
 0x00451150,th08::Player::FUN_00451150,404,matching,100.00,player-fun-00451150,python3 scripts/compare-function.py player-fun-00451150 --json
 0x00451500,th08::Player::FUN_00451500,311,matching,100.00,player-fun-00451500,python3 scripts/compare-function.py player-fun-00451500 --json
 0x0040D3D0,th08::ZunTimer::FUN_0040d3d0,27,matching,100.00,zun-timer-fun-0040d3d0,python3 scripts/compare-function.py zun-timer-fun-0040d3d0 --json
+0x0044FD80,th08::Player::FUN_0044fd80,65,matching,100.00,player-fun-0044fd80,python3 scripts/compare-function.py player-fun-0044fd80 --json
+0x00445E3D,th08::Supervisor::ControllerCallback,106,matching,100.00,supervisor-controller-callback,python3 scripts/compare-function.py supervisor-controller-callback --json

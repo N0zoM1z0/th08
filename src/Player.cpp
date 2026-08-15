@@ -289,6 +289,24 @@ i32 Player::FUN_00451500()
     return 0;
 }
 
+// STUB: th08 0x44fb70
+void __fastcall Player::FUN_0044fb70(u8 *slot, u8 *entry)
+{
+}
+
+// FUNCTION: th08 0x44fd80
+#pragma var_order(slot, this)
+i32 __fastcall Player::FUN_0044fd80(u8 *slot, i32 value, u8 *entry)
+{
+    if (value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
+    {
+        this->FUN_0044fb70(slot, entry);
+        return 1;
+    }
+
+    return 0;
+}
+
 // STUB: th08 0x450f60
 void __fastcall Player::FUN_00450f60(i32 value)
 {
