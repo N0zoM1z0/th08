@@ -56397,3 +56397,10 @@ offset = 0x1A
 type = "DIR32"
 symbol = "__real@42000000"
 target = 0x004B42CC
+
+[[units]]
+name = "increment-truncate"
+object = "build/GameManager.obj"
+symbol = "?IncrementTruncate@th08@@YIXPAIH@Z"
+target_address = 0x0043BE09
+size = 0x23

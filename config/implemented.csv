@@ -679,3 +679,4 @@ th08::GameManager::SetBombCount
 th08::GameManager::AddToDeaths
 th08::GameManager::AddToBombsUsed
 th08::GameManager::ScaleFloatBasedOnRank
+th08::IncrementTruncate

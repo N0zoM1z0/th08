@@ -181,6 +181,15 @@ void GameManager::AddTimeOrbs(i32 amount)
 #pragma optimize("", on)
 
 
+// FUNCTION: th08 0x43be09
+void __fastcall IncrementTruncate(u32 *value, i32 unused)
+{
+    if (*value < 999999u)
+    {
+        (*value)++;
+    }
+}
+
 #pragma optimize("t", on)
 i32 GameManager::GetTimeOrbs()
 {

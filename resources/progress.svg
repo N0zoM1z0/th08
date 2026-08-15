@@ -3,7 +3,7 @@
   <text x="24" y="32" fill="#f4f4f5" font-family="sans-serif" font-size="16" font-weight="600">TH08 source reconstruction</text>
   <text x="536" y="32" fill="#f4f4f5" text-anchor="end" font-family="monospace" font-size="14">42.71% exact bytes</text>
   <rect x="24" y="48" width="440" height="14" rx="7" fill="#3b4058"/>
-  <rect x="24" y="48" width="187.90" height="14" rx="7" fill="#9b6de3"/>
-  <text x="24" y="88" fill="#c8cad2" font-family="sans-serif" font-size="13">Authored exact: 676 / 1,117 functions · 196,428 / 459,958 bytes</text>
+  <rect x="24" y="48" width="187.94" height="14" rx="7" fill="#9b6de3"/>
+  <text x="24" y="88" fill="#c8cad2" font-family="sans-serif" font-size="13">Authored exact: 677 / 1,117 functions · 196,463 / 459,958 bytes</text>
   <text x="24" y="108" fill="#c8cad2" font-family="sans-serif" font-size="13">Library exact: not counted until TH08-specific archives are attested</text>
 </svg>

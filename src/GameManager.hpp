@@ -22,6 +22,8 @@
 namespace th08
 {
 
+void __fastcall IncrementTruncate(u32 *value, i32 unused);
+
 struct GameManagerFlags
 {
     u32 isPracticeMode : 1;
