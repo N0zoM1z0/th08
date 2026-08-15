@@ -203,3 +203,4 @@ When a structure begins with the field required by an API, VC7 may pass the stru
 - A single reused loop local can still need per-loop signedness. In `EnemyManager::Initialize`, the first four-entry sentinel loop must be written with `(u32)i < 4` to get target `jae`, while later loops with the same local stay signed and use `jge`.
 - For tiny predicate helpers, a direct boolean `return expr;` under local `#pragma optimize("t", on)` can match VC7 target code better than an explicit `result` local; verified with `GameManager::IsSoloHuman/IsSoloYoukai`.
 - D3DXVECTOR3 helper callbacks may need strict x87 comparisons (`>`, `<`) rather than inclusive operators to match `test ah,0x41` and `test ah,5` masks.
+- For byte-copy loops where target has separate increment blocks, use explicit `for` loops (not `while`) and spell pointer updates in target order, e.g. `*dst = *src++; dst++;` when target increments source before destination.  Verified by `Supervisor::TakeSnapshot`.

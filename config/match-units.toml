@@ -54795,3 +54795,166 @@ offset = 0x193
 type = "REL32"
 symbol = "??YD3DXVECTOR3@@QAEAAU0@ABU0@@Z"
 target = 0x00410A70
+
+[[units]]
+name = "supervisor-take-snapshot"
+object = "build/Supervisor.obj"
+symbol = "?TakeSnapshot@Supervisor@th08@@QAEIPBD@Z"
+target_address = 0x0044748F
+size = 0x2D5
+
+[[units.relocations]]
+offset = 0x1A
+type = "DIR32"
+symbol = "??_C@_0O@FOBPAMME@SnapShot?$CB?5?$CFs?6?$AA@"
+target = 0x004B699C
+
+[[units.relocations]]
+offset = 0x1F
+type = "REL32"
+symbol = "?GuiDebugPrint@utils@th08@@YAXPADZZ"
+target = 0x00437CDD
+
+[[units.relocations]]
+offset = 0x4B
+type = "DIR32"
+symbol = "??_C@_02DGHHEOAL@BM?$AA@"
+target = 0x004B6998
+
+[[units.relocations]]
+offset = 0x7E
+type = "DIR32"
+symbol = "??_C@_0BO@JIBJEEN@16bit?5?c?$IB?$KP?e?$IP?$JG?c?$IC?$IK?h?$LO?$LM?c?$IC?$IB?c?$IB?$KK?c?$IB?$IE?$AN?6?$AA@"
+target = 0x004B6980
+
+[[units.relocations]]
+offset = 0x83
+type = "REL32"
+symbol = "?GuiDebugPrint@utils@th08@@YAXPADZZ"
+target = 0x00437CDD
+
+[[units.relocations]]
+offset = 0x89
+type = "DIR32"
+symbol = "??_C@_0BO@JIBJEEN@16bit?5?c?$IB?$KP?e?$IP?$JG?c?$IC?$IK?h?$LO?$LM?c?$IC?$IB?c?$IB?$KK?c?$IB?$IE?$AN?6?$AA@"
+target = 0x004B6980
+
+[[units.relocations]]
+offset = 0x8E
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x93
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00
+
+[[units.relocations]]
+offset = 0xA9
+type = "REL32"
+symbol = "_malloc"
+target = 0x004A4269
+
+[[units.relocations]]
+offset = 0xB8
+type = "DIR32"
+symbol = "??_C@_0CD@JBDDKALF@snapShotScreen?5?3?5?g?$KC?$LK?d?$LP?$JN?c?$IB?$JH?c?$IB?$IP?c?$IC?$IK@"
+target = 0x004B6960
+
+[[units.relocations]]
+offset = 0xBD
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0xC2
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00
+
+[[units.relocations]]
+offset = 0xE9
+type = "REL32"
+symbol = "_malloc"
+target = 0x004A4269
+
+[[units.relocations]]
+offset = 0xF8
+type = "DIR32"
+symbol = "??_C@_0CD@JBDDKALF@snapShotScreen?5?3?5?g?$KC?$LK?d?$LP?$JN?c?$IB?$JH?c?$IB?$IP?c?$IC?$IK@"
+target = 0x004B6960
+
+[[units.relocations]]
+offset = 0xFD
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x102
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00
+
+[[units.relocations]]
+offset = 0x232
+type = "DIR32"
+symbol = "__imp__CreateFileA@28"
+target = 0x004B4064
+
+[[units.relocations]]
+offset = 0x252
+type = "DIR32"
+symbol = "__imp__WriteFile@20"
+target = 0x004B4068
+
+[[units.relocations]]
+offset = 0x266
+type = "DIR32"
+symbol = "__imp__WriteFile@20"
+target = 0x004B4068
+
+[[units.relocations]]
+offset = 0x282
+type = "DIR32"
+symbol = "__imp__WriteFile@20"
+target = 0x004B4068
+
+[[units.relocations]]
+offset = 0x28B
+type = "DIR32"
+symbol = "__imp__CloseHandle@4"
+target = 0x004B405C
+
+[[units.relocations]]
+offset = 0x292
+type = "DIR32"
+symbol = "??_C@_0BF@KMKEHGHL@error?5?$DP?5mother?4cpp?$AN?6?$AA@"
+target = 0x004B6948
+
+[[units.relocations]]
+offset = 0x297
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x29C
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00
+
+[[units.relocations]]
+offset = 0x2C0
+type = "REL32"
+symbol = "_free"
+target = 0x004A427B
+
+[[units.relocations]]
+offset = 0x2C9
+type = "REL32"
+symbol = "_free"
+target = 0x004A427B

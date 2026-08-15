@@ -914,9 +914,116 @@ void Supervisor::TickTimer(int *frames, float *subframes)
     }
 }
 
-// STUB: th08 0x44748f
+#pragma pack(push, 1)
+struct SnapshotBitmapFileHeader
+{
+    u16 type;
+    u32 size;
+    u16 reserved1;
+    u16 reserved2;
+    u32 offBits;
+};
+#pragma pack(pop)
+
+// FUNCTION: th08 0x44748f
+#pragma var_order(fileHeader, pixels, infoHeader, backbuffer, widthBytes, src, dst, y, x, dstRow, lockedRect, bytesWritten, file, allocSize, this)
 ZunBool Supervisor::TakeSnapshot(const char *filePath)
 {
+    SnapshotBitmapFileHeader fileHeader;
+    BITMAPINFOHEADER *infoHeader = NULL;
+    u8 *pixels = NULL;
+    IDirect3DSurface8 *backbuffer = NULL;
+    D3DLOCKED_RECT lockedRect;
+    DWORD bytesWritten;
+    HANDLE file;
+    i32 widthBytes;
+    i32 y;
+    i32 x;
+    i32 dstRow;
+    u8 *dst;
+    u8 *src;
+    i32 allocSize;
+
+    utils::GuiDebugPrint("SnapShot! %s\n", filePath);
+    this->d3dDevice->GetBackBuffer(0, D3DBACKBUFFER_TYPE_MONO, &backbuffer);
+
+    memset(&fileHeader, 0, sizeof(fileHeader));
+    fileHeader.type = *reinterpret_cast<const u16 *>("BM");
+    fileHeader.offBits = 0x36;
+    fileHeader.size = fileHeader.offBits;
+
+    switch (this->presentParameters.BackBufferFormat)
+    {
+    case D3DFMT_R5G6B5:
+        utils::GuiDebugPrint("16bit は取り込めない\r\n");
+        g_GameErrorContext.Log("16bit は取り込めない\r\n");
+        goto cleanup;
+
+    case D3DFMT_X8R8G8B8:
+        allocSize = 0x2C;
+        infoHeader = (BITMAPINFOHEADER *)malloc(allocSize);
+        if (infoHeader == NULL)
+        {
+            g_GameErrorContext.Log("snapShotScreen : 確保しくり\r\n");
+            goto cleanup;
+        }
+        memset(infoHeader, 0, 0x2C);
+        widthBytes = 0x780;
+        pixels = (u8 *)malloc(widthBytes * 0x1E0);
+        if (pixels == NULL)
+        {
+            g_GameErrorContext.Log("snapShotScreen : 確保しくり\r\n");
+            goto cleanup;
+        }
+        fileHeader.size += widthBytes * 0x1E0;
+        infoHeader->biBitCount = 0x18;
+        infoHeader->biSize = 0x28;
+        infoHeader->biWidth = 0x280;
+        infoHeader->biHeight = 0x1E0;
+        infoHeader->biPlanes = 1;
+        infoHeader->biCompression = 0;
+        backbuffer->LockRect(&lockedRect, NULL, 0);
+        dstRow = 0;
+        for (y = 0x1DF; y > -1; y--, dstRow++)
+        {
+            dst = pixels + widthBytes * dstRow;
+            src = (u8 *)lockedRect.pBits + lockedRect.Pitch * y;
+            for (x = 0; x < 0x280; x++)
+            {
+                *dst = *src++;
+                dst++;
+                *dst = *src++;
+                dst++;
+                *dst = *src;
+                src += 2;
+                dst++;
+            }
+        }
+        backbuffer->UnlockRect();
+        file = CreateFileA(filePath, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+        if (file == INVALID_HANDLE_VALUE)
+        {
+            goto cleanup;
+        }
+        WriteFile(file, &fileHeader, sizeof(fileHeader), &bytesWritten, NULL);
+        WriteFile(file, infoHeader, sizeof(BITMAPINFOHEADER), &bytesWritten, NULL);
+        WriteFile(file, pixels, widthBytes * 0x1E0, &bytesWritten, NULL);
+        CloseHandle(file);
+        goto cleanup;
+
+    default:
+        g_GameErrorContext.Log("error ? mother.cpp\r\n");
+        return TRUE;
+    }
+
+cleanup:
+    if (backbuffer != NULL)
+    {
+        backbuffer->Release();
+        backbuffer = NULL;
+    }
+    free(infoHeader);
+    free(pixels);
     return FALSE;
 }
 
