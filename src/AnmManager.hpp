@@ -394,6 +394,8 @@ struct AnmVm : AnmVmBase
         this->activeSpriteIndex = -1;
     }
 
+    u32 FUN_004396f8();
+
     f32 GetFloatVar(f32 varId);
     i32 GetIntVar(i32 varId);
     f32 *GetFloatVarPtr(f32 *varPtr, u16 varMask, u32 variableNumber);

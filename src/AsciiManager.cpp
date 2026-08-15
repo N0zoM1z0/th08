@@ -140,6 +140,28 @@ void AsciiManager::SetGaugeInterrupt(i32 interrupt)
     this->gaugeInterrupt = interrupt;
 }
 
+
+// FUNCTION: th08 0x0042F2D0
+void AsciiManager::FUN_0042f2d0(i32 index, u32 value)
+{
+    *(u32 *)((u8 *)this + 0x2254 + index * 4) = value;
+}
+
+// FUNCTION: th08 0x0042F2F0
+void AsciiManager::SetScale(float scaleX, float scaleY)
+{
+    this->scaleX = scaleX;
+    this->scaleY = scaleY;
+}
+
+#pragma optimize("s", on)
+// FUNCTION: th08 0x004398FF
+void AsciiManager::SetIsGuiMode(u32 value)
+{
+    this->isGui = value;
+}
+#pragma optimize("", on)
+
 // FUNCTION: th08 0x422bb0
 void AsciiManager::FUN_00422bb0(i32 slot, i16 state)
 {

@@ -78,7 +78,7 @@ th08::GameManager::SetBombCount,0x406f30,0x6e,__thiscall,,void,GameManager*,i32
 th08::GameManager::SetPower,0x406fa0,0x24,__thiscall,,void,GameManager*,i32
 th08::AsciiManager::FUN_00406fd0,0x406fd0,0xd9,__thiscall,,void,AsciiManager*
 th08::AsciiManager::SetGaugeInterrupt,0x4070b0,0x65,__thiscall,,void,AsciiManager*,i32
-th08::AnmVm::SetInterrupt,0x407120,0x1b,__thiscall,,void,AnmVm*,i16
+th08::AnmVmBase::SetInterrupt,0x407120,0x1b,__thiscall,,void,AnmVmBase*,i16
 th08::AsciiManager::GetGaugeInterrupt,0x407140,0x14,__thiscall,,i32,AsciiManager*
 th08::AsciiManager::ResetStrings,0x407160,0x18,__thiscall,,void,AsciiManager*
 th08::AsciiManager::SetSpaceWidth,0x407180,0x19,__thiscall,,void,AsciiManager*,i32
@@ -425,7 +425,7 @@ th08::GameManager::IsSoloHuman,0x42f230,0x40,__thiscall,,i32,GameManager*
 th08::GameManager::IsSoloYoukai,0x42f270,0x40,__thiscall,,i32,GameManager*
 th08::GameManager::GetLives,0x42f2b0,0x19,__thiscall,,ulonglong,GameManager*
 th08::AsciiManager::FUN_0042f2d0,0x42f2d0,0x1d,__thiscall,,void,AsciiManager*,i32,u32
-th08::AsciiManager::SetScale,0x42f2f0,0x25,__thiscall,,void,AsciiManager*,u32,u32
+th08::AsciiManager::SetScale,0x42f2f0,0x25,__thiscall,,void,AsciiManager*,f32,f32
 FUN_0042f320,0x42f320,0x11,unknown,,u8
 FUN_0042f340,0x42f340,0x16,unknown,,u8,u8
 FUN_0042f360,0x42f360,0xb1,unknown,,u8

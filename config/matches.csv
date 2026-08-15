@@ -572,3 +572,8 @@ address,name,size,status,match_percent,unit,evidence
 0x00414540,th08::Spellcard::IsLastSpell,68,matching,100.00,spellcard-is-last-spell,python3 scripts/compare-function.py spellcard-is-last-spell --json
 0x00417860,th08::Spellcard::FUN_00417860,59,matching,100.00,spellcard-fun-00417860,python3 scripts/compare-function.py spellcard-fun-00417860 --json
 0x0042DFF0,th08::Spellcard::FUN_0042DFF0,22,matching,100.00,spellcard-fun-0042dff0,python3 scripts/compare-function.py spellcard-fun-0042dff0 --json
+0x0042F2D0,th08::AsciiManager::FUN_0042f2d0,29,matching,100.00,ascii-fun-0042f2d0,python3 scripts/compare-function.py ascii-fun-0042f2d0 --json
+0x0042F2F0,th08::AsciiManager::SetScale,37,matching,100.00,ascii-set-scale,python3 scripts/compare-function.py ascii-set-scale --json
+0x004398FF,th08::AsciiManager::SetIsGuiMode,23,matching,100.00,ascii-set-is-gui-mode,python3 scripts/compare-function.py ascii-set-is-gui-mode --json
+0x004396F8,th08::AnmVm::FUN_004396f8,24,matching,100.00,anm-vm-fun-004396f8,python3 scripts/compare-function.py anm-vm-fun-004396f8 --json
+0x00407120,th08::AnmVmBase::SetInterrupt,27,matching,100.00,anm-vm-base-set-interrupt,python3 scripts/compare-function.py anm-vm-base-set-interrupt --json

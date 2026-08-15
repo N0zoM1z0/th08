@@ -576,3 +576,8 @@ th08::ZunTimer::operator--(int)
 th08::Spellcard::IsLastSpell
 th08::Spellcard::FUN_00417860
 th08::Spellcard::FUN_0042DFF0
+th08::AsciiManager::FUN_0042f2d0
+th08::AsciiManager::SetScale
+th08::AsciiManager::SetIsGuiMode
+th08::AnmVm::FUN_004396f8
+th08::AnmVmBase::SetInterrupt

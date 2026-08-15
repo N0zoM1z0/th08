@@ -99,6 +99,7 @@ struct AsciiManager
     void OnDrawHighPrioImpl();
     void DrawPercentage(Float3 *position, i32 percentage, D3DCOLOR color);
     void FUN_00422bb0(i32 slot, i16 state);
+    void FUN_0042f2d0(i32 index, u32 value);
     void SetBossMarkerPosition(i32 slot, D3DXVECTOR3 *position);
 
     void Reset();
@@ -114,11 +115,7 @@ struct AsciiManager
         this->isSelected = selected;
     }
 
-    void SetScale(float scaleX, float scaleY)
-    {
-        this->scaleX = scaleX;
-        this->scaleY = scaleY;
-    }
+    void SetScale(float scaleX, float scaleY);
 
     void UpdateVms()
     {
@@ -150,6 +147,8 @@ struct AsciiManager
     {
         this->spaceWidth = spaceWidth;
     }
+
+    void SetIsGuiMode(u32 value);
 
     AnmVm largeText;
     AnmVm smallScoreText;

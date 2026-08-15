@@ -66,6 +66,9 @@ def main() -> int:
     parser.add_argument("objects", nargs="*", type=Path, default=sorted((ROOT / "build").glob("*.obj")))
     parser.add_argument("--min-size", type=lambda x: int(x, 0), default=0x10)
     parser.add_argument("--max-size", type=lambda x: int(x, 0), default=0x400)
+    parser.add_argument("--limit", type=int, default=0, help="maximum rows to print; 0 means all")
+    parser.add_argument("--near", action="store_true", help="also show source symbols whose size differs from mapping")
+    parser.add_argument("--max-delta", type=lambda x: int(x, 0), default=0x40, help="maximum absolute size delta for --near")
     args = parser.parse_args()
 
     mapping = load_mapping()
@@ -84,13 +87,19 @@ def main() -> int:
             if demangled in implemented or demangled not in mapping:
                 continue
             target_addr, target_size = mapping[demangled]
-            if size != target_size or not (args.min_size <= size <= args.max_size):
+            if not (args.min_size <= target_size <= args.max_size):
                 continue
-            rows.append((demangled, object_path.relative_to(ROOT), raw, target_addr, size))
+            delta = size - target_size
+            if delta != 0 and (not args.near or abs(delta) > args.max_delta):
+                continue
+            rows.append((abs(delta), delta, demangled, object_path.relative_to(ROOT), raw, target_addr, target_size, size))
 
-    for demangled, object_path, raw, target_addr, size in sorted(rows):
-        print(f"0x{target_addr:08X} size=0x{size:X} object={object_path} name={demangled} symbol={raw}")
-    print(f"candidates={len(rows)}")
+    rows = sorted(rows)
+    shown = rows if args.limit <= 0 else rows[: args.limit]
+    for _abs_delta, delta, demangled, object_path, raw, target_addr, target_size, size in shown:
+        delta_text = "exact" if delta == 0 else f"delta={delta:+#x} object=0x{size:X}"
+        print(f"0x{target_addr:08X} size=0x{target_size:X} {delta_text} object={object_path} name={demangled} symbol={raw}")
+    print(f"candidates={len(rows)} shown={len(shown)}")
     return 0
 
 

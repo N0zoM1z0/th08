@@ -11,6 +11,15 @@
 namespace th08
 {
 
+#pragma optimize("s", on)
+// FUNCTION: th08 0x004396F8
+u32 AnmVm::FUN_004396f8()
+{
+    return (*(u32 *)((u8 *)this + 0x1F8) >> 14) & 1;
+}
+#pragma optimize("", on)
+
+
 // FUNCTION: th08 0x4068e0
 void AnmVmBase::Initialize()
 {
