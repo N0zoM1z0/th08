@@ -133,3 +133,11 @@ bottom-left, bottom-right, then drawn with `D3DPT_TRIANGLESTRIP`, not
 `D3DPT_TRIANGLEFAN`.  Declare the local vertex array after any preceding
 statements that target emits first, because VC7 constructs typed local arrays at
 the declaration point.
+
+
+## Reused effect fields and integer width are part of the source shape
+
+Verified with `ScreenEffect::CalcPartialFadeOut` and `ScreenEffect::FUN_0045bd70`.
+`ScreenEffect` reuses parameter slots differently for different effect types, so avoid renaming a field globally from a single callback. For effect-specific callbacks, raw offset access can be clearer and safer until all variants are understood.
+
+When target uses `fild qword`, cast the integer multiplicand to a 64-bit integer before the floating expression. Otherwise VC7 may generate `fild dword` or a shorter float-only sequence.

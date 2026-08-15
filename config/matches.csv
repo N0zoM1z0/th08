@@ -598,3 +598,6 @@ address,name,size,status,match_percent,unit,evidence
 0x0040B580,th08::VertexDiffuseXyzrhw::VertexDiffuseXyzrhw,22,matching,100.00,vertex-diffuse-ctor,python3 scripts/compare-function.py vertex-diffuse-ctor --json
 0x0045B1E0,th08::ScreenEffect::DrawSquare,687,matching,100.00,screen-effect-draw-square,python3 scripts/compare-function.py screen-effect-draw-square --json
 0x0045B490,th08::ScreenEffect::DrawSquareShaded,717,matching,100.00,screen-effect-draw-square-shaded,python3 scripts/compare-function.py screen-effect-draw-square-shaded --json
+0x0045B800,th08::ScreenEffect::CalcPartialFadeOut,169,matching,100.00,screen-effect-calc-partial-fade-out,python3 scripts/compare-function.py screen-effect-calc-partial-fade-out --json
+0x0045BBF0,th08::ScreenEffect::DrawPartialFade,69,matching,100.00,screen-effect-draw-partial-fade,python3 scripts/compare-function.py screen-effect-draw-partial-fade --json
+0x0045BD70,th08::ScreenEffect::FUN_0045bd70,76,matching,100.00,screen-effect-fun-0045bd70,python3 scripts/compare-function.py screen-effect-fun-0045bd70 --json

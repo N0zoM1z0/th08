@@ -207,6 +207,33 @@ ChainCallbackResult ScreenEffect::CalcFadeOut(ScreenEffect *screenEffect)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
+
+// FUNCTION: th08 0x45b800
+ChainCallbackResult ScreenEffect::CalcPartialFadeOut(ScreenEffect *screenEffect)
+{
+    if (screenEffect->unk24 == 0)
+    {
+        if (screenEffect->duration != 0 && screenEffect->timer <= screenEffect->duration)
+        {
+            screenEffect->arcadeFadeAlpha = (i32)(((f32)screenEffect->timer * 128.0f) / screenEffect->duration);
+        }
+    }
+    else
+    {
+        if (screenEffect->timer <= 8)
+        {
+            screenEffect->arcadeFadeAlpha = 128 - (i32)(((f32)screenEffect->timer * 128.0f) / 8.0f);
+        }
+        else
+        {
+            return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
+        }
+    }
+
+    screenEffect->timer++;
+    return CHAIN_CALLBACK_RESULT_CONTINUE;
+}
+
 // STUB: th08 0x45b8b0
 ScreenEffect *ScreenEffect::RegisterChain(ScreenEffectType effect, i32 ticks, i32 param_3, i32 param_4, i32 param_5,
                                           i32 param_6)
@@ -244,6 +271,35 @@ ChainCallbackResult ScreenEffect::DrawArcadeFade(ScreenEffect *screenEffect)
     rect.right = 416.0f;
     rect.bottom = 464.0f;
     ScreenEffect::DrawSquare(&rect, (screenEffect->arcadeFadeAlpha << 24) | screenEffect->arcadeFadeColor);
+    return CHAIN_CALLBACK_RESULT_CONTINUE;
+}
+
+
+// FUNCTION: th08 0x45bbf0
+ChainCallbackResult ScreenEffect::DrawPartialFade(ScreenEffect *screenEffect)
+{
+    ZunRect rect;
+
+    rect.left = 0.0f;
+    rect.top = 0.0f;
+    rect.right = 640.0f;
+    rect.bottom = 480.0f;
+    ScreenEffect::DrawSquare(&rect, (screenEffect->arcadeFadeAlpha << 24) | screenEffect->arcadeFadeColor);
+    return CHAIN_CALLBACK_RESULT_CONTINUE;
+}
+
+// FUNCTION: th08 0x45bd70
+ChainCallbackResult ScreenEffect::FUN_0045bd70(ScreenEffect *screenEffect)
+{
+    ZunRect rect;
+
+    rect.left = 32.0f;
+    rect.top = 16.0f;
+    rect.right = 416.0f;
+    rect.bottom = 464.0f;
+    ScreenEffect::DrawSquare(
+        &rect, (screenEffect->arcadeFadeAlpha << 24) |
+                       (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x1C) & 0xFFFFFF));
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 

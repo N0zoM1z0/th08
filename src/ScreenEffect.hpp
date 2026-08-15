@@ -33,13 +33,16 @@ struct ScreenEffect
     static void DrawSquareShaded(ZunRect *rect, D3DCOLOR topLeft, D3DCOLOR topRight, D3DCOLOR bottomLeft,
                                  D3DCOLOR bottomRight);
     static ChainCallbackResult CalcFadeOut(ScreenEffect *screenEffect);
+    static ChainCallbackResult CalcPartialFadeOut(ScreenEffect *screenEffect);
 
     static ScreenEffect *RegisterChain(ScreenEffectType effect, i32 ticks, i32 param_3, i32 param_4, i32 param_5,
                                        i32 param_6);
 
     static ChainCallbackResult DrawFullFade(ScreenEffect *screenEffect);
+    static ChainCallbackResult DrawPartialFade(ScreenEffect *screenEffect);
 
     static ChainCallbackResult DrawArcadeFade(ScreenEffect *screenEffect);
+    static ChainCallbackResult FUN_0045bd70(ScreenEffect *screenEffect);
     static ChainCallbackResult CalcShake(ScreenEffect *screenEffect);
 
     static ZunResult AddedCallback(ScreenEffect *screenEffect);

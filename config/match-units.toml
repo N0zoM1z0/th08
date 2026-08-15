@@ -50748,3 +50748,96 @@ type = "DIR32"
 symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
 target = 0x017CE758
 addend = 0x8
+
+[[units]]
+name = "screen-effect-calc-partial-fade-out"
+object = "build/ScreenEffect.obj"
+symbol = "?CalcPartialFadeOut@ScreenEffect@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target_address = 0x0045B800
+size = 0xA9
+
+[[units.relocations]]
+offset = 0x27
+type = "REL32"
+symbol = "??NZunTimer@th08@@QAEIH@Z"
+target = 0x0040E390
+
+[[units.relocations]]
+offset = 0x36
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 0x3C
+type = "DIR32"
+symbol = "__real@43000000"
+target = 0x004B443C
+
+[[units.relocations]]
+offset = 0x47
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x5C
+type = "REL32"
+symbol = "??NZunTimer@th08@@QAEIH@Z"
+target = 0x0040E390
+
+[[units.relocations]]
+offset = 0x6B
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 0x71
+type = "DIR32"
+symbol = "__real@43000000"
+target = 0x004B443C
+
+[[units.relocations]]
+offset = 0x77
+type = "DIR32"
+symbol = "__real@41000000"
+target = 0x004B4300
+
+[[units.relocations]]
+offset = 0x7C
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x9C
+type = "REL32"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
+target = 0x00406640
+
+[[units]]
+name = "screen-effect-draw-partial-fade"
+object = "build/ScreenEffect.obj"
+symbol = "?DrawPartialFade@ScreenEffect@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target_address = 0x0045BBF0
+size = 0x45
+
+[[units.relocations]]
+offset = 0x38
+type = "REL32"
+symbol = "?DrawSquare@ScreenEffect@th08@@SIXPAUZunRect@2@K@Z"
+target = 0x0045B1E0
+
+[[units]]
+name = "screen-effect-fun-0045bd70"
+object = "build/ScreenEffect.obj"
+symbol = "?FUN_0045bd70@ScreenEffect@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target_address = 0x0045BD70
+size = 0x4C
+
+[[units.relocations]]
+offset = 0x3F
+type = "REL32"
+symbol = "?DrawSquare@ScreenEffect@th08@@SIXPAUZunRect@2@K@Z"
+target = 0x0045B1E0
