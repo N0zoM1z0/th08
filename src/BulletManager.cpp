@@ -1,6 +1,7 @@
 #include "th_pch.h"
 
 #include "BulletManager.hpp"
+#include "GameManager.hpp"
 #include "ItemManager.hpp"
 #include "Player.hpp"
 #include "SoundPlayer.hpp"
@@ -357,6 +358,55 @@ void Bullet::FUN_004326e0()
         ->FromAngleMagnitude(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74),
                              magnitude * *reinterpret_cast<f32 *>(0x17CE8E0));
     (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004))++;
+}
+
+
+// FUNCTION: th08 0x432830
+#pragma var_order(magnitude, this)
+void Bullet::FUN_00432830()
+{
+    f32 magnitude;
+
+    if (!g_GameManager.IsWithinPlayfield((reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xD44)->operator float *())[0],
+                                         (reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xD44)->operator float *())[1],
+                                         *reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x224) + 0x34),
+                                         *reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x224) + 0x30)))
+    {
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDC8) >= 0)
+        {
+            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDC8)), 0);
+        }
+
+        if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD44) < 0.0f ||
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD44) >= 384.0f)
+        {
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74) =
+                -*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74) - ZUN_PI;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74) =
+                AddNormalizeAngle(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74), 0.0f);
+        }
+
+        if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD48) < 0.0f ||
+            (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD48) >= 448.0f &&
+             (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) & 0x400) != 0))
+        {
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74) =
+                -*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74);
+        }
+
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xD68) =
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x103C);
+        magnitude = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68);
+        reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xD50)
+            ->FromAngleMagnitude(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74),
+                                 magnitude * *reinterpret_cast<f32 *>(0x17CE8E0));
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1050) += 1;
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1050) >=
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1054))
+        {
+            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) &= ~0xC00;
+        }
+    }
 }
 
 // FUNCTION: th08 0x4329f0

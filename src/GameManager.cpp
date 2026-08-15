@@ -91,6 +91,14 @@ i32 GameManager::CalcChecksum(u8 *address, i32 size)
 }
 
 #pragma optimize("t", on)
+void GameManager::SetLives(i32 lives)
+{
+    this->globals->livesRemaining = (f32)lives;
+    this->UpdateAntiTamper();
+}
+#pragma optimize("", on)
+
+#pragma optimize("t", on)
 void GameManager::SetPower(i32 power)
 {
     this->globals->playerPower = (f32)power;
