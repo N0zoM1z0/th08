@@ -205,3 +205,4 @@ When a structure begins with the field required by an API, VC7 may pass the stru
 - D3DXVECTOR3 helper callbacks may need strict x87 comparisons (`>`, `<`) rather than inclusive operators to match `test ah,0x41` and `test ah,5` masks.
 - For byte-copy loops where target has separate increment blocks, use explicit `for` loops (not `while`) and spell pointer updates in target order, e.g. `*dst = *src++; dst++;` when target increments source before destination.  Verified by `Supervisor::TakeSnapshot`.
 - DirectInput setup helpers may need literal legacy device type constants (for example `4`) and global `g_Supervisor.controllerCaps` access to preserve target vtable-call and relocation shape.
+- Shared update tails can require an explicit `goto` into an `else if` block; `Player::OnUpdate` uses this to merge the dying success path and spawning path without an extra call-site.

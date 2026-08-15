@@ -102,6 +102,14 @@ struct Player
     void FUN_0044c5b0();
     void FUN_0044d2c0();
 
+    void FUN_0044c650();
+    i32 FUN_0044cbf0();
+    void FUN_0044d180();
+    void FUN_0044aec0();
+    void FUN_0044d420();
+    void FUN_00451150();
+    void FUN_00451500();
+
     static ZunResult LoadShtFile(PlayerRawShtFile **header, const char *path);
     i32 IsYoukai();
     i32 FUN_00449ff0(Float3 *position, Float3 *position2);

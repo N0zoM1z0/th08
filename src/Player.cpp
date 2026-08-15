@@ -2,6 +2,8 @@
 
 #include "AsciiManager.hpp"
 #include "BulletManager.hpp"
+#include "Gui.hpp"
+#include "AnmManager.hpp"
 #include "Player.hpp"
 
 namespace th08
@@ -107,9 +109,99 @@ ZunResult Player::RegisterChain(u32 playerType)
     return ZUN_SUCCESS;
 }
 
-// STUB: th08 0x44c390
+
+// STUB: th08 0x44c650
+void Player::FUN_0044c650()
+{
+}
+// STUB: th08 0x44cbf0
+i32 Player::FUN_0044cbf0()
+{
+    return 0;
+}
+// STUB: th08 0x44d180
+void Player::FUN_0044d180()
+{
+}
+// STUB: th08 0x44aec0
+void Player::FUN_0044aec0()
+{
+}
+// STUB: th08 0x451150
+void Player::FUN_00451150()
+{
+}
+// STUB: th08 0x451500
+void Player::FUN_00451500()
+{
+}
+// STUB: th08 0x44d420
+void Player::FUN_0044d420()
+{
+}
+// FUNCTION: th08 0x44c390
 ChainCallbackResult Player::OnUpdate(Player *player)
 {
+    if (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x2C) != 0)
+    {
+        if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xBE834) != 0)
+        {
+            *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(player) + 0xBE834) + 0x1F8) |= 0x80000;
+        }
+        if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xE2B24) != 0)
+        {
+            *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(player) + 0xE2B24) + 0x1F8) |= 0x80000;
+        }
+        return CHAIN_CALLBACK_RESULT_CONTINUE;
+    }
+    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xBE834) != 0)
+    {
+        *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(player) + 0xBE834) + 0x1F8) &= 0xfff7ffff;
+    }
+    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xE2B24) != 0)
+    {
+        *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(player) + 0xE2B24) + 0x1F8) &= 0xfff7ffff;
+    }
+    player->FUN_0044c5b0();
+    player->FUN_0044c650();
+    if (player->playerState == PLAYER_STATE_DYING)
+    {
+        if (player->FUN_0044cbf0() != 0)
+        {
+            goto updateD180;
+        }
+    }
+    else if (player->playerState == PLAYER_STATE_SPAWNING)
+    {
+updateD180:
+        player->FUN_0044d180();
+    }
+    player->FUN_0044d2c0();
+    if (player->playerState != PLAYER_STATE_DYING && player->playerState != PLAYER_STATE_SPAWNING)
+    {
+        player->FUN_0044aec0();
+    }
+    g_AnmManager->ExecuteScript(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(player) + 0x10));
+    player->FUN_00451150();
+    player->FUN_00451500();
+    player->FUN_0044d420();
+    if (!g_Gui.IsDialogPresent())
+    {
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE10) += 1;
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE14) += 1;
+        if (g_GameManager.GaugeIsExtremelyHuman())
+        {
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE1C) += 1;
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE24) += 1;
+            g_GameManager.AddScore(100);
+        }
+        else if (g_GameManager.GaugeIsExtremelyYoukai())
+        {
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE18) += 1;
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE20) += 1;
+            g_GameManager.AddScore(100);
+        }
+    }
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
