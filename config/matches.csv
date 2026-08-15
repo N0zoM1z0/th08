@@ -640,3 +640,5 @@ address,name,size,status,match_percent,unit,evidence
 0x0040BB60,th08::AnmManager::GetAnm,26,matching,100.00,anm-manager-get-anm,python3 scripts/compare-function.py anm-manager-get-anm --json
 0x0042EBF0,th08::EnemyManager::AddedCallback,642,matching,100.00,enemy-manager-added-callback,python3 scripts/compare-function.py enemy-manager-added-callback --json
 0x00429E00,th08::EnemyManager::Initialize,1029,matching,100.00,enemy-manager-initialize,python3 scripts/compare-function.py enemy-manager-initialize --json
+0x0042F230,th08::GameManager::IsSoloHuman,64,matching,100.00,game-manager-is-solo-human,python3 scripts/compare-function.py game-manager-is-solo-human --json
+0x0042F270,th08::GameManager::IsSoloYoukai,64,matching,100.00,game-manager-is-solo-youkai,python3 scripts/compare-function.py game-manager-is-solo-youkai --json

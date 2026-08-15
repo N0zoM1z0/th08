@@ -65,14 +65,42 @@ def iter_defined_symbols(object_path: Path):
 
 
 
+def ninja_targets() -> set[str]:
+    """Return explicit ninja targets accepted by this build directory."""
+
+    result = subprocess.run(
+        ["./scripts/wineth08", "./scripts/th08run.bat", "ninja", "-t", "targets", "all"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    targets: set[str] = set()
+    for line in result.stdout.splitlines():
+        target = line.split(":", 1)[0].strip().replace("\\", "/")
+        if target:
+            targets.add(target)
+    return targets
+
+
 def clean_rebuild_objects(objects: list[Path]) -> None:
     """Force scanned objects to reflect the current source tree."""
 
+    accepted_targets = ninja_targets()
     normalized: list[Path] = []
+    skipped: list[str] = []
     for object_path in objects:
         object_path = object_path if object_path.is_absolute() else ROOT / object_path
-        if not object_path.name.endswith("-stripped.obj"):
-            normalized.append(object_path)
+        rel = str(object_path.relative_to(ROOT)).replace("\\", "/")
+        if object_path.name.endswith("-stripped.obj"):
+            continue
+        if rel not in accepted_targets:
+            skipped.append(rel)
+            continue
+        normalized.append(object_path)
+
+    for rel in skipped:
+        print(f"warning: clean-rebuild skipped non-ninja target {rel}", file=sys.stderr)
 
     for object_path in normalized:
         try:

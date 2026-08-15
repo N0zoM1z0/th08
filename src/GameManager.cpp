@@ -482,52 +482,18 @@ ZunBool GameManager::IsReplayPractice()
 }
 
 // FUNCTION: th08 0x42f230
+#pragma optimize("t", on)
 ZunBool GameManager::IsSoloHuman()
 {
-    ZunBool result;
-
-    if (this->shotType >= 4)
-    {
-        if ((this->shotType & 1) != 0)
-        {
-            result = FALSE;
-        }
-        else
-        {
-            result = TRUE;
-        }
-    }
-    else
-    {
-        result = FALSE;
-    }
-
-    return result;
+    return this->shotType >= 4 && (this->shotType & 1) == 0;
 }
 
 // FUNCTION: th08 0x42f270
 ZunBool GameManager::IsSoloYoukai()
 {
-    ZunBool result;
-
-    if (this->shotType >= 4)
-    {
-        if ((this->shotType & 1) == 0)
-        {
-            result = FALSE;
-        }
-        else
-        {
-            result = TRUE;
-        }
-    }
-    else
-    {
-        result = FALSE;
-    }
-
-    return result;
+    return this->shotType >= 4 && (this->shotType & 1) != 0;
 }
+#pragma optimize("", on)
 
 void GameManager::CutChain()
 {
