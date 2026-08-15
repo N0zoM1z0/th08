@@ -842,7 +842,9 @@ enter_subroutine:
         TH08_ECL_AT(ctx, i32, 0x3028) = TH08_ECL_READ_I(ctx, 1);
         break;
     case 151:
-        TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFBFFFFFF) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 26);
+        TH08_ECL_AT(ctx, u32, 0x3324) =
+            ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 26) |
+            (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFBFFFFFF);
         break;
     case 152:
         TH08_ECL_AT(ctx, f32, 0x2DEC) = TH08_ECL_READ_F_RAWARG(ctx, 0);
@@ -857,11 +859,15 @@ enter_subroutine:
         *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E14) = 0;
         break;
     case 155:
-        TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xF7FFFFFF) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 27);
+        TH08_ECL_AT(ctx, u32, 0x3324) =
+            ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 27) |
+            (TH08_ECL_AT(ctx, u32, 0x3324) & 0xF7FFFFFF);
         g_EclGlobal004ECCA8 = 0x05F5E0F6;
         break;
     case 156:
-        TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFFFFFF7F) | ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 7);
+        TH08_ECL_AT(ctx, u32, 0x3324) =
+            ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 7) |
+            (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFFFFFF7F);
         TH08_ECL_AT(ctx, u8, 0x332F) = 2;
         break;
     case 157:
