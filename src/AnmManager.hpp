@@ -31,6 +31,15 @@ struct VertexTex1DiffuseXyzrhw
     Float2 textureUV;
 };
 
+// Target-observed 4-vertex textured quad without a diffuse color field.
+struct VertexTex0Xyzrhw
+{
+    Float3 pos;
+    float w;
+    Float2 textureUV;
+};
+C_ASSERT(sizeof(VertexTex0Xyzrhw) == 0x18);
+
 // Touhou 8 uses DirectX 8.1, but evidently Zun used some mismatched DirectX 8 headers as well
 // D3DXIMAGE_INFO changed from 20 to 28 bytes between DX8 and DX8.1, but somehow IN uses the the DX8 version
 // This struct is a redefinition of the DX8 D3DXIMAGE_INFO for that

@@ -16,7 +16,7 @@ SoundPlayer,th08::SoundPlayer
 Supervisor,th08::Supervisor,th08::SoundPlayer::UpdateFades
 TextHelper,th08::TextHelper
 Supervisor,th08::Supervisor
-AnmManager,th08::AnmManager,th08::AnmVm
+AnmManager,th08::AnmManager,th08::AnmVm,th08::g_AnmManagerUntexturedQuadVertices
 AsciiManager,th08::AsciiManager,th08::AsciiManagerString,th08::AsciiManagerPopup,th08::PauseMenu,th08::RetryMenu
 Ending,th08::Ending
 ResultScreen,th08::ResultScreen

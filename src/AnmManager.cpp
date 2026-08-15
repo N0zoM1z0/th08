@@ -54,6 +54,7 @@ void AnmVm::ClearVisible()
 
 DIFFABLE_STATIC(AnmManager *, g_AnmManager);
 DIFFABLE_STATIC_ARRAY(VertexTex1DiffuseXyzrhw, 4, g_QuadVertices);
+DIFFABLE_STATIC_ARRAY(VertexTex0Xyzrhw, 4, g_AnmManagerUntexturedQuadVertices);
 
 D3DFORMAT g_TextureFormatD3D8Mapping[] = {D3DFMT_UNKNOWN, D3DFMT_A8R8G8B8, D3DFMT_A1R5G5B5,
                                           D3DFMT_R5G6B5,  D3DFMT_R8G8B8,   D3DFMT_A4R4G4B4};
@@ -1400,12 +1401,42 @@ ZunResult AnmManager::DrawTriangleFan(AnmVm *vm, VertexDiffuseXyzrhw *vertices, 
     return ZUN_SUCCESS;
 }
 
-// STUB: th08 0x465070
+// FUNCTION: th08 0x465070
 AnmManager::AnmManager()
 {
     memset((void *)this, 0, sizeof(AnmManager));
 
+    g_AnmManagerUntexturedQuadVertices[0].w = g_AnmManagerUntexturedQuadVertices[1].w =
+        g_AnmManagerUntexturedQuadVertices[2].w = g_AnmManagerUntexturedQuadVertices[3].w = 1.0f;
+    g_AnmManagerUntexturedQuadVertices[0].textureUV.x = 0.0f;
+    g_AnmManagerUntexturedQuadVertices[0].textureUV.y = 0.0f;
+    g_AnmManagerUntexturedQuadVertices[1].textureUV.x = 1.0f;
+    g_AnmManagerUntexturedQuadVertices[1].textureUV.y = 0.0f;
+    g_AnmManagerUntexturedQuadVertices[2].textureUV.x = 0.0f;
+    g_AnmManagerUntexturedQuadVertices[2].textureUV.y = 1.0f;
+    g_AnmManagerUntexturedQuadVertices[3].textureUV.x = 1.0f;
+    g_AnmManagerUntexturedQuadVertices[3].textureUV.y = 1.0f;
+
     g_QuadVertices[0].w = g_QuadVertices[1].w = g_QuadVertices[2].w = g_QuadVertices[3].w = 1.0f;
+    g_QuadVertices[0].textureUV.x = 0.0f;
+    g_QuadVertices[0].textureUV.y = 0.0f;
+    g_QuadVertices[1].textureUV.x = 1.0f;
+    g_QuadVertices[1].textureUV.y = 0.0f;
+    g_QuadVertices[2].textureUV.x = 0.0f;
+    g_QuadVertices[2].textureUV.y = 1.0f;
+    g_QuadVertices[3].textureUV.x = 1.0f;
+    g_QuadVertices[3].textureUV.y = 1.0f;
+
+    this->quadVertexBuffer = NULL;
+    this->currentTexture = NULL;
+    this->currentBlendMode = 0;
+    this->currentColorOp = 0;
+    *(u32 *)((u8 *)this + 0x24B8) = 1;
+    this->currentVertexShader = 0;
+    this->cameraMode = (AnmCameraMode)0xff;
+    this->disableZWrite = (AnmZWriteMode)0;
+    this->captureAnmIdx = -1;
+    this->captureSurfaceIdx = -1;
 }
 
 // STUB: th08 0x465250

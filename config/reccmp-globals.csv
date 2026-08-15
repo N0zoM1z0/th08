@@ -147,6 +147,7 @@ th08::g_PlayerPrimaryShtFile,0x18b896c,global
 th08::g_PlayerSecondaryShtFile,0x18b8970,global
 th08::g_AnmManager,0x18bdc90,global
 th08::g_QuadVertices,0x18bdc98,global
+th08::g_AnmManagerUntexturedQuadVertices,0x18bdd08,global
 g_BackgroundQuadVertices,0x18bdd68,global
 th08::g_FullWidthNumberBuffer,0x18bddc8,global
 th08::g_TitleScreen,0x18bde08,global
