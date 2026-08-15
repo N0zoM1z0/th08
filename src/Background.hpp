@@ -1,5 +1,6 @@
 #pragma once
 #include "Global.hpp"
+#include "AnmManager.hpp"
 #include "ZunResult.hpp"
 #include "diffbuild.hpp"
 #include "inttypes.hpp"
@@ -8,6 +9,13 @@
 
 namespace th08
 {
+struct BackgroundUnkVectors
+{
+    Float3 vectors[6];
+    f32 unk48;
+};
+C_ASSERT(sizeof(BackgroundUnkVectors) == 0x4c);
+
 struct Background
 {
     Background();
@@ -29,12 +37,43 @@ struct Background
     {
     }
 
-    void *stageAnm; // +0x000: target-owned allocation released at teardown
-    unknown_fields(0x4, 0x7f0);
-    void *stageAnmSecondary; // +0x7f4: release is gated by resource reload
-    unknown_fields(0x7f8, 0x328);
-    u8 skyFogNeedsSetup; // Leftover from earlier games. Never checked in IN
-    unknown_fields(0xb21, 0x5adf);
+    void *stageAnm;
+    AnmVm stageVm0;
+    AnmVm stageVm1;
+    AnmVm stageVm2;
+    AnmLoaded *stageAnmFile;
+    void *stageAnmSecondary;
+    i32 stageVmCount;
+    i32 stageObjectCount;
+    void *stageOffsets;
+    void *stageUnknown804;
+    void *stageUnknown808;
+    ZunTimer timer80c;
+    unknown_fields(0x818, 0xc);
+    Float3 vector824;
+    unknown_fields(0x830, 0x8);
+    ZunTimer timer838;
+    AnmVm textAnmVm;
+    unknown_fields(0xae8, 0x2c);
+    ZunTimer timerB14;
+    u8 skyFogNeedsSetup;
+    unknown_fields(0xb21, 0x17);
+    AnmVm anmVmArray[0x20];
+    AnmVm anmVm5fb8;
+    unknown_fields(0x625c, 0x8);
+    BackgroundUnkVectors unk6264;
+    BackgroundUnkVectors unk62b0;
+    BackgroundUnkVectors unk62fc;
+    BackgroundUnkVectors unk6348;
+    BackgroundUnkVectors unk6394;
+    unknown_fields(0x63e0, 0x14);
+    ZunTimer timers63f4[5];
+    unknown_fields(0x6430, 0x14);
+    Float3 vector6444;
+    unknown_fields(0x6450, 0x4);
+    Float3 vector6454;
+    unknown_fields(0x6460, 0x20);
+    Float3 vectors6480[0x20];
 };
 C_ASSERT(sizeof(Background) == 0x6600);
 

@@ -12,9 +12,16 @@ DIFFABLE_STATIC(ChainElem, g_BackgroundCalcChain);
 DIFFABLE_STATIC(ChainElem, g_BackgroundDrawChainHighPrio);
 DIFFABLE_STATIC(ChainElem, g_BackgroundDrawChainLowPrio);
 
-// STUB: th08 0x4071a0
+// FUNCTION: th08 0x4071a0
 Background::Background()
 {
+    memset(this, 0, sizeof(Background));
+    *reinterpret_cast<D3DXVECTOR3 *>(&this->unk6394.vectors[0]) = D3DXVECTOR3(0, 0, 1000.0f);
+    *reinterpret_cast<D3DXVECTOR3 *>(&this->unk6394.vectors[1]) = D3DXVECTOR3(0, 0, 0);
+    *reinterpret_cast<D3DXVECTOR3 *>(&this->unk6394.vectors[2]) = D3DXVECTOR3(0, 1.0f, 0);
+    this->unk6394.unk48 = 0.5235987901687622f;
+    this->unk6264 = this->unk6394;
+    this->unk62b0 = this->unk6394;
 }
 
 // STUB: th08 0x407400

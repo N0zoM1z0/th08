@@ -53647,3 +53647,160 @@ offset = 0x23D
 type = "DIR32"
 symbol = "__real@3f800000"
 target = 0x004B42CC
+
+[[units]]
+name = "background-constructor"
+object = "build/Background.obj"
+symbol = "??0Background@th08@@QAE@XZ"
+target_address = 0x004071A0
+size = 0x201
+
+[[units.relocations]]
+offset = 0x12
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x20
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x2E
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x3C
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x4A
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x58
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x66
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x74
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x79
+type = "DIR32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x8E
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x9C
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0xAA
+type = "REL32"
+symbol = "??0BackgroundUnkVectors@th08@@QAE@XZ"
+target = 0x004073B0
+
+[[units.relocations]]
+offset = 0xB8
+type = "REL32"
+symbol = "??0BackgroundUnkVectors@th08@@QAE@XZ"
+target = 0x004073B0
+
+[[units.relocations]]
+offset = 0xC6
+type = "REL32"
+symbol = "??0BackgroundUnkVectors@th08@@QAE@XZ"
+target = 0x004073B0
+
+[[units.relocations]]
+offset = 0xD4
+type = "REL32"
+symbol = "??0BackgroundUnkVectors@th08@@QAE@XZ"
+target = 0x004073B0
+
+[[units.relocations]]
+offset = 0xE2
+type = "REL32"
+symbol = "??0BackgroundUnkVectors@th08@@QAE@XZ"
+target = 0x004073B0
+
+[[units.relocations]]
+offset = 0xE7
+type = "DIR32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0xFA
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x108
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x116
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x11B
+type = "DIR32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x12E
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x14B
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x172
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x19C
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@MMM@Z"
+target = 0x00404720
