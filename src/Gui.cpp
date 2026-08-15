@@ -11,6 +11,7 @@ DIFFABLE_STATIC(ChainElem, g_GuiCalcChain);
 DIFFABLE_STATIC(ChainElem, g_GuiDrawChain);
 DIFFABLE_STATIC(i32, g_GuiAnmReleaseRequired);
 DIFFABLE_STATIC(i32, g_GuiResourceReloadEnabled);
+DIFFABLE_STATIC(i32, g_GuiFullPowerModeFrames);
 
 // FUNCTION: th08 0x438fe9
 i32 FUN_00438fe9()
@@ -48,6 +49,17 @@ i32 FUN_00438ff3()
 i32 FUN_00438ffd()
 {
     return g_GuiAnmReleaseRequired;
+}
+
+
+// FUNCTION: th08 0x437e5d
+void Gui::FUN_00437e5d(i32 value, i32 isShown)
+{
+    this->impl->formatted1.position = Float3(416.0f, 168.0f, 0.0f);
+    this->impl->formatted1.isShown = isShown;
+    this->impl->formatted1.timer = 0;
+    this->impl->formatted1.value = value;
+    g_GuiFullPowerModeFrames = 2;
 }
 
 // FUNCTION: th08 0x437bc4

@@ -145,3 +145,8 @@ When target uses `fild qword`, cast the integer multiplicand to a 64-bit integer
 ## Large struct tail fields via target-relative offsets
 
 Verified with `ItemManager::SpawnItem`: a field access may point far inside a large global object, such as `g_BulletManager + 0x6BA574` for `BulletManager::bulletAnm`. Prefer adding a minimal typed tail field with `unknown_fields` instead of treating it as an unrelated global, then validate the relocation addend in `match-units.toml`.
+
+
+## Power item bucket loops
+
+Verified with `Item::CollectPowerSmall` and `Item::CollectPowerBig`: VC7 emits the target top-tested loop when the source is written as `value = 0; while (condition) { value++; }`.  A `for (value = 0; condition; value++)` can add an initial jump and miss by one byte.  Use `#pragma var_order` when the old bucket and current bucket locals must occupy specific stack slots.

@@ -134,6 +134,7 @@ th08::g_SupervisorScreenEffect,0x17ce750,global
 th08::g_Supervisor,0x17ce758,global
 th08::g_BulletManagerAnmReleaseRequired,0x17ce8c0,global
 th08::g_GuiAnmReleaseRequired,0x17ce8c4,global
+th08::g_GuiFullPowerModeFrames,0x17ce8cc,global
 th08::g_SupervisorLoadingVms,0x17ceac0,global
 th08::g_MusicRoom,0x17cf4c8,global
 th08::g_Player,0x17d5ef8,global

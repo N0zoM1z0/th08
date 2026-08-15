@@ -5,12 +5,14 @@
 #include "Gui.hpp"
 #include "ItemManager.hpp"
 #include "Player.hpp"
+#include "Spellcard.hpp"
 
 namespace th08
 {
 
 DIFFABLE_STATIC(ItemManager, g_ItemManager);
 DIFFABLE_STATIC(i32, g_MaxValuePointItemsCollected);
+DIFFABLE_STATIC_ARRAY_ASSIGN(i32, 6, g_PowerUpThresholds) = {8, 24, 48, 80, 128, 999};
 
 // FUNCTION: th08 0x440010
 ItemManager::ItemManager()
@@ -175,9 +177,59 @@ void ItemManager::OnUpdate()
     // TODO: NEEDS WORK ON Gui
 }
 
-// STUB: th08 0x440cf0
+// FUNCTION: th08 0x440cf0
+#pragma var_order(powerLevel, oldPowerLevel)
 void Item::CollectPowerSmall()
 {
+    i32 powerLevel;
+    i32 oldPowerLevel;
+
+    if (g_GameManager.GetPower() >= 0x80)
+    {
+        goto increaseSubrank;
+    }
+
+    powerLevel = 0;
+    while (g_GameManager.GetPower() >= g_PowerUpThresholds[powerLevel])
+    {
+        powerLevel++;
+    }
+    oldPowerLevel = powerLevel;
+
+    *(u8 *)((u8 *)&g_GameManager + 0x3DBA8) = 0;
+    g_GameManager.AddPower(1);
+
+    if (g_GameManager.GetPower() >= 0x80)
+    {
+        g_GameManager.SetPower(0x80);
+        if (!g_Spellcard.IsActive())
+        {
+            g_BulletManager.bulletmanager_fun_00415c60();
+        }
+        g_Gui.FUN_00437e5d(0, 1);
+        g_ItemManager.ConvertAllPowerItemsToTimeOrbs(this);
+    }
+
+    g_GameManager.AddScore(10);
+    g_Gui.flags.powerDisplayUpdateFrames = 2;
+
+    while (g_GameManager.GetPower() >= g_PowerUpThresholds[powerLevel])
+    {
+        powerLevel++;
+    }
+
+    if (powerLevel != oldPowerLevel)
+    {
+        g_AsciiManager.CreateScorePopup(&this->currentPosition, -1, 0xffffc0a0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_POWERUP, 0);
+    }
+    else
+    {
+        g_AsciiManager.CreateScorePopup(&this->currentPosition, 10, 0xffffffff);
+    }
+
+increaseSubrank:
+    g_GameManager.IncreaseSubrank(1);
 }
 
 // FUNCTION: th08 0x440e40
@@ -314,9 +366,55 @@ void Item::CollectPointSmall()
     }
 }
 
-// STUB: th08 0x441170
+// FUNCTION: th08 0x441170
+#pragma var_order(powerLevel, oldPowerLevel)
 void Item::CollectPowerBig()
 {
+    i32 powerLevel;
+    i32 oldPowerLevel;
+
+    if (g_GameManager.GetPower() >= 0x80)
+    {
+        return;
+    }
+
+    powerLevel = 0;
+    while (g_GameManager.GetPower() >= g_PowerUpThresholds[powerLevel])
+    {
+        powerLevel++;
+    }
+    oldPowerLevel = powerLevel;
+
+    g_GameManager.AddPower(8);
+
+    if (g_GameManager.GetPower() >= 0x80)
+    {
+        g_GameManager.SetPower(0x80);
+        if (!g_Spellcard.IsActive())
+        {
+            g_BulletManager.bulletmanager_fun_00415c60();
+        }
+        g_Gui.FUN_00437e5d(0, 1);
+        g_ItemManager.ConvertAllPowerItemsToTimeOrbs(this);
+    }
+
+    g_Gui.flags.powerDisplayUpdateFrames = 2;
+    g_GameManager.AddScore(10);
+
+    while (g_GameManager.GetPower() >= g_PowerUpThresholds[powerLevel])
+    {
+        powerLevel++;
+    }
+
+    if (powerLevel != oldPowerLevel)
+    {
+        g_AsciiManager.CreateScorePopup(&this->currentPosition, -1, 0xffffc0a0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_POWERUP, 0);
+    }
+    else
+    {
+        g_AsciiManager.CreateScorePopup(&this->currentPosition, 10, 0xffffffff);
+    }
 }
 
 // STUB: th08 0x4412b0

@@ -606,3 +606,6 @@ th08::ScreenEffect::CalcPartialFadeOut
 th08::ScreenEffect::DrawPartialFade
 th08::ScreenEffect::FUN_0045bd70
 th08::ItemManager::SpawnItem
+th08::Gui::FUN_00437e5d
+th08::Item::CollectPowerSmall
+th08::Item::CollectPowerBig

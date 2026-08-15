@@ -489,7 +489,7 @@ th08::Gui::CutChain,0x437d64,0x23,__cdecl,,void
 FUN_00437d87,0x437d87,0x40,unknown,,u8
 FUN_00437dc7,0x437dc7,0x16,unknown,,u8
 FUN_00437ddd,0x437ddd,0x80,unknown,,u8,u8
-FUN_00437e5d,0x437e5d,0x7f,unknown,,u8,u8,u8
+th08::Gui::FUN_00437e5d,0x437e5d,0x7f,__thiscall,,void,Gui*,i32,i32
 FUN_00437edc,0x437edc,0x80,unknown,,u8,u8
 FUN_00437f5c,0x437f5c,0xea,unknown,,u8
 FUN_00438046,0x438046,0x205,unknown,,u8
@@ -619,7 +619,7 @@ th08::ItemManager::OnUpdate,0x440500,0x7c5,__thiscall,,void,ItemManager*
 th08::Item::CollectPowerSmall,0x440cf0,0x14e,__thiscall,,void,Item*
 th08::Item::CollectPoint,0x440e40,0x1d8,__thiscall,,void,Item*
 th08::Item::CollectPointSmall,0x441020,0x14e,__thiscall,,void,Item*
-th08::Item::CollectPowerBig,0x441170,0x13b,unknown,,u8
+th08::Item::CollectPowerBig,0x441170,0x13b,__thiscall,,void,Item*
 th08::Item::FUN_00412b0,0x4412b0,0x125,__thiscall,,void,Item*
 th08::ItemManager::AutoCollectAllItems,0x4413e0,0x61,__thiscall,,void,ItemManager*
 th08::ItemManager::FUN_00441450,0x441450,0xd1,__thiscall,,void,ItemManager*,i32

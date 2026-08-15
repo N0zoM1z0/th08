@@ -51000,3 +51000,462 @@ offset = 0x32B
 type = "REL32"
 symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
 target = 0x004069F0
+
+
+[[units]]
+name = "gui-fun-00437e5d"
+object = "build/Gui.obj"
+symbol = "?FUN_00437e5d@Gui@th08@@QAEXHH@Z"
+target_address = 0x00437E5D
+size = 0x7F
+
+[[units.relocations]]
+offset = 0x13
+type = "DIR32"
+symbol = "__real@43280000"
+target = 0x004B4D10
+
+[[units.relocations]]
+offset = 0x1D
+type = "DIR32"
+symbol = "__real@43d00000"
+target = 0x004B42FC
+
+[[units.relocations]]
+offset = 0x29
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x5C
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x71
+type = "DIR32"
+symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
+target = 0x017CE8CC
+
+[[units]]
+name = "item-collect-power-small"
+object = "build/ItemManager.obj"
+symbol = "?CollectPowerSmall@Item@th08@@QAEXXZ"
+target_address = 0x00440CF0
+size = 0x14E
+
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xF
+type = "REL32"
+symbol = "?GetPower@GameManager@th08@@QAEHXZ"
+target = 0x00422480
+
+[[units.relocations]]
+offset = 0x27
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x2C
+type = "REL32"
+symbol = "?GetPower@GameManager@th08@@QAEHXZ"
+target = 0x00422480
+
+[[units.relocations]]
+offset = 0x36
+type = "DIR32"
+symbol = "?g_PowerUpThresholds@th08@@3PAHA"
+target = 0x004C7A6C
+
+[[units.relocations]]
+offset = 0x4F
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA8
+
+[[units.relocations]]
+offset = 0x57
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x5C
+type = "REL32"
+symbol = "?AddPower@GameManager@th08@@QAEXH@Z"
+target = 0x00441850
+
+[[units.relocations]]
+offset = 0x61
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x66
+type = "REL32"
+symbol = "?GetPower@GameManager@th08@@QAEHXZ"
+target = 0x00422480
+
+[[units.relocations]]
+offset = 0x77
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x7C
+type = "REL32"
+symbol = "?SetPower@GameManager@th08@@QAEXH@Z"
+target = 0x00406FA0
+
+[[units.relocations]]
+offset = 0x81
+type = "DIR32"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+
+[[units.relocations]]
+offset = 0x86
+type = "REL32"
+symbol = "?IsActive@Spellcard@th08@@QAEHXZ"
+target = 0x004178A0
+
+[[units.relocations]]
+offset = 0x8F
+type = "DIR32"
+symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
+target = 0x00F54E90
+
+[[units.relocations]]
+offset = 0x94
+type = "REL32"
+symbol = "?bulletmanager_fun_00415c60@BulletManager@th08@@QAEXXZ"
+target = 0x00415C60
+
+[[units.relocations]]
+offset = 0x9D
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0xA2
+type = "REL32"
+symbol = "?FUN_00437e5d@Gui@th08@@QAEXHH@Z"
+target = 0x00437E5D
+
+[[units.relocations]]
+offset = 0xAB
+type = "DIR32"
+symbol = "?g_ItemManager@th08@@3UItemManager@1@A"
+target = 0x01653648
+
+[[units.relocations]]
+offset = 0xB0
+type = "REL32"
+symbol = "?ConvertAllPowerItemsToTimeOrbs@ItemManager@th08@@QAEXPAUItem@2@@Z"
+target = 0x00441450
+
+[[units.relocations]]
+offset = 0xB7
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xBC
+type = "REL32"
+symbol = "?AddScore@GameManager@th08@@QAEXH@Z"
+target = 0x004181F0
+
+[[units.relocations]]
+offset = 0xC2
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+addend = 0x4
+
+[[units.relocations]]
+offset = 0xCE
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+addend = 0x4
+
+[[units.relocations]]
+offset = 0xD3
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xD8
+type = "REL32"
+symbol = "?GetPower@GameManager@th08@@QAEHXZ"
+target = 0x00422480
+
+[[units.relocations]]
+offset = 0xE2
+type = "DIR32"
+symbol = "?g_PowerUpThresholds@th08@@3PAHA"
+target = 0x004C7A6C
+
+[[units.relocations]]
+offset = 0x10D
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x112
+type = "REL32"
+symbol = "?CreateScorePopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z"
+target = 0x00403200
+
+[[units.relocations]]
+offset = 0x11B
+type = "DIR32"
+symbol = "?g_SoundPlayer@th08@@3VSoundPlayer@1@A"
+target = 0x018B8A68
+
+[[units.relocations]]
+offset = 0x120
+type = "REL32"
+symbol = "?PlaySoundByIdx@SoundPlayer@th08@@QAEXW4SoundIdx@2@H@Z"
+target = 0x0045D550
+
+[[units.relocations]]
+offset = 0x135
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x13A
+type = "REL32"
+symbol = "?CreateScorePopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z"
+target = 0x00403200
+
+[[units.relocations]]
+offset = 0x141
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x146
+type = "REL32"
+symbol = "?IncreaseSubrank@GameManager@th08@@QAEXH@Z"
+target = 0x0043BFC3
+
+[[units]]
+name = "item-collect-power-big"
+object = "build/ItemManager.obj"
+symbol = "?CollectPowerBig@Item@th08@@QAEXXZ"
+target_address = 0x00441170
+size = 0x13B
+
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xF
+type = "REL32"
+symbol = "?GetPower@GameManager@th08@@QAEHXZ"
+target = 0x00422480
+
+[[units.relocations]]
+offset = 0x27
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x2C
+type = "REL32"
+symbol = "?GetPower@GameManager@th08@@QAEHXZ"
+target = 0x00422480
+
+[[units.relocations]]
+offset = 0x36
+type = "DIR32"
+symbol = "?g_PowerUpThresholds@th08@@3PAHA"
+target = 0x004C7A6C
+
+[[units.relocations]]
+offset = 0x50
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x55
+type = "REL32"
+symbol = "?AddPower@GameManager@th08@@QAEXH@Z"
+target = 0x00441850
+
+[[units.relocations]]
+offset = 0x5A
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x5F
+type = "REL32"
+symbol = "?GetPower@GameManager@th08@@QAEHXZ"
+target = 0x00422480
+
+[[units.relocations]]
+offset = 0x70
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x75
+type = "REL32"
+symbol = "?SetPower@GameManager@th08@@QAEXH@Z"
+target = 0x00406FA0
+
+[[units.relocations]]
+offset = 0x7A
+type = "DIR32"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+
+[[units.relocations]]
+offset = 0x7F
+type = "REL32"
+symbol = "?IsActive@Spellcard@th08@@QAEHXZ"
+target = 0x004178A0
+
+[[units.relocations]]
+offset = 0x88
+type = "DIR32"
+symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
+target = 0x00F54E90
+
+[[units.relocations]]
+offset = 0x8D
+type = "REL32"
+symbol = "?bulletmanager_fun_00415c60@BulletManager@th08@@QAEXXZ"
+target = 0x00415C60
+
+[[units.relocations]]
+offset = 0x96
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x9B
+type = "REL32"
+symbol = "?FUN_00437e5d@Gui@th08@@QAEXHH@Z"
+target = 0x00437E5D
+
+[[units.relocations]]
+offset = 0xA4
+type = "DIR32"
+symbol = "?g_ItemManager@th08@@3UItemManager@1@A"
+target = 0x01653648
+
+[[units.relocations]]
+offset = 0xA9
+type = "REL32"
+symbol = "?ConvertAllPowerItemsToTimeOrbs@ItemManager@th08@@QAEXPAUItem@2@@Z"
+target = 0x00441450
+
+[[units.relocations]]
+offset = 0xAF
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+addend = 0x4
+
+[[units.relocations]]
+offset = 0xBB
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+addend = 0x4
+
+[[units.relocations]]
+offset = 0xC2
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xC7
+type = "REL32"
+symbol = "?AddScore@GameManager@th08@@QAEXH@Z"
+target = 0x004181F0
+
+[[units.relocations]]
+offset = 0xCC
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xD1
+type = "REL32"
+symbol = "?GetPower@GameManager@th08@@QAEHXZ"
+target = 0x00422480
+
+[[units.relocations]]
+offset = 0xDB
+type = "DIR32"
+symbol = "?g_PowerUpThresholds@th08@@3PAHA"
+target = 0x004C7A6C
+
+[[units.relocations]]
+offset = 0x106
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x10B
+type = "REL32"
+symbol = "?CreateScorePopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z"
+target = 0x00403200
+
+[[units.relocations]]
+offset = 0x114
+type = "DIR32"
+symbol = "?g_SoundPlayer@th08@@3VSoundPlayer@1@A"
+target = 0x018B8A68
+
+[[units.relocations]]
+offset = 0x119
+type = "REL32"
+symbol = "?PlaySoundByIdx@SoundPlayer@th08@@QAEXW4SoundIdx@2@H@Z"
+target = 0x0045D550
+
+[[units.relocations]]
+offset = 0x12E
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x133
+type = "REL32"
+symbol = "?CreateScorePopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z"
+target = 0x00403200
