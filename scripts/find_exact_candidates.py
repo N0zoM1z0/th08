@@ -71,6 +71,8 @@ def main() -> int:
     parser.add_argument("--max-delta", type=lambda x: int(x, 0), default=0x40, help="maximum absolute size delta for --near")
     args = parser.parse_args()
 
+    args.objects = [obj for obj in args.objects if not obj.name.endswith("-stripped.obj")]
+
     mapping = load_mapping()
     implemented = load_implemented()
     rows = []

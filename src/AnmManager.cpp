@@ -2184,10 +2184,52 @@ void AnmManager::CopySurfaceToBackbuffer2(i32 surfaceIdx, i32 rectX, i32 rectY, 
     backbuffer->Release();
 }
 
-// STUB: th08 0x466f20
+// FUNCTION: th08 0x466f20
+#pragma var_order(srcRect, textureSurface, backbuffer, dstRect, this)
 void AnmManager::CaptureToTexture(i32 captureAnmIdx, i32 srcX, i32 srcY, i32 srcW, i32 srcH, i32 dstX, i32 dstY,
                                   i32 dstW, i32 dstH)
 {
+    IDirect3DSurface8 *backbuffer;
+    IDirect3DSurface8 *textureSurface;
+    RECT srcRect;
+    RECT dstRect;
+
+    if (this->anmFiles[captureAnmIdx].textures->texture == NULL)
+    {
+        return;
+    }
+
+    this->FlushVertexBuffer();
+
+    if (g_Supervisor.d3dDevice->GetBackBuffer(0, D3DBACKBUFFER_TYPE_MONO, &backbuffer) != D3D_OK)
+    {
+        return;
+    }
+
+    if (this->anmFiles[captureAnmIdx].textures->texture->GetSurfaceLevel(0, &textureSurface) != D3D_OK)
+    {
+        backbuffer->Release();
+        return;
+    }
+
+    srcRect.left = srcX;
+    srcRect.top = srcY;
+    srcRect.right = srcX + srcW;
+    srcRect.bottom = srcY + srcH;
+    dstRect.left = dstX;
+    dstRect.top = dstY;
+    dstRect.right = dstX + dstW;
+    dstRect.bottom = dstY + dstH;
+
+    if (D3DXLoadSurfaceFromSurface(textureSurface, NULL, &dstRect, backbuffer, NULL, &srcRect, -1, 0) != D3D_OK)
+    {
+        textureSurface->Release();
+        backbuffer->Release();
+        return;
+    }
+
+    textureSurface->Release();
+    backbuffer->Release();
 }
 
 #pragma var_order(srcRect, backbuffer, dstRect)

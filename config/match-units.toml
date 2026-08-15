@@ -52412,3 +52412,35 @@ offset = 0x9D
 type = "REL32"
 symbol = "?Fatal@GameErrorContext@th08@@QAAPBDPBDZZ"
 target = 0x0043EB60
+[[units]]
+name = "anm-manager-capture-to-texture"
+object = "build/AnmManager.obj"
+symbol = "?CaptureToTexture@AnmManager@th08@@QAEXHHHHHHHHH@Z"
+target_address = 0x00466F20
+size = 0x11E
+
+[[units.relocations]]
+offset = 0x24
+type = "REL32"
+symbol = "?FlushVertexBuffer@AnmManager@th08@@QAEXXZ"
+target = 0x00462E40
+
+[[units.relocations]]
+offset = 0x32
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x8
+
+[[units.relocations]]
+offset = 0x39
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x8
+
+[[units.relocations]]
+offset = 0xDE
+type = "REL32"
+symbol = "_D3DXLoadSurfaceFromSurface@32"
+target = 0x0047ABAB

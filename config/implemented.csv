@@ -621,3 +621,4 @@ th08::Supervisor::PlayAudio
 th08::Supervisor::PlayMusic
 th08::Supervisor::FadeOutMusic
 th08::AnmManager::LoadExternalTextureData
+th08::AnmManager::CaptureToTexture
