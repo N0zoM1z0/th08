@@ -131,6 +131,7 @@ low_advance_instruction:
     // the observed in-function easing switch and child-context back edge.
     if (TH08_ECL_AT(unusedContext, i32, 0x2DFC) > 0)
     {
+#pragma var_order(i, progress, restorePosition, entry, savedPosition)
         i32 i;
         f32 progress;
         i32 restorePosition = 0;

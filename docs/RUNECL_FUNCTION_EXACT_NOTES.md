@@ -618,3 +618,37 @@ opcode 3 and the complete handler map to exact zero deltas and lowers strict
 relocation replay from 2189 to 2012.  Never "balance" either with an unrelated
 handler; the pair is justified independently by the target ABI and by exact
 VectorAngle call precedent elsewhere in the project.
+
+## RunEcl tail: block-scope var_order recovers the exact shallow frame
+
+The remaining tail mismatch after the ABI/control-flow recovery was almost
+purely local-slot placement.  Instruction-by-instruction pairing showed 66
+mismatching BP-displacement bytes and no structural length differences.  The
+required target mapping is:
+
+- `i` at `-0xE4`;
+- `progress` at `-0xE8`;
+- `restorePosition` at `-0xEC`;
+- `entry` at `-0xF0`;
+- `savedPosition` across `-0xF4/-0xF8/-0xFC`;
+- `next` at `-0x100`;
+- `childContext` at `-0x104`.
+
+A function-scope `#pragma var_order(...)` is accepted by VC7 but has no effect on
+these block locals.  The pragma must live inside the tail block immediately
+before the declarations:
+
+`#pragma var_order(i, progress, restorePosition, entry, savedPosition)`.
+
+That exact list/order moves every affected tail local to its target home while
+leaving `next` and `childContext` in their already-correct slots.  It preserves
+zero physical, positive, and absolute handler deltas and lowers strict replay
+from 2012 to 1946, exactly the 66 stack-displacement bytes predicted by the
+pairing analysis.
+
+After this, opcode 3 has only one authored-byte mismatch left.  It is not a tail
+instruction-shape error: the final jump back to `restart_context` encodes a
+different rel32 because target `restart_context` is at function offset `0x70`
+while the current object label is at `0x4F`, a 0x21-byte prefix-layout debt.
+Thus the tail body itself should not be perturbed further to fix that byte; it
+will resolve when the RunEcl entry/prefix is reconstructed.
