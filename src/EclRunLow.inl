@@ -707,18 +707,22 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) = 0;
         break;
     case 66:
-        lhsInt = ReadInt(enemy, instruction, 0);
-        if (lhsInt <= 0)
+        if (ReadInt(enemy, instruction, 0) <= 0)
         {
-            F32At(enemy, 0x2D94) = AddNormalizeAngle(ReadFloat(enemy, instruction, 2), 0.0f);
-            F32At(enemy, 0x2DA8) = ReadFloatRawArg(enemy, instruction, 3);
-            SetMovementState1(enemy);
+            F32At(enemy, 0x2D94) = AddNormalizeAngle(((instruction->operandFlags & (1U << 2))
+                ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
+                : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))), 0.0f);
+            F32At(enemy, 0x2DA8) = ((instruction->operandFlags & (1U << 3))
+                ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3)))
+                : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
+            U32At(enemy, 0x3324) =
+                (U32At(enemy, 0x3324) & 0xFFFFCFFFU) | 0x1000U;
             I32At(enemy, 0x2DE8) = 0;
             *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) = 0;
         }
-        if (lhsInt > 0)
+        else
         {
-            BeginTimedMove(enemy, instruction, services);
+            EclHelpers::ConfigurePolarMotion(enemy, instruction);
         }
         break;
     case 67:

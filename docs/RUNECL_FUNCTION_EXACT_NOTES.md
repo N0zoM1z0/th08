@@ -395,3 +395,14 @@ This is a reusable warning for giant VC7 functions: a seemingly local
 `fld/fstp` versus integer raw-copy choice can rotate register allocation in the
 next handler.  Fix upstream handlers before trying to force a downstream
 register with source hacks.
+
+## Opcode 66: re-evaluate full target flow only after upstream register-phase fixes
+
+Opcode 66 should be evaluated as one control-flow unit: direct `ReadInt(0) <= 0`,
+explicit raw-bit conditional floats for operands 2/3, movement-mode update,
+timer reset, and an `else` call to `EclHelpers::ConfigurePolarMotion`.  Earlier
+probes on the pre-op77/78 allocator phase were misleading because the whole
+handler's EAX/ECX/EDX cycle was shifted.  The selector in `.analysis/select_op66_target.py`
+compares this complete target-flow form against the current whole-function
+strict replay and retains it only when both shape zero and byte improvement are
+proven.
