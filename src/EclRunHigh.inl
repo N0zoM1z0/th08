@@ -613,7 +613,8 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             TH08_ECL_AT(ctx, u32, 0x3324) = ((TH08_ECL_RAW_BYTE(ctx, 0) & 7) << 20) | (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFF8FFFFF);
         break;
     case 130:
-        if (TH08_ECL_PRESENTATION_WRITES_ALLOWED())
+        if ((((g_EnemyManagerUpdateManagerFlags >> 14) & 1) != 1) ||
+            (((g_EnemyManagerUpdateManagerFlags >> 7) & 3) == 0))
             TH08_ECL_AT(ctx, u16, 0x2CEE) = TH08_ECL_RAW_U16(ctx, 0);
         break;
     case 126:
@@ -629,7 +630,7 @@ enter_subroutine:
         *(RawInstruction **)TH08_ECL_CURRENT_CONTEXT(ctx) =
             (RawInstruction *)((u8 *)instruction + instruction->nextOffset);
 
-        if (((TH08_ECL_AT(ctx, u32, 0x3324) >> 26) & 1) == 0)
+        if (((TH08_ECL_AT(ctx, u32, 0x3324) >> 26) & 1) != 1)
         {
             memcpy(TH08_ECL_AT(ctx, u8 *, 0x2CA4) +
                        TH08_ECL_AT(ctx, i16, 0x2CEA) * 0x228,
