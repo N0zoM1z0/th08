@@ -763,8 +763,8 @@ enter_subroutine:
         {
             position = *reinterpret_cast<Float3 *>(
                 &TH08_ECL_AT(ctx, Vec3, 0x2D34));
-            ((f32 *)position)[0] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
-            position.y += g_Rng.GetRandomF32() * 128.0f - 64.0f;
+            position.x += g_Rng.GetRandomF32() * 128.0f - 64.0f;
+            ((f32 *)position)[1] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&position), static_cast<ItemType>(1), 0);
         }
         break;
