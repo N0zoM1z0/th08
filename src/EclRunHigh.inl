@@ -721,15 +721,20 @@ enter_subroutine:
         break;
     case 140:
     {
-        Vec3 vector;
+        D3DXVECTOR3 vector;
         if (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
             vector.x = reinterpret_cast<EclOperands::EnemyOverlay *>(
                 TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
                     *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)));
         else
             *reinterpret_cast<i32 *>(&vector.x) = TH08_ECL_RAW_I(ctx, 3);
-        vector.y = TH08_ECL_READ_F_RAWARG(ctx, 4);
-        vector.z = TH08_ECL_READ_F_RAWARG(ctx, 5);
+        if (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 4))
+            vector.y = reinterpret_cast<EclOperands::EnemyOverlay *>(
+                TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
+                    *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 4)));
+        else
+            *reinterpret_cast<i32 *>(&vector.y) = TH08_ECL_RAW_I(ctx, 4);
+        vector.z = TH08_ECL_READ_F(ctx, 5);
         g_EffectManager.SpawnEffectAngle(TH08_ECL_READ_I(ctx, 0), reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)), reinterpret_cast<D3DXVECTOR3 *>(&vector),
                                        TH08_ECL_READ_I(ctx, 1), *TH08_ECL_WRITE_I(ctx, 2));
         break;
@@ -749,7 +754,7 @@ enter_subroutine:
             position.y += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             i32 playerPower = g_GameManager.GetPower();
             if (playerPower < 0x80)
-                g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&position), static_cast<ItemType>(i == 0 ? 2 : 0), 0);
+                g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&position), static_cast<ItemType>((i == 0) * 2), 0);
             else
                 g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&position), static_cast<ItemType>(1), 0);
         }
