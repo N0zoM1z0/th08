@@ -180,7 +180,11 @@ low_select_next_context:
                 if (entry->affectedVariable == 10042.0f ||
                     entry->affectedVariable == 10043.0f ||
                     entry->affectedVariable == 10044.0f)
-                    restorePosition = 1;
+                    goto markPositionRestore;
+                goto donePositionRestoreCheck;
+            markPositionRestore:
+                restorePosition = 1;
+            donePositionRestoreCheck:;
             }
         }
 
