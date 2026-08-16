@@ -871,23 +871,12 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
 
     case 87:
-        lhsInt = ReadInt(enemy, instruction, 2);
-        if (g_EclEnemyTableF54CC0[lhsInt])
-        {
-            if (instruction->operandFlags & 2U)
-            {
-                // 0x0041ADC1 resolves operand 2 again before selecting the
-                // foreign register namespace for operand 1.
-                lhsFloat = g_EclEnemyTableF54CC0[
-                    ReadInt(enemy, instruction, 2)]->ResolveFloat(
-                        RawFloat(instruction, 1));
-            }
-            else
-            {
-                lhsFloat = RawFloat(instruction, 1);
-            }
-            *WriteFloat(enemy, instruction, 0) = lhsFloat;
-        }
+        if (g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)])
+            *WriteFloat(enemy, instruction, 0) =
+                (instruction->operandFlags & 2U)
+                    ? g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)]->ResolveFloat(
+                          *reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+                    : *reinterpret_cast<f32 *>(&RawInt(instruction, 1));
         break;
 
     case 88:

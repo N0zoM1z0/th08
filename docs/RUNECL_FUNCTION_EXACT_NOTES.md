@@ -242,3 +242,35 @@ too shallow.  With the target-present 4-byte `childContext` tail local restored,
 those homes move exactly to target offsets `-0x438/-0x43C/-0x440/-0x444`.
 This is strong evidence that the missing frame dword is a shared cause rather
 than an opcode-127-local expression problem.
+
+## Opcode 87: a hidden float temporary is the RunEcl frame-size hinge
+
+The decisive frame mismatch was not caused by the tail.  Target opcode 87
+performs `if (enemyTable[ReadInt(2)])` directly, then assigns a conditional
+float expression straight into `*WriteFloat(...)`.  This makes VC7 allocate a
+hidden float result home at `[ebp-0x370]` after the two existing integer
+resolver homes at `-0x368/-0x36C`.
+
+The earlier reconstruction saved the first `ReadInt(2)` into shared `lhsInt`
+and the float into shared `lhsFloat@-0x1C`.  That removed the hidden `-0x370`
+dword.  As a consequence every compiler-owned resolver scratch allocated after
+opcode 87 was four bytes too shallow, the function frame was `0x5C0` instead
+of target `0x5C4`, and many otherwise-correct handlers differed only in stack
+home bytes.
+
+Target-faithful source shape:
+
+```cpp
+if (g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)])
+    *WriteFloat(enemy, instruction, 0) =
+        (instruction->operandFlags & 2U)
+            ? g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)]
+                  ->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 1));
+```
+
+This removes an extra six-byte `lhsInt` spill/reload, creates the target hidden
+float home, keeps the opcode-87 extent exact, restores the `0x5C4` frame, and
+moves all later resolver homes onto their target offsets.  In the current
+RunEcl reconstruction it reduces relocated byte mismatches from 4721 to 4100;
+opcodes 87, 88, 89, 127, 168, and 184 become byte-exact under replay.
