@@ -98,11 +98,12 @@ struct TargetZunTimerOverlay
 // context argument in EDX.  Interpolator callbacks receive Enemy in ECX and
 // their progress value on the stack.
 typedef void (__fastcall *EclContextCallback)(Enemy *enemy, void *argument);
-typedef void (Enemy::*EclInterpolatorCallback)(f32 progress);
+struct Interpolator;
+typedef void (__fastcall *EclInterpolatorCallback)(Enemy *enemy, Interpolator *entry, f32 progress);
 
 struct Interpolator
 {
-    EclInterpolatorCallback callback; // +0x00, target calls with Enemy in ECX
+    EclInterpolatorCallback callback; // +0x00, target calls with Enemy in ECX and entry in EDX
     ZunTimer timer;                 // +0x04
     i32 duration;         // +0x10
     i32 unknown14;        // +0x14

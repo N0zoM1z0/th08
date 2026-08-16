@@ -176,7 +176,7 @@ low_advance_instruction:
                     break;
                 }
 
-                (enemy->*entry->callback)(progress);
+                entry->callback(enemy, entry, progress);
                 if (entry->timer >= entry->duration)
                     entry->callback = 0;
 
@@ -195,8 +195,8 @@ low_advance_instruction:
                 TH08_ECL_AT(unusedContext, f32, 0x2D38) - savedPosition.y;
             TH08_ECL_AT(unusedContext, f32, 0x2D94) =
                 VectorAngle(
-                    TH08_ECL_AT(unusedContext, f32, 0x2D50),
-                    TH08_ECL_AT(unusedContext, f32, 0x2D4C));
+                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(enemy) + 0x2D50),
+                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(enemy) + 0x2D4C));
             TH08_ECL_AT(unusedContext, Vec3, 0x2D34) = savedPosition;
         }
     }

@@ -587,3 +587,34 @@ Useful local-layout evidence after this step: `i` naturally occupies target
 at target `-0x104`.  `progress`, `restorePosition`, `entry`, and the
 `savedPosition` aggregate are not all in their final target homes yet, so tail
 byte work remains even though the span is now exact.
+
+## RunEcl tail: callback ABI and VectorAngle argument source shape are coupled
+
+The target interpolation callback sequence is not a C++ member-function call.
+It pushes `progress`, loads the callback through the interpolation entry, passes
+the entry itself in EDX and the enemy in ECX, then calls through the callback.
+That is the natural x86 `__fastcall` shape for:
+
+`void callback(Enemy *enemy, Interpolator *entry, f32 progress)`.
+
+Model `Interpolator::callback` as that 4-byte fastcall function pointer and call
+`entry->callback(enemy, entry, progress)`.  This emits the recovered ECX/EDX
+argument setup and indirect call sequence.
+
+The restore-path `VectorAngle` is the real global `th08::VectorAngle(f32,f32)`.
+To reproduce its target argument moves without changing the ABI, use the same
+direct float-lvalue source form already present in exact Bullet code:
+
+`*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(enemy) + offset)`.
+
+VC7 then passes the two float arguments as raw dword `mov/push` pairs, exactly as
+the target does.  Keeping the macroized `TH08_ECL_AT(..., f32, ...)` spelling in
+this giant RunEcl body instead produced x87 `fld/fstp [esp]` argument transfers.
+
+These two fixes are compiler-shape coupled.  On the 2189-diff baseline, changing
+only VectorAngle argument spelling makes opcode 3 seven bytes short; changing
+only the callback ABI makes it six bytes long.  Applying both together restores
+opcode 3 and the complete handler map to exact zero deltas and lowers strict
+relocation replay from 2189 to 2012.  Never "balance" either with an unrelated
+handler; the pair is justified independently by the target ABI and by exact
+VectorAngle call precedent elsewhere in the project.
