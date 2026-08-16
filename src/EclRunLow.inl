@@ -929,8 +929,6 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                                     0x9DCEF8) == 0)
         {
             reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
-                linkedChild = 1;
-            reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
                 isYoukai =
                 reinterpret_cast<EclOperands::TargetPlayerOverlay *>(&g_Player)->
                     IsYoukai();
@@ -943,6 +941,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                                  -2) +
                                 2);
             U32At(child, 0x3324) &= ~4U;
+            reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
+                linkedChild = 1;
 
             if (PointerAt(child, 0x53C8) == 0)
             {
