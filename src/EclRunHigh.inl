@@ -721,7 +721,7 @@ enter_subroutine:
         break;
     case 140:
     {
-        D3DXVECTOR3 vector;
+        Float3 vector;
         if (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
             vector.x = reinterpret_cast<EclOperands::EnemyOverlay *>(
                 TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
@@ -735,7 +735,7 @@ enter_subroutine:
         else
             *reinterpret_cast<i32 *>(&vector.y) = TH08_ECL_RAW_I(ctx, 4);
         vector.z = TH08_ECL_READ_F(ctx, 5);
-        g_EffectManager.SpawnEffectAngle(TH08_ECL_READ_I(ctx, 0), reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)), reinterpret_cast<D3DXVECTOR3 *>(&vector),
+        g_EffectManager.SpawnEffectAngle(TH08_ECL_READ_I(ctx, 0), reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)), reinterpret_cast<D3DXVECTOR3 *>(static_cast<f32 *>(vector)),
                                        TH08_ECL_READ_I(ctx, 1), *TH08_ECL_WRITE_I(ctx, 2));
         break;
     }
