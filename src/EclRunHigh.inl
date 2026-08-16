@@ -449,12 +449,8 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         break;
     }
     case 110:
-        TH08_ECL_AT(ctx, f32, 0x2DB8) = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 0))
-            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0)))
-            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0)));
-        TH08_ECL_AT(ctx, f32, 0x2DBC) = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
-            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)))
-            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)));
+        TH08_ECL_AT(ctx, f32, 0x2DB8) = TH08_ECL_READ_F_RAWARG(ctx, 0);
+        TH08_ECL_AT(ctx, f32, 0x2DBC) = TH08_ECL_READ_F_RAWARG(ctx, 1);
         TH08_ECL_AT(ctx, i32, 0x2DC0) = 0;
         break;
 
@@ -785,15 +781,9 @@ enter_subroutine:
     case 140:
     {
         Float3 vector;
-        vector.x = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
-            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)))
-            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)));
-        vector.y = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 4))
-            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 4)))
-            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 4)));
-        vector.z = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 5))
-            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 5)))
-            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 5)));
+        vector.x = TH08_ECL_READ_F_RAWARG(ctx, 3);
+        vector.y = TH08_ECL_READ_F_RAWARG(ctx, 4);
+        vector.z = TH08_ECL_READ_F_RAWARG(ctx, 5);
         g_EffectManager.SpawnEffectAngle(
             TH08_ECL_READ_I(ctx, 0),
             reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)),
@@ -950,9 +940,7 @@ enter_subroutine:
         break;
     case 152:
         TH08_ECL_AT(ctx, f32, 0x2DEC) = TH08_ECL_READ_F_RAWARG(ctx, 0);
-        TH08_ECL_AT(ctx, f32, 0x2DF0) = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
-            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)))
-            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)));
+        TH08_ECL_AT(ctx, f32, 0x2DF0) = TH08_ECL_READ_F_RAWARG(ctx, 1);
         TH08_ECL_AT(ctx, u16, 0x2DF4) = (u16)TH08_ECL_READ_I(ctx, 2);
         TH08_ECL_AT(ctx, u16, 0x2DF6) = (u16)TH08_ECL_READ_I(ctx, 3);
         TH08_ECL_AT(ctx, u16, 0x2DF8) = (u16)TH08_ECL_READ_I(ctx, 4);
@@ -998,13 +986,9 @@ enter_subroutine:
     case 165: TH08_ECL_AT(ctx, f32, 0x14) = TH08_ECL_READ_F_RAWARG(ctx, 0); break;
     case 166:
         *TH08_ECL_WRITE_F(ctx, 1) =
-            sinf(TH08_ECL_READ_F_RAWARG(ctx, 2)) * ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
-            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)))
-            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)));
+            sinf(TH08_ECL_READ_F_RAWARG(ctx, 2)) * TH08_ECL_READ_F_RAWARG(ctx, 3);
         *TH08_ECL_WRITE_F(ctx, 0) =
-            cosf(((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2))
-            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2)))
-            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2)))) *
+            cosf(TH08_ECL_READ_F_RAWARG(ctx, 2)) *
             ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
                  ? reinterpret_cast<EclOperands::EnemyOverlay *>(
                        TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(

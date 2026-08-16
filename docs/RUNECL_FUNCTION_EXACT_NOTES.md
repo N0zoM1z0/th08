@@ -436,3 +436,35 @@ handler (never a global macro change), and each selector retains a source
 variant only if the complete RunEcl remains shape-zero and strict replay
 improves.  This preserves opcode-specific VC7 behavior while avoiding repeated
 manual probes of already exact handlers.
+
+
+## Strict selector gate must check every handler span, not only total extent
+
+A later raw-branch sweep exposed a validation bug in the experimental selectors.
+They treated `physical_handler_delta == 0` as "shape zero". That only proves the
+sum of all handler-size deltas is zero; compensating positive and negative
+handler deltas can still remain. One such sweep left RunEcl at exact total
+extent `0x6B06/0x680E` while the real shape score had
+`positive_delta = 4` and `absolute_delta = 8` (for example opcode 66 `+2`,
+opcode 68 `+1`, opcode 69 `-1`, opcode 72 `+1`, opcode 73 `-1`). This is not
+acceptable for function-exact work because later handler addresses drift.
+
+The reusable hard gate for every candidate is all of:
+
+- target function and code extents exact;
+- `physical_handler_delta == 0`;
+- `positive_delta == 0`;
+- `absolute_delta == 0`;
+- only then compare relocation-replayed authored bytes.
+
+Never trust a selector's saved score without a fresh rebuild followed by
+`scripts/ecl-shape-score.py`. The source was restored to the last independently
+verified shape-zero state (`5cf06a4` source shape), where the fresh strict scorer
+reports 2727 mismatching authored bytes. The later raw-branch experiments remain
+useful allocator evidence, but their source changes must be re-tested under the
+full gate before reuse.
+
+`.analysis/runecl_strict_score.py` is the local scorer used for this work. It
+applies relocation replay only to in-range relocation fields and reports
+`shape_ok` only when function/code extents plus physical, positive, and absolute
+handler deltas are all zero.
