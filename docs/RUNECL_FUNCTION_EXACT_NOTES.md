@@ -426,3 +426,13 @@ existing calls inside one handler, rebuild each subset, and keep a candidate
 only when the whole RunEcl remains shape-zero and strict relocation replay
 improves.  Run related handlers sequentially so the second search evaluates on
 top of any accepted first-handler improvement.
+
+## Hotspot-only raw-branch sweep
+
+Once individual float raw-branch patterns were understood, the same search was
+scaled only across handlers that still contribute at least 18 strict mismatched
+bytes.  The sweep enumerates explicit raw-dword conditional branches per
+handler (never a global macro change), and each selector retains a source
+variant only if the complete RunEcl remains shape-zero and strict replay
+improves.  This preserves opcode-specific VC7 behavior while avoiding repeated
+manual probes of already exact handlers.
