@@ -756,13 +756,24 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & 0xFFFFCFFFU) | 0x1000U;
         break;
     case 72:
-        ResetMovementTimer(enemy, services, ReadInt(enemy, instruction, 0));
+        *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) =
+            (I32At(enemy, 0x2DE8) = ReadInt(enemy, instruction, 0));
         F32At(enemy, 0x2DD0) = ReadFloatRawArg(enemy, instruction, 1);
-        F32At(enemy, 0x2DD4) = ReadFloat(enemy, instruction, 2);
-        F32At(enemy, 0x2D9C) = ReadFloat(enemy, instruction, 3);
-        F32At(enemy, 0x2DA0) = ReadFloat(enemy, instruction, 4);
-        F32At(enemy, 0x2DB0) = ReadFloat(enemy, instruction, 5);
-        F32At(enemy, 0x2DB4) = ReadFloat(enemy, instruction, 6);
+        F32At(enemy, 0x2DD4) = ((instruction->operandFlags & (1U << 2))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 2)));
+        F32At(enemy, 0x2D9C) = ((instruction->operandFlags & (1U << 3))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
+        F32At(enemy, 0x2DA0) = ((instruction->operandFlags & (1U << 4))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 4)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 4)));
+        F32At(enemy, 0x2DB0) = ((instruction->operandFlags & (1U << 5))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 5)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 5)));
+        F32At(enemy, 0x2DB4) = ((instruction->operandFlags & (1U << 6))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 6)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 6)));
         U32At(enemy, 0x3324) |= 0x3000U;
         break;
     case 73:

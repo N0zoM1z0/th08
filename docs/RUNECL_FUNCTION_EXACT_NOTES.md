@@ -339,3 +339,25 @@ This reduces opcode-119 relocated mismatches from 70 to 30 and full RunEcl
 strict replay from 3736 to 3696.  Reversing the commutative source addition did
 not change VC7's x87 load order, so keep the natural existing `base + operand`
 source order and only preserve the raw-bit conditional.
+
+## Opcode 72: only operand 1 keeps the old raw-float source shape
+
+Opcode 72 is not uniform across its six float operands.  Target first resolves
+operand 0 once, stores it to `enemy+0x2DE8`, then assigns the same compiler
+scratch to `ZunTimer@+0x2DDC`.  Operand 1 (`+0x2DD0`) retains the existing
+`ReadFloatRawArg` x87 raw branch, while operands 2..6 use conditional
+expressions whose unresolved branches copy raw dword bits into their hidden
+float result homes with integer moves.
+
+The target-faithful combination is therefore:
+
+- direct chained timer assignment;
+- leave operand 1 as `ReadFloatRawArg`;
+- spell operands 2..6 as explicit `ResolveFloat(raw-bits) : raw-bits`;
+- keep the final `flags |= 0x3000` source unchanged.
+
+A bounded 128-combination probe found only two shape-zero variants before the
+search timeout; this one reduces opcode-72 relocated mismatches from 350 to 26
+and full RunEcl strict replay from 3696 to 3372 while preserving the global
+zero shape score.  The remaining 26 bytes are a cyclic EAX/ECX/EDX register
+phase, not a data-flow or stack-home mismatch.
