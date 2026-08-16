@@ -441,10 +441,9 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
 
     case 109:
     {
-        D3DXVECTOR3 sum =
+        *reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2E28)) =
             *reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)) +
             *reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2DB8));
-        TH08_ECL_AT(ctx, Vec3, 0x2E28) = *reinterpret_cast<Vec3 *>(&sum);
         reinterpret_cast<TargetApi *>(&g_BulletManager)->FinalizeVectorState(
             TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E24);
         break;
@@ -458,26 +457,30 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
     case 114:
     case 115:
     {
+        u8 *operands = TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands;
         u8 *state = TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3070;
-        Vec3 transformed;
-        TH08_ECL_CONTEXT_API(ctx)->AddVectors(&transformed, &TH08_ECL_AT(ctx, Vec3, 0x2D88), &TH08_ECL_AT(ctx, Vec3, 0x2DB8));
-        *(u16 *)(state + 0x00) = TH08_ECL_RAW_U16(ctx, 0);
-        *(u16 *)(state + 0x02) = (u16)TH08_ECL_READ_I16(ctx, 2, 1);
-        *(Vec3 *)(state + 0x04) = transformed;
-        *(f32 *)(state + 0x10) = TH08_ECL_READ_F(ctx, 1);
-        *(f32 *)(state + 0x18) = TH08_ECL_READ_F(ctx, 2);
-        *(f32 *)(state + 0x1D0) = TH08_ECL_READ_F(ctx, 3);
-        *(f32 *)(state + 0x1D4) = TH08_ECL_READ_F(ctx, 4);
-        *(f32 *)(state + 0x1D8) = TH08_ECL_READ_F(ctx, 5);
-        *(f32 *)(state + 0x1DC) = TH08_ECL_READ_F(ctx, 6);
-        *(i32 *)(state + 0x1E0) = TH08_ECL_READ_I(ctx, 7);
-        *(i32 *)(state + 0x1E4) = TH08_ECL_READ_I(ctx, 8);
-        *(i32 *)(state + 0x1E8) = TH08_ECL_READ_I(ctx, 9);
-        *(i32 *)(state + 0x1EC) = TH08_ECL_RAW_I(ctx, 10);
-        *(i32 *)(state + 0x1F0) = TH08_ECL_RAW_I(ctx, 11);
-        *(i32 *)(state + 0x1FC) = TH08_ECL_RAW_I(ctx, 12);
-        *(u16 *)(state + 0x1F8) = TH08_ECL_CONTEXT_INSTRUCTION(ctx)->opcode == 115 ? 0 : 1;
-        TH08_ECL_AT(ctx, void *, 0x3280 + TH08_ECL_AT(ctx, i32, 0x3300) * 4) = TH08_ECL_CONTEXT_API(ctx)->CreateModeObject(state);
+        *reinterpret_cast<D3DXVECTOR3 *>(state + 0x04) =
+            *reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D88)) +
+            *reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2DB8));
+        *(u16 *)(state + 0x00) = *reinterpret_cast<u16 *>(operands);
+        *(u16 *)(state + 0x02) = (u16)((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & 2U) ? EclOperands::ResolveInt(reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx)), static_cast<i32>(*reinterpret_cast<i16 *>(operands + 2))) : static_cast<i32>(*reinterpret_cast<i16 *>(operands + 2)));
+        *(f32 *)(state + 0x10) = TH08_ECL_READ_F_RAWARG(ctx, 2);
+        *(f32 *)(state + 0x18) = TH08_ECL_READ_F_RAWARG(ctx, 3);
+        *(f32 *)(state + 0x1D0) = TH08_ECL_READ_F_RAWARG(ctx, 4);
+        *(f32 *)(state + 0x1D4) = TH08_ECL_READ_F_RAWARG(ctx, 5);
+        *(f32 *)(state + 0x1D8) = TH08_ECL_READ_F_RAWARG(ctx, 6);
+        *(f32 *)(state + 0x1DC) = TH08_ECL_READ_F_RAWARG(ctx, 7);
+        *(i32 *)(state + 0x1E0) = TH08_ECL_READ_I(ctx, 8);
+        *(i32 *)(state + 0x1E4) = TH08_ECL_READ_I(ctx, 9);
+        *(i32 *)(state + 0x1E8) = TH08_ECL_READ_I(ctx, 10);
+        *(i32 *)(state + 0x1EC) = *reinterpret_cast<i32 *>(operands + 40);
+        *(i32 *)(state + 0x1F0) = *reinterpret_cast<i32 *>(operands + 44);
+        *(i32 *)(state + 0x1FC) = *reinterpret_cast<i32 *>(operands + 48);
+        if (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->opcode == 115)
+            *(u16 *)(state + 0x1F8) = 0;
+        else
+            *(u16 *)(state + 0x1F8) = 1;
+        TH08_ECL_AT(ctx, void *, 0x3280 + TH08_ECL_AT(ctx, i32, 0x3300) * 4) = reinterpret_cast<TargetApi *>(&g_BulletManager)->CreateModeObject(state);
         break;
     }
     case 116: TH08_ECL_AT(ctx, i32, 0x3300) = TH08_ECL_READ_I(ctx, 0); break;
@@ -571,9 +574,9 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             g_AsciiManager.FUN_00422bb0(
                 TH08_ECL_AT(ctx, u8, 0x3313), 2);
             reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->FUN_0042a820();
-            D3DXVECTOR3 offscreen(-999.0f, -999.0f, 0.0f);
             g_AsciiManager.SetBossMarkerPosition(
-                TH08_ECL_AT(ctx, u8, 0x3313), &offscreen);
+                TH08_ECL_AT(ctx, u8, 0x3313),
+                &D3DXVECTOR3(-999.0f, -999.0f, 0.0f));
         }
         else
         {
@@ -594,11 +597,11 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
 
     case 128:
     {
+        u8 *operands = TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands;
         TH08_ECL_AT(ctx, u8 *, 0x5360 + TH08_ECL_AT(ctx, i32, 0x53C0) * 4) =
             reinterpret_cast<u8 *>(g_EffectManager.SpawnEffect(
                 13, reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)),
                 1, 0xFF6060D0));
-        u8 *operands = TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands;
         *reinterpret_cast<Vec3 *>(
             TH08_ECL_AT(ctx, u8 *, 0x5360 + TH08_ECL_AT(ctx, i32, 0x53C0) * 4) +
             0x2EC) = *reinterpret_cast<Vec3 *>(operands + 4);
@@ -630,7 +633,7 @@ enter_subroutine:
         *(RawInstruction **)TH08_ECL_CURRENT_CONTEXT(ctx) =
             (RawInstruction *)((u8 *)instruction + instruction->nextOffset);
 
-        if (((TH08_ECL_AT(ctx, u32, 0x3324) >> 26) & 1) != 1)
+        if (((TH08_ECL_AT(ctx, u32, 0x3324) >> 26) & 1) == 0)
         {
             memcpy(TH08_ECL_AT(ctx, u8 *, 0x2CA4) +
                        TH08_ECL_AT(ctx, i16, 0x2CEA) * 0x228,
@@ -693,24 +696,23 @@ enter_subroutine:
     case 135:
     {
         lhsInt = TH08_ECL_READ_I(ctx, 0);
-        u8 *oldContext = TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4);
-        if (oldContext)
-            g_ZunMemory.Free(oldContext);
+        if (TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4))
+            g_ZunMemory.Free(TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4));
         TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) = 0;
 
         if (TH08_ECL_READ_I(ctx, 1) >= 0)
         {
-            u8 *child = (u8 *)g_ZunMemory.Alloc(0x24B0, "ECLInt");
-            TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) = child;
-            if (child)
+            TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) =
+                (u8 *)g_ZunMemory.Alloc(0x24B0, "ECLInt");
+            if (TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4))
             {
-                for (i32 *clear = (i32 *)child, *end = (i32 *)child + 0x92C;
-                     clear < end; ++clear)
-                    *clear = 0;
-                *(i32 *)child = TH08_ECL_READ_I(ctx, 1);
-                TH08_ECL_CONTEXT_API(ctx)->InitializeEclContext(child + 8, *(u16 *)child);
-                memcpy(child + 0x20, TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18,
-                       0x1E * sizeof(i32));
+                memset(TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4), 0, 0x24B0);
+                *(i32 *)TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) = TH08_ECL_READ_I(ctx, 1);
+                reinterpret_cast<TargetApi *>(0x004ECCB8)->InitializeEclContext(
+                    TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) + 8,
+                    *(u16 *)TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4));
+                memcpy(TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) + 0x20,
+                       TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18, 0x1E * sizeof(i32));
             }
         }
         break;
@@ -722,24 +724,14 @@ enter_subroutine:
     case 140:
     {
         Float3 vector;
-        if ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3)) == 0)
-            goto rawVectorX140;
-        vector.x = reinterpret_cast<EclOperands::EnemyOverlay *>(
-            TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
-                *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)));
-        goto doneVectorX140;
-    rawVectorX140:
-        *reinterpret_cast<i32 *>(&vector.x) = TH08_ECL_RAW_I(ctx, 3);
-    doneVectorX140:
-        if (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 4))
-            vector.y = reinterpret_cast<EclOperands::EnemyOverlay *>(
-                TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
-                    *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 4)));
-        else
-            *reinterpret_cast<i32 *>(&vector.y) = TH08_ECL_RAW_I(ctx, 4);
-        vector.z = TH08_ECL_READ_F(ctx, 5);
-        g_EffectManager.SpawnEffectAngle(TH08_ECL_READ_I(ctx, 0), reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)), reinterpret_cast<D3DXVECTOR3 *>(static_cast<f32 *>(vector)),
-                                       TH08_ECL_READ_I(ctx, 1), *TH08_ECL_WRITE_I(ctx, 2));
+        vector.x = TH08_ECL_READ_F_RAWARG(ctx, 3);
+        vector.y = TH08_ECL_READ_F_RAWARG(ctx, 4);
+        vector.z = TH08_ECL_READ_F_RAWARG(ctx, 5);
+        g_EffectManager.SpawnEffectAngle(
+            TH08_ECL_READ_I(ctx, 0),
+            reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)),
+            reinterpret_cast<D3DXVECTOR3 *>(&vector),
+            TH08_ECL_READ_I(ctx, 1), *TH08_ECL_WRITE_I(ctx, 2));
         break;
     }
     case 143: TH08_ECL_AT(ctx, i32, 0x3304) = TH08_ECL_READ_I(ctx, 0); break;
@@ -749,29 +741,37 @@ enter_subroutine:
         break;
     case 142:
     {
-        i32 count = TH08_ECL_READ_I(ctx, 0);
-        for (i32 i = 0; i < count; ++i)
-        {
-            Vec3 position = TH08_ECL_AT(ctx, Vec3, 0x2D34);
-            position.x += g_Rng.GetRandomF32() * 128.0f - 64.0f;
-            position.y += g_Rng.GetRandomF32() * 128.0f - 64.0f;
-            i32 playerPower = g_GameManager.GetPower();
-            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&position),
-                                    static_cast<ItemType>(playerPower < 0x80 ? ((i == 0) * 2) : 1), 0);
-        }
-        break;
-    }
-    case 168:
-    {
         Float3 position;
         i32 count = TH08_ECL_READ_I(ctx, 0);
         for (i32 i = 0; i < count; ++i)
         {
             position = *reinterpret_cast<Float3 *>(
                 &TH08_ECL_AT(ctx, Vec3, 0x2D34));
-            position.x += g_Rng.GetRandomF32() * 128.0f - 64.0f;
+            ((f32 *)position)[0] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             ((f32 *)position)[1] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
-            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&position), static_cast<ItemType>(1), 0);
+            if (g_GameManager.GetPower() < 0x80)
+                g_ItemManager.SpawnItem(&position,
+                                        static_cast<ItemType>(i != 0 ? 0 : 2), 0);
+            else
+                g_ItemManager.SpawnItem(&position, static_cast<ItemType>(1), 0);
+        }
+        break;
+    }
+    case 168:
+    {
+        struct Op168Locals
+        {
+            Float3 position;
+            i32 i;
+        } locals;
+        i32 count = TH08_ECL_READ_I(ctx, 0);
+        for (locals.i = 0; locals.i < count; ++locals.i)
+        {
+            locals.position = *reinterpret_cast<Float3 *>(
+                &TH08_ECL_AT(ctx, Vec3, 0x2D34));
+            ((f32 *)locals.position)[0] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
+            ((f32 *)locals.position)[1] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
+            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&locals.position), static_cast<ItemType>(1), 0);
         }
         break;
     }
@@ -800,34 +800,35 @@ enter_subroutine:
     case 93:
         if (TH08_ECL_AT(ctx, i32, 0x2DFC) > 0)
         {
-            SpawnPacketTyped packet;
-            memcpy(&packet, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet));
-            D3DXVECTOR3 position;
-            position.x = TH08_ECL_READ_F_RAWARG(ctx, 1);
-            position.y = TH08_ECL_READ_F_RAWARG(ctx, 2);
-            position.z = TH08_ECL_READ_F_RAWARG(ctx, 3);
-            void *spawned = g_EnemyManager.SpawnEnemy2(packet.type, &position,
+            SpawnPacketTyped packet93;
+            memcpy(&packet93, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet93));
+            D3DXVECTOR3 position93;
+            position93.x = TH08_ECL_READ_F_RAWARG(ctx, 1);
+            position93.y = TH08_ECL_READ_F_RAWARG(ctx, 2);
+            position93.z = TH08_ECL_READ_F_RAWARG(ctx, 3);
+            void *spawned93 = g_EnemyManager.SpawnEnemy2(packet93.type, &position93,
                                       TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
                                       TH08_ECL_READ_I(ctx, 6),
                                       (i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18));
-            (void)spawned;
+            (void)spawned93;
         }
         break;
     case 94:
         if (TH08_ECL_AT(ctx, i32, 0x2DFC) > 0)
         {
-            SpawnPacketTyped packet;
-            memcpy(&packet, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet));
-            D3DXVECTOR3 position;
-            position.x = TH08_ECL_READ_F_RAWARG(ctx, 1);
-            position.y = TH08_ECL_READ_F_RAWARG(ctx, 2);
-            position.z = TH08_ECL_READ_F_RAWARG(ctx, 3);
-            Float3 *positionResult = reinterpret_cast<Float3 *>(&position)->operator+=(
+            SpawnPacketTyped packet94;
+            memcpy(&packet94, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet94));
+            D3DXVECTOR3 position94;
+            position94.x = TH08_ECL_READ_F_RAWARG(ctx, 1);
+            position94.y = TH08_ECL_READ_F_RAWARG(ctx, 2);
+            position94.z = TH08_ECL_READ_F_RAWARG(ctx, 3);
+            reinterpret_cast<Float3 *>(&position94)->operator+=(
                 *reinterpret_cast<Float3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)));
-            g_EnemyManager.SpawnEnemy2(packet.type, reinterpret_cast<D3DXVECTOR3 *>(positionResult),
+            void *spawned94 = g_EnemyManager.SpawnEnemy2(packet94.type, &position94,
                                       TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
                                       TH08_ECL_READ_I(ctx, 6),
                                       (i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18));
+            (void)spawned94;
         }
         break;
     case 95:
