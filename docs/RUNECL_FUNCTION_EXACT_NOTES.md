@@ -406,3 +406,13 @@ handler's EAX/ECX/EDX cycle was shifted.  The selector in `.analysis/select_op66
 compares this complete target-flow form against the current whole-function
 strict replay and retains it only when both shape zero and byte improvement are
 proven.
+
+## Opcode 73 conditional raw-float branches are searched as a coupled group
+
+Opcode 73 shares the movement-timer/vector/flag pipeline with opcode 72, but
+its three float operands do not necessarily want the same unresolved-branch
+source form.  `.analysis/select_op73_rawfloats.py` evaluates all eight choices
+between `ReadFloatRawArg` and explicit raw-dword conditional branches and keeps
+only a shape-zero candidate that lowers the whole RunEcl strict replay.  This
+avoids assuming that a source form proven for opcode 72 transfers unchanged to
+opcode 73.
