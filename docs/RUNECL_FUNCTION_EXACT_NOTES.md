@@ -733,3 +733,17 @@ mismatch counts for opcodes 155, 156, and 157 all zero.  This is another strong
 example of a physical-handler phase chain: solving a successor locally was the
 wrong abstraction; the exact source forms of its two predecessors plus the real
 call owner were required together.
+
+## Opcode 75: raw-float sites are 0111, not uniformly explicit
+
+On the 1697-diff full-shape baseline, opcode 75's four conditional float stores
+were re-searched under the corrected hard gate.  The retained subset is `0111`:
+keep operand 0 as `ReadFloatRawArg`, and spell operands 1, 2, and 3 as explicit
+`ResolveFloat(raw bits) : raw bits` conditionals.
+
+This preserves exact function/code extents and zero physical, positive, and
+absolute handler deltas, lowering strict replay from 1697 to 1663.  The handler
+then has only 12 authored-byte mismatches left, all in operand 0's unresolved
+branch.  Making operand 0 explicit by itself rotates the later handler phase and
+is not an improvement; its remaining raw-copy shape must be solved together
+with the physical predecessor rather than forced locally.

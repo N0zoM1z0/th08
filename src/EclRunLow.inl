@@ -821,9 +821,15 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
     case 75:
         F32At(enemy, 0x3340) = ReadFloatRawArg(enemy, instruction, 0);
-        F32At(enemy, 0x3344) = ReadFloatRawArg(enemy, instruction, 1);
-        F32At(enemy, 0x3348) = ReadFloatRawArg(enemy, instruction, 2);
-        F32At(enemy, 0x334C) = ReadFloatRawArg(enemy, instruction, 3);
+        F32At(enemy, 0x3344) = ((instruction->operandFlags & (1U << 1))
+                ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+                : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
+        F32At(enemy, 0x3348) = ((instruction->operandFlags & (1U << 2))
+                ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
+                : *reinterpret_cast<f32 *>(&RawInt(instruction, 2)));
+        F32At(enemy, 0x334C) = ((instruction->operandFlags & (1U << 3))
+                ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3)))
+                : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
         U32At(enemy, 0x3324) |= 0x80000U;
         break;
     case 76:
