@@ -683,7 +683,11 @@ enter_subroutine:
                 TH08_ECL_READ_I(ctx, 1);
         break;
     case 134:
-        if (TH08_ECL_PRESENTATION_WRITES_ALLOWED())
+        // Both extracted fields are small nonnegative masks, so their product
+        // is zero exactly when either presentation-write gate is zero.  This
+        // equivalent form preserves VC7's target handler extent.
+        if ((((g_EnemyManagerUpdateManagerFlags >> 14) & 1) *
+             ((g_EnemyManagerUpdateManagerFlags >> 7) & 3)) == 0)
         {
             TH08_ECL_AT(ctx, i32, 0x3378) = TH08_ECL_READ_I(ctx, 0);
             TH08_ECL_AT(ctx, i32, 0x337C) = TH08_ECL_READ_I(ctx, 1);
