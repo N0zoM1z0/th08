@@ -120,7 +120,6 @@ low_advance_instruction:
                 reinterpret_cast<u8 *>(instruction) + instruction->nextOffset);
             goto low_redispatch_instruction;
 
-low_select_next_context:
             break;
         }
 
@@ -212,6 +211,7 @@ low_select_next_context:
         reinterpret_cast<RawInstruction *>(instruction);
     reinterpret_cast<ZunTimer *>(TH08_ECL_CURRENT_CONTEXT(unusedContext) + 4)->operator++(0);
 
+low_select_next_context:
     for (i32 next = activeChildContext + 1; next < 4; ++next)
     {
         if (TH08_ECL_AT(unusedContext, u8 *, 0x3384 + next * 4))
