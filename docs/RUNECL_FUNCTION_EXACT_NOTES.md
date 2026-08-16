@@ -835,3 +835,52 @@ So the remaining opcode-34 source debt is coupled to the later movement-phase
 chain.  Do not retain the locally best `1011` compromise merely because it keeps
 shape zero: target evidence says all four raw branches are explicit.  Continue
 by repairing the downstream physical phase until `1111` closes naturally.
+
+## Opcodes 105/106: target reloads 0x3060 instead of using lhsInt
+
+Target opcodes 105 and 106 write `ReadInt(0)` to enemy+0x3060 and, when the
+field is nonzero, reload that field independently for the positive and negative
+`/5` arguments passed to `GameManager::ScaleIntBasedOnRank`.  The old source
+copied 0x3060 to shared `lhsInt@-4` and reused the scratch.
+
+Removing the `lhsInt` copy and spelling both divisions directly from
+`TH08_ECL_AT(ctx, i32, 0x3060)` preserves all handler extents and improves
+relocation-replayed strict comparison:
+
+- op105 alone: 1281 -> 1261;
+- op106 alone: 1281 -> 1260;
+- both: 1281 -> 1240.
+
+The RNG/timer part of opcode 106 was already structurally correct.  The useful
+reconstruction detail is the repeated field reload rather than a named/shared
+scratch local.
+
+## Opcode 83: OR operand order is observable in VC7 codegen
+
+Target opcode 83 calculates `(ReadInt(0) & 1) << 1` before loading/masking
+`enemy+0x3328`.  The previous source put `(flags & ~2)` on the left of `|`, so
+VC7 loaded the flags word first.  Reversing the two OR operands is semantically
+identical but restores target evaluation order; opcode 83 becomes byte-exact on
+the current phase and strict replay improves 1240 -> 1239 while shape stays 0.
+
+The analogous opcode 182 reversal currently grows that handler by one byte, so
+this is an evaluation-order observation, not a blanket textual rule.
+
+## Full raw opcode-34 chain currently reduces to two accumulator encodings
+
+When opcode 34 is restored to four raw-dword false branches and all known
+corresponding target-raw sites in op37/op38/op39/op65/op68/op69/op71/op72/
+op74/op75 are restored together, with opcode 66 using its target-like direct
+`if/else` + `ConfigurePolarMotion` flow, the formerly large movement span drift
+collapses to only:
+
+- opcode 66: +2 bytes;
+- opcode 68: +1 byte.
+
+The opcode-66 +2 consists exactly of `and/or` on 0x3324 using an ordinary
+register instead of target EAX, losing the two 5-byte accumulator encodings.
+The opcode-68 +1 is `add reg,0x2D34`: target uses EAX's 5-byte accumulator form.
+Thus the remaining blocker is a one-step register phase entering opcode 66,
+not missing target operations in opcode 34.  Making both opcode-63 float false
+branches raw rotates the phase too far; byte-exact opcode-64 `break -> goto`
+does not affect it.

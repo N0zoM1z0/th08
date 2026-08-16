@@ -426,8 +426,9 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         TH08_ECL_AT(ctx, i32, 0x3060) = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_AT(ctx, i32, 0x3060) != 0)
         {
-            lhsInt = TH08_ECL_AT(ctx, i32, 0x3060);
-            TH08_ECL_AT(ctx, i32, 0x3060) += g_GameManager.ScaleIntBasedOnRank(lhsInt / 5, -lhsInt / 5);
+            TH08_ECL_AT(ctx, i32, 0x3060) += g_GameManager.ScaleIntBasedOnRank(
+                TH08_ECL_AT(ctx, i32, 0x3060) / 5,
+                -TH08_ECL_AT(ctx, i32, 0x3060) / 5);
             *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3064) = 0;
         }
         break;
@@ -435,8 +436,9 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         TH08_ECL_AT(ctx, i32, 0x3060) = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_AT(ctx, i32, 0x3060) != 0)
         {
-            lhsInt = TH08_ECL_AT(ctx, i32, 0x3060);
-            TH08_ECL_AT(ctx, i32, 0x3060) += g_GameManager.ScaleIntBasedOnRank(lhsInt / 5, -lhsInt / 5);
+            TH08_ECL_AT(ctx, i32, 0x3060) += g_GameManager.ScaleIntBasedOnRank(
+                TH08_ECL_AT(ctx, i32, 0x3060) / 5,
+                -TH08_ECL_AT(ctx, i32, 0x3060) / 5);
             *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3064) =
                 g_Rng.GetRandomU32InRange(TH08_ECL_AT(ctx, i32, 0x3060));
         }
@@ -1071,8 +1073,8 @@ enter_subroutine:
         break;
     case 83:
         TH08_ECL_AT(ctx, u32, 0x3328) =
-            (TH08_ECL_AT(ctx, u32, 0x3328) & ~2U) |
-            ((TH08_ECL_READ_I(ctx, 0) & 1) << 1);
+            ((TH08_ECL_READ_I(ctx, 0) & 1) << 1) |
+            (TH08_ECL_AT(ctx, u32, 0x3328) & ~2U);
         break;
 #endif
     case 174:
