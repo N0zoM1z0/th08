@@ -646,9 +646,16 @@ zero physical, positive, and absolute handler deltas and lowers strict replay
 from 2012 to 1946, exactly the 66 stack-displacement bytes predicted by the
 pairing analysis.
 
-After this, opcode 3 has only one authored-byte mismatch left.  It is not a tail
-instruction-shape error: the final jump back to `restart_context` encodes a
-different rel32 because target `restart_context` is at function offset `0x70`
-while the current object label is at `0x4F`, a 0x21-byte prefix-layout debt.
-Thus the tail body itself should not be perturbed further to fix that byte; it
-will resolve when the RunEcl entry/prefix is reconstructed.
+After this, opcode 3 had only one authored-byte mismatch left.  A direct prefix
+comparison corrected the earlier label interpretation: target `restart_context`
+is already at function offset `0x4F`, exactly like the object.  Target offset
+`0x70` (`0x418520`) is `low_redispatch_instruction`.  The final child-context
+path had already loaded the new current instruction itself, so the original
+target jumps directly to `low_redispatch_instruction`; the reconstruction was
+incorrectly jumping to `restart_context` and redundantly reloading it.
+
+Changing that single child-loop goto to `low_redispatch_instruction` changes the
+last rel32 byte to the target value, keeps the complete handler map at zero
+delta, lowers whole-function strict replay from 1946 to 1945, and makes opcode 3
+fully byte-exact (zero relocation-replayed authored mismatches).  Do not revive
+the discarded "0x21-byte prefix debt" hypothesis.

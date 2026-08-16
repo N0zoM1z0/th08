@@ -228,7 +228,7 @@ low_select_next_context:
             TH08_ECL_AT(unusedContext, i16, 0x2CEA) =
                 *(i16 *)(childContext + 6);
             activeChildContext = next;
-            goto restart_context;
+            goto low_redispatch_instruction;
         }
     }
 
