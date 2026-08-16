@@ -689,7 +689,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
     case 66:
         lhsInt = ReadInt(enemy, instruction, 0);
-        if (lhsInt < 1)
+        if (lhsInt <= 0)
         {
             F32At(enemy, 0x2D94) = AddNormalizeAngle(ReadFloat(enemy, instruction, 2), 0.0f);
             F32At(enemy, 0x2DA8) = ReadFloatRawArg(enemy, instruction, 3);
@@ -697,7 +697,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
             I32At(enemy, 0x2DE8) = 0;
             *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) = 0;
         }
-        else
+        if (lhsInt > 0)
         {
             BeginTimedMove(enemy, instruction, services);
         }
@@ -722,21 +722,20 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
     case 69:
         lhsInt = ReadInt(enemy, instruction, 0);
-        if (lhsInt < 1)
-        {
-            F32At(enemy, 0x2D94) =
-                AddNormalizeAngle(ReadFloat(enemy, instruction, 2),
-                                  services.AngleToPlayer(Bytes(enemy) + 0x2D34));
-            F32At(enemy, 0x2DA8) = ReadFloat(enemy, instruction, 3);
-            SetMovementState1(enemy);
-            // The target resolves operand 0 again before timer assignment.
-            *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) =
-                (I32At(enemy, 0x2DE8) = ReadInt(enemy, instruction, 0));
-        }
-        else
-        {
-            BeginTimedMove(enemy, instruction, services);
-        }
+        if (lhsInt > 0)
+            goto beginTimedMove69;
+        F32At(enemy, 0x2D94) =
+            AddNormalizeAngle(ReadFloat(enemy, instruction, 2),
+                              services.AngleToPlayer(Bytes(enemy) + 0x2D34));
+        F32At(enemy, 0x2DA8) = ReadFloat(enemy, instruction, 3);
+        SetMovementState1(enemy);
+        // The target resolves operand 0 again before timer assignment.
+        *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) =
+            (I32At(enemy, 0x2DE8) = ReadInt(enemy, instruction, 0));
+        goto doneTimedMove69;
+    beginTimedMove69:
+        BeginTimedMove(enemy, instruction, services);
+    doneTimedMove69:
         break;
 
     case 70:
