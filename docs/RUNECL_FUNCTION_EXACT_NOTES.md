@@ -526,3 +526,20 @@ physical, positive, and absolute handler deltas, and lowers strict relocation
 replay from 2620 to 2588. The 32-byte opcode-140 hotspot disappears entirely.
 This is a case where all components genuinely share the same raw-branch source
 shape, unlike opcodes 39 and 152.
+
+## Opcode 166: trig call sites require asymmetric raw-float source shapes
+
+Opcode 166 evaluates the same logical angle/magnitude operands twice, once for
+`sinf` and once for `cosf`, but VC7 does not want symmetric source spelling at
+all call sites.  Under the corrected full-shape gate, the best subset for the
+three remaining `TH08_ECL_READ_F_RAWARG` sites is `011`:
+
+- keep the `sinf` angle (operand 2) as `TH08_ECL_READ_F_RAWARG`;
+- spell the `sinf` magnitude (operand 3) as an explicit raw-dword conditional;
+- spell the `cosf` angle (operand 2) as an explicit raw-dword conditional;
+- the `cosf` magnitude (operand 3) was already explicit and remains so.
+
+This preserves exact function/code extents and zero physical, positive, and
+absolute handler deltas, lowering strict replay from 2588 to 2565.  Reusing the
+same source form for repeated logical operands is not safe in this giant VC7
+function; call-site evaluation order and register/x87 state matter.

@@ -995,9 +995,13 @@ enter_subroutine:
     case 165: TH08_ECL_AT(ctx, f32, 0x14) = TH08_ECL_READ_F_RAWARG(ctx, 0); break;
     case 166:
         *TH08_ECL_WRITE_F(ctx, 1) =
-            sinf(TH08_ECL_READ_F_RAWARG(ctx, 2)) * TH08_ECL_READ_F_RAWARG(ctx, 3);
+            sinf(TH08_ECL_READ_F_RAWARG(ctx, 2)) * ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
+            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)))
+            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)));
         *TH08_ECL_WRITE_F(ctx, 0) =
-            cosf(TH08_ECL_READ_F_RAWARG(ctx, 2)) *
+            cosf(((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2))
+            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2)))
+            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2)))) *
             ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
                  ? reinterpret_cast<EclOperands::EnemyOverlay *>(
                        TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
