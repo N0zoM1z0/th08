@@ -324,3 +324,18 @@ VC7 materializes the target hidden result home with an integer raw-branch copy.
 With the current frame reconstruction this keeps opcode 114/115 span exact and
 reduces its relocated byte mismatches from 148 to 44; full RunEcl strict replay
 improves from 3840 to 3736 mismatching bytes.
+
+## Opcode 119: conditional float raw branches must copy bits, not round-trip x87
+
+For the three object-position deltas in opcode 119, target `ResolveFloat`
+branches store the x87 result into compiler scratch, while the unresolved
+branches copy the raw operand dword into the same scratch with integer moves.
+`TH08_ECL_READ_F_RAWARG` still compiled the raw branch as `fld/fstp` in this
+context.  Spelling each conditional explicitly with
+`*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(...))` recovers the integer raw-copy
+branch without changing the handler extent.
+
+This reduces opcode-119 relocated mismatches from 70 to 30 and full RunEcl
+strict replay from 3736 to 3696.  Reversing the commutative source addition did
+not change VC7's x87 load order, so keep the natural existing `base + operand`
+source order and only preserve the raw-bit conditional.

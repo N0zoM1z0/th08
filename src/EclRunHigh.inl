@@ -550,9 +550,18 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
         {
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x548) = TH08_ECL_AT(ctx, f32, 0x2D88) + TH08_ECL_READ_F_RAWARG(ctx, 1);
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x54C) = TH08_ECL_AT(ctx, f32, 0x2D8C) + TH08_ECL_READ_F_RAWARG(ctx, 2);
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x550) = TH08_ECL_AT(ctx, f32, 0x2D90) + TH08_ECL_READ_F_RAWARG(ctx, 3);
+            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x548) = TH08_ECL_AT(ctx, f32, 0x2D88) + ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
+                    ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
+                          *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)))
+                    : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)));
+            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x54C) = TH08_ECL_AT(ctx, f32, 0x2D8C) + ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2))
+                    ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
+                          *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2)))
+                    : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2)));
+            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x550) = TH08_ECL_AT(ctx, f32, 0x2D90) + ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
+                    ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
+                          *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)))
+                    : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)));
         }
         break;
     case 170:
