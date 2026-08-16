@@ -416,3 +416,13 @@ between `ReadFloatRawArg` and explicit raw-dword conditional branches and keeps
 only a shape-zero candidate that lowers the whole RunEcl strict replay.  This
 avoids assuming that a source form proven for opcode 72 transfers unchanged to
 opcode 73.
+
+## Opcode-local raw-float searches must be subset-based
+
+For movement-family handlers such as 74/75, not every `ReadFloatRawArg` wants
+an explicit integer raw-copy branch.  Use
+`.analysis/select_opcode_rawarg_subset.py OPCODE` to enumerate only the
+existing calls inside one handler, rebuild each subset, and keep a candidate
+only when the whole RunEcl remains shape-zero and strict relocation replay
+improves.  Run related handlers sequentially so the second search evaluates on
+top of any accepted first-handler improvement.
