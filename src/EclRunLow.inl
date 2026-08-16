@@ -44,6 +44,8 @@ namespace th08
 
 namespace EclHelpers
 {
+void __fastcall ConfigurePolarMotion(
+    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction);
 void __fastcall ConfigureRelativeMotion(
     EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction);
 }
@@ -724,21 +726,25 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         F32At(enemy, 0x2DA8) = ReadFloatRawArg(enemy, instruction, 1);
         break;
     case 69:
-        lhsInt = ReadInt(enemy, instruction, 0);
-        if (lhsInt > 0)
-            goto beginTimedMove69;
-        F32At(enemy, 0x2D94) =
-            AddNormalizeAngle(ReadFloat(enemy, instruction, 2),
-                              services.AngleToPlayer(Bytes(enemy) + 0x2D34));
-        F32At(enemy, 0x2DA8) = ReadFloat(enemy, instruction, 3);
-        SetMovementState1(enemy);
-        // The target resolves operand 0 again before timer assignment.
-        *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) =
-            (I32At(enemy, 0x2DE8) = ReadInt(enemy, instruction, 0));
-        goto doneTimedMove69;
-    beginTimedMove69:
-        BeginTimedMove(enemy, instruction, services);
-    doneTimedMove69:
+        if (ReadInt(enemy, instruction, 0) <= 0)
+        {
+            F32At(enemy, 0x2D94) =
+                AddNormalizeAngle(
+                    ReadFloatRawArg(enemy, instruction, 2),
+                    EclOperands::g_TargetPlayer017D5EF8.AngleToPlayer(
+                        reinterpret_cast<EclOperands::TargetVector3 *>(
+                            Bytes(enemy) + 0x2D34)));
+            F32At(enemy, 0x2DA8) = ReadFloatRawArg(enemy, instruction, 3);
+            U32At(enemy, 0x3324) =
+                (U32At(enemy, 0x3324) & 0xFFFFCFFFU) | 0x1000U;
+            // The target resolves operand 0 again before timer assignment.
+            *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) =
+                (I32At(enemy, 0x2DE8) = ReadInt(enemy, instruction, 0));
+        }
+        else
+        {
+            EclHelpers::ConfigurePolarMotion(enemy, instruction);
+        }
         break;
 
     case 70:
