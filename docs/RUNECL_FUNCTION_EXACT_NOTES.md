@@ -295,3 +295,16 @@ inner `position` declaration.  The first three resolved floats are read from
 With the opcode-87 frame fix already present, each handler becomes fully
 byte-exact under relocation replay (op93 82 -> 0 mismatching bytes, op94 83 ->
 0) while preserving the global zero shape score.
+
+## Opcode 90: linked-child flag assignment is the first init statement
+
+Target opcode 90 sets the new child's `linkedChild` bit immediately after the
+initialization-enabled guard, before the three `IsYoukai`-driven updates.  The
+earlier source placed this assignment after those updates.  Moving the same
+bitfield assignment to the top of the guarded block keeps the handler extent
+unchanged and reduces opcode-90 relocated mismatches from 119 to 24 (full
+RunEcl strict replay improves by 95 bytes).  Opcodes 91/92 already had this
+ordering.
+
+The remaining opcode-90 residuals track the four-byte shallow-local shift from
+the extra opcode-79 `flags` local; do not paper over them with register tricks.
