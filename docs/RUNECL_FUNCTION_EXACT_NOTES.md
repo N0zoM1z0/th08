@@ -684,3 +684,22 @@ Reusable lesson: when target code stores a resolved integer scratch with plain
 homogeneous `f32[]` merely from neighboring fields.  Recover field types from
 store instructions first; a wrong aggregate type can preserve total size while
 changing every authored byte in the block.
+
+## Opcodes 110 and 114: local-home fix plus upstream register-phase fix
+
+Opcode 114 had two real pointer locals with correct execution order but reversed
+stack homes. Target uses `state=-0x40` and `operands=-0x44`. A block-scope
+`#pragma var_order(state, operands)` fixes those homes without reordering the
+initialization statements, reducing strict replay by 43 bytes while all handler
+span deltas stay zero.
+
+After that, opcode 114's only residual was a cyclic ECX/EDX/EAX phase in its
+first 0x47 bytes. The phase comes from physical predecessor opcode 110. Target
+opcode 110 uses integer raw-dword copies on both unresolved float branches;
+restoring both (`11`) clears opcode 110's own 24-byte hotspot and rotates opcode
+114 into the target register phase. Whole-function strict replay drops from 1813
+to 1763, and relocation-replayed mismatch counts for both opcodes become zero.
+
+When a handler is structurally exact after local-home repair but its opening
+registers are cyclically shifted, inspect the immediately preceding physical
+handler instead of trying to force registers locally.
