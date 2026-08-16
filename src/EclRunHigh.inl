@@ -673,10 +673,10 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
     case 124: reinterpret_cast<TargetApi *>(&g_SoundPlayer)->PlayPositioned(TH08_ECL_READ_I(ctx, 0), TH08_ECL_AT(ctx, i32, 0x2D34)); break;
     case 129:
         if (TH08_ECL_PRESENTATION_WRITES_ALLOWED())
-            TH08_ECL_AT(ctx, u32, 0x3324) = ((TH08_ECL_RAW_BYTE(ctx, 0) & 7) << 20) | (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFF8FFFFF);
+            reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->op129Bits20_22 = TH08_ECL_RAW_BYTE(ctx, 0);
         break;
     case 130:
-        if ((((g_EnemyManagerUpdateManagerFlags >> 14) & 1) != 1) ||
+        if ((((g_EnemyManagerUpdateManagerFlags >> 14) & 1) == 0) ||
             (((g_EnemyManagerUpdateManagerFlags >> 7) & 3) == 0))
             TH08_ECL_AT(ctx, u16, 0x2CEE) = TH08_ECL_RAW_U16(ctx, 0);
         break;
@@ -713,10 +713,9 @@ enter_subroutine:
         TH08_ECL_RUN_HIGH_YIELD(DISPATCH_ENTER_SUBROUTINE);
 #endif
     case 131:
-        lhsInt = TH08_ECL_READ_I(ctx, 0);
-        TH08_ECL_AT(ctx, i32, 0x2E00) = lhsInt;
-        TH08_ECL_AT(ctx, i32, 0x2DFC) = lhsInt;
-        TH08_ECL_AT(ctx, i32, 0x2E04) = lhsInt;
+        TH08_ECL_AT(ctx, i32, 0x2E04) =
+            TH08_ECL_AT(ctx, i32, 0x2DFC) =
+            TH08_ECL_AT(ctx, i32, 0x2E00) = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_AT(ctx, u8, 0x3313) == 0 && (((TH08_ECL_AT(ctx, u32, 0x3324) >> 1) & 1) != 0))
             for (i32 i = 0; i < 8; ++i)
                 reinterpret_cast<TargetApi *>(&g_Gui)->SetBossGaugeSlot(i, 0.0f, 0.0f);
@@ -748,11 +747,8 @@ enter_subroutine:
                 TH08_ECL_READ_I(ctx, 1);
         break;
     case 134:
-        // Both extracted fields are small nonnegative masks, so their product
-        // is zero exactly when either presentation-write gate is zero.  This
-        // equivalent form preserves VC7's target handler extent.
-        if ((((g_EnemyManagerUpdateManagerFlags >> 14) & 1) *
-             ((g_EnemyManagerUpdateManagerFlags >> 7) & 3)) == 0)
+        if ((((g_EnemyManagerUpdateManagerFlags >> 14) & 1) == 0) ||
+            (((g_EnemyManagerUpdateManagerFlags >> 7) & 3) == 0))
         {
             TH08_ECL_AT(ctx, i32, 0x3378) = TH08_ECL_READ_I(ctx, 0);
             TH08_ECL_AT(ctx, i32, 0x337C) = TH08_ECL_READ_I(ctx, 1);

@@ -131,7 +131,9 @@ struct LinkedChildFlags1
     u32 inheritParentPosition : 1;
     u32 unknown0A : 1;
     u32 isYoukai : 1;
-    u32 unknown0C_1A : 15;
+    u32 unknown0C_13 : 8;
+    u32 op129Bits20_22 : 3;
+    u32 unknown17_1A : 4;
     u32 op155Bit27 : 1;
     u32 op79Bit28 : 1;
     u32 unknown1D : 1;

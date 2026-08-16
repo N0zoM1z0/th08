@@ -884,3 +884,66 @@ Thus the remaining blocker is a one-step register phase entering opcode 66,
 not missing target operations in opcode 34.  Making both opcode-63 float false
 branches raw rotates the phase too far; byte-exact opcode-64 `break -> goto`
 does not affect it.
+
+## Opcodes 129-134: recover the bitfield and let source-order phase close naturally
+
+A large formal-exact breakthrough came from treating opcode 129 as a real
+3-bit field assignment rather than a hand-written whole-dword OR.
+
+The target opcode-129 body evaluates the raw byte first, masks it to 3 bits,
+shifts it to bits 20..22, then loads/masks the destination word and performs
+`or edx,eax; store edx`.  This is exactly VC7's bitfield-assignment shape.
+Split `LinkedChildFlags1`'s old `unknown0C_1A` region into:
+
+```cpp
+u32 unknown0C_13 : 8;
+u32 op129Bits20_22 : 3;
+u32 unknown17_1A : 4;
+```
+
+and assign the raw byte directly:
+
+```cpp
+flags->op129Bits20_22 = TH08_ECL_RAW_BYTE(ctx, 0);
+```
+
+Do **not** manually `& 7` on the RHS: the 3-bit assignment already emits the
+mask, and an explicit mask makes VC7 generate a duplicate `and eax,7` (+3
+bytes).  With the direct raw-byte assignment opcode 129 becomes byte-exact.
+
+That source correction changes the following register phase.  Opcode 130 can
+then be written in its natural target form:
+
+```cpp
+if ((((flags >> 14) & 1) == 0) || (((flags >> 7) & 3) == 0))
+```
+
+and becomes byte-exact as well.  The old `!= 1` spelling had only existed as a
+shape compensation for the previous phase.
+
+Opcode 134 likewise no longer needs the temporary product-zero shape trick.
+The real short-circuit OR is now extent-exact.
+
+The remaining +1/-1 pair after these changes was op133/op134.  The decisive
+fix was opcode 131's value flow: target does not copy `ReadInt(0)` through the
+shared `lhsInt@-4`; one compiler result is stored to 0x2E00, 0x2DFC, and 0x2E04
+in that order.  The source form that naturally produces this is the
+right-associative chain with reversed LHS textual order:
+
+```cpp
+TH08_ECL_AT(ctx, i32, 0x2E04) =
+    TH08_ECL_AT(ctx, i32, 0x2DFC) =
+    TH08_ECL_AT(ctx, i32, 0x2E00) = TH08_ECL_READ_I(ctx, 0);
+```
+
+Because assignment associates right-to-left, emitted stores are
+`2E00 -> 2DFC -> 2E04`, matching target.  This also removes the `lhsInt` spill
+and rotates the following allocator phase so op132 and op133 become byte-exact.
+On the current reconstruction this single source-flow closure restores shape 0
+and improves relocation-replayed strict diff **1239 -> 861**.  At that point
+op129, op130, op131, op132, op133, and op134 are all byte-exact.
+
+Reusable lesson: when a target shows one hidden ternary/result scratch feeding
+multiple consecutive stores, a right-associative assignment chain can be the
+actual source shape.  The textual LHS order must be reversed to obtain the
+observed store order.
