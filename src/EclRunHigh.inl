@@ -449,8 +449,12 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         break;
     }
     case 110:
-        TH08_ECL_AT(ctx, f32, 0x2DB8) = TH08_ECL_READ_F_RAWARG(ctx, 0);
-        TH08_ECL_AT(ctx, f32, 0x2DBC) = TH08_ECL_READ_F_RAWARG(ctx, 1);
+        TH08_ECL_AT(ctx, f32, 0x2DB8) = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 0))
+            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0)))
+            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0)));
+        TH08_ECL_AT(ctx, f32, 0x2DBC) = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
+            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)))
+            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)));
         TH08_ECL_AT(ctx, i32, 0x2DC0) = 0;
         break;
 
