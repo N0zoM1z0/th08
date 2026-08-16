@@ -308,3 +308,19 @@ ordering.
 
 The remaining opcode-90 residuals track the four-byte shallow-local shift from
 the extra opcode-79 `flags` local; do not paper over them with register tricks.
+
+## Opcode 114/115: mixed-width operand packet is not generic 4-byte indexing
+
+The opcode-114 packet starts with a raw `u16` at `operands+0`, a conditional
+signed `i16` at `+2`, then six floats at `+4,+8,+0xC,+0x10,+0x14,+0x18`, three
+conditional ints at `+0x1C,+0x20,+0x24`, and three raw ints at
+`+0x28,+0x2C,+0x30`.  Generic `TH08_ECL_READ_F_RAWARG(ctx, 2..7)` and
+`TH08_ECL_READ_I(ctx, 8..10)` were therefore one dword late even though their
+code lengths happened to fit the handler extent.
+
+Spell these fields from the local `operands` pointer explicitly.  The
+conditional float raw branch must use the same `f32` lvalue from `operands`, so
+VC7 materializes the target hidden result home with an integer raw-branch copy.
+With the current frame reconstruction this keeps opcode 114/115 span exact and
+reduces its relocated byte mismatches from 148 to 44; full RunEcl strict replay
+improves from 3840 to 3736 mismatching bytes.

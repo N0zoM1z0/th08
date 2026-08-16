@@ -464,15 +464,54 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             *reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2DB8));
         *(u16 *)(state + 0x00) = *reinterpret_cast<u16 *>(operands);
         *(u16 *)(state + 0x02) = (u16)((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & 2U) ? EclOperands::ResolveInt(reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx)), static_cast<i32>(*reinterpret_cast<i16 *>(operands + 2))) : static_cast<i32>(*reinterpret_cast<i16 *>(operands + 2)));
-        *(f32 *)(state + 0x10) = TH08_ECL_READ_F_RAWARG(ctx, 2);
-        *(f32 *)(state + 0x18) = TH08_ECL_READ_F_RAWARG(ctx, 3);
-        *(f32 *)(state + 0x1D0) = TH08_ECL_READ_F_RAWARG(ctx, 4);
-        *(f32 *)(state + 0x1D4) = TH08_ECL_READ_F_RAWARG(ctx, 5);
-        *(f32 *)(state + 0x1D8) = TH08_ECL_READ_F_RAWARG(ctx, 6);
-        *(f32 *)(state + 0x1DC) = TH08_ECL_READ_F_RAWARG(ctx, 7);
-        *(i32 *)(state + 0x1E0) = TH08_ECL_READ_I(ctx, 8);
-        *(i32 *)(state + 0x1E4) = TH08_ECL_READ_I(ctx, 9);
-        *(i32 *)(state + 0x1E8) = TH08_ECL_READ_I(ctx, 10);
+        *(f32 *)(state + 0x10) =
+            (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2))
+                ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
+                      *reinterpret_cast<f32 *>(operands + 4))
+                : *reinterpret_cast<f32 *>(operands + 4);
+        *(f32 *)(state + 0x18) =
+            (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
+                ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
+                      *reinterpret_cast<f32 *>(operands + 8))
+                : *reinterpret_cast<f32 *>(operands + 8);
+        *(f32 *)(state + 0x1D0) =
+            (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 4))
+                ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
+                      *reinterpret_cast<f32 *>(operands + 12))
+                : *reinterpret_cast<f32 *>(operands + 12);
+        *(f32 *)(state + 0x1D4) =
+            (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 5))
+                ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
+                      *reinterpret_cast<f32 *>(operands + 16))
+                : *reinterpret_cast<f32 *>(operands + 16);
+        *(f32 *)(state + 0x1D8) =
+            (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 6))
+                ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
+                      *reinterpret_cast<f32 *>(operands + 20))
+                : *reinterpret_cast<f32 *>(operands + 20);
+        *(f32 *)(state + 0x1DC) =
+            (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 7))
+                ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
+                      *reinterpret_cast<f32 *>(operands + 24))
+                : *reinterpret_cast<f32 *>(operands + 24);
+        *(i32 *)(state + 0x1E0) =
+            (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 8))
+                ? EclOperands::ResolveInt(
+                      reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx)),
+                      *reinterpret_cast<i32 *>(operands + 28))
+                : *reinterpret_cast<i32 *>(operands + 28);
+        *(i32 *)(state + 0x1E4) =
+            (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 9))
+                ? EclOperands::ResolveInt(
+                      reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx)),
+                      *reinterpret_cast<i32 *>(operands + 32))
+                : *reinterpret_cast<i32 *>(operands + 32);
+        *(i32 *)(state + 0x1E8) =
+            (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 10))
+                ? EclOperands::ResolveInt(
+                      reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx)),
+                      *reinterpret_cast<i32 *>(operands + 36))
+                : *reinterpret_cast<i32 *>(operands + 36);
         *(i32 *)(state + 0x1EC) = *reinterpret_cast<i32 *>(operands + 40);
         *(i32 *)(state + 0x1F0) = *reinterpret_cast<i32 *>(operands + 44);
         *(i32 *)(state + 0x1FC) = *reinterpret_cast<i32 *>(operands + 48);
