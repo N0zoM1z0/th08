@@ -361,3 +361,37 @@ search timeout; this one reduces opcode-72 relocated mismatches from 350 to 26
 and full RunEcl strict replay from 3696 to 3372 while preserving the global
 zero shape score.  The remaining 26 bytes are a cyclic EAX/ECX/EDX register
 phase, not a data-flow or stack-home mismatch.
+
+## Opcodes 77/78 are the register-phase hinge for opcode 79
+
+Opcodes 77 and 78 each assign two conditional floats.  Their unresolved
+branches must copy the raw instruction dword into the compiler float result
+home with integer moves.  Leaving either handler as `ReadFloatRawArg` produces
+an x87 `fld/fstp` branch and also changes the register allocator phase entering
+opcode 79.
+
+Changing only opcode 77 or only opcode 78 makes the global handler extent grow
+by four bytes.  Changing **both together** preserves the zero shape score and
+makes both handlers byte-exact.  More importantly, the opcode-79 entry sequence
+changes from `scratch -> EDX -> lhsInt -> EAX` to target
+`scratch -> EAX -> lhsInt -> ECX`.
+
+With that correct upstream phase, the natural opcode-79 reconstruction finally
+matches without length tricks:
+
+- remove the extra `flags` local and use shared `lhsInt` directly;
+- assign the six observed one-bit fields through real bitfields;
+- restore opcode 158's dedicated `index` local, which occupies target `-0x54`
+  and balances the four-byte local removed from opcode 79.
+
+Under the corrected 77/78 phase, opcode 79's bit-28 update naturally uses the
+target ordinary-register `and ecx, 0xEFFFFFFF` rather than the one-byte-short
+EAX encoding.  Opcodes 77, 78, 79, 80, 81, 90, 91, and 92 all become byte-exact
+in the same candidate, while global shape remains zero.  On the current
+RunEcl baseline, strict replay drops from 3372 to 2727 mismatching authored
+bytes.
+
+This is a reusable warning for giant VC7 functions: a seemingly local
+`fld/fstp` versus integer raw-copy choice can rotate register allocation in the
+next handler.  Fix upstream handlers before trying to force a downstream
+register with source hacks.

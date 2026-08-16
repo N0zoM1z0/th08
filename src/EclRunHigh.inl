@@ -710,11 +710,16 @@ enter_subroutine:
                 reinterpret_cast<TargetApi *>(&g_Gui)->SetBossGaugeSlot(i, 0.0f, 0.0f);
         break;
     case 158:
-        lhsInt = TH08_ECL_READ_I(ctx, 0);
-        reinterpret_cast<TargetApi *>(&g_Gui)->SetBossGaugeSlot(lhsInt, (f32)TH08_ECL_READ_I(ctx, 1) / (f32)TH08_ECL_AT(ctx, i32, 0x2E00),
-                                                     (f32)TH08_ECL_READ_I(ctx, 2) / (f32)TH08_ECL_AT(ctx, i32, 0x2E00));
-        reinterpret_cast<TargetApi *>(&g_Gui)->SetBossGaugeValue(lhsInt, TH08_ECL_READ_I(ctx, 3));
+    {
+        i32 index = TH08_ECL_READ_I(ctx, 0);
+        reinterpret_cast<TargetApi *>(&g_Gui)->SetBossGaugeSlot(
+            index,
+            (f32)TH08_ECL_READ_I(ctx, 1) / (f32)TH08_ECL_AT(ctx, i32, 0x2E00),
+            (f32)TH08_ECL_READ_I(ctx, 2) / (f32)TH08_ECL_AT(ctx, i32, 0x2E00));
+        reinterpret_cast<TargetApi *>(&g_Gui)->SetBossGaugeValue(
+            index, TH08_ECL_READ_I(ctx, 3));
         break;
+    }
     case 122: StartEnemySpell(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_CONTEXT_INSTRUCTION(ctx)); break;
     case 123: EndEnemySpell(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_CONTEXT_INSTRUCTION(ctx)); break;
     case 132: *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E14) = TH08_ECL_READ_I(ctx, 0); break;

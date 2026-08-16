@@ -122,16 +122,30 @@ struct LinkedChildFlags1
 {
     u32 unknown00 : 2;
     u32 effectMirrored : 1;
-    u32 unknown03 : 5;
+    u32 op79Bit3 : 1;
+    u32 op79Bit4 : 1;
+    u32 unknown05 : 1;
+    u32 op79Bit6 : 1;
+    u32 unknown07 : 1;
     u32 linkedChild : 1;
     u32 inheritParentPosition : 1;
     u32 unknown0A : 1;
     u32 isYoukai : 1;
-    u32 unknown0C_1D : 18;
+    u32 unknown0C_1B : 16;
+    u32 op79Bit28 : 1;
+    u32 unknown1D : 1;
     u32 pauseTimer : 1;
     u32 noDamageDuringStop : 1;
 };
 C_ASSERT(sizeof(LinkedChildFlags1) == 4);
+
+struct Op79Flags2
+{
+    u32 unknown00_05 : 6;
+    u32 op79Bit6 : 1;
+    u32 unknown07_31 : 25;
+};
+C_ASSERT(sizeof(Op79Flags2) == 4);
 
 void __fastcall ApplyInterpolationOperation(
     EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction);
@@ -807,25 +821,31 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         U32At(enemy, 0x3324) &= ~0x80000U;
         break;
     case 77:
-        F32At(enemy, 0x2D70) = ReadFloatRawArg(enemy, instruction, 0);
-        F32At(enemy, 0x2D74) = ReadFloatRawArg(enemy, instruction, 1);
+        F32At(enemy, 0x2D70) = ((instruction->operandFlags & (1U << 0))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 0)));
+        F32At(enemy, 0x2D74) = ((instruction->operandFlags & (1U << 1))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
         break;
     case 78:
-        F32At(enemy, 0x2D7C) = ReadFloatRawArg(enemy, instruction, 0);
-        F32At(enemy, 0x2D80) = ReadFloatRawArg(enemy, instruction, 1);
+        F32At(enemy, 0x2D7C) = ((instruction->operandFlags & (1U << 0))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 0)));
+        F32At(enemy, 0x2D80) = ((instruction->operandFlags & (1U << 1))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
         break;
 
     case 79:
-    {
-        i32 flags = (lhsInt = ReadInt(enemy, instruction, 0));
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x40U) | ((1 - ((flags & 1) != 0)) << 6);
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x4U) | ((flags & 2) == 0 ? 0x4U : 0);
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x8U) | ((flags & 4) == 0 ? 0x8U : 0);
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x10U) | (((flags & 8) != 0) << 4);
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x10000000U) | ((flags & 0x10) ? 0x10000000U : 0);
-        U32At(enemy, 0x3328) = (U32At(enemy, 0x3328) & ~0x40U) | (((flags & 0x20) != 0) << 6);
+        lhsInt = ReadInt(enemy, instruction, 0);
+        reinterpret_cast<LinkedChildFlags1 *>(Bytes(enemy) + 0x3324)->op79Bit6 = (lhsInt & 1) == 0;
+        reinterpret_cast<LinkedChildFlags1 *>(Bytes(enemy) + 0x3324)->effectMirrored = (lhsInt & 2) == 0;
+        reinterpret_cast<LinkedChildFlags1 *>(Bytes(enemy) + 0x3324)->op79Bit3 = (lhsInt & 4) == 0;
+        reinterpret_cast<LinkedChildFlags1 *>(Bytes(enemy) + 0x3324)->op79Bit4 = (lhsInt & 8) != 0;
+        reinterpret_cast<LinkedChildFlags1 *>(Bytes(enemy) + 0x3324)->op79Bit28 = (lhsInt & 0x10) != 0;
+        reinterpret_cast<Op79Flags2 *>(Bytes(enemy) + 0x3328)->op79Bit6 = (lhsInt & 0x20) != 0;
         break;
-    }
 
     case 80:
         lhsInt = ReadInt(enemy, instruction, 0);
