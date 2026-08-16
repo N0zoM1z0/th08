@@ -816,8 +816,9 @@ enter_subroutine:
             position.x = TH08_ECL_READ_F_RAWARG(ctx, 1);
             position.y = TH08_ECL_READ_F_RAWARG(ctx, 2);
             position.z = TH08_ECL_READ_F_RAWARG(ctx, 3);
-            TH08_ECL_CONTEXT_API(ctx)->TransformSpawnVector(reinterpret_cast<Vec3 *>(&position), &TH08_ECL_AT(ctx, Vec3, 0x2D34));
-            g_EnemyManager.SpawnEnemy2(packet.type, &position,
+            Float3 *positionResult = reinterpret_cast<Float3 *>(&position)->operator+=(
+                *reinterpret_cast<Float3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)));
+            g_EnemyManager.SpawnEnemy2(packet.type, reinterpret_cast<D3DXVECTOR3 *>(positionResult),
                                       TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
                                       TH08_ECL_READ_I(ctx, 6),
                                       (i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18));
