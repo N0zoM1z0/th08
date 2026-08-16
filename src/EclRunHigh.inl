@@ -781,9 +781,15 @@ enter_subroutine:
     case 140:
     {
         Float3 vector;
-        vector.x = TH08_ECL_READ_F_RAWARG(ctx, 3);
-        vector.y = TH08_ECL_READ_F_RAWARG(ctx, 4);
-        vector.z = TH08_ECL_READ_F_RAWARG(ctx, 5);
+        vector.x = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
+            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)))
+            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)));
+        vector.y = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 4))
+            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 4)))
+            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 4)));
+        vector.z = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 5))
+            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 5)))
+            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 5)));
         g_EffectManager.SpawnEffectAngle(
             TH08_ECL_READ_I(ctx, 0),
             reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)),

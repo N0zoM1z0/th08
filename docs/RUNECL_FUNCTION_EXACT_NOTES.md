@@ -511,3 +511,18 @@ positive, and absolute handler deltas, while lowering strict relocation replay
 from 2679 to 2620.  Earlier attempts to convert both leading floats changed the
 allocator phase of following handlers and were not acceptable.  Treat this as
 another opcode-local source-shape fact, not a global raw-float rule.
+
+
+## Opcode 140: all three vector components use explicit raw-dword branches
+
+Opcode 140 constructs a local `Float3` from operands 3, 4, and 5 before calling
+`SpawnEffectAngle`. The target unresolved branches for all three components copy
+the raw operand dword into the compiler float result homes with integer moves;
+the resolved branches still call `ResolveFloat` and store the x87 result.
+
+With the corrected full-shape selector gate, the `111` subset is retained from
+the 2620-diff baseline. It preserves exact function/code extents plus zero
+physical, positive, and absolute handler deltas, and lowers strict relocation
+replay from 2620 to 2588. The 32-byte opcode-140 hotspot disappears entirely.
+This is a case where all components genuinely share the same raw-branch source
+shape, unlike opcodes 39 and 152.
