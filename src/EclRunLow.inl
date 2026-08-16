@@ -113,7 +113,8 @@ struct SpawnedEffectAnmVm
 };
 
 // Observed first flag word at Enemy +0x3324.  Opcode 90..92 assign bit 11
-// from Player::IsYoukai through VC7's bitfield-assignment path; preserving the
+// from Player::IsYoukai through VC7's bitfield-assignment path; opcodes 173
+// and 183 likewise assign bits 30 and 31 as one-bit fields.  Preserving the
 // bitfield is necessary both for semantics and for the call-result stack home.
 struct LinkedChildFlags1
 {
@@ -124,7 +125,9 @@ struct LinkedChildFlags1
     u32 inheritParentPosition : 1;
     u32 unknown0A : 1;
     u32 isYoukai : 1;
-    u32 unknown0C : 20;
+    u32 unknown0C_1D : 18;
+    u32 pauseTimer : 1;
+    u32 noDamageDuringStop : 1;
 };
 C_ASSERT(sizeof(LinkedChildFlags1) == 4);
 

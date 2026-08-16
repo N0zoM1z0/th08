@@ -924,10 +924,10 @@ enter_subroutine:
                 g_Rng.GetRandomF32InRange(1.5707964f) - 0.78539819f;
         break;
     case 173:
-        TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0xBFFFFFFF) | ((TH08_ECL_READ_I(ctx, 0) & 1) << 30);
+        reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->pauseTimer = TH08_ECL_READ_I(ctx, 0);
         break;
     case 183:
-        TH08_ECL_AT(ctx, u32, 0x3324) = (TH08_ECL_AT(ctx, u32, 0x3324) & 0x7FFFFFFF) | ((u32)(TH08_ECL_READ_I(ctx, 0) & 1) << 31);
+        reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->noDamageDuringStop = TH08_ECL_READ_I(ctx, 0);
         break;
     case 176:
     {
