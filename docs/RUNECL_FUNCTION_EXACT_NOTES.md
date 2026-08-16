@@ -558,3 +558,32 @@ positive, and absolute handler deltas, reducing strict replay from 2565 to 2562.
 This small result reinforces that target machine-level raw copies do not imply
 identical C++ spelling for every argument; right-to-left argument evaluation and
 incoming allocator state still matter.
+
+## RunEcl tail: local-set and control-flow reconstruction closes op3 span
+
+The tail at opcode-3's shared destination was still the largest strict hotspot.
+The target shallow local set and child-loop code show that the current
+`inverse` temporary is not part of the original layout, while a real
+`childContext` pointer is.  A target-backed reconstruction that keeps every
+change semantic (no padding) is:
+
+- declare the real loop `i` and easing `progress` at the start of the tail block;
+- remove `inverse` and perform easing cases 4..6 in-place through `progress`;
+- replace the hand-written mark/done gotos with the natural
+  `if (affectedVariable == ...) restorePosition = 1;`;
+- call the real global `th08::VectorAngle` rather than the provisional
+  EclManager `TargetApi` thiscall;
+- introduce the real `childContext` pointer in the child selection loop and use
+  it for the recovered `+0x230`, `+8`, and `+6` accesses, while loading the
+  current instruction and `+0x220` field through the current-context pointer.
+
+On the `a3c78da` 2562-diff full-shape baseline this combined tail change closes
+opcode 3's handler span exactly by itself: physical, positive, and absolute
+handler deltas all remain zero.  Whole-function relocation-replayed strict diff
+drops from 2562 to 2189, a 373-byte improvement.
+
+Useful local-layout evidence after this step: `i` naturally occupies target
+`-0xE4`, `next` moves to target `-0x100`, and the restored `childContext` lands
+at target `-0x104`.  `progress`, `restorePosition`, `entry`, and the
+`savedPosition` aggregate are not all in their final target homes yet, so tail
+byte work remains even though the span is now exact.

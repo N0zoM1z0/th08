@@ -131,6 +131,8 @@ low_advance_instruction:
     // the observed in-function easing switch and child-context back edge.
     if (TH08_ECL_AT(unusedContext, i32, 0x2DFC) > 0)
     {
+        i32 i;
+        f32 progress;
         i32 restorePosition = 0;
         Interpolator *entry = reinterpret_cast<Interpolator *>(
             TH08_ECL_CURRENT_CONTEXT(unusedContext) + 0x9C);
@@ -143,7 +145,7 @@ low_advance_instruction:
                 enemy, *reinterpret_cast<void **>(
                     TH08_ECL_CURRENT_CONTEXT(unusedContext) + 0x14));
 
-        for (i32 i = 0; i < 8; ++i, ++entry)
+        for (i = 0; i < 8; ++i, ++entry)
         {
             if (entry->callback)
             {
@@ -151,24 +153,26 @@ low_advance_instruction:
                 if (entry->timer >= entry->duration)
                     entry->timer = entry->duration;
 
-                f32 progress = static_cast<f32>(entry->timer) / entry->duration;
-                f32 inverse;
+                progress = static_cast<f32>(entry->timer) / entry->duration;
                 switch (entry->easing)
                 {
                 case 1: progress = progress * progress; break;
                 case 2: progress = progress * progress * progress; break;
                 case 3: progress = progress * progress * progress * progress; break;
                 case 4:
-                    inverse = 1.0f - progress;
-                    progress = 1.0f - inverse * inverse;
+                    progress = 1.0f - progress;
+                    progress = progress * progress;
+                    progress = 1.0f - progress;
                     break;
                 case 5:
-                    inverse = 1.0f - progress;
-                    progress = 1.0f - inverse * inverse * inverse;
+                    progress = 1.0f - progress;
+                    progress = progress * progress * progress;
+                    progress = 1.0f - progress;
                     break;
                 case 6:
-                    inverse = 1.0f - progress;
-                    progress = 1.0f - inverse * inverse * inverse * inverse;
+                    progress = 1.0f - progress;
+                    progress = progress * progress * progress * progress;
+                    progress = 1.0f - progress;
                     break;
                 }
 
@@ -179,11 +183,7 @@ low_advance_instruction:
                 if (entry->affectedVariable == 10042.0f ||
                     entry->affectedVariable == 10043.0f ||
                     entry->affectedVariable == 10044.0f)
-                    goto markPositionRestore;
-                goto donePositionRestoreCheck;
-            markPositionRestore:
-                restorePosition = 1;
-            donePositionRestoreCheck:;
+                    restorePosition = 1;
             }
         }
 
@@ -194,7 +194,7 @@ low_advance_instruction:
             TH08_ECL_AT(unusedContext, f32, 0x2D50) =
                 TH08_ECL_AT(unusedContext, f32, 0x2D38) - savedPosition.y;
             TH08_ECL_AT(unusedContext, f32, 0x2D94) =
-                TH08_ECL_CONTEXT_API(unusedContext)->VectorAngle(
+                VectorAngle(
                     TH08_ECL_AT(unusedContext, f32, 0x2D50),
                     TH08_ECL_AT(unusedContext, f32, 0x2D4C));
             TH08_ECL_AT(unusedContext, Vec3, 0x2D34) = savedPosition;
@@ -216,15 +216,16 @@ low_select_next_context:
     {
         if (TH08_ECL_AT(unusedContext, u8 *, 0x3384 + next * 4))
         {
+            u8 *childContext = TH08_ECL_AT(unusedContext, u8 *, 0x3384 + next * 4);
             TH08_ECL_AT(unusedContext, u8 *, 0x2CA4) =
-                TH08_ECL_AT(unusedContext, u8 *, 0x3384 + next * 4) + 0x230;
+                childContext + 0x230;
             TH08_ECL_AT(unusedContext, u8 *, 0x2CA0) =
-                TH08_ECL_AT(unusedContext, u8 *, 0x3384 + next * 4) + 8;
+                childContext + 8;
             instruction = reinterpret_cast<EclRawInstruction *>(
-                *(RawInstruction **)(TH08_ECL_AT(unusedContext, u8 *, 0x3384 + next * 4) + 8));
-            *(i32 *)(TH08_ECL_AT(unusedContext, u8 *, 0x3384 + next * 4) + 0x228) = next + 1;
+                *(RawInstruction **)TH08_ECL_CURRENT_CONTEXT(unusedContext));
+            *(i32 *)(TH08_ECL_CURRENT_CONTEXT(unusedContext) + 0x220) = next + 1;
             TH08_ECL_AT(unusedContext, i16, 0x2CEA) =
-                *(i16 *)(TH08_ECL_AT(unusedContext, u8 *, 0x3384 + next * 4) + 6);
+                *(i16 *)(childContext + 6);
             activeChildContext = next;
             goto restart_context;
         }
