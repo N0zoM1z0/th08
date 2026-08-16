@@ -482,7 +482,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     {
 #endif
     case 1:
-        TH08_ECL_RUN_LOW_YIELD(LOW_RETURN_MINUS_ONE, 0);
+        return ZUN_ERROR;
 
     case 2:
         context->secondaryTime = ReadInt(enemy, instruction, 0);
@@ -494,20 +494,21 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     case 5:
         --*WriteInt(enemy, instruction, 2);
         if (ReadInt(enemy, instruction, 2) <= 0)
-            TH08_ECL_RUN_LOW_YIELD(LOW_ADVANCE, 0);
+            goto low_advance_instruction;
 
     case 4:
         context->time.current = RawInt(instruction, 0);
-        TH08_ECL_RUN_LOW_YIELD(
-            LOW_REDISPATCH,
-            reinterpret_cast<EclRawInstruction *>(
-                reinterpret_cast<u8 *>(instruction) + RawInt(instruction, 1)));
+        instruction = reinterpret_cast<EclRawInstruction *>(
+            reinterpret_cast<u8 *>(instruction) + RawInt(instruction, 1));
+        goto low_redispatch_instruction;
 
     case 6:
         *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1);
         break;
     case 7:
-        *WriteFloat(enemy, instruction, 0) = ReadFloatRawArg(enemy, instruction, 1);
+        *WriteFloat(enemy, instruction, 0) = ((instruction->operandFlags & (1U << 1))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
         break;
     case 8:
         *WriteInt(enemy, instruction, 0) =
@@ -515,42 +516,89 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
     case 9:
         *WriteFloat(enemy, instruction, 0) =
-            (g_Rng.GetRandomU16() & 1U ? 1.0f : -1.0f) * ReadFloatRawArg(enemy, instruction, 1);
+            (g_Rng.GetRandomU16() & 1U ? 1.0f : -1.0f) *
+            ((instruction->operandFlags & (1U << 1))
+                ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+                : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
         break;
 
     case 10: *WriteInt(enemy, instruction, 0) += ReadInt(enemy, instruction, 1); break;
-    case 15: *WriteFloat(enemy, instruction, 0) += ReadFloatRawArg(enemy, instruction, 1); break;
+    case 15: *WriteFloat(enemy, instruction, 0) += ((instruction->operandFlags & (1U << 1))
+        ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+        : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))); break;
     case 11: *WriteInt(enemy, instruction, 0) -= ReadInt(enemy, instruction, 1); break;
-    case 16: *WriteFloat(enemy, instruction, 0) -= ReadFloatRawArg(enemy, instruction, 1); break;
+    case 16: *WriteFloat(enemy, instruction, 0) -= ((instruction->operandFlags & (1U << 1))
+        ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+        : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))); break;
     case 12: *WriteInt(enemy, instruction, 0) *= ReadInt(enemy, instruction, 1); break;
-    case 17: *WriteFloat(enemy, instruction, 0) *= ReadFloatRawArg(enemy, instruction, 1); break;
+    case 17: *WriteFloat(enemy, instruction, 0) *= ((instruction->operandFlags & (1U << 1))
+        ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+        : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))); break;
     case 13: *WriteInt(enemy, instruction, 0) /= ReadInt(enemy, instruction, 1); break;
-    case 18: *WriteFloat(enemy, instruction, 0) /= ReadFloatRawArg(enemy, instruction, 1); break;
+    case 18: *WriteFloat(enemy, instruction, 0) /= ((instruction->operandFlags & (1U << 1))
+        ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+        : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))); break;
     case 14: *WriteInt(enemy, instruction, 0) %= ReadInt(enemy, instruction, 1); break;
     case 19:
         *WriteFloat(enemy, instruction, 0) =
-            fmodf(ReadFloatRawArg(enemy, instruction, 0),
-                  ReadFloatRawArg(enemy, instruction, 1));
+            fmodf(((instruction->operandFlags & (1U << 0))
+                       ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0)))
+                       : *reinterpret_cast<f32 *>(&RawInt(instruction, 0))),
+                  ((instruction->operandFlags & (1U << 1))
+                       ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+                       : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))));
         break;
 
     case 20: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) + ReadInt(enemy, instruction, 2); break;
-    case 25: *WriteFloat(enemy, instruction, 0) = ReadFloatRawArg(enemy, instruction, 1) + ReadFloatRawArg(enemy, instruction, 2); break;
+    case 25: *WriteFloat(enemy, instruction, 0) =
+        ((instruction->operandFlags & (1U << 1))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))) +
+        ((instruction->operandFlags & (1U << 2))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))); break;
     case 21: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) - ReadInt(enemy, instruction, 2); break;
-    case 26: *WriteFloat(enemy, instruction, 0) = ReadFloatRawArg(enemy, instruction, 1) - ReadFloatRawArg(enemy, instruction, 2); break;
+    case 26: *WriteFloat(enemy, instruction, 0) =
+        ((instruction->operandFlags & (1U << 1))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))) -
+        ((instruction->operandFlags & (1U << 2))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))); break;
     case 22: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) * ReadInt(enemy, instruction, 2); break;
-    case 27: *WriteFloat(enemy, instruction, 0) = ReadFloatRawArg(enemy, instruction, 1) * ReadFloatRawArg(enemy, instruction, 2); break;
+    case 27: *WriteFloat(enemy, instruction, 0) =
+        ((instruction->operandFlags & (1U << 1))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))) *
+        ((instruction->operandFlags & (1U << 2))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))); break;
     case 23: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) / ReadInt(enemy, instruction, 2); break;
-    case 28: *WriteFloat(enemy, instruction, 0) = ReadFloatRawArg(enemy, instruction, 1) / ReadFloatRawArg(enemy, instruction, 2); break;
+    case 28: *WriteFloat(enemy, instruction, 0) =
+        ((instruction->operandFlags & (1U << 1))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))) /
+        ((instruction->operandFlags & (1U << 2))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))); break;
     case 24: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) % ReadInt(enemy, instruction, 2); break;
     case 29:
         *WriteFloat(enemy, instruction, 0) =
-            fmodf(ReadFloatRawArg(enemy, instruction, 1),
-                  ReadFloatRawArg(enemy, instruction, 2));
+            fmodf(((instruction->operandFlags & (1U << 1))
+                       ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+                       : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))),
+                  ((instruction->operandFlags & (1U << 2))
+                       ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
+                       : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))));
         break;
     case 30: ++*WriteInt(enemy, instruction, 0); break;
     case 31: --*WriteInt(enemy, instruction, 0); break;
-    case 32: *WriteFloat(enemy, instruction, 0) = sinf(ReadFloatRawArg(enemy, instruction, 1)); break;
-    case 33: *WriteFloat(enemy, instruction, 0) = cosf(ReadFloatRawArg(enemy, instruction, 1)); break;
+    case 32: *WriteFloat(enemy, instruction, 0) = sinf(((instruction->operandFlags & (1U << 1))
+        ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+        : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)))); break;
+    case 33: *WriteFloat(enemy, instruction, 0) = cosf(((instruction->operandFlags & (1U << 1))
+        ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+        : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)))); break;
     case 34:
         *WriteFloat(enemy, instruction, 0) =
             atan2f(ReadFloatRawArg(enemy, instruction, 4) - ReadFloatRawArg(enemy, instruction, 2),

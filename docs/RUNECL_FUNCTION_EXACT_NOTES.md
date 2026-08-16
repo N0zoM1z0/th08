@@ -747,3 +747,91 @@ then has only 12 authored-byte mismatches left, all in operand 0's unresolved
 branch.  Making operand 0 explicit by itself rotates the later handler phase and
 is not an improvement; its remaining raw-copy shape must be solved together
 with the physical predecessor rather than forced locally.
+
+## Early low-opcode phase chain: byte-identical predecessor AST still matters
+
+On the `3c6fc21` full-shape baseline, relocation-replayed strict diff was 1663.
+The first nonzero physical handler was opcode 2 even though opcode 1's emitted
+bytes were already exact.  The cause was not opcode 2's timer receiver type:
+seven equivalent `EnemyEclContext`/`ZunTimer` pointer/member spellings and a
+real-member overlay all compiled identically.
+
+The decisive source difference was the predecessor control-flow AST.  Replacing
+`TH08_ECL_RUN_LOW_YIELD(LOW_RETURN_MINUS_ONE, 0)` in opcode 1 with the natural
+`return ZUN_ERROR;` leaves opcode 1 byte-for-byte unchanged but rotates VC7's
+subsequent ECX/EDX/EAX allocation so opcode 2 becomes byte-exact.  Strict replay
+falls 1663 -> 1652.
+
+The same pattern repeats immediately:
+
+- opcode 5's emitted bytes remain exact when its `LOW_ADVANCE` yield macro is
+  replaced by direct `goto low_advance_instruction;`; opcode 4 then becomes
+  byte-exact and strict falls 1652 -> 1636;
+- opcode 4's emitted bytes remain exact when its `LOW_REDISPATCH` yield macro is
+  replaced by direct instruction assignment plus
+  `goto low_redispatch_instruction;`; opcode 6 then becomes byte-exact and
+  strict falls 1636 -> 1624.
+
+Reusable rule: **a byte-exact physical predecessor is not necessarily source-
+exact enough for VC7**.  Macro/control-flow AST can affect later register
+allocation even when the predecessor's own machine code is identical.  When a
+small handler is a pure cyclic-register mismatch, inspect no-op source wrappers
+in the immediate physical predecessor before forcing registers locally.
+
+## Early float arithmetic: restore raw-dword false branches in physical order
+
+After the control-flow phase fixes, the first remaining mismatches moved through
+the early float arithmetic opcodes.  In every accepted case the resolver path
+was already correct; the target's unresolved path copied the operand's raw
+32-bit bits with integer `mov`, while `ReadFloatRawArg`'s generic false arm made
+VC7 use `fld/fstp`.
+
+Restore these sites with an opcode-local conditional of the form:
+
+```cpp
+((instruction->operandFlags & (1U << index))
+    ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, index)))
+    : *reinterpret_cast<f32 *>(&RawInt(instruction, index)))
+```
+
+Do this in **physical handler order**, not numeric opcode order, because the float
+handlers establish the register phase of interleaved integer handlers.  The
+accepted chain was:
+
+- op7: strict 1624 -> 1617;
+- op9: 1617 -> 1608;
+- op15: 1608 -> 1580;
+- op16: 1580 -> 1556;
+- op17: 1556 -> 1532;
+- op18: 1532 -> 1505;
+- op19: both `fmodf` inputs explicit (`11`), 1505 -> 1485 and op20 becomes
+  exact automatically;
+- op25: both inputs explicit, 1485 -> 1436 and op21 becomes exact;
+- op26: both inputs explicit, 1436 -> 1419 and op22 becomes exact;
+- op27: both inputs explicit, 1419 -> 1370 and op23 becomes exact;
+- op28: both inputs explicit, 1370 -> 1353 and op24 becomes exact;
+- op29: both `fmodf` inputs explicit, 1353 -> 1304;
+- op32: explicit input, 1304 -> 1300;
+- op33: explicit input, 1300 -> 1281.
+
+All accepted steps preserve function/code extent and zero physical, positive,
+and absolute handler deltas.  For binary float operations the four-way subset
+search repeatedly showed `11` as the source-correct form.  Partial raw-site
+changes can make a local handler look better while rotating later handlers the
+wrong way, so always score the whole function.
+
+## Opcode 34: all four raw-copy branches expose a downstream movement phase chain
+
+Opcode 34's target has raw-dword false branches for all four conditional float
+operands.  However, on the 1281-diff baseline, making all four sites explicit
+(`1111`) keeps opcode 34's own span at delta zero but moves the whole function to
+physical `+2`, absolute `12`.  The nonzero spans are not in opcode 34; they are:
+
+- +1: op68, op72, op75, op76, op80, op81, op90;
+- -1: op69, op73, op74;
+- -2: op71.
+
+So the remaining opcode-34 source debt is coupled to the later movement-phase
+chain.  Do not retain the locally best `1011` compromise merely because it keeps
+shape zero: target evidence says all four raw branches are explicit.  Continue
+by repairing the downstream physical phase until `1111` closes naturally.
