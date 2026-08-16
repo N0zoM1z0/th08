@@ -797,10 +797,16 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
             reinterpret_cast<u8 *>(enemy) + 0x2DD0) =
             *reinterpret_cast<D3DXVECTOR3 *>(
                 reinterpret_cast<u8 *>(enemy) + 0x2D34);
-        F32At(enemy, 0x2D9C) = ReadFloatRawArg(enemy, instruction, 1);
-        F32At(enemy, 0x2DA0) = ReadFloatRawArg(enemy, instruction, 2);
+        F32At(enemy, 0x2D9C) = ((instruction->operandFlags & (1U << 1))
+                ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+                : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
+        F32At(enemy, 0x2DA0) = ((instruction->operandFlags & (1U << 2))
+                ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
+                : *reinterpret_cast<f32 *>(&RawInt(instruction, 2)));
         F32At(enemy, 0x2DB0) = 0.0f;
-        F32At(enemy, 0x2DB4) = ReadFloatRawArg(enemy, instruction, 3);
+        F32At(enemy, 0x2DB4) = ((instruction->operandFlags & (1U << 3))
+                ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3)))
+                : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
         U32At(enemy, 0x3324) |= 0x3000U;
         break;
     case 74:

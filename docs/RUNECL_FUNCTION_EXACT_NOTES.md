@@ -468,3 +468,17 @@ full gate before reuse.
 applies relocation replay only to in-range relocation fields and reports
 `shape_ok` only when function/code extents plus physical, positive, and absolute
 handler deltas are all zero.
+
+## Opcode 73: all three conditional floats use integer raw branches
+
+After fixing the selector gate to require physical, positive, and absolute
+handler deltas all be zero, opcode 73 was re-tested from the trusted 2727-diff
+shape-zero baseline.  Enumerating its three `ReadFloatRawArg` sites shows that
+all three unresolved branches must copy the raw operand dword into the hidden
+float result home with integer moves.
+
+The `111` subset is the only retained whole-function improvement in that search:
+opcode 73 becomes byte-exact, neighboring opcode spans remain exact, and strict
+relocation replay drops from 2727 to 2691 while the complete RunEcl shape score
+remains zero.  This re-validates the earlier opcode-73 observation under the
+correct full handler-shape gate.
