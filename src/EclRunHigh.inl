@@ -753,10 +753,8 @@ enter_subroutine:
             position.x += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             position.y += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             i32 playerPower = g_GameManager.GetPower();
-            if (playerPower < 0x80)
-                g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&position), static_cast<ItemType>((i == 0) * 2), 0);
-            else
-                g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&position), static_cast<ItemType>(1), 0);
+            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&position),
+                                    static_cast<ItemType>(playerPower < 0x80 ? ((i == 0) * 2) : 1), 0);
         }
         break;
     }
