@@ -855,19 +855,18 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     case 86:
     {
         i32 remoteValue;
-        if (instruction->operandFlags & 2U)
-        {
-            // Operand 2 selects the Enemy whose register namespace resolves
-            // operand 1.  The destination remains in the current Enemy.
-            lhsInt = ReadInt(enemy, instruction, 2);
-            remoteValue = EclOperands::ResolveInt(
-                g_EclEnemyTableF54CC0[lhsInt],
-                RawInt(instruction, 1));
-        }
-        else
-        {
-            remoteValue = RawInt(instruction, 1);
-        }
+        if ((instruction->operandFlags & 2U) == 0)
+            goto useLocalRegister86;
+        // Operand 2 selects the Enemy whose register namespace resolves
+        // operand 1.  The destination remains in the current Enemy.
+        lhsInt = ReadInt(enemy, instruction, 2);
+        remoteValue = EclOperands::ResolveInt(
+            g_EclEnemyTableF54CC0[lhsInt],
+            RawInt(instruction, 1));
+        goto writeRemoteValue86;
+    useLocalRegister86:
+        remoteValue = RawInt(instruction, 1);
+    writeRemoteValue86:
         *WriteInt(enemy, instruction, 0) = remoteValue;
         break;
     }
