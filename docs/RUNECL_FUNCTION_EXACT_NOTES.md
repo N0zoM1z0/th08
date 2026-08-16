@@ -980,3 +980,41 @@ flags2->op182Bit8 = TH08_ECL_READ_I(ctx, 0);
 Do not add a manual `& 1`: the one-bit field already emits the target mask.
 This makes opcode 182 byte-exact and preserves shape zero.  Together with the
 opcode-181 signed interpretation, strict replay improves 861 -> 833.
+
+## Opcode 142: group position and loop index to recover stack-home order
+
+Opcode 142's total local storage was already correct, but VC7 laid out the two
+independent block locals in the wrong order.  Target homes are:
+
+```text
+count    -0x64
+i        -0x68
+position -0x74..-0x6C
+```
+
+while the old source produced:
+
+```text
+count    -0x64
+position -0x70..-0x68
+i        -0x74
+```
+
+Use a same-size real state aggregate, not padding:
+
+```cpp
+struct Op142Locals {
+    Float3 position;
+    i32 i;
+} locals;
+```
+
+and use `locals.i` in the loop.  With downward-growing stack allocation this
+places the 12-byte position deeper and the integer immediately above it, exactly
+matching target.  No bytes are added or removed.  Opcode 142 becomes byte-exact,
+shape remains zero, and strict replay improves 833 -> 820.
+
+This is the same source-level stack-layout technique that previously fixed
+opcode 168: when target groups semantically related live locals contiguously but
+VC7 ignores ordinary declaration order, a same-size POD aggregate can express
+the true lifetime/layout without dummy storage.

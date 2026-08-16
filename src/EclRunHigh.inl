@@ -812,19 +812,23 @@ enter_subroutine:
         break;
     case 142:
     {
-        Float3 position;
-        i32 count = TH08_ECL_READ_I(ctx, 0);
-        for (i32 i = 0; i < count; ++i)
+        struct Op142Locals
         {
-            position = *reinterpret_cast<Float3 *>(
+            Float3 position;
+            i32 i;
+        } locals;
+        i32 count = TH08_ECL_READ_I(ctx, 0);
+        for (locals.i = 0; locals.i < count; ++locals.i)
+        {
+            locals.position = *reinterpret_cast<Float3 *>(
                 &TH08_ECL_AT(ctx, Vec3, 0x2D34));
-            ((f32 *)position)[0] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
-            ((f32 *)position)[1] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
+            ((f32 *)locals.position)[0] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
+            ((f32 *)locals.position)[1] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             if (g_GameManager.GetPower() < 0x80)
-                g_ItemManager.SpawnItem(&position,
-                                        static_cast<ItemType>(i != 0 ? 0 : 2), 0);
+                g_ItemManager.SpawnItem(&locals.position,
+                                        static_cast<ItemType>(locals.i != 0 ? 0 : 2), 0);
             else
-                g_ItemManager.SpawnItem(&position, static_cast<ItemType>(1), 0);
+                g_ItemManager.SpawnItem(&locals.position, static_cast<ItemType>(1), 0);
         }
         break;
     }
