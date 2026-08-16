@@ -227,3 +227,18 @@ op3=-10
 
 So the direct global call is likely part of the eventual byte-exact form, but it
 must be paired with other real tail-shape changes rather than applied alone.
+
+## Opcode 127: basic-block order matters even when span is exact
+
+Target opcode 127 executes the nonnegative slot-install path first and branches
+to the negative cleanup path.  Writing the equivalent source with the cleanup
+path first kept the handler extent exact but produced 324 relocated byte
+mismatches.  Reordering the C++ to `if (ReadInt(...) >= 0) { install } else {
+cleanup }` preserves the 0-delta span and reduces opcode 127 to 12 mismatching
+bytes; full RunEcl relocated mismatch count drops from 5033 to 4721.
+
+The remaining 12 bytes are four resolver scratch homes that are all four bytes
+too shallow.  With the target-present 4-byte `childContext` tail local restored,
+those homes move exactly to target offsets `-0x438/-0x43C/-0x440/-0x444`.
+This is strong evidence that the missing frame dword is a shared cause rather
+than an opcode-127-local expression problem.

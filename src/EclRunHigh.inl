@@ -564,21 +564,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         break;
     case 163: g_EclGlobal00F54CEC = TH08_ECL_READ_I(ctx, 0); break;
     case 127:
-        if (TH08_ECL_READ_I(ctx, 0) < 0)
-        {
-            if (TH08_ECL_AT(ctx, u8, 0x3313) < 4)
-                g_Gui.FUN_00422c20(0);
-            EclRunLowProposal::g_EclEnemyTableF54CC0[
-                TH08_ECL_AT(ctx, u8, 0x3313)] = 0;
-            TH08_ECL_AT(ctx, u32, 0x3324) &= ~2U;
-            g_AsciiManager.FUN_00422bb0(
-                TH08_ECL_AT(ctx, u8, 0x3313), 2);
-            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->FUN_0042a820();
-            g_AsciiManager.SetBossMarkerPosition(
-                TH08_ECL_AT(ctx, u8, 0x3313),
-                &D3DXVECTOR3(-999.0f, -999.0f, 0.0f));
-        }
-        else
+        if (TH08_ECL_READ_I(ctx, 0) >= 0)
         {
             EclRunLowProposal::g_EclEnemyTableF54CC0[TH08_ECL_READ_I(ctx, 0)] =
                 reinterpret_cast<EclOperands::EnemyOverlay *>(
@@ -592,6 +578,20 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             TH08_ECL_AT(ctx, u8, 0x3313) = (u8)TH08_ECL_READ_I(ctx, 0);
             g_AsciiManager.FUN_00422bb0(TH08_ECL_AT(ctx, u8, 0x3313), 1);
             TH08_ECL_AT(ctx, i32, 0x3350) = 0;
+        }
+        else
+        {
+            if (TH08_ECL_AT(ctx, u8, 0x3313) < 4)
+                g_Gui.FUN_00422c20(0);
+            EclRunLowProposal::g_EclEnemyTableF54CC0[
+                TH08_ECL_AT(ctx, u8, 0x3313)] = 0;
+            TH08_ECL_AT(ctx, u32, 0x3324) &= ~2U;
+            g_AsciiManager.FUN_00422bb0(
+                TH08_ECL_AT(ctx, u8, 0x3313), 2);
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->FUN_0042a820();
+            g_AsciiManager.SetBossMarkerPosition(
+                TH08_ECL_AT(ctx, u8, 0x3313),
+                &D3DXVECTOR3(-999.0f, -999.0f, 0.0f));
         }
         break;
 
