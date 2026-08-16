@@ -1097,18 +1097,18 @@ enter_subroutine:
     case 179: g_Gui.FUN_00439007(); break;
     case 180: g_Gui.FUN_004390d6(); break;
     case 181:
-        if (g_GameManager.GetClockTime() < 12)
+        if (static_cast<i8>(g_GameManager.GetClockTime()) < 12)
         {
             g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(0x2D), 0);
             g_GameManager.AddToClockTime(1);
-            if (g_GameManager.GetClockTime() == 12)
+            if (static_cast<i8>(g_GameManager.GetClockTime()) == 12)
                 g_Gui.FUN_00439093();
             else
                 g_Gui.FUN_00439050();
         }
         break;
     case 182:
-        TH08_ECL_AT(ctx, u32, 0x3328) = (TH08_ECL_AT(ctx, u32, 0x3328) & 0xFFFFFEFF) | ((TH08_ECL_READ_I(ctx, 0) & 1) << 8);
+        reinterpret_cast<EclRunLowProposal::Op79Flags2 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3328)->op182Bit8 = TH08_ECL_READ_I(ctx, 0);
         break;
     case 184: reinterpret_cast<TargetApi *>(&g_Spellcard)->Call0041F0E0(TH08_ECL_READ_I(ctx, 0)); break;
 #if !defined(TH08_ECL_RUN_SHARED_SWITCH)

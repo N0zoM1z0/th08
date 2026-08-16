@@ -146,7 +146,9 @@ struct Op79Flags2
 {
     u32 unknown00_05 : 6;
     u32 op79Bit6 : 1;
-    u32 unknown07_31 : 25;
+    u32 unknown07 : 1;
+    u32 op182Bit8 : 1;
+    u32 unknown09_31 : 23;
 };
 C_ASSERT(sizeof(Op79Flags2) == 4);
 

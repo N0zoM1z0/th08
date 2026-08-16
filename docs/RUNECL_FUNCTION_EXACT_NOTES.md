@@ -947,3 +947,36 @@ Reusable lesson: when a target shows one hidden ternary/result scratch feeding
 multiple consecutive stores, a right-associative assignment chain can be the
 actual source shape.  The textual LHS order must be reversed to obtain the
 observed store order.
+
+## Opcodes 181/182: signed clock byte and destination bitfield
+
+Opcode 181's target sign-extends AL after both `GameManager::GetClockTime`
+calls (`movsx reg, al`), while the declared return type is currently `u8` and
+unqualified C++ therefore emitted `movzx`.  Keep the global ABI declaration
+unchanged, but interpret the result as the target does at this call site:
+
+```cpp
+static_cast<i8>(g_GameManager.GetClockTime())
+```
+
+for both the `< 12` and `== 12` comparisons.  This changes only the extension
+opcode; handler extent remains exact and formal diff decreases by 2 bytes.
+
+Opcode 182 is another real bitfield assignment, analogous to opcode 129.  Split
+`Op79Flags2` so bit 8 is named:
+
+```cpp
+u32 unknown07 : 1;
+u32 op182Bit8 : 1;
+u32 unknown09_31 : 23;
+```
+
+and assign the resolved integer directly:
+
+```cpp
+flags2->op182Bit8 = TH08_ECL_READ_I(ctx, 0);
+```
+
+Do not add a manual `& 1`: the one-bit field already emits the target mask.
+This makes opcode 182 byte-exact and preserves shape zero.  Together with the
+opcode-181 signed interpretation, strict replay improves 861 -> 833.
