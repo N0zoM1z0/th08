@@ -855,7 +855,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     case 86:
     {
         i32 remoteValue;
-        if ((instruction->operandFlags & 2U) == 0)
+        if ((instruction->operandFlags & 2U) != 2U)
             goto useLocalRegister86;
         // Operand 2 selects the Enemy whose register namespace resolves
         // operand 1.  The destination remains in the current Enemy.
