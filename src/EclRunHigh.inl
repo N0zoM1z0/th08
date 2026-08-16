@@ -722,12 +722,15 @@ enter_subroutine:
     case 140:
     {
         Float3 vector;
-        if (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
-            vector.x = reinterpret_cast<EclOperands::EnemyOverlay *>(
-                TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
-                    *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)));
-        else
-            *reinterpret_cast<i32 *>(&vector.x) = TH08_ECL_RAW_I(ctx, 3);
+        if ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3)) == 0)
+            goto rawVectorX140;
+        vector.x = reinterpret_cast<EclOperands::EnemyOverlay *>(
+            TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
+                *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)));
+        goto doneVectorX140;
+    rawVectorX140:
+        *reinterpret_cast<i32 *>(&vector.x) = TH08_ECL_RAW_I(ctx, 3);
+    doneVectorX140:
         if (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 4))
             vector.y = reinterpret_cast<EclOperands::EnemyOverlay *>(
                 TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
