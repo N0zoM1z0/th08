@@ -970,15 +970,13 @@ enter_subroutine:
         *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E14) = 0;
         break;
     case 155:
-        TH08_ECL_AT(ctx, u32, 0x3324) =
-            ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 27) |
-            (TH08_ECL_AT(ctx, u32, 0x3324) & 0xF7FFFFFF);
+        reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->op155Bit27 =
+            TH08_ECL_RAW_BYTE(ctx, 0);
         g_EclGlobal004ECCA8 = 0x05F5E0F6;
         break;
     case 156:
-        TH08_ECL_AT(ctx, u32, 0x3324) =
-            ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 7) |
-            (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFFFFFF7F);
+        reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->op156Bit7 =
+            TH08_ECL_RAW_BYTE(ctx, 0);
         TH08_ECL_AT(ctx, u8, 0x332F) = 2;
         break;
     case 157:
@@ -987,8 +985,10 @@ enter_subroutine:
         TH08_ECL_AT(ctx, u16, 0x5350) = (u16)TH08_ECL_READ_I(ctx, 2);
         TH08_ECL_AT(ctx, u16, 0x5352) = (u16)TH08_ECL_READ_I(ctx, 3);
         if (TH08_ECL_AT(ctx, u8, 0x534C) & 8)
-            TH08_ECL_CONTEXT_API(ctx)->ConfigureBoss(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x0C, TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3E14,
-                                   (TH08_ECL_AT(ctx, i16, 0x534E) / TH08_ECL_AT(ctx, i16, 0x5352)) << 1);
+            g_AnmManager->FUN_004649a0(
+                reinterpret_cast<AnmVm *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x0C),
+                TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3E14,
+                (TH08_ECL_AT(ctx, i16, 0x534E) / TH08_ECL_AT(ctx, i16, 0x5352)) << 1);
         break;
     case 160: *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x5354) = TH08_ECL_READ_I(ctx, 0); break;
     case 161:

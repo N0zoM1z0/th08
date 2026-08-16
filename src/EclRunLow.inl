@@ -126,12 +126,13 @@ struct LinkedChildFlags1
     u32 op79Bit4 : 1;
     u32 unknown05 : 1;
     u32 op79Bit6 : 1;
-    u32 unknown07 : 1;
+    u32 op156Bit7 : 1;
     u32 linkedChild : 1;
     u32 inheritParentPosition : 1;
     u32 unknown0A : 1;
     u32 isYoukai : 1;
-    u32 unknown0C_1B : 16;
+    u32 unknown0C_1A : 15;
+    u32 op155Bit27 : 1;
     u32 op79Bit28 : 1;
     u32 unknown1D : 1;
     u32 pauseTimer : 1;

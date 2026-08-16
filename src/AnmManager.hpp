@@ -506,6 +506,7 @@ struct AnmManager
     void DrawPlayerBullet(AnmVm *vm);
     ZunResult FUN_00463cf0(AnmVm *vm);
     ZunResult FUN_00464070(AnmVm *vm);
+    ZunResult FUN_004649a0(AnmVm *vm, void *state, i32 count);
     ZunResult DrawWithCallback(AnmVm *vm, void *callback);
     void Draw2DAndFlush(AnmVm *vm);
     ZunResult DrawNoRotationNoRound(AnmVm *vm);

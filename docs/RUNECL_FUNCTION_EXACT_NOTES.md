@@ -703,3 +703,33 @@ to 1763, and relocation-replayed mismatch counts for both opcodes become zero.
 When a handler is structurally exact after local-home repair but its opening
 registers are cyclically shifted, inspect the immediately preceding physical
 handler instead of trying to force registers locally.
+
+## Opcodes 155-157: raw-byte bitfields restore the phase and real AnmManager owner
+
+Opcode 155 (Enemy flags bit 27) and opcode 156 (bit 7) are genuine one-bit
+bitfield assignments.  The crucial VC7 source detail is to assign the raw ECL
+byte directly to the one-bit field.  Do **not** spell `raw & 1`: the bitfield
+store already truncates the value, and an explicit mask makes VC7 emit a second
+`and 1` and grows the handler by three bytes.
+
+Expose the two real fields in `LinkedChildFlags1` and use:
+
+- `op155Bit27 = TH08_ECL_RAW_BYTE(ctx, 0);`
+- `op156Bit7  = TH08_ECL_RAW_BYTE(ctx, 0);`
+
+With direct raw-byte assignment, opcode 155 becomes byte-exact and rotates the
+incoming allocator phase of opcode 156; doing the same for opcode 156 makes it
+byte-exact and rotates opcode 157 into its target ECX/EDX/EAX phase.
+
+Opcode 157's final call is also owned by the real animation manager, not the
+RunEcl/EclManager provisional adapter.  Target 0x4649A0 is a thiscall with ECX
+=`g_AnmManager`, three stack arguments, and `ret 0x0C`; declare it as
+`AnmManager::FUN_004649a0(AnmVm *, void *, i32)` and call it through
+`g_AnmManager`.
+
+The complete trio keeps function/code extents and all handler span deltas at
+zero, lowers strict replay from 1758 to 1697, and makes relocation-replayed
+mismatch counts for opcodes 155, 156, and 157 all zero.  This is another strong
+example of a physical-handler phase chain: solving a successor locally was the
+wrong abstraction; the exact source forms of its two predecessors plus the real
+call owner were required together.
