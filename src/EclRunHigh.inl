@@ -805,15 +805,28 @@ enter_subroutine:
         if (TH08_ECL_AT(ctx, i32, 0x2DFC) > 0)
         {
             SpawnPacketTyped packet93;
-            memcpy(&packet93, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet93));
-            D3DXVECTOR3 position93;
-            position93.x = TH08_ECL_READ_F_RAWARG(ctx, 1);
-            position93.y = TH08_ECL_READ_F_RAWARG(ctx, 2);
-            position93.z = TH08_ECL_READ_F_RAWARG(ctx, 3);
-            void *spawned93 = g_EnemyManager.SpawnEnemy2(packet93.type, &position93,
-                                      TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
-                                      TH08_ECL_READ_I(ctx, 6),
-                                      (i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18));
+            void *spawned93;
+            {
+                D3DXVECTOR3 position93;
+                memcpy(&packet93, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet93));
+                position93.x =
+                    (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
+                        ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(packet93.position.x)
+                        : packet93.position.x;
+                position93.y =
+                    (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2))
+                        ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(packet93.position.y)
+                        : packet93.position.y;
+                position93.z =
+                    (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
+                        ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(packet93.position.z)
+                        : packet93.position.z;
+                spawned93 = g_EnemyManager.SpawnEnemy2(
+                    packet93.type, &position93,
+                    TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
+                    TH08_ECL_READ_I(ctx, 6),
+                    (i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18));
+            }
             (void)spawned93;
         }
         break;
@@ -821,17 +834,30 @@ enter_subroutine:
         if (TH08_ECL_AT(ctx, i32, 0x2DFC) > 0)
         {
             SpawnPacketTyped packet94;
-            memcpy(&packet94, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet94));
-            D3DXVECTOR3 position94;
-            position94.x = TH08_ECL_READ_F_RAWARG(ctx, 1);
-            position94.y = TH08_ECL_READ_F_RAWARG(ctx, 2);
-            position94.z = TH08_ECL_READ_F_RAWARG(ctx, 3);
-            reinterpret_cast<Float3 *>(&position94)->operator+=(
-                *reinterpret_cast<Float3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)));
-            void *spawned94 = g_EnemyManager.SpawnEnemy2(packet94.type, &position94,
-                                      TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
-                                      TH08_ECL_READ_I(ctx, 6),
-                                      (i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18));
+            void *spawned94;
+            {
+                D3DXVECTOR3 position94;
+                memcpy(&packet94, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet94));
+                position94.x =
+                    (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
+                        ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(packet94.position.x)
+                        : packet94.position.x;
+                position94.y =
+                    (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2))
+                        ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(packet94.position.y)
+                        : packet94.position.y;
+                position94.z =
+                    (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
+                        ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(packet94.position.z)
+                        : packet94.position.z;
+                reinterpret_cast<Float3 *>(&position94)->operator+=(
+                    *reinterpret_cast<Float3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)));
+                spawned94 = g_EnemyManager.SpawnEnemy2(
+                    packet94.type, &position94,
+                    TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
+                    TH08_ECL_READ_I(ctx, 6),
+                    (i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18));
+            }
             (void)spawned94;
         }
         break;

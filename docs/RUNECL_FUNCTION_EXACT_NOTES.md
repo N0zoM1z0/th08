@@ -274,3 +274,24 @@ float home, keeps the opcode-87 extent exact, restores the `0x5C4` frame, and
 moves all later resolver homes onto their target offsets.  In the current
 RunEcl reconstruction it reduces relocated byte mismatches from 4721 to 4100;
 opcodes 87, 88, 89, 127, 168, and 184 become byte-exact under replay.
+
+## Opcodes 93/94: nested scope recovers packet/position local order
+
+The target constructs `SpawnPacketTyped` first, then `D3DXVECTOR3 position`, and
+only then copies the seven instruction operands into the packet.  Despite that
+constructor order, target stack layout is packet-shallow / position-deep.  A
+flat block makes VC7 allocate the two locals in the opposite physical order.
+
+The matching source keeps `packet` and the `spawned` result in the outer block,
+then introduces an inner block containing `position`; `memcpy` occurs after the
+inner `position` declaration.  The first three resolved floats are read from
+`packet.position`, not from the instruction again.  This produces:
+
+- op93: packet `-0xA8`, position `-0xB4`, spawned `-0x8C`;
+- op94: packet `-0xD4`, position `-0xE0`, spawned `-0xB8`;
+- packet ctor -> position ctor -> `rep movsd`, exactly as target;
+- integer-move raw branches for the three packet-local float fields.
+
+With the opcode-87 frame fix already present, each handler becomes fully
+byte-exact under relocation replay (op93 82 -> 0 mismatching bytes, op94 83 ->
+0) while preserving the global zero shape score.
