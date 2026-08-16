@@ -837,13 +837,13 @@ enter_subroutine:
     case 112: g_BulletManager.bulletmanager_fun_00415c60(); break;
 
     case 113:
-        if (TH08_ECL_READ_I(ctx, 0) < 0)
-            TH08_ECL_AT(ctx, u32, 0x3020) &= ~0x200;
-        else
+        if (TH08_ECL_READ_I(ctx, 0) >= 0)
         {
             TH08_ECL_AT(ctx, i32, 0x3024) = TH08_ECL_READ_I(ctx, 0);
             TH08_ECL_AT(ctx, u32, 0x3020) |= 0x200;
         }
+        else
+            TH08_ECL_AT(ctx, u32, 0x3020) &= ~0x200;
         TH08_ECL_AT(ctx, i32, 0x3028) = TH08_ECL_READ_I(ctx, 1);
         break;
     case 151:
