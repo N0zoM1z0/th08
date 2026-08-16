@@ -940,7 +940,10 @@ enter_subroutine:
         break;
     case 152:
         TH08_ECL_AT(ctx, f32, 0x2DEC) = TH08_ECL_READ_F_RAWARG(ctx, 0);
-        TH08_ECL_AT(ctx, f32, 0x2DF0) = TH08_ECL_READ_F_RAWARG(ctx, 1);
+        TH08_ECL_AT(ctx, f32, 0x2DF0) = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
+            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
+                  *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)))
+            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)));
         TH08_ECL_AT(ctx, u16, 0x2DF4) = (u16)TH08_ECL_READ_I(ctx, 2);
         TH08_ECL_AT(ctx, u16, 0x2DF6) = (u16)TH08_ECL_READ_I(ctx, 3);
         TH08_ECL_AT(ctx, u16, 0x2DF8) = (u16)TH08_ECL_READ_I(ctx, 4);

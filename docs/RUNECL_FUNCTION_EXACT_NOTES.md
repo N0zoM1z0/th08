@@ -482,3 +482,32 @@ opcode 73 becomes byte-exact, neighboring opcode spans remain exact, and strict
 relocation replay drops from 2727 to 2691 while the complete RunEcl shape score
 remains zero.  This re-validates the earlier opcode-73 observation under the
 correct full handler-shape gate.
+
+## Opcode 39: only operand 2 wants an explicit raw-dword branch
+
+Opcode 39 is another reminder that adjacent float operands in one expression can
+want different VC7 source shapes.  From the full-shape-zero 2691 baseline, the
+only retained target-backed change is the first operand of `rhsFloat` (ECL
+operand 2): spell its conditional float resolve explicitly so the unresolved
+path copies the raw dword bits.  Leave operands 1, 3, and 4 as
+`ReadFloatRawArg`.
+
+This single-site change preserves physical, positive, and absolute handler
+deltas at zero and lowers whole-function strict replay from 2691 to 2679.  Do
+not generalize the raw-copy form across all four operands merely because the
+target unresolved branches look similar in isolation; the surrounding x87 and
+register allocation remain source-order sensitive.
+
+## Opcode 152: only the second float uses the explicit raw-dword branch
+
+Opcode 152 has two leading conditional float operands, but the correct VC7
+source shapes are not symmetric.  On the full-shape-zero 2679 baseline, keep
+operand 0 (`enemy+0x2DEC`) as `TH08_ECL_READ_F_RAWARG(ctx, 0)` and spell only
+operand 1 (`enemy+0x2DF0`) as an explicit `ResolveFloat(raw bits) : raw bits`
+conditional.
+
+That single-site change preserves exact function/code extents and zero physical,
+positive, and absolute handler deltas, while lowering strict relocation replay
+from 2679 to 2620.  Earlier attempts to convert both leading floats changed the
+allocator phase of following handlers and were not acceptable.  Treat this as
+another opcode-local source-shape fact, not a global raw-float rule.
