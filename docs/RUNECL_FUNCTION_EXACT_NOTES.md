@@ -659,3 +659,28 @@ last rel32 byte to the target value, keeps the complete handler map at zero
 delta, lowers whole-function strict replay from 1946 to 1945, and makes opcode 3
 fully byte-exact (zero relocation-replayed authored mismatches).  Do not revive
 the discarded "0x21-byte prefix debt" hypothesis.
+
+## Opcode 111: the interpolation-slot entry is not a homogeneous float array
+
+Opcode 111 originally modeled its 0x18-byte entry as `f32 *` and cast four
+resolved integer operands to float before storing them.  The target does not
+perform those numeric conversions: operands 1..4 are stored as raw/resolved
+32-bit integers at `+0x10`, `+0x14`, `+0x08`, and `+0x0C`, while only `+0x00`
+and `+0x04` are float fields.
+
+Recover the entry as byte-addressed/typed fields instead of a homogeneous float
+array.  This removes four non-target `fild/fstp` conversions without changing
+handler length.  On the 1945-diff full-shape baseline that field-type correction
+alone lowers strict replay to 1906.
+
+The remaining two float operands (5 and 6) both want explicit raw-dword
+conditional branches.  The full-shape selector retains subset `11`, lowering
+strict replay from 1906 to 1856.  The combined 89-byte reduction equals the
+entire pre-change opcode-111 hotspot, so the handler is effectively cleared by
+these two source facts.
+
+Reusable lesson: when target code stores a resolved integer scratch with plain
+`mov` into a structure later treated partly as floats, do not infer a
+homogeneous `f32[]` merely from neighboring fields.  Recover field types from
+store instructions first; a wrong aggregate type can preserve total size while
+changing every authored byte in the block.

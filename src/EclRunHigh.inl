@@ -403,13 +403,17 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
 
     case 111:
     {
-        f32 *entry = (f32 *)(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E44 + TH08_ECL_READ_I(ctx, 0) * 0x18);
-        entry[4] = (f32)TH08_ECL_READ_I(ctx, 1);
-        entry[5] = (f32)TH08_ECL_READ_I(ctx, 2);
-        entry[2] = (f32)TH08_ECL_READ_I(ctx, 3);
-        entry[3] = (f32)TH08_ECL_READ_I(ctx, 4);
-        entry[0] = TH08_ECL_READ_F_RAWARG(ctx, 5);
-        entry[1] = TH08_ECL_READ_F_RAWARG(ctx, 6);
+        u8 *entry = TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E44 + TH08_ECL_READ_I(ctx, 0) * 0x18;
+        *reinterpret_cast<i32 *>(entry + 0x10) = TH08_ECL_READ_I(ctx, 1);
+        *reinterpret_cast<i32 *>(entry + 0x14) = TH08_ECL_READ_I(ctx, 2);
+        *reinterpret_cast<i32 *>(entry + 0x08) = TH08_ECL_READ_I(ctx, 3);
+        *reinterpret_cast<i32 *>(entry + 0x0C) = TH08_ECL_READ_I(ctx, 4);
+        *reinterpret_cast<f32 *>(entry + 0x00) = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 5))
+            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 5)))
+            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 5)));
+        *reinterpret_cast<f32 *>(entry + 0x04) = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 6))
+            ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 6)))
+            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 6)));
         break;
     }
     case 138:
