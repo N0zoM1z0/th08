@@ -692,7 +692,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         if (lhsInt < 1)
         {
             F32At(enemy, 0x2D94) = AddNormalizeAngle(ReadFloat(enemy, instruction, 2), 0.0f);
-            F32At(enemy, 0x2DA8) = ReadFloat(enemy, instruction, 3);
+            F32At(enemy, 0x2DA8) = ReadFloatRawArg(enemy, instruction, 3);
             SetMovementState1(enemy);
             I32At(enemy, 0x2DE8) = 0;
             *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) = 0;
@@ -750,7 +750,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     case 72:
         ResetMovementTimer(enemy, services, ReadInt(enemy, instruction, 0));
         F32At(enemy, 0x2DD0) = ReadFloatRawArg(enemy, instruction, 1);
-        F32At(enemy, 0x2DD4) = ReadFloatRawArg(enemy, instruction, 2);
+        F32At(enemy, 0x2DD4) = ReadFloat(enemy, instruction, 2);
         F32At(enemy, 0x2D9C) = ReadFloat(enemy, instruction, 3);
         F32At(enemy, 0x2DA0) = ReadFloat(enemy, instruction, 4);
         F32At(enemy, 0x2DB0) = ReadFloat(enemy, instruction, 5);
