@@ -543,3 +543,18 @@ This preserves exact function/code extents and zero physical, positive, and
 absolute handler deltas, lowering strict replay from 2588 to 2565.  Reusing the
 same source form for repeated logical operands is not safe in this giant VC7
 function; call-site evaluation order and register/x87 state matter.
+
+## Opcode 164: only the first spell-parameter raw branch is retained explicit
+
+Opcode 164 calls the three-float spellcard helper with operands 1, 2, and 3.
+Although all three target unresolved paths eventually copy raw dword bits into
+compiler scratch, the full-shape selector shows that the correct source spelling
+is not uniform: the best subset is `100`, so only operand 1 is written as an
+explicit raw-dword conditional while operands 2 and 3 remain
+`TH08_ECL_READ_F_RAWARG`.
+
+Fresh verification preserves exact function/code extents and zero physical,
+positive, and absolute handler deltas, reducing strict replay from 2565 to 2562.
+This small result reinforces that target machine-level raw copies do not imply
+identical C++ spelling for every argument; right-to-left argument evaluation and
+incoming allocator state still matter.
