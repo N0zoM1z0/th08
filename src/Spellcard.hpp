@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AnmManager.hpp"
 #include "ZunBool.hpp"
 #include "diffbuild.hpp"
 #include "inttypes.hpp"
@@ -254,9 +255,48 @@ enum SpellcardNumber
 
 struct Spellcard
 {
-    u32 flags;
-    u8 unknown_04[0xF0];
-    u8 *activeEnemy;
+    Spellcard();
+
+    u32 flags;                       // +0x000
+    u8 unknown_004[0xF0];           // +0x004
+    u8 *activeEnemy;                 // +0x0F4
+    u8 unknown_0F8[0x4];            // +0x0F8
+    i32 bonusProgress;               // +0x0FC
+    i32 bonusCounter;                // +0x100
+    u8 unknown_104[0x4];             // +0x104
+    ZunTimer timer108;               // +0x108
+    ZunTimer timer114;               // +0x114
+    AnmVm vm120;                     // +0x120
+    AnmVm vm3C4;                     // +0x3C4
+    AnmVm vm668;                     // +0x668
+    AnmVm vm90C;                     // +0x90C
+    AnmVm vmBB0;                     // +0xBB0
+    AnmVm vmE54;                     // +0xE54
+    AnmVm vm10F8;                    // +0x10F8
+    AnmVm vm139C;                    // +0x139C
+    AnmVm vm1640;                    // +0x1640
+    AnmVm vm18E4;                    // +0x18E4
+    AnmVm vm1B88;                    // +0x1B88
+    AnmVm vm1E2C;                    // +0x1E2C
+    AnmVm vm20D0;                    // +0x20D0
+    AnmVm vm2374;                    // +0x2374
+    f32 playerSpellNameWidth;        // +0x2618
+    f32 enemySpellNameWidth;         // +0x261C
+    u8 unknown_2620[0x4];            // +0x2620
+    AnmLoaded *playerFaceAnm0;       // +0x2624
+    AnmLoaded *playerFaceAnm1;       // +0x2628
+    AnmLoaded *enemyFaceAnm0;        // +0x262C
+    AnmLoaded *enemyFaceAnm1;        // +0x2630
+    AnmLoaded *commonFaceAnm;        // +0x2634
+    i32 scoreLimit;                  // +0x2638
+    void *lifetimeObject;            // +0x263C
+    ChainElem *lifetimeChain;        // +0x2640
+
+    void CutInPlayer(i32 playerFace, const char *name, i32 sprite);
+    void spellcard_fun_00416130();
+    void spellcard_fun_00416160();
+    void spellcard_fun_00416af0();
+    void spellcard_fun_00416b10(i32 amount);
 
     void SetStoredVector(f32 x, f32 y, f32 z);
     i32 IsActive();
@@ -271,6 +311,7 @@ struct Spellcard
     static i32 GetDifficultyFromSpellCard(i32 spellcardNumber);
     static void CutChain();
 };
+C_ASSERT(sizeof(Spellcard) == 0x2644);
 
 DIFFABLE_EXTERN_ARRAY(i32 *, 6, g_SpellcardNumbersPerDifficulty);
 DIFFABLE_EXTERN_ARRAY(i32, 6, g_SpellcardCountsPerDifficulty);

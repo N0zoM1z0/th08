@@ -207,14 +207,14 @@ th08::BulletManager::bulletmanager_fun_00415c60,0x415c60,0x15,__thiscall,,void,B
 FUN_00415c80,0x415c80,0x55,unknown,,u8
 FUN_00415ce0,0x415ce0,0x25,unknown,,u8
 FUN_00415d10,0x415d10,0x47,__thiscall,,u8,void*,u8
-FUN_00415d60,0x415d60,0x19f,unknown,,u8,u8,u8,u8
+th08::Spellcard::CutInPlayer,0x415d60,0x19f,__thiscall,,void,Spellcard*,i32,const char*,i32
 FUN_00415f00,0x415f00,0x22e,unknown,,u8,u8,u8,u8
-FUN_00416130,0x416130,0x27,unknown,,u8
-FUN_00416160,0x416160,0x46,__thiscall,,u8,void*,u8,u8
+th08::Spellcard::spellcard_fun_00416130,0x416130,0x27,__thiscall,,void,Spellcard*
+th08::Spellcard::spellcard_fun_00416160,0x416160,0x46,__thiscall,,void,Spellcard*
 FUN_004161b0,0x4161b0,0x91b,unknown,,u8
 FUN_00416ad0,0x416ad0,0x18,unknown,,u8
-FUN_00416af0,0x416af0,0x20,unknown,,u8
-FUN_00416b10,0x416b10,0x76,unknown,,u8,u8
+th08::Spellcard::spellcard_fun_00416af0,0x416af0,0x20,__thiscall,,void,Spellcard*
+th08::Spellcard::spellcard_fun_00416b10,0x416b10,0x76,__thiscall,,void,Spellcard*,i32
 FUN_00416b90,0x416b90,0xcc5,unknown,,u8
 th08::Spellcard::FUN_00417860,0x417860,0x3b,__thiscall,,i32,Spellcard*
 th08::Spellcard::IsActive,0x4178a0,0x13,__thiscall,,i32,Spellcard*
@@ -992,7 +992,7 @@ th08::AnmManager::ReleaseAnmEntry,0x466160,0x48,__thiscall,,void,AnmManager*,Anm
 th08::AnmLoaded::LoadSprite,0x4661b0,0x155,__thiscall,,void,AnmLoaded*,i32,AnmLoadedSprite*
 th08::AnmManager::DrawTextInner,0x466310,0x91,__thiscall,,void,AnmManager*,IDirect3DTexture8*,i32,i32,i32,i32,i32,i32,COLORREF,COLORREF,const char*,f32,f32
 th08::AnmManager::DrawTextLeft,0x4663b0,0xee,__cdecl,varargs,void,AnmManager*,AnmVm*,COLORREF,COLORREF,const char*
-FUN_004664a0,0x4664a0,0x1b0,unknown,,u8,u8,u8,u8,u8,u8,u8
+th08::AnmManager::DrawTextRight,0x4664a0,0x1b0,__cdecl,varargs,void,AnmManager*,AnmVm*,COLORREF,COLORREF,const char*
 FUN_00466650,0x466650,0x16e,unknown,,u8,u8,u8,u8,u8,u8,u8
 th08::AnmManager::LoadSurface,0x4667c0,0x29e,__thiscall,,ZunResult,AnmManager*,i32,char*
 th08::AnmManager::PreloadSurface,0x466a60,0x7e,__thiscall,,ZunResult,AnmManager*,i32,const char*

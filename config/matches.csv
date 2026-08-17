@@ -719,3 +719,10 @@ address,name,size,status,match_percent,unit,evidence
 0x00425870,th08::EffectManager::FUN_00425870,365,matching,100.00,effect-manager-fun-00425870,python3 scripts/compare-function.py effect-manager-fun-00425870 --json
 0x00426D10,th08::FUN_00426d10,94,matching,100.00,fun-00426d10,python3 scripts/compare-function.py fun-00426d10 --json
 0x00407400,th08::Background::OnUpdate,6291,matching,100.00,background-on-update,python3 scripts/compare-function.py background-on-update --json
+0x004664A0,th08::AnmManager::DrawTextRight,432,matching,100.00,anm-manager-draw-text-right,python3 scripts/compare-function.py anm-manager-draw-text-right --json
+0x004143E0,th08::Spellcard::Spellcard,238,matching,100.00,spellcard-constructor,python3 scripts/compare-function.py spellcard-constructor --json
+0x00415D60,th08::Spellcard::CutInPlayer,415,matching,100.00,spellcard-cut-in-player,python3 scripts/compare-function.py spellcard-cut-in-player --json
+0x00416130,th08::Spellcard::spellcard_fun_00416130,39,matching,100.00,spellcard-fun-00416130,python3 scripts/compare-function.py spellcard-fun-00416130 --json
+0x00416160,th08::Spellcard::spellcard_fun_00416160,70,matching,100.00,spellcard-fun-00416160,python3 scripts/compare-function.py spellcard-fun-00416160 --json
+0x00416AF0,th08::Spellcard::spellcard_fun_00416af0,32,matching,100.00,spellcard-fun-00416af0,python3 scripts/compare-function.py spellcard-fun-00416af0 --json
+0x00416B10,th08::Spellcard::spellcard_fun_00416b10,118,matching,100.00,spellcard-fun-00416b10,python3 scripts/compare-function.py spellcard-fun-00416b10 --json

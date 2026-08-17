@@ -354,6 +354,83 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(i32, 10, g_SpellcardCountPerStage) = {
 // TODO: stop clang-format from fucking with whitespace formatting
 
 
+// FUNCTION: th08 0x4143e0
+Spellcard::Spellcard()
+{
+}
+
+
+DIFFABLE_EXTERN(i32, g_GuiFullPowerModeFrames);
+
+// FUNCTION: th08 0x415d60
+void Spellcard::CutInPlayer(i32 playerFace, const char *name, i32 sprite)
+{
+    if (playerFace == 0)
+    {
+        this->playerFaceAnm0->SetAndExecuteScriptIdx(&this->vm120, 0);
+        this->playerFaceAnm0->SetSprite(&this->vm120, 0);
+    }
+    else if (playerFace == 1)
+    {
+        this->playerFaceAnm1->SetAndExecuteScriptIdx(&this->vm120, 0);
+        this->playerFaceAnm1->SetSprite(&this->vm120, 0);
+    }
+
+    this->commonFaceAnm->SetAndExecuteScriptIdx(&this->vm668, 0);
+    this->commonFaceAnm->SetAndExecuteScriptIdx(&this->vmBB0, 2);
+    this->commonFaceAnm->SetSprite(&this->vm668, sprite);
+    this->commonFaceAnm->SetSprite(&this->vmBB0, sprite);
+    g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->vm10F8, 4);
+    g_AnmManager->DrawTextLeft(&this->vm10F8, 0x00F0F0FF, 0, name);
+    this->playerSpellNameWidth = strlen(name) * 0xf / 2.0f + 16;
+    this->vm1B88.SetInterrupt(1);
+    g_SoundPlayer.PlaySoundByIdx((SoundIdx)14, 0);
+    g_GuiFullPowerModeFrames = 2;
+}
+
+// FUNCTION: th08 0x416130
+void Spellcard::spellcard_fun_00416130()
+{
+    this->vm10F8.pendingInterrupt = 1;
+    this->vm1B88.SetInterrupt(2);
+}
+
+// FUNCTION: th08 0x416160
+void Spellcard::spellcard_fun_00416160()
+{
+    this->vm139C.pendingInterrupt = 1;
+    this->vm1E2C.SetInterrupt(2);
+    if (((this->flags >> 10) & 1) == 0)
+    {
+        this->vm2374.SetInterrupt(2);
+    }
+}
+
+// FUNCTION: th08 0x416af0
+void Spellcard::spellcard_fun_00416af0()
+{
+    this->flags &= ~1;
+    this->spellcard_fun_00416160();
+}
+
+// FUNCTION: th08 0x416b10
+void Spellcard::spellcard_fun_00416b10(i32 amount)
+{
+    if (((this->flags >> 11) & 1) == 0)
+    {
+        this->bonusProgress += amount;
+        if ((u32)this->bonusProgress >= (u32)this->scoreLimit)
+        {
+            this->bonusProgress = this->scoreLimit;
+        }
+        else
+        {
+            this->bonusCounter += amount / 120;
+        }
+    }
+}
+
+
 // FUNCTION: th08 0x0041F040
 void Spellcard::SetStoredVector(f32 x, f32 y, f32 z)
 {

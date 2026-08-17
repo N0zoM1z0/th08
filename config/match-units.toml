@@ -65465,3 +65465,329 @@ offset = 0x1933
 type = "DIR32"
 symbol = "$L*"
 target = 0x004085A6
+
+# th08::Spellcard::Spellcard
+[[units]]
+name = "spellcard-constructor"
+object = "build/SpellCard.obj"
+symbol = "??0Spellcard@th08@@QAE@XZ"
+target_address = 0x004143E0
+size = 0xEE
+
+[[units.relocations]]
+offset = 0x11
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x1F
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x2D
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x3B
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x49
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x57
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x65
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x73
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x81
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x8F
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x9D
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0xAB
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0xB9
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0xC7
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0xD5
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0xE3
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+# th08::AnmManager::DrawTextRight
+[[units]]
+name = "anm-manager-draw-text-right"
+object = "build/AnmManager.obj"
+symbol = "?DrawTextRight@AnmManager@th08@@QAAXPAUAnmVm@2@KKPBDZZ"
+target_address = 0x004664A0
+size = 0x1B0
+
+[[units.relocations]]
+offset = 0x55
+type = "REL32"
+symbol = "_vsprintf"
+target = 0x004A3E17
+
+[[units.relocations]]
+offset = 0xFF
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x106
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x155
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x167
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x179
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x193
+type = "REL32"
+symbol = "?DrawTextInner@AnmManager@th08@@QAEXPAUIDirect3DTexture8@@HHHHHHKKPBDMM@Z"
+target = 0x00466310
+
+# Spellcard exact candidate 0x00415D60
+[[units]]
+name = "spellcard-cut-in-player"
+object = "build/SpellCard.obj"
+symbol = "?CutInPlayer@Spellcard@th08@@QAEXHPBDH@Z"
+target_address = 0x00415D60
+size = 0x19F
+
+[[units.relocations]]
+offset = 0x24
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x3E
+type = "REL32"
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
+
+[[units.relocations]]
+offset = 0x60
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x79
+type = "REL32"
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
+
+[[units.relocations]]
+offset = 0x93
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0xAD
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0xC9
+type = "REL32"
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
+
+[[units.relocations]]
+offset = 0xE5
+type = "REL32"
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
+
+[[units.relocations]]
+offset = 0xF6
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xFB
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x115
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x11B
+type = "REL32"
+symbol = "?DrawTextLeft@AnmManager@th08@@QAAXPAUAnmVm@2@KKPBDZZ"
+target = 0x004663B0
+
+[[units.relocations]]
+offset = 0x15E
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x164
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004B42D4
+
+[[units.relocations]]
+offset = 0x17D
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x186
+type = "DIR32"
+symbol = "?g_SoundPlayer@th08@@3VSoundPlayer@1@A"
+target = 0x018B8A68
+
+[[units.relocations]]
+offset = 0x18B
+type = "REL32"
+symbol = "?PlaySoundByIdx@SoundPlayer@th08@@QAEXW4SoundIdx@2@H@Z"
+target = 0x0045D550
+
+[[units.relocations]]
+offset = 0x191
+type = "DIR32"
+symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
+target = 0x017CE8CC
+
+# Spellcard exact candidate 0x00416B10
+[[units]]
+name = "spellcard-fun-00416b10"
+object = "build/SpellCard.obj"
+symbol = "?spellcard_fun_00416b10@Spellcard@th08@@QAEXH@Z"
+target_address = 0x00416B10
+size = 0x76
+
+# Spellcard exact candidate 0x00416160
+[[units]]
+name = "spellcard-fun-00416160"
+object = "build/SpellCard.obj"
+symbol = "?spellcard_fun_00416160@Spellcard@th08@@QAEXXZ"
+target_address = 0x00416160
+size = 0x46
+
+[[units.relocations]]
+offset = 0x1F
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x3E
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+# Spellcard exact candidate 0x00416130
+[[units]]
+name = "spellcard-fun-00416130"
+object = "build/SpellCard.obj"
+symbol = "?spellcard_fun_00416130@Spellcard@th08@@QAEXXZ"
+target_address = 0x00416130
+size = 0x27
+
+[[units.relocations]]
+offset = 0x1F
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+# Spellcard exact candidate 0x00416AF0
+[[units]]
+name = "spellcard-fun-00416af0"
+object = "build/SpellCard.obj"
+symbol = "?spellcard_fun_00416af0@Spellcard@th08@@QAEXXZ"
+target_address = 0x00416AF0
+size = 0x20
+
+[[units.relocations]]
+offset = 0x18
+type = "REL32"
+symbol = "?spellcard_fun_00416160@Spellcard@th08@@QAEXXZ"
+target = 0x00416160
