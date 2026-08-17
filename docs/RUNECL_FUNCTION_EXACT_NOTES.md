@@ -1018,3 +1018,46 @@ This is the same source-level stack-layout technique that previously fixed
 opcode 168: when target groups semantically related live locals contiguously but
 VC7 ignores ordinary declaration order, a same-size POD aggregate can express
 the true lifetime/layout without dummy storage.
+
+## Opcodes 38/39: shared float homes require VC7 var_order
+
+The four real shared low-opcode float locals have target stack homes that are
+visible directly in opcodes 38 and 39:
+
+```text
+angle     [ebp-0x10]
+magnitude [ebp-0x14]
+lhsFloat  [ebp-0x18]
+rhsFloat  [ebp-0x1C]
+```
+
+The source declarations alone did not produce that coloring.  All 24 textual
+declaration permutations were tested and VC7 continued to color by use/lifetime
+rather than declaration position.  Making the variables case-local also changed
+homes but did not reproduce the target lifecycle or alter the downstream
+movement register phase.
+
+This repository already uses VC7 `#pragma var_order` extensively, including in
+RunEcl itself.  Exhaustively testing all 24 pragma permutations proved that the
+pragma list maps directly onto these four short stack homes in order.  The
+unique target-backed spelling is therefore:
+
+```cpp
+#pragma var_order(angle, magnitude, lhsFloat, rhsFloat)
+f32 lhsFloat;
+f32 rhsFloat;
+f32 angle;
+f32 magnitude;
+```
+
+Applied by itself on the `4e49929` baseline, this preserves exact RunEcl extent
+and all handler spans while reducing relocation-replayed formal byte mismatch
+**820 -> 811**.  It also moves opcode 38/39's shared local homes onto the target
+offsets.
+
+Reusable rule: when VC7 stack coloring of genuine shared locals is the only
+remaining source mismatch and the project already relies on `#pragma var_order`,
+use target stack-home evidence to derive the pragma order.  Do not replace real
+shared locals with dummy padding or artificial scopes.  Declaration order and
+scope experiments are useful diagnostics but are not substitutes for the
+compiler-supported ordering mechanism when the target proves a fixed layout.

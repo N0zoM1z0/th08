@@ -476,6 +476,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
 #ifndef TH08_ECL_RUN_LOW_BODY
     i32 lhsInt;
 #endif
+#pragma var_order(angle, magnitude, lhsFloat, rhsFloat)
     f32 lhsFloat;
     f32 rhsFloat;
     f32 angle;
