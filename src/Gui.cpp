@@ -16,6 +16,8 @@
 #include "Spellcard.hpp"
 #include "Supervisor.hpp"
 
+#include <stdio.h>
+
 namespace th08
 {
 
@@ -1232,6 +1234,91 @@ void Gui::FUN_0043826b()
                     ->clockDisplayCurrent % 60);
         g_AsciiManager.SetColor(0xffffffff);
     }
+}
+
+// FUNCTION: th08 0x438a89
+void Gui::FUN_00438a89()
+{
+    char bonusText[32];
+
+    g_AsciiManager.SetIsGuiMode(1);
+
+    if (this->impl->formatted0.isShown)
+    {
+        g_AsciiManager.SetColor(0xffffff80);
+        g_AsciiManager.AddFormatText(&this->impl->formatted0.position, " BONUS %8d", this->impl->formatted0.value);
+        g_AsciiManager.SetColor(0xffffffff);
+    }
+
+    switch (this->impl->formatted1.isShown)
+    {
+    case 1:
+        g_AsciiManager.SetColor(0xffc0b0ff);
+        g_AsciiManager.AddFormatText(&this->impl->formatted1.position, "Full Power Mode!");
+        g_AsciiManager.SetColor(0xffffffff);
+        break;
+    case 2:
+        g_AsciiManager.SetScale(0.9f, 1.0f);
+        g_AsciiManager.SetSpaceWidth(11);
+        g_AsciiManager.SetColor(0xffe0b0ff);
+        g_AsciiManager.AddFormatText(&this->impl->formatted1.position, "Supernatural Border!!");
+        g_AsciiManager.SetColor(0xffffffff);
+        g_AsciiManager.SetScale(1.0f, 1.0f);
+        g_AsciiManager.SetSpaceWidth(13);
+        break;
+    case 3:
+        g_AsciiManager.SetColor(0xffc0b0ff);
+        g_AsciiManager.AddFormatText(&this->impl->formatted1.position, "CherryPoint Max!");
+        g_AsciiManager.SetColor(0xffffffff);
+        break;
+    case 4:
+        g_AsciiManager.SetScale(0.9f, 1.0f);
+        g_AsciiManager.SetSpaceWidth(11);
+        g_AsciiManager.SetColor(0xffe0b0ff);
+        g_AsciiManager.AddFormatText(&this->impl->formatted1.position, "Border Bonus %7d", this->impl->formatted1.value);
+        g_AsciiManager.SetColor(0xffffffff);
+        g_AsciiManager.SetScale(1.0f, 1.0f);
+        g_AsciiManager.SetSpaceWidth(13);
+        break;
+    case 5:
+        g_AsciiManager.SetScale(0.9f, 1.0f);
+        g_AsciiManager.SetSpaceWidth(11);
+        g_AsciiManager.SetColor(0xffe0b0ff);
+        g_AsciiManager.AddFormatText(&this->impl->formatted1.position, "Spell Bonus Failed");
+        g_AsciiManager.SetColor(0xffffffff);
+        g_AsciiManager.SetScale(1.0f, 1.0f);
+        g_AsciiManager.SetSpaceWidth(13);
+        break;
+    case 6:
+        g_AsciiManager.SetScale(0.9f, 1.0f);
+        g_AsciiManager.SetSpaceWidth(11);
+        g_AsciiManager.SetColor(0xffe0b0ff);
+        g_AsciiManager.AddFormatText(&this->impl->formatted1.position, "Last Spell Failed");
+        g_AsciiManager.SetColor(0xffffffff);
+        g_AsciiManager.SetScale(1.0f, 1.0f);
+        g_AsciiManager.SetSpaceWidth(13);
+        break;
+    default:
+        break;
+    }
+
+    if (this->impl->formatted2.isShown)
+    {
+        g_AsciiManager.SetColor(0xffff0000);
+        this->impl->formatted2.position.x = (384.0f - (f32)strlen("Spell Card Bonus!") * 14.0f) / 2.0f + 32.0f;
+        this->impl->formatted2.position.y = 80.0f;
+        g_AsciiManager.AddFormatText(&this->impl->formatted2.position, "Spell Card Bonus!");
+        this->impl->formatted2.position.y += 16.0f;
+        sprintf(bonusText, "+%d", this->impl->formatted2.value);
+        this->impl->formatted2.position.x = (384.0f - strlen(bonusText) * 28.0f) / 2.0f + 32.0f;
+        g_AsciiManager.SetScale(2.0f, 2.0f);
+        g_AsciiManager.SetColor(0xffff8080);
+        g_AsciiManager.AddString(&this->impl->formatted2.position, bonusText);
+        g_AsciiManager.SetScale(1.0f, 1.0f);
+        g_AsciiManager.SetColor(0xffffffff);
+    }
+
+    g_AsciiManager.SetIsGuiMode(0);
 }
 
 // FUNCTION: th08 0x438fe9

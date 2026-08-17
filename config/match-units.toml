@@ -75911,3 +75911,724 @@ offset = 1976
 type = "REL32"
 symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
 target = 4430056
+
+[[units]]
+name = "gui-formatted-popup-draw"
+object = "build/objdiff/reimpl/Gui.obj"
+symbol = "th08::Gui::FUN_00438a89"
+target_address = 4426377
+size = 1231
+
+[[units.relocations]]
+offset = 12
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 17
+type = "REL32"
+symbol = "?SetIsGuiMode@AsciiManager@th08@@QAEXI@Z"
+target = 4430079
+
+[[units.relocations]]
+offset = 39
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 44
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 4430056
+
+[[units.relocations]]
+offset = 61
+type = "DIR32"
+symbol = "??_C@_0L@DDKENMJK@?5BONUS?5?$CF8d?$AA@"
+target = 4935624
+
+[[units.relocations]]
+offset = 78
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 83
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 4205104
+
+[[units.relocations]]
+offset = 93
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 98
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 4430056
+
+[[units.relocations]]
+offset = 180
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 185
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 4430056
+
+[[units.relocations]]
+offset = 190
+type = "DIR32"
+symbol = "??_C@_0BB@HJFNEDJM@Full?5Power?5Mode?$CB?$AA@"
+target = 4935604
+
+[[units.relocations]]
+offset = 207
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 212
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 4205104
+
+[[units.relocations]]
+offset = 222
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 227
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 4430056
+
+[[units.relocations]]
+offset = 244
+type = "DIR32"
+symbol = "__real@3f666666"
+target = 4935600
+
+[[units.relocations]]
+offset = 253
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 258
+type = "REL32"
+symbol = "?SetScale@AsciiManager@th08@@QAEXMM@Z"
+target = 4387568
+
+[[units.relocations]]
+offset = 265
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 270
+type = "REL32"
+symbol = "?SetSpaceWidth@AsciiManager@th08@@QAEXH@Z"
+target = 4223360
+
+[[units.relocations]]
+offset = 280
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 285
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 4430056
+
+[[units.relocations]]
+offset = 290
+type = "DIR32"
+symbol = "??_C@_0BG@PBIAEHGE@Supernatural?5Border?$CB?$CB?$AA@"
+target = 4935576
+
+[[units.relocations]]
+offset = 307
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 312
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 4205104
+
+[[units.relocations]]
+offset = 322
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 327
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 4430056
+
+[[units.relocations]]
+offset = 344
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 349
+type = "REL32"
+symbol = "?SetScale@AsciiManager@th08@@QAEXMM@Z"
+target = 4387568
+
+[[units.relocations]]
+offset = 356
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 361
+type = "REL32"
+symbol = "?SetSpaceWidth@AsciiManager@th08@@QAEXH@Z"
+target = 4223360
+
+[[units.relocations]]
+offset = 376
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 381
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 4430056
+
+[[units.relocations]]
+offset = 386
+type = "DIR32"
+symbol = "??_C@_0BB@OMJBAKOE@CherryPoint?5Max?$CB?$AA@"
+target = 4935556
+
+[[units.relocations]]
+offset = 403
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 408
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 4205104
+
+[[units.relocations]]
+offset = 418
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 423
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 4430056
+
+[[units.relocations]]
+offset = 440
+type = "DIR32"
+symbol = "__real@3f666666"
+target = 4935600
+
+[[units.relocations]]
+offset = 449
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 454
+type = "REL32"
+symbol = "?SetScale@AsciiManager@th08@@QAEXMM@Z"
+target = 4387568
+
+[[units.relocations]]
+offset = 461
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 466
+type = "REL32"
+symbol = "?SetSpaceWidth@AsciiManager@th08@@QAEXH@Z"
+target = 4223360
+
+[[units.relocations]]
+offset = 476
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 481
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 4430056
+
+[[units.relocations]]
+offset = 498
+type = "DIR32"
+symbol = "??_C@_0BB@PHNBAFAO@Border?5Bonus?5?$CF7d?$AA@"
+target = 4935536
+
+[[units.relocations]]
+offset = 515
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 520
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 4205104
+
+[[units.relocations]]
+offset = 530
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 535
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 4430056
+
+[[units.relocations]]
+offset = 552
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 557
+type = "REL32"
+symbol = "?SetScale@AsciiManager@th08@@QAEXMM@Z"
+target = 4387568
+
+[[units.relocations]]
+offset = 564
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 569
+type = "REL32"
+symbol = "?SetSpaceWidth@AsciiManager@th08@@QAEXH@Z"
+target = 4223360
+
+[[units.relocations]]
+offset = 586
+type = "DIR32"
+symbol = "__real@3f666666"
+target = 4935600
+
+[[units.relocations]]
+offset = 595
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 600
+type = "REL32"
+symbol = "?SetScale@AsciiManager@th08@@QAEXMM@Z"
+target = 4387568
+
+[[units.relocations]]
+offset = 607
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 612
+type = "REL32"
+symbol = "?SetSpaceWidth@AsciiManager@th08@@QAEXH@Z"
+target = 4223360
+
+[[units.relocations]]
+offset = 622
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 627
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 4430056
+
+[[units.relocations]]
+offset = 632
+type = "DIR32"
+symbol = "??_C@_0BD@CJKFFNCP@Spell?5Bonus?5Failed?$AA@"
+target = 4935516
+
+[[units.relocations]]
+offset = 649
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 654
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 4205104
+
+[[units.relocations]]
+offset = 664
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 669
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 4430056
+
+[[units.relocations]]
+offset = 686
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 691
+type = "REL32"
+symbol = "?SetScale@AsciiManager@th08@@QAEXMM@Z"
+target = 4387568
+
+[[units.relocations]]
+offset = 698
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 703
+type = "REL32"
+symbol = "?SetSpaceWidth@AsciiManager@th08@@QAEXH@Z"
+target = 4223360
+
+[[units.relocations]]
+offset = 720
+type = "DIR32"
+symbol = "__real@3f666666"
+target = 4935600
+
+[[units.relocations]]
+offset = 729
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 734
+type = "REL32"
+symbol = "?SetScale@AsciiManager@th08@@QAEXMM@Z"
+target = 4387568
+
+[[units.relocations]]
+offset = 741
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 746
+type = "REL32"
+symbol = "?SetSpaceWidth@AsciiManager@th08@@QAEXH@Z"
+target = 4223360
+
+[[units.relocations]]
+offset = 756
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 761
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 4430056
+
+[[units.relocations]]
+offset = 766
+type = "DIR32"
+symbol = "??_C@_0BC@KGGBHBD@Last?5Spell?5Failed?$AA@"
+target = 4935496
+
+[[units.relocations]]
+offset = 783
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 788
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 4205104
+
+[[units.relocations]]
+offset = 798
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 803
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 4430056
+
+[[units.relocations]]
+offset = 820
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 825
+type = "REL32"
+symbol = "?SetScale@AsciiManager@th08@@QAEXMM@Z"
+target = 4387568
+
+[[units.relocations]]
+offset = 832
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 837
+type = "REL32"
+symbol = "?SetSpaceWidth@AsciiManager@th08@@QAEXH@Z"
+target = 4223360
+
+[[units.relocations]]
+offset = 866
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 871
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 4430056
+
+[[units.relocations]]
+offset = 877
+type = "DIR32"
+symbol = "__real@41880000"
+target = 4935492
+
+[[units.relocations]]
+offset = 883
+type = "DIR32"
+symbol = "__real@41600000"
+target = 4932320
+
+[[units.relocations]]
+offset = 889
+type = "DIR32"
+symbol = "__real@43c00000"
+target = 4932904
+
+[[units.relocations]]
+offset = 895
+type = "DIR32"
+symbol = "__real@40000000"
+target = 4932332
+
+[[units.relocations]]
+offset = 901
+type = "DIR32"
+symbol = "__real@42000000"
+target = 4932300
+
+[[units.relocations]]
+offset = 925
+type = "DIR32"
+symbol = "__real@42a00000"
+target = 4932328
+
+[[units.relocations]]
+offset = 936
+type = "DIR32"
+symbol = "??_C@_0BC@IFGCKOKI@Spell?5Card?5Bonus?$CB?$AA@"
+target = 4935472
+
+[[units.relocations]]
+offset = 953
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 958
+type = "REL32"
+symbol = "?AddFormatText@AsciiManager@th08@@QAAXPAUFloat3@2@PBDZZ"
+target = 4205104
+
+[[units.relocations]]
+offset = 979
+type = "DIR32"
+symbol = "__real@41800000"
+target = 4932308
+
+[[units.relocations]]
+offset = 1008
+type = "DIR32"
+symbol = "??_C@_03JGJPCCHE@?$CL?$CFd?$AA@"
+target = 4935468
+
+[[units.relocations]]
+offset = 1017
+type = "REL32"
+symbol = "_sprintf"
+target = 4868183
+
+[[units.relocations]]
+offset = 1078
+type = "DIR32"
+symbol = "__real@41e00000"
+target = 4935464
+
+[[units.relocations]]
+offset = 1084
+type = "DIR32"
+symbol = "__real@43c00000"
+target = 4932904
+
+[[units.relocations]]
+offset = 1090
+type = "DIR32"
+symbol = "__real@40000000"
+target = 4932332
+
+[[units.relocations]]
+offset = 1096
+type = "DIR32"
+symbol = "__real@42000000"
+target = 4932300
+
+[[units.relocations]]
+offset = 1114
+type = "DIR32"
+symbol = "__real@40000000"
+target = 4932332
+
+[[units.relocations]]
+offset = 1124
+type = "DIR32"
+symbol = "__real@40000000"
+target = 4932332
+
+[[units.relocations]]
+offset = 1133
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 1138
+type = "REL32"
+symbol = "?SetScale@AsciiManager@th08@@QAEXMM@Z"
+target = 4387568
+
+[[units.relocations]]
+offset = 1148
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 1153
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 4430056
+
+[[units.relocations]]
+offset = 1174
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 1179
+type = "REL32"
+symbol = "?AddString@AsciiManager@th08@@QAEXPAUFloat3@2@PBD@Z"
+target = 4204832
+
+[[units.relocations]]
+offset = 1196
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 1201
+type = "REL32"
+symbol = "?SetScale@AsciiManager@th08@@QAEXMM@Z"
+target = 4387568
+
+[[units.relocations]]
+offset = 1208
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 1213
+type = "REL32"
+symbol = "?SetColor@AsciiManager@th08@@QAEXK@Z"
+target = 4430056
+
+[[units.relocations]]
+offset = 1220
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 5033504
+
+[[units.relocations]]
+offset = 1225
+type = "REL32"
+symbol = "?SetIsGuiMode@AsciiManager@th08@@QAEXI@Z"
+target = 4430079

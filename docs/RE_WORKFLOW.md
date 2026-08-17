@@ -170,3 +170,6 @@ The GUI updater at `0x435900` is now a strict 2,397-byte match. Its proven state
 
 
 `Gui::FUN_0043826b @ 0x43826B` is now a strict 1,982-byte result-overlay draw. It independently reuses the `GuiStageResultUpdateOverlay` fields proven by the 0x435900 updater, so those offsets now have both update-side and draw-side evidence. For result screens, preserve each lexical `AsciiManager::AddFormatText` call and its Y advance; visually equivalent string consolidation is not compiler-equivalent.
+
+
+`Gui::FUN_00438A89` is now a strict 1,231-byte formatted-popup draw. The TH06 `Gui::OnDraw` popup block is a useful source-shape ancestor: TH08 keeps the same spell-card bonus centering logic, while expanding the full-power popup into a six-state switch. When an ancestor uses `strlen` of a string literal in a centering formula, preserve that call spelling instead of substituting the known length; the old compiler's partial constant folding can be target-visible.

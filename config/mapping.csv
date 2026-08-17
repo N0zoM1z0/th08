@@ -497,7 +497,7 @@ th08::Supervisor::IsMinimumGraphicsMode,0x438a29,0x18,__thiscall,,u32,Supervisor
 th08::Supervisor::IsDepthTestDisabled,0x438a41,0x18,__thiscall,,u32,Supervisor*
 th08::Supervisor::IsColorCompositingDisabled,0x438a59,0x18,__thiscall,,u32,Supervisor*
 th08::Supervisor::IsHUDRedrawEnabled,0x438a71,0x18,__thiscall,,u32,Supervisor*
-FUN_00438a89,0x438a89,0x4cf,unknown,,u8
+th08::Gui::FUN_00438a89,0x438a89,0x4cf,__thiscall,,void,Gui*
 th08::Gui::FUN_00438f58,0x438f58,0x91,unknown,,u8
 th08::FUN_00438fe9,0x438fe9,0xa,__fastcall,,i32
 th08::FUN_00438ff3,0x438ff3,0xa,unknown,,u8

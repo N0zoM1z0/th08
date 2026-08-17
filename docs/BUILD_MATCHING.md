@@ -290,6 +290,9 @@ nonzero instead of borrowing TH07 assumptions.
 
 - Do not merge adjacent label/value text calls just because one formatted string could display the same text. `Gui::FUN_0043826b` has a standalone `AddFormatText("Night Bonus")`, advances Y by 16, then a second `AddFormatText("        %8d0", value)`. Combining them into `"Night Bonus = %8d0"` made the function exactly 34 bytes short and changed the static call-site layout.
 
+
+- A compile-time string length can be the right way to prevent over-folding of a floating expression. In `Gui::FUN_00438a89`, `(384.0f - (f32)strlen("Spell Card Bonus!") * 14.0f) / 2.0f + 32.0f` makes VC7 fold the literal `strlen` to `17.0f` but still emit the target five-step x87 multiply/subtract/divide/add sequence. Replacing it with the seemingly equivalent literal `17.0f` let VC7 fold the entire x coordinate to one constant and made the function 24 bytes short.
+
 ## Acceptance rules
 
 - Verify the target hash before every new comparison environment.

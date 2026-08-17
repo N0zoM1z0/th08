@@ -107,6 +107,7 @@ struct Gui
     void FUN_0043741d();
     void FUN_00435900();
     void FUN_0043826b();
+    void FUN_00438a89();
 
     u32 unk_0;
     GuiFlags flags;
