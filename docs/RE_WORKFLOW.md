@@ -87,6 +87,12 @@ small units and verify each against TH08. Prefer instruction-level evidence
 over semantic resemblance, and re-check all absolute addresses and structure
 offsets. Do not bulk-copy a module and mark it reconstructed.
 
+When a large function repeatedly touches anonymous structure offsets, first look
+for tiny target helpers that own the same fields. Reconstruct and strictly match
+those helpers in isolation, then promote the proven offsets to named fields and
+rerun every accepted unit for that class. This dependency-first field recovery
+keeps semantic naming evidence separate from guesses made inside a large boss.
+
 ## High-leverage lanes
 
 Prefer dependency work that turns a giant dispatcher into bounded units:

@@ -66457,3 +66457,29 @@ offset = 0x220
 type = "DIR32"
 symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
 target = 0x017CE8CC
+
+# Ledger name: th08::Enemy::enemy_fun_00415c80
+[[units]]
+name = "enemy-spell-phase-reset"
+object = "build/EnemyManager.obj"
+symbol = "?enemy_fun_00415c80@Enemy@th08@@QAEXXZ"
+target_address = 0x00415C80
+size = 0x55
+
+
+# Ledger name: th08::Background::background_fun_00415ce0
+[[units]]
+name = "background-spell-phase-start"
+object = "build/Background.obj"
+symbol = "?background_fun_00415ce0@Background@th08@@QAEXXZ"
+target_address = 0x00415CE0
+size = 0x25
+
+
+# Ledger name: th08::Background::background_fun_00416ad0
+[[units]]
+name = "background-spell-phase-end"
+object = "build/Background.obj"
+symbol = "?background_fun_00416ad0@Background@th08@@QAEXXZ"
+target_address = 0x00416AD0
+size = 0x18

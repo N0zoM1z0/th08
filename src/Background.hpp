@@ -44,6 +44,8 @@ struct Background
                                   const Float3 *control2, const Float3 *control3);
     void FUN_00409160(D3DCOLOR color);
     u32 FUN_00409f40();
+    void background_fun_00415ce0();
+    void background_fun_00416ad0();
 
     void *stageAnm;
     AnmVm stageVm0;
@@ -69,7 +71,10 @@ struct Background
     i32 skyFogInterpDuration;
     ZunTimer timerB14;
     u8 skyFogNeedsSetup;
-    unknown_fields(0xb21, 0x17);
+    unknown_fields(0xb21, 0x3);
+    i32 spellBackgroundState;
+    i32 spellBackgroundTimer;
+    unknown_fields(0xb2c, 0xc);
     AnmVm anmVmArray[0x20];
     AnmVm anmVm5fb8;
     void (*onDrawLowPrioCallback)();

@@ -731,3 +731,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00418180,th08::GameManager::IsSpellNumberInRange,98,matching,100.00,gamemanager-is-spell-number-in-range,python3 scripts/compare-function.py gamemanager-is-spell-number-in-range --json
 0x00415D10,th08::Spellcard::CutInEnemyNoPortrait,71,matching,100.00,spellcard-cut-in-enemy-no-portrait,python3 scripts/compare-function.py spellcard-cut-in-enemy-no-portrait --json
 0x00415F00,th08::Spellcard::CutInEnemy,558,matching,100.00,spellcard-cut-in-enemy,python3 scripts/compare-function.py spellcard-cut-in-enemy --json
+0x00415C80,th08::Enemy::enemy_fun_00415c80,85,matching,100.00,enemy-spell-phase-reset,python3 scripts/compare-function.py enemy-spell-phase-reset --json
+0x00415CE0,th08::Background::background_fun_00415ce0,37,matching,100.00,background-spell-phase-start,python3 scripts/compare-function.py background-spell-phase-start --json
+0x00416AD0,th08::Background::background_fun_00416ad0,24,matching,100.00,background-spell-phase-end,python3 scripts/compare-function.py background-spell-phase-end --json

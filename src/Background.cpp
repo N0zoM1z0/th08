@@ -97,6 +97,19 @@ struct BackgroundStageVertex
 };
 C_ASSERT(sizeof(BackgroundStageVertex) == 0x1c);
 DIFFABLE_STATIC(Background, g_Background);
+
+// FUNCTION: th08 0x415ce0
+void Background::background_fun_00415ce0()
+{
+    this->spellBackgroundState = 1;
+    this->spellBackgroundTimer = 0;
+}
+
+// FUNCTION: th08 0x416ad0
+void Background::background_fun_00416ad0()
+{
+    this->spellBackgroundState = 0;
+}
 DIFFABLE_STATIC(ChainElem, g_BackgroundCalcChain);
 DIFFABLE_STATIC(ChainElem, g_BackgroundDrawChainHighPrio);
 DIFFABLE_STATIC(ChainElem, g_BackgroundDrawChainLowPrio);
