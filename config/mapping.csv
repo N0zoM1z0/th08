@@ -626,7 +626,7 @@ th08::ItemManager::CancelAutoCollect,0x441530,0x6d,__thiscall,,void,ItemManager*
 th08::ItemManager::OnDraw,0x4415a0,0x1c3,__thiscall,,void,ItemManager*
 th08::Item::Delete,0x441770,0x6a,__thiscall,,void,Item*
 th08::ItemManager::GetTimeOrbCount,0x4417e0,0x4f,__thiscall,,i32,ItemManager*
-FUN_00441830,0x441830,0x1b,__thiscall,,bool,i32,i32
+th08::ZunTimer::operator!=,0x441830,0x1b,__thiscall,,ZunBool,ZunTimer*,i32
 th08::GameManager::AddPower,0x441850,0x4d,__thiscall,,void,GameManager*,i32
 th08::GameWindow::GameWindow,0x4418a0,0x1c,__thiscall,,GameWindow*,GameWindow*
 WinMain,0x4418c0,0x54a,__stdcall,,i32,HINSTANCE__*,HINSTANCE__*,char*,i32
@@ -752,7 +752,7 @@ th08::Player::FUN_00449ff0,0x449ff0,0x233,__thiscall,,i32,Player*,Float3*,Float3
 FUN_0044a230,0x44a230,0x12e,unknown,,u8,u8,u8
 FUN_0044a360,0x44a360,0x110,unknown,,u8,u8,u8
 FUN_0044a470,0x44a470,0x12f,unknown,,u8,u8,u8
-th08::Player::CalcItemBoxCollision,0x44a5a0,0xf9,__thiscall,,u32,Player*,_D3DVECTOR*,_D3DVECTOR*
+th08::Player::CalcItemBoxCollision,0x44a5a0,0xf9,__thiscall,,u32,Player*,Float3*,Float3*
 th08::Player::CalcLaserHitbox,0x44a6a0,0x28b,__thiscall,,u32,Player*,_D3DVECTOR*,_D3DVECTOR*,_D3DVECTOR*,f32,i32
 FUN_0044a930,0x44a930,0x209,unknown,,u8,u8,u8
 FUN_0044ab40,0x44ab40,0x378,unknown,,u8

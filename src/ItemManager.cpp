@@ -6,6 +6,7 @@
 #include "Gui.hpp"
 #include "ItemManager.hpp"
 #include "Player.hpp"
+#include "ReplayManager.hpp"
 #include "Spellcard.hpp"
 
 namespace th08
@@ -20,9 +21,17 @@ struct ItemTimeOrbTimerStorage
     i32 previous;
 };
 DIFFABLE_STATIC(ItemTimeOrbTimerStorage, g_ItemTimeOrbTimerStorage);
+DIFFABLE_STATIC(ItemTimeOrbTimerStorage, g_ItemScatterTimerStorage);
+DIFFABLE_STATIC(f32, g_ItemPlayfieldBottom);
 DIFFABLE_STATIC(i32, g_MaxValuePointItemsCollected);
 DIFFABLE_STATIC(Float2, g_ItemAnmManagerScreenShakeOffset);
 DIFFABLE_STATIC_ARRAY_ASSIGN(i32, 6, g_PowerUpThresholds) = {8, 24, 48, 80, 128, 999};
+
+// FUNCTION: th08 0x441830
+ZunBool ZunTimer::operator!=(int value)
+{
+    return this->current != value;
+}
 
 // FUNCTION: th08 0x440010
 ItemManager::ItemManager()
@@ -188,10 +197,214 @@ void ItemManager::UpdatePointItemExtendThreshold()
     }
 }
 
-// STUB: th08 0x440500
+// FUNCTION: th08 0x440500
+#pragma var_order(speed, interp, pickupScore, angle, itemBox, soundIndex, item)
 void ItemManager::OnUpdate()
 {
-    // TODO: NEEDS WORK ON Gui
+    f32 speed;
+    f32 interp;
+    i32 pickupScore;
+    f32 angle;
+    i32 soundIndex = 0;
+    Item *item = this->itemListHead.next;
+    Float3 itemBox(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x18),
+                   *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x18), 16.0f);
+
+    this->itemCount = 0;
+    speed = *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&g_Player) + 3)
+                ? *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerSecondaryShtFile) + 0x34)
+                : *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x34);
+    speed *= g_EclGameTimeScale;
+
+    while (item != NULL)
+    {
+        this->itemCount++;
+
+        if (item->state == ITEM_STATE_UNK2)
+        {
+            if (item->timer < 60)
+            {
+                interp = (f32)item->timer / 60.0f;
+                item->currentPosition =
+                    item->targetPosition * interp + item->startPositionOrVelocity * (1.0f - interp);
+                goto pickup;
+            }
+            if (item->timer == 60)
+            {
+                item->startPositionOrVelocity = Float3(0.0f, 0.0f, 0.0f);
+                item->state = ITEM_STATE_DEFAULT;
+            }
+            goto moveItem;
+        }
+        else if (item->state == ITEM_STATE_UNK3)
+        {
+            item->startPositionOrVelocity.y += 0.05f * g_EclGameTimeScale;
+            if (item->startPositionOrVelocity.y > 0.0f ||
+                *reinterpret_cast<ZunTimer *>(&g_ItemScatterTimerStorage) < 0)
+            {
+                item->state = ITEM_STATE_AUTOCOLLECT;
+            }
+            if (g_Player.playerState == PLAYER_STATE_DYING)
+            {
+                item->state = ITEM_STATE_DEFAULT;
+                item->startPositionOrVelocity.x = 0.0f;
+                item->startPositionOrVelocity.y = -0.7f;
+                item->startPositionOrVelocity.z = 0.0f;
+            }
+            goto moveItem;
+        }
+        else if (item->state == ITEM_STATE_UNK5)
+        {
+            item->startPositionOrVelocity.y += 0.05f * g_EclGameTimeScale;
+            item->currentPosition += item->startPositionOrVelocity * speed;
+            if (item->startPositionOrVelocity.y > 0.0f)
+            {
+                item->state = ITEM_STATE_AUTOCOLLECT;
+            }
+            else
+            {
+                goto executeOnly;
+            }
+            if (g_Player.playerState == PLAYER_STATE_DYING)
+            {
+                item->state = ITEM_STATE_DEFAULT;
+                item->startPositionOrVelocity.x = 0.0f;
+                item->startPositionOrVelocity.y = -0.7f;
+                item->startPositionOrVelocity.z = 0.0f;
+            }
+            goto moveItem;
+        }
+        else
+        {
+            if (item->state == ITEM_STATE_AUTOCOLLECT ||
+                (g_Player.position.y < g_PlayerPrimaryShtFile->pointItemValueLine &&
+                 (g_GameManager.GetPower() >= 0.0 ||
+                  *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&g_Player) + 3) != 0 ||
+                  g_TargetByte0164D0B1 == 1 || g_TargetByte0164D0B1 == 6)))
+            {
+                if (g_Player.playerState != PLAYER_STATE_DYING && g_Player.playerState != PLAYER_STATE_SPAWNING)
+                {
+                    angle = g_Player.FUN_0044c1b0(&item->currentPosition);
+                    item->startPositionOrVelocity.FromAngleMagnitude(
+                        angle, *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x14));
+                    item->state = ITEM_STATE_AUTOCOLLECT;
+                    item->currentPosition += item->startPositionOrVelocity * g_EclGameTimeScale;
+                    goto pickup;
+                }
+                item->startPositionOrVelocity.y = -0.7f;
+                item->state = ITEM_STATE_DEFAULT;
+            }
+            else
+            {
+                item->startPositionOrVelocity.x = 0.0f;
+                item->startPositionOrVelocity.z = 0.0f;
+                if (item->startPositionOrVelocity.y < -2.2f)
+                    item->startPositionOrVelocity.y = -2.2f;
+            }
+        }
+
+moveItem:
+        item->currentPosition += item->startPositionOrVelocity * speed;
+        if (item->state == ITEM_STATE_DEFAULT && g_ItemPlayfieldBottom + 16.0f <= item->currentPosition.y)
+        {
+            g_GameManager.DecreaseSubrank(3);
+            item->Delete();
+            item = item->next;
+            continue;
+        }
+
+        if (item->startPositionOrVelocity.operator float *()[1] < 3.0f)
+            item->startPositionOrVelocity.y += 0.03f * speed;
+        else
+            item->startPositionOrVelocity.y = 3.0f;
+
+pickup:
+        if (item->state != ITEM_STATE_UNK3 && g_Player.CalcItemBoxCollision(&item->currentPosition, &itemBox))
+        {
+            *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xda) |= 0x40;
+            switch (item->itemType)
+            {
+            case ITEM_POWER_SMALL:
+                item->CollectPowerSmall();
+                break;
+            case ITEM_POINT:
+                item->CollectPoint();
+                break;
+            case ITEM_POINT_SMALL:
+                item->CollectPointSmall();
+                break;
+            case ITEM_POWER_BIG:
+                item->CollectPowerBig();
+                break;
+            case ITEM_BOMB:
+                if (g_GameManager.GetBombsRemaining() < 8)
+                {
+                    g_GameManager.AddToBombCount(1);
+                    g_Gui.flags.bombDisplayUpdateFrames = 2;
+                }
+                g_GameManager.IncreaseSubrank(5);
+                break;
+            case ITEM_EXTEND:
+                g_GameManager.CollectExtend();
+                break;
+            case ITEM_POWER_FULL:
+                if (g_GameManager.GetPower() < 128)
+                {
+                    g_BulletManager.bulletmanager_fun_00415c60();
+                    g_Gui.FUN_00437e5d(0, 1);
+                    g_SoundPlayer.PlaySoundByIdx(SOUND_POWERUP, 0);
+                    g_AsciiManager.CreatePlayerPointPopup(&item->currentPosition, -1, 0xffffc0a0);
+                    this->ConvertAllPowerItemsToTimeOrbs(item);
+                }
+                g_GameManager.SetPower(128);
+                g_GameManager.AddScore(1000);
+                g_AsciiManager.CreatePlayerPointPopup(&item->currentPosition, 1000, 0xffffffff);
+                g_Gui.flags.powerDisplayUpdateFrames = 2;
+                break;
+            case ITEM_POINT_STAR:
+                if (g_ItemTimeOrbMode == 0)
+                {
+                    pickupScore = (g_GameManager.globals->graze / 40) * 10 + 300;
+                    if (pickupScore <= 0)
+                        pickupScore = 10;
+                }
+                else
+                {
+                    pickupScore = 100;
+                }
+                g_AsciiManager.CreateScorePopup(&item->currentPosition, pickupScore, 0xffffffff);
+                g_GameManager.AddScore(pickupScore);
+                break;
+            case ITEM_TIME:
+                item->CollectTimeOrb();
+                break;
+            default:
+                break;
+            }
+
+            if (soundIndex <= SOUND_ITEM)
+                soundIndex = item->isMaxValue ? SOUND_2C : SOUND_ITEM;
+            item->Delete();
+            item = item->next;
+            continue;
+        }
+
+executeOnly:
+        item->timer++;
+        if (item->sprite.currentInstruction != NULL)
+            g_AnmManager->ExecuteScript(&item->sprite);
+        item = item->next;
+    }
+
+    if (soundIndex != 0)
+        g_SoundPlayer.PlaySoundByIdx((SoundIdx)soundIndex, 0);
+
+    if (*reinterpret_cast<ZunTimer *>(&g_ItemTimeOrbTimerStorage) != 0)
+    {
+        (*reinterpret_cast<ZunTimer *>(&g_ItemTimeOrbTimerStorage))--;
+        if (*reinterpret_cast<ZunTimer *>(&g_ItemTimeOrbTimerStorage) <= 0)
+            *reinterpret_cast<ZunTimer *>(&g_ItemTimeOrbTimerStorage) = 0;
+    }
 }
 
 // FUNCTION: th08 0x440cf0

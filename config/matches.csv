@@ -778,3 +778,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00433070,th08::BulletManager::AddedCallback,1662,matching,100.00,bullet-manager-added-callback,python3 scripts/compare-function.py bullet-manager-added-callback --json
 0x004337F0,th08::ItemManager::Initialize,42,matching,100.00,item-manager-initialize,python3 scripts/compare-function.py item-manager-initialize --json
 0x004412B0,th08::Item::CollectTimeOrb,293,matching,100.00,item-collect-time-orb,python3 scripts/compare-function.py item-collect-time-orb --json
+0x0044A5A0,th08::Player::CalcItemBoxCollision,249,matching,100.00,player-item-box-collision,python3 scripts/compare-function.py player-item-box-collision --json
+0x00441830,th08::ZunTimer::operator!=,27,matching,100.00,item-timer-not-equal,python3 scripts/compare-function.py item-timer-not-equal --json
+0x00440500,th08::ItemManager::OnUpdate,1989,matching,100.00,item-manager-on-update,python3 scripts/compare-function.py item-manager-on-update --json

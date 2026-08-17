@@ -35,6 +35,7 @@ DIFFABLE_EXTERN(ChainElem, g_EffectManagerDrawChain);
 DIFFABLE_EXTERN(i32, g_EclCallbackPublishedEnemyField24);
 DIFFABLE_EXTERN(i8, g_EclScriptedGlobalUpdateFreeze);
 DIFFABLE_EXTERN(f32, g_EclGameTimeScale);
+DIFFABLE_EXTERN(u8, g_TargetByte0164D0B1);
 
 struct EclRawInstruction
 {

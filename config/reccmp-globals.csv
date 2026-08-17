@@ -187,3 +187,6 @@ th08::g_GuiBossTimerColors,0x4c72ac,global
 th08::g_GuiTimePeriodLabels,0x4c72bc,global
 th08::g_ItemTimeOrbMode,0x18b8974,global
 th08::g_ItemTimeOrbTimerStorage,0x18b89d4,global
+th08::g_TargetByte0164D0B1,0x164d0b1,global
+th08::g_ItemPlayfieldBottom,0x164d2e8,global
+th08::g_ItemScatterTimerStorage,0x18b89bc,global

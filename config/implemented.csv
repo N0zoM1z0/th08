@@ -777,3 +777,6 @@ th08::BulletManager::OnDraw
 th08::BulletManager::AddedCallback
 th08::ItemManager::Initialize
 th08::Item::CollectTimeOrb
+th08::Player::CalcItemBoxCollision
+th08::ZunTimer::operator!=
+th08::ItemManager::OnUpdate

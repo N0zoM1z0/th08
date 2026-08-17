@@ -78344,3 +78344,813 @@ offset = 284
 type = "REL32"
 symbol = "?AddToYoukaiGauge@GameManager@th08@@QAEXHH@Z"
 target = 0x0043C0BB
+
+[[units]]
+name = "player-item-box-collision"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "th08::Player::CalcItemBoxCollision"
+target_address = 0x0044A5A0
+size = 249
+
+[[units.relocations]]
+offset = 13
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 21
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 77
+type = "REL32"
+symbol = "??KFloat3@th08@@QBE?AU01@M@Z"
+target = 0x0040C7D0
+
+[[units.relocations]]
+offset = 90
+type = "REL32"
+symbol = "??GFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x004090D0
+
+[[units.relocations]]
+offset = 124
+type = "REL32"
+symbol = "??KFloat3@th08@@QBE?AU01@M@Z"
+target = 0x0040C7D0
+
+[[units.relocations]]
+offset = 137
+type = "REL32"
+symbol = "??HFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x00409080
+
+[[units]]
+name = "item-timer-not-equal"
+object = "build/objdiff/reimpl/ItemManager.obj"
+symbol = "??9ZunTimer@th08@@QAEIH@Z"
+target_address = 0x00441830
+size = 27
+
+[[units]]
+name = "item-manager-on-update"
+object = "build/objdiff/reimpl/ItemManager.obj"
+symbol = "th08::ItemManager::OnUpdate"
+target_address = 0x00440500
+size = 1989
+compare_size = 2025
+
+[[units.relocations]]
+offset = 38
+type = "DIR32"
+symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
+target = 0x018B896C
+
+[[units.relocations]]
+offset = 48
+type = "DIR32"
+symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
+target = 0x018B896C
+
+[[units.relocations]]
+offset = 60
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 80
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 3
+
+[[units.relocations]]
+offset = 90
+type = "DIR32"
+symbol = "?g_PlayerSecondaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
+target = 0x018B8970
+
+[[units.relocations]]
+offset = 104
+type = "DIR32"
+symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
+target = 0x018B896C
+
+[[units.relocations]]
+offset = 125
+type = "DIR32"
+symbol = "?g_EclGameTimeScale@th08@@3MA"
+target = 0x017CE8E0
+
+[[units.relocations]]
+offset = 194
+type = "REL32"
+symbol = "??MZunTimer@th08@@QAEIH@Z"
+target = 0x004066A0
+
+[[units.relocations]]
+offset = 212
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 218
+type = "DIR32"
+symbol = "__real@42700000"
+target = 0x004B430C
+
+[[units.relocations]]
+offset = 227
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 252
+type = "REL32"
+symbol = "??DFloat3@th08@@QBE?AU01@M@Z"
+target = 0x00409120
+
+[[units.relocations]]
+offset = 279
+type = "REL32"
+symbol = "??DFloat3@th08@@QBE?AU01@M@Z"
+target = 0x00409120
+
+[[units.relocations]]
+offset = 286
+type = "REL32"
+symbol = "??HFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 332
+type = "REL32"
+symbol = "??8ZunTimer@th08@@QAEIH@Z"
+target = 0x0040D3F0
+
+[[units.relocations]]
+offset = 350
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 415
+type = "DIR32"
+symbol = "__real@3d4ccccd"
+target = 0x004B5B38
+
+[[units.relocations]]
+offset = 421
+type = "DIR32"
+symbol = "?g_EclGameTimeScale@th08@@3MA"
+target = 0x017CE8E0
+
+[[units.relocations]]
+offset = 454
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 468
+type = "DIR32"
+symbol = "?g_ItemScatterTimerStorage@th08@@3UItemTimeOrbTimerStorage@1@A"
+target = 0x018B89BC
+
+[[units.relocations]]
+offset = 473
+type = "REL32"
+symbol = "??MZunTimer@th08@@QAEIH@Z"
+target = 0x004066A0
+
+[[units.relocations]]
+offset = 494
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 578
+type = "DIR32"
+symbol = "__real@3d4ccccd"
+target = 0x004B5B38
+
+[[units.relocations]]
+offset = 584
+type = "DIR32"
+symbol = "?g_EclGameTimeScale@th08@@3MA"
+target = 0x017CE8E0
+
+[[units.relocations]]
+offset = 624
+type = "REL32"
+symbol = "??DFloat3@th08@@QBE?AU01@M@Z"
+target = 0x00409120
+
+[[units.relocations]]
+offset = 639
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 654
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 685
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 765
+type = "DIR32"
+symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
+target = 0x018B896C
+
+[[units.relocations]]
+offset = 771
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 696
+
+[[units.relocations]]
+offset = 790
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 795
+type = "REL32"
+symbol = "?GetPower@GameManager@th08@@QAEHXZ"
+target = 0x00422480
+
+[[units.relocations]]
+offset = 813
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target = 0x004B5B30
+
+[[units.relocations]]
+offset = 827
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 3
+
+[[units.relocations]]
+offset = 838
+type = "DIR32"
+symbol = "?g_TargetByte0164D0B1@th08@@3EA"
+target = 0x0164D0B1
+
+[[units.relocations]]
+offset = 850
+type = "DIR32"
+symbol = "?g_TargetByte0164D0B1@th08@@3EA"
+target = 0x0164D0B1
+
+[[units.relocations]]
+offset = 866
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 878
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 898
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 903
+type = "REL32"
+symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
+target = 0x0044C1B0
+
+[[units.relocations]]
+offset = 912
+type = "DIR32"
+symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
+target = 0x018B896C
+
+[[units.relocations]]
+offset = 934
+type = "REL32"
+symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
+target = 0x004286E0
+
+[[units.relocations]]
+offset = 949
+type = "DIR32"
+symbol = "?g_EclGameTimeScale@th08@@3MA"
+target = 0x017CE8E0
+
+[[units.relocations]]
+offset = 968
+type = "REL32"
+symbol = "??DFloat3@th08@@QBE?AU01@M@Z"
+target = 0x00409120
+
+[[units.relocations]]
+offset = 983
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 1054
+type = "DIR32"
+symbol = "__real@c00ccccd"
+target = 0x004B5B2C
+
+[[units.relocations]]
+offset = 1096
+type = "REL32"
+symbol = "??DFloat3@th08@@QBE?AU01@M@Z"
+target = 0x00409120
+
+[[units.relocations]]
+offset = 1111
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 1131
+type = "DIR32"
+symbol = "?g_ItemPlayfieldBottom@th08@@3MA"
+target = 0x0164D2E8
+
+[[units.relocations]]
+offset = 1137
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004B42D4
+
+[[units.relocations]]
+offset = 1160
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 1165
+type = "REL32"
+symbol = "?DecreaseSubrank@GameManager@th08@@QAEXH@Z"
+target = 0x0043C03F
+
+[[units.relocations]]
+offset = 1173
+type = "REL32"
+symbol = "th08::Item::Delete"
+target = 0x00441770
+
+[[units.relocations]]
+offset = 1204
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 1213
+type = "DIR32"
+symbol = "__real@40400000"
+target = 0x004B42DC
+
+[[units.relocations]]
+offset = 1226
+type = "DIR32"
+symbol = "__real@3cf5c28f"
+target = 0x004B44C0
+
+[[units.relocations]]
+offset = 1299
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 1304
+type = "REL32"
+symbol = "?CalcItemBoxCollision@Player@th08@@QAEIPAUFloat3@2@0@Z"
+target = 0x0044A5A0
+
+[[units.relocations]]
+offset = 1318
+type = "DIR32"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
+target = 0x018B8A28
+
+[[units.relocations]]
+offset = 1333
+type = "DIR32"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
+target = 0x018B8A28
+
+[[units.relocations]]
+offset = 1382
+type = "DIR32"
+symbol = "$L*"
+target = 0x00440CC5
+
+[[units.relocations]]
+offset = 1390
+type = "REL32"
+symbol = "th08::Item::CollectPowerSmall"
+target = 0x00440CF0
+
+[[units.relocations]]
+offset = 1403
+type = "REL32"
+symbol = "th08::Item::CollectPoint"
+target = 0x00440E40
+
+[[units.relocations]]
+offset = 1416
+type = "REL32"
+symbol = "th08::Item::CollectPointSmall"
+target = 0x00441020
+
+[[units.relocations]]
+offset = 1429
+type = "REL32"
+symbol = "th08::Item::CollectPowerBig"
+target = 0x00441170
+
+[[units.relocations]]
+offset = 1439
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 1444
+type = "REL32"
+symbol = "?GetBombsRemaining@GameManager@th08@@QAEHXZ"
+target = 0x004398CE
+
+[[units.relocations]]
+offset = 1456
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 1461
+type = "REL32"
+symbol = "?AddToBombCount@GameManager@th08@@QAEXH@Z"
+target = 0x00439883
+
+[[units.relocations]]
+offset = 1467
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+addend = 4
+
+[[units.relocations]]
+offset = 1479
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+addend = 4
+
+[[units.relocations]]
+offset = 1486
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 1491
+type = "REL32"
+symbol = "?IncreaseSubrank@GameManager@th08@@QAEXH@Z"
+target = 0x0043BFC3
+
+[[units.relocations]]
+offset = 1501
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 1506
+type = "REL32"
+symbol = "?CollectExtend@GameManager@th08@@QAEXXZ"
+target = 0x00439B29
+
+[[units.relocations]]
+offset = 1516
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 1521
+type = "REL32"
+symbol = "?GetPower@GameManager@th08@@QAEHXZ"
+target = 0x00422480
+
+[[units.relocations]]
+offset = 1533
+type = "DIR32"
+symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
+target = 0x00F54E90
+
+[[units.relocations]]
+offset = 1538
+type = "REL32"
+symbol = "?bulletmanager_fun_00415c60@BulletManager@th08@@QAEXXZ"
+target = 0x00415C60
+
+[[units.relocations]]
+offset = 1547
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 1552
+type = "REL32"
+symbol = "?FUN_00437e5d@Gui@th08@@QAEXHH@Z"
+target = 0x00437E5D
+
+[[units.relocations]]
+offset = 1561
+type = "DIR32"
+symbol = "?g_SoundPlayer@th08@@3VSoundPlayer@1@A"
+target = 0x018B8A68
+
+[[units.relocations]]
+offset = 1566
+type = "REL32"
+symbol = "?PlaySoundByIdx@SoundPlayer@th08@@QAEXW4SoundIdx@2@H@Z"
+target = 0x0045D550
+
+[[units.relocations]]
+offset = 1588
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 1593
+type = "REL32"
+symbol = "?CreatePlayerPointPopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z"
+target = 0x00403200
+
+[[units.relocations]]
+offset = 1605
+type = "REL32"
+symbol = "th08::ItemManager::ConvertAllPowerItemsToTimeOrbs"
+target = 0x00441450
+
+[[units.relocations]]
+offset = 1615
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 1620
+type = "REL32"
+symbol = "?SetPower@GameManager@th08@@QAEXH@Z"
+target = 0x00406FA0
+
+[[units.relocations]]
+offset = 1630
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 1635
+type = "REL32"
+symbol = "?AddScore@GameManager@th08@@QAEXH@Z"
+target = 0x004181F0
+
+[[units.relocations]]
+offset = 1657
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 1662
+type = "REL32"
+symbol = "?CreatePlayerPointPopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z"
+target = 0x00403200
+
+[[units.relocations]]
+offset = 1668
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+addend = 4
+
+[[units.relocations]]
+offset = 1680
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+addend = 4
+
+[[units.relocations]]
+offset = 1688
+type = "DIR32"
+symbol = "?g_ItemTimeOrbMode@th08@@3HA"
+target = 0x018B8974
+
+[[units.relocations]]
+offset = 1696
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 8
+
+[[units.relocations]]
+offset = 1760
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 1765
+type = "REL32"
+symbol = "?CreateScorePopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z"
+target = 0x00403330
+
+[[units.relocations]]
+offset = 1774
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 1779
+type = "REL32"
+symbol = "?AddScore@GameManager@th08@@QAEXH@Z"
+target = 0x004181F0
+
+[[units.relocations]]
+offset = 1789
+type = "REL32"
+symbol = "th08::Item::CollectTimeOrb"
+target = 0x004412B0
+
+[[units.relocations]]
+offset = 1826
+type = "REL32"
+symbol = "th08::Item::Delete"
+target = 0x00441770
+
+[[units.relocations]]
+offset = 1859
+type = "REL32"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
+target = 0x00406640
+
+[[units.relocations]]
+offset = 1881
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 1886
+type = "REL32"
+symbol = "?ExecuteScript@AnmManager@th08@@QAEIPAUAnmVm@2@@Z"
+target = 0x0045EA00
+
+[[units.relocations]]
+offset = 1920
+type = "DIR32"
+symbol = "?g_SoundPlayer@th08@@3VSoundPlayer@1@A"
+target = 0x018B8A68
+
+[[units.relocations]]
+offset = 1925
+type = "REL32"
+symbol = "?PlaySoundByIdx@SoundPlayer@th08@@QAEXW4SoundIdx@2@H@Z"
+target = 0x0045D550
+
+[[units.relocations]]
+offset = 1932
+type = "DIR32"
+symbol = "?g_ItemTimeOrbTimerStorage@th08@@3UItemTimeOrbTimerStorage@1@A"
+target = 0x018B89D4
+
+[[units.relocations]]
+offset = 1937
+type = "REL32"
+symbol = "??9ZunTimer@th08@@QAEIH@Z"
+target = 0x00441830
+
+[[units.relocations]]
+offset = 1948
+type = "DIR32"
+symbol = "?g_ItemTimeOrbTimerStorage@th08@@3UItemTimeOrbTimerStorage@1@A"
+target = 0x018B89D4
+
+[[units.relocations]]
+offset = 1953
+type = "REL32"
+symbol = "??FZunTimer@th08@@QAEXH@Z"
+target = 0x00418110
+
+[[units.relocations]]
+offset = 1960
+type = "DIR32"
+symbol = "?g_ItemTimeOrbTimerStorage@th08@@3UItemTimeOrbTimerStorage@1@A"
+target = 0x018B89D4
+
+[[units.relocations]]
+offset = 1965
+type = "REL32"
+symbol = "??NZunTimer@th08@@QAEIH@Z"
+target = 0x0040E390
+
+[[units.relocations]]
+offset = 1976
+type = "DIR32"
+symbol = "?g_ItemTimeOrbTimerStorage@th08@@3UItemTimeOrbTimerStorage@1@A"
+target = 0x018B89D4
+
+[[units.relocations]]
+offset = 1981
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 1989
+type = "DIR32"
+symbol = "$L*"
+target = 0x00440A6A
+
+[[units.relocations]]
+offset = 1993
+type = "DIR32"
+symbol = "$L*"
+target = 0x00440A77
+
+[[units.relocations]]
+offset = 1997
+type = "DIR32"
+symbol = "$L*"
+target = 0x00440A91
+
+[[units.relocations]]
+offset = 2001
+type = "DIR32"
+symbol = "$L*"
+target = 0x00440A9E
+
+[[units.relocations]]
+offset = 2005
+type = "DIR32"
+symbol = "$L*"
+target = 0x00440AEB
+
+[[units.relocations]]
+offset = 2009
+type = "DIR32"
+symbol = "$L*"
+target = 0x00440ADC
+
+[[units.relocations]]
+offset = 2013
+type = "DIR32"
+symbol = "$L*"
+target = 0x00440B96
+
+[[units.relocations]]
+offset = 2017
+type = "DIR32"
+symbol = "$L*"
+target = 0x00440BF9
+
+[[units.relocations]]
+offset = 2021
+type = "DIR32"
+symbol = "$L*"
+target = 0x00440A84

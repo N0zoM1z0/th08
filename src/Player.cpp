@@ -93,6 +93,27 @@ f32 Player::FUN_0044c1b0(Float3 *position)
     return VectorAngle(yDelta, xDelta);
 }
 
+// FUNCTION: th08 0x44a5a0
+#pragma var_order(itemMax, itemMin)
+u32 Player::CalcItemBoxCollision(Float3 *position, Float3 *size)
+{
+    Float3 itemMin;
+    Float3 itemMax;
+
+    if (this->playerState != 0 && this->playerState != 3 && this->playerState != 4)
+        return 0;
+
+    itemMin = *position - *size / 2.0f;
+    itemMax = *position + *size / 2.0f;
+
+    if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3bc) > itemMax.x ||
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3c8) < itemMin.x ||
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3c0) > itemMax.y ||
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3cc) < itemMin.y)
+        return 0;
+    return 1;
+}
+
 // FUNCTION: th08 0x449ff0
 #pragma var_order(halfSize, yDelta, xDelta, i, rotated, delta, slot, boundsMax)
 i32 Player::FUN_00449ff0(Float3 *position, Float3 *position2)
