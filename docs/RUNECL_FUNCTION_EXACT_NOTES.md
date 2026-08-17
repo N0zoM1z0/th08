@@ -1161,3 +1161,44 @@ Reusable lesson: for VC7 phase chains, a seemingly tiny unresolved-arm source
 shape can be the final phase toggle for many later handlers.  When a long set of
 target-backed changes leaves only distributed +/-1 deltas, verify every raw
 branch in physical order before reverting any known-correct reconstruction.
+
+## High opcode raw-float phase chains: 303 -> 97
+
+Once the movement block was exact, the first high-opcode mismatch was opcode
+117.  The remaining conditional float reads follow the same VC7 rule seen in
+the low dispatcher: target unresolved arms copy the raw dword instead of using
+an x87 load/store round trip.  These changes are phase-gated and must be landed
+in physical groups.
+
+The accepted sequence is:
+
+1. **op117 + op167 + op118**
+   - each operand-1 false arm becomes a raw dword copy;
+   - op117 alone changes phase; op117+167 leaves only a distant +1 span;
+   - adding op118 closes shape and reduces strict diff **303 -> 228**.
+
+2. **op171 + op172**
+   - op171 operand 1 raw;
+   - op172 operands 1 and 2 raw;
+   - the pair keeps shape zero and reduces **228 -> 175**.  The 53-byte gain is
+     exactly the previous op171 (9) + op172 (44) formal residual.
+
+3. **op161 + op164**
+   - op161's angle operand uses a raw false arm;
+   - op164 operands 2 and 3 use raw false arms (operand 1 was already explicit);
+   - op164 alone slightly worsens formal bytes while keeping span lengths, but
+     pairing op161 closes the phase and reduces **175 -> 130**.  The 45-byte
+     gain equals the old op161 (8) + op164 (37) residual.
+
+4. **op165 + op166**
+   - op165's only float false arm becomes raw;
+   - in op166 only the first `sinf` angle read was still generic; the other
+     three conditional float reads were already explicit raw forms;
+   - the pair closes shape and reduces **130 -> 97**, exactly the former
+     op165 (6) + op166 (27) residual.
+
+Reusable rule: in the high dispatcher, a target-raw handler may be locally
+span-exact yet still be unsafe to land alone.  Pair it with the next physical
+handler that has the same known raw-float debt and evaluate whole-function
+shape/strict bytes.  The formal byte reduction often equals the sum of both
+handlers' previous residuals, proving that the pair has become byte-exact.

@@ -541,13 +541,13 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x554) =
                 AddNormalizeAngle(
                     *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x554),
-                    TH08_ECL_READ_F_RAWARG(ctx, 1));
+                    ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))));
         break;
     case 167:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
             *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x554) =
-                TH08_ECL_READ_F_RAWARG(ctx, 1);
+                ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)));
         break;
     case 118:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
@@ -556,7 +556,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
                 EclOperands::g_TargetPlayer017D5EF8.AngleToPlayer(
                     reinterpret_cast<EclOperands::TargetVector3 *>(
                         TH08_ECL_OBJECT(ctx, lhsInt) + 0x548)) +
-                TH08_ECL_READ_F_RAWARG(ctx, 1);
+                ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)));
         break;
     case 119:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
@@ -610,16 +610,16 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
             *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x560) =
-                TH08_ECL_READ_F_RAWARG(ctx, 1);
+                ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)));
         break;
     case 172:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
         {
             *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x558) =
-                TH08_ECL_READ_F_RAWARG(ctx, 1);
+                ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)));
             *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x55C) =
-                TH08_ECL_READ_F_RAWARG(ctx, 2);
+                ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2)));
         }
         break;
     case 163: g_EclGlobal00F54CEC = TH08_ECL_READ_I(ctx, 0); break;
@@ -995,7 +995,7 @@ enter_subroutine:
     case 160: *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x5354) = TH08_ECL_READ_I(ctx, 0); break;
     case 161:
         reinterpret_cast<TargetApi *>(&g_BulletManager)->SetAngleFromPosition(
-            &TH08_ECL_AT(ctx, Vec3, 0x2D88), TH08_ECL_READ_F_RAWARG(ctx, 0));
+            &TH08_ECL_AT(ctx, Vec3, 0x2D88), ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 0)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0))));
         break;
     case 162: g_BulletManager.RemoveAllBullets(4); break;
     case 164:
@@ -1004,12 +1004,12 @@ enter_subroutine:
         if (lhsInt == 0)
             reinterpret_cast<TargetApi *>(&g_Spellcard)->Call0041F040(((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
             ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)))
-            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))), TH08_ECL_READ_F_RAWARG(ctx, 2), TH08_ECL_READ_F_RAWARG(ctx, 3));
+            : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))), ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2))), ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3))));
         break;
-    case 165: TH08_ECL_AT(ctx, f32, 0x14) = TH08_ECL_READ_F_RAWARG(ctx, 0); break;
+    case 165: TH08_ECL_AT(ctx, f32, 0x14) = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 0)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0))); break;
     case 166:
         *TH08_ECL_WRITE_F(ctx, 1) =
-            sinf(TH08_ECL_READ_F_RAWARG(ctx, 2)) * ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
+            sinf(((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2)))) * ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
             ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)))
             : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)));
         *TH08_ECL_WRITE_F(ctx, 0) =
