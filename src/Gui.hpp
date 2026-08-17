@@ -104,6 +104,7 @@ struct Gui
     void FUN_00439810(i32 value);
     void DrawGameScene();
     void FUN_0043741d();
+    void FUN_00435900();
 
     u32 unk_0;
     GuiFlags flags;

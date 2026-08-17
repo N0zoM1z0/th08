@@ -120,6 +120,21 @@ C_ASSERT(offsetof(GuiMessageStateOverlay, dialogueLines) == 0xAB0);
 C_ASSERT(offsetof(GuiMessageStateOverlay, extraVms) == 0xFF8);
 C_ASSERT(offsetof(GuiMessageStateOverlay, textColors) == 0x1540);
 
+struct GuiStageResultUpdateOverlay
+{
+    i32 baseScore;                 // +0x00 / impl +0x22DEC
+    i32 power;                     // +0x04
+    i32 pointItemsCollectedInStage;// +0x08
+    i32 grazeInStage;              // +0x0C
+    i32 timeOrbs;                  // +0x10
+    i32 clockIncrement;            // +0x14
+    i32 clockDisplayStart;         // +0x18
+    i32 clockDisplayTarget;        // +0x1C
+    i32 clockDisplayCurrent;       // +0x20
+    i32 clockDisplayTimer;         // +0x24
+};
+C_ASSERT(sizeof(GuiStageResultUpdateOverlay) == 0x28);
+
 
 void __fastcall FUN_004353ec(char *out, const char *encoded);
 
@@ -1461,6 +1476,256 @@ void Gui::FreeMsgFile(void)
     if (this->impl->msgVm.msgFile != NULL)
     {
         ZUN_FREE(this->impl->msgVm.msgFile);
+    }
+}
+
+// FUNCTION: th08 0x435900
+#pragma var_order(i, remaining, j, score, k)
+void Gui::FUN_00435900()
+{
+    i32 i;
+    i32 remaining;
+    i32 j;
+    i32 score;
+    i32 k;
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->currentMsgIdx < 0)
+    {
+        if (this->bossPresent)
+        {
+            if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) == 0)
+            {
+                this->impl->vm0000[12].SetInterrupt(1);
+                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) = 1;
+                this->bossUIOpacity = 0;
+            }
+            else
+            {
+                if (this->impl->vm0000[12].FUN_004396f8())
+                    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) = 2;
+                if (this->bossUIOpacity < 0xfc)
+                    this->bossUIOpacity += 4;
+                else
+                    this->bossUIOpacity = 0xff;
+            }
+        }
+        else if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) != 0)
+        {
+            if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) <= 2)
+            {
+                this->impl->vm0000[12].SetInterrupt(2);
+                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) = 3;
+            }
+            if (this->bossUIOpacity > 0)
+                this->bossUIOpacity -= 4;
+            else
+                this->bossUIOpacity = 0;
+            if (this->impl->vm0000[12].FUN_004396f8())
+            {
+                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) = 0;
+                this->bossLifeBarMaxSize = 0.0f;
+                this->bossUIOpacity = 0;
+            }
+        }
+
+        if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) >= 2)
+        {
+            if (this->bossLifeBarSize > this->bossLifeBarMaxSize)
+            {
+                this->bossLifeBarMaxSize += 0.01f;
+                if (this->bossLifeBarSize < this->bossLifeBarMaxSize)
+                    this->bossLifeBarMaxSize = this->bossLifeBarSize;
+            }
+            else if (this->bossLifeBarSize < this->bossLifeBarMaxSize)
+            {
+                this->bossLifeBarMaxSize -= 0.02f;
+                if (this->bossLifeBarSize > this->bossLifeBarMaxSize)
+                    this->bossLifeBarMaxSize = this->bossLifeBarSize;
+            }
+        }
+    }
+
+    g_AnmManager->ExecuteScriptArray(this->impl->vm0000, 16);
+    g_AnmManager->ExecuteScriptArray(this->impl->vm2a44, 4);
+    if (!g_GameManager.flags.isSpellPractice && this->impl->vm2a44[0].color1.a)
+        g_AnmManager->ExecuteScriptArray(&this->impl->vm34d4, 1);
+
+    g_AnmManager->ExecuteScript(&this->impl->vm212c8);
+    g_AnmManager->ExecuteScript(&this->impl->vm2156c);
+
+    if (this->impl->vm2156c.color1.a)
+    {
+        if (EclOperands::g_TargetPlayerPosition017D61AC.x >= 64.0f &&
+            EclOperands::g_TargetPlayerPosition017D61AC.y < 128.0f)
+        {
+            if (this->impl->vm2156c.color1.a > 0x40)
+                this->impl->vm2156c.color1.a -= 4;
+        }
+        else if (this->impl->vm2156c.color1.a < 0xff)
+        {
+            if (this->impl->vm2156c.color1.a <= 0xfb)
+                this->impl->vm2156c.color1.a += 4;
+            else
+                this->impl->vm2156c.color1.a = 0xff;
+        }
+    }
+
+    g_AnmManager->ExecuteScript(&this->impl->vm5484);
+    g_AnmManager->ExecuteScript(&this->impl->vm22e14);
+
+    if (this->impl->vm3778.activeSpriteIndex >= 0)
+    {
+        if (g_AnmManager->ExecuteScript(&this->impl->vm3778))
+            this->impl->vm3778.activeSpriteIndex = -1;
+        if (g_AnmManager->ExecuteScript(&this->impl->vm3cc0))
+            this->impl->vm3cc0.activeSpriteIndex = -1;
+        for (i = 0; i < ARRAY_SIZE(this->impl->vm3f64); i++)
+            g_AnmManager->ExecuteScript(&this->impl->vm3f64[i]);
+    }
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this->impl) + 0x21810) != 0)
+    {
+        remaining = 0xa8;
+        for (j = 0; j < 0xa8; j++)
+        {
+            if (g_AnmManager->ExecuteScript(&this->impl->vm5728[j]))
+                remaining--;
+        }
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this->impl) + 0x21810) = remaining;
+    }
+
+    if (this->impl->formatted0.isShown)
+    {
+        if (this->impl->formatted0.timer < 30)
+            this->impl->formatted0.position.x =
+                static_cast<f32>(this->impl->formatted0.timer) * -312.0f / 30.0f + 416.0f;
+        else
+            this->impl->formatted0.position.x = 104.0f;
+        if (this->impl->formatted0.timer >= 250)
+            this->impl->formatted0.isShown = 0;
+        this->impl->formatted0.timer++;
+    }
+
+    if (this->impl->formatted1.isShown)
+    {
+        if (this->impl->formatted1.timer < 30)
+            this->impl->formatted1.position.x =
+                static_cast<f32>(this->impl->formatted1.timer) * -312.0f / 30.0f + 416.0f;
+        else
+            this->impl->formatted1.position.x = 104.0f;
+        if (this->impl->formatted1.timer >= 180)
+            this->impl->formatted1.isShown = 0;
+        this->impl->formatted1.timer++;
+    }
+
+    if (this->impl->formatted2.isShown)
+    {
+        if (this->impl->formatted2.timer >= 280)
+            this->impl->formatted2.isShown = 0;
+        this->impl->formatted2.timer++;
+    }
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->resultState == 1)
+    {
+        score = 0;
+        score += reinterpret_cast<GuiStageResultUpdateOverlay *>(
+                     reinterpret_cast<u8 *>(this->impl) + 0x22dec)->baseScore;
+        score += reinterpret_cast<GuiStageResultUpdateOverlay *>(
+                     reinterpret_cast<u8 *>(this->impl) + 0x22dec)->grazeInStage * 50;
+        score += reinterpret_cast<GuiStageResultUpdateOverlay *>(
+                     reinterpret_cast<u8 *>(this->impl) + 0x22dec)->pointItemsCollectedInStage * 5000;
+        score += reinterpret_cast<GuiStageResultUpdateOverlay *>(
+                     reinterpret_cast<u8 *>(this->impl) + 0x22dec)->timeOrbs * 100;
+
+        if (g_GameManager.currentStage >= STAGE6A && !g_GameManager.IsPracticeMode())
+        {
+            score += 2500000 * g_GameManager.GetLives();
+            score += 500000 * g_GameManager.GetBombsRemaining();
+        }
+        if (g_GameManager.currentStage == STAGE6B)
+            score += 2000000 * (12 - static_cast<i8>(g_GameManager.GetClockTime()));
+
+        switch (g_GameManager.difficulty)
+        {
+        case EASY:
+            score /= 2;
+            break;
+        case HARD:
+            score = score * 12 / 10;
+            break;
+        case LUNATIC:
+            score = score * 15 / 10;
+            break;
+        case EXTRA:
+            score *= 2;
+            break;
+        default:
+            break;
+        }
+
+        switch (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(g_GameManager.cfg) + 0x1c))
+        {
+        case 3:
+            score = score * 5 / 10;
+            break;
+        case 4:
+            score = score * 2 / 10;
+            break;
+        case 5:
+            score /= 10;
+            break;
+        case 6:
+            score /= 20;
+            break;
+        default:
+            break;
+        }
+
+        reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->unknown1574 = score;
+        for (k = 0; k < 10; k++)
+            g_GameManager.AddScore(score);
+        reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->resultState++;
+    }
+
+    if (g_GameManager.currentStage < STAGE6A &&
+        reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent != 0 &&
+        reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent >=
+            reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTarget &&
+        g_GameManager.flags.unk5_6 == 0)
+    {
+        g_GameManager.flags.unk5_6 = 2;
+    }
+
+    if (reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent != 0 &&
+        reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent !=
+            reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTarget)
+    {
+        if (reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTimer >= 60)
+        {
+            if (reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent <
+                reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTarget)
+            {
+                reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent++;
+                if ((g_GuiMessageInputCurrent & TH_BUTTON_SHOOT) || (g_GuiMessageInputCurrent & TH_BUTTON_SKIP))
+                {
+                    reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent += 3;
+                }
+                if (reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent >
+                    reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTarget)
+                {
+                    reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent =
+                        reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTarget;
+                }
+            }
+            else
+            {
+                reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTimer++;
+            }
+        }
+        else
+        {
+            reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTimer++;
+        }
     }
 }
 

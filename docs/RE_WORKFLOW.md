@@ -161,3 +161,6 @@ ancestor-style integer-plus-zero-float expressions.
 
 
 When a newly reconstructed production function uses a target global that previously existed only as an `extern` in a probe-only ECL lane, promote the storage to a production-linked TU before accepting the function. `Gui::FUN_0043741d` calls through `g_EclEnemyTableF54CC0`; the target span to the next known global proves 92 pointer entries, so its storage now lives in `EclGlobals.cpp` while probes and GUI share the `EclOperands.hpp` declaration. This is the same dependency-first rule used for probe-only Enemy helpers: strict object matching is not enough if the normal link would otherwise have no owner for the symbol.
+
+
+The GUI updater at `0x435900` is now a strict 2,397-byte match. Its proven state model links the boss-gauge fade state (`impl+0x2a40`), VM update batches, three `GuiFormattedText` timers, stage-result score calculation, and the animated clock-result tail. Reuse the local `GuiStageResultUpdateOverlay` at `impl+0x22dec` instead of rediscovering those ten dwords in later GUI work; do not cache a pointer to the overlay unless the target does so.

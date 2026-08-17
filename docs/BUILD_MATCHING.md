@@ -278,6 +278,11 @@ nonzero instead of borrowing TH07 assumptions.
 - A constructor can be target-visible even when the initialized value is overwritten before its apparent first use. The TH08 boss-HUD code constructs `Float3 textPos(48.0f, 16.0f, 0.0f)` immediately before the first health-bar draw and later assigns `(384,16,0)`. Omitting or moving that seemingly dead construction changed both size and control-flow offsets.
 - Prefer correcting typed field order over compensating in expressions. `Gui::bossLifeBarMaxSize` was actually at `+0x34` while the previous header named the `+0x30` float as the max value. Swapping the two field names removed repeated target/object displacement mismatches throughout the health-bar code and preserves the proven segment arrays at `+0x3c/+0x5c/+0x7c`.
 
+
+- For VC7 x87 comparisons, `a > b` and `b < a` are not interchangeable source shapes. In `Gui::FUN_00435900`, the target gauge test `fld size; fcomp max; test ah,0x41; jne` came from `bossLifeBarSize > bossLifeBarMaxSize`; spelling it as `bossLifeBarMaxSize < bossLifeBarSize` emitted the opposite operand/test-mask sequence despite identical C++ semantics.
+- Preserve the target's outer condition direction when it controls a large lexical branch. The clock-display tail matches as `if (timer >= 60) { if (current < target) animate; else timer++; } else { timer++; }`. Rewriting it as `if (timer < 60) ... else if (...)` selected a short conditional jump plus an extra branch and made the function two bytes short.
+- Equivalent boolean regions can have very different floating-point branch layouts. The GUI portrait-alpha target is naturally `if (x >= 64 && y < 128) { fade down } else { fade up }`; the De Morgan form `x < 64 || y >= 128` reversed both x87 test masks. Prefer the target fallthrough region over a logically equivalent negated predicate.
+
 ## Acceptance rules
 
 - Verify the target hash before every new comparison environment.
