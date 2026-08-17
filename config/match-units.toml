@@ -64548,3 +64548,93 @@ offset = 0x255
 type = "DIR32"
 symbol = "$L*"
 target = 0x00408EA9
+
+# Ledger name: th08::EffectManager::FUN_00425870
+# Evidence: target disassembly/IDA semantics; 10 relocations; full COFF replay required.
+[[units]]
+name = "effect-manager-fun-00425870"
+object = "build/EffectManager.obj"
+symbol = "?FUN_00425870@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+target_address = 0x00425870
+size = 0x16D
+
+[[units.relocations]]
+offset = 0x39
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x3E
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+[[units.relocations]]
+offset = 0x93
+type = "DIR32"
+symbol = "?g_EffectTemplates@th08@@3PAUEffectTemplate@1@A"
+target = 0x004C6D30
+
+[[units.relocations]]
+offset = 0xA2
+type = "DIR32"
+symbol = "?g_EffectTemplates@th08@@3PAUEffectTemplate@1@A"
+target = 0x004C6D30
+
+[[units.relocations]]
+offset = 0xB5
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x10E
+type = "DIR32"
+symbol = "?g_EffectTemplates@th08@@3PAUEffectTemplate@1@A"
+target = 0x004C6D30
+
+[[units.relocations]]
+offset = 0x120
+type = "DIR32"
+symbol = "?g_EffectTemplates@th08@@3PAUEffectTemplate@1@A"
+target = 0x004C6D30
+
+[[units.relocations]]
+offset = 0x132
+type = "DIR32"
+symbol = "?g_EffectTemplates@th08@@3PAUEffectTemplate@1@A"
+target = 0x004C6D30
+
+[[units.relocations]]
+offset = 0x146
+type = "DIR32"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
+target = 0x018B8A28
+
+[[units.relocations]]
+offset = 0x158
+type = "DIR32"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
+target = 0x018B8A28
+
+# Ledger name: th08::FUN_00426d10
+# Evidence: target disassembly/IDA semantics; scanner full replay exact.
+[[units]]
+name = "fun-00426d10"
+object = "build/EffectManager.obj"
+symbol = "?FUN_00426d10@th08@@YIXPAUFloat3@1@@Z"
+target_address = 0x00426D10
+size = 0x5E
+
+[[units.relocations]]
+offset = 0xC
+type = "DIR32"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0x54
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70

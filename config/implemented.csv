@@ -717,3 +717,5 @@ th08::AnmManager::Draw3D
 th08::AnmManager::FUN_00464dd0
 th08::Background::FUN_00408d60
 FUN_00408fc0
+th08::EffectManager::FUN_00425870
+th08::FUN_00426d10

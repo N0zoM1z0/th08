@@ -258,6 +258,62 @@ AnmVm *EffectManager::SpawnEffectAngle(i32 id, D3DXVECTOR3 *position, D3DXVECTOR
     return reinterpret_cast<AnmVm *>(i >= 0x200 ? reinterpret_cast<u8 *>(this) + 0x89BFC : effect);
 }
 
+// FUNCTION: th08 0x425870
+#pragma var_order(effect)
+AnmVm *EffectManager::FUN_00425870(i32 id, D3DXVECTOR3 *position, i32 slotIndex, i32 unused, i32 color)
+{
+    u8 *effect = reinterpret_cast<u8 *>(this) + (slotIndex + 0x280) * 0x360 + 0x1C;
+
+    if (*reinterpret_cast<void **>(effect + 0x358) != NULL)
+    {
+        g_ZunMemory.Free(*reinterpret_cast<void **>(effect + 0x358));
+    }
+
+    memset(effect, 0, 0x360);
+    *reinterpret_cast<i32 *>(effect + 0x328) = slotIndex;
+    *reinterpret_cast<i8 *>(effect + 0x350) = 1;
+    *reinterpret_cast<i8 *>(effect + 0x351) = id;
+    *reinterpret_cast<D3DXVECTOR3 *>(effect + 0x2A4) = *position;
+
+    if (g_EffectTemplates[id].scriptIdx >= 0)
+    {
+        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0x8B054))
+            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(effect), g_EffectTemplates[id].scriptIdx);
+    }
+
+    *reinterpret_cast<u32 *>(effect + 0x1F8) |= 0x2000;
+    *reinterpret_cast<i32 *>(effect + 0x1F0) = color;
+    *reinterpret_cast<i32 *>(effect + 0x288) = 0;
+    *reinterpret_cast<i32 *>(effect + 0x28C) = 0;
+    *reinterpret_cast<i32 *>(effect + 0x290) = 0;
+    *reinterpret_cast<i32 *>(effect + 0x348) = g_EffectTemplates[id].field348;
+
+    if (g_EffectTemplates[id].callback != NULL &&
+        g_EffectTemplates[id].callback(reinterpret_cast<AnmVm *>(effect)) != 0)
+    {
+        *reinterpret_cast<i8 *>(effect + 0x350) = 0;
+    }
+
+    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x400;
+    return reinterpret_cast<AnmVm *>(effect);
+}
+
+// FUNCTION: th08 0x426d10
+#pragma var_order(effect, i, delta)
+void __fastcall FUN_00426d10(Float3 *delta)
+{
+    u8 *effect = reinterpret_cast<u8 *>(&g_EffectManager) + 0x1C;
+    i32 i;
+
+    for (i = 0; i < 0x200; i++, effect += 0x360)
+    {
+        if (*reinterpret_cast<i8 *>(effect + 0x351) == 0x33)
+        {
+            *reinterpret_cast<Float3 *>(effect + 0x2D4) += *delta;
+        }
+    }
+}
+
 // FUNCTION: th08 0x425b70
 #pragma var_order(effect, i, zeroVector)
 AnmVm *EffectManager::SpawnEffect00425B70(i32 id, D3DXVECTOR3 *position, i32 count, i32 color)

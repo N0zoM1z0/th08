@@ -86,7 +86,7 @@ th08::Background::Background,0x4071a0,0x201,__thiscall,,Background*,Background*
 FUN_004073b0,0x4073b0,0x4d,unknown,,u8
 th08::Background::OnUpdate,0x407400,0x1893,__fastcall,,u32,Background*
 _cosf,0x408d40,0x15,__stdcall,,f32,f32
-FUN_00408d60,0x408d60,0x241,__fastcall,,u32,Background*,u32,u32,u32,u32,u32,u32
+th08::Background::FUN_00408d60,0x408d60,0x241,__fastcall,,void,Background*,i32,Float3*,const Float3*,const Float3*,const Float3*,const Float3*
 FUN_00408fc0,0x408fc0,0x98,unknown,,u8,u8,u8,u8,u8,u8
 _sinf,0x409060,0x15,__stdcall,,f32,f32
 th08::Float3::operator+,0x409080,0x46,__thiscall,,Float3*,Float3*,const Float3*
@@ -104,7 +104,7 @@ th08::Background::FUN_00409f40,0x409f40,0x262,__thiscall,,u32,Background*
 th08::Background::RenderObjects,0x40a1b0,0x128a,__thiscall,,void,Background*,i32
 _sqrtf,0x40b440,0x15,__fastcall,,f32,f32
 D3DXVECTOR3::D3DXVECTOR3,0x40b460,0xe,__thiscall,,_D3DVECTOR*,_D3DVECTOR*
-FUN_0040b470,0x40b470,0x49,unknown,,u8,u8
+th08::Float3::operator/=,0x40b470,0x49,__thiscall,,Float3*,Float3*,f32
 FUN_0040b4c0,0x40b4c0,0x3a,unknown,,u8
 FUN_0040b500,0x40b500,0x31,unknown,,u8
 FUN_0040b540,0x40b540,0x36,unknown,,u8
@@ -132,7 +132,7 @@ th08::AnmManager::Draw2DAndFlush,0x40baf0,0x21,__thiscall,,void,AnmManager*,AnmV
 Concurrency::details::ContextBase::ClearCancel,0x40bb20,0x33,__thiscall,,u8,ContextBase*
 th08::AnmManager::GetAnm,0x40bb60,0x1a,__thiscall,,AnmLoaded*,AnmManager*,i32
 th08::GameManager::IsTampered,0x40bb80,0x91,__thiscall,,ZunBool,GameManager*
-FUN_0040bc20,0x40bc20,0x17,unknown,,u8
+th08::Player::IsHuman,0x40bc20,0x17,__thiscall,,i32,Player*
 th08::Player::IsYoukai,0x40bc40,0x12,__thiscall,,i32,Player*
 FUN_0040bc60,0x40bc60,0x1c2,unknown,,u8
 FUN_0040be30,0x40be30,0xc2,__thiscall,,u8,void*,u8,u8,u8,u8
@@ -323,7 +323,7 @@ FUN_004253e0,0x4253e0,0x22,unknown,,u8,u8
 FUN_00425410,0x425410,0x19,unknown,,u8
 th08::EffectManager::SpawnEffect,0x425430,0x211,__thiscall,,AnmVm*,EffectManager*,i32,D3DXVECTOR3*,i32,i32
 th08::EffectManager::SpawnEffectAngle,0x425650,0x215,__thiscall,,AnmVm*,EffectManager*,i32,D3DXVECTOR3*,D3DXVECTOR3*,i32,i32
-FUN_00425870,0x425870,0x16d,unknown,,u8,u8,u8,u8,u8,u8
+th08::EffectManager::FUN_00425870,0x425870,0x16d,__thiscall,,AnmVm*,EffectManager*,i32,D3DXVECTOR3*,i32,i32,i32
 FUN_004259e0,0x4259e0,0x18a,unknown,,u8,u8,u8,u8,u8,u8,u8
 th08::EffectManager::SpawnEffect00425B70,0x425b70,0x1fd,__thiscall,,AnmVm*,EffectManager*,i32,D3DXVECTOR3*,i32,i32
 FUN_00425d70,0x425d70,0xec,unknown,,u8
@@ -340,7 +340,7 @@ FUN_00426b20,0x426b20,0x86,unknown,,u8
 FUN_00426bb0,0x426bb0,0x85,unknown,,u8
 FUN_00426c40,0x426c40,0x42,unknown,,u8
 FUN_00426c90,0x426c90,0x78,unknown,,u8
-FUN_00426d10,0x426d10,0x5e,unknown,,u8
+th08::FUN_00426d10,0x426d10,0x5e,__fastcall,,void,Float3*
 FUN_00426d70,0x426d70,0xfb,unknown,,u8
 FUN_00426e70,0x426e70,0x24b,unknown,,u8
 FUN_004270c0,0x4270c0,0xd9,unknown,,u8
@@ -950,7 +950,7 @@ th08::AnmManager::SetInterruptArray,0x462270,0x4a,__thiscall,,void,AnmManager*,A
 th08::AnmManager::SpriteHasTexture,0x4622c0,0x4c,__thiscall,,ZunBool,AnmManager*,AnmVm*
 th08::AnmManager::ExecuteScriptArray,0x462310,0x46,__thiscall,,void,AnmManager*,AnmVm*,i32
 th08::AnmLoaded::ExecuteAnmIdxArray,0x462360,0x56,__thiscall,,void,AnmLoaded*,AnmVm*,i32,i32
-th08::AnmManager::FUN_004623c0,0x4623c0,0x390,__thiscall,,void,AnmManager*,AnmVm*
+th08::AnmManager::SetRenderStateForVm3D,0x4623c0,0x390,__thiscall,,void,AnmManager*,AnmVm*
 th08::MixColors,0x462750,0x34,__fastcall,,u8,u8,u8
 th08::AnmManager::SetRenderStateForVm,0x462790,0x116,__thiscall,,u8,AnmManager*,AnmVm*
 th08::AnmManager::DrawInner,0x4628b0,0x54f,__thiscall,,ZunResult,AnmManager*,AnmVm*,i32
@@ -968,7 +968,7 @@ th08::AnmManager::FUN_00463d60,0x463d60,0x30b,__thiscall,,ZunResult,AnmManager*,
 th08::AnmManager::FUN_00464070,0x464070,0x62,__thiscall,,ZunResult,AnmManager*,AnmVm*
 th08::AnmManager::FUN_004640e0,0x4640e0,0x312,__thiscall,,ZunResult,AnmManager*,AnmVm*,void*
 th08::AnmManager::DrawWithCallback,0x464400,0x6f,__thiscall,,ZunResult,AnmManager*,AnmVm*,void*
-FUN_00464470,0x464470,0x526,unknown,,u8,u8
+th08::AnmManager::Draw3D,0x464470,0x526,__thiscall,,ZunResult,AnmManager*,AnmVm*
 FUN_004649a0,0x4649a0,0x160,unknown,,u8,u8,u8,u8
 FUN_00464b00,0x464b00,0x160,unknown,,u8,u8,u8,u8
 FUN_00464c60,0x464c60,0x16f,unknown,,u8,u8,u8,u8

@@ -341,7 +341,7 @@ FUN_00426b20,0x426b20,function
 FUN_00426bb0,0x426bb0,function
 FUN_00426c40,0x426c40,function
 FUN_00426c90,0x426c90,function
-FUN_00426d10,0x426d10,function
+th08::FUN_00426d10,0x426d10,function
 FUN_00426d70,0x426d70,function
 FUN_00426e70,0x426e70,function
 FUN_004270c0,0x4270c0,function

@@ -716,3 +716,5 @@ address,name,size,status,match_percent,unit,evidence
 0x00464DD0,th08::AnmManager::FUN_00464dd0,225,matching,100.00,anm-manager-fun-00464dd0,python3 scripts/compare-function.py anm-manager-fun-00464dd0 --json
 0x00408D60,th08::Background::FUN_00408d60,577,matching,100.00,background-fun-00408d60,python3 scripts/compare-function.py background-fun-00408d60 --json
 0x00408FC0,FUN_00408fc0,152,matching,100.00,fun-00408fc0,python3 scripts/compare-function.py fun-00408fc0 --json
+0x00425870,th08::EffectManager::FUN_00425870,365,matching,100.00,effect-manager-fun-00425870,python3 scripts/compare-function.py effect-manager-fun-00425870 --json
+0x00426D10,th08::FUN_00426d10,94,matching,100.00,fun-00426d10,python3 scripts/compare-function.py fun-00426d10 --json
