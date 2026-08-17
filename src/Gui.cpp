@@ -49,6 +49,7 @@ struct GuiStageMusicContextSet
 };
 DIFFABLE_STATIC_ARRAY(GuiStageMusicContextSet, MAX_STAGES, g_GuiStageMusicContexts);
 DIFFABLE_STATIC_ARRAY_ASSIGN(u32, 4, g_GuiBossTimerColors) = {0x00a0d0ff, 0x00a080ff, 0x00e080c0, 0x00ff4040};
+DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 2, g_GuiTimePeriodLabels) = {"AM", "PM"};
 
 struct GuiStageMusicDataOverlay
 {
@@ -1053,6 +1054,184 @@ void __fastcall FUN_004353ec(char *out, const char *encoded)
         i++;
         encoded++;
     } while (decoded != '\0');
+}
+
+// FUNCTION: th08 0x43826b
+void Gui::FUN_0043826b()
+{
+    Float3 stringPos(120.0f, 96.0f, 0.0f);
+
+    g_AsciiManager.SetColor(0xffffff40);
+    if (g_GameManager.currentStage < STAGE6A)
+    {
+        g_AsciiManager.AddFormatText(&stringPos, "Stage Clear");
+    }
+    else
+    {
+        if (g_GameManager.currentStage >= STAGE6B)
+            stringPos.y -= 16.0f;
+        g_AsciiManager.AddFormatText(&stringPos, "All Clear!");
+    }
+
+    stringPos.y += 32.0f;
+    g_AsciiManager.SetColor(0xffffffff);
+    g_AsciiManager.AddFormatText(
+        &stringPos, "Clear = %8d0",
+        reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->baseScore);
+
+    stringPos.y += 16.0f;
+    g_AsciiManager.SetColor(0xffe0e0ff);
+    g_AsciiManager.AddFormatText(
+        &stringPos, "Point = %8d0",
+        reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)
+                ->pointItemsCollectedInStage * 5000);
+
+    stringPos.y += 16.0f;
+    g_AsciiManager.SetColor(0xffd0d0ff);
+    g_AsciiManager.AddFormatText(
+        &stringPos, "Graze = %8d0",
+        reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->grazeInStage * 50);
+
+    stringPos.y += 16.0f;
+    g_AsciiManager.SetColor(0xffd0d0ff);
+    g_AsciiManager.AddFormatText(
+        &stringPos, "Time  = %8d0",
+        reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->timeOrbs * 100);
+
+    stringPos.y += 16.0f;
+    g_AsciiManager.SetColor(0xffd0d0ff);
+    stringPos.y += 16.0f;
+    g_AsciiManager.AddFormatText(&stringPos, "over-80%% = %3d.%.2d%%",
+                                 100 * (i32)g_GameManager.unk3de24 / (i32)g_GameManager.unk3de14,
+                                 10000 * (i32)g_GameManager.unk3de24 / (i32)g_GameManager.unk3de14 % 100);
+    stringPos.y += 16.0f;
+    g_AsciiManager.AddFormatText(&stringPos, "over 80%% = %3d.%.2d%%",
+                                 100 * (i32)g_GameManager.unk3de20 / (i32)g_GameManager.unk3de14,
+                                 10000 * (i32)g_GameManager.unk3de20 / (i32)g_GameManager.unk3de14 % 100);
+
+    if (g_GameManager.currentStage >= STAGE6A && !g_GameManager.IsPracticeMode() && !g_GameManager.IsReplayPractice())
+    {
+        stringPos.y += 16.0f;
+        g_AsciiManager.SetColor(0xffffff80);
+        g_AsciiManager.AddFormatText(&stringPos, "Player = %8d0", g_GameManager.GetLives() * 2500000);
+        stringPos.y += 16.0f;
+        g_AsciiManager.SetColor(0xffffff80);
+        g_AsciiManager.AddFormatText(&stringPos, "Bomb = %8d0", g_GameManager.GetBombsRemaining() * 500000);
+
+        if (g_GameManager.currentStage == STAGE6B && !g_GameManager.IsPracticeMode() && !g_GameManager.IsReplayPractice())
+        {
+            stringPos.y += 16.0f;
+            g_AsciiManager.SetColor(0xffffff80);
+            g_AsciiManager.AddFormatText(
+                &stringPos, "Last Time = %2d:%.2d",
+                reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)
+                        ->clockDisplayTarget / 60 % 12,
+                reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)
+                        ->clockDisplayTarget % 60);
+            stringPos.y += 16.0f;
+            g_AsciiManager.AddFormatText(&stringPos, "Night Bonus");
+            stringPos.y += 16.0f;
+            g_AsciiManager.AddFormatText(&stringPos, "        %8d0",
+                                         (12 - (i8)g_GameManager.GetClockTime()) * 2000000);
+        }
+    }
+
+    stringPos.y += 32.0f;
+    switch (g_GameManager.difficulty)
+    {
+    case EASY:
+        g_AsciiManager.SetColor(0xffff8080);
+        g_AsciiManager.AddFormatText(&stringPos, "Rank Easy    (0.5)");
+        break;
+    case NORMAL:
+        g_AsciiManager.SetColor(0xffff8080);
+        g_AsciiManager.AddFormatText(&stringPos, "Rank Normal  (1.0)");
+        break;
+    case HARD:
+        g_AsciiManager.SetColor(0xffff8080);
+        g_AsciiManager.AddFormatText(&stringPos, "Rank Hard    (1.2)");
+        break;
+    case LUNATIC:
+        g_AsciiManager.SetColor(0xffff8080);
+        g_AsciiManager.AddFormatText(&stringPos, "Rank Lunatic (1.5)");
+        break;
+    case EXTRA:
+        g_AsciiManager.SetColor(0xffff8080);
+        g_AsciiManager.AddFormatText(&stringPos, "Rank Extra   (2.0)");
+        break;
+    case 5:
+        g_AsciiManager.SetColor(0xffff8080);
+        g_AsciiManager.AddFormatText(&stringPos, "Rank Phantasm(2.0)");
+        break;
+    default:
+        break;
+    }
+
+    if (g_GameManager.difficulty < EXTRA && !g_GameManager.flags.isPracticeMode)
+    {
+        stringPos.y += 16.0f;
+        switch (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(g_GameManager.cfg) + 0x1c))
+        {
+        case 3:
+            g_AsciiManager.SetColor(0xffff8080);
+            g_AsciiManager.AddFormatText(&stringPos, "Slowdown Penalty 50%%");
+            stringPos.y += 16.0f;
+            break;
+        case 4:
+            g_AsciiManager.SetColor(0xffff8080);
+            g_AsciiManager.AddFormatText(&stringPos, "Slowdown Penalty 80%%");
+            stringPos.y += 16.0f;
+            break;
+        case 5:
+            g_AsciiManager.SetColor(0xffff8080);
+            g_AsciiManager.AddFormatText(&stringPos, "Slowdown Penalty 90%%");
+            stringPos.y += 16.0f;
+            break;
+        case 6:
+            g_AsciiManager.SetColor(0xffff8080);
+            g_AsciiManager.AddFormatText(&stringPos, "Slowdown Penalty 95%%");
+            stringPos.y += 16.0f;
+            break;
+        default:
+            break;
+        }
+    }
+
+    stringPos.y += 16.0f;
+    g_AsciiManager.SetColor(0xffffffff);
+    g_AsciiManager.AddFormatText(
+        &stringPos, "Total        %8d0",
+        reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->unknown1574);
+    g_AsciiManager.SetColor(0xffffffff);
+
+    if (g_GameManager.currentStage <= STAGE5)
+    {
+        stringPos.y += 40.0f;
+        stringPos.x = 120.0f;
+        g_AsciiManager.SetColor(0xffdfdfdf);
+        g_AsciiManager.AddFormatText(
+            &stringPos, "%s%2d:%.2d",
+            g_GuiTimePeriodLabels[(reinterpret_cast<GuiStageResultUpdateOverlay *>(
+                reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayStart / 60) < 12],
+            reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)
+                    ->clockDisplayStart / 60 % 12,
+            reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)
+                    ->clockDisplayStart % 60);
+        stringPos.x += 99.0f;
+        g_AsciiManager.SetColor(0xffafafaf);
+        g_AsciiManager.AddFormatText(&stringPos, ">>");
+        stringPos.x += 34.0f;
+        g_AsciiManager.SetColor(0xffff8f8f);
+        g_AsciiManager.AddFormatText(
+            &stringPos, "%s%2d:%.2d",
+            g_GuiTimePeriodLabels[(reinterpret_cast<GuiStageResultUpdateOverlay *>(
+                reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent / 60) < 12],
+            reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)
+                    ->clockDisplayCurrent / 60 % 12,
+            reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)
+                    ->clockDisplayCurrent % 60);
+        g_AsciiManager.SetColor(0xffffffff);
+    }
 }
 
 // FUNCTION: th08 0x438fe9

@@ -167,3 +167,6 @@ The GUI updater at `0x435900` is now a strict 2,397-byte match. Its proven state
 
 
 `GuiImpl::DrawDialogue @ 0x43542B` is now a strict 1,107-byte match. For this family of GUI drawing routines, the TH06 source is especially useful for local declaration order and D3D state restoration, but TH08-specific portrait ordering must still be read from the target. The exact TH08 routine keeps two explicit if/else z-order pairs for four portrait VMs, so preserve lexical duplicate draw calls rather than abstracting them into a sort/loop.
+
+
+`Gui::FUN_0043826b @ 0x43826B` is now a strict 1,982-byte result-overlay draw. It independently reuses the `GuiStageResultUpdateOverlay` fields proven by the 0x435900 updater, so those offsets now have both update-side and draw-side evidence. For result screens, preserve each lexical `AsciiManager::AddFormatText` call and its Y advance; visually equivalent string consolidation is not compiler-equivalent.

@@ -287,6 +287,9 @@ nonzero instead of borrowing TH07 assumptions.
 - A local array of a type with a non-trivial default constructor can explain an otherwise mysterious `eh_vector_constructor_iterator` call. `GuiImpl::DrawDialogue` declares `VertexDiffuseXyzrhw vertices[4]`; leaving it as a real local array naturally emits target helper `0x406850` with element ctor `VertexDiffuseXyzrhw::VertexDiffuseXyzrhw @ 0x40B580`.
 - Preserve aggregate-copy spelling when the target copies a constructor temporary with string instructions. In `GuiImpl::DrawDialogue`, the adjacent source shape `memcpy(&vertices[i].pos, &Float3(...), sizeof(Float3))` emits `Float3::Float3` followed by three `movsd`/`rep`-style dword copies exactly like TH08. Replacing that with an apparently cleaner typed assignment can change register ownership and copy lowering.
 
+
+- Do not merge adjacent label/value text calls just because one formatted string could display the same text. `Gui::FUN_0043826b` has a standalone `AddFormatText("Night Bonus")`, advances Y by 16, then a second `AddFormatText("        %8d0", value)`. Combining them into `"Night Bonus = %8d0"` made the function exactly 34 bytes short and changed the static call-site layout.
+
 ## Acceptance rules
 
 - Verify the target hash before every new comparison environment.

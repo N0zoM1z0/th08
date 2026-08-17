@@ -492,7 +492,7 @@ th08::Gui::FUN_00437e5d,0x437e5d,0x7f,__thiscall,,void,Gui*,i32,i32
 FUN_00437edc,0x437edc,0x80,unknown,,u8,u8
 th08::FUN_00437f5c,0x437f5c,0xea,__fastcall,,void,i32
 FUN_00438046,0x438046,0x205,unknown,,u8
-th08::Gui::FUN_0043826b,0x43826b,0x7be,__thiscall,,u8,Gui*
+th08::Gui::FUN_0043826b,0x43826b,0x7be,__thiscall,,void,Gui*
 th08::Supervisor::IsMinimumGraphicsMode,0x438a29,0x18,__thiscall,,u32,Supervisor*
 th08::Supervisor::IsDepthTestDisabled,0x438a41,0x18,__thiscall,,u32,Supervisor*
 th08::Supervisor::IsColorCompositingDisabled,0x438a59,0x18,__thiscall,,u32,Supervisor*

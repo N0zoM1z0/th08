@@ -760,3 +760,4 @@ address,name,size,status,match_percent,unit,evidence
 0x00435900,th08::Gui::FUN_00435900,2397,matching,100.00,gui-update-implementation,python3 scripts/compare-function.py gui-update-implementation --json
 0x004338CA,th08::Gui::OnUpdate,93,matching,100.00,gui-update-callback,python3 scripts/compare-function.py gui-update-callback --json
 0x0043542B,th08::GuiImpl::DrawDialogue,1107,matching,100.00,gui-draw-dialogue,python3 scripts/compare-function.py gui-draw-dialogue --json
+0x0043826B,th08::Gui::FUN_0043826b,1982,matching,100.00,gui-result-overlay-draw,python3 scripts/compare-function.py gui-result-overlay-draw --json

@@ -759,3 +759,4 @@ th08::Gui::FUN_0043741d
 th08::Gui::FUN_00435900
 th08::Gui::OnUpdate
 th08::GuiImpl::DrawDialogue
+th08::Gui::FUN_0043826b
