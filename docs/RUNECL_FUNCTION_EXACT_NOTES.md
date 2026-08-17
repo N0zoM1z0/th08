@@ -1090,3 +1090,36 @@ A full 24-permutation search of
 its target form produced the exact same movement phase for every permutation.
 The shared-float var order matters for stack homes (see the earlier 820 -> 811
 improvement) but it is **not** the opcode-34 movement-phase hinge.
+
+## Opcodes 38-40: the next raw-phase pair, then opcode 39 becomes independently exact
+
+After the opcode-34/opcode-37 pair closed at strict diff 757, opcode 38 became
+the first structural float debt.  Restoring both opcode-38 unresolved float
+arms to raw dword copies alone switches the same movement phase and breaks
+shape.  The matching source-AST phase toggle is opcode 40's successful branch:
+replace the `LOW_REDISPATCH` yield wrapper with the direct control flow that it
+represents:
+
+```cpp
+if (branch)
+{
+    instruction = branch;
+    goto low_redispatch_instruction;
+}
+```
+
+Opcode 40's own handler extent remains exact.  The pair keeps whole-function
+shape at zero and reduces relocation-replayed strict diff **757 -> 726**;
+opcode 38 and the shared opcode-40..51 block both disappear from the formal
+hotspot list.
+
+With that phase established, opcode 39's remaining three generic
+`ReadFloatRawArg` sites (operands 1, 3, and 4; operand 2 was already explicit)
+can all be restored to raw-dword false branches without any phase penalty.
+Opcode 39 becomes byte-exact and strict diff falls **726 -> 688**.
+
+Reusable rule: source-correct raw-float changes can be phase-gated in one
+allocator state and independently exact after the preceding physical handler's
+AST is corrected.  Re-test old negative probes after every successful physical
+phase closure; do not preserve a known-wrong x87 false arm based on an older
+allocator state.

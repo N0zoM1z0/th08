@@ -632,17 +632,23 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
 
     case 38:
-        angle = AddNormalizeAngle(ReadFloatRawArg(enemy, instruction, 2), 0.0f);
-        magnitude = ReadFloatRawArg(enemy, instruction, 3);
+        angle = AddNormalizeAngle(((instruction->operandFlags & (1U << 2)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))), 0.0f);
+        magnitude = ((instruction->operandFlags & (1U << 3)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
         *WriteFloat(enemy, instruction, 0) = cosf(angle) * magnitude;
         *WriteFloat(enemy, instruction, 1) = sinf(angle) * magnitude;
         break;
 
     case 39:
-        lhsFloat = ReadFloatRawArg(enemy, instruction, 1) - ReadFloatRawArg(enemy, instruction, 3);
+        lhsFloat = ((instruction->operandFlags & (1U << 1))
+                ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+                : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))) - ((instruction->operandFlags & (1U << 3))
+                ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3)))
+                : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
         rhsFloat = ((instruction->operandFlags & (1U << 2))
                 ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
-                : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))) - ReadFloatRawArg(enemy, instruction, 4);
+                : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))) - ((instruction->operandFlags & (1U << 4))
+                ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 4)))
+                : *reinterpret_cast<f32 *>(&RawInt(instruction, 4)));
         *WriteFloat(enemy, instruction, 0) =
             sqrtf(lhsFloat * lhsFloat + rhsFloat * rhsFloat);
         break;
@@ -665,7 +671,10 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     {
         EclRawInstruction *branch = CompareOperands(enemy, instruction);
         if (branch)
-            TH08_ECL_RUN_LOW_YIELD(LOW_REDISPATCH, branch);
+        {
+            instruction = branch;
+            goto low_redispatch_instruction;
+        }
         break;
     }
 
