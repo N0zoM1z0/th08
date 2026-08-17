@@ -736,3 +736,6 @@ th08::Background::background_fun_00415ce0
 th08::Background::background_fun_00416ad0
 th08::Gui::gui_fun_00437edc
 th08::Spellcard::StartSpell
+th08::Gui::FUN_00437ddd
+th08::Enemy::FUN_0042b2f0
+th08::EnemyManager::FUN_0042efb0

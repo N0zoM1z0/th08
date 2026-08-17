@@ -736,3 +736,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00416AD0,th08::Background::background_fun_00416ad0,24,matching,100.00,background-spell-phase-end,python3 scripts/compare-function.py background-spell-phase-end --json
 0x00437EDC,th08::Gui::gui_fun_00437edc,128,matching,100.00,gui-fun-00437edc,python3 scripts/compare-function.py gui-fun-00437edc --json
 0x004152A0,th08::Spellcard::StartSpell,2483,matching,100.00,spellcard-start-spell,python3 scripts/compare-function.py spellcard-start-spell --json
+0x00437DDD,th08::Gui::FUN_00437ddd,128,matching,100.00,gui-fun-00437ddd,python3 scripts/compare-function.py gui-fun-00437ddd --json
+0x0042B2F0,th08::Enemy::FUN_0042b2f0,117,matching,100.00,enemy-fun-0042b2f0,python3 scripts/compare-function.py enemy-fun-0042b2f0 --json
+0x0042EFB0,th08::EnemyManager::FUN_0042efb0,575,matching,100.00,enemy-manager-fun-0042efb0,python3 scripts/compare-function.py enemy-manager-fun-0042efb0 --json

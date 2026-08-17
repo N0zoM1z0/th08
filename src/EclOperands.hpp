@@ -16,6 +16,13 @@ struct EnemyOverlay
     f32 ResolveFloat(f32 operand);
 };
 
+struct TargetEnemyHelpersOverlay
+{
+    i32 HasParentChain();
+    i32 HasAttachedEnemy();
+    i32 CountParentChain();
+};
+
 i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand);
 i32 *__fastcall ResolveIntLValue(EnemyOverlay *enemy, i32 *operand, u16 flags, i32 flagIndex);
 f32 *__fastcall ResolveFloatLValue(EnemyOverlay *enemy, f32 *operand, u16 flags, i32 flagIndex);

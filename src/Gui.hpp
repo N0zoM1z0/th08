@@ -90,6 +90,7 @@ struct Gui
     i32 MsgWait();
     i32 IsDialogPresent();
     void FreeMsgFile();
+    void FUN_00437ddd(i32 value);
     void FUN_00437e5d(i32 value, i32 isShown);
     void gui_fun_00437edc(i32 value);
     void FUN_00422c20(i32 value);

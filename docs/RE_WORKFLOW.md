@@ -93,6 +93,15 @@ those helpers in isolation, then promote the proven offsets to named fields and
 rerun every accepted unit for that class. This dependency-first field recovery
 keeps semantic naming evidence separate from guesses made inside a large boss.
 
+Probe objects are proof scaffolding, not production linkage. If a helper that was
+first reconstructed in `build/probes/*.obj` becomes a dependency of linked game
+code, move its real definition into a production-linked translation unit and
+point the strict unit at that production object. Re-run both the helper and its
+callers; do not satisfy the linker with an unverified duplicate shim. Compiler-
+local relocation labels may be renumbered when shared declarations change, but
+any manifest update must preserve the same relocation offset/type/target and the
+full canonical byte comparison.
+
 ## High-leverage lanes
 
 Prefer dependency work that turns a giant dispatcher into bounded units:

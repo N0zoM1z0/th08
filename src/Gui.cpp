@@ -64,6 +64,16 @@ i32 FUN_00438ffd()
 }
 
 
+// FUNCTION: th08 0x437ddd
+void Gui::FUN_00437ddd(i32 value)
+{
+    this->impl->formatted0.position = Float3(416.0f, 48.0f, 0.0f);
+    this->impl->formatted0.isShown = 1;
+    this->impl->formatted0.timer = 0;
+    this->impl->formatted0.value = value;
+    g_GuiFullPowerModeFrames = 2;
+}
+
 // FUNCTION: th08 0x437e5d
 void Gui::FUN_00437e5d(i32 value, i32 isShown)
 {

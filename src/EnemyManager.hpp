@@ -15,6 +15,7 @@ struct Enemy
     void FUN_00423150();
     void FUN_0042bc90();
     void enemy_fun_00415c80();
+    void FUN_0042b2f0();
 };
 
 struct EnemyManager
@@ -28,7 +29,7 @@ struct EnemyManager
     static ZunResult AddedCallback(EnemyManager *enemyManager);
     static ZunResult DeletedCallback(EnemyManager *enemyManager);
     void *SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i32 b, i32 c, i32 *outContext);
-    void FUN_0042efb0(i32 count, i32 mode);
+    i32 FUN_0042efb0(i32 maxScore, i32 totalScore);
     static void CutChain();
 };
 

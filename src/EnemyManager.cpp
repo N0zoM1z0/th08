@@ -5,6 +5,8 @@
 #include "AsciiManager.hpp"
 #include "BulletManager.hpp"
 #include "EclManager.hpp"
+#include "EclOperands.hpp"
+#include "ItemManager.hpp"
 
 namespace th08
 {
@@ -13,6 +15,40 @@ ZunBool IsDisableResourceReload();
 i32 IsResourceReloadEnabled();
 
 DIFFABLE_STATIC(EnemyManager, g_EnemyManager);
+
+namespace EclOperands
+{
+
+// FUNCTION: th08 0x0041F000
+i32 TargetEnemyHelpersOverlay::HasParentChain()
+{
+    return *(void **)((u8 *)this + 0x2DA4) == 0 &&
+           *(void **)((u8 *)this + 8) != 0;
+}
+
+// FUNCTION: th08 0x0041FD20
+i32 TargetEnemyHelpersOverlay::HasAttachedEnemy()
+{
+    return *(void **)((u8 *)this + 0x2DA4) != 0;
+}
+
+// FUNCTION: th08 0x0041FD40
+i32 TargetEnemyHelpersOverlay::CountParentChain()
+{
+    TargetEnemyHelpersOverlay *cursor = this;
+    i32 count = 0;
+    if (this->HasParentChain())
+    {
+        while (*(void **)((u8 *)cursor + 8) != 0)
+        {
+            cursor = *(TargetEnemyHelpersOverlay **)((u8 *)cursor + 8);
+            count++;
+        }
+    }
+    return count;
+}
+
+} // namespace EclOperands
 
 // FUNCTION: th08 0x415c80
 void Enemy::enemy_fun_00415c80()
@@ -24,6 +60,29 @@ void Enemy::enemy_fun_00415c80()
     *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2DF8) = 0;
     *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2DFA) = 0;
 }
+
+// FUNCTION: th08 0x42b2f0
+void Enemy::FUN_0042b2f0()
+{
+    if (reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(this)->HasAttachedEnemy())
+    {
+        *reinterpret_cast<u8 **>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 4) + 8) =
+            *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 8);
+        if (*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 8) != NULL)
+        {
+            *reinterpret_cast<u8 **>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 8) + 4) =
+                *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 4);
+        }
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2DA4) = 0;
+        *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 8) = NULL;
+        *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 4) = NULL;
+    }
+    else
+    {
+        *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 4) = NULL;
+        *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 8) = NULL;
+    }
+}
 DIFFABLE_STATIC(ChainElem, g_EnemyManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_EnemyManagerDrawChainHighPrio);
 DIFFABLE_STATIC(ChainElem, g_EnemyManagerDrawChainLowPrio);
@@ -31,6 +90,82 @@ DIFFABLE_STATIC(ChainElem, g_EnemyManagerDrawChainLowPrio);
 // STUB: th08 0x42bc90
 void Enemy::FUN_0042bc90()
 {
+}
+
+// FUNCTION: th08 0x42efb0
+#pragma var_order(score, totalScore, enemy, enemyIndex, itemIndex, this)
+i32 EnemyManager::FUN_0042efb0(i32 maxScore, i32 initialScore)
+{
+    i32 itemIndex;
+    i32 enemyIndex;
+    u8 *enemy;
+    i32 totalScore;
+    i32 score;
+
+    enemy = reinterpret_cast<u8 *>(this) + 0x53D0;
+    totalScore = initialScore;
+    score = 2000;
+    for (enemyIndex = 0; enemyIndex < 480; enemyIndex++, enemy += 0x53D0)
+    {
+        if ((*reinterpret_cast<u32 *>(enemy + 0x3324) & 1) == 0)
+        {
+            continue;
+        }
+        if (((*reinterpret_cast<u32 *>(enemy + 0x3324) >> 1) & 1) != 0)
+        {
+            continue;
+        }
+        if (((*reinterpret_cast<u32 *>(enemy + 0x3328) >> 6) & 1) != 0)
+        {
+            continue;
+        }
+
+        *reinterpret_cast<i32 *>(enemy + 0x2DFC) = 0;
+        if (((*reinterpret_cast<u32 *>(enemy + 0x3324) >> 7) & 1) != 0)
+        {
+            *reinterpret_cast<Float3 *>(enemy + 0x2D88) =
+                *reinterpret_cast<Float3 *>(enemy + 0x2D34) + *reinterpret_cast<Float3 *>(enemy + 0x2D40);
+            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(enemy + 0x2D88), ITEM_POINT_STAR,
+                                    ITEM_STATE_AUTOCOLLECT);
+            g_AsciiManager.CreateScorePopup(reinterpret_cast<Float3 *>(enemy + 0x2D88), score,
+                                            score >= maxScore ? -256 : -1);
+            totalScore += score;
+            score += 30;
+            if (score > maxScore)
+            {
+                score = maxScore;
+            }
+
+            if (*reinterpret_cast<u8 *>(enemy + 0x534C) != 0)
+            {
+                for (itemIndex = 0; itemIndex < *reinterpret_cast<i16 *>(enemy + 0x534E); itemIndex += 6)
+                {
+                    g_ItemManager.SpawnItem(
+                        reinterpret_cast<Float3 *>(enemy + itemIndex * 0x1C + 0x3394), ITEM_POINT_STAR,
+                        ITEM_STATE_AUTOCOLLECT);
+                    g_AsciiManager.CreateScorePopup(
+                        reinterpret_cast<Float3 *>(enemy + itemIndex * 0x1C + 0x3394), score,
+                        score >= maxScore ? -256 : -1);
+                    totalScore += score;
+                    score += 30;
+                    if (score > maxScore)
+                    {
+                        score = maxScore;
+                    }
+                }
+            }
+        }
+
+        reinterpret_cast<Enemy *>(enemy)->FUN_0042b2f0();
+        if (*reinterpret_cast<i16 *>(enemy + 0x2CEE) >= 0)
+        {
+            reinterpret_cast<EclManager *>(0x4ECCB8)->CallEclSub(
+                reinterpret_cast<EnemyEclContext *>(enemy + 0x7F8), *reinterpret_cast<i16 *>(enemy + 0x2CEE));
+            *reinterpret_cast<i16 *>(enemy + 0x2CEE) = -1;
+        }
+    }
+
+    return totalScore;
 }
 
 // FUNCTION: th08 0x429e00

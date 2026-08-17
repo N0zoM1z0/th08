@@ -172,6 +172,13 @@ TH08 matches; use them as diagnostics, not as permission to force bytes:
   conjunction and then copy it into a second ternary-result slot; flattening the
   same logic to `gate && a && b` removes that outer slot. Preserve the target's
   expression grouping when stack shape shows both temporaries.
+- Ternary comparison direction and integer signedness can change the exact
+  branchless select sequence even when the result is algebraically identical.
+  For example, VC7 may emit `setl` plus a signed difference mask for
+  `value >= limit ? negative_a : negative_b`, while the inverted `<` form or
+  unsigned hex constants select `setge` and a different mask/add sequence.
+  Preserve the target's comparison direction and signed value context before
+  trying to tune registers around an equivalent expression.
 - A one-bit bitfield assignment has its own read-modify-write shape: VC7 can
   evaluate and mask/shift the RHS first, then load the containing word, clear the
   destination bit, OR the shifted value into that word, and store it. An
