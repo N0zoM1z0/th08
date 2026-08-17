@@ -6,6 +6,7 @@
 #include "ScreenEffect.hpp"
 #include "EclManager.hpp"
 #include "GameManager.hpp"
+#include "Player.hpp"
 #include "Supervisor.hpp"
 
 namespace th08
@@ -525,6 +526,82 @@ ZunResult Background::LoadStageData(const char *path)
     *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x834) = 0;
     this->timer838 = 0;
     return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x409f40
+#pragma var_order(unusedQuad, activeVms, i, vm, curObj, curQuad, this)
+u32 Background::FUN_00409f40()
+{
+    RawStageQuadBasic *curQuad;
+    RawStageObject *curObj;
+    AnmVm *vm;
+    i32 i;
+    i32 activeVms;
+    RawStageQuadBasic *unusedQuad;
+
+    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x834) != 0)
+    {
+        if (g_Player.IsHuman())
+        {
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x834) = 0;
+            this->timer838 = 0;
+            this->textAnmVm.SetInterrupt(2);
+        }
+    }
+    else if (g_Player.IsYoukai())
+    {
+        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x834) = 1;
+        this->timer838 = 0;
+        this->textAnmVm.SetInterrupt(1);
+    }
+
+    this->timer838++;
+    g_AnmManager->ExecuteScript(&this->textAnmVm);
+
+    for (i = 0; i < this->stageObjectCount; i++)
+    {
+        curObj = ((RawStageObject **)this->stageOffsets)[i];
+        if ((curObj->flags & 1) != 0)
+        {
+            activeVms = 0;
+            curQuad = &curObj->firstQuad;
+            while (curQuad->type >= 0)
+            {
+                vm = &((AnmVm *)this->stageAnm)[curQuad->vmIdx];
+                switch (curQuad->type)
+                {
+                case 0:
+                    g_AnmManager->ExecuteScript(vm);
+                    break;
+                case 1:
+                    unusedQuad = curQuad;
+                    g_AnmManager->ExecuteScript(vm);
+                    break;
+                }
+
+                if (vm->currentInstruction != NULL)
+                {
+                    activeVms++;
+                }
+                curQuad = (RawStageQuadBasic *)((u8 *)curQuad + curQuad->byteSize);
+            }
+
+            if (vm->type == 1)
+            {
+                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(vm) + 0x1F8) |= 0x20000;
+                vm->color2.r = ((u32)vm->color1.r * reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0xA34)->r) >> 8;
+                vm->color2.g = ((u32)vm->color1.g * reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0xA34)->g) >> 8;
+                vm->color2.b = ((u32)vm->color1.b * reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0xA34)->b) >> 8;
+                vm->color2.a = ((u32)vm->color1.a * reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0xA34)->a) >> 8;
+            }
+
+            if (activeVms == 0)
+            {
+                curObj->flags &= ~1;
+            }
+        }
+    }
+    return 0;
 }
 
 // FUNCTION: th08 0x40b5a0

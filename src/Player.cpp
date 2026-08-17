@@ -63,6 +63,12 @@ ZunBool ZunTimer::FUN_0040d3d0()
     return this->current != this->previous;
 }
 
+// FUNCTION: th08 0x40bc20
+i32 Player::IsHuman()
+{
+    return !this->isYoukai;
+}
+
 // FUNCTION: th08 0x40bc40
 i32 Player::IsYoukai()
 {

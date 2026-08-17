@@ -33,6 +33,7 @@ struct Background
     void SetCamera1();
     void SetCamera2();
     void FUN_00409160(D3DCOLOR color);
+    u32 FUN_00409f40();
 
     void *stageAnm;
     AnmVm stageVm0;

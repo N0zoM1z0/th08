@@ -707,3 +707,5 @@ address,name,size,status,match_percent,unit,evidence
 0x00409CE0,th08::Background::LoadStageData,598,matching,100.00,background-load-stage-data,python3 scripts/compare-function.py background-load-stage-data --json
 0x0040B5A0,th08::Background::SetCamera1,292,matching,100.00,background-set-camera1,python3 scripts/compare-function.py background-set-camera1 --json
 0x0040B6D0,th08::Background::SetCamera2,283,matching,100.00,background-set-camera2,python3 scripts/compare-function.py background-set-camera2 --json
+0x0040BC20,th08::Player::IsHuman,23,matching,100.00,player-is-human,python3 scripts/compare-function.py player-is-human --json
+0x00409F40,th08::Background::FUN_00409f40,610,matching,100.00,background-fun-00409f40,python3 scripts/compare-function.py background-fun-00409f40 --json

@@ -62802,3 +62802,111 @@ object = "build/Background.obj"
 symbol = "?FUN_00409160@Background@th08@@QAEXK@Z"
 target_address = 0x00409160
 size = 0x9D
+
+# Ledger name: th08::Player::IsHuman
+# Evidence: natural !isYoukai implementation reproduces target bytes exactly.
+[[units]]
+name = "player-is-human"
+object = "build/Player.obj"
+symbol = "?IsHuman@Player@th08@@QAEHXZ"
+target_address = 0x0040BC20
+size = 0x17
+
+# Ledger name: th08::Background::FUN_00409f40
+# Evidence: 15 relocations; 10 direct calls; full replay exact; implemented ledger=False.
+[[units]]
+name = "background-fun-00409f40"
+object = "build/Background.obj"
+symbol = "?FUN_00409f40@Background@th08@@QAEIXZ"
+target_address = 0x00409F40
+size = 0x262
+
+[[units.relocations]]
+offset = 0x18
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "?IsHuman@Player@th08@@QAEHXZ"
+target = 0x0040BC20
+
+[[units.relocations]]
+offset = 0x3B
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x4B
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x52
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x57
+type = "REL32"
+symbol = "?IsYoukai@Player@th08@@QAEHXZ"
+target = 0x0040BC40
+
+[[units.relocations]]
+offset = 0x75
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x85
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x95
+type = "REL32"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
+target = 0x00406640
+
+[[units.relocations]]
+offset = 0xA5
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xAA
+type = "REL32"
+symbol = "?ExecuteScript@AnmManager@th08@@QAEIPAUAnmVm@2@@Z"
+target = 0x0045EA00
+
+[[units.relocations]]
+offset = 0x142
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x147
+type = "REL32"
+symbol = "?ExecuteScript@AnmManager@th08@@QAEIPAUAnmVm@2@@Z"
+target = 0x0045EA00
+
+[[units.relocations]]
+offset = 0x159
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x15E
+type = "REL32"
+symbol = "?ExecuteScript@AnmManager@th08@@QAEIPAUAnmVm@2@@Z"
+target = 0x0045EA00

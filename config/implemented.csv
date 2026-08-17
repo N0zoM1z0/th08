@@ -708,3 +708,5 @@ th08::Background::OnDrawHighPrio
 th08::Background::LoadStageData
 th08::Background::SetCamera1
 th08::Background::SetCamera2
+th08::Player::IsHuman
+th08::Background::FUN_00409f40

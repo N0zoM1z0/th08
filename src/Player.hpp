@@ -120,6 +120,7 @@ struct Player
     i32 FUN_00451d50();
 
     static ZunResult LoadShtFile(PlayerRawShtFile **header, const char *path);
+    i32 IsHuman();
     i32 IsYoukai();
     f32 FUN_0044c1b0(Float3 *position);
     i32 FUN_00449ff0(Float3 *position, Float3 *position2);
