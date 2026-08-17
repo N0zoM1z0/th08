@@ -585,10 +585,11 @@ processEntry:
     }
 }
 
-// STUB: th08 0x451d50
+// FUNCTION: th08 0x451d50
 i32 Player::FUN_00451d50()
 {
-    return 0;
+    return *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xfdc) != 0 &&
+           *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xfe0) == 4;
 }
 // FUNCTION: th08 0x44d420
 void Player::FUN_0044d420()

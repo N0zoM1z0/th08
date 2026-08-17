@@ -763,3 +763,4 @@ address,name,size,status,match_percent,unit,evidence
 0x0043826B,th08::Gui::FUN_0043826b,1982,matching,100.00,gui-result-overlay-draw,python3 scripts/compare-function.py gui-result-overlay-draw --json
 0x00438A89,th08::Gui::FUN_00438a89,1231,matching,100.00,gui-formatted-popup-draw,python3 scripts/compare-function.py gui-formatted-popup-draw --json
 0x00433927,th08::Gui::OnDraw,70,matching,100.00,gui-draw-callback,python3 scripts/compare-function.py gui-draw-callback --json
+0x00451D50,th08::Player::FUN_00451d50,56,matching,100.00,player-state-predicate-451d50,python3 scripts/compare-function.py player-state-predicate-451d50 --json

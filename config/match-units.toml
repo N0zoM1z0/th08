@@ -76669,3 +76669,10 @@ offset = 61
 type = "REL32"
 symbol = "th08::Gui::FUN_00438a89"
 target = 4426377
+
+[[units]]
+name = "player-state-predicate-451d50"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "th08::Player::FUN_00451d50"
+target_address = 0x00451D50
+size = 56

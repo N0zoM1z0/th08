@@ -762,3 +762,4 @@ th08::GuiImpl::DrawDialogue
 th08::Gui::FUN_0043826b
 th08::Gui::FUN_00438a89
 th08::Gui::OnDraw
+th08::Player::FUN_00451d50
