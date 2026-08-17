@@ -319,3 +319,5 @@ nonzero instead of borrowing TH07 assumptions.
   by `shotType * 4` generated `shl 2` plus a scale-4 SIB; the target used `shl 4` and
   a plain base+index load. Typing the table as 16-byte rows (`u32 colors[4]`) restored
   the exact addressing mode and removed one byte from each of four loads.
+
+- In a small VC7 `/Os` cleanup loop, caching a repeated indexed field address in an explicit pointer local can make the function *shorter* than the target. `Enemy::FUN_0042bc90` is 96 bytes only when the three `this + i * 4 + 0x3384` accesses remain lexically explicit; a `void **slot` cache compiled to 88 bytes. Treat repeated address formation as source-shape evidence rather than automatically introducing a convenience local.

@@ -76676,3 +76676,22 @@ object = "build/objdiff/reimpl/Player.obj"
 symbol = "th08::Player::FUN_00451d50"
 target_address = 0x00451D50
 size = 56
+
+[[units]]
+name = "enemy-free-ecl-slots"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "th08::Enemy::FUN_0042bc90"
+target_address = 0x0042BC90
+size = 96
+
+[[units.relocations]]
+offset = 64
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 69
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0

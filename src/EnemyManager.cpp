@@ -87,9 +87,17 @@ DIFFABLE_STATIC(ChainElem, g_EnemyManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_EnemyManagerDrawChainHighPrio);
 DIFFABLE_STATIC(ChainElem, g_EnemyManagerDrawChainLowPrio);
 
-// STUB: th08 0x42bc90
+// FUNCTION: th08 0x42bc90
 void Enemy::FUN_0042bc90()
 {
+    for (i32 i = 0; i < 4; i++)
+    {
+        if (*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + i * 4) != NULL)
+        {
+            g_ZunMemory.Free(*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + i * 4));
+            *reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + i * 4) = NULL;
+        }
+    }
 }
 
 // FUNCTION: th08 0x42efb0

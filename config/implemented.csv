@@ -763,3 +763,4 @@ th08::Gui::FUN_0043826b
 th08::Gui::FUN_00438a89
 th08::Gui::OnDraw
 th08::Player::FUN_00451d50
+th08::Enemy::FUN_0042bc90
