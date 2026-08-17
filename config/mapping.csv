@@ -992,7 +992,7 @@ th08::AnmLoaded::LoadSprite,0x4661b0,0x155,__thiscall,,void,AnmLoaded*,i32,AnmLo
 th08::AnmManager::DrawTextInner,0x466310,0x91,__thiscall,,void,AnmManager*,IDirect3DTexture8*,i32,i32,i32,i32,i32,i32,COLORREF,COLORREF,const char*,f32,f32
 th08::AnmManager::DrawTextLeft,0x4663b0,0xee,__cdecl,varargs,void,AnmManager*,AnmVm*,COLORREF,COLORREF,const char*
 th08::AnmManager::DrawTextRight,0x4664a0,0x1b0,__cdecl,varargs,void,AnmManager*,AnmVm*,COLORREF,COLORREF,const char*
-FUN_00466650,0x466650,0x16e,unknown,,u8,u8,u8,u8,u8,u8,u8
+th08::AnmManager::DrawTextCentered,0x466650,0x16e,__cdecl,varargs,void,AnmManager*,AnmVm*,COLORREF,COLORREF,const char*
 th08::AnmManager::LoadSurface,0x4667c0,0x29e,__thiscall,,ZunResult,AnmManager*,i32,char*
 th08::AnmManager::PreloadSurface,0x466a60,0x7e,__thiscall,,ZunResult,AnmManager*,i32,const char*
 th08::AnmManager::ReleaseSurface,0x466ae0,0xc8,__thiscall,,void,AnmManager*,i32

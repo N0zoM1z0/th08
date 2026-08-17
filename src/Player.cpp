@@ -93,10 +93,73 @@ f32 Player::FUN_0044c1b0(Float3 *position)
     return VectorAngle(yDelta, xDelta);
 }
 
-// STUB: th08 0x449ff0
+// FUNCTION: th08 0x449ff0
+#pragma var_order(halfSize, yDelta, xDelta, i, rotated, delta, slot, boundsMax)
 i32 Player::FUN_00449ff0(Float3 *position, Float3 *position2)
 {
+    Float3 delta;
+    Float3 rotated;
+    Float3 halfSize;
+    Float3 boundsMax;
+    PlayerUnkStruct0x40 *slot = this->playerSlotsC;
+    i32 i;
+    f32 xDelta;
+    f32 yDelta;
+
+    for (i = 0; i < ARRAY_SIZE_SIGNED(this->playerSlotsC); i++, slot++)
+    {
+        if (!slot->active)
+            continue;
+
+        if (slot->radius != 0.0)
+        {
+            xDelta = position->x - slot->center.x;
+            yDelta = position->y - slot->center.y;
+            if (xDelta * xDelta + yDelta * yDelta < slot->radius * slot->radius)
+                goto hit;
+            goto next;
+        }
+
+        if (slot->angle != 0.0f)
+        {
+            delta.x = position->x - slot->center.x;
+            delta.y = position->y - slot->center.y;
+            Rotate(&rotated, &delta, -slot->angle);
+            halfSize.x = slot->size.x / 2.0f;
+            halfSize.y = slot->size.y / 2.0f;
+            if (-halfSize.x <= rotated.x && rotated.x <= halfSize.x && -halfSize.y <= rotated.y &&
+                rotated.y <= halfSize.y)
+                goto hit;
+            goto next;
+        }
+
+        halfSize.x = slot->center.x - slot->size.x / 2.0f;
+        halfSize.y = slot->center.y - slot->size.y / 2.0f;
+        boundsMax.x = slot->size.x / 2.0f + slot->center.x;
+        boundsMax.y = slot->size.y / 2.0f + slot->center.y;
+        if (!(halfSize.x > position->x))
+        {
+            if (!(boundsMax.x < position->x))
+            {
+                if (!(halfSize.y > position->y))
+                {
+                    if (!(boundsMax.y < position->y))
+                        goto hit;
+                }
+            }
+        }
+        goto next;
+
+    next:
+        ;
+    }
+
     return 0;
+
+hit:
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xe2a90) = slot->collisionValue;
+    slot->hitAccumulator++;
+    return 2;
 }
 
 #pragma var_order(primaryShtFile, player, secondaryShtFile)

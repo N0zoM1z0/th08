@@ -2060,7 +2060,7 @@ AnmLoaded *AnmManager::PreloadAnm(i32 anmIdx, const char *filename)
     return g_Supervisor.subthreadCloseRequestActive ? NULL : anmLoaded;
 }
 
-// STUB: th08 0x465ac0
+// FUNCTION: th08 0x465ac0
 #pragma var_order(result, startOfEntry, path, fileSize, fileData)
 i32 AnmManager::LoadExternalTextureData(AnmLoaded *anmLoaded, i32 entryNumber, i32 *sprites, i32 *scripts,
                                         AnmRawEntry *rawEntry)
@@ -2385,9 +2385,27 @@ void AnmManager::DrawTextRight(AnmVm *vm, COLORREF textColor, COLORREF shadowCol
     vm->visible = true;
 }
 
-// STUB: th08 0x466650
+// FUNCTION: th08 0x466650
+#pragma var_order(buf, fontWidth)
 void AnmManager::DrawTextCentered(AnmVm *vm, COLORREF textColor, COLORREF shadowColor, const char *fmt, ...)
 {
+    char buf[72];
+    int x;
+    int fontWidth = vm->fontWidth <= 0 ? 15 : vm->fontWidth;
+
+    va_list args;
+
+    va_start(args, fmt);
+    vsprintf(buf, fmt, args);
+    va_end(args);
+
+    x = vm->loadedSprite->startPixelInclusive.x + vm->loadedSprite->widthPx * vm->loadedSprite->scaleFactor.x / 2.0f -
+        (f32)strlen(buf) * fontWidth * vm->loadedSprite->scaleFactor.x / 4.0f;
+    this->DrawTextInner(vm->loadedSprite->texture, x, vm->loadedSprite->startPixelInclusive.y,
+                        vm->loadedSprite->width, vm->loadedSprite->height, fontWidth, vm->fontHeight, textColor,
+                        shadowColor, buf, vm->loadedSprite->scaleFactor.x, vm->loadedSprite->scaleFactor.y);
+
+    vm->visible = true;
 }
 
 #pragma var_order(surface, fileSize, fileData)

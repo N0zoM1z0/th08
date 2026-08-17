@@ -770,3 +770,5 @@ address,name,size,status,match_percent,unit,evidence
 0x0045BC90,th08::ScreenEffect::FUN_0045bc90,210,matching,100.00,screen-effect-fun-0045bc90,python3 scripts/compare-function.py screen-effect-fun-0045bc90 --json
 0x0045BF10,th08::ScreenEffect::FUN_0045bf10,459,matching,100.00,screen-effect-fun-0045bf10,python3 scripts/compare-function.py screen-effect-fun-0045bf10 --json
 0x0045B8B0,th08::ScreenEffect::RegisterChain,628,matching,100.00,screen-effect-register-chain,python3 scripts/compare-function.py screen-effect-register-chain --json
+0x00466650,th08::AnmManager::DrawTextCentered,366,matching,100.00,anm-manager-draw-text-centered,python3 scripts/compare-function.py anm-manager-draw-text-centered --json
+0x00449FF0,th08::Player::FUN_00449ff0,563,matching,100.00,player-cancel-region-test,python3 scripts/compare-function.py player-cancel-region-test --json

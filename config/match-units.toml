@@ -77435,3 +77435,143 @@ offset = 656
 type = "DIR32"
 symbol = "$L*"
 target = 0x0045BA6A
+
+[[units]]
+name = "anm-manager-draw-text-centered"
+object = "build/objdiff/reimpl/AnmManager.obj"
+symbol = "th08::AnmManager::DrawTextCentered"
+target_address = 0x00466650
+size = 366
+
+[[units.relocations]]
+offset = 67
+type = "REL32"
+symbol = "_vsprintf"
+target = 0x004A3E17
+
+[[units.relocations]]
+offset = 155
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 195
+type = "DIR32"
+symbol = "__real@40800000"
+target = 0x004B4308
+
+[[units.relocations]]
+offset = 202
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 275
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 293
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 311
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 337
+type = "REL32"
+symbol = "th08::AnmManager::DrawTextInner"
+target = 0x00466310
+
+[[units]]
+name = "player-cancel-region-test"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "th08::Player::FUN_00449ff0"
+target_address = 0x00449FF0
+size = 563
+
+[[units.relocations]]
+offset = 13
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 21
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 29
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 37
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 113
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target = 0x004B4C90
+
+[[units.relocations]]
+offset = 205
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 267
+type = "REL32"
+symbol = "?Rotate@th08@@YIXPAUFloat3@1@0M@Z"
+target = 0x0043EE30
+
+[[units.relocations]]
+offset = 279
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 294
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 375
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 395
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 416
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 436
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC

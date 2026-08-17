@@ -769,3 +769,5 @@ th08::ScreenEffect::CalcShake
 th08::ScreenEffect::FUN_0045bc90
 th08::ScreenEffect::FUN_0045bf10
 th08::ScreenEffect::RegisterChain
+th08::AnmManager::DrawTextCentered
+th08::Player::FUN_00449ff0
