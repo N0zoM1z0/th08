@@ -219,6 +219,16 @@ labels are normalized to `$L*` by the comparator because VC7 renumbers them when
 earlier code in the translation unit changes; their relocation offsets and
 resolved target addresses remain the evidence.
 
+When a shared header change appears to break unrelated strict units after a fresh
+rebuild, establish causality before editing manifests: save the current header,
+restore the committed header only for the failing object's rebuild, rerun that
+unit, then restore the current header and rebuild again. If the same size or
+relocation failure persists under the committed header, treat it as baseline
+staleness rather than attributing it to the new declaration. Only update a
+compiler-local relocation name when the A/B build proves that the current header
+caused the renumbering while machine code and resolved target addresses remain
+unchanged.
+
 For stack, register-home, direct-call, absolute-reference, and return-cleanup
 facts, install Python Capstone and generate a read-only target packet:
 
@@ -231,6 +241,16 @@ python3 scripts/typed-re.py 0x004413E0 --compare --json \
 `scripts/scan-vc7-library.py` is intentionally disabled until TH08-specific,
 SHA-pinned library archives and relocation policy exist. Unsupported use exits
 nonzero instead of borrowing TH07 assumptions.
+
+- When a switch-bearing function emits compiler-owned jump tables in the same COFF section,
+  keep `size` equal to the authored function extent but set `compare_size` to the full
+  source-emitted COFF section. This attests jump-table entries and padding without
+  inflating authored-byte progress. `Spellcard::Init` is a concrete example: 0xCA5
+  authored bytes plus 0x63 bytes of three VC7 switch tables compare as a 0xD08 unit.
+- Do not merge branch-local resource checks merely because the failure action is identical.
+  In `Spellcard::Init`, each `PreloadAnm` branch performs its own immediate null check
+  and return path. Hoisting those checks to a common merge preserved successful-case
+  semantics but changed branch topology and shortened the target by dozens of bytes.
 
 ## Acceptance rules
 

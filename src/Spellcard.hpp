@@ -256,6 +256,7 @@ enum SpellcardNumber
 struct Spellcard
 {
     Spellcard();
+    ZunResult Init();
 
     u32 flags;                       // +0x000
     u8 *activeEnemy;                 // +0x004
@@ -323,6 +324,7 @@ struct Spellcard
     i32 FUN_00417860();
     i32 FUN_0042DFF0();
 
+    static ZunResult RegisterChain();
     static ZunResult DeletedCallback(Spellcard *spellcard);
     static i32 __fastcall IsLastSpell(i32 spellCardNumber);
 

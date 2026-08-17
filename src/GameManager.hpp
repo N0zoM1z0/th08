@@ -141,6 +141,10 @@ struct GameManager
 
     ZunBool IsReplay();
     ZunBool IsSpellPractice();
+    ZunBool IsSpellNumberEqualTo(i32 spellCardNumber)
+    {
+        return this->flags.isSpellPractice ? this->currentSpellCardNumber == spellCardNumber : false;
+    }
     ZunBool IsSpellNumberInRange(i32 firstSpell, i32 lastSpell)
     {
         return this->flags.isSpellPractice

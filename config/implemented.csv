@@ -745,3 +745,6 @@ th08::Spellcard::DeletedCallback
 th08::Spellcard::OnUpdateImpl
 th08::Spellcard::OnUpdate
 th08::Spellcard::OnDraw
+th08::Spellcard::Init
+th08::GameManager::IsSpellNumberEqualTo
+th08::Spellcard::RegisterChain

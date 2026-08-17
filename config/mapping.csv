@@ -201,7 +201,7 @@ th08::Rng::GetRandomF32SignedInRange,0x4143c0,0x18,__thiscall,,float10,Rng*,f32
 th08::Spellcard::Spellcard,0x4143e0,0xee,unknown,,u8
 FUN_004144d0,0x4144d0,0x69,unknown,,u8
 th08::Spellcard::IsLastSpell,0x414540,0x44,__fastcall,,i32,i32
-FUN_00414590,0x414590,0xca5,unknown,,u8
+th08::Spellcard::Init,0x414590,0xca5,__thiscall,,ZunResult,Spellcard*
 FUN_004152a0,0x4152a0,0x9b3,unknown,,u8,u8,u8,u8,u8,u8,u8,u8,u8
 th08::BulletManager::bulletmanager_fun_00415c60,0x415c60,0x15,__thiscall,,void,BulletManager*
 FUN_00415c80,0x415c80,0x55,unknown,,u8
@@ -219,13 +219,13 @@ th08::Spellcard::OnUpdateImpl,0x416b90,0xcc5,__thiscall,,i32,Spellcard*
 th08::Spellcard::FUN_00417860,0x417860,0x3b,__thiscall,,i32,Spellcard*
 th08::Spellcard::IsActive,0x4178a0,0x13,__thiscall,,i32,Spellcard*
 FUN_004178c0,0x4178c0,0x695,unknown,,u8
-FUN_00417f60,0x417f60,0xaf,unknown,,u8
+th08::Spellcard::RegisterChain,0x417f60,0xaf,__fastcall,,ZunResult
 th08::Spellcard::OnUpdate,0x418010,0x13,__fastcall,,ChainCallbackResult,Spellcard*
 th08::Spellcard::OnDraw,0x418030,0x13,__fastcall,,ChainCallbackResult,Spellcard*
 th08::Spellcard::DeletedCallback,0x418050,0x9d,__fastcall,,ZunResult,Spellcard*
 th08::Spellcard::CutChain,0x4180f0,0x1e,__stdcall,,void
 th08::ZunTimer::operator--(int),0x418110,0x17,__thiscall,,void,ZunTimer*,i32
-th08::GameManager::FUN_00418130,0x418130,0x43,__thiscall,,bool,GameManager*,i32
+th08::GameManager::IsSpellNumberEqualTo,0x418130,0x43,__thiscall,,ZunBool,GameManager*,i32
 th08::GameManager::FUN_00418180,0x418180,0x62,__thiscall,,u32,GameManager*,i32,i32
 th08::GameManager::AddScore,0x4181f0,0x2c,__thiscall,,void,GameManager*,i32
 th08::GameManager::AddTimeOrbs,0x418220,0xb4,__thiscall,,void,GameManager*,i32
