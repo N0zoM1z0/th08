@@ -362,6 +362,15 @@ Spellcard::Spellcard()
 
 DIFFABLE_EXTERN(i32, g_GuiFullPowerModeFrames);
 
+// FUNCTION: th08 0x415d10
+void Spellcard::CutInEnemyNoPortrait(const char *name, i32 unused)
+{
+    this->flags |= 0x400;
+    this->flags &= ~1;
+    this->flags &= ~0x10;
+    this->CutInEnemy(-1, name, 1);
+}
+
 // FUNCTION: th08 0x415d60
 void Spellcard::CutInPlayer(i32 playerFace, const char *name, i32 sprite)
 {
@@ -384,6 +393,44 @@ void Spellcard::CutInPlayer(i32 playerFace, const char *name, i32 sprite)
     g_AnmManager->DrawTextLeft(&this->vm10F8, 0x00F0F0FF, 0, name);
     this->playerSpellNameWidth = strlen(name) * 0xf / 2.0f + 16;
     this->vm1B88.SetInterrupt(1);
+    g_SoundPlayer.PlaySoundByIdx((SoundIdx)14, 0);
+    g_GuiFullPowerModeFrames = 2;
+}
+
+// FUNCTION: th08 0x415f00
+void Spellcard::CutInEnemy(i32 enemyFace, const char *name, i32 sprite)
+{
+    if (enemyFace >= 0)
+    {
+        this->enemyFaceAnm0->SetAndExecuteScriptIdx(&this->vm3C4, 0);
+        this->enemyFaceAnm0->SetSprite(&this->vm3C4, enemyFace);
+    }
+
+    this->commonFaceAnm->SetAndExecuteScriptIdx(&this->vm668, 1);
+    this->commonFaceAnm->SetSprite(&this->vm668, sprite);
+    this->commonFaceAnm->SetAndExecuteScriptIdx(&this->vmBB0, 3);
+    this->commonFaceAnm->SetSprite(&this->vmBB0, sprite);
+
+    if (g_GameManager.IsSpellNumberInRange(205, 221))
+    {
+        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->vm139C, 6);
+        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->vm1640, 7);
+        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->vm18E4, 8);
+        g_AnmManager->DrawTextRight(&this->vm1640, 0x00fff0f0, 0, name);
+        g_AnmManager->DrawTextRight(&this->vm18E4, 0x00fff0f0, 0, name);
+    }
+    else
+    {
+        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->vm139C, 5);
+    }
+    g_AnmManager->DrawTextRight(&this->vm139C, 0x00fff0f0, 0, name);
+
+    this->enemySpellNameWidth = strlen(name) * 0xf / 2.0f + 16;
+    this->vm1E2C.SetInterrupt(1);
+    if (((this->flags >> 10) & 1) == 0)
+    {
+        this->vm2374.SetInterrupt(1);
+    }
     g_SoundPlayer.PlaySoundByIdx((SoundIdx)14, 0);
     g_GuiFullPowerModeFrames = 2;
 }

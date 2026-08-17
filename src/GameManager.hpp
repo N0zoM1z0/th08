@@ -141,6 +141,12 @@ struct GameManager
 
     ZunBool IsReplay();
     ZunBool IsSpellPractice();
+    ZunBool IsSpellNumberInRange(i32 firstSpell, i32 lastSpell)
+    {
+        return this->flags.isSpellPractice
+                   ? this->currentSpellCardNumber >= firstSpell && this->currentSpellCardNumber <= lastSpell
+                   : false;
+    }
     ZunBool IsDemoMode();
 
     ZunBool IsSoloHuman();

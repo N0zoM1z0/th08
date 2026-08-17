@@ -164,6 +164,11 @@ TH08 matches; use them as diagnostics, not as permission to force bytes:
   32-bit `0`/`1` temporary and test it before selecting the ternary arm. When the
   target contains that materialized boolean slot, reproduce the value conversion
   in C++ rather than inventing a named stack local.
+- Boolean grouping can change temporary ownership even when the truth table is
+  identical. Under VC7 `/Od`, `gate ? (a && b) : false` can materialize the inner
+  conjunction and then copy it into a second ternary-result slot; flattening the
+  same logic to `gate && a && b` removes that outer slot. Preserve the target's
+  expression grouping when stack shape shows both temporaries.
 
 For a function whose authored body is followed by compiler-owned tables, first
 prove the authored extent independently, then set `compare_size` to the COFF

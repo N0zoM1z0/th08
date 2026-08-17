@@ -728,3 +728,6 @@ th08::Spellcard::spellcard_fun_00416160
 th08::Spellcard::spellcard_fun_00416af0
 th08::Spellcard::spellcard_fun_00416b10
 th08::Spellcard::OnDrawImpl
+th08::GameManager::IsSpellNumberInRange
+th08::Spellcard::CutInEnemyNoPortrait
+th08::Spellcard::CutInEnemy

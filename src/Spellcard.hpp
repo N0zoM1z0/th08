@@ -294,7 +294,9 @@ struct Spellcard
     void *lifetimeObject;            // +0x263C
     ChainElem *lifetimeChain;        // +0x2640
 
+    void CutInEnemyNoPortrait(const char *name, i32 unused);
     void CutInPlayer(i32 playerFace, const char *name, i32 sprite);
+    void CutInEnemy(i32 enemyFace, const char *name, i32 sprite);
     void spellcard_fun_00416130();
     void spellcard_fun_00416160();
     void spellcard_fun_00416af0();

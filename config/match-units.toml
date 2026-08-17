@@ -66251,3 +66251,209 @@ offset = 0x688
 type = "REL32"
 symbol = "?SetMixColorDefault@AnmManager@th08@@QAEXXZ"
 target = 0x0040BAB0
+
+# Ledger name: th08::GameManager::IsSpellNumberInRange
+[[units]]
+name = "gamemanager-is-spell-number-in-range"
+object = "build/SpellCard.obj"
+symbol = "?IsSpellNumberInRange@GameManager@th08@@QAEIHH@Z"
+target_address = 0x00418180
+size = 0x62
+
+
+# Ledger name: th08::Spellcard::CutInEnemyNoPortrait
+[[units]]
+name = "spellcard-cut-in-enemy-no-portrait"
+object = "build/SpellCard.obj"
+symbol = "?CutInEnemyNoPortrait@Spellcard@th08@@QAEXPBDH@Z"
+target_address = 0x00415D10
+size = 0x47
+
+[[units.relocations]]
+offset = 0x3D
+type = "REL32"
+symbol = "?CutInEnemy@Spellcard@th08@@QAEXHPBDH@Z"
+target = 0x00415F00
+
+
+# Ledger name: th08::Spellcard::CutInEnemy
+[[units]]
+name = "spellcard-cut-in-enemy"
+object = "build/SpellCard.obj"
+symbol = "?CutInEnemy@Spellcard@th08@@QAEXHPBDH@Z"
+target_address = 0x00415F00
+size = 0x22E
+
+[[units.relocations]]
+offset = 0x24
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x3F
+type = "REL32"
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
+
+[[units.relocations]]
+offset = 0x59
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x75
+type = "REL32"
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
+
+[[units.relocations]]
+offset = 0x8F
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0xAB
+type = "REL32"
+symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
+target = 0x0045E430
+
+[[units.relocations]]
+offset = 0xBA
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xBF
+type = "REL32"
+symbol = "?IsSpellNumberInRange@GameManager@th08@@QAEIHH@Z"
+target = 0x00418180
+
+[[units.relocations]]
+offset = 0xD8
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xDD
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0xEF
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xF4
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x106
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x10B
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x126
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x12C
+type = "REL32"
+symbol = "?DrawTextRight@AnmManager@th08@@QAAXPAUAnmVm@2@KKPBDZZ"
+target = 0x004664A0
+
+[[units.relocations]]
+offset = 0x14A
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x150
+type = "REL32"
+symbol = "?DrawTextRight@AnmManager@th08@@QAAXPAUAnmVm@2@KKPBDZZ"
+target = 0x004664A0
+
+[[units.relocations]]
+offset = 0x166
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x16B
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x185
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x18B
+type = "REL32"
+symbol = "?DrawTextRight@AnmManager@th08@@QAAXPAUAnmVm@2@KKPBDZZ"
+target = 0x004664A0
+
+[[units.relocations]]
+offset = 0x1CE
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x1D4
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004B42D4
+
+[[units.relocations]]
+offset = 0x1ED
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x20C
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x215
+type = "DIR32"
+symbol = "?g_SoundPlayer@th08@@3VSoundPlayer@1@A"
+target = 0x018B8A68
+
+[[units.relocations]]
+offset = 0x21A
+type = "REL32"
+symbol = "?PlaySoundByIdx@SoundPlayer@th08@@QAEXW4SoundIdx@2@H@Z"
+target = 0x0045D550
+
+[[units.relocations]]
+offset = 0x220
+type = "DIR32"
+symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
+target = 0x017CE8CC
