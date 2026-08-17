@@ -898,14 +898,14 @@ th08::ScreenEffect::DrawSquare,0x45b1e0,0x2af,__fastcall,,void,ZunRect*,D3DCOLOR
 th08::ScreenEffect::DrawSquareShaded,0x45b490,0x2cd,__fastcall,,void,ZunRect*,D3DCOLOR,D3DCOLOR,D3DCOLOR,D3DCOLOR
 th08::ScreenEffect::CalcFadeOut,0x45b760,0x9b,__fastcall,,ChainCallbackResult,ScreenEffect*
 th08::ScreenEffect::CalcPartialFadeOut,0x45b800,0xa9,__fastcall,,ChainCallbackResult,ScreenEffect*
-th08::ScreenEffect::RegisterChain,0x45b8b0,0x274,__fastcall,,u8,ScreenEffects,i32,i32,i32,i32,i32
+th08::ScreenEffect::RegisterChain,0x45b8b0,0x274,__fastcall,,ScreenEffect*,ScreenEffectType,i32,i32,i32,i32,i32
 th08::ScreenEffect::DrawFullFade,0x45bb50,0x91,__fastcall,,ChainCallbackResult,ScreenEffect*
 th08::ScreenEffect::DrawPartialFade,0x45bbf0,0x45,__fastcall,,ChainCallbackResult,ScreenEffect*
 th08::ScreenEffect::DrawArcadeFade,0x45bc40,0x45,__fastcall,,u32,ScreenEffect*
-FUN_0045bc90,0x45bc90,0xd2,unknown,,u8
+th08::ScreenEffect::FUN_0045bc90,0x45bc90,0xd2,__fastcall,,ChainCallbackResult,ScreenEffect*
 th08::ScreenEffect::FUN_0045bd70,0x45bd70,0x4c,__fastcall,,ChainCallbackResult,ScreenEffect*
 th08::ScreenEffect::CalcShake,0x45bdc0,0x14c,__fastcall,,u32,ScreenEffect*
-FUN_0045bf10,0x45bf10,0x1cb,unknown,,u8
+th08::ScreenEffect::FUN_0045bf10,0x45bf10,0x1cb,__fastcall,,ChainCallbackResult,ScreenEffect*
 th08::ScreenEffect::AddedCallback,0x45c0e0,0x1a,__fastcall,,ZunResult,ScreenEffect*
 th08::ScreenEffect::DeletedCallback,0x45c100,0x5e,__fastcall,,ZunResult,ScreenEffect*
 FUN_0045c160,0x45c160,0x22,unknown,,u8

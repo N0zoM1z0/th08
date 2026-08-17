@@ -906,7 +906,7 @@ th08::ScreenEffect::DrawArcadeFade,0x45bc40,function
 th08::ScreenEffect::FUN_0045bc90,0x45bc90,function
 th08::ScreenEffect::FUN_0045bd70,0x45bd70,function
 th08::ScreenEffect::CalcShake,0x45bdc0,function
-FUN_0045bf10,0x45bf10,function
+th08::ScreenEffect::FUN_0045bf10,0x45bf10,function
 th08::ScreenEffect::AddedCallback,0x45c0e0,function
 th08::ScreenEffect::DeletedCallback,0x45c100,function
 th08::ScreenEffect::FUN_0045c160,0x45c160,function

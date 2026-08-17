@@ -42,8 +42,10 @@ struct ScreenEffect
     static ChainCallbackResult DrawPartialFade(ScreenEffect *screenEffect);
 
     static ChainCallbackResult DrawArcadeFade(ScreenEffect *screenEffect);
+    static ChainCallbackResult FUN_0045bc90(ScreenEffect *screenEffect);
     static ChainCallbackResult FUN_0045bd70(ScreenEffect *screenEffect);
     static ChainCallbackResult CalcShake(ScreenEffect *screenEffect);
+    static ChainCallbackResult FUN_0045bf10(ScreenEffect *screenEffect);
 
     static ZunResult AddedCallback(ScreenEffect *screenEffect);
     static ZunResult DeletedCallback(ScreenEffect *screenEffect);

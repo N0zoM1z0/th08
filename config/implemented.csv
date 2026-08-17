@@ -766,3 +766,6 @@ th08::Player::FUN_00451d50
 th08::Enemy::FUN_0042bc90
 th08::AnmManager::DrawPlayerBullet
 th08::ScreenEffect::CalcShake
+th08::ScreenEffect::FUN_0045bc90
+th08::ScreenEffect::FUN_0045bf10
+th08::ScreenEffect::RegisterChain
