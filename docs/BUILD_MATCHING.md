@@ -276,3 +276,16 @@ nonzero instead of borrowing TH07 assumptions.
   the exact scope demonstrated by the accepted report and command.
 - Do not infer a repository-wide percentage from source coverage, mapping rows,
   or adjacent-version similarity.
+- Cache-vs-direct-object access can be target-visible under `/Os`. In the GUI message
+  initializer, caching `&this->msgVm` in a local pointer moved `this` from `-0x10` to
+  `-0x14` and shortened every later large-offset access. The target repeatedly forms
+  `this + 0x21814`; a local typed overlay is still useful as a type, but do not store
+  a pointer to it unless the target has that stack slot.
+- Preserve block placement, not just condition truth. The target's route setup spells
+  replay handling as `if (!IsReplay()) { clear-history tree } else { replay tree }`;
+  moving the replay tree before the non-replay checks kept semantics but changed a
+  large forward branch region.
+- Recover table row types when address generation disagrees. A flat `u32[]` indexed
+  by `shotType * 4` generated `shl 2` plus a scale-4 SIB; the target used `shl 4` and
+  a plain base+index load. Typing the table as 16-byte rows (`u32 colors[4]`) restored
+  the exact addressing mode and removed one byte from each of four loads.

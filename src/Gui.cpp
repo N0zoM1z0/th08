@@ -2,6 +2,10 @@
 
 #include "BulletManager.hpp"
 #include "Gui.hpp"
+#include "EnemyManager.hpp"
+#include "GameManager.hpp"
+#include "ItemManager.hpp"
+#include "ReplayManager.hpp"
 
 namespace th08
 {
@@ -12,6 +16,48 @@ DIFFABLE_STATIC(ChainElem, g_GuiDrawChain);
 DIFFABLE_STATIC(i32, g_GuiAnmReleaseRequired);
 DIFFABLE_STATIC(i32, g_GuiResourceReloadEnabled);
 DIFFABLE_STATIC(i32, g_GuiFullPowerModeFrames);
+DIFFABLE_STATIC(i32, g_GuiMessageStageMode);
+DIFFABLE_STATIC(AnmLoaded *, g_GuiPortraitAnm0);
+DIFFABLE_STATIC(AnmLoaded *, g_GuiPortraitAnm1);
+DIFFABLE_STATIC(AnmLoaded *, g_GuiPortraitAnm2);
+struct GuiMessageTextColorSet
+{
+    u32 colors[4];
+};
+DIFFABLE_STATIC_ARRAY(GuiMessageTextColorSet, SHOT_ALL, g_GuiMessageTextColors);
+
+struct GuiMessageStateOverlay
+{
+    void *msgFile;                  // +0x000
+    u8 *currentInstr;               // +0x004
+    i32 currentMsgIdx;              // +0x008
+    ZunTimer timer;                 // +0x00C
+    i32 framesElapsedDuringPause;   // +0x018
+    i32 waitThreshold;              // +0x01C
+    AnmVm portraits[4];             // +0x020
+    AnmVm dialogueLines[2];         // +0xAB0
+    AnmVm extraVms[2];              // +0xFF8
+    u32 textColors[4];              // +0x1540
+    u32 shadowColors[4];            // +0x1550
+    i32 fontSize;                   // +0x1560
+    i32 ignoreWaitCounter;          // +0x1564
+    u8 dialogueSkippable;           // +0x1568
+    u8 currentSide;                 // +0x1569
+    u8 textPending;                 // +0x156A
+    u8 currentLine;                 // +0x156B
+    u8 currentPortrait;             // +0x156C
+    u8 messageFlag;                 // +0x156D
+    u8 routeChoice;                 // +0x156E
+    u8 pad156F;                     // +0x156F
+    i32 resultState;                // +0x1570
+    i32 unknown1574;                // +0x1574
+};
+C_ASSERT(sizeof(GuiMessageStateOverlay) == 0x1578);
+C_ASSERT(offsetof(GuiMessageStateOverlay, portraits) == 0x20);
+C_ASSERT(offsetof(GuiMessageStateOverlay, dialogueLines) == 0xAB0);
+C_ASSERT(offsetof(GuiMessageStateOverlay, extraVms) == 0xFF8);
+C_ASSERT(offsetof(GuiMessageStateOverlay, textColors) == 0x1540);
+
 
 // FUNCTION: th08 0x4353ec
 #pragma var_order(i, decoded)
@@ -55,9 +101,146 @@ void __fastcall FUN_00437f5c(i32 spriteIdx)
     g_AnmManager->CopyTextureRect(10, 0, 10, 1, &destRect, &srcRect);
 }
 
-// STUB: th08 0x43396d
+// FUNCTION: th08 0x43396d
 void GuiImpl::FUN_0043396d(i32 value)
 {
+    void *msgFile;
+
+    utils::GuiDebugPrint("msg start %d\n\r", value);
+    msgFile = reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->msgFile;
+    memset(reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm), 0, 0x1570);
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->msgFile = msgFile;
+
+    if (value == 0)
+    {
+        switch (g_GameManager.currentStage)
+        {
+        case STAGE5:
+            FUN_00437f5c(22);
+            break;
+        case STAGE6A:
+            g_GuiMessageStageMode = 2;
+            break;
+        case STAGE6B:
+        {
+            AnmLoaded *tmp = g_GuiPortraitAnm1;
+            g_GuiPortraitAnm1 = g_GuiPortraitAnm2;
+            g_GuiPortraitAnm2 = tmp;
+            g_GuiMessageStageMode = 2;
+            FUN_00437f5c(24);
+            break;
+        }
+        case EXTRASTAGE:
+        {
+            AnmLoaded *tmp = g_GuiPortraitAnm1;
+            g_GuiPortraitAnm1 = g_GuiPortraitAnm2;
+            g_GuiPortraitAnm2 = tmp;
+            g_GuiMessageStageMode = 2;
+            FUN_00437f5c(25);
+            break;
+        }
+        default:
+            break;
+        }
+    }
+    else if (value == 10)
+    {
+        switch (g_GameManager.currentStage)
+        {
+        case STAGE5:
+            if (g_GameManager.globals->numRetries > 0)
+            {
+                value = 1;
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 0;
+            }
+            else if (!g_GameManager.IsReplay())
+            {
+                if (g_GameManager.IsStageClearedWithoutRetries(STAGE6B, g_GameManager.shotType, EASY) ||
+                    g_GameManager.IsStageClearedWithoutRetries(STAGE6B, g_GameManager.shotType, NORMAL) ||
+                    g_GameManager.IsStageClearedWithoutRetries(STAGE6B, g_GameManager.shotType, HARD) ||
+                    g_GameManager.IsStageClearedWithoutRetries(STAGE6B, g_GameManager.shotType, LUNATIC) ||
+                    g_GameManager.shotType > SHOT_YOUMU_YUYUKO)
+                {
+                    value = 3;
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 1;
+                }
+                else if (g_GameManager.IsStageClearedWithRetries(STAGE6A, g_GameManager.shotType, EASY) ||
+                         g_GameManager.IsStageClearedWithRetries(STAGE6A, g_GameManager.shotType, NORMAL) ||
+                         g_GameManager.IsStageClearedWithRetries(STAGE6A, g_GameManager.shotType, HARD) ||
+                         g_GameManager.IsStageClearedWithRetries(STAGE6A, g_GameManager.shotType, LUNATIC))
+                {
+                    value = 2;
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 1;
+                }
+                else
+                {
+                    value = 1;
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 0;
+                }
+            }
+            else
+            {
+                if ((i8)g_ReplayManager->replayData->clearState == 2)
+                {
+                    value = 3;
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 1;
+                }
+                else if ((i8)g_ReplayManager->replayData->clearState == 1)
+                {
+                    value = 2;
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 1;
+                }
+                else
+                {
+                    value = 1;
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 0;
+                }
+            }
+            g_GameManager.flags.isGoingToFinalB = reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice;
+            break;
+        default:
+            break;
+        }
+    }
+    else if (value >= 6)
+    {
+        switch (g_GameManager.currentStage)
+        {
+        case STAGE6B:
+            if ((i8)g_GameManager.GetClockTime() >= 12)
+            {
+                value = 5;
+            }
+            break;
+        default:
+            break;
+        }
+    }
+
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentMsgIdx = value;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr = reinterpret_cast<u8 **>(reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->msgFile)[value + 1];
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[0].scriptIndex = -1;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1].scriptIndex = -1;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->messageFlag = 1;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->fontSize = 15;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[0] = g_GuiMessageTextColors[g_GameManager.shotType].colors[0];
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[1] = g_GuiMessageTextColors[g_GameManager.shotType].colors[1];
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[2] = g_GuiMessageTextColors[g_GameManager.shotType].colors[2];
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[3] = g_GuiMessageTextColors[g_GameManager.shotType].colors[3];
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[0] = 0;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[1] = 0;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[2] = 0;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[3] = 0;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueSkippable = 1;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->waitThreshold = 6;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentSide = 0;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textPending = 1;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentLine = 0;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentPortrait = 0xff;
+
+    g_BulletManager.bulletmanager_fun_00415c60();
+    g_EnemyManager.FUN_0042efb0(0, 0);
+    g_ItemManager.AutoCollectAllItems();
 }
 
 // FUNCTION: th08 0x439810

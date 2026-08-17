@@ -169,3 +169,8 @@ th08::g_ItemAnmManagerScreenShakeOffset,0x164d2dc,global
 th08::g_BulletCancelItemType,0x18b8988,global
 th08::g_EclScriptedGlobalUpdateFreeze,0x160f534,global
 th08::g_EclGameTimeScale,0x17ce8e0,global
+th08::g_GuiMessageTextColors,0x4c7180,global
+th08::g_GuiMessageStageMode,0x4e4b64,global
+th08::g_GuiPortraitAnm0,0x4ecc98,global
+th08::g_GuiPortraitAnm1,0x4ecc9c,global
+th08::g_GuiPortraitAnm2,0x4ecca0,global
