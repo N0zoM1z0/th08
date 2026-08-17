@@ -734,3 +734,4 @@ address,name,size,status,match_percent,unit,evidence
 0x00415C80,th08::Enemy::enemy_fun_00415c80,85,matching,100.00,enemy-spell-phase-reset,python3 scripts/compare-function.py enemy-spell-phase-reset --json
 0x00415CE0,th08::Background::background_fun_00415ce0,37,matching,100.00,background-spell-phase-start,python3 scripts/compare-function.py background-spell-phase-start --json
 0x00416AD0,th08::Background::background_fun_00416ad0,24,matching,100.00,background-spell-phase-end,python3 scripts/compare-function.py background-spell-phase-end --json
+0x00437EDC,th08::Gui::gui_fun_00437edc,128,matching,100.00,gui-fun-00437edc,python3 scripts/compare-function.py gui-fun-00437edc --json

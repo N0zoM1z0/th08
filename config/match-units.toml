@@ -66483,3 +66483,41 @@ object = "build/Background.obj"
 symbol = "?background_fun_00416ad0@Background@th08@@QAEXXZ"
 target_address = 0x00416AD0
 size = 0x18
+
+# Ledger name: th08::Gui::gui_fun_00437edc
+[[units]]
+name = "gui-fun-00437edc"
+object = "build/Gui.obj"
+symbol = "?gui_fun_00437edc@Gui@th08@@QAEXH@Z"
+target_address = 0x00437EDC
+size = 0x80
+
+[[units.relocations]]
+offset = 0x13
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004B42D4
+
+[[units.relocations]]
+offset = 0x1D
+type = "DIR32"
+symbol = "__real@43600000"
+target = 0x004B4938
+
+[[units.relocations]]
+offset = 0x29
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x5D
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x72
+type = "DIR32"
+symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
+target = 0x017CE8CC

@@ -74,6 +74,16 @@ void Gui::FUN_00437e5d(i32 value, i32 isShown)
     g_GuiFullPowerModeFrames = 2;
 }
 
+// FUNCTION: th08 0x437edc
+void Gui::gui_fun_00437edc(i32 value)
+{
+    this->impl->formatted2.position = Float3(224.0f, 16.0f, 0.0f);
+    this->impl->formatted2.isShown = 1;
+    this->impl->formatted2.timer = 0;
+    this->impl->formatted2.value = value;
+    g_GuiFullPowerModeFrames = 2;
+}
+
 // FUNCTION: th08 0x437bc4
 GuiImpl::GuiImpl()
 {
