@@ -4,8 +4,10 @@
 #include "Background.hpp"
 #include "BulletManager.hpp"
 #include "EclManager.hpp"
+#include "EclOperands.hpp"
 #include "EnemyManager.hpp"
 #include "Gui.hpp"
+#include "ItemManager.hpp"
 #include "Player.hpp"
 #include "Spellcard.hpp"
 #include "Global.hpp"
@@ -14,6 +16,7 @@
 namespace th08
 {
 ZunBool IsDisableResourceReload();
+DIFFABLE_EXTERN(AnmLoaded *, g_AsciiManagerDemoAnm0577EB4);
 DIFFABLE_STATIC(Spellcard, g_Spellcard);
 DIFFABLE_STATIC(ChainElem *, g_SpellcardCalcChain);
 DIFFABLE_STATIC(i32, g_LastSpellCount);
@@ -24,6 +27,31 @@ struct SpellcardFlagBits
     u32 lowBits : 5;
     u32 unk5 : 1;
     u32 highBits : 26;
+};
+
+struct SpellEffectDword
+{
+    u32 value;
+};
+
+struct SpellEffectCopyOverlay
+{
+    u8 pad000[0x208];
+    SpellEffectDword field208;
+    SpellEffectDword field20C;
+    u8 pad210[0x28];
+    SpellEffectDword field238;
+    SpellEffectDword field23C;
+    u8 pad240[0x28];
+    SpellEffectDword field268;
+    u8 pad26C[0xC];
+    SpellEffectDword field278;
+    u8 pad27C[0x98];
+    SpellEffectDword field314;
+    u8 pad318[0x8];
+    SpellEffectDword field320;
+    u8 pad324[0x8];
+    SpellEffectDword field32C;
 };
 // clang-format off
 // TODO: stop clang-format from fucking with whitespace formatting
@@ -429,7 +457,7 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
 
     if (((this->flags >> 8) & 1) != 0)
     {
-        this->unknown_0F8 = 0;
+        this->rewardEffect = NULL;
         g_Gui.gui_fun_00437edc(this->bonusAward);
         g_GameManager.AddScore(this->bonusAward);
         this->flags &= ~0x100;
@@ -847,7 +875,7 @@ void Spellcard::EndSpell()
                 *reinterpret_cast<f32 *>(this->spellEffect + 0x334) = 6.0f;
                 *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x338) = 0;
 
-                this->unknown_0F8 = reinterpret_cast<i32>(this->spellEffect);
+                this->rewardEffect = this->spellEffect;
                 this->spellEffect = NULL;
                 g_SoundPlayer.PlaySoundByIdx(SOUND_SPELL_CAPTURE, 0);
             }
@@ -897,6 +925,230 @@ void Spellcard::spellcard_fun_00416b10(i32 amount)
     }
 }
 
+
+// FUNCTION: th08 0x416b90
+#pragma var_order(itemCount, i, this)
+i32 Spellcard::OnUpdateImpl()
+{
+    i32 i;
+    i32 itemCount;
+
+    if (g_GameManager.flags.unk10 || g_EclScriptedGlobalUpdateFreeze)
+    {
+        return 1;
+    }
+
+    if ((this->flags & 1) != 0)
+    {
+        if ((*reinterpret_cast<u32 *>(this->activeEnemy + 0x3324) & 1) == 0 ||
+            this->enemySpellFlagsSnapshot != *reinterpret_cast<u32 *>(this->activeEnemy + 0x2E0C))
+        {
+            this->spellcard_fun_00416af0();
+        }
+
+        if (EclOperands::g_TargetPlayerPosition017D61AC.x >= 64.0f &&
+            EclOperands::g_TargetPlayerPosition017D61AC.y < 64.0f)
+        {
+            if (reinterpret_cast<u8 *>(&this->mixColor)[3] > 0x20)
+            {
+                reinterpret_cast<u8 *>(&this->mixColor)[3] -= 4;
+            }
+        }
+        else if (reinterpret_cast<u8 *>(&this->mixColor)[3] < 0x80)
+        {
+            reinterpret_cast<u8 *>(&this->mixColor)[3] += 4;
+        }
+
+        if (((this->flags >> 2) & 1) != 0)
+        {
+            if (((this->flags >> 11) & 1) == 0 &&
+                ((*reinterpret_cast<u32 *>(this->activeEnemy + 0x3324) >> 27) & 1) == 0)
+            {
+                this->bonusProgress -=
+                    (i32)((f64)((u32)this->bonusCounter / 60u) * g_EclGameTimeScale);
+                this->bonusProgress -= (u32)this->bonusProgress % 10u;
+            }
+        }
+        else if (*reinterpret_cast<i16 *>(this->spellEffect + 0x214) == 221)
+        {
+            g_AsciiManagerDemoAnm0577EB4->SetSprite(reinterpret_cast<AnmVm *>(this->spellEffect), 222);
+            *reinterpret_cast<f32 *>(this->spellEffect + 0x270) = 4.0f;
+            *reinterpret_cast<f32 *>(this->spellEffect + 0x18) = 4.0f;
+        }
+
+        if (*reinterpret_cast<f32 *>(this->spellEffect + 0x334) != 0.0f)
+        {
+            *reinterpret_cast<u32 *>(this->spellEffect + 0x32C) =
+                *reinterpret_cast<u32 *>(this->spellEffect + 0x20C);
+            if (*reinterpret_cast<f32 *>(this->spellEffect + 0x32C) == 0.0f)
+            {
+                *reinterpret_cast<f32 *>(this->spellEffect + 0x334) = 0.0f;
+            }
+        }
+
+        if ((i32)*reinterpret_cast<ZunTimer *>(this->spellEffect + 0xA4) == 0)
+        {
+            *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x50) = 0;
+            *reinterpret_cast<ZunTimer *>(this->spellEffect + 0xA4) =
+                *reinterpret_cast<i32 *>(this->activeEnemy + 0x3378) - 100;
+            *reinterpret_cast<u8 *>(this->spellEffect + 0xF8) = 0;
+            *reinterpret_cast<f32 *>(this->spellEffect + 0x238) = 256.0f;
+            *reinterpret_cast<f32 *>(this->spellEffect + 0x244) = 8.0f;
+            *reinterpret_cast<f32 *>(this->spellEffect + 0x23C) = 0.0f;
+            *reinterpret_cast<f32 *>(this->spellEffect + 0x248) = 0.0f;
+        }
+
+        if (((this->flags >> 6) & 1) == 0)
+        {
+        *reinterpret_cast<Float3 *>(this->spellEffect + 0x2E0) =
+            ((*reinterpret_cast<Float3 *>(this->activeEnemy + 0x2D34) +
+              *reinterpret_cast<Float3 *>(this->activeEnemy + 0x2D40)) -
+             *reinterpret_cast<Float3 *>(this->spellEffect + 0x2E0)) /
+                16.0f +
+            *reinterpret_cast<Float3 *>(this->spellEffect + 0x2E0);
+        *reinterpret_cast<f32 *>(this->spellEffect + 0x2E8) = 0.0f;
+        }
+
+        *reinterpret_cast<f32 *>(this->spellEffect + 0x318) = AddNormalizeAngle(
+            *reinterpret_cast<f32 *>(this->spellEffect + 0x318),
+            this->FUN_00417860() ? -0.031415928f : 0.015707964f);
+    }
+    else if (this->rewardEffect != NULL)
+    {
+        if (*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) == 30)
+        {
+            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x80) = 0;
+            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0xD4) = 20;
+            *reinterpret_cast<u8 *>(this->rewardEffect + 0xFC) = 1;
+            *reinterpret_cast<u32 *>(this->rewardEffect + 0x268) =
+                *reinterpret_cast<u32 *>(this->rewardEffect + 0x320);
+            *reinterpret_cast<f32 *>(this->rewardEffect + 0x270) = 64.0f;
+            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x50) = 0;
+            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0xA4) = 100;
+            *reinterpret_cast<u8 *>(this->rewardEffect + 0xF8) = 4;
+            *reinterpret_cast<u32 *>(this->rewardEffect + 0x238) =
+                *reinterpret_cast<u32 *>(this->rewardEffect + 0x314);
+            *reinterpret_cast<f32 *>(this->rewardEffect + 0x244) = 0.0f;
+            *reinterpret_cast<u32 *>(this->rewardEffect + 0x23C) =
+                *reinterpret_cast<u32 *>(this->rewardEffect + 0x32C);
+            *reinterpret_cast<f32 *>(this->rewardEffect + 0x248) = 60.0f;
+            *reinterpret_cast<u32 *>(this->rewardEffect + 0x208) =
+                *reinterpret_cast<u32 *>(this->rewardEffect + 0x314);
+            *reinterpret_cast<u32 *>(this->rewardEffect + 0x20C) =
+                *reinterpret_cast<u32 *>(this->rewardEffect + 0x32C);
+        }
+        else if (*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) == 60)
+        {
+            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x80) = 0;
+            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0xD4) = 70;
+            *reinterpret_cast<u8 *>(this->rewardEffect + 0xFC) = 1;
+            *reinterpret_cast<u32 *>(this->rewardEffect + 0x268) =
+                *reinterpret_cast<u32 *>(this->rewardEffect + 0x320);
+            *reinterpret_cast<f32 *>(this->rewardEffect + 0x270) = 0.0f;
+        }
+        else if (*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) == 130)
+        {
+            *reinterpret_cast<u8 *>(this->rewardEffect + 0x350) = 0;
+            this->rewardEffect = NULL;
+            g_Gui.gui_fun_00437edc(this->bonusAward);
+            g_GameManager.AddScore(this->bonusAward);
+            this->flags &= ~0x100;
+            if (this->pendingTimeOrbs > 0)
+            {
+                g_GameManager.AddTimeOrbs(this->pendingTimeOrbs);
+                g_GameManager.globals->pointItemValue += this->pendingTimeOrbs * 10;
+                this->pendingTimeOrbs = 0;
+            }
+        }
+
+        if (this->rewardEffect != NULL)
+        {
+            if (*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) <= 80)
+            {
+                *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0) =
+                    (reinterpret_cast<const Float3 &>(EclOperands::g_TargetPlayerPosition017D61AC) -
+                     *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0)) /
+                        16.0f +
+                    *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0);
+                *reinterpret_cast<f32 *>(this->rewardEffect + 0x2E8) = 0.0f;
+                *reinterpret_cast<f32 *>(this->rewardEffect + 0x318) = AddNormalizeAngle(
+                    *reinterpret_cast<f32 *>(this->rewardEffect + 0x318), -0.015707964f);
+            }
+            else
+            {
+                *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0) =
+                    (reinterpret_cast<const Float3 &>(EclOperands::g_TargetPlayerPosition017D61AC) -
+                     *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0)) /
+                        4.0f +
+                    *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0);
+                *reinterpret_cast<f32 *>(this->rewardEffect + 0x2E8) = 0.0f;
+                *reinterpret_cast<f32 *>(this->rewardEffect + 0x318) = AddNormalizeAngle(
+                    *reinterpret_cast<f32 *>(this->rewardEffect + 0x318), -0.05235988f);
+            }
+
+            *reinterpret_cast<u32 *>(this->rewardEffect + 0x32C) =
+                *reinterpret_cast<u32 *>(this->rewardEffect + 0x20C);
+
+            if (*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) > 8 &&
+                this->pendingTimeOrbs > 0)
+            {
+                D3DXVECTOR3 itemPosition;
+                f32 angle =
+                    ((f32)*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) - 10.0f) *
+                        6.2831855f / 40.0f -
+                    1.5707964f;
+                angle = AddNormalizeAngle(angle, 0.0f);
+                reinterpret_cast<Float3 *>(&itemPosition)->FromAngleMagnitude(angle, 128.0f);
+                *reinterpret_cast<Float3 *>(&itemPosition) +=
+                    *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0);
+                itemPosition.z = 0.0f;
+
+                itemCount = this->pendingTimeOrbs > 7 ? 7 : this->pendingTimeOrbs;
+                for (i = 0; i < itemCount; i++)
+                {
+                    g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&itemPosition), ITEM_TIME2,
+                                            ITEM_STATE_DEFAULT);
+                }
+                this->pendingTimeOrbs -= itemCount;
+
+                angle = AddNormalizeAngle(angle, 3.1415927f);
+                reinterpret_cast<Float3 *>(&itemPosition)->FromAngleMagnitude(angle, 128.0f);
+                *reinterpret_cast<Float3 *>(&itemPosition) +=
+                    *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0);
+                itemPosition.z = 0.0f;
+
+                itemCount = this->pendingTimeOrbs > 7 ? 7 : this->pendingTimeOrbs;
+                for (i = 0; i < 6; i++)
+                {
+                    g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&itemPosition), ITEM_TIME2,
+                                            ITEM_STATE_DEFAULT);
+                }
+                this->pendingTimeOrbs -= itemCount;
+                if (this->pendingTimeOrbs < 0)
+                {
+                    this->pendingTimeOrbs = 0;
+                }
+            }
+        }
+    }
+
+    g_AnmManager->ExecuteScript(&this->vm120);
+    g_AnmManager->ExecuteScript(&this->vm668);
+    g_AnmManager->ExecuteScript(&this->vmBB0);
+    g_AnmManager->ExecuteScript(&this->vm10F8);
+    g_AnmManager->ExecuteScript(&this->vm1B88);
+    g_AnmManager->ExecuteScript(&this->vm3C4);
+    g_AnmManager->ExecuteScript(&this->vm90C);
+    g_AnmManager->ExecuteScript(&this->vmE54);
+    g_AnmManager->ExecuteScript(&this->vm139C);
+    g_AnmManager->ExecuteScript(&this->vm1640);
+    g_AnmManager->ExecuteScript(&this->vm18E4);
+    g_AnmManager->ExecuteScript(&this->vm1E2C);
+    g_AnmManager->ExecuteScript(&this->vm2374);
+    this->timer108--;
+
+    return 1;
+}
 
 // FUNCTION: th08 0x4178c0
 #pragma var_order(savedPos, catk, i, value, score, divisor, leading, this)

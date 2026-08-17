@@ -7,6 +7,17 @@ namespace th08
 namespace EclOperands
 {
 
+struct Vector3
+{
+    f32 x;
+    f32 y;
+    f32 z;
+
+    Vector3 operator-(const Vector3 &other) const;
+    f32 Length() const;
+};
+extern Vector3 g_TargetPlayerPosition017D61AC;
+
 // Private byte overlay for target-observed Enemy offsets. The public Enemy
 // layout remains intentionally incomplete until its owning lane proves it.
 struct EnemyOverlay

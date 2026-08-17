@@ -195,6 +195,22 @@ TH08 matches; use them as diagnostics, not as permission to force bytes:
   `movsx`, while the target's `movzx` is evidence for an unsigned value context.
   Cast the read to `u8` (or recover the field type) instead of masking the result
   after sign extension.
+- Keep nested condition ownership intact when an `else if` belongs only to the
+  outer condition. Flattening `if (gate) { if (a && b) body; } else if (c)` into
+  `if (gate && a && b) body; else if (c)` changes behavior when `gate` is true
+  but `a` or `b` is false, and VC7 can expose the mistake as a near conditional
+  jump where the target has a short jump to an outer merge trampoline.
+- For class-valued arithmetic, algebraic commutativity does not imply identical
+  VC7 hidden-return-buffer codegen. In the matched spell-effect interpolation,
+  `delta / scale + base` lets the division temporary stay in `this` for the final
+  `operator+` while `base` is pre-pushed as the RHS; spelling the equivalent
+  `base + delta / scale` changes temporary creation and call setup. Preserve the
+  target's operand order even for mathematically commutative operators.
+- An empty SDK/class default constructor can be target-visible under `/Od`. A
+  plain declaration such as `D3DXVECTOR3 position;` emitted the target's call to
+  the empty constructor, while copy-initializing the same local from an existing
+  vector elided that call and emitted three dword copies. Distinguish declaration
+  from copy initialization when the target shows constructor timing explicitly.
 
 For a function whose authored body is followed by compiler-owned tables, first
 prove the authored extent independently, then set `compare_size` to the COFF

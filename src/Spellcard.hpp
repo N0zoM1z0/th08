@@ -267,7 +267,7 @@ struct Spellcard
     char spellCommentLine1[64];      // +0x074
     char spellCommentLine2[64];      // +0x0B4
     u8 *spellEffect;                 // +0x0F4
-    i32 unknown_0F8;                 // +0x0F8
+    u8 *rewardEffect;                // +0x0F8
     i32 bonusProgress;               // +0x0FC
     i32 bonusCounter;                // +0x100
     i32 bonusAward;                  // +0x104
@@ -309,6 +309,7 @@ struct Spellcard
     void EndSpell();
     void spellcard_fun_00416af0();
     void spellcard_fun_00416b10(i32 amount);
+    i32 OnUpdateImpl();
     i32 OnDrawImpl();
 
     void SetStoredVector(f32 x, f32 y, f32 z);

@@ -8,15 +8,6 @@ namespace EclOperands
 // These private overlays expose only behavior and offsets observed in the
 // hash-attested TH08 1.00d target. Their owning subsystem lanes can replace
 // the address-based names once the corresponding public layouts are proven.
-struct Vector3
-{
-    f32 x;
-    f32 y;
-    f32 z;
-
-    Vector3 operator-(const Vector3 &other) const;
-    f32 Length() const;
-};
 
 struct TargetRngOverlay
 {
