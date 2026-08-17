@@ -764,8 +764,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
 
     case 63:
-        F32At(enemy, 0x2D34) = ReadFloatRawArg(enemy, instruction, 0);
-        F32At(enemy, 0x2D38) = ReadFloatRawArg(enemy, instruction, 1);
+        F32At(enemy, 0x2D34) = ((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0)));
+        F32At(enemy, 0x2D38) = ((instruction->operandFlags & (1U << 1)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
         F32At(enemy, 0x2D3C) = 0.0f;
         ClampEnemyPosition(enemy);
         break;
@@ -773,26 +773,22 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         EclHelpers::ConfigureRelativeMotion(enemy, instruction);
         break;
     case 65:
-        F32At(enemy, 0x2D94) = AddNormalizeAngle(ReadFloatRawArg(enemy, instruction, 0), 0.0f);
-        F32At(enemy, 0x2DA8) = ReadFloatRawArg(enemy, instruction, 1);
+        F32At(enemy, 0x2D94) = AddNormalizeAngle(((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0))), 0.0f);
+        F32At(enemy, 0x2DA8) = ((instruction->operandFlags & (1U << 1)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
         U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x3000U) | 0x1000U;
         I32At(enemy, 0x2DE8) = 0;
         *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) = 0;
         break;
     case 66:
-        lhsInt = ReadInt(enemy, instruction, 0);
-        if (lhsInt <= 0)
+        if (ReadInt(enemy, instruction, 0) <= 0)
         {
-            F32At(enemy, 0x2D94) = AddNormalizeAngle(ReadFloat(enemy, instruction, 2), 0.0f);
-            F32At(enemy, 0x2DA8) = ReadFloatRawArg(enemy, instruction, 3);
-            SetMovementState1(enemy);
+            F32At(enemy, 0x2D94) = AddNormalizeAngle(((instruction->operandFlags & (1U << 2)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))), 0.0f);
+            F32At(enemy, 0x2DA8) = ((instruction->operandFlags & (1U << 3)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
+            U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & 0xFFFFCFFFU) | 0x1000U;
             I32At(enemy, 0x2DE8) = 0;
             *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) = 0;
         }
-        if (lhsInt > 0)
-        {
-            BeginTimedMove(enemy, instruction, services);
-        }
+        else EclHelpers::ConfigurePolarMotion(enemy, instruction);
         break;
     case 67:
         BeginBoundaryAwareMove(enemy, instruction);
@@ -806,22 +802,22 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     case 68:
         F32At(enemy, 0x2D94) =
             AddNormalizeAngle(
-                ReadFloatRawArg(enemy, instruction, 0),
+                ((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0))),
                 EclOperands::g_TargetPlayer017D5EF8.AngleToPlayer(
                     reinterpret_cast<EclOperands::TargetVector3 *>(
                         Bytes(enemy) + 0x2D34)));
-        F32At(enemy, 0x2DA8) = ReadFloatRawArg(enemy, instruction, 1);
+        F32At(enemy, 0x2DA8) = ((instruction->operandFlags & (1U << 1)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
         break;
     case 69:
         if (ReadInt(enemy, instruction, 0) <= 0)
         {
             F32At(enemy, 0x2D94) =
                 AddNormalizeAngle(
-                    ReadFloatRawArg(enemy, instruction, 2),
+                    ((instruction->operandFlags & (1U << 2)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))),
                     EclOperands::g_TargetPlayer017D5EF8.AngleToPlayer(
                         reinterpret_cast<EclOperands::TargetVector3 *>(
                             Bytes(enemy) + 0x2D34)));
-            F32At(enemy, 0x2DA8) = ReadFloatRawArg(enemy, instruction, 3);
+            F32At(enemy, 0x2DA8) = ((instruction->operandFlags & (1U << 3)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
             U32At(enemy, 0x3324) =
                 (U32At(enemy, 0x3324) & 0xFFFFCFFFU) | 0x1000U;
             // The target resolves operand 0 again before timer assignment.
@@ -835,17 +831,17 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         break;
 
     case 70:
-        F32At(enemy, 0x2D98) = ReadFloatRawArg(enemy, instruction, 0);
+        F32At(enemy, 0x2D98) = ((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0)));
         U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & 0xFFFFCFFFU) | 0x1000U;
         break;
     case 71:
-        F32At(enemy, 0x2DAC) = ReadFloatRawArg(enemy, instruction, 0);
+        F32At(enemy, 0x2DAC) = ((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0)));
         U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & 0xFFFFCFFFU) | 0x1000U;
         break;
     case 72:
         *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) =
             (I32At(enemy, 0x2DE8) = ReadInt(enemy, instruction, 0));
-        F32At(enemy, 0x2DD0) = ReadFloatRawArg(enemy, instruction, 1);
+        F32At(enemy, 0x2DD0) = ((instruction->operandFlags & (1U << 1)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
         F32At(enemy, 0x2DD4) = ((instruction->operandFlags & (1U << 2))
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 2)));
@@ -885,12 +881,12 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     case 74:
         *reinterpret_cast<ZunTimer *>(Bytes(enemy) + 0x2DDC) =
             (I32At(enemy, 0x2DE8) = ReadInt(enemy, instruction, 0));
-        F32At(enemy, 0x2DA0) = ReadFloatRawArg(enemy, instruction, 1);
-        F32At(enemy, 0x2DB4) = ReadFloatRawArg(enemy, instruction, 2);
+        F32At(enemy, 0x2DA0) = ((instruction->operandFlags & (1U << 1)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
+        F32At(enemy, 0x2DB4) = ((instruction->operandFlags & (1U << 2)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 2)));
         U32At(enemy, 0x3324) |= 0x3000U;
         break;
     case 75:
-        F32At(enemy, 0x3340) = ReadFloatRawArg(enemy, instruction, 0);
+        F32At(enemy, 0x3340) = ((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0)));
         F32At(enemy, 0x3344) = ((instruction->operandFlags & (1U << 1))
                 ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
                 : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));

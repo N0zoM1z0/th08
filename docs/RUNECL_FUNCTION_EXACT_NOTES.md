@@ -1123,3 +1123,41 @@ allocator state and independently exact after the preceding physical handler's
 AST is corrected.  Re-test old negative probes after every successful physical
 phase closure; do not preserve a known-wrong x87 false arm based on an older
 allocator state.
+
+## Opcodes 63-76: the full movement phase closes only after opcode 70
+
+After opcodes 34-40 were made byte-exact, the first formal mismatch moved to
+opcode 63.  Restoring individual movement raw-float sites produces several
+stable VC7 phase states; partial fixes are therefore misleading.  The
+source-correct movement chain must be evaluated as one physical sequence.
+
+The target-backed set that closes the phase is:
+
+- op63: both unresolved float arms are raw dword copies;
+- op65: both unresolved float arms are raw dword copies;
+- op66: direct `if (ReadInt(0) <= 0) ... else ConfigurePolarMotion(...)`, raw
+  operands 2/3, inline 0x3324 state update, direct timer reset;
+- op68: both unresolved float arms raw;
+- op69: operands 2/3 raw (with the already reconstructed target control flow);
+- **op70: operand 0 raw**;
+- op71: operand 0 raw;
+- op72: operand 1 raw (2-6 were already explicit); chained timer assignment;
+- op73: existing explicit raw form;
+- op74: operands 1/2 raw;
+- op75: operand 0 raw.
+
+Without opcode 70, the otherwise complete target chain still reports physical
+-3 / absolute 9, with residual +/-1/+/-2 spans across op71-79.  Opcode 70's
+target disassembly clearly has the same raw-dword false branch, and adding that
+single missing source correction makes the entire chain close naturally:
+
+- shape remains exactly zero;
+- all movement handler span deltas disappear;
+- relocation-replayed strict diff falls **688 -> 303**;
+- the first formal mismatch moves from opcode 63 to opcode 117;
+- byte-exact spans rise to 144 / 162.
+
+Reusable lesson: for VC7 phase chains, a seemingly tiny unresolved-arm source
+shape can be the final phase toggle for many later handlers.  When a long set of
+target-backed changes leaves only distributed +/-1 deltas, verify every raw
+branch in physical order before reverting any known-correct reconstruction.
