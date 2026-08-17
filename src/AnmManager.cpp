@@ -2789,9 +2789,30 @@ out:
 }
 
 
-// STUB: th08 0x45e960
+// FUNCTION: th08 0x45e960
 void AnmManager::DrawPlayerBullet(AnmVm *vm)
 {
+    switch (vm->playerBulletHitAnimationType)
+    {
+    case 0:
+        this->DrawNoRotation(vm);
+        break;
+    case 1:
+        this->DrawNoRotationNoRound(vm);
+        break;
+    case 2:
+        this->Draw2D(vm);
+        break;
+    case 3:
+        this->FUN_00463470(vm);
+        break;
+    case 4:
+        this->FUN_00463cf0(vm);
+        break;
+    case 5:
+        this->FUN_00464070(vm);
+        break;
+    }
 }
 
 }; // Namespace th08

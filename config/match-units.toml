@@ -76695,3 +76695,89 @@ offset = 69
 type = "REL32"
 symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
 target = 0x0040B8A0
+
+[[units]]
+name = "anm-draw-player-bullet"
+object = "build/objdiff/reimpl/AnmManager.obj"
+symbol = "th08::AnmManager::DrawPlayerBullet"
+target_address = 0x0045E960
+size = 125
+compare_size = 149
+
+[[units.relocations]]
+offset = 33
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045E9DD
+
+[[units.relocations]]
+offset = 45
+type = "REL32"
+symbol = "th08::AnmManager::DrawNoRotation"
+target = 0x00462FF0
+
+[[units.relocations]]
+offset = 59
+type = "REL32"
+symbol = "th08::AnmManager::DrawNoRotationNoRound"
+target = 0x00463800
+
+[[units.relocations]]
+offset = 73
+type = "REL32"
+symbol = "th08::AnmManager::Draw2D"
+target = 0x00463210
+
+[[units.relocations]]
+offset = 87
+type = "REL32"
+symbol = "th08::AnmManager::FUN_00463470"
+target = 0x00463470
+
+[[units.relocations]]
+offset = 101
+type = "REL32"
+symbol = "th08::AnmManager::FUN_00463cf0"
+target = 0x00463CF0
+
+[[units.relocations]]
+offset = 115
+type = "REL32"
+symbol = "th08::AnmManager::FUN_00464070"
+target = 0x00464070
+
+[[units.relocations]]
+offset = 125
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045E985
+
+[[units.relocations]]
+offset = 129
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045E993
+
+[[units.relocations]]
+offset = 133
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045E9A1
+
+[[units.relocations]]
+offset = 137
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045E9AF
+
+[[units.relocations]]
+offset = 141
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045E9BD
+
+[[units.relocations]]
+offset = 145
+type = "DIR32"
+symbol = "$L*"
+target = 0x0045E9CB
