@@ -804,3 +804,11 @@ address,name,size,status,match_percent,unit,evidence
 0x0042BEA0,th08::Enemy::FUN_0042bea0,734,matching,100.00,enemy-drop-items,python3 scripts/compare-function.py enemy-drop-items --json
 0x0044C650,th08::Player::FUN_0044c650,1352,matching,100.00,player-deathbomb-transition,python3 scripts/compare-function.py player-deathbomb-transition --json
 0x0044CBA0,th08::Spellcard::FUN_0044cba0,69,matching,100.00,spellcard-reset-deathbomb-state,python3 scripts/compare-function.py spellcard-reset-deathbomb-state --json
+0x0042A410,th08::BulletSpawnDescriptor::BulletSpawnDescriptor,52,matching,100.00,bullet-spawn-descriptor-ctor,python3 scripts/compare-function.py bullet-spawn-descriptor-ctor --json
+0x0042F5F0,th08::BulletManager::FUN_0042f5f0,2138,matching,100.00,bullet-manager-spawn-single-bullet,python3 scripts/compare-function.py bullet-manager-spawn-single-bullet --json
+0x0042FE70,th08::CopyBulletAnmVmCore,33,matching,100.00,bullet-copy-anm-vm-core,python3 scripts/compare-function.py bullet-copy-anm-vm-core --json
+0x0042FEA0,th08::SelectBulletSprite,204,matching,100.00,bullet-select-spawn-sprite,python3 scripts/compare-function.py bullet-select-spawn-sprite --json
+0x0042FF70,th08::Float3::operator-=,67,matching,100.00,float3-subtract-assign,python3 scripts/compare-function.py float3-subtract-assign --json
+0x0042FFC0,th08::Bullet::FUN_0042ffc0,2075,matching,100.00,bullet-transform-program-runner,python3 scripts/compare-function.py bullet-transform-program-runner --json
+0x00430E10,th08::BulletManager::FUN_00430e10,259,matching,100.00,bullet-manager-spawn-pattern-dispatch,python3 scripts/compare-function.py bullet-manager-spawn-pattern-dispatch --json
+0x00431240,th08::BulletManager::OnUpdate,3862,matching,100.00,bullet-manager-on-update-reconstructed,python3 scripts/compare-function.py bullet-manager-on-update-reconstructed --json

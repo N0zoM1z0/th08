@@ -130,8 +130,16 @@ def apply_relocations(
     def stable_symbol(name: str) -> str:
         # VC7 renumbers compiler-owned local labels when an earlier function in
         # the same translation unit changes. Their relocation offset and
-        # resolved target are stable evidence; the numeric $L suffix is not.
-        return "$L*" if name.startswith("$L") else name
+        # resolved target are stable evidence; the generated numeric suffix is
+        # not. Preserve a named local label's semantic stem (for example
+        # $updateBullet$) while ignoring only its unstable trailing number.
+        if name.startswith("$L"):
+            return "$L*"
+        if name.startswith("$"):
+            stem, separator, suffix = name.rpartition("$")
+            if separator and stem and suffix.isdigit():
+                return stem + "$*"
+        return name
 
     normalized_expected = []
     for relocation in expected:

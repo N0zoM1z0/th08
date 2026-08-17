@@ -6,6 +6,8 @@
 namespace th08
 {
 
+struct BulletSpawnDescriptor;
+
 i32 IsBulletManagerAnmReleaseRequired();
 DIFFABLE_EXTERN(i32, g_BulletManagerAnmReleaseRequired);
 
@@ -51,6 +53,7 @@ struct Bullet
 {
     Bullet();
     void FUN_00432170();
+    void FUN_0042ffc0();
     void FUN_00432390();
     void FUN_004325a0();
     void FUN_004326e0();
@@ -96,6 +99,8 @@ struct BulletManager
     void RemoveAllBullets(i32 mode);
     i32 DespawnBullets(i32 maxScore, i32 awardLaserItems);
     void FUN_004321b0();
+    i32 FUN_0042f5f0(BulletSpawnDescriptor *descriptor, i32 index1, i32 index2, f32 angleToPlayer);
+    i32 FUN_00430e10(BulletSpawnDescriptor *descriptor);
 
     static ZunResult RegisterChain(char *bulletAnmPath);
     static ChainCallbackResult OnUpdate(BulletManager *bulletManager);

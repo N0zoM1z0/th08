@@ -803,3 +803,11 @@ th08::EclOperands::EnemyOverlay::FUN_0042adb0
 th08::Enemy::FUN_0042bea0
 th08::Player::FUN_0044c650
 th08::Spellcard::FUN_0044cba0
+th08::BulletSpawnDescriptor::BulletSpawnDescriptor
+th08::BulletManager::FUN_0042f5f0
+th08::CopyBulletAnmVmCore
+th08::SelectBulletSprite
+th08::Float3::operator-=
+th08::Bullet::FUN_0042ffc0
+th08::BulletManager::FUN_00430e10
+th08::BulletManager::OnUpdate

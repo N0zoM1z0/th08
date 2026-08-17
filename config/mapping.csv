@@ -384,7 +384,7 @@ th08::ZunMemory::RemoveFromRegistry,0x429df0,0xd,__thiscall,,void,ZunMemory*,voi
 th08::EnemyManager::Initialize,0x429e00,0x405,__thiscall,,void,EnemyManager*
 th08::EnemyManager::EnemyManager,0x42a210,0x61,__thiscall,,void*,EnemyManager*
 FUN_0042a280,0x42a280,0x18a,unknown,,u8
-FUN_0042a410,0x42a410,0x34,unknown,,u8
+th08::BulletSpawnDescriptor::BulletSpawnDescriptor,0x42a410,0x34,__thiscall,,BulletSpawnDescriptor*,BulletSpawnDescriptor*
 FUN_0042a450,0x42a450,0x3e,unknown,,u8
 FUN_0042a490,0x42a490,0x21,unknown,,u8
 FUN_0042a4c0,0x42a4c0,0x19,unknown,,u8
@@ -434,18 +434,18 @@ th08::BulletTypeSprites::BulletTypeSprites,0x42f4a0,0x5c,__thiscall,,BulletTypeS
 th08::Bullet::Bullet,0x42f500,0x73,__thiscall,,Bullet*,Bullet*
 th08::Laser::Laser,0x42f580,0x40,__thiscall,,Laser*,Laser*
 th08::BulletExState::BulletExState,0x42f5c0,0x21,__thiscall,,BulletExState*,BulletExState*
-FUN_0042f5f0,0x42f5f0,0x85a,unknown,,u8,u8,u8,u8,u8
-FUN_0042fe70,0x42fe70,0x21,unknown,,u8
-FUN_0042fea0,0x42fea0,0xcc,unknown,,u8,u8,u8
-FUN_0042ff70,0x42ff70,0x43,unknown,,u8,u8
-FUN_0042ffc0,0x42ffc0,0x81b,unknown,,u8
+th08::BulletManager::FUN_0042f5f0,0x42f5f0,0x85a,__thiscall,,i32,BulletManager*,BulletSpawnDescriptor*,i32,i32,f32
+th08::CopyBulletAnmVmCore,0x42fe70,0x21,__fastcall,,void,AnmVm*,const AnmVm*
+th08::SelectBulletSprite,0x42fea0,0xcc,__fastcall,,void,AnmVm*,AnmVm*,AnmVm*,i32
+th08::Float3::operator-=,0x42ff70,0x43,__thiscall,,Float3*,Float3*,const Float3*
+th08::Bullet::FUN_0042ffc0,0x42ffc0,0x81b,__thiscall,,void,Bullet*
 th08::BulletManager::RemoveAllBullets,0x430830,0x26c,__thiscall,,void,BulletManager*,i32
 th08::BulletManager::DespawnBullets,0x430aa0,0x28b,__thiscall,,i32,BulletManager*,i32,i32
 FUN_00430d30,0x430d30,0xd6,unknown,,u8,u8,u8
-FUN_00430e10,0x430e10,0x103,unknown,,u8,u8
+th08::BulletManager::FUN_00430e10,0x430e10,0x103,__thiscall,,i32,BulletManager*,BulletSpawnDescriptor*
 FUN_00430f20,0x430f20,0x27f,unknown,,u8,u8
 th08::BulletManager::RegisterChain,0x4311a0,0x98,__fastcall,,ZunResult,char*
-FUN_00431240,0x431240,0xf16,unknown,,u8
+th08::BulletManager::OnUpdate,0x431240,0xf16,__fastcall,,ChainCallbackResult,BulletManager*
 th08::Bullet::FUN_00432170,0x432170,0x37,__thiscall,,void,Bullet*
 th08::BulletManager::FUN_004321b0,0x4321b0,0x59,__thiscall,,void,BulletManager*
 th08::Bullet::FUN_00432210,0x432210,0x99,__thiscall,,void,Bullet*

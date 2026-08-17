@@ -197,3 +197,5 @@ th08::g_EnemyAttachedTimer30,0x18b89c8,global
 th08::g_EnemyAttachedTimer0,0x18b89e0,global
 th08::g_PlayerNormalBombCount,0x164cfa8,global
 th08::g_PlayerDeathbombCount,0x164cfac,global
+th08::g_BulletSpriteOffsetSmall,0x4c70f8,global
+th08::g_BulletSpriteOffsetMedium,0x4c7138,global
