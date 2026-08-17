@@ -53552,7 +53552,7 @@ name = "item-collect-point"
 object = "build/ItemManager.obj"
 symbol = "?CollectPoint@Item@th08@@QAEXXZ"
 target_address = 0x00440E40
-size = 0x1DA
+size = 0x1D8
 
 [[units.relocations]]
 offset = 0xC
@@ -53705,55 +53705,52 @@ symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
-offset = 0x19E
+offset = 0x19C
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
-offset = 0x1A3
+offset = 0x1A1
 type = "REL32"
 symbol = "?CollectExtend@GameManager@th08@@QAEXXZ"
 target = 0x00439B29
 
 [[units.relocations]]
-offset = 0x1A8
+offset = 0x1A6
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
-offset = 0x1B4
+offset = 0x1B2
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
-offset = 0x1BE
+offset = 0x1BC
 type = "DIR32"
 symbol = "?g_MaxValuePointItemsCollected@th08@@3HA"
 target = 0x0164CF9C
 
 [[units.relocations]]
-offset = 0x1C6
+offset = 0x1C4
 type = "DIR32"
 symbol = "?g_MaxValuePointItemsCollected@th08@@3HA"
 target = 0x0164CF9C
 
 [[units.relocations]]
-offset = 0x1CB
+offset = 0x1C9
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
-offset = 0x1D0
+offset = 0x1CE
 type = "REL32"
 symbol = "?UpdateAntiTamper@GameManager@th08@@QAEXXZ"
 target = 0x00406E50
-
-# Ledger name: th08::Item::CollectPointSmall
-# Evidence: source-emitted member in ItemManager.cpp.
 [[units]]
 name = "item-collect-point-small"
 object = "build/ItemManager.obj"

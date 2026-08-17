@@ -235,35 +235,17 @@ increaseSubrank:
 }
 
 // FUNCTION: th08 0x440e40
+#pragma var_order(pointItemValueBase, currentPointItemValue)
 void Item::CollectPoint()
 {
-    i32 currentPointItemValue;
-    i32 isAbovePointLine;
-    i32 pointItemValue;
     i32 pointItemValueBase = g_GameManager.globals->pointItemValue;
+    i32 currentPointItemValue;
 
-    if (this->currentPosition.y < g_PlayerPrimaryShtFile->pointItemValueLine)
-    {
-        isAbovePointLine = true;
-    }
-    else
-    {
-        isAbovePointLine = false;
-    }
-
-    if (isAbovePointLine)
-    {
-        pointItemValue = pointItemValueBase;
-    }
-    else
-    {
-        pointItemValue =
-            pointItemValueBase / 2 -
-            (i32)(this->currentPosition.y - g_PlayerPrimaryShtFile->pointItemValueLine) *
-                (g_GameManager.globals->pointItemValue / 1000);
-    }
-
-    currentPointItemValue = pointItemValue;
+    currentPointItemValue = static_cast<ZunBool>(this->currentPosition.y < g_PlayerPrimaryShtFile->pointItemValueLine)
+                                ? pointItemValueBase
+                                : pointItemValueBase / 2 -
+                                      (i32)(this->currentPosition.y - g_PlayerPrimaryShtFile->pointItemValueLine) *
+                                          (g_GameManager.globals->pointItemValue / 1000);
     if (this->isMaxValue == 1)
     {
         currentPointItemValue = pointItemValueBase;
@@ -298,13 +280,9 @@ void Item::CollectPoint()
 
     if ((i32)g_GameManager.globals->pointItemExtendsSoFar >= 0)
     {
-        for (;;)
+        while ((ItemManager::UpdatePointItemExtendThreshold(),
+                g_GameManager.globals->pointItemsCollected >= g_GameManager.globals->nextPointItemExtendThreshold))
         {
-            ItemManager::UpdatePointItemExtendThreshold();
-            if (g_GameManager.globals->pointItemsCollected < g_GameManager.globals->nextPointItemExtendThreshold)
-            {
-                break;
-            }
             g_GameManager.CollectExtend();
             g_GameManager.globals->pointItemExtendsSoFar++;
         }

@@ -242,6 +242,17 @@ python3 scripts/typed-re.py 0x004413E0 --compare --json \
 SHA-pinned library archives and relocation policy exist. Unsupported use exits
 nonzero instead of borrowing TH07 assumptions.
 
+
+- If a target stack layout matches a known ternary with compiler-generated boolean/result
+  slots, do not promote those slots into named locals. In `Item::CollectPoint`, two
+  explicit decompiler locals displaced `this`; restoring the same
+  `static_cast<ZunBool>(comparison) ? a : b` shape already proven by
+  `CollectPointSmall` recreated the anonymous `-0x10/-0x14` temporaries naturally.
+- A side-effecting loop condition can explain a target loop head that calls a helper,
+  tests state, branches directly to the exit, and jumps back to the helper after the
+  body. `while ((UpdateThreshold(), value >= threshold))` matched that VC7 shape;
+  spelling it as an infinite loop plus `if (...) break` introduced a two-byte branch
+  trampoline even though the behavior was equivalent.
 - When a switch-bearing function emits compiler-owned jump tables in the same COFF section,
   keep `size` equal to the authored function extent but set `compare_size` to the full
   source-emitted COFF section. This attests jump-table entries and padding without

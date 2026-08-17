@@ -8,8 +8,8 @@ and `config/implemented.csv`.
 
 - Source-present authored functions: **750 / 1,116 (67.20%)**
 - Source-present authored bytes: **264,500 / 459,958 (57.51%)**
-- Exact authored functions: **749 / 1,116 (67.11%)**
-- Exact authored bytes: **264,028 / 459,958 (57.40%)**
+- Exact authored functions: **750 / 1,116 (67.20%)**
+- Exact authored bytes: **264,500 / 459,958 (57.51%)**
 - Inventory-classified library functions: **1,103**
 
 The public SVG follows the TH07 convention and visualizes exact bytes only;
