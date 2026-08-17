@@ -812,3 +812,6 @@ address,name,size,status,match_percent,unit,evidence
 0x0042FFC0,th08::Bullet::FUN_0042ffc0,2075,matching,100.00,bullet-transform-program-runner,python3 scripts/compare-function.py bullet-transform-program-runner --json
 0x00430E10,th08::BulletManager::FUN_00430e10,259,matching,100.00,bullet-manager-spawn-pattern-dispatch,python3 scripts/compare-function.py bullet-manager-spawn-pattern-dispatch --json
 0x00431240,th08::BulletManager::OnUpdate,3862,matching,100.00,bullet-manager-on-update-reconstructed,python3 scripts/compare-function.py bullet-manager-on-update-reconstructed --json
+0x0044AEC0,th08::Player::FUN_0044aec0,4769,matching,100.00,player-main-input-focus-gauge-update,python3 scripts/compare-function.py player-main-input-focus-gauge-update --json
+0x0044D650,th08::Player::AddedCallback,1537,matching,100.00,player-added-callback-reconstructed,python3 scripts/compare-function.py player-added-callback-reconstructed --json
+0x00451640,th08::Player::FUN_00451640,45,matching,100.00,player-clamp-e2ac4-timer,python3 scripts/compare-function.py player-clamp-e2ac4-timer --json

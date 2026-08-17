@@ -98,5 +98,6 @@ C_ASSERT(sizeof(ItemManager) == 0x17b094);
 DIFFABLE_EXTERN(ItemManager, g_ItemManager);
 DIFFABLE_EXTERN(ItemTimeOrbTimerStorage, g_ItemTimeOrbTimerStorage);
 DIFFABLE_EXTERN(Float2, g_ItemAnmManagerScreenShakeOffset);
+DIFFABLE_EXTERN(f32, g_ItemPlayfieldBottom);
 
 }; // namespace th08

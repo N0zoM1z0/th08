@@ -811,3 +811,6 @@ th08::Float3::operator-=
 th08::Bullet::FUN_0042ffc0
 th08::BulletManager::FUN_00430e10
 th08::BulletManager::OnUpdate
+th08::Player::FUN_0044aec0
+th08::Player::AddedCallback
+th08::Player::FUN_00451640

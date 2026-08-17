@@ -28,6 +28,63 @@ DIFFABLE_STATIC(PlayerRawShtFile *, g_PlayerSecondaryShtFile);
 DIFFABLE_STATIC(i32, g_PlayerNormalBombCount);
 DIFFABLE_STATIC(i32, g_PlayerDeathbombCount);
 
+
+DIFFABLE_STATIC(f32, g_PlayerPlayfieldWidth);
+DIFFABLE_STATIC_ARRAY(i16, 6, g_PlayerGaugeBounds);
+
+DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 12, g_PlayerAnmFilenames) = {
+    "player00.anm", "player01.anm", "player02.anm", "player03.anm",
+    "player00.anm", "player00.anm", "player01.anm", "player01.anm",
+    "player02.anm", "player02.anm", "player03.anm", "player03.anm",
+};
+DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 12, g_Player1ShtFiles) = {
+    "ply00a.sht", "ply01a.sht", "ply02a.sht", "ply03a.sht",
+    "ply00a.sht", "ply00as.sht", "ply01a.sht", "ply01as.sht",
+    "ply02a.sht", "ply02as.sht", "ply03a.sht", "ply03as.sht",
+};
+DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 12, g_Player2ShtFile) = {
+    "ply00as.sht", "ply01as.sht", "ply02as.sht", "ply03as.sht",
+    "ply00a.sht", "ply00as.sht", "ply01a.sht", "ply01as.sht",
+    "ply02a.sht", "ply02as.sht", "ply03a.sht", "ply03as.sht",
+};
+
+struct PlayerBombCallbacks
+{
+    u32 callbacks[5];
+};
+DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerBombCallbacks, 24, g_PlayerBombCallbackTable) = {
+    {{0x0040C010,0x00410C40,0x0040C910,0x00410FE0,0x0040D100}},
+    {{0x0040C820,0x0040D950,0x0040D010,0x004113A0,0x0040D310}},
+    {{0x0040E3B0,0x0040D430,0x0040E780,0x0040D970,0x0040D100}},
+    {{0x0040E610,0x0040D950,0x0040E610,0x0040DEE0,0x0040D310}},
+    {{0x0040FCD0,0x0040EE10,0x004103F0,0x0040F570,0x0040D100}},
+    {{0x00410300,0x0040F550,0x00410AC0,0x0040FCB0,0x0040D310}},
+    {{0x00411B10,0x00413140,0x004123D0,0x00413990,0x0040D100}},
+    {{0x00412300,0x00413890,0x00412FA0,0x004142C0,0x0040D310}},
+    {{0x0040C010,0x0040C010,0x0040C910,0x0040C910,0x0040D100}},
+    {{0x0040C820,0x0040C820,0x0040D010,0x0040D010,0x0040D310}},
+    {{0x00410C40,0x00410C40,0x00410FE0,0x00410FE0,0x0040D100}},
+    {{0x0040D950,0x0040D950,0x004113A0,0x004113A0,0x0040D310}},
+    {{0x0040E3B0,0x0040E3B0,0x0040E780,0x0040E780,0x0040D100}},
+    {{0x0040E610,0x0040E610,0x0040E610,0x0040E610,0x0040D310}},
+    {{0x0040D430,0x0040D430,0x0040D970,0x0040D970,0x0040D100}},
+    {{0x0040D950,0x0040D950,0x0040DEE0,0x0040DEE0,0x0040D310}},
+    {{0x0040FCD0,0x0040FCD0,0x004103F0,0x004103F0,0x0040D100}},
+    {{0x00410300,0x00410300,0x00410AC0,0x00410AC0,0x0040D310}},
+    {{0x0040EE10,0x0040EE10,0x0040F570,0x0040F570,0x0040D100}},
+    {{0x0040F550,0x0040F550,0x0040FCB0,0x0040FCB0,0x0040D310}},
+    {{0x00411B10,0x00411B10,0x004123D0,0x004123D0,0x0040D100}},
+    {{0x00412300,0x00412300,0x00412FA0,0x00412FA0,0x0040D310}},
+    {{0x00413140,0x00413140,0x00413990,0x00413990,0x0040D100}},
+    {{0x00413890,0x00413890,0x004142C0,0x004142C0,0x0040D310}},
+};
+struct PlayerOptionCallbackRow
+{
+    void *callbacks[4];
+};
+DIFFABLE_STATIC_ARRAY(PlayerOptionCallbackRow, 12, g_PlayerOptionUpdateCallbacks);
+DIFFABLE_STATIC_ARRAY(PlayerOptionCallbackRow, 12, g_PlayerOptionRenderCallbacks);
+
 extern u16 g_GuiMessageInputCurrent;
 extern u16 g_GuiMessageInputPrevious;
 
@@ -724,9 +781,375 @@ void Player::FUN_0044d180()
             *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x8);
     }
 }
-// STUB: th08 0x44aec0
-void Player::FUN_0044aec0()
+// FUNCTION: th08 0x44aec0
+#pragma var_order(oldDirection, verticalSpeed, horizontalSpeed, focus, option, optionIndex, option2, optionExitIndex, route3Index, historyInitIndex, optionUpdateIndex, gaugeDelta, historyIndex, this)
+i32 Player::FUN_0044aec0()
 {
+    typedef void (__fastcall *OptionUpdateCallback)(Player *, u8 *);
+
+    i32 oldDirection;
+    f32 verticalSpeed;
+    f32 horizontalSpeed;
+    i32 focus;
+    u8 *option;
+    u32 optionIndex;
+    u8 *option2;
+    u32 optionExitIndex;
+    i32 route3Index;
+    u32 historyInitIndex;
+    u32 optionUpdateIndex;
+    i32 gaugeDelta;
+    i32 historyIndex;
+
+    horizontalSpeed = 0.0f;
+    verticalSpeed = 0.0f;
+    oldDirection = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98);
+
+    if ((g_GuiMessageInputCurrent & 0x50) == 0x50)
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 5;
+    else if ((g_GuiMessageInputCurrent & 0x60) == 0x60)
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 7;
+    else if ((g_GuiMessageInputCurrent & 0x90) == 0x90)
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 6;
+    else if ((g_GuiMessageInputCurrent & 0xA0) == 0xA0)
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 8;
+    else if ((g_GuiMessageInputCurrent & 0x20) != 0)
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 2;
+    else if ((g_GuiMessageInputCurrent & 0x10) != 0)
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 1;
+    else if ((g_GuiMessageInputCurrent & 0x40) != 0)
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 3;
+    else if ((g_GuiMessageInputCurrent & 0x80) != 0)
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 4;
+    else
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 0;
+
+    focus = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFDC)
+                ? (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) & 1)
+                : (g_GuiMessageInputCurrent & 4);
+
+    if (focus)
+    {
+        if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) != 1)
+        {
+            if (g_TargetByte0164D0B1 <= 3)
+            {
+                option = reinterpret_cast<u8 *>(this) + 0x40C;
+                for (optionIndex = 0; optionIndex < 4; optionIndex++, option += 0x2F4)
+                {
+                    memset(option, 0, 0x2F4);
+                    *reinterpret_cast<void **>(option + 0x2EC) =
+                        reinterpret_cast<void *(*)[4]>(0x004C7D40)[g_TargetByte0164D0B1][optionIndex];
+                    *reinterpret_cast<void **>(option + 0x2F0) =
+                        reinterpret_cast<void *(*)[4]>(0x004C7E10)[g_TargetByte0164D0B1][optionIndex];
+                    if (*reinterpret_cast<void **>(option + 0x2EC) != NULL)
+                    {
+                        *reinterpret_cast<i32 *>(option + 0x2C8) = 1;
+                        *reinterpret_cast<ZunTimer *>(option + 0x2E0) = 0;
+                        *reinterpret_cast<i32 *>(option + 0x2D0) = optionIndex;
+                    }
+                    else
+                    {
+                        *reinterpret_cast<i32 *>(option + 0x2C8) = 0;
+                    }
+                }
+            }
+
+            if (g_TargetByte0164D0B1 < 4)
+            {
+                (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0xC))
+                    ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x10), 5);
+                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) = 0.0f;
+                if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8) >= 4)
+                    g_EffectManager.SpawnEffect(29, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 1, 0x80FF8080);
+            }
+            if (*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0xBE834) == NULL)
+            {
+                *reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0xBE834) =
+                    g_EffectManager.FUN_00425870(22, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 2, 1, -1);
+            }
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8) = 0;
+            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AE8) = 0;
+        }
+        else
+        {
+            ++*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8);
+        }
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8) >= 7)
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 5) = 1;
+        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) = 1;
+    }
+    else
+    {
+        if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) != 0)
+        {
+            option2 = reinterpret_cast<u8 *>(this) + 0x40C;
+            if (g_TargetByte0164D0B1 < 3)
+            {
+                for (optionExitIndex = 0; optionExitIndex < 4; optionExitIndex++, option2 += 0x2F4)
+                {
+                    if (*reinterpret_cast<i32 *>(option2 + 0x2C8) != 0 &&
+                        *reinterpret_cast<i32 *>(option2 + 0x2C8) != 3)
+                    {
+                        *reinterpret_cast<i32 *>(option2 + 0x2C8) = 3;
+                        *reinterpret_cast<ZunTimer *>(option2 + 0x2E0) = 0;
+                    }
+                }
+            }
+            else if (g_TargetByte0164D0B1 == 3)
+            {
+                for (route3Index = 0; route3Index < 2; route3Index++, option2 += 0x2F4)
+                {
+                    if (*reinterpret_cast<i32 *>(option2 + 0x2C8) != 0 &&
+                        *reinterpret_cast<i32 *>(option2 + 0x2C8) != 3)
+                    {
+                        *reinterpret_cast<i32 *>(option2 + 0x2C8) = 3;
+                        *reinterpret_cast<ZunTimer *>(option2 + 0x2E0) = 0;
+                    }
+                }
+                memset(option2, 0, 0x2F4);
+                *reinterpret_cast<void **>(option2 + 0x2EC) = reinterpret_cast<void **>(0x004C7E00)[route3Index];
+                *reinterpret_cast<void **>(option2 + 0x2F0) = reinterpret_cast<void **>(0x004C7ED0)[route3Index];
+                *reinterpret_cast<i32 *>(option2 + 0x2C8) = 1;
+                *reinterpret_cast<ZunTimer *>(option2 + 0x2E0) = 0;
+                *reinterpret_cast<i32 *>(option2 + 0x2D0) = route3Index;
+                for (historyInitIndex = 0; historyInitIndex < 16; ++historyInitIndex)
+                    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2CC + historyInitIndex * 12) = this->position;
+            }
+
+            if (g_TargetByte0164D0B1 < 4)
+            {
+                (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0xC))
+                    ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x10), 0);
+                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) = 0.0f;
+                if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8) >= 4)
+                    g_EffectManager.SpawnEffect(28, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 1, 0x808080FF);
+            }
+            if (*reinterpret_cast<AnmVmBase **>(reinterpret_cast<u8 *>(this) + 0xBE834) != NULL)
+                (*reinterpret_cast<AnmVmBase **>(reinterpret_cast<u8 *>(this) + 0xBE834))->SetInterrupt(1);
+            *reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0xBE834) = NULL;
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8) = 0;
+            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AE8) = 0;
+        }
+        else
+        {
+            ++*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8);
+        }
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8) >= 7)
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 5) = 0;
+        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) = 0;
+    }
+
+    if (g_TargetByte0164D0B1 >= 4)
+    {
+        if ((g_TargetByte0164D0B1 & 1) != 0)
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 5) = 1;
+        else
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 5) = 0;
+    }
+
+    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) != 0)
+    {
+        switch (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98))
+        {
+        case 4: horizontalSpeed =  *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->secondaryShtFile) + 0x28); break;
+        case 3: horizontalSpeed = -*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->secondaryShtFile) + 0x28); break;
+        case 1: verticalSpeed =   -*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->secondaryShtFile) + 0x28); break;
+        case 2: verticalSpeed =    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->secondaryShtFile) + 0x28); break;
+        case 5: horizontalSpeed = -*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->secondaryShtFile) + 0x30); verticalSpeed = horizontalSpeed; break;
+        case 7: verticalSpeed =    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->secondaryShtFile) + 0x30); horizontalSpeed = -verticalSpeed; break;
+        case 6: horizontalSpeed =  *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->secondaryShtFile) + 0x30); verticalSpeed = -horizontalSpeed; break;
+        case 8: horizontalSpeed =  *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->secondaryShtFile) + 0x30); verticalSpeed = horizontalSpeed; break;
+        default: break;
+        }
+    }
+    else
+    {
+        switch (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98))
+        {
+        case 4: horizontalSpeed =  *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->primaryShtFile) + 0x24); break;
+        case 3: horizontalSpeed = -*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->primaryShtFile) + 0x24); break;
+        case 1: verticalSpeed =   -*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->primaryShtFile) + 0x24); break;
+        case 2: verticalSpeed =    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->primaryShtFile) + 0x24); break;
+        case 5: horizontalSpeed = -*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->primaryShtFile) + 0x2C); verticalSpeed = horizontalSpeed; break;
+        case 7: verticalSpeed =    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->primaryShtFile) + 0x2C); horizontalSpeed = -verticalSpeed; break;
+        case 6: horizontalSpeed =  *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->primaryShtFile) + 0x2C); verticalSpeed = -horizontalSpeed; break;
+        case 8: horizontalSpeed =  *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->primaryShtFile) + 0x2C); verticalSpeed = horizontalSpeed; break;
+        default: break;
+        }
+    }
+
+    horizontalSpeed *= *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x404);
+    verticalSpeed *= *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x408);
+
+#define SET_PLAYER_SCRIPT(idx) ((*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0xC))->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x10), (idx)))
+    if (g_TargetByte0164D0B1 < 4)
+    {
+        if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) == 0)
+        {
+            if (horizontalSpeed < 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) >= 0.0f)
+                SET_PLAYER_SCRIPT(1);
+            else if (horizontalSpeed == 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) < 0.0f)
+                SET_PLAYER_SCRIPT(2);
+            if (horizontalSpeed > 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) <= 0.0f)
+                SET_PLAYER_SCRIPT(3);
+            else if (horizontalSpeed == 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) > 0.0f)
+                SET_PLAYER_SCRIPT(4);
+        }
+        else
+        {
+            if (horizontalSpeed < 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) >= 0.0f)
+                SET_PLAYER_SCRIPT(6);
+            else if (horizontalSpeed == 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) < 0.0f)
+                SET_PLAYER_SCRIPT(7);
+            if (horizontalSpeed > 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) <= 0.0f)
+                SET_PLAYER_SCRIPT(8);
+            else if (horizontalSpeed == 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) > 0.0f)
+                SET_PLAYER_SCRIPT(9);
+        }
+    }
+    else
+    {
+        if ((g_TargetByte0164D0B1 & 1) != 0)
+        {
+            if (horizontalSpeed < 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) >= 0.0f)
+                SET_PLAYER_SCRIPT(6);
+            else if (horizontalSpeed == 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) < 0.0f)
+                SET_PLAYER_SCRIPT(7);
+            if (horizontalSpeed > 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) <= 0.0f)
+                SET_PLAYER_SCRIPT(8);
+            else if (horizontalSpeed == 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) > 0.0f)
+                SET_PLAYER_SCRIPT(9);
+        }
+        else
+        {
+            if (horizontalSpeed < 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) >= 0.0f)
+                SET_PLAYER_SCRIPT(1);
+            else if (horizontalSpeed == 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) < 0.0f)
+                SET_PLAYER_SCRIPT(2);
+            if (horizontalSpeed > 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) <= 0.0f)
+                SET_PLAYER_SCRIPT(3);
+            else if (horizontalSpeed == 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) > 0.0f)
+                SET_PLAYER_SCRIPT(4);
+        }
+    }
+#undef SET_PLAYER_SCRIPT
+
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) = horizontalSpeed;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2AA0) = verticalSpeed;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3F8) = horizontalSpeed * g_EclGameTimeScale;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3FC) = verticalSpeed * g_EclGameTimeScale;
+    this->position.operator float *()[0] += *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3F8);
+    this->position.operator float *()[1] += *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3FC);
+
+    if (this->position.operator float *()[0] < *reinterpret_cast<f32 *>(0x0164D2EC))
+        this->position.operator float *()[0] = *reinterpret_cast<f32 *>(0x0164D2EC);
+    else if (this->position.operator float *()[0] >
+             *reinterpret_cast<f32 *>(0x0164D2EC) + *reinterpret_cast<f32 *>(0x0164D2F4))
+    {
+        this->position.operator float *()[0] =
+            *reinterpret_cast<f32 *>(0x0164D2EC) + *reinterpret_cast<f32 *>(0x0164D2F4);
+    }
+    if (this->position.operator float *()[1] < *reinterpret_cast<f32 *>(0x0164D2F0))
+        this->position.operator float *()[1] = *reinterpret_cast<f32 *>(0x0164D2F0);
+    else if (this->position.operator float *()[1] >
+             *reinterpret_cast<f32 *>(0x0164D2F0) + *reinterpret_cast<f32 *>(0x0164D2F8))
+    {
+        this->position.operator float *()[1] =
+            *reinterpret_cast<f32 *>(0x0164D2F0) + *reinterpret_cast<f32 *>(0x0164D2F8);
+    }
+
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x38C) = this->position - *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3D4);
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x398) = this->position + *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3D4);
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3A4) = this->position - *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3E0);
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3B0) = this->position + *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3E0);
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3BC) = this->position - *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3EC);
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3C8) = this->position + *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3EC);
+
+    for (optionUpdateIndex = 0; optionUpdateIndex < 4; ++optionUpdateIndex)
+    {
+        if (*reinterpret_cast<OptionUpdateCallback *>(reinterpret_cast<u8 *>(this) + 0x6F8 + optionUpdateIndex * 0x2F4) != NULL)
+        {
+            (*reinterpret_cast<OptionUpdateCallback *>(reinterpret_cast<u8 *>(this) + 0x6F8 + optionUpdateIndex * 0x2F4))(
+                this, reinterpret_cast<u8 *>(this) + 0x40C + optionUpdateIndex * 0x2F4);
+            g_AnmManager->ExecuteScript(
+                reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x40C + optionUpdateIndex * 0x2F4));
+            (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x6EC + optionUpdateIndex * 0x2F4))++;
+        }
+    }
+
+    if ((g_GuiMessageInputCurrent & 1) != 0 && !g_Gui.IsDialogPresent() && !g_GameManager.IsTampered())
+        this->FUN_00451640();
+
+    if (!g_Gui.IsDialogPresent() && *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8) >= 30 &&
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) == 0)
+    {
+        gaugeDelta = 0;
+        if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) >= 0)
+        {
+            if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AD0) > 0)
+                (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AD0))--;
+            else
+            {
+                gaugeDelta = (i32)((f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AE8) > 300.0f
+                                       ? 21.0f
+                                       : (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AE8) / 15.0f);
+                if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) == 0)
+                    gaugeDelta = -gaugeDelta;
+                g_GameManager.AddToYoukaiGauge((i32)((f32)gaugeDelta * g_EclGameTimeScale), 0);
+                (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AE8))++;
+            }
+        }
+        else
+        {
+            if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AD0) >= 4)
+                *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AE8) = 0;
+            if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AD0) >= 30)
+            {
+                if (fabs((double)g_GameManager.GetYoukaiGauge()) <= 9.0)
+                {
+                    g_GameManager.SetYoukaiGauge(0);
+                }
+                else
+                {
+                    if (g_GameManager.GaugeIsExtremelyYoukai()) gaugeDelta = -5;
+                    else if (g_GameManager.GaugeIsModeratelyYoukai()) gaugeDelta = -3;
+                    else if (g_GameManager.GetYoukaiGauge() > 0) gaugeDelta = -2;
+                    else if (!g_GameManager.GaugeIsModeratelyHuman()) gaugeDelta = 2;
+                    else if (!g_GameManager.GaugeIsExtremelyHuman()) gaugeDelta = 3;
+                    else gaugeDelta = 5;
+                    g_GameManager.AddToYoukaiGauge((i32)((f32)gaugeDelta * g_EclGameTimeScale), 0);
+                }
+            }
+            else
+                (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AD0))++;
+        }
+    }
+
+    if ((g_GameManager.GaugeIsExtremelyHuman() || g_GameManager.GaugeIsExtremelyYoukai()) &&
+        *reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0xE2B24) == NULL)
+    {
+        *reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0xE2B24) =
+            g_EffectManager.FUN_00425870(25, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 8, 1, -1);
+    }
+    if (*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0xE2B24) != NULL)
+    {
+        *reinterpret_cast<Float3 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B24) + 0x2A4) = this->position;
+        if (!g_GameManager.GaugeIsExtremelyHuman() && !g_GameManager.GaugeIsExtremelyYoukai())
+        {
+            *reinterpret_cast<u8 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B24) + 0x350) = 0;
+            *reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0xE2B24) = NULL;
+        }
+    }
+
+    if (verticalSpeed != 0.0f || horizontalSpeed != 0.0f)
+    {
+        for (historyIndex = 15; historyIndex > 0; --historyIndex)
+            *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2CC + historyIndex * 12) =
+                *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2CC + (historyIndex - 1) * 12);
+        *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2CC) = this->position;
+    }
+    return 0;
 }
 // FUNCTION: th08 0x451150
 #pragma var_order(i, slot, this)
@@ -1126,6 +1549,13 @@ processEntry:
     }
 }
 
+// FUNCTION: th08 0x451640
+void Player::FUN_00451640()
+{
+    if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) < 0)
+        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) = 0;
+}
+
 // FUNCTION: th08 0x451d50
 i32 Player::FUN_00451d50()
 {
@@ -1345,9 +1775,160 @@ void Player::FUN_0044d2c0()
     }
 }
 
-// STUB: th08 0x44d650
+// FUNCTION: th08 0x44d650
+#pragma var_order(i, shotSlot, option, m, player)
 ZunResult Player::AddedCallback(Player *player)
 {
+    u32 i;
+    u8 *shotSlot;
+    u8 *option;
+    u32 m;
+
+    if (IsResourceReloadEnabled())
+    {
+        if (Player::LoadShtFile(&player->primaryShtFile, g_Player1ShtFiles[g_TargetByte0164D0B1]) != ZUN_SUCCESS)
+            return ZUN_ERROR;
+        if (Player::LoadShtFile(&player->secondaryShtFile, g_Player2ShtFile[g_TargetByte0164D0B1]) != ZUN_SUCCESS)
+            return ZUN_ERROR;
+        *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC) =
+            g_AnmManager->PreloadAnm(5, g_PlayerAnmFilenames[g_TargetByte0164D0B1]);
+        if (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC) == NULL)
+            return ZUN_ERROR;
+    }
+    else
+    {
+        *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC) = g_AnmManager->GetAnm(5);
+    }
+
+    if (g_TargetByte0164D0B1 < 4 || (g_TargetByte0164D0B1 & 1) == 0)
+        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC))
+            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(player) + 0x10), 0);
+    else
+        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC))
+            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(player) + 0x10), 5);
+
+    player->position.operator float *()[0] = g_PlayerPlayfieldWidth / 2.0f;
+    player->position.operator float *()[1] = g_ItemPlayfieldBottom - 64.0f;
+    player->position.operator float *()[2] = 0.49f;
+
+    for (i = 0; i < 0x180; ++i)
+        reinterpret_cast<PlayerUnkStruct0x40 *>(player->playerSlotsB)[i].Reset();
+
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3D8) =
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0xC) / 2.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3D4) =
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3D8);
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3DC) = 5.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3E4) =
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x10) / 2.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3E0) =
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3E4);
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3E8) = 5.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3F0) =
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x18) / 2.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3EC) =
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3F0);
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3F4) = 5.0f;
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2A98) = 0;
+    player->playerState = PLAYER_STATE_SPAWNING;
+    player->timer = g_GameManager.IsSpellPractice() ? 10 : 120;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(player) + 2) = 1;
+
+    shotSlot = reinterpret_cast<u8 *>(player) + 0xBE838;
+    for (i = 0; (i32)i < 0x80; ++i, shotSlot += 0x484)
+        *reinterpret_cast<i16 *>(shotSlot + 0x462) = 0;
+
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AC4) = -1;
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AD0) = 0;
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AE8) = 0;
+
+    *reinterpret_cast<PlayerBombCallbacks *>(reinterpret_cast<u8 *>(player) + 0x1000) =
+        g_PlayerBombCallbackTable[g_TargetByte0164D0B1 * 2];
+    *reinterpret_cast<PlayerBombCallbacks *>(reinterpret_cast<u8 *>(player) + 0x1014) =
+        g_PlayerBombCallbackTable[g_TargetByte0164D0B1 * 2 + 1];
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xFDC) = 0;
+    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xE2B0C) = 0xBFC90FDB;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 1.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 1.0f;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2A68) =
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 8);
+
+    if (IsResourceReloadEnabled())
+        g_AsciiManager.SetGaugeInterrupt(1);
+    g_AsciiManager.FUN_00422bb0(0, 2);
+    g_AsciiManager.FUN_00422bb0(1, 2);
+    g_AsciiManager.FUN_00422bb0(2, 2);
+
+    g_PlayerGaugeBounds[0] = -10000;
+    g_PlayerGaugeBounds[2] = -8000;
+    g_PlayerGaugeBounds[4] = -2000;
+    g_PlayerGaugeBounds[1] = 10000;
+    g_PlayerGaugeBounds[3] = 8000;
+    g_PlayerGaugeBounds[5] = 2000;
+    if (g_TargetByte0164D0B1 == 3)
+    {
+        g_PlayerGaugeBounds[0] = -5000;
+        g_PlayerGaugeBounds[2] = -3000;
+        g_PlayerGaugeBounds[4] = -2000;
+    }
+    else if (g_TargetByte0164D0B1 == 10)
+    {
+        g_PlayerGaugeBounds[0] = -5000;
+        g_PlayerGaugeBounds[2] = -3000;
+        g_PlayerGaugeBounds[4] = -2000;
+        g_PlayerGaugeBounds[1] = 5000;
+        g_PlayerGaugeBounds[3] = 3000;
+        g_PlayerGaugeBounds[5] = 2000;
+    }
+    else if (g_GameManager.IsSoloHuman())
+    {
+        g_PlayerGaugeBounds[1] = 2000;
+        g_PlayerGaugeBounds[3] = 8000;
+        g_PlayerGaugeBounds[5] = 2001;
+    }
+    else if (g_GameManager.IsSoloYoukai())
+    {
+        g_PlayerGaugeBounds[0] = -2000;
+        g_PlayerGaugeBounds[2] = -8000;
+        g_PlayerGaugeBounds[4] = -2001;
+    }
+
+    *reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2B24) = NULL;
+    for (i = 0; i < 16; ++i)
+        *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(player) + 0x2CC + i * 12) = player->position;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(player) + 3) = 2;
+
+    if (g_TargetByte0164D0B1 > 3)
+    {
+        option = reinterpret_cast<u8 *>(player) + 0x40C;
+        for (m = 0; m < 4; ++m, option += 0x2F4)
+        {
+            memset(option, 0, 0x2F4);
+            *reinterpret_cast<void **>(option + 0x2EC) =
+                g_PlayerOptionUpdateCallbacks[g_TargetByte0164D0B1].callbacks[m];
+            *reinterpret_cast<void **>(option + 0x2F0) =
+                g_PlayerOptionRenderCallbacks[g_TargetByte0164D0B1].callbacks[m];
+            if (*reinterpret_cast<void **>(option + 0x2EC) != NULL)
+            {
+                *reinterpret_cast<i32 *>(option + 0x2C8) = 1;
+                *reinterpret_cast<ZunTimer *>(option + 0x2E0) = 0;
+                *reinterpret_cast<i32 *>(option + 0x2D0) = m;
+            }
+            else
+            {
+                *reinterpret_cast<i32 *>(option + 0x2C8) = 0;
+            }
+        }
+    }
+
+    if (g_GameManager.IsSoloHuman())
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2B2C) = 27;
+    else
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2B2C) = 40;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x2E10) =
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2B2C);
     return ZUN_SUCCESS;
 }
 
