@@ -11,6 +11,8 @@
 #include "EnemyManager.hpp"
 #include "Spellcard.hpp"
 #include "EclManager.hpp"
+#include "EclOperands.hpp"
+#include "ScreenEffect.hpp"
 #include "utils.hpp"
 
 namespace th08
@@ -23,6 +25,11 @@ DIFFABLE_STATIC(ChainElem *, g_PlayerDrawChainLowPrio);
 // The callback releases and clears these two independently allocated SHT files.
 DIFFABLE_STATIC(PlayerRawShtFile *, g_PlayerPrimaryShtFile);
 DIFFABLE_STATIC(PlayerRawShtFile *, g_PlayerSecondaryShtFile);
+DIFFABLE_STATIC(i32, g_PlayerNormalBombCount);
+DIFFABLE_STATIC(i32, g_PlayerDeathbombCount);
+
+extern u16 g_GuiMessageInputCurrent;
+extern u16 g_GuiMessageInputPrevious;
 
 // FUNCTION: th08 0x44e0e0
 ZunBool IsResourceReloadDisabled()
@@ -516,9 +523,169 @@ ZunResult Player::RegisterChain(u32 playerType)
 }
 
 
-// STUB: th08 0x44c650
+// FUNCTION: th08 0x44c650
+#pragma var_order(isForced, i)
 void Player::FUN_0044c650()
 {
+    u32 i;
+    i32 isForced;
+    isForced = 0;
+    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x6) != 0 &&
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) == 1)
+    {
+        isForced = 1;
+        goto acceptBomb;
+    }
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A6C) != 0)
+        --*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A6C);
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) != 0)
+    {
+        if (reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4)->FUN_0040d3d0())
+            g_Gui.flags.pointDisplayUpdateFrames = 2;
+
+        if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4) >= *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE4))
+        {
+            g_Spellcard.spellcard_fun_00416130();
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) = 0;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x408) = 1.0f;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x404) = 1.0f;
+
+            if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) == 4)
+            {
+                *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFE7Fu;
+                for (i = 0; i < 8; i++)
+                {
+                    if (reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i] != NULL)
+                    {
+                        reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]->FUN_0042adb0(0);
+                        *reinterpret_cast<i32 *>(reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]->bytes + 0x2DFC) = 0;
+                        *reinterpret_cast<u32 *>(reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]->bytes + 0x3324) &= 0xBFFFFFFFu;
+                    }
+                }
+                ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 30, 1, -1, 0, 21);
+            }
+        }
+        else
+        {
+            reinterpret_cast<void (__fastcall **)(Player *)>(reinterpret_cast<u8 *>(this) + 0x1000)
+                [*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0)](this);
+            (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4))++;
+        }
+
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) < 4)
+        {
+            if ((*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) & 1) != 0)
+                g_GameManager.AddToYoukaiGauge(26000 / *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE4), 1);
+            else
+                g_GameManager.AddToYoukaiGauge(-26000 / *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE4), 1);
+        }
+        return;
+    }
+
+    if ((g_GuiMessageInputCurrent & 2) != 0 && !g_GameManager.IsTampered() && !g_Gui.IsDialogPresent() &&
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) != 0 &&
+        g_GameManager.GetBombsRemaining() > 0 &&
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A6C) == 0)
+    {
+        if ((((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0) ||
+            (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 14) & 1) != 0))
+        {
+            if ((g_GuiMessageInputCurrent & 2) != 0)
+            {
+                if ((g_GuiMessageInputCurrent & 2) != (g_GuiMessageInputPrevious & 2))
+                    g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(41), 0);
+            }
+            goto done;
+        }
+
+acceptBomb:
+    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 1;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x6) = 0;
+    if (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0)
+    {
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) = 4;
+    }
+    else
+    {
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x208) &= 0xFFFDFFFFu;
+        if (*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) != NULL)
+        {
+            *reinterpret_cast<u8 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) + 0x350) = 0;
+            *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) = NULL;
+        }
+        *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFBFFu;
+        g_AnmManager->SetMixColorDefault();
+
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) =
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3);
+        if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4))
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) =
+                1 - *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0);
+
+        if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4))
+        {
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) += 2;
+            if (isForced)
+            {
+                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFEC) = g_GameManager.GetBombsRemaining();
+                g_GameManager.SetBombCount(0);
+            }
+            else
+            {
+                if (g_GameManager.GetBombsRemaining() < 2)
+                {
+                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFEC) = g_GameManager.GetBombsRemaining();
+                    g_GameManager.SetBombCount(0);
+                }
+                else
+                {
+                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFEC) = 2;
+                    g_GameManager.AddToBombCount(-2);
+                }
+            }
+            ++g_PlayerDeathbombCount;
+        }
+        else
+        {
+            ++g_PlayerNormalBombCount;
+            g_GameManager.AddToBombCount(-1);
+        }
+        g_GameManager.AddToBombsUsed(1);
+    }
+
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4) = 0;
+    g_Gui.flags.bombDisplayUpdateFrames = 2;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) = 1;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A7C) = 1;
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE4) = 999;
+
+    {
+        reinterpret_cast<void (__fastcall **)(Player *)>(reinterpret_cast<u8 *>(this) + 0x1000)
+            [*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0)](this);
+    }
+    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4))++;
+    g_GameManager.DecreaseSubrank(200);
+    g_Spellcard.FUN_0044cba0();
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) += 6;
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) >
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x8))
+    {
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) =
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x8);
+    }
+        goto done;
+    }
+    else
+    {
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A7C) = 0;
+    }
+
+done:
+    return;
 }
 // STUB: th08 0x44cbf0
 i32 Player::FUN_0044cbf0()

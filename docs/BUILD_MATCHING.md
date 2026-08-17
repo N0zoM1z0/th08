@@ -376,3 +376,16 @@ The laser helper also demonstrates that a seemingly interchangeable argument can
 - Doubling the pre-death counter must be written as `counter += counter`; `counter *= 2` lowers to `shl` and removes the target's repeated receiver/load/add/store sequence under `/Od`.
 
 When a near-exact function is short by only a handful of bytes, inspect cold-path lexical placement and apparently trivial arithmetic rewrites before adding locals or touching data layout.
+
+### Scope-owned temporaries, probe aliases, and duplicated source bodies
+
+The death-flow closures at 0x42ADB0, 0x42BEA0, 0x44C650, and 0x44CBA0 add several reusable VC7 rules:
+
+- Constructor placement follows lexical scope under `/Od`. In `EnemyOverlay::FUN_0042adb0`, the first `Float3` must be declared only after the parent-chain test succeeds, while the attached-enemy `Float3` is declared only inside the attached tail path. Declaring both at function entry moves constructors and changes every later stack slot.
+- When two independent block locals refuse to occupy the target slots, a trivial local aggregate can express the original ownership without padding. The exact ADB0 shape uses a two-int local struct so `itemCount` and the loop index occupy one contiguous eight-byte allocation while the separate `itemType` remains in the shallow slot. This is source structure, not manual stack padding.
+- Algebraic equivalence is not instruction equivalence on x87. `(f32)itemCount * 2.0f` lowers to target `fild; fadd st,st`; adding two separately cast copies can lower to a longer integer-memory add. Likewise, random coordinate updates in `Enemy::FUN_0042bea0` must use compound `+=` so the lvalue pointer returned by `Float3::operator float*()` survives the RNG call in the target compiler temporary.
+- Do not deduplicate repeated source bodies just because they are semantically identical. `Player::FUN_0044c650` contains two copies of the “consume all remaining Bombs” path under the forced/non-forced deathbomb branches. Combining them with `isForced || bombs < 2` removes 39 target-authored bytes.
+- A probe alias is not automatically a production global. The analysis name `g_EclEnemyTableF54CC0` resolves to `g_EnemyManager + 0x9DCDA0` in the shipped image. Production code should reference the real `EnemyManager` storage and let the COFF relocation carry the field addend instead of creating a second global at the same address.
+- Bitfield-to-bitfield assignment can be target-visible. `Spellcard::FUN_0044cba0` only reproduces VC7's redundant-looking mask sequence when bit 7 is assigned from bit 0 through a one-bit overlay; simplifying it to whole-word arithmetic changes register ownership and bytes.
+
+If a header change is correct but VC7 reports a newly declared member as absent, verify the precompiled header timestamp. This repository's object-only path can reuse a stale `build/th_pch.pch`; forcing a PCH rebuild is preferable to changing valid declarations to satisfy stale compiler state.

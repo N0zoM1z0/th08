@@ -393,7 +393,7 @@ th08::EnemyManager::SpawnEnemy1,0x42a4e0,function
 th08::EnemyManager::SpawnEnemy2,0x42a680,function
 th08::Enemy::FUN_0042a820,0x42a820,function
 th08::EclTimeline::FUN_0042a8a0,0x42a8a0,function
-th08::Enemy::FUN_0042adb0,0x42adb0,function
+th08::EclOperands::EnemyOverlay::FUN_0042adb0,0x42adb0,function
 th08::Enemy::FUN_0042b2f0,0x42b2f0,function
 th08::Enemy::FUN_0042b370,0x42b370,function
 th08::Enemy::FUN_0042b490,0x42b490,function
@@ -763,7 +763,7 @@ th08::Player::RegisterChain,0x44c230,function
 th08::Player::OnUpdate,0x44c390,function
 th08::Player::FUN_0044c5b0,0x44c5b0,function
 th08::Player::FUN_0044c650,0x44c650,function
-FUN_0044cba0,0x44cba0,function
+th08::Spellcard::FUN_0044cba0,0x44cba0,function
 th08::Player::FUN_0044cbf0,0x44cbf0,function
 FUN_0044d150,0x44d150,function
 th08::Player::FUN_0044d180,0x44d180,function

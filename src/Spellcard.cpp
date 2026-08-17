@@ -29,6 +29,14 @@ struct SpellcardFlagBits
     u32 highBits : 26;
 };
 
+struct SpellcardResetFlagBits
+{
+    u32 bit0 : 1;
+    u32 bits1To6 : 6;
+    u32 bit7 : 1;
+    u32 rest : 24;
+};
+
 struct SpellEffectDword
 {
     u32 value;
@@ -1708,6 +1716,15 @@ i32 Spellcard::GetDifficultyFromSpellCard(i32 spellCardNumber)
         }
     }
     return MAX_DIFFICULTIES;
+}
+
+// FUNCTION: th08 0x44cba0
+void Spellcard::FUN_0044cba0()
+{
+    this->flags &= ~4u;
+    this->bonusProgress = 0;
+    reinterpret_cast<SpellcardResetFlagBits *>(&this->flags)->bit7 =
+        reinterpret_cast<SpellcardResetFlagBits *>(&this->flags)->bit0;
 }
 
 // FUNCTION: th08 0x4180f0

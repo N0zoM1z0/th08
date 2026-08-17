@@ -799,3 +799,7 @@ th08::Player::FUN_0044a470
 th08::Player::CalcLaserHitbox
 th08::Player::FUN_0044a930
 th08::Player::Die
+th08::EclOperands::EnemyOverlay::FUN_0042adb0
+th08::Enemy::FUN_0042bea0
+th08::Player::FUN_0044c650
+th08::Spellcard::FUN_0044cba0

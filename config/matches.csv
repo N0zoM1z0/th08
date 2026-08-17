@@ -800,3 +800,7 @@ address,name,size,status,match_percent,unit,evidence
 0x0044A6A0,th08::Player::CalcLaserHitbox,651,matching,100.00,player-laser-hitbox,python3 scripts/compare-function.py player-laser-hitbox --json
 0x0044A930,th08::Player::FUN_0044a930,521,matching,100.00,player-graze-reward,python3 scripts/compare-function.py player-graze-reward --json
 0x0044AB40,th08::Player::Die,888,matching,100.00,player-die,python3 scripts/compare-function.py player-die --json
+0x0042ADB0,th08::EclOperands::EnemyOverlay::FUN_0042adb0,1336,matching,100.00,enemy-parent-chain-cleanup,python3 scripts/compare-function.py enemy-parent-chain-cleanup --json
+0x0042BEA0,th08::Enemy::FUN_0042bea0,734,matching,100.00,enemy-drop-items,python3 scripts/compare-function.py enemy-drop-items --json
+0x0044C650,th08::Player::FUN_0044c650,1352,matching,100.00,player-deathbomb-transition,python3 scripts/compare-function.py player-deathbomb-transition --json
+0x0044CBA0,th08::Spellcard::FUN_0044cba0,69,matching,100.00,spellcard-reset-deathbomb-state,python3 scripts/compare-function.py spellcard-reset-deathbomb-state --json

@@ -25,6 +25,7 @@ struct EnemyOverlay
     u8 bytes[1];
 
     f32 ResolveFloat(f32 operand);
+    void FUN_0042adb0(i32 value);
 };
 
 struct TargetEnemyHelpersOverlay

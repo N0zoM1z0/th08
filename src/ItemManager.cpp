@@ -14,12 +14,6 @@ namespace th08
 
 DIFFABLE_STATIC(ItemManager, g_ItemManager);
 DIFFABLE_STATIC(i32, g_ItemTimeOrbMode);
-struct ItemTimeOrbTimerStorage
-{
-    i32 current;
-    f32 subFrame;
-    i32 previous;
-};
 DIFFABLE_STATIC(ItemTimeOrbTimerStorage, g_ItemTimeOrbTimerStorage);
 DIFFABLE_STATIC(ItemTimeOrbTimerStorage, g_ItemScatterTimerStorage);
 DIFFABLE_STATIC(f32, g_ItemPlayfieldBottom);

@@ -16,6 +16,7 @@ struct Enemy
     void FUN_0042bc90();
     void enemy_fun_00415c80();
     void FUN_0042b2f0();
+    void FUN_0042bea0(i32 mode);
 };
 
 struct EnemyManager

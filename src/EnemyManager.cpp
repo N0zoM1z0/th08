@@ -7,6 +7,7 @@
 #include "EclManager.hpp"
 #include "EclOperands.hpp"
 #include "ItemManager.hpp"
+#include "Player.hpp"
 
 namespace th08
 {
@@ -15,6 +16,16 @@ ZunBool IsDisableResourceReload();
 i32 IsResourceReloadEnabled();
 
 DIFFABLE_STATIC(EnemyManager, g_EnemyManager);
+DIFFABLE_STATIC(u16, g_EnemyDropCounter);
+DIFFABLE_STATIC(ItemTimeOrbTimerStorage, g_EnemyAttachedTimer30);
+DIFFABLE_STATIC(ItemTimeOrbTimerStorage, g_EnemyAttachedTimer0);
+DIFFABLE_STATIC(u16, g_EnemyDropScheduleIndex);
+DIFFABLE_STATIC_ARRAY_ASSIGN(u8, 32, g_EnemyDropSchedule) = {
+    0, 0, 1, 0, 1, 0, 0, 0,
+    1, 1, 0, 0, 1, 1, 1, 0,
+    1, 0, 1, 0, 1, 0, 1, 0,
+    1, 0, 0, 1, 1, 1, 0, 0,
+};
 
 namespace EclOperands
 {
@@ -48,6 +59,130 @@ i32 TargetEnemyHelpersOverlay::CountParentChain()
     return count;
 }
 
+// FUNCTION: th08 0x42adb0
+#pragma var_order(j, nextEnemy, enemy, popupColor, chainIndex, position, dropLocals, itemType, attachedPosition)
+void EnemyOverlay::FUN_0042adb0(i32 mode)
+{
+    i32 j;
+    EnemyOverlay *nextEnemy;
+    EnemyOverlay *enemy;
+    i32 popupColor;
+    i32 chainIndex;
+
+    j = reinterpret_cast<TargetEnemyHelpersOverlay *>(this)->CountParentChain();
+    if (j != 0)
+    {
+        chainIndex = 0;
+        Float3 position;
+        struct DropLocals { i32 itemCount; i32 i; } dropLocals;
+        i32 itemType;
+        enemy = *reinterpret_cast<EnemyOverlay **>(this->bytes + 8);
+        popupColor = j < 2 ? -1 : (j < 6 ? -48 : (j < 10 ? -80 : -128));
+
+        while (enemy != NULL)
+        {
+            if (((*reinterpret_cast<u32 *>(enemy->bytes + 0x3324) >> 9) & 1) != 0)
+                *reinterpret_cast<Float3 *>(enemy->bytes + 0x2D40) =
+                    *reinterpret_cast<Float3 *>(this->bytes + 0x2D34);
+
+            nextEnemy = *reinterpret_cast<EnemyOverlay **>(enemy->bytes + 8);
+            *reinterpret_cast<u32 *>(enemy->bytes + 0x3324) |= 0x400;
+            *reinterpret_cast<f32 *>(enemy->bytes + 0x2DA4) = 0.0f;
+            *reinterpret_cast<void **>(enemy->bytes + 8) = NULL;
+            *reinterpret_cast<void **>(enemy->bytes + 4) = NULL;
+
+            if (mode != 0)
+            {
+                itemType = (((*reinterpret_cast<u32 *>(this->bytes + 0x3324) >> 1) & 1) != 0) ? 7 : 9;
+                if (g_GameManager.IsSoloYoukai())
+                    dropLocals.itemCount = j >= 10 ? 26 : j * 2 + 6;
+                else if (g_GameManager.IsSoloHuman())
+                    dropLocals.itemCount = j >= 4 ? 40 : j * 6 + 16;
+                else
+                    dropLocals.itemCount = j >= 8 ? 26 : j * 2 + 10;
+
+                if (g_Player.frameStop != 0)
+                    j /= 3;
+
+                g_AsciiManager.CreateTimePopup(
+                    reinterpret_cast<Float3 *>(enemy->bytes + 0x2D88), j, 0, popupColor);
+                *reinterpret_cast<Float3 *>(enemy->bytes + 0x2D88) =
+                    *reinterpret_cast<Float3 *>(enemy->bytes + 0x2D34) +
+                    *reinterpret_cast<Float3 *>(enemy->bytes + 0x2D40);
+                g_Player.FUN_0044df00(reinterpret_cast<Float3 *>(enemy->bytes + 0x2D88),
+                                      32.0f, 2.0f, 8, itemType);
+
+                for (dropLocals.i = 0; dropLocals.i < dropLocals.itemCount; dropLocals.i++)
+                {
+                    position.FromAngleMagnitude(
+                        g_Rng.GetRandomF32SignedInRange(ZUN_PI),
+                        g_Rng.GetRandomF32InRange((f32)dropLocals.itemCount * 2.0f));
+                    position.z = 0.0f;
+                    position += *reinterpret_cast<Float3 *>(enemy->bytes + 0x2D88);
+                    g_ItemManager.SpawnItem(&position, ITEM_TIME, 3);
+                }
+
+                if (!g_EnemyManager.FUN_0042f1f0() || g_Spellcard.IsActive())
+                {
+                    *reinterpret_cast<i32 *>(enemy->bytes + 0x3304) = 8;
+                    reinterpret_cast<Enemy *>(enemy)->FUN_0042bea0(0);
+                }
+                g_SoundPlayer.PlaySoundPositionedByIdx(
+                    static_cast<SoundIdx>(chainIndex % 2 + 2),
+                    *reinterpret_cast<f32 *>(enemy->bytes + 0x2D88));
+            }
+
+            *reinterpret_cast<f32 *>(enemy->bytes + 0x330C) = 0.0f;
+            *reinterpret_cast<f32 *>(enemy->bytes + 0x3308) = 0.0f;
+            *reinterpret_cast<i32 *>(enemy->bytes + 0x3304) = -2;
+            enemy = nextEnemy;
+            ++chainIndex;
+        }
+
+        if (mode != 0)
+        {
+            g_AsciiManager.SetScale(2.0f, 2.0f);
+            g_AsciiManager.CreateTimePopup(
+                reinterpret_cast<Float3 *>(this->bytes + 0x2D88),
+                *reinterpret_cast<i32 *>(this->bytes + 0x3380), 0, 0xFFF0F00F);
+            g_AsciiManager.SetScale(1.0f, 1.0f);
+
+            for (j = 0; j < 2 * *reinterpret_cast<i32 *>(this->bytes + 0x3380); j++)
+            {
+                position.FromAngleMagnitude(
+                    g_Rng.GetRandomF32SignedInRange(ZUN_PI),
+                    g_Rng.GetRandomF32InRange(128.0f));
+                position.z = 0.0f;
+                position += *reinterpret_cast<Float3 *>(this->bytes + 0x2D88);
+                g_ItemManager.SpawnItem(&position, ITEM_TIME, 1);
+            }
+            g_Player.FUN_0044df00(reinterpret_cast<Float3 *>(this->bytes + 0x2D88),
+                                  32.0f, 1.0f, 16, 7);
+            *reinterpret_cast<ZunTimer *>(&g_ItemTimeOrbTimerStorage) = 0;
+        }
+    }
+
+    if (reinterpret_cast<TargetEnemyHelpersOverlay *>(this)->HasAttachedEnemy() && mode != 0)
+    {
+        Float3 attachedPosition;
+        g_GameManager.AddToYoukaiGauge(-g_GameManager.GetYoukaiGauge() / 12, 0);
+        *reinterpret_cast<ZunTimer *>(&g_EnemyAttachedTimer0) = 0;
+        *reinterpret_cast<ZunTimer *>(&g_EnemyAttachedTimer30) = 30;
+        *reinterpret_cast<ZunTimer *>(&g_ItemTimeOrbTimerStorage) = 50;
+        *reinterpret_cast<Float3 *>(this->bytes + 0x2D88) =
+            *reinterpret_cast<Float3 *>(this->bytes + 0x2D34) +
+            *reinterpret_cast<Float3 *>(this->bytes + 0x2D40);
+        g_AsciiManager.CreateTimePopup(
+            reinterpret_cast<Float3 *>(this->bytes + 0x2D88), 1, 0, 0xFFFFFFFF);
+        g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(this->bytes + 0x2D88), ITEM_TIME, 1);
+        *reinterpret_cast<i32 *>(this->bytes + 0x330C) = 0;
+        *reinterpret_cast<i32 *>(this->bytes + 0x3308) = 0;
+        *reinterpret_cast<i32 *>(this->bytes + 0x3304) = -2;
+    }
+
+    reinterpret_cast<Enemy *>(this)->FUN_0042b2f0();
+}
+
 } // namespace EclOperands
 
 // FUNCTION: th08 0x415c80
@@ -59,6 +194,66 @@ void Enemy::enemy_fun_00415c80()
     *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2DF6) = 0;
     *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2DF8) = 0;
     *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2DFA) = 0;
+}
+
+// FUNCTION: th08 0x42bea0
+#pragma var_order(i, position)
+void Enemy::FUN_0042bea0(i32 mode)
+{
+    Float3 position;
+    i32 i;
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3304) >= 0)
+    {
+        g_EffectManager.SpawnEffect(
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3311) + 4,
+            reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(this) + 0x2D88), 3, -1);
+        g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2D88),
+                                static_cast<ItemType>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3304)),
+                                mode != 0);
+    }
+    else if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3304) == -1)
+    {
+        if ((g_EnemyDropCounter % 3) == 0)
+        {
+            g_EffectManager.SpawnEffect(
+                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3311) + 4,
+                reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(this) + 0x2D88), 6, -1);
+            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2D88),
+                                    static_cast<ItemType>(g_EnemyDropSchedule[g_EnemyDropScheduleIndex]),
+                                    mode != 0);
+            ++g_EnemyDropScheduleIndex;
+            if (g_EnemyDropScheduleIndex >= 32)
+                g_EnemyDropScheduleIndex = 0;
+        }
+        ++g_EnemyDropCounter;
+    }
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x330C) != 0)
+    {
+        for (i = 0; i < *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x330C); i++)
+        {
+            position = *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2D88);
+            position.operator float *()[0] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
+            position.operator float *()[1] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
+            if (g_GameManager.GetPower() < 128)
+                g_ItemManager.SpawnItem(&position, ITEM_POWER_SMALL, 0);
+            else
+                g_ItemManager.SpawnItem(&position, ITEM_POINT, 0);
+        }
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x330C) = 0;
+    }
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3308) != 0)
+    {
+        for (i = 0; i < *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3308); i++)
+        {
+            position = *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2D88);
+            position.operator float *()[0] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
+            position.operator float *()[1] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
+            g_ItemManager.SpawnItem(&position, ITEM_POINT, 0);
+        }
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3308) = 0;
+    }
 }
 
 // FUNCTION: th08 0x42b2f0
