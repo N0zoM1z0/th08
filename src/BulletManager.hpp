@@ -93,6 +93,7 @@ struct BulletManager
     void Initialize();
     void bulletmanager_fun_00415c60();
     void RemoveAllBullets(i32 mode);
+    i32 DespawnBullets(i32 maxScore, i32 awardLaserItems);
     void FUN_004321b0();
 
     static ZunResult RegisterChain(char *bulletAnmPath);

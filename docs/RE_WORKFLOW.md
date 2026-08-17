@@ -22,7 +22,11 @@ recorded in notes and handoffs.
 3. Locate it in `config/mapping.csv` and `config/reccmp-functions.csv`.
 4. Inspect target disassembly, callers, callees, strings, globals, imports,
    nearby functions, and exception/control-flow edges.
-5. Reconcile the analyzed function extent with actual target instructions.
+5. Reconcile the analyzed function extent with actual target instructions. If
+   inventory rows split a range that has one target prologue, one compiler return,
+   and one matching VC7 COFF auxiliary extent spanning the combined bytes, fix the
+   inventory boundary before recording exactness; never accept only the false
+   prefix as a function.
 6. Use TH06, TH07, or the inherited TH08 source to test names, ABI, layout, and
    behavior; record disagreements rather than silently choosing one version.
 7. Implement the smallest coherent change while preserving the VC7 x86 ABI.

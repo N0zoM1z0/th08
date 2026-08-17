@@ -440,8 +440,7 @@ FUN_0042fea0,0x42fea0,0xcc,unknown,,u8,u8,u8
 FUN_0042ff70,0x42ff70,0x43,unknown,,u8,u8
 FUN_0042ffc0,0x42ffc0,0x81b,unknown,,u8
 th08::BulletManager::RemoveAllBullets,0x430830,0x26c,__thiscall,,void,BulletManager*,i32
-FUN_00430aa0,0x430aa0,0x10,unknown,,u8,u8,u8
-FUN_00430ab0,0x430ab0,0x27b,unknown,,u8
+th08::BulletManager::DespawnBullets,0x430aa0,0x28b,__thiscall,,i32,BulletManager*,i32,i32
 FUN_00430d30,0x430d30,0xd6,unknown,,u8,u8,u8
 FUN_00430e10,0x430e10,0x103,unknown,,u8,u8
 FUN_00430f20,0x430f20,0x27f,unknown,,u8,u8

@@ -118,6 +118,99 @@ void BulletManager::RemoveAllBullets(i32 mode)
 }
 
 
+// FUNCTION: th08 0x430aa0
+#pragma var_order(score, totalScore, bulletCount, bulletIndex, sine, bullet, position, laser, cosine, radius, this)
+i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
+{
+    f32 radius;
+    f32 cosine;
+    u8 *laser;
+    f32 position[3];
+    u8 *bullet;
+    f32 sine;
+    i32 bulletIndex;
+    i32 bulletCount;
+    i32 totalScore;
+    i32 score;
+
+    totalScore = 0;
+    score = 2000;
+    bulletCount = 0;
+    bullet = reinterpret_cast<u8 *>(&g_BulletManager) + 0x1A880;
+    for (bulletIndex = 0; bulletIndex < 0x600; bulletIndex++, bullet += 0x10B8)
+    {
+        if (*reinterpret_cast<u16 *>(bullet + 0xDB8) == 0)
+        {
+            continue;
+        }
+
+        if (g_Player.FUN_00449ff0(reinterpret_cast<Float3 *>(bullet + 0xD44),
+                                 reinterpret_cast<Float3 *>(bullet + 0xD34)) == 2)
+        {
+            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44),
+                                    static_cast<ItemType>(g_BulletCancelItemType), 1);
+        }
+        else
+        {
+            g_ItemManager.SpawnItem(
+                reinterpret_cast<Float3 *>(bullet + 0xD44),
+                static_cast<ItemType>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA570)), 1);
+        }
+
+        g_AsciiManager.CreateScorePopup(reinterpret_cast<Float3 *>(bullet + 0xD44), score,
+                                        score >= maxScore ? -256 : -1);
+        totalScore += score;
+        bulletCount++;
+        score += 20;
+        if (score > maxScore)
+        {
+            score = maxScore;
+        }
+        *reinterpret_cast<u16 *>(bullet + 0xDB8) = 5;
+    }
+
+    laser = reinterpret_cast<u8 *>(this) + 0x660938;
+    reinterpret_cast<Float3 *>(position)->operator float *();
+    for (bulletIndex = 0; bulletIndex < 0x100; bulletIndex++, laser += 0x59C)
+    {
+        if (*reinterpret_cast<i32 *>(laser + 0x584) == 0)
+        {
+            continue;
+        }
+
+        if (*reinterpret_cast<u8 *>(laser + 0x598) < 2)
+        {
+            *reinterpret_cast<u8 *>(laser + 0x598) = 2;
+            *reinterpret_cast<ZunTimer *>(laser + 0x588) = 0;
+            *reinterpret_cast<i32 *>(laser + 0x564) = *reinterpret_cast<i32 *>(laser + 0x568);
+
+            if (awardLaserItems)
+            {
+                g_ItemManager.SpawnItem(
+                    reinterpret_cast<Float3 *>(laser + 0x548),
+                    static_cast<ItemType>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA570)), 1);
+                radius = *reinterpret_cast<f32 *>(laser + 0x558);
+                fsincos(&sine, &cosine, *reinterpret_cast<f32 *>(laser + 0x554));
+                while (*reinterpret_cast<f32 *>(laser + 0x55C) > radius)
+                {
+                    position[0] = cosine * radius + *reinterpret_cast<f32 *>(laser + 0x548);
+                    position[1] = sine * radius + *reinterpret_cast<f32 *>(laser + 0x54C);
+                    position[2] = 0.0f;
+                    g_ItemManager.SpawnItem(
+                        reinterpret_cast<Float3 *>(position),
+                        static_cast<ItemType>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA570)), 1);
+                    radius += 32.0f;
+                }
+            }
+        }
+
+        *reinterpret_cast<i32 *>(laser + 0x580) = 0;
+    }
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA53C) = 10;
+    return totalScore;
+}
+
 // FUNCTION: th08 0x42f420
 BulletManager::BulletManager()
 {

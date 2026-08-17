@@ -441,8 +441,7 @@ FUN_0042fea0,0x42fea0,function
 FUN_0042ff70,0x42ff70,function
 FUN_0042ffc0,0x42ffc0,function
 th08::BulletManager::RemoveAllBullets,0x430830,function
-th08::BulletManager::FUN_00430aa0,0x430aa0,function
-FUN_00430ab0,0x430ab0,function
+th08::BulletManager::DespawnBullets,0x430aa0,function
 FUN_00430d30,0x430d30,function
 FUN_00430e10,0x430e10,function
 FUN_00430f20,0x430f20,function
