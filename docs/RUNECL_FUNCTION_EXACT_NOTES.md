@@ -1061,3 +1061,32 @@ use target stack-home evidence to derive the pragma order.  Do not replace real
 shared locals with dummy padding or artificial scopes.  Declaration order and
 scope experiments are useful diagnostics but are not substitutes for the
 compiler-supported ordering mechanism when the target proves a fixed layout.
+
+## Opcodes 34 and 37: source-correct raw branches form a paired VC7 phase toggle
+
+On the `f162248` baseline the relocation-replayed strict diff was 811 and the
+first authored mismatch was opcode 34.  Target opcode 34 has four conditional
+float reads whose unresolved arms are raw dword copies, and calls the project
+`VectorAngle` helper at 0x0040C7B0.  The source-correct direct expression is the
+only tested form that preserves the target handler extent; spelling the result
+or x/y differences as named locals changes opcode 34 by +/-6 bytes.
+
+Restoring opcode 34 alone switches VC7 into the alternate movement-register
+phase.  The same is true for restoring opcode 37's unresolved float arm to a
+raw dword copy.  Applying **both** target-backed changes switches the phase
+back while making both handlers byte-exact:
+
+- baseline strict diff: 811;
+- opcode 34 target form alone: movement spans drift by the known +/-1/+/-2 set;
+- opcode 37 target raw arm alone: the same movement drift;
+- opcode 34 + opcode 37 together: shape remains 0 and strict diff becomes 757.
+
+This is a concrete example where two individually phase-gated source fixes must
+land together.  Do not retain an x87 false arm merely to preserve shape if a
+nearby target-backed raw arm closes the phase naturally.
+
+A full 24-permutation search of
+`#pragma var_order(angle, magnitude, lhsFloat, rhsFloat)` while opcode 34 was in
+its target form produced the exact same movement phase for every permutation.
+The shared-float var order matters for stack homes (see the earlier 820 -> 811
+improvement) but it is **not** the opcode-34 movement-phase hinge.

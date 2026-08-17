@@ -605,14 +605,22 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
         : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)))); break;
     case 34:
-        *WriteFloat(enemy, instruction, 0) =
-            atan2f(ReadFloatRawArg(enemy, instruction, 4) - ReadFloatRawArg(enemy, instruction, 2),
-                   ReadFloatRawArg(enemy, instruction, 3) - ReadFloatRawArg(enemy, instruction, 1));
+        *WriteFloat(enemy, instruction, 0) = VectorAngle((((instruction->operandFlags & (1U << 4))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 4)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 4))) - ((instruction->operandFlags & (1U << 2))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 2)))), (((instruction->operandFlags & (1U << 3))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 3))) - ((instruction->operandFlags & (1U << 1))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)))));
         break;
 
     case 37:
         *WriteFloat(enemy, instruction, 0) =
-            AddNormalizeAngle(ReadFloatRawArg(enemy, instruction, 0), 0.0f);
+            AddNormalizeAngle(((instruction->operandFlags & (1U << 0))
+            ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0)))
+            : *reinterpret_cast<f32 *>(&RawInt(instruction, 0))), 0.0f);
         break;
 
     case 35:
