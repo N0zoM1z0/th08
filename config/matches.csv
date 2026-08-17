@@ -727,3 +727,4 @@ address,name,size,status,match_percent,unit,evidence
 0x00416AF0,th08::Spellcard::spellcard_fun_00416af0,32,matching,100.00,spellcard-fun-00416af0,python3 scripts/compare-function.py spellcard-fun-00416af0 --json
 0x00416B10,th08::Spellcard::spellcard_fun_00416b10,118,matching,100.00,spellcard-fun-00416b10,python3 scripts/compare-function.py spellcard-fun-00416b10 --json
 0x004178C0,th08::Spellcard::OnDrawImpl,1685,matching,100.00,spellcard-on-draw-impl,python3 scripts/compare-function.py spellcard-on-draw-impl --json
+0x00441020,th08::Item::CollectPointSmall,334,matching,100.00,item-collect-point-small,python3 scripts/compare-function.py item-collect-point-small --json

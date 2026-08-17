@@ -315,36 +315,17 @@ void Item::CollectPoint()
 }
 
 // FUNCTION: th08 0x441020
-#pragma var_order(pointItemValueBase, currentPointItemValue, pointItemValue, isAbovePointLine, this)
+#pragma var_order(pointItemValueBase, currentPointItemValue)
 void Item::CollectPointSmall()
 {
     i32 pointItemValueBase = g_GameManager.globals->pointItemValue;
-    i32 pointItemValue;
     i32 currentPointItemValue;
-    i32 isAbovePointLine;
 
-    if (this->currentPosition.y < g_PlayerPrimaryShtFile->pointItemValueLine)
-    {
-        isAbovePointLine = true;
-    }
-    else
-    {
-        isAbovePointLine = false;
-    }
-
-    if (isAbovePointLine)
-    {
-        pointItemValue = pointItemValueBase;
-    }
-    else
-    {
-        pointItemValue =
-            pointItemValueBase / 2 -
-            (i32)(this->currentPosition.y - g_PlayerPrimaryShtFile->pointItemValueLine) *
-                (g_GameManager.globals->pointItemValue / 1000);
-    }
-
-    currentPointItemValue = pointItemValue;
+    currentPointItemValue = static_cast<ZunBool>(this->currentPosition.y < g_PlayerPrimaryShtFile->pointItemValueLine)
+                                ? pointItemValueBase
+                                : pointItemValueBase / 2 -
+                                      (i32)(this->currentPosition.y - g_PlayerPrimaryShtFile->pointItemValueLine) *
+                                          (g_GameManager.globals->pointItemValue / 1000);
     if (this->isMaxValue == 1)
     {
         currentPointItemValue = pointItemValueBase;

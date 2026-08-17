@@ -158,6 +158,12 @@ TH08 matches; use them as diagnostics, not as permission to force bytes:
   use a function-local trivial aggregate with the same fields for the temporary.
   This can express the observed copy semantics without constructor machinery;
   accept it only when the strict comparator proves the full function.
+- Value context matters for x87 comparisons. A floating comparison used directly
+  as a ternary condition can branch on the status word without materializing a
+  source value, while `static_cast<ZunBool>(comparison)` makes VC7 `/Od` store a
+  32-bit `0`/`1` temporary and test it before selecting the ternary arm. When the
+  target contains that materialized boolean slot, reproduce the value conversion
+  in C++ rather than inventing a named stack local.
 
 For a function whose authored body is followed by compiler-owned tables, first
 prove the authored extent independently, then set `compare_size` to the COFF
