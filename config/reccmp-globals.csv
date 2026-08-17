@@ -185,3 +185,5 @@ th08::g_GuiMessageInputPrevious,0x164d534,global
 th08::g_GuiMessageScreenEffectDuration,0x17ce8cc,global
 th08::g_GuiBossTimerColors,0x4c72ac,global
 th08::g_GuiTimePeriodLabels,0x4c72bc,global
+th08::g_ItemTimeOrbMode,0x18b8974,global
+th08::g_ItemTimeOrbTimerStorage,0x18b89d4,global

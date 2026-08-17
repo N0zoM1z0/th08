@@ -12,6 +12,14 @@ namespace th08
 {
 
 DIFFABLE_STATIC(ItemManager, g_ItemManager);
+DIFFABLE_STATIC(i32, g_ItemTimeOrbMode);
+struct ItemTimeOrbTimerStorage
+{
+    i32 current;
+    f32 subFrame;
+    i32 previous;
+};
+DIFFABLE_STATIC(ItemTimeOrbTimerStorage, g_ItemTimeOrbTimerStorage);
 DIFFABLE_STATIC(i32, g_MaxValuePointItemsCollected);
 DIFFABLE_STATIC(Float2, g_ItemAnmManagerScreenShakeOffset);
 DIFFABLE_STATIC_ARRAY_ASSIGN(i32, 6, g_PowerUpThresholds) = {8, 24, 48, 80, 128, 999};
@@ -385,9 +393,48 @@ void Item::CollectPowerBig()
     }
 }
 
-// STUB: th08 0x4412b0
+// FUNCTION: th08 0x4412b0
+#pragma var_order(score)
 void Item::CollectTimeOrb()
 {
+    i32 score;
+
+    if (g_ItemTimeOrbMode == 0)
+    {
+        if (g_GameManager.globals->pointItemsCollectedInStage >= 2000)
+        {
+            score = 10000;
+        }
+        else
+        {
+            score = (g_GameManager.globals->pointItemsCollected / 2) * 10;
+            if (score < 100)
+                score = 100;
+        }
+    }
+    else
+    {
+        score = 100;
+    }
+
+    if (this != NULL)
+    {
+        g_AsciiManager.CreateScorePopup(
+            &this->currentPosition, score,
+            g_GameManager.GetTimeOrbs() < g_GameManager.GetLastSpellTimeOrbThreshold() ? -536870913 : -536875136);
+    }
+
+    g_Gui.flags.timeDisplayUpdateFrames = 2;
+    g_GameManager.AddScore(score);
+    g_GameManager.AddTimeOrbs(1);
+    g_Spellcard.spellcard_fun_00416b10(8000);
+
+    if (*reinterpret_cast<ZunTimer *>(&g_ItemTimeOrbTimerStorage) == 0)
+    {
+        score = 111;
+        g_GameManager.AddToYoukaiGauge(
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&g_Player) + 3) ? score : -score, 0);
+    }
 }
 
 // FUNCTION: th08 0x4413e0

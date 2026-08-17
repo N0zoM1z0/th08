@@ -78202,3 +78202,145 @@ offset = 1805
 type = "DIR32"
 symbol = "$L*"
 target = 0x00433652
+
+[[units]]
+name = "item-collect-time-orb"
+object = "build/objdiff/reimpl/ItemManager.obj"
+symbol = "th08::Item::CollectTimeOrb"
+target_address = 0x004412B0
+size = 293
+
+[[units.relocations]]
+offset = 12
+type = "DIR32"
+symbol = "?g_ItemTimeOrbMode@th08@@3HA"
+target = 0x018B8974
+
+[[units.relocations]]
+offset = 20
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 44
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 91
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 96
+type = "REL32"
+symbol = "?GetTimeOrbs@GameManager@th08@@QAEHXZ"
+target = 0x00421B60
+
+[[units.relocations]]
+offset = 103
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 108
+type = "REL32"
+symbol = "?GetLastSpellTimeOrbThreshold@GameManager@th08@@QAEHXZ"
+target = 0x00421B80
+
+[[units.relocations]]
+offset = 148
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 153
+type = "REL32"
+symbol = "?CreateScorePopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z"
+target = 0x00403330
+
+[[units.relocations]]
+offset = 159
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+addend = 4
+
+[[units.relocations]]
+offset = 177
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+addend = 4
+
+[[units.relocations]]
+offset = 186
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 191
+type = "REL32"
+symbol = "?AddScore@GameManager@th08@@QAEXH@Z"
+target = 0x004181F0
+
+[[units.relocations]]
+offset = 198
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 203
+type = "REL32"
+symbol = "?AddTimeOrbs@GameManager@th08@@QAEXH@Z"
+target = 0x00418220
+
+[[units.relocations]]
+offset = 213
+type = "DIR32"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+
+[[units.relocations]]
+offset = 218
+type = "REL32"
+symbol = "?spellcard_fun_00416b10@Spellcard@th08@@QAEXH@Z"
+target = 0x00416B10
+
+[[units.relocations]]
+offset = 225
+type = "DIR32"
+symbol = "?g_ItemTimeOrbTimerStorage@th08@@3UItemTimeOrbTimerStorage@1@A"
+target = 0x018B89D4
+
+[[units.relocations]]
+offset = 230
+type = "REL32"
+symbol = "??8ZunTimer@th08@@QAEIH@Z"
+target = 0x0040D3F0
+
+[[units.relocations]]
+offset = 248
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 3
+
+[[units.relocations]]
+offset = 279
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 284
+type = "REL32"
+symbol = "?AddToYoukaiGauge@GameManager@th08@@QAEXHH@Z"
+target = 0x0043C0BB

@@ -776,3 +776,4 @@ th08::Bullet::DrawSingleBullet
 th08::BulletManager::OnDraw
 th08::BulletManager::AddedCallback
 th08::ItemManager::Initialize
+th08::Item::CollectTimeOrb

@@ -777,3 +777,4 @@ address,name,size,status,match_percent,unit,evidence
 0x00432B50,th08::BulletManager::OnDraw,969,matching,100.00,bullet-manager-on-draw,python3 scripts/compare-function.py bullet-manager-on-draw --json
 0x00433070,th08::BulletManager::AddedCallback,1662,matching,100.00,bullet-manager-added-callback,python3 scripts/compare-function.py bullet-manager-added-callback --json
 0x004337F0,th08::ItemManager::Initialize,42,matching,100.00,item-manager-initialize,python3 scripts/compare-function.py item-manager-initialize --json
+0x004412B0,th08::Item::CollectTimeOrb,293,matching,100.00,item-collect-time-orb,python3 scripts/compare-function.py item-collect-time-orb --json

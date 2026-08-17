@@ -619,7 +619,7 @@ th08::Item::CollectPowerSmall,0x440cf0,0x14e,__thiscall,,void,Item*
 th08::Item::CollectPoint,0x440e40,0x1d8,__thiscall,,void,Item*
 th08::Item::CollectPointSmall,0x441020,0x14e,__thiscall,,void,Item*
 th08::Item::CollectPowerBig,0x441170,0x13b,__thiscall,,void,Item*
-th08::Item::FUN_00412b0,0x4412b0,0x125,__thiscall,,void,Item*
+th08::Item::CollectTimeOrb,0x4412b0,0x125,__thiscall,,void,Item*
 th08::ItemManager::AutoCollectAllItems,0x4413e0,0x61,__thiscall,,void,ItemManager*
 th08::ItemManager::ConvertAllPowerItemsToTimeOrbs,0x441450,0xd1,__thiscall,,void,ItemManager*,Item*
 th08::ItemManager::CancelAutoCollect,0x441530,0x6d,__thiscall,,void,ItemManager*
