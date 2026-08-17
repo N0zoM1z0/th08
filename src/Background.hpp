@@ -74,7 +74,9 @@ struct Background
     unknown_fields(0xb21, 0x3);
     i32 spellBackgroundState;
     i32 spellBackgroundTimer;
-    unknown_fields(0xb2c, 0xc);
+    unknown_fields(0xb2c, 0x4);
+    i32 spellVmCount;
+    i32 spellVmScriptBase;
     AnmVm anmVmArray[0x20];
     AnmVm anmVm5fb8;
     void (*onDrawLowPrioCallback)();

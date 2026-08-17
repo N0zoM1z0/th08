@@ -735,3 +735,4 @@ th08::Enemy::enemy_fun_00415c80
 th08::Background::background_fun_00415ce0
 th08::Background::background_fun_00416ad0
 th08::Gui::gui_fun_00437edc
+th08::Spellcard::StartSpell

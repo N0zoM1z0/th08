@@ -260,12 +260,17 @@ struct Spellcard
     u32 flags;                       // +0x000
     u8 *activeEnemy;                 // +0x004
     i32 spellCardNumber;             // +0x008
-    u8 unknown_00C[0xE8];           // +0x00C
+    u32 enemySpellFlagsSnapshot;     // +0x00C
+    i32 pendingTimeOrbs;             // +0x010
+    char spellName[48];              // +0x014
+    u8 unknown_044[0x30];            // +0x044
+    char spellCommentLine1[64];      // +0x074
+    char spellCommentLine2[64];      // +0x0B4
     u8 *spellEffect;                 // +0x0F4
-    u8 unknown_0F8[0x4];            // +0x0F8
+    i32 unknown_0F8;                 // +0x0F8
     i32 bonusProgress;               // +0x0FC
     i32 bonusCounter;                // +0x100
-    u8 unknown_104[0x4];             // +0x104
+    i32 bonusAward;                  // +0x104
     ZunTimer timer108;               // +0x108
     ZunTimer timer114;               // +0x114
     AnmVm vm120;                     // +0x120
@@ -294,6 +299,8 @@ struct Spellcard
     void *lifetimeObject;            // +0x263C
     ChainElem *lifetimeChain;        // +0x2640
 
+    void StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemyFace, i32 bonus, u8 *enemy,
+                    const u8 *encodedOwner, const char *commentLine1, const char *commentLine2);
     void CutInEnemyNoPortrait(const char *name, i32 unused);
     void CutInPlayer(i32 playerFace, const char *name, i32 sprite);
     void CutInEnemy(i32 enemyFace, const char *name, i32 sprite);

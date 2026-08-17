@@ -136,6 +136,9 @@ TH08 matches; use them as diagnostics, not as permission to force bytes:
 - `#pragma var_order(a, b, c)` assigns listed function-scope locals from the
   least-negative stack slot downward in list order. Nested block locals are not
   reliably controlled by a function-level list.
+  On large `/Od` functions, getting this order right can change total function
+  size substantially because locals inside `-0x80..-0x1` use short EBP
+  displacements while deeper slots require long displacements on every access.
 - A block-scope `#pragma var_order` can control locals declared in that block,
   including a direct-initialized class local that receives a hidden return
   buffer. Do not put the pragma directly after a label: VC7 can mis-handle name
@@ -169,6 +172,12 @@ TH08 matches; use them as diagnostics, not as permission to force bytes:
   conjunction and then copy it into a second ternary-result slot; flattening the
   same logic to `gate && a && b` removes that outer slot. Preserve the target's
   expression grouping when stack shape shows both temporaries.
+- A one-bit bitfield assignment has its own read-modify-write shape: VC7 can
+  evaluate and mask/shift the RHS first, then load the containing word, clear the
+  destination bit, OR the shifted value into that word, and store it. An
+  equivalent hand-written integer mask/OR expression can choose the opposite OR
+  destination register. When the target shows the bitfield pattern, a typed
+  bitfield view is a more faithful C++ expression than algebraic register tuning.
 
 For a function whose authored body is followed by compiler-owned tables, first
 prove the authored extent independently, then set `compare_size` to the COFF

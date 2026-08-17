@@ -1,6 +1,11 @@
 #include "th_pch.h"
 
 #include "ScoreDat.hpp"
+#include "Background.hpp"
+#include "BulletManager.hpp"
+#include "EclManager.hpp"
+#include "EnemyManager.hpp"
+#include "Gui.hpp"
 #include "Spellcard.hpp"
 #include "Global.hpp"
 #include "utils.hpp"
@@ -10,6 +15,14 @@ namespace th08
 DIFFABLE_STATIC(Spellcard, g_Spellcard);
 DIFFABLE_STATIC(ChainElem *, g_SpellcardCalcChain);
 DIFFABLE_STATIC(i32, g_LastSpellCount);
+DIFFABLE_STATIC(AnmLoaded *, g_SpellcardBackgroundAnm);
+
+struct SpellcardFlagBits
+{
+    u32 lowBits : 5;
+    u32 unk5 : 1;
+    u32 highBits : 26;
+};
 // clang-format off
 // TODO: stop clang-format from fucking with whitespace formatting
 
@@ -361,6 +374,180 @@ Spellcard::Spellcard()
 
 
 DIFFABLE_EXTERN(i32, g_GuiFullPowerModeFrames);
+
+// FUNCTION: th08 0x4152a0
+#pragma var_order(i, catk, j, checksum, nameChecksum, ownerName, this)
+void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemyFace, i32 bonus, u8 *enemy,
+                           const u8 *encodedOwner, const char *commentLine1, const char *commentLine2)
+{
+    char ownerName[128];
+    i32 nameChecksum;
+    i32 checksum;
+    i32 j;
+    Catk *catk;
+    u32 i;
+
+    this->flags &= ~0x200;
+    this->flags |= 1;
+    this->flags |= 4;
+    this->flags &= ~0x10;
+    this->flags &= ~8;
+    this->flags &= ~0x40;
+    this->flags &= ~0x80;
+    this->flags &= ~0x400;
+    this->spellCardNumber = spellCardNumber;
+    this->activeEnemy = enemy;
+    this->enemySpellFlagsSnapshot = *reinterpret_cast<u32 *>(this->activeEnemy + 0x2E0C);
+    this->bonusProgress = bonus;
+    this->scoreLimit = bonus;
+    if (((*reinterpret_cast<u32 *>(this->activeEnemy + 0x3324) >> 27) & 1) != 0)
+    {
+        this->scoreLimit = 99999990;
+    }
+    this->bonusCounter =
+        (this->bonusProgress - this->bonusProgress / 7u) / (*reinterpret_cast<i32 *>(this->activeEnemy + 0x3378) / 60);
+    this->timer108 = *reinterpret_cast<i32 *>(this->activeEnemy + 0x3378);
+    this->timer114 = *reinterpret_cast<i32 *>(this->activeEnemy + 0x3378);
+
+    for (i = 0; i < 0x30; i++)
+    {
+        this->spellName[i] = encodedName[i] ^ 0xAA;
+    }
+    this->CutInEnemy(enemyFace, this->spellName, 0);
+    g_BulletManager.bulletmanager_fun_00415c60();
+    g_Background.background_fun_00415ce0();
+    for (i = 0; (i32)i < g_Background.spellVmCount; i++)
+    {
+        g_SpellcardBackgroundAnm->SetAndExecuteScriptIdx(&g_Background.anmVmArray[i],
+                                                         i + g_Background.spellVmScriptBase);
+    }
+    g_Background.onDrawLowPrioCallback = NULL;
+    reinterpret_cast<Enemy *>(this->activeEnemy)->enemy_fun_00415c80();
+    this->mixColor = 0x80808080;
+
+    if (((this->flags >> 8) & 1) != 0)
+    {
+        this->unknown_0F8 = 0;
+        g_Gui.gui_fun_00437edc(this->bonusAward);
+        g_GameManager.AddScore(this->bonusAward);
+        this->flags &= ~0x100;
+        if (this->pendingTimeOrbs > 0)
+        {
+            g_GameManager.AddTimeOrbs(this->pendingTimeOrbs);
+            this->pendingTimeOrbs = 0;
+        }
+    }
+
+    this->flags &= ~0x800;
+    this->spellEffect = reinterpret_cast<u8 *>(g_EffectManager.FUN_00425870(
+        (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0) ? 52 : 39,
+        reinterpret_cast<D3DXVECTOR3 *>(this->activeEnemy + 0x2D34), 1, 1, -1));
+    *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x50) = 0;
+    *reinterpret_cast<ZunTimer *>(this->spellEffect + 0xA4) = 100;
+    *reinterpret_cast<u8 *>(this->spellEffect + 0xF8) = 6;
+    *reinterpret_cast<f32 *>(this->spellEffect + 0x238) = 8.0f;
+    *reinterpret_cast<f32 *>(this->spellEffect + 0x244) = 256.0f;
+    *reinterpret_cast<f32 *>(this->spellEffect + 0x23C) = 64.0f;
+    *reinterpret_cast<f32 *>(this->spellEffect + 0x248) = 0.0f;
+    *reinterpret_cast<f32 *>(this->spellEffect + 0x20C) = 64.0f;
+    *reinterpret_cast<D3DXVECTOR3 *>(this->spellEffect + 0x2A4) = *reinterpret_cast<D3DXVECTOR3 *>(this->activeEnemy + 0x2D34);
+    *reinterpret_cast<i32 *>(this->spellEffect + 0x324) = 64;
+    *reinterpret_cast<i32 *>(this->spellEffect + 0x318) = 0;
+    *reinterpret_cast<f32 *>(this->spellEffect + 0x314) = 256.0f;
+    *reinterpret_cast<f32 *>(this->spellEffect + 0x320) = 15.0f;
+    *reinterpret_cast<f32 *>(this->spellEffect + 0x334) = 6.0f;
+
+    reinterpret_cast<SpellcardFlagBits *>(&this->flags)->unk5 =
+        (*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3;
+    g_Gui.flags.bombDisplayUpdateFrames = 3;
+    g_Gui.flags.lifeDisplayUpdateFrames = 3;
+    this->flags &= ~0x40;
+
+    if (!g_GameManager.IsReplay())
+    {
+        catk = &g_GameManager.catkData[this->spellCardNumber];
+        checksum = 0;
+        strcpy(catk->spellName, this->spellName);
+
+        memset(ownerName, 0, sizeof(ownerName));
+        for (j = 0; (u32)j < 0x30; j++)
+        {
+            ownerName[j] = encodedOwner[j] ^ 0xBB;
+        }
+        strcpy(catk->spellOwnerName, ownerName);
+
+        if (g_GameManager.flags.isSpellPractice)
+        {
+            memcpy(this->spellCommentLine1, commentLine1, sizeof(this->spellCommentLine1));
+            memcpy(this->spellCommentLine2, commentLine2, sizeof(this->spellCommentLine2));
+        }
+
+        for (j = strlen(catk->spellName); j > 0;)
+        {
+            --j;
+            checksum += catk->spellName[j];
+        }
+        nameChecksum = checksum;
+
+        for (j = 0; j < SHOT_ALL + 1; j++)
+        {
+            checksum += catk->inGameHistory.captures[j];
+            checksum += catk->inGameHistory.attempts[j];
+            checksum += catk->inGameHistory.maxBonus[j];
+            checksum += catk->spellPracticeHistory.captures[j];
+            checksum += catk->spellPracticeHistory.attempts[j];
+            checksum += catk->spellPracticeHistory.maxBonus[j];
+        }
+
+        if (catk->unk0xe != (u8)checksum)
+        {
+            for (j = 0; j < SHOT_ALL + 1; j++)
+            {
+                catk->inGameHistory.captures[j] = 0;
+                catk->inGameHistory.attempts[j] = 0;
+                catk->inGameHistory.maxBonus[j] = 0;
+                catk->spellPracticeHistory.captures[j] = 0;
+                catk->spellPracticeHistory.attempts[j] = 0;
+                catk->spellPracticeHistory.maxBonus[j] = 0;
+            }
+        }
+
+        if (!g_GameManager.flags.isSpellPractice)
+        {
+            if (catk->inGameHistory.attempts[g_GameManager.shotType] < 9999)
+            {
+                catk->inGameHistory.attempts[g_GameManager.shotType]++;
+            }
+            if (catk->inGameHistory.attempts[SHOT_ALL] < 9999)
+            {
+                catk->inGameHistory.attempts[SHOT_ALL]++;
+            }
+        }
+        else
+        {
+            if (catk->spellPracticeHistory.attempts[g_GameManager.shotType] < 9999)
+            {
+                catk->spellPracticeHistory.attempts[g_GameManager.shotType]++;
+            }
+            if (catk->spellPracticeHistory.attempts[SHOT_ALL] < 9999)
+            {
+                catk->spellPracticeHistory.attempts[SHOT_ALL]++;
+            }
+        }
+
+        for (j = 0; j < SHOT_ALL + 1; j++)
+        {
+            nameChecksum += catk->inGameHistory.captures[j];
+            nameChecksum += catk->inGameHistory.attempts[j];
+            nameChecksum += catk->inGameHistory.maxBonus[j];
+            nameChecksum += catk->spellPracticeHistory.captures[j];
+            nameChecksum += catk->spellPracticeHistory.attempts[j];
+            nameChecksum += catk->spellPracticeHistory.maxBonus[j];
+        }
+        catk->difficulty = (u8)g_GameManager.difficulty;
+        catk->unk0xe = (u8)nameChecksum;
+    }
+}
 
 // FUNCTION: th08 0x415d10
 void Spellcard::CutInEnemyNoPortrait(const char *name, i32 unused)

@@ -66521,3 +66521,264 @@ offset = 0x72
 type = "DIR32"
 symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
 target = 0x017CE8CC
+
+# Ledger name: th08::Spellcard::StartSpell
+# Evidence: VC7 COFF auxiliary extent is 0x9B3 and ends at the target ret 0x20.
+[[units]]
+name = "spellcard-start-spell"
+object = "build/SpellCard.obj"
+symbol = "?StartSpell@Spellcard@th08@@QAEXHPBEHHPAE0PBD2@Z"
+target_address = 0x004152A0
+size = 0x9B3
+
+[[units.relocations]]
+offset = 0x194
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x1B5
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x205
+type = "REL32"
+symbol = "?CutInEnemy@Spellcard@th08@@QAEXHPBDH@Z"
+target = 0x00415F00
+
+[[units.relocations]]
+offset = 0x20A
+type = "DIR32"
+symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
+target = 0x00F54E90
+
+[[units.relocations]]
+offset = 0x20F
+type = "REL32"
+symbol = "?bulletmanager_fun_00415c60@BulletManager@th08@@QAEXXZ"
+target = 0x00415C60
+
+[[units.relocations]]
+offset = 0x214
+type = "DIR32"
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+
+[[units.relocations]]
+offset = 0x219
+type = "REL32"
+symbol = "?background_fun_00415ce0@Background@th08@@QAEXXZ"
+target = 0x00415CE0
+
+[[units.relocations]]
+offset = 0x234
+type = "DIR32"
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+
+[[units.relocations]]
+offset = 0x23F
+type = "DIR32"
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+
+[[units.relocations]]
+offset = 0x24F
+type = "DIR32"
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+
+[[units.relocations]]
+offset = 0x256
+type = "DIR32"
+symbol = "?g_SpellcardBackgroundAnm@th08@@3PAUAnmLoaded@1@A"
+target = 0x00577EB8
+
+[[units.relocations]]
+offset = 0x25B
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x263
+type = "DIR32"
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+
+[[units.relocations]]
+offset = 0x275
+type = "REL32"
+symbol = "?enemy_fun_00415c80@Enemy@th08@@QAEXXZ"
+target = 0x00415C80
+
+[[units.relocations]]
+offset = 0x2BD
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x2C2
+type = "REL32"
+symbol = "?gui_fun_00437edc@Gui@th08@@QAEXH@Z"
+target = 0x00437EDC
+
+[[units.relocations]]
+offset = 0x2D4
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x2D9
+type = "REL32"
+symbol = "?AddScore@GameManager@th08@@QAEXH@Z"
+target = 0x004181F0
+
+[[units.relocations]]
+offset = 0x30A
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x30F
+type = "REL32"
+symbol = "?AddTimeOrbs@GameManager@th08@@QAEXH@Z"
+target = 0x00418220
+
+[[units.relocations]]
+offset = 0x34D
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x363
+type = "DIR32"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0x368
+type = "REL32"
+symbol = "?FUN_00425870@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+target = 0x00425870
+
+[[units.relocations]]
+offset = 0x38A
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x3A3
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x4C9
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x4F0
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x4F9
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x4FE
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x506
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x51E
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x523
+type = "REL32"
+symbol = "?IsReplay@GameManager@th08@@QAEIXZ"
+target = 0x00406C90
+
+[[units.relocations]]
+offset = 0x540
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x663
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x837
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x848
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x85F
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x873
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x8AA
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x8C1
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x8D5
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x99B
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
