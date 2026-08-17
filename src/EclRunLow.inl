@@ -133,7 +133,9 @@ struct LinkedChildFlags1
     u32 isYoukai : 1;
     u32 unknown0C_13 : 8;
     u32 op129Bits20_22 : 3;
-    u32 unknown17_1A : 4;
+    u32 unknown17_18 : 2;
+    u32 op145Bit25 : 1;
+    u32 op151Bit26 : 1;
     u32 op155Bit27 : 1;
     u32 op79Bit28 : 1;
     u32 unknown1D : 1;
@@ -144,7 +146,9 @@ C_ASSERT(sizeof(LinkedChildFlags1) == 4);
 
 struct Op79Flags2
 {
-    u32 unknown00_05 : 6;
+    u32 unknown00 : 1;
+    u32 op83Bit1 : 1;
+    u32 unknown02_05 : 4;
     u32 op79Bit6 : 1;
     u32 unknown07 : 1;
     u32 op182Bit8 : 1;

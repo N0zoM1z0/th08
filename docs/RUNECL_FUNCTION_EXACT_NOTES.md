@@ -1202,3 +1202,63 @@ span-exact yet still be unsafe to land alone.  Pair it with the next physical
 handler that has the same known raw-float debt and evaluate whole-function
 shape/strict bytes.  The formal byte reduction often equals the sum of both
 handlers' previous residuals, proving that the pair has become byte-exact.
+
+## Final closure: target lvalues and bitfields take 97 -> 0
+
+After the high-opcode raw-float phase chain closed, relocation-replayed strict
+diff was 97 with full handler/function shape already exact.  The final closure
+was not another synthetic register-phase adjustment.  A small set of remaining
+source abstractions still differed from the target's real lvalue/type tree and
+had to land together:
+
+- **op119** writes the three object-vector components through a typed `Vec3`
+  lvalue and forms each value as `resolved_or_raw_operand + enemy_base_component`.
+  The old scalar-offset form expressed the same arithmetic but selected a
+  different VC7 register/evaluation tree.
+- **op145 / op151** are one-bit assignments to bits 25 and 26 of the 0x3324
+  flags word.  Extending `LinkedChildFlags1` with real bitfields and assigning
+  the raw byte directly reproduces target mask/merge code without manual
+  whole-dword OR expressions.
+- **op152 operand 0** needs the same explicit raw-dword false arm used by the
+  already-recovered float resolver sites; the generic raw-float macro preserved
+  the wrong source tree even when the handler extent happened to match.
+- **op169** uses the player-x comparison in target orientation (`playerX <
+  enemyX`), expressed through typed vector components.
+- **op82** uses a real field lvalue at enemy+0x3350 for the square update rather
+  than repeated scalar `F32At` casts.
+- **op83** is a one-bit assignment to bit 1 of the 0x3328 flags word; the real
+  bitfield assignment replaces the manual mask/OR form.
+
+With those source corrections together:
+
+- `ecl-shape-score.py` reports physical/positive/absolute delta all zero;
+- relocation-replayed strict diff is **0**;
+- all **162 / 162** RunEcl handler spans are byte-exact;
+- function code coverage is **26638 / 26638** bytes;
+- full comparison extent (including the jump table) is **27398 / 27398** bytes.
+
+### Formal relocation manifest
+
+`RunEcl` contains 799 COFF relocations in its 0x6B06-byte comparison extent:
+336 `DIR32` and 463 `REL32`.  189 of those reference compiler-owned local
+labels.  `compare-function.py` intentionally canonicalizes local label symbols
+to `$L*`, because VC7 can renumber `$L123` names while relocation offsets and
+resolved target addresses remain stable evidence.
+
+The RunEcl match unit therefore needs an explicit 799-row relocation manifest.
+Each relocation target is derived mechanically from the verified target field,
+the object relocation addend, the RunEcl target base, and the relocation kind;
+no destination is guessed or added merely to satisfy comparison.  With this
+manifest installed, the repository's official command:
+
+```text
+python3 scripts/compare-function.py ecl-manager-run-ecl --json
+```
+
+returns `result: exact`, with 26638/26638 coverage bytes and 27398/27398
+compared bytes, all 799 relocations accepted, and no first differences.
+
+Reusable lesson: **shape zero and even a local relocation-replayed zero are not
+the publication boundary.**  For a large dispatcher, finish by recording the
+actual COFF relocation key/targets in the match unit and require the official
+strict comparator to return `exact` before adding `matches.csv` evidence.

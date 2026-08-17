@@ -59,6 +59,12 @@ struct Vec3
     f32 z;
 };
 
+struct Op82EnemyFieldOverlay
+{
+    u8 padding00[0x3350];
+    f32 squaredValue;
+};
+
 struct RawInstruction
 {
     i32 time;
@@ -562,18 +568,18 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
         {
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x548) = TH08_ECL_AT(ctx, f32, 0x2D88) + ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
+            reinterpret_cast<Vec3 *>(TH08_ECL_OBJECT(ctx, lhsInt) + 0x548)->x = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
                     ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
                           *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)))
-                    : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)));
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x54C) = TH08_ECL_AT(ctx, f32, 0x2D8C) + ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2))
+                    : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))) + TH08_ECL_AT(ctx, Vec3, 0x2D88).x;
+            reinterpret_cast<Vec3 *>(TH08_ECL_OBJECT(ctx, lhsInt) + 0x548)->y = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2))
                     ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
                           *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2)))
-                    : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2)));
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x550) = TH08_ECL_AT(ctx, f32, 0x2D90) + ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
+                    : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2))) + TH08_ECL_AT(ctx, Vec3, 0x2D88).y;
+            reinterpret_cast<Vec3 *>(TH08_ECL_OBJECT(ctx, lhsInt) + 0x548)->z = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
                     ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
                           *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)))
-                    : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)));
+                    : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3))) + TH08_ECL_AT(ctx, Vec3, 0x2D88).z;
         }
         break;
     case 170:
@@ -851,7 +857,7 @@ enter_subroutine:
         break;
     }
     case 145:
-        TH08_ECL_AT(ctx, u32, 0x3324) = ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 25) | (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFDFFFFFF);
+        reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->op145Bit25 = TH08_ECL_RAW_BYTE(ctx, 0);
         break;
     case 136: reinterpret_cast<void (__fastcall *)(u8 *, RawInstruction *)>(g_EclExInsn[TH08_ECL_READ_I(ctx, 0)])(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_CONTEXT_INSTRUCTION(ctx)); break;
     case 137:
@@ -952,12 +958,11 @@ enter_subroutine:
         TH08_ECL_AT(ctx, i32, 0x3028) = TH08_ECL_READ_I(ctx, 1);
         break;
     case 151:
-        TH08_ECL_AT(ctx, u32, 0x3324) =
-            ((TH08_ECL_RAW_BYTE(ctx, 0) & 1) << 26) |
-            (TH08_ECL_AT(ctx, u32, 0x3324) & 0xFBFFFFFF);
+        reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->op151Bit26 =
+            TH08_ECL_RAW_BYTE(ctx, 0);
         break;
     case 152:
-        TH08_ECL_AT(ctx, f32, 0x2DEC) = TH08_ECL_READ_F_RAWARG(ctx, 0);
+        TH08_ECL_AT(ctx, f32, 0x2DEC) = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 0)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0)));
         TH08_ECL_AT(ctx, f32, 0x2DF0) = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
             ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
                   *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)))
@@ -1024,8 +1029,8 @@ enter_subroutine:
         break;
     case 169:
         if (
-            TH08_ECL_AT(ctx, f32, 0x2D34) >
-                (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(&g_Player) + 0x2B4)) &&
+            reinterpret_cast<Vec3 *>(reinterpret_cast<u8 *>(&g_Player) + 0x2B4)->x <
+                TH08_ECL_AT(ctx, Vec3, 0x2D34).x &&
             96.0f < TH08_ECL_AT(ctx, f32, 0x2D34) ||
             288.0f < TH08_ECL_AT(ctx, f32, 0x2D34))
             *TH08_ECL_WRITE_F(ctx, 0) = AddNormalizeAngle(
@@ -1063,18 +1068,18 @@ enter_subroutine:
     // the target's late physical handler order.  Their standalone low-opcode
     // forms remain in EclRunLow.inl for source ownership and audit coverage.
     case 82:
-        TH08_ECL_AT(ctx, f32, 0x3350) =
+        reinterpret_cast<Op82EnemyFieldOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->squaredValue =
             (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & 1U)
                 ? reinterpret_cast<EclOperands::EnemyOverlay *>(
                       TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
                       *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0)))
                 : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0));
-        TH08_ECL_AT(ctx, f32, 0x3350) *= TH08_ECL_AT(ctx, f32, 0x3350);
+        reinterpret_cast<Op82EnemyFieldOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->squaredValue *=
+            reinterpret_cast<Op82EnemyFieldOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->squaredValue;
         break;
     case 83:
-        TH08_ECL_AT(ctx, u32, 0x3328) =
-            ((TH08_ECL_READ_I(ctx, 0) & 1) << 1) |
-            (TH08_ECL_AT(ctx, u32, 0x3328) & ~2U);
+        reinterpret_cast<EclRunLowProposal::Op79Flags2 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3328)->op83Bit1 =
+            TH08_ECL_READ_I(ctx, 0);
         break;
 #endif
     case 174:
