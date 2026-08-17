@@ -1588,9 +1588,15 @@ ChainCallbackResult Gui::OnUpdate(Gui *gui)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-// STUB: th08 0x433927
+// FUNCTION: th08 0x433927
 ChainCallbackResult Gui::OnDraw(Gui *gui)
 {
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(gui->impl) + 0x22d84) != 0)
+        gui->FUN_0043826b();
+    gui->impl->DrawDialogue();
+    gui->FUN_0043741d();
+    gui->DrawGameScene();
+    gui->FUN_00438a89();
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 

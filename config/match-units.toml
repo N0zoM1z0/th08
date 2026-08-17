@@ -76632,3 +76632,40 @@ offset = 1225
 type = "REL32"
 symbol = "?SetIsGuiMode@AsciiManager@th08@@QAEXI@Z"
 target = 4430079
+
+[[units]]
+name = "gui-draw-callback"
+object = "build/objdiff/reimpl/Gui.obj"
+symbol = "th08::Gui::OnDraw"
+target_address = 0x00433927
+size = 70
+
+[[units.relocations]]
+offset = 26
+type = "REL32"
+symbol = "th08::Gui::FUN_0043826b"
+target = 4424299
+
+[[units.relocations]]
+offset = 37
+type = "REL32"
+symbol = "?DrawDialogue@GuiImpl@th08@@QAE?AW4ZunResult@@XZ"
+target = 4412459
+
+[[units.relocations]]
+offset = 45
+type = "REL32"
+symbol = "th08::Gui::FUN_0043741d"
+target = 4420637
+
+[[units.relocations]]
+offset = 53
+type = "REL32"
+symbol = "th08::Gui::DrawGameScene"
+target = 4416093
+
+[[units.relocations]]
+offset = 61
+type = "REL32"
+symbol = "th08::Gui::FUN_00438a89"
+target = 4426377

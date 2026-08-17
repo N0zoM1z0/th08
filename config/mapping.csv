@@ -467,7 +467,7 @@ FUN_00433880,0x433880,0x21,unknown,,u8,u8
 th08::IsResourceReloadEnabled,0x4338b0,0xa,__fastcall,,i32
 th08::IsBulletManagerAnmReleaseRequired,0x4338c0,0xa,__fastcall,,i32
 th08::Gui::OnUpdate,0x4338ca,0x5d,__fastcall,,ChainCallbackResult,Gui*
-FUN_00433927,0x433927,0x46,unknown,,u8
+th08::Gui::OnDraw,0x433927,0x46,__fastcall,,ChainCallbackResult,Gui*
 th08::GuiImpl::FUN_0043396d,0x43396d,0x446,__thiscall,,void,GuiImpl*,i32
 th08::GuiImpl::RunMsg,0x433db3,0x15dd,__thiscall,,i32,GuiImpl*
 th08::FUN_004353ec,0x4353ec,0x3f,__fastcall,,void,char*,const char*
