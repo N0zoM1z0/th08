@@ -411,3 +411,7 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 - Equivalent flat indexing can change address-generation ownership. The option callback tables are exact as rows of four pointers indexed `table[route].callbacks[slot]`, which makes VC7 form `route << 4` first and then apply `slot * 4`. Flattening to `table[route * 4 + slot]` is semantically identical but changes the register/evaluation sequence.
 - A large switch's lexical case order is observable independently of the numeric case values. Both movement-speed switches in `Player::FUN_0044aec0` are exact with physical case order `4, 3, 1, 2, 5, 7, 6, 8`; two compiler-owned eight-entry tables map numeric cases back to those blocks. Strict comparison uses `size = 0x12A1` and `compare_size = 0x12E1`, counting only authored bytes while still verifying both tables.
 - When IDA pseudo-code and shipped control-flow disagree, trust the shipped image. The team-route animation block at `0x44AEC0` is one example: the physical route/odd-even script selection was recovered from target branches and strict comparison rather than the initial decompiler arm labels.
+
+### Shipped-vs-analysis-database target safety
+
+- Preserve shipped executable semantics when the analysis database contains a research patch. At `0x44D0F9`, the shipped v1.00d bytes are `push -1` before `GameManager::AddLives`; the IDA database had been intentionally patched to `push 0`. Reconstruction follows `resources/th08.exe`, not the patched pseudo-code.

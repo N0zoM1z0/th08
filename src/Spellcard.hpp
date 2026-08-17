@@ -308,6 +308,7 @@ struct Spellcard
     void spellcard_fun_00416130();
     void spellcard_fun_00416160();
     void FUN_0044cba0();
+    void FUN_0044d150();
     void EndSpell();
     void spellcard_fun_00416af0();
     void spellcard_fun_00416b10(i32 amount);

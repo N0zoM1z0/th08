@@ -1727,6 +1727,13 @@ void Spellcard::FUN_0044cba0()
         reinterpret_cast<SpellcardResetFlagBits *>(&this->flags)->bit0;
 }
 
+// FUNCTION: th08 0x44d150
+void Spellcard::FUN_0044d150()
+{
+    this->flags &= ~4u;
+    this->bonusProgress = 0;
+}
+
 // FUNCTION: th08 0x4180f0
 void Spellcard::CutChain()
 {

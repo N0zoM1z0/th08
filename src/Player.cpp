@@ -27,6 +27,8 @@ DIFFABLE_STATIC(PlayerRawShtFile *, g_PlayerPrimaryShtFile);
 DIFFABLE_STATIC(PlayerRawShtFile *, g_PlayerSecondaryShtFile);
 DIFFABLE_STATIC(i32, g_PlayerNormalBombCount);
 DIFFABLE_STATIC(i32, g_PlayerDeathbombCount);
+DIFFABLE_STATIC(u8, g_PlayerRouteStateFlag);
+DIFFABLE_STATIC(u8, g_PlayerNoLivesFlag);
 
 
 DIFFABLE_STATIC(f32, g_PlayerPlayfieldWidth);
@@ -744,9 +746,114 @@ acceptBomb:
 done:
     return;
 }
-// STUB: th08 0x44cbf0
+// FUNCTION: th08 0x44cbf0
+#pragma var_order(value, this)
 i32 Player::FUN_0044cbf0()
 {
+    f32 value;
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) != 0)
+    {
+        g_GameManager.AddTimeOrbs(-15);
+        --*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68);
+        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 4) = 1;
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) == 0)
+        {
+            if (*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) != NULL)
+            {
+                *reinterpret_cast<u8 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) + 0x350) = 0;
+                *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) = NULL;
+            }
+            g_EffectManager.FUN_00425870(12, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 3, 1, 0xFF4040FF);
+            g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 16, -1);
+            g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), this->position.x);
+            *reinterpret_cast<u32 *>(&g_GameManager.flags) &= ~0x400u;
+            g_AnmManager->SetMixColorDefault();
+            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x208) &= ~0x20000u;
+            *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 4;
+            g_PlayerRouteStateFlag = 0;
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 4) = 0;
+            g_Spellcard.FUN_0044d150();
+            g_GameManager.AddToDeaths(1);
+            g_Gui.flags.timeDisplayUpdateFrames = 2;
+            g_GameManager.AddTimeOrbs(g_GameManager.globals->currentTimeOrbs > 5000
+                                           ? -500
+                                           : -g_GameManager.globals->currentTimeOrbs / 10);
+
+            if (g_GameManager.GetLives() > 0)
+            {
+                if (g_GameManager.GetPower() <= 16)
+                    g_GameManager.SetPower(0);
+                else
+                    g_GameManager.AddPower(-16);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_BIG, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
+                if (g_GameManager.GetBombsRemaining() > 0 &&
+                    (g_TargetByte0164D0B1 == 2 || g_TargetByte0164D0B1 == 8 || g_TargetByte0164D0B1 == 9))
+                    g_ItemManager.SpawnItem(&this->position, ITEM_BOMB, ITEM_STATE_UNK2);
+                g_Gui.flags.powerDisplayUpdateFrames = 2;
+                g_ItemManager.CancelAutoCollect();
+            }
+            else
+            {
+                g_GameManager.SetPower(0);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
+                g_Gui.flags.powerDisplayUpdateFrames = 2;
+            }
+            g_GameManager.DecreaseSubrank(1600);
+        }
+        return 0;
+    }
+
+    value = (f32)this->timer / 30.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 3.0f * value + 1.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 1.0f - 1.0f * value;
+    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x200) =
+        ((i32)(255.0f - (f32)this->timer * 255.0f / 30.0f) << 24) | 0xFFFFFF;
+    reinterpret_cast<AnmVmBase *>(reinterpret_cast<u8 *>(this) + 0x10)->SetBlendModeAdditive();
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2AA0) = 0;
+
+    if ((i32)this->timer >= 30)
+    {
+        f32 spawnY;
+        f32 spawnX;
+        this->playerState = PLAYER_STATE_SPAWNING;
+        spawnX = g_PlayerPlayfieldWidth / 2.0f;
+        this->position.operator float *()[0] = spawnX;
+        spawnY = g_ItemPlayfieldBottom - 64.0f;
+        this->position.operator float *()[1] = spawnY;
+        this->position.operator float *()[2] = 0.2f;
+        this->timer = 0;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 3.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 3.0f;
+        if ((g_TargetByte0164D0B1 >= 4 || *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) != 0) &&
+            (g_TargetByte0164D0B1 & 1) != 0)
+            (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0xC))
+                ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x10), 5);
+        else
+            (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0xC))
+                ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x10), 0);
+
+        if (g_GameManager.GetLives() <= 0)
+        {
+            g_PlayerNoLivesFlag = 1;
+            return 0;
+        }
+        g_GameManager.AddLives(-1);
+        g_Gui.flags.lifeDisplayUpdateFrames = 2;
+        g_GameManager.SetBombCount((i32)*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 4));
+        g_Gui.flags.bombDisplayUpdateFrames = 2;
+        return 1;
+    }
     return 0;
 }
 // FUNCTION: th08 0x44d180

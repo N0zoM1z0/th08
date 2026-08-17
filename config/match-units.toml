@@ -84993,3 +84993,10 @@ offset = 0x5F5
 type = "DIR32"
 symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
 target = 0x00577F20
+
+[[units]]
+name = "spellcard-clear-death-state"
+object = "build/objdiff/reimpl/SpellCard.obj"
+symbol = "th08::Spellcard::FUN_0044d150"
+target_address = 0x0044D150
+size = 0x25

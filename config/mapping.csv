@@ -763,8 +763,8 @@ th08::Player::OnUpdate,0x44c390,0x211,unknown,,u8
 th08::Player::FUN_0044c5b0,0x44c5b0,0x9f,__thiscall,,void,Player*
 th08::Player::FUN_0044c650,0x44c650,0x548,__thiscall,,void,Player*
 th08::Spellcard::FUN_0044cba0,0x44cba0,0x45,__thiscall,,void,Spellcard*
-FUN_0044cbf0,0x44cbf0,0x55d,unknown,,u8
-FUN_0044d150,0x44d150,0x25,unknown,,u8
+th08::Player::FUN_0044cbf0,0x44cbf0,0x55d,__thiscall,,i32,Player*
+th08::Spellcard::FUN_0044d150,0x44d150,0x25,__thiscall,,void,Spellcard*
 th08::Player::FUN_0044d180,0x44d180,0x13a,__thiscall,,void,Player*
 th08::Player::FUN_0044d2c0,0x44d2c0,0x152,__thiscall,,void,Player*
 th08::Player::FUN_0044d420,0x44d420,0x10b,__thiscall,,void,Player*
