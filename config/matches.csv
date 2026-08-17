@@ -758,3 +758,4 @@ address,name,size,status,match_percent,unit,evidence
 0x0043625D,th08::Gui::DrawGameScene,4544,matching,100.00,gui-draw-game-scene,python3 scripts/compare-function.py gui-draw-game-scene --json
 0x0043741D,th08::Gui::FUN_0043741d,1554,matching,100.00,gui-boss-stage-elements,python3 scripts/compare-function.py gui-boss-stage-elements --json
 0x00435900,th08::Gui::FUN_00435900,2397,matching,100.00,gui-update-implementation,python3 scripts/compare-function.py gui-update-implementation --json
+0x004338CA,th08::Gui::OnUpdate,93,matching,100.00,gui-update-callback,python3 scripts/compare-function.py gui-update-callback --json

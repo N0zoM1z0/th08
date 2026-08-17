@@ -5,6 +5,7 @@
 #include "Background.hpp"
 #include "Gui.hpp"
 #include "EnemyManager.hpp"
+#include "EclManager.hpp"
 #include "EclOperands.hpp"
 #include "GameManager.hpp"
 #include "ItemManager.hpp"
@@ -1219,9 +1220,17 @@ GuiFormattedText::GuiFormattedText()
 {
 }
 
-// STUB: th08 0x4338ca
+// FUNCTION: th08 0x4338ca
 ChainCallbackResult Gui::OnUpdate(Gui *gui)
 {
+    if (g_EclScriptedGlobalUpdateFreeze)
+        return CHAIN_CALLBACK_RESULT_CONTINUE;
+
+    gui->FUN_00435900();
+    gui->impl->RunMsg();
+    if ((g_CurFrameInput & TH_BUTTON_SKIP) && g_GuiMessageScreenEffectDuration < 8)
+        g_GuiMessageScreenEffectDuration = 8;
+    gui->unk_0++;
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 

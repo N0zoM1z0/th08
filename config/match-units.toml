@@ -74186,3 +74186,46 @@ offset = 2251
 type = "DIR32"
 symbol = "?g_GuiMessageInputCurrent@th08@@3GA"
 target = 23385388
+
+[[units]]
+name = "gui-update-callback"
+object = "build/objdiff/reimpl/Gui.obj"
+symbol = "th08::Gui::OnUpdate"
+target_address = 4405450
+size = 93
+
+[[units.relocations]]
+offset = 10
+type = "DIR32"
+symbol = "?g_EclScriptedGlobalUpdateFreeze@th08@@3DA"
+target = 23131444
+
+[[units.relocations]]
+offset = 27
+type = "REL32"
+symbol = "th08::Gui::FUN_00435900"
+target = 4413696
+
+[[units.relocations]]
+offset = 38
+type = "REL32"
+symbol = "?RunMsg@GuiImpl@th08@@QAEHXZ"
+target = 4406707
+
+[[units.relocations]]
+offset = 45
+type = "DIR32"
+symbol = "?g_CurFrameInput@th08@@3GA"
+target = 23385384
+
+[[units.relocations]]
+offset = 60
+type = "DIR32"
+symbol = "?g_GuiMessageScreenEffectDuration@th08@@3HA"
+target = 24963276
+
+[[units.relocations]]
+offset = 69
+type = "DIR32"
+symbol = "?g_GuiMessageScreenEffectDuration@th08@@3HA"
+target = 24963276
