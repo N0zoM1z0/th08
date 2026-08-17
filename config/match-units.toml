@@ -61977,3 +61977,828 @@ offset = 0xBA
 type = "REL32"
 symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
 target = 0x004286E0
+
+# Ledger name: th08::Background::SetCamera1
+# Evidence: direct camera setup source; strict COFF replay matches the verified target.
+[[units]]
+name = "background-set-camera1"
+object = "build/Background.obj"
+symbol = "?SetCamera1@Background@th08@@QAEXXZ"
+target_address = 0x0040B5A0
+size = 0x124
+
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x1D
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x26
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x39
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x42
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x54
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x76
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x7B
+type = "REL32"
+symbol = "__CItan"
+target = 0x004A4110
+
+[[units.relocations]]
+offset = 0x95
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0xA8
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0xBD
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0xC3
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xC8
+type = "REL32"
+symbol = "_D3DXMatrixLookAtLH@16"
+target = 0x00478395
+
+[[units.relocations]]
+offset = 0xDF
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xE4
+type = "REL32"
+symbol = "_D3DXMatrixPerspectiveFovLH@20"
+target = 0x004784DD
+
+[[units.relocations]]
+offset = 0xE9
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xF1
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xF9
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x105
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x10D
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x115
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+# Ledger name: th08::Background::SetCamera2
+# Evidence: direct camera setup source; strict COFF replay matches the verified target.
+[[units]]
+name = "background-set-camera2"
+object = "build/Background.obj"
+symbol = "?SetCamera2@Background@th08@@QAEXXZ"
+target_address = 0x0040B6D0
+size = 0x11B
+
+[[units.relocations]]
+offset = 0x20
+type = "REL32"
+symbol = "??HFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 0x3C
+type = "REL32"
+symbol = "??HFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 0x53
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x58
+type = "REL32"
+symbol = "_D3DXMatrixLookAtLH@16"
+target = 0x00478395
+
+[[units.relocations]]
+offset = 0x68
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x7B
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x9D
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xA2
+type = "REL32"
+symbol = "_D3DXMatrixPerspectiveFovLH@20"
+target = 0x004784DD
+
+[[units.relocations]]
+offset = 0xA7
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xAF
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xB7
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xC3
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xCB
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xD3
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xFB
+type = "REL32"
+symbol = "?D3DXVec3Cross@@YIPAUD3DXVECTOR3@@PAU1@PBU1@1@Z"
+target = 0x0040B7F0
+
+[[units.relocations]]
+offset = 0x113
+type = "REL32"
+symbol = "_D3DXVec3Normalize@8"
+target = 0x00476E9F
+
+# Ledger name: th08::Background::LoadStageData
+# Evidence: 17 relocations; 10 direct calls; full replay exact; implemented ledger=False.
+[[units]]
+name = "background-load-stage-data"
+object = "build/Background.obj"
+symbol = "?LoadStageData@Background@th08@@QAE?AW4ZunResult@@PBD@Z"
+target_address = 0x00409CE0
+size = 0x256
+
+[[units.relocations]]
+offset = 0xA
+type = "REL32"
+symbol = "?IsDisableResourceReload@th08@@YIIXZ"
+target = 0x0040B900
+
+[[units.relocations]]
+offset = 0x1A
+type = "REL32"
+symbol = "?OpenFile@FileSystem@th08@@YIPAEPBDPAHH@Z"
+target = 0x0043E660
+
+[[units.relocations]]
+offset = 0x34
+type = "DIR32"
+symbol = "??_C@_0FB@HBGBELJH@?c?$IC?$LJ?c?$ID?$IG?c?$ID?$LM?c?$IC?$LI?c?$ID?$IH?c?$ID?$LM?c?$IC?$LP?c?$IB?$IM?h?$KG?$IL?c?$IB?$KE?c?$IB@"
+target = 0x004B4348
+
+[[units.relocations]]
+offset = 0x39
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x3E
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00
+
+[[units.relocations]]
+offset = 0xCD
+type = "REL32"
+symbol = "?IsDisableResourceReload@th08@@YIIXZ"
+target = 0x0040B900
+
+[[units.relocations]]
+offset = 0x11F
+type = "DIR32"
+symbol = "??_C@_08IKHPBOIG@bgscroll?$AA@"
+target = 0x004B433C
+
+[[units.relocations]]
+offset = 0x134
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x139
+type = "REL32"
+symbol = "?Alloc@ZunMemory@th08@@QAEPAXIPBD@Z"
+target = 0x0040B880
+
+[[units.relocations]]
+offset = 0x1B6
+type = "REL32"
+symbol = "?ExecuteAnmIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x0040B910
+
+[[units.relocations]]
+offset = 0x1E6
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x203
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x208
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x21B
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x220
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x230
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x24A
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+# Ledger name: th08::Background::OnDrawHighPrio
+# Evidence: 76 relocations; 31 direct calls; full replay exact; implemented ledger=False.
+[[units]]
+name = "background-on-draw-high-prio"
+object = "build/Background.obj"
+symbol = "?OnDrawHighPrio@Background@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target_address = 0x00409200
+size = 0x43F
+
+[[units.relocations]]
+offset = 0x38
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x60
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x6A
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x74
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x7E
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x88
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x8D
+type = "REL32"
+symbol = "?ClearVertexBuffer@AnmManager@th08@@QAEXXZ"
+target = 0x00462E00
+
+[[units.relocations]]
+offset = 0x93
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x98
+type = "REL32"
+symbol = "?ClearVertexShader@AnmManager@th08@@QAEXXZ"
+target = 0x0040B9F0
+
+[[units.relocations]]
+offset = 0x9E
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xA3
+type = "REL32"
+symbol = "?ClearSprite@AnmManager@th08@@QAEXXZ"
+target = 0x0040BA50
+
+[[units.relocations]]
+offset = 0xA9
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xAE
+type = "REL32"
+symbol = "?ClearTexture@AnmManager@th08@@QAEXXZ"
+target = 0x0040BA10
+
+[[units.relocations]]
+offset = 0xB4
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xB9
+type = "REL32"
+symbol = "?ClearColorOp@AnmManager@th08@@QAEXXZ"
+target = 0x0040B9D0
+
+[[units.relocations]]
+offset = 0xBF
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xC4
+type = "REL32"
+symbol = "?ClearBlendMode@AnmManager@th08@@QAEXXZ"
+target = 0x0040B9B0
+
+[[units.relocations]]
+offset = 0xCA
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xCF
+type = "REL32"
+symbol = "?ClearZWrite@AnmManager@th08@@QAEXXZ"
+target = 0x0040BA30
+
+[[units.relocations]]
+offset = 0xD5
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xDA
+type = "REL32"
+symbol = "?ResetFrameDebugInfo@AnmManager@th08@@QAEXXZ"
+target = 0x0040BB20
+
+[[units.relocations]]
+offset = 0xE0
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xE5
+type = "REL32"
+symbol = "?ClearCameraSettings@AnmManager@th08@@QAEXXZ"
+target = 0x0040BA70
+
+[[units.relocations]]
+offset = 0xEA
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xEF
+type = "REL32"
+symbol = "?IsFogDisabled@Supervisor@th08@@QAEIXZ"
+target = 0x00406580
+
+[[units.relocations]]
+offset = 0xF8
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xFD
+type = "REL32"
+symbol = "?DisableFog@Supervisor@th08@@QAEHXZ"
+target = 0x00448229
+
+[[units.relocations]]
+offset = 0x103
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x108
+type = "REL32"
+symbol = "?FlushVertexBuffer@AnmManager@th08@@QAEXXZ"
+target = 0x00462E40
+
+[[units.relocations]]
+offset = 0x139
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x141
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x15F
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x167
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x180
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x186
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x18D
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x1B2
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x1B7
+type = "REL32"
+symbol = "?SetMixColor@AnmManager@th08@@QAEXK@Z"
+target = 0x0040BAD0
+
+[[units.relocations]]
+offset = 0x1F0
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x1F5
+type = "REL32"
+symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+target = 0x00437D87
+
+[[units.relocations]]
+offset = 0x214
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x219
+type = "REL32"
+symbol = "?Draw2DAndFlush@AnmManager@th08@@QAEXPAUAnmVm@2@@Z"
+target = 0x0040BAF0
+
+[[units.relocations]]
+offset = 0x236
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x23B
+type = "REL32"
+symbol = "?Draw2DAndFlush@AnmManager@th08@@QAEXPAUAnmVm@2@@Z"
+target = 0x0040BAF0
+
+[[units.relocations]]
+offset = 0x293
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x29A
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x2DF
+type = "REL32"
+symbol = "?DrawSquare@ScreenEffect@th08@@SIXPAUZunRect@2@K@Z"
+target = 0x0045B1E0
+
+[[units.relocations]]
+offset = 0x2FC
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x304
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x32A
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x331
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x341
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x346
+type = "REL32"
+symbol = "?SetRenderState@Supervisor@th08@@QAEXW4_D3DRENDERSTATETYPE@@H@Z"
+target = 0x00448270
+
+[[units.relocations]]
+offset = 0x34C
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x363
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x368
+type = "REL32"
+symbol = "?SetRenderState@Supervisor@th08@@QAEXW4_D3DRENDERSTATETYPE@@H@Z"
+target = 0x00448270
+
+[[units.relocations]]
+offset = 0x37B
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x386
+type = "REL32"
+symbol = "?MixColors@th08@@YIEEE@Z"
+target = 0x00462750
+
+[[units.relocations]]
+offset = 0x38F
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x39A
+type = "REL32"
+symbol = "?MixColors@th08@@YIEEE@Z"
+target = 0x00462750
+
+[[units.relocations]]
+offset = 0x3A3
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x3AD
+type = "REL32"
+symbol = "?MixColors@th08@@YIEEE@Z"
+target = 0x00462750
+
+[[units.relocations]]
+offset = 0x3BB
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x3C0
+type = "REL32"
+symbol = "?SetRenderState@Supervisor@th08@@QAEXW4_D3DRENDERSTATETYPE@@H@Z"
+target = 0x00448270
+
+[[units.relocations]]
+offset = 0x3D1
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x3D6
+type = "REL32"
+symbol = "?SetRenderState@Supervisor@th08@@QAEXW4_D3DRENDERSTATETYPE@@H@Z"
+target = 0x00448270
+
+[[units.relocations]]
+offset = 0x3E7
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x3EC
+type = "REL32"
+symbol = "?SetRenderState@Supervisor@th08@@QAEXW4_D3DRENDERSTATETYPE@@H@Z"
+target = 0x00448270
+
+[[units.relocations]]
+offset = 0x3F1
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x3F6
+type = "REL32"
+symbol = "?IsFogDisabled@Supervisor@th08@@QAEIXZ"
+target = 0x00406580
+
+[[units.relocations]]
+offset = 0x3FF
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x404
+type = "REL32"
+symbol = "?EnableFog@Supervisor@th08@@QAEHXZ"
+target = 0x004481DF
+
+[[units.relocations]]
+offset = 0x415
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x41A
+type = "REL32"
+symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+target = 0x00437D87
+
+[[units.relocations]]
+offset = 0x428
+type = "REL32"
+symbol = "?RenderObjects@Background@th08@@QAEXH@Z"
+target = 0x0040A1B0
+
+[[units.relocations]]
+offset = 0x432
+type = "REL32"
+symbol = "?RenderObjects@Background@th08@@QAEXH@Z"
+target = 0x0040A1B0
+
+# Ledger name: th08::Background::FUN_00409160
+# Evidence: 0 relocations; 0 direct calls; full replay exact; implemented ledger=False.
+[[units]]
+name = "background-fun-00409160"
+object = "build/Background.obj"
+symbol = "?FUN_00409160@Background@th08@@QAEXK@Z"
+target_address = 0x00409160
+size = 0x9D

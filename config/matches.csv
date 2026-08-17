@@ -702,3 +702,8 @@ address,name,size,status,match_percent,unit,evidence
 0x004184B0,th08::EclManager::RunEcl,26638,matching,100.00,ecl-manager-run-ecl,python3 scripts/compare-function.py ecl-manager-run-ecl --json
 0x00420D10,th08::EclHelpers::ConfigurePolarMotion,556,matching,100.00,ecl-configure-polar-motion,python3 scripts/compare-function.py ecl-configure-polar-motion --json
 0x00420F40,th08::EclHelpers::ConfigureRelativeMotion,467,matching,100.00,ecl-configure-relative-motion,python3 scripts/compare-function.py ecl-configure-relative-motion --json
+0x00409160,th08::Background::FUN_00409160,157,matching,100.00,background-fun-00409160,python3 scripts/compare-function.py background-fun-00409160 --json
+0x00409200,th08::Background::OnDrawHighPrio,1087,matching,100.00,background-on-draw-high-prio,python3 scripts/compare-function.py background-on-draw-high-prio --json
+0x00409CE0,th08::Background::LoadStageData,598,matching,100.00,background-load-stage-data,python3 scripts/compare-function.py background-load-stage-data --json
+0x0040B5A0,th08::Background::SetCamera1,292,matching,100.00,background-set-camera1,python3 scripts/compare-function.py background-set-camera1 --json
+0x0040B6D0,th08::Background::SetCamera2,283,matching,100.00,background-set-camera2,python3 scripts/compare-function.py background-set-camera2 --json

@@ -11,6 +11,42 @@
 namespace th08
 {
 ZunBool IsDisableResourceReload();
+u8 MixColors(u8 color1, u8 color2);
+
+struct RawStageHeader
+{
+    i16 nbObjects;
+    i16 nbFaces;
+    i32 facesOffset;
+    i32 scriptOffset;
+    i32 unkC;
+    char stageName[128];
+    char songNames[4][128];
+    char songPaths[4][128];
+};
+C_ASSERT(sizeof(RawStageHeader) == 0x490);
+
+struct RawStageQuadBasic
+{
+    i16 type;
+    i16 byteSize;
+    i16 anmScript;
+    i16 vmIdx;
+    D3DXVECTOR3 position;
+    D3DXVECTOR2 size;
+};
+C_ASSERT(sizeof(RawStageQuadBasic) == 0x1c);
+
+struct RawStageObject
+{
+    i16 id;
+    i8 zLevel;
+    i8 flags;
+    D3DXVECTOR3 position;
+    D3DXVECTOR3 size;
+    RawStageQuadBasic firstQuad;
+};
+C_ASSERT(sizeof(RawStageObject) == 0x38);
 DIFFABLE_STATIC(Background, g_Background);
 DIFFABLE_STATIC(ChainElem, g_BackgroundCalcChain);
 DIFFABLE_STATIC(ChainElem, g_BackgroundDrawChainHighPrio);
@@ -44,9 +80,159 @@ ChainCallbackResult Background::OnUpdate(Background *background)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-// STUB: th08 0x409200
+// FUNCTION: th08 0x409160
+#pragma var_order(color2, this)
+void Background::FUN_00409160(D3DCOLOR color)
+{
+    ZunColor color2;
+
+    if (reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0x6468)->a == 0)
+    {
+        reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0x6468)->d3dColor = color;
+    }
+    else
+    {
+        color2.d3dColor = color;
+        reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0x6468)->r =
+            ((u32)color2.r + reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0x6468)->r) >> 1;
+        reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0x6468)->g =
+            ((u32)color2.g + reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0x6468)->g) >> 1;
+        reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0x6468)->b =
+            ((u32)color2.b + reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0x6468)->b) >> 1;
+        reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0x6468)->a =
+            ((u32)color2.a + reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0x6468)->a) >> 1;
+    }
+}
+
+// FUNCTION: th08 0x409200
+#pragma var_order(i, viewport, effect, rect, fogColor, background)
 ChainCallbackResult Background::OnDrawHighPrio(Background *background)
 {
+    i32 i;
+    D3DVIEWPORT8 viewport;
+    AnmVm *effect;
+    ZunRect rect;
+    ZunColor fogColor;
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + 0x6478) = 0;
+    for (i = 0; i < 16; i++)
+    {
+        background->vectors6480[i] = Float3(0.0f, 0.0f, 0.0f);
+    }
+
+    g_Supervisor.viewport.X = 32;
+    g_Supervisor.viewport.Y = 16;
+    g_Supervisor.viewport.Width = 384;
+    g_Supervisor.viewport.Height = 448;
+
+    g_AnmManager->ClearVertexBuffer();
+    g_AnmManager->ClearVertexShader();
+    g_AnmManager->ClearSprite();
+    g_AnmManager->ClearTexture();
+    g_AnmManager->ClearColorOp();
+    g_AnmManager->ClearBlendMode();
+    g_AnmManager->ClearZWrite();
+    g_AnmManager->ResetFrameDebugInfo();
+    g_AnmManager->ClearCameraSettings();
+    if (!g_Supervisor.IsFogDisabled())
+    {
+        g_Supervisor.DisableFog();
+    }
+    g_AnmManager->FlushVertexBuffer();
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + 0xB2C) != 0)
+    {
+        viewport.X = 32;
+        viewport.Y = 16;
+        viewport.Width = 384;
+        viewport.Height = 448;
+        g_Supervisor.d3dDevice->SetViewport(&viewport);
+        g_Supervisor.d3dDevice->Clear(0, NULL, D3DCLEAR_TARGET, COLOR_BLACK, 1.0f, 0);
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + 0xB2C) = 0;
+    }
+    g_Supervisor.d3dDevice->SetViewport(&g_Supervisor.viewport);
+
+    if (reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(background) + 0x6468)->a > 0)
+    {
+        g_AnmManager->SetMixColor(
+            reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(background) + 0x6468)->d3dColor);
+    }
+    reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(background) + 0x6468)->a = 0;
+    reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(background) + 0x6468)->r = 0x80;
+    reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(background) + 0x6468)->g = 0x80;
+    reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(background) + 0x6468)->b = 0x80;
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + 0xB24) <= 1 && !g_Gui.IsDialogPresent())
+    {
+        if (background->stageVm0.activeSpriteIndex > 0)
+        {
+            g_AnmManager->Draw2DAndFlush(&background->stageVm0);
+        }
+        if (background->stageVm1.activeSpriteIndex > 0)
+        {
+            g_AnmManager->Draw2DAndFlush(&background->stageVm1);
+        }
+        if (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(background) + 0xAE8) != NULL)
+        {
+            effect = *reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(background) + 0xAE8);
+            (*reinterpret_cast<void (__fastcall **)(AnmVm *)>(reinterpret_cast<u8 *>(effect) + 0x34C))(effect);
+        }
+    }
+
+    if ((*reinterpret_cast<D3DCOLOR *>(reinterpret_cast<u8 *>(background) + 0x830) & COLOR_ALPHA_MASK) ==
+        COLOR_ALPHA_MASK)
+    {
+        g_Supervisor.d3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
+                                      *reinterpret_cast<D3DCOLOR *>(reinterpret_cast<u8 *>(background) + 0x830),
+                                      1.0f, 0);
+    }
+    else if (*reinterpret_cast<D3DCOLOR *>(reinterpret_cast<u8 *>(background) + 0x830) != 0)
+    {
+        rect.left = 32.0f;
+        rect.top = 16.0f;
+        rect.right = 416.0f;
+        rect.bottom = 464.0f;
+        ScreenEffect::DrawSquare(&rect,
+                                 *reinterpret_cast<D3DCOLOR *>(reinterpret_cast<u8 *>(background) + 0x830));
+        g_Supervisor.d3dDevice->Clear(0, NULL, D3DCLEAR_ZBUFFER,
+                                      *reinterpret_cast<D3DCOLOR *>(reinterpret_cast<u8 *>(background) + 0x830),
+                                      1.0f, 0);
+    }
+    else
+    {
+        g_Supervisor.d3dDevice->Clear(0, NULL, D3DCLEAR_ZBUFFER,
+                                      *reinterpret_cast<D3DCOLOR *>(reinterpret_cast<u8 *>(background) + 0x830),
+                                      1.0f, 0);
+    }
+
+    g_Supervisor.SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+    if (!g_AnmManager->useMixColor)
+    {
+        g_Supervisor.SetRenderState(
+            D3DRS_FOGCOLOR, *reinterpret_cast<D3DCOLOR *>(reinterpret_cast<u8 *>(background) + 0xAF4));
+    }
+    else
+    {
+        fogColor.d3dColor = *reinterpret_cast<D3DCOLOR *>(reinterpret_cast<u8 *>(background) + 0xAF4);
+        fogColor.r = MixColors(fogColor.r, g_AnmManager->color.r);
+        fogColor.g = MixColors(fogColor.g, g_AnmManager->color.g);
+        fogColor.b = MixColors(fogColor.b, g_AnmManager->color.b);
+        g_Supervisor.SetRenderState(D3DRS_FOGCOLOR, fogColor.d3dColor);
+    }
+    g_Supervisor.SetRenderState(
+        D3DRS_FOGSTART, *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(background) + 0xAEC));
+    g_Supervisor.SetRenderState(
+        D3DRS_FOGEND, *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(background) + 0xAF0));
+    if (!g_Supervisor.IsFogDisabled())
+    {
+        g_Supervisor.EnableFog();
+    }
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + 0xB24) <= 1 && !g_Gui.IsDialogPresent())
+    {
+        background->RenderObjects(0);
+        background->RenderObjects(1);
+    }
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
@@ -275,10 +461,115 @@ void Background::RenderObjects(i32 mode)
 {
 }
 
-// STUB: th08 0x409ce0
+// FUNCTION: th08 0x409ce0
+#pragma var_order(vmIdx, i, curObj, curQuad, this)
 ZunResult Background::LoadStageData(const char *path)
 {
-    return ZUN_ERROR;
+    RawStageObject *curObj;
+    RawStageQuadBasic *curQuad;
+    i32 i;
+    i32 vmIdx;
+
+    if (!IsDisableResourceReload())
+    {
+        this->stageAnmSecondary = FileSystem::OpenFile(path, NULL, 0);
+        if (this->stageAnmSecondary == NULL)
+        {
+            g_GameErrorContext.Log("ステージデータが見つかりません。データが壊れています\r\n");
+            return ZUN_ERROR;
+        }
+    }
+
+    this->stageObjectCount = ((RawStageHeader *)this->stageAnmSecondary)->nbObjects;
+    this->stageVmCount = ((RawStageHeader *)this->stageAnmSecondary)->nbFaces;
+    this->stageUnknown804 =
+        (void *)(((RawStageHeader *)this->stageAnmSecondary)->facesOffset + (i32)this->stageAnmSecondary);
+    this->stageUnknown808 =
+        (void *)(((RawStageHeader *)this->stageAnmSecondary)->scriptOffset + (i32)this->stageAnmSecondary);
+    this->stageOffsets = (u8 *)this->stageAnmSecondary + sizeof(RawStageHeader);
+
+    if (!IsDisableResourceReload())
+    {
+        for (i = 0; i < this->stageObjectCount; i++)
+        {
+            ((RawStageObject **)this->stageOffsets)[i] =
+                (RawStageObject *)((i32)((RawStageObject **)this->stageOffsets)[i] +
+                                   (i32)this->stageAnmSecondary);
+        }
+    }
+
+    this->stageAnm = g_ZunMemory.Alloc(this->stageVmCount * sizeof(AnmVm), "bgscroll");
+    for (i = 0, vmIdx = 0; i < this->stageObjectCount; i++)
+    {
+        curObj = ((RawStageObject **)this->stageOffsets)[i];
+        curObj->flags = 1;
+        curQuad = &curObj->firstQuad;
+        while (curQuad->type >= 0)
+        {
+            this->stageAnmFile->ExecuteAnmIdx(&((AnmVm *)this->stageAnm)[vmIdx], curQuad->anmScript);
+            curQuad->vmIdx = vmIdx++;
+            curQuad = (RawStageQuadBasic *)((u8 *)curQuad + curQuad->byteSize);
+        }
+    }
+
+    switch (g_GameManager.currentStage)
+    {
+    case 2:
+        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->textAnmVm, 33);
+        break;
+    default:
+        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->textAnmVm, 33);
+        break;
+    }
+    this->textAnmVm.SetInterrupt(2);
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x834) = 0;
+    this->timer838 = 0;
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x40b5a0
+#pragma var_order(cameraDistance, viewportMiddleHeight, viewportMiddleWidth, aspectRatio, fov, this)
+void Background::SetCamera1()
+{
+    f32 fov;
+    f32 aspectRatio;
+    f32 viewportMiddleWidth;
+    f32 viewportMiddleHeight;
+    f32 cameraDistance;
+
+    viewportMiddleWidth = (f32)g_Supervisor.viewport.Width / 2.0f;
+    viewportMiddleHeight = (f32)g_Supervisor.viewport.Height / 2.0f;
+    aspectRatio = (f32)g_Supervisor.viewport.Width / (f32)g_Supervisor.viewport.Height;
+    fov = ZUN_PI / 10.0f;
+    cameraDistance = viewportMiddleHeight / (f32)tan(fov / 2.0f);
+
+    D3DXMatrixLookAtLH(&g_Supervisor.viewMatrix,
+                       &D3DXVECTOR3(viewportMiddleWidth, viewportMiddleHeight, cameraDistance),
+                       &D3DXVECTOR3(viewportMiddleWidth, viewportMiddleHeight, 0.0f),
+                       &D3DXVECTOR3(0.0f, -1.0f, 0.0f));
+    D3DXMatrixPerspectiveFovLH(&g_Supervisor.projectionMatrix, fov, aspectRatio, 1.0f, 10000.0f);
+    g_Supervisor.d3dDevice->SetTransform(D3DTS_VIEW, &g_Supervisor.viewMatrix);
+    g_Supervisor.d3dDevice->SetTransform(D3DTS_PROJECTION, &g_Supervisor.projectionMatrix);
+}
+
+// FUNCTION: th08 0x40b6d0
+#pragma var_order(eyeVec, atVec, this)
+void Background::SetCamera2()
+{
+    Float3 atVec = this->unk6394.vectors[1] + this->unk6394.vectors[0];
+    Float3 eyeVec = this->unk6394.vectors[5] + this->unk6394.vectors[0];
+    D3DXMatrixLookAtLH(&g_Supervisor.viewMatrix, reinterpret_cast<D3DXVECTOR3 *>(&eyeVec),
+                       reinterpret_cast<D3DXVECTOR3 *>(&atVec),
+                       reinterpret_cast<D3DXVECTOR3 *>(&this->unk6394.vectors[2]));
+    D3DXMatrixPerspectiveFovLH(&g_Supervisor.projectionMatrix, this->unk6394.unk48,
+                               (f32)g_Supervisor.viewport.Width / (f32)g_Supervisor.viewport.Height, 30.0f, 1800.0f);
+    g_Supervisor.d3dDevice->SetTransform(D3DTS_VIEW, &g_Supervisor.viewMatrix);
+    g_Supervisor.d3dDevice->SetTransform(D3DTS_PROJECTION, &g_Supervisor.projectionMatrix);
+    D3DXVec3Cross(reinterpret_cast<D3DXVECTOR3 *>(&this->unk6394.vectors[4]),
+                  reinterpret_cast<D3DXVECTOR3 *>(&this->unk6394.vectors[1]),
+                  reinterpret_cast<D3DXVECTOR3 *>(&this->unk6394.vectors[2]));
+    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&this->unk6394.vectors[4]),
+                      reinterpret_cast<D3DXVECTOR3 *>(&this->unk6394.vectors[4]));
 }
 
 }; // Namespace th08

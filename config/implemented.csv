@@ -703,3 +703,8 @@ th08::Player::LoadShtFile
 th08::Player::FUN_0044fdd0
 th08::Player::FUN_0044fe20
 th08::Player::FUN_0044ffa0
+th08::Background::FUN_00409160
+th08::Background::OnDrawHighPrio
+th08::Background::LoadStageData
+th08::Background::SetCamera1
+th08::Background::SetCamera2

@@ -30,13 +30,9 @@ struct Background
     ZunResult LoadStageData(const char *path);
     void RenderObjects(i32 mode);
 
-    void SetCamera1()
-    {
-    }
-
-    void SetCamera2()
-    {
-    }
+    void SetCamera1();
+    void SetCamera2();
+    void FUN_00409160(D3DCOLOR color);
 
     void *stageAnm;
     AnmVm stageVm0;
