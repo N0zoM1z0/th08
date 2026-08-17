@@ -13,6 +13,7 @@
 
 namespace th08
 {
+ZunBool IsDisableResourceReload();
 DIFFABLE_STATIC(Spellcard, g_Spellcard);
 DIFFABLE_STATIC(ChainElem *, g_SpellcardCalcChain);
 DIFFABLE_STATIC(i32, g_LastSpellCount);
@@ -1090,6 +1091,31 @@ i32 Spellcard::FUN_00417860()
 i32 Spellcard::FUN_0042DFF0()
 {
     return (this->flags >> 7) & 1;
+}
+
+// FUNCTION: th08 0x00418050
+ZunResult Spellcard::DeletedCallback(Spellcard *spellcard)
+{
+    if (!IsDisableResourceReload())
+    {
+        g_AnmManager->ReleaseAnm(18);
+        g_AnmManager->ReleaseAnm(19);
+    }
+
+    if (IsBulletManagerAnmReleaseRequired())
+    {
+        g_AnmManager->ReleaseAnm(15);
+        g_AnmManager->ReleaseAnm(16);
+        g_AnmManager->ReleaseAnm(17);
+    }
+
+    if (spellcard->lifetimeObject != NULL)
+    {
+        reinterpret_cast<ChainElem *>(spellcard->lifetimeObject)->deletedCallback = NULL;
+    }
+    g_Chain.Cut(spellcard->lifetimeChain);
+    spellcard->lifetimeChain = NULL;
+    return ZUN_SUCCESS;
 }
 
 // FUNCTION: th08 0x00414540

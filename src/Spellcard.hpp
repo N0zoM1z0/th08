@@ -319,6 +319,7 @@ struct Spellcard
     i32 FUN_00417860();
     i32 FUN_0042DFF0();
 
+    static ZunResult DeletedCallback(Spellcard *spellcard);
     static i32 __fastcall IsLastSpell(i32 spellCardNumber);
 
     static i32 GetDifficultyFromSpellCard(i32 spellcardNumber);

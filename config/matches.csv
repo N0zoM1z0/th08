@@ -741,3 +741,4 @@ address,name,size,status,match_percent,unit,evidence
 0x0042EFB0,th08::EnemyManager::FUN_0042efb0,575,matching,100.00,enemy-manager-fun-0042efb0,python3 scripts/compare-function.py enemy-manager-fun-0042efb0 --json
 0x00430AA0,th08::BulletManager::DespawnBullets,651,matching,100.00,bullet-manager-despawn-bullets,python3 scripts/compare-function.py bullet-manager-despawn-bullets --json
 0x004161B0,th08::Spellcard::EndSpell,2331,matching,100.00,spellcard-end-spell,python3 scripts/compare-function.py spellcard-end-spell --json
+0x00418050,th08::Spellcard::DeletedCallback,157,matching,100.00,spellcard-deleted-callback,python3 scripts/compare-function.py spellcard-deleted-callback --json

@@ -222,7 +222,7 @@ FUN_004178c0,0x4178c0,0x695,unknown,,u8
 FUN_00417f60,0x417f60,0xaf,unknown,,u8
 FUN_00418010,0x418010,0x13,unknown,,u8
 FUN_00418030,0x418030,0x13,unknown,,u8
-FUN_00418050,0x418050,0x9d,unknown,,u8
+th08::Spellcard::DeletedCallback,0x418050,0x9d,__fastcall,,ZunResult,Spellcard*
 th08::Spellcard::CutChain,0x4180f0,0x1e,__stdcall,,void
 th08::ZunTimer::operator--(int),0x418110,0x17,__thiscall,,void,ZunTimer*,i32
 th08::GameManager::FUN_00418130,0x418130,0x43,__thiscall,,bool,GameManager*,i32
