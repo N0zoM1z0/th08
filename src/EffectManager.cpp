@@ -2,6 +2,7 @@
 
 #include "EclManager.hpp"
 #include "AnmManager.hpp"
+#include "ItemManager.hpp"
 #include "ReplayManager.hpp"
 
 namespace th08
@@ -46,6 +47,35 @@ void __fastcall FUN_00428310(AnmVm *effect, D3DXVECTOR3 *base)
 DIFFABLE_STATIC(EffectManager, g_EffectManager);
 DIFFABLE_STATIC(ChainElem, g_EffectManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_EffectManagerDrawChain);
+
+// FUNCTION: th08 0x428100
+#pragma var_order(effect, this)
+i32 EffectManager::DrawUnkTypeEffects()
+{
+    u8 *effect = *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x8acd8);
+
+    while (effect != NULL)
+    {
+        if (*reinterpret_cast<void **>(effect + 0x34c) != NULL)
+        {
+            reinterpret_cast<void (__fastcall *)(void *)>(*reinterpret_cast<void **>(effect + 0x34c))(effect);
+        }
+        else
+        {
+            *reinterpret_cast<Float3 *>(effect + 0x208) = *reinterpret_cast<Float3 *>(effect + 0x2a4);
+            *reinterpret_cast<f32 *>(effect + 0x208) += g_ItemAnmManagerScreenShakeOffset.x;
+            *reinterpret_cast<f32 *>(effect + 0x20c) += g_ItemAnmManagerScreenShakeOffset.y;
+            reinterpret_cast<Float3 *>(effect + 0x208)->operator+=(
+                *reinterpret_cast<Float3 *>(effect + 0x288));
+            *reinterpret_cast<f32 *>(effect + 0x210) = 0.04f;
+            g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(effect));
+        }
+
+        effect = *reinterpret_cast<u8 **>(effect + 0x35c);
+    }
+
+    return 1;
+}
 
 // FUNCTION: th08 0x4281e0
 #pragma var_order(effect, i, this)

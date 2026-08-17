@@ -77575,3 +77575,377 @@ offset = 436
 type = "DIR32"
 symbol = "__real@40000000"
 target = 0x004B42EC
+
+[[units]]
+name = "bullet-draw-single"
+object = "build/objdiff/reimpl/BulletManager.obj"
+symbol = "?DrawSingleBullet@Bullet@th08@@QAE?AW4ZunResult@@XZ"
+target_address = 0x00432F20
+size = 320
+compare_size = 336
+
+[[units.relocations]]
+offset = 43
+type = "DIR32"
+symbol = "$L*"
+target = 0x00433060
+
+[[units.relocations]]
+offset = 118
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 124
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 143
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 162
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 168
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+addend = 4
+
+[[units.relocations]]
+offset = 188
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 208
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 270
+type = "DIR32"
+symbol = "__real@3fc90fdb"
+target = 0x004B4468
+
+[[units.relocations]]
+offset = 285
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 297
+type = "REL32"
+symbol = "?SetZRotation@AnmVm@th08@@QAEXM@Z"
+target = 0x0040EC00
+
+[[units.relocations]]
+offset = 307
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 312
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units.relocations]]
+offset = 320
+type = "DIR32"
+symbol = "$L*"
+target = 0x00432F4F
+
+[[units.relocations]]
+offset = 324
+type = "DIR32"
+symbol = "$L*"
+target = 0x00432F5D
+
+[[units.relocations]]
+offset = 328
+type = "DIR32"
+symbol = "$L*"
+target = 0x00432F6B
+
+[[units.relocations]]
+offset = 332
+type = "DIR32"
+symbol = "$L*"
+target = 0x00432F78
+
+[[units]]
+name = "effect-manager-draw-unk-type-effects"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "th08::EffectManager::DrawUnkTypeEffects"
+target_address = 0x00428100
+size = 219
+
+[[units.relocations]]
+offset = 99
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 123
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+addend = 4
+
+[[units.relocations]]
+offset = 161
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 184
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 189
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units]]
+name = "bullet-manager-on-draw"
+object = "build/objdiff/reimpl/BulletManager.obj"
+symbol = "th08::BulletManager::OnDraw"
+target_address = 0x00432B50
+size = 969
+
+[[units.relocations]]
+offset = 31
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 36
+type = "REL32"
+symbol = "?SetMixColor@AnmManager@th08@@QAEXK@Z"
+target = 0x0040BAD0
+
+[[units.relocations]]
+offset = 53
+type = "DIR32"
+symbol = "?g_ItemManager@th08@@3UItemManager@1@A"
+target = 0x01653648
+
+[[units.relocations]]
+offset = 58
+type = "REL32"
+symbol = "?OnDraw@ItemManager@th08@@QAEXXZ"
+target = 0x004415A0
+
+[[units.relocations]]
+offset = 135
+type = "REL32"
+symbol = "?fsincos@th08@@YIXPAM0M@Z"
+target = 0x00433880
+
+[[units.relocations]]
+offset = 159
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 185
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 210
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 229
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 255
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 275
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 323
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 347
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+addend = 4
+
+[[units.relocations]]
+offset = 372
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 377
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units.relocations]]
+offset = 392
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004B42D4
+
+[[units.relocations]]
+offset = 414
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 471
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 502
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 521
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 553
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 573
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 662
+type = "DIR32"
+symbol = "__real@41200000"
+target = 0x004B4390
+
+[[units.relocations]]
+offset = 671
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004B42D4
+
+[[units.relocations]]
+offset = 683
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004B42D4
+
+[[units.relocations]]
+offset = 727
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 749
+type = "DIR32"
+symbol = "__real@41200000"
+target = 0x004B4390
+
+[[units.relocations]]
+offset = 785
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 809
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+addend = 4
+
+[[units.relocations]]
+offset = 839
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 844
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units.relocations]]
+offset = 903
+type = "REL32"
+symbol = "?DrawSingleBullet@Bullet@th08@@QAE?AW4ZunResult@@XZ"
+target = 0x00432F20
+
+[[units.relocations]]
+offset = 924
+type = "DIR32"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 929
+type = "REL32"
+symbol = "?DrawUnkTypeEffects@EffectManager@th08@@QAEHXZ"
+target = 0x00428100
+
+[[units.relocations]]
+offset = 951
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 956
+type = "REL32"
+symbol = "?SetMixColorDefault@AnmManager@th08@@QAEXXZ"
+target = 0x0040BAB0

@@ -459,7 +459,7 @@ th08::Bullet::FUN_00432830,0x432830,function
 th08::Bullet::FUN_004329f0,0x4329f0,function
 th08::Bullet::FUN_00432aa0,0x432aa0,function
 th08::BulletManager::OnDraw,0x432b50,function
-th08::BulletManager::DrawSingleBullet,0x432f20,function
+th08::Bullet::DrawSingleBullet,0x432f20,function
 th08::BulletManager::AddedCallback,0x433070,function
 FUN_004337f0,0x4337f0,function
 th08::BulletManager::DeletedCallback,0x433820,function

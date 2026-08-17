@@ -60,6 +60,7 @@ struct Bullet
     void FUN_004322b0();
     void FUN_00432aa0();
     void FUN_004329f0();
+    ZunResult DrawSingleBullet();
 
     BulletTypeSprites sprites;
     Float3 position0;

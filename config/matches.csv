@@ -772,3 +772,6 @@ address,name,size,status,match_percent,unit,evidence
 0x0045B8B0,th08::ScreenEffect::RegisterChain,628,matching,100.00,screen-effect-register-chain,python3 scripts/compare-function.py screen-effect-register-chain --json
 0x00466650,th08::AnmManager::DrawTextCentered,366,matching,100.00,anm-manager-draw-text-centered,python3 scripts/compare-function.py anm-manager-draw-text-centered --json
 0x00449FF0,th08::Player::FUN_00449ff0,563,matching,100.00,player-cancel-region-test,python3 scripts/compare-function.py player-cancel-region-test --json
+0x00428100,th08::EffectManager::DrawUnkTypeEffects,219,matching,100.00,effect-manager-draw-unk-type-effects,python3 scripts/compare-function.py effect-manager-draw-unk-type-effects --json
+0x00432F20,th08::Bullet::DrawSingleBullet,320,matching,100.00,bullet-draw-single,python3 scripts/compare-function.py bullet-draw-single --json
+0x00432B50,th08::BulletManager::OnDraw,969,matching,100.00,bullet-manager-on-draw,python3 scripts/compare-function.py bullet-manager-on-draw --json

@@ -2,6 +2,7 @@
 
 #include "BulletManager.hpp"
 #include "GameManager.hpp"
+#include "EclManager.hpp"
 #include "ItemManager.hpp"
 #include "Player.hpp"
 #include "SoundPlayer.hpp"
@@ -569,6 +570,46 @@ void BulletManager::Initialize()
     }
 }
 
+// FUNCTION: th08 0x432f20
+ZunResult Bullet::DrawSingleBullet()
+{
+    AnmVm *vm;
+
+    switch (*reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(this) + 0xdb8))
+    {
+    case 2:
+        vm = &this->sprites.sprite1;
+        break;
+    case 3:
+        vm = &this->sprites.sprite2;
+        break;
+    case 4:
+        vm = &this->sprites.sprite3;
+        break;
+    case 5:
+        vm = &this->sprites.sprite4;
+        break;
+    default:
+        vm = &this->sprites.sprite0;
+        break;
+    }
+
+    vm->pos.operator float *()[0] =
+        g_ItemAnmManagerScreenShakeOffset.x + this->position0.operator float *()[0];
+    vm->pos.operator float *()[1] =
+        g_ItemAnmManagerScreenShakeOffset.y + this->position0.operator float *()[1];
+    vm->pos.operator float *()[2] = 0.05f;
+    vm->color1.d3dColor = (vm->color1.d3dColor & 0xff000000) | 0xffffff;
+
+    if (vm->type != 0)
+    {
+        vm->SetZRotation(AddNormalizeAngle(
+            ZUN_PI / 2.0f + *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xd74), 0.0f));
+    }
+
+    return g_AnmManager->Draw2D(vm);
+}
+
 // FUNCTION: th08 0x4311a0
 #pragma var_order(bulletManager, bulletAnmPath)
 ZunResult BulletManager::RegisterChain(char *bulletAnmPath)
@@ -600,9 +641,93 @@ ChainCallbackResult BulletManager::OnUpdate(BulletManager *bulletManager)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-// STUB: th08 0x432b50
+// FUNCTION: th08 0x432b50
+#pragma var_order(i, sine, laser, halfLength, cosine, node, bulletManager)
 ChainCallbackResult BulletManager::OnDraw(BulletManager *bulletManager)
 {
+    i32 i;
+    f32 sine;
+    Laser *laser;
+    f32 halfLength;
+    f32 cosine;
+    Bullet *node;
+
+    if ((*reinterpret_cast<u32 *>(0x164D0B4) >> 10) & 1)
+        g_AnmManager->SetMixColor(0xfff01010);
+
+    laser = bulletManager->lasers;
+    g_ItemManager.OnDraw();
+
+    for (i = 0; i < ARRAY_SIZE_SIGNED(bulletManager->lasers); i++, laser++)
+    {
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(laser) + 0x584) == 0)
+            continue;
+
+        fsincos(&sine, &cosine, *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x554));
+        halfLength = (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x55c) -
+                      *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x558)) /
+                         2.0f +
+                     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x558);
+
+        laser->vm0.pos.operator float *()[0] =
+            laser->position.operator float *()[0] + cosine * halfLength;
+        laser->vm0.pos.operator float *()[1] =
+            laser->position.operator float *()[1] + sine * halfLength;
+        laser->vm0.pos.operator float *()[2] = 0.06f;
+        *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(laser) + 0x596) =
+            (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(laser) + 0x596) & 0xff000000) | 0xffffff;
+        laser->vm0.pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+        laser->vm0.pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+        g_AnmManager->Draw2D(&laser->vm0);
+
+        if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x558) < 16.0f ||
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x56c) == 0.0f)
+        {
+            if (!*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(laser) + 0x599) ||
+                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(laser) + 0x598))
+            {
+                laser->vm1.pos.operator float *()[0] =
+                    laser->position.operator float *()[0] +
+                    cosine * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x558);
+                laser->vm1.pos.operator float *()[1] =
+                    laser->position.operator float *()[1] +
+                    sine * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x558);
+                laser->vm1.pos.operator float *()[2] = 0.05f;
+                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(laser) + 0x494) =
+                    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(laser) + 0x1f0);
+                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&laser->vm1) + 0x1f8) |= 0x40;
+                laser->vm1.color1.d3dColor = (laser->vm1.color1.d3dColor & 0xffffff) | 0xff000000;
+                laser->vm1.scale.x =
+                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x564) / 10.0f *
+                    ((16.0f - *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x558)) / 16.0f);
+                laser->vm1.scale.y = laser->vm1.scale.x;
+                if (laser->vm1.scale.y <= 0.0f)
+                {
+                    laser->vm1.scale.x =
+                        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x564) / 10.0f;
+                    laser->vm1.scale.y = laser->vm1.scale.x;
+                }
+                laser->vm1.pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+                laser->vm1.pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                g_AnmManager->Draw2D(&laser->vm1);
+            }
+        }
+    }
+
+    for (i = 0; i < 6; i++)
+    {
+        node = *reinterpret_cast<Bullet **>(reinterpret_cast<u8 *>(bulletManager) + 0x6ba554 + i * 4);
+        while (node != NULL)
+        {
+            node->DrawSingleBullet();
+            node = *reinterpret_cast<Bullet **>(reinterpret_cast<u8 *>(node) + 0xdc0);
+        }
+    }
+
+    g_EffectManager.DrawUnkTypeEffects();
+    if ((*reinterpret_cast<u32 *>(0x164D0B4) >> 10) & 1)
+        g_AnmManager->SetMixColorDefault();
+
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
