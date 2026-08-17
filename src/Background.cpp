@@ -57,6 +57,21 @@ struct RawStageObjectInstance
 };
 C_ASSERT(sizeof(RawStageObjectInstance) == 0x10);
 
+struct RawStageInstr
+{
+    i32 frame;
+    i16 opcode;
+    i16 size;
+    i32 args[3];
+};
+C_ASSERT(sizeof(RawStageInstr) == 0x14);
+
+struct BackgroundAnmVmSnapshot
+{
+    u32 words[0xA9];
+};
+C_ASSERT(sizeof(BackgroundAnmVmSnapshot) == sizeof(AnmVm));
+
 struct RawStageQuadType1
 {
     i16 type;
@@ -180,10 +195,439 @@ void __fastcall Background::FUN_00408d60(i32 index, Float3 *out, const Float3 *s
     }
 }
 
-// STUB: th08 0x407400
+// FUNCTION: th08 0x407400
+#pragma var_order(curInsn, pos, spawnedStageEffect)
 ChainCallbackResult Background::OnUpdate(Background *background)
 {
+    RawStageInstr *curInsn;
+    D3DXVECTOR3 pos;
+    AnmVm *spawnedStageEffect;
+
+#define BG_I32(off) (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + (off)))
+#define BG_U8(off) (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(background) + (off)))
+#define BG_COLOR(off) (*reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(background) + (off)))
+
+    if (background->stageAnmSecondary == NULL)
+    {
+        return CHAIN_CALLBACK_RESULT_CONTINUE;
+    }
+    if ((*reinterpret_cast<u32 *>(0x164D0B4) >> 10) & 1)
+    {
+        return CHAIN_CALLBACK_RESULT_CONTINUE;
+    }
+
+    if (*reinterpret_cast<i32 *>(0x164D2CC) == 7)
+    {
+        if (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(background) + 0xAE8) == NULL)
+        {
+            Float3 zeroVector(0.0f, 0.0f, 0.0f);
+            *reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(background) + 0xAE8) =
+                g_EffectManager.FUN_00425870(0x40, reinterpret_cast<D3DXVECTOR3 *>(&zeroVector), 0xC, 1, -1);
+            spawnedStageEffect = *reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(background) + 0xAE8);
+            background->stageAnmFile->SetAndExecuteScriptIdx(spawnedStageEffect, 11);
+        }
+        else if (background->unk6260 == 1)
+        {
+            AnmVm *stageEffect1 = *reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(background) + 0xAE8);
+            background->stageAnmFile->SetAndExecuteScriptIdx(stageEffect1, 11);
+        }
+        else if (background->unk6260 == 2)
+        {
+            AnmVm *stageEffect2 = *reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(background) + 0xAE8);
+            BackgroundAnmVmSnapshot savedStageVm2 = *reinterpret_cast<BackgroundAnmVmSnapshot *>(stageEffect2);
+            background->stageAnmFile->SetAndExecuteScriptIdx(stageEffect2, 12);
+            stageEffect2->SetInterrupt(2);
+            *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(stageEffect2) + 0x244) =
+                *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(&savedStageVm2) + 0x244);
+            *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(stageEffect2) + 0x238) =
+                *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(&savedStageVm2) + 0x238);
+            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(stageEffect2) + 0x50) =
+                *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(&savedStageVm2) + 0x50);
+            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(stageEffect2) + 0xA4) =
+                *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(&savedStageVm2) + 0xA4);
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(stageEffect2) + 0xF8) =
+                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&savedStageVm2) + 0xF8);
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(stageEffect2) + 0x1F0) =
+                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&savedStageVm2) + 0x1F0);
+        }
+        else if (background->unk6260 == 3)
+        {
+            AnmVm *stageEffect3 = *reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(background) + 0xAE8);
+            BackgroundAnmVmSnapshot savedStageVm3 = *reinterpret_cast<BackgroundAnmVmSnapshot *>(stageEffect3);
+            stageEffect3->SetInterrupt(3);
+            *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(stageEffect3) + 0x244) =
+                *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(&savedStageVm3) + 0x244);
+            *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(stageEffect3) + 0x238) =
+                *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(&savedStageVm3) + 0x238);
+            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(stageEffect3) + 0x50) =
+                *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(&savedStageVm3) + 0x50);
+            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(stageEffect3) + 0xA4) =
+                *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(&savedStageVm3) + 0xA4);
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(stageEffect3) + 0xF8) =
+                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&savedStageVm3) + 0xF8);
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(stageEffect3) + 0x1F0) =
+                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&savedStageVm3) + 0x1F0);
+        }
+        else if (background->unk6260 == 4)
+        {
+            AnmVm *stageEffect4 = *reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(background) + 0xAE8);
+            BackgroundAnmVmSnapshot savedStageVm4 = *reinterpret_cast<BackgroundAnmVmSnapshot *>(stageEffect4);
+            stageEffect4->SetInterrupt(4);
+            *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(stageEffect4) + 0x244) =
+                *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(&savedStageVm4) + 0x244);
+            *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(stageEffect4) + 0x238) =
+                *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(&savedStageVm4) + 0x238);
+            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(stageEffect4) + 0x50) =
+                *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(&savedStageVm4) + 0x50);
+            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(stageEffect4) + 0xA4) =
+                *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(&savedStageVm4) + 0xA4);
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(stageEffect4) + 0xF8) =
+                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&savedStageVm4) + 0xF8);
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(stageEffect4) + 0x1F0) =
+                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&savedStageVm4) + 0x1F0);
+        }
+    }
+
+    if (background->unk6260 != 0)
+    {
+        i32 seekIndex = 0;
+        curInsn = reinterpret_cast<RawStageInstr *>(background->stageUnknown808);
+        BG_I32(0x818) = 0;
+        while ((curInsn->opcode != 0x1F || background->unk6260 != curInsn->args[0]) && curInsn->frame != -1)
+        {
+            curInsn++;
+            seekIndex++;
+        }
+        if (curInsn->frame != -1)
+        {
+            BG_I32(0x818) = seekIndex + 1;
+            background->timer80c = curInsn->frame;
+            background->unk6260 = 0;
+        }
+    }
+
+read_instruction:
+    curInsn = reinterpret_cast<RawStageInstr *>(background->stageUnknown808) + BG_I32(0x818);
+    if (background->timer80c >= curInsn->frame)
+    {
+        if (curInsn->frame != -1)
+        {
+    switch (curInsn->opcode)
+    {
+    case 0:
+        if (curInsn->frame == -1)
+        {
+            background->vector6454 = *reinterpret_cast<Float3 *>(curInsn->args);
+            background->vector824.x = background->vector6454.x;
+            background->vector824.y = background->vector6454.y;
+            background->vector824.z = background->vector6454.z;
+        }
+        else
+        {
+            pos = *reinterpret_cast<D3DXVECTOR3 *>(curInsn->args);
+            background->vector824.x = pos.x;
+            background->vector824.y = pos.y;
+            background->vector824.z = pos.z;
+            background->vector6454 = *reinterpret_cast<Float3 *>(&pos);
+            BG_I32(0x6460) = curInsn->frame;
+            curInsn++;
+            BG_I32(0x6450) = curInsn->frame;
+            background->vector6444 = *reinterpret_cast<Float3 *>(curInsn->args);
+        }
+        break;
+    case 1:
+        BG_I32(0xAF4) = curInsn->args[0];
+        BG_I32(0xAEC) = curInsn->args[1];
+        BG_I32(0xAF0) = curInsn->args[2];
+        *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(background) + 0xB04) =
+            *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(background) + 0xAEC);
+        break;
+    case 2:
+        *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(background) + 0xAF8) =
+            *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(background) + 0xAEC);
+        BG_I32(0xB10) = curInsn->args[0];
+        background->timerB14 = 0;
+        break;
+    case 5:
+        if (BG_U8(0x6464))
+        {
+            Float3 cameraDelta = *reinterpret_cast<Float3 *>(curInsn->args) - background->unk6264.vectors[0];
+            FUN_00426d10(&cameraDelta);
+            BG_U8(0x6464) = 0;
+        }
+        background->unk62b0.vectors[0] = background->unk6264.vectors[0];
+        background->unk6264.vectors[0] = *reinterpret_cast<Float3 *>(curInsn->args);
+        if (background->interpolationDuration[0] == 0)
+            background->unk6394.vectors[0] = *reinterpret_cast<Float3 *>(curInsn->args);
+        break;
+    case 6:
+        background->interpolationDuration[0] = curInsn->args[0];
+        background->interpolationTimers[0] = 0;
+        background->interpolationMode[0] = curInsn->args[1];
+        break;
+    case 7:
+        background->unk62b0.vectors[1] = background->unk6264.vectors[1];
+        background->unk6264.vectors[1] = *reinterpret_cast<Float3 *>(curInsn->args);
+        if (background->interpolationDuration[1] == 0)
+            background->unk6394.vectors[1] = *reinterpret_cast<Float3 *>(curInsn->args);
+        break;
+    case 8:
+        background->interpolationDuration[1] = curInsn->args[0];
+        background->interpolationTimers[1] = 0;
+        background->interpolationMode[1] = curInsn->args[1];
+        break;
+    case 9:
+        background->unk62b0.vectors[2] = background->unk6264.vectors[2];
+        background->unk6264.vectors[2] = *reinterpret_cast<Float3 *>(curInsn->args);
+        if (background->interpolationDuration[2] == 0)
+            background->unk6394.vectors[2] = *reinterpret_cast<Float3 *>(curInsn->args);
+        break;
+    case 10:
+        background->interpolationDuration[2] = curInsn->args[0];
+        background->interpolationMode[2] = curInsn->args[1];
+        background->interpolationTimers[2] = 0;
+        break;
+    case 11:
+        background->unk62b0.unk48 = background->unk6264.unk48;
+        background->unk6264.unk48 = *reinterpret_cast<f32 *>(&curInsn->args[0]);
+        if (background->interpolationDuration[3] == 0)
+            background->unk6394.unk48 = *reinterpret_cast<f32 *>(&curInsn->args[0]);
+        break;
+    case 12:
+        background->interpolationDuration[3] = curInsn->args[0];
+        background->interpolationTimers[3] = 0;
+        background->interpolationMode[3] = curInsn->args[1];
+        break;
+    case 13:
+        BG_I32(0x830) = curInsn->args[0];
+        break;
+    case 3:
+        if (background->unk6260 != 0)
+        {
+            background->unk6260 = 0;
+            break;
+        }
+        goto instructions_done;
+    case 4:
+        BG_I32(0x818) = curInsn->args[0];
+        background->timer80c = curInsn->args[1];
+        background->interpolationDuration[0] = 0;
+        BG_U8(0x6464) = 1;
+        goto read_instruction;
+    case 14: background->unk62b0.vectors[0] = *reinterpret_cast<Float3 *>(curInsn->args); break;
+    case 15: background->unk6264.vectors[0] = *reinterpret_cast<Float3 *>(curInsn->args); break;
+    case 16: background->unk6348.vectors[0] = *reinterpret_cast<Float3 *>(curInsn->args); break;
+    case 17: background->unk62fc.vectors[0] = *reinterpret_cast<Float3 *>(curInsn->args); break;
+    case 18:
+        background->interpolationDuration[0] = curInsn->args[0];
+        background->interpolationTimers[0] = 0;
+        background->interpolationMode[0] = 7;
+        break;
+    case 19: background->unk62b0.vectors[1] = *reinterpret_cast<Float3 *>(curInsn->args); break;
+    case 20: background->unk6264.vectors[1] = *reinterpret_cast<Float3 *>(curInsn->args); break;
+    case 21: background->unk6348.vectors[1] = *reinterpret_cast<Float3 *>(curInsn->args); break;
+    case 22: background->unk62fc.vectors[1] = *reinterpret_cast<Float3 *>(curInsn->args); break;
+    case 23:
+        background->interpolationDuration[1] = curInsn->args[0];
+        background->interpolationTimers[1] = 0;
+        background->interpolationMode[1] = 7;
+        break;
+    case 24: background->unk62b0.vectors[2] = *reinterpret_cast<Float3 *>(curInsn->args); break;
+    case 25: background->unk6264.vectors[2] = *reinterpret_cast<Float3 *>(curInsn->args); break;
+    case 26: background->unk6348.vectors[2] = *reinterpret_cast<Float3 *>(curInsn->args); break;
+    case 27: background->unk62fc.vectors[2] = *reinterpret_cast<Float3 *>(curInsn->args); break;
+    case 28:
+        background->interpolationDuration[2] = curInsn->args[0];
+        background->interpolationTimers[2] = 0;
+        background->interpolationMode[2] = 7;
+        break;
+    case 29:
+        if (curInsn->args[0] >= 0) background->stageAnmFile->ExecuteAnmIdx(&background->stageVm0, curInsn->args[0]);
+        else background->stageVm0.activeSpriteIndex = -1;
+        break;
+    case 30:
+        if (curInsn->args[0] >= 0) background->stageAnmFile->ExecuteAnmIdx(&background->stageVm1, curInsn->args[0]);
+        else background->stageVm0.activeSpriteIndex = -1;
+        break;
+    case 33:
+        BG_U8(0x6474) = *reinterpret_cast<u8 *>(&curInsn->args[0]);
+        background->interpolationDuration[4] = 0;
+        background->interpolationTimers[4] = 0;
+        background->interpolationMode[4] = 0;
+        break;
+    case 32:
+        background->unk6394.vectors[5] = *reinterpret_cast<Float3 *>(curInsn->args);
+        break;
+    case 34:
+        if (curInsn->args[0] >= 0) background->stageAnmFile->ExecuteAnmIdx(&background->stageVm2, curInsn->args[0]);
+        else background->stageVm2.activeSpriteIndex = -1;
+        break;
+    case 31:
+        break;
+    default:
+        break;
+    }
+
+    BG_I32(0x818)++;
+    goto read_instruction;
+        }
+    }
+
+instructions_done:
+    {
+#pragma var_order(interpolationIndex, interpolationDelta, interpolationTime, angle1, angle2, angle3, fogInterpRatio, i, j, spawnedEffect, k)
+    i32 interpolationIndex;
+    f32 interpolationDelta;
+    f32 interpolationTime;
+    f32 angle1;
+    f32 angle2;
+    f32 angle3;
+    f32 fogInterpRatio;
+    i32 i;
+    i32 j;
+    AnmVm *spawnedEffect;
+    i32 k;
+
+    interpolationIndex = 0;
+    if (background->interpolationDuration[interpolationIndex] != 0)
+        background->FUN_00408d60(interpolationIndex, &background->unk6394.vectors[0], &background->unk62b0.vectors[0],
+                                 &background->unk6264.vectors[0], &background->unk6348.vectors[0], &background->unk62fc.vectors[0]);
+    interpolationIndex = 1;
+    if (background->interpolationDuration[interpolationIndex] != 0)
+        background->FUN_00408d60(interpolationIndex, &background->unk6394.vectors[1], &background->unk62b0.vectors[1],
+                                 &background->unk6264.vectors[1], &background->unk6348.vectors[1], &background->unk62fc.vectors[1]);
+    interpolationIndex = 2;
+    if (background->interpolationDuration[interpolationIndex] != 0)
+        background->FUN_00408d60(interpolationIndex, &background->unk6394.vectors[2], &background->unk62b0.vectors[2],
+                                 &background->unk6264.vectors[2], &background->unk6348.vectors[2], &background->unk62fc.vectors[2]);
+    interpolationIndex = 3;
+    if (background->interpolationDuration[interpolationIndex] != 0)
+    {
+        if (background->interpolationTimers[interpolationIndex] < background->interpolationDuration[interpolationIndex])
+        {
+            background->interpolationTimers[interpolationIndex]++;
+            interpolationTime = (f32)background->interpolationTimers[interpolationIndex] /
+                                background->interpolationDuration[interpolationIndex];
+        }
+        else
+        {
+            background->interpolationTimers[interpolationIndex] = background->interpolationDuration[interpolationIndex];
+            interpolationTime = 1.0f;
+            background->interpolationDuration[interpolationIndex] = 0;
+        }
+        switch (background->interpolationMode[interpolationIndex])
+        {
+        case 1: interpolationTime = 1.0f - interpolationTime; interpolationTime = 1.0f - interpolationTime * interpolationTime; break;
+        case 2: interpolationTime = 1.0f - interpolationTime; interpolationTime = 1.0f - interpolationTime * interpolationTime * interpolationTime; break;
+        case 3: interpolationTime = 1.0f - interpolationTime; interpolationTime = 1.0f - interpolationTime * interpolationTime * interpolationTime * interpolationTime; break;
+        case 4: interpolationTime = interpolationTime * interpolationTime; break;
+        case 5: interpolationTime = interpolationTime * interpolationTime * interpolationTime; break;
+        case 6: interpolationTime = interpolationTime * interpolationTime * interpolationTime * interpolationTime; break;
+        }
+        interpolationDelta = background->unk6264.unk48 - background->unk62b0.unk48;
+        background->unk6394.unk48 = interpolationDelta * interpolationTime + background->unk62b0.unk48;
+    }
+
+    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&background->unk6394.vectors[3]),
+                      reinterpret_cast<D3DXVECTOR3 *>(&background->unk6394.vectors[1]));
+
+    if (BG_U8(0x6474) != 0)
+    {
+        switch (BG_U8(0x6474))
+        {
+        case 1:
+        {
+            angle1 = (f32)background->interpolationTimers[4] * ZUN_PI * 2.0f / 480.0f - ZUN_PI;
+            background->unk6394.vectors[5].x = sinf(angle1) * 40.0f;
+            background->interpolationTimers[4]++;
+            if (background->interpolationTimers[4] >= 480) background->interpolationTimers[4] = 0;
+            break;
+        }
+        case 2:
+        {
+            angle2 = (f32)background->interpolationTimers[4] * ZUN_PI * 2.0f / 480.0f - ZUN_PI;
+            background->unk6394.vectors[5].x = sinf(angle2) * 70.0f;
+            background->unk6394.vectors[2].x = -sinf(angle2) * 0.1f;
+            background->interpolationTimers[4]++;
+            if (background->interpolationTimers[4] >= 480) background->interpolationTimers[4] = 0;
+            break;
+        }
+        case 3:
+        {
+            angle3 = (f32)background->interpolationTimers[4] * ZUN_PI * 2.0f / 4800.0f - ZUN_PI;
+            background->unk6394.vectors[2].x = sinf(angle3) * 1.0f;
+            background->unk6394.vectors[2].z = cosf(angle3) * 1.0f;
+            background->interpolationTimers[4]++;
+            if (background->interpolationTimers[4] >= 4800) background->interpolationTimers[4] = 0;
+            break;
+        }
+        }
+    }
+
+    if (BG_I32(0xB10) != 0)
+    {
+        background->timerB14++;
+        fogInterpRatio = (f32)background->timerB14 / BG_I32(0xB10);
+        if (fogInterpRatio >= 1.0f) fogInterpRatio = 1.0f;
+        for (i = 0; i < 4; i++)
+        {
+            reinterpret_cast<u8 *>(&BG_COLOR(0xAF4))[i] =
+                (u8)(((f32)reinterpret_cast<u8 *>(&BG_COLOR(0xB0C))[i] -
+                      (f32)reinterpret_cast<u8 *>(&BG_COLOR(0xB00))[i]) * fogInterpRatio +
+                     (f32)reinterpret_cast<u8 *>(&BG_COLOR(0xB00))[i]);
+        }
+        background->skyFog.nearPlane =
+            (background->skyFogInterpFinal.nearPlane - background->skyFogInterpInitial.nearPlane) *
+                fogInterpRatio +
+            background->skyFogInterpInitial.nearPlane;
+        background->skyFog.farPlane =
+            (background->skyFogInterpFinal.farPlane - background->skyFogInterpInitial.farPlane) * fogInterpRatio +
+            background->skyFogInterpInitial.farPlane;
+        if (background->timerB14 >= background->skyFogInterpDuration) background->skyFogInterpDuration = 0;
+    }
+
+    if (curInsn->opcode != 3)
+        background->timer80c++;
+    background->FUN_00409f40();
+
+    if (BG_I32(0xB24) >= 1)
+    {
+        if (BG_I32(0xB28) == 60) BG_I32(0xB24)++;
+        BG_I32(0xB28)++;
+        for (j = 0; j < BG_I32(0xB30); j++)
+            g_AnmManager->ExecuteScript(&background->anmVmArray[j]);
+    }
+    if (background->stageVm0.activeSpriteIndex > 0) g_AnmManager->ExecuteScript(&background->stageVm0);
+    if (background->stageVm1.activeSpriteIndex > 0) g_AnmManager->ExecuteScript(&background->stageVm1);
+    if (background->stageVm2.activeSpriteIndex > 0)
+    {
+        g_AnmManager->ExecuteScript(&background->stageVm2);
+        BG_I32(0x830) = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&background->stageVm2) + 0x1F0);
+    }
+
+    if (BG_I32(0x81C) % 3 == 0 && (BG_I32(0x81C) >= 700 || g_GameManager.IsSpellPractice()) && BG_I32(0xB24) < 2)
+    {
+        for (k = 0; k < 12; k++)
+        {
+            spawnedEffect = g_EffectManager.SpawnEffect(62, reinterpret_cast<D3DXVECTOR3 *>(&background->vectors6480[k]),
+                                                        1, 0x20FFFFFF);
+            *reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(spawnedEffect) + 0x354) = 4;
+        }
+    }
+    BG_I32(0x647C) = 1;
+    if (BG_I32(0xB24) >= 2) BG_I32(0x6478) = 0;
+
+    BG_I32(0x81C)++;
+    if (BG_I32(0x81C) % 500 == 250 && g_GameManager.IsTampered())
+    {
+        return CHAIN_CALLBACK_RESULT_EXIT_GAME_SUCCESS;
+    }
     return CHAIN_CALLBACK_RESULT_CONTINUE;
+    }
+
+#undef BG_I32
+#undef BG_U8
+#undef BG_COLOR
 }
 
 // FUNCTION: th08 0x409160

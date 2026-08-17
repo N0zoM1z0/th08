@@ -24,6 +24,7 @@ struct EffectManager
     i32 FUN_004281e0();
 };
 extern EffectManager g_EffectManager;
+void __fastcall FUN_00426d10(Float3 *delta);
 DIFFABLE_EXTERN(ChainElem, g_EffectManagerCalcChain);
 DIFFABLE_EXTERN(ChainElem, g_EffectManagerDrawChain);
 

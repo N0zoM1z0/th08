@@ -16,6 +16,14 @@ struct BackgroundUnkVectors
 };
 C_ASSERT(sizeof(BackgroundUnkVectors) == 0x4c);
 
+struct BackgroundFog
+{
+    f32 nearPlane;
+    f32 farPlane;
+    ZunColor color;
+};
+C_ASSERT(sizeof(BackgroundFog) == 0xc);
+
 struct Background
 {
     Background();
@@ -54,7 +62,11 @@ struct Background
     unknown_fields(0x830, 0x8);
     ZunTimer timer838;
     AnmVm textAnmVm;
-    unknown_fields(0xae8, 0x2c);
+    AnmVm *stageEffect;
+    BackgroundFog skyFog;
+    BackgroundFog skyFogInterpInitial;
+    BackgroundFog skyFogInterpFinal;
+    i32 skyFogInterpDuration;
     ZunTimer timerB14;
     u8 skyFogNeedsSetup;
     unknown_fields(0xb21, 0x17);
