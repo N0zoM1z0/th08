@@ -765,3 +765,4 @@ th08::Gui::OnDraw
 th08::Player::FUN_00451d50
 th08::Enemy::FUN_0042bc90
 th08::AnmManager::DrawPlayerBullet
+th08::ScreenEffect::CalcShake

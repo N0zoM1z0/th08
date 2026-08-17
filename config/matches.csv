@@ -766,3 +766,4 @@ address,name,size,status,match_percent,unit,evidence
 0x00451D50,th08::Player::FUN_00451d50,56,matching,100.00,player-state-predicate-451d50,python3 scripts/compare-function.py player-state-predicate-451d50 --json
 0x0042BC90,th08::Enemy::FUN_0042bc90,96,matching,100.00,enemy-free-ecl-slots,python3 scripts/compare-function.py enemy-free-ecl-slots --json
 0x0045E960,th08::AnmManager::DrawPlayerBullet,125,matching,100.00,anm-draw-player-bullet,python3 scripts/compare-function.py anm-draw-player-bullet --json
+0x0045BDC0,th08::ScreenEffect::CalcShake,332,matching,100.00,screen-effect-calc-shake,python3 scripts/compare-function.py screen-effect-calc-shake --json

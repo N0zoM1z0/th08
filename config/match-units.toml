@@ -76781,3 +76781,101 @@ offset = 145
 type = "DIR32"
 symbol = "$L*"
 target = 0x0045E9CB
+
+[[units]]
+name = "screen-effect-calc-shake"
+object = "build/objdiff/reimpl/ScreenEffect.obj"
+symbol = "th08::ScreenEffect::CalcShake"
+target_address = 0x0045BDC0
+size = 332
+
+[[units.relocations]]
+offset = 37
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 44
+
+[[units.relocations]]
+offset = 57
+type = "DIR32"
+symbol = "?g_ScreenEffectCounter@th08@@3HA"
+target = 0x018B8A2C
+
+[[units.relocations]]
+offset = 80
+type = "REL32"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
+target = 0x00406640
+
+[[units.relocations]]
+offset = 98
+type = "REL32"
+symbol = "??PZunTimer@th08@@QAEIH@Z"
+target = 0x0040B8E0
+
+[[units.relocations]]
+offset = 120
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 172
+type = "DIR32"
+symbol = "?g_Rng@th08@@3VRng@1@A"
+target = 0x0164D520
+
+[[units.relocations]]
+offset = 177
+type = "REL32"
+symbol = "?GetRandomU32InRange@Rng@th08@@QAEII@Z"
+target = 0x00406EF0
+
+[[units.relocations]]
+offset = 205
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 220
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 238
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 248
+type = "DIR32"
+symbol = "?g_Rng@th08@@3VRng@1@A"
+target = 0x0164D520
+
+[[units.relocations]]
+offset = 253
+type = "REL32"
+symbol = "?GetRandomU32InRange@Rng@th08@@QAEII@Z"
+target = 0x00406EF0
+
+[[units.relocations]]
+offset = 282
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 297
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 316
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90

@@ -303,9 +303,62 @@ ChainCallbackResult ScreenEffect::FUN_0045bd70(ScreenEffect *screenEffect)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-// STUB: th08 0x45bdc0
+// FUNCTION: th08 0x45bdc0
 ChainCallbackResult ScreenEffect::CalcShake(ScreenEffect *screenEffect)
 {
+    f32 shakeAmount;
+
+    if ((*reinterpret_cast<u32 *>(0x164D0B4) >> 10) & 1)
+    {
+        return CHAIN_CALLBACK_RESULT_CONTINUE;
+    }
+    if (g_GameManager.unk2C != 0)
+    {
+        return CHAIN_CALLBACK_RESULT_CONTINUE;
+    }
+    if (g_ScreenEffectCounter != 0)
+    {
+        return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
+    }
+
+    screenEffect->timer++;
+    if (screenEffect->timer >= screenEffect->duration)
+    {
+        return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
+    }
+
+    shakeAmount = (f32)screenEffect->timer *
+                  (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x1c) -
+                   *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x18));
+    shakeAmount = shakeAmount / screenEffect->duration;
+    shakeAmount = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x18) + shakeAmount;
+
+    switch (g_Rng.GetRandomU32InRange(3))
+    {
+    case 0:
+        g_AnmManager->screenShakeOffset.x = 0.0f;
+        break;
+    case 1:
+        g_AnmManager->screenShakeOffset.x = shakeAmount;
+        break;
+    case 2:
+        g_AnmManager->screenShakeOffset.x = -shakeAmount;
+        break;
+    }
+
+    switch (g_Rng.GetRandomU32InRange(3))
+    {
+    case 0:
+        g_AnmManager->screenShakeOffset.y = 0.0f;
+        break;
+    case 1:
+        g_AnmManager->screenShakeOffset.y = shakeAmount;
+        break;
+    case 2:
+        g_AnmManager->screenShakeOffset.y = -shakeAmount;
+        break;
+    }
+
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
