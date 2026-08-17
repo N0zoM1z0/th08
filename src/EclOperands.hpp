@@ -39,4 +39,9 @@ i32 *__fastcall ResolveIntLValue(EnemyOverlay *enemy, i32 *operand, u16 flags, i
 f32 *__fastcall ResolveFloatLValue(EnemyOverlay *enemy, f32 *operand, u16 flags, i32 flagIndex);
 
 } // namespace EclOperands
+
+namespace EclRunLowProposal
+{
+extern EclOperands::EnemyOverlay *g_EclEnemyTableF54CC0[];
+} // namespace EclRunLowProposal
 } // namespace th08

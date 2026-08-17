@@ -755,3 +755,4 @@ th08::GuiImpl::FUN_0043396d
 th08::AnmManager::SetTextureCaptureParams
 th08::GuiImpl::RunMsg
 th08::Gui::DrawGameScene
+th08::Gui::FUN_0043741d

@@ -183,3 +183,4 @@ th08::g_GuiMessageAnm,0x17ce8f4,global
 th08::g_GuiMessageInputCurrent,0x164d52c,global
 th08::g_GuiMessageInputPrevious,0x164d534,global
 th08::g_GuiMessageScreenEffectDuration,0x17ce8cc,global
+th08::g_GuiBossTimerColors,0x4c72ac,global

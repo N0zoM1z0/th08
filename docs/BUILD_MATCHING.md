@@ -272,6 +272,12 @@ nonzero instead of borrowing TH07 assumptions.
 
 - The type of an apparently neutral constant can control where VC7 converts an integer expression to floating point. In `Gui::DrawGameScene`, `GetPower() + 488 + 0.0f` emits the target `add eax, 488; fild; fadd 0.0`, while `GetPower() + 488.0f` converts `GetPower()` first and emits a different x87 sequence. Preserve integer subexpressions and even a trailing `+ 0.0f` when the target shows an integer ALU operation immediately before `fild`.
 
+
+- VC7 can match a target stack slot only when the source also reuses one local across phases. In `Gui::FUN_0043741d`, the target slot at `[ebp-0x20]` first holds the boss-life count and later the capped spell timer. Keeping separate `bossLives` and `cappedSpellcardSecondsRemaining` locals enlarged the frame by four bytes; one reusable `bossValue` restored the target frame without padding.
+- `#pragma var_order` is lexical-scope sensitive in this codebase. A function-level pragma did not order locals declared inside the boss-HUD block. Moving the pragma into that block, while keeping declarations at their target execution points, restored `dark=-0x8`, `bright=-0xc`, `rect=-0x1c..-0x10`, `bossValue=-0x20`, `segmentIndex=-0x24`, `segmentStop=-0x28`, `timerColor=-0x2c`, `segmentWidth=-0x30`, and `textPos=-0x3c..-0x34`.
+- A constructor can be target-visible even when the initialized value is overwritten before its apparent first use. The TH08 boss-HUD code constructs `Float3 textPos(48.0f, 16.0f, 0.0f)` immediately before the first health-bar draw and later assigns `(384,16,0)`. Omitting or moving that seemingly dead construction changed both size and control-flow offsets.
+- Prefer correcting typed field order over compensating in expressions. `Gui::bossLifeBarMaxSize` was actually at `+0x34` while the previous header named the `+0x30` float as the max value. Swapping the two field names removed repeated target/object displacement mismatches throughout the health-bar code and preserves the proven segment arrays at `+0x3c/+0x5c/+0x7c`.
+
 ## Acceptance rules
 
 - Verify the target hash before every new comparison environment.

@@ -103,6 +103,7 @@ struct Gui
     void FUN_004390d6();
     void FUN_00439810(i32 value);
     void DrawGameScene();
+    void FUN_0043741d();
 
     u32 unk_0;
     GuiFlags flags;
@@ -116,8 +117,8 @@ struct Gui
     i32 spellcardSecondsRemaining;
     i32 previousSpellcardSecondsRemaining;
     bool bossPresent;
-    f32 bossLifeBarMaxSize;
     f32 bossLifeBarSize;
+    f32 bossLifeBarMaxSize;
     unknown_fields(0x38, 0x4);
     f32 bossLifeBarSegmentStop[MAX_BOSS_LIFEBAR_SEGMENTS];
     f32 bossLifeBarSegmentStart[MAX_BOSS_LIFEBAR_SEGMENTS];

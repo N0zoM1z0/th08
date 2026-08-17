@@ -158,3 +158,6 @@ expressions, but TH08 reordered the minimum-graphics/background work and added t
 time-orb row. In `Gui::DrawGameScene`, the TH08-first ordering yielded an exact 0x1C4
 frame on the first complete pass; the remaining 10-byte size error came from only two
 ancestor-style integer-plus-zero-float expressions.
+
+
+When a newly reconstructed production function uses a target global that previously existed only as an `extern` in a probe-only ECL lane, promote the storage to a production-linked TU before accepting the function. `Gui::FUN_0043741d` calls through `g_EclEnemyTableF54CC0`; the target span to the next known global proves 92 pointer entries, so its storage now lives in `EclGlobals.cpp` while probes and GUI share the `EclOperands.hpp` declaration. This is the same dependency-first rule used for probe-only Enemy helpers: strict object matching is not enough if the normal link would otherwise have no owner for the symbol.

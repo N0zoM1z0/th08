@@ -5,6 +5,7 @@
 #include "Background.hpp"
 #include "Gui.hpp"
 #include "EnemyManager.hpp"
+#include "EclOperands.hpp"
 #include "GameManager.hpp"
 #include "ItemManager.hpp"
 #include "ReplayManager.hpp"
@@ -46,6 +47,7 @@ struct GuiStageMusicContextSet
     i32 values[3];
 };
 DIFFABLE_STATIC_ARRAY(GuiStageMusicContextSet, MAX_STAGES, g_GuiStageMusicContexts);
+DIFFABLE_STATIC_ARRAY_ASSIGN(u32, 4, g_GuiBossTimerColors) = {0x00a0d0ff, 0x00a080ff, 0x00e080c0, 0x00ff4040};
 
 struct GuiStageMusicDataOverlay
 {
@@ -1212,6 +1214,143 @@ ChainCallbackResult Gui::OnUpdate(Gui *gui)
 ChainCallbackResult Gui::OnDraw(Gui *gui)
 {
     return CHAIN_CALLBACK_RESULT_CONTINUE;
+}
+
+// FUNCTION: th08 0x43741d
+void Gui::FUN_0043741d()
+{
+    i32 i;
+
+    for (i = 0; i < 4; i++)
+        g_AnmManager->Draw2D(&this->impl->vm2a44[i]);
+    g_AnmManager->Draw2D(&this->impl->vm34d4);
+    g_AnmManager->Draw2D(&this->impl->vm2156c);
+
+    if (this->impl->vm3778.activeSpriteIndex >= 0)
+    {
+        g_AnmManager->DrawNoRotation(&this->impl->vm3778);
+        g_AnmManager->FUN_00464070(&this->impl->vm3cc0);
+        for (i = 0; i < ARRAY_SIZE(this->impl->vm3f64); i++)
+            g_AnmManager->FUN_00464070(&this->impl->vm3f64[i]);
+        if (this->impl->vm3a1c.activeSpriteIndex >= 0)
+        {
+            this->impl->vm3a1c.pos = Float3(304.0f, 448.0f, 0.0f);
+            g_AnmManager->DrawNoRotation(&this->impl->vm3a1c);
+        }
+    }
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this->impl) + 0x21810) != 0)
+    {
+        for (i = 0; i < 0xa8; i++)
+        {
+            g_AnmManager->FUN_00464070(&this->impl->vm5728[i]);
+            g_AnmManager->ClearSprite();
+        }
+    }
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->currentMsgIdx < 0 &&
+        (this->bossPresent + *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40)) > 0)
+    {
+#pragma var_order(bossColorDark, bossColor, rect, bossValue, segmentIndex, segmentStop, bossTimerColor, segmentWidth, textPos)
+        ZunRect rect;
+        D3DCOLOR bossColor;
+        D3DCOLOR bossColorDark;
+        i32 bossValue;
+        i32 segmentIndex;
+
+        rect.left = 64.0f;
+        rect.top = 19.0f;
+        rect.right = this->bossLifeBarMaxSize * 320.0f + 64.0f;
+        rect.bottom = 23.0f;
+        bossColor = (this->bossUIOpacity << 24) | 0x00ffffff;
+        bossColorDark = (this->bossUIOpacity << 24) | 0x00202060;
+        Float3 textPos(48.0f, 16.0f, 0.0f);
+        ScreenEffect::DrawSquareShaded(&rect, bossColor, bossColor, bossColorDark, bossColorDark);
+
+        f32 segmentStop;
+        for (segmentIndex = 0; segmentIndex < MAX_BOSS_LIFEBAR_SEGMENTS; segmentIndex++)
+        {
+            if (this->bossLifeBarSegmentStop[segmentIndex] == 0.0f)
+                continue;
+            if (this->bossLifeBarSegmentStart[segmentIndex] >= this->bossLifeBarMaxSize)
+                continue;
+
+            segmentStop = this->bossLifeBarSegmentStop[segmentIndex];
+            if (this->bossLifeBarMaxSize < segmentStop)
+                segmentStop = this->bossLifeBarMaxSize;
+
+            rect.left = this->bossLifeBarSegmentStart[segmentIndex] * 320.0f + 64.0f;
+            rect.top = 19.0f;
+            rect.right = segmentStop * 320.0f + 64.0f;
+            rect.bottom = 23.0f;
+            bossColor = (this->bossUIOpacity << 24) | (this->bossLifeBarSegmentColor[segmentIndex] & 0x00ffffff);
+            bossColorDark = (this->bossUIOpacity << 24) |
+                            ((this->bossLifeBarSegmentColor[segmentIndex] >> 2) & 0x003f3f3f);
+            ScreenEffect::DrawSquareShaded(&rect, bossColor, bossColor, bossColorDark, bossColorDark);
+        }
+
+        g_AnmManager->DrawNoRotation(&this->impl->vm0000[12]);
+
+        i32 segmentWidth;
+        {
+            rect.left = 33.0f;
+            rect.top = 19.0f;
+            rect.right = rect.left + 3.0f;
+            rect.bottom = rect.top + 4.0f;
+            bossValue = this->eclSetLives;
+            segmentWidth = this->eclSetLives <= 5 ? 2 : 1;
+            for (segmentIndex = 0; segmentIndex < bossValue; segmentIndex++)
+            {
+                rect.left = segmentIndex * 26.0f / bossValue + 35.0f;
+                rect.right = (segmentIndex + 1) * 26.0f / bossValue + 35.0f - segmentWidth;
+                bossColor = (this->bossUIOpacity << 24) | (0x00ffffff - segmentIndex * 0xff / 9);
+                bossColorDark = (this->bossUIOpacity << 24) | 0x00202020;
+                ScreenEffect::DrawSquareShaded(&rect, bossColor, bossColor, bossColorDark, bossColorDark);
+            }
+        }
+
+        i32 bossTimerColor;
+        {
+            textPos = Float3(384.0f, 16.0f, 0.0f);
+            if (this->spellcardSecondsRemaining >= 20)
+                bossTimerColor = g_GuiBossTimerColors[0];
+            else if (this->spellcardSecondsRemaining >= 10)
+                bossTimerColor = g_GuiBossTimerColors[1];
+            else if (this->spellcardSecondsRemaining >= 5)
+                bossTimerColor = g_GuiBossTimerColors[2];
+            else
+                bossTimerColor = g_GuiBossTimerColors[3];
+
+            g_AsciiManager.SetColor((this->bossUIOpacity << 24) | bossTimerColor);
+            bossValue = this->spellcardSecondsRemaining > 99 ? 99 : this->spellcardSecondsRemaining;
+            if (this->previousSpellcardSecondsRemaining != this->spellcardSecondsRemaining)
+            {
+                if (bossValue < 3)
+                    g_SoundPlayer.PlaySoundByIdx((SoundIdx)0x26, 0);
+                else if (bossValue < 10)
+                    g_SoundPlayer.PlaySoundByIdx((SoundIdx)0x1d, 0);
+            }
+            g_AsciiManager.AddFormatText(&textPos, "%.2d", bossValue);
+            g_AsciiManager.SetColor(0xffffffff);
+            this->previousSpellcardSecondsRemaining = this->spellcardSecondsRemaining;
+
+            if (!g_GameManager.isInGameMenu && !g_GameManager.showRetryMenu && !g_GameManager.flags.unk10 &&
+                EclRunLowProposal::g_EclEnemyTableF54CC0[0] != NULL)
+            {
+                textPos = Float3(2.0f, 29.0f, 0.0f);
+                g_AsciiManager.SetScale(1.0f, 1.0f);
+                g_AsciiManager.CreateFamiliarPopup(
+                    &textPos,
+                    reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(
+                        EclRunLowProposal::g_EclEnemyTableF54CC0[0])->CountParentChain(),
+                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+                        EclRunLowProposal::g_EclEnemyTableF54CC0[0]) + 0x3380),
+                    0xfff0f00f);
+            }
+        }
+    }
+
+    g_AnmManager->DrawNoRotation(&this->impl->vm212c8);
 }
 
 // FUNCTION: th08 0x437a2f
