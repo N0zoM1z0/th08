@@ -952,6 +952,94 @@ void Gui::DrawGameScene()
         this->flags.timeDisplayUpdateFrames--;
 }
 
+// FUNCTION: th08 0x43542b
+#pragma var_order(dialogueBoxHeight, vertices)
+ZunResult GuiImpl::DrawDialogue()
+{
+    f32 dialogueBoxHeight;
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentMsgIdx < 0)
+        return ZUN_ERROR;
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->timer < 60)
+        dialogueBoxHeight = static_cast<f32>(reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->timer) *
+                            48.0f / 60.0f;
+    else
+        dialogueBoxHeight = 48.0f;
+
+    VertexDiffuseXyzrhw vertices[4];
+    memcpy(&vertices[0].pos, &Float3(g_ItemAnmManagerScreenShakeOffset.x + 16.0f, 384.0f, 0.0f), sizeof(Float3));
+    memcpy(&vertices[1].pos,
+           &Float3(g_ItemAnmManagerScreenShakeOffset.x + 384.0f - 16.0f, 384.0f, 0.0f), sizeof(Float3));
+    memcpy(&vertices[2].pos,
+           &Float3(g_ItemAnmManagerScreenShakeOffset.x + 16.0f, 384.0f + dialogueBoxHeight, 0.0f), sizeof(Float3));
+    memcpy(&vertices[3].pos,
+           &Float3(g_ItemAnmManagerScreenShakeOffset.x + 384.0f - 16.0f, 384.0f + dialogueBoxHeight, 0.0f),
+           sizeof(Float3));
+
+    vertices[0].diffuse = vertices[1].diffuse = 0xd0000000;
+    vertices[2].diffuse = vertices[3].diffuse = 0x90000000;
+    vertices[0].w = vertices[1].w = vertices[2].w = vertices[3].w = 1.0f;
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0].pos.z >=
+        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1].pos.z)
+    {
+        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0]);
+        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1]);
+    }
+    else
+    {
+        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1]);
+        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0]);
+    }
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2].pos.z >=
+        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3].pos.z)
+    {
+        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2]);
+        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3]);
+    }
+    else
+    {
+        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3]);
+        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2]);
+    }
+
+    g_AnmManager->FlushVertexBuffer();
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->messageFlag)
+    {
+        if (!g_Supervisor.IsColorCompositingDisabled())
+        {
+            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+        }
+        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE);
+        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
+        if (!g_Supervisor.IsDepthTestDisabled())
+            g_Supervisor.SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+        g_Supervisor.d3dDevice->SetVertexShader(D3DFVF_DIFFUSE | D3DFVF_XYZRHW);
+        g_Supervisor.d3dDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, vertices, sizeof(VertexDiffuseXyzrhw));
+        g_AnmManager->ClearVertexShader();
+        g_AnmManager->ClearColorOp();
+        g_AnmManager->ClearBlendMode();
+        g_AnmManager->ClearZWrite();
+        if (!g_Supervisor.IsColorCompositingDisabled())
+        {
+            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+        }
+        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+    }
+
+    g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[0]);
+    g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1]);
+    g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->extraVms[0]);
+    g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->extraVms[1]);
+    return ZUN_SUCCESS;
+}
+
 // FUNCTION: th08 0x4353ec
 #pragma var_order(i, decoded)
 void __fastcall FUN_004353ec(char *out, const char *encoded)

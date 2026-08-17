@@ -283,6 +283,10 @@ nonzero instead of borrowing TH07 assumptions.
 - Preserve the target's outer condition direction when it controls a large lexical branch. The clock-display tail matches as `if (timer >= 60) { if (current < target) animate; else timer++; } else { timer++; }`. Rewriting it as `if (timer < 60) ... else if (...)` selected a short conditional jump plus an extra branch and made the function two bytes short.
 - Equivalent boolean regions can have very different floating-point branch layouts. The GUI portrait-alpha target is naturally `if (x >= 64 && y < 128) { fade down } else { fade up }`; the De Morgan form `x < 64 || y >= 128` reversed both x87 test masks. Prefer the target fallthrough region over a logically equivalent negated predicate.
 
+
+- A local array of a type with a non-trivial default constructor can explain an otherwise mysterious `eh_vector_constructor_iterator` call. `GuiImpl::DrawDialogue` declares `VertexDiffuseXyzrhw vertices[4]`; leaving it as a real local array naturally emits target helper `0x406850` with element ctor `VertexDiffuseXyzrhw::VertexDiffuseXyzrhw @ 0x40B580`.
+- Preserve aggregate-copy spelling when the target copies a constructor temporary with string instructions. In `GuiImpl::DrawDialogue`, the adjacent source shape `memcpy(&vertices[i].pos, &Float3(...), sizeof(Float3))` emits `Float3::Float3` followed by three `movsd`/`rep`-style dword copies exactly like TH08. Replacing that with an apparently cleaner typed assignment can change register ownership and copy lowering.
+
 ## Acceptance rules
 
 - Verify the target hash before every new comparison environment.
