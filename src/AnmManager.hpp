@@ -689,6 +689,7 @@ struct AnmManager
 
     void CaptureToTexture(i32 captureAnmIdx, i32 srcX, i32 srcY, i32 srcW, i32 srcH, i32 dstX, i32 dstY, i32 dstW,
                           i32 dstH);
+    ZunResult SetTextureCaptureParams(u32 captureAnmIdx, u32 srcX, u32 srcY, u32 srcW, u32 srcH, u32 dstX, u32 dstY, u32 dstW, u32 dstH);
     void CopyTextureRect(i32 dstAnmIdx, i32 dstEntryIdx, i32 srcAnmIdx, i32 srcEntryIdx, RECT *dstRect,
                          RECT *srcRect);
     void CaptureToSurface(i32 captureSurfaceIdx, i32 srcX, i32 srcY, i32 srcW, i32 srcH, i32 dstX, i32 dstY, i32 dstW,

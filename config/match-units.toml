@@ -69427,6 +69427,13 @@ target_address = 0x004353EC
 size = 0x3F
 
 [[units]]
+name = "anm-set-texture-capture-params"
+object = "build/AnmManager.obj"
+symbol = "?SetTextureCaptureParams@AnmManager@th08@@QAE?AW4ZunResult@@IIIIIIIII@Z"
+target_address = 0x00406A30
+size = 0x8C
+
+[[units]]
 name = "anm-copy-texture-rect"
 object = "build/AnmManager.obj"
 symbol = "?CopyTextureRect@AnmManager@th08@@QAEXHHHHPAUtagRECT@@0@Z"

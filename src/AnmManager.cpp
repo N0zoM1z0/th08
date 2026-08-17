@@ -2669,6 +2669,25 @@ void AnmManager::CaptureToTexture(i32 captureAnmIdx, i32 srcX, i32 srcY, i32 src
     backbuffer->Release();
 }
 
+// FUNCTION: th08 0x406a30
+ZunResult AnmManager::SetTextureCaptureParams(u32 captureAnmIdx, u32 srcX, u32 srcY, u32 srcW, u32 srcH, u32 dstX,
+                                              u32 dstY, u32 dstW, u32 dstH)
+{
+    if (this->captureAnmIdx >= 0)
+        return ZUN_ERROR;
+
+    this->captureAnmIdx = captureAnmIdx;
+    this->textureCaptureSrcX = srcX;
+    this->textureCaptureSrcY = srcY;
+    this->textureCaptureSrcW = srcW;
+    this->textureCaptureSrcH = srcH;
+    this->textureCaptureDstX = dstX;
+    this->textureCaptureDstY = dstY;
+    this->textureCaptureDstW = dstW;
+    this->textureCaptureDstH = dstH;
+    return ZUN_SUCCESS;
+}
+
 // FUNCTION: th08 0x467040
 #pragma var_order(destSurface, srcSurface, this)
 void AnmManager::CopyTextureRect(i32 dstAnmIdx, i32 dstEntryIdx, i32 srcAnmIdx, i32 srcEntryIdx, RECT *dstRect,
