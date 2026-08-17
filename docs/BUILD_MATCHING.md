@@ -263,6 +263,12 @@ nonzero instead of borrowing TH07 assumptions.
   and return path. Hoisting those checks to a common merge preserved successful-case
   semantics but changed branch topology and shortened the target by dozens of bytes.
 
+
+- For a dense VC7 switch, compare the object jump-table entry targets with the target table before rewriting the whole dispatcher. If every later case start is displaced by the same constant, that constant is often exactly one missing case body. In `GuiImpl::RunMsg`, cases 8 through 0x16 were all shifted by `0xEC`; reconstructing the missing 236-byte case 7 made every one of the 23 case starts land on its canonical address and also caused VC7 to emit the target function-level `push esi` naturally.
+- Do not replace a target's repeated calls with a loop merely because the operands form a contiguous array. `GuiImpl::RunMsg` executes its eight message VMs as eight lexical `ExecuteScript` calls; spelling them as `4 + 2 + 2` loops added exactly 26 bytes of loop machinery under `/Os`.
+- Pointer-update spelling can determine VC7 register ownership. The adjacent-engine source shape `currentInstr = (Instr *)((i32)&currentInstr->args + currentInstr->argSize)` preserved the base pointer in EAX and loaded `argSize` through ECX, exactly matching TH08. Algebraically rewriting it as `currentInstr + argSize + 4` reversed those roles even though the computed pointer was identical.
+- A later case body can change the prologue of the entire function. Before GUI opcode 7 was restored, `RunMsg` had the correct frame but no callee-saved ESI save; the real case's register pressure made VC7 emit `push esi`/`pop esi` automatically. Do not force such prologue bytes locally—restore the missing source body first.
+
 ## Acceptance rules
 
 - Verify the target hash before every new comparison environment.

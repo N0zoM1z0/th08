@@ -59,6 +59,7 @@ struct GuiImpl
 
     GuiImpl();
     void FUN_0043396d(i32 value);
+    i32 RunMsg();
 };
 C_ASSERT(sizeof(GuiImpl) == 0x230b8);
 

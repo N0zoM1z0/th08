@@ -1,11 +1,16 @@
 #include "th_pch.h"
 
 #include "BulletManager.hpp"
+#include "Background.hpp"
 #include "Gui.hpp"
 #include "EnemyManager.hpp"
 #include "GameManager.hpp"
 #include "ItemManager.hpp"
 #include "ReplayManager.hpp"
+#include "Player.hpp"
+#include "ScreenEffect.hpp"
+#include "SoundPlayer.hpp"
+#include "Supervisor.hpp"
 
 namespace th08
 {
@@ -20,11 +25,64 @@ DIFFABLE_STATIC(i32, g_GuiMessageStageMode);
 DIFFABLE_STATIC(AnmLoaded *, g_GuiPortraitAnm0);
 DIFFABLE_STATIC(AnmLoaded *, g_GuiPortraitAnm1);
 DIFFABLE_STATIC(AnmLoaded *, g_GuiPortraitAnm2);
+DIFFABLE_STATIC(AnmLoaded *, g_GuiPortraitAnmPrimary);
+DIFFABLE_STATIC(AnmLoaded *, g_GuiMessageAnm);
+DIFFABLE_STATIC(u16, g_GuiMessageInputCurrent);
+DIFFABLE_STATIC(u16, g_GuiMessageInputPrevious);
+DIFFABLE_STATIC(i32, g_GuiMessageScreenEffectDuration);
+DIFFABLE_STATIC_ARRAY(i32 *, MAX_STAGES, g_GuiStageScoreTables);
+DIFFABLE_STATIC(AnmLoaded *, g_GuiResultAnm0);
+DIFFABLE_STATIC(AnmLoaded *, g_GuiResultAnm1);
 struct GuiMessageTextColorSet
 {
     u32 colors[4];
 };
 DIFFABLE_STATIC_ARRAY(GuiMessageTextColorSet, SHOT_ALL, g_GuiMessageTextColors);
+
+struct GuiStageMusicContextSet
+{
+    i32 values[3];
+};
+DIFFABLE_STATIC_ARRAY(GuiStageMusicContextSet, MAX_STAGES, g_GuiStageMusicContexts);
+
+struct GuiStageMusicDataOverlay
+{
+    unknown_fields(0x0, 0x290);
+    char songPaths[4][128];
+};
+
+struct GuiRawMessageInstruction
+{
+    u16 time;
+    u8 opcode;
+    u8 argSize;
+    u8 args[1];
+};
+
+struct GuiMessagePortraitArgs
+{
+    i32 portraitIndex;
+    i32 scriptOrSprite;
+};
+
+struct GuiMessagePortraitShortArgs
+{
+    i16 portraitIndex;
+    i16 scriptOrSprite;
+};
+
+struct GuiMessageScriptsArgs
+{
+    i32 portraitIndex;
+    i32 scripts[4];
+};
+
+struct GuiMessageTextArgs
+{
+    i16 colorIndex;
+    i16 lineIndex;
+    char text[1];
+};
 
 struct GuiMessageStateOverlay
 {
@@ -40,7 +98,7 @@ struct GuiMessageStateOverlay
     u32 textColors[4];              // +0x1540
     u32 shadowColors[4];            // +0x1550
     i32 fontSize;                   // +0x1560
-    i32 ignoreWaitCounter;          // +0x1564
+    u32 ignoreWaitCounter;          // +0x1564
     u8 dialogueSkippable;           // +0x1568
     u8 currentSide;                 // +0x1569
     u8 textPending;                 // +0x156A
@@ -48,7 +106,7 @@ struct GuiMessageStateOverlay
     u8 currentPortrait;             // +0x156C
     u8 messageFlag;                 // +0x156D
     u8 routeChoice;                 // +0x156E
-    u8 pad156F;                     // +0x156F
+    u8 choiceSelection;             // +0x156F
     i32 resultState;                // +0x1570
     i32 unknown1574;                // +0x1574
 };
@@ -58,6 +116,581 @@ C_ASSERT(offsetof(GuiMessageStateOverlay, dialogueLines) == 0xAB0);
 C_ASSERT(offsetof(GuiMessageStateOverlay, extraVms) == 0xFF8);
 C_ASSERT(offsetof(GuiMessageStateOverlay, textColors) == 0x1540);
 
+
+void __fastcall FUN_004353ec(char *out, const char *encoded);
+
+// FUNCTION: th08 0x433db3
+#pragma var_order(args, j, portraitArgs, k, portraitSpriteArgs, text3, text16, text19, text20, i)
+i32 GuiImpl::RunMsg()
+{
+    GuiMessagePortraitArgs *args;
+    u32 j;
+    GuiMessagePortraitArgs *portraitArgs;
+    u32 k;
+    GuiMessagePortraitArgs *portraitSpriteArgs;
+    char text3[64];
+    char text19[64];
+    char text20[64];
+    char text16[64];
+    u32 i;
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentMsgIdx < 0)
+        return -1;
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->ignoreWaitCounter > 0)
+        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->ignoreWaitCounter--;
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueSkippable &&
+        (g_GuiMessageInputCurrent & TH_BUTTON_SKIP))
+    {
+        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->timer =
+            reinterpret_cast<GuiRawMessageInstruction *>(
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->time;
+    }
+
+    if (g_Player.playerState != PLAYER_STATE_DYING)
+        g_ItemManager.AutoCollectAllItems();
+
+    while (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->timer >= (i32)
+           reinterpret_cast<GuiRawMessageInstruction *>(
+               reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->time)
+    {
+        switch (reinterpret_cast<GuiRawMessageInstruction *>(
+                   reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->opcode)
+        {
+        case 0:
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentMsgIdx = -1;
+            return -1;
+
+        case 0xF:
+            portraitArgs = reinterpret_cast<GuiMessagePortraitArgs *>(
+                reinterpret_cast<GuiRawMessageInstruction *>(
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args);
+            if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentPortrait !=
+                reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->portraitIndex)
+            {
+                for (j = 0; j < 4; j++)
+                {
+                    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentPortrait == j)
+                    {
+                        if ((reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentPortrait / 2) !=
+                            (reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->portraitIndex / 2))
+                            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[j].pendingInterrupt = 6;
+                        else
+                            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[j].pendingInterrupt = 4;
+                    }
+                    else
+                        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[j].pendingInterrupt = 4;
+                }
+            }
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
+                ->portraits[reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->portraitIndex].pendingInterrupt = 3;
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentPortrait =
+                reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->portraitIndex;
+            if (reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[0] >= 0)
+                g_GuiPortraitAnmPrimary->SetSprite(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0],
+                    reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[0]);
+            if (reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[1] >= 0)
+                g_GuiPortraitAnm0->SetSprite(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1],
+                    reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[1]);
+            if (reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[2] >= 0)
+                g_GuiPortraitAnm1->SetSprite(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2],
+                    reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[2]);
+            if (reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[3] >= 0)
+                g_GuiPortraitAnm2->SetSprite(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3],
+                    reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[3]);
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentSide =
+                reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->portraitIndex;
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textPending = 1;
+            break;
+
+        case 0x11:
+            portraitSpriteArgs = reinterpret_cast<GuiMessagePortraitArgs *>(
+                reinterpret_cast<GuiRawMessageInstruction *>(
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args);
+            if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentPortrait !=
+                portraitSpriteArgs->portraitIndex)
+            {
+                for (k = 0; k < 4; k++)
+                {
+                    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentPortrait == k)
+                    {
+                        if ((reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentPortrait / 2) !=
+                            (portraitSpriteArgs->portraitIndex / 2))
+                            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[k].pendingInterrupt = 6;
+                        else
+                            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[k].pendingInterrupt = 4;
+                    }
+                    else
+                    {
+                        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[k].pendingInterrupt = 4;
+                    }
+                }
+            }
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
+                ->portraits[portraitSpriteArgs->portraitIndex].pendingInterrupt = 3;
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentPortrait =
+                portraitSpriteArgs->portraitIndex;
+            if (portraitSpriteArgs->scriptOrSprite >= 0)
+            {
+                switch (portraitSpriteArgs->portraitIndex)
+                {
+                case 0:
+                    g_GuiPortraitAnmPrimary->SetSprite(
+                        &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0],
+                        portraitSpriteArgs->scriptOrSprite);
+                    break;
+                case 1:
+                    g_GuiPortraitAnm0->SetSprite(
+                        &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1],
+                        portraitSpriteArgs->scriptOrSprite);
+                    break;
+                case 2:
+                    g_GuiPortraitAnm1->SetSprite(
+                        &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2],
+                        portraitSpriteArgs->scriptOrSprite);
+                    break;
+                case 3:
+                    g_GuiPortraitAnm2->SetSprite(
+                        &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3],
+                        portraitSpriteArgs->scriptOrSprite);
+                    break;
+                }
+            }
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentSide =
+                portraitSpriteArgs->portraitIndex;
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textPending = 1;
+            break;
+
+        case 1:
+            args = reinterpret_cast<GuiMessagePortraitArgs *>(
+                reinterpret_cast<GuiRawMessageInstruction *>(
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args);
+            switch (reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex)
+            {
+            case 0:
+                g_GuiPortraitAnmPrimary->SetAndExecuteScriptIdx(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0],
+                    reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
+                break;
+            case 1:
+                g_GuiPortraitAnm0->SetAndExecuteScriptIdx(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1],
+                    reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
+                break;
+            case 2:
+                g_GuiPortraitAnm1->SetAndExecuteScriptIdx(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2],
+                    reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
+                break;
+            case 3:
+                g_GuiPortraitAnm2->SetAndExecuteScriptIdx(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3],
+                    reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
+                break;
+            }
+            if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
+                    ->portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]
+                    .loadedSprite->widthPx > 128.0f)
+                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
+                         ->portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]) + 0x288) = -112.0f;
+            else
+                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
+                         ->portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]) + 0x288) = 0.0f;
+            break;
+
+        case 2:
+            args = reinterpret_cast<GuiMessagePortraitArgs *>(
+                reinterpret_cast<GuiRawMessageInstruction *>(
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args);
+            switch (reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex)
+            {
+            case 0:
+                g_GuiPortraitAnmPrimary->SetSprite(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0],
+                    reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
+                break;
+            case 1:
+                g_GuiPortraitAnm0->SetSprite(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1],
+                    reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
+                break;
+            case 2:
+                g_GuiPortraitAnm1->SetSprite(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2],
+                    reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
+                break;
+            case 3:
+                g_GuiPortraitAnm2->SetSprite(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3],
+                    reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
+                break;
+            }
+            if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
+                    ->portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]
+                    .loadedSprite->widthPx > 256.0f)
+            {
+                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
+                         ->portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]) + 0x288) = -208.0f;
+                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
+                         ->portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]) + 0x28C) = -50.0f;
+            }
+            else if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
+                         ->portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]
+                         .loadedSprite->widthPx > 128.0f)
+            {
+                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
+                         ->portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]) + 0x288) = -80.0f;
+            }
+            else
+            {
+                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
+                    &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
+                         ->portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]) + 0x288) = 0.0f;
+            }
+            break;
+
+        case 3:
+            args = reinterpret_cast<GuiMessagePortraitArgs *>(
+                reinterpret_cast<GuiRawMessageInstruction *>(
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args);
+            if (reinterpret_cast<GuiMessageTextArgs *>(args)->lineIndex == 0 &&
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1].scriptIndex >= 0)
+            {
+                g_AnmManager->DrawTextLeft(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1],
+                                           reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[reinterpret_cast<GuiMessageTextArgs *>(args)->colorIndex],
+                                           reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[reinterpret_cast<GuiMessageTextArgs *>(args)->colorIndex], " ");
+            }
+            g_GuiMessageAnm->SetAndExecuteScriptIdx(
+                &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[reinterpret_cast<GuiMessageTextArgs *>(args)->lineIndex], reinterpret_cast<GuiMessageTextArgs *>(args)->lineIndex);
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
+                ->dialogueLines[reinterpret_cast<GuiMessageTextArgs *>(args)->lineIndex].fontWidth =
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
+                    ->dialogueLines[reinterpret_cast<GuiMessageTextArgs *>(args)->lineIndex].fontHeight =
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->fontSize;
+            FUN_004353ec(text3, reinterpret_cast<GuiMessageTextArgs *>(args)->text);
+            g_AnmManager->DrawTextLeft(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[reinterpret_cast<GuiMessageTextArgs *>(args)->lineIndex],
+                                       reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[reinterpret_cast<GuiMessageTextArgs *>(args)->colorIndex],
+                                       reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[reinterpret_cast<GuiMessageTextArgs *>(args)->colorIndex], text3);
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->framesElapsedDuringPause = 0;
+            break;
+
+        case 0x10:
+            args = reinterpret_cast<GuiMessagePortraitArgs *>(
+                reinterpret_cast<GuiRawMessageInstruction *>(
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args);
+            if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textPending)
+            {
+                if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1].scriptIndex >= 0)
+                {
+                    g_AnmManager->DrawTextLeft(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1],
+                        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentSide],
+                        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentSide], " ");
+                }
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentLine = 0;
+            }
+            g_GuiMessageAnm->SetAndExecuteScriptIdx(
+                &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentLine],
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentLine);
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
+                ->dialogueLines[reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentLine].fontWidth =
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
+                    ->dialogueLines[reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentLine].fontHeight =
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->fontSize;
+            FUN_004353ec(text16, reinterpret_cast<const char *>(args));
+            g_AnmManager->DrawTextLeft(
+                &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentLine],
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentSide],
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentSide], text16);
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->framesElapsedDuringPause = 0;
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textPending = 0;
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentLine++;
+            break;
+
+        case 0x13:
+            args = reinterpret_cast<GuiMessagePortraitArgs *>(
+                reinterpret_cast<GuiRawMessageInstruction *>(reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args);
+            g_GuiMessageAnm->SetAndExecuteScriptIdx(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[0], 0);
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[0].fontWidth =
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[0].fontHeight =
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->fontSize;
+            FUN_004353ec(text19, reinterpret_cast<const char *>(args));
+            g_AnmManager->DrawTextLeft(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[0],
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[0],
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[0], text19);
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->framesElapsedDuringPause = 0;
+            break;
+
+        case 0x14:
+            args = reinterpret_cast<GuiMessagePortraitArgs *>(
+                reinterpret_cast<GuiRawMessageInstruction *>(reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args);
+            g_GuiMessageAnm->SetAndExecuteScriptIdx(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1], 1);
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1].fontWidth =
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1].fontHeight =
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->fontSize;
+            FUN_004353ec(text20, reinterpret_cast<const char *>(args));
+            g_AnmManager->DrawTextLeft(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1],
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[0],
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[0], text20);
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->framesElapsedDuringPause = 0;
+            break;
+
+        case 0x15:
+            if ((g_GuiMessageInputCurrent & TH_BUTTON_UP) &&
+                (g_GuiMessageInputCurrent & TH_BUTTON_UP) != (g_GuiMessageInputPrevious & TH_BUTTON_UP))
+            {
+                if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice == 1)
+                    g_SoundPlayer.PlaySoundByIdx(SOUND_MOVE_MENU, 0);
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 0;
+            }
+            if ((g_GuiMessageInputCurrent & TH_BUTTON_DOWN) &&
+                (g_GuiMessageInputCurrent & TH_BUTTON_DOWN) != (g_GuiMessageInputPrevious & TH_BUTTON_DOWN))
+            {
+                if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice == 0)
+                    g_SoundPlayer.PlaySoundByIdx(SOUND_MOVE_MENU, 0);
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 1;
+            }
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x224B4 +
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice * sizeof(AnmVm)) = -1;
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x224B4 +
+                (1 - reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice) * sizeof(AnmVm)) =
+                0xE0606060;
+            if (!((g_GuiMessageInputCurrent & TH_BUTTON_SHOOT) &&
+                  (g_GuiMessageInputCurrent & TH_BUTTON_SHOOT) !=
+                      (g_GuiMessageInputPrevious & TH_BUTTON_SHOOT)) ||
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->framesElapsedDuringPause < 60)
+            {
+                if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->framesElapsedDuringPause >=
+                    *reinterpret_cast<i32 *>(reinterpret_cast<GuiRawMessageInstruction *>(
+                        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args))
+                {
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textPending = 1;
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->waitThreshold = 30;
+                    break;
+                }
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->framesElapsedDuringPause++;
+                goto run_scripts;
+            }
+            g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
+            break;
+        case 0x16:
+            g_GameManager.flags.isGoingToFinalB = reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice;
+            g_Gui.FUN_00439810(reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice + 1);
+            continue;
+        case 4:
+            if (!reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueSkippable ||
+                !(g_GuiMessageInputCurrent & TH_BUTTON_SKIP))
+            {
+                if (!(g_GuiMessageInputCurrent & TH_BUTTON_SHOOT) ||
+                    (g_GuiMessageInputCurrent & TH_BUTTON_SHOOT) ==
+                        (g_GuiMessageInputPrevious & TH_BUTTON_SHOOT) ||
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->framesElapsedDuringPause <
+                        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->waitThreshold)
+                {
+                    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->framesElapsedDuringPause >=
+                        *reinterpret_cast<i32 *>(reinterpret_cast<GuiRawMessageInstruction *>(
+                            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args))
+                    {
+                        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textPending = 1;
+                        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->waitThreshold = 30;
+                        break;
+                    }
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->framesElapsedDuringPause++;
+                    goto run_scripts;
+                }
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textPending = 1;
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->waitThreshold = 8;
+            }
+            break;
+
+        case 5:
+            args = reinterpret_cast<GuiMessagePortraitArgs *>(
+                reinterpret_cast<GuiRawMessageInstruction *>(
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args);
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
+                ->portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex].pendingInterrupt =
+                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(args) + 2);
+            break;
+
+        case 6:
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->ignoreWaitCounter++;
+            break;
+
+        case 7:
+            if (*reinterpret_cast<i32 *>(reinterpret_cast<GuiRawMessageInstruction *>(
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args) < 0)
+            {
+                g_Supervisor.StopAudio();
+            }
+            else
+            {
+                g_Gui.stageTextAnm->SetAndExecuteScriptIdx(&this->vm2a44[3], 3);
+                g_Gui.stageTextAnm->SetSprite(
+                    &this->vm2a44[3],
+                    *reinterpret_cast<i32 *>(reinterpret_cast<GuiRawMessageInstruction *>(
+                        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args) + 3);
+                if (g_Supervisor.PlayMusic(
+                        *reinterpret_cast<i32 *>(reinterpret_cast<GuiRawMessageInstruction *>(
+                            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args),
+                        reinterpret_cast<char *>(g_GuiStageMusicContexts[g_GameManager.currentStage]
+                                                    .values[*reinterpret_cast<i32 *>(
+                                                        reinterpret_cast<GuiRawMessageInstruction *>(
+                                                            reinterpret_cast<GuiMessageStateOverlay *>(
+                                                                &this->msgVm)->currentInstr)->args)])))
+                {
+                    g_Supervisor.PlayAudio(
+                        reinterpret_cast<GuiStageMusicDataOverlay *>(g_Background.stageAnmSecondary)
+                            ->songPaths[*reinterpret_cast<i32 *>(reinterpret_cast<GuiRawMessageInstruction *>(
+                                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args)],
+                        g_GuiStageMusicContexts[g_GameManager.currentStage]
+                            .values[*reinterpret_cast<i32 *>(reinterpret_cast<GuiRawMessageInstruction *>(
+                                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args)]);
+                }
+            }
+            break;
+
+        case 8:
+            args = reinterpret_cast<GuiMessagePortraitArgs *>(
+                reinterpret_cast<GuiRawMessageInstruction *>(
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args);
+            g_GuiPortraitAnm1->SetAndExecuteScriptIdx(
+                &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->extraVms[0], 1);
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->framesElapsedDuringPause = 0;
+            break;
+
+        case 9:
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x22DF0) = g_GameManager.GetPower();
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x22DF4) = g_GameManager.globals->pointItemsCollectedInStage;
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x22DFC) = g_GameManager.GetTimeOrbs();
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x22DF8) = g_GameManager.globals->grazeInStage;
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x22E04) =
+                (i8)g_GameManager.GetClockTime() * 30 + 0x294;
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x22E00) = g_GameManager.GetClockTimeIncrement();
+            g_GameManager.AddToClockTime(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x22E00));
+            *reinterpret_cast<i32 **>(reinterpret_cast<u8 *>(this) + 0x22DEC) =
+                g_GuiStageScoreTables[g_GameManager.currentStage];
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x22E08) =
+                (i8)g_GameManager.GetClockTime() * 30 + 0x294;
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x22E0C) =
+                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x22E04);
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x22E10) &= 0;
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->resultState = 1;
+            g_GameManager.flags.unk9 = 1;
+
+            if (g_GameManager.currentStage != STAGE6A && g_GameManager.currentStage != STAGE6B &&
+                g_GameManager.currentStage != EXTRASTAGE)
+            {
+                g_GuiResultAnm0->SetAndExecuteScriptIdx(
+                    reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x212C8), 3);
+                g_GuiResultAnm0->SetSprite(
+                    reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x212C8),
+                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x22E00) + 0x80);
+            }
+            else
+            {
+                reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x212C8)->currentInstruction = NULL;
+            }
+            reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x212C8)->SetInterrupt(1);
+
+            if (g_GameManager.currentStage != STAGE6A && g_GameManager.currentStage != STAGE6B &&
+                g_GameManager.currentStage != EXTRASTAGE)
+            {
+                (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(&g_Gui) + 0x18))
+                    ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x3778), 0);
+                g_GuiResultAnm1->SetAndExecuteScriptIdx(
+                    reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x3CC0), 1);
+                g_AnmManager->SetTextureCaptureParams(
+                    3, 0x20, 0x10, 0x180, 0x1C0,
+                    (u32)(i32)reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x3CC0)->loadedSprite->startPixelInclusive.x,
+                    (u32)(i32)reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x3CC0)->loadedSprite->startPixelInclusive.y,
+                    (u32)(i32)reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x3CC0)->loadedSprite->widthPx,
+                    (u32)(i32)reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x3CC0)->loadedSprite->heightPx);
+
+                for (i = 0; i < 8; i++)
+                {
+                    g_GuiResultAnm1->SetAndExecuteScriptIdx(
+                        reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x3F64 + i * sizeof(AnmVm)), 2);
+                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x4084 + i * sizeof(AnmVm)) = i * 4 + 3;
+                    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4157 + i * sizeof(AnmVm)) = 64 - i * 2;
+                }
+            }
+            else
+            {
+                g_GameManager.globals->pointItemExtendsSoFar = -1;
+            }
+
+            if (g_GameManager.currentStage != STAGE6B && g_GameManager.currentStage != STAGE6A &&
+                g_GameManager.currentStage != EXTRASTAGE && g_GameManager.GetBombsRemaining() < 3 &&
+                (g_GameManager.shotType == SHOT_YOUMU_YUYUKO || g_GameManager.shotType == SHOT_YOUMU ||
+                 g_GameManager.shotType == SHOT_YUYUKO))
+            {
+                g_GameManager.AddToBombCount(1);
+                g_SoundPlayer.PlaySoundByIdx((SoundIdx)0x23, 0);
+                g_Gui.flags.bombDisplayUpdateFrames = 2;
+            }
+            break;
+        case 0xA:
+            goto run_scripts;
+        case 0xC:
+            g_Supervisor.FadeOutMusic(4.0f);
+            break;
+        case 0xE:
+            ScreenEffect::RegisterChain((ScreenEffectType)4, 442, 0xffffff, 0, 0, 21);
+            g_GuiMessageScreenEffectDuration = 442;
+            break;
+        case 0xB:
+            if (g_GameManager.currentStage == STAGE6A || g_GameManager.currentStage == STAGE6B ||
+                g_GameManager.currentStage == EXTRASTAGE)
+                g_GameManager.flags.unk5_6 = 2;
+            goto run_scripts;
+        case 0xD:
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueSkippable =
+                reinterpret_cast<GuiRawMessageInstruction *>(
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args[0];
+            break;
+        case 0x12:
+            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->messageFlag =
+                reinterpret_cast<GuiRawMessageInstruction *>(reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args[0];
+            break;
+
+        }
+
+        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr =
+            reinterpret_cast<u8 *>(
+                reinterpret_cast<i32>(&reinterpret_cast<GuiRawMessageInstruction *>(
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args) +
+                reinterpret_cast<GuiRawMessageInstruction *>(
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->argSize);
+    }
+
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->timer++;
+
+run_scripts:
+    g_AnmManager->ExecuteScript(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0]);
+    g_AnmManager->ExecuteScript(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1]);
+    g_AnmManager->ExecuteScript(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2]);
+    g_AnmManager->ExecuteScript(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3]);
+    g_AnmManager->ExecuteScript(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[0]);
+    g_AnmManager->ExecuteScript(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1]);
+    g_AnmManager->ExecuteScript(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->extraVms[0]);
+    g_AnmManager->ExecuteScript(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->extraVms[1]);
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->timer < 60 &&
+        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueSkippable &&
+        (g_GuiMessageInputCurrent & TH_BUTTON_SKIP))
+        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->timer = 60;
+
+    return 0;
+}
 
 // FUNCTION: th08 0x4353ec
 #pragma var_order(i, decoded)

@@ -753,3 +753,4 @@ th08::AnmManager::CopyTextureRect
 th08::FUN_00437f5c
 th08::GuiImpl::FUN_0043396d
 th08::AnmManager::SetTextureCaptureParams
+th08::GuiImpl::RunMsg

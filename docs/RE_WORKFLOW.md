@@ -115,11 +115,12 @@ Prefer dependency work that turns a giant dispatcher into bounded units:
   `0x0041F420`, `0x0041FE10`, `0x00420120`, and `0x00420950`. Together they
   cover 4,830 target bytes and 290 of `RunEcl`'s 463 direct-call sites. Port
   the TH07 private-overlay method, not its offsets or opcode numbers.
-- GUI: recover constructor-proven `GuiImpl`/`GuiMsgVm` layout before the hard
-  bodies. `Gui::DrawGameScene` is the first large target because restoring its
-  real callers naturally emits four `/Os` Supervisor graphics predicates;
-  defer the 23-case `RunMsg` until its raw instruction and trailing state are
-  named.
+- GUI: `GuiImpl::RunMsg` is now a strict 5,597-byte match (plus its 92-byte
+  compiler-owned jump table). Reuse its proven `GuiMsgVm` offsets, portrait/message
+  ANM globals, and stage music/result globals rather than rediscovering them.
+  The next large GUI target is `Gui::DrawGameScene`; restoring its real callers
+  should naturally emit the `/Os` Supervisor graphics predicates already seen in
+  target code.
 - Large dispatchers: use the jump-table/call-multiset audit in `$th08-re` to
   establish source presence, while retaining strict comparator-only exactness.
 
@@ -142,3 +143,11 @@ A bounded handoff contains:
 
 Workers should avoid shared headers and mapping files unless explicitly
 assigned. The coordinator reruns comparisons and owns progress publication.
+
+For large switch interpreters, treat the jump table as a structural checksum before
+fine byte matching. Resolve each COFF local-label relocation and compare the ordered
+case entry addresses with the target. A uniform displacement across all later cases
+localizes the missing or oversized lexical case without requiring a full-function
+decompiler diff. Once the case starts align, compare the shared merge/tail separately;
+this split reduced `GuiImpl::RunMsg` from a 5.6 KB problem to one missing 236-byte
+case and a 26-byte loop-vs-explicit-call tail mismatch.
