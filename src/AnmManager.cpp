@@ -1,6 +1,7 @@
 #include "th_pch.h"
 
 #include "AnmManager.hpp"
+#include "Background.hpp"
 #include "TextHelper.hpp"
 #include "ZunMath.hpp"
 #include "i18n.hpp"
@@ -992,6 +993,110 @@ u8 MixColors(u8 color1, u8 color2)
     return color;
 }
 
+// FUNCTION: th08 0x004623c0
+#pragma var_order(color, this)
+void AnmManager::SetRenderStateForVm3D(AnmVm *vm)
+{
+    ZunColor color;
+
+    if (this->currentBlendMode != vm->blendMode)
+    {
+        this->FlushVertexBuffer();
+        this->currentBlendMode = vm->blendMode;
+        switch (this->currentBlendMode)
+        {
+        case AnmBlendMode_Normal:
+            g_Supervisor.d3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+            break;
+        case AnmBlendMode_Additive:
+            g_Supervisor.d3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+            break;
+        }
+    }
+
+    color.d3dColor = vm->flag17 ? vm->color2.d3dColor : vm->color1.d3dColor;
+
+    if (this->needsTextureFactorSetup)
+    {
+        this->needsTextureFactorSetup = 0;
+        if (!g_Supervisor.IsVertexBufferDisabled())
+        {
+            this->FlushVertexBuffer();
+            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_TFACTOR);
+        }
+    }
+
+    if (!g_Supervisor.IsVertexBufferDisabled())
+    {
+        if (this->useMixColor)
+        {
+            color.r = MixColors(color.r, this->color.r);
+            color.g = MixColors(color.g, this->color.g);
+            color.b = MixColors(color.b, this->color.b);
+            color.a = MixColors(color.a, this->color.a);
+        }
+
+        if (this->currentTextureFactor != color.d3dColor)
+        {
+            this->FlushVertexBuffer();
+            this->currentTextureFactor = color.d3dColor;
+            g_Supervisor.d3dDevice->SetRenderState(D3DRS_TEXTUREFACTOR, this->currentTextureFactor);
+        }
+    }
+    else
+    {
+        if (this->useMixColor)
+        {
+            color.r = MixColors(color.r, this->color.r);
+            color.g = MixColors(color.g, this->color.g);
+            color.b = MixColors(color.b, this->color.b);
+            color.a = MixColors(color.a, this->color.a);
+        }
+
+        g_QuadVertices[0].diffuse = color.d3dColor;
+        g_QuadVertices[1].diffuse = color.d3dColor;
+        g_QuadVertices[2].diffuse = color.d3dColor;
+        g_QuadVertices[3].diffuse = color.d3dColor;
+        *reinterpret_cast<D3DCOLOR *>(&g_BackgroundQuadVertices[0].w) = color.d3dColor;
+        *reinterpret_cast<D3DCOLOR *>(&g_BackgroundQuadVertices[1].w) = color.d3dColor;
+        *reinterpret_cast<D3DCOLOR *>(&g_BackgroundQuadVertices[2].w) = color.d3dColor;
+        *reinterpret_cast<D3DCOLOR *>(&g_BackgroundQuadVertices[3].w) = color.d3dColor;
+    }
+
+    if (!g_Supervisor.IsDepthTestDisabled() && this->disableZWrite != vm->zWriteDisabled)
+    {
+        this->FlushVertexBuffer();
+        this->disableZWrite = vm->zWriteDisabled;
+        if (!this->disableZWrite)
+        {
+            g_Supervisor.d3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+        }
+        else
+        {
+            g_Supervisor.d3dDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+        }
+    }
+
+    if (this->cameraMode != vm->flag15)
+    {
+        this->FlushVertexBuffer();
+        this->cameraMode = vm->flag15;
+        if (!this->cameraMode)
+        {
+            g_Background.SetCamera1();
+            g_Supervisor.d3dDevice->SetViewport(&g_Supervisor.viewport);
+        }
+        else
+        {
+            g_Background.SetCamera2();
+            g_Supervisor.d3dDevice->SetViewport(&g_Supervisor.viewport);
+        }
+    }
+
+    this->renderStateChangesThisFrame++;
+}
+
 void AnmManager::SetRenderStateForVm(AnmVm *vm)
 {
     if (this->currentBlendMode != vm->blendMode)
@@ -1175,6 +1280,158 @@ ZunResult AnmManager::AddSpriteToDrawBuffer(VertexTex1DiffuseXyzrhw *vertices)
     this->vertexBufferEndPtr += 6;
     this->spritesToDraw++;
 
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x00464470
+#pragma var_order(textureMatrix, rotationMatrix, worldTransformMatrix, this)
+ZunResult AnmManager::Draw3D(AnmVm *vm)
+{
+    D3DMATRIX textureMatrix;
+    D3DXMATRIX rotationMatrix;
+    D3DXMATRIX worldTransformMatrix;
+
+    if (!vm->IsVisible())
+    {
+        return ZUN_ERROR;
+    }
+    if (!vm->flag1)
+    {
+        return ZUN_ERROR;
+    }
+    if (vm->color1.a == 0)
+    {
+        return ZUN_ERROR;
+    }
+
+    if (this->spritesToDraw != 0)
+    {
+        this->FlushVertexBuffer();
+    }
+
+    if (!vm->flag16 && (vm->updateScale || vm->updateRotation))
+    {
+        vm->matrix2 = vm->matrix1;
+        vm->matrix2._11 *= vm->scale.x;
+        vm->matrix2._22 *= vm->scale.y;
+        vm->updateScale = 0;
+
+        if (vm->rotation.x != 0.0)
+        {
+            D3DXMatrixRotationX(&rotationMatrix, vm->rotation.x);
+            D3DXMatrixMultiply(&vm->matrix2, &vm->matrix2, &rotationMatrix);
+        }
+        if (vm->rotation.y != 0.0)
+        {
+            D3DXMatrixRotationY(&rotationMatrix, vm->rotation.y);
+            D3DXMatrixMultiply(&vm->matrix2, &vm->matrix2, &rotationMatrix);
+        }
+        if (vm->rotation.z != 0.0)
+        {
+            D3DXMatrixRotationZ(&rotationMatrix, vm->rotation.z);
+            D3DXMatrixMultiply(&vm->matrix2, &vm->matrix2, &rotationMatrix);
+        }
+        vm->updateRotation = 0;
+    }
+
+    worldTransformMatrix = vm->matrix2;
+    if ((vm->anchor & 1) == 0)
+    {
+        worldTransformMatrix._41 = vm->pos.x;
+    }
+    else
+    {
+        worldTransformMatrix._41 = fabsf(vm->spriteSize.x * vm->scale.x / 2.0f) + vm->pos.x;
+    }
+    if ((vm->anchor & 2) == 0)
+    {
+        worldTransformMatrix._42 = vm->pos.y;
+    }
+    else
+    {
+        worldTransformMatrix._42 = fabsf(vm->spriteSize.y * vm->scale.y / 2.0f) + vm->pos.y;
+    }
+    worldTransformMatrix._41 += this->screenShakeOffset.x;
+    worldTransformMatrix._42 += this->screenShakeOffset.y;
+
+    this->SetRenderStateForVm3D(vm);
+    worldTransformMatrix._43 = vm->pos.z;
+    g_Supervisor.d3dDevice->SetTransform(D3DTS_WORLD, &worldTransformMatrix);
+
+    if (this->currentSprite != vm->loadedSprite || vm->uvScrollPos.x != 0.0f || vm->uvScrollPos.x != 0.0f)
+    {
+        this->currentSprite = vm->loadedSprite;
+        textureMatrix = vm->matrix3;
+        textureMatrix._31 = vm->loadedSprite->uvStart.x + vm->uvScrollPos.x;
+        textureMatrix._32 = vm->loadedSprite->uvStart.y + vm->uvScrollPos.y;
+        g_Supervisor.d3dDevice->SetTransform(D3DTS_TEXTURE0, &textureMatrix);
+
+        if (this->currentTexture != vm->loadedSprite->texture)
+        {
+            this->currentTexture = vm->loadedSprite->texture;
+            g_Supervisor.d3dDevice->SetTexture(0, this->currentTexture);
+        }
+    }
+
+    if (this->currentVertexShader != 2)
+    {
+        if (!g_Supervisor.IsVertexBufferDisabled())
+        {
+            g_Supervisor.d3dDevice->SetVertexShader(D3DFVF_XYZ | D3DFVF_TEX1);
+            g_Supervisor.d3dDevice->SetStreamSource(0, this->quadVertexBuffer, sizeof(VertexDiffuseXyzrhw));
+        }
+        else
+        {
+            g_Supervisor.d3dDevice->SetVertexShader(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1);
+        }
+        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_TFACTOR);
+        this->currentVertexShader = 2;
+    }
+
+    if (!g_Supervisor.IsVertexBufferDisabled())
+    {
+        g_Supervisor.d3dDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+    }
+    else
+    {
+        g_Supervisor.d3dDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, g_BackgroundQuadVertices,
+                                                 sizeof(VertexTex0Xyzrhw));
+    }
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x00464dd0
+ZunResult AnmManager::FUN_00464dd0(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices)
+{
+    if (!vm->IsVisible())
+    {
+        return ZUN_ERROR;
+    }
+    if (!vm->flag1)
+    {
+        return ZUN_ERROR;
+    }
+    if (vm->color1.a == 0)
+    {
+        return ZUN_ERROR;
+    }
+
+    if (this->currentTexture != vm->loadedSprite->texture)
+    {
+        this->currentTexture = vm->loadedSprite->texture;
+        this->FlushVertexBuffer();
+        g_Supervisor.d3dDevice->SetTexture(0, this->currentTexture);
+    }
+
+    if (this->currentVertexShader != 1)
+    {
+        this->FlushVertexBuffer();
+        this->currentVertexShader = 1;
+    }
+
+    this->SetRenderStateForVm(vm);
+    this->AddSpriteToDrawBuffer(vertices);
     return ZUN_SUCCESS;
 }
 

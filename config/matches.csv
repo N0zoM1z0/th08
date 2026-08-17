@@ -709,3 +709,8 @@ address,name,size,status,match_percent,unit,evidence
 0x0040B6D0,th08::Background::SetCamera2,283,matching,100.00,background-set-camera2,python3 scripts/compare-function.py background-set-camera2 --json
 0x0040BC20,th08::Player::IsHuman,23,matching,100.00,player-is-human,python3 scripts/compare-function.py player-is-human --json
 0x00409F40,th08::Background::FUN_00409f40,610,matching,100.00,background-fun-00409f40,python3 scripts/compare-function.py background-fun-00409f40 --json
+0x0040A1B0,th08::Background::RenderObjects,4746,matching,100.00,background-render-objects,python3 scripts/compare-function.py background-render-objects --json
+0x0040B470,th08::Float3::operator/=,73,matching,100.00,float3-operator-div-equals,python3 scripts/compare-function.py float3-operator-div-equals --json
+0x004623C0,th08::AnmManager::SetRenderStateForVm3D,912,matching,100.00,anm-manager-set-render-state-for-vm3d,python3 scripts/compare-function.py anm-manager-set-render-state-for-vm3d --json
+0x00464470,th08::AnmManager::Draw3D,1318,matching,100.00,anm-manager-draw3d,python3 scripts/compare-function.py anm-manager-draw3d --json
+0x00464DD0,th08::AnmManager::FUN_00464dd0,225,matching,100.00,anm-manager-fun-00464dd0,python3 scripts/compare-function.py anm-manager-fun-00464dd0 --json

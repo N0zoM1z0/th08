@@ -710,3 +710,8 @@ th08::Background::SetCamera1
 th08::Background::SetCamera2
 th08::Player::IsHuman
 th08::Background::FUN_00409f40
+th08::Background::RenderObjects
+th08::Float3::operator/=
+th08::AnmManager::SetRenderStateForVm3D
+th08::AnmManager::Draw3D
+th08::AnmManager::FUN_00464dd0

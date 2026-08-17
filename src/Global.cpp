@@ -1217,6 +1217,19 @@ Float3 Float3::operator*(f32 scalar) const
     return Float3(this->x * scalar, this->y * scalar, this->z * scalar);
 }
 
+// FUNCTION: th08 0x40b470
+#pragma var_order(inverse, this)
+Float3 *Float3::operator/=(f32 scalar)
+{
+    f32 inverse;
+
+    inverse = 1.0f / scalar;
+    this->x *= inverse;
+    this->y *= inverse;
+    this->z *= inverse;
+    return this;
+}
+
 // FUNCTION: th08 0x40c7d0
 #pragma var_order(inverse, this)
 Float3 Float3::operator/(f32 scalar) const

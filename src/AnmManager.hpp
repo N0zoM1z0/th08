@@ -493,6 +493,7 @@ struct AnmManager
     ZunBool ExecuteScript(AnmVm *vm);
     void ExecuteScriptArray(AnmVm *sprites, int count);
     void SetRenderStateForVm(AnmVm *vm);
+    void SetRenderStateForVm3D(AnmVm *vm);
     ZunResult FUN_004639e0(AnmVm *vm);
     ZunResult FUN_00463d60(AnmVm *vm);
     ZunResult FUN_004640e0(AnmVm *vm, void *callback);
@@ -510,6 +511,8 @@ struct AnmManager
     ZunResult DrawWithCallback(AnmVm *vm, void *callback);
     void Draw2DAndFlush(AnmVm *vm);
     ZunResult DrawNoRotationNoRound(AnmVm *vm);
+    ZunResult Draw3D(AnmVm *vm);
+    ZunResult FUN_00464dd0(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices);
     ZunResult DrawTriangleFan(AnmVm *vm, VertexDiffuseXyzrhw *vertices, i32 vertexCount);
     ZunResult CreateTextureFromFile(AnmEntry *entry, i32 format, i32 colorKey);
     ZunResult CreateTextureFromAnm(IDirect3DTexture8 **outTexture, AnmTextureHeader *textureData, i32 format);
@@ -711,7 +714,7 @@ struct AnmManager
     u32 surfaceDataSizes[32];
     ZunImageInfo surfaceInfo[32];
 
-    unknown_fields(0x24b8, 0x4);
+    D3DCOLOR currentTextureFactor;
 
     IDirect3DTexture8 *currentTexture;
     u8 currentBlendMode;
@@ -719,7 +722,8 @@ struct AnmManager
     u8 currentVertexShader;
     u8 disableZWrite;
     u8 cameraMode;
-    unknown_fields(0x24c5, 3); // Padding?
+    u8 needsTextureFactorSetup;
+    unknown_fields(0x24c6, 2); // Padding?
     void *currentSprite;
     IDirect3DVertexBuffer8 *quadVertexBuffer;
     VertexDiffuseXyzrhw untexturedVector[4];

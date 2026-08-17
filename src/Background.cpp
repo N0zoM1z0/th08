@@ -48,6 +48,39 @@ struct RawStageObject
     RawStageQuadBasic firstQuad;
 };
 C_ASSERT(sizeof(RawStageObject) == 0x38);
+
+struct RawStageObjectInstance
+{
+    i16 id;
+    i16 unk2;
+    Float3 position;
+};
+C_ASSERT(sizeof(RawStageObjectInstance) == 0x10);
+
+struct RawStageQuadType1
+{
+    i16 type;
+    i16 byteSize;
+    i16 anmScript;
+    i16 vmIdx;
+    Float3 position1;
+    Float3 position2;
+    f32 width;
+};
+C_ASSERT(sizeof(RawStageQuadType1) == 0x24);
+
+struct BackgroundStageVertex
+{
+    BackgroundStageVertex()
+    {
+    }
+
+    Float3 pos;
+    f32 w;
+    ZunColor diffuse;
+    Float2 textureUV;
+};
+C_ASSERT(sizeof(BackgroundStageVertex) == 0x1c);
 DIFFABLE_STATIC(Background, g_Background);
 DIFFABLE_STATIC(ChainElem, g_BackgroundCalcChain);
 DIFFABLE_STATIC(ChainElem, g_BackgroundDrawChainHighPrio);
@@ -457,9 +490,411 @@ void Background::CutChain()
     g_Chain.Cut(&g_BackgroundDrawChainLowPrio);
 }
 
-// STUB: th08 0x40a1b0
-void Background::RenderObjects(i32 mode)
+// FUNCTION: th08 0x40a1b0
+#pragma var_order(objQuadType1, curQuadVm, instancesDrawn, instance, fogState, worldMatrix, obj, objectDistance, cameraVec, quadPos, projectDest, curQuad, didDraw, radius, projectSrc, quadWidth, originalColor, this)
+ZunResult Background::RenderObjects(i32 mode)
 {
+    RawStageQuadType1 *objQuadType1;
+    AnmVm *curQuadVm;
+    i32 instancesDrawn;
+    RawStageObjectInstance *instance;
+    i32 fogState;
+    RawStageObject *obj;
+    f32 objectDistance;
+    RawStageQuadBasic *curQuad;
+    i32 didDraw;
+    f32 radius;
+    f32 quadWidth;
+    ZunColor originalColor;
+
+    instance = reinterpret_cast<RawStageObjectInstance *>(this->stageUnknown804);
+    instancesDrawn = 0;
+    didDraw = 0;
+
+    Float3 quadPos;
+    Float3 cameraVec;
+    Float3 projectDest;
+    Float3 projectSrc(0.0f, 0.0f, 0.0f);
+    D3DXMATRIX worldMatrix;
+
+    fogState = 255;
+
+    this->SetCamera2();
+    g_AnmManager->SetCameraMode(1);
+    D3DXMatrixIdentity(&worldMatrix);
+    cameraVec = *reinterpret_cast<Float3 *>(&g_Supervisor.viewMatrix);
+    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&cameraVec),
+                      reinterpret_cast<D3DXVECTOR3 *>(&cameraVec));
+
+    while (instance->id >= 0)
+    {
+        obj = reinterpret_cast<RawStageObject **>(this->stageOffsets)[instance->id];
+        if (obj->zLevel == mode)
+        {
+            curQuad = &obj->firstQuad;
+
+            quadPos.x = obj->position.x + instance->position.x - this->vector824.x + obj->size.x / 2.0f;
+            quadPos.y = obj->position.y + instance->position.y - this->vector824.y + obj->size.y / 2.0f;
+            quadPos.z = obj->position.z + instance->position.z - this->vector824.z + obj->size.z / 2.0f;
+            quadPos = quadPos - (this->unk6394.vectors[0] + this->unk6394.vectors[5]);
+
+            if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x6470) <
+                D3DXVec3LengthSq(reinterpret_cast<D3DXVECTOR3 *>(&quadPos)))
+            {
+                goto skip;
+            }
+
+            objectDistance = D3DXVec3Dot(reinterpret_cast<D3DXVECTOR3 *>(&quadPos),
+                                         reinterpret_cast<D3DXVECTOR3 *>(&this->unk6394.vectors[3]));
+            radius = D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&obj->size)) / 2.0f + 960.0f;
+            if ((objectDistance > radius) || (objectDistance < 80.0f))
+            {
+                goto skip;
+            }
+
+            obj->flags |= 2;
+            didDraw = 1;
+            while (curQuad->type >= 0)
+            {
+                        curQuadVm = &reinterpret_cast<AnmVm *>(this->stageAnm)[curQuad->vmIdx];
+                        switch (curQuad->type)
+                        {
+                        case 0:
+                            curQuadVm->pos.x = curQuadVm->pos2.x + curQuad->position.x + instance->position.x -
+                                                 this->vector824.x;
+                            curQuadVm->pos.y = curQuadVm->pos2.y + curQuad->position.y + instance->position.y -
+                                                 this->vector824.y;
+                            curQuadVm->pos.z = curQuadVm->pos2.z + curQuad->position.z + instance->position.z -
+                                                 this->vector824.z;
+                            if (curQuad->size.x != 0.0f)
+                            {
+                                curQuadVm->scale.x = curQuad->size.x / curQuadVm->loadedSprite->widthPx;
+                            }
+                            if (curQuad->size.y != 0.0f)
+                            {
+                                curQuadVm->scale.y = curQuad->size.y / curQuadVm->loadedSprite->heightPx;
+                            }
+
+                            if ((curQuadVm->type & 0xF) == 2)
+                            {
+                                worldMatrix._41 = curQuadVm->pos[0];
+                                worldMatrix._42 = curQuadVm->pos[1];
+                                worldMatrix._43 = curQuadVm->pos[2];
+                                D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&quadPos),
+                                                reinterpret_cast<D3DXVECTOR3 *>(&projectSrc), &g_Supervisor.viewport,
+                                                &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldMatrix);
+
+                                if (curQuad->size.x != 0.0f)
+                                {
+                                    quadWidth = curQuad->size.x;
+                                }
+                                else
+                                {
+                                    quadWidth = curQuadVm->loadedSprite->widthPx;
+                                }
+
+                                worldMatrix._41 = cameraVec.x * quadWidth * curQuadVm->scale.x + worldMatrix._41;
+                                worldMatrix._42 = cameraVec.y * quadWidth * curQuadVm->scale.x + worldMatrix._42;
+                                worldMatrix._43 = cameraVec.z * quadWidth * curQuadVm->scale.x + worldMatrix._43;
+                                D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectDest),
+                                                reinterpret_cast<D3DXVECTOR3 *>(&projectSrc), &g_Supervisor.viewport,
+                                                &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldMatrix);
+                                projectDest = projectDest - quadPos;
+                                curQuadVm->scale.x =
+                                    D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&projectDest)) / quadWidth;
+                                curQuadVm->scale.y = curQuadVm->scale.x;
+                                if (quadWidth < 0.0f)
+                                {
+                                    curQuadVm->scale.y = -curQuadVm->scale.y;
+                                }
+
+                                projectDest = curQuadVm->pos - (this->unk6394.vectors[0] + this->unk6394.vectors[5]);
+                                quadWidth = D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&projectDest));
+                                originalColor = curQuadVm->color1;
+                                if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xAEC) < quadWidth)
+                                {
+                                    quadWidth = (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xAEC) -
+                                                 quadWidth) /
+                                                (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xAEC) -
+                                                 *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xAF0));
+                                    if (quadWidth >= 1.0f)
+                                    {
+                                        break;
+                                    }
+                                    curQuadVm->color1.b = curQuadVm->color1.b - static_cast<u8>(
+                                        (curQuadVm->color1.b - reinterpret_cast<ZunColor *>(
+                                                                      reinterpret_cast<u8 *>(this) + 0xAF4)->b) *
+                                        quadWidth);
+                                    curQuadVm->color1.g = curQuadVm->color1.g - static_cast<u8>(
+                                        (curQuadVm->color1.g - reinterpret_cast<ZunColor *>(
+                                                                      reinterpret_cast<u8 *>(this) + 0xAF4)->g) *
+                                        quadWidth);
+                                    curQuadVm->color1.r = curQuadVm->color1.r - static_cast<u8>(
+                                        (curQuadVm->color1.r - reinterpret_cast<ZunColor *>(
+                                                                      reinterpret_cast<u8 *>(this) + 0xAF4)->r) *
+                                        quadWidth);
+                                    curQuadVm->color1.a =
+                                        static_cast<u8>(curQuadVm->color1.a * (1.0f - quadWidth));
+                                }
+
+                                curQuadVm->pos = quadPos;
+                                if ((curQuadVm->pos.z < 0.0f) || (curQuadVm->pos.z > 1.0f))
+                                {
+                                    goto restore_color;
+                                }
+
+                                if (fogState != 0)
+                                {
+                                    if (!g_Supervisor.IsFogDisabled())
+                                    {
+                                        g_Supervisor.DisableFog();
+                                    }
+                                    fogState = 0;
+                                }
+                                g_AnmManager->DrawNoRotationNoRound(curQuadVm);
+                                if ((curQuadVm->type & 0xF0) == 0x10 &&
+                                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xAEC) > quadWidth &&
+                                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x647C) != 0)
+                                {
+                                    this->vectors6480[*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) +
+                                                                              0x6478)] = quadPos;
+                                    this->vectors6480[*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) +
+                                                                              0x6478)].z = 0.0f;
+                                    (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6478))++;
+                                }
+
+                            restore_color:
+                                curQuadVm->color1 = originalColor;
+                            }
+                            else
+                            {
+                                if (!g_Supervisor.IsFogDisabled() && fogState != 1)
+                                {
+                                    if (!g_Supervisor.IsFogDisabled())
+                                    {
+                                        g_Supervisor.EnableFog();
+                                    }
+                                    fogState = 1;
+                                }
+                                g_AnmManager->Draw3D(curQuadVm);
+                            }
+                            break;
+
+                        case 1:
+                        {
+                            objQuadType1 = reinterpret_cast<RawStageQuadType1 *>(curQuad);
+#pragma var_order(type1World, halfWidthSecond, type1Width, vertices, projectedSecond, halfWidthFirst)
+                            Float3 type1World;
+                            Float3 projectedSecond;
+                            BackgroundStageVertex vertices[4];
+                            f32 halfWidthFirst;
+                            f32 halfWidthSecond;
+                            f32 type1Width;
+
+                            type1World.x = objQuadType1->position1.x + instance->position.x - this->vector824.x;
+                            type1World.y = objQuadType1->position1.y + instance->position.y - this->vector824.y;
+                            type1World.z = objQuadType1->position1.z + instance->position.z - this->vector824.z;
+                            worldMatrix._41 = type1World.x;
+                            worldMatrix._42 = type1World.y;
+                            worldMatrix._43 = type1World.z;
+                            D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&quadPos),
+                                            reinterpret_cast<D3DXVECTOR3 *>(&projectSrc), &g_Supervisor.viewport,
+                                            &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldMatrix);
+
+                            if (objQuadType1->width != 0.0f)
+                            {
+                                type1Width = objQuadType1->width;
+                            }
+                            else
+                            {
+                                type1Width = curQuadVm->loadedSprite->widthPx;
+                            }
+                            worldMatrix._41 = cameraVec.x * type1Width + worldMatrix._41;
+                            worldMatrix._42 = cameraVec.y * type1Width + worldMatrix._42;
+                            worldMatrix._43 = cameraVec.z * type1Width + worldMatrix._43;
+                            D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectDest),
+                                            reinterpret_cast<D3DXVECTOR3 *>(&projectSrc), &g_Supervisor.viewport,
+                                            &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldMatrix);
+                            projectDest = projectDest - quadPos;
+                            halfWidthFirst =
+                                D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&projectDest)) / 2.0f;
+
+                            projectDest = type1World - (this->unk6394.vectors[0] + this->unk6394.vectors[5]);
+                            type1Width = D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&projectDest));
+                            if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xAEC) < type1Width)
+                            {
+                                type1Width = (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xAEC) -
+                                              type1Width) /
+                                             (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xAEC) -
+                                              *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xAF0));
+                                if (type1Width < 1.0f)
+                                {
+                                    vertices[1].diffuse.b = curQuadVm->color1.b - static_cast<u8>(
+                                        (curQuadVm->color1.b - reinterpret_cast<ZunColor *>(
+                                                                      reinterpret_cast<u8 *>(this) + 0xAF4)->b) *
+                                        type1Width);
+                                    vertices[0].diffuse.b = vertices[1].diffuse.b;
+                                    vertices[1].diffuse.g = curQuadVm->color1.g - static_cast<u8>(
+                                        (curQuadVm->color1.g - reinterpret_cast<ZunColor *>(
+                                                                      reinterpret_cast<u8 *>(this) + 0xAF4)->g) *
+                                        type1Width);
+                                    vertices[0].diffuse.g = vertices[1].diffuse.g;
+                                    vertices[1].diffuse.r = curQuadVm->color1.r - static_cast<u8>(
+                                        (curQuadVm->color1.r - reinterpret_cast<ZunColor *>(
+                                                                      reinterpret_cast<u8 *>(this) + 0xAF4)->r) *
+                                        type1Width);
+                                    vertices[0].diffuse.r = vertices[1].diffuse.r;
+                                    vertices[1].diffuse.a =
+                                        static_cast<u8>(curQuadVm->color1.a * (1.0f - type1Width));
+                                    vertices[0].diffuse.a = vertices[1].diffuse.a;
+                                }
+                                else
+                                {
+                                    vertices[1].diffuse.a = 0;
+                                    vertices[0].diffuse.a = vertices[1].diffuse.a;
+                                }
+                            }
+                            else
+                            {
+                                vertices[1].diffuse.d3dColor = curQuadVm->color1.d3dColor;
+                                vertices[0].diffuse.d3dColor = vertices[1].diffuse.d3dColor;
+                            }
+
+                            type1World.x = objQuadType1->position2.x + instance->position.x - this->vector824.x;
+                            type1World.y = objQuadType1->position2.y + instance->position.y - this->vector824.y;
+                            type1World.z = objQuadType1->position2.z + instance->position.z - this->vector824.z;
+                            worldMatrix._41 = type1World.x;
+                            worldMatrix._42 = type1World.y;
+                            worldMatrix._43 = type1World.z;
+                            D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectedSecond),
+                                            reinterpret_cast<D3DXVECTOR3 *>(&projectSrc), &g_Supervisor.viewport,
+                                            &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldMatrix);
+
+                            if (objQuadType1->width != 0.0f)
+                            {
+                                type1Width = objQuadType1->width;
+                            }
+                            else
+                            {
+                                type1Width = curQuadVm->loadedSprite->widthPx;
+                            }
+                            worldMatrix._41 = cameraVec.x * type1Width + worldMatrix._41;
+                            worldMatrix._42 = cameraVec.y * type1Width + worldMatrix._42;
+                            worldMatrix._43 = cameraVec.z * type1Width + worldMatrix._43;
+                            D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectDest),
+                                            reinterpret_cast<D3DXVECTOR3 *>(&projectSrc), &g_Supervisor.viewport,
+                                            &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldMatrix);
+                            projectDest = projectDest - projectedSecond;
+                            halfWidthSecond =
+                                D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&projectDest)) / 2.0f;
+
+                            projectDest = type1World - (this->unk6394.vectors[0] + this->unk6394.vectors[5]);
+                            type1Width = D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&projectDest));
+                            if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xAEC) < type1Width)
+                            {
+                                type1Width = (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xAEC) -
+                                              type1Width) /
+                                             (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xAEC) -
+                                              *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xAF0));
+                                if (type1Width < 1.0f)
+                                {
+                                    vertices[3].diffuse.b = curQuadVm->color1.b - static_cast<u8>(
+                                        (curQuadVm->color1.b - reinterpret_cast<ZunColor *>(
+                                                                      reinterpret_cast<u8 *>(this) + 0xAF4)->b) *
+                                        type1Width);
+                                    vertices[2].diffuse.b = vertices[3].diffuse.b;
+                                    vertices[3].diffuse.g = curQuadVm->color1.g - static_cast<u8>(
+                                        (curQuadVm->color1.g - reinterpret_cast<ZunColor *>(
+                                                                      reinterpret_cast<u8 *>(this) + 0xAF4)->g) *
+                                        type1Width);
+                                    vertices[2].diffuse.g = vertices[3].diffuse.g;
+                                    vertices[3].diffuse.r = curQuadVm->color1.r - static_cast<u8>(
+                                        (curQuadVm->color1.r - reinterpret_cast<ZunColor *>(
+                                                                      reinterpret_cast<u8 *>(this) + 0xAF4)->r) *
+                                        type1Width);
+                                    vertices[2].diffuse.r = vertices[3].diffuse.r;
+                                    vertices[3].diffuse.a =
+                                        static_cast<u8>(curQuadVm->color1.a * (1.0f - type1Width));
+                                    vertices[2].diffuse.a = vertices[3].diffuse.a;
+                                }
+                                else
+                                {
+                                    vertices[3].diffuse.a = 0;
+                                    vertices[2].diffuse.a = vertices[3].diffuse.a;
+                                }
+                            }
+                            else
+                            {
+                                vertices[3].diffuse.d3dColor = curQuadVm->color1.d3dColor;
+                                vertices[2].diffuse.d3dColor = vertices[3].diffuse.d3dColor;
+                            }
+
+                            projectSrc = projectedSecond - quadPos;
+                            type1Width = sqrtf(projectSrc.x * projectSrc.x + projectSrc.y * projectSrc.y);
+                            if (type1Width < 0.00001f)
+                            {
+                                goto advance_quad;
+                            }
+                            projectSrc /= type1Width;
+
+                            if ((quadPos.z < 0.0f) || (quadPos.z > 1.0f))
+                            {
+                                goto advance_quad;
+                            }
+                            if ((projectedSecond.z < 0.0f) || (projectedSecond.z > 1.0f))
+                            {
+                                goto advance_quad;
+                            }
+
+                            vertices[0].pos.x = projectSrc.y * halfWidthFirst + quadPos.x;
+                            vertices[0].pos.y = quadPos.y - projectSrc.x * halfWidthFirst;
+                            vertices[0].pos.z = quadPos.z;
+                            vertices[1].pos.x = quadPos.x - projectSrc.y * halfWidthFirst;
+                            vertices[1].pos.y = projectSrc.x * halfWidthFirst + quadPos.y;
+                            vertices[1].pos.z = quadPos.z;
+                            vertices[2].pos.x = projectSrc.y * halfWidthSecond + projectedSecond.x;
+                            vertices[2].pos.y = projectedSecond.y - projectSrc.x * halfWidthSecond;
+                            vertices[2].pos.z = projectedSecond.z;
+                            vertices[3].pos.x = projectedSecond.x - projectSrc.y * halfWidthSecond;
+                            vertices[3].pos.y = projectSrc.x * halfWidthSecond + projectedSecond.y;
+                            vertices[3].pos.z = projectedSecond.z;
+
+                            vertices[2].textureUV.x = curQuadVm->loadedSprite->uvStart.x +
+                                                      curQuadVm->uvScrollPos.x;
+                            vertices[0].textureUV.x = vertices[2].textureUV.x;
+                            vertices[3].textureUV.x = curQuadVm->loadedSprite->uvEnd.x +
+                                                      curQuadVm->uvScrollPos.x;
+                            vertices[1].textureUV.x = vertices[3].textureUV.x;
+                            vertices[1].textureUV.y = curQuadVm->loadedSprite->uvStart.y +
+                                                      curQuadVm->uvScrollPos.y;
+                            vertices[0].textureUV.y = vertices[1].textureUV.y;
+                            vertices[3].textureUV.y = curQuadVm->loadedSprite->uvEnd.y +
+                                                      curQuadVm->uvScrollPos.y;
+                            vertices[2].textureUV.y = vertices[3].textureUV.y;
+                            vertices[0].w = vertices[1].w = vertices[2].w = vertices[3].w = 1.0f;
+
+                            if (fogState != 0)
+                            {
+                                if (!g_Supervisor.IsFogDisabled())
+                                {
+                                    g_Supervisor.DisableFog();
+                                }
+                                fogState = 0;
+                            }
+                            g_AnmManager->FUN_00464dd0(curQuadVm, reinterpret_cast<VertexTex1DiffuseXyzrhw *>(vertices));
+                            break;
+                        }
+                        }
+                    advance_quad:
+                        curQuad = reinterpret_cast<RawStageQuadBasic *>(reinterpret_cast<u8 *>(curQuad) +
+                                                                       curQuad->byteSize);
+            }
+            instancesDrawn++;
+        }
+    skip:
+        instance++;
+    }
+    return ZUN_SUCCESS;
 }
 
 // FUNCTION: th08 0x409ce0
