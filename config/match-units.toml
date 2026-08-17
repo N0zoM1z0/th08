@@ -64335,3 +64335,216 @@ offset = 0xD5
 type = "REL32"
 symbol = "?AddSpriteToDrawBuffer@AnmManager@th08@@QAE?AW4ZunResult@@PAUVertexTex1DiffuseXyzrhw@2@@Z"
 target = 0x00462F10
+
+# Ledger name: FUN_00408fc0
+# Evidence: 9 relocations; 0 direct calls; full replay exact; implemented ledger=False.
+[[units]]
+name = "fun-00408fc0"
+object = "build/Background.obj"
+symbol = "?FUN_00408fc0@th08@@YGMMMMMM@Z"
+target_address = 0x00408FC0
+size = 0x98
+
+[[units.relocations]]
+offset = 0xB
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x14
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x1C
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x25
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x36
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x3F
+type = "DIR32"
+symbol = "__real@40400000"
+target = 0x004B42DC
+
+[[units.relocations]]
+offset = 0x4A
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x53
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x67
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+# Ledger name: th08::Background::FUN_00408d60
+# Authored extent: 0x00408D60..0x00408FA1 (0x241 bytes)
+# Associated switch table: 0x00408FA1..0x00408FB9 (0x18 bytes)
+# Evidence: source-emitted helper plus compiler-owned switch table; strict COFF relocation replay against pinned target.
+[[units]]
+name = "background-fun-00408d60"
+object = "build/Background.obj"
+symbol = "?FUN_00408d60@Background@th08@@QAIXHPAUFloat3@2@PBU32@111@Z"
+target_address = 0x00408D60
+size = 0x241
+compare_size = 0x259
+
+[[units.relocations]]
+offset = 0x2B
+type = "REL32"
+symbol = "??MZunTimer@th08@@QAEIH@Z"
+target = 0x004066A0
+
+[[units.relocations]]
+offset = 0x46
+type = "REL32"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
+target = 0x00406640
+
+[[units.relocations]]
+offset = 0x5B
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 0x90
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0xD5
+type = "DIR32"
+symbol = "$L*"
+target = 0x00408FA1
+
+[[units.relocations]]
+offset = 0xDB
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0xEA
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0xF5
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x107
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x112
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x127
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x174
+type = "REL32"
+symbol = "??GFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x004090D0
+
+[[units.relocations]]
+offset = 0x19F
+type = "REL32"
+symbol = "??DFloat3@th08@@QBE?AU01@M@Z"
+target = 0x00409120
+
+[[units.relocations]]
+offset = 0x1A6
+type = "REL32"
+symbol = "??HFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 0x1DC
+type = "REL32"
+symbol = "?FUN_00408fc0@th08@@YGMMMMMM@Z"
+target = 0x00408FC0
+
+[[units.relocations]]
+offset = 0x206
+type = "REL32"
+symbol = "?FUN_00408fc0@th08@@YGMMMMMM@Z"
+target = 0x00408FC0
+
+[[units.relocations]]
+offset = 0x231
+type = "REL32"
+symbol = "?FUN_00408fc0@th08@@YGMMMMMM@Z"
+target = 0x00408FC0
+
+[[units.relocations]]
+offset = 0x241
+type = "DIR32"
+symbol = "$L*"
+target = 0x00408E39
+
+[[units.relocations]]
+offset = 0x245
+type = "DIR32"
+symbol = "$L*"
+target = 0x00408E53
+
+[[units.relocations]]
+offset = 0x249
+type = "DIR32"
+symbol = "$L*"
+target = 0x00408E70
+
+[[units.relocations]]
+offset = 0x24D
+type = "DIR32"
+symbol = "$L*"
+target = 0x00408E90
+
+[[units.relocations]]
+offset = 0x251
+type = "DIR32"
+symbol = "$L*"
+target = 0x00408E9B
+
+[[units.relocations]]
+offset = 0x255
+type = "DIR32"
+symbol = "$L*"
+target = 0x00408EA9

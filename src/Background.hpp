@@ -32,6 +32,8 @@ struct Background
 
     void SetCamera1();
     void SetCamera2();
+    void __fastcall FUN_00408d60(i32 index, Float3 *out, const Float3 *start, const Float3 *end,
+                                  const Float3 *control2, const Float3 *control3);
     void FUN_00409160(D3DCOLOR color);
     u32 FUN_00409f40();
 
@@ -65,9 +67,9 @@ struct Background
     BackgroundUnkVectors unk62fc;
     BackgroundUnkVectors unk6348;
     BackgroundUnkVectors unk6394;
-    unknown_fields(0x63e0, 0x14);
-    ZunTimer timers63f4[5];
-    unknown_fields(0x6430, 0x14);
+    i32 interpolationDuration[5];
+    ZunTimer interpolationTimers[5];
+    i32 interpolationMode[5];
     Float3 vector6444;
     unknown_fields(0x6450, 0x4);
     Float3 vector6454;

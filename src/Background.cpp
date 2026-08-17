@@ -108,6 +108,78 @@ Background::Background()
     this->unk62b0 = this->unk6394;
 }
 
+// FUNCTION: th08 0x408fc0
+#pragma var_order(weight3, weight1, weight2, weight0)
+f32 __stdcall FUN_00408fc0(f32 value0, f32 value1, f32 value2, f32 value3, f32 time)
+{
+    f32 weight0;
+    f32 weight1;
+    f32 weight2;
+    f32 weight3;
+
+    weight0 = (time - 1.0f) * (time - 1.0f) * (2.0f * time + 1.0f);
+    weight1 = time * time * (3.0f - 2.0f * time);
+    weight2 = (1.0f - time) * (1.0f - time) * time;
+    weight3 = (time - 1.0f) * time * time;
+    return weight0 * value0 + weight1 * value1 + weight2 * value2 + weight3 * value3;
+}
+
+// FUNCTION: th08 0x408d60
+void __fastcall Background::FUN_00408d60(i32 index, Float3 *out, const Float3 *start, const Float3 *end,
+                                         const Float3 *control2, const Float3 *control3)
+{
+    f32 time;
+
+    if (this->interpolationTimers[index] < this->interpolationDuration[index])
+    {
+        this->interpolationTimers[index]++;
+        time = (f32)this->interpolationTimers[index] / this->interpolationDuration[index];
+    }
+    else
+    {
+        this->interpolationTimers[index] = this->interpolationDuration[index];
+        time = 1.0f;
+        this->interpolationDuration[index] = 0;
+    }
+
+    switch (this->interpolationMode[index])
+    {
+    case 1:
+        time = 1.0f - time;
+        time = 1.0f - time * time;
+        break;
+    case 2:
+        time = 1.0f - time;
+        time = 1.0f - time * time * time;
+        break;
+    case 3:
+        time = 1.0f - time;
+        time = 1.0f - time * time * time * time;
+        break;
+    case 4:
+        time = time * time;
+        break;
+    case 5:
+        time = time * time * time;
+        break;
+    case 6:
+        time = time * time * time * time;
+        break;
+    }
+
+    if (this->interpolationMode[index] != 7)
+    {
+        *out = *end - *start;
+        *out = (*out * time) + *start;
+    }
+    else
+    {
+        out->x = FUN_00408fc0(start->x, end->x, control2->x, control3->x, time);
+        out->y = FUN_00408fc0(start->y, end->y, control2->y, control3->y, time);
+        out->z = FUN_00408fc0(start->z, end->z, control2->z, control3->z, time);
+    }
+}
+
 // STUB: th08 0x407400
 ChainCallbackResult Background::OnUpdate(Background *background)
 {
@@ -399,7 +471,7 @@ ZunResult Background::AddedCallback(Background *background)
     for (i = 0; i < 4; i++)
     {
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(background) + i * 4 + 0x63E0) = 0;
-        background->timers63f4[i] = 0;
+        background->interpolationTimers[i] = 0;
     }
 
     background->unk6260 = 0;

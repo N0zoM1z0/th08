@@ -715,3 +715,5 @@ th08::Float3::operator/=
 th08::AnmManager::SetRenderStateForVm3D
 th08::AnmManager::Draw3D
 th08::AnmManager::FUN_00464dd0
+th08::Background::FUN_00408d60
+FUN_00408fc0

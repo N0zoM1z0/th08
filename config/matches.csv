@@ -714,3 +714,5 @@ address,name,size,status,match_percent,unit,evidence
 0x004623C0,th08::AnmManager::SetRenderStateForVm3D,912,matching,100.00,anm-manager-set-render-state-for-vm3d,python3 scripts/compare-function.py anm-manager-set-render-state-for-vm3d --json
 0x00464470,th08::AnmManager::Draw3D,1318,matching,100.00,anm-manager-draw3d,python3 scripts/compare-function.py anm-manager-draw3d --json
 0x00464DD0,th08::AnmManager::FUN_00464dd0,225,matching,100.00,anm-manager-fun-00464dd0,python3 scripts/compare-function.py anm-manager-fun-00464dd0 --json
+0x00408D60,th08::Background::FUN_00408d60,577,matching,100.00,background-fun-00408d60,python3 scripts/compare-function.py background-fun-00408d60 --json
+0x00408FC0,FUN_00408fc0,152,matching,100.00,fun-00408fc0,python3 scripts/compare-function.py fun-00408fc0 --json
