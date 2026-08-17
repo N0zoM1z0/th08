@@ -470,7 +470,7 @@ FUN_004338ca,0x4338ca,0x5d,unknown,,u8
 FUN_00433927,0x433927,0x46,unknown,,u8
 th08::GuiImpl::FUN_0043396d,0x43396d,0x446,__thiscall,,void,GuiImpl*,i32
 th08::GuiImpl::RunMsg,0x433db3,0x15dd,unknown,,u8
-FUN_004353ec,0x4353ec,0x3f,unknown,,u8
+th08::FUN_004353ec,0x4353ec,0x3f,__fastcall,,void,char*,const char*
 th08::GuiImpl::DrawDialogue,0x43542b,0x453,__thiscall,,u8,GuiImpl*
 th08::Gui::MsgWait,0x43587e,0x3d,__thiscall,,bool,Gui*
 th08::Gui::IsDialogPresent,0x4358bb,0x45,__thiscall,,i32

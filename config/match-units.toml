@@ -69418,3 +69418,10 @@ offset = 0xA5
 type = "REL32"
 symbol = "?AddToDrawChain@Chain@th08@@QAEHPAVChainElem@2@H@Z"
 target = 0x0043C960
+
+[[units]]
+name = "gui-decode-message-text"
+object = "build/Gui.obj"
+symbol = "?FUN_004353ec@th08@@YIXPADPBD@Z"
+target_address = 0x004353EC
+size = 0x3F

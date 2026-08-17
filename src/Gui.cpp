@@ -13,6 +13,21 @@ DIFFABLE_STATIC(i32, g_GuiAnmReleaseRequired);
 DIFFABLE_STATIC(i32, g_GuiResourceReloadEnabled);
 DIFFABLE_STATIC(i32, g_GuiFullPowerModeFrames);
 
+// FUNCTION: th08 0x4353ec
+#pragma var_order(i, decoded)
+void __fastcall FUN_004353ec(char *out, const char *encoded)
+{
+    char decoded;
+    i32 i = 0;
+    do
+    {
+        decoded = *encoded ^ 0x77;
+        out[i] = decoded;
+        i++;
+        encoded++;
+    } while (decoded != '\0');
+}
+
 // FUNCTION: th08 0x438fe9
 i32 FUN_00438fe9()
 {

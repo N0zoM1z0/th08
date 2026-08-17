@@ -748,3 +748,4 @@ th08::Spellcard::OnDraw
 th08::Spellcard::Init
 th08::GameManager::IsSpellNumberEqualTo
 th08::Spellcard::RegisterChain
+th08::FUN_004353ec
