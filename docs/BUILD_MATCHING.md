@@ -185,6 +185,16 @@ TH08 matches; use them as diagnostics, not as permission to force bytes:
   equivalent hand-written integer mask/OR expression can choose the opposite OR
   destination register. When the target shows the bitfield pattern, a typed
   bitfield view is a more faithful C++ expression than algebraic register tuning.
+- Recovered typed fields can also fix evaluation order that raw byte-pointer
+  arithmetic gets wrong. A raw `*(u32 *)(p + dst) = *(u32 *)(p + src)` may make
+  VC7 prefetch the left-hand base before finishing the RHS; expressing the same
+  operation as a real field assignment such as `vm->color1Initial = vm->color1`
+  can restore the target's RHS-first register sequence without inventing a stack
+  temporary. Prefer the existing ABI type when the offsets are already proven.
+- Signedness of byte fields is visible in exact codegen: plain `char` may produce
+  `movsx`, while the target's `movzx` is evidence for an unsigned value context.
+  Cast the read to `u8` (or recover the field type) instead of masking the result
+  after sign extension.
 
 For a function whose authored body is followed by compiler-owned tables, first
 prove the authored extent independently, then set `compare_size` to the COFF

@@ -740,3 +740,4 @@ th08::Gui::FUN_00437ddd
 th08::Enemy::FUN_0042b2f0
 th08::EnemyManager::FUN_0042efb0
 th08::BulletManager::DespawnBullets
+th08::Spellcard::EndSpell

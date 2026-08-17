@@ -6,6 +6,7 @@
 #include "EclManager.hpp"
 #include "EnemyManager.hpp"
 #include "Gui.hpp"
+#include "Player.hpp"
 #include "Spellcard.hpp"
 #include "Global.hpp"
 #include "utils.hpp"
@@ -638,6 +639,237 @@ void Spellcard::spellcard_fun_00416160()
     {
         this->vm2374.SetInterrupt(2);
     }
+}
+
+// FUNCTION: th08 0x4161b0
+#pragma var_order(enemyScore, captured, catk, i, route, checksum, baseChecksum, this)
+void Spellcard::EndSpell()
+{
+    i32 baseChecksum;
+    i32 checksum;
+    i32 route;
+    i32 i;
+    Catk *catk;
+    i32 captured;
+    i32 enemyScore;
+
+    g_EclCallbackPublishedEnemyField24 = 0;
+    if ((this->flags & 1) != 0)
+    {
+        captured = 0;
+        this->flags &= ~1;
+        this->spellcard_fun_00416160();
+
+        if (((this->flags >> 3) & 1) == 0)
+        {
+            enemyScore = g_BulletManager.DespawnBullets(8000, 1);
+            enemyScore = g_EnemyManager.FUN_0042efb0(8000, enemyScore);
+            if (enemyScore != 0)
+            {
+                g_GameManager.AddScore(enemyScore);
+                g_Gui.FUN_00437ddd(enemyScore);
+            }
+
+            if (((this->flags >> 2) & 1) != 0)
+            {
+                catk = &g_GameManager.catkData[this->spellCardNumber];
+                this->bonusAward = this->bonusProgress;
+                if (((*reinterpret_cast<u32 *>(this->activeEnemy + 0x3324) >> 27) & 1) != 0)
+                {
+                    this->pendingTimeOrbs = 700;
+                }
+                else
+                {
+                    i = (i32)this->timer114 - (i32)this->timer114 / 7;
+                    if ((i32)this->timer108 >= i)
+                    {
+                        this->pendingTimeOrbs = 1000;
+                    }
+                    else if ((i32)this->timer108 >= 180)
+                    {
+                        this->pendingTimeOrbs = 900 * ((i32)this->timer108 - 180) / (i - 180) + 100;
+                    }
+                    else
+                    {
+                        this->pendingTimeOrbs = 100;
+                    }
+                }
+
+                this->flags |= 0x200;
+                if (!g_GameManager.IsReplay())
+                {
+                    checksum = 0;
+                    for (i = strlen(catk->spellName); i > 0;)
+                    {
+                        --i;
+                        checksum += catk->spellName[i];
+                    }
+                    baseChecksum = checksum;
+
+                    for (i = 0; i < SHOT_ALL + 1; i++)
+                    {
+                        checksum += catk->inGameHistory.captures[i];
+                        checksum += catk->inGameHistory.attempts[i];
+                        checksum += catk->inGameHistory.maxBonus[i];
+                        checksum += catk->spellPracticeHistory.captures[i];
+                        checksum += catk->spellPracticeHistory.attempts[i];
+                        checksum += catk->spellPracticeHistory.maxBonus[i];
+                    }
+
+                    if (catk->unk0xe != (u8)checksum)
+                    {
+                        for (i = 0; i < SHOT_ALL + 1; i++)
+                        {
+                            catk->inGameHistory.captures[i] = 0;
+                            catk->inGameHistory.attempts[i] = 0;
+                            catk->inGameHistory.maxBonus[i] = 0;
+                            catk->spellPracticeHistory.captures[i] = 0;
+                            catk->spellPracticeHistory.attempts[i] = 0;
+                            catk->spellPracticeHistory.maxBonus[i] = 0;
+                        }
+                    }
+
+                    catk->difficulty = (u8)g_GameManager.difficulty;
+                    if (!g_GameManager.IsSpellPractice())
+                    {
+                        route = g_GameManager.shotType;
+                        if ((u32)catk->inGameHistory.maxBonus[route] < (u32)this->bonusProgress)
+                        {
+                            catk->inGameHistory.maxBonus[route] = this->bonusProgress;
+                        }
+                        if ((u32)catk->inGameHistory.maxBonus[SHOT_ALL] < (u32)this->bonusProgress)
+                        {
+                            catk->inGameHistory.maxBonus[SHOT_ALL] = this->bonusProgress;
+                        }
+                        if (catk->inGameHistory.captures[route] < 9999)
+                        {
+                            catk->inGameHistory.captures[route]++;
+                        }
+                        if (catk->inGameHistory.captures[SHOT_ALL] < 9999)
+                        {
+                            catk->inGameHistory.captures[SHOT_ALL]++;
+                        }
+                    }
+                    else
+                    {
+                        for (i = 0; (u32)i < sizeof(catk->spellCommentLine1); i++)
+                        {
+                            catk->spellCommentLine1[i] = (u8)this->spellCommentLine1[i] ^ 0xDD;
+                        }
+                        for (i = 0; (u32)i < sizeof(catk->spellCommentLine2); i++)
+                        {
+                            catk->spellCommentLine2[i] = (u8)this->spellCommentLine2[i] ^ 0xEE;
+                        }
+
+                        route = g_GameManager.shotType;
+                        if ((u32)catk->spellPracticeHistory.maxBonus[route] < (u32)this->bonusProgress)
+                        {
+                            catk->spellPracticeHistory.maxBonus[route] = this->bonusProgress;
+                        }
+                        if ((u32)catk->spellPracticeHistory.maxBonus[SHOT_ALL] < (u32)this->bonusProgress)
+                        {
+                            catk->spellPracticeHistory.maxBonus[SHOT_ALL] = this->bonusProgress;
+                        }
+                        if (catk->spellPracticeHistory.captures[route] < 9999)
+                        {
+                            catk->spellPracticeHistory.captures[route]++;
+                        }
+                        if (catk->spellPracticeHistory.captures[SHOT_ALL] < 9999)
+                        {
+                            catk->spellPracticeHistory.captures[SHOT_ALL]++;
+                        }
+                    }
+
+                    for (i = 0; i < SHOT_ALL + 1; i++)
+                    {
+                        baseChecksum += catk->inGameHistory.captures[i];
+                        baseChecksum += catk->inGameHistory.attempts[i];
+                        baseChecksum += catk->inGameHistory.maxBonus[i];
+                        baseChecksum += catk->spellPracticeHistory.captures[i];
+                        baseChecksum += catk->spellPracticeHistory.attempts[i];
+                        baseChecksum += catk->spellPracticeHistory.maxBonus[i];
+                    }
+                    catk->unk0xe = (u8)baseChecksum;
+                    g_GameManager.hscr.spellCounters[this->spellCardNumber]++;
+                }
+
+                g_GameManager.globals->spellcardsCaptured++;
+                captured = 1;
+                g_GameManager.UpdateAntiTamper();
+            }
+        }
+
+        if (this->spellEffect != NULL)
+        {
+            if (captured == 0)
+            {
+                if (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0)
+                {
+                    *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFE7F;
+                }
+                *reinterpret_cast<u8 *>(this->spellEffect + 0x350) = 0;
+                this->spellEffect = NULL;
+                g_Gui.FUN_00437e5d(0, (((this->flags >> 5) & 1) != 0) + 5);
+            }
+            else
+            {
+                this->flags |= 0x100;
+                if (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0)
+                {
+                    *reinterpret_cast<u32 *>(&g_GameManager.flags) =
+                        (*reinterpret_cast<u32 *>(&g_GameManager.flags) & 0xFFFFFE7F) | 0x100;
+                }
+
+                *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x50) = 0;
+                *reinterpret_cast<ZunTimer *>(this->spellEffect + 0xA4) = 30;
+                *reinterpret_cast<u8 *>(this->spellEffect + 0xF8) = 6;
+                *reinterpret_cast<u32 *>(this->spellEffect + 0x238) =
+                    *reinterpret_cast<u32 *>(this->spellEffect + 0x314);
+                *reinterpret_cast<f32 *>(this->spellEffect + 0x244) = 256.0f;
+                *reinterpret_cast<u32 *>(this->spellEffect + 0x23C) =
+                    *reinterpret_cast<u32 *>(this->spellEffect + 0x32C);
+                *reinterpret_cast<u32 *>(this->spellEffect + 0x248) = 0;
+                *reinterpret_cast<u32 *>(this->spellEffect + 0x208) =
+                    *reinterpret_cast<u32 *>(this->spellEffect + 0x314);
+                *reinterpret_cast<u32 *>(this->spellEffect + 0x20C) =
+                    *reinterpret_cast<u32 *>(this->spellEffect + 0x32C);
+
+                *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x5C) = 0;
+                *reinterpret_cast<ZunTimer *>(this->spellEffect + 0xB0) = 60;
+                *reinterpret_cast<u8 *>(this->spellEffect + 0xF9) = 3;
+                reinterpret_cast<AnmVm *>(this->spellEffect)->color1Initial =
+                    reinterpret_cast<AnmVm *>(this->spellEffect)->color1;
+                *reinterpret_cast<u8 *>(this->spellEffect + 0x27E) = 0xD0;
+                *reinterpret_cast<u8 *>(this->spellEffect + 0x27D) = 0x80;
+                *reinterpret_cast<u8 *>(this->spellEffect + 0x27C) = 0xA0;
+                *reinterpret_cast<u8 *>(this->spellEffect + 0x27F) = 0x20;
+                *reinterpret_cast<f32 *>(this->spellEffect + 0x334) = 6.0f;
+                *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x338) = 0;
+
+                this->unknown_0F8 = reinterpret_cast<i32>(this->spellEffect);
+                this->spellEffect = NULL;
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SPELL_CAPTURE, 0);
+            }
+        }
+
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Player) + 0xE2A6C) = 16;
+        if (g_Player.playerState == PLAYER_STATE_ALIVE)
+        {
+            g_Player.timer = 70;
+            g_Player.playerState = PLAYER_STATE_DEAD;
+        }
+        g_Gui.flags.bombDisplayUpdateFrames = 3;
+        g_Gui.flags.lifeDisplayUpdateFrames = 3;
+        g_SoundPlayer.PlaySoundByIdx((SoundIdx)15, 0);
+        g_Background.background_fun_00416ad0();
+    }
+
+    if (this->activeEnemy != NULL)
+    {
+        *reinterpret_cast<u32 *>(this->activeEnemy + 0x3324) &= 0xF7FFFFFF;
+    }
+    this->activeEnemy = NULL;
+    this->flags &= ~0x800;
 }
 
 // FUNCTION: th08 0x416af0

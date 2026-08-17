@@ -306,6 +306,7 @@ struct Spellcard
     void CutInEnemy(i32 enemyFace, const char *name, i32 sprite);
     void spellcard_fun_00416130();
     void spellcard_fun_00416160();
+    void EndSpell();
     void spellcard_fun_00416af0();
     void spellcard_fun_00416b10(i32 amount);
     i32 OnDrawImpl();
