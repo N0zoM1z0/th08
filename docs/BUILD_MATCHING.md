@@ -128,6 +128,38 @@ extent. Such units keep `size` as authored code coverage and use `compare_size`
 for the complete code-plus-table range. Exact acceptance still compares every
 associated byte and relocation; table bytes do not increase authored progress.
 
+### VC7 source-shape notes
+
+The following `/Od` behaviors are confirmed by small VC7 probes and by strict
+TH08 matches; use them as diagnostics, not as permission to force bytes:
+
+- `#pragma var_order(a, b, c)` assigns listed function-scope locals from the
+  least-negative stack slot downward in list order. Nested block locals are not
+  reliably controlled by a function-level list.
+- A block-scope `#pragma var_order` can control locals declared in that block,
+  including a direct-initialized class local that receives a hidden return
+  buffer. Do not put the pragma directly after a label: VC7 can mis-handle name
+  visibility there. Open a normal `{ ... }` block after the label first.
+- Unlisted scoped locals can otherwise occupy earlier stack slots than expected.
+  When a large function's frame size is right but every named local is shifted,
+  identify the actual owners of the leading slots before changing semantics.
+- Under `/Od`, lexical `case` body order affects emitted switch layout even when
+  the numeric case values and jump table are unchanged. Likewise, ordinary
+  `break` statements can compile directly to the switch merge while explicit
+  `goto` statements may introduce short trampoline chains. Preserve the target's
+  source-level control-flow shape where the bytes distinguish them.
+- Placement construction and tiny wrapper classes are not neutral stack-layout
+  tools here. In the tested VC7 `/EHsc` configuration they introduced extra
+  constructor/placement-`new` machinery, so prefer ordinary source constructs
+  and compiler-native temporaries.
+
+For a function whose authored body is followed by compiler-owned tables, first
+prove the authored extent independently, then set `compare_size` to the COFF
+auxiliary extent and replay every table relocation as well. Local `$L...` COFF
+labels are normalized to `$L*` by the comparator because VC7 renumbers them when
+earlier code in the translation unit changes; their relocation offsets and
+resolved target addresses remain the evidence.
+
 For stack, register-home, direct-call, absolute-reference, and return-cleanup
 facts, install Python Capstone and generate a read-only target packet:
 
