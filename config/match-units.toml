@@ -77949,3 +77949,256 @@ offset = 956
 type = "REL32"
 symbol = "?SetMixColorDefault@AnmManager@th08@@QAEXXZ"
 target = 0x0040BAB0
+
+[[units]]
+name = "item-manager-initialize"
+object = "build/objdiff/reimpl/ItemManager.obj"
+symbol = "th08::ItemManager::Initialize"
+target_address = 0x004337F0
+size = 42
+
+[[units]]
+name = "bullet-manager-added-callback"
+object = "build/objdiff/reimpl/BulletManager.obj"
+symbol = "th08::BulletManager::AddedCallback"
+target_address = 0x00433070
+size = 1662
+compare_size = 1917
+
+[[units.relocations]]
+offset = 11
+type = "REL32"
+symbol = "?IsResourceReloadEnabled@th08@@YIHXZ"
+target = 0x004338B0
+
+[[units.relocations]]
+offset = 20
+type = "DIR32"
+symbol = "??_C@_09NMANGJFI@etama?4anm?$AA@"
+target = 0x004B4CA0
+
+[[units.relocations]]
+offset = 28
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 33
+type = "REL32"
+symbol = "?PreloadAnm@AnmManager@th08@@QAEPAUAnmLoaded@2@HPBD@Z"
+target = 0x00465A40
+
+[[units.relocations]]
+offset = 38
+type = "DIR32"
+symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
+target = 0x00577EB4
+
+[[units.relocations]]
+offset = 47
+type = "DIR32"
+symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
+target = 0x00577EB4
+
+[[units.relocations]]
+offset = 83
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 88
+type = "REL32"
+symbol = "?GetAnm@AnmManager@th08@@QAEPAUAnmLoaded@2@H@Z"
+target = 0x0040BB60
+
+[[units.relocations]]
+offset = 137
+type = "DIR32"
+symbol = "_g_BulletSpriteScripts"
+target = 0x004B4AD8
+
+[[units.relocations]]
+offset = 167
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 179
+type = "DIR32"
+symbol = "_g_BulletSpriteScripts"
+target = 0x004B4AD8
+addend = 4
+
+[[units.relocations]]
+offset = 214
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 226
+type = "DIR32"
+symbol = "_g_BulletSpriteScripts"
+target = 0x004B4AD8
+addend = 8
+
+[[units.relocations]]
+offset = 261
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 273
+type = "DIR32"
+symbol = "_g_BulletSpriteScripts"
+target = 0x004B4AD8
+addend = 12
+
+[[units.relocations]]
+offset = 308
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 320
+type = "DIR32"
+symbol = "_g_BulletSpriteScripts"
+target = 0x004B4AD8
+addend = 16
+
+[[units.relocations]]
+offset = 355
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 640
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 687
+type = "DIR32"
+symbol = "__real@41000000"
+target = 0x004B4300
+
+[[units.relocations]]
+offset = 793
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004B42D4
+
+[[units.relocations]]
+offset = 816
+type = "DIR32"
+symbol = "_g_BulletSpriteScripts"
+target = 0x004B4AD8
+
+[[units.relocations]]
+offset = 848
+type = "DIR32"
+symbol = "$L*"
+target = 0x00433706
+
+[[units.relocations]]
+offset = 855
+type = "DIR32"
+symbol = "$L*"
+target = 0x004336EE
+
+[[units.relocations]]
+offset = 1301
+type = "DIR32"
+symbol = "__real@42000000"
+target = 0x004B42CC
+
+[[units.relocations]]
+offset = 1324
+type = "DIR32"
+symbol = "_g_BulletSpriteScripts"
+target = 0x004B4AD8
+
+[[units.relocations]]
+offset = 1356
+type = "DIR32"
+symbol = "$L*"
+target = 0x00433781
+
+[[units.relocations]]
+offset = 1363
+type = "DIR32"
+symbol = "$L*"
+target = 0x00433775
+
+[[units.relocations]]
+offset = 1646
+type = "DIR32"
+symbol = "?g_ItemManager@th08@@3UItemManager@1@A"
+target = 0x01653648
+
+[[units.relocations]]
+offset = 1651
+type = "REL32"
+symbol = "?Initialize@ItemManager@th08@@QAEXXZ"
+target = 0x004337F0
+
+[[units.relocations]]
+offset = 1662
+type = "DIR32"
+symbol = "$L*"
+target = 0x004333CB
+
+[[units.relocations]]
+offset = 1666
+type = "DIR32"
+symbol = "$L*"
+target = 0x00433412
+
+[[units.relocations]]
+offset = 1670
+type = "DIR32"
+symbol = "$L*"
+target = 0x00433459
+
+[[units.relocations]]
+offset = 1674
+type = "DIR32"
+symbol = "$L*"
+target = 0x0043349B
+
+[[units.relocations]]
+offset = 1678
+type = "DIR32"
+symbol = "$L*"
+target = 0x004334E2
+
+[[units.relocations]]
+offset = 1682
+type = "DIR32"
+symbol = "$L*"
+target = 0x00433526
+
+[[units.relocations]]
+offset = 1797
+type = "DIR32"
+symbol = "$L*"
+target = 0x004335C7
+
+[[units.relocations]]
+offset = 1801
+type = "DIR32"
+symbol = "$L*"
+target = 0x0043360E
+
+[[units.relocations]]
+offset = 1805
+type = "DIR32"
+symbol = "$L*"
+target = 0x00433652

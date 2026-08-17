@@ -10,11 +10,28 @@
 namespace th08
 {
 
+DIFFABLE_EXTERN(AnmLoaded *, g_AsciiManagerDemoAnm0577EB4);
+
 DIFFABLE_STATIC(BulletManager, g_BulletManager);
 DIFFABLE_STATIC(ChainElem, g_BulletManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_BulletManagerDrawChain);
 DIFFABLE_STATIC(i32, g_ResourceReloadEnabled);
 DIFFABLE_STATIC(i32, g_BulletManagerAnmReleaseRequired);
+
+struct BulletSpriteScriptRow
+{
+    i32 scripts[5];
+};
+
+static BulletSpriteScriptRow g_BulletSpriteScripts[21] = {
+    {{0, 18, 19, 20, 15}},   {{1, 21, 22, 23, 16}},   {{2, 21, 22, 23, 16}},
+    {{3, 21, 22, 23, 16}},   {{4, 21, 22, 23, 16}},   {{5, 21, 22, 23, 16}},
+    {{6, 21, 22, 23, 16}},   {{7, 24, 24, 24, 17}},   {{8, 24, 24, 24, 17}},
+    {{9, 24, 24, 24, 17}},   {{25, 27, 27, 27, 26}}, {{106, 21, 22, 23, 16}},
+    {{107, 21, 22, 23, 16}}, {{108, 21, 22, 23, 16}}, {{109, 24, 24, 24, 17}},
+    {{110, 24, 24, 24, 17}}, {{111, 21, 22, 23, 16}}, {{112, 21, 22, 23, 16}},
+    {{113, 24, 24, 24, 17}}, {{114, 24, 24, 24, 17}}, {{115, 24, 24, 24, 17}},
+};
 
 // FUNCTION: th08 0x4338b0
 i32 IsResourceReloadEnabled()
@@ -731,9 +748,123 @@ ChainCallbackResult BulletManager::OnDraw(BulletManager *bulletManager)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-// STUB: th08 0x433070
+// FUNCTION: th08 0x433070
+#pragma var_order(i)
 ZunResult BulletManager::AddedCallback(BulletManager *bulletManager)
 {
+    u32 i;
+
+    if (IsResourceReloadEnabled())
+    {
+        g_AsciiManagerDemoAnm0577EB4 = g_AnmManager->PreloadAnm(6, "etama.anm");
+        bulletManager->bulletAnm = g_AsciiManagerDemoAnm0577EB4;
+        if (bulletManager->bulletAnm == NULL)
+            return ZUN_ERROR;
+    }
+    else
+    {
+        bulletManager->bulletAnm = g_AnmManager->GetAnm(6);
+    }
+
+    for (i = 0; i < 21; i++)
+    {
+        bulletManager->bulletAnm->SetAndExecuteScriptIdx(&bulletManager->bulletTypeSprites[i].sprite0, g_BulletSpriteScripts[i].scripts[0]);
+        bulletManager->bulletAnm->SetAndExecuteScriptIdx(&bulletManager->bulletTypeSprites[i].sprite1, g_BulletSpriteScripts[i].scripts[1]);
+        bulletManager->bulletAnm->SetAndExecuteScriptIdx(&bulletManager->bulletTypeSprites[i].sprite2, g_BulletSpriteScripts[i].scripts[2]);
+        bulletManager->bulletAnm->SetAndExecuteScriptIdx(&bulletManager->bulletTypeSprites[i].sprite3, g_BulletSpriteScripts[i].scripts[3]);
+        bulletManager->bulletAnm->SetAndExecuteScriptIdx(&bulletManager->bulletTypeSprites[i].sprite4, g_BulletSpriteScripts[i].scripts[4]);
+
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].sprite0) + 0x1f8) |= 0x2000;
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].sprite1) + 0x1f8) |= 0x2000;
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].sprite2) + 0x1f8) |= 0x2000;
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].sprite3) + 0x1f8) |= 0x2000;
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].sprite4) + 0x1f8) |= 0x2000;
+
+        bulletManager->bulletTypeSprites[i].sprite0.baseSpriteIndex =
+            bulletManager->bulletTypeSprites[i].sprite0.activeSpriteIndex;
+        *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd41) =
+            (u8)bulletManager->bulletTypeSprites[i].sprite0.loadedSprite->heightPx;
+
+        if (bulletManager->bulletTypeSprites[i].sprite0.loadedSprite->heightPx <= 8.0f)
+        {
+            bulletManager->bulletTypeSprites[i].position.x = 4.0f;
+            bulletManager->bulletTypeSprites[i].position.y = 4.0f;
+            *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 5;
+        }
+        else if (bulletManager->bulletTypeSprites[i].sprite0.loadedSprite->heightPx <= 16.0f)
+        {
+            switch (g_BulletSpriteScripts[i].scripts[0])
+            {
+            case 2:
+            case 111:
+            case 112:
+                bulletManager->bulletTypeSprites[i].position.x = 4.0f;
+                bulletManager->bulletTypeSprites[i].position.y = 4.0f;
+                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 4;
+                break;
+            case 4:
+            case 6:
+                bulletManager->bulletTypeSprites[i].position.x = 4.0f;
+                bulletManager->bulletTypeSprites[i].position.y = 4.0f;
+                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 4;
+                break;
+            case 5:
+                bulletManager->bulletTypeSprites[i].position.x = 4.0f;
+                bulletManager->bulletTypeSprites[i].position.y = 4.0f;
+                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 3;
+            case 106:
+                bulletManager->bulletTypeSprites[i].position.x = 4.0f;
+                bulletManager->bulletTypeSprites[i].position.y = 4.0f;
+                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 4;
+                break;
+            case 107:
+            case 108:
+                bulletManager->bulletTypeSprites[i].position.x = 4.0f;
+                bulletManager->bulletTypeSprites[i].position.y = 4.0f;
+                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 4;
+                break;
+            default:
+                bulletManager->bulletTypeSprites[i].position.x = 6.0f;
+                bulletManager->bulletTypeSprites[i].position.y = 6.0f;
+                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 3;
+                break;
+            }
+        }
+        else if (bulletManager->bulletTypeSprites[i].sprite0.loadedSprite->heightPx <= 32.0f)
+        {
+            switch (g_BulletSpriteScripts[i].scripts[0])
+            {
+            case 8:
+            case 113:
+            case 114:
+            case 115:
+                bulletManager->bulletTypeSprites[i].position.x = 5.0f;
+                bulletManager->bulletTypeSprites[i].position.y = 5.0f;
+                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 2;
+                break;
+            case 9:
+            case 109:
+            case 110:
+                bulletManager->bulletTypeSprites[i].position.x = 8.0f;
+                bulletManager->bulletTypeSprites[i].position.y = 8.0f;
+                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 1;
+                break;
+            default:
+                bulletManager->bulletTypeSprites[i].position.x = 10.0f;
+                bulletManager->bulletTypeSprites[i].position.y = 10.0f;
+                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 1;
+                break;
+            }
+        }
+        else
+        {
+            *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 0;
+            bulletManager->bulletTypeSprites[i].position.x = 24.0f;
+            bulletManager->bulletTypeSprites[i].position.y = 24.0f;
+        }
+    }
+
+    g_ItemManager.Initialize();
     return ZUN_SUCCESS;
 }
 

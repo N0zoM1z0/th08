@@ -774,3 +774,5 @@ th08::Player::FUN_00449ff0
 th08::EffectManager::DrawUnkTypeEffects
 th08::Bullet::DrawSingleBullet
 th08::BulletManager::OnDraw
+th08::BulletManager::AddedCallback
+th08::ItemManager::Initialize

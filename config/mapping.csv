@@ -459,8 +459,8 @@ th08::Bullet::FUN_004329f0,0x4329f0,0xa7,__thiscall,,void,Bullet*
 th08::Bullet::FUN_00432aa0,0x432aa0,0xa7,__thiscall,,void,Bullet*
 th08::BulletManager::OnDraw,0x432b50,0x3c9,__fastcall,,ChainCallbackResult,BulletManager*
 th08::Bullet::DrawSingleBullet,0x432f20,0x140,__thiscall,,ZunResult,Bullet*
-FUN_00433070,0x433070,0x67e,unknown,,u8
-FUN_004337f0,0x4337f0,0x2a,unknown,,u8
+th08::BulletManager::AddedCallback,0x433070,0x67e,__fastcall,,ZunResult,BulletManager*
+th08::ItemManager::Initialize,0x4337f0,0x2a,__thiscall,,void,ItemManager*
 th08::BulletManager::DeletedCallback,0x433820,0x23,__fastcall,,ZunResult,BulletManager*
 th08::BulletManager::CutChain,0x433850,0x23,__stdcall,,void
 FUN_00433880,0x433880,0x21,unknown,,u8,u8

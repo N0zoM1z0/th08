@@ -21,6 +21,13 @@ ItemManager::ItemManager()
 {
 }
 
+// FUNCTION: th08 0x4337f0
+void ItemManager::Initialize()
+{
+    memset(this, 0, sizeof(ItemManager));
+    this->itemListTail = &this->itemListHead;
+}
+
 // FUNCTION: th08 0x440050
 Item::Item()
 {
