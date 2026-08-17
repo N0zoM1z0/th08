@@ -123,7 +123,13 @@ struct Player
     i32 IsHuman();
     i32 IsYoukai();
     f32 FUN_0044c1b0(Float3 *position);
+    i32 FUN_0044a230(Float3 *position, Float3 *size);
+    i32 FUN_0044a360(Float3 *position, Float3 *size);
+    i32 FUN_0044a470(Float3 *position, Float3 *size);
     u32 CalcItemBoxCollision(Float3 *position, Float3 *size);
+    u32 CalcLaserHitbox(Float3 *position, Float3 *size, Float3 *origin, f32 angle, i32 graze);
+    void FUN_0044a930(Float3 *position, i32 suppressExtraItems);
+    void Die();
     i32 FUN_00449ff0(Float3 *position, Float3 *position2);
 };
 C_ASSERT(sizeof(Player) == 0xe2b30);

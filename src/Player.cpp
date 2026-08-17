@@ -7,6 +7,11 @@
 #include "AnmManager.hpp"
 #include "Player.hpp"
 #include "SoundPlayer.hpp"
+#include "ReplayManager.hpp"
+#include "EnemyManager.hpp"
+#include "Spellcard.hpp"
+#include "EclManager.hpp"
+#include "utils.hpp"
 
 namespace th08
 {
@@ -91,6 +96,291 @@ f32 Player::FUN_0044c1b0(Float3 *position)
     }
 
     return VectorAngle(yDelta, xDelta);
+}
+
+// FUNCTION: th08 0x44a230
+#pragma var_order(boundsMax, boundsMin)
+i32 Player::FUN_0044a230(Float3 *position, Float3 *size)
+{
+    Float3 boundsMin;
+    Float3 boundsMax;
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A90) = 6;
+    if (this->FUN_00449ff0(position, size))
+        return 2;
+
+    boundsMin.x = position->x - size->x / 2.0f;
+    boundsMin.y = position->y - size->y / 2.0f;
+    boundsMax.x = size->x / 2.0f + position->x;
+    boundsMax.y = size->y / 2.0f + position->y;
+
+    if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x38C) > boundsMax.x ||
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x390) > boundsMax.y ||
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x398) < boundsMin.x ||
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x39C) < boundsMin.y)
+        return 0;
+
+    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 2;
+    if (this->playerState != PLAYER_STATE_ALIVE)
+        return 1;
+    g_GameManager.RandomizeAntiTamper();
+    this->Die();
+    return 1;
+}
+
+// FUNCTION: th08 0x44a360
+#pragma var_order(boundsMax, boundsMin)
+i32 Player::FUN_0044a360(Float3 *position, Float3 *size)
+{
+    Float3 boundsMin;
+    Float3 boundsMax;
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A90) = 6;
+    boundsMin.x = position->x - size->x / 2.0f;
+    boundsMin.y = position->y - size->y / 2.0f;
+    boundsMax.x = size->x / 2.0f + position->x;
+    boundsMax.y = size->y / 2.0f + position->y;
+
+    if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x38C) > boundsMax.x ||
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x390) > boundsMax.y ||
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x398) < boundsMin.x ||
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x39C) < boundsMin.y)
+        return 0;
+
+    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 2;
+    if (this->playerState != PLAYER_STATE_ALIVE)
+        return 1;
+    g_GameManager.RandomizeAntiTamper();
+    this->Die();
+    return 1;
+}
+
+// FUNCTION: th08 0x44a470
+#pragma var_order(boundsMax, boundsMin)
+i32 Player::FUN_0044a470(Float3 *position, Float3 *size)
+{
+    Float3 boundsMin;
+    Float3 boundsMax;
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A90) = 6;
+    if (this->FUN_00449ff0(position, size))
+        return 2;
+
+    boundsMin.x = position->x - size->x / 2.0f - 20.0f;
+    boundsMin.y = position->y - size->y / 2.0f - 20.0f;
+    boundsMax.x = size->x / 2.0f + position->x + 20.0f;
+    boundsMax.y = size->y / 2.0f + position->y + 20.0f;
+
+    if (this->playerState == PLAYER_STATE_DYING || this->playerState == PLAYER_STATE_SPAWNING)
+        return 0;
+
+    if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3A4) > boundsMax.x ||
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3B0) < boundsMin.x ||
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3A8) > boundsMax.y ||
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3B4) < boundsMin.y)
+        return 0;
+
+    this->FUN_0044a930(position, 0);
+    return 1;
+}
+
+// FUNCTION: th08 0x44a6a0
+#pragma var_order(playerMin, incomingMax, incomingMin, playerMax)
+u32 Player::CalcLaserHitbox(Float3 *position, Float3 *size, Float3 *origin, f32 angle, i32 graze)
+{
+    Float3 incomingMin;
+    Float3 incomingMax;
+    Float3 playerMin;
+    Float3 playerMax;
+
+    incomingMin = this->position - *origin;
+    Rotate(&incomingMax, &incomingMin, -angle);
+    incomingMax.z = 0.0f;
+    incomingMin = incomingMax + *origin;
+
+    playerMin = incomingMin - *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3D4);
+    playerMax = incomingMin + *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3D4);
+    incomingMin = *position - *size / 2.0f;
+    incomingMax = *position + *size / 2.0f;
+
+    if (!(playerMin.x > incomingMax.x))
+    {
+        if (!(playerMax.x < incomingMin.x))
+        {
+            if (!(playerMin.y > incomingMax.y))
+            {
+                if (!(playerMax.y < incomingMin.y))
+                    goto lethalPath;
+            }
+        }
+    }
+
+grazePath:
+    {
+        if (!graze)
+            return 0;
+
+        incomingMin.x -= 48.0f;
+        incomingMin.y -= 48.0f;
+        incomingMax.x += 48.0f;
+        incomingMax.y += 48.0f;
+
+        if (playerMin.x > incomingMax.x || playerMax.x < incomingMin.x ||
+            playerMin.y > incomingMax.y || playerMax.y < incomingMin.y)
+            return 0;
+
+        if (this->playerState == PLAYER_STATE_DYING || this->playerState == PLAYER_STATE_SPAWNING)
+            return 0;
+        this->FUN_0044a930(&this->position, 1);
+        return 2;
+    }
+
+lethalPath:
+    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 2;
+    if (this->playerState != PLAYER_STATE_ALIVE)
+        return 0;
+    g_GameManager.RandomizeAntiTamper();
+    this->Die();
+    return 1;
+}
+
+// FUNCTION: th08 0x44a930
+#pragma var_order(midpoint, gaugeGain, score)
+void Player::FUN_0044a930(Float3 *position, i32 suppressExtraItems)
+{
+    Float3 midpoint;
+    i32 gaugeGain;
+    i32 score;
+
+    if (g_Player.frameStop == 0)
+    {
+        gaugeGain = g_GameManager.GaugeIsExtremelyHuman()
+                        ? 3
+                        : (g_GameManager.GaugeIsModeratelyHuman() ? 2 : 1);
+
+        if (g_GameManager.globals->grazeInStage < 99999)
+            g_GameManager.globals->grazeInStage += gaugeGain;
+        if (g_GameManager.globals->graze < 999999)
+            g_GameManager.globals->graze += gaugeGain;
+    }
+
+    midpoint = (this->position + *position) / 2.0f;
+    g_EffectManager.SpawnEffect(8, reinterpret_cast<D3DXVECTOR3 *>(&midpoint), 1, -1);
+    g_GameManager.IncreaseSubrank(6);
+    g_Gui.flags.grazeDisplayUpdateFrames = 2;
+    g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(30), position->x);
+
+    score = g_GameManager.GaugeIsModeratelyYoukai() ? 4000 : 2000;
+    g_GameManager.AddScore(score);
+    if (this->IsYoukai())
+        g_GameManager.AddToYoukaiGauge(100, 0);
+
+    if (!g_GameManager.IsSoloHuman() || *reinterpret_cast<u8 *>(0x164D0B1) == 10)
+    {
+        if (g_EnemyManager.FUN_0042f1f0() && g_GameManager.GaugeIsExtremelyYoukai())
+        {
+            g_ItemManager.SpawnItem(position, ITEM_TIME2, 1);
+            if (!suppressExtraItems && g_Spellcard.IsActive())
+            {
+                g_ItemManager.SpawnItem(position, ITEM_TIME2, 1);
+                if (!g_GameManager.IsSoloYoukai())
+                    g_ItemManager.SpawnItem(position, ITEM_TIME2, 1);
+            }
+        }
+    }
+
+    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x2000;
+}
+
+// FUNCTION: th08 0x44ab40
+#pragma var_order(effectVm)
+void Player::Die()
+{
+    AnmVm *effectVm;
+
+    utils::DebugPrint("player DEAD");
+    g_EclScriptedGlobalUpdateFreeze = 0;
+    g_GameManager.UpdateAntiTamper();
+    g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 16, -1);
+    this->playerState = PLAYER_STATE_DYING;
+    this->timer = 0;
+    g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_PICHUN, this->position.x);
+    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x200;
+
+    if (((*reinterpret_cast<u32 *>(0x164D0B4) >> 7) & 3) != 0)
+    {
+        utils::DebugPrint(" desolve\n");
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) = 2;
+        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x6) = 1;
+    }
+    else
+    {
+        g_GameManager.SetYoukaiGauge(0);
+        if (g_GameManager.GetBombsRemaining() >= 1)
+        {
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) =
+                g_GameManager.GetBombsRemaining() * 6;
+            if (g_GameManager.GetTimeOrbs() >= g_GameManager.GetLastSpellTimeOrbThreshold())
+                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) += 7;
+            if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) > 15)
+                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) = 15;
+
+            if (g_Spellcard.IsActive())
+            {
+                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) +=
+                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68);
+                if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) > 30)
+                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) = 30;
+            }
+
+            if (*reinterpret_cast<u8 *>(0x164D0B1) == 0 || *reinterpret_cast<u8 *>(0x164D0B1) == 4 ||
+                *reinterpret_cast<u8 *>(0x164D0B1) == 5)
+            {
+                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) *= 9;
+                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) /= 5;
+            }
+
+            utils::DebugPrint(" preDeadCount %d\n",
+                              *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68));
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x206) = 0xFF;
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x205) = 0xFF;
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x204) = 0xFF;
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x207) =
+                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x203);
+            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x208) |= 0x20000;
+
+            *reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0xE2B28) =
+                g_EffectManager.FUN_00425870(59, reinterpret_cast<D3DXVECTOR3 *>(&this->position),
+                                              11, 1, 0xFFF0404F);
+            effectVm = *reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0xE2B28);
+            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effectVm) + 0x50) = 0;
+            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effectVm) + 0xA4) =
+                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68);
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effectVm) + 0xF8) = 4;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x238) = 128.0f;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x244) = 8.0f;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x23C) = 32.0f;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x248) = 0.0f;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x208) = 128.0f;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x20C) = 32.0f;
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effectVm) + 0x324) = 64;
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effectVm) + 0x318) = 0;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x314) = 128.0f;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x320) = 15.0f;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x334) = 6.0f;
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effectVm) + 0x357) = 1;
+
+            if (g_Spellcard.IsActive())
+                *reinterpret_cast<u32 *>(0x164D0B4) |= 0x400;
+        }
+        else
+        {
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) = 2;
+            utils::DebugPrint(" Miss\n");
+        }
+    }
+
+    g_ItemManager.CancelAutoCollect();
 }
 
 // FUNCTION: th08 0x44a5a0

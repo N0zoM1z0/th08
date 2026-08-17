@@ -793,3 +793,10 @@ address,name,size,status,match_percent,unit,evidence
 0x004284B0,th08::EffectManager::AddedCallback,216,matching,100.00,effect-manager-added-callback,python3 scripts/compare-function.py effect-manager-added-callback --json
 0x00428590,th08::EffectManager::DeletedCallback,132,matching,100.00,effect-manager-deleted-callback,python3 scripts/compare-function.py effect-manager-deleted-callback --json
 0x00428620,th08::EffectManager::RegisterChain,135,matching,100.00,effect-manager-register-chain,python3 scripts/compare-function.py effect-manager-register-chain --json
+0x0042F1F0,th08::EnemyManager::FUN_0042f1f0,64,matching,100.00,enemy-manager-has-indexed-enemy,python3 scripts/compare-function.py enemy-manager-has-indexed-enemy --json
+0x0044A230,th08::Player::FUN_0044a230,302,matching,100.00,player-bullet-collision-or-cancel,python3 scripts/compare-function.py player-bullet-collision-or-cancel --json
+0x0044A360,th08::Player::FUN_0044a360,272,matching,100.00,player-deadly-aabb-contact,python3 scripts/compare-function.py player-deadly-aabb-contact --json
+0x0044A470,th08::Player::FUN_0044a470,303,matching,100.00,player-aux-collision-graze,python3 scripts/compare-function.py player-aux-collision-graze --json
+0x0044A6A0,th08::Player::CalcLaserHitbox,651,matching,100.00,player-laser-hitbox,python3 scripts/compare-function.py player-laser-hitbox --json
+0x0044A930,th08::Player::FUN_0044a930,521,matching,100.00,player-graze-reward,python3 scripts/compare-function.py player-graze-reward --json
+0x0044AB40,th08::Player::Die,888,matching,100.00,player-die,python3 scripts/compare-function.py player-die --json

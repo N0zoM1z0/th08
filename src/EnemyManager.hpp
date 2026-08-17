@@ -30,6 +30,7 @@ struct EnemyManager
     static ZunResult DeletedCallback(EnemyManager *enemyManager);
     void *SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i32 b, i32 c, i32 *outContext);
     i32 FUN_0042efb0(i32 maxScore, i32 totalScore);
+    i32 FUN_0042f1f0();
     static void CutChain();
 };
 

@@ -100,6 +100,18 @@ void Enemy::FUN_0042bc90()
     }
 }
 
+// FUNCTION: th08 0x42f1f0
+i32 EnemyManager::FUN_0042f1f0()
+{
+    i32 i;
+    for (i = 0; i < 8; i++)
+    {
+        if (*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x9DCDA0 + i * 4) != NULL)
+            return 1;
+    }
+    return 0;
+}
+
 // FUNCTION: th08 0x42efb0
 #pragma var_order(score, totalScore, enemy, enemyIndex, itemIndex, this)
 i32 EnemyManager::FUN_0042efb0(i32 maxScore, i32 initialScore)

@@ -792,3 +792,10 @@ th08::EffectManager::OnDraw
 th08::EffectManager::AddedCallback
 th08::EffectManager::DeletedCallback
 th08::EffectManager::RegisterChain
+th08::EnemyManager::FUN_0042f1f0
+th08::Player::FUN_0044a230
+th08::Player::FUN_0044a360
+th08::Player::FUN_0044a470
+th08::Player::CalcLaserHitbox
+th08::Player::FUN_0044a930
+th08::Player::Die

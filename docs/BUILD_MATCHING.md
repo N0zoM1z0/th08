@@ -358,3 +358,21 @@ Two recent strict closures expose source-shape rules that are useful for large V
 - In `EffectManager::OnUpdate` (0x427BF0), an equivalent `else if (mode != 0)` placed its body immediately after the test and produced a short branch, leaving the function at 0x309 bytes. Structuring the same logic as `if (mode == 0) { nested cases } else { nonzero body }` moves that body after the nested subtree, causing VC7 to emit the target long branch and the exact 0x30A-byte body. For near-exact large functions, inspect where physical branch bodies live before changing data or adding padding.
 
 These are compiler-owned layout effects, not semantic differences. Prefer source restructuring and strict recompile over manual byte compensation.
+
+### VC7 conditional-result temporaries and collision gate layout
+
+The Player collision cluster around 0x44A230..0x44A930 adds two reusable `/Od` source-shape rules:
+
+- `Player::FUN_0044a930` needs a nested conditional expression, `extreme ? 3 : (moderate ? 2 : 1)`. VC7 materializes the outer conditional result in a hidden stack slot and then copies it to the named local. Writing `(moderate != 0) + 1` is semantically identical but lowers through `neg/sbb/neg/add` and removes the target hidden result temporary. When a decompiler shows an anonymous value copied into a named local immediately after a conditional, preserve the conditional-expression ownership rather than algebraically simplifying it.
+- `Player::CalcLaserHitbox` uses four nested negated overlap gates for its first rectangle test. A failure exits the nested region and naturally falls into the graze path; only four successful gates execute the explicit `goto` to the lethal path. Flattening the same test into a positive `&&` or a failure `||` changes the final x87 branch sense and introduces/removes compiler trampolines. The same `!(min > max)` / `!(max < min)` spelling also preserves the target `test ah,0x41` and `test ah,0x05` masks.
+
+The laser helper also demonstrates that a seemingly interchangeable argument can be target-visible: the successful graze callback passes `&this->position`, not the incoming laser position. That changes the call setup by nine bytes even though both positions may be close in gameplay semantics.
+
+### VC7 cold-path placement and arithmetic spelling
+
+`Player::Die` (0x44AB40) shows two more source-shape details worth preserving in large control-flow functions:
+
+- The target keeps the normal `bombs >= 1` deathbomb path lexically before the rare Miss path. This makes VC7 emit a six-byte forward `jl` into the cold tail block. Writing the equivalent `if (bombs < 1) { Miss } else { main }` places the cold block first and shrinks the branch to a short inverse jump, shifting the remainder of the function.
+- Doubling the pre-death counter must be written as `counter += counter`; `counter *= 2` lowers to `shl` and removes the target's repeated receiver/load/add/store sequence under `/Od`.
+
+When a near-exact function is short by only a handful of bytes, inspect cold-path lexical placement and apparently trivial arithmetic rewrites before adding locals or touching data layout.
