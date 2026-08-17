@@ -4,9 +4,12 @@
 #include "AnmManager.hpp"
 #include "ItemManager.hpp"
 #include "ReplayManager.hpp"
+#include "GameManager.hpp"
 
 namespace th08
 {
+
+ZunBool IsDisableResourceReload();
 
 // FUNCTION: th08 0x428310
 #pragma var_order(delta, point)
@@ -47,6 +50,235 @@ void __fastcall FUN_00428310(AnmVm *effect, D3DXVECTOR3 *base)
 DIFFABLE_STATIC(EffectManager, g_EffectManager);
 DIFFABLE_STATIC(ChainElem, g_EffectManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_EffectManagerDrawChain);
+
+// Target 0x004E4B64 is owned by Gui.cpp but participates in effect-resource setup.
+extern i32 g_GuiMessageStageMode;
+
+// FUNCTION: th08 0x425410
+void EffectManager::ResetEffects()
+{
+    memset(this, 0, 0x8B05C);
+}
+
+// FUNCTION: th08 0x427bf0
+#pragma var_order(effect, i)
+ChainCallbackResult EffectManager::OnUpdate(EffectManager *effectManager)
+{
+    u8 *effect = reinterpret_cast<u8 *>(effectManager) + 0x1C;
+    i32 i;
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effectManager) + 0x8) = 0;
+    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8B03C) =
+        reinterpret_cast<u8 *>(effectManager) + 0x89F5C;
+    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8B040) =
+        reinterpret_cast<u8 *>(effectManager) + 0x8A2BC;
+    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8B044) =
+        reinterpret_cast<u8 *>(effectManager) + 0x8A61C;
+    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8B048) =
+        reinterpret_cast<u8 *>(effectManager) + 0x8A97C;
+    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8B04C) =
+        reinterpret_cast<u8 *>(effectManager) + 0x8ACDC;
+
+    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8A2B8) = NULL;
+    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8A618) = NULL;
+    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8A978) = NULL;
+    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8ACD8) = NULL;
+    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8B038) = NULL;
+
+    for (i = 0; i < 653; i++, effect += 0x360)
+    {
+        if (*reinterpret_cast<i8 *>(effect + 0x350) == 0)
+        {
+            if (*reinterpret_cast<void **>(effect + 0x358) != NULL)
+            {
+                g_ZunMemory.Free(*reinterpret_cast<void **>(effect + 0x358));
+                *reinterpret_cast<void **>(effect + 0x358) = NULL;
+            }
+            continue;
+        }
+
+        (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effectManager) + 0x8))++;
+        if (((*reinterpret_cast<u32 *>(0x164D0B4) >> 10) & 1) == 0 ||
+            *reinterpret_cast<i8 *>(effect + 0x357) != 0)
+        {
+            if (*reinterpret_cast<void **>(effect + 0x348) != NULL &&
+                reinterpret_cast<i32 (__fastcall *)(void *)>(*reinterpret_cast<void **>(effect + 0x348))(effect) != 1)
+            {
+                *reinterpret_cast<i8 *>(effect + 0x350) = 0;
+                continue;
+            }
+            if (g_AnmManager->ExecuteScript(reinterpret_cast<AnmVm *>(effect)))
+            {
+                *reinterpret_cast<i8 *>(effect + 0x350) = 0;
+                continue;
+            }
+            (*reinterpret_cast<ZunTimer *>(effect + 0x338))++;
+        }
+
+        *reinterpret_cast<u8 **>(effect + 0x35C) = NULL;
+        if (*reinterpret_cast<i8 *>(effect + 0x351) == 0x40)
+            continue;
+
+        if (*reinterpret_cast<i8 *>(effect + 0x354) == 1 || *reinterpret_cast<i8 *>(effect + 0x354) >= 3)
+        {
+            *reinterpret_cast<u8 **>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8B040) + 0x35C) = effect;
+            *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8B040) = effect;
+        }
+        else if (*reinterpret_cast<i8 *>(effect + 0x354) == 0)
+        {
+            if (*reinterpret_cast<i8 *>(effect + 0x355) != 0)
+            {
+                *reinterpret_cast<u8 **>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8B048) + 0x35C) = effect;
+                *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8B048) = effect;
+            }
+            else if (((*reinterpret_cast<u32 *>(effect + 0x1F8) >> 4) & 3) == 1)
+            {
+                *reinterpret_cast<u8 **>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8B04C) + 0x35C) = effect;
+                *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8B04C) = effect;
+            }
+            else
+            {
+                *reinterpret_cast<u8 **>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8B03C) + 0x35C) = effect;
+                *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8B03C) = effect;
+            }
+        }
+        else
+        {
+            *reinterpret_cast<u8 **>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8B044) + 0x35C) = effect;
+            *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8B044) = effect;
+        }
+    }
+
+    if (++*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effectManager) + 0x8B050) % 300 == 100 &&
+        g_GameManager.IsTampered())
+        return CHAIN_CALLBACK_RESULT_EXIT_GAME_SUCCESS;
+    return CHAIN_CALLBACK_RESULT_CONTINUE;
+}
+
+// FUNCTION: th08 0x427f00
+#pragma var_order(effect)
+ChainCallbackResult EffectManager::OnDraw(EffectManager *effectManager)
+{
+    u8 *effect;
+
+    effect = *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8A2B8);
+    while (effect != NULL)
+    {
+        if (*reinterpret_cast<void **>(effect + 0x34C) != NULL)
+        {
+            reinterpret_cast<void (__fastcall *)(void *)>(*reinterpret_cast<void **>(effect + 0x34C))(effect);
+        }
+        else
+        {
+            *reinterpret_cast<Float3 *>(effect + 0x208) = *reinterpret_cast<Float3 *>(effect + 0x2A4);
+            *reinterpret_cast<f32 *>(effect + 0x208) += g_ItemAnmManagerScreenShakeOffset.x;
+            *reinterpret_cast<f32 *>(effect + 0x20C) += g_ItemAnmManagerScreenShakeOffset.y;
+            *reinterpret_cast<f32 *>(effect + 0x210) = 0.07f;
+            reinterpret_cast<Float3 *>(effect + 0x208)->operator+=(
+                *reinterpret_cast<Float3 *>(effect + 0x288));
+            g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(effect));
+        }
+        effect = *reinterpret_cast<u8 **>(effect + 0x35C);
+    }
+
+    effect = *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8A978);
+    while (effect != NULL)
+    {
+        *reinterpret_cast<Float3 *>(effect + 0x208) = *reinterpret_cast<Float3 *>(effect + 0x2A4);
+        g_AnmManager->FUN_00463cf0(reinterpret_cast<AnmVm *>(effect));
+        effect = *reinterpret_cast<u8 **>(effect + 0x35C);
+    }
+
+    effect = *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(effectManager) + 0x8B038);
+    while (effect != NULL)
+    {
+        if (*reinterpret_cast<void **>(effect + 0x34C) != NULL)
+        {
+            reinterpret_cast<void (__fastcall *)(void *)>(*reinterpret_cast<void **>(effect + 0x34C))(effect);
+        }
+        else
+        {
+            *reinterpret_cast<Float3 *>(effect + 0x208) = *reinterpret_cast<Float3 *>(effect + 0x2A4);
+            *reinterpret_cast<f32 *>(effect + 0x208) += g_ItemAnmManagerScreenShakeOffset.x;
+            *reinterpret_cast<f32 *>(effect + 0x20C) += g_ItemAnmManagerScreenShakeOffset.y;
+            *reinterpret_cast<f32 *>(effect + 0x210) = 0.07f;
+            reinterpret_cast<Float3 *>(effect + 0x208)->operator+=(
+                *reinterpret_cast<Float3 *>(effect + 0x288));
+            g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(effect));
+        }
+        effect = *reinterpret_cast<u8 **>(effect + 0x35C);
+    }
+
+    return CHAIN_CALLBACK_RESULT_CONTINUE;
+}
+
+// FUNCTION: th08 0x4284b0
+ZunResult EffectManager::AddedCallback(EffectManager *effectManager)
+{
+    effectManager->ResetEffects();
+    *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B054) = g_AnmManager->GetAnm(6);
+    g_GuiMessageStageMode = 0;
+    *reinterpret_cast<i32 *>(0x4E4B60) = 2;
+
+    if (!IsDisableResourceReload())
+    {
+        if (!g_GameManager.IsSpellPractice() || g_GameManager.currentSpellCardNumber < 216)
+        {
+            *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B058) =
+                g_AnmManager->PreloadAnm(9, reinterpret_cast<const char **>(0x4C7480)[g_GameManager.currentStage]);
+        }
+        else
+        {
+            *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B058) =
+                g_AnmManager->PreloadAnm(
+                    9, reinterpret_cast<const char **>(0x4C7144)[g_GameManager.currentSpellCardNumber]);
+        }
+        if (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B058) == NULL)
+            return ZUN_ERROR;
+    }
+    else
+    {
+        *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B058) = g_AnmManager->GetAnm(9);
+    }
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x428590
+#pragma var_order(effect, i)
+ZunResult EffectManager::DeletedCallback(EffectManager *effectManager)
+{
+    u8 *effect = reinterpret_cast<u8 *>(effectManager) + 0x1C;
+    i32 i;
+    for (i = 0; i < 653; i++, effect += 0x360)
+    {
+        if (*reinterpret_cast<void **>(effect + 0x358) != NULL)
+        {
+            g_ZunMemory.Free(*reinterpret_cast<void **>(effect + 0x358));
+            *reinterpret_cast<void **>(effect + 0x358) = NULL;
+        }
+    }
+    if (!IsDisableResourceReload())
+        g_AnmManager->ReleaseAnm(9);
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x428620
+ZunResult EffectManager::RegisterChain()
+{
+    EffectManager *effectManager = &g_EffectManager;
+    effectManager->ResetEffects();
+    g_EffectManagerCalcChain.SetCallback((ChainCallback)EffectManager::OnUpdate);
+    g_EffectManagerCalcChain.addedCallback = (ChainLifetimeCallback)EffectManager::AddedCallback;
+    g_EffectManagerCalcChain.deletedCallback = (ChainLifetimeCallback)EffectManager::DeletedCallback;
+    g_EffectManagerCalcChain.arg = effectManager;
+    if (g_Chain.AddToCalcChain(&g_EffectManagerCalcChain, 13) != ZUN_SUCCESS)
+        return ZUN_ERROR;
+
+    g_EffectManagerDrawChain.SetCallback((ChainCallback)EffectManager::OnDraw);
+    g_EffectManagerDrawChain.arg = effectManager;
+    g_Chain.AddToDrawChain(&g_EffectManagerDrawChain, 12);
+    return ZUN_SUCCESS;
+}
 
 // FUNCTION: th08 0x428100
 #pragma var_order(effect, this)

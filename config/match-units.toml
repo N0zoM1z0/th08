@@ -79189,3 +79189,567 @@ object = "build/objdiff/reimpl/Global.obj"
 symbol = "th08::Rng::GetSeed"
 target_address = 0x00453C20
 size = 17
+
+[[units]]
+name = "game-manager-clock-increment"
+object = "build/objdiff/reimpl/GameManager.obj"
+symbol = "th08::GameManager::GetClockTimeIncrement"
+target_address = 0x0043C35F
+size = 0x134
+compare_size = 0x154
+
+[[units.relocations]]
+offset = 10
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDC4
+
+[[units.relocations]]
+offset = 33
+type = "DIR32"
+symbol = "$L*"
+target = 0x0043C493
+
+[[units.relocations]]
+offset = 38
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 8
+
+[[units.relocations]]
+offset = 49
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 8
+
+[[units.relocations]]
+offset = 84
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 8
+
+[[units.relocations]]
+offset = 95
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 8
+
+[[units.relocations]]
+offset = 130
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 8
+
+[[units.relocations]]
+offset = 141
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 8
+
+[[units.relocations]]
+offset = 176
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 8
+
+[[units.relocations]]
+offset = 187
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 8
+
+[[units.relocations]]
+offset = 216
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 8
+
+[[units.relocations]]
+offset = 227
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 8
+
+[[units.relocations]]
+offset = 256
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 8
+
+[[units.relocations]]
+offset = 267
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 8
+
+[[units.relocations]]
+offset = 308
+type = "DIR32"
+symbol = "$L*"
+target = 0x0043C384
+
+[[units.relocations]]
+offset = 312
+type = "DIR32"
+symbol = "$L*"
+target = 0x0043C3B2
+
+[[units.relocations]]
+offset = 316
+type = "DIR32"
+symbol = "$L*"
+target = 0x0043C3E0
+
+[[units.relocations]]
+offset = 320
+type = "DIR32"
+symbol = "$L*"
+target = 0x0043C40E
+
+[[units.relocations]]
+offset = 324
+type = "DIR32"
+symbol = "$L*"
+target = 0x0043C436
+
+[[units.relocations]]
+offset = 328
+type = "DIR32"
+symbol = "$L*"
+target = 0x0043C45E
+
+[[units.relocations]]
+offset = 332
+type = "DIR32"
+symbol = "$L*"
+target = 0x0043C486
+
+[[units.relocations]]
+offset = 336
+type = "DIR32"
+symbol = "$L*"
+target = 0x0043C48A
+
+[[units]]
+name = "effect-manager-reset-effects"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "th08::EffectManager::ResetEffects"
+target_address = 0x00425410
+size = 25
+
+[[units]]
+name = "effect-manager-added-callback"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "th08::EffectManager::AddedCallback"
+target_address = 0x004284B0
+size = 216
+
+[[units.relocations]]
+offset = 11
+type = "REL32"
+symbol = "th08::EffectManager::ResetEffects"
+target = 0x00425410
+
+[[units.relocations]]
+offset = 19
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 24
+type = "REL32"
+symbol = "?GetAnm@AnmManager@th08@@QAEPAUAnmLoaded@2@H@Z"
+target = 0x0040BB60
+
+[[units.relocations]]
+offset = 39
+type = "DIR32"
+symbol = "?g_GuiMessageStageMode@th08@@3HA"
+target = 0x004E4B64
+
+[[units.relocations]]
+offset = 58
+type = "REL32"
+symbol = "?IsDisableResourceReload@th08@@YIIXZ"
+target = 0x0040B900
+
+[[units.relocations]]
+offset = 67
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 72
+type = "REL32"
+symbol = "?IsSpellPractice@GameManager@th08@@QAEIXZ"
+target = 0x00406C70
+
+[[units.relocations]]
+offset = 83
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBB0
+
+[[units.relocations]]
+offset = 96
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBB0
+
+[[units.relocations]]
+offset = 112
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 117
+type = "REL32"
+symbol = "?PreloadAnm@AnmManager@th08@@QAEPAUAnmLoaded@2@HPBD@Z"
+target = 0x00465A40
+
+[[units.relocations]]
+offset = 135
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDC4
+
+[[units.relocations]]
+offset = 151
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 156
+type = "REL32"
+symbol = "?PreloadAnm@AnmManager@th08@@QAEPAUAnmLoaded@2@HPBD@Z"
+target = 0x00465A40
+
+[[units.relocations]]
+offset = 192
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 197
+type = "REL32"
+symbol = "?GetAnm@AnmManager@th08@@QAEPAUAnmLoaded@2@H@Z"
+target = 0x0040BB60
+
+[[units]]
+name = "effect-manager-deleted-callback"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "th08::EffectManager::DeletedCallback"
+target_address = 0x00428590
+size = 132
+
+[[units.relocations]]
+offset = 80
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 85
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+[[units.relocations]]
+offset = 105
+type = "REL32"
+symbol = "?IsDisableResourceReload@th08@@YIIXZ"
+target = 0x0040B900
+
+[[units.relocations]]
+offset = 117
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 122
+type = "REL32"
+symbol = "?ReleaseAnm@AnmManager@th08@@QAEXH@Z"
+target = 0x00466060
+
+[[units]]
+name = "effect-manager-register-chain"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "th08::EffectManager::RegisterChain"
+target_address = 0x00428620
+size = 135
+
+[[units.relocations]]
+offset = 7
+type = "DIR32"
+symbol = "th08::g_EffectManager"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 15
+type = "REL32"
+symbol = "th08::EffectManager::ResetEffects"
+target = 0x00425410
+
+[[units.relocations]]
+offset = 20
+type = "DIR32"
+symbol = "th08::EffectManager::OnUpdate"
+target = 0x00427BF0
+
+[[units.relocations]]
+offset = 25
+type = "DIR32"
+symbol = "?g_EffectManagerCalcChain@th08@@3VChainElem@1@A"
+target = 0x00577EBC
+
+[[units.relocations]]
+offset = 30
+type = "REL32"
+symbol = "?SetCallback@ChainElem@th08@@QAEXP6I?AW4ChainCallbackResult@2@PAX@Z@Z"
+target = 0x00406520
+
+[[units.relocations]]
+offset = 36
+type = "DIR32"
+symbol = "?g_EffectManagerCalcChain@th08@@3VChainElem@1@A"
+target = 0x00577EBC
+addend = 0x8
+
+[[units.relocations]]
+offset = 40
+type = "DIR32"
+symbol = "th08::EffectManager::AddedCallback"
+target = 0x004284B0
+
+[[units.relocations]]
+offset = 46
+type = "DIR32"
+symbol = "?g_EffectManagerCalcChain@th08@@3VChainElem@1@A"
+target = 0x00577EBC
+addend = 0xC
+
+[[units.relocations]]
+offset = 50
+type = "DIR32"
+symbol = "th08::EffectManager::DeletedCallback"
+target = 0x00428590
+
+[[units.relocations]]
+offset = 58
+type = "DIR32"
+symbol = "?g_EffectManagerCalcChain@th08@@3VChainElem@1@A"
+target = 0x00577EBC
+addend = 0x1C
+
+[[units.relocations]]
+offset = 65
+type = "DIR32"
+symbol = "?g_EffectManagerCalcChain@th08@@3VChainElem@1@A"
+target = 0x00577EBC
+
+[[units.relocations]]
+offset = 70
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 75
+type = "REL32"
+symbol = "?AddToCalcChain@Chain@th08@@QAEHPAVChainElem@2@H@Z"
+target = 0x0043C880
+
+[[units.relocations]]
+offset = 89
+type = "DIR32"
+symbol = "th08::EffectManager::OnDraw"
+target = 0x00427F00
+
+[[units.relocations]]
+offset = 94
+type = "DIR32"
+symbol = "?g_EffectManagerDrawChain@th08@@3VChainElem@1@A"
+target = 0x00577EDC
+
+[[units.relocations]]
+offset = 99
+type = "REL32"
+symbol = "?SetCallback@ChainElem@th08@@QAEXP6I?AW4ChainCallbackResult@2@PAX@Z@Z"
+target = 0x00406520
+
+[[units.relocations]]
+offset = 108
+type = "DIR32"
+symbol = "?g_EffectManagerDrawChain@th08@@3VChainElem@1@A"
+target = 0x00577EDC
+addend = 0x1C
+
+[[units.relocations]]
+offset = 115
+type = "DIR32"
+symbol = "?g_EffectManagerDrawChain@th08@@3VChainElem@1@A"
+target = 0x00577EDC
+
+[[units.relocations]]
+offset = 120
+type = "DIR32"
+symbol = "?g_Chain@th08@@3VChain@1@A"
+target = 0x0164F548
+
+[[units.relocations]]
+offset = 125
+type = "REL32"
+symbol = "?AddToDrawChain@Chain@th08@@QAEHPAVChainElem@2@H@Z"
+target = 0x0043C960
+
+[[units]]
+name = "effect-manager-on-draw"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "th08::EffectManager::OnDraw"
+target_address = 0x00427F00
+size = 501
+
+[[units.relocations]]
+offset = 99
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 123
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+addend = 4
+
+[[units.relocations]]
+offset = 175
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 185
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 190
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units.relocations]]
+offset = 269
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 274
+type = "REL32"
+symbol = "?FUN_00463cf0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463CF0
+
+[[units.relocations]]
+offset = 381
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 405
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+addend = 4
+
+[[units.relocations]]
+offset = 456
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 466
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 471
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units]]
+name = "effect-manager-on-update"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "th08::EffectManager::OnUpdate"
+target_address = 0x00427BF0
+size = 778
+
+[[units.relocations]]
+offset = 261
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 266
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+[[units.relocations]]
+offset = 380
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 385
+type = "REL32"
+symbol = "?ExecuteScript@AnmManager@th08@@QAEIPAUAnmVm@2@@Z"
+target = 0x0045EA00
+
+[[units.relocations]]
+offset = 420
+type = "REL32"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
+target = 0x00406640
+
+[[units.relocations]]
+offset = 749
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 754
+type = "REL32"
+symbol = "?IsTampered@GameManager@th08@@QAEIXZ"
+target = 0x0040BB80

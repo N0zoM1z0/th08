@@ -786,3 +786,10 @@ address,name,size,status,match_percent,unit,evidence
 0x00453BE0,th08::Rng::SetSeed,23,matching,100.00,rng-set-seed,python3 scripts/compare-function.py rng-set-seed --json
 0x00453C00,th08::Rng::ResetGenerationCount,21,matching,100.00,rng-reset-generation-count,python3 scripts/compare-function.py rng-reset-generation-count --json
 0x00453C20,th08::Rng::GetSeed,17,matching,100.00,rng-get-seed,python3 scripts/compare-function.py rng-get-seed --json
+0x0043C35F,th08::GameManager::GetClockTimeIncrement,308,matching,100.00,game-manager-clock-increment,python3 scripts/compare-function.py game-manager-clock-increment --json
+0x00425410,th08::EffectManager::ResetEffects,25,matching,100.00,effect-manager-reset-effects,python3 scripts/compare-function.py effect-manager-reset-effects --json
+0x00427BF0,th08::EffectManager::OnUpdate,778,matching,100.00,effect-manager-on-update,python3 scripts/compare-function.py effect-manager-on-update --json
+0x00427F00,th08::EffectManager::OnDraw,501,matching,100.00,effect-manager-on-draw,python3 scripts/compare-function.py effect-manager-on-draw --json
+0x004284B0,th08::EffectManager::AddedCallback,216,matching,100.00,effect-manager-added-callback,python3 scripts/compare-function.py effect-manager-added-callback --json
+0x00428590,th08::EffectManager::DeletedCallback,132,matching,100.00,effect-manager-deleted-callback,python3 scripts/compare-function.py effect-manager-deleted-callback --json
+0x00428620,th08::EffectManager::RegisterChain,135,matching,100.00,effect-manager-register-chain,python3 scripts/compare-function.py effect-manager-register-chain --json

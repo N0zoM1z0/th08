@@ -621,13 +621,29 @@ void GameManager::CutChain()
     g_Supervisor.framerateMultiplier = 1.0f;
 }
 
+#pragma var_order(timeOrbs1, threshold1, timeOrbs2, threshold2, timeOrbs3, threshold3, timeOrbs4, threshold4, timeOrbs5, threshold5, timeOrbs6, threshold6)
 i32 GameManager::GetClockTimeIncrement()
 {
-    // ZUN bloat: Why not use switch case fallthrough?
+    i32 timeOrbs1;
+    i32 threshold1;
+    i32 timeOrbs2;
+    i32 threshold2;
+    i32 timeOrbs3;
+    i32 threshold3;
+    i32 timeOrbs4;
+    i32 threshold4;
+    i32 timeOrbs5;
+    i32 threshold5;
+    i32 timeOrbs6;
+    i32 threshold6;
+
+    // ZUN bloat: each stage keeps its own pair of temporaries.
     switch (g_GameManager.currentStage)
     {
     case STAGE1:
-        if (g_GameManager.GetTimeOrbs() >= g_GameManager.GetLastSpellTimeOrbThreshold())
+        timeOrbs1 = g_GameManager.globals->currentTimeOrbs;
+        threshold1 = g_GameManager.globals->lastSpellTimeOrbThreshold;
+        if (timeOrbs1 >= threshold1)
         {
             return 1;
         }
@@ -636,7 +652,9 @@ i32 GameManager::GetClockTimeIncrement()
             return 2;
         }
     case STAGE2:
-        if (g_GameManager.GetTimeOrbs() >= g_GameManager.GetLastSpellTimeOrbThreshold())
+        timeOrbs2 = g_GameManager.globals->currentTimeOrbs;
+        threshold2 = g_GameManager.globals->lastSpellTimeOrbThreshold;
+        if (timeOrbs2 >= threshold2)
         {
             return 1;
         }
@@ -645,7 +663,9 @@ i32 GameManager::GetClockTimeIncrement()
             return 2;
         }
     case STAGE3:
-        if (g_GameManager.GetTimeOrbs() >= g_GameManager.GetLastSpellTimeOrbThreshold())
+        timeOrbs3 = g_GameManager.globals->currentTimeOrbs;
+        threshold3 = g_GameManager.globals->lastSpellTimeOrbThreshold;
+        if (timeOrbs3 >= threshold3)
         {
             return 1;
         }
@@ -654,7 +674,9 @@ i32 GameManager::GetClockTimeIncrement()
             return 2;
         }
     case STAGE4A:
-        if (g_GameManager.GetTimeOrbs() >= g_GameManager.GetLastSpellTimeOrbThreshold())
+        timeOrbs4 = g_GameManager.globals->currentTimeOrbs;
+        threshold4 = g_GameManager.globals->lastSpellTimeOrbThreshold;
+        if (timeOrbs4 >= threshold4)
         {
             return 1;
         }
@@ -663,7 +685,9 @@ i32 GameManager::GetClockTimeIncrement()
             return 2;
         }
     case STAGE4B:
-        if (g_GameManager.GetTimeOrbs() >= g_GameManager.GetLastSpellTimeOrbThreshold())
+        timeOrbs5 = g_GameManager.globals->currentTimeOrbs;
+        threshold5 = g_GameManager.globals->lastSpellTimeOrbThreshold;
+        if (timeOrbs5 >= threshold5)
         {
             return 1;
         }
@@ -672,7 +696,9 @@ i32 GameManager::GetClockTimeIncrement()
             return 2;
         }
     case STAGE5:
-        if (g_GameManager.GetTimeOrbs() >= g_GameManager.GetLastSpellTimeOrbThreshold())
+        timeOrbs6 = g_GameManager.globals->currentTimeOrbs;
+        threshold6 = g_GameManager.globals->lastSpellTimeOrbThreshold;
+        if (timeOrbs6 >= threshold6)
         {
             return 1;
         }

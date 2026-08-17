@@ -349,3 +349,12 @@ nonzero instead of borrowing TH07 assumptions.
 
 - Tiny class helpers that already exist as natural C++ may still lack a standalone production owner. The Rng seed accessors were originally class-inline definitions; moving their unchanged bodies to `Global.cpp` produced the target standalone VC7 functions (`SetSeed`, `ResetGenerationCount`, `GetSeed`) without changing semantics. Treat such moves as shared-header changes: fresh-rebuild callers and rerun their strict units before accepting the new owner.
 - Existing COMDAT-emitted helpers can sometimes be attested without any source change at all. `Float3::operator+=` and `AnmManager::ResetFrameDebugInfo` were already emitted by production objects and matched their target extents directly; source presence should still be separated from exact ledger acceptance until the canonical comparator is run.
+
+### VC7 dispatcher locals and lexical branch placement
+
+Two recent strict closures expose source-shape rules that are useful for large VC7 dispatchers:
+
+- `GameManager::GetClockTimeIncrement` (0x43C35F) only reproduces its 0x38-byte frame when each of the six repeated stage cases has its own pair of integer locals. Calling equivalent getters or reusing one pair shrinks the frame and changes every case body. The target also requires explicit `if/else` returns; a semantically equivalent ternary lowers to `setl/inc` instead. The authored body is 0x134 bytes followed by a compiler-owned 0x20-byte jump table.
+- In `EffectManager::OnUpdate` (0x427BF0), an equivalent `else if (mode != 0)` placed its body immediately after the test and produced a short branch, leaving the function at 0x309 bytes. Structuring the same logic as `if (mode == 0) { nested cases } else { nonzero body }` moves that body after the nested subtree, causing VC7 to emit the target long branch and the exact 0x30A-byte body. For near-exact large functions, inspect where physical branch bodies live before changing data or adding padding.
+
+These are compiler-owned layout effects, not semantic differences. Prefer source restructuring and strict recompile over manual byte compensation.

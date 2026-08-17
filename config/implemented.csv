@@ -785,3 +785,10 @@ th08::AnmManager::ResetFrameDebugInfo
 th08::Rng::SetSeed
 th08::Rng::ResetGenerationCount
 th08::Rng::GetSeed
+th08::GameManager::GetClockTimeIncrement
+th08::EffectManager::ResetEffects
+th08::EffectManager::OnUpdate
+th08::EffectManager::OnDraw
+th08::EffectManager::AddedCallback
+th08::EffectManager::DeletedCallback
+th08::EffectManager::RegisterChain

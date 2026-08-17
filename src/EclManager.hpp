@@ -16,6 +16,12 @@ struct AnmVm;
 // The full manager layout remains outside the recovered public ABI.
 struct EffectManager
 {
+    void ResetEffects();
+    static ChainCallbackResult OnUpdate(EffectManager *effectManager);
+    static ChainCallbackResult OnDraw(EffectManager *effectManager);
+    static ZunResult AddedCallback(EffectManager *effectManager);
+    static ZunResult DeletedCallback(EffectManager *effectManager);
+    static ZunResult RegisterChain();
     static void CutChain();
     AnmVm *SpawnEffect00425B70(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
     AnmVm *SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
