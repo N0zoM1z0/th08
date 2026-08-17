@@ -749,3 +749,5 @@ th08::Spellcard::Init
 th08::GameManager::IsSpellNumberEqualTo
 th08::Spellcard::RegisterChain
 th08::FUN_004353ec
+th08::AnmManager::CopyTextureRect
+th08::FUN_00437f5c

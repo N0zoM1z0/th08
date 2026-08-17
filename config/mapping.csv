@@ -490,7 +490,7 @@ FUN_00437dc7,0x437dc7,0x16,unknown,,u8
 th08::Gui::FUN_00437ddd,0x437ddd,0x80,__thiscall,,void,Gui*,i32
 th08::Gui::FUN_00437e5d,0x437e5d,0x7f,__thiscall,,void,Gui*,i32,i32
 FUN_00437edc,0x437edc,0x80,unknown,,u8,u8
-FUN_00437f5c,0x437f5c,0xea,unknown,,u8
+th08::FUN_00437f5c,0x437f5c,0xea,__fastcall,,void,i32
 FUN_00438046,0x438046,0x205,unknown,,u8
 th08::Gui::FUN_0043826b,0x43826b,0x7be,__thiscall,,u8,Gui*
 th08::Supervisor::IsMinimumGraphicsMode,0x438a29,0x18,__thiscall,,u32,Supervisor*
@@ -999,7 +999,7 @@ th08::AnmManager::ReleaseSurface,0x466ae0,0xc8,__thiscall,,void,AnmManager*,i32
 th08::AnmManager::CopySurfaceToBackbuffer,0x466bb0,0x1bd,__thiscall,,u8,AnmManager*,i32,i32,i32,i32,i32
 th08::AnmManager::CopySurfaceToBackbuffer2,0x466d70,0x1a8,__thiscall,,void,AnmManager*,i32,i32,i32,i32,i32,i32,i32
 th08::AnmManager::CaptureToTexture,0x466f20,0x11e,__thiscall,,void,AnmManager*,i32,i32,i32,i32,i32,i32,i32,i32,i32
-FUN_00467040,0x467040,0x133,unknown,,u8,u8,u8,u8,u8,u8,u8
+th08::AnmManager::CopyTextureRect,0x467040,0x133,__thiscall,,void,AnmManager*,i32,i32,i32,i32,RECT*,RECT*
 th08::AnmManager::CaptureToSurface,0x467180,0x219,__thiscall,,void,AnmManager*,i32,i32,i32,i32,i32,i32,i32,i32,i32
 th08::Title::OnUpdate,0x467399,0x10d,__fastcall,,u32,Title*
 FUN_004674e0,0x4674e0,0xe77,unknown,,u8

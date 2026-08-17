@@ -2669,6 +2669,40 @@ void AnmManager::CaptureToTexture(i32 captureAnmIdx, i32 srcX, i32 srcY, i32 src
     backbuffer->Release();
 }
 
+// FUNCTION: th08 0x467040
+#pragma var_order(destSurface, srcSurface, this)
+void AnmManager::CopyTextureRect(i32 dstAnmIdx, i32 dstEntryIdx, i32 srcAnmIdx, i32 srcEntryIdx, RECT *dstRect,
+                                 RECT *srcRect)
+{
+    IDirect3DSurface8 *destSurface;
+    IDirect3DSurface8 *srcSurface;
+
+    if (this->anmFiles[dstAnmIdx].textures[dstEntryIdx].texture == NULL)
+        return;
+    if (this->anmFiles[srcAnmIdx].textures[srcEntryIdx].texture == NULL)
+        return;
+
+    this->FlushVertexBuffer();
+
+    if (this->anmFiles[dstAnmIdx].textures[dstEntryIdx].texture->GetSurfaceLevel(0, &destSurface) != D3D_OK)
+        return;
+    if (this->anmFiles[srcAnmIdx].textures[srcEntryIdx].texture->GetSurfaceLevel(0, &srcSurface) != D3D_OK)
+    {
+        destSurface->Release();
+        return;
+    }
+
+    if (D3DXLoadSurfaceFromSurface(destSurface, NULL, dstRect, srcSurface, NULL, srcRect, -1, 0) != D3D_OK)
+    {
+        destSurface->Release();
+        srcSurface->Release();
+        return;
+    }
+
+    destSurface->Release();
+    srcSurface->Release();
+}
+
 #pragma var_order(srcRect, backbuffer, dstRect)
 void AnmManager::CaptureToSurface(i32 captureSurfaceIdx, i32 srcX, i32 srcY, i32 srcW, i32 srcH, i32 dstX, i32 dstY,
                                   i32 dstW, i32 dstH)

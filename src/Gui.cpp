@@ -35,6 +35,26 @@ i32 FUN_00438fe9()
 }
 
 
+// FUNCTION: th08 0x437f5c
+#pragma var_order(srcRect, destRect)
+void __fastcall FUN_00437f5c(i32 spriteIdx)
+{
+    RECT destRect;
+    RECT srcRect;
+
+    destRect.left = (i32)g_Gui.stageTextAnm->GetSprite(10)->startPixelInclusive.x;
+    destRect.top = (i32)g_Gui.stageTextAnm->GetSprite(10)->startPixelInclusive.y;
+    destRect.right = (i32)g_Gui.stageTextAnm->GetSprite(10)->endPixelInclusive.x;
+    destRect.bottom = (i32)g_Gui.stageTextAnm->GetSprite(10)->endPixelInclusive.y;
+
+    srcRect.left = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->startPixelInclusive.x;
+    srcRect.top = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->startPixelInclusive.y;
+    srcRect.right = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->endPixelInclusive.x;
+    srcRect.bottom = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->endPixelInclusive.y;
+
+    g_AnmManager->CopyTextureRect(10, 0, 10, 1, &destRect, &srcRect);
+}
+
 // STUB: th08 0x43396d
 void GuiImpl::FUN_0043396d(i32 value)
 {

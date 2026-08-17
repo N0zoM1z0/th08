@@ -69425,3 +69425,185 @@ object = "build/Gui.obj"
 symbol = "?FUN_004353ec@th08@@YIXPADPBD@Z"
 target_address = 0x004353EC
 size = 0x3F
+
+[[units]]
+name = "anm-copy-texture-rect"
+object = "build/AnmManager.obj"
+symbol = "?CopyTextureRect@AnmManager@th08@@QAEXHHHHPAUtagRECT@@0@Z"
+target_address = 0x00467040
+size = 0x133
+
+[[units.relocations]]
+offset = 0x4A
+type = "REL32"
+symbol = "?FlushVertexBuffer@AnmManager@th08@@QAEXXZ"
+target = 0x00462E40
+
+[[units.relocations]]
+offset = 0xF2
+type = "REL32"
+symbol = "_D3DXLoadSurfaceFromSurface@32"
+target = 0x0047ABAB
+
+[[units]]
+name = "gui-copy-message-texture-rect"
+object = "build/Gui.obj"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target_address = 0x00437F5C
+size = 0xEA
+
+[[units.relocations]]
+offset = 0xD
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F424
+
+[[units.relocations]]
+offset = 0x12
+type = "REL32"
+symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
+target = 0x00406880
+
+[[units.relocations]]
+offset = 0x1A
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x25
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F424
+
+[[units.relocations]]
+offset = 0x2A
+type = "REL32"
+symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
+target = 0x00406880
+
+[[units.relocations]]
+offset = 0x32
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x3D
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F424
+
+[[units.relocations]]
+offset = 0x42
+type = "REL32"
+symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
+target = 0x00406880
+
+[[units.relocations]]
+offset = 0x4A
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x55
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F424
+
+[[units.relocations]]
+offset = 0x5A
+type = "REL32"
+symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
+target = 0x00406880
+
+[[units.relocations]]
+offset = 0x62
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x6E
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F424
+
+[[units.relocations]]
+offset = 0x73
+type = "REL32"
+symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
+target = 0x00406880
+
+[[units.relocations]]
+offset = 0x7B
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x87
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F424
+
+[[units.relocations]]
+offset = 0x8C
+type = "REL32"
+symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
+target = 0x00406880
+
+[[units.relocations]]
+offset = 0x94
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0xA0
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F424
+
+[[units.relocations]]
+offset = 0xA5
+type = "REL32"
+symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
+target = 0x00406880
+
+[[units.relocations]]
+offset = 0xAD
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0xB9
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F424
+
+[[units.relocations]]
+offset = 0xBE
+type = "REL32"
+symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
+target = 0x00406880
+
+[[units.relocations]]
+offset = 0xC6
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0xDF
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xE4
+type = "REL32"
+symbol = "?CopyTextureRect@AnmManager@th08@@QAEXHHHHPAUtagRECT@@0@Z"
+target = 0x00467040
