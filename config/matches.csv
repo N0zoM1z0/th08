@@ -755,3 +755,4 @@ address,name,size,status,match_percent,unit,evidence
 0x0043396D,th08::GuiImpl::FUN_0043396d,1094,matching,100.00,gui-message-start,python3 scripts/compare-function.py gui-message-start --json
 0x00406A30,th08::AnmManager::SetTextureCaptureParams,140,matching,100.00,anm-set-texture-capture-params,python3 scripts/compare-function.py anm-set-texture-capture-params --json
 0x00433DB3,th08::GuiImpl::RunMsg,5597,matching,100.00,gui-run-msg,python3 scripts/compare-function.py gui-run-msg --json
+0x0043625D,th08::Gui::DrawGameScene,4544,matching,100.00,gui-draw-game-scene,python3 scripts/compare-function.py gui-draw-game-scene --json

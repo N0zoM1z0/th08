@@ -115,12 +115,11 @@ Prefer dependency work that turns a giant dispatcher into bounded units:
   `0x0041F420`, `0x0041FE10`, `0x00420120`, and `0x00420950`. Together they
   cover 4,830 target bytes and 290 of `RunEcl`'s 463 direct-call sites. Port
   the TH07 private-overlay method, not its offsets or opcode numbers.
-- GUI: `GuiImpl::RunMsg` is now a strict 5,597-byte match (plus its 92-byte
-  compiler-owned jump table). Reuse its proven `GuiMsgVm` offsets, portrait/message
-  ANM globals, and stage music/result globals rather than rediscovering them.
-  The next large GUI target is `Gui::DrawGameScene`; restoring its real callers
-  should naturally emit the `/Os` Supervisor graphics predicates already seen in
-  target code.
+- GUI: `GuiImpl::RunMsg` is a strict 5,597-byte match (plus its 92-byte
+  compiler-owned jump table), and `Gui::DrawGameScene` is now a strict 4,544-byte
+  match. Reuse their proven `GuiMsgVm` offsets, HUD VM indices, portrait/message ANM
+  globals, stage music/result globals, and Supervisor graphics predicates rather
+  than rediscovering them. Remaining GUI work should build on this typed layout.
 - Large dispatchers: use the jump-table/call-multiset audit in `$th08-re` to
   establish source presence, while retaining strict comparator-only exactness.
 
@@ -151,3 +150,11 @@ localizes the missing or oversized lexical case without requiring a full-functio
 decompiler diff. Once the case starts align, compare the shared merge/tail separately;
 this split reduced `GuiImpl::RunMsg` from a 5.6 KB problem to one missing 236-byte
 case and a 26-byte loop-vs-explicit-call tail mismatch.
+
+When using an adjacent-game source as a reconstruction scaffold, first match the TH08
+basic-block order and constants rather than copying the whole ancestor function. The
+TH06 HUD draw routine supplied the local declaration order and several source-shaped
+expressions, but TH08 reordered the minimum-graphics/background work and added the
+time-orb row. In `Gui::DrawGameScene`, the TH08-first ordering yielded an exact 0x1C4
+frame on the first complete pass; the remaining 10-byte size error came from only two
+ancestor-style integer-plus-zero-float expressions.

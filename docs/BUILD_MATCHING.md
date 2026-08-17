@@ -269,6 +269,9 @@ nonzero instead of borrowing TH07 assumptions.
 - Pointer-update spelling can determine VC7 register ownership. The adjacent-engine source shape `currentInstr = (Instr *)((i32)&currentInstr->args + currentInstr->argSize)` preserved the base pointer in EAX and loaded `argSize` through ECX, exactly matching TH08. Algebraically rewriting it as `currentInstr + argSize + 4` reversed those roles even though the computed pointer was identical.
 - A later case body can change the prologue of the entire function. Before GUI opcode 7 was restored, `RunMsg` had the correct frame but no callee-saved ESI save; the real case's register pressure made VC7 emit `push esi`/`pop esi` automatically. Do not force such prologue bytes locally—restore the missing source body first.
 
+
+- The type of an apparently neutral constant can control where VC7 converts an integer expression to floating point. In `Gui::DrawGameScene`, `GetPower() + 488 + 0.0f` emits the target `add eax, 488; fild; fadd 0.0`, while `GetPower() + 488.0f` converts `GetPower()` first and emits a different x87 sequence. Preserve integer subexpressions and even a trailing `+ 0.0f` when the target shows an integer ALU operation immediately before `fild`.
+
 ## Acceptance rules
 
 - Verify the target hash before every new comparison environment.

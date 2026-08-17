@@ -102,6 +102,7 @@ struct Gui
     ZunResult FUN_00439093();
     void FUN_004390d6();
     void FUN_00439810(i32 value);
+    void DrawGameScene();
 
     u32 unk_0;
     GuiFlags flags;
