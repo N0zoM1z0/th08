@@ -12,7 +12,18 @@ namespace EclHelpers
 using EclOperands::EnemyOverlay;
 
 #define FloatField(enemy, offset) ((f32 *)((enemy)->bytes + (offset)))
-#define Flags(enemy) ((u32 *)((enemy)->bytes + 0x3324))
+
+struct EnemyMotionFlags
+{
+    u32 lowBits : 12;
+    u32 interpolationMode : 2;
+    u32 motionMode : 3;
+    u32 bit17 : 1;
+    u32 mirrorX : 1;
+    u32 highBits : 13;
+};
+
+#define MotionFlags(enemy) (*reinterpret_cast<EnemyMotionFlags *>((enemy)->bytes + 0x3324))
 
 #define ReadInt(enemy, instruction, index)                                                   \
     ((instruction)->operandFlags & (1 << (index))                                           \
@@ -44,10 +55,9 @@ void __fastcall ConfigurePolarMotion(EnemyOverlay *enemy, EclRawInstruction *ins
     *(ZunTimer *)(enemy->bytes + 0x2DDC) =
         (*(i32 *)(enemy->bytes + 0x2DE8) = ReadInt(enemy, instruction, 0));
 
-    const i32 mode = ReadInt(enemy, instruction, 1);
-    *Flags(enemy) = (*Flags(enemy) & 0xFFFE3FFF) | ((mode & 7) << 14);
-    *Flags(enemy) = (*Flags(enemy) & 0xFFFFCFFF) | 0x2000;
-    if (((*Flags(enemy)) >> 18) & 1)
+    MotionFlags(enemy).motionMode = ReadInt(enemy, instruction, 1);
+    MotionFlags(enemy).interpolationMode = 2;
+    if (MotionFlags(enemy).mirrorX)
         *FloatField(enemy, 0x2DC4) = -*FloatField(enemy, 0x2DC4);
 }
 
@@ -68,18 +78,17 @@ void __fastcall ConfigureRelativeMotion(EnemyOverlay *enemy, EclRawInstruction *
     *(ZunTimer *)(enemy->bytes + 0x2DDC) =
         (*(i32 *)(enemy->bytes + 0x2DE8) = ReadInt(enemy, instruction, 0));
 
-    *Flags(enemy) = (*Flags(enemy) & 0xFFFE3FFF) |
-                    ((ReadInt(enemy, instruction, 1) & 7) << 14);
-    *Flags(enemy) = (*Flags(enemy) & 0xFFFFCFFF) | 0x2000;
+    MotionFlags(enemy).motionMode = ReadInt(enemy, instruction, 1);
+    MotionFlags(enemy).interpolationMode = 2;
     *reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2D4C) =
         D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-    if (((*Flags(enemy)) >> 18) & 1)
+    if (MotionFlags(enemy).mirrorX)
         *FloatField(enemy, 0x2DC4) = -*FloatField(enemy, 0x2DC4);
 }
 
 #undef ReadFloat
 #undef ReadInt
-#undef Flags
+#undef MotionFlags
 #undef FloatField
 
 } // namespace EclHelpers

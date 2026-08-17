@@ -53414,8 +53414,7 @@ symbol = "__ftol2"
 target = 0x004a3e70
 
 # Ledger name: th08::EclHelpers::ConfigurePolarMotion
-# Evidence: source-emitted helper in EclHelpers.cpp; tail register layout
-# not yet exact (527/556 bytes matched).
+# Evidence: private bitfield overlay reproduces the target flag updates; strict comparator exact.
 [[units]]
 name = "ecl-configure-polar-motion"
 object = "build/probes/EclHelpers.obj"
@@ -53490,7 +53489,7 @@ symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
 target = 0x0041F420
 
 # Ledger name: th08::EclHelpers::ConfigureRelativeMotion
-# Evidence: source-emitted helper in EclHelpers.cpp.
+# Evidence: private bitfield overlay reproduces the target flag updates; strict comparator exact.
 [[units]]
 name = "ecl-configure-relative-motion"
 object = "build/probes/EclHelpers.obj"

@@ -700,3 +700,5 @@ address,name,size,status,match_percent,unit,evidence
 0x0044FE20,th08::Player::FUN_0044fe20,375,matching,100.00,player-fun-0044fe20,python3 scripts/compare-function.py player-fun-0044fe20 --json
 0x0044FFA0,th08::Player::FUN_0044ffa0,217,matching,100.00,player-fun-0044ffa0,python3 scripts/compare-function.py player-fun-0044ffa0 --json
 0x004184B0,th08::EclManager::RunEcl,26638,matching,100.00,ecl-manager-run-ecl,python3 scripts/compare-function.py ecl-manager-run-ecl --json
+0x00420D10,th08::EclHelpers::ConfigurePolarMotion,556,matching,100.00,ecl-configure-polar-motion,python3 scripts/compare-function.py ecl-configure-polar-motion --json
+0x00420F40,th08::EclHelpers::ConfigureRelativeMotion,467,matching,100.00,ecl-configure-relative-motion,python3 scripts/compare-function.py ecl-configure-relative-motion --json
