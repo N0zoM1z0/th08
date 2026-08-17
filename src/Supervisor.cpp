@@ -615,7 +615,7 @@ void Supervisor::StartupThread(Supervisor *s)
     g_Supervisor.unk174 = 0;
     g_Supervisor.totalPlayTime = timeGetTime();
 
-    g_Rng.SetSeed(g_Supervisor.totalPlayTime);
+    *reinterpret_cast<u16 *>(&g_Rng) = static_cast<u16>(g_Supervisor.totalPlayTime);
 
     g_Supervisor.SetupDInput();
 

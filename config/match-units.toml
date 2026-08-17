@@ -79154,3 +79154,38 @@ offset = 2021
 type = "DIR32"
 symbol = "$L*"
 target = 0x00440A84
+
+[[units]]
+name = "float3-add-assign"
+object = "build/objdiff/reimpl/ItemManager.obj"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target_address = 0x00410A70
+size = 67
+
+[[units]]
+name = "anm-reset-frame-debug-info"
+object = "build/objdiff/reimpl/Background.obj"
+symbol = "?ResetFrameDebugInfo@AnmManager@th08@@QAEXXZ"
+target_address = 0x0040BB20
+size = 51
+
+[[units]]
+name = "rng-set-seed"
+object = "build/objdiff/reimpl/Global.obj"
+symbol = "th08::Rng::SetSeed"
+target_address = 0x00453BE0
+size = 23
+
+[[units]]
+name = "rng-reset-generation-count"
+object = "build/objdiff/reimpl/Global.obj"
+symbol = "th08::Rng::ResetGenerationCount"
+target_address = 0x00453C00
+size = 21
+
+[[units]]
+name = "rng-get-seed"
+object = "build/objdiff/reimpl/Global.obj"
+symbol = "th08::Rng::GetSeed"
+target_address = 0x00453C20
+size = 17

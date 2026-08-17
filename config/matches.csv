@@ -781,3 +781,8 @@ address,name,size,status,match_percent,unit,evidence
 0x0044A5A0,th08::Player::CalcItemBoxCollision,249,matching,100.00,player-item-box-collision,python3 scripts/compare-function.py player-item-box-collision --json
 0x00441830,th08::ZunTimer::operator!=,27,matching,100.00,item-timer-not-equal,python3 scripts/compare-function.py item-timer-not-equal --json
 0x00440500,th08::ItemManager::OnUpdate,1989,matching,100.00,item-manager-on-update,python3 scripts/compare-function.py item-manager-on-update --json
+0x00410A70,th08::Float3::operator+=,67,matching,100.00,float3-add-assign,python3 scripts/compare-function.py float3-add-assign --json
+0x0040BB20,th08::AnmManager::ResetFrameDebugInfo,51,matching,100.00,anm-reset-frame-debug-info,python3 scripts/compare-function.py anm-reset-frame-debug-info --json
+0x00453BE0,th08::Rng::SetSeed,23,matching,100.00,rng-set-seed,python3 scripts/compare-function.py rng-set-seed --json
+0x00453C00,th08::Rng::ResetGenerationCount,21,matching,100.00,rng-reset-generation-count,python3 scripts/compare-function.py rng-reset-generation-count --json
+0x00453C20,th08::Rng::GetSeed,17,matching,100.00,rng-get-seed,python3 scripts/compare-function.py rng-get-seed --json

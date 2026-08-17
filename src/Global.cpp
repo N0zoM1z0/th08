@@ -1171,6 +1171,24 @@ const char *GameErrorContext::Fatal(const char *fmt, ...)
     return fmt;
 }
 
+// FUNCTION: th08 0x453be0
+void Rng::SetSeed(u16 newSeed)
+{
+    this->seed = newSeed;
+}
+
+// FUNCTION: th08 0x453c00
+void Rng::ResetGenerationCount()
+{
+    this->generationCount = 0;
+}
+
+// FUNCTION: th08 0x453c20
+u16 Rng::GetSeed()
+{
+    return this->seed;
+}
+
 u16 Rng::GetRandomU16(void)
 {
     u16 temp = (this->seed ^ 0x9630) - 0x6553;

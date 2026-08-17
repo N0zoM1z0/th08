@@ -780,3 +780,8 @@ th08::Item::CollectTimeOrb
 th08::Player::CalcItemBoxCollision
 th08::ZunTimer::operator!=
 th08::ItemManager::OnUpdate
+th08::Float3::operator+=
+th08::AnmManager::ResetFrameDebugInfo
+th08::Rng::SetSeed
+th08::Rng::ResetGenerationCount
+th08::Rng::GetSeed

@@ -192,20 +192,9 @@ class Rng
     f32 GetRandomF32();
     f32 GetRandomF32Signed();
 
-    void ResetGenerationCount()
-    {
-        this->generationCount = 0;
-    }
-
-    void SetSeed(u16 newSeed)
-    {
-        this->seed = newSeed;
-    }
-
-    u16 GetSeed()
-    {
-        return this->seed;
-    }
+    void ResetGenerationCount();
+    void SetSeed(u16 newSeed);
+    u16 GetSeed();
 
     u16 GetRandomU16InRange(u16 range)
     {
