@@ -65791,3 +65791,463 @@ offset = 0x18
 type = "REL32"
 symbol = "?spellcard_fun_00416160@Spellcard@th08@@QAEXXZ"
 target = 0x00416160
+
+# Ledger name: th08::Spellcard::OnDrawImpl
+# Evidence: source-emitted member in Spellcard.cpp; target returns at 0x00417F54,
+# with 0xCC alignment bytes through the next function boundary at 0x00417F60.
+[[units]]
+name = "spellcard-on-draw-impl"
+object = "build/SpellCard.obj"
+symbol = "?OnDrawImpl@Spellcard@th08@@QAEHXZ"
+target_address = 0x004178C0
+size = 0x695
+
+[[units.relocations]]
+offset = 0x13
+type = "REL32"
+symbol = "?IsVisible@AnmVmBase@th08@@QAEIXZ"
+target = 0x004066E0
+
+[[units.relocations]]
+offset = 0x26
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x2B
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462FF0
+
+[[units.relocations]]
+offset = 0x3B
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x40
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462FF0
+
+[[units.relocations]]
+offset = 0x50
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x55
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units.relocations]]
+offset = 0x63
+type = "REL32"
+symbol = "?IsVisible@AnmVmBase@th08@@QAEIXZ"
+target = 0x004066E0
+
+[[units.relocations]]
+offset = 0x9C
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 0xAC
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xB1
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462FF0
+
+[[units.relocations]]
+offset = 0xDA
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xDF
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462FF0
+
+[[units.relocations]]
+offset = 0xEE
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xF3
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units.relocations]]
+offset = 0x101
+type = "REL32"
+symbol = "?IsVisible@AnmVmBase@th08@@QAEIXZ"
+target = 0x004066E0
+
+[[units.relocations]]
+offset = 0x136
+type = "DIR32"
+symbol = "__real@42000000"
+target = 0x004B42CC
+
+[[units.relocations]]
+offset = 0x14F
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x154
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462FF0
+
+[[units.relocations]]
+offset = 0x164
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x169
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units.relocations]]
+offset = 0x177
+type = "REL32"
+symbol = "?IsVisible@AnmVmBase@th08@@QAEIXZ"
+target = 0x004066E0
+
+[[units.relocations]]
+offset = 0x18F
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x194
+type = "REL32"
+symbol = "?SetMixColor@AnmManager@th08@@QAEXK@Z"
+target = 0x0040BAD0
+
+[[units.relocations]]
+offset = 0x1C4
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x1C9
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462FF0
+
+[[units.relocations]]
+offset = 0x1D9
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x1DE
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units.relocations]]
+offset = 0x1EE
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x1F3
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units.relocations]]
+offset = 0x202
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x207
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units.relocations]]
+offset = 0x217
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x21C
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462FF0
+
+[[units.relocations]]
+offset = 0x25B
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x2A5
+type = "DIR32"
+symbol = "__real@42200000"
+target = 0x004B432C
+
+[[units.relocations]]
+offset = 0x2BD
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x31A
+type = "REL32"
+symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
+target = 0x00406880
+
+[[units.relocations]]
+offset = 0x332
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x337
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462FF0
+
+[[units.relocations]]
+offset = 0x346
+type = "DIR32"
+symbol = "__real@40e00000"
+target = 0x004B42F4
+
+[[units.relocations]]
+offset = 0x371
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x376
+type = "REL32"
+symbol = "?IsSpellPractice@GameManager@th08@@QAEIXZ"
+target = 0x00406C70
+
+[[units.relocations]]
+offset = 0x381
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x397
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x3C9
+type = "DIR32"
+symbol = "__real@42000000"
+target = 0x004B42CC
+
+[[units.relocations]]
+offset = 0x404
+type = "REL32"
+symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
+target = 0x00406880
+
+[[units.relocations]]
+offset = 0x41C
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x421
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462FF0
+
+[[units.relocations]]
+offset = 0x445
+type = "DIR32"
+symbol = "__real@40e00000"
+target = 0x004B42F4
+
+[[units.relocations]]
+offset = 0x47F
+type = "REL32"
+symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
+target = 0x00406880
+
+[[units.relocations]]
+offset = 0x497
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x49C
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462FF0
+
+[[units.relocations]]
+offset = 0x4B9
+type = "DIR32"
+symbol = "__real@40e00000"
+target = 0x004B42F4
+
+[[units.relocations]]
+offset = 0x4D7
+type = "REL32"
+symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
+target = 0x00406880
+
+[[units.relocations]]
+offset = 0x4EF
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x4F4
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462FF0
+
+[[units.relocations]]
+offset = 0x4F9
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x4FE
+type = "REL32"
+symbol = "?IsSpellPractice@GameManager@th08@@QAEIXZ"
+target = 0x00406C70
+
+[[units.relocations]]
+offset = 0x509
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x51F
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x551
+type = "DIR32"
+symbol = "__real@41500000"
+target = 0x004B4804
+
+[[units.relocations]]
+offset = 0x585
+type = "REL32"
+symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
+target = 0x00406880
+
+[[units.relocations]]
+offset = 0x59D
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x5A2
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462FF0
+
+[[units.relocations]]
+offset = 0x5C6
+type = "DIR32"
+symbol = "__real@40e00000"
+target = 0x004B42F4
+
+[[units.relocations]]
+offset = 0x600
+type = "REL32"
+symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
+target = 0x00406880
+
+[[units.relocations]]
+offset = 0x618
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x61D
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462FF0
+
+[[units.relocations]]
+offset = 0x63A
+type = "DIR32"
+symbol = "__real@40e00000"
+target = 0x004B42F4
+
+[[units.relocations]]
+offset = 0x660
+type = "REL32"
+symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
+target = 0x00406880
+
+[[units.relocations]]
+offset = 0x678
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x67D
+type = "REL32"
+symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00462FF0
+
+[[units.relocations]]
+offset = 0x683
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x688
+type = "REL32"
+symbol = "?SetMixColorDefault@AnmManager@th08@@QAEXXZ"
+target = 0x0040BAB0

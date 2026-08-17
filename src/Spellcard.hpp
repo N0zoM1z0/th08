@@ -258,8 +258,10 @@ struct Spellcard
     Spellcard();
 
     u32 flags;                       // +0x000
-    u8 unknown_004[0xF0];           // +0x004
-    u8 *activeEnemy;                 // +0x0F4
+    u8 *activeEnemy;                 // +0x004
+    i32 spellCardNumber;             // +0x008
+    u8 unknown_00C[0xE8];           // +0x00C
+    u8 *spellEffect;                 // +0x0F4
     u8 unknown_0F8[0x4];            // +0x0F8
     i32 bonusProgress;               // +0x0FC
     i32 bonusCounter;                // +0x100
@@ -282,7 +284,7 @@ struct Spellcard
     AnmVm vm2374;                    // +0x2374
     f32 playerSpellNameWidth;        // +0x2618
     f32 enemySpellNameWidth;         // +0x261C
-    u8 unknown_2620[0x4];            // +0x2620
+    D3DCOLOR mixColor;                 // +0x2620
     AnmLoaded *playerFaceAnm0;       // +0x2624
     AnmLoaded *playerFaceAnm1;       // +0x2628
     AnmLoaded *enemyFaceAnm0;        // +0x262C
@@ -297,6 +299,7 @@ struct Spellcard
     void spellcard_fun_00416160();
     void spellcard_fun_00416af0();
     void spellcard_fun_00416b10(i32 amount);
+    i32 OnDrawImpl();
 
     void SetStoredVector(f32 x, f32 y, f32 z);
     i32 IsActive();

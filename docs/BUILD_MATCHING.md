@@ -152,6 +152,12 @@ TH08 matches; use them as diagnostics, not as permission to force bytes:
   tools here. In the tested VC7 `/EHsc` configuration they introduced extra
   constructor/placement-`new` machinery, so prefer ordinary source constructs
   and compiler-native temporaries.
+- A user-defined empty default constructor can still materialize as a call under
+  `/Od`. If the target instead shows a plain aggregate copy (for example, one
+  base load followed by three dword moves), keep the public/ABI type intact and
+  use a function-local trivial aggregate with the same fields for the temporary.
+  This can express the observed copy semantics without constructor machinery;
+  accept it only when the strict comparator proves the full function.
 
 For a function whose authored body is followed by compiler-owned tables, first
 prove the authored extent independently, then set `compare_size` to the COFF

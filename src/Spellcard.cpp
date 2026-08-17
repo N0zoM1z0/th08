@@ -431,12 +431,160 @@ void Spellcard::spellcard_fun_00416b10(i32 amount)
 }
 
 
+// FUNCTION: th08 0x4178c0
+#pragma var_order(savedPos, catk, i, value, score, divisor, leading, this)
+i32 Spellcard::OnDrawImpl()
+{
+    i32 leading;
+    i32 divisor;
+    i32 score;
+    i32 value;
+    i32 i;
+    Catk *catk;
+    struct SavedPosition
+    {
+        f32 x;
+        f32 y;
+        f32 z;
+    } savedPos;
+
+    if (this->vm120.IsVisible())
+    {
+        g_AnmManager->DrawNoRotation(&this->vm120);
+        g_AnmManager->DrawNoRotation(&this->vm668);
+        g_AnmManager->Draw2D(&this->vmBB0);
+    }
+
+    if (this->vm3C4.IsVisible())
+    {
+        savedPos = *reinterpret_cast<SavedPosition *>(&this->vm3C4.pos);
+        this->vm3C4.pos += this->vm3C4.pos2;
+        g_AnmManager->DrawNoRotation(&this->vm3C4);
+        *reinterpret_cast<SavedPosition *>(&this->vm3C4.pos) = savedPos;
+        g_AnmManager->DrawNoRotation(&this->vm90C);
+        g_AnmManager->Draw2D(&this->vmE54);
+    }
+
+    if (this->vm10F8.IsVisible())
+    {
+        this->vm1B88.pos = this->vm10F8.pos;
+        this->vm1B88.pos.x -= 32.0f;
+        g_AnmManager->DrawNoRotation(&this->vm1B88);
+        g_AnmManager->Draw2D(&this->vm10F8);
+    }
+
+    if (this->vm139C.IsVisible())
+    {
+        g_AnmManager->SetMixColor(this->mixColor);
+        this->vm1E2C.pos = this->vm139C.pos;
+        g_AnmManager->DrawNoRotation(&this->vm1E2C);
+        g_AnmManager->Draw2D(&this->vm139C);
+        g_AnmManager->Draw2D(&this->vm1640);
+        g_AnmManager->Draw2D(&this->vm18E4);
+        g_AnmManager->DrawNoRotation(&this->vm2374);
+
+        if (((this->flags >> 10) & 1) == 0)
+        {
+            score = this->bonusProgress;
+            divisor = 10000000;
+            leading = 0;
+            catk = &g_GameManager.catkData[this->spellCardNumber];
+            if (((this->flags >> 2) & 1) == 0)
+            {
+                score = 0;
+            }
+
+            this->vm20D0.pos = this->vm2374.pos;
+            this->vm20D0.pos.x -= 40.0f;
+            this->vm20D0.pos.y += 1.0f;
+            for (i = 0; i < 8; i++)
+            {
+                value = score / divisor;
+                if (value != 0)
+                {
+                    leading = 1;
+                }
+                if (leading != 0 || divisor == 1)
+                {
+                    this->vm20D0.loadedSprite =
+                        (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->GetSprite(value + 136);
+                    g_AnmManager->DrawNoRotation(&this->vm20D0);
+                }
+                this->vm20D0.pos.x += 7.0f;
+                score %= divisor;
+                divisor /= 10;
+            }
+
+            value = g_GameManager.IsSpellPractice()
+                        ? catk->spellPracticeHistory.captures[g_GameManager.shotType]
+                        : catk->inGameHistory.captures[g_GameManager.shotType];
+            if (value > 999)
+            {
+                value = 999;
+            }
+            this->vm20D0.pos.x += 32.0f;
+            leading = 0;
+            if (value / 100 != 0)
+            {
+                this->vm20D0.loadedSprite =
+                    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->GetSprite(value / 100 + 136);
+                g_AnmManager->DrawNoRotation(&this->vm20D0);
+                value %= 100;
+                leading = 1;
+            }
+            this->vm20D0.pos.x += 7.0f;
+            if (value / 10 != 0 || leading != 0)
+            {
+                this->vm20D0.loadedSprite =
+                    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->GetSprite(value / 10 + 136);
+                g_AnmManager->DrawNoRotation(&this->vm20D0);
+                value %= 10;
+            }
+            this->vm20D0.pos.x += 7.0f;
+            this->vm20D0.loadedSprite = (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->GetSprite(value + 136);
+            g_AnmManager->DrawNoRotation(&this->vm20D0);
+
+            value = g_GameManager.IsSpellPractice()
+                        ? catk->spellPracticeHistory.attempts[g_GameManager.shotType]
+                        : catk->inGameHistory.attempts[g_GameManager.shotType];
+            if (value > 999)
+            {
+                value = 999;
+            }
+            this->vm20D0.pos.x += 13.0f;
+            if (value / 100 != 0)
+            {
+                this->vm20D0.loadedSprite =
+                    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->GetSprite(value / 100 + 136);
+                g_AnmManager->DrawNoRotation(&this->vm20D0);
+                value %= 100;
+                leading = 1;
+            }
+            this->vm20D0.pos.x += 7.0f;
+            if (value / 10 != 0 || leading != 0)
+            {
+                this->vm20D0.loadedSprite =
+                    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->GetSprite(value / 10 + 136);
+                g_AnmManager->DrawNoRotation(&this->vm20D0);
+                value %= 10;
+            }
+            this->vm20D0.pos.x += 7.0f;
+            this->vm20D0.loadedSprite =
+                (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->GetSprite(value % 10 + 136);
+            g_AnmManager->DrawNoRotation(&this->vm20D0);
+        }
+        g_AnmManager->SetMixColorDefault();
+    }
+    return 1;
+}
+
+
 // FUNCTION: th08 0x0041F040
 void Spellcard::SetStoredVector(f32 x, f32 y, f32 z)
 {
-    *(f32 *)(this->activeEnemy + 0x2A4) = x;
-    *(f32 *)(this->activeEnemy + 0x2A8) = y;
-    *(f32 *)(this->activeEnemy + 0x2AC) = z;
+    *(f32 *)(this->spellEffect + 0x2A4) = x;
+    *(f32 *)(this->spellEffect + 0x2A8) = y;
+    *(f32 *)(this->spellEffect + 0x2AC) = z;
 }
 
 
