@@ -743,3 +743,5 @@ th08::BulletManager::DespawnBullets
 th08::Spellcard::EndSpell
 th08::Spellcard::DeletedCallback
 th08::Spellcard::OnUpdateImpl
+th08::Spellcard::OnUpdate
+th08::Spellcard::OnDraw

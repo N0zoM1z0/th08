@@ -68041,3 +68041,29 @@ offset = 0xCB8
 type = "REL32"
 symbol = "??FZunTimer@th08@@QAEXH@Z"
 target = 0x00418110
+
+[[units]]
+name = "spellcard-on-update"
+object = "build/SpellCard.obj"
+symbol = "?OnUpdate@Spellcard@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target_address = 0x00418010
+size = 0x13
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "?OnUpdateImpl@Spellcard@th08@@QAEHXZ"
+target = 0x00416B90
+
+[[units]]
+name = "spellcard-on-draw"
+object = "build/SpellCard.obj"
+symbol = "?OnDraw@Spellcard@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target_address = 0x00418030
+size = 0x13
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "?OnDrawImpl@Spellcard@th08@@QAEHXZ"
+target = 0x004178C0

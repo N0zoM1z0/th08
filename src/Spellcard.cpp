@@ -1345,6 +1345,18 @@ i32 Spellcard::FUN_0042DFF0()
     return (this->flags >> 7) & 1;
 }
 
+// FUNCTION: th08 0x00418010
+ChainCallbackResult Spellcard::OnUpdate(Spellcard *spellcard)
+{
+    return static_cast<ChainCallbackResult>(spellcard->OnUpdateImpl());
+}
+
+// FUNCTION: th08 0x00418030
+ChainCallbackResult Spellcard::OnDraw(Spellcard *spellcard)
+{
+    return static_cast<ChainCallbackResult>(spellcard->OnDrawImpl());
+}
+
 // FUNCTION: th08 0x00418050
 ZunResult Spellcard::DeletedCallback(Spellcard *spellcard)
 {

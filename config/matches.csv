@@ -743,3 +743,5 @@ address,name,size,status,match_percent,unit,evidence
 0x004161B0,th08::Spellcard::EndSpell,2331,matching,100.00,spellcard-end-spell,python3 scripts/compare-function.py spellcard-end-spell --json
 0x00418050,th08::Spellcard::DeletedCallback,157,matching,100.00,spellcard-deleted-callback,python3 scripts/compare-function.py spellcard-deleted-callback --json
 0x00416B90,th08::Spellcard::OnUpdateImpl,3269,matching,100.00,spellcard-on-update-impl,python3 scripts/compare-function.py spellcard-on-update-impl --json
+0x00418010,th08::Spellcard::OnUpdate,19,matching,100.00,spellcard-on-update,python3 scripts/compare-function.py spellcard-on-update --json
+0x00418030,th08::Spellcard::OnDraw,19,matching,100.00,spellcard-on-draw,python3 scripts/compare-function.py spellcard-on-draw --json
