@@ -261,7 +261,7 @@ FUN_00421180,0x421180,function
 th08::StartEnemySpell,0x421280,function
 th08::EndEnemySpell,0x4212e0,function
 FUN_00421300,0x421300,function
-FUN_004213f0,0x4213f0,function
+th08::EclRunLowProposal::InstallInterpolationSlot,0x4213f0,function
 FUN_004215f0,0x4215f0,function
 th08::GameManager::GetTimeOrbs,0x421b60,function
 th08::GameManager::GetLastSpellTimeOrbThreshold,0x421b80,function
@@ -271,10 +271,10 @@ FUN_00421cb0,0x421cb0,function
 th08::utils::DebugPrint,0x421dd0,function
 FUN_00421de0,0x421de0,function
 FUN_00421e50,0x421e50,function
-FUN_00422020,0x422020,function
-FUN_004222b0,0x4222b0,function
+th08::EclRunLowProposal::BeginBoundaryAwareMove,0x422020,function
+th08::EclRunLowProposal::StartTimedPolarDisplacement,0x4222b0,function
 th08::GameManager::GetPower,0x422480,function
-FUN_004224a0,0x4224a0,function
+th08::EclRunLowProposal::FUN_004224a0,0x4224a0,function
 th08::EclRunHighProposal::DispatchShotInstruction,0x422720,function
 th08::GameManager::ScaleFloatBasedOnRank,0x422b80,function
 th08::AsciiManager::FUN_00422bb0,0x422bb0,function

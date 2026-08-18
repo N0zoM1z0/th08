@@ -46,6 +46,7 @@ th08::g_LastSpellNumbers,0x4c6b90,global
 th08::g_LastSpellCount,0x4c6c3c,global
 th08::g_SpellcardNumbersPerStage,0x4c6c40,global
 th08::g_SpellcardCountPerStage,0x4c6c68,global
+th08::EclRunLowProposal::g_EclInterpolatorCallbacks,0x4c6c90,global
 th08::g_EclExInsn,0x4c6cb0,global
 th08::g_EffectTemplates,0x4c6d30,global
 th08::g_StageAnmFiles,0x4c72f8,global

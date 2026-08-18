@@ -260,7 +260,7 @@ FUN_00421180,0x421180,0x100,unknown,,u8,u8
 th08::StartEnemySpell,0x421280,0x53,__fastcall,,void,u8*,void*
 th08::EndEnemySpell,0x4212e0,0x1a,__fastcall,,void,u8*,void*
 FUN_00421300,0x421300,0xee,unknown,,u8
-FUN_004213f0,0x4213f0,0x1fa,unknown,,u8
+th08::EclRunLowProposal::InstallInterpolationSlot,0x4213f0,0x1fa,__fastcall,,void,EclOperands::EnemyOverlay*,EclRawInstruction*
 FUN_004215f0,0x4215f0,0x53f,unknown,,u8
 th08::GameManager::GetTimeOrbs,0x421b60,0x14,__thiscall,,u32,GameManager*
 th08::GameManager::GetLastSpellTimeOrbThreshold,0x421b80,0x14,__thiscall,,u32,GameManager*
@@ -270,10 +270,10 @@ FUN_00421cb0,0x421cb0,0x118,unknown,,u8
 th08::utils::DebugPrint,0x421dd0,0x5,__cdecl,varargs,void,char*
 FUN_00421de0,0x421de0,0x70,unknown,,u8,u8,u8,u8,u8,u8,u8
 FUN_00421e50,0x421e50,0x1c6,unknown,,u8
-FUN_00422020,0x422020,0x28a,unknown,,u8
-FUN_004222b0,0x4222b0,0x1cd,unknown,,u8,u8
+th08::EclRunLowProposal::BeginBoundaryAwareMove,0x422020,0x28a,__fastcall,,void,EclOperands::EnemyOverlay*,EclRawInstruction*
+th08::EclRunLowProposal::StartTimedPolarDisplacement,0x4222b0,0x1cd,__fastcall,,void,EclOperands::EnemyOverlay*,EclRawInstruction*,f32
 th08::GameManager::GetPower,0x422480,0x1c,__thiscall,,ulonglong,GameManager*
-FUN_004224a0,0x4224a0,0x276,unknown,,u8
+th08::EclRunLowProposal::FUN_004224a0,0x4224a0,0x276,__fastcall,,void,u8*,void*
 th08::EclRunHighProposal::DispatchShotInstruction,0x422720,0x456,__fastcall,,void,u8*,EclRunHighProposal::RawInstruction*
 th08::GameManager::ScaleFloatBasedOnRank,0x422b80,0x27,__thiscall,,float10,GameManager*,f32,f32
 th08::AsciiManager::FUN_00422bb0,0x422bb0,0x2a,__thiscall,,void,AsciiManager*,i32,i16

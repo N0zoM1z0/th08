@@ -222,3 +222,11 @@ For VC7 `/Od` ECL helpers, two class-local constructor calls can require sequent
 Keep conditional expressions wide until a target-proven narrow store.  If a `ResolveInt`/raw-value ternary feeds an `i16` descriptor member, casting both arms early can create word stack temporaries; leaving the ternary as `i32` lets VC7 materialize a dword conditional temp and then copy its low word, matching the TH08 shot descriptor path.
 
 Guard-return grouping is code-generation-visible.  A single `if (rejectA || rejectB) return;` can make VC7 share one nearby reject trampoline, while two separate returns duplicate long epilogue jumps and the inverse positive `if` can produce long conditional branches.  For x87 range gates, preserve positive strict predicates such as `radius > 0.0f && distanceSquared < radius` when the target status masks prove them; algebraically equivalent `<=`/`>=` rewrites can change unordered behavior and branch opcodes.
+
+## ECL x87 comparison / loop-exit corpus
+
+When a TH08 `/Od` float comparison contains `Float3::operator float*()` or another call, keep the exact source-side operand ownership observed in the target.  `positionMember < bound` can avoid an x87 spill that appears for the algebraically equivalent `bound > positionMember`.  Also prefer a proven typed member over a raw offset when the target's `fld`/`fcomp` ownership depends on the member AST.
+
+Do not normalize direct/wrapped distance tests: the target can require `directDistance < wrappedDistance` specifically.  Reversing it to an equivalent `wrapped <= direct` changes `fcompp` ownership and status masks.  Likewise preserve branch polarity when one side is much larger; `if (duration <= 0) immediate else timed` can be required solely to keep the large block as fallthrough and the short call at the tail.
+
+For slot-scanning installers, try rejection-first control flow before adding temporaries: `if (reject) continue; install; break;` lets VC7 place the continue edge at the loop increment and the successful install fall through to the common epilogue.  A positive accept block with `return` may add both a long continue branch and an epilogue jump.  TH08 interpolation callbacks use a separate eight-pointer table at `0x004C6C90`; do not alias it to `g_EclExInsn @ 0x004C6CB0`.

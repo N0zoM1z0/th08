@@ -975,3 +975,7 @@ th08::Gui::FUN_00423130
 th08::Enemy::FUN_00422c40
 th08::Enemy::FUN_00423150
 th08::EclRunHighProposal::DispatchShotInstruction
+th08::EclRunLowProposal::BeginBoundaryAwareMove
+th08::EclRunLowProposal::StartTimedPolarDisplacement
+th08::EclRunLowProposal::FUN_004224a0
+th08::EclRunLowProposal::InstallInterpolationSlot
