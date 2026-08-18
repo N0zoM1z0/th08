@@ -200,7 +200,7 @@ FUN_00413990,0x413990,function
 FUN_004142c0,0x4142c0,function
 th08::Rng::GetRandomF32SignedInRange,0x4143c0,function
 th08::Spellcard::Spellcard,0x4143e0,function
-th08::SpellCard_conflict1::GetDifficultyFromSpellCard,0x4144d0,function
+th08::Spellcard::GetDifficultyFromSpellCard,0x4144d0,function
 th08::Spellcard::IsLastSpell,0x414540,function
 th08::Spellcard::Init,0x414590,function
 th08::Spellcard::StartSpell,0x4152a0,function

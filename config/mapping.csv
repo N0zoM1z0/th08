@@ -199,7 +199,7 @@ FUN_00413990,0x413990,0x928,unknown,,u8
 FUN_004142c0,0x4142c0,0xf4,unknown,,u8
 th08::Rng::GetRandomF32SignedInRange,0x4143c0,0x18,__thiscall,,float10,Rng*,f32
 th08::Spellcard::Spellcard,0x4143e0,0xee,unknown,,u8
-FUN_004144d0,0x4144d0,0x69,unknown,,u8
+th08::Spellcard::GetDifficultyFromSpellCard,0x4144d0,0x69,__thiscall,,i32,Spellcard*,i32
 th08::Spellcard::IsLastSpell,0x414540,0x44,__fastcall,,i32,i32
 th08::Spellcard::Init,0x414590,0xca5,__thiscall,,ZunResult,Spellcard*
 FUN_004152a0,0x4152a0,0x9b3,unknown,,u8,u8,u8,u8,u8,u8,u8,u8,u8
@@ -368,7 +368,7 @@ FUN_004286e0,0x4286e0,0x20,unknown,,u8,u8,u8
 FUN_00428700,0x428700,0x20,unknown,,u8,u8,u8,u8
 FUN_00428720,0x428720,0x1c,unknown,,u8
 th08::EffectManager::EffectManager,0x428740,0x9f,unknown,,u8
-FUN_004287e0,0x4287e0,0xa2,unknown,,u8
+th08::Effect::Effect,0x4287e0,0xa2,__thiscall,,Effect*,Effect*
 th08::Ending::ReadEndFileParameter,0x428890,0x73,__thiscall,,i32,Ending*
 th08::Ending::FadingEffect,0x428910,0x24f,__thiscall,,void,Ending*
 th08::Ending::ParseEndFile,0x428b80,0x97c,__thiscall,,ZunResult,Ending*

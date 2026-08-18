@@ -460,3 +460,9 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 - A semantically redundant allocation temporary can be target-visible at `/Od`. The target stores the 0x10004-byte block allocation first in `blockCursor`, then copies it into the persistent `block` local. Writing `block = Alloc(...)` directly made the function exactly 14 bytes short.
 - `do { if (!node) break; ... } while (limit)` was not byte-equivalent to the target score-list traversal. The target comes from `while (node != NULL) { ...; if (entry >= 10) break; }`, producing a direct near `je` at loop entry instead of a short inverse branch plus a near trampoline. Restoring that ownership fixed the final two-byte extent/direction difference.
 - CP932 target text can be reconstructed portably with the same `\xNN` byte-literal convention used by generated `i18n.hpp`; this avoids host/source-codepage dependence while still letting VC7 pool ordinary string literals and emit canonical relocations.
+
+### Constructor lowering and optimized integer scaling
+
+- An array of non-trivial elements is not source-shape equivalent to adjacent named fields under VC7. `Effect::Effect @ 0x4287e0` needs nine distinct `Float3` members: `Float3 vectors[9]` collapses the nine target-visible constructor calls into `eh_vector_constructor_iterator`, while nine adjacent fields emit the exact individual call chain before the trailing `ZunTimer` constructor.
+- Optimization pragmas are part of the source-shape contract. `GameManager::ScaleIntBasedOnRank @ 0x421ba0` only emits the target signed divide-by-32 correction (`cdq; and; add; sar`) inside the surrounding `#pragma optimize("t", on)` region; `/Od` emits `idiv` instead.
+- Operand order remains target-visible even after strength reduction: spelling the final expression as `quotient + upper` lets VC7 use `add eax,[upper]`, while `upper + quotient` introduces an extra register move and changes the extent.

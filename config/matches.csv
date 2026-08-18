@@ -840,3 +840,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00406940,D3DXMatrixIdentity,173,matching,100.00,d3dx-matrix-identity,python3 scripts/compare-function.py d3dx-matrix-identity --json
 0x00454269,th08::AppendLogFormat,47,matching,100.00,result-screen-append-log-format,python3 scripts/compare-function.py result-screen-append-log-format --json
 0x00454298,th08::ResultScreen::LogScoreDataToFile,2497,matching,100.00,result-screen-log-score-data,python3 scripts/compare-function.py result-screen-log-score-data --json
+0x00421BA0,th08::GameManager::ScaleIntBasedOnRank,43,matching,100.00,game-manager-scale-int-based-on-rank,python3 scripts/compare-function.py game-manager-scale-int-based-on-rank --json
+0x004287E0,th08::Effect::Effect,162,matching,100.00,effect-constructor,python3 scripts/compare-function.py effect-constructor --json
+0x004144D0,th08::Spellcard::GetDifficultyFromSpellCard,105,matching,100.00,spellcard-get-difficulty,python3 scripts/compare-function.py spellcard-get-difficulty --json

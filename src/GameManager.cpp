@@ -142,6 +142,12 @@ ZunBool GameManager::IsStageClearedWithRetries(i32 stage, i32 character, i32 dif
 }
 
 #pragma optimize("t", on)
+// FUNCTION: th08 0x421ba0
+i32 GameManager::ScaleIntBasedOnRank(i32 upper, i32 lower)
+{
+    return this->rank * (lower - upper) / 32 + upper;
+}
+
 f32 GameManager::ScaleFloatBasedOnRank(f32 upper, f32 lower)
 {
     return upper + ((f32)this->rank * (lower - upper)) / 32.0f;

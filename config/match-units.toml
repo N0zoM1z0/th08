@@ -89813,3 +89813,102 @@ object = "build/objdiff/reimpl/AnmManager.obj"
 symbol = "?D3DXMatrixIdentity@@YIPAUD3DXMATRIX@@PAU1@@Z"
 target_address = 0x00406940
 size = 0xAD
+
+[[units]]
+name = "game-manager-scale-int-based-on-rank"
+object = "build/objdiff/reimpl/GameManager.obj"
+symbol = "th08::GameManager::ScaleIntBasedOnRank"
+target_address = 0x00421BA0
+size = 0x2B
+
+[[units]]
+name = "effect-constructor"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "??0Effect@th08@@QAE@XZ"
+target_address = 0x004287E0
+size = 0xA2
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x19
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x27
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x35
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x43
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x51
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x5F
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x6D
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x7B
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x89
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x97
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units]]
+name = "spellcard-get-difficulty"
+object = "build/objdiff/reimpl/SpellCard.obj"
+symbol = "th08::Spellcard::GetDifficultyFromSpellCard"
+target_address = 0x004144D0
+size = 0x69
+
+[[units.relocations]]
+offset = 0x3C
+type = "DIR32"
+symbol = "?g_SpellcardCountsPerDifficulty@th08@@3PAHA"
+target = 0x004C67E8
+
+[[units.relocations]]
+offset = 0x48
+type = "DIR32"
+symbol = "?g_SpellcardNumbersPerDifficulty@th08@@3PAPAHA"
+target = 0x004C67D0

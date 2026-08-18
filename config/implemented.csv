@@ -839,3 +839,6 @@ th08::AnmManager::DrawVertices
 D3DXMatrixIdentity
 th08::AppendLogFormat
 th08::ResultScreen::LogScoreDataToFile
+th08::GameManager::ScaleIntBasedOnRank
+th08::Effect::Effect
+th08::Spellcard::GetDifficultyFromSpellCard
