@@ -57,8 +57,8 @@ i32 __fastcall FUN_00426280(Effect *effect)
 {
     Float3 backgroundOffset;
 
-    backgroundOffset = -g_Background.unk6394.vectors[1];
-    effect->vector4 = g_Background.unk6394.vectors[1] + g_Background.unk6394.vectors[0];
+    backgroundOffset = -g_Background.unk6394.vector1;
+    effect->vector4 = g_Background.unk6394.vector1 + g_Background.unk6394.vector0;
     effect->vector4.x += g_Rng.GetRandomF32SignedInRange(60.0f) + backgroundOffset.x / 2.0f;
     effect->vector4.y += g_Rng.GetRandomF32SignedInRange(100.0f) - 50.0f + backgroundOffset.y / 2.0f;
     effect->vector4.z += g_Rng.GetRandomF32InRange(100.0f) - 100.0f + backgroundOffset.z / 2.0f;
@@ -89,8 +89,8 @@ i32 __fastcall FUN_00426720(Effect *effect)
 {
     Float3 backgroundOffset;
 
-    backgroundOffset = -g_Background.unk6394.vectors[1];
-    effect->vector4 = g_Background.unk6394.vectors[1] + g_Background.unk6394.vectors[0];
+    backgroundOffset = -g_Background.unk6394.vector1;
+    effect->vector4 = g_Background.unk6394.vector1 + g_Background.unk6394.vector0;
     effect->vector4.x += g_Rng.GetRandomF32SignedInRange(60.0f) + backgroundOffset.x / 2.0f;
     effect->vector4.y += g_Rng.GetRandomF32SignedInRange(200.0f) - 200.0f + backgroundOffset.y / 2.0f;
     effect->vector4.z += g_Rng.GetRandomF32InRange(100.0f) - 100.0f + backgroundOffset.z / 2.0f;
@@ -121,8 +121,8 @@ i32 __fastcall FUN_00426e70(Effect *effect)
 {
     Float3 backgroundOffset;
 
-    backgroundOffset = -g_Background.unk6394.vectors[1];
-    effect->vector4 = g_Background.unk6394.vectors[1] + g_Background.unk6394.vectors[0];
+    backgroundOffset = -g_Background.unk6394.vector1;
+    effect->vector4 = g_Background.unk6394.vector1 + g_Background.unk6394.vector0;
     effect->vector4.x += g_Rng.GetRandomF32InRange(120.0f) - 60.0f + backgroundOffset.x / 2.0f;
     effect->vector4.y += g_Rng.GetRandomF32InRange(200.0f) - 100.0f + backgroundOffset.y / 2.0f;
     effect->vector4.z += g_Rng.GetRandomF32InRange(100.0f) - 100.0f + backgroundOffset.z / 2.0f;

@@ -1001,3 +1001,4 @@ address,name,size,status,match_percent,unit,evidence
 0x0040B4C0,D3DXVec3Length,58,matching,100.00,d3dx-vec3-length-0040b4c0,python3 scripts/compare-function.py d3dx-vec3-length-0040b4c0 --json
 0x0040B540,D3DXVec3Dot,54,matching,100.00,d3dx-vec3-dot-0040b540,python3 scripts/compare-function.py d3dx-vec3-dot-0040b540 --json
 0x0040B7F0,D3DXVec3Cross,132,matching,100.00,d3dx-vec3-cross-0040b7f0,python3 scripts/compare-function.py d3dx-vec3-cross-0040b7f0 --json
+0x004073B0,th08::BackgroundUnkVectors::BackgroundUnkVectors,77,matching,100.00,background-unk-vectors-ctor-004073b0,python3 scripts/compare-function.py background-unk-vectors-ctor-004073b0 --json

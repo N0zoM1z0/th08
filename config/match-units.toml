@@ -105322,3 +105322,46 @@ offset = 0x10
 type = "REL32"
 symbol = "??0D3DXVECTOR3@@QAE@XZ"
 target = 0x0040B460
+
+[[units]]
+name = "background-unk-vectors-ctor-004073b0"
+object = "build/objdiff/reimpl/Background.obj"
+symbol = "??0BackgroundUnkVectors@th08@@QAE@XZ"
+target_address = 0x004073B0
+size = 0x4D
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x16
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x21
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x2C
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x37
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x42
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460

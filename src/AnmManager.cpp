@@ -1751,7 +1751,7 @@ ZunResult AnmManager::FUN_004639e0(AnmVm *vm)
         return ZUN_ERROR;
 
     D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectedReference),
-                    reinterpret_cast<D3DXVECTOR3 *>(&g_Background.unk6394.vectors[4]),
+                    reinterpret_cast<D3DXVECTOR3 *>(&g_Background.unk6394.vector4),
                     &g_Supervisor.viewport, &g_Supervisor.projectionMatrix,
                     &g_Supervisor.viewMatrix, &worldMatrix);
     delta = projectedReference - projectedPosition;
@@ -1905,7 +1905,7 @@ ZunResult AnmManager::FUN_004640e0(AnmVm *vm, void *callback)
         return ZUN_ERROR;
 
     D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectedReference),
-                    reinterpret_cast<D3DXVECTOR3 *>(&g_Background.unk6394.vectors[4]),
+                    reinterpret_cast<D3DXVECTOR3 *>(&g_Background.unk6394.vector4),
                     &g_Supervisor.viewport, &g_Supervisor.projectionMatrix,
                     &g_Supervisor.viewMatrix, &worldMatrix);
     delta = projectedReference - projectedPosition;

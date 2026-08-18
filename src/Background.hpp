@@ -11,7 +11,14 @@ namespace th08
 {
 struct BackgroundUnkVectors
 {
-    Float3 vectors[6];
+    BackgroundUnkVectors();
+
+    Float3 vector0;
+    Float3 vector1;
+    Float3 vector2;
+    Float3 vector3;
+    Float3 vector4;
+    Float3 vector5;
     f32 unk48;
 };
 C_ASSERT(sizeof(BackgroundUnkVectors) == 0x4c);

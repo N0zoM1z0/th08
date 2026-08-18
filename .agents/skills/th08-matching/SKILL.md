@@ -260,3 +260,7 @@ When a cross-version aggregate lines up field-for-field with target accesses, pr
 ## SDK/header-inline emitted helpers
 
 If a target function is an SDK/header-inline helper, keep the toolchain header as the source of truth and let a real reconstruction caller TU emit its COMDAT naturally. Do not paste the SDK body into `src/` or add a dummy caller. Pick a stable TU that already calls the helper, require a normal build plus strict per-function relocation replay, and only then record exactness. The TH08 `D3DXVec3Length/Dot/Cross` bodies are emitted naturally by `Background.obj` this way.
+
+## Repeated non-trivial members
+
+Do not treat `T members[N]` as codegen-equivalent to `T member0; ...; T memberN;` when `T` has a target-visible constructor. VC7 can lower the array through `??_H` but emit one direct constructor call per individual member. If target construction shows repeated direct calls and all consumers use constant indices, split the fields, keep the same offsets, and rerun every accepted unit that touches the aggregate before promoting the layout.

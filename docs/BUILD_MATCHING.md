@@ -710,3 +710,7 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 ### SDK/header-inline COMDAT ownership
 
 When the target contains a standalone body for an SDK/header-inline helper, do not copy the SDK implementation into repository source just to manufacture a symbol.  Prefer a real reconstructed caller TU that naturally emits the COMDAT under the target VC7 flags, then compare that emitted body and every relocation normally.  `D3DXVec3Length`, `D3DXVec3Dot`, and `D3DXVec3Cross` at `0x0040B4C0/0x0040B540/0x0040B7F0` are the corpus example: `Background.cpp` already uses those SDK inline helpers, so the exact functions are reproducibly emitted without changing their SDK source.
+
+### Non-trivial member arrays versus repeated members
+
+For VC7 `/Od`, an array of non-trivial class members and several individually declared members are not constructor-codegen equivalent.  `Float3 vectors[6]` in `BackgroundUnkVectors` emitted the vector-constructor iterator `??_H`, while the TH08 target constructor at `0x004073B0` contains six direct `Float3::Float3()` calls at offsets `0x00..0x3C`.  When every observed use is a constant index, repeated direct ctor calls are strong evidence that the original layout used individual members.  Promote the fields individually, preserve their offsets, and regress every accepted consumer before accepting the ABI change.
