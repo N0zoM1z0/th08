@@ -1436,9 +1436,97 @@ ZunResult AnmManager::FUN_00464dd0(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices)
 }
 
 // FUNCTION: th08 0x00463470
-u8 AnmManager::FUN_00463470(AnmVm *vm)
+#pragma var_order(sine, rotation, cosine, halfWidth, halfHeight, yOffset, xOffset, zeroHalfWidth, zeroHalfHeight, this)
+ZunResult AnmManager::FUN_00463470(AnmVm *vm)
 {
-    return 0;
+    f32 rotation;
+    f32 sine;
+    f32 cosine;
+    f32 halfWidth;
+    f32 halfHeight;
+    f32 xOffset;
+    f32 yOffset;
+    f32 zeroHalfWidth;
+    f32 zeroHalfHeight;
+
+    if (!vm->IsVisible())
+        return ZUN_ERROR;
+    if (!vm->flag1)
+        return ZUN_ERROR;
+    if (vm->color1.a == 0)
+        return ZUN_ERROR;
+
+    rotation = vm->rotation.z;
+    if (rotation != 0.0f)
+    {
+        sincos(rotation, sine, cosine);
+        xOffset = vm->pos.x;
+        yOffset = vm->pos.y;
+        halfWidth = vm->spriteSize.x * vm->scale.x / 2.0f;
+        halfHeight = vm->spriteSize.y * vm->scale.y / 2.0f;
+
+        this->TranslateRotation(&g_QuadVertices[0], -halfWidth, -halfHeight, sine, cosine, xOffset, yOffset);
+        this->TranslateRotation(&g_QuadVertices[1], halfWidth, -halfHeight, sine, cosine, xOffset, yOffset);
+        this->TranslateRotation(&g_QuadVertices[2], -halfWidth, halfHeight, sine, cosine, xOffset, yOffset);
+        this->TranslateRotation(&g_QuadVertices[3], halfWidth, halfHeight, sine, cosine, xOffset, yOffset);
+
+        g_QuadVertices[3].pos.z = vm->pos.z;
+        g_QuadVertices[2].pos.z = g_QuadVertices[3].pos.z;
+        g_QuadVertices[1].pos.z = g_QuadVertices[2].pos.z;
+        g_QuadVertices[0].pos.z = g_QuadVertices[1].pos.z;
+
+        if (vm->anchor & 1)
+        {
+            g_QuadVertices[0].pos.x += halfWidth;
+            g_QuadVertices[1].pos.x += halfWidth;
+            g_QuadVertices[2].pos.x += halfWidth;
+            g_QuadVertices[3].pos.x += halfWidth;
+        }
+        if (vm->anchor & 2)
+        {
+            g_QuadVertices[0].pos.y += halfHeight;
+            g_QuadVertices[1].pos.y += halfHeight;
+            g_QuadVertices[2].pos.y += halfHeight;
+            g_QuadVertices[3].pos.y += halfHeight;
+        }
+    }
+    else
+    {
+        zeroHalfWidth = vm->spriteSize.x * vm->scale.x / 2.0f;
+        zeroHalfHeight = vm->spriteSize.y * vm->scale.y / 2.0f;
+
+        if ((vm->anchor & 1) == 0)
+        {
+            g_QuadVertices[2].pos.x = vm->pos.x - zeroHalfWidth;
+            g_QuadVertices[0].pos.x = g_QuadVertices[2].pos.x;
+            g_QuadVertices[3].pos.x = zeroHalfWidth + vm->pos.x;
+            g_QuadVertices[1].pos.x = g_QuadVertices[3].pos.x;
+        }
+        else
+        {
+            g_QuadVertices[2].pos.x = vm->pos.x;
+            g_QuadVertices[0].pos.x = g_QuadVertices[2].pos.x;
+            g_QuadVertices[3].pos.x = zeroHalfWidth + vm->pos.x + zeroHalfWidth;
+            g_QuadVertices[1].pos.x = g_QuadVertices[3].pos.x;
+        }
+
+        if ((vm->anchor & 2) == 0)
+        {
+            g_QuadVertices[1].pos.y = vm->pos.y - zeroHalfHeight;
+            g_QuadVertices[0].pos.y = g_QuadVertices[1].pos.y;
+            g_QuadVertices[3].pos.y = zeroHalfHeight + vm->pos.y;
+            g_QuadVertices[2].pos.y = g_QuadVertices[3].pos.y;
+        }
+        else
+        {
+            g_QuadVertices[1].pos.y = vm->pos.y;
+            g_QuadVertices[0].pos.y = g_QuadVertices[1].pos.y;
+            g_QuadVertices[3].pos.y = zeroHalfHeight + vm->pos.y + zeroHalfHeight;
+            g_QuadVertices[2].pos.y = g_QuadVertices[3].pos.y;
+        }
+    }
+
+    return this->DrawInner(vm, 0);
 }
 
 #pragma var_order(spriteHalfWidth, spriteHalfHeight)

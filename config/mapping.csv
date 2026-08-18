@@ -959,7 +959,7 @@ th08::AnmManager::AddSpriteToDrawBuffer,0x462f10,0xd3,__thiscall,,u8,AnmManager*
 th08::AnmManager::DrawNoRotation,0x462ff0,0x1d5,__thiscall,,u32,AnmManager*,AnmVm*
 th08::AnmManager::TranslateRotation,0x4631d0,0x3a,__thiscall,,void,AnmManager*,VertexTex1DiffuseXyzrhw*,f32,f32,f32,f32,f32,f32
 th08::AnmManager::Draw2D,0x463210,0x258,__thiscall,,ZunResult,AnmManager*,AnmVm*
-th08::AnmManager::FUN_00463470,0x463470,0x390,__thiscall,,u8,AnmManager*,AnmVm*
+th08::AnmManager::FUN_00463470,0x463470,0x390,__thiscall,,ZunResult,AnmManager*,AnmVm*
 th08::AnmManager::DrawNoRotationNoRound,0x463800,0x1d5,__thiscall,,ZunResult,AnmManager*,AnmVm*
 th08::AnmManager::FUN_004639e0,0x4639e0,0x303,__thiscall,,ZunResult,AnmManager*,AnmVm*
 th08::AnmManager::FUN_00463cf0,0x463cf0,0x6b,__thiscall,,ZunResult,AnmManager*,AnmVm*

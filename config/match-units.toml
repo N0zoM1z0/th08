@@ -86797,3 +86797,382 @@ offset = 0x306
 type = "DIR32"
 symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
 target = 0x018BDC98
+
+[[units]]
+name = "anm-draw-rotated-or-axis-quad"
+object = "build/objdiff/reimpl/AnmManager.obj"
+symbol = "th08::AnmManager::FUN_00463470"
+target_address = 0x00463470
+size = 0x390
+
+[[units.relocations]]
+offset = 0xD
+type = "REL32"
+symbol = "?IsVisible@AnmVmBase@th08@@QAEIXZ"
+target = 0x004066E0
+
+[[units.relocations]]
+offset = 0x5B
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x9B
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0xB0
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0xDA
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0xE2
+type = "REL32"
+symbol = "th08::AnmManager::TranslateRotation"
+target = 0x004631D0
+
+[[units.relocations]]
+offset = 0x104
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x10C
+type = "REL32"
+symbol = "th08::AnmManager::TranslateRotation"
+target = 0x004631D0
+
+[[units.relocations]]
+offset = 0x12E
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x136
+type = "REL32"
+symbol = "th08::AnmManager::TranslateRotation"
+target = 0x004631D0
+
+[[units.relocations]]
+offset = 0x153
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x15B
+type = "REL32"
+symbol = "th08::AnmManager::TranslateRotation"
+target = 0x004631D0
+
+[[units.relocations]]
+offset = 0x16A
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x16F
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x174
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x17A
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x180
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x186
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x18C
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1A8
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1B1
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1B7
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1C0
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1C6
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1CF
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1D5
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1DE
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x1FA
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x203
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x209
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x212
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x218
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x221
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x227
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x230
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x247
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x25C
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x287
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x28D
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x293
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x2A5
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x2AB
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x2B1
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x2C1
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x2C7
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x2CD
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x2E2
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x2E7
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x2EC
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x314
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x31A
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x320
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x332
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x337
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x33C
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x34D
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x352
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x357
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x36C
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x372
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x378
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x386
+type = "REL32"
+symbol = "th08::AnmManager::DrawInner"
+target = 0x004628B0
