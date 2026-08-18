@@ -492,7 +492,7 @@ th08::Gui::FUN_00437ddd,0x437ddd,function
 th08::Gui::FUN_00437e5d,0x437e5d,function
 th08::Gui::gui_fun_00437edc,0x437edc,function
 th08::FUN_00437f5c,0x437f5c,function
-FUN_00438046,0x438046,function
+th08::FUN_00438046,0x438046,function
 th08::Gui::FUN_0043826b,0x43826b,function
 th08::Supervisor::IsMinimumGraphicsMode,0x438a29,function
 th08::Supervisor::IsDepthTestDisabled,0x438a41,function

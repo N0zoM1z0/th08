@@ -105258,7 +105258,7 @@ target = 0x0045E430
 
 [[units]]
 name = "gui-set-boss-present-00422c20"
-object = "build/probes/EclDependencies.obj"
+object = "build/objdiff/reimpl/EclManager.obj"
 symbol = "?SetBossPresent@Gui@th08@@QAE_N_N@Z"
 target_address = 0x00422C20
 size = 0x19
@@ -105702,3 +105702,724 @@ offset = 0xE3
 type = "DIR32"
 symbol = "__real@00000000"
 target = 0x004B4384
+
+[[units]]
+name = "gui-stage-spell-sprite-00438046"
+object = "build/objdiff/reimpl/Gui.obj"
+symbol = "?FUN_00438046@th08@@YIXXZ"
+target_address = 0x00438046
+size = 0x205
+compare_size = 0x225
+
+[[units.relocations]]
+offset = 0x5
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDC4
+
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "$L72070"
+target = 0x0043824B
+
+[[units.relocations]]
+offset = 0x27
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0x34
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0x41
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0x4B
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x50
+type = "REL32"
+symbol = "?IsSpellPractice@GameManager@th08@@QAEIXZ"
+target = 0x00406C70
+
+[[units.relocations]]
+offset = 0x5E
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x63
+type = "REL32"
+symbol = "?IsSpellNumberEqualTo@GameManager@th08@@QAEIH@Z"
+target = 0x00418130
+
+[[units.relocations]]
+offset = 0x6F
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0x7E
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x83
+type = "REL32"
+symbol = "?IsSpellNumberEqualTo@GameManager@th08@@QAEIH@Z"
+target = 0x00418130
+
+[[units.relocations]]
+offset = 0x8F
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0x9E
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xA3
+type = "REL32"
+symbol = "?IsSpellNumberEqualTo@GameManager@th08@@QAEIH@Z"
+target = 0x00418130
+
+[[units.relocations]]
+offset = 0xAF
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0xBB
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xC0
+type = "REL32"
+symbol = "?IsSpellNumberEqualTo@GameManager@th08@@QAEIH@Z"
+target = 0x00418130
+
+[[units.relocations]]
+offset = 0xCC
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0xD8
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xDD
+type = "REL32"
+symbol = "?IsSpellNumberEqualTo@GameManager@th08@@QAEIH@Z"
+target = 0x00418130
+
+[[units.relocations]]
+offset = 0xE9
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0xF5
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xFA
+type = "REL32"
+symbol = "?IsSpellNumberEqualTo@GameManager@th08@@QAEIH@Z"
+target = 0x00418130
+
+[[units.relocations]]
+offset = 0x106
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0x112
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x117
+type = "REL32"
+symbol = "?IsSpellNumberEqualTo@GameManager@th08@@QAEIH@Z"
+target = 0x00418130
+
+[[units.relocations]]
+offset = 0x123
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0x130
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0x13A
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x13F
+type = "REL32"
+symbol = "?IsSpellPractice@GameManager@th08@@QAEIXZ"
+target = 0x00406C70
+
+[[units.relocations]]
+offset = 0x14D
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x152
+type = "REL32"
+symbol = "?IsSpellNumberEqualTo@GameManager@th08@@QAEIH@Z"
+target = 0x00418130
+
+[[units.relocations]]
+offset = 0x15E
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0x168
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0x175
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0x17F
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x184
+type = "REL32"
+symbol = "?IsSpellPractice@GameManager@th08@@QAEIXZ"
+target = 0x00406C70
+
+[[units.relocations]]
+offset = 0x197
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x19C
+type = "REL32"
+symbol = "?IsSpellNumberInRange@GameManager@th08@@QAEIHH@Z"
+target = 0x00418180
+
+[[units.relocations]]
+offset = 0x1A8
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0x1B2
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0x1B9
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x1BE
+type = "REL32"
+symbol = "?IsSpellPractice@GameManager@th08@@QAEIXZ"
+target = 0x00406C70
+
+[[units.relocations]]
+offset = 0x1D1
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x1D6
+type = "REL32"
+symbol = "?IsSpellNumberInRange@GameManager@th08@@QAEIHH@Z"
+target = 0x00418180
+
+[[units.relocations]]
+offset = 0x1E4
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x1E9
+type = "REL32"
+symbol = "?IsSpellNumberEqualTo@GameManager@th08@@QAEIH@Z"
+target = 0x00418130
+
+[[units.relocations]]
+offset = 0x1F5
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0x1FF
+type = "REL32"
+symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+target = 0x00437F5C
+
+[[units.relocations]]
+offset = 0x205
+type = "DIR32"
+symbol = "$L71099"
+target = 0x00438076
+
+[[units.relocations]]
+offset = 0x209
+type = "DIR32"
+symbol = "$L71100"
+target = 0x00438083
+
+[[units.relocations]]
+offset = 0x20D
+type = "DIR32"
+symbol = "$L71101"
+target = 0x00438090
+
+[[units.relocations]]
+offset = 0x211
+type = "DIR32"
+symbol = "$L71116"
+target = 0x00438172
+
+[[units.relocations]]
+offset = 0x215
+type = "DIR32"
+symbol = "$L71117"
+target = 0x0043817F
+
+[[units.relocations]]
+offset = 0x219
+type = "DIR32"
+symbol = "$L71121"
+target = 0x004381B7
+
+[[units.relocations]]
+offset = 0x21D
+type = "DIR32"
+symbol = "$L71122"
+target = 0x004381C4
+
+[[units.relocations]]
+offset = 0x221
+type = "DIR32"
+symbol = "$L71126"
+target = 0x004381FE
+
+[[units]]
+name = "gui-dialog-vm-ready-00437d87"
+object = "build/objdiff/reimpl/Gui.obj"
+symbol = "th08::Gui::FUN_00437d87"
+target_address = 0x00437D87
+size = 0x40
+
+[[units.relocations]]
+offset = 0x26
+type = "REL32"
+symbol = "?FUN_004396f8@AnmVm@th08@@QAEIXZ"
+target = 0x004396F8
+
+[[units]]
+name = "gui-result-texture-capture-00438f58"
+object = "build/objdiff/reimpl/Gui.obj"
+symbol = "th08::Gui::FUN_00438f58"
+target_address = 0x00438F58
+size = 0x91
+
+[[units.relocations]]
+offset = 0x17
+type = "DIR32"
+symbol = "?g_GuiResultAnm1@th08@@3PAUAnmLoaded@1@A"
+target = 0x004D50AC
+
+[[units.relocations]]
+offset = 0x1C
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x30
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x45
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x5A
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x6F
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x86
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x8B
+type = "REL32"
+symbol = "?SetTextureCaptureParams@AnmManager@th08@@QAE?AW4ZunResult@@IIIIIIIII@Z"
+target = 0x00406A30
+
+[[units]]
+name = "screen-effect-reset-0045c160"
+object = "build/objdiff/reimpl/ScreenEffect.obj"
+symbol = "th08::ScreenEffect::FUN_0045c160"
+target_address = 0x0045C160
+size = 0x22
+
+[[units.relocations]]
+offset = 0x1A
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units]]
+name = "supervisor-hide-loading-vms-0044881a"
+object = "build/objdiff/reimpl/Supervisor.obj"
+symbol = "th08::Supervisor::HideLoadingVms"
+target_address = 0x0044881A
+size = 0x55
+
+[[units.relocations]]
+offset = 0x16
+type = "DIR32"
+symbol = "?g_SupervisorLoadingVms@th08@@3PAUAnmVm@1@A"
+target = 0x017CEAC0
+addend = 0x1FE
+
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "?g_SupervisorLoadingVms@th08@@3PAUAnmVm@1@A"
+target = 0x017CEAC0
+addend = 0x4A2
+
+[[units.relocations]]
+offset = 0x28
+type = "DIR32"
+symbol = "?g_SupervisorLoadingVms@th08@@3PAUAnmVm@1@A"
+target = 0x017CEAC0
+addend = 0x746
+
+[[units.relocations]]
+offset = 0x3A
+type = "DIR32"
+symbol = "?g_SupervisorScreenEffect@th08@@3PAUScreenEffect@1@A"
+target = 0x017CE750
+
+[[units.relocations]]
+offset = 0x43
+type = "DIR32"
+symbol = "?g_SupervisorScreenEffect@th08@@3PAUScreenEffect@1@A"
+target = 0x017CE750
+
+[[units.relocations]]
+offset = 0x48
+type = "REL32"
+symbol = "?FUN_0045c160@ScreenEffect@th08@@QAEXXZ"
+target = 0x0045C160
+
+[[units.relocations]]
+offset = 0x4E
+type = "DIR32"
+symbol = "?g_SupervisorScreenEffect@th08@@3PAUScreenEffect@1@A"
+target = 0x017CE750
+
+[[units]]
+name = "supervisor-loading-vms-mode2-00448972"
+object = "build/objdiff/reimpl/Supervisor.obj"
+symbol = "th08::Supervisor::FUN_00448972"
+target_address = 0x00448972
+size = 0x58
+
+[[units.relocations]]
+offset = 0x16
+type = "DIR32"
+symbol = "?g_SupervisorLoadingVms@th08@@3PAUAnmVm@1@A"
+target = 0x017CEAC0
+addend = 0x1FE
+
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "?g_SupervisorLoadingVms@th08@@3PAUAnmVm@1@A"
+target = 0x017CEAC0
+addend = 0x4A2
+
+[[units.relocations]]
+offset = 0x28
+type = "DIR32"
+symbol = "?g_SupervisorLoadingVms@th08@@3PAUAnmVm@1@A"
+target = 0x017CEAC0
+addend = 0x746
+
+[[units.relocations]]
+offset = 0x3D
+type = "DIR32"
+symbol = "?g_SupervisorScreenEffect@th08@@3PAUScreenEffect@1@A"
+target = 0x017CE750
+
+[[units.relocations]]
+offset = 0x46
+type = "DIR32"
+symbol = "?g_SupervisorScreenEffect@th08@@3PAUScreenEffect@1@A"
+target = 0x017CE750
+
+[[units.relocations]]
+offset = 0x4B
+type = "REL32"
+symbol = "?FUN_0045c160@ScreenEffect@th08@@QAEXXZ"
+target = 0x0045C160
+
+[[units.relocations]]
+offset = 0x51
+type = "DIR32"
+symbol = "?g_SupervisorScreenEffect@th08@@3PAUScreenEffect@1@A"
+target = 0x017CE750
+
+[[units]]
+name = "supervisor-start-effect-004489ca"
+object = "build/objdiff/reimpl/Supervisor.obj"
+symbol = "th08::Supervisor::StartEffect"
+target_address = 0x004489CA
+size = 0x2F
+
+[[units.relocations]]
+offset = 0x9
+type = "DIR32"
+symbol = "?g_SupervisorScreenEffect@th08@@3PAUScreenEffect@1@A"
+target = 0x017CE750
+
+[[units.relocations]]
+offset = 0x22
+type = "REL32"
+symbol = "?RegisterChain@ScreenEffect@th08@@SIPAU12@W4ScreenEffectType@2@HHHHH@Z"
+target = 0x0045B8B0
+
+[[units.relocations]]
+offset = 0x27
+type = "DIR32"
+symbol = "?g_SupervisorScreenEffect@th08@@3PAUScreenEffect@1@A"
+target = 0x017CE750
+
+[[units]]
+name = "enemy-attached-hp-clamp-0042b370"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "th08::Enemy::FUN_0042b370"
+target_address = 0x0042B370
+size = 0x120
+
+[[units.relocations]]
+offset = 0xD
+type = "REL32"
+symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+target = 0x0041FD20
+
+[[units.relocations]]
+offset = 0x1C
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xFDC
+
+[[units.relocations]]
+offset = 0x94
+type = "REL32"
+symbol = "??OZunTimer@th08@@QAEIH@Z"
+target = 0x004066C0
+
+[[units]]
+name = "enemy-cleanup-0042bcf0"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "th08::Enemy::FUN_0042bcf0"
+target_address = 0x0042BCF0
+size = 0x1B0
+
+[[units.relocations]]
+offset = 0xF
+type = "REL32"
+symbol = "?FUN_0042adb0@EnemyOverlay@EclOperands@th08@@QAEXH@Z"
+target = 0x0042ADB0
+
+[[units.relocations]]
+offset = 0x63
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x68
+type = "REL32"
+symbol = "?SetBossPresent@Gui@th08@@QAE_N_N@Z"
+target = 0x00422C20
+
+[[units.relocations]]
+offset = 0x79
+type = "DIR32"
+symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
+target = 0x00F54CC0
+
+[[units.relocations]]
+offset = 0xA4
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0xA9
+type = "REL32"
+symbol = "?FUN_00422bb0@AsciiManager@th08@@QAEXHF@Z"
+target = 0x00422BB0
+
+[[units.relocations]]
+offset = 0xBD
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0xCE
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0xD3
+type = "REL32"
+symbol = "?SetBossMarkerPosition@AsciiManager@th08@@QAEXHPAUD3DXVECTOR3@@@Z"
+target = 0x00422BE0
+
+[[units.relocations]]
+offset = 0xE7
+type = "REL32"
+symbol = "th08::Enemy::FUN_0042a820"
+target = 0x0042A820
+
+[[units.relocations]]
+offset = 0x10A
+type = "DIR32"
+symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
+target = 0x00F54CC0
+
+[[units.relocations]]
+offset = 0x114
+type = "DIR32"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
+target = 0x018B8A28
+
+[[units.relocations]]
+offset = 0x124
+type = "DIR32"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
+target = 0x018B8A28
+
+[[units.relocations]]
+offset = 0x147
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x194
+type = "REL32"
+symbol = "th08::Enemy::FUN_0042bc90"
+target = 0x0042BC90
+
+[[units.relocations]]
+offset = 0x199
+type = "DIR32"
+symbol = "?g_EnemyTrackedEnemy@th08@@3PAUEnemy@1@A"
+target = 0x018B89B4
+
+[[units.relocations]]
+offset = 0x1A4
+type = "DIR32"
+symbol = "?g_EnemyTrackedEnemy@th08@@3PAUEnemy@1@A"
+target = 0x018B89B4
+
+[[units]]
+name = "enemy-sync-effects-0042e010"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "th08::Enemy::FUN_0042e010"
+target_address = 0x0042E010
+size = 0x101
+
+[[units.relocations]]
+offset = 0xBA
+type = "DIR32"
+symbol = "__real@3e99999a"
+target = 0x004B48D0
+
+[[units.relocations]]
+offset = 0xEB
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0

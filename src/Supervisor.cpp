@@ -1920,6 +1920,28 @@ void Supervisor::HideLoadingVms(void)
         g_SupervisorLoadingVms[2].SetInterrupt(1);
         this->loadingVmsHaveBeenSetup = 0;
     }
+    if (g_SupervisorScreenEffect != NULL)
+    {
+        g_SupervisorScreenEffect->FUN_0045c160();
+        g_SupervisorScreenEffect = NULL;
+    }
+}
+
+// FUNCTION: th08 0x448972
+void Supervisor::FUN_00448972()
+{
+    if (this->loadingVmsHaveBeenSetup == 1)
+    {
+        g_SupervisorLoadingVms[0].SetInterrupt(2);
+        g_SupervisorLoadingVms[1].SetInterrupt(2);
+        g_SupervisorLoadingVms[2].SetInterrupt(2);
+        this->loadingVmsHaveBeenSetup = 2;
+    }
+    if (g_SupervisorScreenEffect != NULL)
+    {
+        g_SupervisorScreenEffect->FUN_0045c160();
+        g_SupervisorScreenEffect = NULL;
+    }
 }
 
 void Supervisor::SetupLoadingVmsAndInitCapture(Float3 *position)
@@ -1944,8 +1966,8 @@ void Supervisor::StartEffect(i32 idx)
 {
     if (g_SupervisorScreenEffect == NULL)
     {
-        // g_SupervisorScreenEffect = ScreenEffect::RegisterChain(((ScreenEffectType) idx) + SCREEN_EFFECT_UNK5, 60, 0,
-        // 0, 0, 1);
+        g_SupervisorScreenEffect =
+            ScreenEffect::RegisterChain((ScreenEffectType)(idx + SCREEN_EFFECT_UNK5), 60, 0, 0, 0, 1);
     }
 }
 

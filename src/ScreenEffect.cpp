@@ -307,6 +307,13 @@ ScreenEffect *ScreenEffect::RegisterChain(ScreenEffectType effect, i32 ticks, i3
     return screenEffect;
 }
 
+// FUNCTION: th08 0x45c160
+void ScreenEffect::FUN_0045c160()
+{
+    this->unk24 = 1;
+    this->timer = 0;
+}
+
 // FUNCTION: th08 0x45bb50
 ChainCallbackResult ScreenEffect::DrawFullFade(ScreenEffect *screenEffect)
 {

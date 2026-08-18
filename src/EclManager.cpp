@@ -1,9 +1,17 @@
 #include "th_pch.h"
 
 #include "EclManager.hpp"
+#include "Gui.hpp"
 
 namespace th08
 {
+
+// FUNCTION: th08 0x422c20
+bool Gui::SetBossPresent(bool value)
+{
+    return this->bossPresent = value;
+}
+
 
 EclTimelineState::EclTimelineState()
 {

@@ -1004,3 +1004,13 @@ th08::BackgroundUnkVectors::BackgroundUnkVectors
 th08::FUN_004264f0
 th08::FUN_00426990
 th08::FUN_00426d70
+th08::FUN_00438046
+th08::Gui::FUN_00437d87
+th08::Gui::FUN_00438f58
+th08::ScreenEffect::FUN_0045c160
+th08::Supervisor::HideLoadingVms
+th08::Supervisor::FUN_00448972
+th08::Supervisor::StartEffect
+th08::Enemy::FUN_0042b370
+th08::Enemy::FUN_0042bcf0
+th08::Enemy::FUN_0042e010

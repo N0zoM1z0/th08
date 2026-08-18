@@ -148,6 +148,7 @@ struct Supervisor
     void ThreadClose();
     void SetupLoadingVms(Float3 *position);
     void HideLoadingVms(void);
+    void FUN_00448972();
     void SetupLoadingVmsAndInitCapture(Float3 *position);
     void StartEffect(i32 idx);
     void InitializeCriticalSections();

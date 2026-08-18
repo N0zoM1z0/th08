@@ -97,6 +97,7 @@ struct Gui
     bool IsBossPresent();
     bool SetBossPresent(bool value);
     i32 StartStageBackgroundSequence();
+    i32 FUN_00437d87();
     i32 FUN_00437dc7();
     void FreeMsgFile();
     void FUN_00437ddd(i32 value);
@@ -118,6 +119,7 @@ struct Gui
     void FUN_00435900();
     void FUN_0043826b();
     void FUN_00438a89();
+    ZunResult FUN_00438f58();
 
     u32 unk_0;
     GuiFlags flags;

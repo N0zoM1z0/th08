@@ -1349,6 +1349,93 @@ void Gui::FUN_00438a89()
     g_AsciiManager.SetIsGuiMode(0);
 }
 
+void __fastcall FUN_00437f5c(i32 spriteIdx);
+
+// FUNCTION: th08 0x438046
+void FUN_00438046()
+{
+    switch (g_GameManager.currentStage)
+    {
+    default:
+        FUN_00437f5c(16);
+        break;
+    case STAGE2:
+        FUN_00437f5c(17);
+        break;
+    case STAGE3:
+        FUN_00437f5c(18);
+        break;
+    case STAGE4A:
+        if (!g_GameManager.IsSpellPractice() || g_GameManager.IsSpellNumberEqualTo(214))
+        {
+            FUN_00437f5c(19);
+        }
+        else if (g_GameManager.IsSpellNumberEqualTo(216))
+        {
+            FUN_00437f5c(26);
+        }
+        else if (g_GameManager.IsSpellNumberEqualTo(217))
+        {
+            FUN_00437f5c(27);
+        }
+        else if (g_GameManager.IsSpellNumberEqualTo(218))
+        {
+            FUN_00437f5c(28);
+        }
+        else if (g_GameManager.IsSpellNumberEqualTo(219))
+        {
+            FUN_00437f5c(29);
+        }
+        else if (g_GameManager.IsSpellNumberEqualTo(220))
+        {
+            FUN_00437f5c(30);
+        }
+        else if (g_GameManager.IsSpellNumberEqualTo(221))
+        {
+            FUN_00437f5c(31);
+        }
+        break;
+    case STAGE4B:
+        FUN_00437f5c(20);
+        break;
+    case STAGE5:
+        if (!g_GameManager.IsSpellPractice() || g_GameManager.IsSpellNumberEqualTo(212))
+            FUN_00437f5c(21);
+        else
+            FUN_00437f5c(22);
+        break;
+    case STAGE6A:
+        FUN_00437f5c(23);
+        break;
+    case STAGE6B:
+        if (!g_GameManager.IsSpellPractice() || g_GameManager.IsSpellNumberInRange(147, 150))
+            FUN_00437f5c(23);
+        else
+            FUN_00437f5c(24);
+        break;
+    case EXTRASTAGE:
+        if (!g_GameManager.IsSpellPractice() ||
+            g_GameManager.IsSpellNumberInRange(191, 193) ||
+            g_GameManager.IsSpellNumberEqualTo(213))
+            FUN_00437f5c(32);
+        else
+            FUN_00437f5c(25);
+        break;
+    }
+}
+
+// FUNCTION: th08 0x438f58
+ZunResult Gui::FUN_00438f58()
+{
+    g_GuiResultAnm1->SetAndExecuteScriptIdx(&this->impl->vm3cc0, 1);
+    return g_AnmManager->SetTextureCaptureParams(
+        3, 32, 16, 384, 448,
+        (i32)this->impl->vm3cc0.loadedSprite->startPixelInclusive.x,
+        (i32)this->impl->vm3cc0.loadedSprite->startPixelInclusive.y,
+        (i32)this->impl->vm3cc0.loadedSprite->widthPx,
+        (i32)this->impl->vm3cc0.loadedSprite->heightPx);
+}
+
 // FUNCTION: th08 0x438fe9
 i32 FUN_00438fe9()
 {
@@ -1817,6 +1904,13 @@ i32 Gui::IsDialogPresent()
     if (this->impl == NULL)
         return 0;
     return *(i32 *)((u8 *)this->impl + 0x2181C) >= 0 || *(i32 *)((u8 *)this->impl + 0x2181C) == -2;
+}
+
+// FUNCTION: th08 0x437d87
+i32 Gui::FUN_00437d87()
+{
+    return this->impl->vm3778.activeSpriteIndex >= 0 &&
+           this->impl->vm3778.FUN_004396f8();
 }
 
 // FUNCTION: th08 0x437dc7

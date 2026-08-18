@@ -52,12 +52,6 @@ void __fastcall EndEnemySpell(u8 *enemy, void *instruction)
     g_Spellcard.EndSpell();
 }
 
-// FUNCTION: th08 0x422c20
-bool Gui::SetBossPresent(bool value)
-{
-    return this->bossPresent = value;
-}
-
 // FUNCTION: th08 0x4230c0
 void Gui::FUN_004230c0(f32 value)
 {

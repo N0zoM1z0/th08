@@ -46,6 +46,9 @@ void __fastcall FUN_0042bc50(void *self);
 struct Enemy
 {
     Enemy();
+    void FUN_0042b370(i32 amount);
+    void FUN_0042bcf0();
+    void FUN_0042e010();
 
     unknown_fields(0x0, 0xc);
     AnmVm vm;

@@ -10,6 +10,7 @@
 #include "Gui.hpp"
 #include "GameManager.hpp"
 #include "Player.hpp"
+#include "ReplayManager.hpp"
 
 namespace th08
 {
@@ -22,6 +23,7 @@ DIFFABLE_STATIC(u16, g_EnemyDropCounter);
 DIFFABLE_STATIC(ItemTimeOrbTimerStorage, g_EnemyAttachedTimer30);
 DIFFABLE_STATIC(ItemTimeOrbTimerStorage, g_EnemyAttachedTimer0);
 DIFFABLE_STATIC(ZunTimer, g_EnemyManagerUpdatePlayerTimer);
+DIFFABLE_STATIC(Enemy *, g_EnemyTrackedEnemy);
 DIFFABLE_STATIC(u16, g_EnemyDropScheduleIndex);
 DIFFABLE_STATIC_ARRAY_ASSIGN(u8, 32, g_EnemyDropSchedule) = {
     0, 0, 1, 0, 1, 0, 0, 0,
@@ -139,6 +141,59 @@ i32 Enemy::FUN_0042b930()
     return 1;
     }
     return 0;
+}
+
+// FUNCTION: th08 0x42b370
+#pragma var_order(damage, i, maxHp, this)
+void Enemy::FUN_0042b370(i32 amount)
+{
+    i32 damage;
+    i32 i;
+    i32 maxHp;
+
+    if (!reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(this)->HasAttachedEnemy())
+        return;
+    if (g_Player.bombState.frameStop != 0)
+        return;
+
+    maxHp = 0;
+    for (i = 0; i < 4; ++i)
+    {
+        if (maxHp < *reinterpret_cast<i32 *>(
+                        *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x2da4) +
+                        0x3358 + i * 4))
+        {
+            maxHp = *reinterpret_cast<i32 *>(
+                *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x2da4) +
+                0x3358 + i * 4);
+        }
+    }
+
+    damage = amount / 2;
+    if (*reinterpret_cast<ZunTimer *>(
+            *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x2da4) + 0x5354) > 0)
+    {
+        if (((*reinterpret_cast<u32 *>(
+                  *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x2da4) + 0x3324) >>
+              1) &
+             1) != 0)
+            damage /= 9;
+        else
+            damage = 0;
+    }
+
+    if (damage == 0)
+        return;
+
+    *reinterpret_cast<i32 *>(
+        *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x2da4) + 0x2dfc) -= damage;
+    if (*reinterpret_cast<i32 *>(
+            *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x2da4) + 0x2dfc) <=
+        maxHp)
+    {
+        *reinterpret_cast<i32 *>(
+            *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x2da4) + 0x2dfc) = maxHp;
+    }
 }
 
 // FUNCTION: th08 0x42b490
@@ -373,6 +428,55 @@ void EnemyManager::FUN_0042c3b0()
     }
 }
 
+// FUNCTION: th08 0x42bcf0
+#pragma var_order(i, this)
+void Enemy::FUN_0042bcf0()
+{
+    i32 i;
+
+    reinterpret_cast<EclOperands::EnemyOverlay *>(this)->FUN_0042adb0(0);
+
+    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 20) & 7) == 0)
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) &= ~1U;
+
+    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) != 0 &&
+        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3313) < 4)
+    {
+        g_Gui.SetBossPresent(false);
+        EclRunLowProposal::g_EclEnemyTableF54CC0[
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3313)] = NULL;
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) &= ~2U;
+        g_AsciiManager.FUN_00422bb0(
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3313), 2);
+        g_AsciiManager.SetBossMarkerPosition(
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3313),
+            reinterpret_cast<D3DXVECTOR3 *>(&Float3(-999.0f, -999.0f, 0.0f)));
+    }
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53c0) != 0)
+        this->FUN_0042a820();
+
+    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) != 0)
+        EclRunLowProposal::g_EclEnemyTableF54CC0[
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3313)] = NULL;
+
+    g_ReplayManager->flags |= 0x20;
+
+    if (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8) != NULL)
+    {
+        (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8))->SetInterrupt(3);
+        *reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8) = NULL;
+    }
+
+    for (i = 0; i < 4; ++i)
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4) = -1;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) = -1;
+
+    this->FUN_0042bc90();
+    if (g_EnemyTrackedEnemy == this)
+        g_EnemyTrackedEnemy = NULL;
+}
+
 // FUNCTION: th08 0x42c290
 #pragma var_order(collisionSize)
 void Enemy::FUN_0042c290(Float3 *position, Float3 *size)
@@ -402,6 +506,39 @@ void Enemy::FUN_0042c290(Float3 *position, Float3 *size)
                 *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc) -= 10;
             }
         }
+    }
+}
+
+// FUNCTION: th08 0x42e010
+#pragma var_order(effect, i, this)
+void Enemy::FUN_0042e010()
+{
+    u8 *effect;
+    i32 i;
+
+    for (i = 0; i < *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53c0); ++i)
+    {
+        effect = *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x5360 + i * 4);
+        if (effect == NULL)
+            continue;
+
+        reinterpret_cast<AnmVmBase *>(effect)->flag1 =
+            ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 4) & 1) == 0;
+        *reinterpret_cast<Float3 *>(effect + 0x2e0) = this->vector2d34;
+
+        if (*reinterpret_cast<f32 *>(effect + 0x314) <
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x53c4))
+        {
+            *reinterpret_cast<f32 *>(effect + 0x314) += 0.3f;
+        }
+        else
+        {
+            *reinterpret_cast<f32 *>(effect + 0x314) =
+                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x53c4);
+        }
+
+        *reinterpret_cast<f32 *>(effect + 0x318) =
+            AddNormalizeAngle(*reinterpret_cast<f32 *>(effect + 0x318), 0.031415928f);
     }
 }
 

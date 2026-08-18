@@ -1005,3 +1005,13 @@ address,name,size,status,match_percent,unit,evidence
 0x004264F0,th08::FUN_004264f0,545,matching,100.00,effect-callback-004264f0,python3 scripts/compare-function.py effect-callback-004264f0 --json
 0x00426990,th08::FUN_00426990,388,matching,100.00,effect-callback-00426990,python3 scripts/compare-function.py effect-callback-00426990 --json
 0x00426D70,th08::FUN_00426d70,251,matching,100.00,effect-callback-00426d70,python3 scripts/compare-function.py effect-callback-00426d70 --json
+0x00438046,th08::FUN_00438046,517,matching,100.00,gui-stage-spell-sprite-00438046,python3 scripts/compare-function.py gui-stage-spell-sprite-00438046 --json
+0x00437D87,th08::Gui::FUN_00437d87,64,matching,100.00,gui-dialog-vm-ready-00437d87,python3 scripts/compare-function.py gui-dialog-vm-ready-00437d87 --json
+0x00438F58,th08::Gui::FUN_00438f58,145,matching,100.00,gui-result-texture-capture-00438f58,python3 scripts/compare-function.py gui-result-texture-capture-00438f58 --json
+0x0045C160,th08::ScreenEffect::FUN_0045c160,34,matching,100.00,screen-effect-reset-0045c160,python3 scripts/compare-function.py screen-effect-reset-0045c160 --json
+0x0044881A,th08::Supervisor::HideLoadingVms,85,matching,100.00,supervisor-hide-loading-vms-0044881a,python3 scripts/compare-function.py supervisor-hide-loading-vms-0044881a --json
+0x00448972,th08::Supervisor::FUN_00448972,88,matching,100.00,supervisor-loading-vms-mode2-00448972,python3 scripts/compare-function.py supervisor-loading-vms-mode2-00448972 --json
+0x004489CA,th08::Supervisor::StartEffect,47,matching,100.00,supervisor-start-effect-004489ca,python3 scripts/compare-function.py supervisor-start-effect-004489ca --json
+0x0042B370,th08::Enemy::FUN_0042b370,288,matching,100.00,enemy-attached-hp-clamp-0042b370,python3 scripts/compare-function.py enemy-attached-hp-clamp-0042b370 --json
+0x0042BCF0,th08::Enemy::FUN_0042bcf0,432,matching,100.00,enemy-cleanup-0042bcf0,python3 scripts/compare-function.py enemy-cleanup-0042bcf0 --json
+0x0042E010,th08::Enemy::FUN_0042e010,257,matching,100.00,enemy-sync-effects-0042e010,python3 scripts/compare-function.py enemy-sync-effects-0042e010 --json

@@ -268,3 +268,11 @@ Do not treat `T members[N]` as codegen-equivalent to `T member0; ...; T memberN;
 ## Effect callback lifetime/rematerialization
 
 For VC7 effect callbacks, place a non-trivial work vector at the lexical point where the target first calls its constructor; do not hoist it just because C++ permits it. Use direct owner expressions when the target repeatedly reloads an enemy/global/member instead of caching references. Hidden `Float3` return temporaries then tend to fall into the target slots naturally. Treat x87 comparison polarity and return-block order as source evidence: equivalent negation can keep semantics but swap `je/jne` and fail strict matching.
+
+## Normalized switch / temporary-address corpus
+
+For dense `/Os` switches, verify the enum's actual numeric base before changing source shape. A compiler normalization such as `dec` can mean the first logical enum value belongs to the default path. If the target bounds check is short and the table starts immediately after the authored body, test lexical `default` placement as well as case order; `Gui::FUN_00438046` requires default first and uses `size=body`, `compare_size=body+table`.
+
+For VC7 `/Od` branch-local class temporaries, the target may consume the constructor's returned `this` directly. When a target shows `ctor; push eax` with no later address materialization, an old-MSVC address-of temporary expression such as `&Float3(...)` can be the real source shape. A named local followed by `&local` adds an observable `lea`. Accept the temporary form only under strict canonical replay and never replace it with asm or byte padding.
+
+Treat early-return topology as codegen evidence. `if (value == 0) return; body;` and `if (value != 0) { body; }` are semantically equivalent at function end but can differ by a short conditional plus an explicit epilogue jump. Preserve the form demonstrated by the target.
