@@ -90911,3 +90911,188 @@ offset = 0x19B
 type = "REL32"
 symbol = "??0ZunTimer@th08@@QAE@XZ"
 target = 0x004065A0
+
+[[units]]
+name = "player-bomb-background-color"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+target_address = 0x0040BC60
+size = 0x1C2
+
+[[units.relocations]]
+offset = 0x1F
+type = "REL32"
+symbol = "??MZunTimer@th08@@QAEIH@Z"
+target = 0x004066A0
+
+[[units.relocations]]
+offset = 0x40
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0x6E
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0x9C
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0xD1
+type = "REL32"
+symbol = "??PZunTimer@th08@@QAEIH@Z"
+target = 0x0040B8E0
+
+[[units.relocations]]
+offset = 0xF2
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0x12D
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0x168
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0x19C
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x1A1
+type = "REL32"
+symbol = "?SetMixColorDefault@AnmManager@th08@@QAEXXZ"
+target = 0x0040BAB0
+
+[[units.relocations]]
+offset = 0x1AA
+type = "DIR32"
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+
+[[units.relocations]]
+offset = 0x1AF
+type = "REL32"
+symbol = "?FUN_00409160@Background@th08@@QAEXK@Z"
+target = 0x00409160
+
+[[units.relocations]]
+offset = 0x1B5
+type = "DIR32"
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+
+
+[[units]]
+name = "player-bomb-draw-white-flash"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_00412300@th08@@YIXPAUPlayer@1@@Z"
+target_address = 0x00412300
+size = 0xCF
+
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+target = 0x0040BC60
+
+[[units.relocations]]
+offset = 0x2A
+type = "REL32"
+symbol = "??PZunTimer@th08@@QAEIH@Z"
+target = 0x0040B8E0
+
+[[units.relocations]]
+offset = 0x3F
+type = "REL32"
+symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+target = 0x0040BC60
+
+[[units.relocations]]
+offset = 0x74
+type = "REL32"
+symbol = "??MZunTimer@th08@@QAEIH@Z"
+target = 0x004066A0
+
+[[units.relocations]]
+offset = 0x8E
+type = "REL32"
+symbol = "??MZunTimer@th08@@QAEIH@Z"
+target = 0x004066A0
+
+[[units.relocations]]
+offset = 0x9D
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0xC7
+type = "REL32"
+symbol = "?DrawSquare@ScreenEffect@th08@@SIXPAUZunRect@2@K@Z"
+target = 0x0045B1E0
+
+
+[[units]]
+name = "player-bomb-draw-red-flash"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_00412fa0@th08@@YIXPAUPlayer@1@@Z"
+target_address = 0x00412FA0
+size = 0xCF
+
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+target = 0x0040BC60
+
+[[units.relocations]]
+offset = 0x2A
+type = "REL32"
+symbol = "??PZunTimer@th08@@QAEIH@Z"
+target = 0x0040B8E0
+
+[[units.relocations]]
+offset = 0x3F
+type = "REL32"
+symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+target = 0x0040BC60
+
+[[units.relocations]]
+offset = 0x74
+type = "REL32"
+symbol = "??MZunTimer@th08@@QAEIH@Z"
+target = 0x004066A0
+
+[[units.relocations]]
+offset = 0x8E
+type = "REL32"
+symbol = "??MZunTimer@th08@@QAEIH@Z"
+target = 0x004066A0
+
+[[units.relocations]]
+offset = 0x9D
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0xC7
+type = "REL32"
+symbol = "?DrawSquare@ScreenEffect@th08@@SIXPAUZunRect@2@K@Z"
+target = 0x0045B1E0

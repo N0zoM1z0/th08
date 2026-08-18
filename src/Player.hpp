@@ -88,7 +88,9 @@ C_ASSERT(sizeof(PlayerBombWorkItem) == 0x16F0);
 struct PlayerBombState
 {
     i32 frameStop;
-    unknown_fields(0x000004, 0x14);
+    i32 unknown4;
+    i32 duration;
+    unknown_fields(0x00000C, 0xC);
     ZunTimer timer;
     unknown_fields(0x000024, 0x28);
     PlayerBombWorkItem workItems[128];

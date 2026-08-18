@@ -858,3 +858,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00451CE0,th08::PlayerBuildAabb,108,matching,100.00,player-build-aabb,python3 scripts/compare-function.py player-build-aabb --json
 0x0040D410,th08::ZunTimer::operator%,25,matching,100.00,zun-timer-modulo,python3 scripts/compare-function.py zun-timer-modulo --json
 0x00449CA0,th08::Player::Player,422,matching,100.00,player-constructor,python3 scripts/compare-function.py player-constructor --json
+0x0040BC60,th08::FUN_0040bc60,450,matching,100.00,player-bomb-background-color,python3 scripts/compare-function.py player-bomb-background-color --json
+0x00412300,th08::FUN_00412300,207,matching,100.00,player-bomb-draw-white-flash,python3 scripts/compare-function.py player-bomb-draw-white-flash --json
+0x00412FA0,th08::FUN_00412fa0,207,matching,100.00,player-bomb-draw-red-flash,python3 scripts/compare-function.py player-bomb-draw-red-flash --json

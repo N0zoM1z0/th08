@@ -135,7 +135,7 @@ th08::AnmManager::GetAnm,0x40bb60,function
 th08::GameManager::IsTampered,0x40bb80,function
 th08::Player::IsHuman,0x40bc20,function
 th08::Player::IsYoukai,0x40bc40,function
-FUN_0040bc60,0x40bc60,function
+th08::FUN_0040bc60,0x40bc60,function
 FUN_0040be30,0x40be30,function
 FUN_0040bf00,0x40bf00,function
 FUN_0040c010,0x40c010,function
@@ -190,9 +190,9 @@ FUN_00411720,0x411720,function
 FUN_004117b0,0x4117b0,function
 FUN_00411a80,0x411a80,function
 FUN_00411b10,0x411b10,function
-FUN_00412300,0x412300,function
+th08::FUN_00412300,0x412300,function
 FUN_004123d0,0x4123d0,function
-FUN_00412fa0,0x412fa0,function
+th08::FUN_00412fa0,0x412fa0,function
 FUN_00413070,0x413070,function
 FUN_00413140,0x413140,function
 FUN_00413890,0x413890,function

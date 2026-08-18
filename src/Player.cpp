@@ -1,6 +1,7 @@
 #include "th_pch.h"
 
 #include "AsciiManager.hpp"
+#include "Background.hpp"
 #include "BulletManager.hpp"
 #include "Gui.hpp"
 #include "ItemManager.hpp"
@@ -17,6 +18,105 @@
 
 namespace th08
 {
+
+// FUNCTION: th08 0x40bc60
+#pragma var_order(sourceColor, mixedColor)
+void __fastcall FUN_0040bc60(Player *player, D3DCOLOR color)
+{
+    ZunColor mixedColor;
+    ZunColor sourceColor;
+    sourceColor.d3dColor = color;
+
+    if (player->bombState.timer < 60)
+    {
+        mixedColor.r = 0x80 - (0x80 - sourceColor.r) * (i32)player->bombState.timer / 60;
+        mixedColor.g = 0x80 - (0x80 - sourceColor.g) * (i32)player->bombState.timer / 60;
+        mixedColor.b = 0x80 - (0x80 - sourceColor.b) * (i32)player->bombState.timer / 60;
+    }
+    else if (player->bombState.timer >= player->bombState.duration - 60)
+    {
+        mixedColor.r = 0x80 - (0x80 - sourceColor.r) * (player->bombState.duration - (i32)player->bombState.timer) / 60;
+        mixedColor.g = 0x80 - (0x80 - sourceColor.g) * (player->bombState.duration - (i32)player->bombState.timer) / 60;
+        mixedColor.b = 0x80 - (0x80 - sourceColor.b) * (player->bombState.duration - (i32)player->bombState.timer) / 60;
+    }
+    else
+    {
+        mixedColor.d3dColor = sourceColor.d3dColor;
+    }
+    mixedColor.a = 0x80;
+    g_AnmManager->SetMixColorDefault();
+    g_Background.FUN_00409160(mixedColor.d3dColor);
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Background) + 0x646C) = 1;
+}
+
+
+// FUNCTION: th08 0x412300
+#pragma var_order(bomb, rect, color)
+void __fastcall FUN_00412300(Player *player)
+{
+    PlayerBombState *bomb = &player->bombState;
+    FUN_0040bc60(player, 0x80404040);
+    if (bomb->timer >= 70)
+    {
+        FUN_0040bc60(player, 0x80000030);
+        ZunColor color;
+        ZunRect rect;
+        rect.left = 32.0f;
+        rect.top = 16.0f;
+        rect.right = 416.0f;
+        rect.bottom = 464.0f;
+        color.r = 0xff;
+        color.g = 0xff;
+        color.b = 0xff;
+        if (bomb->timer < 100)
+        {
+            color.a = 0xff;
+        }
+        else if (bomb->timer < 160)
+        {
+            color.a = 0xff - 0xff * ((i32)bomb->timer - 100) / 60;
+        }
+        else
+        {
+            return;
+        }
+        ScreenEffect::DrawSquare(&rect, color.d3dColor);
+    }
+}
+
+// FUNCTION: th08 0x412fa0
+#pragma var_order(bomb, rect, color)
+void __fastcall FUN_00412fa0(Player *player)
+{
+    PlayerBombState *bomb = &player->bombState;
+    FUN_0040bc60(player, 0x80404040);
+    if (bomb->timer >= 70)
+    {
+        FUN_0040bc60(player, 0x80000030);
+        ZunRect rect;
+        ZunColor color;
+        rect.left = 32.0f;
+        rect.top = 16.0f;
+        rect.right = 416.0f;
+        rect.bottom = 464.0f;
+        color.r = 0xff;
+        color.g = 0x00;
+        color.b = 0x00;
+        if (bomb->timer < 100)
+        {
+            color.a = 0xff;
+        }
+        else if (bomb->timer < 160)
+        {
+            color.a = 0xff - 0xff * ((i32)bomb->timer - 100) / 60;
+        }
+        else
+        {
+            return;
+        }
+        ScreenEffect::DrawSquare(&rect, color.d3dColor);
+    }
+}
 
 DIFFABLE_STATIC(Player, g_Player);
 DIFFABLE_STATIC(ChainElem *, g_PlayerCalcChain);

@@ -134,7 +134,7 @@ th08::AnmManager::GetAnm,0x40bb60,0x1a,__thiscall,,AnmLoaded*,AnmManager*,i32
 th08::GameManager::IsTampered,0x40bb80,0x91,__thiscall,,ZunBool,GameManager*
 th08::Player::IsHuman,0x40bc20,0x17,__thiscall,,i32,Player*
 th08::Player::IsYoukai,0x40bc40,0x12,__thiscall,,i32,Player*
-FUN_0040bc60,0x40bc60,0x1c2,unknown,,u8
+th08::FUN_0040bc60,0x40bc60,0x1c2,__fastcall,,void,Player*,u32
 FUN_0040be30,0x40be30,0xc2,__thiscall,,u8,void*,u8,u8,u8,u8
 FUN_0040bf00,0x40bf00,0x108,unknown,,u8
 FUN_0040c010,0x40c010,0x795,unknown,,u8
@@ -189,9 +189,9 @@ FUN_00411720,0x411720,0x8b,unknown,,u8
 FUN_004117b0,0x4117b0,0x2c4,unknown,,u8
 FUN_00411a80,0x411a80,0x8b,unknown,,u8
 FUN_00411b10,0x411b10,0x7f0,unknown,,u8
-FUN_00412300,0x412300,0xcf,unknown,,u8
+th08::FUN_00412300,0x412300,0xcf,__fastcall,,void,Player*
 FUN_004123d0,0x4123d0,0xbc8,unknown,,u8
-FUN_00412fa0,0x412fa0,0xcf,unknown,,u8
+th08::FUN_00412fa0,0x412fa0,0xcf,__fastcall,,void,Player*
 FUN_00413070,0x413070,0xcc,unknown,,u8
 FUN_00413140,0x413140,0x743,unknown,,u8
 FUN_00413890,0x413890,0xf1,unknown,,u8
