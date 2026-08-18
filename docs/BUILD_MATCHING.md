@@ -477,3 +477,9 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 
 - `EffectManager::EffectManager @ 0x428740` proves the manager contains `Effect effects[654]` beginning at `+0x1C`, followed by five distinct `Effect` sentinel members. VC7 therefore emits one `eh_vector_constructor_iterator` for 654 rows and five individual constructor calls; one 659-element array is byte-different.
 - The layout reaches `+0x8B03C`; its 0x20-byte tail gives the same `0x8B05C` extent independently observed in `ResetEffects`, so constructor lowering and reset extent cross-check the ABI.
+
+### Collision predicates: preserve branch ownership and x87 operand order
+
+- `Player::FUN_00451670 @ 0x451670` shows that `!(a <= b && c <= d && ...)` is not a byte-equivalent replacement for the target's direct separating-axis `a > b || c > d || ...` test. VC7 changes the x87 status mask and parity-branch direction even though the predicates are mathematically equivalent. Preserve the target comparison orientation instead of normalizing boolean algebra.
+- Two independent early exits should remain two source `if` statements when the target has two distinct short trampolines. Combining `if (!active) continue; if (frame % interval != 0) continue;` into one `if (!active || frame % interval != 0)` made this function exactly two bytes short; splitting them restored the target 0x66E extent.
+- Rotated AABB and circle tests are sensitive to comparison operand order. Writing the target's bound on the left (`-halfWidth > projectedRight`, `halfWidth < projectedLeft`, `radius * radius < distanceSquared`) restored the target x87 load order and `test ah`/`jp`/`jnp` sequence. Reversing the comparison while preserving semantics produced a different instruction stream.

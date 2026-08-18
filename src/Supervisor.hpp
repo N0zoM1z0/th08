@@ -375,6 +375,8 @@ struct ZunTimer
 
     ZunBool operator!=(int value);
 
+    i32 operator%(i32 value);
+
     void operator+=(int value);
 
     ZunBool operator-=(int value)

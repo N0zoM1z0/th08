@@ -849,3 +849,10 @@ th08::EnemyUnkStruct0x1c::EnemyUnkStruct0x1c
 th08::EnemyUnkStruct3::EnemyUnkStruct3
 th08::EclTimeline::EclTimeline
 th08::EffectManager::EffectManager
+th08::PlayerOptionState::PlayerOptionState
+th08::PlayerBombState::PlayerBombState
+th08::PlayerShot::PlayerShot
+th08::PlayerBombWorkItem::PlayerBombWorkItem
+th08::Player::FUN_00451670
+th08::PlayerBuildAabb
+th08::ZunTimer::operator%

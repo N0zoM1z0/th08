@@ -6,6 +6,8 @@
 namespace th08
 {
 
+struct AnmLoaded;
+
 struct PlayerRawShtFile
 {
     unknown_fields(0x0, 0x1c);
@@ -58,7 +60,9 @@ struct Player
     unknown_fields(0x2, 0x2);
     i8 stateFlag;
     u8 isYoukai;
-    unknown_fields(0x6, 0x1fa);
+    unknown_fields(0x6, 0x6);
+    AnmLoaded *anmFile;
+    unknown_fields(0x10, 0x1f0);
     i32 stateColor;
     unknown_fields(0x204, 0xb0);
     Float3 position;
@@ -85,7 +89,8 @@ struct Player
     ChainElem *drawChainHighPrio;
     ChainElem *drawChainLowPrio;
     PlayerStateEffect *stateEffect;
-    unknown_fields(0xe2b20, 0x10);
+    unknown_fields(0xe2b20, 0xc);
+    i32 damageAccumulatorThreshold;
 
     static ZunResult RegisterChain(u32 playerType);
     static ChainCallbackResult OnUpdate(Player *player);
@@ -117,6 +122,7 @@ struct Player
     void FUN_00451400();
     i32 FUN_00451500();
     void FUN_00451640();
+    i32 FUN_00451670(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccumulator, i32 *bombHit);
     void __fastcall FUN_00450f60(i32 value);
     i32 FUN_00451d50();
 

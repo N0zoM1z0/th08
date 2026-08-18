@@ -744,11 +744,11 @@ th08::TrackDescriptor::TrackDescriptor,0x449bee,function
 th08::MusicRoom::DeletedCallback,0x449c0a,function
 th08::Supervisor::IsMusicPreloadEnabled,0x449c79,function
 th08::Player::Player,0x449ca0,function
-FUN_00449e50,0x449e50,function
-FUN_00449ea0,0x449ea0,function
-FUN_00449ef0,0x449ef0,function
+th08::PlayerOptionState::PlayerOptionState,0x449e50,function
+th08::PlayerBombState::PlayerBombState,0x449ea0,function
+th08::PlayerShot::PlayerShot,0x449ef0,function
 th08::EclTimeline::EclTimeline,0x449f50,function
-FUN_00449f70,0x449f70,function
+th08::PlayerBombWorkItem::PlayerBombWorkItem,0x449f70,function
 th08::Player::FUN_00449ff0,0x449ff0,function
 th08::Player::FUN_0044a230,0x44a230,function
 th08::Player::FUN_0044a360,0x44a360,function
@@ -821,7 +821,7 @@ th08::Player::FUN_00451400,0x451400,function
 th08::Player::FUN_00451500,0x451500,function
 th08::Player::FUN_00451640,0x451640,function
 th08::Player::FUN_00451670,0x451670,function
-FUN_00451ce0,0x451ce0,function
+th08::PlayerBuildAabb,0x451ce0,function
 th08::Player::FUN_00451d50,0x451d50,function
 th08::ReplayManager::LoadReplayData,0x451d90,function
 th08::ReplayManager::RegisterChain,0x451f90,function

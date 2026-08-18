@@ -90,6 +90,235 @@ DIFFABLE_STATIC_ARRAY(PlayerOptionCallbackRow, 12, g_PlayerOptionRenderCallbacks
 extern u16 g_GuiMessageInputCurrent;
 extern u16 g_GuiMessageInputPrevious;
 
+// Target-observed constructor-only rows owned by the Player translation unit.
+struct PlayerOptionState
+{
+    AnmVm vm;
+    Float3 position;
+    Float3 target;
+    Float3 velocity;
+    unknown_fields(0x2C8, 0x18);
+    ZunTimer timer;
+    unknown_fields(0x2EC, 8);
+    PlayerOptionState();
+};
+C_ASSERT(sizeof(PlayerOptionState) == 0x2F4);
+
+// FUNCTION: th08 0x449e50
+PlayerOptionState::PlayerOptionState() {}
+
+struct PlayerBombWorkItem
+{
+    unknown_fields(0x0000, 0x14);
+    Float3 anchor;
+    Float3 points[32];
+    Float3 position;
+    Float3 velocity;
+    AnmVm vms[8];
+    unknown_fields(0x16D8, 4);
+    ZunTimer timer;
+    unknown_fields(0x16E8, 8);
+    PlayerBombWorkItem();
+};
+C_ASSERT(sizeof(PlayerBombWorkItem) == 0x16F0);
+
+// FUNCTION: th08 0x449f70
+PlayerBombWorkItem::PlayerBombWorkItem() {}
+
+struct PlayerBombState
+{
+    unknown_fields(0x000000, 0x18);
+    ZunTimer timer;
+    unknown_fields(0x000024, 0x28);
+    PlayerBombWorkItem workItems[128];
+    Float3 tailPosition;
+    PlayerBombState();
+};
+C_ASSERT(sizeof(PlayerBombState) == 0xB7858);
+
+// FUNCTION: th08 0x449ea0
+PlayerBombState::PlayerBombState() {}
+
+struct PlayerShot;
+typedef i32 (__fastcall *PlayerShotCollisionCallback)(Player *player, PlayerShot *shot, Float3 *enemyPosition);
+
+struct PlayerShotVelocity
+{
+    f32 x;
+    f32 y;
+    f32 z;
+};
+
+struct PlayerShot
+{
+    AnmVm vm;
+    Float3 position;
+    Float3 vectors[32];
+    Float3 hitboxSize;
+    PlayerShotVelocity velocity;
+    unknown_fields(0x448, 0xC);
+    ZunTimer timer;
+    i16 damage;
+    i16 state;
+    i16 type;
+    unknown_fields(0x466, 8);
+    i16 animationIndex;
+    unknown_fields(0x470, 0xC);
+    PlayerShotCollisionCallback collisionCallback;
+    void *shtEntry;
+    PlayerShot();
+};
+C_ASSERT(sizeof(PlayerShot) == 0x484);
+
+// FUNCTION: th08 0x449ef0
+PlayerShot::PlayerShot() {}
+
+// FUNCTION: th08 0x451ce0
+void __fastcall PlayerBuildAabb(Float3 *topLeft, Float3 *bottomRight, const Float3 *center, const Float3 *size)
+{
+    topLeft->x = center->x - size->x * 0.5f;
+    topLeft->y = center->y - size->y * 0.5f;
+    bottomRight->x = center->x + size->x * 0.5f;
+    bottomRight->y = center->y + size->y * 0.5f;
+}
+
+// FUNCTION: th08 0x451670
+#pragma var_order(bullet, i, enemyBottomRight, savedRotation, bulletBottomRight, enemyTopLeft, damage, region, bulletTopLeft)
+i32 Player::FUN_00451670(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccumulator, i32 *bombHit)
+{
+    Float3 enemyTopLeft;
+    Float3 enemyBottomRight;
+    Float3 bulletTopLeft;
+    Float3 bulletBottomRight;
+    i32 damage;
+    i32 i;
+    i32 savedRotation;
+    PlayerUnkStruct0x40 *region;
+    PlayerShot *bullet;
+
+    damage = 0;
+    if (!reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4)->FUN_0040d3d0())
+        return 0;
+
+    PlayerBuildAabb(&enemyTopLeft, &enemyBottomRight, enemyPosition, enemySize);
+    bullet = reinterpret_cast<PlayerShot *>(reinterpret_cast<u8 *>(this) + 0xBE838);
+    if (bombHit != NULL)
+        *bombHit = 0;
+
+    for (i = 0; i < 128; i++, bullet++)
+    {
+        if (bullet->state == 0 || (bullet->state != 1 && bullet->type != 3))
+            continue;
+
+        PlayerBuildAabb(&bulletTopLeft, &bulletBottomRight, &bullet->position, &bullet->hitboxSize);
+        if (bulletTopLeft.y > enemyBottomRight.y || bulletTopLeft.x > enemyBottomRight.x ||
+            bulletBottomRight.y < enemyTopLeft.y || bulletBottomRight.x < enemyTopLeft.x)
+            continue;
+
+        if ((bullet->type == 4 || bullet->type == 5) && (bullet->timer % 2) != 0)
+            continue;
+        if (bullet->collisionCallback != NULL && bullet->collisionCallback(this, bullet, enemyPosition))
+            continue;
+
+        if (this->frameStop == 0)
+            damage += bullet->damage;
+        else
+            damage += bullet->damage / 5 ? bullet->damage / 5 : 1;
+
+        while (*hitAccumulator >= g_Player.damageAccumulatorThreshold)
+        {
+            if (g_GameManager.GaugeIsExtremelyHuman())
+            {
+                if (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(bullet->shtEntry) + 0x1E) < 0)
+                    g_ItemManager.SpawnItem(&bullet->position, static_cast<ItemType>(7), 3);
+            }
+            *hitAccumulator -= g_Player.damageAccumulatorThreshold;
+        }
+
+        if (bullet->type != 4 && bullet->type != 5 && bullet->type != 6)
+        {
+            if (bullet->state == 1)
+            {
+                savedRotation = *reinterpret_cast<i32 *>(&bullet->vm.rotation.z);
+                this->anmFile->SetAndExecuteScriptIdx(&bullet->vm, bullet->animationIndex + 11);
+                *reinterpret_cast<i32 *>(&bullet->vm.rotation.z) = savedRotation;
+                g_EffectManager.SpawnEffect(5, reinterpret_cast<D3DXVECTOR3 *>(&bullet->position), 1, -1);
+                bullet->position.operator float *()[2] = 0.1f;
+            }
+            bullet->state = 2;
+            if (bullet->type != 3)
+            {
+                bullet->velocity.x /= 8.0f;
+                bullet->velocity.y /= 8.0f;
+            }
+        }
+    }
+
+    *hitAccumulator += damage > 50 ? 50 : damage;
+
+    {
+        region = this->playerSlotsB;
+        for (i = 0; i < 192; i++, region++)
+        {
+            if (!region->active)
+                continue;
+            if ((region->lifetime % region->collisionInterval) != 0)
+                continue;
+
+            if (region->radius == 0.0f)
+            {
+                if (region->angle == 0.0f)
+                {
+                    if (region->center.x - region->size.x / 2.0f > enemyBottomRight.x ||
+                        region->center.x + region->size.x / 2.0f < enemyTopLeft.x ||
+                        region->center.y - region->size.y / 2.0f > enemyBottomRight.y ||
+                        region->center.y + region->size.y / 2.0f < enemyTopLeft.y)
+                        continue;
+                }
+                else
+                {
+                    bulletTopLeft.x = enemyPosition->x - region->center.x;
+                    bulletTopLeft.y = enemyPosition->y - region->center.y;
+                    Rotate(&bulletBottomRight, &bulletTopLeft, -region->angle);
+                    if (-region->size.x / 2.0f > enemySize->x / 2.0f + bulletBottomRight.x ||
+                        region->size.x / 2.0f < bulletBottomRight.x - enemySize->x / 2.0f ||
+                        -region->size.y / 2.0f > enemySize->y / 2.0f + bulletBottomRight.y ||
+                        region->size.y / 2.0f < bulletBottomRight.y - enemySize->y / 2.0f)
+                        continue;
+                }
+            }
+            else if (region->radius * region->radius <
+                     (region->center.x - enemyPosition->x) * (region->center.x - enemyPosition->x) +
+                         (region->center.y - enemyPosition->y) * (region->center.y - enemyPosition->y))
+            {
+                continue;
+            }
+
+            damage += region->damage;
+            region->hitAccumulator += region->damage;
+            if (region->hitCap > 0 && region->hitCap <= region->hitAccumulator)
+            {
+                region->damage = 0;
+                damage -= region->hitAccumulator - region->hitCap;
+            }
+
+            if (region->mode == 0 && (++*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0xE2A94) % 4) == 0)
+            {
+                if (i < 192)
+                    g_EffectManager.SpawnEffect(3, reinterpret_cast<D3DXVECTOR3 *>(enemyPosition), 1, -1);
+                else
+                    g_EffectManager.SpawnEffect(5, reinterpret_cast<D3DXVECTOR3 *>(enemyPosition), 1, -1);
+            }
+            if (this->frameStop != 0 && bombHit != NULL)
+                *bombHit = 1;
+        }
+    }
+
+    if (g_GameManager.GaugeIsExtremelyYoukai() && damage != 0)
+        damage = damage * 106 / 100;
+    return damage;
+}
+
 // FUNCTION: th08 0x44e0e0
 ZunBool IsResourceReloadDisabled()
 {
@@ -201,6 +430,12 @@ i32 __fastcall PlayerRoute2OptionRender(Player *, u8 *option)
 ZunBool ZunTimer::FUN_0040d3d0()
 {
     return this->current != this->previous;
+}
+
+// FUNCTION: th08 0x40d410
+i32 ZunTimer::operator%(i32 value)
+{
+    return this->current % value;
 }
 
 // FUNCTION: th08 0x40bc20

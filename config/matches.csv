@@ -850,3 +850,10 @@ address,name,size,status,match_percent,unit,evidence
 0x0042A4C0,th08::EnemyUnkStruct3::EnemyUnkStruct3,25,matching,100.00,enemy-unk-struct3-ctor,python3 scripts/compare-function.py enemy-unk-struct3-ctor --json
 0x00449F50,th08::EclTimeline::EclTimeline,22,matching,100.00,ecl-timeline-constructor,python3 scripts/compare-function.py ecl-timeline-constructor --json
 0x00428740,th08::EffectManager::EffectManager,159,matching,100.00,effect-manager-constructor,python3 scripts/compare-function.py effect-manager-constructor --json
+0x00449E50,th08::PlayerOptionState::PlayerOptionState,78,matching,100.00,player-option-state-ctor,python3 scripts/compare-function.py player-option-state-ctor --json
+0x00449EA0,th08::PlayerBombState::PlayerBombState,66,matching,100.00,player-bomb-state-ctor,python3 scripts/compare-function.py player-bomb-state-ctor --json
+0x00449EF0,th08::PlayerShot::PlayerShot,87,matching,100.00,player-shot-ctor,python3 scripts/compare-function.py player-shot-ctor --json
+0x00449F70,th08::PlayerBombWorkItem::PlayerBombWorkItem,115,matching,100.00,player-bomb-work-item-ctor,python3 scripts/compare-function.py player-bomb-work-item-ctor --json
+0x00451670,th08::Player::FUN_00451670,1646,matching,100.00,player-fun-00451670,python3 scripts/compare-function.py player-fun-00451670 --json
+0x00451CE0,th08::PlayerBuildAabb,108,matching,100.00,player-build-aabb,python3 scripts/compare-function.py player-build-aabb --json
+0x0040D410,th08::ZunTimer::operator%,25,matching,100.00,zun-timer-modulo,python3 scripts/compare-function.py zun-timer-modulo --json
