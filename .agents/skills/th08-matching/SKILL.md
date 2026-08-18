@@ -324,3 +324,5 @@ A VC7 function symbol's aux `total_size` may include an immediately associated j
 ## Correct runtime helpers out of authored inventory
 
 Do not force standard math/runtime helpers into authored reconstruction merely because an imported seed marked them `function`. If the target name/provenance and body establish a CRT/x87 helper (`_sinf`, `_cosf`, `_sqrtf`, `fabs`, `fmodf`, `fsincos` in TH08), change the inventory type to `library`. This is a classification correction, not an exact-match claim; revisit the helper only after authored work is complete. Never use inline asm just to mimic such runtime stubs.
+
+- VC7 `MATH.H` itself is valid provenance for float wrapper classification: inline `acosf/atanf/tanf` lower to tiny x87 wrappers around CRT double cores. If the target has that wrapper shape and the core is runtime-owned, classify the wrapper as library; do not write inline asm or count it as authored reconstruction.

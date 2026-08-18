@@ -773,3 +773,7 @@ This corpus attests the natural VC7 emissions for ResultScreen/AnmManager/MidiOu
 
 - Target helpers `_sinf @ 0x00409060`, `_cosf @ 0x00408D40`, `_sqrtf @ 0x0040B440`, `fabs @ 0x004031E0`, `fmodf @ 0x0041F090`, and `fsincos @ 0x00433880` are math-runtime/library entries, not authored game functions. Their imported reccmp names already identify the runtime role, and their target bodies are x87/CRT helper shapes rather than subsystem-owned C++ source. Classify them as `library` instead of manufacturing authored replacements (especially inline-asm x87 wrappers, which are forbidden by the project rules).
 - Inventory correction is separate from exact acceptance: reclassification removes a proven library helper from the authored denominator; it does not claim that helper is reconstructed. After authored reaches 100%, these helpers belong to the explicit library-reconstruction lane.
+
+### VC7 float math inline-wrapper classification
+
+- VC7 `MATH.H` defines `acosf`, `atanf`, and `tanf` inline as float-returning wrappers around the corresponding double CRT functions. TH08 targets `0x00462210`, `0x00462230`, and `0x00462250` are the expected 0x15-byte wrapper shape (`fld` float argument, call CRT core, `fst` compiler temp, `ret 4`). Treat these as library/runtime inventory, like the already-classified `sinf/cosf/sqrtf/fmodf/fsincos`, rather than manufacturing game-authored replacements.

@@ -943,9 +943,9 @@ th08::AnmVm::GetFloatVarPtr,0x45e810,function
 th08::AnmVm::GetIntVarPtr,0x45e8a0,function
 th08::AnmManager::DrawPlayerBullet,0x45e960,function
 th08::AnmManager::ExecuteScript,0x45ea00,function
-acosf,0x462210,function
-atanf,0x462230,function
-tanf,0x462250,function
+acosf,0x462210,library
+atanf,0x462230,library
+tanf,0x462250,library
 th08::AnmManager::SetInterruptArray,0x462270,function
 th08::AnmManager::SpriteHasTexture,0x4622c0,function
 th08::AnmManager::ExecuteScriptArray,0x462310,function
@@ -1042,7 +1042,7 @@ th08::CSoundManager::~CSoundManager,0x471700,function
 th08::CSoundManager::Initialize,0x471730,function
 th08::CSoundManager::SetPrimaryBufferFormat,0x4717c0,function
 th08::CSoundManager::CreateStreaming,0x4718d0,function
-th08::CWaveFile::`scalar deleting destructor',0x471c10,function
+th08::CWaveFile::`scalar_deleting_destructor',0x471c10,function
 th08::CSoundManager::CreateStreamingFromMemory,0x471c40,function
 th08::CSound::CSound,0x471f60,function
 th08::CSound::`scalar_deleting_destructor',0x472040,function

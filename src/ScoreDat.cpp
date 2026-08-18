@@ -7,6 +7,14 @@
 
 namespace th08
 {
+// FUNCTION: th08 0x00405280
+void __fastcall PlstPlayCounts::IncrementTotalAttempts(u32 limit)
+{
+    if (this->attemptsTotal < limit)
+        this->attemptsTotal++;
+}
+
+
 
 #pragma optimize("s", on)
 // FUNCTION: th08 0x45a4a0

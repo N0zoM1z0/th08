@@ -1069,3 +1069,5 @@ address,name,size,status,match_percent,unit,evidence
 0x00402B20,th08::AsciiManager::OnDrawLowPrioImpl,1698,matching,100.00,ascii-manager-draw-low-prio-00402b20,python3 scripts/compare-function.py ascii-manager-draw-low-prio-00402b20 --json
 0x004246E0,th08::FUN_004246e0,68,matching,100.00,ecl-ex-screen-effects-004246e0,python3 scripts/compare-function.py ecl-ex-screen-effects-004246e0 --json
 0x00424A00,th08::FUN_00424a00,28,matching,100.00,ecl-ex-publish-screen-counter-00424a00,python3 scripts/compare-function.py ecl-ex-publish-screen-counter-00424a00 --json
+0x00405280,th08::PlstPlayCounts::IncrementTotalAttempts,39,matching,100.00,plst-increment-total-attempts-00405280,python3 scripts/compare-function.py plst-increment-total-attempts-00405280 --json
+0x00471C10,th08::CWaveFile::`scalar_deleting_destructor',46,matching,100.00,cwavefile-scalar-deleting-dtor-00471c10,python3 scripts/compare-function.py cwavefile-scalar-deleting-dtor-00471c10 --json

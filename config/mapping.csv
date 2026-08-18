@@ -26,7 +26,7 @@ th08::Float3::Float3,0x404720,0x2a,__thiscall,,Float3*,Float3*,f32,f32,f32
 th08::PauseMenu::OnDrawPauseMenu,0x404750,0x135,__thiscall,,void,PauseMenu*
 th08::RetryMenu::OnUpdateRetryMenu,0x404890,0x9b2,__thiscall,,u32,RetryMenu*
 th08::Spellcard::GetInactiveState,0x405260,0x16,__thiscall,,i32,Spellcard*
-th08::PlstPlayCounts::IncrementTotalAttempts,0x405280,0x27,unknown,,u8
+th08::PlstPlayCounts::IncrementTotalAttempts,0x405280,0x27,__fastcall,,void,PlstPlayCounts*,u32
 th08::RetryMenu::OnDrawRetryMenu,0x4052b0,0x16c,__thiscall,,void,RetryMenu*
 th08::AsciiManager::OnDrawHighPrioImpl,0x405420,0x9ea,__thiscall,,void,AsciiManager*
 th08::AsciiManager::DrawPercentage,0x405e10,0x70b,__thiscall,,void,AsciiManager*,u32,u32,unsigned long
@@ -942,9 +942,9 @@ th08::AnmVm::GetFloatVarPtr,0x45e810,0x7c,__thiscall,,f32*,i32,f32*,u16,u8
 th08::AnmVm::GetIntVarPtr,0x45e8a0,0x8b,__thiscall,,i32*,AnmVm*,i32*,u16,u8
 th08::AnmManager::DrawPlayerBullet,0x45e960,0x7d,__thiscall,,void,AnmManager*,AnmVm*
 th08::AnmManager::ExecuteScript,0x45ea00,0x366d,__thiscall,,u32,AnmManager*,AnmVm*
-FUN_00462210,0x462210,0x15,unknown,,u8,u8
-FUN_00462230,0x462230,0x15,unknown,,u8,u8
-FUN_00462250,0x462250,0x15,unknown,,u8,u8
+acosf,0x462210,0x15,unknown,,u8,u8
+atanf,0x462230,0x15,unknown,,u8,u8
+tanf,0x462250,0x15,unknown,,u8,u8
 th08::AnmManager::SetInterruptArray,0x462270,0x4a,__thiscall,,void,AnmManager*,AnmVm*,i32,i16
 th08::AnmManager::SpriteHasTexture,0x4622c0,0x4c,__thiscall,,ZunBool,AnmManager*,AnmVm*
 th08::AnmManager::ExecuteScriptArray,0x462310,0x46,__thiscall,,void,AnmManager*,AnmVm*,i32

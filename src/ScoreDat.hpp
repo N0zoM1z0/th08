@@ -96,6 +96,8 @@ C_ASSERT(sizeof(Th8k) == 0xC);
 
 struct PlstPlayCounts
 {
+    void __fastcall IncrementTotalAttempts(u32 limit);
+
     u32 attemptsTotal;
     i32 attemptsPerCharacter[SHOT_ALL];
     unknown_fields(0x34, 0x4);
