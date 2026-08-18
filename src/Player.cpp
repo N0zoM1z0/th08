@@ -1271,6 +1271,256 @@ void __fastcall FUN_0040fcb0(Player *player)
     FUN_0040bc60(player, 0x80f00000);
 }
 
+// FUNCTION: th08 0x40fcd0
+#pragma var_order(i, bomb, workItem, vm, angle)
+void __fastcall FUN_0040fcd0(Player *player)
+{
+    i32 i;
+    PlayerBombState *bomb;
+    PlayerBombWorkItem *workItem;
+    AnmVm *vm;
+    f32 angle;
+
+    bomb = &player->bombState;
+    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
+    {
+        FUN_0040be30(player, 0,
+                     "\x8C\xB6\x95\x84\x81\x75\x8E\x45\x90\x6C\x83\x68\x81\x5B\x83\x8B\x81\x76",
+                     250, 290, 0);
+        workItem = bomb->workItems;
+        for (i = 0; i < 96; i++, workItem++)
+            workItem->active = 0;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.5f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.5f;
+        bomb->workItems[0].effect =
+            g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
+    }
+
+    if (bomb->timer >= 0 && bomb->timer <= 60)
+    {
+        reinterpret_cast<Effect *>(bomb->workItems[0].effect)->vector0 = player->position;
+    }
+
+    if (bomb->timer >= 20 && bomb->timer < 116)
+    {
+        workItem = player->bombState.workItems;
+        for (i = 0; i < 96; i++, workItem++)
+        {
+            if (!player->bombState.timer.FUN_0040e350(2 * (i % 48) + 20))
+                continue;
+            if (workItem->active)
+                return;
+            workItem->active = 1;
+                vm = &workItem->vms[0];
+                player->anmFile->ExecuteAnmIdx(vm, 22);
+                angle = (f32)i * ZUN_2PI / 96.0f - ZUN_PI;
+                workItem->rotation = angle;
+                workItem->speed = g_Rng.GetRandomF32InRange(1.0f) + 0.5f;
+                workItem->rotationStep = g_Rng.GetRandomF32InRange(0.1f) + 0.03f;
+                workItem->velocity.x = g_Rng.GetRandomU16InRange(1)
+                    ? 0.15707963705062866f : -0.15707963705062866f;
+                workItem->position.x = cosf(workItem->rotation) * 24.0f;
+                workItem->position.y = sinf(workItem->rotation) * 24.0f;
+                workItem->anchor = player->position + workItem->position;
+                workItem->timer = 0;
+                workItem->position.z = 0.0f;
+                workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 32.0f, 0.0f, 500, 6);
+            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 32.0f, 0.0f, 20, 500);
+        }
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 120, 4, 1, 0, 21);
+    }
+
+    workItem = bomb->workItems;
+    for (i = 0; i < 96; i++, workItem++)
+    {
+        if (!workItem->active)
+            continue;
+
+        if ((i32)workItem->timer < 30 || (i32)workItem->timer >= 70)
+        {
+            if (workItem->timer.FUN_0040e350(70))
+            {
+                if (player->tailPosition0.x > -100.0f)
+                {
+                    workItem->rotation = AddNormalizeAngle(
+                        VectorAngle(player->tailPosition0.y - workItem->anchor.y,
+                                    player->tailPosition0.x - workItem->anchor.x),
+                        0.0f);
+                }
+                workItem->speed = 14.0f;
+            }
+            workItem->speed += workItem->rotationStep;
+            workItem->position.x = cosf(workItem->rotation) * workItem->speed;
+            workItem->position.y = sinf(workItem->rotation) * workItem->speed;
+        }
+        else
+        {
+            workItem->rotation = AddNormalizeAngle(workItem->rotation, workItem->velocity.x);
+            workItem->position.x = 0.0f;
+            workItem->position.y = 0.0f;
+        }
+
+        if (workItem->damageSlot != NULL)
+        {
+            workItem->damageSlot->center.x = workItem->anchor.x;
+            workItem->damageSlot->center.y = workItem->anchor.y;
+            workItem->cancelSlot->center.x = workItem->anchor.x;
+            workItem->cancelSlot->center.y = workItem->anchor.y;
+            if (workItem->timer >= 120)
+            {
+                workItem->damageSlot->active = 0;
+                workItem->cancelSlot->active = 0;
+                workItem->cancelSlot = NULL;
+                workItem->damageSlot = NULL;
+            }
+            else if (workItem->damageSlot->hitAccumulator > 0)
+            {
+                player->anmFile->ExecuteAnmIdx(&workItem->vms[0], 23);
+                g_EffectManager.SpawnEffect(
+                    0, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[i].anchor), 1, 0xffff80ff);
+                workItem->damageSlot->active = 0;
+                workItem->cancelSlot->active = 0;
+                workItem->cancelSlot = NULL;
+                workItem->damageSlot = NULL;
+                g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(43), workItem->anchor.x);
+            }
+        }
+
+        workItem->anchor += workItem->position;
+        g_AnmManager->ExecuteScript(&workItem->vms[0]);
+        workItem->timer++;
+    }
+}
+
+// FUNCTION: th08 0x4103f0
+#pragma var_order(i, bomb, workItem, vm, angle)
+void __fastcall FUN_004103f0(Player *player)
+{
+    i32 i;
+    PlayerBombState *bomb;
+    PlayerBombWorkItem *workItem;
+    AnmVm *vm;
+    f32 angle;
+
+    bomb = &player->bombState;
+    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
+    {
+        FUN_0040be30(player, 0,
+                     "\x8C\xB6\x91\x92\x81\x75\x96\xE9\x96\xB6\x82\xCC\x8C\xB6\x89\x65\x8E\x45\x90\x6C\x8B\x53\x81\x76",
+                     320, 350, 1);
+        workItem = bomb->workItems;
+        for (i = 0; i < 128; i++, workItem++)
+            workItem->active = 0;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.5f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.5f;
+        bomb->workItems[0].effect =
+            g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 50, 4, 1, 0, 21);
+    }
+
+    if (bomb->timer >= 0 && bomb->timer <= 60)
+    {
+        reinterpret_cast<Effect *>(bomb->workItems[0].effect)->vector0 = player->position;
+    }
+
+    if (bomb->timer >= 20 && bomb->timer < 148)
+    {
+        workItem = player->bombState.workItems;
+        for (i = 0; i < 128; i++, workItem++)
+        {
+            if (!player->bombState.timer.FUN_0040e350(2 * (i % 64) + 20))
+                continue;
+            if (workItem->active)
+                return;
+            workItem->active = 1;
+            vm = &workItem->vms[0];
+            player->anmFile->ExecuteAnmIdx(vm, 20);
+            angle = AddNormalizeAngle((f32)i * ZUN_2PI / 64.0f - ZUN_PI, 0.0f);
+            workItem->rotation = angle;
+            workItem->speed = g_Rng.GetRandomF32InRange(1.0f) + 0.5f;
+            workItem->rotationStep = g_Rng.GetRandomF32InRange(0.1f) + 0.03f;
+            workItem->velocity.x = g_Rng.GetRandomU16InRange(1)
+                ? 0.15707963705062866f : -0.15707963705062866f;
+            workItem->position.x = cosf(workItem->rotation) * 24.0f;
+            workItem->position.y = sinf(workItem->rotation) * 24.0f;
+            workItem->anchor = player->position + workItem->position;
+            workItem->timer = 0;
+            workItem->position.z = 0.0f;
+            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 32.0f, 0.0f, 500, 6);
+            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 32.0f, 0.0f, 30, 500);
+        }
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
+    }
+
+    workItem = bomb->workItems;
+    for (i = 0; i < 128; i++, workItem++)
+    {
+        if (!workItem->active)
+            continue;
+
+        if ((i32)workItem->timer < 30 || (i32)workItem->timer >= 70)
+        {
+            if (workItem->timer.FUN_0040e350(70))
+            {
+                if (player->tailPosition0.x > -100.0f)
+                {
+                    workItem->rotation = AddNormalizeAngle(
+                        VectorAngle(player->tailPosition0.y - workItem->anchor.y,
+                                    player->tailPosition0.x - workItem->anchor.x),
+                        0.0f);
+                }
+                workItem->speed = 14.0f;
+                g_EffectManager.SpawnEffect(
+                    46, reinterpret_cast<D3DXVECTOR3 *>(&workItem->anchor), 1, -1);
+            }
+            workItem->speed += workItem->rotationStep;
+            workItem->position.x = cosf(workItem->rotation) * workItem->speed;
+            workItem->position.y = sinf(workItem->rotation) * workItem->speed;
+        }
+        else
+        {
+            workItem->rotation = AddNormalizeAngle(workItem->rotation, workItem->velocity.x);
+            workItem->position.x = 0.0f;
+            workItem->position.y = 0.0f;
+        }
+
+        if (workItem->damageSlot != NULL)
+        {
+            workItem->damageSlot->center.x = workItem->anchor.x;
+            workItem->damageSlot->center.y = workItem->anchor.y;
+            workItem->cancelSlot->center.x = workItem->anchor.x;
+            workItem->cancelSlot->center.y = workItem->anchor.y;
+            if (workItem->timer >= 120)
+            {
+                workItem->damageSlot->active = 0;
+                workItem->cancelSlot->active = 0;
+                workItem->cancelSlot = NULL;
+                workItem->damageSlot = NULL;
+            }
+            else if (workItem->damageSlot->hitAccumulator > 0)
+            {
+                if (i % 3 == 0)
+                    ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 2, 1, 0x208080ff, 0, 21);
+                g_EffectManager.SpawnEffect(
+                    0, reinterpret_cast<D3DXVECTOR3 *>(&workItem->anchor), 1, 0xffff80ff);
+                player->anmFile->ExecuteAnmIdx(&workItem->vms[0], 21);
+                workItem->damageSlot->active = 0;
+                workItem->cancelSlot->active = 0;
+                workItem->cancelSlot = NULL;
+                workItem->damageSlot = NULL;
+                g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(43), workItem->anchor.x);
+            }
+        }
+
+        workItem->anchor += workItem->position;
+        g_AnmManager->ExecuteScript(&workItem->vms[0]);
+        workItem->timer++;
+    }
+}
+
 // FUNCTION: th08 0x410300
 #pragma var_order(i, workItem)
 void __fastcall FUN_00410300(Player *player)

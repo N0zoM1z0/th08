@@ -174,9 +174,9 @@ th08::FUN_0040ee10,0x40ee10,0x73d,__fastcall,,void,Player*
 th08::FUN_0040f550,0x40f550,0x18,__fastcall,,void,Player*
 th08::FUN_0040f570,0x40f570,0x73d,__fastcall,,void,Player*
 th08::FUN_0040fcb0,0x40fcb0,0x18,__fastcall,,void,Player*
-FUN_0040fcd0,0x40fcd0,0x625,unknown,,u8
+th08::FUN_0040fcd0,0x40fcd0,0x625,__fastcall,,void,Player*
 th08::FUN_00410300,0x410300,0xe1,__fastcall,,void,Player*
-FUN_004103f0,0x4103f0,0x677,unknown,,u8
+th08::FUN_004103f0,0x4103f0,0x677,__fastcall,,void,Player*
 FUN_00410a70,0x410a70,0x43,unknown,,u8,u8
 th08::FUN_00410ac0,0x410ac0,0xe1,__fastcall,,void,Player*
 FUN_00410bb0,0x410bb0,0x4c,unknown,,u8

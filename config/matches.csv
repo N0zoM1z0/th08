@@ -904,3 +904,5 @@ address,name,size,status,match_percent,unit,evidence
 0x0040E780,th08::FUN_0040e780,968,matching,100.00,player-bomb-callback-0040e780,python3 scripts/compare-function.py player-bomb-callback-0040e780 --json
 0x0040EE10,th08::FUN_0040ee10,1853,matching,100.00,player-bomb-callback-0040ee10,python3 scripts/compare-function.py player-bomb-callback-0040ee10 --json
 0x0040F570,th08::FUN_0040f570,1853,matching,100.00,player-bomb-callback-0040f570,python3 scripts/compare-function.py player-bomb-callback-0040f570 --json
+0x0040FCD0,th08::FUN_0040fcd0,1573,matching,100.00,player-bomb-callback-0040fcd0,python3 scripts/compare-function.py player-bomb-callback-0040fcd0 --json
+0x004103F0,th08::FUN_004103f0,1655,matching,100.00,player-bomb-callback-004103f0,python3 scripts/compare-function.py player-bomb-callback-004103f0 --json

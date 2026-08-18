@@ -175,9 +175,9 @@ th08::FUN_0040ee10,0x40ee10,function
 th08::FUN_0040f550,0x40f550,function
 th08::FUN_0040f570,0x40f570,function
 th08::FUN_0040fcb0,0x40fcb0,function
-FUN_0040fcd0,0x40fcd0,function
+th08::FUN_0040fcd0,0x40fcd0,function
 th08::FUN_00410300,0x410300,function
-FUN_004103f0,0x4103f0,function
+th08::FUN_004103f0,0x4103f0,function
 th08::Float3::operator+=,0x410a70,function
 th08::FUN_00410ac0,0x410ac0,function
 FUN_00410bb0,0x410bb0,function
