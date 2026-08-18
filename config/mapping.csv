@@ -486,7 +486,7 @@ th08::GuiMsgVm::GuiMsgVm,0x437ce2,0x63,__thiscall,,GuiMsgVm*,GuiMsgVm*
 th08::GuiFormattedText::GuiFormattedText,0x437d45,0x1f,__thiscall,,GuiFormattedText*,GuiFormattedText*
 th08::Gui::CutChain,0x437d64,0x23,__cdecl,,void
 FUN_00437d87,0x437d87,0x40,unknown,,u8
-FUN_00437dc7,0x437dc7,0x16,unknown,,u8
+th08::Gui::FUN_00437dc7,0x437dc7,0x16,__thiscall,,i32,Gui*
 th08::Gui::FUN_00437ddd,0x437ddd,0x80,__thiscall,,void,Gui*,i32
 th08::Gui::FUN_00437e5d,0x437e5d,0x7f,__thiscall,,void,Gui*,i32,i32
 FUN_00437edc,0x437edc,0x80,unknown,,u8,u8
@@ -823,16 +823,16 @@ th08::Player::FUN_00451670,0x451670,0x66e,__thiscall,,i32,Player*,Float3*,Float3
 th08::PlayerBuildAabb,0x451ce0,0x6c,__fastcall,,void,Float3*,Float3*,Float3*,Float3*
 th08::Player::FUN_00451d50,0x451d50,0x38,__thiscall,,i32,Player*
 th08::ReplayManager::LoadReplayData,0x451d90,0x1ff,__fastcall,,ReplayData*,void*,i32
-FUN_00451f90,0x451f90,0x309,unknown,,u8
-FUN_004522a0,0x4522a0,0x66,unknown,,u8
-FUN_00452310,0x452310,0x174,unknown,,u8
-FUN_00452490,0x452490,0xb8,unknown,,u8
-FUN_00452550,0x452550,0x16a,unknown,,u8
-FUN_004526c0,0x4526c0,0x169,unknown,,u8
-FUN_00452830,0x452830,0x523,unknown,,u8
-FUN_00452d60,0x452d60,0x313,unknown,,u8
-FUN_00453080,0x453080,0xd1,unknown,,u8
-FUN_00453160,0x453160,0x3a,unknown,,u8
+th08::ReplayManager::RegisterChain,0x451f90,0x309,__fastcall,,ZunResult,i32,const char*
+th08::ReplayManager::OnUpdateLowPrio,0x4522a0,0x66,__fastcall,,ChainCallbackResult,ReplayManager*
+th08::ReplayManager::OnUpdateHighPrio,0x452310,0x174,__fastcall,,ChainCallbackResult,ReplayManager*
+th08::ReplayManager::OnUpdateFrameControl,0x452490,0xb8,__fastcall,,ChainCallbackResult,ReplayManager*
+th08::ReplayManager::OnUpdateHighPrioDemo,0x452550,0x16a,__fastcall,,ChainCallbackResult,ReplayManager*
+th08::ReplayManager::OnUpdateHighPrioDemo2,0x4526c0,0x169,__fastcall,,ChainCallbackResult,ReplayManager*
+th08::ReplayManager::AddedCallback,0x452830,0x523,__fastcall,,ZunResult,ReplayManager*
+th08::ReplayManager::AddedCallbackDemo,0x452d60,0x313,__fastcall,,ZunResult,ReplayManager*
+th08::ReplayManager::DeletedCallback,0x453080,0xd1,__fastcall,,ZunResult,ReplayManager*
+th08::ReplayManager::ReplayManager,0x453160,0x3a,__thiscall,,ReplayManager*,ReplayManager*
 th08::ReplayManager::StopRecording,0x4531a0,0x4d,__fastcall,,void
 th08::ReplayManager::SaveReplay,0x4531f0,0x98d,__fastcall,,void,char*,char*
 th08::?A0xb3f6a42d::AppendFormat,0x453b80,0x58,__cdecl,varargs,char*,char*,char*
@@ -840,7 +840,7 @@ th08::Rng::SetSeed,0x453be0,0x17,__thiscall,,void,Rng*,u16
 th08::Rng::ResetGenerationCount,0x453c00,0x15,__thiscall,,void,Rng*
 th08::Rng::GetSeed,0x453c20,0x11,__thiscall,,u16,Rng*
 th08::Supervisor::IsClearBackBufferOnRefreshEnabled,0x453c40,0x1a,__thiscall,,u32,Supervisor*
-th08::GameManager::SetClockTime,0x453c60,0x19,__thiscall,,void,GameManager*,u8
+th08::GameManager::SetClockTime,0x453c60,0x19,__thiscall,,void,GameManager*,i32
 th08::GameManager::GetDeaths,0x453c80,0x19,__thiscall,,i32,GameManager*
 th08::GameManager::GetBombsUsed,0x453ca0,0x1c,__thiscall,,i32,GameManager*
 th08::ReplayManager::IsDemo,0x453cc0,0x11,__thiscall,,i32,ReplayManager*

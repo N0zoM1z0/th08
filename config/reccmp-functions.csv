@@ -487,7 +487,7 @@ th08::GuiMsgVm::GuiMsgVm,0x437ce2,function
 th08::GuiFormattedText::GuiFormattedText,0x437d45,function
 th08::Gui::CutChain,0x437d64,function
 th08::Gui::FUN_00437d87,0x437d87,function
-FUN_00437dc7,0x437dc7,function
+th08::Gui::FUN_00437dc7,0x437dc7,function
 th08::Gui::FUN_00437ddd,0x437ddd,function
 th08::Gui::FUN_00437e5d,0x437e5d,function
 th08::Gui::gui_fun_00437edc,0x437edc,function
@@ -827,9 +827,9 @@ th08::ReplayManager::LoadReplayData,0x451d90,function
 th08::ReplayManager::RegisterChain,0x451f90,function
 th08::ReplayManager::OnUpdateLowPrio,0x4522a0,function
 th08::ReplayManager::OnUpdateHighPrio,0x452310,function
-FUN_00452490,0x452490,function
+th08::ReplayManager::OnUpdateFrameControl,0x452490,function
 th08::ReplayManager::OnUpdateHighPrioDemo,0x452550,function
-FUN_004526c0,0x4526c0,function
+th08::ReplayManager::OnUpdateHighPrioDemo2,0x4526c0,function
 th08::ReplayManager::AddedCallback,0x452830,function
 th08::ReplayManager::AddedCallbackDemo,0x452d60,function
 th08::ReplayManager::DeletedCallback,0x453080,function

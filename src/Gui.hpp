@@ -29,7 +29,9 @@ struct GuiMsgVm
     AnmVm dialogueLines[4];
     AnmVm portraits[2];
     AnmVm portraitEffects[2];
-    unknown_fields(0x1540, 0x38);
+    unknown_fields(0x1540, 0x28);
+    u8 unk1568;
+    unknown_fields(0x1569, 0xf);
 
     GuiMsgVm();
 };
@@ -92,6 +94,7 @@ struct Gui
     ZunResult LoadMsg(const char *path);
     i32 MsgWait();
     i32 IsDialogPresent();
+    i32 FUN_00437dc7();
     void FreeMsgFile();
     void FUN_00437ddd(i32 value);
     void FUN_00437e5d(i32 value, i32 isShown);

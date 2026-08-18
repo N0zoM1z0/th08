@@ -1783,6 +1783,12 @@ i32 Gui::IsDialogPresent()
     return *(i32 *)((u8 *)this->impl + 0x2181C) >= 0 || *(i32 *)((u8 *)this->impl + 0x2181C) == -2;
 }
 
+// FUNCTION: th08 0x437dc7
+i32 Gui::FUN_00437dc7()
+{
+    return this->impl->msgVm.unk1568;
+}
+
 // FUNCTION: th08 0x437ad0
 ZunResult Gui::RegisterChain()
 {

@@ -948,3 +948,14 @@ th08::Enemy::FUN_0042deb0
 th08::Enemy::FUN_0042b490
 th08::Enemy::FUN_0042b930
 th08::Gui::FUN_0042f340
+th08::Gui::FUN_00437dc7
+th08::ReplayManager::ReplayManager
+th08::ReplayManager::RegisterChain
+th08::ReplayManager::OnUpdateLowPrio
+th08::ReplayManager::OnUpdateHighPrio
+th08::ReplayManager::OnUpdateFrameControl
+th08::ReplayManager::OnUpdateHighPrioDemo
+th08::ReplayManager::OnUpdateHighPrioDemo2
+th08::ReplayManager::AddedCallback
+th08::ReplayManager::AddedCallbackDemo
+th08::ReplayManager::DeletedCallback

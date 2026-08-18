@@ -949,3 +949,13 @@ address,name,size,status,match_percent,unit,evidence
 0x0042B490,th08::Enemy::FUN_0042b490,1180,matching,100.00,enemy-phase-health-transition-0042b490,python3 scripts/compare-function.py enemy-phase-health-transition-0042b490 --json
 0x0042B930,th08::Enemy::FUN_0042b930,796,matching,100.00,enemy-phase-timeout-transition-0042b930,python3 scripts/compare-function.py enemy-phase-timeout-transition-0042b930 --json
 0x0042F340,th08::Gui::FUN_0042f340,22,matching,100.00,gui-boss-timer-setter-0042f340,python3 scripts/compare-function.py gui-boss-timer-setter-0042f340 --json
+0x00437DC7,th08::Gui::FUN_00437dc7,22,matching,100.00,gui-message-state-helper-00437dc7,python3 scripts/compare-function.py gui-message-state-helper-00437dc7 --json
+0x00451F90,th08::ReplayManager::RegisterChain,777,matching,100.00,replay-manager-register-chain,python3 scripts/compare-function.py replay-manager-register-chain --json
+0x004522A0,th08::ReplayManager::OnUpdateLowPrio,102,matching,100.00,replay-manager-on-update-low-prio,python3 scripts/compare-function.py replay-manager-on-update-low-prio --json
+0x00452310,th08::ReplayManager::OnUpdateHighPrio,372,matching,100.00,replay-manager-on-update-high-prio,python3 scripts/compare-function.py replay-manager-on-update-high-prio --json
+0x00452490,th08::ReplayManager::OnUpdateFrameControl,184,matching,100.00,replay-manager-frame-control,python3 scripts/compare-function.py replay-manager-frame-control --json
+0x00452550,th08::ReplayManager::OnUpdateHighPrioDemo,362,matching,100.00,replay-manager-on-update-high-prio-demo,python3 scripts/compare-function.py replay-manager-on-update-high-prio-demo --json
+0x00452830,th08::ReplayManager::AddedCallback,1315,matching,100.00,replay-manager-added-callback,python3 scripts/compare-function.py replay-manager-added-callback --json
+0x00452D60,th08::ReplayManager::AddedCallbackDemo,787,matching,100.00,replay-manager-added-callback-demo,python3 scripts/compare-function.py replay-manager-added-callback-demo --json
+0x00453080,th08::ReplayManager::DeletedCallback,209,matching,100.00,replay-manager-deleted-callback,python3 scripts/compare-function.py replay-manager-deleted-callback --json
+0x00453160,th08::ReplayManager::ReplayManager,58,matching,100.00,replay-manager-constructor,python3 scripts/compare-function.py replay-manager-constructor --json

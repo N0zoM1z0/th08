@@ -165,7 +165,7 @@ struct GameManager
 
     u8 GetClockTime();
     void AddToClockTime(i8 value);
-    void SetClockTime(u8 value);
+    void SetClockTime(i32 value);
 
     ZunBool IsStageClearedWithRetries(i32 stage, i32 character, i32 difficulty);
     ZunBool IsStageClearedWithoutRetries(i32 stage, i32 character, i32 difficulty);

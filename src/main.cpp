@@ -1210,7 +1210,7 @@ void GameManager::AddToClockTime(i8 value)
 }
 
 // FUNCTION: th08 0x453c60
-void GameManager::SetClockTime(u8 value)
+void GameManager::SetClockTime(i32 value)
 {
     this->globals->clockTime = value;
 }

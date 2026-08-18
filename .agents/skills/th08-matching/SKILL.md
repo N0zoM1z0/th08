@@ -191,3 +191,10 @@ python3 scripts/validate-tracking.py
 python3 scripts/progress.py --check
 git diff --check
 ```
+
+
+## Replay/VC7 source-shape corpus
+
+When matching `/Od` replay callbacks, check three high-value shapes before introducing extra locals. First, let `new T` remain directly inside registry/allocation calls when the target frame already contains VC7's hidden new-expression temporary; a redundant named allocation local can add exactly six bytes. Second, retain apparently pointless legacy division/modulo stores when target code contains their signed arithmetic lowering; adjacent Touhou sources may explain why the statements existed, but validate the exact constants against TH08. Third, infer narrow-looking setter ABIs from exact callers as well as the callee: a byte store in the callee does not prove a byte parameter if callers consistently sign-extend to `int`.
+
+For a final one-byte register-owner mismatch, do not use padding, inline assembly, or fake types. Build a bounded expression/type matrix under the repository VC7 flags and compare instruction templates against already-exact corpus functions. Record eliminated hypotheses in `.analysis/` or `docs/BUILD_MATCHING.md`, keep the semantic implementation, and defer the match until natural C/C++ emission reaches zero differences.
