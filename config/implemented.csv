@@ -945,3 +945,6 @@ th08::Enemy::FUN_0042c290
 th08::EnemyManager::FUN_0042c3b0
 th08::Enemy::FUN_0042c420
 th08::Enemy::FUN_0042deb0
+th08::Enemy::FUN_0042b490
+th08::Enemy::FUN_0042b930
+th08::Gui::FUN_0042f340

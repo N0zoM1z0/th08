@@ -41,6 +41,8 @@ struct EnemyUnkStruct0x1c
 };
 C_ASSERT(sizeof(EnemyUnkStruct0x1c) == 0x1c);
 
+void __fastcall FUN_0042bc50(void *self);
+
 struct Enemy
 {
     Enemy();
@@ -89,6 +91,8 @@ struct Enemy
     void enemy_fun_00415c80();
     void FUN_0042b2f0();
     void FUN_0042bea0(i32 mode);
+    i32 FUN_0042b490();
+    i32 FUN_0042b930();
     void FUN_0042c290(Float3 *position, Float3 *size);
     void FUN_0042c420();
     void FUN_0042deb0();

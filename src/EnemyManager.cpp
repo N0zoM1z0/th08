@@ -21,6 +21,7 @@ DIFFABLE_STATIC(EnemyManager, g_EnemyManager);
 DIFFABLE_STATIC(u16, g_EnemyDropCounter);
 DIFFABLE_STATIC(ItemTimeOrbTimerStorage, g_EnemyAttachedTimer30);
 DIFFABLE_STATIC(ItemTimeOrbTimerStorage, g_EnemyAttachedTimer0);
+DIFFABLE_STATIC(ZunTimer, g_EnemyManagerUpdatePlayerTimer);
 DIFFABLE_STATIC(u16, g_EnemyDropScheduleIndex);
 DIFFABLE_STATIC_ARRAY_ASSIGN(u8, 32, g_EnemyDropSchedule) = {
     0, 0, 1, 0, 1, 0, 0, 0,
@@ -28,6 +29,283 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(u8, 32, g_EnemyDropSchedule) = {
     1, 0, 1, 0, 1, 0, 1, 0,
     1, 0, 0, 1, 1, 1, 0, 0,
 };
+
+// FUNCTION: th08 0x42f340
+void Gui::FUN_0042f340(i32 value)
+{
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x24) = value;
+}
+
+// FUNCTION: th08 0x42b930
+#pragma var_order(i, maxThreshold, selectedOrK, enemyCursor, j, this)
+i32 Enemy::FUN_0042b930()
+{
+    i32 i;
+    i32 maxThreshold;
+    i32 selectedOrK;
+    Enemy *enemyCursor;
+    i32 j;
+
+    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) != 0 &&
+        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3313) == 0)
+    {
+        g_Gui.FUN_0042f340(
+            (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) - (i32)this->timer2e14) / 60);
+    }
+
+    if (this->timer2e14 >= *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378))
+    {
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53cc) = 0;
+    maxThreshold = 0;
+    for (i = 0; i < 4; i++)
+    {
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4) < 0)
+            continue;
+        if (maxThreshold < *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4))
+        {
+            maxThreshold = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4);
+            selectedOrK = i;
+        }
+    }
+
+    if (maxThreshold > 0)
+    {
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc) =
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + selectedOrK * 4);
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2e04) =
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc);
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + selectedOrK * 4) = -1;
+    }
+
+    reinterpret_cast<EclManager *>(0x4ECCB8)->CallEclSub(
+        reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(this) + 0x7f8),
+        *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x337c));
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) = -1;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x337c) =
+        *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2cee);
+    this->timer2e14 = 0;
+
+    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 27) & 1) == 0)
+    {
+        FUN_0042bc50(&g_Spellcard);
+        g_BulletManager.RemoveAllBullets(4);
+    }
+
+    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) != 0 &&
+        g_Player.playerState == 0)
+    {
+        g_EnemyManagerUpdatePlayerTimer = 70;
+        g_Player.playerState = 3;
+    }
+
+    reinterpret_cast<EclOperands::EnemyOverlay *>(this)->FUN_0042adb0(0);
+    enemyCursor = &g_EnemyManager.enemies[0];
+    for (j = 0; j < 480; j++, enemyCursor++)
+    {
+        if ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x3324) & 1) == 0)
+            continue;
+        if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x3324) >> 1) & 1) != 0)
+            continue;
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2dfc) = 0;
+        if (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee) >= 0)
+        {
+            reinterpret_cast<EclManager *>(0x4ECCB8)->CallEclSub(
+                reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(enemyCursor) + 0x7f8),
+                *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee));
+            *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee) = -1;
+        }
+    }
+
+    for (selectedOrK = 0; selectedOrK < 4; selectedOrK++)
+    {
+        if (*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + selectedOrK * 4) != NULL)
+        {
+            g_ZunMemory.Free(*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + selectedOrK * 4));
+            *reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + selectedOrK * 4) = NULL;
+        }
+    }
+
+    this->bullet2e24 = g_EnemyManager.firstEnemy.bullet2e24;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3060) = 0;
+    this->enemy_fun_00415c80();
+    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2cea) = 0;
+    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) &= 0xffffffcf;
+    return 1;
+    }
+    return 0;
+}
+
+// FUNCTION: th08 0x42b490
+#pragma var_order(state, phaseCount, i, work, enemyCursor, k, this)
+i32 Enemy::FUN_0042b490()
+{
+    u32 state;
+    i32 phaseCount;
+    i32 i;
+    i32 work;
+    Enemy *enemyCursor;
+    i32 k;
+
+    phaseCount = 0;
+    state = 0;
+    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) &= 0xffffffcf;
+    for (i = 0; i < 4; i++)
+    {
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4) < 0)
+            continue;
+
+        phaseCount++;
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc) <
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4))
+        {
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc) =
+                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4);
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2e04) =
+                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc);
+            reinterpret_cast<EclManager *>(0x4ECCB8)->CallEclSub(
+                reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(this) + 0x7f8),
+                *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x3368 + i * 4));
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4) = -1;
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53cc) =
+                (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) - (i32)this->timer2e14) / 60;
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) = -1;
+
+            for (work = 0; work < 4; work++)
+            {
+                if (*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + work * 4) != NULL)
+                {
+                    g_ZunMemory.Free(*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + work * 4));
+                    *reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + work * 4) = NULL;
+                }
+            }
+
+            this->enemy_fun_00415c80();
+            *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2cea) = 0;
+            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) &= 0xffffffcf;
+            this->bullet2e24 = g_EnemyManager.firstEnemy.bullet2e24;
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3060) = 0;
+            reinterpret_cast<EclOperands::EnemyOverlay *>(this)->FUN_0042adb0(1);
+
+            enemyCursor = &g_EnemyManager.enemies[0];
+            for (k = 0; k < 480; k++, enemyCursor++)
+            {
+                if ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x3324) & 1) == 0)
+                    continue;
+                if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x3324) >> 1) & 1) != 0)
+                    continue;
+
+                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2dfc) = 0;
+                if (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee) >= 0)
+                {
+                    reinterpret_cast<EclManager *>(0x4ECCB8)->CallEclSub(
+                        reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(enemyCursor) + 0x7f8),
+                        *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee));
+                    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee) = -1;
+                }
+            }
+
+            if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) != 0 &&
+                g_Player.playerState == 0)
+            {
+                g_EnemyManagerUpdatePlayerTimer = 70;
+                g_Player.playerState = 3;
+            }
+            return 1;
+        }
+
+        work = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc) -
+               *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4);
+        if (g_Spellcard.IsActive())
+        {
+            if (work < 120)
+                state = 3;
+            else if (work < 200)
+                state = 2;
+            else if (work < 300)
+                state = 1;
+            else
+                state = 0;
+        }
+        else
+        {
+            if (work < 500)
+                state = 3;
+            else if (work < 1500)
+                state = 2;
+            else if (work < 2200)
+                state = 1;
+            else
+                state = 0;
+        }
+
+        if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) >> 4) & 3) < state)
+        {
+            struct EnemyPhaseBits
+            {
+                u32 pad0 : 4;
+                u32 state : 2;
+                u32 pad6 : 26;
+            };
+            reinterpret_cast<EnemyPhaseBits *>(reinterpret_cast<u8 *>(this) + 0x3328)->state = state;
+        }
+    }
+
+    if (phaseCount == 0)
+    {
+        work = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc);
+        if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) != 0)
+        {
+            if (g_Spellcard.IsActive())
+            {
+                if (work < 120)
+                    state = 3;
+                else if (work < 300)
+                    state = 2;
+                else if (work < 400)
+                    state = 1;
+                else
+                    state = 0;
+            }
+            else
+            {
+                if (work < 600)
+                    state = 3;
+                else if (work < 1600)
+                    state = 2;
+                else if (work < 2400)
+                    state = 1;
+                else
+                    state = 0;
+            }
+        }
+        else if (g_Spellcard.IsActive())
+        {
+            if (work < 10)
+                state = 3;
+            else
+                state = 0;
+        }
+        else
+        {
+            if (work < 50)
+                state = 3;
+            else
+                state = 0;
+        }
+
+        if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) >> 4) & 3) < state)
+        {
+            struct EnemyPhaseBits
+            {
+                u32 pad0 : 4;
+                u32 state : 2;
+                u32 pad6 : 26;
+            };
+            reinterpret_cast<EnemyPhaseBits *>(reinterpret_cast<u8 *>(this) + 0x3328)->state = state;
+        }
+    }
+    return 0;
+}
 
 // FUNCTION: th08 0x42c420
 void Enemy::FUN_0042c420()

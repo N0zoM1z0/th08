@@ -395,8 +395,8 @@ FUN_0042a8a0,0x42a8a0,0x4c0,unknown,,u8
 th08::EclOperands::EnemyOverlay::FUN_0042adb0,0x42adb0,0x538,__thiscall,,void,EnemyOverlay*,i32
 th08::Enemy::FUN_0042b2f0,0x42b2f0,0x75,__thiscall,,void,Enemy*
 FUN_0042b370,0x42b370,0x120,unknown,,u8,u8
-FUN_0042b490,0x42b490,0x49c,unknown,,u8
-FUN_0042b930,0x42b930,0x31c,unknown,,u8
+th08::Enemy::FUN_0042b490,0x42b490,0x49c,__thiscall,,i32,Enemy*
+th08::Enemy::FUN_0042b930,0x42b930,0x31c,__thiscall,,i32,Enemy*
 th08::FUN_0042bc50,0x42bc50,0x32,__fastcall,,void,void*
 th08::Enemy::FUN_0042bc90,0x42bc90,0x60,__thiscall,,void,Enemy*
 FUN_0042bcf0,0x42bcf0,0x1b0,unknown,,u8
@@ -427,7 +427,7 @@ th08::GameManager::GetLives,0x42f2b0,0x19,__thiscall,,ulonglong,GameManager*
 th08::AsciiManager::FUN_0042f2d0,0x42f2d0,0x1d,__thiscall,,void,AsciiManager*,i32,u32
 th08::AsciiManager::SetScale,0x42f2f0,0x25,__thiscall,,void,AsciiManager*,f32,f32
 FUN_0042f320,0x42f320,0x11,unknown,,u8
-FUN_0042f340,0x42f340,0x16,unknown,,u8,u8
+th08::Gui::FUN_0042f340,0x42f340,0x16,__thiscall,,void,Gui*,i32
 th08::BulletManager::Initialize,0x42f360,0xb1,__thiscall,,void,BulletManager*
 th08::BulletManager::BulletManager,0x42f420,0x75,__thiscall,,BulletManager*,BulletManager*
 th08::BulletTypeSprites::BulletTypeSprites,0x42f4a0,0x5c,__thiscall,,BulletTypeSprites*,BulletTypeSprites*

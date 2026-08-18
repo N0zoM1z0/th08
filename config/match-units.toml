@@ -100542,3 +100542,264 @@ offset = 0xDC
 type = "DIR32"
 symbol = "?g_EclGameTimeScale@th08@@3MA"
 target = 0x017CE8E0
+
+[[units]]
+name = "enemy-phase-health-transition-0042b490"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "th08::Enemy::FUN_0042b490"
+target_address = 0x0042B490
+size = 0x49C
+
+[[units.relocations]]
+offset = 0xC8
+type = "REL32"
+symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
+target = 0x00418450
+
+[[units.relocations]]
+offset = 0xE7
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0x14D
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x152
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+[[units.relocations]]
+offset = 0x16D
+type = "REL32"
+symbol = "th08::Enemy::enemy_fun_00415c80"
+target = 0x00415C80
+
+[[units.relocations]]
+offset = 0x1A1
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x1BA
+type = "REL32"
+symbol = "?FUN_0042adb0@EnemyOverlay@EclOperands@th08@@QAEXH@Z"
+target = 0x0042ADB0
+
+[[units.relocations]]
+offset = 0x1C1
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x247
+type = "REL32"
+symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
+target = 0x00418450
+
+[[units.relocations]]
+offset = 0x271
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x27C
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdatePlayerTimer@th08@@3UZunTimer@1@A"
+target = 0x018B89EC
+
+[[units.relocations]]
+offset = 0x281
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x287
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x2B0
+type = "DIR32"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+
+[[units.relocations]]
+offset = 0x2B5
+type = "REL32"
+symbol = "?IsActive@Spellcard@th08@@QAEHXZ"
+target = 0x004178A0
+
+[[units.relocations]]
+offset = 0x39C
+type = "DIR32"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+
+[[units.relocations]]
+offset = 0x3A1
+type = "REL32"
+symbol = "?IsActive@Spellcard@th08@@QAEHXZ"
+target = 0x004178A0
+
+[[units.relocations]]
+offset = 0x425
+type = "DIR32"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+
+[[units.relocations]]
+offset = 0x42A
+type = "REL32"
+symbol = "?IsActive@Spellcard@th08@@QAEHXZ"
+target = 0x004178A0
+
+[[units]]
+name = "enemy-phase-timeout-transition-0042b930"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "th08::Enemy::FUN_0042b930"
+target_address = 0x0042B930
+size = 0x31C
+
+[[units.relocations]]
+offset = 0x35
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0x50
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x55
+type = "REL32"
+symbol = "?FUN_0042f340@Gui@th08@@QAEXH@Z"
+target = 0x0042F340
+
+[[units.relocations]]
+offset = 0x6D
+type = "REL32"
+symbol = "??PZunTimer@th08@@QAEIH@Z"
+target = 0x0040B8E0
+
+[[units.relocations]]
+offset = 0x13A
+type = "REL32"
+symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
+target = 0x00418450
+
+[[units.relocations]]
+offset = 0x16A
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x182
+type = "DIR32"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+
+[[units.relocations]]
+offset = 0x187
+type = "REL32"
+symbol = "?FUN_0042bc50@th08@@YIXPAX@Z"
+target = 0x0042BC50
+
+[[units.relocations]]
+offset = 0x18E
+type = "DIR32"
+symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
+target = 0x00F54E90
+
+[[units.relocations]]
+offset = 0x193
+type = "REL32"
+symbol = "?RemoveAllBullets@BulletManager@th08@@QAEXH@Z"
+target = 0x00430830
+
+[[units.relocations]]
+offset = 0x1AC
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x1B7
+type = "DIR32"
+symbol = "?g_EnemyManagerUpdatePlayerTimer@th08@@3UZunTimer@1@A"
+target = 0x018B89EC
+
+[[units.relocations]]
+offset = 0x1BC
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x1C2
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x1CD
+type = "REL32"
+symbol = "?FUN_0042adb0@EnemyOverlay@EclOperands@th08@@QAEXH@Z"
+target = 0x0042ADB0
+
+[[units.relocations]]
+offset = 0x1D4
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x25A
+type = "REL32"
+symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
+target = 0x00418450
+
+[[units.relocations]]
+offset = 0x2A6
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x2AB
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+[[units.relocations]]
+offset = 0x2D1
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x2E8
+type = "REL32"
+symbol = "th08::Enemy::enemy_fun_00415c80"
+target = 0x00415C80
+
+[[units]]
+name = "gui-boss-timer-setter-0042f340"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "?FUN_0042f340@Gui@th08@@QAEXH@Z"
+target_address = 0x0042F340
+size = 0x16

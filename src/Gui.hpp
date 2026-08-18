@@ -78,6 +78,7 @@ struct GuiFlags
 
 struct Gui
 {
+    void FUN_0042f340(i32 value);
     static ChainCallbackResult OnUpdate(Gui *gui);
     static ChainCallbackResult OnDraw(Gui *gui);
 

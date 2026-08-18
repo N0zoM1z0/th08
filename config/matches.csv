@@ -946,3 +946,6 @@ address,name,size,status,match_percent,unit,evidence
 0x0042C3B0,th08::EnemyManager::FUN_0042c3b0,110,matching,100.00,enemy-manager-rank-timer-0042c3b0,python3 scripts/compare-function.py enemy-manager-rank-timer-0042c3b0 --json
 0x0042C420,th08::Enemy::FUN_0042c420,367,matching,100.00,enemy-youkai-state-sync-0042c420,python3 scripts/compare-function.py enemy-youkai-state-sync-0042c420 --json
 0x0042DEB0,th08::Enemy::FUN_0042deb0,252,matching,100.00,enemy-integrate-motion-0042deb0,python3 scripts/compare-function.py enemy-integrate-motion-0042deb0 --json
+0x0042B490,th08::Enemy::FUN_0042b490,1180,matching,100.00,enemy-phase-health-transition-0042b490,python3 scripts/compare-function.py enemy-phase-health-transition-0042b490 --json
+0x0042B930,th08::Enemy::FUN_0042b930,796,matching,100.00,enemy-phase-timeout-transition-0042b930,python3 scripts/compare-function.py enemy-phase-timeout-transition-0042b930 --json
+0x0042F340,th08::Gui::FUN_0042f340,22,matching,100.00,gui-boss-timer-setter-0042f340,python3 scripts/compare-function.py gui-boss-timer-setter-0042f340 --json
