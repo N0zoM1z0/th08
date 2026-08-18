@@ -137,7 +137,7 @@ th08::Player::IsYoukai,0x40bc40,0x12,__thiscall,,i32,Player*
 th08::FUN_0040bc60,0x40bc60,0x1c2,__fastcall,,void,Player*,u32
 th08::FUN_0040be30,0x40be30,0xc2,__fastcall,,void,Player*,i32,const char*,i32,i32,i32
 th08::Player::FUN_0040bf00,0x40bf00,0x108,__thiscall,,void,Player*
-FUN_0040c010,0x40c010,0x795,unknown,,u8
+th08::FUN_0040c010,0x40c010,0x795,__fastcall,,void,Player*
 th08::VectorAngle,0x40c7b0,0x18,__fastcall,,f32,f32,f32
 th08::Float3::operator/,0x40c7d0,0x4c,__thiscall,,Float3*,Float3*,f32
 th08::FUN_0040c820,0x40c820,0xe6,__fastcall,,void,Player*

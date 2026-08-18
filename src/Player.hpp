@@ -74,7 +74,7 @@ struct PlayerBombWorkItem
     i32 active;
     unknown_fields(0x0004, 4);
     f32 rotationStep;
-    unknown_fields(0x000C, 4);
+    f32 speed;
     f32 rotation;
     Float3 anchor;
     Float3 points[32];

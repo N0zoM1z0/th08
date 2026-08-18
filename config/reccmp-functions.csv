@@ -138,7 +138,7 @@ th08::Player::IsYoukai,0x40bc40,function
 th08::FUN_0040bc60,0x40bc60,function
 th08::FUN_0040be30,0x40be30,function
 th08::Player::FUN_0040bf00,0x40bf00,function
-FUN_0040c010,0x40c010,function
+th08::FUN_0040c010,0x40c010,function
 th08::VectorAngle,0x40c7b0,function
 th08::Float3::operator/,0x40c7d0,function
 th08::FUN_0040c820,0x40c820,function
