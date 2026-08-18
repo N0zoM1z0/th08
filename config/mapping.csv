@@ -1016,7 +1016,7 @@ FUN_0046bbc0,0x46bbc0,0xfcf,unknown,,u8
 FUN_0046cbbb,0x46cbbb,0xba8,unknown,,u8
 FUN_0046d763,0x46d763,0x96,unknown,,u8
 FUN_0046d7f9,0x46d7f9,0x93d,unknown,,u8
-FUN_0046e136,0x46e136,0xe57,unknown,,u8
+th08::TitleScreen::OnUpdateReplayMenu,0x46e136,0xe57,__thiscall,,ChainCallbackResult,TitleScreen*
 th08::TitleScreen::DrawReplayMenu,0x46ef8d,0x49c,__thiscall,,ChainCallbackResult,TitleScreen*
 th08::TitleScreen::DrawPracticeStageSelect,0x46f429,0x1a2,unknown,,u8
 th08::TitleScreen::DrawSpellStageSelect,0x46f5cb,0x794,__thiscall,,ChainCallbackResult,TitleScreen*

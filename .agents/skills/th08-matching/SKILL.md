@@ -332,3 +332,6 @@ Do not force standard math/runtime helpers into authored reconstruction merely b
 - If POD `new/delete/free` traffic has stable stack work homes, model the real allocation/deallocation pointers as semantic locals and control them with `#pragma var_order`; do not use padding or asm. Direct `operator new/delete` is acceptable only when the owner has no constructor/destructor work and full canonical replay proves equivalence.
 - A target dword work value later consumed as one byte should not automatically be declared `u8`. Preserve the dword source shape when target stores prove it.
 - When a same-type totals record physically follows an array, a narrow overlay for the contiguous table can recover the original constant-index AST without undefined one-past-array access.
+
+- If an exact function lives only in a foreign dirty/claimed TU, make the evidence reproducible before promotion: copy the minimal function plus required file-scope data/helpers into a probe compiled with the same rule, verify strict zero-diff there, and ledger the probe object. Never make canonical progress depend on someone else's uncommitted object.
+- Keep stable exact probes narrow. Remove neighboring near-match experiments before committing an exact anchor so future agents can reproduce the accepted unit without inheriting unrelated unfinished code.
