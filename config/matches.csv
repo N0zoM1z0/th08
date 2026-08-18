@@ -1033,3 +1033,9 @@ address,name,size,status,match_percent,unit,evidence
 0x00472040,th08::CSound::`scalar_deleting_destructor',46,matching,100.00,csound-scalar-deleting-dtor-00472040,python3 scripts/compare-function.py csound-scalar-deleting-dtor-00472040 --json
 0x00474A80,th08::PbgArchiveEntry::`vector_deleting_destructor',112,matching,100.00,pbg-entry-vector-deleting-dtor-00474a80,python3 scripts/compare-function.py pbg-entry-vector-deleting-dtor-00474a80 --json
 0x00446F42,th08::DummyMidiTimer::~DummyMidiTimer,17,matching,100.00,dummy-midi-timer-dtor-00446f42,python3 scripts/compare-function.py dummy-midi-timer-dtor-00446f42 --json
+0x00423390,th08::FUN_00423390,52,matching,100.00,ecl-ex-callback-00423390,python3 scripts/compare-function.py ecl-ex-callback-00423390 --json
+0x004233D0,th08::FUN_004233d0,39,matching,100.00,ecl-ex-callback-004233d0,python3 scripts/compare-function.py ecl-ex-callback-004233d0 --json
+0x00423530,th08::FUN_00423530,104,matching,100.00,ecl-ex-callback-00423530,python3 scripts/compare-function.py ecl-ex-callback-00423530 --json
+0x00423A60,th08::FUN_00423a60,784,matching,100.00,ecl-ex-bullet-zone-callback-00423a60,python3 scripts/compare-function.py ecl-ex-bullet-zone-callback-00423a60 --json
+0x00423DB0,th08::FUN_00423db0,104,matching,100.00,ecl-ex-callback-00423db0,python3 scripts/compare-function.py ecl-ex-callback-00423db0 --json
+0x00424170,th08::FUN_00424170,104,matching,100.00,ecl-ex-callback-00424170,python3 scripts/compare-function.py ecl-ex-callback-00424170 --json

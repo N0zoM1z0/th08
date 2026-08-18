@@ -288,3 +288,9 @@ Canonical evidence should come from a COFF function symbol with a reproducible e
 Some VC7 compiler-generated functions have no function-definition aux record even though their `.text` COMDAT is an isolated, reproducible body. Do not hand-write a fake deleting destructor merely to manufacture an aux record. Use `allow_auxless_comdat = true` only when the manifest intentionally owns that compiler body and the comparator can prove all of: code+COMDAT section, function symbol at offset zero, exactly one section-defined external function owner, and section length equal to the full comparison extent. Relocations must still match and replay normally. Undefined symbols of the same decorated name are references, not competing body owners.
 
 For a real implicit class constructor, prefer a real explicit empty constructor if that preserves bytes: `AnmVmBase::AnmVmBase` demonstrates that member initialization remains compiler-generated while the explicit owner gains a standard COFF function extent. Keep ordinary functions off the auxless path whenever a natural source-level owner can provide normal canonical evidence.
+
+## Declaration initialization versus constructor timing
+
+When a target writes a scalar/pointer local before constructing a later non-trivial local, test a declaration initializer rather than a body assignment. VC7 may hoist non-trivial local construction ahead of ordinary body statements, while C++ declaration initialization preserves declaration sequencing. `ECL EX FUN_00423A60` requires the bullet cursor to be initialized at declaration before a later `Float3` constructor.
+
+Short-circuit operand order is machine-code evidence even when the boolean expression is commutative. For `a == 0 || b == 0`, VC7 emits the first stack-home compare exactly in lexical order; do not reorder equivalent operands after the target has established their sequence.

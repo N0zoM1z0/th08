@@ -221,3 +221,6 @@ th08::g_GuiLoadingAnmPaths,0x4c72c4,global
 th08::g_GuiStageTextAnmPaths,0x4c745c,global
 th08::g_GuiMessagePaths,0x4c74c0,global
 th08::g_EnemyTrackedEnemy,0x18b89b4,global
+th08::g_EclCallbackPublishedEnemyField56,0x4e3d24,global
+th08::g_EclExUpdateCallback,0x4ea28c,global
+th08::g_AsciiManagerDemoAnm0577EB4,0x577eb4,global

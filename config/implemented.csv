@@ -1032,3 +1032,9 @@ th08::CStreamingSound::`scalar_deleting_destructor'
 th08::CSound::`scalar_deleting_destructor'
 th08::PbgArchiveEntry::`vector_deleting_destructor'
 th08::DummyMidiTimer::~DummyMidiTimer
+th08::FUN_00423390
+th08::FUN_004233d0
+th08::FUN_00423530
+th08::FUN_00423a60
+th08::FUN_00423db0
+th08::FUN_00424170

@@ -77,6 +77,8 @@ DIFFABLE_EXTERN(ChainElem, g_EffectManagerDrawChain);
 // field.  Its consumer semantics are still unknown; this name records only
 // the observed callback ownership and width.
 DIFFABLE_EXTERN(i32, g_EclCallbackPublishedEnemyField24);
+DIFFABLE_EXTERN(i32, g_EclCallbackPublishedEnemyField56);
+DIFFABLE_EXTERN(void *, g_EclExUpdateCallback);
 DIFFABLE_EXTERN(i8, g_EclScriptedGlobalUpdateFreeze);
 DIFFABLE_EXTERN(f32, g_EclGameTimeScale);
 DIFFABLE_EXTERN(u8, g_TargetByte0164D0B1);

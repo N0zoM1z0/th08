@@ -178,6 +178,7 @@ def configure(build_type):
             "EclRun",
             "EnemyTimeline",
             "EclDependencies",
+            "EclExIns",
         ]
 
         pbg_sources = [

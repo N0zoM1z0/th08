@@ -106903,3 +106903,429 @@ offset = 0xB
 type = "REL32"
 symbol = "??1MidiTimer@th08@@QAE@XZ"
 target = 0x00443E20
+
+[[units]]
+name = "ecl-ex-bullet-zone-callback-00423a60"
+object = "build/probes/EclExIns.obj"
+symbol = "?FUN_00423a60@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+target_address = 0x00423A60
+size = 0x310
+
+[[units.relocations]]
+offset = 0xF
+type = "DIR32"
+symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
+target = 0x00F54E90
+
+[[units.relocations]]
+offset = 0x17
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x91
+type = "REL32"
+symbol = "??GFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x004090D0
+
+[[units.relocations]]
+offset = 0xB1
+type = "DIR32"
+symbol = "__real@42f83c49"
+target = 0x004B490C
+
+[[units.relocations]]
+offset = 0xC7
+type = "DIR32"
+symbol = "__real@4381f0ee"
+target = 0x004B4908
+
+[[units.relocations]]
+offset = 0xDD
+type = "DIR32"
+symbol = "__real@430c1e24"
+target = 0x004B4904
+
+[[units.relocations]]
+offset = 0xF3
+type = "DIR32"
+symbol = "__real@4389f0ee"
+target = 0x004B4900
+
+[[units.relocations]]
+offset = 0x112
+type = "DIR32"
+symbol = "__real@4260f124"
+target = 0x004B48FC
+
+[[units.relocations]]
+offset = 0x128
+type = "DIR32"
+symbol = "__real@43a3e1dc"
+target = 0x004B48F8
+
+[[units.relocations]]
+offset = 0x13E
+type = "DIR32"
+symbol = "__real@42907892"
+target = 0x004B48F4
+
+[[units.relocations]]
+offset = 0x154
+type = "DIR32"
+symbol = "__real@43abe1dc"
+target = 0x004B48F0
+
+[[units.relocations]]
+offset = 0x174
+type = "DIR32"
+symbol = "__real@42f83c49"
+target = 0x004B490C
+
+[[units.relocations]]
+offset = 0x184
+type = "DIR32"
+symbol = "__real@4381f0ee"
+target = 0x004B4908
+
+[[units.relocations]]
+offset = 0x194
+type = "DIR32"
+symbol = "__real@430c1e24"
+target = 0x004B4904
+
+[[units.relocations]]
+offset = 0x1A4
+type = "DIR32"
+symbol = "__real@4389f0ee"
+target = 0x004B4900
+
+[[units.relocations]]
+offset = 0x1BD
+type = "DIR32"
+symbol = "__real@4260f124"
+target = 0x004B48FC
+
+[[units.relocations]]
+offset = 0x1CD
+type = "DIR32"
+symbol = "__real@43a3e1dc"
+target = 0x004B48F8
+
+[[units.relocations]]
+offset = 0x1DD
+type = "DIR32"
+symbol = "__real@42907892"
+target = 0x004B48F4
+
+[[units.relocations]]
+offset = 0x1ED
+type = "DIR32"
+symbol = "__real@43abe1dc"
+target = 0x004B48F0
+
+[[units.relocations]]
+offset = 0x230
+type = "REL32"
+symbol = "??XFloat3@th08@@QAEPAU01@M@Z"
+target = 0x00423D70
+
+[[units.relocations]]
+offset = 0x24B
+type = "DIR32"
+symbol = "__real@43400000"
+target = 0x004B4440
+
+[[units.relocations]]
+offset = 0x251
+type = "DIR32"
+symbol = "__real@4287c3b7"
+target = 0x004B48EC
+
+[[units.relocations]]
+offset = 0x257
+type = "DIR32"
+symbol = "__real@4307c3b7"
+target = 0x004B48E8
+
+[[units.relocations]]
+offset = 0x25D
+type = "DIR32"
+symbol = "__real@43400000"
+target = 0x004B4440
+
+[[units.relocations]]
+offset = 0x275
+type = "DIR32"
+symbol = "__real@43500000"
+target = 0x004B48E4
+
+[[units.relocations]]
+offset = 0x27B
+type = "DIR32"
+symbol = "__real@4287c3b7"
+target = 0x004B48EC
+
+[[units.relocations]]
+offset = 0x281
+type = "DIR32"
+symbol = "__real@4307c3b7"
+target = 0x004B48E8
+
+[[units.relocations]]
+offset = 0x287
+type = "DIR32"
+symbol = "__real@43500000"
+target = 0x004B48E4
+
+[[units.relocations]]
+offset = 0x2A1
+type = "DIR32"
+symbol = "__real@43400000"
+target = 0x004B4440
+
+[[units.relocations]]
+offset = 0x2A7
+type = "DIR32"
+symbol = "__real@4307c3b7"
+target = 0x004B48E8
+
+[[units.relocations]]
+offset = 0x2AD
+type = "DIR32"
+symbol = "__real@4287c3b7"
+target = 0x004B48EC
+
+[[units.relocations]]
+offset = 0x2B3
+type = "DIR32"
+symbol = "__real@43400000"
+target = 0x004B4440
+
+[[units.relocations]]
+offset = 0x2CB
+type = "DIR32"
+symbol = "__real@43500000"
+target = 0x004B48E4
+
+[[units.relocations]]
+offset = 0x2D1
+type = "DIR32"
+symbol = "__real@4307c3b7"
+target = 0x004B48E8
+
+[[units.relocations]]
+offset = 0x2D7
+type = "DIR32"
+symbol = "__real@4287c3b7"
+target = 0x004B48EC
+
+[[units.relocations]]
+offset = 0x2DD
+type = "DIR32"
+symbol = "__real@43500000"
+target = 0x004B48E4
+
+[[units.relocations]]
+offset = 0x2FA
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units]]
+name = "ecl-ex-callback-00423530"
+object = "build/probes/EclExIns.obj"
+symbol = "?FUN_00423530@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+target_address = 0x00423530
+size = 0x68
+
+[[units.relocations]]
+offset = 0x1E
+type = "DIR32"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0x23
+type = "REL32"
+symbol = "?FUN_00425870@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+target = 0x00425870
+
+[[units.relocations]]
+offset = 0x3D
+type = "DIR32"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0x42
+type = "REL32"
+symbol = "?FUN_00425870@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+target = 0x00425870
+
+[[units.relocations]]
+offset = 0x51
+type = "DIR32"
+symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
+target = 0x00577EB4
+
+[[units.relocations]]
+offset = 0x56
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x5C
+type = "DIR32"
+symbol = "?g_EclExUpdateCallback@th08@@3PAXA"
+target = 0x004EA28C
+
+[[units.relocations]]
+offset = 0x60
+type = "DIR32"
+symbol = "?FUN_004235a0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+target = 0x004235A0
+
+[[units]]
+name = "ecl-ex-callback-00423db0"
+object = "build/probes/EclExIns.obj"
+symbol = "?FUN_00423db0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+target_address = 0x00423DB0
+size = 0x68
+
+[[units.relocations]]
+offset = 0x1E
+type = "DIR32"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0x23
+type = "REL32"
+symbol = "?FUN_00425870@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+target = 0x00425870
+
+[[units.relocations]]
+offset = 0x3D
+type = "DIR32"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0x42
+type = "REL32"
+symbol = "?FUN_00425870@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+target = 0x00425870
+
+[[units.relocations]]
+offset = 0x51
+type = "DIR32"
+symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
+target = 0x00577EB4
+
+[[units.relocations]]
+offset = 0x56
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x5C
+type = "DIR32"
+symbol = "?g_EclExUpdateCallback@th08@@3PAXA"
+target = 0x004EA28C
+
+[[units.relocations]]
+offset = 0x60
+type = "DIR32"
+symbol = "?FUN_004235a0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+target = 0x004235A0
+
+[[units]]
+name = "ecl-ex-callback-00424170"
+object = "build/probes/EclExIns.obj"
+symbol = "?FUN_00424170@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+target_address = 0x00424170
+size = 0x68
+
+[[units.relocations]]
+offset = 0x1E
+type = "DIR32"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0x23
+type = "REL32"
+symbol = "?FUN_00425870@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+target = 0x00425870
+
+[[units.relocations]]
+offset = 0x3D
+type = "DIR32"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0x42
+type = "REL32"
+symbol = "?FUN_00425870@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+target = 0x00425870
+
+[[units.relocations]]
+offset = 0x51
+type = "DIR32"
+symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
+target = 0x00577EB4
+
+[[units.relocations]]
+offset = 0x56
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x5C
+type = "DIR32"
+symbol = "?g_EclExUpdateCallback@th08@@3PAXA"
+target = 0x004EA28C
+
+[[units.relocations]]
+offset = 0x60
+type = "DIR32"
+symbol = "?FUN_004235a0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+target = 0x004235A0
+
+[[units]]
+name = "ecl-ex-callback-00423390"
+object = "build/probes/EclExIns.obj"
+symbol = "?FUN_00423390@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+target_address = 0x00423390
+size = 0x34
+
+[[units.relocations]]
+offset = 0x1A
+type = "DIR32"
+symbol = "?g_EclCallbackPublishedEnemyField24@th08@@3HA"
+target = 0x004E3D28
+
+[[units.relocations]]
+offset = 0x2C
+type = "DIR32"
+symbol = "?g_EclCallbackPublishedEnemyField56@th08@@3HA"
+target = 0x004E3D24
+
+[[units]]
+name = "ecl-ex-callback-004233d0"
+object = "build/probes/EclExIns.obj"
+symbol = "?FUN_004233d0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+target_address = 0x004233D0
+size = 0x27
+
+[[units.relocations]]
+offset = 0x1F
+type = "REL32"
+symbol = "?RegisterChain@ScreenEffect@th08@@SIPAU12@W4ScreenEffectType@2@HHHHH@Z"
+target = 0x0045B8B0
