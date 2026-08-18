@@ -547,6 +547,132 @@ i32 __fastcall FUN_004114e0(AnmVm *effect)
     return 1;
 }
 
+// FUNCTION: th08 0x411b10
+#pragma var_order(unused0, unused1, bomb, workItem, interp)
+void __fastcall FUN_00411b10(Player *player)
+{
+    i32 unused0;
+    i32 unused1;
+    PlayerBombState *bomb;
+    PlayerBombWorkItem *workItem;
+    f32 interp;
+
+    bomb = &player->bombState;
+    unused1 = 0;
+    unused0 = 0;
+    workItem = &bomb->workItems[0];
+
+    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
+    {
+        FUN_0040be30(player, 0,
+                     "\x90\x6C\x95\x84\x81\x75\x8C\xBB\x90\xA2\x8E\x61\x81\x76",
+                     220, 270, 0);
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.0f;
+        player->anmFile->SetAndExecuteScriptIdx(&player->mainVm, 0);
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
+        workItem->anchor = player->position;
+        workItem->position = workItem->anchor;
+        workItem->position.y = 416.0f;
+    }
+
+    if (bomb->timer < 40)
+    {
+        interp = (f32)bomb->timer / 40.0f;
+        interp = 1.0f - interp;
+        interp *= interp;
+        interp = 1.0f - interp;
+        player->position = (workItem->position - workItem->anchor) * interp + workItem->anchor;
+        return;
+    }
+    else if (bomb->timer.FUN_0040e350(40))
+    {
+        g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, 0xff8080ff);
+        return;
+    }
+    else if (bomb->timer.FUN_0040e350(70))
+    {
+        player->position.y = 32.0f;
+        Float3 position = player->position;
+        position.y = 224.0f;
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xefffffff, 0, 21);
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(42), 0);
+        workItem->cancelSlot = player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 300, 10);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 80, 60);
+        workItem->damageSlot->collisionInterval = 5;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
+        return;
+    }
+    else if (bomb->timer.FUN_0040e350(80))
+    {
+        Float3 position = player->position;
+        position.y = 224.0f;
+        position.x -= 32.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
+        workItem->damageSlot->collisionInterval = 2;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
+        position.x += 64.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
+        workItem->damageSlot->collisionInterval = 3;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xcfffffff, 0, 21);
+        return;
+    }
+    else if (bomb->timer.FUN_0040e350(90))
+    {
+        Float3 position = player->position;
+        position.y = 224.0f;
+        position.x -= 64.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
+        workItem->damageSlot->collisionInterval = 2;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
+        position.x += 128.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
+        workItem->damageSlot->collisionInterval = 3;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xbfffffff, 0, 21);
+        return;
+    }
+    else if (bomb->timer.FUN_0040e350(100))
+    {
+        Float3 position = player->position;
+        position.y = 224.0f;
+        position.x -= 96.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 80, 40);
+        workItem->damageSlot->collisionInterval = 2;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
+        position.x += 192.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 80, 40);
+        workItem->damageSlot->collisionInterval = 3;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8fffffff, 0, 21);
+        workItem->position = player->position;
+        return;
+    }
+    else if (bomb->timer >= 120 && bomb->timer < 150)
+    {
+        interp = ((f32)bomb->timer - 120.0f) / 30.0f;
+        interp = 1.0f - interp;
+        interp *= interp;
+        interp = 1.0f - interp;
+        player->position = (workItem->anchor - workItem->position) * interp + workItem->position;
+        return;
+    }
+    else if (bomb->timer.FUN_0040e350(150))
+    {
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 1.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 1.0f;
+    }
+}
+
 // FUNCTION: th08 0x4117b0
 #pragma var_order(interp, radialBase, i, slot, angle)
 i32 __fastcall FUN_004117b0(AnmVm *effect)

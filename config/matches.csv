@@ -887,3 +887,4 @@ address,name,size,status,match_percent,unit,evidence
 0x00411720,th08::FUN_00411720,139,matching,100.00,player-bomb-effect-init-00411720,python3 scripts/compare-function.py player-bomb-effect-init-00411720 --json
 0x004117B0,th08::FUN_004117b0,708,matching,100.00,player-bomb-effect-update-004117b0,python3 scripts/compare-function.py player-bomb-effect-update-004117b0 --json
 0x00411A80,th08::FUN_00411a80,139,matching,100.00,player-bomb-effect-init-00411a80,python3 scripts/compare-function.py player-bomb-effect-init-00411a80 --json
+0x00411B10,th08::FUN_00411b10,2032,matching,100.00,player-bomb-callback-00411b10,python3 scripts/compare-function.py player-bomb-callback-00411b10 --json

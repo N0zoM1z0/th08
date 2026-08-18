@@ -81,7 +81,8 @@ struct PlayerBombWorkItem
     AnmVm vms[8];
     unknown_fields(0x16D8, 4);
     ZunTimer timer;
-    unknown_fields(0x16E8, 8);
+    PlayerUnkStruct0x40 *damageSlot;
+    PlayerUnkStruct0x40 *cancelSlot;
 
     PlayerBombWorkItem();
 };
