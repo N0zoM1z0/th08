@@ -382,12 +382,12 @@ th08::Ending::DeletedCallback,0x429d40,0x93,__fastcall,,ZunResult,Ending*
 th08::ZunMemory::AddToRegistry,0x429de0,0x10,__thiscall,,void*,ZunMemory*,void*,u32,char*
 th08::ZunMemory::RemoveFromRegistry,0x429df0,0xd,__thiscall,,void,ZunMemory*,void*
 th08::EnemyManager::Initialize,0x429e00,0x405,__thiscall,,void,EnemyManager*
-th08::EnemyManager::EnemyManager,0x42a210,0x61,__thiscall,,void*,EnemyManager*
-FUN_0042a280,0x42a280,0x18a,unknown,,u8
+th08::EnemyManager::EnemyManager,0x42a210,0x61,__thiscall,,EnemyManager*,EnemyManager*
+th08::Enemy::Enemy,0x42a280,0x18a,__thiscall,,Enemy*,Enemy*
 th08::BulletSpawnDescriptor::BulletSpawnDescriptor,0x42a410,0x34,__thiscall,,BulletSpawnDescriptor*,BulletSpawnDescriptor*
-FUN_0042a450,0x42a450,0x3e,unknown,,u8
-FUN_0042a490,0x42a490,0x21,unknown,,u8
-FUN_0042a4c0,0x42a4c0,0x19,unknown,,u8
+th08::EnemyUnkStruct2::EnemyUnkStruct2,0x42a450,0x3e,__thiscall,,EnemyUnkStruct2*,EnemyUnkStruct2*
+th08::EnemyUnkStruct0x1c::EnemyUnkStruct0x1c,0x42a490,0x21,__thiscall,,EnemyUnkStruct0x1c*,EnemyUnkStruct0x1c*
+th08::EnemyUnkStruct3::EnemyUnkStruct3,0x42a4c0,0x19,__thiscall,,EnemyUnkStruct3*,EnemyUnkStruct3*
 FUN_0042a4e0,0x42a4e0,0x199,unknown,,u8,u8,u8,u8,u8,u8,u8
 FUN_0042a680,0x42a680,0x19d,unknown,,u8,u8,u8,u8,u8,u8,u8
 FUN_0042a820,0x42a820,0x73,unknown,,u8
@@ -746,7 +746,7 @@ th08::Player::Player,0x449ca0,0x1a6,__thiscall,,Player*,Player*
 FUN_00449e50,0x449e50,0x4e,__thiscall,,AnmVm*,void*
 FUN_00449ea0,0x449ea0,0x42,unknown,,u8
 FUN_00449ef0,0x449ef0,0x57,unknown,,u8
-FUN_00449f50,0x449f50,0x16,unknown,,u8
+th08::EclTimeline::EclTimeline,0x449f50,0x16,__thiscall,,EclTimeline*,EclTimeline*
 FUN_00449f70,0x449f70,0x73,unknown,,u8
 th08::Player::FUN_00449ff0,0x449ff0,0x233,__thiscall,,i32,Player*,Float3*,Float3*
 th08::Player::FUN_0044a230,0x44a230,0x12e,__thiscall,,i32,Player*,Float3*,Float3*

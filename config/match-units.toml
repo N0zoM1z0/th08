@@ -89912,3 +89912,303 @@ offset = 0x48
 type = "DIR32"
 symbol = "?g_SpellcardNumbersPerDifficulty@th08@@3PAPAHA"
 target = 0x004C67D0
+
+[[units]]
+name = "enemy-unk-struct3-ctor"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "??0EnemyUnkStruct3@th08@@QAE@XZ"
+target_address = 0x0042A4C0
+size = 0x19
+
+[[units.relocations]]
+offset = 0xE
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units]]
+name = "enemy-unk-struct2-ctor"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "??0EnemyUnkStruct2@th08@@QAE@XZ"
+target_address = 0x0042A450
+size = 0x3E
+
+[[units.relocations]]
+offset = 0xE
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x1C
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x21
+type = "DIR32"
+symbol = "??0EnemyUnkStruct3@th08@@QAE@XZ"
+target = 0x0042A4C0
+
+[[units.relocations]]
+offset = 0x33
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units]]
+name = "enemy-unk-struct0x1c-ctor"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "??0EnemyUnkStruct0x1c@th08@@QAE@XZ"
+target_address = 0x0042A490
+size = 0x21
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x16
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units]]
+name = "enemy-constructor"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "th08::Enemy::Enemy"
+target_address = 0x0042A280
+size = 0x18A
+
+[[units.relocations]]
+offset = 0xE
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x13
+type = "DIR32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0x28
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x36
+type = "REL32"
+symbol = "??0EnemyUnkStruct2@th08@@QAE@XZ"
+target = 0x0042A450
+
+[[units.relocations]]
+offset = 0x3B
+type = "DIR32"
+symbol = "??0EnemyUnkStruct2@th08@@QAE@XZ"
+target = 0x0042A450
+
+[[units.relocations]]
+offset = 0x51
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x5F
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x6D
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x7B
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x89
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x97
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xA5
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xB3
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xC1
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xCF
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xDD
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xEB
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xF9
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x107
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x115
+type = "REL32"
+symbol = "??0BulletSpawnDescriptor@th08@@QAE@XZ"
+target = 0x0042A410
+
+[[units.relocations]]
+offset = 0x123
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x131
+type = "REL32"
+symbol = "??0BulletSpawnDescriptor@th08@@QAE@XZ"
+target = 0x0042A410
+
+[[units.relocations]]
+offset = 0x13F
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x144
+type = "DIR32"
+symbol = "??0EnemyUnkStruct0x1c@th08@@QAE@XZ"
+target = 0x0042A490
+
+[[units.relocations]]
+offset = 0x157
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x15C
+type = "DIR32"
+symbol = "??0VertexTex1DiffuseXyzrhw@th08@@QAE@XZ"
+target = 0x0040B580
+
+[[units.relocations]]
+offset = 0x171
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x17F
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units]]
+name = "enemy-manager-constructor"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "th08::EnemyManager::EnemyManager"
+target_address = 0x0042A210
+size = 0x61
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "th08::Enemy::Enemy"
+target = 0x0042A280
+
+[[units.relocations]]
+offset = 0x10
+type = "DIR32"
+symbol = "th08::Enemy::Enemy"
+target = 0x0042A280
+
+[[units.relocations]]
+offset = 0x28
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x2D
+type = "DIR32"
+symbol = "??0EclTimeline@th08@@QAE@XZ"
+target = 0x00449F50
+
+[[units.relocations]]
+offset = 0x40
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x4E
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x56
+type = "REL32"
+symbol = "th08::EnemyManager::Initialize"
+target = 0x00429E00
+
+[[units]]
+name = "ecl-timeline-constructor"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "??0EclTimeline@th08@@QAE@XZ"
+target_address = 0x00449F50
+size = 0x16
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0

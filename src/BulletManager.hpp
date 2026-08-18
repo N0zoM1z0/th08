@@ -6,7 +6,43 @@
 namespace th08
 {
 
-struct BulletSpawnDescriptor;
+struct BulletTypeSprites;
+
+struct BulletTransformRecord
+{
+    f32 float0;
+    f32 float1;
+    i32 int0;
+    i32 int1;
+    u32 kind;
+    i32 allowWhileActive;
+};
+C_ASSERT(sizeof(BulletTransformRecord) == 0x18);
+
+struct BulletSpawnDescriptor
+{
+    i16 bulletType;
+    i16 color;
+    Float3 position;
+    f32 angle;
+    f32 angleStep;
+    f32 speed1;
+    f32 speed2;
+    BulletTransformRecord transforms[18];
+    unknown_fields(0x1D0, 0x24);
+    i16 count1;
+    i16 count2;
+    u16 aimMode;
+    u16 unknown1FA;
+    u32 transformFlags;
+    i32 spawnSound;
+    i32 transformSound;
+    i32 transformStartIndex;
+    BulletTypeSprites *templateSprites;
+
+    BulletSpawnDescriptor();
+};
+C_ASSERT(sizeof(BulletSpawnDescriptor) == 0x210);
 
 i32 IsBulletManagerAnmReleaseRequired();
 DIFFABLE_EXTERN(i32, g_BulletManagerAnmReleaseRequired);

@@ -843,3 +843,9 @@ address,name,size,status,match_percent,unit,evidence
 0x00421BA0,th08::GameManager::ScaleIntBasedOnRank,43,matching,100.00,game-manager-scale-int-based-on-rank,python3 scripts/compare-function.py game-manager-scale-int-based-on-rank --json
 0x004287E0,th08::Effect::Effect,162,matching,100.00,effect-constructor,python3 scripts/compare-function.py effect-constructor --json
 0x004144D0,th08::Spellcard::GetDifficultyFromSpellCard,105,matching,100.00,spellcard-get-difficulty,python3 scripts/compare-function.py spellcard-get-difficulty --json
+0x0042A210,th08::EnemyManager::EnemyManager,97,matching,100.00,enemy-manager-constructor,python3 scripts/compare-function.py enemy-manager-constructor --json
+0x0042A280,th08::Enemy::Enemy,394,matching,100.00,enemy-constructor,python3 scripts/compare-function.py enemy-constructor --json
+0x0042A450,th08::EnemyUnkStruct2::EnemyUnkStruct2,62,matching,100.00,enemy-unk-struct2-ctor,python3 scripts/compare-function.py enemy-unk-struct2-ctor --json
+0x0042A490,th08::EnemyUnkStruct0x1c::EnemyUnkStruct0x1c,33,matching,100.00,enemy-unk-struct0x1c-ctor,python3 scripts/compare-function.py enemy-unk-struct0x1c-ctor --json
+0x0042A4C0,th08::EnemyUnkStruct3::EnemyUnkStruct3,25,matching,100.00,enemy-unk-struct3-ctor,python3 scripts/compare-function.py enemy-unk-struct3-ctor --json
+0x00449F50,th08::EclTimeline::EclTimeline,22,matching,100.00,ecl-timeline-constructor,python3 scripts/compare-function.py ecl-timeline-constructor --json

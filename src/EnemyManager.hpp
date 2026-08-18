@@ -1,13 +1,85 @@
 #pragma once
 #include "Global.hpp"
+#include "AnmManager.hpp"
+#include "BulletManager.hpp"
 #include "ZunResult.hpp"
 #include "diffbuild.hpp"
 
 namespace th08
 {
 
+struct EnemyUnkStruct3
+{
+    i32 unknown0;
+    ZunTimer timer;
+    unknown_fields(0x10, 0x20);
+
+    EnemyUnkStruct3();
+};
+C_ASSERT(sizeof(EnemyUnkStruct3) == 0x30);
+
+struct EnemyUnkStruct2
+{
+    i32 unknown0;
+    ZunTimer timer4;
+    unknown_fields(0x10, 0x80);
+    ZunTimer timer90;
+    EnemyUnkStruct3 rows[8];
+    unknown_fields(0x21c, 0xc);
+
+    EnemyUnkStruct2();
+};
+C_ASSERT(sizeof(EnemyUnkStruct2) == 0x228);
+
+struct EnemyUnkStruct0x1c
+{
+    Float3 position;
+    Float3 velocity;
+    i32 unknown18;
+
+    EnemyUnkStruct0x1c();
+};
+C_ASSERT(sizeof(EnemyUnkStruct0x1c) == 0x1c);
+
 struct Enemy
 {
+    Enemy();
+
+    unknown_fields(0x0, 0xc);
+    AnmVm vm;
+    AnmVm secondaryVms[2];
+    EnemyUnkStruct2 firstContext;
+    EnemyUnkStruct2 contexts[16];
+    unknown_fields(0x2ca0, 0x94);
+    Float3 vector2d34;
+    Float3 vector2d40;
+    Float3 vector2d4c;
+    Float3 vector2d58;
+    Float3 vector2d64;
+    Float3 vector2d70;
+    Float3 vector2d7c;
+    Float3 vector2d88;
+    unknown_fields(0x2d94, 0x24);
+    Float3 vector2db8;
+    Float3 vector2dc4;
+    Float3 vector2dd0;
+    ZunTimer timer2ddc;
+    unknown_fields(0x2de8, 0x2c);
+    ZunTimer timer2e14;
+    unknown_fields(0x2e20, 4);
+    BulletSpawnDescriptor bullet2e24;
+    unknown_fields(0x3034, 0x30);
+    ZunTimer timer3064;
+    BulletSpawnDescriptor bullet3070;
+    unknown_fields(0x3280, 0x98);
+    ZunTimer timer3318;
+    unknown_fields(0x3324, 0x70);
+    EnemyUnkStruct0x1c trail[96];
+    VertexTex1DiffuseXyzrhw vertices[194];
+    unknown_fields(0x534c, 8);
+    ZunTimer timer5354;
+    unknown_fields(0x5360, 0x70);
+
     // Target-observed RunEcl post-dispatch calls.  Both receive the current
     // enemy in ECX and take no explicit arguments.
     void FUN_0042a820();
@@ -18,9 +90,27 @@ struct Enemy
     void FUN_0042b2f0();
     void FUN_0042bea0(i32 mode);
 };
+C_ASSERT(sizeof(Enemy) == 0x53d0);
+
+struct EclTimeline
+{
+    ZunTimer timer;
+    i32 unknownC;
+    EclTimeline();
+};
+C_ASSERT(sizeof(EclTimeline) == 0x10);
 
 struct EnemyManager
 {
+    EnemyManager();
+
+    Enemy firstEnemy;
+    Enemy enemies[481];
+    unknown_fields(0x9dcda0, 0x30);
+    EclTimeline timelines[16];
+    ZunTimer timer;
+    unknown_fields(0x9dcedc, 0x34);
+
     void Initialize();
     static ZunResult RegisterChain();
     static ChainCallbackResult OnUpdate();
@@ -34,6 +124,7 @@ struct EnemyManager
     i32 FUN_0042f1f0();
     static void CutChain();
 };
+C_ASSERT(sizeof(EnemyManager) == 0x9dcf10);
 
 DIFFABLE_EXTERN(EnemyManager, g_EnemyManager);
 

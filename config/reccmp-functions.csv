@@ -386,9 +386,9 @@ th08::EnemyManager::Initialize,0x429e00,function
 th08::EnemyManager::EnemyManager,0x42a210,function
 th08::Enemy::Enemy,0x42a280,function
 th08::BulletSpawnDescriptor::BulletSpawnDescriptor,0x42a410,function
-th08::EnemyUnkStruct2::FUN_0042a450,0x42a450,function
-th08::EnemyUnkStruct0x1c::FUN_0042a490,0x42a490,function
-th08::EnemyUnkStruct3::FUN_0042a4c0,0x42a4c0,function
+th08::EnemyUnkStruct2::EnemyUnkStruct2,0x42a450,function
+th08::EnemyUnkStruct0x1c::EnemyUnkStruct0x1c,0x42a490,function
+th08::EnemyUnkStruct3::EnemyUnkStruct3,0x42a4c0,function
 th08::EnemyManager::SpawnEnemy1,0x42a4e0,function
 th08::EnemyManager::SpawnEnemy2,0x42a680,function
 th08::Enemy::FUN_0042a820,0x42a820,function
@@ -747,7 +747,7 @@ th08::Player::Player,0x449ca0,function
 FUN_00449e50,0x449e50,function
 FUN_00449ea0,0x449ea0,function
 FUN_00449ef0,0x449ef0,function
-th08::EclTimeline::FUN_00449f50,0x449f50,function
+th08::EclTimeline::EclTimeline,0x449f50,function
 FUN_00449f70,0x449f70,function
 th08::Player::FUN_00449ff0,0x449ff0,function
 th08::Player::FUN_0044a230,0x44a230,function

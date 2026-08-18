@@ -27,6 +27,27 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(u8, 32, g_EnemyDropSchedule) = {
     1, 0, 0, 1, 1, 1, 0, 0,
 };
 
+// FUNCTION: th08 0x42a4c0
+EnemyUnkStruct3::EnemyUnkStruct3() {}
+
+// FUNCTION: th08 0x42a450
+EnemyUnkStruct2::EnemyUnkStruct2() {}
+
+// FUNCTION: th08 0x42a490
+EnemyUnkStruct0x1c::EnemyUnkStruct0x1c() {}
+
+// FUNCTION: th08 0x42a280
+Enemy::Enemy() {}
+
+// FUNCTION: th08 0x449f50
+EclTimeline::EclTimeline() {}
+
+// FUNCTION: th08 0x42a210
+EnemyManager::EnemyManager()
+{
+    this->Initialize();
+}
+
 namespace EclOperands
 {
 
