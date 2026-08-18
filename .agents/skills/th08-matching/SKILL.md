@@ -326,3 +326,9 @@ A VC7 function symbol's aux `total_size` may include an immediately associated j
 Do not force standard math/runtime helpers into authored reconstruction merely because an imported seed marked them `function`. If the target name/provenance and body establish a CRT/x87 helper (`_sinf`, `_cosf`, `_sqrtf`, `fabs`, `fmodf`, `fsincos` in TH08), change the inventory type to `library`. This is a classification correction, not an exact-match claim; revisit the helper only after authored work is complete. Never use inline asm just to mimic such runtime stubs.
 
 - VC7 `MATH.H` itself is valid provenance for float wrapper classification: inline `acosf/atanf/tanf` lower to tiny x87 wrappers around CRT double cores. If the target has that wrapper shape and the core is runtime-owned, classify the wrapper as library; do not write inline asm or count it as authored reconstruction.
+
+
+- In large VC7 `/Os` setup functions, local-vs-global receiver ownership, helper placement, table dimensionality, and loop spelling are first-class exact-match evidence. Equivalent refactors can move dozens of bytes.
+- If POD `new/delete/free` traffic has stable stack work homes, model the real allocation/deallocation pointers as semantic locals and control them with `#pragma var_order`; do not use padding or asm. Direct `operator new/delete` is acceptable only when the owner has no constructor/destructor work and full canonical replay proves equivalence.
+- A target dword work value later consumed as one byte should not automatically be declared `u8`. Preserve the dword source shape when target stores prove it.
+- When a same-type totals record physically follows an array, a narrow overlay for the contiguous table can recover the original constant-index AST without undefined one-past-array access.

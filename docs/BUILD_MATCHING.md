@@ -777,3 +777,15 @@ This corpus attests the natural VC7 emissions for ResultScreen/AnmManager/MidiOu
 ### VC7 float math inline-wrapper classification
 
 - VC7 `MATH.H` defines `acosf`, `atanf`, and `tanf` inline as float-returning wrappers around the corresponding double CRT functions. TH08 targets `0x00462210`, `0x00462230`, and `0x00462250` are the expected 0x15-byte wrapper shape (`fld` float argument, call CRT core, `fst` compiler temp, `ret 4`). Treat these as library/runtime inventory, like the already-classified `sinf/cosf/sqrtf/fmodf/fsincos`, rather than manufacturing game-authored replacements.
+
+
+### Large `/Os` setup-thread source-shape recovery
+
+- `GameManager::GameplaySetupThread @ 0x0043ABD7` shows that equal addresses are not enough under VC7 `/Os`: the target deliberately mixes a cached `gameManager` local with direct `g_GameManager` accesses. Preserve the lexical owner seen in the target instead of normalizing every access through one spelling.
+- Keep anti-tamper refreshes inside their original branch arms. Hoisting six identical `UpdateAntiTamper` calls to shared tails shortened the target by dozens of bytes even though values were equivalent.
+- Preserve apparently redundant helpers when target locals prove them. The stage-5 spell-practice arm calls `IsSpellNumberEqualTo(212)` and discards the result; its compiler-owned BOOL work slots are part of the target 0x60-byte frame.
+- Preserve multidimensional table shape. `g_TimeRequirementParams[stage][difficulty]` naturally emits the target `stage << 4` plus `difficulty * 4` calculation; flattening to `stage * 4 + difficulty` changes codegen.
+- `for` and explicit `while` are not interchangeable. The spell-practice BGM table target keeps `++i` at the body tail; a `for (...; ...; i++)` spelling introduced a 2-byte trampoline.
+- The play-count storage acts as seven contiguous `PlstPlayCounts` records: six difficulty records followed by totals. A narrow typed overlay models that physical table and restores the target constant-index fastcall argument evaluation without one-past-array UB.
+- For constructor/destructor-free POD owners, naming real allocation work pointers and using direct `operator new/delete` can expose the same machine semantics without VC7 adding a second hidden new/delete temp. In this setup thread, `oldCfg`, `oldGlobals`, `newCfg`, `newGlobals`, and the malloc/free pointer occupy target homes `-0x14..-0x24`.
+- The final exact local order is `#pragma var_order(..., allocation, stageMode, configMode)`. `stageMode` uses lexical `if/else`, and `configMode` is the integer source of the `fild`; the 3423-byte body then replays exactly with 183 relocations and no inline asm or padding.

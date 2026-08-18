@@ -1070,3 +1070,4 @@ th08::FUN_004246e0
 th08::FUN_00424a00
 th08::PlstPlayCounts::IncrementTotalAttempts
 th08::CWaveFile::`scalar_deleting_destructor'
+th08::GameManager::GameplaySetupThread
