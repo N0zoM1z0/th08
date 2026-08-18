@@ -59,14 +59,19 @@ def render() -> tuple[str, str]:
         raise ValueError(f"{len(missing_sizes)} authored functions lack mapping sizes")
 
     source_rows = [row for row in authored if row["name"] in implemented]
-    authored_by_name = {row["name"]: row for row in authored}
+    # Authored names are not unique: overloaded members can legitimately share the
+    # same logical name (for example the two Float3 constructors).  Exact evidence
+    # is range evidence, so bind matches to the authored inventory by target address
+    # and then require the logical name/size to agree at that address.
+    authored_by_address = {int(row["address"], 0): row for row in authored}
     exact_rows = [row for row in matches if row["status"] == "matching"]
     for row in exact_rows:
-        if row["name"] not in authored_by_name:
+        address = int(row["address"], 0)
+        authored_row = authored_by_address.get(address)
+        if authored_row is None:
             raise ValueError(f"exact match is absent from authored inventory: {row['name']}")
-        address = int(authored_by_name[row["name"]]["address"], 0)
-        if address != int(row["address"], 0) or sizes[address] != int(row["size"]):
-            raise ValueError(f"exact match address/size differs from inventory: {row['name']}")
+        if authored_row["name"] != row["name"] or sizes[address] != int(row["size"]):
+            raise ValueError(f"exact match name/address/size differs from inventory: {row['name']}")
         if row["match_percent"] != "100.00" or not row["evidence"]:
             raise ValueError(f"exact match lacks 100% evidence: {row['name']}")
     total_bytes = sum(sizes[int(row["address"], 0)] for row in authored)

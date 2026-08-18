@@ -968,3 +968,8 @@ address,name,size,status,match_percent,unit,evidence
 0x0042A680,th08::EnemyManager::SpawnEnemy2,413,matching,100.00,enemy-manager-spawn-enemy2-0042a680,python3 scripts/compare-function.py enemy-manager-spawn-enemy2-0042a680 --json
 0x0042A8A0,th08::EclTimeline::Run,1216,matching,100.00,ecl-timeline-run-0042a8a0,python3 scripts/compare-function.py ecl-timeline-run-0042a8a0 --json
 0x0042F320,th08::Gui::IsBossPresent,17,matching,100.00,gui-is-boss-present-0042f320,python3 scripts/compare-function.py gui-is-boss-present-0042f320 --json
+0x00404720,th08::Float3::Float3,42,matching,100.00,float3-xyz-constructor-00404720,python3 scripts/compare-function.py float3-xyz-constructor-00404720 --json
+0x00421280,th08::StartEnemySpell,83,matching,100.00,ecl-start-enemy-spell-00421280,python3 scripts/compare-function.py ecl-start-enemy-spell-00421280 --json
+0x004212E0,th08::EndEnemySpell,26,matching,100.00,ecl-end-enemy-spell-004212e0,python3 scripts/compare-function.py ecl-end-enemy-spell-004212e0 --json
+0x004230C0,th08::Gui::FUN_004230c0,22,matching,100.00,gui-boss-life-ratio-setter-004230c0,python3 scripts/compare-function.py gui-boss-life-ratio-setter-004230c0 --json
+0x00423130,th08::Gui::FUN_00423130,22,matching,100.00,gui-ecl-lives-setter-00423130,python3 scripts/compare-function.py gui-ecl-lives-setter-00423130 --json

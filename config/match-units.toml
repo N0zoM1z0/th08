@@ -103411,3 +103411,67 @@ object = "build/EnemyManager.obj"
 symbol = "?IsBossPresent@Gui@th08@@QAE_NXZ"
 target_address = 0x0042F320
 size = 0x11
+
+# Ledger name: th08::Float3::Float3
+[[units]]
+name = "float3-xyz-constructor-00404720"
+object = "build/Global.obj"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target_address = 0x00404720
+size = 0x2A
+
+# Ledger name: th08::StartEnemySpell
+[[units]]
+name = "ecl-start-enemy-spell-00421280"
+object = "build/probes/EclDependencies.obj"
+symbol = "?StartEnemySpell@th08@@YIXPAEPAX@Z"
+target_address = 0x00421280
+size = 0x53
+
+[[units.relocations]]
+offset = 0x46
+type = "DIR32"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+
+[[units.relocations]]
+offset = 0x4B
+type = "REL32"
+symbol = "?StartSpell@Spellcard@th08@@QAEXHPBEHHPAE0PBD2@Z"
+target = 0x004152A0
+
+# Ledger name: th08::EndEnemySpell
+[[units]]
+name = "ecl-end-enemy-spell-004212e0"
+object = "build/probes/EclDependencies.obj"
+symbol = "?EndEnemySpell@th08@@YIXPAEPAX@Z"
+target_address = 0x004212E0
+size = 0x1A
+
+[[units.relocations]]
+offset = 0xD
+type = "DIR32"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+
+[[units.relocations]]
+offset = 0x12
+type = "REL32"
+symbol = "?EndSpell@Spellcard@th08@@QAEXXZ"
+target = 0x004161B0
+
+# Ledger name: th08::Gui::FUN_004230c0
+[[units]]
+name = "gui-boss-life-ratio-setter-004230c0"
+object = "build/probes/EclDependencies.obj"
+symbol = "?FUN_004230c0@Gui@th08@@QAEXM@Z"
+target_address = 0x004230C0
+size = 0x16
+
+# Ledger name: th08::Gui::FUN_00423130
+[[units]]
+name = "gui-ecl-lives-setter-00423130"
+object = "build/probes/EclDependencies.obj"
+symbol = "?FUN_00423130@Gui@th08@@QAEXH@Z"
+target_address = 0x00423130
+size = 0x16

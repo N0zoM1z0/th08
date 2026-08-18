@@ -210,3 +210,7 @@ For VC7 `/Od` interpreters and spawn paths, separate non-trivial object lifetime
 For large copies, compare target `rep movsd` register ownership before using `memcpy`. Typed aggregate assignment can intentionally schedule source/destination/count in a different order and is often the real source shape. Likewise, use semantic one-bit fields for target bitfield RMW sequences rather than algebraically equivalent mask/or expressions.
 
 When an exact dependency still belongs to the reconstruction probe graph, keep one canonical probe implementation and leave normal production link inputs clean. Do not create duplicate forwarding shims merely to satisfy the linker; promote the owner and its dependency closure together.
+
+## Overloads and tiny fastcall adapters
+
+Treat authored exact identity as target address + extent, not logical name. Overloaded members may share the same reccmp/mapping name; tooling that collapses authored rows by name will mis-account exact evidence. For tiny `__fastcall` bridge functions, do not cache ECX/EDX arguments unless target stack accesses prove a third local. Repeated casts/field accesses from the original parameter can be the exact `/Od` source shape.

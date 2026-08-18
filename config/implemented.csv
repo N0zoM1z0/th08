@@ -968,3 +968,7 @@ th08::EnemyManager::SpawnEnemy1
 th08::EnemyManager::SpawnEnemy2
 th08::EclTimeline::Run
 th08::Gui::IsBossPresent
+th08::StartEnemySpell
+th08::EndEnemySpell
+th08::Gui::FUN_004230c0
+th08::Gui::FUN_00423130

@@ -257,8 +257,8 @@ th08::EclHelpers::ConfigurePolarMotion,0x420d10,0x22c,__fastcall,,void,EnemyOver
 th08::EclHelpers::ConfigureRelativeMotion,0x420f40,0x1d3,__fastcall,,void,EnemyOverlay*,EclRawInstruction*
 FUN_00421120,0x421120,0x59,unknown,,u8,u8
 FUN_00421180,0x421180,0x100,unknown,,u8,u8
-FUN_00421280,0x421280,0x53,unknown,,u8
-FUN_004212e0,0x4212e0,0x1a,unknown,,u8
+th08::StartEnemySpell,0x421280,0x53,__fastcall,,void,u8*,void*
+th08::EndEnemySpell,0x4212e0,0x1a,__fastcall,,void,u8*,void*
 FUN_00421300,0x421300,0xee,unknown,,u8
 FUN_004213f0,0x4213f0,0x1fa,unknown,,u8
 FUN_004215f0,0x4215f0,0x53f,unknown,,u8
