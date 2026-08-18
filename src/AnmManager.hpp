@@ -406,6 +406,11 @@ struct AnmVm : AnmVmBase
     }
 
     u32 FUN_004396f8();
+    i32 FUN_0040eb50();
+    void FUN_0040ec30(i32 duration, i32 mode, Float3 *value0, Float3 *value1);
+    void FUN_0040eca0(i32 duration, i32 mode, u32 color0, u32 color1);
+    void FUN_0040ed50(i32 duration, i32 mode, i32 alpha0, i32 alpha1);
+    void FUN_0040eda0(i32 duration, i32 mode, Float2 *value0, Float2 *value1);
 
     f32 GetFloatVar(f32 varId);
     i32 GetIntVar(i32 varId);

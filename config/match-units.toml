@@ -94772,3 +94772,102 @@ offset = 0x8F4
 type = "REL32"
 symbol = "?ExecuteScript@AnmManager@th08@@QAEIPAUAnmVm@2@@Z"
 target = 0x0045EA00
+
+[[units]]
+name = "anm-vm-fun-0040eb50"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_0040eb50@AnmVm@th08@@QAEHXZ"
+target_address = 0x0040EB50
+size = 0x70
+
+[[units.relocations]]
+offset = 0x37
+type = "REL32"
+symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0x4D
+type = "DIR32"
+symbol = "__real@42800000"
+target = 0x004B42C8
+
+
+[[units]]
+name = "anm-vm-fun-0040ec30"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_0040ec30@AnmVm@th08@@QAEXHHPAUFloat3@2@0@Z"
+target_address = 0x0040EC30
+size = 0x70
+
+[[units.relocations]]
+offset = 0x10
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x22
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+
+[[units]]
+name = "anm-vm-fun-0040eca0"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_0040eca0@AnmVm@th08@@QAEXHHII@Z"
+target_address = 0x0040ECA0
+size = 0xAE
+
+[[units.relocations]]
+offset = 0x10
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x22
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+
+[[units]]
+name = "anm-vm-fun-0040ed50"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_0040ed50@AnmVm@th08@@QAEXHHHH@Z"
+target_address = 0x0040ED50
+size = 0x50
+
+[[units.relocations]]
+offset = 0x10
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x22
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+
+[[units]]
+name = "anm-vm-fun-0040eda0"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_0040eda0@AnmVm@th08@@QAEXHHPAUFloat2@2@0@Z"
+target_address = 0x0040EDA0
+size = 0x69
+
+[[units.relocations]]
+offset = 0x13
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x25
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0

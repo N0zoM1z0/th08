@@ -892,3 +892,8 @@ address,name,size,status,match_percent,unit,evidence
 0x0040EBC0,th08::ZunTimer::FUN_0040ebc0,61,matching,100.00,zun-timer-periodic,python3 scripts/compare-function.py zun-timer-periodic --json
 0x00413140,th08::FUN_00413140,1859,matching,100.00,player-bomb-callback-00413140,python3 scripts/compare-function.py player-bomb-callback-00413140 --json
 0x00413990,th08::FUN_00413990,2344,matching,100.00,player-bomb-callback-00413990,python3 scripts/compare-function.py player-bomb-callback-00413990 --json
+0x0040EB50,th08::AnmVm::FUN_0040eb50,112,matching,100.00,anm-vm-fun-0040eb50,python3 scripts/compare-function.py anm-vm-fun-0040eb50 --json
+0x0040EC30,th08::AnmVm::FUN_0040ec30,112,matching,100.00,anm-vm-fun-0040ec30,python3 scripts/compare-function.py anm-vm-fun-0040ec30 --json
+0x0040ECA0,th08::AnmVm::FUN_0040eca0,174,matching,100.00,anm-vm-fun-0040eca0,python3 scripts/compare-function.py anm-vm-fun-0040eca0 --json
+0x0040ED50,th08::AnmVm::FUN_0040ed50,80,matching,100.00,anm-vm-fun-0040ed50,python3 scripts/compare-function.py anm-vm-fun-0040ed50 --json
+0x0040EDA0,th08::AnmVm::FUN_0040eda0,105,matching,100.00,anm-vm-fun-0040eda0,python3 scripts/compare-function.py anm-vm-fun-0040eda0 --json

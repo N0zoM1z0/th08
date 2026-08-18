@@ -51,6 +51,62 @@ void __fastcall FUN_0040bc60(Player *player, D3DCOLOR color)
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Background) + 0x646C) = 1;
 }
 
+// FUNCTION: th08 0x40eb50
+i32 AnmVm::FUN_0040eb50()
+{
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x356) = 1;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x324) = 48;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x320) = 32.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x314) =
+        64.0f + (f32)((reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x338)->FUN_0040d3d0() & 1) ? 8 : 0);
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x318) = 0.0f;
+    return 1;
+}
+
+// FUNCTION: th08 0x40ec30
+void AnmVm::FUN_0040ec30(i32 duration, i32 mode, Float3 *value0, Float3 *value1)
+{
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x50) = 0;
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xA4) = duration;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0xF8) = mode;
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x238) = *value0;
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x244) = *value1;
+}
+
+// FUNCTION: th08 0x40eca0
+void AnmVm::FUN_0040eca0(i32 duration, i32 mode, u32 color0, u32 color1)
+{
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x5C) = 0;
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xB0) = duration;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0xF9) = mode;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27A) = (color0 >> 16) & 0xFF;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x279) = (color0 >> 8) & 0xFF;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x278) = color0 & 0xFF;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27E) = (color1 >> 16) & 0xFF;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27D) = (color1 >> 8) & 0xFF;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27C) = color1 & 0xFF;
+}
+
+// FUNCTION: th08 0x40ed50
+void AnmVm::FUN_0040ed50(i32 duration, i32 mode, i32 alpha0, i32 alpha1)
+{
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x68) = 0;
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xBC) = duration;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0xFA) = mode;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27B) = alpha0;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27F) = alpha1;
+}
+
+// FUNCTION: th08 0x40eda0
+void AnmVm::FUN_0040eda0(i32 duration, i32 mode, Float2 *value0, Float2 *value1)
+{
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x80) = 0;
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xD4) = duration;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0xFC) = mode;
+    *reinterpret_cast<Float2 *>(reinterpret_cast<u8 *>(this) + 0x268) = *value0;
+    *reinterpret_cast<Float2 *>(reinterpret_cast<u8 *>(this) + 0x270) = *value1;
+}
+
 // FUNCTION: th08 0x40ebc0
 ZunBool ZunTimer::FUN_0040ebc0(i32 interval)
 {
