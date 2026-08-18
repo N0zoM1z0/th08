@@ -62,6 +62,7 @@ struct EffectManager
     AnmVm *SpawnEffect00425B70(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
     AnmVm *SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
     AnmVm *SpawnEffectAngle(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 count, i32 color);
+    AnmVm *FUN_004253e0(i32 index);
     AnmVm *FUN_00425870(i32 id, D3DXVECTOR3 *position, i32 slotIndex, i32 unused, i32 color);
     AnmVm *FUN_004259e0(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 slotIndex, i32 unused, i32 color);
     i32 DrawUnkTypeEffects();
@@ -79,6 +80,16 @@ DIFFABLE_EXTERN(ChainElem, g_EffectManagerDrawChain);
 DIFFABLE_EXTERN(i32, g_EclCallbackPublishedEnemyField24);
 DIFFABLE_EXTERN(i32, g_EclCallbackPublishedEnemyField56);
 DIFFABLE_EXTERN(void *, g_EclExUpdateCallback);
+struct EclExBarrierRenderState
+{
+    i32 mode;
+    i32 unknown4;
+    AnmVm vm0;
+    AnmVm vm1;
+};
+C_ASSERT(offsetof(EclExBarrierRenderState, vm0) == 0x8);
+C_ASSERT(offsetof(EclExBarrierRenderState, vm1) == 0x2ac);
+DIFFABLE_EXTERN(EclExBarrierRenderState, g_EclExBarrierRenderState);
 DIFFABLE_EXTERN(i8, g_EclScriptedGlobalUpdateFreeze);
 DIFFABLE_EXTERN(f32, g_EclGameTimeScale);
 DIFFABLE_EXTERN(u8, g_TargetByte0164D0B1);

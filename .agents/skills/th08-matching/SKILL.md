@@ -294,3 +294,11 @@ For a real implicit class constructor, prefer a real explicit empty constructor 
 When a target writes a scalar/pointer local before constructing a later non-trivial local, test a declaration initializer rather than a body assignment. VC7 may hoist non-trivial local construction ahead of ordinary body statements, while C++ declaration initialization preserves declaration sequencing. `ECL EX FUN_00423A60` requires the bullet cursor to be initialized at declaration before a later `Float3` constructor.
 
 Short-circuit operand order is machine-code evidence even when the boolean expression is commutative. For `a == 0 || b == 0`, VC7 emits the first stack-home compare exactly in lexical order; do not reorder equivalent operands after the target has established their sequence.
+
+## Aggregate ownership from repeated fixed-size global spacing
+
+When several absolute globals differ by an already-attested type size, test an aggregate owner before introducing independent globals. The TH08 ECL EX barrier block has `AnmVm` instances at `0x004E4B68` and `0x004E4E0C`, exactly `0x2A4` bytes apart. Modeling `g_EclExBarrierRenderState @ 0x004E4B60` with `vm0 @ +8` and `vm1 @ +0x2AC` naturally reproduces all target member-address relocations.
+
+Do not infer callback parameters from the functions that publish the callback address. A stored function pointer may target a no-argument callback even when the publisher itself is fastcall with ECX/EDX inputs. Use the callback target prologue and actual indirect call sites; update relocation symbol spelling when ABI recovery changes the source declaration.
+
+Non-trivial local arrays are compiler structure, not just storage. If the target calls VC7's vector-constructor iterator with element size/count/ctor, express the local as a real C++ array of that element type and keep its lexical lifetime. Also retain target-proven dead locals instead of deleting them as cleanup.

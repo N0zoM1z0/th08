@@ -783,6 +783,12 @@ ChainCallbackResult EffectManager::OnDraw(EffectManager *effectManager)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
+// FUNCTION: th08 0x4253e0
+AnmVm *EffectManager::FUN_004253e0(i32 index)
+{
+    return &this->effects[index + 0x280].vm;
+}
+
 // FUNCTION: th08 0x4284b0
 ZunResult EffectManager::AddedCallback(EffectManager *effectManager)
 {

@@ -1039,3 +1039,9 @@ address,name,size,status,match_percent,unit,evidence
 0x00423A60,th08::FUN_00423a60,784,matching,100.00,ecl-ex-bullet-zone-callback-00423a60,python3 scripts/compare-function.py ecl-ex-bullet-zone-callback-00423a60 --json
 0x00423DB0,th08::FUN_00423db0,104,matching,100.00,ecl-ex-callback-00423db0,python3 scripts/compare-function.py ecl-ex-callback-00423db0 --json
 0x00424170,th08::FUN_00424170,104,matching,100.00,ecl-ex-callback-00424170,python3 scripts/compare-function.py ecl-ex-callback-00424170 --json
+0x00423400,th08::FUN_00423400,296,matching,100.00,ecl-ex-enemy-bounce-00423400,python3 scripts/compare-function.py ecl-ex-enemy-bounce-00423400 --json
+0x00423E20,th08::FUN_00423e20,784,matching,100.00,ecl-ex-bullet-zone-callback-00423e20,python3 scripts/compare-function.py ecl-ex-bullet-zone-callback-00423e20 --json
+0x00424130,th08::FUN_00424130,64,matching,100.00,ecl-ex-disable-barrier-00424130,python3 scripts/compare-function.py ecl-ex-disable-barrier-00424130 --json
+0x004241E0,th08::FUN_004241e0,784,matching,100.00,ecl-ex-bullet-zone-callback-004241e0,python3 scripts/compare-function.py ecl-ex-bullet-zone-callback-004241e0 --json
+0x004253E0,th08::EffectManager::FUN_004253e0,34,matching,100.00,effect-manager-ecl-slot-004253e0,python3 scripts/compare-function.py effect-manager-ecl-slot-004253e0 --json
+0x004235A0,th08::FUN_004235a0,1203,matching,100.00,ecl-ex-barrier-render-callback-004235a0,python3 scripts/compare-function.py ecl-ex-barrier-render-callback-004235a0 --json

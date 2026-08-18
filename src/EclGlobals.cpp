@@ -9,6 +9,7 @@ namespace th08
 DIFFABLE_STATIC(i32, g_EclCallbackPublishedEnemyField24);
 DIFFABLE_STATIC(i32, g_EclCallbackPublishedEnemyField56);
 DIFFABLE_STATIC(void *, g_EclExUpdateCallback);
+DIFFABLE_STATIC(EclExBarrierRenderState, g_EclExBarrierRenderState);
 DIFFABLE_STATIC(i8, g_EclScriptedGlobalUpdateFreeze);
 DIFFABLE_STATIC(f32, g_EclGameTimeScale);
 DIFFABLE_STATIC(u8, g_TargetByte0164D0B1);

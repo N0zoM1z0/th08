@@ -10,6 +10,7 @@ _g_SFXList,                 0x004c81b0
 _g_Stage,                   0x004e4030
 _g_EclCallbackPublishedEnemyField56, 0x004e3d24
 _g_EclCallbackPublishedEnemyField24, 0x004e3d28
+_g_EclExBarrierRenderState, 0x004e4b60
 _g_EclExUpdateCallback,    0x004ea28c
 _g_Spellcard,               0x004ea670
 _g_SpellcardCalcChain,      0x004eccac
