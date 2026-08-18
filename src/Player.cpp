@@ -49,6 +49,50 @@ void __fastcall FUN_0040bc60(Player *player, D3DCOLOR color)
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Background) + 0x646C) = 1;
 }
 
+// FUNCTION: th08 0x40bf00
+void Player::FUN_0040bf00()
+{
+    AnmVm *effect;
+    if (this->stateEffect != NULL)
+        this->stateEffect->active = false;
+
+    effect = g_EffectManager.FUN_00425870(23, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 0, 1, -1);
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x80) = 0;
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0xD4) = this->timer;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0xFC) = 0;
+    *reinterpret_cast<Float2 *>(reinterpret_cast<u8 *>(effect) + 0x268) = effect->scale;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x270) = 0.0625f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x274) = 0.0625f;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x100) = (i32)this->timer;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x14) *= -1.0f;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x1F2) = 0xFF;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x1F1) = 0x40;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x1F0) = 0x40;
+    this->stateEffect = reinterpret_cast<PlayerStateEffect *>(effect);
+}
+
+// FUNCTION: th08 0x40be30
+#pragma var_order(i, bomb, workItem)
+void __fastcall FUN_0040be30(Player *player, i32 cutInType, const char *cutInText, i32 duration, i32 timer, i32 cutInArg)
+{
+    u32 i;
+    PlayerBombState *bomb;
+    PlayerBombWorkItem *workItem;
+
+    bomb = &player->bombState;
+    g_Spellcard.CutInPlayer(cutInType, cutInText, cutInArg);
+    bomb->duration = duration;
+    player->timer = timer;
+    player->playerState = PLAYER_STATE_DEAD;
+    player->FUN_0040bf00();
+    i = 0;
+    workItem = bomb->workItems;
+    for (; i < 128; i++, workItem++)
+        workItem->active = 0;
+    g_ItemManager.AutoCollectAllItems();
+    bomb->tailPosition = player->position;
+}
+
 // FUNCTION: th08 0x40c820
 #pragma var_order(vm, i, workItem)
 void __fastcall FUN_0040c820(Player *player)
@@ -174,6 +218,55 @@ void __fastcall FUN_0040dee0(Player *player)
     FUN_0040bc60(player, 0x802020d0);
 }
 
+// FUNCTION: th08 0x40e3b0
+#pragma var_order(bomb, workItem, angle, slot, position)
+void __fastcall FUN_0040e3b0(Player *player)
+{
+    PlayerBombState *bomb;
+    PlayerBombWorkItem *workItem;
+    f32 angle;
+    PlayerUnkStruct0x40 *slot;
+
+    bomb = &player->bombState;
+    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
+    {
+        FUN_0040be30(player, 0,
+                     "\x97\xF6\x95\x84\x81\x75\x83\x7D\x83\x58\x83\x5E\x81\x5B\x83\x58\x83\x70\x81\x5B\x83\x4E\x81\x76",
+                     300, 350, 0);
+        angle = -ZUN_PI;
+        workItem = &bomb->workItems[0];
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(19), 0);
+        workItem->anchor = player->position;
+        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[0], 30);
+        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[1], 31);
+        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[2], 32);
+        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[3], 33);
+        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[4], 34);
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.2f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.2f;
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK7, 16, 120, 60, 120, 21);
+    }
+
+    if (player->bombState.timer.FUN_0040d3d0() && ((i32)player->bombState.timer % 4) != 0)
+    {
+        Float3 position;
+        position = player->position;
+        position.x = 192.0f;
+        position.y /= 2.0f;
+        player->FUN_0044de60(&position, 384.0f, position.y * 2.0f, 6, 0);
+
+        position = player->position;
+        position.y /= 2.0f;
+        slot = player->FUN_0044dfa0(&position, 128.0f, position.y * 2.0f, 12, 0);
+        slot->mode = 1;
+        position.x = 192.0f;
+        slot = player->FUN_0044dfa0(&position, 384.0f, position.y * 2.0f, 6, 0);
+        slot->mode = 1;
+    }
+
+    g_AnmManager->ExecuteScriptArray(&bomb->workItems[0].vms[0], 5);
+}
+
 // FUNCTION: th08 0x40e610
 #pragma var_order(vm, i, angleStep, angle)
 void __fastcall FUN_0040e610(Player *player)
@@ -280,6 +373,50 @@ void __fastcall FUN_004113a0(Player *player)
     vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
     vm->pos.z = 0.0f;
     g_AnmManager->Draw2D(vm);
+}
+
+// FUNCTION: th08 0x413890
+#pragma var_order(i, workItem)
+void __fastcall FUN_00413890(Player *player)
+{
+    i32 i;
+    PlayerBombWorkItem *workItem;
+
+    FUN_0040bc60(player, 0x80404040);
+    workItem = player->bombState.workItems;
+    for (i = 0; i < 96; i++, workItem++)
+    {
+        if (workItem->active == 0)
+            continue;
+        workItem->vms[0].SetZRotation(VectorAngle(workItem->points[1].y, workItem->points[1].x));
+        workItem->vms[0].pos = workItem->anchor;
+        workItem->vms[0].pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+        workItem->vms[0].pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+        workItem->vms[0].pos.z = 0.0f;
+        g_AnmManager->Draw2D(&workItem->vms[0]);
+    }
+}
+
+// FUNCTION: th08 0x4142c0
+#pragma var_order(i, workItem)
+void __fastcall FUN_004142c0(Player *player)
+{
+    i32 i;
+    PlayerBombWorkItem *workItem;
+
+    FUN_0040bc60(player, 0x80802020);
+    workItem = player->bombState.workItems;
+    for (i = 0; i < 128; i++, workItem++)
+    {
+        if (workItem->active == 0)
+            continue;
+        workItem->vms[0].SetZRotation(VectorAngle(workItem->points[1].y, workItem->points[1].x));
+        workItem->vms[0].pos = workItem->anchor;
+        workItem->vms[0].pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+        workItem->vms[0].pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+        workItem->vms[0].pos.z = 0.0f;
+        g_AnmManager->Draw2D(&workItem->vms[0]);
+    }
 }
 
 // FUNCTION: th08 0x412300

@@ -136,8 +136,8 @@ th08::GameManager::IsTampered,0x40bb80,function
 th08::Player::IsHuman,0x40bc20,function
 th08::Player::IsYoukai,0x40bc40,function
 th08::FUN_0040bc60,0x40bc60,function
-FUN_0040be30,0x40be30,function
-FUN_0040bf00,0x40bf00,function
+th08::FUN_0040be30,0x40be30,function
+th08::Player::FUN_0040bf00,0x40bf00,function
 FUN_0040c010,0x40c010,function
 th08::VectorAngle,0x40c7b0,function
 th08::Float3::operator/,0x40c7d0,function
@@ -161,7 +161,7 @@ FUN_0040e200,0x40e200,function
 FUN_0040e2d0,0x40e2d0,function
 FUN_0040e350,0x40e350,function
 th08::ZunTimer::operator<=,0x40e390,function
-FUN_0040e3b0,0x40e3b0,function
+th08::FUN_0040e3b0,0x40e3b0,function
 th08::FUN_0040e610,0x40e610,function
 FUN_0040e780,0x40e780,function
 FUN_0040eb50,0x40eb50,function
@@ -195,9 +195,9 @@ FUN_004123d0,0x4123d0,function
 th08::FUN_00412fa0,0x412fa0,function
 FUN_00413070,0x413070,function
 FUN_00413140,0x413140,function
-FUN_00413890,0x413890,function
+th08::FUN_00413890,0x413890,function
 FUN_00413990,0x413990,function
-FUN_004142c0,0x4142c0,function
+th08::FUN_004142c0,0x4142c0,function
 th08::Rng::GetRandomF32SignedInRange,0x4143c0,function
 th08::Spellcard::Spellcard,0x4143e0,function
 th08::Spellcard::GetDifficultyFromSpellCard,0x4144d0,function

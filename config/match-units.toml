@@ -91573,3 +91573,324 @@ offset = 0x131
 type = "REL32"
 symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463210
+
+[[units]]
+name = "player-bomb-common-init"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+target_address = 0x0040BE30
+size = 0xC2
+
+[[units.relocations]]
+offset = 0x24
+type = "DIR32"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+
+[[units.relocations]]
+offset = 0x29
+type = "REL32"
+symbol = "?CutInPlayer@Spellcard@th08@@QAEXHPBDH@Z"
+target = 0x00415D60
+
+[[units.relocations]]
+offset = 0x44
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x52
+type = "REL32"
+symbol = "th08::Player::FUN_0040bf00"
+target = 0x0040BF00
+
+[[units.relocations]]
+offset = 0x92
+type = "DIR32"
+symbol = "?g_ItemManager@th08@@3UItemManager@1@A"
+target = 0x01653648
+
+[[units.relocations]]
+offset = 0x97
+type = "REL32"
+symbol = "?AutoCollectAllItems@ItemManager@th08@@QAEXXZ"
+target = 0x004413E0
+
+
+[[units]]
+name = "player-bomb-state-effect"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "th08::Player::FUN_0040bf00"
+target_address = 0x0040BF00
+size = 0x108
+
+[[units.relocations]]
+offset = 0x37
+type = "DIR32"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0x3C
+type = "REL32"
+symbol = "?FUN_00425870@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+target = 0x00425870
+
+[[units.relocations]]
+offset = 0x4F
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0xBB
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0xD0
+type = "DIR32"
+symbol = "__real@bf800000"
+target = 0x004B438C
+
+
+[[units]]
+name = "player-bomb-callback-0040e3b0"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_0040e3b0@th08@@YIXPAUPlayer@1@@Z"
+target_address = 0x0040E3B0
+size = 0x258
+
+[[units.relocations]]
+offset = 0x1B
+type = "REL32"
+symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+target = 0x0040D3D0
+
+[[units.relocations]]
+offset = 0x30
+type = "REL32"
+symbol = "??8ZunTimer@th08@@QAEIH@Z"
+target = 0x0040D3F0
+
+[[units.relocations]]
+offset = 0x49
+type = "DIR32"
+symbol = "??_C@_0BJ@IFMENAOA@?$JH?v?$JF?$IE?$IBu?$ID?$HN?$IDX?$ID?$FO?$IB?$FL?$IDX?$IDp?$IB?$FL?$IDN?$IBv?$AA@"
+target = 0x004B4444
+
+[[units.relocations]]
+offset = 0x53
+type = "REL32"
+symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+target = 0x0040BE30
+
+[[units.relocations]]
+offset = 0x6C
+type = "DIR32"
+symbol = "?g_SoundPlayer@th08@@3VSoundPlayer@1@A"
+target = 0x018B8A68
+
+[[units.relocations]]
+offset = 0x71
+type = "REL32"
+symbol = "?PlaySoundByIdx@SoundPlayer@th08@@QAEXW4SoundIdx@2@H@Z"
+target = 0x0045D550
+
+[[units.relocations]]
+offset = 0xA6
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0xBD
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0xD4
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0xEA
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x101
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x132
+type = "REL32"
+symbol = "?RegisterChain@ScreenEffect@th08@@SIPAU12@W4ScreenEffectType@2@HHHHH@Z"
+target = 0x0045B8B0
+
+[[units.relocations]]
+offset = 0x140
+type = "REL32"
+symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+target = 0x0040D3D0
+
+[[units.relocations]]
+offset = 0x156
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0x172
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x19B
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x1BC
+type = "REL32"
+symbol = "th08::Player::FUN_0044de60"
+target = 0x0044DE60
+
+[[units.relocations]]
+offset = 0x1DF
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x200
+type = "REL32"
+symbol = "th08::Player::FUN_0044dfa0"
+target = 0x0044DFA0
+
+[[units.relocations]]
+offset = 0x22F
+type = "REL32"
+symbol = "th08::Player::FUN_0044dfa0"
+target = 0x0044DFA0
+
+[[units.relocations]]
+offset = 0x24B
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x250
+type = "REL32"
+symbol = "?ExecuteScriptArray@AnmManager@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x00462310
+
+
+[[units]]
+name = "player-bomb-callback-00413890"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_00413890@th08@@YIXPAUPlayer@1@@Z"
+target_address = 0x00413890
+size = 0xF1
+
+[[units.relocations]]
+offset = 0x12
+type = "REL32"
+symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+target = 0x0040BC60
+
+[[units.relocations]]
+offset = 0x62
+type = "REL32"
+symbol = "?VectorAngle@th08@@YIMMM@Z"
+target = 0x0040C7B0
+
+[[units.relocations]]
+offset = 0x74
+type = "REL32"
+symbol = "?SetZRotation@AnmVm@th08@@QAEXM@Z"
+target = 0x0040EC00
+
+[[units.relocations]]
+offset = 0x9B
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0xB3
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0xDF
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xE4
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+
+[[units]]
+name = "player-bomb-callback-004142c0"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_004142c0@th08@@YIXPAUPlayer@1@@Z"
+target_address = 0x004142C0
+size = 0xF4
+
+[[units.relocations]]
+offset = 0x12
+type = "REL32"
+symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+target = 0x0040BC60
+
+[[units.relocations]]
+offset = 0x65
+type = "REL32"
+symbol = "?VectorAngle@th08@@YIMMM@Z"
+target = 0x0040C7B0
+
+[[units.relocations]]
+offset = 0x77
+type = "REL32"
+symbol = "?SetZRotation@AnmVm@th08@@QAEXM@Z"
+target = 0x0040EC00
+
+[[units.relocations]]
+offset = 0x9E
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0xB6
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0xE2
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xE7
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210

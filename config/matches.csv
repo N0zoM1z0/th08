@@ -872,3 +872,8 @@ address,name,size,status,match_percent,unit,evidence
 0x00410300,th08::FUN_00410300,225,matching,100.00,player-bomb-callback-00410300,python3 scripts/compare-function.py player-bomb-callback-00410300 --json
 0x00410AC0,th08::FUN_00410ac0,225,matching,100.00,player-bomb-callback-00410ac0,python3 scripts/compare-function.py player-bomb-callback-00410ac0 --json
 0x004113A0,th08::FUN_004113a0,313,matching,100.00,player-bomb-callback-004113a0,python3 scripts/compare-function.py player-bomb-callback-004113a0 --json
+0x0040BE30,th08::FUN_0040be30,194,matching,100.00,player-bomb-common-init,python3 scripts/compare-function.py player-bomb-common-init --json
+0x0040BF00,th08::Player::FUN_0040bf00,264,matching,100.00,player-bomb-state-effect,python3 scripts/compare-function.py player-bomb-state-effect --json
+0x0040E3B0,th08::FUN_0040e3b0,600,matching,100.00,player-bomb-callback-0040e3b0,python3 scripts/compare-function.py player-bomb-callback-0040e3b0 --json
+0x00413890,th08::FUN_00413890,241,matching,100.00,player-bomb-callback-00413890,python3 scripts/compare-function.py player-bomb-callback-00413890 --json
+0x004142C0,th08::FUN_004142c0,244,matching,100.00,player-bomb-callback-004142c0,python3 scripts/compare-function.py player-bomb-callback-004142c0 --json
