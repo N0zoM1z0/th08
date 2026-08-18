@@ -979,3 +979,9 @@ th08::EclRunLowProposal::BeginBoundaryAwareMove
 th08::EclRunLowProposal::StartTimedPolarDisplacement
 th08::EclRunLowProposal::FUN_004224a0
 th08::EclRunLowProposal::InstallInterpolationSlot
+th08::EclRunLowProposal::CompareOperands
+th08::EclRunLowProposal::ApplyInterpolationOperation
+th08::EclRunLowProposal::CallSubOnEnemy
+th08::EclRunLowProposal::PopEclContext
+th08::EclRunLowProposal::SetPrimaryAnmScripts
+th08::EclRunLowProposal::SetExtraAnmScript

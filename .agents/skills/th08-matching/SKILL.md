@@ -230,3 +230,13 @@ When a TH08 `/Od` float comparison contains `Float3::operator float*()` or anoth
 Do not normalize direct/wrapped distance tests: the target can require `directDistance < wrappedDistance` specifically.  Reversing it to an equivalent `wrapped <= direct` changes `fcompp` ownership and status masks.  Likewise preserve branch polarity when one side is much larger; `if (duration <= 0) immediate else timed` can be required solely to keep the large block as fallthrough and the short call at the tail.
 
 For slot-scanning installers, try rejection-first control flow before adding temporaries: `if (reject) continue; install; break;` lets VC7 place the continue edge at the loop increment and the successful install fall through to the common epilogue.  A positive accept block with `return` may add both a long continue branch and an epilogue jump.  TH08 interpolation callbacks use a separate eight-pointer table at `0x004C6C90`; do not alias it to `g_EclExInsn @ 0x004C6CB0`.
+
+## ECL switch/context/ANM source-shape corpus
+
+Switch bounds checks can depend on where shared labels are written in source.  If VC7 inserts a tiny default trampoline, try placing the shared success code inside the switch after the final case and place `default:` on the shared failure label immediately afterward.  In TH08 `CompareOperands`, that lexical layout removed the only two-byte residual while preserving the 12-entry associated jump table.
+
+For repeated operand dispatch, do not cache resolved values unless target call counts prove a source local.  Independent `?:` reads can be responsible for large compiler-owned temp frames.  `ApplyInterpolationOperation` also proves that an operand may intentionally be resolved twice.
+
+When a `rep movsd` copy uses a target-resident static source, test a real extern aggregate owner instead of an absolute pointer cast.  The `g_EclCallParameters @ 0x004ECE20` aggregate changes VC7 evaluation from source-first to the target destination/count/source order.  Use typed `EnemyEclContext` aggregate assignment for 0x228 stack frames rather than `memcpy`/asm.
+
+For raw VM-offset cleanup, verify the exact narrow field.  `enemy + index*0x2A4 + 0x4CA` is `AnmVm::scriptIndex` relative to VM base `+0x2B0`; `activeSpriteIndex` would be six bytes earlier and is not equivalent.

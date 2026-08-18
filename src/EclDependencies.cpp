@@ -6,6 +6,7 @@
 #include "GameManager.hpp"
 #include "EclOperands.hpp"
 #include "EclManager.hpp"
+#include "utils.hpp"
 
 #include <math.h>
 
@@ -263,6 +264,22 @@ void __fastcall FUN_004224a0(u8 *rawEnemy, void *rawInstruction)
 }
 
 
+
+// FUNCTION: th08 0x421300
+void __fastcall ApplyInterpolationOperation(
+    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction)
+{
+    f32 delta;
+
+    delta = DEP_READ_FLOAT(enemy, instruction, 1) -
+            DEP_READ_FLOAT(enemy, instruction, 2);
+    *EclOperands::ResolveFloatLValue(
+        enemy, reinterpret_cast<f32 *>(instruction->operands),
+        instruction->operandFlags, 0) =
+        delta * DEP_READ_FLOAT(enemy, instruction, 3) +
+        DEP_READ_FLOAT(enemy, instruction, 2);
+}
+
 struct InterpolationSlot
 {
     void *callback;
@@ -308,6 +325,208 @@ void __fastcall InstallInterpolationSlot(
             slot->parameter3 = DEP_READ_FLOAT(enemy, instruction, 7);
             break;
         }
+    }
+}
+
+// FUNCTION: th08 0x4215f0
+EclRawInstruction *__fastcall CompareOperands(
+    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction)
+{
+    switch (instruction->opcode)
+    {
+    case 40:
+        if (DEP_READ_INT(enemy, instruction, 0) == DEP_READ_INT(enemy, instruction, 1))
+            goto compare_success;
+        goto compare_failure;
+    case 41:
+        if (DEP_READ_FLOAT(enemy, instruction, 0) == DEP_READ_FLOAT(enemy, instruction, 1))
+            goto compare_success;
+        goto compare_failure;
+    case 42:
+        if (DEP_READ_INT(enemy, instruction, 0) != DEP_READ_INT(enemy, instruction, 1))
+            goto compare_success;
+        goto compare_failure;
+    case 43:
+        if (DEP_READ_FLOAT(enemy, instruction, 0) != DEP_READ_FLOAT(enemy, instruction, 1))
+            goto compare_success;
+        goto compare_failure;
+    case 44:
+        if (DEP_READ_INT(enemy, instruction, 0) < DEP_READ_INT(enemy, instruction, 1))
+            goto compare_success;
+        goto compare_failure;
+    case 45:
+        if (DEP_READ_FLOAT(enemy, instruction, 0) < DEP_READ_FLOAT(enemy, instruction, 1))
+            goto compare_success;
+        goto compare_failure;
+    case 46:
+        if (DEP_READ_INT(enemy, instruction, 0) <= DEP_READ_INT(enemy, instruction, 1))
+            goto compare_success;
+        goto compare_failure;
+    case 47:
+        if (DEP_READ_FLOAT(enemy, instruction, 0) <= DEP_READ_FLOAT(enemy, instruction, 1))
+            goto compare_success;
+        goto compare_failure;
+    case 48:
+        if (DEP_READ_INT(enemy, instruction, 0) > DEP_READ_INT(enemy, instruction, 1))
+            goto compare_success;
+        goto compare_failure;
+    case 49:
+        if (DEP_READ_FLOAT(enemy, instruction, 0) > DEP_READ_FLOAT(enemy, instruction, 1))
+            goto compare_success;
+        goto compare_failure;
+    case 50:
+        if (DEP_READ_INT(enemy, instruction, 0) >= DEP_READ_INT(enemy, instruction, 1))
+            goto compare_success;
+        goto compare_failure;
+    case 51:
+        if (DEP_READ_FLOAT(enemy, instruction, 0) >= DEP_READ_FLOAT(enemy, instruction, 1))
+            goto compare_success;
+        goto compare_failure;
+
+compare_success:
+        *reinterpret_cast<i32 *>(
+            *reinterpret_cast<u8 **>(DEP_BYTES(enemy) + 0x2ca0) + 0x0c) =
+            *reinterpret_cast<i32 *>(instruction->operands + 8);
+        return reinterpret_cast<EclRawInstruction *>(
+            reinterpret_cast<u8 *>(instruction) +
+            *reinterpret_cast<i32 *>(instruction->operands + 12));
+
+    default:
+compare_failure:
+        return NULL;
+    }
+}
+
+
+// FUNCTION: th08 0x421de0
+void __fastcall SetPrimaryAnmScripts(
+    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction,
+    i32 script0, i32 script1, i32 script2, i32 script3, i32 script4, i32 script5)
+{
+    *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x3332) = static_cast<i16>(script0);
+    *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x3338) = static_cast<i16>(script1);
+    *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x333a) = static_cast<i16>(script2);
+    *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x3334) = static_cast<i16>(script3);
+    *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x3336) = static_cast<i16>(script4);
+    *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x333c) = static_cast<i16>(script5);
+    *reinterpret_cast<u8 *>(DEP_BYTES(enemy) + 0x332e) = 0xff;
+}
+
+
+struct EclCallParameterCopy
+{
+    u32 words[8];
+};
+C_ASSERT(sizeof(EclCallParameterCopy) == 0x20);
+extern EclCallParameterCopy g_EclCallParameters;
+
+// FUNCTION: th08 0x421bd0
+void __fastcall CallSubOnEnemy(
+    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction, i32 rawSubId)
+{
+    (*reinterpret_cast<EnemyEclContext **>(DEP_BYTES(enemy) + 0x2ca0))->currentInstr =
+        reinterpret_cast<EclRawInstruction *>(
+            reinterpret_cast<u8 *>(instruction) + instruction->nextOffset);
+
+    if (((*reinterpret_cast<u32 *>(DEP_BYTES(enemy) + 0x3324) >> 26) & 1) == 0)
+    {
+        *reinterpret_cast<EnemyEclContext *>(
+            *reinterpret_cast<u8 **>(DEP_BYTES(enemy) + 0x2ca4) +
+            static_cast<i16>(*reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x2cea)) *
+                sizeof(EnemyEclContext)) =
+            **reinterpret_cast<EnemyEclContext **>(DEP_BYTES(enemy) + 0x2ca0);
+    }
+
+    reinterpret_cast<EclManager *>(0x004ECCB8)->CallEclSub(
+        *reinterpret_cast<EnemyEclContext **>(DEP_BYTES(enemy) + 0x2ca0),
+        static_cast<i16>(rawSubId));
+
+    *reinterpret_cast<EclCallParameterCopy *>(
+        reinterpret_cast<u8 *>(
+            *reinterpret_cast<EnemyEclContext **>(DEP_BYTES(enemy) + 0x2ca0)) + 0x70) =
+        g_EclCallParameters;
+
+    if (((*reinterpret_cast<u32 *>(DEP_BYTES(enemy) + 0x3324) >> 26) & 1) == 0 &&
+        *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x2cea) < 15)
+    {
+        ++*reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x2cea);
+    }
+}
+
+
+// FUNCTION: th08 0x421cb0
+int __fastcall PopEclContext(
+    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction)
+{
+    i32 contextIndex;
+
+    if (((*reinterpret_cast<u32 *>(DEP_BYTES(enemy) + 0x3324) >> 26) & 1) != 0)
+        utils::DebugPrint("error : no Stack Ret\r\n");
+
+    --*reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x2cea);
+    if (*reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x2cea) < 0)
+    {
+        contextIndex =
+            *reinterpret_cast<i32 *>(
+                reinterpret_cast<u8 *>(
+                    *reinterpret_cast<EnemyEclContext **>(DEP_BYTES(enemy) + 0x2ca0)) + 0x220) -
+            1;
+        if (*reinterpret_cast<void **>(DEP_BYTES(enemy) + 0x3384 + contextIndex * 4) != NULL)
+            g_ZunMemory.Free(
+                *reinterpret_cast<void **>(DEP_BYTES(enemy) + 0x3384 + contextIndex * 4));
+        *reinterpret_cast<void **>(DEP_BYTES(enemy) + 0x3384 + contextIndex * 4) = NULL;
+        *reinterpret_cast<u8 **>(DEP_BYTES(enemy) + 0x2ca4) = DEP_BYTES(enemy) + 0x0a20;
+        *reinterpret_cast<u8 **>(DEP_BYTES(enemy) + 0x2ca0) = DEP_BYTES(enemy) + 0x07f8;
+        *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x2cea) =
+            *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x2ce8);
+        return 1;
+    }
+
+    **reinterpret_cast<EnemyEclContext **>(DEP_BYTES(enemy) + 0x2ca0) =
+        *reinterpret_cast<EnemyEclContext *>(
+            *reinterpret_cast<u8 **>(DEP_BYTES(enemy) + 0x2ca4) +
+            static_cast<i16>(*reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x2cea)) *
+                sizeof(EnemyEclContext));
+    return 0;
+}
+
+
+// FUNCTION: th08 0x421e50
+void __fastcall SetExtraAnmScript(
+    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction)
+{
+    if (DEP_READ_INT(enemy, instruction, 0) >= 2)
+        utils::DebugPrint("error : sub anim overflow\r\n");
+
+    if (DEP_READ_INT(enemy, instruction, 1) >= 0)
+    {
+        if (((*reinterpret_cast<u32 *>(DEP_BYTES(enemy) + 0x3328) >> 2) & 1) != 0)
+        {
+            (*reinterpret_cast<AnmLoaded **>(
+                reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9dcef0))
+                ->SetAndExecuteScriptIdx(
+                    reinterpret_cast<AnmVm *>(
+                        DEP_BYTES(enemy) + 0x2b0 +
+                        DEP_READ_INT(enemy, instruction, 0) * sizeof(AnmVm)),
+                    DEP_READ_INT(enemy, instruction, 1));
+        }
+        else
+        {
+            (*reinterpret_cast<AnmLoaded **>(
+                reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9dceec))
+                ->SetAndExecuteScriptIdx(
+                    reinterpret_cast<AnmVm *>(
+                        DEP_BYTES(enemy) + 0x2b0 +
+                        DEP_READ_INT(enemy, instruction, 0) * sizeof(AnmVm)),
+                    DEP_READ_INT(enemy, instruction, 1));
+        }
+    }
+    else
+    {
+        reinterpret_cast<AnmVm *>(
+            DEP_BYTES(enemy) + 0x2b0 +
+            DEP_READ_INT(enemy, instruction, 0) * sizeof(AnmVm))
+            ->scriptIndex = -1;
     }
 }
 

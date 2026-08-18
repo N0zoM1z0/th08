@@ -104554,3 +104554,413 @@ offset = 0x1DB
 type = "REL32"
 symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
 target = 0x00420120
+
+# Comparison dispatcher: authored body 0x53f; associated 12-entry switch table 0x30 compared but not counted.
+[[units]]
+name = "ecl-compare-operands-004215f0"
+object = "build/probes/EclDependencies.obj"
+symbol = "?CompareOperands@EclRunLowProposal@th08@@YIPAUEclRawInstruction@2@PAUEnemyOverlay@EclOperands@2@PAU32@@Z"
+target_address = 0x004215F0
+size = 0x53F
+compare_size = 0x56F
+
+[[units.relocations]]
+offset = 0x2F
+type = "DIR32"
+symbol = "$L*"
+target = 0x00421B2F
+
+[[units.relocations]]
+offset = 0x4B
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x75
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0xB2
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0xDD
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x11E
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x148
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x185
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x1B0
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x1F1
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x21B
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x258
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x283
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x2C4
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x2EE
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x32B
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x356
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x397
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x3C1
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x3FE
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x429
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x46A
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x494
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x4CE
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x4F9
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x53F
+type = "DIR32"
+symbol = "$L*"
+target = 0x00421623
+
+[[units.relocations]]
+offset = 0x543
+type = "DIR32"
+symbol = "$L*"
+target = 0x00421689
+
+[[units.relocations]]
+offset = 0x547
+type = "DIR32"
+symbol = "$L*"
+target = 0x004216F6
+
+[[units.relocations]]
+offset = 0x54B
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042175C
+
+[[units.relocations]]
+offset = 0x54F
+type = "DIR32"
+symbol = "$L*"
+target = 0x004217C9
+
+[[units.relocations]]
+offset = 0x553
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042182F
+
+[[units.relocations]]
+offset = 0x557
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042189C
+
+[[units.relocations]]
+offset = 0x55B
+type = "DIR32"
+symbol = "$L*"
+target = 0x00421902
+
+[[units.relocations]]
+offset = 0x55F
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042196F
+
+[[units.relocations]]
+offset = 0x563
+type = "DIR32"
+symbol = "$L*"
+target = 0x004219D5
+
+[[units.relocations]]
+offset = 0x567
+type = "DIR32"
+symbol = "$L*"
+target = 0x00421A42
+
+[[units.relocations]]
+offset = 0x56B
+type = "DIR32"
+symbol = "$L*"
+target = 0x00421AA5
+
+[[units]]
+name = "ecl-apply-interpolation-operation-00421300"
+object = "build/probes/EclDependencies.obj"
+symbol = "?ApplyInterpolationOperation@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
+target_address = 0x00421300
+size = 0xEE
+
+[[units.relocations]]
+offset = 0x25
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x50
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x84
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0xAF
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0xE1
+type = "REL32"
+symbol = "?ResolveFloatLValue@EclOperands@th08@@YIPAMPAUEnemyOverlay@12@PAMGH@Z"
+target = 0x00420950
+
+[[units]]
+name = "ecl-call-sub-on-enemy-00421bd0"
+object = "build/probes/EclDependencies.obj"
+symbol = "?CallSubOnEnemy@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@H@Z"
+target_address = 0x00421BD0
+size = 0xD6
+
+[[units.relocations]]
+offset = 0x78
+type = "REL32"
+symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
+target = 0x00418450
+
+[[units.relocations]]
+offset = 0x8E
+type = "DIR32"
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+
+[[units]]
+name = "ecl-pop-context-00421cb0"
+object = "build/probes/EclDependencies.obj"
+symbol = "?PopEclContext@EclRunLowProposal@th08@@YIHPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
+target_address = 0x00421CB0
+size = 0x118
+
+[[units.relocations]]
+offset = 0x22
+type = "DIR32"
+symbol = "??_C@_0BH@NKALJCPN@error?5?3?5no?5Stack?5Ret?$AN?6?$AA@"
+target = 0x004B4894
+
+[[units.relocations]]
+offset = 0x27
+type = "REL32"
+symbol = "?DebugPrint@utils@th08@@YAXPADZZ"
+target = 0x00421DD0
+
+[[units.relocations]]
+offset = 0x8C
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x91
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+[[units]]
+name = "ecl-set-primary-anm-scripts-00421de0"
+object = "build/probes/EclDependencies.obj"
+symbol = "?SetPrimaryAnmScripts@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@HHHHHH@Z"
+target_address = 0x00421DE0
+size = 0x70
+
+[[units]]
+name = "ecl-set-extra-anm-script-00421e50"
+object = "build/probes/EclDependencies.obj"
+symbol = "?SetExtraAnmScript@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
+target_address = 0x00421E50
+size = 0x1C6
+
+[[units.relocations]]
+offset = 0x24
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x3D
+type = "DIR32"
+symbol = "??_C@_0BM@BHMNFKCI@error?5?3?5sub?5anim?5overflow?$AN?6?$AA@"
+target = 0x004B48AC
+
+[[units.relocations]]
+offset = 0x42
+type = "REL32"
+symbol = "?DebugPrint@utils@th08@@YAXPADZZ"
+target = 0x00421DD0
+
+[[units.relocations]]
+offset = 0x61
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0xA8
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0xD2
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0xFE
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x103
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x121
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x14B
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x177
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x17C
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x19A
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420

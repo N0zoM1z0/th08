@@ -980,3 +980,9 @@ address,name,size,status,match_percent,unit,evidence
 0x004222B0,th08::EclRunLowProposal::StartTimedPolarDisplacement,461,matching,100.00,ecl-timed-polar-displacement-004222b0,python3 scripts/compare-function.py ecl-timed-polar-displacement-004222b0 --json
 0x004224A0,th08::EclRunLowProposal::FUN_004224a0,630,matching,100.00,ecl-random-biased-move-004224a0,python3 scripts/compare-function.py ecl-random-biased-move-004224a0 --json
 0x004213F0,th08::EclRunLowProposal::InstallInterpolationSlot,506,matching,100.00,ecl-install-interpolation-slot-004213f0,python3 scripts/compare-function.py ecl-install-interpolation-slot-004213f0 --json
+0x004215F0,th08::EclRunLowProposal::CompareOperands,1343,matching,100.00,ecl-compare-operands-004215f0,python3 scripts/compare-function.py ecl-compare-operands-004215f0 --json
+0x00421300,th08::EclRunLowProposal::ApplyInterpolationOperation,238,matching,100.00,ecl-apply-interpolation-operation-00421300,python3 scripts/compare-function.py ecl-apply-interpolation-operation-00421300 --json
+0x00421BD0,th08::EclRunLowProposal::CallSubOnEnemy,214,matching,100.00,ecl-call-sub-on-enemy-00421bd0,python3 scripts/compare-function.py ecl-call-sub-on-enemy-00421bd0 --json
+0x00421CB0,th08::EclRunLowProposal::PopEclContext,280,matching,100.00,ecl-pop-context-00421cb0,python3 scripts/compare-function.py ecl-pop-context-00421cb0 --json
+0x00421DE0,th08::EclRunLowProposal::SetPrimaryAnmScripts,112,matching,100.00,ecl-set-primary-anm-scripts-00421de0,python3 scripts/compare-function.py ecl-set-primary-anm-scripts-00421de0 --json
+0x00421E50,th08::EclRunLowProposal::SetExtraAnmScript,454,matching,100.00,ecl-set-extra-anm-script-00421e50,python3 scripts/compare-function.py ecl-set-extra-anm-script-00421e50 --json
