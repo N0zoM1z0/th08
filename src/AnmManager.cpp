@@ -1500,9 +1500,73 @@ void AnmManager::TranslateRotation(VertexTex1DiffuseXyzrhw *vertex, float x, flo
 }
 
 
-// STUB: th08 0x4639e0
+// FUNCTION: th08 0x4639e0
+#pragma var_order(halfWidth, halfHeight, yOffset, xOffset, sine, worldMatrix, rotation, projectedReference, projectedPosition, delta, cosine, origin, this)
 ZunResult AnmManager::FUN_004639e0(AnmVm *vm)
 {
+    f32 rotation;
+    f32 sine;
+    f32 cosine;
+    f32 xOffset;
+    f32 yOffset;
+    f32 halfHeight;
+    f32 halfWidth;
+
+    rotation = vm->rotation.z;
+    sincos(rotation, sine, cosine);
+
+    D3DXMATRIX worldMatrix;
+    Float3 projectedPosition;
+    Float3 projectedReference;
+    Float3 delta;
+    Float3 origin(0.0f, 0.0f, 0.0f);
+
+    D3DXMatrixIdentity(&worldMatrix);
+    worldMatrix._41 = vm->pos.operator float *()[0];
+    worldMatrix._42 = vm->pos.operator float *()[1];
+    worldMatrix._43 = vm->pos.operator float *()[2];
+
+    D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectedPosition),
+                    reinterpret_cast<D3DXVECTOR3 *>(&origin), &g_Supervisor.viewport,
+                    &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldMatrix);
+    if (projectedPosition.z < 0.0f || projectedPosition.z > 1.0f)
+        return ZUN_ERROR;
+
+    D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectedReference),
+                    reinterpret_cast<D3DXVECTOR3 *>(&g_Background.unk6394.vectors[4]),
+                    &g_Supervisor.viewport, &g_Supervisor.projectionMatrix,
+                    &g_Supervisor.viewMatrix, &worldMatrix);
+    delta = projectedReference - projectedPosition;
+    xOffset = D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&delta)) * 0.5f;
+    halfWidth = xOffset * vm->spriteSize.x * vm->scale.x;
+    halfHeight = xOffset * vm->spriteSize.y * vm->scale.y;
+    xOffset = projectedPosition.x;
+    yOffset = projectedPosition.y;
+
+    this->TranslateRotation(&g_QuadVertices[0], -halfWidth, -halfHeight, sine, cosine, xOffset, yOffset);
+    this->TranslateRotation(&g_QuadVertices[1], halfWidth, -halfHeight, sine, cosine, xOffset, yOffset);
+    this->TranslateRotation(&g_QuadVertices[2], -halfWidth, halfHeight, sine, cosine, xOffset, yOffset);
+    this->TranslateRotation(&g_QuadVertices[3], halfWidth, halfHeight, sine, cosine, xOffset, yOffset);
+
+    g_QuadVertices[3].pos.z = projectedPosition.z;
+    g_QuadVertices[2].pos.z = g_QuadVertices[3].pos.z;
+    g_QuadVertices[1].pos.z = g_QuadVertices[2].pos.z;
+    g_QuadVertices[0].pos.z = g_QuadVertices[1].pos.z;
+
+    if (vm->anchor & 1)
+    {
+        g_QuadVertices[0].pos.x += halfWidth;
+        g_QuadVertices[1].pos.x += halfWidth;
+        g_QuadVertices[2].pos.x += halfWidth;
+        g_QuadVertices[3].pos.x += halfWidth;
+    }
+    if (vm->anchor & 2)
+    {
+        g_QuadVertices[0].pos.y += halfHeight;
+        g_QuadVertices[1].pos.y += halfHeight;
+        g_QuadVertices[2].pos.y += halfHeight;
+        g_QuadVertices[3].pos.y += halfHeight;
+    }
     return ZUN_SUCCESS;
 }
 
@@ -1590,9 +1654,76 @@ ZunResult AnmManager::FUN_00464070(AnmVm *vm)
     return this->DrawInner(vm, 0);
 }
 
-// STUB: th08 0x4640e0
+// FUNCTION: th08 0x4640e0
+#pragma var_order(halfWidth, halfHeight, yOffset, xOffset, sine, worldMatrix, rotation, projectedReference, projectedPosition, delta, cosine, origin, this)
 ZunResult AnmManager::FUN_004640e0(AnmVm *vm, void *callback)
 {
+    f32 rotation;
+    f32 sine;
+    f32 cosine;
+    f32 xOffset;
+    f32 yOffset;
+    f32 halfHeight;
+    f32 halfWidth;
+
+    rotation = vm->rotation.z;
+    sincos(rotation, sine, cosine);
+
+    D3DXMATRIX worldMatrix;
+    Float3 projectedPosition;
+    Float3 projectedReference;
+    Float3 delta;
+    Float3 origin(0.0f, 0.0f, 0.0f);
+
+    D3DXMatrixIdentity(&worldMatrix);
+    worldMatrix._41 = vm->pos.operator float *()[0];
+    worldMatrix._42 = vm->pos.operator float *()[1];
+    worldMatrix._43 = vm->pos.operator float *()[2];
+
+    D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectedPosition),
+                    reinterpret_cast<D3DXVECTOR3 *>(&origin), &g_Supervisor.viewport,
+                    &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldMatrix);
+    if (projectedPosition.z < 0.0f || projectedPosition.z > 1.0f)
+        return ZUN_ERROR;
+
+    D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectedReference),
+                    reinterpret_cast<D3DXVECTOR3 *>(&g_Background.unk6394.vectors[4]),
+                    &g_Supervisor.viewport, &g_Supervisor.projectionMatrix,
+                    &g_Supervisor.viewMatrix, &worldMatrix);
+    delta = projectedReference - projectedPosition;
+    xOffset = D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&delta)) * 0.5f;
+    halfWidth = xOffset * vm->spriteSize.x * vm->scale.x;
+    halfHeight = xOffset * vm->spriteSize.y * vm->scale.y;
+
+    if (callback != NULL)
+        reinterpret_cast<void (__fastcall *)(AnmVm *, Float3 *)>(callback)(vm, &projectedPosition);
+
+    xOffset = projectedPosition.x;
+    yOffset = projectedPosition.y;
+    this->TranslateRotation(&g_QuadVertices[0], -halfWidth, -halfHeight, sine, cosine, xOffset, yOffset);
+    this->TranslateRotation(&g_QuadVertices[1], halfWidth, -halfHeight, sine, cosine, xOffset, yOffset);
+    this->TranslateRotation(&g_QuadVertices[2], -halfWidth, halfHeight, sine, cosine, xOffset, yOffset);
+    this->TranslateRotation(&g_QuadVertices[3], halfWidth, halfHeight, sine, cosine, xOffset, yOffset);
+
+    g_QuadVertices[3].pos.z = projectedPosition.z;
+    g_QuadVertices[2].pos.z = g_QuadVertices[3].pos.z;
+    g_QuadVertices[1].pos.z = g_QuadVertices[2].pos.z;
+    g_QuadVertices[0].pos.z = g_QuadVertices[1].pos.z;
+
+    if (vm->anchor & 1)
+    {
+        g_QuadVertices[0].pos.x += halfWidth;
+        g_QuadVertices[1].pos.x += halfWidth;
+        g_QuadVertices[2].pos.x += halfWidth;
+        g_QuadVertices[3].pos.x += halfWidth;
+    }
+    if (vm->anchor & 2)
+    {
+        g_QuadVertices[0].pos.y += halfHeight;
+        g_QuadVertices[1].pos.y += halfHeight;
+        g_QuadVertices[2].pos.y += halfHeight;
+        g_QuadVertices[3].pos.y += halfHeight;
+    }
     return ZUN_SUCCESS;
 }
 

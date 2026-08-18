@@ -822,3 +822,5 @@ address,name,size,status,match_percent,unit,evidence
 0x0044E770,th08::PlayerOptionHomingToPlayer,352,matching,100.00,player-option-homing-to-player,python3 scripts/compare-function.py player-option-homing-to-player --json
 0x0044E8D0,th08::PlayerOptionHomingToTarget,269,matching,100.00,player-option-homing-to-target,python3 scripts/compare-function.py player-option-homing-to-target --json
 0x0044E9E0,th08::PlayerRoute2OptionRender,94,matching,100.00,player-route2-option-render,python3 scripts/compare-function.py player-route2-option-render --json
+0x004639E0,th08::AnmManager::FUN_004639e0,771,matching,100.00,anm-project-facing-quad,python3 scripts/compare-function.py anm-project-facing-quad --json
+0x004640E0,th08::AnmManager::FUN_004640e0,786,matching,100.00,anm-project-facing-quad-callback,python3 scripts/compare-function.py anm-project-facing-quad-callback --json
