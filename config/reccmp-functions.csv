@@ -292,7 +292,7 @@ FUN_00423400,0x423400,function
 FUN_00423530,0x423530,function
 FUN_004235a0,0x4235a0,function
 FUN_00423a60,0x423a60,function
-FUN_00423d70,0x423d70,function
+th08::Float3::operator*=,0x423d70,function
 FUN_00423db0,0x423db0,function
 FUN_00423e20,0x423e20,function
 FUN_00424130,0x424130,function
@@ -327,12 +327,12 @@ th08::EffectManager::SpawnEffectAngle,0x425650,function
 th08::EffectManager::FUN_00425870,0x425870,function
 FUN_004259e0,0x4259e0,function
 th08::EffectManager::SpawnEffect00425B70,0x425b70,function
-FUN_00425d70,0x425d70,function
-FUN_00425e60,0x425e60,function
-FUN_00425ea0,0x425ea0,function
-FUN_00425fa0,0x425fa0,function
-FUN_00425fe0,0x425fe0,function
-FUN_00426030,0x426030,function
+th08::EffectRandomSplashInit,0x425d70,function
+th08::EffectRandomSplashUpdate,0x425e60,function
+th08::EffectRandomSplashBigInit,0x425ea0,function
+th08::Float3::operator-() const,0x425fa0,function
+th08::EffectOrbitInit,0x425fe0,function
+th08::EffectOrbitUpdate,0x426030,function
 FUN_00426280,0x426280,function
 FUN_004264f0,0x4264f0,function
 FUN_00426720,0x426720,function

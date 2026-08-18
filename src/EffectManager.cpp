@@ -364,6 +364,116 @@ void EffectManager::CutChain()
 
 
 
+
+extern f32 g_EclGameTimeScale;
+
+// FUNCTION: th08 0x423d70
+Float3 *Float3::operator*=(f32 scalar)
+{
+    this->x *= scalar;
+    this->y *= scalar;
+    this->z *= scalar;
+    return this;
+}
+
+// FUNCTION: th08 0x425fa0
+Float3 Float3::operator-() const
+{
+    return Float3(-this->x, -this->y, -this->z);
+}
+
+// FUNCTION: th08 0x425d70
+i32 __fastcall EffectRandomSplashInit(AnmVm *effect)
+{
+    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[0] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) / 12.0f;
+    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[1] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) / 12.0f;
+    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[2] = 0.0f;
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2c8) =
+        -*reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc) / 19.0f;
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc) *= g_EclGameTimeScale;
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2c8) *= g_EclGameTimeScale;
+    return 0;
+}
+
+// FUNCTION: th08 0x425ea0
+i32 __fastcall EffectRandomSplashBigInit(AnmVm *effect)
+{
+    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[0] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) * 4.0f / 33.0f;
+    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[1] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) * 4.0f / 33.0f;
+    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[2] = 0.0f;
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2c8) =
+        -*reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc) / 20.0f;
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc) *= g_EclGameTimeScale;
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2c8) *= g_EclGameTimeScale;
+    return 0;
+}
+
+// FUNCTION: th08 0x425e60
+i32 __fastcall EffectRandomSplashUpdate(AnmVm *effect)
+{
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2a4) +=
+        *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc);
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc) +=
+        *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2c8);
+    return 1;
+}
+
+// FUNCTION: th08 0x425fe0
+i32 __fastcall EffectOrbitInit(AnmVm *effect)
+{
+    *reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(effect) + 0x354) = 2;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x2ec) = 0.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x2f0) = 0.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x2f4) = 0.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 0.0f;
+    return 0;
+}
+
+// FUNCTION: th08 0x426030
+#pragma var_order(posOffset, verticalAngle, localMatrix, horizontalAngle, normalizedPos, alpha, this)
+i32 __fastcall EffectOrbitUpdate(AnmVm *effect)
+{
+    Float3 posOffset;
+    f32 verticalAngle;
+    Float3 normalizedPos;
+    D3DXMATRIX localMatrix;
+    f32 horizontalAngle;
+    f32 alpha;
+    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&normalizedPos), reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x2ec));
+    verticalAngle = sinf(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318));
+    horizontalAngle = cosf(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318));
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x304) = normalizedPos.x * verticalAngle;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x308) = normalizedPos.y * verticalAngle;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x30c) = normalizedPos.z * verticalAngle;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x310) = horizontalAngle;
+    D3DXMatrixRotationQuaternion(&localMatrix, reinterpret_cast<D3DXQUATERNION *>(reinterpret_cast<u8 *>(effect) + 0x304));
+    posOffset.x = normalizedPos.y * 1.0f - normalizedPos.z * 0.0f;
+    posOffset.y = normalizedPos.z * 0.0f - normalizedPos.x * 1.0f;
+    posOffset.z = normalizedPos.x * 0.0f - normalizedPos.y * 0.0f;
+    if (D3DXVec3LengthSq(reinterpret_cast<D3DXVECTOR3 *>(&posOffset)) < 0.00001f)
+        normalizedPos = Float3(1.0f, 0.0f, 0.0f);
+    else
+        D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&posOffset), reinterpret_cast<D3DXVECTOR3 *>(&posOffset));
+    posOffset *= *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314);
+    D3DXVec3TransformCoord(reinterpret_cast<D3DXVECTOR3 *>(&posOffset), reinterpret_cast<D3DXVECTOR3 *>(&posOffset), &localMatrix);
+    posOffset.z *= 6.0f;
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2a4) = posOffset + *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2e0);
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x2ac) = 0.0f;
+    if (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(effect) + 0x352) != 0)
+    {
+        ++*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(effect) + 0x353);
+        if (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(effect) + 0x353) >= 16)
+            return 0;
+        alpha = 1.0f - (f32)*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(effect) + 0x353) / 16.0f;
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(effect) + 0x1f0) =
+            (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(effect) + 0x1f0) & 0xffffff) |
+            ((i32)(alpha * 255.0f) << 24);
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x1c) = 2.0f - alpha;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x18) = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x1c);
+    }
+    return 1;
+}
+
 struct EffectTemplate
 {
     i32 scriptIdx;

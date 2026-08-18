@@ -825,3 +825,10 @@ address,name,size,status,match_percent,unit,evidence
 0x004639E0,th08::AnmManager::FUN_004639e0,771,matching,100.00,anm-project-facing-quad,python3 scripts/compare-function.py anm-project-facing-quad --json
 0x004640E0,th08::AnmManager::FUN_004640e0,786,matching,100.00,anm-project-facing-quad-callback,python3 scripts/compare-function.py anm-project-facing-quad-callback --json
 0x00463470,th08::AnmManager::FUN_00463470,912,matching,100.00,anm-draw-rotated-or-axis-quad,python3 scripts/compare-function.py anm-draw-rotated-or-axis-quad --json
+0x00423D70,th08::Float3::operator*=,59,matching,100.00,float3-multiply-assign,python3 scripts/compare-function.py float3-multiply-assign --json
+0x00425FA0,th08::Float3::operator-() const,59,matching,100.00,float3-unary-minus,python3 scripts/compare-function.py float3-unary-minus --json
+0x00425D70,th08::EffectRandomSplashInit,236,matching,100.00,effect-random-splash-init,python3 scripts/compare-function.py effect-random-splash-init --json
+0x00425EA0,th08::EffectRandomSplashBigInit,248,matching,100.00,effect-random-splash-big-init,python3 scripts/compare-function.py effect-random-splash-big-init --json
+0x00425E60,th08::EffectRandomSplashUpdate,63,matching,100.00,effect-random-splash-update,python3 scripts/compare-function.py effect-random-splash-update --json
+0x00425FE0,th08::EffectOrbitInit,75,matching,100.00,effect-orbit-init,python3 scripts/compare-function.py effect-orbit-init --json
+0x00426030,th08::EffectOrbitUpdate,588,matching,100.00,effect-orbit-update,python3 scripts/compare-function.py effect-orbit-update --json

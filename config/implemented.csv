@@ -825,3 +825,10 @@ th08::PlayerRoute2OptionRender
 th08::AnmManager::FUN_004639e0
 th08::AnmManager::FUN_004640e0
 th08::AnmManager::FUN_00463470
+th08::Float3::operator*=
+th08::EffectRandomSplashInit
+th08::EffectRandomSplashBigInit
+th08::EffectRandomSplashUpdate
+th08::EffectOrbitInit
+th08::Float3::operator-() const
+th08::EffectOrbitUpdate

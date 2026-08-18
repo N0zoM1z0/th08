@@ -87176,3 +87176,442 @@ offset = 0x386
 type = "REL32"
 symbol = "th08::AnmManager::DrawInner"
 target = 0x004628B0
+
+[[units]]
+name = "float3-multiply-assign"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "??XFloat3@th08@@QAEPAU01@M@Z"
+target_address = 0x00423D70
+size = 0x3B
+
+[[units]]
+name = "float3-unary-minus"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "??GFloat3@th08@@QBE?AU01@XZ"
+target_address = 0x00425FA0
+size = 0x3B
+
+[[units.relocations]]
+offset = 0x2E
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units]]
+name = "effect-random-splash-init"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?EffectRandomSplashInit@th08@@YIHPAUAnmVm@1@@Z"
+target_address = 0x00425D70
+size = 0xEC
+
+[[units.relocations]]
+offset = 0xF
+type = "DIR32"
+symbol = "?g_Rng@th08@@3VRng@1@A"
+target = 0x0164D520
+
+[[units.relocations]]
+offset = 0x14
+type = "REL32"
+symbol = "?GetRandomF32InRange@Rng@th08@@QAEMM@Z"
+target = 0x0040D390
+
+[[units.relocations]]
+offset = 0x1A
+type = "DIR32"
+symbol = "__real@43000000"
+target = 0x004B443C
+
+[[units.relocations]]
+offset = 0x20
+type = "DIR32"
+symbol = "__real@41400000"
+target = 0x004B4970
+
+[[units.relocations]]
+offset = 0x31
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x40
+type = "DIR32"
+symbol = "?g_Rng@th08@@3VRng@1@A"
+target = 0x0164D520
+
+[[units.relocations]]
+offset = 0x45
+type = "REL32"
+symbol = "?GetRandomF32InRange@Rng@th08@@QAEMM@Z"
+target = 0x0040D390
+
+[[units.relocations]]
+offset = 0x4B
+type = "DIR32"
+symbol = "__real@43000000"
+target = 0x004B443C
+
+[[units.relocations]]
+offset = 0x51
+type = "DIR32"
+symbol = "__real@41400000"
+target = 0x004B4970
+
+[[units.relocations]]
+offset = 0x62
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x76
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x98
+type = "REL32"
+symbol = "??GFloat3@th08@@QBE?AU01@XZ"
+target = 0x00425FA0
+
+[[units.relocations]]
+offset = 0x9F
+type = "REL32"
+symbol = "??KFloat3@th08@@QBE?AU01@M@Z"
+target = 0x0040C7D0
+
+[[units.relocations]]
+offset = 0xBE
+type = "DIR32"
+symbol = "?g_EclGameTimeScale@th08@@3MA"
+target = 0x017CE8E0
+
+[[units.relocations]]
+offset = 0xCD
+type = "REL32"
+symbol = "??XFloat3@th08@@QAEPAU01@M@Z"
+target = 0x00423D70
+
+[[units.relocations]]
+offset = 0xD3
+type = "DIR32"
+symbol = "?g_EclGameTimeScale@th08@@3MA"
+target = 0x017CE8E0
+
+[[units.relocations]]
+offset = 0xE2
+type = "REL32"
+symbol = "??XFloat3@th08@@QAEPAU01@M@Z"
+target = 0x00423D70
+
+[[units]]
+name = "effect-random-splash-big-init"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?EffectRandomSplashBigInit@th08@@YIHPAUAnmVm@1@@Z"
+target_address = 0x00425EA0
+size = 0xF8
+
+[[units.relocations]]
+offset = 0xF
+type = "DIR32"
+symbol = "?g_Rng@th08@@3VRng@1@A"
+target = 0x0164D520
+
+[[units.relocations]]
+offset = 0x14
+type = "REL32"
+symbol = "?GetRandomF32InRange@Rng@th08@@QAEMM@Z"
+target = 0x0040D390
+
+[[units.relocations]]
+offset = 0x1A
+type = "DIR32"
+symbol = "__real@43000000"
+target = 0x004B443C
+
+[[units.relocations]]
+offset = 0x20
+type = "DIR32"
+symbol = "__real@40800000"
+target = 0x004B4308
+
+[[units.relocations]]
+offset = 0x26
+type = "DIR32"
+symbol = "__real@42040000"
+target = 0x004B4974
+
+[[units.relocations]]
+offset = 0x37
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x46
+type = "DIR32"
+symbol = "?g_Rng@th08@@3VRng@1@A"
+target = 0x0164D520
+
+[[units.relocations]]
+offset = 0x4B
+type = "REL32"
+symbol = "?GetRandomF32InRange@Rng@th08@@QAEMM@Z"
+target = 0x0040D390
+
+[[units.relocations]]
+offset = 0x51
+type = "DIR32"
+symbol = "__real@43000000"
+target = 0x004B443C
+
+[[units.relocations]]
+offset = 0x57
+type = "DIR32"
+symbol = "__real@40800000"
+target = 0x004B4308
+
+[[units.relocations]]
+offset = 0x5D
+type = "DIR32"
+symbol = "__real@42040000"
+target = 0x004B4974
+
+[[units.relocations]]
+offset = 0x6E
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x82
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xA4
+type = "REL32"
+symbol = "??GFloat3@th08@@QBE?AU01@XZ"
+target = 0x00425FA0
+
+[[units.relocations]]
+offset = 0xAB
+type = "REL32"
+symbol = "??KFloat3@th08@@QBE?AU01@M@Z"
+target = 0x0040C7D0
+
+[[units.relocations]]
+offset = 0xCA
+type = "DIR32"
+symbol = "?g_EclGameTimeScale@th08@@3MA"
+target = 0x017CE8E0
+
+[[units.relocations]]
+offset = 0xD9
+type = "REL32"
+symbol = "??XFloat3@th08@@QAEPAU01@M@Z"
+target = 0x00423D70
+
+[[units.relocations]]
+offset = 0xDF
+type = "DIR32"
+symbol = "?g_EclGameTimeScale@th08@@3MA"
+target = 0x017CE8E0
+
+[[units.relocations]]
+offset = 0xEE
+type = "REL32"
+symbol = "??XFloat3@th08@@QAEPAU01@M@Z"
+target = 0x00423D70
+
+[[units]]
+name = "effect-random-splash-update"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?EffectRandomSplashUpdate@th08@@YIHPAUAnmVm@1@@Z"
+target_address = 0x00425E60
+size = 0x3F
+
+[[units.relocations]]
+offset = 0x1A
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 0x32
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units]]
+name = "effect-orbit-init"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?EffectOrbitInit@th08@@YIHPAUAnmVm@1@@Z"
+target_address = 0x00425FE0
+size = 0x4B
+
+[[units]]
+name = "effect-orbit-update"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?EffectOrbitUpdate@th08@@YIHPAUAnmVm@1@@Z"
+target_address = 0x00426030
+size = 0x24C
+
+[[units.relocations]]
+offset = 0x11
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x19
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x21
+type = "REL32"
+symbol = "??0D3DXMATRIX@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x33
+type = "REL32"
+symbol = "_D3DXVec3Normalize@8"
+target = 0x00476E9F
+
+[[units.relocations]]
+offset = 0x42
+type = "REL32"
+symbol = "@sinf@4"
+target = 0x00409060
+
+[[units.relocations]]
+offset = 0x54
+type = "REL32"
+symbol = "@cosf@4"
+target = 0x00408D40
+
+[[units.relocations]]
+offset = 0xA3
+type = "REL32"
+symbol = "_D3DXMatrixRotationQuaternion@8"
+target = 0x004781C7
+
+[[units.relocations]]
+offset = 0xAC
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0xB5
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0xC3
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0xCC
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0xDA
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0xE3
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0xF0
+type = "REL32"
+symbol = "?D3DXVec3LengthSq@@YIMPBUD3DXVECTOR3@@@Z"
+target = 0x0040B500
+
+[[units.relocations]]
+offset = 0xF6
+type = "DIR32"
+symbol = "__real@3727c5ac"
+target = 0x004B4380
+
+[[units.relocations]]
+offset = 0x10E
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x12E
+type = "REL32"
+symbol = "_D3DXVec3Normalize@8"
+target = 0x00476E9F
+
+[[units.relocations]]
+offset = 0x140
+type = "REL32"
+symbol = "??XFloat3@th08@@QAEPAU01@M@Z"
+target = 0x00423D70
+
+[[units.relocations]]
+offset = 0x151
+type = "REL32"
+symbol = "_D3DXVec3TransformCoord@12"
+target = 0x0047710C
+
+[[units.relocations]]
+offset = 0x15A
+type = "DIR32"
+symbol = "__real@40c00000"
+target = 0x004B497C
+
+[[units.relocations]]
+offset = 0x173
+type = "REL32"
+symbol = "??HFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 0x1EF
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004B42D4
+
+[[units.relocations]]
+offset = 0x1F5
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x210
+type = "DIR32"
+symbol = "__real@437f0000"
+target = 0x004B4978
+
+[[units.relocations]]
+offset = 0x215
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x229
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC

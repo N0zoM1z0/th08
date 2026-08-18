@@ -291,7 +291,7 @@ FUN_00423400,0x423400,0x128,unknown,,u8
 FUN_00423530,0x423530,0x68,unknown,,u8
 FUN_004235a0,0x4235a0,0x4b3,unknown,,u8
 FUN_00423a60,0x423a60,0x310,unknown,,u8
-FUN_00423d70,0x423d70,0x3b,unknown,,u8,u8
+th08::Float3::operator*=,0x423d70,0x3b,__thiscall,,Float3*,Float3*,f32
 FUN_00423db0,0x423db0,0x68,unknown,,u8
 FUN_00423e20,0x423e20,0x310,unknown,,u8
 FUN_00424130,0x424130,0x40,unknown,,u8
@@ -326,12 +326,12 @@ th08::EffectManager::SpawnEffectAngle,0x425650,0x215,__thiscall,,AnmVm*,EffectMa
 th08::EffectManager::FUN_00425870,0x425870,0x16d,__thiscall,,AnmVm*,EffectManager*,i32,D3DXVECTOR3*,i32,i32,i32
 FUN_004259e0,0x4259e0,0x18a,unknown,,u8,u8,u8,u8,u8,u8,u8
 th08::EffectManager::SpawnEffect00425B70,0x425b70,0x1fd,__thiscall,,AnmVm*,EffectManager*,i32,D3DXVECTOR3*,i32,i32
-FUN_00425d70,0x425d70,0xec,unknown,,u8
-FUN_00425e60,0x425e60,0x3f,unknown,,u8
-FUN_00425ea0,0x425ea0,0xf8,unknown,,u8
-FUN_00425fa0,0x425fa0,0x3b,unknown,,u8,u8
-FUN_00425fe0,0x425fe0,0x4b,unknown,,u8
-FUN_00426030,0x426030,0x24c,unknown,,u8
+th08::EffectRandomSplashInit,0x425d70,0xec,__fastcall,,i32,AnmVm*
+th08::EffectRandomSplashUpdate,0x425e60,0x3f,__fastcall,,i32,AnmVm*
+th08::EffectRandomSplashBigInit,0x425ea0,0xf8,__fastcall,,i32,AnmVm*
+th08::Float3::operator-() const,0x425fa0,0x3b,__thiscall,,Float3*,Float3*
+th08::EffectOrbitInit,0x425fe0,0x4b,__fastcall,,i32,AnmVm*
+th08::EffectOrbitUpdate,0x426030,0x24c,__fastcall,,i32,AnmVm*
 FUN_00426280,0x426280,0x270,unknown,,u8
 FUN_004264f0,0x4264f0,0x221,unknown,,u8
 FUN_00426720,0x426720,0x26c,unknown,,u8
