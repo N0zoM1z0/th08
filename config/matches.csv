@@ -1019,3 +1019,17 @@ address,name,size,status,match_percent,unit,evidence
 0x00421180,th08::EclRunLowProposal::InterpolateHermite,256,matching,100.00,ecl-interpolate-hermite-00421180,python3 scripts/compare-function.py ecl-interpolate-hermite-00421180 --json
 0x00465510,th08::GetAnmFormat,83,matching,100.00,anm-get-format-00465510,python3 scripts/compare-function.py anm-get-format-00465510 --json
 0x0040B500,D3DXVec3LengthSq,49,matching,100.00,d3dx-vec3-length-sq-0040b500,python3 scripts/compare-function.py d3dx-vec3-length-sq-0040b500 --json
+0x004067C0,th08::AnmVmBase::AnmVmBase,142,matching,100.00,anm-vm-base-ctor-004067c0,python3 scripts/compare-function.py anm-vm-base-ctor-004067c0 --json
+0x00406850,`eh_vector_constructor_iterator',39,matching,100.00,vc7-vector-constructor-iterator-00406850,python3 scripts/compare-function.py vc7-vector-constructor-iterator-00406850 --json
+0x00453C40,th08::Supervisor::IsSpeedhackDetected,26,matching,100.00,supervisor-speedhack-detected-00453c40,python3 scripts/compare-function.py supervisor-speedhack-detected-00453c40 --json
+0x0045A0B3,th08::ResultScreen::`scalar_deleting_destructor',41,matching,100.00,result-screen-scalar-deleting-dtor-0045a0b3,python3 scripts/compare-function.py result-screen-scalar-deleting-dtor-0045a0b3 --json
+0x0045C480,th08::CSoundManager::`scalar_deleting_destructor',46,matching,100.00,sound-manager-scalar-deleting-dtor-0045c480,python3 scripts/compare-function.py sound-manager-scalar-deleting-dtor-0045c480 --json
+0x00441E10,th08::AnmManager::`scalar_deleting_destructor',46,matching,100.00,anm-manager-scalar-deleting-dtor-00441e10,python3 scripts/compare-function.py anm-manager-scalar-deleting-dtor-00441e10 --json
+0x00441E40,th08::MidiOutput::`scalar_deleting_destructor',46,matching,100.00,midi-output-scalar-deleting-dtor-00441e40,python3 scripts/compare-function.py midi-output-scalar-deleting-dtor-00441e40 --json
+0x0043CE00,th08::ChainElem::`scalar_deleting_destructor',46,matching,100.00,chain-elem-scalar-deleting-dtor-0043ce00,python3 scripts/compare-function.py chain-elem-scalar-deleting-dtor-0043ce00 --json
+0x00473C80,th08::IPbgFile::`scalar_deleting_destructor',46,matching,100.00,ipbgfile-scalar-deleting-dtor-00473c80,python3 scripts/compare-function.py ipbgfile-scalar-deleting-dtor-00473c80 --json
+0x00473700,th08::CPbgFile::`scalar_deleting_destructor',46,matching,100.00,cpbgfile-scalar-deleting-dtor-00473700,python3 scripts/compare-function.py cpbgfile-scalar-deleting-dtor-00473700 --json
+0x00472B00,th08::CStreamingSound::`scalar_deleting_destructor',46,matching,100.00,streaming-sound-scalar-deleting-dtor-00472b00,python3 scripts/compare-function.py streaming-sound-scalar-deleting-dtor-00472b00 --json
+0x00472040,th08::CSound::`scalar_deleting_destructor',46,matching,100.00,csound-scalar-deleting-dtor-00472040,python3 scripts/compare-function.py csound-scalar-deleting-dtor-00472040 --json
+0x00474A80,th08::PbgArchiveEntry::`vector_deleting_destructor',112,matching,100.00,pbg-entry-vector-deleting-dtor-00474a80,python3 scripts/compare-function.py pbg-entry-vector-deleting-dtor-00474a80 --json
+0x00446F42,th08::DummyMidiTimer::~DummyMidiTimer,17,matching,100.00,dummy-midi-timer-dtor-00446f42,python3 scripts/compare-function.py dummy-midi-timer-dtor-00446f42 --json

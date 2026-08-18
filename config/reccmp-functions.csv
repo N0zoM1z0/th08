@@ -45,8 +45,8 @@ th08::ZunTimer::operator>,0x4066c0,function
 th08::AnmVmBase::IsVisible,0x4066e0,function
 th08::AnmVm::ClearVisible,0x406700,function
 th08::AnmVm::AnmVm,0x406720,function
-th08::AnmPrefix::AnmPrefix,0x4067c0,function
-`vector constructor iterator',0x406850,function
+th08::AnmVmBase::AnmVmBase,0x4067c0,function
+`eh_vector_constructor_iterator',0x406850,function
 th08::AnmLoaded::GetSprite,0x406880,function
 th08::AnmLoaded::InitializeAndSetSprite,0x4068a0,function
 th08::AnmVmBase::Initialize,0x4068e0,function
@@ -559,7 +559,7 @@ th08::Chain::AddToDrawChain,0x43c960,function
 th08::Chain::RunCalcChain,0x43ca50,function
 th08::Chain::RunDrawChain,0x43cb60,function
 th08::Chain::ReleaseSingleChain,0x43cc60,function
-th08::ChainElem::`scalar deleting destructor',0x43ce00,function
+th08::ChainElem::`scalar_deleting_destructor',0x43ce00,function
 th08::Chain::Release,0x43ce30,function
 th08::Chain::CreateElem,0x43ce60,function
 th08::Chain::Cut,0x43cf10,function
@@ -631,8 +631,8 @@ th08::ZunTimer::operator!=,0x441830,function
 th08::GameManager::AddPower,0x441850,function
 th08::GameWindow::GameWindow,0x4418a0,function
 WinMain,0x4418c0,function
-th08::AnmManager::`scalar deleting destructor',0x441e10,function
-th08::MidiOutput::`scalar deleting destructor',0x441e40,function
+th08::AnmManager::`scalar_deleting_destructor',0x441e10,function
+th08::MidiOutput::`scalar_deleting_destructor',0x441e40,function
 th08::GameWindow::Render,0x441e70,function
 th08::GameWindow::Present,0x442060,function
 th08::GameWindow::GetTimestamp,0x442190,function
@@ -840,7 +840,7 @@ th08::?A0xb3f6a42d::AppendFormat,0x453b80,function
 th08::Rng::SetSeed,0x453be0,function
 th08::Rng::ResetGenerationCount,0x453c00,function
 th08::Rng::GetSeed,0x453c20,function
-th08::Supervisor::IsClearBackBufferOnRefreshEnabled,0x453c40,function
+th08::Supervisor::IsSpeedhackDetected,0x453c40,function
 th08::GameManager::SetClockTime,0x453c60,function
 th08::GameManager::GetDeaths,0x453c80,function
 th08::GameManager::GetBombsUsed,0x453ca0,function
@@ -872,7 +872,7 @@ th08::ResultScreen::OnUpdate,0x4584b0,function
 th08::ResultScreen::OnDraw,0x4586b4,function
 th08::ResultScreen::AddedCallback,0x45964d,function
 th08::ResultScreen::DeletedCallback,0x459fd2,function
-th08::ResultScreen::`scalar deleting destructor',0x45a0b3,function
+th08::ResultScreen::`scalar_deleting_destructor',0x45a0b3,function
 th08::ResultScreen::~ResultScreen,0x45a0dc,function
 th08::ResultScreen::MoveCursor,0x45a0f4,function
 th08::ResultScreen::MoveShotTypeCursor,0x45a1f3,function
@@ -911,7 +911,7 @@ th08::ScreenEffect::AddedCallback,0x45c0e0,function
 th08::ScreenEffect::DeletedCallback,0x45c100,function
 th08::ScreenEffect::FUN_0045c160,0x45c160,function
 th08::SoundPlayer::InitializeDSound,0x45c190,function
-th08::CSoundManager::`scalar deleting destructor',0x45c480,function
+th08::CSoundManager::`scalar_deleting_destructor',0x45c480,function
 th08::SoundPlayer::Release,0x45c4b0,function
 th08::SoundPlayer::GetFmtIndexByName,0x45c6b0,function
 th08::SoundPlayer::LoadSound,0x45c8c0,function
@@ -1045,7 +1045,7 @@ th08::CSoundManager::CreateStreaming,0x4718d0,function
 th08::CWaveFile::`scalar deleting destructor',0x471c10,function
 th08::CSoundManager::CreateStreamingFromMemory,0x471c40,function
 th08::CSound::CSound,0x471f60,function
-th08::CSound::`scalar deleting destructor',0x472040,function
+th08::CSound::`scalar_deleting_destructor',0x472040,function
 th08::CStreamingSound::InitSoundBuffers,0x472070,function
 th08::CSound::~CSound,0x4722d0,function
 th08::CSound::FillBufferWithSound,0x4723b0,function
@@ -1059,7 +1059,7 @@ th08::CSound::Pause,0x472990,function
 th08::CSound::Unpause,0x4729e0,function
 th08::CSound::Reset,0x472a30,function
 th08::CStreamingSound::CStreamingSound,0x472aa0,function
-th08::CStreamingSound::`scalar deleting destructor',0x472b00,function
+th08::CStreamingSound::`scalar_deleting_destructor',0x472b00,function
 th08::CStreamingSound::~CStreamingSound,0x472b30,function
 th08::CStreamingSound::UpdateFadeOut,0x472b50,function
 th08::CStreamingSound::UpdateFadeIn,0x472be0,function
@@ -1077,7 +1077,7 @@ th08::CWaveFile::ResetFile,0x4733e0,function
 th08::CWaveFile::Read,0x473530,function
 th08::CWaveFile::Close,0x473680,function
 th08::CPbgFile::CPbgFile,0x4736c0,function
-th08::CPbgFile::`scalar deleting destructor',0x473700,function
+th08::CPbgFile::`scalar_deleting_destructor',0x473700,function
 th08::CPbgFile::~CPbgFile,0x473730,function
 th08::CPbgFile::Open,0x473790,function
 th08::CPbgFile::Close,0x4738e0,function
@@ -1090,7 +1090,7 @@ th08::CPbgFile::ReadWholeFile,0x473a60,function
 th08::CPbgFile::GetFullFilePath,0x473b40,function
 th08::IPbgFile::IPbgFile,0x473c40,function
 th08::IPbgFile::~IPbgFile,0x473c60,function
-th08::IPbgFile::`scalar deleting destructor',0x473c80,function
+th08::IPbgFile::`scalar_deleting_destructor',0x473c80,function
 th08::Lzss::Encode,0x473cb0,function
 th08::Lzss::Decode,0x4740e0,function
 th08::Lzss::InitTree,0x474450,function
@@ -1104,7 +1104,7 @@ th08::PbgArchive::PbgArchive,0x474860,function
 th08::PbgArchive::~PbgArchive,0x4748a0,function
 th08::PbgArchive::Load,0x4748c0,function
 th08::PbgArchive::Release,0x4749b0,function
-th08::PbgArchiveEntry::`vector deleting destructor',0x474a80,function
+th08::PbgArchiveEntry::`vector_deleting_destructor',0x474a80,function
 th08::PbgArchive::ReadDecompressEntry,0x474af0,function
 th08::PbgArchive::GetEntryDecompressedSize,0x474c40,function
 th08::PbgArchive::FindEntry,0x474c70,function

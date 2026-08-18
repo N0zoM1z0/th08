@@ -282,3 +282,9 @@ Treat early-return topology as codegen evidence. `if (value == 0) return; body;`
 When VC7 `/Od` target code stores an x87 result with `fst [local]` and immediately continues arithmetic without reloading it, test a real named source local rather than an artificial spill. A named value assigned from the call and used in the following expression can make VC7 preserve both the stack home and the live ST0 value; use `#pragma var_order` only to place proven locals.
 
 Canonical evidence should come from a COFF function symbol with a reproducible extent. If an already-exact TU-local `static` helper has only a raw/internal aux record, prefer promoting that existing implementation to its real namespace-level owner when ownership is semantically valid and codegen remains exact. Do not add comparator exceptions merely to accept an unbounded symbol.
+
+## Auxless compiler COMDAT acceptance
+
+Some VC7 compiler-generated functions have no function-definition aux record even though their `.text` COMDAT is an isolated, reproducible body. Do not hand-write a fake deleting destructor merely to manufacture an aux record. Use `allow_auxless_comdat = true` only when the manifest intentionally owns that compiler body and the comparator can prove all of: code+COMDAT section, function symbol at offset zero, exactly one section-defined external function owner, and section length equal to the full comparison extent. Relocations must still match and replay normally. Undefined symbols of the same decorated name are references, not competing body owners.
+
+For a real implicit class constructor, prefer a real explicit empty constructor if that preserves bytes: `AnmVmBase::AnmVmBase` demonstrates that member initialization remains compiler-generated while the explicit owner gains a standard COFF function extent. Keep ordinary functions off the auxless path whenever a natural source-level owner can provide normal canonical evidence.

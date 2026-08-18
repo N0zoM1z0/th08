@@ -291,6 +291,8 @@ struct AnmRawInstr
 
 struct AnmVmBase
 {
+    AnmVmBase();
+
     void SetBlendModeAdditive();
     void SetBlendModeNormal();
 

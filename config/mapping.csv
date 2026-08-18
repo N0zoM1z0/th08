@@ -44,8 +44,8 @@ th08::ZunTimer::operator>,0x4066c0,0x1b,__thiscall,,bool,ZunTimer*,i32
 th08::AnmVmBase::IsVisible,0x4066e0,0x17,__thiscall,,ZunBool,AnmVm*
 th08::AnmVm::ClearVisible,0x406700,0x20,__thiscall,,void,AnmVm*
 th08::AnmVm::AnmVm,0x406720,0x92,__thiscall,,AnmVm*,AnmVm*
-th08::AnmPrefix::AnmPrefix,0x4067c0,0x8e,__thiscall,,AnmPrefix*,AnmPrefix*
-`eh_vector_constructor_iterator',0x406850,0x27,unknown,,u8,u8,u8,u8,u8
+th08::AnmVmBase::AnmVmBase,0x4067c0,0x8e,__thiscall,,AnmVmBase*,AnmVmBase*
+`eh_vector_constructor_iterator',0x406850,0x27,__stdcall,,void,void*,u32,i32,void*
 th08::AnmLoaded::GetSprite,0x406880,0x19,__thiscall,,AnmLoadedSprite*,AnmLoaded*,i32
 th08::AnmLoaded::InitializeAndSetSprite,0x4068a0,0x31,__thiscall,,void,AnmLoaded*,AnmVm*,i32
 th08::AnmVmBase::Initialize,0x4068e0,0x5f,__thiscall,,void,AnmVmBase*
@@ -558,7 +558,7 @@ th08::Chain::AddToDrawChain,0x43c960,0xe3,__thiscall,,ZunResult,Chain*,ChainElem
 th08::Chain::RunCalcChain,0x43ca50,0xe8,__thiscall,,i32,Chain*
 th08::Chain::RunDrawChain,0x43cb60,0xe6,__thiscall,,i32,Chain*
 th08::Chain::ReleaseSingleChain,0x43cc60,0x198,__thiscall,,void,Chain*,ChainElem*
-th08::ChainElem::`scalar_deleting_destructor',0x43ce00,0x2e,__thiscall,,ChainElem*,ChainElem*,u32
+th08::ChainElem::`scalar_deleting_destructor',0x43ce00,0x2e,__thiscall,,void*,ChainElem*,u32
 th08::Chain::Release,0x43ce30,0x30,__thiscall,,void,Chain*
 th08::Chain::CreateElem,0x43ce60,0xa2,__thiscall,,ChainElem*,Chain*,u32
 th08::Chain::Cut,0x43cf10,0x31,__thiscall,,void,Chain*,ChainElem*
@@ -630,8 +630,8 @@ th08::ZunTimer::operator!=,0x441830,0x1b,__thiscall,,ZunBool,ZunTimer*,i32
 th08::GameManager::AddPower,0x441850,0x4d,__thiscall,,void,GameManager*,i32
 th08::GameWindow::GameWindow,0x4418a0,0x1c,__thiscall,,GameWindow*,GameWindow*
 WinMain,0x4418c0,0x54a,__stdcall,,i32,HINSTANCE__*,HINSTANCE__*,char*,i32
-th08::AnmManager::`scalar_deleting_destructor',0x441e10,0x2e,__thiscall,,AnmManager*,AnmManager*,u32
-th08::MidiOutput::`scalar_deleting_destructor',0x441e40,0x2e,__thiscall,,MidiOutput*,MidiOutput*,u32
+th08::AnmManager::`scalar_deleting_destructor',0x441e10,0x2e,__thiscall,,void*,AnmManager*,u32
+th08::MidiOutput::`scalar_deleting_destructor',0x441e40,0x2e,__thiscall,,void*,MidiOutput*,u32
 th08::GameWindow::Render,0x441e70,0x1e2,__thiscall,,RenderResult,GameWindow*
 th08::GameWindow::Present,0x442060,0x127,__fastcall,,void
 th08::GameWindow::GetTimestamp,0x442190,0x70,__thiscall,,double,GameWindow*
@@ -702,7 +702,7 @@ th08::Supervisor::SetupDInput,0x446a37,0x290,__thiscall,,ZunResult,Supervisor*
 th08::Supervisor::EnumGameControllersCb,0x446cc7,0x3f,__stdcall,,BOOL,LPCDIDEVICEINSTANCE,LPVOID
 th08::Supervisor::DeletedCallback,0x446d06,0x205,__fastcall,,ZunResult,Supervisor*
 th08::AnmManager::ReleaseVertexBuffer,0x446f0b,0x37,__thiscall,,void,AnmManager*
-FUN_00446f42,0x446f42,0x11,__fastcall,,void,u32
+th08::DummyMidiTimer::~DummyMidiTimer,0x446f42,0x11,__thiscall,,void,DummyMidiTimer*
 th08::Supervisor::CalculateFps,0x446f53,0x342,__fastcall,,void,ZunBool
 th08::ZunTimer::Increment,0x447295,0xc6,__thiscall,,void,ZunTimer*,i32
 th08::ZunTimer::Decrement,0x44735b,0xc6,__thiscall,,void,ZunTimer*,i32
@@ -839,7 +839,7 @@ th08::?A0xb3f6a42d::AppendFormat,0x453b80,0x58,__cdecl,varargs,char*,char*,char*
 th08::Rng::SetSeed,0x453be0,0x17,__thiscall,,void,Rng*,u16
 th08::Rng::ResetGenerationCount,0x453c00,0x15,__thiscall,,void,Rng*
 th08::Rng::GetSeed,0x453c20,0x11,__thiscall,,u16,Rng*
-th08::Supervisor::IsClearBackBufferOnRefreshEnabled,0x453c40,0x1a,__thiscall,,u32,Supervisor*
+th08::Supervisor::IsSpeedhackDetected,0x453c40,0x1a,__thiscall,,u32,Supervisor*
 th08::GameManager::SetClockTime,0x453c60,0x19,__thiscall,,void,GameManager*,i32
 th08::GameManager::GetDeaths,0x453c80,0x19,__thiscall,,i32,GameManager*
 th08::GameManager::GetBombsUsed,0x453ca0,0x1c,__thiscall,,i32,GameManager*
@@ -910,7 +910,7 @@ th08::ScreenEffect::AddedCallback,0x45c0e0,0x1a,__fastcall,,ZunResult,ScreenEffe
 th08::ScreenEffect::DeletedCallback,0x45c100,0x5e,__fastcall,,ZunResult,ScreenEffect*
 th08::ScreenEffect::FUN_0045c160,0x45c160,0x22,__thiscall,,void,ScreenEffect*
 th08::SoundPlayer::InitializeDSound,0x45c190,0x2ea,__thiscall,,ZunResult,SoundPlayer*,HWND__*
-th08::CSoundManager::`scalar_deleting_destructor',0x45c480,0x2e,__thiscall,,CSoundManager*,CSoundManager*,u32
+th08::CSoundManager::`scalar_deleting_destructor',0x45c480,0x2e,__thiscall,,void*,CSoundManager*,u32
 th08::SoundPlayer::Release,0x45c4b0,0x1fa,__thiscall,,ZunResult,SoundPlayer*
 th08::SoundPlayer::GetFmtIndexByName,0x45c6b0,0x20b,__thiscall,,i32,SoundPlayer*,char*
 th08::SoundPlayer::LoadSound,0x45c8c0,0x2fe,__thiscall,,ZunResult,SoundPlayer*,i32,char*
@@ -1044,7 +1044,7 @@ th08::CSoundManager::CreateStreaming,0x4718d0,0x333,__thiscall,,u32,CSoundManage
 th08::CWaveFile::`scalar_deleting_destructor',0x471c10,0x2e,__thiscall,,CWaveFile*,CWaveFile*,u32
 th08::CSoundManager::CreateStreamingFromMemory,0x471c40,0x31b,__thiscall,,u32,CSoundManager*,CStreamingSound**,uchar*,unsigned long,tWAVEFORMATEX*,unsigned long,GUID,unsigned long,unsigned long,u32
 th08::CSound::CSound,0x471f60,0xdd,__thiscall,,u8,CSound*,IDirectSoundBuffer**,unsigned long,unsigned long,CWaveFile*
-th08::CSound::`scalar_deleting_destructor',0x472040,0x2e,__thiscall,,u32,CSound*,u32
+th08::CSound::`scalar_deleting_destructor',0x472040,0x2e,__thiscall,,void*,CSound*,u32
 th08::CStreamingSound::InitSoundBuffers,0x472070,0x257,__thiscall,,u32,CStreamingSound*
 th08::CSound::~CSound,0x4722d0,0xd8,unknown,,u8
 th08::CSound::FillBufferWithSound,0x4723b0,0x1e4,__thiscall,,i32,CSound*,IDirectSoundBuffer*,i32
@@ -1058,7 +1058,7 @@ th08::CSound::Pause,0x472990,0x4f,__thiscall,,u32,CSound*
 th08::CSound::Unpause,0x4729e0,0x4e,__thiscall,,u32,CSound*
 th08::CSound::Reset,0x472a30,0x6e,__thiscall,,long,CSound*
 th08::CStreamingSound::CStreamingSound,0x472aa0,0x60,__thiscall,,CStreamingSound*,CStreamingSound*,IDirectSoundBuffer*,unsigned long,CWaveFile*,unsigned long
-th08::CStreamingSound::`scalar_deleting_destructor',0x472b00,0x2e,unknown,,u8,u8
+th08::CStreamingSound::`scalar_deleting_destructor',0x472b00,0x2e,__thiscall,,void*,CStreamingSound*,u32
 th08::CStreamingSound::~CStreamingSound,0x472b30,0x1c,__thiscall,,void,CStreamingSound*
 th08::CStreamingSound::UpdateFadeOut,0x472b50,0x81,__thiscall,,u32,CStreamingSound*
 th08::CStreamingSound::UpdateFadeIn,0x472be0,0x6a,__thiscall,,u32,CStreamingSound*
@@ -1076,7 +1076,7 @@ th08::CWaveFile::ResetFile,0x4733e0,0x148,__thiscall,,u32,CWaveFile*,bool
 th08::CWaveFile::Read,0x473530,0x148,__thiscall,,long,CWaveFile*,uchar*,unsigned long,unsigned long*
 th08::CWaveFile::Close,0x473680,0x33,__thiscall,,u32,CWaveFile*
 th08::CPbgFile::CPbgFile,0x4736c0,0x33,__thiscall,,CPbgFile*,CPbgFile*
-th08::CPbgFile::`scalar_deleting_destructor',0x473700,0x2e,unknown,,u8,u8
+th08::CPbgFile::`scalar_deleting_destructor',0x473700,0x2e,__thiscall,,void*,CPbgFile*,u32
 th08::CPbgFile::~CPbgFile,0x473730,0x51,__thiscall,,void,CPbgFile*
 th08::CPbgFile::Open,0x473790,0x14a,__thiscall,,u32,CPbgFile*,char*,char*
 th08::CPbgFile::Close,0x4738e0,0x35,__thiscall,,void,CPbgFile*
@@ -1089,7 +1089,7 @@ th08::CPbgFile::ReadWholeFile,0x473a60,0xd2,unknown,,u8,u8
 th08::CPbgFile::GetFullFilePath,0x473b40,0xfd,unknown,,u8
 th08::IPbgFile::IPbgFile,0x473c40,0x17,__thiscall,,u32*,IPbgFile*
 th08::IPbgFile::~IPbgFile,0x473c60,0x14,__thiscall,,void,IPbgFile*
-th08::IPbgFile::`scalar_deleting_destructor',0x473c80,0x2e,__thiscall,,u32,IPbgFile*,u32
+th08::IPbgFile::`scalar_deleting_destructor',0x473c80,0x2e,__thiscall,,void*,IPbgFile*,u32
 th08::Lzss::Encode,0x473cb0,0x429,unknown,,u8,u8
 th08::Lzss::Decode,0x4740e0,0x364,unknown,,u8,u8,u8
 th08::Lzss::InitTree,0x474450,0x43,__fastcall,,void,i32
@@ -1103,7 +1103,7 @@ th08::PbgArchive::PbgArchive,0x474860,0x35,__thiscall,,PbgArchive*,PbgArchive*
 th08::PbgArchive::~PbgArchive,0x4748a0,0x13,unknown,,u8
 th08::PbgArchive::Load,0x4748c0,0xe5,unknown,,u8,u8
 th08::PbgArchive::Release,0x4749b0,0xd0,__thiscall,,void,PbgArchive*
-th08::PbgArchiveEntry::`vector_deleting_destructor',0x474a80,0x70,__thiscall,,i32,PbgArchiveEntry*,u32
+th08::PbgArchiveEntry::`vector_deleting_destructor',0x474a80,0x70,__thiscall,,void*,PbgArchiveEntry*,u32
 th08::PbgArchive::ReadDecompressEntry,0x474af0,0x141,unknown,,u8,u8,u8
 th08::PbgArchive::GetEntryDecompressedSize,0x474c40,0x2e,__thiscall,,u8,PbgArchive*,char*
 th08::PbgArchive::FindEntry,0x474c70,0x65,__thiscall,,u32*,PbgArchive*,u8

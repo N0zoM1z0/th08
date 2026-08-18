@@ -1018,3 +1018,17 @@ th08::EclRunLowProposal::InterpolateLinear
 th08::EclRunLowProposal::InterpolateHermite
 th08::GetAnmFormat
 D3DXVec3LengthSq
+th08::AnmVmBase::AnmVmBase
+`eh_vector_constructor_iterator'
+th08::Supervisor::IsSpeedhackDetected
+th08::ResultScreen::`scalar_deleting_destructor'
+th08::CSoundManager::`scalar_deleting_destructor'
+th08::AnmManager::`scalar_deleting_destructor'
+th08::MidiOutput::`scalar_deleting_destructor'
+th08::ChainElem::`scalar_deleting_destructor'
+th08::IPbgFile::`scalar_deleting_destructor'
+th08::CPbgFile::`scalar_deleting_destructor'
+th08::CStreamingSound::`scalar_deleting_destructor'
+th08::CSound::`scalar_deleting_destructor'
+th08::PbgArchiveEntry::`vector_deleting_destructor'
+th08::DummyMidiTimer::~DummyMidiTimer

@@ -106583,3 +106583,323 @@ object = "build/objdiff/reimpl/EffectManager.obj"
 symbol = "?D3DXVec3LengthSq@@YIMPBUD3DXVECTOR3@@@Z"
 target_address = 0x0040B500
 size = 0x31
+
+[[units]]
+name = "anm-vm-base-ctor-004067c0"
+object = "build/objdiff/reimpl/AnmManager.obj"
+symbol = "??0AnmVmBase@th08@@QAE@XZ"
+target_address = 0x004067C0
+size = 0x8E
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x16
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x21
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x2C
+type = "REL32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x31
+type = "DIR32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x41
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x46
+type = "DIR32"
+symbol = "??0ZunTimer@th08@@QAE@XZ"
+target = 0x004065A0
+
+[[units.relocations]]
+offset = 0x59
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x67
+type = "REL32"
+symbol = "??0D3DXMATRIX@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x75
+type = "REL32"
+symbol = "??0D3DXMATRIX@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x83
+type = "REL32"
+symbol = "??0D3DXMATRIX@@QAE@XZ"
+target = 0x0040B460
+
+[[units]]
+name = "vc7-vector-constructor-iterator-00406850"
+object = "build/objdiff/reimpl/AnmManager.obj"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target_address = 0x00406850
+size = 0x27
+allow_auxless_comdat = true
+
+[[units]]
+name = "supervisor-speedhack-detected-00453c40"
+object = "build/objdiff/reimpl/ReplayManager.obj"
+symbol = "?IsSpeedhackDetected@Supervisor@th08@@QAEIXZ"
+target_address = 0x00453C40
+size = 0x1A
+
+[[units]]
+name = "result-screen-scalar-deleting-dtor-0045a0b3"
+object = "build/objdiff/reimpl/ResultScreen.obj"
+symbol = "??_GResultScreen@th08@@QAEPAXI@Z"
+target_address = 0x0045A0B3
+size = 0x29
+allow_auxless_comdat = true
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "th08::ResultScreen::~ResultScreen"
+target = 0x0045A0DC
+
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "??3@YAXPAX@Z"
+target = 0x004A43CF
+
+[[units]]
+name = "sound-manager-scalar-deleting-dtor-0045c480"
+object = "build/objdiff/reimpl/SoundPlayer.obj"
+symbol = "??_GCSoundManager@th08@@QAEPAXI@Z"
+target_address = 0x0045C480
+size = 0x2E
+allow_auxless_comdat = true
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "??1CSoundManager@th08@@QAE@XZ"
+target = 0x00471700
+
+[[units.relocations]]
+offset = 0x1E
+type = "REL32"
+symbol = "??3@YAXPAX@Z"
+target = 0x004A43CF
+
+[[units]]
+name = "anm-manager-scalar-deleting-dtor-00441e10"
+object = "build/objdiff/reimpl/main.obj"
+symbol = "??_GAnmManager@th08@@QAEPAXI@Z"
+target_address = 0x00441E10
+size = 0x2E
+allow_auxless_comdat = true
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "??1AnmManager@th08@@QAE@XZ"
+target = 0x0043EF40
+
+[[units.relocations]]
+offset = 0x1E
+type = "REL32"
+symbol = "??3@YAXPAX@Z"
+target = 0x004A43CF
+
+[[units]]
+name = "midi-output-scalar-deleting-dtor-00441e40"
+object = "build/objdiff/reimpl/main.obj"
+symbol = "??_GMidiOutput@th08@@QAEPAXI@Z"
+target_address = 0x00441E40
+size = 0x2E
+allow_auxless_comdat = true
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "??1MidiOutput@th08@@QAE@XZ"
+target = 0x00444100
+
+[[units.relocations]]
+offset = 0x1E
+type = "REL32"
+symbol = "??3@YAXPAX@Z"
+target = 0x004A43CF
+
+[[units]]
+name = "chain-elem-scalar-deleting-dtor-0043ce00"
+object = "build/objdiff/reimpl/Global.obj"
+symbol = "??_GChainElem@th08@@QAEPAXI@Z"
+target_address = 0x0043CE00
+size = 0x2E
+allow_auxless_comdat = true
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "th08::ChainElem::~ChainElem"
+target = 0x0043C7D0
+
+[[units.relocations]]
+offset = 0x1E
+type = "REL32"
+symbol = "??3@YAXPAX@Z"
+target = 0x004A43CF
+
+[[units]]
+name = "ipbgfile-scalar-deleting-dtor-00473c80"
+object = "build/objdiff/reimpl/PbgFile.obj"
+symbol = "??_GIPbgFile@th08@@UAEPAXI@Z"
+target_address = 0x00473C80
+size = 0x2E
+allow_auxless_comdat = true
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "th08::IPbgFile::~IPbgFile"
+target = 0x00473C60
+
+[[units.relocations]]
+offset = 0x1E
+type = "REL32"
+symbol = "??3@YAXPAX@Z"
+target = 0x004A43CF
+
+[[units]]
+name = "cpbgfile-scalar-deleting-dtor-00473700"
+object = "build/objdiff/reimpl/PbgFile.obj"
+symbol = "??_GCPbgFile@th08@@UAEPAXI@Z"
+target_address = 0x00473700
+size = 0x2E
+allow_auxless_comdat = true
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "th08::CPbgFile::~CPbgFile"
+target = 0x00473730
+
+[[units.relocations]]
+offset = 0x1E
+type = "REL32"
+symbol = "??3@YAXPAX@Z"
+target = 0x004A43CF
+
+[[units]]
+name = "streaming-sound-scalar-deleting-dtor-00472b00"
+object = "build/objdiff/reimpl/zwave.obj"
+symbol = "??_GCStreamingSound@th08@@UAEPAXI@Z"
+target_address = 0x00472B00
+size = 0x2E
+allow_auxless_comdat = true
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "th08::CStreamingSound::~CStreamingSound"
+target = 0x00472B30
+
+[[units.relocations]]
+offset = 0x1E
+type = "REL32"
+symbol = "??3@YAXPAX@Z"
+target = 0x004A43CF
+
+[[units]]
+name = "csound-scalar-deleting-dtor-00472040"
+object = "build/objdiff/reimpl/zwave.obj"
+symbol = "??_GCSound@th08@@UAEPAXI@Z"
+target_address = 0x00472040
+size = 0x2E
+allow_auxless_comdat = true
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "th08::CSound::~CSound"
+target = 0x004722D0
+
+[[units.relocations]]
+offset = 0x1E
+type = "REL32"
+symbol = "??3@YAXPAX@Z"
+target = 0x004A43CF
+
+[[units]]
+name = "pbg-entry-vector-deleting-dtor-00474a80"
+object = "build/objdiff/reimpl/PbgArchive.obj"
+symbol = "??_EPbgArchiveEntry@th08@@QAEPAXI@Z"
+target_address = 0x00474A80
+size = 0x70
+allow_auxless_comdat = true
+
+[[units.relocations]]
+offset = 0x12
+type = "DIR32"
+symbol = "th08::PbgArchiveEntry::~PbgArchiveEntry"
+target = 0x00475270
+
+[[units.relocations]]
+offset = 0x24
+type = "REL32"
+symbol = "??_M@YGXPAXIHP6EX0@Z@Z"
+target = 0x004A60F5
+
+[[units.relocations]]
+offset = 0x3A
+type = "REL32"
+symbol = "??3@YAXPAX@Z"
+target = 0x004A43CF
+
+[[units.relocations]]
+offset = 0x4D
+type = "REL32"
+symbol = "th08::PbgArchiveEntry::~PbgArchiveEntry"
+target = 0x00475270
+
+[[units.relocations]]
+offset = 0x60
+type = "REL32"
+symbol = "??3@YAXPAX@Z"
+target = 0x004A43CF
+
+[[units]]
+name = "dummy-midi-timer-dtor-00446f42"
+object = "build/objdiff/reimpl/Supervisor.obj"
+symbol = "??1DummyMidiTimer@th08@@QAE@XZ"
+target_address = 0x00446F42
+size = 0x11
+allow_auxless_comdat = true
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "??1MidiTimer@th08@@QAE@XZ"
+target = 0x00443E20

@@ -84,22 +84,72 @@ def pe_bytes_at(data: bytes, address: int, size: int) -> bytes:
 
 
 def object_function(
-    path: Path, decorated_name: str
+    path: Path,
+    decorated_name: str,
+    *,
+    allow_auxless_comdat: bool = False,
+    expected_size: int | None = None,
 ) -> tuple[bytearray, list[dict[str, object]]]:
     module = ObjectModule()
     module.unpack(path.read_bytes())
     matches = []
     for symbol in module.symbols:
         name = symbol.get_name(module.string_table).decode("ascii", errors="strict")
-        if name == decorated_name:
+        if name == decorated_name and symbol.section_number > 0:
             matches.append(symbol)
     if len(matches) != 1:
-        raise ValueError(f"expected one COFF symbol {decorated_name!r}, found {len(matches)}")
+        raise ValueError(
+            f"expected one section-defined COFF symbol {decorated_name!r}, found {len(matches)}"
+        )
     symbol = matches[0]
-    if symbol.section_number <= 0 or not symbol.aux_records:
-        raise ValueError(f"COFF symbol lacks a function definition: {decorated_name}")
     section = module.sections[symbol.section_number - 1]
-    size = int(symbol.aux_records[0].total_size)
+    function_aux = (
+        symbol.aux_records[0]
+        if symbol.aux_records and hasattr(symbol.aux_records[0], "total_size")
+        else None
+    )
+    if function_aux is not None:
+        size = int(function_aux.total_size)
+    else:
+        if not allow_auxless_comdat:
+            raise ValueError(f"COFF symbol lacks a function definition: {decorated_name}")
+        if expected_size is None:
+            raise ValueError("auxless COMDAT comparison requires an expected size")
+        if section.data is None:
+            raise ValueError("auxless COMDAT section has no raw data")
+        # This opt-in is reserved for compiler-generated isolated COMDAT bodies
+        # such as scalar/vector deleting destructors and VC7 iterator helpers.
+        # Require a code COMDAT section, an offset-zero function symbol, and
+        # exactly one external offset-zero function owner.  The manifest
+        # comparison extent must consume the entire section, so section bounds
+        # cannot silently absorb adjacent authored code.
+        IMAGE_SCN_CNT_CODE = 0x00000020
+        IMAGE_SCN_LNK_COMDAT = 0x00001000
+        if not (section.flags & IMAGE_SCN_CNT_CODE) or not (section.flags & IMAGE_SCN_LNK_COMDAT):
+            raise ValueError("auxless symbol is not in a code COMDAT section")
+        if symbol.value != 0:
+            raise ValueError("auxless COMDAT function does not begin at section offset zero")
+        external_owners = []
+        for candidate in module.symbols:
+            if (
+                candidate.section_number == symbol.section_number
+                and candidate.value == 0
+                and candidate.storage_class == 2
+                and candidate.type == 0x20
+            ):
+                external_owners.append(
+                    candidate.get_name(module.string_table).decode("ascii", errors="strict")
+                )
+        if external_owners != [decorated_name]:
+            raise ValueError(
+                f"auxless COMDAT section has ambiguous external owners: {external_owners!r}"
+            )
+        if len(section.data) != expected_size:
+            raise ValueError(
+                f"auxless COMDAT section size {len(section.data):#x} differs from "
+                f"manifest comparison extent {expected_size:#x}"
+            )
+        size = expected_size
     if section.data is None or symbol.value + size > len(section.data):
         raise ValueError("COFF function extends beyond its section")
     function = bytearray(section.data[symbol.value : symbol.value + size])
@@ -205,7 +255,6 @@ def apply_relocations(
 def compare(unit: dict[str, object], target_path: Path) -> dict[str, object]:
     target_data = verify_target(target_path)
     object_path = repository_path(str(unit["object"]))
-    code, actual_relocations = object_function(object_path, str(unit["symbol"]))
     coverage_size = int(unit["size"])
     compare_size = int(unit.get("compare_size", coverage_size))
     if compare_size < coverage_size:
@@ -213,6 +262,12 @@ def compare(unit: dict[str, object], target_path: Path) -> dict[str, object]:
             f"comparison extent {compare_size:#x} is smaller than coverage "
             f"size {coverage_size:#x}"
         )
+    code, actual_relocations = object_function(
+        object_path,
+        str(unit["symbol"]),
+        allow_auxless_comdat=bool(unit.get("allow_auxless_comdat", False)),
+        expected_size=compare_size,
+    )
     if len(code) != compare_size:
         raise ValueError(
             f"object function size {len(code):#x} differs from manifest "
