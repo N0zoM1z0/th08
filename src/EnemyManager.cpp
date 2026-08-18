@@ -30,6 +30,12 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(u8, 32, g_EnemyDropSchedule) = {
     1, 0, 0, 1, 1, 1, 0, 0,
 };
 
+// FUNCTION: th08 0x42f320
+bool Gui::IsBossPresent()
+{
+    return this->bossPresent;
+}
+
 // FUNCTION: th08 0x42f340
 void Gui::FUN_0042f340(i32 value)
 {

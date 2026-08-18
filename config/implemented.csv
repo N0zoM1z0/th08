@@ -963,3 +963,8 @@ th08::Gui::FUN_004390d6
 th08::Gui::ActualAddedCallback
 th08::Gui::FUN_004396b8
 th08::MusicRoom::AddedCallback
+th08::Float3::Float3
+th08::EnemyManager::SpawnEnemy1
+th08::EnemyManager::SpawnEnemy2
+th08::EclTimeline::Run
+th08::Gui::IsBossPresent

@@ -99,11 +99,25 @@ struct Enemy
 };
 C_ASSERT(sizeof(Enemy) == 0x53d0);
 
+struct EclTimelineInstruction
+{
+    i32 time;
+    i16 opcode;
+    u8 size;
+    u8 difficultyMask;
+    union
+    {
+        i32 ints[7];
+        f32 floats[7];
+    } args;
+};
+
 struct EclTimeline
 {
     ZunTimer timer;
-    i32 unknownC;
+    EclTimelineInstruction *instruction;
     EclTimeline();
+    void Run();
 };
 C_ASSERT(sizeof(EclTimeline) == 0x10);
 
@@ -127,7 +141,8 @@ struct EnemyManager
     static ChainCallbackResult OnDrawLowPrio(EnemyManager *enemyManager);
     static ZunResult AddedCallback(EnemyManager *enemyManager);
     static ZunResult DeletedCallback(EnemyManager *enemyManager);
-    void *SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i32 b, i32 c, i32 *outContext);
+    void *SpawnEnemy1(i32 type, const D3DXVECTOR3 *position, i32 a, i32 b, i32 c, i32 flags);
+    void *SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i32 b, i32 c, i32 *contextInts);
     i32 FUN_0042efb0(i32 maxScore, i32 totalScore);
     i32 FUN_0042f1f0();
     static void CutChain();

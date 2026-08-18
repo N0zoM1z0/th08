@@ -94,6 +94,7 @@ struct Gui
     ZunResult LoadMsg(const char *path);
     i32 MsgWait();
     i32 IsDialogPresent();
+    bool IsBossPresent();
     i32 FUN_00437dc7();
     void FreeMsgFile();
     void FUN_00437ddd(i32 value);

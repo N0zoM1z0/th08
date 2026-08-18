@@ -103,7 +103,7 @@ th08::Background::LoadStageData,0x409ce0,0x256,__thiscall,,u32,Background*,char*
 th08::Background::FUN_00409f40,0x409f40,0x262,__thiscall,,u32,Background*
 th08::Background::RenderObjects,0x40a1b0,0x128a,__thiscall,,void,Background*,i32
 _sqrtf,0x40b440,0x15,__fastcall,,f32,f32
-D3DXVECTOR3::D3DXVECTOR3,0x40b460,0xe,__thiscall,,_D3DVECTOR*,_D3DVECTOR*
+th08::Float3::Float3,0x40b460,0xe,__thiscall,,Float3*,Float3*
 th08::Float3::operator/=,0x40b470,0x49,__thiscall,,Float3*,Float3*,f32
 FUN_0040b4c0,0x40b4c0,0x3a,unknown,,u8
 FUN_0040b500,0x40b500,0x31,unknown,,u8
@@ -388,10 +388,10 @@ th08::BulletSpawnDescriptor::BulletSpawnDescriptor,0x42a410,0x34,__thiscall,,Bul
 th08::EnemyUnkStruct2::EnemyUnkStruct2,0x42a450,0x3e,__thiscall,,EnemyUnkStruct2*,EnemyUnkStruct2*
 th08::EnemyUnkStruct0x1c::EnemyUnkStruct0x1c,0x42a490,0x21,__thiscall,,EnemyUnkStruct0x1c*,EnemyUnkStruct0x1c*
 th08::EnemyUnkStruct3::EnemyUnkStruct3,0x42a4c0,0x19,__thiscall,,EnemyUnkStruct3*,EnemyUnkStruct3*
-FUN_0042a4e0,0x42a4e0,0x199,unknown,,u8,u8,u8,u8,u8,u8,u8
-FUN_0042a680,0x42a680,0x19d,unknown,,u8,u8,u8,u8,u8,u8,u8
+th08::EnemyManager::SpawnEnemy1,0x42a4e0,0x199,__thiscall,,void*,EnemyManager*,i32,const D3DXVECTOR3*,i32,i32,i32,i32
+th08::EnemyManager::SpawnEnemy2,0x42a680,0x19d,__thiscall,,void*,EnemyManager*,i32,const D3DXVECTOR3*,i32,i32,i32,i32*
 th08::Enemy::FUN_0042a820,0x42a820,0x73,__thiscall,,void,Enemy*
-FUN_0042a8a0,0x42a8a0,0x4c0,unknown,,u8
+th08::EclTimeline::Run,0x42a8a0,0x4c0,__thiscall,,void,EclTimeline*
 th08::EclOperands::EnemyOverlay::FUN_0042adb0,0x42adb0,0x538,__thiscall,,void,EnemyOverlay*,i32
 th08::Enemy::FUN_0042b2f0,0x42b2f0,0x75,__thiscall,,void,Enemy*
 FUN_0042b370,0x42b370,0x120,unknown,,u8,u8
@@ -426,7 +426,7 @@ th08::GameManager::IsSoloYoukai,0x42f270,0x40,__thiscall,,i32,GameManager*
 th08::GameManager::GetLives,0x42f2b0,0x19,__thiscall,,ulonglong,GameManager*
 th08::AsciiManager::FUN_0042f2d0,0x42f2d0,0x1d,__thiscall,,void,AsciiManager*,i32,u32
 th08::AsciiManager::SetScale,0x42f2f0,0x25,__thiscall,,void,AsciiManager*,f32,f32
-FUN_0042f320,0x42f320,0x11,unknown,,u8
+th08::Gui::IsBossPresent,0x42f320,0x11,__thiscall,,bool,Gui*
 th08::Gui::FUN_0042f340,0x42f340,0x16,__thiscall,,void,Gui*,i32
 th08::BulletManager::Initialize,0x42f360,0xb1,__thiscall,,void,BulletManager*
 th08::BulletManager::BulletManager,0x42f420,0x75,__thiscall,,BulletManager*,BulletManager*

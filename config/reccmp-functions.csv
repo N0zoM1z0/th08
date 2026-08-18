@@ -392,7 +392,7 @@ th08::EnemyUnkStruct3::EnemyUnkStruct3,0x42a4c0,function
 th08::EnemyManager::SpawnEnemy1,0x42a4e0,function
 th08::EnemyManager::SpawnEnemy2,0x42a680,function
 th08::Enemy::FUN_0042a820,0x42a820,function
-th08::EclTimeline::FUN_0042a8a0,0x42a8a0,function
+th08::EclTimeline::Run,0x42a8a0,function
 th08::EclOperands::EnemyOverlay::FUN_0042adb0,0x42adb0,function
 th08::Enemy::FUN_0042b2f0,0x42b2f0,function
 th08::Enemy::FUN_0042b370,0x42b370,function

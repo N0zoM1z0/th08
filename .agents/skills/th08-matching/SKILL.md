@@ -202,3 +202,11 @@ For a final one-byte register-owner mismatch, do not use padding, inline assembl
 ## GUI table/branch source-shape corpus
 
 For `/Os` GUI setup code, keep target-observed table dimensionality and branch-local validation. A real `paths[stage][shot]` table can be codegen-visible (`imul stage,row_size` plus scaled column), so do not flatten it merely because the address is equivalent. Likewise, two mutually exclusive resource-load arms may intentionally carry duplicate NULL checks; hoisting a shared check can shorten the function materially. When a helper or ANM member is addressable through both a receiver home and a canonical global/member owner, preserve the owner shown by target ECX/member offsets. Use already-exact accessors to name overlapping `AnmVm` fields before tuning a large grid loop.
+
+## Branch-local ctor / aggregate-copy corpus
+
+For VC7 `/Od` interpreters and spawn paths, separate non-trivial object lifetime from scalar-local placement. Keep branch-only vectors or timer-like objects in the lexical branch so their constructors are not hoisted. If adjacent scalar locals remain swapped despite declaration and `#pragma var_order` experiments, test whether the source shape is one meaningful POD work aggregate rather than adding padding or no-ops. Preserve explicit `continue`/fallthrough structure when it controls short-branch extents or the start of an associated jump table.
+
+For large copies, compare target `rep movsd` register ownership before using `memcpy`. Typed aggregate assignment can intentionally schedule source/destination/count in a different order and is often the real source shape. Likewise, use semantic one-bit fields for target bitfield RMW sequences rather than algebraically equivalent mask/or expressions.
+
+When an exact dependency still belongs to the reconstruction probe graph, keep one canonical probe implementation and leave normal production link inputs clean. Do not create duplicate forwarding shims merely to satisfy the linker; promote the owner and its dependency closure together.

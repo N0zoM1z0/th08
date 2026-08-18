@@ -176,6 +176,7 @@ def configure(build_type):
             "EnemyManagerUpdate",
             "EclHelpers",
             "EclRun",
+            "EnemyTimeline",
         ]
 
         pbg_sources = [

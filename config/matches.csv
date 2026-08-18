@@ -963,3 +963,8 @@ address,name,size,status,match_percent,unit,evidence
 0x004390EE,th08::Gui::ActualAddedCallback,1482,matching,100.00,gui-actual-added-callback-004390ee,python3 scripts/compare-function.py gui-actual-added-callback-004390ee --json
 0x004396B8,th08::Gui::FUN_004396b8,64,matching,100.00,gui-vm-grid-reset-004396b8,python3 scripts/compare-function.py gui-vm-grid-reset-004396b8 --json
 0x0044970F,th08::MusicRoom::AddedCallback,1247,matching,100.00,music-room-added-callback-0044970f,python3 scripts/compare-function.py music-room-added-callback-0044970f --json
+0x0040B460,th08::Float3::Float3,14,matching,100.00,float3-default-constructor-0040b460,python3 scripts/compare-function.py float3-default-constructor-0040b460 --json
+0x0042A4E0,th08::EnemyManager::SpawnEnemy1,409,matching,100.00,enemy-manager-spawn-enemy1-0042a4e0,python3 scripts/compare-function.py enemy-manager-spawn-enemy1-0042a4e0 --json
+0x0042A680,th08::EnemyManager::SpawnEnemy2,413,matching,100.00,enemy-manager-spawn-enemy2-0042a680,python3 scripts/compare-function.py enemy-manager-spawn-enemy2-0042a680 --json
+0x0042A8A0,th08::EclTimeline::Run,1216,matching,100.00,ecl-timeline-run-0042a8a0,python3 scripts/compare-function.py ecl-timeline-run-0042a8a0 --json
+0x0042F320,th08::Gui::IsBossPresent,17,matching,100.00,gui-is-boss-present-0042f320,python3 scripts/compare-function.py gui-is-boss-present-0042f320 --json

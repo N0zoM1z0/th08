@@ -102901,3 +102901,513 @@ offset = 0x4D7
 type = "DIR32"
 symbol = "__except_list"
 target = 0x00000000
+
+# Ledger name: th08::Float3::Float3
+[[units]]
+name = "float3-default-constructor-0040b460"
+object = "build/probes/EnemyTimeline.obj"
+symbol = "??0D3DXVECTOR3@@QAE@XZ"
+target_address = 0x0040B460
+size = 0xE
+
+# Ledger name: th08::EnemyManager::SpawnEnemy1
+[[units]]
+name = "enemy-manager-spawn-enemy1-0042a4e0"
+object = "build/probes/EnemyTimeline.obj"
+symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHH@Z"
+target_address = 0x0042A4E0
+size = 0x199
+
+[[units.relocations]]
+offset = 0x18
+type = "DIR32"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
+target = 0x018B8A28
+
+[[units.relocations]]
+offset = 0x2A
+type = "DIR32"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
+target = 0x018B8A28
+
+[[units.relocations]]
+offset = 0xEF
+type = "REL32"
+symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
+target = 0x00418450
+
+[[units.relocations]]
+offset = 0xFD
+type = "REL32"
+symbol = "?RunEcl@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemy@2@@Z"
+target = 0x004184B0
+
+# Ledger name: th08::EnemyManager::SpawnEnemy2
+[[units]]
+name = "enemy-manager-spawn-enemy2-0042a680"
+object = "build/probes/EnemyTimeline.obj"
+symbol = "?SpawnEnemy2@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHPAH@Z"
+target_address = 0x0042A680
+size = 0x19D
+
+[[units.relocations]]
+offset = 0x18
+type = "DIR32"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
+target = 0x018B8A28
+
+[[units.relocations]]
+offset = 0x2A
+type = "DIR32"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
+target = 0x018B8A28
+
+[[units.relocations]]
+offset = 0xCE
+type = "REL32"
+symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
+target = 0x00418450
+
+[[units.relocations]]
+offset = 0xEF
+type = "REL32"
+symbol = "?RunEcl@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemy@2@@Z"
+target = 0x004184B0
+
+# Ledger name: th08::EclTimeline::Run
+# Associated switch table: target 0x0042AD60..0x0042ADA4 (0x44 bytes; 17 relocations; compared, excluded from authored bytes)
+[[units]]
+name = "ecl-timeline-run-0042a8a0"
+object = "build/probes/EnemyTimeline.obj"
+symbol = "?Run@EclTimeline@th08@@QAEXXZ"
+target_address = 0x0042A8A0
+size = 0x4C0
+compare_size = 0x504
+
+[[units.relocations]]
+offset = 0x2C
+type = "REL32"
+symbol = "??8ZunTimer@th08@@QAEIH@Z"
+target = 0x0040D3F0
+
+[[units.relocations]]
+offset = 0x4B
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x75
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042AD60
+
+[[units.relocations]]
+offset = 0x7B
+type = "DIR32"
+symbol = "?g_PlayerNoLivesFlag@th08@@3EA"
+target = 0x0164D0BB
+
+[[units.relocations]]
+offset = 0x8D
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x92
+type = "REL32"
+symbol = "?IsBossPresent@Gui@th08@@QAE_NXZ"
+target = 0x0042F320
+
+[[units.relocations]]
+offset = 0x9F
+type = "DIR32"
+symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
+target = 0x00F54CC0
+
+[[units.relocations]]
+offset = 0xB6
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xF7
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0xFC
+type = "REL32"
+symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHH@Z"
+target = 0x0042A4E0
+
+[[units.relocations]]
+offset = 0x115
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x156
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x15B
+type = "REL32"
+symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHH@Z"
+target = 0x0042A4E0
+
+[[units.relocations]]
+offset = 0x16C
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x171
+type = "REL32"
+symbol = "?IsBossPresent@Gui@th08@@QAE_NXZ"
+target = 0x0042F320
+
+[[units.relocations]]
+offset = 0x17E
+type = "DIR32"
+symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
+target = 0x00F54CC0
+
+[[units.relocations]]
+offset = 0x195
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x1D1
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x1D6
+type = "REL32"
+symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHH@Z"
+target = 0x0042A4E0
+
+[[units.relocations]]
+offset = 0x208
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x20D
+type = "REL32"
+symbol = "?IsBossPresent@Gui@th08@@QAE_NXZ"
+target = 0x0042F320
+
+[[units.relocations]]
+offset = 0x21A
+type = "DIR32"
+symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
+target = 0x00F54CC0
+
+[[units.relocations]]
+offset = 0x231
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x246
+type = "DIR32"
+symbol = "?g_Rng@th08@@3VRng@1@A"
+target = 0x0164D520
+
+[[units.relocations]]
+offset = 0x24B
+type = "REL32"
+symbol = "?GetRandomF32InRange@Rng@th08@@QAEMM@Z"
+target = 0x0040D390
+
+[[units.relocations]]
+offset = 0x28C
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x291
+type = "REL32"
+symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHH@Z"
+target = 0x0042A4E0
+
+[[units.relocations]]
+offset = 0x2A2
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x2A7
+type = "REL32"
+symbol = "?IsBossPresent@Gui@th08@@QAE_NXZ"
+target = 0x0042F320
+
+[[units.relocations]]
+offset = 0x2B4
+type = "DIR32"
+symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
+target = 0x00F54CC0
+
+[[units.relocations]]
+offset = 0x2CB
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x2D5
+type = "DIR32"
+symbol = "?g_Rng@th08@@3VRng@1@A"
+target = 0x0164D520
+
+[[units.relocations]]
+offset = 0x2DA
+type = "REL32"
+symbol = "?GetRandomF32InRange@Rng@th08@@QAEMM@Z"
+target = 0x0040D390
+
+[[units.relocations]]
+offset = 0x315
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x31A
+type = "REL32"
+symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHH@Z"
+target = 0x0042A4E0
+
+[[units.relocations]]
+offset = 0x32E
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x333
+type = "REL32"
+symbol = "?FUN_00439810@Gui@th08@@QAEXH@Z"
+target = 0x00439810
+
+[[units.relocations]]
+offset = 0x33D
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0x342
+type = "REL32"
+symbol = "?MsgWait@Gui@th08@@QAEHXZ"
+target = 0x0043587E
+
+[[units.relocations]]
+offset = 0x350
+type = "REL32"
+symbol = "??FZunTimer@th08@@QAEXH@Z"
+target = 0x00418110
+
+[[units.relocations]]
+offset = 0x370
+type = "DIR32"
+symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
+target = 0x00F54CC0
+
+[[units.relocations]]
+offset = 0x38F
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x394
+type = "REL32"
+symbol = "?SetPower@GameManager@th08@@QAEXH@Z"
+target = 0x00406FA0
+
+[[units.relocations]]
+offset = 0x3A9
+type = "DIR32"
+symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
+target = 0x00F54CC0
+
+[[units.relocations]]
+offset = 0x3BC
+type = "DIR32"
+symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
+target = 0x00F54CC0
+
+[[units.relocations]]
+offset = 0x3D3
+type = "REL32"
+symbol = "??FZunTimer@th08@@QAEXH@Z"
+target = 0x00418110
+
+[[units.relocations]]
+offset = 0x40C
+type = "DIR32"
+symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
+target = 0x00F54CC0
+
+[[units.relocations]]
+offset = 0x424
+type = "DIR32"
+symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
+target = 0x00F54CC0
+
+[[units.relocations]]
+offset = 0x43A
+type = "REL32"
+symbol = "??FZunTimer@th08@@QAEXH@Z"
+target = 0x00418110
+
+[[units.relocations]]
+offset = 0x460
+type = "DIR32"
+symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
+target = 0x00F54CC0
+
+[[units.relocations]]
+offset = 0x478
+type = "DIR32"
+symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
+target = 0x00F54CC0
+
+[[units.relocations]]
+offset = 0x48D
+type = "REL32"
+symbol = "??MZunTimer@th08@@QAEIH@Z"
+target = 0x004066A0
+
+[[units.relocations]]
+offset = 0x4B8
+type = "REL32"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
+target = 0x00406640
+
+[[units.relocations]]
+offset = 0x4C0
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042A92C
+
+[[units.relocations]]
+offset = 0x4C4
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042A925
+
+[[units.relocations]]
+offset = 0x4C8
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042AAA7
+
+[[units.relocations]]
+offset = 0x4CC
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042AB41
+
+[[units.relocations]]
+offset = 0x4D0
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042AAA0
+
+[[units.relocations]]
+offset = 0x4D4
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042AB3A
+
+[[units.relocations]]
+offset = 0x4D8
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042ABC3
+
+[[units.relocations]]
+offset = 0x4DC
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042ABDC
+
+[[units.relocations]]
+offset = 0x4E0
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042ABFE
+
+[[units.relocations]]
+offset = 0x4E4
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042AC24
+
+[[units.relocations]]
+offset = 0x4E8
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042AC3D
+
+[[units.relocations]]
+offset = 0x4EC
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042AA0B
+
+[[units.relocations]]
+offset = 0x4F0
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042AA04
+
+[[units.relocations]]
+offset = 0x4F4
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042AC81
+
+[[units.relocations]]
+offset = 0x4F8
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042ACE2
+
+[[units.relocations]]
+offset = 0x4FC
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042A9A5
+
+[[units.relocations]]
+offset = 0x500
+type = "DIR32"
+symbol = "$L*"
+target = 0x0042A919
+
+# Ledger name: th08::Gui::IsBossPresent
+[[units]]
+name = "gui-is-boss-present-0042f320"
+object = "build/EnemyManager.obj"
+symbol = "?IsBossPresent@Gui@th08@@QAE_NXZ"
+target_address = 0x0042F320
+size = 0x11
