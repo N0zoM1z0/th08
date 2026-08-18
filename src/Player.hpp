@@ -61,7 +61,8 @@ struct PlayerOptionState
     Float3 position;
     Float3 target;
     Float3 velocity;
-    unknown_fields(0x2C8, 0x18);
+    i32 state2C8;
+    unknown_fields(0x2CC, 0x14);
     ZunTimer timer;
     unknown_fields(0x2EC, 8);
 

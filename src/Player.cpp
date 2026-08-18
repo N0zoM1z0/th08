@@ -565,10 +565,229 @@ void __fastcall FUN_0040d310(Player *player)
     }
 }
 
+// FUNCTION: th08 0x40d430
+#pragma var_order(bomb, workItem)
+void __fastcall FUN_0040d430(Player *player)
+{
+    PlayerBombState *bomb;
+    PlayerBombWorkItem *workItem;
+
+    bomb = &player->bombState;
+    workItem = &bomb->workItems[0];
+    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
+    {
+        FUN_0040be30(player, 1,
+                     "\x96\x82\x95\x84\x81\x75\x83\x41\x81\x5B\x83\x65\x83\x42\x83\x74\x83\x8B\x83\x54\x83\x4E\x83\x8A\x83\x74\x83\x40\x83\x43\x83\x58\x81\x76",
+                     210, 250, 0);
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        workItem->anchor = player->optionStates[0].position;
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
+    }
+
+    if (bomb->timer < 60)
+    {
+        Float3 target(192.0f, 224.0f, 0.0f);
+        f32 interp = (f32)bomb->timer / 60.0f;
+        interp *= interp;
+        player->optionStates[0].position =
+            (target - workItem->anchor) * interp + workItem->anchor;
+        player->optionStates[0].vm.rotation.z += -0.31415927410125732f;
+        player->FUN_0044df00(&player->optionStates[0].position, 32.0f, 0.0f, 0, 6);
+        player->FUN_0044e040(&player->optionStates[0].position, 32.0f, 0.0f, 40, 0);
+    }
+    else
+    {
+        player->optionStates[0].vm.rotation.z = 0.0f;
+        player->optionStates[0].position.x = 192.0f;
+        player->optionStates[0].position.y = 224.0f;
+        if (bomb->timer >= 150)
+            player->optionStates[0].vm.color1.a = 0;
+
+        if (bomb->timer.FUN_0040e350(60))
+        {
+            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
+        }
+        else if (bomb->timer.FUN_0040e350(64))
+        {
+            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -12080);
+        }
+        else if (bomb->timer.FUN_0040e350(68))
+        {
+            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -20304);
+        }
+        else if (bomb->timer.FUN_0040e350(72))
+        {
+            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -32640);
+        }
+        else if (bomb->timer.FUN_0040e350(76))
+        {
+            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -49088);
+        }
+        else if (bomb->timer.FUN_0040e350(90))
+        {
+#pragma var_order(effect, damageSlot)
+            AnmVm *effect;
+            PlayerUnkStruct0x40 *damageSlot;
+            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(15), 0);
+            effect = g_EffectManager.SpawnEffect(42, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
+            effect = g_EffectManager.SpawnEffect(43, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
+            effect = g_EffectManager.SpawnEffect(44, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
+            player->FUN_0044df00(&player->optionStates[0].position, 1.0f, 5.0f, 110, 6);
+            damageSlot = player->FUN_0044e040(&player->optionStates[0].position, 1.0f, 5.0f, 70, 110);
+            damageSlot->collisionInterval = 5;
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 24, 8, 0, 0, 21);
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8fffffff, 0, 21);
+        }
+        else if (bomb->timer.FUN_0040e350(100))
+        {
+            AnmVm *effect100 = g_EffectManager.SpawnEffect(
+                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
+        }
+        else if (bomb->timer.FUN_0040e350(110))
+        {
+            AnmVm *effect110 = g_EffectManager.SpawnEffect(
+                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -12080);
+        }
+        else if (bomb->timer.FUN_0040e350(120))
+        {
+            AnmVm *effect120 = g_EffectManager.SpawnEffect(
+                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -32640);
+        }
+        else if (bomb->timer.FUN_0040e350(130))
+        {
+            AnmVm *effect130 = g_EffectManager.SpawnEffect(
+                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -65536);
+        }
+        else if (bomb->timer.FUN_0040e350(150))
+        {
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8fffffff, 0, 21);
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 24, 8, 0, 0, 21);
+            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(25), 0);
+        }
+        else if (bomb->timer.FUN_0040e350(209))
+        {
+            player->optionStates[0].state2C8 = 1;
+            player->optionStates[0].timer = 0;
+        }
+    }
+}
+
 // FUNCTION: th08 0x40d950
 void __fastcall FUN_0040d950(Player *player)
 {
     FUN_0040bc60(player, 0x80404040);
+}
+
+// FUNCTION: th08 0x40d970
+#pragma var_order(bomb, workItem)
+void __fastcall FUN_0040d970(Player *player)
+{
+    PlayerBombState *bomb;
+    PlayerBombWorkItem *workItem;
+
+    bomb = &player->bombState;
+    workItem = &bomb->workItems[0];
+    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
+    {
+        FUN_0040be30(player, 1,
+                     "\x96\x82\x91\x80\x81\x75\x83\x8A\x83\x5E\x81\x5B\x83\x93\x83\x43\x83\x69\x83\x6A\x83\x81\x83\x67\x83\x6C\x83\x58\x81\x76",
+                     230, 280, 1);
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        workItem->anchor = player->position;
+    }
+
+    if (bomb->timer < 60)
+    {
+        Float3 target(192.0f, 224.0f, 0.0f);
+        f32 interp = (f32)bomb->timer / 60.0f;
+        interp *= interp;
+        player->optionStates[0].position =
+            (target - workItem->anchor) * interp + workItem->anchor;
+        player->optionStates[0].vm.rotation.z += -0.31415927410125732f;
+        player->FUN_0044df00(&player->optionStates[0].position, 32.0f, 0.0f, 0, 6);
+        player->FUN_0044e040(&player->optionStates[0].position, 32.0f, 0.0f, 40, 0);
+    }
+    else
+    {
+        player->optionStates[0].vm.rotation.z = 0.0f;
+        player->optionStates[0].position.x = 192.0f;
+        player->optionStates[0].position.y = 224.0f;
+        if (bomb->timer >= 128)
+            player->optionStates[0].vm.color1.a = 0;
+
+        if (bomb->timer.FUN_0040e350(60))
+        {
+            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
+        }
+        else if (bomb->timer.FUN_0040e350(64))
+        {
+            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -12080);
+        }
+        else if (bomb->timer.FUN_0040e350(68))
+        {
+            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -20304);
+        }
+        else if (bomb->timer.FUN_0040e350(72))
+        {
+            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -32640);
+        }
+        else if (bomb->timer.FUN_0040e350(76))
+        {
+            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -49088);
+        }
+        else if (bomb->timer.FUN_0040e350(120))
+        {
+#pragma var_order(effect, damageSlot, burstPosition)
+            AnmVm *effect;
+            PlayerUnkStruct0x40 *damageSlot;
+            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(15), 0);
+            effect = g_EffectManager.SpawnEffect(42, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
+            effect = g_EffectManager.SpawnEffect(43, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
+            effect = g_EffectManager.SpawnEffect(44, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
+            Float3 burstPosition(64.0f, 96.0f, 0.0f);
+            effect = g_EffectManager.SpawnEffect(45, reinterpret_cast<D3DXVECTOR3 *>(&burstPosition), 1, 0xff0000f0);
+            burstPosition.y = 352.0f;
+            effect = g_EffectManager.SpawnEffect(45, reinterpret_cast<D3DXVECTOR3 *>(&burstPosition), 1, 0xfff00000);
+            burstPosition.x = 320.0f;
+            effect = g_EffectManager.SpawnEffect(45, reinterpret_cast<D3DXVECTOR3 *>(&burstPosition), 1, 0xff00f000);
+            burstPosition.y = 96.0f;
+            effect = g_EffectManager.SpawnEffect(45, reinterpret_cast<D3DXVECTOR3 *>(&burstPosition), 1, 0xff00f0f0);
+            player->FUN_0044df00(&player->optionStates[0].position, 1.0f, 5.0f, 110, 6);
+            damageSlot = player->FUN_0044e040(&player->optionStates[0].position, 1.0f, 5.0f, 70, 110);
+            damageSlot->collisionInterval = 5;
+        }
+        else if (bomb->timer.FUN_0040e350(130))
+        {
+            AnmVm *effect130 = g_EffectManager.SpawnEffect(
+                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
+        }
+        else if (bomb->timer.FUN_0040e350(140))
+        {
+            AnmVm *effect140 = g_EffectManager.SpawnEffect(
+                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -12080);
+        }
+        else if (bomb->timer.FUN_0040e350(150))
+        {
+            AnmVm *effect150 = g_EffectManager.SpawnEffect(
+                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -32640);
+        }
+        else if (bomb->timer.FUN_0040e350(160))
+        {
+            AnmVm *effect160 = g_EffectManager.SpawnEffect(
+                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -65536);
+        }
+        else if (bomb->timer.FUN_0040e350(180))
+        {
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, -1, 0, 21);
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 24, 8, 0, 0, 21);
+            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(25), 0);
+        }
+        else if (bomb->timer.FUN_0040e350(229))
+        {
+            player->optionStates[0].state2C8 = 1;
+            player->optionStates[0].timer = 0;
+        }
+    }
 }
 
 // FUNCTION: th08 0x40dee0

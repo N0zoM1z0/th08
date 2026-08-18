@@ -151,9 +151,9 @@ th08::ZunTimer::operator_int,0x40d3b0,function
 th08::ZunTimer::FUN_0040d3d0,0x40d3d0,function
 th08::ZunTimer::operator==,0x40d3f0,function
 th08::ZunTimer::operator%,0x40d410,function
-FUN_0040d430,0x40d430,function
+th08::FUN_0040d430,0x40d430,function
 th08::FUN_0040d950,0x40d950,function
-FUN_0040d970,0x40d970,function
+th08::FUN_0040d970,0x40d970,function
 th08::FUN_0040dee0,0x40dee0,function
 FUN_0040e040,0x40e040,function
 FUN_0040e120,0x40e120,function
