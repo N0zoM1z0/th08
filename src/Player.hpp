@@ -62,9 +62,14 @@ struct PlayerOptionState
     Float3 target;
     Float3 velocity;
     i32 state2C8;
-    unknown_fields(0x2CC, 0x14);
+    i32 substate2CC;
+    i32 optionIndex;
+    unknown_fields(0x2D4, 4);
+    f32 orbitAngle;
+    unknown_fields(0x2DC, 4);
     ZunTimer timer;
-    unknown_fields(0x2EC, 8);
+    void *updateCallback;
+    void *renderCallback;
 
     PlayerOptionState();
 };
@@ -180,7 +185,8 @@ struct Player
     unknown_fields(0xE2A7C, 0x28);
     Float3 tailPosition0;
     Float3 tailPosition1;
-    unknown_fields(0xE2ABC, 8);
+    Enemy *optionHomingTarget;
+    unknown_fields(0xE2AC0, 4);
     ZunTimer timerE2AC4;
     ZunTimer timerE2AD0;
     ZunTimer timerE2ADC;

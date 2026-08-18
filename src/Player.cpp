@@ -2976,6 +2976,219 @@ void PlayerUnkStruct0x40::Reset()
     this->collisionInterval = 1;
 }
 
+void __fastcall PlayerOptionHomingToPlayer(Player *player, u8 *option);
+void __fastcall PlayerOptionHomingToTarget(Player *player, u8 *option);
+
+// FUNCTION: th08 0x44e3a0
+i32 __fastcall FUN_0044e3a0(Player *player, PlayerOptionState *option)
+{
+    switch (option->state2C8)
+    {
+    case 1:
+        player->anmFile->SetAndExecuteScriptIdx(&option->vm, 18);
+        option->position = player->position;
+        option->position.y -= 96.0f;
+        if (option->position.y < 32.0f)
+            option->position.y = 32.0f;
+        option->state2C8 = 2;
+        player->optionHomingTarget = NULL;
+        break;
+
+    case 2:
+        switch (option->substate2CC)
+        {
+        case 0:
+            PlayerOptionHomingToPlayer(player, reinterpret_cast<u8 *>(option));
+            if (option->velocity.x < 0.0f)
+            {
+                option->vm.SetInterrupt(2);
+                option->substate2CC = 1;
+                if (option->vm.scale.x < 0.0f)
+                    option->vm.scale.x = -option->vm.scale.x;
+            }
+            else if (option->velocity.x > 0.0f)
+            {
+                option->vm.SetInterrupt(2);
+                option->substate2CC = 2;
+                if (option->vm.scale.x > 0.0f)
+                    option->vm.scale.x = -option->vm.scale.x;
+            }
+            break;
+
+        case 1:
+            PlayerOptionHomingToPlayer(player, reinterpret_cast<u8 *>(option));
+            if (option->velocity.x == 0.0f)
+            {
+                option->vm.SetInterrupt(1);
+                option->substate2CC = 0;
+                if (option->vm.scale.x < 0.0f)
+                    option->vm.scale.x = -option->vm.scale.x;
+            }
+            else if (option->velocity.x > 0.0f)
+            {
+                option->vm.SetInterrupt(2);
+                option->substate2CC = 2;
+                if (option->vm.scale.x > 0.0f)
+                    option->vm.scale.x = -option->vm.scale.x;
+            }
+            break;
+
+        case 2:
+            PlayerOptionHomingToPlayer(player, reinterpret_cast<u8 *>(option));
+            if (option->velocity.x == 0.0f)
+            {
+                option->vm.SetInterrupt(1);
+                option->substate2CC = 0;
+                if (option->vm.scale.x < 0.0f)
+                    option->vm.scale.x = -option->vm.scale.x;
+            }
+            else if (option->velocity.x < 0.0f)
+            {
+                option->vm.SetInterrupt(2);
+                option->substate2CC = 1;
+                if (option->vm.scale.x < 0.0f)
+                    option->vm.scale.x = -option->vm.scale.x;
+            }
+            break;
+
+        case 3:
+            if (player->optionHomingTarget != NULL)
+                PlayerOptionHomingToTarget(player, reinterpret_cast<u8 *>(option));
+            if (((player->timerE2AC4 < 0) && ((g_CurFrameInput & 1) == 0)) ||
+                player->optionHomingTarget == NULL)
+            {
+                player->optionHomingTarget = NULL;
+                option->vm.SetInterrupt(1);
+                option->substate2CC = 0;
+            }
+            break;
+
+        default:
+            break;
+        }
+        break;
+
+    case 3:
+        if (option->timer == 0)
+            option->vm.SetInterrupt(5);
+        if (option->timer > 16)
+        {
+            option->state2C8 = 0;
+            option->updateCallback = NULL;
+            option->renderCallback = NULL;
+        }
+        break;
+    }
+    return 0;
+}
+
+// FUNCTION: th08 0x44ea40
+i32 __fastcall FUN_0044ea40(Player *player, PlayerOptionState *option)
+{
+    switch (option->state2C8)
+    {
+    case 1:
+        player->anmFile->SetAndExecuteScriptIdx(&option->vm, 29);
+        option->state2C8 = 2;
+        // Fall through: the option starts following immediately.
+    case 2:
+        if (player->bombState.frameStop == 0)
+        {
+            option->position = player->position;
+            option->position.y -= 32.0f;
+        }
+        break;
+
+    case 3:
+        option->position = player->position;
+        option->position.y -= 32.0f;
+        if (option->timer == 0)
+            option->vm.SetInterrupt(5);
+        if (option->timer > 16)
+        {
+            option->state2C8 = 0;
+            option->updateCallback = NULL;
+            option->renderCallback = NULL;
+        }
+        break;
+    }
+    return 0;
+}
+
+// FUNCTION: th08 0x44eb70
+i32 __fastcall FUN_0044eb70(Player *player, PlayerOptionState *option)
+{
+    switch (option->state2C8)
+    {
+    case 1:
+        player->anmFile->SetAndExecuteScriptIdx(&option->vm, 24);
+        option->state2C8 = 2;
+        option->target = player->position;
+        switch (option->optionIndex)
+        {
+        case 0:
+            option->target.x -= 30.0f;
+            option->target.y -= 16.0f;
+            option->orbitAngle = 0.0f;
+            break;
+        case 1:
+            option->target.x -= 10.0f;
+            option->target.y -= 32.0f;
+            option->orbitAngle = ZUN_PI;
+            break;
+        case 2:
+            option->target.x += 10.0f;
+            option->target.y -= 32.0f;
+            option->orbitAngle = 0.0f;
+            break;
+        case 3:
+            option->target.x += 30.0f;
+            option->target.y -= 16.0f;
+            option->orbitAngle = ZUN_PI;
+            break;
+        default:
+            break;
+        }
+        // Fall through to update the orbit immediately.
+    case 2:
+        if (option->timer > 12)
+        {
+            switch (option->optionIndex)
+            {
+            case 0:
+                option->orbitAngle = AddNormalizeAngle(option->orbitAngle, 0.02617993950843811f);
+                break;
+            case 1:
+                option->orbitAngle = AddNormalizeAngle(option->orbitAngle, -0.03490658476948738f);
+                break;
+            case 2:
+                option->orbitAngle = AddNormalizeAngle(option->orbitAngle, 0.03490658476948738f);
+                break;
+            case 3:
+                option->orbitAngle = AddNormalizeAngle(option->orbitAngle, -0.02617993950843811f);
+                break;
+            default:
+                break;
+            }
+        }
+        option->position.FromAngleMagnitude(option->orbitAngle, 8.0f);
+        option->position += option->target;
+        break;
+
+    case 3:
+        if (option->timer == 0)
+            option->vm.SetInterrupt(5);
+        if (option->timer > 16)
+        {
+            option->state2C8 = 0;
+            option->updateCallback = NULL;
+            option->renderCallback = NULL;
+        }
+        break;
+    }
+    return 0;
+}
+
 // FUNCTION: th08 0x44e770
 #pragma var_order(delta, target, player, option)
 void __fastcall PlayerOptionHomingToPlayer(Player *player, u8 *option)

@@ -912,3 +912,6 @@ address,name,size,status,match_percent,unit,evidence
 0x0040E2D0,th08::FUN_0040e2d0,119,matching,100.00,player-effect-callback-0040e2d0,python3 scripts/compare-function.py player-effect-callback-0040e2d0 --json
 0x00410BB0,th08::FUN_00410bb0,76,matching,100.00,player-effect-callback-00410bb0,python3 scripts/compare-function.py player-effect-callback-00410bb0 --json
 0x00413070,th08::FUN_00413070,204,matching,100.00,player-effect-callback-00413070,python3 scripts/compare-function.py player-effect-callback-00413070 --json
+0x0044E3A0,th08::FUN_0044e3a0,949,matching,100.00,player-option-update-0044e3a0,python3 scripts/compare-function.py player-option-update-0044e3a0 --json
+0x0044EA40,th08::FUN_0044ea40,303,matching,100.00,player-option-update-0044ea40,python3 scripts/compare-function.py player-option-update-0044ea40 --json
+0x0044EB70,th08::FUN_0044eb70,731,matching,100.00,player-option-update-0044eb70,python3 scripts/compare-function.py player-option-update-0044eb70 --json

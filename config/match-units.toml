@@ -98368,3 +98368,454 @@ offset = 0xAC
 type = "DIR32"
 symbol = "__real@40400000"
 target = 0x004B42DC
+
+[[units]]
+name = "player-option-update-0044e3a0"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_0044e3a0@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
+target_address = 0x0044E3A0
+size = 0x3B5
+compare_size = 0x3C5
+
+[[units.relocations]]
+offset = 0x44
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x75
+type = "DIR32"
+symbol = "__real@42c00000"
+target = 0x004B42C4
+
+[[units.relocations]]
+offset = 0x8D
+type = "DIR32"
+symbol = "__real@42000000"
+target = 0x004B42CC
+
+[[units.relocations]]
+offset = 0xE0
+type = "DIR32"
+symbol = "$L73886"
+target = 0x0044E755
+
+[[units.relocations]]
+offset = 0xEB
+type = "REL32"
+symbol = "?PlayerOptionHomingToPlayer@th08@@YIXPAUPlayer@1@PAE@Z"
+target = 0x0044E770
+
+[[units.relocations]]
+offset = 0xFA
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x10B
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x124
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x14A
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x15B
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x174
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x199
+type = "REL32"
+symbol = "?PlayerOptionHomingToPlayer@th08@@YIXPAUPlayer@1@PAE@Z"
+target = 0x0044E770
+
+[[units.relocations]]
+offset = 0x1A8
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x1B9
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x1D2
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x1F8
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x209
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x222
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x247
+type = "REL32"
+symbol = "?PlayerOptionHomingToPlayer@th08@@YIXPAUPlayer@1@PAE@Z"
+target = 0x0044E770
+
+[[units.relocations]]
+offset = 0x256
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x267
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x280
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x2A6
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x2B7
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x2D0
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x2FE
+type = "REL32"
+symbol = "?PlayerOptionHomingToTarget@th08@@YIXPAUPlayer@1@PAE@Z"
+target = 0x0044E8D0
+
+[[units.relocations]]
+offset = 0x30E
+type = "REL32"
+symbol = "??MZunTimer@th08@@QAEIH@Z"
+target = 0x004066A0
+
+[[units.relocations]]
+offset = 0x319
+type = "DIR32"
+symbol = "?g_CurFrameInput@th08@@3GA"
+target = 0x0164D52C
+
+[[units.relocations]]
+offset = 0x343
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x362
+type = "REL32"
+symbol = "??8ZunTimer@th08@@QAEIH@Z"
+target = 0x0040D3F0
+
+[[units.relocations]]
+offset = 0x370
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x380
+type = "REL32"
+symbol = "??OZunTimer@th08@@QAEIH@Z"
+target = 0x004066C0
+
+[[units.relocations]]
+offset = 0x3B5
+type = "DIR32"
+symbol = "$L71258"
+target = 0x0044E484
+
+[[units.relocations]]
+offset = 0x3B9
+type = "DIR32"
+symbol = "$L71265"
+target = 0x0044E532
+
+[[units.relocations]]
+offset = 0x3BD
+type = "DIR32"
+symbol = "$L71272"
+target = 0x0044E5E0
+
+[[units.relocations]]
+offset = 0x3C1
+type = "DIR32"
+symbol = "$L71279"
+target = 0x0044E68B
+
+
+[[units]]
+name = "player-option-update-0044ea40"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_0044ea40@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
+target_address = 0x0044EA40
+size = 0x12F
+
+[[units.relocations]]
+offset = 0x3C
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x85
+type = "DIR32"
+symbol = "__real@42000000"
+target = 0x004B42CC
+
+[[units.relocations]]
+offset = 0xC3
+type = "DIR32"
+symbol = "__real@42000000"
+target = 0x004B42CC
+
+[[units.relocations]]
+offset = 0xDC
+type = "REL32"
+symbol = "??8ZunTimer@th08@@QAEIH@Z"
+target = 0x0040D3F0
+
+[[units.relocations]]
+offset = 0xEA
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0xFA
+type = "REL32"
+symbol = "??OZunTimer@th08@@QAEIH@Z"
+target = 0x004066C0
+
+
+[[units]]
+name = "player-option-update-0044eb70"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_0044eb70@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
+target_address = 0x0044EB70
+size = 0x2DB
+compare_size = 0x2FB
+
+[[units.relocations]]
+offset = 0x44
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x92
+type = "DIR32"
+symbol = "$L73893"
+target = 0x0044EE4B
+
+[[units.relocations]]
+offset = 0xA1
+type = "DIR32"
+symbol = "__real@41f00000"
+target = 0x004B4534
+
+[[units.relocations]]
+offset = 0xB9
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004B42D4
+
+[[units.relocations]]
+offset = 0xE3
+type = "DIR32"
+symbol = "__real@41200000"
+target = 0x004B4390
+
+[[units.relocations]]
+offset = 0xFB
+type = "DIR32"
+symbol = "__real@42000000"
+target = 0x004B42CC
+
+[[units.relocations]]
+offset = 0x122
+type = "DIR32"
+symbol = "__real@41200000"
+target = 0x004B4390
+
+[[units.relocations]]
+offset = 0x13A
+type = "DIR32"
+symbol = "__real@42000000"
+target = 0x004B42CC
+
+[[units.relocations]]
+offset = 0x161
+type = "DIR32"
+symbol = "__real@41f00000"
+target = 0x004B4534
+
+[[units.relocations]]
+offset = 0x179
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004B42D4
+
+[[units.relocations]]
+offset = 0x19F
+type = "REL32"
+symbol = "??OZunTimer@th08@@QAEIH@Z"
+target = 0x004066C0
+
+[[units.relocations]]
+offset = 0x1C7
+type = "DIR32"
+symbol = "$L73894"
+target = 0x0044EE5B
+
+[[units.relocations]]
+offset = 0x1DB
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0x1FA
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0x219
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0x238
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0x25E
+type = "REL32"
+symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
+target = 0x004286E0
+
+[[units.relocations]]
+offset = 0x276
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 0x288
+type = "REL32"
+symbol = "??8ZunTimer@th08@@QAEIH@Z"
+target = 0x0040D3F0
+
+[[units.relocations]]
+offset = 0x296
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x2A6
+type = "REL32"
+symbol = "??OZunTimer@th08@@QAEIH@Z"
+target = 0x004066C0
+
+[[units.relocations]]
+offset = 0x2DB
+type = "DIR32"
+symbol = "$L71316"
+target = 0x0044EC06
+
+[[units.relocations]]
+offset = 0x2DF
+type = "DIR32"
+symbol = "$L71317"
+target = 0x0044EC48
+
+[[units.relocations]]
+offset = 0x2E3
+type = "DIR32"
+symbol = "$L71319"
+target = 0x0044EC87
+
+[[units.relocations]]
+offset = 0x2E7
+type = "DIR32"
+symbol = "$L71320"
+target = 0x0044ECC6
+
+[[units.relocations]]
+offset = 0x2EB
+type = "DIR32"
+symbol = "$L71329"
+target = 0x0044ED3B
+
+[[units.relocations]]
+offset = 0x2EF
+type = "DIR32"
+symbol = "$L71330"
+target = 0x0044ED5A
+
+[[units.relocations]]
+offset = 0x2F3
+type = "DIR32"
+symbol = "$L71331"
+target = 0x0044ED79
+
+[[units.relocations]]
+offset = 0x2F7
+type = "DIR32"
+symbol = "$L71332"
+target = 0x0044ED98
