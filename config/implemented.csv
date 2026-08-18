@@ -1072,3 +1072,5 @@ th08::PlstPlayCounts::IncrementTotalAttempts
 th08::CWaveFile::`scalar_deleting_destructor'
 th08::GameManager::GameplaySetupThread
 th08::TitleScreen::OnUpdateReplayMenu
+th08::TitleScreen::OnUpdateStartMenu
+th08::TitleScreen::OnUpdateKeyConfig

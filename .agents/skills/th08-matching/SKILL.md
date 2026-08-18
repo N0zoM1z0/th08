@@ -335,3 +335,7 @@ Do not force standard math/runtime helpers into authored reconstruction merely b
 
 - If an exact function lives only in a foreign dirty/claimed TU, make the evidence reproducible before promotion: copy the minimal function plus required file-scope data/helpers into a probe compiled with the same rule, verify strict zero-diff there, and ledger the probe object. Never make canonical progress depend on someone else's uncommitted object.
 - Keep stable exact probes narrow. Remove neighboring near-match experiments before committing an exact anchor so future agents can reproduce the accepted unit without inheriting unrelated unfinished code.
+
+- When an `/Os` function appears longer by exactly `N*4`, inspect the target boundary before changing source: VC7 may have appended an associated switch table to the COFF aux extent. Use authored `size` plus a larger `compare_size` and replay the table relocations.
+- Do not replace direct flag/bitfield reads with convenience getters in exact work; even a one-instruction getter call can change branch reach and body size. Let target relocation/disassembly decide the lexical owner.
+- If a large function has equal instruction count/extent and only stack-displacement residuals, map source locals from first use and solve with `#pragma var_order` before touching control flow.

@@ -16,7 +16,60 @@
 namespace th08
 {
 
-enum { TITLE_MENU_ITEM_START_REPLAY = 4 };
+#define TITLE_SPRITE_KEYCONFIG_SLOWSHOT_START 75
+#define TITLE_SPRITE_KEYCONFIG_SLOWSHOT_END 76
+
+
+enum
+{
+    TITLE_MENU_ITEM_START_START = 0,
+    TITLE_MENU_ITEM_START_EXTRA_START = 1,
+    TITLE_MENU_ITEM_START_SPELL_PRACTICE = 2,
+    TITLE_MENU_ITEM_START_PRACTICE_START = 3,
+    TITLE_MENU_ITEM_START_REPLAY = 4,
+    TITLE_MENU_ITEM_START_RESULT = 5,
+    TITLE_MENU_ITEM_START_MUSIC_ROOM = 6,
+    TITLE_MENU_ITEM_START_OPTION = 7,
+    TITLE_MENU_ITEM_START_QUIT = 8,
+    TITLE_MENU_ITEM_START_NUM_ITEMS
+};
+
+
+enum { TITLE_MENU_ITEM_OPTION_KEYCONFIG = 8 };
+
+enum
+{
+    TITLE_MENU_ITEM_KEYCONFIG_SHOT = 0,
+    TITLE_MENU_ITEM_KEYCONFIG_BOMB = 1,
+    TITLE_MENU_ITEM_KEYCONFIG_SLOW = 2,
+    TITLE_MENU_ITEM_KEYCONFIG_SKIP = 3,
+    TITLE_MENU_ITEM_KEYCONFIG_PAUSE = 4,
+    TITLE_MENU_ITEM_KEYCONFIG_UP = 5,
+    TITLE_MENU_ITEM_KEYCONFIG_DOWN = 6,
+    TITLE_MENU_ITEM_KEYCONFIG_LEFT = 7,
+    TITLE_MENU_ITEM_KEYCONFIG_RIGHT = 8,
+    TITLE_MENU_ITEM_KEYCONFIG_SHOTSLOW = 9,
+    TITLE_MENU_ITEM_KEYCONFIG_RESET = 10,
+    TITLE_MENU_ITEM_KEYCONFIG_QUIT = 11,
+};
+
+DIFFABLE_STATIC_ASSIGN(i16, g_LastKeyChanged) = 32;
+DIFFABLE_STATIC_ASSIGN(const char *, g_KeyConfigHelpText[]) = {
+    TH_TITLE_KEYCONFIG_HELPTEXT0, TH_TITLE_KEYCONFIG_HELPTEXT1, TH_TITLE_KEYCONFIG_HELPTEXT2,
+    TH_TITLE_KEYCONFIG_HELPTEXT3, TH_TITLE_KEYCONFIG_HELPTEXT4, TH_TITLE_KEYCONFIG_HELPTEXT5,
+    TH_TITLE_KEYCONFIG_HELPTEXT6, TH_TITLE_KEYCONFIG_HELPTEXT7, TH_TITLE_KEYCONFIG_HELPTEXT8,
+    TH_TITLE_KEYCONFIG_HELPTEXT9, TH_TITLE_KEYCONFIG_HELPTEXT10, TH_TITLE_KEYCONFIG_HELPTEXT11,
+};
+
+DIFFABLE_STATIC_ASSIGN(const char *, g_DemoReplayFiles[]) = {
+    "demo/demorpy0.rpy", "demo/demorpy1.rpy", "demo/demorpy2.rpy", "demo/demorpy3.rpy",
+};
+
+DIFFABLE_STATIC_ASSIGN(const char *, g_StartMenuHelpText[]) = {
+    TH_TITLE_STARTMENU_HELPTEXT0, TH_TITLE_STARTMENU_HELPTEXT1, TH_TITLE_STARTMENU_HELPTEXT2,
+    TH_TITLE_STARTMENU_HELPTEXT3, TH_TITLE_STARTMENU_HELPTEXT4, TH_TITLE_STARTMENU_HELPTEXT5,
+    TH_TITLE_STARTMENU_HELPTEXT6, TH_TITLE_STARTMENU_HELPTEXT7, TH_TITLE_STARTMENU_HELPTEXT8,
+};
 
 DIFFABLE_STATIC_ASSIGN(const char *, g_StageNames[]) = {
     "Stage1 ", "Stage2 ", "Stage3 ", "Stage4A", "Stage4B", "Stage5 ", "Stage6A", "Stage6B", "StageEX",
@@ -371,5 +424,601 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
 }
 
 
+
+
+
+ChainCallbackResult TitleScreen::OnUpdateStartMenu()
+{
+    i32 i;
+    i32 fileSize;
+
+    switch (this->currentScreenState)
+    {
+    case TitleCurrentScreenState_Init:
+        if (this->stateTimer2 == 0)
+        {
+            if (this->previousScreen == TitleCurrentScreen_StartMenu &&
+                g_Supervisor.wantedState2 != SupervisorState_ResultScreen)
+            {
+                g_Supervisor.PlayMusic(8, 0);
+            }
+
+            if (this->previousScreen == TitleCurrentScreen_StartMenu ||
+                this->previousScreen == TitleCurrentScreen_DifficultySelect ||
+                this->previousScreen == TitleCurrentScreen_Replay ||
+                this->previousScreen == TitleCurrentScreen_DifficultySelectPractice ||
+                this->previousScreen == TitleCurrentScreen_DifficultySelectExtra ||
+                this->previousScreen == TitleCurrentScreen_CharacterSelectSpell ||
+                this->previousScreen == TitleCurrentScreen_SpellStageSelect)
+            {
+                if (g_AnmManager->LoadSurface(0, "title/title00.png") != ZUN_SUCCESS)
+                {
+                    return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
+                }
+            }
+
+            if (this->vmCount == 0)
+            {
+                this->vmCount = 142;
+                this->vms = new AnmVm[this->vmCount];
+                this->titleAnm->ExecuteAnmIdxArray(this->vms, 0, this->vmCount);
+            }
+
+            g_AnmManager->SetInterruptArray(this->vms, this->vmCount, 2);
+
+            if (g_GameManager.flags.isReplay)
+            {
+                this->ChangeCurrentScreen(TitleCurrentScreen_Replay);
+                g_AnmManager->SetInterruptArray(this->vms, this->vmCount, 13);
+                this->currentHelpTextVm->SetInterrupt(2);
+                g_GameManager.SetIsReplayWeird(FALSE);
+
+                return CHAIN_CALLBACK_RESULT_CONTINUE;
+            }
+
+            if (this->practiceState != 0)
+            {
+                if (this->practiceState == 2)
+                {
+                    g_GameManager.flags.isSpellPractice = TRUE;
+                }
+
+                this->ChangeCurrentScreen(g_GameManager.flags.isSpellPractice
+                                              ? TitleCurrentScreen_CharacterSelectSpell
+                                              : TitleCurrentScreen_DifficultySelectPractice);
+
+                g_AnmManager->SetInterruptArray(this->vms, this->vmCount, 5);
+                this->currentHelpTextVm->SetInterrupt(2);
+
+                return CHAIN_CALLBACK_RESULT_CONTINUE;
+            }
+
+            /* Set each menu item's sprite. */
+            for (i = 0; i < TITLE_MENU_ITEM_START_NUM_ITEMS; i++)
+            {
+                this->titleAnm->SetSprite(&this->vms[1 + i], this->vms[1 + i].baseSpriteIndex + 1);
+            }
+
+            /* Mark the selected menu item. */
+            this->titleAnm->SetSprite(&this->vms[1 + this->cursor], this->vms[1 + this->cursor].baseSpriteIndex);
+
+            /* Mark the "Spell Practice" button as grayed out. */
+            if (!g_GameManager.IsSpellPracticeUnlocked())
+            {
+                this->vms[3].color1.d3dColor = 0xff404040;
+            }
+
+            /* Mark the "Extra Start" button as grayed out. */
+            if (!g_GameManager.IsExtraUnlocked())
+            {
+                this->vms[2].color1.d3dColor = 0xff404040;
+            }
+        }
+
+        if (this->stateTimer2 < ARRAY_SIZE(g_StartMenuHelpText))
+        {
+            g_AnmManager->DrawTextCentered(&this->helpTextVms[this->stateTimer2], 0xfff0e0, 0x300000,
+                                           g_StartMenuHelpText[this->stateTimer2]);
+            this->stateTimer2++;
+
+            return CHAIN_CALLBACK_RESULT_CONTINUE;
+        }
+
+        this->stateTimer2 = 0;
+        this->stateTimer = 0;
+        this->cursor2 = -1;
+        this->currentScreenState = TitleCurrentScreenState_Ready;
+        this->startMenuIdleFrames = 0;
+    case TitleCurrentScreenState_Ready:
+        i = this->MoveCursorVertical(9);
+        if (i != 0)
+        {
+            /* ... Just why, ZUN */
+        back:
+            if (!g_GameManager.IsSpellPracticeUnlocked())
+            {
+                if (this->cursor == TITLE_MENU_ITEM_START_SPELL_PRACTICE)
+                {
+                    this->cursor += i;
+                    goto back;
+                }
+            }
+
+            if (!g_GameManager.IsExtraUnlocked())
+            {
+                if (this->cursor == TITLE_MENU_ITEM_START_EXTRA_START)
+                {
+                    this->cursor += i;
+                    goto back;
+                }
+            }
+
+            /* Set each menu item's sprite. */
+            for (i = 0; i < TITLE_MENU_ITEM_START_NUM_ITEMS; i++)
+            {
+                this->titleAnm->SetSprite(&this->vms[1 + i], this->vms[1 + i].baseSpriteIndex + 1);
+            }
+
+            /* Mark the selected menu item. */
+            this->titleAnm->SetSprite(&this->vms[1 + this->cursor], this->vms[1 + this->cursor].baseSpriteIndex);
+
+            /* Mark the "Spell Practice" button as grayed out. */
+            if (!g_GameManager.IsSpellPracticeUnlocked())
+            {
+                this->vms[3].color1.d3dColor = 0xff404040;
+            }
+
+            /* Mark the "Extra Start" button as grayed out. */
+            if (!g_GameManager.IsExtraUnlocked())
+            {
+                this->vms[2].color1.d3dColor = 0xff404040;
+            }
+        }
+
+        this->startMenuIdleFrames++;
+        if (g_CurFrameInput != 0)
+        {
+            this->startMenuIdleFrames = 0;
+        }
+
+        if (this->startMenuIdleFrames > 1500)
+        {
+            g_GameManager.currentDemoReplay++;
+            g_GameManager.currentDemoReplay %= ARRAY_SIZE_SIGNED(g_DemoReplayFiles);
+            strcpy(g_GameManager.replayFilename, g_DemoReplayFiles[g_GameManager.currentDemoReplay]);
+
+            this->currentReplay = (ReplayData *)FileSystem::OpenFile(g_GameManager.replayFilename, &fileSize, FALSE);
+            this->currentReplay = ReplayManager::LoadReplayData(this->currentReplay, fileSize);
+
+            if (this->currentReplay == NULL)
+            {
+                utils::GuiDebugPrint("error : Demo Play is not ready\r\n");
+                this->startMenuIdleFrames = 0;
+            }
+            else
+            {
+                g_GameManager.SetIsReplayWeird(TRUE);
+                g_GameManager.flags.isDemoMode = TRUE;
+                g_GameManager.demoFrameCount = 0;
+                g_GameManager.difficulty = this->currentReplay->difficulty;
+
+                // Leftover from PCB
+                g_GameManager.shotType = this->currentReplay->shotType / 2;
+                g_GameManager.fullShotType = this->currentReplay->shotType % 2;
+                g_GameManager.shotType = this->currentReplay->shotType;
+
+                i = 0;
+
+                while (this->currentReplay->header.stageReplayData[i] == NULL)
+                {
+                    i++;
+                }
+
+                g_GameManager.currentStage = i;
+
+                g_ZunMemory.Free(this->currentReplay);
+                this->currentReplay = NULL;
+
+                g_Supervisor.curState = SupervisorState_GameManager;
+                g_GameManager.replayMode = REPLAY_MODE_NORMAL;
+
+                g_GameManager.flags.isSpellPractice = FALSE;
+
+                return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
+            }
+        }
+
+        if (this->cursor2 != this->cursor)
+        {
+            this->currentHelpTextVm = this->helpTextVms + this->cursor;
+            this->currentHelpTextVm->SetInterrupt(1);
+        }
+
+        this->cursor2 = this->cursor;
+
+        if (this->stateTimer2 < 10)
+        {
+            break;
+        }
+
+        if (WAS_PRESSED(TH_BUTTON_SHOOT | TH_BUTTON_ENTER))
+        {
+            g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
+            g_SoundPlayer.ProcessQueues();
+
+            switch (this->cursor)
+            {
+            case TITLE_MENU_ITEM_START_START:
+                g_GameManager.flags.isPracticeMode = FALSE;
+                g_GameManager.flags.isSpellPractice = FALSE;
+                this->cursor = g_Supervisor.cfg.defaultDifficulty;
+                if (this->cursor >= EXTRA)
+                {
+                    this->cursor = HARD;
+                }
+
+                this->ChangeCurrentScreen(TitleCurrentScreen_DifficultySelect);
+                g_AnmManager->SetInterruptArray(this->vms, this->vmCount, 5);
+                this->currentHelpTextVm->SetInterrupt(2);
+
+                return CHAIN_CALLBACK_RESULT_CONTINUE;
+            case TITLE_MENU_ITEM_START_PRACTICE_START:
+                g_GameManager.flags.isPracticeMode = TRUE;
+                g_GameManager.flags.isSpellPractice = FALSE;
+
+                this->cursor = g_Supervisor.cfg.defaultDifficulty;
+                if (this->cursor >= EXTRA)
+                {
+                    this->cursor = HARD;
+                }
+
+                this->ChangeCurrentScreen(TitleCurrentScreen_DifficultySelectPractice);
+                g_AnmManager->SetInterruptArray(this->vms, this->vmCount, 5);
+
+                this->currentHelpTextVm->SetInterrupt(2);
+
+                return CHAIN_CALLBACK_RESULT_CONTINUE;
+            case TITLE_MENU_ITEM_START_EXTRA_START:
+                if (g_GameManager.IsExtraUnlocked())
+                {
+                    g_GameManager.flags.isPracticeMode = FALSE;
+                    g_GameManager.flags.isSpellPractice = FALSE;
+
+                    this->cursor = 0;
+                    this->ChangeCurrentScreen(TitleCurrentScreen_DifficultySelectExtra);
+
+                    g_AnmManager->SetInterruptArray(this->vms, this->vmCount, 5);
+                    this->currentHelpTextVm->SetInterrupt(2);
+
+                    return CHAIN_CALLBACK_RESULT_CONTINUE;
+                }
+            case TITLE_MENU_ITEM_START_SPELL_PRACTICE:
+                if (g_GameManager.IsSpellPracticeUnlocked())
+                {
+                    g_GameManager.flags.isPracticeMode = TRUE;
+                    g_GameManager.flags.isSpellPractice = TRUE;
+
+                    this->cursor = g_GameManager.shotType;
+                    this->ChangeCurrentScreen(TitleCurrentScreen_SpellStageSelect);
+
+                    g_AnmManager->SetInterruptArray(this->vms, this->vmCount, 5);
+                    this->currentHelpTextVm->SetInterrupt(2);
+
+                    return CHAIN_CALLBACK_RESULT_CONTINUE;
+                }
+            case TITLE_MENU_ITEM_START_REPLAY:
+                g_GameManager.flags.isPracticeMode = FALSE;
+                g_GameManager.flags.isSpellPractice = FALSE;
+
+                this->ChangeCurrentScreen(TitleCurrentScreen_Replay);
+
+                g_AnmManager->SetInterruptArray(this->vms, this->vmCount, 13);
+                this->currentHelpTextVm->SetInterrupt(2);
+
+                return CHAIN_CALLBACK_RESULT_CONTINUE;
+            case TITLE_MENU_ITEM_START_MUSIC_ROOM:
+                g_Supervisor.curState = SupervisorState_MusicRoom;
+                this->currentHelpTextVm->SetInterrupt(2);
+                return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
+            case TITLE_MENU_ITEM_START_RESULT:
+                g_Supervisor.curState = SupervisorState_ResultScreen;
+                this->currentHelpTextVm->SetInterrupt(2);
+                return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
+            case TITLE_MENU_ITEM_START_OPTION:
+                /* ??? */
+                this->currentScreenState = TitleCurrentScreenState_Init;
+                this->cursor = 0;
+                this->stateTimer2 = 0;
+                this->stateTimer = 0;
+                this->currentScreenState = TitleCurrentScreenState_Changing;
+                this->stateTimer = 0;
+                this->OnUpdateOptions();
+                this->cursor = 0;
+                break;
+            case TITLE_MENU_ITEM_START_QUIT:
+                this->currentScreenState = TitleCurrentScreenState_Exit;
+                this->stateTimer = 0;
+                g_AnmManager->SetInterruptArray(this->vms, this->vmCount, 1);
+                if (g_Supervisor.cfg.musicMode == MIDI)
+                {
+                    g_Supervisor.midiOutput->PlayFile(30);
+                }
+                break;
+            }
+        }
+
+        if (WAS_PRESSED(TH_BUTTON_BOMB | TH_BUTTON_MENU))
+        {
+            this->titleAnm->SetSprite(&this->vms[this->cursor + 1], this->vms[this->cursor + 1].baseSpriteIndex + 1);
+            this->cursor = TITLE_MENU_ITEM_START_QUIT;
+            this->titleAnm->SetSprite(&this->vms[this->cursor + 1], this->vms[this->cursor + 1].baseSpriteIndex);
+            g_SoundPlayer.PlaySoundByIdx(SOUND_BACK, 0);
+            g_SoundPlayer.ProcessQueues();
+        }
+        break;
+    case TitleCurrentScreenState_Exit:
+        if (stateTimer >= 60)
+        {
+            ZUN_DELETE2(this->vms);
+            // Yes, this->vms is set to NULL twice.
+            this->vms = NULL;
+
+            this->vmCount = 0;
+            this->stateTimer2 = 0;
+
+            g_Supervisor.curState = SupervisorState_ExitGame;
+
+            return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
+        }
+        break;
+    case TitleCurrentScreenState_Changing:
+        if (stateTimer >= 30)
+        {
+            this->ChangeCurrentScreen(TitleCurrentScreen_Option);
+            this->cursor = 0;
+            this->currentGameConfig = g_Supervisor.cfg;
+
+            return CHAIN_CALLBACK_RESULT_CONTINUE;
+        }
+        break;
+    }
+
+    this->idleFrames++;
+    this->stateTimer++;
+    this->stateTimer2++;
+
+    return CHAIN_CALLBACK_RESULT_CONTINUE;
+}
+
+
+
+#pragma var_order(vmPair, i, keyToChange, controllerState)
+ChainCallbackResult TitleScreen::OnUpdateKeyConfig()
+{
+    AnmVm *vmPair;
+    i32 i;
+    u8 *controllerState;
+    i16 keyToChange;
+
+    switch (this->currentScreenState)
+    {
+    case TitleCurrentScreenState_Init:
+        if (this->stateTimer2 == 0)
+        {
+            g_AnmManager->SetInterruptArray(this->vms, this->vmCount, 4);
+
+            for (i = 0; i < 12; i++)
+            {
+                this->titleAnm->SetSprite(&this->vms[i + 45], this->vms[i + 45].baseSpriteIndex + 1);
+            }
+
+            this->titleAnm->SetSprite(&this->vms[this->cursor + 45], this->vms[this->cursor + 45].baseSpriteIndex);
+            this->currentScreenState = TitleCurrentScreenState_Init;
+            this->stateTimer = 0;
+
+            this->controllerMapping = g_Supervisor.cfg.controllerMapping;
+
+            g_Supervisor.cfg.controllerMapping.upButton = -1;
+            g_Supervisor.cfg.controllerMapping.downButton = -1;
+
+            /* Yes, ZUN really did write this. */
+            vmPair = &this->vms[57];
+            this->SetKeyNumberSprite(vmPair, this->controllerMapping.shotButton);
+            vmPair += 2;
+            this->SetKeyNumberSprite(vmPair, this->controllerMapping.bombButton);
+            vmPair += 2;
+            this->SetKeyNumberSprite(vmPair, this->controllerMapping.focusButton);
+            vmPair += 2;
+            this->SetKeyNumberSprite(vmPair, this->controllerMapping.skipButton);
+            vmPair += 2;
+            this->SetKeyNumberSprite(vmPair, this->controllerMapping.menuButton);
+            vmPair += 2;
+            this->SetKeyNumberSprite(vmPair, this->controllerMapping.upButton);
+            vmPair += 2;
+            this->SetKeyNumberSprite(vmPair, this->controllerMapping.downButton);
+            vmPair += 2;
+            this->SetKeyNumberSprite(vmPair, this->controllerMapping.leftButton);
+            vmPair += 2;
+            this->SetKeyNumberSprite(vmPair, this->controllerMapping.rightButton);
+
+            this->cursor2 = -1;
+        }
+
+        this->currentScreenState = TitleCurrentScreenState_Ready;
+
+        for (i = 0; i < ARRAY_SIZE(g_KeyConfigHelpText); i++)
+        {
+            g_AnmManager->DrawTextCentered(&this->helpTextVms[i], 0xfff0e0, 0x300000, g_KeyConfigHelpText[i]);
+        }
+
+    case TitleCurrentScreenState_Ready:
+        if (this->MoveCursorVertical(12) != 0)
+        {
+            for (i = 0; i < 12; i++)
+            {
+                this->titleAnm->SetSprite(&this->vms[i + 45], this->vms[i + 45].baseSpriteIndex + 1);
+            }
+
+            this->titleAnm->SetSprite(&this->vms[this->cursor + 45], this->vms[this->cursor + 45].baseSpriteIndex);
+        }
+        if (this->cursor2 != this->cursor)
+        {
+            this->currentHelpTextVm = &this->helpTextVms[this->cursor];
+            this->currentHelpTextVm->SetInterrupt(1);
+        }
+        this->cursor2 = this->cursor;
+
+        vmPair = &this->vms[57];
+        this->SetKeyNumberSprite(vmPair, this->controllerMapping.shotButton);
+        vmPair += 2;
+        this->SetKeyNumberSprite(vmPair, this->controllerMapping.bombButton);
+        vmPair += 2;
+        this->SetKeyNumberSprite(vmPair, this->controllerMapping.focusButton);
+        vmPair += 2;
+        this->SetKeyNumberSprite(vmPair, this->controllerMapping.skipButton);
+        vmPair += 2;
+        this->SetKeyNumberSprite(vmPair, this->controllerMapping.menuButton);
+        vmPair += 2;
+        this->SetKeyNumberSprite(vmPair, this->controllerMapping.upButton);
+        vmPair += 2;
+        this->SetKeyNumberSprite(vmPair, this->controllerMapping.downButton);
+        vmPair += 2;
+        this->SetKeyNumberSprite(vmPair, this->controllerMapping.leftButton);
+        vmPair += 2;
+        this->SetKeyNumberSprite(vmPair, this->controllerMapping.rightButton);
+
+        for (i = TITLE_SPRITE_KEYCONFIG_SLOWSHOT_START; i <= TITLE_SPRITE_KEYCONFIG_SLOWSHOT_END; i++)
+        {
+            this->titleAnm->SetSprite(&this->vms[i], this->vms[i].baseSpriteIndex + 1);
+        }
+
+        i = TITLE_SPRITE_KEYCONFIG_SLOWSHOT_START + g_Supervisor.cfg.shotSlow;
+        this->titleAnm->SetSprite(&this->vms[i], this->vms[i].baseSpriteIndex);
+
+        controllerState = Controller::GetControllerState();
+
+        for (keyToChange = 0; keyToChange < 32; keyToChange++)
+        {
+            if ((controllerState[keyToChange] & TH_BUTTON_RIGHT) != 0)
+            {
+                break;
+            }
+        }
+
+        if (keyToChange < 32 && g_LastKeyChanged != keyToChange)
+        {
+            switch (this->cursor)
+            {
+            case TITLE_MENU_ITEM_KEYCONFIG_SHOT:
+                this->SetKeyConfigKey(keyToChange, this->controllerMapping.shotButton, 1);
+                this->controllerMapping.shotButton = keyToChange;
+                break;
+            case TITLE_MENU_ITEM_KEYCONFIG_BOMB:
+                this->SetKeyConfigKey(keyToChange, this->controllerMapping.bombButton, 0);
+                this->controllerMapping.bombButton = keyToChange;
+                break;
+            case TITLE_MENU_ITEM_KEYCONFIG_SLOW:
+                this->SetKeyConfigKey(keyToChange, this->controllerMapping.focusButton, 1);
+                this->controllerMapping.focusButton = keyToChange;
+                break;
+            case TITLE_MENU_ITEM_KEYCONFIG_PAUSE:
+                this->SetKeyConfigKey(keyToChange, this->controllerMapping.menuButton, 0);
+                this->controllerMapping.menuButton = keyToChange;
+                break;
+            case TITLE_MENU_ITEM_KEYCONFIG_UP:
+                this->SetKeyConfigKey(keyToChange, this->controllerMapping.upButton, 0);
+                this->controllerMapping.upButton = keyToChange;
+                break;
+            case TITLE_MENU_ITEM_KEYCONFIG_DOWN:
+                this->SetKeyConfigKey(keyToChange, this->controllerMapping.downButton, 0);
+                this->controllerMapping.downButton = keyToChange;
+                break;
+            case TITLE_MENU_ITEM_KEYCONFIG_LEFT:
+                this->SetKeyConfigKey(keyToChange, this->controllerMapping.leftButton, 0);
+                this->controllerMapping.leftButton = keyToChange;
+                break;
+            case TITLE_MENU_ITEM_KEYCONFIG_RIGHT:
+                this->SetKeyConfigKey(keyToChange, this->controllerMapping.rightButton, 0);
+                this->controllerMapping.rightButton = keyToChange;
+                break;
+            case TITLE_MENU_ITEM_KEYCONFIG_SKIP:
+                this->SetKeyConfigKey(keyToChange, this->controllerMapping.skipButton, 0);
+                this->controllerMapping.skipButton = keyToChange;
+                break;
+            default:
+                goto out;
+            }
+
+            g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
+            g_SoundPlayer.ProcessQueues();
+        }
+
+    out:
+
+        g_LastKeyChanged = keyToChange;
+
+        if (WAS_PRESSED(TH_BUTTON_LEFT))
+        {
+            switch (this->cursor)
+            {
+            case TITLE_MENU_ITEM_KEYCONFIG_SHOTSLOW:
+                g_Supervisor.cfg.shotSlow = 1 - g_Supervisor.cfg.shotSlow;
+                break;
+            }
+        }
+
+        if (WAS_PRESSED(TH_BUTTON_RIGHT))
+        {
+            switch (this->cursor)
+            {
+            case TITLE_MENU_ITEM_KEYCONFIG_SHOTSLOW:
+                g_Supervisor.cfg.shotSlow = 1 - g_Supervisor.cfg.shotSlow;
+                break;
+            }
+        }
+
+        if (g_CurFrameInput != 0)
+        {
+            this->idleFrames = 0;
+        }
+
+        if (this->idleFrames >= 3600)
+        {
+            goto exit_keyconfig;
+        }
+
+        if (WAS_PRESSED(TH_BUTTON_SHOOT | TH_BUTTON_ENTER))
+        {
+            switch (this->cursor)
+            {
+            case TITLE_MENU_ITEM_KEYCONFIG_RESET:
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
+                g_SoundPlayer.ProcessQueues();
+
+                this->controllerMapping = g_ControllerMapping;
+                g_Supervisor.cfg.shotSlow = TRUE;
+                break;
+            case TITLE_MENU_ITEM_KEYCONFIG_QUIT:
+            exit_keyconfig:
+                g_SoundPlayer.PlaySoundByIdx(SOUND_BACK, 0);
+                g_SoundPlayer.ProcessQueues();
+
+                this->ChangeCurrentScreen(TitleCurrentScreen_Option);
+
+                g_Supervisor.cfg.controllerMapping = this->controllerMapping;
+                this->cursor = TITLE_MENU_ITEM_OPTION_KEYCONFIG;
+                return CHAIN_CALLBACK_RESULT_CONTINUE;
+            }
+        }
+
+        break;
+    }
+
+    this->idleFrames++;
+    this->stateTimer++;
+    this->stateTimer2++;
+
+    return CHAIN_CALLBACK_RESULT_CONTINUE;
+}
 
 } // namespace th08

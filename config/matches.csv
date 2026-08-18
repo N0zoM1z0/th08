@@ -1073,3 +1073,5 @@ address,name,size,status,match_percent,unit,evidence
 0x00471C10,th08::CWaveFile::`scalar_deleting_destructor',46,matching,100.00,cwavefile-scalar-deleting-dtor-00471c10,python3 scripts/compare-function.py cwavefile-scalar-deleting-dtor-00471c10 --json
 0x0043ABD7,th08::GameManager::GameplaySetupThread,3423,matching,100.00,game-manager-gameplay-setup-thread-0043abd7,python3 scripts/compare-function.py game-manager-gameplay-setup-thread-0043abd7 --json
 0x0046E136,th08::TitleScreen::OnUpdateReplayMenu,3671,matching,100.00,title-replay-menu-0046e136,python3 scripts/compare-function.py title-replay-menu-0046e136 --json
+0x004674E0,th08::TitleScreen::OnUpdateStartMenu,3703,matching,100.00,title-start-menu-004674e0,python3 scripts/compare-function.py title-start-menu-004674e0 --json
+0x00469636,th08::TitleScreen::OnUpdateKeyConfig,2383,matching,100.00,title-key-config-00469636,python3 scripts/compare-function.py title-key-config-00469636 --json
