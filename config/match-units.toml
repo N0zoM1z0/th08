@@ -57500,7 +57500,7 @@ size = 0x1D2
 [[units.relocations]]
 offset = 0x12
 type = "REL32"
-symbol = "??0Float3@th08@@QAE@XZ"
+symbol = "??0D3DXMATRIX@@QAE@XZ"
 target = 0x0040B460
 
 [[units.relocations]]
@@ -58990,7 +58990,7 @@ target = 0x004066E0
 [[units.relocations]]
 offset = 0x4A
 type = "REL32"
-symbol = "?FUN_00463d60@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+symbol = "?FUN_00463d60@AnmManager@th08@@QAEXPAUAnmVm@2@@Z"
 target = 0x00463D60
 
 [[units.relocations]]
@@ -85710,3 +85710,220 @@ offset = 0x285
 type = "DIR32"
 symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
 target = 0x017CE758
+
+[[units]]
+name = "anm-project-3d-quad"
+object = "build/objdiff/reimpl/AnmManager.obj"
+symbol = "th08::AnmManager::FUN_00463d60"
+target_address = 0x00463D60
+size = 0x30B
+
+[[units.relocations]]
+offset = 0x15
+type = "REL32"
+symbol = "??0D3DXMATRIX@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "??0D3DXMATRIX@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xC7
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target = 0x004B4C90
+
+[[units.relocations]]
+offset = 0xDD
+type = "REL32"
+symbol = "_D3DXMatrixRotationX@8"
+target = 0x00477F42
+
+[[units.relocations]]
+offset = 0xF9
+type = "REL32"
+symbol = "_D3DXMatrixMultiply@12"
+target = 0x00477612
+
+[[units.relocations]]
+offset = 0x105
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target = 0x004B4C90
+
+[[units.relocations]]
+offset = 0x11C
+type = "REL32"
+symbol = "_D3DXMatrixRotationY@8"
+target = 0x00477FC2
+
+[[units.relocations]]
+offset = 0x138
+type = "REL32"
+symbol = "_D3DXMatrixMultiply@12"
+target = 0x00477612
+
+[[units.relocations]]
+offset = 0x144
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target = 0x004B4C90
+
+[[units.relocations]]
+offset = 0x15B
+type = "REL32"
+symbol = "_D3DXMatrixRotationZ@8"
+target = 0x00478043
+
+[[units.relocations]]
+offset = 0x178
+type = "REL32"
+symbol = "_D3DXMatrixMultiply@12"
+target = 0x00477612
+
+[[units.relocations]]
+offset = 0x1D6
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x1DF
+type = "REL32"
+symbol = "@fabsf@4"
+target = 0x004031E0
+
+[[units.relocations]]
+offset = 0x221
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x22A
+type = "REL32"
+symbol = "@fabsf@4"
+target = 0x004031E0
+
+[[units.relocations]]
+offset = 0x24B
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x250
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x255
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x267
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x26C
+type = "REL32"
+symbol = "_D3DXVec3Project@24"
+target = 0x00477178
+
+[[units.relocations]]
+offset = 0x275
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x27A
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x27F
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x291
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x296
+type = "REL32"
+symbol = "_D3DXVec3Project@24"
+target = 0x00477178
+
+[[units.relocations]]
+offset = 0x29F
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x2A4
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x2A9
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x2BA
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x2BF
+type = "REL32"
+symbol = "_D3DXVec3Project@24"
+target = 0x00477178
+
+[[units.relocations]]
+offset = 0x2C8
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x2CD
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x2D2
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x2E4
+type = "DIR32"
+symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
+target = 0x018BDC98
+
+[[units.relocations]]
+offset = 0x2E9
+type = "REL32"
+symbol = "_D3DXVec3Project@24"
+target = 0x00477178

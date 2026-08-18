@@ -495,7 +495,7 @@ struct AnmManager
     void SetRenderStateForVm(AnmVm *vm);
     void SetRenderStateForVm3D(AnmVm *vm);
     ZunResult FUN_004639e0(AnmVm *vm);
-    ZunResult FUN_00463d60(AnmVm *vm);
+    void FUN_00463d60(AnmVm *vm);
     ZunResult FUN_004640e0(AnmVm *vm, void *callback);
     ZunResult DrawInner(AnmVm *vm, i32 flags);
     ZunResult AddSpriteToDrawBuffer(VertexTex1DiffuseXyzrhw *vertices);
@@ -707,8 +707,7 @@ struct AnmManager
     u32 flushesThisFrame;
     Float2 screenShakeOffset;
     AnmLoaded anmFiles[256];
-    Float3 unk0x1c24;
-    unknown_fields(0x1c30, 0x34);
+    D3DXMATRIX cachedWorldMatrix;
     AnmVm unk0x1c64;
     unknown_fields(0x1f08, 0x130);
 

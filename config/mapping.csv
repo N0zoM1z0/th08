@@ -963,7 +963,7 @@ th08::AnmManager::FUN_00463470,0x463470,0x390,__thiscall,,u8,AnmManager*,AnmVm*
 th08::AnmManager::DrawNoRotationNoRound,0x463800,0x1d5,__thiscall,,ZunResult,AnmManager*,AnmVm*
 th08::AnmManager::FUN_004639e0,0x4639e0,0x303,__thiscall,,ZunResult,AnmManager*,AnmVm*
 th08::AnmManager::FUN_00463cf0,0x463cf0,0x6b,__thiscall,,ZunResult,AnmManager*,AnmVm*
-th08::AnmManager::FUN_00463d60,0x463d60,0x30b,__thiscall,,ZunResult,AnmManager*,AnmVm*
+th08::AnmManager::FUN_00463d60,0x463d60,0x30b,__thiscall,,void,AnmManager*,AnmVm*
 th08::AnmManager::FUN_00464070,0x464070,0x62,__thiscall,,ZunResult,AnmManager*,AnmVm*
 th08::AnmManager::FUN_004640e0,0x4640e0,0x312,__thiscall,,ZunResult,AnmManager*,AnmVm*,void*
 th08::AnmManager::DrawWithCallback,0x464400,0x6f,__thiscall,,ZunResult,AnmManager*,AnmVm*,void*

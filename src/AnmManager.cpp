@@ -1520,10 +1520,61 @@ ZunResult AnmManager::FUN_00463cf0(AnmVm *vm)
     return this->DrawInner(vm, 0);
 }
 
-// STUB: th08 0x463d60
-ZunResult AnmManager::FUN_00463d60(AnmVm *vm)
+// FUNCTION: th08 0x463d60
+#pragma var_order(rotationMatrix, worldTransformMatrix, this)
+void AnmManager::FUN_00463d60(AnmVm *vm)
 {
-    return ZUN_SUCCESS;
+    D3DXMATRIX worldTransformMatrix;
+    D3DXMATRIX rotationMatrix;
+
+    if (!vm->flag16 && (vm->updateScale || vm->updateRotation))
+    {
+        vm->matrix2 = vm->matrix1;
+        vm->matrix2._11 *= vm->scale.x;
+        vm->matrix2._22 *= vm->scale.y;
+        vm->updateScale = 0;
+
+        if (vm->rotation.x != 0.0)
+        {
+            D3DXMatrixRotationX(&rotationMatrix, vm->rotation.x);
+            D3DXMatrixMultiply(&vm->matrix2, &vm->matrix2, &rotationMatrix);
+        }
+        if (vm->rotation.y != 0.0)
+        {
+            D3DXMatrixRotationY(&rotationMatrix, vm->rotation.y);
+            D3DXMatrixMultiply(&vm->matrix2, &vm->matrix2, &rotationMatrix);
+        }
+        if (vm->rotation.z != 0.0)
+        {
+            D3DXMatrixRotationZ(&rotationMatrix, vm->rotation.z);
+            D3DXMatrixMultiply(&vm->matrix2, &vm->matrix2, &rotationMatrix);
+        }
+        vm->updateRotation = 0;
+    }
+
+    worldTransformMatrix = vm->matrix2;
+    if ((vm->anchor & 1) == 0)
+        worldTransformMatrix._41 = vm->pos.x;
+    else
+        worldTransformMatrix._41 = fabsf(vm->spriteSize.x * vm->scale.x / 2.0f) + vm->pos.x;
+
+    if ((vm->anchor & 2) == 0)
+        worldTransformMatrix._42 = vm->pos.y;
+    else
+        worldTransformMatrix._42 = fabsf(vm->spriteSize.y * vm->scale.y / 2.0f) + vm->pos.y;
+
+    worldTransformMatrix._43 = vm->pos.z;
+
+    D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&g_QuadVertices[0].pos), reinterpret_cast<D3DXVECTOR3 *>(&this->untexturedVector[0].pos), &g_Supervisor.viewport,
+                    &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldTransformMatrix);
+    D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&g_QuadVertices[1].pos), reinterpret_cast<D3DXVECTOR3 *>(&this->untexturedVector[1].pos), &g_Supervisor.viewport,
+                    &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldTransformMatrix);
+    D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&g_QuadVertices[2].pos), reinterpret_cast<D3DXVECTOR3 *>(&this->untexturedVector[2].pos), &g_Supervisor.viewport,
+                    &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldTransformMatrix);
+    D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&g_QuadVertices[3].pos), reinterpret_cast<D3DXVECTOR3 *>(&this->untexturedVector[3].pos), &g_Supervisor.viewport,
+                    &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldTransformMatrix);
+
+    this->cachedWorldMatrix = worldTransformMatrix;
 }
 
 // FUNCTION: th08 0x464070
