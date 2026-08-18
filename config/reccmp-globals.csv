@@ -206,3 +206,10 @@ th08::g_PlayerPlayfieldWidth,0x164d2e4,global
 th08::g_PlayerGaugeBounds,0x164d300,global
 th08::g_PlayerRouteStateFlag,0x164d0b0,global
 th08::g_PlayerNoLivesFlag,0x164d0bb,global
+th08::g_SupervisorFpsQpcSampleCount,0x17cf2ac,global
+th08::g_SupervisorFpsLastQpc,0x17cf2b0,global
+th08::g_SupervisorFpsDebugBuffer,0x17cf2b8,global
+th08::g_SupervisorFpsBuffer,0x17cf3b8,global
+th08::g_SupervisorFpsLastTime,0x17cf4b8,global
+th08::g_SupervisorFpsTimeInitialized,0x17cf4bc,global
+th08::g_SupervisorFpsFrameCount,0x17cf4c0,global

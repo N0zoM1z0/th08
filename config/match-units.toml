@@ -85000,3 +85000,713 @@ object = "build/objdiff/reimpl/SpellCard.obj"
 symbol = "th08::Spellcard::FUN_0044d150"
 target_address = 0x0044D150
 size = 0x25
+
+[[units]]
+name = "supervisor-calculate-fps"
+object = "build/objdiff/reimpl/Supervisor.obj"
+symbol = "th08::Supervisor::CalculateFps"
+target_address = 0x00446F53
+size = 0x342
+
+[[units.relocations]]
+offset = 0xC
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x1B
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x21
+type = "DIR32"
+symbol = "?g_SupervisorFpsFrameCount@th08@@3IA"
+target = 0x017CF4C0
+
+[[units.relocations]]
+offset = 0x2A
+type = "DIR32"
+symbol = "?g_SupervisorFpsFrameCount@th08@@3IA"
+target = 0x017CF4C0
+
+[[units.relocations]]
+offset = 0x30
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x3C
+type = "DIR32"
+symbol = "?g_SupervisorFpsTimeInitialized@th08@@3IA"
+target = 0x017CF4BC
+
+[[units.relocations]]
+offset = 0x48
+type = "DIR32"
+symbol = "?g_SupervisorFpsTimeInitialized@th08@@3IA"
+target = 0x017CF4BC
+
+[[units.relocations]]
+offset = 0x50
+type = "DIR32"
+symbol = "?g_SupervisorFpsTimeInitialized@th08@@3IA"
+target = 0x017CF4BC
+
+[[units.relocations]]
+offset = 0x56
+type = "DIR32"
+symbol = "__imp__timeGetTime@0"
+target = 0x004B4240
+
+[[units.relocations]]
+offset = 0x5B
+type = "DIR32"
+symbol = "?g_SupervisorFpsLastTime@th08@@3KA"
+target = 0x017CF4B8
+
+[[units.relocations]]
+offset = 0x61
+type = "DIR32"
+symbol = "__imp__timeGetTime@0"
+target = 0x004B4240
+
+[[units.relocations]]
+offset = 0x6D
+type = "DIR32"
+symbol = "?g_SupervisorFpsLastTime@th08@@3KA"
+target = 0x017CF4B8
+
+[[units.relocations]]
+offset = 0x77
+type = "DIR32"
+symbol = "?g_SupervisorFpsLastTime@th08@@3KA"
+target = 0x017CF4B8
+
+[[units.relocations]]
+offset = 0x7D
+type = "DIR32"
+symbol = "?g_SupervisorFpsFrameCount@th08@@3IA"
+target = 0x017CF4C0
+
+[[units.relocations]]
+offset = 0x87
+type = "DIR32"
+symbol = "?g_SupervisorFpsLastTime@th08@@3KA"
+target = 0x017CF4B8
+
+[[units.relocations]]
+offset = 0x9B
+type = "DIR32"
+symbol = "?g_SupervisorFpsLastTime@th08@@3KA"
+target = 0x017CF4B8
+
+[[units.relocations]]
+offset = 0xAB
+type = "DIR32"
+symbol = "__real@447a0000"
+target = 0x004B6778
+
+[[units.relocations]]
+offset = 0xB6
+type = "DIR32"
+symbol = "?g_SupervisorFpsLastTime@th08@@3KA"
+target = 0x017CF4B8
+
+[[units.relocations]]
+offset = 0xBB
+type = "DIR32"
+symbol = "?g_SupervisorFpsFrameCount@th08@@3IA"
+target = 0x017CF4C0
+
+[[units.relocations]]
+offset = 0xD1
+type = "DIR32"
+symbol = "?g_SupervisorFpsFrameCount@th08@@3IA"
+target = 0x017CF4C0
+
+[[units.relocations]]
+offset = 0xDF
+type = "DIR32"
+symbol = "??_C@_08IEGBDHHK@?$CF?402ffps?$AA@"
+target = 0x004B6938
+
+[[units.relocations]]
+offset = 0xE4
+type = "DIR32"
+symbol = "?g_SupervisorFpsBuffer@th08@@3PADA"
+target = 0x017CF3B8
+
+[[units.relocations]]
+offset = 0xE9
+type = "REL32"
+symbol = "_sprintf"
+target = 0x004A4857
+
+[[units.relocations]]
+offset = 0x10F
+type = "DIR32"
+symbol = "__real@42700000"
+target = 0x004B430C
+
+[[units.relocations]]
+offset = 0x118
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x121
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x12A
+type = "DIR32"
+symbol = "__real@3f666666"
+target = 0x004B4FB0
+
+[[units.relocations]]
+offset = 0x13A
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x143
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x14E
+type = "DIR32"
+symbol = "__real@3f333333"
+target = 0x004B4C84
+
+[[units.relocations]]
+offset = 0x161
+type = "DIR32"
+symbol = "__real@3f4ccccd"
+target = 0x004B6934
+
+[[units.relocations]]
+offset = 0x167
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x16D
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x178
+type = "DIR32"
+symbol = "__real@3f000000"
+target = 0x004B847C
+
+[[units.relocations]]
+offset = 0x18B
+type = "DIR32"
+symbol = "__real@3f19999a"
+target = 0x004B6930
+
+[[units.relocations]]
+offset = 0x191
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x197
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x1A2
+type = "DIR32"
+symbol = "__real@3f000000"
+target = 0x004B847C
+
+[[units.relocations]]
+offset = 0x1A8
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x1AE
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x1C6
+type = "DIR32"
+symbol = "__real@3f000000"
+target = 0x004B847C
+
+[[units.relocations]]
+offset = 0x1CB
+type = "REL32"
+symbol = "__ftol2"
+target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x1D1
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x1DA
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x1E0
+type = "DIR32"
+symbol = "??_C@_03GPCJOALC@?$CF2d?$AA@"
+target = 0x004B692C
+
+[[units.relocations]]
+offset = 0x1E5
+type = "DIR32"
+symbol = "?g_SupervisorFpsDebugBuffer@th08@@3PADA"
+target = 0x017CF2B8
+
+[[units.relocations]]
+offset = 0x1EA
+type = "REL32"
+symbol = "_sprintf"
+target = 0x004A4857
+
+[[units.relocations]]
+offset = 0x1F8
+type = "DIR32"
+symbol = "?g_SupervisorFpsLastQpc@th08@@3T_LARGE_INTEGER@@A"
+target = 0x017CF2B0
+
+[[units.relocations]]
+offset = 0x200
+type = "DIR32"
+symbol = "?g_SupervisorFpsLastQpc@th08@@3T_LARGE_INTEGER@@A"
+target = 0x017CF2B0
+
+[[units.relocations]]
+offset = 0x206
+type = "DIR32"
+symbol = "__imp__QueryPerformanceCounter@4"
+target = 0x004B4088
+
+[[units.relocations]]
+offset = 0x210
+type = "DIR32"
+symbol = "__imp__QueryPerformanceCounter@4"
+target = 0x004B4088
+
+[[units.relocations]]
+offset = 0x219
+type = "DIR32"
+symbol = "?g_SupervisorFpsLastQpc@th08@@3T_LARGE_INTEGER@@A"
+target = 0x017CF2B0
+
+[[units.relocations]]
+offset = 0x223
+type = "DIR32"
+symbol = "?g_SupervisorFpsLastQpc@th08@@3T_LARGE_INTEGER@@A"
+target = 0x017CF2B0
+
+[[units.relocations]]
+offset = 0x22B
+type = "DIR32"
+symbol = "?g_SupervisorFpsLastQpc@th08@@3T_LARGE_INTEGER@@A"
+target = 0x017CF2B0
+
+[[units.relocations]]
+offset = 0x231
+type = "DIR32"
+symbol = "?g_SupervisorFpsFrameCount@th08@@3IA"
+target = 0x017CF4C0
+
+[[units.relocations]]
+offset = 0x237
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x23F
+type = "DIR32"
+symbol = "?g_SupervisorFpsLastQpc@th08@@3T_LARGE_INTEGER@@A"
+target = 0x017CF2B0
+
+[[units.relocations]]
+offset = 0x24F
+type = "DIR32"
+symbol = "?g_SupervisorFpsLastQpc@th08@@3T_LARGE_INTEGER@@A"
+target = 0x017CF2B0
+
+[[units.relocations]]
+offset = 0x25E
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x275
+type = "DIR32"
+symbol = "?g_SupervisorFpsLastQpc@th08@@3T_LARGE_INTEGER@@A"
+target = 0x017CF2B0
+
+[[units.relocations]]
+offset = 0x27D
+type = "DIR32"
+symbol = "?g_SupervisorFpsLastQpc@th08@@3T_LARGE_INTEGER@@A"
+target = 0x017CF2B0
+
+[[units.relocations]]
+offset = 0x282
+type = "DIR32"
+symbol = "?g_SupervisorFpsQpcSampleCount@th08@@3IA"
+target = 0x017CF2AC
+
+[[units.relocations]]
+offset = 0x288
+type = "DIR32"
+symbol = "?g_SupervisorFpsQpcSampleCount@th08@@3IA"
+target = 0x017CF2AC
+
+[[units.relocations]]
+offset = 0x293
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x2AA
+type = "DIR32"
+symbol = "__real@44000000"
+target = 0x004B4D04
+
+[[units.relocations]]
+offset = 0x2B3
+type = "DIR32"
+symbol = "__real@43e80000"
+target = 0x004B4D08
+
+[[units.relocations]]
+offset = 0x2C0
+type = "DIR32"
+symbol = "?g_SupervisorFpsBuffer@th08@@3PADA"
+target = 0x017CF3B8
+
+[[units.relocations]]
+offset = 0x2C9
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x2CE
+type = "REL32"
+symbol = "?AddString@AsciiManager@th08@@QAEXPAUFloat3@2@PBD@Z"
+target = 0x00402920
+
+[[units.relocations]]
+offset = 0x2F2
+type = "DIR32"
+symbol = "__real@43c00000"
+target = 0x004B4528
+
+[[units.relocations]]
+offset = 0x2FB
+type = "DIR32"
+symbol = "__real@43e00000"
+target = 0x004B4940
+
+[[units.relocations]]
+offset = 0x309
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x312
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x31E
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x327
+type = "DIR32"
+symbol = "?g_SupervisorFpsDebugBuffer@th08@@3PADA"
+target = 0x017CF2B8
+
+[[units.relocations]]
+offset = 0x330
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units.relocations]]
+offset = 0x335
+type = "REL32"
+symbol = "?AddString@AsciiManager@th08@@QAEXPAUFloat3@2@PBD@Z"
+target = 0x00402920
+
+[[units.relocations]]
+offset = 0x33B
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+
+[[units]]
+name = "supervisor-check-fps"
+object = "build/objdiff/reimpl/Supervisor.obj"
+symbol = "th08::Supervisor::CheckFps"
+target_address = 0x00446232
+size = 0x296
+
+[[units.relocations]]
+offset = 0x20
+type = "DIR32"
+symbol = "__imp__timeBeginPeriod@4"
+target = 0x004B426C
+
+[[units.relocations]]
+offset = 0x26
+type = "DIR32"
+symbol = "__imp__timeGetTime@0"
+target = 0x004B4240
+
+[[units.relocations]]
+offset = 0x31
+type = "DIR32"
+symbol = "__imp__timeEndPeriod@4"
+target = 0x004B425C
+
+[[units.relocations]]
+offset = 0x50
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x58
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x6E
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x73
+type = "REL32"
+symbol = "?CopySurfaceToBackbuffer@AnmManager@th08@@QAEXHHHHH@Z"
+target = 0x00466BB0
+
+[[units.relocations]]
+offset = 0x78
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x80
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x93
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x9B
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xA7
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xAC
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xB4
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xC6
+type = "DIR32"
+symbol = "__imp__timeBeginPeriod@4"
+target = 0x004B426C
+
+[[units.relocations]]
+offset = 0xCC
+type = "DIR32"
+symbol = "__imp__timeGetTime@0"
+target = 0x004B4240
+
+[[units.relocations]]
+offset = 0xDA
+type = "DIR32"
+symbol = "__imp__timeEndPeriod@4"
+target = 0x004B425C
+
+[[units.relocations]]
+offset = 0x123
+type = "DIR32"
+symbol = "__real@447a0000"
+target = 0x004B6778
+
+[[units.relocations]]
+offset = 0x132
+type = "DIR32"
+symbol = "__real@447a0000"
+target = 0x004B6778
+
+[[units.relocations]]
+offset = 0x14A
+type = "DIR32"
+symbol = "__real@42640000"
+target = 0x004B6774
+
+[[units.relocations]]
+offset = 0x188
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x200
+type = "DIR32"
+symbol = "__real@447a0000"
+target = 0x004B6778
+
+[[units.relocations]]
+offset = 0x212
+type = "DIR32"
+symbol = "__real@43200000"
+target = 0x004B4554
+
+[[units.relocations]]
+offset = 0x21E
+type = "DIR32"
+symbol = "??_C@_0DL@ELPKNGII@?$JA?$IC?$JC?$LM?$JD?$KP?$IK?z?$IC?$KK?$IO?f?$IC?j?$IC?D?$IC?H?$IC?$KC?$IC?$KJ?$IBA?$ID?$IK?$IDt?$ID?$IM?$IDb@"
+target = 0x004B6738
+
+[[units.relocations]]
+offset = 0x223
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x228
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00
+
+[[units.relocations]]
+offset = 0x22F
+type = "DIR32"
+symbol = "??_C@_0CF@LJKILJKA@?$IL?$KN?$JA?$KH?$ICU?$ICO?$IDt?$ID?$IM?$IB?$FL?$ID?$IA?$ID?$IC?$IB?$FL?$IDh?$IC?E?$JD?$KO?$IN?l?$IC?$LF?$IC?$NM@"
+target = 0x004B6710
+
+[[units.relocations]]
+offset = 0x234
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x239
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00
+
+[[units.relocations]]
+offset = 0x241
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x256
+type = "DIR32"
+symbol = "__real@42820000"
+target = 0x004B670C
+
+[[units.relocations]]
+offset = 0x262
+type = "DIR32"
+symbol = "??_C@_0DL@ELPKNGII@?$JA?$IC?$JC?$LM?$JD?$KP?$IK?z?$IC?$KK?$IO?f?$IC?j?$IC?D?$IC?H?$IC?$KC?$IC?$KJ?$IBA?$ID?$IK?$IDt?$ID?$IM?$IDb@"
+target = 0x004B66D0
+
+[[units.relocations]]
+offset = 0x267
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x26C
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00
+
+[[units.relocations]]
+offset = 0x273
+type = "DIR32"
+symbol = "??_C@_0CF@LJKILJKA@?$IL?$KN?$JA?$KH?$ICU?$ICO?$IDt?$ID?$IM?$IB?$FL?$ID?$IA?$ID?$IC?$IB?$FL?$IDh?$IC?E?$JD?$KO?$IN?l?$IC?$LF?$IC?$NM@"
+target = 0x004B6710
+
+[[units.relocations]]
+offset = 0x278
+type = "DIR32"
+symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
+target = 0x0164D540
+
+[[units.relocations]]
+offset = 0x27D
+type = "REL32"
+symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
+target = 0x0043EA00
+
+[[units.relocations]]
+offset = 0x285
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758

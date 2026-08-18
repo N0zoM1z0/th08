@@ -29,6 +29,14 @@ DIFFABLE_STATIC(ScreenEffect *, g_SupervisorScreenEffect);
 DIFFABLE_STATIC(Supervisor, g_Supervisor);
 DIFFABLE_STATIC_ARRAY(AnmVm, 3, g_SupervisorLoadingVms);
 
+DIFFABLE_STATIC(u32, g_SupervisorFpsQpcSampleCount);
+DIFFABLE_STATIC(LARGE_INTEGER, g_SupervisorFpsLastQpc);
+DIFFABLE_STATIC_ARRAY(char, 256, g_SupervisorFpsDebugBuffer);
+DIFFABLE_STATIC_ARRAY(char, 256, g_SupervisorFpsBuffer);
+DIFFABLE_STATIC(DWORD, g_SupervisorFpsLastTime);
+DIFFABLE_STATIC(u32, g_SupervisorFpsTimeInitialized);
+DIFFABLE_STATIC(u32, g_SupervisorFpsFrameCount);
+
 // FUNCTION: th08 0x438a29
 ZunBool Supervisor::IsMinimumGraphicsMode()
 {
@@ -590,10 +598,98 @@ ZunResult Supervisor::LoadDat()
     return ZUN_SUCCESS;
 }
 
-// STUB: th08 0x446232
+// FUNCTION: th08 0x446232
+#pragma var_order(frameIndex, framesInWindow, lastTime, samples, sampleCount, currentTime, deltaTime, fps, elapsedSeconds, averageIndex, average)
 i32 Supervisor::CheckFps()
 {
-    return 0;
+    i32 frameIndex;
+    i32 framesInWindow;
+    DWORD lastTime;
+    f32 samples[29];
+    i32 sampleCount;
+    DWORD currentTime;
+    i32 deltaTime;
+    f32 fps;
+    f32 elapsedSeconds;
+    i32 averageIndex;
+    f32 average;
+
+    frameIndex = 0;
+    framesInWindow = 0;
+    sampleCount = 0;
+    lastTime = 0;
+
+    timeBeginPeriod(1);
+    lastTime = timeGetTime();
+    timeEndPeriod(1);
+
+    while (frameIndex < 1800 && sampleCount < 8)
+    {
+        g_Supervisor.d3dDevice->BeginScene();
+        g_AnmManager->CopySurfaceToBackbuffer(8, 0, 0, 0, 0);
+        g_Supervisor.d3dDevice->EndScene();
+        if (g_Supervisor.d3dDevice->Present(NULL, NULL, NULL, NULL) < 0)
+            g_Supervisor.d3dDevice->Reset(&g_Supervisor.presentParameters);
+
+        frameIndex++;
+        timeBeginPeriod(1);
+        currentTime = timeGetTime();
+        timeEndPeriod(1);
+        framesInWindow++;
+        deltaTime = currentTime - lastTime;
+
+        if (deltaTime >= 700)
+        {
+            lastTime = currentTime;
+            framesInWindow = 0;
+        }
+        else if (deltaTime >= 500)
+        {
+            elapsedSeconds = (f32)deltaTime / 1000.0f;
+            fps = (f32)framesInWindow * 1000.0f / deltaTime;
+            if (fps >= 57.0f)
+            {
+                samples[sampleCount] = fps;
+                sampleCount++;
+            }
+            lastTime = currentTime;
+            framesInWindow = 0;
+        }
+    }
+
+    if (!g_Supervisor.cfg.opts.disableVsync)
+    {
+        average = 0.0f;
+        if (sampleCount >= 2)
+        {
+            for (averageIndex = 0; averageIndex < sampleCount; averageIndex++)
+                average = average + samples[averageIndex];
+            average = average / averageIndex;
+        }
+        else
+        {
+            average = 1000.0f;
+        }
+
+        if (average > 160.0f)
+        {
+            g_GameErrorContext.Log("\x90\x82\x92\xBC\x93\xAF\x8A\xFA\x82\xAA\x8E\xE6\x82\xEA\x82\xC4\x82\xC8\x82\xA2\x82\xA9\x81\x41\x83\x8A\x83\x74\x83\x8C\x83\x62\x83\x56\x83\x85\x83\x8C\x81\x5B\x83\x67\x82\xAA\x8D\x82\x82\xB7\x82\xAC\x82\xDC\x82\xB7\x81\x42\r\n");
+            g_GameErrorContext.Log("\x8B\xAD\x90\xA7\x82\x55\x82\x4F\x83\x74\x83\x8C\x81\x5B\x83\x80\x83\x82\x81\x5B\x83\x68\x82\xC5\x93\xAE\x8D\xEC\x82\xB5\x82\xDC\x82\xB7\r\n");
+            g_Supervisor.disableVsync = true;
+            return -2;
+        }
+
+        if (average >= 65.0f)
+        {
+            g_GameErrorContext.Log("\x90\x82\x92\xBC\x93\xAF\x8A\xFA\x82\xAA\x8E\xE6\x82\xEA\x82\xC4\x82\xC8\x82\xA2\x82\xA9\x81\x41\x83\x8A\x83\x74\x83\x8C\x83\x62\x83\x56\x83\x85\x83\x8C\x81\x5B\x83\x67\x82\xAA\x8D\x82\x82\xB7\x82\xAC\x82\xDC\x82\xB7\x81\x42\r\n");
+            g_GameErrorContext.Log("\x8B\xAD\x90\xA7\x82\x55\x82\x4F\x83\x74\x83\x8C\x81\x5B\x83\x80\x83\x82\x81\x5B\x83\x68\x82\xC5\x93\xAE\x8D\xEC\x82\xB5\x82\xDC\x82\xB7\r\n");
+            g_Supervisor.disableVsync = true;
+            return -2;
+        }
+    }
+
+    return ZUN_SUCCESS;
+
 }
 
 #pragma var_order(bgmVolume, scoreFileSize, scoreFile, findFile, i, fileNameBuffer, scoreBackupFileName, findData,     \
@@ -932,9 +1028,115 @@ ZunResult Supervisor::DeletedCallback(Supervisor *s)
     return ZUN_SUCCESS;
 }
 
-// STUB: th08 0x446f53
+// FUNCTION: th08 0x446f53
+#pragma var_order(fps, elapsed, currentTime, framerate, currentQpc, fpsCounterPos, debugCounterPos, shouldDraw)
 void Supervisor::CalculateFps(ZunBool shouldDraw)
 {
+    f32 fps;
+    f32 elapsed;
+    DWORD currentTime;
+    f32 framerate;
+    LARGE_INTEGER currentQpc;
+    Float3 fpsCounterPos;
+    Float3 debugCounterPos;
+
+    if ((i8)g_GameManager.unk2D == 0)
+    {
+        g_SupervisorFpsFrameCount += (u8)g_Supervisor.cfg.frameskipConfig + 1;
+
+        if (g_Supervisor.fpsPerformanceFrequency == 0)
+        {
+            if ((g_SupervisorFpsTimeInitialized & 1) == 0)
+            {
+                g_SupervisorFpsTimeInitialized |= 1;
+                g_SupervisorFpsLastTime = timeGetTime();
+            }
+
+            currentTime = timeGetTime();
+            if (currentTime < g_SupervisorFpsLastTime)
+            {
+                g_SupervisorFpsLastTime = currentTime;
+                g_SupervisorFpsFrameCount = 0;
+            }
+
+            if (currentTime - g_SupervisorFpsLastTime >= 500)
+            {
+                elapsed = (f32)(currentTime - g_SupervisorFpsLastTime) / 1000.0f;
+                g_SupervisorFpsLastTime = currentTime;
+calculateFps:
+                fps = (f32)g_SupervisorFpsFrameCount / elapsed;
+                g_SupervisorFpsFrameCount = 0;
+                sprintf(g_SupervisorFpsBuffer, "%.02ffps", fps);
+
+                if (((*reinterpret_cast<u32 *>(0x164D0B4) >> 2) & 1) != 0 && shouldDraw)
+                {
+                    framerate = 60.0f;
+                    g_Supervisor.lagDenominator += framerate;
+
+                    if (framerate * 0.89999998f < fps)
+                        g_Supervisor.lagNumerator += framerate;
+                    else if (framerate * 0.69999999f < fps)
+                        g_Supervisor.lagNumerator += framerate * 0.80000001f;
+                    else if (framerate * 0.5f < fps)
+                        g_Supervisor.lagNumerator += framerate * 0.60000002f;
+                    else
+                        g_Supervisor.lagNumerator += framerate * 0.5f;
+
+                    if (((*reinterpret_cast<u32 *>(0x164D0B4) >> 3) & 1) == 0)
+                        *reinterpret_cast<i16 *>(&g_Supervisor.unk198) = (i16)(fps + 0.5f);
+                    else
+                        sprintf(g_SupervisorFpsDebugBuffer, "%2d", *reinterpret_cast<i16 *>(&g_Supervisor.unk198));
+                }
+            }
+        }
+        else
+        {
+            if (g_SupervisorFpsLastQpc.LowPart == 0)
+                QueryPerformanceCounter(&g_SupervisorFpsLastQpc);
+
+            QueryPerformanceCounter(&currentQpc);
+            if (currentQpc.LowPart < g_SupervisorFpsLastQpc.LowPart)
+            {
+                g_SupervisorFpsLastQpc = currentQpc;
+                g_SupervisorFpsFrameCount = 0;
+            }
+
+            if (currentQpc.LowPart >=
+                g_SupervisorFpsLastQpc.LowPart +
+                    (g_Supervisor.fpsPerformanceFrequency >> 1))
+            {
+                elapsed = (f32)(currentQpc.LowPart - g_SupervisorFpsLastQpc.LowPart) /
+                          (f32)g_Supervisor.fpsPerformanceFrequency;
+                g_SupervisorFpsLastQpc = currentQpc;
+                g_SupervisorFpsQpcSampleCount++;
+                goto calculateFps;
+            }
+        }
+    }
+
+    if (g_Supervisor.unk178 == 0 && shouldDraw)
+    {
+        fpsCounterPos.x = 512.0f;
+        fpsCounterPos.y = 464.0f;
+        fpsCounterPos.z = 0.0f;
+        g_AsciiManager.AddString(&fpsCounterPos, g_SupervisorFpsBuffer);
+
+        if (((*reinterpret_cast<u32 *>(0x164D0B4) >> 3) & 1) != 0 &&
+            ((*reinterpret_cast<u32 *>(0x164D0B4) >> 2) & 1) != 0)
+        {
+            debugCounterPos.x = 384.0f;
+            debugCounterPos.y = 448.0f;
+            debugCounterPos.z = 0.0f;
+
+            if (g_Supervisor.unk0x33c != 0)
+                g_AsciiManager.color.d3dColor = 0xffff4040;
+            else
+                g_AsciiManager.color.d3dColor = 0xffffffd0;
+
+            g_AsciiManager.AddString(&debugCounterPos, g_SupervisorFpsDebugBuffer);
+            g_AsciiManager.color.d3dColor = 0xffffffff;
+        }
+    }
 }
 
 void ZunTimer::Increment(int value)

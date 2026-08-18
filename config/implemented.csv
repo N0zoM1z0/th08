@@ -816,3 +816,5 @@ th08::Player::AddedCallback
 th08::Player::FUN_00451640
 th08::Player::FUN_0044cbf0
 th08::Spellcard::FUN_0044d150
+th08::Supervisor::CheckFps
+th08::Supervisor::CalculateFps

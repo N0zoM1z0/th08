@@ -301,7 +301,9 @@ struct Supervisor
     u8 lockCounts[4];
     i32 loadingVmsHaveBeenSetup;
 
-    unknown_fields(0x300, 0x38);
+    // Target-observed FPS timing denominator at Supervisor + 0x300.
+    u32 fpsPerformanceFrequency;
+    unknown_fields(0x304, 0x34);
 
     u32 unk0x338;
     u32 unk0x33c;
