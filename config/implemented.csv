@@ -959,3 +959,6 @@ th08::ReplayManager::OnUpdateHighPrioDemo2
 th08::ReplayManager::AddedCallback
 th08::ReplayManager::AddedCallbackDemo
 th08::ReplayManager::DeletedCallback
+th08::Gui::FUN_004390d6
+th08::Gui::ActualAddedCallback
+th08::Gui::FUN_004396b8

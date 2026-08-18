@@ -129,7 +129,7 @@ th08::AnmManager::SetCameraMode,0x40ba90,0x19,__thiscall,,void,AnmManager*,i32
 th08::AnmManager::SetMixColorDefault,0x40bab0,0x1e,__thiscall,,void,AnmManager*
 th08::AnmManager::SetMixColor,0x40bad0,0x1f,__thiscall,,void,AnmManager*,D3DCOLOR
 th08::AnmManager::Draw2DAndFlush,0x40baf0,0x21,__thiscall,,void,AnmManager*,AnmVm*
-Concurrency::details::ContextBase::ClearCancel,0x40bb20,0x33,__thiscall,,u8,ContextBase*
+th08::AnmManager::ResetFrameDebugInfo,0x40bb20,0x33,__thiscall,,void,AnmManager*
 th08::AnmManager::GetAnm,0x40bb60,0x1a,__thiscall,,AnmLoaded*,AnmManager*,i32
 th08::GameManager::IsTampered,0x40bb80,0x91,__thiscall,,ZunBool,GameManager*
 th08::Player::IsHuman,0x40bc20,0x17,__thiscall,,i32,Player*
@@ -177,7 +177,7 @@ th08::FUN_0040fcb0,0x40fcb0,0x18,__fastcall,,void,Player*
 th08::FUN_0040fcd0,0x40fcd0,0x625,__fastcall,,void,Player*
 th08::FUN_00410300,0x410300,0xe1,__fastcall,,void,Player*
 th08::FUN_004103f0,0x4103f0,0x677,__fastcall,,void,Player*
-FUN_00410a70,0x410a70,0x43,unknown,,u8,u8
+th08::Float3::operator+=,0x410a70,0x43,__thiscall,,Float3*,Float3*,const Float3*
 th08::FUN_00410ac0,0x410ac0,0xe1,__fastcall,,void,Player*
 th08::FUN_00410bb0,0x410bb0,0x4c,__fastcall,,i32,AnmVm*
 th08::Rng::GetRandomU16InRange,0x410c00,0x39,__thiscall,,u16,Rng*,u16
@@ -202,23 +202,23 @@ th08::Spellcard::Spellcard,0x4143e0,0xee,unknown,,u8
 th08::Spellcard::GetDifficultyFromSpellCard,0x4144d0,0x69,__thiscall,,i32,Spellcard*,i32
 th08::Spellcard::IsLastSpell,0x414540,0x44,__fastcall,,i32,i32
 th08::Spellcard::Init,0x414590,0xca5,__thiscall,,ZunResult,Spellcard*
-FUN_004152a0,0x4152a0,0x9b3,unknown,,u8,u8,u8,u8,u8,u8,u8,u8,u8
+th08::Spellcard::StartSpell,0x4152a0,0x9b3,__thiscall,,void,Spellcard*,i32,const u8*,i32,i32,u8*,const u8*,const char*,const char*
 th08::BulletManager::bulletmanager_fun_00415c60,0x415c60,0x15,__thiscall,,void,BulletManager*
-FUN_00415c80,0x415c80,0x55,unknown,,u8
-FUN_00415ce0,0x415ce0,0x25,unknown,,u8
-FUN_00415d10,0x415d10,0x47,__thiscall,,u8,void*,u8
+th08::Enemy::enemy_fun_00415c80,0x415c80,0x55,__thiscall,,void,Enemy*
+th08::Background::background_fun_00415ce0,0x415ce0,0x25,__thiscall,,void,Background*
+th08::Spellcard::CutInEnemyNoPortrait,0x415d10,0x47,__thiscall,,void,Spellcard*,const char*,i32
 th08::Spellcard::CutInPlayer,0x415d60,0x19f,__thiscall,,void,Spellcard*,i32,const char*,i32
-FUN_00415f00,0x415f00,0x22e,unknown,,u8,u8,u8,u8
+th08::Spellcard::CutInEnemy,0x415f00,0x22e,__thiscall,,void,Spellcard*,i32,const char*,i32
 th08::Spellcard::spellcard_fun_00416130,0x416130,0x27,__thiscall,,void,Spellcard*
 th08::Spellcard::spellcard_fun_00416160,0x416160,0x46,__thiscall,,void,Spellcard*
 th08::Spellcard::EndSpell,0x4161b0,0x91b,__thiscall,,void,Spellcard*
-FUN_00416ad0,0x416ad0,0x18,unknown,,u8
+th08::Background::background_fun_00416ad0,0x416ad0,0x18,__thiscall,,void,Background*
 th08::Spellcard::spellcard_fun_00416af0,0x416af0,0x20,__thiscall,,void,Spellcard*
 th08::Spellcard::spellcard_fun_00416b10,0x416b10,0x76,__thiscall,,void,Spellcard*,i32
 th08::Spellcard::OnUpdateImpl,0x416b90,0xcc5,__thiscall,,i32,Spellcard*
 th08::Spellcard::FUN_00417860,0x417860,0x3b,__thiscall,,i32,Spellcard*
 th08::Spellcard::IsActive,0x4178a0,0x13,__thiscall,,i32,Spellcard*
-FUN_004178c0,0x4178c0,0x695,unknown,,u8
+th08::Spellcard::OnDrawImpl,0x4178c0,0x695,__thiscall,,i32,Spellcard*
 th08::Spellcard::RegisterChain,0x417f60,0xaf,__fastcall,,ZunResult
 th08::Spellcard::OnUpdate,0x418010,0x13,__fastcall,,ChainCallbackResult,Spellcard*
 th08::Spellcard::OnDraw,0x418030,0x13,__fastcall,,ChainCallbackResult,Spellcard*
@@ -226,7 +226,7 @@ th08::Spellcard::DeletedCallback,0x418050,0x9d,__fastcall,,ZunResult,Spellcard*
 th08::Spellcard::CutChain,0x4180f0,0x1e,__stdcall,,void
 th08::ZunTimer::operator--(int),0x418110,0x17,__thiscall,,void,ZunTimer*,i32
 th08::GameManager::IsSpellNumberEqualTo,0x418130,0x43,__thiscall,,ZunBool,GameManager*,i32
-th08::GameManager::FUN_00418180,0x418180,0x62,__thiscall,,u32,GameManager*,i32,i32
+th08::GameManager::IsSpellNumberInRange,0x418180,0x62,__thiscall,,ZunBool,GameManager*,i32,i32
 th08::GameManager::AddScore,0x4181f0,0x2c,__thiscall,,void,GameManager*,i32
 th08::GameManager::AddTimeOrbs,0x418220,0xb4,__thiscall,,void,GameManager*,i32
 th08::EclManager::EclManager,0x4182e0,0x19,__thiscall,,EclManager*,EclManager*
@@ -489,7 +489,7 @@ FUN_00437d87,0x437d87,0x40,unknown,,u8
 th08::Gui::FUN_00437dc7,0x437dc7,0x16,__thiscall,,i32,Gui*
 th08::Gui::FUN_00437ddd,0x437ddd,0x80,__thiscall,,void,Gui*,i32
 th08::Gui::FUN_00437e5d,0x437e5d,0x7f,__thiscall,,void,Gui*,i32,i32
-FUN_00437edc,0x437edc,0x80,unknown,,u8,u8
+th08::Gui::gui_fun_00437edc,0x437edc,0x80,__thiscall,,void,Gui*,i32
 th08::FUN_00437f5c,0x437f5c,0xea,__fastcall,,void,i32
 FUN_00438046,0x438046,0x205,unknown,,u8
 th08::Gui::FUN_0043826b,0x43826b,0x7be,__thiscall,,void,Gui*
@@ -505,9 +505,9 @@ th08::FUN_00438ffd,0x438ffd,0xa,unknown,,u8
 FUN_00439007,0x439007,0x49,unknown,,u8
 th08::Gui::FUN_00439050,0x439050,0x43,__thiscall,,ZunResult,Gui*
 th08::Gui::FUN_00439093,0x439093,0x43,__thiscall,,ZunResult,Gui*
-FUN_004390d6,0x4390d6,0x18,unknown,,u8
-th08::Gui::ActualAddedCallback,0x4390ee,0x5ca,__thiscall,,u32,Gui*
-FUN_004396b8,0x4396b8,0x40,unknown,,u8
+th08::Gui::FUN_004390d6,0x4390d6,0x18,__thiscall,,ZunResult,Gui*
+th08::Gui::ActualAddedCallback,0x4390ee,0x5ca,__thiscall,,ZunResult,Gui*
+th08::Gui::FUN_004396b8,0x4396b8,0x40,__thiscall,,void,Gui*
 th08::AnmVm::FUN_004396f8,0x4396f8,0x18,__thiscall,,u32,AnmVm*
 th08::Gui::LoadMsg,0x439710,0xc5,__thiscall,,ZunResult,Gui*,char*
 th08::Gui::FreeMsgFile,0x4397d5,0x3b,__thiscall,,void,Gui*

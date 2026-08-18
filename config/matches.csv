@@ -959,3 +959,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00452D60,th08::ReplayManager::AddedCallbackDemo,787,matching,100.00,replay-manager-added-callback-demo,python3 scripts/compare-function.py replay-manager-added-callback-demo --json
 0x00453080,th08::ReplayManager::DeletedCallback,209,matching,100.00,replay-manager-deleted-callback,python3 scripts/compare-function.py replay-manager-deleted-callback --json
 0x00453160,th08::ReplayManager::ReplayManager,58,matching,100.00,replay-manager-constructor,python3 scripts/compare-function.py replay-manager-constructor --json
+0x004390D6,th08::Gui::FUN_004390d6,24,matching,100.00,gui-stage-background-sequence-disable-004390d6,python3 scripts/compare-function.py gui-stage-background-sequence-disable-004390d6 --json
+0x004390EE,th08::Gui::ActualAddedCallback,1482,matching,100.00,gui-actual-added-callback-004390ee,python3 scripts/compare-function.py gui-actual-added-callback-004390ee --json
+0x004396B8,th08::Gui::FUN_004396b8,64,matching,100.00,gui-vm-grid-reset-004396b8,python3 scripts/compare-function.py gui-vm-grid-reset-004396b8 --json

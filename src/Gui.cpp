@@ -53,6 +53,34 @@ DIFFABLE_STATIC_ARRAY(GuiStageMusicContextSet, MAX_STAGES, g_GuiStageMusicContex
 DIFFABLE_STATIC_ARRAY_ASSIGN(u32, 4, g_GuiBossTimerColors) = {0x00a0d0ff, 0x00a080ff, 0x00e080c0, 0x00ff4040};
 DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 2, g_GuiTimePeriodLabels) = {"AM", "PM"};
 
+DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 12, g_GuiLoadingAnmPaths) = {
+    "loading00.anm", "loading01.anm", "loading02.anm", "loading03.anm", "loading00h.anm", "loading00a.anm",
+    "loading01h.anm", "loading01a.anm", "loading02h.anm", "loading02a.anm", "loading03h.anm", "loading03a.anm",
+};
+
+DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 9, g_GuiStageTextAnmPaths) = {
+    "stg1txt.anm", "stg2txt.anm", "stg3txt.anm", "stg4atxt.anm", "stg4btxt.anm", "stg5txt.anm",
+    "stg6txt.anm", "stg7txt.anm", "stg8txt.anm",
+};
+
+typedef const char *GuiMessagePathRow[SHOT_ALL];
+DIFFABLE_STATIC_ARRAY_ASSIGN(GuiMessagePathRow, MAX_STAGES, g_GuiMessagePaths) = {
+    {"msg1a.dat", "msg1b.dat", "msg1c.dat", "msg1d.dat", "msg1a.dat", "msg1a.dat", "msg1b.dat", "msg1b.dat", "msg1c.dat", "msg1c.dat", "msg1d.dat", "msg1d.dat"},
+    {"msg2a.dat", "msg2b.dat", "msg2c.dat", "msg2d.dat", "msg2a.dat", "msg2a.dat", "msg2b.dat", "msg2b.dat", "msg2c.dat", "msg2c.dat", "msg2d.dat", "msg2d.dat"},
+    {"msg3a.dat", "msg3b.dat", "msg3c.dat", "msg3d.dat", "msg3a.dat", "msg3a.dat", "msg3b.dat", "msg3b.dat", "msg3c.dat", "msg3c.dat", "msg3d.dat", "msg3d.dat"},
+    {"msg4dm.dat", "msg4ab.dat", "msg4ac.dat", "msg4dm.dat", "msg4dm.dat", "msg4dm.dat", "msg4ab.dat", "msg4ab.dat", "msg4ac.dat", "msg4ac.dat", "msg4dm.dat", "msg4dm.dat"},
+    {"msg4ba.dat", "msg4dm.dat", "msg4dm.dat", "msg4bd.dat", "msg4ba.dat", "msg4ba.dat", "msg4dm.dat", "msg4dm.dat", "msg4dm.dat", "msg4dm.dat", "msg4bd.dat", "msg4bd.dat"},
+    {"msg5a.dat", "msg5b.dat", "msg5c.dat", "msg5d.dat", "msg5a.dat", "msg5a.dat", "msg5b.dat", "msg5b.dat", "msg5c.dat", "msg5c.dat", "msg5d.dat", "msg5d.dat"},
+    {"msg6a.dat", "msg6b.dat", "msg6c.dat", "msg6d.dat", "msg6a.dat", "msg6a.dat", "msg6b.dat", "msg6b.dat", "msg6c.dat", "msg6c.dat", "msg6d.dat", "msg6d.dat"},
+    {"msg7a.dat", "msg7b.dat", "msg7c.dat", "msg7d.dat", "msg7a.dat", "msg7a.dat", "msg7b.dat", "msg7b.dat", "msg7c.dat", "msg7c.dat", "msg7d.dat", "msg7d.dat"},
+    {"msg8a.dat", "msg8b.dat", "msg8c.dat", "msg8d.dat", "msg8a.dat", "msg8a.dat", "msg8b.dat", "msg8b.dat", "msg8c.dat", "msg8c.dat", "msg8d.dat", "msg8d.dat"},
+};
+
+
+
+i32 FUN_00439916(i32 unused);
+i32 FUN_00439961(i32 unused);
+
 struct GuiStageMusicDataOverlay
 {
     unknown_fields(0x0, 0x290);
@@ -1820,9 +1848,140 @@ void Gui::CutChain()
     g_Chain.Cut(&g_GuiDrawChain);
 }
 
-// STUB: th08 0x4390ee
+// FUNCTION: th08 0x4390d6
+ZunResult Gui::FUN_004390d6()
+{
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2175f) = 0;
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x4396b8
+void Gui::FUN_004396b8()
+{
+    this->impl->vm3778.activeSpriteIndex = -1;
+    this->impl->vm3a1c.activeSpriteIndex = -1;
+    this->impl->vm3cc0.activeSpriteIndex = -1;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this->impl) + 0x21810) = 0;
+}
+
+#pragma var_order(i, j, k)
+// FUNCTION: th08 0x4390ee
 ZunResult Gui::ActualAddedCallback()
 {
+    i32 i;
+    i32 j;
+    u32 k;
+
+    if (FUN_00438fe9())
+    {
+        memset(this->impl, 0, sizeof(GuiImpl));
+
+        this->frontAnm = g_AnmManager->PreloadAnm(10, "front.anm");
+        if (this->frontAnm == NULL)
+            return ZUN_ERROR;
+
+        this->FUN_004396b8();
+
+        this->timesAnm = g_AnmManager->PreloadAnm(14, "times.anm");
+        if (this->timesAnm == NULL)
+            return ZUN_ERROR;
+
+        this->loadingPortraitAnm = g_AnmManager->PreloadAnm(12, g_GuiLoadingAnmPaths[g_GameManager.shotType]);
+        if (this->loadingPortraitAnm == NULL)
+            return ZUN_ERROR;
+
+        g_GuiResultAnm0->SetAndExecuteScriptIdx(&this->impl->vm5484, 26);
+        g_GuiResultAnm0->SetAndExecuteScriptIdx(&this->impl->vm22e14, 25);
+        if (g_GameManager.IsSpellPractice() && g_GameManager.currentSpellCardNumber >= 205)
+            g_GuiResultAnm0->SetSprite(&this->impl->vm22e14, 288);
+        else
+            g_GuiResultAnm0->SetSprite(&this->impl->vm22e14, g_GameManager.difficulty + 283);
+    }
+    else
+    {
+        this->FUN_004396b8();
+        g_GuiResultAnm1->SetAndExecuteScriptIdx(&this->impl->vm3cc0, 1);
+        this->impl->vm3cc0.pendingInterrupt = 1;
+
+        for (i = 0; i < 14; i++)
+        {
+            for (j = 0; j < 12; j++)
+            {
+                g_GuiResultAnm1->SetAndExecuteScriptIdx(&this->impl->vm5728[i * 12 + j], ((i + j) & 1) + 3);
+                this->impl->vm5728[i * 12 + j].counterVar0 = i + j * 2;
+                this->impl->vm5728[i * 12 + j].pos.x = j * 32.0f - 0.5f + 16.0f;
+                this->impl->vm5728[i * 12 + j].pos.y = i * 32.0f - 0.5f + 16.0f;
+                this->impl->vm5728[i * 12 + j].pos.z = 0.0f;
+                this->impl->vm5728[i * 12 + j].uvScrollPos.x = j * 32.0f / 512.0f;
+                this->impl->vm5728[i * 12 + j].uvScrollPos.y = i * 32.0f / 512.0f;
+            }
+        }
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this->impl) + 0x21810) = 168;
+    }
+
+    g_Gui.FUN_004390d6();
+    this->timesAnm->ExecuteAnmIdx(&this->impl->vm34d4, 0);
+    this->timesAnm->SetSprite(&this->impl->vm34d4, static_cast<i8>(g_GameManager.GetClockTime()));
+
+    if (!g_GameManager.IsSpellPractice() &&
+        this->LoadMsg(g_GuiMessagePaths[g_GameManager.currentStage][g_GameManager.shotType]) != ZUN_SUCCESS)
+        return ZUN_ERROR;
+
+    if (!FUN_00438ffd())
+    {
+        if (!g_GameManager.flags.isSpellPractice || g_GameManager.currentSpellCardNumber < 205)
+        {
+            this->stageTextAnm = g_AnmManager->PreloadAnm(13, g_GuiStageTextAnmPaths[g_GameManager.currentStage]);
+            if (this->stageTextAnm == NULL)
+                return ZUN_ERROR;
+        }
+        else
+        {
+            this->stageTextAnm = g_AnmManager->PreloadAnm(13, g_GuiStageTextAnmPaths[MAX_STAGES - 1]);
+            if (this->stageTextAnm == NULL)
+                return ZUN_ERROR;
+        }
+    }
+
+    if (FUN_00438fe9())
+    {
+        for (k = 0; k < 16; k++)
+            this->frontAnm->SetAndExecuteScriptIdx(&this->impl->vm0000[k], k);
+    }
+
+    this->unk_0 = 0;
+    this->bossPresent = false;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) = 0;
+    this->bossLifeBarSize = 0.0f;
+    this->bossLifeBarMaxSize = 0.0f;
+
+    if (!g_GameManager.flags.isSpellPractice)
+    {
+        this->stageTextAnm->ExecuteAnmIdxArray(&this->impl->vm2a44[0], 0, 4);
+    }
+    else if (!FUN_00438ffd() || FUN_00439916(g_GameManager.currentSpellCardNumber))
+    {
+        this->stageTextAnm->ExecuteAnmIdxArray(&this->impl->vm2a44[0], 3, 1);
+        this->stageTextAnm->SetSprite(&this->impl->vm2a44[0], FUN_00439961(g_GameManager.currentSpellCardNumber) + 3);
+    }
+
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->currentMsgIdx = -1;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->resultState = 0;
+    this->impl->formatted0.isShown = 0;
+    this->impl->formatted1.isShown = 0;
+    this->impl->formatted2.isShown = 0;
+
+    this->flags.lifeDisplayUpdateFrames = 2;
+    this->flags.bombDisplayUpdateFrames = 2;
+    this->flags.grazeDisplayUpdateFrames = 2;
+    this->flags.pointDisplayUpdateFrames = 2;
+    this->flags.powerDisplayUpdateFrames = 2;
+    this->flags.timeDisplayUpdateFrames = 2;
+
+    g_GuiResultAnm0->SetAndExecuteScriptIdx(&this->impl->vm212c8, 3);
+    g_GuiMessageScreenEffectDuration = 16;
+    reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent = 0;
+
     return ZUN_SUCCESS;
 }
 

@@ -215,3 +215,6 @@ th08::g_SupervisorFpsLastTime,0x17cf4b8,global
 th08::g_SupervisorFpsTimeInitialized,0x17cf4bc,global
 th08::g_SupervisorFpsFrameCount,0x17cf4c0,global
 th08::g_EnemyManagerUpdatePlayerTimer,0x18b89ec,global
+th08::g_GuiLoadingAnmPaths,0x4c72c4,global
+th08::g_GuiStageTextAnmPaths,0x4c745c,global
+th08::g_GuiMessagePaths,0x4c74c0,global

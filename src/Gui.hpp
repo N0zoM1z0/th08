@@ -105,7 +105,8 @@ struct Gui
     void FUN_00439007();
     ZunResult FUN_00439050();
     ZunResult FUN_00439093();
-    void FUN_004390d6();
+    ZunResult FUN_004390d6();
+    void FUN_004396b8();
     void FUN_00439810(i32 value);
     void DrawGameScene();
     void FUN_0043741d();
