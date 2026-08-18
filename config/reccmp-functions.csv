@@ -789,9 +789,9 @@ th08::GameManager::AddToBombsUsed,0x44e2e0,function
 th08::PlayerUnkStruct0x40::Deactivate,0x44e350,function
 th08::PlayerUnkStruct0x40::Reset,0x44e370,function
 FUN_0044e3a0,0x44e3a0,function
-FUN_0044e770,0x44e770,function
-FUN_0044e8d0,0x44e8d0,function
-FUN_0044e9e0,0x44e9e0,function
+th08::PlayerOptionHomingToPlayer,0x44e770,function
+th08::PlayerOptionHomingToTarget,0x44e8d0,function
+th08::PlayerRoute2OptionRender,0x44e9e0,function
 FUN_0044ea40,0x44ea40,function
 FUN_0044eb70,0x44eb70,function
 FUN_0044ee70,0x44ee70,function

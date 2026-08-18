@@ -819,3 +819,6 @@ th08::Spellcard::FUN_0044d150
 th08::Supervisor::CheckFps
 th08::Supervisor::CalculateFps
 th08::AnmManager::FUN_00463d60
+th08::PlayerOptionHomingToPlayer
+th08::PlayerOptionHomingToTarget
+th08::PlayerRoute2OptionRender

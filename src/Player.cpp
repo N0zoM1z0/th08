@@ -128,6 +128,75 @@ void PlayerUnkStruct0x40::Reset()
     this->collisionInterval = 1;
 }
 
+// FUNCTION: th08 0x44e770
+#pragma var_order(delta, target, player, option)
+void __fastcall PlayerOptionHomingToPlayer(Player *player, u8 *option)
+{
+    Float3 target;
+    Float3 delta;
+
+    target = player->position;
+    target.y -= 96.0f;
+    if (target.y < 32.0f)
+        target.y = 32.0f;
+
+    delta = target - *reinterpret_cast<Float3 *>(option + 0x2A4);
+    delta /= 16.0f;
+    *reinterpret_cast<Float3 *>(option + 0x2BC) +=
+        (delta - *reinterpret_cast<Float3 *>(option + 0x2BC)) * 0.2f;
+    *reinterpret_cast<Float3 *>(option + 0x2A4) += *reinterpret_cast<Float3 *>(option + 0x2BC);
+
+    if (fabsf(*reinterpret_cast<f32 *>(option + 0x2BC)) < 0.05f)
+        *reinterpret_cast<f32 *>(option + 0x2BC) = 0.0f;
+
+    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AC4) >= 0 &&
+        *reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2ABC) != NULL &&
+        *reinterpret_cast<ZunTimer *>(option + 0x2E0) >= 10)
+    {
+        reinterpret_cast<AnmVmBase *>(option)->SetInterrupt(3);
+        *reinterpret_cast<i32 *>(option + 0x2CC) = 3;
+    }
+    else
+    {
+        *reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2ABC) = NULL;
+    }
+}
+
+// FUNCTION: th08 0x44e8d0
+#pragma var_order(delta, target, player, option)
+void __fastcall PlayerOptionHomingToTarget(Player *player, u8 *option)
+{
+    Float3 target;
+    Float3 delta;
+
+    target = *reinterpret_cast<Float3 *>(
+        reinterpret_cast<u8 *>(*reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2ABC)) + 0x2D88);
+    target.y += 32.0f;
+    if (target.y < 32.0f)
+        target.y = 32.0f;
+
+    delta = target - *reinterpret_cast<Float3 *>(option + 0x2A4);
+    delta /= 16.0f;
+    *reinterpret_cast<Float3 *>(option + 0x2BC) +=
+        (delta - *reinterpret_cast<Float3 *>(option + 0x2BC)) * 0.2f;
+    *reinterpret_cast<Float3 *>(option + 0x2A4) += *reinterpret_cast<Float3 *>(option + 0x2BC);
+
+    if (fabsf(*reinterpret_cast<f32 *>(option + 0x2BC)) < 0.05f)
+        *reinterpret_cast<f32 *>(option + 0x2BC) = 0.0f;
+}
+
+// FUNCTION: th08 0x44e9e0
+i32 __fastcall PlayerRoute2OptionRender(Player *, u8 *option)
+{
+    reinterpret_cast<AnmVm *>(option)->pos.x =
+        g_ItemAnmManagerScreenShakeOffset.x + *reinterpret_cast<f32 *>(option + 0x2A4);
+    reinterpret_cast<AnmVm *>(option)->pos.y =
+        g_ItemAnmManagerScreenShakeOffset.y + *reinterpret_cast<f32 *>(option + 0x2A8);
+    reinterpret_cast<AnmVm *>(option)->pos.z = 0.49f;
+    g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(option));
+    return 0;
+}
+
 // FUNCTION: th08 0x40d3d0
 ZunBool ZunTimer::FUN_0040d3d0()
 {

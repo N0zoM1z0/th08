@@ -819,3 +819,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00446232,th08::Supervisor::CheckFps,662,matching,100.00,supervisor-check-fps,python3 scripts/compare-function.py supervisor-check-fps --json
 0x00446F53,th08::Supervisor::CalculateFps,834,matching,100.00,supervisor-calculate-fps,python3 scripts/compare-function.py supervisor-calculate-fps --json
 0x00463D60,th08::AnmManager::FUN_00463d60,779,matching,100.00,anm-project-3d-quad,python3 scripts/compare-function.py anm-project-3d-quad --json
+0x0044E770,th08::PlayerOptionHomingToPlayer,352,matching,100.00,player-option-homing-to-player,python3 scripts/compare-function.py player-option-homing-to-player --json
+0x0044E8D0,th08::PlayerOptionHomingToTarget,269,matching,100.00,player-option-homing-to-target,python3 scripts/compare-function.py player-option-homing-to-target --json
+0x0044E9E0,th08::PlayerRoute2OptionRender,94,matching,100.00,player-route2-option-render,python3 scripts/compare-function.py player-route2-option-render --json
