@@ -537,7 +537,7 @@ void GameManager::DecreaseSubrank(int amount)
 // FUNCTION: th08 0x43c0bb
 void GameManager::AddToYoukaiGauge(i32 amount, i32 forceUpdate)
 {
-    if (g_Player.frameStop && !forceUpdate)
+    if (g_Player.bombState.frameStop && !forceUpdate)
         return;
 
     this->globals->youkaiGauge += amount;

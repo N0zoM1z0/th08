@@ -856,3 +856,4 @@ th08::PlayerBombWorkItem::PlayerBombWorkItem
 th08::Player::FUN_00451670
 th08::PlayerBuildAabb
 th08::ZunTimer::operator%
+th08::Player::Player

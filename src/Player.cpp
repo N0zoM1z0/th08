@@ -90,85 +90,19 @@ DIFFABLE_STATIC_ARRAY(PlayerOptionCallbackRow, 12, g_PlayerOptionRenderCallbacks
 extern u16 g_GuiMessageInputCurrent;
 extern u16 g_GuiMessageInputPrevious;
 
-// Target-observed constructor-only rows owned by the Player translation unit.
-struct PlayerOptionState
+// FUNCTION: th08 0x449ca0
+Player::Player()
 {
-    AnmVm vm;
-    Float3 position;
-    Float3 target;
-    Float3 velocity;
-    unknown_fields(0x2C8, 0x18);
-    ZunTimer timer;
-    unknown_fields(0x2EC, 8);
-    PlayerOptionState();
-};
-C_ASSERT(sizeof(PlayerOptionState) == 0x2F4);
+}
 
 // FUNCTION: th08 0x449e50
 PlayerOptionState::PlayerOptionState() {}
 
-struct PlayerBombWorkItem
-{
-    unknown_fields(0x0000, 0x14);
-    Float3 anchor;
-    Float3 points[32];
-    Float3 position;
-    Float3 velocity;
-    AnmVm vms[8];
-    unknown_fields(0x16D8, 4);
-    ZunTimer timer;
-    unknown_fields(0x16E8, 8);
-    PlayerBombWorkItem();
-};
-C_ASSERT(sizeof(PlayerBombWorkItem) == 0x16F0);
-
 // FUNCTION: th08 0x449f70
 PlayerBombWorkItem::PlayerBombWorkItem() {}
 
-struct PlayerBombState
-{
-    unknown_fields(0x000000, 0x18);
-    ZunTimer timer;
-    unknown_fields(0x000024, 0x28);
-    PlayerBombWorkItem workItems[128];
-    Float3 tailPosition;
-    PlayerBombState();
-};
-C_ASSERT(sizeof(PlayerBombState) == 0xB7858);
-
 // FUNCTION: th08 0x449ea0
 PlayerBombState::PlayerBombState() {}
-
-struct PlayerShot;
-typedef i32 (__fastcall *PlayerShotCollisionCallback)(Player *player, PlayerShot *shot, Float3 *enemyPosition);
-
-struct PlayerShotVelocity
-{
-    f32 x;
-    f32 y;
-    f32 z;
-};
-
-struct PlayerShot
-{
-    AnmVm vm;
-    Float3 position;
-    Float3 vectors[32];
-    Float3 hitboxSize;
-    PlayerShotVelocity velocity;
-    unknown_fields(0x448, 0xC);
-    ZunTimer timer;
-    i16 damage;
-    i16 state;
-    i16 type;
-    unknown_fields(0x466, 8);
-    i16 animationIndex;
-    unknown_fields(0x470, 0xC);
-    PlayerShotCollisionCallback collisionCallback;
-    void *shtEntry;
-    PlayerShot();
-};
-C_ASSERT(sizeof(PlayerShot) == 0x484);
 
 // FUNCTION: th08 0x449ef0
 PlayerShot::PlayerShot() {}
@@ -220,7 +154,7 @@ i32 Player::FUN_00451670(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccum
         if (bullet->collisionCallback != NULL && bullet->collisionCallback(this, bullet, enemyPosition))
             continue;
 
-        if (this->frameStop == 0)
+        if (this->bombState.frameStop == 0)
             damage += bullet->damage;
         else
             damage += bullet->damage / 5 ? bullet->damage / 5 : 1;
@@ -309,7 +243,7 @@ i32 Player::FUN_00451670(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccum
                 else
                     g_EffectManager.SpawnEffect(5, reinterpret_cast<D3DXVECTOR3 *>(enemyPosition), 1, -1);
             }
-            if (this->frameStop != 0 && bombHit != NULL)
+            if (this->bombState.frameStop != 0 && bombHit != NULL)
                 *bombHit = 1;
         }
     }
@@ -622,7 +556,7 @@ void Player::FUN_0044a930(Float3 *position, i32 suppressExtraItems)
     i32 gaugeGain;
     i32 score;
 
-    if (g_Player.frameStop == 0)
+    if (g_Player.bombState.frameStop == 0)
     {
         gaugeGain = g_GameManager.GaugeIsExtremelyHuman()
                         ? 3
@@ -2168,15 +2102,15 @@ void Player::FUN_0044d2c0()
 
             this->playerState = PLAYER_STATE_ALIVE;
             this->timer = 0;
-            this->stateColor = -1;
+            this->mainVm.color1.d3dColor = -1;
         }
         else if ((i32)this->timer % 8 < 2)
         {
-            this->stateColor = 0xfff02020;
+            this->mainVm.color1.d3dColor = 0xfff02020;
         }
         else
         {
-            this->stateColor = -1;
+            this->mainVm.color1.d3dColor = -1;
         }
     }
     else

@@ -2,6 +2,8 @@
 
 #include "Global.hpp"
 #include "Supervisor.hpp"
+#include "AnmManager.hpp"
+#include "EnemyManager.hpp"
 
 namespace th08
 {
@@ -53,8 +55,86 @@ struct PlayerStateEffect
     i8 active;
 };
 
+struct PlayerOptionState
+{
+    AnmVm vm;
+    Float3 position;
+    Float3 target;
+    Float3 velocity;
+    unknown_fields(0x2C8, 0x18);
+    ZunTimer timer;
+    unknown_fields(0x2EC, 8);
+
+    PlayerOptionState();
+};
+C_ASSERT(sizeof(PlayerOptionState) == 0x2F4);
+
+struct PlayerBombWorkItem
+{
+    unknown_fields(0x0000, 0x14);
+    Float3 anchor;
+    Float3 points[32];
+    Float3 position;
+    Float3 velocity;
+    AnmVm vms[8];
+    unknown_fields(0x16D8, 4);
+    ZunTimer timer;
+    unknown_fields(0x16E8, 8);
+
+    PlayerBombWorkItem();
+};
+C_ASSERT(sizeof(PlayerBombWorkItem) == 0x16F0);
+
+struct PlayerBombState
+{
+    i32 frameStop;
+    unknown_fields(0x000004, 0x14);
+    ZunTimer timer;
+    unknown_fields(0x000024, 0x28);
+    PlayerBombWorkItem workItems[128];
+    Float3 tailPosition;
+
+    PlayerBombState();
+};
+C_ASSERT(sizeof(PlayerBombState) == 0xB7858);
+
+struct Player;
+struct PlayerShot;
+typedef i32 (__fastcall *PlayerShotCollisionCallback)(Player *player, PlayerShot *shot, Float3 *enemyPosition);
+
+struct PlayerShotVelocity
+{
+    f32 x;
+    f32 y;
+    f32 z;
+};
+
+struct PlayerShot
+{
+    AnmVm vm;
+    Float3 position;
+    Float3 vectors[32];
+    Float3 hitboxSize;
+    PlayerShotVelocity velocity;
+    unknown_fields(0x448, 0xC);
+    ZunTimer timer;
+    i16 damage;
+    i16 state;
+    i16 type;
+    unknown_fields(0x466, 8);
+    i16 animationIndex;
+    unknown_fields(0x470, 0xC);
+    PlayerShotCollisionCallback collisionCallback;
+    void *shtEntry;
+
+    PlayerShot();
+};
+C_ASSERT(sizeof(PlayerShot) == 0x484);
+
 struct Player
 {
+    Player();
+
     i8 playerState;
     u8 playerType;
     unknown_fields(0x2, 0x2);
@@ -62,34 +142,48 @@ struct Player
     u8 isYoukai;
     unknown_fields(0x6, 0x6);
     AnmLoaded *anmFile;
-    unknown_fields(0x10, 0x1f0);
-    i32 stateColor;
-    unknown_fields(0x204, 0xb0);
+    AnmVm mainVm;
     Float3 position;
-    unknown_fields(0x2c0, 0xd1c);
-
-    // Observed as g_Player + 0xFDC and through Player receivers at +0xFDC.
-    // The target uses it to pause/alter gameplay updates.
-    i32 frameStop;
-    unknown_fields(0xfe0, 0xb7854);
-    // Target slot allocators at 0x44DFA0 and 0x44E040 address this array as
-    // Player + 0xB8834. Each element's active byte is at +0x3C.
+    Float3 position2;
+    Float3 vectors2CC[16];
+    Float3 vector38C;
+    Float3 vector398;
+    Float3 vector3A4;
+    Float3 vector3B0;
+    Float3 vector3BC;
+    Float3 vector3C8;
+    Float3 vector3D4;
+    Float3 vector3E0;
+    Float3 vector3EC;
+    Float3 vector3F8;
+    unknown_fields(0x404, 8);
+    PlayerOptionState optionStates[4];
+    PlayerBombState bombState;
     PlayerUnkStruct0x40 playerSlotsB[192];
-    // Target slot allocators at 0x44DE60 and 0x44DF00 address this array as
-    // Player + 0xBB834. Each element's active byte is at +0x3C.
     PlayerUnkStruct0x40 playerSlotsC[192];
-    unknown_fields(0xbe834, 0x2423c);
+    unknown_fields(0xBE834, 4);
+    PlayerShot shots[128];
+    EclTimeline timelines[3];
+    unknown_fields(0xE2A68, 8);
     i32 playerStateSlotCooldown;
     PlayerRawShtFile *primaryShtFile;
     PlayerRawShtFile *secondaryShtFile;
-    unknown_fields(0xe2a7c, 0x78);
+    unknown_fields(0xE2A7C, 0x28);
+    Float3 tailPosition0;
+    Float3 tailPosition1;
+    unknown_fields(0xE2ABC, 8);
+    ZunTimer timerE2AC4;
+    ZunTimer timerE2AD0;
+    ZunTimer timerE2ADC;
+    ZunTimer timerE2AE8;
     ZunTimer timer;
-    unknown_fields(0xe2b00, 0x10);
+    ZunTimer timerE2B00;
+    unknown_fields(0xE2B0C, 4);
     ChainElem *calcChain;
     ChainElem *drawChainHighPrio;
     ChainElem *drawChainLowPrio;
     PlayerStateEffect *stateEffect;
-    unknown_fields(0xe2b20, 0xc);
+    unknown_fields(0xE2B20, 0xC);
     i32 damageAccumulatorThreshold;
 
     static ZunResult RegisterChain(u32 playerType);
@@ -140,6 +234,17 @@ struct Player
     i32 FUN_00449ff0(Float3 *position, Float3 *position2);
 };
 C_ASSERT(sizeof(Player) == 0xe2b30);
+C_ASSERT(offsetof(Player, mainVm) == 0x10);
+C_ASSERT(offsetof(Player, position) == 0x2B4);
+C_ASSERT(offsetof(Player, optionStates) == 0x40C);
+C_ASSERT(offsetof(Player, bombState) == 0xFDC);
+C_ASSERT(offsetof(Player, playerSlotsB) == 0xB8834);
+C_ASSERT(offsetof(Player, playerSlotsC) == 0xBB834);
+C_ASSERT(offsetof(Player, shots) == 0xBE838);
+C_ASSERT(offsetof(Player, timelines) == 0xE2A38);
+C_ASSERT(offsetof(Player, playerStateSlotCooldown) == 0xE2A70);
+C_ASSERT(offsetof(Player, timer) == 0xE2AF4);
+C_ASSERT(offsetof(Player, damageAccumulatorThreshold) == 0xE2B2C);
 
 DIFFABLE_EXTERN(Player, g_Player);
 DIFFABLE_EXTERN(PlayerRawShtFile *, g_PlayerPrimaryShtFile);

@@ -122,7 +122,7 @@ void EnemyOverlay::FUN_0042adb0(i32 mode)
                 else
                     dropLocals.itemCount = j >= 8 ? 26 : j * 2 + 10;
 
-                if (g_Player.frameStop != 0)
+                if (g_Player.bombState.frameStop != 0)
                     j /= 3;
 
                 g_AsciiManager.CreateTimePopup(
