@@ -738,8 +738,8 @@ th08::MusicRoom::RegisterChain,0x449254,0xdd,__fastcall,,ZunResult
 th08::MusicRoom::MusicRoom,0x449331,0x68,unknown,,u8
 th08::MusicRoom::OnUpdate,0x449399,0xee,unknown,,u8
 th08::MusicRoom::OnDraw,0x449487,0x288,unknown,,u8
-FUN_0044970f,0x44970f,0x4df,unknown,,u8
-th08::TrackDescriptor::TrackDescriptor,0x449bee,0x1c,unknown,,u8
+th08::MusicRoom::AddedCallback,0x44970f,0x4df,__fastcall,,ZunResult,MusicRoom*
+th08::TrackDescriptor::TrackDescriptor,0x449bee,0x1c,__thiscall,,TrackDescriptor*,TrackDescriptor*
 th08::MusicRoom::DeletedCallback,0x449c0a,0x6f,unknown,,u8
 th08::Supervisor::IsMusicPreloadEnabled,0x449c79,0x18,__thiscall,,ZunBool,Supervisor*
 th08::Player::Player,0x449ca0,0x1a6,__thiscall,,Player*,Player*

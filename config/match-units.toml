@@ -102713,3 +102713,191 @@ object = "build/Gui.obj"
 symbol = "?FUN_004396b8@Gui@th08@@QAEXXZ"
 target_address = 0x004396B8
 size = 0x40
+
+# Ledger name: th08::MusicRoom::AddedCallback
+[[units]]
+name = "music-room-added-callback-0044970f"
+object = "build/MusicRoom.obj"
+symbol = "?AddedCallback@MusicRoom@th08@@SI?AW4ZunResult@@PAU12@@Z"
+target_address = 0x0044970F
+size = 0x4DF
+
+[[units.relocations]]
+offset = 0x1
+type = "DIR32"
+symbol = "$L*"
+target = 0x004B30C6
+
+[[units.relocations]]
+offset = 0x6
+type = "REL32"
+symbol = "__EH_prolog"
+target = 0x004A4838
+
+[[units.relocations]]
+offset = 0x13
+type = "DIR32"
+symbol = "??_C@_0BB@GCJHDHHM@result?1music?4jpg?$AA@"
+target = 0x004B6EE0
+
+[[units.relocations]]
+offset = 0x1B
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x20
+type = "REL32"
+symbol = "?LoadSurface@AnmManager@th08@@QAE?AW4ZunResult@@HPBD@Z"
+target = 0x004667C0
+
+[[units.relocations]]
+offset = 0x31
+type = "DIR32"
+symbol = "??_C@_0M@MNBAFEMH@music00?4anm?$AA@"
+target = 0x004B6ED4
+
+[[units.relocations]]
+offset = 0x39
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x3E
+type = "REL32"
+symbol = "?LoadAnm@AnmManager@th08@@QAEPAUAnmLoaded@2@HPBD@Z"
+target = 0x00465800
+
+[[units.relocations]]
+offset = 0x72
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x83
+type = "DIR32"
+symbol = "??_C@_0BC@OFOJFOID@sprt?1musiccmt?4txt?$AA@"
+target = 0x004B6EC0
+
+[[units.relocations]]
+offset = 0x88
+type = "REL32"
+symbol = "?OpenFile@FileSystem@th08@@YIPAEPBDPAHH@Z"
+target = 0x0043E660
+
+[[units.relocations]]
+offset = 0xA9
+type = "REL32"
+symbol = "??2@YAPAXI@Z"
+target = 0x004A43D4
+
+[[units.relocations]]
+offset = 0xBC
+type = "DIR32"
+symbol = "??0TrackDescriptor@th08@@QAE@XZ"
+target = 0x00449BEE
+
+[[units.relocations]]
+offset = 0xCB
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0xE6
+type = "DIR32"
+symbol = "??_C@_0M@EMGANHNA@MusicCmtInf?$AA@"
+target = 0x004B6EB4
+
+[[units.relocations]]
+offset = 0xF3
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0xF8
+type = "REL32"
+symbol = "?AddToRegistry@ZunMemory@th08@@QAEPAXPAXIPAD@Z"
+target = 0x00429DE0
+
+[[units.relocations]]
+offset = 0x362
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x3B1
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x3F9
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x3FE
+type = "REL32"
+symbol = "?DrawTextLeft@AnmManager@th08@@QAAXPAUAnmVm@2@KKPBDZZ"
+target = 0x004663B0
+
+[[units.relocations]]
+offset = 0x408
+type = "DIR32"
+symbol = "??_C@_0BB@OPBHMMAG@?$IBH?$IBH?$IBH?$IBH?$IBH?$IBH?$IBH?$IBH?$AA@"
+target = 0x004B6EA0
+
+[[units.relocations]]
+offset = 0x42C
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x431
+type = "REL32"
+symbol = "?DrawTextLeft@AnmManager@th08@@QAAXPAUAnmVm@2@KKPBDZZ"
+target = 0x004663B0
+
+[[units.relocations]]
+offset = 0x446
+type = "DIR32"
+symbol = "__real@42ba0000"
+target = 0x004B6E9C
+
+[[units.relocations]]
+offset = 0x460
+type = "DIR32"
+symbol = "__real@42d00000"
+target = 0x004B4CD0
+
+[[units.relocations]]
+offset = 0x466
+type = "DIR32"
+symbol = "__real@41a00000"
+target = 0x004B6E98
+
+[[units.relocations]]
+offset = 0x4C6
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x4CB
+type = "REL32"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
+target = 0x0040B8A0
+
+[[units.relocations]]
+offset = 0x4D7
+type = "DIR32"
+symbol = "__except_list"
+target = 0x00000000

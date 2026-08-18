@@ -962,3 +962,4 @@ th08::ReplayManager::DeletedCallback
 th08::Gui::FUN_004390d6
 th08::Gui::ActualAddedCallback
 th08::Gui::FUN_004396b8
+th08::MusicRoom::AddedCallback
