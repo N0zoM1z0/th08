@@ -845,6 +845,79 @@ void __fastcall FUN_0040dee0(Player *player)
     FUN_0040bc60(player, 0x802020d0);
 }
 
+// FUNCTION: th08 0x40e040
+i32 __fastcall FUN_0040e040(AnmVm *effect)
+{
+    f32 interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 40.0f;
+    interp *= interp;
+    interp = 1.0f - interp;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 256.0f * interp;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 64;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 5.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330) = 0.0f;
+    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 40)
+    {
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 8.0f;
+    }
+    else
+    {
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = 64.0f * interp;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) += 2.0f;
+    }
+    return 1;
+}
+
+// FUNCTION: th08 0x40e120
+i32 __fastcall FUN_0040e120(AnmVm *effect)
+{
+    f32 interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 40.0f;
+    interp *= interp;
+    interp = 1.0f - interp;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 256.0f * interp;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 48;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 0.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = 128.0f * interp;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330) = ZUN_PI / 4.0f;
+    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 40)
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 8.0f;
+    else
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) += 1.5f;
+    return 1;
+}
+
+// FUNCTION: th08 0x40e200
+i32 __fastcall FUN_0040e200(AnmVm *effect)
+{
+    f32 interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 40.0f;
+    interp *= interp;
+    interp = 1.0f - interp;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 256.0f * interp;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 48;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = 128.0f * interp;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330) = -ZUN_PI / 4.0f;
+    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 40)
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 8.0f;
+    else
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) += 1.5f;
+    return 1;
+}
+
+// FUNCTION: th08 0x40e2d0
+i32 __fastcall FUN_0040e2d0(AnmVm *effect)
+{
+    f32 interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 40.0f;
+    interp *= interp;
+    interp = 1.0f - interp;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 192.0f * interp;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 8;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 8.0f;
+    return 1;
+}
+
 // FUNCTION: th08 0x40e3b0
 #pragma var_order(bomb, workItem, angle, slot, position)
 void __fastcall FUN_0040e3b0(Player *player)
@@ -2198,6 +2271,40 @@ void __fastcall FUN_004113a0(Player *player)
     vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
     vm->pos.z = 0.0f;
     g_AnmManager->Draw2D(vm);
+}
+
+// FUNCTION: th08 0x410bb0
+i32 __fastcall FUN_00410bb0(AnmVm *effect)
+{
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) += 8.0f;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 12;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 32.0f;
+    return 1;
+}
+
+// FUNCTION: th08 0x413070
+i32 __fastcall FUN_00413070(AnmVm *effect)
+{
+    f32 interp;
+    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 30)
+    {
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 192.0f;
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 48;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 3.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = 0.0001f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330) = ZUN_PI / 2.0f;
+    }
+    else
+    {
+        interp = ((f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) - 30.0f) / 30.0f;
+        interp *= interp;
+        interp *= interp;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = 192.0f * interp + 0.0001f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 80.0f * interp + 3.0f;
+    }
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+    return 1;
 }
 
 // FUNCTION: th08 0x413140

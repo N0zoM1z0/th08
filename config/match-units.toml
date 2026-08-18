@@ -98093,3 +98093,278 @@ offset = 0x66A
 type = "REL32"
 symbol = "??EZunTimer@th08@@QAEXH@Z"
 target = 0x00406640
+
+[[units]]
+name = "player-effect-callback-0040e040"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_0040e040@th08@@YIHPAUAnmVm@1@@Z"
+target_address = 0x0040E040
+size = 0xD1
+
+[[units.relocations]]
+offset = 0x13
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 0x19
+type = "DIR32"
+symbol = "__real@42200000"
+target = 0x004B432C
+
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x2E
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x3A
+type = "DIR32"
+symbol = "__real@43800000"
+target = 0x004B4434
+
+[[units.relocations]]
+offset = 0x87
+type = "REL32"
+symbol = "??MZunTimer@th08@@QAEIH@Z"
+target = 0x004066A0
+
+[[units.relocations]]
+offset = 0xA0
+type = "DIR32"
+symbol = "__real@42800000"
+target = 0x004B42C8
+
+[[units.relocations]]
+offset = 0xBB
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+
+[[units]]
+name = "player-effect-callback-0040e120"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_0040e120@th08@@YIHPAUAnmVm@1@@Z"
+target_address = 0x0040E120
+size = 0xD1
+
+[[units.relocations]]
+offset = 0x13
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 0x19
+type = "DIR32"
+symbol = "__real@42200000"
+target = 0x004B432C
+
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x2E
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x3A
+type = "DIR32"
+symbol = "__real@43800000"
+target = 0x004B4434
+
+[[units.relocations]]
+offset = 0x70
+type = "DIR32"
+symbol = "__real@43000000"
+target = 0x004B443C
+
+[[units.relocations]]
+offset = 0x99
+type = "REL32"
+symbol = "??MZunTimer@th08@@QAEIH@Z"
+target = 0x004066A0
+
+[[units.relocations]]
+offset = 0xBB
+type = "DIR32"
+symbol = "__real@3fc00000"
+target = 0x004B4438
+
+
+[[units]]
+name = "player-effect-callback-0040e200"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_0040e200@th08@@YIHPAUAnmVm@1@@Z"
+target_address = 0x0040E200
+size = 0xC4
+
+[[units.relocations]]
+offset = 0x13
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 0x19
+type = "DIR32"
+symbol = "__real@42200000"
+target = 0x004B432C
+
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x2E
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x3A
+type = "DIR32"
+symbol = "__real@43800000"
+target = 0x004B4434
+
+[[units.relocations]]
+offset = 0x63
+type = "DIR32"
+symbol = "__real@43000000"
+target = 0x004B443C
+
+[[units.relocations]]
+offset = 0x8C
+type = "REL32"
+symbol = "??MZunTimer@th08@@QAEIH@Z"
+target = 0x004066A0
+
+[[units.relocations]]
+offset = 0xAE
+type = "DIR32"
+symbol = "__real@3fc00000"
+target = 0x004B4438
+
+
+[[units]]
+name = "player-effect-callback-0040e2d0"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_0040e2d0@th08@@YIHPAUAnmVm@1@@Z"
+target_address = 0x0040E2D0
+size = 0x77
+
+[[units.relocations]]
+offset = 0x13
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 0x19
+type = "DIR32"
+symbol = "__real@42200000"
+target = 0x004B432C
+
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x2E
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x3A
+type = "DIR32"
+symbol = "__real@43400000"
+target = 0x004B4440
+
+
+[[units]]
+name = "player-effect-callback-00410bb0"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_00410bb0@th08@@YIHPAUAnmVm@1@@Z"
+target_address = 0x00410BB0
+size = 0x4C
+
+[[units.relocations]]
+offset = 0x12
+type = "DIR32"
+symbol = "__real@41000000"
+target = 0x004B4300
+
+
+[[units]]
+name = "player-effect-callback-00413070"
+object = "build/objdiff/reimpl/Player.obj"
+symbol = "?FUN_00413070@th08@@YIHPAUAnmVm@1@@Z"
+target_address = 0x00413070
+size = 0xCC
+
+[[units.relocations]]
+offset = 0x15
+type = "REL32"
+symbol = "??MZunTimer@th08@@QAEIH@Z"
+target = 0x004066A0
+
+[[units.relocations]]
+offset = 0x6A
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 0x70
+type = "DIR32"
+symbol = "__real@41f00000"
+target = 0x004B4534
+
+[[units.relocations]]
+offset = 0x76
+type = "DIR32"
+symbol = "__real@41f00000"
+target = 0x004B4534
+
+[[units.relocations]]
+offset = 0x8B
+type = "DIR32"
+symbol = "__real@43400000"
+target = 0x004B4440
+
+[[units.relocations]]
+offset = 0x94
+type = "DIR32"
+symbol = "__real@38d1b717"
+target = 0x004B456C
+
+[[units.relocations]]
+offset = 0xA3
+type = "DIR32"
+symbol = "__real@42a00000"
+target = 0x004B42E8
+
+[[units.relocations]]
+offset = 0xAC
+type = "DIR32"
+symbol = "__real@40400000"
+target = 0x004B42DC

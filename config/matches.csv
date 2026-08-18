@@ -906,3 +906,9 @@ address,name,size,status,match_percent,unit,evidence
 0x0040F570,th08::FUN_0040f570,1853,matching,100.00,player-bomb-callback-0040f570,python3 scripts/compare-function.py player-bomb-callback-0040f570 --json
 0x0040FCD0,th08::FUN_0040fcd0,1573,matching,100.00,player-bomb-callback-0040fcd0,python3 scripts/compare-function.py player-bomb-callback-0040fcd0 --json
 0x004103F0,th08::FUN_004103f0,1655,matching,100.00,player-bomb-callback-004103f0,python3 scripts/compare-function.py player-bomb-callback-004103f0 --json
+0x0040E040,th08::FUN_0040e040,209,matching,100.00,player-effect-callback-0040e040,python3 scripts/compare-function.py player-effect-callback-0040e040 --json
+0x0040E120,th08::FUN_0040e120,209,matching,100.00,player-effect-callback-0040e120,python3 scripts/compare-function.py player-effect-callback-0040e120 --json
+0x0040E200,th08::FUN_0040e200,196,matching,100.00,player-effect-callback-0040e200,python3 scripts/compare-function.py player-effect-callback-0040e200 --json
+0x0040E2D0,th08::FUN_0040e2d0,119,matching,100.00,player-effect-callback-0040e2d0,python3 scripts/compare-function.py player-effect-callback-0040e2d0 --json
+0x00410BB0,th08::FUN_00410bb0,76,matching,100.00,player-effect-callback-00410bb0,python3 scripts/compare-function.py player-effect-callback-00410bb0 --json
+0x00413070,th08::FUN_00413070,204,matching,100.00,player-effect-callback-00413070,python3 scripts/compare-function.py player-effect-callback-00413070 --json
