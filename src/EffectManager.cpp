@@ -47,29 +47,19 @@ void __fastcall FUN_00428310(AnmVm *effect, D3DXVECTOR3 *base)
     *base += *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x244);
 }
 
-struct Effect
-{
-    AnmVm vm;
-    Float3 vector0;
-    Float3 vector1;
-    Float3 vector2;
-    Float3 vector3;
-    Float3 vector4;
-    Float3 vector5;
-    Float3 vector6;
-    Float3 vector7;
-    Float3 vector8;
-    u8 unknown310[0x28];
-    ZunTimer timer;
-    u8 unknown344[0x1c];
-
-    Effect();
-};
-C_ASSERT(sizeof(Effect) == 0x360);
-
 // FUNCTION: th08 0x4287e0
 Effect::Effect()
 {
+}
+
+// FUNCTION: th08 0x428740
+EffectManager::EffectManager()
+{
+    this->ResetEffects();
+    this->scaleX = 1.0f;
+    this->scaleY = 1.0f;
+    this->scaleZ = 1.0f;
+    this->scaleW = 1.0f;
 }
 
 DIFFABLE_STATIC(EffectManager, g_EffectManager);

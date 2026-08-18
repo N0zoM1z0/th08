@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Global.hpp"
+#include "AnmManager.hpp"
 #include "Supervisor.hpp"
 #include "ZunResult.hpp"
 
@@ -12,10 +13,45 @@ namespace th08
 struct Enemy;
 struct AnmVm;
 
-// Target-observed effect-manager entry points used by ECL and game teardown.
-// The full manager layout remains outside the recovered public ABI.
+struct Effect
+{
+    AnmVm vm;
+    Float3 vector0;
+    Float3 vector1;
+    Float3 vector2;
+    Float3 vector3;
+    Float3 vector4;
+    Float3 vector5;
+    Float3 vector6;
+    Float3 vector7;
+    Float3 vector8;
+    unknown_fields(0x310, 0x28);
+    ZunTimer timer;
+    unknown_fields(0x344, 0x1c);
+
+    Effect();
+};
+C_ASSERT(sizeof(Effect) == 0x360);
+
 struct EffectManager
 {
+    EffectManager();
+
+    i32 unknown0;
+    i32 unknown4;
+    i32 activeCount;
+    f32 scaleX;
+    f32 scaleY;
+    f32 scaleZ;
+    f32 scaleW;
+    Effect effects[654];
+    Effect sentinel0;
+    Effect sentinel1;
+    Effect sentinel2;
+    Effect sentinel3;
+    Effect sentinel4;
+    unknown_fields(0x8b03c, 0x20);
+
     void ResetEffects();
     static ChainCallbackResult OnUpdate(EffectManager *effectManager);
     static ChainCallbackResult OnDraw(EffectManager *effectManager);
@@ -30,6 +66,7 @@ struct EffectManager
     i32 DrawUnkTypeEffects();
     i32 FUN_004281e0();
 };
+C_ASSERT(sizeof(EffectManager) == 0x8b05c);
 extern EffectManager g_EffectManager;
 void __fastcall FUN_00426d10(Float3 *delta);
 DIFFABLE_EXTERN(ChainElem, g_EffectManagerCalcChain);

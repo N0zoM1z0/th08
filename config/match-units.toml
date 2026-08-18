@@ -90212,3 +90212,58 @@ offset = 0xB
 type = "REL32"
 symbol = "??0ZunTimer@th08@@QAE@XZ"
 target = 0x004065A0
+
+[[units]]
+name = "effect-manager-constructor"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "th08::EffectManager::EffectManager"
+target_address = 0x00428740
+size = 0x9F
+
+[[units.relocations]]
+offset = 0x8
+type = "DIR32"
+symbol = "??0Effect@th08@@QAE@XZ"
+target = 0x004287E0
+
+[[units.relocations]]
+offset = 0x1E
+type = "REL32"
+symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
+target = 0x00406850
+
+[[units.relocations]]
+offset = 0x2C
+type = "REL32"
+symbol = "??0Effect@th08@@QAE@XZ"
+target = 0x004287E0
+
+[[units.relocations]]
+offset = 0x3A
+type = "REL32"
+symbol = "??0Effect@th08@@QAE@XZ"
+target = 0x004287E0
+
+[[units.relocations]]
+offset = 0x48
+type = "REL32"
+symbol = "??0Effect@th08@@QAE@XZ"
+target = 0x004287E0
+
+[[units.relocations]]
+offset = 0x56
+type = "REL32"
+symbol = "??0Effect@th08@@QAE@XZ"
+target = 0x004287E0
+
+[[units.relocations]]
+offset = 0x64
+type = "REL32"
+symbol = "??0Effect@th08@@QAE@XZ"
+target = 0x004287E0
+
+[[units.relocations]]
+offset = 0x6C
+type = "REL32"
+symbol = "th08::EffectManager::ResetEffects"
+target = 0x00425410
