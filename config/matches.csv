@@ -861,3 +861,14 @@ address,name,size,status,match_percent,unit,evidence
 0x0040BC60,th08::FUN_0040bc60,450,matching,100.00,player-bomb-background-color,python3 scripts/compare-function.py player-bomb-background-color --json
 0x00412300,th08::FUN_00412300,207,matching,100.00,player-bomb-draw-white-flash,python3 scripts/compare-function.py player-bomb-draw-white-flash --json
 0x00412FA0,th08::FUN_00412fa0,207,matching,100.00,player-bomb-draw-red-flash,python3 scripts/compare-function.py player-bomb-draw-red-flash --json
+0x0040C820,th08::FUN_0040c820,230,matching,100.00,player-bomb-callback-0040c820,python3 scripts/compare-function.py player-bomb-callback-0040c820 --json
+0x0040D010,th08::FUN_0040d010,233,matching,100.00,player-bomb-callback-0040d010,python3 scripts/compare-function.py player-bomb-callback-0040d010 --json
+0x0040D310,th08::FUN_0040d310,121,matching,100.00,player-bomb-callback-0040d310,python3 scripts/compare-function.py player-bomb-callback-0040d310 --json
+0x0040D950,th08::FUN_0040d950,24,matching,100.00,player-bomb-callback-0040d950,python3 scripts/compare-function.py player-bomb-callback-0040d950 --json
+0x0040DEE0,th08::FUN_0040dee0,349,matching,100.00,player-bomb-callback-0040dee0,python3 scripts/compare-function.py player-bomb-callback-0040dee0 --json
+0x0040E610,th08::FUN_0040e610,362,matching,100.00,player-bomb-callback-0040e610,python3 scripts/compare-function.py player-bomb-callback-0040e610 --json
+0x0040F550,th08::FUN_0040f550,24,matching,100.00,player-bomb-callback-0040f550,python3 scripts/compare-function.py player-bomb-callback-0040f550 --json
+0x0040FCB0,th08::FUN_0040fcb0,24,matching,100.00,player-bomb-callback-0040fcb0,python3 scripts/compare-function.py player-bomb-callback-0040fcb0 --json
+0x00410300,th08::FUN_00410300,225,matching,100.00,player-bomb-callback-00410300,python3 scripts/compare-function.py player-bomb-callback-00410300 --json
+0x00410AC0,th08::FUN_00410ac0,225,matching,100.00,player-bomb-callback-00410ac0,python3 scripts/compare-function.py player-bomb-callback-00410ac0 --json
+0x004113A0,th08::FUN_004113a0,313,matching,100.00,player-bomb-callback-004113a0,python3 scripts/compare-function.py player-bomb-callback-004113a0 --json

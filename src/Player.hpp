@@ -71,7 +71,9 @@ C_ASSERT(sizeof(PlayerOptionState) == 0x2F4);
 
 struct PlayerBombWorkItem
 {
-    unknown_fields(0x0000, 0x14);
+    i32 active;
+    unknown_fields(0x0004, 0xC);
+    f32 rotation;
     Float3 anchor;
     Float3 points[32];
     Float3 position;

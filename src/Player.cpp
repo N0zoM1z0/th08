@@ -49,6 +49,238 @@ void __fastcall FUN_0040bc60(Player *player, D3DCOLOR color)
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Background) + 0x646C) = 1;
 }
 
+// FUNCTION: th08 0x40c820
+#pragma var_order(vm, i, workItem)
+void __fastcall FUN_0040c820(Player *player)
+{
+    PlayerBombWorkItem *workItem;
+    i32 i;
+    AnmVm *vm;
+
+    FUN_0040bc60(player, 0x80404040);
+    i = 0;
+    workItem = player->bombState.workItems;
+    for (; i < 16; i++, workItem++)
+    {
+        if (workItem->active == 0)
+            continue;
+        vm = &workItem->vms[0];
+        vm->pos = workItem->anchor + vm->pos2;
+        vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+        vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+        vm->pos.z = 0.0f;
+        g_AnmManager->DrawNoRotation(vm);
+    }
+}
+
+// FUNCTION: th08 0x40d010
+#pragma var_order(vm, i, workItem)
+void __fastcall FUN_0040d010(Player *player)
+{
+    PlayerBombWorkItem *workItem;
+    u32 i;
+    AnmVm *vm;
+
+    FUN_0040bc60(player, 0x802020d0);
+    i = 0;
+    workItem = player->bombState.workItems;
+    for (; i < 128; i++, workItem++)
+    {
+        if (workItem->active == 0)
+            continue;
+        vm = &workItem->vms[0];
+        vm->pos = workItem->anchor + vm->pos2;
+        vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+        vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+        vm->pos.z = 0.0f;
+        g_AnmManager->DrawNoRotation(vm);
+    }
+}
+
+// FUNCTION: th08 0x40d310
+#pragma var_order(bomb, colorValue)
+void __fastcall FUN_0040d310(Player *player)
+{
+    PlayerBombState *bomb = &player->bombState;
+    if (bomb->timer < 60)
+    {
+        FUN_0040bc60(player, 0x80404040);
+    }
+    else
+    {
+        i32 colorValue = ((i32)bomb->timer - 60) * 176 / 60 + 64;
+        FUN_0040bc60(player, 0x80000000 | (colorValue << 16) | (colorValue << 8) | colorValue);
+    }
+}
+
+// FUNCTION: th08 0x40d950
+void __fastcall FUN_0040d950(Player *player)
+{
+    FUN_0040bc60(player, 0x80404040);
+}
+
+// FUNCTION: th08 0x40dee0
+#pragma var_order(bomb, workItem, rect, fadeValue, color, color2, rect2)
+void __fastcall FUN_0040dee0(Player *player)
+{
+    PlayerBombState *bomb;
+    PlayerBombWorkItem *workItem;
+    ZunRect rect;
+    i32 fadeValue;
+    ZunColor color;
+    ZunColor color2;
+    ZunRect rect2;
+
+    bomb = &player->bombState;
+    workItem = player->bombState.workItems;
+    if (bomb->timer < 90)
+    {
+        FUN_0040bc60(player, 0x802020d0);
+        return;
+    }
+    if (bomb->timer <= 120)
+    {
+        fadeValue = 208 * ((i32)bomb->timer - 90) / 30;
+        color.r = fadeValue / 5 + 0xd0;
+        color.g = fadeValue + 0x20;
+        color.b = fadeValue + 0x20;
+        color.a = 0x80;
+        FUN_0040bc60(player, color.d3dColor);
+
+        rect.left = 32.0f;
+        rect.top = 16.0f;
+        rect.right = 416.0f;
+        rect.bottom = 464.0f;
+        color.r = 0xff;
+        color.g = 0xff;
+        color.b = 0xff;
+        color.a = 255 * ((i32)bomb->timer - 90) / 30;
+        ScreenEffect::DrawSquare(&rect, color.d3dColor);
+        return;
+    }
+    if (bomb->timer <= 220)
+    {
+        rect2.left = 32.0f;
+        rect2.top = 16.0f;
+        rect2.right = 416.0f;
+        rect2.bottom = 464.0f;
+        color2.r = 0xff;
+        color2.g = 0xff;
+        color2.b = 0xff;
+        color2.a = 0x70;
+        ScreenEffect::DrawSquare(&rect2, color2.d3dColor);
+        return;
+    }
+    FUN_0040bc60(player, 0x802020d0);
+}
+
+// FUNCTION: th08 0x40e610
+#pragma var_order(vm, i, angleStep, angle)
+void __fastcall FUN_0040e610(Player *player)
+{
+    AnmVm *vm;
+    i32 i;
+    f32 angleStep;
+    f32 angle;
+
+    FUN_0040bc60(player, 0x80404040);
+    angleStep = ZUN_PI / 15.0f;
+    vm = &player->bombState.workItems[0].vms[0];
+    for (i = 0; i < 5; i++, vm++)
+    {
+        angle = (f32)i * angleStep - ZUN_PI / 2.0f - angleStep * 2.0f;
+        if (angle < -ZUN_PI)
+            angle += ZUN_2PI;
+        vm->pos = player->position;
+        vm->pos.x += cosf(angle) * vm->loadedSprite->widthPx * vm->scale.x / 2.0f;
+        vm->pos.y += sinf(angle) * vm->loadedSprite->widthPx * vm->scale.x / 2.0f;
+        vm->SetZRotation(angle);
+        vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+        vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+        vm->pos.z = 0.0f;
+        g_AnmManager->Draw2D(vm);
+    }
+}
+
+// FUNCTION: th08 0x40f550
+void __fastcall FUN_0040f550(Player *player)
+{
+    FUN_0040bc60(player, 0x80d02020);
+}
+
+// FUNCTION: th08 0x40fcb0
+void __fastcall FUN_0040fcb0(Player *player)
+{
+    FUN_0040bc60(player, 0x80f00000);
+}
+
+// FUNCTION: th08 0x410300
+#pragma var_order(i, workItem)
+void __fastcall FUN_00410300(Player *player)
+{
+    PlayerBombWorkItem *workItem;
+    i32 i;
+
+    FUN_0040bc60(player, 0x80404040);
+    workItem = player->bombState.workItems;
+    for (i = 0; i < 96; i++, workItem++)
+    {
+        if (workItem->active == 0)
+            continue;
+        workItem->vms[0].SetZRotation(workItem->rotation);
+        workItem->vms[0].pos = workItem->anchor;
+        workItem->vms[0].pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+        workItem->vms[0].pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+        workItem->vms[0].pos.z = 0.0f;
+        g_AnmManager->Draw2D(&workItem->vms[0]);
+    }
+}
+
+// FUNCTION: th08 0x410ac0
+#pragma var_order(i, workItem)
+void __fastcall FUN_00410ac0(Player *player)
+{
+    PlayerBombWorkItem *workItem;
+    i32 i;
+
+    FUN_0040bc60(player, 0x80202080);
+    workItem = player->bombState.workItems;
+    for (i = 0; i < 96; i++, workItem++)
+    {
+        if (workItem->active == 0)
+            continue;
+        workItem->vms[0].SetZRotation(workItem->rotation);
+        workItem->vms[0].pos = workItem->anchor;
+        workItem->vms[0].pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+        workItem->vms[0].pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+        workItem->vms[0].pos.z = 0.0f;
+        g_AnmManager->Draw2D(&workItem->vms[0]);
+    }
+}
+
+// FUNCTION: th08 0x4113a0
+#pragma var_order(vm, workItem)
+void __fastcall FUN_004113a0(Player *player)
+{
+    PlayerBombWorkItem *workItem;
+    AnmVm *vm;
+
+    workItem = player->bombState.workItems;
+    FUN_0040bc60(player, 0x802020d0);
+    vm = &workItem->vms[0];
+    vm->pos = workItem->anchor + vm->pos2;
+    vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+    vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+    vm->pos.z = 0.01f;
+    g_AnmManager->Draw2D(vm);
+
+    vm++;
+    vm->pos = workItem->anchor + vm->pos2;
+    vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+    vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+    vm->pos.z = 0.0f;
+    g_AnmManager->Draw2D(vm);
+}
 
 // FUNCTION: th08 0x412300
 #pragma var_order(bomb, rect, color)
