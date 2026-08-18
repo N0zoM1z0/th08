@@ -1,7 +1,9 @@
 #include "th_pch.h"
 
 #include "EclManager.hpp"
+#include "EclOperands.hpp"
 #include "AnmManager.hpp"
+#include "Background.hpp"
 #include "ItemManager.hpp"
 #include "ReplayManager.hpp"
 #include "GameManager.hpp"
@@ -48,6 +50,183 @@ void __fastcall FUN_00428310(AnmVm *effect, D3DXVECTOR3 *base)
 }
 
 i32 __fastcall FUN_00427450(Effect *effect);
+
+// FUNCTION: th08 0x426280
+#pragma var_order(backgroundOffset, effect)
+i32 __fastcall FUN_00426280(Effect *effect)
+{
+    Float3 backgroundOffset;
+
+    backgroundOffset = -g_Background.unk6394.vectors[1];
+    effect->vector4 = g_Background.unk6394.vectors[1] + g_Background.unk6394.vectors[0];
+    effect->vector4.x += g_Rng.GetRandomF32SignedInRange(60.0f) + backgroundOffset.x / 2.0f;
+    effect->vector4.y += g_Rng.GetRandomF32SignedInRange(100.0f) - 50.0f + backgroundOffset.y / 2.0f;
+    effect->vector4.z += g_Rng.GetRandomF32InRange(100.0f) - 100.0f + backgroundOffset.z / 2.0f;
+
+    effect->vector2.x = g_Rng.GetRandomF32SignedInRange(0.001f) + effect->vector1.x;
+    effect->vector2.y = g_Rng.GetRandomF32SignedInRange(0.03f) + effect->vector1.y;
+    effect->vector2.z = -g_Rng.GetRandomF32InRange(0.1f) - 0.3f + effect->vector1.z;
+    effect->vector3.x = g_Rng.GetRandomF32SignedInRange(0.0001f);
+    effect->vector3.y = g_Rng.GetRandomF32SignedInRange(0.0001f);
+    effect->vector3.z = -0.0003f;
+    effect->vector2 = effect->vector2 * g_EclGameTimeScale;
+    effect->vector3 = effect->vector3 * g_EclGameTimeScale;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x354) = 1;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x288) = -9999.0f;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x238) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x244) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x248) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x24c) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x250) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x254) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x258) = 0;
+    return 0;
+}
+
+// FUNCTION: th08 0x426720
+#pragma var_order(backgroundOffset, effect)
+i32 __fastcall FUN_00426720(Effect *effect)
+{
+    Float3 backgroundOffset;
+
+    backgroundOffset = -g_Background.unk6394.vectors[1];
+    effect->vector4 = g_Background.unk6394.vectors[1] + g_Background.unk6394.vectors[0];
+    effect->vector4.x += g_Rng.GetRandomF32SignedInRange(60.0f) + backgroundOffset.x / 2.0f;
+    effect->vector4.y += g_Rng.GetRandomF32SignedInRange(200.0f) - 200.0f + backgroundOffset.y / 2.0f;
+    effect->vector4.z += g_Rng.GetRandomF32InRange(100.0f) - 100.0f + backgroundOffset.z / 2.0f;
+
+    effect->vector2.x = g_Rng.GetRandomF32SignedInRange(0.001f) + effect->vector1.x;
+    effect->vector2.y = g_Rng.GetRandomF32SignedInRange(0.03f) + 0.4f;
+    effect->vector2.z = -g_Rng.GetRandomF32InRange(0.1f) - 0.3f + effect->vector1.z;
+    effect->vector3.x = g_Rng.GetRandomF32SignedInRange(0.0001f);
+    effect->vector3.y = g_Rng.GetRandomF32SignedInRange(0.0001f);
+    effect->vector3.z = -0.0003f;
+    effect->vector2 = effect->vector2 * g_EclGameTimeScale;
+    effect->vector3 = effect->vector3 * g_EclGameTimeScale;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x354) = 1;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x288) = -9999.0f;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x238) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x244) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x248) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x24c) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x250) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x254) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x258) = 0;
+    return 0;
+}
+
+// FUNCTION: th08 0x426e70
+#pragma var_order(backgroundOffset, effect)
+i32 __fastcall FUN_00426e70(Effect *effect)
+{
+    Float3 backgroundOffset;
+
+    backgroundOffset = -g_Background.unk6394.vectors[1];
+    effect->vector4 = g_Background.unk6394.vectors[1] + g_Background.unk6394.vectors[0];
+    effect->vector4.x += g_Rng.GetRandomF32InRange(120.0f) - 60.0f + backgroundOffset.x / 2.0f;
+    effect->vector4.y += g_Rng.GetRandomF32InRange(200.0f) - 100.0f + backgroundOffset.y / 2.0f;
+    effect->vector4.z += g_Rng.GetRandomF32InRange(100.0f) - 100.0f + backgroundOffset.z / 2.0f;
+
+    effect->vector2.x = g_Rng.GetRandomF32InRange(0.06f) - 0.03f + effect->vector1.x;
+    effect->vector2.y = g_Rng.GetRandomF32InRange(0.06f) - 0.03f + effect->vector1.y;
+    effect->vector2.z = g_Rng.GetRandomF32InRange(0.1f) + 0.03f + effect->vector1.z;
+    effect->vector3.x = g_Rng.GetRandomF32InRange(0.0002f) - 0.0001f;
+    effect->vector3.y = g_Rng.GetRandomF32InRange(0.0002f) - 0.0001f;
+    effect->vector2 = effect->vector2 * g_EclGameTimeScale;
+    effect->vector3 = effect->vector3 * g_EclGameTimeScale;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x354) = 1;
+    effect->vm.rotation.z = g_Rng.GetRandomF32InRange(ZUN_2PI) - ZUN_PI;
+    effect->vm.rotation.x = g_Rng.GetRandomF32InRange(0.03141592815518379f) - 0.015707964077591896f;
+    return 0;
+}
+
+// FUNCTION: th08 0x426b20
+#pragma var_order(angle, effect)
+i32 __fastcall FUN_00426b20(Effect *effect)
+{
+    f32 angle;
+
+    effect->vector5 = effect->vector0;
+    effect->vector5.z = 0.0f;
+    angle = g_Rng.GetRandomF32InRange(ZUN_2PI) - ZUN_PI;
+    effect->vector6.x = cosf(angle);
+    effect->vector6.y = sinf(angle);
+    effect->vector6.z = 0.0f;
+    return 0;
+}
+
+// FUNCTION: th08 0x426bb0
+#pragma var_order(alpha, effect)
+i32 __fastcall FUN_00426bb0(Effect *effect)
+{
+    f32 alpha;
+
+    alpha = 256.0f - (f32)effect->timer * 256.0f / 60.0f;
+    effect->vector0 = effect->vector6 * alpha + effect->vector5;
+    effect->vector0.z = 0.0f;
+    return 1;
+}
+
+// FUNCTION: th08 0x428720
+i32 __fastcall FUN_00428720(Effect *effect)
+{
+    return effect->vm.currentInstruction == NULL;
+}
+
+// FUNCTION: th08 0x426c40
+i32 __fastcall FUN_00426c40(Effect *effect)
+{
+    if (FUN_00428720(effect))
+        return 0;
+
+    reinterpret_cast<EclOperands::Vector3 &>(effect->vector0) =
+        EclOperands::g_TargetPlayerPosition017D61AC;
+    return 1;
+}
+
+// FUNCTION: th08 0x426c90
+#pragma var_order(alpha, effect)
+i32 __fastcall FUN_00426c90(Effect *effect)
+{
+    f32 alpha;
+
+    alpha = 256.0f - (f32)effect->timer * 256.0f / 240.0f;
+    effect->vector0 = effect->vector6 * alpha + effect->vector5;
+    return 1;
+}
+
+// FUNCTION: th08 0x4270c0
+#pragma var_order(angle, effect)
+i32 __fastcall FUN_004270c0(Effect *effect)
+{
+    f32 angle;
+
+    if (effect->vector1.x > -990.0)
+        angle = AddNormalizeAngle(effect->vector1.x, 0.0f);
+    else
+        angle = g_Rng.GetRandomF32InRange(ZUN_2PI) - ZUN_PI;
+
+    effect->vector5 = effect->vector0;
+    effect->vector5.z = 0.0f;
+    effect->vector6.x = cosf(angle);
+    effect->vector6.y = sinf(angle);
+    effect->vector6.z = 0.0f;
+    effect->vector6 *= g_Rng.GetRandomF32InRange(1.5f) + 0.0f;
+    return 0;
+}
+
+// FUNCTION: th08 0x4271a0
+#pragma var_order(alpha, effect)
+i32 __fastcall FUN_004271a0(Effect *effect)
+{
+    f32 alpha;
+
+    alpha = (f32)effect->timer / 90.0f;
+    alpha = 1.0f - (1.0f - alpha) * (1.0f - alpha);
+    effect->vector0 = effect->vector6 * alpha * 128.0f + effect->vector5;
+    effect->vector0.z = 0.0f;
+    return 1;
+}
 
 // FUNCTION: th08 0x427250
 i32 __fastcall FUN_00427250(Effect *effect)

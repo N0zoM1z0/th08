@@ -928,3 +928,13 @@ address,name,size,status,match_percent,unit,evidence
 0x004286E0,th08::Float3::FromAngleMagnitude,32,matching,100.00,float3-from-angle-magnitude,python3 scripts/compare-function.py float3-from-angle-magnitude --json
 0x00428700,th08::Float3::FromRotatedVec2,32,matching,100.00,float3-from-rotated-vec2,python3 scripts/compare-function.py float3-from-rotated-vec2 --json
 0x004649A0,th08::AnmManager::FUN_004649a0,352,matching,100.00,anm-manager-fun-004649a0,python3 scripts/compare-function.py anm-manager-fun-004649a0 --json
+0x00426280,th08::FUN_00426280,624,matching,100.00,effect-random-camera-init-00426280,python3 scripts/compare-function.py effect-random-camera-init-00426280 --json
+0x00426720,th08::FUN_00426720,620,matching,100.00,effect-random-camera-init-00426720,python3 scripts/compare-function.py effect-random-camera-init-00426720 --json
+0x00426E70,th08::FUN_00426e70,587,matching,100.00,effect-random-camera-init-00426e70,python3 scripts/compare-function.py effect-random-camera-init-00426e70 --json
+0x00426B20,th08::FUN_00426b20,134,matching,100.00,effect-random-direction-init-00426b20,python3 scripts/compare-function.py effect-random-direction-init-00426b20 --json
+0x00426BB0,th08::FUN_00426bb0,133,matching,100.00,effect-timer-vector-update-00426bb0,python3 scripts/compare-function.py effect-timer-vector-update-00426bb0 --json
+0x00426C40,th08::FUN_00426c40,66,matching,100.00,effect-target-position-update-00426c40,python3 scripts/compare-function.py effect-target-position-update-00426c40 --json
+0x00426C90,th08::FUN_00426c90,120,matching,100.00,effect-timer-vector-update-00426c90,python3 scripts/compare-function.py effect-timer-vector-update-00426c90 --json
+0x004270C0,th08::FUN_004270c0,217,matching,100.00,effect-random-direction-init-004270c0,python3 scripts/compare-function.py effect-random-direction-init-004270c0 --json
+0x004271A0,th08::FUN_004271a0,166,matching,100.00,effect-eased-vector-update-004271a0,python3 scripts/compare-function.py effect-eased-vector-update-004271a0 --json
+0x00428720,th08::FUN_00428720,28,matching,100.00,effect-vm-script-ended-00428720,python3 scripts/compare-function.py effect-vm-script-ended-00428720 --json

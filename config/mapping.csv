@@ -332,19 +332,19 @@ th08::EffectRandomSplashBigInit,0x425ea0,0xf8,__fastcall,,i32,AnmVm*
 th08::Float3::operator-() const,0x425fa0,0x3b,__thiscall,,Float3*,Float3*
 th08::EffectOrbitInit,0x425fe0,0x4b,__fastcall,,i32,AnmVm*
 th08::EffectOrbitUpdate,0x426030,0x24c,__fastcall,,i32,AnmVm*
-FUN_00426280,0x426280,0x270,unknown,,u8
+th08::FUN_00426280,0x426280,0x270,__fastcall,,i32,Effect*
 FUN_004264f0,0x4264f0,0x221,unknown,,u8
-FUN_00426720,0x426720,0x26c,unknown,,u8
+th08::FUN_00426720,0x426720,0x26c,__fastcall,,i32,Effect*
 FUN_00426990,0x426990,0x184,unknown,,u8
-FUN_00426b20,0x426b20,0x86,unknown,,u8
-FUN_00426bb0,0x426bb0,0x85,unknown,,u8
-FUN_00426c40,0x426c40,0x42,unknown,,u8
-FUN_00426c90,0x426c90,0x78,unknown,,u8
+th08::FUN_00426b20,0x426b20,0x86,__fastcall,,i32,Effect*
+th08::FUN_00426bb0,0x426bb0,0x85,__fastcall,,i32,Effect*
+th08::FUN_00426c40,0x426c40,0x42,__fastcall,,i32,Effect*
+th08::FUN_00426c90,0x426c90,0x78,__fastcall,,i32,Effect*
 th08::FUN_00426d10,0x426d10,0x5e,__fastcall,,void,Float3*
 FUN_00426d70,0x426d70,0xfb,unknown,,u8
-FUN_00426e70,0x426e70,0x24b,unknown,,u8
-FUN_004270c0,0x4270c0,0xd9,unknown,,u8
-FUN_004271a0,0x4271a0,0xa6,unknown,,u8
+th08::FUN_00426e70,0x426e70,0x24b,__fastcall,,i32,Effect*
+th08::FUN_004270c0,0x4270c0,0xd9,__fastcall,,i32,Effect*
+th08::FUN_004271a0,0x4271a0,0xa6,__fastcall,,i32,Effect*
 th08::FUN_00427250,0x427250,0x10,__fastcall,,i32,Effect*
 th08::FUN_00427260,0x427260,0x72,__fastcall,,i32,Effect*
 th08::FUN_004272e0,0x4272e0,0x161,__fastcall,,i32,Effect*
@@ -366,7 +366,7 @@ th08::EffectManager::RegisterChain,0x428620,0x87,__fastcall,,ZunResult
 th08::EffectManager::CutChain,0x4286b0,0x23,unknown,,u8
 th08::Float3::FromAngleMagnitude,0x4286e0,0x20,__thiscall,,void,Float3*,f32,f32
 th08::Float3::FromRotatedVec2,0x428700,0x20,__thiscall,,void,Float3*,f32,f32,f32
-FUN_00428720,0x428720,0x1c,unknown,,u8
+th08::FUN_00428720,0x428720,0x1c,__fastcall,,i32,Effect*
 th08::EffectManager::EffectManager,0x428740,0x9f,unknown,,u8
 th08::Effect::Effect,0x4287e0,0xa2,__thiscall,,Effect*,Effect*
 th08::Ending::ReadEndFileParameter,0x428890,0x73,__thiscall,,i32,Ending*
