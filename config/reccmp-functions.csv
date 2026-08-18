@@ -142,7 +142,7 @@ th08::FUN_0040c010,0x40c010,function
 th08::VectorAngle,0x40c7b0,function
 th08::Float3::operator/,0x40c7d0,function
 th08::FUN_0040c820,0x40c820,function
-FUN_0040c910,0x40c910,function
+th08::FUN_0040c910,0x40c910,function
 th08::FUN_0040d010,0x40d010,function
 th08::FUN_0040d100,0x40d100,function
 th08::FUN_0040d310,0x40d310,function

@@ -898,3 +898,4 @@ address,name,size,status,match_percent,unit,evidence
 0x0040ED50,th08::AnmVm::FUN_0040ed50,80,matching,100.00,anm-vm-fun-0040ed50,python3 scripts/compare-function.py anm-vm-fun-0040ed50 --json
 0x0040EDA0,th08::AnmVm::FUN_0040eda0,105,matching,100.00,anm-vm-fun-0040eda0,python3 scripts/compare-function.py anm-vm-fun-0040eda0 --json
 0x0040C010,th08::FUN_0040c010,1941,matching,100.00,player-bomb-callback-0040c010,python3 scripts/compare-function.py player-bomb-callback-0040c010 --json
+0x0040C910,th08::FUN_0040c910,1790,matching,100.00,player-bomb-callback-0040c910,python3 scripts/compare-function.py player-bomb-callback-0040c910 --json

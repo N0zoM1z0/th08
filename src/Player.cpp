@@ -334,6 +334,141 @@ void __fastcall FUN_0040c820(Player *player)
     }
 }
 
+
+DIFFABLE_STATIC_ARRAY_ASSIGN(u32, 7, g_PlayerDreamSealColors) = {
+    0x8FFFFFFF, 0x8F0000FF, 0x8FFF00FF, 0x8FFF0000, 0x8FFFFF00, 0x8F00FF00, 0x8F00FFFF,
+};
+
+// FUNCTION: th08 0x40c910
+#pragma var_order(i, bomb, workItem, angle, previousPosition)
+void __fastcall FUN_0040c910(Player *player)
+{
+    i32 i;
+    PlayerBombState *bomb;
+    PlayerBombWorkItem *workItem;
+    f32 angle;
+
+    bomb = &player->bombState;
+    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
+    {
+        FUN_0040be30(player, 0,
+                     "\x90\x5F\x97\xEC\x81\x75\x96\xB2\x91\x7A\x95\x95\x88\xF3\x81\x40\x8F\x75\x81\x76",
+                     200, 260, 1);
+        g_EffectManager.SpawnEffect(12, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, 0xFF4040FF);
+        angle = -ZUN_PI;
+        workItem = bomb->workItems;
+        for (i = 0; i < 16; i++, workItem++)
+        {
+            player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[i].vms[0], 19);
+            bomb->workItems[i].rotation = angle;
+            angle += ZUN_PI / 8.0f;
+            workItem->anchor = player->position;
+            workItem->points[0] = workItem->anchor;
+            workItem->rotationStep = 0.0f;
+            workItem->active = 1;
+            workItem->cancelSlot = player->FUN_0044df00(&player->position, 96.0f, 0.0f, 200, 6);
+            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 64.0f, 0.0f, 5, 200);
+            workItem->damageSlot->collisionInterval = 2;
+            workItem->damageSlot->hitCap = 200;
+            workItem->damageSlot->mode = 1;
+        }
+        bomb->secondaryWorkIndex = 0;
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+    }
+
+    Float3 previousPosition;
+    workItem = bomb->workItems;
+    for (i = 0; i < 16; i++, workItem++)
+    {
+        if (workItem->active == 1)
+        {
+            workItem->rotation = AddNormalizeAngle(
+                workItem->rotation, (i & 1) ? 0.052359879016876221f : -0.052359879016876221f);
+            previousPosition = workItem->anchor;
+            workItem->anchor.x = cosf(workItem->rotation) * workItem->rotationStep + workItem->points[0].x;
+            workItem->anchor.y = sinf(workItem->rotation) * workItem->rotationStep + workItem->points[0].y;
+            if (bomb->timer < 40)
+            {
+                if (i & 1)
+                    workItem->rotationStep += 1.2000000476837158f;
+                else
+                    workItem->rotationStep += 2.4000000953674316f;
+            }
+            workItem->position = workItem->anchor - previousPosition;
+
+            if (bomb->timer >= bomb->duration - 40 - i)
+            {
+                workItem->cancelSlot->active = 0;
+                workItem->damageSlot->active = 0;
+                player->FUN_0044df00(&player->position, 64.0f, 4.266666889190674f, 30, 6);
+                PlayerUnkStruct0x40 *slot =
+                    player->FUN_0044e040(&workItem->anchor, 64.0f, 8.533333778381348f, 25, 15);
+                slot->collisionInterval = 5;
+                slot->hitCap = 50;
+                g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&workItem->anchor), 8, -1);
+                workItem->active = 2;
+                workItem->vms[0].pendingInterrupt = 1;
+                workItem->position / 8.0f;
+                g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), workItem->anchor.x);
+                ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 16, 8, 0, 0, 21);
+            }
+
+            workItem->cancelSlot->center.x = workItem->anchor.x;
+            workItem->cancelSlot->center.y = workItem->anchor.y;
+            workItem->damageSlot->center.x = workItem->anchor.x;
+            workItem->damageSlot->center.y = workItem->anchor.y;
+        }
+        g_AnmManager->ExecuteScript(&workItem->vms[0]);
+    }
+
+    if (bomb->timer >= 40)
+    {
+#pragma var_order(color, spawnPosition, slot)
+        Float3 spawnPosition;
+        u32 color;
+        PlayerUnkStruct0x40 *slot;
+        if (bomb->timer % 20 == 0)
+        {
+            workItem = &bomb->workItems[bomb->secondaryWorkIndex + 16];
+            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 20);
+            bomb->secondaryWorkIndex = 1;
+            workItem->active = 1;
+            color = g_PlayerDreamSealColors[(u32)((i32)bomb->timer / 20) % 7];
+            if (player->tailPosition0.x > -100.0f)
+                spawnPosition = player->tailPosition0;
+            else
+            {
+                spawnPosition.x = g_Rng.GetRandomF32InRange(320.0f) + 32.0f;
+                spawnPosition.y = g_Rng.GetRandomF32InRange(384.0f) + 32.0f;
+                spawnPosition.z = 0.0f;
+            }
+            workItem->anchor = spawnPosition;
+            g_EffectManager.SpawnEffect(49, reinterpret_cast<D3DXVECTOR3 *>(&workItem->anchor), 1, color);
+            g_EffectManager.SpawnEffect(55, reinterpret_cast<D3DXVECTOR3 *>(&workItem->anchor), 1, color);
+            workItem->cancelSlot = player->FUN_0044df00(&spawnPosition, 64.0f, 4.266666889190674f, 30, 6);
+            workItem->damageSlot = player->FUN_0044e040(&spawnPosition, 64.0f, 8.533333778381348f, 400, 15);
+            slot = workItem->damageSlot;
+            slot->collisionInterval = 2;
+            g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), workItem->anchor.x);
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 16, 8, 0, 0, 21);
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, color, 0, 21);
+        }
+    }
+
+    workItem = &bomb->workItems[16];
+    for (i = 16; i < ARRAY_SIZE(bomb->workItems); i++, workItem++)
+    {
+        if (!workItem->active)
+            continue;
+        workItem->cancelSlot->center.x = workItem->anchor.x;
+        workItem->cancelSlot->center.y = workItem->anchor.y;
+        workItem->damageSlot->center.x = workItem->anchor.x;
+        workItem->damageSlot->center.y = workItem->anchor.y;
+        if (g_AnmManager->ExecuteScript(&workItem->vms[0]))
+            workItem->active = 0;
+    }
+}
+
 // FUNCTION: th08 0x40d010
 #pragma var_order(vm, i, workItem)
 void __fastcall FUN_0040d010(Player *player)

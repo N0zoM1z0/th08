@@ -15,6 +15,7 @@ IID_IDirectInput8A,0x4bd6c0,global
 IID_IShellLinkA,0x4bd6d0,global
 CLSID_ShellLink,0x4bd6e0,global
 IPersistFile,0x4bd6f0,global
+th08::g_PlayerDreamSealColors,0x4c6100,global
 th08::g_SpellCardNumbersEasy,0x4c6120,global
 th08::g_SpellcardNumbersEasy,0x4c6120,global
 th08::g_SpellCardNumbersNormal,0x4c61c8,global

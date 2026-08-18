@@ -95,7 +95,8 @@ struct PlayerBombState
     i32 frameStop;
     i32 unknown4;
     i32 duration;
-    unknown_fields(0x00000C, 0xC);
+    unknown_fields(0x00000C, 0x8);
+    i32 secondaryWorkIndex;
     ZunTimer timer;
     unknown_fields(0x000024, 0x28);
     PlayerBombWorkItem workItems[128];
