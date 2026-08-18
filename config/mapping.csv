@@ -390,14 +390,14 @@ th08::EnemyUnkStruct0x1c::EnemyUnkStruct0x1c,0x42a490,0x21,__thiscall,,EnemyUnkS
 th08::EnemyUnkStruct3::EnemyUnkStruct3,0x42a4c0,0x19,__thiscall,,EnemyUnkStruct3*,EnemyUnkStruct3*
 FUN_0042a4e0,0x42a4e0,0x199,unknown,,u8,u8,u8,u8,u8,u8,u8
 FUN_0042a680,0x42a680,0x19d,unknown,,u8,u8,u8,u8,u8,u8,u8
-FUN_0042a820,0x42a820,0x73,unknown,,u8
+th08::Enemy::FUN_0042a820,0x42a820,0x73,__thiscall,,void,Enemy*
 FUN_0042a8a0,0x42a8a0,0x4c0,unknown,,u8
 th08::EclOperands::EnemyOverlay::FUN_0042adb0,0x42adb0,0x538,__thiscall,,void,EnemyOverlay*,i32
 th08::Enemy::FUN_0042b2f0,0x42b2f0,0x75,__thiscall,,void,Enemy*
 FUN_0042b370,0x42b370,0x120,unknown,,u8,u8
 FUN_0042b490,0x42b490,0x49c,unknown,,u8
 FUN_0042b930,0x42b930,0x31c,unknown,,u8
-FUN_0042bc50,0x42bc50,0x32,unknown,,u8
+th08::FUN_0042bc50,0x42bc50,0x32,__fastcall,,void,void*
 th08::Enemy::FUN_0042bc90,0x42bc90,0x60,__thiscall,,void,Enemy*
 FUN_0042bcf0,0x42bcf0,0x1b0,unknown,,u8
 th08::Enemy::FUN_0042bea0,0x42bea0,0x2de,__thiscall,,void,Enemy*,i32
@@ -408,8 +408,8 @@ FUN_0042c420,0x42c420,0x16f,unknown,,u8
 th08::EnemyManager::RegisterChain,0x42c590,0xcb,__fastcall,,ZunResult
 th08::EnemyManager::OnUpdate,0x42c660,0x1836,__thiscall,,u32,EnemyManager*
 FUN_0042deb0,0x42deb0,0xfc,unknown,,u8
-FUN_0042dfb0,0x42dfb0,0x14,unknown,,u8
-FUN_0042dfd0,0x42dfd0,0x19,unknown,,u8,u8
+th08::EclManager::GetTimelineCount,0x42dfb0,0x14,__thiscall,,i32,EclManager*
+th08::EclManager::GetTimeline,0x42dfd0,0x19,__thiscall,,u32,EclManager*,i32
 th08::Spellcard::FUN_0042DFF0,0x42dff0,0x16,__thiscall,,i32,Spellcard*
 FUN_0042e010,0x42e010,0x101,unknown,,u8
 th08::EnemyManager::OnDrawHighPrio,0x42e120,0x17,__fastcall,,ChainCallbackResult,EnemyManager*

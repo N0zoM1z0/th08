@@ -937,3 +937,7 @@ th08::FUN_00426c90
 th08::FUN_004270c0
 th08::FUN_004271a0
 th08::FUN_00428720
+th08::Enemy::FUN_0042a820
+th08::FUN_0042bc50
+th08::EclManager::GetTimelineCount
+th08::EclManager::GetTimeline

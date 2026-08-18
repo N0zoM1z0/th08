@@ -135,6 +135,8 @@ struct EclManager
     void Unload();
     ZunResult CallEclSub(EnemyEclContext *context, i16 subId);
     ZunResult RunEcl(Enemy *enemy);
+    i32 GetTimelineCount();
+    u32 GetTimeline(i32 index);
 
     EclRawHeader *eclFile;             // +0x000
     u32 *subTable;                     // +0x004

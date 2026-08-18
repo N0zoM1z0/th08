@@ -27,6 +27,31 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(u8, 32, g_EnemyDropSchedule) = {
     1, 0, 0, 1, 1, 1, 0, 0,
 };
 
+// FUNCTION: th08 0x42bc50
+void __fastcall FUN_0042bc50(void *self)
+{
+    *reinterpret_cast<u32 *>(self) &= ~4u;
+    *reinterpret_cast<u32 *>(self) |= 8u;
+    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(self) + 0xfc) = 0;
+}
+
+// FUNCTION: th08 0x42a820
+#pragma var_order(i, this)
+void Enemy::FUN_0042a820()
+{
+    i32 i;
+
+    for (i = 0; i < *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53c0); i++)
+    {
+        if (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x5360 + i * 4) == NULL)
+            continue;
+        *reinterpret_cast<u8 *>(
+            reinterpret_cast<u8 *>(*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x5360 + i * 4)) + 0x352) = 1;
+        *reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x5360 + i * 4) = NULL;
+    }
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53c0) = 0;
+}
+
 // FUNCTION: th08 0x42a4c0
 EnemyUnkStruct3::EnemyUnkStruct3() {}
 

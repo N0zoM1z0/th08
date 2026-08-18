@@ -100210,3 +100210,31 @@ object = "build/objdiff/reimpl/EffectManager.obj"
 symbol = "?FUN_00428720@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x00428720
 size = 0x1C
+
+[[units]]
+name = "enemy-cleanup-linked-vms-0042a820"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "th08::Enemy::FUN_0042a820"
+target_address = 0x0042A820
+size = 0x73
+
+[[units]]
+name = "enemy-helper-0042bc50"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "?FUN_0042bc50@th08@@YIXPAX@Z"
+target_address = 0x0042BC50
+size = 0x32
+
+[[units]]
+name = "ecl-manager-get-timeline-count"
+object = "build/objdiff/reimpl/EclManager.obj"
+symbol = "th08::EclManager::GetTimelineCount"
+target_address = 0x0042DFB0
+size = 0x14
+
+[[units]]
+name = "ecl-manager-get-timeline"
+object = "build/objdiff/reimpl/EclManager.obj"
+symbol = "th08::EclManager::GetTimeline"
+target_address = 0x0042DFD0
+size = 0x19

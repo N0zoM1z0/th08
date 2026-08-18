@@ -938,3 +938,7 @@ address,name,size,status,match_percent,unit,evidence
 0x004270C0,th08::FUN_004270c0,217,matching,100.00,effect-random-direction-init-004270c0,python3 scripts/compare-function.py effect-random-direction-init-004270c0 --json
 0x004271A0,th08::FUN_004271a0,166,matching,100.00,effect-eased-vector-update-004271a0,python3 scripts/compare-function.py effect-eased-vector-update-004271a0 --json
 0x00428720,th08::FUN_00428720,28,matching,100.00,effect-vm-script-ended-00428720,python3 scripts/compare-function.py effect-vm-script-ended-00428720 --json
+0x0042A820,th08::Enemy::FUN_0042a820,115,matching,100.00,enemy-cleanup-linked-vms-0042a820,python3 scripts/compare-function.py enemy-cleanup-linked-vms-0042a820 --json
+0x0042BC50,th08::FUN_0042bc50,50,matching,100.00,enemy-helper-0042bc50,python3 scripts/compare-function.py enemy-helper-0042bc50 --json
+0x0042DFB0,th08::EclManager::GetTimelineCount,20,matching,100.00,ecl-manager-get-timeline-count,python3 scripts/compare-function.py ecl-manager-get-timeline-count --json
+0x0042DFD0,th08::EclManager::GetTimeline,25,matching,100.00,ecl-manager-get-timeline,python3 scripts/compare-function.py ecl-manager-get-timeline --json

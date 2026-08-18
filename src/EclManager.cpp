@@ -74,4 +74,16 @@ ZunResult EclManager::CallEclSub(EnemyEclContext *context, i16 subId)
     return ZUN_SUCCESS;
 }
 
+// FUNCTION: th08 0x42dfb0
+i32 EclManager::GetTimelineCount()
+{
+    return this->eclFile->unknown06;
+}
+
+// FUNCTION: th08 0x42dfd0
+u32 EclManager::GetTimeline(i32 index)
+{
+    return this->eclFile->timelineOffsets[index];
+}
+
 } // namespace th08
