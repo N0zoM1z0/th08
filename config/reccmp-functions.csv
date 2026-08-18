@@ -163,7 +163,7 @@ th08::ZunTimer::FUN_0040e350,0x40e350,function
 th08::ZunTimer::operator<=,0x40e390,function
 th08::FUN_0040e3b0,0x40e3b0,function
 th08::FUN_0040e610,0x40e610,function
-FUN_0040e780,0x40e780,function
+th08::FUN_0040e780,0x40e780,function
 th08::AnmVm::FUN_0040eb50,0x40eb50,function
 th08::ZunTimer::FUN_0040ebc0,0x40ebc0,function
 th08::AnmVm::SetZRotation,0x40ec00,function

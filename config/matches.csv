@@ -901,3 +901,4 @@ address,name,size,status,match_percent,unit,evidence
 0x0040C910,th08::FUN_0040c910,1790,matching,100.00,player-bomb-callback-0040c910,python3 scripts/compare-function.py player-bomb-callback-0040c910 --json
 0x0040D430,th08::FUN_0040d430,1303,matching,100.00,player-bomb-callback-0040d430,python3 scripts/compare-function.py player-bomb-callback-0040d430 --json
 0x0040D970,th08::FUN_0040d970,1390,matching,100.00,player-bomb-callback-0040d970,python3 scripts/compare-function.py player-bomb-callback-0040d970 --json
+0x0040E780,th08::FUN_0040e780,968,matching,100.00,player-bomb-callback-0040e780,python3 scripts/compare-function.py player-bomb-callback-0040e780 --json

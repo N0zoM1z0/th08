@@ -922,6 +922,92 @@ void __fastcall FUN_0040e610(Player *player)
     }
 }
 
+// FUNCTION: th08 0x40e780
+#pragma var_order(bomb, workItem, angle)
+void __fastcall FUN_0040e780(Player *player)
+{
+    PlayerBombState *bomb;
+    PlayerBombWorkItem *workItem;
+    f32 angle;
+
+    bomb = &player->bombState;
+    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
+    {
+        FUN_0040be30(player, 0,
+                     "\x96\x82\x96\x43\x81\x75\x83\x74\x83\x40\x83\x43\x83\x69\x83\x8B\x83\x58\x83\x70\x81\x5B\x83\x4E\x81\x76",
+                     350, 380, 1);
+        angle = -ZUN_PI;
+        workItem = &bomb->workItems[0];
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(19), 0);
+        workItem->anchor = player->position;
+        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[0], 35);
+        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[1], 36);
+        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[2], 37);
+        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[3], 38);
+        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[4], 39);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK7, 16, 120, 60, 120, 21);
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.2f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.2f;
+        bomb->secondaryWorkIndex = 0;
+    }
+
+    if (bomb->timer.FUN_0040ebc0(10))
+    {
+#pragma var_order(effect, position1, position0, scale1, scale0)
+        AnmVm *effect = g_EffectManager.FUN_00425870(
+            53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkIndex % 4 + 4, 1, -1);
+        if (bomb->secondaryWorkIndex & 1)
+            g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 92);
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 32;
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 0;
+
+        Float3 position0;
+        Float3 position1;
+        position0.x = 0.0f;
+        position0.y = 0.0f;
+        position0.z = 0.0f;
+        position1.x = 128.0f;
+        position1.y = 0.0f;
+        position1.z = 0.0f;
+        effect->FUN_0040ec30(30, 4, &position0, &position1);
+
+        Float2 scale0;
+        Float2 scale1;
+        scale0.x = 32.0f;
+        scale0.y = 0.0f;
+        scale1.x = 64.0f;
+        scale1.y = 0.0f;
+        effect->FUN_0040eda0(30, 1, &scale0, &scale1);
+        effect->FUN_0040ed50(30, 3, 255, 0);
+        effect->FUN_0040eca0(30, 0, -1, 0xffff0000);
+        g_AnmManager->ExecuteScript(effect);
+        bomb->secondaryWorkIndex++;
+        g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(17), player->position.x);
+    }
+
+    if (player->bombState.timer.FUN_0040d3d0() && ((i32)player->bombState.timer % 4) != 0)
+    {
+#pragma var_order(slot, position)
+        Float3 position;
+        PlayerUnkStruct0x40 *slot;
+        position = player->position;
+        position.x = 192.0f;
+        position.y /= 2.0f;
+        player->FUN_0044de60(&position, 384.0f, position.y * 2.0f, 6, 0);
+
+        position = player->position;
+        position.y /= 2.0f;
+        slot = player->FUN_0044dfa0(&position, 128.0f, position.y * 2.0f, 12, 0);
+        slot->mode = 1;
+        position.x = 192.0f;
+        slot = player->FUN_0044dfa0(&position, 384.0f, position.y * 2.0f, 7, 0);
+        slot->mode = 1;
+    }
+
+    g_AnmManager->ExecuteScriptArray(&bomb->workItems[0].vms[0], 5);
+}
+
 // FUNCTION: th08 0x40f550
 void __fastcall FUN_0040f550(Player *player)
 {
