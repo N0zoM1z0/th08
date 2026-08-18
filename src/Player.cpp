@@ -1008,10 +1008,261 @@ void __fastcall FUN_0040e780(Player *player)
     g_AnmManager->ExecuteScriptArray(&bomb->workItems[0].vms[0], 5);
 }
 
+// FUNCTION: th08 0x40ee10
+#pragma var_order(bomb, workItem)
+void __fastcall FUN_0040ee10(Player *player)
+{
+    PlayerBombState *bomb;
+    PlayerBombWorkItem *workItem;
+
+    bomb = &player->bombState;
+    workItem = &bomb->workItems[0];
+    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
+    {
+        FUN_0040be30(player, 1,
+                     "\x8D\x67\x95\x84\x81\x75\x95\x73\x96\xE9\x8F\xE9\x83\x8C\x83\x62\x83\x68\x81\x76",
+                     240, 290, 0);
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        workItem[0].anchor = player->optionStates[0].target;
+        workItem[1].anchor = player->optionStates[1].target;
+        workItem[2].anchor = player->optionStates[2].target;
+        workItem[3].anchor = player->optionStates[3].target;
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
+        bomb->secondaryWorkIndex = 0;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.0f;
+    }
+
+    if (bomb->timer < 60)
+    {
+#pragma var_order(interp, position)
+        f32 interp = (f32)bomb->timer / 60.0f;
+        interp *= interp;
+        Float3 position;
+        position = player->position;
+        position.x -= 32.0f;
+        player->optionStates[0].target =
+            (position - workItem[0].anchor) * interp + workItem[0].anchor;
+        position.x += 32.0f;
+        position.y -= 32.0f;
+        player->optionStates[1].target =
+            (position - workItem[1].anchor) * interp + workItem[1].anchor;
+        position.y += 64.0f;
+        player->optionStates[2].target =
+            (position - workItem[2].anchor) * interp + workItem[2].anchor;
+        position.x += 32.0f;
+        position.y -= 32.0f;
+        player->optionStates[3].target =
+            (position - workItem[3].anchor) * interp + workItem[3].anchor;
+    }
+    else
+    {
+        if (bomb->timer.FUN_0040e350(60))
+        {
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 2.0f;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 2.0f;
+            player->optionStates[0].vm.SetInterrupt(2);
+            player->optionStates[1].vm.SetInterrupt(2);
+            player->optionStates[2].vm.SetInterrupt(2);
+            player->optionStates[3].vm.SetInterrupt(2);
+        }
+
+        Float3 position;
+        position = player->position;
+        position.x -= 32.0f;
+        player->optionStates[0].target = position;
+        position.x += 32.0f;
+        position.y -= 32.0f;
+        player->optionStates[1].target = position;
+        position.y += 64.0f;
+        player->optionStates[2].target = position;
+        position.x += 32.0f;
+        position.y -= 32.0f;
+        player->optionStates[3].target = position;
+
+        workItem->cancelSlot = player->FUN_0044df00(&player->position, 96.0f, 0.0f, 0, 6);
+
+        if (bomb->timer.FUN_0040ebc0(10))
+        {
+#pragma var_order(effect, position1, position0, scale1, scale0)
+            AnmVm *effect = g_EffectManager.FUN_00425870(
+                53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkIndex % 4 + 4, 1, -1);
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 32;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 4.0f;
+
+            Float3 position0;
+            Float3 position1;
+            position0.x = 0.0f;
+            position0.y = 0.0f;
+            position0.z = 0.0f;
+            position1.x = 192.0f;
+            position1.y = g_Rng.GetRandomF32InRange(128.0f);
+            position1.z = 0.0f;
+            effect->FUN_0040ec30(30, 4, &position0, &position1);
+
+            Float2 scale0;
+            Float2 scale1;
+            scale0.x = 64.0f;
+            scale0.y = 0.0f;
+            scale1.x = 64.0f;
+            scale1.y = 0.0f;
+            effect->FUN_0040eda0(30, 1, &scale0, &scale1);
+            effect->FUN_0040ed50(30, 3, 255, 0);
+            effect->FUN_0040eca0(30, 0, -1, 0xffff0000);
+            bomb->secondaryWorkIndex++;
+            g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(17), player->position.x);
+            g_AnmManager->ExecuteScript(effect);
+        }
+
+        if (player->timerE2AC4 >= 5)
+        {
+            workItem->cancelSlot = player->FUN_0044de60(&player->position, 96.0f, 800.0f, 6, 0);
+            workItem->cancelSlot = player->FUN_0044de60(&player->position, 800.0f, 96.0f, 6, 0);
+        }
+
+        if (bomb->timer.FUN_0040e350(239))
+        {
+            player->optionStates[0].state2C8 = 1;
+            player->optionStates[0].timer = 0;
+            player->optionStates[1].state2C8 = 1;
+            player->optionStates[1].timer = 0;
+            player->optionStates[2].state2C8 = 1;
+            player->optionStates[2].timer = 0;
+            player->optionStates[3].state2C8 = 1;
+            player->optionStates[3].timer = 0;
+        }
+    }
+}
+
 // FUNCTION: th08 0x40f550
 void __fastcall FUN_0040f550(Player *player)
 {
     FUN_0040bc60(player, 0x80d02020);
+}
+
+// FUNCTION: th08 0x40f570
+#pragma var_order(bomb, workItem)
+void __fastcall FUN_0040f570(Player *player)
+{
+    PlayerBombState *bomb;
+    PlayerBombWorkItem *workItem;
+
+    bomb = &player->bombState;
+    workItem = &bomb->workItems[0];
+    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
+    {
+        FUN_0040be30(player, 1,
+                     "\x8D\x67\x96\x82\x81\x75\x83\x58\x83\x4A\x81\x5B\x83\x8C\x83\x62\x83\x67\x83\x66\x83\x72\x83\x8B\x81\x76",
+                     280, 320, 1);
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        workItem[0].anchor = player->optionStates[0].target;
+        workItem[1].anchor = player->optionStates[1].target;
+        workItem[2].anchor = player->optionStates[2].target;
+        workItem[3].anchor = player->optionStates[3].target;
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
+        bomb->secondaryWorkIndex = 0;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.0f;
+    }
+
+    if (bomb->timer < 60)
+    {
+#pragma var_order(interp, position)
+        f32 interp = (f32)bomb->timer / 60.0f;
+        interp *= interp;
+        Float3 position;
+        position = player->position;
+        position.x -= 32.0f;
+        player->optionStates[0].target =
+            (position - workItem[0].anchor) * interp + workItem[0].anchor;
+        position.x += 32.0f;
+        position.y -= 32.0f;
+        player->optionStates[1].target =
+            (position - workItem[1].anchor) * interp + workItem[1].anchor;
+        position.y += 64.0f;
+        player->optionStates[2].target =
+            (position - workItem[2].anchor) * interp + workItem[2].anchor;
+        position.x += 32.0f;
+        position.y -= 32.0f;
+        player->optionStates[3].target =
+            (position - workItem[3].anchor) * interp + workItem[3].anchor;
+    }
+    else
+    {
+        if (bomb->timer.FUN_0040e350(60))
+        {
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 3.0f;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 3.0f;
+            player->optionStates[0].vm.SetInterrupt(2);
+            player->optionStates[1].vm.SetInterrupt(2);
+            player->optionStates[2].vm.SetInterrupt(2);
+            player->optionStates[3].vm.SetInterrupt(2);
+        }
+
+        Float3 position;
+        workItem->cancelSlot = player->FUN_0044df00(&player->position, 96.0f, 0.0f, 0, 6);
+        position = player->position;
+        position.x -= 32.0f;
+        player->optionStates[0].target = position;
+        position.x += 32.0f;
+        position.y -= 32.0f;
+        player->optionStates[1].target = position;
+        position.y += 64.0f;
+        player->optionStates[2].target = position;
+        position.x += 32.0f;
+        position.y -= 32.0f;
+        player->optionStates[3].target = position;
+
+        if (bomb->timer.FUN_0040ebc0(10))
+        {
+#pragma var_order(effect, position1, position0, scale1, scale0)
+            AnmVm *effect = g_EffectManager.FUN_00425870(
+                53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkIndex % 4 + 4, 1, -1);
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 32;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 4.0f;
+
+            Float3 position0;
+            Float3 position1;
+            position0.x = 0.0f;
+            position0.y = 0.0f;
+            position0.z = 0.0f;
+            position1.x = 192.0f;
+            position1.y = g_Rng.GetRandomF32InRange(128.0f);
+            position1.z = 0.0f;
+            effect->FUN_0040ec30(30, 4, &position0, &position1);
+
+            Float2 scale0;
+            Float2 scale1;
+            scale0.x = 64.0f;
+            scale0.y = 0.0f;
+            scale1.x = 128.0f;
+            scale1.y = 0.0f;
+            effect->FUN_0040eda0(30, 1, &scale0, &scale1);
+            effect->FUN_0040ed50(30, 3, 255, 0);
+            effect->FUN_0040eca0(30, 0, -1, 0xffff0000);
+            bomb->secondaryWorkIndex++;
+            g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(17), player->position.x);
+            g_AnmManager->ExecuteScript(effect);
+        }
+
+        if (player->timerE2AC4 >= 5)
+        {
+            workItem->cancelSlot = player->FUN_0044de60(&player->position, 96.0f, 800.0f, 6, 0);
+            workItem->cancelSlot = player->FUN_0044de60(&player->position, 800.0f, 96.0f, 6, 0);
+        }
+
+        if (bomb->timer.FUN_0040e350(279))
+        {
+            player->optionStates[0].state2C8 = 1;
+            player->optionStates[0].timer = 0;
+            player->optionStates[1].state2C8 = 1;
+            player->optionStates[1].timer = 0;
+            player->optionStates[2].state2C8 = 1;
+            player->optionStates[2].timer = 0;
+            player->optionStates[3].state2C8 = 1;
+            player->optionStates[3].timer = 0;
+        }
+    }
 }
 
 // FUNCTION: th08 0x40fcb0
