@@ -320,3 +320,7 @@ An empty user-written constructor can still compile to a large target when its c
 ## Distinguish authored body size from COFF aux extent
 
 A VC7 function symbol's aux `total_size` may include an immediately associated jump table. If the target's authored mapping stops at the first table byte, keep authored progress at that body size and set the canonical unit's `compare_size` through the table. `AsciiManager::OnDrawLowPrioImpl` is 0x6A2 authored bytes but 0x6B6 compared bytes because of its five-entry table.
+
+## Correct runtime helpers out of authored inventory
+
+Do not force standard math/runtime helpers into authored reconstruction merely because an imported seed marked them `function`. If the target name/provenance and body establish a CRT/x87 helper (`_sinf`, `_cosf`, `_sqrtf`, `fabs`, `fmodf`, `fsincos` in TH08), change the inventory type to `library`. This is a classification correction, not an exact-match claim; revisit the helper only after authored work is complete. Never use inline asm just to mimic such runtime stubs.

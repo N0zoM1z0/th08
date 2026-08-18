@@ -298,11 +298,11 @@ th08::FUN_00424130,0x424130,0x40,__fastcall,,void,EclOperands::EnemyOverlay*,Ecl
 th08::FUN_00424170,0x424170,0x68,__fastcall,,void,EclOperands::EnemyOverlay*,EclExInstruction*
 th08::FUN_004241e0,0x4241e0,0x310,__fastcall,,void,EclOperands::EnemyOverlay*,EclExInstruction*
 th08::FUN_004244f0,0x4244f0,0x1ee,__fastcall,,void,EclOperands::EnemyOverlay*,EclExInstruction*
-FUN_004246e0,0x4246e0,0x44,unknown,,u8
+th08::FUN_004246e0,0x4246e0,0x44,__fastcall,,void,EclOperands::EnemyOverlay*,EclExInstruction*
 th08::FUN_00424730,0x424730,0xe4,__fastcall,,void,EclOperands::EnemyOverlay*,EclExInstruction*
 th08::FUN_00424820,0x424820,0xe4,__fastcall,,void,EclOperands::EnemyOverlay*,EclExInstruction*
 th08::FUN_00424910,0x424910,0xe4,__fastcall,,void,EclOperands::EnemyOverlay*,EclExInstruction*
-FUN_00424a00,0x424a00,0x1c,unknown,,u8
+th08::FUN_00424a00,0x424a00,0x1c,__fastcall,,void,EclOperands::EnemyOverlay*,EclExInstruction*
 th08::EclExIns::ReisenFreezeBullets,0x424a20,0x218,__fastcall,,void,EclOperands::EnemyOverlay*,EclExInstruction*
 th08::FUN_00424c40,0x424c40,0x1bb,__fastcall,,void,EclOperands::EnemyOverlay*,EclExInstruction*
 th08::FUN_00424e00,0x424e00,0x1f,__fastcall,,void,EclOperands::EnemyOverlay*,EclExInstruction*

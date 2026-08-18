@@ -538,6 +538,21 @@ void __fastcall FUN_004244f0(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 
 
 
+
+
+// FUNCTION: th08 0x4246e0
+void __fastcall FUN_004246e0(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    ScreenEffect::RegisterChain(static_cast<ScreenEffectType>(3), 30, 5, 0x40ffffff, 0, 21);
+    ScreenEffect::RegisterChain(static_cast<ScreenEffectType>(7), 4, 120, 190, 60, 21);
+}
+
+// FUNCTION: th08 0x424a00
+void __fastcall FUN_00424a00(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    g_ScreenEffectCounter = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(instruction) + 0x10);
+}
+
 // FUNCTION: th08 0x424730
 #pragma var_order(position, outerSize, innerSize, origin, enemy, instruction)
 void __fastcall FUN_00424730(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)

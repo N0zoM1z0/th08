@@ -17,7 +17,7 @@ th08::AsciiManager::AddString,0x402920,function
 th08::AsciiManager::AddFormatText,0x402a30,function
 th08::AsciiManager::AddFormatText2,0x402a80,function
 th08::AsciiManager::OnDrawLowPrioImpl,0x402b20,function
-fabs,0x4031e0,function
+fabs,0x4031e0,library
 th08::AsciiManager::CreateScorePopup,0x403200,function
 th08::AsciiManager::CreatePlayerPointPopup,0x403330,function
 th08::AsciiManager::CreateTimePopup,0x403460,function
@@ -86,10 +86,10 @@ th08::AsciiManager::SetSpaceWidth,0x407180,function
 th08::Background::Background,0x4071a0,function
 th08::BackgroundUnkVectors::BackgroundUnkVectors,0x4073b0,function
 th08::Background::OnUpdate,0x407400,function
-cosf,0x408d40,function
+cosf,0x408d40,library
 th08::Background::FUN_00408d60,0x408d60,function
 FUN_00408fc0,0x408fc0,function
-sinf,0x409060,function
+sinf,0x409060,library
 th08::Float3::operator+,0x409080,function
 th08::Float3::operator-,0x4090d0,function
 th08::Float3::operator*,0x409120,function
@@ -103,7 +103,7 @@ th08::Background::CutChain,0x409ca0,function
 th08::Background::LoadStageData,0x409ce0,function
 th08::Background::FUN_00409f40,0x409f40,function
 th08::Background::RenderObjects,0x40a1b0,function
-sqrtf,0x40b440,function
+sqrtf,0x40b440,library
 th08::Float3::Float3,0x40b460,function
 th08::Float3::operator/=,0x40b470,function
 D3DXVec3Length,0x40b4c0,function
@@ -239,7 +239,7 @@ th08::EclManager::RunEcl,0x4184b0,function
 th08::EclRunLowProposal::FindLinkedChildTail0041EFC0,0x41efc0,function
 th08::EclOperands::TargetEnemyHelpersOverlay::HasParentChain,0x41f000,function
 th08::Spellcard::SetStoredVector,0x41f040,function
-fmodf,0x41f090,function
+fmodf,0x41f090,library
 th08::Spellcard::FUN_0041f0b0,0x41f0b0,function
 th08::Spellcard::FUN_0041f0e0,0x41f0e0,function
 th08::EclRunLowProposal::SpawnChildStandard0041F110,0x41f110,function
@@ -299,11 +299,11 @@ th08::FUN_00424130,0x424130,function
 th08::FUN_00424170,0x424170,function
 th08::FUN_004241e0,0x4241e0,function
 th08::FUN_004244f0,0x4244f0,function
-FUN_004246e0,0x4246e0,function
+th08::FUN_004246e0,0x4246e0,function
 th08::FUN_00424730,0x424730,function
 th08::FUN_00424820,0x424820,function
 th08::FUN_00424910,0x424910,function
-FUN_00424a00,0x424a00,function
+th08::FUN_00424a00,0x424a00,function
 th08::EclExIns::ReisenFreezeBullets,0x424a20,function
 th08::FUN_00424c40,0x424c40,function
 th08::FUN_00424e00,0x424e00,function
@@ -464,7 +464,7 @@ th08::BulletManager::AddedCallback,0x433070,function
 th08::ItemManager::Initialize,0x4337f0,function
 th08::BulletManager::DeletedCallback,0x433820,function
 th08::BulletManager::CutChain,0x433850,function
-fsincos,0x433880,function
+fsincos,0x433880,library
 th08::IsResourceReloadEnabled,0x4338b0,function
 th08::IsBulletManagerAnmReleaseRequired,0x4338c0,function
 th08::Gui::OnUpdate,0x4338ca,function

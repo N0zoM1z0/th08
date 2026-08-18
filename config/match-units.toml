@@ -109848,3 +109848,35 @@ offset = 0x6B2
 type = "DIR32"
 symbol = "$L69557"
 target = 0x00403107
+
+[[units]]
+name = "ecl-ex-screen-effects-004246e0"
+object = "build/probes/EclExIns.obj"
+symbol = "?FUN_004246e0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+target_address = 0x004246E0
+size = 0x44
+
+[[units.relocations]]
+offset = 0x22
+type = "REL32"
+symbol = "?RegisterChain@ScreenEffect@th08@@SIPAU12@W4ScreenEffectType@2@HHHHH@Z"
+target = 0x0045B8B0
+
+[[units.relocations]]
+offset = 0x3C
+type = "REL32"
+symbol = "?RegisterChain@ScreenEffect@th08@@SIPAU12@W4ScreenEffectType@2@HHHHH@Z"
+target = 0x0045B8B0
+
+[[units]]
+name = "ecl-ex-publish-screen-counter-00424a00"
+object = "build/probes/EclExIns.obj"
+symbol = "?FUN_00424a00@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+target_address = 0x00424A00
+size = 0x1C
+
+[[units.relocations]]
+offset = 0x14
+type = "DIR32"
+symbol = "?g_ScreenEffectCounter@th08@@3HA"
+target = 0x018B8A2C
