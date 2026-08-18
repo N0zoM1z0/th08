@@ -836,3 +836,6 @@ th08::GameManager::RandomizeAntiTamper
 th08::EnemyManager::OnDrawImpl
 th08::FUN_0042eb10
 th08::AnmManager::DrawVertices
+D3DXMatrixIdentity
+th08::AppendLogFormat
+th08::ResultScreen::LogScoreDataToFile

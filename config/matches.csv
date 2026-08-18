@@ -837,3 +837,6 @@ address,name,size,status,match_percent,unit,evidence
 0x0042E140,th08::EnemyManager::OnDrawImpl,2504,matching,100.00,enemy-manager-ondraw-impl,python3 scripts/compare-function.py enemy-manager-ondraw-impl --json
 0x0042EB10,th08::FUN_0042eb10,114,matching,100.00,enemy-angle-interpolate,python3 scripts/compare-function.py enemy-angle-interpolate --json
 0x00464C60,th08::AnmManager::DrawVertices,367,matching,100.00,anm-manager-draw-vertices,python3 scripts/compare-function.py anm-manager-draw-vertices --json
+0x00406940,D3DXMatrixIdentity,173,matching,100.00,d3dx-matrix-identity,python3 scripts/compare-function.py d3dx-matrix-identity --json
+0x00454269,th08::AppendLogFormat,47,matching,100.00,result-screen-append-log-format,python3 scripts/compare-function.py result-screen-append-log-format --json
+0x00454298,th08::ResultScreen::LogScoreDataToFile,2497,matching,100.00,result-screen-log-score-data,python3 scripts/compare-function.py result-screen-log-score-data --json

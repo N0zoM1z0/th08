@@ -91,6 +91,8 @@ DIFFABLE_STATIC_ASSIGN(const char *, g_ResultsStageList[]) = {
     "Stage 5", "Stage 6-Eirin", "Stage 6-Kaguya", "Extra Stage",     "Last Word",
 };
 
+DIFFABLE_STATIC_ASSIGN(const char *, g_ResultsDifficultyList[]) = {"Easy", "Normal", "Hard", "Lunatic", "Extra"};
+
 DIFFABLE_STATIC_ASSIGN(float, g_SpellcardsWeightList[]) = {1.0f, 1.5f, 1.5f, 2.0f, 2.5f};
 
 DIFFABLE_STATIC_ASSIGN(const char *, g_RightAlignedDifficultyList[]) = {
@@ -306,9 +308,227 @@ void ResultScreen::WriteScore(ResultScreen *result)
 #undef COPY
 }
 
-// STUB: th08 0x454298
+// FUNCTION: th08 0x454269
+char *AppendLogFormat(char *buffer, const char *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    vsprintf(buffer, format, args);
+    va_end(args);
+    return buffer + strlen(buffer);
+}
+
+// FUNCTION: th08 0x454298
+#pragma var_order(i, entryIndex, outputCursor, spellName, unused, scoreNode, character, outputStart, timeInfo, currentTime, timeBuffer, block, difficultyHeaderWritten, validCount, spellNames, k, blockCursor, catk, catk2, m, resultScreen)
 void ResultScreen::LogScoreDataToFile(ResultScreen *resultScreen)
 {
+    i32 unused;
+    char *outputCursor;
+    ScoreListNode *scoreNode;
+    i32 character;
+    char *outputStart;
+    tm *timeInfo;
+    time_t currentTime;
+    char timeBuffer[128];
+    char *block;
+    i32 difficultyHeaderWritten;
+    i32 validCount;
+    const char *spellNames[SPELLCARD_COUNT_SPELLCARDS];
+    i32 k;
+    char *blockCursor;
+    Catk *catk;
+    Catk *catk2;
+    i32 m;
+    i32 i;
+    i32 entryIndex;
+    char spellName[64];
+
+    unused = 0;
+    outputCursor = (char *)g_ZunMemory.Alloc(0x640000);
+    outputStart = outputCursor;
+    memset(outputCursor, 0, 0x640000);
+
+    outputCursor = AppendLogFormat(outputCursor,
+        "\x23\x20\x93\x8C\x95\xFB\x89\x69\x96\xE9\x8F\xB4\x81\x40\x81\x60\x20\x49\x6D\x70\x65\x72\x69\x73\x68\x61\x62\x6C\x65\x20\x4E\x69\x67\x68\x74\x2E\x20\x76\x65\x72\x20\x31\x2E\x30\x30\x64\x20\x8B\x4C\x98\x5E\x83\x65\x83\x4C\x83\x58\x83\x67\x94\xC5\x5C\x72\x5C\x6E\x23\x20\x5C\x72\x5C\x6E");
+    outputCursor = AppendLogFormat(outputCursor,
+        "\x23\x20\x82\xB1\x82\xCC\x83\x74\x83\x40\x83\x43\x83\x8B\x82\xCD\x81\x41\x8C\xBB\x8D\xDD\x82\xCC\x8B\x4C\x98\x5E\x82\xF0\x83\x5F\x83\x93\x83\x76\x82\xB5\x82\xBD\x95\xA8\x82\xC5\x82\xB7\x81\x42\x5C\x72\x5C\x6E");
+    outputCursor = AppendLogFormat(outputCursor,
+        "\x23\x20\x82\xB1\x82\xCC\x83\x74\x83\x40\x83\x43\x83\x8B\x82\xCC\x93\xE0\x97\x65\x82\xF0\x95\xCF\x8D\x58\x82\xB5\x82\xC4\x82\xE0\x83\x51\x81\x5B\x83\x80\x82\xC9\x82\xCD\x94\xBD\x89\x66\x82\xB3\x82\xEA\x82\xDC\x82\xB9\x82\xF1\x81\x42\x5C\x72\x5C\x6E");
+    outputCursor = AppendLogFormat(outputCursor,
+        "\x23\x20\x82\xB1\x82\xCC\x83\x74\x83\x40\x83\x43\x83\x8B\x82\xCD\x8E\xA9\x97\x52\x82\xC9\x97\x98\x97\x70\x82\xB5\x82\xBD\x82\xE8\x93\x5D\x8D\xDA\x82\xB5\x82\xBD\x82\xE8\x81\x41\x95\xCA\x82\xCC\x83\x74\x83\x48\x81\x5B\x83\x7D\x83\x62\x83\x67\x82\xC9\x82\xB5\x82\xC4\x82\xE0\x8D\x5C\x82\xA2\x82\xDC\x82\xB7\x82\xF1\x81\x42\x5C\x72\x5C\x6E");
+
+    time(&currentTime);
+    timeInfo = localtime(&currentTime);
+    strftime(timeBuffer, sizeof(timeBuffer), "%y/%m/%d %H:%M:%S", timeInfo);
+    outputCursor = AppendLogFormat(outputCursor,
+        "\x23\x20\x81\x40\x81\x40\x81\x40\x81\x40\x81\x40\x81\x40\x81\x40\x81\x40\x81\x40\x81\x40\x81\x40\x81\x40\x20\x20\x20\x54\x69\x6D\x65\x2D\x73\x74\x61\x6D\x70\x3A\x20\x3C\x25\x73\x3E\x5C\x72\x5C\x6E", timeBuffer);
+    outputCursor = AppendLogFormat(outputCursor, "\r\n\r\n");
+    outputCursor = AppendLogFormat(outputCursor, "Version: %.2f\r\n", 0.01f);
+    outputCursor = AppendLogFormat(outputCursor, "\r\n");
+
+    blockCursor = (char *)g_ZunMemory.Alloc(0x10004);
+    block = blockCursor;
+    catk = g_GameManager.catkData;
+    for (i = 0; i < SPELLCARD_COUNT_SPELLCARDS; ++i, ++catk)
+    {
+        if (catk->base.magic == CATK_MAGIC)
+            spellNames[i] = catk->spellName;
+        else
+            spellNames[i] = TH_RESULT_SPELLCARD_NOT_UNLOCKED;
+    }
+
+    for (i = 0; i < MAX_DIFFICULTIES; ++i)
+    {
+        difficultyHeaderWritten = 0;
+        for (character = 0; character < SHOT_ALL; ++character)
+        {
+            scoreNode = resultScreen->scores[i][character].next;
+            entryIndex = 0;
+            validCount = 0;
+            blockCursor = block;
+            while (scoreNode != NULL)
+            {
+                if (scoreNode->data->base.magic == HSCR_MAGIC)
+                {
+                    blockCursor = AppendLogFormat(blockCursor, "  No.%d \r\n", entryIndex + 1);
+                    blockCursor = AppendLogFormat(blockCursor, "    \x93\xBE\x93\x5F\x20\x20%d%d\r\n",
+                                                  scoreNode->data->score, scoreNode->data->numRetries);
+                    blockCursor = AppendLogFormat(blockCursor, "    \x96\xBC\x91\x4F\x20\x20%s\r\n", scoreNode->data->name);
+                    if (scoreNode->data->stage == 'c')
+                        blockCursor = AppendLogFormat(blockCursor, "    \x83\x58\x83\x65\x81\x5B\x83\x57\x20\x20\x20\x20\x20\x20\x20\x20\x20" "All Clear\r\n");
+                    else
+                        blockCursor = AppendLogFormat(blockCursor, "    \x83\x58\x83\x65\x81\x5B\x83\x57\x20\x20\x20\x20\x20\x20\x20\x20\x20%s\r\n",
+                                                      g_ResultsStageList[scoreNode->data->stage]);
+                    blockCursor = AppendLogFormat(blockCursor, "    \x93\xFA\x95\x74\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20%s\r\n",
+                                                  scoreNode->data->date);
+                    blockCursor = AppendLogFormat(blockCursor, "    \x8F\x88\x97\x9D\x97\x8E\x82\xBF\x97\xA6\x20\x20\x20\x20\x20\x20\x20%.2f\x81\x93\r\n",
+                                                  scoreNode->data->lagPercentage);
+                    blockCursor = AppendLogFormat(blockCursor, "    \x83\x76\x83\x8C\x83\x43\x8E\x9E\x8A\xD4\x20\x20\x20\x20\x20\x20%.2d\x95\xAA%.2d\x95\x62\r\n",
+                                                  scoreNode->data->playtimeFrames / 3600,
+                                                  (scoreNode->data->playtimeFrames / 60) % 60);
+                    blockCursor = AppendLogFormat(blockCursor, "    \x8F\x89\x8A\xFA\x83\x76\x83\x8C\x83\x43\x83\x84\x81\x5B\x90\x94\x20\x20\x20\x20\x20%d\x90\x6C\r\n",
+                                                  scoreNode->data->cfg.lifeCount + 1);
+                    blockCursor = AppendLogFormat(blockCursor, "    \x93\xBE\x93\x5F\x83\x41\x83\x43\x83\x65\x83\x80\x90\x94\x20\x20\x20%5d\x8C\xC2\r\n",
+                                                  scoreNode->data->numPointItemsCollected);
+                    blockCursor = AppendLogFormat(blockCursor, "    \x8D\x8F\x95\x84\x90\x94\x20\x20\x20\x20\x20\x20\x20\x20\x20%6d\x8C\xC2\r\n",
+                                                  scoreNode->data->numTimeOrbsCollected);
+                    blockCursor = AppendLogFormat(blockCursor, "    \x83\x7E\x83\x58\x89\xF1\x90\x94\x20\x20\x20\x20\x20\x20\x20\x20\x20%3d\x89\xF1\r\n",
+                                                  scoreNode->data->numDeaths);
+                    blockCursor = AppendLogFormat(blockCursor, "    \x83\x7B\x83\x80\x89\xF1\x90\x94\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20%3d\x89\xF1\r\n",
+                                                  scoreNode->data->numBombsUsed);
+                    blockCursor = AppendLogFormat(blockCursor, "    \x83\x89\x83\x58\x83\x67\x83\x58\x83\x79\x83\x8B\x89\xF1\x90\x94\x20\x20\x20%3d\x89\xF1\r\n",
+                                                  scoreNode->data->numLastSpells);
+                    blockCursor = AppendLogFormat(blockCursor, "    \x83\x7C\x81\x5B\x83\x59\x89\xF1\x90\x94\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20%3d\x89\xF1\r\n",
+                                                  scoreNode->data->numPauses);
+                    blockCursor = AppendLogFormat(blockCursor, "    \x83\x52\x83\x93\x83\x65\x83\x42\x83\x6A\x83\x85\x81\x5B\x89\xF1\x90\x94\x20%3d\x89\xF1\r\n",
+                                                  scoreNode->data->numRetries);
+                    blockCursor = AppendLogFormat(blockCursor, "    \x90\x6C\x8A\xD4\x97\xA6\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20%3.2f%%\r\n",
+                                                  (f32)scoreNode->data->humanityRate / 100.0f);
+                    blockCursor = AppendLogFormat(blockCursor,
+                        "    \x8E\xE6\x93\xBE\x83\x58\x83\x79\x83\x8B\x83\x4A\x81\x5B\x83\x68\x88\xEA\x97\x97\x20\x28\x91\x8D\x8E\xE6\x93\xBE\x89\xF1\x90\x94\x2F\x91\x8D\x91\x98\x8B\xF6\x89\xF1\x90\x94\x29\x5C\x72\x5C\x6E");
+
+                    for (k = 0; k < SPELLCARD_COUNT_SPELLCARDS; ++k)
+                    {
+                        if (scoreNode->data->spellCounters[k] != 0)
+                        {
+                            memset(spellName, ' ', sizeof(spellName));
+                            spellName[48] = spellName[49] = 0;
+                            memcpy(spellName, spellNames[k], strlen(spellNames[k]));
+                            blockCursor = AppendLogFormat(blockCursor, "      No.%.3d %s (%d/%d)\r\n", k + 1, spellName,
+                                g_GameManager.catkData[k].inGameHistory.captures[SHOT_ALL],
+                                g_GameManager.catkData[k].inGameHistory.attempts[SHOT_ALL]);
+                        }
+                    }
+                    ++validCount;
+                }
+                scoreNode = scoreNode->next;
+                ++entryIndex;
+                if (entryIndex >= 10)
+                    break;
+            }
+
+            if (validCount != 0)
+            {
+                if (difficultyHeaderWritten == 0)
+                {
+                    outputCursor = AppendLogFormat(outputCursor, "# ======================================== \r\n");
+                    outputCursor = AppendLogFormat(outputCursor, "\x93\xEF\x88\xD5\x93\x78\x20%s\r\n", g_ResultsDifficultyList[i]);
+                    difficultyHeaderWritten = 1;
+                }
+                outputCursor = AppendLogFormat(outputCursor, "# ---------------------------------------- \r\n");
+                outputCursor = AppendLogFormat(outputCursor, "\x8E\x67\x97\x70\x83\x4C\x83\x83\x83\x89\x20%s\r\n", g_CharacterList[character]);
+                outputCursor = AppendLogFormat(outputCursor, "%s\r\n", block);
+            }
+        }
+    }
+
+    catk2 = g_GameManager.catkData;
+    outputCursor = AppendLogFormat(outputCursor, "# ======================================== \r\n");
+    outputCursor = AppendLogFormat(outputCursor, "\x83\x58\x83\x79\x83\x8B\x83\x4A\x81\x5B\x83\x68\x88\xEA\x97\x97\x20\x96\x7B\x95\xD2\x81\x40\x97\xFB\x8F\x4B\r\n");
+    for (i = 0; i < SPELLCARD_COUNT_SPELLCARDS; ++i, ++catk2)
+    {
+        if (catk2->base.magic == CATK_MAGIC && catk2->WasAttemptedWithShot(SHOT_ALL))
+        {
+            memset(spellName, ' ', sizeof(spellName));
+            spellName[48] = spellName[49] = 0;
+            memcpy(spellName, catk2->spellName, strlen(catk2->spellName));
+            outputCursor = AppendLogFormat(outputCursor, "No.%.3d %s %3d/%3d %3d/%3d  (%s)\r\n", i + 1, spellName,
+                catk2->inGameHistory.captures[SHOT_ALL], catk2->inGameHistory.attempts[SHOT_ALL],
+                catk2->spellPracticeHistory.captures[SHOT_ALL], catk2->spellPracticeHistory.attempts[SHOT_ALL],
+                g_ResultsDifficultyList[catk2->difficulty]);
+        }
+    }
+
+    g_Supervisor.UpdatePlayTime();
+    outputCursor = AppendLogFormat(outputCursor, "# ======================================== \r\n");
+    outputCursor = AppendLogFormat(outputCursor, TH_RESULT_TOTAL_TIME "\r\n",
+                                   g_GameManager.plst.totalHours, g_GameManager.plst.totalMinutes, g_GameManager.plst.totalSeconds);
+    outputCursor = AppendLogFormat(outputCursor, TH_RESULT_TOTAL_PLAYTIME "\r\n",
+                                   g_GameManager.plst.gameHours, g_GameManager.plst.gameMinutes, g_GameManager.plst.gameSeconds);
+    outputCursor = AppendLogFormat(outputCursor, TH_RESULT_PLAYCOUNT_INFO "\r\n");
+
+    for (m = 0; m < SHOT_ALL; ++m)
+    {
+        outputCursor = AppendLogFormat(outputCursor, "%s %6d %6d %6d %6d %6d %6d\r\n", g_CharacterList[m],
+            g_GameManager.plst.playDataByDifficulty[EASY].attemptsPerCharacter[m],
+            g_GameManager.plst.playDataByDifficulty[NORMAL].attemptsPerCharacter[m],
+            g_GameManager.plst.playDataByDifficulty[HARD].attemptsPerCharacter[m],
+            g_GameManager.plst.playDataByDifficulty[LUNATIC].attemptsPerCharacter[m],
+            g_GameManager.plst.playDataByDifficulty[EXTRA].attemptsPerCharacter[m],
+            g_GameManager.plst.playDataTotals.attemptsPerCharacter[m]);
+    }
+    outputCursor = AppendLogFormat(outputCursor, "%s %6d %6d %6d %6d %6d %6d\r\n", g_CharacterList[SHOT_ALL],
+        g_GameManager.plst.playDataByDifficulty[EASY].attemptsTotal,
+        g_GameManager.plst.playDataByDifficulty[NORMAL].attemptsTotal,
+        g_GameManager.plst.playDataByDifficulty[HARD].attemptsTotal,
+        g_GameManager.plst.playDataByDifficulty[LUNATIC].attemptsTotal,
+        g_GameManager.plst.playDataByDifficulty[EXTRA].attemptsTotal,
+        g_GameManager.plst.playDataTotals.attemptsTotal);
+    outputCursor = AppendLogFormat(outputCursor, TH_RESULT_CLEAR_COUNT "\r\n",
+        g_GameManager.plst.playDataByDifficulty[EASY].clears,
+        g_GameManager.plst.playDataByDifficulty[NORMAL].clears,
+        g_GameManager.plst.playDataByDifficulty[HARD].clears,
+        g_GameManager.plst.playDataByDifficulty[LUNATIC].clears,
+        g_GameManager.plst.playDataByDifficulty[EXTRA].clears,
+        g_GameManager.plst.playDataTotals.clears);
+    outputCursor = AppendLogFormat(outputCursor, TH_RESULT_CONTINUE_COUNT "\r\n",
+        g_GameManager.plst.playDataByDifficulty[EASY].continues,
+        g_GameManager.plst.playDataByDifficulty[NORMAL].continues,
+        g_GameManager.plst.playDataByDifficulty[HARD].continues,
+        g_GameManager.plst.playDataByDifficulty[LUNATIC].continues,
+        g_GameManager.plst.playDataByDifficulty[EXTRA].continues,
+        g_GameManager.plst.playDataByDifficulty[MAX_DIFFICULTIES].continues);
+    outputCursor = AppendLogFormat(outputCursor, TH_RESULT_PRACTICE_COUNT "\r\n",
+        g_GameManager.plst.playDataByDifficulty[EASY].practices,
+        g_GameManager.plst.playDataByDifficulty[NORMAL].practices,
+        g_GameManager.plst.playDataByDifficulty[HARD].practices,
+        g_GameManager.plst.playDataByDifficulty[LUNATIC].practices,
+        g_GameManager.plst.playDataByDifficulty[EXTRA].practices,
+        g_GameManager.plst.playDataTotals.practices);
+
+    g_ZunMemory.Free(block);
+    FileSystem::WriteDataToFile("score.txt", outputStart, strlen(outputStart));
+    g_ZunMemory.Free(outputStart);
 }
 
 i32 ResultScreen::LinkScoreEx(Hscr *out, i32 difficulty, i32 character)

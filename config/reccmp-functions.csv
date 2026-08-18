@@ -848,7 +848,7 @@ th08::ReplayManager::IsDemo,0x453cc0,function
 th08::ResultScreen::GetStageName,0x453cd1,function
 th08::ResultScreen::GetCharacterName,0x453cfa,function
 th08::ResultScreen::WriteScore,0x453d0d,function
-sprintf,0x454269,function
+th08::AppendLogFormat,0x454269,function
 th08::ResultScreen::LogScoreDataToFile,0x454298,function
 th08::ResultScreen::LinkScoreEx,0x454c59,function
 th08::ResultScreen::FreeScore,0x454c87,function
