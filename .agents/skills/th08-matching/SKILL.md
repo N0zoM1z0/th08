@@ -302,3 +302,13 @@ When several absolute globals differ by an already-attested type size, test an a
 Do not infer callback parameters from the functions that publish the callback address. A stored function pointer may target a no-argument callback even when the publisher itself is fastcall with ECX/EDX inputs. Use the callback target prologue and actual indirect call sites; update relocation symbol spelling when ABI recovery changes the source declaration.
 
 Non-trivial local arrays are compiler structure, not just storage. If the target calls VC7's vector-constructor iterator with element size/count/ctor, express the local as a real C++ array of that element type and keep its lexical lifetime. Also retain target-proven dead locals instead of deleting them as cleanup.
+
+## Stack order versus constructor order
+
+`#pragma var_order` controls VC7 local stack homes but does not require declarations to follow that same order. For multiple non-trivial locals, recover two separate facts from the target: physical slots and constructor call chronology. The ECL EX laser-hitbox trio constructs `origin -> outer -> inner -> position` while the stack is ordered nearest-EBP as `position, outer, inner, origin`; a matching pragma plus semantic declaration order reproduces both facts.
+
+## Positive body gates
+
+When a target tests a mask and then skips a large region with one forward branch, write the source as a positive wrapper around the body. Replacing it with an equivalent reject-and-`continue` commonly generates `jcc + short jmp` and changes the function by two bytes. This pattern repeats in ECL EX bullet callbacks at `0x00424A20`, `0x00424C40`, and `0x00424E50`.
+
+For floating ternaries, recover comparison polarity and expression operand ownership separately. `constant + local` can be required even when `local +/- constant` is algebraically identical, because VC7 chooses different x87 load/add/sub forms.

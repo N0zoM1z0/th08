@@ -5,6 +5,10 @@
 #include "ScreenEffect.hpp"
 #include "AnmManager.hpp"
 #include "BulletManager.hpp"
+#include "Player.hpp"
+#include "Spellcard.hpp"
+#include "ItemManager.hpp"
+#include "Background.hpp"
 
 namespace th08
 {
@@ -19,6 +23,12 @@ struct EclExInstruction
     u16 operandFlags;
     u8 operands[1];
 };
+
+namespace EclExIns
+{
+void __fastcall ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
+void __fastcall MokouResurrection(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
+}
 
 DIFFABLE_EXTERN(AnmLoaded *, g_AsciiManagerDemoAnm0577EB4);
 extern i32 g_EclCallbackPublishedEnemyField56;
@@ -443,6 +453,509 @@ void __fastcall FUN_004241e0(EclOperands::EnemyOverlay *enemy, EclExInstruction 
                 AddNormalizeAngle(*reinterpret_cast<f32 *>(bullet + 0xd74), ZUN_PI);
         }
     }
+}
+
+
+
+
+// FUNCTION: th08 0x4244f0
+#pragma var_order(count, groupId, firstChild, delta, targetAngle, cursor, enemy, instruction)
+void __fastcall FUN_004244f0(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    i32 count;
+    i32 groupId;
+    EclOperands::EnemyOverlay *firstChild;
+    f32 delta;
+    f32 targetAngle;
+    EclOperands::EnemyOverlay *cursor;
+
+    groupId = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+        *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x60);
+    cursor = *reinterpret_cast<EclOperands::EnemyOverlay **>(enemy->bytes + 0x2da4);
+    if (cursor == NULL)
+        return;
+
+    count = 0;
+    while (*reinterpret_cast<EclOperands::EnemyOverlay **>(cursor->bytes + 0x8) != NULL)
+    {
+        cursor = *reinterpret_cast<EclOperands::EnemyOverlay **>(cursor->bytes + 0x8);
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+                *reinterpret_cast<EnemyEclContext **>(cursor->bytes + 0x2ca0)) + 0x60) == groupId)
+        {
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+                *reinterpret_cast<EnemyEclContext **>(cursor->bytes + 0x2ca0)) + 0x5c) = count;
+            if (count == 0)
+                firstChild = cursor;
+            ++count;
+        }
+    }
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+        *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x2c) = 0;
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+            *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x30) != count)
+    {
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x30) != 0)
+        {
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x2c) = 1;
+        }
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+            *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x30) = count;
+    }
+
+    groupId = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+        *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x5c);
+    ++*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+        *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x34);
+    if (groupId != 0)
+    {
+        targetAngle = AddNormalizeAngle(
+            *reinterpret_cast<f32 *>(firstChild->bytes + 0x2d9c),
+            static_cast<f32>(groupId) * 6.2831854820251465f / static_cast<f32>(count));
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+                *reinterpret_cast<EnemyEclContext **>(firstChild->bytes + 0x2ca0)) + 0x34) !=
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x34))
+        {
+            targetAngle = AddNormalizeAngle(
+                targetAngle, *reinterpret_cast<f32 *>(firstChild->bytes + 0x2da0));
+        }
+
+        delta = AddNormalizeAngle(*reinterpret_cast<f32 *>(enemy->bytes + 0x2d9c),
+                                  *reinterpret_cast<f32 *>(enemy->bytes + 0x2da0));
+        delta = targetAngle - delta;
+        if (fabsf(delta) > ZUN_PI)
+        {
+            delta = delta > 0.0f ? -6.2831854820251465f + delta : 6.2831854820251465f + delta;
+        }
+        delta *= 0.02f;
+        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d9c) =
+            AddNormalizeAngle(*reinterpret_cast<f32 *>(enemy->bytes + 0x2d9c), delta);
+    }
+}
+
+
+
+// FUNCTION: th08 0x424730
+#pragma var_order(position, outerSize, innerSize, origin, enemy, instruction)
+void __fastcall FUN_00424730(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    Float3 origin(
+        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d88) -
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
+                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x38),
+        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d8c) -
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
+                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x3c),
+        0.0f);
+    Float3 outerSize(590.0f, 160.0f, 0.0f);
+    Float3 innerSize(590.0f, 128.0f, 0.0f);
+    Float3 position(outerSize.x / 2.0f + origin.x, origin.y, 0.0f);
+
+    if (reinterpret_cast<ZunTimer *>(enemy->bytes + 0x2e14)->FUN_0040ebc0(12))
+    {
+        g_Player.CalcLaserHitbox(&position, &innerSize, &origin,
+                                 *reinterpret_cast<f32 *>(enemy->bytes + 0x14), 1);
+    }
+    g_Player.CalcLaserHitbox(&position, &outerSize, &origin,
+                             *reinterpret_cast<f32 *>(enemy->bytes + 0x14), 0);
+}
+
+
+
+// FUNCTION: th08 0x424820
+#pragma var_order(position, outerSize, innerSize, origin, enemy, instruction)
+void __fastcall FUN_00424820(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    Float3 origin(
+        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d34) -
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
+                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x38),
+        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d38) -
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
+                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x3c),
+        0.0f);
+    Float3 outerSize(590.0f, 240.0f, 0.0f);
+    Float3 innerSize(590.0f, 192.0f, 0.0f);
+    Float3 position(outerSize.x / 2.0f + origin.x, origin.y, 0.0f);
+
+    if (reinterpret_cast<ZunTimer *>(enemy->bytes + 0x2e14)->FUN_0040ebc0(12))
+    {
+        g_Player.CalcLaserHitbox(&position, &innerSize, &origin,
+                                 *reinterpret_cast<f32 *>(enemy->bytes + 0x14), 1);
+    }
+    g_Player.CalcLaserHitbox(&position, &outerSize, &origin,
+                             *reinterpret_cast<f32 *>(enemy->bytes + 0x14), 0);
+}
+
+
+// FUNCTION: th08 0x424910
+#pragma var_order(position, outerSize, innerSize, origin, enemy, instruction)
+void __fastcall FUN_00424910(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    Float3 origin(
+        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d88) -
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
+                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x38),
+        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d8c) -
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
+                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x3c),
+        0.0f);
+    Float3 outerSize(590.0f, 288.0f, 0.0f);
+    Float3 innerSize(590.0f, 224.0f, 0.0f);
+    Float3 position(outerSize.x / 2.0f + origin.x, origin.y, 0.0f);
+
+    if (reinterpret_cast<ZunTimer *>(enemy->bytes + 0x2e14)->FUN_0040ebc0(12))
+    {
+        g_Player.CalcLaserHitbox(&position, &innerSize, &origin,
+                                 *reinterpret_cast<f32 *>(enemy->bytes + 0x14), 1);
+    }
+    g_Player.CalcLaserHitbox(&position, &outerSize, &origin,
+                             *reinterpret_cast<f32 *>(enemy->bytes + 0x14), 0);
+}
+
+// FUNCTION: th08 0x424a20
+#pragma var_order(i, bullet, setCursor, clearCursor, enemy, instruction)
+void __fastcall EclExIns::ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    i32 i;
+    u8 *bullet = reinterpret_cast<u8 *>(&g_BulletManager) + 0x1a880;
+    EclOperands::EnemyOverlay *setCursor;
+    EclOperands::EnemyOverlay *clearCursor;
+
+    for (i = 0; i < 0x600; ++i, bullet += 0x10b8)
+    {
+        if (*reinterpret_cast<u16 *>(bullet + 0xdb8) == 0)
+            continue;
+        if ((*reinterpret_cast<u32 *>(bullet + 0xdb0) &
+             *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(
+                 *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x18)) != 0)
+        {
+        if (*reinterpret_cast<i16 *>(bullet + 0x1fc) == 1)
+        {
+            *reinterpret_cast<i16 *>(bullet + 0x1fc) = 0;
+            *reinterpret_cast<u32 *>(bullet + 0x1f8) =
+                (*reinterpret_cast<u32 *>(bullet + 0x1f8) & 0xffffffcfU) | 0x10U;
+            g_BulletManager.bulletAnm->SetSprite(
+                reinterpret_cast<AnmVm *>(bullet),
+                *reinterpret_cast<i16 *>(bullet + 0x214) + 16);
+            *reinterpret_cast<u8 *>(bullet + 0x10b4) = 1;
+            reinterpret_cast<Float3 *>(bullet + 0xd50)->FromAngleMagnitude(
+                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
+                    *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x38),
+                g_EclGameTimeScale *
+                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
+                        *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x3c));
+        }
+        else
+        {
+            *reinterpret_cast<i16 *>(bullet + 0x1fc) = 1;
+            *reinterpret_cast<u32 *>(bullet + 0x1f8) &= 0xffffffcfU;
+            g_BulletManager.bulletAnm->SetSprite(
+                reinterpret_cast<AnmVm *>(bullet),
+                *reinterpret_cast<i16 *>(bullet + 0x214) - 16);
+            *reinterpret_cast<u8 *>(bullet + 0x10b4) = 0;
+            reinterpret_cast<Float3 *>(bullet + 0xd50)->FromAngleMagnitude(
+                *reinterpret_cast<f32 *>(bullet + 0xd74),
+                g_EclGameTimeScale * *reinterpret_cast<f32 *>(bullet + 0xd68));
+        }
+        }
+    }
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+            *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x1c) == 0)
+    {
+        setCursor = enemy;
+        while (*reinterpret_cast<EclOperands::EnemyOverlay **>(setCursor->bytes + 0x8) != NULL)
+        {
+            setCursor = *reinterpret_cast<EclOperands::EnemyOverlay **>(setCursor->bytes + 0x8);
+            *reinterpret_cast<u32 *>(setCursor->bytes + 0x3328) |= 0x80U;
+        }
+        g_EclExBarrierRenderState.vm0.SetInterrupt(2);
+        g_EclExBarrierRenderState.vm1.SetInterrupt(2);
+    }
+    else
+    {
+        clearCursor = enemy;
+        while (*reinterpret_cast<EclOperands::EnemyOverlay **>(clearCursor->bytes + 0x8) != NULL)
+        {
+            clearCursor = *reinterpret_cast<EclOperands::EnemyOverlay **>(clearCursor->bytes + 0x8);
+            *reinterpret_cast<u32 *>(clearCursor->bytes + 0x3328) &= ~0x80U;
+        }
+        g_EclExBarrierRenderState.vm0.SetInterrupt(1);
+        g_EclExBarrierRenderState.vm1.SetInterrupt(1);
+    }
+}
+
+// FUNCTION: th08 0x424c40
+#pragma var_order(i, bullet, enemy, instruction)
+void __fastcall FUN_00424c40(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    i32 i;
+    u8 *bullet = reinterpret_cast<u8 *>(&g_BulletManager) + 0x1a880;
+
+    for (i = 0; i < 0x600; ++i, bullet += 0x10b8)
+    {
+        if (*reinterpret_cast<u16 *>(bullet + 0xdb8) == 0)
+            continue;
+        if ((*reinterpret_cast<u32 *>(bullet + 0xdb0) &
+             *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(
+                 *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x18)) != 0)
+        {
+        if (*reinterpret_cast<i16 *>(bullet + 0x1fc) == 1)
+        {
+            *reinterpret_cast<i16 *>(bullet + 0x1fc) = 0;
+            *reinterpret_cast<u32 *>(bullet + 0x1f8) =
+                (*reinterpret_cast<u32 *>(bullet + 0x1f8) & 0xffffffcfU) | 0x10U;
+            *reinterpret_cast<u8 *>(bullet + 0x1f3) = 0;
+            g_BulletManager.bulletAnm->SetSprite(
+                reinterpret_cast<AnmVm *>(bullet),
+                *reinterpret_cast<i16 *>(bullet + 0x214) + 16);
+            *reinterpret_cast<u8 *>(bullet + 0x10b4) = 1;
+            reinterpret_cast<Float3 *>(bullet + 0xd50)->FromAngleMagnitude(
+                *reinterpret_cast<f32 *>(bullet + 0xd74),
+                g_EclGameTimeScale *
+                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
+                        *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x3c));
+        }
+        else if (*reinterpret_cast<i16 *>(bullet + 0x1fc) == 0)
+        {
+            *reinterpret_cast<i16 *>(bullet + 0x1fc) = 2;
+            *reinterpret_cast<u8 *>(bullet + 0x1f3) = 0;
+            reinterpret_cast<AnmVm *>(bullet)->FUN_0040ed50(15, 0, 0, 255);
+        }
+        else
+        {
+            *reinterpret_cast<i16 *>(bullet + 0x1fc) = 1;
+            *reinterpret_cast<u32 *>(bullet + 0x1f8) &= 0xffffffcfU;
+            g_BulletManager.bulletAnm->SetSprite(
+                reinterpret_cast<AnmVm *>(bullet),
+                *reinterpret_cast<i16 *>(bullet + 0x214) - 16);
+            *reinterpret_cast<u8 *>(bullet + 0x10b4) = 0;
+            reinterpret_cast<Float3 *>(bullet + 0xd50)->FromAngleMagnitude(
+                *reinterpret_cast<f32 *>(bullet + 0xd74),
+                g_EclGameTimeScale * *reinterpret_cast<f32 *>(bullet + 0xd68));
+        }
+        }
+    }
+}
+
+
+// FUNCTION: th08 0x424e00
+void __fastcall FUN_00424e00(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    g_Background.FUN_00409160(0xffc03030U);
+}
+
+// FUNCTION: th08 0x424e20
+void __fastcall FUN_00424e20(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    ScreenEffect::RegisterChain(static_cast<ScreenEffectType>(7), 16, 20, 20, 20, 21);
+}
+
+
+
+// FUNCTION: th08 0x424e50
+#pragma var_order(i, bullet, child, delta, enemy, instruction)
+void __fastcall FUN_00424e50(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    i32 i;
+    u8 *bullet = reinterpret_cast<u8 *>(&g_BulletManager) + 0x1a880;
+    EclOperands::EnemyOverlay *child;
+    Float3 delta;
+
+    for (i = 0; i < 0x600; ++i, bullet += 0x10b8)
+    {
+        if (*reinterpret_cast<u16 *>(bullet + 0xdb8) == 0)
+            continue;
+        if ((*reinterpret_cast<u32 *>(bullet + 0xdb0) & 0x100000U) != 0)
+        {
+        child = *reinterpret_cast<EclOperands::EnemyOverlay **>(enemy->bytes + 0x8);
+        while (child != NULL)
+        {
+            if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+                    *reinterpret_cast<EnemyEclContext **>(child->bytes + 0x2ca0)) + 0x60) == 0)
+            {
+                delta = *reinterpret_cast<Float3 *>(bullet + 0xd44) -
+                        *reinterpret_cast<Float3 *>(child->bytes + 0x2d34);
+                if (D3DXVec3LengthSq(reinterpret_cast<D3DXVECTOR3 *>(&delta)) < 4096.0f)
+                {
+                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+                        *reinterpret_cast<EnemyEclContext **>(child->bytes + 0x2ca0)) + 0x60) = 60;
+                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+                        *reinterpret_cast<EnemyEclContext **>(child->bytes + 0x2ca0)) + 0x34) =
+                        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+                            *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x34);
+                }
+            }
+            child = *reinterpret_cast<EclOperands::EnemyOverlay **>(child->bytes + 0x8);
+        }
+        }
+    }
+}
+
+// FUNCTION: th08 0x424f60
+void __fastcall FUN_00424f60(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    ScreenEffect::RegisterChain(static_cast<ScreenEffectType>(3), 180, 1, -1, 0, 21);
+}
+
+// FUNCTION: th08 0x424f90
+#pragma var_order(value, scale, enemy, instruction)
+void __fastcall FUN_00424f90(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    i32 value;
+    f32 scale;
+
+    value = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(instruction) + 0x10);
+    scale = 1.0f / static_cast<f32>(value);
+    g_EclGameTimeScale = scale;
+}
+
+// FUNCTION: th08 0x424fc0
+void __fastcall FUN_00424fc0(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+        *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x18) =
+        static_cast<i32>(g_GameManager.currentSpellCardNumber);
+}
+
+// FUNCTION: th08 0x424ff0
+void __fastcall EclExIns::MokouResurrection(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    g_Spellcard.CutInEnemyNoPortrait(
+        "\x81\x75\x83\x8a\x83\x55\x83\x8c\x83\x4e\x83\x56\x83\x87\x83\x93\x81\x76",
+        reinterpret_cast<i32>(enemy));
+}
+
+// FUNCTION: th08 0x425020
+void __fastcall FUN_00425020(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    g_Spellcard.spellcard_fun_00416160();
+}
+
+// FUNCTION: th08 0x425040
+void __fastcall FUN_00425040(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+        *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x18) =
+        g_GameManager.globals->spellcardsCaptured;
+}
+
+// FUNCTION: th08 0x425070
+void __fastcall FUN_00425070(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    g_EclScriptedGlobalUpdateFreeze =
+        *reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(instruction) + 0x10);
+    if (g_EclScriptedGlobalUpdateFreeze)
+    {
+        g_EclExBarrierRenderState.vm0.SetInterrupt(2);
+        g_EclExBarrierRenderState.vm1.SetInterrupt(2);
+    }
+    else
+    {
+        g_EclExBarrierRenderState.vm0.SetInterrupt(1);
+        g_EclExBarrierRenderState.vm1.SetInterrupt(1);
+    }
+}
+
+
+// FUNCTION: th08 0x4250d0
+#pragma var_order(i, bullet, unusedVector, enemy, instruction)
+void __fastcall FUN_004250d0(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    i32 i;
+    u8 *bullet = reinterpret_cast<u8 *>(&g_BulletManager) + 0x1a880;
+    Float3 unusedVector;
+
+    for (i = 0; i < 0x600; ++i, bullet += 0x10b8)
+    {
+        if (*reinterpret_cast<u16 *>(bullet + 0xdb8) == 0)
+            continue;
+        if ((*reinterpret_cast<u32 *>(bullet + 0xdb0) & 0x100000U) != 0)
+        {
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
+                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x38) =
+                *reinterpret_cast<f32 *>(bullet + 0xd74);
+            g_EnemyManager.SpawnEnemy2(
+                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+                    *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x60),
+                reinterpret_cast<D3DXVECTOR3 *>(bullet + 0xd44), 800, -2, 10,
+                reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+                    *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x18));
+            *reinterpret_cast<u32 *>(bullet + 0xdb0) &= ~0x100000U;
+        }
+    }
+}
+
+// FUNCTION: th08 0x4251b0
+#pragma var_order(i, bullet, enemy, instruction)
+void __fastcall FUN_004251b0(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    i32 i;
+    u8 *bullet;
+
+    g_EclGameTimeScale =
+        1.0f / static_cast<f32>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(instruction) + 0x10));
+    g_EclExBarrierRenderState.vm0.SetInterrupt(2);
+    g_EclExBarrierRenderState.vm1.SetInterrupt(2);
+
+    bullet = reinterpret_cast<u8 *>(&g_BulletManager) + 0x1a880;
+    for (i = 0; i < 0x600; ++i, bullet += 0x10b8)
+    {
+        if (*reinterpret_cast<u16 *>(bullet + 0xdb8) == 0)
+            continue;
+        *reinterpret_cast<Float3 *>(bullet + 0xd50) *= g_EclGameTimeScale;
+        *reinterpret_cast<i16 *>(bullet + 0x218) = *reinterpret_cast<i16 *>(bullet + 0x214);
+        if (*reinterpret_cast<i16 *>(bullet + 0x214) >= 96 &&
+            *reinterpret_cast<i16 *>(bullet + 0x214) <= 111)
+        {
+            g_BulletManager.bulletAnm->SetSprite(reinterpret_cast<AnmVm *>(bullet), 111);
+        }
+    }
+}
+
+// FUNCTION: th08 0x425290
+#pragma var_order(i, scale, bullet, enemy, instruction)
+void __fastcall FUN_00425290(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    i32 i;
+    f32 scale;
+    u8 *bullet = reinterpret_cast<u8 *>(&g_BulletManager) + 0x1a880;
+
+    scale = 1.0f / g_EclGameTimeScale;
+    for (i = 0; i < 0x600; ++i, bullet += 0x10b8)
+    {
+        if (*reinterpret_cast<u16 *>(bullet + 0xdb8) == 0)
+            continue;
+        *reinterpret_cast<Float3 *>(bullet + 0xd50) *= scale;
+        if (*reinterpret_cast<i16 *>(bullet + 0x214) >= 96 &&
+            *reinterpret_cast<i16 *>(bullet + 0x214) <= 111)
+        {
+            g_BulletManager.bulletAnm->SetSprite(
+                reinterpret_cast<AnmVm *>(bullet), *reinterpret_cast<i16 *>(bullet + 0x218));
+        }
+    }
+
+    g_EclGameTimeScale =
+        1.0f / static_cast<f32>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(instruction) + 0x10));
+    if (g_EclGameTimeScale < 1.0f)
+        g_EclGameTimeScaleFlags |= 0x20U;
+    g_EclGameTimeScale = 1.0f;
+    g_EclExBarrierRenderState.vm0.SetInterrupt(1);
+    g_EclExBarrierRenderState.vm1.SetInterrupt(1);
+}
+
+
+// FUNCTION: th08 0x425390
+void __fastcall FUN_00425390(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+{
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Player) + 0xfdc) != 0)
+        g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(enemy->bytes + 0x2d34), static_cast<ItemType>(3), 0);
+    else
+        g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(enemy->bytes + 0x2d34), static_cast<ItemType>(5), 0);
 }
 
 } // namespace th08

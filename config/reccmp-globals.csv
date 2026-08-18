@@ -225,3 +225,4 @@ th08::g_EclCallbackPublishedEnemyField56,0x4e3d24,global
 th08::g_EclExUpdateCallback,0x4ea28c,global
 th08::g_AsciiManagerDemoAnm0577EB4,0x577eb4,global
 th08::g_EclExBarrierRenderState,0x4e4b60,global
+th08::g_EclGameTimeScaleFlags,0x17ce8fc,global

@@ -37,3 +37,4 @@ _g_Player,                  0x017d5ef8
 _g_ScreenEffect,            0x018b8a30
 _g_SoundPlayer,             0x018b8a68
 _g_AnmManager,              0x018bdc90
+_g_EclGameTimeScaleFlags, 0x017ce8fc
