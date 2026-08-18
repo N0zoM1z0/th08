@@ -832,3 +832,5 @@ address,name,size,status,match_percent,unit,evidence
 0x00425E60,th08::EffectRandomSplashUpdate,63,matching,100.00,effect-random-splash-update,python3 scripts/compare-function.py effect-random-splash-update --json
 0x00425FE0,th08::EffectOrbitInit,75,matching,100.00,effect-orbit-init,python3 scripts/compare-function.py effect-orbit-init --json
 0x00426030,th08::EffectOrbitUpdate,588,matching,100.00,effect-orbit-update,python3 scripts/compare-function.py effect-orbit-update --json
+0x0044E160,th08::GameManager::RandomizeAntiTamper,255,matching,100.00,game-manager-randomize-antitamper,python3 scripts/compare-function.py game-manager-randomize-antitamper --json
+0x0044CBF0,th08::Player::FUN_0044cbf0,1373,matching,100.00,player-fun-0044cbf0,python3 scripts/compare-function.py player-fun-0044cbf0 --json

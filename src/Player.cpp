@@ -879,10 +879,10 @@ i32 Player::FUN_0044cbf0()
             }
             g_GameManager.DecreaseSubrank(1600);
         }
-        return 0;
     }
-
-    value = (f32)this->timer / 30.0f;
+    else
+    {
+        value = (f32)this->timer / 30.0f;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 3.0f * value + 1.0f;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 1.0f - 1.0f * value;
     *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x200) =
@@ -893,35 +893,34 @@ i32 Player::FUN_0044cbf0()
 
     if ((i32)this->timer >= 30)
     {
-        f32 spawnY;
-        f32 spawnX;
         this->playerState = PLAYER_STATE_SPAWNING;
-        spawnX = g_PlayerPlayfieldWidth / 2.0f;
-        this->position.operator float *()[0] = spawnX;
-        spawnY = g_ItemPlayfieldBottom - 64.0f;
-        this->position.operator float *()[1] = spawnY;
+        this->position.operator float *()[0] = g_PlayerPlayfieldWidth / 2.0f;
+        this->position.operator float *()[1] = g_ItemPlayfieldBottom - 64.0f;
         this->position.operator float *()[2] = 0.2f;
         this->timer = 0;
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 3.0f;
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 3.0f;
-        if ((g_TargetByte0164D0B1 >= 4 || *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) != 0) &&
-            (g_TargetByte0164D0B1 & 1) != 0)
-            (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0xC))
-                ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x10), 5);
-        else
+        if ((g_TargetByte0164D0B1 < 4 && *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) == 0) ||
+            (g_TargetByte0164D0B1 & 1) == 0)
             (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0xC))
                 ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x10), 0);
+        else
+            (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0xC))
+                ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x10), 5);
 
         if (g_GameManager.GetLives() <= 0)
         {
             g_PlayerNoLivesFlag = 1;
-            return 0;
         }
-        g_GameManager.AddLives(-1);
-        g_Gui.flags.lifeDisplayUpdateFrames = 2;
-        g_GameManager.SetBombCount((i32)*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 4));
-        g_Gui.flags.bombDisplayUpdateFrames = 2;
-        return 1;
+        else
+        {
+            g_GameManager.AddLives(-1);
+            g_Gui.flags.lifeDisplayUpdateFrames = 2;
+            g_GameManager.SetBombCount((i32)*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 4));
+            g_Gui.flags.bombDisplayUpdateFrames = 2;
+            return 1;
+        }
+    }
     }
     return 0;
 }

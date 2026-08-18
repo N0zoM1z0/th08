@@ -832,3 +832,4 @@ th08::EffectRandomSplashUpdate
 th08::EffectOrbitInit
 th08::Float3::operator-() const
 th08::EffectOrbitUpdate
+th08::GameManager::RandomizeAntiTamper

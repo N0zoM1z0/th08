@@ -441,3 +441,8 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 ### Byte-lane writes versus packed-color RMW
 
 - A source write to one byte of a packed color is not necessarily equivalent to the target's dword operation. `EffectOrbitUpdate @ 0x426030` keeps the existing RGB low 24 bits, converts the computed alpha with `__ftol2`, shifts it by 24, ORs it into the preserved dword, and writes the full color back. Spelling the operation as `effectBytes[0x1f3] = alpha` removed the target's ESI save/mask/or sequence and made the function 29 bytes short. Express the observed whole-word read-modify-write in ordinary C++ when the target proves it; an extra `(u8)` cast before the shift also inserts a target-absent `movzx`.
+
+### Compiler-owned RHS temporaries and shared return blocks
+
+- In `Player::FUN_0044cbf0`, explicit `spawnX` / `spawnY` source locals forced VC7 to reserve their stack slots before the member-function `this` home. The shipped code instead comes naturally from direct assignments such as `position.operator float *()[0] = expression`: because the conversion call would clobber the x87 value, VC7 creates compiler-owned RHS temporaries at the point of use. This restored `value=-0x4`, `this=-0x8`, an earlier ternary temp at `-0xC`, and the two late RHS temps at `-0x10/-0x14` without padding.
+- Repeated `return 0` statements are not source-shape neutral under VC7 `/Od`. Two explicit zero returns in `Player::FUN_0044cbf0` each emitted a local `xor eax,eax` before jumping to the epilogue. Spelling the same control flow as ordinary `if/else` arms let both paths jump to the single shared final zero-return block, removing exactly two bytes per path and matching the target extent.
