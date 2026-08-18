@@ -877,3 +877,7 @@ address,name,size,status,match_percent,unit,evidence
 0x0040E3B0,th08::FUN_0040e3b0,600,matching,100.00,player-bomb-callback-0040e3b0,python3 scripts/compare-function.py player-bomb-callback-0040e3b0 --json
 0x00413890,th08::FUN_00413890,241,matching,100.00,player-bomb-callback-00413890,python3 scripts/compare-function.py player-bomb-callback-00413890 --json
 0x004142C0,th08::FUN_004142c0,244,matching,100.00,player-bomb-callback-004142c0,python3 scripts/compare-function.py player-bomb-callback-004142c0 --json
+0x0040D100,th08::FUN_0040d100,521,matching,100.00,player-bomb-callback-0040d100,python3 scripts/compare-function.py player-bomb-callback-0040d100 --json
+0x004259E0,th08::EffectManager::FUN_004259e0,394,matching,100.00,effect-manager-fun-004259e0,python3 scripts/compare-function.py effect-manager-fun-004259e0 --json
+0x0040E350,th08::ZunTimer::FUN_0040e350,58,matching,100.00,zun-timer-just-reached,python3 scripts/compare-function.py zun-timer-just-reached --json
+0x00410C40,th08::FUN_00410c40,922,matching,100.00,player-bomb-callback-00410c40,python3 scripts/compare-function.py player-bomb-callback-00410c40 --json

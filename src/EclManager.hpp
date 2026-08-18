@@ -63,6 +63,7 @@ struct EffectManager
     AnmVm *SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
     AnmVm *SpawnEffectAngle(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 count, i32 color);
     AnmVm *FUN_00425870(i32 id, D3DXVECTOR3 *position, i32 slotIndex, i32 unused, i32 color);
+    AnmVm *FUN_004259e0(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 slotIndex, i32 unused, i32 color);
     i32 DrawUnkTypeEffects();
     i32 FUN_004281e0();
 };

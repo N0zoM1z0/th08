@@ -348,6 +348,7 @@ struct ZunTimer
     }
 
     ZunBool FUN_0040d3d0();
+    ZunBool FUN_0040e350(i32 value);
 
     operator float()
     {

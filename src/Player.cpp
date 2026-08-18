@@ -19,6 +19,8 @@
 namespace th08
 {
 
+DIFFABLE_EXTERN(AnmLoaded *, g_AsciiManagerDemoAnm0577EB4);
+
 // FUNCTION: th08 0x40bc60
 #pragma var_order(sourceColor, mixedColor)
 void __fastcall FUN_0040bc60(Player *player, D3DCOLOR color)
@@ -47,6 +49,12 @@ void __fastcall FUN_0040bc60(Player *player, D3DCOLOR color)
     g_AnmManager->SetMixColorDefault();
     g_Background.FUN_00409160(mixedColor.d3dColor);
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Background) + 0x646C) = 1;
+}
+
+// FUNCTION: th08 0x40e350
+ZunBool ZunTimer::FUN_0040e350(i32 value)
+{
+    return this->current != this->previous && this->current == value;
 }
 
 // FUNCTION: th08 0x40bf00
@@ -138,6 +146,62 @@ void __fastcall FUN_0040d010(Player *player)
         vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
         vm->pos.z = 0.0f;
         g_AnmManager->DrawNoRotation(vm);
+    }
+}
+
+// FUNCTION: th08 0x40d100
+#pragma var_order(bomb, effect, i)
+void __fastcall FUN_0040d100(Player *player)
+{
+    PlayerBombState *bomb;
+    AnmVm *effect;
+    u32 i;
+
+    bomb = &player->bombState;
+    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
+    {
+        if (!g_GameManager.IsSpellPractice())
+            FUN_0040be30(player, -1,
+                         "\x81\x75\x83\x66\x83\x42\x83\x5D\x83\x8B\x83\x75\x83\x58\x83\x79\x83\x8B\x81\x76",
+                         120, 200, 0);
+        else
+            FUN_0040be30(player, -1,
+                         "\x81\x75\x83\x66\x83\x42\x83\x5D\x83\x8B\x83\x75\x83\x58\x83\x79\x83\x8B\x81\x76",
+                         40, 200, 0);
+
+        g_EffectManager.SpawnEffect(12, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, 0xff4040ff);
+        effect = g_EffectManager.FUN_00425870(50, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 4, 1,
+                                              0xff4040ff);
+        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x50) = 0;
+        if (!g_GameManager.IsSpellPractice())
+            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0xA4) = 90;
+        else
+            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0xA4) = 30;
+        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0xF8) = 5;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x238) = 8.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x244) = 128.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x23C) = 64.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x248) = 0.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x208) = 8.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x20C) = 64.0f;
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 64;
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x318) = 0;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 8.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 15.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 6.0f;
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.0f;
+
+        for (i = 0; i < 8; i++)
+        {
+            if (reinterpret_cast<Enemy **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i] != NULL)
+            {
+                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(
+                    reinterpret_cast<Enemy **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]) + 0x3324) &=
+                    ~0x40u;
+            }
+        }
     }
 }
 
@@ -349,6 +413,82 @@ void __fastcall FUN_00410ac0(Player *player)
         workItem->vms[0].pos.z = 0.0f;
         g_AnmManager->Draw2D(&workItem->vms[0]);
     }
+}
+
+// FUNCTION: th08 0x410c40
+#pragma var_order(bomb, workItem, angle)
+void __fastcall FUN_00410c40(Player *player)
+{
+    PlayerBombState *bomb;
+    PlayerBombWorkItem *workItem;
+    f32 angle;
+
+    bomb = &player->bombState;
+    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
+    {
+        PlayerUnkStruct0x40 *slot;
+
+        FUN_0040be30(player, 1,
+                     "\x8B\xAB\x95\x84\x81\x75\x8E\x6C\x8F\x64\x8C\x8B\x8A\x45\x81\x76",
+                     150, 200, 0);
+        angle = -ZUN_PI;
+        workItem = &bomb->workItems[0];
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        workItem->anchor = player->position;
+        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 40, 6);
+        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(slot) + 0x38) = 5;
+        Float3 velocity(ZUN_PI / 4.0f, 1.0f, 4.0f);
+        g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&workItem->anchor),
+                                     reinterpret_cast<D3DXVECTOR3 *>(&velocity), 4, 1, -1);
+    }
+
+    if (bomb->timer.FUN_0040e350(10))
+    {
+        PlayerUnkStruct0x40 *slot;
+        AnmVm *effect;
+
+        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 40, 6);
+        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(slot) + 0x38) = 5;
+        Float3 velocity(ZUN_PI * 3.0f / 8.0f, 1.0f, 4.0f);
+        effect = g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
+                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 5, 1, -1);
+        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 89);
+        bomb->workItems[1].anchor = player->position;
+    }
+
+    if (bomb->timer.FUN_0040e350(20))
+    {
+        PlayerUnkStruct0x40 *slot;
+        AnmVm *effect;
+
+        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 40, 6);
+        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(slot) + 0x38) = 5;
+        Float3 velocity(ZUN_PI / 2.0f, 1.0f, 4.0f);
+        effect = g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
+                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 6, 1, -1);
+        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 90);
+        bomb->workItems[2].anchor = player->position;
+    }
+
+    if (bomb->timer.FUN_0040e350(30))
+    {
+        PlayerUnkStruct0x40 *slot;
+        AnmVm *effect;
+
+        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 40, 6);
+        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(slot) + 0x38) = 5;
+        Float3 velocity(1.9634954929351807f, 1.0f, 4.0f);
+        effect = g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
+                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 7, 1, -1);
+        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 91);
+        bomb->workItems[3].anchor = player->position;
+    }
+
+    g_AnmManager->ExecuteScriptArray(&bomb->workItems[0].vms[0], 2);
 }
 
 // FUNCTION: th08 0x4113a0
