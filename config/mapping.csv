@@ -414,7 +414,7 @@ th08::Spellcard::FUN_0042DFF0,0x42dff0,0x16,__thiscall,,i32,Spellcard*
 FUN_0042e010,0x42e010,0x101,unknown,,u8
 th08::EnemyManager::OnDrawHighPrio,0x42e120,0x17,__fastcall,,ChainCallbackResult,EnemyManager*
 th08::EnemyManager::OnDrawImpl,0x42e140,0x9c8,__fastcall,,ChainCallbackResult,EnemyManager*,i32,i32
-FUN_0042eb10,0x42eb10,0x72,unknown,,u8,u8,u8,u8
+th08::FUN_0042eb10,0x42eb10,0x72,__stdcall,,f32,f32,f32,f32
 th08::EnemyManager::OnDrawLowPrio,0x42eb90,0x5c,__fastcall,,ChainCallbackResult,EnemyManager*
 th08::EnemyManager::AddedCallback,0x42ebf0,0x282,__thiscall,,u32,EnemyManager*
 th08::EnemyManager::DeletedCallback,0x42ee80,0xe1,__fastcall,,ZunResult,EnemyManager*
@@ -970,7 +970,7 @@ th08::AnmManager::DrawWithCallback,0x464400,0x6f,__thiscall,,ZunResult,AnmManage
 th08::AnmManager::Draw3D,0x464470,0x526,__thiscall,,ZunResult,AnmManager*,AnmVm*
 FUN_004649a0,0x4649a0,0x160,unknown,,u8,u8,u8,u8
 FUN_00464b00,0x464b00,0x160,unknown,,u8,u8,u8,u8
-FUN_00464c60,0x464c60,0x16f,unknown,,u8,u8,u8,u8
+th08::AnmManager::DrawVertices,0x464c60,0x16f,__thiscall,,ZunResult,AnmManager*,AnmVm*,VertexTex1DiffuseXyzrhw*,i32
 th08::AnmManager::FUN_00464dd0,0x464dd0,0xe1,__thiscall,,u8,AnmManager*,u8,u8
 th08::AnmManager::DrawTriangleFan,0x464ec0,0x1ab,__thiscall,,ZunResult,AnmManager*,AnmVm*,VertexDiffuseXyzrhw*,i32
 th08::AnmManager::AnmManager,0x465070,0x1d2,__thiscall,,AnmManager*,AnmManager*

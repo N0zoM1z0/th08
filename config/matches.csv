@@ -834,3 +834,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00426030,th08::EffectOrbitUpdate,588,matching,100.00,effect-orbit-update,python3 scripts/compare-function.py effect-orbit-update --json
 0x0044E160,th08::GameManager::RandomizeAntiTamper,255,matching,100.00,game-manager-randomize-antitamper,python3 scripts/compare-function.py game-manager-randomize-antitamper --json
 0x0044CBF0,th08::Player::FUN_0044cbf0,1373,matching,100.00,player-fun-0044cbf0,python3 scripts/compare-function.py player-fun-0044cbf0 --json
+0x0042E140,th08::EnemyManager::OnDrawImpl,2504,matching,100.00,enemy-manager-ondraw-impl,python3 scripts/compare-function.py enemy-manager-ondraw-impl --json
+0x0042EB10,th08::FUN_0042eb10,114,matching,100.00,enemy-angle-interpolate,python3 scripts/compare-function.py enemy-angle-interpolate --json
+0x00464C60,th08::AnmManager::DrawVertices,367,matching,100.00,anm-manager-draw-vertices,python3 scripts/compare-function.py anm-manager-draw-vertices --json

@@ -415,7 +415,7 @@ th08::Spellcard::FUN_0042DFF0,0x42dff0,function
 th08::Enemy::FUN_0042e010,0x42e010,function
 th08::EnemyManager::OnDrawHighPrio,0x42e120,function
 th08::EnemyManager::OnDrawImpl,0x42e140,function
-FUN_0042eb10,0x42eb10,function
+th08::FUN_0042eb10,0x42eb10,function
 th08::EnemyManager::OnDrawLowPrio,0x42eb90,function
 th08::EnemyManager::AddedCallback,0x42ebf0,function
 th08::EnemyManager::DeletedCallback,0x42ee80,function

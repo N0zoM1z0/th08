@@ -486,15 +486,272 @@ ChainCallbackResult EnemyManager::OnUpdate()
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
+// FUNCTION: th08 0x42eb10
+#pragma var_order(wrapDelta, shortDelta)
+f32 __stdcall FUN_0042eb10(f32 angle1, f32 angle2, f32 factor)
+{
+    f32 shortDelta;
+    f32 wrapDelta;
+
+    if (angle1 < angle2)
+    {
+        shortDelta = angle2 - angle1;
+        wrapDelta = angle1 + ZUN_2PI - angle2;
+    }
+    else
+    {
+        shortDelta = angle1 - angle2;
+        wrapDelta = angle2 + ZUN_2PI - angle1;
+        angle1 = angle2;
+    }
+
+    if (shortDelta < wrapDelta)
+        return shortDelta * factor + angle1;
+    return wrapDelta * factor + angle1;
+}
+
 // FUNCTION: th08 0x42e120
 ChainCallbackResult EnemyManager::OnDrawHighPrio(EnemyManager *enemyManager)
 {
     return enemyManager->OnDrawImpl(0, 2);
 }
 
-// STUB: th08 0x42e140
+// FUNCTION: th08 0x42e140
+#pragma var_order(savedScaleY, savedScaleX, i, savedColor, vm, k, enemy, halfWidth, halfCenter, vertexCount, sinAngle, uv, previousAngle, vertices, uvStep, angle, cosAngle, uvSpan, this, drawGroup)
 ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chainPriority)
 {
+    f32 savedScaleY;
+    f32 savedScaleX;
+    i32 i;
+    u32 savedColor;
+    AnmVm *vm;
+    i32 k;
+    u8 *enemy;
+    f32 halfWidth;
+    f32 halfCenter;
+    i32 vertexCount;
+    f32 sinAngle;
+    f32 uv;
+    f32 previousAngle;
+    VertexTex1DiffuseXyzrhw *vertices;
+    f32 uvStep;
+    f32 angle;
+    f32 cosAngle;
+    f32 uvSpan;
+
+    for (i = drawGroup; i < chainPriority; ++i)
+    {
+        enemy = *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x9DCEDC + i * 4);
+        while (enemy != NULL)
+        {
+            vm = reinterpret_cast<AnmVm *>(enemy + 0x2B0);
+            for (k = 0; k < 1; ++k, ++vm)
+            {
+                if (vm->scriptIndex >= 0)
+                {
+                    if (vm->type)
+                        vm->SetZRotation(*reinterpret_cast<f32 *>(enemy + 0x2D94));
+
+                    if (((*reinterpret_cast<u32 *>(enemy + 0x3328) >> 8) & 1) == 0)
+                        vm->pos = *reinterpret_cast<Float3 *>(enemy + 0x2D88) + vm->pos2;
+                    else
+                        vm->pos = *reinterpret_cast<Float3 *>(enemy + 0x2D88) +
+                                  *reinterpret_cast<Float3 *>(enemy + 0x294);
+
+                    vm->pos.z = 0.3f;
+                    vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+                    vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                    g_AnmManager->Draw2D(vm);
+                }
+            }
+
+            if (((*reinterpret_cast<u32 *>(enemy + 0x3324) >> 25) & 1) != 0)
+                reinterpret_cast<AnmVm *>(enemy + 0xC)->SetZRotation(*reinterpret_cast<f32 *>(enemy + 0x2D94));
+
+            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos =
+                *reinterpret_cast<Float3 *>(enemy + 0x2D88) + *reinterpret_cast<Float3 *>(enemy + 0x294);
+            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.z = 0.25f;
+
+            if (*reinterpret_cast<u8 *>(enemy + 0x534C))
+            {
+                *reinterpret_cast<Float2 *>(&savedScaleX) = reinterpret_cast<AnmVm *>(enemy + 0xC)->scale;
+                savedColor = reinterpret_cast<AnmVm *>(enemy + 0xC)->color1.d3dColor;
+
+                if ((*reinterpret_cast<u8 *>(enemy + 0x534C) & 8) == 0)
+                {
+                    for (k = *reinterpret_cast<i16 *>(enemy + 0x534E) - 1; k > 0;
+                         k -= *reinterpret_cast<i16 *>(enemy + 0x5352))
+                    {
+                        if (*reinterpret_cast<f32 *>(enemy + 0x3394 + k * 0x1C) < -990.0f)
+                            continue;
+
+                        if (((*reinterpret_cast<u32 *>(enemy + 0x3324) >> 25) & 1) != 0)
+                                reinterpret_cast<AnmVm *>(enemy + 0xC)->SetZRotation(
+                                    *reinterpret_cast<f32 *>(enemy + 0x33AC + k * 0x1C));
+
+                            if ((*reinterpret_cast<u8 *>(enemy + 0x534C) & 2) != 0)
+                                reinterpret_cast<AnmVm *>(enemy + 0xC)->scale.x =
+                                    savedScaleX - (f32)k * savedScaleX /
+                                                      (f32)*reinterpret_cast<i16 *>(enemy + 0x534E);
+
+                            if ((*reinterpret_cast<u8 *>(enemy + 0x534C) & 4) != 0)
+                                reinterpret_cast<AnmVm *>(enemy + 0xC)->color1.a =
+                                    reinterpret_cast<u8 *>(&savedColor)[3] -
+                                    reinterpret_cast<u8 *>(&savedColor)[3] * k /
+                                        *reinterpret_cast<i16 *>(enemy + 0x534E);
+
+                            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos =
+                                *reinterpret_cast<Float3 *>(enemy + 0x3394 + k * 0x1C) +
+                                *reinterpret_cast<Float3 *>(enemy + 0x294);
+                            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.z = 0.3f;
+                            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+                            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                        g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(enemy + 0xC));
+                    }
+                }
+                else
+                {
+                    vertexCount = 0;
+                    for (k = 0; k < *reinterpret_cast<i16 *>(enemy + 0x534E);
+                         k += *reinterpret_cast<i16 *>(enemy + 0x5352))
+                    {
+                        if (*reinterpret_cast<f32 *>(enemy + 0x3394 + k * 0x1C) < -990.0f)
+                            break;
+                        vertexCount += 2;
+                    }
+
+                    if (vertexCount > 2)
+                    {
+                        uvSpan = reinterpret_cast<AnmVm *>(enemy + 0xC)->loadedSprite->uvEnd.x -
+                                 reinterpret_cast<AnmVm *>(enemy + 0xC)->loadedSprite->uvStart.x;
+                        uvStep = uvSpan / ((vertexCount + 1) / 2 - 1);
+                        uv = reinterpret_cast<AnmVm *>(enemy + 0xC)->loadedSprite->uvEnd.x +
+                             reinterpret_cast<AnmVm *>(enemy + 0xC)->uvScrollPos.x;
+                        vertices = reinterpret_cast<VertexTex1DiffuseXyzrhw *>(enemy + 0x3E14);
+
+                        for (k = 0; k < *reinterpret_cast<i16 *>(enemy + 0x534E);
+                             k += *reinterpret_cast<i16 *>(enemy + 0x5352), uv -= uvStep)
+                        {
+                            if (*reinterpret_cast<f32 *>(enemy + 0x3394 + k * 0x1C) < -990.0f)
+                                break;
+
+                            if (k == 0)
+                            {
+                                angle = *reinterpret_cast<f32 *>(enemy + 0x33AC);
+                            }
+                            else
+                            {
+                                angle = FUN_0042eb10(
+                                    *reinterpret_cast<f32 *>(enemy + 0x33AC + (k - 1) * 0x1C),
+                                    *reinterpret_cast<f32 *>(enemy + 0x33AC + k * 0x1C), 0.5f);
+                            }
+
+                            if ((*reinterpret_cast<u8 *>(enemy + 0x534C) & 2) != 0 && k > 0 &&
+                                k + *reinterpret_cast<i16 *>(enemy + 0x5352) <
+                                    *reinterpret_cast<i16 *>(enemy + 0x534E))
+                            {
+                                sinAngle = FUN_0042eb10(
+                                    *reinterpret_cast<f32 *>(
+                                        enemy + 0x33AC +
+                                        (k + *reinterpret_cast<i16 *>(enemy + 0x5352) - 1) * 0x1C),
+                                    *reinterpret_cast<f32 *>(
+                                        enemy + 0x33AC + *reinterpret_cast<i16 *>(enemy + 0x5352) * 0x1C),
+                                    0.5f);
+                                if (fabsf(previousAngle - angle) < 0.00001f &&
+                                    fabsf(angle - sinAngle) < 0.00001f)
+                                {
+                                    vertexCount -= 2;
+                                    continue;
+                                }
+                            }
+
+                            previousAngle = angle;
+                            sinAngle = sinf(angle);
+                            cosAngle = cosf(angle);
+                            halfCenter = 0.0f;
+                            halfWidth = savedScaleY *
+                                        reinterpret_cast<AnmVm *>(enemy + 0xC)->loadedSprite->heightPx / 2.0f;
+                            if ((*reinterpret_cast<u8 *>(enemy + 0x534C) & 2) != 0)
+                            {
+                                angle = 1.0f - (f32)k / (f32)*reinterpret_cast<i16 *>(enemy + 0x534E);
+                                halfCenter *= angle;
+                                halfWidth *= angle;
+                            }
+
+                            vertices[1].diffuse = reinterpret_cast<AnmVm *>(enemy + 0xC)->color1.d3dColor;
+                            vertices[0].diffuse = vertices[1].diffuse;
+                            if ((*reinterpret_cast<u8 *>(enemy + 0x534C) & 4) != 0)
+                            {
+                                reinterpret_cast<u8 *>(&vertices[1].diffuse)[3] =
+                                    reinterpret_cast<u8 *>(&savedColor)[3] -
+                                    reinterpret_cast<u8 *>(&savedColor)[3] * k /
+                                        *reinterpret_cast<i16 *>(enemy + 0x534E);
+                                reinterpret_cast<u8 *>(&vertices[0].diffuse)[3] =
+                                    reinterpret_cast<u8 *>(&vertices[1].diffuse)[3];
+                            }
+
+                            vertices[0].pos = *reinterpret_cast<Float3 *>(enemy + 0x3394 + k * 0x1C);
+                            vertices[0].pos.x += cosAngle * halfCenter - sinAngle * halfWidth + 32.0f;
+                            vertices[0].pos.y += sinAngle * halfCenter + cosAngle * halfWidth + 16.0f;
+                            vertices[0].textureUV.x = uv;
+                            vertices[0].textureUV.y =
+                                reinterpret_cast<AnmVm *>(enemy + 0xC)->loadedSprite->uvStart.y +
+                                reinterpret_cast<AnmVm *>(enemy + 0xC)->uvScrollPos.y;
+                            ++vertices;
+
+                            vertices[0].pos = *reinterpret_cast<Float3 *>(enemy + 0x3394 + k * 0x1C);
+                            vertices[0].pos.x += cosAngle * halfCenter + sinAngle * halfWidth + 32.0f;
+                            vertices[0].pos.y += sinAngle * halfCenter - cosAngle * halfWidth + 16.0f;
+                            vertices[0].textureUV.x = uv;
+                            vertices[0].textureUV.y =
+                                reinterpret_cast<AnmVm *>(enemy + 0xC)->loadedSprite->uvEnd.y +
+                                reinterpret_cast<AnmVm *>(enemy + 0xC)->uvScrollPos.y;
+                            ++vertices;
+                        }
+
+                        if (vertexCount > 2)
+                            g_AnmManager->DrawVertices(
+                                reinterpret_cast<AnmVm *>(enemy + 0xC),
+                                reinterpret_cast<VertexTex1DiffuseXyzrhw *>(enemy + 0x3E14), vertexCount);
+                    }
+                }
+
+                reinterpret_cast<AnmVm *>(enemy + 0xC)->scale = *reinterpret_cast<Float2 *>(&savedScaleX);
+                reinterpret_cast<AnmVm *>(enemy + 0xC)->color1.d3dColor = savedColor;
+            }
+
+            if ((*reinterpret_cast<u8 *>(enemy + 0x534C) & 0x10) == 0 &&
+                ((*reinterpret_cast<u32 *>(enemy + 0x3324) >> 5) & 1) == 0)
+            {
+                g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(enemy + 0xC));
+            }
+
+            for (k = 1; k < 2; ++k, ++vm)
+            {
+                if (vm->scriptIndex >= 0)
+                {
+                    if (vm->type)
+                        vm->SetZRotation(-*reinterpret_cast<f32 *>(enemy + 0x2D94));
+
+                    if (((*reinterpret_cast<u32 *>(enemy + 0x3328) >> 8) & 1) == 0)
+                        vm->pos = *reinterpret_cast<Float3 *>(enemy + 0x2D88) + vm->pos2;
+                    else
+                        vm->pos = *reinterpret_cast<Float3 *>(enemy + 0x2D88) +
+                                  *reinterpret_cast<Float3 *>(enemy + 0x294);
+
+                    vm->pos.z = 0.3f;
+                    vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+                    vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                    g_AnmManager->Draw2D(vm);
+                }
+            }
+
+            enemy = *reinterpret_cast<u8 **>(enemy);
+        }
+    }
+
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 

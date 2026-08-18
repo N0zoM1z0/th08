@@ -88403,3 +88403,396 @@ offset = 0x54C
 type = "DIR32"
 symbol = "?g_Gui@th08@@3UGui@1@A"
 target = 0x0160F428
+
+[[units]]
+name = "enemy-angle-interpolate"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "?FUN_0042eb10@th08@@YGMMMM@Z"
+target_address = 0x0042EB10
+size = 0x72
+
+[[units.relocations]]
+offset = 0x21
+type = "DIR32"
+symbol = "__real@40c90fdb"
+target = 0x004B4460
+
+[[units.relocations]]
+offset = 0x3B
+type = "DIR32"
+symbol = "__real@40c90fdb"
+target = 0x004B4460
+
+[[units]]
+name = "enemy-manager-ondraw-impl"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "th08::EnemyManager::OnDrawImpl"
+target_address = 0x0042E140
+size = 0x9C8
+
+[[units.relocations]]
+offset = 0xB4
+type = "REL32"
+symbol = "?SetZRotation@AnmVm@th08@@QAEXM@Z"
+target = 0x0040EC00
+
+[[units.relocations]]
+offset = 0xE3
+type = "REL32"
+symbol = "??HFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 0x11A
+type = "REL32"
+symbol = "??HFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 0x149
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x161
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x17A
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x17F
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units.relocations]]
+offset = 0x1AC
+type = "REL32"
+symbol = "?SetZRotation@AnmVm@th08@@QAEXM@Z"
+target = 0x0040EC00
+
+[[units.relocations]]
+offset = 0x1C8
+type = "REL32"
+symbol = "??HFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 0x1EA
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x202
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x2A4
+type = "DIR32"
+symbol = "__real@c4778000"
+target = 0x004B4AC4
+
+[[units.relocations]]
+offset = 0x2DC
+type = "REL32"
+symbol = "?SetZRotation@AnmVm@th08@@QAEXM@Z"
+target = 0x0040EC00
+
+[[units.relocations]]
+offset = 0x36A
+type = "REL32"
+symbol = "??HFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 0x399
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x3B1
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x3CD
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x3D2
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units.relocations]]
+offset = 0x423
+type = "DIR32"
+symbol = "__real@c4778000"
+target = 0x004B4AC4
+
+[[units.relocations]]
+offset = 0x4EA
+type = "DIR32"
+symbol = "__real@c4778000"
+target = 0x004B4AC4
+
+[[units.relocations]]
+offset = 0x539
+type = "REL32"
+symbol = "?FUN_0042eb10@th08@@YGMMMM@Z"
+target = 0x0042EB10
+
+[[units.relocations]]
+offset = 0x5BD
+type = "REL32"
+symbol = "?FUN_0042eb10@th08@@YGMMMM@Z"
+target = 0x0042EB10
+
+[[units.relocations]]
+offset = 0x5CF
+type = "REL32"
+symbol = "@fabsf@4"
+target = 0x004031E0
+
+[[units.relocations]]
+offset = 0x5D5
+type = "DIR32"
+symbol = "__real@3727c5ac"
+target = 0x004B4380
+
+[[units.relocations]]
+offset = 0x5EB
+type = "REL32"
+symbol = "@fabsf@4"
+target = 0x004031E0
+
+[[units.relocations]]
+offset = 0x5F1
+type = "DIR32"
+symbol = "__real@3727c5ac"
+target = 0x004B4380
+
+[[units.relocations]]
+offset = 0x615
+type = "REL32"
+symbol = "@sinf@4"
+target = 0x00409060
+
+[[units.relocations]]
+offset = 0x621
+type = "REL32"
+symbol = "@cosf@4"
+target = 0x00408D40
+
+[[units.relocations]]
+offset = 0x640
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x673
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x718
+type = "DIR32"
+symbol = "__real@42000000"
+target = 0x004B42CC
+
+[[units.relocations]]
+offset = 0x736
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004B42D4
+
+[[units.relocations]]
+offset = 0x7A3
+type = "DIR32"
+symbol = "__real@42000000"
+target = 0x004B42CC
+
+[[units.relocations]]
+offset = 0x7C1
+type = "DIR32"
+symbol = "__real@41800000"
+target = 0x004B42D4
+
+[[units.relocations]]
+offset = 0x81C
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x821
+type = "REL32"
+symbol = "?DrawVertices@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@H@Z"
+target = 0x00464C60
+
+[[units.relocations]]
+offset = 0x86D
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x872
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units.relocations]]
+offset = 0x8D1
+type = "REL32"
+symbol = "?SetZRotation@AnmVm@th08@@QAEXM@Z"
+target = 0x0040EC00
+
+[[units.relocations]]
+offset = 0x902
+type = "REL32"
+symbol = "??HFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 0x93C
+type = "REL32"
+symbol = "??HFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 0x96B
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x983
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x99C
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x9A1
+type = "REL32"
+symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+target = 0x00463210
+
+[[units]]
+name = "anm-manager-draw-vertices"
+object = "build/objdiff/reimpl/AnmManager.obj"
+symbol = "th08::AnmManager::DrawVertices"
+target_address = 0x00464C60
+size = 0x16F
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "?IsVisible@AnmVmBase@th08@@QAEIXZ"
+target = 0x004066E0
+
+[[units.relocations]]
+offset = 0x5B
+type = "REL32"
+symbol = "th08::AnmManager::FlushVertexBuffer"
+target = 0x00462E40
+
+[[units.relocations]]
+offset = 0x98
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xA0
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xC1
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xC9
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xE6
+type = "REL32"
+symbol = "th08::AnmManager::SetRenderStateForVm"
+target = 0x00462790
+
+[[units.relocations]]
+offset = 0x103
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x108
+type = "REL32"
+symbol = "?IsVertexBufferDisabled@Supervisor@th08@@QAEIXZ"
+target = 0x00443A70
+
+[[units.relocations]]
+offset = 0x118
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x11F
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x132
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x139
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x154
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x15C
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758

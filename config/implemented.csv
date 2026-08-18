@@ -833,3 +833,6 @@ th08::EffectOrbitInit
 th08::Float3::operator-() const
 th08::EffectOrbitUpdate
 th08::GameManager::RandomizeAntiTamper
+th08::EnemyManager::OnDrawImpl
+th08::FUN_0042eb10
+th08::AnmManager::DrawVertices

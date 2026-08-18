@@ -1401,6 +1401,48 @@ ZunResult AnmManager::Draw3D(AnmVm *vm)
     return ZUN_SUCCESS;
 }
 
+// FUNCTION: th08 0x00464c60
+ZunResult AnmManager::DrawVertices(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount)
+{
+    if (!vm->IsVisible())
+        return ZUN_ERROR;
+    if (!vm->flag1)
+        return ZUN_ERROR;
+    if (vm->color1.a == 0)
+        return ZUN_ERROR;
+
+    if (this->spritesToDraw != 0)
+        this->FlushVertexBuffer();
+
+    if (this->currentTexture != vm->loadedSprite->texture)
+    {
+        this->currentTexture = vm->loadedSprite->texture;
+        g_Supervisor.d3dDevice->SetTexture(0, this->currentTexture);
+    }
+
+    if (this->currentVertexShader != 3)
+    {
+        g_Supervisor.d3dDevice->SetVertexShader(D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1);
+        this->currentVertexShader = 3;
+    }
+
+    this->SetRenderStateForVm(vm);
+
+    if (!this->needsTextureFactorSetup)
+    {
+        this->needsTextureFactorSetup = 1;
+        if (!g_Supervisor.IsVertexBufferDisabled())
+        {
+            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
+            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+        }
+    }
+
+    g_Supervisor.d3dDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, vertexCount - 2, vertices,
+                                             sizeof(VertexTex1DiffuseXyzrhw));
+    return ZUN_SUCCESS;
+}
+
 // FUNCTION: th08 0x00464dd0
 ZunResult AnmManager::FUN_00464dd0(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices)
 {
