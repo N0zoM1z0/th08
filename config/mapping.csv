@@ -1012,7 +1012,7 @@ th08::TitleScreen::OnUpdateDifficultySelect,0x46a071,0x5b4,unknown,,u8
 th08::TitleScreen::OnUpdateCharacterSelect,0x46a625,0x78b,unknown,,u8
 th08::TitleScreen::OnUpdatePracticeStageSelect,0x46adb0,0x3c4,unknown,,u8
 FUN_0046b174,0x46b174,0xa4c,unknown,,u8
-FUN_0046bbc0,0x46bbc0,0xfcf,unknown,,u8
+th08::TitleScreen::OnUpdateSpellCardSelect,0x46bbc0,0xfcf,__thiscall,,ChainCallbackResult,TitleScreen*
 FUN_0046cbbb,0x46cbbb,0xba8,unknown,,u8
 FUN_0046d763,0x46d763,0x96,unknown,,u8
 FUN_0046d7f9,0x46d7f9,0x93d,unknown,,u8

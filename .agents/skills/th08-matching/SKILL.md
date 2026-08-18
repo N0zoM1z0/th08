@@ -339,3 +339,6 @@ Do not force standard math/runtime helpers into authored reconstruction merely b
 - When an `/Os` function appears longer by exactly `N*4`, inspect the target boundary before changing source: VC7 may have appended an associated switch table to the COFF aux extent. Use authored `size` plus a larger `compare_size` and replay the table relocations.
 - Do not replace direct flag/bitfield reads with convenience getters in exact work; even a one-instruction getter call can change branch reach and body size. Let target relocation/disassembly decide the lexical owner.
 - If a large function has equal instruction count/extent and only stack-displacement residuals, map source locals from first use and solve with `#pragma var_order` before touching control flow.
+
+- Repeated `cmp` operand-owner residuals can signal a real semantic inversion. If target behavior is `cursor >= count` but source says `count >= cursor`, correct the relation itself; do not treat the mismatch as a register-allocation problem merely because the function extent is already exact.
+- Continue to include associated switch tables in `compare_size` while counting only the authored body in progress. `OnUpdateSpellCardSelect` is a 0xFCF body plus a 0x2C table.

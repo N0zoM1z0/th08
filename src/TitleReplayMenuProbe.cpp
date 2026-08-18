@@ -20,6 +20,7 @@ namespace th08
 #define TITLE_SPRITE_KEYCONFIG_SLOWSHOT_END 76
 
 
+
 enum
 {
     TITLE_MENU_ITEM_START_START = 0,
@@ -1009,6 +1010,361 @@ ChainCallbackResult TitleScreen::OnUpdateKeyConfig()
                 this->cursor = TITLE_MENU_ITEM_OPTION_KEYCONFIG;
                 return CHAIN_CALLBACK_RESULT_CONTINUE;
             }
+        }
+
+        break;
+    }
+
+    this->idleFrames++;
+    this->stateTimer++;
+    this->stateTimer2++;
+
+    return CHAIN_CALLBACK_RESULT_CONTINUE;
+}
+
+
+
+#pragma var_order(spellCardNumber, i, oldCursor, spellCardNumber2, i2, oldPageIdx, spellCardNumber3)
+ChainCallbackResult TitleScreen::OnUpdateSpellCardSelect()
+{
+    i32 spellCardNumber;
+    i32 spellCardNumber3;
+    i32 spellCardNumber2;
+    i32 i;
+    i32 i2;
+    i32 oldCursor;
+    i32 oldPageIdx;
+
+    switch (this->currentScreenState)
+    {
+    case TitleCurrentScreenState_Init:
+        if (this->stateTimer2 == 0)
+        {
+            g_AnmManager->SetInterruptArray(this->vms, this->vmCount, 26);
+
+            this->practiceState = 0;
+            this->currentScreenState = TitleCurrentScreenState_Init;
+            this->stateTimer = 0;
+
+            g_GameManager.flags.isPracticeMode = TRUE;
+            g_GameManager.flags.isSpellPractice = TRUE;
+
+            this->currentNumberOfSpellCards = g_SpellcardCountPerStage[g_GameManager.currentStage];
+
+            this->UnlockLastWordSpellCards();
+
+            this->cursor = 0;
+            for (i = 0; i < this->currentNumberOfSpellCards; i++)
+            {
+                if (g_SpellcardNumbersPerStage[g_GameManager.currentStage][i] == g_GameManager.currentSpellCardNumber)
+                {
+                    this->cursor = i;
+                    break;
+                }
+            }
+
+            this->currentPageSpellCardSelect = this->cursor / TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE;
+
+            for (i = 0; i < TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE; i++)
+            {
+                if ((i + this->currentPageSpellCardSelect * TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE) >=
+                    this->currentNumberOfSpellCards)
+                {
+                    break;
+                }
+
+                spellCardNumber = g_SpellcardNumbersPerStage[g_GameManager.currentStage]
+                                                            [i + this->currentPageSpellCardSelect *
+                                                                     TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE];
+
+                InitializeTitleVmAndSetSprite(this->resultTextAnm, &this->spellCardNameVms[i], i + 2);
+                this->spellCardNameVms[i].pos = Float3(0, 0, 0);
+                this->spellCardNameVms[i].anchor = 3;
+                /* Copy paste mistake? */
+                this->spellCardNameVms[0].fontWidth = 15;
+                this->spellCardNameVms[i].fontHeight = 15;
+
+                if (g_GameManager.catkData[spellCardNumber].inGameHistory.attempts[SHOT_ALL] == 0 &&
+                    g_GameManager.catkData[spellCardNumber].spellPracticeHistory.attempts[SHOT_ALL] == 0)
+                {
+                    if (Spellcard::GetDifficultyFromSpellCard(spellCardNumber) <= EXTRA ||
+                        !g_GameManager.IsLastWordSpellCardAttempted(spellCardNumber))
+                    {
+                        g_AnmManager->DrawTextLeft(&this->spellCardNameVms[i], COLOR_TEXT_WHITE, 0,
+                                                   TH_TITLE_SPELLCARD_NOT_UNLOCKED);
+                    }
+                    else
+                    {
+                        g_AnmManager->DrawTextLeft(&this->spellCardNameVms[i], COLOR_TEXT_WHITE, 0,
+                                                   TH_TITLE_SPELLCARD_AVAILABLE);
+                    }
+                }
+                else
+                {
+                    g_AnmManager->DrawTextLeft(&this->spellCardNameVms[i], COLOR_TEXT_WHITE, 0,
+                                               g_GameManager.catkData[spellCardNumber].spellName);
+                }
+
+                this->spellCardNameVms[i].color1.a = 255;
+                this->spellCardNameVms[i].color1.r = 96;
+                this->spellCardNameVms[i].color1.g = 96;
+                this->spellCardNameVms[i].color1.b = 96;
+            }
+
+            i = TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE;
+            InitializeTitleVmAndSetSprite(this->resultTextAnm, &this->spellCardNameVms[i], i + 2);
+            this->spellCardNameVms[i].pos = Float3(0, 0, 0);
+            this->spellCardNameVms[i].anchor = 3;
+            this->spellCardNameVms[i].fontWidth = 15;
+            this->spellCardNameVms[i].fontHeight = 15;
+
+            g_AnmManager->DrawTextLeft(&this->spellCardNameVms[i], COLOR_TEXT_WHITE, 0, TH_TITLE_SPELL_CARD_INFO);
+
+            this->spellCardNameVms[i].color1.a = 255;
+            this->spellCardNameVms[i].color1.r = 255;
+            this->spellCardNameVms[i].color1.g = 255;
+            this->spellCardNameVms[i].color1.b = 255;
+
+            i = this->cursor - (this->currentPageSpellCardSelect * TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE);
+            this->spellCardNameVms[i].color1.r = 255;
+            this->spellCardNameVms[i].color1.g = 255;
+            this->spellCardNameVms[i].color1.b = 255;
+
+            for (i = 0; i < 7; i++)
+            {
+                InitializeTitleVmAndSetSprite(g_Supervisor.textAnm, &this->spellCardInfoVms[i], i + 21);
+
+                if (i < 4)
+                {
+                    this->spellCardInfoVms[i].pos = Float3(64.0f, (i * 16) + 344.0f, 0.0f);
+                }
+                else
+                {
+                    this->spellCardInfoVms[i].pos = Float3(64.0f, (i * 16) + 344.0f + 8.0f, 0.0f);
+                }
+
+                this->spellCardInfoVms[i].anchor = 3;
+                this->spellCardInfoVms[i].fontWidth = 15;
+                this->spellCardInfoVms[i].fontHeight = 15;
+                this->spellCardInfoVms[i].color1.d3dColor = COLOR_WHITE;
+            }
+
+            this->FormatSpellCardInfo();
+            this->unk0xc29c = 0;
+        }
+
+        if (this->stateTimer2 == 8)
+        {
+            this->currentScreenState = TitleCurrentScreenState_Ready;
+        }
+        break;
+    case TitleCurrentScreenState_Ready:
+        oldPageIdx = this->currentPageSpellCardSelect;
+        oldCursor = this->cursor;
+
+        if (this->currentNumberOfSpellCards > TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE)
+        {
+            if (WAS_PRESSED_SCROLLING(TH_BUTTON_LEFT))
+            {
+                this->cursor -= TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE;
+
+                g_SoundPlayer.PlaySoundByIdx(SOUND_MOVE_MENU, 0);
+                g_SoundPlayer.ProcessQueues();
+
+                if (this->cursor < 0)
+                {
+                    this->cursor = this->currentNumberOfSpellCards - 1;
+                }
+                if (this->cursor >= this->currentNumberOfSpellCards)
+                {
+                    this->cursor = 0;
+                }
+            }
+            if (WAS_PRESSED_SCROLLING(TH_BUTTON_RIGHT))
+            {
+                g_SoundPlayer.PlaySoundByIdx(SOUND_MOVE_MENU, 0);
+
+                if (this->currentNumberOfSpellCards - this->cursor <=
+                    this->currentNumberOfSpellCards % TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE)
+                {
+                    this->cursor %= TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE;
+                }
+                else
+                {
+                    this->cursor += TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE;
+                    if (this->cursor < 0)
+                    {
+                        this->cursor = currentNumberOfSpellCards - 1;
+                    }
+                    if (this->cursor >= this->currentNumberOfSpellCards)
+                    {
+                        this->cursor = currentNumberOfSpellCards - 1;
+                    }
+                }
+            }
+        }
+
+        this->MoveCursorVertical(this->currentNumberOfSpellCards);
+        this->currentPageSpellCardSelect = this->cursor / TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE;
+
+        if (oldPageIdx != this->currentPageSpellCardSelect)
+        {
+            for (i2 = 0; i2 < TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE; i2++)
+            {
+                if ((i2 + this->currentPageSpellCardSelect * TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE) >=
+                    this->currentNumberOfSpellCards)
+                {
+                    break;
+                }
+
+                InitializeTitleVmAndSetSprite(this->resultTextAnm, &this->spellCardNameVms[i2], i2 + 2);
+                this->spellCardNameVms[i2].pos = Float3(0, 0, 0);
+                this->spellCardNameVms[i2].anchor = 3;
+                /* Similar copy paste mistake as before? */
+                this->spellCardInfoVms[0].fontWidth = 15;
+                this->spellCardNameVms[i2].fontHeight = 15;
+
+                spellCardNumber2 = g_SpellcardNumbersPerStage[g_GameManager.currentStage]
+                                                             [i2 + this->currentPageSpellCardSelect *
+                                                                       TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE];
+
+                /* Why does ZUN use this helper method here, and in the initialization , use direct access? */
+                if (g_GameManager.HasSpellCardBeenEncountered(spellCardNumber2, SHOT_ALL))
+                {
+                    g_AnmManager->DrawTextLeft(&this->spellCardNameVms[i2], COLOR_TEXT_WHITE, 0,
+                                               g_GameManager.catkData[spellCardNumber2].spellName);
+                }
+                else
+                {
+                    if (Spellcard::GetDifficultyFromSpellCard(spellCardNumber2) <= EXTRA ||
+                        !g_GameManager.IsLastWordSpellCardAttempted(spellCardNumber2))
+                    {
+                        g_AnmManager->DrawTextLeft(&this->spellCardNameVms[i2], COLOR_TEXT_WHITE, 0,
+                                                   TH_TITLE_SPELLCARD_NOT_UNLOCKED);
+                    }
+                    else
+                    {
+                        g_AnmManager->DrawTextLeft(&this->spellCardNameVms[i2], COLOR_TEXT_WHITE, 0,
+                                                   TH_TITLE_SPELLCARD_AVAILABLE);
+                    }
+                }
+
+                this->spellCardNameVms[i2].color1.a = 255;
+                this->spellCardNameVms[i2].color1.r = 96;
+                this->spellCardNameVms[i2].color1.g = 96;
+                this->spellCardNameVms[i2].color1.b = 96;
+            }
+        }
+
+        if (oldCursor != this->cursor)
+        {
+            for (i2 = 0; i2 < TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE; i2++)
+            {
+                this->spellCardNameVms[i2].color1.r = 96;
+                this->spellCardNameVms[i2].color1.g = 96;
+                this->spellCardNameVms[i2].color1.b = 96;
+            }
+
+            i2 = this->cursor - (this->currentPageSpellCardSelect * TITLE_SPELL_CARD_SPELLCARDS_PER_PAGE);
+            this->spellCardNameVms[i2].color1.r = 255;
+            this->spellCardNameVms[i2].color1.g = 255;
+            this->spellCardNameVms[i2].color1.b = 255;
+
+            for (i2 = 0; i2 < 7; i2++)
+            {
+                this->spellCardInfoVms[i2].color1.a = 0;
+            }
+
+            this->unk0xc29c = 21;
+        }
+
+        this->FormatSpellCardInfo();
+
+        if (WAS_PRESSED(TH_BUTTON_SHOOT | TH_BUTTON_ENTER))
+        {
+            spellCardNumber3 = g_SpellcardNumbersPerStage[g_GameManager.currentStage][this->cursor];
+            if (g_GameManager.catkData[spellCardNumber3].inGameHistory.attempts[SHOT_ALL] != 0 ||
+                g_GameManager.catkData[spellCardNumber3].spellPracticeHistory.attempts[SHOT_ALL] != 0 ||
+                (spellCardNumber3 >= SPELLCARD_LAST_WORD_START &&
+                 g_GameManager.IsLastWordSpellCardAttempted(spellCardNumber3)))
+            {
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
+
+                g_GameManager.flags.isSpellPractice = TRUE;
+                g_GameManager.currentSpellCardNumber =
+                    g_SpellcardNumbersPerStage[g_GameManager.currentStage][this->cursor];
+
+                g_GameManager.difficulty = Spellcard::GetDifficultyFromSpellCard(g_GameManager.currentSpellCardNumber);
+
+                if (g_GameManager.difficulty > EXTRA)
+                {
+                    /* Set the correct difficulty for each Last Word spell card. */
+                    switch (g_GameManager.currentSpellCardNumber)
+                    {
+                    case SPELLCARD_LW_WRIGGLE:
+                        g_GameManager.currentStage = STAGE1;
+                        break;
+                    case SPELLCARD_LW_MYSTIA:
+                        g_GameManager.currentStage = STAGE2;
+                        break;
+                    case SPELLCARD_LW_KEINE:
+                        g_GameManager.currentStage = STAGE3;
+                        break;
+                    case SPELLCARD_LW_REISEN:
+                        g_GameManager.currentStage = STAGE5;
+                        break;
+                    case SPELLCARD_LW_EIRIN:
+                        g_GameManager.currentStage = STAGE6A;
+                        break;
+                    case SPELLCARD_LW_KAGUYA:
+                        g_GameManager.currentStage = STAGE6B;
+                        break;
+                    case SPELLCARD_LW_MOKOU:
+                        g_GameManager.currentStage = EXTRASTAGE;
+                        break;
+                    case SPELLCARD_LW_TEWI:
+                        g_GameManager.currentStage = STAGE5;
+                        break;
+                    case SPELLCARD_LW_KEINEEX:
+                        g_GameManager.currentStage = EXTRASTAGE;
+                        break;
+                    case SPELLCARD_LW_REIMU:
+                        g_GameManager.currentStage = STAGE4A;
+                        break;
+                    case SPELLCARD_LW_MARISA:
+                        g_GameManager.currentStage = STAGE4B;
+                        break;
+                    default: /* ... everyone else */
+                        g_GameManager.currentStage = STAGE4A;
+                        break;
+                    }
+
+                    g_GameManager.difficulty = NORMAL;
+                }
+
+                g_Supervisor.curState = SupervisorState_GameManager;
+                g_GameManager.SetIsReplayWeird(FALSE);
+
+                g_Supervisor.StopAudio();
+
+                return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
+            }
+            else
+            {
+                g_SoundPlayer.PlaySoundByIdx(SOUND_INVALID_ACTION, 0);
+            }
+        }
+
+        if (WAS_PRESSED(TH_BUTTON_BOMB | TH_BUTTON_MENU))
+        {
+            g_GameManager.currentSpellCardNumber = g_SpellcardNumbersPerStage[g_GameManager.currentStage][this->cursor];
+
+            g_SoundPlayer.PlaySoundByIdx(SOUND_BACK, 0);
+            this->cursor = g_GameManager.currentStage;
+
+            this->ChangeCurrentScreen(TitleCurrentScreen_SpellStageSelect);
+
+            return CHAIN_CALLBACK_RESULT_EXECUTE_AGAIN;
         }
 
         break;
