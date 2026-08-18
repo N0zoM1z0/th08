@@ -81,6 +81,7 @@ C_ASSERT(sizeof(AsciiManagerPopup) == 0x38);
 
 struct AsciiManager
 {
+    AsciiManager();
     static ChainCallbackResult OnUpdate(AsciiManager *mgr);
     static ChainCallbackResult OnDrawLowPrio(AsciiManager *mgr);
     static ChainCallbackResult OnDrawHighPrio(AsciiManager *mgr);

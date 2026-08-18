@@ -32,6 +32,11 @@ DIFFABLE_STATIC(AsciiManager, g_AsciiManager);
 DIFFABLE_STATIC(ChainElem, g_AsciiManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_AsciiManagerDrawChainHighPrio);
 
+// FUNCTION: th08 0x402000
+AsciiManager::AsciiManager()
+{
+}
+
 // FUNCTION: th08 0x402130
 AsciiManagerString::AsciiManagerString()
 {
@@ -376,6 +381,7 @@ int AsciiManager::AddFormatText2(Float3 *position, const char *fmt, ...)
     return strlen(buf);
 }
 
+// FUNCTION: th08 0x402b20
 #pragma var_order(spaceWidth, i, curString, text, isGui, vector)
 void AsciiManager::OnDrawLowPrioImpl()
 {
@@ -469,8 +475,7 @@ void AsciiManager::OnDrawLowPrioImpl()
     {
         if (this->bossMarkers[i].pos.x >= 56.0f && this->bossMarkers[i].pos.x <= 392.0f)
         {
-            // TODO: This line is not done! The player position is needed in this calculation
-            spaceWidth = fabsf(this->bossMarkers[i].pos.x - 32.0f);
+            spaceWidth = fabsf(this->bossMarkers[i].pos.x - 32.0f - g_Player.position.x);
 
             this->bossMarkers[i].loadedSprite = this->asciiAnm->GetSprite(157);
 

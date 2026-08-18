@@ -312,3 +312,11 @@ Non-trivial local arrays are compiler structure, not just storage. If the target
 When a target tests a mask and then skips a large region with one forward branch, write the source as a positive wrapper around the body. Replacing it with an equivalent reject-and-`continue` commonly generates `jcc + short jmp` and changes the function by two bytes. This pattern repeats in ECL EX bullet callbacks at `0x00424A20`, `0x00424C40`, and `0x00424E50`.
 
 For floating ternaries, recover comparison polarity and expression operand ownership separately. `constant + local` can be required even when `local +/- constant` is algebraically identical, because VC7 chooses different x87 load/add/sub forms.
+
+## Empty aggregate constructors as layout attestations
+
+An empty user-written constructor can still compile to a large target when its class contains non-trivial members and arrays. If the target consists of the expected member ctor calls/vector-constructor iterators, prefer fixing the class layout and leaving the body empty. `AsciiManager::AsciiManager @ 0x00402000` becomes 0x128-byte exact solely from correct member ownership/order.
+
+## Distinguish authored body size from COFF aux extent
+
+A VC7 function symbol's aux `total_size` may include an immediately associated jump table. If the target's authored mapping stops at the first table byte, keep authored progress at that body size and set the canonical unit's `compare_size` through the table. `AsciiManager::OnDrawLowPrioImpl` is 0x6A2 authored bytes but 0x6B6 compared bytes because of its five-entry table.

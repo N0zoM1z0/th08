@@ -1064,3 +1064,5 @@ th08::FUN_004250d0
 th08::FUN_004251b0
 th08::FUN_00425290
 th08::FUN_00425390
+th08::AsciiManager::AsciiManager
+th08::AsciiManager::OnDrawLowPrioImpl

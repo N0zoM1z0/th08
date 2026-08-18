@@ -1065,3 +1065,5 @@ address,name,size,status,match_percent,unit,evidence
 0x004251B0,th08::FUN_004251b0,213,matching,100.00,ecl-ex-callback-004251b0,python3 scripts/compare-function.py ecl-ex-callback-004251b0 --json
 0x00425290,th08::FUN_00425290,255,matching,100.00,ecl-ex-callback-00425290,python3 scripts/compare-function.py ecl-ex-callback-00425290 --json
 0x00425390,th08::FUN_00425390,74,matching,100.00,ecl-ex-callback-00425390,python3 scripts/compare-function.py ecl-ex-callback-00425390 --json
+0x00402000,th08::AsciiManager::AsciiManager,296,matching,100.00,ascii-manager-ctor-00402000,python3 scripts/compare-function.py ascii-manager-ctor-00402000 --json
+0x00402B20,th08::AsciiManager::OnDrawLowPrioImpl,1698,matching,100.00,ascii-manager-draw-low-prio-00402b20,python3 scripts/compare-function.py ascii-manager-draw-low-prio-00402b20 --json

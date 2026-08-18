@@ -1,4 +1,4 @@
-th08::AsciiManager::AsciiManager,0x402000,0x128,__thiscall,,AsciiManager*,AsciiManager*
+th08::AsciiManager::AsciiManager,0x402000,0x128,__thiscall,,void,AsciiManager*
 th08::AsciiManagerString::AsciiManagerString,0x402130,0x19,__thiscall,,AsciiManagerString*,AsciiManagerString*
 th08::PauseMenu::PauseMenu,0x402150,0x34,__thiscall,,PauseMenu*,PauseMenu*
 th08::RetryMenu::RetryMenu,0x402190,0x34,__thiscall,,RetryMenu*,RetryMenu*
@@ -15,7 +15,7 @@ th08::AsciiManager::CutChain,0x4028f0,0x23,__fastcall,,void
 th08::AsciiManager::AddString,0x402920,0x109,__thiscall,,void,AsciiManager*,_D3DVECTOR*,char*
 th08::AsciiManager::AddFormatText,0x402a30,0x44,__cdecl,varargs,u8,u32,u32,u32,u8
 th08::AsciiManager::AddFormatText2,0x402a80,0x92,__cdecl,varargs,u8,u32,u32,u32,u8
-th08::AsciiManager::DrawStrings,0x402b20,0x6a2,__thiscall,,u8,AsciiManager*
+th08::AsciiManager::OnDrawLowPrioImpl,0x402b20,0x6a2,__thiscall,,void,AsciiManager*
 FUN_004031e0,0x4031e0,0x12,unknown,,u8,u8
 th08::AsciiManager::CreateScorePopup,0x403200,0x127,__thiscall,,void,AsciiManager*,Float3*,i32,D3DCOLOR
 th08::AsciiManager::CreatePlayerPointPopup,0x403330,0x129,__thiscall,,void,AsciiManager*,Float3*,i32,D3DCOLOR
