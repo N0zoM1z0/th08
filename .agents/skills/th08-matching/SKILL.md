@@ -214,3 +214,11 @@ When an exact dependency still belongs to the reconstruction probe graph, keep o
 ## Overloads and tiny fastcall adapters
 
 Treat authored exact identity as target address + extent, not logical name. Overloaded members may share the same reccmp/mapping name; tooling that collapses authored rows by name will mis-account exact evidence. For tiny `__fastcall` bridge functions, do not cache ECX/EDX arguments unless target stack accesses prove a third local. Repeated casts/field accesses from the original parameter can be the exact `/Od` source shape.
+
+## ECL tail guard/lifetime source-shape corpus
+
+For VC7 `/Od` ECL helpers, two class-local constructor calls can require sequential non-overlapping source scopes.  If the target constructs a dead legacy `Float3` in one slot and then a used `Float3` in another, test `{ Float3 legacy; } Float3 used;` before changing declarations globally.  A synthetic aggregate is not equivalent if it creates a compiler-generated constructor.
+
+Keep conditional expressions wide until a target-proven narrow store.  If a `ResolveInt`/raw-value ternary feeds an `i16` descriptor member, casting both arms early can create word stack temporaries; leaving the ternary as `i32` lets VC7 materialize a dword conditional temp and then copy its low word, matching the TH08 shot descriptor path.
+
+Guard-return grouping is code-generation-visible.  A single `if (rejectA || rejectB) return;` can make VC7 share one nearby reject trampoline, while two separate returns duplicate long epilogue jumps and the inverse positive `if` can produce long conditional branches.  For x87 range gates, preserve positive strict predicates such as `radius > 0.0f && distanceSquared < radius` when the target status masks prove them; algebraically equivalent `<=`/`>=` rewrites can change unordered behavior and branch opcodes.

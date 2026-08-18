@@ -103475,3 +103475,538 @@ object = "build/probes/EclDependencies.obj"
 symbol = "?FUN_00423130@Gui@th08@@QAEXH@Z"
 target_address = 0x00423130
 size = 0x16
+
+# Enemy movement-mode integrator. Authored body is 0x462 bytes;
+# the following 0x18-byte six-entry easing jump table is compiler-owned
+# associated data and is compared but excluded from authored progress.
+[[units]]
+name = "enemy-motion-integrator-00422c40"
+object = "build/EnemyManager.obj"
+symbol = "?FUN_00422c40@Enemy@th08@@QAEXXZ"
+target_address = 0x00422C40
+size = 0x462
+compare_size = 0x47A
+
+[[units.relocations]]
+offset = 0x3E
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x46
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x4F
+type = "DIR32"
+symbol = "?g_EclGameTimeScale@th08@@3MA"
+target = 0x017CE8E0
+
+[[units.relocations]]
+offset = 0x68
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0x7A
+type = "DIR32"
+symbol = "?g_EclGameTimeScale@th08@@3MA"
+target = 0x017CE8E0
+
+[[units.relocations]]
+offset = 0xAE
+type = "REL32"
+symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
+target = 0x004286E0
+
+[[units.relocations]]
+offset = 0x103
+type = "REL32"
+symbol = "?VectorAngle@th08@@YIMMM@Z"
+target = 0x0040C7B0
+
+[[units.relocations]]
+offset = 0x128
+type = "REL32"
+symbol = "??FZunTimer@th08@@QAEXH@Z"
+target = 0x00418110
+
+[[units.relocations]]
+offset = 0x138
+type = "REL32"
+symbol = "??NZunTimer@th08@@QAEIH@Z"
+target = 0x0040E390
+
+[[units.relocations]]
+offset = 0x162
+type = "DIR32"
+symbol = "?g_EclGameTimeScale@th08@@3MA"
+target = 0x017CE8E0
+
+[[units.relocations]]
+offset = 0x17B
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0x18D
+type = "DIR32"
+symbol = "?g_EclGameTimeScale@th08@@3MA"
+target = 0x017CE8E0
+
+[[units.relocations]]
+offset = 0x1C7
+type = "REL32"
+symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
+target = 0x004286E0
+
+[[units.relocations]]
+offset = 0x1D5
+type = "REL32"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x1F8
+type = "REL32"
+symbol = "??FZunTimer@th08@@QAEXH@Z"
+target = 0x00418110
+
+[[units.relocations]]
+offset = 0x208
+type = "REL32"
+symbol = "??NZunTimer@th08@@QAEIH@Z"
+target = 0x0040E390
+
+[[units.relocations]]
+offset = 0x239
+type = "REL32"
+symbol = "??FZunTimer@th08@@QAEXH@Z"
+target = 0x00418110
+
+[[units.relocations]]
+offset = 0x247
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEMXZ"
+target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 0x256
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x262
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x29F
+type = "DIR32"
+symbol = "$L*"
+target = 0x004230A2
+
+[[units.relocations]]
+offset = 0x2D2
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x2E4
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x2F2
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x307
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x315
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x32D
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x356
+type = "REL32"
+symbol = "??DFloat3@th08@@QBE?AU01@M@Z"
+target = 0x00409120
+
+[[units.relocations]]
+offset = 0x369
+type = "REL32"
+symbol = "??HFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 0x370
+type = "REL32"
+symbol = "??GFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x004090D0
+
+[[units.relocations]]
+offset = 0x3C9
+type = "REL32"
+symbol = "?VectorAngle@th08@@YIMMM@Z"
+target = 0x0040C7B0
+
+[[units.relocations]]
+offset = 0x3E2
+type = "REL32"
+symbol = "??NZunTimer@th08@@QAEIH@Z"
+target = 0x0040E390
+
+[[units.relocations]]
+offset = 0x41A
+type = "REL32"
+symbol = "??HFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 0x441
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@MMM@Z"
+target = 0x00404720
+
+[[units.relocations]]
+offset = 0x462
+type = "DIR32"
+symbol = "$L*"
+target = 0x00422EE3
+
+[[units.relocations]]
+offset = 0x466
+type = "DIR32"
+symbol = "$L*"
+target = 0x00422EF1
+
+[[units.relocations]]
+offset = 0x46A
+type = "DIR32"
+symbol = "$L*"
+target = 0x00422EFF
+
+[[units.relocations]]
+offset = 0x46E
+type = "DIR32"
+symbol = "$L*"
+target = 0x00422F10
+
+[[units.relocations]]
+offset = 0x472
+type = "DIR32"
+symbol = "$L*"
+target = 0x00422F30
+
+[[units.relocations]]
+offset = 0x476
+type = "DIR32"
+symbol = "$L*"
+target = 0x00422F53
+
+[[units]]
+name = "enemy-post-ecl-shot-anm-00423150"
+object = "build/probes/EclDependencies.obj"
+symbol = "?FUN_00423150@Enemy@th08@@QAEXXZ"
+target_address = 0x00423150
+size = 0x237
+
+[[units.relocations]]
+offset = 0x31
+type = "REL32"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
+target = 0x00406640
+
+[[units.relocations]]
+offset = 0x49
+type = "REL32"
+symbol = "??PZunTimer@th08@@QAEIH@Z"
+target = 0x0040B8E0
+
+[[units.relocations]]
+offset = 0x5E
+type = "REL32"
+symbol = "?DispatchShotInstruction@EclRunHighProposal@th08@@YIXPAEPAURawInstruction@12@@Z"
+target = 0x00422720
+
+[[units.relocations]]
+offset = 0x6E
+type = "REL32"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
+target = 0x004065F0
+
+[[units.relocations]]
+offset = 0xA9
+type = "DIR32"
+symbol = "__real@bc23d70a"
+target = 0x004B48D8
+
+[[units.relocations]]
+offset = 0xC8
+type = "DIR32"
+symbol = "__real@3c23d70a"
+target = 0x004B48D4
+
+[[units.relocations]]
+offset = 0xE7
+type = "DIR32"
+symbol = "__real@bc23d70a"
+target = 0x004B48D8
+
+[[units.relocations]]
+offset = 0x106
+type = "DIR32"
+symbol = "__real@3c23d70a"
+target = 0x004B48D4
+
+[[units.relocations]]
+offset = 0x140
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x14B
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x1A4
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x1CF
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x1EB
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x207
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units.relocations]]
+offset = 0x223
+type = "REL32"
+symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x004069F0
+
+[[units]]
+name = "ecl-dispatch-shot-instruction-00422720"
+object = "build/probes/EclDependencies.obj"
+symbol = "?DispatchShotInstruction@EclRunHighProposal@th08@@YIXPAEPAURawInstruction@12@@Z"
+target_address = 0x00422720
+size = 0x456
+
+[[units.relocations]]
+offset = 0x76
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x8C
+type = "DIR32"
+symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
+target = 0x017D61AC
+
+[[units.relocations]]
+offset = 0x9B
+type = "DIR32"
+symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
+target = 0x017D61AC
+
+[[units.relocations]]
+offset = 0xAC
+type = "DIR32"
+symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
+target = 0x017D61AC
+
+[[units.relocations]]
+offset = 0xBB
+type = "DIR32"
+symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
+target = 0x017D61AC
+
+[[units.relocations]]
+offset = 0xF0
+type = "REL32"
+symbol = "??HFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x00409080
+
+[[units.relocations]]
+offset = 0x128
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x16D
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x1A5
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x1DE
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x212
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x248
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x27C
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x298
+type = "DIR32"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+
+[[units.relocations]]
+offset = 0x29D
+type = "REL32"
+symbol = "?IsActive@Spellcard@th08@@QAEHXZ"
+target = 0x004178A0
+
+[[units.relocations]]
+offset = 0x2C0
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x2C5
+type = "REL32"
+symbol = "?ScaleIntBasedOnRank@GameManager@th08@@QAEHHH@Z"
+target = 0x00421BA0
+
+[[units.relocations]]
+offset = 0x310
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x315
+type = "REL32"
+symbol = "?ScaleIntBasedOnRank@GameManager@th08@@QAEHHH@Z"
+target = 0x00421BA0
+
+[[units.relocations]]
+offset = 0x351
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x371
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x376
+type = "REL32"
+symbol = "?ScaleFloatBasedOnRank@GameManager@th08@@QAEMMM@Z"
+target = 0x00422B80
+
+[[units.relocations]]
+offset = 0x38E
+type = "DIR32"
+symbol = "__real@3e99999a"
+target = 0x004B48D0
+
+[[units.relocations]]
+offset = 0x3B8
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x3BD
+type = "REL32"
+symbol = "?ScaleFloatBasedOnRank@GameManager@th08@@QAEMMM@Z"
+target = 0x00422B80
+
+[[units.relocations]]
+offset = 0x3C3
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x3DB
+type = "DIR32"
+symbol = "__real@3e99999a"
+target = 0x004B48D0
+
+[[units.relocations]]
+offset = 0x42A
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x449
+type = "DIR32"
+symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
+target = 0x00F54E90
+
+[[units.relocations]]
+offset = 0x44E
+type = "REL32"
+symbol = "?FUN_00430e10@BulletManager@th08@@QAEHPAUBulletSpawnDescriptor@2@@Z"
+target = 0x00430E10

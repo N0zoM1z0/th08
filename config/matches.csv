@@ -973,3 +973,6 @@ address,name,size,status,match_percent,unit,evidence
 0x004212E0,th08::EndEnemySpell,26,matching,100.00,ecl-end-enemy-spell-004212e0,python3 scripts/compare-function.py ecl-end-enemy-spell-004212e0 --json
 0x004230C0,th08::Gui::FUN_004230c0,22,matching,100.00,gui-boss-life-ratio-setter-004230c0,python3 scripts/compare-function.py gui-boss-life-ratio-setter-004230c0 --json
 0x00423130,th08::Gui::FUN_00423130,22,matching,100.00,gui-ecl-lives-setter-00423130,python3 scripts/compare-function.py gui-ecl-lives-setter-00423130 --json
+0x00422C40,th08::Enemy::FUN_00422c40,1122,matching,100.00,enemy-motion-integrator-00422c40,python3 scripts/compare-function.py enemy-motion-integrator-00422c40 --json
+0x00423150,th08::Enemy::FUN_00423150,567,matching,100.00,enemy-post-ecl-shot-anm-00423150,python3 scripts/compare-function.py enemy-post-ecl-shot-anm-00423150 --json
+0x00422720,th08::EclRunHighProposal::DispatchShotInstruction,1110,matching,100.00,ecl-dispatch-shot-instruction-00422720,python3 scripts/compare-function.py ecl-dispatch-shot-instruction-00422720 --json

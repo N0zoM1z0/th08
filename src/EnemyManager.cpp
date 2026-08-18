@@ -443,6 +443,108 @@ void Enemy::FUN_0042a820()
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53c0) = 0;
 }
 
+// FUNCTION: th08 0x422c40
+void Enemy::FUN_00422c40()
+{
+    switch ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 12) & 3)
+    {
+    case 3:
+    {
+        {
+            Float3 legacyWork;
+        }
+        Float3 polarVelocity;
+
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2d9c) =
+            AddNormalizeAngle(
+                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2d9c),
+                g_EclGameTimeScale * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2da0));
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2db0) =
+            g_EclGameTimeScale * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2db4) +
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2db0);
+        polarVelocity.FromAngleMagnitude(
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2d9c),
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2db0));
+        this->vector2d4c.x = polarVelocity.x + this->vector2dd0.x - this->vector2d34.x;
+        this->vector2d4c.y = polarVelocity.y + this->vector2dd0.y - this->vector2d34.y;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2d94) =
+            VectorAngle(this->vector2d4c.y, this->vector2d4c.x);
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2de8) > 0)
+        {
+            this->timer2ddc--;
+            if (this->timer2ddc <= 0)
+                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) &= 0xffffcfff;
+        }
+        break;
+    }
+
+    case 1:
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2d94) =
+            AddNormalizeAngle(
+                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2d94),
+                g_EclGameTimeScale * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2d98));
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2da8) =
+            g_EclGameTimeScale * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2dac) +
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2da8);
+        this->vector2d4c.FromAngleMagnitude(
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2d94),
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2da8));
+        this->vector2d4c.operator float *()[2] = 0.0f;
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2de8) > 0)
+        {
+            this->timer2ddc--;
+            if (this->timer2ddc <= 0)
+                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) &= 0xffffcfff;
+        }
+        break;
+
+    case 2:
+    {
+        f32 progress;
+
+        this->timer2ddc--;
+        progress = 1.0f - (f32)this->timer2ddc /
+                              *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2de8);
+        if (progress < 0.0f)
+            progress = 0.0f;
+        switch ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 14) & 7)
+        {
+        case 1: progress *= progress; break;
+        case 2: progress = progress * progress * progress; break;
+        case 3: progress = progress * progress * progress * progress; break;
+        case 4:
+            progress = 1.0f - progress;
+            progress *= progress;
+            progress = 1.0f - progress;
+            break;
+        case 5:
+            progress = 1.0f - progress;
+            progress = progress * progress * progress;
+            progress = 1.0f - progress;
+            break;
+        case 6:
+            progress = 1.0f - progress;
+            progress = progress * progress * progress * progress;
+            progress = 1.0f - progress;
+            break;
+        }
+
+        this->vector2d4c = this->vector2dd0 + this->vector2dc4 * progress - this->vector2d34;
+        if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 18) & 1) != 0)
+            this->vector2d4c.x = -this->vector2d4c.x;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2d94) =
+            VectorAngle(this->vector2d4c.y, this->vector2d4c.x);
+        if (this->timer2ddc <= 0)
+        {
+            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) &= 0xffffcfff;
+            this->vector2d34 = this->vector2dd0 + this->vector2dc4;
+            this->vector2d4c = Float3(0.0f, 0.0f, 0.0f);
+        }
+        break;
+    }
+    }
+}
+
 // FUNCTION: th08 0x42a4c0
 EnemyUnkStruct3::EnemyUnkStruct3() {}
 

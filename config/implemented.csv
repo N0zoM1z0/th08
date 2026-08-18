@@ -972,3 +972,6 @@ th08::StartEnemySpell
 th08::EndEnemySpell
 th08::Gui::FUN_004230c0
 th08::Gui::FUN_00423130
+th08::Enemy::FUN_00422c40
+th08::Enemy::FUN_00423150
+th08::EclRunHighProposal::DispatchShotInstruction
