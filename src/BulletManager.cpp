@@ -1036,6 +1036,29 @@ i32 BulletManager::FUN_0042f5f0(BulletSpawnDescriptor *descriptor, i32 index1, i
     return 0;
 }
 
+// FUNCTION: th08 0x430d30
+#pragma var_order(delta, i, bullet, this)
+void BulletManager::RemoveBulletsInRadius(const Float3 *position, f32 radius)
+{
+    i32 i;
+    Bullet *bullet;
+
+    bullet = &g_BulletManager.bullets[0];
+    Float3 delta;
+    radius *= radius;
+    for (i = 0; i < 0x600; i++, bullet++)
+    {
+        if (*reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(bullet) + 0xdb8) == 0 ||
+            *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(bullet) + 0xdb8) == 5)
+            continue;
+        delta = bullet->position0 - *position;
+        if (D3DXVec3LengthSq(reinterpret_cast<D3DXVECTOR3 *>(&delta)) > radius)
+            continue;
+        g_ItemManager.SpawnItem(&bullet->position0, static_cast<ItemType>(6), 1);
+        memset(bullet, 0, sizeof(Bullet));
+    }
+}
+
 // FUNCTION: th08 0x430e10
 #pragma var_order(i, angleToPlayer, j, this)
 i32 BulletManager::FUN_00430e10(BulletSpawnDescriptor *descriptor)
@@ -1063,6 +1086,56 @@ doneSpawning:
     if ((descriptor->transformFlags & 0x200) != 0)
         g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(descriptor->spawnSound), descriptor->position.x);
     return 0;
+}
+
+// FUNCTION: th08 0x430f20
+#pragma var_order(i, laser, this)
+Laser *BulletManager::SpawnLaserPattern(BulletSpawnDescriptor *descriptor)
+{
+    Laser *laser;
+    i32 i;
+
+    laser = &this->lasers[0];
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA53C) != 0 &&
+        (descriptor->transformFlags & 4) == 0)
+        return laser;
+
+    for (i = 0; i < 0x100; i++, laser++)
+    {
+        if (laser->inUse)
+            continue;
+
+        this->bulletAnm->SetAndExecuteScriptIdx(&laser->vm0, descriptor->bulletType + 10);
+        this->bulletAnm->SetSprite(&laser->vm0, laser->vm0.activeSpriteIndex + descriptor->color);
+        this->bulletAnm->InitializeAndSetSprite(
+            &laser->vm1, g_BulletSpriteOffsetSmall[descriptor->color] + 0x92);
+        laser->vm1.blendMode = 1;
+        laser->position = descriptor->position;
+        laser->color = descriptor->color;
+        laser->inUse = 1;
+        laser->angle = descriptor->angle;
+        if (descriptor->aimMode == 0)
+            laser->angle = g_Player.FUN_0044c1b0(&descriptor->position) + laser->angle;
+        laser->flags = static_cast<u16>(descriptor->transformFlags);
+        laser->timer = 0;
+        laser->startOffset = descriptor->laserStartOffset;
+        laser->endOffset = descriptor->laserEndOffset;
+        laser->startLength = descriptor->laserStartLength;
+        laser->width = descriptor->laserWidth;
+        laser->speed = descriptor->speed1;
+        laser->startTime = descriptor->laserStartTime;
+        laser->duration = descriptor->laserDuration;
+        laser->despawnDuration = descriptor->laserDespawnDuration;
+        laser->hitboxStartTime = descriptor->laserHitboxStartTime;
+        laser->hitboxEndDelay = descriptor->laserHitboxEndDelay;
+        laser->unknown599 = 0;
+        if (laser->startTime == 0)
+            laser->state = 1;
+        else
+            laser->state = 0;
+        break;
+    }
+    return laser;
 }
 
 // FUNCTION: th08 0x431240

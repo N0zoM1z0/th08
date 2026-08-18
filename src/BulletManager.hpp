@@ -29,7 +29,15 @@ struct BulletSpawnDescriptor
     f32 speed1;
     f32 speed2;
     BulletTransformRecord transforms[18];
-    unknown_fields(0x1D0, 0x24);
+    f32 laserStartOffset;       // +0x1D0
+    f32 laserEndOffset;         // +0x1D4
+    f32 laserStartLength;       // +0x1D8
+    f32 laserWidth;             // +0x1DC
+    i32 laserStartTime;         // +0x1E0
+    i32 laserDuration;          // +0x1E4
+    i32 laserDespawnDuration;   // +0x1E8
+    i32 laserHitboxStartTime;   // +0x1EC
+    i32 laserHitboxEndDelay;    // +0x1F0
     i16 count1;
     i16 count2;
     u16 aimMode;
@@ -79,9 +87,25 @@ struct Laser
     AnmVm vm0;
     AnmVm vm1;
     Float3 position;
-    unknown_fields(0x554, 0x34);
-    ZunTimer timer;
-    unknown_fields(0x594, 8);
+    f32 angle;                 // +0x554
+    f32 startOffset;           // +0x558
+    f32 endOffset;             // +0x55C
+    f32 startLength;           // +0x560
+    f32 width;                 // +0x564
+    f32 currentWidth;          // +0x568
+    f32 speed;                 // +0x56C
+    i32 startTime;             // +0x570
+    i32 hitboxStartTime;       // +0x574
+    i32 duration;              // +0x578
+    i32 despawnDuration;       // +0x57C
+    i32 hitboxEndDelay;        // +0x580
+    i32 inUse;                 // +0x584
+    ZunTimer timer;            // +0x588
+    u16 flags;                 // +0x594
+    i16 color;                 // +0x596
+    u8 state;                  // +0x598
+    u8 unknown599;
+    u8 unknown59A[2];
 };
 C_ASSERT(sizeof(Laser) == 0x59c);
 
@@ -136,7 +160,9 @@ struct BulletManager
     i32 DespawnBullets(i32 maxScore, i32 awardLaserItems);
     void FUN_004321b0();
     i32 FUN_0042f5f0(BulletSpawnDescriptor *descriptor, i32 index1, i32 index2, f32 angleToPlayer);
+    void RemoveBulletsInRadius(const Float3 *position, f32 radius);
     i32 FUN_00430e10(BulletSpawnDescriptor *descriptor);
+    Laser *SpawnLaserPattern(BulletSpawnDescriptor *descriptor);
 
     static ZunResult RegisterChain(char *bulletAnmPath);
     static ChainCallbackResult OnUpdate(BulletManager *bulletManager);

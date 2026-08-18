@@ -990,3 +990,10 @@ th08::EclRunLowProposal::SpawnChildStandard0041F110
 th08::EclRunLowProposal::SpawnChildAlternate0041F280
 th08::Spellcard::FUN_0041f0b0
 th08::Spellcard::FUN_0041f0e0
+th08::BulletManager::RemoveBulletsInRadius
+th08::BulletManager::SpawnLaserPattern
+th08::Gui::StartStageBackgroundSequence
+th08::Gui::SetBossPresent
+th08::Gui::SetBossGaugeSlot
+th08::Gui::SetBossGaugeValue
+th08::EclRunHighProposal::SpawnPacketTyped::SpawnPacketTyped

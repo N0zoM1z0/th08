@@ -95,6 +95,8 @@ struct Gui
     i32 MsgWait();
     i32 IsDialogPresent();
     bool IsBossPresent();
+    bool SetBossPresent(bool value);
+    i32 StartStageBackgroundSequence();
     i32 FUN_00437dc7();
     void FreeMsgFile();
     void FUN_00437ddd(i32 value);
@@ -102,6 +104,8 @@ struct Gui
     void gui_fun_00437edc(i32 value);
     void FUN_00422c20(i32 value);
     void FUN_004230c0(f32 value);
+    void SetBossGaugeSlot(i32 index, f32 start, f32 stop);
+    void SetBossGaugeValue(i32 index, i32 value);
     void FUN_00423130(i32 value);
     void FUN_00439007();
     ZunResult FUN_00439050();

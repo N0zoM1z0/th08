@@ -243,7 +243,7 @@ th08::Spellcard::FUN_0041f0b0,0x41f0b0,0x25,__thiscall,,void,Spellcard*,i32
 th08::Spellcard::FUN_0041f0e0,0x41f0e0,0x28,__thiscall,,void,Spellcard*,i32
 th08::EclRunLowProposal::SpawnChildStandard0041F110,0x41f110,0x16d,__fastcall,,EclOperands::EnemyOverlay*,EclOperands::EnemyOverlay*,EclRawInstruction*
 th08::EclRunLowProposal::SpawnChildAlternate0041F280,0x41f280,0x17f,__fastcall,,EclOperands::EnemyOverlay*,EclOperands::EnemyOverlay*,EclRawInstruction*
-FUN_0041f400,0x41f400,0x19,unknown,,u8
+th08::EclRunHighProposal::SpawnPacketTyped::SpawnPacketTyped,0x41f400,0x19,__thiscall,,EclRunHighProposal::SpawnPacketTyped*,EclRunHighProposal::SpawnPacketTyped*
 th08::EclOperands::ResolveInt,0x41f420,0x76b,__fastcall,,i32,EnemyOverlay*,i32
 th08::EclOperands::TargetEnemyHelpersOverlay::HasAttachedEnemy,0x41fd20,0x1c,__thiscall,,i32,TargetEnemyHelpersOverlay*
 th08::EclOperands::TargetEnemyHelpersOverlay::CountParentChain,0x41fd40,0x46,__thiscall,,i32,TargetEnemyHelpersOverlay*
@@ -278,11 +278,11 @@ th08::EclRunHighProposal::DispatchShotInstruction,0x422720,0x456,__fastcall,,voi
 th08::GameManager::ScaleFloatBasedOnRank,0x422b80,0x27,__thiscall,,float10,GameManager*,f32,f32
 th08::AsciiManager::FUN_00422bb0,0x422bb0,0x2a,__thiscall,,void,AsciiManager*,i32,i16
 th08::AsciiManager::SetBossMarkerPosition,0x422be0,0x33,__thiscall,,void,AsciiManager*,i32,_D3DVECTOR*
-th08::Gui::FUN_00422c20,0x422c20,0x19,__thiscall,,void,Gui*,i32
+th08::Gui::SetBossPresent,0x422c20,0x19,__thiscall,,bool,Gui*,bool
 th08::Enemy::FUN_00422c40,0x422c40,0x462,__thiscall,,void,Enemy*
 th08::Gui::FUN_004230c0,0x4230c0,0x16,__thiscall,,void,Gui*,f32
-FUN_004230e0,0x4230e0,0x27,unknown,,u8,u8,u8,u8
-FUN_00423110,0x423110,0x1a,unknown,,u8,u8,u8
+th08::Gui::SetBossGaugeSlot,0x4230e0,0x27,__thiscall,,void,Gui*,i32,f32,f32
+th08::Gui::SetBossGaugeValue,0x423110,0x1a,__thiscall,,void,Gui*,i32,i32
 th08::Gui::FUN_00423130,0x423130,0x16,__thiscall,,void,Gui*,i32
 th08::Enemy::FUN_00423150,0x423150,0x237,__thiscall,,void,Enemy*
 FUN_00423390,0x423390,0x34,unknown,,u8
@@ -441,9 +441,9 @@ th08::Float3::operator-=,0x42ff70,0x43,__thiscall,,Float3*,Float3*,const Float3*
 th08::Bullet::FUN_0042ffc0,0x42ffc0,0x81b,__thiscall,,void,Bullet*
 th08::BulletManager::RemoveAllBullets,0x430830,0x26c,__thiscall,,void,BulletManager*,i32
 th08::BulletManager::DespawnBullets,0x430aa0,0x28b,__thiscall,,i32,BulletManager*,i32,i32
-FUN_00430d30,0x430d30,0xd6,unknown,,u8,u8,u8
+th08::BulletManager::RemoveBulletsInRadius,0x430d30,0xd6,__thiscall,,void,BulletManager*,const Float3*,f32
 th08::BulletManager::FUN_00430e10,0x430e10,0x103,__thiscall,,i32,BulletManager*,BulletSpawnDescriptor*
-FUN_00430f20,0x430f20,0x27f,unknown,,u8,u8
+th08::BulletManager::SpawnLaserPattern,0x430f20,0x27f,__thiscall,,Laser*,BulletManager*,BulletSpawnDescriptor*
 th08::BulletManager::RegisterChain,0x4311a0,0x98,__fastcall,,ZunResult,char*
 th08::BulletManager::OnUpdate,0x431240,0xf16,__fastcall,,ChainCallbackResult,BulletManager*
 th08::Bullet::FUN_00432170,0x432170,0x37,__thiscall,,void,Bullet*
@@ -502,7 +502,7 @@ th08::Gui::FUN_00438f58,0x438f58,0x91,unknown,,u8
 th08::FUN_00438fe9,0x438fe9,0xa,__fastcall,,i32
 th08::FUN_00438ff3,0x438ff3,0xa,unknown,,u8
 th08::FUN_00438ffd,0x438ffd,0xa,unknown,,u8
-FUN_00439007,0x439007,0x49,unknown,,u8
+th08::Gui::StartStageBackgroundSequence,0x439007,0x49,__thiscall,,i32,Gui*
 th08::Gui::FUN_00439050,0x439050,0x43,__thiscall,,ZunResult,Gui*
 th08::Gui::FUN_00439093,0x439093,0x43,__thiscall,,ZunResult,Gui*
 th08::Gui::FUN_004390d6,0x4390d6,0x18,__thiscall,,ZunResult,Gui*

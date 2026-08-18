@@ -1524,6 +1524,14 @@ void Gui::FUN_00439810(i32 value)
     this->impl->FUN_0043396d(value);
 }
 
+// FUNCTION: th08 0x439007
+i32 Gui::StartStageBackgroundSequence()
+{
+    this->timesAnm->ExecuteAnmIdx(&this->impl->vm2156c, 2);
+    this->timesAnm->SetSprite(&this->impl->vm2156c, static_cast<i8>(g_GameManager.GetClockTime()));
+    return 0;
+}
+
 // FUNCTION: th08 0x439050
 ZunResult Gui::FUN_00439050()
 {

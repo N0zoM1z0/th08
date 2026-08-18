@@ -248,3 +248,11 @@ When a target address falls inside a known large global object, express it throu
 For one-bit setters, a real bitfield assignment can be required for register ownership even when a manual mask/OR expression is mathematically identical.  If target code computes the incoming bit first and then uses the old flag word as the OR destination, test a bitfield member store.
 
 If MSVC reports that a newly declared member does not exist, check whether that class definition is already cached in the PCH through an indirect include.  Force-rebuild `th_pch.pch` before treating the diagnostic as a declaration/source mismatch.
+
+## TU-profile and subsystem-field closure corpus
+
+Before tuning a small residual, verify that the function is compiled in the target-proven translation unit and optimization profile. `Gui::StartStageBackgroundSequence @ 0x00439007` is 77 bytes in the `/Od` ECL dependency probe but exactly 73 bytes in the real `/Os` Gui TU with the same behavior; the profile change naturally restores EAX reuse and the `leave` epilogue.
+
+For a loop that owns a non-trivial vector local, constructor timing and physical stack order are independent. `BulletManager::RemoveBulletsInRadius` materializes the bullet-pool pointer before constructing `Float3 delta`, while `#pragma var_order(delta, i, bullet, this)` controls the final slots. A rejection-first `if (distanceSquared > radiusSquared) continue;` is also target-visible and should be preferred over an algebraically equivalent positive-body form when the target has a short conditional plus explicit loop jump.
+
+When a cross-version aggregate lines up field-for-field with target accesses, promote the target-proven fields instead of maintaining raw offsets. TH08 `SpawnLaserPattern` confirms the laser runtime tail and the descriptor's nine `+0x1D0..+0x1F0` laser parameters; the resulting typed TH06-style source matches all 639 target bytes directly. Re-audit large-dispatcher direct-call closures after such promotions and separate remaining runtime/library wrappers from authored functions.

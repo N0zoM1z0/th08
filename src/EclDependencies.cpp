@@ -3,6 +3,7 @@
 #include "Gui.hpp"
 #include "Spellcard.hpp"
 #include "EnemyManager.hpp"
+#include "BulletManager.hpp"
 #include "GameManager.hpp"
 #include "EclOperands.hpp"
 #include "EclManager.hpp"
@@ -51,10 +52,29 @@ void __fastcall EndEnemySpell(u8 *enemy, void *instruction)
     g_Spellcard.EndSpell();
 }
 
+// FUNCTION: th08 0x422c20
+bool Gui::SetBossPresent(bool value)
+{
+    return this->bossPresent = value;
+}
+
 // FUNCTION: th08 0x4230c0
 void Gui::FUN_004230c0(f32 value)
 {
     this->bossLifeBarSize = value;
+}
+
+// FUNCTION: th08 0x4230e0
+void Gui::SetBossGaugeSlot(i32 index, f32 start, f32 stop)
+{
+    this->bossLifeBarSegmentStart[index] = start;
+    this->bossLifeBarSegmentStop[index] = stop;
+}
+
+// FUNCTION: th08 0x423110
+void Gui::SetBossGaugeValue(i32 index, i32 value)
+{
+    this->bossLifeBarSegmentColor[index] = value;
 }
 
 // FUNCTION: th08 0x423130
@@ -62,6 +82,8 @@ void Gui::FUN_00423130(i32 value)
 {
     this->eclSetLives = value;
 }
+
+
 
 namespace EclRunLowProposal
 {
@@ -619,6 +641,21 @@ EclOperands::EnemyOverlay *__fastcall SpawnChildAlternate0041F280(
 
 namespace EclRunHighProposal
 {
+
+struct SpawnPacketTyped
+{
+    SpawnPacketTyped();
+
+    i32 type;
+    D3DXVECTOR3 position;
+    i32 arg4;
+    i32 arg5;
+    i32 arg6;
+};
+
+// FUNCTION: th08 0x41f400
+SpawnPacketTyped::SpawnPacketTyped() {}
+
 struct RawInstruction
 {
     i32 time;
