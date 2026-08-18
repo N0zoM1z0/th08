@@ -256,8 +256,8 @@ th08::EclOperands::EnemyOverlay::ResolveFloat,0x420120,function
 th08::EclOperands::ResolveFloatLValue,0x420950,function
 th08::EclHelpers::ConfigurePolarMotion,0x420d10,function
 th08::EclHelpers::ConfigureRelativeMotion,0x420f40,function
-FUN_00421120,0x421120,function
-FUN_00421180,0x421180,function
+th08::EclRunLowProposal::InterpolateLinear,0x421120,function
+th08::EclRunLowProposal::InterpolateHermite,0x421180,function
 th08::StartEnemySpell,0x421280,function
 th08::EndEnemySpell,0x4212e0,function
 th08::EclRunLowProposal::ApplyInterpolationOperation,0x421300,function

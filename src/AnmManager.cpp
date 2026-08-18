@@ -2227,7 +2227,7 @@ void AnmManager::SetupVertexBuffer()
     }
 }
 
-static i32 GetAnmFormat(i32 format)
+i32 GetAnmFormat(i32 format)
 {
     if (g_Supervisor.Is16bitColorMode() != 0)
     {

@@ -1015,3 +1015,7 @@ address,name,size,status,match_percent,unit,evidence
 0x0042B370,th08::Enemy::FUN_0042b370,288,matching,100.00,enemy-attached-hp-clamp-0042b370,python3 scripts/compare-function.py enemy-attached-hp-clamp-0042b370 --json
 0x0042BCF0,th08::Enemy::FUN_0042bcf0,432,matching,100.00,enemy-cleanup-0042bcf0,python3 scripts/compare-function.py enemy-cleanup-0042bcf0 --json
 0x0042E010,th08::Enemy::FUN_0042e010,257,matching,100.00,enemy-sync-effects-0042e010,python3 scripts/compare-function.py enemy-sync-effects-0042e010 --json
+0x00421120,th08::EclRunLowProposal::InterpolateLinear,89,matching,100.00,ecl-interpolate-linear-00421120,python3 scripts/compare-function.py ecl-interpolate-linear-00421120 --json
+0x00421180,th08::EclRunLowProposal::InterpolateHermite,256,matching,100.00,ecl-interpolate-hermite-00421180,python3 scripts/compare-function.py ecl-interpolate-hermite-00421180 --json
+0x00465510,th08::GetAnmFormat,83,matching,100.00,anm-get-format-00465510,python3 scripts/compare-function.py anm-get-format-00465510 --json
+0x0040B500,D3DXVec3LengthSq,49,matching,100.00,d3dx-vec3-length-sq-0040b500,python3 scripts/compare-function.py d3dx-vec3-length-sq-0040b500 --json

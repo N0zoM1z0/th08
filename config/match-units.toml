@@ -106423,3 +106423,163 @@ offset = 0xEB
 type = "REL32"
 symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
 target = 0x0043EDB0
+
+[[units]]
+name = "ecl-interpolate-linear-00421120"
+object = "build/probes/EclDependencies.obj"
+symbol = "?InterpolateLinear@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUInterpolationSlot@12@M@Z"
+target_address = 0x00421120
+size = 0x59
+
+[[units.relocations]]
+offset = 0x17
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x29
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x4A
+type = "REL32"
+symbol = "?ResolveFloatLValue@EclOperands@th08@@YIPAMPAUEnemyOverlay@12@PAMGH@Z"
+target = 0x00420950
+
+[[units]]
+name = "ecl-interpolate-hermite-00421180"
+object = "build/probes/EclDependencies.obj"
+symbol = "?InterpolateHermite@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUInterpolationSlot@12@M@Z"
+target_address = 0x00421180
+size = 0x100
+
+[[units.relocations]]
+offset = 0x17
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x29
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x3B
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x4D
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x59
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x62
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x6A
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x73
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0x84
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x8D
+type = "DIR32"
+symbol = "__real@40400000"
+target = 0x004B42DC
+
+[[units.relocations]]
+offset = 0x98
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0xA1
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0xB5
+type = "DIR32"
+symbol = "__real@3f800000"
+target = 0x004B4338
+
+[[units.relocations]]
+offset = 0xF1
+type = "REL32"
+symbol = "?ResolveFloatLValue@EclOperands@th08@@YIPAMPAUEnemyOverlay@12@PAMGH@Z"
+target = 0x00420950
+
+[[units]]
+name = "anm-get-format-00465510"
+object = "build/objdiff/reimpl/AnmManager.obj"
+symbol = "?GetAnmFormat@th08@@YIHH@Z"
+target_address = 0x00465510
+size = 0x53
+
+[[units.relocations]]
+offset = 0x8
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0xD
+type = "REL32"
+symbol = "?Is16bitColorMode@Supervisor@th08@@QAEIXZ"
+target = 0x00443A90
+
+[[units.relocations]]
+offset = 0x1B
+type = "DIR32"
+symbol = "?g_TextureFormatD3D8Mapping@th08@@3PAW4_D3DFORMAT@@A"
+target = 0x004B8480
+
+[[units.relocations]]
+offset = 0x28
+type = "DIR32"
+symbol = "?g_TextureFormatD3D8Mapping@th08@@3PAW4_D3DFORMAT@@A"
+target = 0x004B8480
+
+[[units.relocations]]
+offset = 0x3E
+type = "DIR32"
+symbol = "?g_TextureFormatD3D8Mapping@th08@@3PAW4_D3DFORMAT@@A"
+target = 0x004B8480
+
+[[units]]
+name = "d3dx-vec3-length-sq-0040b500"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?D3DXVec3LengthSq@@YIMPBUD3DXVECTOR3@@@Z"
+target_address = 0x0040B500
+size = 0x31

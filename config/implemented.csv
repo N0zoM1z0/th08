@@ -1014,3 +1014,7 @@ th08::Supervisor::StartEffect
 th08::Enemy::FUN_0042b370
 th08::Enemy::FUN_0042bcf0
 th08::Enemy::FUN_0042e010
+th08::EclRunLowProposal::InterpolateLinear
+th08::EclRunLowProposal::InterpolateHermite
+th08::GetAnmFormat
+D3DXVec3LengthSq

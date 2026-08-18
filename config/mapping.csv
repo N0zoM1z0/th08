@@ -106,7 +106,7 @@ _sqrtf,0x40b440,0x15,__fastcall,,f32,f32
 th08::Float3::Float3,0x40b460,0xe,__thiscall,,Float3*,Float3*
 th08::Float3::operator/=,0x40b470,0x49,__thiscall,,Float3*,Float3*,f32
 D3DXVec3Length,0x40b4c0,0x3a,__fastcall,,f32,const D3DXVECTOR3*
-FUN_0040b500,0x40b500,0x31,unknown,,u8
+D3DXVec3LengthSq,0x40b500,0x31,__fastcall,,f32,const D3DXVECTOR3*
 D3DXVec3Dot,0x40b540,0x36,__fastcall,,f32,const D3DXVECTOR3*,const D3DXVECTOR3*
 th08::VertexDiffuseXyzrhw::VertexDiffuseXyzrhw,0x40b580,0x16,__thiscall,,VertexDiffuseXyzrhw*,VertexDiffuseXyzrhw*
 th08::Background::SetCamera1,0x40b5a0,0x124,__thiscall,,u8,Background*
@@ -255,8 +255,8 @@ th08::EclOperands::EnemyOverlay::ResolveFloat,0x420120,0x697,__thiscall,,f32,Ene
 th08::EclOperands::ResolveFloatLValue,0x420950,0x2b8,__fastcall,,f32*,EnemyOverlay*,f32*,u16,i32
 th08::EclHelpers::ConfigurePolarMotion,0x420d10,0x22c,__fastcall,,void,EnemyOverlay*,EclRawInstruction*
 th08::EclHelpers::ConfigureRelativeMotion,0x420f40,0x1d3,__fastcall,,void,EnemyOverlay*,EclRawInstruction*
-FUN_00421120,0x421120,0x59,unknown,,u8,u8
-FUN_00421180,0x421180,0x100,unknown,,u8,u8
+th08::EclRunLowProposal::InterpolateLinear,0x421120,0x59,__fastcall,,void,EclOperands::EnemyOverlay*,EclRunLowProposal::InterpolationSlot*,f32
+th08::EclRunLowProposal::InterpolateHermite,0x421180,0x100,__fastcall,,void,EclOperands::EnemyOverlay*,EclRunLowProposal::InterpolationSlot*,f32
 th08::StartEnemySpell,0x421280,0x53,__fastcall,,void,u8*,void*
 th08::EndEnemySpell,0x4212e0,0x1a,__fastcall,,void,u8*,void*
 th08::EclRunLowProposal::ApplyInterpolationOperation,0x421300,0xee,__fastcall,,void,EclOperands::EnemyOverlay*,EclRawInstruction*

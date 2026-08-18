@@ -276,3 +276,9 @@ For dense `/Os` switches, verify the enum's actual numeric base before changing 
 For VC7 `/Od` branch-local class temporaries, the target may consume the constructor's returned `this` directly. When a target shows `ctor; push eax` with no later address materialization, an old-MSVC address-of temporary expression such as `&Float3(...)` can be the real source shape. A named local followed by `&local` adds an observable `lea`. Accept the temporary form only under strict canonical replay and never replace it with asm or byte padding.
 
 Treat early-return topology as codegen evidence. `if (value == 0) return; body;` and `if (value != 0) { body; }` are semantically equivalent at function end but can differ by a short conditional plus an explicit epilogue jump. Preserve the form demonstrated by the target.
+
+## x87 named-home / static-owner corpus
+
+When VC7 `/Od` target code stores an x87 result with `fst [local]` and immediately continues arithmetic without reloading it, test a real named source local rather than an artificial spill. A named value assigned from the call and used in the following expression can make VC7 preserve both the stack home and the live ST0 value; use `#pragma var_order` only to place proven locals.
+
+Canonical evidence should come from a COFF function symbol with a reproducible extent. If an already-exact TU-local `static` helper has only a raw/internal aux record, prefer promoting that existing implementation to its real namespace-level owner when ownership is semantically valid and codegen remains exact. Do not add comparator exceptions merely to accept an unbounded symbol.

@@ -313,6 +313,50 @@ C_ASSERT(sizeof(InterpolationSlot) == 0x30);
 
 extern void *g_EclInterpolatorCallbacks[];
 
+// FUNCTION: th08 0x421120
+#pragma var_order(end, start)
+void __fastcall InterpolateLinear(
+    EclOperands::EnemyOverlay *enemy, InterpolationSlot *slot, f32 t)
+{
+    f32 start;
+    f32 end;
+
+    start = enemy->ResolveFloat(slot->parameter0);
+    end = enemy->ResolveFloat(slot->parameter1);
+    *EclOperands::ResolveFloatLValue(enemy, &slot->affectedVariable, 0, -1) =
+        (end - start) * t + start;
+}
+
+// FUNCTION: th08 0x421180
+#pragma var_order(weight3, parameter3, weight1, parameter2, parameter1, weight2, weight0, parameter0)
+void __fastcall InterpolateHermite(
+    EclOperands::EnemyOverlay *enemy, InterpolationSlot *slot, f32 t)
+{
+    f32 parameter0;
+    f32 parameter1;
+    f32 parameter2;
+    f32 parameter3;
+    f32 weight0;
+    f32 weight1;
+    f32 weight2;
+    f32 weight3;
+
+    parameter0 = enemy->ResolveFloat(slot->parameter0);
+    parameter1 = enemy->ResolveFloat(slot->parameter1);
+    parameter2 = enemy->ResolveFloat(slot->parameter2);
+    parameter3 = enemy->ResolveFloat(slot->parameter3);
+
+    weight0 = (t - 1.0f) * (t - 1.0f) * (2.0f * t + 1.0f);
+    weight1 = t * t * (3.0f - 2.0f * t);
+    weight2 = (1.0f - t) * (1.0f - t) * t;
+    weight3 = (t - 1.0f) * t * t;
+
+    *EclOperands::ResolveFloatLValue(enemy, &slot->affectedVariable, 0, -1) =
+        weight0 * parameter0 + weight1 * parameter1 +
+        weight2 * parameter2 + weight3 * parameter3;
+}
+
+
 // FUNCTION: th08 0x4213f0
 void __fastcall InstallInterpolationSlot(
     EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction)
