@@ -240,3 +240,11 @@ For repeated operand dispatch, do not cache resolved values unless target call c
 When a `rep movsd` copy uses a target-resident static source, test a real extern aggregate owner instead of an absolute pointer cast.  The `g_EclCallParameters @ 0x004ECE20` aggregate changes VC7 evaluation from source-first to the target destination/count/source order.  Use typed `EnemyEclContext` aggregate assignment for 0x228 stack frames rather than `memcpy`/asm.
 
 For raw VM-offset cleanup, verify the exact narrow field.  `enemy + index*0x2A4 + 0x4CA` is `AnmVm::scriptIndex` relative to VM base `+0x2B0`; `activeSpriteIndex` would be six bytes earlier and is not equivalent.
+
+## Typed sentinel / bitfield / PCH corpus
+
+When a target address falls inside a known large global object, express it through the owning typed object and index/field before creating a new global.  `0x00F4F8F0` is `&g_EnemyManager.enemies[480]`; VC7 emits the target base relocation plus a large addend automatically.  This is preferable to an absolute pointer or synthetic sentinel symbol.
+
+For one-bit setters, a real bitfield assignment can be required for register ownership even when a manual mask/OR expression is mathematically identical.  If target code computes the incoming bit first and then uses the old flag word as the OR destination, test a bitfield member store.
+
+If MSVC reports that a newly declared member does not exist, check whether that class definition is already cached in the PCH through an indirect include.  Force-rebuild `th_pch.pch` before treating the diagnostic as a declaration/source mismatch.

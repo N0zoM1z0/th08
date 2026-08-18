@@ -104964,3 +104964,170 @@ offset = 0x19A
 type = "REL32"
 symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
 target = 0x0041F420
+
+[[units]]
+name = "ecl-find-linked-child-tail-0041efc0"
+object = "build/probes/EclDependencies.obj"
+symbol = "?FindLinkedChildTail0041EFC0@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
+target_address = 0x0041EFC0
+size = 0x36
+
+[[units.relocations]]
+offset = 0x13
+type = "REL32"
+symbol = "?HasParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+target = 0x0041F000
+
+[[units]]
+name = "ecl-spawn-child-standard-0041f110"
+object = "build/probes/EclDependencies.obj"
+symbol = "?SpawnChildStandard0041F110@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
+target_address = 0x0041F110
+size = 0x16D
+
+[[units.relocations]]
+offset = 0xF
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x3E
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x5B
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x8C
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0xC3
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0xED
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x117
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x14E
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x153
+type = "REL32"
+symbol = "?SpawnEnemy2@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHPAH@Z"
+target = 0x0042A680
+
+[[units.relocations]]
+offset = 0x15E
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units]]
+name = "ecl-spawn-child-alternate-0041f280"
+object = "build/probes/EclDependencies.obj"
+symbol = "?SpawnChildAlternate0041F280@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
+target_address = 0x0041F280
+size = 0x17F
+
+[[units.relocations]]
+offset = 0xF
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x3E
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x5B
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0x8C
+type = "REL32"
+symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
+target = 0x00420120
+
+[[units.relocations]]
+offset = 0xB9
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 0xD5
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0xFF
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x129
+type = "REL32"
+symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
+target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x160
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x165
+type = "REL32"
+symbol = "?SpawnEnemy2@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHPAH@Z"
+target = 0x0042A680
+
+[[units.relocations]]
+offset = 0x170
+type = "DIR32"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+
+[[units]]
+name = "spellcard-ecl-flag-bit6-0041f0b0"
+object = "build/SpellCard.obj"
+symbol = "?FUN_0041f0b0@Spellcard@th08@@QAEXH@Z"
+target_address = 0x0041F0B0
+size = 0x25
+
+[[units]]
+name = "spellcard-ecl-flag-bit11-0041f0e0"
+object = "build/SpellCard.obj"
+symbol = "?FUN_0041f0e0@Spellcard@th08@@QAEXH@Z"
+target_address = 0x0041F0E0
+size = 0x28

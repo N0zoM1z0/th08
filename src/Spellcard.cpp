@@ -1314,6 +1314,28 @@ void Spellcard::SetStoredVector(f32 x, f32 y, f32 z)
     *(f32 *)(this->spellEffect + 0x2AC) = z;
 }
 
+struct SpellcardEclFlagBits
+{
+    u32 lowBits : 6;
+    u32 bit6 : 1;
+    u32 bits7To10 : 4;
+    u32 bit11 : 1;
+    u32 highBits : 20;
+};
+C_ASSERT(sizeof(SpellcardEclFlagBits) == 4);
+
+// FUNCTION: th08 0x0041F0B0
+void Spellcard::FUN_0041f0b0(i32 value)
+{
+    reinterpret_cast<SpellcardEclFlagBits *>(&this->flags)->bit6 = value;
+}
+
+// FUNCTION: th08 0x0041F0E0
+void Spellcard::FUN_0041f0e0(i32 value)
+{
+    reinterpret_cast<SpellcardEclFlagBits *>(&this->flags)->bit11 = value;
+}
+
 
 
 // FUNCTION: th08 0x004178A0

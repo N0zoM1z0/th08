@@ -530,6 +530,87 @@ void __fastcall SetExtraAnmScript(
     }
 }
 
+
+// FUNCTION: th08 0x41efc0
+EclOperands::EnemyOverlay *__fastcall FindLinkedChildTail0041EFC0(
+    EclOperands::EnemyOverlay *parent)
+{
+    EclOperands::EnemyOverlay *cursor;
+
+    cursor = parent;
+    if (reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(parent)->HasParentChain())
+    {
+        while (*reinterpret_cast<EclOperands::EnemyOverlay **>(cursor->bytes + 8) != NULL)
+            cursor = *reinterpret_cast<EclOperands::EnemyOverlay **>(cursor->bytes + 8);
+    }
+    return cursor;
+}
+
+// FUNCTION: th08 0x41f110
+EclOperands::EnemyOverlay *__fastcall SpawnChildStandard0041F110(
+    EclOperands::EnemyOverlay *parent, EclRawInstruction *instruction)
+{
+    EclOperands::EnemyOverlay *child;
+
+    child = reinterpret_cast<EclOperands::EnemyOverlay *>(&g_EnemyManager.enemies[480]);
+    if (*reinterpret_cast<i32 *>(parent->bytes + 0x2dfc) > 0 &&
+        (((*reinterpret_cast<u32 *>(parent->bytes + 0x3324) >> 10) & 1) == 0))
+    {
+        Float3 position;
+        position.x = DEP_READ_FLOAT(parent, instruction, 1);
+        position.y = DEP_READ_FLOAT(parent, instruction, 2);
+        position.z = 0.0f;
+        child = reinterpret_cast<EclOperands::EnemyOverlay *>(
+            g_EnemyManager.SpawnEnemy2(
+                *reinterpret_cast<i32 *>(instruction->operands),
+                reinterpret_cast<D3DXVECTOR3 *>(&position),
+                DEP_READ_INT(parent, instruction, 3),
+                DEP_READ_INT(parent, instruction, 4),
+                DEP_READ_INT(parent, instruction, 5),
+                reinterpret_cast<i32 *>(
+                    *reinterpret_cast<u8 **>(parent->bytes + 0x2ca0) + 0x18)));
+    }
+    else
+    {
+        *reinterpret_cast<i32 *>(
+            reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9dcef8) = 1;
+    }
+    return child;
+}
+
+// FUNCTION: th08 0x41f280
+EclOperands::EnemyOverlay *__fastcall SpawnChildAlternate0041F280(
+    EclOperands::EnemyOverlay *parent, EclRawInstruction *instruction)
+{
+    EclOperands::EnemyOverlay *child;
+
+    child = reinterpret_cast<EclOperands::EnemyOverlay *>(&g_EnemyManager.enemies[480]);
+    if (*reinterpret_cast<i32 *>(parent->bytes + 0x2dfc) > 0 &&
+        (((*reinterpret_cast<u32 *>(parent->bytes + 0x3324) >> 10) & 1) == 0))
+    {
+        Float3 position;
+        position.x = DEP_READ_FLOAT(parent, instruction, 1);
+        position.y = DEP_READ_FLOAT(parent, instruction, 2);
+        position.z = 0.0f;
+        position += *reinterpret_cast<Float3 *>(parent->bytes + 0x2d88);
+        child = reinterpret_cast<EclOperands::EnemyOverlay *>(
+            g_EnemyManager.SpawnEnemy2(
+                *reinterpret_cast<i32 *>(instruction->operands),
+                reinterpret_cast<D3DXVECTOR3 *>(&position),
+                DEP_READ_INT(parent, instruction, 3),
+                DEP_READ_INT(parent, instruction, 4),
+                DEP_READ_INT(parent, instruction, 5),
+                reinterpret_cast<i32 *>(
+                    *reinterpret_cast<u8 **>(parent->bytes + 0x2ca0) + 0x18)));
+    }
+    else
+    {
+        *reinterpret_cast<i32 *>(
+            reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9dcef8) = 1;
+    }
+    return child;
+}
+
 #undef DEP_READ_FLOAT
 #undef DEP_READ_INT
 #undef DEP_BYTES

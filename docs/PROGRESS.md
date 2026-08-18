@@ -6,10 +6,10 @@ and `config/implemented.csv`.
 > `implemented.csv` records source presence only. Exact figures below
 > count only reproducible 100% comparisons tracked in `config/matches.csv`.
 
-- Source-present authored functions: **988 / 1,116 (88.53%)**
-- Source-present authored bytes: **397,691 / 459,958 (86.46%)**
-- Exact authored functions: **987 / 1,116 (88.44%)**
-- Exact authored bytes: **397,330 / 459,958 (86.38%)**
+- Source-present authored functions: **993 / 1,116 (88.98%)**
+- Source-present authored bytes: **398,570 / 459,958 (86.65%)**
+- Exact authored functions: **992 / 1,116 (88.89%)**
+- Exact authored bytes: **398,209 / 459,958 (86.58%)**
 - Inventory-classified library functions: **1,103**
 
 The public SVG follows the TH07 convention and visualizes exact bytes only;

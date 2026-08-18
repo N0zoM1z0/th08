@@ -319,6 +319,8 @@ struct Spellcard
     static ChainCallbackResult OnDraw(Spellcard *spellcard);
 
     void SetStoredVector(f32 x, f32 y, f32 z);
+    void FUN_0041f0b0(i32 value);
+    void FUN_0041f0e0(i32 value);
     i32 IsActive();
     i32 GetInactiveState();
     i32 GetActiveState();
