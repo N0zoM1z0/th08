@@ -89,6 +89,9 @@ struct Enemy
     void enemy_fun_00415c80();
     void FUN_0042b2f0();
     void FUN_0042bea0(i32 mode);
+    void FUN_0042c290(Float3 *position, Float3 *size);
+    void FUN_0042c420();
+    void FUN_0042deb0();
 };
 C_ASSERT(sizeof(Enemy) == 0x53d0);
 
@@ -112,6 +115,7 @@ struct EnemyManager
     unknown_fields(0x9dcedc, 0x34);
 
     void Initialize();
+    void FUN_0042c3b0();
     static ZunResult RegisterChain();
     static ChainCallbackResult OnUpdate();
     static ChainCallbackResult OnDrawHighPrio(EnemyManager *enemyManager);

@@ -100238,3 +100238,307 @@ object = "build/objdiff/reimpl/EclManager.obj"
 symbol = "th08::EclManager::GetTimeline"
 target_address = 0x0042DFD0
 size = 0x19
+
+[[units]]
+name = "enemy-player-contact-0042c290"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "th08::Enemy::FUN_0042c290"
+target_address = 0x0042C290
+size = 0x11C
+
+[[units.relocations]]
+offset = 0xD
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x1E
+type = "REL32"
+symbol = "??KFloat3@th08@@QBE?AU01@M@Z"
+target = 0x0040C7D0
+
+[[units.relocations]]
+offset = 0x50
+type = "REL32"
+symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+target = 0x0040D3D0
+
+[[units.relocations]]
+offset = 0x64
+type = "REL32"
+symbol = "??LZunTimer@th08@@QAEHH@Z"
+target = 0x0040D410
+
+[[units.relocations]]
+offset = 0x75
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x7A
+type = "REL32"
+symbol = "?FUN_0044a470@Player@th08@@QAEHPAUFloat3@2@0@Z"
+target = 0x0044A470
+
+[[units.relocations]]
+offset = 0x81
+type = "DIR32"
+symbol = "?g_TargetByte0164D0B1@th08@@3EA"
+target = 0x0164D0B1
+
+[[units.relocations]]
+offset = 0x8C
+type = "DIR32"
+symbol = "?g_TargetByte0164D0B1@th08@@3EA"
+target = 0x0164D0B1
+
+[[units.relocations]]
+offset = 0x99
+type = "REL32"
+symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+target = 0x0041FD20
+
+[[units.relocations]]
+offset = 0xB0
+type = "REL32"
+symbol = "??KFloat3@th08@@QBE?AU01@M@Z"
+target = 0x0040C7D0
+
+[[units.relocations]]
+offset = 0xCE
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0xD3
+type = "REL32"
+symbol = "?FUN_0044a360@Player@th08@@QAEHPAUFloat3@2@0@Z"
+target = 0x0044A360
+
+[[units]]
+name = "enemy-manager-rank-timer-0042c3b0"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "th08::EnemyManager::FUN_0042c3b0"
+target_address = 0x0042C3B0
+size = 0x6E
+
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "?g_Gui@th08@@3UGui@1@A"
+target = 0x0160F428
+
+[[units.relocations]]
+offset = 0xF
+type = "REL32"
+symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+target = 0x004358BB
+
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x24
+type = "REL32"
+symbol = "?GetLives@GameManager@th08@@QAEHXZ"
+target = 0x0042F2B0
+
+[[units.relocations]]
+offset = 0x40
+type = "REL32"
+symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+target = 0x0040D3D0
+
+[[units.relocations]]
+offset = 0x52
+type = "REL32"
+symbol = "??BZunTimer@th08@@QAEHXZ"
+target = 0x0040D3B0
+
+[[units.relocations]]
+offset = 0x61
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x66
+type = "REL32"
+symbol = "?IncreaseSubrank@GameManager@th08@@QAEXH@Z"
+target = 0x0043BFC3
+
+[[units]]
+name = "enemy-youkai-state-sync-0042c420"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "th08::Enemy::FUN_0042c420"
+target_address = 0x0042C420
+size = 0x16F
+
+[[units.relocations]]
+offset = 0x21
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x26
+type = "REL32"
+symbol = "?IsYoukai@Player@th08@@QAEHXZ"
+target = 0x0040BC40
+
+[[units.relocations]]
+offset = 0x42
+type = "DIR32"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0x47
+type = "REL32"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+target = 0x00425430
+
+[[units.relocations]]
+offset = 0x63
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x6C
+type = "DIR32"
+symbol = "?g_SoundPlayer@th08@@3VSoundPlayer@1@A"
+target = 0x018B8A68
+
+[[units.relocations]]
+offset = 0x71
+type = "REL32"
+symbol = "?PlaySoundByIdx@SoundPlayer@th08@@QAEXW4SoundIdx@2@H@Z"
+target = 0x0045D550
+
+[[units.relocations]]
+offset = 0x9D
+type = "REL32"
+symbol = "?FUN_0040ebc0@ZunTimer@th08@@QAEIH@Z"
+target = 0x0040EBC0
+
+[[units.relocations]]
+offset = 0xB6
+type = "DIR32"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0xBB
+type = "REL32"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+target = 0x00425430
+
+[[units.relocations]]
+offset = 0xC2
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0xC7
+type = "REL32"
+symbol = "?IsYoukai@Player@th08@@QAEHXZ"
+target = 0x0040BC40
+
+[[units.relocations]]
+offset = 0xE2
+type = "DIR32"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
+
+[[units.relocations]]
+offset = 0xE7
+type = "REL32"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+target = 0x00425430
+
+[[units.relocations]]
+offset = 0x103
+type = "REL32"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
+target = 0x00407120
+
+[[units.relocations]]
+offset = 0x10C
+type = "DIR32"
+symbol = "?g_SoundPlayer@th08@@3VSoundPlayer@1@A"
+target = 0x018B8A68
+
+[[units.relocations]]
+offset = 0x111
+type = "REL32"
+symbol = "?PlaySoundByIdx@SoundPlayer@th08@@QAEXW4SoundIdx@2@H@Z"
+target = 0x0045D550
+
+[[units.relocations]]
+offset = 0x120
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x125
+type = "REL32"
+symbol = "?IsYoukai@Player@th08@@QAEHXZ"
+target = 0x0040BC40
+
+[[units.relocations]]
+offset = 0x14F
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+
+[[units.relocations]]
+offset = 0x154
+type = "REL32"
+symbol = "?IsYoukai@Player@th08@@QAEHXZ"
+target = 0x0040BC40
+
+[[units]]
+name = "enemy-integrate-motion-0042deb0"
+object = "build/objdiff/reimpl/EnemyManager.obj"
+symbol = "th08::Enemy::FUN_0042deb0"
+target_address = 0x0042DEB0
+size = 0xFC
+
+[[units.relocations]]
+offset = 0x20
+type = "REL32"
+symbol = "??GFloat3@th08@@QBE?AU01@ABU01@@Z"
+target = 0x004090D0
+
+[[units.relocations]]
+offset = 0x77
+type = "DIR32"
+symbol = "?g_EclGameTimeScale@th08@@3MA"
+target = 0x017CE8E0
+
+[[units.relocations]]
+offset = 0x9A
+type = "DIR32"
+symbol = "?g_EclGameTimeScale@th08@@3MA"
+target = 0x017CE8E0
+
+[[units.relocations]]
+offset = 0xBB
+type = "DIR32"
+symbol = "?g_EclGameTimeScale@th08@@3MA"
+target = 0x017CE8E0
+
+[[units.relocations]]
+offset = 0xDC
+type = "DIR32"
+symbol = "?g_EclGameTimeScale@th08@@3MA"
+target = 0x017CE8E0

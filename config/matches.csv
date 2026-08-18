@@ -942,3 +942,7 @@ address,name,size,status,match_percent,unit,evidence
 0x0042BC50,th08::FUN_0042bc50,50,matching,100.00,enemy-helper-0042bc50,python3 scripts/compare-function.py enemy-helper-0042bc50 --json
 0x0042DFB0,th08::EclManager::GetTimelineCount,20,matching,100.00,ecl-manager-get-timeline-count,python3 scripts/compare-function.py ecl-manager-get-timeline-count --json
 0x0042DFD0,th08::EclManager::GetTimeline,25,matching,100.00,ecl-manager-get-timeline,python3 scripts/compare-function.py ecl-manager-get-timeline --json
+0x0042C290,th08::Enemy::FUN_0042c290,284,matching,100.00,enemy-player-contact-0042c290,python3 scripts/compare-function.py enemy-player-contact-0042c290 --json
+0x0042C3B0,th08::EnemyManager::FUN_0042c3b0,110,matching,100.00,enemy-manager-rank-timer-0042c3b0,python3 scripts/compare-function.py enemy-manager-rank-timer-0042c3b0 --json
+0x0042C420,th08::Enemy::FUN_0042c420,367,matching,100.00,enemy-youkai-state-sync-0042c420,python3 scripts/compare-function.py enemy-youkai-state-sync-0042c420 --json
+0x0042DEB0,th08::Enemy::FUN_0042deb0,252,matching,100.00,enemy-integrate-motion-0042deb0,python3 scripts/compare-function.py enemy-integrate-motion-0042deb0 --json

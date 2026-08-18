@@ -618,3 +618,9 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 
 - `FUN_0042bc50 @ 0x42bc50` is exact only when its three stores operate directly from the fastcall receiver. Caching `reinterpret_cast<u8 *>(self)` in a local enlarges the target 0x32-byte helper to 0x3a by adding an extra stack home. For tiny `/Od` accessors and bit-manipulation helpers, start from repeated direct receiver expressions and introduce a pointer local only if the shipped frame proves one exists.
 - `EclManager::GetTimelineCount/GetTimeline @ 0x42dfb0/0x42dfd0` independently prove the ECL header word at `+0x06` is the timeline count and the relocated timeline pointer table begins at `+0x08`. Keep the underlying header layout stable for claimed ECL interpreter work; a semantic accessor can expose the proven meaning without forcing an immediate shared-field rename.
+
+### Enemy contact and motion branch ownership
+
+- `Enemy::FUN_0042c290 @ 0x42c290` uses one source-visible `Float3 collisionSize` plus two compiler-owned return buffers for `size / 0.7f` and `size / 1.5f`. The route/attachment gate is not byte-equivalent as one OR expression: the target calls `HasAttachedEnemy()` only for route ids 0/4 and uses a short `je` into the collision body followed by a near jump to the epilogue when an attached enemy exists. Preserve that nested early-return ownership.
+- `EnemyManager::FUN_0042c3b0` preserves the arithmetic grouping `GetLives() * 4 * 60`, which VC7 lowers to `shl eax,2; imul eax,eax,0x3c`; replacing it with `* 240` changes the target instruction shape. Its dialog gate likewise matches as one outer `if (!IsDialogPresent())` block rather than an explicit early return.
+- `Enemy::FUN_0042deb0` places the normal X integration block before the mirrored-X block: spell bit 18 is tested as `if (bit == 0) add; else subtract`. Reversing the lexical arms leaves semantics unchanged but swaps the target `jne` and the physical `fadd/fsubr` opcodes.

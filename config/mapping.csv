@@ -402,12 +402,12 @@ th08::Enemy::FUN_0042bc90,0x42bc90,0x60,__thiscall,,void,Enemy*
 FUN_0042bcf0,0x42bcf0,0x1b0,unknown,,u8
 th08::Enemy::FUN_0042bea0,0x42bea0,0x2de,__thiscall,,void,Enemy*,i32
 th08::Enemy::ClampPosition,0x42c180,0x10e,__thiscall,,void,Enemy*
-FUN_0042c290,0x42c290,0x11c,unknown,,u8,u8,u8
-FUN_0042c3b0,0x42c3b0,0x6e,unknown,,u8
-FUN_0042c420,0x42c420,0x16f,unknown,,u8
+th08::Enemy::FUN_0042c290,0x42c290,0x11c,__thiscall,,void,Enemy*,Float3*,Float3*
+th08::EnemyManager::FUN_0042c3b0,0x42c3b0,0x6e,__thiscall,,void,EnemyManager*
+th08::Enemy::FUN_0042c420,0x42c420,0x16f,__thiscall,,void,Enemy*
 th08::EnemyManager::RegisterChain,0x42c590,0xcb,__fastcall,,ZunResult
 th08::EnemyManager::OnUpdate,0x42c660,0x1836,__thiscall,,u32,EnemyManager*
-FUN_0042deb0,0x42deb0,0xfc,unknown,,u8
+th08::Enemy::FUN_0042deb0,0x42deb0,0xfc,__thiscall,,void,Enemy*
 th08::EclManager::GetTimelineCount,0x42dfb0,0x14,__thiscall,,i32,EclManager*
 th08::EclManager::GetTimeline,0x42dfd0,0x19,__thiscall,,u32,EclManager*,i32
 th08::Spellcard::FUN_0042DFF0,0x42dff0,0x16,__thiscall,,i32,Spellcard*

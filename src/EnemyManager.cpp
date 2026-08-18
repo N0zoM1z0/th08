@@ -7,6 +7,8 @@
 #include "EclManager.hpp"
 #include "EclOperands.hpp"
 #include "ItemManager.hpp"
+#include "Gui.hpp"
+#include "GameManager.hpp"
 #include "Player.hpp"
 
 namespace th08
@@ -26,6 +28,111 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(u8, 32, g_EnemyDropSchedule) = {
     1, 0, 1, 0, 1, 0, 1, 0,
     1, 0, 0, 1, 1, 1, 0, 0,
 };
+
+// FUNCTION: th08 0x42c420
+void Enemy::FUN_0042c420()
+{
+    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 11) & 1) == 0)
+    {
+        if (g_Player.IsYoukai())
+        {
+            g_EffectManager.SpawnEffect(31, reinterpret_cast<D3DXVECTOR3 *>(&this->vector2d88), 1, 0x80303080);
+            if (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8) != NULL)
+                (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8))->SetInterrupt(2);
+            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(40), 0);
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x332f) = 0;
+        }
+
+        if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) >> 1) & 1) != 0 &&
+            this->timer2e14.FUN_0040ebc0(2))
+        {
+            g_EffectManager.SpawnEffect(38, reinterpret_cast<D3DXVECTOR3 *>(&this->vector2d88), 1, -1);
+        }
+    }
+    else
+    {
+        if (!g_Player.IsYoukai())
+        {
+            g_EffectManager.SpawnEffect(30, reinterpret_cast<D3DXVECTOR3 *>(&this->vector2d88), 1, 0x80803030);
+            if (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8) != NULL)
+                (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8))->SetInterrupt(1);
+            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(39), 0);
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x332f) = 2;
+        }
+    }
+
+    struct EnemyYoukaiFlagBits
+    {
+        u32 pad0 : 11;
+        u32 isYoukai : 1;
+        u32 pad12 : 20;
+    };
+    reinterpret_cast<EnemyYoukaiFlagBits *>(reinterpret_cast<u8 *>(this) + 0x3324)->isYoukai = g_Player.IsYoukai();
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3330) = g_Player.IsYoukai() ? 64 : 32;
+}
+
+// FUNCTION: th08 0x42c3b0
+#pragma var_order(interval, this)
+void EnemyManager::FUN_0042c3b0()
+{
+    i32 interval;
+
+    if (!g_Gui.IsDialogPresent())
+    {
+        interval = 2400;
+        interval -= g_GameManager.GetLives() * 4 * 60;
+        if (this->timer.FUN_0040d3d0())
+        {
+            if ((i32)this->timer % interval == 0)
+                g_GameManager.IncreaseSubrank(100);
+        }
+    }
+}
+
+// FUNCTION: th08 0x42c290
+#pragma var_order(collisionSize)
+void Enemy::FUN_0042c290(Float3 *position, Float3 *size)
+{
+    Float3 collisionSize;
+
+    collisionSize = *size / 0.7f;
+    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 7) & 1) != 0 &&
+        this->timer2e14.FUN_0040d3d0() && this->timer2e14 % 6 == 0)
+    {
+        g_Player.FUN_0044a470(position, &collisionSize);
+    }
+
+    if (g_TargetByte0164D0B1 == 0 || g_TargetByte0164D0B1 == 4)
+    {
+        if (reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(this)->HasAttachedEnemy())
+            return;
+    }
+
+    {
+        collisionSize = *size / 1.5f;
+        if (g_Player.FUN_0044a360(position, &collisionSize) == 1)
+        {
+            if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) == 0 &&
+                ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 7) & 1) == 0)
+            {
+                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc) -= 10;
+            }
+        }
+    }
+}
+
+// FUNCTION: th08 0x42deb0
+void Enemy::FUN_0042deb0()
+{
+    this->vector2d64 = this->vector2d34 - this->vector2d58;
+    this->vector2d58 = this->vector2d34;
+    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 18) & 1) == 0)
+        this->vector2d34.x += g_EclGameTimeScale * this->vector2d4c.x;
+    else
+        this->vector2d34.x -= g_EclGameTimeScale * this->vector2d4c.x;
+    this->vector2d34.y += g_EclGameTimeScale * this->vector2d4c.y;
+    this->vector2d34.z += g_EclGameTimeScale * this->vector2d4c.z;
+}
 
 // FUNCTION: th08 0x42bc50
 void __fastcall FUN_0042bc50(void *self)
