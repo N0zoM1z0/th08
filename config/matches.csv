@@ -998,3 +998,6 @@ address,name,size,status,match_percent,unit,evidence
 0x004230E0,th08::Gui::SetBossGaugeSlot,39,matching,100.00,gui-set-boss-gauge-slot-004230e0,python3 scripts/compare-function.py gui-set-boss-gauge-slot-004230e0 --json
 0x00423110,th08::Gui::SetBossGaugeValue,26,matching,100.00,gui-set-boss-gauge-value-00423110,python3 scripts/compare-function.py gui-set-boss-gauge-value-00423110 --json
 0x0041F400,th08::EclRunHighProposal::SpawnPacketTyped::SpawnPacketTyped,25,matching,100.00,ecl-spawn-packet-typed-ctor-0041f400,python3 scripts/compare-function.py ecl-spawn-packet-typed-ctor-0041f400 --json
+0x0040B4C0,D3DXVec3Length,58,matching,100.00,d3dx-vec3-length-0040b4c0,python3 scripts/compare-function.py d3dx-vec3-length-0040b4c0 --json
+0x0040B540,D3DXVec3Dot,54,matching,100.00,d3dx-vec3-dot-0040b540,python3 scripts/compare-function.py d3dx-vec3-dot-0040b540 --json
+0x0040B7F0,D3DXVec3Cross,132,matching,100.00,d3dx-vec3-cross-0040b7f0,python3 scripts/compare-function.py d3dx-vec3-cross-0040b7f0 --json

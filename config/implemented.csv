@@ -997,3 +997,6 @@ th08::Gui::SetBossPresent
 th08::Gui::SetBossGaugeSlot
 th08::Gui::SetBossGaugeValue
 th08::EclRunHighProposal::SpawnPacketTyped::SpawnPacketTyped
+D3DXVec3Length
+D3DXVec3Dot
+D3DXVec3Cross

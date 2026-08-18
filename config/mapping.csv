@@ -105,13 +105,13 @@ th08::Background::RenderObjects,0x40a1b0,0x128a,__thiscall,,void,Background*,i32
 _sqrtf,0x40b440,0x15,__fastcall,,f32,f32
 th08::Float3::Float3,0x40b460,0xe,__thiscall,,Float3*,Float3*
 th08::Float3::operator/=,0x40b470,0x49,__thiscall,,Float3*,Float3*,f32
-FUN_0040b4c0,0x40b4c0,0x3a,unknown,,u8
+D3DXVec3Length,0x40b4c0,0x3a,__fastcall,,f32,const D3DXVECTOR3*
 FUN_0040b500,0x40b500,0x31,unknown,,u8
-FUN_0040b540,0x40b540,0x36,unknown,,u8
+D3DXVec3Dot,0x40b540,0x36,__fastcall,,f32,const D3DXVECTOR3*,const D3DXVECTOR3*
 th08::VertexDiffuseXyzrhw::VertexDiffuseXyzrhw,0x40b580,0x16,__thiscall,,VertexDiffuseXyzrhw*,VertexDiffuseXyzrhw*
 th08::Background::SetCamera1,0x40b5a0,0x124,__thiscall,,u8,Background*
 th08::Background::SetCamera2,0x40b6d0,0x11b,__thiscall,,void,Background*
-FUN_0040b7f0,0x40b7f0,0x84,unknown,,u8,u8
+D3DXVec3Cross,0x40b7f0,0x84,__fastcall,,D3DXVECTOR3*,D3DXVECTOR3*,const D3DXVECTOR3*,const D3DXVECTOR3*
 th08::ZunMemory::Alloc,0x40b880,0x19,__thiscall,,void*,ZunMemory*,u32,char*
 th08::ZunMemory::Free,0x40b8a0,0x19,__thiscall,,u8,ZunMemory*,void*
 th08::ZunTimer::operator_float,0x40b8c0,0x17,__thiscall,,float10,ZunTimer*

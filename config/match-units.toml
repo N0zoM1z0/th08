@@ -105289,3 +105289,36 @@ offset = 0xE
 type = "REL32"
 symbol = "??0D3DXVECTOR3@@QAE@XZ"
 target = 0x0040B460
+
+[[units]]
+name = "d3dx-vec3-length-0040b4c0"
+object = "build/objdiff/reimpl/Background.obj"
+symbol = "?D3DXVec3Length@@YIMPBUD3DXVECTOR3@@@Z"
+target_address = 0x0040B4C0
+size = 0x3A
+
+[[units.relocations]]
+offset = 0x32
+type = "REL32"
+symbol = "@sqrtf@4"
+target = 0x0040B440
+
+[[units]]
+name = "d3dx-vec3-dot-0040b540"
+object = "build/objdiff/reimpl/Background.obj"
+symbol = "?D3DXVec3Dot@@YIMPBUD3DXVECTOR3@@0@Z"
+target_address = 0x0040B540
+size = 0x36
+
+[[units]]
+name = "d3dx-vec3-cross-0040b7f0"
+object = "build/objdiff/reimpl/Background.obj"
+symbol = "?D3DXVec3Cross@@YIPAUD3DXVECTOR3@@PAU1@PBU1@1@Z"
+target_address = 0x0040B7F0
+size = 0x84
+
+[[units.relocations]]
+offset = 0x10
+type = "REL32"
+symbol = "??0D3DXVECTOR3@@QAE@XZ"
+target = 0x0040B460
