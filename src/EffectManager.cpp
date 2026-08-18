@@ -47,6 +47,272 @@ void __fastcall FUN_00428310(AnmVm *effect, D3DXVECTOR3 *base)
     *base += *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x244);
 }
 
+i32 __fastcall FUN_00427450(Effect *effect);
+
+// FUNCTION: th08 0x427250
+i32 __fastcall FUN_00427250(Effect *effect)
+{
+    return 1;
+}
+
+// FUNCTION: th08 0x427260
+#pragma var_order(offset, effect)
+i32 __fastcall FUN_00427260(Effect *effect)
+{
+    Float3 offset;
+
+    offset.FromAngleMagnitude(effect->vector1.x, 256.0f);
+    effect->vector0.x += offset.x;
+    effect->vector0.y += offset.y;
+    effect->vm.rotation.z = AddNormalizeAngle(effect->vector1.x, ZUN_PI / 2.0f);
+    return 0;
+}
+
+// FUNCTION: th08 0x4272e0
+i32 __fastcall FUN_004272e0(Effect *effect)
+{
+    *reinterpret_cast<VertexTex1DiffuseXyzrhw **>(reinterpret_cast<u8 *>(effect) + 0x358) =
+        static_cast<VertexTex1DiffuseXyzrhw *>(g_ZunMemory.Alloc(0x1c38, "Effect"));
+    if (*reinterpret_cast<VertexTex1DiffuseXyzrhw **>(reinterpret_cast<u8 *>(effect) + 0x358) == NULL)
+        return -1;
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 3;
+    effect->vector5 = effect->vector0;
+    effect->vector6.x = 0.0f;
+    effect->vector6.y = 0.0f;
+    effect->vector6.z = 1.0f;
+    effect->vector7.x = 0.0f;
+    effect->vector7.y = -1.0f;
+    effect->vector7.z = 0.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318) = effect->vector1.x;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = effect->vector1.y;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = effect->vector1.z;
+
+    g_AnmManager->FUN_004649a0(
+        reinterpret_cast<AnmVm *>(effect),
+        *reinterpret_cast<VertexTex1DiffuseXyzrhw **>(reinterpret_cast<u8 *>(effect) + 0x358),
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) * 2);
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+    *reinterpret_cast<void **>(reinterpret_cast<u8 *>(effect) + 0x34c) = reinterpret_cast<void *>(&FUN_00427450);
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = 0.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330) = 0.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 0.0f;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 24;
+    return 0;
+}
+
+// FUNCTION: th08 0x427450
+#pragma var_order(i, innerRadius, vertex, angleStep, radius)
+i32 __fastcall FUN_00427450(Effect *effect)
+{
+    i32 i;
+    f32 innerRadius;
+    VertexTex1DiffuseXyzrhw *vertex;
+    f32 angleStep;
+    f32 radius;
+
+    if (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(effect) + 0x356))
+    {
+        angleStep = ZUN_2PI / *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324);
+        radius = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) /
+                 sinf((ZUN_PI - angleStep) / 2.0f);
+        vertex = *reinterpret_cast<VertexTex1DiffuseXyzrhw **>(reinterpret_cast<u8 *>(effect) + 0x358);
+        g_AnmManager->FUN_00464b00(
+            reinterpret_cast<AnmVm *>(effect),
+            *reinterpret_cast<VertexTex1DiffuseXyzrhw **>(reinterpret_cast<u8 *>(effect) + 0x358),
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) * 2 + 2);
+
+        if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) == 0.0f)
+        {
+            f32 angle;
+            angle = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318);
+            innerRadius = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) - radius;
+            radius += *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314);
+            for (i = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) + 1; i > 0; --i)
+            {
+                if (angle >= ZUN_PI)
+                    angle -= ZUN_2PI;
+
+                vertex->pos.z = 0.0f;
+                vertex->pos.FromAngleMagnitude(angle, radius);
+                vertex->pos += effect->vector5;
+                vertex->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+                vertex->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                vertex++;
+
+                vertex->pos.z = 0.0f;
+                vertex->pos.FromAngleMagnitude(angle, innerRadius);
+                vertex->pos += effect->vector5;
+                vertex->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+                vertex->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                vertex++;
+
+                angle += angleStep;
+            }
+        }
+        else if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) == 0.0f)
+        {
+#pragma var_order(innerEllipseRadius, outerEllipseRadius, angle, point)
+            f32 angle = 0.0f;
+            Float3 point;
+            f32 outerEllipseRadius;
+            f32 innerEllipseRadius;
+
+            outerEllipseRadius = radius + *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c);
+            innerEllipseRadius = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) - radius;
+            innerRadius = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) - radius;
+            radius += *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314);
+
+            for (i = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) + 1; i > 0; --i)
+            {
+                point.FromRotatedVec2(angle, radius, outerEllipseRadius);
+                Rotate(&vertex->pos, &point, *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330));
+                vertex->pos += effect->vector5;
+                vertex->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+                vertex->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                vertex->pos.z = 0.0f;
+                vertex++;
+
+                point.FromRotatedVec2(angle, innerRadius, innerEllipseRadius);
+                Rotate(&vertex->pos, &point, *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330));
+                vertex->pos += effect->vector5;
+                vertex->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+                vertex->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                vertex->pos.z = 0.0f;
+                vertex++;
+
+                angle += angleStep;
+            }
+        }
+        else
+        {
+#pragma var_order(secondAngleStep, secondAngle, radialOffset, angle, unused)
+            f32 secondAngle;
+            f32 angle;
+            f32 secondAngleStep;
+            f32 radialOffset;
+
+            secondAngle = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330);
+            angle = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318);
+            secondAngleStep = ZUN_2PI * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) /
+                              *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324);
+            Float3 unused;
+            innerRadius = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) - radius;
+            radius += *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314);
+
+            for (i = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) + 1; i > 0; --i)
+            {
+                if (angle >= ZUN_PI)
+                    angle -= ZUN_2PI;
+                if (secondAngle >= ZUN_PI)
+                    secondAngle -= ZUN_2PI;
+
+                radialOffset = cosf(secondAngle) *
+                               *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c);
+                vertex->pos.FromAngleMagnitude(angle, radius + radialOffset);
+                vertex->pos += effect->vector5;
+                vertex->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+                vertex->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                vertex->pos.z = 0.0f;
+                vertex++;
+
+                vertex->pos.FromAngleMagnitude(angle, innerRadius + radialOffset);
+                vertex->pos += effect->vector5;
+                vertex->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
+                vertex->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                vertex->pos.z = 0.0f;
+                vertex++;
+
+                angle += angleStep;
+                secondAngle += secondAngleStep;
+            }
+        }
+        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 0;
+    }
+
+    g_AnmManager->DrawVertices(
+        reinterpret_cast<AnmVm *>(effect),
+        *reinterpret_cast<VertexTex1DiffuseXyzrhw **>(reinterpret_cast<u8 *>(effect) + 0x358),
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) * 2 + 2);
+    return 1;
+}
+
+// FUNCTION: th08 0x427970
+i32 __fastcall FUN_00427970(Effect *effect)
+{
+    FUN_004272e0(effect);
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x355) = 1;
+    return 0;
+}
+
+// FUNCTION: th08 0x427990
+i32 __fastcall FUN_00427990(Effect *effect)
+{
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = effect->vm.scale.x;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = effect->vm.pos.x;
+    return 1;
+}
+
+// FUNCTION: th08 0x4279d0
+i32 __fastcall FUN_004279d0(Effect *effect)
+{
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) =
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x100);
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) =
+        (f32)*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x104);
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = effect->vm.scale.x;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = effect->vm.pos.x;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = effect->vm.pos.y;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318) = effect->vm.rotation.z;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330) = effect->vm.rotation.y;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+    return 1;
+}
+
+// FUNCTION: th08 0x427a60
+i32 __fastcall FUN_00427a60(Effect *effect)
+{
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 32;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = effect->vm.scale.x;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = effect->vm.pos.x;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = effect->vm.pos.y;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+    if (effect->timer >= 120)
+        return 0;
+    return 1;
+}
+
+// FUNCTION: th08 0x427ae0
+i32 __fastcall FUN_00427ae0(Effect *effect)
+{
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = effect->vm.scale.x;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = effect->vm.pos.x;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = effect->vm.pos.y;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318) = effect->vm.rotation.z;
+    if (effect->vm.color1.a == 0)
+        return 0;
+    return 1;
+}
+
+// FUNCTION: th08 0x427b50
+i32 __fastcall FUN_00427b50(Effect *effect)
+{
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) =
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x100);
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) =
+        (f32)*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x104);
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = effect->vm.scale.x;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) =
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x114);
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318) = effect->vm.rotation.z;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330) = effect->vm.rotation.y;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+    effect->vector5 = effect->vm.pos;
+    return 1;
+}
+
 // FUNCTION: th08 0x4287e0
 Effect::Effect()
 {

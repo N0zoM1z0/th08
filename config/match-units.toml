@@ -98819,3 +98819,436 @@ offset = 0x2F7
 type = "DIR32"
 symbol = "$L71332"
 target = 0x0044ED98
+
+[[units]]
+name = "effect-trail-static-callback-00427250"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?FUN_00427250@th08@@YIHPAUEffect@1@@Z"
+target_address = 0x00427250
+size = 0x10
+
+[[units]]
+name = "effect-trail-offset-update-00427260"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?FUN_00427260@th08@@YIHPAUEffect@1@@Z"
+target_address = 0x00427260
+size = 0x72
+
+[[units.relocations]]
+offset = 0xD
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x24
+type = "REL32"
+symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
+target = 0x004286E0
+
+[[units.relocations]]
+offset = 0x62
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units]]
+name = "effect-trail-init-004272e0"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?FUN_004272e0@th08@@YIHPAUEffect@1@@Z"
+target_address = 0x004272E0
+size = 0x161
+
+[[units.relocations]]
+offset = 0x8
+type = "DIR32"
+symbol = "??_C@_06LBEFNKEP@Effect?$AA@"
+target = 0x004B49AC
+
+[[units.relocations]]
+offset = 0x12
+type = "DIR32"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
+target = 0x0164F598
+
+[[units.relocations]]
+offset = 0x17
+type = "REL32"
+symbol = "?Alloc@ZunMemory@th08@@QAEPAXIPBD@Z"
+target = 0x0040B880
+
+[[units.relocations]]
+offset = 0x107
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x10C
+type = "REL32"
+symbol = "?FUN_004649a0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@H@Z"
+target = 0x004649A0
+
+[[units.relocations]]
+offset = 0x123
+type = "DIR32"
+symbol = "?FUN_00427450@th08@@YIHPAUEffect@1@@Z"
+target = 0x00427450
+
+[[units]]
+name = "effect-trail-draw-00427450"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?FUN_00427450@th08@@YIHPAUEffect@1@@Z"
+target_address = 0x00427450
+size = 0x517
+
+[[units.relocations]]
+offset = 0x26
+type = "DIR32"
+symbol = "__real@40c90fdb"
+target = 0x004B4460
+
+[[units.relocations]]
+offset = 0x2F
+type = "DIR32"
+symbol = "__real@40490fdb"
+target = 0x004B4334
+
+[[units.relocations]]
+offset = 0x38
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x41
+type = "REL32"
+symbol = "@sinf@4"
+target = 0x00409060
+
+[[units.relocations]]
+offset = 0x7B
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x80
+type = "REL32"
+symbol = "?FUN_00464b00@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@H@Z"
+target = 0x00464B00
+
+[[units.relocations]]
+offset = 0x8F
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0xF1
+type = "DIR32"
+symbol = "__real@40490fdb"
+target = 0x004B4334
+
+[[units.relocations]]
+offset = 0x101
+type = "DIR32"
+symbol = "__real@40c90fdb"
+target = 0x004B4460
+
+[[units.relocations]]
+offset = 0x11E
+type = "REL32"
+symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
+target = 0x004286E0
+
+[[units.relocations]]
+offset = 0x130
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 0x139
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x149
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x175
+type = "REL32"
+symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
+target = 0x004286E0
+
+[[units.relocations]]
+offset = 0x187
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 0x190
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x1A0
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x1D4
+type = "DIR32"
+symbol = "__real@00000000"
+target = 0x004B4384
+
+[[units.relocations]]
+offset = 0x1EE
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x262
+type = "REL32"
+symbol = "?FromRotatedVec2@Float3@th08@@QAEXMMM@Z"
+target = 0x00428700
+
+[[units.relocations]]
+offset = 0x277
+type = "REL32"
+symbol = "?Rotate@th08@@YIXPAUFloat3@1@0M@Z"
+target = 0x0043EE30
+
+[[units.relocations]]
+offset = 0x288
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 0x291
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x2A1
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x2D1
+type = "REL32"
+symbol = "?FromRotatedVec2@Float3@th08@@QAEXMMM@Z"
+target = 0x00428700
+
+[[units.relocations]]
+offset = 0x2E6
+type = "REL32"
+symbol = "?Rotate@th08@@YIXPAUFloat3@1@0M@Z"
+target = 0x0043EE30
+
+[[units.relocations]]
+offset = 0x2F7
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 0x300
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x310
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x360
+type = "DIR32"
+symbol = "__real@40c90fdb"
+target = 0x004B4460
+
+[[units.relocations]]
+offset = 0x37A
+type = "REL32"
+symbol = "??0Float3@th08@@QAE@XZ"
+target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x3C5
+type = "DIR32"
+symbol = "__real@40490fdb"
+target = 0x004B4334
+
+[[units.relocations]]
+offset = 0x3D5
+type = "DIR32"
+symbol = "__real@40c90fdb"
+target = 0x004B4460
+
+[[units.relocations]]
+offset = 0x3E1
+type = "DIR32"
+symbol = "__real@40490fdb"
+target = 0x004B4334
+
+[[units.relocations]]
+offset = 0x3F1
+type = "DIR32"
+symbol = "__real@40c90fdb"
+target = 0x004B4460
+
+[[units.relocations]]
+offset = 0x3FD
+type = "REL32"
+symbol = "@cosf@4"
+target = 0x00408D40
+
+[[units.relocations]]
+offset = 0x41F
+type = "REL32"
+symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
+target = 0x004286E0
+
+[[units.relocations]]
+offset = 0x430
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 0x439
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x449
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x47B
+type = "REL32"
+symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
+target = 0x004286E0
+
+[[units.relocations]]
+offset = 0x48D
+type = "REL32"
+symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
+target = 0x00410A70
+
+[[units.relocations]]
+offset = 0x496
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x4A6
+type = "DIR32"
+symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
+target = 0x0164D2DC
+
+[[units.relocations]]
+offset = 0x505
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x50A
+type = "REL32"
+symbol = "?DrawVertices@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@H@Z"
+target = 0x00464C60
+
+[[units]]
+name = "effect-trail-layer-init-00427970"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?FUN_00427970@th08@@YIHPAUEffect@1@@Z"
+target_address = 0x00427970
+size = 0x1F
+
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "?FUN_004272e0@th08@@YIHPAUEffect@1@@Z"
+target = 0x004272E0
+
+[[units]]
+name = "effect-trail-sync-00427990"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?FUN_00427990@th08@@YIHPAUEffect@1@@Z"
+target_address = 0x00427990
+size = 0x3B
+
+[[units]]
+name = "effect-trail-params-004279d0"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?FUN_004279d0@th08@@YIHPAUEffect@1@@Z"
+target_address = 0x004279D0
+size = 0x8F
+
+[[units]]
+name = "effect-trail-timed-00427a60"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?FUN_00427a60@th08@@YIHPAUEffect@1@@Z"
+target_address = 0x00427A60
+size = 0x72
+
+[[units.relocations]]
+offset = 0x5D
+type = "REL32"
+symbol = "??PZunTimer@th08@@QAEIH@Z"
+target = 0x0040B8E0
+
+[[units]]
+name = "effect-trail-alpha-00427ae0"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?FUN_00427ae0@th08@@YIHPAUEffect@1@@Z"
+target_address = 0x00427AE0
+size = 0x6E
+
+[[units]]
+name = "effect-trail-anchor-00427b50"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?FUN_00427b50@th08@@YIHPAUEffect@1@@Z"
+target_address = 0x00427B50
+size = 0x9E
+
+[[units]]
+name = "float3-from-angle-magnitude"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
+target_address = 0x004286E0
+size = 0x20
+
+[[units]]
+name = "float3-from-rotated-vec2"
+object = "build/objdiff/reimpl/EffectManager.obj"
+symbol = "?FromRotatedVec2@Float3@th08@@QAEXMMM@Z"
+target_address = 0x00428700
+size = 0x20
+
+[[units]]
+name = "anm-manager-fun-004649a0"
+object = "build/objdiff/reimpl/AnmManager.obj"
+symbol = "th08::AnmManager::FUN_004649a0"
+target_address = 0x004649A0
+size = 0x160

@@ -915,3 +915,16 @@ address,name,size,status,match_percent,unit,evidence
 0x0044E3A0,th08::FUN_0044e3a0,949,matching,100.00,player-option-update-0044e3a0,python3 scripts/compare-function.py player-option-update-0044e3a0 --json
 0x0044EA40,th08::FUN_0044ea40,303,matching,100.00,player-option-update-0044ea40,python3 scripts/compare-function.py player-option-update-0044ea40 --json
 0x0044EB70,th08::FUN_0044eb70,731,matching,100.00,player-option-update-0044eb70,python3 scripts/compare-function.py player-option-update-0044eb70 --json
+0x00427250,th08::FUN_00427250,16,matching,100.00,effect-trail-static-callback-00427250,python3 scripts/compare-function.py effect-trail-static-callback-00427250 --json
+0x00427260,th08::FUN_00427260,114,matching,100.00,effect-trail-offset-update-00427260,python3 scripts/compare-function.py effect-trail-offset-update-00427260 --json
+0x004272E0,th08::FUN_004272e0,353,matching,100.00,effect-trail-init-004272e0,python3 scripts/compare-function.py effect-trail-init-004272e0 --json
+0x00427450,th08::FUN_00427450,1303,matching,100.00,effect-trail-draw-00427450,python3 scripts/compare-function.py effect-trail-draw-00427450 --json
+0x00427970,th08::FUN_00427970,31,matching,100.00,effect-trail-layer-init-00427970,python3 scripts/compare-function.py effect-trail-layer-init-00427970 --json
+0x00427990,th08::FUN_00427990,59,matching,100.00,effect-trail-sync-00427990,python3 scripts/compare-function.py effect-trail-sync-00427990 --json
+0x004279D0,th08::FUN_004279d0,143,matching,100.00,effect-trail-params-004279d0,python3 scripts/compare-function.py effect-trail-params-004279d0 --json
+0x00427A60,th08::FUN_00427a60,114,matching,100.00,effect-trail-timed-00427a60,python3 scripts/compare-function.py effect-trail-timed-00427a60 --json
+0x00427AE0,th08::FUN_00427ae0,110,matching,100.00,effect-trail-alpha-00427ae0,python3 scripts/compare-function.py effect-trail-alpha-00427ae0 --json
+0x00427B50,th08::FUN_00427b50,158,matching,100.00,effect-trail-anchor-00427b50,python3 scripts/compare-function.py effect-trail-anchor-00427b50 --json
+0x004286E0,th08::Float3::FromAngleMagnitude,32,matching,100.00,float3-from-angle-magnitude,python3 scripts/compare-function.py float3-from-angle-magnitude --json
+0x00428700,th08::Float3::FromRotatedVec2,32,matching,100.00,float3-from-rotated-vec2,python3 scripts/compare-function.py float3-from-rotated-vec2 --json
+0x004649A0,th08::AnmManager::FUN_004649a0,352,matching,100.00,anm-manager-fun-004649a0,python3 scripts/compare-function.py anm-manager-fun-004649a0 --json
