@@ -7,6 +7,7 @@
 #include "ItemManager.hpp"
 #include "ReplayManager.hpp"
 #include "GameManager.hpp"
+#include "EnemyManager.hpp"
 
 namespace th08
 {
@@ -81,6 +82,116 @@ i32 __fastcall FUN_00426280(Effect *effect)
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x254) = 0;
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x258) = 0;
     return 0;
+}
+
+// FUNCTION: th08 0x4264f0
+#pragma var_order(delta, dot, effect)
+i32 __fastcall FUN_004264f0(Effect *effect)
+{
+    f32 dot;
+
+    effect->vector2 += effect->vector3;
+    effect->vector4 += effect->vector2;
+    effect->vector0 = effect->vector4;
+
+    Float3 delta;
+    delta = effect->vector0 - g_Background.unk6394.vector0;
+    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&delta), reinterpret_cast<D3DXVECTOR3 *>(&delta));
+    dot = D3DXVec3Dot(reinterpret_cast<D3DXVECTOR3 *>(&g_Background.unk6394.vector3),
+                      reinterpret_cast<D3DXVECTOR3 *>(&delta));
+    if (dot < 0.94f)
+        return 0;
+
+    if (g_EnemyManager.FUN_0042f1f0())
+    {
+        if (((*reinterpret_cast<u32 *>(EclRunLowProposal::g_EclEnemyTableF54CC0[0]->bytes + 0x3324) >> 3) & 1) != 0)
+        {
+            if (effect->vm.pos2.x <= -9999.0f)
+            {
+                effect->vm.pos2 = *reinterpret_cast<Float3 *>(
+                    EclRunLowProposal::g_EclEnemyTableF54CC0[0]->bytes + 0x2d34);
+            }
+            else
+            {
+                effect->vm.pos2 =
+                    (*reinterpret_cast<Float3 *>(EclRunLowProposal::g_EclEnemyTableF54CC0[0]->bytes + 0x2d34) -
+                     effect->vm.pos2) * 0.1f + effect->vm.pos2;
+            }
+        }
+    }
+
+    *reinterpret_cast<u32 *>(&effect->vm.flags) |= 0x20000;
+    effect->vm.color2.r = ((u32)effect->vm.color1.r *
+        reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(&g_Background) + 0xa34)->r) >> 8;
+    effect->vm.color2.g = ((u32)effect->vm.color1.g *
+        reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(&g_Background) + 0xa34)->g) >> 8;
+    effect->vm.color2.b = ((u32)effect->vm.color1.b *
+        reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(&g_Background) + 0xa34)->b) >> 8;
+    effect->vm.color2.a = ((u32)effect->vm.color1.a *
+        reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(&g_Background) + 0xa34)->a) >> 8;
+    return 1;
+}
+
+// FUNCTION: th08 0x426990
+#pragma var_order(delta, dot, effect)
+i32 __fastcall FUN_00426990(Effect *effect)
+{
+    f32 dot;
+
+    effect->vector2 += effect->vector3;
+    effect->vector4 += effect->vector2;
+    effect->vector0 = effect->vector4;
+
+    Float3 delta;
+    delta = effect->vector0 - g_Background.unk6394.vector0;
+    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&delta), reinterpret_cast<D3DXVECTOR3 *>(&delta));
+    dot = D3DXVec3Dot(reinterpret_cast<D3DXVECTOR3 *>(&g_Background.unk6394.vector3),
+                      reinterpret_cast<D3DXVECTOR3 *>(&delta));
+    if (dot < 0.94f)
+        return 0;
+
+    if (EclRunLowProposal::g_EclEnemyTableF54CC0[0] != NULL)
+    {
+        if (((*reinterpret_cast<u32 *>(EclRunLowProposal::g_EclEnemyTableF54CC0[0]->bytes + 0x3324) >> 3) & 1) != 0)
+        {
+            if (effect->vm.pos2.x <= -9999.0f)
+            {
+                effect->vm.pos2 = *reinterpret_cast<Float3 *>(
+                    EclRunLowProposal::g_EclEnemyTableF54CC0[0]->bytes + 0x2d34);
+            }
+            else
+            {
+                effect->vm.pos2 =
+                    (*reinterpret_cast<Float3 *>(EclRunLowProposal::g_EclEnemyTableF54CC0[0]->bytes + 0x2d34) -
+                     effect->vm.pos2) * 0.1f + effect->vm.pos2;
+            }
+        }
+    }
+    return 1;
+}
+
+// FUNCTION: th08 0x426d70
+#pragma var_order(delta, dot, effect)
+i32 __fastcall FUN_00426d70(Effect *effect)
+{
+    f32 dot;
+
+    effect->vector2 += effect->vector3;
+    effect->vector4 += effect->vector2;
+    effect->vector0 = effect->vector4;
+
+    Float3 delta;
+    delta = effect->vector0 - g_Background.unk6394.vector0;
+    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&delta), reinterpret_cast<D3DXVECTOR3 *>(&delta));
+    dot = D3DXVec3Dot(reinterpret_cast<D3DXVECTOR3 *>(&g_Background.unk6394.vector3),
+                      reinterpret_cast<D3DXVECTOR3 *>(&delta));
+    if (dot < 0.94f)
+        return 0;
+
+    effect->vm.SetZRotation(AddNormalizeAngle(effect->vm.rotation.z, effect->vm.rotation.x));
+    if (effect->vector0.z >= 0.0f)
+        return 0;
+    return 1;
 }
 
 // FUNCTION: th08 0x426720

@@ -30,3 +30,4 @@ __imp__PostThreadMessageA@16,0x004B41D8,2c4d0c00,0x0,PE USER32 import table entr
 __imp__KillTimer@8,0x004B41DC,204d0c00,0x0,PE USER32 import table entry for KillTimer,literal
 __imp__CreateFileA@28,0x004B4064,fa480c00,0x0,PE KERNEL32 import table entry for CreateFileA,literal
 __imp__SetFilePointer@16,0x004B40C8,ce4a0c00,0x0,PE KERNEL32 import table entry for SetFilePointer,literal
+_D3DXVec3Normalize@8,0x00476E9F,ff252c874c00,0x0,PE D3DX8 import thunk for D3DXVec3Normalize,address

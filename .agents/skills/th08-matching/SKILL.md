@@ -264,3 +264,7 @@ If a target function is an SDK/header-inline helper, keep the toolchain header a
 ## Repeated non-trivial members
 
 Do not treat `T members[N]` as codegen-equivalent to `T member0; ...; T memberN;` when `T` has a target-visible constructor. VC7 can lower the array through `??_H` but emit one direct constructor call per individual member. If target construction shows repeated direct calls and all consumers use constant indices, split the fields, keep the same offsets, and rerun every accepted unit that touches the aggregate before promoting the layout.
+
+## Effect callback lifetime/rematerialization
+
+For VC7 effect callbacks, place a non-trivial work vector at the lexical point where the target first calls its constructor; do not hoist it just because C++ permits it. Use direct owner expressions when the target repeatedly reloads an enemy/global/member instead of caching references. Hidden `Float3` return temporaries then tend to fall into the target slots naturally. Treat x87 comparison polarity and return-block order as source evidence: equivalent negation can keep semantics but swap `je/jne` and fail strict matching.
