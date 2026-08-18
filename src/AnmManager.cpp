@@ -1402,6 +1402,50 @@ ZunResult AnmManager::Draw3D(AnmVm *vm)
 }
 
 // FUNCTION: th08 0x00464c60
+// FUNCTION: th08 0x464b00
+#pragma var_order(x, i, vertex, y, currentY, step, ySpan)
+ZunResult AnmManager::FUN_00464b00(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount)
+{
+    f32 x;
+    i32 i;
+    VertexTex1DiffuseXyzrhw *vertex;
+    f32 y;
+    f32 currentY;
+    f32 step;
+    f32 ySpan;
+
+    if (vertexCount < 3)
+        return ZUN_ERROR;
+
+    y = vm->loadedSprite->uvEnd.y + vm->uvScrollPos.y;
+    ySpan = vm->loadedSprite->uvEnd.y - vm->loadedSprite->uvStart.y;
+    x = vm->loadedSprite->uvStart.x + vm->uvScrollPos.x;
+    vertex = vertices;
+    step = ySpan / ((vertexCount + 1) / 2 - 1);
+    i = 0;
+    currentY = y;
+    for (; i < vertexCount; i += 2, vertex += 2, currentY -= step)
+    {
+        vertex->textureUV.y = currentY;
+        vertex->textureUV.x = x;
+        vertex->diffuse = vm->color1.d3dColor;
+        vertex->w = 1.0f;
+    }
+
+    x = vm->loadedSprite->uvEnd.x + vm->uvScrollPos.x;
+    vertex = vertices + 1;
+    i = 1;
+    currentY = y;
+    for (; i < vertexCount; i += 2, vertex += 2, currentY -= step)
+    {
+        vertex->textureUV.y = currentY;
+        vertex->textureUV.x = x;
+        vertex->diffuse = vm->color1.d3dColor;
+        vertex->w = 1.0f;
+    }
+    return ZUN_SUCCESS;
+}
+
 ZunResult AnmManager::DrawVertices(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount)
 {
     if (!vm->IsVisible())

@@ -881,3 +881,9 @@ address,name,size,status,match_percent,unit,evidence
 0x004259E0,th08::EffectManager::FUN_004259e0,394,matching,100.00,effect-manager-fun-004259e0,python3 scripts/compare-function.py effect-manager-fun-004259e0 --json
 0x0040E350,th08::ZunTimer::FUN_0040e350,58,matching,100.00,zun-timer-just-reached,python3 scripts/compare-function.py zun-timer-just-reached --json
 0x00410C40,th08::FUN_00410c40,922,matching,100.00,player-bomb-callback-00410c40,python3 scripts/compare-function.py player-bomb-callback-00410c40 --json
+0x00410FE0,th08::FUN_00410fe0,959,matching,100.00,player-bomb-callback-00410fe0,python3 scripts/compare-function.py player-bomb-callback-00410fe0 --json
+0x00464B00,th08::AnmManager::FUN_00464b00,352,matching,100.00,anm-manager-fun-00464b00,python3 scripts/compare-function.py anm-manager-fun-00464b00 --json
+0x004114E0,th08::FUN_004114e0,567,matching,100.00,player-bomb-effect-update-004114e0,python3 scripts/compare-function.py player-bomb-effect-update-004114e0 --json
+0x00411720,th08::FUN_00411720,139,matching,100.00,player-bomb-effect-init-00411720,python3 scripts/compare-function.py player-bomb-effect-init-00411720 --json
+0x004117B0,th08::FUN_004117b0,708,matching,100.00,player-bomb-effect-update-004117b0,python3 scripts/compare-function.py player-bomb-effect-update-004117b0 --json
+0x00411A80,th08::FUN_00411a80,139,matching,100.00,player-bomb-effect-init-00411a80,python3 scripts/compare-function.py player-bomb-effect-init-00411a80 --json

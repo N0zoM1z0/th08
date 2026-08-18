@@ -182,12 +182,12 @@ th08::FUN_00410ac0,0x410ac0,0xe1,__fastcall,,void,Player*
 FUN_00410bb0,0x410bb0,0x4c,unknown,,u8
 th08::Rng::GetRandomU16InRange,0x410c00,0x39,__thiscall,,u16,Rng*,u16
 th08::FUN_00410c40,0x410c40,0x39a,__fastcall,,void,Player*
-FUN_00410fe0,0x410fe0,0x3bf,unknown,,u8
+th08::FUN_00410fe0,0x410fe0,0x3bf,__fastcall,,void,Player*
 th08::FUN_004113a0,0x4113a0,0x139,__fastcall,,void,Player*
-FUN_004114e0,0x4114e0,0x237,unknown,,u8
-FUN_00411720,0x411720,0x8b,unknown,,u8
-FUN_004117b0,0x4117b0,0x2c4,unknown,,u8
-FUN_00411a80,0x411a80,0x8b,unknown,,u8
+th08::FUN_004114e0,0x4114e0,0x237,__fastcall,,i32,AnmVm*
+th08::FUN_00411720,0x411720,0x8b,__fastcall,,i32,AnmVm*
+th08::FUN_004117b0,0x4117b0,0x2c4,__fastcall,,i32,AnmVm*
+th08::FUN_00411a80,0x411a80,0x8b,__fastcall,,i32,AnmVm*
 FUN_00411b10,0x411b10,0x7f0,unknown,,u8
 th08::FUN_00412300,0x412300,0xcf,__fastcall,,void,Player*
 FUN_004123d0,0x4123d0,0xbc8,unknown,,u8
@@ -969,7 +969,7 @@ th08::AnmManager::FUN_004640e0,0x4640e0,0x312,__thiscall,,ZunResult,AnmManager*,
 th08::AnmManager::DrawWithCallback,0x464400,0x6f,__thiscall,,ZunResult,AnmManager*,AnmVm*,void*
 th08::AnmManager::Draw3D,0x464470,0x526,__thiscall,,ZunResult,AnmManager*,AnmVm*
 FUN_004649a0,0x4649a0,0x160,unknown,,u8,u8,u8,u8
-FUN_00464b00,0x464b00,0x160,unknown,,u8,u8,u8,u8
+th08::AnmManager::FUN_00464b00,0x464b00,0x160,__thiscall,,ZunResult,AnmManager*,AnmVm*,VertexTex1DiffuseXyzrhw*,i32
 th08::AnmManager::DrawVertices,0x464c60,0x16f,__thiscall,,ZunResult,AnmManager*,AnmVm*,VertexTex1DiffuseXyzrhw*,i32
 th08::AnmManager::FUN_00464dd0,0x464dd0,0xe1,__thiscall,,u8,AnmManager*,u8,u8
 th08::AnmManager::DrawTriangleFan,0x464ec0,0x1ab,__thiscall,,ZunResult,AnmManager*,AnmVm*,VertexDiffuseXyzrhw*,i32

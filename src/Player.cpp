@@ -491,6 +491,238 @@ void __fastcall FUN_00410c40(Player *player)
     g_AnmManager->ExecuteScriptArray(&bomb->workItems[0].vms[0], 2);
 }
 
+// FUNCTION: th08 0x4114e0
+#pragma var_order(interp, i, slot, angle)
+i32 __fastcall FUN_004114e0(AnmVm *effect)
+{
+    f32 interp;
+    i32 i;
+    PlayerUnkStruct0x40 *slot;
+    f32 angle;
+
+    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 40)
+    {
+        interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 40.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) =
+            88.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) * 80.0f / 40.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) =
+            192.0f - 384.0f * interp * interp;
+        --*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324);
+        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+    }
+    else
+    {
+        if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) == 40)
+        {
+#pragma var_order(position, radius)
+            f32 radius;
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8ff08080, 0, 21);
+            angle = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318) + ZUN_PI / 4.0f;
+            radius = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) * 0.7071067094802856f;
+            Float3 position;
+            g_AnmManager->FUN_00464b00(
+                effect,
+                reinterpret_cast<VertexTex1DiffuseXyzrhw *>(*reinterpret_cast<void **>(reinterpret_cast<u8 *>(effect) + 0x358)),
+                2 * *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) + 2);
+            for (i = 0; i < 4; i++)
+            {
+                if (angle >= ZUN_PI)
+                    angle -= ZUN_2PI;
+                position.FromAngleMagnitude(angle, radius);
+                position += *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2E0);
+                slot = g_Player.FUN_0044dfa0(
+                    &position, radius * 8.0f,
+                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) * 4.0f, 60, 70);
+                slot->collisionInterval = 4;
+                slot->angle = AddNormalizeAngle(angle, ZUN_PI / 2.0f);
+                angle = slot->angle;
+                slot = g_Player.FUN_0044de60(
+                    &position, radius * 4.0f,
+                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) * 4.0f, 6, 100);
+                slot->angle = angle;
+            }
+        }
+        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+    }
+    return 1;
+}
+
+// FUNCTION: th08 0x4117b0
+#pragma var_order(interp, radialBase, i, slot, angle)
+i32 __fastcall FUN_004117b0(AnmVm *effect)
+{
+    f32 interp;
+    f32 radialBase;
+    i32 i;
+    PlayerUnkStruct0x40 *slot;
+    f32 angle;
+
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318) =
+        AddNormalizeAngle(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318),
+                          ((*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x328) & 1) != 0)
+                              ? 0.039269909f
+                              : -0.039269909f);
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+
+    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 50)
+    {
+        interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 50.0f;
+        radialBase = (f32)(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x328) - 4) * 32.0f + 384.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) =
+            88.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) * 80.0f / 50.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) =
+            (f32)(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x328) - 4) * 32.0f + 192.0f -
+            radialBase * interp * interp;
+        --*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324);
+    }
+    else
+    {
+        if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) == 50)
+        {
+#pragma var_order(position, radius)
+            f32 radius;
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 16, 8, 0, 0, 21);
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8f6060f0, 0, 21);
+            angle = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318) + ZUN_PI / 4.0f;
+            radius = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) * 0.7071067094802856f;
+            Float3 position;
+            g_AnmManager->FUN_00464b00(
+                effect,
+                reinterpret_cast<VertexTex1DiffuseXyzrhw *>(*reinterpret_cast<void **>(reinterpret_cast<u8 *>(effect) + 0x358)),
+                2 * *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) + 2);
+            for (i = 0; i < 4; i++)
+            {
+                if (angle >= ZUN_PI)
+                    angle -= ZUN_2PI;
+                position.FromAngleMagnitude(angle, radius);
+                position += *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2E0);
+                slot = g_Player.FUN_0044dfa0(
+                    &position, radius * 8.0f,
+                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) * 4.0f, 60, 100);
+                slot->collisionInterval = 2;
+                slot->angle = AddNormalizeAngle(angle, ZUN_PI / 2.0f);
+                angle = slot->angle;
+                slot = g_Player.FUN_0044de60(
+                    &position, radius * 4.0f,
+                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) * 4.0f, 6, 150);
+                slot->angle = angle;
+            }
+        }
+        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+    }
+    return 1;
+}
+
+// FUNCTION: th08 0x411720
+#pragma var_order(velocity, position)
+i32 __fastcall FUN_00411720(AnmVm *effect)
+{
+    Float3 position = *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2A4);
+    Float3 velocity = *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2B0);
+
+    g_EffectManager.FUN_004259e0(35, reinterpret_cast<D3DXVECTOR3 *>(&position),
+                                 reinterpret_cast<D3DXVECTOR3 *>(&velocity),
+                                 *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x328), 1, -1);
+    *reinterpret_cast<void **>(reinterpret_cast<u8 *>(effect) + 0x348) = reinterpret_cast<void *>(FUN_004114e0);
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 44;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 4.0f;
+    return 0;
+}
+
+// FUNCTION: th08 0x411a80
+#pragma var_order(velocity, position)
+i32 __fastcall FUN_00411a80(AnmVm *effect)
+{
+    Float3 position = *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2A4);
+    Float3 velocity = *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2B0);
+
+    g_EffectManager.FUN_004259e0(35, reinterpret_cast<D3DXVECTOR3 *>(&position),
+                                 reinterpret_cast<D3DXVECTOR3 *>(&velocity),
+                                 *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x328), 1, -1);
+    *reinterpret_cast<void **>(reinterpret_cast<u8 *>(effect) + 0x348) = reinterpret_cast<void *>(FUN_004117b0);
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 54;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 6.0f;
+    return 0;
+}
+
+// FUNCTION: th08 0x410fe0
+#pragma var_order(bomb, workItem, angle)
+void __fastcall FUN_00410fe0(Player *player)
+{
+    PlayerBombState *bomb;
+    PlayerBombWorkItem *workItem;
+    f32 angle;
+
+    bomb = &player->bombState;
+    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
+    {
+        PlayerUnkStruct0x40 *slot;
+
+        FUN_0040be30(player, 1,
+                     "\x8B\xAB\x8A\x45\x81\x75\x89\x69\x96\xE9\x8E\x6C\x8F\x64\x8C\x8B\x8A\x45\x81\x76",
+                     250, 300, 1);
+        angle = -ZUN_PI;
+        workItem = &bomb->workItems[0];
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        workItem->anchor = player->position;
+        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[0], 21);
+        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[1], 22);
+        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 100, 6);
+        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(slot) + 0x38) = 5;
+        Float3 velocity(ZUN_PI / 4.0f, 1.0f, 4.0f);
+        g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&workItem->anchor),
+                                     reinterpret_cast<D3DXVECTOR3 *>(&velocity), 4, 1, -1);
+    }
+
+    if (bomb->timer.FUN_0040e350(10))
+    {
+        PlayerUnkStruct0x40 *slot;
+        AnmVm *effect;
+
+        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 40, 6);
+        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(slot) + 0x38) = 5;
+        Float3 velocity(ZUN_PI * 3.0f / 8.0f, 1.0f, 4.0f);
+        effect = g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].anchor),
+                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 5, 1, -1);
+        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 93);
+        bomb->workItems[1].anchor = player->position;
+    }
+
+    if (bomb->timer.FUN_0040e350(20))
+    {
+        PlayerUnkStruct0x40 *slot;
+        AnmVm *effect;
+
+        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 100, 6);
+        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(slot) + 0x38) = 5;
+        Float3 velocity(ZUN_PI / 2.0f, 1.0f, 4.0f);
+        effect = g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].anchor),
+                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 6, 1, -1);
+        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 94);
+        bomb->workItems[2].anchor = player->position;
+    }
+
+    if (bomb->timer.FUN_0040e350(30))
+    {
+        PlayerUnkStruct0x40 *slot;
+        AnmVm *effect;
+
+        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 100, 6);
+        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(slot) + 0x38) = 5;
+        Float3 velocity(1.9634954929351807f, 1.0f, 4.0f);
+        effect = g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].anchor),
+                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 7, 1, -1);
+        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 95);
+        bomb->workItems[3].anchor = player->position;
+    }
+
+    g_AnmManager->ExecuteScriptArray(&bomb->workItems[0].vms[0], 2);
+}
+
 // FUNCTION: th08 0x4113a0
 #pragma var_order(vm, workItem)
 void __fastcall FUN_004113a0(Player *player)
