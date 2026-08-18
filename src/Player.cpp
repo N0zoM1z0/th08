@@ -51,6 +51,12 @@ void __fastcall FUN_0040bc60(Player *player, D3DCOLOR color)
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Background) + 0x646C) = 1;
 }
 
+// FUNCTION: th08 0x40ebc0
+ZunBool ZunTimer::FUN_0040ebc0(i32 interval)
+{
+    return this->current != this->previous && (this->current % interval) == 0;
+}
+
 // FUNCTION: th08 0x40e350
 ZunBool ZunTimer::FUN_0040e350(i32 value)
 {
@@ -547,6 +553,183 @@ i32 __fastcall FUN_004114e0(AnmVm *effect)
     return 1;
 }
 
+// FUNCTION: th08 0x4123d0
+#pragma var_order(unused0, unused1, bomb, workItem, interp)
+void __fastcall FUN_004123d0(Player *player)
+{
+    i32 unused0;
+    i32 unused1;
+    PlayerBombState *bomb;
+    PlayerBombWorkItem *workItem;
+    f32 interp;
+
+    bomb = &player->bombState;
+    unused1 = 0;
+    unused0 = 0;
+    workItem = &bomb->workItems[0];
+
+    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
+    {
+        FUN_0040be30(player, 0,
+                     "\x90\x6C\x8B\x53\x81\x75\x96\xA2\x97\x88\x89\x69\x8D\x85\x8E\x61\x81\x76",
+                     250, 300, 0);
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.0f;
+        player->anmFile->SetAndExecuteScriptIdx(&player->mainVm, 0);
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
+        workItem->anchor = player->position;
+        workItem->position = workItem->anchor;
+        workItem->position.y = 416.0f;
+    }
+
+    if (bomb->timer < 40)
+    {
+        interp = (f32)bomb->timer / 40.0f;
+        interp = 1.0f - interp;
+        interp *= interp;
+        interp = 1.0f - interp;
+        player->position = (workItem->position - workItem->anchor) * interp + workItem->anchor;
+        return;
+    }
+    else if (bomb->timer.FUN_0040e350(40))
+    {
+        g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, 0xffff8080);
+        return;
+    }
+    else if (bomb->timer.FUN_0040e350(70))
+    {
+        player->position.y = 32.0f;
+        Float3 position = player->position;
+        position.y = 224.0f;
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xefffffff, 0, 21);
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(42), 0);
+        workItem->cancelSlot = player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 500, 0);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 60);
+        workItem->damageSlot->collisionInterval = 5;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        return;
+    }
+    else if (bomb->timer.FUN_0040e350(80))
+    {
+        Float3 position = player->position;
+        position.y = 224.0f;
+        position.x -= 32.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
+        workItem->damageSlot->collisionInterval = 2;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        position.x += 64.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
+        workItem->damageSlot->collisionInterval = 3;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xcfffffff, 0, 21);
+        return;
+    }
+    else if (bomb->timer.FUN_0040e350(90))
+    {
+        Float3 position = player->position;
+        position.y = 224.0f;
+        position.x -= 64.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
+        workItem->damageSlot->collisionInterval = 2;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        position.x += 128.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
+        workItem->damageSlot->collisionInterval = 3;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xafffffff, 0, 21);
+        return;
+    }
+    else if (bomb->timer.FUN_0040e350(100))
+    {
+        Float3 position = player->position;
+        position.y = 224.0f;
+        position.x -= 96.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 80, 40);
+        workItem->damageSlot->collisionInterval = 2;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        position.x += 192.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 80, 40);
+        workItem->damageSlot->collisionInterval = 3;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8fffffff, 0, 21);
+        return;
+    }
+    else if (bomb->timer.FUN_0040e350(110))
+    {
+        Float3 position = player->position;
+        position.y = 224.0f;
+        position.x -= 128.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 60, 40);
+        workItem->damageSlot->collisionInterval = 2;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        position.x += 256.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 60, 40);
+        workItem->damageSlot->collisionInterval = 3;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x6fffffff, 0, 21);
+        return;
+    }
+    else if (bomb->timer.FUN_0040e350(120))
+    {
+        Float3 position = player->position;
+        position.y = 224.0f;
+        position.x -= 160.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 50, 40);
+        workItem->damageSlot->collisionInterval = 2;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        position.x += 320.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 50, 40);
+        workItem->damageSlot->collisionInterval = 3;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x5fffffff, 0, 21);
+        return;
+    }
+    else if (bomb->timer.FUN_0040e350(130))
+    {
+        Float3 position = player->position;
+        position.y = 224.0f;
+        position.x -= 192.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 40, 40);
+        workItem->damageSlot->collisionInterval = 2;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        position.x += 384.0f;
+        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 40, 40);
+        workItem->damageSlot->collisionInterval = 3;
+        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x5fffffff, 0, 21);
+        workItem->position = player->position;
+        return;
+    }
+    else if (bomb->timer >= 150 && bomb->timer < 180)
+    {
+        interp = ((f32)bomb->timer - 150.0f) / 30.0f;
+        interp = 1.0f - interp;
+        interp *= interp;
+        interp = 1.0f - interp;
+        player->position = (workItem->anchor - workItem->position) * interp + workItem->position;
+        return;
+    }
+    else if (bomb->timer.FUN_0040e350(180))
+    {
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 1.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 1.0f;
+    }
+}
+
 // FUNCTION: th08 0x411b10
 #pragma var_order(unused0, unused1, bomb, workItem, interp)
 void __fastcall FUN_00411b10(Player *player)
@@ -871,6 +1054,290 @@ void __fastcall FUN_004113a0(Player *player)
     vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
     vm->pos.z = 0.0f;
     g_AnmManager->Draw2D(vm);
+}
+
+// FUNCTION: th08 0x413140
+#pragma var_order(i, bomb, workItem)
+void __fastcall FUN_00413140(Player *player)
+{
+    i32 i;
+    PlayerBombState *bomb;
+    PlayerBombWorkItem *workItem;
+
+    bomb = &player->bombState;
+    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
+    {
+        FUN_0040be30(player, 1,
+                     "\x8E\x80\x95\x84\x81\x75\x83\x4D\x83\x83\x83\x58\x83\x67\x83\x8A\x83\x68\x83\x8A\x81\x5B\x83\x80\x81\x76",
+                     300, 350, 0);
+
+        workItem = bomb->workItems;
+        for (i = 0; i < 128; i++, workItem++)
+            workItem->active = 0;
+
+        workItem = bomb->workItems;
+        for (i = 0; i < 16; i++, workItem++)
+        {
+            workItem->active = 1;
+            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 18);
+            workItem->rotation = (f32)i * ZUN_PI / 8.0f - ZUN_PI;
+            workItem->rotationStep = 0.013089969754219055f;
+            workItem->points[0] = player->position;
+            workItem->anchor = workItem->points[0];
+            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 24.0f, 0.0f, 50, 500);
+            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 24.0f, 0.0f, 500, 6);
+            workItem->damageSlot->hitCap = 800;
+            workItem->position.x = 0.0f;
+            workItem->position.y = 2.0f;
+        }
+
+        for (i = 0; i < 16; i++, workItem++)
+        {
+            workItem->active = 1;
+            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 19);
+            workItem->rotation = (f32)i * ZUN_PI / 8.0f - ZUN_PI;
+            workItem->rotationStep = -0.013089969754219055f;
+            workItem->points[0] = player->position;
+            workItem->anchor = workItem->points[0];
+            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 24.0f, 0.0f, 50, 500);
+            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 24.0f, 0.0f, 500, 6);
+            workItem->damageSlot->hitCap = 800;
+            workItem->position.x = 0.0f;
+            workItem->position.y = 2.0f;
+        }
+
+        for (i = 0; i < 16; i++, workItem++)
+        {
+            workItem->active = 1;
+            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 18);
+            workItem->rotation = (f32)i * ZUN_PI / 8.0f - ZUN_PI;
+            workItem->rotationStep = 0.015707964077591896f;
+            workItem->points[0] = player->position;
+            workItem->anchor = workItem->points[0];
+            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 24.0f, 0.0f, 50, 500);
+            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 24.0f, 0.0f, 500, 6);
+            workItem->damageSlot->hitCap = 800;
+            workItem->position.x = 0.0f;
+            workItem->position.y = 1.5f;
+        }
+
+        for (i = 0; i < 16; i++, workItem++)
+        {
+            workItem->active = 1;
+            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 19);
+            workItem->rotation = (f32)i * ZUN_PI / 8.0f - ZUN_PI;
+            workItem->rotationStep = -0.015707964077591896f;
+            workItem->points[0] = player->position;
+            workItem->anchor = workItem->points[0];
+            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 24.0f, 0.0f, 50, 500);
+            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 24.0f, 0.0f, 500, 6);
+            workItem->damageSlot->hitCap = 800;
+            workItem->position.x = 0.0f;
+            workItem->position.y = 1.5f;
+        }
+
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.8f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.8f;
+        bomb->workItems[0].effect =
+            g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 120, 12, 0, 0, 21);
+    }
+
+    workItem = bomb->workItems;
+    for (i = 0; i < 128; i++, workItem++)
+    {
+        if (workItem->active == 0)
+            continue;
+
+        workItem->points[1] = workItem->anchor;
+        workItem->position.x += workItem->position.y;
+        workItem->rotation = AddNormalizeAngle(workItem->rotation, workItem->rotationStep);
+        workItem->anchor.FromAngleMagnitude(workItem->rotation, workItem->position.x);
+        workItem->anchor += workItem->points[0];
+        workItem->points[1] = workItem->anchor - workItem->points[1];
+
+        if (workItem->position.x >= 500.0f)
+        {
+            workItem->active = 0;
+            workItem->damageSlot->active = 0;
+            workItem->cancelSlot->active = 0;
+            continue;
+        }
+        else
+        {
+            if (workItem->damageSlot != NULL)
+            {
+                workItem->damageSlot->center.x = workItem->anchor.x;
+                workItem->damageSlot->center.y = workItem->anchor.y;
+                workItem->cancelSlot->center.x = workItem->anchor.x;
+                workItem->cancelSlot->center.y = workItem->anchor.y;
+            }
+
+            if (g_AnmManager->ExecuteScript(&workItem->vms[0]))
+            {
+                workItem->active = 0;
+                workItem->damageSlot->active = 0;
+                workItem->cancelSlot->active = 0;
+            }
+        }
+    }
+}
+
+// FUNCTION: th08 0x413990
+#pragma var_order(i, bomb, workItem, spawned, signedScaled)
+void __fastcall FUN_00413990(Player *player)
+{
+    i32 i;
+    PlayerBombState *bomb;
+    PlayerBombWorkItem *workItem;
+    i32 spawned;
+    f32 signedScaled;
+
+    bomb = &player->bombState;
+    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
+    {
+        FUN_0040be30(player, 1,
+                     "\x8E\x80\x92\xB1\x81\x75\x89\xD8\xE3\xEF\x82\xCC\x89\x69\x96\xB0\x81\x76",
+                     300, 350, 1);
+
+        workItem = bomb->workItems;
+        for (i = 0; i < 128; i++, workItem++)
+            workItem->active = 0;
+
+        workItem = bomb->workItems;
+        for (i = 0; i < 16; i++, workItem++)
+        {
+            workItem->active = 1;
+            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 18);
+            workItem->rotation = (f32)i * ZUN_PI / 8.0f - ZUN_PI;
+            workItem->rotationStep = 0.013089969754219055f;
+            workItem->points[0] = player->position;
+            workItem->anchor = workItem->points[0];
+            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 24.0f, 0.0f, 50, 500);
+            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 24.0f, 0.0f, 500, 6);
+            workItem->damageSlot->hitCap = 800;
+            workItem->position.x = 0.0f;
+            workItem->position.y = 2.0f;
+        }
+
+        for (i = 0; i < 16; i++, workItem++)
+        {
+            workItem->active = 1;
+            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 19);
+            workItem->rotation = (f32)i * ZUN_PI / 8.0f - ZUN_PI;
+            workItem->rotationStep = -0.013089969754219055f;
+            workItem->points[0] = player->position;
+            workItem->anchor = workItem->points[0];
+            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 24.0f, 0.0f, 50, 500);
+            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 24.0f, 0.0f, 500, 6);
+            workItem->damageSlot->hitCap = 800;
+            workItem->position.x = 0.0f;
+            workItem->position.y = 2.0f;
+        }
+
+        for (i = 0; i < 16; i++, workItem++)
+        {
+            workItem->active = 1;
+            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 18);
+            workItem->rotation = (f32)i * ZUN_PI / 8.0f - ZUN_PI;
+            workItem->rotationStep = 0.015707964077591896f;
+            workItem->points[0] = player->position;
+            workItem->anchor = workItem->points[0];
+            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 24.0f, 0.0f, 50, 500);
+            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 24.0f, 0.0f, 500, 6);
+            workItem->damageSlot->hitCap = 800;
+            workItem->position.x = 0.0f;
+            workItem->position.y = 1.5f;
+        }
+
+        for (i = 0; i < 16; i++, workItem++)
+        {
+            workItem->active = 1;
+            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 19);
+            workItem->rotation = (f32)i * ZUN_PI / 8.0f - ZUN_PI;
+            workItem->rotationStep = -0.015707964077591896f;
+            workItem->points[0] = player->position;
+            workItem->anchor = workItem->points[0];
+            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 24.0f, 0.0f, 50, 500);
+            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 24.0f, 0.0f, 500, 6);
+            workItem->damageSlot->hitCap = 800;
+            workItem->position.x = 0.0f;
+            workItem->position.y = 1.5f;
+        }
+
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.8f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.8f;
+        bomb->workItems[0].effect =
+            g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
+        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 60, 16, 0, 0, 21);
+    }
+
+    if (bomb->timer >= 60 && bomb->timer < 200 && bomb->timer.FUN_0040ebc0(20))
+    {
+        signedScaled = g_Rng.GetRandomF32SignedInRange(ZUN_PI);
+        spawned = 0;
+        workItem = bomb->workItems;
+        for (i = 0; i < 128; i++, workItem++)
+        {
+            if (workItem->active != 0)
+                continue;
+
+            workItem->active = 1;
+            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 20);
+            workItem->rotation = AddNormalizeAngle((f32)i * ZUN_PI / 8.0f, signedScaled);
+            workItem->points[0] = player->position;
+            workItem->anchor = workItem->points[0];
+            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 64.0f, 0.0f, 100, 500);
+            workItem->damageSlot->hitCap = 1200;
+            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 64.0f, 0.0f, 500, 6);
+            workItem->position.x = 0.0f;
+            workItem->position.y = 8.0f;
+            if (++spawned >= 16)
+                break;
+        }
+        g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), workItem->anchor.x);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 30, 8, 0, 0, 21);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xe0f0f0f0, 0, 21);
+    }
+
+    workItem = bomb->workItems;
+    for (i = 0; i < 128; i++, workItem++)
+    {
+        if (workItem->active == 0)
+            continue;
+
+        workItem->points[1] = workItem->anchor;
+        workItem->position.x += workItem->position.y;
+        workItem->rotation = AddNormalizeAngle(workItem->rotation, workItem->rotationStep);
+        workItem->anchor.FromAngleMagnitude(workItem->rotation, workItem->position.x);
+        workItem->anchor += workItem->points[0];
+        workItem->points[1] = workItem->anchor - workItem->points[1];
+
+        if (workItem->position.x >= 500.0f)
+        {
+            workItem->active = 0;
+            workItem->damageSlot->active = 0;
+            workItem->cancelSlot->active = 0;
+            continue;
+        }
+
+        if (workItem->damageSlot != NULL)
+        {
+            workItem->damageSlot->center.x = workItem->anchor.x;
+            workItem->damageSlot->center.y = workItem->anchor.y;
+            workItem->cancelSlot->center.x = workItem->anchor.x;
+            workItem->cancelSlot->center.y = workItem->anchor.y;
+        }
+
+        if (g_AnmManager->ExecuteScript(&workItem->vms[0]))
+        {
+            workItem->active = 0;
+            workItem->damageSlot->active = 0;
+            workItem->cancelSlot->active = 0;
+        }
+    }
 }
 
 // FUNCTION: th08 0x413890

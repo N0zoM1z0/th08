@@ -72,14 +72,16 @@ C_ASSERT(sizeof(PlayerOptionState) == 0x2F4);
 struct PlayerBombWorkItem
 {
     i32 active;
-    unknown_fields(0x0004, 0xC);
+    unknown_fields(0x0004, 4);
+    f32 rotationStep;
+    unknown_fields(0x000C, 4);
     f32 rotation;
     Float3 anchor;
     Float3 points[32];
     Float3 position;
     Float3 velocity;
     AnmVm vms[8];
-    unknown_fields(0x16D8, 4);
+    AnmVm *effect;
     ZunTimer timer;
     PlayerUnkStruct0x40 *damageSlot;
     PlayerUnkStruct0x40 *cancelSlot;

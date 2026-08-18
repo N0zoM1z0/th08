@@ -888,3 +888,7 @@ address,name,size,status,match_percent,unit,evidence
 0x004117B0,th08::FUN_004117b0,708,matching,100.00,player-bomb-effect-update-004117b0,python3 scripts/compare-function.py player-bomb-effect-update-004117b0 --json
 0x00411A80,th08::FUN_00411a80,139,matching,100.00,player-bomb-effect-init-00411a80,python3 scripts/compare-function.py player-bomb-effect-init-00411a80 --json
 0x00411B10,th08::FUN_00411b10,2032,matching,100.00,player-bomb-callback-00411b10,python3 scripts/compare-function.py player-bomb-callback-00411b10 --json
+0x004123D0,th08::FUN_004123d0,3016,matching,100.00,player-bomb-callback-004123d0,python3 scripts/compare-function.py player-bomb-callback-004123d0 --json
+0x0040EBC0,th08::ZunTimer::FUN_0040ebc0,61,matching,100.00,zun-timer-periodic,python3 scripts/compare-function.py zun-timer-periodic --json
+0x00413140,th08::FUN_00413140,1859,matching,100.00,player-bomb-callback-00413140,python3 scripts/compare-function.py player-bomb-callback-00413140 --json
+0x00413990,th08::FUN_00413990,2344,matching,100.00,player-bomb-callback-00413990,python3 scripts/compare-function.py player-bomb-callback-00413990 --json
