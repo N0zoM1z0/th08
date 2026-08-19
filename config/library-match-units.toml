@@ -8739,3 +8739,54 @@ offset = 0xF3
 type = "REL32"
 symbol = "@__security_check_cookie@4"
 target_base = 0x004AB43C
+
+[[units]]
+name = "crt-statfp"
+target_address = 0x004AD490
+body_size = 0xD
+compare_size = 0xD
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/fpctrl.obj"
+symbol = "__statfp"
+
+[[units]]
+name = "crt-clrfp"
+target_address = 0x004AD49D
+body_size = 0xE
+compare_size = 0xE
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/fpctrl.obj"
+symbol = "__clrfp"
+
+[[units]]
+name = "crt-ctrlfp"
+target_address = 0x004AD4AB
+body_size = 0x24
+compare_size = 0x24
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/fpctrl.obj"
+symbol = "__ctrlfp"
+
+[[units]]
+name = "crt-set-statfp"
+target_address = 0x004AD4CF
+body_size = 0x59
+compare_size = 0x59
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/fpctrl.obj"
+symbol = "__set_statfp"
+[[units.relocations]]
+offset = 0xD
+type = "DIR32"
+symbol = "_over"
+target_base = 0x004CC640
+[[units.relocations]]
+offset = 0x20
+type = "DIR32"
+symbol = "_over"
+target_base = 0x004CC640
+[[units.relocations]]
+offset = 0x33
+type = "DIR32"
+symbol = "_under"
+target_base = 0x004CC64C
