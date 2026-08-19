@@ -19,6 +19,11 @@ namespace th08
 #define TITLE_SPRITE_KEYCONFIG_SLOWSHOT_START 75
 #define TITLE_SPRITE_KEYCONFIG_SLOWSHOT_END 76
 
+#define TITLE_SPRITE_CHARACTER_START 111
+#define TITLE_SPRITE_CHARACTER_END 130
+
+extern i32 g_TitleCharacterSpriteIndices[SHOT_ALL][4];
+
 
 
 enum
@@ -1367,6 +1372,233 @@ ChainCallbackResult TitleScreen::OnUpdateSpellCardSelect()
             return CHAIN_CALLBACK_RESULT_EXECUTE_AGAIN;
         }
 
+        break;
+    }
+
+    this->idleFrames++;
+    this->stateTimer++;
+    this->stateTimer2++;
+
+    return CHAIN_CALLBACK_RESULT_CONTINUE;
+}
+
+
+// Probe-only recovery for the claimed Title lane. The three title VM
+// initializations use the target-shaped inline helper so VC7 retains the
+// per-inline work slot observed in the retail 0x88-byte frame.
+#pragma var_order(menuLength1, vmIdx1, i1, horizontalCursorMovement, oldCursorPos, menuLength2, vmIdx2, i2, oldScreen)
+ChainCallbackResult TitleScreen::OnUpdateSpellStageSelect()
+{
+    i32 menuLength1;
+    i32 menuLength2;
+    i32 vmIdx1;
+    i32 vmIdx2;
+    i32 i1;
+    i32 i2;
+    i32 oldCursorPos;
+    i32 horizontalCursorMovement;
+    TitleCurrentScreen oldScreen;
+
+    switch (this->currentScreenState)
+    {
+    case TitleCurrentScreenState_Init:
+        if (stateTimer2 == 0)
+        {
+            g_AnmManager->SetInterruptArray(this->vms, this->vmCount, 18);
+
+            this->vms[139].SetInterrupt(27);
+            this->vms[138].SetInterrupt(27);
+
+            if (this->previousScreen != TitleCurrentScreen_SpellCardSelect)
+            {
+                if (g_AnmManager->LoadSurface(0, "title/select00.png") != ZUN_SUCCESS)
+                {
+                    return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
+                }
+            }
+
+            this->cursor = g_GameManager.shotType;
+
+            menuLength1 = g_GameManager.IsExtraUnlockedWithAllTeams() ? 12 : 4;
+            while (!g_GameManager.IsSpellPracticeUnlockedForCharacter(this->cursor))
+            {
+                this->cursor++;
+                if (this->cursor >= menuLength1)
+                {
+                    this->cursor -= menuLength1;
+                }
+            }
+
+            g_GameManager.shotType = this->cursor;
+
+            this->percentageCapturedSpellPracticePerShot = 0.0f;
+            this->percentageCapturedInGamePerShot = 0.0f;
+            this->percentageCapturedSpellPractice = 0.0f;
+            this->percentageCapturedInGame = 0.0f;
+
+            this->cursor = g_GameManager.currentStage;
+
+            for (vmIdx1 = TITLE_SPRITE_CHARACTER_START; vmIdx1 <= TITLE_SPRITE_CHARACTER_END; vmIdx1++)
+            {
+                this->vms[vmIdx1].flag1 = FALSE;
+                this->vms[vmIdx1].SetInterrupt(8);
+                for (i1 = 1; i1 < ARRAY_SIZE(g_TitleCharacterSpriteIndices[0]) - 1; i1++)
+                {
+                    if (g_TitleCharacterSpriteIndices[g_GameManager.shotType][i1] == vmIdx1)
+                    {
+                        this->vms[vmIdx1].flag1 = TRUE;
+                        this->vms[vmIdx1].SetInterrupt(9);
+                    }
+                }
+                if (g_TitleCharacterSpriteIndices[g_GameManager.shotType][i1] == vmIdx1)
+                {
+                    this->vms[vmIdx1].flag1 = TRUE;
+                    this->vms[vmIdx1].SetInterrupt(23);
+                }
+            }
+
+            InitializeTitleVmAndSetSprite(this->resultTextAnm, &this->spellCardNameVms[0], 2);
+            this->spellCardNameVms[0].pos = Float3(0, 0, 0);
+            this->spellCardNameVms[0].anchor = 3;
+            this->spellCardNameVms[0].fontWidth = 15;
+            this->spellCardNameVms[0].fontHeight = 15;
+            this->spellCardNameVms[0].color1.a = 255;
+            this->spellCardNameVms[0].color1.r = 255;
+            this->spellCardNameVms[0].color1.g = 255;
+            this->spellCardNameVms[0].color1.b = 255;
+            g_AnmManager->DrawTextLeft(&this->spellCardNameVms[0], COLOR_TEXT_WHITE, 0, TH_TITLE_SPELL_STAGE_INFO);
+
+            InitializeTitleVmAndSetSprite(this->resultTextAnm, &this->spellCardNameVms[1], 3);
+            this->spellCardNameVms[1].pos = Float3(0, 0, 0);
+            this->spellCardNameVms[1].anchor = 3;
+            this->spellCardNameVms[1].fontWidth = 15;
+            this->spellCardNameVms[1].fontHeight = 15;
+            this->spellCardNameVms[1].color1.a = 255;
+            this->spellCardNameVms[1].color1.r = 255;
+            this->spellCardNameVms[1].color1.g = 255;
+            this->spellCardNameVms[1].color1.b = 255;
+            g_AnmManager->DrawTextLeft(&this->spellCardNameVms[1], COLOR_TEXT_WHITE, 0,
+                                       TH_TITLE_SPELL_CAPTURE_PERCENTAGE);
+
+            /* ZUN bug: possible copy paste mistake? */
+            InitializeTitleVmAndSetSprite(this->titleAnm, &this->spellCardNameVms[2], 144);
+            this->spellCardNameVms[1].anchor = 3;
+            this->spellCardNameVms[1].color1.a = 255;
+            this->spellCardNameVms[1].color1.r = 255;
+            this->spellCardNameVms[1].color1.g = 255;
+            this->spellCardNameVms[1].color1.b = 255;
+
+            this->currentScreenState = TitleCurrentScreenState_Init;
+            this->stateTimer = 0;
+
+            g_GameManager.flags.isPracticeMode = TRUE;
+            g_GameManager.flags.isSpellPractice = TRUE;
+        }
+
+        if (this->practiceState != 0)
+        {
+            this->cursor = 0;
+            this->ChangeCurrentScreen(TitleCurrentScreen_SpellCardSelect);
+            if (g_GameManager.currentSpellCardNumber >= SPELLCARD_LAST_WORD_START)
+            {
+                g_GameManager.currentStage = STAGE_LAST_WORD;
+            }
+            return CHAIN_CALLBACK_RESULT_EXECUTE_AGAIN;
+        }
+
+        if (stateTimer2 == 8)
+        {
+            this->currentScreenState = TitleCurrentScreenState_Ready;
+        }
+        break;
+    case TitleCurrentScreenState_Ready:
+        this->MoveCursorVertical(10);
+        oldCursorPos = this->cursor;
+        this->cursor = g_GameManager.shotType;
+
+        menuLength2 = g_GameManager.IsExtraUnlockedWithAllTeams() ? 12 : 4;
+
+        horizontalCursorMovement = this->MoveCursorHorizontal(menuLength2);
+        if (horizontalCursorMovement != 0)
+        {
+            while (!g_GameManager.IsSpellPracticeUnlockedForCharacter(this->cursor))
+            {
+                this->cursor += horizontalCursorMovement;
+                if (this->cursor >= menuLength2)
+                {
+                    this->cursor -= menuLength2;
+                }
+                if (this->cursor < 0)
+                {
+                    this->cursor += menuLength2;
+                }
+            }
+
+            g_GameManager.shotType = this->cursor;
+
+            for (vmIdx2 = TITLE_SPRITE_CHARACTER_START; vmIdx2 <= TITLE_SPRITE_CHARACTER_END; vmIdx2++)
+            {
+                this->vms[vmIdx2].flag1 = FALSE;
+                this->vms[vmIdx2].SetInterrupt(8);
+                for (i2 = 1; i2 < ARRAY_SIZE(g_TitleCharacterSpriteIndices[0]) - 1; i2++)
+                {
+                    if (g_TitleCharacterSpriteIndices[this->cursor][i2] == vmIdx2)
+                    {
+                        this->vms[vmIdx2].flag1 = TRUE;
+                        this->vms[vmIdx2].SetInterrupt(9);
+                    }
+                }
+                if (g_TitleCharacterSpriteIndices[this->cursor][i2] == vmIdx2)
+                {
+                    this->vms[vmIdx2].flag1 = TRUE;
+                    this->vms[vmIdx2].SetInterrupt(23);
+                }
+            }
+
+            this->stateTimer2 = 0;
+        }
+
+        this->cursor = oldCursorPos;
+
+        if (WAS_PRESSED(TH_BUTTON_SHOOT | TH_BUTTON_ENTER))
+        {
+            g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
+
+            g_GameManager.currentStage = this->cursor;
+
+            /* ??? */
+            g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
+            g_SoundPlayer.ProcessQueues();
+
+            this->cursor = 0;
+
+            this->ChangeCurrentScreen(TitleCurrentScreen_SpellCardSelect);
+
+            return CHAIN_CALLBACK_RESULT_EXECUTE_AGAIN;
+        }
+
+        if (WAS_PRESSED(TH_BUTTON_BOMB | TH_BUTTON_MENU))
+        {
+            g_SoundPlayer.PlaySoundByIdx(SOUND_BACK, 0);
+            g_SoundPlayer.ProcessQueues();
+
+            this->currentScreenState = TitleCurrentScreenState_Changing;
+            this->stateTimer = 0;
+
+            g_GameManager.currentStage = this->cursor;
+            g_AnmManager->SetInterruptArray(this->vms, this->vmCount, 6);
+            break;
+        }
+        break;
+    case TitleCurrentScreenState_Changing:
+        if (this->stateTimer >= 20)
+        {
+            oldScreen = this->currentScreen;
+            this->ChangeCurrentScreen(TitleCurrentScreen_StartMenu);
+            this->cursor = 2;
+            g_GameManager.flags.isPracticeMode = FALSE;
+            return CHAIN_CALLBACK_RESULT_CONTINUE;
+        }
         break;
     }
 
