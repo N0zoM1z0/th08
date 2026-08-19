@@ -23,6 +23,8 @@ namespace th08
 #define TITLE_SPRITE_CHARACTER_END 130
 
 extern i32 g_TitleCharacterSpriteIndices[SHOT_ALL][4];
+extern const char *g_FullWidthDigits[];
+extern char g_FullWidthNumberBuffer[64];
 
 
 
@@ -1607,6 +1609,26 @@ ChainCallbackResult TitleScreen::OnUpdateSpellStageSelect()
     this->stateTimer2++;
 
     return CHAIN_CALLBACK_RESULT_CONTINUE;
+}
+
+#pragma var_order(i, multiplier)
+char *__fastcall ConvertToFullWidthDigits(i32 value, i32 width)
+{
+    i32 multiplier;
+    i32 i;
+    multiplier = 1;
+    memset(g_FullWidthNumberBuffer, 0, sizeof(g_FullWidthNumberBuffer));
+    for (i = 1; i < width; i++)
+        multiplier *= 10;
+    i = 0;
+    while (multiplier > 0)
+    {
+        strcpy(&g_FullWidthNumberBuffer[i], g_FullWidthDigits[value / multiplier]);
+        value %= multiplier;
+        multiplier /= 10;
+        i += 2;
+    }
+    return g_FullWidthNumberBuffer;
 }
 
 } // namespace th08

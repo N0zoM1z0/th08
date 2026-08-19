@@ -1076,3 +1076,4 @@ th08::TitleScreen::OnUpdateStartMenu
 th08::TitleScreen::OnUpdateKeyConfig
 th08::TitleScreen::OnUpdateSpellCardSelect
 th08::TitleScreen::OnUpdateSpellStageSelect
+th08::ConvertToFullWidthDigits

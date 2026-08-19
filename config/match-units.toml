@@ -114368,3 +114368,46 @@ offset = 0x9F7
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
+
+[[units]]
+name = "title-full-width-digits-0046d763"
+object = "build/probes/TitleReplayMenuProbe.obj"
+symbol = "?ConvertToFullWidthDigits@th08@@YIPADHH@Z"
+target_address = 0x0046D763
+size = 0x96
+
+[[units.relocations]]
+offset = 0x18
+type = "DIR32"
+symbol = "?g_FullWidthNumberBuffer@th08@@3PADA"
+target = 0x018BDDC8
+
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "_memset"
+target = 0x004A4920
+
+[[units.relocations]]
+offset = 0x5B
+type = "DIR32"
+symbol = "?g_FullWidthDigits@th08@@3PAPBDA"
+target = 0x004C829C
+
+[[units.relocations]]
+offset = 0x63
+type = "DIR32"
+symbol = "?g_FullWidthNumberBuffer@th08@@3PADA"
+target = 0x018BDDC8
+
+[[units.relocations]]
+offset = 0x69
+type = "REL32"
+symbol = "_strcpy"
+target = 0x004A5D20
+
+[[units.relocations]]
+offset = 0x90
+type = "DIR32"
+symbol = "?g_FullWidthNumberBuffer@th08@@3PADA"
+target = 0x018BDDC8
