@@ -1181,3 +1181,8 @@ without those explicit fields retain the stricter whole-section ownership rule.
   at that address.  Remove the conflict prefix only after that evidence; a
   decompiler conflict label is not provenance and should not survive once the
   original archive owner is established.
+
+### Library extent triage: instruction truncation vs associated cleanup
+
+- `_strcmp @ 0x004AFE80` is a hard stale-boundary case: the imported 0x87 extent ends on the first byte of the final two-byte backward `jmp`.  `strcmp.obj` gives a 0x88 function-definition extent and the complete target range matches, so the mapping must be repaired to 0x88.  An extent that splits an instruction is never a valid compiler boundary.
+- `_msize @ 0x004A6E01` is the opposite case.  Its main function returns at body offset 0x69, so the imported 0x6A body is correct; `msize.obj` continues to a 0x76 function-definition extent containing an alternate-entry prelude and the separately mapped 9-byte cleanup tail at `0x004A6E6E`.  Keep `body_size = 0x6A`, compare all 0x76 bytes, and accept the child through the tail-local-funclet schema (`$L19142 @ +0x6D`).

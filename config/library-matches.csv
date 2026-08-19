@@ -121,3 +121,6 @@ address,name,size,status,unit,evidence
 0x004AAF80,_isindst_lk,395,matching,crt-isindst-lk,python3 scripts/compare-library.py crt-isindst-lk --json
 0x004AADC8,cvtdate,440,matching,crt-cvtdate,python3 scripts/compare-library.py crt-cvtdate --json
 0x004B05D5,_getenv_lk,129,matching,crt-getenv-lk,python3 scripts/compare-library.py crt-getenv-lk --json
+0x004AFE80,strcmp,136,matching,crt-strcmp,python3 scripts/compare-library.py crt-strcmp --json
+0x004A6E01,_msize,106,matching,crt-msize,python3 scripts/compare-library.py crt-msize --json
+0x004A6E6E,FUN_004a6e6e,9,matching,crt-msize-tail-funclet,python3 scripts/compare-library.py crt-msize-tail-funclet --json
