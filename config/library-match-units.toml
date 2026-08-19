@@ -2061,3 +2061,38 @@ offset = 0xB6
 type = "REL32"
 symbol = "__SEH_epilog"
 target_base = 0x004A6EB3
+
+[[units]]
+name = "crt-catch-guard-handler"
+target_address = 0x004A44A1
+body_size = 0x24
+compare_size = 0x24
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/trnsctrl.obj"
+symbol = "?CatchGuardHandler@@YA?AW4_EXCEPTION_DISPOSITION@@PAUEHExceptionRecord@@PAUCatchGuardRN@@PAX2@Z"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x1C
+type = "REL32"
+symbol = "___InternalCxxFrameHandler"
+target_base = 0x004AA910
+
+[[units]]
+name = "crt-translator-guard-handler"
+target_address = 0x004A44C5
+body_size = 0x71
+compare_size = 0x71
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/trnsctrl.obj"
+symbol = "?TranslatorGuardHandler@@YA?AW4_EXCEPTION_DISPOSITION@@PAUEHExceptionRecord@@PAUTranslatorGuardRN@@PAX2@Z"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x44
+type = "REL32"
+symbol = "___InternalCxxFrameHandler"
+target_base = 0x004AA910
+[[units.relocations]]
+offset = 0x5B
+type = "REL32"
+symbol = "?_UnwindNestedFrames@@YGXPAUEHRegistrationNode@@PAUEHExceptionRecord@@@Z"
+target_base = 0x004A4419

@@ -1735,7 +1735,8 @@ JumpToContinuation,0x4a43e2,library
 CallMemberFunction1,0x4a4412,library
 UnwindNestedFrames,0x4a4419,library
 __CxxFrameHandler,0x4a446b,library
-FUN_004a44c5,0x4a44c5,library
+CatchGuardHandler,0x4a44a1,library
+TranslatorGuardHandler,0x4a44c5,library
 GetRangeOfTrysToCheck,0x4a4536,library
 CreateFrameInfo,0x4a45b0,library
 IsExceptionObjectToBeDestroyed,0x4a45d8,library

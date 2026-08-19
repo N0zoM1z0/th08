@@ -1021,3 +1021,14 @@ without those explicit fields retain the stricter whole-section ownership rule.
   valid nested funclet overlap. Keep the parent at `0xBB`, replay the complete
   section, and preserve the overlap exception; do not truncate the parent merely
   to avoid double ownership in a linear address map.
+
+### Archive gaps can reveal missing library inventory starts
+
+- Reconcile contiguous archive members against target control-flow gaps instead
+  of assuming the imported function list is complete. `trnsctrl.obj` proved
+  that `CatchGuardHandler @ 0x004A44A1` was entirely absent from the library
+  inventory, while the following `TranslatorGuardHandler @ 0x004A44C5` was
+  truncated by three bytes. Their auxless code COMDATs are exactly `0x24` and
+  `0x71` bytes and fill the target interval between `__CxxFrameHandler` and
+  `_GetRangeOfTrysToCheck` without gaps. Add the missing row only after archive
+  symbol, target extent, and relocation replay all agree.

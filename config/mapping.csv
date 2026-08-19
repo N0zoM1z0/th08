@@ -1734,7 +1734,8 @@ _JumpToContinuation,0x4a43e2,0x2b,__stdcall,,void,void*,EHRegistrationNode*
 _CallMemberFunction1,0x4a4412,0x7,__stdcall,,void,void*,void*,void*,i32
 _UnwindNestedFrames,0x4a4419,0x52,__stdcall,,void,EHRegistrationNode*,EHExceptionRecord*
 ___CxxFrameHandler,0x4a446b,0x36,unknown,,u8,u8,u8,u8,u8
-FUN_004a44c5,0x4a44c5,0x6e,unknown,,u8,u8,u8,u8
+CatchGuardHandler,0x4a44a1,0x24,unknown,,u8,u8,u8,u8,u8
+TranslatorGuardHandler,0x4a44c5,0x71,unknown,,u8,u8,u8,u8
 _GetRangeOfTrysToCheck,0x4a4536,0x7a,__cdecl,,_s_TryBlockMapEntry*,_s_FuncInfo*,i32,i32,u32*,u32*
 _CreateFrameInfo,0x4a45b0,0x28,__cdecl,,FrameInfo*,FrameInfo*,void*
 IsExceptionObjectToBeDestroyed,0x4a45d8,0x21,__cdecl,,i32,void*
