@@ -1876,9 +1876,9 @@ FUN_004a9e82,0x4a9e82,library
 FUN_004a9f4c,0x4a9f4c,library
 __updatetlocinfo,0x4aa00e,library
 FUN_004aa040,0x4aa040,library
-FUN_004aa049,0x4aa049,library
+_mtterm,0x4aa049,library
 _getptd,0x4aa067,library
-FUN_004aa0d8,0x4aa0d8,library
+_mtinit,0x4aa0d8,library
 TypeMatch,0x4aa147,library
 __FrameUnwindToState,0x4aa1b4,library
 FUN_004aa267,0x4aa267,library
