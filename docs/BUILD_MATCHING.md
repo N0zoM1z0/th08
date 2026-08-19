@@ -918,3 +918,18 @@ target-linked libraries, resources, or complete-PE identity.
   five-byte `.text` section with one `DISP32 _free` relocation.  Use the member
   section/relocation as the extent proof; the adjacent `operator new` address
   alone is only corroboration.
+
+
+### Microsoft COFF archive member identity for library replay
+
+- VC7 `.LIB` long-name tables use NUL-terminated member names in the archive
+  observed here; do not assume GNU ar's `/\n` spelling.  More importantly, a
+  Microsoft archive can contain repeated member path names.  A library comparator
+  must therefore preserve all occurrences and disambiguate the configured member
+  by its section-defined COFF symbol (or fail if more than one occurrence owns the
+  symbol), rather than treating the member path as a unique key.
+- Library relocation replay must resolve the object field addend plus a pinned
+  target base.  Masking relocation bytes is only a diagnostic.  The initial D3DX
+  family proves `.data1` bases `0x018DA000` (SSE) and `0x018DA220` (SSE2), plus
+  `.data` bases `0x004C9FC0` (Vec4 normalize) and `0x004CA180` (quaternion
+  normalize); `operator delete` proves a REL32 target of `_free @ 0x004A427B`.

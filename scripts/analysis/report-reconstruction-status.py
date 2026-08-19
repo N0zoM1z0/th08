@@ -92,6 +92,11 @@ def load_rows() -> list[dict[str, object]]:
 def summary(rows: list[dict[str, object]]) -> dict[str, object]:
     authored = [row for row in rows if row["category"] == "authored"]
     library = [row for row in rows if row["category"] == "library"]
+    with (CONFIG / "library-match-units.toml").open("rb") as stream:
+        library_manifest = tomllib.load(stream)
+    library_units = library_manifest.get("units", [])
+    with (CONFIG / "library-matches.csv").open(newline="", encoding="utf-8") as stream:
+        library_matches = list(csv.DictReader(stream))
     return {
         "authored": {
             "functions": len(authored),
@@ -113,7 +118,8 @@ def summary(rows: list[dict[str, object]]) -> dict[str, object]:
             "known_bytes": sum(
                 int(row["size"]) for row in library if row["size"] is not None
             ),
-            "with_match_units": sum(bool(row["units"]) for row in library),
+            "with_match_units": len(library_units),
+            "accepted_matches": len(library_matches),
         },
     }
 
@@ -155,7 +161,8 @@ def text_summary(report: dict[str, object]) -> str:
             "Library: "
             f"{library['functions']} classified functions; mapping sizes for "
             f"{library['sized_functions']} ({library['known_bytes']} known bytes); "
-            f"{library['with_match_units']} configured match units",
+            f"{library['with_match_units']} configured match units; "
+            f"{library['accepted_matches']} accepted exact matches",
         ]
     )
 

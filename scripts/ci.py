@@ -64,7 +64,9 @@ def main() -> int:
             [sys.executable, "scripts/validate-tracking.py", "--skip-target-bytes"],
         )
         run("Validate exact-match configuration", [sys.executable, "scripts/check-match-config.py"])
+        run("Validate library reconstruction ledgers", [sys.executable, "scripts/validate-library.py"])
         run("Check generated progress", [sys.executable, "scripts/progress.py", "--check"])
+        run("Check generated library progress", [sys.executable, "scripts/library-progress.py", "--check"])
         run("Check tracked documentation", [sys.executable, "scripts/check-docs.py"])
         run(
             "Smoke-test status reporting",

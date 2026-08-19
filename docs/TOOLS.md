@@ -24,6 +24,9 @@ repeating target analysis or compiler-shape probes.
 | Is this the one supported executable? | `python3 scripts/verify-target.py` | Verifies size and hashes; no reconstruction claim. |
 | What authored/library work remains? | `python3 scripts/analysis/report-reconstruction-status.py --summary` | Ledger-derived totals. Omit `--summary` for the default authored non-exact rows. |
 | Which library rows still lack mapping extents? | `python3 scripts/analysis/report-reconstruction-status.py --category library --state missing-size --sort address` | Current machine-derived first lane for library inventory repair; do not copy the prose count into scripts. |
+| Is library provenance/config structurally valid? | `python3 scripts/validate-library.py` | Public target-independent schema/ledger validation. Add `--require-archives` locally to hash-check configured private archives. |
+| Is one configured library/archive unit exact? | `python3 scripts/compare-library.py UNIT --json` | Local target-required archive hash + member identity + COFF relocation replay + full `compare_size` target comparison. |
+| Is separate library progress current? | `python3 scripts/library-progress.py --check` | Checks `docs/LIBRARY_PROGRESS.md`; counts accepted body bytes only and never changes authored progress. |
 | What does the target prove about one ABI/body? | `python3 scripts/typed-re.py ADDRESS --compare --json > build/typed-re-ADDRESS.json` | Read-only instruction/ABI facts; comparison is exact only if the configured report says so. |
 | How do I build the normal executable? | `python3 scripts/build.py` | Regenerates `build.ninja` and links `build/th08.exe`. Add `--fresh` to clean generated Ninja outputs and known VC7/linker side outputs first. |
 | How do I build one configured object? | Read its `object` in `config/match-units.toml`, then use `python3 scripts/build.py TARGET` or the documented objdiff object command. | Build success means `compiles`, not `matching`. |

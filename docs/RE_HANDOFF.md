@@ -108,14 +108,22 @@ overlaps are VC7 CRT nested SEH cleanup funclets and are explicitly represented
 in `config/mapping-overlaps.csv`; `validate-tracking.py` rejects stale exception
 rows and reports any new unclassified overlap.
 
-Proceed with provenance and separate library acceptance infrastructure:
+Separate library acceptance infrastructure is now in place:
 
-1. pin archive/member provenance for the remaining VC7 CRT/runtime, standard
-   library, D3DX, and compiler-runtime families;
-2. add the separate library provenance manifest, match-unit schema, accepted
-   ledger, relocation-aware comparator, public CI validation, local target
-   verification command, and independent progress report;
-3. only then accept one coherent library family at a time.
+- `library-provenance.toml` pins archive identity and SHA-256;
+- `library-match-units.toml` records target body/compare extents, archive member,
+  COFF symbol, and every relocation target base;
+- `compare-library.py` verifies archive hash/member identity and replays DIR32/REL32
+  relocations before comparing the complete target range;
+- `library-matches.csv` is the independent accepted ledger;
+- `validate-library.py` is the public CI gate, with `--require-archives` for local
+  hash attestation; `library-progress.py` generates `LIBRARY_PROGRESS.md`.
+
+Seven Phase-A units are configured as the first bounded acceptance family.  The
+current accepted library ledger remains empty until their canonical local exact
+results are replayed after this infrastructure checkpoint.  Continue by accepting
+that family, then pin provenance and match units for the remaining VC7 CRT/runtime,
+standard-library, D3DX, and compiler-runtime inventory.
 
 Keep authored `implemented.csv`, `matches.csv`, and authored percentages
 unchanged.  There is intentionally no whole-library scanner until archive

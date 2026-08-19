@@ -33,7 +33,7 @@ before repeating target analysis or compiler-shape probes.
 | GUI/title/replay source shapes | Search `BUILD_MATCHING.md` for the symbol or address | Includes switch-table extents, inline ownership, table dimensionality, and frame-shape cases. |
 | Function boundaries, COFF aux extents, relocations | `BUILD_MATCHING.md` | Search for `compare_size`, `COMDAT`, `REL32`, or `DIR32`. |
 | Generic VC7 declaration/branch/local patterns | `VC7_ZUN_PATTERNS.md` | Search this before creating expression or `#pragma var_order` matrices. |
-| Target-linked CRT/D3DX work | `RE_HANDOFF.md`, `$th08-library`, and `report-reconstruction-status.py --category library --state missing-size` | Current next phase and machine-derived first inventory lane; no accepted library scanner/ledger exists yet. |
+| Target-linked CRT/D3DX work | `RE_HANDOFF.md`, `$th08-library`, `config/library-provenance.toml`, and `scripts/compare-library.py` | Separate archive provenance, relocation-aware match units, accepted library ledger, and current library lane. |
 | Stale object/PCH exact-state failures | Search `BUILD_MATCHING.md` for `cold-build` | Why focused historical successes cannot be promoted to a current aggregate without a cold full replay. |
 
 Fast lookup recipes:

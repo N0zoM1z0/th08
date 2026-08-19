@@ -134,8 +134,14 @@ The next primary lane is target-linked library/runtime recovery:
    do not treat the prose count as a permanent invariant.
 2. Identify the exact VC7/CRT/D3DX archive provenance and pin archive hashes
    before writing a scanner. TH07 archives are not substitutes.
-3. Design a separate library acceptance ledger and progress view before
-   claiming library matches. Do not insert library rows into authored
+3. Use the separate library acceptance path: pin archive hashes in
+   `config/library-provenance.toml`, define reviewed units and every COFF
+   relocation in `config/library-match-units.toml`, run
+   `python3 scripts/compare-library.py UNIT --json` against the canonical target,
+   and only then add the result to `config/library-matches.csv`. Public CI runs
+   `validate-library.py` without private archives; local evidence adds
+   `--require-archives`. Library progress is generated independently by
+   `scripts/library-progress.py`. Do not insert library rows into authored
    `implemented.csv`/`matches.csv` merely to reuse their percentage.
 4. After library/object coverage is reproducible, compare link layout, globals,
    imports, PE metadata, resources, and remaining data as the whole-executable

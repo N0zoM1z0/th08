@@ -55,6 +55,13 @@ boundaries.
   itself an exact-match result.
 - `config/match-units.toml` and `config/matches.csv`: strict function-level
   comparison definitions and accepted exact results.
+- `config/library-provenance.toml`, `config/library-match-units.toml`, and
+  `config/library-matches.csv`: SHA-pinned target-linked archive provenance,
+  library-specific comparison definitions, and accepted library exact results.
+  They are intentionally separate from authored progress.
+- `config/mapping-overlaps.csv`: explicit target-proven nested-funclet overlap
+  exceptions; stale or unclassified overlap state is rejected/reported by the
+  tracking validator.
 - `config/claims.csv`: retired claim schema, kept header-only for compatibility
   with earlier history; it is not current task state.
 - `scripts/`: environment acquisition, Ninja generation, target verification,

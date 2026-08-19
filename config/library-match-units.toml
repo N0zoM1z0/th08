@@ -1,0 +1,149 @@
+schema_version = 1
+
+[[units]]
+name = "d3dx-sse-vec3-normalize"
+target_address = 0x0048D3D0
+body_size = 0xC6
+compare_size = 0xD0
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/d3dxmathsse.obj"
+symbol = "?sse_D3DXVec3Normalize@@YGPAUD3DXVECTOR3@@PAU1@PBU1@@Z"
+[[units.relocations]]
+offset = 0x2C
+type = "DIR32"
+symbol = ".data1"
+target_base = 0x018DA000
+[[units.relocations]]
+offset = 0x73
+type = "DIR32"
+symbol = ".data1"
+target_base = 0x018DA000
+[[units.relocations]]
+offset = 0x7B
+type = "DIR32"
+symbol = ".data1"
+target_base = 0x018DA000
+
+[[units]]
+name = "d3dx-sse-plane-normalize"
+target_address = 0x0048D4A0
+body_size = 0xD8
+compare_size = 0xE0
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/d3dxmathsse.obj"
+symbol = "?sse_D3DXPlaneNormalize@@YGPAUD3DXPLANE@@PAU1@PBU1@@Z"
+[[units.relocations]]
+offset = 0x2C
+type = "DIR32"
+symbol = ".data1"
+target_base = 0x018DA000
+[[units.relocations]]
+offset = 0x78
+type = "DIR32"
+symbol = ".data1"
+target_base = 0x018DA000
+[[units.relocations]]
+offset = 0x80
+type = "DIR32"
+symbol = ".data1"
+target_base = 0x018DA000
+
+[[units]]
+name = "d3dx-sse-vec4-normalize"
+target_address = 0x0048DA50
+body_size = 0x9C
+compare_size = 0xA0
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/d3dxmathsse.obj"
+symbol = "?sse_D3DXVec4Normalize@@YGPAUD3DXVECTOR4@@PAU1@PBU1@@Z"
+[[units.relocations]]
+offset = 0x59
+type = "DIR32"
+symbol = ".data"
+target_base = 0x004C9FC0
+[[units.relocations]]
+offset = 0x65
+type = "DIR32"
+symbol = ".data"
+target_base = 0x004C9FC0
+
+[[units]]
+name = "d3dx-sse-quaternion-normalize"
+target_address = 0x0048E680
+body_size = 0x9C
+compare_size = 0xA0
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/d3dxquatsse.obj"
+symbol = "?sse_D3DXQuaternionNormalize@@YGPAUD3DXQUATERNION@@PAU1@PBU1@@Z"
+[[units.relocations]]
+offset = 0x5C
+type = "DIR32"
+symbol = ".data"
+target_base = 0x004CA180
+[[units.relocations]]
+offset = 0x68
+type = "DIR32"
+symbol = ".data"
+target_base = 0x004CA180
+
+[[units]]
+name = "d3dx-sse2-vec3-normalize"
+target_address = 0x0048EFB0
+body_size = 0xC6
+compare_size = 0xD0
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/d3dxmathsse2.obj"
+symbol = "?sse2_D3DXVec3Normalize@@YGPAUD3DXVECTOR3@@PAU1@PBU1@@Z"
+[[units.relocations]]
+offset = 0x2C
+type = "DIR32"
+symbol = ".data1"
+target_base = 0x018DA220
+[[units.relocations]]
+offset = 0x73
+type = "DIR32"
+symbol = ".data1"
+target_base = 0x018DA220
+[[units.relocations]]
+offset = 0x7B
+type = "DIR32"
+symbol = ".data1"
+target_base = 0x018DA220
+
+[[units]]
+name = "d3dx-sse2-plane-normalize"
+target_address = 0x0048F080
+body_size = 0xD8
+compare_size = 0xE0
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/d3dxmathsse2.obj"
+symbol = "?sse2_D3DXPlaneNormalize@@YGPAUD3DXPLANE@@PAU1@PBU1@@Z"
+[[units.relocations]]
+offset = 0x2C
+type = "DIR32"
+symbol = ".data1"
+target_base = 0x018DA220
+[[units.relocations]]
+offset = 0x78
+type = "DIR32"
+symbol = ".data1"
+target_base = 0x018DA220
+[[units.relocations]]
+offset = 0x80
+type = "DIR32"
+symbol = ".data1"
+target_base = 0x018DA220
+
+[[units]]
+name = "crt-operator-delete"
+target_address = 0x004A43CF
+body_size = 0x5
+compare_size = 0x5
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/delete.obj"
+symbol = "??3@YAXPAX@Z"
+[[units.relocations]]
+offset = 0x1
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B

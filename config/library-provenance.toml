@@ -1,0 +1,17 @@
+schema_version = 1
+
+[[archives]]
+id = "vc7-d3dx8-prerelease"
+path = "scripts/prefix/PROGRAM FILES/MICROSOFT VISUAL STUDIO .NET/VC7/PLATFORMSDK/LIB/PRERELEASE/D3DX8.LIB"
+sha256 = "0d4a2b642485dcaa7671926a9a1a545c656d5eb73f160fe971b3deebf0b516b5"
+origin = "Visual Studio .NET 2002 PlatformSDK prerelease D3DX8 static library"
+toolchain = "Microsoft VC7 / DirectX 8 prerelease"
+notes = "Contains SSE/SSE2 D3DX math COMDATs and fast-table initializers linked into TH08."
+
+[[archives]]
+id = "vc7-libcmt"
+path = "scripts/prefix/PROGRAM FILES/MICROSOFT VISUAL STUDIO .NET/VC7/LIB/LIBCMT.LIB"
+sha256 = "8815af7b9b6e0e28b77708ede25ab7ecfc4b05e1d8811f092c516cff5ce19d94"
+origin = "Visual Studio .NET 2002 static multithreaded C/C++ runtime"
+toolchain = "Microsoft VC7 /MT"
+notes = "Repository compiler profile uses /MT; operator delete is from delete.obj and tail-jumps to _free."
