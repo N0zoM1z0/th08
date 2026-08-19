@@ -8177,3 +8177,177 @@ offset = 0x86
 type = "REL32"
 symbol = "@__security_check_cookie@4"
 target_base = 0x004AB43C
+
+[[units]]
+name = "crt-forcdecpt"
+target_address = 0x004A6EC4
+body_size = 0x3C
+compare_size = 0x3C
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/cvt.obj"
+symbol = "__forcdecpt"
+[[units.relocations]]
+offset = 0xA
+type = "REL32"
+symbol = "_tolower"
+target_base = 0x004AE9A0
+[[units.relocations]]
+offset = 0x19
+type = "REL32"
+symbol = "_isdigit"
+target_base = 0x004A6517
+[[units.relocations]]
+offset = 0x26
+type = "DIR32"
+symbol = "___decimal_point"
+target_base = 0x004CC6C8
+
+[[units]]
+name = "crt-fassign"
+target_address = 0x004A6F65
+body_size = 0x3E
+compare_size = 0x3E
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/cvt.obj"
+symbol = "__fassign"
+[[units.relocations]]
+offset = 0x13
+type = "REL32"
+symbol = "__atodbl"
+target_base = 0x004AECE6
+[[units.relocations]]
+offset = 0x2E
+type = "REL32"
+symbol = "__atoflt"
+target_base = 0x004AED29
+
+[[units]]
+name = "crt-cftoe"
+target_address = 0x004A706E
+body_size = 0x74
+compare_size = 0x74
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/cvt.obj"
+symbol = "__cftoe"
+[[units.relocations]]
+offset = 0x7
+type = "DIR32"
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
+[[units.relocations]]
+offset = 0x24
+type = "REL32"
+symbol = "__fltout2"
+target_base = 0x004AEE9D
+[[units.relocations]]
+offset = 0x4E
+type = "REL32"
+symbol = "__fptostr"
+target_base = 0x004AED6C
+[[units.relocations]]
+offset = 0x5C
+type = "REL32"
+symbol = "__cftoe2"
+target_base = 0x004A6FC0
+[[units.relocations]]
+offset = 0x6E
+type = "REL32"
+symbol = "@__security_check_cookie@4"
+target_base = 0x004AB43C
+
+[[units]]
+name = "crt-cftof"
+target_address = 0x004A717E
+body_size = 0x68
+compare_size = 0x68
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/cvt.obj"
+symbol = "__cftof"
+[[units.relocations]]
+offset = 0x7
+type = "DIR32"
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
+[[units.relocations]]
+offset = 0x23
+type = "REL32"
+symbol = "__fltout2"
+target_base = 0x004AEE9D
+[[units.relocations]]
+offset = 0x42
+type = "REL32"
+symbol = "__fptostr"
+target_base = 0x004AED6C
+[[units.relocations]]
+offset = 0x50
+type = "REL32"
+symbol = "__cftof2"
+target_base = 0x004A70E2
+[[units.relocations]]
+offset = 0x62
+type = "REL32"
+symbol = "@__security_check_cookie@4"
+target_base = 0x004AB43C
+
+[[units]]
+name = "crt-cftog"
+target_address = 0x004A71E6
+body_size = 0xA0
+compare_size = 0xA0
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/cvt.obj"
+symbol = "__cftog"
+[[units.relocations]]
+offset = 0x7
+type = "DIR32"
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
+[[units.relocations]]
+offset = 0x25
+type = "REL32"
+symbol = "__fltout2"
+target_base = 0x004AEE9D
+[[units.relocations]]
+offset = 0x45
+type = "REL32"
+symbol = "__fptostr"
+target_base = 0x004AED6C
+[[units.relocations]]
+offset = 0x76
+type = "REL32"
+symbol = "__cftof2"
+target_base = 0x004A70E2
+[[units.relocations]]
+offset = 0x89
+type = "REL32"
+symbol = "__cftoe2"
+target_base = 0x004A6FC0
+[[units.relocations]]
+offset = 0x9A
+type = "REL32"
+symbol = "@__security_check_cookie@4"
+target_base = 0x004AB43C
+
+[[units]]
+name = "crt-cfltcvt"
+target_address = 0x004A7286
+body_size = 0x51
+compare_size = 0x51
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/cvt.obj"
+symbol = "__cfltcvt"
+[[units.relocations]]
+offset = 0x1F
+type = "REL32"
+symbol = "__cftof"
+target_base = 0x004A717E
+[[units.relocations]]
+offset = 0x35
+type = "REL32"
+symbol = "__cftog"
+target_base = 0x004A71E6
+[[units.relocations]]
+offset = 0x48
+type = "REL32"
+symbol = "__cftoe"
+target_base = 0x004A706E

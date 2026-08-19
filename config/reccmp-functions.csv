@@ -1822,10 +1822,10 @@ _forcdecpt,0x4a6ec4,library
 _fassign,0x4a6f65,library
 _shift,0x4a6fa3,library
 _cftoe2,0x4a6fc0,library
-FUN_004a706e,0x4a706e,library
+_cftoe,0x4a706e,library
 FUN_004a70e2,0x4a70e2,library
-FUN_004a717e,0x4a717e,library
-FUN_004a71e6,0x4a71e6,library
+_cftof,0x4a717e,library
+_cftog,0x4a71e6,library
 _cfltcvt,0x4a7286,library
 FUN_004a72d7,0x4a72d7,library
 _ms_p5_test_fdiv,0x4a72e9,library

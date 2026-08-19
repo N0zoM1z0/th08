@@ -1821,10 +1821,10 @@ __forcdecpt,0x4a6ec4,0x3c,__cdecl,,u8,u8
 __fassign,0x4a6f65,0x3e,__cdecl,,u8,u8,u8,u8
 __shift,0x4a6fa3,0x1d,unknown,,u8
 __cftoe2,0x4a6fc0,0xae,unknown,,u8,u8,u8,u8
-FUN_004a706e,0x4a706e,0x74,unknown,,u8,u8,u8,u8,u8
+__cftoe,0x4a706e,0x74,__cdecl,,u8,u8,u8,u8,u8
 FUN_004a70e2,0x4a70e2,0x9c,unknown,,u8,u8,u8,u8
-FUN_004a717e,0x4a717e,0x68,unknown,,u8,u8,u8,u8
-FUN_004a71e6,0x4a71e6,0xa0,unknown,,u8,u8,u8,u8,u8
+__cftof,0x4a717e,0x68,__cdecl,,u8,u8,u8,u8
+__cftog,0x4a71e6,0xa0,__cdecl,,u8,u8,u8,u8,u8
 __cfltcvt,0x4a7286,0x51,__cdecl,,u8,u8,u8,u8,u8,u8,u8
 FUN_004a72d7,0x4a72d7,0x12,unknown,,u8
 __ms_p5_test_fdiv,0x4a72e9,0x40,unknown,,u8

@@ -202,3 +202,9 @@ address,name,size,status,unit,evidence
 0x004B1012,__mtold12,228,matching,crt-mtold12,python3 scripts/compare-library.py crt-mtold12 --json
 0x004B22F9,__ld12mul,568,matching,crt-ld12mul,python3 scripts/compare-library.py crt-ld12mul --json
 0x004B2531,__multtenpow12,140,matching,crt-multtenpow12,python3 scripts/compare-library.py crt-multtenpow12 --json
+0x004A6EC4,_forcdecpt,60,matching,crt-forcdecpt,python3 scripts/compare-library.py crt-forcdecpt --json
+0x004A6F65,_fassign,62,matching,crt-fassign,python3 scripts/compare-library.py crt-fassign --json
+0x004A706E,_cftoe,116,matching,crt-cftoe,python3 scripts/compare-library.py crt-cftoe --json
+0x004A717E,_cftof,104,matching,crt-cftof,python3 scripts/compare-library.py crt-cftof --json
+0x004A71E6,_cftog,160,matching,crt-cftog,python3 scripts/compare-library.py crt-cftog --json
+0x004A7286,_cfltcvt,81,matching,crt-cfltcvt,python3 scripts/compare-library.py crt-cfltcvt --json
