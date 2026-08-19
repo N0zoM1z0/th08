@@ -1315,3 +1315,178 @@ offset = 0x67
 type = "REL32"
 symbol = "__mtterm"
 target_base = 0x004AA049
+
+[[units]]
+name = "crt-mtinitlocks"
+target_address = 0x004A8043
+body_size = 0x49
+compare_size = 0x49
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/mlock.obj"
+symbol = "__mtinitlocks"
+[[units.relocations]]
+offset = 0x5
+type = "DIR32"
+symbol = "_lclcritsects"
+target_base = 0x018D8048
+[[units.relocations]]
+offset = 0xC
+type = "DIR32"
+symbol = "__locktable"
+target_base = 0x004CBD40
+[[units.relocations]]
+offset = 0x16
+type = "DIR32"
+symbol = "__locktable"
+target_base = 0x004CBD40
+[[units.relocations]]
+offset = 0x27
+type = "REL32"
+symbol = "___crtInitCritSecAndSpinCount"
+target_base = 0x004AF7F3
+[[units.relocations]]
+offset = 0x40
+type = "DIR32"
+symbol = "__locktable"
+target_base = 0x004CBD40
+
+[[units]]
+name = "crt-mtdeletelocks"
+target_address = 0x004A808C
+body_size = 0x55
+compare_size = 0x55
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/mlock.obj"
+symbol = "__mtdeletelocks"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "__imp__DeleteCriticalSection@4"
+target_base = 0x004B40BC
+[[units.relocations]]
+offset = 0x9
+type = "DIR32"
+symbol = "__locktable"
+target_base = 0x004CBD40
+[[units.relocations]]
+offset = 0x1F
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x2C
+type = "DIR32"
+symbol = "__locktable"
+target_base = 0x004CBD40
+[[units.relocations]]
+offset = 0x33
+type = "DIR32"
+symbol = "__locktable"
+target_base = 0x004CBD40
+[[units.relocations]]
+offset = 0x4C
+type = "DIR32"
+symbol = "__locktable"
+target_base = 0x004CBD40
+
+[[units]]
+name = "crt-unlock"
+target_address = 0x004A80E1
+body_size = 0x15
+compare_size = 0x15
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/mlock.obj"
+symbol = "__unlock"
+[[units.relocations]]
+offset = 0x9
+type = "DIR32"
+symbol = "__locktable"
+target_base = 0x004CBD40
+[[units.relocations]]
+offset = 0xF
+type = "DIR32"
+symbol = "__imp__LeaveCriticalSection@4"
+target_base = 0x004B4080
+
+[[units]]
+name = "crt-mtinitlocknum"
+target_address = 0x004A80F6
+body_size = 0x7F
+compare_size = 0x7F
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/mlock.obj"
+symbol = "__mtinitlocknum"
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "__locktable"
+target_base = 0x004CBD40
+[[units.relocations]]
+offset = 0x1C
+type = "REL32"
+symbol = "_malloc"
+target_base = 0x004A4269
+[[units.relocations]]
+offset = 0x28
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0x39
+type = "REL32"
+symbol = "__lock"
+target_base = 0x004A8175
+[[units.relocations]]
+offset = 0x4A
+type = "REL32"
+symbol = "___crtInitCritSecAndSpinCount"
+target_base = 0x004AF7F3
+[[units.relocations]]
+offset = 0x56
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x5D
+type = "REL32"
+symbol = "__unlock"
+target_base = 0x004A80E1
+[[units.relocations]]
+offset = 0x6B
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x73
+type = "REL32"
+symbol = "__unlock"
+target_base = 0x004A80E1
+
+[[units]]
+name = "crt-lock"
+target_address = 0x004A8175
+body_size = 0x31
+compare_size = 0x31
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/mlock.obj"
+symbol = "__lock"
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "__locktable"
+target_base = 0x004CBD40
+[[units.relocations]]
+offset = 0x15
+type = "REL32"
+symbol = "__mtinitlocknum"
+target_base = 0x004A80F6
+[[units.relocations]]
+offset = 0x21
+type = "REL32"
+symbol = "__amsg_exit"
+target_base = 0x004A6155
+[[units.relocations]]
+offset = 0x2A
+type = "DIR32"
+symbol = "__imp__EnterCriticalSection@4"
+target_base = 0x004B407C

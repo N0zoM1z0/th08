@@ -51,3 +51,8 @@ address,name,size,status,unit,evidence
 0x004AA72E,FindHandler,482,matching,crt-find-handler,python3 scripts/compare-library.py crt-find-handler --json
 0x004AA049,_mtterm,30,matching,crt-mtterm,python3 scripts/compare-library.py crt-mtterm --json
 0x004AA0D8,_mtinit,111,matching,crt-mtinit,python3 scripts/compare-library.py crt-mtinit --json
+0x004A8043,_mtinitlocks,73,matching,crt-mtinitlocks,python3 scripts/compare-library.py crt-mtinitlocks --json
+0x004A808C,_mtdeletelocks,85,matching,crt-mtdeletelocks,python3 scripts/compare-library.py crt-mtdeletelocks --json
+0x004A80E1,_unlock,21,matching,crt-unlock,python3 scripts/compare-library.py crt-unlock --json
+0x004A80F6,_mtinitlocknum,127,matching,crt-mtinitlocknum,python3 scripts/compare-library.py crt-mtinitlocknum --json
+0x004A8175,_lock,49,matching,crt-lock,python3 scripts/compare-library.py crt-lock --json

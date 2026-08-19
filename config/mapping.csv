@@ -1847,8 +1847,8 @@ FUN_004a7ff0,0x4a7ff0,0x17,unknown,,u8,u8,u8,u8,u8,u8,u8
 __startOneArgErrorHandling,0x4a8007,0x3c,unknown,,u8,u8,u8,u8,u8
 __mtinitlocks,0x4a8043,0x49,__cdecl,,u8
 __mtdeletelocks,0x4a808c,0x55,__cdecl,,u8
-FUN_004a80e1,0x4a80e1,0x15,unknown,,u8,u8
-FUN_004a80f6,0x4a80f6,0x7f,unknown,,u8,u8
+__unlock,0x4a80e1,0x15,unknown,,u8,u8
+__mtinitlocknum,0x4a80f6,0x7f,unknown,,u8,u8
 __lock,0x4a8175,0x31,__cdecl,,u8,u8
 ___heap_select,0x4a81a6,0x1a,unknown,,u8
 __heap_init,0x4a81c0,0x51,__cdecl,,u8

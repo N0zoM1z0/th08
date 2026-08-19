@@ -1848,8 +1848,8 @@ FUN_004a7ff0,0x4a7ff0,library
 _startOneArgErrorHandling,0x4a8007,library
 _mtinitlocks,0x4a8043,library
 _mtdeletelocks,0x4a808c,library
-FUN_004a80e1,0x4a80e1,library
-FUN_004a80f6,0x4a80f6,library
+_unlock,0x4a80e1,library
+_mtinitlocknum,0x4a80f6,library
 _lock,0x4a8175,library
 __heap_select,0x4a81a6,library
 _heap_init,0x4a81c0,library
