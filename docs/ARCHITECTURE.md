@@ -60,7 +60,7 @@ boundaries.
   focused matching, typed target facts, and progress helpers.
 - `reccmp-project.yml`: exact target hash and reccmp data sources.
 - `objdiff.json`: reconstructed/original COFF unit mapping.
-- `3rdparty/`: pinned Detours and munit submodules.
+- `3rdparty/`: the pinned Detours submodule used only by the optional DLL build.
 - `resources/`: non-source inputs and progress artwork; the private target is
   expected here but must not be committed.
 - `build/`: generated executables, objects, maps, and reports.

@@ -14,7 +14,7 @@ Host requirements are:
   with Python 3.4;
 - `msiextract` and Wine on Linux/macOS;
 - `aria2c` optionally, for torrent-backed dependency acquisition;
-- initialized Detours and munit Git submodules.
+- the initialized Detours Git submodule for optional DLL builds.
 
 Create the environment on Linux/macOS with:
 
@@ -47,13 +47,12 @@ modes are selected explicitly:
 ```bash
 python3 ./scripts/build.py --build-type bugfix
 python3 ./scripts/build.py --build-type diffbuild
-python3 ./scripts/build.py --build-type tests
 python3 ./scripts/build.py --build-type dllbuild
 python3 ./scripts/build.py --build-type objdiffbuild
 ```
 
 These modes serve different runtime and comparison purposes. Success in a
-bugfix, DLL, test, or object build does not establish that the normal
+bugfix, DLL, or object build does not establish that the normal
 executable matches the original.
 
 ## Target detection
@@ -238,9 +237,9 @@ python3 scripts/typed-re.py 0x004413E0 --compare --json \
   > build/typed-re-004413E0.json
 ```
 
-`scripts/scan-vc7-library.py` is intentionally disabled until TH08-specific,
-SHA-pinned library archives and relocation policy exist. Unsupported use exits
-nonzero instead of borrowing TH07 assumptions.
+There is no VC7 library scanner yet. Do not borrow TH07 archives or infer
+library matches from names. A future scanner must start with SHA-pinned
+TH08-specific archives, relocation policy, and canonical comparator replay.
 
 
 - If a target stack layout matches a known ternary with compiler-generated boolean/result

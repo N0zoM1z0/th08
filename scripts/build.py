@@ -20,8 +20,6 @@ def build(build_type, verbose=False, jobs=1, target=None):
 
     if target is not None:
         ninja_args += [target]
-    elif build_type == BuildType.TESTS:
-        ninja_args += ["build/th08e-tests.exe"]
     elif build_type == BuildType.DLLBUILD:
         ninja_args += ["build/th08e.dll"]
     elif build_type == BuildType.OBJDIFFBUILD:
@@ -44,7 +42,7 @@ def main():
     )
     parser.add_argument(
         "--build-type",
-        choices=["normal", "bugfix", "diffbuild", "tests", "dllbuild", "objdiffbuild"],
+        choices=["normal", "bugfix", "diffbuild", "dllbuild", "objdiffbuild"],
         default="normal",
         help=textwrap.dedent(
             """Note: the bugfix build contains bugfixes that would otherwise make the build non-functional."""
@@ -69,7 +67,6 @@ def main():
         Ninja target to build. Default depends on the build type:
           - Normal, bugfix and diff builds will build th08.exe
           - dll builds will build th08e.dll
-          - Test builds will build th08e-tests.exe
           - objdiff builds will build all the object files necessary for objdiff.
     """),
     )
@@ -83,8 +80,6 @@ def main():
         build_type = BuildType.BUGFIX
     elif args.build_type == "diffbuild":
         build_type = BuildType.DIFFBUILD
-    elif args.build_type == "tests":
-        build_type = BuildType.TESTS
     elif args.build_type == "dllbuild":
         build_type = BuildType.DLLBUILD
     elif args.build_type == "objdiffbuild":

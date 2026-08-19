@@ -159,24 +159,22 @@ review the unit before claiming exactness.
 
 ## Improve the model
 
-The stable CLIs are `scripts/typed-re.py` and
-`scripts/scan-vc7-library.py`; implementation modules live under
-`scripts/typed_re/`. Only the coordinator may change this automation, its
-rules, regressions, or skill.
+The stable CLI is `scripts/typed-re.py`; implementation modules live under
+`scripts/typed_re/`. Changes to this automation, its rules, regressions, or
+skill need a dedicated reviewed commit.
 
 For a new extractor or rule, fail closed on target identity, PE mapping,
 ledger extent, and incomplete decoding; keep deterministic target observations
 out of `inferences`; add a target-pinned assertion to `--check`; then run:
 
 ```bash
-python3 -m compileall -q scripts/typed_re scripts/typed-re.py \
-  scripts/scan-vc7-library.py
+python3 -m compileall -q scripts/typed_re scripts/typed-re.py
 python3 scripts/typed-re.py --check
 ```
 
-The VC7 library scanner currently returns `unsupported` until SHA-pinned TH08
-archives, a relocation allowlist, and comparator replay are configured. Do not
-substitute TH07 archives or rules.
+There is no VC7 library scanner yet. Do not create or claim one until
+SHA-pinned TH08 archives, a relocation allowlist, and comparator replay are
+configured; never substitute TH07 archives or rules.
 
 ## Handoff
 

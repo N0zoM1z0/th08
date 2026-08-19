@@ -42,7 +42,10 @@ Verified by full build after probe-only ECL helpers were marked exact.
 
 ## Candidate scanning workflow
 
-Use `scripts/find_exact_candidates.py` to discover defined symbols that already match `mapping.csv` names but have no `matches.csv` entry. It is a triage tool; every selected function still needs a normal `match-units.toml` entry and `compare-function.py` proof.
+Use `scripts/analysis/report-reconstruction-status.py` to select a current gap.
+For a conservative review artifact from existing objects, use
+`scripts/discover-exact-units.py`; every proposed function still needs a normal
+`match-units.toml` entry and `compare-function.py` proof.
 
 
 ## Optimize pragma for `leave` epilogues
@@ -200,7 +203,8 @@ When a structure begins with the field required by an API, VC7 may pass the stru
 - For target callback fields that are invoked as `mov ecx, owner; call [ecx+field]`, type the field as a no-argument function pointer and call `owner->callback()`; adding an explicit owner argument forces an extra register move.
 - Target draw helper wrappers may be semantically void even if an earlier guess used `ZunResult`; match the target epilogue/register behavior, then update all relocation manifests to the new decorated symbol.
 - Thin AnmManager draw wrappers can stay exact by calling unrecovered transform helpers as stubs; keep the gate sequence as `IsVisible`, raw dword flag bit 1, raw byte +0x1F3, then the transform helper and `DrawInner(vm, 0)`.
-- Candidate scans can be polluted by stale probe objects; use `scripts/find_exact_candidates.py --clean-rebuild ...` after temporary source-shape experiments so object sizes reflect current sources, not the last probe build.
+- Candidate scans can be polluted by stale probe objects. Rebuild the selected
+  Ninja object from current source before running `scripts/discover-exact-units.py`.
 - For local D3DXVECTOR3 temporaries copied into fields, prefer direct temporary assignment (`dst = D3DXVECTOR3(...)`) over a named local; VC7 then copies from the constructor return pointer in `eax`, matching ZUN camera/background setup code.
 - For lifecycle reload callbacks, raw target global tables can be used for still-unnamed indexed resources, but keep them isolated and verify with compare-function before naming wider data structures.
 - A single reused loop local can still need per-loop signedness. In `EnemyManager::Initialize`, the first four-entry sentinel loop must be written with `(u32)i < 4` to get target `jae`, while later loops with the same local stay signed and use `jge`.
