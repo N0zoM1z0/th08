@@ -1889,7 +1889,7 @@ FUN_004aa427,0x4aa427,library
 BuildCatchObject,0x4aa48b,library
 CatchIt,0x4aa607,library
 FUN_004aa66e,0x4aa66e,library
-FUN_004aa72e,0x4aa72e,library
+FindHandler,0x4aa72e,library
 __InternalCxxFrameHandler,0x4aa910,library
 terminate,0x4aa9b2,library
 inconsistency,0x4aa9e7,library

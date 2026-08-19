@@ -6,9 +6,9 @@ COFF relocation, extent, and canonical-target replay.
 
 - Inventory-mapped library functions: **1,112 / 1,112**
 - Inventory-mapped library bytes: **216,288 / 216,288**
-- Configured library match units: **49 functions / 6,776 body bytes**
-- Exact library functions: **49 / 1,112 (4.41%)**
-- Exact library body bytes: **6,776 / 216,288 (3.13%)**
+- Configured library match units: **50 functions / 7,258 body bytes**
+- Exact library functions: **50 / 1,112 (4.50%)**
+- Exact library body bytes: **7,258 / 216,288 (3.36%)**
 
 Archive-member padding and compiler-owned associated bytes may be included in
 `compare_size`, but they do not inflate library body-byte progress.

@@ -1152,3 +1152,78 @@ offset = 0xC2
 type = "REL32"
 symbol = "__getptd"
 target_base = 0x004AA067
+
+[[units]]
+name = "crt-find-handler"
+target_address = 0x004AA72E
+body_size = 0x1E2
+compare_size = 0x1E2
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/frame.obj"
+symbol = "?FindHandler@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@EH1@Z"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x21
+type = "REL32"
+symbol = "?_inconsistency@@YAXXZ"
+target_base = 0x004AA9E7
+[[units.relocations]]
+offset = 0x4E
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0x5D
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0x68
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0x7A
+type = "REL32"
+symbol = "?_ValidateRead@@YAHPBXI@Z"
+target_base = 0x004B056D
+[[units.relocations]]
+offset = 0x85
+type = "REL32"
+symbol = "?_inconsistency@@YAXXZ"
+target_base = 0x004AA9E7
+[[units.relocations]]
+offset = 0xAA
+type = "REL32"
+symbol = "?_inconsistency@@YAXXZ"
+target_base = 0x004AA9E7
+[[units.relocations]]
+offset = 0xE3
+type = "REL32"
+symbol = "?_GetRangeOfTrysToCheck@@YAPBU_s_TryBlockMapEntry@@PBU_s_FuncInfo@@HHPAI1@Z"
+target_base = 0x004A4536
+[[units.relocations]]
+offset = 0x139
+type = "REL32"
+symbol = "?TypeMatch@@YAHPBU_s_HandlerType@@PBU_s_CatchableType@@PBU_s_ThrowInfo@@@Z"
+target_base = 0x004AA147
+[[units.relocations]]
+offset = 0x17E
+type = "REL32"
+symbol = "?CatchIt@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@PBU_s_HandlerType@@PBU_s_CatchableType@@PBU_s_TryBlockMapEntry@@H1E@Z"
+target_base = 0x004AA607
+[[units.relocations]]
+offset = 0x1A9
+type = "REL32"
+symbol = "___DestructExceptionObject"
+target_base = 0x004AA282
+[[units.relocations]]
+offset = 0x1D4
+type = "REL32"
+symbol = "?FindHandlerForForeignException@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@HH1@Z"
+target_base = 0x004AA66E
+[[units.relocations]]
+offset = 0x1DE
+type = "REL32"
+symbol = "?terminate@@YAXXZ"
+target_base = 0x004AA9B2

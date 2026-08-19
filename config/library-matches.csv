@@ -48,3 +48,4 @@ address,name,size,status,unit,evidence
 0x004AA9E7,inconsistency,45,matching,crt-inconsistency,python3 scripts/compare-library.py crt-inconsistency --json
 0x004AAA20,_CallSettingFrame@12,76,matching,crt-call-setting-frame,python3 scripts/compare-library.py crt-call-setting-frame --json
 0x004AA1B4,__FrameUnwindToState,173,matching,crt-frame-unwind-to-state,python3 scripts/compare-library.py crt-frame-unwind-to-state --json
+0x004AA72E,FindHandler,482,matching,crt-find-handler,python3 scripts/compare-library.py crt-find-handler --json
