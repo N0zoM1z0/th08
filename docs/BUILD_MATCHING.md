@@ -1272,3 +1272,22 @@ without those explicit fields retain the stricter whole-section ownership rule.
 
 - `fclose.obj::_fclose` uniquely matches `0x004B2609..0x004B2659` (0x51 bytes), a gap omitted from the imported inventory between exact `_fclose_lk` and the next wrapper.  Add a real `fclose` library row rather than attributing those bytes to padding or a neighbor.
 - `commit.obj::__commit @ 0x004B265A` and `close.obj::__close @ 0x004B2E0D` replay their full 0xBC / 0x9B function-definition extents.  The imported 0xB1 / 0x90 mappings stopped inside the parent error/SEH path because each contains a nested unlock cleanup funclet.  Preserve the child overlap rows and repair the parent extents through their final `__SEH_epilog`/`ret`.
+
+### `fflush.obj` gap inventory
+
+- The target gap immediately after `_fflush_lk @ 0x004B1C3B` is real CRT code, not padding.  `fflush.obj` gives a static auxless `_flsall` section of 0xD5 bytes at `0x004B1C69` followed by the 0x9-byte public `_flushall` wrapper at `0x004B1D3E`; the next existing mapping starts exactly at `0x004B1D47`.
+- Full relocation replay establishes `_flsall` with 13 relocations and `_flushall` with one `REL32 _flsall`.  When a mapping gap aligns exactly with consecutive archive sections, add the missing library rows rather than widening a neighbor or calling the bytes alignment.
+### x87 `common.obj` uses multiple function definitions inside one shared code section
+
+- The nine helpers from `_twoToTOS @ 0x004A7E60` through
+  `_check_range_exit @ 0x004A7F49` all live in a single 0x18C-byte `.text`
+  section in VC7 `common.obj`.  Each symbol still has its own function-definition
+  aux extent, so exact units must pin both `section_offset` and
+  `section_size = 0x18C`; treating each function as an isolated section fails
+  closed in the comparator.  Relocation offsets remain function-relative.
+
+
+### Bounded functions inside one shared VC7 `.text` section
+
+- `common.obj` stores nine x87 helpers in one 0x18C non-COMDAT code section: `_twoToTOS`, `_load_CW`, `_convertTOStoQNaN`, `_fload_withFB`, `_checkTOS_withFB`, `_fast_exit`, `_math_exit`, `_check_overflow_exit`, and `_check_range_exit`.  Function-definition aux records give individual extents, but each symbol's `section_offset` must be retained against the common member-wide `section_size`.
+- `0x004A7F35` was a true inventory hole.  Its 0x14 target bytes exactly match `__check_overflow_exit` at section offset 0xD5, between `_math_exit` and `_check_range_exit`.

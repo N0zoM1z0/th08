@@ -8351,3 +8351,241 @@ offset = 0x48
 type = "REL32"
 symbol = "__cftoe"
 target_base = 0x004A706E
+
+[[units]]
+name = "crt-flsall"
+target_address = 0x004B1C69
+body_size = 0xD5
+compare_size = 0xD5
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/fflush.obj"
+symbol = "_flsall"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T19885"
+target_base = 0x004C3C08
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0x17
+type = "REL32"
+symbol = "__lock"
+target_base = 0x004A8175
+[[units.relocations]]
+offset = 0x26
+type = "DIR32"
+symbol = "__nstream"
+target_base = 0x018D96E0
+[[units.relocations]]
+offset = 0x31
+type = "DIR32"
+symbol = "___piob"
+target_base = 0x018D86CC
+[[units.relocations]]
+offset = 0x45
+type = "REL32"
+symbol = "__lock_file2"
+target_base = 0x004AF549
+[[units.relocations]]
+offset = 0x52
+type = "DIR32"
+symbol = "___piob"
+target_base = 0x018D86CC
+[[units.relocations]]
+offset = 0x68
+type = "REL32"
+symbol = "__fflush_lk"
+target_base = 0x004B1C3B
+[[units.relocations]]
+offset = 0x83
+type = "REL32"
+symbol = "__fflush_lk"
+target_base = 0x004B1C3B
+[[units.relocations]]
+offset = 0xA1
+type = "DIR32"
+symbol = "___piob"
+target_base = 0x018D86CC
+[[units.relocations]]
+offset = 0xAA
+type = "REL32"
+symbol = "__unlock_file2"
+target_base = 0x004AF59B
+[[units.relocations]]
+offset = 0xC7
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3
+[[units.relocations]]
+offset = 0xCF
+type = "REL32"
+symbol = "__unlock"
+target_base = 0x004A80E1
+
+[[units]]
+name = "crt-flushall"
+target_address = 0x004B1D3E
+body_size = 0x9
+compare_size = 0x9
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/fflush.obj"
+symbol = "__flushall"
+[[units.relocations]]
+offset = 0x3
+type = "REL32"
+symbol = "_flsall"
+target_base = 0x004B1C69
+
+[[units]]
+name = "crt-two-to-tos"
+target_address = 0x004A7E60
+body_size = 0x15
+compare_size = 0x15
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/common.obj"
+symbol = "__twoToTOS"
+section_offset = 0x0
+section_size = 0x18C
+
+[[units]]
+name = "crt-load-cw"
+target_address = 0x004A7E75
+body_size = 0x17
+compare_size = 0x17
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/common.obj"
+symbol = "__load_CW"
+section_offset = 0x15
+section_size = 0x18C
+
+[[units]]
+name = "crt-convert-tos-qnan"
+target_address = 0x004A7E8C
+body_size = 0x19
+compare_size = 0x19
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/common.obj"
+symbol = "__convertTOStoQNaN"
+section_offset = 0x2C
+section_size = 0x18C
+[[units.relocations]]
+offset = 0xF
+type = "DIR32"
+symbol = "One"
+target_base = 0x004BDA20
+
+[[units]]
+name = "crt-fload-with-fb"
+target_address = 0x004A7EA5
+body_size = 0x43
+compare_size = 0x43
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/common.obj"
+symbol = "__fload_withFB"
+section_offset = 0x45
+section_size = 0x18C
+
+[[units]]
+name = "crt-check-tos-with-fb"
+target_address = 0x004A7EE8
+body_size = 0x16
+compare_size = 0x16
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/common.obj"
+symbol = "__checkTOS_withFB"
+section_offset = 0x88
+section_size = 0x18C
+
+[[units]]
+name = "crt-fast-exit"
+target_address = 0x004A7EFE
+body_size = 0xD
+compare_size = 0xD
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/common.obj"
+symbol = "__fast_exit"
+section_offset = 0x9E
+section_size = 0x18C
+
+[[units]]
+name = "crt-math-exit"
+target_address = 0x004A7F0B
+body_size = 0x2A
+compare_size = 0x2A
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/common.obj"
+symbol = "__math_exit"
+section_offset = 0xAB
+section_size = 0x18C
+[[units.relocations]]
+offset = 0x1F
+type = "REL32"
+symbol = "__startOneArgErrorHandling"
+target_base = 0x004A8007
+
+[[units]]
+name = "crt-check-overflow-exit"
+target_address = 0x004A7F35
+body_size = 0x14
+compare_size = 0x14
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/common.obj"
+symbol = "__check_overflow_exit"
+section_offset = 0xD5
+section_size = 0x18C
+
+[[units]]
+name = "crt-check-range-exit"
+target_address = 0x004A7F49
+body_size = 0xA3
+compare_size = 0xA3
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/common.obj"
+symbol = "__check_range_exit"
+section_offset = 0xE9
+section_size = 0x18C
+[[units.relocations]]
+offset = 0x3F
+type = "REL32"
+symbol = "__startOneArgErrorHandling"
+target_base = 0x004A8007
+[[units.relocations]]
+offset = 0x46
+type = "REL32"
+symbol = "__startTwoArgErrorHandling"
+target_base = 0x004A7FF0
+[[units.relocations]]
+offset = 0x53
+type = "DIR32"
+symbol = "IeeeAdjU"
+target_base = 0x004BDA4C
+[[units.relocations]]
+offset = 0x63
+type = "DIR32"
+symbol = "DblMin"
+target_base = 0x004BDA3C
+[[units.relocations]]
+offset = 0x74
+type = "DIR32"
+symbol = "_zero"
+target_base = 0x004BDA5C
+[[units.relocations]]
+offset = 0x7C
+type = "DIR32"
+symbol = "IeeeAdjO"
+target_base = 0x004BDA44
+[[units.relocations]]
+offset = 0x8C
+type = "DIR32"
+symbol = "DblMax"
+target_base = 0x004BDA34
+[[units.relocations]]
+offset = 0x9D
+type = "DIR32"
+symbol = "_infinity"
+target_base = 0x004BDA54

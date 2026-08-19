@@ -208,3 +208,14 @@ address,name,size,status,unit,evidence
 0x004A717E,_cftof,104,matching,crt-cftof,python3 scripts/compare-library.py crt-cftof --json
 0x004A71E6,_cftog,160,matching,crt-cftog,python3 scripts/compare-library.py crt-cftog --json
 0x004A7286,_cfltcvt,81,matching,crt-cfltcvt,python3 scripts/compare-library.py crt-cfltcvt --json
+0x004B1C69,flsall,213,matching,crt-flsall,python3 scripts/compare-library.py crt-flsall --json
+0x004B1D3E,_flushall,9,matching,crt-flushall,python3 scripts/compare-library.py crt-flushall --json
+0x004A7E60,_twoToTOS,21,matching,crt-two-to-tos,python3 scripts/compare-library.py crt-two-to-tos --json
+0x004A7E75,_load_CW,23,matching,crt-load-cw,python3 scripts/compare-library.py crt-load-cw --json
+0x004A7E8C,_convertTOStoQNaN,25,matching,crt-convert-tos-qnan,python3 scripts/compare-library.py crt-convert-tos-qnan --json
+0x004A7EA5,_fload_withFB,67,matching,crt-fload-with-fb,python3 scripts/compare-library.py crt-fload-with-fb --json
+0x004A7EE8,_checkTOS_withFB,22,matching,crt-check-tos-with-fb,python3 scripts/compare-library.py crt-check-tos-with-fb --json
+0x004A7EFE,_fast_exit,13,matching,crt-fast-exit,python3 scripts/compare-library.py crt-fast-exit --json
+0x004A7F0B,_math_exit,42,matching,crt-math-exit,python3 scripts/compare-library.py crt-math-exit --json
+0x004A7F49,_check_range_exit,163,matching,crt-check-range-exit,python3 scripts/compare-library.py crt-check-range-exit --json
+0x004A7F35,_check_overflow_exit,20,matching,crt-check-overflow-exit,python3 scripts/compare-library.py crt-check-overflow-exit --json
