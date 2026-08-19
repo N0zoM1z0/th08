@@ -133,3 +133,14 @@ address,name,size,status,unit,evidence
 0x004B0546,FUN_004b0546,9,matching,crt-setmbcp-tail-funclet,python3 scripts/compare-library.py crt-setmbcp-tail-funclet --json
 0x004B054F,__initmbctable,30,matching,crt-initmbctable,python3 scripts/compare-library.py crt-initmbctable --json
 0x004B279D,__crtCompareStringA,906,matching,crt-crt-compare-string-a,python3 scripts/compare-library.py crt-crt-compare-string-a --json
+0x004AB1AE,_resetstkoflw,209,matching,crt-resetstkoflw,python3 scripts/compare-library.py crt-resetstkoflw --json
+0x004B1D47,__ansicp,73,matching,crt-ansicp,python3 scripts/compare-library.py crt-ansicp --json
+0x004B2781,strncnt,28,matching,crt-strncnt,python3 scripts/compare-library.py crt-strncnt --json
+0x004A69DF,__crtExitProcess,47,matching,crt-crt-exit-process,python3 scripts/compare-library.py crt-crt-exit-process --json
+0x004A6A0F,_lockexit,9,matching,crt-lockexit,python3 scripts/compare-library.py crt-lockexit --json
+0x004A6A18,_unlockexit,9,matching,crt-unlockexit,python3 scripts/compare-library.py crt-unlockexit --json
+0x004A6A21,_cinit,101,matching,crt-cinit,python3 scripts/compare-library.py crt-cinit --json
+0x004A6A86,doexit,211,matching,crt-doexit,python3 scripts/compare-library.py crt-doexit --json
+0x004A6B59,exit,17,matching,crt-public-exit,python3 scripts/compare-library.py crt-public-exit --json
+0x004A6B7B,_cexit,15,matching,crt-cexit,python3 scripts/compare-library.py crt-cexit --json
+0x004A6B8A,_c_exit,15,matching,crt-c-exit,python3 scripts/compare-library.py crt-c-exit --json

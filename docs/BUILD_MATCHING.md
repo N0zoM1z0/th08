@@ -1199,3 +1199,16 @@ without those explicit fields retain the stricter whole-section ownership rule.
   `0x004B2B26`, and `a_cmp.obj` supplies a 0x38A-byte function definition with
   38 replayed relocations.  Repair the body to 0x38A rather than treating the
   final 0x34 bytes as associated data.
+### Static archive-local helpers can still be exact target-linked functions
+
+- `_strncnt @ 0x004B2781` is a static `a_cmp.obj` function and therefore is not
+  surfaced by every archive symbol-index workflow.  Direct COFF inspection shows
+  a unique auxless 0x1C-byte code COMDAT whose target bytes match exactly with no
+  relocations.  When a linked parent relocates to an internal helper, inspect the
+  owning member's full symbol table instead of treating absence from the archive
+  global index as absence from the executable.
+
+### VC7 crt0dat startup/termination family
+
+- `crt0dat.obj` contributes a coherent startup/termination chain at `0x004A69DF..0x004A6B98`: `__crtExitProcess`, `_lockexit`, `_unlockexit`, `_cinit`, `doexit`, public `exit`, `_cexit`, and `_c_exit`.  The last wrapper at `0x004A6B8A` was absent from the imported inventory; its 0xF-byte archive function fills the exact gap before `calloc @ 0x004A6B99` and replays one `REL32 _doexit` relocation.
+- `__crtExitProcess` has a 0x30-byte COFF function-definition extent but only 0x2F target body bytes before the terminal `int3`, matching the existing `_abort` precedent.  Keep `body_size = 0x2F, compare_size = 0x30` so compiler trap bytes are verified without inflating body progress.
