@@ -1772,7 +1772,7 @@ strchr,0x4a5be0,library
 sscanf,0x4a5c9e,library
 strncmp,0x4a5ce0,library
 strcpy,0x4a5d20,library
-FUN_004a5d30,0x4a5d30,library
+strcat,0x4a5d30,library
 FUN_004a5e20,0x4a5e20,library
 FUN_004a5e3d,0x4a5e3d,library
 FUN_004a5f30,0x4a5f30,library

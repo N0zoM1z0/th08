@@ -10,3 +10,6 @@ address,name,size,status,unit,evidence
 0x004A4920,memset,96,matching,crt-memset,python3 scripts/compare-library.py crt-memset --json
 0x004A4CC0,strlen,139,matching,crt-strlen,python3 scripts/compare-library.py crt-strlen --json
 0x004A5CE0,strncmp,57,matching,crt-strncmp,python3 scripts/compare-library.py crt-strncmp --json
+0x004A5BE0,strchr,190,matching,crt-strchr,python3 scripts/compare-library.py crt-strchr --json
+0x004A5D20,strcpy,7,matching,crt-strcpy,python3 scripts/compare-library.py crt-strcpy --json
+0x004A5D30,strcat,232,matching,crt-strcat,python3 scripts/compare-library.py crt-strcat --json

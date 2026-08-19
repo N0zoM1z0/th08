@@ -1767,11 +1767,11 @@ _localtime,0x4a5940,0x180,__cdecl,,tm*,longlong*
 __time32,0x4a5ac0,0x39,__cdecl,,long,long*
 FUN_004a5af9,0x4a5af9,0x2e,unknown,,u8,u8,u8
 FUN_004a5b27,0x4a5b27,0x9c,unknown,,u8,u8
-_strchr,0x4a5be0,0xbe,__cdecl,,u8,u8,u8
+_strchr,0x4a5be0,0xbe,__cdecl,,char*,const char*,i32
 _sscanf,0x4a5c9e,0x34,__cdecl,varargs,u8,u8,u8
 _strncmp,0x4a5ce0,0x39,__cdecl,,u8,char*,char*,u8
-FUN_004a5d20,0x4a5d20,0x7,unknown,,u8,u8
-FUN_004a5d30,0x4a5d30,0xe8,unknown,,u8,u8,u8
+_strcpy,0x4a5d20,0x7,__cdecl,,char*,char*,const char*
+_strcat,0x4a5d30,0xe8,__cdecl,,char*,char*,const char*
 FUN_004a5e20,0x4a5e20,0x14,unknown,,u8
 FUN_004a5e3d,0x4a5e3d,0xae,unknown,,u8,u8,u8
 FUN_004a5f30,0x4a5f30,0x4f,unknown,,u8
