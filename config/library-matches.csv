@@ -37,3 +37,9 @@ address,name,size,status,unit,evidence
 0x004A45F9,FindAndUnlinkFrame,76,matching,crt-find-unlink-frame,python3 scripts/compare-library.py crt-find-unlink-frame --json
 0x004A4645,CallCatchBlock2,81,matching,crt-call-catch-block2,python3 scripts/compare-library.py crt-call-catch-block2 --json
 0x004A4696,CallSETranslator,175,matching,crt-call-se-translator,python3 scripts/compare-library.py crt-call-se-translator --json
+0x004A4748,_global_unwind2,32,matching,crt-global-unwind2,python3 scripts/compare-library.py crt-global-unwind2 --json
+0x004A478A,_local_unwind2,104,matching,crt-local-unwind2,python3 scripts/compare-library.py crt-local-unwind2 --json
+0x004A47F2,_abnormal_termination,35,matching,crt-abnormal-termination,python3 scripts/compare-library.py crt-abnormal-termination --json
+0x004A4815,_NLG_Notify1,9,matching,crt-nlg-notify1,python3 scripts/compare-library.py crt-nlg-notify1 --json
+0x004A481E,_NLG_Notify,24,matching,crt-nlg-notify,python3 scripts/compare-library.py crt-nlg-notify --json
+0x004A4838,__EH_prolog,31,matching,crt-eh-prolog,python3 scripts/compare-library.py crt-eh-prolog --json

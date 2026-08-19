@@ -12,7 +12,7 @@ As cold-built and replayed on 2026-08-19 against the original Japanese TH08
 - authored source: **1,107 / 1,107 functions**, **459,757 / 459,757 bytes**;
 - strict authored exact: **1,091 / 1,107 functions**, **445,728 / 459,757 bytes**;
 - library inventory: **1,112 classified functions**; all **1,112 / 1,112** now have
-  mapping sizes totaling **216,256 bytes**; the independent library exact ledger currently accepts **38 functions / 5,972 body bytes**;
+  mapping sizes totaling **216,256 bytes**; the independent library exact ledger currently accepts **44 functions / 6,207 body bytes**;
 - `config/claims.csv` is header-only;
 - a cold normal VC7 build links `build/th08.exe` successfully;
 - a cold objdiff build followed by full replay passes **1,091 / 1,091**
@@ -118,13 +118,13 @@ Separate library acceptance infrastructure is now in place:
 - `validate-library.py` is the public CI gate, with `--require-archives` for local
   hash attestation; `library-progress.py` generates `LIBRARY_PROGRESS.md`.
 
-Library acceptance now has **38 / 38 configured units** and **5,972 body bytes**
+Library acceptance now has **44 / 44 configured units** and **6,207 body bytes**
 after canonical zero-difference replay.  The accepted set contains six SSE/SSE2
 D3DX normalize helpers, VC7 `/MT` `operator delete`, seven CRT string/memory
 helpers (including strict shared-section `strchr`/`strcpy`/`strcat`), six
 isolated compiler-runtime arithmetic helpers (`_ftol2`, `_chkstk`, `_aulldiv`,
 `_allmul`, `_ftol`, `_aullshr`), and the `LIBCMT malloc.obj` allocation wrappers
-`_nh_malloc @ 0x004A423D` / `malloc @ 0x004A4269` with explicit DIR32/REL32 replay, plus the complete currently mapped `heapinit.obj`/`sbheap.obj` core accepted so far: `_heap_init`, `__sbh_heap_init`, `__sbh_find_block`, `__sbh_free_block`, `__sbh_alloc_new_region`, `__sbh_alloc_new_group`, the 735-byte `__sbh_resize_block`, and the 764-byte `__sbh_alloc_block`.  The next accepted family also covers eight `trnsctrl.obj` C++ EH helpers, including `_UnwindNestedFrames`, `__CxxFrameHandler`, `_GetRangeOfTrysToCheck`, `_CreateFrameInfo`, `IsExceptionObjectToBeDestroyed`, `_FindAndUnlinkFrame`, `_CallCatchBlock2`, and `_CallSETranslator`.  Continue pinning provenance/match units for
+`_nh_malloc @ 0x004A423D` / `malloc @ 0x004A4269` with explicit DIR32/REL32 replay, plus the complete currently mapped `heapinit.obj`/`sbheap.obj` core accepted so far: `_heap_init`, `__sbh_heap_init`, `__sbh_find_block`, `__sbh_free_block`, `__sbh_alloc_new_region`, `__sbh_alloc_new_group`, the 735-byte `__sbh_resize_block`, and the 764-byte `__sbh_alloc_block`.  The next accepted family also covers eight `trnsctrl.obj` C++ EH helpers, including `_UnwindNestedFrames`, `__CxxFrameHandler`, `_GetRangeOfTrysToCheck`, `_CreateFrameInfo`, `IsExceptionObjectToBeDestroyed`, `_FindAndUnlinkFrame`, `_CallCatchBlock2`, and `_CallSETranslator`.  Shared-section `exsup.obj` coverage now also accepts `_global_unwind2`, `_local_unwind2`, `_abnormal_termination`, `_NLG_Notify1`, `_NLG_Notify`, plus the isolated `__EH_prolog`.  Continue pinning provenance/match units for
 remaining VC7 CRT/runtime, standard-library, D3DX, and compiler-runtime inventory;
 keep library progress separate from authored totals.
 

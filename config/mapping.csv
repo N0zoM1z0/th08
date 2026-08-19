@@ -1745,7 +1745,7 @@ __global_unwind2,0x4a4748,0x20,unknown,,u8,u8
 __local_unwind2,0x4a478a,0x68,unknown,,u8,u8,u8
 __abnormal_termination,0x4a47f2,0x23,__cdecl,,u8
 __NLG_Notify1,0x4a4815,0x9,unknown,,u8
-FUN_004a481e,0x4a481e,0x18,unknown,,u8
+__NLG_Notify,0x4a481e,0x18,unknown,,u8
 ___EH_prolog,0x4a4838,0x1f,default,,u8
 _sprintf,0x4a4857,0x58,__cdecl,varargs,i32,char*,char*
 _strrchr,0x4a48b0,0x2d,__cdecl,,char*,char*,char

@@ -1746,7 +1746,7 @@ _global_unwind2,0x4a4748,library
 _local_unwind2,0x4a478a,library
 _abnormal_termination,0x4a47f2,library
 _NLG_Notify1,0x4a4815,library
-FUN_004a481e,0x4a481e,library
+_NLG_Notify,0x4a481e,library
 __EH_prolog,0x4a4838,library
 sprintf,0x4a4857,library
 strrchr,0x4a48b0,library
