@@ -1087,3 +1087,14 @@ without those explicit fields retain the stricter whole-section ownership rule.
   sizes must be identical. This deliberately does not cover middle-of-section
   cleanup funclets such as the `calloc` lock-release helper; those need an
   independently pinned end boundary before they can be accepted.
+
+### A mapping extent that ends inside an instruction is conclusively stale
+
+- `terminate @ 0x004AA9B2` was imported as `0x2E` bytes, which ends in the
+  middle of the five-byte call/jump encoding beginning at `0x004AA9DE`.
+  `hooks.obj` carries a `0x35` function-definition extent ending exactly at the
+  next mapped `_inconsistency @ 0x004AA9E7`; replay of `$T18546`,
+  `__SEH_prolog`, two `__getptd` calls, and the final `_abort @ 0x004B05BD`
+  relocation is zero-difference. An instruction-splitting boundary is enough to
+  reject the imported extent immediately; use the archive/control-flow replay
+  to establish the replacement rather than guessing from the next address.

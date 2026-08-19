@@ -1891,7 +1891,7 @@ CatchIt,0x4aa607,0x67,__cdecl,,void,EHExceptionRecord*,EHRegistrationNode*,_CONT
 FindHandlerForForeignException,0x4aa66e,0xc0,__cdecl,,void,u8,u8,u8,u8,u8,u8,u8,u8
 FindHandler,0x4aa72e,0x1e2,__cdecl,,void,u8,u8,u8,u8,u8,u8,u8,u8
 ___InternalCxxFrameHandler,0x4aa910,0xa2,unknown,,u8,u8,u8,u8,u8,u8,u8,u8,u8
-terminate,0x4aa9b2,0x2e,__cdecl,,void
+terminate,0x4aa9b2,0x35,__cdecl,,void
 _inconsistency,0x4aa9e7,0x2d,__cdecl,,void
 __CallSettingFrame@12,0x4aaa20,0x4c,unknown,,u8,u8,u8,u8
 FUN_004aaa6c,0x4aaa6c,0x46,unknown,,u8,u8

@@ -83,3 +83,5 @@ address,name,size,status,unit,evidence
 0x004B05A5,ValidateExecute,24,matching,crt-validate-execute,python3 scripts/compare-library.py crt-validate-execute --json
 0x004A4D50,memmove,829,matching,crt-memmove,python3 scripts/compare-library.py crt-memmove --json
 0x004AA427,FUN_004aa427,100,matching,crt-call-catch-block-tail-funclet,python3 scripts/compare-library.py crt-call-catch-block-tail-funclet --json
+0x004AA267,FUN_004aa267,27,matching,crt-frame-unwind-tail-funclet,python3 scripts/compare-library.py crt-frame-unwind-tail-funclet --json
+0x004AA9B2,terminate,53,matching,crt-terminate,python3 scripts/compare-library.py crt-terminate --json

@@ -2774,3 +2774,60 @@ offset = 0x5D
 type = "REL32"
 symbol = "___DestructExceptionObject"
 target_base = 0x004AA282
+
+[[units]]
+name = "crt-frame-unwind-tail-funclet"
+target_address = 0x004AA267
+body_size = 0x1B
+compare_size = 0x1B
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/frame.obj"
+symbol = "$L19568"
+allow_tail_local_funclet = true
+owner_symbol = "___FrameUnwindToState"
+section_offset = 0xB3
+section_size = 0xCE
+[[units.relocations]]
+offset = 0x1
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0xF
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+
+[[units]]
+name = "crt-terminate"
+target_address = 0x004AA9B2
+body_size = 0x35
+compare_size = 0x35
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/hooks.obj"
+symbol = "?terminate@@YAXXZ"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T18546"
+target_base = 0x004BDC80
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0xD
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0x1C
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0x31
+type = "REL32"
+symbol = "_abort"
+target_base = 0x004B05BD
