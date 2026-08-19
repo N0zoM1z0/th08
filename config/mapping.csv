@@ -1807,7 +1807,7 @@ FUN_004a6a86,0x4a6a86,0xd3,unknown,,u8,u8,u8,u8
 FUN_004a6b59,0x4a6b59,0x11,unknown,,u8,u8
 __exit,0x4a6b6a,0x11,__cdecl,,u8,u8
 FUN_004a6b7b,0x4a6b7b,0xf,unknown,,u8
-_calloc,0x4a6b99,0xaf,__cdecl,,u8,u8,u8
+_calloc,0x4a6b99,0xbb,__cdecl,,u8,u8,u8
 FUN_004a6c43,0x4a6c43,0x9,unknown,,u8
 _realloc,0x4a6c54,0x19c,__cdecl,,u8,u8,u8
 FUN_004a6dbc,0x4a6dbc,0x9,unknown,,u8
@@ -1906,7 +1906,7 @@ ___ascii_stricmp,0x4ab160,0x4e,__cdecl,,u8,u8,u8
 FUN_004ab1ae,0x4ab1ae,0xd1,unknown,,u8
 _gmtime,0x4ab27f,0x107,__cdecl,,u8,u8
 __mbctoupper,0x4ab386,0x85,__cdecl,,u8,u8
-_report_failure,0x4ab40b,0x29,unknown,,u8
+_report_failure,0x4ab40b,0x31,unknown,,u8
 FUN_004ab43c,0x4ab43c,0xe,unknown,,u8
 __inc,0x4ab44a,0x16,unknown,,u8
 FUN_004ab460,0x4ab460,0xa70,unknown,,u8,u8,u8,u8

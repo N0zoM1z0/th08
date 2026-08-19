@@ -1957,3 +1957,107 @@ offset = 0xF0
 type = "DIR32"
 symbol = "?pfnMessageBoxA@?1??__crtMessageBoxA@@9@9"
 target_base = 0x018D8428
+
+[[units]]
+name = "crt-report-failure"
+target_address = 0x004AB40B
+body_size = 0x31
+compare_size = 0x31
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/seccook.obj"
+symbol = "_report_failure"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T19486"
+target_base = 0x004BE0F0
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0x15
+type = "REL32"
+symbol = "___security_error_handler"
+target_base = 0x004B0A68
+[[units.relocations]]
+offset = 0x2C
+type = "DIR32"
+symbol = "__imp__ExitProcess@4"
+target_base = 0x004B418C
+
+[[units]]
+name = "crt-calloc"
+target_address = 0x004A6B99
+body_size = 0xBB
+compare_size = 0xBB
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/calloc.obj"
+symbol = "_calloc"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T19503"
+target_base = 0x004BD930
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0x27
+type = "DIR32"
+symbol = "___active_heap"
+target_base = 0x018D9828
+[[units.relocations]]
+offset = 0x3C
+type = "DIR32"
+symbol = "___sbh_threshold"
+target_base = 0x018D9814
+[[units.relocations]]
+offset = 0x45
+type = "REL32"
+symbol = "__lock"
+target_base = 0x004A8175
+[[units.relocations]]
+offset = 0x4F
+type = "REL32"
+symbol = "___sbh_alloc_block"
+target_base = 0x004A8A38
+[[units.relocations]]
+offset = 0x6E
+type = "REL32"
+symbol = "_memset"
+target_base = 0x004A4920
+[[units.relocations]]
+offset = 0x7E
+type = "DIR32"
+symbol = "__crtheap"
+target_base = 0x018D9824
+[[units.relocations]]
+offset = 0x84
+type = "DIR32"
+symbol = "__imp__HeapAlloc@12"
+target_base = 0x004B4194
+[[units.relocations]]
+offset = 0x90
+type = "DIR32"
+symbol = "__newmode"
+target_base = 0x018D819C
+[[units.relocations]]
+offset = 0x98
+type = "REL32"
+symbol = "__callnewh"
+target_base = 0x004A8D34
+[[units.relocations]]
+offset = 0xAD
+type = "REL32"
+symbol = "__unlock"
+target_base = 0x004A80E1
+[[units.relocations]]
+offset = 0xB6
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3

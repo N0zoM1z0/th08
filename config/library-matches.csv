@@ -65,3 +65,5 @@ address,name,size,status,unit,evidence
 0x004AFD50,strncpy,292,matching,crt-strncpy,python3 scripts/compare-library.py crt-strncpy --json
 0x004AB43C,FUN_004ab43c,14,matching,crt-security-check-cookie,python3 scripts/compare-library.py crt-security-check-cookie --json
 0x004B0DEA,__crtMessageBoxA,249,matching,crt-message-box-a,python3 scripts/compare-library.py crt-message-box-a --json
+0x004AB40B,report_failure,49,matching,crt-report-failure,python3 scripts/compare-library.py crt-report-failure --json
+0x004A6B99,calloc,187,matching,crt-calloc,python3 scripts/compare-library.py crt-calloc --json

@@ -1010,3 +1010,14 @@ without those explicit fields retain the stricter whole-section ownership rule.
   `initcrit.obj` is `0x8B` bytes and replays exactly to
   `___crtGetStringTypeA @ 0x004AF87E`. The next start is corroboration only;
   the acceptance proof is the complete archive extent plus relocation replay.
+
+### Nested CRT cleanup funclets do not justify truncating the parent extent
+
+- A parent CRT function can have a cleanup funclet physically embedded before
+  the parent's final epilogue. `calloc @ 0x004A6B99` is the canonical example:
+  the imported `0xAF` mapping ended inside the cleanup region, while
+  `calloc.obj` carries a `0xBB` function-definition extent and the target main
+  epilogue returns at `0x004A6C53`. The `0x004A6C43` cleanup row remains a
+  valid nested funclet overlap. Keep the parent at `0xBB`, replay the complete
+  section, and preserve the overlap exception; do not truncate the parent merely
+  to avoid double ownership in a linear address map.
