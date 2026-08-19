@@ -1901,8 +1901,8 @@ __dosmaperr,0x4aaae4,0x73,__cdecl,,u8,u8
 FUN_004aab57,0x4aab57,0x271,unknown,,u8
 _cvtdate,0x4aadc8,0x1b8,unknown,,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8
 FUN_004aaf80,0x4aaf80,0x18b,unknown,,u8
-FUN_004ab10b,0x4ab10b,0x2e,unknown,,u8
-FUN_004ab139,0x4ab139,0x20,unknown,,u8,u8
+__tzset,0x4ab10b,0x2e,__cdecl,,u8
+_isindst,0x4ab139,0x20,__cdecl,,u8,u8
 ___ascii_stricmp,0x4ab160,0x4e,__cdecl,,u8,u8,u8
 FUN_004ab1ae,0x4ab1ae,0xd1,unknown,,u8
 _gmtime,0x4ab27f,0x107,__cdecl,,u8,u8

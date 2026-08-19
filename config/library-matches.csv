@@ -110,3 +110,10 @@ address,name,size,status,unit,evidence
 0x004A4342,atol,136,matching,crt-atol,python3 scripts/compare-library.py crt-atol --json
 0x004A600A,rand,34,matching,crt-rand,python3 scripts/compare-library.py crt-rand --json
 0x004A602C,purecall,9,matching,crt-purecall,python3 scripts/compare-library.py crt-purecall --json
+0x004A3CD6,_onexit_lk,128,matching,crt-onexit-lk,python3 scripts/compare-library.py crt-onexit-lk --json
+0x004A3D7E,_onexit,50,matching,crt-onexit,python3 scripts/compare-library.py crt-onexit --json
+0x004A3DB0,FUN_004a3db0,6,matching,crt-onexit-tail-funclet,python3 scripts/compare-library.py crt-onexit-tail-funclet --json
+0x004A3DB6,atexit,18,matching,crt-atexit,python3 scripts/compare-library.py crt-atexit --json
+0x004AB10B,__tzset,46,matching,crt-tzset,python3 scripts/compare-library.py crt-tzset --json
+0x004AB139,_isindst,32,matching,crt-isindst,python3 scripts/compare-library.py crt-isindst --json
+0x004AB27F,gmtime,263,matching,crt-gmtime,python3 scripts/compare-library.py crt-gmtime --json

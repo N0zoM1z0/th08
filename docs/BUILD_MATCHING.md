@@ -1154,3 +1154,17 @@ without those explicit fields retain the stricter whole-section ownership rule.
   resolve to `__output` and `__flsbuf`, while `sscanf` resolves to `_strlen` and
   `__input`.  Treat their small size as a convenience, not a reason to skip
   archive identity or relocation checks.
+
+### VC7 onexit body/cleanup separation
+
+- `LIBCMT onexit.obj::__onexit @ 0x004A3D7E` is a 0x38-byte COFF function-definition extent, while the target main body ends after 0x32 bytes.  The final 6 bytes are the separately mapped cleanup tail at `0x004A3DB0` and replay exactly as a tail-local funclet.  Accept the parent as `body_size = 0x32, compare_size = 0x38`; do not inflate parent progress or delete the child row to force non-overlap.
+- The same member's `__onexit_lk` and `_atexit` are independent whole-function extents.  Keeping all three member identities plus the explicit cleanup tail makes the exit-registration dependency chain reproducible without treating linker/compiler-owned associated code as authored body bytes.
+### VC7 onexit uses a mapped main body plus a compiler cleanup tail
+
+- `__onexit @ 0x004A3D7E` returns at `0x004A3DAF`, so its inventory body is
+  correctly `0x32` bytes.  `onexit.obj` defines a `0x38`-byte function section;
+  the final six bytes are the separately mapped unlock cleanup at `0x004A3DB0`.
+  Accept the parent as `body_size = 0x32`, `compare_size = 0x38`, and accept the
+  cleanup only through the explicit tail-local-funclet schema pinned to the
+  `__onexit` owner.  Do not inflate the parent body merely because the COFF
+  function-definition extent includes its cleanup tail.
