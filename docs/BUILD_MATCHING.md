@@ -1075,3 +1075,15 @@ without those explicit fields retain the stricter whole-section ownership rule.
   standalone archive function-definition for it. Such rows require a future
   explicit local-funclet acceptance rule with pinned section owner, local label,
   target extent, and non-overlap/overlap semantics.
+
+### Tail-local funclets need a stricter opt-in than auxless functions
+
+- A local COFF label inside an accepted parent section is not automatically a
+  function. The library comparator supports `allow_tail_local_funclet = true`
+  only for a mapped target range that begins at a COFF label (storage class 6),
+  lives in a pinned code-COMDAT section owned by an explicitly named offset-zero
+  function symbol, and consumes the section tail exactly. The unit must pin
+  `owner_symbol`, `section_offset`, and `section_size`, and its body/comparison
+  sizes must be identical. This deliberately does not cover middle-of-section
+  cleanup funclets such as the `calloc` lock-release helper; those need an
+  independently pinned end boundary before they can be accepted.

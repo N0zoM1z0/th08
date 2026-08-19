@@ -40,11 +40,16 @@ def main()->int:
   if addr not in lib: errors.append(f'{name}: target address is not library inventory')
   if addr not in mapping or mapping[addr][1]!=body: errors.append(f'{name}: body_size differs from mapping')
   if comp<body or not u.get('member') or not u.get('symbol'): errors.append(f'{name}: invalid comparison extent/member/symbol')
-  section_offset=int(u.get('section_offset',0)); section_size=int(u.get('section_size',comp)); allow_auxless=u.get('allow_auxless_comdat',False)
+  section_offset=int(u.get('section_offset',0)); section_size=int(u.get('section_size',comp)); allow_auxless=u.get('allow_auxless_comdat',False); allow_tail=u.get('allow_tail_local_funclet',False)
   if section_offset<0 or section_size<section_offset+comp: errors.append(f'{name}: invalid section_offset/section_size')
   if ('section_offset' in u) != ('section_size' in u): errors.append(f'{name}: shared-section units must pin both section_offset and section_size')
   if not isinstance(allow_auxless,bool): errors.append(f'{name}: allow_auxless_comdat must be boolean')
+  if not isinstance(allow_tail,bool): errors.append(f'{name}: allow_tail_local_funclet must be boolean')
+  if allow_auxless and allow_tail: errors.append(f'{name}: cannot combine auxless and tail-local-funclet modes')
   if allow_auxless and ('section_offset' in u or 'section_size' in u): errors.append(f'{name}: auxless COMDAT units must use whole-section comparison')
+  if allow_tail:
+   if 'section_offset' not in u or 'section_size' not in u or not u.get('owner_symbol'): errors.append(f'{name}: tail local funclet must pin owner_symbol and section bounds')
+   if comp!=body or section_offset<=0 or section_offset+comp!=section_size: errors.append(f'{name}: tail local funclet must exactly consume a nonzero section tail')
   seen=set()
   for r in u.get('relocations',[]):
    key=(int(r['offset']),str(r['type']),str(r['symbol']))

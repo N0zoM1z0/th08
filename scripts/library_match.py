@@ -63,14 +63,30 @@ def compare_member(member: bytes, unit: dict, target_code: bytes) -> dict:
     section_size=int(unit.get("section_size",compare_size))
     aux=sym.aux_records[0] if sym.aux_records and hasattr(sym.aux_records[0],"total_size") else None
     allow_auxless=bool(unit.get("allow_auxless_comdat",False))
+    allow_tail_funclet=bool(unit.get("allow_tail_local_funclet",False))
+    IMAGE_SCN_CNT_CODE=0x00000020; IMAGE_SCN_LNK_COMDAT=0x00001000
+    if allow_auxless and allow_tail_funclet:
+        raise ValueError("library unit cannot combine auxless COMDAT and tail-local-funclet modes")
     if sym.value!=section_offset:
         raise ValueError(f"COFF symbol offset {sym.value:#x} != configured section_offset {section_offset:#x}")
     if len(sec.data)!=section_size:
         raise ValueError(f"archive section size {len(sec.data):#x} != configured section_size {section_size:#x}")
-    if aux is None:
+    if allow_tail_funclet:
+        if aux is not None:
+            raise ValueError("tail local funclet unexpectedly has a function-definition aux record")
+        if sym.storage_class!=6 or sym.type!=0:
+            raise ValueError("tail local funclet symbol is not a COFF local label")
+        if section_offset<=0 or compare_size!=int(unit["body_size"]) or section_offset+compare_size!=section_size:
+            raise ValueError("tail local funclet must consume the pinned section tail exactly")
+        if not (sec.flags & IMAGE_SCN_CNT_CODE) or not (sec.flags & IMAGE_SCN_LNK_COMDAT):
+            raise ValueError("tail local funclet owner section is not a code COMDAT")
+        owner_name=str(unit.get("owner_symbol",""))
+        owners=[candidate for candidate in m.symbols if candidate.section_number==sym.section_number and candidate.value==0 and candidate.type==0x20 and candidate.get_name(m.string_table).decode("ascii",errors="strict")==owner_name]
+        if len(owners)!=1:
+            raise ValueError(f"tail local funclet owner symbol is not unique in section: {owner_name!r}")
+    elif aux is None:
         if not allow_auxless:
             raise ValueError("COFF function lacks a function-definition aux record")
-        IMAGE_SCN_CNT_CODE=0x00000020; IMAGE_SCN_LNK_COMDAT=0x00001000
         if section_offset!=0 or section_size!=compare_size:
             raise ValueError("auxless COMDAT comparison requires a whole-section extent")
         if sym.value!=0 or sym.type!=0x20 or not (sec.flags & IMAGE_SCN_CNT_CODE) or not (sec.flags & IMAGE_SCN_LNK_COMDAT):
@@ -83,7 +99,7 @@ def compare_member(member: bytes, unit: dict, target_code: bytes) -> dict:
             raise ValueError(f"auxless COMDAT section has ambiguous function owners: {owners!r}")
     elif allow_auxless:
         raise ValueError("allow_auxless_comdat is set for a symbol with a function-definition aux record")
-    if section_offset or section_size!=compare_size:
+    if (section_offset or section_size!=compare_size) and not allow_tail_funclet:
         if int(aux.total_size)!=compare_size:
             raise ValueError(f"COFF aux extent {int(aux.total_size):#x} != compare_size {compare_size:#x}")
     if section_offset+compare_size>section_size:
