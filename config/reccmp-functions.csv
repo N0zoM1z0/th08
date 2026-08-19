@@ -1899,9 +1899,9 @@ FUN_004aaa6c,0x4aaa6c,library
 _errno,0x4aaad2,library
 FUN_004aaadb,0x4aaadb,library
 _dosmaperr,0x4aaae4,library
-FUN_004aab57,0x4aab57,library
+_tzset_lk,0x4aab57,library
 cvtdate,0x4aadc8,library
-FUN_004aaf80,0x4aaf80,library
+_isindst_lk,0x4aaf80,library
 __tzset,0x4ab10b,library
 _isindst,0x4ab139,library
 __ascii_stricmp,0x4ab160,library

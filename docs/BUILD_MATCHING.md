@@ -1168,3 +1168,8 @@ without those explicit fields retain the stricter whole-section ownership rule.
   cleanup only through the explicit tail-local-funclet schema pinned to the
   `__onexit` owner.  Do not inflate the parent body merely because the COFF
   function-definition extent includes its cleanup tail.
+
+### Static timezone helpers require member-level COFF inspection
+
+- `LIBCMT tzset.obj::__tzset_lk @ 0x004AAB57` and `__isindst_lk @ 0x004AAF80` are static auxless code COMDATs, so the archive's global symbol index is insufficient for exact acceptance.  Read the member COFF symbol table directly, require offset-zero unique function ownership and whole-section extent, then replay every relocation.  Their complete 0x271/0x18B target ranges match with 58/30 relocations respectively.
+- The logical target names are `_tzset_lk` and `_isindst_lk`; retain the extra leading underscore only in the COFF symbol field.  This is the same decoration boundary used by the public `__tzset` / `_isindst` wrappers.

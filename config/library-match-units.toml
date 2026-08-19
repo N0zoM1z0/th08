@@ -4185,3 +4185,463 @@ offset = 0x9B
 type = "DIR32"
 symbol = "__days"
 target_base = 0x004CCAFC
+
+[[units]]
+name = "crt-tzset-lk"
+target_address = 0x004AAB57
+body_size = 0x271
+compare_size = 0x271
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/tzset.obj"
+symbol = "__tzset_lk"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x10
+type = "REL32"
+symbol = "__lock"
+target_base = 0x004A8175
+[[units.relocations]]
+offset = 0x16
+type = "DIR32"
+symbol = "___lc_codepage"
+target_base = 0x018D83F0
+[[units.relocations]]
+offset = 0x1C
+type = "DIR32"
+symbol = "_dstend"
+target_base = 0x004CC3CC
+[[units.relocations]]
+offset = 0x23
+type = "DIR32"
+symbol = "_dststart"
+target_base = 0x004CC3C0
+[[units.relocations]]
+offset = 0x2A
+type = "DIR32"
+symbol = "_tzapiused"
+target_base = 0x018D825C
+[[units.relocations]]
+offset = 0x31
+type = "DIR32"
+symbol = "??_C@_02CLFPBFFP@TZ?$AA@"
+target_base = 0x004BDCDC
+[[units.relocations]]
+offset = 0x36
+type = "REL32"
+symbol = "__getenv_lk"
+target_base = 0x004B05D5
+[[units.relocations]]
+offset = 0x4E
+type = "DIR32"
+symbol = "_lastTZ"
+target_base = 0x018D8260
+[[units.relocations]]
+offset = 0x59
+type = "REL32"
+symbol = "_strcmp"
+target_base = 0x004AFE80
+[[units.relocations]]
+offset = 0x66
+type = "REL32"
+symbol = "__unlock"
+target_base = 0x004A80E1
+[[units.relocations]]
+offset = 0x71
+type = "DIR32"
+symbol = "_lastTZ"
+target_base = 0x018D8260
+[[units.relocations]]
+offset = 0x7B
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x82
+type = "REL32"
+symbol = "_strlen"
+target_base = 0x004A4CC0
+[[units.relocations]]
+offset = 0x89
+type = "REL32"
+symbol = "_malloc"
+target_base = 0x004A4269
+[[units.relocations]]
+offset = 0x92
+type = "DIR32"
+symbol = "_lastTZ"
+target_base = 0x018D8260
+[[units.relocations]]
+offset = 0x9B
+type = "REL32"
+symbol = "_strcpy"
+target_base = 0x004A5D20
+[[units.relocations]]
+offset = 0xA2
+type = "REL32"
+symbol = "__unlock"
+target_base = 0x004A80E1
+[[units.relocations]]
+offset = 0xAB
+type = "DIR32"
+symbol = "__tzname"
+target_base = 0x004CC3B8
+[[units.relocations]]
+offset = 0xB0
+type = "REL32"
+symbol = "_strncpy"
+target_base = 0x004AFD50
+[[units.relocations]]
+offset = 0xB5
+type = "DIR32"
+symbol = "__tzname"
+target_base = 0x004CC3B8
+[[units.relocations]]
+offset = 0xD1
+type = "REL32"
+symbol = "_atol"
+target_base = 0x004A4342
+[[units.relocations]]
+offset = 0xDD
+type = "DIR32"
+symbol = "__timezone"
+target_base = 0x004CC328
+[[units.relocations]]
+offset = 0xFA
+type = "REL32"
+symbol = "_atol"
+target_base = 0x004A4342
+[[units.relocations]]
+offset = 0x103
+type = "DIR32"
+symbol = "__timezone"
+target_base = 0x004CC328
+[[units.relocations]]
+offset = 0x11D
+type = "REL32"
+symbol = "_atol"
+target_base = 0x004A4342
+[[units.relocations]]
+offset = 0x123
+type = "DIR32"
+symbol = "__timezone"
+target_base = 0x004CC328
+[[units.relocations]]
+offset = 0x13C
+type = "DIR32"
+symbol = "__timezone"
+target_base = 0x004CC328
+[[units.relocations]]
+offset = 0x146
+type = "DIR32"
+symbol = "__daylight"
+target_base = 0x004CC32C
+[[units.relocations]]
+offset = 0x155
+type = "DIR32"
+symbol = "__tzname"
+target_base = 0x004CC3B8
+[[units.relocations]]
+offset = 0x15A
+type = "REL32"
+symbol = "_strncpy"
+target_base = 0x004AFD50
+[[units.relocations]]
+offset = 0x15F
+type = "DIR32"
+symbol = "__tzname"
+target_base = 0x004CC3B8
+[[units.relocations]]
+offset = 0x16F
+type = "DIR32"
+symbol = "_lastTZ"
+target_base = 0x018D8260
+[[units.relocations]]
+offset = 0x179
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x180
+type = "DIR32"
+symbol = "_lastTZ"
+target_base = 0x018D8260
+[[units.relocations]]
+offset = 0x187
+type = "REL32"
+symbol = "__unlock"
+target_base = 0x004A80E1
+[[units.relocations]]
+offset = 0x18E
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x194
+type = "DIR32"
+symbol = "__imp__GetTimeZoneInformation@4"
+target_base = 0x004B4118
+[[units.relocations]]
+offset = 0x1A2
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x1A8
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x1B5
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x1BB
+type = "DIR32"
+symbol = "_tzapiused"
+target_base = 0x018D825C
+[[units.relocations]]
+offset = 0x1C0
+type = "DIR32"
+symbol = "__timezone"
+target_base = 0x004CC328
+[[units.relocations]]
+offset = 0x1CE
+type = "DIR32"
+symbol = "__timezone"
+target_base = 0x004CC328
+[[units.relocations]]
+offset = 0x1D5
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x1DC
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x1EB
+type = "DIR32"
+symbol = "__daylight"
+target_base = 0x004CC32C
+[[units.relocations]]
+offset = 0x1F0
+type = "DIR32"
+symbol = "__dstbias"
+target_base = 0x004CC330
+[[units.relocations]]
+offset = 0x1F8
+type = "DIR32"
+symbol = "__daylight"
+target_base = 0x004CC32C
+[[units.relocations]]
+offset = 0x1FE
+type = "DIR32"
+symbol = "__dstbias"
+target_base = 0x004CC330
+[[units.relocations]]
+offset = 0x204
+type = "DIR32"
+symbol = "__imp__WideCharToMultiByte@32"
+target_base = 0x004B40E4
+[[units.relocations]]
+offset = 0x211
+type = "DIR32"
+symbol = "__tzname"
+target_base = 0x004CC3B8
+[[units.relocations]]
+offset = 0x218
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x22A
+type = "DIR32"
+symbol = "__tzname"
+target_base = 0x004CC3B8
+[[units.relocations]]
+offset = 0x234
+type = "DIR32"
+symbol = "__tzname"
+target_base = 0x004CC3B8
+[[units.relocations]]
+offset = 0x243
+type = "DIR32"
+symbol = "__tzname"
+target_base = 0x004CC3B8
+[[units.relocations]]
+offset = 0x24A
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x25C
+type = "DIR32"
+symbol = "__tzname"
+target_base = 0x004CC3B8
+[[units.relocations]]
+offset = 0x266
+type = "DIR32"
+symbol = "__tzname"
+target_base = 0x004CC3B8
+
+[[units]]
+name = "crt-isindst-lk"
+target_address = 0x004AAF80
+body_size = 0x18B
+compare_size = 0x18B
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/tzset.obj"
+symbol = "__isindst_lk"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x5
+type = "DIR32"
+symbol = "__daylight"
+target_base = 0x004CC32C
+[[units.relocations]]
+offset = 0x18
+type = "DIR32"
+symbol = "_dststart"
+target_base = 0x004CC3C0
+[[units.relocations]]
+offset = 0x20
+type = "DIR32"
+symbol = "_dstend"
+target_base = 0x004CC3CC
+[[units.relocations]]
+offset = 0x2C
+type = "DIR32"
+symbol = "_tzapiused"
+target_base = 0x018D825C
+[[units.relocations]]
+offset = 0x39
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x40
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x47
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x4F
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x57
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x61
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x6A
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x76
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x82
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x88
+type = "REL32"
+symbol = "_cvtdate"
+target_base = 0x004AADC8
+[[units.relocations]]
+offset = 0x8F
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0x96
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0xA0
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0xA8
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0xB0
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0xBA
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0xC3
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0xCF
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0xD5
+type = "REL32"
+symbol = "_cvtdate"
+target_base = 0x004AADC8
+[[units.relocations]]
+offset = 0xE1
+type = "DIR32"
+symbol = "_tzinfo"
+target_base = 0x018D81B0
+[[units.relocations]]
+offset = 0xFE
+type = "REL32"
+symbol = "_cvtdate"
+target_base = 0x004AADC8
+[[units.relocations]]
+offset = 0x115
+type = "REL32"
+symbol = "_cvtdate"
+target_base = 0x004AADC8
+[[units.relocations]]
+offset = 0x11E
+type = "DIR32"
+symbol = "_dststart"
+target_base = 0x004CC3C0
+[[units.relocations]]
+offset = 0x123
+type = "DIR32"
+symbol = "_dstend"
+target_base = 0x004CC3CC
+[[units.relocations]]
+offset = 0x173
+type = "DIR32"
+symbol = "_dststart"
+target_base = 0x004CC3C0
+[[units.relocations]]
+offset = 0x182
+type = "DIR32"
+symbol = "_dstend"
+target_base = 0x004CC3CC
