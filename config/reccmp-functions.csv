@@ -1895,7 +1895,7 @@ terminate,0x4aa9b2,library
 inconsistency,0x4aa9e7,library
 _CallSettingFrame@12,0x4aaa20,library
 FUN_004aaa6c,0x4aaa6c,library
-FUN_004aaad2,0x4aaad2,library
+_errno,0x4aaad2,library
 FUN_004aaadb,0x4aaadb,library
 _dosmaperr,0x4aaae4,library
 FUN_004aab57,0x4aab57,library

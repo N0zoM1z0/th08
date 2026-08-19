@@ -998,3 +998,15 @@ without those explicit fields retain the stricter whole-section ownership rule.
   offset zero, the complete section is the comparison extent, and that section
   has exactly one offset-zero function-type owner. The default remains to reject
   auxless symbols. `FindHandler @ 0x004AA72E` is the motivating case.
+
+### Adjacent mapped starts can corroborate archive-proven extent repairs
+
+- When a SHA-pinned VC7 member has a larger function-definition extent than the
+  imported mapping, compare the full member before changing the ledger. Two
+  lock-runtime dependencies show the pattern: `__amsg_exit @ 0x004A6155` was
+  mapped as `0x22`, while `wincrt0.obj` is `0x25` bytes and replays exactly up
+  to the next mapped `_fast_error_exit @ 0x004A617A`; similarly
+  `___crtInitCritSecAndSpinCount @ 0x004AF7F3` was `0x67`, while
+  `initcrit.obj` is `0x8B` bytes and replays exactly to
+  `___crtGetStringTypeA @ 0x004AF87E`. The next start is corroboration only;
+  the acceptance proof is the complete archive extent plus relocation replay.

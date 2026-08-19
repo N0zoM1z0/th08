@@ -1783,7 +1783,7 @@ FUN_004a607f,0x4a607f,0x18,unknown,,u8
 __ArrayUnwind,0x4a6097,0x2f,__stdcall,,void,void*,u32,i32,_func_void_void_ptr*
 `eh_vector_destructor_iterator',0x4a60f5,0x48,__stdcall,,void,void*,u32,i32,_func_void_void_ptr*
 FUN_004a613d,0x4a613d,0x18,unknown,,u8
-__amsg_exit,0x4a6155,0x22,__cdecl,,u8,u8
+__amsg_exit,0x4a6155,0x25,__cdecl,,u8,u8
 _fast_error_exit,0x4a617a,0x24,unknown,,u8,u8
 entry,0x4a619e,0x1a7,unknown,,u8
 FUN_004a6370,0x4a6370,0x15,unknown,,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u16
@@ -1894,7 +1894,7 @@ terminate,0x4aa9b2,0x2e,__cdecl,,void
 _inconsistency,0x4aa9e7,0x2d,__cdecl,,void
 __CallSettingFrame@12,0x4aaa20,0x4c,unknown,,u8,u8,u8,u8
 FUN_004aaa6c,0x4aaa6c,0x46,unknown,,u8,u8
-FUN_004aaad2,0x4aaad2,0x9,unknown,,u8
+__errno,0x4aaad2,0x9,unknown,,u8
 FUN_004aaadb,0x4aaadb,0x9,unknown,,u8
 __dosmaperr,0x4aaae4,0x73,__cdecl,,u8,u8
 FUN_004aab57,0x4aab57,0x271,unknown,,u8
@@ -1979,7 +1979,7 @@ _wctomb,0x4af61e,0x27,__cdecl,,u8,u8,u8
 __aulldvrm,0x4af650,0x95,unknown,,u8,u8,u8,u8,u8
 FUN_004af6e5,0x4af6e5,0xfe,unknown,,u8,u8,u8,u8
 ___crtInitCritSecNoSpinCount@8,0x4af7e3,0x10,unknown,,u8,u8
-___crtInitCritSecAndSpinCount,0x4af7f3,0x67,unknown,,u8,u8,u8
+___crtInitCritSecAndSpinCount,0x4af7f3,0x8b,unknown,,u8,u8,u8
 ___crtGetStringTypeA,0x4af87e,0x1a5,__cdecl,,u8,u8,u8,u8,u8,u8,u8,u8
 ___free_lc_time,0x4afa38,0x190,unknown,,u8,u8
 ___free_lconv_num,0x4afbc8,0x5f,unknown,,u8,u8

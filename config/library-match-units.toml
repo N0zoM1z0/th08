@@ -1490,3 +1490,120 @@ offset = 0x2A
 type = "DIR32"
 symbol = "__imp__EnterCriticalSection@4"
 target_base = 0x004B407C
+
+[[units]]
+name = "crt-errno"
+target_address = 0x004AAAD2
+body_size = 0x9
+compare_size = 0x9
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/dosmap.obj"
+symbol = "__errno"
+[[units.relocations]]
+offset = 0x1
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+
+[[units]]
+name = "crt-amsg-exit"
+target_address = 0x004A6155
+body_size = 0x25
+compare_size = 0x25
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/wincrt0.obj"
+symbol = "__amsg_exit"
+[[units.relocations]]
+offset = 0x2
+type = "DIR32"
+symbol = "___error_mode"
+target_base = 0x018D7FF8
+[[units.relocations]]
+offset = 0xA
+type = "REL32"
+symbol = "__FF_MSGBANNER"
+target_base = 0x004AC403
+[[units.relocations]]
+offset = 0x13
+type = "REL32"
+symbol = "__NMSG_WRITE"
+target_base = 0x004AC28C
+[[units.relocations]]
+offset = 0x1E
+type = "DIR32"
+symbol = "__aexit_rtn"
+target_base = 0x004CBCD8
+
+[[units]]
+name = "crt-init-critical-section-spin"
+target_address = 0x004AF7F3
+body_size = 0x8B
+compare_size = 0x8B
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/initcrit.obj"
+symbol = "___crtInitCritSecAndSpinCount"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T19512"
+target_base = 0x004C2130
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0xD
+type = "DIR32"
+symbol = "?__crtInitCritSecAndSpinCount@?1??0@@9@9"
+target_base = 0x018D83A0
+[[units.relocations]]
+offset = 0x17
+type = "DIR32"
+symbol = "__osplatform"
+target_base = 0x018D8000
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "??_C@_0N@MDJJJHMB@kernel32?4dll?$AA@"
+target_base = 0x004C211C
+[[units.relocations]]
+offset = 0x25
+type = "DIR32"
+symbol = "__imp__GetModuleHandleA@4"
+target_base = 0x004B40E0
+[[units.relocations]]
+offset = 0x2E
+type = "DIR32"
+symbol = "??_C@_0CG@PKBDLMEO@InitializeCriticalSectionAndSpin@"
+target_base = 0x004C20F4
+[[units.relocations]]
+offset = 0x35
+type = "DIR32"
+symbol = "__imp__GetProcAddress@8"
+target_base = 0x004B40D8
+[[units.relocations]]
+offset = 0x3A
+type = "DIR32"
+symbol = "?__crtInitCritSecAndSpinCount@?1??0@@9@9"
+target_base = 0x018D83A0
+[[units.relocations]]
+offset = 0x43
+type = "DIR32"
+symbol = "___crtInitCritSecNoSpinCount@8"
+target_base = 0x004AF7E3
+[[units.relocations]]
+offset = 0x48
+type = "DIR32"
+symbol = "?__crtInitCritSecAndSpinCount@?1??0@@9@9"
+target_base = 0x018D83A0
+[[units.relocations]]
+offset = 0x7B
+type = "DIR32"
+symbol = "__imp__SetLastError@4"
+target_base = 0x004B4130
+[[units.relocations]]
+offset = 0x86
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3

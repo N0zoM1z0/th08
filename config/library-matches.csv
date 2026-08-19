@@ -56,3 +56,6 @@ address,name,size,status,unit,evidence
 0x004A80E1,_unlock,21,matching,crt-unlock,python3 scripts/compare-library.py crt-unlock --json
 0x004A80F6,_mtinitlocknum,127,matching,crt-mtinitlocknum,python3 scripts/compare-library.py crt-mtinitlocknum --json
 0x004A8175,_lock,49,matching,crt-lock,python3 scripts/compare-library.py crt-lock --json
+0x004AAAD2,_errno,9,matching,crt-errno,python3 scripts/compare-library.py crt-errno --json
+0x004A6155,_amsg_exit,37,matching,crt-amsg-exit,python3 scripts/compare-library.py crt-amsg-exit --json
+0x004AF7F3,__crtInitCritSecAndSpinCount,139,matching,crt-init-critical-section-spin,python3 scripts/compare-library.py crt-init-critical-section-spin --json
