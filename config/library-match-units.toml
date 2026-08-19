@@ -1607,3 +1607,211 @@ offset = 0x86
 type = "REL32"
 symbol = "__SEH_epilog"
 target_base = 0x004A6EB3
+
+[[units]]
+name = "crt-init-critical-section-no-spin"
+target_address = 0x004AF7E3
+body_size = 0x10
+compare_size = 0x10
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/initcrit.obj"
+symbol = "___crtInitCritSecNoSpinCount@8"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x6
+type = "DIR32"
+symbol = "__imp__InitializeCriticalSection@4"
+target_base = 0x004B40B8
+
+[[units]]
+name = "crt-ff-msgbanner"
+target_address = 0x004AC403
+body_size = 0x39
+compare_size = 0x39
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/crt0msg.obj"
+symbol = "__FF_MSGBANNER"
+[[units.relocations]]
+offset = 0x1
+type = "DIR32"
+symbol = "___error_mode"
+target_base = 0x018D7FF8
+[[units.relocations]]
+offset = 0x10
+type = "DIR32"
+symbol = "___app_type"
+target_base = 0x004CBCDC
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "__NMSG_WRITE"
+target_base = 0x004AC28C
+[[units.relocations]]
+offset = 0x22
+type = "DIR32"
+symbol = "__adbgmsg"
+target_base = 0x018D828C
+[[units.relocations]]
+offset = 0x33
+type = "REL32"
+symbol = "__NMSG_WRITE"
+target_base = 0x004AC28C
+
+[[units]]
+name = "crt-nmsg-write"
+target_address = 0x004AC28C
+body_size = 0x177
+compare_size = 0x177
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/crt0msg.obj"
+symbol = "__NMSG_WRITE"
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
+[[units.relocations]]
+offset = 0x21
+type = "DIR32"
+symbol = "_rterrs"
+target_base = 0x004CC3F0
+[[units.relocations]]
+offset = 0x34
+type = "DIR32"
+symbol = "_rterrs"
+target_base = 0x004CC3F0
+[[units.relocations]]
+offset = 0x3F
+type = "DIR32"
+symbol = "___error_mode"
+target_base = 0x018D7FF8
+[[units.relocations]]
+offset = 0x52
+type = "DIR32"
+symbol = "___app_type"
+target_base = 0x004CBCDC
+[[units.relocations]]
+offset = 0x7B
+type = "DIR32"
+symbol = "__imp__GetModuleFileNameA@12"
+target_base = 0x004B4094
+[[units.relocations]]
+offset = 0x8A
+type = "DIR32"
+symbol = "??_C@_0BH@DNAGHKFM@?$DMprogram?5name?5unknown?$DO?$AA@"
+target_base = 0x004BE614
+[[units.relocations]]
+offset = 0x90
+type = "REL32"
+symbol = "_strcpy"
+target_base = 0x004A5D20
+[[units.relocations]]
+offset = 0xA4
+type = "REL32"
+symbol = "_strlen"
+target_base = 0x004A4CC0
+[[units.relocations]]
+offset = 0xB7
+type = "REL32"
+symbol = "_strlen"
+target_base = 0x004A4CC0
+[[units.relocations]]
+offset = 0xCB
+type = "DIR32"
+symbol = "??_C@_03KHICJKCI@?4?4?4?$AA@"
+target_base = 0x004BE610
+[[units.relocations]]
+offset = 0xD1
+type = "REL32"
+symbol = "_strncpy"
+target_base = 0x004AFD50
+[[units.relocations]]
+offset = 0xDA
+type = "REL32"
+symbol = "_strlen"
+target_base = 0x004A4CC0
+[[units.relocations]]
+offset = 0xE0
+type = "DIR32"
+symbol = "_rterrs"
+target_base = 0x004CC3F0
+[[units.relocations]]
+offset = 0xE7
+type = "REL32"
+symbol = "_strlen"
+target_base = 0x004A4CC0
+[[units.relocations]]
+offset = 0xF8
+type = "REL32"
+symbol = "__alloca_probe"
+target_base = 0x004A48E0
+[[units.relocations]]
+offset = 0xFF
+type = "DIR32"
+symbol = "??_C@_0BK@OFGJDLJJ@Runtime?5Error?$CB?6?6Program?3?5?$AA@"
+target_base = 0x004BE5F4
+[[units.relocations]]
+offset = 0x105
+type = "REL32"
+symbol = "_strcpy"
+target_base = 0x004A5D20
+[[units.relocations]]
+offset = 0x10C
+type = "REL32"
+symbol = "_strcat"
+target_base = 0x004A5D30
+[[units.relocations]]
+offset = 0x111
+type = "DIR32"
+symbol = "??_C@_02PHMGELLB@?6?6?$AA@"
+target_base = 0x004BE5F0
+[[units.relocations]]
+offset = 0x117
+type = "REL32"
+symbol = "_strcat"
+target_base = 0x004A5D30
+[[units.relocations]]
+offset = 0x11D
+type = "DIR32"
+symbol = "_rterrs"
+target_base = 0x004CC3F0
+[[units.relocations]]
+offset = 0x123
+type = "REL32"
+symbol = "_strcat"
+target_base = 0x004A5D30
+[[units.relocations]]
+offset = 0x12D
+type = "DIR32"
+symbol = "??_C@_0CF@GOGNBNAK@Microsoft?5Visual?5C?$CL?$CL?5Runtime?5Lib@"
+target_base = 0x004BE5C8
+[[units.relocations]]
+offset = 0x133
+type = "REL32"
+symbol = "___crtMessageBoxA"
+target_base = 0x004B0DEA
+[[units.relocations]]
+offset = 0x143
+type = "DIR32"
+symbol = "_rterrs"
+target_base = 0x004CC3F0
+[[units.relocations]]
+offset = 0x14A
+type = "REL32"
+symbol = "_strlen"
+target_base = 0x004A4CC0
+[[units.relocations]]
+offset = 0x156
+type = "DIR32"
+symbol = "__imp__GetStdHandle@4"
+target_base = 0x004B410C
+[[units.relocations]]
+offset = 0x15D
+type = "DIR32"
+symbol = "__imp__WriteFile@20"
+target_base = 0x004B4068
+[[units.relocations]]
+offset = 0x16E
+type = "REL32"
+symbol = "@__security_check_cookie@4"
+target_base = 0x004AB43C

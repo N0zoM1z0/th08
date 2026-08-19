@@ -1915,7 +1915,7 @@ FUN_004abf08,0x4abf08,library
 FUN_004abf3d,0x4abf3d,library
 FUN_004abfa0,0x4abfa0,library
 FUN_004abfbe,0x4abfbe,library
-FUN_004ac28c,0x4ac28c,library
+_NMSG_WRITE,0x4ac28c,library
 _FF_MSGBANNER,0x4ac403,library
 _XcptFilter,0x4ac43c,library
 FUN_004ac5a0,0x4ac5a0,library
