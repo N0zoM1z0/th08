@@ -118,3 +118,7 @@ Before committing a knowledge update, check that:
 
 Run `python3 scripts/check-docs.py` and `python3 scripts/ci.py` after reorganizing
 tracked knowledge.
+
+### Library accepted rows and match units are one atomic claim
+
+`config/library-matches.csv` must never contain an accepted row whose `unit` is absent from `config/library-match-units.toml`.  The accepted row names the claim; the unit preserves archive/member identity, target extent, and every relocation needed to reproduce it.  `validate-library.py` intentionally fails on orphan accepted rows.  If an interrupted or split commit separates the two files, restore the reviewed unit schema and rerun the canonical comparator before treating progress as current; do not weaken the validator or keep a progress-only claim.
