@@ -1938,10 +1938,10 @@ __errcode,0x4ad2b4,0x2d,unknown,,u8,u8
 __umatherr,0x4ad2e1,0x9e,unknown,,u8,u8,u8,u8,u8,u8,u8,u8,u8
 __handle_qnan1,0x4ad37f,0x53,unknown,,u8,u32,undefined8,u8,u8,u8,u8,u8,u8,u8,u8,u32
 __except1,0x4ad3d2,0xbe,__cdecl,,u8,u8,u8,u8,u8,u8
-FUN_004ad490,0x4ad490,0xd,unknown,,u8
-FUN_004ad49d,0x4ad49d,0xe,unknown,,u8
+__statfp,0x4ad490,0xd,unknown,,u8
+__clrfp,0x4ad49d,0xe,unknown,,u8
 __ctrlfp,0x4ad4ab,0x24,unknown,,u8,u8,u8
-FUN_004ad4cf,0x4ad4cf,0x59,unknown,,u8,u8
+__set_statfp,0x4ad4cf,0x59,unknown,,u8,u8
 __rt_probe_read4@4,0x4ad528,0x29,unknown,,u8,u8
 FUN_004ad570,0x4ad570,0x19,unknown,,u8
 FUN_004ad589,0x4ad589,0xb2d,unknown,,u8,u8,u8

@@ -226,3 +226,7 @@ address,name,size,status,unit,evidence
 0x004A9011,_ctrandisp1,51,matching,crt-ctrandisp1,python3 scripts/compare-library.py crt-ctrandisp1 --json
 0x004A9044,_fload,60,matching,crt-fload,python3 scripts/compare-library.py crt-fload --json
 0x004AF6E5,__87except,254,matching,crt-87except,python3 scripts/compare-library.py crt-87except --json
+0x004AD490,_statfp,13,matching,crt-statfp,python3 scripts/compare-library.py crt-statfp --json
+0x004AD49D,_clrfp,14,matching,crt-clrfp,python3 scripts/compare-library.py crt-clrfp --json
+0x004AD4AB,_ctrlfp,36,matching,crt-ctrlfp,python3 scripts/compare-library.py crt-ctrlfp --json
+0x004AD4CF,_set_statfp,89,matching,crt-set-statfp,python3 scripts/compare-library.py crt-set-statfp --json

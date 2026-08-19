@@ -1939,10 +1939,10 @@ _errcode,0x4ad2b4,library
 _umatherr,0x4ad2e1,library
 _handle_qnan1,0x4ad37f,library
 _except1,0x4ad3d2,library
-FUN_004ad490,0x4ad490,library
-FUN_004ad49d,0x4ad49d,library
+_statfp,0x4ad490,library
+_clrfp,0x4ad49d,library
 _ctrlfp,0x4ad4ab,library
-FUN_004ad4cf,0x4ad4cf,library
+_set_statfp,0x4ad4cf,library
 _rt_probe_read4@4,0x4ad528,library
 FUN_004ad570,0x4ad570,library
 FUN_004ad589,0x4ad589,library
