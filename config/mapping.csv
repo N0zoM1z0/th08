@@ -1925,7 +1925,7 @@ __setenvp,0x4ac609,0xc7,__cdecl,,u8
 FUN_004ac6d0,0x4ac6d0,0x16c,unknown,,u8,u8,u8
 FUN_004ac83c,0x4ac83c,0xa2,unknown,,u8
 ___crtGetEnvironmentStringsA,0x4ac8de,0x122,__cdecl,,u8
-FUN_004aca00,0x4aca00,0x1fe,unknown,,u8
+__ioinit,0x4aca00,0x1fe,unknown,,u8
 __RTC_Initialize,0x4acbfe,0x44,__cdecl,,u8
 __RTC_Terminate,0x4acc42,0x44,__cdecl,,u8
 __set_exp,0x4acc86,0x2a,unknown,,u8,undefined1[10],u8,u8,u8,u8,u8,u8,u8,u8,u8,u32

@@ -9241,3 +9241,112 @@ offset = 0x96
 type = "DIR32"
 symbol = "one_shl_64"
 target_base = 0x004CBEF4
+
+[[units]]
+name = "crt-ioinit"
+target_address = 0x004ACA00
+body_size = 0x1FE
+compare_size = 0x1FE
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/ioinit.obj"
+symbol = "__ioinit"
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "_malloc"
+target_base = 0x004A4269
+[[units.relocations]]
+offset = 0x1D
+type = "DIR32"
+symbol = "___pioinfo"
+target_base = 0x018D9700
+[[units.relocations]]
+offset = 0x23
+type = "DIR32"
+symbol = "__nhandle"
+target_base = 0x018D96E4
+[[units.relocations]]
+offset = 0x44
+type = "DIR32"
+symbol = "___pioinfo"
+target_base = 0x018D9700
+[[units.relocations]]
+offset = 0x5F
+type = "DIR32"
+symbol = "__imp__GetStartupInfoA@4"
+target_base = 0x004B408C
+[[units.relocations]]
+offset = 0x94
+type = "DIR32"
+symbol = "__nhandle"
+target_base = 0x018D96E4
+[[units.relocations]]
+offset = 0x9B
+type = "DIR32"
+symbol = "___pioinfo"
+target_base = 0x018D9700
+[[units.relocations]]
+offset = 0xA1
+type = "REL32"
+symbol = "_malloc"
+target_base = 0x004A4269
+[[units.relocations]]
+offset = 0xAC
+type = "DIR32"
+symbol = "__nhandle"
+target_base = 0x018D96E4
+[[units.relocations]]
+offset = 0xDA
+type = "DIR32"
+symbol = "__nhandle"
+target_base = 0x018D96E4
+[[units.relocations]]
+offset = 0xE4
+type = "DIR32"
+symbol = "__nhandle"
+target_base = 0x018D96E4
+[[units.relocations]]
+offset = 0x109
+type = "DIR32"
+symbol = "__imp__GetFileType@4"
+target_base = 0x004B40F0
+[[units.relocations]]
+offset = 0x121
+type = "DIR32"
+symbol = "___pioinfo"
+target_base = 0x018D9700
+[[units.relocations]]
+offset = 0x140
+type = "REL32"
+symbol = "___crtInitCritSecAndSpinCount"
+target_base = 0x004AF7F3
+[[units.relocations]]
+offset = 0x15C
+type = "DIR32"
+symbol = "___pioinfo"
+target_base = 0x018D9700
+[[units.relocations]]
+offset = 0x18A
+type = "DIR32"
+symbol = "__imp__GetStdHandle@4"
+target_base = 0x004B410C
+[[units.relocations]]
+offset = 0x198
+type = "DIR32"
+symbol = "__imp__GetFileType@4"
+target_base = 0x004B40F0
+[[units.relocations]]
+offset = 0x1C5
+type = "REL32"
+symbol = "___crtInitCritSecAndSpinCount"
+target_base = 0x004AF7F3
+[[units.relocations]]
+offset = 0x1EA
+type = "DIR32"
+symbol = "__nhandle"
+target_base = 0x018D96E4
+[[units.relocations]]
+offset = 0x1F0
+type = "DIR32"
+symbol = "__imp__SetHandleCount@4"
+target_base = 0x004B40F4
