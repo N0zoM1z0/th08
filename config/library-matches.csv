@@ -43,3 +43,7 @@ address,name,size,status,unit,evidence
 0x004A4815,_NLG_Notify1,9,matching,crt-nlg-notify1,python3 scripts/compare-library.py crt-nlg-notify1 --json
 0x004A481E,_NLG_Notify,24,matching,crt-nlg-notify,python3 scripts/compare-library.py crt-nlg-notify --json
 0x004A4838,__EH_prolog,31,matching,crt-eh-prolog,python3 scripts/compare-library.py crt-eh-prolog --json
+0x004AA067,_getptd,113,matching,crt-getptd,python3 scripts/compare-library.py crt-getptd --json
+0x004AA910,__InternalCxxFrameHandler,162,matching,crt-internal-cxx-frame-handler,python3 scripts/compare-library.py crt-internal-cxx-frame-handler --json
+0x004AA9E7,inconsistency,45,matching,crt-inconsistency,python3 scripts/compare-library.py crt-inconsistency --json
+0x004AAA20,_CallSettingFrame@12,76,matching,crt-call-setting-frame,python3 scripts/compare-library.py crt-call-setting-frame --json

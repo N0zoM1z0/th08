@@ -956,3 +956,134 @@ compare_size = 0x1F
 archive = "vc7-libcmt"
 member = "../build/intel/mt_obj/ehprolog.obj"
 symbol = "__EH_prolog"
+
+[[units]]
+name = "crt-getptd"
+target_address = 0x004AA067
+body_size = 0x71
+compare_size = 0x71
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/tidtable.obj"
+symbol = "__getptd"
+[[units.relocations]]
+offset = 0x4
+type = "DIR32"
+symbol = "__imp__GetLastError@0"
+target_base = 0x004B4074
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "___tlsindex"
+target_base = 0x004CC1B4
+[[units.relocations]]
+offset = 0x12
+type = "DIR32"
+symbol = "__imp__TlsGetValue@4"
+target_base = 0x004B4124
+[[units.relocations]]
+offset = 0x24
+type = "REL32"
+symbol = "_calloc"
+target_base = 0x004A6B99
+[[units.relocations]]
+offset = 0x33
+type = "DIR32"
+symbol = "___tlsindex"
+target_base = 0x004CC1B4
+[[units.relocations]]
+offset = 0x39
+type = "DIR32"
+symbol = "__imp__TlsSetValue@8"
+target_base = 0x004B4128
+[[units.relocations]]
+offset = 0x44
+type = "DIR32"
+symbol = "__XcptActTab"
+target_base = 0x004CC480
+[[units.relocations]]
+offset = 0x51
+type = "DIR32"
+symbol = "__imp__GetCurrentThreadId@0"
+target_base = 0x004B412C
+[[units.relocations]]
+offset = 0x60
+type = "REL32"
+symbol = "__amsg_exit"
+target_base = 0x004A6155
+[[units.relocations]]
+offset = 0x68
+type = "DIR32"
+symbol = "__imp__SetLastError@4"
+target_base = 0x004B4130
+
+[[units]]
+name = "crt-internal-cxx-frame-handler"
+target_address = 0x004AA910
+body_size = 0xA2
+compare_size = 0xA2
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/frame.obj"
+symbol = "___InternalCxxFrameHandler"
+[[units.relocations]]
+offset = 0x19
+type = "REL32"
+symbol = "?_inconsistency@@YAXXZ"
+target_base = 0x004AA9E7
+[[units.relocations]]
+offset = 0x3C
+type = "REL32"
+symbol = "___FrameUnwindToState"
+target_base = 0x004AA1B4
+[[units.relocations]]
+offset = 0x94
+type = "REL32"
+symbol = "?FindHandler@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@EH1@Z"
+target_base = 0x004AA72E
+
+[[units]]
+name = "crt-inconsistency"
+target_address = 0x004AA9E7
+body_size = 0x2D
+compare_size = 0x2D
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/hooks.obj"
+symbol = "?_inconsistency@@YAXXZ"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T18567"
+target_base = 0x004BDC90
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0xD
+type = "DIR32"
+symbol = "?__pInconsistency@@3P6AXXZA"
+target_base = 0x004CC1BC
+[[units.relocations]]
+offset = 0x29
+type = "REL32"
+symbol = "?terminate@@YAXXZ"
+target_base = 0x004AA9B2
+
+[[units]]
+name = "crt-call-setting-frame"
+target_address = 0x004AAA20
+body_size = 0x4C
+compare_size = 0x4C
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/lowhelpr.obj"
+symbol = "__CallSettingFrame@12"
+[[units.relocations]]
+offset = 0x1F
+type = "REL32"
+symbol = "__NLG_Notify1"
+target_base = 0x004A4815
+[[units.relocations]]
+offset = 0x41
+type = "REL32"
+symbol = "__NLG_Notify1"
+target_base = 0x004A4815

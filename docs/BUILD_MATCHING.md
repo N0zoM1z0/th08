@@ -964,3 +964,14 @@ without those explicit fields retain the stricter whole-section ownership rule.
   decorated `_CallSETranslator` symbol proves `__cdecl` and `int` return but the
   back-referenced parameter sequence has not been independently decoded, keep
   those parameter slots conservative rather than manufacturing a typed ABI.
+
+### Library extent repair can emerge from dependency replay
+
+- A mapped library row can be undersized even when it does not overlap a later
+  row. `_inconsistency @ 0x004AA9E7` was seeded as `0x26` bytes, so the
+  conservative archive proposer initially rejected it. `LIBCMT hooks.obj`
+  carries a function-definition aux extent and section size of `0x2D`; the
+  canonical target has the corresponding cleanup path and final tail jump
+  through `0x004AAA13`. Replaying all four relocations over the full 45-byte
+  range produced zero differences. Repair the mapping from `0x26` to `0x2D`
+  rather than weakening the proposer or truncating the archive function.
