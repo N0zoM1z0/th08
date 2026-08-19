@@ -230,3 +230,6 @@ address,name,size,status,unit,evidence
 0x004AD49D,_clrfp,14,matching,crt-clrfp,python3 scripts/compare-library.py crt-clrfp --json
 0x004AD4AB,_ctrlfp,36,matching,crt-ctrlfp,python3 scripts/compare-library.py crt-ctrlfp --json
 0x004AD4CF,_set_statfp,89,matching,crt-set-statfp,python3 scripts/compare-library.py crt-set-statfp --json
+0x004AE2C7,_d_inttype,106,matching,crt-d-inttype,python3 scripts/compare-library.py crt-d-inttype --json
+0x004AE331,_powhlp,354,matching,crt-powhlp,python3 scripts/compare-library.py crt-powhlp --json
+0x004AE493,__libm_error_support,660,matching,crt-libm-error-support,python3 scripts/compare-library.py crt-libm-error-support --json

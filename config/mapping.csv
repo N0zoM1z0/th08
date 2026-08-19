@@ -1945,9 +1945,9 @@ __set_statfp,0x4ad4cf,0x59,unknown,,u8,u8
 __rt_probe_read4@4,0x4ad528,0x29,unknown,,u8,u8
 FUN_004ad570,0x4ad570,0x19,unknown,,u8
 FUN_004ad589,0x4ad589,0xb2d,unknown,,u8,u8,u8
-FUN_004ae2c7,0x4ae2c7,0x6a,unknown,,u8,u8
+__d_inttype,0x4ae2c7,0x6a,unknown,,u8,u8
 __powhlp,0x4ae331,0x162,unknown,,u8,u8,u8,u8
-FUN_004ae493,0x4ae493,0x294,unknown,,u8,u8,u8,u8,u8
+___libm_error_support,0x4ae493,0x294,unknown,,u8,u8,u8,u8,u8
 FUN_004ae8bd,0x4ae8bd,0x1b,unknown,,u8,u8
 FUN_004ae8d8,0x4ae8d8,0xc8,unknown,,u8,u8,u8
 _tolower,0x4ae9a0,0x22,__cdecl,,u8,u8

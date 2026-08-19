@@ -8790,3 +8790,265 @@ offset = 0x33
 type = "DIR32"
 symbol = "_under"
 target_base = 0x004CC64C
+
+[[units]]
+name = "crt-d-inttype"
+target_address = 0x004AE2C7
+body_size = 0x6A
+compare_size = 0x6A
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/powhlp.obj"
+symbol = "__d_inttype"
+[[units.relocations]]
+offset = 0xE
+type = "REL32"
+symbol = "__fpclass"
+target_base = 0x004A6385
+[[units.relocations]]
+offset = 0x21
+type = "REL32"
+symbol = "__frnd"
+target_base = 0x004B0F25
+[[units.relocations]]
+offset = 0x3D
+type = "DIR32"
+symbol = "__real@4000000000000000"
+target_base = 0x004C2050
+[[units.relocations]]
+offset = 0x4C
+type = "REL32"
+symbol = "__frnd"
+target_base = 0x004B0F25
+
+[[units]]
+name = "crt-powhlp"
+target_address = 0x004AE331
+body_size = 0x162
+compare_size = 0x162
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/powhlp.obj"
+symbol = "__powhlp"
+[[units.relocations]]
+offset = 0xB
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target_base = 0x004B4C90
+[[units.relocations]]
+offset = 0x38
+type = "DIR32"
+symbol = "__real@3ff0000000000000"
+target_base = 0x004BA538
+[[units.relocations]]
+offset = 0x4C
+type = "DIR32"
+symbol = "__real@3ff0000000000000"
+target_base = 0x004BA538
+[[units.relocations]]
+offset = 0x60
+type = "DIR32"
+symbol = "__d_ind"
+target_base = 0x004CC538
+[[units.relocations]]
+offset = 0x7B
+type = "DIR32"
+symbol = "__real@3ff0000000000000"
+target_base = 0x004BA538
+[[units.relocations]]
+offset = 0x92
+type = "DIR32"
+symbol = "__real@3ff0000000000000"
+target_base = 0x004BA538
+[[units.relocations]]
+offset = 0xA2
+type = "DIR32"
+symbol = "__d_inf"
+target_base = 0x004CC530
+[[units.relocations]]
+offset = 0xBE
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target_base = 0x004B4C90
+[[units.relocations]]
+offset = 0xCB
+type = "DIR32"
+symbol = "__d_inf"
+target_base = 0x004CC530
+[[units.relocations]]
+offset = 0xD9
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target_base = 0x004B4C90
+[[units.relocations]]
+offset = 0x102
+type = "REL32"
+symbol = "__d_inttype"
+target_base = 0x004AE2C7
+[[units.relocations]]
+offset = 0x10C
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target_base = 0x004B4C90
+[[units.relocations]]
+offset = 0x11F
+type = "DIR32"
+symbol = "__d_inf"
+target_base = 0x004CC530
+[[units.relocations]]
+offset = 0x134
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target_base = 0x004B4C90
+[[units.relocations]]
+offset = 0x146
+type = "DIR32"
+symbol = "__d_mzero"
+target_base = 0x004CC550
+
+[[units]]
+name = "crt-libm-error-support"
+target_address = 0x004AE493
+body_size = 0x294
+compare_size = 0x294
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/libm_error.obj"
+symbol = "___libm_error_support"
+[[units.relocations]]
+offset = 0x7
+type = "DIR32"
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
+[[units.relocations]]
+offset = 0x54
+type = "DIR32"
+symbol = "??_C@_03KHJOGHMM@exp?$AA@"
+target_base = 0x004BE70C
+[[units.relocations]]
+offset = 0x67
+type = "DIR32"
+symbol = "??_C@_03KHJOGHMM@exp?$AA@"
+target_base = 0x004BE70C
+[[units.relocations]]
+offset = 0x73
+type = "DIR32"
+symbol = "??_C@_05HGHHAHAP@log10?$AA@"
+target_base = 0x004BE700
+[[units.relocations]]
+offset = 0x82
+type = "DIR32"
+symbol = "??_C@_05HGHHAHAP@log10?$AA@"
+target_base = 0x004BE700
+[[units.relocations]]
+offset = 0x8E
+type = "DIR32"
+symbol = "??_C@_03MGHMBJCF@log?$AA@"
+target_base = 0x004B650C
+[[units.relocations]]
+offset = 0x9D
+type = "DIR32"
+symbol = "??_C@_03MGHMBJCF@log?$AA@"
+target_base = 0x004B650C
+[[units.relocations]]
+offset = 0xB0
+type = "DIR32"
+symbol = "??_C@_03JGHBODFD@pow?$AA@"
+target_base = 0x004BE708
+[[units.relocations]]
+offset = 0xD5
+type = "DIR32"
+symbol = "??_C@_03JGHBODFD@pow?$AA@"
+target_base = 0x004BE708
+[[units.relocations]]
+offset = 0xF6
+type = "DIR32"
+symbol = "??_C@_03JGHBODFD@pow?$AA@"
+target_base = 0x004BE708
+[[units.relocations]]
+offset = 0x11F
+type = "DIR32"
+symbol = "__pmatherr"
+target_base = 0x004CC6BC
+[[units.relocations]]
+offset = 0x16D
+type = "DIR32"
+symbol = "??_C@_05HGHHAHAP@log10?$AA@"
+target_base = 0x004BE700
+[[units.relocations]]
+offset = 0x179
+type = "DIR32"
+symbol = "??_C@_03MGHMBJCF@log?$AA@"
+target_base = 0x004B650C
+[[units.relocations]]
+offset = 0x185
+type = "DIR32"
+symbol = "??_C@_04KGLCPMCP@log2?$AA@"
+target_base = 0x004C20D0
+[[units.relocations]]
+offset = 0x198
+type = "DIR32"
+symbol = "??_C@_04KGLCPMCP@log2?$AA@"
+target_base = 0x004C20D0
+[[units.relocations]]
+offset = 0x1A8
+type = "DIR32"
+symbol = "??_C@_05EOHGHCHD@exp10?$AA@"
+target_base = 0x004C20C8
+[[units.relocations]]
+offset = 0x1B8
+type = "DIR32"
+symbol = "??_C@_04HPAFEEIN@exp2?$AA@"
+target_base = 0x004C20C0
+[[units.relocations]]
+offset = 0x1DA
+type = "DIR32"
+symbol = "__pmatherr"
+target_base = 0x004CC6BC
+[[units.relocations]]
+offset = 0x1E8
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0x1FA
+type = "DIR32"
+symbol = "??_C@_03KHJOGHMM@exp?$AA@"
+target_base = 0x004BE70C
+[[units.relocations]]
+offset = 0x216
+type = "DIR32"
+symbol = "??_C@_04EHEDPDJG@modf?$AA@"
+target_base = 0x004BE694
+[[units.relocations]]
+offset = 0x21F
+type = "DIR32"
+symbol = "??_C@_03JGHBODFD@pow?$AA@"
+target_base = 0x004BE708
+[[units.relocations]]
+offset = 0x22E
+type = "DIR32"
+symbol = "??_C@_05PBJFFIGL@floor?$AA@"
+target_base = 0x004BE6A4
+[[units.relocations]]
+offset = 0x237
+type = "DIR32"
+symbol = "??_C@_04GFPJNGEK@ceil?$AA@"
+target_base = 0x004BE6AC
+[[units.relocations]]
+offset = 0x240
+type = "DIR32"
+symbol = "??_C@_04MLLJIGOK@atan?$AA@"
+target_base = 0x004BE6D0
+[[units.relocations]]
+offset = 0x26D
+type = "DIR32"
+symbol = "__pmatherr"
+target_base = 0x004CC6BC
+[[units.relocations]]
+offset = 0x277
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0x28E
+type = "REL32"
+symbol = "@__security_check_cookie@4"
+target_base = 0x004AB43C
