@@ -1059,3 +1059,19 @@ without those explicit fields retain the stricter whole-section ownership rule.
   tails, including separately mapped helper starts. Keep the mapped main-body
   size for progress, compare the full unique COMDAT section, and recover child
   funclets separately rather than inflating the parent body.
+
+### Large CRT assembly helpers need full internal-table extents
+
+- `memmove @ 0x004A4D50` was imported as `0x2A0` bytes, but the VC7
+  `memmove.obj` function-definition is `0x33D` bytes and the target continues
+  through both upward/downward copy paths, jump tables, and 1/2/3-byte tails
+  until the next mapped `__mkdir @ 0x004A508D`. Replaying all 47 DIR32
+  internal-label relocations across the complete `0x33D` region is exact.
+  Treat jump-table data and tail cases owned by the function as part of its real
+  extent; do not stop at an internal table boundary just because disassembly
+  temporarily looks like data.
+- A separately mapped EH funclet such as `FUN_004AA427` may correspond only to
+  a local COFF label inside a larger function section. Do not manufacture a
+  standalone archive function-definition for it. Such rows require a future
+  explicit local-funclet acceptance rule with pinned section owner, local label,
+  target extent, and non-overlap/overlap semantics.

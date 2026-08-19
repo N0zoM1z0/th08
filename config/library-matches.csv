@@ -77,3 +77,8 @@ address,name,size,status,unit,evidence
 0x004A4412,CallMemberFunction1,7,matching,crt-call-member-function1,python3 scripts/compare-library.py crt-call-member-function1 --json
 0x004AA2E4,CallCatchBlock,151,matching,crt-call-catch-block,python3 scripts/compare-library.py crt-call-catch-block --json
 0x004AA48B,BuildCatchObject,368,matching,crt-build-catch-object,python3 scripts/compare-library.py crt-build-catch-object --json
+0x004AA2C7,AdjustPointer,29,matching,crt-adjust-pointer,python3 scripts/compare-library.py crt-adjust-pointer --json
+0x004B056D,ValidateRead,28,matching,crt-validate-read,python3 scripts/compare-library.py crt-validate-read --json
+0x004B0589,ValidateWrite,28,matching,crt-validate-write,python3 scripts/compare-library.py crt-validate-write --json
+0x004B05A5,ValidateExecute,24,matching,crt-validate-execute,python3 scripts/compare-library.py crt-validate-execute --json
+0x004A4D50,memmove,829,matching,crt-memmove,python3 scripts/compare-library.py crt-memmove --json

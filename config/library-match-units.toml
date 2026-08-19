@@ -2440,3 +2440,294 @@ offset = 0x178
 type = "REL32"
 symbol = "?terminate@@YAXXZ"
 target_base = 0x004AA9B2
+
+[[units]]
+name = "crt-adjust-pointer"
+target_address = 0x004AA2C7
+body_size = 0x1D
+compare_size = 0x1D
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/frame.obj"
+symbol = "?AdjustPointer@@YAPAXPAXABUPMD@@@Z"
+allow_auxless_comdat = true
+
+[[units]]
+name = "crt-validate-read"
+target_address = 0x004B056D
+body_size = 0x1C
+compare_size = 0x1C
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/validate.obj"
+symbol = "?_ValidateRead@@YAHPBXI@Z"
+[[units.relocations]]
+offset = 0xE
+type = "DIR32"
+symbol = "__imp__IsBadReadPtr@8"
+target_base = 0x004B4160
+
+[[units]]
+name = "crt-validate-write"
+target_address = 0x004B0589
+body_size = 0x1C
+compare_size = 0x1C
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/validate.obj"
+symbol = "?_ValidateWrite@@YAHPAXI@Z"
+[[units.relocations]]
+offset = 0xE
+type = "DIR32"
+symbol = "__imp__IsBadWritePtr@8"
+target_base = 0x004B413C
+
+[[units]]
+name = "crt-validate-execute"
+target_address = 0x004B05A5
+body_size = 0x18
+compare_size = 0x18
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/validate.obj"
+symbol = "?_ValidateExecute@@YAHP6GHXZ@Z"
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "__imp__IsBadCodePtr@4"
+target_base = 0x004B4164
+
+[[units]]
+name = "crt-memmove"
+target_address = 0x004A4D50
+body_size = 0x33D
+compare_size = 0x33D
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/memmove.obj"
+symbol = "_memmove"
+[[units.relocations]]
+offset = 0x38
+type = "DIR32"
+symbol = "TrailUpVec"
+target_base = 0x004A4E9C
+[[units.relocations]]
+offset = 0x50
+type = "DIR32"
+symbol = "LeadUpVec"
+target_base = 0x004A4DB4
+[[units.relocations]]
+offset = 0x57
+type = "DIR32"
+symbol = "TrailUpVec"
+target_base = 0x004A4E9C
+[[units.relocations]]
+offset = 0x5F
+type = "DIR32"
+symbol = "UnwindUpVec"
+target_base = 0x004A4E30
+[[units.relocations]]
+offset = 0x64
+type = "DIR32"
+symbol = "LeadUp1"
+target_base = 0x004A4DC0
+[[units.relocations]]
+offset = 0x68
+type = "DIR32"
+symbol = "LeadUp2"
+target_base = 0x004A4DEC
+[[units.relocations]]
+offset = 0x6C
+type = "DIR32"
+symbol = "LeadUp3"
+target_base = 0x004A4E10
+[[units.relocations]]
+offset = 0x95
+type = "DIR32"
+symbol = "TrailUpVec"
+target_base = 0x004A4E9C
+[[units.relocations]]
+offset = 0xBB
+type = "DIR32"
+symbol = "TrailUpVec"
+target_base = 0x004A4E9C
+[[units.relocations]]
+offset = 0xD9
+type = "DIR32"
+symbol = "TrailUpVec"
+target_base = 0x004A4E9C
+[[units.relocations]]
+offset = 0xE0
+type = "DIR32"
+symbol = "UnwindUp0"
+target_base = 0x004A4E93
+[[units.relocations]]
+offset = 0xE4
+type = "DIR32"
+symbol = "UnwindUp1"
+target_base = 0x004A4E80
+[[units.relocations]]
+offset = 0xE8
+type = "DIR32"
+symbol = "UnwindUp2"
+target_base = 0x004A4E78
+[[units.relocations]]
+offset = 0xEC
+type = "DIR32"
+symbol = "UnwindUp3"
+target_base = 0x004A4E70
+[[units.relocations]]
+offset = 0xF0
+type = "DIR32"
+symbol = "UnwindUp4"
+target_base = 0x004A4E68
+[[units.relocations]]
+offset = 0xF4
+type = "DIR32"
+symbol = "UnwindUp5"
+target_base = 0x004A4E60
+[[units.relocations]]
+offset = 0xF8
+type = "DIR32"
+symbol = "UnwindUp6"
+target_base = 0x004A4E58
+[[units.relocations]]
+offset = 0xFC
+type = "DIR32"
+symbol = "UnwindUp7"
+target_base = 0x004A4E50
+[[units.relocations]]
+offset = 0x146
+type = "DIR32"
+symbol = "TrailUpVec"
+target_base = 0x004A4E9C
+[[units.relocations]]
+offset = 0x14C
+type = "DIR32"
+symbol = "TrailUp0"
+target_base = 0x004A4EAC
+[[units.relocations]]
+offset = 0x150
+type = "DIR32"
+symbol = "TrailUp1"
+target_base = 0x004A4EB4
+[[units.relocations]]
+offset = 0x154
+type = "DIR32"
+symbol = "TrailUp2"
+target_base = 0x004A4EC0
+[[units.relocations]]
+offset = 0x158
+type = "DIR32"
+symbol = "TrailUp3"
+target_base = 0x004A4ED4
+[[units.relocations]]
+offset = 0x1BE
+type = "DIR32"
+symbol = "TrailDownVec"
+target_base = 0x004A5038
+[[units.relocations]]
+offset = 0x1C9
+type = "DIR32"
+symbol = "UnwindDownVec"
+target_base = 0x004A4FCC
+[[units.relocations]]
+offset = 0x1E4
+type = "DIR32"
+symbol = "LeadDownVec"
+target_base = 0x004A4F40
+[[units.relocations]]
+offset = 0x1EB
+type = "DIR32"
+symbol = "TrailDownVec"
+target_base = 0x004A5038
+[[units.relocations]]
+offset = 0x1F0
+type = "DIR32"
+symbol = "LeadDown1"
+target_base = 0x004A4F4C
+[[units.relocations]]
+offset = 0x1F4
+type = "DIR32"
+symbol = "LeadDown2"
+target_base = 0x004A4F70
+[[units.relocations]]
+offset = 0x1F8
+type = "DIR32"
+symbol = "LeadDown3"
+target_base = 0x004A4F98
+[[units.relocations]]
+offset = 0x219
+type = "DIR32"
+symbol = "TrailDownVec"
+target_base = 0x004A5038
+[[units.relocations]]
+offset = 0x243
+type = "DIR32"
+symbol = "TrailDownVec"
+target_base = 0x004A5038
+[[units.relocations]]
+offset = 0x275
+type = "DIR32"
+symbol = "TrailDownVec"
+target_base = 0x004A5038
+[[units.relocations]]
+offset = 0x27C
+type = "DIR32"
+symbol = "UnwindDown7"
+target_base = 0x004A4FEC
+[[units.relocations]]
+offset = 0x280
+type = "DIR32"
+symbol = "UnwindDown6"
+target_base = 0x004A4FF4
+[[units.relocations]]
+offset = 0x284
+type = "DIR32"
+symbol = "UnwindDown5"
+target_base = 0x004A4FFC
+[[units.relocations]]
+offset = 0x288
+type = "DIR32"
+symbol = "UnwindDown4"
+target_base = 0x004A5004
+[[units.relocations]]
+offset = 0x28C
+type = "DIR32"
+symbol = "UnwindDown3"
+target_base = 0x004A500C
+[[units.relocations]]
+offset = 0x290
+type = "DIR32"
+symbol = "UnwindDown2"
+target_base = 0x004A5014
+[[units.relocations]]
+offset = 0x294
+type = "DIR32"
+symbol = "UnwindDown1"
+target_base = 0x004A501C
+[[units.relocations]]
+offset = 0x298
+type = "DIR32"
+symbol = "UnwindDown0"
+target_base = 0x004A502F
+[[units.relocations]]
+offset = 0x2E2
+type = "DIR32"
+symbol = "TrailDownVec"
+target_base = 0x004A5038
+[[units.relocations]]
+offset = 0x2E8
+type = "DIR32"
+symbol = "TrailDown0"
+target_base = 0x004A5048
+[[units.relocations]]
+offset = 0x2EC
+type = "DIR32"
+symbol = "TrailDown1"
+target_base = 0x004A5050
+[[units.relocations]]
+offset = 0x2F0
+type = "DIR32"
+symbol = "TrailDown2"
+target_base = 0x004A5060
+[[units.relocations]]
+offset = 0x2F4
+type = "DIR32"
+symbol = "TrailDown3"
+target_base = 0x004A5074

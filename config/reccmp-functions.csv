@@ -1884,7 +1884,7 @@ TypeMatch,0x4aa147,library
 __FrameUnwindToState,0x4aa1b4,library
 FUN_004aa267,0x4aa267,library
 __DestructExceptionObject,0x4aa282,library
-FUN_004aa2c7,0x4aa2c7,library
+AdjustPointer,0x4aa2c7,library
 CallCatchBlock,0x4aa2e4,library
 FUN_004aa427,0x4aa427,library
 BuildCatchObject,0x4aa48b,library
@@ -2000,7 +2000,7 @@ _setmbcp,0x4b03ff,library
 FUN_004b0546,0x4b0546,library
 __initmbctable,0x4b054f,library
 ValidateRead,0x4b056d,library
-ValidateRead,0x4b0589,library
+ValidateWrite,0x4b0589,library
 ValidateExecute,0x4b05a5,library
 abort,0x4b05bd,library
 FID_conflict:__getenv_lk,0x4b05d5,library
