@@ -2096,3 +2096,117 @@ offset = 0x5B
 type = "REL32"
 symbol = "?_UnwindNestedFrames@@YGXPAUEHRegistrationNode@@PAUEHExceptionRecord@@@Z"
 target_base = 0x004A4419
+
+[[units]]
+name = "crt-type-match"
+target_address = 0x004AA147
+body_size = 0x4F
+compare_size = 0x4F
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/frame.obj"
+symbol = "?TypeMatch@@YAHPBU_s_HandlerType@@PBU_s_CatchableType@@PBU_s_ThrowInfo@@@Z"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x1C
+type = "REL32"
+symbol = "_strcmp"
+target_base = 0x004AFE80
+
+[[units]]
+name = "crt-destruct-exception-object"
+target_address = 0x004AA282
+body_size = 0x45
+compare_size = 0x45
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/frame.obj"
+symbol = "___DestructExceptionObject"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T19595"
+target_base = 0x004BDC48
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0x26
+type = "REL32"
+symbol = "?_CallMemberFunction0@@YGXPAX0@Z"
+target_base = 0x004A4412
+[[units.relocations]]
+offset = 0x2F
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3
+[[units.relocations]]
+offset = 0x41
+type = "REL32"
+symbol = "?terminate@@YAXXZ"
+target_base = 0x004AA9B2
+
+[[units]]
+name = "crt-catch-it"
+target_address = 0x004AA607
+body_size = 0x67
+compare_size = 0x67
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/frame.obj"
+symbol = "?CatchIt@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@PBU_s_HandlerType@@PBU_s_CatchableType@@PBU_s_TryBlockMapEntry@@H1E@Z"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0xE
+type = "REL32"
+symbol = "?BuildCatchObject@@YAXPAUEHExceptionRecord@@PAXPBU_s_HandlerType@@PBU_s_CatchableType@@@Z"
+target_base = 0x004AA48B
+[[units.relocations]]
+offset = 0x24
+type = "REL32"
+symbol = "?_UnwindNestedFrames@@YGXPAUEHRegistrationNode@@PAUEHExceptionRecord@@@Z"
+target_base = 0x004A4419
+[[units.relocations]]
+offset = 0x32
+type = "REL32"
+symbol = "___FrameUnwindToState"
+target_base = 0x004AA1B4
+[[units.relocations]]
+offset = 0x53
+type = "REL32"
+symbol = "?CallCatchBlock@@YAPAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PBU_s_FuncInfo@@PAXHK@Z"
+target_base = 0x004AA2E4
+[[units.relocations]]
+offset = 0x61
+type = "REL32"
+symbol = "?_JumpToContinuation@@YGXPAXPAUEHRegistrationNode@@@Z"
+target_base = 0x004A43E2
+
+[[units]]
+name = "crt-find-handler-foreign"
+target_address = 0x004AA66E
+body_size = 0xC0
+compare_size = 0xC0
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/frame.obj"
+symbol = "?FindHandlerForForeignException@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@HH1@Z"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x16
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0x34
+type = "REL32"
+symbol = "?_CallSETranslator@@YAHPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAX2PBU_s_FuncInfo@@H1@Z"
+target_base = 0x004A4696
+[[units.relocations]]
+offset = 0x53
+type = "REL32"
+symbol = "?_GetRangeOfTrysToCheck@@YAPBU_s_TryBlockMapEntry@@PBU_s_FuncInfo@@HHPAI1@Z"
+target_base = 0x004A4536
+[[units.relocations]]
+offset = 0xA3
+type = "REL32"
+symbol = "?CatchIt@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@PBU_s_HandlerType@@PBU_s_CatchableType@@PBU_s_TryBlockMapEntry@@H1E@Z"
+target_base = 0x004AA607

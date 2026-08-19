@@ -1882,13 +1882,13 @@ __mtinit,0x4aa0d8,0x6f,unknown,,u8
 TypeMatch,0x4aa147,0x4f,__cdecl,,i32,_s_HandlerType*,_s_CatchableType*,_s_ThrowInfo*
 ___FrameUnwindToState,0x4aa1b4,0xad,unknown,,u8,u8,u8,u8,u8
 FUN_004aa267,0x4aa267,0x1b,unknown,,u8
-___DestructExceptionObject,0x4aa282,0x34,unknown,,u8,u8
+___DestructExceptionObject,0x4aa282,0x45,unknown,,u8,u8
 FUN_004aa2c7,0x4aa2c7,0x1d,unknown,,u8
 FUN_004aa2e4,0x4aa2e4,0x97,unknown,,u8,u8,u8,u8,u8,u8,u8
 FUN_004aa427,0x4aa427,0x64,unknown,,u8
 BuildCatchObject,0x4aa48b,0x170,__cdecl,,void,EHExceptionRecord*,void*,_s_HandlerType*,_s_CatchableType*
 CatchIt,0x4aa607,0x67,__cdecl,,void,EHExceptionRecord*,EHRegistrationNode*,_CONTEXT*,void*,_s_FuncInfo*,_s_HandlerType*,_s_CatchableType*,_s_TryBlockMapEntry*,i32,EHRegistrationNode*,uchar
-FUN_004aa66e,0x4aa66e,0xc0,unknown,,u8,u8,u8,u8,u8,u8,u8,u8,u8
+FindHandlerForForeignException,0x4aa66e,0xc0,__cdecl,,void,u8,u8,u8,u8,u8,u8,u8,u8
 FindHandler,0x4aa72e,0x1e2,__cdecl,,void,u8,u8,u8,u8,u8,u8,u8,u8
 ___InternalCxxFrameHandler,0x4aa910,0xa2,unknown,,u8,u8,u8,u8,u8,u8,u8,u8,u8
 terminate,0x4aa9b2,0x2e,__cdecl,,void

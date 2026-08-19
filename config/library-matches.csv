@@ -69,3 +69,7 @@ address,name,size,status,unit,evidence
 0x004A6B99,calloc,187,matching,crt-calloc,python3 scripts/compare-library.py crt-calloc --json
 0x004A44A1,CatchGuardHandler,36,matching,crt-catch-guard-handler,python3 scripts/compare-library.py crt-catch-guard-handler --json
 0x004A44C5,TranslatorGuardHandler,113,matching,crt-translator-guard-handler,python3 scripts/compare-library.py crt-translator-guard-handler --json
+0x004AA147,TypeMatch,79,matching,crt-type-match,python3 scripts/compare-library.py crt-type-match --json
+0x004AA282,__DestructExceptionObject,69,matching,crt-destruct-exception-object,python3 scripts/compare-library.py crt-destruct-exception-object --json
+0x004AA607,CatchIt,103,matching,crt-catch-it,python3 scripts/compare-library.py crt-catch-it --json
+0x004AA66E,FindHandlerForForeignException,192,matching,crt-find-handler-foreign,python3 scripts/compare-library.py crt-find-handler-foreign --json
