@@ -119,15 +119,14 @@ Separate library acceptance infrastructure is now in place:
 - `validate-library.py` is the public CI gate, with `--require-archives` for local
   hash attestation; `library-progress.py` generates `LIBRARY_PROGRESS.md`.
 
-Library acceptance now has **14 / 14 configured units** and **1,911 body bytes**
+Library acceptance now has **20 / 20 configured units** and **2,315 body bytes**
 after canonical zero-difference replay.  The accepted set contains six SSE/SSE2
-D3DX normalize helpers, VC7 `/MT` `operator delete`, four isolated CRT string/
-memory leaves (`strrchr`, `memset`, `strlen`, `strncmp`), and three strict
-shared-section CRT symbols (`strchr`, `strcpy`, `strcat`).  The shared-section
-units pin section offset/size and require the COFF function aux extent, so this
-does not permit arbitrary archive slicing.  Continue pinning provenance/match
-units for remaining VC7 CRT/runtime, standard-library, D3DX, and compiler-runtime
-inventory; keep library progress separate from authored totals.
+D3DX normalize helpers, VC7 `/MT` `operator delete`, seven CRT string/memory
+helpers (including strict shared-section `strchr`/`strcpy`/`strcat`), and six
+isolated compiler-runtime arithmetic helpers (`_ftol2`, `_chkstk`, `_aulldiv`,
+`_allmul`, `_ftol`, `_aullshr`).  Continue pinning provenance/match units for
+remaining VC7 CRT/runtime, standard-library, D3DX, and compiler-runtime inventory;
+keep library progress separate from authored totals.
 
 Keep authored `implemented.csv`, `matches.csv`, and authored percentages
 unchanged.  There is intentionally no whole-library scanner until archive
