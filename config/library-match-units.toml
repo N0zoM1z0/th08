@@ -9184,3 +9184,60 @@ offset = 0x268
 type = "REL32"
 symbol = "@__security_check_cookie@4"
 target_base = 0x004AB43C
+
+[[units]]
+name = "crt-fprem-common"
+target_address = 0x004A9886
+body_size = 0x206
+compare_size = 0x206
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/adj_fdiv.obj"
+symbol = "__fprem_common"
+section_offset = 0x806
+section_size = 0xD8B
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "fprem_risc_table"
+target_base = 0x004CBEDC
+[[units.relocations]]
+offset = 0x163
+type = "DIR32"
+symbol = "half"
+target_base = 0x004CBF0C
+[[units.relocations]]
+offset = 0x17E
+type = "DIR32"
+symbol = "big_number"
+target_base = 0x004CBF14
+[[units.relocations]]
+offset = 0x1CF
+type = "DIR32"
+symbol = "one_shr_64"
+target_base = 0x004CBEFC
+
+[[units]]
+name = "crt-adj-fprem"
+target_address = 0x004A9A8C
+body_size = 0xB2
+compare_size = 0xB2
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/adj_fdiv.obj"
+symbol = "__adj_fprem"
+section_offset = 0xA0C
+section_size = 0xD8B
+[[units.relocations]]
+offset = 0x6A
+type = "DIR32"
+symbol = "one_shl_64"
+target_base = 0x004CBEF4
+[[units.relocations]]
+offset = 0x74
+type = "DIR32"
+symbol = "one_shl_64"
+target_base = 0x004CBEF4
+[[units.relocations]]
+offset = 0x96
+type = "DIR32"
+symbol = "one_shl_64"
+target_base = 0x004CBEF4

@@ -1871,8 +1871,8 @@ FUN_004a8ec3,0x4a8ec3,0x7,unknown,,u8
 FUN_004a8eca,0x4a8eca,0x147,unknown,,u8
 __ctrandisp1,0x4a9011,0x33,unknown,,u8,u8,u8
 __fload,0x4a9044,0x3c,unknown,,u8,u8
-FUN_004a9886,0x4a9886,0x206,unknown,,u8,u8,u8,u8,u8,u8,u8
-FUN_004a9a8c,0x4a9a8c,0xb2,unknown,,u8
+__fprem_common,0x4a9886,0x206,unknown,,u8,u8,u8,u8,u8,u8,u8
+__adj_fprem,0x4a9a8c,0xb2,unknown,,u8
 FUN_004a9e0b,0x4a9e0b,0x77,unknown,,u8,u8,u8,u8
 ___freetlocinfo,0x4a9e82,0xca,unknown,,u8,u8
 ___updatetlocinfo_lk,0x4a9f4c,0xc2,unknown,,u8

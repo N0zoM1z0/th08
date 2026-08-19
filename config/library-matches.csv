@@ -236,3 +236,5 @@ address,name,size,status,unit,evidence
 0x004AEDE3,__dtold,186,matching,crt-dtold,python3 scripts/compare-library.py crt-dtold --json
 0x004AEE9D,_fltout2,114,matching,crt-fltout2,python3 scripts/compare-library.py crt-fltout2 --json
 0x004B1530,FUN_004b1530,660,matching,crt-i10-output,python3 scripts/compare-library.py crt-i10-output --json
+0x004A9886,_fprem_common,518,matching,crt-fprem-common,python3 scripts/compare-library.py crt-fprem-common --json
+0x004A9A8C,_adj_fprem,178,matching,crt-adj-fprem,python3 scripts/compare-library.py crt-adj-fprem --json
