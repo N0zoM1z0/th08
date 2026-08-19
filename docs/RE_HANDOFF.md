@@ -11,8 +11,8 @@ As cold-built and replayed on 2026-08-19 against the original Japanese TH08
 
 - authored source: **1,107 / 1,107 functions**, **459,757 / 459,757 bytes**;
 - strict authored exact: **1,091 / 1,107 functions**, **445,728 / 459,757 bytes**;
-- library inventory: **1,112 classified functions**; 1,105 currently have
-  mapping sizes totaling 215,533 bytes; no library exact ledger exists;
+- library inventory: **1,112 classified functions**; all **1,112 / 1,112** now have
+  mapping sizes totaling **216,678 bytes**; no library exact ledger exists;
 - `config/claims.csv` is header-only;
 - a cold normal VC7 build links `build/th08.exe` successfully;
 - a cold objdiff build followed by full replay passes **1,091 / 1,091**
@@ -84,41 +84,37 @@ separate target-linked library inventory/provenance work below.
 
 ## Next milestone: target-linked libraries
 
-The `library` inventory is code inside the original executable, not
-`3rdparty/Detours`. Start with inventory integrity and provenance, not source
-stubs or inline assembly.
-
-Seven library rows do not yet have mapping extents:
+The seven previously missing library extents are repaired.  The canonical
+selector now reports no missing-size rows:
 
 ```bash
 python3 scripts/analysis/report-reconstruction-status.py \
   --category library --state missing-size --sort address
 ```
 
-The current output is:
+The six D3DX rows were reconciled against the target CPU dispatch tables and
+the SHA-pinned VC7 PlatformSDK prerelease `D3DX8.LIB`
+(`0d4a2b642485dcaa7671926a9a1a545c656d5eb73f160fe971b3deebf0b516b5`).
+Their archive identities are SSE/SSE2 Vec3, Plane, Vec4, and Quaternion
+normalize members; target body extents stop before archive alignment padding.
+`operator delete @ 0x004A43CF` is the five-byte VC7 `/MT` `LIBCMT.LIB`
+`delete.obj` tail jump to `_free`.  These are boundary/provenance facts only;
+there is still no accepted library exact ledger.
 
-```text
-0x0048D3D0 D3DXVec3Normalize_rsqrtss_0048d3d0
-0x0048D4A0 D3DXVec4Normalize3_rsqrtss_0048d4a0
-0x0048DA50 D3DXVec4Normalize_rsqrtss_0048da50
-0x0048E680 D3DXVec4Normalize_rsqrtss_0048e680
-0x0048EFB0 D3DXVec3Normalize_rsqrtss_48efb0
-0x0048F080 D3DXVec4Normalize3_rsqrtss_0048f080
-0x004A43CF operator delete
-```
+Proceed with inventory integrity before accepting library matches:
 
-For the first bounded library batch:
+1. resolve the 18 imported mapping overlaps as real aliases/thunks/shared code
+   or stale extents, preserving useful target facts;
+2. pin archive/member provenance for the remaining VC7 CRT/runtime, standard
+   library, D3DX, and compiler-runtime families;
+3. add the separate library provenance manifest, match-unit schema, accepted
+   ledger, relocation-aware comparator, public CI validation, local target
+   verification command, and independent progress report;
+4. only then accept one coherent library family at a time.
 
-1. verify target boundaries and callers for one coherent family;
-2. determine the originating archive/member and record its SHA-256 provenance;
-3. compare extracted VC7 COFF code with relocation-aware target bytes;
-4. propose a library-specific ledger/progress schema before accepting results;
-5. keep authored `implemented.csv`, `matches.csv`, and authored percentages
-   unchanged.
-
-There is intentionally no library scanner yet. Building one before archives,
-hashes, boundary policy, and relocation replay are pinned would automate an
-unverified assumption.
+Keep authored `implemented.csv`, `matches.csv`, and authored percentages
+unchanged.  There is intentionally no whole-library scanner until archive
+identity, relocation policy, COMDAT/padding rules, and failure modes are encoded.
 
 ## Later whole-executable lane
 

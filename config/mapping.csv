@@ -1493,6 +1493,12 @@ FUN_0048d069,0x48d069,0x34,unknown,,u8,u8,u8
 FUN_0048d09d,0x48d09d,0x34,unknown,,u8,u8,u8
 FUN_0048d0e0,0x48d0e0,0x40,unknown,,u8,u8,u8,u8
 FUN_0048d120,0x48d120,0x59,unknown,,u8,u8,u8,u8
+sse_D3DXVec3Normalize,0x48d3d0,0xc6,__stdcall,,D3DXVECTOR3*,D3DXVECTOR3*,const D3DXVECTOR3*
+sse_D3DXPlaneNormalize,0x48d4a0,0xd8,__stdcall,,D3DXPLANE*,D3DXPLANE*,const D3DXPLANE*
+sse_D3DXVec4Normalize,0x48da50,0x9c,__stdcall,,D3DXVECTOR4*,D3DXVECTOR4*,const D3DXVECTOR4*
+sse_D3DXQuaternionNormalize,0x48e680,0x9c,__stdcall,,D3DXQUATERNION*,D3DXQUATERNION*,const D3DXQUATERNION*
+sse2_D3DXVec3Normalize,0x48efb0,0xc6,__stdcall,,D3DXVECTOR3*,D3DXVECTOR3*,const D3DXVECTOR3*
+sse2_D3DXPlaneNormalize,0x48f080,0xd8,__stdcall,,D3DXPLANE*,D3DXPLANE*,const D3DXPLANE*
 FUN_0048f776,0x48f776,0xb6,unknown,,u8,u8,u8,u8
 FUN_0048fd22,0x48fd22,0x6c,unknown,,u8,u8,u8,u8
 FUN_0048fd8e,0x48fd8e,0x137,unknown,,u8,u8,u8,u8,u8
@@ -1722,6 +1728,7 @@ FUN_004a42ce,0x4a42ce,0x9,unknown,,u8
 FUN_004a42fa,0x4a42fa,0xa,unknown,,u8
 FUN_004a431a,0x4a431a,0xa,unknown,,u8
 _atol,0x4a4342,0x88,__cdecl,,u8,u8
+operator_delete,0x4a43cf,0x5,__cdecl,,void,void*
 operator_new,0x4a43d4,0xe,__cdecl,,void*,u32
 _JumpToContinuation,0x4a43e2,0x2b,__stdcall,,void,void*,EHRegistrationNode*
 _CallMemberFunction1,0x4a4412,0x7,__stdcall,,void,void*,void*,void*,i32

@@ -881,3 +881,40 @@ pinned local VC7 environment are private; it remains a required local gate.
 Generalization limit: this establishes current function-level authored replay
 only. It does not prove original object partition, linked-image layout,
 target-linked libraries, resources, or complete-PE identity.
+
+### Target-linked D3DX fast-table and CRT thunk boundary recovery
+
+- The D3DX optimized dispatch tables at `0x004867B0` (SSE) and `0x004868D0`
+  (SSE2) are stronger naming/provenance evidence than heuristic disassembly
+  labels.  Their relocation order matches `objd/i386/ssefasttable.obj` and
+  `objd/i386/ssefasttable2.obj` from the VC7 PlatformSDK prerelease
+  `D3DX8.LIB` (SHA-256
+  `0d4a2b642485dcaa7671926a9a1a545c656d5eb73f160fe971b3deebf0b516b5`).
+  In particular, the table slots identify `0x0048D3D0` as SSE Vec3 normalize,
+  `0x0048D4A0` as SSE plane normalize, `0x0048DA50` as SSE Vec4 normalize,
+  `0x0048E680` as SSE quaternion normalize, `0x0048EFB0` as SSE2 Vec3
+  normalize, and `0x0048F080` as SSE2 plane normalize.  Do not infer these
+  identities from vector width alone; table relocation identity distinguishes
+  the same-looking four-float normalize families.
+- For these optimized D3DX COMDATs, compare the complete archive section after
+  masking/replaying its COFF relocations.  The target non-relocation bytes,
+  including post-`ret` alignment padding, exactly match the corresponding
+  archive sections.  The accepted function-body extents stop at the compiler
+  return (`0xC6`, `0xD8`, `0x9C`, `0x9C`, `0xC6`, `0xD8` respectively), while
+  the archive sections continue to aligned `0xD0`, `0xE0`, `0xA0`, `0xA0`,
+  `0xD0`, `0xE0`.  Keep body extent separate from archive-member padding; a
+  next mapped address is not a boundary proof.
+- The `+0x0E` labels inside the aligned SSE/SSE2 Vec3/plane normalize bodies are
+  real archive-local secondary symbols (`...Normalize$$1`), not independent
+  TH08 inventory functions.  They have no target xrefs in the attested IDA
+  session and live inside the same archive COMDAT.  Preserve them as internal
+  entry evidence rather than creating overlapping mapping rows.
+- `operator delete @ 0x004A43CF` is the VC7 static-runtime `??3@YAXPAX@Z`
+  thunk: the target is exactly one five-byte near jump to `_free @ 0x004A427B`.
+  With the repository's `/MT` compiler profile, the relevant archive is
+  `LIBCMT.LIB` (SHA-256
+  `8815af7b9b6e0e28b77708ede25ab7ecfc4b05e1d8811f092c516cff5ce19d94`),
+  member `build/intel/mt_obj/delete.obj`.  That member owns an isolated
+  five-byte `.text` section with one `DISP32 _free` relocation.  Use the member
+  section/relocation as the extent proof; the adjacent `operator new` address
+  alone is only corroboration.
