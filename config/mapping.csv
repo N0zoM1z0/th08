@@ -1015,7 +1015,7 @@ th08::TitleScreen::OnUpdateSpellStageSelect,0x46b174,0xa4c,__thiscall,,ChainCall
 th08::TitleScreen::OnUpdateSpellCardSelect,0x46bbc0,0xfcf,__thiscall,,ChainCallbackResult,TitleScreen*
 th08::TitleScreen::UnlockLastWordSpellCards,0x46cbbb,0xba8,__thiscall,,void,TitleScreen*
 th08::ConvertToFullWidthDigits,0x46d763,0x96,__fastcall,,char*,i32,i32
-FUN_0046d7f9,0x46d7f9,0x93d,unknown,,u8
+th08::TitleScreen::FormatSpellCardInfo,0x46d7f9,0x93d,__thiscall,,void,TitleScreen*
 th08::TitleScreen::OnUpdateReplayMenu,0x46e136,0xe57,__thiscall,,ChainCallbackResult,TitleScreen*
 th08::TitleScreen::DrawReplayMenu,0x46ef8d,0x49c,__thiscall,,ChainCallbackResult,TitleScreen*
 th08::TitleScreen::DrawPracticeStageSelect,0x46f429,0x1a2,unknown,,u8

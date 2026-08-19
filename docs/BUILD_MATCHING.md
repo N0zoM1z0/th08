@@ -821,3 +821,11 @@ This corpus attests the natural VC7 emissions for ResultScreen/AnmManager/MidiOu
 - An inline unlock helper taking `i32 spellCardNumber` naturally prevents constant-folding of `unlockedLastWordSpellCards[spell-205] = spell`; VC7 emits the target dword spell-number work home, variable index, and low-byte store. A `do { ... } while (0)` macro is not equivalent here: VC7 kept a six-byte zero-loop tail at every call site.
 - Keep the target-proven loop lifetimes. The exact source uses distinct `k/n/ii/jj/kk` indices for five later loops and `#pragma var_order(i, totalCaptures, extraClearCount2, extraClearCount3, k, lastSpellCaptures15, extraClearCount4, n, requiredNormalCaptures, ii, extraClearCount6, jj, extraStageClearCount, kk, lastSpellCaptures30)`. This produces the target 0xF8 frame and places the Normal-list Catk pointer at `-0x64`.
 - Preserve genuine leftovers even when redundant: the target clears `requiredNormalCaptures` **twice** immediately before the Normal spell-list loop. The second four-byte clear is required for the canonical 0xBA8 body.
+
+
+### Title spell-card info formatter source-shape
+
+- `TitleScreen::FormatSpellCardInfo @ 0x0046D7F9` matches as a 0x148-frame `/Os /Ob1` function with source locals ordered by `#pragma var_order(spellCardNumber, i, totalAttempts, commentLine1, commentLine2)`. Long-lived `Catk&` or Last-Word-table references are not source locals in the target; spelling those accesses directly lets VC7 create only the target compiler pointer temps at `-0x114..-0x148`.
+- Equivalent ternaries are not byte-equivalent. The target uses zero-first lexical forms such as `totalAttempts == 0 ? unknown : spellName` and `captures[SHOT_ALL] == 0 ? unknown : commentBuffer`; reversing the condition and arms flips the short-branch topology.
+- The Last Word hint table begins at spell **204**, one slot before `SPELLCARD_LAST_WORD_START` (205). Its 0x30-byte record has two format pointers and two groups of five integer arguments. Recover the source index as `spellCardNumber - (SPELLCARD_LAST_WORD_START - 1)`, not `spellCardNumber - SPELLCARD_LAST_WORD_START`.
+- `spellCardInfoVms[0..6]` are the natural typed owners for target offsets `0x11F2C..0x12F04`; two 128-byte comment buffers and repeated direct `CatkHistory` reads reproduce the target vararg push order without overlays.

@@ -226,3 +226,5 @@ th08::g_EclExUpdateCallback,0x4ea28c,global
 th08::g_AsciiManagerDemoAnm0577EB4,0x577eb4,global
 th08::g_EclExBarrierRenderState,0x4e4b60,global
 th08::g_EclGameTimeScaleFlags,0x17ce8fc,global
+th08::g_TitleLastWordCommentFormats,0x4c82c8,global
+th08::g_TitleSpellDifficultyNames,0x4c8628,global

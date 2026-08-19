@@ -350,3 +350,9 @@ Do not force standard math/runtime helpers into authored reconstruction merely b
 - Under `/Os /Ob1`, use a target-proven `(... ? TRUE : FALSE)` when the binary materializes a BOOL work slot before testing it; a direct logical OR usually skips that slot.
 - If a constant index must remain runtime-shaped (`push imm / pop / shl`), an inline member helper can preserve the parameterized index without the extra pointer temp introduced by a free helper.
 - Inline `i32` helper parameters can also be source evidence for target variable-index stores that would otherwise constant-fold. Avoid `do/while(0)` macros when the target has no zero-loop tail.
+
+
+### VC7 formatter ternary and reference ownership
+- In large `/Os /Ob1` vararg formatters, avoid caching aggregate/table references unless the target has a source home for them. Four innocent C++ references enlarged `FormatSpellCardInfo`'s frame by exactly 0x10.
+- Preserve ternary lexical polarity when the target materializes pointer alternatives: `zero ? fallback : real` and `nonzero ? real : fallback` are semantically equivalent but select opposite physical arms.
+- When an indexed hint table starts one record before a named enum range, keep the observed base/index expression; forcing the enum start silently shifts every relocation/addend.
