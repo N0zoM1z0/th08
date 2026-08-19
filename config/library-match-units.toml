@@ -270,3 +270,41 @@ compare_size = 0x1F
 archive = "vc7-libcmt"
 member = "build/intel/mt_obj/ullshr.obj"
 symbol = "__aullshr"
+
+[[units]]
+name = "crt-nh-malloc"
+target_address = 0x004A423D
+body_size = 0x2C
+compare_size = 0x2C
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/malloc.obj"
+symbol = "__nh_malloc"
+[[units.relocations]]
+offset = 0xC
+type = "REL32"
+symbol = "__heap_alloc"
+target_base = 0x004A41C2
+[[units.relocations]]
+offset = 0x20
+type = "REL32"
+symbol = "__callnewh"
+target_base = 0x004A8D34
+
+[[units]]
+name = "crt-malloc"
+target_address = 0x004A4269
+body_size = 0x12
+compare_size = 0x12
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/malloc.obj"
+symbol = "_malloc"
+[[units.relocations]]
+offset = 0x2
+type = "DIR32"
+symbol = "__newmode"
+target_base = 0x018D819C
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "__nh_malloc"
+target_base = 0x004A423D
