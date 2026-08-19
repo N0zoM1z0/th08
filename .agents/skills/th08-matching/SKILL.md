@@ -344,3 +344,9 @@ Do not force standard math/runtime helpers into authored reconstruction merely b
 - Continue to include associated switch tables in `compare_size` while counting only the authored body in progress. `OnUpdateSpellCardSelect` is a 0xFCF body plus a 0x2C table.
 - If target and object have the same instruction count but the object is much shorter, compare frame sizes before searching for missing logic. `TitleScreen::OnUpdateSpellStageSelect` was 589 instructions on both sides; three omitted per-inline `inlineSlot` homes reduced the frame by 12 bytes and allowed hundreds of deep-stack accesses to use disp8 instead of disp32. Reusing the target-shaped inline helper restored the frame and exact bytes without padding.
 - For small fastcall helpers, a zero-extent-gap residual concentrated entirely in `ebp-4`/`ebp-8` displacements is often only `#pragma var_order`. `ConvertToFullWidthDigits @ 0x0046D763` became exact by changing the order to `(i, multiplier)`; keep the arithmetic untouched when the target/object instruction forms already agree.
+
+
+### VC7 normalized-bool and inline-member fingerprint
+- Under `/Os /Ob1`, use a target-proven `(... ? TRUE : FALSE)` when the binary materializes a BOOL work slot before testing it; a direct logical OR usually skips that slot.
+- If a constant index must remain runtime-shaped (`push imm / pop / shl`), an inline member helper can preserve the parameterized index without the extra pointer temp introduced by a free helper.
+- Inline `i32` helper parameters can also be source evidence for target variable-index stores that would otherwise constant-fold. Avoid `do/while(0)` macros when the target has no zero-loop tail.

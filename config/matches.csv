@@ -1079,3 +1079,4 @@ address,name,size,status,match_percent,unit,evidence
 0x004674E0,th08::TitleScreen::OnUpdateStartMenu,3703,matching,100.00,title-start-menu-004674e0,python3 scripts/compare-function.py title-start-menu-004674e0 --json
 0x00469636,th08::TitleScreen::OnUpdateKeyConfig,2383,matching,100.00,title-key-config-00469636,python3 scripts/compare-function.py title-key-config-00469636 --json
 0x0046BBC0,th08::TitleScreen::OnUpdateSpellCardSelect,4047,matching,100.00,title-spell-card-select-0046bbc0,python3 scripts/compare-function.py title-spell-card-select-0046bbc0 --json
+0x0046CBBB,th08::TitleScreen::UnlockLastWordSpellCards,2984,matching,100.00,title-unlock-last-word-0046cbbb,python3 scripts/compare-function.py title-unlock-last-word-0046cbbb --json

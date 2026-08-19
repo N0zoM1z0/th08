@@ -1078,3 +1078,4 @@ th08::TitleScreen::OnUpdateSpellCardSelect
 th08::TitleScreen::OnUpdateSpellStageSelect
 th08::ConvertToFullWidthDigits
 th08::TitleScreen::OnUpdate
+th08::TitleScreen::UnlockLastWordSpellCards
