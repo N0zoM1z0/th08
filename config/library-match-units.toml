@@ -9350,3 +9350,413 @@ offset = 0x1F0
 type = "DIR32"
 symbol = "__imp__SetHandleCount@4"
 target_base = 0x004B40F4
+
+[[units]]
+name = "crt-crtsetenv"
+target_address = 0x004B2BD5
+body_size = 0x1B5
+compare_size = 0x1B5
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/setenv.obj"
+symbol = "___crtsetenv"
+[[units.relocations]]
+offset = 0x19
+type = "REL32"
+symbol = "__mbschr"
+target_base = 0x004B2EFE
+[[units.relocations]]
+offset = 0x39
+type = "DIR32"
+symbol = "__environ"
+target_base = 0x018D8020
+[[units.relocations]]
+offset = 0x3F
+type = "DIR32"
+symbol = "___initenv"
+target_base = 0x018D8024
+[[units.relocations]]
+offset = 0x48
+type = "REL32"
+symbol = "_copy_environ"
+target_base = 0x004B2B74
+[[units.relocations]]
+offset = 0x4D
+type = "DIR32"
+symbol = "__environ"
+target_base = 0x018D8020
+[[units.relocations]]
+offset = 0x5C
+type = "DIR32"
+symbol = "__wenviron"
+target_base = 0x018D8028
+[[units.relocations]]
+offset = 0x63
+type = "REL32"
+symbol = "___wtomb_environ"
+target_base = 0x004B2016
+[[units.relocations]]
+offset = 0x7F
+type = "REL32"
+symbol = "_malloc"
+target_base = 0x004A4269
+[[units.relocations]]
+offset = 0x87
+type = "DIR32"
+symbol = "__environ"
+target_base = 0x018D8020
+[[units.relocations]]
+offset = 0x91
+type = "DIR32"
+symbol = "__wenviron"
+target_base = 0x018D8028
+[[units.relocations]]
+offset = 0x9A
+type = "REL32"
+symbol = "_malloc"
+target_base = 0x004A4269
+[[units.relocations]]
+offset = 0xA2
+type = "DIR32"
+symbol = "__wenviron"
+target_base = 0x018D8028
+[[units.relocations]]
+offset = 0xAC
+type = "DIR32"
+symbol = "__environ"
+target_base = 0x018D8020
+[[units.relocations]]
+offset = 0xB9
+type = "REL32"
+symbol = "_findenv"
+target_base = 0x004B2B27
+[[units.relocations]]
+offset = 0xCF
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xF7
+type = "REL32"
+symbol = "_realloc"
+target_base = 0x004A6C54
+[[units.relocations]]
+offset = 0x11D
+type = "REL32"
+symbol = "_realloc"
+target_base = 0x004A6C54
+[[units.relocations]]
+offset = 0x135
+type = "DIR32"
+symbol = "__environ"
+target_base = 0x018D8020
+[[units.relocations]]
+offset = 0x143
+type = "REL32"
+symbol = "_strlen"
+target_base = 0x004A4CC0
+[[units.relocations]]
+offset = 0x14B
+type = "REL32"
+symbol = "_malloc"
+target_base = 0x004A4269
+[[units.relocations]]
+offset = 0x15C
+type = "REL32"
+symbol = "_strcpy"
+target_base = 0x004A5D20
+[[units.relocations]]
+offset = 0x17D
+type = "DIR32"
+symbol = "__imp__SetEnvironmentVariableA@8"
+target_base = 0x004B41B8
+[[units.relocations]]
+offset = 0x18B
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x19A
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x1A9
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+
+[[units]]
+name = "crt-wincmdln"
+target_address = 0x004AC5A0
+body_size = 0x69
+compare_size = 0x69
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/wincmdln.obj"
+symbol = "__wincmdln"
+[[units.relocations]]
+offset = 0x2
+type = "DIR32"
+symbol = "___mbctype_initialized"
+target_base = 0x018D9838
+[[units.relocations]]
+offset = 0xA
+type = "REL32"
+symbol = "___initmbctable"
+target_base = 0x004B054F
+[[units.relocations]]
+offset = 0x11
+type = "DIR32"
+symbol = "__acmdln"
+target_base = 0x018D983C
+[[units.relocations]]
+offset = 0x1A
+type = "DIR32"
+symbol = "??_C@_00CNPNBAHC@?$AA@"
+target_base = 0x004B6CFF
+[[units.relocations]]
+offset = 0x36
+type = "REL32"
+symbol = "__ismbblead"
+target_base = 0x004B0F14
+
+[[units]]
+name = "crt-setenvp"
+target_address = 0x004AC609
+body_size = 0xC7
+compare_size = 0xC7
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/stdenvp.obj"
+symbol = "__setenvp"
+[[units.relocations]]
+offset = 0x5
+type = "DIR32"
+symbol = "___mbctype_initialized"
+target_base = 0x018D9838
+[[units.relocations]]
+offset = 0xE
+type = "REL32"
+symbol = "___initmbctable"
+target_base = 0x004B054F
+[[units.relocations]]
+offset = 0x14
+type = "DIR32"
+symbol = "__aenvptr"
+target_base = 0x018D7FF0
+[[units.relocations]]
+offset = 0x27
+type = "REL32"
+symbol = "_strlen"
+target_base = 0x004A4CC0
+[[units.relocations]]
+offset = 0x3F
+type = "REL32"
+symbol = "_malloc"
+target_base = 0x004A4269
+[[units.relocations]]
+offset = 0x4A
+type = "DIR32"
+symbol = "__environ"
+target_base = 0x018D8020
+[[units.relocations]]
+offset = 0x57
+type = "DIR32"
+symbol = "__aenvptr"
+target_base = 0x018D7FF0
+[[units.relocations]]
+offset = 0x60
+type = "REL32"
+symbol = "_strlen"
+target_base = 0x004A4CC0
+[[units.relocations]]
+offset = 0x6F
+type = "REL32"
+symbol = "_malloc"
+target_base = 0x004A4269
+[[units.relocations]]
+offset = 0x7D
+type = "REL32"
+symbol = "_strcpy"
+target_base = 0x004A5D20
+[[units.relocations]]
+offset = 0x8E
+type = "DIR32"
+symbol = "__aenvptr"
+target_base = 0x018D7FF0
+[[units.relocations]]
+offset = 0x93
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x99
+type = "DIR32"
+symbol = "__aenvptr"
+target_base = 0x018D7FF0
+[[units.relocations]]
+offset = 0xA1
+type = "DIR32"
+symbol = "___env_initialized"
+target_base = 0x018D982C
+[[units.relocations]]
+offset = 0xB3
+type = "DIR32"
+symbol = "__environ"
+target_base = 0x018D8020
+[[units.relocations]]
+offset = 0xB8
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xBE
+type = "DIR32"
+symbol = "__environ"
+target_base = 0x018D8020
+
+[[units]]
+name = "crt-setargv"
+target_address = 0x004AC83C
+body_size = 0xA2
+compare_size = 0xA2
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/stdargv.obj"
+symbol = "__setargv"
+[[units.relocations]]
+offset = 0xC
+type = "DIR32"
+symbol = "___mbctype_initialized"
+target_base = 0x018D9838
+[[units.relocations]]
+offset = 0x13
+type = "REL32"
+symbol = "___initmbctable"
+target_base = 0x004B054F
+[[units.relocations]]
+offset = 0x19
+type = "DIR32"
+symbol = "?_pgmname@?1??_setargv@@9@9"
+target_base = 0x018D8290
+[[units.relocations]]
+offset = 0x24
+type = "DIR32"
+symbol = "?_pgmname@?1??_setargv@@9@9"
+target_base = 0x018D8290
+[[units.relocations]]
+offset = 0x2C
+type = "DIR32"
+symbol = "__imp__GetModuleFileNameA@12"
+target_base = 0x004B4094
+[[units.relocations]]
+offset = 0x31
+type = "DIR32"
+symbol = "__acmdln"
+target_base = 0x018D983C
+[[units.relocations]]
+offset = 0x39
+type = "DIR32"
+symbol = "__pgmptr"
+target_base = 0x018D8030
+[[units.relocations]]
+offset = 0x55
+type = "REL32"
+symbol = "_parse_cmdline"
+target_base = 0x004AC6D0
+[[units.relocations]]
+offset = 0x66
+type = "REL32"
+symbol = "_malloc"
+target_base = 0x004A4269
+[[units.relocations]]
+offset = 0x86
+type = "REL32"
+symbol = "_parse_cmdline"
+target_base = 0x004AC6D0
+[[units.relocations]]
+offset = 0x90
+type = "DIR32"
+symbol = "___argc"
+target_base = 0x018D8014
+[[units.relocations]]
+offset = 0x97
+type = "DIR32"
+symbol = "___argv"
+target_base = 0x018D8018
+
+[[units]]
+name = "crt-crt-get-env-strings-a"
+target_address = 0x004AC8DE
+body_size = 0x122
+compare_size = 0x122
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/a_env.obj"
+symbol = "___crtGetEnvironmentStringsA"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "?f_use@?1??__crtGetEnvironmentStringsA@@9@9"
+target_base = 0x018D8398
+[[units.relocations]]
+offset = 0xD
+type = "DIR32"
+symbol = "__imp__GetEnvironmentStringsW@0"
+target_base = 0x004B40F8
+[[units.relocations]]
+offset = 0x26
+type = "DIR32"
+symbol = "?f_use@?1??__crtGetEnvironmentStringsA@@9@9"
+target_base = 0x018D8398
+[[units.relocations]]
+offset = 0x32
+type = "DIR32"
+symbol = "__imp__GetLastError@0"
+target_base = 0x004B4074
+[[units.relocations]]
+offset = 0x3E
+type = "DIR32"
+symbol = "?f_use@?1??__crtGetEnvironmentStringsA@@9@9"
+target_base = 0x018D8398
+[[units.relocations]]
+offset = 0x45
+type = "DIR32"
+symbol = "?f_use@?1??__crtGetEnvironmentStringsA@@9@9"
+target_base = 0x018D8398
+[[units.relocations]]
+offset = 0x71
+type = "DIR32"
+symbol = "__imp__WideCharToMultiByte@32"
+target_base = 0x004B40E4
+[[units.relocations]]
+offset = 0x90
+type = "REL32"
+symbol = "_malloc"
+target_base = 0x004A4269
+[[units.relocations]]
+offset = 0xB3
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xC3
+type = "DIR32"
+symbol = "__imp__FreeEnvironmentStringsW@4"
+target_base = 0x004B40FC
+[[units.relocations]]
+offset = 0xD9
+type = "DIR32"
+symbol = "__imp__GetEnvironmentStrings@0"
+target_base = 0x004B4100
+[[units.relocations]]
+offset = 0xF8
+type = "REL32"
+symbol = "_malloc"
+target_base = 0x004A4269
+[[units.relocations]]
+offset = 0x10B
+type = "REL32"
+symbol = "_memcpy"
+target_base = 0x004A4980
+[[units.relocations]]
+offset = 0x115
+type = "DIR32"
+symbol = "__imp__FreeEnvironmentStringsA@4"
+target_base = 0x004B4104

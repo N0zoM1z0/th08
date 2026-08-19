@@ -1921,10 +1921,10 @@ FUN_004abfbe,0x4abfbe,library
 _NMSG_WRITE,0x4ac28c,library
 _FF_MSGBANNER,0x4ac403,library
 _XcptFilter,0x4ac43c,library
-FUN_004ac5a0,0x4ac5a0,library
+_wincmdln,0x4ac5a0,library
 _setenvp,0x4ac609,library
 FUN_004ac6d0,0x4ac6d0,library
-FUN_004ac83c,0x4ac83c,library
+_setargv,0x4ac83c,library
 __crtGetEnvironmentStringsA,0x4ac8de,library
 _ioinit,0x4aca00,library
 _RTC_Initialize,0x4acbfe,library
@@ -2056,7 +2056,7 @@ strncnt,0x4b2781,library
 __crtCompareStringA,0x4b279d,library
 findenv,0x4b2b27,library
 copy_environ,0x4b2b74,library
-FUN_004b2bd5,0x4b2bd5,library
+__crtsetenv,0x4b2bd5,library
 _close_lk,0x4b2d8a,library
 _close,0x4b2e0d,library
 FUN_004b2e84,0x4b2e84,library

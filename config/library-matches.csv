@@ -239,3 +239,8 @@ address,name,size,status,unit,evidence
 0x004A9886,_fprem_common,518,matching,crt-fprem-common,python3 scripts/compare-library.py crt-fprem-common --json
 0x004A9A8C,_adj_fprem,178,matching,crt-adj-fprem,python3 scripts/compare-library.py crt-adj-fprem --json
 0x004ACA00,_ioinit,510,matching,crt-ioinit,python3 scripts/compare-library.py crt-ioinit --json
+0x004AC5A0,_wincmdln,105,matching,crt-wincmdln,python3 scripts/compare-library.py crt-wincmdln --json
+0x004AC609,_setenvp,199,matching,crt-setenvp,python3 scripts/compare-library.py crt-setenvp --json
+0x004AC83C,_setargv,162,matching,crt-setargv,python3 scripts/compare-library.py crt-setargv --json
+0x004AC8DE,__crtGetEnvironmentStringsA,290,matching,crt-crt-get-env-strings-a,python3 scripts/compare-library.py crt-crt-get-env-strings-a --json
+0x004B2BD5,__crtsetenv,437,matching,crt-crtsetenv,python3 scripts/compare-library.py crt-crtsetenv --json
