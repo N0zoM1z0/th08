@@ -2021,7 +2021,7 @@ __addl,0x4b0f38,library
 __add_12,0x4b0f59,library
 __shl_12,0x4b0fb7,library
 __shr_12,0x4b0fe5,library
-FUN_004b1012,0x4b1012,library
+__mtold12,0x4b1012,library
 FUN_004b10f6,0x4b10f6,library
 FUN_004b1530,0x4b1530,library
 siglookup,0x4b17c4,library
@@ -2042,8 +2042,8 @@ __wtomb_environ,0x4b2016,library
 _read_lk,0x4b2081,library
 _read,0x4b224e,library
 FUN_004b22d5,0x4b22d5,library
-FUN_004b22f9,0x4b22f9,library
-FUN_004b2531,0x4b2531,library
+__ld12mul,0x4b22f9,library
+__multtenpow12,0x4b2531,library
 _fclose_lk,0x4b25bd,library
 fclose,0x4b2609,library
 _commit,0x4b265a,library

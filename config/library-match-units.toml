@@ -8004,3 +8004,176 @@ offset = 0x112
 type = "REL32"
 symbol = "__ShrMan"
 target_base = 0x004AEAE7
+
+[[units]]
+name = "crt-addl"
+target_address = 0x004B0F38
+body_size = 0x21
+compare_size = 0x21
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/mantold.obj"
+symbol = "___addl"
+
+[[units]]
+name = "crt-add12"
+target_address = 0x004B0F59
+body_size = 0x5E
+compare_size = 0x5E
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/mantold.obj"
+symbol = "___add_12"
+[[units.relocations]]
+offset = 0x10
+type = "REL32"
+symbol = "___addl"
+target_base = 0x004B0F38
+[[units.relocations]]
+offset = 0x24
+type = "REL32"
+symbol = "___addl"
+target_base = 0x004B0F38
+[[units.relocations]]
+offset = 0x3C
+type = "REL32"
+symbol = "___addl"
+target_base = 0x004B0F38
+[[units.relocations]]
+offset = 0x54
+type = "REL32"
+symbol = "___addl"
+target_base = 0x004B0F38
+
+[[units]]
+name = "crt-shl12"
+target_address = 0x004B0FB7
+body_size = 0x2E
+compare_size = 0x2E
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/mantold.obj"
+symbol = "___shl_12"
+
+[[units]]
+name = "crt-shr12"
+target_address = 0x004B0FE5
+body_size = 0x2D
+compare_size = 0x2D
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/mantold.obj"
+symbol = "___shr_12"
+
+[[units]]
+name = "crt-mtold12"
+target_address = 0x004B1012
+body_size = 0xE4
+compare_size = 0xE4
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/mantold.obj"
+symbol = "___mtold12"
+[[units.relocations]]
+offset = 0x7
+type = "DIR32"
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
+[[units.relocations]]
+offset = 0x3C
+type = "REL32"
+symbol = "___shl_12"
+target_base = 0x004B0FB7
+[[units.relocations]]
+offset = 0x42
+type = "REL32"
+symbol = "___shl_12"
+target_base = 0x004B0FB7
+[[units.relocations]]
+offset = 0x4C
+type = "REL32"
+symbol = "___add_12"
+target_base = 0x004B0F59
+[[units.relocations]]
+offset = 0x52
+type = "REL32"
+symbol = "___shl_12"
+target_base = 0x004B0FB7
+[[units.relocations]]
+offset = 0x6D
+type = "REL32"
+symbol = "___add_12"
+target_base = 0x004B0F59
+[[units.relocations]]
+offset = 0xBB
+type = "REL32"
+symbol = "___shl_12"
+target_base = 0x004B0FB7
+[[units.relocations]]
+offset = 0xDE
+type = "REL32"
+symbol = "@__security_check_cookie@4"
+target_base = 0x004AB43C
+
+[[units]]
+name = "crt-ld12mul"
+target_address = 0x004B22F9
+body_size = 0x238
+compare_size = 0x238
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/tenpow.obj"
+symbol = "___ld12mul"
+[[units.relocations]]
+offset = 0x7
+type = "DIR32"
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
+[[units.relocations]]
+offset = 0x103
+type = "REL32"
+symbol = "___addl"
+target_base = 0x004B0F38
+[[units.relocations]]
+offset = 0x14A
+type = "REL32"
+symbol = "___shl_12"
+target_base = 0x004B0FB7
+[[units.relocations]]
+offset = 0x18B
+type = "REL32"
+symbol = "___shr_12"
+target_base = 0x004B0FE5
+[[units.relocations]]
+offset = 0x232
+type = "REL32"
+symbol = "@__security_check_cookie@4"
+target_base = 0x004AB43C
+
+[[units]]
+name = "crt-multtenpow12"
+target_address = 0x004B2531
+body_size = 0x8C
+compare_size = 0x8C
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/tenpow.obj"
+symbol = "___multtenpow12"
+[[units.relocations]]
+offset = 0x7
+type = "DIR32"
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
+[[units.relocations]]
+offset = 0x10
+type = "DIR32"
+symbol = "__pow10pos"
+target_base = 0x004CCB40
+[[units.relocations]]
+offset = 0x27
+type = "DIR32"
+symbol = "__pow10neg"
+target_base = 0x004CCCA0
+[[units.relocations]]
+offset = 0x6F
+type = "REL32"
+symbol = "___ld12mul"
+target_base = 0x004B22F9
+[[units.relocations]]
+offset = 0x86
+type = "REL32"
+symbol = "@__security_check_cookie@4"
+target_base = 0x004AB43C

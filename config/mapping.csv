@@ -2020,7 +2020,7 @@ ___addl,0x4b0f38,0x21,unknown,,u8,u8,u8,u8
 ___add_12,0x4b0f59,0x5e,unknown,,u8,u8,u8
 ___shl_12,0x4b0fb7,0x2e,unknown,,u8,u8
 ___shr_12,0x4b0fe5,0x2d,unknown,,u8,u8
-FUN_004b1012,0x4b1012,0xe4,unknown,,u8,u8,u8,u8
+___mtold12,0x4b1012,0xe4,unknown,,u8,u8,u8,u8
 FUN_004b10f6,0x4b10f6,0x40a,unknown,,u8,u8,u8,u8,u8,u8,u8,u8
 FUN_004b1530,0x4b1530,0x294,unknown,,u8,u8,u8,u8,u8,u8,u8
 _siglookup,0x4b17c4,0x2e,unknown,,u8
@@ -2041,8 +2041,8 @@ __wtomb_environ,0x4b2016,0x6b,__cdecl,,u8
 __read_lk,0x4b2081,0x1cd,__cdecl,,u8,u8,u8,u8
 __read,0x4b224e,0xab,__cdecl,,u8,u8,u8,u8
 FUN_004b22d5,0x4b22d5,0x8,unknown,,u8
-FUN_004b22f9,0x4b22f9,0x238,unknown,,u8,u8,u8
-FUN_004b2531,0x4b2531,0x8c,unknown,,u8,u8,u8,u8
+___ld12mul,0x4b22f9,0x238,unknown,,u8,u8,u8
+___multtenpow12,0x4b2531,0x8c,unknown,,u8,u8,u8,u8
 __fclose_lk,0x4b25bd,0x4c,__cdecl,,u8,u8
 _fclose,0x4b2609,0x51,__cdecl,,u8,u8
 __commit,0x4b265a,0xbc,__cdecl,,u8,u8

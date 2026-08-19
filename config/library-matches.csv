@@ -195,3 +195,10 @@ address,name,size,status,unit,evidence
 0x004AEACE,_IsZeroMan,25,matching,crt-is-zero-man,python3 scripts/compare-library.py crt-is-zero-man --json
 0x004AEAE7,_ShrMan,123,matching,crt-shr-man,python3 scripts/compare-library.py crt-shr-man --json
 0x004AEB62,_ld12cvt,344,matching,crt-ld12cvt,python3 scripts/compare-library.py crt-ld12cvt --json
+0x004B0F38,__addl,33,matching,crt-addl,python3 scripts/compare-library.py crt-addl --json
+0x004B0F59,__add_12,94,matching,crt-add12,python3 scripts/compare-library.py crt-add12 --json
+0x004B0FB7,__shl_12,46,matching,crt-shl12,python3 scripts/compare-library.py crt-shl12 --json
+0x004B0FE5,__shr_12,45,matching,crt-shr12,python3 scripts/compare-library.py crt-shr12 --json
+0x004B1012,__mtold12,228,matching,crt-mtold12,python3 scripts/compare-library.py crt-mtold12 --json
+0x004B22F9,__ld12mul,568,matching,crt-ld12mul,python3 scripts/compare-library.py crt-ld12mul --json
+0x004B2531,__multtenpow12,140,matching,crt-multtenpow12,python3 scripts/compare-library.py crt-multtenpow12 --json
