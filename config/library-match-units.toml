@@ -3890,3 +3890,60 @@ offset = 0x2B
 type = "REL32"
 symbol = "__input"
 target_base = 0x004AB460
+
+[[units]]
+name = "crt-atol"
+target_address = 0x004A4342
+body_size = 0x88
+compare_size = 0x88
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/atox.obj"
+symbol = "_atol"
+[[units.relocations]]
+offset = 0x3
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0xC
+type = "DIR32"
+symbol = "___ptlocinfo"
+target_base = 0x004CC07C
+[[units.relocations]]
+offset = 0x13
+type = "REL32"
+symbol = "___updatetlocinfo"
+target_base = 0x004AA00E
+[[units.relocations]]
+offset = 0x2B
+type = "REL32"
+symbol = "___isctype_mt"
+target_base = 0x004A9E0B
+
+[[units]]
+name = "crt-rand"
+target_address = 0x004A600A
+body_size = 0x22
+compare_size = 0x22
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/rand.obj"
+symbol = "_rand"
+[[units.relocations]]
+offset = 0x1
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+
+[[units]]
+name = "crt-purecall"
+target_address = 0x004A602C
+body_size = 0x9
+compare_size = 0x9
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/purevirt.obj"
+symbol = "__purecall"
+[[units.relocations]]
+offset = 0x3
+type = "REL32"
+symbol = "__amsg_exit"
+target_base = 0x004A6155
