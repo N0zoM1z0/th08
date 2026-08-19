@@ -1109,3 +1109,12 @@ without those explicit fields retain the stricter whole-section ownership rule.
   bytes are independently accepted as the pinned tail-local `FUN_004AA040`
   cleanup range. Do not inflate function progress with trap/padding or a
   separately tracked cleanup tail just because the archive section owns it.
+
+### Signal/runtime parents can retain nested cleanup overlaps at full extent
+
+- `_raise @ 0x004B17F2` was imported as `0x164` bytes, ending before its main
+  post-handler restoration and final `__SEH_epilog`. `winsig.obj` carries a
+  `0x179` function-definition extent with 19 relocations and replays exactly to
+  the next mapped function. The existing `0x004B192D` cleanup helper remains a
+  valid nested funclet overlap. Repair the parent to `0x179`; do not shrink it
+  around the child or treat the child start as the parent end.

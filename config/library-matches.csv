@@ -89,3 +89,6 @@ address,name,size,status,unit,evidence
 0x004AA00E,__updatetlocinfo,50,matching,crt-updatetlocinfo,python3 scripts/compare-library.py crt-updatetlocinfo --json
 0x004AA040,FUN_004aa040,9,matching,crt-updatetlocinfo-tail-funclet,python3 scripts/compare-library.py crt-updatetlocinfo-tail-funclet --json
 0x004B05BD,abort,23,matching,crt-abort,python3 scripts/compare-library.py crt-abort --json
+0x004B17F2,raise,377,matching,crt-raise,python3 scripts/compare-library.py crt-raise --json
+0x004A6B6A,_exit,17,matching,crt-exit,python3 scripts/compare-library.py crt-exit --json
+0x004A9E82,__freetlocinfo,202,matching,crt-freetlocinfo,python3 scripts/compare-library.py crt-freetlocinfo --json

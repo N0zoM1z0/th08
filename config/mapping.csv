@@ -1872,7 +1872,7 @@ __fload,0x4a9044,0x3c,unknown,,u8,u8
 FUN_004a9886,0x4a9886,0x206,unknown,,u8,u8,u8,u8,u8,u8,u8
 FUN_004a9a8c,0x4a9a8c,0xb2,unknown,,u8
 FUN_004a9e0b,0x4a9e0b,0x77,unknown,,u8,u8,u8,u8
-FUN_004a9e82,0x4a9e82,0xca,unknown,,u8,u8
+___freetlocinfo,0x4a9e82,0xca,unknown,,u8,u8
 ___updatetlocinfo_lk,0x4a9f4c,0xc2,unknown,,u8
 ___updatetlocinfo,0x4aa00e,0x32,__cdecl,,u8
 FUN_004aa040,0x4aa040,0x9,unknown,,u8
@@ -2022,7 +2022,7 @@ FUN_004b1012,0x4b1012,0xe4,unknown,,u8,u8,u8,u8
 FUN_004b10f6,0x4b10f6,0x40a,unknown,,u8,u8,u8,u8,u8,u8,u8,u8
 FUN_004b1530,0x4b1530,0x294,unknown,,u8,u8,u8,u8,u8,u8,u8
 _siglookup,0x4b17c4,0x2e,unknown,,u8
-_raise,0x4b17f2,0x164,__cdecl,,u8,u8
+_raise,0x4b17f2,0x179,__cdecl,,u8,u8
 FUN_004b192d,0x4b192d,0xd,unknown,,u8
 FUN_004b196b,0x4b196b,0x7f,unknown,,u8,u8
 __get_osfhandle,0x4b19ea,0x41,__cdecl,,u8,u8
