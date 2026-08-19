@@ -1146,3 +1146,11 @@ without those explicit fields retain the stricter whole-section ownership rule.
   archive membership, or a plausible signal-family neighborhood.  By contrast,
   the same member's static `_siglookup` section at `0x004B17C4` replays exactly.
   Keep the mismatch as a provenance/boundary blocker and move on.
+### Variadic CRT formatting wrappers can be accepted as small isolated archive functions
+
+- VC7 `LIBCMT` `vsprintf.obj::_vsprintf`, `sprintf.obj::_sprintf`, and
+  `sscanf.obj::_sscanf` are each isolated whole-section function definitions in
+  this target.  Exactness still comes from relocation replay: the first two
+  resolve to `__output` and `__flsbuf`, while `sscanf` resolves to `_strlen` and
+  `__input`.  Treat their small size as a convenience, not a reason to skip
+  archive identity or relocation checks.

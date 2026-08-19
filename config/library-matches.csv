@@ -104,3 +104,6 @@ address,name,size,status,unit,evidence
 0x004A5925,strftime,27,matching,crt-strftime,python3 scripts/compare-library.py crt-strftime --json
 0x004A5940,localtime,384,matching,crt-localtime,python3 scripts/compare-library.py crt-localtime --json
 0x004A5AC0,time,57,matching,crt-time,python3 scripts/compare-library.py crt-time --json
+0x004A3E17,vsprintf,87,matching,crt-vsprintf,python3 scripts/compare-library.py crt-vsprintf --json
+0x004A4857,sprintf,88,matching,crt-sprintf,python3 scripts/compare-library.py crt-sprintf --json
+0x004A5C9E,sscanf,52,matching,crt-sscanf,python3 scripts/compare-library.py crt-sscanf --json
