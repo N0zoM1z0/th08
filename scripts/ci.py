@@ -10,6 +10,7 @@ claims.
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -30,7 +31,9 @@ def tracked(pattern: str) -> list[str]:
 
 def run(label: str, command: list[str]) -> None:
     print(f"\n==> {label}", flush=True)
-    subprocess.run(command, cwd=ROOT, check=True)
+    environment = os.environ.copy()
+    environment["PYTHONPYCACHEPREFIX"] = str(ROOT / "build" / "pycache")
+    subprocess.run(command, cwd=ROOT, check=True, env=environment)
 
 
 def main() -> int:
