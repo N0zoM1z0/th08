@@ -1087,3 +1087,62 @@ offset = 0x41
 type = "REL32"
 symbol = "__NLG_Notify1"
 target_base = 0x004A4815
+
+[[units]]
+name = "crt-frame-unwind-to-state"
+target_address = 0x004AA1B4
+body_size = 0xAD
+compare_size = 0xCE
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/frame.obj"
+symbol = "___FrameUnwindToState"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T19575"
+target_base = 0x004BDC30
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0x16
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0x38
+type = "REL32"
+symbol = "?_inconsistency@@YAXXZ"
+target_base = 0x004AA9E7
+[[units.relocations]]
+offset = 0x69
+type = "REL32"
+symbol = "__CallSettingFrame@12"
+target_base = 0x004AAA20
+[[units.relocations]]
+offset = 0x77
+type = "REL32"
+symbol = "?FrameUnwindFilter@@YAHPAU_EXCEPTION_POINTERS@@@Z"
+target_base = 0x004AA196
+[[units.relocations]]
+offset = 0xA0
+type = "REL32"
+symbol = "?_inconsistency@@YAXXZ"
+target_base = 0x004AA9E7
+[[units.relocations]]
+offset = 0xA8
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3
+[[units.relocations]]
+offset = 0xB4
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0xC2
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067

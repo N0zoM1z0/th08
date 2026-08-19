@@ -975,3 +975,16 @@ without those explicit fields retain the stricter whole-section ownership rule.
   through `0x004AAA13`. Replaying all four relocations over the full 45-byte
   range produced zero differences. Repair the mapping from `0x26` to `0x2D`
   rather than weakening the proposer or truncating the archive function.
+
+### Library body extent and COFF comparison extent may differ for EH funclets
+
+- VC7 may place a normal function, an alternate cleanup-entry prelude, and a
+  local EH funclet in one COFF function-definition section.  Do not choose
+  between truncating the archive section and double-counting the funclet.
+  `__FrameUnwindToState @ 0x004AA1B4` has a target main-body return at
+  `0x004AA260`, so its mapping/body extent is `0xAD`; the same `frame.obj`
+  function-definition section is `0xCE` bytes and includes the cleanup bytes
+  beginning at offset `0xAD` plus the separately mapped funclet at
+  `0x004AA267`.  Use `body_size = 0xAD` and `compare_size = 0xCE`, replay all
+  ten relocations across the complete COFF section, and count only the main
+  body in library progress.

@@ -1879,7 +1879,7 @@ FUN_004aa049,0x4aa049,0x1e,unknown,,u8
 __getptd,0x4aa067,0x71,__cdecl,,u8
 FUN_004aa0d8,0x4aa0d8,0x6f,unknown,,u8
 TypeMatch,0x4aa147,0x4f,__cdecl,,i32,_s_HandlerType*,_s_CatchableType*,_s_ThrowInfo*
-___FrameUnwindToState,0x4aa1b4,0x94,unknown,,u8,u8,u8,u8,u8
+___FrameUnwindToState,0x4aa1b4,0xad,unknown,,u8,u8,u8,u8,u8
 FUN_004aa267,0x4aa267,0x1b,unknown,,u8
 ___DestructExceptionObject,0x4aa282,0x34,unknown,,u8,u8
 FUN_004aa2c7,0x4aa2c7,0x1d,unknown,,u8
