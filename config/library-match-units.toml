@@ -7699,3 +7699,308 @@ offset = 0xB6
 type = "REL32"
 symbol = "@__security_check_cookie@4"
 target_base = 0x004AB43C
+
+[[units]]
+name = "crt-fclose"
+target_address = 0x004B2609
+body_size = 0x51
+compare_size = 0x51
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/fclose.obj"
+symbol = "_fclose"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T20241"
+target_base = 0x004C3C40
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0x21
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3
+[[units.relocations]]
+offset = 0x28
+type = "REL32"
+symbol = "__lock_file"
+target_base = 0x004AF51A
+[[units.relocations]]
+offset = 0x33
+type = "REL32"
+symbol = "__fclose_lk"
+target_base = 0x004B25BD
+[[units.relocations]]
+offset = 0x4B
+type = "REL32"
+symbol = "__unlock_file"
+target_base = 0x004AF56C
+
+[[units]]
+name = "crt-commit"
+target_address = 0x004B265A
+body_size = 0xBC
+compare_size = 0xBC
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/commit.obj"
+symbol = "__commit"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T19872"
+target_base = 0x004C3C50
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0x11
+type = "DIR32"
+symbol = "__nhandle"
+target_base = 0x018D96E4
+[[units.relocations]]
+offset = 0x23
+type = "DIR32"
+symbol = "___pioinfo"
+target_base = 0x018D9700
+[[units.relocations]]
+offset = 0x3D
+type = "REL32"
+symbol = "__lock_fhandle"
+target_base = 0x004B1A2B
+[[units.relocations]]
+offset = 0x51
+type = "REL32"
+symbol = "__get_osfhandle"
+target_base = 0x004B19EA
+[[units.relocations]]
+offset = 0x59
+type = "DIR32"
+symbol = "__imp__FlushFileBuffers@4"
+target_base = 0x004B4180
+[[units.relocations]]
+offset = 0x63
+type = "DIR32"
+symbol = "__imp__GetLastError@0"
+target_base = 0x004B4074
+[[units.relocations]]
+offset = 0x77
+type = "REL32"
+symbol = "___doserrno"
+target_base = 0x004AAADB
+[[units.relocations]]
+offset = 0x81
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0xA2
+type = "REL32"
+symbol = "__unlock_fhandle"
+target_base = 0x004B1A9E
+[[units.relocations]]
+offset = 0xA9
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0xB7
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3
+
+[[units]]
+name = "crt-close"
+target_address = 0x004B2E0D
+body_size = 0x9B
+compare_size = 0x9B
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/close.obj"
+symbol = "__close"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T19899"
+target_base = 0x004C3C78
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0x11
+type = "DIR32"
+symbol = "__nhandle"
+target_base = 0x018D96E4
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "___pioinfo"
+target_base = 0x018D9700
+[[units.relocations]]
+offset = 0x39
+type = "REL32"
+symbol = "__lock_fhandle"
+target_base = 0x004B1A2B
+[[units.relocations]]
+offset = 0x4D
+type = "REL32"
+symbol = "__close_lk"
+target_base = 0x004B2D8A
+[[units.relocations]]
+offset = 0x58
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0x79
+type = "REL32"
+symbol = "__unlock_fhandle"
+target_base = 0x004B1A9E
+[[units.relocations]]
+offset = 0x80
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0x8B
+type = "REL32"
+symbol = "___doserrno"
+target_base = 0x004AAADB
+[[units.relocations]]
+offset = 0x96
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3
+
+[[units]]
+name = "crt-zero-tail"
+target_address = 0x004AE9C2
+body_size = 0x32
+compare_size = 0x32
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/intrncvt.obj"
+symbol = "__ZeroTail"
+
+[[units]]
+name = "crt-inc-man"
+target_address = 0x004AE9F4
+body_size = 0x4D
+compare_size = 0x4D
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/intrncvt.obj"
+symbol = "__IncMan"
+[[units.relocations]]
+offset = 0x24
+type = "REL32"
+symbol = "___addl"
+target_base = 0x004B0F38
+[[units.relocations]]
+offset = 0x3B
+type = "REL32"
+symbol = "___addl"
+target_base = 0x004B0F38
+
+[[units]]
+name = "crt-round-man"
+target_address = 0x004AEA41
+body_size = 0x72
+compare_size = 0x72
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/intrncvt.obj"
+symbol = "__RoundMan"
+[[units.relocations]]
+offset = 0x34
+type = "REL32"
+symbol = "__ZeroTail"
+target_base = 0x004AE9C2
+[[units.relocations]]
+offset = 0x43
+type = "REL32"
+symbol = "__IncMan"
+target_base = 0x004AE9F4
+
+[[units]]
+name = "crt-copy-man"
+target_address = 0x004AEAB3
+body_size = 0x1B
+compare_size = 0x1B
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/intrncvt.obj"
+symbol = "__CopyMan"
+
+[[units]]
+name = "crt-is-zero-man"
+target_address = 0x004AEACE
+body_size = 0x19
+compare_size = 0x19
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/intrncvt.obj"
+symbol = "__IsZeroMan"
+
+[[units]]
+name = "crt-shr-man"
+target_address = 0x004AEAE7
+body_size = 0x7B
+compare_size = 0x7B
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/intrncvt.obj"
+symbol = "__ShrMan"
+
+[[units]]
+name = "crt-ld12cvt"
+target_address = 0x004AEB62
+body_size = 0x158
+compare_size = 0x158
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/intrncvt.obj"
+symbol = "__ld12cvt"
+[[units.relocations]]
+offset = 0x4E
+type = "REL32"
+symbol = "__IsZeroMan"
+target_base = 0x004AEACE
+[[units.relocations]]
+offset = 0x6E
+type = "REL32"
+symbol = "__CopyMan"
+target_base = 0x004AEAB3
+[[units.relocations]]
+offset = 0x7A
+type = "REL32"
+symbol = "__RoundMan"
+target_base = 0x004AEA41
+[[units.relocations]]
+offset = 0xAD
+type = "REL32"
+symbol = "__CopyMan"
+target_base = 0x004AEAB3
+[[units.relocations]]
+offset = 0xB7
+type = "REL32"
+symbol = "__ShrMan"
+target_base = 0x004AEAE7
+[[units.relocations]]
+offset = 0xC3
+type = "REL32"
+symbol = "__RoundMan"
+target_base = 0x004AEA41
+[[units.relocations]]
+offset = 0xD1
+type = "REL32"
+symbol = "__ShrMan"
+target_base = 0x004AEAE7
+[[units.relocations]]
+offset = 0xF4
+type = "REL32"
+symbol = "__ShrMan"
+target_base = 0x004AEAE7
+[[units.relocations]]
+offset = 0x112
+type = "REL32"
+symbol = "__ShrMan"
+target_base = 0x004AEAE7

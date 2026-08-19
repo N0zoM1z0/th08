@@ -1267,3 +1267,8 @@ without those explicit fields retain the stricter whole-section ownership rule.
   both relocations and every non-relocation byte replay exactly.  Prefer the
   original archive identity once exact evidence resolves the imported conflict
   label, just as with `_getenv_lk`.
+
+### Public close/commit wrapper inventory repair
+
+- `fclose.obj::_fclose` uniquely matches `0x004B2609..0x004B2659` (0x51 bytes), a gap omitted from the imported inventory between exact `_fclose_lk` and the next wrapper.  Add a real `fclose` library row rather than attributing those bytes to padding or a neighbor.
+- `commit.obj::__commit @ 0x004B265A` and `close.obj::__close @ 0x004B2E0D` replay their full 0xBC / 0x9B function-definition extents.  The imported 0xB1 / 0x90 mappings stopped inside the parent error/SEH path because each contains a nested unlock cleanup funclet.  Preserve the child overlap rows and repair the parent extents through their final `__SEH_epilog`/`ret`.

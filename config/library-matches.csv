@@ -185,3 +185,13 @@ address,name,size,status,unit,evidence
 0x004AD2E1,_umatherr,158,matching,crt-umatherr,python3 scripts/compare-library.py crt-umatherr --json
 0x004AD37F,_handle_qnan1,83,matching,crt-handle-qnan1,python3 scripts/compare-library.py crt-handle-qnan1 --json
 0x004AD3D2,_except1,190,matching,crt-except1,python3 scripts/compare-library.py crt-except1 --json
+0x004B2609,fclose,81,matching,crt-fclose,python3 scripts/compare-library.py crt-fclose --json
+0x004B265A,_commit,188,matching,crt-commit,python3 scripts/compare-library.py crt-commit --json
+0x004B2E0D,_close,155,matching,crt-close,python3 scripts/compare-library.py crt-close --json
+0x004AE9C2,_ZeroTail,50,matching,crt-zero-tail,python3 scripts/compare-library.py crt-zero-tail --json
+0x004AE9F4,_IncMan,77,matching,crt-inc-man,python3 scripts/compare-library.py crt-inc-man --json
+0x004AEA41,_RoundMan,114,matching,crt-round-man,python3 scripts/compare-library.py crt-round-man --json
+0x004AEAB3,_CopyMan,27,matching,crt-copy-man,python3 scripts/compare-library.py crt-copy-man --json
+0x004AEACE,_IsZeroMan,25,matching,crt-is-zero-man,python3 scripts/compare-library.py crt-is-zero-man --json
+0x004AEAE7,_ShrMan,123,matching,crt-shr-man,python3 scripts/compare-library.py crt-shr-man --json
+0x004AEB62,_ld12cvt,344,matching,crt-ld12cvt,python3 scripts/compare-library.py crt-ld12cvt --json

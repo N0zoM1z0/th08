@@ -2044,7 +2044,8 @@ FUN_004b22d5,0x4b22d5,0x8,unknown,,u8
 FUN_004b22f9,0x4b22f9,0x238,unknown,,u8,u8,u8
 FUN_004b2531,0x4b2531,0x8c,unknown,,u8,u8,u8,u8
 __fclose_lk,0x4b25bd,0x4c,__cdecl,,u8,u8
-FUN_004b265a,0x4b265a,0xb1,unknown,,u8,u8
+_fclose,0x4b2609,0x51,__cdecl,,u8,u8
+__commit,0x4b265a,0xbc,__cdecl,,u8,u8
 FUN_004b26fa,0x4b26fa,0x8,unknown,,u8
 ___ascii_strnicmp,0x4b2720,0x61,__cdecl,,u8,u8,u8,u8
 _strncnt,0x4b2781,0x1c,__cdecl,,u8,u8,u8
@@ -2053,7 +2054,7 @@ _findenv,0x4b2b27,0x4d,unknown,,u8,u8
 _copy_environ,0x4b2b74,0x61,unknown,,u8
 FUN_004b2bd5,0x4b2bd5,0x1b5,unknown,,u8,u8,u8
 __close_lk,0x4b2d8a,0x83,__cdecl,,u8,u8
-FUN_004b2e0d,0x4b2e0d,0x90,unknown,,u8,u8
+__close,0x4b2e0d,0x9b,__cdecl,,u8,u8
 FUN_004b2e84,0x4b2e84,0x8,unknown,,u8
 FUN_004b2ea8,0x4b2ea8,0x2b,unknown,,u8,u8
 __strdup,0x4b2ed3,0x2b,__cdecl,,u8,u8

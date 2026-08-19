@@ -2045,7 +2045,8 @@ FUN_004b22d5,0x4b22d5,library
 FUN_004b22f9,0x4b22f9,library
 FUN_004b2531,0x4b2531,library
 _fclose_lk,0x4b25bd,library
-FUN_004b265a,0x4b265a,library
+fclose,0x4b2609,library
+_commit,0x4b265a,library
 FUN_004b26fa,0x4b26fa,library
 __ascii_strnicmp,0x4b2720,library
 strncnt,0x4b2781,library
@@ -2054,7 +2055,7 @@ findenv,0x4b2b27,library
 copy_environ,0x4b2b74,library
 FUN_004b2bd5,0x4b2bd5,library
 _close_lk,0x4b2d8a,library
-FUN_004b2e0d,0x4b2e0d,library
+_close,0x4b2e0d,library
 FUN_004b2e84,0x4b2e84,library
 FUN_004b2ea8,0x4b2ea8,library
 _strdup,0x4b2ed3,library
