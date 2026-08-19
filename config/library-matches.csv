@@ -62,3 +62,6 @@ address,name,size,status,unit,evidence
 0x004AF7E3,__crtInitCritSecNoSpinCount@8,16,matching,crt-init-critical-section-no-spin,python3 scripts/compare-library.py crt-init-critical-section-no-spin --json
 0x004AC403,_FF_MSGBANNER,57,matching,crt-ff-msgbanner,python3 scripts/compare-library.py crt-ff-msgbanner --json
 0x004AC28C,_NMSG_WRITE,375,matching,crt-nmsg-write,python3 scripts/compare-library.py crt-nmsg-write --json
+0x004AFD50,strncpy,292,matching,crt-strncpy,python3 scripts/compare-library.py crt-strncpy --json
+0x004AB43C,FUN_004ab43c,14,matching,crt-security-check-cookie,python3 scripts/compare-library.py crt-security-check-cookie --json
+0x004B0DEA,__crtMessageBoxA,249,matching,crt-message-box-a,python3 scripts/compare-library.py crt-message-box-a --json

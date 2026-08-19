@@ -1815,3 +1815,145 @@ offset = 0x16E
 type = "REL32"
 symbol = "@__security_check_cookie@4"
 target_base = 0x004AB43C
+
+[[units]]
+name = "crt-strncpy"
+target_address = 0x004AFD50
+body_size = 0x124
+compare_size = 0x124
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/strncpy.obj"
+symbol = "_strncpy"
+
+[[units]]
+name = "crt-security-check-cookie"
+target_address = 0x004AB43C
+body_size = 0xE
+compare_size = 0xE
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/seccook.obj"
+symbol = "@__security_check_cookie@4"
+[[units.relocations]]
+offset = 0x2
+type = "DIR32"
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
+[[units.relocations]]
+offset = 0xA
+type = "REL32"
+symbol = "_report_failure"
+target_base = 0x004AB40B
+
+[[units]]
+name = "crt-message-box-a"
+target_address = 0x004B0DEA
+body_size = 0xF9
+compare_size = 0xF9
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/crtmbox.obj"
+symbol = "___crtMessageBoxA"
+[[units.relocations]]
+offset = 0xB
+type = "DIR32"
+symbol = "?pfnMessageBoxA@?1??__crtMessageBoxA@@9@9"
+target_base = 0x018D8428
+[[units.relocations]]
+offset = 0x14
+type = "DIR32"
+symbol = "??_C@_0L@GMPLCCII@user32?4dll?$AA@"
+target_base = 0x004C3BBC
+[[units.relocations]]
+offset = 0x1A
+type = "DIR32"
+symbol = "__imp__LoadLibraryA@4"
+target_base = 0x004B40DC
+[[units.relocations]]
+offset = 0x2A
+type = "DIR32"
+symbol = "__imp__GetProcAddress@8"
+target_base = 0x004B40D8
+[[units.relocations]]
+offset = 0x2F
+type = "DIR32"
+symbol = "??_C@_0M@CHKKJDAI@MessageBoxA?$AA@"
+target_base = 0x004C3BB0
+[[units.relocations]]
+offset = 0x39
+type = "DIR32"
+symbol = "?pfnMessageBoxA@?1??__crtMessageBoxA@@9@9"
+target_base = 0x018D8428
+[[units.relocations]]
+offset = 0x40
+type = "DIR32"
+symbol = "??_C@_0BA@HNOPNCHB@GetActiveWindow?$AA@"
+target_base = 0x004C3BA0
+[[units.relocations]]
+offset = 0x48
+type = "DIR32"
+symbol = "??_C@_0BD@HHGDFDBJ@GetLastActivePopup?$AA@"
+target_base = 0x004C3B8C
+[[units.relocations]]
+offset = 0x4E
+type = "DIR32"
+symbol = "?pfnGetActiveWindow@?1??__crtMessageBoxA@@9@9"
+target_base = 0x018D842C
+[[units.relocations]]
+offset = 0x56
+type = "DIR32"
+symbol = "__osplatform"
+target_base = 0x018D8000
+[[units.relocations]]
+offset = 0x5C
+type = "DIR32"
+symbol = "?pfnGetLastActivePopup@?1??__crtMessageBoxA@@9@9"
+target_base = 0x018D8430
+[[units.relocations]]
+offset = 0x63
+type = "DIR32"
+symbol = "??_C@_0BK@CIDNPOGP@GetUserObjectInformationA?$AA@"
+target_base = 0x004C3B70
+[[units.relocations]]
+offset = 0x6D
+type = "DIR32"
+symbol = "?pfnGetUserObjectInformationA@?1??__crtMessageBoxA@@9@9"
+target_base = 0x018D8438
+[[units.relocations]]
+offset = 0x74
+type = "DIR32"
+symbol = "??_C@_0BI@DFKBFLJE@GetProcessWindowStation?$AA@"
+target_base = 0x004C3B58
+[[units.relocations]]
+offset = 0x7C
+type = "DIR32"
+symbol = "?pfnGetProcessWindowStation@?1??__crtMessageBoxA@@9@9"
+target_base = 0x018D8434
+[[units.relocations]]
+offset = 0x81
+type = "DIR32"
+symbol = "?pfnGetProcessWindowStation@?1??__crtMessageBoxA@@9@9"
+target_base = 0x018D8434
+[[units.relocations]]
+offset = 0x9E
+type = "DIR32"
+symbol = "?pfnGetUserObjectInformationA@?1??__crtMessageBoxA@@9@9"
+target_base = 0x018D8438
+[[units.relocations]]
+offset = 0xAE
+type = "DIR32"
+symbol = "__winmajor"
+target_base = 0x018D800C
+[[units.relocations]]
+offset = 0xC6
+type = "DIR32"
+symbol = "?pfnGetActiveWindow@?1??__crtMessageBoxA@@9@9"
+target_base = 0x018D842C
+[[units.relocations]]
+offset = 0xD7
+type = "DIR32"
+symbol = "?pfnGetLastActivePopup@?1??__crtMessageBoxA@@9@9"
+target_base = 0x018D8430
+[[units.relocations]]
+offset = 0xF0
+type = "DIR32"
+symbol = "?pfnMessageBoxA@?1??__crtMessageBoxA@@9@9"
+target_base = 0x018D8428
