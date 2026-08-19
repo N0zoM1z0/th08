@@ -1118,3 +1118,13 @@ without those explicit fields retain the stricter whole-section ownership rule.
   the next mapped function. The existing `0x004B192D` cleanup helper remains a
   valid nested funclet overlap. Repair the parent to `0x179`; do not shrink it
   around the child or treat the child start as the parent end.
+
+### Static archive functions may not appear in the library's global symbol index
+
+- `siglookup @ 0x004B17C4` is a static `winsig.obj` function with decorated
+  COFF symbol `?siglookup@@YAPAU_sigtab@@H@Z`. It does not appear in the
+  archive-wide global symbol listing used by `nm -A`, but the extracted member
+  symbol table provides a normal `0x2E` function-definition extent and exact
+  target bytes. Treat the archive index as a discovery aid, not proof that a
+  member-local function is absent; inspect the owning COFF member when target
+  control flow or relocations point into it.
