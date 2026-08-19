@@ -106590,6 +106590,7 @@ object = "build/objdiff/reimpl/AnmManager.obj"
 symbol = "??0AnmVmBase@th08@@QAE@XZ"
 target_address = 0x004067C0
 size = 0x8E
+allow_auxless_comdat = true
 
 [[units.relocations]]
 offset = 0xB

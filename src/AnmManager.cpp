@@ -12,11 +12,6 @@
 namespace th08
 {
 
-// FUNCTION: th08 0x4067c0
-AnmVmBase::AnmVmBase()
-{
-}
-
 // FUNCTION: th08 0x40b580
 VertexDiffuseXyzrhw::VertexDiffuseXyzrhw()
 {
