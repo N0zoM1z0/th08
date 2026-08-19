@@ -120,7 +120,10 @@ The next primary lane is target-linked library/runtime recovery:
 
 1. Reconcile library names and boundaries against target disassembly, beginning
    with the seven library rows that lack `mapping.csv` sizes and the
-   imported overlapping ranges reported by `validate-tracking.py`.
+   imported overlapping ranges reported by `validate-tracking.py`. Select the
+   live missing-size set with
+   `report-reconstruction-status.py --category library --state missing-size`;
+   do not treat the prose count as a permanent invariant.
 2. Identify the exact VC7/CRT/D3DX archive provenance and pin archive hashes
    before writing a scanner. TH07 archives are not substitutes.
 3. Design a separate library acceptance ledger and progress view before

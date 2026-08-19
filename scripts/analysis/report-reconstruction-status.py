@@ -136,6 +136,8 @@ def selected_rows(
         selected = [row for row in selected if not row["exact"]]
     elif state == "without-unit":
         selected = [row for row in selected if not row["units"]]
+    elif state == "missing-size":
+        selected = [row for row in selected if row["size"] is None]
     return selected
 
 
@@ -166,7 +168,7 @@ def main() -> int:
             "  python3 scripts/analysis/report-reconstruction-status.py --summary\n"
             "  python3 scripts/analysis/report-reconstruction-status.py\n"
             "  python3 scripts/analysis/report-reconstruction-status.py "
-            "--category library --state without-unit --sort size"
+            "--category library --state missing-size --sort address"
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -177,7 +179,13 @@ def main() -> int:
     )
     parser.add_argument(
         "--state",
-        choices=("all", "source-missing", "non-exact", "without-unit"),
+        choices=(
+            "all",
+            "source-missing",
+            "non-exact",
+            "without-unit",
+            "missing-size",
+        ),
         default="non-exact",
     )
     parser.add_argument("--summary", action="store_true", help="print totals only")

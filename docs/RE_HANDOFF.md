@@ -90,6 +90,13 @@ stubs or inline assembly.
 
 Seven library rows do not yet have mapping extents:
 
+```bash
+python3 scripts/analysis/report-reconstruction-status.py \
+  --category library --state missing-size --sort address
+```
+
+The current output is:
+
 ```text
 0x0048D3D0 D3DXVec3Normalize_rsqrtss_0048d3d0
 0x0048D4A0 D3DXVec4Normalize3_rsqrtss_0048d4a0

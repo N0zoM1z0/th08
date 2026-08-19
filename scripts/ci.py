@@ -74,6 +74,19 @@ def main() -> int:
                 "--summary",
             ],
         )
+        run(
+            "Smoke-test library missing-size routing",
+            [
+                sys.executable,
+                "scripts/analysis/report-reconstruction-status.py",
+                "--category",
+                "library",
+                "--state",
+                "missing-size",
+                "--sort",
+                "address",
+            ],
+        )
         run("Check whitespace", ["git", "diff", "--check"])
     except (OSError, RuntimeError, subprocess.CalledProcessError) as exc:
         print(f"error: CI validation failed: {exc}", file=sys.stderr)

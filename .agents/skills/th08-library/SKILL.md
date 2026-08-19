@@ -19,9 +19,11 @@ reconstruction DLL.
    python3 scripts/verify-target.py
    python3 scripts/validate-tracking.py --require-target
    python3 scripts/analysis/report-reconstruction-status.py \
-     --category library --state without-unit --sort address
+     --category library --state missing-size --sort address
    ```
 
+   The current first-lane result is seven rows. If that count changes, trust
+   the command and current ledgers rather than copying an old prose list.
 3. Select one coherent runtime/D3DX family. Reconcile every start and extent
    against target control flow before editing `mapping.csv`; imported Ghidra
    boundaries and the next CSV address are leads, not accepted sizes.
