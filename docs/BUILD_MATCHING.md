@@ -829,3 +829,11 @@ This corpus attests the natural VC7 emissions for ResultScreen/AnmManager/MidiOu
 - Equivalent ternaries are not byte-equivalent. The target uses zero-first lexical forms such as `totalAttempts == 0 ? unknown : spellName` and `captures[SHOT_ALL] == 0 ? unknown : commentBuffer`; reversing the condition and arms flips the short-branch topology.
 - The Last Word hint table begins at spell **204**, one slot before `SPELLCARD_LAST_WORD_START` (205). Its 0x30-byte record has two format pointers and two groups of five integer arguments. Recover the source index as `spellCardNumber - (SPELLCARD_LAST_WORD_START - 1)`, not `spellCardNumber - SPELLCARD_LAST_WORD_START`.
 - `spellCardInfoVms[0..6]` are the natural typed owners for target offsets `0x11F2C..0x12F04`; two 128-byte comment buffers and repeated direct `CatkHistory` reads reproduce the target vararg push order without overlays.
+
+
+### Title completion badge: preserving an inlined GameManager member owner
+
+- `TitleScreen::DrawCompletionStatusText @ 0x0047052D` proves that an out-of-line-looking helper can still have an **inline member** source shape at a caller. A free `u16` bit-test helper kept the correct mask arithmetic but folded `g_GameManager.clrdData` into one memory displacement; a probe-local GameManager member view reproduced the target `this` parameter, `character * 0x24`, explicit `add &clrdData[0]`, and then the difficulty-indexed word load.
+- In the inlined stage-clear helper, keep source order `difficultyBits & ZUN_BIT(stage)`. VC7 evaluates the right operand first, so the target starts with `xor/inc/shl` for the stage mask before loading the clear-data word. Reversing the `&` operands flips evaluation order even though the value is identical.
+- The completion-status third condition is target-proven as five independent OR arms: Easy, Normal, Hard, Lunatic clear, **or `cursor > 3`**. The earlier reconstructed `Lunatic && cursor > 3` precedence was semantically wrong.
+- Reuse the low-level `InitializeTitleVmAndSetSprite` source shape instead of `AnmLoaded::InitializeAndSetSprite`; four lexical branches then naturally allocate the target VM/AnmLoaded work homes and produce the exact 0x38 frame.

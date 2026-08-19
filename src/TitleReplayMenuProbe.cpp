@@ -2036,4 +2036,71 @@ void TitleScreen::FormatSpellCardInfo()
 }
 
 
+
+
+struct TitleGameManagerStageView
+{
+    inline ZunBool StageClearedWithoutRetries(i32 stage, i32 character, i32 difficulty)
+    {
+        return reinterpret_cast<GameManager *>(this)->clrdData[character].difficultiesClearedWithoutRetries[difficulty] & ZUN_BIT(stage);
+    }
+
+    inline ZunBool StageClearedWithRetries(i32 stage, i32 character, i32 difficulty)
+    {
+        return reinterpret_cast<GameManager *>(this)->clrdData[character].difficultiesClearedWithRetries[difficulty] & ZUN_BIT(stage);
+    }
+};
+
+ChainCallbackResult TitleScreen::DrawCompletionStatusText()
+{
+    ZunBool showVm = FALSE;
+
+    if (this->stateTimer2 > 8)
+    {
+        if (reinterpret_cast<TitleGameManagerStageView *>(&g_GameManager)->StageClearedWithoutRetries(STAGE6B, this->cursor, g_Supervisor.cfg.defaultDifficulty) &&
+            reinterpret_cast<TitleGameManagerStageView *>(&g_GameManager)->StageClearedWithRetries(STAGE6A, this->cursor, g_Supervisor.cfg.defaultDifficulty))
+        {
+            showVm = TRUE;
+            InitializeTitleVmAndSetSprite(this->titleAnm, &this->spellCardNameVms[0], 146);
+        }
+        else if (reinterpret_cast<TitleGameManagerStageView *>(&g_GameManager)->StageClearedWithoutRetries(STAGE6B, this->cursor, g_Supervisor.cfg.defaultDifficulty))
+        {
+            showVm = TRUE;
+            InitializeTitleVmAndSetSprite(this->titleAnm, &this->spellCardNameVms[0], 148);
+        }
+        else if (reinterpret_cast<TitleGameManagerStageView *>(&g_GameManager)->StageClearedWithoutRetries(STAGE6B, this->cursor, EASY) ||
+                 reinterpret_cast<TitleGameManagerStageView *>(&g_GameManager)->StageClearedWithoutRetries(STAGE6B, this->cursor, NORMAL) ||
+                 reinterpret_cast<TitleGameManagerStageView *>(&g_GameManager)->StageClearedWithoutRetries(STAGE6B, this->cursor, HARD) ||
+                 reinterpret_cast<TitleGameManagerStageView *>(&g_GameManager)->StageClearedWithoutRetries(STAGE6B, this->cursor, LUNATIC) ||
+                 this->cursor > 3)
+        {
+            showVm = TRUE;
+            InitializeTitleVmAndSetSprite(this->titleAnm, &this->spellCardNameVms[0], 147);
+        }
+        else if (reinterpret_cast<TitleGameManagerStageView *>(&g_GameManager)->StageClearedWithRetries(STAGE6A, this->cursor, EASY) ||
+                 reinterpret_cast<TitleGameManagerStageView *>(&g_GameManager)->StageClearedWithRetries(STAGE6A, this->cursor, NORMAL) ||
+                 reinterpret_cast<TitleGameManagerStageView *>(&g_GameManager)->StageClearedWithRetries(STAGE6A, this->cursor, HARD) ||
+                 reinterpret_cast<TitleGameManagerStageView *>(&g_GameManager)->StageClearedWithRetries(STAGE6A, this->cursor, LUNATIC))
+        {
+            showVm = TRUE;
+            InitializeTitleVmAndSetSprite(this->titleAnm, &this->spellCardNameVms[0], 145);
+        }
+    }
+
+    if (showVm)
+    {
+        this->spellCardNameVms[0].anchor = 3;
+        this->spellCardNameVms[0].color1.a = 255;
+        this->spellCardNameVms[0].color1.r = 255;
+        this->spellCardNameVms[0].color1.g = 255;
+        this->spellCardNameVms[0].color1.b = 255;
+        this->spellCardNameVms[0].pos.x = 400.0f;
+        this->spellCardNameVms[0].pos.y = 170.0f;
+        this->spellCardNameVms[0].pos.z = 0.0f;
+        g_AnmManager->DrawNoRotation(&this->spellCardNameVms[0]);
+    }
+
+    return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
+}
+
 } // namespace th08

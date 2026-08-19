@@ -356,3 +356,8 @@ Do not force standard math/runtime helpers into authored reconstruction merely b
 - In large `/Os /Ob1` vararg formatters, avoid caching aggregate/table references unless the target has a source home for them. Four innocent C++ references enlarged `FormatSpellCardInfo`'s frame by exactly 0x10.
 - Preserve ternary lexical polarity when the target materializes pointer alternatives: `zero ? fallback : real` and `nonzero ? real : fallback` are semantically equivalent but select opposite physical arms.
 - When an indexed hint table starts one record before a named enum range, keep the observed base/index expression; forcing the enum start silently shifts every relocation/addend.
+
+
+### Inline member owner can be part of exactness
+- If an inlined helper needs a subobject base to stay materialized (`character*stride; add aggregate_subobject_base`), a free helper over the final field value may over-fold the address. Model the helper as a narrow member view so VC7 retains the implicit `this` parameter and original aggregate ownership.
+- For commutative bit tests, machine evaluation order can reveal lexical order: under VC7 `/Os`, `field & ZUN_BIT(stage)` can evaluate the mask first, while `ZUN_BIT(stage) & field` evaluates the field first.

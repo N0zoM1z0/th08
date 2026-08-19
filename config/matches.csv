@@ -1081,3 +1081,4 @@ address,name,size,status,match_percent,unit,evidence
 0x0046BBC0,th08::TitleScreen::OnUpdateSpellCardSelect,4047,matching,100.00,title-spell-card-select-0046bbc0,python3 scripts/compare-function.py title-spell-card-select-0046bbc0 --json
 0x0046CBBB,th08::TitleScreen::UnlockLastWordSpellCards,2984,matching,100.00,title-unlock-last-word-0046cbbb,python3 scripts/compare-function.py title-unlock-last-word-0046cbbb --json
 0x0046D7F9,th08::TitleScreen::FormatSpellCardInfo,2365,matching,100.00,title-format-spell-card-info-0046d7f9,python3 scripts/compare-function.py title-format-spell-card-info-0046d7f9 --json
+0x0047052D,th08::TitleScreen::DrawCompletionStatusText,850,matching,100.00,title-draw-completion-status-0047052d,python3 scripts/compare-function.py title-draw-completion-status-0047052d --json
