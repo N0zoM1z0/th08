@@ -10288,3 +10288,227 @@ offset = 0xA1E
 type = "DIR32"
 symbol = "?const3dn_SignBitLo@@3T__m64@@B"
 target_base = 0x004BA838
+
+[[units]]
+name = "d3dx-x3d-matrix-identity"
+target_address = 0x004912D5
+body_size = 0x39
+compare_size = 0x39
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/x3d_matx.obj"
+symbol = "?x3d_D3DXMatrixIdentity@@YAPAUD3DXMATRIX@@PAU1@@Z"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "?const3dn_1_N1@@3T__m64@@B"
+target_base = 0x004BA810
+
+[[units]]
+name = "d3dx-x3d-matrix-transformation"
+target_address = 0x00491495
+body_size = 0x1198
+compare_size = 0x1198
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/x3d_matx.obj"
+symbol = "?x3d_D3DXMatrixTransformation@@YGPAUD3DXMATRIX@@PAU1@PBUD3DXVECTOR3@@PBUD3DXQUATERNION@@1121@Z"
+[[units.relocations]]
+offset = 0x28
+type = "DIR32"
+symbol = "?const3dn_0_1@@3T__m64@@B"
+target_base = 0x004BA800
+[[units.relocations]]
+offset = 0xD2
+type = "DIR32"
+symbol = "?const3dn_1_1@@3T__m64@@B"
+target_base = 0x004BA820
+[[units.relocations]]
+offset = 0xDA
+type = "DIR32"
+symbol = "?const3dn_1_1@@3T__m64@@B"
+target_base = 0x004BA820
+[[units.relocations]]
+offset = 0x112
+type = "DIR32"
+symbol = "?const3dn_1_1@@3T__m64@@B"
+target_base = 0x004BA820
+[[units.relocations]]
+offset = 0x1D6
+type = "DIR32"
+symbol = "?const3dn_1_N1@@3T__m64@@B"
+target_base = 0x004BA810
+[[units.relocations]]
+offset = 0xC2A
+type = "DIR32"
+symbol = "?const3dn_0_1@@3T__m64@@B"
+target_base = 0x004BA800
+[[units.relocations]]
+offset = 0xC68
+type = "DIR32"
+symbol = "?const3dn_1_N1@@3T__m64@@B"
+target_base = 0x004BA810
+[[units.relocations]]
+offset = 0xD0B
+type = "DIR32"
+symbol = "?const3dn_1_1@@3T__m64@@B"
+target_base = 0x004BA820
+[[units.relocations]]
+offset = 0xD13
+type = "DIR32"
+symbol = "?const3dn_1_1@@3T__m64@@B"
+target_base = 0x004BA820
+[[units.relocations]]
+offset = 0xD4D
+type = "DIR32"
+symbol = "?const3dn_1_1@@3T__m64@@B"
+target_base = 0x004BA820
+
+[[units]]
+name = "d3dx-x3d-matrix-rotation-yaw-pitch-roll"
+target_address = 0x0049262D
+body_size = 0x1A5
+compare_size = 0x1A5
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/x3d_matx.obj"
+symbol = "?x3d_D3DXMatrixRotationYawPitchRoll@@YGPAUD3DXMATRIX@@PAU1@MMM@Z"
+[[units.relocations]]
+offset = 0xE
+type = "DIR32"
+symbol = "?g_const_half@@3T__m64@@B"
+target_base = 0x004BA8B0
+[[units.relocations]]
+offset = 0x2F
+type = "REL32"
+symbol = "_a_sincos"
+target_base = 0x0049A0A0
+[[units.relocations]]
+offset = 0x41
+type = "REL32"
+symbol = "_a_sincos"
+target_base = 0x0049A0A0
+[[units.relocations]]
+offset = 0x50
+type = "REL32"
+symbol = "_a_sincos"
+target_base = 0x0049A0A0
+[[units.relocations]]
+offset = 0x61
+type = "DIR32"
+symbol = "?const3dn_SignBitHi@@3T__m64@@B"
+target_base = 0x004BA840
+[[units.relocations]]
+offset = 0x13A
+type = "DIR32"
+symbol = "?const3dn_1_1@@3T__m64@@B"
+target_base = 0x004BA820
+[[units.relocations]]
+offset = 0x142
+type = "DIR32"
+symbol = "?const3dn_1_1@@3T__m64@@B"
+target_base = 0x004BA820
+[[units.relocations]]
+offset = 0x17A
+type = "DIR32"
+symbol = "?const3dn_1_1@@3T__m64@@B"
+target_base = 0x004BA820
+
+[[units]]
+name = "d3dx-x3d-matrix-rotation-axis"
+target_address = 0x00492D06
+body_size = 0x119
+compare_size = 0x119
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/x3d_matx.obj"
+symbol = "?x3d_D3DXMatrixRotationAxis@@YGPAUD3DXMATRIX@@PAU1@PBUD3DXVECTOR3@@M@Z"
+[[units.relocations]]
+offset = 0x2A
+type = "REL32"
+symbol = "?x3d_D3DXVec3Normalize@@YGPAUD3DXVECTOR3@@PAU1@PBU1@@Z"
+target_base = 0x00494897
+[[units.relocations]]
+offset = 0x33
+type = "REL32"
+symbol = "_a_cos"
+target_base = 0x0049A0A0
+[[units.relocations]]
+offset = 0x40
+type = "DIR32"
+symbol = "?const3dn_1_1@@3T__m64@@B"
+target_base = 0x004BA820
+[[units.relocations]]
+offset = 0xF0
+type = "DIR32"
+symbol = "?const3dn_1_1@@3T__m64@@B"
+target_base = 0x004BA820
+
+[[units]]
+name = "d3dx-x3d-matrix-transformation-k7"
+target_address = 0x00492E1F
+body_size = 0x1154
+compare_size = 0x1154
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/x3d_matx.obj"
+symbol = "?x3d_D3DXMatrixTransformation_K7@@YGPAUD3DXMATRIX@@PAU1@PBUD3DXVECTOR3@@PBUD3DXQUATERNION@@1121@Z"
+[[units.relocations]]
+offset = 0x28
+type = "DIR32"
+symbol = "?const3dn_0_1@@3T__m64@@B"
+target_base = 0x004BA800
+[[units.relocations]]
+offset = 0xAC
+type = "DIR32"
+symbol = "?const3dn_1_1@@3T__m64@@B"
+target_base = 0x004BA820
+[[units.relocations]]
+offset = 0xD2
+type = "DIR32"
+symbol = "?const3dn_1_1@@3T__m64@@B"
+target_base = 0x004BA820
+[[units.relocations]]
+offset = 0x102
+type = "DIR32"
+symbol = "?const3dn_1_1@@3T__m64@@B"
+target_base = 0x004BA820
+[[units.relocations]]
+offset = 0x1B9
+type = "DIR32"
+symbol = "?const3dn_1_N1@@3T__m64@@B"
+target_base = 0x004BA810
+[[units.relocations]]
+offset = 0xC08
+type = "DIR32"
+symbol = "?const3dn_0_1@@3T__m64@@B"
+target_base = 0x004BA800
+[[units.relocations]]
+offset = 0xC46
+type = "DIR32"
+symbol = "?const3dn_1_N1@@3T__m64@@B"
+target_base = 0x004BA810
+[[units.relocations]]
+offset = 0xCBD
+type = "DIR32"
+symbol = "?const3dn_1_1@@3T__m64@@B"
+target_base = 0x004BA820
+[[units.relocations]]
+offset = 0xCE3
+type = "DIR32"
+symbol = "?const3dn_1_1@@3T__m64@@B"
+target_base = 0x004BA820
+[[units.relocations]]
+offset = 0xD17
+type = "DIR32"
+symbol = "?const3dn_1_1@@3T__m64@@B"
+target_base = 0x004BA820
+
+[[units]]
+name = "d3dx-x3d-matrix-inverse-k7"
+target_address = 0x00493F73
+body_size = 0x2E2
+compare_size = 0x2E2
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/x3d_matx.obj"
+symbol = "?x3d_D3DXMatrixInverse_K7@@YGPAUD3DXMATRIX@@PAU1@PAMPBU1@@Z"
+[[units.relocations]]
+offset = 0x23B
+type = "DIR32"
+symbol = "?const3dn_1_N1@@3T__m64@@B"
+target_base = 0x004BA810

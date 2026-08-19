@@ -12,7 +12,7 @@ As cold-built and replayed on 2026-08-20 against the original Japanese TH08
 - authored source: **1,107 / 1,107 functions**, **459,757 / 459,757 bytes**;
 - strict authored exact: **1,091 / 1,107 functions**, **445,728 / 459,757 bytes**;
 - library inventory: **1,119 classified functions**; all **1,119 / 1,119** now have
-  mapping sizes totaling **217,165 bytes**; the independent library exact ledger currently accepts **252 functions / 42,270 body bytes**;
+  mapping sizes totaling **217,165 bytes**; the independent library exact ledger currently accepts **258 functions / 52,707 body bytes**;
 - `config/claims.csv` is header-only;
 - a cold normal VC7 build links `build/th08.exe` successfully;
 - a cold objdiff build followed by full replay passes **1,091 / 1,091**
@@ -118,9 +118,9 @@ Separate library acceptance infrastructure is now in place:
 - `validate-library.py` is the public CI gate, with `--require-archives` for local
   hash attestation; `library-progress.py` generates `LIBRARY_PROGRESS.md`.
 
-Library acceptance now has **252 / 252 configured units** and **42,270 body bytes**
+Library acceptance now has **258 / 258 configured units** and **52,707 body bytes**
 after canonical zero-difference replay.  The accepted set contains six SSE/SSE2
-D3DX normalize helpers plus seven exact `x3d_quat.obj` quaternion helpers (including the 0xA59-byte `x3d_D3DXQuaternionSquadSetup` with 66 replayed relocations), VC7 `/MT` `operator delete`, seven CRT string/memory
+D3DX normalize helpers plus seven exact `x3d_quat.obj` quaternion helpers (including the 0xA59-byte `x3d_D3DXQuaternionSquadSetup` with 66 replayed relocations) and six exact `x3d_matx.obj` matrix helpers (including 0x1198/0x1154-byte transformation implementations), VC7 `/MT` `operator delete`, seven CRT string/memory
 helpers (including strict shared-section `strchr`/`strcpy`/`strcat`), six
 isolated compiler-runtime arithmetic helpers (`_ftol2`, `_chkstk`, `_aulldiv`,
 `_allmul`, `_ftol`, `_aullshr`), and the `LIBCMT malloc.obj` allocation wrappers

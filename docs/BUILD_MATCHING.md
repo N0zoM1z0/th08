@@ -1296,3 +1296,9 @@ without those explicit fields retain the stricter whole-section ownership rule.
 - The SHA-pinned VC7 prerelease `D3DX8.LIB` contains a coherent `objd/i386/x3d_quat.obj` family.  Seven target rows at `0x0048F776`, `0x0048FD22`, `0x0048FD8E`, `0x0048FEC5`, `0x0048FF52`, `0x00490048`, and `0x00490194` replay exactly from that member after explicit COFF relocation resolution.
 - Prefer the archive-decorated `x3d_D3DXQuaternion*` identities over imported `FUN_*` names.  MSVC decoration directly establishes the global `__stdcall` ABI; use it to type return/argument pointer classes, but do not infer unrelated source ownership from the `x3d_` prefix.
 - `x3d_D3DXQuaternionSquadSetup @ 0x00490194` is a useful high-density acceptance fixture: the 0xA59-byte function replays 66 relocations with zero differences.  A large exact result here is evidence for the archive/member/relocation model, not permission to accept neighboring D3DX functions without their own unit replay.
+
+### D3DX x3d matrix archive identity
+
+- `objd/i386/x3d_matx.obj` in the same SHA-pinned prerelease `D3DX8.LIB` now has six independently replayed target owners: MatrixIdentity, MatrixTransformation, MatrixRotationYawPitchRoll, MatrixRotationAxis, MatrixTransformation_K7, and MatrixInverse_K7.
+- Do not assume a uniform calling convention from the family name.  VC7 decoration shows `x3d_D3DXMatrixIdentity` as global `__cdecl` (`YA...`) while the other five use global `__stdcall` (`YG...`).  Preserve the decorated ABI per symbol.
+- The 0x1198-byte MatrixTransformation and 0x1154-byte MatrixTransformation_K7 bodies both replay exactly, so large x3d functions are valid direct archive match units when their own COFF relocation graph is explicit.  Their success does not authorize range-based acceptance of neighboring matrix code.

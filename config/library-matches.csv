@@ -251,3 +251,9 @@ address,name,size,status,unit,evidence
 0x0048FF52,x3d_D3DXQuaternionSquad,146,matching,d3dx-x3d-quaternion-squad,python3 scripts/compare-library.py d3dx-x3d-quaternion-squad --json
 0x00490048,x3d_D3DXQuaternionLn,167,matching,d3dx-x3d-quaternion-ln,python3 scripts/compare-library.py d3dx-x3d-quaternion-ln --json
 0x00490194,x3d_D3DXQuaternionSquadSetup,2649,matching,d3dx-x3d-quaternion-squad-setup,python3 scripts/compare-library.py d3dx-x3d-quaternion-squad-setup --json
+0x004912D5,x3d_D3DXMatrixIdentity,57,matching,d3dx-x3d-matrix-identity,python3 scripts/compare-library.py d3dx-x3d-matrix-identity --json
+0x00491495,x3d_D3DXMatrixTransformation,4504,matching,d3dx-x3d-matrix-transformation,python3 scripts/compare-library.py d3dx-x3d-matrix-transformation --json
+0x0049262D,x3d_D3DXMatrixRotationYawPitchRoll,421,matching,d3dx-x3d-matrix-rotation-yaw-pitch-roll,python3 scripts/compare-library.py d3dx-x3d-matrix-rotation-yaw-pitch-roll --json
+0x00492D06,x3d_D3DXMatrixRotationAxis,281,matching,d3dx-x3d-matrix-rotation-axis,python3 scripts/compare-library.py d3dx-x3d-matrix-rotation-axis --json
+0x00492E1F,x3d_D3DXMatrixTransformation_K7,4436,matching,d3dx-x3d-matrix-transformation-k7,python3 scripts/compare-library.py d3dx-x3d-matrix-transformation-k7 --json
+0x00493F73,x3d_D3DXMatrixInverse_K7,738,matching,d3dx-x3d-matrix-inverse-k7,python3 scripts/compare-library.py d3dx-x3d-matrix-inverse-k7 --json

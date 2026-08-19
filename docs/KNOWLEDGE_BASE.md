@@ -122,3 +122,11 @@ tracked knowledge.
 ### Library accepted rows and match units are one atomic claim
 
 `config/library-matches.csv` must never contain an accepted row whose `unit` is absent from `config/library-match-units.toml`.  The accepted row names the claim; the unit preserves archive/member identity, target extent, and every relocation needed to reproduce it.  `validate-library.py` intentionally fails on orphan accepted rows.  If an interrupted or split commit separates the two files, restore the reviewed unit schema and rerun the canonical comparator before treating progress as current; do not weaken the validator or keep a progress-only claim.
+### A zero-item conservative proposal queue is a routing result, not completion
+
+When `propose-library-units.py --archive vc7-libcmt --min-size 1` returns zero
+unique candidates, it means all candidates satisfying its strict function-aux,
+size, supported-relocation, and non-relocation-byte gates have been configured.
+It does **not** mean all CRT/runtime inventory is exact.  Route the remainder to
+explicit boundary repair, shared/local funclet evidence, COMDAT/alias analysis,
+or other archive-family investigations instead of weakening the proposer.
