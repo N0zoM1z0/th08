@@ -101,16 +101,21 @@ normalize members; target body extents stop before archive alignment padding.
 `delete.obj` tail jump to `_free`.  These are boundary/provenance facts only;
 there is still no accepted library exact ledger.
 
-Proceed with inventory integrity before accepting library matches:
+Inventory integrity is now reconciled.  Four imported extents were stale and
+were shortened at target-proven return/next-function boundaries (`0x0049E3CD`,
+`0x004A51FD`, `_strchr @ 0x004A5BE0`, and `0x004A6890`).  The remaining nine
+overlaps are VC7 CRT nested SEH cleanup funclets and are explicitly represented
+in `config/mapping-overlaps.csv`; `validate-tracking.py` rejects stale exception
+rows and reports any new unclassified overlap.
 
-1. resolve the 18 imported mapping overlaps as real aliases/thunks/shared code
-   or stale extents, preserving useful target facts;
-2. pin archive/member provenance for the remaining VC7 CRT/runtime, standard
+Proceed with provenance and separate library acceptance infrastructure:
+
+1. pin archive/member provenance for the remaining VC7 CRT/runtime, standard
    library, D3DX, and compiler-runtime families;
-3. add the separate library provenance manifest, match-unit schema, accepted
+2. add the separate library provenance manifest, match-unit schema, accepted
    ledger, relocation-aware comparator, public CI validation, local target
    verification command, and independent progress report;
-4. only then accept one coherent library family at a time.
+3. only then accept one coherent library family at a time.
 
 Keep authored `implemented.csv`, `matches.csv`, and authored percentages
 unchanged.  There is intentionally no whole-library scanner until archive

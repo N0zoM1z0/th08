@@ -46,6 +46,14 @@ the header instead of assuming a column number. Use
 other non-inventory relocation destinations. Do not add those addresses to
 `mapping.csv` or `reccmp-functions.csv` merely to make a comparison pass.
 
+Imported library/runtime functions may legitimately contain compiler-generated
+SEH cleanup funclets whose independent starts lie inside the parent's contiguous
+mapping extent.  Record only proven adjacent parent/child overlaps in
+`config/mapping-overlaps.csv` with `kind=nested-funclet`.  The tracking validator
+requires every exception to describe a current overlap and reports any
+unclassified overlap separately.  Do not shrink a parent through live control
+flow or delete a funclet row merely to eliminate an overlap warning.
+
 ## Current analysis backends
 
 IDA MCP is usable only for an active TH08 database that passes the session

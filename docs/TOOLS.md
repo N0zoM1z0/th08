@@ -32,6 +32,7 @@ repeating target analysis or compiler-shape probes.
 | Is the complete accepted ledger reproducible from a cold build? | `python3 scripts/analysis/verify-exact-units.py --all --json > build/accepted-unit-replay.json` | Cleans generated outputs including known VC7/linker sidecars, builds every configured object with one job, and replays all accepted units. Build logs go to stderr, so the report is pure JSON. |
 | Are there conservative exact candidates in current objects? | `python3 scripts/analysis/propose-exact-units.py --object build/NAME.obj --output .analysis/proposed-units.toml` | Review artifact only; never edits ledgers or proves acceptance. |
 | What is inside the generated VC7 PDB? | `python3 scripts/analysis/inspect-pdb-streams.py build/vc70.pdb` | Lists MSF streams. Extraction requires explicit `--extract`; output defaults to `.analysis/`. |
+| Are mapping overlaps explicitly classified? | `python3 scripts/validate-tracking.py --require-target` | Validates `config/mapping-overlaps.csv`; accepted nested funclets are reported separately and stale/unclassified overlap state is rejected or warned. |
 | Is tracked repository state CI-clean? | `python3 scripts/ci.py` | Public, target-independent schema/docs/syntax checks. It cannot establish binary exactness. |
 | May I use the active IDA database? | Follow `docs/IDA_MCP.md`. | IDA is blocked until the active GUI database is attested. |
 

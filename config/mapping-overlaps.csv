@@ -1,0 +1,10 @@
+parent_address,child_address,kind,notes
+0x4a427b,0x4a42ce,nested-funclet,free SEH cleanup funclet releases heap lock
+0x4a6b99,0x4a6c43,nested-funclet,calloc SEH cleanup funclet releases heap lock
+0x4a6c54,0x4a6dbc,nested-funclet,realloc SEH cleanup funclet releases heap lock
+0x4af0f4,0x4af17b,nested-funclet,lseek SEH cleanup funclet unlocks file handle
+0x4af344,0x4af3cb,nested-funclet,write SEH cleanup funclet unlocks file handle
+0x4b17f2,0x4b192d,nested-funclet,raise SEH cleanup funclet releases signal lock
+0x4b224e,0x4b22d5,nested-funclet,read SEH cleanup funclet unlocks file handle
+0x4b265a,0x4b26fa,nested-funclet,CRT file-handle wrapper cleanup funclet
+0x4b2e0d,0x4b2e84,nested-funclet,CRT file-handle wrapper cleanup funclet

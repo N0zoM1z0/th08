@@ -1651,7 +1651,7 @@ FUN_0049dfba,0x49dfba,0xa6,unknown,,u8,u8,u8,u8,u8,u8,u8,u8
 FUN_0049e060,0x49e060,0x31,unknown,,u8,u8,u8,u8,u8,u8,u8
 FUN_0049e091,0x49e091,0x156,unknown,,u8,u8,u8,u8,u8
 FUN_0049e1e7,0x49e1e7,0x1e6,unknown,,u8,u8,u8,u8,u8
-FUN_0049e3cd,0x49e3cd,0x125,unknown,,u8,u8
+FUN_0049e3cd,0x49e3cd,0x75,unknown,,u8,u8
 FUN_0049e442,0x49e442,0x6c,unknown,,u8,u8,u8,u8,u8
 FUN_0049e4ae,0x49e4ae,0x338,unknown,,u8
 FUN_0049e7e6,0x49e7e6,0x153,unknown,,u8,u8,u8,u8,u8
@@ -1758,7 +1758,7 @@ __mkdir,0x4a508d,0x2c,__stdcall,,i32,char*
 __aulldiv,0x4a50c0,0x68,__stdcall,,u32,unsigned long,unsigned long,unsigned long,unsigned long
 __allmul,0x4a5130,0x34,unknown,,u8,u8,u8,u8,u8
 _store_num,0x4a5184,0x79,__cdecl,,void,i32,i32,char**,u32*,u32
-FUN_004a51fd,0x4a51fd,0x260,unknown,,u8,u8,u8,u8
+FUN_004a51fd,0x4a51fd,0x240,unknown,,u8,u8,u8,u8
 FUN_004a543d,0x4a543d,0x3fb,unknown,,u8,u8,u8,u8,u8,u8,u8
 FUN_004a584f,0x4a584f,0xa4,unknown,,u8,u8,u8,u8,u8,u8,u8
 __Strftime,0x4a58f3,0x32,__cdecl,,u8,u8,u8,u8,u8,u8
@@ -1767,7 +1767,7 @@ _localtime,0x4a5940,0x180,__cdecl,,tm*,longlong*
 __time32,0x4a5ac0,0x39,__cdecl,,long,long*
 FUN_004a5af9,0x4a5af9,0x2e,unknown,,u8,u8,u8
 FUN_004a5b27,0x4a5b27,0x9c,unknown,,u8,u8
-_strchr,0x4a5be0,0xc3,__cdecl,,u8,u8,u8
+_strchr,0x4a5be0,0xbe,__cdecl,,u8,u8,u8
 _sscanf,0x4a5c9e,0x34,__cdecl,varargs,u8,u8,u8
 _strncmp,0x4a5ce0,0x39,__cdecl,,u8,char*,char*,u8
 FUN_004a5d20,0x4a5d20,0x7,unknown,,u8,u8
@@ -1797,7 +1797,7 @@ __ftol,0x4a65cc,0x27,unknown,,u8
 FUN_004a6640,0x4a6640,0x54,unknown,,u8
 FUN_004a669d,0x4a669d,0x1c5,unknown,,u8,u8,u8,u8,u8
 FUN_004a6862,0x4a6862,0x28,unknown,,u8
-FUN_004a6890,0x4a6890,0x1f2,unknown,,u8,u8
+FUN_004a6890,0x4a6890,0x121,unknown,,u8,u8
 __aullshr,0x4a69c0,0x1f,unknown,,u8
 ___crtExitProcess,0x4a69df,0x2f,__cdecl,,u8,u8
 FUN_004a6a0f,0x4a6a0f,0x9,unknown,,u8

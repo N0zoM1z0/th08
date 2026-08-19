@@ -220,6 +220,44 @@ def load_mapping(errors: list[str]) -> tuple[list[MappingRow], set[str], set[int
     return rows, names, addresses
 
 
+def load_mapping_overlap_exceptions(
+    errors: list[str],
+) -> dict[tuple[int, int], tuple[str, str]]:
+    result: dict[tuple[int, int], tuple[str, str]] = {}
+    try:
+        with (CONFIG / "mapping-overlaps.csv").open(
+            newline="", encoding="utf-8"
+        ) as stream:
+            reader = csv.DictReader(stream)
+            expected = ["parent_address", "child_address", "kind", "notes"]
+            if reader.fieldnames != expected:
+                fail(f"mapping-overlaps.csv: unexpected columns: {reader.fieldnames}")
+            for line, row in enumerate(reader, start=2):
+                parent = parse_address(row["parent_address"])
+                child = parse_address(row["child_address"])
+                if row["parent_address"] != f"0x{parent:x}" or row[
+                    "child_address"
+                ] != f"0x{child:x}":
+                    fail(
+                        f"mapping-overlaps.csv:{line}: addresses must use canonical lowercase hex"
+                    )
+                key = (parent, child)
+                if key in result:
+                    fail(f"mapping-overlaps.csv:{line}: duplicate overlap pair")
+                kind = row["kind"]
+                if kind != "nested-funclet":
+                    fail(
+                        f"mapping-overlaps.csv:{line}: unsupported overlap kind {kind!r}"
+                    )
+                notes = row["notes"]
+                if not notes:
+                    fail(f"mapping-overlaps.csv:{line}: notes are required")
+                result[key] = (kind, notes)
+    except (OSError, KeyError, ValueError) as exc:
+        errors.append(str(exc))
+    return result
+
+
 def validate_implemented(
     mapping_names: set[str], errors: list[str]
 ) -> tuple[int, set[str]]:
@@ -354,20 +392,36 @@ def seed_overlaps(rows: list[MappingRow]) -> list[tuple[MappingRow, MappingRow, 
     return overlaps
 
 
-def report_seed_overlaps(
+def validate_seed_overlaps(
     overlaps: list[tuple[MappingRow, MappingRow, int]],
+    exceptions: dict[tuple[int, int], tuple[str, str]],
+    errors: list[str],
 ) -> None:
-    if not overlaps:
-        return
-    print(
-        f"warning: imported upstream mapping seed contains {len(overlaps)} "
-        "overlapping address ranges"
-    )
+    seen: set[tuple[int, int]] = set()
+    unexpected: list[tuple[MappingRow, MappingRow, int]] = []
     for left, right, amount in overlaps:
-        print(
-            f"  mapping.csv:{left.line}/{right.line}: {left.name} overlaps "
-            f"{right.name} at 0x{right.address:06x} by 0x{amount:x} bytes"
+        key = (left.address, right.address)
+        if key in exceptions:
+            seen.add(key)
+        else:
+            unexpected.append((left, right, amount))
+    for parent, child in sorted(set(exceptions) - seen):
+        errors.append(
+            "mapping-overlaps.csv: exception "
+            f"0x{parent:x}->0x{child:x} does not describe a current overlap"
         )
+    if unexpected:
+        print(
+            f"warning: mapping contains {len(unexpected)} unclassified overlapping "
+            "address ranges"
+        )
+        for left, right, amount in unexpected:
+            print(
+                f"  mapping.csv:{left.line}/{right.line}: {left.name} overlaps "
+                f"{right.name} at 0x{right.address:06x} by 0x{amount:x} bytes"
+            )
+    if seen:
+        print(f"tracking overlap exceptions OK: {len(seen)} nested funclet pairs")
 
 
 def main() -> int:
@@ -407,8 +461,9 @@ def main() -> int:
     implemented, implemented_names = validate_implemented(names, errors)
     claims = validate_claims(addresses, errors)
     matches = validate_matches(mapping, implemented_names, errors)
+    overlap_exceptions = load_mapping_overlap_exceptions(errors)
     overlaps = seed_overlaps(mapping)
-    report_seed_overlaps(overlaps)
+    validate_seed_overlaps(overlaps, overlap_exceptions, errors)
 
     if errors:
         for error in errors:
