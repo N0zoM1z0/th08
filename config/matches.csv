@@ -35,6 +35,8 @@ address,name,size,status,match_percent,unit,evidence
 0x0044E140,th08::GameManager::SetYoukaiGauge,27,matching,100.00,game-manager-set-youkai-gauge,python3 scripts/compare-function.py game-manager-set-youkai-gauge --json
 0x0044E350,th08::PlayerUnkStruct0x40::Deactivate,18,matching,100.00,player-region-deactivate,python3 scripts/compare-function.py player-region-deactivate --json
 0x0044E370,th08::PlayerUnkStruct0x40::Reset,35,matching,100.00,player-region-reset,python3 scripts/compare-function.py player-region-reset --json
+0x0044EE70,FUN_0044ee70,1059,matching,100.00,player-option-orbit-0044ee70,python3 scripts/compare-function.py player-option-orbit-0044ee70 --json
+0x0044F2D0,FUN_0044f2d0,737,matching,100.00,player-option-facing-0044f2d0,python3 scripts/compare-function.py player-option-facing-0044f2d0 --json
 0x0045C0E0,th08::ScreenEffect::AddedCallback,26,matching,100.00,screen-effect-added,python3 scripts/compare-function.py screen-effect-added --json
 0x0045C100,th08::ScreenEffect::DeletedCallback,94,matching,100.00,screen-effect-deleted,python3 scripts/compare-function.py screen-effect-deleted --json
 0x0045BC40,th08::ScreenEffect::DrawArcadeFade,69,matching,100.00,screen-effect-draw-arcade-fade,python3 scripts/compare-function.py screen-effect-draw-arcade-fade --json
