@@ -1736,11 +1736,11 @@ _UnwindNestedFrames,0x4a4419,0x52,__stdcall,,void,EHRegistrationNode*,EHExceptio
 ___CxxFrameHandler,0x4a446b,0x36,unknown,,u8,u8,u8,u8,u8
 FUN_004a44c5,0x4a44c5,0x6e,unknown,,u8,u8,u8,u8
 _GetRangeOfTrysToCheck,0x4a4536,0x7a,__cdecl,,_s_TryBlockMapEntry*,_s_FuncInfo*,i32,i32,u32*,u32*
-FUN_004a45b0,0x4a45b0,0x28,unknown,,u8,u8,u8
-FUN_004a45d8,0x4a45d8,0x21,unknown,,u8,u8
+_CreateFrameInfo,0x4a45b0,0x28,__cdecl,,FrameInfo*,FrameInfo*,void*
+IsExceptionObjectToBeDestroyed,0x4a45d8,0x21,__cdecl,,i32,void*
 _FindAndUnlinkFrame,0x4a45f9,0x4c,__cdecl,,void,FrameInfo*
-FUN_004a4645,0x4a4645,0x51,unknown,,u8,u8,u8,u8,u8,u8
-FUN_004a4696,0x4a4696,0xaf,unknown,,u8,u8,u8,u8,u8,u8,u8,u8
+_CallCatchBlock2,0x4a4645,0x51,__cdecl,,void*,EHRegistrationNode*,const _s_FuncInfo*,void*,i32,u32
+_CallSETranslator,0x4a4696,0xaf,__cdecl,,i32,u8,u8,u8,u8,u8,u8,u8
 __global_unwind2,0x4a4748,0x20,unknown,,u8,u8
 __local_unwind2,0x4a478a,0x68,unknown,,u8,u8,u8
 __abnormal_termination,0x4a47f2,0x23,__cdecl,,u8

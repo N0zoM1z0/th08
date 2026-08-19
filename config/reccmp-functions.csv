@@ -1737,11 +1737,11 @@ UnwindNestedFrames,0x4a4419,library
 __CxxFrameHandler,0x4a446b,library
 FUN_004a44c5,0x4a44c5,library
 GetRangeOfTrysToCheck,0x4a4536,library
-FUN_004a45b0,0x4a45b0,library
-FUN_004a45d8,0x4a45d8,library
+CreateFrameInfo,0x4a45b0,library
+IsExceptionObjectToBeDestroyed,0x4a45d8,library
 FindAndUnlinkFrame,0x4a45f9,library
-FUN_004a4645,0x4a4645,library
-FUN_004a4696,0x4a4696,library
+CallCatchBlock2,0x4a4645,library
+CallSETranslator,0x4a4696,library
 _global_unwind2,0x4a4748,library
 _local_unwind2,0x4a478a,library
 _abnormal_termination,0x4a47f2,library

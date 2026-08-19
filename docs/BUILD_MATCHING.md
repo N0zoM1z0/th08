@@ -946,3 +946,21 @@ that exact offset, requires a COFF function-definition auxiliary record whose
 `total_size` equals `compare_size`, bounds every relocation relative to that
 symbol, and rejects any subrange that extends beyond the pinned section.  Units
 without those explicit fields retain the stricter whole-section ownership rule.
+
+### Library archive decoration is naming evidence only after range replay
+
+- VC7 CRT/C++ EH members can turn anonymous imported inventory rows into stable
+  names, but do not rename a `FUN_*` row merely because an archive contains a
+  plausible decorated symbol of the same size.  First pin the archive hash and
+  member, require the COFF function-definition extent to match the target body,
+  replay every DIR32/REL32 field, and obtain a zero-difference canonical target
+  comparison.  The `trnsctrl.obj` family at `0x004A4419..0x004A4745` is the
+  corpus example: eight helpers replay exactly before four anonymous rows are
+  promoted to `_CreateFrameInfo`, `IsExceptionObjectToBeDestroyed`,
+  `_CallCatchBlock2`, and `_CallSETranslator`.
+- MSVC decoration can directly prove storage-level facts such as global
+  `__cdecl` (`YA`), return class, and simple parameter lists.  It does not
+  justify guessing complicated numbered type back-references.  When the
+  decorated `_CallSETranslator` symbol proves `__cdecl` and `int` return but the
+  back-referenced parameter sequence has not been independently decoded, keep
+  those parameter slots conservative rather than manufacturing a typed ABI.
