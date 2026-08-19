@@ -2230,3 +2230,213 @@ compare_size = 0x7
 archive = "vc7-libcmt"
 member = "../build/intel/mt_obj/trnsctrl.obj"
 symbol = "?_CallMemberFunction1@@YGXPAX00@Z"
+
+[[units]]
+name = "crt-call-catch-block"
+target_address = 0x004AA2E4
+body_size = 0x97
+compare_size = 0x1A7
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/frame.obj"
+symbol = "?CallCatchBlock@@YAPAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PBU_s_FuncInfo@@PAXHK@Z"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T19667"
+target_base = 0x004BDC58
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0x29
+type = "REL32"
+symbol = "?_CreateFrameInfo@@YAPAUFrameInfo@@PAU1@PAX@Z"
+target_base = 0x004A45B0
+[[units.relocations]]
+offset = 0x33
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0x3E
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0x49
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0x51
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0x72
+type = "REL32"
+symbol = "?_CallCatchBlock2@@YAPAXPAUEHRegistrationNode@@PBU_s_FuncInfo@@PAXHK@Z"
+target_base = 0x004A4645
+[[units.relocations]]
+offset = 0x118
+type = "REL32"
+symbol = "___FrameUnwindToState"
+target_base = 0x004AA1B4
+[[units.relocations]]
+offset = 0x135
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3
+[[units.relocations]]
+offset = 0x14D
+type = "REL32"
+symbol = "?_FindAndUnlinkFrame@@YAXPAUFrameInfo@@@Z"
+target_base = 0x004A45F9
+[[units.relocations]]
+offset = 0x153
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0x15E
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0x18F
+type = "REL32"
+symbol = "?IsExceptionObjectToBeDestroyed@@YAHPAX@Z"
+target_base = 0x004A45D8
+[[units.relocations]]
+offset = 0x199
+type = "REL32"
+symbol = "__abnormal_termination"
+target_base = 0x004A47F2
+[[units.relocations]]
+offset = 0x1A0
+type = "REL32"
+symbol = "___DestructExceptionObject"
+target_base = 0x004AA282
+
+[[units]]
+name = "crt-build-catch-object"
+target_address = 0x004AA48B
+body_size = 0x170
+compare_size = 0x17C
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/frame.obj"
+symbol = "?BuildCatchObject@@YAXPAUEHExceptionRecord@@PAXPBU_s_HandlerType@@PBU_s_CatchableType@@@Z"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T19686"
+target_base = 0x004BDC70
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0x54
+type = "REL32"
+symbol = "?_ValidateRead@@YAHPBXI@Z"
+target_base = 0x004B056D
+[[units.relocations]]
+offset = 0x66
+type = "REL32"
+symbol = "?_ValidateWrite@@YAHPAXI@Z"
+target_base = 0x004B0589
+[[units.relocations]]
+offset = 0x7D
+type = "REL32"
+symbol = "?AdjustPointer@@YAPAXPAXABUPMD@@@Z"
+target_base = 0x004AA2C7
+[[units.relocations]]
+offset = 0x8E
+type = "REL32"
+symbol = "?_ValidateRead@@YAHPBXI@Z"
+target_base = 0x004B056D
+[[units.relocations]]
+offset = 0xA0
+type = "REL32"
+symbol = "?_ValidateWrite@@YAHPAXI@Z"
+target_base = 0x004B0589
+[[units.relocations]]
+offset = 0xB6
+type = "REL32"
+symbol = "_memmove"
+target_base = 0x004A4D50
+[[units.relocations]]
+offset = 0xDA
+type = "REL32"
+symbol = "?_ValidateRead@@YAHPBXI@Z"
+target_base = 0x004B056D
+[[units.relocations]]
+offset = 0xE8
+type = "REL32"
+symbol = "?_ValidateWrite@@YAHPAXI@Z"
+target_base = 0x004B0589
+[[units.relocations]]
+offset = 0xFC
+type = "REL32"
+symbol = "?AdjustPointer@@YAPAXPAXABUPMD@@@Z"
+target_base = 0x004AA2C7
+[[units.relocations]]
+offset = 0x103
+type = "REL32"
+symbol = "_memmove"
+target_base = 0x004A4D50
+[[units.relocations]]
+offset = 0x10D
+type = "REL32"
+symbol = "?_ValidateRead@@YAHPBXI@Z"
+target_base = 0x004B056D
+[[units.relocations]]
+offset = 0x11B
+type = "REL32"
+symbol = "?_ValidateWrite@@YAHPAXI@Z"
+target_base = 0x004B0589
+[[units.relocations]]
+offset = 0x129
+type = "REL32"
+symbol = "?_ValidateExecute@@YAHP6GHXZ@Z"
+target_base = 0x004B05A5
+[[units.relocations]]
+offset = 0x140
+type = "REL32"
+symbol = "?AdjustPointer@@YAPAXPAXABUPMD@@@Z"
+target_base = 0x004AA2C7
+[[units.relocations]]
+offset = 0x14A
+type = "REL32"
+symbol = "?_CallMemberFunction2@@YGXPAX00H@Z"
+target_base = 0x004A4412
+[[units.relocations]]
+offset = 0x151
+type = "REL32"
+symbol = "?AdjustPointer@@YAPAXPAXABUPMD@@@Z"
+target_base = 0x004AA2C7
+[[units.relocations]]
+offset = 0x15B
+type = "REL32"
+symbol = "?_CallMemberFunction1@@YGXPAX00@Z"
+target_base = 0x004A4412
+[[units.relocations]]
+offset = 0x162
+type = "REL32"
+symbol = "?_inconsistency@@YAXXZ"
+target_base = 0x004AA9E7
+[[units.relocations]]
+offset = 0x16B
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3
+[[units.relocations]]
+offset = 0x178
+type = "REL32"
+symbol = "?terminate@@YAXXZ"
+target_base = 0x004AA9B2

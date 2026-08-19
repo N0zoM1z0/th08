@@ -1885,7 +1885,7 @@ __FrameUnwindToState,0x4aa1b4,library
 FUN_004aa267,0x4aa267,library
 __DestructExceptionObject,0x4aa282,library
 FUN_004aa2c7,0x4aa2c7,library
-FUN_004aa2e4,0x4aa2e4,library
+CallCatchBlock,0x4aa2e4,library
 FUN_004aa427,0x4aa427,library
 BuildCatchObject,0x4aa48b,library
 CatchIt,0x4aa607,library

@@ -1048,3 +1048,14 @@ without those explicit fields retain the stricter whole-section ownership rule.
   ending at its indirect jump, while its VC7 function-definition section is
   `0x30` and includes the associated `pop ebx; leave; ret 8` tail. Compare all
   `0x30` bytes but count only the `0x2B` mapped body.
+
+### Large auxless EH COMDATs can contain mapped funclets beyond the main body
+
+- `CallCatchBlock @ 0x004AA2E4` and `BuildCatchObject @ 0x004AA48B` show that
+  body-vs-comparison separation is not limited to small epilogues. Their target
+  main bodies are `0x97` and `0x170` bytes, while the corresponding static
+  `frame.obj` COMDAT sections are `0x1A7` and `0x17C` bytes and replay exactly
+  across all 16/22 relocations. The larger sections contain EH cleanup/guard
+  tails, including separately mapped helper starts. Keep the mapped main-body
+  size for progress, compare the full unique COMDAT section, and recover child
+  funclets separately rather than inflating the parent body.
