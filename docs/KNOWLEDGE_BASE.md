@@ -34,6 +34,7 @@ before repeating target analysis or compiler-shape probes.
 | Function boundaries, COFF aux extents, relocations | `BUILD_MATCHING.md` | Search for `compare_size`, `COMDAT`, `REL32`, or `DIR32`. |
 | Generic VC7 declaration/branch/local patterns | `VC7_ZUN_PATTERNS.md` | Search this before creating expression or `#pragma var_order` matrices. |
 | Target-linked CRT/D3DX work | `RE_HANDOFF.md`, `$th08-library`, `config/library-provenance.toml`, and `scripts/compare-library.py` | Separate archive provenance, relocation-aware match units, accepted library ledger, and current library lane. |
+| Library candidate discovery | `scripts/analysis/propose-library-units.py` | Conservative review queue from one pinned archive; candidate status is not exact acceptance and must be promoted through an explicit unit plus `compare-library.py`. |
 | Stale object/PCH exact-state failures | Search `BUILD_MATCHING.md` for `cold-build` | Why focused historical successes cannot be promoted to a current aggregate without a cold full replay. |
 
 Fast lookup recipes:
