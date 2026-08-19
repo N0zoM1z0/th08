@@ -119,11 +119,13 @@ Separate library acceptance infrastructure is now in place:
 - `validate-library.py` is the public CI gate, with `--require-archives` for local
   hash attestation; `library-progress.py` generates `LIBRARY_PROGRESS.md`.
 
-Seven Phase-A units are configured as the first bounded acceptance family.  The
-current accepted library ledger remains empty until their canonical local exact
-results are replayed after this infrastructure checkpoint.  Continue by accepting
-that family, then pin provenance and match units for the remaining VC7 CRT/runtime,
-standard-library, D3DX, and compiler-runtime inventory.
+The first bounded library family is now accepted after a post-infrastructure
+canonical replay: **7 / 7 configured units**, **1,145 library body bytes**, all
+with zero target differences after full configured COFF relocation replay.  The
+accepted set is six SSE/SSE2 D3DX normalize helpers plus VC7 `/MT` `operator
+delete`.  Continue by pinning provenance and match units for the remaining VC7
+CRT/runtime, standard-library, D3DX, and compiler-runtime inventory; keep library
+progress separate from authored totals.
 
 Keep authored `implemented.csv`, `matches.csv`, and authored percentages
 unchanged.  There is intentionally no whole-library scanner until archive

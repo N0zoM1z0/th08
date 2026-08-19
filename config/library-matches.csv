@@ -1,1 +1,8 @@
 address,name,size,status,unit,evidence
+0x0048D3D0,sse_D3DXVec3Normalize,198,matching,d3dx-sse-vec3-normalize,python3 scripts/compare-library.py d3dx-sse-vec3-normalize --json
+0x0048D4A0,sse_D3DXPlaneNormalize,216,matching,d3dx-sse-plane-normalize,python3 scripts/compare-library.py d3dx-sse-plane-normalize --json
+0x0048DA50,sse_D3DXVec4Normalize,156,matching,d3dx-sse-vec4-normalize,python3 scripts/compare-library.py d3dx-sse-vec4-normalize --json
+0x0048E680,sse_D3DXQuaternionNormalize,156,matching,d3dx-sse-quaternion-normalize,python3 scripts/compare-library.py d3dx-sse-quaternion-normalize --json
+0x0048EFB0,sse2_D3DXVec3Normalize,198,matching,d3dx-sse2-vec3-normalize,python3 scripts/compare-library.py d3dx-sse2-vec3-normalize --json
+0x0048F080,sse2_D3DXPlaneNormalize,216,matching,d3dx-sse2-plane-normalize,python3 scripts/compare-library.py d3dx-sse2-plane-normalize --json
+0x004A43CF,operator delete,5,matching,crt-operator-delete,python3 scripts/compare-library.py crt-operator-delete --json

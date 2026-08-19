@@ -50,8 +50,12 @@ def main()->int:
   rd=csv.DictReader(f); expected=['address','name','size','status','unit','evidence']
   if rd.fieldnames!=expected: errors.append(f'library-matches.csv: unexpected columns {rd.fieldnames}')
   accepted=0
+  seen_units=set()
   for row in rd:
    addr=int(row['address'],0); unit=row['unit']
+   if row['address'] != f'0x{addr:08X}': errors.append(f'{unit}: noncanonical accepted address {row["address"]!r}')
+   if unit in seen_units: errors.append(f'duplicate accepted unit {unit}')
+   seen_units.add(unit)
    if unit not in names: errors.append(f'accepted row unknown unit {unit}') ; continue
    u=names[unit]
    if addr!=int(u['target_address']) or int(row['size'],0)!=int(u['body_size']): errors.append(f'{unit}: accepted address/size mismatch')
