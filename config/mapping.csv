@@ -21,10 +21,10 @@ th08::AsciiManager::CreateScorePopup,0x403200,0x127,__thiscall,,void,AsciiManage
 th08::AsciiManager::CreatePlayerPointPopup,0x403330,0x129,__thiscall,,void,AsciiManager*,Float3*,i32,D3DCOLOR
 th08::AsciiManager::CreateTimePopup,0x403460,0x19b,__thiscall,,void,AsciiManager*,Float3*,i32,i32,D3DCOLOR
 th08::AsciiManager::CreateFamiliarPopup,0x403600,0x1a4,__thiscall,,void,AsciiManager*,Float3*,i32,i32,D3DCOLOR
-th08::PauseMenu::OnUpdatePauseMenu,0x4037b0,0xf3a,__thiscall,,u32,PauseMenu*
+th08::PauseMenu::OnUpdate,0x4037b0,0xf3a,__thiscall,,i32,PauseMenu*
 th08::Float3::Float3,0x404720,0x2a,__thiscall,,Float3*,Float3*,f32,f32,f32
 th08::PauseMenu::OnDraw,0x404750,0x135,__thiscall,,void,PauseMenu*
-th08::RetryMenu::OnUpdateRetryMenu,0x404890,0x9b2,__thiscall,,u32,RetryMenu*
+th08::RetryMenu::OnUpdate,0x404890,0x9b2,__thiscall,,i32,RetryMenu*
 th08::Spellcard::GetInactiveState,0x405260,0x16,__thiscall,,i32,Spellcard*
 th08::PlstPlayCounts::IncrementTotalAttempts,0x405280,0x27,__fastcall,,void,PlstPlayCounts*,u32
 th08::RetryMenu::OnDraw,0x4052b0,0x16c,__thiscall,,void,RetryMenu*

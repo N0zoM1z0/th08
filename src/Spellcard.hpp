@@ -258,6 +258,11 @@ struct Spellcard
     Spellcard();
     ZunResult Init();
 
+    ZunBool IsCaptured()
+    {
+        return (this->flags >> 9) & 1;
+    }
+
     u32 flags;                       // +0x000
     u8 *activeEnemy;                 // +0x004
     i32 spellCardNumber;             // +0x008

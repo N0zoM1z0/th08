@@ -107,6 +107,17 @@ struct PlstPlayCounts
 };
 C_ASSERT(sizeof(PlstPlayCounts) == 0x44);
 
+struct PlstPlayCountsLegacy
+{
+    u32 attemptsTotal;
+    u32 attemptsPerCharacter[SHOT_ALL];
+    unknown_fields(0x34, 0x4);
+    u32 clears;
+    u32 continues;
+    u32 practices;
+};
+C_ASSERT(sizeof(PlstPlayCountsLegacy) == 0x44);
+
 struct Plst
 {
     Th8k base;
@@ -118,8 +129,15 @@ struct Plst
     u32 gameMinutes;
     u32 gameSeconds;
     u32 gameMilliseconds;
-    PlstPlayCounts playDataByDifficulty[MAX_DIFFICULTIES + 1];
-    PlstPlayCounts playDataTotals;
+    union
+    {
+        struct
+        {
+            PlstPlayCounts playDataByDifficulty[MAX_DIFFICULTIES + 1];
+            PlstPlayCounts playDataTotals;
+        };
+        PlstPlayCountsLegacy playData[MAX_DIFFICULTIES + 2];
+    };
     i8 bgmUnlocked[32];
 };
 

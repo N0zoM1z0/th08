@@ -1099,3 +1099,5 @@ FUN_00450ee0
 FUN_0043bbe1
 th08::PauseMenu::OnDraw
 th08::RetryMenu::OnDraw
+th08::PauseMenu::OnUpdate
+th08::RetryMenu::OnUpdate

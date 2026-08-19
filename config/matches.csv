@@ -1100,3 +1100,5 @@ address,name,size,status,match_percent,unit,evidence
 0x0043BBE1,FUN_0043bbe1,552,matching,100.00,game-manager-score-init-0043bbe1,python3 scripts/compare-function.py game-manager-score-init-0043bbe1 --json
 0x00404750,th08::PauseMenu::OnDraw,309,matching,100.00,stage-menu-pause-draw-00404750,python3 scripts/compare-function.py stage-menu-pause-draw-00404750 --json
 0x004052B0,th08::RetryMenu::OnDraw,364,matching,100.00,stage-menu-retry-draw-004052b0,python3 scripts/compare-function.py stage-menu-retry-draw-004052b0 --json
+0x004037B0,th08::PauseMenu::OnUpdate,3898,matching,100.00,stage-menu-pause-update-004037b0,python3 scripts/compare-function.py stage-menu-pause-update-004037b0 --json
+0x00404890,th08::RetryMenu::OnUpdate,2482,matching,100.00,stage-menu-retry-update-00404890,python3 scripts/compare-function.py stage-menu-retry-update-00404890 --json

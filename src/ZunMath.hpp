@@ -8,6 +8,14 @@
 namespace th08
 {
 
+inline void IncrementIfBelow(u32 *value, u32 threshold)
+{
+    if (*value < threshold)
+    {
+        (*value)++;
+    }
+}
+
 /* ZUN name: FVector */
 struct Float3
 {

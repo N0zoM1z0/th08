@@ -6,6 +6,10 @@
 #include "Player.hpp"
 #include "GameManager.hpp"
 #include "ScreenEffect.hpp"
+#include "Spellcard.hpp"
+#include "ZunMath.hpp"
+#include "Gui.hpp"
+#include "ResultScreen.hpp"
 
 namespace th08
 {
@@ -31,6 +35,87 @@ DIFFABLE_STATIC(ChainElem, g_AsciiManagerDrawChainLowPrio);
 DIFFABLE_STATIC(AsciiManager, g_AsciiManager);
 DIFFABLE_STATIC(ChainElem, g_AsciiManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_AsciiManagerDrawChainHighPrio);
+
+// Menu script indices and interrupts used by the original pause/retry state machines.
+#define ASCII_SCRIPT_PAUSE 12
+#define ASCII_SCRIPT_RETURN_TO_GAME 13
+#define ASCII_SCRIPT_QUIT 14
+#define ASCII_SCRIPT_RESTART 15
+#define ASCII_SCRIPT_CONFIRM 16
+#define ASCII_SCRIPT_YES 17
+#define ASCII_SCRIPT_NO 18
+#define ASCII_SCRIPT_DIFFICULTY 19
+#define ASCII_SCRIPT_PRACTICE 20
+#define ASCII_SCRIPT_SLOW_MODE 21
+#define ASCII_SCRIPT_RETRY 22
+#define ASCII_SCRIPT_RETRY_YES 23
+#define ASCII_SCRIPT_RETRY_NO 24
+
+#define CAPTURE_SCRIPT_MENU_BACKGROUND 0
+
+#define ASCII_INTERRUPT_SHOW 1
+#define ASCII_INTERRUPT_HIDE 2
+#define ASCII_INTERRUPT_BACKGROUND_HIDE 1
+#define ASCII_INTERRUPT_CLOCKTIME_FLIP 1
+
+#define PAUSE_SPRITE(i) (i - ASCII_SCRIPT_PAUSE)
+#define PAUSE_SPRITE_PAUSED PAUSE_SPRITE(ASCII_SCRIPT_PAUSE)
+#define PAUSE_SPRITE_RETURN_TO_GAME PAUSE_SPRITE(ASCII_SCRIPT_RETURN_TO_GAME)
+#define PAUSE_SPRITE_QUIT PAUSE_SPRITE(ASCII_SCRIPT_QUIT)
+#define PAUSE_SPRITE_RESTART PAUSE_SPRITE(ASCII_SCRIPT_RESTART)
+#define PAUSE_SPRITE_CONFIRM PAUSE_SPRITE(ASCII_SCRIPT_CONFIRM)
+#define PAUSE_SPRITE_YES PAUSE_SPRITE(ASCII_SCRIPT_YES)
+#define PAUSE_SPRITE_NO PAUSE_SPRITE(ASCII_SCRIPT_NO)
+#define PAUSE_SPRITE_DIFFICULTY PAUSE_SPRITE(ASCII_SCRIPT_DIFFICULTY)
+#define PAUSE_SPRITE_PRACTICE_MODE PAUSE_SPRITE(ASCII_SCRIPT_PRACTICE)
+#define PAUSE_SPRITE_SLOW_MODE PAUSE_SPRITE(ASCII_SCRIPT_SLOW_MODE)
+
+#define RETRY_SPRITE(i) (i - ASCII_SCRIPT_RETRY)
+#define RETRY_SPRITE_RETRY RETRY_SPRITE(ASCII_SCRIPT_RETRY)
+#define RETRY_SPRITE_YES RETRY_SPRITE(ASCII_SCRIPT_RETRY_YES)
+#define RETRY_SPRITE_NO RETRY_SPRITE(ASCII_SCRIPT_RETRY_NO)
+#define RETRY_SPRITE_CLOCKTIME 3
+
+#define COLOR_MENU_ITEM_SELECTED 0xffff8080
+#define COLOR_MENU_ITEM_NORMAL 0xff505050
+
+#define ARCADE_LEFT 32
+#define ARCADE_TOP 16
+#define ARCADE_WIDTH 384
+#define ARCADE_HEIGHT 448
+
+enum
+{
+    PAUSE_MENU_STATE_INIT = 0,
+    PAUSE_MENU_STATE_RETURN_TO_GAME_SELECTED = 1,
+    PAUSE_MENU_STATE_RETURN_TO_TITLE_SELECTED = 2,
+    PAUSE_MENU_STATE_RETRY_SELECTED = 3,
+    PAUSE_MENU_STATE_CLOSING = 4,
+    PAUSE_MENU_STATE_RETURN_TO_GAME_YES_SELECTED = 5,
+    PAUSE_MENU_STATE_RETURN_TO_GAME_NO_SELECTED = 6,
+    PAUSE_MENU_STATE_RETURN_TO_TITLE_YES_SELECTED = 7,
+    PAUSE_MENU_STATE_RETURN_TO_TITLE_NO_SELECTED = 8,
+    PAUSE_MENU_STATE_EXIT_TO_TITLE = 9,
+    PAUSE_MENU_STATE_RESTART_GAME = 10
+};
+
+enum
+{
+    RETRY_MENU_STATE_INIT = 0,
+    RETRY_MENU_STATE_YES_SELECTED = 1,
+    RETRY_MENU_STATE_NO_SELECTED = 2,
+    RETRY_MENU_STATE_RETRY = 3,
+    RETRY_MENU_STATE_EXIT_TO_TITLE = 4,
+};
+
+// Recovered target 0x00439916; /Gr makes this fastcall in this TU.
+i32 FUN_00439916(i32 unused);
+
+struct PauseRetryShtFileView
+{
+    unknown_fields(0x0, 4);
+    f32 bombCount;
+};
 
 // FUNCTION: th08 0x402000
 AsciiManager::AsciiManager()
@@ -748,9 +833,434 @@ void AsciiManager::CreateFamiliarPopup(Float3 *position, i32 number, i32 param3,
     this->nextTimePopupIndex++;
 }
 
-// STUB: th08 0x4037b0
+// FUNCTION: th08 0x4037b0
 i32 PauseMenu::OnUpdate()
 {
+    i32 i;
+
+    if (WAS_PRESSED(TH_BUTTON_MENU) && this->curState != PAUSE_MENU_STATE_CLOSING)
+    {
+        g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
+
+        this->curState = PAUSE_MENU_STATE_CLOSING;
+
+        for (i = 0; i < ARRAY_SIZE(this->menuSprites); i++)
+        {
+            if (this->menuSprites[i].IsVisible())
+            {
+                this->menuSprites[i].pendingInterrupt = ASCII_INTERRUPT_HIDE;
+            }
+        }
+
+        this->numFrames = 0;
+        this->menuBackground.pendingInterrupt = ASCII_INTERRUPT_BACKGROUND_HIDE;
+    }
+
+    if (WAS_PRESSED(TH_BUTTON_Q) && this->curState != PAUSE_MENU_STATE_EXIT_TO_TITLE)
+    {
+        g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
+
+        this->curState = PAUSE_MENU_STATE_EXIT_TO_TITLE;
+
+        for (i = 0; i < ARRAY_SIZE(this->menuSprites); i++)
+        {
+            if (this->menuSprites[i].IsVisible())
+            {
+                this->menuSprites[i].pendingInterrupt = ASCII_INTERRUPT_HIDE;
+            }
+        }
+
+        this->numFrames = 0;
+    }
+
+    if (!g_GameManager.IsReplay() && WAS_PRESSED(TH_BUTTON_RESET) && this->curState != PAUSE_MENU_STATE_EXIT_TO_TITLE)
+    {
+        g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
+
+        this->curState = PAUSE_MENU_STATE_RESTART_GAME;
+
+        for (i = 0; i < ARRAY_SIZE(this->menuSprites); i++)
+        {
+            if (this->menuSprites[i].IsVisible())
+            {
+                this->menuSprites[i].pendingInterrupt = ASCII_INTERRUPT_HIDE;
+            }
+        }
+
+        this->numFrames = 0;
+    }
+
+    switch (this->curState)
+    {
+    case PAUSE_MENU_STATE_INIT:
+        for (i = 0; i < ARRAY_SIZE(this->menuSprites); i++)
+        {
+            g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->menuSprites[i], i + ASCII_SCRIPT_PAUSE);
+        }
+
+        for (i = 0; i < 4; i++)
+        {
+            this->menuSprites[i].pendingInterrupt = ASCII_INTERRUPT_SHOW;
+        }
+
+        if (g_GameManager.IsSpellPractice() && g_GameManager.currentSpellCardNumber >= SPELLCARD_LAST_WORD_START)
+        {
+            g_AsciiManager.asciiAnm->SetSprite(&this->menuSprites[PAUSE_SPRITE_DIFFICULTY], 288);
+        }
+        else
+        {
+            g_AsciiManager.asciiAnm->SetSprite(&this->menuSprites[PAUSE_SPRITE_DIFFICULTY], g_GameManager.difficulty + 283);
+        }
+
+        if (!g_GameManager.IsPracticeMode())
+        {
+            this->menuSprites[PAUSE_SPRITE_PRACTICE_MODE].SetInvisible();
+        }
+
+        if (!g_GameManager.cfg->slowMode)
+        {
+            this->menuSprites[PAUSE_SPRITE_SLOW_MODE].SetInvisible();
+        }
+
+        if (g_GameManager.IsReplay())
+        {
+            this->menuSprites[PAUSE_SPRITE_RESTART].currentInstruction = NULL;
+        }
+
+        this->curState++;
+        this->numFrames = 0;
+
+        if (g_Supervisor.flags.unk1)
+        {
+            g_AsciiManager.captureAnm->SetAndExecuteScriptIdx(&this->menuBackground, CAPTURE_SCRIPT_MENU_BACKGROUND);
+
+            // Seemingly intentionally the width and height are switched?
+            if (g_AnmManager->SetTextureCaptureParams(3,
+                                                      ARCADE_LEFT,
+                                                      ARCADE_TOP,
+                                                      ARCADE_WIDTH,
+                                                      ARCADE_HEIGHT,
+                                                      this->menuBackground.loadedSprite->startPixelInclusive.x,
+                                                      this->menuBackground.loadedSprite->startPixelInclusive.y,
+                                                      this->menuBackground.loadedSprite->heightPx,
+                                                      this->menuBackground.loadedSprite->widthPx) != ZUN_SUCCESS)
+            {
+                // ZUN landmine: if the screen capture never works, the pause
+                // menu gets stuck and only the Escape, Q and R keys work.
+                this->curState = PAUSE_MENU_STATE_INIT;
+                return 0;
+            }
+            else
+            {
+                this->menuBackground.pos.x = ARCADE_LEFT;
+                this->menuBackground.pos.y = ARCADE_TOP;
+                this->menuBackground.pos.z = 0.0f;
+            }
+        }
+        // fallthrough
+    case PAUSE_MENU_STATE_RETURN_TO_GAME_SELECTED:
+        this->menuSprites[PAUSE_SPRITE_RETURN_TO_GAME].color1.d3dColor = COLOR_WHITE;
+        this->menuSprites[PAUSE_SPRITE_QUIT].color1.d3dColor = this->menuSprites[PAUSE_SPRITE_RESTART].color1.d3dColor = COLOR_MENU_ITEM_NORMAL;
+
+        this->menuSprites[PAUSE_SPRITE_RETURN_TO_GAME].pos2 = Float3(-4.0f, -4.0f, 0.0f);
+        this->menuSprites[PAUSE_SPRITE_QUIT].pos2 = this->menuSprites[PAUSE_SPRITE_RESTART].pos2 = Float3(0.0f, 0.0f, 0.0f);
+
+        if (this->numFrames >= 4)
+        {
+            if (!g_GameManager.IsReplay())
+            {
+                if (WAS_PRESSED(TH_BUTTON_UP))
+                {
+                    this->curState = PAUSE_MENU_STATE_RETRY_SELECTED;
+                    g_SoundPlayer.PlaySoundByIdx(SOUND_SHOOT, 0);
+                }
+            }
+            else if (WAS_PRESSED(TH_BUTTON_UP))
+            {
+                this->curState = PAUSE_MENU_STATE_RETURN_TO_TITLE_SELECTED;
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SHOOT, 0);
+            }
+
+            if (WAS_PRESSED(TH_BUTTON_DOWN))
+            {
+                this->curState = PAUSE_MENU_STATE_RETURN_TO_TITLE_SELECTED;
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SHOOT, 0);
+            }
+
+            if (WAS_PRESSED(TH_BUTTON_SELECTMENU))
+            {
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
+
+                for (i = PAUSE_SPRITE_PAUSED; i < PAUSE_SPRITE_CONFIRM; i++)
+                {
+                    this->menuSprites[i].pendingInterrupt = ASCII_INTERRUPT_HIDE;
+                }
+
+                this->curState = PAUSE_MENU_STATE_CLOSING;
+                this->numFrames = 0;
+                this->menuBackground.pendingInterrupt = ASCII_INTERRUPT_BACKGROUND_HIDE;
+            }
+        }
+        break;
+    case PAUSE_MENU_STATE_RETURN_TO_TITLE_SELECTED:
+        this->menuSprites[PAUSE_SPRITE_RETURN_TO_GAME].color1.d3dColor = this->menuSprites[PAUSE_SPRITE_RESTART].color1.d3dColor = COLOR_MENU_ITEM_NORMAL;
+        this->menuSprites[PAUSE_SPRITE_QUIT].color1.d3dColor = COLOR_WHITE;
+
+        this->menuSprites[PAUSE_SPRITE_RETURN_TO_GAME].pos2 = this->menuSprites[PAUSE_SPRITE_RESTART].pos2 = Float3(0.0f, 0.0f, 0.0f);
+        this->menuSprites[PAUSE_SPRITE_QUIT].pos2 = Float3(-4.0f, -4.0f, 0.0f);
+
+        if (this->numFrames >= 4)
+        {
+            if (WAS_PRESSED(TH_BUTTON_UP))
+            {
+                this->curState = PAUSE_MENU_STATE_RETURN_TO_GAME_SELECTED;
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SHOOT, 0);
+            }
+            if (g_GameManager.IsReplay())
+            {
+                if (WAS_PRESSED(TH_BUTTON_DOWN))
+                {
+                    this->curState = PAUSE_MENU_STATE_RETURN_TO_GAME_SELECTED;
+                    g_SoundPlayer.PlaySoundByIdx(SOUND_SHOOT, 0);
+                }
+            }
+            else if (WAS_PRESSED(TH_BUTTON_DOWN))
+            {
+                this->curState = PAUSE_MENU_STATE_RETRY_SELECTED;
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SHOOT, 0);
+            }
+
+            if (WAS_PRESSED(TH_BUTTON_SELECTMENU))
+            {
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
+
+                for (i = PAUSE_SPRITE_PAUSED; i < PAUSE_SPRITE_CONFIRM; i++)
+                {
+                    this->menuSprites[i].pendingInterrupt = ASCII_INTERRUPT_HIDE;
+                }
+
+                for (; i < PAUSE_SPRITE_DIFFICULTY; i++)
+                {
+                    this->menuSprites[i].pendingInterrupt = ASCII_INTERRUPT_SHOW;
+                }
+
+                this->curState = PAUSE_MENU_STATE_RETURN_TO_GAME_NO_SELECTED;
+                this->numFrames = 0;
+            }
+        }
+        break;
+    case PAUSE_MENU_STATE_RETRY_SELECTED:
+        this->menuSprites[PAUSE_SPRITE_RETURN_TO_GAME].color1.d3dColor = this->menuSprites[PAUSE_SPRITE_QUIT].color1.d3dColor = COLOR_MENU_ITEM_NORMAL;
+        this->menuSprites[PAUSE_SPRITE_RESTART].color1.d3dColor = COLOR_WHITE;
+
+        this->menuSprites[PAUSE_SPRITE_RETURN_TO_GAME].pos2 = this->menuSprites[PAUSE_SPRITE_QUIT].pos2 = Float3(0.0f, 0.0f, 0.0f);
+        this->menuSprites[PAUSE_SPRITE_RESTART].pos2 = Float3(-4.0f, -4.0f, 0.0f);
+
+        if (this->numFrames >= 4)
+        {
+            if (WAS_PRESSED(TH_BUTTON_UP))
+            {
+                this->curState = PAUSE_MENU_STATE_RETURN_TO_TITLE_SELECTED;
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SHOOT, 0);
+            }
+            if (WAS_PRESSED(TH_BUTTON_DOWN))
+            {
+                this->curState = PAUSE_MENU_STATE_RETURN_TO_GAME_SELECTED;
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SHOOT, 0);
+            }
+
+            if (WAS_PRESSED(TH_BUTTON_SELECTMENU))
+            {
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
+
+                for (i = PAUSE_SPRITE_PAUSED; i < PAUSE_SPRITE_CONFIRM; i++)
+                {
+                    this->menuSprites[i].pendingInterrupt = ASCII_INTERRUPT_HIDE;
+                }
+
+                for (; i < PAUSE_SPRITE_DIFFICULTY; i++)
+                {
+                    this->menuSprites[i].pendingInterrupt = ASCII_INTERRUPT_SHOW;
+                }
+
+                this->curState = PAUSE_MENU_STATE_RETURN_TO_TITLE_NO_SELECTED;
+                this->numFrames = 0;
+            }
+        }
+        break;
+        break;
+    case PAUSE_MENU_STATE_CLOSING:
+        if (this->numFrames >= 20)
+        {
+            this->curState = 0;
+
+            g_GameManager.isInGameMenu = FALSE;
+
+            for (i = 0; i < ARRAY_SIZE(this->menuSprites); i++)
+            {
+                this->menuSprites[i].SetInvisible();
+            }
+
+            g_SoundPlayer.UnPause();
+            g_Supervisor.systemTime = timeGetTime();
+        }
+        break;
+    case PAUSE_MENU_STATE_RETURN_TO_GAME_YES_SELECTED:
+    case PAUSE_MENU_STATE_RETURN_TO_TITLE_YES_SELECTED:
+        this->menuSprites[PAUSE_SPRITE_YES].color1.d3dColor = COLOR_MENU_ITEM_SELECTED;
+        this->menuSprites[PAUSE_SPRITE_NO].color1.d3dColor = COLOR_MENU_ITEM_NORMAL;
+
+        this->menuSprites[PAUSE_SPRITE_YES].pos2 = Float3(-4.0f, -4.0f, 0.0f);
+        this->menuSprites[PAUSE_SPRITE_NO].pos2 = Float3(0.0f, 0.0f, 0.0f);
+
+        if (this->numFrames >= 4)
+        {
+            if (WAS_PRESSED(TH_BUTTON_UP) || WAS_PRESSED(TH_BUTTON_DOWN))
+            {
+                if (this->curState == PAUSE_MENU_STATE_RETURN_TO_GAME_YES_SELECTED)
+                {
+                    this->curState = PAUSE_MENU_STATE_RETURN_TO_GAME_NO_SELECTED;
+                }
+                else
+                {
+                    this->curState = PAUSE_MENU_STATE_RETURN_TO_TITLE_NO_SELECTED;
+                }
+
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SHOOT, 0);
+            }
+
+            if (WAS_PRESSED(TH_BUTTON_SELECTMENU))
+            {
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
+
+                for (i = PAUSE_SPRITE_CONFIRM; i < PAUSE_SPRITE_DIFFICULTY; i++)
+                {
+                    this->menuSprites[i].pendingInterrupt = ASCII_INTERRUPT_HIDE;
+                }
+
+                if (this->curState == PAUSE_MENU_STATE_RETURN_TO_GAME_YES_SELECTED)
+                {
+                    this->curState = PAUSE_MENU_STATE_EXIT_TO_TITLE;
+                }
+                else
+                {
+                    this->curState = PAUSE_MENU_STATE_RESTART_GAME;
+                }
+
+                this->numFrames = 0;
+            }
+        }
+        break;
+    case PAUSE_MENU_STATE_RETURN_TO_GAME_NO_SELECTED:
+    case PAUSE_MENU_STATE_RETURN_TO_TITLE_NO_SELECTED:
+        this->menuSprites[PAUSE_SPRITE_YES].color1.d3dColor = COLOR_MENU_ITEM_NORMAL;
+        this->menuSprites[PAUSE_SPRITE_NO].color1.d3dColor = COLOR_MENU_ITEM_SELECTED;
+
+        this->menuSprites[PAUSE_SPRITE_YES].pos2 = Float3(0.0f, 0.0f, 0.0f);
+        this->menuSprites[PAUSE_SPRITE_NO].pos2 = Float3(-4.0f, -4.0f, 0.0f);
+
+        if (this->numFrames >= 4)
+        {
+            if (WAS_PRESSED(TH_BUTTON_UP) || WAS_PRESSED(TH_BUTTON_DOWN))
+            {
+                if (this->curState == PAUSE_MENU_STATE_RETURN_TO_GAME_NO_SELECTED)
+                {
+                    this->curState = PAUSE_MENU_STATE_RETURN_TO_GAME_YES_SELECTED;
+                }
+                else
+                {
+                    this->curState = PAUSE_MENU_STATE_RETURN_TO_TITLE_YES_SELECTED;
+                }
+
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SHOOT, 0);
+            }
+
+            if (WAS_PRESSED(TH_BUTTON_SELECTMENU))
+            {
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
+
+                for (i = PAUSE_SPRITE_PAUSED; i < PAUSE_SPRITE_CONFIRM; i++)
+                {
+                    this->menuSprites[i].pendingInterrupt = ASCII_INTERRUPT_SHOW;
+                }
+
+                for (; i < PAUSE_SPRITE_DIFFICULTY; i++)
+                {
+                    this->menuSprites[i].pendingInterrupt = ASCII_INTERRUPT_HIDE;
+                }
+
+                if (this->curState == PAUSE_MENU_STATE_RETURN_TO_GAME_NO_SELECTED)
+                {
+                    this->curState = PAUSE_MENU_STATE_RETURN_TO_TITLE_SELECTED;
+                }
+                else
+                {
+                    this->curState = PAUSE_MENU_STATE_RETRY_SELECTED;
+                }
+
+                this->numFrames = 0;
+            }
+        }
+        break;
+    case PAUSE_MENU_STATE_EXIT_TO_TITLE:
+        if (this->numFrames >= 20)
+        {
+            this->curState = 0;
+
+            g_Supervisor.curState = SupervisorState_TitleScreen;
+            g_GameManager.isInGameMenu = FALSE;
+            g_Supervisor.systemTime = timeGetTime();
+
+            ResultScreen::RegisterChain(2);
+        }
+        break;
+    case PAUSE_MENU_STATE_RESTART_GAME:
+        if (this->numFrames >= 20)
+        {
+            if (!g_GameManager.IsSpellPractice() && !g_GameManager.IsPracticeMode() && g_GameManager.difficulty != EXTRA)
+            {
+                this->curState = PAUSE_MENU_STATE_INIT;
+                g_Supervisor.curState = SupervisorState_GameManagerRestartFromBeginning;
+                g_GameManager.isInGameMenu = FALSE;
+                g_Supervisor.systemTime = timeGetTime();
+            }
+            else
+            {
+                if (g_GameManager.IsSpellPractice() && !FUN_00439916(g_GameManager.currentSpellCardNumber))
+                {
+                    g_SoundPlayer.UnPause();
+                    g_SoundPlayer.FadeIn(2.0f);
+                }
+                else
+                {
+                    g_Supervisor.StopAudio();
+                }
+
+                g_Supervisor.curState = SupervisorState_SpellcardPracticeRestart;
+
+                g_Gui.FUN_00438f58();
+
+                g_GameManager.isInGameMenu = FALSE;
+                g_Supervisor.systemTime = timeGetTime();
+
+                return 0;
+            }
+        }
+        break;
+    }
+
+    for (i = 0; i < ARRAY_SIZE(this->menuSprites); i++)
+    {
+        g_AnmManager->ExecuteScript(&this->menuSprites[i]);
+    }
+
+    if (g_Supervisor.flags.unk1)
+    {
+        g_AnmManager->ExecuteScript(&this->menuBackground);
+    }
+
+    this->numFrames++;
+
     return 0;
 }
 
@@ -760,9 +1270,302 @@ i32 PauseMenu::OnDraw()
     return 0;
 }
 
-// STUB: th08 0x404890
+// FUNCTION: th08 0x404890
 i32 RetryMenu::OnUpdate()
 {
+    i32 i;
+
+    if (g_GameManager.IsPracticeMode() && !g_GameManager.flags.isSpellPractice)
+    {
+        g_GameManager.showRetryMenu = FALSE;
+        g_GameManager.globals->displayScore = g_GameManager.globals->score;
+        g_Supervisor.curState = SupervisorState_ResultScreenFromGame;
+        return 1;
+    }
+
+    if (g_GameManager.IsReplay())
+    {
+        g_GameManager.showRetryMenu = FALSE;
+        g_Supervisor.curState = SupervisorState_FinishReplay;
+        g_GameManager.globals->displayScore = g_GameManager.globals->score;
+        return 1;
+    }
+
+    switch (this->curState)
+    {
+    case RETRY_MENU_STATE_INIT:
+        if (this->numFrames == 0)
+        {
+            if (!g_GameManager.IsSpellPractice() && g_GameManager.difficulty < EXTRA
+                && ((i8)g_GameManager.GetClockTime() >= 11 || g_GameManager.currentStage == STAGE6B))
+            {
+                g_GameManager.showRetryMenu = FALSE;
+                g_GameManager.globals->displayScore = g_GameManager.globals->score;
+
+                if (g_GameManager.difficulty >= EXTRA)
+                {
+                    g_Supervisor.curState = SupervisorState_ResultScreenFromGame;
+                }
+                else
+                {
+                    g_GameManager.flags.unk4 = FALSE;
+                    g_Supervisor.curState = SupervisorState_Ending;
+                }
+
+                return 1;
+            }
+
+            if (g_GameManager.IsSpellPractice() && !FUN_00439916(g_GameManager.currentSpellCardNumber))
+            {
+                g_SoundPlayer.PartialFadeOut(1.0f);
+            }
+            else
+            {
+                g_SoundPlayer.Pause();
+            }
+
+            for (i = 0; i < RETRY_SPRITE_CLOCKTIME; i++)
+            {
+                g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->menuSprites[i], i + ASCII_SCRIPT_RETRY);
+                this->menuSprites[i].pendingInterrupt = ASCII_INTERRUPT_SHOW;
+            }
+
+            g_Gui.timesAnm->SetAndExecuteScriptIdx(&this->menuSprites[RETRY_SPRITE_CLOCKTIME], 1);
+            g_Gui.timesAnm->SetSprite(&this->menuSprites[RETRY_SPRITE_CLOCKTIME], (i8)g_GameManager.GetClockTime());
+
+            if (g_Supervisor.flags.unk1)
+            {
+                g_AsciiManager.captureAnm->SetAndExecuteScriptIdx(&this->menuBackground, 0);
+
+                // Seemingly intentionally the width and height are switched?
+                if (g_AnmManager->SetTextureCaptureParams(3,
+                                                          ARCADE_LEFT,
+                                                          ARCADE_TOP,
+                                                          ARCADE_WIDTH,
+                                                          ARCADE_HEIGHT,
+                                                          this->menuBackground.loadedSprite->startPixelInclusive.x,
+                                                          this->menuBackground.loadedSprite->startPixelInclusive.y,
+                                                          this->menuBackground.loadedSprite->heightPx,
+                                                          this->menuBackground.loadedSprite->widthPx) != ZUN_SUCCESS)
+                {
+                    // ZUN landmine: if the screen capture never works, the pause
+                    // menu gets stuck and only the Escape, Q and R keys work.
+                    this->curState = PAUSE_MENU_STATE_INIT;
+                    return 0;
+                }
+                else
+                {
+                    this->menuBackground.pos.x = ARCADE_LEFT;
+                    this->menuBackground.pos.y = ARCADE_TOP;
+                    this->menuBackground.pos.z = 0.0f;
+                }
+            }
+
+            g_Supervisor.UpdateGameTime();
+        }
+
+        if (this->numFrames > 8)
+        {
+            break;
+        }
+
+        // Why +=? Why not =?
+        if (!g_GameManager.IsSpellPractice() && g_GameManager.difficulty < EXTRA)
+        {
+            this->curState += RETRY_MENU_STATE_NO_SELECTED;
+        }
+        else
+        {
+            this->curState += !g_Spellcard.IsCaptured() && g_GameManager.IsSpellPractice()
+                              ? RETRY_MENU_STATE_YES_SELECTED
+                              : RETRY_MENU_STATE_NO_SELECTED;
+        }
+
+        this->numFrames = 0;
+
+        if (this->curState == RETRY_MENU_STATE_NO_SELECTED)
+        {
+            goto selected_no;
+        }
+        // fallthrough
+    case RETRY_MENU_STATE_YES_SELECTED:
+        this->menuSprites[RETRY_SPRITE_YES].color1.d3dColor = COLOR_MENU_ITEM_SELECTED;
+        this->menuSprites[RETRY_SPRITE_NO].color1.d3dColor = COLOR_MENU_ITEM_NORMAL;
+        this->menuSprites[RETRY_SPRITE_YES].pos2 = Float3(-4.0f, -4.0f, 0.0f);
+        this->menuSprites[RETRY_SPRITE_NO].pos2 = Float3(0.0f, 0.0f, 0.0f);
+
+        if (this->numFrames >= 4)
+        {
+            if (WAS_PRESSED(TH_BUTTON_UP) || WAS_PRESSED(TH_BUTTON_DOWN))
+            {
+                this->curState = RETRY_MENU_STATE_NO_SELECTED;
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SHOOT, 0);
+            }
+
+            if (WAS_PRESSED(TH_BUTTON_SELECTMENU))
+            {
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
+
+                if (!g_GameManager.IsSpellPractice() && g_GameManager.difficulty < EXTRA)
+                {
+                    this->menuSprites[RETRY_SPRITE_CLOCKTIME].pendingInterrupt = ASCII_INTERRUPT_CLOCKTIME_FLIP;
+                    this->curState = RETRY_MENU_STATE_RETRY;
+                    this->numFrames = 0;
+                }
+                else
+                {
+                    if (g_GameManager.IsSpellPractice()
+                        && !FUN_00439916(g_GameManager.currentSpellCardNumber))
+                    {
+                        g_GameManager.showRetryMenu = FALSE;
+                        g_SoundPlayer.UnPause();
+                        g_SoundPlayer.PartialFadeIn(1.0f);
+                    }
+                    else
+                    {
+                        g_Supervisor.StopAudio();
+                    }
+
+                    g_Supervisor.curState = SupervisorState_SpellcardPracticeRestart;
+                    g_Gui.FUN_00438f58();
+                    g_GameManager.showRetryMenu = FALSE;
+                    g_Supervisor.systemTime = timeGetTime();
+
+                    return 0;
+                }
+            }
+        }
+        break;
+    case RETRY_MENU_STATE_NO_SELECTED:
+selected_no:
+        this->menuSprites[RETRY_SPRITE_NO].color1.d3dColor = COLOR_MENU_ITEM_SELECTED;
+        this->menuSprites[RETRY_SPRITE_YES].color1.d3dColor = COLOR_MENU_ITEM_NORMAL;
+        this->menuSprites[RETRY_SPRITE_NO].pos2 = Float3(-4.0f, -4.0f, 0.0f);
+        this->menuSprites[RETRY_SPRITE_YES].pos2 = Float3(0.0f, 0.0f, 0.0f);
+
+        if (this->numFrames >= 30)
+        {
+            if (WAS_PRESSED(TH_BUTTON_UP) || WAS_PRESSED(TH_BUTTON_DOWN))
+            {
+                this->curState = RETRY_MENU_STATE_YES_SELECTED;
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SHOOT, 0);
+            }
+            if (WAS_PRESSED(TH_BUTTON_SELECTMENU))
+            {
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
+
+                for (i = 0; i < 4; i++)
+                {
+                    this->menuSprites[i].pendingInterrupt = ASCII_INTERRUPT_HIDE;
+                }
+
+                this->curState = RETRY_MENU_STATE_EXIT_TO_TITLE;
+                this->numFrames = 0;
+            }
+        }
+        break;
+    case RETRY_MENU_STATE_EXIT_TO_TITLE:
+        if (this->numFrames >= 20)
+        {
+            this->curState = RETRY_MENU_STATE_INIT;
+            this->numFrames = 0;
+
+            g_GameManager.showRetryMenu = FALSE;
+
+            g_Supervisor.curState = SupervisorState_ResultScreenFromGame;
+
+            for (i = 0; i < 4; i++)
+            {
+                this->menuSprites[i].SetInvisible();
+            }
+
+            g_GameManager.globals->displayScore = g_GameManager.globals->score;
+            g_Supervisor.systemTime = timeGetTime();
+            return 0;
+        }
+
+        break;
+    case RETRY_MENU_STATE_RETRY:
+        if (this->numFrames == 15)
+        {
+            g_GameManager.AddToClockTime(1);
+            g_Gui.timesAnm->SetSprite(&this->menuSprites[RETRY_SPRITE_CLOCKTIME], (i8)g_GameManager.GetClockTime());
+        }
+        if (this->numFrames == 60)
+        {
+            this->menuBackground.pendingInterrupt = ASCII_INTERRUPT_BACKGROUND_HIDE;
+
+            for (i = 0; i < 4; i++)
+            {
+                // This doesn't do anything? Could this be an interrupt that
+                // was removed from the scripts later in development?
+                this->menuSprites[i].pendingInterrupt = 3;
+            }
+        }
+        if (this->numFrames >= 90)
+        {
+            this->curState = RETRY_MENU_STATE_INIT;
+            this->numFrames = 0;
+
+            g_GameManager.showRetryMenu = FALSE;
+
+            for (i = 0; i < 4; i++)
+            {
+                this->menuSprites[i].SetInvisible();
+            }
+
+            g_GameManager.globals->numRetries++;
+
+            // Set the score to the number of retry. Each increment is a
+            // multiple of 10, so the last digit of your score is the number
+            // of continues/retries used.
+            g_GameManager.globals->displayScore = g_GameManager.globals->numRetries;
+            g_GameManager.globals->unk0x10 = 0;
+            g_GameManager.globals->score = g_GameManager.globals->displayScore;
+
+            g_GameManager.SetLives(g_GameManager.cfg->lifeCount);
+
+            g_GameManager.SetBombCount(reinterpret_cast<PauseRetryShtFileView *>(g_Player.primaryShtFile)->bombCount);
+
+            g_GameManager.globals->grazeInStage = 0;
+            g_GameManager.globals->pointItemsCollectedInStage = 0;
+            g_GameManager.globals->pointItemsCollected = 0;
+
+            g_GameManager.SetPower(0);
+
+            g_GameManager.globals->pointItemExtendsSoFar = 0;
+            g_GameManager.globals->nextPointItemExtendThreshold = 100;
+
+            g_Supervisor.unk174 = 8;
+
+            IncrementIfBelow(&g_GameManager.plst.playData[g_GameManager.difficulty].attemptsTotal, 999999);
+            IncrementIfBelow(&g_GameManager.plst.playData[MAX_DIFFICULTIES + 1].attemptsTotal, 999999);
+            IncrementIfBelow(&g_GameManager.plst.playData[g_GameManager.difficulty].attemptsPerCharacter[g_GameManager.shotType], 999999);
+            IncrementIfBelow(&g_GameManager.plst.playData[MAX_DIFFICULTIES + 1].attemptsPerCharacter[g_GameManager.shotType], 999999);
+            IncrementIfBelow(&g_GameManager.plst.playData[g_GameManager.difficulty].continues, 999999);
+            IncrementIfBelow(&g_GameManager.plst.playData[MAX_DIFFICULTIES + 1].continues, 999999);
+
+            g_SoundPlayer.UnPause();
+
+            g_Supervisor.systemTime = timeGetTime();
+
+            return 0;
+        }
+        break;
+    }
+
+    for (i = 0; i < 4; i++)
+    {
+        g_AnmManager->ExecuteScript(&this->menuSprites[i]);
+    }
+
+    if (g_Supervisor.flags.unk1)
+    {
+        g_AnmManager->ExecuteScript(&this->menuBackground);
+    }
+
+    this->numFrames++;
+
     return 0;
 }
 
