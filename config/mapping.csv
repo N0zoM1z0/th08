@@ -1001,7 +1001,7 @@ th08::AnmManager::CopySurfaceToBackbuffer2,0x466d70,0x1a8,__thiscall,,void,AnmMa
 th08::AnmManager::CaptureToTexture,0x466f20,0x11e,__thiscall,,void,AnmManager*,i32,i32,i32,i32,i32,i32,i32,i32,i32
 th08::AnmManager::CopyTextureRect,0x467040,0x133,__thiscall,,void,AnmManager*,i32,i32,i32,i32,RECT*,RECT*
 th08::AnmManager::CaptureToSurface,0x467180,0x219,__thiscall,,void,AnmManager*,i32,i32,i32,i32,i32,i32,i32,i32,i32
-th08::Title::OnUpdate,0x467399,0x10d,__fastcall,,u32,Title*
+th08::TitleScreen::OnUpdate,0x467399,0x10d,__fastcall,,ChainCallbackResult,TitleScreen*
 th08::TitleScreen::OnUpdateStartMenu,0x4674e0,0xe77,__thiscall,,ChainCallbackResult,TitleScreen*
 th08::TitleScreen::OnUpdateOptions,0x46837b,0x1148,unknown,,u8
 th08::TitleScreen::ChangeCurrentScreen,0x4694c3,0x48,unknown,,u8,u8

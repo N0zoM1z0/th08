@@ -1631,4 +1631,68 @@ char *__fastcall ConvertToFullWidthDigits(i32 value, i32 width)
     return g_FullWidthNumberBuffer;
 }
 
+
+// Claim-safe owner for the Title dispatcher; compare through its associated
+// switch data rather than inflating authored coverage.
+ChainCallbackResult TitleScreen::OnUpdate(TitleScreen *titleScreen)
+{
+    ChainCallbackResult result;
+
+    if (titleScreen->state != TitleScreenState_Ready)
+    {
+        if (titleScreen->state == TitleScreenState_Close)
+        {
+            return CHAIN_CALLBACK_RESULT_EXIT_GAME_SUCCESS;
+        }
+        else
+        {
+            return CHAIN_CALLBACK_RESULT_CONTINUE;
+        }
+    }
+
+    switch (titleScreen->currentScreen)
+    {
+    case TitleCurrentScreen_StartMenu:
+        result = titleScreen->OnUpdateStartMenu();
+        break;
+    case TitleCurrentScreen_Replay:
+        result = titleScreen->OnUpdateReplayMenu();
+        break;
+    case TitleCurrentScreen_Option:
+        result = titleScreen->OnUpdateOptions();
+        break;
+    case TitleCurrentScreen_KeyConfig:
+        result = titleScreen->OnUpdateKeyConfig();
+        break;
+    case TitleCurrentScreen_DifficultySelect:
+    case TitleCurrentScreen_DifficultySelectPractice:
+    case TitleCurrentScreen_DifficultySelectExtra:
+        result = titleScreen->OnUpdateDifficultySelect();
+        break;
+    case TitleCurrentScreen_CharacterSelect:
+    case TitleCurrentScreen_CharacterSelectPractice:
+    case TitleCurrentScreen_CharacterSelectExtra:
+    case TitleCurrentScreen_CharacterSelectSpell:
+        result = titleScreen->OnUpdateCharacterSelect();
+        break;
+    case TitleCurrentScreen_PracticeStageSelect:
+        result = titleScreen->OnUpdatePracticeStageSelect();
+        break;
+    case TitleCurrentScreen_SpellStageSelect:
+        result = titleScreen->OnUpdateSpellStageSelect();
+        break;
+    case TitleCurrentScreen_SpellCardSelect:
+        result = titleScreen->OnUpdateSpellCardSelect();
+        break;
+    }
+
+    g_AnmManager->ExecuteScriptArray(titleScreen->vms, titleScreen->vmCount);
+    if (titleScreen->currentHelpTextVm != NULL)
+    {
+        g_AnmManager->ExecuteScript(titleScreen->currentHelpTextVm);
+    }
+
+    return result;
+}
+
 } // namespace th08

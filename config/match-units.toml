@@ -114411,3 +114411,161 @@ offset = 0x90
 type = "DIR32"
 symbol = "?g_FullWidthNumberBuffer@th08@@3PADA"
 target = 0x018BDDC8
+
+[[units]]
+name = "title-on-update-00467399"
+object = "build/probes/TitleReplayMenuProbe.obj"
+symbol = "?OnUpdate@TitleScreen@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+target_address = 0x00467399
+size = 0x10D
+compare_size = 0x147
+
+[[units.relocations]]
+offset = 0x4D
+type = "DIR32"
+symbol = "$L70011"
+target = 0x004674CE
+
+[[units.relocations]]
+offset = 0x54
+type = "DIR32"
+symbol = "$L70012"
+target = 0x004674A6
+
+[[units.relocations]]
+offset = 0x5C
+type = "REL32"
+symbol = "?OnUpdateStartMenu@TitleScreen@th08@@QAE?AW4ChainCallbackResult@2@XZ"
+target = 0x004674E0
+
+[[units.relocations]]
+offset = 0x69
+type = "REL32"
+symbol = "?OnUpdateReplayMenu@TitleScreen@th08@@QAE?AW4ChainCallbackResult@2@XZ"
+target = 0x0046E136
+
+[[units.relocations]]
+offset = 0x76
+type = "REL32"
+symbol = "?OnUpdateOptions@TitleScreen@th08@@QAE?AW4ChainCallbackResult@2@XZ"
+target = 0x0046837B
+
+[[units.relocations]]
+offset = 0x83
+type = "REL32"
+symbol = "?OnUpdateKeyConfig@TitleScreen@th08@@QAE?AW4ChainCallbackResult@2@XZ"
+target = 0x00469636
+
+[[units.relocations]]
+offset = 0x90
+type = "REL32"
+symbol = "?OnUpdateDifficultySelect@TitleScreen@th08@@QAE?AW4ChainCallbackResult@2@XZ"
+target = 0x0046A071
+
+[[units.relocations]]
+offset = 0x9D
+type = "REL32"
+symbol = "?OnUpdateCharacterSelect@TitleScreen@th08@@QAE?AW4ChainCallbackResult@2@XZ"
+target = 0x0046A625
+
+[[units.relocations]]
+offset = 0xAA
+type = "REL32"
+symbol = "?OnUpdatePracticeStageSelect@TitleScreen@th08@@QAE?AW4ChainCallbackResult@2@XZ"
+target = 0x0046ADB0
+
+[[units.relocations]]
+offset = 0xB7
+type = "REL32"
+symbol = "?OnUpdateSpellStageSelect@TitleScreen@th08@@QAE?AW4ChainCallbackResult@2@XZ"
+target = 0x0046B174
+
+[[units.relocations]]
+offset = 0xC4
+type = "REL32"
+symbol = "?OnUpdateSpellCardSelect@TitleScreen@th08@@QAE?AW4ChainCallbackResult@2@XZ"
+target = 0x0046BBC0
+
+[[units.relocations]]
+offset = 0xDF
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0xE4
+type = "REL32"
+symbol = "?ExecuteScriptArray@AnmManager@th08@@QAEXPAUAnmVm@2@H@Z"
+target = 0x00462310
+
+[[units.relocations]]
+offset = 0xFF
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x104
+type = "REL32"
+symbol = "?ExecuteScript@AnmManager@th08@@QAEIPAUAnmVm@2@@Z"
+target = 0x0045EA00
+
+[[units.relocations]]
+offset = 0x10D
+type = "DIR32"
+symbol = "$L69500"
+target = 0x004673F1
+
+[[units.relocations]]
+offset = 0x111
+type = "DIR32"
+symbol = "$L69502"
+target = 0x0046740B
+
+[[units.relocations]]
+offset = 0x115
+type = "DIR32"
+symbol = "$L69503"
+target = 0x00467418
+
+[[units.relocations]]
+offset = 0x119
+type = "DIR32"
+symbol = "$L69504"
+target = 0x00467425
+
+[[units.relocations]]
+offset = 0x11D
+type = "DIR32"
+symbol = "$L69505"
+target = 0x00467432
+
+[[units.relocations]]
+offset = 0x121
+type = "DIR32"
+symbol = "$L69501"
+target = 0x004673FE
+
+[[units.relocations]]
+offset = 0x125
+type = "DIR32"
+symbol = "$L69506"
+target = 0x0046743F
+
+[[units.relocations]]
+offset = 0x129
+type = "DIR32"
+symbol = "$L69507"
+target = 0x0046744C
+
+[[units.relocations]]
+offset = 0x12D
+type = "DIR32"
+symbol = "$L69508"
+target = 0x00467459
+
+[[units.relocations]]
+offset = 0x131
+type = "DIR32"
+symbol = "$L69497"
+target = 0x00467464

@@ -89,6 +89,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00418420,th08::EclManager::Unload,44,matching,100.00,ecl-manager-unload,python3 scripts/compare-function.py ecl-manager-unload --json
 0x00418450,th08::EclManager::CallEclSub,88,matching,100.00,ecl-manager-call-sub,python3 scripts/compare-function.py ecl-manager-call-sub --json
 0x0043EF40,th08::MidiTimer::OnTimerElapsed,11,matching,100.00,midi-timer-elapsed,python3 scripts/compare-function.py midi-timer-elapsed --json
+0x00467399,th08::TitleScreen::OnUpdate,269,matching,100.00,title-on-update-00467399,python3 scripts/compare-function.py title-on-update-00467399 --json
 0x0046B174,th08::TitleScreen::OnUpdateSpellStageSelect,2636,matching,100.00,title-spell-stage-select-0046b174,python3 scripts/compare-function.py title-spell-stage-select-0046b174 --json
 0x0046D763,th08::ConvertToFullWidthDigits,150,matching,100.00,title-full-width-digits-0046d763,python3 scripts/compare-function.py title-full-width-digits-0046d763 --json
 0x004716E0,th08::CSoundManager::CSoundManager,23,matching,100.00,sound-manager-constructor,python3 scripts/compare-function.py sound-manager-constructor --json
