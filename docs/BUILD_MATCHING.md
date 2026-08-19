@@ -1212,3 +1212,8 @@ without those explicit fields retain the stricter whole-section ownership rule.
 
 - `crt0dat.obj` contributes a coherent startup/termination chain at `0x004A69DF..0x004A6B98`: `__crtExitProcess`, `_lockexit`, `_unlockexit`, `_cinit`, `doexit`, public `exit`, `_cexit`, and `_c_exit`.  The last wrapper at `0x004A6B8A` was absent from the imported inventory; its 0xF-byte archive function fills the exact gap before `calloc @ 0x004A6B99` and replays one `REL32 _doexit` relocation.
 - `__crtExitProcess` has a 0x30-byte COFF function-definition extent but only 0x2F target body bytes before the terminal `int3`, matching the existing `_abort` precedent.  Keep `body_size = 0x2F, compare_size = 0x30` so compiler trap bytes are verified without inflating body progress.
+
+### VC7 initsect inventory holes
+
+- `initsect.obj` owns `_RTC_Initialize @ 0x004ACBFE` and `_RTC_Terminate @ 0x004ACC42`, each as a 0x44-byte function-definition section with five relocations.  The imported inventory truncated Initialize to 0x3D and omitted Terminate entirely, even though target control flow has clean `ret` boundaries at 0x004ACC41 and 0x004ACC85.
+- When an archive relocation points into an apparently unmapped gap, inspect the exact member before assuming the target address is data or an internal label.  Here the archive and target establish a missing public runtime function, so add a new library row rather than folding it into a neighbor.

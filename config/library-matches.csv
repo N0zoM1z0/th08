@@ -144,3 +144,5 @@ address,name,size,status,unit,evidence
 0x004A6B59,exit,17,matching,crt-public-exit,python3 scripts/compare-library.py crt-public-exit --json
 0x004A6B7B,_cexit,15,matching,crt-cexit,python3 scripts/compare-library.py crt-cexit --json
 0x004A6B8A,_c_exit,15,matching,crt-c-exit,python3 scripts/compare-library.py crt-c-exit --json
+0x004ACBFE,_RTC_Initialize,68,matching,crt-rtc-initialize,python3 scripts/compare-library.py crt-rtc-initialize --json
+0x004ACC42,_RTC_Terminate,68,matching,crt-rtc-terminate,python3 scripts/compare-library.py crt-rtc-terminate --json

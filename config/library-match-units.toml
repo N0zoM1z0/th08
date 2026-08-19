@@ -5851,3 +5851,71 @@ offset = 0x7
 type = "REL32"
 symbol = "_doexit"
 target_base = 0x004A6A86
+
+[[units]]
+name = "crt-rtc-initialize"
+target_address = 0x004ACBFE
+body_size = 0x44
+compare_size = 0x44
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/initsect.obj"
+symbol = "__RTC_Initialize"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T18502"
+target_base = 0x004BE630
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0xF
+type = "DIR32"
+symbol = "___rtc_iaa"
+target_base = 0x004C3C84
+[[units.relocations]]
+offset = 0x16
+type = "DIR32"
+symbol = "___rtc_izz"
+target_base = 0x004C3C88
+[[units.relocations]]
+offset = 0x3F
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3
+
+[[units]]
+name = "crt-rtc-terminate"
+target_address = 0x004ACC42
+body_size = 0x44
+compare_size = 0x44
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/initsect.obj"
+symbol = "__RTC_Terminate"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T18518"
+target_base = 0x004BE640
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0xF
+type = "DIR32"
+symbol = "___rtc_taa"
+target_base = 0x004C3C8C
+[[units.relocations]]
+offset = 0x16
+type = "DIR32"
+symbol = "___rtc_tzz"
+target_base = 0x004C3C90
+[[units.relocations]]
+offset = 0x3F
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3

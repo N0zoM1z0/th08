@@ -1926,7 +1926,8 @@ FUN_004ac6d0,0x4ac6d0,library
 FUN_004ac83c,0x4ac83c,library
 __crtGetEnvironmentStringsA,0x4ac8de,library
 FUN_004aca00,0x4aca00,library
-FUN_004acbfe,0x4acbfe,library
+_RTC_Initialize,0x4acbfe,library
+_RTC_Terminate,0x4acc42,library
 _set_exp,0x4acc86,library
 _sptype,0x4accb0,library
 FUN_004acd0b,0x4acd0b,library
