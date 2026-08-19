@@ -2831,3 +2831,149 @@ offset = 0x31
 type = "REL32"
 symbol = "_abort"
 target_base = 0x004B05BD
+
+[[units]]
+name = "crt-updatetlocinfo-lk"
+target_address = 0x004A9F4C
+body_size = 0xC2
+compare_size = 0xC2
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/setlocal.obj"
+symbol = "___updatetlocinfo_lk"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x2
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0xD
+type = "DIR32"
+symbol = "___ptlocinfo"
+target_base = 0x004CC07C
+[[units.relocations]]
+offset = 0x4C
+type = "DIR32"
+symbol = "___ptlocinfo"
+target_base = 0x004CC07C
+[[units.relocations]]
+offset = 0x55
+type = "DIR32"
+symbol = "___ptlocinfo"
+target_base = 0x004CC07C
+[[units.relocations]]
+offset = 0x5D
+type = "DIR32"
+symbol = "___ptlocinfo"
+target_base = 0x004CC07C
+[[units.relocations]]
+offset = 0x6C
+type = "DIR32"
+symbol = "___ptlocinfo"
+target_base = 0x004CC07C
+[[units.relocations]]
+offset = 0x7B
+type = "DIR32"
+symbol = "___ptlocinfo"
+target_base = 0x004CC07C
+[[units.relocations]]
+offset = 0x8A
+type = "DIR32"
+symbol = "___ptlocinfo"
+target_base = 0x004CC07C
+[[units.relocations]]
+offset = 0x99
+type = "DIR32"
+symbol = "___ptlocinfo"
+target_base = 0x004CC07C
+[[units.relocations]]
+offset = 0xB0
+type = "DIR32"
+symbol = "___initiallocinfo"
+target_base = 0x004CC028
+[[units.relocations]]
+offset = 0xB8
+type = "REL32"
+symbol = "___freetlocinfo"
+target_base = 0x004A9E82
+
+[[units]]
+name = "crt-updatetlocinfo"
+target_address = 0x004AA00E
+body_size = 0x32
+compare_size = 0x3B
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/setlocal.obj"
+symbol = "___updatetlocinfo"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T20007"
+target_base = 0x004BDC20
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0xF
+type = "REL32"
+symbol = "__lock"
+target_base = 0x004A8175
+[[units.relocations]]
+offset = 0x19
+type = "REL32"
+symbol = "___updatetlocinfo_lk"
+target_base = 0x004A9F4C
+[[units.relocations]]
+offset = 0x2D
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3
+[[units.relocations]]
+offset = 0x35
+type = "REL32"
+symbol = "__unlock"
+target_base = 0x004A80E1
+
+[[units]]
+name = "crt-updatetlocinfo-tail-funclet"
+target_address = 0x004AA040
+body_size = 0x9
+compare_size = 0x9
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/setlocal.obj"
+symbol = "$L20005"
+allow_tail_local_funclet = true
+owner_symbol = "___updatetlocinfo"
+section_offset = 0x32
+section_size = 0x3B
+[[units.relocations]]
+offset = 0x3
+type = "REL32"
+symbol = "__unlock"
+target_base = 0x004A80E1
+
+[[units]]
+name = "crt-abort"
+target_address = 0x004B05BD
+body_size = 0x17
+compare_size = 0x18
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/abort.obj"
+symbol = "_abort"
+[[units.relocations]]
+offset = 0x3
+type = "REL32"
+symbol = "__NMSG_WRITE"
+target_base = 0x004AC28C
+[[units.relocations]]
+offset = 0xA
+type = "REL32"
+symbol = "_raise"
+target_base = 0x004B17F2
+[[units.relocations]]
+offset = 0x13
+type = "REL32"
+symbol = "__exit"
+target_base = 0x004A6B6A

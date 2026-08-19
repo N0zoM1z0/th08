@@ -1873,7 +1873,7 @@ FUN_004a9886,0x4a9886,0x206,unknown,,u8,u8,u8,u8,u8,u8,u8
 FUN_004a9a8c,0x4a9a8c,0xb2,unknown,,u8
 FUN_004a9e0b,0x4a9e0b,0x77,unknown,,u8,u8,u8,u8
 FUN_004a9e82,0x4a9e82,0xca,unknown,,u8,u8
-FUN_004a9f4c,0x4a9f4c,0xc2,unknown,,u8
+___updatetlocinfo_lk,0x4a9f4c,0xc2,unknown,,u8
 ___updatetlocinfo,0x4aa00e,0x32,__cdecl,,u8
 FUN_004aa040,0x4aa040,0x9,unknown,,u8
 __mtterm,0x4aa049,0x1e,unknown,,u8

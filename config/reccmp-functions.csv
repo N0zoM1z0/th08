@@ -1874,7 +1874,7 @@ FUN_004a9886,0x4a9886,library
 FUN_004a9a8c,0x4a9a8c,library
 FUN_004a9e0b,0x4a9e0b,library
 FUN_004a9e82,0x4a9e82,library
-FUN_004a9f4c,0x4a9f4c,library
+__updatetlocinfo_lk,0x4a9f4c,library
 __updatetlocinfo,0x4aa00e,library
 FUN_004aa040,0x4aa040,library
 _mtterm,0x4aa049,library

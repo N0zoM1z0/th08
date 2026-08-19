@@ -1098,3 +1098,14 @@ without those explicit fields retain the stricter whole-section ownership rule.
   relocation is zero-difference. An instruction-splitting boundary is enough to
   reject the imported extent immediately; use the archive/control-flow replay
   to establish the replacement rather than guessing from the next address.
+
+### Trap bytes and cleanup tails can be comparison coverage without body progress
+
+- `_abort @ 0x004B05BD` has a 0x17-byte mapped body ending immediately before
+  the final `int3`, while VC7 `abort.obj` owns a 0x18-byte function section.
+  Replaying the full section is exact, but only the 0x17 executable body counts
+  toward library progress. Likewise `__updatetlocinfo @ 0x004AA00E` keeps its
+  0x32 main body while comparing the complete 0x3B section; the final nine
+  bytes are independently accepted as the pinned tail-local `FUN_004AA040`
+  cleanup range. Do not inflate function progress with trap/padding or a
+  separately tracked cleanup tail just because the archive section owns it.
