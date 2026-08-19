@@ -1982,7 +1982,7 @@ _isatty,0x4af433,library
 __wctomb_mt,0x4af5be,library
 wctomb,0x4af61e,library
 _aulldvrm,0x4af650,library
-FUN_004af6e5,0x4af6e5,library
+__87except,0x4af6e5,library
 __crtInitCritSecNoSpinCount@8,0x4af7e3,library
 __crtInitCritSecAndSpinCount,0x4af7f3,library
 __crtGetStringTypeA,0x4af87e,library

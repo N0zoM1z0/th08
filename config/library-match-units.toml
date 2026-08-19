@@ -8589,3 +8589,153 @@ offset = 0x9D
 type = "DIR32"
 symbol = "_infinity"
 target_base = 0x004BDA54
+
+[[units]]
+name = "crt-trandisp1"
+target_address = 0x004A7C90
+body_size = 0x67
+compare_size = 0x67
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/87disp.obj"
+symbol = "__trandisp1"
+section_offset = 0x0
+section_size = 0x1CA
+[[units.relocations]]
+offset = 0x29
+type = "DIR32"
+symbol = "XAMtoTagTab"
+target_base = 0x004CBD2C
+
+[[units]]
+name = "crt-trandisp2"
+target_address = 0x004A7CF7
+body_size = 0x8C
+compare_size = 0x8C
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/87disp.obj"
+symbol = "__trandisp2"
+section_offset = 0x67
+section_size = 0x1CA
+[[units.relocations]]
+offset = 0x29
+type = "DIR32"
+symbol = "XAMtoTagTab"
+target_base = 0x004CBD2C
+
+[[units]]
+name = "crt-cintrindisp2"
+target_address = 0x004A8E00
+body_size = 0x3E
+compare_size = 0x3E
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/87cdisp.obj"
+symbol = "__cintrindisp2"
+section_offset = 0x0
+section_size = 0x280
+[[units.relocations]]
+offset = 0x14
+type = "DIR32"
+symbol = "__matherr_flag"
+target_base = 0x004CCB30
+[[units.relocations]]
+offset = 0x1C
+type = "REL32"
+symbol = "__trandisp2"
+target_base = 0x004A7CF7
+
+[[units]]
+name = "crt-cintrindisp1"
+target_address = 0x004A8E3E
+body_size = 0x3D
+compare_size = 0x3D
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/87cdisp.obj"
+symbol = "__cintrindisp1"
+section_offset = 0x3E
+section_size = 0x280
+[[units.relocations]]
+offset = 0x13
+type = "DIR32"
+symbol = "__matherr_flag"
+target_base = 0x004CCB30
+[[units.relocations]]
+offset = 0x1B
+type = "REL32"
+symbol = "__trandisp1"
+target_base = 0x004A7C90
+
+[[units]]
+name = "crt-ctrandisp1"
+target_address = 0x004A9011
+body_size = 0x33
+compare_size = 0x33
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/87cdisp.obj"
+symbol = "__ctrandisp1"
+section_offset = 0x211
+section_size = 0x280
+[[units.relocations]]
+offset = 0x27
+type = "REL32"
+symbol = "__trandisp1"
+target_base = 0x004A7C90
+
+[[units]]
+name = "crt-fload"
+target_address = 0x004A9044
+body_size = 0x3C
+compare_size = 0x3C
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/87cdisp.obj"
+symbol = "__fload"
+section_offset = 0x244
+section_size = 0x280
+
+[[units]]
+name = "crt-87except"
+target_address = 0x004AF6E5
+body_size = 0xFE
+compare_size = 0xFE
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/87except.obj"
+symbol = "__87except"
+[[units.relocations]]
+offset = 0xD
+type = "DIR32"
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
+[[units.relocations]]
+offset = 0x65
+type = "REL32"
+symbol = "__handle_exc"
+target_base = 0x004AD06A
+[[units.relocations]]
+offset = 0xB0
+type = "REL32"
+symbol = "__raise_exc"
+target_base = 0x004ACDC5
+[[units.relocations]]
+offset = 0xC1
+type = "REL32"
+symbol = "__ctrlfp"
+target_base = 0x004AD4AB
+[[units.relocations]]
+offset = 0xCE
+type = "DIR32"
+symbol = "__matherr_flag"
+target_base = 0x004CCB30
+[[units.relocations]]
+offset = 0xD7
+type = "REL32"
+symbol = "__matherr"
+target_base = 0x0049AE16
+[[units.relocations]]
+offset = 0xE3
+type = "REL32"
+symbol = "__set_errno"
+target_base = 0x004AD28C
+[[units.relocations]]
+offset = 0xF3
+type = "REL32"
+symbol = "@__security_check_cookie@4"
+target_base = 0x004AB43C

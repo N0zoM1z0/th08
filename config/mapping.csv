@@ -1981,7 +1981,7 @@ __isatty,0x4af433,0x2a,__cdecl,,u8,u8
 ___wctomb_mt,0x4af5be,0x60,unknown,,u8,u8,u8,u8
 _wctomb,0x4af61e,0x27,__cdecl,,u8,u8,u8
 __aulldvrm,0x4af650,0x95,unknown,,u8,u8,u8,u8,u8
-FUN_004af6e5,0x4af6e5,0xfe,unknown,,u8,u8,u8,u8
+___87except,0x4af6e5,0xfe,unknown,,u8,u8,u8,u8
 ___crtInitCritSecNoSpinCount@8,0x4af7e3,0x10,unknown,,u8,u8
 ___crtInitCritSecAndSpinCount,0x4af7f3,0x8b,unknown,,u8,u8,u8
 ___crtGetStringTypeA,0x4af87e,0x1a5,__cdecl,,u8,u8,u8,u8,u8,u8,u8,u8
