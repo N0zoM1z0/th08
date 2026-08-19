@@ -162,3 +162,12 @@ address,name,size,status,unit,evidence
 0x004B1A2B,_lock_fhandle,115,matching,crt-lock-fhandle,python3 scripts/compare-library.py crt-lock-fhandle --json
 0x004B1A9E,_unlock_fhandle,34,matching,crt-unlock-fhandle,python3 scripts/compare-library.py crt-unlock-fhandle --json
 0x004B2081,_read_lk,461,matching,crt-read-lk,python3 scripts/compare-library.py crt-read-lk --json
+0x004AAADB,_doserrno,9,matching,crt-doserrno,python3 scripts/compare-library.py crt-doserrno --json
+0x004AAAE4,_dosmaperr,115,matching,crt-dosmaperr,python3 scripts/compare-library.py crt-dosmaperr --json
+0x004B19EA,_get_osfhandle,65,matching,crt-get-osfhandle,python3 scripts/compare-library.py crt-get-osfhandle --json
+0x004AF3EF,_getbuf,68,matching,crt-getbuf,python3 scripts/compare-library.py crt-getbuf --json
+0x004B0BB2,_filbuf,225,matching,crt-filbuf,python3 scripts/compare-library.py crt-filbuf --json
+0x004B0DBF,mbtowc,43,matching,crt-mbtowc,python3 scripts/compare-library.py crt-mbtowc --json
+0x004AF61E,wctomb,39,matching,crt-wctomb,python3 scripts/compare-library.py crt-wctomb --json
+0x004B0CFF,__mbtowc_mt,192,matching,crt-mbtowc-mt,python3 scripts/compare-library.py crt-mbtowc-mt --json
+0x004AF5BE,__wctomb_mt,96,matching,crt-wctomb-mt,python3 scripts/compare-library.py crt-wctomb-mt --json

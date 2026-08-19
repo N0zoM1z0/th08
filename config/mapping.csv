@@ -1897,7 +1897,7 @@ _inconsistency,0x4aa9e7,0x2d,__cdecl,,void
 __CallSettingFrame@12,0x4aaa20,0x4c,unknown,,u8,u8,u8,u8
 FUN_004aaa6c,0x4aaa6c,0x46,unknown,,u8,u8
 __errno,0x4aaad2,0x9,unknown,,u8
-FUN_004aaadb,0x4aaadb,0x9,unknown,,u8
+___doserrno,0x4aaadb,0x9,__cdecl,,u8
 __dosmaperr,0x4aaae4,0x73,__cdecl,,u8,u8
 _tzset_lk,0x4aab57,0x271,__cdecl,,u8
 _cvtdate,0x4aadc8,0x1b8,unknown,,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8

@@ -1250,3 +1250,8 @@ without those explicit fields retain the stricter whole-section ownership rule.
 
 - The repaired `_lseek`, `_write`, and `_read` wrappers point directly at VC7 worker functions `_lseek_lk`, `_write_lk`, and `_read_lk`, plus the shared `_lock_fhandle` / `_unlock_fhandle` pair.  All five are isolated function-definition candidates in `lseek.obj`, `write.obj`, `read.obj`, or `osfinfo.obj` and replay exactly with their COFF relocations.
 - Once exact archive identity is established, replace anonymous `FUN_*` target labels with the logical CRT names while preserving the decorated COFF symbol separately in `library-match-units.toml`.  This keeps target inventory readable without losing provenance.
+
+### Stdio buffer and multibyte conversion dependency closure
+
+- The accepted `output`/`input` core calls small CRT support members across `_getbuf.obj`, `_filbuf.obj`, `wctomb.obj`, and `mbtowc.obj`.  `_getbuf`, `_filbuf`, `wctomb`, `mbtowc`, `__wctomb_mt`, and `__mbtowc_mt` each replay exactly as their own VC7 function-definition extents with explicit relocations.
+- Treat `_mt` conversion helpers as normal library functions when the archive exposes a real function-definition symbol; unlike compiler local cleanup labels, they do not require funclet-specific acceptance rules.

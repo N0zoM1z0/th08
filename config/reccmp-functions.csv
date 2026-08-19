@@ -1898,7 +1898,7 @@ inconsistency,0x4aa9e7,library
 _CallSettingFrame@12,0x4aaa20,library
 FUN_004aaa6c,0x4aaa6c,library
 _errno,0x4aaad2,library
-FUN_004aaadb,0x4aaadb,library
+_doserrno,0x4aaadb,library
 _dosmaperr,0x4aaae4,library
 _tzset_lk,0x4aab57,library
 cvtdate,0x4aadc8,library
