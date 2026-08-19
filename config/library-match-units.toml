@@ -3186,83 +3186,650 @@ symbol = "_free"
 target_base = 0x004A427B
 
 [[units]]
-name = "crt-free-lconv-num"
-target_address = 0x004A9DED
-body_size = 0x2E
-compare_size = 0x2E
+name = "crt-strftime-mt"
+target_address = 0x004A584F
+body_size = 0xA4
+compare_size = 0xA4
 archive = "vc7-libcmt"
-member = "build/intel/mt_obj/setlocal.obj"
+member = "build/intel/mt_obj/strftime.obj"
+symbol = "__Strftime_mt"
+[[units.relocations]]
+offset = 0x30
+type = "DIR32"
+symbol = "__pctype"
+target_base = 0x004CC3E0
+[[units.relocations]]
+offset = 0x7B
+type = "REL32"
+symbol = "__expandtime"
+target_base = 0x004A51FD
+
+[[units]]
+name = "crt-strftime-core"
+target_address = 0x004A58F3
+body_size = 0x32
+compare_size = 0x32
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/strftime.obj"
+symbol = "__Strftime"
+[[units.relocations]]
+offset = 0x4
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0xD
+type = "DIR32"
+symbol = "___ptlocinfo"
+target_base = 0x004CC07C
+[[units.relocations]]
+offset = 0x14
+type = "REL32"
+symbol = "___updatetlocinfo"
+target_base = 0x004AA00E
+[[units.relocations]]
+offset = 0x29
+type = "REL32"
+symbol = "__Strftime_mt"
+target_base = 0x004A584F
+
+[[units]]
+name = "crt-strftime"
+target_address = 0x004A5925
+body_size = 0x1B
+compare_size = 0x1B
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/strftime.obj"
+symbol = "_strftime"
+[[units.relocations]]
+offset = 0x13
+type = "REL32"
+symbol = "__Strftime"
+target_base = 0x004A58F3
+
+[[units]]
+name = "crt-localtime"
+target_address = 0x004A5940
+body_size = 0x180
+compare_size = 0x180
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/localtim.obj"
+symbol = "_localtime"
+[[units.relocations]]
+offset = 0x14
+type = "REL32"
+symbol = "___tzset"
+target_base = 0x004AB10B
+[[units.relocations]]
+offset = 0x2A
+type = "DIR32"
+symbol = "__timezone"
+target_base = 0x004CC328
+[[units.relocations]]
+offset = 0x36
+type = "REL32"
+symbol = "_gmtime"
+target_base = 0x004AB27F
+[[units.relocations]]
+offset = 0x3C
+type = "DIR32"
+symbol = "__daylight"
+target_base = 0x004CC32C
+[[units.relocations]]
+offset = 0x4C
+type = "REL32"
+symbol = "__isindst"
+target_base = 0x004AB139
+[[units.relocations]]
+offset = 0x5A
+type = "DIR32"
+symbol = "__dstbias"
+target_base = 0x004CC330
+[[units.relocations]]
+offset = 0x66
+type = "REL32"
+symbol = "_gmtime"
+target_base = 0x004AB27F
+[[units.relocations]]
+offset = 0x7B
+type = "REL32"
+symbol = "_gmtime"
+target_base = 0x004AB27F
+[[units.relocations]]
+offset = 0x81
+type = "DIR32"
+symbol = "__daylight"
+target_base = 0x004CC32C
+[[units.relocations]]
+offset = 0x8D
+type = "REL32"
+symbol = "__isindst"
+target_base = 0x004AB139
+[[units.relocations]]
+offset = 0x9A
+type = "DIR32"
+symbol = "__dstbias"
+target_base = 0x004CC330
+[[units.relocations]]
+offset = 0xA0
+type = "DIR32"
+symbol = "__timezone"
+target_base = 0x004CC328
+[[units.relocations]]
+offset = 0xB7
+type = "DIR32"
+symbol = "__timezone"
+target_base = 0x004CC328
+
+[[units]]
+name = "crt-time"
+target_address = 0x004A5AC0
+body_size = 0x39
+compare_size = 0x39
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/time.obj"
+symbol = "_time"
+[[units.relocations]]
+offset = 0xB
+type = "DIR32"
+symbol = "__imp__GetSystemTimeAsFileTime@4"
+target_base = 0x004B41B0
+[[units.relocations]]
+offset = 0x2A
+type = "REL32"
+symbol = "__aulldiv"
+target_base = 0x004A50C0
+
+[[units]]
+name = "crt-free-lc-time"
+target_address = 0x004AFA38
+body_size = 0x190
+compare_size = 0x190
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/inittime.obj"
+symbol = "___free_lc_time"
+[[units.relocations]]
+offset = 0x11
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x19
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x21
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x29
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x31
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x39
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x40
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x48
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x50
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x58
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x60
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x68
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x70
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x78
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x80
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x88
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x93
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x9B
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xA3
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xAB
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xB3
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xBB
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xC3
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xCB
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xD3
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xDB
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xE3
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xEB
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xF3
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xFB
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x103
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x10B
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x119
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x124
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x12F
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x13A
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x145
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x150
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x15B
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x166
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x171
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x17C
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x187
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+
+[[units]]
+name = "crt-free-lconv-num"
+target_address = 0x004AFBC8
+body_size = 0x5F
+compare_size = 0x5F
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/initnum.obj"
 symbol = "___free_lconv_num"
 [[units.relocations]]
-offset = 0x6
+offset = 0xD
+type = "DIR32"
+symbol = "___lconv"
+target_base = 0x004CC9B4
+[[units.relocations]]
+offset = 0x17
+type = "DIR32"
+symbol = "___lconv_c"
+target_base = 0x004CC984
+[[units.relocations]]
+offset = 0x1F
 type = "REL32"
 symbol = "_free"
 target_base = 0x004A427B
 [[units.relocations]]
-offset = 0xE
+offset = 0x29
+type = "DIR32"
+symbol = "___lconv"
+target_base = 0x004CC9B4
+[[units.relocations]]
+offset = 0x34
+type = "DIR32"
+symbol = "___lconv_c"
+target_base = 0x004CC984
+[[units.relocations]]
+offset = 0x3C
 type = "REL32"
 symbol = "_free"
 target_base = 0x004A427B
 [[units.relocations]]
-offset = 0x16
-type = "REL32"
-symbol = "_free"
-target_base = 0x004A427B
+offset = 0x45
+type = "DIR32"
+symbol = "___lconv"
+target_base = 0x004CC9B4
 [[units.relocations]]
-offset = 0x1E
-type = "REL32"
-symbol = "_free"
-target_base = 0x004A427B
+offset = 0x50
+type = "DIR32"
+symbol = "___lconv_c"
+target_base = 0x004CC984
 [[units.relocations]]
-offset = 0x26
+offset = 0x58
 type = "REL32"
 symbol = "_free"
 target_base = 0x004A427B
 
 [[units]]
 name = "crt-free-lconv-mon"
-target_address = 0x004A9E1B
-body_size = 0x31
-compare_size = 0x31
+target_address = 0x004AFC27
+body_size = 0xD9
+compare_size = 0xD9
 archive = "vc7-libcmt"
-member = "build/intel/mt_obj/setlocal.obj"
+member = "build/intel/mt_obj/initmon.obj"
 symbol = "___free_lconv_mon"
 [[units.relocations]]
-offset = 0xB
+offset = 0x12
+type = "DIR32"
+symbol = "___lconv"
+target_base = 0x004CC9B4
+[[units.relocations]]
+offset = 0x1D
+type = "DIR32"
+symbol = "___lconv_c"
+target_base = 0x004CC984
+[[units.relocations]]
+offset = 0x25
 type = "REL32"
 symbol = "_free"
 target_base = 0x004A427B
 [[units.relocations]]
-offset = 0x13
+offset = 0x2F
+type = "DIR32"
+symbol = "___lconv"
+target_base = 0x004CC9B4
+[[units.relocations]]
+offset = 0x3A
+type = "DIR32"
+symbol = "___lconv_c"
+target_base = 0x004CC984
+[[units.relocations]]
+offset = 0x42
 type = "REL32"
 symbol = "_free"
 target_base = 0x004A427B
 [[units.relocations]]
-offset = 0x1B
+offset = 0x4C
+type = "DIR32"
+symbol = "___lconv"
+target_base = 0x004CC9B4
+[[units.relocations]]
+offset = 0x57
+type = "DIR32"
+symbol = "___lconv_c"
+target_base = 0x004CC984
+[[units.relocations]]
+offset = 0x5F
 type = "REL32"
 symbol = "_free"
 target_base = 0x004A427B
 [[units.relocations]]
-offset = 0x23
+offset = 0x69
+type = "DIR32"
+symbol = "___lconv"
+target_base = 0x004CC9B4
+[[units.relocations]]
+offset = 0x74
+type = "DIR32"
+symbol = "___lconv_c"
+target_base = 0x004CC984
+[[units.relocations]]
+offset = 0x7C
 type = "REL32"
 symbol = "_free"
 target_base = 0x004A427B
 [[units.relocations]]
-offset = 0x2B
+offset = 0x86
+type = "DIR32"
+symbol = "___lconv"
+target_base = 0x004CC9B4
+[[units.relocations]]
+offset = 0x91
+type = "DIR32"
+symbol = "___lconv_c"
+target_base = 0x004CC984
+[[units.relocations]]
+offset = 0x99
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xA3
+type = "DIR32"
+symbol = "___lconv"
+target_base = 0x004CC9B4
+[[units.relocations]]
+offset = 0xAE
+type = "DIR32"
+symbol = "___lconv_c"
+target_base = 0x004CC984
+[[units.relocations]]
+offset = 0xB6
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xBF
+type = "DIR32"
+symbol = "___lconv"
+target_base = 0x004CC9B4
+[[units.relocations]]
+offset = 0xCA
+type = "DIR32"
+symbol = "___lconv_c"
+target_base = 0x004CC984
+[[units.relocations]]
+offset = 0xD2
 type = "REL32"
 symbol = "_free"
 target_base = 0x004A427B
 
 [[units]]
-name = "crt-free-lc-time"
-target_address = 0x004A9E4C
-body_size = 0x36
-compare_size = 0x36
+name = "crt-siglookup"
+target_address = 0x004B17C4
+body_size = 0x2E
+compare_size = 0x2E
 archive = "vc7-libcmt"
-member = "build/intel/mt_obj/setlocal.obj"
-symbol = "___free_lc_time"
+member = "build/intel/mt_obj/winsig.obj"
+symbol = "_siglookup"
+allow_auxless_comdat = true
 [[units.relocations]]
-offset = 0x16
+offset = 0x2
+type = "DIR32"
+symbol = "__XcptActTabCount"
+target_base = 0x004CC504
+
+[[units]]
+name = "crt-isdigit"
+target_address = 0x004A6517
+body_size = 0x3A
+compare_size = 0x3A
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/_ctype.obj"
+symbol = "_isdigit"
+[[units.relocations]]
+offset = 0x1
 type = "REL32"
-symbol = "_free"
-target_base = 0x004A427B
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "___ptlocinfo"
+target_base = 0x004CC07C
+[[units.relocations]]
+offset = 0x11
+type = "REL32"
+symbol = "___updatetlocinfo"
+target_base = 0x004AA00E
+[[units.relocations]]
+offset = 0x23
+type = "REL32"
+symbol = "___isctype_mt"
+target_base = 0x004A9E0B
+
+[[units]]
+name = "crt-isxdigit"
+target_address = 0x004A6551
+body_size = 0x3F
+compare_size = 0x3F
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/_ctype.obj"
+symbol = "_isxdigit"
+[[units.relocations]]
+offset = 0x1
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "___ptlocinfo"
+target_base = 0x004CC07C
+[[units.relocations]]
+offset = 0x11
+type = "REL32"
+symbol = "___updatetlocinfo"
+target_base = 0x004AA00E
+[[units.relocations]]
+offset = 0x26
+type = "REL32"
+symbol = "___isctype_mt"
+target_base = 0x004A9E0B
+
+[[units]]
+name = "crt-isspace"
+target_address = 0x004A6590
+body_size = 0x3A
+compare_size = 0x3A
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/_ctype.obj"
+symbol = "_isspace"
+[[units.relocations]]
+offset = 0x1
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "___ptlocinfo"
+target_base = 0x004CC07C
+[[units.relocations]]
+offset = 0x11
+type = "REL32"
+symbol = "___updatetlocinfo"
+target_base = 0x004AA00E
+[[units.relocations]]
+offset = 0x23
+type = "REL32"
+symbol = "___isctype_mt"
+target_base = 0x004A9E0B

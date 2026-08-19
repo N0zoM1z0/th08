@@ -1762,11 +1762,11 @@ _allmul,0x4a5130,library
 store_num,0x4a5184,library
 FUN_004a51fd,0x4a51fd,library
 FUN_004a543d,0x4a543d,library
-FUN_004a584f,0x4a584f,library
+_Strftime_mt,0x4a584f,library
 _Strftime,0x4a58f3,library
 strftime,0x4a5925,library
 localtime,0x4a5940,library
-_time32,0x4a5ac0,library
+time,0x4a5ac0,library
 rename,0x4a5af9,library
 _chdir,0x4a5b27,library
 strchr,0x4a5be0,library

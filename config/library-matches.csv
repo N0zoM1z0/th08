@@ -92,3 +92,15 @@ address,name,size,status,unit,evidence
 0x004B17F2,raise,377,matching,crt-raise,python3 scripts/compare-library.py crt-raise --json
 0x004A6B6A,_exit,17,matching,crt-exit,python3 scripts/compare-library.py crt-exit --json
 0x004A9E82,__freetlocinfo,202,matching,crt-freetlocinfo,python3 scripts/compare-library.py crt-freetlocinfo --json
+0x004AFA38,__free_lc_time,400,matching,crt-free-lc-time,python3 scripts/compare-library.py crt-free-lc-time --json
+0x004AFBC8,__free_lconv_num,95,matching,crt-free-lconv-num,python3 scripts/compare-library.py crt-free-lconv-num --json
+0x004AFC27,__free_lconv_mon,217,matching,crt-free-lconv-mon,python3 scripts/compare-library.py crt-free-lconv-mon --json
+0x004B17C4,siglookup,46,matching,crt-siglookup,python3 scripts/compare-library.py crt-siglookup --json
+0x004A6517,isdigit,58,matching,crt-isdigit,python3 scripts/compare-library.py crt-isdigit --json
+0x004A6551,isxdigit,63,matching,crt-isxdigit,python3 scripts/compare-library.py crt-isxdigit --json
+0x004A6590,isspace,58,matching,crt-isspace,python3 scripts/compare-library.py crt-isspace --json
+0x004A584F,_Strftime_mt,164,matching,crt-strftime-mt,python3 scripts/compare-library.py crt-strftime-mt --json
+0x004A58F3,_Strftime,50,matching,crt-strftime-core,python3 scripts/compare-library.py crt-strftime-core --json
+0x004A5925,strftime,27,matching,crt-strftime,python3 scripts/compare-library.py crt-strftime --json
+0x004A5940,localtime,384,matching,crt-localtime,python3 scripts/compare-library.py crt-localtime --json
+0x004A5AC0,time,57,matching,crt-time,python3 scripts/compare-library.py crt-time --json

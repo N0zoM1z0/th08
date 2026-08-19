@@ -1,9 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="560" height="116" role="img" aria-label="TH08 reconstruction progress 96.95% exact authored bytes">
-  <rect width="560" height="116" rx="8" fill="#1f2335"/>
-  <text x="24" y="32" fill="#f4f4f5" font-family="sans-serif" font-size="16" font-weight="600">TH08 source reconstruction</text>
-  <text x="536" y="32" fill="#f4f4f5" text-anchor="end" font-family="monospace" font-size="14">96.95% exact bytes</text>
-  <rect x="24" y="48" width="440" height="14" rx="7" fill="#3b4058"/>
-  <rect x="24" y="48" width="426.57" height="14" rx="7" fill="#9b6de3"/>
-  <text x="24" y="88" fill="#c8cad2" font-family="sans-serif" font-size="13">Authored exact: 1,091 / 1,107 functions · 445,728 / 459,757 bytes</text>
-  <text x="24" y="108" fill="#c8cad2" font-family="sans-serif" font-size="13">Library exact: 93 / 1,113 functions · 12,329 / 216,588 bytes</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="176" role="img" aria-label="TH08 reconstruction progress: authored 96.95% exact bytes, library 6.44% exact bytes">
+  <rect width="560" height="176" rx="8" fill="#1f2335"/>
+  <text x="24" y="28" fill="#f4f4f5" font-family="sans-serif" font-size="16" font-weight="600">TH08 reconstruction progress</text>
+
+  <text x="24" y="52" fill="#f4f4f5" font-family="sans-serif" font-size="13" font-weight="600">Authored exact</text>
+  <text x="536" y="52" fill="#f4f4f5" text-anchor="end" font-family="monospace" font-size="13">96.95%</text>
+  <rect x="24" y="60" width="512" height="12" rx="6" fill="#3b4058"/>
+  <rect x="24" y="60" width="496.38" height="12" rx="6" fill="#9b6de3"/>
+  <text x="24" y="89" fill="#c8cad2" font-family="sans-serif" font-size="12">1,091 / 1,107 functions · 445,728 / 459,757 bytes</text>
+
+  <text x="24" y="116" fill="#f4f4f5" font-family="sans-serif" font-size="13" font-weight="600">Library exact</text>
+  <text x="536" y="116" fill="#f4f4f5" text-anchor="end" font-family="monospace" font-size="13">6.44%</text>
+  <rect x="24" y="124" width="512" height="12" rx="6" fill="#3b4058"/>
+  <rect x="24" y="124" width="32.97" height="12" rx="6" fill="#9b6de3"/>
+  <text x="24" y="153" fill="#c8cad2" font-family="sans-serif" font-size="12">105 / 1,113 functions · 13,948 / 216,588 bytes</text>
 </svg>

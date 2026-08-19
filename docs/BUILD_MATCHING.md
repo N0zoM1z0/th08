@@ -1128,3 +1128,21 @@ without those explicit fields retain the stricter whole-section ownership rule.
   target bytes. Treat the archive index as a discovery aid, not proof that a
   member-local function is absent; inspect the owning COFF member when target
   control flow or relocations point into it.
+
+### Exact VC7 archive provenance can correct modern runtime naming
+
+- Do not preserve a modern CRT name when the pinned VC7 archive proves a
+  different symbol identity. TH08's `0x004A5AC0` body is emitted by
+  `LIBCMT time.obj::_time` and replays exactly across its 0x39-byte extent; the
+  imported `_time32` mapping name reflects later CRT terminology, not the VC7
+  link input. Rename the mapping to `_time` only after the archive member and
+  canonical target comparison agree.
+### Reject library candidates on non-relocation bytes even when symbol names look perfect
+
+- `winsig.obj::_signal` is a concrete fail-closed example.  The archive has an
+  isolated 0x1A9-byte function-definition section, but replaying it at the
+  imported `0x004B196B` `FUN_*` row produces hundreds of non-relocation byte
+  differences.  Do not rename or accept the row from symbol-name proximity,
+  archive membership, or a plausible signal-family neighborhood.  By contrast,
+  the same member's static `_siglookup` section at `0x004B17C4` replays exactly.
+  Keep the mismatch as a provenance/boundary blocker and move on.

@@ -135,15 +135,24 @@ def render() -> tuple[str, str]:
         ]
     )
 
-    filled = 440 * exact_byte_pct / 100
-    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="560" height="116" role="img" aria-label="TH08 reconstruction progress {exact_byte_pct:.2f}% exact authored bytes">
-  <rect width="560" height="116" rx="8" fill="#1f2335"/>
-  <text x="24" y="32" fill="#f4f4f5" font-family="sans-serif" font-size="16" font-weight="600">TH08 source reconstruction</text>
-  <text x="536" y="32" fill="#f4f4f5" text-anchor="end" font-family="monospace" font-size="14">{exact_byte_pct:.2f}% exact bytes</text>
-  <rect x="24" y="48" width="440" height="14" rx="7" fill="#3b4058"/>
-  <rect x="24" y="48" width="{filled:.2f}" height="14" rx="7" fill="#9b6de3"/>
-  <text x="24" y="88" fill="#c8cad2" font-family="sans-serif" font-size="13">Authored exact: {len(exact_rows):,} / {len(authored):,} functions · {exact_bytes:,} / {total_bytes:,} bytes</text>
-  <text x="24" y="108" fill="#c8cad2" font-family="sans-serif" font-size="13">Library exact: {len(library_exact_rows):,} / {library_count:,} functions · {library_exact_bytes:,} / {library_total_bytes:,} bytes</text>
+    bar_width = 512
+    authored_filled = bar_width * exact_byte_pct / 100
+    library_filled = bar_width * library_exact_byte_pct / 100
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="560" height="176" role="img" aria-label="TH08 reconstruction progress: authored {exact_byte_pct:.2f}% exact bytes, library {library_exact_byte_pct:.2f}% exact bytes">
+  <rect width="560" height="176" rx="8" fill="#1f2335"/>
+  <text x="24" y="28" fill="#f4f4f5" font-family="sans-serif" font-size="16" font-weight="600">TH08 reconstruction progress</text>
+
+  <text x="24" y="52" fill="#f4f4f5" font-family="sans-serif" font-size="13" font-weight="600">Authored exact</text>
+  <text x="536" y="52" fill="#f4f4f5" text-anchor="end" font-family="monospace" font-size="13">{exact_byte_pct:.2f}%</text>
+  <rect x="24" y="60" width="{bar_width}" height="12" rx="6" fill="#3b4058"/>
+  <rect x="24" y="60" width="{authored_filled:.2f}" height="12" rx="6" fill="#9b6de3"/>
+  <text x="24" y="89" fill="#c8cad2" font-family="sans-serif" font-size="12">{len(exact_rows):,} / {len(authored):,} functions · {exact_bytes:,} / {total_bytes:,} bytes</text>
+
+  <text x="24" y="116" fill="#f4f4f5" font-family="sans-serif" font-size="13" font-weight="600">Library exact</text>
+  <text x="536" y="116" fill="#f4f4f5" text-anchor="end" font-family="monospace" font-size="13">{library_exact_byte_pct:.2f}%</text>
+  <rect x="24" y="124" width="{bar_width}" height="12" rx="6" fill="#3b4058"/>
+  <rect x="24" y="124" width="{library_filled:.2f}" height="12" rx="6" fill="#9b6de3"/>
+  <text x="24" y="153" fill="#c8cad2" font-family="sans-serif" font-size="12">{len(library_exact_rows):,} / {library_count:,} functions · {library_exact_bytes:,} / {library_total_bytes:,} bytes</text>
 </svg>
 '''
     return markdown, svg

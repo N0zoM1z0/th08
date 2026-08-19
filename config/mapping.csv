@@ -1761,11 +1761,11 @@ __allmul,0x4a5130,0x34,unknown,,u8,u8,u8,u8,u8
 _store_num,0x4a5184,0x79,__cdecl,,void,i32,i32,char**,u32*,u32
 FUN_004a51fd,0x4a51fd,0x240,unknown,,u8,u8,u8,u8
 FUN_004a543d,0x4a543d,0x3fb,unknown,,u8,u8,u8,u8,u8,u8,u8
-FUN_004a584f,0x4a584f,0xa4,unknown,,u8,u8,u8,u8,u8,u8,u8
+__Strftime_mt,0x4a584f,0xa4,__cdecl,,u8,u8,u8,u8,u8,u8,u8
 __Strftime,0x4a58f3,0x32,__cdecl,,u8,u8,u8,u8,u8,u8
 _strftime,0x4a5925,0x1b,__cdecl,,u8,char*,u32,char*,tm*
 _localtime,0x4a5940,0x180,__cdecl,,tm*,longlong*
-__time32,0x4a5ac0,0x39,__cdecl,,long,long*
+_time,0x4a5ac0,0x39,__cdecl,,long,long*
 FUN_004a5af9,0x4a5af9,0x2e,unknown,,u8,u8,u8
 FUN_004a5b27,0x4a5b27,0x9c,unknown,,u8,u8
 _strchr,0x4a5be0,0xbe,__cdecl,,char*,const char*,i32
