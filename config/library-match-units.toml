@@ -9760,3 +9760,531 @@ offset = 0x115
 type = "DIR32"
 symbol = "__imp__FreeEnvironmentStringsA@4"
 target_base = 0x004B4104
+
+[[units]]
+name = "d3dx-x3d-quaternion-to-axis-angle"
+target_address = 0x0048F776
+body_size = 0xB6
+compare_size = 0xB6
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/x3d_quat.obj"
+symbol = "?x3d_D3DXQuaternionToAxisAngle@@YGXPBUD3DXQUATERNION@@PAUD3DXVECTOR3@@PAM@Z"
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "?const3dn_FltMin@@3T__m64@@B"
+target_base = 0x004BA890
+[[units.relocations]]
+offset = 0x76
+type = "REL32"
+symbol = "_a_acos"
+target_base = 0x00499AC0
+[[units.relocations]]
+offset = 0x81
+type = "DIR32"
+symbol = "?const3dn_2_2@@3T__m64@@B"
+target_base = 0x004BA828
+[[units.relocations]]
+offset = 0x95
+type = "DIR32"
+symbol = "?const3dn_1_N1@@3T__m64@@B"
+target_base = 0x004BA810
+
+[[units]]
+name = "d3dx-x3d-quaternion-rotation-axis"
+target_address = 0x0048FD22
+body_size = 0x6C
+compare_size = 0x6C
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/x3d_quat.obj"
+symbol = "?x3d_D3DXQuaternionRotationAxis@@YGPAUD3DXQUATERNION@@PAU1@PBUD3DXVECTOR3@@M@Z"
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "?x3d_D3DXVec3Normalize@@YGPAUD3DXVECTOR3@@PAU1@PBU1@@Z"
+target_base = 0x00494897
+[[units.relocations]]
+offset = 0x28
+type = "DIR32"
+symbol = "?g_const_half@@3T__m64@@B"
+target_base = 0x004BA8B0
+[[units.relocations]]
+offset = 0x2E
+type = "REL32"
+symbol = "_a_sincos"
+target_base = 0x0049A0A0
+
+[[units]]
+name = "d3dx-x3d-quaternion-slerp"
+target_address = 0x0048FD8E
+body_size = 0x137
+compare_size = 0x137
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/x3d_quat.obj"
+symbol = "?x3d_D3DXQuaternionSlerp@@YGPAUD3DXQUATERNION@@PAU1@PBU1@1M@Z"
+[[units.relocations]]
+offset = 0x18
+type = "DIR32"
+symbol = "?g_const_1@@3T__m64@@B"
+target_base = 0x004BA8A8
+[[units.relocations]]
+offset = 0x47
+type = "DIR32"
+symbol = "?g_const_niner@@3T__m64@@B"
+target_base = 0x004BA908
+[[units.relocations]]
+offset = 0x4E
+type = "DIR32"
+symbol = "?g_const_nh_nl@@3T__m64@@B"
+target_base = 0x004BA8F0
+[[units.relocations]]
+offset = 0x66
+type = "DIR32"
+symbol = "?g_const_1@@3T__m64@@B"
+target_base = 0x004BA8A8
+[[units.relocations]]
+offset = 0xA6
+type = "REL32"
+symbol = "_a_atan2"
+target_base = 0x004999C0
+[[units.relocations]]
+offset = 0xB9
+type = "REL32"
+symbol = "_a_sin"
+target_base = 0x0049A1C0
+[[units.relocations]]
+offset = 0xD0
+type = "REL32"
+symbol = "_a_sin"
+target_base = 0x0049A1C0
+
+[[units]]
+name = "d3dx-x3d-quaternion-barycentric"
+target_address = 0x0048FEC5
+body_size = 0x8D
+compare_size = 0x8D
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/x3d_quat.obj"
+symbol = "?x3d_D3DXQuaternionBaryCentric@@YGPAUD3DXQUATERNION@@PAU1@PBU1@11MM@Z"
+[[units.relocations]]
+offset = 0x2F
+type = "REL32"
+symbol = "?x3d_D3DXQuaternionSlerp@@YGPAUD3DXQUATERNION@@PAU1@PBU1@1M@Z"
+target_base = 0x0048FD8E
+[[units.relocations]]
+offset = 0x42
+type = "REL32"
+symbol = "?x3d_D3DXQuaternionSlerp@@YGPAUD3DXQUATERNION@@PAU1@PBU1@1M@Z"
+target_base = 0x0048FD8E
+[[units.relocations]]
+offset = 0x78
+type = "REL32"
+symbol = "?x3d_D3DXQuaternionSlerp@@YGPAUD3DXQUATERNION@@PAU1@PBU1@1M@Z"
+target_base = 0x0048FD8E
+
+[[units]]
+name = "d3dx-x3d-quaternion-squad"
+target_address = 0x0048FF52
+body_size = 0x92
+compare_size = 0x92
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/x3d_quat.obj"
+symbol = "?x3d_D3DXQuaternionSquad@@YGPAUD3DXQUATERNION@@PAU1@PBU1@111M@Z"
+[[units.relocations]]
+offset = 0x23
+type = "REL32"
+symbol = "?x3d_D3DXQuaternionSlerp@@YGPAUD3DXQUATERNION@@PAU1@PBU1@1M@Z"
+target_base = 0x0048FD8E
+[[units.relocations]]
+offset = 0x4A
+type = "REL32"
+symbol = "?x3d_D3DXQuaternionSlerp@@YGPAUD3DXQUATERNION@@PAU1@PBU1@1M@Z"
+target_base = 0x0048FD8E
+[[units.relocations]]
+offset = 0x7B
+type = "DIR32"
+symbol = "?const3dn_2_2@@3T__m64@@B"
+target_base = 0x004BA828
+[[units.relocations]]
+offset = 0x86
+type = "REL32"
+symbol = "?x3d_D3DXQuaternionSlerp@@YGPAUD3DXQUATERNION@@PAU1@PBU1@1M@Z"
+target_base = 0x0048FD8E
+
+[[units]]
+name = "d3dx-x3d-quaternion-ln"
+target_address = 0x00490048
+body_size = 0xA7
+compare_size = 0xA7
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/x3d_quat.obj"
+symbol = "?x3d_D3DXQuaternionLn@@YGPAUD3DXQUATERNION@@PAU1@PBU1@@Z"
+[[units.relocations]]
+offset = 0x20
+type = "DIR32"
+symbol = "?g_const_1@@3T__m64@@B"
+target_base = 0x004BA8A8
+[[units.relocations]]
+offset = 0x2D
+type = "REL32"
+symbol = "_a_acos"
+target_base = 0x00499AC0
+[[units.relocations]]
+offset = 0x3E
+type = "REL32"
+symbol = "_a_sin"
+target_base = 0x0049A1C0
+[[units.relocations]]
+offset = 0x50
+type = "DIR32"
+symbol = "?const3dn_SignMasks@@3T__m64@@B"
+target_base = 0x004BA860
+[[units.relocations]]
+offset = 0x5F
+type = "DIR32"
+symbol = "?const3dn_epsilon@@3T__m64@@B"
+target_base = 0x004BA868
+[[units.relocations]]
+offset = 0x94
+type = "DIR32"
+symbol = "?const3dn_dwordLo@@3T__m64@@B"
+target_base = 0x004BA870
+
+[[units]]
+name = "d3dx-x3d-quaternion-squad-setup"
+target_address = 0x00490194
+body_size = 0xA59
+compare_size = 0xA59
+archive = "vc7-d3dx8-prerelease"
+member = "objd/i386/x3d_quat.obj"
+symbol = "?x3d_D3DXQuaternionSquadSetup@@YGXPAUD3DXQUATERNION@@00PBU1@111@Z"
+[[units.relocations]]
+offset = 0xBD
+type = "DIR32"
+symbol = "?const3dn_SignBits@@3T__m64@@B"
+target_base = 0x004BA848
+[[units.relocations]]
+offset = 0x1A0
+type = "DIR32"
+symbol = "?const3dn_FltMin@@3T__m64@@B"
+target_base = 0x004BA890
+[[units.relocations]]
+offset = 0x1A8
+type = "DIR32"
+symbol = "?g_const_nh_nl@@3T__m64@@B"
+target_base = 0x004BA8F0
+[[units.relocations]]
+offset = 0x1AF
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x205
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x210
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x234
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x243
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x29E
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x2A9
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x2CE
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x2DD
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x324
+type = "DIR32"
+symbol = "?g_const_1@@3T__m64@@B"
+target_base = 0x004BA8A8
+[[units.relocations]]
+offset = 0x331
+type = "REL32"
+symbol = "_a_acos"
+target_base = 0x00499AC0
+[[units.relocations]]
+offset = 0x342
+type = "REL32"
+symbol = "_a_sin"
+target_base = 0x0049A1C0
+[[units.relocations]]
+offset = 0x354
+type = "DIR32"
+symbol = "?const3dn_SignMasks@@3T__m64@@B"
+target_base = 0x004BA860
+[[units.relocations]]
+offset = 0x363
+type = "DIR32"
+symbol = "?const3dn_epsilon@@3T__m64@@B"
+target_base = 0x004BA868
+[[units.relocations]]
+offset = 0x3A1
+type = "DIR32"
+symbol = "?const3dn_dwordLo@@3T__m64@@B"
+target_base = 0x004BA870
+[[units.relocations]]
+offset = 0x3D1
+type = "DIR32"
+symbol = "?g_const_1@@3T__m64@@B"
+target_base = 0x004BA8A8
+[[units.relocations]]
+offset = 0x3DE
+type = "REL32"
+symbol = "_a_acos"
+target_base = 0x00499AC0
+[[units.relocations]]
+offset = 0x3EF
+type = "REL32"
+symbol = "_a_sin"
+target_base = 0x0049A1C0
+[[units.relocations]]
+offset = 0x401
+type = "DIR32"
+symbol = "?const3dn_SignMasks@@3T__m64@@B"
+target_base = 0x004BA860
+[[units.relocations]]
+offset = 0x410
+type = "DIR32"
+symbol = "?const3dn_epsilon@@3T__m64@@B"
+target_base = 0x004BA868
+[[units.relocations]]
+offset = 0x44E
+type = "DIR32"
+symbol = "?const3dn_dwordLo@@3T__m64@@B"
+target_base = 0x004BA870
+[[units.relocations]]
+offset = 0x478
+type = "DIR32"
+symbol = "_const3dn_NegQuarters"
+target_base = 0x004BC160
+[[units.relocations]]
+offset = 0x480
+type = "DIR32"
+symbol = "_const3dn_NegQuarters"
+target_base = 0x004BC160
+[[units.relocations]]
+offset = 0x498
+type = "DIR32"
+symbol = "?const3dn_epsilon@@3T__m64@@B"
+target_base = 0x004BA868
+[[units.relocations]]
+offset = 0x4E3
+type = "REL32"
+symbol = "_a_sincos"
+target_base = 0x0049A0A0
+[[units.relocations]]
+offset = 0x4ED
+type = "DIR32"
+symbol = "?const3dn_SignMaskHi@@3T__m64@@B"
+target_base = 0x004BA858
+[[units.relocations]]
+offset = 0x4F4
+type = "DIR32"
+symbol = "?const3dn_epsilon@@3T__m64@@B"
+target_base = 0x004BA868
+[[units.relocations]]
+offset = 0x57E
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x589
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x5AE
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x5BD
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x606
+type = "DIR32"
+symbol = "?const3dn_FltMin@@3T__m64@@B"
+target_base = 0x004BA890
+[[units.relocations]]
+offset = 0x60E
+type = "DIR32"
+symbol = "?g_const_nh_nl@@3T__m64@@B"
+target_base = 0x004BA8F0
+[[units.relocations]]
+offset = 0x615
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x66C
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x677
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x69C
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x6AB
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x706
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x711
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x736
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x745
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x78C
+type = "DIR32"
+symbol = "?g_const_1@@3T__m64@@B"
+target_base = 0x004BA8A8
+[[units.relocations]]
+offset = 0x799
+type = "REL32"
+symbol = "_a_acos"
+target_base = 0x00499AC0
+[[units.relocations]]
+offset = 0x7AA
+type = "REL32"
+symbol = "_a_sin"
+target_base = 0x0049A1C0
+[[units.relocations]]
+offset = 0x7BC
+type = "DIR32"
+symbol = "?const3dn_SignMasks@@3T__m64@@B"
+target_base = 0x004BA860
+[[units.relocations]]
+offset = 0x7CB
+type = "DIR32"
+symbol = "?const3dn_epsilon@@3T__m64@@B"
+target_base = 0x004BA868
+[[units.relocations]]
+offset = 0x809
+type = "DIR32"
+symbol = "?const3dn_dwordLo@@3T__m64@@B"
+target_base = 0x004BA870
+[[units.relocations]]
+offset = 0x839
+type = "DIR32"
+symbol = "?g_const_1@@3T__m64@@B"
+target_base = 0x004BA8A8
+[[units.relocations]]
+offset = 0x846
+type = "REL32"
+symbol = "_a_acos"
+target_base = 0x00499AC0
+[[units.relocations]]
+offset = 0x857
+type = "REL32"
+symbol = "_a_sin"
+target_base = 0x0049A1C0
+[[units.relocations]]
+offset = 0x869
+type = "DIR32"
+symbol = "?const3dn_SignMasks@@3T__m64@@B"
+target_base = 0x004BA860
+[[units.relocations]]
+offset = 0x878
+type = "DIR32"
+symbol = "?const3dn_epsilon@@3T__m64@@B"
+target_base = 0x004BA868
+[[units.relocations]]
+offset = 0x8B6
+type = "DIR32"
+symbol = "?const3dn_dwordLo@@3T__m64@@B"
+target_base = 0x004BA870
+[[units.relocations]]
+offset = 0x8E0
+type = "DIR32"
+symbol = "_const3dn_NegQuarters"
+target_base = 0x004BC160
+[[units.relocations]]
+offset = 0x8E8
+type = "DIR32"
+symbol = "_const3dn_NegQuarters"
+target_base = 0x004BC160
+[[units.relocations]]
+offset = 0x944
+type = "REL32"
+symbol = "_a_sincos"
+target_base = 0x0049A0A0
+[[units.relocations]]
+offset = 0x94E
+type = "DIR32"
+symbol = "?const3dn_SignMaskHi@@3T__m64@@B"
+target_base = 0x004BA858
+[[units.relocations]]
+offset = 0x955
+type = "DIR32"
+symbol = "?const3dn_epsilon@@3T__m64@@B"
+target_base = 0x004BA868
+[[units.relocations]]
+offset = 0x9DF
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0x9EA
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0xA0F
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838
+[[units.relocations]]
+offset = 0xA1E
+type = "DIR32"
+symbol = "?const3dn_SignBitLo@@3T__m64@@B"
+target_base = 0x004BA838

@@ -1291,3 +1291,8 @@ without those explicit fields retain the stricter whole-section ownership rule.
 
 - `common.obj` stores nine x87 helpers in one 0x18C non-COMDAT code section: `_twoToTOS`, `_load_CW`, `_convertTOStoQNaN`, `_fload_withFB`, `_checkTOS_withFB`, `_fast_exit`, `_math_exit`, `_check_overflow_exit`, and `_check_range_exit`.  Function-definition aux records give individual extents, but each symbol's `section_offset` must be retained against the common member-wide `section_size`.
 - `0x004A7F35` was a true inventory hole.  Its 0x14 target bytes exactly match `__check_overflow_exit` at section offset 0xD5, between `_math_exit` and `_check_range_exit`.
+### D3DX x3d quaternion archive identity
+
+- The SHA-pinned VC7 prerelease `D3DX8.LIB` contains a coherent `objd/i386/x3d_quat.obj` family.  Seven target rows at `0x0048F776`, `0x0048FD22`, `0x0048FD8E`, `0x0048FEC5`, `0x0048FF52`, `0x00490048`, and `0x00490194` replay exactly from that member after explicit COFF relocation resolution.
+- Prefer the archive-decorated `x3d_D3DXQuaternion*` identities over imported `FUN_*` names.  MSVC decoration directly establishes the global `__stdcall` ABI; use it to type return/argument pointer classes, but do not infer unrelated source ownership from the `x3d_` prefix.
+- `x3d_D3DXQuaternionSquadSetup @ 0x00490194` is a useful high-density acceptance fixture: the 0xA59-byte function replays 66 relocations with zero differences.  A large exact result here is evidence for the archive/member/relocation model, not permission to accept neighboring D3DX functions without their own unit replay.

@@ -244,3 +244,10 @@ address,name,size,status,unit,evidence
 0x004AC83C,_setargv,162,matching,crt-setargv,python3 scripts/compare-library.py crt-setargv --json
 0x004AC8DE,__crtGetEnvironmentStringsA,290,matching,crt-crt-get-env-strings-a,python3 scripts/compare-library.py crt-crt-get-env-strings-a --json
 0x004B2BD5,__crtsetenv,437,matching,crt-crtsetenv,python3 scripts/compare-library.py crt-crtsetenv --json
+0x0048F776,x3d_D3DXQuaternionToAxisAngle,182,matching,d3dx-x3d-quaternion-to-axis-angle,python3 scripts/compare-library.py d3dx-x3d-quaternion-to-axis-angle --json
+0x0048FD22,x3d_D3DXQuaternionRotationAxis,108,matching,d3dx-x3d-quaternion-rotation-axis,python3 scripts/compare-library.py d3dx-x3d-quaternion-rotation-axis --json
+0x0048FD8E,x3d_D3DXQuaternionSlerp,311,matching,d3dx-x3d-quaternion-slerp,python3 scripts/compare-library.py d3dx-x3d-quaternion-slerp --json
+0x0048FEC5,x3d_D3DXQuaternionBaryCentric,141,matching,d3dx-x3d-quaternion-barycentric,python3 scripts/compare-library.py d3dx-x3d-quaternion-barycentric --json
+0x0048FF52,x3d_D3DXQuaternionSquad,146,matching,d3dx-x3d-quaternion-squad,python3 scripts/compare-library.py d3dx-x3d-quaternion-squad --json
+0x00490048,x3d_D3DXQuaternionLn,167,matching,d3dx-x3d-quaternion-ln,python3 scripts/compare-library.py d3dx-x3d-quaternion-ln --json
+0x00490194,x3d_D3DXQuaternionSquadSetup,2649,matching,d3dx-x3d-quaternion-squad-setup,python3 scripts/compare-library.py d3dx-x3d-quaternion-squad-setup --json

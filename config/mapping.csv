@@ -1499,13 +1499,13 @@ sse_D3DXVec4Normalize,0x48da50,0x9c,__stdcall,,D3DXVECTOR4*,D3DXVECTOR4*,const D
 sse_D3DXQuaternionNormalize,0x48e680,0x9c,__stdcall,,D3DXQUATERNION*,D3DXQUATERNION*,const D3DXQUATERNION*
 sse2_D3DXVec3Normalize,0x48efb0,0xc6,__stdcall,,D3DXVECTOR3*,D3DXVECTOR3*,const D3DXVECTOR3*
 sse2_D3DXPlaneNormalize,0x48f080,0xd8,__stdcall,,D3DXPLANE*,D3DXPLANE*,const D3DXPLANE*
-FUN_0048f776,0x48f776,0xb6,unknown,,u8,u8,u8,u8
-FUN_0048fd22,0x48fd22,0x6c,unknown,,u8,u8,u8,u8
-FUN_0048fd8e,0x48fd8e,0x137,unknown,,u8,u8,u8,u8,u8
-FUN_0048fec5,0x48fec5,0x8d,unknown,,u8,u8,u8,u8,u8,u8,u8
-FUN_0048ff52,0x48ff52,0x92,unknown,,u8,u8,u8,u8,u8,u8,u8
-FUN_00490048,0x490048,0xa7,unknown,,u8,u8,u8
-FUN_00490194,0x490194,0xa59,unknown,,u8,u8,u8,u8,u8,u8,u8,u8
+x3d_D3DXQuaternionToAxisAngle,0x48f776,0xb6,__stdcall,,void,const D3DXQUATERNION*,D3DXVECTOR3*,float*
+x3d_D3DXQuaternionRotationAxis,0x48fd22,0x6c,__stdcall,,D3DXQUATERNION*,D3DXQUATERNION*,const D3DXVECTOR3*,float
+x3d_D3DXQuaternionSlerp,0x48fd8e,0x137,__stdcall,,D3DXQUATERNION*,D3DXQUATERNION*,const D3DXQUATERNION*,const D3DXQUATERNION*,float
+x3d_D3DXQuaternionBaryCentric,0x48fec5,0x8d,__stdcall,,D3DXQUATERNION*,D3DXQUATERNION*,const D3DXQUATERNION*,const D3DXQUATERNION*,const D3DXQUATERNION*,float,float
+x3d_D3DXQuaternionSquad,0x48ff52,0x92,__stdcall,,D3DXQUATERNION*,D3DXQUATERNION*,const D3DXQUATERNION*,const D3DXQUATERNION*,const D3DXQUATERNION*,const D3DXQUATERNION*,float
+x3d_D3DXQuaternionLn,0x490048,0xa7,__stdcall,,D3DXQUATERNION*,D3DXQUATERNION*,const D3DXQUATERNION*
+x3d_D3DXQuaternionSquadSetup,0x490194,0xa59,__stdcall,,void,D3DXQUATERNION*,D3DXQUATERNION*,D3DXQUATERNION*,const D3DXQUATERNION*,const D3DXQUATERNION*,const D3DXQUATERNION*,const D3DXQUATERNION*
 FUN_004912d5,0x4912d5,0x39,unknown,,u8,u8
 FUN_00491495,0x491495,0x1198,unknown,,u8,u8,u8,u8,u8,u8,u8,u8
 FUN_0049262d,0x49262d,0x1a5,unknown,,u8,u32,undefined8,undefined8
