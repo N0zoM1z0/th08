@@ -121341,3 +121341,60 @@ offset = 0x9C2
 type = "DIR32"
 symbol = "$L70377"
 target = 0x00404F17
+
+# Ledger name: th08::DrawPieChart
+# Evidence: probe TU uses the TitleScreen /Os /Oi- /Ob1 rule; full 0x1FE body and all relocations replay exactly.
+[[units]]
+name = "title-draw-pie-chart-0046fdc2"
+object = "build/probes/TitleReplayMenuProbe.obj"
+symbol = "?DrawPieChart@th08@@YIXPAUFloat3@1@KMM@Z"
+target_address = 0x0046FDC2
+size = 0x1FE
+
+[[units.relocations]]
+offset = 0x68
+type = "REL32"
+symbol = "??0AnmVm@th08@@QAE@XZ"
+target = 0x00406720
+
+[[units.relocations]]
+offset = 0xC9
+type = "DIR32"
+symbol = "__real@bfc90fdb"
+target = 0x004B48CC
+
+[[units.relocations]]
+offset = 0xD8
+type = "DIR32"
+symbol = "__real@40000000"
+target = 0x004B42EC
+
+[[units.relocations]]
+offset = 0x128
+type = "REL32"
+symbol = "?Rotate@th08@@YIXPAUFloat3@1@0M@Z"
+target = 0x0043EE30
+
+[[units.relocations]]
+offset = 0x1B8
+type = "DIR32"
+symbol = "__real@3dcf8c3d"
+target = 0x004B960C
+
+[[units.relocations]]
+offset = 0x1CE
+type = "REL32"
+symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
+target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0x1EF
+type = "DIR32"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
+target = 0x018BDC90
+
+[[units.relocations]]
+offset = 0x1F4
+type = "REL32"
+symbol = "?DrawTriangleFan@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexDiffuseXyzrhw@2@H@Z"
+target = 0x00464EC0

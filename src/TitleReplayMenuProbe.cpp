@@ -2103,4 +2103,55 @@ ChainCallbackResult TitleScreen::DrawCompletionStatusText()
     return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
 }
 
+struct TitlePieVertexPosition : Float3
+{
+    TitlePieVertexPosition &operator=(const Float3 &other)
+    {
+        *reinterpret_cast<D3DVECTOR *>(this) = *reinterpret_cast<const D3DVECTOR *>(&other);
+        return *this;
+    }
+};
+
+struct TitlePieVertex
+{
+    TitlePieVertexPosition pos;
+    f32 w;
+    D3DCOLOR diffuse;
+};
+C_ASSERT(sizeof(TitlePieVertex) == 0x14);
+
+#pragma var_order(center, vm, vertices, i, angle)
+void DrawPieChart(Float3 *position, D3DCOLOR color, f32 param_3, f32 param_4)
+{
+    TitlePieVertex vertices[64];
+    Float3 center;
+    AnmVm vm;
+    f32 angle;
+    i32 i;
+
+    vm.blendMode = AnmBlendMode_Normal;
+    vm.color1.d3dColor = COLOR_WHITE;
+    vm.zWriteDisabled = TRUE;
+    vm.flag15 = FALSE;
+
+    vertices[0].diffuse = color;
+    vertices[0].pos = *position;
+    vertices[0].w = 1.0f;
+    angle = -(ZUN_PI / 2.0f);
+    center.x = param_4 / 2.0f;
+    center.y = 0.0f;
+
+    for (i = 1; i < 64; i++)
+    {
+        Rotate(&vertices[i].pos, &center, angle);
+        vertices[i].pos.x += vertices[0].pos.x;
+        vertices[i].pos.y += vertices[0].pos.y;
+        vertices[i].pos.z = vertices[0].pos.z;
+        vertices[i].diffuse = color;
+        vertices[i].w = 1.0f;
+        angle = AddNormalizeAngle(angle, (ZUN_PI / 31.0f) * param_3);
+    }
+    g_AnmManager->DrawTriangleFan(&vm, reinterpret_cast<VertexDiffuseXyzrhw *>(vertices), 64);
+}
+
 } // namespace th08

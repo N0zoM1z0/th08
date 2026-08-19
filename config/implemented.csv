@@ -537,6 +537,7 @@ th08::TitleScreen::DrawSpellStageSelect
 th08::ResultScreen::DrawFinalStats
 th08::TitleScreen::DrawReplayMenu
 th08::TitleScreen::DrawSpellCardSelect
+th08::DrawPieChart
 th08::TextHelper::RenderTextToTextureBold
 th08::TextHelper::RenderTextToTexture
 th08::SoundPlayer::InitializeDSound
