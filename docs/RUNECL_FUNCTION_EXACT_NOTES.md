@@ -2,17 +2,24 @@
 
 Target: Japanese TH08 1.00d `resources/th08.exe` at `0x004184B0`.
 
-These notes are for continuing `th08::EclManager::RunEcl` from shape-exact
-status toward strict `compare-function.py ecl-manager-run-ecl` exactness.  They
-record reproducible observations and failed natural C++ probes so later workers
-do not have to rediscover them.
+> **Completed historical investigation.** `th08::EclManager::RunEcl` is an
+> accepted strict match: 26,638 authored bytes, 27,398 compared bytes including
+> its jump table, and 799 explicit relocations. Words such as “current”,
+> “remaining”, and “not exact” below describe dated intermediate snapshots, not
+> current repository status. Use the final formal result at the end of this
+> document and `config/matches.csv` as the publication record.
 
-## Current baseline
+These chronological notes preserve reproducible observations and rejected
+natural C++ probes so the accepted result can be audited without repeating the
+investigation. The associated scripts now live under
+`scripts/analysis/historical/` and are not current work selectors.
+
+## Historical intermediate baseline
 
 As of `a553062 gpt-web: align runecl context selection flow`:
 
 ```text
-scripts/ecl-shape-score.py --object build/probes/EclRun.obj
+scripts/analysis/historical/runecl-score-shape.py --object build/probes/EclRun.obj
 function=0x6B06/0x6B06
 code=0x680E/0x680E
 physical_delta=0
@@ -458,7 +465,7 @@ The reusable hard gate for every candidate is all of:
 - only then compare relocation-replayed authored bytes.
 
 Never trust a selector's saved score without a fresh rebuild followed by
-`scripts/ecl-shape-score.py`. The source was restored to the last independently
+`scripts/analysis/historical/runecl-score-shape.py`. The source was restored to the last independently
 verified shape-zero state (`5cf06a4` source shape), where the fresh strict scorer
 reports 2727 mismatching authored bytes. The later raw-branch experiments remain
 useful allocator evidence, but their source changes must be re-tested under the
@@ -1231,7 +1238,7 @@ had to land together:
 
 With those source corrections together:
 
-- `ecl-shape-score.py` reports physical/positive/absolute delta all zero;
+- `runecl-score-shape.py` reports physical/positive/absolute delta all zero;
 - relocation-replayed strict diff is **0**;
 - all **162 / 162** RunEcl handler spans are byte-exact;
 - function code coverage is **26638 / 26638** bytes;

@@ -17,8 +17,8 @@ recorded in notes and handoffs.
 ## Bounded reconstruction loop
 
 1. Verify the executable hash and size.
-2. Select a small function or contiguous address range and ensure no other
-   worker owns the same source/global/type surface.
+2. Run `scripts/analysis/report-reconstruction-status.py` and select one small
+   function, one contiguous address range, or one inventory family.
 3. Locate it in `config/mapping.csv` and `config/reccmp-functions.csv`.
 4. Inspect target disassembly, callers, callees, strings, globals, imports,
    nearby functions, and exception/control-flow edges.
@@ -106,42 +106,46 @@ local relocation labels may be renumbered when shared declarations change, but
 any manifest update must preserve the same relocation offset/type/target and the
 full canonical byte comparison.
 
-## High-leverage lanes
+## Current phase selection
 
-Prefer dependency work that turns a giant dispatcher into bounded units:
+Authored source is present for the complete authored inventory and all but two
+authored functions have accepted exact units. Those two near matches are
+deliberately deferred in `docs/RE_HANDOFF.md`; do not restart blind expression
+matrices for them.
 
-- ECL: establish `EclManager` lifecycle and the target-observed `0x228` ECL
-  context, then reconstruct the four integer/float rvalue/lvalue resolvers at
-  `0x0041F420`, `0x0041FE10`, `0x00420120`, and `0x00420950`. Together they
-  cover 4,830 target bytes and 290 of `RunEcl`'s 463 direct-call sites. Port
-  the TH07 private-overlay method, not its offsets or opcode numbers.
-- GUI: `GuiImpl::RunMsg` is a strict 5,597-byte match (plus its 92-byte
-  compiler-owned jump table), and `Gui::DrawGameScene` is now a strict 4,544-byte
-  match. Reuse their proven `GuiMsgVm` offsets, HUD VM indices, portrait/message ANM
-  globals, stage music/result globals, and Supervisor graphics predicates rather
-  than rediscovering them. Remaining GUI work should build on this typed layout.
-- Large dispatchers: use the jump-table/call-multiset audit in `$th08-re` to
-  establish source presence, while retaining strict comparator-only exactness.
+The next primary lane is target-linked library/runtime recovery:
 
-The ECL dependency-first pass now has exact lifecycle units, complete four
-resolver tables, source coverage for all 184 `RunEcl` opcodes, and a typed
-`EnemyManager::OnUpdate` overlay. Re-audit the dispatcher with
-`python3 scripts/audit-ecl-dispatch.py`. Remaining work is service/global
-binding and compiler-shape convergence; source-present status does not imply
-that the giant dispatcher or update loop is byte-matching.
+1. Reconcile library names and boundaries against target disassembly, beginning
+   with the seven library rows that lack `mapping.csv` sizes and the
+   imported overlapping ranges reported by `validate-tracking.py`.
+2. Identify the exact VC7/CRT/D3DX archive provenance and pin archive hashes
+   before writing a scanner. TH07 archives are not substitutes.
+3. Design a separate library acceptance ledger and progress view before
+   claiming library matches. Do not insert library rows into authored
+   `implemented.csv`/`matches.csv` merely to reuse their percentage.
+4. After library/object coverage is reproducible, compare link layout, globals,
+   imports, PE metadata, resources, and remaining data as the whole-executable
+   lane. A successful normal link alone is not whole-image exactness.
 
-## Parallel handoff
+`3rdparty/Detours` supports the optional reconstruction DLL and is not code from
+the original target. Do not spend target-matching effort on that submodule.
 
-A bounded handoff contains:
+## Single-session checkpoint
+
+A bounded checkpoint contains:
 
 - target version, address range, and source files;
 - exact observations and separately labeled cross-version hypotheses;
 - compiler/build mode and the full comparison command;
 - comparison result or concrete blocker;
-- mapping/global/header changes that need coordinator review.
+- mapping/global/header changes and every accepted unit that must be rerun.
 
-Workers should avoid shared headers and mapping files unless explicitly
-assigned. The coordinator reruns comparisons and owns progress publication.
+Keep `config/claims.csv` header-only. Before yielding a browser session, either
+restore experiments or commit a coherent batch, refresh `docs/RE_HANDOFF.md` if
+the phase changed, and leave exact commands/results. Do not depend on chat
+history or `.analysis/` filenames as the only explanation of current state.
+Route reusable conclusions through `docs/KNOWLEDGE_BASE.md` and remove scratch
+that has been superseded by tracked evidence.
 
 For large switch interpreters, treat the jump table as a structural checksum before
 fine byte matching. Resolve each COFF local-label relocation and compare the ordered

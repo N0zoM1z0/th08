@@ -21,8 +21,8 @@ supported by evidence.
    its target address/size, decorated COFF symbol, object path, and every
    relocation against `config/mapping.csv`, `config/reccmp-*.csv`, and target
    disassembly.
-   If an original delinked object is required and Ghidra is configured, the
-   coordinator may generate it through the verified disposable import:
+   If an original delinked object is required and Ghidra is configured,
+   generate it through the verified disposable import:
 
    ```bash
    python3 scripts/export_ghidra_objs.py --import-csv
@@ -56,7 +56,7 @@ For a read-only search of already built, source-emitted leaves, use the
 conservative discovery gate:
 
 ```bash
-nice -n 15 python3 scripts/discover-exact-units.py --min-size 0x80
+nice -n 15 python3 scripts/analysis/propose-exact-units.py --min-size 0x80
 ```
 
 It emits review-only candidates only when the target-pinned isolated extent,
@@ -66,12 +66,12 @@ functions missing from `implemented.csv`; it never updates tracking. Inspect
 the source and target, add a reviewed unit, and obtain this skill's canonical
 `compare-function.py` `exact` result before entering either ledger.
 
-For a scanner batch, reject same-address multi-owner candidates and run the
+For a candidate-proposal batch, reject same-address multi-owner candidates and run the
 canonical comparator once for every remaining unit before adding any
 `implemented.csv` or `matches.csv` rows. Aggregate replay evidence is a
 prioritization result, not a substitute for per-unit acceptance.
 
-The scanner includes ordinary and `build/probes/` VC7 objects.  Use
+The proposer includes ordinary and `build/probes/` VC7 objects. Use
 `--allow-unnamed-mapping` only to diagnose a one-to-one exact body whose
 target row is still `FUN_*`; it is review-only.  Reconcile the target name and
 ABI in the ledgers before creating a canonical unit, rather than accepting a
@@ -97,21 +97,19 @@ This exposes the responsible handler even when slots share a default body. It
 is only a source-shaping aid; it does not establish a boundary or an exact
 match without the canonical full-range comparison.
 
-For `EclManager::RunEcl`, use the checked-in implementation rather than
-rebuilding this bookkeeping ad hoc:
+`EclManager::RunEcl` is already exact. Only when reproducing its historical
+evidence or verifying a dependency change, use:
 
 ```bash
-python3 scripts/crosswalk-ecl-dispatch.py --object build/probes/EclRun.obj --top 20
-python3 scripts/ecl-shape-score.py --top 20
+python3 scripts/analysis/historical/runecl-crosswalk-dispatch.py --object build/probes/EclRun.obj --top 20
+python3 scripts/analysis/historical/runecl-score-shape.py --top 20
 ```
 
-`crosswalk-ecl-dispatch.py` reports the physical handler movement.  The score
-helper is a non-mutating guardrail for probes: it checks the required
+`runecl-crosswalk-dispatch.py` reports physical handler movement. The score
+helper is a non-mutating historical guardrail: it checks the required
 code-plus-table extent, sums all positive/absolute handler deltas, and lists
-focus opcodes.  Prefer changes that preserve the `0x6B06` associated extent and
-improve the global score; do not commit a swap that merely moves bytes from one
-handler to another unless a later bounded probe depends on that exact shape.
-Neither script can be used to count unmatched bytes as authored.
+focus opcodes. Neither script selects current work or replaces the accepted
+canonical comparison.
 
 When a dispatcher target loads ECX from an absolute address immediately before
 a `__thiscall`, resolve that address through `config/reccmp-globals.csv` before
@@ -179,15 +177,16 @@ analysis data to clear a compiler cache.
 
 An `exact` JSON result proves only the configured function bytes after the
 declared relocations. It does not prove the original object partition, adjacent
-functions, data layout, or a repository-wide percentage. Only the coordinator
-updates shared mapping/match manifests or publishes matching status.
+functions, data layout, or a repository-wide percentage. Update shared
+mapping/match manifests and published status only in a reviewed coherent commit.
 
 Do not force bytes with naked assembly, copied code arrays, arbitrary padding,
-fake types, ABI lies, empty behavior, or target patches. Serialize Wine/VC7
-builds when parallel agents are active. End with:
+fake types, ABI lies, empty behavior, or target patches. Run only one Wine/VC7
+build at a time. End with:
 
 ```bash
-python3 scripts/validate-tracking.py
+python3 scripts/validate-tracking.py --require-target
+python3 scripts/ci.py
 python3 scripts/progress.py --check
 git diff --check
 ```
@@ -333,7 +332,7 @@ Do not force standard math/runtime helpers into authored reconstruction merely b
 - A target dword work value later consumed as one byte should not automatically be declared `u8`. Preserve the dword source shape when target stores prove it.
 - When a same-type totals record physically follows an array, a narrow overlay for the contiguous table can recover the original constant-index AST without undefined one-past-array access.
 
-- If an exact function lives only in a foreign dirty/claimed TU, make the evidence reproducible before promotion: copy the minimal function plus required file-scope data/helpers into a probe compiled with the same rule, verify strict zero-diff there, and ledger the probe object. Never make canonical progress depend on someone else's uncommitted object.
+- If an exact function lives only in a dirty production TU, make the evidence reproducible before promotion: copy the minimal function plus required file-scope data/helpers into a probe compiled with the same rule, verify strict zero-diff there, and ledger the probe object. Never make canonical progress depend on an uncommitted experimental object.
 - Keep stable exact probes narrow. Remove neighboring near-match experiments before committing an exact anchor so future agents can reproduce the accepted unit without inheriting unrelated unfinished code.
 
 - When an `/Os` function appears longer by exactly `N*4`, inspect the target boundary before changing source: VC7 may have appended an associated switch table to the COFF aux extent. Use authored `size` plus a larger `compare_size` and replay the table relocations.

@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""Score the current EclRun.obj physical handler shape against the TH08 target.
+"""Reproduce the completed RunEcl handler-shape score.
 
-This is a non-mutating companion to scripts/crosswalk-ecl-dispatch.py.  It is
-intended for RunEcl source-shape probes: rebuild build/probes/EclRun.obj, then
-run this script to check whether a probe preserves the required associated
-extent and whether it improves handler span balance globally rather than merely
-moving bytes between handlers.
+This is a non-mutating historical companion to runecl-crosswalk-dispatch.py.
+RunEcl is already exact; use this only to reproduce its checked-in evidence,
+not to select new work.
 """
 from __future__ import annotations
 
@@ -16,7 +14,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_OBJECT = ROOT / "build" / "probes" / "EclRun.obj"
 EXPECTED_FUNCTION_SIZE = 0x6B06
 EXPECTED_CODE_SIZE = 0x680E
@@ -26,7 +24,13 @@ def run_crosswalk(object_path: Path, top: int) -> dict[str, Any]:
     output = subprocess.check_output(
         [
             sys.executable,
-            str(ROOT / "scripts" / "crosswalk-ecl-dispatch.py"),
+            str(
+                ROOT
+                / "scripts"
+                / "analysis"
+                / "historical"
+                / "runecl-crosswalk-dispatch.py"
+            ),
             "--object",
             str(object_path),
             "--top",

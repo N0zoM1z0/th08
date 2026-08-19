@@ -14,12 +14,12 @@ image base `0x00400000`, entry `0x004A619E`, and `.text`
 
 1. Read `AGENTS.md`, `docs/ARCHITECTURE.md`, `docs/RE_WORKFLOW.md`, the
    relevant `config/mapping.csv` and `config/reccmp-functions.csv` rows, and
-   `config/claims.csv`.
+   `docs/RE_HANDOFF.md`.
 2. Run:
 
    ```bash
    python3 scripts/verify-target.py
-   python3 scripts/validate-tracking.py
+   python3 scripts/validate-tracking.py --require-target
    ```
 
 3. Fail closed on IDA until its active TH08 database passes
@@ -28,8 +28,9 @@ image base `0x00400000`, entry `0x004A619E`, and `.text`
    identity with the required metadata and multi-point read-only byte samples.
    Use verified-target `objdump` or the dedicated headless Ghidra import until
    then. Never use IDA semantic evidence as a matching claim.
-4. Ensure the coordinator assigned the address and exclusive writable files.
-   Reconcile mapping/Ghidra boundaries against complete target control flow.
+4. Confirm `config/claims.csv` is header-only and keep one bounded writable
+   scope. Reconcile mapping/Ghidra boundaries against complete target control
+   flow.
 
 ## Recover and implement
 
@@ -52,10 +53,9 @@ image base `0x00400000`, entry `0x004A619E`, and `.text`
    destination multiset with the built function's `REL32` multiset; and
    reconcile returns, fallthroughs, field offsets, and access widths. This can
    justify `implemented.csv`, never `matches.csv`.
-   For TH08 ECL, run `python3 scripts/audit-ecl-dispatch.py` after changing
-   `EclRunLow.inl` or `EclRunHigh.inl`. Its primary table uses `opcode - 1`;
-   retain the public 1..184 numbering and reconstruct integer/float rvalue and
-   lvalue tables independently because their writable offsets can differ.
+   RunEcl is already exact. Its opcode audit is retained at
+   `scripts/analysis/historical/runecl-audit-dispatch.py` only for reproducing
+   the completed investigation; do not select it as new work from stale notes.
 5. Implement the smallest coherent function in its existing module. Do not
    manufacture behavior, paste decompiler output, patch target bytes, or use
    assembly/byte arrays/padding to force code shape.
@@ -64,12 +64,13 @@ image base `0x00400000`, entry `0x004A619E`, and `.text`
    defined for one subsystem may have been emitted in another subsystem's
    translation unit. Preserve the class owner while testing the target-proven
    TU/profile, as with `GameManager::SetYoukaiGauge` in `Player.obj`.
-6. Ask the coordinator to review shared layouts, canonical mapping names,
-   `config/implemented.csv`, and `config/match-units.toml` changes.
+6. Treat shared layouts, canonical mapping names, `config/implemented.csv`, and
+   `config/match-units.toml` as high-risk changes. Re-run every affected exact
+   unit before committing them.
 7. Use `$th08-matching` for the focused VC7 build and strict comparison.
 
-When a coordinator needs Ghidra-backed original objects and Ghidra is
-configured, use the target-verifying disposable import path:
+When Ghidra-backed original objects are needed and Ghidra is configured, use
+the target-verifying disposable import path:
 
 ```bash
 python3 scripts/export_ghidra_objs.py --import-csv
@@ -85,5 +86,6 @@ mapping row into an exact-match claim without the canonical comparator result.
 
 Report address and size, observations, inferences, unknowns, files changed,
 target inspection commands, focused unit/result, and remaining ABI or layout
-risk. Run `python3 scripts/validate-tracking.py` and `git diff --check` before
-handoff. Do not commit binaries, toolchains, databases, reports, or credentials.
+risk. Run `python3 scripts/validate-tracking.py --require-target`,
+`python3 scripts/ci.py`, and `git diff --check` before a session checkpoint. Do
+not commit binaries, toolchains, databases, reports, or credentials.

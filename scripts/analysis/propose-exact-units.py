@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Discover conservative, review-only exact COFF function candidates.
+"""Propose conservative, review-only exact COFF function candidates.
 
 This never changes mapping, match units, or progress.  It verifies the pinned
 target, then emits only isolated VC7 functions whose target extent, relocation
@@ -19,7 +19,7 @@ import sys
 import tomllib
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from coff import ObjectModule  # noqa: E402
@@ -221,7 +221,7 @@ def unnamed_mapping_candidate(
     A source symbol can predate reconciliation of imported ``FUN_`` mapping
     names.  This diagnostic path never accepts it: it requires one exact
     target extent with a placeholder mapping name and leaves the later naming
-    decision to coordinator review.
+    decision to explicit ledger review.
     """
     if (
         symbol.section_number <= 0
@@ -280,11 +280,21 @@ def render(candidates: list[dict[str, object]], target_sha: str) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        epilog=(
+            "Examples:\n"
+            "  python3 scripts/analysis/propose-exact-units.py "
+            "--object build/ScreenEffect.obj --min-size 0x80\n"
+            "  python3 scripts/analysis/propose-exact-units.py "
+            "--output .analysis/proposed-units.toml"
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     parser.add_argument("--object", action="append", dest="objects", help="build object name or repository-relative path; repeatable")
     parser.add_argument("--min-size", type=lambda value: int(value, 0), default=1)
     parser.add_argument("--include-implemented", action="store_true", help="also print existing exact entries (for scanner validation)")
-    parser.add_argument("--allow-unimplemented", action="store_true", help="emit source-built candidates absent from implemented.csv for coordinator review")
+    parser.add_argument("--allow-unimplemented", action="store_true", help="emit source-built candidates absent from implemented.csv for explicit review")
     parser.add_argument("--allow-unnamed-mapping", action="store_true", help="diagnose one-to-one exact source bodies currently mapped only as FUN_*; review-only")
     parser.add_argument("--output", type=Path, help="write a review-only TOML artifact")
     args = parser.parse_args()

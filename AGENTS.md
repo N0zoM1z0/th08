@@ -67,19 +67,24 @@ the TH07 database. Never patch target bytes.
 - Do not commit original executables, game archives, IDA/Ghidra databases,
   downloaded toolchains, generated reports, credentials, or private keys.
 
-## Parallel reconstruction
+## Single-agent sessions
 
-- Give workers non-overlapping modules or address ranges.
-- The coordinator owns shared ABI/type decisions, mapping CSV changes, progress
-  assets, commits, and pushes.
-- Workers report target range, evidence, files changed, exact build/comparison
-  commands, result, and remaining uncertainty.
-- Shared headers, class layouts, compiler flags, object partitioning, and global
-  mappings require coordinator review before integration.
+- Use one writable agent/session at a time. Do not delegate reconstruction or
+  matching to subagents, and do not run concurrent Wine/VC7 builds.
+- Start by reading `docs/RE_HANDOFF.md`, inspecting `git status`, and running
+  `scripts/analysis/report-reconstruction-status.py --summary`. Treat prose
+  snapshots as secondary to the ledgers.
+- `config/claims.csv` is retained only as a schema-compatible empty file. It is
+  not a task list; single-agent work must leave it header-only.
+- Keep one bounded address or one coherent repository-maintenance batch in
+  flight. Commit stable checkpoints before a browser/session handoff.
+- Re-run affected accepted units after shared header, layout, compiler-flag,
+  object-partition, or global-mapping changes.
 
 ## Handoff
 
 Run the relevant normal/object build and comparison, followed by
-`git diff --check`. Report the target addresses, evidence class, exact result,
-and any unverified assumptions. If the exact executable or analysis backend is
-unavailable, say so and stop short of a matching claim.
+`python3 scripts/ci.py` and `git diff --check`. Update `docs/RE_HANDOFF.md` when
+the current phase or blocker changes. Report target addresses, evidence class,
+exact result, and any unverified assumptions. If the exact executable or
+analysis backend is unavailable, say so and stop short of a matching claim.

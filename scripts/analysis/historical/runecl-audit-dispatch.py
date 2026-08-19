@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit TH08 RunEcl opcode coverage and resolver-call leverage."""
+"""Reproduce the completed RunEcl opcode-coverage audit."""
 
 from __future__ import annotations
 
@@ -8,14 +8,17 @@ import json
 from pathlib import Path
 import re
 import struct
+import sys
 
 from capstone import Cs, CS_ARCH_X86, CS_MODE_32
 from capstone.x86 import X86_OP_IMM
 
-from typed_re.facts import DEFAULT_TARGET, load_target
+ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from typed_re.facts import DEFAULT_TARGET, load_target  # noqa: E402
 
 
-ROOT = Path(__file__).resolve().parents[1]
 RUN_ECL = 0x004184B0
 RUN_ECL_SIZE = 0x680E
 JUMP_TABLE = 0x0041ECBE

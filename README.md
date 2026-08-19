@@ -73,11 +73,17 @@ build-mode, reccmp, and objdiff details.
 
 ## Analysis status
 
-The currently available IDA MCP session is attached to TH07. It must not be
-used as TH08 evidence. Until an exact TH08 1.00d IDB is open and the metadata
-preflight passes, use target-side `objdump`/`llvm-objdump`, a correctly imported
-Ghidra project, and the inherited upstream mappings. See
-[IDA and analysis safety](docs/IDA_MCP.md).
+IDA MCP follows whichever database is active in the GUI; it has no reliable
+program selector. Use it for TH08 only after the active database passes the
+attestation in [IDA and analysis safety](docs/IDA_MCP.md). Otherwise use
+target-side `objdump`/`llvm-objdump`, the verified disposable Ghidra import, and
+the target-pinned repository tools.
+
+To see the live authored and library inventory instead of relying on prose:
+
+```bash
+python3 scripts/analysis/report-reconstruction-status.py --summary
+```
 
 ## Project map
 
@@ -85,6 +91,9 @@ Ghidra project, and the inherited upstream mappings. See
 - [Reverse-engineering workflow](docs/RE_WORKFLOW.md)
 - [IDA and analysis safety](docs/IDA_MCP.md)
 - [Build and exact matching](docs/BUILD_MATCHING.md)
+- [Tool selection and command recipes](docs/TOOLS.md)
+- [Reusable knowledge map and contribution policy](docs/KNOWLEDGE_BASE.md)
+- [Current handoff and next milestones](docs/RE_HANDOFF.md)
 - [Generated reconstruction progress](docs/PROGRESS.md)
 - [Agent operating rules](AGENTS.md)
 
@@ -97,7 +106,7 @@ repository. The upstream project also credits @EstexNT for porting its
 `var_order` pragma to MSVC7.
 
 The [N0zoM1z0/th07 reconstruction](https://github.com/N0zoM1z0/th07) supplies
-this repository's workflow, structure, target gates, claims, matching, and
+this repository's workflow, structure, target gates, matching, and
 documentation model. [GensokyoClub/th06](https://github.com/GensokyoClub/th06)
 is adjacent-engine corroboration only; neither reference overrides TH08 target
 evidence.

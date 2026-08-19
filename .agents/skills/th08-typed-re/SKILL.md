@@ -11,7 +11,7 @@ it never edits source, analysis databases, or tracking state.
 
 ## Generate a packet
 
-1. Follow `$th08-re` preflight and ownership rules.
+1. Follow `$th08-re` preflight and single-session scope rules.
 2. Run:
 
    ```bash
@@ -26,8 +26,8 @@ it never edits source, analysis databases, or tracking state.
    `scripts/compare-function.py`.
 
 If no match unit owns the address, the packet remains useful for ABI recovery,
-but comparison state is `not_configured`; ask the coordinator to define and
-review the unit before claiming exactness.
+but comparison state is `not_configured`; define and review a canonical unit
+before claiming exactness.
 
 ## Shape source
 

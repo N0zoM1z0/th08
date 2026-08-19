@@ -17,7 +17,7 @@ import sys
 import tomllib
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from coff import ObjectModule  # noqa: E402
@@ -103,7 +103,15 @@ def spans(starts: list[int], end: int) -> dict[int, int]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        epilog=(
+            "Historical reproduction:\n"
+            "  python3 scripts/analysis/historical/runecl-crosswalk-dispatch.py "
+            "--object build/probes/EclRun.obj --top 20"
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     parser.add_argument("--object", type=Path, default=ROOT / "build" / "probes" / "EclRun.obj")
     parser.add_argument("--target", type=Path, default=ROOT / "resources" / "th08.exe")
     parser.add_argument("--top", type=int, default=20)

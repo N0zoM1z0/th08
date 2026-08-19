@@ -9,4 +9,4 @@ Reusable VC7 source-shape evidence from the TH08 Player option/shot callback fam
 - The target sometimes writes `vm.pendingInterrupt = 1` directly instead of calling `SetInterrupt(1)`. `FUN_004505D0` and `FUN_00450840` require the direct field owner.
 - Avoid chained assignments when target store order matters. `FUN_00450C50` needs `hitboxSize.x = value; hitboxSize.y = value;`; `x = y = value` reverses the stores under VC7.
 - Keep associated tables out of authored progress: `FUN_0044F5E0` is 0x32A authored / 0x34E compared, and `FUN_00450C50` is 0x263 authored / 0x287 compared.
-- The SHT callback ABI is consistently `__fastcall(Player *player, PlayerShot *slot, ...)`: ECX owns Player, EDX owns the shot, and extra SHT arguments are stack parameters. A claim-safe free-function probe reproduces this without editing the active Player TU.
+- The SHT callback ABI is consistently `__fastcall(Player *player, PlayerShot *slot, ...)`: ECX owns Player, EDX owns the shot, and extra SHT arguments are stack parameters. An isolated free-function probe reproduces this without perturbing the production Player TU.

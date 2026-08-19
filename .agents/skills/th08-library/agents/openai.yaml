@@ -1,0 +1,4 @@
+interface:
+  display_name: "TH08 Library Recovery"
+  short_description: "Recover target-linked VC7 and D3DX library code"
+  default_prompt: "Use $th08-library to recover one bounded target-linked TH08 library family with pinned provenance."

@@ -92,7 +92,7 @@ evidence = "TH08 float resolver tables at 0x00420120 and 0x00420950"
 id = "ecl-opcode-minus-one-dispatch"
 requires = ["ecl_dispatch_table"]
 confidence = "target_observation"
-recommendation = "The RunEcl primary jump table indexes opcode-1. Normalize decompiler case labels back to actual opcodes 1..184, then audit each source case once with scripts/audit-ecl-dispatch.py."
+recommendation = "The RunEcl primary jump table indexes opcode-1. Normalize decompiler case labels back to actual opcodes 1..184, then audit each source case once with scripts/analysis/historical/runecl-audit-dispatch.py."
 evidence = "TH08 RunEcl dispatch at 0x00418623 and 184-slot table at 0x0041ECBE"
 
 [[rules]]

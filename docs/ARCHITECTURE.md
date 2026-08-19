@@ -55,21 +55,32 @@ boundaries.
   itself an exact-match result.
 - `config/match-units.toml` and `config/matches.csv`: strict function-level
   comparison definitions and accepted exact results.
-- `config/claims.csv`: coordinator-owned parallel work claims.
+- `config/claims.csv`: retired claim schema, kept header-only for compatibility
+  with earlier history; it is not current task state.
 - `scripts/`: environment acquisition, Ninja generation, target verification,
-  focused matching, typed target facts, and progress helpers.
+  focused matching, typed target facts, and progress helpers. Reusable read-only
+  investigations live under `scripts/analysis/`; completed phase-specific
+  reproducers live under `scripts/analysis/historical/`.
 - `reccmp-project.yml`: exact target hash and reccmp data sources.
 - `objdiff.json`: reconstructed/original COFF unit mapping.
 - `3rdparty/`: the pinned Detours submodule used only by the optional DLL build.
 - `resources/`: non-source inputs and progress artwork; the private target is
   expected here but must not be committed.
 - `build/`: generated executables, objects, maps, and reports.
+- `.analysis/`: ignored, disposable scratch evidence for the active bounded
+  investigation. It must not be treated as status or durable instructions.
 
 `scripts/progress.py` derives both source-presence and strict exact-match views
 in `docs/PROGRESS.md` and its SVG. Source presence comes from
 `config/implemented.csv`; exact coverage counts only accepted rows in
 `config/matches.csv`. CI checks these generated files but cannot replay private
 target comparisons.
+
+The `library` rows in `config/reccmp-functions.csv` describe code linked into
+the original TH08 image, principally VC7 CRT/runtime and D3DX bodies. They are
+not the same thing as repository dependencies under `3rdparty/`. Detours is
+used by the optional DLL build and is not a target library-reconstruction
+milestone.
 
 ## Evidence relationship to adjacent games
 

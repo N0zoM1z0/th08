@@ -244,37 +244,20 @@ def validate_implemented(
     return count, seen
 
 
-def validate_claims(mapping_addresses: set[int], errors: list[str]) -> int:
-    count = 0
-    seen: set[int] = set()
+def validate_claims(_mapping_addresses: set[int], errors: list[str]) -> int:
     try:
         with (CONFIG / "claims.csv").open(newline="", encoding="utf-8") as stream:
             reader = csv.DictReader(stream)
             if reader.fieldnames != CLAIM_FIELDS:
                 fail(f"claims.csv: unexpected columns: {reader.fieldnames}")
-            for line, row in enumerate(reader, start=2):
-                address = parse_address(row["address"])
-                canonical = f"0x{address:08X}"
-                if row["address"] != canonical:
-                    fail(
-                        f"claims.csv:{line}: noncanonical address {row['address']!r}; "
-                        f"expected {canonical}"
-                    )
-                if address in seen:
-                    fail(f"claims.csv:{line}: duplicate address {canonical}")
-                if address not in mapping_addresses:
-                    fail(
-                        f"claims.csv:{line}: address absent from mapping.csv: {canonical}"
-                    )
-                if not row["owner"] or not row["started_utc"] or not row["branch"]:
-                    fail(
-                        f"claims.csv:{line}: owner, started_utc, and branch are required"
-                    )
-                seen.add(address)
-                count += 1
+            for line, _row in enumerate(reader, start=2):
+                fail(
+                    f"claims.csv:{line}: claims are retired in the single-agent "
+                    "workflow; keep this file header-only"
+                )
     except (OSError, KeyError, TypeError, ValueError) as exc:
         errors.append(str(exc))
-    return count
+    return 0
 
 
 def load_match_units(errors: list[str]) -> dict[str, tuple[int, int]]:
@@ -435,7 +418,7 @@ def main() -> int:
     print(
         f"tracking data OK: {len(mapping):,} mapping rows, "
         f"{implemented:,} implemented symbols, {matches:,} exact matches, "
-        f"{claims:,} active claims, {relocations:,} relocation-only symbols; "
+        f"{claims:,} claim rows, {relocations:,} relocation-only symbols; "
         f"target bytes {'checked' if check_target_bytes else 'skipped'}"
     )
     return 0

@@ -151,7 +151,7 @@ def text_summary(report: dict[str, object]) -> str:
             f"exact {authored['exact_functions']}/{authored['functions']} "
             f"({authored['exact_bytes']}/{authored['bytes']} bytes)",
             "Library: "
-            f"{library['functions']} classified functions; accepted sizes for "
+            f"{library['functions']} classified functions; mapping sizes for "
             f"{library['sized_functions']} ({library['known_bytes']} known bytes); "
             f"{library['with_match_units']} configured match units",
         ]
