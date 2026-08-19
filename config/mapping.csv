@@ -23,11 +23,11 @@ th08::AsciiManager::CreateTimePopup,0x403460,0x19b,__thiscall,,void,AsciiManager
 th08::AsciiManager::CreateFamiliarPopup,0x403600,0x1a4,__thiscall,,void,AsciiManager*,Float3*,i32,i32,D3DCOLOR
 th08::PauseMenu::OnUpdatePauseMenu,0x4037b0,0xf3a,__thiscall,,u32,PauseMenu*
 th08::Float3::Float3,0x404720,0x2a,__thiscall,,Float3*,Float3*,f32,f32,f32
-th08::PauseMenu::OnDrawPauseMenu,0x404750,0x135,__thiscall,,void,PauseMenu*
+th08::PauseMenu::OnDraw,0x404750,0x135,__thiscall,,void,PauseMenu*
 th08::RetryMenu::OnUpdateRetryMenu,0x404890,0x9b2,__thiscall,,u32,RetryMenu*
 th08::Spellcard::GetInactiveState,0x405260,0x16,__thiscall,,i32,Spellcard*
 th08::PlstPlayCounts::IncrementTotalAttempts,0x405280,0x27,__fastcall,,void,PlstPlayCounts*,u32
-th08::RetryMenu::OnDrawRetryMenu,0x4052b0,0x16c,__thiscall,,void,RetryMenu*
+th08::RetryMenu::OnDraw,0x4052b0,0x16c,__thiscall,,void,RetryMenu*
 th08::AsciiManager::OnDrawHighPrioImpl,0x405420,0x9ea,__thiscall,,void,AsciiManager*
 th08::AsciiManager::DrawPercentage,0x405e10,0x70b,__thiscall,,void,AsciiManager*,u32,u32,unsigned long
 th08::ChainElem::SetCallback,0x406520,0x2a,__thiscall,,void,ChainElem*,u32
