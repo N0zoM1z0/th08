@@ -6,6 +6,16 @@ from configure import BuildType, configure
 from winhelpers import run_windows_program
 
 SCRIPTS_DIR = Path(__file__).parent
+ROOT = SCRIPTS_DIR.parent
+FRESH_SIDE_OUTPUTS = (
+    "build/vc70.pdb",
+    "build/th08.map",
+    "build/th08.pdb",
+    "build/th08e.map",
+    "build/th08e.pdb",
+    "build/th08e.exp",
+    "build/th08e.lib",
+)
 
 
 def build(build_type, verbose=False, jobs=1, targets=None, fresh=False):
@@ -31,15 +41,21 @@ def build(build_type, verbose=False, jobs=1, targets=None, fresh=False):
     # wine if running on linux/macos. scripts/th08run.bat will setup PATH and other
     # environment variables for the MSVC toolchain to work before calling ninja.
     if fresh:
-        # Ninja removes only outputs declared by the freshly generated graph.
+        # Ninja removes outputs declared by the freshly generated graph.  VC7
+        # and the linker also create a small set of undeclared side outputs;
+        # remove those explicitly so a "fresh" build cannot inherit them.
         # Source, target inputs, toolchains, and private analysis are untouched.
         run_windows_program(
             [str(SCRIPTS_DIR / "th08run.bat"), "ninja", "-t", "clean"],
-            cwd=str(SCRIPTS_DIR.parent),
+            cwd=str(ROOT),
         )
+        for relative in FRESH_SIDE_OUTPUTS:
+            path = ROOT / relative
+            if path.is_file():
+                path.unlink()
     run_windows_program(
         [str(SCRIPTS_DIR / "th08run.bat"), "ninja"] + ninja_args,
-        cwd=str(SCRIPTS_DIR.parent),
+        cwd=str(ROOT),
     )
 
 
@@ -71,8 +87,8 @@ def main():
         "--fresh",
         action="store_true",
         help=(
-            "clean all outputs declared by the generated Ninja graph before "
-            "building; use for aggregate exact-state attestation"
+            "clean generated Ninja outputs and known VC7/linker side outputs "
+            "before building; use for aggregate exact-state attestation"
         ),
     )
     parser.add_argument(

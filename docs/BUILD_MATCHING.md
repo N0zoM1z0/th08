@@ -857,7 +857,8 @@ does not fill this evidence gap.
 Working shape: `configure.py` derives the aggregate `objdiff` dependencies from
 both `objdiff.json` and every object in `match-units.toml`.
 `verify-exact-units.py --all` then regenerates that graph, asks Ninja to clean
-its declared outputs, builds serially, and replays only rows accepted by
+its declared outputs, removes the explicitly listed VC7/linker side outputs
+that Ninja cannot see, builds serially, and replays only rows accepted by
 `matches.csv`.
 
 Rejected alternative: reusing `build/`, relying on normal-build objects, or

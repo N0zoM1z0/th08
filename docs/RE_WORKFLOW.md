@@ -140,8 +140,9 @@ python3 scripts/analysis/verify-exact-units.py --all --json \
   > build/accepted-unit-replay.json
 ```
 
-`--all` regenerates the objdiff graph, cleans Ninja-declared outputs, builds all
-configured objects serially, and then replays the accepted ledger. A run with
+`--all` regenerates the objdiff graph, cleans Ninja outputs and known VC7/linker
+side outputs, builds all configured objects serially, and then replays the
+accepted ledger. A run with
 `--reuse-build`, a normal link, or a focused object comparison cannot attest
 repository-wide exact totals.
 

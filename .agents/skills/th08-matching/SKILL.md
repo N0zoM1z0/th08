@@ -189,10 +189,11 @@ python3 scripts/analysis/verify-exact-units.py --all --json \
 ```
 
 `--all` is cold by default: it regenerates the objdiff graph, cleans only
-Ninja-declared outputs, builds every configured comparison object with one job,
-and then replays accepted units. `--reuse-build` is a non-attesting diagnostic
-shortcut. A focused exact result may update its own row only after the affected
-object's accepted units pass; aggregate progress requires the cold full replay.
+generated Ninja outputs plus the explicitly known VC7/linker side outputs,
+builds every configured comparison object with one job, and then replays
+accepted units. `--reuse-build` is a non-attesting diagnostic shortcut. A
+focused exact result may update its own row only after the affected object's
+accepted units pass; aggregate progress requires the cold full replay.
 
 Do not force bytes with naked assembly, copied code arrays, arbitrary padding,
 fake types, ABI lies, empty behavior, or target patches. Run only one Wine/VC7

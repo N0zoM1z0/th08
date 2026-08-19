@@ -83,7 +83,8 @@ the TH07 database. Never patch target bytes.
 - Before publishing aggregate exact totals, or after any shared change that may
   affect more than one object, run
   `python3 scripts/analysis/verify-exact-units.py --all`. This command performs
-  a single-job cold build of every configured comparison object by default.
+  a single-job cold build of every configured comparison object by default,
+  clearing both Ninja outputs and known VC7/linker side outputs first.
   `--reuse-build` is diagnostic only and cannot support an aggregate claim.
 
 ## Handoff
