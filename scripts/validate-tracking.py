@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Validate TH08 target identity and the imported upstream tracking seed."""
+"""Validate TH08 tracking ledgers, optionally including private target bytes."""
 
 from __future__ import annotations
 
+import argparse
 import csv
 from dataclasses import dataclass
 from pathlib import Path
@@ -118,12 +119,16 @@ def target_bytes_at(data: bytes, address: int, size: int) -> bytes:
     fail(f"relocation ledger range 0x{address:08X}+0x{size:X} is outside the PE")
 
 
-def validate_relocation_ledger(errors: list[str]) -> int:
+def validate_relocation_ledger(errors: list[str], *, check_target_bytes: bool) -> int:
     count = 0
     seen_symbols: set[str] = set()
     seen_addresses: set[int] = set()
     try:
-        target = (ROOT / "resources" / "th08.exe").read_bytes()
+        target = (
+            (ROOT / "resources" / "th08.exe").read_bytes()
+            if check_target_bytes
+            else None
+        )
         with (CONFIG / "reccmp-relocations.csv").open(
             newline="", encoding="utf-8"
         ) as stream:
@@ -157,12 +162,13 @@ def validate_relocation_ledger(errors: list[str]) -> int:
                     fail(f"reccmp-relocations.csv:{line}: invalid row")
                 if not row["evidence"]:
                     fail(f"reccmp-relocations.csv:{line}: evidence is required")
-                actual = target_bytes_at(target, address, len(literal))
-                if actual != literal:
-                    fail(
-                        f"reccmp-relocations.csv:{line}: target bytes differ at "
-                        f"{canonical}"
-                    )
+                if target is not None:
+                    actual = target_bytes_at(target, address, len(literal))
+                    if actual != literal:
+                        fail(
+                            f"reccmp-relocations.csv:{line}: target bytes differ at "
+                            f"{canonical}"
+                        )
                 seen_symbols.add(symbol)
                 seen_addresses.add(address)
                 count += 1
@@ -382,10 +388,38 @@ def report_seed_overlaps(
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        epilog=(
+            "Examples:\n"
+            "  python3 scripts/validate-tracking.py --require-target\n"
+            "  python3 scripts/validate-tracking.py --skip-target-bytes  # public CI"
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    target_mode = parser.add_mutually_exclusive_group()
+    target_mode.add_argument(
+        "--require-target",
+        action="store_true",
+        help="fail unless resources/th08.exe exists, then validate relocation bytes",
+    )
+    target_mode.add_argument(
+        "--skip-target-bytes",
+        action="store_true",
+        help="validate static ledger structure without reading the untracked executable",
+    )
+    args = parser.parse_args()
+
     errors: list[str] = []
     target = load_target(errors)
     validate_reccmp_hash(target, errors)
-    relocations = validate_relocation_ledger(errors)
+    target_path = ROOT / "resources" / "th08.exe"
+    if args.require_target and not target_path.is_file():
+        errors.append(f"required target is missing: {target_path}")
+    check_target_bytes = not args.skip_target_bytes and target_path.is_file()
+    relocations = validate_relocation_ledger(
+        errors, check_target_bytes=check_target_bytes
+    )
     mapping, names, addresses = load_mapping(errors)
     implemented, implemented_names = validate_implemented(names, errors)
     claims = validate_claims(addresses, errors)
@@ -401,7 +435,8 @@ def main() -> int:
     print(
         f"tracking data OK: {len(mapping):,} mapping rows, "
         f"{implemented:,} implemented symbols, {matches:,} exact matches, "
-        f"{claims:,} active claims, {relocations:,} relocation-only symbols"
+        f"{claims:,} active claims, {relocations:,} relocation-only symbols; "
+        f"target bytes {'checked' if check_target_bytes else 'skipped'}"
     )
     return 0
 

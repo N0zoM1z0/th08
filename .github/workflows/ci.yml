@@ -1,8 +1,16 @@
-name: reconstruction-ledger
+name: TH08 repository validation
 
 on:
   push:
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: th08-validation-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate:
@@ -12,11 +20,5 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Validate tracked reconstruction state
-        run: |
-          python3 -m py_compile scripts/*.py scripts/typed_re/*.py
-          bash -n scripts/create_th08_prefix scripts/wineth08
-          python3 scripts/validate-tracking.py
-          python3 scripts/check-match-config.py
-          python3 scripts/progress.py --check
-          git diff --check
+      - name: Run repository-owned validation
+        run: python3 scripts/ci.py
