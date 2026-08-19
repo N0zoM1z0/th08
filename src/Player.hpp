@@ -66,7 +66,7 @@ struct PlayerOptionState
     i32 optionIndex;
     unknown_fields(0x2D4, 4);
     f32 orbitAngle;
-    unknown_fields(0x2DC, 4);
+    f32 facingAngle;
     ZunTimer timer;
     void *updateCallback;
     void *renderCallback;
@@ -151,7 +151,8 @@ struct Player
 
     i8 playerState;
     u8 playerType;
-    unknown_fields(0x2, 0x2);
+    unknown_fields(0x2, 1);
+    u8 optionModeFlag;
     i8 stateFlag;
     u8 isYoukai;
     unknown_fields(0x6, 0x6);
@@ -182,7 +183,9 @@ struct Player
     i32 playerStateSlotCooldown;
     PlayerRawShtFile *primaryShtFile;
     PlayerRawShtFile *secondaryShtFile;
-    unknown_fields(0xE2A7C, 0x28);
+    unknown_fields(0xE2A7C, 0x1C);
+    i32 movementDirection;
+    unknown_fields(0xE2A9C, 8);
     Float3 tailPosition0;
     Float3 tailPosition1;
     Enemy *optionHomingTarget;
@@ -250,15 +253,18 @@ struct Player
     i32 FUN_00449ff0(Float3 *position, Float3 *position2);
 };
 C_ASSERT(sizeof(Player) == 0xe2b30);
+C_ASSERT(offsetof(Player, optionModeFlag) == 0x3);
 C_ASSERT(offsetof(Player, mainVm) == 0x10);
 C_ASSERT(offsetof(Player, position) == 0x2B4);
 C_ASSERT(offsetof(Player, optionStates) == 0x40C);
+C_ASSERT(offsetof(PlayerOptionState, facingAngle) == 0x2DC);
 C_ASSERT(offsetof(Player, bombState) == 0xFDC);
 C_ASSERT(offsetof(Player, playerSlotsB) == 0xB8834);
 C_ASSERT(offsetof(Player, playerSlotsC) == 0xBB834);
 C_ASSERT(offsetof(Player, shots) == 0xBE838);
 C_ASSERT(offsetof(Player, timelines) == 0xE2A38);
 C_ASSERT(offsetof(Player, playerStateSlotCooldown) == 0xE2A70);
+C_ASSERT(offsetof(Player, movementDirection) == 0xE2A98);
 C_ASSERT(offsetof(Player, timer) == 0xE2AF4);
 C_ASSERT(offsetof(Player, damageAccumulatorThreshold) == 0xE2B2C);
 

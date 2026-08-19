@@ -1032,8 +1032,8 @@ th08::Supervisor::ResetUnknownStuff,0x470dd5,0x3b,unknown,,u8
 th08::TitleScreen::TitleSetupThread,0x470e10,0x371,unknown,,u8
 th08::TitleScreen::DisplayInfoImage,0x471181,0x27f,unknown,,u8
 th08::TitleScreen::Release,0x471400,0x6d,unknown,,u8
-th08::Title::RegisterChain,0x47146d,0x119,__fastcall,,ZunResult,i32
-th08::TitleScreen::TitleScreen,0x471586,0xcb,__thiscall,,Title*,Title*
+th08::TitleScreen::RegisterChain,0x47146d,0x119,__fastcall,,ZunResult,i32
+th08::TitleScreen::TitleScreen,0x471586,0xcb,__thiscall,,TitleScreen*,TitleScreen*
 th08::TitleScreen::AddedCallback,0x471651,0x11,__fastcall,,ZunResult,u32*
 th08::TitleScreen::DeletedCallback,0x471662,0x7d,__stdcall,,ZunResult
 th08::CSoundManager::CSoundManager,0x4716e0,0x17,__thiscall,,CSoundManager*,CSoundManager*

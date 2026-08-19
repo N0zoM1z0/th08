@@ -67,7 +67,7 @@ def main():
         nargs="?",
         help=textwrap.dedent("""
         Ninja target to build. Default depends on the build type:
-          - Normal, bugfix and diff builds will build th08e.exe
+          - Normal, bugfix and diff builds will build th08.exe
           - dll builds will build th08e.dll
           - Test builds will build th08e-tests.exe
           - objdiff builds will build all the object files necessary for objdiff.

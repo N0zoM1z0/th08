@@ -99,7 +99,7 @@ def render() -> tuple[str, str]:
             f"- Exact authored bytes: **{exact_bytes:,} / {total_bytes:,} ({exact_byte_pct:.2f}%)**",
             f"- Inventory-classified library functions: **{library_count:,}**",
             "",
-            "The public SVG follows the TH07 convention and visualizes exact bytes only;",
+            "The public SVG visualizes exact bytes only;",
             "source presence never fills the progress bar.",
             "",
             "Function sizes and library classification are imported analysis seeds and",

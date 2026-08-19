@@ -1079,6 +1079,7 @@ th08::TitleScreen::OnUpdateSpellCardSelect
 th08::TitleScreen::OnUpdateSpellStageSelect
 th08::ConvertToFullWidthDigits
 th08::TitleScreen::OnUpdate
+th08::TitleScreen::RegisterChain
 FUN_0044ee70
 FUN_0044f2d0
 th08::TitleScreen::UnlockLastWordSpellCards
