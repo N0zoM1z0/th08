@@ -2003,7 +2003,7 @@ ValidateRead,0x4b056d,library
 ValidateWrite,0x4b0589,library
 ValidateExecute,0x4b05a5,library
 abort,0x4b05bd,library
-FID_conflict:__getenv_lk,0x4b05d5,library
+_getenv_lk,0x4b05d5,library
 __crtLCMapStringA,0x4b0656,library
 _security_init_cookie,0x4b0a12,library
 FUN_004b0a68,0x4b0a68,library

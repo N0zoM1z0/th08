@@ -4487,6 +4487,91 @@ symbol = "__tzname"
 target_base = 0x004CC3B8
 
 [[units]]
+name = "crt-cvtdate"
+target_address = 0x004AADC8
+body_size = 0x1B8
+compare_size = 0x1B8
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/tzset.obj"
+symbol = "_cvtdate"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x4B
+type = "DIR32"
+symbol = "__days"
+target_base = 0x004CCAFC
+[[units.relocations]]
+offset = 0x58
+type = "DIR32"
+symbol = "__lpdays"
+target_base = 0x004CCAC8
+[[units.relocations]]
+offset = 0xF0
+type = "DIR32"
+symbol = "__days"
+target_base = 0x004CCAFC
+[[units.relocations]]
+offset = 0xFB
+type = "DIR32"
+symbol = "__lpdays"
+target_base = 0x004CCAC8
+[[units.relocations]]
+offset = 0x12D
+type = "DIR32"
+symbol = "__days"
+target_base = 0x004CCAFC
+[[units.relocations]]
+offset = 0x136
+type = "DIR32"
+symbol = "__lpdays"
+target_base = 0x004CCAC8
+[[units.relocations]]
+offset = 0x151
+type = "DIR32"
+symbol = "_dststart"
+target_base = 0x004CC3C0
+[[units.relocations]]
+offset = 0x160
+type = "DIR32"
+symbol = "_dststart"
+target_base = 0x004CC3C0
+[[units.relocations]]
+offset = 0x166
+type = "DIR32"
+symbol = "_dststart"
+target_base = 0x004CC3C0
+[[units.relocations]]
+offset = 0x16E
+type = "DIR32"
+symbol = "__dstbias"
+target_base = 0x004CC330
+[[units.relocations]]
+offset = 0x174
+type = "DIR32"
+symbol = "_dstend"
+target_base = 0x004CC3CC
+[[units.relocations]]
+offset = 0x186
+type = "DIR32"
+symbol = "_dstend"
+target_base = 0x004CC3CC
+[[units.relocations]]
+offset = 0x1A3
+type = "DIR32"
+symbol = "_dstend"
+target_base = 0x004CC3CC
+[[units.relocations]]
+offset = 0x1A9
+type = "DIR32"
+symbol = "_dstend"
+target_base = 0x004CC3CC
+[[units.relocations]]
+offset = 0x1AF
+type = "DIR32"
+symbol = "_dstend"
+target_base = 0x004CC3CC
+
+[[units]]
 name = "crt-isindst-lk"
 target_address = 0x004AAF80
 body_size = 0x18B
@@ -4645,3 +4730,133 @@ offset = 0x182
 type = "DIR32"
 symbol = "_dstend"
 target_base = 0x004CC3CC
+
+[[units]]
+name = "crt-getenv-lk"
+target_address = 0x004B05D5
+body_size = 0x81
+compare_size = 0x81
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/getenv.obj"
+symbol = "__getenv_lk"
+[[units.relocations]]
+offset = 0x2
+type = "DIR32"
+symbol = "___env_initialized"
+target_base = 0x018D982C
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "__environ"
+target_base = 0x018D8020
+[[units.relocations]]
+offset = 0x1C
+type = "DIR32"
+symbol = "__wenviron"
+target_base = 0x018D8028
+[[units.relocations]]
+offset = 0x23
+type = "REL32"
+symbol = "___wtomb_environ"
+target_base = 0x004B2016
+[[units.relocations]]
+offset = 0x2D
+type = "DIR32"
+symbol = "__environ"
+target_base = 0x018D8020
+[[units.relocations]]
+offset = 0x3F
+type = "REL32"
+symbol = "_strlen"
+target_base = 0x004A4CC0
+[[units.relocations]]
+offset = 0x4A
+type = "REL32"
+symbol = "_strlen"
+target_base = 0x004A4CC0
+[[units.relocations]]
+offset = 0x5F
+type = "REL32"
+symbol = "__mbsnbicoll"
+target_base = 0x004B1FC8
+
+[[units]]
+name = "crt-strcmp"
+target_address = 0x004AFE80
+body_size = 0x88
+compare_size = 0x88
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/strcmp.obj"
+symbol = "_strcmp"
+
+[[units]]
+name = "crt-msize"
+target_address = 0x004A6E01
+body_size = 0x6A
+compare_size = 0x76
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/msize.obj"
+symbol = "__msize"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T19146"
+target_base = 0x004BD950
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0xE
+type = "DIR32"
+symbol = "___active_heap"
+target_base = 0x018D9828
+[[units.relocations]]
+offset = 0x18
+type = "REL32"
+symbol = "__lock"
+target_base = 0x004A8175
+[[units.relocations]]
+offset = 0x26
+type = "REL32"
+symbol = "___sbh_find_block"
+target_base = 0x004A8259
+[[units.relocations]]
+offset = 0x56
+type = "DIR32"
+symbol = "__crtheap"
+target_base = 0x018D9824
+[[units.relocations]]
+offset = 0x5C
+type = "DIR32"
+symbol = "__imp__HeapSize@12"
+target_base = 0x004B4150
+[[units.relocations]]
+offset = 0x65
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3
+[[units.relocations]]
+offset = 0x70
+type = "REL32"
+symbol = "__unlock"
+target_base = 0x004A80E1
+
+[[units]]
+name = "crt-msize-tail-funclet"
+target_address = 0x004A6E6E
+body_size = 0x9
+compare_size = 0x9
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/msize.obj"
+symbol = "$L19142"
+allow_tail_local_funclet = true
+owner_symbol = "__msize"
+section_offset = 0x6D
+section_size = 0x76
+[[units.relocations]]
+offset = 0x3
+type = "REL32"
+symbol = "__unlock"
+target_base = 0x004A80E1

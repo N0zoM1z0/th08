@@ -119,3 +119,5 @@ address,name,size,status,unit,evidence
 0x004AB27F,gmtime,263,matching,crt-gmtime,python3 scripts/compare-library.py crt-gmtime --json
 0x004AAB57,_tzset_lk,625,matching,crt-tzset-lk,python3 scripts/compare-library.py crt-tzset-lk --json
 0x004AAF80,_isindst_lk,395,matching,crt-isindst-lk,python3 scripts/compare-library.py crt-isindst-lk --json
+0x004AADC8,cvtdate,440,matching,crt-cvtdate,python3 scripts/compare-library.py crt-cvtdate --json
+0x004B05D5,_getenv_lk,129,matching,crt-getenv-lk,python3 scripts/compare-library.py crt-getenv-lk --json

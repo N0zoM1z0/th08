@@ -1173,3 +1173,11 @@ without those explicit fields retain the stricter whole-section ownership rule.
 
 - `LIBCMT tzset.obj::__tzset_lk @ 0x004AAB57` and `__isindst_lk @ 0x004AAF80` are static auxless code COMDATs, so the archive's global symbol index is insufficient for exact acceptance.  Read the member COFF symbol table directly, require offset-zero unique function ownership and whole-section extent, then replay every relocation.  Their complete 0x271/0x18B target ranges match with 58/30 relocations respectively.
 - The logical target names are `_tzset_lk` and `_isindst_lk`; retain the extra leading underscore only in the COFF symbol field.  This is the same decoration boundary used by the public `__tzset` / `_isindst` wrappers.
+### Resolve `FID_conflict:` library names only after archive identity and exact replay
+
+- `_getenv_lk @ 0x004B05D5` was imported as `FID_conflict:__getenv_lk`.
+  VC7 `LIBCMT getenv.obj` provides a single 0x81-byte `__getenv_lk` function
+  definition whose eight relocations and all non-relocation bytes replay exactly
+  at that address.  Remove the conflict prefix only after that evidence; a
+  decompiler conflict label is not provenance and should not survive once the
+  original archive owner is established.

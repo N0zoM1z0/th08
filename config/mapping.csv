@@ -1987,7 +1987,7 @@ ___free_lconv_num,0x4afbc8,0x5f,unknown,,u8,u8
 ___free_lconv_mon,0x4afc27,0xd9,unknown,,u8,u8
 _strcspn,0x4afd00,0x46,__cdecl,,u8,u8,u8
 _strncpy,0x4afd50,0x124,__cdecl,,u8,u8,u8,u8
-_strcmp,0x4afe80,0x87,__cdecl,,u8,u8,u8
+_strcmp,0x4afe80,0x88,__cdecl,,u8,u8,u8
 _strpbrk,0x4affd0,0x40,__cdecl,,u8,u8,u8
 FUN_004b0010,0x4b0010,0x2f,unknown,,u8
 _setSBCS,0x4b003f,0x29,unknown,,u8
@@ -2002,7 +2002,7 @@ _ValidateRead,0x4b056d,0x1c,__cdecl,,i32,void*,u32
 _ValidateWrite,0x4b0589,0x1c,__cdecl,,i32,void*,u32
 _ValidateExecute,0x4b05a5,0x18,__cdecl,,i32,_func_int*
 _abort,0x4b05bd,0x17,__cdecl,,u8
-FID_conflict:__getenv_lk,0x4b05d5,0x81,__cdecl,,u8,u8
+__getenv_lk,0x4b05d5,0x81,__cdecl,,u8,u8
 ___crtLCMapStringA,0x4b0656,0x376,__cdecl,,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8
 __security_init_cookie,0x4b0a12,0x56,__cdecl,,u8
 FUN_004b0a68,0x4b0a68,0x140,unknown,,u8,u8,u8
