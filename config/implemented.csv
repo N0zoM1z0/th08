@@ -1101,3 +1101,4 @@ th08::PauseMenu::OnDraw
 th08::RetryMenu::OnDraw
 th08::PauseMenu::OnUpdate
 th08::RetryMenu::OnUpdate
+th08::GameManager::OnUpdate

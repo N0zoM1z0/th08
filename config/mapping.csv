@@ -524,7 +524,7 @@ th08::GameManager::IsWithinPlayfield,0x4399ac,0x82,__thiscall,,u32,GameManager*,
 th08::GameManager::CalcAntiTamperChecksum,0x439a2e,0x97,__thiscall,,i32,GameManager*
 th08::GameManager::CalcChecksum,0x439ac5,0x64,__fastcall,,i32,u8*,i32
 th08::GameManager::CollectExtend,0x439b29,0x9e,__thiscall,,void,GameManager*
-th08::GameManager::OnUpdate,0x439bc7,0xe3c,unknown,,u8
+th08::GameManager::OnUpdate,0x439bc7,0xe3c,__fastcall,,ChainCallbackResult,GameManager*
 th08::GameManager::OnDraw,0x43aa03,0x59,unknown,,u8
 th08::GameManager::RegisterChain,0x43aa5c,0x98,__fastcall,,ZunResult
 th08::GameManager::AddedCallback,0x43aaf4,0xe3,unknown,,u8

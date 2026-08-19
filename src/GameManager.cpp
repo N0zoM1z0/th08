@@ -1,6 +1,7 @@
 #include "th_pch.h"
 
 #include "GameManager.hpp"
+#include "AnmManager.hpp"
 #include "AsciiManager.hpp"
 #include "Background.hpp"
 #include "BulletManager.hpp"
@@ -36,6 +37,8 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(RankParams, 6, g_RankParams) = {
 DIFFABLE_STATIC(GameManager, g_GameManager);
 DIFFABLE_STATIC(ChainElem, g_GameManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_GameManagerDrawChain);
+
+void FUN_00438046();
 
 
 // FUNCTION: th08 0x439916
@@ -306,11 +309,326 @@ void GameManager::InitRankParams()
     this->maxRank = g_RankParams[g_GameManager.difficulty].maxRank;
 }
 
-// STUB: th08 0x439bc7
+// FUNCTION: th08 0x439bc7
+#define GM_U8(gm, off) (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(gm) + (off)))
+#define GM_I32(gm, off) (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(gm) + (off)))
+#define GM_U32(gm, off) (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(gm) + (off)))
+#define ABS_U8(addr) (*reinterpret_cast<u8 *>(addr))
+#define ABS_I8(addr) (*reinterpret_cast<i8 *>(addr))
+#define ABS_U16(addr) (*reinterpret_cast<u16 *>(addr))
+#define ABS_I16(addr) (*reinterpret_cast<i16 *>(addr))
+#define ABS_I32(addr) (*reinterpret_cast<i32 *>(addr))
+#define ABS_U32(addr) (*reinterpret_cast<u32 *>(addr))
+#define ABS_F32(addr) (*reinterpret_cast<f32 *>(addr))
+
+#pragma var_order(checksum, antiTamperIdx, value, stageIdx, stage, musicIdx, clockTime, anmManager)
 ChainCallbackResult GameManager::OnUpdate(GameManager *gameManager)
 {
+    i32 checksum;
+    AnmManager *anmManager;
+    i8 clockTime;
+    i32 musicIdx;
+    i32 stage;
+    i32 stageIdx;
+    u32 value;
+    u32 antiTamperIdx;
+
+    g_GameManager.unk3DB94++;
+
+    if (gameManager->flags.unk5_6 != 0)
+    {
+        if (gameManager->flags.unk5_6 == 2)
+        {
+            GM_U32(gameManager, 0x3DBAC) |= 0x60;
+            g_GameManager.unk38 = 1;
+            g_GameManager.unk3DB9C = -1;
+
+            if (!g_GameManager.flags.isReplay)
+        {
+            if (g_GameManager.globals->numRetries == 0)
+            {
+                g_GameManager.clrdData[g_GameManager.shotType].difficultiesClearedWithoutRetries[g_GameManager.difficulty] |=
+                    g_GameManager.unk3DDD0;
+                g_GameManager.clrdData[SHOT_ALL].difficultiesClearedWithoutRetries[g_GameManager.difficulty] |= g_GameManager.unk3DDD0;
+            }
+            g_GameManager.clrdData[g_GameManager.shotType].difficultiesClearedWithRetries[g_GameManager.difficulty] |=
+                g_GameManager.unk3DDD0;
+            g_GameManager.clrdData[SHOT_ALL].difficultiesClearedWithRetries[g_GameManager.difficulty] |= g_GameManager.unk3DDD0;
+        }
+        gameManager->globals->displayScore = gameManager->globals->score;
+
+        if (gameManager->flags.isPracticeMode)
+            {
+                g_GameManager.globals->displayScore = g_GameManager.globals->score;
+                g_GameManager.unk3DB9C = 6;
+                return CHAIN_CALLBACK_RESULT_BREAK;
+            }
+
+        if (g_GameManager.currentStage != STAGE6A && g_GameManager.currentStage != STAGE6B &&
+            g_GameManager.currentStage != EXTRASTAGE)
+        {
+            if (g_GameManager.flags.isReplay)
+            {
+                stage = 0;
+                for (stageIdx = g_GameManager.currentStage + 1; stageIdx < MAX_STAGES; stageIdx++)
+                {
+                    if (static_cast<ZunBool>(g_ReplayManager->replayData->header.stageReplayData[stageIdx] != NULL))
+                    {
+                        stage = stageIdx;
+                        break;
+                    }
+                }
+                if (stage == 0)
+                    g_Supervisor.curState = SupervisorState_FinishReplay;
+                else
+                {
+                    g_GameManager.currentStage = stage;
+                    g_Supervisor.curState = SupervisorState_GameManagerReInit;
+                }
+            }
+            else
+            {
+                clockTime = (i8)g_GameManager.globals->clockTime;
+                if (clockTime >= 12)
+                {
+                    g_GameManager.flags.unk4 = 0;
+                    g_GameManager.unk3DB9C = 9;
+                    return CHAIN_CALLBACK_RESULT_BREAK;
+                }
+                g_GameManager.AdvanceToNextStage();
+                g_Supervisor.curState = SupervisorState_GameManagerReInit;
+            }
+        }
+        else if (g_GameManager.flags.isReplay)
+        {
+            g_GameManager.unk3DB9C = 7;
+        }
+        else if (g_GameManager.difficulty >= 4)
+        {
+            if (g_GameManager.difficulty == 4)
+            {
+                g_GameManager.clrdData[g_GameManager.shotType].difficultiesClearedWithoutRetries[g_GameManager.difficulty] |= 0x8000;
+                g_GameManager.clrdData[SHOT_ALL].difficultiesClearedWithRetries[g_GameManager.difficulty] |= 0x8000;
+            }
+            g_GameManager.plst.playDataByDifficulty[g_GameManager.difficulty].clears++;
+            g_GameManager.flags.unk4 = 1;
+            g_GameManager.globals->displayScore = g_GameManager.globals->score;
+            g_GameManager.unk3DB9C = 6;
+            return CHAIN_CALLBACK_RESULT_BREAK;
+        }
+        else
+        {
+            g_GameManager.flags.unk4 = 1;
+            g_GameManager.unk3DB9C = 9;
+            return CHAIN_CALLBACK_RESULT_BREAK;
+        }
+
+            if (g_GameManager.unk3DB9C < 0)
+                g_Gui.FUN_00438f58();
+        }
+
+        if ((((g_CurFrameInput & 0x1001) != 0) && ((g_CurFrameInput & 0x1001) != (g_LastFrameInput & 0x1001))) ||
+            g_GameManager.flags.isReplay || g_GameManager.currentStage == STAGE6A ||
+            g_GameManager.currentStage == STAGE6B || g_GameManager.currentStage == EXTRASTAGE)
+        {
+            GM_U32(gameManager, 0x3DBAC) &= ~0x60U;
+            if (g_GameManager.unk3DB9C >= 0)
+                g_Supervisor.curState = g_GameManager.unk3DB9C;
+        }
+    }
+
+    if (gameManager->unk38 != 0)
+    {
+        if (gameManager->unk38 == 2)
+            return CHAIN_CALLBACK_RESULT_EXIT_GAME_SUCCESS;
+        gameManager->unk3c++;
+        return CHAIN_CALLBACK_RESULT_BREAK;
+    }
+
+    if (gameManager->unk3de28 != 0)
+    {
+        FUN_00438046();
+        g_AnmManager->ReleaseSurface(8);
+        ABS_I32(0x17CEA54) = 0;
+        if (gameManager->unk3de28 == 1)
+        {
+            if (!g_GameManager.flags.isSpellPractice)
+            {
+                g_Supervisor.PlayMusic(0, reinterpret_cast<char *>(*reinterpret_cast<u32 *>(0x4C7240 + g_GameManager.currentStage * 0x0c)));
+            }
+            else
+            {
+                musicIdx = 0;
+                while (*reinterpret_cast<i32 *>(0x4C7670 + musicIdx * 0x14) >= 0)
+                {
+                    if (g_GameManager.currentSpellCardNumber <= *reinterpret_cast<i32 *>(0x4C7670 + musicIdx * 0x14))
+                    {
+                        g_Supervisor.PlayMusic(0, reinterpret_cast<char *>(*reinterpret_cast<u32 *>(0x4C7674 + musicIdx * 0x14)));
+                        break;
+                    }
+                    musicIdx++;
+                }
+            }
+        }
+        gameManager->unk3de28 = 0;
+    }
+
+    if (!gameManager->showRetryMenu && !gameManager->isInGameMenu && !gameManager->flags.isDemoMode &&
+        !gameManager->unk2D && (g_CurFrameInput & TH_BUTTON_MENU) &&
+        (g_CurFrameInput & TH_BUTTON_MENU) != (g_LastFrameInput & TH_BUTTON_MENU))
+    {
+        gameManager->isInGameMenu = 1;
+        g_GameManager.arcadeRegionTopLeftPos.x = 32.0f;
+        g_GameManager.arcadeRegionTopLeftPos.y = 16.0f;
+        g_GameManager.arcadeRegionSize.x = 384.0f;
+        g_GameManager.arcadeRegionSize.y = 448.0f;
+        gameManager->unk3DB98 = 1;
+        g_SoundPlayer.QueueCommand(6, 0, "Pause");
+        g_SoundPlayer.PlaySoundByIdx(SOUND_PAUSE, 0);
+        g_Supervisor.UpdateGameTime();
+        *reinterpret_cast<u16 *>(0x164D522) = *reinterpret_cast<u16 *>(&g_Rng);
+        gameManager->hscr.numPauses++;
+        g_GameManager.UpdateAntiTamper();
+        *reinterpret_cast<u16 *>(&g_Rng) = *reinterpret_cast<u16 *>(0x164D522);
+    }
+
+    ABS_I32(0x17CE820) = (i32)gameManager->arcadeRegionTopLeftPos.x;
+    ABS_I32(0x17CE824) = (i32)gameManager->arcadeRegionTopLeftPos.y;
+    ABS_I32(0x17CE828) = (i32)gameManager->arcadeRegionSize.x;
+    ABS_I32(0x17CE82C) = (i32)gameManager->arcadeRegionSize.y;
+    ABS_F32(0x17CE830) = 0.0f;
+    ABS_F32(0x17CE834) = 1.0f;
+    anmManager = g_AnmManager;
+    anmManager->cameraMode |= AnmCameraMode_Unset;
+
+    if (g_GameManager.flags.isReplay && g_GameManager.replayMode == 1 && !g_Gui.IsDialogPresent())
+    {
+        gameManager->unk3de08++;
+        if ((ABS_I16(0x17CE8F0) < 20 && gameManager->unk3de08 % 3 != 0) ||
+            (ABS_I16(0x17CE8F0) >= 20 && ABS_I16(0x17CE8F0) < 30 && gameManager->unk3de08 % 2 != 0) ||
+            (ABS_I16(0x17CE8F0) >= 30 && ABS_I16(0x17CE8F0) < 40 && gameManager->unk3de08 % 3 == 0) ||
+            (ABS_I16(0x17CE8F0) >= 40 && ABS_I16(0x17CE8F0) < 50 && gameManager->unk3de08 % 6 == 0))
+            return CHAIN_CALLBACK_RESULT_BREAK;
+    }
+
+    if (gameManager->flags.isDemoMode)
+    {
+        if ((g_CurFrameInput & TH_BUTTON_ANY) != 0 &&
+            (g_CurFrameInput & TH_BUTTON_ANY) != (g_LastFrameInput & TH_BUTTON_ANY))
+            g_Supervisor.curState = SupervisorState_TitleScreen;
+        gameManager->demoFrameCount++;
+        if ((gameManager->currentDemoReplay == 0 && gameManager->demoFrameCount == 6000) ||
+            (gameManager->currentDemoReplay == 1 && gameManager->demoFrameCount == 4800) ||
+            (gameManager->currentDemoReplay == 2 && gameManager->demoFrameCount == 4920) ||
+            (gameManager->currentDemoReplay == 3 && gameManager->demoFrameCount == 6900))
+        {
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_FADE_OUT, 120, 0, 0, 0, 21);
+            g_Supervisor.FadeOutMusic(3.0f);
+        }
+        if ((gameManager->currentDemoReplay == 0 && gameManager->demoFrameCount >= 6120) ||
+            (gameManager->currentDemoReplay == 1 && gameManager->demoFrameCount >= 4920) ||
+            (gameManager->currentDemoReplay == 2 && gameManager->demoFrameCount >= 5040) ||
+            (gameManager->currentDemoReplay == 3 && gameManager->demoFrameCount == 7020))
+        {
+            g_Supervisor.curState = SupervisorState_TitleScreen;
+            return CHAIN_CALLBACK_RESULT_BREAK;
+        }
+    }
+
+    g_GameManager.globals->antiTamperValue = g_GameManager.globals->rng1[2];
+    checksum = gameManager->CalcAntiTamperChecksum();
+    g_GameManager.antiTamperExpectedValue = (f32)checksum + g_GameManager.globals->rng7[3];
+
+    for (antiTamperIdx = 0; antiTamperIdx < 7; ++antiTamperIdx)
+        if (gameManager->globals->rng1[antiTamperIdx] < 6543 || gameManager->globals->rng1[antiTamperIdx] > 106543)
+            g_GameManager.antiTamperExpectedValue = -9999.0f;
+    for (antiTamperIdx = 0; antiTamperIdx < 2; ++antiTamperIdx)
+        if (gameManager->globals->rng3[antiTamperIdx] < 6543.0f || gameManager->globals->rng3[antiTamperIdx] > 106543.0f)
+            g_GameManager.antiTamperExpectedValue = -9999.0f;
+
+    gameManager->flags.unk2 = !gameManager->showRetryMenu && !gameManager->isInGameMenu;
+
+    for (antiTamperIdx = 0; antiTamperIdx < 2; ++antiTamperIdx)
+        if (gameManager->globals->rng2[antiTamperIdx] < 6543.0f || gameManager->globals->rng2[antiTamperIdx] > 106543.0f)
+            g_GameManager.antiTamperExpectedValue = -9999.0f;
+    for (antiTamperIdx = 0; antiTamperIdx < 8; ++antiTamperIdx)
+        if (gameManager->globals->rng7[antiTamperIdx] < 6543 || gameManager->globals->rng7[antiTamperIdx] > 106543)
+            g_GameManager.antiTamperExpectedValue = -9999.0f;
+
+    g_Supervisor.d3dDevice->Clear(0, NULL, D3DCLEAR_ZBUFFER, ABS_U32(0x4E4B24), 1.0f, 0);
+
+    if (gameManager->isInGameMenu == 1 || gameManager->isInGameMenu == 2 || gameManager->showRetryMenu)
+        return CHAIN_CALLBACK_RESULT_BREAK;
+
+    if (gameManager->globals->score >= 1000000000U)
+        gameManager->globals->score = 999999999U;
+
+    if (gameManager->globals->displayScore != gameManager->globals->score)
+    {
+        if (gameManager->globals->score < gameManager->globals->displayScore)
+            gameManager->globals->score = gameManager->globals->displayScore;
+        value = (gameManager->globals->score - gameManager->globals->displayScore) >> 5;
+        if (value >= 578910)
+            value = 578910;
+        else if (value == 0)
+            value = 1;
+        if (gameManager->globals->unk0x10 < value)
+            gameManager->globals->unk0x10 = value;
+        if (gameManager->globals->displayScore + gameManager->globals->unk0x10 > gameManager->globals->score)
+            gameManager->globals->unk0x10 = gameManager->globals->score - gameManager->globals->displayScore;
+        gameManager->globals->displayScore += gameManager->globals->unk0x10;
+        if (gameManager->globals->displayScore >= gameManager->globals->score)
+        {
+            gameManager->globals->unk0x10 = 0;
+            gameManager->globals->displayScore = gameManager->globals->score;
+        }
+        if (gameManager->globals->displayedHighScore < gameManager->globals->displayScore)
+        {
+            gameManager->globals->displayedHighScore = gameManager->globals->displayScore;
+            gameManager->globals->continuesUsedInHighScore = gameManager->globals->numRetries;
+        }
+    }
+
+    for (antiTamperIdx = 0; antiTamperIdx < 3; ++antiTamperIdx)
+        if (gameManager->globals->rng4[antiTamperIdx] < 6543.0f || gameManager->globals->rng4[antiTamperIdx] > 106543.0f)
+            g_GameManager.antiTamperExpectedValue = -9999.0f;
+    for (antiTamperIdx = 0; antiTamperIdx < 2; ++antiTamperIdx)
+        if (gameManager->globals->rng5[antiTamperIdx] < 6543.0f || gameManager->globals->rng5[antiTamperIdx] > 106543.0f)
+            g_GameManager.antiTamperExpectedValue = -9999.0f;
+    for (antiTamperIdx = 0; antiTamperIdx < 5; ++antiTamperIdx)
+        if (gameManager->globals->rng8[antiTamperIdx] < 6543 || gameManager->globals->rng8[antiTamperIdx] > 106543)
+            g_GameManager.antiTamperExpectedValue = -9999.0f;
+
+    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(g_GameManager.cfg) + 0x25))
+    {
+        g_GameManager.unk2D = 0;
+        gameManager->unk3de08++;
+        if ((ABS_I32(0x160F3C8) >= 320 && gameManager->unk3de08 % 3 == 0) ||
+            (ABS_I32(0x160F3C8) < 320 && ABS_I32(0x160F3C8) >= 224 && gameManager->unk3de08 % 4 == 0) ||
+            (ABS_I32(0x160F3C8) < 224 && ABS_I32(0x160F3C8) >= 128 && gameManager->unk3de08 % 5 == 0))
+        {
+            g_GameManager.unk2D = 1;
+            return CHAIN_CALLBACK_RESULT_BREAK;
+        }
+        if (ABS_I32(0x160F3C8) < 128)
+            gameManager->unk3de08 = 0;
+    }
+
+    g_GameManager.IsTampered();
+    gameManager->unk3ddc0++;
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
+
+#undef ABS_F32
+#undef ABS_U32
+#undef ABS_I32
+#undef ABS_I16
+#undef ABS_U16
+#undef ABS_I8
+#undef ABS_U8
+#undef GM_U32
+#undef GM_I32
+#undef GM_U8
 
 // FUNCTION: th08 0x43aa03
 ChainCallbackResult GameManager::OnDraw(GameManager *gameManager)
