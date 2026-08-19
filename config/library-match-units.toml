@@ -4862,6 +4862,433 @@ symbol = "__unlock"
 target_base = 0x004A80E1
 
 [[units]]
+name = "crt-wtomb-environ"
+target_address = 0x004B2016
+body_size = 0x6B
+compare_size = 0x6B
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/wtombenv.obj"
+symbol = "___wtomb_environ"
+[[units.relocations]]
+offset = 0x6
+type = "DIR32"
+symbol = "__wenviron"
+target_base = 0x018D8028
+[[units.relocations]]
+offset = 0x15
+type = "DIR32"
+symbol = "__imp__WideCharToMultiByte@32"
+target_base = 0x004B40E4
+[[units.relocations]]
+offset = 0x2C
+type = "REL32"
+symbol = "_malloc"
+target_base = 0x004A4269
+[[units.relocations]]
+offset = 0x4F
+type = "REL32"
+symbol = "___crtsetenv"
+target_base = 0x004B2BD5
+
+[[units]]
+name = "crt-updatetmbcinfo"
+target_address = 0x004B01FA
+body_size = 0x63
+compare_size = 0x6F
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/mbctype.obj"
+symbol = "___updatetmbcinfo"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T20392"
+target_base = 0x004C2150
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0xF
+type = "REL32"
+symbol = "__lock"
+target_base = 0x004A8175
+[[units.relocations]]
+offset = 0x19
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0x2A
+type = "DIR32"
+symbol = "___ptmbcinfo"
+target_base = 0x018D8498
+[[units.relocations]]
+offset = 0x3A
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x40
+type = "DIR32"
+symbol = "___ptmbcinfo"
+target_base = 0x018D8498
+[[units.relocations]]
+offset = 0x49
+type = "DIR32"
+symbol = "___ptmbcinfo"
+target_base = 0x018D8498
+[[units.relocations]]
+offset = 0x5E
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3
+[[units.relocations]]
+offset = 0x69
+type = "REL32"
+symbol = "__unlock"
+target_base = 0x004A80E1
+
+[[units]]
+name = "crt-updatetmbcinfo-tail-funclet"
+target_address = 0x004B0260
+body_size = 0x9
+compare_size = 0x9
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/mbctype.obj"
+symbol = "$L20390"
+allow_tail_local_funclet = true
+owner_symbol = "___updatetmbcinfo"
+section_offset = 0x66
+section_size = 0x6F
+[[units.relocations]]
+offset = 0x3
+type = "REL32"
+symbol = "__unlock"
+target_base = 0x004A80E1
+
+[[units]]
+name = "crt-setmbcp-lk"
+target_address = 0x004B0269
+body_size = 0x196
+compare_size = 0x196
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/mbctype.obj"
+symbol = "__setmbcp_lk"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x7
+type = "DIR32"
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
+[[units.relocations]]
+offset = 0x27
+type = "DIR32"
+symbol = "___rgcode_page_info"
+target_base = 0x004CC9D8
+[[units.relocations]]
+offset = 0x3F
+type = "DIR32"
+symbol = "__imp__GetCPInfo@8"
+target_base = 0x004B4050
+[[units.relocations]]
+offset = 0x56
+type = "DIR32"
+symbol = "__mbctype"
+target_base = 0x018D84A0
+[[units.relocations]]
+offset = 0x5F
+type = "DIR32"
+symbol = "___mbcodepage"
+target_base = 0x018D85A4
+[[units.relocations]]
+offset = 0x65
+type = "DIR32"
+symbol = "___mblcid"
+target_base = 0x018D8494
+[[units.relocations]]
+offset = 0x98
+type = "DIR32"
+symbol = "__mbctype"
+target_base = 0x018D84A0
+[[units.relocations]]
+offset = 0xAA
+type = "DIR32"
+symbol = "___rgcode_page_info"
+target_base = 0x004CC9D8
+[[units.relocations]]
+offset = 0xCA
+type = "DIR32"
+symbol = "___rgctypeflag"
+target_base = 0x004CC9D0
+[[units.relocations]]
+offset = 0xD0
+type = "DIR32"
+symbol = "__mbctype"
+target_base = 0x018D84A0
+[[units.relocations]]
+offset = 0xF1
+type = "DIR32"
+symbol = "___mbcodepage"
+target_base = 0x018D85A4
+[[units.relocations]]
+offset = 0xF7
+type = "DIR32"
+symbol = "___ismbcodepage"
+target_base = 0x018D849C
+[[units.relocations]]
+offset = 0x100
+type = "REL32"
+symbol = "_CPtoLCID"
+target_base = 0x004B0010
+[[units.relocations]]
+offset = 0x106
+type = "DIR32"
+symbol = "___rgcode_page_info"
+target_base = 0x004CC9D8
+[[units.relocations]]
+offset = 0x10D
+type = "DIR32"
+symbol = "___mbulinfo"
+target_base = 0x018D85B0
+[[units.relocations]]
+offset = 0x114
+type = "DIR32"
+symbol = "___mblcid"
+target_base = 0x018D8494
+[[units.relocations]]
+offset = 0x11D
+type = "DIR32"
+symbol = "__mbctype"
+target_base = 0x018D84A0
+[[units.relocations]]
+offset = 0x13A
+type = "DIR32"
+symbol = "__mbctype"
+target_base = 0x018D84A0
+[[units.relocations]]
+offset = 0x14A
+type = "REL32"
+symbol = "_CPtoLCID"
+target_base = 0x004B0010
+[[units.relocations]]
+offset = 0x14F
+type = "DIR32"
+symbol = "___mblcid"
+target_base = 0x018D8494
+[[units.relocations]]
+offset = 0x155
+type = "DIR32"
+symbol = "___ismbcodepage"
+target_base = 0x018D849C
+[[units.relocations]]
+offset = 0x15D
+type = "DIR32"
+symbol = "___ismbcodepage"
+target_base = 0x018D849C
+[[units.relocations]]
+offset = 0x164
+type = "DIR32"
+symbol = "___mbulinfo"
+target_base = 0x018D85B0
+[[units.relocations]]
+offset = 0x16F
+type = "DIR32"
+symbol = "_fSystemSet"
+target_base = 0x018D841C
+[[units.relocations]]
+offset = 0x176
+type = "REL32"
+symbol = "_setSBCS"
+target_base = 0x004B003F
+[[units.relocations]]
+offset = 0x17B
+type = "REL32"
+symbol = "_setSBUpLow"
+target_base = 0x004B0068
+[[units.relocations]]
+offset = 0x190
+type = "REL32"
+symbol = "@__security_check_cookie@4"
+target_base = 0x004AB43C
+
+[[units]]
+name = "crt-setmbcp"
+target_address = 0x004B03FF
+body_size = 0x147
+compare_size = 0x150
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/mbctype.obj"
+symbol = "__setmbcp"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T20455"
+target_base = 0x004C2160
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0x13
+type = "REL32"
+symbol = "__lock"
+target_base = 0x004A8175
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "_fSystemSet"
+target_base = 0x018D841C
+[[units.relocations]]
+offset = 0x2D
+type = "DIR32"
+symbol = "_fSystemSet"
+target_base = 0x018D841C
+[[units.relocations]]
+offset = 0x37
+type = "DIR32"
+symbol = "__imp__GetOEMCP@0"
+target_base = 0x004B415C
+[[units.relocations]]
+offset = 0x44
+type = "DIR32"
+symbol = "_fSystemSet"
+target_base = 0x018D841C
+[[units.relocations]]
+offset = 0x4E
+type = "DIR32"
+symbol = "__imp__GetACP@0"
+target_base = 0x004B4158
+[[units.relocations]]
+offset = 0x5B
+type = "DIR32"
+symbol = "_fSystemSet"
+target_base = 0x018D841C
+[[units.relocations]]
+offset = 0x64
+type = "DIR32"
+symbol = "___lc_codepage"
+target_base = 0x018D83F0
+[[units.relocations]]
+offset = 0x6D
+type = "DIR32"
+symbol = "___mbcodepage"
+target_base = 0x018D85A4
+[[units.relocations]]
+offset = 0x79
+type = "DIR32"
+symbol = "___ptmbcinfo"
+target_base = 0x018D8498
+[[units.relocations]]
+offset = 0x8E
+type = "REL32"
+symbol = "_malloc"
+target_base = 0x004A4269
+[[units.relocations]]
+offset = 0xA0
+type = "REL32"
+symbol = "__setmbcp_lk"
+target_base = 0x004B0269
+[[units.relocations]]
+offset = 0xAF
+type = "DIR32"
+symbol = "___mbcodepage"
+target_base = 0x018D85A4
+[[units.relocations]]
+offset = 0xB7
+type = "DIR32"
+symbol = "___ismbcodepage"
+target_base = 0x018D849C
+[[units.relocations]]
+offset = 0xBF
+type = "DIR32"
+symbol = "___mblcid"
+target_base = 0x018D8494
+[[units.relocations]]
+offset = 0xD4
+type = "DIR32"
+symbol = "___mbulinfo"
+target_base = 0x018D85B0
+[[units.relocations]]
+offset = 0xEE
+type = "DIR32"
+symbol = "__mbctype"
+target_base = 0x018D84A0
+[[units.relocations]]
+offset = 0x107
+type = "DIR32"
+symbol = "__mbcasemap"
+target_base = 0x018D85C0
+[[units.relocations]]
+offset = 0x117
+type = "DIR32"
+symbol = "___ptmbcinfo"
+target_base = 0x018D8498
+[[units.relocations]]
+offset = 0x123
+type = "DIR32"
+symbol = "___ptmbcinfo"
+target_base = 0x018D8498
+[[units.relocations]]
+offset = 0x12B
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x142
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3
+[[units.relocations]]
+offset = 0x14A
+type = "REL32"
+symbol = "__unlock"
+target_base = 0x004A80E1
+
+[[units]]
+name = "crt-setmbcp-tail-funclet"
+target_address = 0x004B0546
+body_size = 0x9
+compare_size = 0x9
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/mbctype.obj"
+symbol = "$L20442"
+allow_tail_local_funclet = true
+owner_symbol = "__setmbcp"
+section_offset = 0x147
+section_size = 0x150
+[[units.relocations]]
+offset = 0x3
+type = "REL32"
+symbol = "__unlock"
+target_base = 0x004A80E1
+
+[[units]]
+name = "crt-initmbctable"
+target_address = 0x004B054F
+body_size = 0x1E
+compare_size = 0x1E
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/mbctype.obj"
+symbol = "___initmbctable"
+[[units.relocations]]
+offset = 0x2
+type = "DIR32"
+symbol = "___mbctype_initialized"
+target_base = 0x018D9838
+[[units.relocations]]
+offset = 0xC
+type = "REL32"
+symbol = "__setmbcp"
+target_base = 0x004B03FF
+[[units.relocations]]
+offset = 0x13
+type = "DIR32"
+symbol = "___mbctype_initialized"
+target_base = 0x018D9838
+
+[[units]]
 name = "crt-mbsnbicoll"
 target_address = 0x004B1FC8
 body_size = 0x4E
@@ -4891,30 +5318,200 @@ symbol = "___crtCompareStringA"
 target_base = 0x004B279D
 
 [[units]]
-name = "crt-wtomb-environ"
-target_address = 0x004B2016
-body_size = 0x6B
-compare_size = 0x6B
+name = "crt-crt-compare-string-a"
+target_address = 0x004B279D
+body_size = 0x38A
+compare_size = 0x38A
 archive = "vc7-libcmt"
-member = "build/intel/mt_obj/wtombenv.obj"
-symbol = "___wtomb_environ"
+member = "build/intel/mt_obj/a_cmp.obj"
+symbol = "___crtCompareStringA"
 [[units.relocations]]
-offset = 0x6
+offset = 0x3
 type = "DIR32"
-symbol = "__wenviron"
-target_base = 0x018D8028
+symbol = "$T19895"
+target_base = 0x004C3C60
 [[units.relocations]]
-offset = 0x15
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0xD
 type = "DIR32"
-symbol = "__imp__WideCharToMultiByte@32"
-target_base = 0x004B40E4
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
 [[units.relocations]]
-offset = 0x2C
+offset = 0x1E
+type = "DIR32"
+symbol = "?f_use@?1??__crtCompareStringA@@9@9"
+target_base = 0x018D8460
+[[units.relocations]]
+offset = 0x26
+type = "DIR32"
+symbol = "??_C@_13NOLLCAOD@?$AA?$AA?$AA?$AA@"
+target_base = 0x004B4384
+[[units.relocations]]
+offset = 0x31
+type = "DIR32"
+symbol = "__imp__CompareStringW@24"
+target_base = 0x004B4134
+[[units.relocations]]
+offset = 0x3B
+type = "DIR32"
+symbol = "?f_use@?1??__crtCompareStringA@@9@9"
+target_base = 0x018D8460
+[[units.relocations]]
+offset = 0x43
+type = "DIR32"
+symbol = "__imp__GetLastError@0"
+target_base = 0x004B4074
+[[units.relocations]]
+offset = 0x4E
+type = "DIR32"
+symbol = "?f_use@?1??__crtCompareStringA@@9@9"
+target_base = 0x018D8460
+[[units.relocations]]
+offset = 0x62
+type = "REL32"
+symbol = "_strncnt"
+target_base = 0x004B2781
+[[units.relocations]]
+offset = 0x76
+type = "REL32"
+symbol = "_strncnt"
+target_base = 0x004B2781
+[[units.relocations]]
+offset = 0x80
+type = "DIR32"
+symbol = "?f_use@?1??__crtCompareStringA@@9@9"
+target_base = 0x018D8460
+[[units.relocations]]
+offset = 0xAF
+type = "DIR32"
+symbol = "___lc_codepage"
+target_base = 0x018D83F0
+[[units.relocations]]
+offset = 0xED
+type = "DIR32"
+symbol = "__imp__GetCPInfo@8"
+target_base = 0x004B4050
+[[units.relocations]]
+offset = 0x17B
+type = "DIR32"
+symbol = "__imp__MultiByteToWideChar@24"
+target_base = 0x004B409C
+[[units.relocations]]
+offset = 0x199
+type = "REL32"
+symbol = "__alloca_probe"
+target_base = 0x004A48E0
+[[units.relocations]]
+offset = 0x1B3
+type = "REL32"
+symbol = "__resetstkoflw"
+target_base = 0x004AB1AE
+[[units.relocations]]
+offset = 0x1D3
 type = "REL32"
 symbol = "_malloc"
 target_base = 0x004A4269
 [[units.relocations]]
-offset = 0x4F
+offset = 0x1F4
+type = "DIR32"
+symbol = "__imp__MultiByteToWideChar@24"
+target_base = 0x004B409C
+[[units.relocations]]
+offset = 0x211
+type = "DIR32"
+symbol = "__imp__MultiByteToWideChar@24"
+target_base = 0x004B409C
+[[units.relocations]]
+offset = 0x233
 type = "REL32"
-symbol = "___crtsetenv"
-target_base = 0x004B2BD5
+symbol = "__alloca_probe"
+target_base = 0x004A48E0
+[[units.relocations]]
+offset = 0x24D
+type = "REL32"
+symbol = "__resetstkoflw"
+target_base = 0x004AB1AE
+[[units.relocations]]
+offset = 0x266
+type = "REL32"
+symbol = "_malloc"
+target_base = 0x004A4269
+[[units.relocations]]
+offset = 0x287
+type = "DIR32"
+symbol = "__imp__MultiByteToWideChar@24"
+target_base = 0x004B409C
+[[units.relocations]]
+offset = 0x29D
+type = "DIR32"
+symbol = "__imp__CompareStringW@24"
+target_base = 0x004B4134
+[[units.relocations]]
+offset = 0x2AC
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x2BB
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x2D1
+type = "DIR32"
+symbol = "___lc_handle"
+target_base = 0x018D83D8
+[[units.relocations]]
+offset = 0x2E1
+type = "DIR32"
+symbol = "___lc_codepage"
+target_base = 0x018D83F0
+[[units.relocations]]
+offset = 0x2E9
+type = "REL32"
+symbol = "___ansicp"
+target_base = 0x004B1D47
+[[units.relocations]]
+offset = 0x30B
+type = "REL32"
+symbol = "___convertcp"
+target_base = 0x004B1D90
+[[units.relocations]]
+offset = 0x326
+type = "REL32"
+symbol = "___convertcp"
+target_base = 0x004B1D90
+[[units.relocations]]
+offset = 0x336
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x35A
+type = "DIR32"
+symbol = "__imp__CompareStringA@24"
+target_base = 0x004B4178
+[[units.relocations]]
+offset = 0x366
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x36E
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x380
+type = "REL32"
+symbol = "@__security_check_cookie@4"
+target_base = 0x004AB43C
+[[units.relocations]]
+offset = 0x385
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3

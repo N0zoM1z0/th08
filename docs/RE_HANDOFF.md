@@ -12,7 +12,7 @@ As cold-built and replayed on 2026-08-20 against the original Japanese TH08
 - authored source: **1,107 / 1,107 functions**, **459,757 / 459,757 bytes**;
 - strict authored exact: **1,091 / 1,107 functions**, **445,728 / 459,757 bytes**;
 - library inventory: **1,113 classified functions**; all **1,113 / 1,113** now have
-  mapping sizes totaling **216,589 bytes**; the independent library exact ledger currently accepts **127 functions / 16,922 body bytes**;
+  mapping sizes totaling **216,589 bytes**; the independent library exact ledger currently accepts **134 functions / 18,708 body bytes**;
 - `config/claims.csv` is header-only;
 - a cold normal VC7 build links `build/th08.exe` successfully;
 - a cold objdiff build followed by full replay passes **1,091 / 1,091**
@@ -118,7 +118,7 @@ Separate library acceptance infrastructure is now in place:
 - `validate-library.py` is the public CI gate, with `--require-archives` for local
   hash attestation; `library-progress.py` generates `LIBRARY_PROGRESS.md`.
 
-Library acceptance now has **127 / 127 configured units** and **16,922 body bytes**
+Library acceptance now has **134 / 134 configured units** and **18,708 body bytes**
 after canonical zero-difference replay.  The accepted set contains six SSE/SSE2
 D3DX normalize helpers, VC7 `/MT` `operator delete`, seven CRT string/memory
 helpers (including strict shared-section `strchr`/`strcpy`/`strcat`), six

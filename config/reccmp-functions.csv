@@ -1995,7 +1995,7 @@ setSBCS,0x4b003f,library
 FUN_004b0068,0x4b0068,library
 __updatetmbcinfo,0x4b01fa,library
 FUN_004b0260,0x4b0260,library
-FUN_004b0269,0x4b0269,library
+_setmbcp_lk,0x4b0269,library
 _setmbcp,0x4b03ff,library
 FUN_004b0546,0x4b0546,library
 __initmbctable,0x4b054f,library
@@ -2047,7 +2047,7 @@ FUN_004b265a,0x4b265a,library
 FUN_004b26fa,0x4b26fa,library
 __ascii_strnicmp,0x4b2720,library
 strncnt,0x4b2781,library
-FUN_004b279d,0x4b279d,library
+__crtCompareStringA,0x4b279d,library
 findenv,0x4b2b27,library
 copy_environ,0x4b2b74,library
 FUN_004b2bd5,0x4b2bd5,library

@@ -1186,3 +1186,16 @@ without those explicit fields retain the stricter whole-section ownership rule.
 
 - `_strcmp @ 0x004AFE80` is a hard stale-boundary case: the imported 0x87 extent ends on the first byte of the final two-byte backward `jmp`.  `strcmp.obj` gives a 0x88 function-definition extent and the complete target range matches, so the mapping must be repaired to 0x88.  An extent that splits an instruction is never a valid compiler boundary.
 - `_msize @ 0x004A6E01` is the opposite case.  Its main function returns at body offset 0x69, so the imported 0x6A body is correct; `msize.obj` continues to a 0x76 function-definition extent containing an alternate-entry prelude and the separately mapped 9-byte cleanup tail at `0x004A6E6E`.  Keep `body_size = 0x6A`, compare all 0x76 bytes, and accept the child through the tail-local-funclet schema (`$L19142 @ +0x6D`).
+### MBCS runtime parents keep mapped bodies separate from cleanup tails
+
+- `___updatetmbcinfo @ 0x004B01FA` returns after a 0x63-byte main body, but
+  `mbctype.obj` defines a 0x6F-byte function section.  The associated tail
+  contains the separately mapped 9-byte cleanup at `0x004B0260`; compare the
+  parent across 0x6F bytes while counting only 0x63 body bytes.  `_setmbcp` has
+  the same shape: 0x147 body, 0x150 comparison extent, and a 9-byte mapped tail
+  at `0x004B0546`.
+- `___crtCompareStringA @ 0x004B279D` is the opposite case: the imported 0x356
+  extent cut off live main control flow.  Target execution reaches the return at
+  `0x004B2B26`, and `a_cmp.obj` supplies a 0x38A-byte function definition with
+  38 replayed relocations.  Repair the body to 0x38A rather than treating the
+  final 0x34 bytes as associated data.

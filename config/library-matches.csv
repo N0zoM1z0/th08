@@ -126,3 +126,10 @@ address,name,size,status,unit,evidence
 0x004A6E6E,FUN_004a6e6e,9,matching,crt-msize-tail-funclet,python3 scripts/compare-library.py crt-msize-tail-funclet --json
 0x004B1FC8,_mbsnbicoll,78,matching,crt-mbsnbicoll,python3 scripts/compare-library.py crt-mbsnbicoll --json
 0x004B2016,__wtomb_environ,107,matching,crt-wtomb-environ,python3 scripts/compare-library.py crt-wtomb-environ --json
+0x004B01FA,__updatetmbcinfo,99,matching,crt-updatetmbcinfo,python3 scripts/compare-library.py crt-updatetmbcinfo --json
+0x004B0260,FUN_004b0260,9,matching,crt-updatetmbcinfo-tail-funclet,python3 scripts/compare-library.py crt-updatetmbcinfo-tail-funclet --json
+0x004B0269,_setmbcp_lk,406,matching,crt-setmbcp-lk,python3 scripts/compare-library.py crt-setmbcp-lk --json
+0x004B03FF,_setmbcp,327,matching,crt-setmbcp,python3 scripts/compare-library.py crt-setmbcp --json
+0x004B0546,FUN_004b0546,9,matching,crt-setmbcp-tail-funclet,python3 scripts/compare-library.py crt-setmbcp-tail-funclet --json
+0x004B054F,__initmbctable,30,matching,crt-initmbctable,python3 scripts/compare-library.py crt-initmbctable --json
+0x004B279D,__crtCompareStringA,906,matching,crt-crt-compare-string-a,python3 scripts/compare-library.py crt-crt-compare-string-a --json
