@@ -1972,7 +1972,7 @@ __controlfp,0x4af06a,0x16,__cdecl,,u8,u8,u8
 __lseek_lk,0x4af080,0x74,unknown,,u8,u8,u8,u8
 __lseek,0x4af0f4,0xab,__cdecl,,u8,u8,u8,u8
 FUN_004af17b,0x4af17b,0x8,unknown,,u8
-FUN_004af19f,0x4af19f,0x1a5,unknown,,u8,u8,u8,u8
+__write_lk,0x4af19f,0x1a5,__cdecl,,u8,u8,u8,u8
 __write,0x4af344,0xab,__cdecl,,u8,u8,u8,u8
 FUN_004af3cb,0x4af3cb,0x8,unknown,,u8
 __getbuf,0x4af3ef,0x44,__cdecl,,u8,u8
@@ -2028,8 +2028,8 @@ _raise,0x4b17f2,0x179,__cdecl,,u8,u8
 FUN_004b192d,0x4b192d,0xd,unknown,,u8
 FUN_004b196b,0x4b196b,0x7f,unknown,,u8,u8
 __get_osfhandle,0x4b19ea,0x41,__cdecl,,u8,u8
-FUN_004b1a2b,0x4b1a2b,0x73,unknown,,u8,u8
-FUN_004b1a9e,0x4b1a9e,0x22,unknown,,u8,u8
+__lock_fhandle,0x4b1a2b,0x73,__cdecl,,u8,u8
+__unlock_fhandle,0x4b1a9e,0x22,__cdecl,,u8,u8
 __lseeki64_lk,0x4b1ac0,0x83,unknown,,u8,u8,u8,u8,u8
 FUN_004b1bde,0x4b1bde,0x5d,unknown,,u8,u8
 FUN_004b1c3b,0x4b1c3b,0x2e,unknown,,u8,u8
@@ -2038,7 +2038,7 @@ FUN_004b1d90,0x4b1d90,0x1b8,unknown,,u8,u8,u8,u8,u8,u8,u8
 __stricmp,0x4b1f5f,0x69,__cdecl,,i32,char*,char*
 __mbsnbicoll,0x4b1fc8,0x4e,__cdecl,,u8,u8,u8,u8
 __wtomb_environ,0x4b2016,0x6b,__cdecl,,u8
-FUN_004b2081,0x4b2081,0x1cd,unknown,,u8,u8,u8,u8
+__read_lk,0x4b2081,0x1cd,__cdecl,,u8,u8,u8,u8
 __read,0x4b224e,0xab,__cdecl,,u8,u8,u8,u8
 FUN_004b22d5,0x4b22d5,0x8,unknown,,u8
 FUN_004b22f9,0x4b22f9,0x238,unknown,,u8,u8,u8

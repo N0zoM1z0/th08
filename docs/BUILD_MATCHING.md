@@ -1245,3 +1245,8 @@ without those explicit fields retain the stricter whole-section ownership rule.
 
 - Exact parent `output`/`input` replay can expose small archive-local helpers that are also independently mapped in the target.  `output.obj` owns `write_char @ 0x004A746B`, `write_multi_char @ 0x004A749E`, and `write_string @ 0x004A74C2`; `input.obj` owns `_inc @ 0x004AB44A`.  Their isolated auxless COMDATs replay exactly and may be accepted independently without double-counting any parent extent.
 - `0x004B0C93` was imported as `FID_conflict:_ungetc`, but exact `ungetc.obj::__ungetc_lk` replay fixes the identity to logical `_ungetc_lk`.  Prefer archive-proven internal names over decompiler conflict labels once member identity, extent, and relocations all agree.
+
+### File-handle wrapper dependency closure
+
+- The repaired `_lseek`, `_write`, and `_read` wrappers point directly at VC7 worker functions `_lseek_lk`, `_write_lk`, and `_read_lk`, plus the shared `_lock_fhandle` / `_unlock_fhandle` pair.  All five are isolated function-definition candidates in `lseek.obj`, `write.obj`, `read.obj`, or `osfinfo.obj` and replay exactly with their COFF relocations.
+- Once exact archive identity is established, replace anonymous `FUN_*` target labels with the logical CRT names while preserving the decorated COFF symbol separately in `library-match-units.toml`.  This keeps target inventory readable without losing provenance.

@@ -1973,7 +1973,7 @@ _controlfp,0x4af06a,library
 _lseek_lk,0x4af080,library
 _lseek,0x4af0f4,library
 FUN_004af17b,0x4af17b,library
-FUN_004af19f,0x4af19f,library
+_write_lk,0x4af19f,library
 _write,0x4af344,library
 FUN_004af3cb,0x4af3cb,library
 _getbuf,0x4af3ef,library
@@ -2029,8 +2029,8 @@ raise,0x4b17f2,library
 FUN_004b192d,0x4b192d,library
 FUN_004b196b,0x4b196b,library
 _get_osfhandle,0x4b19ea,library
-FUN_004b1a2b,0x4b1a2b,library
-FUN_004b1a9e,0x4b1a9e,library
+_lock_fhandle,0x4b1a2b,library
+_unlock_fhandle,0x4b1a9e,library
 _lseeki64_lk,0x4b1ac0,library
 FUN_004b1bde,0x4b1bde,library
 FUN_004b1c3b,0x4b1c3b,library
@@ -2039,7 +2039,7 @@ FUN_004b1d90,0x4b1d90,library
 _stricmp,0x4b1f5f,library
 _mbsnbicoll,0x4b1fc8,library
 __wtomb_environ,0x4b2016,library
-FUN_004b2081,0x4b2081,library
+_read_lk,0x4b2081,library
 _read,0x4b224e,library
 FUN_004b22d5,0x4b22d5,library
 FUN_004b22f9,0x4b22f9,library

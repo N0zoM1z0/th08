@@ -6742,3 +6742,228 @@ offset = 0x26
 type = "REL32"
 symbol = "__getbuf"
 target_base = 0x004AF3EF
+
+[[units]]
+name = "crt-lseek-lk"
+target_address = 0x004AF080
+body_size = 0x74
+compare_size = 0x74
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/lseek.obj"
+symbol = "__lseek_lk"
+[[units.relocations]]
+offset = 0x7
+type = "REL32"
+symbol = "__get_osfhandle"
+target_base = 0x004B19EA
+[[units.relocations]]
+offset = 0x12
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0x2F
+type = "DIR32"
+symbol = "__imp__SetFilePointer@16"
+target_base = 0x004B40C8
+[[units.relocations]]
+offset = 0x3C
+type = "DIR32"
+symbol = "__imp__GetLastError@0"
+target_base = 0x004B4074
+[[units.relocations]]
+offset = 0x4A
+type = "REL32"
+symbol = "__dosmaperr"
+target_base = 0x004AAAE4
+[[units.relocations]]
+offset = 0x5F
+type = "DIR32"
+symbol = "___pioinfo"
+target_base = 0x018D9700
+
+[[units]]
+name = "crt-write-lk"
+target_address = 0x004AF19F
+body_size = 0x1A5
+compare_size = 0x1A5
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/write.obj"
+symbol = "__write_lk"
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
+[[units.relocations]]
+offset = 0x3D
+type = "DIR32"
+symbol = "___pioinfo"
+target_base = 0x018D9700
+[[units.relocations]]
+offset = 0x55
+type = "REL32"
+symbol = "__lseeki64_lk"
+target_base = 0x004B1AC0
+[[units.relocations]]
+offset = 0xD6
+type = "DIR32"
+symbol = "__imp__WriteFile@20"
+target_base = 0x004B4068
+[[units.relocations]]
+offset = 0xF9
+type = "DIR32"
+symbol = "__imp__GetLastError@0"
+target_base = 0x004B4074
+[[units.relocations]]
+offset = 0x11B
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0x126
+type = "REL32"
+symbol = "___doserrno"
+target_base = 0x004AAADB
+[[units.relocations]]
+offset = 0x13D
+type = "DIR32"
+symbol = "__imp__WriteFile@20"
+target_base = 0x004B4068
+[[units.relocations]]
+offset = 0x152
+type = "DIR32"
+symbol = "__imp__GetLastError@0"
+target_base = 0x004B4074
+[[units.relocations]]
+offset = 0x15F
+type = "REL32"
+symbol = "__dosmaperr"
+target_base = 0x004AAAE4
+[[units.relocations]]
+offset = 0x17F
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0x18A
+type = "REL32"
+symbol = "___doserrno"
+target_base = 0x004AAADB
+[[units.relocations]]
+offset = 0x19F
+type = "REL32"
+symbol = "@__security_check_cookie@4"
+target_base = 0x004AB43C
+
+[[units]]
+name = "crt-lock-fhandle"
+target_address = 0x004B1A2B
+body_size = 0x73
+compare_size = 0x73
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/osfinfo.obj"
+symbol = "__lock_fhandle"
+[[units.relocations]]
+offset = 0x12
+type = "DIR32"
+symbol = "___pioinfo"
+target_base = 0x018D9700
+[[units.relocations]]
+offset = 0x29
+type = "REL32"
+symbol = "__lock"
+target_base = 0x004A8175
+[[units.relocations]]
+offset = 0x3E
+type = "REL32"
+symbol = "___crtInitCritSecAndSpinCount"
+target_base = 0x004AF7F3
+[[units.relocations]]
+offset = 0x4B
+type = "REL32"
+symbol = "__unlock"
+target_base = 0x004A80E1
+[[units.relocations]]
+offset = 0x5A
+type = "REL32"
+symbol = "__unlock"
+target_base = 0x004A80E1
+[[units.relocations]]
+offset = 0x68
+type = "DIR32"
+symbol = "__imp__EnterCriticalSection@4"
+target_base = 0x004B407C
+
+[[units]]
+name = "crt-unlock-fhandle"
+target_address = 0x004B1A9E
+body_size = 0x22
+compare_size = 0x22
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/osfinfo.obj"
+symbol = "__unlock_fhandle"
+[[units.relocations]]
+offset = 0xF
+type = "DIR32"
+symbol = "___pioinfo"
+target_base = 0x018D9700
+[[units.relocations]]
+offset = 0x1D
+type = "DIR32"
+symbol = "__imp__LeaveCriticalSection@4"
+target_base = 0x004B4080
+
+[[units]]
+name = "crt-read-lk"
+target_address = 0x004B2081
+body_size = 0x1CD
+compare_size = 0x1CD
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/read.obj"
+symbol = "__read_lk"
+[[units.relocations]]
+offset = 0x2D
+type = "DIR32"
+symbol = "___pioinfo"
+target_base = 0x018D9700
+[[units.relocations]]
+offset = 0x77
+type = "DIR32"
+symbol = "__imp__ReadFile@20"
+target_base = 0x004B4058
+[[units.relocations]]
+offset = 0x81
+type = "DIR32"
+symbol = "__imp__GetLastError@0"
+target_base = 0x004B4074
+[[units.relocations]]
+offset = 0x8D
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0x98
+type = "REL32"
+symbol = "___doserrno"
+target_base = 0x004AAADB
+[[units.relocations]]
+offset = 0xAB
+type = "REL32"
+symbol = "__dosmaperr"
+target_base = 0x004AAAE4
+[[units.relocations]]
+offset = 0x141
+type = "DIR32"
+symbol = "__imp__ReadFile@20"
+target_base = 0x004B4058
+[[units.relocations]]
+offset = 0x14B
+type = "DIR32"
+symbol = "__imp__GetLastError@0"
+target_base = 0x004B4074
+[[units.relocations]]
+offset = 0x18C
+type = "REL32"
+symbol = "__lseek_lk"
+target_base = 0x004AF080

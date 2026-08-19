@@ -11,8 +11,8 @@ Generated from `config/reccmp-functions.csv`, `config/mapping.csv`,
 - Exact authored functions: **1,091 / 1,107 (98.55%)**
 - Exact authored bytes: **445,728 / 459,757 (96.95%)**
 - Inventory-classified library functions: **1,115**
-- Exact library functions: **158 / 1,115 (14.17%)**
-- Exact library bytes: **25,281 / 216,820 (11.66%)**
+- Exact library functions: **163 / 1,115 (14.62%)**
+- Exact library bytes: **26,428 / 216,820 (12.19%)**
 
 The public SVG visualizes exact bytes only;
 source presence never fills the progress bar.

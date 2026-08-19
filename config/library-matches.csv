@@ -157,3 +157,8 @@ address,name,size,status,unit,evidence
 0x004A74C2,write_string,55,matching,crt-write-string,python3 scripts/compare-library.py crt-write-string --json
 0x004AB44A,_inc,22,matching,crt-input-inc,python3 scripts/compare-library.py crt-input-inc --json
 0x004B0C93,_ungetc_lk,108,matching,crt-ungetc-lk,python3 scripts/compare-library.py crt-ungetc-lk --json
+0x004AF080,_lseek_lk,116,matching,crt-lseek-lk,python3 scripts/compare-library.py crt-lseek-lk --json
+0x004AF19F,_write_lk,421,matching,crt-write-lk,python3 scripts/compare-library.py crt-write-lk --json
+0x004B1A2B,_lock_fhandle,115,matching,crt-lock-fhandle,python3 scripts/compare-library.py crt-lock-fhandle --json
+0x004B1A9E,_unlock_fhandle,34,matching,crt-unlock-fhandle,python3 scripts/compare-library.py crt-unlock-fhandle --json
+0x004B2081,_read_lk,461,matching,crt-read-lk,python3 scripts/compare-library.py crt-read-lk --json
