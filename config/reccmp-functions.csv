@@ -1965,7 +1965,7 @@ FUN_004aece6,0x4aece6,library
 FUN_004aed29,0x4aed29,library
 FUN_004aed6c,0x4aed6c,library
 __dtold,0x4aede3,library
-FUN_004aee9d,0x4aee9d,library
+_fltout2,0x4aee9d,library
 FUN_004aef0f,0x4aef0f,library
 _abstract_cw,0x4aef18,library
 _hw_cw,0x4aefaa,library

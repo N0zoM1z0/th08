@@ -233,3 +233,6 @@ address,name,size,status,unit,evidence
 0x004AE2C7,_d_inttype,106,matching,crt-d-inttype,python3 scripts/compare-library.py crt-d-inttype --json
 0x004AE331,_powhlp,354,matching,crt-powhlp,python3 scripts/compare-library.py crt-powhlp --json
 0x004AE493,__libm_error_support,660,matching,crt-libm-error-support,python3 scripts/compare-library.py crt-libm-error-support --json
+0x004AEDE3,__dtold,186,matching,crt-dtold,python3 scripts/compare-library.py crt-dtold --json
+0x004AEE9D,_fltout2,114,matching,crt-fltout2,python3 scripts/compare-library.py crt-fltout2 --json
+0x004B1530,FUN_004b1530,660,matching,crt-i10-output,python3 scripts/compare-library.py crt-i10-output --json

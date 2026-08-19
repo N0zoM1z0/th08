@@ -1964,7 +1964,7 @@ FUN_004aece6,0x4aece6,0x43,unknown,,u8,u8,u8
 FUN_004aed29,0x4aed29,0x43,unknown,,u8,u8,u8
 FUN_004aed6c,0x4aed6c,0x77,unknown,,u8,u8,u8,u8
 ___dtold,0x4aede3,0xba,unknown,,u8,u8,u8
-FUN_004aee9d,0x4aee9d,0x72,unknown,,u8,u8,u8,u8,u8
+__fltout2,0x4aee9d,0x72,unknown,,u8,u8,u8,u8,u8
 FUN_004aef0f,0x4aef0f,0x9,unknown,,u8
 __abstract_cw,0x4aef18,0x92,unknown,,u8
 __hw_cw,0x4aefaa,0x8e,unknown,,u8

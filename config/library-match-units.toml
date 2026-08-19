@@ -9052,3 +9052,135 @@ offset = 0x28E
 type = "REL32"
 symbol = "@__security_check_cookie@4"
 target_base = 0x004AB43C
+
+[[units]]
+name = "crt-dtold"
+target_address = 0x004AEDE3
+body_size = 0xBA
+compare_size = 0xBA
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/cfout.obj"
+symbol = "___dtold"
+
+[[units]]
+name = "crt-fltout2"
+target_address = 0x004AEE9D
+body_size = 0x72
+compare_size = 0x72
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/cfout.obj"
+symbol = "__fltout2"
+[[units.relocations]]
+offset = 0x7
+type = "DIR32"
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
+[[units.relocations]]
+offset = 0x1C
+type = "REL32"
+symbol = "___dtold"
+target_base = 0x004AEDE3
+[[units.relocations]]
+offset = 0x37
+type = "REL32"
+symbol = "_$I10_OUTPUT"
+target_base = 0x004B1530
+[[units.relocations]]
+offset = 0x57
+type = "REL32"
+symbol = "_strcpy"
+target_base = 0x004A5D20
+[[units.relocations]]
+offset = 0x6A
+type = "REL32"
+symbol = "@__security_check_cookie@4"
+target_base = 0x004AB43C
+
+[[units]]
+name = "crt-i10-output"
+target_address = 0x004B1530
+body_size = 0x294
+compare_size = 0x294
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/x10fout.obj"
+symbol = "_$I10_OUTPUT"
+[[units.relocations]]
+offset = 0x7
+type = "DIR32"
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
+[[units.relocations]]
+offset = 0xA8
+type = "DIR32"
+symbol = "??_C@_06PGGFOGJG@1?$CDSNAN?$AA@"
+target_base = 0x004C3BE0
+[[units.relocations]]
+offset = 0xC2
+type = "DIR32"
+symbol = "??_C@_05PHHOCPM@1?$CDIND?$AA@"
+target_base = 0x004C3BD8
+[[units.relocations]]
+offset = 0xD3
+type = "DIR32"
+symbol = "??_C@_05DNEBIAHO@1?$CDINF?$AA@"
+target_base = 0x004C3BD0
+[[units.relocations]]
+offset = 0xDC
+type = "REL32"
+symbol = "_strcpy"
+target_base = 0x004A5D20
+[[units.relocations]]
+offset = 0xF0
+type = "DIR32"
+symbol = "??_C@_06IMKFLFPG@1?$CDQNAN?$AA@"
+target_base = 0x004C3BC8
+[[units.relocations]]
+offset = 0xF9
+type = "REL32"
+symbol = "_strcpy"
+target_base = 0x004A5D20
+[[units.relocations]]
+offset = 0x145
+type = "REL32"
+symbol = "___multtenpow12"
+target_base = 0x004B2531
+[[units.relocations]]
+offset = 0x15E
+type = "REL32"
+symbol = "___ld12mul"
+target_base = 0x004B22F9
+[[units.relocations]]
+offset = 0x1A5
+type = "REL32"
+symbol = "___shl_12"
+target_base = 0x004B0FB7
+[[units.relocations]]
+offset = 0x1C2
+type = "REL32"
+symbol = "___shr_12"
+target_base = 0x004B0FE5
+[[units.relocations]]
+offset = 0x1E8
+type = "REL32"
+symbol = "___shl_12"
+target_base = 0x004B0FB7
+[[units.relocations]]
+offset = 0x1F1
+type = "REL32"
+symbol = "___shl_12"
+target_base = 0x004B0FB7
+[[units.relocations]]
+offset = 0x1FE
+type = "REL32"
+symbol = "___add_12"
+target_base = 0x004B0F59
+[[units.relocations]]
+offset = 0x207
+type = "REL32"
+symbol = "___shl_12"
+target_base = 0x004B0FB7
+[[units.relocations]]
+offset = 0x268
+type = "REL32"
+symbol = "@__security_check_cookie@4"
+target_base = 0x004AB43C
