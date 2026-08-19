@@ -1255,3 +1255,8 @@ without those explicit fields retain the stricter whole-section ownership rule.
 
 - The accepted `output`/`input` core calls small CRT support members across `_getbuf.obj`, `_filbuf.obj`, `wctomb.obj`, and `mbtowc.obj`.  `_getbuf`, `_filbuf`, `wctomb`, `mbtowc`, `__wctomb_mt`, and `__mbtowc_mt` each replay exactly as their own VC7 function-definition extents with explicit relocations.
 - Treat `_mt` conversion helpers as normal library functions when the archive exposes a real function-definition symbol; unlike compiler local cleanup labels, they do not require funclet-specific acceptance rules.
+
+### Public file wrappers should close through exact `_lk` workers first
+
+- Before repairing higher-level close/flush/seek wrappers, pin their direct worker functions.  VC7 `osfinfo.obj`, `lseeki64.obj`, `fflush.obj`, and `fclose/close.obj` provide exact `_free_osfhnd`, `_lseeki64_lk`, `_flush`, `_fflush_lk`, `_fclose_lk`, and `_close_lk` target functions.
+- This direction reduces ambiguity when a public wrapper contains an SEH cleanup funclet: the parent can be validated against known exact lock/unlock and worker targets rather than treating internal calls as unnamed CFG noise.

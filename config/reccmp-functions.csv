@@ -2027,13 +2027,13 @@ FUN_004b1530,0x4b1530,library
 siglookup,0x4b17c4,library
 raise,0x4b17f2,library
 FUN_004b192d,0x4b192d,library
-FUN_004b196b,0x4b196b,library
+_free_osfhnd,0x4b196b,library
 _get_osfhandle,0x4b19ea,library
 _lock_fhandle,0x4b1a2b,library
 _unlock_fhandle,0x4b1a9e,library
 _lseeki64_lk,0x4b1ac0,library
-FUN_004b1bde,0x4b1bde,library
-FUN_004b1c3b,0x4b1c3b,library
+_flush,0x4b1bde,library
+_fflush_lk,0x4b1c3b,library
 __ansicp,0x4b1d47,library
 FUN_004b1d90,0x4b1d90,library
 _stricmp,0x4b1f5f,library
@@ -2044,7 +2044,7 @@ _read,0x4b224e,library
 FUN_004b22d5,0x4b22d5,library
 FUN_004b22f9,0x4b22f9,library
 FUN_004b2531,0x4b2531,library
-FUN_004b25bd,0x4b25bd,library
+_fclose_lk,0x4b25bd,library
 FUN_004b265a,0x4b265a,library
 FUN_004b26fa,0x4b26fa,library
 __ascii_strnicmp,0x4b2720,library
@@ -2053,7 +2053,7 @@ __crtCompareStringA,0x4b279d,library
 findenv,0x4b2b27,library
 copy_environ,0x4b2b74,library
 FUN_004b2bd5,0x4b2bd5,library
-FUN_004b2d8a,0x4b2d8a,library
+_close_lk,0x4b2d8a,library
 FUN_004b2e0d,0x4b2e0d,library
 FUN_004b2e84,0x4b2e84,library
 FUN_004b2ea8,0x4b2ea8,library

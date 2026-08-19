@@ -2026,13 +2026,13 @@ FUN_004b1530,0x4b1530,0x294,unknown,,u8,u8,u8,u8,u8,u8,u8
 _siglookup,0x4b17c4,0x2e,unknown,,u8
 _raise,0x4b17f2,0x179,__cdecl,,u8,u8
 FUN_004b192d,0x4b192d,0xd,unknown,,u8
-FUN_004b196b,0x4b196b,0x7f,unknown,,u8,u8
+__free_osfhnd,0x4b196b,0x7f,__cdecl,,u8,u8
 __get_osfhandle,0x4b19ea,0x41,__cdecl,,u8,u8
 __lock_fhandle,0x4b1a2b,0x73,__cdecl,,u8,u8
 __unlock_fhandle,0x4b1a9e,0x22,__cdecl,,u8,u8
 __lseeki64_lk,0x4b1ac0,0x83,unknown,,u8,u8,u8,u8,u8
-FUN_004b1bde,0x4b1bde,0x5d,unknown,,u8,u8
-FUN_004b1c3b,0x4b1c3b,0x2e,unknown,,u8,u8
+__flush,0x4b1bde,0x5d,__cdecl,,u8,u8
+__fflush_lk,0x4b1c3b,0x2e,__cdecl,,u8,u8
 ___ansicp,0x4b1d47,0x49,__cdecl,,u8,u8
 FUN_004b1d90,0x4b1d90,0x1b8,unknown,,u8,u8,u8,u8,u8,u8,u8
 __stricmp,0x4b1f5f,0x69,__cdecl,,i32,char*,char*
@@ -2043,7 +2043,7 @@ __read,0x4b224e,0xab,__cdecl,,u8,u8,u8,u8
 FUN_004b22d5,0x4b22d5,0x8,unknown,,u8
 FUN_004b22f9,0x4b22f9,0x238,unknown,,u8,u8,u8
 FUN_004b2531,0x4b2531,0x8c,unknown,,u8,u8,u8,u8
-FUN_004b25bd,0x4b25bd,0x4c,unknown,,u8,u8
+__fclose_lk,0x4b25bd,0x4c,__cdecl,,u8,u8
 FUN_004b265a,0x4b265a,0xb1,unknown,,u8,u8
 FUN_004b26fa,0x4b26fa,0x8,unknown,,u8
 ___ascii_strnicmp,0x4b2720,0x61,__cdecl,,u8,u8,u8,u8
@@ -2052,7 +2052,7 @@ ___crtCompareStringA,0x4b279d,0x38a,__cdecl,,u8,u8,u8,u8,u8,u8,u8,u8
 _findenv,0x4b2b27,0x4d,unknown,,u8,u8
 _copy_environ,0x4b2b74,0x61,unknown,,u8
 FUN_004b2bd5,0x4b2bd5,0x1b5,unknown,,u8,u8,u8
-FUN_004b2d8a,0x4b2d8a,0x83,unknown,,u8,u8
+__close_lk,0x4b2d8a,0x83,__cdecl,,u8,u8
 FUN_004b2e0d,0x4b2e0d,0x90,unknown,,u8,u8
 FUN_004b2e84,0x4b2e84,0x8,unknown,,u8
 FUN_004b2ea8,0x4b2ea8,0x2b,unknown,,u8,u8

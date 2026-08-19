@@ -171,3 +171,10 @@ address,name,size,status,unit,evidence
 0x004AF61E,wctomb,39,matching,crt-wctomb,python3 scripts/compare-library.py crt-wctomb --json
 0x004B0CFF,__mbtowc_mt,192,matching,crt-mbtowc-mt,python3 scripts/compare-library.py crt-mbtowc-mt --json
 0x004AF5BE,__wctomb_mt,96,matching,crt-wctomb-mt,python3 scripts/compare-library.py crt-wctomb-mt --json
+0x004B196B,_free_osfhnd,127,matching,crt-free-osfhnd,python3 scripts/compare-library.py crt-free-osfhnd --json
+0x004B1AC0,_lseeki64_lk,131,matching,crt-lseeki64-lk,python3 scripts/compare-library.py crt-lseeki64-lk --json
+0x004B1BDE,_flush,93,matching,crt-flush,python3 scripts/compare-library.py crt-flush --json
+0x004B1C3B,_fflush_lk,46,matching,crt-fflush-lk,python3 scripts/compare-library.py crt-fflush-lk --json
+0x004B25BD,_fclose_lk,76,matching,crt-fclose-lk,python3 scripts/compare-library.py crt-fclose-lk --json
+0x004B2D8A,_close_lk,131,matching,crt-close-lk,python3 scripts/compare-library.py crt-close-lk --json
+0x004AF433,_isatty,42,matching,crt-isatty,python3 scripts/compare-library.py crt-isatty --json
