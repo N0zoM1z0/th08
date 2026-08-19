@@ -61,14 +61,29 @@ def compare_member(member: bytes, unit: dict, target_code: bytes) -> dict:
     m,sym,sec=coff_section_for_symbol(member,str(unit["symbol"])); compare_size=int(unit["compare_size"])
     section_offset=int(unit.get("section_offset",0))
     section_size=int(unit.get("section_size",compare_size))
+    aux=sym.aux_records[0] if sym.aux_records and hasattr(sym.aux_records[0],"total_size") else None
+    allow_auxless=bool(unit.get("allow_auxless_comdat",False))
     if sym.value!=section_offset:
         raise ValueError(f"COFF symbol offset {sym.value:#x} != configured section_offset {section_offset:#x}")
     if len(sec.data)!=section_size:
         raise ValueError(f"archive section size {len(sec.data):#x} != configured section_size {section_size:#x}")
+    if aux is None:
+        if not allow_auxless:
+            raise ValueError("COFF function lacks a function-definition aux record")
+        IMAGE_SCN_CNT_CODE=0x00000020; IMAGE_SCN_LNK_COMDAT=0x00001000
+        if section_offset!=0 or section_size!=compare_size:
+            raise ValueError("auxless COMDAT comparison requires a whole-section extent")
+        if sym.value!=0 or sym.type!=0x20 or not (sec.flags & IMAGE_SCN_CNT_CODE) or not (sec.flags & IMAGE_SCN_LNK_COMDAT):
+            raise ValueError("auxless symbol is not an offset-zero function in a code COMDAT")
+        owners=[]
+        for candidate in m.symbols:
+            if candidate.section_number==sym.section_number and candidate.value==0 and candidate.type==0x20:
+                owners.append(candidate.get_name(m.string_table).decode("ascii",errors="strict"))
+        if owners != [str(unit["symbol"])]:
+            raise ValueError(f"auxless COMDAT section has ambiguous function owners: {owners!r}")
+    elif allow_auxless:
+        raise ValueError("allow_auxless_comdat is set for a symbol with a function-definition aux record")
     if section_offset or section_size!=compare_size:
-        aux=sym.aux_records[0] if sym.aux_records and hasattr(sym.aux_records[0],"total_size") else None
-        if aux is None:
-            raise ValueError("shared-section library unit requires a COFF function-definition aux record")
         if int(aux.total_size)!=compare_size:
             raise ValueError(f"COFF aux extent {int(aux.total_size):#x} != compare_size {compare_size:#x}")
     if section_offset+compare_size>section_size:

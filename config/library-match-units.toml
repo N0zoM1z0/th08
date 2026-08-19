@@ -8,6 +8,7 @@ compare_size = 0xD0
 archive = "vc7-d3dx8-prerelease"
 member = "objd/i386/d3dxmathsse.obj"
 symbol = "?sse_D3DXVec3Normalize@@YGPAUD3DXVECTOR3@@PAU1@PBU1@@Z"
+allow_auxless_comdat = true
 [[units.relocations]]
 offset = 0x2C
 type = "DIR32"
@@ -32,6 +33,7 @@ compare_size = 0xE0
 archive = "vc7-d3dx8-prerelease"
 member = "objd/i386/d3dxmathsse.obj"
 symbol = "?sse_D3DXPlaneNormalize@@YGPAUD3DXPLANE@@PAU1@PBU1@@Z"
+allow_auxless_comdat = true
 [[units.relocations]]
 offset = 0x2C
 type = "DIR32"
@@ -56,6 +58,7 @@ compare_size = 0xA0
 archive = "vc7-d3dx8-prerelease"
 member = "objd/i386/d3dxmathsse.obj"
 symbol = "?sse_D3DXVec4Normalize@@YGPAUD3DXVECTOR4@@PAU1@PBU1@@Z"
+allow_auxless_comdat = true
 [[units.relocations]]
 offset = 0x59
 type = "DIR32"
@@ -75,6 +78,7 @@ compare_size = 0xA0
 archive = "vc7-d3dx8-prerelease"
 member = "objd/i386/d3dxquatsse.obj"
 symbol = "?sse_D3DXQuaternionNormalize@@YGPAUD3DXQUATERNION@@PAU1@PBU1@@Z"
+allow_auxless_comdat = true
 [[units.relocations]]
 offset = 0x5C
 type = "DIR32"
@@ -94,6 +98,7 @@ compare_size = 0xD0
 archive = "vc7-d3dx8-prerelease"
 member = "objd/i386/d3dxmathsse2.obj"
 symbol = "?sse2_D3DXVec3Normalize@@YGPAUD3DXVECTOR3@@PAU1@PBU1@@Z"
+allow_auxless_comdat = true
 [[units.relocations]]
 offset = 0x2C
 type = "DIR32"
@@ -118,6 +123,7 @@ compare_size = 0xE0
 archive = "vc7-d3dx8-prerelease"
 member = "objd/i386/d3dxmathsse2.obj"
 symbol = "?sse2_D3DXPlaneNormalize@@YGPAUD3DXPLANE@@PAU1@PBU1@@Z"
+allow_auxless_comdat = true
 [[units.relocations]]
 offset = 0x2C
 type = "DIR32"

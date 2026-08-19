@@ -988,3 +988,13 @@ without those explicit fields retain the stricter whole-section ownership rule.
   `0x004AA267`.  Use `body_size = 0xAD` and `compare_size = 0xCE`, replay all
   ten relocations across the complete COFF section, and count only the main
   body in library progress.
+
+### Auxless library COMDATs require explicit whole-section ownership
+
+- Some VC7 internal CRT helpers are function-type symbols whose auxiliary record
+  is raw rather than a function-definition extent. Do not infer their size from
+  the next symbol. A library unit may opt in with `allow_auxless_comdat = true`
+  only when the archive section itself is a code COMDAT, the named symbol is at
+  offset zero, the complete section is the comparison extent, and that section
+  has exactly one offset-zero function-type owner. The default remains to reject
+  auxless symbols. `FindHandler @ 0x004AA72E` is the motivating case.
