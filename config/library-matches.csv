@@ -124,3 +124,5 @@ address,name,size,status,unit,evidence
 0x004AFE80,strcmp,136,matching,crt-strcmp,python3 scripts/compare-library.py crt-strcmp --json
 0x004A6E01,_msize,106,matching,crt-msize,python3 scripts/compare-library.py crt-msize --json
 0x004A6E6E,FUN_004a6e6e,9,matching,crt-msize-tail-funclet,python3 scripts/compare-library.py crt-msize-tail-funclet --json
+0x004B1FC8,_mbsnbicoll,78,matching,crt-mbsnbicoll,python3 scripts/compare-library.py crt-mbsnbicoll --json
+0x004B2016,__wtomb_environ,107,matching,crt-wtomb-environ,python3 scripts/compare-library.py crt-wtomb-environ --json

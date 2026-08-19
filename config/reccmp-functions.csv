@@ -2036,7 +2036,7 @@ FUN_004b1d47,0x4b1d47,library
 FUN_004b1d90,0x4b1d90,library
 _stricmp,0x4b1f5f,library
 _mbsnbicoll,0x4b1fc8,library
-FUN_004b2016,0x4b2016,library
+__wtomb_environ,0x4b2016,library
 FUN_004b2081,0x4b2081,library
 _read,0x4b224e,library
 FUN_004b22d5,0x4b22d5,library
