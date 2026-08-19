@@ -1084,3 +1084,16 @@ address,name,size,status,match_percent,unit,evidence
 0x0046CBBB,th08::TitleScreen::UnlockLastWordSpellCards,2984,matching,100.00,title-unlock-last-word-0046cbbb,python3 scripts/compare-function.py title-unlock-last-word-0046cbbb --json
 0x0046D7F9,th08::TitleScreen::FormatSpellCardInfo,2365,matching,100.00,title-format-spell-card-info-0046d7f9,python3 scripts/compare-function.py title-format-spell-card-info-0046d7f9 --json
 0x0047052D,th08::TitleScreen::DrawCompletionStatusText,850,matching,100.00,title-draw-completion-status-0047052d,python3 scripts/compare-function.py title-draw-completion-status-0047052d --json
+0x0044F5E0,FUN_0044f5e0,810,matching,100.00,player-option-aim-0044f5e0,python3 scripts/compare-function.py player-option-aim-0044f5e0 --json
+0x0044F930,FUN_0044f930,570,matching,100.00,player-option-sway-0044f930,python3 scripts/compare-function.py player-option-sway-0044f930 --json
+0x00450080,FUN_00450080,142,matching,100.00,player-shot-callback-00450080,python3 scripts/compare-function.py player-shot-callback-00450080 --json
+0x00450110,FUN_00450110,145,matching,100.00,player-shot-callback-00450110,python3 scripts/compare-function.py player-shot-callback-00450110 --json
+0x004501B0,FUN_004501b0,133,matching,100.00,player-shot-callback-004501b0,python3 scripts/compare-function.py player-shot-callback-004501b0 --json
+0x00450240,FUN_00450240,223,matching,100.00,player-shot-callback-00450240,python3 scripts/compare-function.py player-shot-callback-00450240 --json
+0x00450320,FUN_00450320,599,matching,100.00,player-shot-steering-00450320,python3 scripts/compare-function.py player-shot-steering-00450320 --json
+0x00450580,FUN_00450580,72,matching,100.00,player-shot-random-drift-00450580,python3 scripts/compare-function.py player-shot-random-drift-00450580 --json
+0x004505D0,FUN_004505d0,609,matching,100.00,player-shot-timeline-update-004505d0,python3 scripts/compare-function.py player-shot-timeline-update-004505d0 --json
+0x00450840,FUN_00450840,643,matching,100.00,player-shot-trail-update-00450840,python3 scripts/compare-function.py player-shot-trail-update-00450840 --json
+0x00450AD0,FUN_00450ad0,372,matching,100.00,player-shot-trail-draw-00450ad0,python3 scripts/compare-function.py player-shot-trail-draw-00450ad0 --json
+0x00450C50,FUN_00450c50,611,matching,100.00,player-shot-script-update-00450c50,python3 scripts/compare-function.py player-shot-script-update-00450c50 --json
+0x00450EE0,FUN_00450ee0,128,matching,100.00,player-shot-effect-tick-00450ee0,python3 scripts/compare-function.py player-shot-effect-tick-00450ee0 --json
