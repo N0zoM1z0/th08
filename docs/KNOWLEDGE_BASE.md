@@ -15,6 +15,7 @@ before repeating target analysis or compiler-shape probes.
 | Exact authored totals | [PROGRESS.md](PROGRESS.md) and `config/matches.csv` | Generated totals and accepted per-address evidence. |
 | Target mappings and types | `config/mapping.csv`, `config/reccmp-*.csv` | Imported/reconciled leads; mapping alone is not exactness. |
 | Canonical exact replay | `config/match-units.toml` | COFF symbol, object, extent, and explicit relocations. |
+| Aggregate cold-build attestation | `scripts/analysis/verify-exact-units.py --all` and [BUILD_MATCHING.md](BUILD_MATCHING.md) | Rebuilds every configured input before replay; the durable stale-object/PCH lesson is indexed under `cold-build`. |
 | Detailed VC7/comparator corpus | [BUILD_MATCHING.md](BUILD_MATCHING.md) | Address-backed build, relocation, boundary, ABI, and source-shape lessons. |
 | Concise cross-subsystem compiler patterns | [VC7_ZUN_PATTERNS.md](VC7_ZUN_PATTERNS.md) | Reusable VC7/ZUN patterns with exact examples. |
 | IDA/Ghidra trust boundary | [IDA_MCP.md](IDA_MCP.md) | Active-database attestation and safe fallback paths. |
@@ -33,6 +34,7 @@ before repeating target analysis or compiler-shape probes.
 | Function boundaries, COFF aux extents, relocations | `BUILD_MATCHING.md` | Search for `compare_size`, `COMDAT`, `REL32`, or `DIR32`. |
 | Generic VC7 declaration/branch/local patterns | `VC7_ZUN_PATTERNS.md` | Search this before creating expression or `#pragma var_order` matrices. |
 | Target-linked CRT/D3DX work | `RE_HANDOFF.md` and `$th08-library` | Current next phase; no accepted library scanner/ledger exists yet. |
+| Stale object/PCH exact-state failures | Search `BUILD_MATCHING.md` for `cold-build` | Why focused historical successes cannot be promoted to a current aggregate without a cold full replay. |
 
 Fast lookup recipes:
 
@@ -40,6 +42,7 @@ Fast lookup recipes:
 rg -n "0x004526C0|OnUpdateHighPrioDemo2" docs config src
 rg -n "compare_size|COMDAT|DIR32|REL32" docs/BUILD_MATCHING.md
 rg -n "pragma var_order|frame|stack home" docs/VC7_ZUN_PATTERNS.md
+rg -n "cold-build|stale object|aggregate exact" docs/BUILD_MATCHING.md docs/RE_WORKFLOW.md
 ```
 
 Use the target address when names are overloaded or provisional. A logical

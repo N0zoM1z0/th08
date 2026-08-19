@@ -1,6 +1,7 @@
 from enum import Enum
 import json
 from pathlib import Path
+import tomllib
 
 from ninja_syntax import Writer
 
@@ -208,7 +209,15 @@ def configure(build_type):
             objdiff_deps.append(obj["base_path"].replace("build", "$builddir"))
         for obj in objdiff_json.get("units", {}):
             objdiff_deps.append(obj["base_path"].replace("build", "$builddir"))
-        writer.build("objdiff", "phony", [], objdiff_deps)
+        # The strict comparison ledger contains probe and reimplementation
+        # objects that are not necessarily present in objdiff.json.  The
+        # aggregate target must build every configured comparison input so a
+        # full replay cannot silently reuse or omit an old object.
+        with open("config/match-units.toml", "rb") as f:
+            match_units = tomllib.load(f).get("units", [])
+        for unit in match_units:
+            objdiff_deps.append(str(unit["object"]).replace("build", "$builddir", 1))
+        writer.build("objdiff", "phony", [], sorted(set(objdiff_deps)))
 
         # Precompiled header
         writer.rule(

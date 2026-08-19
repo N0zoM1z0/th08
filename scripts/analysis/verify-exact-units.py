@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Re-run accepted exact comparisons for one unit, one object, or the ledger."""
+"""Build and replay accepted exact comparisons for a unit, object, or ledger."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ import csv
 import importlib.util
 import json
 from pathlib import Path
+import subprocess
 import sys
 import tomllib
 from types import ModuleType
@@ -53,7 +54,9 @@ def main() -> int:
             "--unit player-option-orbit-0044ee70\n"
             "  python3 scripts/analysis/verify-exact-units.py "
             "--object build/probes/PlayerOptionProbe.obj\n"
-            "  python3 scripts/analysis/verify-exact-units.py --all"
+            "  python3 scripts/analysis/verify-exact-units.py --all\n\n"
+            "--all performs a single-job cold objdiff build before replay. "
+            "Use --reuse-build only for a non-attesting diagnostic replay."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -77,6 +80,14 @@ def main() -> int:
     )
     parser.add_argument("--fail-fast", action="store_true")
     parser.add_argument("--json", action="store_true")
+    parser.add_argument(
+        "--reuse-build",
+        action="store_true",
+        help=(
+            "compare existing objects without building; diagnostic only and "
+            "not sufficient for an aggregate exact-state claim"
+        ),
+    )
     parser.add_argument(
         "--target", type=Path, default=ROOT / "resources" / "th08.exe"
     )
@@ -104,9 +115,45 @@ def main() -> int:
         selected.sort(key=lambda unit: (int(unit["target_address"]), unit["name"]))
         if not selected:
             raise ValueError("selection contains no comparison units")
-        comparator = load_comparator()
         target = args.target.expanduser().resolve()
-    except (OSError, KeyError, TypeError, ValueError, RuntimeError, tomllib.TOMLDecodeError) as exc:
+        if not args.reuse_build:
+            build_command = [
+                sys.executable,
+                "scripts/build.py",
+                "--build-type=objdiffbuild",
+            ]
+            if args.all:
+                build_command.append("--fresh")
+            else:
+                build_command.extend(sorted({str(unit["object"]) for unit in selected}))
+            print(
+                "exact-unit batch: "
+                + ("cold-building all configured objects" if args.all else "building selected objects"),
+                file=sys.stderr if args.json else sys.stdout,
+                flush=True,
+            )
+            subprocess.run(
+                build_command,
+                cwd=ROOT,
+                check=True,
+                stdout=sys.stderr if args.json else None,
+            )
+        elif args.all:
+            print(
+                "warning: --reuse-build skips cold-build attestation; "
+                "do not publish aggregate exact totals from this run",
+                file=sys.stderr,
+            )
+        comparator = load_comparator()
+    except (
+        OSError,
+        KeyError,
+        TypeError,
+        ValueError,
+        RuntimeError,
+        subprocess.CalledProcessError,
+        tomllib.TOMLDecodeError,
+    ) as exc:
         print(f"error: exact-unit batch: {exc}")
         return 1
 
@@ -130,6 +177,11 @@ def main() -> int:
     failures = [report for report in reports if report.get("result") != "exact"]
     payload = {
         "result": "exact" if not failures and len(reports) == len(selected) else "failed",
+        "build": (
+            "reused"
+            if args.reuse_build
+            else ("cold" if args.all else "incremental")
+        ),
         "selected": len(selected),
         "checked": len(reports),
         "exact": len(reports) - len(failures),

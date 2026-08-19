@@ -180,12 +180,27 @@ declared relocations. It does not prove the original object partition, adjacent
 functions, data layout, or a repository-wide percentage. Update shared
 mapping/match manifests and published status only in a reviewed coherent commit.
 
+Before publishing repository-wide authored totals, cold-build and replay the
+entire accepted ledger:
+
+```bash
+python3 scripts/analysis/verify-exact-units.py --all --json \
+  > build/accepted-unit-replay.json
+```
+
+`--all` is cold by default: it regenerates the objdiff graph, cleans only
+Ninja-declared outputs, builds every configured comparison object with one job,
+and then replays accepted units. `--reuse-build` is a non-attesting diagnostic
+shortcut. A focused exact result may update its own row only after the affected
+object's accepted units pass; aggregate progress requires the cold full replay.
+
 Do not force bytes with naked assembly, copied code arrays, arbitrary padding,
 fake types, ABI lies, empty behavior, or target patches. Run only one Wine/VC7
 build at a time. End with:
 
 ```bash
 python3 scripts/validate-tracking.py --require-target
+python3 scripts/analysis/verify-exact-units.py --all
 python3 scripts/ci.py
 python3 scripts/progress.py --check
 git diff --check

@@ -62,7 +62,6 @@ address,name,size,status,match_percent,unit,evidence
 0x004068E0,th08::AnmVmBase::Initialize,95,matching,100.00,anm-vm-base-initialize,python3 scripts/compare-function.py anm-vm-base-initialize --json
 0x004066E0,th08::AnmVmBase::IsVisible,23,matching,100.00,anm-vm-base-is-visible,python3 scripts/compare-function.py anm-vm-base-is-visible --json
 0x00406700,th08::AnmVm::ClearVisible,32,matching,100.00,anm-vm-clear-visible,python3 scripts/compare-function.py anm-vm-clear-visible --json
-0x0040EC00,th08::AnmVm::SetZRotation,43,matching,100.00,anm-vm-set-z-rotation,python3 scripts/compare-function.py anm-vm-set-z-rotation --json
 0x0040B9B0,th08::AnmManager::ClearBlendMode,21,matching,100.00,anm-manager-clear-blend-mode,python3 scripts/compare-function.py anm-manager-clear-blend-mode --json
 0x0040B9D0,th08::AnmManager::ClearColorOp,21,matching,100.00,anm-manager-clear-color-op,python3 scripts/compare-function.py anm-manager-clear-color-op --json
 0x0040B9F0,th08::AnmManager::ClearVertexShader,21,matching,100.00,anm-manager-clear-vertex-shader,python3 scripts/compare-function.py anm-manager-clear-vertex-shader --json
@@ -142,7 +141,6 @@ address,name,size,status,match_percent,unit,evidence
 0x0043EF10,th08::GameErrorContext::GameErrorContext,48,matching,100.00,global-exact-0043ef10,python3 scripts/compare-function.py global-exact-0043ef10 --json
 0x0043EF70,th08::Supervisor::EnterCriticalSectionWrapper,63,matching,100.00,global-exact-0043ef70,python3 scripts/compare-function.py global-exact-0043ef70 --json
 0x0043EFB0,th08::Supervisor::LeaveCriticalSectionWrapper,63,matching,100.00,global-exact-0043efb0,python3 scripts/compare-function.py global-exact-0043efb0 --json
-0x00406580,th08::Supervisor::IsFogDisabled,26,matching,100.00,main-exact-00406580,python3 scripts/compare-function.py main-exact-00406580 --json
 0x00441E70,th08::GameWindow::Render,482,matching,100.00,main-exact-00441e70,python3 scripts/compare-function.py main-exact-00441e70 --json
 0x00442060,th08::GameWindow::Present,295,matching,100.00,main-exact-00442060,python3 scripts/compare-function.py main-exact-00442060 --json
 0x00442190,th08::GameWindow::GetTimestamp,112,matching,100.00,main-exact-00442190,python3 scripts/compare-function.py main-exact-00442190 --json
@@ -321,7 +319,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00465860,th08::AnmManager::ReadAnmEntries,473,matching,100.00,anm-manager-unblocked-exact-00465860,python3 scripts/compare-function.py anm-manager-unblocked-exact-00465860 --json
 0x00465A40,th08::AnmManager::PreloadAnm,115,matching,100.00,anm-manager-unblocked-exact-00465a40,python3 scripts/compare-function.py anm-manager-unblocked-exact-00465a40 --json
 0x00465BA0,th08::AnmManager::PostloadAnmEntry,284,matching,100.00,anm-manager-unblocked-exact-00465ba0,python3 scripts/compare-function.py anm-manager-unblocked-exact-00465ba0 --json
-0x00465CC0,th08::AnmManager::LoadTextureData,829,matching,100.00,anm-manager-unblocked-exact-00465cc0,python3 scripts/compare-function.py anm-manager-unblocked-exact-00465cc0 --json
 0x004667C0,th08::AnmManager::LoadSurface,670,matching,100.00,anm-manager-unblocked-exact-004667c0,python3 scripts/compare-function.py anm-manager-unblocked-exact-004667c0 --json
 0x00453CD1,th08::ResultScreen::GetStageName,41,matching,100.00,result-screen-roi-exact-00453cd1,python3 scripts/compare-function.py result-screen-roi-exact-00453cd1 --json
 0x00455F6B,th08::ResultScreen::HandleSpellCardScreen,691,matching,100.00,result-screen-roi-exact-00455f6b,python3 scripts/compare-function.py result-screen-roi-exact-00455f6b --json
@@ -329,7 +326,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00456938,th08::ResultScreen::FormatDate,55,matching,100.00,result-screen-roi-exact-00456938,python3 scripts/compare-function.py result-screen-roi-exact-00456938 --json
 0x0045696F,th08::ResultScreen::HandleReplaySaveKeyboard,3699,matching,100.00,result-screen-roi-exact-0045696f,python3 scripts/compare-function.py result-screen-roi-exact-0045696f --json
 0x004578AA,th08::ResultScreen::HandleOtherStatsScreen,1366,matching,100.00,result-screen-roi-exact-004578aa,python3 scripts/compare-function.py result-screen-roi-exact-004578aa --json
-0x0045964D,th08::ResultScreen::AddedCallback,2437,matching,100.00,result-screen-roi-exact-0045964d,python3 scripts/compare-function.py result-screen-roi-exact-0045964d --json
 0x00421DD0,th08::utils::DebugPrint,5,matching,100.00,utils-remaining-exact-00421dd0,python3 scripts/compare-function.py utils-remaining-exact-00421dd0 --json
 0x00437CDD,th08::utils::GuiDebugPrint,5,matching,100.00,utils-remaining-exact-00437cdd,python3 scripts/compare-function.py utils-remaining-exact-00437cdd --json
 0x0045C6B0,th08::SoundPlayer::GetFmtIndexByName,523,matching,100.00,sound-player-roi-exact-0045c6b0,python3 scripts/compare-function.py sound-player-roi-exact-0045c6b0 --json
@@ -360,7 +356,6 @@ address,name,size,status,match_percent,unit,evidence
 0x0045E8A0,th08::AnmVm::GetIntVarPtr,139,matching,100.00,anm-vm-accessor-tail-exact-0045e8a0,python3 scripts/compare-function.py anm-vm-accessor-tail-exact-0045e8a0 --json
 0x00439A2E,th08::GameManager::CalcAntiTamperChecksum,151,matching,100.00,game-manager-roi-exact-00439a2e,python3 scripts/compare-function.py game-manager-roi-exact-00439a2e --json
 0x00439AC5,th08::GameManager::CalcChecksum,100,matching,100.00,game-manager-roi-exact-00439ac5,python3 scripts/compare-function.py game-manager-roi-exact-00439ac5 --json
-0x00439B29,th08::GameManager::CollectExtend,158,matching,100.00,game-manager-roi-exact-00439b29,python3 scripts/compare-function.py game-manager-roi-exact-00439b29 --json
 0x0043B984,th08::GameManager::InitializeAntiTamper,605,matching,100.00,game-manager-roi-exact-0043b984,python3 scripts/compare-function.py game-manager-roi-exact-0043b984 --json
 0x0043BFC3,th08::GameManager::IncreaseSubrank,124,matching,100.00,game-manager-roi-exact-0043bfc3,python3 scripts/compare-function.py game-manager-roi-exact-0043bfc3 --json
 0x0043C03F,th08::GameManager::DecreaseSubrank,124,matching,100.00,game-manager-roi-exact-0043c03f,python3 scripts/compare-function.py game-manager-roi-exact-0043c03f --json
@@ -392,16 +387,13 @@ address,name,size,status,match_percent,unit,evidence
 0x0047030B,th08::TitleScreen::MoveCursorVertical,281,matching,100.00,title-screen-roi-exact-0047030b,python3 scripts/compare-function.py title-screen-roi-exact-0047030b --json
 0x00470424,th08::TitleScreen::MoveCursorHorizontal,265,matching,100.00,title-screen-roi-exact-00470424,python3 scripts/compare-function.py title-screen-roi-exact-00470424 --json
 0x0047087F,th08::TitleScreen::OnDraw,493,matching,100.00,title-screen-roi-exact-0047087f,python3 scripts/compare-function.py title-screen-roi-exact-0047087f --json
-0x00470A6C,th08::TitleScreen::ActualAddedCallback,873,matching,100.00,title-screen-roi-exact-00470a6c,python3 scripts/compare-function.py title-screen-roi-exact-00470a6c --json
 0x00470DD5,th08::Supervisor::ResetUnknownStuff,59,matching,100.00,title-screen-roi-exact-00470dd5,python3 scripts/compare-function.py title-screen-roi-exact-00470dd5 --json
-0x00470E10,th08::TitleScreen::TitleSetupThread,881,matching,100.00,title-screen-roi-exact-00470e10,python3 scripts/compare-function.py title-screen-roi-exact-00470e10 --json
 0x00471181,th08::TitleScreen::DisplayInfoImage,639,matching,100.00,title-screen-roi-exact-00471181,python3 scripts/compare-function.py title-screen-roi-exact-00471181 --json
 0x00471400,th08::TitleScreen::Release,109,matching,100.00,title-screen-roi-exact-00471400,python3 scripts/compare-function.py title-screen-roi-exact-00471400 --json
 0x00471586,th08::TitleScreen::TitleScreen,203,matching,100.00,title-screen-roi-exact-00471586,python3 scripts/compare-function.py title-screen-roi-exact-00471586 --json
 0x00471651,th08::TitleScreen::AddedCallback,17,matching,100.00,title-screen-roi-exact-00471651,python3 scripts/compare-function.py title-screen-roi-exact-00471651 --json
 0x00471662,th08::TitleScreen::DeletedCallback,125,matching,100.00,title-screen-roi-exact-00471662,python3 scripts/compare-function.py title-screen-roi-exact-00471662 --json
 0x00448A65,th08::MusicRoom::CheckInputEnable,177,matching,100.00,music-room-roi-exact-00448a65,python3 scripts/compare-function.py music-room-roi-exact-00448a65 --json
-0x00448B16,th08::MusicRoom::ProcessInput,1854,matching,100.00,music-room-roi-exact-00448b16,python3 scripts/compare-function.py music-room-roi-exact-00448b16 --json
 0x00449331,th08::MusicRoom::MusicRoom,104,matching,100.00,music-room-roi-exact-00449331,python3 scripts/compare-function.py music-room-roi-exact-00449331 --json
 0x00449399,th08::MusicRoom::OnUpdate,238,matching,100.00,music-room-roi-exact-00449399,python3 scripts/compare-function.py music-room-roi-exact-00449399 --json
 0x00449487,th08::MusicRoom::OnDraw,648,matching,100.00,music-room-roi-exact-00449487,python3 scripts/compare-function.py music-room-roi-exact-00449487 --json
@@ -475,11 +467,9 @@ address,name,size,status,match_percent,unit,evidence
 0x0040B900,th08::IsDisableResourceReload,10,matching,100.00,background-resource-reload-disabled,python3 scripts/compare-function.py background-resource-reload-disabled --json
 0x00409C20,th08::Background::DeletedCallback,122,matching,100.00,background-deleted-callback,python3 scripts/compare-function.py background-deleted-callback --json
 0x00405E10,th08::AsciiManager::DrawPercentage,1803,matching,100.00,ascii-manager-draw-percentage,python3 scripts/compare-function.py ascii-manager-draw-percentage --json
-0x00405420,th08::AsciiManager::OnDrawHighPrioImpl,2538,matching,100.00,ascii-manager-on-draw-high-prio-impl,python3 scripts/compare-function.py ascii-manager-on-draw-high-prio-impl --json
 0x004584B0,th08::ResultScreen::OnUpdate,424,matching,100.00,result-screen-on-update,python3 scripts/compare-function.py result-screen-on-update --json
 0x004586B4,th08::ResultScreen::OnDraw,3993,matching,100.00,result-screen-on-draw,python3 scripts/compare-function.py result-screen-on-draw --json
 0x00402450,th08::AsciiManager::Reset,426,matching,100.00,accepted-exact-00402450,python3 scripts/compare-function.py accepted-exact-00402450 --json
-0x00402600,th08::AsciiManager::InitializeVms,372,matching,100.00,accepted-exact-00402600,python3 scripts/compare-function.py accepted-exact-00402600 --json
 0x00403200,th08::AsciiManager::CreateScorePopup,295,matching,100.00,accepted-exact-00403200,python3 scripts/compare-function.py accepted-exact-00403200 --json
 0x00403330,th08::AsciiManager::CreatePlayerPointPopup,297,matching,100.00,accepted-exact-00403330,python3 scripts/compare-function.py accepted-exact-00403330 --json
 0x00403460,th08::AsciiManager::CreateTimePopup,411,matching,100.00,accepted-exact-00403460,python3 scripts/compare-function.py accepted-exact-00403460 --json
@@ -512,7 +502,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00463210,th08::AnmManager::Draw2D,600,matching,100.00,accepted-reccmp-exact-00463210,python3 scripts/compare-function.py accepted-reccmp-exact-00463210 --json
 0x00406720,th08::AnmVm::AnmVm,146,matching,100.00,manual-comdat-exact-00406720,python3 scripts/compare-function.py manual-comdat-exact-00406720 --json
 0x004068A0,th08::AnmLoaded::InitializeAndSetSprite,49,matching,100.00,manual-comdat-exact-004068a0,python3 scripts/compare-function.py manual-comdat-exact-004068a0 --json
-0x004069F0,th08::AnmLoaded::SetAndExecuteScriptIdx,64,matching,100.00,manual-comdat-exact-004069f0,python3 scripts/compare-function.py manual-comdat-exact-004069f0 --json
 0x0040B910,th08::AnmLoaded::ExecuteAnmIdx,152,matching,100.00,manual-comdat-exact-0040b910,python3 scripts/compare-function.py manual-comdat-exact-0040b910 --json
 0x0040BA10,th08::AnmManager::ClearTexture,24,matching,100.00,manual-comdat-exact-0040ba10,python3 scripts/compare-function.py manual-comdat-exact-0040ba10 --json
 0x0040D390,th08::Rng::GetRandomF32InRange,24,matching,100.00,manual-comdat-exact-0040d390,python3 scripts/compare-function.py manual-comdat-exact-0040d390 --json
@@ -529,10 +518,8 @@ address,name,size,status,match_percent,unit,evidence
 0x00406C50,th08::SoundPlayer::UnPause,28,matching,100.00,soundplayer-command-exact-00406c50,python3 scripts/compare-function.py soundplayer-command-exact-00406c50 --json
 0x0045D790,th08::SoundPlayer::ProcessQueues,2358,matching,100.00,soundplayer-process-queues-exact-0045d790,python3 scripts/compare-function.py soundplayer-process-queues-exact-0045d790 --json
 0x00428B80,th08::Ending::ParseEndFile,2428,matching,100.00,accepted-source-exact-00428b80,python3 scripts/compare-function.py accepted-source-exact-00428b80 --json
-0x0046F5CB,th08::TitleScreen::DrawSpellStageSelect,1940,matching,100.00,accepted-source-exact-0046f5cb,python3 scripts/compare-function.py accepted-source-exact-0046f5cb --json
 0x00457E00,th08::ResultScreen::DrawFinalStats,1184,matching,100.00,accepted-source-exact-00457e00,python3 scripts/compare-function.py accepted-source-exact-00457e00 --json
 0x0046EF8D,th08::TitleScreen::DrawReplayMenu,1180,matching,100.00,accepted-source-exact-0046ef8d,python3 scripts/compare-function.py accepted-source-exact-0046ef8d --json
-0x0046FFC0,th08::TitleScreen::DrawSpellCardSelect,843,matching,100.00,accepted-source-exact-0046ffc0,python3 scripts/compare-function.py accepted-source-exact-0046ffc0 --json
 0x0043F9C8,th08::TextHelper::RenderTextToTextureBold,801,matching,100.00,accepted-source-exact-0043f9c8,python3 scripts/compare-function.py accepted-source-exact-0043f9c8 --json
 0x0043FCE9,th08::TextHelper::RenderTextToTexture,793,matching,100.00,accepted-source-exact-0043fce9,python3 scripts/compare-function.py accepted-source-exact-0043fce9 --json
 0x0045C190,th08::SoundPlayer::InitializeDSound,746,matching,100.00,accepted-source-exact-0045c190,python3 scripts/compare-function.py accepted-source-exact-0045c190 --json
@@ -650,7 +637,6 @@ address,name,size,status,match_percent,unit,evidence
 0x00428310,th08::FUN_00428310,411,matching,100.00,effect-fun-00428310,python3 scripts/compare-function.py effect-fun-00428310 --json
 0x0044748F,th08::Supervisor::TakeSnapshot,725,matching,100.00,supervisor-take-snapshot,python3 scripts/compare-function.py supervisor-take-snapshot --json
 0x00446A37,th08::Supervisor::SetupDInput,656,matching,100.00,supervisor-setup-dinput,python3 scripts/compare-function.py supervisor-setup-dinput --json
-0x0044C390,th08::Player::OnUpdate,529,matching,100.00,player-onupdate,python3 scripts/compare-function.py player-onupdate --json
 0x0042F360,th08::BulletManager::Initialize,177,matching,100.00,bullet-manager-initialize,python3 scripts/compare-function.py bullet-manager-initialize --json
 0x0042F420,th08::BulletManager::BulletManager,117,matching,100.00,bullet-manager-constructor,python3 scripts/compare-function.py bullet-manager-constructor --json
 0x0042F4A0,th08::BulletTypeSprites::BulletTypeSprites,92,matching,100.00,bullet-type-sprites-constructor,python3 scripts/compare-function.py bullet-type-sprites-constructor --json

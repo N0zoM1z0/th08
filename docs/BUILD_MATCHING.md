@@ -836,3 +836,47 @@ This corpus attests the natural VC7 emissions for ResultScreen/AnmManager/MidiOu
 - In the inlined stage-clear helper, keep source order `difficultyBits & ZUN_BIT(stage)`. VC7 evaluates the right operand first, so the target starts with `xor/inc/shl` for the stage mask before loading the clear-data word. Reversing the `&` operands flips evaluation order even though the value is identical.
 - The completion-status third condition is target-proven as five independent OR arms: Easy, Normal, Hard, Lunatic clear, **or `cursor > 3`**. The earlier reconstructed `Lunatic && cursor > 3` precedence was semantically wrong.
 - Reuse the low-level `InitializeTitleVmAndSetSprite` source shape instead of `AnmLoaded::InitializeAndSetSprite`; four lexical branches then naturally allocate the target VM/AnmLoaded work homes and produce the exact 0x38 frame.
+
+### Aggregate exact state requires a cold-build replay
+
+Scope: the complete authored exact ledger and every object named by
+`config/match-units.toml`.
+
+Observed: on 2026-08-19, replaying 1,105 historically accepted rows from a cold
+VC7 build exposed 14 units that no longer reproduced. The old aggregate path
+also omitted 23 configured reimplementation objects unless they were built by
+hand. Focused comparisons had been run against objects and a PCH produced at
+different repository states, so their individual historical results did not
+establish a current aggregate result.
+
+Inference: a focused `exact` remains evidence for that function and that object
+state, but aggregate progress is invalidated by an untested shared header,
+layout, compiler-flag, PCH, or object-graph change. A successful normal link
+does not fill this evidence gap.
+
+Working shape: `configure.py` derives the aggregate `objdiff` dependencies from
+both `objdiff.json` and every object in `match-units.toml`.
+`verify-exact-units.py --all` then regenerates that graph, asks Ninja to clean
+its declared outputs, builds serially, and replays only rows accepted by
+`matches.csv`.
+
+Rejected alternative: reusing `build/`, relying on normal-build objects, or
+running aggregate replay only after an agent manually notices missing objects.
+Those paths are useful for diagnosis but cannot publish repository-wide exact
+totals.
+
+Reproduce:
+
+```bash
+python3 scripts/analysis/verify-exact-units.py --all --json \
+  > build/accepted-unit-replay.json
+```
+
+Result: after removing the 14 unreproducible claims, the cold build and replay
+passed 1,091 / 1,091 accepted units. `--reuse-build` is explicitly diagnostic.
+Public GitHub Actions cannot perform this attestation because the target and
+pinned local VC7 environment are private; it remains a required local gate.
+
+Generalization limit: this establishes current function-level authored replay
+only. It does not prove original object partition, linked-image layout,
+target-linked libraries, resources, or complete-PE identity.

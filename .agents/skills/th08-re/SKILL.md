@@ -66,7 +66,10 @@ image base `0x00400000`, entry `0x004A619E`, and `.text`
    TU/profile, as with `GameManager::SetYoukaiGauge` in `Player.obj`.
 6. Treat shared layouts, canonical mapping names, `config/implemented.csv`, and
    `config/match-units.toml` as high-risk changes. Re-run every affected exact
-   unit before committing them.
+   unit before committing them. Before publishing aggregate totals after a
+   shared header/layout/compiler/object-graph change, run
+   `python3 scripts/analysis/verify-exact-units.py --all`; its cold build is
+   part of the evidence, and `--reuse-build` is not sufficient.
 7. Use `$th08-matching` for the focused VC7 build and strict comparison.
 
 When Ghidra-backed original objects are needed and Ghidra is configured, use

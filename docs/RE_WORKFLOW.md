@@ -108,10 +108,13 @@ full canonical byte comparison.
 
 ## Current phase selection
 
-Authored source is present for the complete authored inventory and all but two
-authored functions have accepted exact units. Those two near matches are
-deliberately deferred in `docs/RE_HANDOFF.md`; do not restart blind expression
-matrices for them.
+Authored source is present for the complete authored inventory. A 2026-08-19
+cold-build replay invalidated 14 historical accepted rows that no longer
+reproduced; 1,091 accepted units remain cold-reproducible. Together with two
+previously deferred near matches, 16 authored functions are currently outside
+the accepted exact ledger. Their configured units remain available for later
+diagnosis in `config/match-units.toml`; see `docs/RE_HANDOFF.md` for the bounded
+list. Do not treat a configured unit as an accepted result.
 
 The next primary lane is target-linked library/runtime recovery:
 
@@ -129,6 +132,18 @@ The next primary lane is target-linked library/runtime recovery:
 
 `3rdparty/Detours` supports the optional reconstruction DLL and is not code from
 the original target. Do not spend target-matching effort on that submodule.
+
+Before changing aggregate exact totals, run:
+
+```bash
+python3 scripts/analysis/verify-exact-units.py --all --json \
+  > build/accepted-unit-replay.json
+```
+
+`--all` regenerates the objdiff graph, cleans Ninja-declared outputs, builds all
+configured objects serially, and then replays the accepted ledger. A run with
+`--reuse-build`, a normal link, or a focused object comparison cannot attest
+repository-wide exact totals.
 
 ## Single-session checkpoint
 
