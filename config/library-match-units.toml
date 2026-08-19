@@ -2210,3 +2210,23 @@ offset = 0xA3
 type = "REL32"
 symbol = "?CatchIt@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@PBU_s_HandlerType@@PBU_s_CatchableType@@PBU_s_TryBlockMapEntry@@H1E@Z"
 target_base = 0x004AA607
+
+[[units]]
+name = "crt-jump-to-continuation"
+target_address = 0x004A43E2
+body_size = 0x2B
+compare_size = 0x30
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/trnsctrl.obj"
+symbol = "?_JumpToContinuation@@YGXPAXPAUEHRegistrationNode@@@Z"
+section_offset = 0x0
+section_size = 0x30
+
+[[units]]
+name = "crt-call-member-function1"
+target_address = 0x004A4412
+body_size = 0x7
+compare_size = 0x7
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/trnsctrl.obj"
+symbol = "?_CallMemberFunction1@@YGXPAX00@Z"

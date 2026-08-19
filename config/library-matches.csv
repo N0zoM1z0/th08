@@ -73,3 +73,5 @@ address,name,size,status,unit,evidence
 0x004AA282,__DestructExceptionObject,69,matching,crt-destruct-exception-object,python3 scripts/compare-library.py crt-destruct-exception-object --json
 0x004AA607,CatchIt,103,matching,crt-catch-it,python3 scripts/compare-library.py crt-catch-it --json
 0x004AA66E,FindHandlerForForeignException,192,matching,crt-find-handler-foreign,python3 scripts/compare-library.py crt-find-handler-foreign --json
+0x004A43E2,JumpToContinuation,43,matching,crt-jump-to-continuation,python3 scripts/compare-library.py crt-jump-to-continuation --json
+0x004A4412,CallMemberFunction1,7,matching,crt-call-member-function1,python3 scripts/compare-library.py crt-call-member-function1 --json

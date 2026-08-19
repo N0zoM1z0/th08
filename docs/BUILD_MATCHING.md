@@ -1032,3 +1032,19 @@ without those explicit fields retain the stricter whole-section ownership rule.
   `0x71` bytes and fill the target interval between `__CxxFrameHandler` and
   `_GetRangeOfTrysToCheck` without gaps. Add the missing row only after archive
   symbol, target extent, and relocation replay all agree.
+
+### Identical helper COMDATs can collapse to one linked target copy
+
+- Do not create multiple target rows merely because a static archive defines
+  multiple named COMDAT helpers. VC7 `trnsctrl.obj` defines
+  `_CallMemberFunction0`, `_CallMemberFunction1`, and `_CallMemberFunction2` as
+  three distinct symbols whose sections are all the same seven bytes
+  (`58 59 87 04 24 FF E0`). TH08 contains one linked copy at `0x004A4412`.
+  Preserve the single target range and record the archive alias fact; exact
+  acceptance may use one stable symbol owner without pretending the executable
+  contains three separate bodies.
+- The five bytes immediately before that helper are not another member-call
+  function: `_JumpToContinuation @ 0x004A43E2` has a `0x2B` main-body extent
+  ending at its indirect jump, while its VC7 function-definition section is
+  `0x30` and includes the associated `pop ebx; leave; ret 8` tail. Compare all
+  `0x30` bytes but count only the `0x2B` mapped body.
