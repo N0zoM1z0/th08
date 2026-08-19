@@ -1217,3 +1217,13 @@ without those explicit fields retain the stricter whole-section ownership rule.
 
 - `initsect.obj` owns `_RTC_Initialize @ 0x004ACBFE` and `_RTC_Terminate @ 0x004ACC42`, each as a 0x44-byte function-definition section with five relocations.  The imported inventory truncated Initialize to 0x3D and omitted Terminate entirely, even though target control flow has clean `ret` boundaries at 0x004ACC41 and 0x004ACC85.
 - When an archive relocation points into an apparently unmapped gap, inspect the exact member before assuming the target address is data or an internal label.  Here the archive and target establish a missing public runtime function, so add a new library row rather than folding it into a neighbor.
+### Distinguish stdio jump-table tails from genuinely truncated main bodies
+
+- `_output @ 0x004A74F9` returns after a 0x775-byte main body.  `output.obj`
+  continues for 0x20 bytes with a relocation-bearing local-label jump table, so
+  accept `body_size = 0x775` and `compare_size = 0x795`.
+- `_input @ 0x004AB460` is different: the imported 0xA70 extent cuts off live
+  parsing/error-return control flow.  The target reaches its return at
+  `0x004ABF07`; `input.obj` defines exactly 0xAA8 bytes and the next mapped
+  function starts at `0x004ABF08`.  Repair the body to 0xAA8 rather than
+  classifying the final 0x38 bytes as associated data.

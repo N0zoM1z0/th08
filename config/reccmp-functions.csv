@@ -1912,7 +1912,7 @@ _mbctoupper,0x4ab386,library
 report_failure,0x4ab40b,library
 FUN_004ab43c,0x4ab43c,library
 _inc,0x4ab44a,library
-FUN_004ab460,0x4ab460,library
+input,0x4ab460,library
 FUN_004abf08,0x4abf08,library
 FUN_004abf3d,0x4abf3d,library
 FUN_004abfa0,0x4abfa0,library

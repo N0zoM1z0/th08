@@ -5919,3 +5919,545 @@ offset = 0x3F
 type = "REL32"
 symbol = "__SEH_epilog"
 target_base = 0x004A6EB3
+
+[[units]]
+name = "crt-flsbuf"
+target_address = 0x004A7352
+body_size = 0x119
+compare_size = 0x119
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/_flsbuf.obj"
+symbol = "__flsbuf"
+[[units.relocations]]
+offset = 0x55
+type = "DIR32"
+symbol = "__iob"
+target_base = 0x004CC700
+[[units.relocations]]
+offset = 0x5D
+type = "DIR32"
+symbol = "__iob"
+target_base = 0x004CC700
+[[units.relocations]]
+offset = 0x65
+type = "REL32"
+symbol = "__isatty"
+target_base = 0x004AF433
+[[units.relocations]]
+offset = 0x70
+type = "REL32"
+symbol = "__getbuf"
+target_base = 0x004AF3EF
+[[units.relocations]]
+offset = 0x99
+type = "REL32"
+symbol = "__write"
+target_base = 0x004AF344
+[[units.relocations]]
+offset = 0xAF
+type = "DIR32"
+symbol = "___pioinfo"
+target_base = 0x018D9700
+[[units.relocations]]
+offset = 0xC1
+type = "DIR32"
+symbol = "___badioinfo"
+target_base = 0x004CC508
+[[units.relocations]]
+offset = 0xD1
+type = "REL32"
+symbol = "__lseek"
+target_base = 0x004AF0F4
+[[units.relocations]]
+offset = 0xEC
+type = "REL32"
+symbol = "__write"
+target_base = 0x004AF344
+
+[[units]]
+name = "crt-output"
+target_address = 0x004A74F9
+body_size = 0x775
+compare_size = 0x795
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/output.obj"
+symbol = "__output"
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
+[[units.relocations]]
+offset = 0x56
+type = "DIR32"
+symbol = "___lookuptable"
+target_base = 0x004BD9A0
+[[units.relocations]]
+offset = 0x65
+type = "DIR32"
+symbol = "___lookuptable"
+target_base = 0x004BD9A0
+[[units.relocations]]
+offset = 0x7D
+type = "DIR32"
+symbol = "$L20575"
+target_base = 0x004A7C6E
+[[units.relocations]]
+offset = 0x201
+type = "DIR32"
+symbol = "__pctype"
+target_base = 0x004CC3E0
+[[units.relocations]]
+offset = 0x21C
+type = "REL32"
+symbol = "_write_char"
+target_base = 0x004A746B
+[[units.relocations]]
+offset = 0x22F
+type = "REL32"
+symbol = "_write_char"
+target_base = 0x004A746B
+[[units.relocations]]
+offset = 0x2AD
+type = "DIR32"
+symbol = "___wnullstring"
+target_base = 0x004CBD0C
+[[units.relocations]]
+offset = 0x318
+type = "REL32"
+symbol = "_wctomb"
+target_base = 0x004AF61E
+[[units.relocations]]
+offset = 0x3C7
+type = "DIR32"
+symbol = "___nullstring"
+target_base = 0x004CBD08
+[[units.relocations]]
+offset = 0x405
+type = "REL32"
+symbol = "_malloc"
+target_base = 0x004A4269
+[[units.relocations]]
+offset = 0x440
+type = "DIR32"
+symbol = "__cfltcvt_tab"
+target_base = 0x004CBCF0
+[[units.relocations]]
+offset = 0x45B
+type = "DIR32"
+symbol = "__cfltcvt_tab"
+target_base = 0x004CBCF0
+[[units.relocations]]
+offset = 0x46C
+type = "DIR32"
+symbol = "__cfltcvt_tab"
+target_base = 0x004CBCF0
+[[units.relocations]]
+offset = 0x480
+type = "REL32"
+symbol = "_strlen"
+target_base = 0x004A4CC0
+[[units.relocations]]
+offset = 0x4E5
+type = "DIR32"
+symbol = "___nullstring"
+target_base = 0x004CBD08
+[[units.relocations]]
+offset = 0x60E
+type = "REL32"
+symbol = "__aulldvrm"
+target_base = 0x004AF650
+[[units.relocations]]
+offset = 0x6A3
+type = "REL32"
+symbol = "_write_multi_char"
+target_base = 0x004A749E
+[[units.relocations]]
+offset = 0x6B7
+type = "REL32"
+symbol = "_write_string"
+target_base = 0x004A74C2
+[[units.relocations]]
+offset = 0x6CE
+type = "REL32"
+symbol = "_write_multi_char"
+target_base = 0x004A749E
+[[units.relocations]]
+offset = 0x6F8
+type = "REL32"
+symbol = "_wctomb"
+target_base = 0x004AF61E
+[[units.relocations]]
+offset = 0x70F
+type = "REL32"
+symbol = "_write_string"
+target_base = 0x004A74C2
+[[units.relocations]]
+offset = 0x726
+type = "REL32"
+symbol = "_write_string"
+target_base = 0x004A74C2
+[[units.relocations]]
+offset = 0x73B
+type = "REL32"
+symbol = "_write_multi_char"
+target_base = 0x004A749E
+[[units.relocations]]
+offset = 0x74C
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0x76F
+type = "REL32"
+symbol = "@__security_check_cookie@4"
+target_base = 0x004AB43C
+[[units.relocations]]
+offset = 0x775
+type = "DIR32"
+symbol = "$NORMAL_STATE$20160"
+target_base = 0x004A76F8
+[[units.relocations]]
+offset = 0x779
+type = "DIR32"
+symbol = "$L20166"
+target_base = 0x004A757A
+[[units.relocations]]
+offset = 0x77D
+type = "DIR32"
+symbol = "$L20167"
+target_base = 0x004A7597
+[[units.relocations]]
+offset = 0x781
+type = "DIR32"
+symbol = "$L20177"
+target_base = 0x004A75E3
+[[units.relocations]]
+offset = 0x785
+type = "DIR32"
+symbol = "$L20181"
+target_base = 0x004A761E
+[[units.relocations]]
+offset = 0x789
+type = "DIR32"
+symbol = "$L20182"
+target_base = 0x004A7627
+[[units.relocations]]
+offset = 0x78D
+type = "DIR32"
+symbol = "$L20186"
+target_base = 0x004A765F
+[[units.relocations]]
+offset = 0x791
+type = "DIR32"
+symbol = "$L20202"
+target_base = 0x004A7731
+
+[[units]]
+name = "crt-input"
+target_address = 0x004AB460
+body_size = 0xAA8
+compare_size = 0xAA8
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/input.obj"
+symbol = "__input"
+[[units.relocations]]
+offset = 0x6
+type = "DIR32"
+symbol = "$T20716"
+target_base = 0x004BE100
+[[units.relocations]]
+offset = 0xB
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0x10
+type = "DIR32"
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
+[[units.relocations]]
+offset = 0x40
+type = "REL32"
+symbol = "_isspace"
+target_base = 0x004A6590
+[[units.relocations]]
+offset = 0x53
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0x5B
+type = "REL32"
+symbol = "_isspace"
+target_base = 0x004A6590
+[[units.relocations]]
+offset = 0x6E
+type = "REL32"
+symbol = "__ungetc_lk"
+target_base = 0x004B0C93
+[[units.relocations]]
+offset = 0x7F
+type = "REL32"
+symbol = "_isspace"
+target_base = 0x004A6590
+[[units.relocations]]
+offset = 0xD0
+type = "REL32"
+symbol = "_isdigit"
+target_base = 0x004A6517
+[[units.relocations]]
+offset = 0x1F0
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0x1F8
+type = "REL32"
+symbol = "_isspace"
+target_base = 0x004A6590
+[[units.relocations]]
+offset = 0x26D
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0x2BB
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0x2F7
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0x302
+type = "REL32"
+symbol = "_isdigit"
+target_base = 0x004A6517
+[[units.relocations]]
+offset = 0x30D
+type = "DIR32"
+symbol = "___decimal_point"
+target_base = 0x004CC6C8
+[[units.relocations]]
+offset = 0x323
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0x32A
+type = "DIR32"
+symbol = "___decimal_point"
+target_base = 0x004CC6C8
+[[units.relocations]]
+offset = 0x349
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0x354
+type = "REL32"
+symbol = "_isdigit"
+target_base = 0x004A6517
+[[units.relocations]]
+offset = 0x381
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0x3BE
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0x3C9
+type = "REL32"
+symbol = "_isdigit"
+target_base = 0x004A6517
+[[units.relocations]]
+offset = 0x3DD
+type = "REL32"
+symbol = "__ungetc_lk"
+target_base = 0x004B0C93
+[[units.relocations]]
+offset = 0x40F
+type = "DIR32"
+symbol = "__cfltcvt_tab"
+target_base = 0x004CBCF0
+[[units.relocations]]
+offset = 0x4C3
+type = "REL32"
+symbol = "__alloca_probe"
+target_base = 0x004A48E0
+[[units.relocations]]
+offset = 0x4DD
+type = "REL32"
+symbol = "__resetstkoflw"
+target_base = 0x004AB1AE
+[[units.relocations]]
+offset = 0x4E4
+type = "REL32"
+symbol = "_malloc"
+target_base = 0x004A4269
+[[units.relocations]]
+offset = 0x513
+type = "REL32"
+symbol = "_memset"
+target_base = 0x004A4920
+[[units.relocations]]
+offset = 0x5C6
+type = "REL32"
+symbol = "__ungetc_lk"
+target_base = 0x004B0C93
+[[units.relocations]]
+offset = 0x5E7
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0x65F
+type = "DIR32"
+symbol = "__pctype"
+target_base = 0x004CC3E0
+[[units.relocations]]
+offset = 0x671
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0x67D
+type = "DIR32"
+symbol = "___mb_cur_max"
+target_base = 0x004CC6C4
+[[units.relocations]]
+offset = 0x690
+type = "REL32"
+symbol = "_mbtowc"
+target_base = 0x004B0DBF
+[[units.relocations]]
+offset = 0x6C2
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0x6DA
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0x71A
+type = "REL32"
+symbol = "__ungetc_lk"
+target_base = 0x004B0C93
+[[units.relocations]]
+offset = 0x72E
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0x76C
+type = "REL32"
+symbol = "__ungetc_lk"
+target_base = 0x004B0C93
+[[units.relocations]]
+offset = 0x7D7
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0x800
+type = "REL32"
+symbol = "_isdigit"
+target_base = 0x004A6517
+[[units.relocations]]
+offset = 0x833
+type = "REL32"
+symbol = "__allmul"
+target_base = 0x004A5130
+[[units.relocations]]
+offset = 0x841
+type = "REL32"
+symbol = "_isxdigit"
+target_base = 0x004A6551
+[[units.relocations]]
+offset = 0x85F
+type = "REL32"
+symbol = "_isdigit"
+target_base = 0x004A6517
+[[units.relocations]]
+offset = 0x89D
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0x8B0
+type = "REL32"
+symbol = "__ungetc_lk"
+target_base = 0x004B0C93
+[[units.relocations]]
+offset = 0x8FB
+type = "REL32"
+symbol = "_isdigit"
+target_base = 0x004A6517
+[[units.relocations]]
+offset = 0x923
+type = "REL32"
+symbol = "_isxdigit"
+target_base = 0x004A6551
+[[units.relocations]]
+offset = 0x932
+type = "REL32"
+symbol = "_isdigit"
+target_base = 0x004A6517
+[[units.relocations]]
+offset = 0x970
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0x983
+type = "REL32"
+symbol = "__ungetc_lk"
+target_base = 0x004B0C93
+[[units.relocations]]
+offset = 0x9F0
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0xA09
+type = "DIR32"
+symbol = "__pctype"
+target_base = 0x004CC3E0
+[[units.relocations]]
+offset = 0xA1B
+type = "REL32"
+symbol = "__inc"
+target_base = 0x004AB44A
+[[units.relocations]]
+offset = 0xA34
+type = "REL32"
+symbol = "__ungetc_lk"
+target_base = 0x004B0C93
+[[units.relocations]]
+offset = 0xA46
+type = "REL32"
+symbol = "__ungetc_lk"
+target_base = 0x004B0C93
+[[units.relocations]]
+offset = 0xA77
+type = "REL32"
+symbol = "_free"
+target_base = 0x004A427B
+[[units.relocations]]
+offset = 0xA9E
+type = "REL32"
+symbol = "@__security_check_cookie@4"
+target_base = 0x004AB43C
+[[units.relocations]]
+offset = 0xAA3
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3

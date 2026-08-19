@@ -1911,7 +1911,7 @@ __mbctoupper,0x4ab386,0x85,__cdecl,,u8,u8
 _report_failure,0x4ab40b,0x31,unknown,,u8
 FUN_004ab43c,0x4ab43c,0xe,unknown,,u8
 __inc,0x4ab44a,0x16,unknown,,u8
-FUN_004ab460,0x4ab460,0xa70,unknown,,u8,u8,u8,u8
+_input,0x4ab460,0xaa8,__cdecl,,u8,u8,u8,u8
 FUN_004abf08,0x4abf08,0x2e,unknown,,u8
 FUN_004abf3d,0x4abf3d,0x57,unknown,,u8
 FUN_004abfa0,0x4abfa0,0x18,unknown,,u8
