@@ -119,13 +119,15 @@ Separate library acceptance infrastructure is now in place:
 - `validate-library.py` is the public CI gate, with `--require-archives` for local
   hash attestation; `library-progress.py` generates `LIBRARY_PROGRESS.md`.
 
-The first bounded library family is now accepted after a post-infrastructure
-canonical replay: **7 / 7 configured units**, **1,145 library body bytes**, all
-with zero target differences after full configured COFF relocation replay.  The
-accepted set is six SSE/SSE2 D3DX normalize helpers plus VC7 `/MT` `operator
-delete`.  Continue by pinning provenance and match units for the remaining VC7
-CRT/runtime, standard-library, D3DX, and compiler-runtime inventory; keep library
-progress separate from authored totals.
+Library acceptance now has **11 / 11 configured units** and **1,482 body bytes**
+after canonical zero-difference replay.  The accepted set contains six SSE/SSE2
+D3DX normalize helpers, VC7 `/MT` `operator delete`, and four isolated zero-
+relocation CRT leaves (`strrchr`, `memset`, `strlen`, `strncmp`).  Shared-section
+CRT members such as `strchr`/`strcat` are intentionally deferred until the
+library comparator can prove a bounded symbol subrange without weakening its
+section-ownership checks.  Continue pinning provenance/match units for remaining
+VC7 CRT/runtime, standard-library, D3DX, and compiler-runtime inventory; keep
+library progress separate from authored totals.
 
 Keep authored `implemented.csv`, `matches.csv`, and authored percentages
 unchanged.  There is intentionally no whole-library scanner until archive
