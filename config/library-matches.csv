@@ -149,3 +149,11 @@ address,name,size,status,unit,evidence
 0x004A7352,_flsbuf,281,matching,crt-flsbuf,python3 scripts/compare-library.py crt-flsbuf --json
 0x004A74F9,output,1909,matching,crt-output,python3 scripts/compare-library.py crt-output --json
 0x004AB460,input,2728,matching,crt-input,python3 scripts/compare-library.py crt-input --json
+0x004AF0F4,_lseek,171,matching,crt-lseek,python3 scripts/compare-library.py crt-lseek --json
+0x004AF344,_write,171,matching,crt-write,python3 scripts/compare-library.py crt-write --json
+0x004B224E,_read,171,matching,crt-read,python3 scripts/compare-library.py crt-read --json
+0x004A746B,write_char,51,matching,crt-write-char,python3 scripts/compare-library.py crt-write-char --json
+0x004A749E,write_multi_char,36,matching,crt-write-multi-char,python3 scripts/compare-library.py crt-write-multi-char --json
+0x004A74C2,write_string,55,matching,crt-write-string,python3 scripts/compare-library.py crt-write-string --json
+0x004AB44A,_inc,22,matching,crt-input-inc,python3 scripts/compare-library.py crt-input-inc --json
+0x004B0C93,_ungetc_lk,108,matching,crt-ungetc-lk,python3 scripts/compare-library.py crt-ungetc-lk --json

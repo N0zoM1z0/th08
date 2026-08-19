@@ -1970,10 +1970,10 @@ __hw_cw,0x4aefaa,0x8e,unknown,,u8
 __control87,0x4af038,0x32,__cdecl,,u8,u8,u8
 __controlfp,0x4af06a,0x16,__cdecl,,u8,u8,u8
 __lseek_lk,0x4af080,0x74,unknown,,u8,u8,u8,u8
-__lseek,0x4af0f4,0xa0,__cdecl,,u8,u8,u8,u8
+__lseek,0x4af0f4,0xab,__cdecl,,u8,u8,u8,u8
 FUN_004af17b,0x4af17b,0x8,unknown,,u8
 FUN_004af19f,0x4af19f,0x1a5,unknown,,u8,u8,u8,u8
-__write,0x4af344,0xa0,__cdecl,,u8,u8,u8,u8
+__write,0x4af344,0xab,__cdecl,,u8,u8,u8,u8
 FUN_004af3cb,0x4af3cb,0x8,unknown,,u8
 __getbuf,0x4af3ef,0x44,__cdecl,,u8,u8
 __isatty,0x4af433,0x2a,__cdecl,,u8,u8
@@ -2009,7 +2009,7 @@ ___crtLCMapStringA,0x4b0656,0x376,__cdecl,,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8
 __security_init_cookie,0x4b0a12,0x56,__cdecl,,u8
 FUN_004b0a68,0x4b0a68,0x140,unknown,,u8,u8,u8
 __filbuf,0x4b0bb2,0xe1,__cdecl,,u8,u8
-FID_conflict:_ungetc,0x4b0c93,0x6c,__cdecl,,u8,u8,u8
+__ungetc_lk,0x4b0c93,0x6c,__cdecl,,u8,u8,u8
 ___mbtowc_mt,0x4b0cff,0xc0,unknown,,u8,u8,u8,u8,u8
 _mbtowc,0x4b0dbf,0x2b,__cdecl,,u8,u8,u8,u8
 ___crtMessageBoxA,0x4b0dea,0xf9,__cdecl,,u8,u8,u8,u8
@@ -2039,7 +2039,7 @@ __stricmp,0x4b1f5f,0x69,__cdecl,,i32,char*,char*
 __mbsnbicoll,0x4b1fc8,0x4e,__cdecl,,u8,u8,u8,u8
 __wtomb_environ,0x4b2016,0x6b,__cdecl,,u8
 FUN_004b2081,0x4b2081,0x1cd,unknown,,u8,u8,u8,u8
-__read,0x4b224e,0xa0,__cdecl,,u8,u8,u8,u8
+__read,0x4b224e,0xab,__cdecl,,u8,u8,u8,u8
 FUN_004b22d5,0x4b22d5,0x8,unknown,,u8
 FUN_004b22f9,0x4b22f9,0x238,unknown,,u8,u8,u8
 FUN_004b2531,0x4b2531,0x8c,unknown,,u8,u8,u8,u8

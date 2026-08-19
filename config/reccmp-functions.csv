@@ -2010,7 +2010,7 @@ __crtLCMapStringA,0x4b0656,library
 _security_init_cookie,0x4b0a12,library
 FUN_004b0a68,0x4b0a68,library
 _filbuf,0x4b0bb2,library
-FID_conflict:_ungetc,0x4b0c93,library
+_ungetc_lk,0x4b0c93,library
 __mbtowc_mt,0x4b0cff,library
 mbtowc,0x4b0dbf,library
 __crtMessageBoxA,0x4b0dea,library

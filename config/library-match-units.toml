@@ -6461,3 +6461,284 @@ offset = 0xAA3
 type = "REL32"
 symbol = "__SEH_epilog"
 target_base = 0x004A6EB3
+
+[[units]]
+name = "crt-lseek"
+target_address = 0x004AF0F4
+body_size = 0xAB
+compare_size = 0xAB
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/lseek.obj"
+symbol = "__lseek"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T20245"
+target_base = 0x004C20D8
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0x11
+type = "DIR32"
+symbol = "__nhandle"
+target_base = 0x018D96E4
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "___pioinfo"
+target_base = 0x018D9700
+[[units.relocations]]
+offset = 0x39
+type = "REL32"
+symbol = "__lock_fhandle"
+target_base = 0x004B1A2B
+[[units.relocations]]
+offset = 0x53
+type = "REL32"
+symbol = "__lseek_lk"
+target_base = 0x004AF080
+[[units.relocations]]
+offset = 0x60
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0x6B
+type = "REL32"
+symbol = "___doserrno"
+target_base = 0x004AAADB
+[[units.relocations]]
+offset = 0x89
+type = "REL32"
+symbol = "__unlock_fhandle"
+target_base = 0x004B1A9E
+[[units.relocations]]
+offset = 0x90
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0x9B
+type = "REL32"
+symbol = "___doserrno"
+target_base = 0x004AAADB
+[[units.relocations]]
+offset = 0xA6
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3
+
+[[units]]
+name = "crt-write"
+target_address = 0x004AF344
+body_size = 0xAB
+compare_size = 0xAB
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/write.obj"
+symbol = "__write"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T19957"
+target_base = 0x004C20E8
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0x11
+type = "DIR32"
+symbol = "__nhandle"
+target_base = 0x018D96E4
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "___pioinfo"
+target_base = 0x018D9700
+[[units.relocations]]
+offset = 0x39
+type = "REL32"
+symbol = "__lock_fhandle"
+target_base = 0x004B1A2B
+[[units.relocations]]
+offset = 0x53
+type = "REL32"
+symbol = "__write_lk"
+target_base = 0x004AF19F
+[[units.relocations]]
+offset = 0x60
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0x6B
+type = "REL32"
+symbol = "___doserrno"
+target_base = 0x004AAADB
+[[units.relocations]]
+offset = 0x89
+type = "REL32"
+symbol = "__unlock_fhandle"
+target_base = 0x004B1A9E
+[[units.relocations]]
+offset = 0x90
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0x9B
+type = "REL32"
+symbol = "___doserrno"
+target_base = 0x004AAADB
+[[units.relocations]]
+offset = 0xA6
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3
+
+[[units]]
+name = "crt-read"
+target_address = 0x004B224E
+body_size = 0xAB
+compare_size = 0xAB
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/read.obj"
+symbol = "__read"
+[[units.relocations]]
+offset = 0x3
+type = "DIR32"
+symbol = "$T19959"
+target_base = 0x004C3C30
+[[units.relocations]]
+offset = 0x8
+type = "REL32"
+symbol = "__SEH_prolog"
+target_base = 0x004A6E78
+[[units.relocations]]
+offset = 0x11
+type = "DIR32"
+symbol = "__nhandle"
+target_base = 0x018D96E4
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "___pioinfo"
+target_base = 0x018D9700
+[[units.relocations]]
+offset = 0x39
+type = "REL32"
+symbol = "__lock_fhandle"
+target_base = 0x004B1A2B
+[[units.relocations]]
+offset = 0x53
+type = "REL32"
+symbol = "__read_lk"
+target_base = 0x004B2081
+[[units.relocations]]
+offset = 0x60
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0x6B
+type = "REL32"
+symbol = "___doserrno"
+target_base = 0x004AAADB
+[[units.relocations]]
+offset = 0x89
+type = "REL32"
+symbol = "__unlock_fhandle"
+target_base = 0x004B1A9E
+[[units.relocations]]
+offset = 0x90
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0x9B
+type = "REL32"
+symbol = "___doserrno"
+target_base = 0x004AAADB
+[[units.relocations]]
+offset = 0xA6
+type = "REL32"
+symbol = "__SEH_epilog"
+target_base = 0x004A6EB3
+
+[[units]]
+name = "crt-write-char"
+target_address = 0x004A746B
+body_size = 0x33
+compare_size = 0x33
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/output.obj"
+symbol = "_write_char"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x22
+type = "REL32"
+symbol = "__flsbuf"
+target_base = 0x004A7352
+
+[[units]]
+name = "crt-write-multi-char"
+target_address = 0x004A749E
+body_size = 0x24
+compare_size = 0x24
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/output.obj"
+symbol = "_write_multi_char"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x12
+type = "REL32"
+symbol = "_write_char"
+target_base = 0x004A746B
+
+[[units]]
+name = "crt-write-string"
+target_address = 0x004A74C2
+body_size = 0x37
+compare_size = 0x37
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/output.obj"
+symbol = "_write_string"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x23
+type = "REL32"
+symbol = "_write_char"
+target_base = 0x004A746B
+
+[[units]]
+name = "crt-input-inc"
+target_address = 0x004AB44A
+body_size = 0x16
+compare_size = 0x16
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/input.obj"
+symbol = "__inc"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x10
+type = "REL32"
+symbol = "__filbuf"
+target_base = 0x004B0BB2
+
+[[units]]
+name = "crt-ungetc-lk"
+target_address = 0x004B0C93
+body_size = 0x6C
+compare_size = 0x6C
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/ungetc.obj"
+symbol = "__ungetc_lk"
+[[units.relocations]]
+offset = 0x26
+type = "REL32"
+symbol = "__getbuf"
+target_base = 0x004AF3EF

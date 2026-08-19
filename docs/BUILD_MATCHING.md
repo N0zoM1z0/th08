@@ -1227,3 +1227,21 @@ without those explicit fields retain the stricter whole-section ownership rule.
   `0x004ABF07`; `input.obj` defines exactly 0xAA8 bytes and the next mapped
   function starts at `0x004ABF08`.  Repair the body to 0xAA8 rather than
   classifying the final 0x38 bytes as associated data.
+
+### Mid-function SEH cleanup funclets do not define parent extents
+
+- `LIBCMT lseek.obj::__lseek @ 0x004AF0F4`, `write.obj::__write @ 0x004AF344`, and `read.obj::__read @ 0x004B224E` each have a 0xAB COFF function-definition extent.  The imported 0xA0 mappings stopped shortly after a nested cleanup funclet, but target control flow continues through errno/doserrno handling and `__SEH_epilog` to the parent return.  All three complete 0xAB ranges replay exactly with 12 relocations each.
+- Keep the existing `mapping-overlaps.csv` nested-funclet rows.  A cleanup funclet reached by an internal SEH call is a separately useful target fact, but it does not truncate the containing CRT wrapper when the parent's CFG resumes afterward.  Repair the parent boundary and preserve the overlap rather than choosing one fact over the other.
+### Stdio wrapper parents may legitimately overlap nested unlock funclets
+
+- `_lseek @ 0x004AF0F4`, `_write @ 0x004AF344`, and `_read @ 0x004B224E`
+  each have a 0xAB VC7 function-definition/body extent.  The imported 0xA0
+  extents stopped before the final error path and SEH epilogue.  Their mapped
+  cleanup starts at `0x004AF17B`, `0x004AF3CB`, and `0x004B22D5` remain valid
+  nested funclet overlaps; repair the parent rather than deleting the child.
+
+
+### Stdio internal helper ownership after parent exactness
+
+- Exact parent `output`/`input` replay can expose small archive-local helpers that are also independently mapped in the target.  `output.obj` owns `write_char @ 0x004A746B`, `write_multi_char @ 0x004A749E`, and `write_string @ 0x004A74C2`; `input.obj` owns `_inc @ 0x004AB44A`.  Their isolated auxless COMDATs replay exactly and may be accepted independently without double-counting any parent extent.
+- `0x004B0C93` was imported as `FID_conflict:_ungetc`, but exact `ungetc.obj::__ungetc_lk` replay fixes the identity to logical `_ungetc_lk`.  Prefer archive-proven internal names over decompiler conflict labels once member identity, extent, and relocations all agree.
