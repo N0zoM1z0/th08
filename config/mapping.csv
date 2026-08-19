@@ -531,7 +531,7 @@ th08::GameManager::AddedCallback,0x43aaf4,0xe3,unknown,,u8
 th08::GameManager::GameplaySetupThread,0x43abd7,0xd5f,__fastcall,,void,void*
 th08::GameManager::InitRankParams,0x43b936,0x4e,__thiscall,,void,GameManager*
 th08::GameManager::InitializeAntiTamper,0x43b984,0x25d,unknown,,u8
-FUN_0043bbe1,0x43bbe1,0x228,unknown,,u8
+FUN_0043bbe1,0x43bbe1,0x228,__fastcall,,i32
 th08::IncrementTruncate,0x43be09,0x23,__fastcall,,void,u32*,i32
 th08::GameManager::DeletedCallback,0x43be2c,0x142,__fastcall,,u32,MidiOutput*
 th08::GameManager::CutChain,0x43bf6e,0x55,unknown,,u8

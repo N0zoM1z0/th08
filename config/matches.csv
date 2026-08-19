@@ -1097,3 +1097,4 @@ address,name,size,status,match_percent,unit,evidence
 0x00450AD0,FUN_00450ad0,372,matching,100.00,player-shot-trail-draw-00450ad0,python3 scripts/compare-function.py player-shot-trail-draw-00450ad0 --json
 0x00450C50,FUN_00450c50,611,matching,100.00,player-shot-script-update-00450c50,python3 scripts/compare-function.py player-shot-script-update-00450c50 --json
 0x00450EE0,FUN_00450ee0,128,matching,100.00,player-shot-effect-tick-00450ee0,python3 scripts/compare-function.py player-shot-effect-tick-00450ee0 --json
+0x0043BBE1,FUN_0043bbe1,552,matching,100.00,game-manager-score-init-0043bbe1,python3 scripts/compare-function.py game-manager-score-init-0043bbe1 --json
