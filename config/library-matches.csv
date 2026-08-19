@@ -24,3 +24,8 @@ address,name,size,status,unit,evidence
 0x004A8211,__sbh_heap_init,72,matching,crt-sbh-heap-init,python3 scripts/compare-library.py crt-sbh-heap-init --json
 0x004A8259,__sbh_find_block,43,matching,crt-sbh-find-block,python3 scripts/compare-library.py crt-sbh-find-block --json
 0x004A8759,__sbh_resize_block,735,matching,crt-sbh-resize-block,python3 scripts/compare-library.py crt-sbh-resize-block --json
+0x004A81C0,_heap_init,81,matching,crt-heap-init,python3 scripts/compare-library.py crt-heap-init --json
+0x004A8284,__sbh_free_block,792,matching,crt-sbh-free-block,python3 scripts/compare-library.py crt-sbh-free-block --json
+0x004A859C,__sbh_alloc_new_region,183,matching,crt-sbh-alloc-new-region,python3 scripts/compare-library.py crt-sbh-alloc-new-region --json
+0x004A8653,__sbh_alloc_new_group,262,matching,crt-sbh-alloc-new-group,python3 scripts/compare-library.py crt-sbh-alloc-new-group --json
+0x004A8A38,__sbh_alloc_block,764,matching,crt-sbh-alloc-block,python3 scripts/compare-library.py crt-sbh-alloc-block --json
