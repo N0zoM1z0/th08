@@ -2731,3 +2731,46 @@ offset = 0x2F4
 type = "DIR32"
 symbol = "TrailDown3"
 target_base = 0x004A5074
+
+[[units]]
+name = "crt-call-catch-block-tail-funclet"
+target_address = 0x004AA427
+body_size = 0x64
+compare_size = 0x64
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/frame.obj"
+symbol = "$L19653"
+allow_tail_local_funclet = true
+owner_symbol = "?CallCatchBlock@@YAPAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PBU_s_FuncInfo@@PAXHK@Z"
+section_offset = 0x143
+section_size = 0x1A7
+[[units.relocations]]
+offset = 0xA
+type = "REL32"
+symbol = "?_FindAndUnlinkFrame@@YAXPAUFrameInfo@@@Z"
+target_base = 0x004A45F9
+[[units.relocations]]
+offset = 0x10
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0x1B
+type = "REL32"
+symbol = "__getptd"
+target_base = 0x004AA067
+[[units.relocations]]
+offset = 0x4C
+type = "REL32"
+symbol = "?IsExceptionObjectToBeDestroyed@@YAHPAX@Z"
+target_base = 0x004A45D8
+[[units.relocations]]
+offset = 0x56
+type = "REL32"
+symbol = "__abnormal_termination"
+target_base = 0x004A47F2
+[[units.relocations]]
+offset = 0x5D
+type = "REL32"
+symbol = "___DestructExceptionObject"
+target_base = 0x004AA282
