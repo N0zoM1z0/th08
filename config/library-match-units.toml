@@ -308,3 +308,80 @@ offset = 0xB
 type = "REL32"
 symbol = "__nh_malloc"
 target_base = 0x004A423D
+
+[[units]]
+name = "crt-sbh-heap-init"
+target_address = 0x004A8211
+body_size = 0x48
+compare_size = 0x48
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/sbheap.obj"
+symbol = "___sbh_heap_init"
+[[units.relocations]]
+offset = 0x9
+type = "DIR32"
+symbol = "__crtheap"
+target_base = 0x018D9824
+[[units.relocations]]
+offset = 0xF
+type = "DIR32"
+symbol = "__imp__HeapAlloc@12"
+target_base = 0x004B4194
+[[units.relocations]]
+offset = 0x16
+type = "DIR32"
+symbol = "___sbh_pHeaderList"
+target_base = 0x018D9810
+[[units.relocations]]
+offset = 0x23
+type = "DIR32"
+symbol = "___sbh_pHeaderDefer"
+target_base = 0x018D9808
+[[units.relocations]]
+offset = 0x2A
+type = "DIR32"
+symbol = "___sbh_cntHeaderList"
+target_base = 0x018D980C
+[[units.relocations]]
+offset = 0x30
+type = "DIR32"
+symbol = "___sbh_pHeaderScan"
+target_base = 0x018D9818
+[[units.relocations]]
+offset = 0x38
+type = "DIR32"
+symbol = "___sbh_threshold"
+target_base = 0x018D9814
+[[units.relocations]]
+offset = 0x3E
+type = "DIR32"
+symbol = "___sbh_sizeHeaderList"
+target_base = 0x018D981C
+
+[[units]]
+name = "crt-sbh-find-block"
+target_address = 0x004A8259
+body_size = 0x2B
+compare_size = 0x2B
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/sbheap.obj"
+symbol = "___sbh_find_block"
+[[units.relocations]]
+offset = 0x1
+type = "DIR32"
+symbol = "___sbh_cntHeaderList"
+target_base = 0x018D980C
+[[units.relocations]]
+offset = 0x9
+type = "DIR32"
+symbol = "___sbh_pHeaderList"
+target_base = 0x018D9810
+
+[[units]]
+name = "crt-sbh-resize-block"
+target_address = 0x004A8759
+body_size = 0x2DF
+compare_size = 0x2DF
+archive = "vc7-libcmt"
+member = "build/intel/mt_obj/sbheap.obj"
+symbol = "___sbh_resize_block"

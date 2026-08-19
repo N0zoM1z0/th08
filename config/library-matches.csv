@@ -21,3 +21,6 @@ address,name,size,status,unit,evidence
 0x004A69C0,_aullshr,31,matching,crt-aullshr,python3 scripts/compare-library.py crt-aullshr --json
 0x004A423D,_nh_malloc,44,matching,crt-nh-malloc,python3 scripts/compare-library.py crt-nh-malloc --json
 0x004A4269,malloc,18,matching,crt-malloc,python3 scripts/compare-library.py crt-malloc --json
+0x004A8211,__sbh_heap_init,72,matching,crt-sbh-heap-init,python3 scripts/compare-library.py crt-sbh-heap-init --json
+0x004A8259,__sbh_find_block,43,matching,crt-sbh-find-block,python3 scripts/compare-library.py crt-sbh-find-block --json
+0x004A8759,__sbh_resize_block,735,matching,crt-sbh-resize-block,python3 scripts/compare-library.py crt-sbh-resize-block --json
