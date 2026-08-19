@@ -933,3 +933,16 @@ target-linked libraries, resources, or complete-PE identity.
   family proves `.data1` bases `0x018DA000` (SSE) and `0x018DA220` (SSE2), plus
   `.data` bases `0x004C9FC0` (Vec4 normalize) and `0x004CA180` (quaternion
   normalize); `operator delete` proves a REL32 target of `_free @ 0x004A427B`.
+
+### Strict bounded symbols inside a shared library COFF section
+
+Some VC7 CRT archive members place more than one externally named function in a
+single `.text` section.  Do not reject those functions merely because their
+symbol is not at section offset zero, and do not solve the problem with an
+arbitrary byte slice.  A library match unit may opt into a bounded shared-
+section comparison only by pinning both `section_offset` and the complete
+`section_size`.  The comparator then requires the configured symbol to begin at
+that exact offset, requires a COFF function-definition auxiliary record whose
+`total_size` equals `compare_size`, bounds every relocation relative to that
+symbol, and rejects any subrange that extends beyond the pinned section.  Units
+without those explicit fields retain the stricter whole-section ownership rule.

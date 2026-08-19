@@ -59,14 +59,27 @@ def pe_bytes_at(data: bytes,address:int,size:int)->bytes:
 
 def compare_member(member: bytes, unit: dict, target_code: bytes) -> dict:
     m,sym,sec=coff_section_for_symbol(member,str(unit["symbol"])); compare_size=int(unit["compare_size"])
-    if sym.value!=0: raise ValueError("library unit symbol must begin at section offset zero")
-    if len(sec.data)!=compare_size: raise ValueError(f"archive section size {len(sec.data):#x} != compare_size {compare_size:#x}")
-    code=bytearray(sec.data)
+    section_offset=int(unit.get("section_offset",0))
+    section_size=int(unit.get("section_size",compare_size))
+    if sym.value!=section_offset:
+        raise ValueError(f"COFF symbol offset {sym.value:#x} != configured section_offset {section_offset:#x}")
+    if len(sec.data)!=section_size:
+        raise ValueError(f"archive section size {len(sec.data):#x} != configured section_size {section_size:#x}")
+    if section_offset or section_size!=compare_size:
+        aux=sym.aux_records[0] if sym.aux_records and hasattr(sym.aux_records[0],"total_size") else None
+        if aux is None:
+            raise ValueError("shared-section library unit requires a COFF function-definition aux record")
+        if int(aux.total_size)!=compare_size:
+            raise ValueError(f"COFF aux extent {int(aux.total_size):#x} != compare_size {compare_size:#x}")
+    if section_offset+compare_size>section_size:
+        raise ValueError("configured library subrange extends beyond archive section")
+    code=bytearray(sec.data[section_offset:section_offset+compare_size])
     actual=[]
     for r in sec.relocations:
-        if 0<=r.virtual_address<compare_size:
+        local_offset=r.virtual_address-section_offset
+        if 0<=local_offset<compare_size:
             ref=m.symbols[r.symbol_table_index].get_name(m.string_table).decode("ascii")
-            actual.append((r.virtual_address,r.type,ref))
+            actual.append((local_offset,r.type,ref))
     expected=[]
     for r in unit.get("relocations",[]): expected.append((int(r["offset"]),RELOC_TYPES[str(r["type"])],str(r["symbol"])))
     if sorted(actual)!=sorted(expected): raise ValueError(f"COFF relocations differ: actual={sorted(actual)!r} expected={sorted(expected)!r}")
