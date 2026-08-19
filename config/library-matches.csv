@@ -178,3 +178,10 @@ address,name,size,status,unit,evidence
 0x004B25BD,_fclose_lk,76,matching,crt-fclose-lk,python3 scripts/compare-library.py crt-fclose-lk --json
 0x004B2D8A,_close_lk,131,matching,crt-close-lk,python3 scripts/compare-library.py crt-close-lk --json
 0x004AF433,_isatty,42,matching,crt-isatty,python3 scripts/compare-library.py crt-isatty --json
+0x004ACDC5,_raise_exc,677,matching,crt-raise-exc,python3 scripts/compare-library.py crt-raise-exc --json
+0x004AD06A,_handle_exc,546,matching,crt-handle-exc,python3 scripts/compare-library.py crt-handle-exc --json
+0x004AD28C,_set_errno,40,matching,crt-set-errno-math,python3 scripts/compare-library.py crt-set-errno-math --json
+0x004AD2B4,_errcode,45,matching,crt-errcode,python3 scripts/compare-library.py crt-errcode --json
+0x004AD2E1,_umatherr,158,matching,crt-umatherr,python3 scripts/compare-library.py crt-umatherr --json
+0x004AD37F,_handle_qnan1,83,matching,crt-handle-qnan1,python3 scripts/compare-library.py crt-handle-qnan1 --json
+0x004AD3D2,_except1,190,matching,crt-except1,python3 scripts/compare-library.py crt-except1 --json

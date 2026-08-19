@@ -7416,3 +7416,286 @@ offset = 0x74
 type = "REL32"
 symbol = "__dosmaperr"
 target_base = 0x004AAAE4
+
+[[units]]
+name = "crt-raise-exc"
+target_address = 0x004ACDC5
+body_size = 0x2A5
+compare_size = 0x2A5
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/fpexcept.obj"
+symbol = "__raise_exc"
+[[units.relocations]]
+offset = 0xDF
+type = "REL32"
+symbol = "__statfp"
+target_base = 0x004AD490
+[[units.relocations]]
+offset = 0x1E7
+type = "REL32"
+symbol = "__clrfp"
+target_base = 0x004AD49D
+[[units.relocations]]
+offset = 0x1F7
+type = "DIR32"
+symbol = "__imp__RaiseException@16"
+target_base = 0x004B41A0
+
+[[units]]
+name = "crt-handle-exc"
+target_address = 0x004AD06A
+body_size = 0x222
+compare_size = 0x222
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/fpexcept.obj"
+symbol = "__handle_exc"
+[[units.relocations]]
+offset = 0x21
+type = "REL32"
+symbol = "__set_statfp"
+target_base = 0x004AD4CF
+[[units.relocations]]
+offset = 0x3B
+type = "REL32"
+symbol = "__set_statfp"
+target_base = 0x004AD4CF
+[[units.relocations]]
+offset = 0x5D
+type = "REL32"
+symbol = "__set_statfp"
+target_base = 0x004AD4CF
+[[units.relocations]]
+offset = 0x8F
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target_base = 0x004B4C90
+[[units.relocations]]
+offset = 0x95
+type = "DIR32"
+symbol = "__d_max"
+target_base = 0x004CC540
+[[units.relocations]]
+offset = 0xB1
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target_base = 0x004B4C90
+[[units.relocations]]
+offset = 0xBE
+type = "DIR32"
+symbol = "__d_inf"
+target_base = 0x004CC530
+[[units.relocations]]
+offset = 0xC6
+type = "DIR32"
+symbol = "__d_max"
+target_base = 0x004CC540
+[[units.relocations]]
+offset = 0xDB
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target_base = 0x004B4C90
+[[units.relocations]]
+offset = 0xE8
+type = "DIR32"
+symbol = "__d_max"
+target_base = 0x004CC540
+[[units.relocations]]
+offset = 0xF0
+type = "DIR32"
+symbol = "__d_inf"
+target_base = 0x004CC530
+[[units.relocations]]
+offset = 0x105
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target_base = 0x004B4C90
+[[units.relocations]]
+offset = 0x10B
+type = "DIR32"
+symbol = "__d_inf"
+target_base = 0x004CC530
+[[units.relocations]]
+offset = 0x14A
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target_base = 0x004B4C90
+[[units.relocations]]
+offset = 0x165
+type = "REL32"
+symbol = "__decomp"
+target_base = 0x004ACD0B
+[[units.relocations]]
+offset = 0x185
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target_base = 0x004B4C90
+[[units.relocations]]
+offset = 0x18F
+type = "DIR32"
+symbol = "__real@0000000000000000"
+target_base = 0x004B4C90
+[[units.relocations]]
+offset = 0x1F4
+type = "REL32"
+symbol = "__set_statfp"
+target_base = 0x004AD4CF
+[[units.relocations]]
+offset = 0x20F
+type = "REL32"
+symbol = "__set_statfp"
+target_base = 0x004AD4CF
+
+[[units]]
+name = "crt-set-errno-math"
+target_address = 0x004AD28C
+body_size = 0x28
+compare_size = 0x28
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/fpexcept.obj"
+symbol = "__set_errno"
+[[units.relocations]]
+offset = 0x11
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0x1D
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+
+[[units]]
+name = "crt-errcode"
+target_address = 0x004AD2B4
+body_size = 0x2D
+compare_size = 0x2D
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/fpexcept.obj"
+symbol = "__errcode"
+
+[[units]]
+name = "crt-umatherr"
+target_address = 0x004AD2E1
+body_size = 0x9E
+compare_size = 0x9E
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/fpexcept.obj"
+symbol = "__umatherr"
+[[units.relocations]]
+offset = 0xB
+type = "DIR32"
+symbol = "?_names@?1??_get_fname@@9@9"
+target_base = 0x004CC558
+[[units.relocations]]
+offset = 0x57
+type = "REL32"
+symbol = "__ctrlfp"
+target_base = 0x004AD4AB
+[[units.relocations]]
+offset = 0x60
+type = "REL32"
+symbol = "__matherr"
+target_base = 0x0049AE16
+[[units.relocations]]
+offset = 0x6D
+type = "REL32"
+symbol = "__set_errno"
+target_base = 0x004AD28C
+[[units.relocations]]
+offset = 0x7B
+type = "DIR32"
+symbol = "?_names@?1??_get_fname@@9@9"
+target_base = 0x004CC558
+[[units.relocations]]
+offset = 0x8A
+type = "REL32"
+symbol = "__ctrlfp"
+target_base = 0x004AD4AB
+[[units.relocations]]
+offset = 0x92
+type = "REL32"
+symbol = "__set_errno"
+target_base = 0x004AD28C
+
+[[units]]
+name = "crt-handle-qnan1"
+target_address = 0x004AD37F
+body_size = 0x53
+compare_size = 0x53
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/fpexcept.obj"
+symbol = "__handle_qnan1"
+[[units.relocations]]
+offset = 0x5
+type = "DIR32"
+symbol = "__matherr_flag"
+target_base = 0x004CCB30
+[[units.relocations]]
+offset = 0x2B
+type = "REL32"
+symbol = "__umatherr"
+target_base = 0x004AD2E1
+[[units.relocations]]
+offset = 0x35
+type = "REL32"
+symbol = "__errno"
+target_base = 0x004AAAD2
+[[units.relocations]]
+offset = 0x48
+type = "REL32"
+symbol = "__ctrlfp"
+target_base = 0x004AD4AB
+
+[[units]]
+name = "crt-except1"
+target_address = 0x004AD3D2
+body_size = 0xBE
+compare_size = 0xBE
+archive = "vc7-libcmt"
+member = "../build/intel/mt_obj/fpexcept.obj"
+symbol = "__except1"
+[[units.relocations]]
+offset = 0xD
+type = "DIR32"
+symbol = "___security_cookie"
+target_base = 0x004CC3E8
+[[units.relocations]]
+offset = 0x26
+type = "REL32"
+symbol = "__handle_exc"
+target_base = 0x004AD06A
+[[units.relocations]]
+offset = 0x4E
+type = "REL32"
+symbol = "__raise_exc"
+target_base = 0x004ACDC5
+[[units.relocations]]
+offset = 0x59
+type = "REL32"
+symbol = "__errcode"
+target_base = 0x004AD2B4
+[[units.relocations]]
+offset = 0x62
+type = "DIR32"
+symbol = "__matherr_flag"
+target_base = 0x004CCB30
+[[units.relocations]]
+offset = 0x8B
+type = "REL32"
+symbol = "__umatherr"
+target_base = 0x004AD2E1
+[[units.relocations]]
+offset = 0x96
+type = "REL32"
+symbol = "__set_errno"
+target_base = 0x004AD28C
+[[units.relocations]]
+offset = 0xA5
+type = "REL32"
+symbol = "__ctrlfp"
+target_base = 0x004AD4AB
+[[units.relocations]]
+offset = 0xB6
+type = "REL32"
+symbol = "@__security_check_cookie@4"
+target_base = 0x004AB43C

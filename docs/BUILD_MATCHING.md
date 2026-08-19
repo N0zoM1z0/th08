@@ -1260,3 +1260,10 @@ without those explicit fields retain the stricter whole-section ownership rule.
 
 - Before repairing higher-level close/flush/seek wrappers, pin their direct worker functions.  VC7 `osfinfo.obj`, `lseeki64.obj`, `fflush.obj`, and `fclose/close.obj` provide exact `_free_osfhnd`, `_lseeki64_lk`, `_flush`, `_fflush_lk`, `_fclose_lk`, and `_close_lk` target functions.
 - This direction reduces ambiguity when a public wrapper contains an SEH cleanup funclet: the parent can be validated against known exact lock/unlock and worker targets rather than treating internal calls as unnamed CFG noise.
+### Math-runtime conflict labels should collapse to the original archive symbol
+
+- `0x004AD28C` arrived as `FID_conflict:__set_errno_from_matherr`.  VC7
+  `fpexcept.obj` defines `__set_errno` at an isolated 0x28-byte function extent;
+  both relocations and every non-relocation byte replay exactly.  Prefer the
+  original archive identity once exact evidence resolves the imported conflict
+  label, just as with `_getenv_lk`.

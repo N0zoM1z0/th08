@@ -1932,12 +1932,12 @@ _set_exp,0x4acc86,library
 _sptype,0x4accb0,library
 FUN_004acd0b,0x4acd0b,library
 _raise_exc,0x4acdc5,library
-FUN_004ad06a,0x4ad06a,library
-FID_conflict:__set_errno_from_matherr,0x4ad28c,library
+_handle_exc,0x4ad06a,library
+_set_errno,0x4ad28c,library
 _errcode,0x4ad2b4,library
 _umatherr,0x4ad2e1,library
 _handle_qnan1,0x4ad37f,library
-FUN_004ad3d2,0x4ad3d2,library
+_except1,0x4ad3d2,library
 FUN_004ad490,0x4ad490,library
 FUN_004ad49d,0x4ad49d,library
 _ctrlfp,0x4ad4ab,library

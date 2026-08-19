@@ -1931,12 +1931,12 @@ __set_exp,0x4acc86,0x2a,unknown,,u8,undefined1[10],u8,u8,u8,u8,u8,u8,u8,u8,u8,u3
 __sptype,0x4accb0,0x5b,unknown,,u8,u8,u8
 FUN_004acd0b,0x4acd0b,0xba,unknown,,u8,undefined1[10],u8,u8,u8,u8,u8,u8,u8,u8,u8,u32
 __raise_exc,0x4acdc5,0x2a5,unknown,,u8,u8,u8,u8,u8,u8,u8
-FUN_004ad06a,0x4ad06a,0x222,unknown,,u8,u8,u8,u8
-FID_conflict:__set_errno_from_matherr,0x4ad28c,0x28,__cdecl,,u8,u8
+__handle_exc,0x4ad06a,0x222,__cdecl,,u8,u8,u8,u8
+__set_errno,0x4ad28c,0x28,__cdecl,,u8,u8
 __errcode,0x4ad2b4,0x2d,unknown,,u8,u8
 __umatherr,0x4ad2e1,0x9e,unknown,,u8,u8,u8,u8,u8,u8,u8,u8,u8
 __handle_qnan1,0x4ad37f,0x53,unknown,,u8,u32,undefined8,u8,u8,u8,u8,u8,u8,u8,u8,u32
-FUN_004ad3d2,0x4ad3d2,0xbe,unknown,,u8,u8,u8,u8,u8,u8
+__except1,0x4ad3d2,0xbe,__cdecl,,u8,u8,u8,u8,u8,u8
 FUN_004ad490,0x4ad490,0xd,unknown,,u8
 FUN_004ad49d,0x4ad49d,0xe,unknown,,u8
 __ctrlfp,0x4ad4ab,0x24,unknown,,u8,u8,u8
