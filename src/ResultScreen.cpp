@@ -3173,4 +3173,22 @@ i32 ResultScreen::MoveCursorHorizontally(ResultScreen *resultScreen, i32 length)
     return 0;
 }
 
+// FUNCTION: th08 0x45a3fd
+void AnmManager::ReplaceSurface(i32 destIndex, i32 srcIndex)
+{
+    if (this->surfaces[srcIndex] != NULL)
+    {
+        this->ReleaseSurface(destIndex);
+
+        this->surfaces[destIndex] = this->surfaces[srcIndex];
+        this->surfacesBis[destIndex] = this->surfacesBis[srcIndex];
+
+        this->surfaces[srcIndex] = NULL;
+        this->surfacesBis[srcIndex] = NULL;
+
+        this->surfaceInfo[destIndex] = this->surfaceInfo[srcIndex];
+    }
+}
+
+
 } /* namespace th08 */

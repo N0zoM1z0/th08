@@ -698,21 +698,7 @@ struct AnmManager
         this->surfaceCaptureDstH = dstH;
     }
 
-    void ReplaceSurface(i32 destIndex, i32 srcIndex)
-    {
-        if (this->surfaces[srcIndex] != NULL)
-        {
-            this->ReleaseSurface(destIndex);
-
-            this->surfaces[destIndex] = this->surfaces[srcIndex];
-            this->surfacesBis[destIndex] = this->surfacesBis[srcIndex];
-
-            this->surfaces[srcIndex] = NULL;
-            this->surfacesBis[srcIndex] = NULL;
-
-            this->surfaceInfo[destIndex] = this->surfaceInfo[srcIndex];
-        }
-    }
+    void ReplaceSurface(i32 destIndex, i32 srcIndex);
 
     void CaptureToTexture(i32 captureAnmIdx, i32 srcX, i32 srcY, i32 srcW, i32 srcH, i32 dstX, i32 dstY, i32 dstW,
                           i32 dstH);

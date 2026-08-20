@@ -252,12 +252,7 @@ struct ScoreListNode
     ScoreListNode *next;
     Hscr *data;
 
-    ScoreListNode()
-    {
-        this->prev = NULL;
-        this->next = NULL;
-        this->data = NULL;
-    }
+    ScoreListNode();
 };
 
 C_ASSERT(sizeof(ScoreListNode) == 0xc);

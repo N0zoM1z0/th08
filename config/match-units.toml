@@ -27837,7 +27837,7 @@ target = 0x00466AE0
 #           0 direct calls matched; no EH/local/ICF association
 [[units]]
 name = "result-screen-remaining-exact-0045a4dc"
-object = "build/ResultScreen.obj"
+object = "build/ScoreDat.obj"
 symbol = "??0ScoreListNode@th08@@QAE@XZ"
 target_address = 0x0045A4DC
 size = 0x20

@@ -22,6 +22,14 @@ ZunBool Catk::WasAttemptedWithShot(i32 shotType)
 {
     return this->inGameHistory.attempts[shotType] > 0 || this->spellPracticeHistory.attempts[shotType] != 0;
 }
+
+// FUNCTION: th08 0x45a4dc
+ScoreListNode::ScoreListNode()
+{
+    this->prev = NULL;
+    this->next = NULL;
+    this->data = NULL;
+}
 #pragma optimize("", on)
 
 i32 ScoreDat::LinkScore(ScoreListNode *node, Hscr *newScore)
