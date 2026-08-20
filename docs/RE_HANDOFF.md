@@ -17,17 +17,12 @@ As cold-built and replayed on 2026-08-20 against the original Japanese TH08
 - a cold normal VC7 build links `build/th08.exe` successfully;
 - a cold objdiff build followed by full replay passes **1,105 / 1,105**
   accepted units;
-- six production-object layout repairs are complete. Seven exact AsciiManager
-  bodies now live in four target-cluster TUs, while the early Player bomb/shot
-  callback family now lives in `PlayerBomb.cpp`; both remaining donor objects
-  have zero target-order inversions. The contiguous main Player TU is also back
-  in target function order. Fourteen shared helpers formerly appended to
-  `main.cpp` now emit naturally from their target-neighbor consumer TUs. The
-  retained AnmManager render cluster is also back in target function order.
-  The continuous Global main region and its target-neighbor math helpers are
-  now in target order as well. SoundPlayer's early fade/pause helpers now emit
-  from their target-neighbor Ascii consumer, and its retained main TU is in
-  target order;
+- the completed production-layout passes cover the Ascii target clusters,
+  Player bomb/main regions, misplaced `main.cpp` helpers, Anm render helpers,
+  Global math helpers, SoundPlayer helpers/tail, and GameManager helpers/main
+  region. `Player.obj`, `GameManager.obj`, `Global.obj`, and `SoundPlayer.obj`
+  now each have zero target-order inversions. Canonical owners record the
+  section-defined production copies rather than stale probe/objdiff donors;
 - the whole-image comparator is in place. After the first evidence-backed link
   contract repairs, the rebuild has the target's DLL descriptor order, no debug
   directory, and the same two resource paths and resource section extent. The
@@ -162,7 +157,7 @@ The 2026-08-20 baseline after fixing the first observable link contracts is:
   `KERNEL32` symbols. Nine are referenced by D3DX `cd3dxfile.obj` /
   `cd3dxresource.obj`; the remaining set is referenced by six linked VC7 CRT
   members recorded in `KNOWLEDGE_BASE.md`;
-- 944 accepted address anchors are found in the linker map and 68 accepted units
+- 949 accepted address anchors are found in the linker map and 66 accepted units
   lack a unique map candidate. Anchor-derived current-object order differs from
   target order, and large drift spans occur within production objects.
 
@@ -307,9 +302,42 @@ focused replay passed **25 / 25**, followed by another **1,105 / 1,105** cold
 aggregate replay. `SoundPlayer.obj` improved from **181 inversions / 4 runs /
 358,864 bytes of drift span** to **0 / 1 / 0**.
 
-The current ranking now places `GameManager.obj` first (**174 inversions / 9
-runs / 291,648 span**), followed by `Gui.obj` (**167 / 12 / 23,133**) and the
-expanded target-neighbor `AsciiManager.obj` cluster (**154 / 7 / 9,600**).
+The seventh bounded pass repaired `GameManager.obj`, which initially had **37
+anchors / 174 inversions / 9 runs / 291,648 bytes of drift span**. It required
+several kinds of evidence-backed repair rather than one artificial source-file
+split:
+
+- `SetLives`, `UpdateAntiTamper`, `SetBombCount`, and `SetPower` now emit from
+  the early Ascii consumer cluster. The target places Sound helper COMDATs
+  before these GameManager COMDATs, so `th_pch.h` includes `SoundPlayer.hpp`
+  before `GameManager.hpp`; PCH include order is part of the VC7 emission
+  contract.
+- `IsSoloHuman`, `IsSoloYoukai`, and `GetLives` now emit from their real
+  `EnemyManager.obj` consumer at the target `0x0042F230..0x0042F2B0`
+  neighborhood.
+- the retained GameManager main definitions were reordered by target address.
+  `AddLives @ 0x0043C641` is an explicit definition between the constructor and
+  `InitArcadeRegionParams`, matching the continuous target sequence without
+  changing its exact body.
+- the Player-local sequence at `0x0044E140..0x0044E348` is now explicit in
+  `Player.cpp`: `SetYoukaiGauge`, `RandomizeAntiTamper`, `AddToDeaths`, and
+  `AddToBombsUsed`. This both restores the target order and replaces the stale
+  objdiff-only `RandomizeAntiTamper` owner with the exact production copy.
+- `ScaleFloatBasedOnRank @ 0x00422B80` is the first definition in the existing
+  target-contiguous `AsciiManagerBossMarker.cpp` block, immediately before the
+  two Ascii functions at `0x00422BB0..0x00422C13`.
+
+Focused replay passed **65 / 65** Ascii units for the setter move, **44 / 44**
+Enemy units for the solo move, **62 / 62** Player units for the Player-local
+block, **3 / 3** Ascii boss-marker units for the final cluster, and **40 / 40**
+units in the final GameManager donor. Shared-header checkpoints and the final
+cold aggregate replay pass **1,105 / 1,105**. The final linked metrics are
+`GameManager.obj` **30 / 0 / 1 / 3,970**, `Player.obj` **36 / 0 / 1 / 7,264**,
+and `AsciiManagerBossMarker.obj` **3 / 0 / 1 / 0**.
+
+The current ranking now places `Gui.obj` first (**167 inversions / 12 runs /
+23,133 span**), followed by `SpellCard.obj` (**122 / 7 / 167,120**) and the
+expanded target-neighbor `AsciiManager.obj` cluster (**86 / 6 / 9,600**).
 Select only one and confirm the target neighborhood before moving definitions;
 the Ascii inversion count includes several independently justified COMDAT
 groups and is not by itself evidence that they have the wrong owner.

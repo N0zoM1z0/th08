@@ -224,7 +224,19 @@ When a structure begins with the field required by an API, VC7 may pass the stru
 - With `/Gr`, free functions taking only floats (for example `VectorAngle(f32 y, f32 x)`) still pass float arguments on the stack and return with `ret 8`; using `atan2` rather than `atan2f` emits the target x87 `__CIatan2` helper wrapper.
 - Boundary-bounce helpers may need explicit `Float3::operator float *()` calls when the target fetches `pos.x`/`pos.y` through the conversion operator; `Bullet::FUN_00432830` also shows the flag only guards the high-Y bounce, not the low-Y bounce.
 - VC7 will allocate the hidden `this` home before an implicit integer-to-float `fild` temporary when the integer expression is cast directly; `GameManager::SetBombCount` matches only as `(f32)(checksum + rng7[3])`, while a named `expectedValue` local moves `this` from `-4` to `-8`.
-- `/Os` GameManager anti-tamper counters may still require `#pragma optimize("t", on)` on the out-of-line mutator: verified `AddToDeaths` and `AddToBombsUsed` need it for the target `mov esp, ebp; pop ebp` epilogue and repeated `this->globals` reload shape; `ScaleFloatBasedOnRank` needs an explicit `(f32)this->rank` cast to emit `fild rank` + `fmulp` instead of `fimul`.
+- Do not treat a donor-local optimizer workaround as ownership evidence.
+  `AddToDeaths` and `AddToBombsUsed` were first made exact in the `/Os`
+  GameManager donor with `#pragma optimize("t", on)`, but target neighbors and
+  production calls later proved that their natural exact definitions belong in
+  the `/Od` Player TU without that pragma. `ScaleFloatBasedOnRank` does retain a
+  local `optimize("t")` in the `/Od` boss-marker target cluster, and still needs
+  an explicit `(f32)this->rank` cast to emit `fild rank` + `fmulp` instead of
+  `fimul`.
+- VC7 PCH include order can become COMDAT link order. When multiple inline
+  helper families are first emitted by the same consumer, compare the target
+  family order before rearranging definitions; the TH08 early Ascii cluster
+  requires `SoundPlayer.hpp` before `GameManager.hpp` so Sound wrappers precede
+  the GameManager setters.
 - Fastcall helpers with an unused `edx` home can require an explicit dummy second parameter; for `IncrementTruncate(u32 *value, i32 unused)`, use an unsigned pointer and do not force `optimize("t")` so VC7 emits the target `push ecx; push ecx`, unsigned `jae`, and `inc eax` store-back shape.
 - Header inline predicates can be promoted to out-of-line definitions when the target has a standalone copy: verified `GameManager::IsStageClearedWithoutRetries` / `IsStageClearedWithRetries`; keep the same macro expression so VC7 emits `xor edx; inc edx; shl edx, cl` instead of a boolean normalize sequence.
 - Fastcall helpers may need an unused register dummy parameter to home `ecx`; for top-tested table scans, write `i = 0; while (...) { ...; i++; }` rather than `for`, or VC7 emits an entry `jmp`. Verified by `FUN_00439916` and `FUN_00439961`.

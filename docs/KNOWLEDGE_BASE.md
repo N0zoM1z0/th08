@@ -250,6 +250,48 @@ codegen. Removing inline visibility is still a shared-header change: focused
 replay is diagnostic, and the cold **1,105 / 1,105** aggregate replay is the
 acceptance gate.
 
+The `GameManager.obj` pass is the combined-case reference. One ranking
+candidate contained ordinary lexical disorder, natural consumer COMDATs,
+target-local explicit cross-subsystem definitions, and one stale objdiff-only
+owner. Treating every reset as the same kind of boundary would have produced
+the wrong architecture.
+
+Use these distinctions:
+
+1. If header helpers form a target-neighbor group and a real production caller
+   emits exact copies, restore the inline bodies and canonicalize the
+   section-defined consumer. The GameManager setter group belongs to
+   `AsciiManager.obj`; the solo-character predicates and `GetLives` belong to
+   `EnemyManager.obj`.
+2. PCH include order can determine the relative order of deferred VC7 COMDATs.
+   The target early cluster places Sound fade/pause helpers before the
+   GameManager setters, so `th_pch.h` must include `SoundPlayer.hpp` before
+   `GameManager.hpp`. After changing this order, clean the PCH and replay every
+   accepted unit, not just the moved helpers.
+3. If the retained target neighborhood is continuous, reorder real definitions
+   instead of splitting it. A deferred header body may become explicit when
+   target order and complete caller evidence support the call boundary;
+   `AddLives` belongs between the GameManager constructor and
+   `InitArcadeRegionParams`.
+4. A target-local block can contain definitions from more than one class.
+   `Player.cpp` explicitly owns `SetYoukaiGauge`, `RandomizeAntiTamper`,
+   `AddToDeaths`, and `AddToBombsUsed` in the exact
+   `0x0044E140..0x0044E348` order. This is stronger than leaving exact bodies
+   in a nominal class donor or a private objdiff object because Player has the
+   production calls and the mapped neighboring functions.
+5. An already recovered target-contiguous production cluster may absorb its
+   missing leading definition when target order, compile profile, and exact
+   replay all agree. `ScaleFloatBasedOnRank @ 0x00422B80` followed by the two
+   Ascii boss-marker functions at `0x00422BB0..0x00422C13` is exact as one
+   three-anchor block; no padding or artificial reference is needed.
+
+This pass improved `GameManager.obj` from **37 anchors / 174 inversions / 9
+runs / 291,648 drift span** to **30 / 0 / 1 / 3,970**. The Player-side block
+also leaves `Player.obj` at **36 / 0 / 1 / 7,264**, while the three-function
+boss-marker block is **3 / 0 / 1 / 0**. Focused donor/recipient replay plus the
+cold **1,105 / 1,105** aggregate replay are both required; a perfect ordering
+metric does not replace exact-code attestation.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into

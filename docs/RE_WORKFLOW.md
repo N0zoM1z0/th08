@@ -173,10 +173,16 @@ difference rather than by inventory percentage alone.
    defers the standalone COMDAT to an inconvenient object position. An
    alternating target sequence of forwarding wrappers and their callees can be
    evidence for paired consumer-triggered header COMDATs; verify the outer
-   production caller and replay both layers. A deferred tiny accessor may be
-   made explicit to restore order only after its full caller set is bounded and
-   target relocations prove that removing inline visibility preserves the call
-   boundary. Do not
+   production caller and replay both layers. If several helper families first
+   emit from the same PCH consumer, treat header include order as a candidate
+   part of the link contract and verify the complete target family order after
+   a clean PCH build. A target-contiguous block may contain explicit
+   definitions from several classes; preserve that local sequence when mapped
+   neighbors, compile profile, and exact donor/recipient replay all agree,
+   rather than routing every method to its nominal class TU. A deferred tiny
+   accessor may be made explicit to restore order only after its full caller
+   set is bounded and target relocations prove that removing inline visibility
+   preserves the call boundary. Do not
    manufacture an owner for a helper with no production caller. If the retained
    target neighborhood is continuous, restore lexical function order inside
    that TU instead of manufacturing a source file for every run. Replay donor
