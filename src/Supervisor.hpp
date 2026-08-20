@@ -218,10 +218,14 @@ struct Supervisor
         return this->cfg.opts.referenceRasterizerMode;
     }
 
+#ifdef TH08_MUSICROOM_SUPERVISOR_PRELOAD_OUT_OF_LINE
+    ZunBool IsMusicPreloadEnabled();
+#else
     ZunBool IsMusicPreloadEnabled()
     {
         return this->cfg.opts.preloadMusic;
     }
+#endif
 
     ZunBool IsWindowed()
     {

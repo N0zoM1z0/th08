@@ -1,4 +1,6 @@
+#define TH08_MUSICROOM_SUPERVISOR_PRELOAD_OUT_OF_LINE
 #include "th_pch.h"
+#undef TH08_MUSICROOM_SUPERVISOR_PRELOAD_OUT_OF_LINE
 
 #include "AsciiManager.hpp"
 #include "GameManager.hpp"
@@ -561,6 +563,12 @@ ZunResult MusicRoom::DeletedCallback(MusicRoom *musicRoom)
     musicRoom->drawChain = NULL;
 
     return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x449c79
+inline ZunBool Supervisor::IsMusicPreloadEnabled()
+{
+    return this->cfg.opts.preloadMusic;
 }
 
 } /* namespace th08 */
