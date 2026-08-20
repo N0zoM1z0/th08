@@ -405,6 +405,13 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(i32, 10, g_SpellcardCountPerStage) = {
 // TODO: stop clang-format from fucking with whitespace formatting
 
 
+// FUNCTION: th08 0x00405260
+i32 Spellcard::GetInactiveState()
+{
+    return (this->flags >> 9) & 1;
+}
+
+
 // FUNCTION: th08 0x4143e0
 Spellcard::Spellcard()
 {
@@ -412,6 +419,313 @@ Spellcard::Spellcard()
 
 
 DIFFABLE_EXTERN(i32, g_GuiFullPowerModeFrames);
+
+// FUNCTION: th08 0x4144d0
+#pragma var_order(difficulty, i)
+i32 Spellcard::GetDifficultyFromSpellCard(i32 spellCardNumber)
+{
+    i32 difficulty;
+    i32 i;
+    for (difficulty = 0; difficulty < MAX_DIFFICULTIES; difficulty++)
+    {
+        for (i = 0; i < g_SpellcardCountsPerDifficulty[difficulty]; i++)
+        {
+            if (g_SpellcardNumbersPerDifficulty[difficulty][i] == spellCardNumber)
+            {
+                return difficulty;
+            }
+        }
+    }
+    return MAX_DIFFICULTIES;
+}
+
+// FUNCTION: th08 0x00414540
+i32 __fastcall Spellcard::IsLastSpell(i32 spellCardNumber)
+{
+    for (i32 i = 0; i < g_LastSpellCount; ++i)
+    {
+        if (g_LastSpellNumbers[i] == spellCardNumber)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+// FUNCTION: th08 0x414590
+ZunResult Spellcard::Init()
+{
+    if (IsResourceReloadEnabled())
+    {
+        memset(this, 0, sizeof(Spellcard));
+        this->commonFaceAnm = g_AnmManager->PreloadAnm(15, "face_cdbg.anm");
+        if (this->commonFaceAnm == NULL)
+            return ZUN_ERROR;
+
+        if (!g_GameManager.IsSpellPractice())
+        {
+            switch (g_GameManager.shotType)
+            {
+            default:
+                this->playerFaceAnm0 = g_AnmManager->PreloadAnm(16, "face_rm00.anm");
+                if (this->playerFaceAnm0 == NULL)
+                    return ZUN_ERROR;
+                this->playerFaceAnm1 = g_AnmManager->PreloadAnm(17, "face_yk00.anm");
+                if (this->playerFaceAnm1 == NULL)
+                    return ZUN_ERROR;
+                break;
+
+            case SHOT_MARISA_ALICE:
+            case SHOT_MARISA:
+            case SHOT_ALICE:
+                this->playerFaceAnm0 = g_AnmManager->PreloadAnm(16, "face_mr00.anm");
+                if (this->playerFaceAnm0 == NULL)
+                    return ZUN_ERROR;
+                this->playerFaceAnm1 = g_AnmManager->PreloadAnm(17, "face_al00.anm");
+                if (this->playerFaceAnm1 == NULL)
+                    return ZUN_ERROR;
+                break;
+
+            case SHOT_SAKUYA_REMILIA:
+            case SHOT_SAKUYA:
+            case SHOT_REMILIA:
+                this->playerFaceAnm0 = g_AnmManager->PreloadAnm(16, "face_sk00.anm");
+                if (this->playerFaceAnm0 == NULL)
+                    return ZUN_ERROR;
+                this->playerFaceAnm1 = g_AnmManager->PreloadAnm(17, "face_rs00.anm");
+                if (this->playerFaceAnm1 == NULL)
+                    return ZUN_ERROR;
+                break;
+
+            case SHOT_YOUMU_YUYUKO:
+            case SHOT_YOUMU:
+            case SHOT_YUYUKO:
+                this->playerFaceAnm0 = g_AnmManager->PreloadAnm(16, "face_ym00.anm");
+                if (this->playerFaceAnm0 == NULL)
+                    return ZUN_ERROR;
+                this->playerFaceAnm1 = g_AnmManager->PreloadAnm(17, "face_yy00.anm");
+                if (this->playerFaceAnm1 == NULL)
+                    return ZUN_ERROR;
+                break;
+            }
+        }
+    }
+    else
+    {
+        memset(this, 0, sizeof(Spellcard));
+        this->commonFaceAnm = g_AnmManager->GetAnm(15);
+        if (!g_GameManager.IsSpellPractice())
+        {
+            this->playerFaceAnm0 = g_AnmManager->GetAnm(16);
+            this->playerFaceAnm1 = g_AnmManager->GetAnm(17);
+        }
+    }
+
+    if (!IsDisableResourceReload())
+    {
+        if (!g_GameManager.IsSpellPractice())
+        {
+            switch (g_GameManager.currentStage)
+            {
+            case STAGE1:
+                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st01.anm");
+                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                break;
+            case STAGE2:
+                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st02.anm");
+                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                break;
+            case STAGE3:
+                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st03.anm");
+                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                break;
+            case STAGE4A:
+                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st04a.anm");
+                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                break;
+            case STAGE4B:
+                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st04b.anm");
+                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                break;
+            case STAGE5:
+                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st05.anm");
+                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                this->enemyFaceAnm1 = g_AnmManager->PreloadAnm(19, "face_st05b.anm");
+                if (this->enemyFaceAnm1 == NULL) return ZUN_ERROR;
+                break;
+            case STAGE6A:
+                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st06.anm");
+                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                break;
+            case STAGE6B:
+                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st06.anm");
+                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                this->enemyFaceAnm1 = g_AnmManager->PreloadAnm(19, "face_st07.anm");
+                if (this->enemyFaceAnm1 == NULL) return ZUN_ERROR;
+                break;
+            case EXTRASTAGE:
+                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st08m.anm");
+                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                this->enemyFaceAnm1 = g_AnmManager->PreloadAnm(19, "face_st08.anm");
+                if (this->enemyFaceAnm1 == NULL) return ZUN_ERROR;
+                break;
+            default:
+                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st03.anm");
+                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                break;
+            }
+        }
+        else
+        {
+            switch (g_GameManager.currentStage)
+            {
+            case STAGE1:
+                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st01sp.anm");
+                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                break;
+            case STAGE2:
+                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st02sp.anm");
+                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                break;
+            case STAGE3:
+                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st03sp.anm");
+                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                break;
+            case STAGE4A:
+                if (!g_GameManager.IsSpellPractice() || g_GameManager.IsSpellNumberEqualTo(214))
+                {
+                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st04asp.anm");
+                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                }
+                else if (g_GameManager.IsSpellNumberEqualTo(216))
+                {
+                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_sksp.anm");
+                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                }
+                else if (g_GameManager.IsSpellNumberEqualTo(217))
+                {
+                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_ymsp.anm");
+                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                }
+                else if (g_GameManager.IsSpellNumberEqualTo(218))
+                {
+                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_alsp.anm");
+                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                }
+                else if (g_GameManager.IsSpellNumberEqualTo(219))
+                {
+                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_rssp.anm");
+                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                }
+                else if (g_GameManager.IsSpellNumberEqualTo(220))
+                {
+                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_yysp.anm");
+                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                }
+                else if (g_GameManager.IsSpellNumberEqualTo(221))
+                {
+                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_yksp.anm");
+                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                }
+                else
+                {
+                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st04asp.anm");
+                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                }
+                break;
+            case STAGE4B:
+                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st04bsp.anm");
+                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                break;
+            case STAGE5:
+                if (g_GameManager.IsSpellNumberEqualTo(212))
+                {
+                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st05msp.anm");
+                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                }
+                else
+                {
+                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st05sp.anm");
+                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                }
+                break;
+            case STAGE6A:
+                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st06sp.anm");
+                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                break;
+            case STAGE6B:
+                if (g_GameManager.IsSpellNumberInRange(147, 150))
+                {
+                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st06sp.anm");
+                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                }
+                else
+                {
+                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st07sp.anm");
+                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                }
+                break;
+            case EXTRASTAGE:
+                if (g_GameManager.IsSpellNumberInRange(191, 193) || g_GameManager.IsSpellNumberEqualTo(213))
+                {
+                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st08msp.anm");
+                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                }
+                else if (g_GameManager.IsSpellNumberInRange(194, 204) || g_GameManager.IsSpellNumberEqualTo(211))
+                {
+                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st08sp.anm");
+                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                }
+                break;
+            default:
+                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st03.anm");
+                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
+                break;
+            }
+        }
+    }
+    else
+    {
+        this->enemyFaceAnm0 = g_AnmManager->GetAnm(18);
+        this->enemyFaceAnm1 = g_AnmManager->GetAnm(19);
+    }
+
+    if (this->playerFaceAnm0 != NULL)
+    {
+        this->playerFaceAnm0->SetAndExecuteScriptIdx(&this->vm120, 0);
+        this->playerFaceAnm0->SetAndExecuteScriptIdx(&this->vm3C4, 0);
+    }
+
+    (*reinterpret_cast<AnmLoaded **>(0x017CE8F4))->SetAndExecuteScriptIdx(&this->vm10F8, 4);
+    (*reinterpret_cast<AnmLoaded **>(0x017CE8F4))->SetAndExecuteScriptIdx(&this->vm139C, 5);
+    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->SetAndExecuteScriptIdx(&this->vm1B88, 1);
+    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->SetAndExecuteScriptIdx(&this->vm1E2C, 0);
+    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->SetAndExecuteScriptIdx(&this->vm2374, 2);
+    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->SetAndExecuteScriptIdx(&this->vm20D0, 4);
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm120) + 0x220) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm668) + 0x220) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vmBB0) + 0x220) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm10F8) + 0x220) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm3C4) + 0x220) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm90C) + 0x220) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vmE54) + 0x220) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm139C) + 0x220) = 0;
+
+    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm120) + 0x1F8) &= ~1u;
+    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm668) + 0x1F8) &= ~1u;
+    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vmBB0) + 0x1F8) &= ~1u;
+    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm10F8) + 0x1F8) &= ~1u;
+    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm3C4) + 0x1F8) &= ~1u;
+    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm90C) + 0x1F8) &= ~1u;
+    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vmE54) + 0x1F8) &= ~1u;
+    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm139C) + 0x1F8) &= ~1u;
+
+    this->vm10F8.fontWidth = 15;
+    this->vm10F8.fontHeight = 15;
+    this->vm139C.fontWidth = 15;
+    this->vm139C.fontHeight = 15;
+    this->pendingTimeOrbs = 0;
+    return ZUN_SUCCESS;
+}
 
 // FUNCTION: th08 0x4152a0
 #pragma var_order(i, catk, j, checksum, nameChecksum, ownerName, this)
@@ -1158,6 +1472,18 @@ i32 Spellcard::OnUpdateImpl()
     return 1;
 }
 
+// FUNCTION: th08 0x00417860
+i32 Spellcard::FUN_00417860()
+{
+    return this->IsActive() && ((this->flags >> 5) & 1);
+}
+
+// FUNCTION: th08 0x004178A0
+i32 Spellcard::IsActive()
+{
+    return this->flags & 1;
+}
+
 // FUNCTION: th08 0x4178c0
 #pragma var_order(savedPos, catk, i, value, score, divisor, leading, this)
 i32 Spellcard::OnDrawImpl()
@@ -1306,75 +1632,6 @@ i32 Spellcard::OnDrawImpl()
 }
 
 
-// FUNCTION: th08 0x0041F040
-void Spellcard::SetStoredVector(f32 x, f32 y, f32 z)
-{
-    *(f32 *)(this->spellEffect + 0x2A4) = x;
-    *(f32 *)(this->spellEffect + 0x2A8) = y;
-    *(f32 *)(this->spellEffect + 0x2AC) = z;
-}
-
-struct SpellcardEclFlagBits
-{
-    u32 lowBits : 6;
-    u32 bit6 : 1;
-    u32 bits7To10 : 4;
-    u32 bit11 : 1;
-    u32 highBits : 20;
-};
-C_ASSERT(sizeof(SpellcardEclFlagBits) == 4);
-
-// FUNCTION: th08 0x0041F0B0
-void Spellcard::FUN_0041f0b0(i32 value)
-{
-    reinterpret_cast<SpellcardEclFlagBits *>(&this->flags)->bit6 = value;
-}
-
-// FUNCTION: th08 0x0041F0E0
-void Spellcard::FUN_0041f0e0(i32 value)
-{
-    reinterpret_cast<SpellcardEclFlagBits *>(&this->flags)->bit11 = value;
-}
-
-
-
-// FUNCTION: th08 0x004178A0
-i32 Spellcard::IsActive()
-{
-    return this->flags & 1;
-}
-
-// FUNCTION: th08 0x00405260
-i32 Spellcard::GetInactiveState()
-{
-    return (this->flags >> 9) & 1;
-}
-
-
-// FUNCTION: th08 0x0041FDD0
-i32 Spellcard::GetTimerFrames()
-{
-    return *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x108);
-}
-
-// FUNCTION: th08 0x0041FD90
-i32 Spellcard::GetActiveState()
-{
-    return this->IsActive() && ((this->flags >> 2) & 1);
-}
-
-// FUNCTION: th08 0x00417860
-i32 Spellcard::FUN_00417860()
-{
-    return this->IsActive() && ((this->flags >> 5) & 1);
-}
-
-// FUNCTION: th08 0x0042DFF0
-i32 Spellcard::FUN_0042DFF0()
-{
-    return (this->flags >> 7) & 1;
-}
-
 // FUNCTION: th08 0x00417F60
 ZunResult Spellcard::RegisterChain()
 {
@@ -1433,311 +1690,62 @@ ZunResult Spellcard::DeletedCallback(Spellcard *spellcard)
     return ZUN_SUCCESS;
 }
 
-// FUNCTION: th08 0x00414540
-i32 __fastcall Spellcard::IsLastSpell(i32 spellCardNumber)
+// FUNCTION: th08 0x4180f0
+void Spellcard::CutChain()
 {
-    for (i32 i = 0; i < g_LastSpellCount; ++i)
+    if (g_SpellcardCalcChain != NULL)
     {
-        if (g_LastSpellNumbers[i] == spellCardNumber)
-            return TRUE;
+        g_Chain.Cut(g_SpellcardCalcChain);
     }
-    return FALSE;
+}
+// FUNCTION: th08 0x0041F040
+void Spellcard::SetStoredVector(f32 x, f32 y, f32 z)
+{
+    *(f32 *)(this->spellEffect + 0x2A4) = x;
+    *(f32 *)(this->spellEffect + 0x2A8) = y;
+    *(f32 *)(this->spellEffect + 0x2AC) = z;
 }
 
-// FUNCTION: th08 0x414590
-ZunResult Spellcard::Init()
+struct SpellcardEclFlagBits
 {
-    if (IsResourceReloadEnabled())
-    {
-        memset(this, 0, sizeof(Spellcard));
-        this->commonFaceAnm = g_AnmManager->PreloadAnm(15, "face_cdbg.anm");
-        if (this->commonFaceAnm == NULL)
-            return ZUN_ERROR;
+    u32 lowBits : 6;
+    u32 bit6 : 1;
+    u32 bits7To10 : 4;
+    u32 bit11 : 1;
+    u32 highBits : 20;
+};
+C_ASSERT(sizeof(SpellcardEclFlagBits) == 4);
 
-        if (!g_GameManager.IsSpellPractice())
-        {
-            switch (g_GameManager.shotType)
-            {
-            default:
-                this->playerFaceAnm0 = g_AnmManager->PreloadAnm(16, "face_rm00.anm");
-                if (this->playerFaceAnm0 == NULL)
-                    return ZUN_ERROR;
-                this->playerFaceAnm1 = g_AnmManager->PreloadAnm(17, "face_yk00.anm");
-                if (this->playerFaceAnm1 == NULL)
-                    return ZUN_ERROR;
-                break;
-
-            case SHOT_MARISA_ALICE:
-            case SHOT_MARISA:
-            case SHOT_ALICE:
-                this->playerFaceAnm0 = g_AnmManager->PreloadAnm(16, "face_mr00.anm");
-                if (this->playerFaceAnm0 == NULL)
-                    return ZUN_ERROR;
-                this->playerFaceAnm1 = g_AnmManager->PreloadAnm(17, "face_al00.anm");
-                if (this->playerFaceAnm1 == NULL)
-                    return ZUN_ERROR;
-                break;
-
-            case SHOT_SAKUYA_REMILIA:
-            case SHOT_SAKUYA:
-            case SHOT_REMILIA:
-                this->playerFaceAnm0 = g_AnmManager->PreloadAnm(16, "face_sk00.anm");
-                if (this->playerFaceAnm0 == NULL)
-                    return ZUN_ERROR;
-                this->playerFaceAnm1 = g_AnmManager->PreloadAnm(17, "face_rs00.anm");
-                if (this->playerFaceAnm1 == NULL)
-                    return ZUN_ERROR;
-                break;
-
-            case SHOT_YOUMU_YUYUKO:
-            case SHOT_YOUMU:
-            case SHOT_YUYUKO:
-                this->playerFaceAnm0 = g_AnmManager->PreloadAnm(16, "face_ym00.anm");
-                if (this->playerFaceAnm0 == NULL)
-                    return ZUN_ERROR;
-                this->playerFaceAnm1 = g_AnmManager->PreloadAnm(17, "face_yy00.anm");
-                if (this->playerFaceAnm1 == NULL)
-                    return ZUN_ERROR;
-                break;
-            }
-        }
-    }
-    else
-    {
-        memset(this, 0, sizeof(Spellcard));
-        this->commonFaceAnm = g_AnmManager->GetAnm(15);
-        if (!g_GameManager.IsSpellPractice())
-        {
-            this->playerFaceAnm0 = g_AnmManager->GetAnm(16);
-            this->playerFaceAnm1 = g_AnmManager->GetAnm(17);
-        }
-    }
-
-    if (!IsDisableResourceReload())
-    {
-        if (!g_GameManager.IsSpellPractice())
-        {
-            switch (g_GameManager.currentStage)
-            {
-            case STAGE1:
-                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st01.anm");
-                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                break;
-            case STAGE2:
-                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st02.anm");
-                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                break;
-            case STAGE3:
-                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st03.anm");
-                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                break;
-            case STAGE4A:
-                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st04a.anm");
-                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                break;
-            case STAGE4B:
-                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st04b.anm");
-                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                break;
-            case STAGE5:
-                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st05.anm");
-                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                this->enemyFaceAnm1 = g_AnmManager->PreloadAnm(19, "face_st05b.anm");
-                if (this->enemyFaceAnm1 == NULL) return ZUN_ERROR;
-                break;
-            case STAGE6A:
-                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st06.anm");
-                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                break;
-            case STAGE6B:
-                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st06.anm");
-                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                this->enemyFaceAnm1 = g_AnmManager->PreloadAnm(19, "face_st07.anm");
-                if (this->enemyFaceAnm1 == NULL) return ZUN_ERROR;
-                break;
-            case EXTRASTAGE:
-                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st08m.anm");
-                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                this->enemyFaceAnm1 = g_AnmManager->PreloadAnm(19, "face_st08.anm");
-                if (this->enemyFaceAnm1 == NULL) return ZUN_ERROR;
-                break;
-            default:
-                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st03.anm");
-                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                break;
-            }
-        }
-        else
-        {
-            switch (g_GameManager.currentStage)
-            {
-            case STAGE1:
-                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st01sp.anm");
-                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                break;
-            case STAGE2:
-                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st02sp.anm");
-                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                break;
-            case STAGE3:
-                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st03sp.anm");
-                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                break;
-            case STAGE4A:
-                if (!g_GameManager.IsSpellPractice() || g_GameManager.IsSpellNumberEqualTo(214))
-                {
-                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st04asp.anm");
-                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                }
-                else if (g_GameManager.IsSpellNumberEqualTo(216))
-                {
-                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_sksp.anm");
-                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                }
-                else if (g_GameManager.IsSpellNumberEqualTo(217))
-                {
-                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_ymsp.anm");
-                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                }
-                else if (g_GameManager.IsSpellNumberEqualTo(218))
-                {
-                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_alsp.anm");
-                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                }
-                else if (g_GameManager.IsSpellNumberEqualTo(219))
-                {
-                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_rssp.anm");
-                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                }
-                else if (g_GameManager.IsSpellNumberEqualTo(220))
-                {
-                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_yysp.anm");
-                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                }
-                else if (g_GameManager.IsSpellNumberEqualTo(221))
-                {
-                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_yksp.anm");
-                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                }
-                else
-                {
-                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st04asp.anm");
-                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                }
-                break;
-            case STAGE4B:
-                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st04bsp.anm");
-                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                break;
-            case STAGE5:
-                if (g_GameManager.IsSpellNumberEqualTo(212))
-                {
-                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st05msp.anm");
-                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                }
-                else
-                {
-                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st05sp.anm");
-                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                }
-                break;
-            case STAGE6A:
-                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st06sp.anm");
-                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                break;
-            case STAGE6B:
-                if (g_GameManager.IsSpellNumberInRange(147, 150))
-                {
-                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st06sp.anm");
-                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                }
-                else
-                {
-                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st07sp.anm");
-                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                }
-                break;
-            case EXTRASTAGE:
-                if (g_GameManager.IsSpellNumberInRange(191, 193) || g_GameManager.IsSpellNumberEqualTo(213))
-                {
-                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st08msp.anm");
-                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                }
-                else if (g_GameManager.IsSpellNumberInRange(194, 204) || g_GameManager.IsSpellNumberEqualTo(211))
-                {
-                    this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st08sp.anm");
-                    if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                }
-                break;
-            default:
-                this->enemyFaceAnm0 = g_AnmManager->PreloadAnm(18, "face_st03.anm");
-                if (this->enemyFaceAnm0 == NULL) return ZUN_ERROR;
-                break;
-            }
-        }
-    }
-    else
-    {
-        this->enemyFaceAnm0 = g_AnmManager->GetAnm(18);
-        this->enemyFaceAnm1 = g_AnmManager->GetAnm(19);
-    }
-
-    if (this->playerFaceAnm0 != NULL)
-    {
-        this->playerFaceAnm0->SetAndExecuteScriptIdx(&this->vm120, 0);
-        this->playerFaceAnm0->SetAndExecuteScriptIdx(&this->vm3C4, 0);
-    }
-
-    (*reinterpret_cast<AnmLoaded **>(0x017CE8F4))->SetAndExecuteScriptIdx(&this->vm10F8, 4);
-    (*reinterpret_cast<AnmLoaded **>(0x017CE8F4))->SetAndExecuteScriptIdx(&this->vm139C, 5);
-    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->SetAndExecuteScriptIdx(&this->vm1B88, 1);
-    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->SetAndExecuteScriptIdx(&this->vm1E2C, 0);
-    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->SetAndExecuteScriptIdx(&this->vm2374, 2);
-    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->SetAndExecuteScriptIdx(&this->vm20D0, 4);
-
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm120) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm668) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vmBB0) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm10F8) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm3C4) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm90C) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vmE54) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm139C) + 0x220) = 0;
-
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm120) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm668) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vmBB0) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm10F8) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm3C4) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm90C) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vmE54) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm139C) + 0x1F8) &= ~1u;
-
-    this->vm10F8.fontWidth = 15;
-    this->vm10F8.fontHeight = 15;
-    this->vm139C.fontWidth = 15;
-    this->vm139C.fontHeight = 15;
-    this->pendingTimeOrbs = 0;
-    return ZUN_SUCCESS;
+// FUNCTION: th08 0x0041F0B0
+void Spellcard::FUN_0041f0b0(i32 value)
+{
+    reinterpret_cast<SpellcardEclFlagBits *>(&this->flags)->bit6 = value;
 }
 
-// FUNCTION: th08 0x4144d0
-#pragma var_order(difficulty, i)
-i32 Spellcard::GetDifficultyFromSpellCard(i32 spellCardNumber)
+// FUNCTION: th08 0x0041F0E0
+void Spellcard::FUN_0041f0e0(i32 value)
 {
-    i32 difficulty;
-    i32 i;
-    for (difficulty = 0; difficulty < MAX_DIFFICULTIES; difficulty++)
-    {
-        for (i = 0; i < g_SpellcardCountsPerDifficulty[difficulty]; i++)
-        {
-            if (g_SpellcardNumbersPerDifficulty[difficulty][i] == spellCardNumber)
-            {
-                return difficulty;
-            }
-        }
-    }
-    return MAX_DIFFICULTIES;
+    reinterpret_cast<SpellcardEclFlagBits *>(&this->flags)->bit11 = value;
+}
+
+
+
+// FUNCTION: th08 0x0041FD90
+i32 Spellcard::GetActiveState()
+{
+    return this->IsActive() && ((this->flags >> 2) & 1);
+}
+
+// FUNCTION: th08 0x0041FDD0
+i32 Spellcard::GetTimerFrames()
+{
+    return *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x108);
+}
+
+// FUNCTION: th08 0x0042DFF0
+i32 Spellcard::FUN_0042DFF0()
+{
+    return (this->flags >> 7) & 1;
 }
 
 // FUNCTION: th08 0x44cba0
@@ -1756,12 +1764,4 @@ void Spellcard::FUN_0044d150()
     this->bonusProgress = 0;
 }
 
-// FUNCTION: th08 0x4180f0
-void Spellcard::CutChain()
-{
-    if (g_SpellcardCalcChain != NULL)
-    {
-        g_Chain.Cut(g_SpellcardCalcChain);
-    }
-}
 } /* namespace th08 */
