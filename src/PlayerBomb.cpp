@@ -322,6 +322,22 @@ void __fastcall FUN_0040c010(Player *player)
     }
 }
 
+// FUNCTION: th08 0x40c7b0
+f32 VectorAngle(f32 y, f32 x)
+{
+    return (f32)atan2(y, x);
+}
+
+// FUNCTION: th08 0x40c7d0
+#pragma var_order(inverse, this)
+Float3 Float3::operator/(f32 scalar) const
+{
+    f32 inverse;
+
+    inverse = 1.0f / scalar;
+    return Float3(this->x * inverse, this->y * inverse, this->z * inverse);
+}
+
 // FUNCTION: th08 0x40c820
 #pragma var_order(vm, i, workItem)
 void __fastcall FUN_0040c820(Player *player)

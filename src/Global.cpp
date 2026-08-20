@@ -209,46 +209,6 @@ loop_exit:
     return updatedCount;
 }
 
-void Chain::ReleaseSingleChain(ChainElem *root)
-{
-    // NOTE: Those names are like this to get perfect stack frame matching
-    // TODO: Give meaningfull names that still match.
-    ChainElem a0;
-    ChainElem *current;
-    ChainElem *tmp;
-    ChainElem *wasNext;
-
-    tmp = (ChainElem *)g_ZunMemory.AddToRegistry(new ChainElem(), sizeof(ChainElem), "funcChainInf");
-    a0.next = tmp;
-
-    current = root;
-    while (current != NULL)
-    {
-        tmp->unkPtr = current;
-        tmp->next = (ChainElem *)g_ZunMemory.AddToRegistry(new ChainElem(), sizeof(ChainElem), "funcChainInf");
-        tmp = tmp->next;
-        current = current->next;
-    }
-
-    current = &a0;
-    while (current != NULL)
-    {
-        Cut(current->unkPtr);
-        current = current->next;
-    }
-
-    tmp = a0.next;
-
-    while (tmp != NULL)
-    {
-        wasNext = tmp->next;
-        g_ZunMemory.RemoveFromRegistry(tmp);
-        delete tmp;
-        tmp = NULL;
-        tmp = wasNext;
-    }
-}
-
 #pragma var_order(current, updatedCount, result, tmp1)
 int Chain::RunDrawChain()
 {
@@ -309,6 +269,46 @@ int Chain::RunDrawChain()
 loop_exit:
     g_Supervisor.LeaveCriticalSectionWrapper(0);
     return updatedCount;
+}
+
+void Chain::ReleaseSingleChain(ChainElem *root)
+{
+    // NOTE: Those names are like this to get perfect stack frame matching
+    // TODO: Give meaningfull names that still match.
+    ChainElem a0;
+    ChainElem *current;
+    ChainElem *tmp;
+    ChainElem *wasNext;
+
+    tmp = (ChainElem *)g_ZunMemory.AddToRegistry(new ChainElem(), sizeof(ChainElem), "funcChainInf");
+    a0.next = tmp;
+
+    current = root;
+    while (current != NULL)
+    {
+        tmp->unkPtr = current;
+        tmp->next = (ChainElem *)g_ZunMemory.AddToRegistry(new ChainElem(), sizeof(ChainElem), "funcChainInf");
+        tmp = tmp->next;
+        current = current->next;
+    }
+
+    current = &a0;
+    while (current != NULL)
+    {
+        Cut(current->unkPtr);
+        current = current->next;
+    }
+
+    tmp = a0.next;
+
+    while (tmp != NULL)
+    {
+        wasNext = tmp->next;
+        g_ZunMemory.RemoveFromRegistry(tmp);
+        delete tmp;
+        tmp = NULL;
+        tmp = wasNext;
+    }
 }
 
 void Chain::Release()
@@ -1216,53 +1216,6 @@ f32 Rng::GetRandomF32Signed(void)
     return (f32)GetRandomU32() / (f32)INT_MAX - 1.0f;
 }
 
-
-// FUNCTION: th08 0x409080
-Float3 Float3::operator+(const Float3 &other) const
-{
-    return Float3(this->x + other.x, this->y + other.y, this->z + other.z);
-}
-
-// FUNCTION: th08 0x4090d0
-Float3 Float3::operator-(const Float3 &other) const
-{
-    return Float3(this->x - other.x, this->y - other.y, this->z - other.z);
-}
-
-// FUNCTION: th08 0x409120
-Float3 Float3::operator*(f32 scalar) const
-{
-    return Float3(this->x * scalar, this->y * scalar, this->z * scalar);
-}
-
-// FUNCTION: th08 0x40b470
-#pragma var_order(inverse, this)
-Float3 *Float3::operator/=(f32 scalar)
-{
-    f32 inverse;
-
-    inverse = 1.0f / scalar;
-    this->x *= inverse;
-    this->y *= inverse;
-    this->z *= inverse;
-    return this;
-}
-
-// FUNCTION: th08 0x40c7d0
-#pragma var_order(inverse, this)
-Float3 Float3::operator/(f32 scalar) const
-{
-    f32 inverse;
-
-    inverse = 1.0f / scalar;
-    return Float3(this->x * inverse, this->y * inverse, this->z * inverse);
-}
-
-// FUNCTION: th08 0x40c7b0
-f32 VectorAngle(f32 y, f32 x)
-{
-    return (f32)atan2(y, x);
-}
 
 f32 AddNormalizeAngle(f32 a, f32 b)
 {

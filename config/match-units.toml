@@ -61882,7 +61882,7 @@ target = 0x00406640
 
 [[units]]
 name = "float3-operator-plus"
-object = "build/Global.obj"
+object = "build/Background.obj"
 symbol = "??HFloat3@th08@@QBE?AU01@ABU01@@Z"
 target_address = 0x00409080
 size = 0x46
@@ -61895,7 +61895,7 @@ target = 0x00404720
 
 [[units]]
 name = "float3-operator-minus"
-object = "build/Global.obj"
+object = "build/Background.obj"
 symbol = "??GFloat3@th08@@QBE?AU01@ABU01@@Z"
 target_address = 0x004090D0
 size = 0x46
@@ -61908,7 +61908,7 @@ target = 0x00404720
 
 [[units]]
 name = "float3-operator-mul"
-object = "build/Global.obj"
+object = "build/Background.obj"
 symbol = "??DFloat3@th08@@QBE?AU01@M@Z"
 target_address = 0x00409120
 size = 0x3E
@@ -61921,7 +61921,7 @@ target = 0x00404720
 
 [[units]]
 name = "float3-operator-div"
-object = "build/Global.obj"
+object = "build/PlayerBomb.obj"
 symbol = "??KFloat3@th08@@QBE?AU01@M@Z"
 target_address = 0x0040C7D0
 size = 0x4C
@@ -61940,7 +61940,7 @@ target = 0x00404720
 
 [[units]]
 name = "vector-angle"
-object = "build/Global.obj"
+object = "build/PlayerBomb.obj"
 symbol = "?VectorAngle@th08@@YIMMM@Z"
 target_address = 0x0040C7B0
 size = 0x18
@@ -64717,7 +64717,7 @@ target = 0x00464DD0
 # Evidence: source-emitted function; strict COFF relocation replay against pinned target.
 [[units]]
 name = "float3-operator-div-equals"
-object = "build/Global.obj"
+object = "build/Background.obj"
 symbol = "??_0Float3@th08@@QAEPAU01@M@Z"
 target_address = 0x0040B470
 size = 0x49
@@ -104455,7 +104455,7 @@ size = 0x11
 # Ledger name: th08::Float3::Float3
 [[units]]
 name = "float3-xyz-constructor-00404720"
-object = "build/Global.obj"
+object = "build/AsciiManager.obj"
 symbol = "??0Float3@th08@@QAE@MMM@Z"
 target_address = 0x00404720
 size = 0x2A

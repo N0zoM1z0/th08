@@ -648,6 +648,24 @@ instructions_done:
 #undef BG_COLOR
 }
 
+// FUNCTION: th08 0x409080
+Float3 Float3::operator+(const Float3 &other) const
+{
+    return Float3(this->x + other.x, this->y + other.y, this->z + other.z);
+}
+
+// FUNCTION: th08 0x4090d0
+Float3 Float3::operator-(const Float3 &other) const
+{
+    return Float3(this->x - other.x, this->y - other.y, this->z - other.z);
+}
+
+// FUNCTION: th08 0x409120
+Float3 Float3::operator*(f32 scalar) const
+{
+    return Float3(this->x * scalar, this->y * scalar, this->z * scalar);
+}
+
 // FUNCTION: th08 0x409160
 #pragma var_order(color2, this)
 void Background::FUN_00409160(D3DCOLOR color)
@@ -1571,6 +1589,19 @@ u32 Background::FUN_00409f40()
         }
     }
     return 0;
+}
+
+// FUNCTION: th08 0x40b470
+#pragma var_order(inverse, this)
+Float3 *Float3::operator/=(f32 scalar)
+{
+    f32 inverse;
+
+    inverse = 1.0f / scalar;
+    this->x *= inverse;
+    this->y *= inverse;
+    this->z *= inverse;
+    return this;
 }
 
 // FUNCTION: th08 0x40b5a0
