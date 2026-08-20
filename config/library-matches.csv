@@ -257,3 +257,5 @@ address,name,size,status,unit,evidence
 0x00492D06,x3d_D3DXMatrixRotationAxis,281,matching,d3dx-x3d-matrix-rotation-axis,python3 scripts/compare-library.py d3dx-x3d-matrix-rotation-axis --json
 0x00492E1F,x3d_D3DXMatrixTransformation_K7,4436,matching,d3dx-x3d-matrix-transformation-k7,python3 scripts/compare-library.py d3dx-x3d-matrix-transformation-k7 --json
 0x00493F73,x3d_D3DXMatrixInverse_K7,738,matching,d3dx-x3d-matrix-inverse-k7,python3 scripts/compare-library.py d3dx-x3d-matrix-inverse-k7 --json
+0x0047AAF3,D3DXLoadSurfaceFromFileInMemory,184,matching,d3dx-load-surface-from-file-in-memory,python3 scripts/compare-library.py d3dx-load-surface-from-file-in-memory --json
+0x0047B72E,D3DXCreateTextureFromFileInMemoryEx,64,matching,d3dx-create-texture-from-file-in-memory-ex,python3 scripts/compare-library.py d3dx-create-texture-from-file-in-memory-ex --json

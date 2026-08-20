@@ -10512,3 +10512,48 @@ offset = 0x23B
 type = "DIR32"
 symbol = "?const3dn_1_N1@@3T__m64@@B"
 target_base = 0x004BA810
+
+[[units]]
+name = "d3dx-load-surface-from-file-in-memory"
+target_address = 0x0047AAF3
+body_size = 0xB8
+compare_size = 0xB8
+archive = "vc7-d3dx8-prerelease"
+member = "obj/i386/d3dx8tex.obj"
+symbol = "_D3DXLoadSurfaceFromFileInMemory@36"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0xD
+type = "REL32"
+symbol = "??0CD3DXImage@@QAE@XZ"
+target_base = 0x0047BADD
+[[units.relocations]]
+offset = 0x31
+type = "REL32"
+symbol = "?Load@CD3DXImage@@QAEJPBXKPAU_D3DXIMAGE_INFO@@H@Z"
+target_base = 0x0047D5A6
+[[units.relocations]]
+offset = 0x78
+type = "REL32"
+symbol = "??1CD3DXImage@@QAE@XZ"
+target_base = 0x0047BAF6
+[[units.relocations]]
+offset = 0xAC
+type = "REL32"
+symbol = "_D3DXLoadSurfaceFromMemory@40"
+target_base = 0x0047A586
+
+[[units]]
+name = "d3dx-create-texture-from-file-in-memory-ex"
+target_address = 0x0047B72E
+body_size = 0x40
+compare_size = 0x40
+archive = "vc7-d3dx8-prerelease"
+member = "obj/i386/d3dx8tex.obj"
+symbol = "_D3DXCreateTextureFromFileInMemoryEx@60"
+allow_auxless_comdat = true
+[[units.relocations]]
+offset = 0x35
+type = "REL32"
+symbol = "?CreateTextureFromFileInMemoryEx@@YAJPAUIDirect3DDevice8@@PBXIIIIIKW4_D3DFORMAT@@W4_D3DPOOL@@KKKPAU_D3DXIMAGE_INFO@@PAUtagPALETTEENTRY@@W4_D3DRESOURCETYPE@@PAPAUIDirect3DBaseTexture8@@@Z"
+target_base = 0x0047B0BB
