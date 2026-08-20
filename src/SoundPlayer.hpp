@@ -109,11 +109,35 @@ class SoundPlayer
     void FreePreloadedBGM(i32 idx);
     void StopBGM();
     void FadeOut(f32 seconds);
-    void FadeIn(f32 seconds);
-    void PartialFadeOut(f32 seconds);
-    void PartialFadeIn(f32 seconds);
-    void Pause();
-    void UnPause();
+    void FadeIn(f32 seconds)
+    {
+        if (this->bgm != NULL)
+        {
+            this->bgm->FadeIn(seconds);
+        }
+    }
+    void PartialFadeOut(f32 seconds)
+    {
+        if (this->bgm != NULL)
+        {
+            this->bgm->PartialFadeOut(seconds);
+        }
+    }
+    void PartialFadeIn(f32 seconds)
+    {
+        if (this->bgm != NULL)
+        {
+            this->bgm->PartialFadeIn(seconds);
+        }
+    }
+    void Pause()
+    {
+        this->QueueCommand(6, 0, "Pause");
+    }
+    void UnPause()
+    {
+        this->QueueCommand(7, 0, "UnPause");
+    }
 
     void UpdateFades()
     {

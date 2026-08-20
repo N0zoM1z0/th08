@@ -48856,10 +48856,10 @@ target_address = 0x00449C79
 size = 0x18
 
 # Ledger name: th08::SoundPlayer::FadeIn
-# Evidence: IDA-attested TH08 body forwards to active BGM stream when present; exact COFF replay from SoundPlayer.obj.
+# Evidence: target-neighbor Ascii callers naturally emit the exact header COMDAT under /Od.
 [[units]]
 name = "soundplayer-fade-exact-00406ac0"
-object = "build/SoundPlayer.obj"
+object = "build/AsciiManager.obj"
 symbol = "?FadeIn@SoundPlayer@th08@@QAEXM@Z"
 target_address = 0x00406AC0
 size = 0x2B
@@ -48871,10 +48871,10 @@ symbol = "?FadeIn@CStreamingSound@th08@@QAEXM@Z"
 target = 0x00406AF0
 
 # Ledger name: th08::CStreamingSound::FadeIn
-# Evidence: IDA-attested TH08 body sets fade type 2, converts seconds to frames, and starts at silent volume; exact COFF replay from SoundPlayer.obj.
+# Evidence: the Ascii-emitted stream helper is target-adjacent to its SoundPlayer wrapper and replays exactly.
 [[units]]
 name = "soundplayer-fade-exact-00406af0"
-object = "build/SoundPlayer.obj"
+object = "build/AsciiManager.obj"
 symbol = "?FadeIn@CStreamingSound@th08@@QAEXM@Z"
 target_address = 0x00406AF0
 size = 0x44
@@ -48898,10 +48898,10 @@ symbol = "?SetVolume@CSound@th08@@QAEJH@Z"
 target = 0x00472840
 
 # Ledger name: th08::SoundPlayer::PartialFadeOut
-# Evidence: IDA-attested TH08 body forwards to active BGM stream when present; exact COFF replay from SoundPlayer.obj.
+# Evidence: target-neighbor Ascii callers naturally emit the exact header COMDAT under /Od.
 [[units]]
 name = "soundplayer-fade-exact-00406b40"
-object = "build/SoundPlayer.obj"
+object = "build/AsciiManager.obj"
 symbol = "?PartialFadeOut@SoundPlayer@th08@@QAEXM@Z"
 target_address = 0x00406B40
 size = 0x2B
@@ -48913,10 +48913,10 @@ symbol = "?PartialFadeOut@CStreamingSound@th08@@QAEXM@Z"
 target = 0x00406B70
 
 # Ledger name: th08::CStreamingSound::PartialFadeOut
-# Evidence: IDA-attested TH08 body sets fade type 4 and converts seconds to frames; exact COFF replay from SoundPlayer.obj.
+# Evidence: the Ascii-emitted stream helper is target-adjacent to its SoundPlayer wrapper and replays exactly.
 [[units]]
 name = "soundplayer-fade-exact-00406b70"
-object = "build/SoundPlayer.obj"
+object = "build/AsciiManager.obj"
 symbol = "?PartialFadeOut@CStreamingSound@th08@@QAEXM@Z"
 target_address = 0x00406B70
 size = 0x37
@@ -48934,10 +48934,10 @@ symbol = "__ftol2"
 target = 0x004A3E70
 
 # Ledger name: th08::SoundPlayer::PartialFadeIn
-# Evidence: IDA-attested TH08 body forwards to active BGM stream when present; exact COFF replay from SoundPlayer.obj.
+# Evidence: target-neighbor Ascii callers naturally emit the exact header COMDAT under /Od.
 [[units]]
 name = "soundplayer-fade-exact-00406bb0"
-object = "build/SoundPlayer.obj"
+object = "build/AsciiManager.obj"
 symbol = "?PartialFadeIn@SoundPlayer@th08@@QAEXM@Z"
 target_address = 0x00406BB0
 size = 0x2B
@@ -48949,10 +48949,10 @@ symbol = "?PartialFadeIn@CStreamingSound@th08@@QAEXM@Z"
 target = 0x00406BE0
 
 # Ledger name: th08::CStreamingSound::PartialFadeIn
-# Evidence: IDA-attested TH08 body sets fade type 3, converts seconds to frames, and starts at partial-muted volume; exact COFF replay from SoundPlayer.obj.
+# Evidence: the Ascii-emitted stream helper is target-adjacent to its SoundPlayer wrapper and replays exactly.
 [[units]]
 name = "soundplayer-fade-exact-00406be0"
-object = "build/SoundPlayer.obj"
+object = "build/AsciiManager.obj"
 symbol = "?PartialFadeIn@CStreamingSound@th08@@QAEXM@Z"
 target_address = 0x00406BE0
 size = 0x44
@@ -48976,10 +48976,10 @@ symbol = "?SetVolume@CSound@th08@@QAEJH@Z"
 target = 0x00472840
 
 # Ledger name: th08::SoundPlayer::Pause
-# Evidence: IDA-attested TH08 body enqueues opcode 6 with "Pause"; exact COFF replay from SoundPlayer.obj.
+# Evidence: the target-neighbor Ascii caller naturally emits the exact header COMDAT under /Od.
 [[units]]
 name = "soundplayer-command-exact-00406c30"
-object = "build/SoundPlayer.obj"
+object = "build/AsciiManager.obj"
 symbol = "?Pause@SoundPlayer@th08@@QAEXXZ"
 target_address = 0x00406C30
 size = 0x1C
@@ -48997,10 +48997,10 @@ symbol = "?QueueCommand@SoundPlayer@th08@@QAEXHHPAD@Z"
 target = 0x0045E1E0
 
 # Ledger name: th08::SoundPlayer::UnPause
-# Evidence: IDA-attested TH08 body enqueues opcode 7 with "UnPause"; exact COFF replay from SoundPlayer.obj.
+# Evidence: the target-neighbor Ascii caller naturally emits the exact header COMDAT under /Od.
 [[units]]
 name = "soundplayer-command-exact-00406c50"
-object = "build/SoundPlayer.obj"
+object = "build/AsciiManager.obj"
 symbol = "?UnPause@SoundPlayer@th08@@QAEXXZ"
 target_address = 0x00406C50
 size = 0x1C

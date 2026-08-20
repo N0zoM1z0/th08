@@ -172,9 +172,23 @@ class CStreamingSound : public CSound
         m_iFadeType = 1;
         m_iTotalFade = m_iCurFadeProgress = seconds * 60;
     }
-    void FadeIn(f32 seconds);
-    void PartialFadeOut(f32 seconds);
-    void PartialFadeIn(f32 seconds);
+    void FadeIn(f32 seconds)
+    {
+        this->m_iFadeType = 2;
+        this->m_iTotalFade = this->m_iCurFadeProgress = seconds * 60;
+        this->SetVolume(DSBVOLUME_MIN);
+    }
+    void PartialFadeOut(f32 seconds)
+    {
+        this->m_iFadeType = 4;
+        this->m_iTotalFade = this->m_iCurFadeProgress = seconds * 60;
+    }
+    void PartialFadeIn(f32 seconds)
+    {
+        this->m_iFadeType = 3;
+        this->m_iTotalFade = this->m_iCurFadeProgress = seconds * 60;
+        this->SetVolume(-1000);
+    }
 };
 
 //-----------------------------------------------------------------------------
