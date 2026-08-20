@@ -234,10 +234,6 @@ i32 GameManager::GetLastSpellTimeOrbThreshold()
     return this->globals->lastSpellTimeOrbThreshold;
 }
 
-i32 GameManager::GetLives()
-{
-    return this->globals->livesRemaining;
-}
 #pragma optimize("", on)
 
 i32 GameManager::GetBombsRemaining()
@@ -892,20 +888,6 @@ ZunBool GameManager::IsReplayPractice()
 {
     return this->flags.isReplay && g_ReplayManager->replayData->isPractice;
 }
-
-// FUNCTION: th08 0x42f230
-#pragma optimize("t", on)
-ZunBool GameManager::IsSoloHuman()
-{
-    return this->shotType >= 4 && (this->shotType & 1) == 0;
-}
-
-// FUNCTION: th08 0x42f270
-ZunBool GameManager::IsSoloYoukai()
-{
-    return this->shotType >= 4 && (this->shotType & 1) != 0;
-}
-#pragma optimize("", on)
 
 void GameManager::CutChain()
 {

@@ -76,7 +76,6 @@ struct GameManager
 
     i32 GetTimeOrbs();
     i32 GetLastSpellTimeOrbThreshold();
-    i32 GetLives();
     i32 GetBombsRemaining();
     i32 GetDeaths();
     i32 GetBombsUsed();
@@ -162,8 +161,18 @@ struct GameManager
         return this->flags.isDemoMode;
     }
 
-    ZunBool IsSoloHuman();
-    ZunBool IsSoloYoukai();
+    ZunBool IsSoloHuman()
+    {
+        return this->shotType >= 4 && (this->shotType & 1) == 0;
+    }
+    ZunBool IsSoloYoukai()
+    {
+        return this->shotType >= 4 && (this->shotType & 1) != 0;
+    }
+    i32 GetLives()
+    {
+        return this->globals->livesRemaining;
+    }
 
     i32 GetYoukaiGauge()
     {

@@ -1153,14 +1153,14 @@ target = 0x018B8A28
 
 [[units]]
 name = "game-manager-is-solo-human"
-object = "build/GameManager.obj"
+object = "build/EnemyManager.obj"
 symbol = "?IsSoloHuman@GameManager@th08@@QAEIXZ"
 target_address = 0x0042F230
 size = 0x40
 
 [[units]]
 name = "game-manager-is-solo-youkai"
-object = "build/GameManager.obj"
+object = "build/EnemyManager.obj"
 symbol = "?IsSoloYoukai@GameManager@th08@@QAEIXZ"
 target_address = 0x0042F270
 size = 0x40
@@ -54397,8 +54397,8 @@ size = 0x14
 # Evidence: source-emitted member in GameManager.cpp.
 [[units]]
 name = "game-manager-get-lives"
-object = "build/objdiff/reimpl/GameManager.obj"
-symbol = "th08::GameManager::GetLives"
+object = "build/EnemyManager.obj"
+symbol = "?GetLives@GameManager@th08@@QAEHXZ"
 target_address = 0x0042F2B0
 size = 0x19
 
