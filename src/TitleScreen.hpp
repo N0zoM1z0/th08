@@ -105,24 +105,7 @@ struct TitleScreen
         this->idleFrames = 0;
     }
 
-    ZunResult SetKeyNumberSprite(AnmVm *vms, i16 key)
-    {
-        if (key < 0)
-        {
-            vms[0].flag1 = FALSE;
-            vms[1].flag1 = FALSE;
-        }
-        else
-        {
-            this->titleAnm->SetSprite(&vms[0], vms[0].baseSpriteIndex + (key / 10) * 2);
-            this->titleAnm->SetSprite(&vms[1], vms[1].baseSpriteIndex + (key % 10) * 2);
-
-            vms[0].flag1 = TRUE;
-            vms[1].flag1 = TRUE;
-        }
-
-        return ZUN_SUCCESS;
-    }
+    ZunResult SetKeyNumberSprite(AnmVm *vms, i16 key);
 
     void SetKeyConfigKey(i16 keyToChange, i16 newKey, i32 unused)
     {

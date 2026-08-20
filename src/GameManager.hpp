@@ -213,13 +213,7 @@ struct GameManager
         return catk->inGameHistory.attempts[shotType] > 0 || catk->spellPracticeHistory.attempts[shotType] != 0;
     }
 
-    ZunBool IsLastWordSpellCardAttempted(i32 spellCardNumber)
-    {
-        return spellCardNumber < SPELLCARD_LAST_WORD_START &&
-                   (this->catkData[spellCardNumber].inGameHistory.attempts[SHOT_ALL] != 0 ||
-                    this->catkData[spellCardNumber].spellPracticeHistory.attempts[SHOT_ALL] != 0) ||
-               this->flsp.unlockedLastWordSpellCards[spellCardNumber - SPELLCARD_LAST_WORD_START] == spellCardNumber;
-    }
+    ZunBool IsLastWordSpellCardAttempted(i32 spellCardNumber);
 
     i32 GetPower()
     {

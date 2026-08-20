@@ -1351,6 +1351,27 @@ ChainCallbackResult TitleScreen::OnUpdateKeyConfig()
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
+// FUNCTION: th08 0x469fa9
+ZunResult TitleScreen::SetKeyNumberSprite(AnmVm *vms, i16 key)
+{
+    if (key < 0)
+    {
+        vms[0].flag1 = FALSE;
+        vms[1].flag1 = FALSE;
+    }
+    else
+    {
+        this->titleAnm->SetSprite(&vms[0], vms[0].baseSpriteIndex + (key / 10) * 2);
+        this->titleAnm->SetSprite(&vms[1], vms[1].baseSpriteIndex + (key % 10) * 2);
+
+        vms[0].flag1 = TRUE;
+        vms[1].flag1 = TRUE;
+    }
+
+    return ZUN_SUCCESS;
+}
+
+
 #pragma var_order(menuLength, i, oldScreen)
 ChainCallbackResult TitleScreen::OnUpdateDifficultySelect()
 {
@@ -2943,6 +2964,16 @@ ChainCallbackResult TitleScreen::DrawSpellStageSelect()
 
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
+
+// FUNCTION: th08 0x46fd5f
+ZunBool GameManager::IsLastWordSpellCardAttempted(i32 spellCardNumber)
+{
+    return spellCardNumber < SPELLCARD_LAST_WORD_START &&
+               (this->catkData[spellCardNumber].inGameHistory.attempts[SHOT_ALL] != 0 ||
+                this->catkData[spellCardNumber].spellPracticeHistory.attempts[SHOT_ALL] != 0) ||
+           this->flsp.unlockedLastWordSpellCards[spellCardNumber - SPELLCARD_LAST_WORD_START] == spellCardNumber;
+}
+
 
 /* Is matching except for missing stack space. */
 #pragma var_order(center, vm, vertices, i, angle)
