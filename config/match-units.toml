@@ -42119,84 +42119,84 @@ target = 0x0160F508
 
 [[units]]
 name = "game-manager-gauge-extremely-human"
-object = "build/main.obj"
+object = "build/AsciiManager.obj"
 symbol = "?GaugeIsExtremelyHuman@GameManager@th08@@QAEIXZ"
 target_address = 0x00406D10
 size = 0x26
 
 [[units]]
 name = "game-manager-gauge-moderately-human"
-object = "build/main.obj"
+object = "build/AsciiManager.obj"
 symbol = "?GaugeIsModeratelyHuman@GameManager@th08@@QAEIXZ"
 target_address = 0x00406D40
 size = 0x26
 
 [[units]]
 name = "game-manager-gauge-extremely-youkai"
-object = "build/main.obj"
+object = "build/AsciiManager.obj"
 symbol = "?GaugeIsExtremelyYoukai@GameManager@th08@@QAEIXZ"
 target_address = 0x00406D70
 size = 0x26
 
 [[units]]
 name = "game-manager-gauge-moderately-youkai"
-object = "build/main.obj"
+object = "build/AsciiManager.obj"
 symbol = "?GaugeIsModeratelyYoukai@GameManager@th08@@QAEIXZ"
 target_address = 0x00406DA0
 size = 0x26
 
 [[units]]
 name = "game-manager-is-spell-practice"
-object = "build/main.obj"
+object = "build/AsciiManager.obj"
 symbol = "?IsSpellPractice@GameManager@th08@@QAEIXZ"
 target_address = 0x00406C70
 size = 0x1A
 
 [[units]]
 name = "game-manager-is-replay"
-object = "build/main.obj"
+object = "build/AsciiManager.obj"
 symbol = "?IsReplay@GameManager@th08@@QAEIXZ"
 target_address = 0x00406C90
 size = 0x1A
 
 [[units]]
 name = "game-manager-is-demo-mode"
-object = "build/main.obj"
+object = "build/AsciiManager.obj"
 symbol = "?IsDemoMode@GameManager@th08@@QAEIXZ"
 target_address = 0x00406CB0
 size = 0x19
 
 [[units]]
 name = "game-manager-get-youkai-gauge"
-object = "build/main.obj"
+object = "build/AsciiManager.obj"
 symbol = "?GetYoukaiGauge@GameManager@th08@@QAEHXZ"
 target_address = 0x00406CF0
 size = 0x15
 
 [[units]]
 name = "game-manager-get-clock-time"
-object = "build/main.obj"
+object = "build/AsciiManager.obj"
 symbol = "?GetClockTime@GameManager@th08@@QAEEXZ"
 target_address = 0x00406DD0
 size = 0x14
 
 [[units]]
 name = "game-manager-set-clock-time"
-object = "build/main.obj"
+object = "build/ReplayManager.obj"
 symbol = "?SetClockTime@GameManager@th08@@QAEXH@Z"
 target_address = 0x00453C60
 size = 0x19
 
 [[units]]
 name = "zun-timer-less-than"
-object = "build/main.obj"
+object = "build/AsciiManager.obj"
 symbol = "??MZunTimer@th08@@QAEIH@Z"
 target_address = 0x004066A0
 size = 0x1B
 
 [[units]]
 name = "zun-timer-greater-than"
-object = "build/main.obj"
+object = "build/AsciiManager.obj"
 symbol = "??OZunTimer@th08@@QAEIH@Z"
 target_address = 0x004066C0
 size = 0x1B
@@ -54929,7 +54929,7 @@ target = 0x004065A0
 
 [[units]]
 name = "game-manager-add-to-clock-time"
-object = "build/main.obj"
+object = "build/AsciiManager.obj"
 symbol = "?AddToClockTime@GameManager@th08@@QAEXD@Z"
 target_address = 0x00406DF0
 size = 0x26
@@ -55102,7 +55102,7 @@ target = 0x004178A0
 
 [[units]]
 name = "zun-timer-post-decrement"
-object = "build/main.obj"
+object = "build/SpellCard.obj"
 symbol = "??FZunTimer@th08@@QAEXH@Z"
 target_address = 0x00418110
 size = 0x17

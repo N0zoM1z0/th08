@@ -139,8 +139,14 @@ struct GameManager
         return this->flags.isPracticeMode;
     }
 
-    ZunBool IsReplay();
-    ZunBool IsSpellPractice();
+    ZunBool IsReplay()
+    {
+        return this->flags.isReplay;
+    }
+    ZunBool IsSpellPractice()
+    {
+        return this->flags.isSpellPractice;
+    }
     ZunBool IsSpellNumberEqualTo(i32 spellCardNumber)
     {
         return this->flags.isSpellPractice ? this->currentSpellCardNumber == spellCardNumber : false;
@@ -151,21 +157,48 @@ struct GameManager
                    ? this->currentSpellCardNumber >= firstSpell && this->currentSpellCardNumber <= lastSpell
                    : false;
     }
-    ZunBool IsDemoMode();
+    ZunBool IsDemoMode()
+    {
+        return this->flags.isDemoMode;
+    }
 
     ZunBool IsSoloHuman();
     ZunBool IsSoloYoukai();
 
-    i32 GetYoukaiGauge();
+    i32 GetYoukaiGauge()
+    {
+        return this->globals->youkaiGauge;
+    }
 
-    ZunBool GaugeIsExtremelyHuman();
-    ZunBool GaugeIsModeratelyHuman();
-    ZunBool GaugeIsExtremelyYoukai();
-    ZunBool GaugeIsModeratelyYoukai();
+    ZunBool GaugeIsExtremelyHuman()
+    {
+        return this->globals->youkaiGauge <= this->youkaiGaugeHumanEffectsThreshold;
+    }
+    ZunBool GaugeIsModeratelyHuman()
+    {
+        return this->globals->youkaiGauge <= this->youkaiGaugeHumanTintThreshold;
+    }
+    ZunBool GaugeIsExtremelyYoukai()
+    {
+        return this->globals->youkaiGauge >= this->youkaiGaugeYoukaiEffectsThreshold;
+    }
+    ZunBool GaugeIsModeratelyYoukai()
+    {
+        return this->globals->youkaiGauge >= this->youkaiGaugeYoukaiTintThreshold;
+    }
 
-    u8 GetClockTime();
-    void AddToClockTime(i8 value);
-    void SetClockTime(i32 value);
+    u8 GetClockTime()
+    {
+        return this->globals->clockTime;
+    }
+    void AddToClockTime(i8 value)
+    {
+        this->globals->clockTime += value;
+    }
+    void SetClockTime(i32 value)
+    {
+        this->globals->clockTime = value;
+    }
 
     ZunBool IsStageClearedWithRetries(i32 stage, i32 character, i32 difficulty);
     ZunBool IsStageClearedWithoutRetries(i32 stage, i32 character, i32 difficulty);
