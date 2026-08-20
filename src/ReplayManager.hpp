@@ -157,10 +157,7 @@ struct ReplayManager
     static ReplayData *LoadReplayData(void *replayData, int fileSize);
     static void StopRecording();
 
-    i32 IsDemo()
-    {
-        return this->isDemo;
-    }
+    i32 IsDemo();
 };
 
 C_ASSERT(sizeof(ReplayManager) == 0xdc);
