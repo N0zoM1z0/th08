@@ -400,13 +400,27 @@ update/render, and the late resource-reload predicate now follow target order.
 span** to **24 / 0 / 1 / 528**. The subsequent cold aggregate replay passed
 **1,105 / 1,105**.
 
+The twelfth bounded pass repaired `Midi.obj`. Its only target-order reset was
+caused by two header-defined bodies whose correct owner was already Midi but
+whose deferred emission positions were wrong. `MidiTimer::OnTimerElapsed @
+0x0043EF40` is the empty virtual base callback and belongs before the main
+`0x00443C60+` Midi implementation; `MidiOutput::Ntohl @ 0x004444E0` belongs
+between `ParseFile` and `LoadFile`. Both caller sets are confined to Midi and
+the target preserves real call/virtual boundaries, so the header declarations
+are now bodyless and the unchanged definitions sit explicitly at their target
+lexical positions in `Midi.cpp`. Focused replay passed **33 / 33**, and the
+subsequent shared-header cold aggregate replay passed **1,105 / 1,105**.
+`Midi.obj` improved from **33 anchors / 43 inversions / 2 runs / 25,888 span**
+to **33 / 0 / 1 / 19,728**; the remaining span is the real target gap from the
+base virtual callback to the main Midi TU.
+
 The raw ranking still places the expanded target-neighbor `AsciiManager.obj`
 cluster first (**63 anchors / 86 inversions / 6 runs / 9,600 span**), but its
 resets remain dominated by already target-backed PCH/header COMDAT groups and
 its first 21 retained Ascii anchors remain exact. Without new owner/caller
 evidence, do not perturb those shared inline contracts merely to reduce the
-metric. The next actionable candidate is `Midi.obj` (**33 / 43 / 2 / 25,888**),
-followed by `EnemyManager.obj` (**18 / 32 / 5 / 111,744**).
+metric. The next actionable candidate is `EnemyManager.obj` (**18 / 32 / 5 /
+111,744**), followed by `Supervisor.obj` (**43 / 29 / 4 / 58,804**).
 Select only one and confirm the target neighborhood before moving definitions;
 the Ascii inversion count includes several independently justified COMDAT
 groups and is not by itself evidence that they have the wrong owner.

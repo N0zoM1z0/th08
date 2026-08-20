@@ -342,6 +342,17 @@ interspersed with functions; a mechanical whole-file function sort can break
 visibility even when the desired code order is correct. This combination
 reduced Background from **61 inversions / 6 runs** to **0 / 1**.
 
+The `Midi.obj` pass is the same-owner deferred-body case in a shared header.
+`MidiTimer::OnTimerElapsed @ 0x0043EF40` and `MidiOutput::Ntohl @ 0x004444E0`
+were already naturally owned by Midi, but inline/header definitions emitted at
+late first-use positions and created the sole target-order reset. Their caller
+sets are bounded to Midi and target code preserves actual call/virtual
+boundaries, so declaration-only headers plus unchanged explicit definitions at
+the target-local positions preserve exact callers while changing only emission
+order. Focused **33 / 33** and cold **1,105 / 1,105** replay reduced Midi from
+**43 inversions / 2 runs** to **0 / 1**. Treat same-owner emission placement as
+a separate question from semantic ownership.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into
