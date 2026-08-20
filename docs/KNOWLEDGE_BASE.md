@@ -437,6 +437,20 @@ aggregate 1,105/1,105 exact.
 
 The `ScreenEffect.obj` pass is the minimal lexical case: a single pair of exact explicit functions (`DrawPartialFade` / `DrawArcadeFade`) was reversed in source. Swapping only those function blocks reduced **1 inversion / 2 runs** to **0 / 1** while preserving **21 / 21** focused exact units.
 
+The production ECL-owner pass adds a target-lane ownership rule. Nominal class
+ownership is weaker than a continuous target subsystem lane when several exact
+helpers were temporarily reconstructed in unrelated production TUs. The target
+places `EclManager::RunEcl @ 0x004184B0` before the ECL helper neighborhood at
+`0x0041F000..0x0041FDF0`; `EnemyManager.cpp`, `Spellcard.cpp`, `main.cpp`, and
+`EclManager.cpp` all use the same `/Od /Yu"th_pch.h"` profile. Rehoming only the
+unchanged exact helper bodies and their canonical match-unit owners into
+`EclManager.cpp` preserved all donor and recipient focused units and cold
+**1,105 / 1,105**, while reducing both SpellCard and main to **0 inversions / 1
+run**. Do not generalize from class names alone: require a mapped target lane,
+compatible codegen, exact donor/recipient replay, and a cold linked-order win.
+This does not by itself promote the separately accepted probe `RunEcl` body to
+production ownership; helper-lane recovery can proceed incrementally.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into

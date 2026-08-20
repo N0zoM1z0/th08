@@ -523,19 +523,31 @@ anchors / 7 inversions / 2 runs / 2,621 span** to **10 / 0 / 1 / 0**.
 
 The twenty-first bounded pass repaired `ScreenEffect.obj`. Its only reset was ordinary lexical disorder: source emitted `DrawArcadeFade @ 0x0045BC40` before `DrawPartialFade @ 0x0045BBF0`, opposite the target. Swapping those complete bodies preserved **21 / 21** focused units; cold aggregate replay passed **1,105 / 1,105**. `ScreenEffect.obj` improved from **14 anchors / 1 inversion / 2 runs / 160 span** to **14 / 0 / 1 / 48**.
 
-The raw ranking still places the expanded target-neighbor `AsciiManager.obj`
-cluster first (**63 anchors / 86 inversions / 6 runs / 9,600 span**), but its
-resets remain dominated by already target-backed PCH/header COMDAT groups and
-its first 21 retained Ascii anchors remain exact. `AnmManager.obj` and
-`SpellCard.obj` also retain previously documented caller/owner-protected
-residuals, and `main.obj` retains the uncalled `ZunTimer::operator+=` reset.
-Without new evidence, do not perturb those contracts merely to reduce the
-metric. The next cleanly actionable candidate is `ScreenEffect.obj` (**14 / 1 /
-2 / 160**); after that, revisit the protected residuals with caller-preserving
-emission techniques rather than metric-only moves.
-Select only one and confirm the target neighborhood before moving definitions;
-the Ascii inversion count includes several independently justified COMDAT
-groups and is not by itself evidence that they have the wrong owner.
+The twenty-third bounded pass repaired the production ECL owner lane that had
+been split across `EnemyManager.obj`, `SpellCard.obj`, and `main.obj`. Target
+mapping shows `EclManager::RunEcl @ 0x004184B0` followed by the ECL operand/run
+neighborhood at `0x0041F000..0x0041FDF0`; all four donor/recipient TUs use the
+same `/Od /Yu"th_pch.h"` profile. The unchanged `HasParentChain`,
+`SetStoredVector`, spellcard ECL flag helpers, attached/parent-chain helpers,
+`GetActiveState`, `GetTimerFrames`, and `ZunTimer::operator+=` bodies now live
+in production `EclManager.cpp`, with `Spellcard::FUN_0042DFF0 @ 0x0042DFF0`
+also following the EclManager timeline getters. Canonical match-unit owners were
+updated with the bodies. Focused replay passed **18 / 18** EclManager, **39 /
+39** EnemyManager, **30 / 30** SpellCard, and **30 / 30** main units. Cold
+aggregate replay passed **1,105 / 1,105**. `SpellCard.obj` improved from **33 /
+18 / 2 / 151,472** to **27 / 0 / 1 / 61,920**, and `main.obj` from **26 / 16 /
+2 / 146,336** to **25 / 0 / 1 / 16**; recipient `EclManager.obj` is **10 / 0 /
+1 / 60,848**. The large EclManager span is target distance, not an order reset.
+
+Only two production objects still report target-order inversions in the latest
+cold normal link: `AsciiManager.obj` (**63 anchors / 86 inversions / 6 runs /
+9,600 span**) and `AnmManager.obj` (**56 / 19 / 2 / 359,840**). The Ascii
+resets remain dominated by already target-backed PCH/header COMDAT groups, so
+use the caller-preserving TU-local COMDAT technique proven by MusicRoom rather
+than global header visibility changes. Investigate `AnmManager.obj` first
+because its two-run shape is bounded; then return to Ascii. Confirm every move
+against target neighborhoods and exact caller/recipient replay rather than
+optimizing the metric alone.
 Large intra-object drift means today's source combines or orders target TUs
 differently, so permuting the existing object list alone cannot solve it. A
 run reset is a routing clue, not automatically a TU boundary: the Player pass
