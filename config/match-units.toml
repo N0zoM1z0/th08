@@ -656,7 +656,7 @@ size = 0x33
 
 [[units]]
 name = "anm-vm-base-initialize"
-object = "build/AnmManager.obj"
+object = "build/AsciiManager.obj"
 symbol = "?Initialize@AnmVmBase@th08@@QAEXXZ"
 target_address = 0x004068E0
 size = 0x5F
@@ -675,7 +675,7 @@ target = 0x004065C0
 
 [[units]]
 name = "anm-vm-set-z-rotation"
-object = "build/AnmManager.obj"
+object = "build/PlayerBomb.obj"
 symbol = "?SetZRotation@AnmVm@th08@@QAEXM@Z"
 target_address = 0x0040EC00
 size = 0x2B
@@ -55177,7 +55177,7 @@ size = 0x17
 
 [[units]]
 name = "anm-vm-fun-004396f8"
-object = "build/AnmManager.obj"
+object = "build/Gui.obj"
 symbol = "?FUN_004396f8@AnmVm@th08@@QAEIXZ"
 target_address = 0x004396F8
 size = 0x18
@@ -59891,14 +59891,14 @@ target = 0x0040BAB0
 
 [[units]]
 name = "anm-manager-set-camera-mode"
-object = "build/AnmManager.obj"
+object = "build/Background.obj"
 symbol = "?SetCameraMode@AnmManager@th08@@QAEXH@Z"
 target_address = 0x0040BA90
 size = 0x19
 
 [[units]]
 name = "anm-manager-draw2d-and-flush"
-object = "build/AnmManager.obj"
+object = "build/Background.obj"
 symbol = "?Draw2DAndFlush@AnmManager@th08@@QAEXPAUAnmVm@2@@Z"
 target_address = 0x0040BAF0
 size = 0x21
@@ -60216,7 +60216,7 @@ target = 0x0160F508
 
 [[units]]
 name = "anm-manager-get-anm"
-object = "build/AnmManager.obj"
+object = "build/Background.obj"
 symbol = "?GetAnm@AnmManager@th08@@QAEPAUAnmLoaded@2@H@Z"
 target_address = 0x0040BB60
 size = 0x1A
@@ -70468,7 +70468,7 @@ size = 0x3F
 
 [[units]]
 name = "anm-set-texture-capture-params"
-object = "build/AnmManager.obj"
+object = "build/AsciiManager.obj"
 symbol = "?SetTextureCaptureParams@AnmManager@th08@@QAE?AW4ZunResult@@IIIIIIIII@Z"
 target_address = 0x00406A30
 size = 0x8C

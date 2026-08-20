@@ -12,45 +12,15 @@
 namespace th08
 {
 
-// FUNCTION: th08 0x40b580
-VertexDiffuseXyzrhw::VertexDiffuseXyzrhw()
-{
-}
-
-
-#pragma optimize("s", on)
-// FUNCTION: th08 0x004396F8
-u32 AnmVm::FUN_004396f8()
-{
-    return (*(u32 *)((u8 *)this + 0x1F8) >> 14) & 1;
-}
-#pragma optimize("", on)
-
-
-// FUNCTION: th08 0x4068e0
-void AnmVmBase::Initialize()
-{
-    memset(this, 0, sizeof(AnmVmBase));
-
-    this->scale.x = 1.0f;
-    this->scale.y = 1.0f;
-    this->color1.d3dColor = COLOR_WHITE;
-    D3DXMatrixIdentity(&this->matrix1);
-    this->flags = 7;
-    this->currentTimeInScript.Initialize();
-}
-
-// FUNCTION: th08 0x40ec00
-void AnmVm::SetZRotation(f32 z)
-{
-    this->rotation.z = z;
-    this->updateRotation = 1;
-}
-
 // FUNCTION: th08 0x406700
 void AnmVm::ClearVisible()
 {
     this->visible = false;
+}
+
+// FUNCTION: th08 0x40b580
+VertexDiffuseXyzrhw::VertexDiffuseXyzrhw()
+{
 }
 
 DIFFABLE_STATIC(AnmManager *, g_AnmManager);
@@ -981,17 +951,7 @@ void AnmLoaded::ExecuteAnmIdxArray(AnmVm *vm, i32 scriptIdx, i32 count)
     }
 }
 
-u8 MixColors(u8 color1, u8 color2)
-{
-    u32 color = ((color1 * color2) / 128U);
-
-    if (color >= 256)
-    {
-        color = 255;
-    }
-
-    return color;
-}
+u8 MixColors(u8 color1, u8 color2);
 
 // FUNCTION: th08 0x004623c0
 #pragma var_order(color, this)
@@ -1095,6 +1055,18 @@ void AnmManager::SetRenderStateForVm3D(AnmVm *vm)
     }
 
     this->renderStateChangesThisFrame++;
+}
+
+u8 MixColors(u8 color1, u8 color2)
+{
+    u32 color = ((color1 * color2) / 128U);
+
+    if (color >= 256)
+    {
+        color = 255;
+    }
+
+    return color;
 }
 
 void AnmManager::SetRenderStateForVm(AnmVm *vm)
@@ -1283,286 +1255,124 @@ ZunResult AnmManager::AddSpriteToDrawBuffer(VertexTex1DiffuseXyzrhw *vertices)
     return ZUN_SUCCESS;
 }
 
-// FUNCTION: th08 0x00464470
-#pragma var_order(textureMatrix, rotationMatrix, worldTransformMatrix, this)
-ZunResult AnmManager::Draw3D(AnmVm *vm)
+#pragma var_order(spriteHalfWidth, spriteHalfHeight)
+ZunResult AnmManager::DrawNoRotation(AnmVm *vm)
 {
-    D3DMATRIX textureMatrix;
-    D3DXMATRIX rotationMatrix;
-    D3DXMATRIX worldTransformMatrix;
+    float spriteHalfWidth;
+    float spriteHalfHeight;
 
     if (!vm->IsVisible())
     {
         return ZUN_ERROR;
     }
+
     if (!vm->flag1)
     {
         return ZUN_ERROR;
     }
+
     if (vm->color1.a == 0)
     {
         return ZUN_ERROR;
     }
 
-    if (this->spritesToDraw != 0)
-    {
-        this->FlushVertexBuffer();
-    }
+    spriteHalfWidth = (vm->spriteSize.x * vm->scale.x) / 2.0f;
+    spriteHalfHeight = (vm->spriteSize.y * vm->scale.y) / 2.0f;
 
-    if (!vm->flag16 && (vm->updateScale || vm->updateRotation))
-    {
-        vm->matrix2 = vm->matrix1;
-        vm->matrix2._11 *= vm->scale.x;
-        vm->matrix2._22 *= vm->scale.y;
-        vm->updateScale = 0;
-
-        if (vm->rotation.x != 0.0)
-        {
-            D3DXMatrixRotationX(&rotationMatrix, vm->rotation.x);
-            D3DXMatrixMultiply(&vm->matrix2, &vm->matrix2, &rotationMatrix);
-        }
-        if (vm->rotation.y != 0.0)
-        {
-            D3DXMatrixRotationY(&rotationMatrix, vm->rotation.y);
-            D3DXMatrixMultiply(&vm->matrix2, &vm->matrix2, &rotationMatrix);
-        }
-        if (vm->rotation.z != 0.0)
-        {
-            D3DXMatrixRotationZ(&rotationMatrix, vm->rotation.z);
-            D3DXMatrixMultiply(&vm->matrix2, &vm->matrix2, &rotationMatrix);
-        }
-        vm->updateRotation = 0;
-    }
-
-    worldTransformMatrix = vm->matrix2;
     if ((vm->anchor & 1) == 0)
     {
-        worldTransformMatrix._41 = vm->pos.x;
+        g_QuadVertices[0].pos.x = g_QuadVertices[2].pos.x = vm->pos.x - spriteHalfWidth;
+        g_QuadVertices[1].pos.x = g_QuadVertices[3].pos.x = spriteHalfWidth + vm->pos.x;
     }
     else
     {
-        worldTransformMatrix._41 = fabsf(vm->spriteSize.x * vm->scale.x / 2.0f) + vm->pos.x;
+        g_QuadVertices[0].pos.x = g_QuadVertices[2].pos.x = vm->pos.x;
+        g_QuadVertices[1].pos.x = g_QuadVertices[3].pos.x = spriteHalfWidth + vm->pos.x + spriteHalfWidth;
     }
+
     if ((vm->anchor & 2) == 0)
     {
-        worldTransformMatrix._42 = vm->pos.y;
+        g_QuadVertices[0].pos.y = g_QuadVertices[1].pos.y = vm->pos.y - spriteHalfHeight;
+        g_QuadVertices[2].pos.y = g_QuadVertices[3].pos.y = spriteHalfHeight + vm->pos.y;
     }
     else
     {
-        worldTransformMatrix._42 = fabsf(vm->spriteSize.y * vm->scale.y / 2.0f) + vm->pos.y;
-    }
-    worldTransformMatrix._41 += this->screenShakeOffset.x;
-    worldTransformMatrix._42 += this->screenShakeOffset.y;
-
-    this->SetRenderStateForVm3D(vm);
-    worldTransformMatrix._43 = vm->pos.z;
-    g_Supervisor.d3dDevice->SetTransform(D3DTS_WORLD, &worldTransformMatrix);
-
-    if (this->currentSprite != vm->loadedSprite || vm->uvScrollPos.x != 0.0f || vm->uvScrollPos.x != 0.0f)
-    {
-        this->currentSprite = vm->loadedSprite;
-        textureMatrix = vm->matrix3;
-        textureMatrix._31 = vm->loadedSprite->uvStart.x + vm->uvScrollPos.x;
-        textureMatrix._32 = vm->loadedSprite->uvStart.y + vm->uvScrollPos.y;
-        g_Supervisor.d3dDevice->SetTransform(D3DTS_TEXTURE0, &textureMatrix);
-
-        if (this->currentTexture != vm->loadedSprite->texture)
-        {
-            this->currentTexture = vm->loadedSprite->texture;
-            g_Supervisor.d3dDevice->SetTexture(0, this->currentTexture);
-        }
+        g_QuadVertices[0].pos.y = g_QuadVertices[1].pos.y = vm->pos.y;
+        g_QuadVertices[2].pos.y = g_QuadVertices[3].pos.y = spriteHalfHeight + vm->pos.y + spriteHalfHeight;
     }
 
-    if (this->currentVertexShader != 2)
-    {
-        if (!g_Supervisor.IsVertexBufferDisabled())
-        {
-            g_Supervisor.d3dDevice->SetVertexShader(D3DFVF_XYZ | D3DFVF_TEX1);
-            g_Supervisor.d3dDevice->SetStreamSource(0, this->quadVertexBuffer, sizeof(VertexDiffuseXyzrhw));
-        }
-        else
-        {
-            g_Supervisor.d3dDevice->SetVertexShader(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1);
-        }
-        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
-        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_TFACTOR);
-        this->currentVertexShader = 2;
-    }
+    g_QuadVertices[0].pos.z = g_QuadVertices[1].pos.z = g_QuadVertices[2].pos.z = g_QuadVertices[3].pos.z = vm->pos.z;
 
-    if (!g_Supervisor.IsVertexBufferDisabled())
-    {
-        g_Supervisor.d3dDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
-    }
-    else
-    {
-        g_Supervisor.d3dDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, g_BackgroundQuadVertices,
-                                                 sizeof(VertexTex0Xyzrhw));
-    }
-    return ZUN_SUCCESS;
+    return this->DrawInner(vm, 1);
 }
 
-// FUNCTION: th08 0x4649a0
-#pragma var_order(y, i, vertex, x, currentX, step, xSpan)
-ZunResult AnmManager::FUN_004649a0(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount)
+void AnmManager::TranslateRotation(VertexTex1DiffuseXyzrhw *vertex, float x, float y, float sine, float cosine,
+                                   float xOffset, float yOffset)
 {
-    f32 y;
-    i32 i;
-    VertexTex1DiffuseXyzrhw *vertex;
-    f32 x;
-    f32 currentX;
-    f32 step;
-    f32 xSpan;
-
-    if (vertexCount < 3)
-        return ZUN_ERROR;
-
-    x = vm->loadedSprite->uvEnd.x + vm->uvScrollPos.x;
-    xSpan = vm->loadedSprite->uvEnd.x - vm->loadedSprite->uvStart.x;
-    y = vm->loadedSprite->uvStart.y + vm->uvScrollPos.y;
-    vertex = vertices;
-    step = xSpan / ((vertexCount + 1) / 2 - 1);
-    i = 0;
-    currentX = x;
-    for (; i < vertexCount; i += 2, vertex += 2, currentX -= step)
-    {
-        vertex->textureUV.x = currentX;
-        vertex->textureUV.y = y;
-        vertex->diffuse = vm->color1.d3dColor;
-        vertex->w = 1.0f;
-    }
-
-    y = vm->loadedSprite->uvEnd.y + vm->uvScrollPos.y;
-    vertex = vertices + 1;
-    i = 1;
-    currentX = x;
-    for (; i < vertexCount; i += 2, vertex += 2, currentX -= step)
-    {
-        vertex->textureUV.x = currentX;
-        vertex->textureUV.y = y;
-        vertex->diffuse = vm->color1.d3dColor;
-        vertex->w = 1.0f;
-    }
-    return ZUN_SUCCESS;
+    vertex->pos.x = x * cosine - y * sine + xOffset;
+    vertex->pos.y = x * sine + y * cosine + yOffset;
 }
 
-// FUNCTION: th08 0x00464c60
-// FUNCTION: th08 0x464b00
-#pragma var_order(x, i, vertex, y, currentY, step, ySpan)
-ZunResult AnmManager::FUN_00464b00(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount)
+
+#pragma var_order(sine, rotation, cosine, x, y, yOffset, xOffset)
+ZunResult AnmManager::Draw2D(AnmVm *vm)
 {
-    f32 x;
-    i32 i;
-    VertexTex1DiffuseXyzrhw *vertex;
-    f32 y;
-    f32 currentY;
-    f32 step;
-    f32 ySpan;
+    float sine, cosine, rotation, xOffset, yOffset, x, y;
 
-    if (vertexCount < 3)
-        return ZUN_ERROR;
-
-    y = vm->loadedSprite->uvEnd.y + vm->uvScrollPos.y;
-    ySpan = vm->loadedSprite->uvEnd.y - vm->loadedSprite->uvStart.y;
-    x = vm->loadedSprite->uvStart.x + vm->uvScrollPos.x;
-    vertex = vertices;
-    step = ySpan / ((vertexCount + 1) / 2 - 1);
-    i = 0;
-    currentY = y;
-    for (; i < vertexCount; i += 2, vertex += 2, currentY -= step)
+    if (vm->rotation.z == 0.0f)
     {
-        vertex->textureUV.y = currentY;
-        vertex->textureUV.x = x;
-        vertex->diffuse = vm->color1.d3dColor;
-        vertex->w = 1.0f;
+        return this->DrawNoRotation(vm);
     }
 
-    x = vm->loadedSprite->uvEnd.x + vm->uvScrollPos.x;
-    vertex = vertices + 1;
-    i = 1;
-    currentY = y;
-    for (; i < vertexCount; i += 2, vertex += 2, currentY -= step)
-    {
-        vertex->textureUV.y = currentY;
-        vertex->textureUV.x = x;
-        vertex->diffuse = vm->color1.d3dColor;
-        vertex->w = 1.0f;
-    }
-    return ZUN_SUCCESS;
-}
-
-ZunResult AnmManager::DrawVertices(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount)
-{
-    if (!vm->IsVisible())
-        return ZUN_ERROR;
-    if (!vm->flag1)
-        return ZUN_ERROR;
-    if (vm->color1.a == 0)
-        return ZUN_ERROR;
-
-    if (this->spritesToDraw != 0)
-        this->FlushVertexBuffer();
-
-    if (this->currentTexture != vm->loadedSprite->texture)
-    {
-        this->currentTexture = vm->loadedSprite->texture;
-        g_Supervisor.d3dDevice->SetTexture(0, this->currentTexture);
-    }
-
-    if (this->currentVertexShader != 3)
-    {
-        g_Supervisor.d3dDevice->SetVertexShader(D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1);
-        this->currentVertexShader = 3;
-    }
-
-    this->SetRenderStateForVm(vm);
-
-    if (!this->needsTextureFactorSetup)
-    {
-        this->needsTextureFactorSetup = 1;
-        if (!g_Supervisor.IsVertexBufferDisabled())
-        {
-            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
-            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
-        }
-    }
-
-    g_Supervisor.d3dDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, vertexCount - 2, vertices,
-                                             sizeof(VertexTex1DiffuseXyzrhw));
-    return ZUN_SUCCESS;
-}
-
-// FUNCTION: th08 0x00464dd0
-ZunResult AnmManager::FUN_00464dd0(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices)
-{
     if (!vm->IsVisible())
     {
         return ZUN_ERROR;
     }
+
     if (!vm->flag1)
     {
         return ZUN_ERROR;
     }
+
     if (vm->color1.a == 0)
     {
         return ZUN_ERROR;
     }
 
-    if (this->currentTexture != vm->loadedSprite->texture)
+    rotation = vm->rotation.z;
+
+    sincos(rotation, sine, cosine);
+
+    xOffset = vm->pos.x;
+    yOffset = vm->pos.y;
+
+    x = (vm->spriteSize.x * vm->scale.x) / 2.0f;
+    y = (vm->spriteSize.y * vm->scale.y) / 2.0f;
+
+    this->TranslateRotation(&g_QuadVertices[0], -x, -y, sine, cosine, xOffset, yOffset);
+    this->TranslateRotation(&g_QuadVertices[1], x, -y, sine, cosine, xOffset, yOffset);
+    this->TranslateRotation(&g_QuadVertices[2], -x, y, sine, cosine, xOffset, yOffset);
+    this->TranslateRotation(&g_QuadVertices[3], x, y, sine, cosine, xOffset, yOffset);
+
+    g_QuadVertices[0].pos.z = g_QuadVertices[1].pos.z = g_QuadVertices[2].pos.z = g_QuadVertices[3].pos.z = vm->pos.z;
+
+    if (vm->anchor & 1)
     {
-        this->currentTexture = vm->loadedSprite->texture;
-        this->FlushVertexBuffer();
-        g_Supervisor.d3dDevice->SetTexture(0, this->currentTexture);
+        g_QuadVertices[0].pos.x += x;
+        g_QuadVertices[1].pos.x += x;
+        g_QuadVertices[2].pos.x += x;
+        g_QuadVertices[3].pos.x += x;
     }
 
-    if (this->currentVertexShader != 1)
+    if (vm->anchor & 2)
     {
-        this->FlushVertexBuffer();
-        this->currentVertexShader = 1;
+        g_QuadVertices[0].pos.y += y;
+        g_QuadVertices[1].pos.y += y;
+        g_QuadVertices[2].pos.y += y;
+        g_QuadVertices[3].pos.y += y;
     }
 
-    this->SetRenderStateForVm(vm);
-    this->AddSpriteToDrawBuffer(vertices);
-    return ZUN_SUCCESS;
+    return this->DrawInner(vm, 0);
 }
 
 // FUNCTION: th08 0x00463470
@@ -1659,8 +1469,11 @@ ZunResult AnmManager::FUN_00463470(AnmVm *vm)
     return this->DrawInner(vm, 0);
 }
 
+/* This is identical to DrawNoRotation except for 0 being passed to DrawInner,
+ * which doesn't round and subtract 0.5 from each vertex.
+ */
 #pragma var_order(spriteHalfWidth, spriteHalfHeight)
-ZunResult AnmManager::DrawNoRotation(AnmVm *vm)
+ZunResult AnmManager::DrawNoRotationNoRound(AnmVm *vm)
 {
     float spriteHalfWidth;
     float spriteHalfHeight;
@@ -1707,16 +1520,8 @@ ZunResult AnmManager::DrawNoRotation(AnmVm *vm)
 
     g_QuadVertices[0].pos.z = g_QuadVertices[1].pos.z = g_QuadVertices[2].pos.z = g_QuadVertices[3].pos.z = vm->pos.z;
 
-    return this->DrawInner(vm, 1);
+    return this->DrawInner(vm, 0);
 }
-
-void AnmManager::TranslateRotation(VertexTex1DiffuseXyzrhw *vertex, float x, float y, float sine, float cosine,
-                                   float xOffset, float yOffset)
-{
-    vertex->pos.x = x * cosine - y * sine + xOffset;
-    vertex->pos.y = x * sine + y * cosine + yOffset;
-}
-
 
 // FUNCTION: th08 0x4639e0
 #pragma var_order(halfWidth, halfHeight, yOffset, xOffset, sine, worldMatrix, rotation, projectedReference, projectedPosition, delta, cosine, origin, this)
@@ -1959,119 +1764,286 @@ ZunResult AnmManager::DrawWithCallback(AnmVm *vm, void *callback)
     return this->DrawInner(vm, 0);
 }
 
-#pragma var_order(sine, rotation, cosine, x, y, yOffset, xOffset)
-ZunResult AnmManager::Draw2D(AnmVm *vm)
+// FUNCTION: th08 0x00464470
+#pragma var_order(textureMatrix, rotationMatrix, worldTransformMatrix, this)
+ZunResult AnmManager::Draw3D(AnmVm *vm)
 {
-    float sine, cosine, rotation, xOffset, yOffset, x, y;
-
-    if (vm->rotation.z == 0.0f)
-    {
-        return this->DrawNoRotation(vm);
-    }
+    D3DMATRIX textureMatrix;
+    D3DXMATRIX rotationMatrix;
+    D3DXMATRIX worldTransformMatrix;
 
     if (!vm->IsVisible())
     {
         return ZUN_ERROR;
     }
-
     if (!vm->flag1)
     {
         return ZUN_ERROR;
     }
-
     if (vm->color1.a == 0)
     {
         return ZUN_ERROR;
     }
 
-    rotation = vm->rotation.z;
-
-    sincos(rotation, sine, cosine);
-
-    xOffset = vm->pos.x;
-    yOffset = vm->pos.y;
-
-    x = (vm->spriteSize.x * vm->scale.x) / 2.0f;
-    y = (vm->spriteSize.y * vm->scale.y) / 2.0f;
-
-    this->TranslateRotation(&g_QuadVertices[0], -x, -y, sine, cosine, xOffset, yOffset);
-    this->TranslateRotation(&g_QuadVertices[1], x, -y, sine, cosine, xOffset, yOffset);
-    this->TranslateRotation(&g_QuadVertices[2], -x, y, sine, cosine, xOffset, yOffset);
-    this->TranslateRotation(&g_QuadVertices[3], x, y, sine, cosine, xOffset, yOffset);
-
-    g_QuadVertices[0].pos.z = g_QuadVertices[1].pos.z = g_QuadVertices[2].pos.z = g_QuadVertices[3].pos.z = vm->pos.z;
-
-    if (vm->anchor & 1)
+    if (this->spritesToDraw != 0)
     {
-        g_QuadVertices[0].pos.x += x;
-        g_QuadVertices[1].pos.x += x;
-        g_QuadVertices[2].pos.x += x;
-        g_QuadVertices[3].pos.x += x;
+        this->FlushVertexBuffer();
     }
 
-    if (vm->anchor & 2)
+    if (!vm->flag16 && (vm->updateScale || vm->updateRotation))
     {
-        g_QuadVertices[0].pos.y += y;
-        g_QuadVertices[1].pos.y += y;
-        g_QuadVertices[2].pos.y += y;
-        g_QuadVertices[3].pos.y += y;
+        vm->matrix2 = vm->matrix1;
+        vm->matrix2._11 *= vm->scale.x;
+        vm->matrix2._22 *= vm->scale.y;
+        vm->updateScale = 0;
+
+        if (vm->rotation.x != 0.0)
+        {
+            D3DXMatrixRotationX(&rotationMatrix, vm->rotation.x);
+            D3DXMatrixMultiply(&vm->matrix2, &vm->matrix2, &rotationMatrix);
+        }
+        if (vm->rotation.y != 0.0)
+        {
+            D3DXMatrixRotationY(&rotationMatrix, vm->rotation.y);
+            D3DXMatrixMultiply(&vm->matrix2, &vm->matrix2, &rotationMatrix);
+        }
+        if (vm->rotation.z != 0.0)
+        {
+            D3DXMatrixRotationZ(&rotationMatrix, vm->rotation.z);
+            D3DXMatrixMultiply(&vm->matrix2, &vm->matrix2, &rotationMatrix);
+        }
+        vm->updateRotation = 0;
     }
 
-    return this->DrawInner(vm, 0);
-}
-
-/* This is identical to DrawNoRotation except for 0 being passed to DrawInner,
- * which doesn't round and subtract 0.5 from each vertex.
- */
-#pragma var_order(spriteHalfWidth, spriteHalfHeight)
-ZunResult AnmManager::DrawNoRotationNoRound(AnmVm *vm)
-{
-    float spriteHalfWidth;
-    float spriteHalfHeight;
-
-    if (!vm->IsVisible())
-    {
-        return ZUN_ERROR;
-    }
-
-    if (!vm->flag1)
-    {
-        return ZUN_ERROR;
-    }
-
-    if (vm->color1.a == 0)
-    {
-        return ZUN_ERROR;
-    }
-
-    spriteHalfWidth = (vm->spriteSize.x * vm->scale.x) / 2.0f;
-    spriteHalfHeight = (vm->spriteSize.y * vm->scale.y) / 2.0f;
-
+    worldTransformMatrix = vm->matrix2;
     if ((vm->anchor & 1) == 0)
     {
-        g_QuadVertices[0].pos.x = g_QuadVertices[2].pos.x = vm->pos.x - spriteHalfWidth;
-        g_QuadVertices[1].pos.x = g_QuadVertices[3].pos.x = spriteHalfWidth + vm->pos.x;
+        worldTransformMatrix._41 = vm->pos.x;
     }
     else
     {
-        g_QuadVertices[0].pos.x = g_QuadVertices[2].pos.x = vm->pos.x;
-        g_QuadVertices[1].pos.x = g_QuadVertices[3].pos.x = spriteHalfWidth + vm->pos.x + spriteHalfWidth;
+        worldTransformMatrix._41 = fabsf(vm->spriteSize.x * vm->scale.x / 2.0f) + vm->pos.x;
     }
-
     if ((vm->anchor & 2) == 0)
     {
-        g_QuadVertices[0].pos.y = g_QuadVertices[1].pos.y = vm->pos.y - spriteHalfHeight;
-        g_QuadVertices[2].pos.y = g_QuadVertices[3].pos.y = spriteHalfHeight + vm->pos.y;
+        worldTransformMatrix._42 = vm->pos.y;
     }
     else
     {
-        g_QuadVertices[0].pos.y = g_QuadVertices[1].pos.y = vm->pos.y;
-        g_QuadVertices[2].pos.y = g_QuadVertices[3].pos.y = spriteHalfHeight + vm->pos.y + spriteHalfHeight;
+        worldTransformMatrix._42 = fabsf(vm->spriteSize.y * vm->scale.y / 2.0f) + vm->pos.y;
+    }
+    worldTransformMatrix._41 += this->screenShakeOffset.x;
+    worldTransformMatrix._42 += this->screenShakeOffset.y;
+
+    this->SetRenderStateForVm3D(vm);
+    worldTransformMatrix._43 = vm->pos.z;
+    g_Supervisor.d3dDevice->SetTransform(D3DTS_WORLD, &worldTransformMatrix);
+
+    if (this->currentSprite != vm->loadedSprite || vm->uvScrollPos.x != 0.0f || vm->uvScrollPos.x != 0.0f)
+    {
+        this->currentSprite = vm->loadedSprite;
+        textureMatrix = vm->matrix3;
+        textureMatrix._31 = vm->loadedSprite->uvStart.x + vm->uvScrollPos.x;
+        textureMatrix._32 = vm->loadedSprite->uvStart.y + vm->uvScrollPos.y;
+        g_Supervisor.d3dDevice->SetTransform(D3DTS_TEXTURE0, &textureMatrix);
+
+        if (this->currentTexture != vm->loadedSprite->texture)
+        {
+            this->currentTexture = vm->loadedSprite->texture;
+            g_Supervisor.d3dDevice->SetTexture(0, this->currentTexture);
+        }
     }
 
-    g_QuadVertices[0].pos.z = g_QuadVertices[1].pos.z = g_QuadVertices[2].pos.z = g_QuadVertices[3].pos.z = vm->pos.z;
+    if (this->currentVertexShader != 2)
+    {
+        if (!g_Supervisor.IsVertexBufferDisabled())
+        {
+            g_Supervisor.d3dDevice->SetVertexShader(D3DFVF_XYZ | D3DFVF_TEX1);
+            g_Supervisor.d3dDevice->SetStreamSource(0, this->quadVertexBuffer, sizeof(VertexDiffuseXyzrhw));
+        }
+        else
+        {
+            g_Supervisor.d3dDevice->SetVertexShader(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1);
+        }
+        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_TFACTOR);
+        this->currentVertexShader = 2;
+    }
 
-    return this->DrawInner(vm, 0);
+    if (!g_Supervisor.IsVertexBufferDisabled())
+    {
+        g_Supervisor.d3dDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+    }
+    else
+    {
+        g_Supervisor.d3dDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, g_BackgroundQuadVertices,
+                                                 sizeof(VertexTex0Xyzrhw));
+    }
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x4649a0
+#pragma var_order(y, i, vertex, x, currentX, step, xSpan)
+ZunResult AnmManager::FUN_004649a0(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount)
+{
+    f32 y;
+    i32 i;
+    VertexTex1DiffuseXyzrhw *vertex;
+    f32 x;
+    f32 currentX;
+    f32 step;
+    f32 xSpan;
+
+    if (vertexCount < 3)
+        return ZUN_ERROR;
+
+    x = vm->loadedSprite->uvEnd.x + vm->uvScrollPos.x;
+    xSpan = vm->loadedSprite->uvEnd.x - vm->loadedSprite->uvStart.x;
+    y = vm->loadedSprite->uvStart.y + vm->uvScrollPos.y;
+    vertex = vertices;
+    step = xSpan / ((vertexCount + 1) / 2 - 1);
+    i = 0;
+    currentX = x;
+    for (; i < vertexCount; i += 2, vertex += 2, currentX -= step)
+    {
+        vertex->textureUV.x = currentX;
+        vertex->textureUV.y = y;
+        vertex->diffuse = vm->color1.d3dColor;
+        vertex->w = 1.0f;
+    }
+
+    y = vm->loadedSprite->uvEnd.y + vm->uvScrollPos.y;
+    vertex = vertices + 1;
+    i = 1;
+    currentX = x;
+    for (; i < vertexCount; i += 2, vertex += 2, currentX -= step)
+    {
+        vertex->textureUV.x = currentX;
+        vertex->textureUV.y = y;
+        vertex->diffuse = vm->color1.d3dColor;
+        vertex->w = 1.0f;
+    }
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x464b00
+#pragma var_order(x, i, vertex, y, currentY, step, ySpan)
+ZunResult AnmManager::FUN_00464b00(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount)
+{
+    f32 x;
+    i32 i;
+    VertexTex1DiffuseXyzrhw *vertex;
+    f32 y;
+    f32 currentY;
+    f32 step;
+    f32 ySpan;
+
+    if (vertexCount < 3)
+        return ZUN_ERROR;
+
+    y = vm->loadedSprite->uvEnd.y + vm->uvScrollPos.y;
+    ySpan = vm->loadedSprite->uvEnd.y - vm->loadedSprite->uvStart.y;
+    x = vm->loadedSprite->uvStart.x + vm->uvScrollPos.x;
+    vertex = vertices;
+    step = ySpan / ((vertexCount + 1) / 2 - 1);
+    i = 0;
+    currentY = y;
+    for (; i < vertexCount; i += 2, vertex += 2, currentY -= step)
+    {
+        vertex->textureUV.y = currentY;
+        vertex->textureUV.x = x;
+        vertex->diffuse = vm->color1.d3dColor;
+        vertex->w = 1.0f;
+    }
+
+    x = vm->loadedSprite->uvEnd.x + vm->uvScrollPos.x;
+    vertex = vertices + 1;
+    i = 1;
+    currentY = y;
+    for (; i < vertexCount; i += 2, vertex += 2, currentY -= step)
+    {
+        vertex->textureUV.y = currentY;
+        vertex->textureUV.x = x;
+        vertex->diffuse = vm->color1.d3dColor;
+        vertex->w = 1.0f;
+    }
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x00464c60
+ZunResult AnmManager::DrawVertices(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount)
+{
+    if (!vm->IsVisible())
+        return ZUN_ERROR;
+    if (!vm->flag1)
+        return ZUN_ERROR;
+    if (vm->color1.a == 0)
+        return ZUN_ERROR;
+
+    if (this->spritesToDraw != 0)
+        this->FlushVertexBuffer();
+
+    if (this->currentTexture != vm->loadedSprite->texture)
+    {
+        this->currentTexture = vm->loadedSprite->texture;
+        g_Supervisor.d3dDevice->SetTexture(0, this->currentTexture);
+    }
+
+    if (this->currentVertexShader != 3)
+    {
+        g_Supervisor.d3dDevice->SetVertexShader(D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1);
+        this->currentVertexShader = 3;
+    }
+
+    this->SetRenderStateForVm(vm);
+
+    if (!this->needsTextureFactorSetup)
+    {
+        this->needsTextureFactorSetup = 1;
+        if (!g_Supervisor.IsVertexBufferDisabled())
+        {
+            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
+            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+        }
+    }
+
+    g_Supervisor.d3dDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, vertexCount - 2, vertices,
+                                             sizeof(VertexTex1DiffuseXyzrhw));
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x00464dd0
+ZunResult AnmManager::FUN_00464dd0(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices)
+{
+    if (!vm->IsVisible())
+    {
+        return ZUN_ERROR;
+    }
+    if (!vm->flag1)
+    {
+        return ZUN_ERROR;
+    }
+    if (vm->color1.a == 0)
+    {
+        return ZUN_ERROR;
+    }
+
+    if (this->currentTexture != vm->loadedSprite->texture)
+    {
+        this->currentTexture = vm->loadedSprite->texture;
+        this->FlushVertexBuffer();
+        g_Supervisor.d3dDevice->SetTexture(0, this->currentTexture);
+    }
+
+    if (this->currentVertexShader != 1)
+    {
+        this->FlushVertexBuffer();
+        this->currentVertexShader = 1;
+    }
+
+    this->SetRenderStateForVm(vm);
+    this->AddSpriteToDrawBuffer(vertices);
+    return ZUN_SUCCESS;
 }
 
 ZunResult AnmManager::DrawTriangleFan(AnmVm *vm, VertexDiffuseXyzrhw *vertices, i32 vertexCount)
@@ -2119,25 +2091,6 @@ ZunResult AnmManager::DrawTriangleFan(AnmVm *vm, VertexDiffuseXyzrhw *vertices, 
     return ZUN_SUCCESS;
 }
 
-
-// FUNCTION: th08 0x40baf0
-void AnmManager::Draw2DAndFlush(AnmVm *vm)
-{
-    this->Draw2D(vm);
-    this->FlushVertexBuffer();
-}
-
-// FUNCTION: th08 0x40ba90
-void AnmManager::SetCameraMode(i32 mode)
-{
-    this->cameraMode = mode;
-}
-
-// FUNCTION: th08 0x40bb60
-AnmLoaded *AnmManager::GetAnm(i32 anmIdx)
-{
-    return &this->anmFiles[anmIdx];
-}
 
 // FUNCTION: th08 0x465070
 AnmManager::AnmManager()
@@ -3085,25 +3038,6 @@ void AnmManager::CaptureToTexture(i32 captureAnmIdx, i32 srcX, i32 srcY, i32 src
 
     textureSurface->Release();
     backbuffer->Release();
-}
-
-// FUNCTION: th08 0x406a30
-ZunResult AnmManager::SetTextureCaptureParams(u32 captureAnmIdx, u32 srcX, u32 srcY, u32 srcW, u32 srcH, u32 dstX,
-                                              u32 dstY, u32 dstW, u32 dstH)
-{
-    if (this->captureAnmIdx >= 0)
-        return ZUN_ERROR;
-
-    this->captureAnmIdx = captureAnmIdx;
-    this->textureCaptureSrcX = srcX;
-    this->textureCaptureSrcY = srcY;
-    this->textureCaptureSrcW = srcW;
-    this->textureCaptureSrcH = srcH;
-    this->textureCaptureDstX = dstX;
-    this->textureCaptureDstY = dstY;
-    this->textureCaptureDstW = dstW;
-    this->textureCaptureDstH = dstH;
-    return ZUN_SUCCESS;
 }
 
 // FUNCTION: th08 0x467040

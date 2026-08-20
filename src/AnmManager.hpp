@@ -373,7 +373,11 @@ C_ASSERT(sizeof(AnmVmBase) == 0x208);
 
 struct AnmVm : AnmVmBase
 {
-    void SetZRotation(f32 z);
+    void SetZRotation(f32 z)
+    {
+        this->rotation.z = z;
+        this->updateRotation = 1;
+    }
     void ClearVisible();
 
     Float3 pos;
@@ -410,7 +414,10 @@ struct AnmVm : AnmVmBase
         this->activeSpriteIndex = -1;
     }
 
-    u32 FUN_004396f8();
+    u32 FUN_004396f8()
+    {
+        return (*(u32 *)((u8 *)this + 0x1F8) >> 14) & 1;
+    }
     i32 FUN_0040eb50();
     void FUN_0040ec30(i32 duration, i32 mode, Float3 *value0, Float3 *value1);
     void FUN_0040eca0(i32 duration, i32 mode, u32 color0, u32 color1);
@@ -519,7 +526,15 @@ struct AnmManager
     ZunResult FUN_00464070(AnmVm *vm);
     ZunResult FUN_004649a0(AnmVm *vm, void *state, i32 count);
     ZunResult DrawWithCallback(AnmVm *vm, void *callback);
-    void Draw2DAndFlush(AnmVm *vm);
+    void SetCameraMode(i32 mode)
+    {
+        this->cameraMode = mode;
+    }
+    void Draw2DAndFlush(AnmVm *vm)
+    {
+        this->Draw2D(vm);
+        this->FlushVertexBuffer();
+    }
     ZunResult DrawNoRotationNoRound(AnmVm *vm);
     ZunResult Draw3D(AnmVm *vm);
     ZunResult DrawVertices(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount);
@@ -532,7 +547,10 @@ struct AnmManager
     ZunResult CreateEmptyTexture(IDirect3DTexture8 **outTexture, i32 width, i32 height, i32 format);
     AnmLoaded *LoadAnm(i32 anmIdx, const char *filename);
     AnmLoaded *ReadAnmEntries(i32 anmIdx, const char *filename);
-    AnmLoaded *GetAnm(i32 anmIdx);
+    AnmLoaded *GetAnm(i32 anmIdx)
+    {
+        return &this->anmFiles[anmIdx];
+    }
     AnmLoaded *PreloadAnm(i32 anmIdx, const char *filename);
     i32 LoadExternalTextureData(AnmLoaded *anmLoaded, i32 entryNumber, i32 *sprites, i32 *scripts,
                                 AnmRawEntry *rawEntry);
@@ -541,7 +559,6 @@ struct AnmManager
     ZunResult ServicePreloadedAnims();
     void ReleaseAnm(i32 anmIdx);
     void ReleaseAnmEntry(AnmEntry *anmEntry);
-    void SetCameraMode(i32 mode);
 
     void DrawTextInner(IDirect3DTexture8 *outTexture, i32 x, i32 y, i32 width, i32 height, i32 fontWidth,
                        i32 fontHeight, COLORREF textColor, COLORREF outlineColor, const char *buffer,
@@ -702,7 +719,23 @@ struct AnmManager
 
     void CaptureToTexture(i32 captureAnmIdx, i32 srcX, i32 srcY, i32 srcW, i32 srcH, i32 dstX, i32 dstY, i32 dstW,
                           i32 dstH);
-    ZunResult SetTextureCaptureParams(u32 captureAnmIdx, u32 srcX, u32 srcY, u32 srcW, u32 srcH, u32 dstX, u32 dstY, u32 dstW, u32 dstH);
+    ZunResult SetTextureCaptureParams(u32 captureAnmIdx, u32 srcX, u32 srcY, u32 srcW, u32 srcH, u32 dstX,
+                                      u32 dstY, u32 dstW, u32 dstH)
+    {
+        if (this->captureAnmIdx >= 0)
+            return ZUN_ERROR;
+
+        this->captureAnmIdx = captureAnmIdx;
+        this->textureCaptureSrcX = srcX;
+        this->textureCaptureSrcY = srcY;
+        this->textureCaptureSrcW = srcW;
+        this->textureCaptureSrcH = srcH;
+        this->textureCaptureDstX = dstX;
+        this->textureCaptureDstY = dstY;
+        this->textureCaptureDstW = dstW;
+        this->textureCaptureDstH = dstH;
+        return ZUN_SUCCESS;
+    }
     void CopyTextureRect(i32 dstAnmIdx, i32 dstEntryIdx, i32 srcAnmIdx, i32 srcEntryIdx, RECT *dstRect,
                          RECT *srcRect);
     void CaptureToSurface(i32 captureSurfaceIdx, i32 srcX, i32 srcY, i32 srcW, i32 srcH, i32 dstX, i32 dstY, i32 dstW,
