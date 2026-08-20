@@ -43,7 +43,7 @@ th08::ZunTimer::Tick,0x406660,function
 th08::ZunTimer::operator<,0x4066a0,function
 th08::ZunTimer::operator>,0x4066c0,function
 th08::AnmVmBase::IsVisible,0x4066e0,function
-th08::AnmVm::ClearVisible,0x406700,function
+th08::AnmVmBase::SetInvisible,0x406700,function
 th08::AnmVm::AnmVm,0x406720,function
 th08::AnmVmBase::AnmVmBase,0x4067c0,function
 `eh_vector_constructor_iterator',0x406850,function

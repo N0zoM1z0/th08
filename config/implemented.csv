@@ -267,7 +267,7 @@ th08::ZunTimer::Tick
 th08::ZunTimer::operator<
 th08::ZunTimer::operator>
 th08::AnmVmBase::IsVisible
-th08::AnmVm::ClearVisible
+th08::AnmVmBase::SetInvisible
 th08::TextHelper::GetBuffer
 th08::TextHelper::GetImageWidthInBytes
 th08::TextHelper::GetHeight

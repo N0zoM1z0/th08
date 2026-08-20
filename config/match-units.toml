@@ -1905,9 +1905,9 @@ target_address = 0x004066E0
 size = 0x17
 
 [[units]]
-name = "anm-vm-clear-visible"
-object = "build/AnmManager.obj"
-symbol = "?ClearVisible@AnmVm@th08@@QAEXXZ"
+name = "anm-vm-base-set-invisible"
+object = "build/AsciiManager.obj"
+symbol = "?SetInvisible@AnmVmBase@th08@@QAEXXZ"
 target_address = 0x00406700
 size = 0x20
 

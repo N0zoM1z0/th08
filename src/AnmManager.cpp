@@ -12,12 +12,6 @@
 namespace th08
 {
 
-// FUNCTION: th08 0x406700
-void AnmVm::ClearVisible()
-{
-    this->visible = false;
-}
-
 // FUNCTION: th08 0x40b580
 VertexDiffuseXyzrhw::VertexDiffuseXyzrhw()
 {

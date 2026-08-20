@@ -306,8 +306,6 @@ struct AnmVmBase
         this->visible = FALSE;
     }
 
-    void ClearVisible();
-
     void SetInterrupt(i16 interrupt)
     {
         this->pendingInterrupt = interrupt;
@@ -378,7 +376,6 @@ struct AnmVm : AnmVmBase
         this->rotation.z = z;
         this->updateRotation = 1;
     }
-    void ClearVisible();
 
     Float3 pos;
     i16 activeSpriteIndex;

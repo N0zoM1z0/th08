@@ -42,7 +42,7 @@ th08::ZunTimer::Tick,0x406660,0x34,__thiscall,,i32,ZunTimer*
 th08::ZunTimer::operator<,0x4066a0,0x1b,__thiscall,,bool,ZunTimer*,i32
 th08::ZunTimer::operator>,0x4066c0,0x1b,__thiscall,,bool,ZunTimer*,i32
 th08::AnmVmBase::IsVisible,0x4066e0,0x17,__thiscall,,ZunBool,AnmVm*
-th08::AnmVm::ClearVisible,0x406700,0x20,__thiscall,,void,AnmVm*
+th08::AnmVmBase::SetInvisible,0x406700,0x20,__thiscall,,void,AnmVmBase*
 th08::AnmVm::AnmVm,0x406720,0x92,__thiscall,,AnmVm*,AnmVm*
 th08::AnmVmBase::AnmVmBase,0x4067c0,0x8e,__thiscall,,AnmVmBase*,AnmVmBase*
 `eh_vector_constructor_iterator',0x406850,0x27,__stdcall,,void,void*,u32,i32,void*
