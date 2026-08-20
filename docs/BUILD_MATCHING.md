@@ -801,6 +801,38 @@ This corpus attests the natural VC7 emissions for ResultScreen/AnmManager/MidiOu
 - In StartMenu, two target tests read `g_GameManager.flags.isReplay` and `.isSpellPractice` directly. Replacing them with out-of-line `IsReplay()` / `IsSpellPractice()` calls shortens each site by one byte under `/Os`; preserve the lexical bitfield owner in source even though the helper is semantically equivalent.
 - In KeyConfig the entire 2383-byte body was already instruction-for-instruction correct; the residual was only a pair of stack homes. The target local order is `vmPair=-0x4, i=-0x8, keyToChange=-0xC, controllerState=-0x10`, reproduced by `#pragma var_order(vmPair, i, keyToChange, controllerState)`.
 
+### Cold-PCH recovery of TitleScreen TU-specific inline contracts
+
+- A historical warm object can preserve a header-inline body after the header
+  has been changed to an out-of-line declaration.  The stale TitleScreen object
+  made `DrawSpellStageSelect` and `DrawSpellCardSelect` appear exact even though
+  a cold build emitted four and two `AsciiManager::SetScale` calls.  Each call
+  made the caller six bytes longer, producing the characteristic `+0x18` and
+  `+0x0C` extent regressions.
+- Do not fix that pattern by making `SetScale` header-inline globally.  Other
+  exact production TUs have target-proven relocations to the standalone
+  `AsciiManager::SetScale @ 0x0042F2F0`.  In the TitleScreen TU, direct writes to
+  `g_AsciiManager.scaleX` and `.scaleY` reproduce the target stores while
+  preserving the out-of-line contract used by those other objects.
+- `ActualAddedCallback @ 0x00470A6C` directly reads
+  `flags.isReplay`, `flags.isDemoMode`, and `flags.isSpellPractice`; the target
+  direct-call set contains none of the corresponding getters.  Under this
+  `/Os /Oi- /Ob1` profile, replacing all three stale calls restores the exact
+  0x369-byte body.  `TitleSetupThread @ 0x00470E10` uses the same direct
+  `flags.isDemoMode` fingerprint at unit offset `0x2D0`.
+- `TitleScreen::RegisterChain @ 0x0047146D` remains a deliberately unaccepted
+  281-byte near match.  Its 20 relocations and all control flow agree; only the
+  `0x5C` versus target `0x40` hidden-new frame and four related displacements
+  differ.  Moving `TitleScreen()` out of line shrinks the frame too far to
+  `0x14`.  Moving `AnmVm()` out of line reaches `0x38` but breaks the already
+  exact 203-byte TitleScreen constructor.  Do not repeat either shared-header
+  experiment or add an artificial stack pad without new target-backed source
+  evidence.
+- Any header/TU experiment in this lane must rebuild the PCH as well as the
+  selected object.  Use `scripts/build.py --build-type=objdiffbuild --fresh
+  --object-name TitleScreen.obj`; a warm selected-object build can otherwise
+  replay the obsolete PCH state that caused this regression.
+
 ### Title spell-card cursor comparisons and switch-tail validation
 
 - `TitleScreen::OnUpdateSpellCardSelect @ 0x0046BBC0` carries an 11-entry / 0x2C-byte jump table after its 0xFCF authored body. Canonical validation uses `compare_size = 0xFFB`, so the table relocations replay without inflating authored-byte progress.

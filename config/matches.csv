@@ -384,10 +384,14 @@ address,name,size,status,match_percent,unit,evidence
 0x0046ADB0,th08::TitleScreen::OnUpdatePracticeStageSelect,964,matching,100.00,title-screen-roi-exact-0046adb0,python3 scripts/compare-function.py title-screen-roi-exact-0046adb0 --json
 0x0046FD5F,th08::GameManager::IsLastWordSpellCardAttempted,99,matching,100.00,title-screen-roi-exact-0046fd5f,python3 scripts/compare-function.py title-screen-roi-exact-0046fd5f --json
 0x0046F429,th08::TitleScreen::DrawPracticeStageSelect,418,matching,100.00,title-screen-roi-exact-0046f429,python3 scripts/compare-function.py title-screen-roi-exact-0046f429 --json
+0x0046F5CB,th08::TitleScreen::DrawSpellStageSelect,1940,matching,100.00,accepted-source-exact-0046f5cb,python3 scripts/compare-function.py accepted-source-exact-0046f5cb --json
+0x0046FFC0,th08::TitleScreen::DrawSpellCardSelect,843,matching,100.00,accepted-source-exact-0046ffc0,python3 scripts/compare-function.py accepted-source-exact-0046ffc0 --json
 0x0047030B,th08::TitleScreen::MoveCursorVertical,281,matching,100.00,title-screen-roi-exact-0047030b,python3 scripts/compare-function.py title-screen-roi-exact-0047030b --json
 0x00470424,th08::TitleScreen::MoveCursorHorizontal,265,matching,100.00,title-screen-roi-exact-00470424,python3 scripts/compare-function.py title-screen-roi-exact-00470424 --json
 0x0047087F,th08::TitleScreen::OnDraw,493,matching,100.00,title-screen-roi-exact-0047087f,python3 scripts/compare-function.py title-screen-roi-exact-0047087f --json
+0x00470A6C,th08::TitleScreen::ActualAddedCallback,873,matching,100.00,title-screen-roi-exact-00470a6c,python3 scripts/compare-function.py title-screen-roi-exact-00470a6c --json
 0x00470DD5,th08::Supervisor::ResetUnknownStuff,59,matching,100.00,title-screen-roi-exact-00470dd5,python3 scripts/compare-function.py title-screen-roi-exact-00470dd5 --json
+0x00470E10,th08::TitleScreen::TitleSetupThread,881,matching,100.00,title-screen-roi-exact-00470e10,python3 scripts/compare-function.py title-screen-roi-exact-00470e10 --json
 0x00471181,th08::TitleScreen::DisplayInfoImage,639,matching,100.00,title-screen-roi-exact-00471181,python3 scripts/compare-function.py title-screen-roi-exact-00471181 --json
 0x00471400,th08::TitleScreen::Release,109,matching,100.00,title-screen-roi-exact-00471400,python3 scripts/compare-function.py title-screen-roi-exact-00471400 --json
 0x00471586,th08::TitleScreen::TitleScreen,203,matching,100.00,title-screen-roi-exact-00471586,python3 scripts/compare-function.py title-screen-roi-exact-00471586 --json

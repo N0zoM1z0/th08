@@ -2808,7 +2808,8 @@ ChainCallbackResult TitleScreen::DrawSpellStageSelect()
                                      g_StageNamesSpellPractice[i]);
         position.x += 182.0f;
 
-        g_AsciiManager.SetScale(0.75f, 1.0f);
+        g_AsciiManager.scaleX = 0.75f;
+        g_AsciiManager.scaleY = 1.0f;
 
         g_AsciiManager.AddFormatText(&position, "%3d(%3d)/%3d/%3d", capturesPerStageSpellPracticePerShot,
                                      capturesPerStageSpellPractice, attemptedLastWord, g_SpellcardCountPerStage[i]);
@@ -2816,7 +2817,8 @@ ChainCallbackResult TitleScreen::DrawSpellStageSelect()
         position.x -= 182.0f;
         position.y += 16.0f;
 
-        g_AsciiManager.SetScale(1.0f, 1.0f);
+        g_AsciiManager.scaleX = 1.0f;
+        g_AsciiManager.scaleY = 1.0f;
     }
 
     position.y += 5.0f;
@@ -2831,14 +2833,16 @@ ChainCallbackResult TitleScreen::DrawSpellStageSelect()
 
     position.x += 182.0f;
 
-    g_AsciiManager.SetScale(0.75f, 1.0f);
+    g_AsciiManager.scaleX = 0.75f;
+    g_AsciiManager.scaleY = 1.0f;
 
     g_AsciiManager.AddFormatText(&position, "%3d(%3d)/%3d/%3d", totalCapturesSpellPracticePerShot,
                                  totalCapturesSpellPractice, totalAttemptedLastWord, SPELLCARD_COUNT_SPELLCARDS);
 
     position.x -= 182.0f;
 
-    g_AsciiManager.SetScale(1.0f, 1.0f);
+    g_AsciiManager.scaleX = 1.0f;
+    g_AsciiManager.scaleY = 1.0f;
     g_AsciiManager.SetColor(COLOR_WHITE);
     g_AsciiManager.SetIsSelected(FALSE);
 
@@ -3028,7 +3032,8 @@ ChainCallbackResult TitleScreen::DrawSpellCardSelect()
 
         position.x += 414.0f;
 
-        g_AsciiManager.SetScale(0.8, 1.0f);
+        g_AsciiManager.scaleX = 0.8f;
+        g_AsciiManager.scaleY = 1.0f;
 
         g_AsciiManager.AddFormatText(
             &position, "%3d/%3d(%3d/%3d)",
@@ -3037,7 +3042,8 @@ ChainCallbackResult TitleScreen::DrawSpellCardSelect()
             g_GameManager.catkData[spellCardNumber].inGameHistory.captures[g_GameManager.shotType],
             g_GameManager.catkData[spellCardNumber].inGameHistory.attempts[g_GameManager.shotType]);
 
-        g_AsciiManager.SetScale(1.0, 1.0f);
+        g_AsciiManager.scaleX = 1.0f;
+        g_AsciiManager.scaleY = 1.0f;
 
         position.x -= 414.0f;
         this->spellCardNameVms[i].pos = position;
@@ -3628,7 +3634,7 @@ ZunResult TitleScreen::ActualAddedCallback()
     g_GameManager.globals = new ZunGlobals();
     g_Supervisor.framerateMultiplier = 1.0f;
 
-    if (g_GameManager.IsReplay())
+    if (g_GameManager.flags.isReplay)
     {
         /* This seems to be a leftover from PCB where there were separate
          * characters and shot types.
@@ -3636,7 +3642,7 @@ ZunResult TitleScreen::ActualAddedCallback()
         g_GameManager.shotType = g_GameManager.shotType = 0;
     }
 
-    if (g_GameManager.IsDemoMode())
+    if (g_GameManager.flags.isDemoMode)
     {
         g_GameManager.flags.isReplay = FALSE;
     }
@@ -3694,7 +3700,7 @@ ZunResult TitleScreen::ActualAddedCallback()
     if (g_GameManager.IsPracticeMode())
     {
         this->cursor = g_GameManager.flags.isSpellPractice ? 2 : 3;
-        this->practiceState = g_GameManager.IsSpellPractice() ? 2 : 1;
+        this->practiceState = g_GameManager.flags.isSpellPractice ? 2 : 1;
     }
 
     g_GameManager.flags.isPracticeMode = FALSE;
@@ -3782,7 +3788,7 @@ void TitleScreen::TitleSetupThread(TitleScreen *titleScreen)
         return;
     }
 
-    if (!g_GameManager.IsDemoMode())
+    if (!g_GameManager.flags.isDemoMode)
     {
         if (g_Supervisor.wantedState2 != SupervisorState_ResultScreen)
         {

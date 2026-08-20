@@ -8,8 +8,8 @@ Generated from `config/reccmp-functions.csv`, `config/mapping.csv`,
 
 - Source-present authored functions: **1,107 / 1,107 (100.00%)**
 - Source-present authored bytes: **459,757 / 459,757 (100.00%)**
-- Exact authored functions: **1,091 / 1,107 (98.55%)**
-- Exact authored bytes: **445,728 / 459,757 (96.95%)**
+- Exact authored functions: **1,095 / 1,107 (98.92%)**
+- Exact authored bytes: **450,265 / 459,757 (97.94%)**
 - Inventory-classified library functions: **1,119**
 - Exact library functions: **258 / 1,119 (23.06%)**
 - Exact library bytes: **52,707 / 217,165 (24.27%)**

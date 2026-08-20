@@ -10,12 +10,12 @@ As cold-built and replayed on 2026-08-20 against the original Japanese TH08
 1.00d target:
 
 - authored source: **1,107 / 1,107 functions**, **459,757 / 459,757 bytes**;
-- strict authored exact: **1,091 / 1,107 functions**, **445,728 / 459,757 bytes**;
+- strict authored exact: **1,095 / 1,107 functions**, **450,265 / 459,757 bytes**;
 - library inventory: **1,119 classified functions**; all **1,119 / 1,119** now have
   mapping sizes totaling **217,165 bytes**; the independent library exact ledger currently accepts **258 functions / 52,707 body bytes**;
 - `config/claims.csv` is header-only;
 - a cold normal VC7 build links `build/th08.exe` successfully;
-- a cold objdiff build followed by full replay passes **1,091 / 1,091**
+- a cold objdiff build followed by full replay passes **1,095 / 1,095**
   accepted units;
 - the whole-image comparator is in place. After the first evidence-backed link
   contract repairs, the rebuild has the target's DLL descriptor order, no debug
@@ -54,10 +54,13 @@ The source for both is present and behaviorally reconstructed. Exact coverage
 will increase only when the canonical comparator returns `exact` for a natural,
 evidence-backed C++ form.
 
-Fourteen additional rows were removed from `config/matches.csv` after the cold
+Ten additional rows remain removed from `config/matches.csv` after the cold
 aggregate replay showed that their historical build objects no longer
 reproduced. Their configured units remain in `config/match-units.toml` as
-diagnostic starting points; they are not accepted claims.
+diagnostic starting points; they are not accepted claims. Four TitleScreen
+regressions from that original batch were restored on 2026-08-20 through a
+cold production-object replay: `DrawSpellStageSelect`, `DrawSpellCardSelect`,
+`ActualAddedCallback`, and `TitleSetupThread`.
 
 | Address | Unit | Cold-build result class |
 | --- | --- | --- |
@@ -71,10 +74,6 @@ diagnostic starting points; they are not accepted claims.
 | `0x0044C390` | `player-onupdate` | relocation symbol drift |
 | `0x0045964D` | `result-screen-roi-exact-0045964d` | caller bytes/relocations differ |
 | `0x00465CC0` | `anm-manager-unblocked-exact-00465cc0` | relocation symbol drift |
-| `0x0046F5CB` | `accepted-source-exact-0046f5cb` | object `0x7AC`, target `0x794` |
-| `0x0046FFC0` | `accepted-source-exact-0046ffc0` | object `0x357`, target `0x34B` |
-| `0x00470A6C` | `title-screen-roi-exact-00470a6c` | object `0x367`, target `0x369` |
-| `0x00470E10` | `title-screen-roi-exact-00470e10` | caller bytes/relocations differ |
 
 Recheck one without accepting it automatically:
 
