@@ -7,7 +7,8 @@ from winhelpers import run_windows_program
 
 SCRIPTS_DIR = Path(__file__).parent
 ROOT = SCRIPTS_DIR.parent
-FRESH_SIDE_OUTPUTS = (
+ROOT_SIDE_OUTPUTS = ("vc70.pdb",)
+FRESH_SIDE_OUTPUTS = ROOT_SIDE_OUTPUTS + (
     "build/vc70.pdb",
     "build/th08.map",
     "build/th08.pdb",
@@ -16,6 +17,13 @@ FRESH_SIDE_OUTPUTS = (
     "build/th08e.exp",
     "build/th08e.lib",
 )
+
+
+def remove_side_outputs(relative_paths):
+    for relative in relative_paths:
+        path = ROOT / relative
+        if path.is_file():
+            path.unlink()
 
 
 def build(build_type, verbose=False, jobs=1, targets=None, fresh=False):
@@ -49,14 +57,14 @@ def build(build_type, verbose=False, jobs=1, targets=None, fresh=False):
             [str(SCRIPTS_DIR / "th08run.bat"), "ninja", "-t", "clean"],
             cwd=str(ROOT),
         )
-        for relative in FRESH_SIDE_OUTPUTS:
-            path = ROOT / relative
-            if path.is_file():
-                path.unlink()
+        remove_side_outputs(FRESH_SIDE_OUTPUTS)
     run_windows_program(
         [str(SCRIPTS_DIR / "th08run.bat"), "ninja"] + ninja_args,
         cwd=str(ROOT),
     )
+    # Some VC7 invocations leak this fallback program database beside
+    # build.ninja despite the explicit /Fd path.  It is never a build input.
+    remove_side_outputs(ROOT_SIDE_OUTPUTS)
 
 
 def main():

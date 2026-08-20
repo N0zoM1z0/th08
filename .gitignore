@@ -6,6 +6,9 @@ log.txt
 scripts/dls
 scripts/prefix
 build.ninja
+.ninja_deps
+.ninja_log
+vc70.pdb
 __pycache__
 .vscode
 
