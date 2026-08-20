@@ -414,10 +414,7 @@ struct AnmVm : AnmVmBase
         this->activeSpriteIndex = -1;
     }
 
-    u32 FUN_004396f8()
-    {
-        return (*(u32 *)((u8 *)this + 0x1F8) >> 14) & 1;
-    }
+    u32 FUN_004396f8();
     i32 FUN_0040eb50();
     void FUN_0040ec30(i32 duration, i32 mode, Float3 *value0, Float3 *value1);
     void FUN_0040eca0(i32 duration, i32 mode, u32 color0, u32 color1);

@@ -169,6 +169,178 @@ C_ASSERT(sizeof(GuiStageResultUpdateOverlay) == 0x28);
 
 
 void __fastcall FUN_004353ec(char *out, const char *encoded);
+void __fastcall FUN_00437f5c(i32 spriteIdx);
+i32 FUN_00438fe9();
+i32 FUN_00438ff3();
+i32 FUN_00438ffd();
+
+// FUNCTION: th08 0x4338ca
+ChainCallbackResult Gui::OnUpdate(Gui *gui)
+{
+    if (g_EclScriptedGlobalUpdateFreeze)
+        return CHAIN_CALLBACK_RESULT_CONTINUE;
+
+    gui->FUN_00435900();
+    gui->impl->RunMsg();
+    if ((g_CurFrameInput & TH_BUTTON_SKIP) && g_GuiMessageScreenEffectDuration < 8)
+        g_GuiMessageScreenEffectDuration = 8;
+    gui->unk_0++;
+    return CHAIN_CALLBACK_RESULT_CONTINUE;
+}
+
+// FUNCTION: th08 0x433927
+ChainCallbackResult Gui::OnDraw(Gui *gui)
+{
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(gui->impl) + 0x22d84) != 0)
+        gui->FUN_0043826b();
+    gui->impl->DrawDialogue();
+    gui->FUN_0043741d();
+    gui->DrawGameScene();
+    gui->FUN_00438a89();
+    return CHAIN_CALLBACK_RESULT_CONTINUE;
+}
+
+// FUNCTION: th08 0x43396d
+void GuiImpl::FUN_0043396d(i32 value)
+{
+    void *msgFile;
+
+    utils::GuiDebugPrint("msg start %d\n\r", value);
+    msgFile = reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->msgFile;
+    memset(reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm), 0, 0x1570);
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->msgFile = msgFile;
+
+    if (value == 0)
+    {
+        switch (g_GameManager.currentStage)
+        {
+        case STAGE5:
+            FUN_00437f5c(22);
+            break;
+        case STAGE6A:
+            g_GuiMessageStageMode = 2;
+            break;
+        case STAGE6B:
+        {
+            AnmLoaded *tmp = g_GuiPortraitAnm1;
+            g_GuiPortraitAnm1 = g_GuiPortraitAnm2;
+            g_GuiPortraitAnm2 = tmp;
+            g_GuiMessageStageMode = 2;
+            FUN_00437f5c(24);
+            break;
+        }
+        case EXTRASTAGE:
+        {
+            AnmLoaded *tmp = g_GuiPortraitAnm1;
+            g_GuiPortraitAnm1 = g_GuiPortraitAnm2;
+            g_GuiPortraitAnm2 = tmp;
+            g_GuiMessageStageMode = 2;
+            FUN_00437f5c(25);
+            break;
+        }
+        default:
+            break;
+        }
+    }
+    else if (value == 10)
+    {
+        switch (g_GameManager.currentStage)
+        {
+        case STAGE5:
+            if (g_GameManager.globals->numRetries > 0)
+            {
+                value = 1;
+                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 0;
+            }
+            else if (!g_GameManager.IsReplay())
+            {
+                if (g_GameManager.IsStageClearedWithoutRetries(STAGE6B, g_GameManager.shotType, EASY) ||
+                    g_GameManager.IsStageClearedWithoutRetries(STAGE6B, g_GameManager.shotType, NORMAL) ||
+                    g_GameManager.IsStageClearedWithoutRetries(STAGE6B, g_GameManager.shotType, HARD) ||
+                    g_GameManager.IsStageClearedWithoutRetries(STAGE6B, g_GameManager.shotType, LUNATIC) ||
+                    g_GameManager.shotType > SHOT_YOUMU_YUYUKO)
+                {
+                    value = 3;
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 1;
+                }
+                else if (g_GameManager.IsStageClearedWithRetries(STAGE6A, g_GameManager.shotType, EASY) ||
+                         g_GameManager.IsStageClearedWithRetries(STAGE6A, g_GameManager.shotType, NORMAL) ||
+                         g_GameManager.IsStageClearedWithRetries(STAGE6A, g_GameManager.shotType, HARD) ||
+                         g_GameManager.IsStageClearedWithRetries(STAGE6A, g_GameManager.shotType, LUNATIC))
+                {
+                    value = 2;
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 1;
+                }
+                else
+                {
+                    value = 1;
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 0;
+                }
+            }
+            else
+            {
+                if ((i8)g_ReplayManager->replayData->clearState == 2)
+                {
+                    value = 3;
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 1;
+                }
+                else if ((i8)g_ReplayManager->replayData->clearState == 1)
+                {
+                    value = 2;
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 1;
+                }
+                else
+                {
+                    value = 1;
+                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 0;
+                }
+            }
+            g_GameManager.flags.isGoingToFinalB = reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice;
+            break;
+        default:
+            break;
+        }
+    }
+    else if (value >= 6)
+    {
+        switch (g_GameManager.currentStage)
+        {
+        case STAGE6B:
+            if ((i8)g_GameManager.GetClockTime() >= 12)
+            {
+                value = 5;
+            }
+            break;
+        default:
+            break;
+        }
+    }
+
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentMsgIdx = value;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr = reinterpret_cast<u8 **>(reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->msgFile)[value + 1];
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[0].scriptIndex = -1;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1].scriptIndex = -1;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->messageFlag = 1;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->fontSize = 15;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[0] = g_GuiMessageTextColors[g_GameManager.shotType].colors[0];
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[1] = g_GuiMessageTextColors[g_GameManager.shotType].colors[1];
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[2] = g_GuiMessageTextColors[g_GameManager.shotType].colors[2];
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[3] = g_GuiMessageTextColors[g_GameManager.shotType].colors[3];
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[0] = 0;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[1] = 0;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[2] = 0;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[3] = 0;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueSkippable = 1;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->waitThreshold = 6;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentSide = 0;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textPending = 1;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentLine = 0;
+    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentPortrait = 0xff;
+
+    g_BulletManager.bulletmanager_fun_00415c60();
+    g_EnemyManager.FUN_0042efb0(0, 0);
+    g_ItemManager.AutoCollectAllItems();
+}
 
 // FUNCTION: th08 0x433db3
 #pragma var_order(args, j, portraitArgs, k, portraitSpriteArgs, text3, text16, text19, text20, i)
@@ -743,6 +915,377 @@ run_scripts:
     return 0;
 }
 
+// FUNCTION: th08 0x4353ec
+#pragma var_order(i, decoded)
+void __fastcall FUN_004353ec(char *out, const char *encoded)
+{
+    char decoded;
+    i32 i = 0;
+    do
+    {
+        decoded = *encoded ^ 0x77;
+        out[i] = decoded;
+        i++;
+        encoded++;
+    } while (decoded != '\0');
+}
+
+// FUNCTION: th08 0x43542b
+#pragma var_order(dialogueBoxHeight, vertices)
+ZunResult GuiImpl::DrawDialogue()
+{
+    f32 dialogueBoxHeight;
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentMsgIdx < 0)
+        return ZUN_ERROR;
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->timer < 60)
+        dialogueBoxHeight = static_cast<f32>(reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->timer) *
+                            48.0f / 60.0f;
+    else
+        dialogueBoxHeight = 48.0f;
+
+    VertexDiffuseXyzrhw vertices[4];
+    memcpy(&vertices[0].pos, &Float3(g_ItemAnmManagerScreenShakeOffset.x + 16.0f, 384.0f, 0.0f), sizeof(Float3));
+    memcpy(&vertices[1].pos,
+           &Float3(g_ItemAnmManagerScreenShakeOffset.x + 384.0f - 16.0f, 384.0f, 0.0f), sizeof(Float3));
+    memcpy(&vertices[2].pos,
+           &Float3(g_ItemAnmManagerScreenShakeOffset.x + 16.0f, 384.0f + dialogueBoxHeight, 0.0f), sizeof(Float3));
+    memcpy(&vertices[3].pos,
+           &Float3(g_ItemAnmManagerScreenShakeOffset.x + 384.0f - 16.0f, 384.0f + dialogueBoxHeight, 0.0f),
+           sizeof(Float3));
+
+    vertices[0].diffuse = vertices[1].diffuse = 0xd0000000;
+    vertices[2].diffuse = vertices[3].diffuse = 0x90000000;
+    vertices[0].w = vertices[1].w = vertices[2].w = vertices[3].w = 1.0f;
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0].pos.z >=
+        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1].pos.z)
+    {
+        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0]);
+        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1]);
+    }
+    else
+    {
+        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1]);
+        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0]);
+    }
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2].pos.z >=
+        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3].pos.z)
+    {
+        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2]);
+        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3]);
+    }
+    else
+    {
+        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3]);
+        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2]);
+    }
+
+    g_AnmManager->FlushVertexBuffer();
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->messageFlag)
+    {
+        if (!g_Supervisor.IsColorCompositingDisabled())
+        {
+            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+        }
+        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE);
+        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
+        if (!g_Supervisor.IsDepthTestDisabled())
+            g_Supervisor.SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+        g_Supervisor.d3dDevice->SetVertexShader(D3DFVF_DIFFUSE | D3DFVF_XYZRHW);
+        g_Supervisor.d3dDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, vertices, sizeof(VertexDiffuseXyzrhw));
+        g_AnmManager->ClearVertexShader();
+        g_AnmManager->ClearColorOp();
+        g_AnmManager->ClearBlendMode();
+        g_AnmManager->ClearZWrite();
+        if (!g_Supervisor.IsColorCompositingDisabled())
+        {
+            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+        }
+        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+    }
+
+    g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[0]);
+    g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1]);
+    g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->extraVms[0]);
+    g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->extraVms[1]);
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x43587e
+i32 Gui::MsgWait()
+{
+    if (this->impl == NULL)
+        return 0;
+    if (*(u32 *)((u8 *)this->impl + 0x22D78) > 0)
+        return 0;
+    return *(i32 *)((u8 *)this->impl + 0x2181C) >= 0;
+}
+
+// FUNCTION: th08 0x4358bb
+i32 Gui::IsDialogPresent()
+{
+    if (this->impl == NULL)
+        return 0;
+    return *(i32 *)((u8 *)this->impl + 0x2181C) >= 0 || *(i32 *)((u8 *)this->impl + 0x2181C) == -2;
+}
+
+// FUNCTION: th08 0x435900
+#pragma var_order(i, remaining, j, score, k)
+void Gui::FUN_00435900()
+{
+    i32 i;
+    i32 remaining;
+    i32 j;
+    i32 score;
+    i32 k;
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->currentMsgIdx < 0)
+    {
+        if (this->bossPresent)
+        {
+            if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) == 0)
+            {
+                this->impl->vm0000[12].SetInterrupt(1);
+                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) = 1;
+                this->bossUIOpacity = 0;
+            }
+            else
+            {
+                if (this->impl->vm0000[12].FUN_004396f8())
+                    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) = 2;
+                if (this->bossUIOpacity < 0xfc)
+                    this->bossUIOpacity += 4;
+                else
+                    this->bossUIOpacity = 0xff;
+            }
+        }
+        else if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) != 0)
+        {
+            if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) <= 2)
+            {
+                this->impl->vm0000[12].SetInterrupt(2);
+                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) = 3;
+            }
+            if (this->bossUIOpacity > 0)
+                this->bossUIOpacity -= 4;
+            else
+                this->bossUIOpacity = 0;
+            if (this->impl->vm0000[12].FUN_004396f8())
+            {
+                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) = 0;
+                this->bossLifeBarMaxSize = 0.0f;
+                this->bossUIOpacity = 0;
+            }
+        }
+
+        if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) >= 2)
+        {
+            if (this->bossLifeBarSize > this->bossLifeBarMaxSize)
+            {
+                this->bossLifeBarMaxSize += 0.01f;
+                if (this->bossLifeBarSize < this->bossLifeBarMaxSize)
+                    this->bossLifeBarMaxSize = this->bossLifeBarSize;
+            }
+            else if (this->bossLifeBarSize < this->bossLifeBarMaxSize)
+            {
+                this->bossLifeBarMaxSize -= 0.02f;
+                if (this->bossLifeBarSize > this->bossLifeBarMaxSize)
+                    this->bossLifeBarMaxSize = this->bossLifeBarSize;
+            }
+        }
+    }
+
+    g_AnmManager->ExecuteScriptArray(this->impl->vm0000, 16);
+    g_AnmManager->ExecuteScriptArray(this->impl->vm2a44, 4);
+    if (!g_GameManager.flags.isSpellPractice && this->impl->vm2a44[0].color1.a)
+        g_AnmManager->ExecuteScriptArray(&this->impl->vm34d4, 1);
+
+    g_AnmManager->ExecuteScript(&this->impl->vm212c8);
+    g_AnmManager->ExecuteScript(&this->impl->vm2156c);
+
+    if (this->impl->vm2156c.color1.a)
+    {
+        if (EclOperands::g_TargetPlayerPosition017D61AC.x >= 64.0f &&
+            EclOperands::g_TargetPlayerPosition017D61AC.y < 128.0f)
+        {
+            if (this->impl->vm2156c.color1.a > 0x40)
+                this->impl->vm2156c.color1.a -= 4;
+        }
+        else if (this->impl->vm2156c.color1.a < 0xff)
+        {
+            if (this->impl->vm2156c.color1.a <= 0xfb)
+                this->impl->vm2156c.color1.a += 4;
+            else
+                this->impl->vm2156c.color1.a = 0xff;
+        }
+    }
+
+    g_AnmManager->ExecuteScript(&this->impl->vm5484);
+    g_AnmManager->ExecuteScript(&this->impl->vm22e14);
+
+    if (this->impl->vm3778.activeSpriteIndex >= 0)
+    {
+        if (g_AnmManager->ExecuteScript(&this->impl->vm3778))
+            this->impl->vm3778.activeSpriteIndex = -1;
+        if (g_AnmManager->ExecuteScript(&this->impl->vm3cc0))
+            this->impl->vm3cc0.activeSpriteIndex = -1;
+        for (i = 0; i < ARRAY_SIZE(this->impl->vm3f64); i++)
+            g_AnmManager->ExecuteScript(&this->impl->vm3f64[i]);
+    }
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this->impl) + 0x21810) != 0)
+    {
+        remaining = 0xa8;
+        for (j = 0; j < 0xa8; j++)
+        {
+            if (g_AnmManager->ExecuteScript(&this->impl->vm5728[j]))
+                remaining--;
+        }
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this->impl) + 0x21810) = remaining;
+    }
+
+    if (this->impl->formatted0.isShown)
+    {
+        if (this->impl->formatted0.timer < 30)
+            this->impl->formatted0.position.x =
+                static_cast<f32>(this->impl->formatted0.timer) * -312.0f / 30.0f + 416.0f;
+        else
+            this->impl->formatted0.position.x = 104.0f;
+        if (this->impl->formatted0.timer >= 250)
+            this->impl->formatted0.isShown = 0;
+        this->impl->formatted0.timer++;
+    }
+
+    if (this->impl->formatted1.isShown)
+    {
+        if (this->impl->formatted1.timer < 30)
+            this->impl->formatted1.position.x =
+                static_cast<f32>(this->impl->formatted1.timer) * -312.0f / 30.0f + 416.0f;
+        else
+            this->impl->formatted1.position.x = 104.0f;
+        if (this->impl->formatted1.timer >= 180)
+            this->impl->formatted1.isShown = 0;
+        this->impl->formatted1.timer++;
+    }
+
+    if (this->impl->formatted2.isShown)
+    {
+        if (this->impl->formatted2.timer >= 280)
+            this->impl->formatted2.isShown = 0;
+        this->impl->formatted2.timer++;
+    }
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->resultState == 1)
+    {
+        score = 0;
+        score += reinterpret_cast<GuiStageResultUpdateOverlay *>(
+                     reinterpret_cast<u8 *>(this->impl) + 0x22dec)->baseScore;
+        score += reinterpret_cast<GuiStageResultUpdateOverlay *>(
+                     reinterpret_cast<u8 *>(this->impl) + 0x22dec)->grazeInStage * 50;
+        score += reinterpret_cast<GuiStageResultUpdateOverlay *>(
+                     reinterpret_cast<u8 *>(this->impl) + 0x22dec)->pointItemsCollectedInStage * 5000;
+        score += reinterpret_cast<GuiStageResultUpdateOverlay *>(
+                     reinterpret_cast<u8 *>(this->impl) + 0x22dec)->timeOrbs * 100;
+
+        if (g_GameManager.currentStage >= STAGE6A && !g_GameManager.IsPracticeMode())
+        {
+            score += 2500000 * g_GameManager.GetLives();
+            score += 500000 * g_GameManager.GetBombsRemaining();
+        }
+        if (g_GameManager.currentStage == STAGE6B)
+            score += 2000000 * (12 - static_cast<i8>(g_GameManager.GetClockTime()));
+
+        switch (g_GameManager.difficulty)
+        {
+        case EASY:
+            score /= 2;
+            break;
+        case HARD:
+            score = score * 12 / 10;
+            break;
+        case LUNATIC:
+            score = score * 15 / 10;
+            break;
+        case EXTRA:
+            score *= 2;
+            break;
+        default:
+            break;
+        }
+
+        switch (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(g_GameManager.cfg) + 0x1c))
+        {
+        case 3:
+            score = score * 5 / 10;
+            break;
+        case 4:
+            score = score * 2 / 10;
+            break;
+        case 5:
+            score /= 10;
+            break;
+        case 6:
+            score /= 20;
+            break;
+        default:
+            break;
+        }
+
+        reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->unknown1574 = score;
+        for (k = 0; k < 10; k++)
+            g_GameManager.AddScore(score);
+        reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->resultState++;
+    }
+
+    if (g_GameManager.currentStage < STAGE6A &&
+        reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent != 0 &&
+        reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent >=
+            reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTarget &&
+        g_GameManager.flags.unk5_6 == 0)
+    {
+        g_GameManager.flags.unk5_6 = 2;
+    }
+
+    if (reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent != 0 &&
+        reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent !=
+            reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTarget)
+    {
+        if (reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTimer >= 60)
+        {
+            if (reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent <
+                reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTarget)
+            {
+                reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent++;
+                if ((g_GuiMessageInputCurrent & TH_BUTTON_SHOOT) || (g_GuiMessageInputCurrent & TH_BUTTON_SKIP))
+                {
+                    reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent += 3;
+                }
+                if (reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent >
+                    reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTarget)
+                {
+                    reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent =
+                        reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTarget;
+                }
+            }
+            else
+            {
+                reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTimer++;
+            }
+        }
+        else
+        {
+            reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTimer++;
+        }
+    }
+}
+
 // FUNCTION: th08 0x43625d
 #pragma var_order(yPos, xPos, idx, vm)
 void Gui::DrawGameScene()
@@ -983,107 +1526,351 @@ void Gui::DrawGameScene()
         this->flags.timeDisplayUpdateFrames--;
 }
 
-// FUNCTION: th08 0x43542b
-#pragma var_order(dialogueBoxHeight, vertices)
-ZunResult GuiImpl::DrawDialogue()
+// FUNCTION: th08 0x43741d
+void Gui::FUN_0043741d()
 {
-    f32 dialogueBoxHeight;
+    i32 i;
 
-    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentMsgIdx < 0)
-        return ZUN_ERROR;
+    for (i = 0; i < 4; i++)
+        g_AnmManager->Draw2D(&this->impl->vm2a44[i]);
+    g_AnmManager->Draw2D(&this->impl->vm34d4);
+    g_AnmManager->Draw2D(&this->impl->vm2156c);
 
-    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->timer < 60)
-        dialogueBoxHeight = static_cast<f32>(reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->timer) *
-                            48.0f / 60.0f;
-    else
-        dialogueBoxHeight = 48.0f;
-
-    VertexDiffuseXyzrhw vertices[4];
-    memcpy(&vertices[0].pos, &Float3(g_ItemAnmManagerScreenShakeOffset.x + 16.0f, 384.0f, 0.0f), sizeof(Float3));
-    memcpy(&vertices[1].pos,
-           &Float3(g_ItemAnmManagerScreenShakeOffset.x + 384.0f - 16.0f, 384.0f, 0.0f), sizeof(Float3));
-    memcpy(&vertices[2].pos,
-           &Float3(g_ItemAnmManagerScreenShakeOffset.x + 16.0f, 384.0f + dialogueBoxHeight, 0.0f), sizeof(Float3));
-    memcpy(&vertices[3].pos,
-           &Float3(g_ItemAnmManagerScreenShakeOffset.x + 384.0f - 16.0f, 384.0f + dialogueBoxHeight, 0.0f),
-           sizeof(Float3));
-
-    vertices[0].diffuse = vertices[1].diffuse = 0xd0000000;
-    vertices[2].diffuse = vertices[3].diffuse = 0x90000000;
-    vertices[0].w = vertices[1].w = vertices[2].w = vertices[3].w = 1.0f;
-
-    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0].pos.z >=
-        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1].pos.z)
+    if (this->impl->vm3778.activeSpriteIndex >= 0)
     {
-        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0]);
-        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1]);
-    }
-    else
-    {
-        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1]);
-        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0]);
-    }
-
-    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2].pos.z >=
-        reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3].pos.z)
-    {
-        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2]);
-        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3]);
-    }
-    else
-    {
-        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3]);
-        g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2]);
-    }
-
-    g_AnmManager->FlushVertexBuffer();
-
-    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->messageFlag)
-    {
-        if (!g_Supervisor.IsColorCompositingDisabled())
+        g_AnmManager->DrawNoRotation(&this->impl->vm3778);
+        g_AnmManager->FUN_00464070(&this->impl->vm3cc0);
+        for (i = 0; i < ARRAY_SIZE(this->impl->vm3f64); i++)
+            g_AnmManager->FUN_00464070(&this->impl->vm3f64[i]);
+        if (this->impl->vm3a1c.activeSpriteIndex >= 0)
         {
-            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
-            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+            this->impl->vm3a1c.pos = Float3(304.0f, 448.0f, 0.0f);
+            g_AnmManager->DrawNoRotation(&this->impl->vm3a1c);
         }
-        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE);
-        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_DIFFUSE);
-        if (!g_Supervisor.IsDepthTestDisabled())
-            g_Supervisor.SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-        g_Supervisor.d3dDevice->SetVertexShader(D3DFVF_DIFFUSE | D3DFVF_XYZRHW);
-        g_Supervisor.d3dDevice->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, vertices, sizeof(VertexDiffuseXyzrhw));
-        g_AnmManager->ClearVertexShader();
-        g_AnmManager->ClearColorOp();
-        g_AnmManager->ClearBlendMode();
-        g_AnmManager->ClearZWrite();
-        if (!g_Supervisor.IsColorCompositingDisabled())
-        {
-            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
-            g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
-        }
-        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
-        g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
     }
 
-    g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[0]);
-    g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1]);
-    g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->extraVms[0]);
-    g_AnmManager->DrawNoRotation(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->extraVms[1]);
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this->impl) + 0x21810) != 0)
+    {
+        for (i = 0; i < 0xa8; i++)
+        {
+            g_AnmManager->FUN_00464070(&this->impl->vm5728[i]);
+            g_AnmManager->ClearSprite();
+        }
+    }
+
+    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->currentMsgIdx < 0 &&
+        (this->bossPresent + *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40)) > 0)
+    {
+#pragma var_order(bossColorDark, bossColor, rect, bossValue, segmentIndex, segmentStop, bossTimerColor, segmentWidth, textPos)
+        ZunRect rect;
+        D3DCOLOR bossColor;
+        D3DCOLOR bossColorDark;
+        i32 bossValue;
+        i32 segmentIndex;
+
+        rect.left = 64.0f;
+        rect.top = 19.0f;
+        rect.right = this->bossLifeBarMaxSize * 320.0f + 64.0f;
+        rect.bottom = 23.0f;
+        bossColor = (this->bossUIOpacity << 24) | 0x00ffffff;
+        bossColorDark = (this->bossUIOpacity << 24) | 0x00202060;
+        Float3 textPos(48.0f, 16.0f, 0.0f);
+        ScreenEffect::DrawSquareShaded(&rect, bossColor, bossColor, bossColorDark, bossColorDark);
+
+        f32 segmentStop;
+        for (segmentIndex = 0; segmentIndex < MAX_BOSS_LIFEBAR_SEGMENTS; segmentIndex++)
+        {
+            if (this->bossLifeBarSegmentStop[segmentIndex] == 0.0f)
+                continue;
+            if (this->bossLifeBarSegmentStart[segmentIndex] >= this->bossLifeBarMaxSize)
+                continue;
+
+            segmentStop = this->bossLifeBarSegmentStop[segmentIndex];
+            if (this->bossLifeBarMaxSize < segmentStop)
+                segmentStop = this->bossLifeBarMaxSize;
+
+            rect.left = this->bossLifeBarSegmentStart[segmentIndex] * 320.0f + 64.0f;
+            rect.top = 19.0f;
+            rect.right = segmentStop * 320.0f + 64.0f;
+            rect.bottom = 23.0f;
+            bossColor = (this->bossUIOpacity << 24) | (this->bossLifeBarSegmentColor[segmentIndex] & 0x00ffffff);
+            bossColorDark = (this->bossUIOpacity << 24) |
+                            ((this->bossLifeBarSegmentColor[segmentIndex] >> 2) & 0x003f3f3f);
+            ScreenEffect::DrawSquareShaded(&rect, bossColor, bossColor, bossColorDark, bossColorDark);
+        }
+
+        g_AnmManager->DrawNoRotation(&this->impl->vm0000[12]);
+
+        i32 segmentWidth;
+        {
+            rect.left = 33.0f;
+            rect.top = 19.0f;
+            rect.right = rect.left + 3.0f;
+            rect.bottom = rect.top + 4.0f;
+            bossValue = this->eclSetLives;
+            segmentWidth = this->eclSetLives <= 5 ? 2 : 1;
+            for (segmentIndex = 0; segmentIndex < bossValue; segmentIndex++)
+            {
+                rect.left = segmentIndex * 26.0f / bossValue + 35.0f;
+                rect.right = (segmentIndex + 1) * 26.0f / bossValue + 35.0f - segmentWidth;
+                bossColor = (this->bossUIOpacity << 24) | (0x00ffffff - segmentIndex * 0xff / 9);
+                bossColorDark = (this->bossUIOpacity << 24) | 0x00202020;
+                ScreenEffect::DrawSquareShaded(&rect, bossColor, bossColor, bossColorDark, bossColorDark);
+            }
+        }
+
+        i32 bossTimerColor;
+        {
+            textPos = Float3(384.0f, 16.0f, 0.0f);
+            if (this->spellcardSecondsRemaining >= 20)
+                bossTimerColor = g_GuiBossTimerColors[0];
+            else if (this->spellcardSecondsRemaining >= 10)
+                bossTimerColor = g_GuiBossTimerColors[1];
+            else if (this->spellcardSecondsRemaining >= 5)
+                bossTimerColor = g_GuiBossTimerColors[2];
+            else
+                bossTimerColor = g_GuiBossTimerColors[3];
+
+            g_AsciiManager.SetColor((this->bossUIOpacity << 24) | bossTimerColor);
+            bossValue = this->spellcardSecondsRemaining > 99 ? 99 : this->spellcardSecondsRemaining;
+            if (this->previousSpellcardSecondsRemaining != this->spellcardSecondsRemaining)
+            {
+                if (bossValue < 3)
+                    g_SoundPlayer.PlaySoundByIdx((SoundIdx)0x26, 0);
+                else if (bossValue < 10)
+                    g_SoundPlayer.PlaySoundByIdx((SoundIdx)0x1d, 0);
+            }
+            g_AsciiManager.AddFormatText(&textPos, "%.2d", bossValue);
+            g_AsciiManager.SetColor(0xffffffff);
+            this->previousSpellcardSecondsRemaining = this->spellcardSecondsRemaining;
+
+            if (!g_GameManager.isInGameMenu && !g_GameManager.showRetryMenu && !g_GameManager.flags.unk10 &&
+                EclRunLowProposal::g_EclEnemyTableF54CC0[0] != NULL)
+            {
+                textPos = Float3(2.0f, 29.0f, 0.0f);
+                g_AsciiManager.SetScale(1.0f, 1.0f);
+                g_AsciiManager.CreateFamiliarPopup(
+                    &textPos,
+                    reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(
+                        EclRunLowProposal::g_EclEnemyTableF54CC0[0])->CountParentChain(),
+                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
+                        EclRunLowProposal::g_EclEnemyTableF54CC0[0]) + 0x3380),
+                    0xfff0f00f);
+            }
+        }
+    }
+
+    g_AnmManager->DrawNoRotation(&this->impl->vm212c8);
+}
+
+// FUNCTION: th08 0x437a2f
+ZunResult Gui::AddedCallback(Gui *gui)
+{
+    return gui->ActualAddedCallback();
+}
+
+// FUNCTION: th08 0x437a40
+ZunResult Gui::DeletedCallback(Gui *gui)
+{
+    if (!FUN_00438ffd())
+    {
+        g_AnmManager->ReleaseAnm(13);
+    }
+
+    gui->FreeMsgFile();
+
+    if (FUN_00438ff3())
+    {
+        g_AnmManager->ReleaseAnm(10);
+        g_AnmManager->ReleaseAnm(12);
+        g_AnmManager->ReleaseAnm(11);
+        g_AnmManager->ReleaseAnm(14);
+        ZUN_DELETE(gui->impl);
+    }
+
     return ZUN_SUCCESS;
 }
 
-// FUNCTION: th08 0x4353ec
-#pragma var_order(i, decoded)
-void __fastcall FUN_004353ec(char *out, const char *encoded)
+// FUNCTION: th08 0x437ad0
+ZunResult Gui::RegisterChain()
 {
-    char decoded;
-    i32 i = 0;
-    do
+    Gui *gui = &g_Gui;
+
+    if (FUN_00438fe9())
     {
-        decoded = *encoded ^ 0x77;
-        out[i] = decoded;
-        i++;
-        encoded++;
-    } while (decoded != '\0');
+        memset(gui, 0, sizeof(Gui));
+        gui->impl = ZUN_NEW(GuiImpl, "GUI");
+    }
+
+    g_GuiCalcChain.SetCallback((ChainCallback)Gui::OnUpdate);
+    g_GuiCalcChain.addedCallback = (ChainLifetimeCallback)Gui::AddedCallback;
+    g_GuiCalcChain.deletedCallback = (ChainLifetimeCallback)Gui::DeletedCallback;
+    g_GuiCalcChain.arg = gui;
+    if (g_Chain.AddToCalcChain(&g_GuiCalcChain, 15) != ZUN_SUCCESS)
+        return ZUN_ERROR;
+
+    g_GuiDrawChain.SetCallback((ChainCallback)Gui::OnDraw);
+    g_GuiDrawChain.arg = gui;
+    g_Chain.AddToDrawChain(&g_GuiDrawChain, 17);
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x437bc4
+GuiImpl::GuiImpl()
+{
+}
+
+// FUNCTION: th08 0x437ce2
+GuiMsgVm::GuiMsgVm()
+{
+}
+
+// FUNCTION: th08 0x437d45
+GuiFormattedText::GuiFormattedText()
+{
+}
+
+// FUNCTION: th08 0x437d64
+void Gui::CutChain()
+{
+    g_Chain.Cut(&g_GuiCalcChain);
+    g_Chain.Cut(&g_GuiDrawChain);
+}
+
+// FUNCTION: th08 0x437d87
+i32 Gui::FUN_00437d87()
+{
+    return this->impl->vm3778.activeSpriteIndex >= 0 &&
+           this->impl->vm3778.FUN_004396f8();
+}
+
+// FUNCTION: th08 0x437dc7
+i32 Gui::FUN_00437dc7()
+{
+    return this->impl->msgVm.unk1568;
+}
+
+// FUNCTION: th08 0x437ddd
+void Gui::FUN_00437ddd(i32 value)
+{
+    this->impl->formatted0.position = Float3(416.0f, 48.0f, 0.0f);
+    this->impl->formatted0.isShown = 1;
+    this->impl->formatted0.timer = 0;
+    this->impl->formatted0.value = value;
+    g_GuiFullPowerModeFrames = 2;
+}
+
+// FUNCTION: th08 0x437e5d
+void Gui::FUN_00437e5d(i32 value, i32 isShown)
+{
+    this->impl->formatted1.position = Float3(416.0f, 168.0f, 0.0f);
+    this->impl->formatted1.isShown = isShown;
+    this->impl->formatted1.timer = 0;
+    this->impl->formatted1.value = value;
+    g_GuiFullPowerModeFrames = 2;
+}
+
+// FUNCTION: th08 0x437edc
+void Gui::gui_fun_00437edc(i32 value)
+{
+    this->impl->formatted2.position = Float3(224.0f, 16.0f, 0.0f);
+    this->impl->formatted2.isShown = 1;
+    this->impl->formatted2.timer = 0;
+    this->impl->formatted2.value = value;
+    g_GuiFullPowerModeFrames = 2;
+}
+
+// FUNCTION: th08 0x437f5c
+#pragma var_order(srcRect, destRect)
+void __fastcall FUN_00437f5c(i32 spriteIdx)
+{
+    RECT destRect;
+    RECT srcRect;
+
+    destRect.left = (i32)g_Gui.stageTextAnm->GetSprite(10)->startPixelInclusive.x;
+    destRect.top = (i32)g_Gui.stageTextAnm->GetSprite(10)->startPixelInclusive.y;
+    destRect.right = (i32)g_Gui.stageTextAnm->GetSprite(10)->endPixelInclusive.x;
+    destRect.bottom = (i32)g_Gui.stageTextAnm->GetSprite(10)->endPixelInclusive.y;
+
+    srcRect.left = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->startPixelInclusive.x;
+    srcRect.top = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->startPixelInclusive.y;
+    srcRect.right = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->endPixelInclusive.x;
+    srcRect.bottom = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->endPixelInclusive.y;
+
+    g_AnmManager->CopyTextureRect(10, 0, 10, 1, &destRect, &srcRect);
+}
+
+// FUNCTION: th08 0x438046
+void FUN_00438046()
+{
+    switch (g_GameManager.currentStage)
+    {
+    default:
+        FUN_00437f5c(16);
+        break;
+    case STAGE2:
+        FUN_00437f5c(17);
+        break;
+    case STAGE3:
+        FUN_00437f5c(18);
+        break;
+    case STAGE4A:
+        if (!g_GameManager.IsSpellPractice() || g_GameManager.IsSpellNumberEqualTo(214))
+        {
+            FUN_00437f5c(19);
+        }
+        else if (g_GameManager.IsSpellNumberEqualTo(216))
+        {
+            FUN_00437f5c(26);
+        }
+        else if (g_GameManager.IsSpellNumberEqualTo(217))
+        {
+            FUN_00437f5c(27);
+        }
+        else if (g_GameManager.IsSpellNumberEqualTo(218))
+        {
+            FUN_00437f5c(28);
+        }
+        else if (g_GameManager.IsSpellNumberEqualTo(219))
+        {
+            FUN_00437f5c(29);
+        }
+        else if (g_GameManager.IsSpellNumberEqualTo(220))
+        {
+            FUN_00437f5c(30);
+        }
+        else if (g_GameManager.IsSpellNumberEqualTo(221))
+        {
+            FUN_00437f5c(31);
+        }
+        break;
+    case STAGE4B:
+        FUN_00437f5c(20);
+        break;
+    case STAGE5:
+        if (!g_GameManager.IsSpellPractice() || g_GameManager.IsSpellNumberEqualTo(212))
+            FUN_00437f5c(21);
+        else
+            FUN_00437f5c(22);
+        break;
+    case STAGE6A:
+        FUN_00437f5c(23);
+        break;
+    case STAGE6B:
+        if (!g_GameManager.IsSpellPractice() || g_GameManager.IsSpellNumberInRange(147, 150))
+            FUN_00437f5c(23);
+        else
+            FUN_00437f5c(24);
+        break;
+    case EXTRASTAGE:
+        if (!g_GameManager.IsSpellPractice() ||
+            g_GameManager.IsSpellNumberInRange(191, 193) ||
+            g_GameManager.IsSpellNumberEqualTo(213))
+            FUN_00437f5c(32);
+        else
+            FUN_00437f5c(25);
+        break;
+    }
 }
 
 // FUNCTION: th08 0x43826b
@@ -1349,80 +2136,6 @@ void Gui::FUN_00438a89()
     g_AsciiManager.SetIsGuiMode(0);
 }
 
-void __fastcall FUN_00437f5c(i32 spriteIdx);
-
-// FUNCTION: th08 0x438046
-void FUN_00438046()
-{
-    switch (g_GameManager.currentStage)
-    {
-    default:
-        FUN_00437f5c(16);
-        break;
-    case STAGE2:
-        FUN_00437f5c(17);
-        break;
-    case STAGE3:
-        FUN_00437f5c(18);
-        break;
-    case STAGE4A:
-        if (!g_GameManager.IsSpellPractice() || g_GameManager.IsSpellNumberEqualTo(214))
-        {
-            FUN_00437f5c(19);
-        }
-        else if (g_GameManager.IsSpellNumberEqualTo(216))
-        {
-            FUN_00437f5c(26);
-        }
-        else if (g_GameManager.IsSpellNumberEqualTo(217))
-        {
-            FUN_00437f5c(27);
-        }
-        else if (g_GameManager.IsSpellNumberEqualTo(218))
-        {
-            FUN_00437f5c(28);
-        }
-        else if (g_GameManager.IsSpellNumberEqualTo(219))
-        {
-            FUN_00437f5c(29);
-        }
-        else if (g_GameManager.IsSpellNumberEqualTo(220))
-        {
-            FUN_00437f5c(30);
-        }
-        else if (g_GameManager.IsSpellNumberEqualTo(221))
-        {
-            FUN_00437f5c(31);
-        }
-        break;
-    case STAGE4B:
-        FUN_00437f5c(20);
-        break;
-    case STAGE5:
-        if (!g_GameManager.IsSpellPractice() || g_GameManager.IsSpellNumberEqualTo(212))
-            FUN_00437f5c(21);
-        else
-            FUN_00437f5c(22);
-        break;
-    case STAGE6A:
-        FUN_00437f5c(23);
-        break;
-    case STAGE6B:
-        if (!g_GameManager.IsSpellPractice() || g_GameManager.IsSpellNumberInRange(147, 150))
-            FUN_00437f5c(23);
-        else
-            FUN_00437f5c(24);
-        break;
-    case EXTRASTAGE:
-        if (!g_GameManager.IsSpellPractice() ||
-            g_GameManager.IsSpellNumberInRange(191, 193) ||
-            g_GameManager.IsSpellNumberEqualTo(213))
-            FUN_00437f5c(32);
-        else
-            FUN_00437f5c(25);
-        break;
-    }
-}
 
 // FUNCTION: th08 0x438f58
 ZunResult Gui::FUN_00438f58()
@@ -1443,173 +2156,18 @@ i32 FUN_00438fe9()
 }
 
 
-// FUNCTION: th08 0x437f5c
-#pragma var_order(srcRect, destRect)
-void __fastcall FUN_00437f5c(i32 spriteIdx)
+// FUNCTION: th08 0x438ff3
+i32 FUN_00438ff3()
 {
-    RECT destRect;
-    RECT srcRect;
-
-    destRect.left = (i32)g_Gui.stageTextAnm->GetSprite(10)->startPixelInclusive.x;
-    destRect.top = (i32)g_Gui.stageTextAnm->GetSprite(10)->startPixelInclusive.y;
-    destRect.right = (i32)g_Gui.stageTextAnm->GetSprite(10)->endPixelInclusive.x;
-    destRect.bottom = (i32)g_Gui.stageTextAnm->GetSprite(10)->endPixelInclusive.y;
-
-    srcRect.left = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->startPixelInclusive.x;
-    srcRect.top = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->startPixelInclusive.y;
-    srcRect.right = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->endPixelInclusive.x;
-    srcRect.bottom = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->endPixelInclusive.y;
-
-    g_AnmManager->CopyTextureRect(10, 0, 10, 1, &destRect, &srcRect);
+    return g_BulletManagerAnmReleaseRequired;
 }
 
-// FUNCTION: th08 0x43396d
-void GuiImpl::FUN_0043396d(i32 value)
+// FUNCTION: th08 0x438ffd
+i32 FUN_00438ffd()
 {
-    void *msgFile;
-
-    utils::GuiDebugPrint("msg start %d\n\r", value);
-    msgFile = reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->msgFile;
-    memset(reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm), 0, 0x1570);
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->msgFile = msgFile;
-
-    if (value == 0)
-    {
-        switch (g_GameManager.currentStage)
-        {
-        case STAGE5:
-            FUN_00437f5c(22);
-            break;
-        case STAGE6A:
-            g_GuiMessageStageMode = 2;
-            break;
-        case STAGE6B:
-        {
-            AnmLoaded *tmp = g_GuiPortraitAnm1;
-            g_GuiPortraitAnm1 = g_GuiPortraitAnm2;
-            g_GuiPortraitAnm2 = tmp;
-            g_GuiMessageStageMode = 2;
-            FUN_00437f5c(24);
-            break;
-        }
-        case EXTRASTAGE:
-        {
-            AnmLoaded *tmp = g_GuiPortraitAnm1;
-            g_GuiPortraitAnm1 = g_GuiPortraitAnm2;
-            g_GuiPortraitAnm2 = tmp;
-            g_GuiMessageStageMode = 2;
-            FUN_00437f5c(25);
-            break;
-        }
-        default:
-            break;
-        }
-    }
-    else if (value == 10)
-    {
-        switch (g_GameManager.currentStage)
-        {
-        case STAGE5:
-            if (g_GameManager.globals->numRetries > 0)
-            {
-                value = 1;
-                reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 0;
-            }
-            else if (!g_GameManager.IsReplay())
-            {
-                if (g_GameManager.IsStageClearedWithoutRetries(STAGE6B, g_GameManager.shotType, EASY) ||
-                    g_GameManager.IsStageClearedWithoutRetries(STAGE6B, g_GameManager.shotType, NORMAL) ||
-                    g_GameManager.IsStageClearedWithoutRetries(STAGE6B, g_GameManager.shotType, HARD) ||
-                    g_GameManager.IsStageClearedWithoutRetries(STAGE6B, g_GameManager.shotType, LUNATIC) ||
-                    g_GameManager.shotType > SHOT_YOUMU_YUYUKO)
-                {
-                    value = 3;
-                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 1;
-                }
-                else if (g_GameManager.IsStageClearedWithRetries(STAGE6A, g_GameManager.shotType, EASY) ||
-                         g_GameManager.IsStageClearedWithRetries(STAGE6A, g_GameManager.shotType, NORMAL) ||
-                         g_GameManager.IsStageClearedWithRetries(STAGE6A, g_GameManager.shotType, HARD) ||
-                         g_GameManager.IsStageClearedWithRetries(STAGE6A, g_GameManager.shotType, LUNATIC))
-                {
-                    value = 2;
-                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 1;
-                }
-                else
-                {
-                    value = 1;
-                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 0;
-                }
-            }
-            else
-            {
-                if ((i8)g_ReplayManager->replayData->clearState == 2)
-                {
-                    value = 3;
-                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 1;
-                }
-                else if ((i8)g_ReplayManager->replayData->clearState == 1)
-                {
-                    value = 2;
-                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 1;
-                }
-                else
-                {
-                    value = 1;
-                    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 0;
-                }
-            }
-            g_GameManager.flags.isGoingToFinalB = reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice;
-            break;
-        default:
-            break;
-        }
-    }
-    else if (value >= 6)
-    {
-        switch (g_GameManager.currentStage)
-        {
-        case STAGE6B:
-            if ((i8)g_GameManager.GetClockTime() >= 12)
-            {
-                value = 5;
-            }
-            break;
-        default:
-            break;
-        }
-    }
-
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentMsgIdx = value;
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr = reinterpret_cast<u8 **>(reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->msgFile)[value + 1];
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[0].scriptIndex = -1;
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1].scriptIndex = -1;
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->messageFlag = 1;
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->fontSize = 15;
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[0] = g_GuiMessageTextColors[g_GameManager.shotType].colors[0];
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[1] = g_GuiMessageTextColors[g_GameManager.shotType].colors[1];
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[2] = g_GuiMessageTextColors[g_GameManager.shotType].colors[2];
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[3] = g_GuiMessageTextColors[g_GameManager.shotType].colors[3];
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[0] = 0;
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[1] = 0;
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[2] = 0;
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[3] = 0;
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueSkippable = 1;
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->waitThreshold = 6;
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentSide = 0;
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textPending = 1;
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentLine = 0;
-    reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentPortrait = 0xff;
-
-    g_BulletManager.bulletmanager_fun_00415c60();
-    g_EnemyManager.FUN_0042efb0(0, 0);
-    g_ItemManager.AutoCollectAllItems();
+    return g_GuiAnmReleaseRequired;
 }
 
-// FUNCTION: th08 0x439810
-void Gui::FUN_00439810(i32 value)
-{
-    this->impl->FUN_0043396d(value);
-}
 
 // FUNCTION: th08 0x439007
 i32 Gui::StartStageBackgroundSequence()
@@ -1639,331 +2197,11 @@ ZunResult Gui::FUN_00439093()
     return ZUN_SUCCESS;
 }
 
-// FUNCTION: th08 0x438ff3
-i32 FUN_00438ff3()
-{
-    return g_BulletManagerAnmReleaseRequired;
-}
-
-// FUNCTION: th08 0x438ffd
-i32 FUN_00438ffd()
-{
-    return g_GuiAnmReleaseRequired;
-}
-
-
-// FUNCTION: th08 0x437ddd
-void Gui::FUN_00437ddd(i32 value)
-{
-    this->impl->formatted0.position = Float3(416.0f, 48.0f, 0.0f);
-    this->impl->formatted0.isShown = 1;
-    this->impl->formatted0.timer = 0;
-    this->impl->formatted0.value = value;
-    g_GuiFullPowerModeFrames = 2;
-}
-
-// FUNCTION: th08 0x437e5d
-void Gui::FUN_00437e5d(i32 value, i32 isShown)
-{
-    this->impl->formatted1.position = Float3(416.0f, 168.0f, 0.0f);
-    this->impl->formatted1.isShown = isShown;
-    this->impl->formatted1.timer = 0;
-    this->impl->formatted1.value = value;
-    g_GuiFullPowerModeFrames = 2;
-}
-
-// FUNCTION: th08 0x437edc
-void Gui::gui_fun_00437edc(i32 value)
-{
-    this->impl->formatted2.position = Float3(224.0f, 16.0f, 0.0f);
-    this->impl->formatted2.isShown = 1;
-    this->impl->formatted2.timer = 0;
-    this->impl->formatted2.value = value;
-    g_GuiFullPowerModeFrames = 2;
-}
-
-// FUNCTION: th08 0x437bc4
-GuiImpl::GuiImpl()
-{
-}
-
-// FUNCTION: th08 0x437ce2
-GuiMsgVm::GuiMsgVm()
-{
-}
-
-// FUNCTION: th08 0x437d45
-GuiFormattedText::GuiFormattedText()
-{
-}
-
-// FUNCTION: th08 0x4338ca
-ChainCallbackResult Gui::OnUpdate(Gui *gui)
-{
-    if (g_EclScriptedGlobalUpdateFreeze)
-        return CHAIN_CALLBACK_RESULT_CONTINUE;
-
-    gui->FUN_00435900();
-    gui->impl->RunMsg();
-    if ((g_CurFrameInput & TH_BUTTON_SKIP) && g_GuiMessageScreenEffectDuration < 8)
-        g_GuiMessageScreenEffectDuration = 8;
-    gui->unk_0++;
-    return CHAIN_CALLBACK_RESULT_CONTINUE;
-}
-
-// FUNCTION: th08 0x433927
-ChainCallbackResult Gui::OnDraw(Gui *gui)
-{
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(gui->impl) + 0x22d84) != 0)
-        gui->FUN_0043826b();
-    gui->impl->DrawDialogue();
-    gui->FUN_0043741d();
-    gui->DrawGameScene();
-    gui->FUN_00438a89();
-    return CHAIN_CALLBACK_RESULT_CONTINUE;
-}
-
-// FUNCTION: th08 0x43741d
-void Gui::FUN_0043741d()
-{
-    i32 i;
-
-    for (i = 0; i < 4; i++)
-        g_AnmManager->Draw2D(&this->impl->vm2a44[i]);
-    g_AnmManager->Draw2D(&this->impl->vm34d4);
-    g_AnmManager->Draw2D(&this->impl->vm2156c);
-
-    if (this->impl->vm3778.activeSpriteIndex >= 0)
-    {
-        g_AnmManager->DrawNoRotation(&this->impl->vm3778);
-        g_AnmManager->FUN_00464070(&this->impl->vm3cc0);
-        for (i = 0; i < ARRAY_SIZE(this->impl->vm3f64); i++)
-            g_AnmManager->FUN_00464070(&this->impl->vm3f64[i]);
-        if (this->impl->vm3a1c.activeSpriteIndex >= 0)
-        {
-            this->impl->vm3a1c.pos = Float3(304.0f, 448.0f, 0.0f);
-            g_AnmManager->DrawNoRotation(&this->impl->vm3a1c);
-        }
-    }
-
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this->impl) + 0x21810) != 0)
-    {
-        for (i = 0; i < 0xa8; i++)
-        {
-            g_AnmManager->FUN_00464070(&this->impl->vm5728[i]);
-            g_AnmManager->ClearSprite();
-        }
-    }
-
-    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->currentMsgIdx < 0 &&
-        (this->bossPresent + *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40)) > 0)
-    {
-#pragma var_order(bossColorDark, bossColor, rect, bossValue, segmentIndex, segmentStop, bossTimerColor, segmentWidth, textPos)
-        ZunRect rect;
-        D3DCOLOR bossColor;
-        D3DCOLOR bossColorDark;
-        i32 bossValue;
-        i32 segmentIndex;
-
-        rect.left = 64.0f;
-        rect.top = 19.0f;
-        rect.right = this->bossLifeBarMaxSize * 320.0f + 64.0f;
-        rect.bottom = 23.0f;
-        bossColor = (this->bossUIOpacity << 24) | 0x00ffffff;
-        bossColorDark = (this->bossUIOpacity << 24) | 0x00202060;
-        Float3 textPos(48.0f, 16.0f, 0.0f);
-        ScreenEffect::DrawSquareShaded(&rect, bossColor, bossColor, bossColorDark, bossColorDark);
-
-        f32 segmentStop;
-        for (segmentIndex = 0; segmentIndex < MAX_BOSS_LIFEBAR_SEGMENTS; segmentIndex++)
-        {
-            if (this->bossLifeBarSegmentStop[segmentIndex] == 0.0f)
-                continue;
-            if (this->bossLifeBarSegmentStart[segmentIndex] >= this->bossLifeBarMaxSize)
-                continue;
-
-            segmentStop = this->bossLifeBarSegmentStop[segmentIndex];
-            if (this->bossLifeBarMaxSize < segmentStop)
-                segmentStop = this->bossLifeBarMaxSize;
-
-            rect.left = this->bossLifeBarSegmentStart[segmentIndex] * 320.0f + 64.0f;
-            rect.top = 19.0f;
-            rect.right = segmentStop * 320.0f + 64.0f;
-            rect.bottom = 23.0f;
-            bossColor = (this->bossUIOpacity << 24) | (this->bossLifeBarSegmentColor[segmentIndex] & 0x00ffffff);
-            bossColorDark = (this->bossUIOpacity << 24) |
-                            ((this->bossLifeBarSegmentColor[segmentIndex] >> 2) & 0x003f3f3f);
-            ScreenEffect::DrawSquareShaded(&rect, bossColor, bossColor, bossColorDark, bossColorDark);
-        }
-
-        g_AnmManager->DrawNoRotation(&this->impl->vm0000[12]);
-
-        i32 segmentWidth;
-        {
-            rect.left = 33.0f;
-            rect.top = 19.0f;
-            rect.right = rect.left + 3.0f;
-            rect.bottom = rect.top + 4.0f;
-            bossValue = this->eclSetLives;
-            segmentWidth = this->eclSetLives <= 5 ? 2 : 1;
-            for (segmentIndex = 0; segmentIndex < bossValue; segmentIndex++)
-            {
-                rect.left = segmentIndex * 26.0f / bossValue + 35.0f;
-                rect.right = (segmentIndex + 1) * 26.0f / bossValue + 35.0f - segmentWidth;
-                bossColor = (this->bossUIOpacity << 24) | (0x00ffffff - segmentIndex * 0xff / 9);
-                bossColorDark = (this->bossUIOpacity << 24) | 0x00202020;
-                ScreenEffect::DrawSquareShaded(&rect, bossColor, bossColor, bossColorDark, bossColorDark);
-            }
-        }
-
-        i32 bossTimerColor;
-        {
-            textPos = Float3(384.0f, 16.0f, 0.0f);
-            if (this->spellcardSecondsRemaining >= 20)
-                bossTimerColor = g_GuiBossTimerColors[0];
-            else if (this->spellcardSecondsRemaining >= 10)
-                bossTimerColor = g_GuiBossTimerColors[1];
-            else if (this->spellcardSecondsRemaining >= 5)
-                bossTimerColor = g_GuiBossTimerColors[2];
-            else
-                bossTimerColor = g_GuiBossTimerColors[3];
-
-            g_AsciiManager.SetColor((this->bossUIOpacity << 24) | bossTimerColor);
-            bossValue = this->spellcardSecondsRemaining > 99 ? 99 : this->spellcardSecondsRemaining;
-            if (this->previousSpellcardSecondsRemaining != this->spellcardSecondsRemaining)
-            {
-                if (bossValue < 3)
-                    g_SoundPlayer.PlaySoundByIdx((SoundIdx)0x26, 0);
-                else if (bossValue < 10)
-                    g_SoundPlayer.PlaySoundByIdx((SoundIdx)0x1d, 0);
-            }
-            g_AsciiManager.AddFormatText(&textPos, "%.2d", bossValue);
-            g_AsciiManager.SetColor(0xffffffff);
-            this->previousSpellcardSecondsRemaining = this->spellcardSecondsRemaining;
-
-            if (!g_GameManager.isInGameMenu && !g_GameManager.showRetryMenu && !g_GameManager.flags.unk10 &&
-                EclRunLowProposal::g_EclEnemyTableF54CC0[0] != NULL)
-            {
-                textPos = Float3(2.0f, 29.0f, 0.0f);
-                g_AsciiManager.SetScale(1.0f, 1.0f);
-                g_AsciiManager.CreateFamiliarPopup(
-                    &textPos,
-                    reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(
-                        EclRunLowProposal::g_EclEnemyTableF54CC0[0])->CountParentChain(),
-                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-                        EclRunLowProposal::g_EclEnemyTableF54CC0[0]) + 0x3380),
-                    0xfff0f00f);
-            }
-        }
-    }
-
-    g_AnmManager->DrawNoRotation(&this->impl->vm212c8);
-}
-
-// FUNCTION: th08 0x437a2f
-ZunResult Gui::AddedCallback(Gui *gui)
-{
-    return gui->ActualAddedCallback();
-}
-
-// FUNCTION: th08 0x437a40
-ZunResult Gui::DeletedCallback(Gui *gui)
-{
-    if (!FUN_00438ffd())
-    {
-        g_AnmManager->ReleaseAnm(13);
-    }
-
-    gui->FreeMsgFile();
-
-    if (FUN_00438ff3())
-    {
-        g_AnmManager->ReleaseAnm(10);
-        g_AnmManager->ReleaseAnm(12);
-        g_AnmManager->ReleaseAnm(11);
-        g_AnmManager->ReleaseAnm(14);
-        ZUN_DELETE(gui->impl);
-    }
-
-    return ZUN_SUCCESS;
-}
-
-// FUNCTION: th08 0x43587e
-i32 Gui::MsgWait()
-{
-    if (this->impl == NULL)
-        return 0;
-    if (*(u32 *)((u8 *)this->impl + 0x22D78) > 0)
-        return 0;
-    return *(i32 *)((u8 *)this->impl + 0x2181C) >= 0;
-}
-
-// FUNCTION: th08 0x4358bb
-i32 Gui::IsDialogPresent()
-{
-    if (this->impl == NULL)
-        return 0;
-    return *(i32 *)((u8 *)this->impl + 0x2181C) >= 0 || *(i32 *)((u8 *)this->impl + 0x2181C) == -2;
-}
-
-// FUNCTION: th08 0x437d87
-i32 Gui::FUN_00437d87()
-{
-    return this->impl->vm3778.activeSpriteIndex >= 0 &&
-           this->impl->vm3778.FUN_004396f8();
-}
-
-// FUNCTION: th08 0x437dc7
-i32 Gui::FUN_00437dc7()
-{
-    return this->impl->msgVm.unk1568;
-}
-
-// FUNCTION: th08 0x437ad0
-ZunResult Gui::RegisterChain()
-{
-    Gui *gui = &g_Gui;
-
-    if (FUN_00438fe9())
-    {
-        memset(gui, 0, sizeof(Gui));
-        gui->impl = ZUN_NEW(GuiImpl, "GUI");
-    }
-
-    g_GuiCalcChain.SetCallback((ChainCallback)Gui::OnUpdate);
-    g_GuiCalcChain.addedCallback = (ChainLifetimeCallback)Gui::AddedCallback;
-    g_GuiCalcChain.deletedCallback = (ChainLifetimeCallback)Gui::DeletedCallback;
-    g_GuiCalcChain.arg = gui;
-    if (g_Chain.AddToCalcChain(&g_GuiCalcChain, 15) != ZUN_SUCCESS)
-        return ZUN_ERROR;
-
-    g_GuiDrawChain.SetCallback((ChainCallback)Gui::OnDraw);
-    g_GuiDrawChain.arg = gui;
-    g_Chain.AddToDrawChain(&g_GuiDrawChain, 17);
-    return ZUN_SUCCESS;
-}
-
-// FUNCTION: th08 0x437d64
-void Gui::CutChain()
-{
-    g_Chain.Cut(&g_GuiCalcChain);
-    g_Chain.Cut(&g_GuiDrawChain);
-}
-
 // FUNCTION: th08 0x4390d6
 ZunResult Gui::FUN_004390d6()
 {
     *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2175f) = 0;
     return ZUN_SUCCESS;
-}
-
-// FUNCTION: th08 0x4396b8
-void Gui::FUN_004396b8()
-{
-    this->impl->vm3778.activeSpriteIndex = -1;
-    this->impl->vm3a1c.activeSpriteIndex = -1;
-    this->impl->vm3cc0.activeSpriteIndex = -1;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this->impl) + 0x21810) = 0;
 }
 
 #pragma var_order(i, j, k)
@@ -2087,6 +2325,21 @@ ZunResult Gui::ActualAddedCallback()
     return ZUN_SUCCESS;
 }
 
+// FUNCTION: th08 0x4396b8
+void Gui::FUN_004396b8()
+{
+    this->impl->vm3778.activeSpriteIndex = -1;
+    this->impl->vm3a1c.activeSpriteIndex = -1;
+    this->impl->vm3cc0.activeSpriteIndex = -1;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this->impl) + 0x21810) = 0;
+}
+
+// FUNCTION: th08 0x4396f8
+u32 AnmVm::FUN_004396f8()
+{
+    return (*(u32 *)((u8 *)this + 0x1F8) >> 14) & 1;
+}
+
 // FUNCTION: th08 0x439710
 ZunResult Gui::LoadMsg(const char *path)
 {
@@ -2115,254 +2368,10 @@ void Gui::FreeMsgFile(void)
     }
 }
 
-// FUNCTION: th08 0x435900
-#pragma var_order(i, remaining, j, score, k)
-void Gui::FUN_00435900()
+// FUNCTION: th08 0x439810
+void Gui::FUN_00439810(i32 value)
 {
-    i32 i;
-    i32 remaining;
-    i32 j;
-    i32 score;
-    i32 k;
-
-    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->currentMsgIdx < 0)
-    {
-        if (this->bossPresent)
-        {
-            if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) == 0)
-            {
-                this->impl->vm0000[12].SetInterrupt(1);
-                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) = 1;
-                this->bossUIOpacity = 0;
-            }
-            else
-            {
-                if (this->impl->vm0000[12].FUN_004396f8())
-                    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) = 2;
-                if (this->bossUIOpacity < 0xfc)
-                    this->bossUIOpacity += 4;
-                else
-                    this->bossUIOpacity = 0xff;
-            }
-        }
-        else if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) != 0)
-        {
-            if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) <= 2)
-            {
-                this->impl->vm0000[12].SetInterrupt(2);
-                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) = 3;
-            }
-            if (this->bossUIOpacity > 0)
-                this->bossUIOpacity -= 4;
-            else
-                this->bossUIOpacity = 0;
-            if (this->impl->vm0000[12].FUN_004396f8())
-            {
-                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) = 0;
-                this->bossLifeBarMaxSize = 0.0f;
-                this->bossUIOpacity = 0;
-            }
-        }
-
-        if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->impl) + 0x2a40) >= 2)
-        {
-            if (this->bossLifeBarSize > this->bossLifeBarMaxSize)
-            {
-                this->bossLifeBarMaxSize += 0.01f;
-                if (this->bossLifeBarSize < this->bossLifeBarMaxSize)
-                    this->bossLifeBarMaxSize = this->bossLifeBarSize;
-            }
-            else if (this->bossLifeBarSize < this->bossLifeBarMaxSize)
-            {
-                this->bossLifeBarMaxSize -= 0.02f;
-                if (this->bossLifeBarSize > this->bossLifeBarMaxSize)
-                    this->bossLifeBarMaxSize = this->bossLifeBarSize;
-            }
-        }
-    }
-
-    g_AnmManager->ExecuteScriptArray(this->impl->vm0000, 16);
-    g_AnmManager->ExecuteScriptArray(this->impl->vm2a44, 4);
-    if (!g_GameManager.flags.isSpellPractice && this->impl->vm2a44[0].color1.a)
-        g_AnmManager->ExecuteScriptArray(&this->impl->vm34d4, 1);
-
-    g_AnmManager->ExecuteScript(&this->impl->vm212c8);
-    g_AnmManager->ExecuteScript(&this->impl->vm2156c);
-
-    if (this->impl->vm2156c.color1.a)
-    {
-        if (EclOperands::g_TargetPlayerPosition017D61AC.x >= 64.0f &&
-            EclOperands::g_TargetPlayerPosition017D61AC.y < 128.0f)
-        {
-            if (this->impl->vm2156c.color1.a > 0x40)
-                this->impl->vm2156c.color1.a -= 4;
-        }
-        else if (this->impl->vm2156c.color1.a < 0xff)
-        {
-            if (this->impl->vm2156c.color1.a <= 0xfb)
-                this->impl->vm2156c.color1.a += 4;
-            else
-                this->impl->vm2156c.color1.a = 0xff;
-        }
-    }
-
-    g_AnmManager->ExecuteScript(&this->impl->vm5484);
-    g_AnmManager->ExecuteScript(&this->impl->vm22e14);
-
-    if (this->impl->vm3778.activeSpriteIndex >= 0)
-    {
-        if (g_AnmManager->ExecuteScript(&this->impl->vm3778))
-            this->impl->vm3778.activeSpriteIndex = -1;
-        if (g_AnmManager->ExecuteScript(&this->impl->vm3cc0))
-            this->impl->vm3cc0.activeSpriteIndex = -1;
-        for (i = 0; i < ARRAY_SIZE(this->impl->vm3f64); i++)
-            g_AnmManager->ExecuteScript(&this->impl->vm3f64[i]);
-    }
-
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this->impl) + 0x21810) != 0)
-    {
-        remaining = 0xa8;
-        for (j = 0; j < 0xa8; j++)
-        {
-            if (g_AnmManager->ExecuteScript(&this->impl->vm5728[j]))
-                remaining--;
-        }
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this->impl) + 0x21810) = remaining;
-    }
-
-    if (this->impl->formatted0.isShown)
-    {
-        if (this->impl->formatted0.timer < 30)
-            this->impl->formatted0.position.x =
-                static_cast<f32>(this->impl->formatted0.timer) * -312.0f / 30.0f + 416.0f;
-        else
-            this->impl->formatted0.position.x = 104.0f;
-        if (this->impl->formatted0.timer >= 250)
-            this->impl->formatted0.isShown = 0;
-        this->impl->formatted0.timer++;
-    }
-
-    if (this->impl->formatted1.isShown)
-    {
-        if (this->impl->formatted1.timer < 30)
-            this->impl->formatted1.position.x =
-                static_cast<f32>(this->impl->formatted1.timer) * -312.0f / 30.0f + 416.0f;
-        else
-            this->impl->formatted1.position.x = 104.0f;
-        if (this->impl->formatted1.timer >= 180)
-            this->impl->formatted1.isShown = 0;
-        this->impl->formatted1.timer++;
-    }
-
-    if (this->impl->formatted2.isShown)
-    {
-        if (this->impl->formatted2.timer >= 280)
-            this->impl->formatted2.isShown = 0;
-        this->impl->formatted2.timer++;
-    }
-
-    if (reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->resultState == 1)
-    {
-        score = 0;
-        score += reinterpret_cast<GuiStageResultUpdateOverlay *>(
-                     reinterpret_cast<u8 *>(this->impl) + 0x22dec)->baseScore;
-        score += reinterpret_cast<GuiStageResultUpdateOverlay *>(
-                     reinterpret_cast<u8 *>(this->impl) + 0x22dec)->grazeInStage * 50;
-        score += reinterpret_cast<GuiStageResultUpdateOverlay *>(
-                     reinterpret_cast<u8 *>(this->impl) + 0x22dec)->pointItemsCollectedInStage * 5000;
-        score += reinterpret_cast<GuiStageResultUpdateOverlay *>(
-                     reinterpret_cast<u8 *>(this->impl) + 0x22dec)->timeOrbs * 100;
-
-        if (g_GameManager.currentStage >= STAGE6A && !g_GameManager.IsPracticeMode())
-        {
-            score += 2500000 * g_GameManager.GetLives();
-            score += 500000 * g_GameManager.GetBombsRemaining();
-        }
-        if (g_GameManager.currentStage == STAGE6B)
-            score += 2000000 * (12 - static_cast<i8>(g_GameManager.GetClockTime()));
-
-        switch (g_GameManager.difficulty)
-        {
-        case EASY:
-            score /= 2;
-            break;
-        case HARD:
-            score = score * 12 / 10;
-            break;
-        case LUNATIC:
-            score = score * 15 / 10;
-            break;
-        case EXTRA:
-            score *= 2;
-            break;
-        default:
-            break;
-        }
-
-        switch (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(g_GameManager.cfg) + 0x1c))
-        {
-        case 3:
-            score = score * 5 / 10;
-            break;
-        case 4:
-            score = score * 2 / 10;
-            break;
-        case 5:
-            score /= 10;
-            break;
-        case 6:
-            score /= 20;
-            break;
-        default:
-            break;
-        }
-
-        reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->unknown1574 = score;
-        for (k = 0; k < 10; k++)
-            g_GameManager.AddScore(score);
-        reinterpret_cast<GuiMessageStateOverlay *>(&this->impl->msgVm)->resultState++;
-    }
-
-    if (g_GameManager.currentStage < STAGE6A &&
-        reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent != 0 &&
-        reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent >=
-            reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTarget &&
-        g_GameManager.flags.unk5_6 == 0)
-    {
-        g_GameManager.flags.unk5_6 = 2;
-    }
-
-    if (reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent != 0 &&
-        reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent !=
-            reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTarget)
-    {
-        if (reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTimer >= 60)
-        {
-            if (reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent <
-                reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTarget)
-            {
-                reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent++;
-                if ((g_GuiMessageInputCurrent & TH_BUTTON_SHOOT) || (g_GuiMessageInputCurrent & TH_BUTTON_SKIP))
-                {
-                    reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent += 3;
-                }
-                if (reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent >
-                    reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTarget)
-                {
-                    reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent =
-                        reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTarget;
-                }
-            }
-            else
-            {
-                reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTimer++;
-            }
-        }
-        else
-        {
-            reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTimer++;
-        }
-    }
+    this->impl->FUN_0043396d(value);
 }
 
 } /* namespace th08 */
