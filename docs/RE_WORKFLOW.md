@@ -174,8 +174,11 @@ difference rather than by inventory percentage alone.
    manufacture an owner for a helper with no production caller. If the retained
    target neighborhood is continuous, restore lexical function order inside
    that TU instead of manufacturing a source file for every run. Replay donor
-   and recipients together, then cold link and measure the new runs/drift
-   before the aggregate replay.
+   and recipients together. Moving a caller or explicit shared-helper body may
+   also remove an otherwise implicit COMDAT from the donor; inspect
+   section-defined symbols in every affected object and change its canonical
+   owner only when target neighborhood and natural production emission agree.
+   Then cold link and measure the new runs/drift before the aggregate replay.
 4. Return to one CRT/D3DX/compiler-runtime member only when the whole-image
    report or a bounded link-provenance trace identifies that member as an
    import, extent, relocation, or layout dependency. For rebuild-only imports,

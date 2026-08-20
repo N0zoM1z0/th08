@@ -17,13 +17,15 @@ As cold-built and replayed on 2026-08-20 against the original Japanese TH08
 - a cold normal VC7 build links `build/th08.exe` successfully;
 - a cold objdiff build followed by full replay passes **1,105 / 1,105**
   accepted units;
-- four production-object layout repairs are complete. Seven exact AsciiManager
+- five production-object layout repairs are complete. Seven exact AsciiManager
   bodies now live in four target-cluster TUs, while the early Player bomb/shot
   callback family now lives in `PlayerBomb.cpp`; both remaining donor objects
   have zero target-order inversions. The contiguous main Player TU is also back
   in target function order. Fourteen shared helpers formerly appended to
   `main.cpp` now emit naturally from their target-neighbor consumer TUs. The
-  retained AnmManager render cluster is also back in target function order;
+  retained AnmManager render cluster is also back in target function order.
+  The continuous Global main region and its target-neighbor math helpers are
+  now in target order as well;
 - the whole-image comparator is in place. After the first evidence-backed link
   contract repairs, the rebuild has the target's DLL descriptor order, no debug
   directory, and the same two resource paths and resource section extent. The
@@ -234,7 +236,10 @@ continuous; the remaining reset is solely the exact but currently uncalled
 `main.cpp` until a target-backed production consumer or owner is recovered;
 do not assign it to an unrelated ECL/SpellCard TU just to improve the metric.
 The current Ascii helper cluster retains a bounded lexical/emission-order issue
-(**45 inversions / 5 runs / 2,320 span**) but no exact-code regression.
+(**50 inversions / 6 runs / 9,600 span**) but no exact-code regression. The
+increase from the earlier measurement is the natural canonical Ascii emission
+of `Float3::Float3(float,float,float) @ 0x00404720`, whose target address is
+beside `PauseMenu::OnDraw`; it is not an exact-code regression.
 
 The fourth bounded pass addressed `AnmManager.obj`. Seven exact helper bodies
 were mixed into the donor despite target-neighbor production consumers:
@@ -258,10 +263,29 @@ span** to **20 / 2 / 359,840**. All 20 residual inversions are that required
 deferred COMDAT placement; the main/render definitions themselves are in
 target order.
 
-The current ranking now places `Global.obj` first (**194 inversions / 4
-runs**), followed by `SoundPlayer.obj` (**181 / 4**) and `GameManager.obj`
-(**174 / 9**); select only one and confirm the target neighborhood before
-moving definitions.
+The fifth bounded pass repaired `Global.obj`. Six exact shared math bodies were
+appended between a substantially continuous Global main region and its final
+global helpers. Target neighborhoods plus production undefined references
+place `Float3::operator+`, `operator-`, `operator*`, and `operator/=` in
+`Background.cpp`, and `VectorAngle` plus `Float3::operator/` in
+`PlayerBomb.cpp`. Their explicit definitions now sit at the corresponding
+target-local lexical positions without making the bodies globally visible.
+`Chain::RunDrawChain` and `Chain::ReleaseSingleChain` remain in the continuous
+Global TU but are lexically ordered as in the target.
+
+Moving the six callers also stopped `Global.obj` from implicitly emitting
+`Float3::Float3(float,float,float) @ 0x00404720`. The target constructor is
+adjacent to `PauseMenu::OnDraw`, and `AsciiManager.obj` naturally emits the
+same exact COMDAT, so its canonical match-unit owner now records that
+section-defined production copy. Focused donor/recipient replay passed **191 /
+191**, and the subsequent full single-job cold replay passed **1,105 /
+1,105**. `Global.obj` improved from **194 inversions / 4 runs / 220,816 bytes
+of drift span** to **0 / 1 / 96**.
+
+The current ranking now places `SoundPlayer.obj` first (**181 inversions / 4
+runs / 358,864 span**), followed by `GameManager.obj` (**174 / 9 / 291,648**)
+and `Gui.obj` (**167 / 12 / 23,133**); select only one and confirm the target
+neighborhood before moving definitions.
 Large intra-object drift means today's source combines or orders target TUs
 differently, so permuting the existing object list alone cannot solve it. A
 run reset is a routing clue, not automatically a TU boundary: the Player pass

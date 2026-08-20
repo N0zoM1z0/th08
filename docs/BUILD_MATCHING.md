@@ -909,6 +909,18 @@ This corpus attests the natural VC7 emissions for ResultScreen/AnmManager/MidiOu
   inlined in the caller. Preserve that header body and accept the deferred
   standalone COMDAT placement until a natural emission-order explanation is
   found. Layout metrics do not override caller bytes and relocations.
+- Shared helper ownership does not always require header-inline emission. The
+  six Global math helpers routed to `Background.cpp` and `PlayerBomb.cpp` use
+  explicit target-local `/Od` definitions; this preserves shared-header
+  visibility while matching both production references and target lexical
+  neighborhoods. Use this form when the helper has a single proven consumer
+  region and changing global visibility would add needless caller risk.
+- Rehoming such helpers can change secondary implicit COMDAT emission. After
+  the Global move, `Float3::Float3(float,float,float) @ 0x00404720` disappeared
+  from `Global.obj`; target adjacency to `PauseMenu::OnDraw` and the exact
+  section-defined production copy in `AsciiManager.obj` support Ascii as its
+  canonical owner. Always inspect donor and recipient symbol tables after an
+  ownership move instead of assuming only the moved symbols can change.
 
 ### Raw union members, bitfield owners, and local value-flow restoration
 

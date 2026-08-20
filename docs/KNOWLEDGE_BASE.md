@@ -209,6 +209,28 @@ target-neighbor helper owners with lexical reordering of the continuous render
 cluster, improving **195 / 10 / 400,208** to **20 / 2 / 359,840** without
 inventing source-file boundaries.
 
+The `Global.obj` pass adds the explicit shared-helper case. Six ordinary math
+definitions were interposed in the current Global object even though target
+neighborhoods and real production references put four beside Background code
+and two beside Player bomb code. Because every involved TU uses `/Od`, moving
+the definitions directly to those target-local lexical positions recovered
+the consumer ownership without changing shared-header visibility. The retained
+Global range was continuous; ordering `Chain::RunDrawChain` before
+`Chain::ReleaseSingleChain` was therefore a lexical repair, not evidence for a
+new TU. Together these changes improved Global from **194 / 4 / 220,816** to
+**0 / 1 / 96**, with a **191 / 191** focused replay and **1,105 / 1,105** cold
+aggregate replay.
+
+A helper move can also change which implicit COMDATs the donor happens to
+emit. Moving those math bodies removed `Float3::Float3(float,float,float) @
+0x00404720` from Global even though its source had not changed. Reinspect the
+section-defined symbols in the donor and recipients after every ownership
+move. In this case the target constructor sits beside `PauseMenu::OnDraw`, and
+`AsciiManager.obj` naturally emits the exact constructor, so Ascii became the
+canonical evidence owner. Treat this as a cascading ownership correction, not
+permission to route a missing symbol to whichever object happens to define a
+byte-identical copy.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into
