@@ -353,6 +353,19 @@ order. Focused **33 / 33** and cold **1,105 / 1,105** replay reduced Midi from
 **43 inversions / 2 runs** to **0 / 1**. Treat same-owner emission placement as
 a separate question from semantic ownership.
 
+The `EnemyManager.obj` pass combines function-only sorting with an existing
+target-contiguous recipient cluster. When file-scope statics are interspersed
+with functions, extract and reorder function bodies only; leaving the data
+declarations fixed avoided the failure mode seen in a whole-file Background
+sort. After that lexical repair, the only residual was a pair of Gui helpers
+that target places immediately after the recovered `AsciiManagerScale` block
+and immediately before BulletManager. The donor and recipient share `/Od` PCH
+codegen, and moving the unchanged bodies made `AsciiManagerScale.obj` a strict
+**4 / 0 / 1 / 0** target-order block while EnemyManager reached **0 / 1**. A
+previously recovered contiguous cluster can absorb an adjacent cross-class
+definition when target sequence, compile profile, focused replay, and cold
+aggregate replay all agree; class name alone is not the production-TU contract.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into

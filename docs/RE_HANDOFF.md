@@ -414,13 +414,33 @@ subsequent shared-header cold aggregate replay passed **1,105 / 1,105**.
 to **33 / 0 / 1 / 19,728**; the remaining span is the real target gap from the
 base virtual callback to the main Midi TU.
 
+The thirteenth bounded pass repaired `EnemyManager.obj`. Its five runs mixed
+ordinary explicit-definition disorder with one target-contiguous cross-class
+tail. Sorting only function bodies by mapped target address (leaving file-scope
+statics in place) required one natural forward declaration for
+`FUN_0042eb10`; focused replay remained **44 / 44** exact and reduced the
+linked object to three residual inversions.
+
+Those three inversions proved a real owner boundary. The target sequence is
+`GameManager::IsSoloHuman/IsSoloYoukai/GetLives @ 0x0042F230..0x0042F2B0`,
+then the recovered `AsciiManagerScale` block at `0x0042F2D0..0x0042F315`,
+then `Gui::IsBossPresent @ 0x0042F320` and `Gui::FUN_0042f340 @ 0x0042F340`,
+followed immediately by `BulletManager::Initialize @ 0x0042F360`. Both donor
+and recipient use the same `/Od` PCH profile. Moving the unchanged Gui bodies
+onto the end of `AsciiManagerScale.cpp` and canonicalizing their match-unit
+owners produced an exact four-function `0x0042F2D0..0x0042F355` block. Donor
+replay passed **42 / 42**, recipient replay **4 / 4**, and the cold aggregate
+replay passed **1,105 / 1,105**. `EnemyManager.obj` improved from **18 anchors /
+32 inversions / 5 runs / 111,744 span** to **17 / 0 / 1 / 89,616**;
+`AsciiManagerScale.obj` is **4 / 0 / 1 / 0**.
+
 The raw ranking still places the expanded target-neighbor `AsciiManager.obj`
 cluster first (**63 anchors / 86 inversions / 6 runs / 9,600 span**), but its
 resets remain dominated by already target-backed PCH/header COMDAT groups and
 its first 21 retained Ascii anchors remain exact. Without new owner/caller
 evidence, do not perturb those shared inline contracts merely to reduce the
-metric. The next actionable candidate is `EnemyManager.obj` (**18 / 32 / 5 /
-111,744**), followed by `Supervisor.obj` (**43 / 29 / 4 / 58,804**).
+metric. The next actionable candidate is `Supervisor.obj` (**43 / 29 / 4 /
+58,804**), followed by `ReplayManager.obj` (**15 / 23 / 4 / 12,352**).
 Select only one and confirm the target neighborhood before moving definitions;
 the Ascii inversion count includes several independently justified COMDAT
 groups and is not by itself evidence that they have the wrong owner.
