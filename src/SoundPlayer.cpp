@@ -913,6 +913,21 @@ void SoundPlayer::QueueCommand(i32 opcode, i32 arg, char *unused)
     return;
 }
 
+ThBgmFormat *CWaveFile::GetFormat()
+{
+    return this->m_pzwf;
+}
+
+LPDIRECTSOUND CSoundManager::GetDirectSound()
+{
+    return this->m_pDS;
+}
+
+CWaveFile *CSound::GetWaveFile()
+{
+    return this->m_pWaveFile;
+}
+
 SoundPlayer::SoundPlayer()
 {
     ZeroMemory(this, sizeof(SoundPlayer));

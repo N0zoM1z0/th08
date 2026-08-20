@@ -69,10 +69,7 @@ class CSoundManager
 
     HRESULT Initialize(HWND hWnd, DWORD dwCoopLevel, DWORD dwPrimaryChannels, DWORD dwPrimaryFreq,
                        DWORD dwPrimaryBitRate);
-    inline LPDIRECTSOUND GetDirectSound()
-    {
-        return m_pDS;
-    }
+    LPDIRECTSOUND GetDirectSound();
     HRESULT SetPrimaryBufferFormat(DWORD dwPrimaryChannels, DWORD dwPrimaryFreq, DWORD dwPrimaryBitRate);
 
     HRESULT CreateStreaming(CStreamingSound **ppStreamingSound, LPTSTR strWaveFileName, DWORD dwCreationFlags,
@@ -126,10 +123,7 @@ class CSound
     HRESULT SetVolume(i32 iVolume);
     HRESULT Pause();
     HRESULT Unpause();
-    CWaveFile *GetWaveFile()
-    {
-        return m_pWaveFile;
-    }
+    CWaveFile *GetWaveFile();
 };
 
 //-----------------------------------------------------------------------------
@@ -231,10 +225,7 @@ class CWaveFile
 
     DWORD GetSize();
     HRESULT ResetFile(bool bLoop);
-    ThBgmFormat *GetFormat()
-    {
-        return m_pzwf;
-    };
+    ThBgmFormat *GetFormat();
 
     // Modifications by ZUN to this class
     HRESULT Reopen(ThBgmFormat *pzwf);
