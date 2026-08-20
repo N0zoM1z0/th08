@@ -53567,7 +53567,7 @@ target = 0x00000000
 # Evidence: source-emitted function body is byte-identical after full relocation replay against TH08 1.00d target.
 [[units]]
 name = "accepted-source-exact-00406e50"
-object = "build/ItemManager.obj"
+object = "build/AsciiManager.obj"
 symbol = "?UpdateAntiTamper@GameManager@th08@@QAEXXZ"
 target_address = 0x00406E50
 size = 0x9A
@@ -54355,15 +54355,15 @@ target = 0x00406e50
 # Evidence: source-emitted member in GameManager.cpp.
 [[units]]
 name = "game-manager-set-power"
-object = "build/objdiff/reimpl/GameManager.obj"
-symbol = "th08::GameManager::SetPower"
+object = "build/AsciiManager.obj"
+symbol = "?SetPower@GameManager@th08@@QAEXH@Z"
 target_address = 0x00406FA0
 size = 0x24
 
 [[units.relocations]]
 offset = 0x1a
 type = "REL32"
-symbol = "th08::GameManager::UpdateAntiTamper"
+symbol = "?UpdateAntiTamper@GameManager@th08@@QAEXXZ"
 target = 0x00406e50
 
 # Ledger name: th08::Player::IsYoukai
@@ -62141,7 +62141,7 @@ symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
 target = 0x004286E0
 [[units]]
 name = "game-manager-set-lives"
-object = "build/GameManager.obj"
+object = "build/AsciiManager.obj"
 symbol = "?SetLives@GameManager@th08@@QAEXH@Z"
 target_address = 0x00406E20
 size = 0x21
@@ -62154,7 +62154,7 @@ target = 0x00406E50
 
 [[units]]
 name = "game-manager-set-bomb-count"
-object = "build/GameManager.obj"
+object = "build/AsciiManager.obj"
 symbol = "?SetBombCount@GameManager@th08@@QAEXH@Z"
 target_address = 0x00406F30
 size = 0x6E

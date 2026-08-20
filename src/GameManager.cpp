@@ -158,32 +158,6 @@ f32 GameManager::ScaleFloatBasedOnRank(f32 upper, f32 lower)
 #pragma optimize("", on)
 
 #pragma optimize("t", on)
-void GameManager::SetLives(i32 lives)
-{
-    this->globals->livesRemaining = (f32)lives;
-    this->UpdateAntiTamper();
-}
-#pragma optimize("", on)
-
-#pragma optimize("t", on)
-void GameManager::SetBombCount(i32 bombs)
-{
-    this->globals->bombsRemaining = (f32)bombs;
-    this->globals->antiTamperValue = this->globals->rng1[2];
-    this->globals->antiTamperChecksum = this->CalcAntiTamperChecksum();
-    this->antiTamperExpectedValue = (f32)(this->globals->antiTamperChecksum + this->globals->rng7[3]);
-}
-#pragma optimize("", on)
-
-#pragma optimize("t", on)
-void GameManager::SetPower(i32 power)
-{
-    this->globals->playerPower = (f32)power;
-    this->UpdateAntiTamper();
-}
-#pragma optimize("", on)
-
-#pragma optimize("t", on)
 void GameManager::AddScore(i32 score)
 {
     this->globals->score += score / 10;

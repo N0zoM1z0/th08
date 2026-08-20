@@ -238,9 +238,24 @@ struct GameManager
 
     i32 GetClockTimeIncrement();
     void AdvanceToNextStage();
-    void SetLives(i32 lives);
-    void SetBombCount(i32 bombs);
-    void SetPower(i32 power);
+    void SetLives(i32 lives)
+    {
+        this->globals->livesRemaining = (f32)lives;
+        this->UpdateAntiTamper();
+    }
+    void SetBombCount(i32 bombs)
+    {
+        this->globals->bombsRemaining = (f32)bombs;
+        this->globals->antiTamperValue = this->globals->rng1[2];
+        this->globals->antiTamperChecksum = this->CalcAntiTamperChecksum();
+        this->antiTamperExpectedValue =
+            (f32)(this->globals->antiTamperChecksum + this->globals->rng7[3]);
+    }
+    void SetPower(i32 power)
+    {
+        this->globals->playerPower = (f32)power;
+        this->UpdateAntiTamper();
+    }
     void AddScore(i32 score);
     void AddTimeOrbs(i32 amount);
     void AddToDeaths(i32 amount);
