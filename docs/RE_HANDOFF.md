@@ -568,9 +568,16 @@ were made declaration-only and their unchanged bodies/canonical owners moved to
 the already recovered `/Od /Yu` `AsciiManagerGauge.obj` target cluster. The
 relevant accepted callers contain real REL32 calls. Final focused replay passed
 **62 / 62** AsciiManager, **5 / 5** AsciiManagerGauge, **41 / 41** Gui, and
-**62 / 62** Player units. Cold aggregate replay passed **1,105 / 1,105**.
-`AsciiManager.obj` improved from **63 anchors / 86 inversions / 6 runs / 9,600
-span** to **60 / 0 / 1 / 736**; `AsciiManagerGauge.obj` is **5 / 0 / 1 / 32**.
+**62 / 62** Player units. Moving the `Float3` constructor out of the shared
+header exposed one final caller-visibility dependency under a full cold build:
+Supervisor, TitleScreen, and the TitleReplay probe compiled larger until the
+same unchanged constructor body was restored as an early TU-local `inline`
+definition in those callers. This preserves their former inline compilation
+context without changing the target-local Ascii owner. The final cold aggregate
+replay then passed **1,105 / 1,105**, and a fresh normal link retained zero
+inversions. `AsciiManager.obj` improved from **63 anchors / 86 inversions / 6
+runs / 9,600 span** to **60 / 0 / 1 / 736**; `AsciiManagerGauge.obj` is **5 / 0 /
+1 / 32**.
 
 The latest cold whole-image TU ranking now reports **zero target-order
 inversions and one run for every ranked production object**. Do not infer

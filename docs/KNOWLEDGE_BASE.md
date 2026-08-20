@@ -468,11 +468,16 @@ An ordinary target-local definition fixed `Float3 @ 0x00404720`; changing
 reordering unchanged ZunTimer and GameManager class-member definitions repaired
 their emitted lexical order; and the target-neighbor `AsciiManagerGauge.obj`
 absorbed the standalone `0x00407140..0x00407180` helpers after exact REL32
-caller evidence proved that header bodies were unnecessary. The combined pass
-reduced Ascii from **86 inversions / 6 runs** to **0 / 1** while preserving the
-cold **1,105 / 1,105** corpus. Prefer the smallest mechanism-specific repair for
-each reset; do not globally toggle header visibility when lexical order or a
-bounded recipient owner is sufficient.
+caller evidence proved that header bodies were unnecessary. Moving the `Float3`
+constructor out of its shared header also demonstrates a cold-build caller gate:
+focused production replay can remain exact while other optimized/probe TUs lose
+the former inline compilation context. Restore the same unchanged body as an
+early TU-local `inline` definition in those callers rather than returning the
+canonical owner to the header. Supervisor, TitleScreen, and TitleReplay required
+that treatment; the final cold corpus then returned to **1,105 / 1,105** while
+Ascii stayed at **0 inversions / 1 run**. Prefer the smallest
+mechanism-specific repair for each reset; do not globally toggle header
+visibility when lexical order or a bounded recipient owner is sufficient.
 
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
