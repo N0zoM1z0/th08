@@ -14,43 +14,473 @@ namespace th08
 
 ZunBool IsDisableResourceReload();
 
-// FUNCTION: th08 0x428310
-#pragma var_order(delta, point)
-void __fastcall FUN_00428310(AnmVm *effect, D3DXVECTOR3 *base)
-{
-    D3DXVECTOR3 delta;
-    D3DXVECTOR3 point;
+void __fastcall FUN_00428310(AnmVm *effect, D3DXVECTOR3 *base);
+i32 __fastcall FUN_00428720(Effect *effect);
+i32 __fastcall FUN_00427450(Effect *effect);
 
-    if (*(u8 *)0x164D0BA == 0 && *(u8 *)0x164D0BB == 0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DIFFABLE_STATIC(EffectManager, g_EffectManager);
+DIFFABLE_STATIC(ChainElem, g_EffectManagerCalcChain);
+DIFFABLE_STATIC(ChainElem, g_EffectManagerDrawChain);
+
+// Target 0x004E4B64 is owned by Gui.cpp but participates in effect-resource setup.
+extern i32 g_GuiMessageStageMode;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+extern f32 g_EclGameTimeScale;
+
+
+
+
+
+
+
+
+struct EffectTemplate
+{
+    i32 scriptIdx;
+    i32 field348;
+    i32 (__fastcall *callback)(AnmVm *effect);
+};
+DIFFABLE_STATIC_ARRAY(EffectTemplate, 20, g_EffectTemplates);
+
+// FUNCTION: th08 0x423d70
+Float3 *Float3::operator*=(f32 scalar)
+{
+    this->x *= scalar;
+    this->y *= scalar;
+    this->z *= scalar;
+    return this;
+}
+
+// FUNCTION: th08 0x4253e0
+AnmVm *EffectManager::FUN_004253e0(i32 index)
+{
+    return &this->effects[index + 0x280].vm;
+}
+
+// FUNCTION: th08 0x425410
+void EffectManager::ResetEffects()
+{
+    memset(this, 0, 0x8B05C);
+}
+
+// FUNCTION: th08 0x425430
+#pragma var_order(effect, i)
+AnmVm *EffectManager::SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 color)
+{
+    u8 *effect = reinterpret_cast<u8 *>(this) + (*reinterpret_cast<i32 *>(this) * 0x360) + 0x1C;
+    i32 i;
+
+    for (i = 0; i < 0x200; i++)
     {
-        point = *base + *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x244);
-        delta = *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x288) - point;
-        if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x288) > -9999.0f)
+        *reinterpret_cast<i32 *>(this) = *reinterpret_cast<i32 *>(this) + 1;
+        if (*reinterpret_cast<i32 *>(this) >= 0x200)
         {
-            delta.x += 32.0f;
-            delta.y += 16.0f;
-            delta.z = 0.0f;
-            if (D3DXVec3LengthSq(&delta) < 25600.0f)
+            *reinterpret_cast<i32 *>(this) = 0;
+        }
+
+        if (*reinterpret_cast<i8 *>(effect + 0x350) != 0)
+        {
+            if (*reinterpret_cast<i32 *>(this) == 0)
             {
-                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x238) += 0.0005000000237487257f;
-                *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x244) +=
-                    delta * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x238);
+                effect = reinterpret_cast<u8 *>(this) + 0x1C;
+            }
+            else
+            {
+                effect += 0x360;
+            }
+            continue;
+        }
+
+        if (*reinterpret_cast<void **>(effect + 0x358) != NULL)
+        {
+            g_ZunMemory.Free(*reinterpret_cast<void **>(effect + 0x358));
+        }
+
+        memset(effect, 0, 0x360);
+        *reinterpret_cast<i8 *>(effect + 0x350) = 1;
+        *reinterpret_cast<i8 *>(effect + 0x351) = id;
+        *reinterpret_cast<D3DXVECTOR3 *>(effect + 0x2A4) = *position;
+        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0x8B054))
+            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(effect), g_EffectTemplates[id].scriptIdx);
+        *reinterpret_cast<u32 *>(effect + 0x1F8) |= 0x2000;
+        *reinterpret_cast<i32 *>(effect + 0x1F0) = color;
+        *reinterpret_cast<i32 *>(effect + 0x288) = 0;
+        *reinterpret_cast<i32 *>(effect + 0x28C) = 0;
+        *reinterpret_cast<i32 *>(effect + 0x290) = 0;
+        *reinterpret_cast<i32 *>(effect + 0x348) = g_EffectTemplates[id].field348;
+
+        if (g_EffectTemplates[id].callback != NULL)
+        {
+            if (g_EffectTemplates[id].callback(reinterpret_cast<AnmVm *>(effect)) != 0)
+            {
+                *reinterpret_cast<i8 *>(effect + 0x350) = 0;
             }
         }
 
-        delta = point - *reinterpret_cast<D3DXVECTOR3 *>(0x17D61AC);
-        delta.x -= 32.0f;
-        delta.y -= 16.0f;
-        delta.z = 0.0f;
-        if (D3DXVec3LengthSq(&delta) < 7744.0f)
+        count--;
+        if (count == 0)
         {
-            *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x244) += delta * 0.019999999552965164f;
+            break;
+        }
+
+        if (*reinterpret_cast<i32 *>(this) == 0)
+        {
+            effect = reinterpret_cast<u8 *>(this) + 0x1C;
+        }
+        else
+        {
+            effect += 0x360;
         }
     }
-    *base += *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x244);
+
+    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x400;
+    return reinterpret_cast<AnmVm *>(i >= 0x200 ? reinterpret_cast<u8 *>(this) + 0x89BFC : effect);
 }
 
-i32 __fastcall FUN_00427450(Effect *effect);
+// FUNCTION: th08 0x425650
+#pragma var_order(effect, i)
+AnmVm *EffectManager::SpawnEffectAngle(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 count, i32 color)
+{
+    u8 *effect = reinterpret_cast<u8 *>(this) + (*reinterpret_cast<i32 *>(this) * 0x360) + 0x1C;
+    i32 i;
+
+    for (i = 0; i < 0x200; i++)
+    {
+        *reinterpret_cast<i32 *>(this) = *reinterpret_cast<i32 *>(this) + 1;
+        if (*reinterpret_cast<i32 *>(this) >= 0x200)
+        {
+            *reinterpret_cast<i32 *>(this) = 0;
+        }
+
+        if (*reinterpret_cast<i8 *>(effect + 0x350) != 0)
+        {
+            if (*reinterpret_cast<i32 *>(this) == 0)
+            {
+                effect = reinterpret_cast<u8 *>(this) + 0x1C;
+            }
+            else
+            {
+                effect += 0x360;
+            }
+            continue;
+        }
+
+        if (*reinterpret_cast<void **>(effect + 0x358) != NULL)
+        {
+            g_ZunMemory.Free(*reinterpret_cast<void **>(effect + 0x358));
+        }
+
+        memset(effect, 0, 0x360);
+        *reinterpret_cast<i8 *>(effect + 0x350) = 1;
+        *reinterpret_cast<i8 *>(effect + 0x351) = id;
+        *reinterpret_cast<D3DXVECTOR3 *>(effect + 0x2A4) = *position;
+        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0x8B054))
+            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(effect), g_EffectTemplates[id].scriptIdx);
+        *reinterpret_cast<i32 *>(effect + 0x1F0) = color;
+        *reinterpret_cast<i32 *>(effect + 0x288) = 0;
+        *reinterpret_cast<i32 *>(effect + 0x28C) = 0;
+        *reinterpret_cast<i32 *>(effect + 0x290) = 0;
+        *reinterpret_cast<i32 *>(effect + 0x348) = g_EffectTemplates[id].field348;
+        *reinterpret_cast<D3DXVECTOR3 *>(effect + 0x2B0) = *velocity;
+
+        if (g_EffectTemplates[id].callback != NULL)
+        {
+            if (g_EffectTemplates[id].callback(reinterpret_cast<AnmVm *>(effect)) != 0)
+            {
+                *reinterpret_cast<i8 *>(effect + 0x350) = 0;
+            }
+        }
+
+        count--;
+        if (count == 0)
+        {
+            break;
+        }
+
+        if (*reinterpret_cast<i32 *>(this) == 0)
+        {
+            effect = reinterpret_cast<u8 *>(this) + 0x1C;
+        }
+        else
+        {
+            effect += 0x360;
+        }
+    }
+
+    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x400;
+    return reinterpret_cast<AnmVm *>(i >= 0x200 ? reinterpret_cast<u8 *>(this) + 0x89BFC : effect);
+}
+
+// FUNCTION: th08 0x425870
+#pragma var_order(effect)
+AnmVm *EffectManager::FUN_00425870(i32 id, D3DXVECTOR3 *position, i32 slotIndex, i32 unused, i32 color)
+{
+    u8 *effect = reinterpret_cast<u8 *>(this) + (slotIndex + 0x280) * 0x360 + 0x1C;
+
+    if (*reinterpret_cast<void **>(effect + 0x358) != NULL)
+    {
+        g_ZunMemory.Free(*reinterpret_cast<void **>(effect + 0x358));
+    }
+
+    memset(effect, 0, 0x360);
+    *reinterpret_cast<i32 *>(effect + 0x328) = slotIndex;
+    *reinterpret_cast<i8 *>(effect + 0x350) = 1;
+    *reinterpret_cast<i8 *>(effect + 0x351) = id;
+    *reinterpret_cast<D3DXVECTOR3 *>(effect + 0x2A4) = *position;
+
+    if (g_EffectTemplates[id].scriptIdx >= 0)
+    {
+        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0x8B054))
+            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(effect), g_EffectTemplates[id].scriptIdx);
+    }
+
+    *reinterpret_cast<u32 *>(effect + 0x1F8) |= 0x2000;
+    *reinterpret_cast<i32 *>(effect + 0x1F0) = color;
+    *reinterpret_cast<i32 *>(effect + 0x288) = 0;
+    *reinterpret_cast<i32 *>(effect + 0x28C) = 0;
+    *reinterpret_cast<i32 *>(effect + 0x290) = 0;
+    *reinterpret_cast<i32 *>(effect + 0x348) = g_EffectTemplates[id].field348;
+
+    if (g_EffectTemplates[id].callback != NULL &&
+        g_EffectTemplates[id].callback(reinterpret_cast<AnmVm *>(effect)) != 0)
+    {
+        *reinterpret_cast<i8 *>(effect + 0x350) = 0;
+    }
+
+    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x400;
+    return reinterpret_cast<AnmVm *>(effect);
+}
+
+// FUNCTION: th08 0x4259e0
+#pragma var_order(effect)
+AnmVm *EffectManager::FUN_004259e0(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 slotIndex,
+                                   i32 unused, i32 color)
+{
+    u8 *effect = reinterpret_cast<u8 *>(this) + (slotIndex + 0x280) * 0x360 + 0x1C;
+
+    if (*reinterpret_cast<void **>(effect + 0x358) != NULL)
+        g_ZunMemory.Free(*reinterpret_cast<void **>(effect + 0x358));
+
+    memset(effect, 0, 0x360);
+    *reinterpret_cast<i32 *>(effect + 0x328) = slotIndex;
+    *reinterpret_cast<D3DXVECTOR3 *>(effect + 0x2B0) = *velocity;
+    *reinterpret_cast<i8 *>(effect + 0x350) = 1;
+    *reinterpret_cast<i8 *>(effect + 0x351) = id;
+    *reinterpret_cast<D3DXVECTOR3 *>(effect + 0x2A4) = *position;
+
+    if (g_EffectTemplates[id].scriptIdx >= 0)
+    {
+        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0x8B054))
+            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(effect), g_EffectTemplates[id].scriptIdx);
+    }
+
+    *reinterpret_cast<u32 *>(effect + 0x1F8) |= 0x2000;
+    *reinterpret_cast<i32 *>(effect + 0x1F0) = color;
+    *reinterpret_cast<i32 *>(effect + 0x288) = 0;
+    *reinterpret_cast<i32 *>(effect + 0x28C) = 0;
+    *reinterpret_cast<i32 *>(effect + 0x290) = 0;
+    *reinterpret_cast<i32 *>(effect + 0x348) = g_EffectTemplates[id].field348;
+
+    if (g_EffectTemplates[id].callback != NULL &&
+        g_EffectTemplates[id].callback(reinterpret_cast<AnmVm *>(effect)) != 0)
+    {
+        *reinterpret_cast<i8 *>(effect + 0x350) = 0;
+    }
+
+    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x400;
+    return reinterpret_cast<AnmVm *>(effect);
+}
+
+// FUNCTION: th08 0x425b70
+#pragma var_order(effect, i, zeroVector)
+AnmVm *EffectManager::SpawnEffect00425B70(i32 id, D3DXVECTOR3 *position, i32 count, i32 color)
+{
+    u8 *effect = reinterpret_cast<u8 *>(this) + 0x6C01C;
+    i32 i;
+
+    for (i = 0; i < 0x80; i++, effect += 0x360)
+    {
+        if (*reinterpret_cast<i8 *>(effect + 0x350) != 0)
+        {
+            continue;
+        }
+
+        if (*reinterpret_cast<void **>(effect + 0x358) != NULL)
+        {
+            g_ZunMemory.Free(*reinterpret_cast<void **>(effect + 0x358));
+        }
+        *reinterpret_cast<void **>(effect + 0x358) = NULL;
+        *reinterpret_cast<i32 *>(effect + 0x34C) = 0;
+        *reinterpret_cast<i8 *>(effect + 0x354) = 0;
+        *reinterpret_cast<i8 *>(effect + 0x350) = 1;
+        *reinterpret_cast<i8 *>(effect + 0x351) = id;
+        *reinterpret_cast<D3DXVECTOR3 *>(effect + 0x2A4) = *position;
+        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0x8B054))
+            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(effect), g_EffectTemplates[id].scriptIdx);
+        *reinterpret_cast<i32 *>(effect + 0x1F0) = color;
+        *reinterpret_cast<i32 *>(effect + 0x288) = 0;
+        *reinterpret_cast<i32 *>(effect + 0x28C) = 0;
+        *reinterpret_cast<i32 *>(effect + 0x290) = 0;
+        *reinterpret_cast<i32 *>(effect + 0x348) = g_EffectTemplates[id].field348;
+        *reinterpret_cast<ZunTimer *>(effect + 0x338) = 0;
+        *reinterpret_cast<i8 *>(effect + 0x352) = 0;
+        *reinterpret_cast<i8 *>(effect + 0x353) = 0;
+        *reinterpret_cast<D3DXVECTOR3 *>(effect + 0x2B0) = D3DXVECTOR3(0, 0, 0);
+
+        if (g_EffectTemplates[id].callback != NULL)
+        {
+            if (g_EffectTemplates[id].callback(reinterpret_cast<AnmVm *>(effect)) != 0)
+            {
+                *reinterpret_cast<i8 *>(effect + 0x350) = 0;
+            }
+        }
+
+        count--;
+        if (count == 0)
+        {
+            break;
+        }
+    }
+
+    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x400;
+    return reinterpret_cast<AnmVm *>(i >= 0x80 ? reinterpret_cast<u8 *>(this) + 0x89BFC : effect);
+}
+
+// FUNCTION: th08 0x425d70
+i32 __fastcall EffectRandomSplashInit(AnmVm *effect)
+{
+    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[0] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) / 12.0f;
+    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[1] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) / 12.0f;
+    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[2] = 0.0f;
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2c8) =
+        -*reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc) / 19.0f;
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc) *= g_EclGameTimeScale;
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2c8) *= g_EclGameTimeScale;
+    return 0;
+}
+
+// FUNCTION: th08 0x425e60
+i32 __fastcall EffectRandomSplashUpdate(AnmVm *effect)
+{
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2a4) +=
+        *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc);
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc) +=
+        *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2c8);
+    return 1;
+}
+
+// FUNCTION: th08 0x425ea0
+i32 __fastcall EffectRandomSplashBigInit(AnmVm *effect)
+{
+    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[0] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) * 4.0f / 33.0f;
+    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[1] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) * 4.0f / 33.0f;
+    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[2] = 0.0f;
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2c8) =
+        -*reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc) / 20.0f;
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc) *= g_EclGameTimeScale;
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2c8) *= g_EclGameTimeScale;
+    return 0;
+}
+
+// FUNCTION: th08 0x425fa0
+Float3 Float3::operator-() const
+{
+    return Float3(-this->x, -this->y, -this->z);
+}
+
+// FUNCTION: th08 0x425fe0
+i32 __fastcall EffectOrbitInit(AnmVm *effect)
+{
+    *reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(effect) + 0x354) = 2;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x2ec) = 0.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x2f0) = 0.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x2f4) = 0.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 0.0f;
+    return 0;
+}
+
+// FUNCTION: th08 0x426030
+#pragma var_order(posOffset, verticalAngle, localMatrix, horizontalAngle, normalizedPos, alpha, this)
+i32 __fastcall EffectOrbitUpdate(AnmVm *effect)
+{
+    Float3 posOffset;
+    f32 verticalAngle;
+    Float3 normalizedPos;
+    D3DXMATRIX localMatrix;
+    f32 horizontalAngle;
+    f32 alpha;
+    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&normalizedPos), reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x2ec));
+    verticalAngle = sinf(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318));
+    horizontalAngle = cosf(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318));
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x304) = normalizedPos.x * verticalAngle;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x308) = normalizedPos.y * verticalAngle;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x30c) = normalizedPos.z * verticalAngle;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x310) = horizontalAngle;
+    D3DXMatrixRotationQuaternion(&localMatrix, reinterpret_cast<D3DXQUATERNION *>(reinterpret_cast<u8 *>(effect) + 0x304));
+    posOffset.x = normalizedPos.y * 1.0f - normalizedPos.z * 0.0f;
+    posOffset.y = normalizedPos.z * 0.0f - normalizedPos.x * 1.0f;
+    posOffset.z = normalizedPos.x * 0.0f - normalizedPos.y * 0.0f;
+    if (D3DXVec3LengthSq(reinterpret_cast<D3DXVECTOR3 *>(&posOffset)) < 0.00001f)
+        normalizedPos = Float3(1.0f, 0.0f, 0.0f);
+    else
+        D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&posOffset), reinterpret_cast<D3DXVECTOR3 *>(&posOffset));
+    posOffset *= *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314);
+    D3DXVec3TransformCoord(reinterpret_cast<D3DXVECTOR3 *>(&posOffset), reinterpret_cast<D3DXVECTOR3 *>(&posOffset), &localMatrix);
+    posOffset.z *= 6.0f;
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2a4) = posOffset + *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2e0);
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x2ac) = 0.0f;
+    if (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(effect) + 0x352) != 0)
+    {
+        ++*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(effect) + 0x353);
+        if (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(effect) + 0x353) >= 16)
+            return 0;
+        alpha = 1.0f - (f32)*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(effect) + 0x353) / 16.0f;
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(effect) + 0x1f0) =
+            (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(effect) + 0x1f0) & 0xffffff) |
+            ((i32)(alpha * 255.0f) << 24);
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x1c) = 2.0f - alpha;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x18) = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x1c);
+    }
+    return 1;
+}
 
 // FUNCTION: th08 0x426280
 #pragma var_order(backgroundOffset, effect)
@@ -132,6 +562,38 @@ i32 __fastcall FUN_004264f0(Effect *effect)
     return 1;
 }
 
+// FUNCTION: th08 0x426720
+#pragma var_order(backgroundOffset, effect)
+i32 __fastcall FUN_00426720(Effect *effect)
+{
+    Float3 backgroundOffset;
+
+    backgroundOffset = -g_Background.unk6394.vector1;
+    effect->vector4 = g_Background.unk6394.vector1 + g_Background.unk6394.vector0;
+    effect->vector4.x += g_Rng.GetRandomF32SignedInRange(60.0f) + backgroundOffset.x / 2.0f;
+    effect->vector4.y += g_Rng.GetRandomF32SignedInRange(200.0f) - 200.0f + backgroundOffset.y / 2.0f;
+    effect->vector4.z += g_Rng.GetRandomF32InRange(100.0f) - 100.0f + backgroundOffset.z / 2.0f;
+
+    effect->vector2.x = g_Rng.GetRandomF32SignedInRange(0.001f) + effect->vector1.x;
+    effect->vector2.y = g_Rng.GetRandomF32SignedInRange(0.03f) + 0.4f;
+    effect->vector2.z = -g_Rng.GetRandomF32InRange(0.1f) - 0.3f + effect->vector1.z;
+    effect->vector3.x = g_Rng.GetRandomF32SignedInRange(0.0001f);
+    effect->vector3.y = g_Rng.GetRandomF32SignedInRange(0.0001f);
+    effect->vector3.z = -0.0003f;
+    effect->vector2 = effect->vector2 * g_EclGameTimeScale;
+    effect->vector3 = effect->vector3 * g_EclGameTimeScale;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x354) = 1;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x288) = -9999.0f;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x238) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x244) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x248) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x24c) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x250) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x254) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x258) = 0;
+    return 0;
+}
+
 // FUNCTION: th08 0x426990
 #pragma var_order(delta, dot, effect)
 i32 __fastcall FUN_00426990(Effect *effect)
@@ -170,87 +632,6 @@ i32 __fastcall FUN_00426990(Effect *effect)
     return 1;
 }
 
-// FUNCTION: th08 0x426d70
-#pragma var_order(delta, dot, effect)
-i32 __fastcall FUN_00426d70(Effect *effect)
-{
-    f32 dot;
-
-    effect->vector2 += effect->vector3;
-    effect->vector4 += effect->vector2;
-    effect->vector0 = effect->vector4;
-
-    Float3 delta;
-    delta = effect->vector0 - g_Background.unk6394.vector0;
-    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&delta), reinterpret_cast<D3DXVECTOR3 *>(&delta));
-    dot = D3DXVec3Dot(reinterpret_cast<D3DXVECTOR3 *>(&g_Background.unk6394.vector3),
-                      reinterpret_cast<D3DXVECTOR3 *>(&delta));
-    if (dot < 0.94f)
-        return 0;
-
-    effect->vm.SetZRotation(AddNormalizeAngle(effect->vm.rotation.z, effect->vm.rotation.x));
-    if (effect->vector0.z >= 0.0f)
-        return 0;
-    return 1;
-}
-
-// FUNCTION: th08 0x426720
-#pragma var_order(backgroundOffset, effect)
-i32 __fastcall FUN_00426720(Effect *effect)
-{
-    Float3 backgroundOffset;
-
-    backgroundOffset = -g_Background.unk6394.vector1;
-    effect->vector4 = g_Background.unk6394.vector1 + g_Background.unk6394.vector0;
-    effect->vector4.x += g_Rng.GetRandomF32SignedInRange(60.0f) + backgroundOffset.x / 2.0f;
-    effect->vector4.y += g_Rng.GetRandomF32SignedInRange(200.0f) - 200.0f + backgroundOffset.y / 2.0f;
-    effect->vector4.z += g_Rng.GetRandomF32InRange(100.0f) - 100.0f + backgroundOffset.z / 2.0f;
-
-    effect->vector2.x = g_Rng.GetRandomF32SignedInRange(0.001f) + effect->vector1.x;
-    effect->vector2.y = g_Rng.GetRandomF32SignedInRange(0.03f) + 0.4f;
-    effect->vector2.z = -g_Rng.GetRandomF32InRange(0.1f) - 0.3f + effect->vector1.z;
-    effect->vector3.x = g_Rng.GetRandomF32SignedInRange(0.0001f);
-    effect->vector3.y = g_Rng.GetRandomF32SignedInRange(0.0001f);
-    effect->vector3.z = -0.0003f;
-    effect->vector2 = effect->vector2 * g_EclGameTimeScale;
-    effect->vector3 = effect->vector3 * g_EclGameTimeScale;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x354) = 1;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x288) = -9999.0f;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x238) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x244) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x248) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x24c) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x250) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x254) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x258) = 0;
-    return 0;
-}
-
-// FUNCTION: th08 0x426e70
-#pragma var_order(backgroundOffset, effect)
-i32 __fastcall FUN_00426e70(Effect *effect)
-{
-    Float3 backgroundOffset;
-
-    backgroundOffset = -g_Background.unk6394.vector1;
-    effect->vector4 = g_Background.unk6394.vector1 + g_Background.unk6394.vector0;
-    effect->vector4.x += g_Rng.GetRandomF32InRange(120.0f) - 60.0f + backgroundOffset.x / 2.0f;
-    effect->vector4.y += g_Rng.GetRandomF32InRange(200.0f) - 100.0f + backgroundOffset.y / 2.0f;
-    effect->vector4.z += g_Rng.GetRandomF32InRange(100.0f) - 100.0f + backgroundOffset.z / 2.0f;
-
-    effect->vector2.x = g_Rng.GetRandomF32InRange(0.06f) - 0.03f + effect->vector1.x;
-    effect->vector2.y = g_Rng.GetRandomF32InRange(0.06f) - 0.03f + effect->vector1.y;
-    effect->vector2.z = g_Rng.GetRandomF32InRange(0.1f) + 0.03f + effect->vector1.z;
-    effect->vector3.x = g_Rng.GetRandomF32InRange(0.0002f) - 0.0001f;
-    effect->vector3.y = g_Rng.GetRandomF32InRange(0.0002f) - 0.0001f;
-    effect->vector2 = effect->vector2 * g_EclGameTimeScale;
-    effect->vector3 = effect->vector3 * g_EclGameTimeScale;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x354) = 1;
-    effect->vm.rotation.z = g_Rng.GetRandomF32InRange(ZUN_2PI) - ZUN_PI;
-    effect->vm.rotation.x = g_Rng.GetRandomF32InRange(0.03141592815518379f) - 0.015707964077591896f;
-    return 0;
-}
-
 // FUNCTION: th08 0x426b20
 #pragma var_order(angle, effect)
 i32 __fastcall FUN_00426b20(Effect *effect)
@@ -278,12 +659,6 @@ i32 __fastcall FUN_00426bb0(Effect *effect)
     return 1;
 }
 
-// FUNCTION: th08 0x428720
-i32 __fastcall FUN_00428720(Effect *effect)
-{
-    return effect->vm.currentInstruction == NULL;
-}
-
 // FUNCTION: th08 0x426c40
 i32 __fastcall FUN_00426c40(Effect *effect)
 {
@@ -304,6 +679,71 @@ i32 __fastcall FUN_00426c90(Effect *effect)
     alpha = 256.0f - (f32)effect->timer * 256.0f / 240.0f;
     effect->vector0 = effect->vector6 * alpha + effect->vector5;
     return 1;
+}
+
+// FUNCTION: th08 0x426d10
+#pragma var_order(effect, i, delta)
+void __fastcall FUN_00426d10(Float3 *delta)
+{
+    u8 *effect = reinterpret_cast<u8 *>(&g_EffectManager) + 0x1C;
+    i32 i;
+
+    for (i = 0; i < 0x200; i++, effect += 0x360)
+    {
+        if (*reinterpret_cast<i8 *>(effect + 0x351) == 0x33)
+        {
+            *reinterpret_cast<Float3 *>(effect + 0x2D4) += *delta;
+        }
+    }
+}
+
+// FUNCTION: th08 0x426d70
+#pragma var_order(delta, dot, effect)
+i32 __fastcall FUN_00426d70(Effect *effect)
+{
+    f32 dot;
+
+    effect->vector2 += effect->vector3;
+    effect->vector4 += effect->vector2;
+    effect->vector0 = effect->vector4;
+
+    Float3 delta;
+    delta = effect->vector0 - g_Background.unk6394.vector0;
+    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&delta), reinterpret_cast<D3DXVECTOR3 *>(&delta));
+    dot = D3DXVec3Dot(reinterpret_cast<D3DXVECTOR3 *>(&g_Background.unk6394.vector3),
+                      reinterpret_cast<D3DXVECTOR3 *>(&delta));
+    if (dot < 0.94f)
+        return 0;
+
+    effect->vm.SetZRotation(AddNormalizeAngle(effect->vm.rotation.z, effect->vm.rotation.x));
+    if (effect->vector0.z >= 0.0f)
+        return 0;
+    return 1;
+}
+
+// FUNCTION: th08 0x426e70
+#pragma var_order(backgroundOffset, effect)
+i32 __fastcall FUN_00426e70(Effect *effect)
+{
+    Float3 backgroundOffset;
+
+    backgroundOffset = -g_Background.unk6394.vector1;
+    effect->vector4 = g_Background.unk6394.vector1 + g_Background.unk6394.vector0;
+    effect->vector4.x += g_Rng.GetRandomF32InRange(120.0f) - 60.0f + backgroundOffset.x / 2.0f;
+    effect->vector4.y += g_Rng.GetRandomF32InRange(200.0f) - 100.0f + backgroundOffset.y / 2.0f;
+    effect->vector4.z += g_Rng.GetRandomF32InRange(100.0f) - 100.0f + backgroundOffset.z / 2.0f;
+
+    effect->vector2.x = g_Rng.GetRandomF32InRange(0.06f) - 0.03f + effect->vector1.x;
+    effect->vector2.y = g_Rng.GetRandomF32InRange(0.06f) - 0.03f + effect->vector1.y;
+    effect->vector2.z = g_Rng.GetRandomF32InRange(0.1f) + 0.03f + effect->vector1.z;
+    effect->vector3.x = g_Rng.GetRandomF32InRange(0.0002f) - 0.0001f;
+    effect->vector3.y = g_Rng.GetRandomF32InRange(0.0002f) - 0.0001f;
+    effect->vector2 = effect->vector2 * g_EclGameTimeScale;
+    effect->vector3 = effect->vector3 * g_EclGameTimeScale;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x354) = 1;
+    effect->vm.rotation.z = g_Rng.GetRandomF32InRange(ZUN_2PI) - ZUN_PI;
+    effect->vm.rotation.x = g_Rng.GetRandomF32InRange(0.03141592815518379f) - 0.015707964077591896f;
+    return 0;
 }
 
 // FUNCTION: th08 0x4270c0
@@ -603,34 +1043,6 @@ i32 __fastcall FUN_00427b50(Effect *effect)
     return 1;
 }
 
-// FUNCTION: th08 0x4287e0
-Effect::Effect()
-{
-}
-
-// FUNCTION: th08 0x428740
-EffectManager::EffectManager()
-{
-    this->ResetEffects();
-    this->scaleX = 1.0f;
-    this->scaleY = 1.0f;
-    this->scaleZ = 1.0f;
-    this->scaleW = 1.0f;
-}
-
-DIFFABLE_STATIC(EffectManager, g_EffectManager);
-DIFFABLE_STATIC(ChainElem, g_EffectManagerCalcChain);
-DIFFABLE_STATIC(ChainElem, g_EffectManagerDrawChain);
-
-// Target 0x004E4B64 is owned by Gui.cpp but participates in effect-resource setup.
-extern i32 g_GuiMessageStageMode;
-
-// FUNCTION: th08 0x425410
-void EffectManager::ResetEffects()
-{
-    memset(this, 0, 0x8B05C);
-}
-
 // FUNCTION: th08 0x427bf0
 #pragma var_order(effect, i)
 ChainCallbackResult EffectManager::OnUpdate(EffectManager *effectManager)
@@ -783,80 +1195,6 @@ ChainCallbackResult EffectManager::OnDraw(EffectManager *effectManager)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-// FUNCTION: th08 0x4253e0
-AnmVm *EffectManager::FUN_004253e0(i32 index)
-{
-    return &this->effects[index + 0x280].vm;
-}
-
-// FUNCTION: th08 0x4284b0
-ZunResult EffectManager::AddedCallback(EffectManager *effectManager)
-{
-    effectManager->ResetEffects();
-    *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B054) = g_AnmManager->GetAnm(6);
-    g_GuiMessageStageMode = 0;
-    *reinterpret_cast<i32 *>(0x4E4B60) = 2;
-
-    if (!IsDisableResourceReload())
-    {
-        if (!g_GameManager.IsSpellPractice() || g_GameManager.currentSpellCardNumber < 216)
-        {
-            *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B058) =
-                g_AnmManager->PreloadAnm(9, reinterpret_cast<const char **>(0x4C7480)[g_GameManager.currentStage]);
-        }
-        else
-        {
-            *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B058) =
-                g_AnmManager->PreloadAnm(
-                    9, reinterpret_cast<const char **>(0x4C7144)[g_GameManager.currentSpellCardNumber]);
-        }
-        if (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B058) == NULL)
-            return ZUN_ERROR;
-    }
-    else
-    {
-        *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B058) = g_AnmManager->GetAnm(9);
-    }
-    return ZUN_SUCCESS;
-}
-
-// FUNCTION: th08 0x428590
-#pragma var_order(effect, i)
-ZunResult EffectManager::DeletedCallback(EffectManager *effectManager)
-{
-    u8 *effect = reinterpret_cast<u8 *>(effectManager) + 0x1C;
-    i32 i;
-    for (i = 0; i < 653; i++, effect += 0x360)
-    {
-        if (*reinterpret_cast<void **>(effect + 0x358) != NULL)
-        {
-            g_ZunMemory.Free(*reinterpret_cast<void **>(effect + 0x358));
-            *reinterpret_cast<void **>(effect + 0x358) = NULL;
-        }
-    }
-    if (!IsDisableResourceReload())
-        g_AnmManager->ReleaseAnm(9);
-    return ZUN_SUCCESS;
-}
-
-// FUNCTION: th08 0x428620
-ZunResult EffectManager::RegisterChain()
-{
-    EffectManager *effectManager = &g_EffectManager;
-    effectManager->ResetEffects();
-    g_EffectManagerCalcChain.SetCallback((ChainCallback)EffectManager::OnUpdate);
-    g_EffectManagerCalcChain.addedCallback = (ChainLifetimeCallback)EffectManager::AddedCallback;
-    g_EffectManagerCalcChain.deletedCallback = (ChainLifetimeCallback)EffectManager::DeletedCallback;
-    g_EffectManagerCalcChain.arg = effectManager;
-    if (g_Chain.AddToCalcChain(&g_EffectManagerCalcChain, 13) != ZUN_SUCCESS)
-        return ZUN_ERROR;
-
-    g_EffectManagerDrawChain.SetCallback((ChainCallback)EffectManager::OnDraw);
-    g_EffectManagerDrawChain.arg = effectManager;
-    g_Chain.AddToDrawChain(&g_EffectManagerDrawChain, 12);
-    return ZUN_SUCCESS;
-}
-
 // FUNCTION: th08 0x428100
 #pragma var_order(effect, this)
 i32 EffectManager::DrawUnkTypeEffects()
@@ -932,6 +1270,110 @@ i32 EffectManager::FUN_004281e0()
     return 1;
 }
 
+// FUNCTION: th08 0x428310
+#pragma var_order(delta, point)
+void __fastcall FUN_00428310(AnmVm *effect, D3DXVECTOR3 *base)
+{
+    D3DXVECTOR3 delta;
+    D3DXVECTOR3 point;
+
+    if (*(u8 *)0x164D0BA == 0 && *(u8 *)0x164D0BB == 0)
+    {
+        point = *base + *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x244);
+        delta = *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x288) - point;
+        if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x288) > -9999.0f)
+        {
+            delta.x += 32.0f;
+            delta.y += 16.0f;
+            delta.z = 0.0f;
+            if (D3DXVec3LengthSq(&delta) < 25600.0f)
+            {
+                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x238) += 0.0005000000237487257f;
+                *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x244) +=
+                    delta * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x238);
+            }
+        }
+
+        delta = point - *reinterpret_cast<D3DXVECTOR3 *>(0x17D61AC);
+        delta.x -= 32.0f;
+        delta.y -= 16.0f;
+        delta.z = 0.0f;
+        if (D3DXVec3LengthSq(&delta) < 7744.0f)
+        {
+            *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x244) += delta * 0.019999999552965164f;
+        }
+    }
+    *base += *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x244);
+}
+
+// FUNCTION: th08 0x4284b0
+ZunResult EffectManager::AddedCallback(EffectManager *effectManager)
+{
+    effectManager->ResetEffects();
+    *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B054) = g_AnmManager->GetAnm(6);
+    g_GuiMessageStageMode = 0;
+    *reinterpret_cast<i32 *>(0x4E4B60) = 2;
+
+    if (!IsDisableResourceReload())
+    {
+        if (!g_GameManager.IsSpellPractice() || g_GameManager.currentSpellCardNumber < 216)
+        {
+            *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B058) =
+                g_AnmManager->PreloadAnm(9, reinterpret_cast<const char **>(0x4C7480)[g_GameManager.currentStage]);
+        }
+        else
+        {
+            *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B058) =
+                g_AnmManager->PreloadAnm(
+                    9, reinterpret_cast<const char **>(0x4C7144)[g_GameManager.currentSpellCardNumber]);
+        }
+        if (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B058) == NULL)
+            return ZUN_ERROR;
+    }
+    else
+    {
+        *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B058) = g_AnmManager->GetAnm(9);
+    }
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x428590
+#pragma var_order(effect, i)
+ZunResult EffectManager::DeletedCallback(EffectManager *effectManager)
+{
+    u8 *effect = reinterpret_cast<u8 *>(effectManager) + 0x1C;
+    i32 i;
+    for (i = 0; i < 653; i++, effect += 0x360)
+    {
+        if (*reinterpret_cast<void **>(effect + 0x358) != NULL)
+        {
+            g_ZunMemory.Free(*reinterpret_cast<void **>(effect + 0x358));
+            *reinterpret_cast<void **>(effect + 0x358) = NULL;
+        }
+    }
+    if (!IsDisableResourceReload())
+        g_AnmManager->ReleaseAnm(9);
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x428620
+ZunResult EffectManager::RegisterChain()
+{
+    EffectManager *effectManager = &g_EffectManager;
+    effectManager->ResetEffects();
+    g_EffectManagerCalcChain.SetCallback((ChainCallback)EffectManager::OnUpdate);
+    g_EffectManagerCalcChain.addedCallback = (ChainLifetimeCallback)EffectManager::AddedCallback;
+    g_EffectManagerCalcChain.deletedCallback = (ChainLifetimeCallback)EffectManager::DeletedCallback;
+    g_EffectManagerCalcChain.arg = effectManager;
+    if (g_Chain.AddToCalcChain(&g_EffectManagerCalcChain, 13) != ZUN_SUCCESS)
+        return ZUN_ERROR;
+
+    g_EffectManagerDrawChain.SetCallback((ChainCallback)EffectManager::OnDraw);
+    g_EffectManagerDrawChain.arg = effectManager;
+    g_Chain.AddToDrawChain(&g_EffectManagerDrawChain, 12);
+    return ZUN_SUCCESS;
+}
+
 // FUNCTION: th08 0x4286b0
 void EffectManager::CutChain()
 {
@@ -939,423 +1381,26 @@ void EffectManager::CutChain()
     g_Chain.Cut(&g_EffectManagerDrawChain);
 }
 
-
-
-
-extern f32 g_EclGameTimeScale;
-
-// FUNCTION: th08 0x423d70
-Float3 *Float3::operator*=(f32 scalar)
+// FUNCTION: th08 0x428720
+i32 __fastcall FUN_00428720(Effect *effect)
 {
-    this->x *= scalar;
-    this->y *= scalar;
-    this->z *= scalar;
-    return this;
+    return effect->vm.currentInstruction == NULL;
 }
 
-// FUNCTION: th08 0x425fa0
-Float3 Float3::operator-() const
+// FUNCTION: th08 0x428740
+EffectManager::EffectManager()
 {
-    return Float3(-this->x, -this->y, -this->z);
+    this->ResetEffects();
+    this->scaleX = 1.0f;
+    this->scaleY = 1.0f;
+    this->scaleZ = 1.0f;
+    this->scaleW = 1.0f;
 }
 
-// FUNCTION: th08 0x425d70
-i32 __fastcall EffectRandomSplashInit(AnmVm *effect)
+// FUNCTION: th08 0x4287e0
+Effect::Effect()
 {
-    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[0] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) / 12.0f;
-    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[1] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) / 12.0f;
-    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[2] = 0.0f;
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2c8) =
-        -*reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc) / 19.0f;
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc) *= g_EclGameTimeScale;
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2c8) *= g_EclGameTimeScale;
-    return 0;
 }
 
-// FUNCTION: th08 0x425ea0
-i32 __fastcall EffectRandomSplashBigInit(AnmVm *effect)
-{
-    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[0] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) * 4.0f / 33.0f;
-    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[1] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) * 4.0f / 33.0f;
-    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc)->operator float *()[2] = 0.0f;
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2c8) =
-        -*reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc) / 20.0f;
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc) *= g_EclGameTimeScale;
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2c8) *= g_EclGameTimeScale;
-    return 0;
-}
-
-// FUNCTION: th08 0x425e60
-i32 __fastcall EffectRandomSplashUpdate(AnmVm *effect)
-{
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2a4) +=
-        *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc);
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2bc) +=
-        *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2c8);
-    return 1;
-}
-
-// FUNCTION: th08 0x425fe0
-i32 __fastcall EffectOrbitInit(AnmVm *effect)
-{
-    *reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(effect) + 0x354) = 2;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x2ec) = 0.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x2f0) = 0.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x2f4) = 0.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 0.0f;
-    return 0;
-}
-
-// FUNCTION: th08 0x426030
-#pragma var_order(posOffset, verticalAngle, localMatrix, horizontalAngle, normalizedPos, alpha, this)
-i32 __fastcall EffectOrbitUpdate(AnmVm *effect)
-{
-    Float3 posOffset;
-    f32 verticalAngle;
-    Float3 normalizedPos;
-    D3DXMATRIX localMatrix;
-    f32 horizontalAngle;
-    f32 alpha;
-    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&normalizedPos), reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x2ec));
-    verticalAngle = sinf(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318));
-    horizontalAngle = cosf(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318));
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x304) = normalizedPos.x * verticalAngle;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x308) = normalizedPos.y * verticalAngle;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x30c) = normalizedPos.z * verticalAngle;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x310) = horizontalAngle;
-    D3DXMatrixRotationQuaternion(&localMatrix, reinterpret_cast<D3DXQUATERNION *>(reinterpret_cast<u8 *>(effect) + 0x304));
-    posOffset.x = normalizedPos.y * 1.0f - normalizedPos.z * 0.0f;
-    posOffset.y = normalizedPos.z * 0.0f - normalizedPos.x * 1.0f;
-    posOffset.z = normalizedPos.x * 0.0f - normalizedPos.y * 0.0f;
-    if (D3DXVec3LengthSq(reinterpret_cast<D3DXVECTOR3 *>(&posOffset)) < 0.00001f)
-        normalizedPos = Float3(1.0f, 0.0f, 0.0f);
-    else
-        D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&posOffset), reinterpret_cast<D3DXVECTOR3 *>(&posOffset));
-    posOffset *= *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314);
-    D3DXVec3TransformCoord(reinterpret_cast<D3DXVECTOR3 *>(&posOffset), reinterpret_cast<D3DXVECTOR3 *>(&posOffset), &localMatrix);
-    posOffset.z *= 6.0f;
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2a4) = posOffset + *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2e0);
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x2ac) = 0.0f;
-    if (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(effect) + 0x352) != 0)
-    {
-        ++*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(effect) + 0x353);
-        if (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(effect) + 0x353) >= 16)
-            return 0;
-        alpha = 1.0f - (f32)*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(effect) + 0x353) / 16.0f;
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(effect) + 0x1f0) =
-            (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(effect) + 0x1f0) & 0xffffff) |
-            ((i32)(alpha * 255.0f) << 24);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x1c) = 2.0f - alpha;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x18) = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x1c);
-    }
-    return 1;
-}
-
-struct EffectTemplate
-{
-    i32 scriptIdx;
-    i32 field348;
-    i32 (__fastcall *callback)(AnmVm *effect);
-};
-DIFFABLE_STATIC_ARRAY(EffectTemplate, 20, g_EffectTemplates);
-
-// FUNCTION: th08 0x425430
-#pragma var_order(effect, i)
-AnmVm *EffectManager::SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 color)
-{
-    u8 *effect = reinterpret_cast<u8 *>(this) + (*reinterpret_cast<i32 *>(this) * 0x360) + 0x1C;
-    i32 i;
-
-    for (i = 0; i < 0x200; i++)
-    {
-        *reinterpret_cast<i32 *>(this) = *reinterpret_cast<i32 *>(this) + 1;
-        if (*reinterpret_cast<i32 *>(this) >= 0x200)
-        {
-            *reinterpret_cast<i32 *>(this) = 0;
-        }
-
-        if (*reinterpret_cast<i8 *>(effect + 0x350) != 0)
-        {
-            if (*reinterpret_cast<i32 *>(this) == 0)
-            {
-                effect = reinterpret_cast<u8 *>(this) + 0x1C;
-            }
-            else
-            {
-                effect += 0x360;
-            }
-            continue;
-        }
-
-        if (*reinterpret_cast<void **>(effect + 0x358) != NULL)
-        {
-            g_ZunMemory.Free(*reinterpret_cast<void **>(effect + 0x358));
-        }
-
-        memset(effect, 0, 0x360);
-        *reinterpret_cast<i8 *>(effect + 0x350) = 1;
-        *reinterpret_cast<i8 *>(effect + 0x351) = id;
-        *reinterpret_cast<D3DXVECTOR3 *>(effect + 0x2A4) = *position;
-        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0x8B054))
-            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(effect), g_EffectTemplates[id].scriptIdx);
-        *reinterpret_cast<u32 *>(effect + 0x1F8) |= 0x2000;
-        *reinterpret_cast<i32 *>(effect + 0x1F0) = color;
-        *reinterpret_cast<i32 *>(effect + 0x288) = 0;
-        *reinterpret_cast<i32 *>(effect + 0x28C) = 0;
-        *reinterpret_cast<i32 *>(effect + 0x290) = 0;
-        *reinterpret_cast<i32 *>(effect + 0x348) = g_EffectTemplates[id].field348;
-
-        if (g_EffectTemplates[id].callback != NULL)
-        {
-            if (g_EffectTemplates[id].callback(reinterpret_cast<AnmVm *>(effect)) != 0)
-            {
-                *reinterpret_cast<i8 *>(effect + 0x350) = 0;
-            }
-        }
-
-        count--;
-        if (count == 0)
-        {
-            break;
-        }
-
-        if (*reinterpret_cast<i32 *>(this) == 0)
-        {
-            effect = reinterpret_cast<u8 *>(this) + 0x1C;
-        }
-        else
-        {
-            effect += 0x360;
-        }
-    }
-
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x400;
-    return reinterpret_cast<AnmVm *>(i >= 0x200 ? reinterpret_cast<u8 *>(this) + 0x89BFC : effect);
-}
-
-// FUNCTION: th08 0x425650
-#pragma var_order(effect, i)
-AnmVm *EffectManager::SpawnEffectAngle(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 count, i32 color)
-{
-    u8 *effect = reinterpret_cast<u8 *>(this) + (*reinterpret_cast<i32 *>(this) * 0x360) + 0x1C;
-    i32 i;
-
-    for (i = 0; i < 0x200; i++)
-    {
-        *reinterpret_cast<i32 *>(this) = *reinterpret_cast<i32 *>(this) + 1;
-        if (*reinterpret_cast<i32 *>(this) >= 0x200)
-        {
-            *reinterpret_cast<i32 *>(this) = 0;
-        }
-
-        if (*reinterpret_cast<i8 *>(effect + 0x350) != 0)
-        {
-            if (*reinterpret_cast<i32 *>(this) == 0)
-            {
-                effect = reinterpret_cast<u8 *>(this) + 0x1C;
-            }
-            else
-            {
-                effect += 0x360;
-            }
-            continue;
-        }
-
-        if (*reinterpret_cast<void **>(effect + 0x358) != NULL)
-        {
-            g_ZunMemory.Free(*reinterpret_cast<void **>(effect + 0x358));
-        }
-
-        memset(effect, 0, 0x360);
-        *reinterpret_cast<i8 *>(effect + 0x350) = 1;
-        *reinterpret_cast<i8 *>(effect + 0x351) = id;
-        *reinterpret_cast<D3DXVECTOR3 *>(effect + 0x2A4) = *position;
-        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0x8B054))
-            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(effect), g_EffectTemplates[id].scriptIdx);
-        *reinterpret_cast<i32 *>(effect + 0x1F0) = color;
-        *reinterpret_cast<i32 *>(effect + 0x288) = 0;
-        *reinterpret_cast<i32 *>(effect + 0x28C) = 0;
-        *reinterpret_cast<i32 *>(effect + 0x290) = 0;
-        *reinterpret_cast<i32 *>(effect + 0x348) = g_EffectTemplates[id].field348;
-        *reinterpret_cast<D3DXVECTOR3 *>(effect + 0x2B0) = *velocity;
-
-        if (g_EffectTemplates[id].callback != NULL)
-        {
-            if (g_EffectTemplates[id].callback(reinterpret_cast<AnmVm *>(effect)) != 0)
-            {
-                *reinterpret_cast<i8 *>(effect + 0x350) = 0;
-            }
-        }
-
-        count--;
-        if (count == 0)
-        {
-            break;
-        }
-
-        if (*reinterpret_cast<i32 *>(this) == 0)
-        {
-            effect = reinterpret_cast<u8 *>(this) + 0x1C;
-        }
-        else
-        {
-            effect += 0x360;
-        }
-    }
-
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x400;
-    return reinterpret_cast<AnmVm *>(i >= 0x200 ? reinterpret_cast<u8 *>(this) + 0x89BFC : effect);
-}
-
-// FUNCTION: th08 0x425870
-#pragma var_order(effect)
-AnmVm *EffectManager::FUN_00425870(i32 id, D3DXVECTOR3 *position, i32 slotIndex, i32 unused, i32 color)
-{
-    u8 *effect = reinterpret_cast<u8 *>(this) + (slotIndex + 0x280) * 0x360 + 0x1C;
-
-    if (*reinterpret_cast<void **>(effect + 0x358) != NULL)
-    {
-        g_ZunMemory.Free(*reinterpret_cast<void **>(effect + 0x358));
-    }
-
-    memset(effect, 0, 0x360);
-    *reinterpret_cast<i32 *>(effect + 0x328) = slotIndex;
-    *reinterpret_cast<i8 *>(effect + 0x350) = 1;
-    *reinterpret_cast<i8 *>(effect + 0x351) = id;
-    *reinterpret_cast<D3DXVECTOR3 *>(effect + 0x2A4) = *position;
-
-    if (g_EffectTemplates[id].scriptIdx >= 0)
-    {
-        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0x8B054))
-            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(effect), g_EffectTemplates[id].scriptIdx);
-    }
-
-    *reinterpret_cast<u32 *>(effect + 0x1F8) |= 0x2000;
-    *reinterpret_cast<i32 *>(effect + 0x1F0) = color;
-    *reinterpret_cast<i32 *>(effect + 0x288) = 0;
-    *reinterpret_cast<i32 *>(effect + 0x28C) = 0;
-    *reinterpret_cast<i32 *>(effect + 0x290) = 0;
-    *reinterpret_cast<i32 *>(effect + 0x348) = g_EffectTemplates[id].field348;
-
-    if (g_EffectTemplates[id].callback != NULL &&
-        g_EffectTemplates[id].callback(reinterpret_cast<AnmVm *>(effect)) != 0)
-    {
-        *reinterpret_cast<i8 *>(effect + 0x350) = 0;
-    }
-
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x400;
-    return reinterpret_cast<AnmVm *>(effect);
-}
-
-// FUNCTION: th08 0x4259e0
-#pragma var_order(effect)
-AnmVm *EffectManager::FUN_004259e0(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 slotIndex,
-                                   i32 unused, i32 color)
-{
-    u8 *effect = reinterpret_cast<u8 *>(this) + (slotIndex + 0x280) * 0x360 + 0x1C;
-
-    if (*reinterpret_cast<void **>(effect + 0x358) != NULL)
-        g_ZunMemory.Free(*reinterpret_cast<void **>(effect + 0x358));
-
-    memset(effect, 0, 0x360);
-    *reinterpret_cast<i32 *>(effect + 0x328) = slotIndex;
-    *reinterpret_cast<D3DXVECTOR3 *>(effect + 0x2B0) = *velocity;
-    *reinterpret_cast<i8 *>(effect + 0x350) = 1;
-    *reinterpret_cast<i8 *>(effect + 0x351) = id;
-    *reinterpret_cast<D3DXVECTOR3 *>(effect + 0x2A4) = *position;
-
-    if (g_EffectTemplates[id].scriptIdx >= 0)
-    {
-        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0x8B054))
-            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(effect), g_EffectTemplates[id].scriptIdx);
-    }
-
-    *reinterpret_cast<u32 *>(effect + 0x1F8) |= 0x2000;
-    *reinterpret_cast<i32 *>(effect + 0x1F0) = color;
-    *reinterpret_cast<i32 *>(effect + 0x288) = 0;
-    *reinterpret_cast<i32 *>(effect + 0x28C) = 0;
-    *reinterpret_cast<i32 *>(effect + 0x290) = 0;
-    *reinterpret_cast<i32 *>(effect + 0x348) = g_EffectTemplates[id].field348;
-
-    if (g_EffectTemplates[id].callback != NULL &&
-        g_EffectTemplates[id].callback(reinterpret_cast<AnmVm *>(effect)) != 0)
-    {
-        *reinterpret_cast<i8 *>(effect + 0x350) = 0;
-    }
-
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x400;
-    return reinterpret_cast<AnmVm *>(effect);
-}
-
-// FUNCTION: th08 0x426d10
-#pragma var_order(effect, i, delta)
-void __fastcall FUN_00426d10(Float3 *delta)
-{
-    u8 *effect = reinterpret_cast<u8 *>(&g_EffectManager) + 0x1C;
-    i32 i;
-
-    for (i = 0; i < 0x200; i++, effect += 0x360)
-    {
-        if (*reinterpret_cast<i8 *>(effect + 0x351) == 0x33)
-        {
-            *reinterpret_cast<Float3 *>(effect + 0x2D4) += *delta;
-        }
-    }
-}
-
-// FUNCTION: th08 0x425b70
-#pragma var_order(effect, i, zeroVector)
-AnmVm *EffectManager::SpawnEffect00425B70(i32 id, D3DXVECTOR3 *position, i32 count, i32 color)
-{
-    u8 *effect = reinterpret_cast<u8 *>(this) + 0x6C01C;
-    i32 i;
-
-    for (i = 0; i < 0x80; i++, effect += 0x360)
-    {
-        if (*reinterpret_cast<i8 *>(effect + 0x350) != 0)
-        {
-            continue;
-        }
-
-        if (*reinterpret_cast<void **>(effect + 0x358) != NULL)
-        {
-            g_ZunMemory.Free(*reinterpret_cast<void **>(effect + 0x358));
-        }
-        *reinterpret_cast<void **>(effect + 0x358) = NULL;
-        *reinterpret_cast<i32 *>(effect + 0x34C) = 0;
-        *reinterpret_cast<i8 *>(effect + 0x354) = 0;
-        *reinterpret_cast<i8 *>(effect + 0x350) = 1;
-        *reinterpret_cast<i8 *>(effect + 0x351) = id;
-        *reinterpret_cast<D3DXVECTOR3 *>(effect + 0x2A4) = *position;
-        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0x8B054))
-            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(effect), g_EffectTemplates[id].scriptIdx);
-        *reinterpret_cast<i32 *>(effect + 0x1F0) = color;
-        *reinterpret_cast<i32 *>(effect + 0x288) = 0;
-        *reinterpret_cast<i32 *>(effect + 0x28C) = 0;
-        *reinterpret_cast<i32 *>(effect + 0x290) = 0;
-        *reinterpret_cast<i32 *>(effect + 0x348) = g_EffectTemplates[id].field348;
-        *reinterpret_cast<ZunTimer *>(effect + 0x338) = 0;
-        *reinterpret_cast<i8 *>(effect + 0x352) = 0;
-        *reinterpret_cast<i8 *>(effect + 0x353) = 0;
-        *reinterpret_cast<D3DXVECTOR3 *>(effect + 0x2B0) = D3DXVECTOR3(0, 0, 0);
-
-        if (g_EffectTemplates[id].callback != NULL)
-        {
-            if (g_EffectTemplates[id].callback(reinterpret_cast<AnmVm *>(effect)) != 0)
-            {
-                *reinterpret_cast<i8 *>(effect + 0x350) = 0;
-            }
-        }
-
-        count--;
-        if (count == 0)
-        {
-            break;
-        }
-    }
-
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x400;
-    return reinterpret_cast<AnmVm *>(i >= 0x80 ? reinterpret_cast<u8 *>(this) + 0x89BFC : effect);
-}
 
 } // namespace th08
