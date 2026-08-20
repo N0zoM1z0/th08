@@ -292,6 +292,24 @@ boss-marker block is **3 / 0 / 1 / 0**. Focused donor/recipient replay plus the
 cold **1,105 / 1,105** aggregate replay are both required; a perfect ordering
 metric does not replace exact-code attestation.
 
+The `Gui.obj` pass is the clean retained-TU lexical-order case. Forty explicit
+Gui-region definitions cover one substantially continuous target sequence, so
+reordering the real definitions by mapped target address reduced the object
+from **167 inversions / 12 runs / 23,133 span** to one residual inline-COMDAT
+reset without changing function behavior. Necessary forward declarations are
+preferable to wrappers when an earlier caller now precedes a file-local helper.
+
+That residual also refines the inline-ownership rule.
+`AnmVm::FUN_004396f8 @ 0x004396F8` had the correct production owner (`Gui.obj`)
+but header visibility forced VC7 to emit it at first use. Its production caller
+set is Gui-only, while two exact PlayerOption probe callers prove real REL32
+call boundaries. Converting the header body to a declaration and placing the
+unchanged explicit body at the target-local Gui position preserved both caller
+families and reduced `Gui.obj` to **0 inversions / 1 run / 101 span**. A
+correct owner does not imply a correct emission position; when callers are
+bounded and target relocations prove out-of-line calls, explicit same-owner
+lexical placement is a valid repair.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into

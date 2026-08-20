@@ -335,9 +335,29 @@ cold aggregate replay pass **1,105 / 1,105**. The final linked metrics are
 `GameManager.obj` **30 / 0 / 1 / 3,970**, `Player.obj` **36 / 0 / 1 / 7,264**,
 and `AsciiManagerBossMarker.obj` **3 / 0 / 1 / 0**.
 
-The current ranking now places `Gui.obj` first (**167 inversions / 12 runs /
-23,133 span**), followed by `SpellCard.obj` (**122 / 7 / 167,120**) and the
-expanded target-neighbor `AsciiManager.obj` cluster (**86 / 6 / 9,600**).
+The eighth bounded pass repaired `Gui.obj`. The target neighborhood from
+`Gui::OnUpdate @ 0x004338CA` through `Gui::FUN_00439810 @ 0x00439810` is
+substantially continuous, so the twelve linked-order runs were lexical
+definition disorder rather than evidence for twelve original source files. The
+40 explicit definitions in `Gui.cpp` now follow target address order; only the
+file-local helpers needed by earlier callers received forward declarations.
+
+One residual remained after that reorder: header-inline
+`AnmVm::FUN_004396f8 @ 0x004396F8` emitted at its first Gui use, placing it far
+earlier than the target. Production callers are confined to Gui, while the two
+PlayerOption probe callers retain target-proven REL32 calls. Making the header
+declaration-only and placing the unchanged body explicitly between
+`Gui::FUN_004396b8 @ 0x004396B8` and `Gui::LoadMsg @ 0x00439710` preserves all
+call boundaries and the established Gui production owner. Focused replay
+passed **41 / 41** Gui units and **15 / 15** PlayerOption probe units. The final
+cold aggregate replay passed **1,105 / 1,105**. `Gui.obj` improved from **28
+anchors / 167 inversions / 12 runs / 23,133 drift span** to **28 / 0 / 1 /
+101**.
+
+The current ranking now places `SpellCard.obj` first (**31 anchors / 122
+inversions / 7 runs / 167,120 span**), followed by the expanded
+target-neighbor `AsciiManager.obj` cluster (**63 / 86 / 6 / 9,600**) and
+`BulletManager.obj` (**25 / 85 / 4 / 121,968**).
 Select only one and confirm the target neighborhood before moving definitions;
 the Ascii inversion count includes several independently justified COMDAT
 groups and is not by itself evidence that they have the wrong owner.
