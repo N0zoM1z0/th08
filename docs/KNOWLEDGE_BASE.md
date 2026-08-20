@@ -310,6 +310,17 @@ correct owner does not imply a correct emission position; when callers are
 bounded and target relocations prove out-of-line calls, explicit same-owner
 lexical placement is a valid repair.
 
+The `SpellCard.obj` pass is a bounded residual example. Sorting all explicit
+definitions by target address preserved **34 / 34** focused exact units and
+reduced the object from **122 inversions / 7 runs** to **18 / 2**, but the last
+reset is not safe to remove mechanically. Exact consumer COMDATs for
+`ZunTimer::operator--(int)` and the GameManager spell-number predicates target
+`0x00418110..0x00418180`, while several explicit Spellcard helpers belong to
+far-later target neighborhoods and currently have no production caller that
+proves a new owner. A strong lexical metric improvement is useful evidence, but
+stop when eliminating the remainder would require changing shared inline
+visibility or manufacturing an unsupported TU owner.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into

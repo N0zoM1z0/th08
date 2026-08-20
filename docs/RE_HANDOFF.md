@@ -354,10 +354,27 @@ cold aggregate replay passed **1,105 / 1,105**. `Gui.obj` improved from **28
 anchors / 167 inversions / 12 runs / 23,133 drift span** to **28 / 0 / 1 /
 101**.
 
-The current ranking now places `SpellCard.obj` first (**31 anchors / 122
-inversions / 7 runs / 167,120 span**), followed by the expanded
-target-neighbor `AsciiManager.obj` cluster (**63 / 86 / 6 / 9,600**) and
-`BulletManager.obj` (**25 / 85 / 4 / 121,968**).
+The ninth bounded pass repaired the safe lexical part of `SpellCard.obj`. Its
+explicit function definitions now follow target address order across the current
+production TU. Focused replay passed **34 / 34** accepted units, and the
+subsequent cold aggregate replay passed **1,105 / 1,105**. The linked object
+improved from **31 anchors / 122 inversions / 7 runs / 167,120 span** to **31 /
+18 / 2 / 151,552**.
+
+The 18 residual inversions are intentionally retained. The continuous Spellcard
+main range through `CutChain @ 0x004180F0` is followed in the target by the
+consumer-emitted `ZunTimer::operator--(int)` and GameManager spell-number
+helpers at `0x00418110..0x00418180`. Current source also contains explicit
+Spellcard helpers whose target homes are far away (`0x0041F040..0x0041FDD0`,
+`0x0042DFF0`, and later Player-region helpers). They have no bounded production
+caller/owner evidence that justifies moving them into another TU, while the
+existing consumer COMDATs are already exact. Do not change header visibility or
+invent owners solely to erase this metric residual.
+
+The current ranking now places the expanded target-neighbor `AsciiManager.obj`
+cluster first (**63 anchors / 86 inversions / 6 runs / 9,600 span**), followed
+by `BulletManager.obj` (**25 / 85 / 4 / 121,968**) and `Background.obj` (**26 /
+61 / 6 / 68,640**).
 Select only one and confirm the target neighborhood before moving definitions;
 the Ascii inversion count includes several independently justified COMDAT
 groups and is not by itself evidence that they have the wrong owner.
