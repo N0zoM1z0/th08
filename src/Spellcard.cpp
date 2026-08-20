@@ -901,6 +901,13 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
     }
 }
 
+// FUNCTION: th08 0x415ce0
+void Background::background_fun_00415ce0()
+{
+    this->spellBackgroundState = 1;
+    this->spellBackgroundTimer = 0;
+}
+
 // FUNCTION: th08 0x415d10
 void Spellcard::CutInEnemyNoPortrait(const char *name, i32 unused)
 {
@@ -1221,6 +1228,12 @@ void Spellcard::EndSpell()
     }
     this->activeEnemy = NULL;
     this->flags &= ~0x800;
+}
+
+// FUNCTION: th08 0x416ad0
+void Background::background_fun_00416ad0()
+{
+    this->spellBackgroundState = 0;
 }
 
 // FUNCTION: th08 0x416af0

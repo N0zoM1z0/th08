@@ -67507,7 +67507,7 @@ size = 0x55
 # Ledger name: th08::Background::background_fun_00415ce0
 [[units]]
 name = "background-spell-phase-start"
-object = "build/Background.obj"
+object = "build/SpellCard.obj"
 symbol = "?background_fun_00415ce0@Background@th08@@QAEXXZ"
 target_address = 0x00415CE0
 size = 0x25
@@ -67516,7 +67516,7 @@ size = 0x25
 # Ledger name: th08::Background::background_fun_00416ad0
 [[units]]
 name = "background-spell-phase-end"
-object = "build/Background.obj"
+object = "build/SpellCard.obj"
 symbol = "?background_fun_00416ad0@Background@th08@@QAEXXZ"
 target_address = 0x00416AD0
 size = 0x18

@@ -12,6 +12,7 @@
 namespace th08
 {
 ZunBool IsDisableResourceReload();
+f32 __stdcall FUN_00408fc0(f32 value0, f32 value1, f32 value2, f32 value3, f32 time);
 u8 MixColors(u8 color1, u8 color2);
 
 struct RawStageHeader
@@ -96,25 +97,8 @@ struct BackgroundStageVertex
     Float2 textureUV;
 };
 C_ASSERT(sizeof(BackgroundStageVertex) == 0x1c);
-// FUNCTION: th08 0x4073b0
-BackgroundUnkVectors::BackgroundUnkVectors()
-{
-}
-
 DIFFABLE_STATIC(Background, g_Background);
 
-// FUNCTION: th08 0x415ce0
-void Background::background_fun_00415ce0()
-{
-    this->spellBackgroundState = 1;
-    this->spellBackgroundTimer = 0;
-}
-
-// FUNCTION: th08 0x416ad0
-void Background::background_fun_00416ad0()
-{
-    this->spellBackgroundState = 0;
-}
 DIFFABLE_STATIC(ChainElem, g_BackgroundCalcChain);
 DIFFABLE_STATIC(ChainElem, g_BackgroundDrawChainHighPrio);
 DIFFABLE_STATIC(ChainElem, g_BackgroundDrawChainLowPrio);
@@ -141,76 +125,9 @@ Background::Background()
     this->unk62b0 = this->unk6394;
 }
 
-// FUNCTION: th08 0x408fc0
-#pragma var_order(weight3, weight1, weight2, weight0)
-f32 __stdcall FUN_00408fc0(f32 value0, f32 value1, f32 value2, f32 value3, f32 time)
+// FUNCTION: th08 0x4073b0
+BackgroundUnkVectors::BackgroundUnkVectors()
 {
-    f32 weight0;
-    f32 weight1;
-    f32 weight2;
-    f32 weight3;
-
-    weight0 = (time - 1.0f) * (time - 1.0f) * (2.0f * time + 1.0f);
-    weight1 = time * time * (3.0f - 2.0f * time);
-    weight2 = (1.0f - time) * (1.0f - time) * time;
-    weight3 = (time - 1.0f) * time * time;
-    return weight0 * value0 + weight1 * value1 + weight2 * value2 + weight3 * value3;
-}
-
-// FUNCTION: th08 0x408d60
-void __fastcall Background::FUN_00408d60(i32 index, Float3 *out, const Float3 *start, const Float3 *end,
-                                         const Float3 *control2, const Float3 *control3)
-{
-    f32 time;
-
-    if (this->interpolationTimers[index] < this->interpolationDuration[index])
-    {
-        this->interpolationTimers[index]++;
-        time = (f32)this->interpolationTimers[index] / this->interpolationDuration[index];
-    }
-    else
-    {
-        this->interpolationTimers[index] = this->interpolationDuration[index];
-        time = 1.0f;
-        this->interpolationDuration[index] = 0;
-    }
-
-    switch (this->interpolationMode[index])
-    {
-    case 1:
-        time = 1.0f - time;
-        time = 1.0f - time * time;
-        break;
-    case 2:
-        time = 1.0f - time;
-        time = 1.0f - time * time * time;
-        break;
-    case 3:
-        time = 1.0f - time;
-        time = 1.0f - time * time * time * time;
-        break;
-    case 4:
-        time = time * time;
-        break;
-    case 5:
-        time = time * time * time;
-        break;
-    case 6:
-        time = time * time * time * time;
-        break;
-    }
-
-    if (this->interpolationMode[index] != 7)
-    {
-        *out = *end - *start;
-        *out = (*out * time) + *start;
-    }
-    else
-    {
-        out->x = FUN_00408fc0(start->x, end->x, control2->x, control3->x, time);
-        out->y = FUN_00408fc0(start->y, end->y, control2->y, control3->y, time);
-        out->z = FUN_00408fc0(start->z, end->z, control2->z, control3->z, time);
-    }
 }
 
 // FUNCTION: th08 0x407400
@@ -648,6 +565,78 @@ instructions_done:
 #undef BG_COLOR
 }
 
+// FUNCTION: th08 0x408d60
+void __fastcall Background::FUN_00408d60(i32 index, Float3 *out, const Float3 *start, const Float3 *end,
+                                         const Float3 *control2, const Float3 *control3)
+{
+    f32 time;
+
+    if (this->interpolationTimers[index] < this->interpolationDuration[index])
+    {
+        this->interpolationTimers[index]++;
+        time = (f32)this->interpolationTimers[index] / this->interpolationDuration[index];
+    }
+    else
+    {
+        this->interpolationTimers[index] = this->interpolationDuration[index];
+        time = 1.0f;
+        this->interpolationDuration[index] = 0;
+    }
+
+    switch (this->interpolationMode[index])
+    {
+    case 1:
+        time = 1.0f - time;
+        time = 1.0f - time * time;
+        break;
+    case 2:
+        time = 1.0f - time;
+        time = 1.0f - time * time * time;
+        break;
+    case 3:
+        time = 1.0f - time;
+        time = 1.0f - time * time * time * time;
+        break;
+    case 4:
+        time = time * time;
+        break;
+    case 5:
+        time = time * time * time;
+        break;
+    case 6:
+        time = time * time * time * time;
+        break;
+    }
+
+    if (this->interpolationMode[index] != 7)
+    {
+        *out = *end - *start;
+        *out = (*out * time) + *start;
+    }
+    else
+    {
+        out->x = FUN_00408fc0(start->x, end->x, control2->x, control3->x, time);
+        out->y = FUN_00408fc0(start->y, end->y, control2->y, control3->y, time);
+        out->z = FUN_00408fc0(start->z, end->z, control2->z, control3->z, time);
+    }
+}
+
+// FUNCTION: th08 0x408fc0
+#pragma var_order(weight3, weight1, weight2, weight0)
+f32 __stdcall FUN_00408fc0(f32 value0, f32 value1, f32 value2, f32 value3, f32 time)
+{
+    f32 weight0;
+    f32 weight1;
+    f32 weight2;
+    f32 weight3;
+
+    weight0 = (time - 1.0f) * (time - 1.0f) * (2.0f * time + 1.0f);
+    weight1 = time * time * (3.0f - 2.0f * time);
+    weight2 = (1.0f - time) * (1.0f - time) * time;
+    weight3 = (time - 1.0f) * time * time;
+    return weight0 * value0 + weight1 * value1 + weight2 * value2 + weight3 * value3;
+}
+
 // FUNCTION: th08 0x409080
 Float3 Float3::operator+(const Float3 &other) const
 {
@@ -1008,12 +997,6 @@ ZunResult Background::RegisterChain(i32 param)
     return ZUN_SUCCESS;
 }
 
-// FUNCTION: th08 0x40b900
-ZunBool IsDisableResourceReload()
-{
-    return g_Supervisor.unk16c;
-}
-
 // FUNCTION: th08 0x409c20
 ZunResult Background::DeletedCallback(Background *background)
 {
@@ -1040,6 +1023,148 @@ void Background::CutChain()
     g_Chain.Cut(&g_BackgroundCalcChain);
     g_Chain.Cut(&g_BackgroundDrawChainHighPrio);
     g_Chain.Cut(&g_BackgroundDrawChainLowPrio);
+}
+
+// FUNCTION: th08 0x409ce0
+#pragma var_order(vmIdx, i, curObj, curQuad, this)
+ZunResult Background::LoadStageData(const char *path)
+{
+    RawStageObject *curObj;
+    RawStageQuadBasic *curQuad;
+    i32 i;
+    i32 vmIdx;
+
+    if (!IsDisableResourceReload())
+    {
+        this->stageAnmSecondary = FileSystem::OpenFile(path, NULL, 0);
+        if (this->stageAnmSecondary == NULL)
+        {
+            g_GameErrorContext.Log("ステージデータが見つかりません。データが壊れています\r\n");
+            return ZUN_ERROR;
+        }
+    }
+
+    this->stageObjectCount = ((RawStageHeader *)this->stageAnmSecondary)->nbObjects;
+    this->stageVmCount = ((RawStageHeader *)this->stageAnmSecondary)->nbFaces;
+    this->stageUnknown804 =
+        (void *)(((RawStageHeader *)this->stageAnmSecondary)->facesOffset + (i32)this->stageAnmSecondary);
+    this->stageUnknown808 =
+        (void *)(((RawStageHeader *)this->stageAnmSecondary)->scriptOffset + (i32)this->stageAnmSecondary);
+    this->stageOffsets = (u8 *)this->stageAnmSecondary + sizeof(RawStageHeader);
+
+    if (!IsDisableResourceReload())
+    {
+        for (i = 0; i < this->stageObjectCount; i++)
+        {
+            ((RawStageObject **)this->stageOffsets)[i] =
+                (RawStageObject *)((i32)((RawStageObject **)this->stageOffsets)[i] +
+                                   (i32)this->stageAnmSecondary);
+        }
+    }
+
+    this->stageAnm = g_ZunMemory.Alloc(this->stageVmCount * sizeof(AnmVm), "bgscroll");
+    for (i = 0, vmIdx = 0; i < this->stageObjectCount; i++)
+    {
+        curObj = ((RawStageObject **)this->stageOffsets)[i];
+        curObj->flags = 1;
+        curQuad = &curObj->firstQuad;
+        while (curQuad->type >= 0)
+        {
+            this->stageAnmFile->ExecuteAnmIdx(&((AnmVm *)this->stageAnm)[vmIdx], curQuad->anmScript);
+            curQuad->vmIdx = vmIdx++;
+            curQuad = (RawStageQuadBasic *)((u8 *)curQuad + curQuad->byteSize);
+        }
+    }
+
+    switch (g_GameManager.currentStage)
+    {
+    case 2:
+        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->textAnmVm, 33);
+        break;
+    default:
+        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->textAnmVm, 33);
+        break;
+    }
+    this->textAnmVm.SetInterrupt(2);
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x834) = 0;
+    this->timer838 = 0;
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x409f40
+#pragma var_order(unusedQuad, activeVms, i, vm, curObj, curQuad, this)
+u32 Background::FUN_00409f40()
+{
+    RawStageQuadBasic *curQuad;
+    RawStageObject *curObj;
+    AnmVm *vm;
+    i32 i;
+    i32 activeVms;
+    RawStageQuadBasic *unusedQuad;
+
+    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x834) != 0)
+    {
+        if (g_Player.IsHuman())
+        {
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x834) = 0;
+            this->timer838 = 0;
+            this->textAnmVm.SetInterrupt(2);
+        }
+    }
+    else if (g_Player.IsYoukai())
+    {
+        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x834) = 1;
+        this->timer838 = 0;
+        this->textAnmVm.SetInterrupt(1);
+    }
+
+    this->timer838++;
+    g_AnmManager->ExecuteScript(&this->textAnmVm);
+
+    for (i = 0; i < this->stageObjectCount; i++)
+    {
+        curObj = ((RawStageObject **)this->stageOffsets)[i];
+        if ((curObj->flags & 1) != 0)
+        {
+            activeVms = 0;
+            curQuad = &curObj->firstQuad;
+            while (curQuad->type >= 0)
+            {
+                vm = &((AnmVm *)this->stageAnm)[curQuad->vmIdx];
+                switch (curQuad->type)
+                {
+                case 0:
+                    g_AnmManager->ExecuteScript(vm);
+                    break;
+                case 1:
+                    unusedQuad = curQuad;
+                    g_AnmManager->ExecuteScript(vm);
+                    break;
+                }
+
+                if (vm->currentInstruction != NULL)
+                {
+                    activeVms++;
+                }
+                curQuad = (RawStageQuadBasic *)((u8 *)curQuad + curQuad->byteSize);
+            }
+
+            if (vm->type == 1)
+            {
+                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(vm) + 0x1F8) |= 0x20000;
+                vm->color2.r = ((u32)vm->color1.r * reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0xA34)->r) >> 8;
+                vm->color2.g = ((u32)vm->color1.g * reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0xA34)->g) >> 8;
+                vm->color2.b = ((u32)vm->color1.b * reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0xA34)->b) >> 8;
+                vm->color2.a = ((u32)vm->color1.a * reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0xA34)->a) >> 8;
+            }
+
+            if (activeVms == 0)
+            {
+                curObj->flags &= ~1;
+            }
+        }
+    }
+    return 0;
 }
 
 // FUNCTION: th08 0x40a1b0
@@ -1449,148 +1574,6 @@ ZunResult Background::RenderObjects(i32 mode)
     return ZUN_SUCCESS;
 }
 
-// FUNCTION: th08 0x409ce0
-#pragma var_order(vmIdx, i, curObj, curQuad, this)
-ZunResult Background::LoadStageData(const char *path)
-{
-    RawStageObject *curObj;
-    RawStageQuadBasic *curQuad;
-    i32 i;
-    i32 vmIdx;
-
-    if (!IsDisableResourceReload())
-    {
-        this->stageAnmSecondary = FileSystem::OpenFile(path, NULL, 0);
-        if (this->stageAnmSecondary == NULL)
-        {
-            g_GameErrorContext.Log("ステージデータが見つかりません。データが壊れています\r\n");
-            return ZUN_ERROR;
-        }
-    }
-
-    this->stageObjectCount = ((RawStageHeader *)this->stageAnmSecondary)->nbObjects;
-    this->stageVmCount = ((RawStageHeader *)this->stageAnmSecondary)->nbFaces;
-    this->stageUnknown804 =
-        (void *)(((RawStageHeader *)this->stageAnmSecondary)->facesOffset + (i32)this->stageAnmSecondary);
-    this->stageUnknown808 =
-        (void *)(((RawStageHeader *)this->stageAnmSecondary)->scriptOffset + (i32)this->stageAnmSecondary);
-    this->stageOffsets = (u8 *)this->stageAnmSecondary + sizeof(RawStageHeader);
-
-    if (!IsDisableResourceReload())
-    {
-        for (i = 0; i < this->stageObjectCount; i++)
-        {
-            ((RawStageObject **)this->stageOffsets)[i] =
-                (RawStageObject *)((i32)((RawStageObject **)this->stageOffsets)[i] +
-                                   (i32)this->stageAnmSecondary);
-        }
-    }
-
-    this->stageAnm = g_ZunMemory.Alloc(this->stageVmCount * sizeof(AnmVm), "bgscroll");
-    for (i = 0, vmIdx = 0; i < this->stageObjectCount; i++)
-    {
-        curObj = ((RawStageObject **)this->stageOffsets)[i];
-        curObj->flags = 1;
-        curQuad = &curObj->firstQuad;
-        while (curQuad->type >= 0)
-        {
-            this->stageAnmFile->ExecuteAnmIdx(&((AnmVm *)this->stageAnm)[vmIdx], curQuad->anmScript);
-            curQuad->vmIdx = vmIdx++;
-            curQuad = (RawStageQuadBasic *)((u8 *)curQuad + curQuad->byteSize);
-        }
-    }
-
-    switch (g_GameManager.currentStage)
-    {
-    case 2:
-        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->textAnmVm, 33);
-        break;
-    default:
-        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->textAnmVm, 33);
-        break;
-    }
-    this->textAnmVm.SetInterrupt(2);
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x834) = 0;
-    this->timer838 = 0;
-    return ZUN_SUCCESS;
-}
-
-// FUNCTION: th08 0x409f40
-#pragma var_order(unusedQuad, activeVms, i, vm, curObj, curQuad, this)
-u32 Background::FUN_00409f40()
-{
-    RawStageQuadBasic *curQuad;
-    RawStageObject *curObj;
-    AnmVm *vm;
-    i32 i;
-    i32 activeVms;
-    RawStageQuadBasic *unusedQuad;
-
-    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x834) != 0)
-    {
-        if (g_Player.IsHuman())
-        {
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x834) = 0;
-            this->timer838 = 0;
-            this->textAnmVm.SetInterrupt(2);
-        }
-    }
-    else if (g_Player.IsYoukai())
-    {
-        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x834) = 1;
-        this->timer838 = 0;
-        this->textAnmVm.SetInterrupt(1);
-    }
-
-    this->timer838++;
-    g_AnmManager->ExecuteScript(&this->textAnmVm);
-
-    for (i = 0; i < this->stageObjectCount; i++)
-    {
-        curObj = ((RawStageObject **)this->stageOffsets)[i];
-        if ((curObj->flags & 1) != 0)
-        {
-            activeVms = 0;
-            curQuad = &curObj->firstQuad;
-            while (curQuad->type >= 0)
-            {
-                vm = &((AnmVm *)this->stageAnm)[curQuad->vmIdx];
-                switch (curQuad->type)
-                {
-                case 0:
-                    g_AnmManager->ExecuteScript(vm);
-                    break;
-                case 1:
-                    unusedQuad = curQuad;
-                    g_AnmManager->ExecuteScript(vm);
-                    break;
-                }
-
-                if (vm->currentInstruction != NULL)
-                {
-                    activeVms++;
-                }
-                curQuad = (RawStageQuadBasic *)((u8 *)curQuad + curQuad->byteSize);
-            }
-
-            if (vm->type == 1)
-            {
-                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(vm) + 0x1F8) |= 0x20000;
-                vm->color2.r = ((u32)vm->color1.r * reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0xA34)->r) >> 8;
-                vm->color2.g = ((u32)vm->color1.g * reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0xA34)->g) >> 8;
-                vm->color2.b = ((u32)vm->color1.b * reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0xA34)->b) >> 8;
-                vm->color2.a = ((u32)vm->color1.a * reinterpret_cast<ZunColor *>(reinterpret_cast<u8 *>(this) + 0xA34)->a) >> 8;
-            }
-
-            if (activeVms == 0)
-            {
-                curObj->flags &= ~1;
-            }
-        }
-    }
-    return 0;
-}
-
 // FUNCTION: th08 0x40b470
 #pragma var_order(inverse, this)
 Float3 *Float3::operator/=(f32 scalar)
@@ -1647,6 +1630,12 @@ void Background::SetCamera2()
                   reinterpret_cast<D3DXVECTOR3 *>(&this->unk6394.vector2));
     D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&this->unk6394.vector4),
                       reinterpret_cast<D3DXVECTOR3 *>(&this->unk6394.vector4));
+}
+
+// FUNCTION: th08 0x40b900
+ZunBool IsDisableResourceReload()
+{
+    return g_Supervisor.unk16c;
 }
 
 }; // Namespace th08
