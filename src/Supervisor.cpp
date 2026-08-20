@@ -1331,6 +1331,18 @@ cleanup:
     return FALSE;
 }
 
+// FUNCTION: th08 0x447764
+void SoundPlayer::UpdateFades()
+{
+    if (this->bgm != NULL)
+    {
+        this->bgm->UpdateFadeOut();
+        this->bgm->UpdateFadeIn();
+        this->bgm->UpdatePartialFadeOut();
+        this->bgm->UpdatePartialFadeIn();
+    }
+}
+
 #pragma var_order(fileSize, configFileBuffer, bgmHandle, bytesRead, bgmBuffer, bgmHandle2, bytesRead2, bgmBuffer2)
 ZunResult Supervisor::LoadConfig(char *configFile)
 {
@@ -1496,6 +1508,15 @@ ZunResult Supervisor::LoadConfig(char *configFile)
 }
 
 #pragma var_order(periodLoc, wavPathBuf)
+// FUNCTION: th08 0x447d04
+ZunBool GameManager::IsExtraUnlockedWithAllTeams()
+{
+    return this->IsExtraUnlockedForCharacter(SHOT_REIMU_YUKARI) &&
+           this->IsExtraUnlockedForCharacter(SHOT_MARISA_ALICE) &&
+           this->IsExtraUnlockedForCharacter(SHOT_SAKUYA_REMILIA) &&
+           this->IsExtraUnlockedForCharacter(SHOT_YOUMU_YUYUKO);
+}
+
 ZunBool Supervisor::LoadMusic(int param_1, char *path)
 {
     char wavPathBuf[256];
@@ -1706,48 +1727,6 @@ void Supervisor::SetRenderState(D3DRENDERSTATETYPE renderStateType, int value)
     this->d3dDevice->SetRenderState(renderStateType, value);
 }
 
-#pragma var_order(gameTime, difference)
-void Supervisor::UpdateGameTime()
-{
-    DWORD gameTime = timeGetTime();
-
-    if (gameTime < this->systemTime)
-    {
-        this->systemTime = 0;
-    }
-
-    DWORD difference = gameTime - this->systemTime;
-
-    g_GameManager.plst.gameHours += (difference / 3600000);
-    difference %= 3600000;
-
-    g_GameManager.plst.gameMinutes += (difference / 60000);
-    difference %= 60000;
-
-    g_GameManager.plst.gameSeconds += (difference / 1000);
-    difference %= 1000;
-
-    g_GameManager.plst.gameMilliseconds += difference;
-
-    if (g_GameManager.plst.gameMilliseconds >= 1000)
-    {
-        g_GameManager.plst.gameSeconds += (g_GameManager.plst.gameMilliseconds / 1000);
-        g_GameManager.plst.gameMilliseconds = (g_GameManager.plst.gameMilliseconds % 1000);
-    }
-    if (g_GameManager.plst.gameSeconds >= 60)
-    {
-        g_GameManager.plst.gameMinutes += (g_GameManager.plst.gameMilliseconds / 60);
-        g_GameManager.plst.gameSeconds = (g_GameManager.plst.gameMilliseconds % 60);
-    }
-    if (g_GameManager.plst.gameMinutes >= 60)
-    {
-        g_GameManager.plst.gameHours += (g_GameManager.plst.gameMinutes / 60);
-        g_GameManager.plst.gameMinutes = (g_GameManager.plst.gameMinutes % 60);
-    }
-
-    this->systemTime = gameTime;
-}
-
 #pragma var_order(playTime, difference)
 void Supervisor::UpdatePlayTime()
 {
@@ -1788,6 +1767,48 @@ void Supervisor::UpdatePlayTime()
     }
 
     this->totalPlayTime = playTime;
+}
+
+#pragma var_order(gameTime, difference)
+void Supervisor::UpdateGameTime()
+{
+    DWORD gameTime = timeGetTime();
+
+    if (gameTime < this->systemTime)
+    {
+        this->systemTime = 0;
+    }
+
+    DWORD difference = gameTime - this->systemTime;
+
+    g_GameManager.plst.gameHours += (difference / 3600000);
+    difference %= 3600000;
+
+    g_GameManager.plst.gameMinutes += (difference / 60000);
+    difference %= 60000;
+
+    g_GameManager.plst.gameSeconds += (difference / 1000);
+    difference %= 1000;
+
+    g_GameManager.plst.gameMilliseconds += difference;
+
+    if (g_GameManager.plst.gameMilliseconds >= 1000)
+    {
+        g_GameManager.plst.gameSeconds += (g_GameManager.plst.gameMilliseconds / 1000);
+        g_GameManager.plst.gameMilliseconds = (g_GameManager.plst.gameMilliseconds % 1000);
+    }
+    if (g_GameManager.plst.gameSeconds >= 60)
+    {
+        g_GameManager.plst.gameMinutes += (g_GameManager.plst.gameMilliseconds / 60);
+        g_GameManager.plst.gameSeconds = (g_GameManager.plst.gameMilliseconds % 60);
+    }
+    if (g_GameManager.plst.gameMinutes >= 60)
+    {
+        g_GameManager.plst.gameHours += (g_GameManager.plst.gameMinutes / 60);
+        g_GameManager.plst.gameMinutes = (g_GameManager.plst.gameMinutes % 60);
+    }
+
+    this->systemTime = gameTime;
 }
 
 #pragma var_order(versionData, versionDataExeChecksum, versionDataSize, oldPos, versionDataExeSize)

@@ -207,13 +207,7 @@ struct GameManager
     ZunBool IsSpellPracticeUnlockedForCharacter(i32 character);
     ZunBool IsSpellPracticeUnlocked();
 
-    ZunBool IsExtraUnlockedWithAllTeams()
-    {
-        return this->IsExtraUnlockedForCharacter(SHOT_REIMU_YUKARI) &&
-               this->IsExtraUnlockedForCharacter(SHOT_MARISA_ALICE) &&
-               this->IsExtraUnlockedForCharacter(SHOT_SAKUYA_REMILIA) &&
-               this->IsExtraUnlockedForCharacter(SHOT_YOUMU_YUYUKO);
-    }
+    ZunBool IsExtraUnlockedWithAllTeams();
 
     ZunBool HasSpellCardBeenEncountered(i32 spellCardNumber, i32 shotType)
     {

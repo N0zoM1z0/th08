@@ -139,16 +139,7 @@ class SoundPlayer
         this->QueueCommand(7, 0, "UnPause");
     }
 
-    void UpdateFades()
-    {
-        if (this->bgm != NULL)
-        {
-            this->bgm->UpdateFadeOut();
-            this->bgm->UpdateFadeIn();
-            this->bgm->UpdatePartialFadeOut();
-            this->bgm->UpdatePartialFadeIn();
-        }
-    }
+    void UpdateFades();
 
     void QueueSetVolumeCommand()
     {
