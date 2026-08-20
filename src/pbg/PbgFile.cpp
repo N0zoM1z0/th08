@@ -200,4 +200,15 @@ void CPbgFile::GetFullFilePath(char *buffer, const char *filename)
         strcat(buffer, filename);
     }
 }
+
+// FUNCTION: th08 0x473c40
+IPbgFile::IPbgFile()
+{
+}
+
+// FUNCTION: th08 0x473c60
+IPbgFile::~IPbgFile()
+{
+}
+
 }; // namespace th08
