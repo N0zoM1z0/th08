@@ -89,6 +89,10 @@ def main() -> int:
                 "address",
             ],
         )
+        run(
+            "Smoke-test whole-image CLI routing",
+            [sys.executable, "scripts/compare-whole-image.py", "--help"],
+        )
         run("Check whitespace", ["git", "diff", "--check"])
     except (OSError, RuntimeError, subprocess.CalledProcessError) as exc:
         print(f"error: CI validation failed: {exc}", file=sys.stderr)

@@ -145,7 +145,12 @@ The next primary lane is target-linked library/runtime recovery:
    `implemented.csv`/`matches.csv` merely to reuse their percentage.
 4. After library/object coverage is reproducible, compare link layout, globals,
    imports, PE metadata, resources, and remaining data as the whole-executable
-   lane. A successful normal link alone is not whole-image exactness.
+   lane. Begin with a single-job cold normal build, then run
+   `python3 scripts/compare-whole-image.py --json > build/whole-image-report.json`.
+   The report verifies the canonical target and separates header/directory,
+   section-byte, import, resource, debug, and accepted-unit address-anchor
+   differences. A successful normal link alone is not whole-image exactness,
+   and the report is diagnostic rather than an acceptance ledger.
 
 `3rdparty/Detours` supports the optional reconstruction DLL and is not code from
 the original target. Do not spend target-matching effort on that submodule.
