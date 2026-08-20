@@ -1,1 +1,3 @@
+// LANG_JAPANESE, SUBLANG_DEFAULT: target resource language 0x0411.
+LANGUAGE 17, 1
 105 ICON DISCARDABLE "..\build\icon.ico"
