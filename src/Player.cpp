@@ -1795,6 +1795,44 @@ void GameManager::SetYoukaiGauge(u16 value)
     this->globals->youkaiGauge = value;
 }
 
+// FUNCTION: th08 0x44e160
+void GameManager::RandomizeAntiTamper()
+{
+    this->globals->rng1[0] = g_Rng.GetRandomU32InRange(ANTITAMPER_RNG_RANGE) + ANTITAMPER_RNG_ADD;
+    this->globals->rng1[1] = g_Rng.GetRandomU32InRange(ANTITAMPER_RNG_RANGE) + ANTITAMPER_RNG_ADD;
+    this->globals->rng1[2] = g_Rng.GetRandomU32InRange(ANTITAMPER_RNG_RANGE) + ANTITAMPER_RNG_ADD;
+    this->globals->rng1[3] = g_Rng.GetRandomU32InRange(ANTITAMPER_RNG_RANGE) + ANTITAMPER_RNG_ADD;
+    this->globals->rng1[4] = g_Rng.GetRandomU32InRange(ANTITAMPER_RNG_RANGE) + ANTITAMPER_RNG_ADD;
+    this->globals->rng4[0] = g_Rng.GetRandomF32InRange(ANTITAMPER_RNG_RANGE) + ANTITAMPER_RNG_ADD;
+    this->globals->rng4[1] = g_Rng.GetRandomF32InRange(ANTITAMPER_RNG_RANGE) + ANTITAMPER_RNG_ADD;
+    this->globals->rng4[2] = g_Rng.GetRandomF32InRange(ANTITAMPER_RNG_RANGE) + ANTITAMPER_RNG_ADD;
+}
+
+// FUNCTION: th08 0x44e260
+void GameManager::AddToDeaths(i32 amount)
+{
+    if (this->IsTampered())
+    {
+        CRASH_GAME();
+    }
+    this->globals->deaths += (f32)amount;
+    this->globals->deathInStage += (f32)amount;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3DA9C) += 1;
+    this->UpdateAntiTamper();
+}
+
+// FUNCTION: th08 0x44e2e0
+void GameManager::AddToBombsUsed(i32 amount)
+{
+    if (this->IsTampered())
+    {
+        CRASH_GAME();
+    }
+    this->globals->bombsUsed += (f32)amount;
+    this->globals->bombsUsedInStage += (f32)amount;
+    this->UpdateAntiTamper();
+}
+
 // FUNCTION: th08 0x44e350
 void PlayerUnkStruct0x40::Deactivate()
 {

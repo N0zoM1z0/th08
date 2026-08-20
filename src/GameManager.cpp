@@ -164,33 +164,6 @@ void GameManager::AddScore(i32 score)
 #pragma optimize("", on)
 
 #pragma optimize("t", on)
-void GameManager::AddToDeaths(i32 amount)
-{
-    if (this->IsTampered())
-    {
-        CRASH_GAME();
-    }
-    this->globals->deaths += (f32)amount;
-    this->globals->deathInStage += (f32)amount;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3DA9C) += 1;
-    this->UpdateAntiTamper();
-}
-#pragma optimize("", on)
-
-#pragma optimize("t", on)
-void GameManager::AddToBombsUsed(i32 amount)
-{
-    if (this->IsTampered())
-    {
-        CRASH_GAME();
-    }
-    this->globals->bombsUsed += (f32)amount;
-    this->globals->bombsUsedInStage += (f32)amount;
-    this->UpdateAntiTamper();
-}
-#pragma optimize("", on)
-
-#pragma optimize("t", on)
 void GameManager::AddTimeOrbs(i32 amount)
 {
     if (amount >= 0 || this->globals->currentTimeOrbs >= -amount)

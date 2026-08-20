@@ -62167,7 +62167,7 @@ target = 0x00439A2E
 
 [[units]]
 name = "game-manager-add-to-deaths"
-object = "build/GameManager.obj"
+object = "build/Player.obj"
 symbol = "?AddToDeaths@GameManager@th08@@QAEXH@Z"
 target_address = 0x0044E260
 size = 0x71
@@ -62192,7 +62192,7 @@ target = 0x00406E50
 
 [[units]]
 name = "game-manager-add-to-bombs-used"
-object = "build/GameManager.obj"
+object = "build/Player.obj"
 symbol = "?AddToBombsUsed@GameManager@th08@@QAEXH@Z"
 target_address = 0x0044E2E0
 size = 0x68
@@ -88658,7 +88658,7 @@ target = 0x004B42EC
 
 [[units]]
 name = "game-manager-randomize-antitamper"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/Player.obj"
 symbol = "?RandomizeAntiTamper@GameManager@th08@@QAEXXZ"
 target_address = 0x0044E160
 size = 0xFF
