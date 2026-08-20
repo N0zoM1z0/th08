@@ -901,6 +901,23 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
     }
 }
 
+// FUNCTION: th08 0x415c60
+void BulletManager::bulletmanager_fun_00415c60()
+{
+    this->RemoveAllBullets(1);
+}
+
+// FUNCTION: th08 0x415c80
+void Enemy::enemy_fun_00415c80()
+{
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2DEC) = -0.5f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2DF0) = 0.5f;
+    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2DF4) = 0;
+    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2DF6) = 0;
+    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2DF8) = 0;
+    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2DFA) = 0;
+}
+
 // FUNCTION: th08 0x415ce0
 void Background::background_fun_00415ce0()
 {

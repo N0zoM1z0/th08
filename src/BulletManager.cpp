@@ -23,13 +23,6 @@ void __fastcall CopyBulletAnmVmCore(AnmVm *dst, const AnmVm *src);
 void __fastcall SelectBulletSprite(AnmVm *dst, AnmVm *base, AnmVm *sizeSource, i32 offset);
 
 
-// FUNCTION: th08 0x415c60
-void BulletManager::bulletmanager_fun_00415c60()
-{
-    this->RemoveAllBullets(1);
-}
-
-
 DIFFABLE_STATIC(i32, g_BulletCancelItemType);
 void __fastcall fsincos(f32 *sine, f32 *cosine, f32 angle) {}
 

@@ -54996,10 +54996,10 @@ type = "REL32"
 symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
 target = 0x00407120
 # Ledger name: th08::BulletManager::bulletmanager_fun_00415c60
-# Evidence: source-emitted wrapper in BulletManager.cpp; exact 21-byte thiscall that forwards mode 1 to RemoveAllBullets.
+# Evidence: target StartSpell service cluster; exact 21-byte thiscall forwards mode 1 to RemoveAllBullets and is emitted by SpellCard.cpp.
 [[units]]
 name = "bullet-manager-clear-all-wrapper"
-object = "build/BulletManager.obj"
+object = "build/SpellCard.obj"
 symbol = "?bulletmanager_fun_00415c60@BulletManager@th08@@QAEXXZ"
 target_address = 0x00415C60
 size = 0x15
@@ -67498,7 +67498,7 @@ target = 0x017CE8CC
 # Ledger name: th08::Enemy::enemy_fun_00415c80
 [[units]]
 name = "enemy-spell-phase-reset"
-object = "build/EnemyManager.obj"
+object = "build/SpellCard.obj"
 symbol = "?enemy_fun_00415c80@Enemy@th08@@QAEXXZ"
 target_address = 0x00415C80
 size = 0x55

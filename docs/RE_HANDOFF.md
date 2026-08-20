@@ -596,6 +596,21 @@ inversions. `AsciiManager.obj` improved from **63 anchors / 86 inversions / 6
 runs / 9,600 span** to **60 / 0 / 1 / 736**; `AsciiManagerGauge.obj` is **5 / 0 /
 1 / 32**.
 
+The twenty-sixth bounded pass restored the `Spellcard::StartSpell` service
+cluster at `0x00415C60..0x00415CE0`. Two exact helper bodies had been placed in
+their class implementation TUs during early local matching even though target
+layout puts them immediately after `StartSpell`:
+`BulletManager::bulletmanager_fun_00415c60 @ 0x00415C60` and
+`Enemy::enemy_fun_00415c80 @ 0x00415C80`, followed by the already-correct
+`Background::background_fun_00415ce0 @ 0x00415CE0` in `Spellcard.cpp`. Moving
+the unchanged bodies into `Spellcard.cpp` and rebinding their canonical exact
+owners preserved focused replay at **32 / 32** SpellCard, **37 / 37**
+BulletManager, and **38 / 38** EnemyManager units. A fresh production link
+reduced `BulletManager.obj` from **25 anchors / 104,240 span** to **24 / 176**
+and `EnemyManager.obj` from **14 / 89,792** to **13 / 36,704**. The SpellCard
+cluster from `StartSpell` through the cut-in helpers now has one uniform linked
+drift; its object remains **29 anchors / 0 inversions / 1 run / 128 span**.
+
 The production link contains **36 object files**. Under target-proven
 `/OPT:ICF`, 35 have accepted map anchors and 34 retain non-folded TU-layout
 anchors. Every layout-ranked object still has **zero target-order inversions and
