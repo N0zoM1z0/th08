@@ -450,13 +450,24 @@ lexical disorder: `UpdatePlayTime @ 0x004482A1` now precedes
 1,105**, and `Supervisor.obj` improved from **43 anchors / 29 inversions / 4
 runs / 58,804 span** to **43 / 0 / 1 / 51,658**.
 
+The fifteenth bounded pass repaired `ReplayManager.obj`. The object mixed plain
+lexical disorder with two same-owner deferred header bodies. `LoadReplayData @
+0x00451D90` is now the first Replay definition, the constructor moved from the
+file head to its target slot after `DeletedCallback @ 0x00453080`, and the
+existing `AppendFormat @ 0x00453B80` tail is followed by explicit
+`GameManager::SetClockTime @ 0x00453C60` and `ReplayManager::IsDemo @
+0x00453CC0`. The latter two were declaration-only header repairs; each has only
+ReplayManager production callers. Focused replay passed **18 / 18**, the cold
+aggregate replay passed **1,105 / 1,105**, and linked metrics improved from **15
+anchors / 23 inversions / 4 runs / 12,352 span** to **15 / 0 / 1 / 192**.
+
 The raw ranking still places the expanded target-neighbor `AsciiManager.obj`
 cluster first (**63 anchors / 86 inversions / 6 runs / 9,600 span**), but its
 resets remain dominated by already target-backed PCH/header COMDAT groups and
 its first 21 retained Ascii anchors remain exact. Without new owner/caller
 evidence, do not perturb those shared inline contracts merely to reduce the
-metric. The next actionable candidate is `ReplayManager.obj` (**15 / 23 / 4 /
-12,352**), followed by `PbgFile.obj` (**13 / 20 / 2 / 1,456**).
+metric. The next actionable candidate is `PbgFile.obj` (**13 / 20 / 2 /
+1,456**), followed by `AnmManager.obj` (**56 / 19 / 2 / 359,840**).
 Select only one and confirm the target neighborhood before moving definitions;
 the Ascii inversion count includes several independently justified COMDAT
 groups and is not by itself evidence that they have the wrong owner.

@@ -377,6 +377,15 @@ version of the same pattern. Explicit target-local placement plus one ordinary
 `UpdatePlayTime`/`UpdateGameTime` swap reduced Supervisor from **29 / 4** to
 **0 inversions / 1 run** without changing any helper owner.
 
+The `ReplayManager.obj` pass is a compact reference for mixing ordinary lexical
+repair and same-owner header deference in one TU. Move large real definitions
+(`LoadReplayData`, constructor) by mapped target address first; then repair the
+small deferred tail only when the production caller set is bounded. Here both
+`GameManager::SetClockTime @ 0x00453C60` and `ReplayManager::IsDemo @
+0x00453CC0` are Replay-only calls, so explicit target-local bodies after
+`AppendFormat` preserved exactness and reduced **23 inversions / 4 runs** to
+**0 / 1**.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into
