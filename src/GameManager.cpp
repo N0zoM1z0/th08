@@ -285,14 +285,14 @@ i32 GameManager::GetBombsUsed()
 
 void GameManager::CollectExtend()
 {
-    if (this->GetLives() < 8)
+    if ((i32)this->globals->livesRemaining < 8)
     {
         this->AddLives(1);
         g_SoundPlayer.PlaySoundByIdx(SOUND_1UP, 0);
         this->IncreaseSubrank(200);
         g_Gui.flags.lifeDisplayUpdateFrames = 2;
     }
-    else if (this->GetBombsRemaining() < 8)
+    else if ((i32)this->globals->bombsRemaining < 8)
     {
         this->AddToBombCount(1);
         g_SoundPlayer.PlaySoundByIdx(SOUND_1UP, 0);

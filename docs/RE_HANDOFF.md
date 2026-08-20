@@ -10,12 +10,12 @@ As cold-built and replayed on 2026-08-20 against the original Japanese TH08
 1.00d target:
 
 - authored source: **1,107 / 1,107 functions**, **459,757 / 459,757 bytes**;
-- strict authored exact: **1,103 / 1,107 functions**, **458,914 / 459,757 bytes**;
+- strict authored exact: **1,105 / 1,107 functions**, **459,115 / 459,757 bytes**;
 - library inventory: **1,119 classified functions**; all **1,119 / 1,119** now have
   mapping sizes totaling **217,165 bytes**; the independent library exact ledger currently accepts **258 functions / 52,707 body bytes**;
 - `config/claims.csv` is header-only;
 - a cold normal VC7 build links `build/th08.exe` successfully;
-- a cold objdiff build followed by full replay passes **1,103 / 1,103**
+- a cold objdiff build followed by full replay passes **1,105 / 1,105**
   accepted units;
 - the whole-image comparator is in place. After the first evidence-backed link
   contract repairs, the rebuild has the target's DLL descriptor order, no debug
@@ -39,13 +39,9 @@ python3 scripts/ci.py
 
 ## Authored exact backlog
 
-Four authored functions remain unaccepted. Do not count them as exact or
+Two authored functions remain unaccepted. Do not count them as exact or
 restart broad brute-force matrices without a new target-backed hypothesis.
 
-- `AnmVm::SetZRotation @ 0x0040EC00`, 43 bytes: the current natural object is
-  `0x2D` bytes while the target is `0x2B`.
-- `GameManager::CollectExtend @ 0x00439B29`, 158 bytes: the current natural
-  object is `0x8F` bytes while the target is `0x9E`.
 - `ReplayManager::OnUpdateHighPrioDemo2 @ 0x004526C0`, 361 bytes: the natural
   source object is one byte longer and the residual is a register-allocation
   phase difference. Its adjacent callback family is exact.
@@ -53,17 +49,19 @@ restart broad brute-force matrices without a new target-backed hypothesis.
   the same extent; five stack-displacement bytes differ because the target
   frame is `0x40` while the current natural object frame is `0x5C`.
 
-The source for all four is present and behaviorally reconstructed. Exact coverage
+The source for both is present and behaviorally reconstructed. Exact coverage
 will increase only when the canonical comparator returns `exact` for a natural,
 evidence-backed C++ form.
 
-The other twelve cold regressions have been repaired and accepted. Four
+The other fourteen cold regressions have been repaired and accepted. Four
 TitleScreen functions required production-source restoration. Seven other
 functions were already byte-exact but had stale relocation identities in
 `match-units.toml`. `Supervisor::IsFogDisabled` required restoring its original
 header-inline definition: VC7 then emits the target `0x1A` COMDAT in
 `main.obj`, while the calling `AsciiManager` function remains exact. The
-2026-08-20 single-job cold replay verifies all **1,103 / 1,103** accepted units.
+`AnmVm::SetZRotation` and `GameManager::CollectExtend` then required bounded
+production-source owner/value-flow fixes. The 2026-08-20 single-job cold replay
+verifies all **1,105 / 1,105** accepted units.
 See `BUILD_MATCHING.md` before changing a shared inline/out-of-line contract.
 
 ## Library foundation (paused except for whole-link blockers)

@@ -857,6 +857,25 @@ This corpus attests the natural VC7 emissions for ResultScreen/AnmManager/MidiOu
   least one accepted caller before aggregate replay; the object containing a
   convenient out-of-line definition is not evidence of original TU ownership.
 
+### Raw union members, bitfield owners, and local value-flow restoration
+
+- When a union exposes both a narrow raw flags member and named `u32`
+  bitfields, the chosen source member controls access width. In
+  `AnmVm::SetZRotation @ 0x0040EC00`, `flags |= 4` selected the `u16` view and
+  emitted a 0x2D-byte word read/store sequence. Assigning the semantic
+  `updateRotation` bitfield emits the target dword read/OR/store and restores
+  the exact 0x2B-byte body without changing the shared structure layout.
+- An out-of-line getter can hide the target value flow even when the getter's
+  standalone body is independently exact. `GameManager::CollectExtend @
+  0x00439B29` target code reads the `f32` life/bomb fields through `globals`,
+  converts each through `__ftol2`, and compares the integer result. Expressing
+  those two local reads as `(i32)this->globals->...` restores the complete
+  0x9E-byte `/Os /Ob1` body while preserving the accepted standalone getter
+  functions and avoiding an unsupported repository-wide header-inline change.
+- Prefer the smallest semantic owner/value-flow correction supported by the
+  target. A field-access fingerprint inside one production function does not,
+  by itself, authorize changing the inline contract of every caller TU.
+
 ### Title spell-card cursor comparisons and switch-tail validation
 
 - `TitleScreen::OnUpdateSpellCardSelect @ 0x0046BBC0` carries an 11-entry / 0x2C-byte jump table after its 0xFCF authored body. Canonical validation uses `compare_size = 0xFFB`, so the table relocations replay without inflating authored-byte progress.

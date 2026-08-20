@@ -1102,3 +1102,5 @@ address,name,size,status,match_percent,unit,evidence
 0x0044C390,th08::Player::OnUpdate,529,matching,100.00,player-onupdate,python3 scripts/compare-function.py player-onupdate --json
 0x0045964D,th08::ResultScreen::AddedCallback,2437,matching,100.00,result-screen-roi-exact-0045964d,python3 scripts/compare-function.py result-screen-roi-exact-0045964d --json
 0x00465CC0,th08::AnmManager::LoadTextureData,829,matching,100.00,anm-manager-unblocked-exact-00465cc0,python3 scripts/compare-function.py anm-manager-unblocked-exact-00465cc0 --json
+0x0040EC00,th08::AnmVm::SetZRotation,43,matching,100.00,anm-vm-set-z-rotation,python3 scripts/compare-function.py anm-vm-set-z-rotation --json
+0x00439B29,th08::GameManager::CollectExtend,158,matching,100.00,game-manager-roi-exact-00439b29,python3 scripts/compare-function.py game-manager-roi-exact-00439b29 --json

@@ -44,7 +44,7 @@ void AnmVmBase::Initialize()
 void AnmVm::SetZRotation(f32 z)
 {
     this->rotation.z = z;
-    this->flags |= 4;
+    this->updateRotation = 1;
 }
 
 // FUNCTION: th08 0x406700
