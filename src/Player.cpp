@@ -19,2690 +19,9 @@
 namespace th08
 {
 
-DIFFABLE_EXTERN(AnmLoaded *, g_AsciiManagerDemoAnm0577EB4);
-
-// FUNCTION: th08 0x40bc60
-#pragma var_order(sourceColor, mixedColor)
-void __fastcall FUN_0040bc60(Player *player, D3DCOLOR color)
-{
-    ZunColor mixedColor;
-    ZunColor sourceColor;
-    sourceColor.d3dColor = color;
-
-    if (player->bombState.timer < 60)
-    {
-        mixedColor.r = 0x80 - (0x80 - sourceColor.r) * (i32)player->bombState.timer / 60;
-        mixedColor.g = 0x80 - (0x80 - sourceColor.g) * (i32)player->bombState.timer / 60;
-        mixedColor.b = 0x80 - (0x80 - sourceColor.b) * (i32)player->bombState.timer / 60;
-    }
-    else if (player->bombState.timer >= player->bombState.duration - 60)
-    {
-        mixedColor.r = 0x80 - (0x80 - sourceColor.r) * (player->bombState.duration - (i32)player->bombState.timer) / 60;
-        mixedColor.g = 0x80 - (0x80 - sourceColor.g) * (player->bombState.duration - (i32)player->bombState.timer) / 60;
-        mixedColor.b = 0x80 - (0x80 - sourceColor.b) * (player->bombState.duration - (i32)player->bombState.timer) / 60;
-    }
-    else
-    {
-        mixedColor.d3dColor = sourceColor.d3dColor;
-    }
-    mixedColor.a = 0x80;
-    g_AnmManager->SetMixColorDefault();
-    g_Background.FUN_00409160(mixedColor.d3dColor);
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Background) + 0x646C) = 1;
-}
-
-// FUNCTION: th08 0x40eb50
-i32 AnmVm::FUN_0040eb50()
-{
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x356) = 1;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x324) = 48;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x320) = 32.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x314) =
-        64.0f + (f32)((reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x338)->FUN_0040d3d0() & 1) ? 8 : 0);
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x318) = 0.0f;
-    return 1;
-}
-
-// FUNCTION: th08 0x40ec30
-void AnmVm::FUN_0040ec30(i32 duration, i32 mode, Float3 *value0, Float3 *value1)
-{
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x50) = 0;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xA4) = duration;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0xF8) = mode;
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x238) = *value0;
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x244) = *value1;
-}
-
-// FUNCTION: th08 0x40eca0
-void AnmVm::FUN_0040eca0(i32 duration, i32 mode, u32 color0, u32 color1)
-{
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x5C) = 0;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xB0) = duration;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0xF9) = mode;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27A) = (color0 >> 16) & 0xFF;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x279) = (color0 >> 8) & 0xFF;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x278) = color0 & 0xFF;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27E) = (color1 >> 16) & 0xFF;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27D) = (color1 >> 8) & 0xFF;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27C) = color1 & 0xFF;
-}
-
-// FUNCTION: th08 0x40ed50
-void AnmVm::FUN_0040ed50(i32 duration, i32 mode, i32 alpha0, i32 alpha1)
-{
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x68) = 0;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xBC) = duration;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0xFA) = mode;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27B) = alpha0;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27F) = alpha1;
-}
-
-// FUNCTION: th08 0x40eda0
-void AnmVm::FUN_0040eda0(i32 duration, i32 mode, Float2 *value0, Float2 *value1)
-{
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x80) = 0;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xD4) = duration;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0xFC) = mode;
-    *reinterpret_cast<Float2 *>(reinterpret_cast<u8 *>(this) + 0x268) = *value0;
-    *reinterpret_cast<Float2 *>(reinterpret_cast<u8 *>(this) + 0x270) = *value1;
-}
-
-// FUNCTION: th08 0x40ebc0
-ZunBool ZunTimer::FUN_0040ebc0(i32 interval)
-{
-    return this->current != this->previous && (this->current % interval) == 0;
-}
-
-// FUNCTION: th08 0x40e350
-ZunBool ZunTimer::FUN_0040e350(i32 value)
-{
-    return this->current != this->previous && this->current == value;
-}
-
-// FUNCTION: th08 0x40bf00
-void Player::FUN_0040bf00()
-{
-    AnmVm *effect;
-    if (this->stateEffect != NULL)
-        this->stateEffect->active = false;
-
-    effect = g_EffectManager.FUN_00425870(23, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 0, 1, -1);
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x80) = 0;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0xD4) = this->timer;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0xFC) = 0;
-    *reinterpret_cast<Float2 *>(reinterpret_cast<u8 *>(effect) + 0x268) = effect->scale;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x270) = 0.0625f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x274) = 0.0625f;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x100) = (i32)this->timer;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x14) *= -1.0f;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x1F2) = 0xFF;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x1F1) = 0x40;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x1F0) = 0x40;
-    this->stateEffect = reinterpret_cast<PlayerStateEffect *>(effect);
-}
-
-// FUNCTION: th08 0x40be30
-#pragma var_order(i, bomb, workItem)
-void __fastcall FUN_0040be30(Player *player, i32 cutInType, const char *cutInText, i32 duration, i32 timer, i32 cutInArg)
-{
-    u32 i;
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-
-    bomb = &player->bombState;
-    g_Spellcard.CutInPlayer(cutInType, cutInText, cutInArg);
-    bomb->duration = duration;
-    player->timer = timer;
-    player->playerState = PLAYER_STATE_DEAD;
-    player->FUN_0040bf00();
-    i = 0;
-    workItem = bomb->workItems;
-    for (; i < 128; i++, workItem++)
-        workItem->active = 0;
-    g_ItemManager.AutoCollectAllItems();
-    bomb->tailPosition = player->position;
-}
-
-// FUNCTION: th08 0x40c010
-#pragma var_order(i, bomb, workItem, angle)
-void __fastcall FUN_0040c010(Player *player)
-{
-    i32 i;
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-    f32 angle;
-
-    bomb = &player->bombState;
-    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
-    {
-        FUN_0040be30(player, 0,
-                     "\x97\xEC\x95\x84\x81\x75\x96\xB2\x91\x7A\x96\xAD\x8E\xEC\x81\x76",
-                     200, 260, 0);
-        g_EffectManager.SpawnEffect(12, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, 0xFF4040FF);
-        angle = -ZUN_PI;
-        workItem = bomb->workItems;
-        for (i = 0; i < 16; i++, workItem++)
-        {
-            player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[i].vms[0], 19);
-            bomb->workItems[i].rotation = angle;
-            angle += ZUN_PI / 8.0f;
-            workItem->anchor = player->position;
-            workItem->points[0] = workItem->anchor;
-            workItem->rotationStep = 0.0f;
-            workItem->active = 1;
-            workItem->cancelSlot = player->FUN_0044df00(&player->position, 96.0f, 0.0f, 200, 6);
-            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 64.0f, 0.0f, 5, 200);
-            workItem->damageSlot->collisionInterval = 2;
-            workItem->damageSlot->hitCap = 200;
-            workItem->damageSlot->mode = 1;
-        }
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
-    }
-
-    if (bomb->timer < 40)
-    {
-        Float3 previousPosition;
-        workItem = bomb->workItems;
-        for (i = 0; i < 16; i++, workItem++)
-        {
-            workItem->rotation = AddNormalizeAngle(
-                workItem->rotation, (i & 1) ? 0.052359879016876221f : -0.052359879016876221f);
-            previousPosition = workItem->anchor;
-            workItem->anchor.x = cosf(workItem->rotation) * workItem->rotationStep + workItem->points[0].x;
-            workItem->anchor.y = sinf(workItem->rotation) * workItem->rotationStep + workItem->points[0].y;
-            workItem->rotationStep += 3.2f;
-            workItem->position = workItem->anchor - previousPosition;
-        }
-    }
-    else
-    {
-#pragma var_order(yDelta, xDelta, speed, targetPosition, slot)
-        Float3 targetPosition;
-        f32 speed;
-        f32 xDelta;
-        f32 yDelta;
-        PlayerUnkStruct0x40 *slot;
-        if (bomb->timer.FUN_0040e350(40))
-        {
-            workItem = bomb->workItems;
-            for (i = 0; i < 16; i++, workItem++)
-            {
-                workItem->speed = sqrtf(workItem->position.x * workItem->position.x +
-                                        workItem->position.y * workItem->position.y);
-                workItem->rotation = VectorAngle(workItem->position.x, workItem->position.y);
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(workItem) + 4) = 0;
-                workItem->rotationStep = 8.0f;
-            }
-        }
-
-        i = 0;
-        workItem = bomb->workItems;
-        for (; i < 16; i++, workItem++)
-        {
-            if (!workItem->active)
-                continue;
-
-            if (workItem->active == 1 && bomb->timer.FUN_0040d3d0())
-            {
-                if (player->tailPosition0.x > -100.0f)
-                    targetPosition = player->tailPosition0;
-                else
-                    targetPosition = player->position;
-
-                    xDelta = targetPosition.operator float *()[0] - workItem->anchor.x;
-                    yDelta = targetPosition.operator float *()[1] - workItem->anchor.y;
-                    speed = sqrtf(xDelta * xDelta + yDelta * yDelta) / (workItem->rotationStep / 8.0f);
-                    if (speed < 1.0f)
-                        speed = 1.0f;
-
-                    xDelta = xDelta / speed + workItem->position.x;
-                    yDelta = yDelta / speed + workItem->position.y;
-                    speed = sqrtf(xDelta * xDelta + yDelta * yDelta);
-                    workItem->rotationStep = speed > 10.0f ? 10.0f : speed;
-                    if (workItem->rotationStep < 1.0f)
-                        workItem->rotationStep = 1.0f;
-                    workItem->position.x = xDelta * workItem->rotationStep / speed;
-                    workItem->position.y = yDelta * workItem->rotationStep / speed;
-
-                    player->FUN_0044df00(&workItem->anchor, 128.0f, 0.0f, 0, 6);
-                    if (workItem->damageSlot->hitAccumulator >= workItem->damageSlot->hitCap ||
-                        bomb->timer >= bomb->duration - 30)
-                    {
-                        workItem->cancelSlot->active = 0;
-                        workItem->damageSlot->active = 0;
-                        player->FUN_0044df00(&player->position, 64.0f, 4.266666889190674f, 30, 6);
-                        slot = player->FUN_0044e040(&workItem->anchor, 64.0f, 12.800000190734863f, 500, 12);
-                        slot->collisionInterval = 4;
-                        slot->hitCap = 0;
-                        g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&workItem->anchor), 8, -1);
-                        workItem->active = 2;
-                        workItem->vms[0].pendingInterrupt = 1;
-                        workItem->position / 8.0f;
-                        g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), workItem->anchor.x);
-                        ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 16, 8, 0, 0, 21);
-                    }
-            }
-
-            workItem->anchor.x += g_EclGameTimeScale * workItem->position.x;
-            workItem->anchor.y += g_EclGameTimeScale * workItem->position.y;
-        }
-    }
-
-    i = 0;
-    workItem = bomb->workItems;
-    for (; i < 16; i++, workItem++)
-    {
-        if (!workItem->active)
-            continue;
-        if (workItem->active == 1)
-        {
-            workItem->cancelSlot->center.x = workItem->anchor.x;
-            workItem->cancelSlot->center.y = workItem->anchor.y;
-            workItem->damageSlot->center.x = workItem->anchor.x;
-            workItem->damageSlot->center.y = workItem->anchor.y;
-        }
-        else if (workItem->active && bomb->timer.FUN_0040d3d0())
-        {
-            if (++*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(workItem) + 4) >= 30)
-                workItem->active = 0;
-        }
-        g_AnmManager->ExecuteScript(&workItem->vms[0]);
-    }
-}
-
-// FUNCTION: th08 0x40c820
-#pragma var_order(vm, i, workItem)
-void __fastcall FUN_0040c820(Player *player)
-{
-    PlayerBombWorkItem *workItem;
-    i32 i;
-    AnmVm *vm;
-
-    FUN_0040bc60(player, 0x80404040);
-    i = 0;
-    workItem = player->bombState.workItems;
-    for (; i < 16; i++, workItem++)
-    {
-        if (workItem->active == 0)
-            continue;
-        vm = &workItem->vms[0];
-        vm->pos = workItem->anchor + vm->pos2;
-        vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-        vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
-        vm->pos.z = 0.0f;
-        g_AnmManager->DrawNoRotation(vm);
-    }
-}
-
-
-DIFFABLE_STATIC_ARRAY_ASSIGN(u32, 7, g_PlayerDreamSealColors) = {
-    0x8FFFFFFF, 0x8F0000FF, 0x8FFF00FF, 0x8FFF0000, 0x8FFFFF00, 0x8F00FF00, 0x8F00FFFF,
-};
-
-// FUNCTION: th08 0x40c910
-#pragma var_order(i, bomb, workItem, angle, previousPosition)
-void __fastcall FUN_0040c910(Player *player)
-{
-    i32 i;
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-    f32 angle;
-
-    bomb = &player->bombState;
-    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
-    {
-        FUN_0040be30(player, 0,
-                     "\x90\x5F\x97\xEC\x81\x75\x96\xB2\x91\x7A\x95\x95\x88\xF3\x81\x40\x8F\x75\x81\x76",
-                     200, 260, 1);
-        g_EffectManager.SpawnEffect(12, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, 0xFF4040FF);
-        angle = -ZUN_PI;
-        workItem = bomb->workItems;
-        for (i = 0; i < 16; i++, workItem++)
-        {
-            player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[i].vms[0], 19);
-            bomb->workItems[i].rotation = angle;
-            angle += ZUN_PI / 8.0f;
-            workItem->anchor = player->position;
-            workItem->points[0] = workItem->anchor;
-            workItem->rotationStep = 0.0f;
-            workItem->active = 1;
-            workItem->cancelSlot = player->FUN_0044df00(&player->position, 96.0f, 0.0f, 200, 6);
-            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 64.0f, 0.0f, 5, 200);
-            workItem->damageSlot->collisionInterval = 2;
-            workItem->damageSlot->hitCap = 200;
-            workItem->damageSlot->mode = 1;
-        }
-        bomb->secondaryWorkIndex = 0;
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
-    }
-
-    Float3 previousPosition;
-    workItem = bomb->workItems;
-    for (i = 0; i < 16; i++, workItem++)
-    {
-        if (workItem->active == 1)
-        {
-            workItem->rotation = AddNormalizeAngle(
-                workItem->rotation, (i & 1) ? 0.052359879016876221f : -0.052359879016876221f);
-            previousPosition = workItem->anchor;
-            workItem->anchor.x = cosf(workItem->rotation) * workItem->rotationStep + workItem->points[0].x;
-            workItem->anchor.y = sinf(workItem->rotation) * workItem->rotationStep + workItem->points[0].y;
-            if (bomb->timer < 40)
-            {
-                if (i & 1)
-                    workItem->rotationStep += 1.2000000476837158f;
-                else
-                    workItem->rotationStep += 2.4000000953674316f;
-            }
-            workItem->position = workItem->anchor - previousPosition;
-
-            if (bomb->timer >= bomb->duration - 40 - i)
-            {
-                workItem->cancelSlot->active = 0;
-                workItem->damageSlot->active = 0;
-                player->FUN_0044df00(&player->position, 64.0f, 4.266666889190674f, 30, 6);
-                PlayerUnkStruct0x40 *slot =
-                    player->FUN_0044e040(&workItem->anchor, 64.0f, 8.533333778381348f, 25, 15);
-                slot->collisionInterval = 5;
-                slot->hitCap = 50;
-                g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&workItem->anchor), 8, -1);
-                workItem->active = 2;
-                workItem->vms[0].pendingInterrupt = 1;
-                workItem->position / 8.0f;
-                g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), workItem->anchor.x);
-                ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 16, 8, 0, 0, 21);
-            }
-
-            workItem->cancelSlot->center.x = workItem->anchor.x;
-            workItem->cancelSlot->center.y = workItem->anchor.y;
-            workItem->damageSlot->center.x = workItem->anchor.x;
-            workItem->damageSlot->center.y = workItem->anchor.y;
-        }
-        g_AnmManager->ExecuteScript(&workItem->vms[0]);
-    }
-
-    if (bomb->timer >= 40)
-    {
-#pragma var_order(color, spawnPosition, slot)
-        Float3 spawnPosition;
-        u32 color;
-        PlayerUnkStruct0x40 *slot;
-        if (bomb->timer % 20 == 0)
-        {
-            workItem = &bomb->workItems[bomb->secondaryWorkIndex + 16];
-            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 20);
-            bomb->secondaryWorkIndex = 1;
-            workItem->active = 1;
-            color = g_PlayerDreamSealColors[(u32)((i32)bomb->timer / 20) % 7];
-            if (player->tailPosition0.x > -100.0f)
-                spawnPosition = player->tailPosition0;
-            else
-            {
-                spawnPosition.x = g_Rng.GetRandomF32InRange(320.0f) + 32.0f;
-                spawnPosition.y = g_Rng.GetRandomF32InRange(384.0f) + 32.0f;
-                spawnPosition.z = 0.0f;
-            }
-            workItem->anchor = spawnPosition;
-            g_EffectManager.SpawnEffect(49, reinterpret_cast<D3DXVECTOR3 *>(&workItem->anchor), 1, color);
-            g_EffectManager.SpawnEffect(55, reinterpret_cast<D3DXVECTOR3 *>(&workItem->anchor), 1, color);
-            workItem->cancelSlot = player->FUN_0044df00(&spawnPosition, 64.0f, 4.266666889190674f, 30, 6);
-            workItem->damageSlot = player->FUN_0044e040(&spawnPosition, 64.0f, 8.533333778381348f, 400, 15);
-            slot = workItem->damageSlot;
-            slot->collisionInterval = 2;
-            g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), workItem->anchor.x);
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 16, 8, 0, 0, 21);
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, color, 0, 21);
-        }
-    }
-
-    workItem = &bomb->workItems[16];
-    for (i = 16; i < ARRAY_SIZE(bomb->workItems); i++, workItem++)
-    {
-        if (!workItem->active)
-            continue;
-        workItem->cancelSlot->center.x = workItem->anchor.x;
-        workItem->cancelSlot->center.y = workItem->anchor.y;
-        workItem->damageSlot->center.x = workItem->anchor.x;
-        workItem->damageSlot->center.y = workItem->anchor.y;
-        if (g_AnmManager->ExecuteScript(&workItem->vms[0]))
-            workItem->active = 0;
-    }
-}
-
-// FUNCTION: th08 0x40d010
-#pragma var_order(vm, i, workItem)
-void __fastcall FUN_0040d010(Player *player)
-{
-    PlayerBombWorkItem *workItem;
-    u32 i;
-    AnmVm *vm;
-
-    FUN_0040bc60(player, 0x802020d0);
-    i = 0;
-    workItem = player->bombState.workItems;
-    for (; i < 128; i++, workItem++)
-    {
-        if (workItem->active == 0)
-            continue;
-        vm = &workItem->vms[0];
-        vm->pos = workItem->anchor + vm->pos2;
-        vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-        vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
-        vm->pos.z = 0.0f;
-        g_AnmManager->DrawNoRotation(vm);
-    }
-}
-
-// FUNCTION: th08 0x40d100
-#pragma var_order(bomb, effect, i)
-void __fastcall FUN_0040d100(Player *player)
-{
-    PlayerBombState *bomb;
-    AnmVm *effect;
-    u32 i;
-
-    bomb = &player->bombState;
-    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
-    {
-        if (!g_GameManager.IsSpellPractice())
-            FUN_0040be30(player, -1,
-                         "\x81\x75\x83\x66\x83\x42\x83\x5D\x83\x8B\x83\x75\x83\x58\x83\x79\x83\x8B\x81\x76",
-                         120, 200, 0);
-        else
-            FUN_0040be30(player, -1,
-                         "\x81\x75\x83\x66\x83\x42\x83\x5D\x83\x8B\x83\x75\x83\x58\x83\x79\x83\x8B\x81\x76",
-                         40, 200, 0);
-
-        g_EffectManager.SpawnEffect(12, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, 0xff4040ff);
-        effect = g_EffectManager.FUN_00425870(50, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 4, 1,
-                                              0xff4040ff);
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x50) = 0;
-        if (!g_GameManager.IsSpellPractice())
-            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0xA4) = 90;
-        else
-            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0xA4) = 30;
-        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0xF8) = 5;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x238) = 8.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x244) = 128.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x23C) = 64.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x248) = 0.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x208) = 8.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x20C) = 64.0f;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 64;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x318) = 0;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 8.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 15.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 6.0f;
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.0f;
-
-        for (i = 0; i < 8; i++)
-        {
-            if (reinterpret_cast<Enemy **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i] != NULL)
-            {
-                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(
-                    reinterpret_cast<Enemy **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]) + 0x3324) &=
-                    ~0x40u;
-            }
-        }
-    }
-}
-
-// FUNCTION: th08 0x40d310
-#pragma var_order(bomb, colorValue)
-void __fastcall FUN_0040d310(Player *player)
-{
-    PlayerBombState *bomb = &player->bombState;
-    if (bomb->timer < 60)
-    {
-        FUN_0040bc60(player, 0x80404040);
-    }
-    else
-    {
-        i32 colorValue = ((i32)bomb->timer - 60) * 176 / 60 + 64;
-        FUN_0040bc60(player, 0x80000000 | (colorValue << 16) | (colorValue << 8) | colorValue);
-    }
-}
-
-// FUNCTION: th08 0x40d430
-#pragma var_order(bomb, workItem)
-void __fastcall FUN_0040d430(Player *player)
-{
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-
-    bomb = &player->bombState;
-    workItem = &bomb->workItems[0];
-    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
-    {
-        FUN_0040be30(player, 1,
-                     "\x96\x82\x95\x84\x81\x75\x83\x41\x81\x5B\x83\x65\x83\x42\x83\x74\x83\x8B\x83\x54\x83\x4E\x83\x8A\x83\x74\x83\x40\x83\x43\x83\x58\x81\x76",
-                     210, 250, 0);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
-        workItem->anchor = player->optionStates[0].position;
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
-    }
-
-    if (bomb->timer < 60)
-    {
-        Float3 target(192.0f, 224.0f, 0.0f);
-        f32 interp = (f32)bomb->timer / 60.0f;
-        interp *= interp;
-        player->optionStates[0].position =
-            (target - workItem->anchor) * interp + workItem->anchor;
-        player->optionStates[0].vm.rotation.z += -0.31415927410125732f;
-        player->FUN_0044df00(&player->optionStates[0].position, 32.0f, 0.0f, 0, 6);
-        player->FUN_0044e040(&player->optionStates[0].position, 32.0f, 0.0f, 40, 0);
-    }
-    else
-    {
-        player->optionStates[0].vm.rotation.z = 0.0f;
-        player->optionStates[0].position.x = 192.0f;
-        player->optionStates[0].position.y = 224.0f;
-        if (bomb->timer >= 150)
-            player->optionStates[0].vm.color1.a = 0;
-
-        if (bomb->timer.FUN_0040e350(60))
-        {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
-        }
-        else if (bomb->timer.FUN_0040e350(64))
-        {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -12080);
-        }
-        else if (bomb->timer.FUN_0040e350(68))
-        {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -20304);
-        }
-        else if (bomb->timer.FUN_0040e350(72))
-        {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -32640);
-        }
-        else if (bomb->timer.FUN_0040e350(76))
-        {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -49088);
-        }
-        else if (bomb->timer.FUN_0040e350(90))
-        {
-#pragma var_order(effect, damageSlot)
-            AnmVm *effect;
-            PlayerUnkStruct0x40 *damageSlot;
-            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(15), 0);
-            effect = g_EffectManager.SpawnEffect(42, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
-            effect = g_EffectManager.SpawnEffect(43, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
-            effect = g_EffectManager.SpawnEffect(44, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
-            player->FUN_0044df00(&player->optionStates[0].position, 1.0f, 5.0f, 110, 6);
-            damageSlot = player->FUN_0044e040(&player->optionStates[0].position, 1.0f, 5.0f, 70, 110);
-            damageSlot->collisionInterval = 5;
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 24, 8, 0, 0, 21);
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8fffffff, 0, 21);
-        }
-        else if (bomb->timer.FUN_0040e350(100))
-        {
-            AnmVm *effect100 = g_EffectManager.SpawnEffect(
-                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
-        }
-        else if (bomb->timer.FUN_0040e350(110))
-        {
-            AnmVm *effect110 = g_EffectManager.SpawnEffect(
-                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -12080);
-        }
-        else if (bomb->timer.FUN_0040e350(120))
-        {
-            AnmVm *effect120 = g_EffectManager.SpawnEffect(
-                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -32640);
-        }
-        else if (bomb->timer.FUN_0040e350(130))
-        {
-            AnmVm *effect130 = g_EffectManager.SpawnEffect(
-                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -65536);
-        }
-        else if (bomb->timer.FUN_0040e350(150))
-        {
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8fffffff, 0, 21);
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 24, 8, 0, 0, 21);
-            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(25), 0);
-        }
-        else if (bomb->timer.FUN_0040e350(209))
-        {
-            player->optionStates[0].state2C8 = 1;
-            player->optionStates[0].timer = 0;
-        }
-    }
-}
-
-// FUNCTION: th08 0x40d950
-void __fastcall FUN_0040d950(Player *player)
-{
-    FUN_0040bc60(player, 0x80404040);
-}
-
-// FUNCTION: th08 0x40d970
-#pragma var_order(bomb, workItem)
-void __fastcall FUN_0040d970(Player *player)
-{
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-
-    bomb = &player->bombState;
-    workItem = &bomb->workItems[0];
-    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
-    {
-        FUN_0040be30(player, 1,
-                     "\x96\x82\x91\x80\x81\x75\x83\x8A\x83\x5E\x81\x5B\x83\x93\x83\x43\x83\x69\x83\x6A\x83\x81\x83\x67\x83\x6C\x83\x58\x81\x76",
-                     230, 280, 1);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
-        workItem->anchor = player->position;
-    }
-
-    if (bomb->timer < 60)
-    {
-        Float3 target(192.0f, 224.0f, 0.0f);
-        f32 interp = (f32)bomb->timer / 60.0f;
-        interp *= interp;
-        player->optionStates[0].position =
-            (target - workItem->anchor) * interp + workItem->anchor;
-        player->optionStates[0].vm.rotation.z += -0.31415927410125732f;
-        player->FUN_0044df00(&player->optionStates[0].position, 32.0f, 0.0f, 0, 6);
-        player->FUN_0044e040(&player->optionStates[0].position, 32.0f, 0.0f, 40, 0);
-    }
-    else
-    {
-        player->optionStates[0].vm.rotation.z = 0.0f;
-        player->optionStates[0].position.x = 192.0f;
-        player->optionStates[0].position.y = 224.0f;
-        if (bomb->timer >= 128)
-            player->optionStates[0].vm.color1.a = 0;
-
-        if (bomb->timer.FUN_0040e350(60))
-        {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
-        }
-        else if (bomb->timer.FUN_0040e350(64))
-        {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -12080);
-        }
-        else if (bomb->timer.FUN_0040e350(68))
-        {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -20304);
-        }
-        else if (bomb->timer.FUN_0040e350(72))
-        {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -32640);
-        }
-        else if (bomb->timer.FUN_0040e350(76))
-        {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -49088);
-        }
-        else if (bomb->timer.FUN_0040e350(120))
-        {
-#pragma var_order(effect, damageSlot, burstPosition)
-            AnmVm *effect;
-            PlayerUnkStruct0x40 *damageSlot;
-            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(15), 0);
-            effect = g_EffectManager.SpawnEffect(42, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
-            effect = g_EffectManager.SpawnEffect(43, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
-            effect = g_EffectManager.SpawnEffect(44, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
-            Float3 burstPosition(64.0f, 96.0f, 0.0f);
-            effect = g_EffectManager.SpawnEffect(45, reinterpret_cast<D3DXVECTOR3 *>(&burstPosition), 1, 0xff0000f0);
-            burstPosition.y = 352.0f;
-            effect = g_EffectManager.SpawnEffect(45, reinterpret_cast<D3DXVECTOR3 *>(&burstPosition), 1, 0xfff00000);
-            burstPosition.x = 320.0f;
-            effect = g_EffectManager.SpawnEffect(45, reinterpret_cast<D3DXVECTOR3 *>(&burstPosition), 1, 0xff00f000);
-            burstPosition.y = 96.0f;
-            effect = g_EffectManager.SpawnEffect(45, reinterpret_cast<D3DXVECTOR3 *>(&burstPosition), 1, 0xff00f0f0);
-            player->FUN_0044df00(&player->optionStates[0].position, 1.0f, 5.0f, 110, 6);
-            damageSlot = player->FUN_0044e040(&player->optionStates[0].position, 1.0f, 5.0f, 70, 110);
-            damageSlot->collisionInterval = 5;
-        }
-        else if (bomb->timer.FUN_0040e350(130))
-        {
-            AnmVm *effect130 = g_EffectManager.SpawnEffect(
-                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
-        }
-        else if (bomb->timer.FUN_0040e350(140))
-        {
-            AnmVm *effect140 = g_EffectManager.SpawnEffect(
-                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -12080);
-        }
-        else if (bomb->timer.FUN_0040e350(150))
-        {
-            AnmVm *effect150 = g_EffectManager.SpawnEffect(
-                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -32640);
-        }
-        else if (bomb->timer.FUN_0040e350(160))
-        {
-            AnmVm *effect160 = g_EffectManager.SpawnEffect(
-                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -65536);
-        }
-        else if (bomb->timer.FUN_0040e350(180))
-        {
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, -1, 0, 21);
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 24, 8, 0, 0, 21);
-            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(25), 0);
-        }
-        else if (bomb->timer.FUN_0040e350(229))
-        {
-            player->optionStates[0].state2C8 = 1;
-            player->optionStates[0].timer = 0;
-        }
-    }
-}
-
-// FUNCTION: th08 0x40dee0
-#pragma var_order(bomb, workItem, rect, fadeValue, color, color2, rect2)
-void __fastcall FUN_0040dee0(Player *player)
-{
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-    ZunRect rect;
-    i32 fadeValue;
-    ZunColor color;
-    ZunColor color2;
-    ZunRect rect2;
-
-    bomb = &player->bombState;
-    workItem = player->bombState.workItems;
-    if (bomb->timer < 90)
-    {
-        FUN_0040bc60(player, 0x802020d0);
-        return;
-    }
-    if (bomb->timer <= 120)
-    {
-        fadeValue = 208 * ((i32)bomb->timer - 90) / 30;
-        color.r = fadeValue / 5 + 0xd0;
-        color.g = fadeValue + 0x20;
-        color.b = fadeValue + 0x20;
-        color.a = 0x80;
-        FUN_0040bc60(player, color.d3dColor);
-
-        rect.left = 32.0f;
-        rect.top = 16.0f;
-        rect.right = 416.0f;
-        rect.bottom = 464.0f;
-        color.r = 0xff;
-        color.g = 0xff;
-        color.b = 0xff;
-        color.a = 255 * ((i32)bomb->timer - 90) / 30;
-        ScreenEffect::DrawSquare(&rect, color.d3dColor);
-        return;
-    }
-    if (bomb->timer <= 220)
-    {
-        rect2.left = 32.0f;
-        rect2.top = 16.0f;
-        rect2.right = 416.0f;
-        rect2.bottom = 464.0f;
-        color2.r = 0xff;
-        color2.g = 0xff;
-        color2.b = 0xff;
-        color2.a = 0x70;
-        ScreenEffect::DrawSquare(&rect2, color2.d3dColor);
-        return;
-    }
-    FUN_0040bc60(player, 0x802020d0);
-}
-
-// FUNCTION: th08 0x40e040
-i32 __fastcall FUN_0040e040(AnmVm *effect)
-{
-    f32 interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 40.0f;
-    interp *= interp;
-    interp = 1.0f - interp;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 256.0f * interp;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 64;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 5.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330) = 0.0f;
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 40)
-    {
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 8.0f;
-    }
-    else
-    {
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = 64.0f * interp;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) += 2.0f;
-    }
-    return 1;
-}
-
-// FUNCTION: th08 0x40e120
-i32 __fastcall FUN_0040e120(AnmVm *effect)
-{
-    f32 interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 40.0f;
-    interp *= interp;
-    interp = 1.0f - interp;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 256.0f * interp;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 48;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 0.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = 128.0f * interp;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330) = ZUN_PI / 4.0f;
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 40)
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 8.0f;
-    else
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) += 1.5f;
-    return 1;
-}
-
-// FUNCTION: th08 0x40e200
-i32 __fastcall FUN_0040e200(AnmVm *effect)
-{
-    f32 interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 40.0f;
-    interp *= interp;
-    interp = 1.0f - interp;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 256.0f * interp;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 48;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = 128.0f * interp;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330) = -ZUN_PI / 4.0f;
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 40)
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 8.0f;
-    else
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) += 1.5f;
-    return 1;
-}
-
-// FUNCTION: th08 0x40e2d0
-i32 __fastcall FUN_0040e2d0(AnmVm *effect)
-{
-    f32 interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 40.0f;
-    interp *= interp;
-    interp = 1.0f - interp;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 192.0f * interp;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 8;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 8.0f;
-    return 1;
-}
-
-// FUNCTION: th08 0x40e3b0
-#pragma var_order(bomb, workItem, angle, slot, position)
-void __fastcall FUN_0040e3b0(Player *player)
-{
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-    f32 angle;
-    PlayerUnkStruct0x40 *slot;
-
-    bomb = &player->bombState;
-    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
-    {
-        FUN_0040be30(player, 0,
-                     "\x97\xF6\x95\x84\x81\x75\x83\x7D\x83\x58\x83\x5E\x81\x5B\x83\x58\x83\x70\x81\x5B\x83\x4E\x81\x76",
-                     300, 350, 0);
-        angle = -ZUN_PI;
-        workItem = &bomb->workItems[0];
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(19), 0);
-        workItem->anchor = player->position;
-        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[0], 30);
-        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[1], 31);
-        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[2], 32);
-        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[3], 33);
-        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[4], 34);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.2f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.2f;
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK7, 16, 120, 60, 120, 21);
-    }
-
-    if (player->bombState.timer.FUN_0040d3d0() && ((i32)player->bombState.timer % 4) != 0)
-    {
-        Float3 position;
-        position = player->position;
-        position.x = 192.0f;
-        position.y /= 2.0f;
-        player->FUN_0044de60(&position, 384.0f, position.y * 2.0f, 6, 0);
-
-        position = player->position;
-        position.y /= 2.0f;
-        slot = player->FUN_0044dfa0(&position, 128.0f, position.y * 2.0f, 12, 0);
-        slot->mode = 1;
-        position.x = 192.0f;
-        slot = player->FUN_0044dfa0(&position, 384.0f, position.y * 2.0f, 6, 0);
-        slot->mode = 1;
-    }
-
-    g_AnmManager->ExecuteScriptArray(&bomb->workItems[0].vms[0], 5);
-}
-
-// FUNCTION: th08 0x40e610
-#pragma var_order(vm, i, angleStep, angle)
-void __fastcall FUN_0040e610(Player *player)
-{
-    AnmVm *vm;
-    i32 i;
-    f32 angleStep;
-    f32 angle;
-
-    FUN_0040bc60(player, 0x80404040);
-    angleStep = ZUN_PI / 15.0f;
-    vm = &player->bombState.workItems[0].vms[0];
-    for (i = 0; i < 5; i++, vm++)
-    {
-        angle = (f32)i * angleStep - ZUN_PI / 2.0f - angleStep * 2.0f;
-        if (angle < -ZUN_PI)
-            angle += ZUN_2PI;
-        vm->pos = player->position;
-        vm->pos.x += cosf(angle) * vm->loadedSprite->widthPx * vm->scale.x / 2.0f;
-        vm->pos.y += sinf(angle) * vm->loadedSprite->widthPx * vm->scale.x / 2.0f;
-        vm->SetZRotation(angle);
-        vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-        vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
-        vm->pos.z = 0.0f;
-        g_AnmManager->Draw2D(vm);
-    }
-}
-
-// FUNCTION: th08 0x40e780
-#pragma var_order(bomb, workItem, angle)
-void __fastcall FUN_0040e780(Player *player)
-{
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-    f32 angle;
-
-    bomb = &player->bombState;
-    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
-    {
-        FUN_0040be30(player, 0,
-                     "\x96\x82\x96\x43\x81\x75\x83\x74\x83\x40\x83\x43\x83\x69\x83\x8B\x83\x58\x83\x70\x81\x5B\x83\x4E\x81\x76",
-                     350, 380, 1);
-        angle = -ZUN_PI;
-        workItem = &bomb->workItems[0];
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(19), 0);
-        workItem->anchor = player->position;
-        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[0], 35);
-        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[1], 36);
-        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[2], 37);
-        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[3], 38);
-        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[4], 39);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK7, 16, 120, 60, 120, 21);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.2f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.2f;
-        bomb->secondaryWorkIndex = 0;
-    }
-
-    if (bomb->timer.FUN_0040ebc0(10))
-    {
-#pragma var_order(effect, position1, position0, scale1, scale0)
-        AnmVm *effect = g_EffectManager.FUN_00425870(
-            53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkIndex % 4 + 4, 1, -1);
-        if (bomb->secondaryWorkIndex & 1)
-            g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 92);
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 32;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 0;
-
-        Float3 position0;
-        Float3 position1;
-        position0.x = 0.0f;
-        position0.y = 0.0f;
-        position0.z = 0.0f;
-        position1.x = 128.0f;
-        position1.y = 0.0f;
-        position1.z = 0.0f;
-        effect->FUN_0040ec30(30, 4, &position0, &position1);
-
-        Float2 scale0;
-        Float2 scale1;
-        scale0.x = 32.0f;
-        scale0.y = 0.0f;
-        scale1.x = 64.0f;
-        scale1.y = 0.0f;
-        effect->FUN_0040eda0(30, 1, &scale0, &scale1);
-        effect->FUN_0040ed50(30, 3, 255, 0);
-        effect->FUN_0040eca0(30, 0, -1, 0xffff0000);
-        g_AnmManager->ExecuteScript(effect);
-        bomb->secondaryWorkIndex++;
-        g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(17), player->position.x);
-    }
-
-    if (player->bombState.timer.FUN_0040d3d0() && ((i32)player->bombState.timer % 4) != 0)
-    {
-#pragma var_order(slot, position)
-        Float3 position;
-        PlayerUnkStruct0x40 *slot;
-        position = player->position;
-        position.x = 192.0f;
-        position.y /= 2.0f;
-        player->FUN_0044de60(&position, 384.0f, position.y * 2.0f, 6, 0);
-
-        position = player->position;
-        position.y /= 2.0f;
-        slot = player->FUN_0044dfa0(&position, 128.0f, position.y * 2.0f, 12, 0);
-        slot->mode = 1;
-        position.x = 192.0f;
-        slot = player->FUN_0044dfa0(&position, 384.0f, position.y * 2.0f, 7, 0);
-        slot->mode = 1;
-    }
-
-    g_AnmManager->ExecuteScriptArray(&bomb->workItems[0].vms[0], 5);
-}
-
-// FUNCTION: th08 0x40ee10
-#pragma var_order(bomb, workItem)
-void __fastcall FUN_0040ee10(Player *player)
-{
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-
-    bomb = &player->bombState;
-    workItem = &bomb->workItems[0];
-    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
-    {
-        FUN_0040be30(player, 1,
-                     "\x8D\x67\x95\x84\x81\x75\x95\x73\x96\xE9\x8F\xE9\x83\x8C\x83\x62\x83\x68\x81\x76",
-                     240, 290, 0);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
-        workItem[0].anchor = player->optionStates[0].target;
-        workItem[1].anchor = player->optionStates[1].target;
-        workItem[2].anchor = player->optionStates[2].target;
-        workItem[3].anchor = player->optionStates[3].target;
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
-        bomb->secondaryWorkIndex = 0;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.0f;
-    }
-
-    if (bomb->timer < 60)
-    {
-#pragma var_order(interp, position)
-        f32 interp = (f32)bomb->timer / 60.0f;
-        interp *= interp;
-        Float3 position;
-        position = player->position;
-        position.x -= 32.0f;
-        player->optionStates[0].target =
-            (position - workItem[0].anchor) * interp + workItem[0].anchor;
-        position.x += 32.0f;
-        position.y -= 32.0f;
-        player->optionStates[1].target =
-            (position - workItem[1].anchor) * interp + workItem[1].anchor;
-        position.y += 64.0f;
-        player->optionStates[2].target =
-            (position - workItem[2].anchor) * interp + workItem[2].anchor;
-        position.x += 32.0f;
-        position.y -= 32.0f;
-        player->optionStates[3].target =
-            (position - workItem[3].anchor) * interp + workItem[3].anchor;
-    }
-    else
-    {
-        if (bomb->timer.FUN_0040e350(60))
-        {
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 2.0f;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 2.0f;
-            player->optionStates[0].vm.SetInterrupt(2);
-            player->optionStates[1].vm.SetInterrupt(2);
-            player->optionStates[2].vm.SetInterrupt(2);
-            player->optionStates[3].vm.SetInterrupt(2);
-        }
-
-        Float3 position;
-        position = player->position;
-        position.x -= 32.0f;
-        player->optionStates[0].target = position;
-        position.x += 32.0f;
-        position.y -= 32.0f;
-        player->optionStates[1].target = position;
-        position.y += 64.0f;
-        player->optionStates[2].target = position;
-        position.x += 32.0f;
-        position.y -= 32.0f;
-        player->optionStates[3].target = position;
-
-        workItem->cancelSlot = player->FUN_0044df00(&player->position, 96.0f, 0.0f, 0, 6);
-
-        if (bomb->timer.FUN_0040ebc0(10))
-        {
-#pragma var_order(effect, position1, position0, scale1, scale0)
-            AnmVm *effect = g_EffectManager.FUN_00425870(
-                53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkIndex % 4 + 4, 1, -1);
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 32;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 4.0f;
-
-            Float3 position0;
-            Float3 position1;
-            position0.x = 0.0f;
-            position0.y = 0.0f;
-            position0.z = 0.0f;
-            position1.x = 192.0f;
-            position1.y = g_Rng.GetRandomF32InRange(128.0f);
-            position1.z = 0.0f;
-            effect->FUN_0040ec30(30, 4, &position0, &position1);
-
-            Float2 scale0;
-            Float2 scale1;
-            scale0.x = 64.0f;
-            scale0.y = 0.0f;
-            scale1.x = 64.0f;
-            scale1.y = 0.0f;
-            effect->FUN_0040eda0(30, 1, &scale0, &scale1);
-            effect->FUN_0040ed50(30, 3, 255, 0);
-            effect->FUN_0040eca0(30, 0, -1, 0xffff0000);
-            bomb->secondaryWorkIndex++;
-            g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(17), player->position.x);
-            g_AnmManager->ExecuteScript(effect);
-        }
-
-        if (player->timerE2AC4 >= 5)
-        {
-            workItem->cancelSlot = player->FUN_0044de60(&player->position, 96.0f, 800.0f, 6, 0);
-            workItem->cancelSlot = player->FUN_0044de60(&player->position, 800.0f, 96.0f, 6, 0);
-        }
-
-        if (bomb->timer.FUN_0040e350(239))
-        {
-            player->optionStates[0].state2C8 = 1;
-            player->optionStates[0].timer = 0;
-            player->optionStates[1].state2C8 = 1;
-            player->optionStates[1].timer = 0;
-            player->optionStates[2].state2C8 = 1;
-            player->optionStates[2].timer = 0;
-            player->optionStates[3].state2C8 = 1;
-            player->optionStates[3].timer = 0;
-        }
-    }
-}
-
-// FUNCTION: th08 0x40f550
-void __fastcall FUN_0040f550(Player *player)
-{
-    FUN_0040bc60(player, 0x80d02020);
-}
-
-// FUNCTION: th08 0x40f570
-#pragma var_order(bomb, workItem)
-void __fastcall FUN_0040f570(Player *player)
-{
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-
-    bomb = &player->bombState;
-    workItem = &bomb->workItems[0];
-    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
-    {
-        FUN_0040be30(player, 1,
-                     "\x8D\x67\x96\x82\x81\x75\x83\x58\x83\x4A\x81\x5B\x83\x8C\x83\x62\x83\x67\x83\x66\x83\x72\x83\x8B\x81\x76",
-                     280, 320, 1);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
-        workItem[0].anchor = player->optionStates[0].target;
-        workItem[1].anchor = player->optionStates[1].target;
-        workItem[2].anchor = player->optionStates[2].target;
-        workItem[3].anchor = player->optionStates[3].target;
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
-        bomb->secondaryWorkIndex = 0;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.0f;
-    }
-
-    if (bomb->timer < 60)
-    {
-#pragma var_order(interp, position)
-        f32 interp = (f32)bomb->timer / 60.0f;
-        interp *= interp;
-        Float3 position;
-        position = player->position;
-        position.x -= 32.0f;
-        player->optionStates[0].target =
-            (position - workItem[0].anchor) * interp + workItem[0].anchor;
-        position.x += 32.0f;
-        position.y -= 32.0f;
-        player->optionStates[1].target =
-            (position - workItem[1].anchor) * interp + workItem[1].anchor;
-        position.y += 64.0f;
-        player->optionStates[2].target =
-            (position - workItem[2].anchor) * interp + workItem[2].anchor;
-        position.x += 32.0f;
-        position.y -= 32.0f;
-        player->optionStates[3].target =
-            (position - workItem[3].anchor) * interp + workItem[3].anchor;
-    }
-    else
-    {
-        if (bomb->timer.FUN_0040e350(60))
-        {
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 3.0f;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 3.0f;
-            player->optionStates[0].vm.SetInterrupt(2);
-            player->optionStates[1].vm.SetInterrupt(2);
-            player->optionStates[2].vm.SetInterrupt(2);
-            player->optionStates[3].vm.SetInterrupt(2);
-        }
-
-        Float3 position;
-        workItem->cancelSlot = player->FUN_0044df00(&player->position, 96.0f, 0.0f, 0, 6);
-        position = player->position;
-        position.x -= 32.0f;
-        player->optionStates[0].target = position;
-        position.x += 32.0f;
-        position.y -= 32.0f;
-        player->optionStates[1].target = position;
-        position.y += 64.0f;
-        player->optionStates[2].target = position;
-        position.x += 32.0f;
-        position.y -= 32.0f;
-        player->optionStates[3].target = position;
-
-        if (bomb->timer.FUN_0040ebc0(10))
-        {
-#pragma var_order(effect, position1, position0, scale1, scale0)
-            AnmVm *effect = g_EffectManager.FUN_00425870(
-                53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkIndex % 4 + 4, 1, -1);
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 32;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 4.0f;
-
-            Float3 position0;
-            Float3 position1;
-            position0.x = 0.0f;
-            position0.y = 0.0f;
-            position0.z = 0.0f;
-            position1.x = 192.0f;
-            position1.y = g_Rng.GetRandomF32InRange(128.0f);
-            position1.z = 0.0f;
-            effect->FUN_0040ec30(30, 4, &position0, &position1);
-
-            Float2 scale0;
-            Float2 scale1;
-            scale0.x = 64.0f;
-            scale0.y = 0.0f;
-            scale1.x = 128.0f;
-            scale1.y = 0.0f;
-            effect->FUN_0040eda0(30, 1, &scale0, &scale1);
-            effect->FUN_0040ed50(30, 3, 255, 0);
-            effect->FUN_0040eca0(30, 0, -1, 0xffff0000);
-            bomb->secondaryWorkIndex++;
-            g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(17), player->position.x);
-            g_AnmManager->ExecuteScript(effect);
-        }
-
-        if (player->timerE2AC4 >= 5)
-        {
-            workItem->cancelSlot = player->FUN_0044de60(&player->position, 96.0f, 800.0f, 6, 0);
-            workItem->cancelSlot = player->FUN_0044de60(&player->position, 800.0f, 96.0f, 6, 0);
-        }
-
-        if (bomb->timer.FUN_0040e350(279))
-        {
-            player->optionStates[0].state2C8 = 1;
-            player->optionStates[0].timer = 0;
-            player->optionStates[1].state2C8 = 1;
-            player->optionStates[1].timer = 0;
-            player->optionStates[2].state2C8 = 1;
-            player->optionStates[2].timer = 0;
-            player->optionStates[3].state2C8 = 1;
-            player->optionStates[3].timer = 0;
-        }
-    }
-}
-
-// FUNCTION: th08 0x40fcb0
-void __fastcall FUN_0040fcb0(Player *player)
-{
-    FUN_0040bc60(player, 0x80f00000);
-}
-
-// FUNCTION: th08 0x40fcd0
-#pragma var_order(i, bomb, workItem, vm, angle)
-void __fastcall FUN_0040fcd0(Player *player)
-{
-    i32 i;
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-    AnmVm *vm;
-    f32 angle;
-
-    bomb = &player->bombState;
-    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
-    {
-        FUN_0040be30(player, 0,
-                     "\x8C\xB6\x95\x84\x81\x75\x8E\x45\x90\x6C\x83\x68\x81\x5B\x83\x8B\x81\x76",
-                     250, 290, 0);
-        workItem = bomb->workItems;
-        for (i = 0; i < 96; i++, workItem++)
-            workItem->active = 0;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.5f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.5f;
-        bomb->workItems[0].effect =
-            g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
-    }
-
-    if (bomb->timer >= 0 && bomb->timer <= 60)
-    {
-        reinterpret_cast<Effect *>(bomb->workItems[0].effect)->vector0 = player->position;
-    }
-
-    if (bomb->timer >= 20 && bomb->timer < 116)
-    {
-        workItem = player->bombState.workItems;
-        for (i = 0; i < 96; i++, workItem++)
-        {
-            if (!player->bombState.timer.FUN_0040e350(2 * (i % 48) + 20))
-                continue;
-            if (workItem->active)
-                return;
-            workItem->active = 1;
-                vm = &workItem->vms[0];
-                player->anmFile->ExecuteAnmIdx(vm, 22);
-                angle = (f32)i * ZUN_2PI / 96.0f - ZUN_PI;
-                workItem->rotation = angle;
-                workItem->speed = g_Rng.GetRandomF32InRange(1.0f) + 0.5f;
-                workItem->rotationStep = g_Rng.GetRandomF32InRange(0.1f) + 0.03f;
-                workItem->velocity.x = g_Rng.GetRandomU16InRange(1)
-                    ? 0.15707963705062866f : -0.15707963705062866f;
-                workItem->position.x = cosf(workItem->rotation) * 24.0f;
-                workItem->position.y = sinf(workItem->rotation) * 24.0f;
-                workItem->anchor = player->position + workItem->position;
-                workItem->timer = 0;
-                workItem->position.z = 0.0f;
-                workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 32.0f, 0.0f, 500, 6);
-            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 32.0f, 0.0f, 20, 500);
-        }
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 120, 4, 1, 0, 21);
-    }
-
-    workItem = bomb->workItems;
-    for (i = 0; i < 96; i++, workItem++)
-    {
-        if (!workItem->active)
-            continue;
-
-        if ((i32)workItem->timer < 30 || (i32)workItem->timer >= 70)
-        {
-            if (workItem->timer.FUN_0040e350(70))
-            {
-                if (player->tailPosition0.x > -100.0f)
-                {
-                    workItem->rotation = AddNormalizeAngle(
-                        VectorAngle(player->tailPosition0.y - workItem->anchor.y,
-                                    player->tailPosition0.x - workItem->anchor.x),
-                        0.0f);
-                }
-                workItem->speed = 14.0f;
-            }
-            workItem->speed += workItem->rotationStep;
-            workItem->position.x = cosf(workItem->rotation) * workItem->speed;
-            workItem->position.y = sinf(workItem->rotation) * workItem->speed;
-        }
-        else
-        {
-            workItem->rotation = AddNormalizeAngle(workItem->rotation, workItem->velocity.x);
-            workItem->position.x = 0.0f;
-            workItem->position.y = 0.0f;
-        }
-
-        if (workItem->damageSlot != NULL)
-        {
-            workItem->damageSlot->center.x = workItem->anchor.x;
-            workItem->damageSlot->center.y = workItem->anchor.y;
-            workItem->cancelSlot->center.x = workItem->anchor.x;
-            workItem->cancelSlot->center.y = workItem->anchor.y;
-            if (workItem->timer >= 120)
-            {
-                workItem->damageSlot->active = 0;
-                workItem->cancelSlot->active = 0;
-                workItem->cancelSlot = NULL;
-                workItem->damageSlot = NULL;
-            }
-            else if (workItem->damageSlot->hitAccumulator > 0)
-            {
-                player->anmFile->ExecuteAnmIdx(&workItem->vms[0], 23);
-                g_EffectManager.SpawnEffect(
-                    0, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[i].anchor), 1, 0xffff80ff);
-                workItem->damageSlot->active = 0;
-                workItem->cancelSlot->active = 0;
-                workItem->cancelSlot = NULL;
-                workItem->damageSlot = NULL;
-                g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(43), workItem->anchor.x);
-            }
-        }
-
-        workItem->anchor += workItem->position;
-        g_AnmManager->ExecuteScript(&workItem->vms[0]);
-        workItem->timer++;
-    }
-}
-
-// FUNCTION: th08 0x4103f0
-#pragma var_order(i, bomb, workItem, vm, angle)
-void __fastcall FUN_004103f0(Player *player)
-{
-    i32 i;
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-    AnmVm *vm;
-    f32 angle;
-
-    bomb = &player->bombState;
-    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
-    {
-        FUN_0040be30(player, 0,
-                     "\x8C\xB6\x91\x92\x81\x75\x96\xE9\x96\xB6\x82\xCC\x8C\xB6\x89\x65\x8E\x45\x90\x6C\x8B\x53\x81\x76",
-                     320, 350, 1);
-        workItem = bomb->workItems;
-        for (i = 0; i < 128; i++, workItem++)
-            workItem->active = 0;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.5f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.5f;
-        bomb->workItems[0].effect =
-            g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 50, 4, 1, 0, 21);
-    }
-
-    if (bomb->timer >= 0 && bomb->timer <= 60)
-    {
-        reinterpret_cast<Effect *>(bomb->workItems[0].effect)->vector0 = player->position;
-    }
-
-    if (bomb->timer >= 20 && bomb->timer < 148)
-    {
-        workItem = player->bombState.workItems;
-        for (i = 0; i < 128; i++, workItem++)
-        {
-            if (!player->bombState.timer.FUN_0040e350(2 * (i % 64) + 20))
-                continue;
-            if (workItem->active)
-                return;
-            workItem->active = 1;
-            vm = &workItem->vms[0];
-            player->anmFile->ExecuteAnmIdx(vm, 20);
-            angle = AddNormalizeAngle((f32)i * ZUN_2PI / 64.0f - ZUN_PI, 0.0f);
-            workItem->rotation = angle;
-            workItem->speed = g_Rng.GetRandomF32InRange(1.0f) + 0.5f;
-            workItem->rotationStep = g_Rng.GetRandomF32InRange(0.1f) + 0.03f;
-            workItem->velocity.x = g_Rng.GetRandomU16InRange(1)
-                ? 0.15707963705062866f : -0.15707963705062866f;
-            workItem->position.x = cosf(workItem->rotation) * 24.0f;
-            workItem->position.y = sinf(workItem->rotation) * 24.0f;
-            workItem->anchor = player->position + workItem->position;
-            workItem->timer = 0;
-            workItem->position.z = 0.0f;
-            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 32.0f, 0.0f, 500, 6);
-            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 32.0f, 0.0f, 30, 500);
-        }
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
-    }
-
-    workItem = bomb->workItems;
-    for (i = 0; i < 128; i++, workItem++)
-    {
-        if (!workItem->active)
-            continue;
-
-        if ((i32)workItem->timer < 30 || (i32)workItem->timer >= 70)
-        {
-            if (workItem->timer.FUN_0040e350(70))
-            {
-                if (player->tailPosition0.x > -100.0f)
-                {
-                    workItem->rotation = AddNormalizeAngle(
-                        VectorAngle(player->tailPosition0.y - workItem->anchor.y,
-                                    player->tailPosition0.x - workItem->anchor.x),
-                        0.0f);
-                }
-                workItem->speed = 14.0f;
-                g_EffectManager.SpawnEffect(
-                    46, reinterpret_cast<D3DXVECTOR3 *>(&workItem->anchor), 1, -1);
-            }
-            workItem->speed += workItem->rotationStep;
-            workItem->position.x = cosf(workItem->rotation) * workItem->speed;
-            workItem->position.y = sinf(workItem->rotation) * workItem->speed;
-        }
-        else
-        {
-            workItem->rotation = AddNormalizeAngle(workItem->rotation, workItem->velocity.x);
-            workItem->position.x = 0.0f;
-            workItem->position.y = 0.0f;
-        }
-
-        if (workItem->damageSlot != NULL)
-        {
-            workItem->damageSlot->center.x = workItem->anchor.x;
-            workItem->damageSlot->center.y = workItem->anchor.y;
-            workItem->cancelSlot->center.x = workItem->anchor.x;
-            workItem->cancelSlot->center.y = workItem->anchor.y;
-            if (workItem->timer >= 120)
-            {
-                workItem->damageSlot->active = 0;
-                workItem->cancelSlot->active = 0;
-                workItem->cancelSlot = NULL;
-                workItem->damageSlot = NULL;
-            }
-            else if (workItem->damageSlot->hitAccumulator > 0)
-            {
-                if (i % 3 == 0)
-                    ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 2, 1, 0x208080ff, 0, 21);
-                g_EffectManager.SpawnEffect(
-                    0, reinterpret_cast<D3DXVECTOR3 *>(&workItem->anchor), 1, 0xffff80ff);
-                player->anmFile->ExecuteAnmIdx(&workItem->vms[0], 21);
-                workItem->damageSlot->active = 0;
-                workItem->cancelSlot->active = 0;
-                workItem->cancelSlot = NULL;
-                workItem->damageSlot = NULL;
-                g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(43), workItem->anchor.x);
-            }
-        }
-
-        workItem->anchor += workItem->position;
-        g_AnmManager->ExecuteScript(&workItem->vms[0]);
-        workItem->timer++;
-    }
-}
-
-// FUNCTION: th08 0x410300
-#pragma var_order(i, workItem)
-void __fastcall FUN_00410300(Player *player)
-{
-    PlayerBombWorkItem *workItem;
-    i32 i;
-
-    FUN_0040bc60(player, 0x80404040);
-    workItem = player->bombState.workItems;
-    for (i = 0; i < 96; i++, workItem++)
-    {
-        if (workItem->active == 0)
-            continue;
-        workItem->vms[0].SetZRotation(workItem->rotation);
-        workItem->vms[0].pos = workItem->anchor;
-        workItem->vms[0].pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-        workItem->vms[0].pos.y += g_ItemAnmManagerScreenShakeOffset.y;
-        workItem->vms[0].pos.z = 0.0f;
-        g_AnmManager->Draw2D(&workItem->vms[0]);
-    }
-}
-
-// FUNCTION: th08 0x410ac0
-#pragma var_order(i, workItem)
-void __fastcall FUN_00410ac0(Player *player)
-{
-    PlayerBombWorkItem *workItem;
-    i32 i;
-
-    FUN_0040bc60(player, 0x80202080);
-    workItem = player->bombState.workItems;
-    for (i = 0; i < 96; i++, workItem++)
-    {
-        if (workItem->active == 0)
-            continue;
-        workItem->vms[0].SetZRotation(workItem->rotation);
-        workItem->vms[0].pos = workItem->anchor;
-        workItem->vms[0].pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-        workItem->vms[0].pos.y += g_ItemAnmManagerScreenShakeOffset.y;
-        workItem->vms[0].pos.z = 0.0f;
-        g_AnmManager->Draw2D(&workItem->vms[0]);
-    }
-}
-
-// FUNCTION: th08 0x410c40
-#pragma var_order(bomb, workItem, angle)
-void __fastcall FUN_00410c40(Player *player)
-{
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-    f32 angle;
-
-    bomb = &player->bombState;
-    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
-    {
-        PlayerUnkStruct0x40 *slot;
-
-        FUN_0040be30(player, 1,
-                     "\x8B\xAB\x95\x84\x81\x75\x8E\x6C\x8F\x64\x8C\x8B\x8A\x45\x81\x76",
-                     150, 200, 0);
-        angle = -ZUN_PI;
-        workItem = &bomb->workItems[0];
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
-        workItem->anchor = player->position;
-        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 40, 6);
-        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(slot) + 0x38) = 5;
-        Float3 velocity(ZUN_PI / 4.0f, 1.0f, 4.0f);
-        g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&workItem->anchor),
-                                     reinterpret_cast<D3DXVECTOR3 *>(&velocity), 4, 1, -1);
-    }
-
-    if (bomb->timer.FUN_0040e350(10))
-    {
-        PlayerUnkStruct0x40 *slot;
-        AnmVm *effect;
-
-        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 40, 6);
-        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(slot) + 0x38) = 5;
-        Float3 velocity(ZUN_PI * 3.0f / 8.0f, 1.0f, 4.0f);
-        effect = g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
-                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 5, 1, -1);
-        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 89);
-        bomb->workItems[1].anchor = player->position;
-    }
-
-    if (bomb->timer.FUN_0040e350(20))
-    {
-        PlayerUnkStruct0x40 *slot;
-        AnmVm *effect;
-
-        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 40, 6);
-        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(slot) + 0x38) = 5;
-        Float3 velocity(ZUN_PI / 2.0f, 1.0f, 4.0f);
-        effect = g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
-                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 6, 1, -1);
-        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 90);
-        bomb->workItems[2].anchor = player->position;
-    }
-
-    if (bomb->timer.FUN_0040e350(30))
-    {
-        PlayerUnkStruct0x40 *slot;
-        AnmVm *effect;
-
-        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 40, 6);
-        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(slot) + 0x38) = 5;
-        Float3 velocity(1.9634954929351807f, 1.0f, 4.0f);
-        effect = g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
-                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 7, 1, -1);
-        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 91);
-        bomb->workItems[3].anchor = player->position;
-    }
-
-    g_AnmManager->ExecuteScriptArray(&bomb->workItems[0].vms[0], 2);
-}
-
-// FUNCTION: th08 0x4114e0
-#pragma var_order(interp, i, slot, angle)
-i32 __fastcall FUN_004114e0(AnmVm *effect)
-{
-    f32 interp;
-    i32 i;
-    PlayerUnkStruct0x40 *slot;
-    f32 angle;
-
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 40)
-    {
-        interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 40.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) =
-            88.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) * 80.0f / 40.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) =
-            192.0f - 384.0f * interp * interp;
-        --*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324);
-        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
-    }
-    else
-    {
-        if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) == 40)
-        {
-#pragma var_order(position, radius)
-            f32 radius;
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8ff08080, 0, 21);
-            angle = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318) + ZUN_PI / 4.0f;
-            radius = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) * 0.7071067094802856f;
-            Float3 position;
-            g_AnmManager->FUN_00464b00(
-                effect,
-                reinterpret_cast<VertexTex1DiffuseXyzrhw *>(*reinterpret_cast<void **>(reinterpret_cast<u8 *>(effect) + 0x358)),
-                2 * *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) + 2);
-            for (i = 0; i < 4; i++)
-            {
-                if (angle >= ZUN_PI)
-                    angle -= ZUN_2PI;
-                position.FromAngleMagnitude(angle, radius);
-                position += *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2E0);
-                slot = g_Player.FUN_0044dfa0(
-                    &position, radius * 8.0f,
-                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) * 4.0f, 60, 70);
-                slot->collisionInterval = 4;
-                slot->angle = AddNormalizeAngle(angle, ZUN_PI / 2.0f);
-                angle = slot->angle;
-                slot = g_Player.FUN_0044de60(
-                    &position, radius * 4.0f,
-                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) * 4.0f, 6, 100);
-                slot->angle = angle;
-            }
-        }
-        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
-    }
-    return 1;
-}
-
-// FUNCTION: th08 0x4123d0
-#pragma var_order(unused0, unused1, bomb, workItem, interp)
-void __fastcall FUN_004123d0(Player *player)
-{
-    i32 unused0;
-    i32 unused1;
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-    f32 interp;
-
-    bomb = &player->bombState;
-    unused1 = 0;
-    unused0 = 0;
-    workItem = &bomb->workItems[0];
-
-    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
-    {
-        FUN_0040be30(player, 0,
-                     "\x90\x6C\x8B\x53\x81\x75\x96\xA2\x97\x88\x89\x69\x8D\x85\x8E\x61\x81\x76",
-                     250, 300, 0);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.0f;
-        player->anmFile->SetAndExecuteScriptIdx(&player->mainVm, 0);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
-        workItem->anchor = player->position;
-        workItem->position = workItem->anchor;
-        workItem->position.y = 416.0f;
-    }
-
-    if (bomb->timer < 40)
-    {
-        interp = (f32)bomb->timer / 40.0f;
-        interp = 1.0f - interp;
-        interp *= interp;
-        interp = 1.0f - interp;
-        player->position = (workItem->position - workItem->anchor) * interp + workItem->anchor;
-        return;
-    }
-    else if (bomb->timer.FUN_0040e350(40))
-    {
-        g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, 0xffff8080);
-        return;
-    }
-    else if (bomb->timer.FUN_0040e350(70))
-    {
-        player->position.y = 32.0f;
-        Float3 position = player->position;
-        position.y = 224.0f;
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xefffffff, 0, 21);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(42), 0);
-        workItem->cancelSlot = player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 500, 0);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 60);
-        workItem->damageSlot->collisionInterval = 5;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        return;
-    }
-    else if (bomb->timer.FUN_0040e350(80))
-    {
-        Float3 position = player->position;
-        position.y = 224.0f;
-        position.x -= 32.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
-        workItem->damageSlot->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        position.x += 64.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
-        workItem->damageSlot->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xcfffffff, 0, 21);
-        return;
-    }
-    else if (bomb->timer.FUN_0040e350(90))
-    {
-        Float3 position = player->position;
-        position.y = 224.0f;
-        position.x -= 64.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
-        workItem->damageSlot->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        position.x += 128.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
-        workItem->damageSlot->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xafffffff, 0, 21);
-        return;
-    }
-    else if (bomb->timer.FUN_0040e350(100))
-    {
-        Float3 position = player->position;
-        position.y = 224.0f;
-        position.x -= 96.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 80, 40);
-        workItem->damageSlot->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        position.x += 192.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 80, 40);
-        workItem->damageSlot->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8fffffff, 0, 21);
-        return;
-    }
-    else if (bomb->timer.FUN_0040e350(110))
-    {
-        Float3 position = player->position;
-        position.y = 224.0f;
-        position.x -= 128.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 60, 40);
-        workItem->damageSlot->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        position.x += 256.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 60, 40);
-        workItem->damageSlot->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x6fffffff, 0, 21);
-        return;
-    }
-    else if (bomb->timer.FUN_0040e350(120))
-    {
-        Float3 position = player->position;
-        position.y = 224.0f;
-        position.x -= 160.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 50, 40);
-        workItem->damageSlot->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        position.x += 320.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 50, 40);
-        workItem->damageSlot->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x5fffffff, 0, 21);
-        return;
-    }
-    else if (bomb->timer.FUN_0040e350(130))
-    {
-        Float3 position = player->position;
-        position.y = 224.0f;
-        position.x -= 192.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 40, 40);
-        workItem->damageSlot->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        position.x += 384.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 40, 40);
-        workItem->damageSlot->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x5fffffff, 0, 21);
-        workItem->position = player->position;
-        return;
-    }
-    else if (bomb->timer >= 150 && bomb->timer < 180)
-    {
-        interp = ((f32)bomb->timer - 150.0f) / 30.0f;
-        interp = 1.0f - interp;
-        interp *= interp;
-        interp = 1.0f - interp;
-        player->position = (workItem->anchor - workItem->position) * interp + workItem->position;
-        return;
-    }
-    else if (bomb->timer.FUN_0040e350(180))
-    {
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 1.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 1.0f;
-    }
-}
-
-// FUNCTION: th08 0x411b10
-#pragma var_order(unused0, unused1, bomb, workItem, interp)
-void __fastcall FUN_00411b10(Player *player)
-{
-    i32 unused0;
-    i32 unused1;
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-    f32 interp;
-
-    bomb = &player->bombState;
-    unused1 = 0;
-    unused0 = 0;
-    workItem = &bomb->workItems[0];
-
-    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
-    {
-        FUN_0040be30(player, 0,
-                     "\x90\x6C\x95\x84\x81\x75\x8C\xBB\x90\xA2\x8E\x61\x81\x76",
-                     220, 270, 0);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.0f;
-        player->anmFile->SetAndExecuteScriptIdx(&player->mainVm, 0);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
-        workItem->anchor = player->position;
-        workItem->position = workItem->anchor;
-        workItem->position.y = 416.0f;
-    }
-
-    if (bomb->timer < 40)
-    {
-        interp = (f32)bomb->timer / 40.0f;
-        interp = 1.0f - interp;
-        interp *= interp;
-        interp = 1.0f - interp;
-        player->position = (workItem->position - workItem->anchor) * interp + workItem->anchor;
-        return;
-    }
-    else if (bomb->timer.FUN_0040e350(40))
-    {
-        g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, 0xff8080ff);
-        return;
-    }
-    else if (bomb->timer.FUN_0040e350(70))
-    {
-        player->position.y = 32.0f;
-        Float3 position = player->position;
-        position.y = 224.0f;
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xefffffff, 0, 21);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(42), 0);
-        workItem->cancelSlot = player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 300, 10);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 80, 60);
-        workItem->damageSlot->collisionInterval = 5;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
-        return;
-    }
-    else if (bomb->timer.FUN_0040e350(80))
-    {
-        Float3 position = player->position;
-        position.y = 224.0f;
-        position.x -= 32.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
-        workItem->damageSlot->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
-        position.x += 64.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
-        workItem->damageSlot->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xcfffffff, 0, 21);
-        return;
-    }
-    else if (bomb->timer.FUN_0040e350(90))
-    {
-        Float3 position = player->position;
-        position.y = 224.0f;
-        position.x -= 64.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
-        workItem->damageSlot->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
-        position.x += 128.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
-        workItem->damageSlot->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xbfffffff, 0, 21);
-        return;
-    }
-    else if (bomb->timer.FUN_0040e350(100))
-    {
-        Float3 position = player->position;
-        position.y = 224.0f;
-        position.x -= 96.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 80, 40);
-        workItem->damageSlot->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
-        position.x += 192.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageSlot = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 80, 40);
-        workItem->damageSlot->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8fffffff, 0, 21);
-        workItem->position = player->position;
-        return;
-    }
-    else if (bomb->timer >= 120 && bomb->timer < 150)
-    {
-        interp = ((f32)bomb->timer - 120.0f) / 30.0f;
-        interp = 1.0f - interp;
-        interp *= interp;
-        interp = 1.0f - interp;
-        player->position = (workItem->anchor - workItem->position) * interp + workItem->position;
-        return;
-    }
-    else if (bomb->timer.FUN_0040e350(150))
-    {
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 1.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 1.0f;
-    }
-}
-
-// FUNCTION: th08 0x4117b0
-#pragma var_order(interp, radialBase, i, slot, angle)
-i32 __fastcall FUN_004117b0(AnmVm *effect)
-{
-    f32 interp;
-    f32 radialBase;
-    i32 i;
-    PlayerUnkStruct0x40 *slot;
-    f32 angle;
-
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318) =
-        AddNormalizeAngle(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318),
-                          ((*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x328) & 1) != 0)
-                              ? 0.039269909f
-                              : -0.039269909f);
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
-
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 50)
-    {
-        interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 50.0f;
-        radialBase = (f32)(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x328) - 4) * 32.0f + 384.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) =
-            88.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) * 80.0f / 50.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) =
-            (f32)(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x328) - 4) * 32.0f + 192.0f -
-            radialBase * interp * interp;
-        --*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324);
-    }
-    else
-    {
-        if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) == 50)
-        {
-#pragma var_order(position, radius)
-            f32 radius;
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 16, 8, 0, 0, 21);
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8f6060f0, 0, 21);
-            angle = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318) + ZUN_PI / 4.0f;
-            radius = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) * 0.7071067094802856f;
-            Float3 position;
-            g_AnmManager->FUN_00464b00(
-                effect,
-                reinterpret_cast<VertexTex1DiffuseXyzrhw *>(*reinterpret_cast<void **>(reinterpret_cast<u8 *>(effect) + 0x358)),
-                2 * *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) + 2);
-            for (i = 0; i < 4; i++)
-            {
-                if (angle >= ZUN_PI)
-                    angle -= ZUN_2PI;
-                position.FromAngleMagnitude(angle, radius);
-                position += *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2E0);
-                slot = g_Player.FUN_0044dfa0(
-                    &position, radius * 8.0f,
-                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) * 4.0f, 60, 100);
-                slot->collisionInterval = 2;
-                slot->angle = AddNormalizeAngle(angle, ZUN_PI / 2.0f);
-                angle = slot->angle;
-                slot = g_Player.FUN_0044de60(
-                    &position, radius * 4.0f,
-                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) * 4.0f, 6, 150);
-                slot->angle = angle;
-            }
-        }
-        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
-    }
-    return 1;
-}
-
-// FUNCTION: th08 0x411720
-#pragma var_order(velocity, position)
-i32 __fastcall FUN_00411720(AnmVm *effect)
-{
-    Float3 position = *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2A4);
-    Float3 velocity = *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2B0);
-
-    g_EffectManager.FUN_004259e0(35, reinterpret_cast<D3DXVECTOR3 *>(&position),
-                                 reinterpret_cast<D3DXVECTOR3 *>(&velocity),
-                                 *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x328), 1, -1);
-    *reinterpret_cast<void **>(reinterpret_cast<u8 *>(effect) + 0x348) = reinterpret_cast<void *>(FUN_004114e0);
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 44;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 4.0f;
-    return 0;
-}
-
-// FUNCTION: th08 0x411a80
-#pragma var_order(velocity, position)
-i32 __fastcall FUN_00411a80(AnmVm *effect)
-{
-    Float3 position = *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2A4);
-    Float3 velocity = *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2B0);
-
-    g_EffectManager.FUN_004259e0(35, reinterpret_cast<D3DXVECTOR3 *>(&position),
-                                 reinterpret_cast<D3DXVECTOR3 *>(&velocity),
-                                 *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x328), 1, -1);
-    *reinterpret_cast<void **>(reinterpret_cast<u8 *>(effect) + 0x348) = reinterpret_cast<void *>(FUN_004117b0);
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 54;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 6.0f;
-    return 0;
-}
-
-// FUNCTION: th08 0x410fe0
-#pragma var_order(bomb, workItem, angle)
-void __fastcall FUN_00410fe0(Player *player)
-{
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-    f32 angle;
-
-    bomb = &player->bombState;
-    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
-    {
-        PlayerUnkStruct0x40 *slot;
-
-        FUN_0040be30(player, 1,
-                     "\x8B\xAB\x8A\x45\x81\x75\x89\x69\x96\xE9\x8E\x6C\x8F\x64\x8C\x8B\x8A\x45\x81\x76",
-                     250, 300, 1);
-        angle = -ZUN_PI;
-        workItem = &bomb->workItems[0];
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
-        workItem->anchor = player->position;
-        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[0], 21);
-        player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[1], 22);
-        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 100, 6);
-        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(slot) + 0x38) = 5;
-        Float3 velocity(ZUN_PI / 4.0f, 1.0f, 4.0f);
-        g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&workItem->anchor),
-                                     reinterpret_cast<D3DXVECTOR3 *>(&velocity), 4, 1, -1);
-    }
-
-    if (bomb->timer.FUN_0040e350(10))
-    {
-        PlayerUnkStruct0x40 *slot;
-        AnmVm *effect;
-
-        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 40, 6);
-        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(slot) + 0x38) = 5;
-        Float3 velocity(ZUN_PI * 3.0f / 8.0f, 1.0f, 4.0f);
-        effect = g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].anchor),
-                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 5, 1, -1);
-        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 93);
-        bomb->workItems[1].anchor = player->position;
-    }
-
-    if (bomb->timer.FUN_0040e350(20))
-    {
-        PlayerUnkStruct0x40 *slot;
-        AnmVm *effect;
-
-        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 100, 6);
-        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(slot) + 0x38) = 5;
-        Float3 velocity(ZUN_PI / 2.0f, 1.0f, 4.0f);
-        effect = g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].anchor),
-                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 6, 1, -1);
-        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 94);
-        bomb->workItems[2].anchor = player->position;
-    }
-
-    if (bomb->timer.FUN_0040e350(30))
-    {
-        PlayerUnkStruct0x40 *slot;
-        AnmVm *effect;
-
-        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 100, 6);
-        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(slot) + 0x38) = 5;
-        Float3 velocity(1.9634954929351807f, 1.0f, 4.0f);
-        effect = g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].anchor),
-                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 7, 1, -1);
-        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 95);
-        bomb->workItems[3].anchor = player->position;
-    }
-
-    g_AnmManager->ExecuteScriptArray(&bomb->workItems[0].vms[0], 2);
-}
-
-// FUNCTION: th08 0x4113a0
-#pragma var_order(vm, workItem)
-void __fastcall FUN_004113a0(Player *player)
-{
-    PlayerBombWorkItem *workItem;
-    AnmVm *vm;
-
-    workItem = player->bombState.workItems;
-    FUN_0040bc60(player, 0x802020d0);
-    vm = &workItem->vms[0];
-    vm->pos = workItem->anchor + vm->pos2;
-    vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-    vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
-    vm->pos.z = 0.01f;
-    g_AnmManager->Draw2D(vm);
-
-    vm++;
-    vm->pos = workItem->anchor + vm->pos2;
-    vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-    vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
-    vm->pos.z = 0.0f;
-    g_AnmManager->Draw2D(vm);
-}
-
-// FUNCTION: th08 0x410bb0
-i32 __fastcall FUN_00410bb0(AnmVm *effect)
-{
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) += 8.0f;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 12;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 32.0f;
-    return 1;
-}
-
-// FUNCTION: th08 0x413070
-i32 __fastcall FUN_00413070(AnmVm *effect)
-{
-    f32 interp;
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 30)
-    {
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 192.0f;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 48;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 3.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = 0.0001f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330) = ZUN_PI / 2.0f;
-    }
-    else
-    {
-        interp = ((f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) - 30.0f) / 30.0f;
-        interp *= interp;
-        interp *= interp;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = 192.0f * interp + 0.0001f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 80.0f * interp + 3.0f;
-    }
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
-    return 1;
-}
-
-// FUNCTION: th08 0x413140
-#pragma var_order(i, bomb, workItem)
-void __fastcall FUN_00413140(Player *player)
-{
-    i32 i;
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-
-    bomb = &player->bombState;
-    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
-    {
-        FUN_0040be30(player, 1,
-                     "\x8E\x80\x95\x84\x81\x75\x83\x4D\x83\x83\x83\x58\x83\x67\x83\x8A\x83\x68\x83\x8A\x81\x5B\x83\x80\x81\x76",
-                     300, 350, 0);
-
-        workItem = bomb->workItems;
-        for (i = 0; i < 128; i++, workItem++)
-            workItem->active = 0;
-
-        workItem = bomb->workItems;
-        for (i = 0; i < 16; i++, workItem++)
-        {
-            workItem->active = 1;
-            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 18);
-            workItem->rotation = (f32)i * ZUN_PI / 8.0f - ZUN_PI;
-            workItem->rotationStep = 0.013089969754219055f;
-            workItem->points[0] = player->position;
-            workItem->anchor = workItem->points[0];
-            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 24.0f, 0.0f, 50, 500);
-            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 24.0f, 0.0f, 500, 6);
-            workItem->damageSlot->hitCap = 800;
-            workItem->position.x = 0.0f;
-            workItem->position.y = 2.0f;
-        }
-
-        for (i = 0; i < 16; i++, workItem++)
-        {
-            workItem->active = 1;
-            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 19);
-            workItem->rotation = (f32)i * ZUN_PI / 8.0f - ZUN_PI;
-            workItem->rotationStep = -0.013089969754219055f;
-            workItem->points[0] = player->position;
-            workItem->anchor = workItem->points[0];
-            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 24.0f, 0.0f, 50, 500);
-            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 24.0f, 0.0f, 500, 6);
-            workItem->damageSlot->hitCap = 800;
-            workItem->position.x = 0.0f;
-            workItem->position.y = 2.0f;
-        }
-
-        for (i = 0; i < 16; i++, workItem++)
-        {
-            workItem->active = 1;
-            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 18);
-            workItem->rotation = (f32)i * ZUN_PI / 8.0f - ZUN_PI;
-            workItem->rotationStep = 0.015707964077591896f;
-            workItem->points[0] = player->position;
-            workItem->anchor = workItem->points[0];
-            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 24.0f, 0.0f, 50, 500);
-            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 24.0f, 0.0f, 500, 6);
-            workItem->damageSlot->hitCap = 800;
-            workItem->position.x = 0.0f;
-            workItem->position.y = 1.5f;
-        }
-
-        for (i = 0; i < 16; i++, workItem++)
-        {
-            workItem->active = 1;
-            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 19);
-            workItem->rotation = (f32)i * ZUN_PI / 8.0f - ZUN_PI;
-            workItem->rotationStep = -0.015707964077591896f;
-            workItem->points[0] = player->position;
-            workItem->anchor = workItem->points[0];
-            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 24.0f, 0.0f, 50, 500);
-            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 24.0f, 0.0f, 500, 6);
-            workItem->damageSlot->hitCap = 800;
-            workItem->position.x = 0.0f;
-            workItem->position.y = 1.5f;
-        }
-
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.8f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.8f;
-        bomb->workItems[0].effect =
-            g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 120, 12, 0, 0, 21);
-    }
-
-    workItem = bomb->workItems;
-    for (i = 0; i < 128; i++, workItem++)
-    {
-        if (workItem->active == 0)
-            continue;
-
-        workItem->points[1] = workItem->anchor;
-        workItem->position.x += workItem->position.y;
-        workItem->rotation = AddNormalizeAngle(workItem->rotation, workItem->rotationStep);
-        workItem->anchor.FromAngleMagnitude(workItem->rotation, workItem->position.x);
-        workItem->anchor += workItem->points[0];
-        workItem->points[1] = workItem->anchor - workItem->points[1];
-
-        if (workItem->position.x >= 500.0f)
-        {
-            workItem->active = 0;
-            workItem->damageSlot->active = 0;
-            workItem->cancelSlot->active = 0;
-            continue;
-        }
-        else
-        {
-            if (workItem->damageSlot != NULL)
-            {
-                workItem->damageSlot->center.x = workItem->anchor.x;
-                workItem->damageSlot->center.y = workItem->anchor.y;
-                workItem->cancelSlot->center.x = workItem->anchor.x;
-                workItem->cancelSlot->center.y = workItem->anchor.y;
-            }
-
-            if (g_AnmManager->ExecuteScript(&workItem->vms[0]))
-            {
-                workItem->active = 0;
-                workItem->damageSlot->active = 0;
-                workItem->cancelSlot->active = 0;
-            }
-        }
-    }
-}
-
-// FUNCTION: th08 0x413990
-#pragma var_order(i, bomb, workItem, spawned, signedScaled)
-void __fastcall FUN_00413990(Player *player)
-{
-    i32 i;
-    PlayerBombState *bomb;
-    PlayerBombWorkItem *workItem;
-    i32 spawned;
-    f32 signedScaled;
-
-    bomb = &player->bombState;
-    if (bomb->timer.FUN_0040d3d0() && bomb->timer == 0)
-    {
-        FUN_0040be30(player, 1,
-                     "\x8E\x80\x92\xB1\x81\x75\x89\xD8\xE3\xEF\x82\xCC\x89\x69\x96\xB0\x81\x76",
-                     300, 350, 1);
-
-        workItem = bomb->workItems;
-        for (i = 0; i < 128; i++, workItem++)
-            workItem->active = 0;
-
-        workItem = bomb->workItems;
-        for (i = 0; i < 16; i++, workItem++)
-        {
-            workItem->active = 1;
-            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 18);
-            workItem->rotation = (f32)i * ZUN_PI / 8.0f - ZUN_PI;
-            workItem->rotationStep = 0.013089969754219055f;
-            workItem->points[0] = player->position;
-            workItem->anchor = workItem->points[0];
-            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 24.0f, 0.0f, 50, 500);
-            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 24.0f, 0.0f, 500, 6);
-            workItem->damageSlot->hitCap = 800;
-            workItem->position.x = 0.0f;
-            workItem->position.y = 2.0f;
-        }
-
-        for (i = 0; i < 16; i++, workItem++)
-        {
-            workItem->active = 1;
-            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 19);
-            workItem->rotation = (f32)i * ZUN_PI / 8.0f - ZUN_PI;
-            workItem->rotationStep = -0.013089969754219055f;
-            workItem->points[0] = player->position;
-            workItem->anchor = workItem->points[0];
-            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 24.0f, 0.0f, 50, 500);
-            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 24.0f, 0.0f, 500, 6);
-            workItem->damageSlot->hitCap = 800;
-            workItem->position.x = 0.0f;
-            workItem->position.y = 2.0f;
-        }
-
-        for (i = 0; i < 16; i++, workItem++)
-        {
-            workItem->active = 1;
-            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 18);
-            workItem->rotation = (f32)i * ZUN_PI / 8.0f - ZUN_PI;
-            workItem->rotationStep = 0.015707964077591896f;
-            workItem->points[0] = player->position;
-            workItem->anchor = workItem->points[0];
-            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 24.0f, 0.0f, 50, 500);
-            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 24.0f, 0.0f, 500, 6);
-            workItem->damageSlot->hitCap = 800;
-            workItem->position.x = 0.0f;
-            workItem->position.y = 1.5f;
-        }
-
-        for (i = 0; i < 16; i++, workItem++)
-        {
-            workItem->active = 1;
-            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 19);
-            workItem->rotation = (f32)i * ZUN_PI / 8.0f - ZUN_PI;
-            workItem->rotationStep = -0.015707964077591896f;
-            workItem->points[0] = player->position;
-            workItem->anchor = workItem->points[0];
-            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 24.0f, 0.0f, 50, 500);
-            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 24.0f, 0.0f, 500, 6);
-            workItem->damageSlot->hitCap = 800;
-            workItem->position.x = 0.0f;
-            workItem->position.y = 1.5f;
-        }
-
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.8f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.8f;
-        bomb->workItems[0].effect =
-            g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 60, 16, 0, 0, 21);
-    }
-
-    if (bomb->timer >= 60 && bomb->timer < 200 && bomb->timer.FUN_0040ebc0(20))
-    {
-        signedScaled = g_Rng.GetRandomF32SignedInRange(ZUN_PI);
-        spawned = 0;
-        workItem = bomb->workItems;
-        for (i = 0; i < 128; i++, workItem++)
-        {
-            if (workItem->active != 0)
-                continue;
-
-            workItem->active = 1;
-            player->anmFile->SetAndExecuteScriptIdx(&workItem->vms[0], 20);
-            workItem->rotation = AddNormalizeAngle((f32)i * ZUN_PI / 8.0f, signedScaled);
-            workItem->points[0] = player->position;
-            workItem->anchor = workItem->points[0];
-            workItem->damageSlot = player->FUN_0044e040(&workItem->anchor, 64.0f, 0.0f, 100, 500);
-            workItem->damageSlot->hitCap = 1200;
-            workItem->cancelSlot = player->FUN_0044df00(&workItem->anchor, 64.0f, 0.0f, 500, 6);
-            workItem->position.x = 0.0f;
-            workItem->position.y = 8.0f;
-            if (++spawned >= 16)
-                break;
-        }
-        g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), workItem->anchor.x);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 30, 8, 0, 0, 21);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xe0f0f0f0, 0, 21);
-    }
-
-    workItem = bomb->workItems;
-    for (i = 0; i < 128; i++, workItem++)
-    {
-        if (workItem->active == 0)
-            continue;
-
-        workItem->points[1] = workItem->anchor;
-        workItem->position.x += workItem->position.y;
-        workItem->rotation = AddNormalizeAngle(workItem->rotation, workItem->rotationStep);
-        workItem->anchor.FromAngleMagnitude(workItem->rotation, workItem->position.x);
-        workItem->anchor += workItem->points[0];
-        workItem->points[1] = workItem->anchor - workItem->points[1];
-
-        if (workItem->position.x >= 500.0f)
-        {
-            workItem->active = 0;
-            workItem->damageSlot->active = 0;
-            workItem->cancelSlot->active = 0;
-            continue;
-        }
-
-        if (workItem->damageSlot != NULL)
-        {
-            workItem->damageSlot->center.x = workItem->anchor.x;
-            workItem->damageSlot->center.y = workItem->anchor.y;
-            workItem->cancelSlot->center.x = workItem->anchor.x;
-            workItem->cancelSlot->center.y = workItem->anchor.y;
-        }
-
-        if (g_AnmManager->ExecuteScript(&workItem->vms[0]))
-        {
-            workItem->active = 0;
-            workItem->damageSlot->active = 0;
-            workItem->cancelSlot->active = 0;
-        }
-    }
-}
-
-// FUNCTION: th08 0x413890
-#pragma var_order(i, workItem)
-void __fastcall FUN_00413890(Player *player)
-{
-    i32 i;
-    PlayerBombWorkItem *workItem;
-
-    FUN_0040bc60(player, 0x80404040);
-    workItem = player->bombState.workItems;
-    for (i = 0; i < 96; i++, workItem++)
-    {
-        if (workItem->active == 0)
-            continue;
-        workItem->vms[0].SetZRotation(VectorAngle(workItem->points[1].y, workItem->points[1].x));
-        workItem->vms[0].pos = workItem->anchor;
-        workItem->vms[0].pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-        workItem->vms[0].pos.y += g_ItemAnmManagerScreenShakeOffset.y;
-        workItem->vms[0].pos.z = 0.0f;
-        g_AnmManager->Draw2D(&workItem->vms[0]);
-    }
-}
-
-// FUNCTION: th08 0x4142c0
-#pragma var_order(i, workItem)
-void __fastcall FUN_004142c0(Player *player)
-{
-    i32 i;
-    PlayerBombWorkItem *workItem;
-
-    FUN_0040bc60(player, 0x80802020);
-    workItem = player->bombState.workItems;
-    for (i = 0; i < 128; i++, workItem++)
-    {
-        if (workItem->active == 0)
-            continue;
-        workItem->vms[0].SetZRotation(VectorAngle(workItem->points[1].y, workItem->points[1].x));
-        workItem->vms[0].pos = workItem->anchor;
-        workItem->vms[0].pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-        workItem->vms[0].pos.y += g_ItemAnmManagerScreenShakeOffset.y;
-        workItem->vms[0].pos.z = 0.0f;
-        g_AnmManager->Draw2D(&workItem->vms[0]);
-    }
-}
-
-// FUNCTION: th08 0x412300
-#pragma var_order(bomb, rect, color)
-void __fastcall FUN_00412300(Player *player)
-{
-    PlayerBombState *bomb = &player->bombState;
-    FUN_0040bc60(player, 0x80404040);
-    if (bomb->timer >= 70)
-    {
-        FUN_0040bc60(player, 0x80000030);
-        ZunColor color;
-        ZunRect rect;
-        rect.left = 32.0f;
-        rect.top = 16.0f;
-        rect.right = 416.0f;
-        rect.bottom = 464.0f;
-        color.r = 0xff;
-        color.g = 0xff;
-        color.b = 0xff;
-        if (bomb->timer < 100)
-        {
-            color.a = 0xff;
-        }
-        else if (bomb->timer < 160)
-        {
-            color.a = 0xff - 0xff * ((i32)bomb->timer - 100) / 60;
-        }
-        else
-        {
-            return;
-        }
-        ScreenEffect::DrawSquare(&rect, color.d3dColor);
-    }
-}
-
-// FUNCTION: th08 0x412fa0
-#pragma var_order(bomb, rect, color)
-void __fastcall FUN_00412fa0(Player *player)
-{
-    PlayerBombState *bomb = &player->bombState;
-    FUN_0040bc60(player, 0x80404040);
-    if (bomb->timer >= 70)
-    {
-        FUN_0040bc60(player, 0x80000030);
-        ZunRect rect;
-        ZunColor color;
-        rect.left = 32.0f;
-        rect.top = 16.0f;
-        rect.right = 416.0f;
-        rect.bottom = 464.0f;
-        color.r = 0xff;
-        color.g = 0x00;
-        color.b = 0x00;
-        if (bomb->timer < 100)
-        {
-            color.a = 0xff;
-        }
-        else if (bomb->timer < 160)
-        {
-            color.a = 0xff - 0xff * ((i32)bomb->timer - 100) / 60;
-        }
-        else
-        {
-            return;
-        }
-        ScreenEffect::DrawSquare(&rect, color.d3dColor);
-    }
-}
-
+// The target places the bomb/shot callback family at 0x0040BC20..0x004142C0,
+// far before the main Player implementation that begins at 0x00449CA0. Its
+// production definitions live in PlayerBomb.cpp.
 DIFFABLE_STATIC(Player, g_Player);
 DIFFABLE_STATIC(ChainElem *, g_PlayerCalcChain);
 DIFFABLE_STATIC(ChainElem *, g_PlayerDrawChainHighPrio);
@@ -2775,6 +94,10 @@ DIFFABLE_STATIC_ARRAY(PlayerOptionCallbackRow, 12, g_PlayerOptionRenderCallbacks
 extern u16 g_GuiMessageInputCurrent;
 extern u16 g_GuiMessageInputPrevious;
 
+ZunBool IsResourceReloadDisabled();
+void __fastcall PlayerBuildAabb(Float3 *topLeft, Float3 *bottomRight,
+                                const Float3 *center, const Float3 *size);
+
 // FUNCTION: th08 0x449ca0
 Player::Player()
 {
@@ -2783,521 +106,82 @@ Player::Player()
 // FUNCTION: th08 0x449e50
 PlayerOptionState::PlayerOptionState() {}
 
-// FUNCTION: th08 0x449f70
-PlayerBombWorkItem::PlayerBombWorkItem() {}
-
 // FUNCTION: th08 0x449ea0
 PlayerBombState::PlayerBombState() {}
 
 // FUNCTION: th08 0x449ef0
 PlayerShot::PlayerShot() {}
 
-// FUNCTION: th08 0x451ce0
-void __fastcall PlayerBuildAabb(Float3 *topLeft, Float3 *bottomRight, const Float3 *center, const Float3 *size)
-{
-    topLeft->x = center->x - size->x * 0.5f;
-    topLeft->y = center->y - size->y * 0.5f;
-    bottomRight->x = center->x + size->x * 0.5f;
-    bottomRight->y = center->y + size->y * 0.5f;
-}
+// FUNCTION: th08 0x449f70
+PlayerBombWorkItem::PlayerBombWorkItem() {}
 
-// FUNCTION: th08 0x451670
-#pragma var_order(bullet, i, enemyBottomRight, savedRotation, bulletBottomRight, enemyTopLeft, damage, region, bulletTopLeft)
-i32 Player::FUN_00451670(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccumulator, i32 *bombHit)
+// FUNCTION: th08 0x449ff0
+#pragma var_order(halfSize, yDelta, xDelta, i, rotated, delta, slot, boundsMax)
+i32 Player::FUN_00449ff0(Float3 *position, Float3 *position2)
 {
-    Float3 enemyTopLeft;
-    Float3 enemyBottomRight;
-    Float3 bulletTopLeft;
-    Float3 bulletBottomRight;
-    i32 damage;
+    Float3 delta;
+    Float3 rotated;
+    Float3 halfSize;
+    Float3 boundsMax;
+    PlayerUnkStruct0x40 *slot = this->playerSlotsC;
     i32 i;
-    i32 savedRotation;
-    PlayerUnkStruct0x40 *region;
-    PlayerShot *bullet;
-
-    damage = 0;
-    if (!reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4)->FUN_0040d3d0())
-        return 0;
-
-    PlayerBuildAabb(&enemyTopLeft, &enemyBottomRight, enemyPosition, enemySize);
-    bullet = reinterpret_cast<PlayerShot *>(reinterpret_cast<u8 *>(this) + 0xBE838);
-    if (bombHit != NULL)
-        *bombHit = 0;
-
-    for (i = 0; i < 128; i++, bullet++)
-    {
-        if (bullet->state == 0 || (bullet->state != 1 && bullet->type != 3))
-            continue;
-
-        PlayerBuildAabb(&bulletTopLeft, &bulletBottomRight, &bullet->position, &bullet->hitboxSize);
-        if (bulletTopLeft.y > enemyBottomRight.y || bulletTopLeft.x > enemyBottomRight.x ||
-            bulletBottomRight.y < enemyTopLeft.y || bulletBottomRight.x < enemyTopLeft.x)
-            continue;
-
-        if ((bullet->type == 4 || bullet->type == 5) && (bullet->timer % 2) != 0)
-            continue;
-        if (bullet->collisionCallback != NULL && bullet->collisionCallback(this, bullet, enemyPosition))
-            continue;
-
-        if (this->bombState.frameStop == 0)
-            damage += bullet->damage;
-        else
-            damage += bullet->damage / 5 ? bullet->damage / 5 : 1;
-
-        while (*hitAccumulator >= g_Player.damageAccumulatorThreshold)
-        {
-            if (g_GameManager.GaugeIsExtremelyHuman())
-            {
-                if (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(bullet->shtEntry) + 0x1E) < 0)
-                    g_ItemManager.SpawnItem(&bullet->position, static_cast<ItemType>(7), 3);
-            }
-            *hitAccumulator -= g_Player.damageAccumulatorThreshold;
-        }
-
-        if (bullet->type != 4 && bullet->type != 5 && bullet->type != 6)
-        {
-            if (bullet->state == 1)
-            {
-                savedRotation = *reinterpret_cast<i32 *>(&bullet->vm.rotation.z);
-                this->anmFile->SetAndExecuteScriptIdx(&bullet->vm, bullet->animationIndex + 11);
-                *reinterpret_cast<i32 *>(&bullet->vm.rotation.z) = savedRotation;
-                g_EffectManager.SpawnEffect(5, reinterpret_cast<D3DXVECTOR3 *>(&bullet->position), 1, -1);
-                bullet->position.operator float *()[2] = 0.1f;
-            }
-            bullet->state = 2;
-            if (bullet->type != 3)
-            {
-                bullet->velocity.x /= 8.0f;
-                bullet->velocity.y /= 8.0f;
-            }
-        }
-    }
-
-    *hitAccumulator += damage > 50 ? 50 : damage;
-
-    {
-        region = this->playerSlotsB;
-        for (i = 0; i < 192; i++, region++)
-        {
-            if (!region->active)
-                continue;
-            if ((region->lifetime % region->collisionInterval) != 0)
-                continue;
-
-            if (region->radius == 0.0f)
-            {
-                if (region->angle == 0.0f)
-                {
-                    if (region->center.x - region->size.x / 2.0f > enemyBottomRight.x ||
-                        region->center.x + region->size.x / 2.0f < enemyTopLeft.x ||
-                        region->center.y - region->size.y / 2.0f > enemyBottomRight.y ||
-                        region->center.y + region->size.y / 2.0f < enemyTopLeft.y)
-                        continue;
-                }
-                else
-                {
-                    bulletTopLeft.x = enemyPosition->x - region->center.x;
-                    bulletTopLeft.y = enemyPosition->y - region->center.y;
-                    Rotate(&bulletBottomRight, &bulletTopLeft, -region->angle);
-                    if (-region->size.x / 2.0f > enemySize->x / 2.0f + bulletBottomRight.x ||
-                        region->size.x / 2.0f < bulletBottomRight.x - enemySize->x / 2.0f ||
-                        -region->size.y / 2.0f > enemySize->y / 2.0f + bulletBottomRight.y ||
-                        region->size.y / 2.0f < bulletBottomRight.y - enemySize->y / 2.0f)
-                        continue;
-                }
-            }
-            else if (region->radius * region->radius <
-                     (region->center.x - enemyPosition->x) * (region->center.x - enemyPosition->x) +
-                         (region->center.y - enemyPosition->y) * (region->center.y - enemyPosition->y))
-            {
-                continue;
-            }
-
-            damage += region->damage;
-            region->hitAccumulator += region->damage;
-            if (region->hitCap > 0 && region->hitCap <= region->hitAccumulator)
-            {
-                region->damage = 0;
-                damage -= region->hitAccumulator - region->hitCap;
-            }
-
-            if (region->mode == 0 && (++*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0xE2A94) % 4) == 0)
-            {
-                if (i < 192)
-                    g_EffectManager.SpawnEffect(3, reinterpret_cast<D3DXVECTOR3 *>(enemyPosition), 1, -1);
-                else
-                    g_EffectManager.SpawnEffect(5, reinterpret_cast<D3DXVECTOR3 *>(enemyPosition), 1, -1);
-            }
-            if (this->bombState.frameStop != 0 && bombHit != NULL)
-                *bombHit = 1;
-        }
-    }
-
-    if (g_GameManager.GaugeIsExtremelyYoukai() && damage != 0)
-        damage = damage * 106 / 100;
-    return damage;
-}
-
-// FUNCTION: th08 0x44e0e0
-ZunBool IsResourceReloadDisabled()
-{
-    return !IsResourceReloadEnabled();
-}
-
-/* The target emits these cross-subsystem definitions in the Player translation unit. */
-// FUNCTION: th08 0x44e0f0
-void AnmVmBase::SetBlendModeAdditive()
-{
-    this->blendMode = AnmBlendMode_Additive;
-}
-
-// FUNCTION: th08 0x44e120
-void AnmVmBase::SetBlendModeNormal()
-{
-    this->blendMode = AnmBlendMode_Normal;
-}
-
-// FUNCTION: th08 0x44e140
-void GameManager::SetYoukaiGauge(u16 value)
-{
-    this->globals->youkaiGauge = value;
-}
-
-// FUNCTION: th08 0x44e350
-void PlayerUnkStruct0x40::Deactivate()
-{
-    this->active = false;
-}
-
-// FUNCTION: th08 0x44e370
-void PlayerUnkStruct0x40::Reset()
-{
-    memset(this, 0, sizeof(*this));
-    this->collisionInterval = 1;
-}
-
-void __fastcall PlayerOptionHomingToPlayer(Player *player, u8 *option);
-void __fastcall PlayerOptionHomingToTarget(Player *player, u8 *option);
-
-// FUNCTION: th08 0x44e3a0
-i32 __fastcall FUN_0044e3a0(Player *player, PlayerOptionState *option)
-{
-    switch (option->state2C8)
-    {
-    case 1:
-        player->anmFile->SetAndExecuteScriptIdx(&option->vm, 18);
-        option->position = player->position;
-        option->position.y -= 96.0f;
-        if (option->position.y < 32.0f)
-            option->position.y = 32.0f;
-        option->state2C8 = 2;
-        player->optionHomingTarget = NULL;
-        break;
-
-    case 2:
-        switch (option->substate2CC)
-        {
-        case 0:
-            PlayerOptionHomingToPlayer(player, reinterpret_cast<u8 *>(option));
-            if (option->velocity.x < 0.0f)
-            {
-                option->vm.SetInterrupt(2);
-                option->substate2CC = 1;
-                if (option->vm.scale.x < 0.0f)
-                    option->vm.scale.x = -option->vm.scale.x;
-            }
-            else if (option->velocity.x > 0.0f)
-            {
-                option->vm.SetInterrupt(2);
-                option->substate2CC = 2;
-                if (option->vm.scale.x > 0.0f)
-                    option->vm.scale.x = -option->vm.scale.x;
-            }
-            break;
-
-        case 1:
-            PlayerOptionHomingToPlayer(player, reinterpret_cast<u8 *>(option));
-            if (option->velocity.x == 0.0f)
-            {
-                option->vm.SetInterrupt(1);
-                option->substate2CC = 0;
-                if (option->vm.scale.x < 0.0f)
-                    option->vm.scale.x = -option->vm.scale.x;
-            }
-            else if (option->velocity.x > 0.0f)
-            {
-                option->vm.SetInterrupt(2);
-                option->substate2CC = 2;
-                if (option->vm.scale.x > 0.0f)
-                    option->vm.scale.x = -option->vm.scale.x;
-            }
-            break;
-
-        case 2:
-            PlayerOptionHomingToPlayer(player, reinterpret_cast<u8 *>(option));
-            if (option->velocity.x == 0.0f)
-            {
-                option->vm.SetInterrupt(1);
-                option->substate2CC = 0;
-                if (option->vm.scale.x < 0.0f)
-                    option->vm.scale.x = -option->vm.scale.x;
-            }
-            else if (option->velocity.x < 0.0f)
-            {
-                option->vm.SetInterrupt(2);
-                option->substate2CC = 1;
-                if (option->vm.scale.x < 0.0f)
-                    option->vm.scale.x = -option->vm.scale.x;
-            }
-            break;
-
-        case 3:
-            if (player->optionHomingTarget != NULL)
-                PlayerOptionHomingToTarget(player, reinterpret_cast<u8 *>(option));
-            if (((player->timerE2AC4 < 0) && ((g_CurFrameInput & 1) == 0)) ||
-                player->optionHomingTarget == NULL)
-            {
-                player->optionHomingTarget = NULL;
-                option->vm.SetInterrupt(1);
-                option->substate2CC = 0;
-            }
-            break;
-
-        default:
-            break;
-        }
-        break;
-
-    case 3:
-        if (option->timer == 0)
-            option->vm.SetInterrupt(5);
-        if (option->timer > 16)
-        {
-            option->state2C8 = 0;
-            option->updateCallback = NULL;
-            option->renderCallback = NULL;
-        }
-        break;
-    }
-    return 0;
-}
-
-// FUNCTION: th08 0x44ea40
-i32 __fastcall FUN_0044ea40(Player *player, PlayerOptionState *option)
-{
-    switch (option->state2C8)
-    {
-    case 1:
-        player->anmFile->SetAndExecuteScriptIdx(&option->vm, 29);
-        option->state2C8 = 2;
-        // Fall through: the option starts following immediately.
-    case 2:
-        if (player->bombState.frameStop == 0)
-        {
-            option->position = player->position;
-            option->position.y -= 32.0f;
-        }
-        break;
-
-    case 3:
-        option->position = player->position;
-        option->position.y -= 32.0f;
-        if (option->timer == 0)
-            option->vm.SetInterrupt(5);
-        if (option->timer > 16)
-        {
-            option->state2C8 = 0;
-            option->updateCallback = NULL;
-            option->renderCallback = NULL;
-        }
-        break;
-    }
-    return 0;
-}
-
-// FUNCTION: th08 0x44eb70
-i32 __fastcall FUN_0044eb70(Player *player, PlayerOptionState *option)
-{
-    switch (option->state2C8)
-    {
-    case 1:
-        player->anmFile->SetAndExecuteScriptIdx(&option->vm, 24);
-        option->state2C8 = 2;
-        option->target = player->position;
-        switch (option->optionIndex)
-        {
-        case 0:
-            option->target.x -= 30.0f;
-            option->target.y -= 16.0f;
-            option->orbitAngle = 0.0f;
-            break;
-        case 1:
-            option->target.x -= 10.0f;
-            option->target.y -= 32.0f;
-            option->orbitAngle = ZUN_PI;
-            break;
-        case 2:
-            option->target.x += 10.0f;
-            option->target.y -= 32.0f;
-            option->orbitAngle = 0.0f;
-            break;
-        case 3:
-            option->target.x += 30.0f;
-            option->target.y -= 16.0f;
-            option->orbitAngle = ZUN_PI;
-            break;
-        default:
-            break;
-        }
-        // Fall through to update the orbit immediately.
-    case 2:
-        if (option->timer > 12)
-        {
-            switch (option->optionIndex)
-            {
-            case 0:
-                option->orbitAngle = AddNormalizeAngle(option->orbitAngle, 0.02617993950843811f);
-                break;
-            case 1:
-                option->orbitAngle = AddNormalizeAngle(option->orbitAngle, -0.03490658476948738f);
-                break;
-            case 2:
-                option->orbitAngle = AddNormalizeAngle(option->orbitAngle, 0.03490658476948738f);
-                break;
-            case 3:
-                option->orbitAngle = AddNormalizeAngle(option->orbitAngle, -0.02617993950843811f);
-                break;
-            default:
-                break;
-            }
-        }
-        option->position.FromAngleMagnitude(option->orbitAngle, 8.0f);
-        option->position += option->target;
-        break;
-
-    case 3:
-        if (option->timer == 0)
-            option->vm.SetInterrupt(5);
-        if (option->timer > 16)
-        {
-            option->state2C8 = 0;
-            option->updateCallback = NULL;
-            option->renderCallback = NULL;
-        }
-        break;
-    }
-    return 0;
-}
-
-// FUNCTION: th08 0x44e770
-#pragma var_order(delta, target, player, option)
-void __fastcall PlayerOptionHomingToPlayer(Player *player, u8 *option)
-{
-    Float3 target;
-    Float3 delta;
-
-    target = player->position;
-    target.y -= 96.0f;
-    if (target.y < 32.0f)
-        target.y = 32.0f;
-
-    delta = target - *reinterpret_cast<Float3 *>(option + 0x2A4);
-    delta /= 16.0f;
-    *reinterpret_cast<Float3 *>(option + 0x2BC) +=
-        (delta - *reinterpret_cast<Float3 *>(option + 0x2BC)) * 0.2f;
-    *reinterpret_cast<Float3 *>(option + 0x2A4) += *reinterpret_cast<Float3 *>(option + 0x2BC);
-
-    if (fabsf(*reinterpret_cast<f32 *>(option + 0x2BC)) < 0.05f)
-        *reinterpret_cast<f32 *>(option + 0x2BC) = 0.0f;
-
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AC4) >= 0 &&
-        *reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2ABC) != NULL &&
-        *reinterpret_cast<ZunTimer *>(option + 0x2E0) >= 10)
-    {
-        reinterpret_cast<AnmVmBase *>(option)->SetInterrupt(3);
-        *reinterpret_cast<i32 *>(option + 0x2CC) = 3;
-    }
-    else
-    {
-        *reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2ABC) = NULL;
-    }
-}
-
-// FUNCTION: th08 0x44e8d0
-#pragma var_order(delta, target, player, option)
-void __fastcall PlayerOptionHomingToTarget(Player *player, u8 *option)
-{
-    Float3 target;
-    Float3 delta;
-
-    target = *reinterpret_cast<Float3 *>(
-        reinterpret_cast<u8 *>(*reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2ABC)) + 0x2D88);
-    target.y += 32.0f;
-    if (target.y < 32.0f)
-        target.y = 32.0f;
-
-    delta = target - *reinterpret_cast<Float3 *>(option + 0x2A4);
-    delta /= 16.0f;
-    *reinterpret_cast<Float3 *>(option + 0x2BC) +=
-        (delta - *reinterpret_cast<Float3 *>(option + 0x2BC)) * 0.2f;
-    *reinterpret_cast<Float3 *>(option + 0x2A4) += *reinterpret_cast<Float3 *>(option + 0x2BC);
-
-    if (fabsf(*reinterpret_cast<f32 *>(option + 0x2BC)) < 0.05f)
-        *reinterpret_cast<f32 *>(option + 0x2BC) = 0.0f;
-}
-
-// FUNCTION: th08 0x44e9e0
-i32 __fastcall PlayerRoute2OptionRender(Player *, u8 *option)
-{
-    reinterpret_cast<AnmVm *>(option)->pos.x =
-        g_ItemAnmManagerScreenShakeOffset.x + *reinterpret_cast<f32 *>(option + 0x2A4);
-    reinterpret_cast<AnmVm *>(option)->pos.y =
-        g_ItemAnmManagerScreenShakeOffset.y + *reinterpret_cast<f32 *>(option + 0x2A8);
-    reinterpret_cast<AnmVm *>(option)->pos.z = 0.49f;
-    g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(option));
-    return 0;
-}
-
-// FUNCTION: th08 0x40d3d0
-ZunBool ZunTimer::FUN_0040d3d0()
-{
-    return this->current != this->previous;
-}
-
-// FUNCTION: th08 0x40d410
-i32 ZunTimer::operator%(i32 value)
-{
-    return this->current % value;
-}
-
-// FUNCTION: th08 0x40bc20
-i32 Player::IsHuman()
-{
-    return !this->isYoukai;
-}
-
-// FUNCTION: th08 0x40bc40
-i32 Player::IsYoukai()
-{
-    return this->isYoukai;
-}
-
-// FUNCTION: th08 0x44c1b0
-#pragma var_order(yDelta, xDelta, this)
-f32 Player::FUN_0044c1b0(Float3 *position)
-{
-    f32 yDelta;
     f32 xDelta;
+    f32 yDelta;
 
-    xDelta = reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2B4)->operator float *()[0] - position->x;
-    yDelta = reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2B4)->operator float *()[1] - position->y;
-
-    if (yDelta == 0.0f && xDelta == 0.0f)
+    for (i = 0; i < ARRAY_SIZE_SIGNED(this->playerSlotsC); i++, slot++)
     {
-        return ZUN_PI / 2.0f;
+        if (!slot->active)
+            continue;
+
+        if (slot->radius != 0.0)
+        {
+            xDelta = position->x - slot->center.x;
+            yDelta = position->y - slot->center.y;
+            if (xDelta * xDelta + yDelta * yDelta < slot->radius * slot->radius)
+                goto hit;
+            goto next;
+        }
+
+        if (slot->angle != 0.0f)
+        {
+            delta.x = position->x - slot->center.x;
+            delta.y = position->y - slot->center.y;
+            Rotate(&rotated, &delta, -slot->angle);
+            halfSize.x = slot->size.x / 2.0f;
+            halfSize.y = slot->size.y / 2.0f;
+            if (-halfSize.x <= rotated.x && rotated.x <= halfSize.x && -halfSize.y <= rotated.y &&
+                rotated.y <= halfSize.y)
+                goto hit;
+            goto next;
+        }
+
+        halfSize.x = slot->center.x - slot->size.x / 2.0f;
+        halfSize.y = slot->center.y - slot->size.y / 2.0f;
+        boundsMax.x = slot->size.x / 2.0f + slot->center.x;
+        boundsMax.y = slot->size.y / 2.0f + slot->center.y;
+        if (!(halfSize.x > position->x))
+        {
+            if (!(boundsMax.x < position->x))
+            {
+                if (!(halfSize.y > position->y))
+                {
+                    if (!(boundsMax.y < position->y))
+                        goto hit;
+                }
+            }
+        }
+        goto next;
+
+    next:
+        ;
     }
 
-    return VectorAngle(yDelta, xDelta);
+    return 0;
+
+hit:
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xe2a90) = slot->collisionValue;
+    slot->hitAccumulator++;
+    return 2;
 }
 
 // FUNCTION: th08 0x44a230
@@ -3383,6 +267,27 @@ i32 Player::FUN_0044a470(Float3 *position, Float3 *size)
         return 0;
 
     this->FUN_0044a930(position, 0);
+    return 1;
+}
+
+// FUNCTION: th08 0x44a5a0
+#pragma var_order(itemMax, itemMin)
+u32 Player::CalcItemBoxCollision(Float3 *position, Float3 *size)
+{
+    Float3 itemMin;
+    Float3 itemMax;
+
+    if (this->playerState != 0 && this->playerState != 3 && this->playerState != 4)
+        return 0;
+
+    itemMin = *position - *size / 2.0f;
+    itemMax = *position + *size / 2.0f;
+
+    if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3bc) > itemMax.x ||
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3c8) < itemMin.x ||
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3c0) > itemMax.y ||
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3cc) < itemMin.y)
+        return 0;
     return 1;
 }
 
@@ -3585,444 +490,6 @@ void Player::Die()
     g_ItemManager.CancelAutoCollect();
 }
 
-// FUNCTION: th08 0x44a5a0
-#pragma var_order(itemMax, itemMin)
-u32 Player::CalcItemBoxCollision(Float3 *position, Float3 *size)
-{
-    Float3 itemMin;
-    Float3 itemMax;
-
-    if (this->playerState != 0 && this->playerState != 3 && this->playerState != 4)
-        return 0;
-
-    itemMin = *position - *size / 2.0f;
-    itemMax = *position + *size / 2.0f;
-
-    if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3bc) > itemMax.x ||
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3c8) < itemMin.x ||
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3c0) > itemMax.y ||
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3cc) < itemMin.y)
-        return 0;
-    return 1;
-}
-
-// FUNCTION: th08 0x449ff0
-#pragma var_order(halfSize, yDelta, xDelta, i, rotated, delta, slot, boundsMax)
-i32 Player::FUN_00449ff0(Float3 *position, Float3 *position2)
-{
-    Float3 delta;
-    Float3 rotated;
-    Float3 halfSize;
-    Float3 boundsMax;
-    PlayerUnkStruct0x40 *slot = this->playerSlotsC;
-    i32 i;
-    f32 xDelta;
-    f32 yDelta;
-
-    for (i = 0; i < ARRAY_SIZE_SIGNED(this->playerSlotsC); i++, slot++)
-    {
-        if (!slot->active)
-            continue;
-
-        if (slot->radius != 0.0)
-        {
-            xDelta = position->x - slot->center.x;
-            yDelta = position->y - slot->center.y;
-            if (xDelta * xDelta + yDelta * yDelta < slot->radius * slot->radius)
-                goto hit;
-            goto next;
-        }
-
-        if (slot->angle != 0.0f)
-        {
-            delta.x = position->x - slot->center.x;
-            delta.y = position->y - slot->center.y;
-            Rotate(&rotated, &delta, -slot->angle);
-            halfSize.x = slot->size.x / 2.0f;
-            halfSize.y = slot->size.y / 2.0f;
-            if (-halfSize.x <= rotated.x && rotated.x <= halfSize.x && -halfSize.y <= rotated.y &&
-                rotated.y <= halfSize.y)
-                goto hit;
-            goto next;
-        }
-
-        halfSize.x = slot->center.x - slot->size.x / 2.0f;
-        halfSize.y = slot->center.y - slot->size.y / 2.0f;
-        boundsMax.x = slot->size.x / 2.0f + slot->center.x;
-        boundsMax.y = slot->size.y / 2.0f + slot->center.y;
-        if (!(halfSize.x > position->x))
-        {
-            if (!(boundsMax.x < position->x))
-            {
-                if (!(halfSize.y > position->y))
-                {
-                    if (!(boundsMax.y < position->y))
-                        goto hit;
-                }
-            }
-        }
-        goto next;
-
-    next:
-        ;
-    }
-
-    return 0;
-
-hit:
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xe2a90) = slot->collisionValue;
-    slot->hitAccumulator++;
-    return 2;
-}
-
-#pragma var_order(primaryShtFile, player, secondaryShtFile)
-// FUNCTION: th08 0x44c230
-ZunResult Player::RegisterChain(u32 playerType)
-{
-    Player *player = &g_Player;
-    PlayerRawShtFile *secondaryShtFile;
-    PlayerRawShtFile *primaryShtFile;
-
-    if (IsResourceReloadDisabled())
-    {
-        primaryShtFile = player->primaryShtFile;
-        secondaryShtFile = player->secondaryShtFile;
-    }
-
-    memset(player, 0, sizeof(*player));
-
-    if (IsResourceReloadDisabled())
-    {
-        player->primaryShtFile = primaryShtFile;
-        player->secondaryShtFile = secondaryShtFile;
-    }
-
-    player->timer = 0;
-    player->playerType = playerType;
-
-    player->calcChain = g_Chain.CreateElem((ChainCallback)Player::OnUpdate);
-    player->calcChain->arg = player;
-    player->calcChain->addedCallback = (ChainLifetimeCallback)Player::AddedCallback;
-    player->calcChain->deletedCallback = (ChainLifetimeCallback)Player::DeletedCallback;
-    if (g_Chain.AddToCalcChain(player->calcChain, 9))
-        return ZUN_ERROR;
-
-    player->drawChainHighPrio = g_Chain.CreateElem((ChainCallback)Player::OnDrawHighPrio);
-    player->drawChainLowPrio = g_Chain.CreateElem((ChainCallback)Player::OnDrawLowPrio);
-    player->drawChainHighPrio->arg = player;
-    player->drawChainLowPrio->arg = player;
-    g_Chain.AddToDrawChain(player->drawChainHighPrio, 9);
-    g_Chain.AddToDrawChain(player->drawChainLowPrio, 10);
-
-    return ZUN_SUCCESS;
-}
-
-
-// FUNCTION: th08 0x44c650
-#pragma var_order(isForced, i)
-void Player::FUN_0044c650()
-{
-    u32 i;
-    i32 isForced;
-    isForced = 0;
-    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x6) != 0 &&
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) == 1)
-    {
-        isForced = 1;
-        goto acceptBomb;
-    }
-
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A6C) != 0)
-        --*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A6C);
-
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) != 0)
-    {
-        if (reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4)->FUN_0040d3d0())
-            g_Gui.flags.pointDisplayUpdateFrames = 2;
-
-        if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4) >= *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE4))
-        {
-            g_Spellcard.spellcard_fun_00416130();
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) = 0;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x408) = 1.0f;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x404) = 1.0f;
-
-            if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) == 4)
-            {
-                *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFE7Fu;
-                for (i = 0; i < 8; i++)
-                {
-                    if (reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i] != NULL)
-                    {
-                        reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]->FUN_0042adb0(0);
-                        *reinterpret_cast<i32 *>(reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]->bytes + 0x2DFC) = 0;
-                        *reinterpret_cast<u32 *>(reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]->bytes + 0x3324) &= 0xBFFFFFFFu;
-                    }
-                }
-                ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 30, 1, -1, 0, 21);
-            }
-        }
-        else
-        {
-            reinterpret_cast<void (__fastcall **)(Player *)>(reinterpret_cast<u8 *>(this) + 0x1000)
-                [*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0)](this);
-            (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4))++;
-        }
-
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) < 4)
-        {
-            if ((*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) & 1) != 0)
-                g_GameManager.AddToYoukaiGauge(26000 / *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE4), 1);
-            else
-                g_GameManager.AddToYoukaiGauge(-26000 / *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE4), 1);
-        }
-        return;
-    }
-
-    if ((g_GuiMessageInputCurrent & 2) != 0 && !g_GameManager.IsTampered() && !g_Gui.IsDialogPresent() &&
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) != 0 &&
-        g_GameManager.GetBombsRemaining() > 0 &&
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A6C) == 0)
-    {
-        if ((((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0) ||
-            (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 14) & 1) != 0))
-        {
-            if ((g_GuiMessageInputCurrent & 2) != 0)
-            {
-                if ((g_GuiMessageInputCurrent & 2) != (g_GuiMessageInputPrevious & 2))
-                    g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(41), 0);
-            }
-            goto done;
-        }
-
-acceptBomb:
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 1;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x6) = 0;
-    if (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0)
-    {
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) = 4;
-    }
-    else
-    {
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x208) &= 0xFFFDFFFFu;
-        if (*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) != NULL)
-        {
-            *reinterpret_cast<u8 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) + 0x350) = 0;
-            *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) = NULL;
-        }
-        *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFBFFu;
-        g_AnmManager->SetMixColorDefault();
-
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) =
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3);
-        if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4))
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) =
-                1 - *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0);
-
-        if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4))
-        {
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) += 2;
-            if (isForced)
-            {
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFEC) = g_GameManager.GetBombsRemaining();
-                g_GameManager.SetBombCount(0);
-            }
-            else
-            {
-                if (g_GameManager.GetBombsRemaining() < 2)
-                {
-                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFEC) = g_GameManager.GetBombsRemaining();
-                    g_GameManager.SetBombCount(0);
-                }
-                else
-                {
-                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFEC) = 2;
-                    g_GameManager.AddToBombCount(-2);
-                }
-            }
-            ++g_PlayerDeathbombCount;
-        }
-        else
-        {
-            ++g_PlayerNormalBombCount;
-            g_GameManager.AddToBombCount(-1);
-        }
-        g_GameManager.AddToBombsUsed(1);
-    }
-
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4) = 0;
-    g_Gui.flags.bombDisplayUpdateFrames = 2;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) = 1;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A7C) = 1;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE4) = 999;
-
-    {
-        reinterpret_cast<void (__fastcall **)(Player *)>(reinterpret_cast<u8 *>(this) + 0x1000)
-            [*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0)](this);
-    }
-    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4))++;
-    g_GameManager.DecreaseSubrank(200);
-    g_Spellcard.FUN_0044cba0();
-
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) += 6;
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) >
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x8))
-    {
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) =
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x8);
-    }
-        goto done;
-    }
-    else
-    {
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A7C) = 0;
-    }
-
-done:
-    return;
-}
-// FUNCTION: th08 0x44cbf0
-#pragma var_order(value, this)
-i32 Player::FUN_0044cbf0()
-{
-    f32 value;
-
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) != 0)
-    {
-        g_GameManager.AddTimeOrbs(-15);
-        --*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68);
-        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 4) = 1;
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) == 0)
-        {
-            if (*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) != NULL)
-            {
-                *reinterpret_cast<u8 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) + 0x350) = 0;
-                *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) = NULL;
-            }
-            g_EffectManager.FUN_00425870(12, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 3, 1, 0xFF4040FF);
-            g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 16, -1);
-            g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), this->position.x);
-            *reinterpret_cast<u32 *>(&g_GameManager.flags) &= ~0x400u;
-            g_AnmManager->SetMixColorDefault();
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x208) &= ~0x20000u;
-            *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 4;
-            g_PlayerRouteStateFlag = 0;
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 4) = 0;
-            g_Spellcard.FUN_0044d150();
-            g_GameManager.AddToDeaths(1);
-            g_Gui.flags.timeDisplayUpdateFrames = 2;
-            g_GameManager.AddTimeOrbs(g_GameManager.globals->currentTimeOrbs > 5000
-                                           ? -500
-                                           : -g_GameManager.globals->currentTimeOrbs / 10);
-
-            if (g_GameManager.GetLives() > 0)
-            {
-                if (g_GameManager.GetPower() <= 16)
-                    g_GameManager.SetPower(0);
-                else
-                    g_GameManager.AddPower(-16);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_BIG, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
-                if (g_GameManager.GetBombsRemaining() > 0 &&
-                    (g_TargetByte0164D0B1 == 2 || g_TargetByte0164D0B1 == 8 || g_TargetByte0164D0B1 == 9))
-                    g_ItemManager.SpawnItem(&this->position, ITEM_BOMB, ITEM_STATE_UNK2);
-                g_Gui.flags.powerDisplayUpdateFrames = 2;
-                g_ItemManager.CancelAutoCollect();
-            }
-            else
-            {
-                g_GameManager.SetPower(0);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
-                g_Gui.flags.powerDisplayUpdateFrames = 2;
-            }
-            g_GameManager.DecreaseSubrank(1600);
-        }
-    }
-    else
-    {
-        value = (f32)this->timer / 30.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 3.0f * value + 1.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 1.0f - 1.0f * value;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x200) =
-        ((i32)(255.0f - (f32)this->timer * 255.0f / 30.0f) << 24) | 0xFFFFFF;
-    reinterpret_cast<AnmVmBase *>(reinterpret_cast<u8 *>(this) + 0x10)->SetBlendModeAdditive();
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2AA0) = 0;
-
-    if ((i32)this->timer >= 30)
-    {
-        this->playerState = PLAYER_STATE_SPAWNING;
-        this->position.operator float *()[0] = g_PlayerPlayfieldWidth / 2.0f;
-        this->position.operator float *()[1] = g_ItemPlayfieldBottom - 64.0f;
-        this->position.operator float *()[2] = 0.2f;
-        this->timer = 0;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 3.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 3.0f;
-        if ((g_TargetByte0164D0B1 < 4 && *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) == 0) ||
-            (g_TargetByte0164D0B1 & 1) == 0)
-            (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0xC))
-                ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x10), 0);
-        else
-            (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0xC))
-                ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x10), 5);
-
-        if (g_GameManager.GetLives() <= 0)
-        {
-            g_PlayerNoLivesFlag = 1;
-        }
-        else
-        {
-            g_GameManager.AddLives(-1);
-            g_Gui.flags.lifeDisplayUpdateFrames = 2;
-            g_GameManager.SetBombCount((i32)*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 4));
-            g_Gui.flags.bombDisplayUpdateFrames = 2;
-            return 1;
-        }
-    }
-    }
-    return 0;
-}
-// FUNCTION: th08 0x44d180
-#pragma var_order(value, this)
-void Player::FUN_0044d180()
-{
-    f32 value;
-
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A70) = 60;
-    value = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) / 60.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 2.0f * value + 1.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 1.0f - 1.0f * value;
-    reinterpret_cast<AnmVmBase *>(reinterpret_cast<u8 *>(this) + 0x10)->SetBlendModeAdditive();
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x408) = 1.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x404) = 1.0f;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x200) =
-        (((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) * 0xFF) / 30 << 24) | 0xFFFFFF;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) = 0;
-
-    if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) >= 30)
-    {
-        *reinterpret_cast<i8 *>(this) = 3;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 1.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 1.0f;
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x200) = 0xFFFFFFFF;
-        reinterpret_cast<AnmVmBase *>(reinterpret_cast<u8 *>(this) + 0x10)->SetBlendModeNormal();
-        if (((*reinterpret_cast<u32 *>(0x164D0B4) >> 14) & 1) == 0)
-        {
-            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) = 240;
-        }
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) =
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x8);
-    }
-}
 // FUNCTION: th08 0x44aec0
 #pragma var_order(oldDirection, verticalSpeed, horizontalSpeed, focus, option, optionIndex, option2, optionExitIndex, route3Index, historyInitIndex, optionUpdateIndex, gaugeDelta, historyIndex, this)
 i32 Player::FUN_0044aec0()
@@ -4393,175 +860,1232 @@ i32 Player::FUN_0044aec0()
     }
     return 0;
 }
-// FUNCTION: th08 0x451150
-#pragma var_order(i, slot, this)
-void Player::FUN_00451150()
+// FUNCTION: th08 0x44c1b0
+#pragma var_order(yDelta, xDelta, this)
+f32 Player::FUN_0044c1b0(Float3 *position)
 {
-    u8 *slot;
-    i32 i;
+    f32 yDelta;
+    f32 xDelta;
 
-    if ((*reinterpret_cast<u32 *>(0x164D0B4) >> 10) & 1)
+    xDelta = reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2B4)->operator float *()[0] - position->x;
+    yDelta = reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2B4)->operator float *()[1] - position->y;
+
+    if (yDelta == 0.0f && xDelta == 0.0f)
     {
+        return ZUN_PI / 2.0f;
+    }
+
+    return VectorAngle(yDelta, xDelta);
+}
+
+#pragma var_order(primaryShtFile, player, secondaryShtFile)
+// FUNCTION: th08 0x44c230
+ZunResult Player::RegisterChain(u32 playerType)
+{
+    Player *player = &g_Player;
+    PlayerRawShtFile *secondaryShtFile;
+    PlayerRawShtFile *primaryShtFile;
+
+    if (IsResourceReloadDisabled())
+    {
+        primaryShtFile = player->primaryShtFile;
+        secondaryShtFile = player->secondaryShtFile;
+    }
+
+    memset(player, 0, sizeof(*player));
+
+    if (IsResourceReloadDisabled())
+    {
+        player->primaryShtFile = primaryShtFile;
+        player->secondaryShtFile = secondaryShtFile;
+    }
+
+    player->timer = 0;
+    player->playerType = playerType;
+
+    player->calcChain = g_Chain.CreateElem((ChainCallback)Player::OnUpdate);
+    player->calcChain->arg = player;
+    player->calcChain->addedCallback = (ChainLifetimeCallback)Player::AddedCallback;
+    player->calcChain->deletedCallback = (ChainLifetimeCallback)Player::DeletedCallback;
+    if (g_Chain.AddToCalcChain(player->calcChain, 9))
+        return ZUN_ERROR;
+
+    player->drawChainHighPrio = g_Chain.CreateElem((ChainCallback)Player::OnDrawHighPrio);
+    player->drawChainLowPrio = g_Chain.CreateElem((ChainCallback)Player::OnDrawLowPrio);
+    player->drawChainHighPrio->arg = player;
+    player->drawChainLowPrio->arg = player;
+    g_Chain.AddToDrawChain(player->drawChainHighPrio, 9);
+    g_Chain.AddToDrawChain(player->drawChainLowPrio, 10);
+
+    return ZUN_SUCCESS;
+}
+
+
+// FUNCTION: th08 0x44c390
+ChainCallbackResult Player::OnUpdate(Player *player)
+{
+    if (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x2C) != 0)
+    {
+        if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xBE834) != 0)
+        {
+            *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(player) + 0xBE834) + 0x1F8) |= 0x80000;
+        }
+        if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xE2B24) != 0)
+        {
+            *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(player) + 0xE2B24) + 0x1F8) |= 0x80000;
+        }
+        return CHAIN_CALLBACK_RESULT_CONTINUE;
+    }
+    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xBE834) != 0)
+    {
+        *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(player) + 0xBE834) + 0x1F8) &= 0xfff7ffff;
+    }
+    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xE2B24) != 0)
+    {
+        *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(player) + 0xE2B24) + 0x1F8) &= 0xfff7ffff;
+    }
+    player->FUN_0044c5b0();
+    player->FUN_0044c650();
+    if (player->playerState == PLAYER_STATE_DYING)
+    {
+        if (player->FUN_0044cbf0() != 0)
+        {
+            goto updateD180;
+        }
+    }
+    else if (player->playerState == PLAYER_STATE_SPAWNING)
+    {
+updateD180:
+        player->FUN_0044d180();
+    }
+    player->FUN_0044d2c0();
+    if (player->playerState != PLAYER_STATE_DYING && player->playerState != PLAYER_STATE_SPAWNING)
+    {
+        player->FUN_0044aec0();
+    }
+    g_AnmManager->ExecuteScript(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(player) + 0x10));
+    player->FUN_00451150();
+    player->FUN_00451500();
+    player->FUN_0044d420();
+    if (!g_Gui.IsDialogPresent())
+    {
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE10) += 1;
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE14) += 1;
+        if (g_GameManager.GaugeIsExtremelyHuman())
+        {
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE1C) += 1;
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE24) += 1;
+            g_GameManager.AddScore(100);
+        }
+        else if (g_GameManager.GaugeIsExtremelyYoukai())
+        {
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE18) += 1;
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE20) += 1;
+            g_GameManager.AddScore(100);
+        }
+    }
+    return CHAIN_CALLBACK_RESULT_CONTINUE;
+}
+
+#pragma var_order(index, slot)
+// FUNCTION: th08 0x44c5b0
+void Player::FUN_0044c5b0()
+{
+    PlayerUnkStruct0x40 *slot = this->playerSlotsB;
+    i32 index;
+
+    for (index = 0; index < 384; index++, slot++)
+    {
+        if (slot->lifetime < 0)
+            continue;
+
+        slot->lifetime--;
+        slot->radius += slot->radiusGrowth;
+        slot->size.x += slot->sizeGrowth.x;
+        slot->size.y += slot->sizeGrowth.y;
+
+        if (slot->lifetime <= 0)
+            slot->Deactivate();
+    }
+}
+
+// FUNCTION: th08 0x44c650
+#pragma var_order(isForced, i)
+void Player::FUN_0044c650()
+{
+    u32 i;
+    i32 isForced;
+    isForced = 0;
+    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x6) != 0 &&
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) == 1)
+    {
+        isForced = 1;
+        goto acceptBomb;
+    }
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A6C) != 0)
+        --*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A6C);
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) != 0)
+    {
+        if (reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4)->FUN_0040d3d0())
+            g_Gui.flags.pointDisplayUpdateFrames = 2;
+
+        if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4) >= *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE4))
+        {
+            g_Spellcard.spellcard_fun_00416130();
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) = 0;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x408) = 1.0f;
+            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x404) = 1.0f;
+
+            if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) == 4)
+            {
+                *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFE7Fu;
+                for (i = 0; i < 8; i++)
+                {
+                    if (reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i] != NULL)
+                    {
+                        reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]->FUN_0042adb0(0);
+                        *reinterpret_cast<i32 *>(reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]->bytes + 0x2DFC) = 0;
+                        *reinterpret_cast<u32 *>(reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]->bytes + 0x3324) &= 0xBFFFFFFFu;
+                    }
+                }
+                ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 30, 1, -1, 0, 21);
+            }
+        }
+        else
+        {
+            reinterpret_cast<void (__fastcall **)(Player *)>(reinterpret_cast<u8 *>(this) + 0x1000)
+                [*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0)](this);
+            (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4))++;
+        }
+
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) < 4)
+        {
+            if ((*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) & 1) != 0)
+                g_GameManager.AddToYoukaiGauge(26000 / *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE4), 1);
+            else
+                g_GameManager.AddToYoukaiGauge(-26000 / *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE4), 1);
+        }
         return;
     }
 
-    slot = reinterpret_cast<u8 *>(this) + 0xBE838;
-    for (i = 0; i < 0x80; i++, slot += 0x484)
+    if ((g_GuiMessageInputCurrent & 2) != 0 && !g_GameManager.IsTampered() && !g_Gui.IsDialogPresent() &&
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) != 0 &&
+        g_GameManager.GetBombsRemaining() > 0 &&
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A6C) == 0)
     {
-        if (*reinterpret_cast<i16 *>(slot + 0x462) == 0)
+        if ((((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0) ||
+            (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 14) & 1) != 0))
         {
-            continue;
-        }
-
-        if (*reinterpret_cast<u32 *>(slot + 0x474) != 0)
-        {
-            if (reinterpret_cast<i32 (__fastcall *)(Player *, u8 *)>(*reinterpret_cast<u32 *>(slot + 0x474))(this, slot) != 0)
+            if ((g_GuiMessageInputCurrent & 2) != 0)
             {
-                *reinterpret_cast<i16 *>(slot + 0x462) = 0;
-                continue;
+                if ((g_GuiMessageInputCurrent & 2) != (g_GuiMessageInputPrevious & 2))
+                    g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(41), 0);
             }
+            goto done;
         }
 
-        reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[0] +=
-            *reinterpret_cast<f32 *>(0x17CE8E0) * *reinterpret_cast<f32 *>(slot + 0x43C);
-        reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[1] +=
-            *reinterpret_cast<f32 *>(0x17CE8E0) * *reinterpret_cast<f32 *>(slot + 0x440);
-
-        if (*reinterpret_cast<i16 *>(slot + 0x464) != 4 && *reinterpret_cast<i16 *>(slot + 0x464) != 5)
+acceptBomb:
+    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 1;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x6) = 0;
+    if (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0)
+    {
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) = 4;
+    }
+    else
+    {
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x208) &= 0xFFFDFFFFu;
+        if (*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) != NULL)
         {
-            if (!g_GameManager.IsWithinPlayfield(
-                    reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[0],
-                    reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[1],
-                    *reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(slot + 0x224) + 0x34),
-                    *reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(slot + 0x224) + 0x30)))
+            *reinterpret_cast<u8 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) + 0x350) = 0;
+            *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) = NULL;
+        }
+        *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFBFFu;
+        g_AnmManager->SetMixColorDefault();
+
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) =
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3);
+        if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4))
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) =
+                1 - *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0);
+
+        if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4))
+        {
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) += 2;
+            if (isForced)
             {
-                *reinterpret_cast<i16 *>(slot + 0x462) = 0;
+                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFEC) = g_GameManager.GetBombsRemaining();
+                g_GameManager.SetBombCount(0);
             }
+            else
+            {
+                if (g_GameManager.GetBombsRemaining() < 2)
+                {
+                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFEC) = g_GameManager.GetBombsRemaining();
+                    g_GameManager.SetBombCount(0);
+                }
+                else
+                {
+                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFEC) = 2;
+                    g_GameManager.AddToBombCount(-2);
+                }
+            }
+            ++g_PlayerDeathbombCount;
         }
-
-        if (g_AnmManager->ExecuteScript(reinterpret_cast<AnmVm *>(slot)) != ZUN_SUCCESS)
+        else
         {
-            *reinterpret_cast<i16 *>(slot + 0x462) = 0;
+            ++g_PlayerNormalBombCount;
+            g_GameManager.AddToBombCount(-1);
         }
-        (*reinterpret_cast<ZunTimer *>(slot + 0x454))++;
+        g_GameManager.AddToBombsUsed(1);
+    }
+
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4) = 0;
+    g_Gui.flags.bombDisplayUpdateFrames = 2;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) = 1;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A7C) = 1;
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE4) = 999;
+
+    {
+        reinterpret_cast<void (__fastcall **)(Player *)>(reinterpret_cast<u8 *>(this) + 0x1000)
+            [*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0)](this);
+    }
+    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4))++;
+    g_GameManager.DecreaseSubrank(200);
+    g_Spellcard.FUN_0044cba0();
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) += 6;
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) >
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x8))
+    {
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) =
+            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x8);
+    }
+        goto done;
+    }
+    else
+    {
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A7C) = 0;
+    }
+
+done:
+    return;
+}
+// FUNCTION: th08 0x44cbf0
+#pragma var_order(value, this)
+i32 Player::FUN_0044cbf0()
+{
+    f32 value;
+
+    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) != 0)
+    {
+        g_GameManager.AddTimeOrbs(-15);
+        --*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68);
+        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 4) = 1;
+        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) == 0)
+        {
+            if (*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) != NULL)
+            {
+                *reinterpret_cast<u8 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) + 0x350) = 0;
+                *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) = NULL;
+            }
+            g_EffectManager.FUN_00425870(12, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 3, 1, 0xFF4040FF);
+            g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 16, -1);
+            g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), this->position.x);
+            *reinterpret_cast<u32 *>(&g_GameManager.flags) &= ~0x400u;
+            g_AnmManager->SetMixColorDefault();
+            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x208) &= ~0x20000u;
+            *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 4;
+            g_PlayerRouteStateFlag = 0;
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 4) = 0;
+            g_Spellcard.FUN_0044d150();
+            g_GameManager.AddToDeaths(1);
+            g_Gui.flags.timeDisplayUpdateFrames = 2;
+            g_GameManager.AddTimeOrbs(g_GameManager.globals->currentTimeOrbs > 5000
+                                           ? -500
+                                           : -g_GameManager.globals->currentTimeOrbs / 10);
+
+            if (g_GameManager.GetLives() > 0)
+            {
+                if (g_GameManager.GetPower() <= 16)
+                    g_GameManager.SetPower(0);
+                else
+                    g_GameManager.AddPower(-16);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_BIG, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
+                if (g_GameManager.GetBombsRemaining() > 0 &&
+                    (g_TargetByte0164D0B1 == 2 || g_TargetByte0164D0B1 == 8 || g_TargetByte0164D0B1 == 9))
+                    g_ItemManager.SpawnItem(&this->position, ITEM_BOMB, ITEM_STATE_UNK2);
+                g_Gui.flags.powerDisplayUpdateFrames = 2;
+                g_ItemManager.CancelAutoCollect();
+            }
+            else
+            {
+                g_GameManager.SetPower(0);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
+                g_Gui.flags.powerDisplayUpdateFrames = 2;
+            }
+            g_GameManager.DecreaseSubrank(1600);
+        }
+    }
+    else
+    {
+        value = (f32)this->timer / 30.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 3.0f * value + 1.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 1.0f - 1.0f * value;
+    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x200) =
+        ((i32)(255.0f - (f32)this->timer * 255.0f / 30.0f) << 24) | 0xFFFFFF;
+    reinterpret_cast<AnmVmBase *>(reinterpret_cast<u8 *>(this) + 0x10)->SetBlendModeAdditive();
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) = 0;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2AA0) = 0;
+
+    if ((i32)this->timer >= 30)
+    {
+        this->playerState = PLAYER_STATE_SPAWNING;
+        this->position.operator float *()[0] = g_PlayerPlayfieldWidth / 2.0f;
+        this->position.operator float *()[1] = g_ItemPlayfieldBottom - 64.0f;
+        this->position.operator float *()[2] = 0.2f;
+        this->timer = 0;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 3.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 3.0f;
+        if ((g_TargetByte0164D0B1 < 4 && *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) == 0) ||
+            (g_TargetByte0164D0B1 & 1) == 0)
+            (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0xC))
+                ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x10), 0);
+        else
+            (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0xC))
+                ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x10), 5);
+
+        if (g_GameManager.GetLives() <= 0)
+        {
+            g_PlayerNoLivesFlag = 1;
+        }
+        else
+        {
+            g_GameManager.AddLives(-1);
+            g_Gui.flags.lifeDisplayUpdateFrames = 2;
+            g_GameManager.SetBombCount((i32)*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 4));
+            g_Gui.flags.bombDisplayUpdateFrames = 2;
+            return 1;
+        }
+    }
+    }
+    return 0;
+}
+// FUNCTION: th08 0x44d180
+#pragma var_order(value, this)
+void Player::FUN_0044d180()
+{
+    f32 value;
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A70) = 60;
+    value = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) / 60.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 2.0f * value + 1.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 1.0f - 1.0f * value;
+    reinterpret_cast<AnmVmBase *>(reinterpret_cast<u8 *>(this) + 0x10)->SetBlendModeAdditive();
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x408) = 1.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x404) = 1.0f;
+    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x200) =
+        (((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) * 0xFF) / 30 << 24) | 0xFFFFFF;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) = 0;
+
+    if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) >= 30)
+    {
+        *reinterpret_cast<i8 *>(this) = 3;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 1.0f;
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 1.0f;
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x200) = 0xFFFFFFFF;
+        reinterpret_cast<AnmVmBase *>(reinterpret_cast<u8 *>(this) + 0x10)->SetBlendModeNormal();
+        if (((*reinterpret_cast<u32 *>(0x164D0B4) >> 14) & 1) == 0)
+        {
+            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) = 240;
+        }
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) =
+            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x8);
     }
 }
-// FUNCTION: th08 0x4512f0
-#pragma var_order(i, slot, this)
-void Player::FUN_004512f0()
+// FUNCTION: th08 0x44d2c0
+void Player::FUN_0044d2c0()
 {
-    u8 *slot;
+    if (this->playerStateSlotCooldown != 0)
+    {
+        this->playerStateSlotCooldown--;
+        this->FUN_0044de60(&this->position, 768.0f, 896.0f, -1, 0);
+    }
+
+    if (this->playerState == PLAYER_STATE_DEAD)
+    {
+        this->stateFlag = false;
+
+        if (this->stateEffect != NULL)
+            this->stateEffect->position = this->position;
+
+        this->timer--;
+        if ((i32)this->timer <= 0)
+        {
+            if (this->stateEffect != NULL)
+            {
+                this->stateEffect->active = false;
+                this->stateEffect = NULL;
+            }
+
+            this->playerState = PLAYER_STATE_ALIVE;
+            this->timer = 0;
+            this->mainVm.color1.d3dColor = -1;
+        }
+        else if ((i32)this->timer % 8 < 2)
+        {
+            this->mainVm.color1.d3dColor = 0xfff02020;
+        }
+        else
+        {
+            this->mainVm.color1.d3dColor = -1;
+        }
+    }
+    else
+    {
+        this->timer++;
+    }
+}
+
+// FUNCTION: th08 0x44d420
+void Player::FUN_0044d420()
+{
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xE2AA4) = Float3(-999.0f, -999.0f, 0.0f);
+    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xE2AB0) = Float3(-999.0f, -999.0f, 0.0f);
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2AC0) = 0;
+
+    if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2B8) >= 400.0f)
+    {
+        if (g_AsciiManager.GetGaugeInterrupt() != 2)
+        {
+            if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2B4) < 160.0f)
+            {
+                g_AsciiManager.SetGaugeInterrupt(2);
+                goto doneTop;
+            }
+        }
+
+        if (g_AsciiManager.GetGaugeInterrupt() == 2)
+        {
+            if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2B4) > 160.0f)
+            {
+                g_AsciiManager.SetGaugeInterrupt(3);
+            }
+        }
+
+doneTop:
+        return;
+    }
+
+    if (g_AsciiManager.GetGaugeInterrupt() == 2)
+    {
+        g_AsciiManager.SetGaugeInterrupt(3);
+    }
+}
+// FUNCTION: th08 0x44d530
+#pragma var_order(i, this)
+ChainCallbackResult Player::OnDrawHighPrio(Player *player)
+{
+    u32 i;
+
+    player->FUN_004512f0();
+
+    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xFDC) != 0)
+    {
+        reinterpret_cast<void (__fastcall *)(Player *)>(
+            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) +
+                                      (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xFE0) * 4) +
+                                      0x1014))(player);
+    }
+
+    if (*reinterpret_cast<u8 *>(0x164D0BB) == 0)
+    {
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x218) =
+            g_ItemAnmManagerScreenShakeOffset.x + *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x2B4);
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x21C) =
+            g_ItemAnmManagerScreenShakeOffset.y + *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x2B8);
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x220) = 0.1f;
+        g_AnmManager->DrawNoRotation(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(player) + 0x10));
+    }
+
+    for (i = 0; i < 4; i++)
+    {
+        if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + i * 0x2F4 + 0x6FC) != 0)
+        {
+            reinterpret_cast<void (__fastcall *)(Player *, u8 *)>(
+                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + i * 0x2F4 + 0x6FC))(
+                player, reinterpret_cast<u8 *>(player) + i * 0x2F4 + 0x40C);
+        }
+    }
+
+    return CHAIN_CALLBACK_RESULT_CONTINUE;
+}
+
+// FUNCTION: th08 0x44d630
+ChainCallbackResult Player::OnDrawLowPrio(Player *player)
+{
+    player->FUN_00451400();
+    return CHAIN_CALLBACK_RESULT_CONTINUE;
+}
+
+// FUNCTION: th08 0x44d650
+#pragma var_order(i, shotSlot, option, m, player)
+ZunResult Player::AddedCallback(Player *player)
+{
+    u32 i;
+    u8 *shotSlot;
+    u8 *option;
+    u32 m;
+
+    if (IsResourceReloadEnabled())
+    {
+        if (Player::LoadShtFile(&player->primaryShtFile, g_Player1ShtFiles[g_TargetByte0164D0B1]) != ZUN_SUCCESS)
+            return ZUN_ERROR;
+        if (Player::LoadShtFile(&player->secondaryShtFile, g_Player2ShtFile[g_TargetByte0164D0B1]) != ZUN_SUCCESS)
+            return ZUN_ERROR;
+        *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC) =
+            g_AnmManager->PreloadAnm(5, g_PlayerAnmFilenames[g_TargetByte0164D0B1]);
+        if (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC) == NULL)
+            return ZUN_ERROR;
+    }
+    else
+    {
+        *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC) = g_AnmManager->GetAnm(5);
+    }
+
+    if (g_TargetByte0164D0B1 < 4 || (g_TargetByte0164D0B1 & 1) == 0)
+        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC))
+            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(player) + 0x10), 0);
+    else
+        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC))
+            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(player) + 0x10), 5);
+
+    player->position.operator float *()[0] = g_PlayerPlayfieldWidth / 2.0f;
+    player->position.operator float *()[1] = g_ItemPlayfieldBottom - 64.0f;
+    player->position.operator float *()[2] = 0.49f;
+
+    for (i = 0; i < 0x180; ++i)
+        reinterpret_cast<PlayerUnkStruct0x40 *>(player->playerSlotsB)[i].Reset();
+
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3D8) =
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0xC) / 2.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3D4) =
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3D8);
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3DC) = 5.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3E4) =
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x10) / 2.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3E0) =
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3E4);
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3E8) = 5.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3F0) =
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x18) / 2.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3EC) =
+        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3F0);
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3F4) = 5.0f;
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2A98) = 0;
+    player->playerState = PLAYER_STATE_SPAWNING;
+    player->timer = g_GameManager.IsSpellPractice() ? 10 : 120;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(player) + 2) = 1;
+
+    shotSlot = reinterpret_cast<u8 *>(player) + 0xBE838;
+    for (i = 0; (i32)i < 0x80; ++i, shotSlot += 0x484)
+        *reinterpret_cast<i16 *>(shotSlot + 0x462) = 0;
+
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AC4) = -1;
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AD0) = 0;
+    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AE8) = 0;
+
+    *reinterpret_cast<PlayerBombCallbacks *>(reinterpret_cast<u8 *>(player) + 0x1000) =
+        g_PlayerBombCallbackTable[g_TargetByte0164D0B1 * 2];
+    *reinterpret_cast<PlayerBombCallbacks *>(reinterpret_cast<u8 *>(player) + 0x1014) =
+        g_PlayerBombCallbackTable[g_TargetByte0164D0B1 * 2 + 1];
+
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xFDC) = 0;
+    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xE2B0C) = 0xBFC90FDB;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 1.0f;
+    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 1.0f;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2A68) =
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 8);
+
+    if (IsResourceReloadEnabled())
+        g_AsciiManager.SetGaugeInterrupt(1);
+    g_AsciiManager.FUN_00422bb0(0, 2);
+    g_AsciiManager.FUN_00422bb0(1, 2);
+    g_AsciiManager.FUN_00422bb0(2, 2);
+
+    g_PlayerGaugeBounds[0] = -10000;
+    g_PlayerGaugeBounds[2] = -8000;
+    g_PlayerGaugeBounds[4] = -2000;
+    g_PlayerGaugeBounds[1] = 10000;
+    g_PlayerGaugeBounds[3] = 8000;
+    g_PlayerGaugeBounds[5] = 2000;
+    if (g_TargetByte0164D0B1 == 3)
+    {
+        g_PlayerGaugeBounds[0] = -5000;
+        g_PlayerGaugeBounds[2] = -3000;
+        g_PlayerGaugeBounds[4] = -2000;
+    }
+    else if (g_TargetByte0164D0B1 == 10)
+    {
+        g_PlayerGaugeBounds[0] = -5000;
+        g_PlayerGaugeBounds[2] = -3000;
+        g_PlayerGaugeBounds[4] = -2000;
+        g_PlayerGaugeBounds[1] = 5000;
+        g_PlayerGaugeBounds[3] = 3000;
+        g_PlayerGaugeBounds[5] = 2000;
+    }
+    else if (g_GameManager.IsSoloHuman())
+    {
+        g_PlayerGaugeBounds[1] = 2000;
+        g_PlayerGaugeBounds[3] = 8000;
+        g_PlayerGaugeBounds[5] = 2001;
+    }
+    else if (g_GameManager.IsSoloYoukai())
+    {
+        g_PlayerGaugeBounds[0] = -2000;
+        g_PlayerGaugeBounds[2] = -8000;
+        g_PlayerGaugeBounds[4] = -2001;
+    }
+
+    *reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2B24) = NULL;
+    for (i = 0; i < 16; ++i)
+        *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(player) + 0x2CC + i * 12) = player->position;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(player) + 3) = 2;
+
+    if (g_TargetByte0164D0B1 > 3)
+    {
+        option = reinterpret_cast<u8 *>(player) + 0x40C;
+        for (m = 0; m < 4; ++m, option += 0x2F4)
+        {
+            memset(option, 0, 0x2F4);
+            *reinterpret_cast<void **>(option + 0x2EC) =
+                g_PlayerOptionUpdateCallbacks[g_TargetByte0164D0B1].callbacks[m];
+            *reinterpret_cast<void **>(option + 0x2F0) =
+                g_PlayerOptionRenderCallbacks[g_TargetByte0164D0B1].callbacks[m];
+            if (*reinterpret_cast<void **>(option + 0x2EC) != NULL)
+            {
+                *reinterpret_cast<i32 *>(option + 0x2C8) = 1;
+                *reinterpret_cast<ZunTimer *>(option + 0x2E0) = 0;
+                *reinterpret_cast<i32 *>(option + 0x2D0) = m;
+            }
+            else
+            {
+                *reinterpret_cast<i32 *>(option + 0x2C8) = 0;
+            }
+        }
+    }
+
+    if (g_GameManager.IsSoloHuman())
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2B2C) = 27;
+    else
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2B2C) = 40;
+    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x2E10) =
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2B2C);
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x44dc60
+ZunResult Player::DeletedCallback(Player *player)
+{
+    if (IsBulletManagerAnmReleaseRequired())
+    {
+        g_AnmManager->ReleaseAnm(5);
+        g_AsciiManager.SetGaugeInterrupt(99);
+        g_AsciiManager.FUN_00422bb0(0, 99);
+        g_AsciiManager.FUN_00422bb0(1, 99);
+        g_AsciiManager.FUN_00422bb0(2, 99);
+
+        if (g_PlayerPrimaryShtFile != NULL)
+        {
+            g_ZunMemory.Free(g_PlayerPrimaryShtFile);
+            g_PlayerPrimaryShtFile = NULL;
+        }
+
+        if (g_PlayerSecondaryShtFile != NULL)
+        {
+            g_ZunMemory.Free(g_PlayerSecondaryShtFile);
+            g_PlayerSecondaryShtFile = NULL;
+        }
+    }
+
+    return ZUN_SUCCESS;
+}
+
+// FUNCTION: th08 0x44dd10
+void Player::CutChain()
+{
+    g_Chain.Cut(g_PlayerCalcChain);
+    g_PlayerCalcChain = NULL;
+    g_Chain.Cut(g_PlayerDrawChainHighPrio);
+    g_PlayerDrawChainHighPrio = NULL;
+    g_Chain.Cut(g_PlayerDrawChainLowPrio);
+    g_PlayerDrawChainLowPrio = NULL;
+}
+
+// FUNCTION: th08 0x44dd70
+#pragma var_order(i, entry, header, path)
+ZunResult Player::LoadShtFile(PlayerRawShtFile **header, const char *path)
+{
     i32 i;
+    u8 *entry;
 
-    slot = reinterpret_cast<u8 *>(this) + 0xBE838;
-    for (i = 0; i < 0x80; i++, slot += 0x484)
+    *header = reinterpret_cast<PlayerRawShtFile *>(FileSystem::OpenFile(path, NULL, 0));
+    if (*header == NULL)
     {
-        if (*reinterpret_cast<i16 *>(slot + 0x462) != 1)
+        return ZUN_ERROR;
+    }
+
+    for (i = 0; i < *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(*header) + 0x2); i++)
+    {
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(*header) + i * 8 + 0x38) +=
+            reinterpret_cast<u32>(*header);
+        entry = *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(*header) + i * 8 + 0x38);
+
+        while (*reinterpret_cast<i16 *>(entry) >= 0)
         {
-            continue;
-        }
-        if (*reinterpret_cast<i16 *>(slot + 0x1FC) != 0)
-        {
-            reinterpret_cast<AnmVm *>(slot)->SetZRotation(*reinterpret_cast<f32 *>(slot + 0x450));
-        }
-        *reinterpret_cast<f32 *>(slot + 0x208) = g_ItemAnmManagerScreenShakeOffset.x + *reinterpret_cast<f32 *>(slot + 0x2A4);
-        *reinterpret_cast<f32 *>(slot + 0x20C) = g_ItemAnmManagerScreenShakeOffset.y + *reinterpret_cast<f32 *>(slot + 0x2A8);
-        *reinterpret_cast<f32 *>(slot + 0x210) = 0.4f;
-        if (*reinterpret_cast<i8 *>(slot + 0x470) != 0)
-        {
-            *reinterpret_cast<u8 *>(slot + 0x1F2) = 0xff;
-            *reinterpret_cast<u8 *>(slot + 0x1F1) = 0x40;
-            *reinterpret_cast<u8 *>(slot + 0x1F0) = 0x40;
-        }
-        g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(slot));
-        if (*reinterpret_cast<u32 *>(slot + 0x478) != 0)
-        {
-            reinterpret_cast<void (__fastcall *)(Player *, u8 *)>(*reinterpret_cast<u32 *>(slot + 0x478))(this, slot);
+            *reinterpret_cast<u32 *>(entry + 0x28) =
+                *reinterpret_cast<u32 *>(0x4C7EE0 + *reinterpret_cast<u32 *>(entry + 0x28) * 4);
+            *reinterpret_cast<u32 *>(entry + 0x2C) =
+                *reinterpret_cast<u32 *>(0x4C7F04 + *reinterpret_cast<u32 *>(entry + 0x2C) * 4);
+            *reinterpret_cast<u32 *>(entry + 0x30) =
+                *reinterpret_cast<u32 *>(0x4C7F1C + *reinterpret_cast<u32 *>(entry + 0x30) * 4);
+            *reinterpret_cast<u32 *>(entry + 0x34) =
+                *reinterpret_cast<u32 *>(0x4C7F24 + *reinterpret_cast<u32 *>(entry + 0x34) * 4);
+            entry += 0x38;
         }
     }
+
+    return ZUN_SUCCESS;
 }
 
-// FUNCTION: th08 0x451400
-#pragma var_order(i, slot, this)
-void Player::FUN_00451400()
+#pragma var_order(slot, index)
+// FUNCTION: th08 0x44de60
+PlayerUnkStruct0x40 *Player::FUN_0044de60(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
 {
-    u8 *slot;
-    i32 i;
+    PlayerUnkStruct0x40 *slot = this->playerSlotsC;
+    i32 index;
 
-    slot = reinterpret_cast<u8 *>(this) + 0xBE838;
-    for (i = 0; i < 0x80; i++, slot += 0x484)
+    for (index = 0; index < 191; index++, slot++)
     {
-        if (*reinterpret_cast<i16 *>(slot + 0x462) != 2)
-        {
-            continue;
-        }
-        if (*reinterpret_cast<i16 *>(slot + 0x1FC) != 0)
-        {
-            reinterpret_cast<AnmVm *>(slot)->SetZRotation(*reinterpret_cast<f32 *>(slot + 0x450));
-        }
-        *reinterpret_cast<f32 *>(slot + 0x208) = g_ItemAnmManagerScreenShakeOffset.x + *reinterpret_cast<f32 *>(slot + 0x2A4);
-        *reinterpret_cast<f32 *>(slot + 0x20C) = g_ItemAnmManagerScreenShakeOffset.y + *reinterpret_cast<f32 *>(slot + 0x2A8);
-        *reinterpret_cast<f32 *>(slot + 0x210) = 0.2f;
-        if (*reinterpret_cast<i8 *>(slot + 0x470) != 0)
-        {
-            *reinterpret_cast<u8 *>(slot + 0x1F2) = 0xff;
-            *reinterpret_cast<u8 *>(slot + 0x1F1) = 0x40;
-            *reinterpret_cast<u8 *>(slot + 0x1F0) = 0x40;
-        }
-        g_AnmManager->DrawPlayerBullet(reinterpret_cast<AnmVm *>(slot));
+        if (!slot->active)
+            break;
     }
+
+    slot->Reset();
+    slot->active = true;
+    slot->center.x = center->x;
+    slot->center.y = center->y;
+    slot->size.x = value1;
+    slot->size.y = value2;
+    slot->lifetime = value4;
+    slot->collisionValue = value3;
+
+    return slot;
 }
-// FUNCTION: th08 0x451500
-i32 Player::FUN_00451500()
+
+#pragma var_order(slot, index)
+// FUNCTION: th08 0x44df00
+PlayerUnkStruct0x40 *Player::FUN_0044df00(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
 {
-    if (*reinterpret_cast<i32 *>(0x164D2C8) < 20)
+    PlayerUnkStruct0x40 *slot = this->playerSlotsC;
+    i32 index;
+
+    for (index = 0; index < 191; index++, slot++)
     {
-        return 0;
+        if (!slot->active)
+            break;
     }
 
-    if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) < 0)
+    slot->Reset();
+    slot->active = true;
+    slot->center.x = center->x;
+    slot->center.y = center->y;
+    slot->radius = value1;
+    slot->radiusGrowth = value2;
+    slot->lifetime = value3;
+    slot->collisionValue = value4;
+
+    return slot;
+}
+
+#pragma var_order(slot, index)
+// FUNCTION: th08 0x44dfa0
+PlayerUnkStruct0x40 *Player::FUN_0044dfa0(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+{
+    PlayerUnkStruct0x40 *slot = this->playerSlotsB;
+    i32 index;
+
+    for (index = 0; index < 191; index++, slot++)
     {
-        return 0;
+        if (!slot->active)
+            break;
     }
 
-    if (this->FUN_00451d50())
+    slot->Reset();
+    slot->active = true;
+    slot->center.x = center->x;
+    slot->center.y = center->y;
+    slot->size.x = value1;
+    slot->size.y = value2;
+    slot->lifetime = value4;
+    slot->damage = value3;
+
+    return slot;
+}
+
+#pragma var_order(slot, index)
+// FUNCTION: th08 0x44e040
+PlayerUnkStruct0x40 *Player::FUN_0044e040(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+{
+    PlayerUnkStruct0x40 *slot = this->playerSlotsB;
+    i32 index;
+
+    for (index = 0; index < 191; index++, slot++)
     {
-        return 0;
+        if (!slot->active)
+            break;
     }
 
-    if (reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4)->FUN_0040d3d0())
+    slot->Reset();
+    slot->active = true;
+    slot->center.x = center->x;
+    slot->center.y = center->y;
+    slot->radius = value1;
+    slot->radiusGrowth = value2;
+    slot->lifetime = value4;
+    slot->damage = value3;
+
+    return slot;
+}
+
+// FUNCTION: th08 0x44e0e0
+ZunBool IsResourceReloadDisabled()
+{
+    return !IsResourceReloadEnabled();
+}
+
+/* The target emits these cross-subsystem definitions in the Player translation unit. */
+// FUNCTION: th08 0x44e0f0
+void AnmVmBase::SetBlendModeAdditive()
+{
+    this->blendMode = AnmBlendMode_Additive;
+}
+
+// FUNCTION: th08 0x44e120
+void AnmVmBase::SetBlendModeNormal()
+{
+    this->blendMode = AnmBlendMode_Normal;
+}
+
+// FUNCTION: th08 0x44e140
+void GameManager::SetYoukaiGauge(u16 value)
+{
+    this->globals->youkaiGauge = value;
+}
+
+// FUNCTION: th08 0x44e350
+void PlayerUnkStruct0x40::Deactivate()
+{
+    this->active = false;
+}
+
+// FUNCTION: th08 0x44e370
+void PlayerUnkStruct0x40::Reset()
+{
+    memset(this, 0, sizeof(*this));
+    this->collisionInterval = 1;
+}
+
+void __fastcall PlayerOptionHomingToPlayer(Player *player, u8 *option);
+void __fastcall PlayerOptionHomingToTarget(Player *player, u8 *option);
+
+// FUNCTION: th08 0x44e3a0
+i32 __fastcall FUN_0044e3a0(Player *player, PlayerOptionState *option)
+{
+    switch (option->state2C8)
     {
-        if (*reinterpret_cast<i32 *>(0x17D6ED4) == 0 ||
-            (*reinterpret_cast<u8 *>(0x164D0B1) != 1 && *reinterpret_cast<u8 *>(0x164D0B1) != 7 &&
-             *reinterpret_cast<u8 *>(0x164D0B1) != 6))
+    case 1:
+        player->anmFile->SetAndExecuteScriptIdx(&option->vm, 18);
+        option->position = player->position;
+        option->position.y -= 96.0f;
+        if (option->position.y < 32.0f)
+            option->position.y = 32.0f;
+        option->state2C8 = 2;
+        player->optionHomingTarget = NULL;
+        break;
+
+    case 2:
+        switch (option->substate2CC)
         {
-            this->FUN_00450f60((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4));
-        }
-    }
-
-    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4))++;
-
-    if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) >= 20)
-    {
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) = -1;
-    }
-
-    if ((*reinterpret_cast<u16 *>(0x164D52C) & 1) != 0)
-    {
-        if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) < 0)
-        {
-            if (!g_Gui.IsDialogPresent())
+        case 0:
+            PlayerOptionHomingToPlayer(player, reinterpret_cast<u8 *>(option));
+            if (option->velocity.x < 0.0f)
             {
-                *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) = 0;
+                option->vm.SetInterrupt(2);
+                option->substate2CC = 1;
+                if (option->vm.scale.x < 0.0f)
+                    option->vm.scale.x = -option->vm.scale.x;
+            }
+            else if (option->velocity.x > 0.0f)
+            {
+                option->vm.SetInterrupt(2);
+                option->substate2CC = 2;
+                if (option->vm.scale.x > 0.0f)
+                    option->vm.scale.x = -option->vm.scale.x;
+            }
+            break;
+
+        case 1:
+            PlayerOptionHomingToPlayer(player, reinterpret_cast<u8 *>(option));
+            if (option->velocity.x == 0.0f)
+            {
+                option->vm.SetInterrupt(1);
+                option->substate2CC = 0;
+                if (option->vm.scale.x < 0.0f)
+                    option->vm.scale.x = -option->vm.scale.x;
+            }
+            else if (option->velocity.x > 0.0f)
+            {
+                option->vm.SetInterrupt(2);
+                option->substate2CC = 2;
+                if (option->vm.scale.x > 0.0f)
+                    option->vm.scale.x = -option->vm.scale.x;
+            }
+            break;
+
+        case 2:
+            PlayerOptionHomingToPlayer(player, reinterpret_cast<u8 *>(option));
+            if (option->velocity.x == 0.0f)
+            {
+                option->vm.SetInterrupt(1);
+                option->substate2CC = 0;
+                if (option->vm.scale.x < 0.0f)
+                    option->vm.scale.x = -option->vm.scale.x;
+            }
+            else if (option->velocity.x < 0.0f)
+            {
+                option->vm.SetInterrupt(2);
+                option->substate2CC = 1;
+                if (option->vm.scale.x < 0.0f)
+                    option->vm.scale.x = -option->vm.scale.x;
+            }
+            break;
+
+        case 3:
+            if (player->optionHomingTarget != NULL)
+                PlayerOptionHomingToTarget(player, reinterpret_cast<u8 *>(option));
+            if (((player->timerE2AC4 < 0) && ((g_CurFrameInput & 1) == 0)) ||
+                player->optionHomingTarget == NULL)
+            {
+                player->optionHomingTarget = NULL;
+                option->vm.SetInterrupt(1);
+                option->substate2CC = 0;
+            }
+            break;
+
+        default:
+            break;
+        }
+        break;
+
+    case 3:
+        if (option->timer == 0)
+            option->vm.SetInterrupt(5);
+        if (option->timer > 16)
+        {
+            option->state2C8 = 0;
+            option->updateCallback = NULL;
+            option->renderCallback = NULL;
+        }
+        break;
+    }
+    return 0;
+}
+
+// FUNCTION: th08 0x44e770
+#pragma var_order(delta, target, player, option)
+void __fastcall PlayerOptionHomingToPlayer(Player *player, u8 *option)
+{
+    Float3 target;
+    Float3 delta;
+
+    target = player->position;
+    target.y -= 96.0f;
+    if (target.y < 32.0f)
+        target.y = 32.0f;
+
+    delta = target - *reinterpret_cast<Float3 *>(option + 0x2A4);
+    delta /= 16.0f;
+    *reinterpret_cast<Float3 *>(option + 0x2BC) +=
+        (delta - *reinterpret_cast<Float3 *>(option + 0x2BC)) * 0.2f;
+    *reinterpret_cast<Float3 *>(option + 0x2A4) += *reinterpret_cast<Float3 *>(option + 0x2BC);
+
+    if (fabsf(*reinterpret_cast<f32 *>(option + 0x2BC)) < 0.05f)
+        *reinterpret_cast<f32 *>(option + 0x2BC) = 0.0f;
+
+    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AC4) >= 0 &&
+        *reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2ABC) != NULL &&
+        *reinterpret_cast<ZunTimer *>(option + 0x2E0) >= 10)
+    {
+        reinterpret_cast<AnmVmBase *>(option)->SetInterrupt(3);
+        *reinterpret_cast<i32 *>(option + 0x2CC) = 3;
+    }
+    else
+    {
+        *reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2ABC) = NULL;
+    }
+}
+
+// FUNCTION: th08 0x44e8d0
+#pragma var_order(delta, target, player, option)
+void __fastcall PlayerOptionHomingToTarget(Player *player, u8 *option)
+{
+    Float3 target;
+    Float3 delta;
+
+    target = *reinterpret_cast<Float3 *>(
+        reinterpret_cast<u8 *>(*reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2ABC)) + 0x2D88);
+    target.y += 32.0f;
+    if (target.y < 32.0f)
+        target.y = 32.0f;
+
+    delta = target - *reinterpret_cast<Float3 *>(option + 0x2A4);
+    delta /= 16.0f;
+    *reinterpret_cast<Float3 *>(option + 0x2BC) +=
+        (delta - *reinterpret_cast<Float3 *>(option + 0x2BC)) * 0.2f;
+    *reinterpret_cast<Float3 *>(option + 0x2A4) += *reinterpret_cast<Float3 *>(option + 0x2BC);
+
+    if (fabsf(*reinterpret_cast<f32 *>(option + 0x2BC)) < 0.05f)
+        *reinterpret_cast<f32 *>(option + 0x2BC) = 0.0f;
+}
+
+// FUNCTION: th08 0x44e9e0
+i32 __fastcall PlayerRoute2OptionRender(Player *, u8 *option)
+{
+    reinterpret_cast<AnmVm *>(option)->pos.x =
+        g_ItemAnmManagerScreenShakeOffset.x + *reinterpret_cast<f32 *>(option + 0x2A4);
+    reinterpret_cast<AnmVm *>(option)->pos.y =
+        g_ItemAnmManagerScreenShakeOffset.y + *reinterpret_cast<f32 *>(option + 0x2A8);
+    reinterpret_cast<AnmVm *>(option)->pos.z = 0.49f;
+    g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(option));
+    return 0;
+}
+// FUNCTION: th08 0x44ea40
+i32 __fastcall FUN_0044ea40(Player *player, PlayerOptionState *option)
+{
+    switch (option->state2C8)
+    {
+    case 1:
+        player->anmFile->SetAndExecuteScriptIdx(&option->vm, 29);
+        option->state2C8 = 2;
+        // Fall through: the option starts following immediately.
+    case 2:
+        if (player->bombState.frameStop == 0)
+        {
+            option->position = player->position;
+            option->position.y -= 32.0f;
+        }
+        break;
+
+    case 3:
+        option->position = player->position;
+        option->position.y -= 32.0f;
+        if (option->timer == 0)
+            option->vm.SetInterrupt(5);
+        if (option->timer > 16)
+        {
+            option->state2C8 = 0;
+            option->updateCallback = NULL;
+            option->renderCallback = NULL;
+        }
+        break;
+    }
+    return 0;
+}
+
+// FUNCTION: th08 0x44eb70
+i32 __fastcall FUN_0044eb70(Player *player, PlayerOptionState *option)
+{
+    switch (option->state2C8)
+    {
+    case 1:
+        player->anmFile->SetAndExecuteScriptIdx(&option->vm, 24);
+        option->state2C8 = 2;
+        option->target = player->position;
+        switch (option->optionIndex)
+        {
+        case 0:
+            option->target.x -= 30.0f;
+            option->target.y -= 16.0f;
+            option->orbitAngle = 0.0f;
+            break;
+        case 1:
+            option->target.x -= 10.0f;
+            option->target.y -= 32.0f;
+            option->orbitAngle = ZUN_PI;
+            break;
+        case 2:
+            option->target.x += 10.0f;
+            option->target.y -= 32.0f;
+            option->orbitAngle = 0.0f;
+            break;
+        case 3:
+            option->target.x += 30.0f;
+            option->target.y -= 16.0f;
+            option->orbitAngle = ZUN_PI;
+            break;
+        default:
+            break;
+        }
+        // Fall through to update the orbit immediately.
+    case 2:
+        if (option->timer > 12)
+        {
+            switch (option->optionIndex)
+            {
+            case 0:
+                option->orbitAngle = AddNormalizeAngle(option->orbitAngle, 0.02617993950843811f);
+                break;
+            case 1:
+                option->orbitAngle = AddNormalizeAngle(option->orbitAngle, -0.03490658476948738f);
+                break;
+            case 2:
+                option->orbitAngle = AddNormalizeAngle(option->orbitAngle, 0.03490658476948738f);
+                break;
+            case 3:
+                option->orbitAngle = AddNormalizeAngle(option->orbitAngle, -0.02617993950843811f);
+                break;
+            default:
+                break;
             }
         }
-    }
+        option->position.FromAngleMagnitude(option->orbitAngle, 8.0f);
+        option->position += option->target;
+        break;
 
-    if (*reinterpret_cast<i8 *>(this) == 2 || *reinterpret_cast<i8 *>(this) == 1)
-    {
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) = -1;
+    case 3:
+        if (option->timer == 0)
+            option->vm.SetInterrupt(5);
+        if (option->timer > 16)
+        {
+            option->state2C8 = 0;
+            option->updateCallback = NULL;
+            option->renderCallback = NULL;
+        }
+        break;
     }
-
     return 0;
 }
 
@@ -4791,11 +2315,329 @@ processEntry:
     }
 }
 
+// FUNCTION: th08 0x451150
+#pragma var_order(i, slot, this)
+void Player::FUN_00451150()
+{
+    u8 *slot;
+    i32 i;
+
+    if ((*reinterpret_cast<u32 *>(0x164D0B4) >> 10) & 1)
+    {
+        return;
+    }
+
+    slot = reinterpret_cast<u8 *>(this) + 0xBE838;
+    for (i = 0; i < 0x80; i++, slot += 0x484)
+    {
+        if (*reinterpret_cast<i16 *>(slot + 0x462) == 0)
+        {
+            continue;
+        }
+
+        if (*reinterpret_cast<u32 *>(slot + 0x474) != 0)
+        {
+            if (reinterpret_cast<i32 (__fastcall *)(Player *, u8 *)>(*reinterpret_cast<u32 *>(slot + 0x474))(this, slot) != 0)
+            {
+                *reinterpret_cast<i16 *>(slot + 0x462) = 0;
+                continue;
+            }
+        }
+
+        reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[0] +=
+            *reinterpret_cast<f32 *>(0x17CE8E0) * *reinterpret_cast<f32 *>(slot + 0x43C);
+        reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[1] +=
+            *reinterpret_cast<f32 *>(0x17CE8E0) * *reinterpret_cast<f32 *>(slot + 0x440);
+
+        if (*reinterpret_cast<i16 *>(slot + 0x464) != 4 && *reinterpret_cast<i16 *>(slot + 0x464) != 5)
+        {
+            if (!g_GameManager.IsWithinPlayfield(
+                    reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[0],
+                    reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[1],
+                    *reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(slot + 0x224) + 0x34),
+                    *reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(slot + 0x224) + 0x30)))
+            {
+                *reinterpret_cast<i16 *>(slot + 0x462) = 0;
+            }
+        }
+
+        if (g_AnmManager->ExecuteScript(reinterpret_cast<AnmVm *>(slot)) != ZUN_SUCCESS)
+        {
+            *reinterpret_cast<i16 *>(slot + 0x462) = 0;
+        }
+        (*reinterpret_cast<ZunTimer *>(slot + 0x454))++;
+    }
+}
+// FUNCTION: th08 0x4512f0
+#pragma var_order(i, slot, this)
+void Player::FUN_004512f0()
+{
+    u8 *slot;
+    i32 i;
+
+    slot = reinterpret_cast<u8 *>(this) + 0xBE838;
+    for (i = 0; i < 0x80; i++, slot += 0x484)
+    {
+        if (*reinterpret_cast<i16 *>(slot + 0x462) != 1)
+        {
+            continue;
+        }
+        if (*reinterpret_cast<i16 *>(slot + 0x1FC) != 0)
+        {
+            reinterpret_cast<AnmVm *>(slot)->SetZRotation(*reinterpret_cast<f32 *>(slot + 0x450));
+        }
+        *reinterpret_cast<f32 *>(slot + 0x208) = g_ItemAnmManagerScreenShakeOffset.x + *reinterpret_cast<f32 *>(slot + 0x2A4);
+        *reinterpret_cast<f32 *>(slot + 0x20C) = g_ItemAnmManagerScreenShakeOffset.y + *reinterpret_cast<f32 *>(slot + 0x2A8);
+        *reinterpret_cast<f32 *>(slot + 0x210) = 0.4f;
+        if (*reinterpret_cast<i8 *>(slot + 0x470) != 0)
+        {
+            *reinterpret_cast<u8 *>(slot + 0x1F2) = 0xff;
+            *reinterpret_cast<u8 *>(slot + 0x1F1) = 0x40;
+            *reinterpret_cast<u8 *>(slot + 0x1F0) = 0x40;
+        }
+        g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(slot));
+        if (*reinterpret_cast<u32 *>(slot + 0x478) != 0)
+        {
+            reinterpret_cast<void (__fastcall *)(Player *, u8 *)>(*reinterpret_cast<u32 *>(slot + 0x478))(this, slot);
+        }
+    }
+}
+
+// FUNCTION: th08 0x451400
+#pragma var_order(i, slot, this)
+void Player::FUN_00451400()
+{
+    u8 *slot;
+    i32 i;
+
+    slot = reinterpret_cast<u8 *>(this) + 0xBE838;
+    for (i = 0; i < 0x80; i++, slot += 0x484)
+    {
+        if (*reinterpret_cast<i16 *>(slot + 0x462) != 2)
+        {
+            continue;
+        }
+        if (*reinterpret_cast<i16 *>(slot + 0x1FC) != 0)
+        {
+            reinterpret_cast<AnmVm *>(slot)->SetZRotation(*reinterpret_cast<f32 *>(slot + 0x450));
+        }
+        *reinterpret_cast<f32 *>(slot + 0x208) = g_ItemAnmManagerScreenShakeOffset.x + *reinterpret_cast<f32 *>(slot + 0x2A4);
+        *reinterpret_cast<f32 *>(slot + 0x20C) = g_ItemAnmManagerScreenShakeOffset.y + *reinterpret_cast<f32 *>(slot + 0x2A8);
+        *reinterpret_cast<f32 *>(slot + 0x210) = 0.2f;
+        if (*reinterpret_cast<i8 *>(slot + 0x470) != 0)
+        {
+            *reinterpret_cast<u8 *>(slot + 0x1F2) = 0xff;
+            *reinterpret_cast<u8 *>(slot + 0x1F1) = 0x40;
+            *reinterpret_cast<u8 *>(slot + 0x1F0) = 0x40;
+        }
+        g_AnmManager->DrawPlayerBullet(reinterpret_cast<AnmVm *>(slot));
+    }
+}
+// FUNCTION: th08 0x451500
+i32 Player::FUN_00451500()
+{
+    if (*reinterpret_cast<i32 *>(0x164D2C8) < 20)
+    {
+        return 0;
+    }
+
+    if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) < 0)
+    {
+        return 0;
+    }
+
+    if (this->FUN_00451d50())
+    {
+        return 0;
+    }
+
+    if (reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4)->FUN_0040d3d0())
+    {
+        if (*reinterpret_cast<i32 *>(0x17D6ED4) == 0 ||
+            (*reinterpret_cast<u8 *>(0x164D0B1) != 1 && *reinterpret_cast<u8 *>(0x164D0B1) != 7 &&
+             *reinterpret_cast<u8 *>(0x164D0B1) != 6))
+        {
+            this->FUN_00450f60((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4));
+        }
+    }
+
+    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4))++;
+
+    if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) >= 20)
+    {
+        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) = -1;
+    }
+
+    if ((*reinterpret_cast<u16 *>(0x164D52C) & 1) != 0)
+    {
+        if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) < 0)
+        {
+            if (!g_Gui.IsDialogPresent())
+            {
+                *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) = 0;
+            }
+        }
+    }
+
+    if (*reinterpret_cast<i8 *>(this) == 2 || *reinterpret_cast<i8 *>(this) == 1)
+    {
+        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) = -1;
+    }
+
+    return 0;
+}
+
 // FUNCTION: th08 0x451640
 void Player::FUN_00451640()
 {
     if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) < 0)
         *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) = 0;
+}
+
+// FUNCTION: th08 0x451670
+#pragma var_order(bullet, i, enemyBottomRight, savedRotation, bulletBottomRight, enemyTopLeft, damage, region, bulletTopLeft)
+i32 Player::FUN_00451670(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccumulator, i32 *bombHit)
+{
+    Float3 enemyTopLeft;
+    Float3 enemyBottomRight;
+    Float3 bulletTopLeft;
+    Float3 bulletBottomRight;
+    i32 damage;
+    i32 i;
+    i32 savedRotation;
+    PlayerUnkStruct0x40 *region;
+    PlayerShot *bullet;
+
+    damage = 0;
+    if (!reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4)->FUN_0040d3d0())
+        return 0;
+
+    PlayerBuildAabb(&enemyTopLeft, &enemyBottomRight, enemyPosition, enemySize);
+    bullet = reinterpret_cast<PlayerShot *>(reinterpret_cast<u8 *>(this) + 0xBE838);
+    if (bombHit != NULL)
+        *bombHit = 0;
+
+    for (i = 0; i < 128; i++, bullet++)
+    {
+        if (bullet->state == 0 || (bullet->state != 1 && bullet->type != 3))
+            continue;
+
+        PlayerBuildAabb(&bulletTopLeft, &bulletBottomRight, &bullet->position, &bullet->hitboxSize);
+        if (bulletTopLeft.y > enemyBottomRight.y || bulletTopLeft.x > enemyBottomRight.x ||
+            bulletBottomRight.y < enemyTopLeft.y || bulletBottomRight.x < enemyTopLeft.x)
+            continue;
+
+        if ((bullet->type == 4 || bullet->type == 5) && (bullet->timer % 2) != 0)
+            continue;
+        if (bullet->collisionCallback != NULL && bullet->collisionCallback(this, bullet, enemyPosition))
+            continue;
+
+        if (this->bombState.frameStop == 0)
+            damage += bullet->damage;
+        else
+            damage += bullet->damage / 5 ? bullet->damage / 5 : 1;
+
+        while (*hitAccumulator >= g_Player.damageAccumulatorThreshold)
+        {
+            if (g_GameManager.GaugeIsExtremelyHuman())
+            {
+                if (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(bullet->shtEntry) + 0x1E) < 0)
+                    g_ItemManager.SpawnItem(&bullet->position, static_cast<ItemType>(7), 3);
+            }
+            *hitAccumulator -= g_Player.damageAccumulatorThreshold;
+        }
+
+        if (bullet->type != 4 && bullet->type != 5 && bullet->type != 6)
+        {
+            if (bullet->state == 1)
+            {
+                savedRotation = *reinterpret_cast<i32 *>(&bullet->vm.rotation.z);
+                this->anmFile->SetAndExecuteScriptIdx(&bullet->vm, bullet->animationIndex + 11);
+                *reinterpret_cast<i32 *>(&bullet->vm.rotation.z) = savedRotation;
+                g_EffectManager.SpawnEffect(5, reinterpret_cast<D3DXVECTOR3 *>(&bullet->position), 1, -1);
+                bullet->position.operator float *()[2] = 0.1f;
+            }
+            bullet->state = 2;
+            if (bullet->type != 3)
+            {
+                bullet->velocity.x /= 8.0f;
+                bullet->velocity.y /= 8.0f;
+            }
+        }
+    }
+
+    *hitAccumulator += damage > 50 ? 50 : damage;
+
+    {
+        region = this->playerSlotsB;
+        for (i = 0; i < 192; i++, region++)
+        {
+            if (!region->active)
+                continue;
+            if ((region->lifetime % region->collisionInterval) != 0)
+                continue;
+
+            if (region->radius == 0.0f)
+            {
+                if (region->angle == 0.0f)
+                {
+                    if (region->center.x - region->size.x / 2.0f > enemyBottomRight.x ||
+                        region->center.x + region->size.x / 2.0f < enemyTopLeft.x ||
+                        region->center.y - region->size.y / 2.0f > enemyBottomRight.y ||
+                        region->center.y + region->size.y / 2.0f < enemyTopLeft.y)
+                        continue;
+                }
+                else
+                {
+                    bulletTopLeft.x = enemyPosition->x - region->center.x;
+                    bulletTopLeft.y = enemyPosition->y - region->center.y;
+                    Rotate(&bulletBottomRight, &bulletTopLeft, -region->angle);
+                    if (-region->size.x / 2.0f > enemySize->x / 2.0f + bulletBottomRight.x ||
+                        region->size.x / 2.0f < bulletBottomRight.x - enemySize->x / 2.0f ||
+                        -region->size.y / 2.0f > enemySize->y / 2.0f + bulletBottomRight.y ||
+                        region->size.y / 2.0f < bulletBottomRight.y - enemySize->y / 2.0f)
+                        continue;
+                }
+            }
+            else if (region->radius * region->radius <
+                     (region->center.x - enemyPosition->x) * (region->center.x - enemyPosition->x) +
+                         (region->center.y - enemyPosition->y) * (region->center.y - enemyPosition->y))
+            {
+                continue;
+            }
+
+            damage += region->damage;
+            region->hitAccumulator += region->damage;
+            if (region->hitCap > 0 && region->hitCap <= region->hitAccumulator)
+            {
+                region->damage = 0;
+                damage -= region->hitAccumulator - region->hitCap;
+            }
+
+            if (region->mode == 0 && (++*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0xE2A94) % 4) == 0)
+            {
+                if (i < 192)
+                    g_EffectManager.SpawnEffect(3, reinterpret_cast<D3DXVECTOR3 *>(enemyPosition), 1, -1);
+                else
+                    g_EffectManager.SpawnEffect(5, reinterpret_cast<D3DXVECTOR3 *>(enemyPosition), 1, -1);
+            }
+            if (this->bombState.frameStop != 0 && bombHit != NULL)
+                *bombHit = 1;
+        }
+    }
+
+    if (g_GameManager.GaugeIsExtremelyYoukai() && damage != 0)
+        damage = damage * 106 / 100;
+    return damage;
+}
+
+// FUNCTION: th08 0x451ce0
+void __fastcall PlayerBuildAabb(Float3 *topLeft, Float3 *bottomRight, const Float3 *center, const Float3 *size)
+{
+    topLeft->x = center->x - size->x * 0.5f;
+    topLeft->y = center->y - size->y * 0.5f;
+    bottomRight->x = center->x + size->x * 0.5f;
+    bottomRight->y = center->y + size->y * 0.5f;
 }
 
 // FUNCTION: th08 0x451d50
@@ -4804,547 +2646,4 @@ i32 Player::FUN_00451d50()
     return *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xfdc) != 0 &&
            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xfe0) == 4;
 }
-// FUNCTION: th08 0x44d420
-void Player::FUN_0044d420()
-{
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xE2AA4) = Float3(-999.0f, -999.0f, 0.0f);
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xE2AB0) = Float3(-999.0f, -999.0f, 0.0f);
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2AC0) = 0;
-
-    if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2B8) >= 400.0f)
-    {
-        if (g_AsciiManager.GetGaugeInterrupt() != 2)
-        {
-            if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2B4) < 160.0f)
-            {
-                g_AsciiManager.SetGaugeInterrupt(2);
-                goto doneTop;
-            }
-        }
-
-        if (g_AsciiManager.GetGaugeInterrupt() == 2)
-        {
-            if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2B4) > 160.0f)
-            {
-                g_AsciiManager.SetGaugeInterrupt(3);
-            }
-        }
-
-doneTop:
-        return;
-    }
-
-    if (g_AsciiManager.GetGaugeInterrupt() == 2)
-    {
-        g_AsciiManager.SetGaugeInterrupt(3);
-    }
-}
-// FUNCTION: th08 0x44c390
-ChainCallbackResult Player::OnUpdate(Player *player)
-{
-    if (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x2C) != 0)
-    {
-        if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xBE834) != 0)
-        {
-            *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(player) + 0xBE834) + 0x1F8) |= 0x80000;
-        }
-        if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xE2B24) != 0)
-        {
-            *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(player) + 0xE2B24) + 0x1F8) |= 0x80000;
-        }
-        return CHAIN_CALLBACK_RESULT_CONTINUE;
-    }
-    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xBE834) != 0)
-    {
-        *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(player) + 0xBE834) + 0x1F8) &= 0xfff7ffff;
-    }
-    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xE2B24) != 0)
-    {
-        *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(player) + 0xE2B24) + 0x1F8) &= 0xfff7ffff;
-    }
-    player->FUN_0044c5b0();
-    player->FUN_0044c650();
-    if (player->playerState == PLAYER_STATE_DYING)
-    {
-        if (player->FUN_0044cbf0() != 0)
-        {
-            goto updateD180;
-        }
-    }
-    else if (player->playerState == PLAYER_STATE_SPAWNING)
-    {
-updateD180:
-        player->FUN_0044d180();
-    }
-    player->FUN_0044d2c0();
-    if (player->playerState != PLAYER_STATE_DYING && player->playerState != PLAYER_STATE_SPAWNING)
-    {
-        player->FUN_0044aec0();
-    }
-    g_AnmManager->ExecuteScript(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(player) + 0x10));
-    player->FUN_00451150();
-    player->FUN_00451500();
-    player->FUN_0044d420();
-    if (!g_Gui.IsDialogPresent())
-    {
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE10) += 1;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE14) += 1;
-        if (g_GameManager.GaugeIsExtremelyHuman())
-        {
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE1C) += 1;
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE24) += 1;
-            g_GameManager.AddScore(100);
-        }
-        else if (g_GameManager.GaugeIsExtremelyYoukai())
-        {
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE18) += 1;
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE20) += 1;
-            g_GameManager.AddScore(100);
-        }
-    }
-    return CHAIN_CALLBACK_RESULT_CONTINUE;
-}
-
-#pragma var_order(index, slot)
-// FUNCTION: th08 0x44c5b0
-void Player::FUN_0044c5b0()
-{
-    PlayerUnkStruct0x40 *slot = this->playerSlotsB;
-    i32 index;
-
-    for (index = 0; index < 384; index++, slot++)
-    {
-        if (slot->lifetime < 0)
-            continue;
-
-        slot->lifetime--;
-        slot->radius += slot->radiusGrowth;
-        slot->size.x += slot->sizeGrowth.x;
-        slot->size.y += slot->sizeGrowth.y;
-
-        if (slot->lifetime <= 0)
-            slot->Deactivate();
-    }
-}
-
-// FUNCTION: th08 0x44d530
-#pragma var_order(i, this)
-ChainCallbackResult Player::OnDrawHighPrio(Player *player)
-{
-    u32 i;
-
-    player->FUN_004512f0();
-
-    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xFDC) != 0)
-    {
-        reinterpret_cast<void (__fastcall *)(Player *)>(
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) +
-                                      (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xFE0) * 4) +
-                                      0x1014))(player);
-    }
-
-    if (*reinterpret_cast<u8 *>(0x164D0BB) == 0)
-    {
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x218) =
-            g_ItemAnmManagerScreenShakeOffset.x + *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x2B4);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x21C) =
-            g_ItemAnmManagerScreenShakeOffset.y + *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x2B8);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x220) = 0.1f;
-        g_AnmManager->DrawNoRotation(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(player) + 0x10));
-    }
-
-    for (i = 0; i < 4; i++)
-    {
-        if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + i * 0x2F4 + 0x6FC) != 0)
-        {
-            reinterpret_cast<void (__fastcall *)(Player *, u8 *)>(
-                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + i * 0x2F4 + 0x6FC))(
-                player, reinterpret_cast<u8 *>(player) + i * 0x2F4 + 0x40C);
-        }
-    }
-
-    return CHAIN_CALLBACK_RESULT_CONTINUE;
-}
-
-// FUNCTION: th08 0x44d630
-ChainCallbackResult Player::OnDrawLowPrio(Player *player)
-{
-    player->FUN_00451400();
-    return CHAIN_CALLBACK_RESULT_CONTINUE;
-}
-
-// FUNCTION: th08 0x44d2c0
-void Player::FUN_0044d2c0()
-{
-    if (this->playerStateSlotCooldown != 0)
-    {
-        this->playerStateSlotCooldown--;
-        this->FUN_0044de60(&this->position, 768.0f, 896.0f, -1, 0);
-    }
-
-    if (this->playerState == PLAYER_STATE_DEAD)
-    {
-        this->stateFlag = false;
-
-        if (this->stateEffect != NULL)
-            this->stateEffect->position = this->position;
-
-        this->timer--;
-        if ((i32)this->timer <= 0)
-        {
-            if (this->stateEffect != NULL)
-            {
-                this->stateEffect->active = false;
-                this->stateEffect = NULL;
-            }
-
-            this->playerState = PLAYER_STATE_ALIVE;
-            this->timer = 0;
-            this->mainVm.color1.d3dColor = -1;
-        }
-        else if ((i32)this->timer % 8 < 2)
-        {
-            this->mainVm.color1.d3dColor = 0xfff02020;
-        }
-        else
-        {
-            this->mainVm.color1.d3dColor = -1;
-        }
-    }
-    else
-    {
-        this->timer++;
-    }
-}
-
-// FUNCTION: th08 0x44d650
-#pragma var_order(i, shotSlot, option, m, player)
-ZunResult Player::AddedCallback(Player *player)
-{
-    u32 i;
-    u8 *shotSlot;
-    u8 *option;
-    u32 m;
-
-    if (IsResourceReloadEnabled())
-    {
-        if (Player::LoadShtFile(&player->primaryShtFile, g_Player1ShtFiles[g_TargetByte0164D0B1]) != ZUN_SUCCESS)
-            return ZUN_ERROR;
-        if (Player::LoadShtFile(&player->secondaryShtFile, g_Player2ShtFile[g_TargetByte0164D0B1]) != ZUN_SUCCESS)
-            return ZUN_ERROR;
-        *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC) =
-            g_AnmManager->PreloadAnm(5, g_PlayerAnmFilenames[g_TargetByte0164D0B1]);
-        if (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC) == NULL)
-            return ZUN_ERROR;
-    }
-    else
-    {
-        *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC) = g_AnmManager->GetAnm(5);
-    }
-
-    if (g_TargetByte0164D0B1 < 4 || (g_TargetByte0164D0B1 & 1) == 0)
-        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC))
-            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(player) + 0x10), 0);
-    else
-        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC))
-            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(player) + 0x10), 5);
-
-    player->position.operator float *()[0] = g_PlayerPlayfieldWidth / 2.0f;
-    player->position.operator float *()[1] = g_ItemPlayfieldBottom - 64.0f;
-    player->position.operator float *()[2] = 0.49f;
-
-    for (i = 0; i < 0x180; ++i)
-        reinterpret_cast<PlayerUnkStruct0x40 *>(player->playerSlotsB)[i].Reset();
-
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3D8) =
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0xC) / 2.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3D4) =
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3D8);
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3DC) = 5.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3E4) =
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x10) / 2.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3E0) =
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3E4);
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3E8) = 5.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3F0) =
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x18) / 2.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3EC) =
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3F0);
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3F4) = 5.0f;
-
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2A98) = 0;
-    player->playerState = PLAYER_STATE_SPAWNING;
-    player->timer = g_GameManager.IsSpellPractice() ? 10 : 120;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(player) + 2) = 1;
-
-    shotSlot = reinterpret_cast<u8 *>(player) + 0xBE838;
-    for (i = 0; (i32)i < 0x80; ++i, shotSlot += 0x484)
-        *reinterpret_cast<i16 *>(shotSlot + 0x462) = 0;
-
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AC4) = -1;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AD0) = 0;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AE8) = 0;
-
-    *reinterpret_cast<PlayerBombCallbacks *>(reinterpret_cast<u8 *>(player) + 0x1000) =
-        g_PlayerBombCallbackTable[g_TargetByte0164D0B1 * 2];
-    *reinterpret_cast<PlayerBombCallbacks *>(reinterpret_cast<u8 *>(player) + 0x1014) =
-        g_PlayerBombCallbackTable[g_TargetByte0164D0B1 * 2 + 1];
-
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xFDC) = 0;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xE2B0C) = 0xBFC90FDB;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 1.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 1.0f;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2A68) =
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 8);
-
-    if (IsResourceReloadEnabled())
-        g_AsciiManager.SetGaugeInterrupt(1);
-    g_AsciiManager.FUN_00422bb0(0, 2);
-    g_AsciiManager.FUN_00422bb0(1, 2);
-    g_AsciiManager.FUN_00422bb0(2, 2);
-
-    g_PlayerGaugeBounds[0] = -10000;
-    g_PlayerGaugeBounds[2] = -8000;
-    g_PlayerGaugeBounds[4] = -2000;
-    g_PlayerGaugeBounds[1] = 10000;
-    g_PlayerGaugeBounds[3] = 8000;
-    g_PlayerGaugeBounds[5] = 2000;
-    if (g_TargetByte0164D0B1 == 3)
-    {
-        g_PlayerGaugeBounds[0] = -5000;
-        g_PlayerGaugeBounds[2] = -3000;
-        g_PlayerGaugeBounds[4] = -2000;
-    }
-    else if (g_TargetByte0164D0B1 == 10)
-    {
-        g_PlayerGaugeBounds[0] = -5000;
-        g_PlayerGaugeBounds[2] = -3000;
-        g_PlayerGaugeBounds[4] = -2000;
-        g_PlayerGaugeBounds[1] = 5000;
-        g_PlayerGaugeBounds[3] = 3000;
-        g_PlayerGaugeBounds[5] = 2000;
-    }
-    else if (g_GameManager.IsSoloHuman())
-    {
-        g_PlayerGaugeBounds[1] = 2000;
-        g_PlayerGaugeBounds[3] = 8000;
-        g_PlayerGaugeBounds[5] = 2001;
-    }
-    else if (g_GameManager.IsSoloYoukai())
-    {
-        g_PlayerGaugeBounds[0] = -2000;
-        g_PlayerGaugeBounds[2] = -8000;
-        g_PlayerGaugeBounds[4] = -2001;
-    }
-
-    *reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2B24) = NULL;
-    for (i = 0; i < 16; ++i)
-        *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(player) + 0x2CC + i * 12) = player->position;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(player) + 3) = 2;
-
-    if (g_TargetByte0164D0B1 > 3)
-    {
-        option = reinterpret_cast<u8 *>(player) + 0x40C;
-        for (m = 0; m < 4; ++m, option += 0x2F4)
-        {
-            memset(option, 0, 0x2F4);
-            *reinterpret_cast<void **>(option + 0x2EC) =
-                g_PlayerOptionUpdateCallbacks[g_TargetByte0164D0B1].callbacks[m];
-            *reinterpret_cast<void **>(option + 0x2F0) =
-                g_PlayerOptionRenderCallbacks[g_TargetByte0164D0B1].callbacks[m];
-            if (*reinterpret_cast<void **>(option + 0x2EC) != NULL)
-            {
-                *reinterpret_cast<i32 *>(option + 0x2C8) = 1;
-                *reinterpret_cast<ZunTimer *>(option + 0x2E0) = 0;
-                *reinterpret_cast<i32 *>(option + 0x2D0) = m;
-            }
-            else
-            {
-                *reinterpret_cast<i32 *>(option + 0x2C8) = 0;
-            }
-        }
-    }
-
-    if (g_GameManager.IsSoloHuman())
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2B2C) = 27;
-    else
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2B2C) = 40;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x2E10) =
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2B2C);
-    return ZUN_SUCCESS;
-}
-
-// FUNCTION: th08 0x44dc60
-ZunResult Player::DeletedCallback(Player *player)
-{
-    if (IsBulletManagerAnmReleaseRequired())
-    {
-        g_AnmManager->ReleaseAnm(5);
-        g_AsciiManager.SetGaugeInterrupt(99);
-        g_AsciiManager.FUN_00422bb0(0, 99);
-        g_AsciiManager.FUN_00422bb0(1, 99);
-        g_AsciiManager.FUN_00422bb0(2, 99);
-
-        if (g_PlayerPrimaryShtFile != NULL)
-        {
-            g_ZunMemory.Free(g_PlayerPrimaryShtFile);
-            g_PlayerPrimaryShtFile = NULL;
-        }
-
-        if (g_PlayerSecondaryShtFile != NULL)
-        {
-            g_ZunMemory.Free(g_PlayerSecondaryShtFile);
-            g_PlayerSecondaryShtFile = NULL;
-        }
-    }
-
-    return ZUN_SUCCESS;
-}
-
-#pragma var_order(slot, index)
-// FUNCTION: th08 0x44de60
-PlayerUnkStruct0x40 *Player::FUN_0044de60(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
-{
-    PlayerUnkStruct0x40 *slot = this->playerSlotsC;
-    i32 index;
-
-    for (index = 0; index < 191; index++, slot++)
-    {
-        if (!slot->active)
-            break;
-    }
-
-    slot->Reset();
-    slot->active = true;
-    slot->center.x = center->x;
-    slot->center.y = center->y;
-    slot->size.x = value1;
-    slot->size.y = value2;
-    slot->lifetime = value4;
-    slot->collisionValue = value3;
-
-    return slot;
-}
-
-#pragma var_order(slot, index)
-// FUNCTION: th08 0x44df00
-PlayerUnkStruct0x40 *Player::FUN_0044df00(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
-{
-    PlayerUnkStruct0x40 *slot = this->playerSlotsC;
-    i32 index;
-
-    for (index = 0; index < 191; index++, slot++)
-    {
-        if (!slot->active)
-            break;
-    }
-
-    slot->Reset();
-    slot->active = true;
-    slot->center.x = center->x;
-    slot->center.y = center->y;
-    slot->radius = value1;
-    slot->radiusGrowth = value2;
-    slot->lifetime = value3;
-    slot->collisionValue = value4;
-
-    return slot;
-}
-
-#pragma var_order(slot, index)
-// FUNCTION: th08 0x44dfa0
-PlayerUnkStruct0x40 *Player::FUN_0044dfa0(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
-{
-    PlayerUnkStruct0x40 *slot = this->playerSlotsB;
-    i32 index;
-
-    for (index = 0; index < 191; index++, slot++)
-    {
-        if (!slot->active)
-            break;
-    }
-
-    slot->Reset();
-    slot->active = true;
-    slot->center.x = center->x;
-    slot->center.y = center->y;
-    slot->size.x = value1;
-    slot->size.y = value2;
-    slot->lifetime = value4;
-    slot->damage = value3;
-
-    return slot;
-}
-
-#pragma var_order(slot, index)
-// FUNCTION: th08 0x44e040
-PlayerUnkStruct0x40 *Player::FUN_0044e040(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
-{
-    PlayerUnkStruct0x40 *slot = this->playerSlotsB;
-    i32 index;
-
-    for (index = 0; index < 191; index++, slot++)
-    {
-        if (!slot->active)
-            break;
-    }
-
-    slot->Reset();
-    slot->active = true;
-    slot->center.x = center->x;
-    slot->center.y = center->y;
-    slot->radius = value1;
-    slot->radiusGrowth = value2;
-    slot->lifetime = value4;
-    slot->damage = value3;
-
-    return slot;
-}
-
-void Player::CutChain()
-{
-    g_Chain.Cut(g_PlayerCalcChain);
-    g_PlayerCalcChain = NULL;
-    g_Chain.Cut(g_PlayerDrawChainHighPrio);
-    g_PlayerDrawChainHighPrio = NULL;
-    g_Chain.Cut(g_PlayerDrawChainLowPrio);
-    g_PlayerDrawChainLowPrio = NULL;
-}
-
-// FUNCTION: th08 0x44dd70
-#pragma var_order(i, entry, header, path)
-ZunResult Player::LoadShtFile(PlayerRawShtFile **header, const char *path)
-{
-    i32 i;
-    u8 *entry;
-
-    *header = reinterpret_cast<PlayerRawShtFile *>(FileSystem::OpenFile(path, NULL, 0));
-    if (*header == NULL)
-    {
-        return ZUN_ERROR;
-    }
-
-    for (i = 0; i < *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(*header) + 0x2); i++)
-    {
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(*header) + i * 8 + 0x38) +=
-            reinterpret_cast<u32>(*header);
-        entry = *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(*header) + i * 8 + 0x38);
-
-        while (*reinterpret_cast<i16 *>(entry) >= 0)
-        {
-            *reinterpret_cast<u32 *>(entry + 0x28) =
-                *reinterpret_cast<u32 *>(0x4C7EE0 + *reinterpret_cast<u32 *>(entry + 0x28) * 4);
-            *reinterpret_cast<u32 *>(entry + 0x2C) =
-                *reinterpret_cast<u32 *>(0x4C7F04 + *reinterpret_cast<u32 *>(entry + 0x2C) * 4);
-            *reinterpret_cast<u32 *>(entry + 0x30) =
-                *reinterpret_cast<u32 *>(0x4C7F1C + *reinterpret_cast<u32 *>(entry + 0x30) * 4);
-            *reinterpret_cast<u32 *>(entry + 0x34) =
-                *reinterpret_cast<u32 *>(0x4C7F24 + *reinterpret_cast<u32 *>(entry + 0x34) * 4);
-            entry += 0x38;
-        }
-    }
-
-    return ZUN_SUCCESS;
-}
-
 } /* namespace th08 */

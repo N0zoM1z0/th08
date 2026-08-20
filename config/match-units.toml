@@ -54370,7 +54370,7 @@ target = 0x00406e50
 # Evidence: source-emitted member in Player.cpp.
 [[units]]
 name = "player-is-youkai"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "th08::Player::IsYoukai"
 target_address = 0x0040BC40
 size = 0x12
@@ -62508,7 +62508,7 @@ target = 0x004065F0
 
 [[units]]
 name = "zun-timer-fun-0040d3d0"
-object = "build/Player.obj"
+object = "build/PlayerBomb.obj"
 symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
 target_address = 0x0040D3D0
 size = 0x1B
@@ -63844,7 +63844,7 @@ size = 0x9D
 # Evidence: natural !isYoukai implementation reproduces target bytes exactly.
 [[units]]
 name = "player-is-human"
-object = "build/Player.obj"
+object = "build/PlayerBomb.obj"
 symbol = "?IsHuman@Player@th08@@QAEHXZ"
 target_address = 0x0040BC20
 size = 0x17
@@ -91507,7 +91507,7 @@ target = 0x004B847C
 
 [[units]]
 name = "zun-timer-modulo"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "??LZunTimer@th08@@QAEHH@Z"
 target_address = 0x0040D410
 size = 0x19
@@ -91954,7 +91954,7 @@ target = 0x004065A0
 
 [[units]]
 name = "player-bomb-background-color"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
 target_address = 0x0040BC60
 size = 0x1C2
@@ -92040,7 +92040,7 @@ target = 0x004E4030
 
 [[units]]
 name = "player-bomb-draw-white-flash"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_00412300@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00412300
 size = 0xCF
@@ -92090,7 +92090,7 @@ target = 0x0045B1E0
 
 [[units]]
 name = "player-bomb-draw-red-flash"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_00412fa0@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00412FA0
 size = 0xCF
@@ -92139,7 +92139,7 @@ target = 0x0045B1E0
 
 [[units]]
 name = "player-bomb-callback-0040c820"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040c820@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040C820
 size = 0xE6
@@ -92183,7 +92183,7 @@ target = 0x00462FF0
 
 [[units]]
 name = "player-bomb-callback-0040d010"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040d010@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040D010
 size = 0xE9
@@ -92227,7 +92227,7 @@ target = 0x00462FF0
 
 [[units]]
 name = "player-bomb-callback-0040d310"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040d310@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040D310
 size = 0x79
@@ -92259,7 +92259,7 @@ target = 0x0040BC60
 
 [[units]]
 name = "player-bomb-callback-0040d950"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040d950@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040D950
 size = 0x18
@@ -92273,7 +92273,7 @@ target = 0x0040BC60
 
 [[units]]
 name = "player-bomb-callback-0040dee0"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040dee0@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040DEE0
 size = 0x15D
@@ -92341,7 +92341,7 @@ target = 0x0040BC60
 
 [[units]]
 name = "player-bomb-callback-0040e610"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040e610@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040E610
 size = 0x16A
@@ -92427,7 +92427,7 @@ target = 0x00463210
 
 [[units]]
 name = "player-bomb-callback-0040f550"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040f550@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040F550
 size = 0x18
@@ -92441,7 +92441,7 @@ target = 0x0040BC60
 
 [[units]]
 name = "player-bomb-callback-0040fcb0"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040fcb0@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040FCB0
 size = 0x18
@@ -92455,7 +92455,7 @@ target = 0x0040BC60
 
 [[units]]
 name = "player-bomb-callback-00410300"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_00410300@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00410300
 size = 0xE1
@@ -92499,7 +92499,7 @@ target = 0x00463210
 
 [[units]]
 name = "player-bomb-callback-00410ac0"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_00410ac0@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00410AC0
 size = 0xE1
@@ -92543,7 +92543,7 @@ target = 0x00463210
 
 [[units]]
 name = "player-bomb-callback-004113a0"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_004113a0@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x004113A0
 size = 0x139
@@ -92616,7 +92616,7 @@ target = 0x00463210
 
 [[units]]
 name = "player-bomb-common-init"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target_address = 0x0040BE30
 size = 0xC2
@@ -92660,7 +92660,7 @@ target = 0x004413E0
 
 [[units]]
 name = "player-bomb-state-effect"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "th08::Player::FUN_0040bf00"
 target_address = 0x0040BF00
 size = 0x108
@@ -92698,7 +92698,7 @@ target = 0x004B438C
 
 [[units]]
 name = "player-bomb-callback-0040e3b0"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040e3b0@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040E3B0
 size = 0x258
@@ -92838,7 +92838,7 @@ target = 0x00462310
 
 [[units]]
 name = "player-bomb-callback-00413890"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_00413890@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00413890
 size = 0xF1
@@ -92888,7 +92888,7 @@ target = 0x00463210
 
 [[units]]
 name = "player-bomb-callback-004142c0"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_004142c0@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x004142C0
 size = 0xF4
@@ -92937,7 +92937,7 @@ target = 0x00463210
 
 [[units]]
 name = "player-bomb-callback-0040d100"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040d100@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040D100
 size = 0x209
@@ -93143,7 +93143,7 @@ target = 0x018B8A28
 
 [[units]]
 name = "zun-timer-just-reached"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
 target_address = 0x0040E350
 size = 0x3A
@@ -93151,7 +93151,7 @@ size = 0x3A
 
 [[units]]
 name = "player-bomb-callback-00410c40"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_00410c40@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00410C40
 size = 0x39A
@@ -93380,7 +93380,7 @@ target = 0x00462310
 
 [[units]]
 name = "player-bomb-callback-00410fe0"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_00410fe0@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00410FE0
 size = 0x3BF
@@ -93629,7 +93629,7 @@ size = 0x160
 
 [[units]]
 name = "player-bomb-effect-update-004114e0"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_004114e0@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x004114E0
 size = 0x237
@@ -93817,7 +93817,7 @@ target = 0x0044DE60
 
 [[units]]
 name = "player-bomb-effect-init-00411720"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_00411720@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x00411720
 size = 0x8B
@@ -93843,7 +93843,7 @@ target = 0x004114E0
 
 [[units]]
 name = "player-bomb-effect-update-004117b0"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_004117b0@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x004117B0
 size = 0x2C4
@@ -94055,7 +94055,7 @@ target = 0x0044DE60
 
 [[units]]
 name = "player-bomb-effect-init-00411a80"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_00411a80@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x00411A80
 size = 0x8B
@@ -94080,7 +94080,7 @@ target = 0x004117B0
 
 [[units]]
 name = "player-bomb-callback-00411b10"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_00411b10@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00411B10
 size = 0x7F0
@@ -94543,7 +94543,7 @@ target = 0x0040E350
 
 [[units]]
 name = "player-bomb-callback-004123d0"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_004123d0@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x004123D0
 size = 0xBC8
@@ -95222,7 +95222,7 @@ target = 0x0040E350
 
 [[units]]
 name = "zun-timer-periodic"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040ebc0@ZunTimer@th08@@QAEIH@Z"
 target_address = 0x0040EBC0
 size = 0x3D
@@ -95230,7 +95230,7 @@ size = 0x3D
 
 [[units]]
 name = "player-bomb-callback-00413140"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_00413140@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00413140
 size = 0x743
@@ -95478,7 +95478,7 @@ target = 0x0045EA00
 
 [[units]]
 name = "player-bomb-callback-00413990"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_00413990@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00413990
 size = 0x928
@@ -95815,7 +95815,7 @@ target = 0x0045EA00
 
 [[units]]
 name = "anm-vm-fun-0040eb50"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040eb50@AnmVm@th08@@QAEHXZ"
 target_address = 0x0040EB50
 size = 0x70
@@ -95835,7 +95835,7 @@ target = 0x004B42C8
 
 [[units]]
 name = "anm-vm-fun-0040ec30"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040ec30@AnmVm@th08@@QAEXHHPAUFloat3@2@0@Z"
 target_address = 0x0040EC30
 size = 0x70
@@ -95855,7 +95855,7 @@ target = 0x004065F0
 
 [[units]]
 name = "anm-vm-fun-0040eca0"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040eca0@AnmVm@th08@@QAEXHHII@Z"
 target_address = 0x0040ECA0
 size = 0xAE
@@ -95875,7 +95875,7 @@ target = 0x004065F0
 
 [[units]]
 name = "anm-vm-fun-0040ed50"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040ed50@AnmVm@th08@@QAEXHHHH@Z"
 target_address = 0x0040ED50
 size = 0x50
@@ -95895,7 +95895,7 @@ target = 0x004065F0
 
 [[units]]
 name = "anm-vm-fun-0040eda0"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040eda0@AnmVm@th08@@QAEXHHPAUFloat2@2@0@Z"
 target_address = 0x0040EDA0
 size = 0x69
@@ -95914,7 +95914,7 @@ target = 0x004065F0
 
 [[units]]
 name = "player-bomb-callback-0040c010"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040c010@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040C010
 size = 0x795
@@ -96209,7 +96209,7 @@ target = 0x0045EA00
 
 [[units]]
 name = "player-bomb-callback-0040c910"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040c910@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040C910
 size = 0x6FE
@@ -96552,7 +96552,7 @@ target = 0x0045EA00
 
 [[units]]
 name = "player-bomb-callback-0040d430"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040d430@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040D430
 size = 0x517
@@ -96956,7 +96956,7 @@ target = 0x004065F0
 
 [[units]]
 name = "player-bomb-callback-0040d970"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040d970@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040D970
 size = 0x56E
@@ -97389,7 +97389,7 @@ target = 0x004065F0
 
 [[units]]
 name = "player-bomb-callback-0040e780"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040e780@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040E780
 size = 0x3C8
@@ -97630,7 +97630,7 @@ target = 0x00462310
 
 [[units]]
 name = "player-bomb-callback-0040ee10"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040ee10@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040EE10
 size = 0x73D
@@ -98034,7 +98034,7 @@ target = 0x004065F0
 
 [[units]]
 name = "player-bomb-callback-0040f570"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040f570@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040F570
 size = 0x73D
@@ -98437,7 +98437,7 @@ target = 0x004065F0
 
 [[units]]
 name = "player-bomb-callback-0040fcd0"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040fcd0@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040FCD0
 size = 0x625
@@ -98775,7 +98775,7 @@ target = 0x00406640
 
 [[units]]
 name = "player-bomb-callback-004103f0"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_004103f0@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x004103F0
 size = 0x677
@@ -99136,7 +99136,7 @@ target = 0x00406640
 
 [[units]]
 name = "player-effect-callback-0040e040"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040e040@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x0040E040
 size = 0xD1
@@ -99192,7 +99192,7 @@ target = 0x004B42EC
 
 [[units]]
 name = "player-effect-callback-0040e120"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040e120@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x0040E120
 size = 0xD1
@@ -99248,7 +99248,7 @@ target = 0x004B4438
 
 [[units]]
 name = "player-effect-callback-0040e200"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040e200@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x0040E200
 size = 0xC4
@@ -99304,7 +99304,7 @@ target = 0x004B4438
 
 [[units]]
 name = "player-effect-callback-0040e2d0"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_0040e2d0@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x0040E2D0
 size = 0x77
@@ -99342,7 +99342,7 @@ target = 0x004B4440
 
 [[units]]
 name = "player-effect-callback-00410bb0"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_00410bb0@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x00410BB0
 size = 0x4C
@@ -99356,7 +99356,7 @@ target = 0x004B4300
 
 [[units]]
 name = "player-effect-callback-00413070"
-object = "build/objdiff/reimpl/Player.obj"
+object = "build/objdiff/reimpl/PlayerBomb.obj"
 symbol = "?FUN_00413070@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x00413070
 size = 0xCC

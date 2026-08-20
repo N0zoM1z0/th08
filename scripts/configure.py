@@ -104,6 +104,7 @@ def configure(build_type):
             "AsciiManagerScale": debug_codegen,
             "AsciiManagerGuiMode": debug_codegen,
             "Background": debug_codegen,
+            "PlayerBomb": debug_codegen,
             "SpellCard": debug_codegen,
             "Ending": debug_codegen,
             "EclManager": debug_codegen,
@@ -142,6 +143,7 @@ def configure(build_type):
         cxx_sources = [
             "AsciiManager",
             "Background",
+            "PlayerBomb",
             "SpellCard",  # card.obj
             "Ending",
             "EclManager",
