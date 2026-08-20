@@ -1094,3 +1094,11 @@ address,name,size,status,match_percent,unit,evidence
 0x00404890,th08::RetryMenu::OnUpdate,2482,matching,100.00,stage-menu-retry-update-00404890,python3 scripts/compare-function.py stage-menu-retry-update-00404890 --json
 0x00439BC7,th08::GameManager::OnUpdate,3644,matching,100.00,game-manager-on-update,python3 scripts/compare-function.py game-manager-on-update --json
 0x0046FDC2,th08::DrawPieChart,510,matching,100.00,title-draw-pie-chart-0046fdc2,python3 scripts/compare-function.py title-draw-pie-chart-0046fdc2 --json
+0x00402600,th08::AsciiManager::InitializeVms,372,matching,100.00,accepted-exact-00402600,python3 scripts/compare-function.py accepted-exact-00402600 --json
+0x00405420,th08::AsciiManager::OnDrawHighPrioImpl,2538,matching,100.00,ascii-manager-on-draw-high-prio-impl,python3 scripts/compare-function.py ascii-manager-on-draw-high-prio-impl --json
+0x00406580,th08::Supervisor::IsFogDisabled,26,matching,100.00,main-exact-00406580,python3 scripts/compare-function.py main-exact-00406580 --json
+0x004069F0,th08::AnmLoaded::SetAndExecuteScriptIdx,64,matching,100.00,manual-comdat-exact-004069f0,python3 scripts/compare-function.py manual-comdat-exact-004069f0 --json
+0x00448B16,th08::MusicRoom::ProcessInput,1854,matching,100.00,music-room-roi-exact-00448b16,python3 scripts/compare-function.py music-room-roi-exact-00448b16 --json
+0x0044C390,th08::Player::OnUpdate,529,matching,100.00,player-onupdate,python3 scripts/compare-function.py player-onupdate --json
+0x0045964D,th08::ResultScreen::AddedCallback,2437,matching,100.00,result-screen-roi-exact-0045964d,python3 scripts/compare-function.py result-screen-roi-exact-0045964d --json
+0x00465CC0,th08::AnmManager::LoadTextureData,829,matching,100.00,anm-manager-unblocked-exact-00465cc0,python3 scripts/compare-function.py anm-manager-unblocked-exact-00465cc0 --json

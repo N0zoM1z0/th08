@@ -1699,11 +1699,6 @@ i32 Supervisor::DisableFog()
     return 0;
 }
 
-ZunBool Supervisor::IsFogDisabled()
-{
-    return this->cfg.opts.disableFog;
-}
-
 void Supervisor::SetRenderState(D3DRENDERSTATETYPE renderStateType, int value)
 {
     g_AnmManager->FlushVertexBuffer();

@@ -833,6 +833,30 @@ This corpus attests the natural VC7 emissions for ResultScreen/AnmManager/MidiOu
   --object-name TitleScreen.obj`; a warm selected-object build can otherwise
   replay the obsolete PCH state that caused this regression.
 
+### Canonical relocation identity and header-inline COMDAT ownership
+
+- A match unit can become a false negative even when its instruction bytes and
+  relocation fields still replay exactly. Renaming a recovered function or
+  correcting its return/parameter type changes the decorated COFF symbol stored
+  in `match-units.toml`. Verify the actual object relocation symbol and the
+  target direct-call address, then update the manifest to that exact identity;
+  do not wildcard a decoration or accept by positional bytes alone.
+- This occurred at the callers of
+  `AnmLoaded::SetAndExecuteScriptIdx @ 0x004069F0`, at
+  `Player::FUN_00451500`, `AnmManager::FUN_00463470`, and
+  `AnmManager::CreateTextureFromFile`. After the identity corrections, a cold
+  canonical replay restored seven accepted functions without source changes.
+- A header-inline member may emit an out-of-line COMDAT in more than one `/Od`
+  production TU. `Supervisor::IsFogDisabled @ 0x00406580` belongs to this
+  class: moving its body into `Supervisor.cpp` removed the target-shaped
+  `main.obj` copy and produced a different `/Os` epilogue. Restoring the inline
+  header body gives the target 0x1A `main.obj` COMDAT while the target-proven
+  call from `AsciiManager.obj` remains intact.
+- For this pattern, select the canonical object from detailed production
+  anchors and rebuild from a clean PCH. Verify both the recovered COMDAT and at
+  least one accepted caller before aggregate replay; the object containing a
+  convenient out-of-line definition is not evidence of original TU ownership.
+
 ### Title spell-card cursor comparisons and switch-tail validation
 
 - `TitleScreen::OnUpdateSpellCardSelect @ 0x0046BBC0` carries an 11-entry / 0x2C-byte jump table after its 0xFCF authored body. Canonical validation uses `compare_size = 0xFFB`, so the table relocations replay without inflating authored-byte progress.

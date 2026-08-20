@@ -10,12 +10,12 @@ As cold-built and replayed on 2026-08-20 against the original Japanese TH08
 1.00d target:
 
 - authored source: **1,107 / 1,107 functions**, **459,757 / 459,757 bytes**;
-- strict authored exact: **1,095 / 1,107 functions**, **450,265 / 459,757 bytes**;
+- strict authored exact: **1,103 / 1,107 functions**, **458,914 / 459,757 bytes**;
 - library inventory: **1,119 classified functions**; all **1,119 / 1,119** now have
   mapping sizes totaling **217,165 bytes**; the independent library exact ledger currently accepts **258 functions / 52,707 body bytes**;
 - `config/claims.csv` is header-only;
 - a cold normal VC7 build links `build/th08.exe` successfully;
-- a cold objdiff build followed by full replay passes **1,095 / 1,095**
+- a cold objdiff build followed by full replay passes **1,103 / 1,103**
   accepted units;
 - the whole-image comparator is in place. After the first evidence-backed link
   contract repairs, the rebuild has the target's DLL descriptor order, no debug
@@ -39,10 +39,13 @@ python3 scripts/ci.py
 
 ## Authored exact backlog
 
-Two functions were already deferred and have never been accepted. Do not count
-them as exact or restart broad brute-force matrices without a new target-backed
-hypothesis.
+Four authored functions remain unaccepted. Do not count them as exact or
+restart broad brute-force matrices without a new target-backed hypothesis.
 
+- `AnmVm::SetZRotation @ 0x0040EC00`, 43 bytes: the current natural object is
+  `0x2D` bytes while the target is `0x2B`.
+- `GameManager::CollectExtend @ 0x00439B29`, 158 bytes: the current natural
+  object is `0x8F` bytes while the target is `0x9E`.
 - `ReplayManager::OnUpdateHighPrioDemo2 @ 0x004526C0`, 361 bytes: the natural
   source object is one byte longer and the residual is a register-allocation
   phase difference. Its adjacent callback family is exact.
@@ -50,40 +53,18 @@ hypothesis.
   the same extent; five stack-displacement bytes differ because the target
   frame is `0x40` while the current natural object frame is `0x5C`.
 
-The source for both is present and behaviorally reconstructed. Exact coverage
+The source for all four is present and behaviorally reconstructed. Exact coverage
 will increase only when the canonical comparator returns `exact` for a natural,
 evidence-backed C++ form.
 
-Ten additional rows remain removed from `config/matches.csv` after the cold
-aggregate replay showed that their historical build objects no longer
-reproduced. Their configured units remain in `config/match-units.toml` as
-diagnostic starting points; they are not accepted claims. Four TitleScreen
-regressions from that original batch were restored on 2026-08-20 through a
-cold production-object replay: `DrawSpellStageSelect`, `DrawSpellCardSelect`,
-`ActualAddedCallback`, and `TitleSetupThread`.
-
-| Address | Unit | Cold-build result class |
-| --- | --- | --- |
-| `0x00402600` | `accepted-exact-00402600` | caller bytes/relocations differ |
-| `0x00405420` | `ascii-manager-on-draw-high-prio-impl` | relocation symbol drift |
-| `0x00406580` | `main-exact-00406580` | configured COMDAT absent from `main.obj` |
-| `0x004069F0` | `manual-comdat-exact-004069f0` | configured COMDAT symbol drift |
-| `0x0040EC00` | `anm-vm-set-z-rotation` | object `0x2D`, target `0x2B` |
-| `0x00439B29` | `game-manager-roi-exact-00439b29` | object `0x8F`, target `0x9E` |
-| `0x00448B16` | `music-room-roi-exact-00448b16` | caller bytes/relocations differ |
-| `0x0044C390` | `player-onupdate` | relocation symbol drift |
-| `0x0045964D` | `result-screen-roi-exact-0045964d` | caller bytes/relocations differ |
-| `0x00465CC0` | `anm-manager-unblocked-exact-00465cc0` | relocation symbol drift |
-
-Recheck one without accepting it automatically:
-
-```bash
-python3 scripts/analysis/verify-exact-units.py \
-  --unit UNIT --include-unaccepted --json
-```
-
-Recover these only as bounded future authored tasks. They do not block the
-whole-executable lane below.
+The other twelve cold regressions have been repaired and accepted. Four
+TitleScreen functions required production-source restoration. Seven other
+functions were already byte-exact but had stale relocation identities in
+`match-units.toml`. `Supervisor::IsFogDisabled` required restoring its original
+header-inline definition: VC7 then emits the target `0x1A` COMDAT in
+`main.obj`, while the calling `AsciiManager` function remains exact. The
+2026-08-20 single-job cold replay verifies all **1,103 / 1,103** accepted units.
+See `BUILD_MATCHING.md` before changing a shared inline/out-of-line contract.
 
 ## Library foundation (paused except for whole-link blockers)
 
