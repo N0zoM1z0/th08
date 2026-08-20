@@ -284,66 +284,6 @@ void AsciiManager::InitializeVms()
     this->SetGaugeInterrupt(this->GetGaugeInterrupt());
 }
 
-// FUNCTION: th08 0x406fd0
-void AsciiManager::FUN_00406fd0()
-{
-    g_AnmManager->ExecuteScript(&this->youkaiGauge);
-    g_AnmManager->ExecuteScript(&this->youkaiGaugeHumanIcon);
-    g_AnmManager->ExecuteScript(&this->youkaiGaugeYoukaiIcon);
-    g_AnmManager->ExecuteScript(&this->youkaiGaugeCursor);
-    g_AnmManager->ExecuteScript(&this->percentageText);
-    g_AnmManager->ExecuteScript(&this->bossMarkers[0]);
-    g_AnmManager->ExecuteScript(&this->bossMarkers[1]);
-    g_AnmManager->ExecuteScript(&this->bossMarkers[2]);
-    g_AnmManager->ExecuteScript(&this->bossMarkers[3]);
-    g_AnmManager->ExecuteScript(&this->unk_1520);
-}
-
-// FUNCTION: th08 0x4070b0
-void AsciiManager::SetGaugeInterrupt(i32 interrupt)
-{
-    this->youkaiGauge.SetInterrupt(interrupt);
-    this->youkaiGaugeHumanIcon.SetInterrupt(interrupt);
-    this->youkaiGaugeYoukaiIcon.SetInterrupt(interrupt);
-    this->youkaiGaugeCursor.SetInterrupt(interrupt);
-
-    this->gaugeInterrupt = interrupt;
-}
-
-
-// FUNCTION: th08 0x0042F2D0
-void AsciiManager::FUN_0042f2d0(i32 index, u32 value)
-{
-    *(u32 *)((u8 *)this + 0x2254 + index * 4) = value;
-}
-
-// FUNCTION: th08 0x0042F2F0
-void AsciiManager::SetScale(float scaleX, float scaleY)
-{
-    this->scaleX = scaleX;
-    this->scaleY = scaleY;
-}
-
-#pragma optimize("s", on)
-// FUNCTION: th08 0x004398FF
-void AsciiManager::SetIsGuiMode(u32 value)
-{
-    this->isGui = value;
-}
-#pragma optimize("", on)
-
-// FUNCTION: th08 0x422bb0
-void AsciiManager::FUN_00422bb0(i32 slot, i16 state)
-{
-    this->bossMarkers[slot].SetInterrupt(state);
-}
-
-// FUNCTION: th08 0x422be0
-void AsciiManager::SetBossMarkerPosition(i32 slot, D3DXVECTOR3 *position)
-{
-    this->bossMarkers[slot].pos = *(Float3 *)position;
-}
-
 ZunResult AsciiManager::RegisterChain()
 {
     AsciiManager *ascii = &g_AsciiManager;

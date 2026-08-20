@@ -99,6 +99,10 @@ def configure(build_type):
 
         cxx_flags_per_source = {
             "AsciiManager": debug_codegen,
+            "AsciiManagerGauge": debug_codegen,
+            "AsciiManagerBossMarker": debug_codegen,
+            "AsciiManagerScale": debug_codegen,
+            "AsciiManagerGuiMode": debug_codegen,
             "Background": debug_codegen,
             "SpellCard": debug_codegen,
             "Ending": debug_codegen,
@@ -143,10 +147,14 @@ def configure(build_type):
             "EclManager",
             "EclGlobals",
             "EffectManager",
+            "AsciiManagerBossMarker",
             "EnemyManager",
+            "AsciiManagerScale",
             "BulletManager",  # etama.obj
             "Gui",  # front.obj
+            "AsciiManagerGuiMode",
             "GameManager",
+            "AsciiManagerGauge",
             "utils",
             "Global",
             "TextHelper",  # grpfont.obj

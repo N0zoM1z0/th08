@@ -605,7 +605,7 @@ target = 0x018B8970
 
 [[units]]
 name = "ascii-manager-set-gauge-interrupt"
-object = "build/AsciiManager.obj"
+object = "build/AsciiManagerGauge.obj"
 symbol = "?SetGaugeInterrupt@AsciiManager@th08@@QAEXH@Z"
 target_address = 0x004070B0
 size = 0x65
@@ -636,7 +636,7 @@ target = 0x00407120
 
 [[units]]
 name = "ascii-manager-boss-marker-interrupt"
-object = "build/AsciiManager.obj"
+object = "build/AsciiManagerBossMarker.obj"
 symbol = "?FUN_00422bb0@AsciiManager@th08@@QAEXHF@Z"
 target_address = 0x00422BB0
 size = 0x2A
@@ -649,7 +649,7 @@ target = 0x00407120
 
 [[units]]
 name = "ascii-manager-set-boss-marker-position"
-object = "build/AsciiManager.obj"
+object = "build/AsciiManagerBossMarker.obj"
 symbol = "?SetBossMarkerPosition@AsciiManager@th08@@QAEXHPAUD3DXVECTOR3@@@Z"
 target_address = 0x00422BE0
 size = 0x33
@@ -55156,21 +55156,21 @@ size = 0x16
 
 [[units]]
 name = "ascii-fun-0042f2d0"
-object = "build/AsciiManager.obj"
+object = "build/AsciiManagerScale.obj"
 symbol = "?FUN_0042f2d0@AsciiManager@th08@@QAEXHI@Z"
 target_address = 0x0042F2D0
 size = 0x1D
 
 [[units]]
 name = "ascii-set-scale"
-object = "build/AsciiManager.obj"
+object = "build/AsciiManagerScale.obj"
 symbol = "?SetScale@AsciiManager@th08@@QAEXMM@Z"
 target_address = 0x0042F2F0
 size = 0x25
 
 [[units]]
 name = "ascii-set-is-gui-mode"
-object = "build/AsciiManager.obj"
+object = "build/AsciiManagerGuiMode.obj"
 symbol = "?SetIsGuiMode@AsciiManager@th08@@QAEXI@Z"
 target_address = 0x004398FF
 size = 0x17
@@ -59045,7 +59045,7 @@ target = 0x0045EA00
 
 [[units]]
 name = "ascii-manager-fun-00406fd0"
-object = "build/AsciiManager.obj"
+object = "build/AsciiManagerGauge.obj"
 symbol = "?FUN_00406fd0@AsciiManager@th08@@QAEXXZ"
 target_address = 0x00406FD0
 size = 0xD9
