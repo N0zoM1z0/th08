@@ -188,6 +188,27 @@ an owner. `ZunTimer::operator+= @ 0x0041FDF0` remains the sole distant
 `main.obj` anchor until stronger evidence appears. Ranking metrics route an
 investigation; they never justify unsupported ownership.
 
+The `AnmManager.obj` pass adds the guardrail for optimized consumers. Moving a
+helper body to a header is a caller-codegen change even when the standalone
+COMDAT remains exact. A focused five-object replay initially passed all 260
+units, but the required full cold replay exposed five Title regressions after
+`AnmVmBase::Initialize` became visible to `/Os /Ob1`. Keeping its declaration
+in the header and placing the exact body explicitly in target-neighbor
+`AsciiManager.cpp` restored all optimized callers. Expand the focused set to
+every optimized production/probe caller when changing inline visibility; the
+aggregate replay is still the acceptance gate.
+
+The reverse case is equally important. `AnmManager::SpriteHasTexture @
+0x004622C0` appears late in the current Anm object when emitted from the class
+header. Making it out-of-line beside its Anm caller removed all 20 remaining
+Anm inversions, but `TitleScreen::OnDraw @ 0x0047087F` became 59 bytes short:
+the target has the helper inlined and no call relocation. Preserve the proven
+inline caller contract even when its standalone COMDAT placement worsens a
+routing metric. The accepted Anm repair therefore combines seven
+target-neighbor helper owners with lexical reordering of the continuous render
+cluster, improving **195 / 10 / 400,208** to **20 / 2 / 359,840** without
+inventing source-file boundaries.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into

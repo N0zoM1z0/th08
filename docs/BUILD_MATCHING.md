@@ -894,6 +894,21 @@ This corpus attests the natural VC7 emissions for ResultScreen/AnmManager/MidiOu
   body and its resulting layout residual until a target-backed consumer or
   owner is recovered. A lower inversion count is not evidence for assigning a
   COMDAT to an unrelated TU.
+- Inline visibility must be regressed through optimized callers, not only the
+  emitted helper. Making `AnmVmBase::Initialize @ 0x004068E0` a class-body
+  definition produced an exact `/Od` Ascii COMDAT and a 260/260 focused replay,
+  but a cold aggregate replay changed five `/Os /Ob1` Title functions. Keeping
+  the header declaration-only and putting the same natural body explicitly in
+  `AsciiManager.cpp` restores the target-neighbor owner without perturbing the
+  Title compiler state. The expanded donor/recipient/Title/probe replay passed
+  294/294 before the 1,105/1,105 cold aggregate replay.
+- `AnmManager::SpriteHasTexture @ 0x004622C0` is the inverse constraint. Moving
+  its exact body out-of-line beside `SetInterruptArray` removed 20 Anm object
+  inversions, but made `TitleScreen::OnDraw @ 0x0047087F` 0x3B bytes short.
+  The accepted target unit has no relocation to `SpriteHasTexture`; its body is
+  inlined in the caller. Preserve that header body and accept the deferred
+  standalone COMDAT placement until a natural emission-order explanation is
+  found. Layout metrics do not override caller bytes and relocations.
 
 ### Raw union members, bitfield owners, and local value-flow restoration
 

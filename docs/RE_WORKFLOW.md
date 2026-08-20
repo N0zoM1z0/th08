@@ -165,12 +165,17 @@ difference rather than by inventory percentage alone.
    production objects: a target-neighbor consumer may be the natural emitter,
    even when the class's nominal implementation TU uses a different compiler
    profile. Restore the header body, clean the PCH, and compare the emitted
-   consumer copy plus affected callers; do not manufacture an owner for a
-   helper with no production caller. If the retained target neighborhood is
-   continuous, restore lexical function order inside that TU instead of
-   manufacturing a source file for every run. Replay donor and recipients
-   together, then cold link and measure the new runs/drift before the aggregate
-   replay.
+   consumer copy plus affected callers, including optimized production and
+   probe callers. If global body visibility changes an accepted caller, keep a
+   declaration-only header and place the exact body explicitly in the
+   target-neighbor consumer TU. Conversely, retain a proven inline contract
+   when a target caller contains the body and no call relocation, even if VC7
+   defers the standalone COMDAT to an inconvenient object position. Do not
+   manufacture an owner for a helper with no production caller. If the retained
+   target neighborhood is continuous, restore lexical function order inside
+   that TU instead of manufacturing a source file for every run. Replay donor
+   and recipients together, then cold link and measure the new runs/drift
+   before the aggregate replay.
 4. Return to one CRT/D3DX/compiler-runtime member only when the whole-image
    report or a bounded link-provenance trace identifies that member as an
    import, extent, relocation, or layout dependency. For rebuild-only imports,

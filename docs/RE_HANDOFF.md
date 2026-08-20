@@ -17,12 +17,13 @@ As cold-built and replayed on 2026-08-20 against the original Japanese TH08
 - a cold normal VC7 build links `build/th08.exe` successfully;
 - a cold objdiff build followed by full replay passes **1,105 / 1,105**
   accepted units;
-- three production-object layout repairs are complete. Seven exact AsciiManager
+- four production-object layout repairs are complete. Seven exact AsciiManager
   bodies now live in four target-cluster TUs, while the early Player bomb/shot
   callback family now lives in `PlayerBomb.cpp`; both remaining donor objects
   have zero target-order inversions. The contiguous main Player TU is also back
   in target function order. Fourteen shared helpers formerly appended to
-  `main.cpp` now emit naturally from their target-neighbor consumer TUs;
+  `main.cpp` now emit naturally from their target-neighbor consumer TUs. The
+  retained AnmManager render cluster is also back in target function order;
 - the whole-image comparator is in place. After the first evidence-backed link
   contract repairs, the rebuild has the target's DLL descriptor order, no debug
   directory, and the same two resource paths and resource section extent. The
@@ -232,13 +233,35 @@ continuous; the remaining reset is solely the exact but currently uncalled
 `ZunTimer::operator+= @ 0x0041FDF0`. It remains explicitly defined in
 `main.cpp` until a target-backed production consumer or owner is recovered;
 do not assign it to an unrelated ECL/SpellCard TU just to improve the metric.
-The newly emitted Ascii COMDATs expose a bounded lexical-emission-order issue
-(**35 inversions / 4 runs / 2,736 span**) but no exact-code regression.
+The current Ascii helper cluster retains a bounded lexical/emission-order issue
+(**45 inversions / 5 runs / 2,320 span**) but no exact-code regression.
 
-The current ranking now places `AnmManager.obj` first (**195 inversions / 10
-runs**), followed by `Global.obj` (**194 / 4**) and `SoundPlayer.obj` (**181 /
-4**); select only one and confirm the target neighborhood before moving
-definitions.
+The fourth bounded pass addressed `AnmManager.obj`. Seven exact helper bodies
+were mixed into the donor despite target-neighbor production consumers:
+`AnmVmBase::Initialize` and `SetTextureCaptureParams` route to the early
+Ascii cluster, `SetZRotation` to `PlayerBomb`, `FUN_004396f8` to `Gui`, and
+`SetCameraMode`/`Draw2DAndFlush`/`GetAnm` to `Background`. Six can remain
+natural consumer-emitted header bodies. `Initialize` must instead be an
+explicit `/Od` definition in `AsciiManager.cpp`: exposing its body globally
+changed five accepted `/Os /Ob1` Title functions during cold replay. The
+expanded seven-object focused replay passed **294 / 294** accepted units and
+the final full cold replay passed **1,105 / 1,105**.
+
+The retained `0x00462270..0x00464EC0` Anm render cluster was continuous, so its
+definitions were reordered by target function address instead of split into
+invented TUs. `SpriteHasTexture @ 0x004622C0` deliberately remains
+header-inline: changing it to out-of-line made the Anm metric perfect but
+broke exact `TitleScreen::OnDraw @ 0x0047087F`, whose target contains the
+inlined body and no call relocation. The accepted result reduces
+`AnmManager.obj` from **195 inversions / 10 runs / 400,208 bytes of drift
+span** to **20 / 2 / 359,840**. All 20 residual inversions are that required
+deferred COMDAT placement; the main/render definitions themselves are in
+target order.
+
+The current ranking now places `Global.obj` first (**194 inversions / 4
+runs**), followed by `SoundPlayer.obj` (**181 / 4**) and `GameManager.obj`
+(**174 / 9**); select only one and confirm the target neighborhood before
+moving definitions.
 Large intra-object drift means today's source combines or orders target TUs
 differently, so permuting the existing object list alone cannot solve it. A
 run reset is a routing clue, not automatically a TU boundary: the Player pass
