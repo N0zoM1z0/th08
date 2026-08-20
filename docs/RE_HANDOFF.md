@@ -508,13 +508,18 @@ passed **23 / 23** TitleScreen units and **11 / 11** TitleReplay probe units;
 cold aggregate replay passed **1,105 / 1,105**. `TitleScreen.obj` improved from
 **23 anchors / 4 inversions / 3 runs / 15,726 span** to **23 / 0 / 1 / 11,979**.
 
-`MusicRoom.obj` remains intentionally unresolved at **10 / 7 / 2 / 2,621**.
-Its sole reset is `Supervisor::IsMusicPreloadEnabled @ 0x00449C79`: moving the
-unchanged body to the target-local MusicRoom tail preserved MusicRoom **11 / 11**
-and SoundPlayer **25 / 25**, but changed two accepted Supervisor callers
-(`0x004464C8` and `0x00448081`) by 1-2 bytes. The probe was fully reverted.
-Do not make this shared header declaration-only unless those exact caller
-constraints are independently solved.
+The twenty-second bounded pass repaired `MusicRoom.obj`. The first global
+visibility probe for `Supervisor::IsMusicPreloadEnabled @ 0x00449C79` correctly
+reproduced the standalone body but changed two accepted Supervisor callers by
+1-2 bytes, so it was rejected. The accepted repair makes the header
+**declaration-only only while compiling MusicRoom** via a TU-local preprocessor
+gate; every other TU still sees the original inline body and therefore keeps its
+caller codegen. The explicit MusicRoom-tail definition is itself `inline`, so it
+remains a COMDAT and coexists with the other header copies while production
+object order selects the target-local MusicRoom copy. Focused replay passed
+MusicRoom **11 / 11**, Supervisor **49 / 49**, and SoundPlayer **25 / 25**; cold
+aggregate replay passed **1,105 / 1,105**. `MusicRoom.obj` improved from **10
+anchors / 7 inversions / 2 runs / 2,621 span** to **10 / 0 / 1 / 0**.
 
 The twenty-first bounded pass repaired `ScreenEffect.obj`. Its only reset was ordinary lexical disorder: source emitted `DrawArcadeFade @ 0x0045BC40` before `DrawPartialFade @ 0x0045BBF0`, opposite the target. Swapping those complete bodies preserved **21 / 21** focused units; cold aggregate replay passed **1,105 / 1,105**. `ScreenEffect.obj` improved from **14 anchors / 1 inversion / 2 runs / 160 span** to **14 / 0 / 1 / 48**.
 

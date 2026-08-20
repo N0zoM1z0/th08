@@ -422,12 +422,18 @@ The `TitleScreen.obj` pass confirms that target-late inline helpers can be made
 explicit when every affected production/probe caller remains byte-exact:
 `SetKeyNumberSprite @ 0x00469FA9` and
 `GameManager::IsLastWordSpellCardAttempted @ 0x0046FD5F` both survived their
-TitleScreen and TitleReplay caller gates. The rejected MusicRoom probe gives the
-opposite boundary: `Supervisor::IsMusicPreloadEnabled @ 0x00449C79` itself was
-exact after explicit placement, but removing its header body changed two exact
-Supervisor callers by 1-2 bytes. A correct standalone body and target address do
-not justify a visibility change when caller codegen regresses; preserve the
-residual and search for a caller-preserving emission mechanism instead.
+TitleScreen and TitleReplay caller gates. `MusicRoom.obj` extends this into a
+caller-preserving COMDAT routing pattern. A global declaration-only change for
+`Supervisor::IsMusicPreloadEnabled @ 0x00449C79` changed two exact Supervisor
+callers by 1-2 bytes. Instead, make only the desired consumer TU see a
+declaration (with a TU-local preprocessor gate), keep the original inline header
+body visible everywhere else, and provide an **inline explicit definition** at
+the target-local consumer position. The explicit `inline` is essential: without
+it the cold link reports LNK2005 against the other header COMDAT copies. With it,
+all callers retain their original codegen while production object order selects
+the target-local COMDAT. This reduced MusicRoom to **0 inversions / 1 run / 0
+span** with MusicRoom 11/11, Supervisor 49/49, SoundPlayer 25/25, and cold
+aggregate 1,105/1,105 exact.
 
 The `ScreenEffect.obj` pass is the minimal lexical case: a single pair of exact explicit functions (`DrawPartialFade` / `DrawArcadeFade`) was reversed in source. Swapping only those function blocks reduced **1 inversion / 2 runs** to **0 / 1** while preserving **21 / 21** focused exact units.
 
