@@ -2983,13 +2983,13 @@ target = 0x00420120
 [[units.relocations]]
 offset = 0x1B8B
 type = "DIR32"
-symbol = "?g_TargetPlayer017D5EF8@EclOperands@th08@@3UTargetPlayerOverlay@12@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x1B90
 type = "REL32"
-symbol = "?AngleToPlayer@TargetPlayerOverlay@EclOperands@th08@@QAEMPBUTargetVector3@23@@Z"
+symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
 target = 0x0044C1B0
 
 [[units.relocations]]
@@ -3019,13 +3019,13 @@ target = 0x00420120
 [[units.relocations]]
 offset = 0x1C6B
 type = "DIR32"
-symbol = "?g_TargetPlayer017D5EF8@EclOperands@th08@@3UTargetPlayerOverlay@12@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x1C70
 type = "REL32"
-symbol = "?AngleToPlayer@TargetPlayerOverlay@EclOperands@th08@@QAEMPBUTargetVector3@23@@Z"
+symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
 target = 0x0044C1B0
 
 [[units.relocations]]
@@ -3379,7 +3379,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x2AEE
 type = "REL32"
-symbol = "?IsYoukai@TargetPlayerOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?IsYoukai@Player@th08@@QAEHXZ"
 target = 0x0040BC40
 
 [[units.relocations]]
@@ -3391,7 +3391,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x2B24
 type = "REL32"
-symbol = "?IsYoukai@TargetPlayerOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?IsYoukai@Player@th08@@QAEHXZ"
 target = 0x0040BC40
 
 [[units.relocations]]
@@ -3415,13 +3415,13 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x2B88
 type = "REL32"
-symbol = "?IsYoukai@TargetPlayerOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?IsYoukai@Player@th08@@QAEHXZ"
 target = 0x0040BC40
 
 [[units.relocations]]
 offset = 0x2B9F
 type = "REL32"
-symbol = "?SetInterrupt@SpawnedEffectAnmVm@EclRunLowProposal@th08@@QAEXF@Z"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
 target = 0x00407120
 
 [[units.relocations]]
@@ -3463,7 +3463,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x2C9E
 type = "REL32"
-symbol = "?IsYoukai@TargetPlayerOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?IsYoukai@Player@th08@@QAEHXZ"
 target = 0x0040BC40
 
 [[units.relocations]]
@@ -3475,7 +3475,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x2CD4
 type = "REL32"
-symbol = "?IsYoukai@TargetPlayerOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?IsYoukai@Player@th08@@QAEHXZ"
 target = 0x0040BC40
 
 [[units.relocations]]
@@ -3499,13 +3499,13 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x2D38
 type = "REL32"
-symbol = "?IsYoukai@TargetPlayerOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?IsYoukai@Player@th08@@QAEHXZ"
 target = 0x0040BC40
 
 [[units.relocations]]
 offset = 0x2D4F
 type = "REL32"
-symbol = "?SetInterrupt@SpawnedEffectAnmVm@EclRunLowProposal@th08@@QAEXF@Z"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
 target = 0x00407120
 
 [[units.relocations]]
@@ -3547,7 +3547,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x2E4E
 type = "REL32"
-symbol = "?IsYoukai@TargetPlayerOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?IsYoukai@Player@th08@@QAEHXZ"
 target = 0x0040BC40
 
 [[units.relocations]]
@@ -3559,7 +3559,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x2E84
 type = "REL32"
-symbol = "?IsYoukai@TargetPlayerOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?IsYoukai@Player@th08@@QAEHXZ"
 target = 0x0040BC40
 
 [[units.relocations]]
@@ -3589,13 +3589,13 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x2F41
 type = "REL32"
-symbol = "?IsYoukai@TargetPlayerOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?IsYoukai@Player@th08@@QAEHXZ"
 target = 0x0040BC40
 
 [[units.relocations]]
 offset = 0x2F58
 type = "REL32"
-symbol = "?SetInterrupt@SpawnedEffectAnmVm@EclRunLowProposal@th08@@QAEXF@Z"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
 target = 0x00407120
 
 [[units.relocations]]
@@ -3733,7 +3733,7 @@ target = 0x00F54E90
 [[units.relocations]]
 offset = 0x3438
 type = "REL32"
-symbol = "?FinalizeVectorState@TargetApi@EclRunHighProposal@th08@@QAEXPAX@Z"
+symbol = "?FUN_00430e10@BulletManager@th08@@QAEHPAUBulletSpawnDescriptor@2@@Z"
 target = 0x00430E10
 
 [[units.relocations]]
@@ -3823,7 +3823,7 @@ target = 0x00F54E90
 [[units.relocations]]
 offset = 0x3807
 type = "REL32"
-symbol = "?CreateModeObject@TargetApi@EclRunHighProposal@th08@@QAEPAXPAX@Z"
+symbol = "?SpawnLaserPattern@BulletManager@th08@@QAEPAULaser@2@PAUBulletSpawnDescriptor@2@@Z"
 target = 0x00430F20
 
 [[units.relocations]]
@@ -3877,13 +3877,13 @@ target = 0x00420120
 [[units.relocations]]
 offset = 0x3A40
 type = "DIR32"
-symbol = "?g_TargetPlayer017D5EF8@EclOperands@th08@@3UTargetPlayerOverlay@12@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x3A45
 type = "REL32"
-symbol = "?AngleToPlayer@TargetPlayerOverlay@EclOperands@th08@@QAEMPBUTargetVector3@23@@Z"
+symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
 target = 0x0044C1B0
 
 [[units.relocations]]
@@ -4141,26 +4141,30 @@ target = 0x0045D660
 [[units.relocations]]
 offset = 0x429C
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateManagerFlags@th08@@3IA"
-target = 0x0164D0B4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 0x42AC
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateManagerFlags@th08@@3IA"
-target = 0x0164D0B4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 0x42E8
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateManagerFlags@th08@@3IA"
-target = 0x0164D0B4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 0x42F8
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateManagerFlags@th08@@3IA"
-target = 0x0164D0B4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 0x4334
@@ -4183,7 +4187,7 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x4455
 type = "REL32"
-symbol = "?InitializeEclContext@TargetApi@EclRunHighProposal@th08@@QAEXPAXG@Z"
+symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
 target = 0x00418450
 
 [[units.relocations]]
@@ -4279,14 +4283,16 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x46C1
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateManagerFlags@th08@@3IA"
-target = 0x0164D0B4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 0x46D1
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateManagerFlags@th08@@3IA"
-target = 0x0164D0B4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 0x46FB
@@ -4327,14 +4333,16 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x484E
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateManagerFlags@th08@@3IA"
-target = 0x0164D0B4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 0x485D
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateManagerFlags@th08@@3IA"
-target = 0x0164D0B4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 0x4887
@@ -4411,7 +4419,7 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x4AAA
 type = "REL32"
-symbol = "?InitializeEclContext@TargetApi@EclRunHighProposal@th08@@QAEXPAXG@Z"
+symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
 target = 0x00418450
 
 [[units.relocations]]
@@ -5059,7 +5067,7 @@ target = 0x018BDC90
 [[units.relocations]]
 offset = 0x5AA7
 type = "REL32"
-symbol = "?FUN_004649a0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAXH@Z"
+symbol = "?FUN_004649a0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@H@Z"
 target = 0x004649A0
 
 [[units.relocations]]
@@ -5425,7 +5433,7 @@ target = 0x0040BC40
 [[units.relocations]]
 offset = 0x616D
 type = "REL32"
-symbol = "?SetInterrupt@SpawnedEffectAnmVm@EclRunLowProposal@th08@@QAEXF@Z"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
 target = 0x00407120
 
 [[units.relocations]]
