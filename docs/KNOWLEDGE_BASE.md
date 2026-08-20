@@ -35,6 +35,7 @@ before repeating target analysis or compiler-shape probes.
 | Generic VC7 declaration/branch/local patterns | `VC7_ZUN_PATTERNS.md` | Search this before creating expression or `#pragma var_order` matrices. |
 | Target-linked CRT/D3DX work | `RE_HANDOFF.md`, `$th08-library`, `config/library-provenance.toml`, and `scripts/compare-library.py` | Paused library foundation: archive provenance, relocation-aware match units, and a separate accepted ledger. Resume only for a bounded whole-link dependency. |
 | Whole-executable reconstruction | `scripts/compare-whole-image.py`, [RE_WORKFLOW.md](RE_WORKFLOW.md), then [RE_HANDOFF.md](RE_HANDOFF.md) | Cold-build PE diff, import/resource/debug contracts, section sizes, and accepted-address link anchors. |
+| Translation-unit partition candidates | `scripts/analysis/report-tu-partition-candidates.py` | Deterministic ranking by target-order inversions/drift jumps, plus bounded per-object anchor details. This is routing evidence, not a boundary claim. |
 | Library candidate discovery | `scripts/analysis/propose-library-units.py` | Conservative review queue from one pinned archive; candidate status is not exact acceptance and must be promoted through an explicit unit plus `compare-library.py`. |
 | Stale object/PCH exact-state failures | Search `BUILD_MATCHING.md` for `cold-build` | Why focused historical successes cannot be promoted to a current aggregate without a cold full replay. |
 
@@ -107,6 +108,30 @@ repair such an intra-object span. First recover target translation-unit/object
 ownership; only then tune object/archive order or padding. This is an inference
 from link-map and target-address evidence, not yet a complete reconstruction of
 the original build graph.
+
+Generate a detailed report only after a cold normal link, then rank it instead
+of manually scanning hundreds of anchors:
+
+```bash
+python3 scripts/compare-whole-image.py --json --include-anchor-details \
+  > build/whole-image-anchors.json
+python3 scripts/analysis/report-tu-partition-candidates.py \
+  build/whole-image-anchors.json --object AsciiManager.obj
+```
+
+The first recovered boundary is the corpus example. The old
+`AsciiManager.obj` linked seven exact bodies totaling `0x220` bytes between
+`InitializeVms` and `RegisterChain`, while their target addresses form four
+separate clusters at `0x00406FD0`, `0x00422BB0`, `0x0042F2D0`, and
+`0x004398FF`. Moving the real definitions into four same-profile production
+TUs made the first 21 accepted Ascii anchors, through
+`PauseMenu::OnUpdate @ 0x004037B0`, land at their exact target addresses.
+Uniform drift within each extracted cluster confirms that the split did not
+disturb its internal layout; placement among neighboring objects remains a
+separate later step. Preserve canonical match-unit object ownership and replay
+both the donor and every recipient object after such a move. This proves the
+necessary separation from the early donor; executable anchors alone do not
+prove that each extracted cluster was a standalone original source file.
 
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build

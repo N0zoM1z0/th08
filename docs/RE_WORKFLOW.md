@@ -116,13 +116,13 @@ full canonical byte comparison.
 
 ## Current phase selection
 
-Authored source is present for the complete authored inventory. A 2026-08-19
-cold-build replay invalidated 14 historical accepted rows that no longer
-reproduced; 1,091 accepted units remain cold-reproducible. Together with two
-previously deferred near matches, 16 authored functions are currently outside
-the accepted exact ledger. Their configured units remain available for later
-diagnosis in `config/match-units.toml`; see `docs/RE_HANDOFF.md` for the bounded
-list. Do not treat a configured unit as an accepted result.
+Authored source is present for the complete authored inventory. The 14 stale
+historical rows exposed by the 2026-08-19 cold replay have been repaired and a
+2026-08-20 cold build now reproduces 1,105 accepted units. Only two authored
+near matches remain outside the accepted exact ledger. Their configured units
+remain available for later diagnosis in `config/match-units.toml`; see
+`docs/RE_HANDOFF.md` for the bounded list. Do not treat a configured unit as an
+accepted result.
 
 The primary lane is now whole-executable reconstruction. Authored source is
 complete, all library inventory rows have bounded extents, exact archives are
@@ -154,7 +154,9 @@ difference rather than by inventory percentage alone.
    code that occupied multiple target translation units or was interleaved with
    other objects; simply permuting the current object list cannot repair that
    shape. Recover target translation-unit ownership before tuning padding or
-   global order.
+   global order. Rank a detailed report with
+   `scripts/analysis/report-tu-partition-candidates.py`, then inspect only one
+   current production object at a time.
 4. Return to one CRT/D3DX/compiler-runtime member only when the whole-image
    report or a bounded link-provenance trace identifies that member as an
    import, extent, relocation, or layout dependency. For rebuild-only imports,

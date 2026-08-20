@@ -17,6 +17,10 @@ As cold-built and replayed on 2026-08-20 against the original Japanese TH08
 - a cold normal VC7 build links `build/th08.exe` successfully;
 - a cold objdiff build followed by full replay passes **1,105 / 1,105**
   accepted units;
+- the first production-object partition repair is complete: seven exact
+  AsciiManager bodies now live in four target-cluster TUs, while the remaining
+  `AsciiManager.obj` has zero target-order inversions and its first 21 accepted
+  anchors land at their exact target addresses;
 - the whole-image comparator is in place. After the first evidence-backed link
   contract repairs, the rebuild has the target's DLL descriptor order, no debug
   directory, and the same two resource paths and resource section extent. The
@@ -151,22 +155,48 @@ The 2026-08-20 baseline after fixing the first observable link contracts is:
   `KERNEL32` symbols. Nine are referenced by D3DX `cd3dxfile.obj` /
   `cd3dxresource.obj`; the remaining set is referenced by six linked VC7 CRT
   members recorded in `KNOWLEDGE_BASE.md`;
-- 931 accepted address anchors are found in the linker map and 67 accepted units
+- 944 accepted address anchors are found in the linker map and 68 accepted units
   lack a unique map candidate. Anchor-derived current-object order differs from
   target order, and large drift spans occur within production objects.
 
-The next bounded lane is target translation-unit/object-partition recovery.
-Large intra-object drift spans mean the current source files combine or order
-code differently from the original link graph; permuting today's object list
-cannot solve that. Use detailed anchors for one production object at a time:
+The first bounded target translation-unit/object-partition recovery is now
+complete. The old `AsciiManager.obj` placed seven exact functions totaling
+`0x220` bytes between `InitializeVms` and `RegisterChain`, although the target
+places them in four distant clusters: `0x00406FD0`, `0x00422BB0`,
+`0x0042F2D0`, and `0x004398FF`. Their definitions now live in
+`AsciiManagerGauge.cpp`, `AsciiManagerBossMarker.cpp`,
+`AsciiManagerScale.cpp`, and `AsciiManagerGuiMode.cpp`, compiled under the same
+`/Od` PCH profile. Canonical focused replay passed all **45 / 45** accepted
+units across the donor and recipients; the subsequent full cold replay passed
+**1,105 / 1,105**.
+
+This split reduced `AsciiManager.obj` from **189 inversions / 3 target-order
+runs / 225,802 bytes of drift span** to **0 inversions / 1 run / 2,800 bytes of
+drift span**. Its first 21 anchors, through `PauseMenu::OnUpdate @ 0x004037B0`,
+now have zero linked-address drift. The extracted clusters each have uniform
+internal drift; their final placement depends on later splits in neighboring
+GameManager, EnemyManager, and Gui ownership and is not yet exact.
+The executable layout proves that these bodies cannot remain in the early
+AsciiManager object; it does not yet prove that all four clusters correspond
+one-for-one to standalone original source files.
+
+Continue target translation-unit recovery one production object at a time.
+Generate and rank the detailed anchors rather than manually scanning the whole
+report:
 
 ```bash
 python3 scripts/compare-whole-image.py --json --include-anchor-details \
   > build/whole-image-anchors.json
+python3 scripts/analysis/report-tu-partition-candidates.py \
+  build/whole-image-anchors.json
 ```
 
-Then reconcile target function order against current source ownership and split
-only when the evidence supports an original translation-unit boundary. The 17
+The current ranking places `Player.obj` first (**286 inversions / 8 runs**),
+followed by `main.obj` and `AnmManager.obj`; select only one and confirm the
+target neighborhood before moving definitions. Large intra-object drift means
+today's source combines or orders target TUs differently, so permuting the
+existing object list alone cannot solve it. Split only when detailed anchors
+support the boundary. The 17
 extra imports already have bounded contributing archive members; do not hide
 them with `/OPT:REF`. A trial of that flag made the import set exact while
 shrinking `.text` to `0x72B6F` and losing 212 located accepted anchors, so

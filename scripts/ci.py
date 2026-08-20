@@ -98,6 +98,10 @@ def main() -> int:
             "Smoke-test import-provenance CLI routing",
             [sys.executable, "scripts/analysis/report-import-provenance.py", "--help"],
         )
+        run(
+            "Smoke-test TU partition candidate CLI routing",
+            [sys.executable, "scripts/analysis/report-tu-partition-candidates.py", "--help"],
+        )
         with tempfile.TemporaryDirectory(prefix="th08-ci-icon-") as directory:
             generated_icon = Path(directory) / "icon.ico"
             run(
