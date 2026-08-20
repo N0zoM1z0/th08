@@ -101839,7 +101839,7 @@ target = 0x00415C80
 
 [[units]]
 name = "gui-boss-timer-setter-0042f340"
-object = "build/objdiff/reimpl/EnemyManager.obj"
+object = "build/AsciiManagerScale.obj"
 symbol = "?FUN_0042f340@Gui@th08@@QAEXH@Z"
 target_address = 0x0042F340
 size = 0x16
@@ -104447,7 +104447,7 @@ target = 0x0042A919
 # Ledger name: th08::Gui::IsBossPresent
 [[units]]
 name = "gui-is-boss-present-0042f320"
-object = "build/EnemyManager.obj"
+object = "build/AsciiManagerScale.obj"
 symbol = "?IsBossPresent@Gui@th08@@QAE_NXZ"
 target_address = 0x0042F320
 size = 0x11
