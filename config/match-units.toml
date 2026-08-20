@@ -9641,74 +9641,82 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 0x38
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGui@th08@@3UEnemyManagerUpdateGui@1@A"
+symbol = "?g_Gui@th08@@3UGui@1@A"
 target = 0x0160F428
 
 [[units.relocations]]
 offset = 0x3D
 type = "REL32"
-symbol = "?IsDialogPresent@EnemyManagerUpdateGui@th08@@QAEHXZ"
+symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
 target = 0x004358BB
 
 [[units.relocations]]
 offset = 0x46
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateFrameCounter@th08@@3HA"
-target = 0x0164D30C
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DE04
 
 [[units.relocations]]
 offset = 0x4E
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateFrameCounter@th08@@3HA"
-target = 0x0164D30C
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DE04
 
 [[units.relocations]]
 offset = 0x5F
 type = "REL32"
-symbol = "??BEnemyManagerUpdateTimer@th08@@QAEHXZ"
+symbol = "??BZunTimer@th08@@QAEHXZ"
 target = 0x0040D3B0
 
 [[units.relocations]]
 offset = 0x6A
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateHumanCounter@th08@@3HA"
-target = 0x0164D0AC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA4
 
 [[units.relocations]]
 offset = 0x73
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateHumanCounter@th08@@3HA"
-target = 0x0164D0AC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA4
 
 [[units.relocations]]
 offset = 0x7A
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x83
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateYoukaiCounter@th08@@3HA"
-target = 0x0164D0A8
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA0
 
 [[units.relocations]]
 offset = 0x8B
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateYoukaiCounter@th08@@3HA"
-target = 0x0164D0A8
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA0
 
 [[units.relocations]]
 offset = 0x91
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateManagerFlags@th08@@3IA"
-target = 0x0164D0B4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 0xAB
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateManagerFlags@th08@@3IA"
-target = 0x0164D0B4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 0xD8
@@ -9725,61 +9733,61 @@ target = 0x00404720
 [[units.relocations]]
 offset = 0x10F
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x114
 type = "REL32"
-symbol = "?CalcDamageToEnemy@EnemyManagerUpdatePlayer@th08@@QAEHPAUD3DXVECTOR3@@0PAXPAH@Z"
+symbol = "?FUN_00451670@Player@th08@@QAEHPAUFloat3@2@0PAH1@Z"
 target = 0x00451670
 
 [[units.relocations]]
 offset = 0x11F
 type = "REL32"
-symbol = "?PrepareFrame@EnemyManagerUpdateOverlay@th08@@QAEXXZ"
+symbol = "?FUN_0042c3b0@EnemyManager@th08@@QAEXXZ"
 target = 0x0042C3B0
 
 [[units.relocations]]
 offset = 0x176
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateEclManager@th08@@3UEnemyManagerUpdateEclManager@1@A"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
 offset = 0x17B
 type = "REL32"
-symbol = "?GetTimelineCount@EnemyManagerUpdateEclManager@th08@@QAEHXZ"
+symbol = "?GetTimelineCount@EclManager@th08@@QAEHXZ"
 target = 0x0042DFB0
 
 [[units.relocations]]
 offset = 0x19F
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateEclManager@th08@@3UEnemyManagerUpdateEclManager@1@A"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
 offset = 0x1A4
 type = "REL32"
-symbol = "?GetTimeline@EnemyManagerUpdateEclManager@th08@@QAEPAXH@Z"
+symbol = "?GetTimeline@EclManager@th08@@QAEIH@Z"
 target = 0x0042DFD0
 
 [[units.relocations]]
 offset = 0x1CF
 type = "REL32"
-symbol = "?Run@EnemyManagerUpdateTimelineLane@th08@@QAEXXZ"
+symbol = "?Run@EclTimeline@th08@@QAEXXZ"
 target = 0x0042A8A0
 
 [[units.relocations]]
 offset = 0x231
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateTrackedEnemy@th08@@3PAUEnemyManagerUpdateEnemy@1@A"
+symbol = "?g_EnemyTrackedEnemy@th08@@3PAUEnemy@1@A"
 target = 0x018B89B4
 
 [[units.relocations]]
 offset = 0x23C
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateTrackedEnemy@th08@@3PAUEnemyManagerUpdateEnemy@1@A"
+symbol = "?g_EnemyTrackedEnemy@th08@@3PAUEnemy@1@A"
 target = 0x018B89B4
 
 [[units.relocations]]
@@ -9791,61 +9799,62 @@ target = 0x00409080
 [[units.relocations]]
 offset = 0x2DA
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateFrameStop@th08@@3HA"
-target = 0x017D6ED4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xFDC
 
 [[units.relocations]]
 offset = 0x2E4
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x30B
 type = "REL32"
-symbol = "??FEnemyManagerUpdateTimer@th08@@QAEXH@Z"
+symbol = "??FZunTimer@th08@@QAEXH@Z"
 target = 0x00418110
 
 [[units.relocations]]
 offset = 0x32B
 type = "REL32"
-symbol = "?PauseUpdate@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+symbol = "?FUN_0042c420@Enemy@th08@@QAEXXZ"
 target = 0x0042C420
 
 [[units.relocations]]
 offset = 0x334
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateEclManager@th08@@3UEnemyManagerUpdateEclManager@1@A"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
 offset = 0x339
 type = "REL32"
-symbol = "?RunEcl@EnemyManagerUpdateEclManager@th08@@QAEHPAUEnemyManagerUpdateEnemy@2@@Z"
+symbol = "?RunEcl@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemy@2@@Z"
 target = 0x004184B0
 
 [[units.relocations]]
 offset = 0x35B
 type = "REL32"
-symbol = "?Despawn@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+symbol = "?FUN_0042bcf0@Enemy@th08@@QAEXXZ"
 target = 0x0042BCF0
 
 [[units.relocations]]
 offset = 0x37F
 type = "REL32"
-symbol = "?ClampPosition@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+symbol = "?ClampPosition@Enemy@th08@@QAEXXZ"
 target = 0x0042C180
 
 [[units.relocations]]
 offset = 0x387
 type = "REL32"
-symbol = "?Move@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+symbol = "?FUN_0042deb0@Enemy@th08@@QAEXXZ"
 target = 0x0042DEB0
 
 [[units.relocations]]
 offset = 0x38F
 type = "REL32"
-symbol = "?ClampPosition@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+symbol = "?ClampPosition@Enemy@th08@@QAEXXZ"
 target = 0x0042C180
 
 [[units.relocations]]
@@ -9875,109 +9884,111 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 0x638
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
 offset = 0x63D
 type = "REL32"
-symbol = "?IsWithinPlayfield@EnemyManagerUpdateGameManager@th08@@QAEHMMMM@Z"
+symbol = "?IsWithinPlayfield@GameManager@th08@@QAEIMMMM@Z"
 target = 0x004399AC
 
 [[units.relocations]]
 offset = 0x6CE
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
 offset = 0x6D3
 type = "REL32"
-symbol = "?IsWithinPlayfield@EnemyManagerUpdateGameManager@th08@@QAEHMMMM@Z"
+symbol = "?IsWithinPlayfield@GameManager@th08@@QAEIMMMM@Z"
 target = 0x004399AC
 
 [[units.relocations]]
 offset = 0x720
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
 offset = 0x725
 type = "REL32"
-symbol = "?IsWithinPlayfield@EnemyManagerUpdateGameManager@th08@@QAEHMMMM@Z"
+symbol = "?IsWithinPlayfield@GameManager@th08@@QAEIMMMM@Z"
 target = 0x004399AC
 
 [[units.relocations]]
 offset = 0x782
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
 offset = 0x787
 type = "REL32"
-symbol = "?IsWithinPlayfield@EnemyManagerUpdateGameManager@th08@@QAEHMMMM@Z"
+symbol = "?IsWithinPlayfield@GameManager@th08@@QAEIMMMM@Z"
 target = 0x004399AC
 
 [[units.relocations]]
 offset = 0x7A8
 type = "REL32"
-symbol = "?Despawn@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+symbol = "?FUN_0042bcf0@Enemy@th08@@QAEXXZ"
 target = 0x0042BCF0
 
 [[units.relocations]]
 offset = 0x7B5
 type = "REL32"
-symbol = "?HandleLifeCallback@EnemyManagerUpdateEnemy@th08@@QAEHXZ"
+symbol = "?FUN_0042b490@Enemy@th08@@QAEHXZ"
 target = 0x0042B490
 
 [[units.relocations]]
 offset = 0x7D2
 type = "REL32"
-symbol = "?HandleTimerCallback@EnemyManagerUpdateEnemy@th08@@QAEHXZ"
+symbol = "?FUN_0042b930@Enemy@th08@@QAEHXZ"
 target = 0x0042B930
 
 [[units.relocations]]
 offset = 0x7FA
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateAnmManager@th08@@3PAUEnemyManagerUpdateAnmManager@1@A"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
 target = 0x018BDC90
 
 [[units.relocations]]
 offset = 0x7FF
 type = "REL32"
-symbol = "?ExecuteScript@EnemyManagerUpdateAnmManager@th08@@QAEHPAUEnemyManagerUpdateAnmVm@2@@Z"
+symbol = "?ExecuteScript@AnmManager@th08@@QAEIPAUAnmVm@2@@Z"
 target = 0x0045EA00
 
 [[units.relocations]]
 offset = 0x85B
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateAnmManager@th08@@3PAUEnemyManagerUpdateAnmManager@1@A"
+symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
 target = 0x018BDC90
 
 [[units.relocations]]
 offset = 0x860
 type = "REL32"
-symbol = "?ExecuteScript@EnemyManagerUpdateAnmManager@th08@@QAEHPAUEnemyManagerUpdateAnmVm@2@@Z"
+symbol = "?ExecuteScript@AnmManager@th08@@QAEIPAUAnmVm@2@@Z"
 target = 0x0045EA00
 
 [[units.relocations]]
 offset = 0x881
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateFrameStop@th08@@3HA"
-target = 0x017D6ED4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xFDC
 
 [[units.relocations]]
 offset = 0x8E2
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateFrameStop@th08@@3HA"
-target = 0x017D6ED4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xFDC
 
 [[units.relocations]]
 offset = 0x91B
 type = "REL32"
-symbol = "?CheckPlayerCollision@EnemyManagerUpdateEnemy@th08@@QAEXPAUD3DXVECTOR3@@0@Z"
+symbol = "?FUN_0042c290@Enemy@th08@@QAEXPAUFloat3@2@0@Z"
 target = 0x0042C290
 
 [[units.relocations]]
@@ -10001,43 +10012,44 @@ target = 0x004090D0
 [[units.relocations]]
 offset = 0xA04
 type = "REL32"
-symbol = "?CheckPlayerCollision@EnemyManagerUpdateEnemy@th08@@QAEXPAUD3DXVECTOR3@@0@Z"
+symbol = "?FUN_0042c290@Enemy@th08@@QAEXPAUFloat3@2@0@Z"
 target = 0x0042C290
 
 [[units.relocations]]
 offset = 0xA32
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateSpellcard@th08@@3UEnemyManagerUpdateSpellcard@1@A"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
 target = 0x004EA670
 
 [[units.relocations]]
 offset = 0xA37
 type = "REL32"
-symbol = "?IsActive@EnemyManagerUpdateSpellcard@th08@@QAEHXZ"
+symbol = "?IsActive@Spellcard@th08@@QAEHXZ"
 target = 0x004178A0
 
 [[units.relocations]]
 offset = 0xA43
 type = "REL32"
-symbol = "?IsBossPart@EnemyManagerUpdateEnemy@th08@@QAEHXZ"
+symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
 target = 0x0041FD20
 
 [[units.relocations]]
 offset = 0xA4D
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateFrameStop@th08@@3HA"
-target = 0x017D6ED4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xFDC
 
 [[units.relocations]]
 offset = 0xA76
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0xA7B
 type = "REL32"
-symbol = "?CalcDamageToEnemy@EnemyManagerUpdatePlayer@th08@@QAEHPAUD3DXVECTOR3@@0PAXPAH@Z"
+symbol = "?FUN_00451670@Player@th08@@QAEHPAUFloat3@2@0PAH1@Z"
 target = 0x00451670
 
 [[units.relocations]]
@@ -10049,13 +10061,13 @@ target = 0x004B4384
 [[units.relocations]]
 offset = 0xAC3
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0xAC8
 type = "REL32"
-symbol = "?CalcDamageToEnemy@EnemyManagerUpdatePlayer@th08@@QAEHPAUD3DXVECTOR3@@0PAXPAH@Z"
+symbol = "?FUN_00451670@Player@th08@@QAEHPAUFloat3@2@0PAH1@Z"
 target = 0x00451670
 
 [[units.relocations]]
@@ -10097,73 +10109,74 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0xB3A
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0xB48
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateFrameStop@th08@@3HA"
-target = 0x017D6ED4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xFDC
 
 [[units.relocations]]
 offset = 0xB68
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0xBBA
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0xBCC
 type = "REL32"
-symbol = "??BEnemyManagerUpdateTimer@th08@@QAEHXZ"
+symbol = "??BZunTimer@th08@@QAEHXZ"
 target = 0x0040D3B0
 
 [[units.relocations]]
 offset = 0xBFB
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
 offset = 0xC00
 type = "REL32"
-symbol = "?AddScore@EnemyManagerUpdateGameManager@th08@@QAEXH@Z"
+symbol = "?AddScore@GameManager@th08@@QAEXH@Z"
 target = 0x004181F0
 
 [[units.relocations]]
 offset = 0xC1C
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateSpellcard@th08@@3UEnemyManagerUpdateSpellcard@1@A"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
 target = 0x004EA670
 
 [[units.relocations]]
 offset = 0xC21
 type = "REL32"
-symbol = "?IsActive@EnemyManagerUpdateSpellcard@th08@@QAEHXZ"
+symbol = "?IsActive@Spellcard@th08@@QAEHXZ"
 target = 0x004178A0
 
 [[units.relocations]]
 offset = 0xC55
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateSpellcard@th08@@3UEnemyManagerUpdateSpellcard@1@A"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
 target = 0x004EA670
 
 [[units.relocations]]
 offset = 0xC5A
 type = "REL32"
-symbol = "?AllowsBombDamage@EnemyManagerUpdateSpellcard@th08@@QAEHXZ"
+symbol = "?FUN_0042DFF0@Spellcard@th08@@QAEHXZ"
 target = 0x0042DFF0
 
 [[units.relocations]]
 offset = 0xC66
 type = "REL32"
-symbol = "?IsBossPart@EnemyManagerUpdateEnemy@th08@@QAEHXZ"
+symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
 target = 0x0041FD20
 
 [[units.relocations]]
@@ -10181,20 +10194,21 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0xCA9
 type = "REL32"
-symbol = "??OEnemyManagerUpdateTimer@th08@@QAEHH@Z"
+symbol = "??OZunTimer@th08@@QAEIH@Z"
 target = 0x004066C0
 
 [[units.relocations]]
 offset = 0xD03
 type = "REL32"
-symbol = "?ApplyDamage@EnemyManagerUpdateEnemy@th08@@QAEXH@Z"
+symbol = "?FUN_0042b370@Enemy@th08@@QAEXH@Z"
 target = 0x0042B370
 
 [[units.relocations]]
 offset = 0xD25
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateReferencePosition@th08@@3UD3DXVECTOR3@@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0x2B4
 
 [[units.relocations]]
 offset = 0xD31
@@ -10211,8 +10225,9 @@ target = 0x004090D0
 [[units.relocations]]
 offset = 0xD4C
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateReferencePosition@th08@@3UD3DXVECTOR3@@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0x2B4
 
 [[units.relocations]]
 offset = 0xD61
@@ -10229,13 +10244,13 @@ target = 0x018B89B8
 [[units.relocations]]
 offset = 0xD84
 type = "REL32"
-symbol = "_EnemyManagerUpdateFabs@4"
+symbol = "@fabsf@4"
 target = 0x004031E0
 
 [[units.relocations]]
 offset = 0xD93
 type = "REL32"
-symbol = "_EnemyManagerUpdateFabs@4"
+symbol = "@fabsf@4"
 target = 0x004031E0
 
 [[units.relocations]]
@@ -10307,13 +10322,14 @@ target = 0x018B899C
 [[units.relocations]]
 offset = 0xE2C
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateReferencePosition@th08@@3UD3DXVECTOR3@@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0x2B4
 
 [[units.relocations]]
 offset = 0xE35
 type = "REL32"
-symbol = "_EnemyManagerUpdateFabs@4"
+symbol = "@fabsf@4"
 target = 0x004031E0
 
 [[units.relocations]]
@@ -10325,25 +10341,25 @@ target = 0x004B42C8
 [[units.relocations]]
 offset = 0xE4A
 type = "REL32"
-symbol = "?IsBossPart@EnemyManagerUpdateEnemy@th08@@QAEHXZ"
+symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
 target = 0x0041FD20
 
 [[units.relocations]]
 offset = 0xE54
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateTrackedEnemy@th08@@3PAUEnemyManagerUpdateEnemy@1@A"
+symbol = "?g_EnemyTrackedEnemy@th08@@3PAUEnemy@1@A"
 target = 0x018B89B4
 
 [[units.relocations]]
 offset = 0xE5C
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateTrackedEnemy@th08@@3PAUEnemyManagerUpdateEnemy@1@A"
+symbol = "?g_EnemyTrackedEnemy@th08@@3PAUEnemy@1@A"
 target = 0x018B89B4
 
 [[units.relocations]]
 offset = 0xE7B
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateTrackedEnemy@th08@@3PAUEnemyManagerUpdateEnemy@1@A"
+symbol = "?g_EnemyTrackedEnemy@th08@@3PAUEnemy@1@A"
 target = 0x018B89B4
 
 [[units.relocations]]
@@ -10355,49 +10371,49 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 0xF18
 type = "REL32"
-symbol = "??BEnemyManagerUpdateTimer@th08@@QAEHXZ"
+symbol = "??BZunTimer@th08@@QAEHXZ"
 target = 0x0040D3B0
 
 [[units.relocations]]
 offset = 0xFA9
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateMemory@th08@@3UEnemyManagerUpdateMemory@1@A"
+symbol = "?g_ZunMemory@th08@@3VZunMemory@1@A"
 target = 0x0164F598
 
 [[units.relocations]]
 offset = 0xFAE
 type = "REL32"
-symbol = "?Free@EnemyManagerUpdateMemory@th08@@QAEXPAX@Z"
+symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
 target = 0x0040B8A0
 
 [[units.relocations]]
 offset = 0xFC9
 type = "REL32"
-symbol = "?IsBossPart@EnemyManagerUpdateEnemy@th08@@QAEHXZ"
+symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
 target = 0x0041FD20
 
 [[units.relocations]]
 offset = 0xFF8
 type = "REL32"
-symbol = "?ReleaseEffects@EnemyManagerUpdateEnemy@th08@@QAEXH@Z"
+symbol = "?FUN_0042adb0@EnemyOverlay@EclOperands@th08@@QAEXH@Z"
 target = 0x0042ADB0
 
 [[units.relocations]]
 offset = 0xFFF
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x101E
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
 offset = 0x1023
 type = "REL32"
-symbol = "?AddToYoukaiGauge@EnemyManagerUpdateGameManager@th08@@QAEXHH@Z"
+symbol = "?AddToYoukaiGauge@GameManager@th08@@QAEXHH@Z"
 target = 0x0043C0BB
 
 [[units.relocations]]
@@ -10409,343 +10425,344 @@ target = 0x0042DE96
 [[units.relocations]]
 offset = 0x1092
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGui@th08@@3UEnemyManagerUpdateGui@1@A"
+symbol = "?g_Gui@th08@@3UGui@1@A"
 target = 0x0160F428
 
 [[units.relocations]]
 offset = 0x1097
 type = "REL32"
-symbol = "?ResetBossUi@EnemyManagerUpdateGui@th08@@QAEXH@Z"
+symbol = "?SetBossPresent@Gui@th08@@QAE_N_N@Z"
 target = 0x00422C20
 
 [[units.relocations]]
 offset = 0x109D
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateReplayManager@th08@@3PAUEnemyManagerUpdateReplayManager@1@A"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
 target = 0x018B8A28
 
 [[units.relocations]]
 offset = 0x10AD
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateReplayManager@th08@@3PAUEnemyManagerUpdateReplayManager@1@A"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
 target = 0x018B8A28
 
 [[units.relocations]]
 offset = 0x10E0
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateEffectManager@th08@@3UEnemyManagerUpdateEffectManager@1@A"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
 target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x10E5
 type = "REL32"
-symbol = "?SpawnEffect@EnemyManagerUpdateEffectManager@th08@@QAEXHPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
 offset = 0x1103
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateEffectManager@th08@@3UEnemyManagerUpdateEffectManager@1@A"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
 target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x1108
 type = "REL32"
-symbol = "?SpawnEffect@EnemyManagerUpdateEffectManager@th08@@QAEXHPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
 offset = 0x1126
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateEffectManager@th08@@3UEnemyManagerUpdateEffectManager@1@A"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
 target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x112B
 type = "REL32"
-symbol = "?SpawnEffect@EnemyManagerUpdateEffectManager@th08@@QAEXHPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
 offset = 0x1147
 type = "REL32"
-symbol = "?SetInterrupt@EnemyManagerUpdateAnmVm@th08@@QAEXH@Z"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
 target = 0x00407120
 
 [[units.relocations]]
 offset = 0x115B
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x1166
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdatePlayerTimer@th08@@3UEnemyManagerUpdateTimer@1@A"
+symbol = "?g_EnemyManagerUpdatePlayerTimer@th08@@3UZunTimer@1@A"
 target = 0x018B89EC
 
 [[units.relocations]]
 offset = 0x116B
 type = "REL32"
-symbol = "??4EnemyManagerUpdateTimer@th08@@QAEXH@Z"
+symbol = "??4ZunTimer@th08@@QAEXH@Z"
 target = 0x004065F0
 
 [[units.relocations]]
 offset = 0x1171
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdatePlayer@th08@@3UEnemyManagerUpdatePlayer@1@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x11B4
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
 offset = 0x11B9
 type = "REL32"
-symbol = "?AddScore@EnemyManagerUpdateGameManager@th08@@QAEXH@Z"
+symbol = "?AddScore@GameManager@th08@@QAEXH@Z"
 target = 0x004181F0
 
 [[units.relocations]]
 offset = 0x1221
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
 offset = 0x1226
 type = "REL32"
-symbol = "?AddScore@EnemyManagerUpdateGameManager@th08@@QAEXH@Z"
+symbol = "?AddScore@GameManager@th08@@QAEXH@Z"
 target = 0x004181F0
 
 [[units.relocations]]
 offset = 0x1257
 type = "REL32"
-symbol = "?SetInterrupt@EnemyManagerUpdateAnmVm@th08@@QAEXH@Z"
+symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
 target = 0x00407120
 
 [[units.relocations]]
 offset = 0x127D
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGui@th08@@3UEnemyManagerUpdateGui@1@A"
+symbol = "?g_Gui@th08@@3UGui@1@A"
 target = 0x0160F428
 
 [[units.relocations]]
 offset = 0x1282
 type = "REL32"
-symbol = "?ResetBossUi@EnemyManagerUpdateGui@th08@@QAEXH@Z"
+symbol = "?SetBossPresent@Gui@th08@@QAE_N_N@Z"
 target = 0x00422C20
 
 [[units.relocations]]
 offset = 0x128A
 type = "REL32"
-symbol = "?SpecialBossDeath@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+symbol = "?FUN_0042a820@Enemy@th08@@QAEXXZ"
 target = 0x0042A820
 
 [[units.relocations]]
 offset = 0x1296
 type = "REL32"
-symbol = "?FinalizeDeath@EnemyManagerUpdateEnemy@th08@@QAEXH@Z"
+symbol = "?FUN_0042bea0@Enemy@th08@@QAEXH@Z"
 target = 0x0042BEA0
 
 [[units.relocations]]
 offset = 0x12AD
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateSpellcard@th08@@3UEnemyManagerUpdateSpellcard@1@A"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
 target = 0x004EA670
 
 [[units.relocations]]
 offset = 0x12B2
 type = "REL32"
-symbol = "?IsActive@EnemyManagerUpdateSpellcard@th08@@QAEHXZ"
+symbol = "?IsActive@Spellcard@th08@@QAEHXZ"
 target = 0x004178A0
 
 [[units.relocations]]
 offset = 0x12C2
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateBulletManager@th08@@3UEnemyManagerUpdateBulletManager@1@A"
+symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
 target = 0x00F54E90
 
 [[units.relocations]]
 offset = 0x12C7
 type = "REL32"
-symbol = "?DespawnBullets@EnemyManagerUpdateBulletManager@th08@@QAEHHH@Z"
+symbol = "?DespawnBullets@BulletManager@th08@@QAEHHH@Z"
 target = 0x00430AA0
 
 [[units.relocations]]
 offset = 0x12D8
 type = "DIR32"
-symbol = "?g_EnemyManager@th08@@3UEnemyManagerUpdateOverlay@1@A"
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
 target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x12DD
 type = "REL32"
-symbol = "?ConvertBulletBonus@EnemyManagerUpdateOverlay@th08@@QAEHHH@Z"
+symbol = "?FUN_0042efb0@EnemyManager@th08@@QAEHHH@Z"
 target = 0x0042EFB0
 
 [[units.relocations]]
 offset = 0x12EF
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
 offset = 0x12F4
 type = "REL32"
-symbol = "?AddScore@EnemyManagerUpdateGameManager@th08@@QAEXH@Z"
+symbol = "?AddScore@GameManager@th08@@QAEXH@Z"
 target = 0x004181F0
 
 [[units.relocations]]
 offset = 0x12FD
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGui@th08@@3UEnemyManagerUpdateGui@1@A"
+symbol = "?g_Gui@th08@@3UGui@1@A"
 target = 0x0160F428
 
 [[units.relocations]]
 offset = 0x1302
 type = "REL32"
-symbol = "?ShowBonus@EnemyManagerUpdateGui@th08@@QAEXH@Z"
+symbol = "?FUN_00437ddd@Gui@th08@@QAEXH@Z"
 target = 0x00437DDD
 
 [[units.relocations]]
 offset = 0x1314
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateReplayManager@th08@@3PAUEnemyManagerUpdateReplayManager@1@A"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
 target = 0x018B8A28
 
 [[units.relocations]]
 offset = 0x1324
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateReplayManager@th08@@3PAUEnemyManagerUpdateReplayManager@1@A"
+symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
 target = 0x018B8A28
 
 [[units.relocations]]
 offset = 0x1365
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateSoundPlayer@th08@@3UEnemyManagerUpdateSoundPlayer@1@A"
+symbol = "?g_SoundPlayer@th08@@3VSoundPlayer@1@A"
 target = 0x018B8A68
 
 [[units.relocations]]
 offset = 0x136A
 type = "REL32"
-symbol = "?PlaySoundPositionedByIdx@EnemyManagerUpdateSoundPlayer@th08@@QAEXHM@Z"
+symbol = "?PlaySoundPositionedByIdx@SoundPlayer@th08@@QAEXW4SoundIdx@2@M@Z"
 target = 0x0045D660
 
 [[units.relocations]]
 offset = 0x1396
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateEffectManager@th08@@3UEnemyManagerUpdateEffectManager@1@A"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
 target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x139B
 type = "REL32"
-symbol = "?SpawnEffect@EnemyManagerUpdateEffectManager@th08@@QAEXHPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
 offset = 0x13BC
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateEffectManager@th08@@3UEnemyManagerUpdateEffectManager@1@A"
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
 target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x13C1
 type = "REL32"
-symbol = "?SpawnEffect@EnemyManagerUpdateEffectManager@th08@@QAEXHPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
 offset = 0x13C6
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
 offset = 0x13CB
 type = "REL32"
-symbol = "?GaugeIsExtremelyHuman@EnemyManagerUpdateGameManager@th08@@QAEHXZ"
+symbol = "?GaugeIsExtremelyHuman@GameManager@th08@@QAEIXZ"
 target = 0x00406D10
 
 [[units.relocations]]
 offset = 0x13D4
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
 offset = 0x13D9
 type = "REL32"
-symbol = "?GaugeIsExtremelyYoukai@EnemyManagerUpdateGameManager@th08@@QAEHXZ"
+symbol = "?GaugeIsExtremelyYoukai@GameManager@th08@@QAEIXZ"
 target = 0x00406D70
 
 [[units.relocations]]
 offset = 0x13F0
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateItemManager@th08@@3UEnemyManagerUpdateItemManager@1@A"
+symbol = "?g_ItemManager@th08@@3UItemManager@1@A"
 target = 0x01653648
 
 [[units.relocations]]
 offset = 0x13F5
 type = "REL32"
-symbol = "?SpawnItem@EnemyManagerUpdateItemManager@th08@@QAEXPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnItem@ItemManager@th08@@QAEPAUItem@2@PAUFloat3@2@W4ItemType@2@H@Z"
 target = 0x004400A0
 
 [[units.relocations]]
 offset = 0x140F
 type = "REL32"
-symbol = "?PrepareDeathCallback@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+symbol = "?enemy_fun_00415c80@Enemy@th08@@QAEXXZ"
 target = 0x00415C80
 
 [[units.relocations]]
 offset = 0x145B
 type = "REL32"
-symbol = "?ResetForDeathCallback@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+symbol = "?FUN_0042bc90@Enemy@th08@@QAEXXZ"
 target = 0x0042BC90
 
 [[units.relocations]]
 offset = 0x146E
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateCombatTemplate@th08@@3PAEA"
-target = 0x0057AD44
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
+addend = 0x2E24
 
 [[units.relocations]]
 offset = 0x1496
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateEclManager@th08@@3UEnemyManagerUpdateEclManager@1@A"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
 target = 0x004ECCB8
 
 [[units.relocations]]
 offset = 0x149B
 type = "REL32"
-symbol = "?CallEclSub@EnemyManagerUpdateEclManager@th08@@QAEHPAXF@Z"
+symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
 target = 0x00418450
 
 [[units.relocations]]
 offset = 0x152D
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateSoundPlayer@th08@@3UEnemyManagerUpdateSoundPlayer@1@A"
+symbol = "?g_SoundPlayer@th08@@3VSoundPlayer@1@A"
 target = 0x018B8A68
 
 [[units.relocations]]
 offset = 0x1532
 type = "REL32"
-symbol = "?PlaySoundPositionedByIdx@EnemyManagerUpdateSoundPlayer@th08@@QAEXHM@Z"
+symbol = "?PlaySoundPositionedByIdx@SoundPlayer@th08@@QAEXW4SoundIdx@2@M@Z"
 target = 0x0045D660
 
 [[units.relocations]]
 offset = 0x1545
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateSoundPlayer@th08@@3UEnemyManagerUpdateSoundPlayer@1@A"
+symbol = "?g_SoundPlayer@th08@@3VSoundPlayer@1@A"
 target = 0x018B8A68
 
 [[units.relocations]]
 offset = 0x154A
 type = "REL32"
-symbol = "?PlaySoundPositionedByIdx@EnemyManagerUpdateSoundPlayer@th08@@QAEXHM@Z"
+symbol = "?PlaySoundPositionedByIdx@SoundPlayer@th08@@QAEXW4SoundIdx@2@M@Z"
 target = 0x0045D660
 
 [[units.relocations]]
@@ -10757,25 +10774,25 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 0x162C
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGui@th08@@3UEnemyManagerUpdateGui@1@A"
+symbol = "?g_Gui@th08@@3UGui@1@A"
 target = 0x0160F428
 
 [[units.relocations]]
 offset = 0x1631
 type = "REL32"
-symbol = "?IsDialogPresent@EnemyManagerUpdateGui@th08@@QAEHXZ"
+symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
 target = 0x004358BB
 
 [[units.relocations]]
 offset = 0x165E
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGui@th08@@3UEnemyManagerUpdateGui@1@A"
+symbol = "?g_Gui@th08@@3UGui@1@A"
 target = 0x0160F428
 
 [[units.relocations]]
 offset = 0x1663
 type = "REL32"
-symbol = "?SetBossHealth@EnemyManagerUpdateGui@th08@@QAEXM@Z"
+symbol = "?FUN_004230c0@Gui@th08@@QAEXM@Z"
 target = 0x004230C0
 
 [[units.relocations]]
@@ -10787,91 +10804,91 @@ target = 0x004B42CC
 [[units.relocations]]
 offset = 0x16D3
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateAsciiManager@th08@@3UEnemyManagerUpdateAsciiManager@1@A"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
 target = 0x004CCE20
 
 [[units.relocations]]
 offset = 0x16D8
 type = "REL32"
-symbol = "?SetBossMarkerPosition@EnemyManagerUpdateAsciiManager@th08@@QAEXHPAUD3DXVECTOR3@@@Z"
+symbol = "?SetBossMarkerPosition@AsciiManager@th08@@QAEXHPAUD3DXVECTOR3@@@Z"
 target = 0x00422BE0
 
 [[units.relocations]]
 offset = 0x1711
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateAsciiManager@th08@@3UEnemyManagerUpdateAsciiManager@1@A"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
 target = 0x004CCE20
 
 [[units.relocations]]
 offset = 0x1716
 type = "REL32"
-symbol = "?SetBossMarkerState@EnemyManagerUpdateAsciiManager@th08@@QAEXHH@Z"
+symbol = "?FUN_0042f2d0@AsciiManager@th08@@QAEXHI@Z"
 target = 0x0042F2D0
 
 [[units.relocations]]
 offset = 0x173B
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateAsciiManager@th08@@3UEnemyManagerUpdateAsciiManager@1@A"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
 target = 0x004CCE20
 
 [[units.relocations]]
 offset = 0x1740
 type = "REL32"
-symbol = "?SetBossMarkerState@EnemyManagerUpdateAsciiManager@th08@@QAEXHH@Z"
+symbol = "?FUN_0042f2d0@AsciiManager@th08@@QAEXHI@Z"
 target = 0x0042F2D0
 
 [[units.relocations]]
 offset = 0x1748
 type = "REL32"
-symbol = "?UpdateEffects@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+symbol = "?FUN_0042e010@Enemy@th08@@QAEXXZ"
 target = 0x0042E010
 
 [[units.relocations]]
 offset = 0x174F
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGamePaused@th08@@3DA"
+symbol = "?g_EclScriptedGlobalUpdateFreeze@th08@@3DA"
 target = 0x0160F534
 
 [[units.relocations]]
 offset = 0x1763
 type = "REL32"
-symbol = "??EEnemyManagerUpdateTimer@th08@@QAEXH@Z"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
 target = 0x00406640
 
 [[units.relocations]]
 offset = 0x1773
 type = "REL32"
-symbol = "??OEnemyManagerUpdateTimer@th08@@QAEHH@Z"
+symbol = "??OZunTimer@th08@@QAEIH@Z"
 target = 0x004066C0
 
 [[units.relocations]]
 offset = 0x1787
 type = "REL32"
-symbol = "??FEnemyManagerUpdateTimer@th08@@QAEXH@Z"
+symbol = "??FZunTimer@th08@@QAEXH@Z"
 target = 0x00418110
 
 [[units.relocations]]
 offset = 0x17FB
 type = "REL32"
-symbol = "??LEnemyManagerUpdateTimer@th08@@QAEHH@Z"
+symbol = "??LZunTimer@th08@@QAEHH@Z"
 target = 0x0040D410
 
 [[units.relocations]]
 offset = 0x1804
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateGameManager@th08@@3UEnemyManagerUpdateGameManager@1@A"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
 offset = 0x1809
 type = "REL32"
-symbol = "?IsTampered@EnemyManagerUpdateGameManager@th08@@QAEHXZ"
+symbol = "?IsTampered@GameManager@th08@@QAEIXZ"
 target = 0x0040BB80
 
 [[units.relocations]]
 offset = 0x1827
 type = "REL32"
-symbol = "??EEnemyManagerUpdateTimer@th08@@QAEXH@Z"
+symbol = "??EZunTimer@th08@@QAEXH@Z"
 target = 0x00406640
 
 [[units.relocations]]

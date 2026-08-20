@@ -156,5 +156,8 @@ struct EclManager
     u32 *subTable;                     // +0x004
     EclTimelineState timelineState;    // +0x008
 };
+C_ASSERT(sizeof(EclManager) == 0x168);
+
+DIFFABLE_EXTERN(EclManager, g_EclManager);
 
 } // namespace th08

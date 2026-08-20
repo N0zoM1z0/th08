@@ -24,7 +24,9 @@ DIFFABLE_STATIC(u16, g_EnemyDropCounter);
 DIFFABLE_STATIC(ItemTimeOrbTimerStorage, g_EnemyAttachedTimer30);
 DIFFABLE_STATIC(ItemTimeOrbTimerStorage, g_EnemyAttachedTimer0);
 DIFFABLE_STATIC(ZunTimer, g_EnemyManagerUpdatePlayerTimer);
+DIFFABLE_STATIC(D3DXVECTOR3, g_EnemyManagerUpdateTrackedPosition);
 DIFFABLE_STATIC(Enemy *, g_EnemyTrackedEnemy);
+DIFFABLE_STATIC(i32, g_EnemyManagerUpdateTrackedPositionValid);
 DIFFABLE_STATIC(u16, g_EnemyDropScheduleIndex);
 DIFFABLE_STATIC_ARRAY_ASSIGN(u8, 32, g_EnemyDropSchedule) = {
     0, 0, 1, 0, 1, 0, 0, 0,

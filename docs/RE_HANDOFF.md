@@ -627,6 +627,24 @@ remaining unresolved object is the still-probe-only `EnemyManagerUpdate.obj`,
 with **77** provisional owner symbols. Treat that object as the next bounded
 promotion blocker rather than reopening already-closed RunEcl/resolver owners.
 
+The twenty-eighth bounded pass closed that final authored ECL owner blocker.
+`EnemyManagerUpdate::OnUpdate @ 0x0042C660` remains **6,198 / 6,198 authored bytes**
+and **6,214 / 6,214 compared bytes** strict exact while its 77 provisional
+external identities were routed back to natural production owners. The pass
+restored the real `g_EclManager @ 0x004ECCB8` data owner; its `0x168`-byte
+extent ends exactly at `g_EclCallParameters @ 0x004ECE20`. It also rebound
+GameManager/Player/subsystem singletons, ZunTimer calls, Enemy methods, the ECL
+timeline lane, canonical `fabsf`, and the target-exact `0x0041FD20` /
+`0x0042ADB0` helpers. The last data alias was proven to be
+`g_EnemyManager.firstEnemy.bullet2e24`: `BulletSpawnDescriptor` is exactly
+`0x210` bytes and its address is `0x00577F20 + 0x2E24 = 0x0057AD44`, matching
+the target `memcpy` source. A no-`/FORCE` diagnostic link of production objects
+plus EclRun, EclDependencies, EclHelpers, EclOperandsInt/Float, EnemyTimeline,
+EclExIns, and EnemyManagerUpdate now exits successfully with **zero unresolved
+externals**. Cold authored replay remains **1,105 / 1,105 exact**. The next
+bounded step is production promotion and fresh whole-image measurement, not
+further owner canonicalization.
+
 The production link contains **36 object files**. Under target-proven
 `/OPT:ICF`, 35 have accepted map anchors and 34 retain non-folded TU-layout
 anchors. Every layout-ranked object still has **zero target-order inversions and
