@@ -5,6 +5,7 @@
 
 #include "Player.hpp"
 #include "GameManager.hpp"
+#include "EclManager.hpp"
 #include "ScreenEffect.hpp"
 #include "Spellcard.hpp"
 #include "ZunMath.hpp"
@@ -1212,10 +1213,31 @@ Float3::Float3(float x, float y, float z)
     this->z = z;
 }
 
-// STUB: th08 0x404750
-i32 PauseMenu::OnDraw()
+#pragma var_order(menuBackground, vmIdx)
+// FUNCTION: th08 0x404750
+void PauseMenu::OnDraw()
 {
-    return 0;
+    u32 vmIdx;
+    if (g_GameManager.isInGameMenu)
+    {
+        g_AnmManager->FlushVertexBuffer();
+        g_Supervisor.viewport.X = g_GameManager.arcadeRegionTopLeftPos.x;
+        g_Supervisor.viewport.Y = g_GameManager.arcadeRegionTopLeftPos.y;
+        g_Supervisor.viewport.Width = g_GameManager.arcadeRegionSize.x;
+        g_Supervisor.viewport.Height = g_GameManager.arcadeRegionSize.y;
+        g_Supervisor.d3dDevice->SetViewport(&g_Supervisor.viewport);
+        if (((g_EclGameTimeScaleFlags >> 1) & 1) != 0 && this->curState != 0)
+        {
+            AnmVm menuBackground = this->menuBackground;
+            menuBackground.zWriteDisabled = TRUE;
+            g_AnmManager->DrawNoRotation(&menuBackground);
+        }
+        for (vmIdx = 0; vmIdx < 10; vmIdx++)
+        {
+            if (this->menuSprites[vmIdx].IsVisible())
+                g_AnmManager->DrawNoRotation(&this->menuSprites[vmIdx]);
+        }
+    }
 }
 
 // FUNCTION: th08 0x404890
@@ -1517,10 +1539,35 @@ selected_no:
     return 0;
 }
 
-// STUB: th08 0x4052b0
-i32 RetryMenu::OnDraw()
+#pragma var_order(vmIdx)
+// FUNCTION: th08 0x4052b0
+void RetryMenu::OnDraw()
 {
-    return 0;
+    i32 vmIdx;
+    if (g_GameManager.showRetryMenu)
+    {
+        g_AnmManager->FlushVertexBuffer();
+        g_Supervisor.viewport.X = g_GameManager.arcadeRegionTopLeftPos.x;
+        g_Supervisor.viewport.Y = g_GameManager.arcadeRegionTopLeftPos.y;
+        g_Supervisor.viewport.Width = g_GameManager.arcadeRegionSize.x;
+        g_Supervisor.viewport.Height = g_GameManager.arcadeRegionSize.y;
+        g_Supervisor.d3dDevice->SetViewport(&g_Supervisor.viewport);
+        if (((g_EclGameTimeScaleFlags >> 1) & 1) != 0 && (this->curState != 0 || this->numFrames > 2))
+            g_AnmManager->DrawNoRotation(&this->menuBackground);
+
+        if (!g_GameManager.IsPracticeMode() && g_GameManager.difficulty < EXTRA)
+        {
+            for (vmIdx = 0; vmIdx < 4; vmIdx++)
+                if (this->menuSprites[vmIdx].IsVisible())
+                    g_AnmManager->DrawNoRotation(&this->menuSprites[vmIdx]);
+        }
+        else
+        {
+            for (vmIdx = 0; vmIdx < 3; vmIdx++)
+                if (this->menuSprites[vmIdx].IsVisible())
+                    g_AnmManager->DrawNoRotation(&this->menuSprites[vmIdx]);
+        }
+    }
 }
 
 #pragma var_order(popup, alpha, dy, dx, i, j, charPtr, unused, rect, alphaColor, divisor)

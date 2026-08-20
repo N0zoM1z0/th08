@@ -68,7 +68,7 @@ struct GameManager
     static ZunResult RegisterChain();
 
     static ZunResult AddedCallback(GameManager *gameManager);
-    static void GameplaySetupThread();
+    static void __fastcall GameplaySetupThread(void *unused);
 
     void InitRankParams();
 

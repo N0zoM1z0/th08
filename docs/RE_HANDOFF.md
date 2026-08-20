@@ -645,14 +645,44 @@ externals**. Cold authored replay remains **1,105 / 1,105 exact**. The next
 bounded step is production promotion and fresh whole-image measurement, not
 further owner canonicalization.
 
-The production link contains **36 object files**. Under target-proven
-`/OPT:ICF`, 35 have accepted map anchors and 34 retain non-folded TU-layout
-anchors. Every layout-ranked object still has **zero target-order inversions and
-exactly one run**. `utils.obj` has two accepted anchors but both are folded
-aliases, so it is explicitly unrankable for TU placement; `EclGlobals.obj` is a
-data-only TU with no function anchors. The fold-aware metric preserves the
-completed production function-order milestone without treating linker-selected
-aliases as source-order resets. The final cold authored replay remains **1,105 /
+The twenty-ninth bounded pass moved the closed ECL lane into the real production
+link without changing its compiler contract: EclRun, EclDependencies, EclHelpers,
+EclOperandsInt/Float, EnemyTimeline, EclExIns, and EnemyManagerUpdate now build as
+`build/*.obj` with the same generic `/Oi /Gr` profile that produced their accepted
+probe objects. All **69 / 69** promoted match units replay strict exact from the
+production paths. Fresh whole-image routing then exposed three earlier probe lanes as
+missing bodies inside existing target TUs rather than standalone objects.
+`PauseMenu::OnDraw` / `RetryMenu::OnDraw` were restored to their real `void` ABI and
+inserted into `AsciiManager.cpp`, which now replays **65 / 65 exact** and reduces its
+former `0 / -304 / -752` drift staircase to only `0 / -80`-class alignment/COMDAT
+noise. `GameManager::GameplaySetupThread @ 0x0043ABD7` and `FUN_0043BBE1` returned to
+`GameManager.cpp`; the target `g_TimeRequirementParams @ 0x004C77F0` storage is a
+semantic `9 x 4` i32 table, the setup member has the observed `__fastcall void(void *)`
+ABI, and `GameManager.obj` now replays **42 / 42 exact** with the former 3,418-byte
+drift jump removed. Fifteen Player option/shot functions were restored into the two
+target gaps in `Player.cpp`; after preserving their VC7 `#pragma var_order` contracts,
+`Player.obj` replays **77 / 77 exact** and the former `-63,824 -> -67,152 -> -70,960`
+staircase collapses to one approximately constant drift. The resulting fresh linked
+PBG lane is only **4,896..4,848 bytes early**, down from 16,672 bytes before these
+owner restorations.
+
+The promoted ECL code is target-backed but its object placement is not yet target-like.
+The current normal image has `.text` raw size `0xBA800` versus target `0xB1C00`,
+`.rdata` `0x15200` versus `0x11400`, `.data` `0x6400` versus `0x6E00`, and file-size
+delta `+49,152` bytes. Do not interpret the `.text` overshoot as evidence that the
+exact ECL bodies are spurious: their target anchors are valid, but the eight promoted
+objects are currently appended after the main authored lane. In particular
+`EclDependencies.obj` now reports **160 target-order inversions / 7 runs** and must be
+partitioned/routed by target neighborhoods; `EclExIns.obj` has a small two-run kink.
+The next bounded whole-image task is ECL object order/partition, followed by the small
+remaining authored gap (PBG about 4.9 KB early), not further ECL owner canonicalization.
+
+The production link contains **44 authored/PBG object files**. The fold-aware
+whole-image report now includes the promoted ECL objects as production layout
+evidence. Existing settled objects such as AsciiManager, GameManager, Player, and the
+PBG lane retain one target-order run, while the newly promoted mixed ECL dependency TU
+is intentionally the active partition candidate. `utils.obj` remains folded-only and
+`EclGlobals.obj` remains data-only; neither should be used as TU-placement evidence. The final cold authored replay remains **1,105 /
 1,105 exact**, `config/claims.csv` remains header-only, and the final
 tracking/progress/CI/doc/whitespace gates pass. Do not infer whole-image byte
 identity from this milestone: section drift, imports/resources, and non-layout

@@ -2018,7 +2018,7 @@ size = 0x15
 
 [[units]]
 name = "ecl-manager-run-ecl"
-object = "build/probes/EclRun.obj"
+object = "build/EclRun.obj"
 symbol = "?RunEcl@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemy@2@@Z"
 target_address = 0x004184B0
 size = 0x680E
@@ -6887,7 +6887,7 @@ target = 0x0040B460
 
 [[units]]
 name = "ecl-resolve-int"
-object = "build/probes/EclOperandsInt.obj"
+object = "build/EclOperandsInt.obj"
 symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
 target_address = 0x0041F420
 size = 0x76B
@@ -8108,7 +8108,7 @@ target = 0x0041FB77
 
 [[units]]
 name = "ecl-resolve-int-lvalue"
-object = "build/probes/EclOperandsInt.obj"
+object = "build/EclOperandsInt.obj"
 symbol = "?ResolveIntLValue@EclOperands@th08@@YIPAHPAUEnemyOverlay@12@PAHGH@Z"
 target_address = 0x0041FE10
 size = 0x224
@@ -8379,7 +8379,7 @@ target = 0x0042002B
 
 [[units]]
 name = "ecl-resolve-float"
-object = "build/probes/EclOperandsFloat.obj"
+object = "build/EclOperandsFloat.obj"
 symbol = "?ResolveFloat@EnemyOverlay@EclOperands@th08@@QAEMM@Z"
 target_address = 0x00420120
 size = 0x697
@@ -9264,7 +9264,7 @@ target = 0x0042077F
 
 [[units]]
 name = "ecl-resolve-float-lvalue"
-object = "build/probes/EclOperandsFloat.obj"
+object = "build/EclOperandsFloat.obj"
 symbol = "?ResolveFloatLValue@EclOperands@th08@@YIPAMPAUEnemyOverlay@12@PAMGH@Z"
 target_address = 0x00420950
 size = 0x2B8
@@ -9615,7 +9615,7 @@ target = 0x00420BFF
 
 [[units]]
 name = "enemy-manager-on-update"
-object = "build/probes/EnemyManagerUpdate.obj"
+object = "build/EnemyManagerUpdate.obj"
 symbol = "?OnUpdate@EnemyManagerUpdateOverlay@th08@@QAEHXZ"
 target_address = 0x0042C660
 size = 0x1836
@@ -28846,13 +28846,13 @@ target = 0x00407160
 [[units.relocations]]
 offset = 0x21
 type = "REL32"
-symbol = "?OnDraw@PauseMenu@th08@@QAEHXZ"
+symbol = "?OnDraw@PauseMenu@th08@@QAEXXZ"
 target = 0x00404750
 
 [[units.relocations]]
 offset = 0x2F
 type = "REL32"
-symbol = "?OnDraw@RetryMenu@th08@@QAEHXZ"
+symbol = "?OnDraw@RetryMenu@th08@@QAEXXZ"
 target = 0x004052B0
 
 [[units.relocations]]
@@ -43566,7 +43566,7 @@ target = 0x0044886F
 [[units.relocations]]
 offset = 0xD1
 type = "DIR32"
-symbol = "?GameplaySetupThread@GameManager@th08@@SIXXZ"
+symbol = "?GameplaySetupThread@GameManager@th08@@SIXPAX@Z"
 target = 0x0043ABD7
 
 [[units.relocations]]
@@ -54524,7 +54524,7 @@ target = 0x004a3e70
 # Evidence: private bitfield overlay reproduces the target flag updates; strict comparator exact.
 [[units]]
 name = "ecl-configure-polar-motion"
-object = "build/probes/EclHelpers.obj"
+object = "build/EclHelpers.obj"
 symbol = "?ConfigurePolarMotion@EclHelpers@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target_address = 0x00420D10
 size = 0x22C
@@ -54599,7 +54599,7 @@ target = 0x0041F420
 # Evidence: private bitfield overlay reproduces the target flag updates; strict comparator exact.
 [[units]]
 name = "ecl-configure-relative-motion"
-object = "build/probes/EclHelpers.obj"
+object = "build/EclHelpers.obj"
 symbol = "?ConfigureRelativeMotion@EclHelpers@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target_address = 0x00420F40
 size = 0x1D3
@@ -104012,7 +104012,7 @@ target = 0x00000000
 # Ledger name: th08::Float3::Float3
 [[units]]
 name = "float3-default-constructor-0040b460"
-object = "build/probes/EnemyTimeline.obj"
+object = "build/EnemyTimeline.obj"
 symbol = "??0D3DXVECTOR3@@QAE@XZ"
 target_address = 0x0040B460
 size = 0xE
@@ -104020,7 +104020,7 @@ size = 0xE
 # Ledger name: th08::EnemyManager::SpawnEnemy1
 [[units]]
 name = "enemy-manager-spawn-enemy1-0042a4e0"
-object = "build/probes/EnemyTimeline.obj"
+object = "build/EnemyTimeline.obj"
 symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHH@Z"
 target_address = 0x0042A4E0
 size = 0x199
@@ -104052,7 +104052,7 @@ target = 0x004184B0
 # Ledger name: th08::EnemyManager::SpawnEnemy2
 [[units]]
 name = "enemy-manager-spawn-enemy2-0042a680"
-object = "build/probes/EnemyTimeline.obj"
+object = "build/EnemyTimeline.obj"
 symbol = "?SpawnEnemy2@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHPAH@Z"
 target_address = 0x0042A680
 size = 0x19D
@@ -104085,7 +104085,7 @@ target = 0x004184B0
 # Associated switch table: target 0x0042AD60..0x0042ADA4 (0x44 bytes; 17 relocations; compared, excluded from authored bytes)
 [[units]]
 name = "ecl-timeline-run-0042a8a0"
-object = "build/probes/EnemyTimeline.obj"
+object = "build/EnemyTimeline.obj"
 symbol = "?Run@EclTimeline@th08@@QAEXXZ"
 target_address = 0x0042A8A0
 size = 0x4C0
@@ -104530,7 +104530,7 @@ size = 0x2A
 # Ledger name: th08::StartEnemySpell
 [[units]]
 name = "ecl-start-enemy-spell-00421280"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?StartEnemySpell@th08@@YIXPAEPAX@Z"
 target_address = 0x00421280
 size = 0x53
@@ -104550,7 +104550,7 @@ target = 0x004152A0
 # Ledger name: th08::EndEnemySpell
 [[units]]
 name = "ecl-end-enemy-spell-004212e0"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?EndEnemySpell@th08@@YIXPAEPAX@Z"
 target_address = 0x004212E0
 size = 0x1A
@@ -104570,7 +104570,7 @@ target = 0x004161B0
 # Ledger name: th08::Gui::FUN_004230c0
 [[units]]
 name = "gui-boss-life-ratio-setter-004230c0"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?FUN_004230c0@Gui@th08@@QAEXM@Z"
 target_address = 0x004230C0
 size = 0x16
@@ -104578,7 +104578,7 @@ size = 0x16
 # Ledger name: th08::Gui::FUN_00423130
 [[units]]
 name = "gui-ecl-lives-setter-00423130"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?FUN_00423130@Gui@th08@@QAEXH@Z"
 target_address = 0x00423130
 size = 0x16
@@ -104836,7 +104836,7 @@ target = 0x00422F53
 
 [[units]]
 name = "enemy-post-ecl-shot-anm-00423150"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?FUN_00423150@Enemy@th08@@QAEXXZ"
 target_address = 0x00423150
 size = 0x237
@@ -104933,7 +104933,7 @@ target = 0x004069F0
 
 [[units]]
 name = "ecl-dispatch-shot-instruction-00422720"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?DispatchShotInstruction@EclRunHighProposal@th08@@YIXPAEPAURawInstruction@12@@Z"
 target_address = 0x00422720
 size = 0x456
@@ -105120,7 +105120,7 @@ target = 0x00430E10
 
 [[units]]
 name = "ecl-boundary-aware-move-00422020"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?BeginBoundaryAwareMove@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target_address = 0x00422020
 size = 0x28A
@@ -105319,7 +105319,7 @@ target = 0x004222B0
 
 [[units]]
 name = "ecl-timed-polar-displacement-004222b0"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?StartTimedPolarDisplacement@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@M@Z"
 target_address = 0x004222B0
 size = 0x1CD
@@ -105380,7 +105380,7 @@ target = 0x0041F420
 
 [[units]]
 name = "ecl-random-biased-move-004224a0"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?FUN_004224a0@EclRunLowProposal@th08@@YIXPAEPAX@Z"
 target_address = 0x004224A0
 size = 0x276
@@ -105603,7 +105603,7 @@ target = 0x004222B0
 
 [[units]]
 name = "ecl-install-interpolation-slot-004213f0"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?InstallInterpolationSlot@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target_address = 0x004213F0
 size = 0x1FA
@@ -105665,7 +105665,7 @@ target = 0x00420120
 # Comparison dispatcher: authored body 0x53f; associated 12-entry switch table 0x30 compared but not counted.
 [[units]]
 name = "ecl-compare-operands-004215f0"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?CompareOperands@EclRunLowProposal@th08@@YIPAUEclRawInstruction@2@PAUEnemyOverlay@EclOperands@2@PAU32@@Z"
 target_address = 0x004215F0
 size = 0x53F
@@ -105895,7 +105895,7 @@ target = 0x00421AA5
 
 [[units]]
 name = "ecl-apply-interpolation-operation-00421300"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?ApplyInterpolationOperation@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target_address = 0x00421300
 size = 0xEE
@@ -105932,7 +105932,7 @@ target = 0x00420950
 
 [[units]]
 name = "ecl-call-sub-on-enemy-00421bd0"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?CallSubOnEnemy@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@H@Z"
 target_address = 0x00421BD0
 size = 0xD6
@@ -105951,7 +105951,7 @@ target = 0x004ECE20
 
 [[units]]
 name = "ecl-pop-context-00421cb0"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?PopEclContext@EclRunLowProposal@th08@@YIHPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target_address = 0x00421CB0
 size = 0x118
@@ -105982,14 +105982,14 @@ target = 0x0040B8A0
 
 [[units]]
 name = "ecl-set-primary-anm-scripts-00421de0"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?SetPrimaryAnmScripts@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@HHHHHH@Z"
 target_address = 0x00421DE0
 size = 0x70
 
 [[units]]
 name = "ecl-set-extra-anm-script-00421e50"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?SetExtraAnmScript@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target_address = 0x00421E50
 size = 0x1C6
@@ -106074,7 +106074,7 @@ target = 0x0041F420
 
 [[units]]
 name = "ecl-find-linked-child-tail-0041efc0"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?FindLinkedChildTail0041EFC0@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
 target_address = 0x0041EFC0
 size = 0x36
@@ -106087,7 +106087,7 @@ target = 0x0041F000
 
 [[units]]
 name = "ecl-spawn-child-standard-0041f110"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?SpawnChildStandard0041F110@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
 target_address = 0x0041F110
 size = 0x16D
@@ -106154,7 +106154,7 @@ target = 0x00577F20
 
 [[units]]
 name = "ecl-spawn-child-alternate-0041f280"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?SpawnChildAlternate0041F280@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
 target_address = 0x0041F280
 size = 0x17F
@@ -106372,21 +106372,21 @@ size = 0x19
 
 [[units]]
 name = "gui-set-boss-gauge-slot-004230e0"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?SetBossGaugeSlot@Gui@th08@@QAEXHMM@Z"
 target_address = 0x004230E0
 size = 0x27
 
 [[units]]
 name = "gui-set-boss-gauge-value-00423110"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?SetBossGaugeValue@Gui@th08@@QAEXHH@Z"
 target_address = 0x00423110
 size = 0x1A
 
 [[units]]
 name = "ecl-spawn-packet-typed-ctor-0041f400"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "??0SpawnPacketTyped@EclRunHighProposal@th08@@QAE@XZ"
 target_address = 0x0041F400
 size = 0x19
@@ -107533,7 +107533,7 @@ target = 0x0043EDB0
 
 [[units]]
 name = "ecl-interpolate-linear-00421120"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?InterpolateLinear@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUInterpolationSlot@12@M@Z"
 target_address = 0x00421120
 size = 0x59
@@ -107558,7 +107558,7 @@ target = 0x00420950
 
 [[units]]
 name = "ecl-interpolate-hermite-00421180"
-object = "build/probes/EclDependencies.obj"
+object = "build/EclDependencies.obj"
 symbol = "?InterpolateHermite@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUInterpolationSlot@12@M@Z"
 target_address = 0x00421180
 size = 0x100
@@ -108014,7 +108014,7 @@ target = 0x00443E20
 
 [[units]]
 name = "ecl-ex-bullet-zone-callback-00423a60"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00423a60@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00423A60
 size = 0x310
@@ -108243,7 +108243,7 @@ target = 0x0043EDB0
 
 [[units]]
 name = "ecl-ex-callback-00423530"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00423530@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00423530
 size = 0x68
@@ -108298,7 +108298,7 @@ target = 0x004235A0
 
 [[units]]
 name = "ecl-ex-callback-00423db0"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00423db0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00423DB0
 size = 0x68
@@ -108353,7 +108353,7 @@ target = 0x004235A0
 
 [[units]]
 name = "ecl-ex-callback-00424170"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00424170@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424170
 size = 0x68
@@ -108408,7 +108408,7 @@ target = 0x004235A0
 
 [[units]]
 name = "ecl-ex-callback-00423390"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00423390@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00423390
 size = 0x34
@@ -108427,7 +108427,7 @@ target = 0x004E3D24
 
 [[units]]
 name = "ecl-ex-callback-004233d0"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_004233d0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x004233D0
 size = 0x27
@@ -108440,7 +108440,7 @@ target = 0x0045B8B0
 
 [[units]]
 name = "ecl-ex-enemy-bounce-00423400"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00423400@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00423400
 size = 0x128
@@ -108477,7 +108477,7 @@ target = 0x0040C7B0
 
 [[units]]
 name = "ecl-ex-bullet-zone-callback-00423e20"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00423e20@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00423E20
 size = 0x310
@@ -108706,7 +108706,7 @@ target = 0x0043EDB0
 
 [[units]]
 name = "ecl-ex-disable-barrier-00424130"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00424130@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424130
 size = 0x40
@@ -108737,7 +108737,7 @@ target = 0x004253E0
 
 [[units]]
 name = "ecl-ex-bullet-zone-callback-004241e0"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_004241e0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x004241E0
 size = 0x310
@@ -108973,7 +108973,7 @@ size = 0x22
 
 [[units]]
 name = "ecl-ex-barrier-render-callback-004235a0"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_004235a0@th08@@YIXXZ"
 target_address = 0x004235A0
 size = 0x4B3
@@ -109514,7 +109514,7 @@ target = 0x00448270
 
 [[units]]
 name = "ecl-ex-callback-004244f0"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_004244f0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x004244F0
 size = 0x1EE
@@ -109587,7 +109587,7 @@ target = 0x0043EDB0
 
 [[units]]
 name = "ecl-ex-callback-00424730"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00424730@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424730
 size = 0xE4
@@ -109654,7 +109654,7 @@ target = 0x0044A6A0
 
 [[units]]
 name = "ecl-ex-callback-00424820"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00424820@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424820
 size = 0xE4
@@ -109721,7 +109721,7 @@ target = 0x0044A6A0
 
 [[units]]
 name = "ecl-ex-callback-00424910"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00424910@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424910
 size = 0xE4
@@ -109788,7 +109788,7 @@ target = 0x0044A6A0
 
 [[units]]
 name = "ecl-ex-reisen-freeze-bullets-00424a20"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?ReisenFreezeBullets@EclExIns@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclExInstruction@2@@Z"
 target_address = 0x00424A20
 size = 0x218
@@ -109897,7 +109897,7 @@ target = 0x00407120
 
 [[units]]
 name = "ecl-ex-callback-00424c40"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00424c40@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424C40
 size = 0x1BB
@@ -109964,7 +109964,7 @@ target = 0x004286E0
 
 [[units]]
 name = "ecl-ex-callback-00424e00"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00424e00@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424E00
 size = 0x1F
@@ -109983,7 +109983,7 @@ target = 0x00409160
 
 [[units]]
 name = "ecl-ex-callback-00424e20"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00424e20@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424E20
 size = 0x27
@@ -109996,7 +109996,7 @@ target = 0x0045B8B0
 
 [[units]]
 name = "ecl-ex-callback-00424e50"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00424e50@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424E50
 size = 0x110
@@ -110033,7 +110033,7 @@ target = 0x004B4958
 
 [[units]]
 name = "ecl-ex-callback-00424f60"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00424f60@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424F60
 size = 0x27
@@ -110046,7 +110046,7 @@ target = 0x0045B8B0
 
 [[units]]
 name = "ecl-ex-callback-00424f90"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00424f90@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424F90
 size = 0x2E
@@ -110065,7 +110065,7 @@ target = 0x017CE8E0
 
 [[units]]
 name = "ecl-ex-callback-00424fc0"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00424fc0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424FC0
 size = 0x23
@@ -110078,7 +110078,7 @@ target = 0x0160F508
 
 [[units]]
 name = "ecl-ex-mokou-resurrection-00424ff0"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?MokouResurrection@EclExIns@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclExInstruction@2@@Z"
 target_address = 0x00424FF0
 size = 0x23
@@ -110103,7 +110103,7 @@ target = 0x00415D10
 
 [[units]]
 name = "ecl-ex-callback-00425020"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00425020@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00425020
 size = 0x1A
@@ -110122,7 +110122,7 @@ target = 0x00416160
 
 [[units]]
 name = "ecl-ex-callback-00425040"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00425040@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00425040
 size = 0x25
@@ -110135,7 +110135,7 @@ target = 0x0160F508
 
 [[units]]
 name = "ecl-ex-callback-00425070"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00425070@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00425070
 size = 0x59
@@ -110202,7 +110202,7 @@ target = 0x00407120
 
 [[units]]
 name = "ecl-ex-callback-004250d0"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_004250d0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x004250D0
 size = 0xD5
@@ -110233,7 +110233,7 @@ target = 0x0042A680
 
 [[units]]
 name = "ecl-ex-callback-004251b0"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_004251b0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x004251B0
 size = 0xD5
@@ -110306,7 +110306,7 @@ target = 0x0045E430
 
 [[units]]
 name = "ecl-ex-callback-00425290"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00425290@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00425290
 size = 0xFF
@@ -110415,7 +110415,7 @@ target = 0x00407120
 
 [[units]]
 name = "ecl-ex-callback-00425390"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00425390@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00425390
 size = 0x4A
@@ -110959,7 +110959,7 @@ target = 0x00403107
 
 [[units]]
 name = "ecl-ex-screen-effects-004246e0"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_004246e0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x004246E0
 size = 0x44
@@ -110978,7 +110978,7 @@ target = 0x0045B8B0
 
 [[units]]
 name = "ecl-ex-publish-screen-counter-00424a00"
-object = "build/probes/EclExIns.obj"
+object = "build/EclExIns.obj"
 symbol = "?FUN_00424a00@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424A00
 size = 0x1C
@@ -111018,8 +111018,8 @@ target = 0x004A43CF
 
 [[units]]
 name = "game-manager-gameplay-setup-thread-0043abd7"
-object = "build/probes/GameManagerSetup.obj"
-symbol = "?GameplaySetupThread0043ABD7@th08@@YIXPAX@Z"
+object = "build/GameManager.obj"
+symbol = "?GameplaySetupThread@GameManager@th08@@SIXPAX@Z"
 target_address = 0x0043ABD7
 size = 0xD5F
 
@@ -115679,7 +115679,7 @@ symbol = "$L69497"
 target = 0x00467464
 [[units]]
 name = "player-option-orbit-0044ee70"
-object = "build/probes/PlayerOptionProbe.obj"
+object = "build/Player.obj"
 symbol = "?FUN_0044ee70@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target_address = 0x0044EE70
 size = 0x423
@@ -115975,7 +115975,7 @@ target = 0x0044F187
 
 [[units]]
 name = "player-option-facing-0044f2d0"
-object = "build/probes/PlayerOptionProbe.obj"
+object = "build/Player.obj"
 symbol = "?FUN_0044f2d0@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target_address = 0x0044F2D0
 size = 0x2E1
@@ -117568,7 +117568,7 @@ target = 0x00462FF0
 
 [[units]]
 name = "player-option-aim-0044f5e0"
-object = "build/probes/PlayerOptionProbe.obj"
+object = "build/Player.obj"
 symbol = "?FUN_0044f5e0@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target_address = 0x0044F5E0
 size = 0x32A
@@ -117755,7 +117755,7 @@ symbol = "$L69919"
 target = 0x0044F7AE
 [[units]]
 name = "player-option-sway-0044f930"
-object = "build/probes/PlayerOptionProbe.obj"
+object = "build/Player.obj"
 symbol = "?FUN_0044f930@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target_address = 0x0044F930
 size = 0x23A
@@ -117851,7 +117851,7 @@ symbol = "??OZunTimer@th08@@QAEIH@Z"
 target = 0x004066C0
 [[units]]
 name = "player-shot-callback-00450080"
-object = "build/probes/PlayerOptionProbe.obj"
+object = "build/Player.obj"
 symbol = "?FUN_00450080@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@HPAE@Z"
 target_address = 0x00450080
 size = 0x8E
@@ -117881,7 +117881,7 @@ symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
 target = 0x004286E0
 [[units]]
 name = "player-shot-callback-00450110"
-object = "build/probes/PlayerOptionProbe.obj"
+object = "build/Player.obj"
 symbol = "?FUN_00450110@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@HPAE@Z"
 target_address = 0x00450110
 size = 0x91
@@ -117905,7 +117905,7 @@ symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
 target = 0x004286E0
 [[units]]
 name = "player-shot-callback-004501b0"
-object = "build/probes/PlayerOptionProbe.obj"
+object = "build/Player.obj"
 symbol = "?FUN_004501b0@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@HPAE@Z"
 target_address = 0x004501B0
 size = 0x85
@@ -117953,7 +117953,7 @@ symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
 target = 0x004286E0
 [[units]]
 name = "player-shot-callback-00450240"
-object = "build/probes/PlayerOptionProbe.obj"
+object = "build/Player.obj"
 symbol = "?FUN_00450240@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@HPAE@Z"
 target_address = 0x00450240
 size = 0xDF
@@ -117995,7 +117995,7 @@ symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
 target = 0x004286E0
 [[units]]
 name = "player-shot-steering-00450320"
-object = "build/probes/PlayerOptionProbe.obj"
+object = "build/Player.obj"
 symbol = "?FUN_00450320@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@@Z"
 target_address = 0x00450320
 size = 0x257
@@ -118091,7 +118091,7 @@ symbol = "?VectorAngle@th08@@YIMMM@Z"
 target = 0x0040C7B0
 [[units]]
 name = "player-shot-random-drift-00450580"
-object = "build/probes/PlayerOptionProbe.obj"
+object = "build/Player.obj"
 symbol = "?FUN_00450580@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@@Z"
 target_address = 0x00450580
 size = 0x48
@@ -118115,7 +118115,7 @@ symbol = "__real@3e8a3d71"
 target = 0x004B6FDC
 [[units]]
 name = "player-shot-timeline-update-004505d0"
-object = "build/probes/PlayerOptionProbe.obj"
+object = "build/Player.obj"
 symbol = "?FUN_004505d0@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@@Z"
 target_address = 0x004505D0
 size = 0x261
@@ -118217,7 +118217,7 @@ symbol = "?GaugeIsExtremelyYoukai@GameManager@th08@@QAEIXZ"
 target = 0x00406D70
 [[units]]
 name = "player-shot-trail-update-00450840"
-object = "build/probes/PlayerOptionProbe.obj"
+object = "build/Player.obj"
 symbol = "?FUN_00450840@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@@Z"
 target_address = 0x00450840
 size = 0x283
@@ -118283,7 +118283,7 @@ symbol = "?GaugeIsExtremelyYoukai@GameManager@th08@@QAEIXZ"
 target = 0x00406D70
 [[units]]
 name = "player-shot-trail-draw-00450ad0"
-object = "build/probes/PlayerOptionProbe.obj"
+object = "build/Player.obj"
 symbol = "?FUN_00450ad0@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@@Z"
 target_address = 0x00450AD0
 size = 0x174
@@ -118331,7 +118331,7 @@ symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463210
 [[units]]
 name = "player-shot-script-update-00450c50"
-object = "build/probes/PlayerOptionProbe.obj"
+object = "build/Player.obj"
 symbol = "?FUN_00450c50@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@PAUFloat3@1@@Z"
 target_address = 0x00450C50
 size = 0x263
@@ -118500,7 +118500,7 @@ symbol = "$L70200"
 target = 0x00450E4C
 [[units]]
 name = "player-shot-effect-tick-00450ee0"
-object = "build/probes/PlayerOptionProbe.obj"
+object = "build/Player.obj"
 symbol = "?FUN_00450ee0@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@PAUFloat3@1@@Z"
 target_address = 0x00450EE0
 size = 0x80
@@ -118525,7 +118525,7 @@ target = 0x00425430
 
 [[units]]
 name = "game-manager-score-init-0043bbe1"
-object = "build/probes/GameManagerScoreProbe.obj"
+object = "build/GameManager.obj"
 symbol = "?FUN_0043bbe1@th08@@YIHXZ"
 target_address = 0x0043BBE1
 size = 0x228
@@ -118808,8 +118808,8 @@ target = 0x0160F508
 
 [[units]]
 name = "stage-menu-pause-draw-00404750"
-object = "build/probes/StageMenuProbe.obj"
-symbol = "?OnDraw@PauseMenuProbe@th08@@QAEXXZ"
+object = "build/AsciiManager.obj"
+symbol = "?OnDraw@PauseMenu@th08@@QAEXXZ"
 target_address = 0x00404750
 size = 0x135
 
@@ -118958,8 +118958,8 @@ symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00462FF0
 [[units]]
 name = "stage-menu-retry-draw-004052b0"
-object = "build/probes/StageMenuProbe.obj"
-symbol = "?OnDraw@RetryMenuProbe@th08@@QAEXXZ"
+object = "build/AsciiManager.obj"
+symbol = "?OnDraw@RetryMenu@th08@@QAEXXZ"
 target_address = 0x004052B0
 size = 0x16C
 

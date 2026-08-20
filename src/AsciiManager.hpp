@@ -22,7 +22,7 @@ struct PauseMenu
     PauseMenu();
 
     i32 OnUpdate();
-    i32 OnDraw();
+    void OnDraw();
 
     u32 curState;
     i32 numFrames;
@@ -37,7 +37,7 @@ struct RetryMenu
     RetryMenu();
 
     i32 OnUpdate();
-    i32 OnDraw();
+    void OnDraw();
 
     u32 curState;
     i32 numFrames;
