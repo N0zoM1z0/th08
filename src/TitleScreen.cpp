@@ -48,6 +48,13 @@
 
 namespace th08
 {
+inline Float3::Float3(float x, float y, float z)
+{
+    this->x = x;
+    this->y = y;
+    this->z = z;
+}
+
 
 // Keep the TitleScreen caller compile context equivalent to the original
 // class-inline helper while the production COMDAT owner is placed in AnmManager.cpp.

@@ -25,6 +25,13 @@
 
 namespace th08
 {
+inline Float3::Float3(float x, float y, float z)
+{
+    this->x = x;
+    this->y = y;
+    this->z = z;
+}
+
 DIFFABLE_STATIC(ScreenEffect *, g_SupervisorScreenEffect);
 DIFFABLE_STATIC(Supervisor, g_Supervisor);
 DIFFABLE_STATIC_ARRAY(AnmVm, 3, g_SupervisorLoadingVms);

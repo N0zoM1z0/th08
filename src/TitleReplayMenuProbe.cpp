@@ -17,6 +17,13 @@
 namespace th08
 {
 
+inline Float3::Float3(float x, float y, float z)
+{
+    this->x = x;
+    this->y = y;
+    this->z = z;
+}
+
 #define TITLE_SPRITE_KEYCONFIG_SLOWSHOT_START 75
 #define TITLE_SPRITE_KEYCONFIG_SLOWSHOT_END 76
 
