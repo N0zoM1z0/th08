@@ -170,7 +170,13 @@ difference rather than by inventory percentage alone.
    declaration-only header and place the exact body explicitly in the
    target-neighbor consumer TU. Conversely, retain a proven inline contract
    when a target caller contains the body and no call relocation, even if VC7
-   defers the standalone COMDAT to an inconvenient object position. Do not
+   defers the standalone COMDAT to an inconvenient object position. An
+   alternating target sequence of forwarding wrappers and their callees can be
+   evidence for paired consumer-triggered header COMDATs; verify the outer
+   production caller and replay both layers. A deferred tiny accessor may be
+   made explicit to restore order only after its full caller set is bounded and
+   target relocations prove that removing inline visibility preserves the call
+   boundary. Do not
    manufacture an owner for a helper with no production caller. If the retained
    target neighborhood is continuous, restore lexical function order inside
    that TU instead of manufacturing a source file for every run. Replay donor

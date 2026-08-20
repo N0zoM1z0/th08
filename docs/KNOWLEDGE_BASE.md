@@ -231,6 +231,25 @@ canonical evidence owner. Treat this as a cascading ownership correction, not
 permission to route a missing symbol to whichever object happens to define a
 byte-identical copy.
 
+The `SoundPlayer.obj` pass demonstrates paired consumer emission. The target
+alternates each small `SoundPlayer` fade wrapper with the
+`CStreamingSound` helper it calls at `0x00406AC0..0x00406BE0`, followed by the
+Sound pause commands. `AsciiManager.obj` is the sole production consumer of
+the outer wrappers, and restoring both wrapper and nested helper bodies inline
+made VC7 emit exactly that pairwise order under Ascii's `/Od` profile. When a
+target cluster alternates forwarding wrappers with their callees, test natural
+consumer-triggered header COMDATs before inventing a helper source file.
+
+The retained Sound tail shows the complementary safe out-of-line case. Three
+tiny accessors were deferred after explicit functions even though the target
+places them first. Their complete caller set is confined to the same `/Od`
+Sound TU, and exact caller relocations prove real call boundaries. Replacing
+their header bodies with declarations and defining them lexically before the
+constructor restored **0 inversions / 1 run / 0 span** without changing caller
+codegen. Removing inline visibility is still a shared-header change: focused
+replay is diagnostic, and the cold **1,105 / 1,105** aggregate replay is the
+acceptance gate.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into

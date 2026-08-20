@@ -17,7 +17,7 @@ As cold-built and replayed on 2026-08-20 against the original Japanese TH08
 - a cold normal VC7 build links `build/th08.exe` successfully;
 - a cold objdiff build followed by full replay passes **1,105 / 1,105**
   accepted units;
-- five production-object layout repairs are complete. Seven exact AsciiManager
+- six production-object layout repairs are complete. Seven exact AsciiManager
   bodies now live in four target-cluster TUs, while the early Player bomb/shot
   callback family now lives in `PlayerBomb.cpp`; both remaining donor objects
   have zero target-order inversions. The contiguous main Player TU is also back
@@ -25,7 +25,9 @@ As cold-built and replayed on 2026-08-20 against the original Japanese TH08
   `main.cpp` now emit naturally from their target-neighbor consumer TUs. The
   retained AnmManager render cluster is also back in target function order.
   The continuous Global main region and its target-neighbor math helpers are
-  now in target order as well;
+  now in target order as well. SoundPlayer's early fade/pause helpers now emit
+  from their target-neighbor Ascii consumer, and its retained main TU is in
+  target order;
 - the whole-image comparator is in place. After the first evidence-backed link
   contract repairs, the rebuild has the target's DLL descriptor order, no debug
   directory, and the same two resource paths and resource section extent. The
@@ -236,10 +238,12 @@ continuous; the remaining reset is solely the exact but currently uncalled
 `main.cpp` until a target-backed production consumer or owner is recovered;
 do not assign it to an unrelated ECL/SpellCard TU just to improve the metric.
 The current Ascii helper cluster retains a bounded lexical/emission-order issue
-(**50 inversions / 6 runs / 9,600 span**) but no exact-code regression. The
-increase from the earlier measurement is the natural canonical Ascii emission
-of `Float3::Float3(float,float,float) @ 0x00404720`, whose target address is
-beside `PauseMenu::OnDraw`; it is not an exact-code regression.
+(**59 anchors / 154 inversions / 7 runs / 9,600 span**) but no exact-code
+regression. The later natural emissions of
+`Float3::Float3(float,float,float) @ 0x00404720` and eight Sound fade/pause
+COMDATs all have target-neighbor evidence; the pairwise inversion count grows
+with the number of anchors and is not directly comparable to the earlier
+45-anchor measurement.
 
 The fourth bounded pass addressed `AnmManager.obj`. Seven exact helper bodies
 were mixed into the donor despite target-neighbor production consumers:
@@ -282,10 +286,33 @@ section-defined production copy. Focused donor/recipient replay passed **191 /
 1,105**. `Global.obj` improved from **194 inversions / 4 runs / 220,816 bytes
 of drift span** to **0 / 1 / 96**.
 
-The current ranking now places `SoundPlayer.obj` first (**181 inversions / 4
-runs / 358,864 span**), followed by `GameManager.obj` (**174 / 9 / 291,648**)
-and `Gui.obj` (**167 / 12 / 23,133**); select only one and confirm the target
-neighborhood before moving definitions.
+The sixth bounded pass repaired `SoundPlayer.obj`. Eight exact fade/pause
+helpers appended to the Sound donor had target addresses
+`0x00406AC0..0x00406C50`, directly between the already recovered Anm and
+GameManager Ascii-emitted clusters. `AsciiManager.obj` was the only production
+object with undefined references to the five outer SoundPlayer wrappers. Once
+the wrapper bodies in `SoundPlayer.hpp` and their three nested stream-helper
+bodies in `zwave.hpp` were restored inline, VC7 emitted the exact target order:
+each SoundPlayer wrapper immediately followed by its CStreamingSound helper,
+then `Pause` and `UnPause`. Focused Ascii/Sound replay passed **86 / 86** and
+the required full cold replay passed **1,105 / 1,105**.
+
+The remaining Sound tail at `0x0045E2D0..0x0045E3F0` was continuous but its
+three deferred header accessors appeared after the explicit constructor/free/
+fade functions. All accessor callers are in the same `/Od` Sound TU and retain
+target-proven call boundaries. Making `CWaveFile::GetFormat`,
+`CSoundManager::GetDirectSound`, and `CSound::GetWaveFile` explicit definitions
+immediately before the constructor restored the complete target lexical order;
+focused replay passed **25 / 25**, followed by another **1,105 / 1,105** cold
+aggregate replay. `SoundPlayer.obj` improved from **181 inversions / 4 runs /
+358,864 bytes of drift span** to **0 / 1 / 0**.
+
+The current ranking now places `GameManager.obj` first (**174 inversions / 9
+runs / 291,648 span**), followed by `Gui.obj` (**167 / 12 / 23,133**) and the
+expanded target-neighbor `AsciiManager.obj` cluster (**154 / 7 / 9,600**).
+Select only one and confirm the target neighborhood before moving definitions;
+the Ascii inversion count includes several independently justified COMDAT
+groups and is not by itself evidence that they have the wrong owner.
 Large intra-object drift means today's source combines or orders target TUs
 differently, so permuting the existing object list alone cannot solve it. A
 run reset is a routing clue, not automatically a TU boundary: the Player pass

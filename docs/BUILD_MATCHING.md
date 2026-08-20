@@ -921,6 +921,21 @@ This corpus attests the natural VC7 emissions for ResultScreen/AnmManager/MidiOu
   section-defined production copy in `AsciiManager.obj` support Ascii as its
   canonical owner. Always inspect donor and recipient symbol tables after an
   ownership move instead of assuming only the moved symbols can change.
+- The Sound fade cluster shows paired header emission. At
+  `0x00406AC0..0x00406BE0`, every outer `SoundPlayer` forwarding wrapper is
+  immediately followed by its `CStreamingSound` callee. Restoring both class
+  bodies inline made the sole production consumer, `AsciiManager.obj`, emit
+  that exact alternating order under `/Od`; `Pause` and `UnPause` followed the
+  pairs naturally. Target adjacency plus the outer undefined references can
+  therefore recover nested COMDAT ownership even when the inner helper has no
+  direct reference from the consumer's authored source.
+- The three accessors at `0x0045E2D0..0x0045E300` are the bounded opposite.
+  Every caller is in `SoundPlayer.cpp`, exact caller relocations preserve real
+  calls, and their target order precedes the explicit Sound constructor/free/
+  fade tail. Declaration-only headers plus explicit same-profile definitions
+  restored the complete Sound object to **0 inversions / 1 run / 0 span**.
+  Do not generalize this to accessors with optimized or unbounded callers;
+  removing inline visibility still requires clean-PCH aggregate replay.
 
 ### Raw union members, bitfield owners, and local value-flow restoration
 
