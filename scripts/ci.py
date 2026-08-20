@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -93,6 +94,26 @@ def main() -> int:
             "Smoke-test whole-image CLI routing",
             [sys.executable, "scripts/compare-whole-image.py", "--help"],
         )
+        run(
+            "Smoke-test import-provenance CLI routing",
+            [sys.executable, "scripts/analysis/report-import-provenance.py", "--help"],
+        )
+        with tempfile.TemporaryDirectory(prefix="th08-ci-icon-") as directory:
+            generated_icon = Path(directory) / "icon.ico"
+            run(
+                "Smoke-test deterministic resource icon generation",
+                [
+                    sys.executable,
+                    "scripts/prepare-icon.py",
+                    "resources/placeholder.ico",
+                    str(generated_icon),
+                ],
+            )
+            if generated_icon.stat().st_size != 3262:
+                raise RuntimeError(
+                    "prepared 32x32 24-bit icon has unexpected size: "
+                    f"{generated_icon.stat().st_size}"
+                )
         run("Check whitespace", ["git", "diff", "--check"])
     except (OSError, RuntimeError, subprocess.CalledProcessError) as exc:
         print(f"error: CI validation failed: {exc}", file=sys.stderr)

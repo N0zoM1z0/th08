@@ -33,7 +33,8 @@ before repeating target analysis or compiler-shape probes.
 | GUI/title/replay source shapes | Search `BUILD_MATCHING.md` for the symbol or address | Includes switch-table extents, inline ownership, table dimensionality, and frame-shape cases. |
 | Function boundaries, COFF aux extents, relocations | `BUILD_MATCHING.md` | Search for `compare_size`, `COMDAT`, `REL32`, or `DIR32`. |
 | Generic VC7 declaration/branch/local patterns | `VC7_ZUN_PATTERNS.md` | Search this before creating expression or `#pragma var_order` matrices. |
-| Target-linked CRT/D3DX work | `RE_HANDOFF.md`, `$th08-library`, `config/library-provenance.toml`, and `scripts/compare-library.py` | Separate archive provenance, relocation-aware match units, accepted library ledger, and current library lane. |
+| Target-linked CRT/D3DX work | `RE_HANDOFF.md`, `$th08-library`, `config/library-provenance.toml`, and `scripts/compare-library.py` | Paused library foundation: archive provenance, relocation-aware match units, and a separate accepted ledger. Resume only for a bounded whole-link dependency. |
+| Whole-executable reconstruction | `scripts/compare-whole-image.py`, [RE_WORKFLOW.md](RE_WORKFLOW.md), then [RE_HANDOFF.md](RE_HANDOFF.md) | Cold-build PE diff, import/resource/debug contracts, section sizes, and accepted-address link anchors. |
 | Library candidate discovery | `scripts/analysis/propose-library-units.py` | Conservative review queue from one pinned archive; candidate status is not exact acceptance and must be promoted through an explicit unit plus `compare-library.py`. |
 | Stale object/PCH exact-state failures | Search `BUILD_MATCHING.md` for `cold-build` | Why focused historical successes cannot be promoted to a current aggregate without a cold full replay. |
 
@@ -48,6 +49,76 @@ rg -n "cold-build|stale object|aggregate exact" docs/BUILD_MATCHING.md docs/RE_W
 
 Use the target address when names are overloaded or provisional. A logical
 name alone is not a unique exact identity.
+
+## Whole-image reconstruction lessons
+
+The canonical first pass is a cold normal build followed by a structured PE
+comparison, not a raw file hash or an unbounded library scan:
+
+```bash
+python3 scripts/build.py --fresh
+python3 scripts/compare-whole-image.py --json \
+  > build/whole-image-report.json
+```
+
+The following facts were observed directly in the hash-attested Japanese 1.00d
+target and are safe link-contract constraints:
+
+- the PE has no debug data-directory entry;
+- import descriptors are ordered `DINPUT8`, `DSOUND`, `d3d8`, `WINMM`,
+  `KERNEL32`, `USER32`, `GDI32`, `ADVAPI32`, `ole32`;
+- the resource tree contains one Japanese-language 32x32 24-bit icon image and
+  one group-icon leaf; the group leaf and both resource extents can be
+  reproduced without copying the copyrighted target icon artwork;
+- accepted authored/library addresses provide hundreds of target-to-rebuild
+  link-layout anchors, but an absent map symbol is not evidence that a function
+  is absent from the executable.
+
+The following behavior was verified by rebuilding this repository: explicit
+import-library order controls the resulting import-descriptor order, omitting
+link-time `/debug` removes the rebuild's CodeView/debug directory, and a
+build-internal icon generator can preserve tracked placeholder artwork while
+emitting the target-observed resource container shape. Keep compile-time `/Zi`
+separate from the final linker's debug-directory contract.
+
+Do not infer `/OPT:REF` from the absence of a debug directory or from extra
+imports. A bounded 2026-08-20 trial made the import set superficially exact but
+shrunk rebuild `.text` from `0xAA26F` to `0x72B6F` and reduced located accepted
+anchors from 931 to 719; the target `.text` is `0xB1B78`. The target therefore
+retains code that global dead stripping removes, so the normal build keeps
+`/OPT:NOREF`. This test isolated REF only; `/OPT:NOICF` remains a separate
+unproven contract and must not be changed as part of the same experiment.
+
+The 17 rebuild-only imports have bounded archive provenance. Nine are referenced
+by linked D3DX `cd3dxfile.obj`/`cd3dxresource.obj`; the remaining set is
+referenced by linked VC7 CRT `a_loc.obj`, `getqloc.obj`, `w_loc.obj`,
+`winsig.obj`, `mlock.obj`, and `tidtable.obj`. `wopen.obj` is another archive
+candidate for `CreateFileW`, but the current map does not place that member in
+the link. Reproduce this distinction with
+`python3 scripts/analysis/report-import-provenance.py`. It identifies later
+focused link/provenance work; it does not prove that those whole members are
+absent from the target or authorize deleting their imports.
+
+Anchor drift must be interpreted structurally. If the first and last accepted
+anchors from one current object have materially different drift, code outside
+that object lies between them in the target layout, or the current source file
+has merged target translation units. Reordering the existing object list cannot
+repair such an intra-object span. First recover target translation-unit/object
+ownership; only then tune object/archive order or padding. This is an inference
+from link-map and target-address evidence, not yet a complete reconstruction of
+the original build graph.
+
+Resource reconstruction must preserve the evidence boundary: reproduce the
+directory IDs, language, DIB dimensions/bit depth, and deterministic build
+shape from repository-owned inputs, but never extract target payload bytes into
+source or generated assets. A same-size resource with a different payload is an
+honest remaining difference, not a reason to copy the original artwork.
+
+Use the default summary JSON for routine work. Add
+`--include-anchor-details` only when investigating a bounded object or function;
+the per-anchor report is intentionally large. After any link graph, resource
+generator, or linker-flag change, repeat the cold normal build before recording
+new whole-image measurements.
 
 ## Promote knowledge instead of accumulating scratch
 

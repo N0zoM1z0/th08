@@ -9,6 +9,7 @@ state or copies bytes out of the target.
 Examples:
   python3 scripts/compare-whole-image.py
   python3 scripts/compare-whole-image.py --json > build/whole-image-report.json
+  python3 scripts/compare-whole-image.py --json --include-anchor-details
   python3 scripts/compare-whole-image.py --require-exact
 """
 
@@ -239,7 +240,9 @@ def accepted_rows(path: Path) -> set[str]:
         return {row["unit"] for row in csv.DictReader(handle) if row.get("unit")}
 
 
-def address_anchors(map_path: Path | None) -> dict[str, object] | None:
+def address_anchors(
+    map_path: Path | None, include_details: bool = False
+) -> dict[str, object] | None:
     if map_path is None or not map_path.is_file():
         return None
     publics = parse_map_publics(map_path)
@@ -330,17 +333,19 @@ def address_anchors(map_path: Path | None) -> dict[str, object] | None:
     linked_order = sorted(object_summaries, key=lambda entry: int(entry["first_linked_address"]))
     target_order_names = [str(entry["object"]) for entry in object_summaries]
     linked_order_names = [str(entry["object"]) for entry in linked_order]
-    return {
+    result: dict[str, object] = {
         "map": relative_display(map_path),
         "anchor_count": len(anchors),
         "missing_count": len(missing),
-        "missing": missing,
         "object_target_anchor_order": target_order_names,
         "object_linked_anchor_order": linked_order_names,
         "object_anchor_order_equal": target_order_names == linked_order_names,
         "objects": object_summaries,
-        "anchors": sorted(anchors, key=lambda entry: int(entry["target_address"])),
     }
+    if include_details:
+        result["missing"] = missing
+        result["anchors"] = sorted(anchors, key=lambda entry: int(entry["target_address"]))
+    return result
 
 
 def compare_directories(target: PEImage, rebuild: PEImage) -> list[dict[str, object]]:
@@ -362,7 +367,12 @@ def compare_directories(target: PEImage, rebuild: PEImage) -> list[dict[str, obj
     return result
 
 
-def build_report(target: PEImage, rebuild: PEImage, map_path: Path | None) -> dict[str, object]:
+def build_report(
+    target: PEImage,
+    rebuild: PEImage,
+    map_path: Path | None,
+    include_anchor_details: bool = False,
+) -> dict[str, object]:
     target_metadata = target.metadata()
     rebuild_metadata = rebuild.metadata()
     target_metadata["path"] = relative_display(target.path)
@@ -387,7 +397,7 @@ def build_report(target: PEImage, rebuild: PEImage, map_path: Path | None) -> di
         "imports": compare_imports(target, rebuild),
         "resources": compare_resources(target, rebuild),
         "debug": {"target": target.debug_entries(), "rebuild": rebuild.debug_entries()},
-        "link_layout": address_anchors(map_path),
+        "link_layout": address_anchors(map_path, include_anchor_details),
     }
 
 
@@ -513,6 +523,11 @@ def main() -> int:
     parser.add_argument("--no-map", action="store_true", help="skip linker-map address anchors")
     parser.add_argument("--json", action="store_true", help="emit deterministic JSON")
     parser.add_argument(
+        "--include-anchor-details",
+        action="store_true",
+        help="include every accepted/missing address anchor in JSON (large; summaries are default)",
+    )
+    parser.add_argument(
         "--skip-target-identity",
         action="store_true",
         help="diagnostic only: do not require the configured TH08 1.00d size/hash",
@@ -531,7 +546,7 @@ def main() -> int:
             {"verified": False} if args.skip_target_identity else verify_target_identity(target)
         )
         map_path = None if args.no_map else args.map_path
-        report = build_report(target, rebuild, map_path)
+        report = build_report(target, rebuild, map_path, args.include_anchor_details)
         report["target_identity"] = target_identity
     except (OSError, PEFormatError, ValueError, KeyError, tomllib.TOMLDecodeError) as exc:
         print(f"error: {exc}", file=sys.stderr)

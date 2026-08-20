@@ -124,33 +124,49 @@ the accepted exact ledger. Their configured units remain available for later
 diagnosis in `config/match-units.toml`; see `docs/RE_HANDOFF.md` for the bounded
 list. Do not treat a configured unit as an accepted result.
 
-The next primary lane is target-linked library/runtime recovery:
+The primary lane is now whole-executable reconstruction. Authored source is
+complete, all library inventory rows have bounded extents, exact archives are
+hash-pinned, and a reviewed subset of library members has a separate accepted
+ledger. Broad library/runtime scanning is paused: a normal executable already
+links, so additional library work must be requested by a concrete whole-image
+difference rather than by inventory percentage alone.
 
-1. Reconcile library names and boundaries against target disassembly, beginning
-   with the seven library rows that lack `mapping.csv` sizes and the
-   imported overlapping ranges reported by `validate-tracking.py`. Select the
-   live missing-size set with
-   `report-reconstruction-status.py --category library --state missing-size`;
-   do not treat the prose count as a permanent invariant.
-2. Identify the exact VC7/CRT/D3DX archive provenance and pin archive hashes
-   before writing a scanner. TH07 archives are not substitutes.
-3. Use the separate library acceptance path: pin archive hashes in
-   `config/library-provenance.toml`, define reviewed units and every COFF
-   relocation in `config/library-match-units.toml`, run
-   `python3 scripts/compare-library.py UNIT --json` against the canonical target,
-   and only then add the result to `config/library-matches.csv`. Public CI runs
-   `validate-library.py` without private archives; local evidence adds
-   `--require-archives`. Library progress is generated independently by
-   `scripts/library-progress.py`. Do not insert library rows into authored
-   `implemented.csv`/`matches.csv` merely to reuse their percentage.
-4. After library/object coverage is reproducible, compare link layout, globals,
-   imports, PE metadata, resources, and remaining data as the whole-executable
-   lane. Begin with a single-job cold normal build, then run
-   `python3 scripts/compare-whole-image.py --json > build/whole-image-report.json`.
-   The report verifies the canonical target and separates header/directory,
-   section-byte, import, resource, debug, and accepted-unit address-anchor
-   differences. A successful normal link alone is not whole-image exactness,
-   and the report is diagnostic rather than an acceptance ledger.
+1. Start from a single-job cold normal build:
+
+   ```bash
+   python3 scripts/build.py --fresh
+   python3 scripts/compare-whole-image.py --json \
+     > build/whole-image-report.json
+   ```
+
+   The comparator verifies the canonical target, then separates PE
+   headers/directories, section bytes, imports, resources, debug data, and
+   accepted-unit linker-map address summaries. Add `--include-anchor-details`
+   only for a bounded per-function layout investigation. The report is a
+   diagnostic, not an exact ledger, and a successful link is not whole-image
+   exactness.
+2. Repair one evidence-backed link contract at a time: entry point and linker
+   flags, section layout, resource tree/metadata, import set and descriptor
+   order, object/archive order, globals, or static initialization. Rebuild cold
+   after changing the link graph or a build-internal generator.
+3. Use accepted function addresses as link-layout anchors. A large drift range
+   within one current production object means that its source likely combines
+   code that occupied multiple target translation units or was interleaved with
+   other objects; simply permuting the current object list cannot repair that
+   shape. Recover target translation-unit ownership before tuning padding or
+   global order.
+4. Return to one CRT/D3DX/compiler-runtime member only when the whole-image
+   report or a bounded link-provenance trace identifies that member as an
+   import, extent, relocation, or layout dependency. For rebuild-only imports,
+   run `python3 scripts/analysis/report-import-provenance.py`; it hash-checks
+   configured archives and distinguishes current-map members from other archive
+   candidates. Pin archive/member identity and use the separate library
+   acceptance path:
+   `config/library-provenance.toml`, `config/library-match-units.toml`,
+   `scripts/compare-library.py`, and `config/library-matches.csv`. Public CI
+   validates the schema without private archives; local attestation adds
+   `python3 scripts/validate-library.py --require-archives`. Never put library
+   claims in authored `implemented.csv` or `matches.csv`.
 
 `3rdparty/Detours` supports the optional reconstruction DLL and is not code from
 the original target. Do not spend target-matching effort on that submodule.
