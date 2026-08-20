@@ -16,6 +16,10 @@ namespace th08
 
 DIFFABLE_STATIC(LARGE_INTEGER, g_DummyMidiTimerPerformanceCounter);
 
+void MidiTimer::OnTimerElapsed()
+{
+}
+
 MidiDevice::MidiDevice()
 {
     handle = NULL;
@@ -322,6 +326,18 @@ ZunResult MidiOutput::ParseFile(int fileIdx)
     this->midiFileIndex = fileIdx;
     utils::DebugPrint(" midi open %d\n", fileIdx);
     return ZUN_SUCCESS;
+}
+
+u32 MidiOutput::Ntohl(u32 val)
+{
+    u8 tmp[4];
+
+    tmp[0] = ((u8 *)&val)[3];
+    tmp[1] = ((u8 *)&val)[2];
+    tmp[2] = ((u8 *)&val)[1];
+    tmp[3] = ((u8 *)&val)[0];
+
+    return *(const u32 *)tmp;
 }
 
 ZunResult MidiOutput::LoadFile(LPCSTR midiPath)
