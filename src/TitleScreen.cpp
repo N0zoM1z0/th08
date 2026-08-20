@@ -49,6 +49,23 @@
 namespace th08
 {
 
+// Keep the TitleScreen caller compile context equivalent to the original
+// class-inline helper while the production COMDAT owner is placed in AnmManager.cpp.
+inline ZunBool AnmManager::SpriteHasTexture(AnmVm *vm)
+{
+    if (vm->loadedSprite == NULL)
+    {
+        return FALSE;
+    }
+
+    if (vm->loadedSprite->anmIdx < 0)
+    {
+        return FALSE;
+    }
+
+    return this->anmFiles[vm->loadedSprite->anmIdx].textures != NULL;
+}
+
 enum
 {
     TITLE_MENU_ITEM_START_START = 0,

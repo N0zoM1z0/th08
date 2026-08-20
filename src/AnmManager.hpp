@@ -619,20 +619,7 @@ struct AnmManager
 
     void SetInterruptArray(AnmVm *vm, int count, i16 interrupt);
 
-    ZunBool SpriteHasTexture(AnmVm *vm)
-    {
-        if (vm->loadedSprite == NULL)
-        {
-            return FALSE;
-        }
-
-        if (vm->loadedSprite->anmIdx < 0)
-        {
-            return FALSE;
-        }
-
-        return this->anmFiles[vm->loadedSprite->anmIdx].textures != NULL;
-    }
+    ZunBool SpriteHasTexture(AnmVm *vm);
 
     void ReleaseSurfaces()
     {
