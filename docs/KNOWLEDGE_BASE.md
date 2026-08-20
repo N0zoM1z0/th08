@@ -429,6 +429,8 @@ Supervisor callers by 1-2 bytes. A correct standalone body and target address do
 not justify a visibility change when caller codegen regresses; preserve the
 residual and search for a caller-preserving emission mechanism instead.
 
+The `ScreenEffect.obj` pass is the minimal lexical case: a single pair of exact explicit functions (`DrawPartialFade` / `DrawArcadeFade`) was reversed in source. Swapping only those function blocks reduced **1 inversion / 2 runs** to **0 / 1** while preserving **21 / 21** focused exact units.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into

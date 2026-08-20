@@ -516,6 +516,8 @@ and SoundPlayer **25 / 25**, but changed two accepted Supervisor callers
 Do not make this shared header declaration-only unless those exact caller
 constraints are independently solved.
 
+The twenty-first bounded pass repaired `ScreenEffect.obj`. Its only reset was ordinary lexical disorder: source emitted `DrawArcadeFade @ 0x0045BC40` before `DrawPartialFade @ 0x0045BBF0`, opposite the target. Swapping those complete bodies preserved **21 / 21** focused units; cold aggregate replay passed **1,105 / 1,105**. `ScreenEffect.obj` improved from **14 anchors / 1 inversion / 2 runs / 160 span** to **14 / 0 / 1 / 48**.
+
 The raw ranking still places the expanded target-neighbor `AsciiManager.obj`
 cluster first (**63 anchors / 86 inversions / 6 runs / 9,600 span**), but its
 resets remain dominated by already target-backed PCH/header COMDAT groups and
