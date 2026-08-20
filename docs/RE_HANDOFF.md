@@ -496,6 +496,8 @@ is `ScoreDat.obj`. Focused replay passed **33 / 33** ResultScreen and **14 / 14*
 ScoreDat units; cold aggregate replay passed **1,105 / 1,105**. Linked metrics
 are `ResultScreen.obj` **30 / 0 / 1 / 0** and `ScoreDat.obj` **13 / 0 / 1 / 9**.
 
+The nineteenth bounded pass repaired `PbgArchive.obj`. Two same-owner header bodies were deferred at first use rather than their target tail positions: `CPbgFile::ReadInt @ 0x004751E0` and `PbgArchiveEntry::~PbgArchiveEntry @ 0x00475270`. Making both declaration-only and defining the unchanged bodies after `CopyFileName` / after `SeekPastString` respectively preserved **15 / 15** focused units. Cold aggregate replay passed **1,105 / 1,105**, and `PbgArchive.obj` improved from **14 anchors / 11 inversions / 3 runs / 2,032 span** to **14 / 0 / 1 / 32**.
+
 The raw ranking still places the expanded target-neighbor `AsciiManager.obj`
 cluster first (**63 anchors / 86 inversions / 6 runs / 9,600 span**), but its
 resets remain dominated by already target-backed PCH/header COMDAT groups and

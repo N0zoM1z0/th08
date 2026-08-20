@@ -416,6 +416,8 @@ address adjacency alone is insufficient. In the same pass,
 `AnmManager::ReplaceSurface @ 0x0045A3FD` was a simpler single-caller
 same-owner deferred-header repair in `ResultScreen.cpp`.
 
+The `PbgArchive.obj` pass is another base/helper deferred-emission case: header-defined `CPbgFile::ReadInt @ 0x004751E0` and `PbgArchiveEntry::~PbgArchiveEntry @ 0x00475270` were exact but emitted at their first users. Declaration-only headers plus unchanged explicit bodies at the target tail restored **0 inversions / 1 run** without changing ownership or behavior.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into
