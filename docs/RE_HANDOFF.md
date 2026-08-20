@@ -17,10 +17,11 @@ As cold-built and replayed on 2026-08-20 against the original Japanese TH08
 - a cold normal VC7 build links `build/th08.exe` successfully;
 - a cold objdiff build followed by full replay passes **1,105 / 1,105**
   accepted units;
-- the first production-object partition repair is complete: seven exact
-  AsciiManager bodies now live in four target-cluster TUs, while the remaining
-  `AsciiManager.obj` has zero target-order inversions and its first 21 accepted
-  anchors land at their exact target addresses;
+- two production-object layout repairs are complete. Seven exact AsciiManager
+  bodies now live in four target-cluster TUs, while the early Player bomb/shot
+  callback family now lives in `PlayerBomb.cpp`; both remaining donor objects
+  have zero target-order inversions. The contiguous main Player TU is also back
+  in target function order;
 - the whole-image comparator is in place. After the first evidence-backed link
   contract repairs, the rebuild has the target's DLL descriptor order, no debug
   directory, and the same two resource paths and resource section extent. The
@@ -180,6 +181,27 @@ The executable layout proves that these bodies cannot remain in the early
 AsciiManager object; it does not yet prove that all four clusters correspond
 one-for-one to standalone original source files.
 
+The second bounded investigation separated a genuine Player TU boundary from
+ordinary lexical disorder. The callback family at
+`0x0040BC20..0x004142C0` was merged into the same source file as the main
+Player region at `0x00449CA0..0x00451D50`, despite the large target gap and
+many intervening subsystems. Its real definitions now live in
+`PlayerBomb.cpp`, under the same `/Od` PCH profile, and all **56** accepted
+early-range units have canonical ownership in `PlayerBomb.obj`. The main
+target neighborhood is otherwise substantially continuous, so its remaining
+seven runs were definition-order drift rather than evidence for six more
+standalone TUs. `Player.cpp` is now ordered by its mapped target functions;
+two forward declarations preserve natural C++ visibility without adding
+definitions or shims.
+
+Focused donor/recipient replay passed all **116 / 116** accepted units. The
+subsequent full single-job cold replay passed **1,105 / 1,105**. The original
+merged `Player.obj` had **286 inversions / 8 runs / 275,088 bytes of drift
+span**. The repaired `Player.obj` has **0 / 1 / 7,760**, and
+`PlayerBomb.obj` has **0 / 1 / 544**. The name `PlayerBomb.cpp` is a
+repository description of the proven callback cluster, not a claim about the
+original filename.
+
 Continue target translation-unit recovery one production object at a time.
 Generate and rank the detailed anchors rather than manually scanning the whole
 report:
@@ -191,12 +213,14 @@ python3 scripts/analysis/report-tu-partition-candidates.py \
   build/whole-image-anchors.json
 ```
 
-The current ranking places `Player.obj` first (**286 inversions / 8 runs**),
-followed by `main.obj` and `AnmManager.obj`; select only one and confirm the
-target neighborhood before moving definitions. Large intra-object drift means
-today's source combines or orders target TUs differently, so permuting the
-existing object list alone cannot solve it. Split only when detailed anchors
-support the boundary. The 17
+The current ranking places `main.obj` first (**277 inversions / 5 runs**),
+followed by `AnmManager.obj` (**195 / 10**) and `Global.obj` (**194 / 4**);
+select only one and confirm the target neighborhood before moving definitions.
+Large intra-object drift means today's source combines or orders target TUs
+differently, so permuting the existing object list alone cannot solve it. A
+run reset is a routing clue, not automatically a TU boundary: the Player pass
+showed that one investigation may require both a real split and target-order
+restoration inside the retained TU. The 17
 extra imports already have bounded contributing archive members; do not hide
 them with `/OPT:REF`. A trial of that flag made the import set exact while
 shrinking `.text` to `0x72B6F` and losing 212 located accepted anchors, so

@@ -133,6 +133,34 @@ both the donor and every recipient object after such a move. This proves the
 necessary separation from the early donor; executable anchors alone do not
 prove that each extracted cluster was a standalone original source file.
 
+The Player pass adds the complementary case: detailed runs can mix a real TU
+boundary with plain lexical definition disorder. The early bomb/shot callback
+family occupies the target range `0x0040BC20..0x004142C0`, while the main
+Player implementation occupies `0x00449CA0..0x00451D50` with many unrelated
+subsystems between them. Moving the real early definitions to same-profile
+`PlayerBomb.cpp` was therefore evidence-backed. By contrast, the main target
+region is substantially continuous; creating one source file per remaining
+run would have invented boundaries. Reordering the retained `Player.cpp` by
+mapped target function address, with declarations for helpers now defined
+after their callers, was the smaller natural repair.
+
+Use three checks for this class of change:
+
+1. Compare the target neighborhoods, including mapped non-anchor functions,
+   before deciding whether a run reset is an object boundary or source order.
+2. Move definitions rather than adding wrappers, preserve the compile profile,
+   update every canonical match-unit owner plus `ghidra_ns_to_obj.csv`, and
+   replay donor and recipients together. The Player move covered **116 / 116**
+   accepted units and exposed the namespace-map requirement before comparison.
+3. Measure the cold linked result, not just object exactness. Player improved
+   from **286 inversions / 8 runs / 275,088 drift span** to a main object at
+   **0 / 1 / 7,760** and an extracted object at **0 / 1 / 544**, followed by a
+   full **1,105 / 1,105** cold replay.
+
+These measurements prove the current layout improvement and the necessary
+separation of the distant callback cluster. They do not prove the original
+source filename or every missing callback's eventual owner.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into
