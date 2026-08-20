@@ -386,6 +386,16 @@ small deferred tail only when the production caller set is bounded. Here both
 `AppendFormat` preserved exactness and reduced **23 inversions / 4 runs** to
 **0 / 1**.
 
+The `PbgFile.obj` pass extends the same-owner deferred-body rule to base-class
+construction. An inline empty base constructor/destructor can be emitted at the
+first derived construction site even when the shipped object places the base
+standalone COMDATs after the entire derived implementation. If the target order
+is contiguous and focused replay proves the bodies unchanged, declaration-only
+base methods plus explicit same-TU definitions can restore production order
+without changing vtable/caller behavior. `IPbgFile` moved to the target
+`0x00473C40..0x00473C60` tail, taking PbgFile from **20 inversions / 2 runs**
+to **0 / 1**.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into
