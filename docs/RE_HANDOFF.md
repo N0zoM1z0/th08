@@ -434,13 +434,29 @@ replay passed **1,105 / 1,105**. `EnemyManager.obj` improved from **18 anchors /
 32 inversions / 5 runs / 111,744 span** to **17 / 0 / 1 / 89,616**;
 `AsciiManagerScale.obj` is **4 / 0 / 1 / 0**.
 
+The fourteenth bounded pass repaired `Supervisor.obj`. Three target-order
+resets had two distinct causes. `SoundPlayer::UpdateFades @ 0x00447764` and
+`GameManager::IsExtraUnlockedWithAllTeams @ 0x00447D04` already had the correct
+Supervisor production owner, but header visibility made VC7 emit their exact
+standalone bodies at earlier first-use positions. Their target locations are
+respectively between `TakeSnapshot`/`LoadConfig` and `LoadConfig`/`LoadMusic`.
+Both headers are now declaration-only and the unchanged bodies are explicit at
+those target-local positions in `Supervisor.cpp`. The GameManager helper has
+multiple Title callers, but their accepted units already contain real REL32
+calls; focused replay passed **49 / 49** Supervisor units, **23 / 23** TitleScreen
+units, and **11 / 11** TitleReplay probe units. The third reset was ordinary
+lexical disorder: `UpdatePlayTime @ 0x004482A1` now precedes
+`UpdateGameTime @ 0x00448418`. The cold aggregate replay passed **1,105 /
+1,105**, and `Supervisor.obj` improved from **43 anchors / 29 inversions / 4
+runs / 58,804 span** to **43 / 0 / 1 / 51,658**.
+
 The raw ranking still places the expanded target-neighbor `AsciiManager.obj`
 cluster first (**63 anchors / 86 inversions / 6 runs / 9,600 span**), but its
 resets remain dominated by already target-backed PCH/header COMDAT groups and
 its first 21 retained Ascii anchors remain exact. Without new owner/caller
 evidence, do not perturb those shared inline contracts merely to reduce the
-metric. The next actionable candidate is `Supervisor.obj` (**43 / 29 / 4 /
-58,804**), followed by `ReplayManager.obj` (**15 / 23 / 4 / 12,352**).
+metric. The next actionable candidate is `ReplayManager.obj` (**15 / 23 / 4 /
+12,352**), followed by `PbgFile.obj` (**13 / 20 / 2 / 1,456**).
 Select only one and confirm the target neighborhood before moving definitions;
 the Ascii inversion count includes several independently justified COMDAT
 groups and is not by itself evidence that they have the wrong owner.

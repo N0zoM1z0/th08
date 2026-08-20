@@ -366,6 +366,17 @@ previously recovered contiguous cluster can absorb an adjacent cross-class
 definition when target sequence, compile profile, focused replay, and cold
 aggregate replay all agree; class name alone is not the production-TU contract.
 
+The `Supervisor.obj` pass shows that a shared-header body can safely become an
+explicit same-owner definition even with multiple optimized callers, but only
+when target relocation evidence proves those callers are already out-of-line.
+`GameManager::IsExtraUnlockedWithAllTeams @ 0x00447D04` is called from several
+TitleScreen paths; their accepted units contain REL32 calls, and declaration-
+only visibility preserved **23 / 23** TitleScreen plus **11 / 11** probe units.
+`SoundPlayer::UpdateFades @ 0x00447764` is the simpler single-production-caller
+version of the same pattern. Explicit target-local placement plus one ordinary
+`UpdatePlayTime`/`UpdateGameTime` swap reduced Supervisor from **29 / 4** to
+**0 inversions / 1 run** without changing any helper owner.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into
