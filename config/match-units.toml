@@ -6900,25 +6900,25 @@ target = 0x0041FB8B
 [[units.relocations]]
 offset = 0x1B4
 type = "DIR32"
-symbol = "?g_TargetRng0164D520@EclOperands@th08@@3UTargetRngOverlay@12@A"
+symbol = "?g_Rng@th08@@3VRng@1@A"
 target = 0x0164D520
 
 [[units.relocations]]
 offset = 0x1B9
 type = "REL32"
-symbol = "?RandomU32@TargetRngOverlay@EclOperands@th08@@QAEIXZ"
+symbol = "?GetRandomU32@Rng@th08@@QAEIXZ"
 target = 0x0043ED20
 
 [[units.relocations]]
 offset = 0x1C8
 type = "DIR32"
-symbol = "?g_TargetRng0164D520@EclOperands@th08@@3UTargetRngOverlay@12@A"
+symbol = "?g_Rng@th08@@3VRng@1@A"
 target = 0x0164D520
 
 [[units.relocations]]
 offset = 0x1CD
 type = "REL32"
-symbol = "?RandomF32@TargetRngOverlay@EclOperands@th08@@QAEMXZ"
+symbol = "?GetRandomF32@Rng@th08@@QAEMXZ"
 target = 0x0043ED50
 
 [[units.relocations]]
@@ -6930,25 +6930,25 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x1DC
 type = "DIR32"
-symbol = "?g_TargetRng0164D520@EclOperands@th08@@3UTargetRngOverlay@12@A"
+symbol = "?g_Rng@th08@@3VRng@1@A"
 target = 0x0164D520
 
 [[units.relocations]]
 offset = 0x1E1
 type = "REL32"
-symbol = "?RandomU32@TargetRngOverlay@EclOperands@th08@@QAEIXZ"
+symbol = "?GetRandomU32@Rng@th08@@QAEIXZ"
 target = 0x0043ED20
 
 [[units.relocations]]
 offset = 0x1EB
 type = "DIR32"
-symbol = "?g_TargetRng0164D520@EclOperands@th08@@3UTargetRngOverlay@12@A"
+symbol = "?g_Rng@th08@@3VRng@1@A"
 target = 0x0164D520
 
 [[units.relocations]]
 offset = 0x1F0
 type = "REL32"
-symbol = "?RandomF32Signed@TargetRngOverlay@EclOperands@th08@@QAEMXZ"
+symbol = "?GetRandomF32Signed@Rng@th08@@QAEMXZ"
 target = 0x0043ED80
 
 [[units.relocations]]
@@ -6960,8 +6960,9 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x1FF
 type = "DIR32"
-symbol = "?g_TargetInt0160F538@EclOperands@th08@@3HA"
-target = 0x0160F538
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x30
 
 [[units.relocations]]
 offset = 0x209
@@ -6972,7 +6973,7 @@ target = 0x0164D334
 [[units.relocations]]
 offset = 0x231
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@EclOperands@th08@@3EA"
+symbol = "?g_TargetByte0164D0B1@th08@@3EA"
 target = 0x0164D0B1
 
 [[units.relocations]]
@@ -7200,8 +7201,9 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x4B5
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0x2B4
 
 [[units.relocations]]
 offset = 0x4BA
@@ -7212,8 +7214,9 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x4C5
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0x2B4
 
 [[units.relocations]]
 offset = 0x4CA
@@ -7224,8 +7227,9 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x4D5
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0x2B4
 
 [[units.relocations]]
 offset = 0x4DA
@@ -7338,13 +7342,13 @@ target = 0x0041FD40
 [[units.relocations]]
 offset = 0x6A3
 type = "DIR32"
-symbol = "?g_TargetPlayer017D5EF8@EclOperands@th08@@3UTargetPlayerOverlay@12@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x6A8
 type = "REL32"
-symbol = "?AngleToPlayer@TargetPlayerOverlay@EclOperands@th08@@QAEMPBUVector3@23@@Z"
+symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
 target = 0x0044C1B0
 
 [[units.relocations]]
@@ -7356,8 +7360,9 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x6C4
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0x2B4
 
 [[units.relocations]]
 offset = 0x6C9
@@ -7380,31 +7385,31 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x6E0
 type = "DIR32"
-symbol = "?g_TargetPlayer017D5EF8@EclOperands@th08@@3UTargetPlayerOverlay@12@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x6E5
 type = "REL32"
-symbol = "?IsYoukai@TargetPlayerOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?IsYoukai@Player@th08@@QAEHXZ"
 target = 0x0040BC40
 
 [[units.relocations]]
 offset = 0x6EC
 type = "DIR32"
-symbol = "?g_TargetGameManager0160F508@EclOperands@th08@@3UTargetGameManagerOverlay@12@A"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
 offset = 0x6F1
 type = "REL32"
-symbol = "?GetTimeOrbs@TargetGameManagerOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?GetTimeOrbs@GameManager@th08@@QAEHXZ"
 target = 0x00421B60
 
 [[units.relocations]]
 offset = 0x6F8
 type = "DIR32"
-symbol = "?g_TargetSpellcard004EA670@EclOperands@th08@@3UTargetSpellcardOverlay@12@A"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
 target = 0x004EA670
 
 [[units.relocations]]
@@ -7416,73 +7421,73 @@ target = 0x00453CC0
 [[units.relocations]]
 offset = 0x704
 type = "DIR32"
-symbol = "?g_TargetItemManager01653648@EclOperands@th08@@3UTargetItemManagerOverlay@12@A"
+symbol = "?g_ItemManager@th08@@3UItemManager@1@A"
 target = 0x01653648
 
 [[units.relocations]]
 offset = 0x709
 type = "REL32"
-symbol = "?GetTimeOrbCount@TargetItemManagerOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?GetTimeOrbCount@ItemManager@th08@@QAEHXZ"
 target = 0x004417E0
 
 [[units.relocations]]
 offset = 0x710
 type = "DIR32"
-symbol = "?g_TargetGameManager0160F508@EclOperands@th08@@3UTargetGameManagerOverlay@12@A"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
 offset = 0x715
 type = "REL32"
-symbol = "?GetLastSpellTimeOrbThreshold@TargetGameManagerOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?GetLastSpellTimeOrbThreshold@GameManager@th08@@QAEHXZ"
 target = 0x00421B80
 
 [[units.relocations]]
 offset = 0x729
 type = "DIR32"
-symbol = "?g_TargetSpellcard004EA670@EclOperands@th08@@3UTargetSpellcardOverlay@12@A"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
 target = 0x004EA670
 
 [[units.relocations]]
 offset = 0x72E
 type = "REL32"
-symbol = "?IsActive@TargetSpellcardOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?IsActive@Spellcard@th08@@QAEHXZ"
 target = 0x004178A0
 
 [[units.relocations]]
 offset = 0x737
 type = "DIR32"
-symbol = "?g_TargetSpellcard004EA670@EclOperands@th08@@3UTargetSpellcardOverlay@12@A"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
 target = 0x004EA670
 
 [[units.relocations]]
 offset = 0x73C
 type = "REL32"
-symbol = "?GetActiveState@TargetSpellcardOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?GetActiveState@Spellcard@th08@@QAEHXZ"
 target = 0x0041FD90
 
 [[units.relocations]]
 offset = 0x746
 type = "DIR32"
-symbol = "?g_TargetSpellcard004EA670@EclOperands@th08@@3UTargetSpellcardOverlay@12@A"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
 target = 0x004EA670
 
 [[units.relocations]]
 offset = 0x74B
 type = "REL32"
-symbol = "?GetInactiveState@TargetSpellcardOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?GetInactiveState@Spellcard@th08@@QAEHXZ"
 target = 0x00405260
 
 [[units.relocations]]
 offset = 0x758
 type = "DIR32"
-symbol = "?g_TargetSpellcard004EA670@EclOperands@th08@@3UTargetSpellcardOverlay@12@A"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
 target = 0x004EA670
 
 [[units.relocations]]
 offset = 0x75D
 type = "REL32"
-symbol = "?GetTimerFrames@TargetSpellcardOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?GetTimerFrames@Spellcard@th08@@QAEHXZ"
 target = 0x0041FDD0
 
 [[units.relocations]]
@@ -8114,8 +8119,9 @@ target = 0x00420034
 [[units.relocations]]
 offset = 0x1CA
 type = "DIR32"
-symbol = "?g_TargetInt0160F538@EclOperands@th08@@3HA"
-target = 0x0160F538
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x30
 
 [[units.relocations]]
 offset = 0x1D1
@@ -8380,61 +8386,61 @@ target = 0x004207B7
 [[units.relocations]]
 offset = 0x1B4
 type = "DIR32"
-symbol = "?g_TargetRng0164D520@EclOperands@th08@@3UTargetRngOverlay@12@A"
+symbol = "?g_Rng@th08@@3VRng@1@A"
 target = 0x0164D520
 
 [[units.relocations]]
 offset = 0x1B9
 type = "REL32"
-symbol = "?GetRandomU32@TargetRngOverlay@EclOperands@th08@@QAEIXZ"
+symbol = "?GetRandomU32@Rng@th08@@QAEIXZ"
 target = 0x0043ED20
 
 [[units.relocations]]
 offset = 0x1D5
 type = "DIR32"
-symbol = "?g_TargetRng0164D520@EclOperands@th08@@3UTargetRngOverlay@12@A"
+symbol = "?g_Rng@th08@@3VRng@1@A"
 target = 0x0164D520
 
 [[units.relocations]]
 offset = 0x1DA
 type = "REL32"
-symbol = "?GetRandomF32@TargetRngOverlay@EclOperands@th08@@QAEMXZ"
+symbol = "?GetRandomF32@Rng@th08@@QAEMXZ"
 target = 0x0043ED50
 
 [[units.relocations]]
 offset = 0x1E4
 type = "DIR32"
-symbol = "?g_TargetRng0164D520@EclOperands@th08@@3UTargetRngOverlay@12@A"
+symbol = "?g_Rng@th08@@3VRng@1@A"
 target = 0x0164D520
 
 [[units.relocations]]
 offset = 0x1E9
 type = "REL32"
-symbol = "?GetRandomU32@TargetRngOverlay@EclOperands@th08@@QAEIXZ"
+symbol = "?GetRandomU32@Rng@th08@@QAEIXZ"
 target = 0x0043ED20
 
 [[units.relocations]]
 offset = 0x1F9
 type = "DIR32"
-symbol = "?g_TargetRng0164D520@EclOperands@th08@@3UTargetRngOverlay@12@A"
+symbol = "?g_Rng@th08@@3VRng@1@A"
 target = 0x0164D520
 
 [[units.relocations]]
 offset = 0x1FE
 type = "REL32"
-symbol = "?GetRandomF32Signed@TargetRngOverlay@EclOperands@th08@@QAEMXZ"
+symbol = "?GetRandomF32Signed@Rng@th08@@QAEMXZ"
 target = 0x0043ED80
 
 [[units.relocations]]
 offset = 0x20D
 type = "DIR32"
-symbol = "?g_TargetRng0164D520@EclOperands@th08@@3UTargetRngOverlay@12@A"
+symbol = "?g_Rng@th08@@3VRng@1@A"
 target = 0x0164D520
 
 [[units.relocations]]
 offset = 0x212
 type = "REL32"
-symbol = "?GetRandomF32InRange@TargetRngOverlay@EclOperands@th08@@QAEMM@Z"
+symbol = "?GetRandomF32InRange@Rng@th08@@QAEMM@Z"
 target = 0x0040D390
 
 [[units.relocations]]
@@ -8446,8 +8452,9 @@ target = 0x004B4334
 [[units.relocations]]
 offset = 0x223
 type = "DIR32"
-symbol = "?g_TargetInt0160F538@EclOperands@th08@@3HA"
-target = 0x0160F538
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x30
 
 [[units.relocations]]
 offset = 0x22E
@@ -8458,7 +8465,7 @@ target = 0x0164D334
 [[units.relocations]]
 offset = 0x256
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@EclOperands@th08@@3EA"
+symbol = "?g_TargetByte0164D0B1@th08@@3EA"
 target = 0x0164D0B1
 
 [[units.relocations]]
@@ -8512,62 +8519,66 @@ target = 0x004ECE3C
 [[units.relocations]]
 offset = 0x44D
 type = "DIR32"
-symbol = "?g_TargetVector017D61AC@EclOperands@th08@@3UTargetVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0x2B4
 
 [[units.relocations]]
 offset = 0x458
 type = "DIR32"
-symbol = "?g_TargetVector017D61AC@EclOperands@th08@@3UTargetVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0x2B4
 
 [[units.relocations]]
 offset = 0x463
 type = "DIR32"
-symbol = "?g_TargetVector017D61AC@EclOperands@th08@@3UTargetVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0x2B4
 
 [[units.relocations]]
 offset = 0x54E
 type = "DIR32"
-symbol = "?g_TargetPlayer017D5EF8@EclOperands@th08@@3UTargetPlayerOverlay@12@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x553
 type = "REL32"
-symbol = "?AngleToPlayer@TargetPlayerOverlay@EclOperands@th08@@QAEMPBUTargetVector3@23@@Z"
+symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
 target = 0x0044C1B0
 
 [[units.relocations]]
 offset = 0x5E5
 type = "REL32"
-symbol = "?FUN_0041F000@TargetEnemyHelperOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?HasParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
 target = 0x0041F000
 
 [[units.relocations]]
 offset = 0x5F1
 type = "REL32"
-symbol = "?FUN_0041FD40@TargetEnemyHelperOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?CountParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
 target = 0x0041FD40
 
 [[units.relocations]]
 offset = 0x5FE
 type = "REL32"
-symbol = "?FUN_0041FD20@TargetEnemyHelperOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
 target = 0x0041FD20
 
 [[units.relocations]]
 offset = 0x610
 type = "REL32"
-symbol = "?FUN_0041FD40@TargetEnemyHelperOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?CountParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
 target = 0x0041FD40
 
 [[units.relocations]]
 offset = 0x63A
 type = "DIR32"
-symbol = "?g_TargetVector017D61AC@EclOperands@th08@@3UTargetVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0x2B4
 
 [[units.relocations]]
 offset = 0x63F
@@ -8584,49 +8595,49 @@ target = 0x0040B4C0
 [[units.relocations]]
 offset = 0x64E
 type = "DIR32"
-symbol = "?g_TargetPlayer017D5EF8@EclOperands@th08@@3UTargetPlayerOverlay@12@A"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x653
 type = "REL32"
-symbol = "?IsYoukai@TargetPlayerOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?IsYoukai@Player@th08@@QAEHXZ"
 target = 0x0040BC40
 
 [[units.relocations]]
 offset = 0x660
 type = "DIR32"
-symbol = "?g_TargetSpellcard004EA670@EclOperands@th08@@3UTargetSpellcardOverlay@12@A"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
 target = 0x004EA670
 
 [[units.relocations]]
 offset = 0x665
 type = "REL32"
-symbol = "?FUN_004178A0@TargetSpellcardOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?IsActive@Spellcard@th08@@QAEHXZ"
 target = 0x004178A0
 
 [[units.relocations]]
 offset = 0x66E
 type = "DIR32"
-symbol = "?g_TargetSpellcard004EA670@EclOperands@th08@@3UTargetSpellcardOverlay@12@A"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
 target = 0x004EA670
 
 [[units.relocations]]
 offset = 0x673
 type = "REL32"
-symbol = "?FUN_0041FD90@TargetSpellcardOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?GetActiveState@Spellcard@th08@@QAEHXZ"
 target = 0x0041FD90
 
 [[units.relocations]]
 offset = 0x67D
 type = "DIR32"
-symbol = "?g_TargetSpellcard004EA670@EclOperands@th08@@3UTargetSpellcardOverlay@12@A"
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
 target = 0x004EA670
 
 [[units.relocations]]
 offset = 0x682
 type = "REL32"
-symbol = "?FUN_00405260@TargetSpellcardOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?GetInactiveState@Spellcard@th08@@QAEHXZ"
 target = 0x00405260
 
 [[units.relocations]]
@@ -9258,20 +9269,23 @@ target = 0x00420C08
 [[units.relocations]]
 offset = 0x1C6
 type = "DIR32"
-symbol = "?g_TargetVector017D61AC@EclOperands@th08@@3UTargetVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0x2B4
 
 [[units.relocations]]
 offset = 0x1D0
 type = "DIR32"
-symbol = "?g_TargetVector017D61AC@EclOperands@th08@@3UTargetVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0x2B4
 
 [[units.relocations]]
 offset = 0x1DA
 type = "DIR32"
-symbol = "?g_TargetVector017D61AC@EclOperands@th08@@3UTargetVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0x2B4
 
 [[units.relocations]]
 offset = 0x206

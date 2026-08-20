@@ -1,5 +1,12 @@
 #include "EclOperands.hpp"
 
+#include "EclManager.hpp"
+#include "GameManager.hpp"
+#include "Global.hpp"
+#include "ItemManager.hpp"
+#include "Player.hpp"
+#include "Spellcard.hpp"
+
 namespace th08
 {
 namespace EclOperands
@@ -9,49 +16,13 @@ namespace EclOperands
 // hash-attested TH08 1.00d target. Their owning subsystem lanes can replace
 // the address-based names once the corresponding public layouts are proven.
 
-struct TargetRngOverlay
-{
-    u32 RandomU32();
-    f32 RandomF32();
-    f32 RandomF32Signed();
-};
-
-struct TargetPlayerOverlay
-{
-    f32 AngleToPlayer(const Vector3 *position);
-    i32 IsYoukai();
-};
-
-struct TargetGameManagerOverlay
-{
-    i32 GetTimeOrbs();
-    i32 GetLastSpellTimeOrbThreshold();
-};
-
-struct TargetItemManagerOverlay
-{
-    i32 GetTimeOrbCount();
-};
-
 struct TargetSpellcardOverlay
 {
     i32 GetDemoFlag();
-    i32 IsActive();
-    i32 GetActiveState();
-    i32 GetInactiveState();
-    i32 GetTimerFrames();
 };
 
-extern TargetRngOverlay g_TargetRng0164D520;
-extern TargetPlayerOverlay g_TargetPlayer017D5EF8;
-extern Vector3 g_TargetPlayerPosition017D61AC;
-extern TargetGameManagerOverlay g_TargetGameManager0160F508;
-extern TargetItemManagerOverlay g_TargetItemManager01653648;
-extern TargetSpellcardOverlay g_TargetSpellcard004EA670;
 
-extern i32 g_TargetInt0160F538;
 extern i32 g_TargetInt0164D334;
-extern u8 g_TargetByte0164D0B1;
 
 extern i32 g_TargetInt004ECE20;
 extern i32 g_TargetInt004ECE24;
@@ -111,15 +82,15 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x2735: return CONTEXT_INT(0x5c);
     case 0x2736: return CONTEXT_INT(0x60);
     case 0x2737: return CONTEXT_INT(0x64);
-    case 0x2730: return (i32)(g_TargetRng0164D520.RandomU32() & 0x7fffffff);
-    case 0x2731: return (i32)g_TargetRng0164D520.RandomF32();
-    case 0x2732: return (i32)g_TargetRng0164D520.RandomU32();
-    case 0x2733: return (i32)g_TargetRng0164D520.RandomF32Signed();
-    case 0x2738: return g_TargetInt0160F538;
+    case 0x2730: return (i32)(g_Rng.GetRandomU32() & 0x7fffffff);
+    case 0x2731: return (i32)g_Rng.GetRandomF32();
+    case 0x2732: return (i32)g_Rng.GetRandomU32();
+    case 0x2733: return (i32)g_Rng.GetRandomF32Signed();
+    case 0x2738: return g_GameManager.difficulty;
     case 0x2739: return g_TargetInt0164D334;
     case 0x2741: return INT_FIELD(0x2e1c);
     case 0x2743: return INT_FIELD(0x2dfc);
-    case 0x2744: return g_TargetByte0164D0B1;
+    case 0x2744: return ::th08::g_TargetByte0164D0B1;
     case 0x276e: return (i32)CONTEXT_FLOAT(0x68);
     case 0x276f: return (i32)CONTEXT_FLOAT(0x6c);
 
@@ -154,9 +125,9 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x273a: return (i32)FLOAT_FIELD(0x2d88);
     case 0x273b: return (i32)FLOAT_FIELD(0x2d8c);
     case 0x273c: return (i32)FLOAT_FIELD(0x2d90);
-    case 0x273d: return (i32)g_TargetPlayerPosition017D61AC.x;
-    case 0x273e: return (i32)g_TargetPlayerPosition017D61AC.y;
-    case 0x273f: return (i32)g_TargetPlayerPosition017D61AC.z;
+    case 0x273d: return (i32)(*reinterpret_cast<Vector3 *>(&g_Player.position)).x;
+    case 0x273e: return (i32)(*reinterpret_cast<Vector3 *>(&g_Player.position)).y;
+    case 0x273f: return (i32)(*reinterpret_cast<Vector3 *>(&g_Player.position)).z;
     case 0x275a: return (i32)FLOAT_FIELD(0x2dd0);
     case 0x275b: return (i32)FLOAT_FIELD(0x2dd4);
     case 0x275c: return (i32)FLOAT_FIELD(0x2dd8);
@@ -186,23 +157,23 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
                          ? (*(TargetEnemyHelpersOverlay **)(enemy->bytes + 0x2da4))->CountParentChain()
                          : 0;
     case 0x2740:
-        return (i32)g_TargetPlayer017D5EF8.AngleToPlayer(&VECTOR_FIELD(0x2d88));
+        return (i32)g_Player.FUN_0044c1b0(reinterpret_cast<Float3 *>(&VECTOR_FIELD(0x2d88)));
     case 0x2742:
     {
-        Vector3 delta = g_TargetPlayerPosition017D61AC - VECTOR_FIELD(0x2d88);
+        Vector3 delta = (*reinterpret_cast<Vector3 *>(&g_Player.position)) - VECTOR_FIELD(0x2d88);
         return (i32)delta.Length();
     }
-    case 0x2771: return g_TargetPlayer017D5EF8.IsYoukai();
+    case 0x2771: return g_Player.IsYoukai();
     case 0x2772:
-        return g_TargetGameManager0160F508.GetTimeOrbs() + g_TargetSpellcard004EA670.GetDemoFlag()
-                       + g_TargetItemManager01653648.GetTimeOrbCount()
-                   >= g_TargetGameManager0160F508.GetLastSpellTimeOrbThreshold()
+        return g_GameManager.GetTimeOrbs() + (*reinterpret_cast<TargetSpellcardOverlay *>(&g_Spellcard)).GetDemoFlag()
+                       + g_ItemManager.GetTimeOrbCount()
+                   >= g_GameManager.GetLastSpellTimeOrbThreshold()
                ? 2
                : 0;
     case 0x2773:
-        return g_TargetSpellcard004EA670.IsActive() ? g_TargetSpellcard004EA670.GetActiveState()
-                                                    : g_TargetSpellcard004EA670.GetInactiveState();
-    case 0x2774: return g_TargetSpellcard004EA670.GetTimerFrames();
+        return g_Spellcard.IsActive() ? g_Spellcard.GetActiveState()
+                                                    : g_Spellcard.GetInactiveState();
+    case 0x2774: return g_Spellcard.GetTimerFrames();
     default: return operand;
     }
 }
@@ -243,7 +214,7 @@ i32 *__fastcall ResolveIntLValue(EnemyOverlay *enemy, i32 *operand, u16 flags, i
     case 0x2735: return &CONTEXT_INT(0x5c);
     case 0x2736: return &CONTEXT_INT(0x60);
     case 0x2737: return &CONTEXT_INT(0x64);
-    case 0x2738: return &g_TargetInt0160F538;
+    case 0x2738: return &g_GameManager.difficulty;
     case 0x2739: return &g_TargetInt0164D334;
     case 0x2741: return &INT_FIELD(0x2e1c);
     case 0x2743: return &INT_FIELD(0x2dfc);

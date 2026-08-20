@@ -1,5 +1,12 @@
 #include "EclOperands.hpp"
 
+#include "EclManager.hpp"
+#include "GameManager.hpp"
+#include "Global.hpp"
+#include "ItemManager.hpp"
+#include "Player.hpp"
+#include "Spellcard.hpp"
+
 namespace th08
 {
 namespace EclOperands
@@ -18,36 +25,6 @@ struct TargetVector3
     f32 Length() const;
 };
 
-struct TargetRngOverlay
-{
-    u32 GetRandomU32();
-    f32 GetRandomF32();
-    f32 GetRandomF32Signed();
-    f32 GetRandomF32InRange(f32 range);
-};
-
-struct TargetPlayerOverlay
-{
-    f32 AngleToPlayer(const TargetVector3 *position);
-    i32 IsYoukai();
-};
-
-struct TargetEnemyHelperOverlay
-{
-    u8 bytes[1];
-
-    i32 FUN_0041F000();
-    i32 FUN_0041FD20();
-    i32 FUN_0041FD40();
-};
-
-struct TargetSpellcardOverlay
-{
-    i32 FUN_004178A0();
-    i32 FUN_0041FD90();
-    i32 FUN_00405260();
-};
-
 // Observed: this target cluster was compiled with inlining disabled.  Even
 // __forceinline helpers become out-of-line COMDAT calls under the probe
 // profile, whereas both target bodies access the private layouts directly.
@@ -58,14 +35,11 @@ struct TargetSpellcardOverlay
 #define ENEMY_INT(owner, offset) (*(i32 *)((owner)->bytes + (offset)))
 #define ENEMY_FLOAT(owner, offset) (*(f32 *)((owner)->bytes + (offset)))
 #define ENEMY_VECTOR(owner, offset) (*(TargetVector3 *)((owner)->bytes + (offset)))
-#define ENEMY_HELPERS(owner) ((TargetEnemyHelperOverlay *)(owner))
+#define ENEMY_HELPERS(owner) ((TargetEnemyHelpersOverlay *)(owner))
 
 // Target globals not yet represented by an owner-lane type are deliberately
 // named by address.  The addresses below are direct operands in 0x00420120.
-extern TargetRngOverlay g_TargetRng0164D520;
-extern i32 g_TargetInt0160F538;
 extern i32 g_TargetInt0164D334;
-extern u8 g_TargetByte0164D0B1;
 extern i32 g_TargetInt004ECE20;
 extern i32 g_TargetInt004ECE24;
 extern i32 g_TargetInt004ECE28;
@@ -74,9 +48,6 @@ extern f32 g_TargetFloat004ECE30;
 extern f32 g_TargetFloat004ECE34;
 extern f32 g_TargetFloat004ECE38;
 extern f32 g_TargetFloat004ECE3C;
-extern TargetVector3 g_TargetVector017D61AC;
-extern TargetPlayerOverlay g_TargetPlayer017D5EF8;
-extern TargetSpellcardOverlay g_TargetSpellcard004EA670;
 
 // Observed: TH08 1.00d 0x00420120 is a thiscall float resolver.  It converts
 // the incoming float to i32, dispatches all IDs 0x2710..0x2773, returns in
@@ -110,16 +81,16 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
     case 0x2735: return (f32)CONTEXT_INT(this, 0x5C);
     case 0x2736: return (f32)CONTEXT_INT(this, 0x60);
     case 0x2737: return (f32)CONTEXT_INT(this, 0x64);
-    case 0x2730: return (f32)(g_TargetRng0164D520.GetRandomU32() & 0x7FFFFFFF);
-    case 0x2731: return g_TargetRng0164D520.GetRandomF32();
-    case 0x2732: return (f32)(i32)g_TargetRng0164D520.GetRandomU32();
-    case 0x2733: return g_TargetRng0164D520.GetRandomF32Signed();
-    case 0x2762: return g_TargetRng0164D520.GetRandomF32InRange(6.2831855f) - 3.1415927f;
-    case 0x2738: return (f32)g_TargetInt0160F538;
+    case 0x2730: return (f32)(g_Rng.GetRandomU32() & 0x7FFFFFFF);
+    case 0x2731: return g_Rng.GetRandomF32();
+    case 0x2732: return (f32)(i32)g_Rng.GetRandomU32();
+    case 0x2733: return g_Rng.GetRandomF32Signed();
+    case 0x2762: return g_Rng.GetRandomF32InRange(6.2831855f) - 3.1415927f;
+    case 0x2738: return (f32)g_GameManager.difficulty;
     case 0x2739: return (f32)g_TargetInt0164D334;
     case 0x2741: return (f32)ENEMY_INT(this, 0x2E1C);
     case 0x2743: return (f32)ENEMY_INT(this, 0x2DFC);
-    case 0x2744: return (f32)g_TargetByte0164D0B1;
+    case 0x2744: return (f32)::th08::g_TargetByte0164D0B1;
     case 0x276C: return (f32)ENEMY_INT(this, 0x3304);
     case 0x276D: return (f32)ENEMY_INT(this, 0x2E08);
     case 0x274D: return (f32)g_TargetInt004ECE20;
@@ -154,9 +125,9 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
     case 0x273A: return ENEMY_FLOAT(this, 0x2D88);
     case 0x273B: return ENEMY_FLOAT(this, 0x2D8C);
     case 0x273C: return ENEMY_FLOAT(this, 0x2D90);
-    case 0x273D: return g_TargetVector017D61AC.x;
-    case 0x273E: return g_TargetVector017D61AC.y;
-    case 0x273F: return g_TargetVector017D61AC.z;
+    case 0x273D: return (*reinterpret_cast<TargetVector3 *>(&g_Player.position)).x;
+    case 0x273E: return (*reinterpret_cast<TargetVector3 *>(&g_Player.position)).y;
+    case 0x273F: return (*reinterpret_cast<TargetVector3 *>(&g_Player.position)).z;
     case 0x276E: return CONTEXT_FLOAT(this, 0x68);
     case 0x276F: return CONTEXT_FLOAT(this, 0x6C);
     case 0x275A: return ENEMY_FLOAT(this, 0x2DD0);
@@ -173,7 +144,7 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
     case 0x276A: return (f32)ENEMY_INT(this, 0x3360);
     case 0x276B: return (f32)ENEMY_INT(this, 0x3364);
     case 0x2740:
-        return g_TargetPlayer017D5EF8.AngleToPlayer(&ENEMY_VECTOR(this, 0x2D88));
+        return g_Player.FUN_0044c1b0(reinterpret_cast<Float3 *>(&ENEMY_VECTOR(this, 0x2D88)));
     case 0x2755: return ENEMY_FLOAT(this, 0x2D94);
     case 0x2756: return ENEMY_FLOAT(this, 0x2D98);
     case 0x2757: return ENEMY_FLOAT(this, 0x2DA8);
@@ -185,22 +156,22 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
     case 0x2763: return (f32)ENEMY_INT(this, 0x3354);
 
     case 0x2770:
-        return (f32)(ENEMY_HELPERS(this)->FUN_0041F000()
-                         ? ENEMY_HELPERS(this)->FUN_0041FD40()
-                         : ENEMY_HELPERS(this)->FUN_0041FD20()
-                               ? ((TargetEnemyHelperOverlay *)*(void **)(bytes + 0x2DA4))->FUN_0041FD40()
+        return (f32)(ENEMY_HELPERS(this)->HasParentChain()
+                         ? ENEMY_HELPERS(this)->CountParentChain()
+                         : ENEMY_HELPERS(this)->HasAttachedEnemy()
+                               ? ((TargetEnemyHelpersOverlay *)*(void **)(bytes + 0x2DA4))->CountParentChain()
                                : 0);
 
     case 0x2742:
     {
-        TargetVector3 delta = g_TargetVector017D61AC - ENEMY_VECTOR(this, 0x2D88);
+        TargetVector3 delta = (*reinterpret_cast<TargetVector3 *>(&g_Player.position)) - ENEMY_VECTOR(this, 0x2D88);
         return delta.Length();
     }
-    case 0x2771: return (f32)g_TargetPlayer017D5EF8.IsYoukai();
+    case 0x2771: return (f32)g_Player.IsYoukai();
     case 0x2773:
-        return (f32)(g_TargetSpellcard004EA670.FUN_004178A0()
-                         ? g_TargetSpellcard004EA670.FUN_0041FD90()
-                         : g_TargetSpellcard004EA670.FUN_00405260());
+        return (f32)(g_Spellcard.IsActive()
+                         ? g_Spellcard.GetActiveState()
+                         : g_Spellcard.GetInactiveState());
 
     case 0x2772:
     default: return operand;
@@ -241,9 +212,9 @@ f32 *__fastcall ResolveFloatLValue(EnemyOverlay *enemy, f32 *operand, u16 flags,
     case 0x273A: return &ENEMY_FLOAT(enemy, 0x2D34);
     case 0x273B: return &ENEMY_FLOAT(enemy, 0x2D38);
     case 0x273C: return &ENEMY_FLOAT(enemy, 0x2D3C);
-    case 0x273D: return &g_TargetVector017D61AC.x;
-    case 0x273E: return &g_TargetVector017D61AC.y;
-    case 0x273F: return &g_TargetVector017D61AC.z;
+    case 0x273D: return &(*reinterpret_cast<TargetVector3 *>(&g_Player.position)).x;
+    case 0x273E: return &(*reinterpret_cast<TargetVector3 *>(&g_Player.position)).y;
+    case 0x273F: return &(*reinterpret_cast<TargetVector3 *>(&g_Player.position)).z;
     case 0x276E: return &CONTEXT_FLOAT(enemy, 0x68);
     case 0x276F: return &CONTEXT_FLOAT(enemy, 0x6C);
     case 0x2751: return &g_TargetFloat004ECE30;
