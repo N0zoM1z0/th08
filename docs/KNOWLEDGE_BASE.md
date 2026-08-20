@@ -479,6 +479,13 @@ Ascii stayed at **0 inversions / 1 run**. Prefer the smallest
 mechanism-specific repair for each reset; do not globally toggle header
 visibility when lexical order or a bounded recipient owner is sufficient.
 
+The layout closure check must compare the production link object set against the
+TU report, not just trust the ranked list. The final link has 36 production
+objects; 35 have at least one accepted function anchor and all 35 are **0
+inversions / 1 run**. `EclGlobals.obj` is the only unranked object and is a
+data-only TU with no function definitions. Treat that as explicit closure of the
+function-layout inventory rather than silently ignoring an unranked object.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into

@@ -579,13 +579,20 @@ inversions. `AsciiManager.obj` improved from **63 anchors / 86 inversions / 6
 runs / 9,600 span** to **60 / 0 / 1 / 736**; `AsciiManagerGauge.obj` is **5 / 0 /
 1 / 32**.
 
-The latest cold whole-image TU ranking now reports **zero target-order
-inversions and one run for every ranked production object**. Do not infer
-whole-image byte identity from this milestone: section drift, imports/resources,
-and non-layout reconstruction work remain separate evidence classes. For future
-layout changes, preserve the same acceptance rule: target-neighborhood evidence,
-focused donor/recipient/caller replay, a cold normal linked-order measurement,
-and a cold aggregate exact replay before committing.
+The production link contains **36 object files**. A `--min-anchors 1` TU report
+measures 35 of them, and every measured object now has **zero target-order
+inversions and exactly one run**. The sole unranked object, `EclGlobals.obj`, is
+a data-only TU containing global storage and no function definitions, so there
+is no function-layout order to measure there. This closes the production
+TU/function-layout milestone across all 36 production `.obj` files. The final
+cold authored replay is **1,105 / 1,105 exact**, `config/claims.csv` remains
+header-only, and the final tracking/progress/CI/doc/whitespace gates pass. Do
+not infer whole-image byte identity from this milestone: section drift,
+imports/resources, and non-layout reconstruction work remain separate evidence
+classes. For future layout changes, preserve the same acceptance rule:
+target-neighborhood evidence, focused donor/recipient/caller replay, a cold
+normal linked-order measurement, and a cold aggregate exact replay before
+committing.
 Large intra-object drift means today's source combines or orders target TUs
 differently, so permuting the existing object list alone cannot solve it. A
 run reset is a routing clue, not automatically a TU boundary: the Player pass
