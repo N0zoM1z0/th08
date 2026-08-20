@@ -405,6 +405,17 @@ For EffectManager, two prototypes were sufficient; focused **52 / 52** plus the
 cold aggregate replay reduced **17 inversions / 4 runs** to **0 / 1** without an
 ownership change.
 
+The `ResultScreen.obj` pass adds an optimization-profile rule to target-neighbor
+rehome. `ScoreListNode::ScoreListNode @ 0x0045A4DC` is target-contiguous with
+`ScoreDat` but moving it into ordinary `/Od` `ScoreDat.cpp` changed its exact
+extent from 0x20 to 0x2B bytes. The same unchanged body became exact when it
+shared the immediately preceding `Catk::WasAttemptedWithShot` local
+`#pragma optimize("s", on)` region. A target-contiguous owner move may therefore
+require preserving the donor's codegen profile locally inside the recipient TU;
+address adjacency alone is insufficient. In the same pass,
+`AnmManager::ReplaceSurface @ 0x0045A3FD` was a simpler single-caller
+same-owner deferred-header repair in `ResultScreen.cpp`.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into

@@ -483,6 +483,19 @@ and the cold aggregate replay passed **1,105 / 1,105**. `EffectManager.obj`
 improved from **8 anchors / 17 inversions / 4 runs / 23,424 span** to **8 / 0 /
 1 / 304**.
 
+The eighteenth bounded pass repaired `ResultScreen.obj` and the adjacent
+ScoreDat owner boundary. `AnmManager::ReplaceSurface @ 0x0045A3FD` has only a
+ResultScreen production caller, so its header body is now declaration-only and
+the unchanged explicit definition follows `MoveCursorHorizontally @
+0x0045A2F2` in `ResultScreen.cpp`. `ScoreListNode::ScoreListNode @ 0x0045A4DC`
+required stronger evidence: a naive move into `/Od` `ScoreDat.cpp` produced a
+0x2B-byte body instead of the accepted 0x20 bytes, but placing it immediately
+after `Catk::WasAttemptedWithShot @ 0x0045A4A0` under that function's existing
+`#pragma optimize("s", on)` reproduced the exact body. The canonical owner now
+is `ScoreDat.obj`. Focused replay passed **33 / 33** ResultScreen and **14 / 14**
+ScoreDat units; cold aggregate replay passed **1,105 / 1,105**. Linked metrics
+are `ResultScreen.obj` **30 / 0 / 1 / 0** and `ScoreDat.obj` **13 / 0 / 1 / 9**.
+
 The raw ranking still places the expanded target-neighbor `AsciiManager.obj`
 cluster first (**63 anchors / 86 inversions / 6 runs / 9,600 span**), but its
 resets remain dominated by already target-backed PCH/header COMDAT groups and
@@ -490,8 +503,8 @@ its first 21 retained Ascii anchors remain exact. `AnmManager.obj` and
 `SpellCard.obj` also retain previously documented caller/owner-protected
 residuals, and `main.obj` retains the uncalled `ZunTimer::operator+=` reset.
 Without new evidence, do not perturb those contracts merely to reduce the
-metric. The next actionable candidate is `ResultScreen.obj` (**31 / 13 / 3 /
-8,431**), followed by `PbgArchive.obj` (**14 / 11 / 3 / 2,032**).
+metric. The next actionable candidate is `PbgArchive.obj` (**14 / 11 / 3 /
+2,032**), followed by `MusicRoom.obj` (**10 / 7 / 2 / 2,621**).
 Select only one and confirm the target neighborhood before moving definitions;
 the Ascii inversion count includes several independently justified COMDAT
 groups and is not by itself evidence that they have the wrong owner.
