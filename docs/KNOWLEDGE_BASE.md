@@ -418,6 +418,17 @@ same-owner deferred-header repair in `ResultScreen.cpp`.
 
 The `PbgArchive.obj` pass is another base/helper deferred-emission case: header-defined `CPbgFile::ReadInt @ 0x004751E0` and `PbgArchiveEntry::~PbgArchiveEntry @ 0x00475270` were exact but emitted at their first users. Declaration-only headers plus unchanged explicit bodies at the target tail restored **0 inversions / 1 run** without changing ownership or behavior.
 
+The `TitleScreen.obj` pass confirms that target-late inline helpers can be made
+explicit when every affected production/probe caller remains byte-exact:
+`SetKeyNumberSprite @ 0x00469FA9` and
+`GameManager::IsLastWordSpellCardAttempted @ 0x0046FD5F` both survived their
+TitleScreen and TitleReplay caller gates. The rejected MusicRoom probe gives the
+opposite boundary: `Supervisor::IsMusicPreloadEnabled @ 0x00449C79` itself was
+exact after explicit placement, but removing its header body changed two exact
+Supervisor callers by 1-2 bytes. A correct standalone body and target address do
+not justify a visibility change when caller codegen regresses; preserve the
+residual and search for a caller-preserving emission mechanism instead.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into

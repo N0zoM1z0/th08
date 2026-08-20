@@ -498,6 +498,24 @@ are `ResultScreen.obj` **30 / 0 / 1 / 0** and `ScoreDat.obj` **13 / 0 / 1 / 9**.
 
 The nineteenth bounded pass repaired `PbgArchive.obj`. Two same-owner header bodies were deferred at first use rather than their target tail positions: `CPbgFile::ReadInt @ 0x004751E0` and `PbgArchiveEntry::~PbgArchiveEntry @ 0x00475270`. Making both declaration-only and defining the unchanged bodies after `CopyFileName` / after `SeekPastString` respectively preserved **15 / 15** focused units. Cold aggregate replay passed **1,105 / 1,105**, and `PbgArchive.obj` improved from **14 anchors / 11 inversions / 3 runs / 2,032 span** to **14 / 0 / 1 / 32**.
 
+The twentieth bounded pass repaired `TitleScreen.obj`. Two target-late helper
+bodies were emitted at their first users because they were still header-inline:
+`TitleScreen::SetKeyNumberSprite @ 0x00469FA9` and
+`GameManager::IsLastWordSpellCardAttempted @ 0x0046FD5F`. Both are now
+header declarations with unchanged explicit definitions after
+`OnUpdateKeyConfig` and `DrawSpellStageSelect` respectively. Focused replay
+passed **23 / 23** TitleScreen units and **11 / 11** TitleReplay probe units;
+cold aggregate replay passed **1,105 / 1,105**. `TitleScreen.obj` improved from
+**23 anchors / 4 inversions / 3 runs / 15,726 span** to **23 / 0 / 1 / 11,979**.
+
+`MusicRoom.obj` remains intentionally unresolved at **10 / 7 / 2 / 2,621**.
+Its sole reset is `Supervisor::IsMusicPreloadEnabled @ 0x00449C79`: moving the
+unchanged body to the target-local MusicRoom tail preserved MusicRoom **11 / 11**
+and SoundPlayer **25 / 25**, but changed two accepted Supervisor callers
+(`0x004464C8` and `0x00448081`) by 1-2 bytes. The probe was fully reverted.
+Do not make this shared header declaration-only unless those exact caller
+constraints are independently solved.
+
 The raw ranking still places the expanded target-neighbor `AsciiManager.obj`
 cluster first (**63 anchors / 86 inversions / 6 runs / 9,600 span**), but its
 resets remain dominated by already target-backed PCH/header COMDAT groups and
@@ -505,8 +523,9 @@ its first 21 retained Ascii anchors remain exact. `AnmManager.obj` and
 `SpellCard.obj` also retain previously documented caller/owner-protected
 residuals, and `main.obj` retains the uncalled `ZunTimer::operator+=` reset.
 Without new evidence, do not perturb those contracts merely to reduce the
-metric. The next actionable candidate is `PbgArchive.obj` (**14 / 11 / 3 /
-2,032**), followed by `MusicRoom.obj` (**10 / 7 / 2 / 2,621**).
+metric. The next cleanly actionable candidate is `ScreenEffect.obj` (**14 / 1 /
+2 / 160**); after that, revisit the protected residuals with caller-preserving
+emission techniques rather than metric-only moves.
 Select only one and confirm the target neighborhood before moving definitions;
 the Ascii inversion count includes several independently justified COMDAT
 groups and is not by itself evidence that they have the wrong owner.
