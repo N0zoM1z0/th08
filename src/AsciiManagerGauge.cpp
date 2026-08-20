@@ -34,4 +34,22 @@ void AsciiManager::SetGaugeInterrupt(i32 interrupt)
     this->gaugeInterrupt = interrupt;
 }
 
+// FUNCTION: th08 0x407140
+i32 AsciiManager::GetGaugeInterrupt()
+{
+    return this->gaugeInterrupt;
+}
+
+// FUNCTION: th08 0x407160
+void AsciiManager::ResetStrings()
+{
+    this->numStrings = 0;
+}
+
+// FUNCTION: th08 0x407180
+void AsciiManager::SetSpaceWidth(i32 spaceWidth)
+{
+    this->spaceWidth = spaceWidth;
+}
+
 } // namespace th08

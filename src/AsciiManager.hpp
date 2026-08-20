@@ -135,20 +135,9 @@ struct AsciiManager
 
     void SetGaugeInterrupt(i32 interrupt);
 
-    i32 GetGaugeInterrupt()
-    {
-        return this->gaugeInterrupt;
-    }
-
-    void ResetStrings()
-    {
-        this->numStrings = 0;
-    }
-
-    void SetSpaceWidth(i32 spaceWidth)
-    {
-        this->spaceWidth = spaceWidth;
-    }
+    i32 GetGaugeInterrupt();
+    void ResetStrings();
+    void SetSpaceWidth(i32 spaceWidth);
 
     void SetIsGuiMode(u32 value);
 

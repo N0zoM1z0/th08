@@ -350,6 +350,18 @@ struct ZunTimer
         this->subFrame = 0.0;
     }
 
+    void operator=(i32 value)
+    {
+        SetCurrent(value);
+    }
+
+    void SetCurrent(i32 value)
+    {
+        this->current = value;
+        this->subFrame = 0.0;
+        this->previous = -999;
+    }
+
     operator int()
     {
         return this->current;
@@ -420,16 +432,5 @@ struct ZunTimer
     void Increment(i32 value);
     void Decrement(i32 value);
 
-    void operator=(i32 value)
-    {
-        SetCurrent(value);
-    }
-
-    void SetCurrent(i32 value)
-    {
-        this->current = value;
-        this->subFrame = 0.0;
-        this->previous = -999;
-    }
 };
 }; // namespace th08

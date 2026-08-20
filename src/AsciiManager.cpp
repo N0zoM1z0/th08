@@ -1204,6 +1204,14 @@ i32 PauseMenu::OnUpdate()
     return 0;
 }
 
+// FUNCTION: th08 0x404720
+Float3::Float3(float x, float y, float z)
+{
+    this->x = x;
+    this->y = y;
+    this->z = z;
+}
+
 // STUB: th08 0x404750
 i32 PauseMenu::OnDraw()
 {
@@ -1905,7 +1913,7 @@ void AsciiManager::DrawPercentage(Float3 *position, i32 percentage, D3DCOLOR col
 }
 
 // FUNCTION: th08 0x4068e0
-void AnmVmBase::Initialize()
+inline void AnmVmBase::Initialize()
 {
     memset(this, 0, sizeof(AnmVmBase));
 

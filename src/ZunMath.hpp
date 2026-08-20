@@ -23,12 +23,7 @@ struct Float3
     {
     }
 
-    Float3(float x, float y, float z)
-    {
-        this->x = x;
-        this->y = y;
-        this->z = z;
-    }
+    Float3(float x, float y, float z);
 
     void FromAngleMagnitude(float angle, float magnitude)
     {

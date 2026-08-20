@@ -29101,7 +29101,7 @@ target = 0x00402920
 # Destination ledgers: none
 [[units]]
 name = "ascii-ending-roi-exact-00407180"
-object = "build/AsciiManager.obj"
+object = "build/AsciiManagerGauge.obj"
 symbol = "?SetSpaceWidth@AsciiManager@th08@@QAEXH@Z"
 target_address = 0x00407180
 size = 0x19
@@ -46817,7 +46817,7 @@ size = 0x19
 # Evidence: unique-owner emitted section; 0 relocations; 0 direct calls; replay exact in scanner.
 [[units]]
 name = "accepted-exact-00407140"
-object = "build/AsciiManager.obj"
+object = "build/AsciiManagerGauge.obj"
 symbol = "?GetGaugeInterrupt@AsciiManager@th08@@QAEHXZ"
 target_address = 0x00407140
 size = 0x14
@@ -46827,7 +46827,7 @@ size = 0x14
 # Evidence: unique-owner emitted section; 0 relocations; 0 direct calls; replay exact in scanner.
 [[units]]
 name = "accepted-exact-00407160"
-object = "build/AsciiManager.obj"
+object = "build/AsciiManagerGauge.obj"
 symbol = "?ResetStrings@AsciiManager@th08@@QAEXXZ"
 target_address = 0x00407160
 size = 0x18

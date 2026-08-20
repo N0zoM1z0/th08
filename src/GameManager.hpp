@@ -128,13 +128,13 @@ struct GameManager
         return this->flags.isPracticeMode;
     }
 
-    ZunBool IsReplay()
-    {
-        return this->flags.isReplay;
-    }
     ZunBool IsSpellPractice()
     {
         return this->flags.isSpellPractice;
+    }
+    ZunBool IsReplay()
+    {
+        return this->flags.isReplay;
     }
     ZunBool IsSpellNumberEqualTo(i32 spellCardNumber)
     {
