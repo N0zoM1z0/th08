@@ -55012,7 +55012,7 @@ target = 0x00430830
 
 [[units]]
 name = "spellcard-set-stored-vector"
-object = "build/SpellCard.obj"
+object = "build/EclManager.obj"
 symbol = "?SetStoredVector@Spellcard@th08@@QAEXMMM@Z"
 target_address = 0x0041F040
 size = 0x43
@@ -55033,7 +55033,7 @@ size = 0x16
 
 [[units]]
 name = "spellcard-get-timer-frames"
-object = "build/SpellCard.obj"
+object = "build/EclManager.obj"
 symbol = "?GetTimerFrames@Spellcard@th08@@QAEHXZ"
 target_address = 0x0041FDD0
 size = 0x19
@@ -55046,14 +55046,14 @@ target = 0x0040D3B0
 
 [[units]]
 name = "ecl-enemy-has-attached-enemy"
-object = "build/EnemyManager.obj"
+object = "build/EclManager.obj"
 symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
 target_address = 0x0041FD20
 size = 0x1C
 
 [[units]]
 name = "zun-timer-plus-equals"
-object = "build/main.obj"
+object = "build/EclManager.obj"
 symbol = "??YZunTimer@th08@@QAEXH@Z"
 target_address = 0x0041FDF0
 size = 0x19
@@ -55067,14 +55067,14 @@ target = 0x00447295
 
 [[units]]
 name = "ecl-enemy-has-parent-chain"
-object = "build/EnemyManager.obj"
+object = "build/EclManager.obj"
 symbol = "?HasParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
 target_address = 0x0041F000
 size = 0x35
 
 [[units]]
 name = "ecl-enemy-count-parent-chain"
-object = "build/EnemyManager.obj"
+object = "build/EclManager.obj"
 symbol = "?CountParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
 target_address = 0x0041FD40
 size = 0x46
@@ -55088,7 +55088,7 @@ target = 0x0041F000
 
 [[units]]
 name = "spellcard-get-active-state"
-object = "build/SpellCard.obj"
+object = "build/EclManager.obj"
 symbol = "?GetActiveState@Spellcard@th08@@QAEHXZ"
 target_address = 0x0041FD90
 size = 0x3B
@@ -55148,7 +55148,7 @@ target = 0x004178A0
 
 [[units]]
 name = "spellcard-fun-0042dff0"
-object = "build/SpellCard.obj"
+object = "build/EclManager.obj"
 symbol = "?FUN_0042DFF0@Spellcard@th08@@QAEHXZ"
 target_address = 0x0042DFF0
 size = 0x16
@@ -106160,14 +106160,14 @@ target = 0x00577F20
 
 [[units]]
 name = "spellcard-ecl-flag-bit6-0041f0b0"
-object = "build/SpellCard.obj"
+object = "build/EclManager.obj"
 symbol = "?FUN_0041f0b0@Spellcard@th08@@QAEXH@Z"
 target_address = 0x0041F0B0
 size = 0x25
 
 [[units]]
 name = "spellcard-ecl-flag-bit11-0041f0e0"
-object = "build/SpellCard.obj"
+object = "build/EclManager.obj"
 symbol = "?FUN_0041f0e0@Spellcard@th08@@QAEXH@Z"
 target_address = 0x0041F0E0
 size = 0x28

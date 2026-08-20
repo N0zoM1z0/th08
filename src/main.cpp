@@ -1148,9 +1148,3 @@ ZunBool GameWindow::ResolveIt(char *shortcutPath, char *dstPath, i32 maxPathLen)
     CoUninitialize();
     return retValue;
 }
-
-// FUNCTION: th08 0x41fdf0
-void ZunTimer::operator+=(int value)
-{
-    this->Increment(value);
-}
