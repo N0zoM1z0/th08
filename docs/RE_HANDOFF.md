@@ -17,11 +17,12 @@ As cold-built and replayed on 2026-08-20 against the original Japanese TH08
 - a cold normal VC7 build links `build/th08.exe` successfully;
 - a cold objdiff build followed by full replay passes **1,105 / 1,105**
   accepted units;
-- two production-object layout repairs are complete. Seven exact AsciiManager
+- three production-object layout repairs are complete. Seven exact AsciiManager
   bodies now live in four target-cluster TUs, while the early Player bomb/shot
   callback family now lives in `PlayerBomb.cpp`; both remaining donor objects
   have zero target-order inversions. The contiguous main Player TU is also back
-  in target function order;
+  in target function order. Fourteen shared helpers formerly appended to
+  `main.cpp` now emit naturally from their target-neighbor consumer TUs;
 - the whole-image comparator is in place. After the first evidence-backed link
   contract repairs, the rebuild has the target's DLL descriptor order, no debug
   directory, and the same two resource paths and resource section extent. The
@@ -213,9 +214,31 @@ python3 scripts/analysis/report-tu-partition-candidates.py \
   build/whole-image-anchors.json
 ```
 
-The current ranking places `main.obj` first (**277 inversions / 5 runs**),
-followed by `AnmManager.obj` (**195 / 10**) and `Global.obj` (**194 / 4**);
-select only one and confirm the target neighborhood before moving definitions.
+The third bounded pass repaired a different ownership error rather than
+inventing another source-file split. Fourteen small `GameManager`/`ZunTimer`
+helpers had explicit definitions appended to `main.cpp`, even though target
+neighborhoods and production undefined references place twelve with the early
+`AsciiManager` consumer cluster, `ZunTimer::operator--(int) @ 0x00418110`
+beside `SpellCard`, and `GameManager::SetClockTime @ 0x00453C60` beside replay
+loading. Restoring their natural header-inline bodies makes VC7 emit exact
+COMDATs from `AsciiManager.obj`, `SpellCard.obj`, and `ReplayManager.obj` under
+the actual consumer profiles. Focused donor/recipient replay passed **133 /
+133** accepted units, and the subsequent full single-job cold replay passed
+**1,105 / 1,105**.
+
+This reduced `main.obj` from **277 inversions / 5 runs / 316,960 bytes of drift
+span** to **16 / 2 / 146,336**. All 25 anchors in the retained main region are
+continuous; the remaining reset is solely the exact but currently uncalled
+`ZunTimer::operator+= @ 0x0041FDF0`. It remains explicitly defined in
+`main.cpp` until a target-backed production consumer or owner is recovered;
+do not assign it to an unrelated ECL/SpellCard TU just to improve the metric.
+The newly emitted Ascii COMDATs expose a bounded lexical-emission-order issue
+(**35 inversions / 4 runs / 2,736 span**) but no exact-code regression.
+
+The current ranking now places `AnmManager.obj` first (**195 inversions / 10
+runs**), followed by `Global.obj` (**194 / 4**) and `SoundPlayer.obj` (**181 /
+4**); select only one and confirm the target neighborhood before moving
+definitions.
 Large intra-object drift means today's source combines or orders target TUs
 differently, so permuting the existing object list alone cannot solve it. A
 run reset is a routing clue, not automatically a TU boundary: the Player pass

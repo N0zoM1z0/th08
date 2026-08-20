@@ -161,6 +161,33 @@ These measurements prove the current layout improvement and the necessary
 separation of the distant callback cluster. They do not prove the original
 source filename or every missing callback's eventual owner.
 
+The `main.obj` pass adds a third case: a convenient out-of-line definition can
+hide consumer-emitted header COMDAT ownership. Fourteen exact
+`GameManager`/`ZunTimer` helpers were appended to `main.cpp`, but `llvm-nm`
+undefined-reference evidence and target neighborhoods identified natural
+production consumers in `AsciiManager.obj`, `SpellCard.obj`, and
+`ReplayManager.obj`. Restoring the bodies inline in their class headers made
+those exact functions emit from the target-neighbor `/Od` consumers without
+wrappers, copied machine code, or changing the consumers' compile profiles.
+Do not select a TU merely because it implements the class: for this family the
+nominal `GameManager.cpp` owner uses `/Os` and is the wrong code-generation
+profile.
+
+Use the consumer-COMDAT procedure only when all four checks hold:
+
+1. the target body is compatible with a natural header-inline emission;
+2. production undefined references identify a real caller, and its target
+   neighborhood supports that caller's object/profile;
+3. the body and at least one affected caller remain exact after a clean-PCH
+   focused replay, followed by aggregate cold replay for the shared header;
+4. the canonical match-unit owner is changed to the section-defined consumer
+   object, not merely to an object with an undefined symbol of the same name.
+
+An exact helper with no current production caller is not permission to invent
+an owner. `ZunTimer::operator+= @ 0x0041FDF0` remains the sole distant
+`main.obj` anchor until stronger evidence appears. Ranking metrics route an
+investigation; they never justify unsupported ownership.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into

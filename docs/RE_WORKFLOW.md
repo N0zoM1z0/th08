@@ -160,10 +160,17 @@ difference rather than by inventory percentage alone.
    evidence, not a boundary claim: inspect mapped non-anchor neighbors as well.
    If one distant cluster is separated by other subsystems, move its real
    definitions to a same-profile production TU and update all match-unit and
-   namespace-map ownership. If the retained target neighborhood is continuous,
-   restore lexical function order inside that TU instead of manufacturing a
-   source file for every run. Replay donor and recipients together, then cold
-   link and measure the new runs/drift before the aggregate replay.
+   namespace-map ownership. If a distant exact helper is a plausible
+   header-inline COMDAT, inspect section-defined and undefined symbols in the
+   production objects: a target-neighbor consumer may be the natural emitter,
+   even when the class's nominal implementation TU uses a different compiler
+   profile. Restore the header body, clean the PCH, and compare the emitted
+   consumer copy plus affected callers; do not manufacture an owner for a
+   helper with no production caller. If the retained target neighborhood is
+   continuous, restore lexical function order inside that TU instead of
+   manufacturing a source file for every run. Replay donor and recipients
+   together, then cold link and measure the new runs/drift before the aggregate
+   replay.
 4. Return to one CRT/D3DX/compiler-runtime member only when the whole-image
    report or a bounded link-provenance trace identifies that member as an
    import, extent, relocation, or layout dependency. For rebuild-only imports,

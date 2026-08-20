@@ -879,6 +879,21 @@ This corpus attests the natural VC7 emissions for ResultScreen/AnmManager/MidiOu
   anchors and rebuild from a clean PCH. Verify both the recovered COMDAT and at
   least one accepted caller before aggregate replay; the object containing a
   convenient out-of-line definition is not evidence of original TU ownership.
+- The fourteen `GameManager`/`ZunTimer` helpers formerly appended to
+  `main.cpp` show how to select that consumer without guessing. Production
+  undefined references plus target adjacency route the query/gauge/clock
+  family to `AsciiManager.obj`, post-decrement to `SpellCard.obj`, and
+  `SetClockTime` to `ReplayManager.obj`. Restoring natural header bodies emits
+  the exact `/Od` COMDATs from those callers; moving them to the nominal
+  `/Os /Ob1` `GameManager.obj` owner would instead choose the wrong profile.
+  Compare the section-defined symbol, not an undefined symbol with the same
+  decoration. The focused four-object replay passed 133/133 units, followed by
+  a 1,105/1,105 cold aggregate replay.
+- `ZunTimer::operator+= @ 0x0041FDF0` is the negative control: no current
+  production object has an undefined reference to it. Keep its explicit exact
+  body and its resulting layout residual until a target-backed consumer or
+  owner is recovered. A lower inversion count is not evidence for assigning a
+  COMDAT to an unrelated TU.
 
 ### Raw union members, bitfield owners, and local value-flow restoration
 
