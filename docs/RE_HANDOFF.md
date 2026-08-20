@@ -472,6 +472,17 @@ header and defining the unchanged bodies at the tail of `PbgFile.cpp` preserved
 and `PbgFile.obj` improved from **13 anchors / 20 inversions / 2 runs / 1,456
 span** to **13 / 0 / 1 / 48**.
 
+The seventeenth bounded pass repaired `EffectManager.obj`. This TU had 49
+mapped function definitions in heavily scrambled lexical order while file-scope
+statics and the `g_EffectTemplates` data definition were interspersed between
+them. Rebuilding the source as the same declarations/data in their original
+relative order followed by all real function bodies sorted by mapped target
+address required only natural forward declarations for `FUN_00428310` and
+`FUN_00428720`. No behavior or owner changed. Focused replay passed **52 / 52**
+and the cold aggregate replay passed **1,105 / 1,105**. `EffectManager.obj`
+improved from **8 anchors / 17 inversions / 4 runs / 23,424 span** to **8 / 0 /
+1 / 304**.
+
 The raw ranking still places the expanded target-neighbor `AsciiManager.obj`
 cluster first (**63 anchors / 86 inversions / 6 runs / 9,600 span**), but its
 resets remain dominated by already target-backed PCH/header COMDAT groups and
@@ -479,8 +490,8 @@ its first 21 retained Ascii anchors remain exact. `AnmManager.obj` and
 `SpellCard.obj` also retain previously documented caller/owner-protected
 residuals, and `main.obj` retains the uncalled `ZunTimer::operator+=` reset.
 Without new evidence, do not perturb those contracts merely to reduce the
-metric. The next actionable candidate is `EffectManager.obj` (**8 / 17 / 4 /
-23,424**), followed by `ResultScreen.obj` (**31 / 13 / 3 / 8,431**).
+metric. The next actionable candidate is `ResultScreen.obj` (**31 / 13 / 3 /
+8,431**), followed by `PbgArchive.obj` (**14 / 11 / 3 / 2,032**).
 Select only one and confirm the target neighborhood before moving definitions;
 the Ascii inversion count includes several independently justified COMDAT
 groups and is not by itself evidence that they have the wrong owner.

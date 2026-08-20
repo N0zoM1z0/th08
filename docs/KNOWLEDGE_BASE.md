@@ -396,6 +396,15 @@ without changing vtable/caller behavior. `IPbgFile` moved to the target
 `0x00473C40..0x00473C60` tail, taking PbgFile from **20 inversions / 2 runs**
 to **0 / 1**.
 
+The `EffectManager.obj` pass shows a safe way to normalize a source file whose
+functions are extensively interleaved with file-scope declarations. Extract
+only real function blocks, preserve all non-function declarations/data in their
+original relative order, then append the function blocks in mapped target order.
+Compile visibility failures should be solved only with real forward declarations.
+For EffectManager, two prototypes were sufficient; focused **52 / 52** plus the
+cold aggregate replay reduced **17 inversions / 4 runs** to **0 / 1** without an
+ownership change.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into
