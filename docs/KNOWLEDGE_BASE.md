@@ -451,6 +451,29 @@ compatible codegen, exact donor/recipient replay, and a cold linked-order win.
 This does not by itself promote the separately accepted probe `RunEcl` body to
 production ownership; helper-lane recovery can proceed incrementally.
 
+The `AnmManager.obj` pass refines caller-preserving COMDAT routing for PCH
+consumers. A TU-local preprocessor gate cannot hide a class-inline body from a
+`/Yu` source when that class definition is already stored in the PCH. In that
+case, make the shared header declaration-only, put an `inline` COMDAT definition
+at the desired owner position, and restore equivalent early body visibility in
+any optimized caller TU that needs it. `SpriteHasTexture @ 0x004622C0` used
+this PCH-safe form; AnmManager **83/83**, TitleScreen **23/23**, and cold
+**1,105/1,105** remained exact while the object reached **0 inversions / 1
+run**.
+
+The final `AsciiManager.obj` pass shows that a dense PCH/COMDAT residual should
+be decomposed by emission mechanism rather than treated as one owner problem.
+An ordinary target-local definition fixed `Float3 @ 0x00404720`; changing
+`AnmVmBase::Initialize @ 0x004068E0` to `inline` moved it into the COMDAT queue;
+reordering unchanged ZunTimer and GameManager class-member definitions repaired
+their emitted lexical order; and the target-neighbor `AsciiManagerGauge.obj`
+absorbed the standalone `0x00407140..0x00407180` helpers after exact REL32
+caller evidence proved that header bodies were unnecessary. The combined pass
+reduced Ascii from **86 inversions / 6 runs** to **0 / 1** while preserving the
+cold **1,105 / 1,105** corpus. Prefer the smallest mechanism-specific repair for
+each reset; do not globally toggle header visibility when lexical order or a
+bounded recipient owner is sufficient.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into

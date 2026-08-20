@@ -539,15 +539,46 @@ aggregate replay passed **1,105 / 1,105**. `SpellCard.obj` improved from **33 /
 2 / 146,336** to **25 / 0 / 1 / 16**; recipient `EclManager.obj` is **10 / 0 /
 1 / 60,848**. The large EclManager span is target distance, not an order reset.
 
-Only two production objects still report target-order inversions in the latest
-cold normal link: `AsciiManager.obj` (**63 anchors / 86 inversions / 6 runs /
-9,600 span**) and `AnmManager.obj` (**56 / 19 / 2 / 359,840**). The Ascii
-resets remain dominated by already target-backed PCH/header COMDAT groups, so
-use the caller-preserving TU-local COMDAT technique proven by MusicRoom rather
-than global header visibility changes. Investigate `AnmManager.obj` first
-because its two-run shape is bounded; then return to Ascii. Confirm every move
-against target neighborhoods and exact caller/recipient replay rather than
-optimizing the metric alone.
+The twenty-fourth bounded pass repaired `AnmManager.obj`. Its only reset was
+`AnmManager::SpriteHasTexture @ 0x004622C0`, a PCH-defined inline body emitted
+after `DrawTriangleFan @ 0x00464EC0` instead of between `SetInterruptArray @
+0x00462270` and `ExecuteScriptArray @ 0x00462310`. A MusicRoom-style TU-local
+header gate cannot work inside a `/Yu` consumer because `AnmManager.hpp` is
+already fixed inside the PCH. The accepted PCH-safe shape therefore makes the
+header declaration-only, provides the target-local `inline` COMDAT body in
+`AnmManager.cpp`, and provides the same early inline definition in
+`TitleScreen.cpp` so its optimized caller still compiles with body visibility.
+Focused replay passed **83 / 83** AnmManager and **23 / 23** TitleScreen units;
+cold aggregate replay passed **1,105 / 1,105**. `AnmManager.obj` improved from
+**56 anchors / 19 inversions / 2 runs / 359,840 span** to **56 / 0 / 1 /
+359,792**. The large span is the real distance from its early target COMDATs at
+`0x00406700/0x0040B580` to the main `0x0045E430+` region, not an order reset.
+
+The twenty-fifth bounded pass repaired the last remaining production layout,
+`AsciiManager.obj`. Four independent fixes were required. First,
+`AnmVmBase::Initialize @ 0x004068E0` became an `inline` COMDAT so it could join
+the target helper emission queue. Second, `Float3::Float3(f32,f32,f32) @
+0x00404720` moved from its header body to an unchanged ordinary definition
+between `PauseMenu::OnUpdate` and `PauseMenu::OnDraw`, matching the target-local
+slot. Third, only lexical order changed inside shared headers: `ZunTimer`
+`operator=`/`SetCurrent` now precede `<`/`>`, and `GameManager::IsSpellPractice`
+precedes `IsReplay`, matching the observed COMDAT order. Finally,
+`GetGaugeInterrupt`, `ResetStrings`, and `SetSpaceWidth @ 0x00407140..7180`
+were made declaration-only and their unchanged bodies/canonical owners moved to
+the already recovered `/Od /Yu` `AsciiManagerGauge.obj` target cluster. The
+relevant accepted callers contain real REL32 calls. Final focused replay passed
+**62 / 62** AsciiManager, **5 / 5** AsciiManagerGauge, **41 / 41** Gui, and
+**62 / 62** Player units. Cold aggregate replay passed **1,105 / 1,105**.
+`AsciiManager.obj` improved from **63 anchors / 86 inversions / 6 runs / 9,600
+span** to **60 / 0 / 1 / 736**; `AsciiManagerGauge.obj` is **5 / 0 / 1 / 32**.
+
+The latest cold whole-image TU ranking now reports **zero target-order
+inversions and one run for every ranked production object**. Do not infer
+whole-image byte identity from this milestone: section drift, imports/resources,
+and non-layout reconstruction work remain separate evidence classes. For future
+layout changes, preserve the same acceptance rule: target-neighborhood evidence,
+focused donor/recipient/caller replay, a cold normal linked-order measurement,
+and a cold aggregate exact replay before committing.
 Large intra-object drift means today's source combines or orders target TUs
 differently, so permuting the existing object list alone cannot solve it. A
 run reset is a routing clue, not automatically a TU boundary: the Player pass
