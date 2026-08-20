@@ -611,6 +611,22 @@ and `EnemyManager.obj` from **14 / 89,792** to **13 / 36,704**. The SpellCard
 cluster from `StartSpell` through the cut-in helpers now has one uniform linked
 drift; its object remains **29 anchors / 0 inversions / 1 run / 128 span**.
 
+The twenty-seventh bounded pass closed the production-owner side of the main
+ECL dispatcher dependency lane. `EclManager::RunEcl @ 0x004184B0` remains
+**26,638 / 26,638 authored bytes** and **27,398 / 27,398 compared bytes**
+strict exact while provisional service/global identities were rebound to their
+natural production owners. The same pass canonicalized the exact integer and
+float operand resolvers, restored `Enemy::ClampPosition @ 0x0042C180` to
+`EnemyManager.cpp`, and promoted the target ECL call-parameter/interpolator/EX
+dispatch data owners into `EclGlobals.cpp`. Focused replay passed **24 / 24**
+EclDependencies, **33 / 33** EclExIns, **4 / 4** EnemyTimeline, **39 / 39**
+EnemyManager, **32 / 32** SpellCard, and all four resolver units. A no-`/FORCE`
+diagnostic link of production objects plus the exact ECL Run/Dependencies/
+Helpers/Operands/Timeline/ExIns group now resolves completely; its only
+remaining unresolved object is the still-probe-only `EnemyManagerUpdate.obj`,
+with **77** provisional owner symbols. Treat that object as the next bounded
+promotion blocker rather than reopening already-closed RunEcl/resolver owners.
+
 The production link contains **36 object files**. Under target-proven
 `/OPT:ICF`, 35 have accepted map anchors and 34 retain non-folded TU-layout
 anchors. Every layout-ranked object still has **zero target-order inversions and

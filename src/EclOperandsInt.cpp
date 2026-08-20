@@ -16,22 +16,8 @@ namespace EclOperands
 // hash-attested TH08 1.00d target. Their owning subsystem lanes can replace
 // the address-based names once the corresponding public layouts are proven.
 
-struct TargetSpellcardOverlay
-{
-    i32 GetDemoFlag();
-};
 
 
-extern i32 g_TargetInt0164D334;
-
-extern i32 g_TargetInt004ECE20;
-extern i32 g_TargetInt004ECE24;
-extern i32 g_TargetInt004ECE28;
-extern i32 g_TargetInt004ECE2C;
-extern f32 g_TargetFloat004ECE30;
-extern f32 g_TargetFloat004ECE34;
-extern f32 g_TargetFloat004ECE38;
-extern f32 g_TargetFloat004ECE3C;
 
 // This target cluster was built with inlining disabled.  Helper functions,
 // including __forceinline helpers, therefore become out-of-line COMDAT calls
@@ -87,7 +73,7 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x2732: return (i32)g_Rng.GetRandomU32();
     case 0x2733: return (i32)g_Rng.GetRandomF32Signed();
     case 0x2738: return g_GameManager.difficulty;
-    case 0x2739: return g_TargetInt0164D334;
+    case 0x2739: return g_GameManager.rank;
     case 0x2741: return INT_FIELD(0x2e1c);
     case 0x2743: return INT_FIELD(0x2dfc);
     case 0x2744: return ::th08::g_TargetByte0164D0B1;
@@ -114,14 +100,14 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x274a: return (i32)CONTEXT_FLOAT(0x84);
     case 0x274b: return (i32)CONTEXT_FLOAT(0x88);
     case 0x274c: return (i32)CONTEXT_FLOAT(0x8c);
-    case 0x274d: return g_TargetInt004ECE20;
-    case 0x274e: return g_TargetInt004ECE24;
-    case 0x274f: return g_TargetInt004ECE28;
-    case 0x2750: return g_TargetInt004ECE2C;
-    case 0x2751: return (i32)g_TargetFloat004ECE30;
-    case 0x2752: return (i32)g_TargetFloat004ECE34;
-    case 0x2753: return (i32)g_TargetFloat004ECE38;
-    case 0x2754: return (i32)g_TargetFloat004ECE3C;
+    case 0x274d: return EclRunLowProposal::g_EclCallParameters.ints[0];
+    case 0x274e: return EclRunLowProposal::g_EclCallParameters.ints[1];
+    case 0x274f: return EclRunLowProposal::g_EclCallParameters.ints[2];
+    case 0x2750: return EclRunLowProposal::g_EclCallParameters.ints[3];
+    case 0x2751: return (i32)EclRunLowProposal::g_EclCallParameters.floats[0];
+    case 0x2752: return (i32)EclRunLowProposal::g_EclCallParameters.floats[1];
+    case 0x2753: return (i32)EclRunLowProposal::g_EclCallParameters.floats[2];
+    case 0x2754: return (i32)EclRunLowProposal::g_EclCallParameters.floats[3];
     case 0x273a: return (i32)FLOAT_FIELD(0x2d88);
     case 0x273b: return (i32)FLOAT_FIELD(0x2d8c);
     case 0x273c: return (i32)FLOAT_FIELD(0x2d90);
@@ -160,12 +146,12 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
         return (i32)g_Player.FUN_0044c1b0(reinterpret_cast<Float3 *>(&VECTOR_FIELD(0x2d88)));
     case 0x2742:
     {
-        Vector3 delta = (*reinterpret_cast<Vector3 *>(&g_Player.position)) - VECTOR_FIELD(0x2d88);
-        return (i32)delta.Length();
+        Float3 delta = g_Player.position - *reinterpret_cast<Float3 *>(&VECTOR_FIELD(0x2d88));
+        return (i32)D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&delta));
     }
     case 0x2771: return g_Player.IsYoukai();
     case 0x2772:
-        return g_GameManager.GetTimeOrbs() + (*reinterpret_cast<TargetSpellcardOverlay *>(&g_Spellcard)).GetDemoFlag()
+        return g_GameManager.GetTimeOrbs() + g_Spellcard.GetPendingTimeOrbs()
                        + g_ItemManager.GetTimeOrbCount()
                    >= g_GameManager.GetLastSpellTimeOrbThreshold()
                ? 2
@@ -215,15 +201,15 @@ i32 *__fastcall ResolveIntLValue(EnemyOverlay *enemy, i32 *operand, u16 flags, i
     case 0x2736: return &CONTEXT_INT(0x60);
     case 0x2737: return &CONTEXT_INT(0x64);
     case 0x2738: return &g_GameManager.difficulty;
-    case 0x2739: return &g_TargetInt0164D334;
+    case 0x2739: return &g_GameManager.rank;
     case 0x2741: return &INT_FIELD(0x2e1c);
     case 0x2743: return &INT_FIELD(0x2dfc);
     case 0x276c: return &INT_FIELD(0x3304);
     case 0x276d: return &INT_FIELD(0x2e08);
-    case 0x274d: return &g_TargetInt004ECE20;
-    case 0x274e: return &g_TargetInt004ECE24;
-    case 0x274f: return &g_TargetInt004ECE28;
-    case 0x2750: return &g_TargetInt004ECE2C;
+    case 0x274d: return &EclRunLowProposal::g_EclCallParameters.ints[0];
+    case 0x274e: return &EclRunLowProposal::g_EclCallParameters.ints[1];
+    case 0x274f: return &EclRunLowProposal::g_EclCallParameters.ints[2];
+    case 0x2750: return &EclRunLowProposal::g_EclCallParameters.ints[3];
     default: return operand;
     }
 }

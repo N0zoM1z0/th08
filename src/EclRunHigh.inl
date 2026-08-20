@@ -42,9 +42,7 @@ namespace th08
 {
 extern void *g_EclExInsn[];
 extern i32 g_EclGlobal004EA290; // target 0x004EA290
-extern i32 g_EclGlobal00F54E2C; // target 0x00F54E2C
 extern i32 g_EclGlobal004ECCA8; // target 0x004ECCA8
-extern i32 g_EclGlobal00F54CEC; // target 0x00F54CEC
 void __fastcall StartEnemySpell(u8 *enemy, void *instruction);
 void __fastcall EndEnemySpell(u8 *enemy, void *instruction);
 
@@ -628,7 +626,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
                 ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2)));
         }
         break;
-    case 163: g_EclGlobal00F54CEC = TH08_ECL_READ_I(ctx, 0); break;
+    case 163: reinterpret_cast<i32 *>(EclRunLowProposal::g_EclEnemyTableF54CC0)[11] = TH08_ECL_READ_I(ctx, 0); break;
     case 127:
         if (TH08_ECL_READ_I(ctx, 0) >= 0)
         {
@@ -676,7 +674,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         break;
     }
     case 159: TH08_ECL_AT(ctx, u8, 0x332F) = (u8)TH08_ECL_READ_I(ctx, 0); break;
-    case 124: reinterpret_cast<TargetApi *>(&g_SoundPlayer)->PlayPositioned(TH08_ECL_READ_I(ctx, 0), TH08_ECL_AT(ctx, i32, 0x2D34)); break;
+    case 124: g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(TH08_ECL_READ_I(ctx, 0)), *reinterpret_cast<f32 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2D34)); break;
     case 129:
         if (TH08_ECL_PRESENTATION_WRITES_ALLOWED())
             reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->op129Bits20_22 = TH08_ECL_RAW_BYTE(ctx, 0);
@@ -999,8 +997,8 @@ enter_subroutine:
         break;
     case 160: *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x5354) = TH08_ECL_READ_I(ctx, 0); break;
     case 161:
-        reinterpret_cast<TargetApi *>(&g_BulletManager)->SetAngleFromPosition(
-            &TH08_ECL_AT(ctx, Vec3, 0x2D88), ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 0)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0))));
+        g_BulletManager.RemoveBulletsInRadius(
+            reinterpret_cast<Float3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D88)), ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 0)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0))));
         break;
     case 162: g_BulletManager.RemoveAllBullets(4); break;
     case 164:
@@ -1098,7 +1096,7 @@ enter_subroutine:
                 -*(f32 *)(TH08_ECL_AT(ctx, u8 *, 0x53C8) + 0x14);
         break;
     }
-    case 175: g_EclGlobal00F54E2C = TH08_ECL_READ_I(ctx, 0); break;
+    case 175: reinterpret_cast<i32 *>(EclRunLowProposal::g_EclEnemyTableF54CC0)[91] = TH08_ECL_READ_I(ctx, 0); break;
     case 177: TH08_ECL_AT(ctx, i32, 0x2E04) = TH08_ECL_READ_I(ctx, 0); break;
 #if !defined(TH08_ECL_RUN_HIGH_BODY)
     case 178: TH08_ECL_CONTEXT_API(ctx)->Call004224A0(TH08_ECL_CONTEXT_ENEMY(ctx)); break;

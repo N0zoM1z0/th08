@@ -330,6 +330,10 @@ struct Spellcard
     i32 GetInactiveState();
     i32 GetActiveState();
     i32 GetTimerFrames();
+    i32 GetPendingTimeOrbs()
+    {
+        return this->pendingTimeOrbs;
+    }
     i32 FUN_00417860();
     i32 FUN_0042DFF0();
 

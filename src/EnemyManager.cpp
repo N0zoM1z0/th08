@@ -856,6 +856,23 @@ void Enemy::FUN_0042bea0(i32 mode)
     }
 }
 
+// FUNCTION: th08 0x42c180
+void Enemy::ClampPosition()
+{
+    if ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 19) & 1)
+    {
+        if ((*reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(this) + 0x2D34))[0] < *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3340))
+            (*reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(this) + 0x2D34))[0] = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3340);
+        else if ((*reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(this) + 0x2D34))[0] > *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3348))
+            (*reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(this) + 0x2D34))[0] = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3348);
+
+        if ((*reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(this) + 0x2D34))[1] < *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3344))
+            (*reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(this) + 0x2D34))[1] = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3344);
+        else if ((*reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(this) + 0x2D34))[1] > *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x334C))
+            (*reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(this) + 0x2D34))[1] = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x334C);
+    }
+}
+
 // FUNCTION: th08 0x42c290
 #pragma var_order(collisionSize)
 void Enemy::FUN_0042c290(Float3 *position, Float3 *size)

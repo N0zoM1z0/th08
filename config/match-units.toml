@@ -2893,7 +2893,7 @@ target = 0x00420120
 [[units.relocations]]
 offset = 0x193F
 type = "REL32"
-symbol = "?ClampEnemyPosition@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@@Z"
+symbol = "?ClampPosition@Enemy@th08@@QAEXXZ"
 target = 0x0042C180
 
 [[units.relocations]]
@@ -3979,8 +3979,9 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x3F8A
 type = "DIR32"
-symbol = "?g_EclGlobal00F54CEC@th08@@3HA"
-target = 0x00F54CEC
+symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
+target = 0x00F54CC0
+addend = 0x2C
 
 [[units.relocations]]
 offset = 0x3FAB
@@ -4135,7 +4136,7 @@ target = 0x018B8A68
 [[units.relocations]]
 offset = 0x4292
 type = "REL32"
-symbol = "?PlayPositioned@TargetApi@EclRunHighProposal@th08@@QAEXHH@Z"
+symbol = "?PlaySoundPositionedByIdx@SoundPlayer@th08@@QAEXW4SoundIdx@2@M@Z"
 target = 0x0045D660
 
 [[units.relocations]]
@@ -5097,7 +5098,7 @@ target = 0x00F54E90
 [[units.relocations]]
 offset = 0x5B42
 type = "REL32"
-symbol = "?SetAngleFromPosition@TargetApi@EclRunHighProposal@th08@@QAEXPAUVec3@23@M@Z"
+symbol = "?RemoveBulletsInRadius@BulletManager@th08@@QAEXPBUFloat3@2@M@Z"
 target = 0x00430D30
 
 [[units.relocations]]
@@ -5445,8 +5446,9 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x61D7
 type = "DIR32"
-symbol = "?g_EclGlobal00F54E2C@th08@@3HA"
-target = 0x00F54E2C
+symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
+target = 0x00F54CC0
+addend = 0x16C
 
 [[units.relocations]]
 offset = 0x61F8
@@ -6830,8 +6832,8 @@ target = 0x0041EA13
 
 [[units]]
 name = "enemy-clamp-position"
-object = "build/probes/EnemyManagerUpdate.obj"
-symbol = "?ClampPosition@EnemyManagerUpdateEnemy@th08@@QAEXXZ"
+object = "build/EnemyManager.obj"
+symbol = "?ClampPosition@Enemy@th08@@QAEXXZ"
 target_address = 0x0042C180
 size = 0x10E
 
@@ -6967,8 +6969,9 @@ addend = 0x30
 [[units.relocations]]
 offset = 0x209
 type = "DIR32"
-symbol = "?g_TargetInt0164D334@EclOperands@th08@@3HA"
-target = 0x0164D334
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DE2C
 
 [[units.relocations]]
 offset = 0x231
@@ -7111,32 +7114,36 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x413
 type = "DIR32"
-symbol = "?g_TargetInt004ECE20@EclOperands@th08@@3HA"
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 
 [[units.relocations]]
 offset = 0x41D
 type = "DIR32"
-symbol = "?g_TargetInt004ECE24@EclOperands@th08@@3HA"
-target = 0x004ECE24
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x4
 
 [[units.relocations]]
 offset = 0x427
 type = "DIR32"
-symbol = "?g_TargetInt004ECE28@EclOperands@th08@@3HA"
-target = 0x004ECE28
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x8
 
 [[units.relocations]]
 offset = 0x431
 type = "DIR32"
-symbol = "?g_TargetInt004ECE2C@EclOperands@th08@@3HA"
-target = 0x004ECE2C
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0xC
 
 [[units.relocations]]
 offset = 0x43C
 type = "DIR32"
-symbol = "?g_TargetFloat004ECE30@EclOperands@th08@@3MA"
-target = 0x004ECE30
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x10
 
 [[units.relocations]]
 offset = 0x441
@@ -7147,8 +7154,9 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x44C
 type = "DIR32"
-symbol = "?g_TargetFloat004ECE34@EclOperands@th08@@3MA"
-target = 0x004ECE34
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x14
 
 [[units.relocations]]
 offset = 0x451
@@ -7159,8 +7167,9 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x45C
 type = "DIR32"
-symbol = "?g_TargetFloat004ECE38@EclOperands@th08@@3MA"
-target = 0x004ECE38
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x18
 
 [[units.relocations]]
 offset = 0x461
@@ -7171,8 +7180,9 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x46C
 type = "DIR32"
-symbol = "?g_TargetFloat004ECE3C@EclOperands@th08@@3MA"
-target = 0x004ECE3C
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x1C
 
 [[units.relocations]]
 offset = 0x471
@@ -7367,13 +7377,13 @@ addend = 0x2B4
 [[units.relocations]]
 offset = 0x6C9
 type = "REL32"
-symbol = "??GVector3@EclOperands@th08@@QBE?AU012@ABU012@@Z"
+symbol = "??GFloat3@th08@@QBE?AU01@ABU01@@Z"
 target = 0x004090D0
 
 [[units.relocations]]
 offset = 0x6D1
 type = "REL32"
-symbol = "?Length@Vector3@EclOperands@th08@@QBEMXZ"
+symbol = "?D3DXVec3Length@@YIMPBUD3DXVECTOR3@@@Z"
 target = 0x0040B4C0
 
 [[units.relocations]]
@@ -7415,7 +7425,7 @@ target = 0x004EA670
 [[units.relocations]]
 offset = 0x6FD
 type = "REL32"
-symbol = "?GetDemoFlag@TargetSpellcardOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?GetPendingTimeOrbs@Spellcard@th08@@QAEHXZ"
 target = 0x00453CC0
 
 [[units.relocations]]
@@ -8126,32 +8136,36 @@ addend = 0x30
 [[units.relocations]]
 offset = 0x1D1
 type = "DIR32"
-symbol = "?g_TargetInt0164D334@EclOperands@th08@@3HA"
-target = 0x0164D334
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DE2C
 
 [[units.relocations]]
 offset = 0x200
 type = "DIR32"
-symbol = "?g_TargetInt004ECE20@EclOperands@th08@@3HA"
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 
 [[units.relocations]]
 offset = 0x207
 type = "DIR32"
-symbol = "?g_TargetInt004ECE24@EclOperands@th08@@3HA"
-target = 0x004ECE24
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x4
 
 [[units.relocations]]
 offset = 0x20E
 type = "DIR32"
-symbol = "?g_TargetInt004ECE28@EclOperands@th08@@3HA"
-target = 0x004ECE28
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x8
 
 [[units.relocations]]
 offset = 0x215
 type = "DIR32"
-symbol = "?g_TargetInt004ECE2C@EclOperands@th08@@3HA"
-target = 0x004ECE2C
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0xC
 
 [[units.relocations]]
 offset = 0x224
@@ -8459,8 +8473,9 @@ addend = 0x30
 [[units.relocations]]
 offset = 0x22E
 type = "DIR32"
-symbol = "?g_TargetInt0164D334@EclOperands@th08@@3HA"
-target = 0x0164D334
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DE2C
 
 [[units.relocations]]
 offset = 0x256
@@ -8471,50 +8486,57 @@ target = 0x0164D0B1
 [[units.relocations]]
 offset = 0x283
 type = "DIR32"
-symbol = "?g_TargetInt004ECE20@EclOperands@th08@@3HA"
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 
 [[units.relocations]]
 offset = 0x28E
 type = "DIR32"
-symbol = "?g_TargetInt004ECE24@EclOperands@th08@@3HA"
-target = 0x004ECE24
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x4
 
 [[units.relocations]]
 offset = 0x299
 type = "DIR32"
-symbol = "?g_TargetInt004ECE28@EclOperands@th08@@3HA"
-target = 0x004ECE28
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x8
 
 [[units.relocations]]
 offset = 0x2A4
 type = "DIR32"
-symbol = "?g_TargetInt004ECE2C@EclOperands@th08@@3HA"
-target = 0x004ECE2C
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0xC
 
 [[units.relocations]]
 offset = 0x2AF
 type = "DIR32"
-symbol = "?g_TargetFloat004ECE30@EclOperands@th08@@3MA"
-target = 0x004ECE30
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x10
 
 [[units.relocations]]
 offset = 0x2BA
 type = "DIR32"
-symbol = "?g_TargetFloat004ECE34@EclOperands@th08@@3MA"
-target = 0x004ECE34
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x14
 
 [[units.relocations]]
 offset = 0x2C5
 type = "DIR32"
-symbol = "?g_TargetFloat004ECE38@EclOperands@th08@@3MA"
-target = 0x004ECE38
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x18
 
 [[units.relocations]]
 offset = 0x2D0
 type = "DIR32"
-symbol = "?g_TargetFloat004ECE3C@EclOperands@th08@@3MA"
-target = 0x004ECE3C
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x1C
 
 [[units.relocations]]
 offset = 0x44D
@@ -8583,13 +8605,13 @@ addend = 0x2B4
 [[units.relocations]]
 offset = 0x63F
 type = "REL32"
-symbol = "??GTargetVector3@EclOperands@th08@@QBE?AU012@ABU012@@Z"
+symbol = "??GFloat3@th08@@QBE?AU01@ABU01@@Z"
 target = 0x004090D0
 
 [[units.relocations]]
 offset = 0x647
 type = "REL32"
-symbol = "?Length@TargetVector3@EclOperands@th08@@QBEMXZ"
+symbol = "?D3DXVec3Length@@YIMPBUD3DXVECTOR3@@@Z"
 target = 0x0040B4C0
 
 [[units.relocations]]
@@ -9290,26 +9312,30 @@ addend = 0x2B4
 [[units.relocations]]
 offset = 0x206
 type = "DIR32"
-symbol = "?g_TargetFloat004ECE30@EclOperands@th08@@3MA"
-target = 0x004ECE30
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x10
 
 [[units.relocations]]
 offset = 0x210
 type = "DIR32"
-symbol = "?g_TargetFloat004ECE34@EclOperands@th08@@3MA"
-target = 0x004ECE34
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x14
 
 [[units.relocations]]
 offset = 0x21A
 type = "DIR32"
-symbol = "?g_TargetFloat004ECE38@EclOperands@th08@@3MA"
-target = 0x004ECE38
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x18
 
 [[units.relocations]]
 offset = 0x224
 type = "DIR32"
-symbol = "?g_TargetFloat004ECE3C@EclOperands@th08@@3MA"
-target = 0x004ECE3C
+symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+target = 0x004ECE20
+addend = 0x1C
 
 [[units.relocations]]
 offset = 0x2B8

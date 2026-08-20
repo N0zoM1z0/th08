@@ -39,15 +39,6 @@ struct TargetVector3
 
 // Target globals not yet represented by an owner-lane type are deliberately
 // named by address.  The addresses below are direct operands in 0x00420120.
-extern i32 g_TargetInt0164D334;
-extern i32 g_TargetInt004ECE20;
-extern i32 g_TargetInt004ECE24;
-extern i32 g_TargetInt004ECE28;
-extern i32 g_TargetInt004ECE2C;
-extern f32 g_TargetFloat004ECE30;
-extern f32 g_TargetFloat004ECE34;
-extern f32 g_TargetFloat004ECE38;
-extern f32 g_TargetFloat004ECE3C;
 
 // Observed: TH08 1.00d 0x00420120 is a thiscall float resolver.  It converts
 // the incoming float to i32, dispatches all IDs 0x2710..0x2773, returns in
@@ -87,20 +78,20 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
     case 0x2733: return g_Rng.GetRandomF32Signed();
     case 0x2762: return g_Rng.GetRandomF32InRange(6.2831855f) - 3.1415927f;
     case 0x2738: return (f32)g_GameManager.difficulty;
-    case 0x2739: return (f32)g_TargetInt0164D334;
+    case 0x2739: return (f32)g_GameManager.rank;
     case 0x2741: return (f32)ENEMY_INT(this, 0x2E1C);
     case 0x2743: return (f32)ENEMY_INT(this, 0x2DFC);
     case 0x2744: return (f32)::th08::g_TargetByte0164D0B1;
     case 0x276C: return (f32)ENEMY_INT(this, 0x3304);
     case 0x276D: return (f32)ENEMY_INT(this, 0x2E08);
-    case 0x274D: return (f32)g_TargetInt004ECE20;
-    case 0x274E: return (f32)g_TargetInt004ECE24;
-    case 0x274F: return (f32)g_TargetInt004ECE28;
-    case 0x2750: return (f32)g_TargetInt004ECE2C;
-    case 0x2751: return g_TargetFloat004ECE30;
-    case 0x2752: return g_TargetFloat004ECE34;
-    case 0x2753: return g_TargetFloat004ECE38;
-    case 0x2754: return g_TargetFloat004ECE3C;
+    case 0x274D: return (f32)EclRunLowProposal::g_EclCallParameters.ints[0];
+    case 0x274E: return (f32)EclRunLowProposal::g_EclCallParameters.ints[1];
+    case 0x274F: return (f32)EclRunLowProposal::g_EclCallParameters.ints[2];
+    case 0x2750: return (f32)EclRunLowProposal::g_EclCallParameters.ints[3];
+    case 0x2751: return EclRunLowProposal::g_EclCallParameters.floats[0];
+    case 0x2752: return EclRunLowProposal::g_EclCallParameters.floats[1];
+    case 0x2753: return EclRunLowProposal::g_EclCallParameters.floats[2];
+    case 0x2754: return EclRunLowProposal::g_EclCallParameters.floats[3];
 
     case 0x2720: return CONTEXT_FLOAT(this, 0x38);
     case 0x2721: return CONTEXT_FLOAT(this, 0x3C);
@@ -164,8 +155,8 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
 
     case 0x2742:
     {
-        TargetVector3 delta = (*reinterpret_cast<TargetVector3 *>(&g_Player.position)) - ENEMY_VECTOR(this, 0x2D88);
-        return delta.Length();
+        Float3 delta = g_Player.position - *reinterpret_cast<Float3 *>(&ENEMY_VECTOR(this, 0x2D88));
+        return D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&delta));
     }
     case 0x2771: return (f32)g_Player.IsYoukai();
     case 0x2773:
@@ -217,10 +208,10 @@ f32 *__fastcall ResolveFloatLValue(EnemyOverlay *enemy, f32 *operand, u16 flags,
     case 0x273F: return &(*reinterpret_cast<TargetVector3 *>(&g_Player.position)).z;
     case 0x276E: return &CONTEXT_FLOAT(enemy, 0x68);
     case 0x276F: return &CONTEXT_FLOAT(enemy, 0x6C);
-    case 0x2751: return &g_TargetFloat004ECE30;
-    case 0x2752: return &g_TargetFloat004ECE34;
-    case 0x2753: return &g_TargetFloat004ECE38;
-    case 0x2754: return &g_TargetFloat004ECE3C;
+    case 0x2751: return &EclRunLowProposal::g_EclCallParameters.floats[0];
+    case 0x2752: return &EclRunLowProposal::g_EclCallParameters.floats[1];
+    case 0x2753: return &EclRunLowProposal::g_EclCallParameters.floats[2];
+    case 0x2754: return &EclRunLowProposal::g_EclCallParameters.floats[3];
 
     case 0x275A: return &ENEMY_FLOAT(enemy, 0x2DD0);
     case 0x275B: return &ENEMY_FLOAT(enemy, 0x2DD4);

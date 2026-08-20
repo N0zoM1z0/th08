@@ -43,6 +43,12 @@ f32 *__fastcall ResolveFloatLValue(EnemyOverlay *enemy, f32 *operand, u16 flags,
 
 namespace EclRunLowProposal
 {
+struct EclCallParameterCopy
+{
+    i32 ints[4];
+    f32 floats[4];
+};
+extern EclCallParameterCopy g_EclCallParameters;
 extern EclOperands::EnemyOverlay *g_EclEnemyTableF54CC0[];
 } // namespace EclRunLowProposal
 } // namespace th08

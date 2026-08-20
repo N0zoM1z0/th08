@@ -96,6 +96,7 @@ struct Enemy
     void FUN_0042bea0(i32 mode);
     i32 FUN_0042b490();
     i32 FUN_0042b930();
+    void ClampPosition();
     void FUN_0042c290(Float3 *position, Float3 *size);
     void FUN_0042c420();
     void FUN_0042deb0();

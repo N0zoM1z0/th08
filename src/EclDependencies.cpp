@@ -473,12 +473,7 @@ void __fastcall SetPrimaryAnmScripts(
 }
 
 
-struct EclCallParameterCopy
-{
-    u32 words[8];
-};
 C_ASSERT(sizeof(EclCallParameterCopy) == 0x20);
-extern EclCallParameterCopy g_EclCallParameters;
 
 // FUNCTION: th08 0x421bd0
 void __fastcall CallSubOnEnemy(
