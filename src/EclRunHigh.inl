@@ -637,7 +637,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
                     TH08_ECL_CONTEXT_ENEMY(ctx));
             if (TH08_ECL_READ_I(ctx, 0) == 0)
             {
-                g_Gui.FUN_00422c20(1);
+                g_Gui.SetBossPresent(true);
                 g_Gui.FUN_004230c0(1.0f);
             }
             TH08_ECL_AT(ctx, u32, 0x3324) |= 2;
@@ -648,7 +648,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         else
         {
             if (TH08_ECL_AT(ctx, u8, 0x3313) < 4)
-                g_Gui.FUN_00422c20(0);
+                g_Gui.SetBossPresent(false);
             EclRunLowProposal::g_EclEnemyTableF54CC0[
                 TH08_ECL_AT(ctx, u8, 0x3313)] = 0;
             TH08_ECL_AT(ctx, u32, 0x3324) &= ~2U;
@@ -724,16 +724,16 @@ enter_subroutine:
             TH08_ECL_AT(ctx, i32, 0x2E00) = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_AT(ctx, u8, 0x3313) == 0 && (((TH08_ECL_AT(ctx, u32, 0x3324) >> 1) & 1) != 0))
             for (i32 i = 0; i < 8; ++i)
-                reinterpret_cast<TargetApi *>(&g_Gui)->SetBossGaugeSlot(i, 0.0f, 0.0f);
+                g_Gui.SetBossGaugeSlot(i, 0.0f, 0.0f);
         break;
     case 158:
     {
         i32 index = TH08_ECL_READ_I(ctx, 0);
-        reinterpret_cast<TargetApi *>(&g_Gui)->SetBossGaugeSlot(
+        g_Gui.SetBossGaugeSlot(
             index,
             (f32)TH08_ECL_READ_I(ctx, 1) / (f32)TH08_ECL_AT(ctx, i32, 0x2E00),
             (f32)TH08_ECL_READ_I(ctx, 2) / (f32)TH08_ECL_AT(ctx, i32, 0x2E00));
-        reinterpret_cast<TargetApi *>(&g_Gui)->SetBossGaugeValue(
+        g_Gui.SetBossGaugeValue(
             index, TH08_ECL_READ_I(ctx, 3));
         break;
     }
@@ -870,7 +870,7 @@ enter_subroutine:
             *(void **)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x10) = 0;
         break;
     case 146:
-        reinterpret_cast<TargetZunTimerOverlay *>(TH08_ECL_CURRENT_CONTEXT(ctx) + 4)->AddAssign0041FDF0(TH08_ECL_READ_I(ctx, 0));
+        reinterpret_cast<ZunTimer *>(TH08_ECL_CURRENT_CONTEXT(ctx) + 4)->operator+=(TH08_ECL_READ_I(ctx, 0));
         break;
     case 141: g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)), static_cast<ItemType>(TH08_ECL_READ_I(ctx, 0)), 0); break;
     case 147: g_EclGlobal004EA290 = TH08_ECL_READ_I(ctx, 0); break;
@@ -1005,9 +1005,9 @@ enter_subroutine:
     case 162: g_BulletManager.RemoveAllBullets(4); break;
     case 164:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
-        reinterpret_cast<TargetApi *>(&g_Spellcard)->Call0041F0B0(lhsInt);
+        g_Spellcard.FUN_0041f0b0(lhsInt);
         if (lhsInt == 0)
-            reinterpret_cast<TargetApi *>(&g_Spellcard)->Call0041F040(((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
+            g_Spellcard.SetStoredVector(((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
             ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)))
             : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))), ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2))), ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3))));
         break;
@@ -1103,7 +1103,7 @@ enter_subroutine:
 #if !defined(TH08_ECL_RUN_HIGH_BODY)
     case 178: TH08_ECL_CONTEXT_API(ctx)->Call004224A0(TH08_ECL_CONTEXT_ENEMY(ctx)); break;
 #endif
-    case 179: g_Gui.FUN_00439007(); break;
+    case 179: g_Gui.StartStageBackgroundSequence(); break;
     case 180: g_Gui.FUN_004390d6(); break;
     case 181:
         if (static_cast<i8>(g_GameManager.GetClockTime()) < 12)
@@ -1119,7 +1119,7 @@ enter_subroutine:
     case 182:
         reinterpret_cast<EclRunLowProposal::Op79Flags2 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3328)->op182Bit8 = TH08_ECL_READ_I(ctx, 0);
         break;
-    case 184: reinterpret_cast<TargetApi *>(&g_Spellcard)->Call0041F0E0(TH08_ECL_READ_I(ctx, 0)); break;
+    case 184: g_Spellcard.FUN_0041f0e0(TH08_ECL_READ_I(ctx, 0)); break;
 #if !defined(TH08_ECL_RUN_SHARED_SWITCH)
     }
 

@@ -2057,14 +2057,16 @@ target = 0x0040D3F0
 [[units.relocations]]
 offset = 0x11E
 type = "DIR32"
-symbol = "?g_TargetDifficulty0160F53C@th08@@3EA"
-target = 0x0160F53C
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x34
 
 [[units.relocations]]
 offset = 0x132
 type = "DIR32"
-symbol = "?g_TargetDifficulty0160F53C@th08@@3EA"
-target = 0x0160F53C
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x34
 
 [[units.relocations]]
 offset = 0x176
@@ -4013,7 +4015,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x4051
 type = "REL32"
-symbol = "?FUN_00422c20@Gui@th08@@QAEXH@Z"
+symbol = "?SetBossPresent@Gui@th08@@QAE_N_N@Z"
 target = 0x00422C20
 
 [[units.relocations]]
@@ -4055,7 +4057,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x40F8
 type = "REL32"
-symbol = "?FUN_00422c20@Gui@th08@@QAEXH@Z"
+symbol = "?SetBossPresent@Gui@th08@@QAE_N_N@Z"
 target = 0x00422C20
 
 [[units.relocations]]
@@ -4199,7 +4201,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x4534
 type = "REL32"
-symbol = "?SetBossGaugeSlot@TargetApi@EclRunHighProposal@th08@@QAEXHMM@Z"
+symbol = "?SetBossGaugeSlot@Gui@th08@@QAEXHMM@Z"
 target = 0x004230E0
 
 [[units.relocations]]
@@ -4229,7 +4231,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x4608
 type = "REL32"
-symbol = "?SetBossGaugeSlot@TargetApi@EclRunHighProposal@th08@@QAEXHMM@Z"
+symbol = "?SetBossGaugeSlot@Gui@th08@@QAEXHMM@Z"
 target = 0x004230E0
 
 [[units.relocations]]
@@ -4247,7 +4249,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x464D
 type = "REL32"
-symbol = "?SetBossGaugeValue@TargetApi@EclRunHighProposal@th08@@QAEXHH@Z"
+symbol = "?SetBossGaugeValue@Gui@th08@@QAEXHH@Z"
 target = 0x00423110
 
 [[units.relocations]]
@@ -4745,7 +4747,7 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x513C
 type = "REL32"
-symbol = "?AddAssign0041FDF0@TargetZunTimerOverlay@EclRunHighProposal@th08@@QAEIH@Z"
+symbol = "??YZunTimer@th08@@QAEXH@Z"
 target = 0x0041FDF0
 
 [[units.relocations]]
@@ -5117,7 +5119,7 @@ target = 0x004EA670
 [[units.relocations]]
 offset = 0x5B9F
 type = "REL32"
-symbol = "?Call0041F0B0@TargetApi@EclRunHighProposal@th08@@QAEXH@Z"
+symbol = "?FUN_0041f0b0@Spellcard@th08@@QAEXH@Z"
 target = 0x0041F0B0
 
 [[units.relocations]]
@@ -5147,7 +5149,7 @@ target = 0x004EA670
 [[units.relocations]]
 offset = 0x5C5B
 type = "REL32"
-symbol = "?Call0041F040@TargetApi@EclRunHighProposal@th08@@QAEXMMM@Z"
+symbol = "?SetStoredVector@Spellcard@th08@@QAEXMMM@Z"
 target = 0x0041F040
 
 [[units.relocations]]
@@ -5453,7 +5455,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x622A
 type = "REL32"
-symbol = "?FUN_00439007@Gui@th08@@QAEXXZ"
+symbol = "?StartStageBackgroundSequence@Gui@th08@@QAEHXZ"
 target = 0x00439007
 
 [[units.relocations]]
@@ -5561,7 +5563,7 @@ target = 0x004EA670
 [[units.relocations]]
 offset = 0x6330
 type = "REL32"
-symbol = "?Call0041F0E0@TargetApi@EclRunHighProposal@th08@@QAEXH@Z"
+symbol = "?FUN_0041f0e0@Spellcard@th08@@QAEXH@Z"
 target = 0x0041F0E0
 
 [[units.relocations]]

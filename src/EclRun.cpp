@@ -20,8 +20,6 @@ namespace th08
 // The dispatcher is now source-complete, while target-address service binding
 // remains intentionally separate: subsystem owners can replace provisional
 // adapters without changing the recovered opcode/control-flow core.
-extern u8 g_TargetDifficulty0160F53C;
-
 #undef TH08_ECL_CONTEXT_ENEMY
 #undef TH08_ECL_CONTEXT_INSTRUCTION
 #undef TH08_ECL_CONTEXT_API
@@ -78,9 +76,9 @@ low_redispatch_instruction:
                 reinterpret_cast<u8 *>(enemy) + 0x2CA0))->time == instruction->time)
         {
             if ((instruction->difficultyMask &
-                 (*reinterpret_cast<u32 *>(&g_TargetDifficulty0160F53C) |
+                 (static_cast<u32>(g_GameManager.difficultyMask) |
                   *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(enemy) + 0x3330))) !=
-                (*reinterpret_cast<u32 *>(&g_TargetDifficulty0160F53C) |
+                (static_cast<u32>(g_GameManager.difficultyMask) |
                  *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(enemy) + 0x3330)))
             {
                 goto low_advance_instruction;
