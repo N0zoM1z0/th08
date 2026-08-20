@@ -156,8 +156,16 @@ The 2026-08-20 baseline after fixing the first observable link contracts is:
   rebuild imports 172: there are no target-only imports and 17 rebuild-only
   `KERNEL32` symbols. Nine are referenced by D3DX `cd3dxfile.obj` /
   `cd3dxresource.obj`; the remaining set is referenced by six linked VC7 CRT
-  members recorded in `KNOWLEDGE_BASE.md`;
-- 949 accepted address anchors are found in the linker map and 66 accepted units
+  members recorded in `KNOWLEDGE_BASE.md`. The configured prerelease
+  `d3dx8tex.obj` is now directly attested by exact auxless-COMDAT units for
+  `D3DXLoadSurfaceFromFileInMemory @ 0x0047AAF3` (0xB8, four REL32 relocations)
+  and `D3DXCreateTextureFromFileInMemoryEx @ 0x0047B72E` (0x40, one REL32).
+  Both have zero non-relocation differences. An isolated `mssdk/lib/d3dx8.lib`
+  link kept all 17 extra imports, reduced located anchors to 930 with 86 missing,
+  and shrank `.text` raw size to `0x96C00`, so do not replace the pinned
+  prerelease archive. The live D3DX import issue is member retention/splitting
+  under `/OPT:NOREF`, not a production source API mismatch;
+- 952 accepted address anchors are found in the linker map and 66 accepted units
   lack a unique map candidate. Anchor-derived current-object order differs from
   target order, and large drift spans occur within production objects.
 

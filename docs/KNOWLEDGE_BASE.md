@@ -96,9 +96,25 @@ referenced by linked VC7 CRT `a_loc.obj`, `getqloc.obj`, `w_loc.obj`,
 `winsig.obj`, `mlock.obj`, and `tidtable.obj`. `wopen.obj` is another archive
 candidate for `CreateFileW`, but the current map does not place that member in
 the link. Reproduce this distinction with
-`python3 scripts/analysis/report-import-provenance.py`. It identifies later
-focused link/provenance work; it does not prove that those whole members are
-absent from the target or authorize deleting their imports.
+`python3 scripts/analysis/report-import-provenance.py`.
+
+The D3DX side is now version-bounded rather than speculative. In the pinned
+Visual Studio .NET 2002 prerelease `D3DX8.LIB`, `obj/i386/d3dx8tex.obj` contains
+auxless code COMDATs whose complete section extents exactly equal the target:
+`D3DXLoadSurfaceFromFileInMemory @ 0x0047AAF3` is 0xB8 bytes with four REL32
+relocations and `D3DXCreateTextureFromFileInMemoryEx @ 0x0047B72E` is 0x40
+bytes with one REL32 relocation. Replaying those relocations leaves zero byte
+differences, so both are accepted library units. The same archive member also
+contains file/resource wrapper functions whose undefined references pull
+`cd3dxfile.obj` and `cd3dxresource.obj` into a `/OPT:NOREF` link. A controlled
+probe with `scripts/prefix/mssdk/lib/d3dx8.lib` did not remove any of the 17
+extra imports, shrank `.text` raw size from `0xAA400` to `0x96C00`, reduced
+located anchors to 930, increased missing anchors to 86, and uses a 0x411-byte
+`D3DXCreateTextureFromFileInMemoryEx` section instead of the target 0x40-byte
+wrapper. Reject that archive substitution. The remaining D3DX import mismatch
+is therefore an archive-member retention/splitting question under the required
+`/OPT:NOREF`, not evidence for changing the production AnmManager API calls or
+for enabling global dead stripping.
 
 Anchor drift must be interpreted structurally. If the first and last accepted
 anchors from one current object have materially different drift, code outside
