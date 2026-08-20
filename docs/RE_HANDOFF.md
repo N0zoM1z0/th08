@@ -44,10 +44,15 @@ restart broad brute-force matrices without a new target-backed hypothesis.
 
 - `ReplayManager::OnUpdateHighPrioDemo2 @ 0x004526C0`, 361 bytes: the natural
   source object is one byte longer and the residual is a register-allocation
-  phase difference. Its adjacent callback family is exact.
+  phase difference. Its adjacent callback family is exact.  The ordinary
+  pointer/cast/increment/local-order variants are exhausted and recorded in
+  `BUILD_MATCHING.md`; resume only from a new allocator/TU hypothesis.
 - `TitleScreen::RegisterChain @ 0x0047146D`, 281 bytes: target and object have
   the same extent; five stack-displacement bytes differ because the target
-  frame is `0x40` while the current natural object frame is `0x5C`.
+  frame is `0x40` while the current natural object frame is `0x5C`.  The
+  constructor itself remains exact with frame `0x4C`; declaration order, PCH,
+  inline-depth, default-init, factory, optimizer-preset, and exception-spec
+  probes did not reproduce the target caller contract.
 
 The source for both is present and behaviorally reconstructed. Exact coverage
 will increase only when the canonical comparator returns `exact` for a natural,

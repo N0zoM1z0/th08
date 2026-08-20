@@ -637,6 +637,18 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 - `ReplayManager::AddedCallbackDemo @ 0x452D60` preserves an adjacent-generation replay leftover rather than simplified arithmetic: the replay shot byte is assigned through `/ 1`, `% 1`, and then overwritten by the original byte. Under VC7 `/Od`, signed `% 1` deliberately emits the target `and 0x80000000 / dec / or -1 / inc` sequence. Algebraically removing the first two stores destroys target-visible source history. TH06/TH07 can identify this family, but TH08 bytes remain the acceptance authority.
 - A caller can prove a wider ABI than the callee body alone. `GameManager::SetClockTime @ 0x453C60` stores only the low byte, so its 25-byte body is identical for a narrow or `i32` parameter. The exact replay caller at `0x452FDB` first sign-extends the stored `i8` clock byte with `movsx` and pushes the resulting `int`; declaring `SetClockTime(i32)` makes both caller and callee exact. Prefer caller+callee evidence over inferring parameter width from the callee's final store.
 - The extended replay stream at `ReplayManager +0x78` is independently constrained as a six-byte record: `AddedCallback` aliases it to the input stream, writes words at `+0/+2/+4`, and playback advances it by six bytes. Keep this layout typed as a three-word record even when a remaining callback has a register-allocation mismatch. A one-byte difference caused solely by `and r32,imm32` versus accumulator-form `and eax,imm32` is not permission to add padding or assembly; preserve the semantic reconstruction and continue compiler-shape inversion.
+- `ReplayManager::OnUpdateHighPrioDemo2 @ 0x004526C0` is the bounded
+  counterexample to treating a one-byte extent miss as a boundary error.  The
+  target is 0x169 bytes and uses the register phase `EAX/ECX/EDX` after the
+  six-byte stream advance; the natural `/Od` object is 0x16A bytes and uses
+  `EDX/EAX/ECX`.  That phase makes the target `% 8` lowering use the five-byte
+  accumulator `and eax,0x80000007`, while the object uses the six-byte generic
+  `and edx,0x80000007`.  Separate versus combined postincrement, struct versus
+  raw-word versus pointer-to-three-word-array ownership, `++` versus `+= 1`,
+  byte arithmetic, index syntax, C versus C++ casts, local type/declaration
+  placement, and `#pragma var_order(unused)` all reproduce the same 0x16A
+  object.  Do not repeat that syntax matrix; require a new source-shape or TU
+  hypothesis that explains the allocator phase before probing again.
 - `Gui::FUN_00437dc7 @ 0x437DC7` proves `GuiMsgVm +0x1568` is a one-byte state consumed by replay frame throttling. Promote the byte inside the real `GuiMsgVm` aggregate instead of hard-coding `g_Gui.impl + 0x1568`; the tiny helper is exact in the `/Os` Gui TU and gives later replay code a canonical owner.
 
 ### Gui added-callback: preserve table rank, branch-local validation, and real receiver owners
@@ -828,6 +840,17 @@ This corpus attests the natural VC7 emissions for ResultScreen/AnmManager/MidiOu
   exact 203-byte TitleScreen constructor.  Do not repeat either shared-header
   experiment or add an artificial stack pad without new target-backed source
   evidence.
+- The exact `TitleScreen::TitleScreen @ 0x00471586` frame is `0x4C` in both
+  target and object, so `RegisterChain` is not reporting a wrong aggregate
+  layout or a wrong emitted constructor body.  Further bounded probes also
+  leave the caller at `0x5C`: moving the inline definition from the class to
+  earlier in the `.cpp`, making `new TitleScreen` a default-init expression,
+  splitting declaration from assignment, limiting inline depth at the caller
+  or constructor definition, moving `TitleScreen.hpp` into the PCH, and moving
+  the `AnmVm()` body later in the same TU.  A TU-local factory remains a real
+  call even with `__forceinline`; `/O1` changes the whole function rather than
+  only its frame; nothrow/`throw()` removes the target-observed new-expression
+  EH contract.  These are eliminated hypotheses, not candidate fixes.
 - Any header/TU experiment in this lane must rebuild the PCH as well as the
   selected object.  Use `scripts/build.py --build-type=objdiffbuild --fresh
   --object-name TitleScreen.obj`; a warm selected-object build can otherwise
