@@ -240,12 +240,25 @@ def accepted_rows(path: Path) -> set[str]:
         return {row["unit"] for row in csv.DictReader(handle) if row.get("unit")}
 
 
+def map_aliases_by_address(
+    publics: dict[str, list[dict[str, object]]],
+) -> dict[int, set[tuple[str, str]]]:
+    aliases: dict[int, set[tuple[str, str]]] = {}
+    for symbol, items in publics.items():
+        for item in items:
+            aliases.setdefault(int(item["address"]), set()).add(
+                (symbol, str(item["object"]))
+            )
+    return aliases
+
+
 def address_anchors(
     map_path: Path | None, include_details: bool = False
 ) -> dict[str, object] | None:
     if map_path is None or not map_path.is_file():
         return None
     publics = parse_map_publics(map_path)
+    aliases_by_address = map_aliases_by_address(publics)
     anchors: list[dict[str, object]] = []
     missing: list[dict[str, str]] = []
 
@@ -270,6 +283,7 @@ def address_anchors(
             continue
         linked = int(candidates[0]["address"])
         target = int(unit["target_address"])
+        linked_aliases = aliases_by_address.get(linked, set())
         anchors.append(
             {
                 "kind": "authored",
@@ -279,6 +293,11 @@ def address_anchors(
                 "target_address": target,
                 "linked_address": linked,
                 "drift": linked - target,
+                "folded_alias": len(linked_aliases) > 1,
+                "linked_alias_count": len(linked_aliases),
+                "linked_alias_object_count": len(
+                    {object_name for _, object_name in linked_aliases}
+                ),
             }
         )
 
@@ -296,6 +315,7 @@ def address_anchors(
             continue
         linked = int(candidates[0]["address"])
         target = int(unit["target_address"])
+        linked_aliases = aliases_by_address.get(linked, set())
         anchors.append(
             {
                 "kind": "library",
@@ -305,6 +325,11 @@ def address_anchors(
                 "target_address": target,
                 "linked_address": linked,
                 "drift": linked - target,
+                "folded_alias": len(linked_aliases) > 1,
+                "linked_alias_count": len(linked_aliases),
+                "linked_alias_object_count": len(
+                    {object_name for _, object_name in linked_aliases}
+                ),
             }
         )
 
@@ -313,12 +338,18 @@ def address_anchors(
         grouped.setdefault(str(anchor["object"]), []).append(anchor)
     object_summaries: list[dict[str, object]] = []
     for object_name, items in grouped.items():
-        by_target = sorted(items, key=lambda entry: int(entry["target_address"]))
+        layout_items = [item for item in items if not bool(item["folded_alias"])]
+        layout_metrics_available = bool(layout_items)
+        metric_items = layout_items or items
+        by_target = sorted(metric_items, key=lambda entry: int(entry["target_address"]))
         drifts = [int(entry["drift"]) for entry in by_target]
         object_summaries.append(
             {
                 "object": object_name,
                 "anchor_count": len(items),
+                "layout_anchor_count": len(layout_items),
+                "folded_alias_count": len(items) - len(layout_items),
+                "layout_metrics_available": layout_metrics_available,
                 "first_target_address": by_target[0]["target_address"],
                 "first_linked_address": by_target[0]["linked_address"],
                 "first_drift": by_target[0]["drift"],
@@ -330,8 +361,11 @@ def address_anchors(
             }
         )
     object_summaries.sort(key=lambda entry: int(entry["first_target_address"]))
-    linked_order = sorted(object_summaries, key=lambda entry: int(entry["first_linked_address"]))
-    target_order_names = [str(entry["object"]) for entry in object_summaries]
+    layout_summaries = [
+        entry for entry in object_summaries if bool(entry["layout_metrics_available"])
+    ]
+    linked_order = sorted(layout_summaries, key=lambda entry: int(entry["first_linked_address"]))
+    target_order_names = [str(entry["object"]) for entry in layout_summaries]
     linked_order_names = [str(entry["object"]) for entry in linked_order]
     result: dict[str, object] = {
         "map": relative_display(map_path),
@@ -489,13 +523,18 @@ def print_human(report: dict[str, object]) -> None:
         production_objects = [
             entry for entry in layout["objects"] if ":" not in str(entry["object"])
         ]
+        layout_objects = [
+            entry for entry in production_objects if bool(entry["layout_metrics_available"])
+        ]
+        folded_only_objects = len(production_objects) - len(layout_objects)
         ranked = sorted(
-            production_objects,
+            layout_objects,
             key=lambda entry: abs(int(entry["maximum_drift"]) - int(entry["minimum_drift"])),
             reverse=True,
         )
         print(
-            f"  production objects anchored={len(production_objects)}; "
+            f"  production objects anchored={len(production_objects)}, "
+            f"layout-ranked={len(layout_objects)}, folded-only={folded_only_objects}; "
             "largest intra-object drift spans:"
         )
         for entry in ranked[:12]:

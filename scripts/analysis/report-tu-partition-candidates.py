@@ -4,7 +4,9 @@
 This consumes the JSON produced by ``compare-whole-image.py`` with
 ``--include-anchor-details``. It is a read-only routing aid: inversions and
 drift jumps can identify a current source file that merged target translation
-units, but they do not prove a boundary by themselves.
+units, but they do not prove a boundary by themselves. ICF-folded aliases are
+reported separately and excluded from TU-layout metrics because a shared RVA
+does not identify the contributing object's placement.
 
 Examples:
   python3 scripts/analysis/report-tu-partition-candidates.py \
@@ -61,7 +63,9 @@ def load_anchors(path: Path) -> list[dict[str, object]]:
 
 
 def summarize_object(object_name: str, anchors: list[dict[str, object]]) -> dict[str, object]:
-    linked = sorted(anchors, key=lambda item: int(item["linked_address"]))
+    layout_anchors = [item for item in anchors if not bool(item.get("folded_alias", False))]
+    layout_metrics_available = bool(layout_anchors)
+    linked = sorted(layout_anchors, key=lambda item: int(item["linked_address"]))
     targets = [int(item["target_address"]) for item in linked]
     drifts = [int(item["drift"]) for item in linked]
     inversions = sum(
@@ -73,18 +77,25 @@ def summarize_object(object_name: str, anchors: list[dict[str, object]]) -> dict
     drift_jumps = [abs(drifts[index] - drifts[index - 1]) for index in range(1, len(drifts))]
     return {
         "object": object_name,
-        "anchor_count": len(linked),
+        "anchor_count": len(anchors),
+        "layout_anchor_count": len(layout_anchors),
+        "folded_alias_count": len(anchors) - len(layout_anchors),
+        "layout_metrics_available": layout_metrics_available,
         "target_order_inversions": inversions,
-        "target_order_runs": descents + 1,
-        "minimum_drift": min(drifts),
-        "maximum_drift": max(drifts),
-        "drift_span": max(drifts) - min(drifts),
+        "target_order_runs": descents + 1 if layout_metrics_available else 0,
+        "minimum_drift": min(drifts) if layout_metrics_available else 0,
+        "maximum_drift": max(drifts) if layout_metrics_available else 0,
+        "drift_span": max(drifts) - min(drifts) if layout_metrics_available else 0,
         "maximum_absolute_drift_jump": max(drift_jumps, default=0),
-        "first_linked_address": int(linked[0]["linked_address"]),
-        "last_linked_address": int(linked[-1]["linked_address"]),
-        "first_target_address": min(targets),
-        "last_target_address": max(targets),
+        "first_linked_address": int(linked[0]["linked_address"]) if layout_metrics_available else 0,
+        "last_linked_address": int(linked[-1]["linked_address"]) if layout_metrics_available else 0,
+        "first_target_address": min(targets) if layout_metrics_available else 0,
+        "last_target_address": max(targets) if layout_metrics_available else 0,
         "anchors": linked,
+        "folded_aliases": sorted(
+            [item for item in anchors if bool(item.get("folded_alias", False))],
+            key=lambda item: (int(item["linked_address"]), int(item["target_address"])),
+        ),
     }
 
 
@@ -99,6 +110,7 @@ def build_report(path: Path, minimum_anchors: int) -> dict[str, object]:
     ]
     objects.sort(
         key=lambda item: (
+            not bool(item["layout_metrics_available"]),
             -int(item["target_order_inversions"]),
             -int(item["drift_span"]),
             str(item["object"]).lower(),
@@ -115,12 +127,13 @@ def build_report(path: Path, minimum_anchors: int) -> dict[str, object]:
 
 def print_summary(objects: list[dict[str, object]], limit: int) -> None:
     print(
-        f"{'object':28} {'anchors':>7} {'inversions':>10} {'runs':>5} "
-        f"{'drift span':>12} {'max drift jump':>15}"
+        f"{'object':28} {'anchors':>7} {'layout':>6} {'folded':>6} "
+        f"{'inversions':>10} {'runs':>5} {'drift span':>12} {'max drift jump':>15}"
     )
     for item in objects[:limit]:
         print(
             f"{str(item['object']):28} {int(item['anchor_count']):7d} "
+            f"{int(item['layout_anchor_count']):6d} {int(item['folded_alias_count']):6d} "
             f"{int(item['target_order_inversions']):10d} "
             f"{int(item['target_order_runs']):5d} "
             f"{int(item['drift_span']):12,d} "
@@ -129,7 +142,16 @@ def print_summary(objects: list[dict[str, object]], limit: int) -> None:
 
 
 def print_details(item: dict[str, object]) -> None:
-    print(f"\n{item['object']} linked-order anchors:")
+    if not bool(item["layout_metrics_available"]):
+        print(
+            f"\n{item['object']}: no non-folded layout anchors; "
+            f"all {item['folded_alias_count']} accepted anchors are folded aliases."
+        )
+    else:
+        print(
+            f"\n{item['object']} linked-order layout anchors "
+            f"({item['folded_alias_count']} folded aliases excluded):"
+        )
     previous_target: int | None = None
     previous_drift: int | None = None
     for anchor in item["anchors"]:
@@ -148,6 +170,13 @@ def print_details(item: dict[str, object]) -> None:
         )
         previous_target = target
         previous_drift = drift
+    if item["folded_aliases"]:
+        print("  folded aliases (not TU-layout evidence):")
+        for anchor in item["folded_aliases"]:
+            print(
+                f"    L {int(anchor['linked_address']):08X}  "
+                f"T {int(anchor['target_address']):08X}  {anchor['unit']}"
+            )
 
 
 def parse_args() -> argparse.Namespace:

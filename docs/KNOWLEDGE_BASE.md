@@ -87,8 +87,17 @@ imports. A bounded 2026-08-20 trial made the import set superficially exact but
 shrunk rebuild `.text` from `0xAA26F` to `0x72B6F` and reduced located accepted
 anchors from 931 to 719; the target `.text` is `0xB1B78`. The target therefore
 retains code that global dead stripping removes, so the normal build keeps
-`/OPT:NOREF`. This test isolated REF only; `/OPT:NOICF` remains a separate
-unproven contract and must not be changed as part of the same experiment.
+`/OPT:NOREF`.
+
+ICF is independently target-proven and must remain enabled. Target constructor-
+iterator sites in Background, ECL, Enemy, Gui, ScreenEffect, and AnmManager all
+load `0x0040B580` for layout-identical vertex element constructors that the
+current COFF objects expose under four different decorated symbols
+(`BackgroundStageVertex`, `VertexTex0Xyzrhw`, `VertexTex1DiffuseXyzrhw`, and
+`VertexDiffuseXyzrhw`). VC7 `/OPT:ICF` reproduces that cross-symbol shared RVA;
+`/OPT:NOICF` leaves four separate bodies. The target also contains the already
+reviewed `CSoundManager` inline-constructor fold at `0x004716E0`. Keep
+`/OPT:NOREF` and `/OPT:ICF` as separate, evidence-backed link contracts.
 
 The 17 rebuild-only imports have bounded archive provenance. Nine are referenced
 by linked D3DX `cd3dxfile.obj`/`cd3dxresource.obj`; the remaining set is

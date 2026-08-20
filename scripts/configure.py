@@ -48,9 +48,10 @@ def configure(build_type):
             "th08_link_flags",
             # Whole-image evidence requires target-retained unreferenced
             # COMDATs: /OPT:REF drops over 200 accepted map anchors and makes
-            # .text far too small.  Keep REF and ICF disabled independently of
-            # the target-proven no-debug-directory link contract below.
-            "/subsystem:windows /machine:X86 /filealign:512 /incremental:no /opt:noref /opt:noicf /map /mapinfo:exports /mapinfo:lines",
+            # .text far too small.  Target constructor-iterator references also
+            # prove identical COMDAT folding: four distinct vertex constructors
+            # converge on 0x0040B580, so keep REF disabled but enable ICF.
+            "/subsystem:windows /machine:X86 /filealign:512 /incremental:no /opt:noref /opt:icf /map /mapinfo:exports /mapinfo:lines",
         )
 
         writer.variable("msvc_deps_prefix", "Note: including file:")

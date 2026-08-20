@@ -138,14 +138,15 @@ python3 scripts/compare-whole-image.py --json \
   > build/whole-image-report.json
 ```
 
-The 2026-08-20 baseline after fixing the first observable link contracts is:
+The 2026-08-20 baseline after restoring the target-proven ICF link contract is:
 
-- file size: target **840,704**, rebuild **823,296** bytes;
-- entry point: target `0x004A619E`, rebuild `0x0049A42B`;
+- file size: target **840,704**, rebuild **817,152** bytes, so the rebuild is
+  **23,552 bytes (`0x5C00`) smaller**;
+- entry point: target `0x004A619E`, rebuild `0x00498EAB`;
 - `.text` virtual/raw: target `0xB1B78 / 0xB1C00`, rebuild
-  `0xAA26F / 0xAA400`;
+  `0xA8C4F / 0xA8E00`; the raw-code deficit is `0x8E00`;
 - `.rdata` virtual/raw: target `0x11284 / 0x11400`, rebuild
-  `0x15164 / 0x15200`;
+  `0x14FDC / 0x15000`;
 - `.data1` raw bytes and extent are exact; `.data` and the rest of the image are
   not exact;
 - `.rsrc` virtual/raw extents are both `0xD60 / 0xE00`, and its two paths and
@@ -166,8 +167,16 @@ The 2026-08-20 baseline after fixing the first observable link contracts is:
   prerelease archive. The live D3DX import issue is member retention/splitting
   under `/OPT:NOREF`, not a production source API mismatch;
 - 952 accepted address anchors are found in the linker map and 66 accepted units
-  lack a unique map candidate. Anchor-derived current-object order differs from
-  target order, and large drift spans occur within production objects.
+  lack a unique map candidate. Twelve located anchors are ICF-folded aliases;
+  they remain exact evidence but are excluded from TU-layout ranking because a
+  shared linked RVA does not identify the contributing object's placement.
+  Thirty-five production objects have accepted anchors, 34 retain at least one
+  non-folded layout anchor, and the only folded-only production object is
+  `utils.obj`. Anchor-derived current-object order still differs from target.
+  The largest genuine intra-object drift is now `BulletManager.obj` at
+  **104,240 bytes**, followed by `EnemyManager.obj` at **89,792 bytes**;
+  `AnmManager.obj` falls from the former 359,792-byte apparent span to only
+  **160 bytes** once its folded vertex-constructor alias is excluded.
 
 The first bounded target translation-unit/object-partition recovery is now
 complete. The old `AsciiManager.obj` placed seven exact functions totaling
@@ -587,20 +596,21 @@ inversions. `AsciiManager.obj` improved from **63 anchors / 86 inversions / 6
 runs / 9,600 span** to **60 / 0 / 1 / 736**; `AsciiManagerGauge.obj` is **5 / 0 /
 1 / 32**.
 
-The production link contains **36 object files**. A `--min-anchors 1` TU report
-measures 35 of them, and every measured object now has **zero target-order
-inversions and exactly one run**. The sole unranked object, `EclGlobals.obj`, is
-a data-only TU containing global storage and no function definitions, so there
-is no function-layout order to measure there. This closes the production
-TU/function-layout milestone across all 36 production `.obj` files. The final
-cold authored replay is **1,105 / 1,105 exact**, `config/claims.csv` remains
-header-only, and the final tracking/progress/CI/doc/whitespace gates pass. Do
-not infer whole-image byte identity from this milestone: section drift,
-imports/resources, and non-layout reconstruction work remain separate evidence
-classes. For future layout changes, preserve the same acceptance rule:
-target-neighborhood evidence, focused donor/recipient/caller replay, a cold
-normal linked-order measurement, and a cold aggregate exact replay before
-committing.
+The production link contains **36 object files**. Under target-proven
+`/OPT:ICF`, 35 have accepted map anchors and 34 retain non-folded TU-layout
+anchors. Every layout-ranked object still has **zero target-order inversions and
+exactly one run**. `utils.obj` has two accepted anchors but both are folded
+aliases, so it is explicitly unrankable for TU placement; `EclGlobals.obj` is a
+data-only TU with no function anchors. The fold-aware metric preserves the
+completed production function-order milestone without treating linker-selected
+aliases as source-order resets. The final cold authored replay remains **1,105 /
+1,105 exact**, `config/claims.csv` remains header-only, and the final
+tracking/progress/CI/doc/whitespace gates pass. Do not infer whole-image byte
+identity from this milestone: section drift, imports/resources, and non-layout
+reconstruction work remain separate evidence classes. For future layout
+changes, preserve the same acceptance rule: target-neighborhood evidence,
+focused donor/recipient/caller replay, a cold normal linked-order measurement,
+and a cold aggregate exact replay before committing.
 Large intra-object drift means today's source combines or orders target TUs
 differently, so permuting the existing object list alone cannot solve it. A
 run reset is a routing clue, not automatically a TU boundary: the Player pass
@@ -609,7 +619,11 @@ restoration inside the retained TU. The 17
 extra imports already have bounded contributing archive members; do not hide
 them with `/OPT:REF`. A trial of that flag made the import set exact while
 shrinking `.text` to `0x72B6F` and losing 212 located accepted anchors, so
-`/OPT:NOREF` remains required by stronger whole-image evidence. Return to
+`/OPT:NOREF` remains required by stronger whole-image evidence. ICF is a
+separate target-proven contract: constructor-iterator sites across multiple
+subsystems load the same `0x0040B580` body for four differently decorated
+vertex constructors, and the linked image also contains the reviewed folded
+sound-manager constructor at `0x004716E0`. Keep `/OPT:ICF` enabled. Return to
 CRT/D3DX exact recovery only if a subsequent diff identifies a specific member
 operation. Do not copy the target icon payload and do not claim whole-image
 exactness from successful linking or same-size sections.
