@@ -149,11 +149,6 @@ i32 GameManager::ScaleIntBasedOnRank(i32 upper, i32 lower)
 {
     return this->rank * (lower - upper) / 32 + upper;
 }
-
-f32 GameManager::ScaleFloatBasedOnRank(f32 upper, f32 lower)
-{
-    return upper + ((f32)this->rank * (lower - upper)) / 32.0f;
-}
 #pragma optimize("", on)
 
 #pragma optimize("t", on)

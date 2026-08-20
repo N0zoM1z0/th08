@@ -62217,7 +62217,7 @@ target = 0x00406E50
 
 [[units]]
 name = "game-manager-scale-float-based-on-rank"
-object = "build/GameManager.obj"
+object = "build/AsciiManagerBossMarker.obj"
 symbol = "?ScaleFloatBasedOnRank@GameManager@th08@@QAEMMM@Z"
 target_address = 0x00422B80
 size = 0x27
