@@ -335,20 +335,6 @@ ChainCallbackResult ScreenEffect::DrawFullFade(ScreenEffect *screenEffect)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-ChainCallbackResult ScreenEffect::DrawArcadeFade(ScreenEffect *screenEffect)
-{
-    ZunRect rect;
-
-    rect.left = 32.0f;
-    rect.top = 16.0f;
-    rect.right = 416.0f;
-    rect.bottom = 464.0f;
-    ScreenEffect::DrawSquare(&rect, (screenEffect->arcadeFadeAlpha << 24) | screenEffect->arcadeFadeColor);
-    return CHAIN_CALLBACK_RESULT_CONTINUE;
-}
-
-
-// FUNCTION: th08 0x45bbf0
 ChainCallbackResult ScreenEffect::DrawPartialFade(ScreenEffect *screenEffect)
 {
     ZunRect rect;
@@ -357,6 +343,20 @@ ChainCallbackResult ScreenEffect::DrawPartialFade(ScreenEffect *screenEffect)
     rect.top = 0.0f;
     rect.right = 640.0f;
     rect.bottom = 480.0f;
+    ScreenEffect::DrawSquare(&rect, (screenEffect->arcadeFadeAlpha << 24) | screenEffect->arcadeFadeColor);
+    return CHAIN_CALLBACK_RESULT_CONTINUE;
+}
+
+
+// FUNCTION: th08 0x45bbf0
+ChainCallbackResult ScreenEffect::DrawArcadeFade(ScreenEffect *screenEffect)
+{
+    ZunRect rect;
+
+    rect.left = 32.0f;
+    rect.top = 16.0f;
+    rect.right = 416.0f;
+    rect.bottom = 464.0f;
     ScreenEffect::DrawSquare(&rect, (screenEffect->arcadeFadeAlpha << 24) | screenEffect->arcadeFadeColor);
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
