@@ -371,10 +371,25 @@ caller/owner evidence that justifies moving them into another TU, while the
 existing consumer COMDATs are already exact. Do not change header visibility or
 invent owners solely to erase this metric residual.
 
-The current ranking now places the expanded target-neighbor `AsciiManager.obj`
-cluster first (**63 anchors / 86 inversions / 6 runs / 9,600 span**), followed
-by `BulletManager.obj` (**25 / 85 / 4 / 121,968**) and `Background.obj` (**26 /
-61 / 6 / 68,640**).
+The tenth bounded pass repaired `BulletManager.obj`. The production source had
+real definitions in a highly non-target lexical order spanning the early
+`0x00415C60` clear wrapper, the `0x0042A410..0x00432F20` bullet body, and the
+`0x00433820..0x004338C0` lifecycle/resource tail. Sorting the existing
+definitions by mapped target address required only forward declarations for
+`CopyBulletAnmVmCore` and `SelectBulletSprite`; no behavior or owner changed.
+Focused replay passed **38 / 38**, and the subsequent cold aggregate replay
+passed **1,105 / 1,105**. Linked metrics improved from **25 anchors / 85
+inversions / 4 runs / 121,968 span** to **25 / 0 / 1 / 104,240**. The large
+remaining span is the real target distance between `0x00415C60` and the main
+`0x0042F360+` block, not a target-order residual.
+
+The raw ranking still places the expanded target-neighbor `AsciiManager.obj`
+cluster first (**63 anchors / 86 inversions / 6 runs / 9,600 span**), but its
+resets are dominated by already target-backed PCH/header COMDAT groups and its
+first 21 retained Ascii anchors remain exact. Without new owner/caller evidence,
+do not perturb those shared inline contracts merely to reduce the metric. The
+next actionable lexical/layout candidate is `Background.obj` (**26 / 61 / 6 /
+68,640**), followed by `Midi.obj` (**33 / 43 / 2 / 25,888**).
 Select only one and confirm the target neighborhood before moving definitions;
 the Ascii inversion count includes several independently justified COMDAT
 groups and is not by itself evidence that they have the wrong owner.

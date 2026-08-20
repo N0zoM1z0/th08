@@ -321,6 +321,16 @@ proves a new owner. A strong lexical metric improvement is useful evidence, but
 stop when eliminating the remainder would require changing shared inline
 visibility or manufacturing an unsupported TU owner.
 
+The `BulletManager.obj` pass reinforces the retained-TU lexical rule across a
+wide target span. The current source mixed the early clear wrapper, constructor/
+manager blocks, bullet update helpers, and lifecycle tail out of target order.
+Sorting the existing real definitions by mapped address, plus two ordinary
+forward declarations, preserved **38 / 38** focused exact units and reduced the
+object from **85 inversions / 4 runs** to **0 / 1**. A large drift span can
+remain even after order is correct when one current object legitimately contains
+widely separated target neighborhoods; inversion/run metrics and drift span
+answer different questions.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into
