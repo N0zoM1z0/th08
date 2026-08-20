@@ -22,10 +22,7 @@ struct PbgArchiveEntry
         filename = NULL;
     }
 
-    ~PbgArchiveEntry()
-    {
-        MemFree(filename);
-    }
+    ~PbgArchiveEntry();
 
     char *filename;
     u32 dataOffset;

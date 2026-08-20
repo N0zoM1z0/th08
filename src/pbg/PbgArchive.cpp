@@ -283,6 +283,12 @@ char *PbgArchive::CopyFileName(LPCSTR filename)
     return mem;
 }
 
+// FUNCTION: th08 0x4751e0
+DWORD CPbgFile::ReadInt(i32 *outData)
+{
+    return Read(outData, 4);
+}
+
 i32 PbgArchive::SeekPastInt(LPVOID *ptr)
 {
     *ptr = (i32 *)*ptr + 1;
@@ -293,5 +299,11 @@ LPVOID PbgArchive::SeekPastString(LPVOID *ptr)
 {
     *ptr = (char *)*ptr + (strlen((char *)*ptr) + 1);
     return *ptr;
+}
+
+// FUNCTION: th08 0x475270
+PbgArchiveEntry::~PbgArchiveEntry()
+{
+    MemFree(filename);
 }
 }; // namespace th08

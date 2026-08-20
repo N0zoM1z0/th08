@@ -38,10 +38,7 @@ class CPbgFile : public IPbgFile
     virtual HGLOBAL ReadWholeFile(DWORD maxSize);
     static void GetFullFilePath(char *buffer, const char *filename);
 
-    DWORD ReadInt(i32 *outData)
-    {
-        return Read(outData, 4);
-    }
+    DWORD ReadInt(i32 *outData);
 
   protected:
     HANDLE m_hFile;
