@@ -383,13 +383,30 @@ inversions / 4 runs / 121,968 span** to **25 / 0 / 1 / 104,240**. The large
 remaining span is the real target distance between `0x00415C60` and the main
 `0x0042F360+` block, not a target-order residual.
 
+The eleventh bounded pass repaired `Background.obj`. Two tiny Background
+methods were not Background-TU bodies at all in the shipped layout: the only
+production callers are in `Spellcard.cpp`, and target addresses place
+`background_fun_00415ce0 @ 0x00415CE0` between `StartSpell` and the cut-in
+sequence, and `background_fun_00416ad0 @ 0x00416AD0` between `EndSpell` and
+`spellcard_fun_00416af0`. Their unchanged definitions and canonical match-unit
+owners now live in `SpellCard.obj`. Background donor/SpellCard recipient
+focused replay passed **29 / 29** and **36 / 36** respectively.
+
+The retained Background definitions were then repaired with targeted lexical
+moves rather than a whole-file sort, preserving the interspersed file-scope
+arrays/globals: constructor/OnUpdate/interpolation helpers, stage-data load/
+update/render, and the late resource-reload predicate now follow target order.
+`Background.obj` improved from **26 anchors / 61 inversions / 6 runs / 68,640
+span** to **24 / 0 / 1 / 528**. The subsequent cold aggregate replay passed
+**1,105 / 1,105**.
+
 The raw ranking still places the expanded target-neighbor `AsciiManager.obj`
 cluster first (**63 anchors / 86 inversions / 6 runs / 9,600 span**), but its
-resets are dominated by already target-backed PCH/header COMDAT groups and its
-first 21 retained Ascii anchors remain exact. Without new owner/caller evidence,
-do not perturb those shared inline contracts merely to reduce the metric. The
-next actionable lexical/layout candidate is `Background.obj` (**26 / 61 / 6 /
-68,640**), followed by `Midi.obj` (**33 / 43 / 2 / 25,888**).
+resets remain dominated by already target-backed PCH/header COMDAT groups and
+its first 21 retained Ascii anchors remain exact. Without new owner/caller
+evidence, do not perturb those shared inline contracts merely to reduce the
+metric. The next actionable candidate is `Midi.obj` (**33 / 43 / 2 / 25,888**),
+followed by `EnemyManager.obj` (**18 / 32 / 5 / 111,744**).
 Select only one and confirm the target neighborhood before moving definitions;
 the Ascii inversion count includes several independently justified COMDAT
 groups and is not by itself evidence that they have the wrong owner.

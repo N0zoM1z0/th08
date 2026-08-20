@@ -331,6 +331,17 @@ remain even after order is correct when one current object legitimately contains
 widely separated target neighborhoods; inversion/run metrics and drift span
 answer different questions.
 
+The `Background.obj` pass shows why target-neighbor caller evidence can be
+stronger than nominal class ownership. `Background::background_fun_00415ce0`
+and `background_fun_00416ad0` are called only from production Spellcard code,
+and their target addresses sit inside the corresponding Spellcard lexical
+sequence. Moving the unchanged bodies to `Spellcard.cpp` and canonicalizing the
+recipient object preserved both donor and recipient exactness. For the retained
+Background TU, use targeted block moves when file-scope data declarations are
+interspersed with functions; a mechanical whole-file function sort can break
+visibility even when the desired code order is correct. This combination
+reduced Background from **61 inversions / 6 runs** to **0 / 1**.
+
 Resource reconstruction must preserve the evidence boundary: reproduce the
 directory IDs, language, DIB dimensions/bit depth, and deterministic build
 shape from repository-owned inputs, but never extract target payload bytes into
