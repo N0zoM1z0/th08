@@ -40,6 +40,17 @@ DIFFABLE_STATIC(ChainElem, g_GameManagerDrawChain);
 
 void FUN_00438046();
 
+// FUNCTION: th08 0x439829
+ZunBool GameManager::IsStageClearedWithoutRetries(i32 stage, i32 character, i32 difficulty)
+{
+    return IS_STAGE_CLEARED(this->clrdData[character].difficultiesClearedWithoutRetries[difficulty], stage);
+}
+
+// FUNCTION: th08 0x439856
+ZunBool GameManager::IsStageClearedWithRetries(i32 stage, i32 character, i32 difficulty)
+{
+    return IS_STAGE_CLEARED(this->clrdData[character].difficultiesClearedWithRetries[difficulty], stage);
+}
 
 // FUNCTION: th08 0x439916
 i32 FUN_00439916(i32 unused)
@@ -132,18 +143,6 @@ i32 GameManager::CalcChecksum(u8 *address, i32 size)
 
 
 
-// FUNCTION: th08 0x439829
-ZunBool GameManager::IsStageClearedWithoutRetries(i32 stage, i32 character, i32 difficulty)
-{
-    return IS_STAGE_CLEARED(this->clrdData[character].difficultiesClearedWithoutRetries[difficulty], stage);
-}
-
-// FUNCTION: th08 0x439856
-ZunBool GameManager::IsStageClearedWithRetries(i32 stage, i32 character, i32 difficulty)
-{
-    return IS_STAGE_CLEARED(this->clrdData[character].difficultiesClearedWithRetries[difficulty], stage);
-}
-
 #pragma optimize("t", on)
 // FUNCTION: th08 0x421ba0
 i32 GameManager::ScaleIntBasedOnRank(i32 upper, i32 lower)
@@ -214,15 +213,6 @@ void GameManager::AddTimeOrbs(i32 amount)
 #pragma optimize("", on)
 
 
-// FUNCTION: th08 0x43be09
-void __fastcall IncrementTruncate(u32 *value, i32 unused)
-{
-    if (*value < 999999u)
-    {
-        (*value)++;
-    }
-}
-
 #pragma optimize("t", on)
 i32 GameManager::GetTimeOrbs()
 {
@@ -269,14 +259,6 @@ void GameManager::CollectExtend()
         this->IncreaseSubrank(200);
         g_Gui.flags.bombDisplayUpdateFrames = 2;
     }
-}
-
-// FUNCTION: th08 0x43b936
-void GameManager::InitRankParams()
-{
-    this->rank = g_RankParams[g_GameManager.difficulty].rank;
-    this->minRank = g_RankParams[g_GameManager.difficulty].minRank;
-    this->maxRank = g_RankParams[g_GameManager.difficulty].maxRank;
 }
 
 // FUNCTION: th08 0x439bc7
@@ -695,6 +677,14 @@ void GameManager::GameplaySetupThread()
 {
 }
 
+// FUNCTION: th08 0x43b936
+void GameManager::InitRankParams()
+{
+    this->rank = g_RankParams[g_GameManager.difficulty].rank;
+    this->minRank = g_RankParams[g_GameManager.difficulty].minRank;
+    this->maxRank = g_RankParams[g_GameManager.difficulty].maxRank;
+}
+
 #pragma var_order(sum, i)
 void GameManager::InitializeAntiTamper()
 {
@@ -734,6 +724,15 @@ void GameManager::InitializeAntiTamper()
     sum = g_GameManager.CalcAntiTamperChecksum();
     g_GameManager.globals->antiTamperChecksum = sum;
     g_GameManager.antiTamperExpectedValue = (f32)sum + (f32)g_GameManager.globals->rng7[3];
+}
+
+// FUNCTION: th08 0x43be09
+void __fastcall IncrementTruncate(u32 *value, i32 unused)
+{
+    if (*value < 999999u)
+    {
+        (*value)++;
+    }
 }
 
 // FUNCTION: th08 0x43be2c
@@ -792,6 +791,18 @@ ZunResult GameManager::DeletedCallback(GameManager *gameManager)
     g_GameManager.unk2D = FALSE;
     g_GameManager.unk3ddc0 = 0;
     return ZUN_SUCCESS;
+}
+
+void GameManager::CutChain()
+{
+    g_Chain.Cut(&g_GameManagerCalcChain);
+    g_Chain.Cut(&g_GameManagerDrawChain);
+    if (g_GameManager.globals->score >= 1000000000)
+    {
+        g_GameManager.globals->score = 999999999;
+    }
+    g_GameManager.globals->displayScore = g_GameManager.globals->score;
+    g_Supervisor.framerateMultiplier = 1.0f;
 }
 
 void GameManager::IncreaseSubrank(int amount)
@@ -887,18 +898,6 @@ ZunBool GameManager::IsPhantasmUnlocked()
 ZunBool GameManager::IsReplayPractice()
 {
     return this->flags.isReplay && g_ReplayManager->replayData->isPractice;
-}
-
-void GameManager::CutChain()
-{
-    g_Chain.Cut(&g_GameManagerCalcChain);
-    g_Chain.Cut(&g_GameManagerDrawChain);
-    if (g_GameManager.globals->score >= 1000000000)
-    {
-        g_GameManager.globals->score = 999999999;
-    }
-    g_GameManager.globals->displayScore = g_GameManager.globals->score;
-    g_Supervisor.framerateMultiplier = 1.0f;
 }
 
 #pragma var_order(timeOrbs1, threshold1, timeOrbs2, threshold2, timeOrbs3, threshold3, timeOrbs4, threshold4, timeOrbs5, threshold5, timeOrbs6, threshold6)
@@ -1051,6 +1050,16 @@ GameManager::GameManager()
     this->arcadeRegionSize.x = 384.0f;
     this->arcadeRegionSize.y = 448.0f;
     this->currentDemoReplay = 3;
+}
+
+void GameManager::AddLives(int lives)
+{
+    if (this->IsTampered())
+    {
+        CRASH_GAME();
+    }
+    this->globals->livesRemaining += lives;
+    this->UpdateAntiTamper();
 }
 
 void GameManager::InitArcadeRegionParams()

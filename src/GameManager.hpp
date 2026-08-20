@@ -270,15 +270,7 @@ struct GameManager
     void AddToDeaths(i32 amount);
     void AddToBombsUsed(i32 amount);
 
-    void AddLives(int lives)
-    {
-        if (this->IsTampered())
-        {
-            CRASH_GAME();
-        }
-        this->globals->livesRemaining += lives;
-        this->UpdateAntiTamper();
-    }
+    void AddLives(int lives);
 
     void AddPower(int power)
     {
