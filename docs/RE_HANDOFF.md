@@ -4,6 +4,38 @@ This file records only the current durable state. Historical investigations
 belong in focused notes such as `RUNECL_FUNCTION_EXACT_NOTES.md`; live counts
 come from the ledgers, not this prose.
 
+## Active playable-port branch
+
+`port/modern-windows` is the independent playable reconstruction lane. It does
+not replace the VC7 exact build or change authored/library ledgers.
+
+As verified on 2026-08-24:
+
+- CMake compiles and links all 44 production-authored source files with the
+  32-bit MinGW toolchain into `build/modern-windows/th08-modern.exe`;
+- the output is an i386 Windows GUI PE and has no MinGW support-DLL dependency;
+- Wine loads the executable and its D3D8, DirectInput, DirectSound, WinMM, and
+  local SDK-only D3DX8 debug dependencies, creates the game window, and reaches
+  the reconstructed startup/error path;
+- title-screen validation is currently blocked by the absence of legally obtained
+  `th08.dat` and BGM assets under `/home/pentester`; Xvfb also has no audio
+  device, so sound should be disabled for the headless probe;
+- the MinGW bring-up build temporarily uses the non-redistributable SDK
+  `d3dx8d.dll`. A distributable build must replace the remaining D3DX calls.
+
+Reproduce the build with:
+
+```bash
+cmake -S . -B build/modern-windows -G Ninja \
+  -DCMAKE_TOOLCHAIN_FILE=cmake/mingw32-toolchain.cmake \
+  -DCMAKE_BUILD_TYPE=Debug
+cmake --build build/modern-windows --parallel 1
+```
+
+Run the executable with the original game-data directory as its working
+directory. Keep executable, SDK DLL, game archives, generated configuration,
+and runtime screenshots under `build/` or outside the repository.
+
 ## Current status
 
 As cold-built and replayed on 2026-08-20 against the original Japanese TH08
