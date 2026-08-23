@@ -71,6 +71,14 @@ python scripts/build.py
 See [Build and exact matching](docs/BUILD_MATCHING.md) for dependency,
 build-mode, reccmp, and objdiff details.
 
+### Playable modern Windows build
+
+An independent CMake target now compiles the production-authored sources as a
+32-bit modern Windows executable. It does not replace or make an exactness
+claim about the VC7 build. For the current MinGW/MSVC requirements, runtime
+asset expectations, and the Windows-to-Linux/macOS port sequence, see
+[Playable reconstruction ports](docs/PORTING.md).
+
 ## Analysis status
 
 IDA MCP follows whichever database is active in the GUI; it has no reliable
@@ -91,6 +99,7 @@ python3 scripts/analysis/report-reconstruction-status.py --summary
 - [Reverse-engineering workflow](docs/RE_WORKFLOW.md)
 - [IDA and analysis safety](docs/IDA_MCP.md)
 - [Build and exact matching](docs/BUILD_MATCHING.md)
+- [Playable reconstruction ports](docs/PORTING.md)
 - [Tool selection and command recipes](docs/TOOLS.md)
 - [Reusable knowledge map and contribution policy](docs/KNOWLEDGE_BASE.md)
 - [Current handoff and next milestones](docs/RE_HANDOFF.md)

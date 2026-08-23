@@ -1133,6 +1133,16 @@ ZunResult AnmManager::DrawInner(AnmVm *vm, i32 flags)
     if (flags & 1)
     {
         /* same as in EoSD. */
+#ifdef TH08_MODERN_PORT
+        triangleX1 = nearbyintf(g_QuadVertices[0].pos.x) - g_ZeroPointFive;
+        triangleX2 = nearbyintf(g_QuadVertices[1].pos.x) - g_ZeroPointFive;
+        triangleY1 = nearbyintf(g_QuadVertices[0].pos.y) - g_ZeroPointFive;
+        triangleY2 = nearbyintf(g_QuadVertices[2].pos.y) - g_ZeroPointFive;
+        g_QuadVertices[2].pos.y = g_QuadVertices[3].pos.y = triangleY2;
+        g_QuadVertices[0].pos.y = g_QuadVertices[1].pos.y = triangleY1;
+        g_QuadVertices[1].pos.x = g_QuadVertices[3].pos.x = triangleX2;
+        g_QuadVertices[0].pos.x = g_QuadVertices[2].pos.x = triangleX1;
+#else
         __asm
         {
             fld g_QuadVertices[0 * TYPE g_QuadVertices].pos.x
@@ -1156,6 +1166,7 @@ ZunResult AnmManager::DrawInner(AnmVm *vm, i32 flags)
             fst g_QuadVertices[0 * TYPE g_QuadVertices].pos.x
             fstp g_QuadVertices[2 * TYPE g_QuadVertices].pos.x
         }
+#endif
     }
 
     g_QuadVertices[0].textureUV.x = g_QuadVertices[2].textureUV.x = vm->loadedSprite->uvStart.x + vm->uvScrollPos.x;
@@ -1163,21 +1174,21 @@ ZunResult AnmManager::DrawInner(AnmVm *vm, i32 flags)
     g_QuadVertices[0].textureUV.y = g_QuadVertices[1].textureUV.y = vm->loadedSprite->uvStart.y + vm->uvScrollPos.y;
     g_QuadVertices[2].textureUV.y = g_QuadVertices[3].textureUV.y = vm->loadedSprite->uvEnd.y + vm->uvScrollPos.y;
 
-    triangleX1 = max(g_QuadVertices[0].pos.x, g_QuadVertices[1].pos.x);
-    triangleX1 = max(g_QuadVertices[2].pos.x, triangleX1);
-    triangleX1 = max(g_QuadVertices[3].pos.x, triangleX1);
+    triangleX1 = ZUN_MAX(g_QuadVertices[0].pos.x, g_QuadVertices[1].pos.x);
+    triangleX1 = ZUN_MAX(g_QuadVertices[2].pos.x, triangleX1);
+    triangleX1 = ZUN_MAX(g_QuadVertices[3].pos.x, triangleX1);
 
-    triangleY1 = max(g_QuadVertices[0].pos.y, g_QuadVertices[1].pos.y);
-    triangleY1 = max(g_QuadVertices[2].pos.y, triangleY1);
-    triangleY1 = max(g_QuadVertices[3].pos.y, triangleY1);
+    triangleY1 = ZUN_MAX(g_QuadVertices[0].pos.y, g_QuadVertices[1].pos.y);
+    triangleY1 = ZUN_MAX(g_QuadVertices[2].pos.y, triangleY1);
+    triangleY1 = ZUN_MAX(g_QuadVertices[3].pos.y, triangleY1);
 
-    triangleX2 = min(g_QuadVertices[0].pos.x, g_QuadVertices[1].pos.x);
-    triangleX2 = min(g_QuadVertices[2].pos.x, triangleX2);
-    triangleX2 = min(g_QuadVertices[3].pos.x, triangleX2);
+    triangleX2 = ZUN_MIN(g_QuadVertices[0].pos.x, g_QuadVertices[1].pos.x);
+    triangleX2 = ZUN_MIN(g_QuadVertices[2].pos.x, triangleX2);
+    triangleX2 = ZUN_MIN(g_QuadVertices[3].pos.x, triangleX2);
 
-    triangleY2 = min(g_QuadVertices[0].pos.y, g_QuadVertices[1].pos.y);
-    triangleY2 = min(g_QuadVertices[2].pos.y, triangleY2);
-    triangleY2 = min(g_QuadVertices[3].pos.y, triangleY2);
+    triangleY2 = ZUN_MIN(g_QuadVertices[0].pos.y, g_QuadVertices[1].pos.y);
+    triangleY2 = ZUN_MIN(g_QuadVertices[2].pos.y, triangleY2);
+    triangleY2 = ZUN_MIN(g_QuadVertices[3].pos.y, triangleY2);
 
     if (triangleX1 < g_Supervisor.viewport.X || triangleY1 < g_Supervisor.viewport.Y ||
         triangleX2 > (g_Supervisor.viewport.X + g_Supervisor.viewport.Width) ||

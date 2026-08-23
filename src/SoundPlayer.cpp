@@ -920,7 +920,14 @@ ThBgmFormat *CWaveFile::GetFormat()
 
 LPDIRECTSOUND CSoundManager::GetDirectSound()
 {
+#ifdef TH08_MODERN_PORT
+    // MinGW models IDirectSound8 as a separate COM interface type rather than
+    // a C++ subclass of IDirectSound. The DirectSound 8 vtable keeps the base
+    // interface prefix used by this caller.
+    return reinterpret_cast<LPDIRECTSOUND>(this->m_pDS);
+#else
     return this->m_pDS;
+#endif
 }
 
 CWaveFile *CSound::GetWaveFile()

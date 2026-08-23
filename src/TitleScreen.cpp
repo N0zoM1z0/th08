@@ -48,12 +48,14 @@
 
 namespace th08
 {
+#ifndef TH08_MODERN_PORT
 inline Float3::Float3(float x, float y, float z)
 {
     this->x = x;
     this->y = y;
     this->z = z;
 }
+#endif
 
 
 // Keep the TitleScreen caller compile context equivalent to the original

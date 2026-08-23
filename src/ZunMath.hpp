@@ -1,7 +1,11 @@
 #pragma once
 #include "inttypes.hpp"
+#ifdef TH08_MODERN_PORT
+#include <math.h>
+#endif
 
 #define ZUN_MIN(x, y) ((x) > (y) ? (y) : (x))
+#define ZUN_MAX(x, y) ((x) > (y) ? (x) : (y))
 #define ZUN_PI ((f32)(3.14159265358979323846))
 #define ZUN_2PI ((f32)(ZUN_PI * 2.0f))
 
@@ -27,6 +31,10 @@ struct Float3
 
     void FromAngleMagnitude(float angle, float magnitude)
     {
+#ifdef TH08_MODERN_PORT
+        this->x = cosf(angle) * magnitude;
+        this->y = sinf(angle) * magnitude;
+#else
         __asm
         {
             mov eax, this
@@ -37,10 +45,15 @@ struct Float3
             fmul [magnitude]
             fstp [eax + 4] /* this->y */
         }
+#endif
     }
 
     void FromRotatedVec2(float angle, float vecX, float vecY)
     {
+#ifdef TH08_MODERN_PORT
+        this->x = cosf(angle) * vecX;
+        this->y = sinf(angle) * vecY;
+#else
         __asm
         {
             mov eax, this
@@ -51,6 +64,7 @@ struct Float3
             fmul [vecY]
             fstp [eax + 4] /* this->y */
         }
+#endif
     }
 
     // FUNCTION: th08 0x40b460 FOLDED
@@ -111,6 +125,13 @@ void Rotate(Float3 *outVector, Float3 *point, f32 angle);
 
 } // namespace th08
 
+#ifdef TH08_MODERN_PORT
+#define sincos(in, out_sine, out_cosine)                                                                               \
+    {                                                                                                                  \
+        out_sine = sinf(in);                                                                                           \
+        out_cosine = cosf(in);                                                                                         \
+    }
+#else
 #define sincos(in, out_sine, out_cosine)                                                                               \
     {                                                                                                                  \
         __asm { \
@@ -119,3 +140,4 @@ void Rotate(Float3 *outVector, Float3 *point, f32 angle);
         __asm fstp out_cosine \
         __asm fstp out_sine }                                            \
     }
+#endif

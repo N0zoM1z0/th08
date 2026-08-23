@@ -487,11 +487,18 @@ HRESULT CSound::RestoreBuffer(LPDIRECTSOUNDBUFFER pDSB, BOOL *pbWasRestored)
 LPDIRECTSOUNDBUFFER CSound::GetFreeBuffer()
 {
     BOOL bIsPlaying = FALSE;
+#ifdef TH08_MODERN_PORT
+    DWORD i;
+#endif
 
     if (m_apDSBuffer == NULL)
         return FALSE;
 
+#ifdef TH08_MODERN_PORT
+    for (i = 0; i < m_dwNumBuffers; i++)
+#else
     for (DWORD i = 0; i < m_dwNumBuffers; i++)
+#endif
     {
         if (m_apDSBuffer[i])
         {

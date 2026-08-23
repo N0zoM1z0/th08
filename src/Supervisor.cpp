@@ -17,7 +17,7 @@
 #include "TitleScreen.hpp"
 #include "i18n.hpp"
 #include "utils.hpp"
-#include <WinBase.h>
+#include <winbase.h>
 #include <d3dx8.h>
 #include <direct.h>
 #include <stdio.h>
@@ -25,12 +25,14 @@
 
 namespace th08
 {
+#ifndef TH08_MODERN_PORT
 inline Float3::Float3(float x, float y, float z)
 {
     this->x = x;
     this->y = y;
     this->z = z;
 }
+#endif
 
 DIFFABLE_STATIC(ScreenEffect *, g_SupervisorScreenEffect);
 DIFFABLE_STATIC(Supervisor, g_Supervisor);
@@ -419,6 +421,9 @@ ChainCallbackResult Supervisor::OnDraw2(Supervisor *s)
     }
     else
     {
+#ifdef TH08_MODERN_PORT
+        surface = g_AnmManager->surfaces[8];
+#else
         __asm
         {
             push 8
@@ -428,6 +433,7 @@ ChainCallbackResult Supervisor::OnDraw2(Supervisor *s)
             mov eax, dword ptr [ecx + eax + 0x2038]
             mov surface, eax
         }
+#endif
         if (surface != NULL)
         {
             g_AnmManager->ReleaseSurface(8);

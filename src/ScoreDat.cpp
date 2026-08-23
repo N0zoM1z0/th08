@@ -2,7 +2,7 @@
 
 #include "GameManager.hpp"
 #include "ScoreDat.hpp"
-#include "SpellCard.hpp"
+#include "Spellcard.hpp"
 #include "pbg/Lzss.hpp"
 
 namespace th08
@@ -262,7 +262,7 @@ u32 ScoreDat::GetHighScore(ScoreDat *scoreDat, ScoreListNode *node, u32 characte
         *continuesUsed = scoreDat2->scores->next != NULL ? scoreDat2->scores->next->data->numRetries : 0;
     }
 
-    return scoreDat2->scores->next != NULL ? max(scoreDat2->scores->next->data->score, 100000) : 100000;
+    return scoreDat2->scores->next != NULL ? ZUN_MAX(scoreDat2->scores->next->data->score, 100000) : 100000;
 }
 
 #pragma var_order(catk, bytesToRead, scoreDat2)
