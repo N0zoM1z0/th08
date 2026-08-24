@@ -53,7 +53,6 @@ struct BulletSpawnDescriptor
 C_ASSERT(sizeof(BulletSpawnDescriptor) == 0x210);
 
 i32 IsBulletManagerAnmReleaseRequired();
-DIFFABLE_EXTERN(i32, g_BulletManagerAnmReleaseRequired);
 
 struct BulletTypeSprites
 {

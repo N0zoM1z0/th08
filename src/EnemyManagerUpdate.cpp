@@ -48,7 +48,6 @@ extern AsciiManager g_AsciiManager;
 extern ReplayManager *g_ReplayManager;
 extern ZunMemory g_ZunMemory;
 extern EnemyManager g_EnemyManager;
-extern Enemy *g_EnemyTrackedEnemy;
 extern i8 g_EclScriptedGlobalUpdateFreeze;
 
 /*
@@ -265,10 +264,6 @@ struct EnemyManagerUpdateMemory
 
 extern "C" f32 __stdcall EnemyManagerUpdateFabs(f32 value);
 
-extern u8 g_TargetByte0164D0B1;
-extern ZunTimer g_EnemyManagerUpdatePlayerTimer;
-extern D3DXVECTOR3 g_EnemyManagerUpdateTrackedPosition;
-extern i32 g_EnemyManagerUpdateTrackedPositionValid;
 extern u8 g_EnemyManagerUpdateCombatTemplate[0x210];
 
 struct EnemyManagerUpdateOverlay
@@ -450,8 +445,8 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
     {
         if ((*reinterpret_cast<u32 *>(enemy->raw + 0x3324) & EMUF1_ACTIVE) == 0)
         {
-            if (g_EnemyTrackedEnemy == reinterpret_cast<Enemy *>(enemy))
-                g_EnemyTrackedEnemy = 0;
+            if (g_Player.optionHomingTarget == reinterpret_cast<Enemy *>(enemy))
+                g_Player.optionHomingTarget = 0;
             continue;
         }
 
@@ -660,8 +655,8 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                         reinterpret_cast<Float3 *>(enemy->raw + 0x2D88), reinterpret_cast<Float3 *>(enemy->raw + 0x2D7C), reinterpret_cast<i32 *>(enemy->raw + 0x2E10), &bombHit);
                     if (!bombHit)
                     {
-                        if (g_TargetByte0164D0B1 == 3 ||
-                            g_TargetByte0164D0B1 == 11)
+                        if (g_GameManager.shotType == 3 ||
+                            g_GameManager.shotType == 11)
                             damage = (i32)((f32)damage + (f32)extraDamage / 6.5f);
                         else
                             damage = (i32)((f32)damage + (f32)extraDamage / 1.7f);
@@ -728,34 +723,35 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->boss)
                 {
                     previousTargetDelta =
-                        g_EnemyManagerUpdateTrackedPosition - (*reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(&g_Player) + 0x2B4));
+                        *reinterpret_cast<D3DXVECTOR3 *>(&g_Player.tailPosition0) -
+                        (*reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(&g_Player) + 0x2B4));
                     currentTargetDelta = *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88) - (*reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(&g_Player) + 0x2B4));
-                    if (!g_EnemyManagerUpdateTrackedPositionValid ||
+                    if (!g_Player.enemyTrackedPositionValid ||
                         fabsf(previousTargetDelta.x) >
                             fabsf(currentTargetDelta.x))
                     {
-                        g_EnemyManagerUpdateTrackedPosition = *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88);
+                        g_Player.tailPosition0 = *reinterpret_cast<Float3 *>(enemy->raw + 0x2D88);
                     }
-                    g_EnemyManagerUpdateTrackedPositionValid = 1;
+                    g_Player.enemyTrackedPositionValid = 1;
                 }
 
-                if (!g_EnemyManagerUpdateTrackedPositionValid &&
-                    g_EnemyManagerUpdateTrackedPosition[1] <
+                if (!g_Player.enemyTrackedPositionValid &&
+                    g_Player.tailPosition0[1] <
                         (*reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88))[1])
                 {
-                    g_EnemyManagerUpdateTrackedPosition = *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88);
+                    g_Player.tailPosition0 = *reinterpret_cast<Float3 *>(enemy->raw + 0x2D88);
                 }
 
                 if (fabsf(
                         reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88)->x -
                         (*reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(&g_Player) + 0x2B4)).x) < 64.0f &&
                     !reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(enemy)->HasAttachedEnemy() &&
-                    (g_EnemyTrackedEnemy == 0 ||
+                    (g_Player.optionHomingTarget == 0 ||
                      reinterpret_cast<D3DXVECTOR3 *>(
-                         reinterpret_cast<EnemyManagerUpdateEnemy *>(g_EnemyTrackedEnemy)->raw + 0x2D34)->y >
+                         reinterpret_cast<EnemyManagerUpdateEnemy *>(g_Player.optionHomingTarget)->raw + 0x2D34)->y >
                          reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D88)->y))
                 {
-                    g_EnemyTrackedEnemy = reinterpret_cast<Enemy *>(enemy);
+                    g_Player.optionHomingTarget = reinterpret_cast<Enemy *>(enemy);
                 }
             }
         }
@@ -828,7 +824,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 }
                 if (!reinterpret_cast<EnemyManagerUpdatePlayer *>(&g_Player)->playerType)
                 {
-                    g_EnemyManagerUpdatePlayerTimer = 90;
+                    g_Player.timer = 90;
                     reinterpret_cast<EnemyManagerUpdatePlayer *>(&g_Player)->playerType = 3;
                 }
                 *reinterpret_cast<u32 *>(enemy->raw + 0x3324) &= ~EMUF1_PAUSE_TIMER;
@@ -1001,6 +997,13 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
 
     (*reinterpret_cast<ZunTimer *>(raw + 0x9DCED0))++;
     return 1;
+}
+
+// FUNCTION: th08 0x42c660
+ChainCallbackResult EnemyManager::OnUpdate(EnemyManager *enemyManager)
+{
+    return static_cast<ChainCallbackResult>(
+        reinterpret_cast<EnemyManagerUpdateOverlay *>(enemyManager)->OnUpdate());
 }
 
 } // namespace th08

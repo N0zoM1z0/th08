@@ -24,21 +24,12 @@ namespace th08
 DIFFABLE_STATIC(Gui, g_Gui);
 DIFFABLE_STATIC(ChainElem, g_GuiCalcChain);
 DIFFABLE_STATIC(ChainElem, g_GuiDrawChain);
-DIFFABLE_STATIC(i32, g_GuiAnmReleaseRequired);
-DIFFABLE_STATIC(i32, g_GuiResourceReloadEnabled);
 DIFFABLE_STATIC(i32, g_GuiFullPowerModeFrames);
 DIFFABLE_STATIC(i32, g_GuiMessageStageMode);
-DIFFABLE_STATIC(AnmLoaded *, g_GuiPortraitAnm0);
-DIFFABLE_STATIC(AnmLoaded *, g_GuiPortraitAnm1);
-DIFFABLE_STATIC(AnmLoaded *, g_GuiPortraitAnm2);
-DIFFABLE_STATIC(AnmLoaded *, g_GuiPortraitAnmPrimary);
-DIFFABLE_STATIC(AnmLoaded *, g_GuiMessageAnm);
 DIFFABLE_STATIC(u16, g_GuiMessageInputCurrent);
 DIFFABLE_STATIC(u16, g_GuiMessageInputPrevious);
 DIFFABLE_STATIC(i32, g_GuiMessageScreenEffectDuration);
 DIFFABLE_STATIC_ARRAY(i32 *, MAX_STAGES, g_GuiStageScoreTables);
-DIFFABLE_STATIC(AnmLoaded *, g_GuiResultAnm0);
-DIFFABLE_STATIC(AnmLoaded *, g_GuiResultAnm1);
 struct GuiMessageTextColorSet
 {
     u32 colors[4];
@@ -56,11 +47,6 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 2, g_GuiTimePeriodLabels) = {"AM", "P
 DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 12, g_GuiLoadingAnmPaths) = {
     "loading00.anm", "loading01.anm", "loading02.anm", "loading03.anm", "loading00h.anm", "loading00a.anm",
     "loading01h.anm", "loading01a.anm", "loading02h.anm", "loading02a.anm", "loading03h.anm", "loading03a.anm",
-};
-
-DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 9, g_GuiStageTextAnmPaths) = {
-    "stg1txt.anm", "stg2txt.anm", "stg3txt.anm", "stg4atxt.anm", "stg4btxt.anm", "stg5txt.anm",
-    "stg6txt.anm", "stg7txt.anm", "stg8txt.anm",
 };
 
 typedef const char *GuiMessagePathRow[SHOT_ALL];
@@ -222,18 +208,18 @@ void GuiImpl::FUN_0043396d(i32 value)
             break;
         case STAGE6B:
         {
-            AnmLoaded *tmp = g_GuiPortraitAnm1;
-            g_GuiPortraitAnm1 = g_GuiPortraitAnm2;
-            g_GuiPortraitAnm2 = tmp;
+            AnmLoaded *tmp = g_Spellcard.enemyFaceAnm0;
+            g_Spellcard.enemyFaceAnm0 = g_Spellcard.enemyFaceAnm1;
+            g_Spellcard.enemyFaceAnm1 = tmp;
             g_GuiMessageStageMode = 2;
             FUN_00437f5c(24);
             break;
         }
         case EXTRASTAGE:
         {
-            AnmLoaded *tmp = g_GuiPortraitAnm1;
-            g_GuiPortraitAnm1 = g_GuiPortraitAnm2;
-            g_GuiPortraitAnm2 = tmp;
+            AnmLoaded *tmp = g_Spellcard.enemyFaceAnm0;
+            g_Spellcard.enemyFaceAnm0 = g_Spellcard.enemyFaceAnm1;
+            g_Spellcard.enemyFaceAnm1 = tmp;
             g_GuiMessageStageMode = 2;
             FUN_00437f5c(25);
             break;
@@ -411,19 +397,19 @@ i32 GuiImpl::RunMsg()
             reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentPortrait =
                 reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->portraitIndex;
             if (reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[0] >= 0)
-                g_GuiPortraitAnmPrimary->SetSprite(
+                g_Spellcard.playerFaceAnm0->SetSprite(
                     &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0],
                     reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[0]);
             if (reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[1] >= 0)
-                g_GuiPortraitAnm0->SetSprite(
+                g_Spellcard.playerFaceAnm1->SetSprite(
                     &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1],
                     reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[1]);
             if (reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[2] >= 0)
-                g_GuiPortraitAnm1->SetSprite(
+                g_Spellcard.enemyFaceAnm0->SetSprite(
                     &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2],
                     reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[2]);
             if (reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[3] >= 0)
-                g_GuiPortraitAnm2->SetSprite(
+                g_Spellcard.enemyFaceAnm1->SetSprite(
                     &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3],
                     reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[3]);
             reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentSide =
@@ -463,22 +449,22 @@ i32 GuiImpl::RunMsg()
                 switch (portraitSpriteArgs->portraitIndex)
                 {
                 case 0:
-                    g_GuiPortraitAnmPrimary->SetSprite(
+                    g_Spellcard.playerFaceAnm0->SetSprite(
                         &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0],
                         portraitSpriteArgs->scriptOrSprite);
                     break;
                 case 1:
-                    g_GuiPortraitAnm0->SetSprite(
+                    g_Spellcard.playerFaceAnm1->SetSprite(
                         &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1],
                         portraitSpriteArgs->scriptOrSprite);
                     break;
                 case 2:
-                    g_GuiPortraitAnm1->SetSprite(
+                    g_Spellcard.enemyFaceAnm0->SetSprite(
                         &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2],
                         portraitSpriteArgs->scriptOrSprite);
                     break;
                 case 3:
-                    g_GuiPortraitAnm2->SetSprite(
+                    g_Spellcard.enemyFaceAnm1->SetSprite(
                         &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3],
                         portraitSpriteArgs->scriptOrSprite);
                     break;
@@ -496,22 +482,22 @@ i32 GuiImpl::RunMsg()
             switch (reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex)
             {
             case 0:
-                g_GuiPortraitAnmPrimary->SetAndExecuteScriptIdx(
+                g_Spellcard.playerFaceAnm0->SetAndExecuteScriptIdx(
                     &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0],
                     reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
                 break;
             case 1:
-                g_GuiPortraitAnm0->SetAndExecuteScriptIdx(
+                g_Spellcard.playerFaceAnm1->SetAndExecuteScriptIdx(
                     &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1],
                     reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
                 break;
             case 2:
-                g_GuiPortraitAnm1->SetAndExecuteScriptIdx(
+                g_Spellcard.enemyFaceAnm0->SetAndExecuteScriptIdx(
                     &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2],
                     reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
                 break;
             case 3:
-                g_GuiPortraitAnm2->SetAndExecuteScriptIdx(
+                g_Spellcard.enemyFaceAnm1->SetAndExecuteScriptIdx(
                     &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3],
                     reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
                 break;
@@ -535,22 +521,22 @@ i32 GuiImpl::RunMsg()
             switch (reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex)
             {
             case 0:
-                g_GuiPortraitAnmPrimary->SetSprite(
+                g_Spellcard.playerFaceAnm0->SetSprite(
                     &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[0],
                     reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
                 break;
             case 1:
-                g_GuiPortraitAnm0->SetSprite(
+                g_Spellcard.playerFaceAnm1->SetSprite(
                     &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[1],
                     reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
                 break;
             case 2:
-                g_GuiPortraitAnm1->SetSprite(
+                g_Spellcard.enemyFaceAnm0->SetSprite(
                     &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[2],
                     reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
                 break;
             case 3:
-                g_GuiPortraitAnm2->SetSprite(
+                g_Spellcard.enemyFaceAnm1->SetSprite(
                     &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->portraits[3],
                     reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
                 break;
@@ -593,7 +579,7 @@ i32 GuiImpl::RunMsg()
                                            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->textColors[reinterpret_cast<GuiMessageTextArgs *>(args)->colorIndex],
                                            reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->shadowColors[reinterpret_cast<GuiMessageTextArgs *>(args)->colorIndex], " ");
             }
-            g_GuiMessageAnm->SetAndExecuteScriptIdx(
+            g_Supervisor.textAnm->SetAndExecuteScriptIdx(
                 &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[reinterpret_cast<GuiMessageTextArgs *>(args)->lineIndex], reinterpret_cast<GuiMessageTextArgs *>(args)->lineIndex);
             reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
                 ->dialogueLines[reinterpret_cast<GuiMessageTextArgs *>(args)->lineIndex].fontWidth =
@@ -621,7 +607,7 @@ i32 GuiImpl::RunMsg()
                 }
                 reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentLine = 0;
             }
-            g_GuiMessageAnm->SetAndExecuteScriptIdx(
+            g_Supervisor.textAnm->SetAndExecuteScriptIdx(
                 &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentLine],
                 reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentLine);
             reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)
@@ -642,7 +628,7 @@ i32 GuiImpl::RunMsg()
         case 0x13:
             args = reinterpret_cast<GuiMessagePortraitArgs *>(
                 reinterpret_cast<GuiRawMessageInstruction *>(reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args);
-            g_GuiMessageAnm->SetAndExecuteScriptIdx(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[0], 0);
+            g_Supervisor.textAnm->SetAndExecuteScriptIdx(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[0], 0);
             reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[0].fontWidth =
                 reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[0].fontHeight =
                 reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->fontSize;
@@ -656,7 +642,7 @@ i32 GuiImpl::RunMsg()
         case 0x14:
             args = reinterpret_cast<GuiMessagePortraitArgs *>(
                 reinterpret_cast<GuiRawMessageInstruction *>(reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args);
-            g_GuiMessageAnm->SetAndExecuteScriptIdx(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1], 1);
+            g_Supervisor.textAnm->SetAndExecuteScriptIdx(&reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1], 1);
             reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1].fontWidth =
                 reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueLines[1].fontHeight =
                 reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->fontSize;
@@ -785,7 +771,7 @@ i32 GuiImpl::RunMsg()
             args = reinterpret_cast<GuiMessagePortraitArgs *>(
                 reinterpret_cast<GuiRawMessageInstruction *>(
                     reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args);
-            g_GuiPortraitAnm1->SetAndExecuteScriptIdx(
+            g_Spellcard.enemyFaceAnm0->SetAndExecuteScriptIdx(
                 &reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->extraVms[0], 1);
             reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->framesElapsedDuringPause = 0;
             break;
@@ -812,9 +798,9 @@ i32 GuiImpl::RunMsg()
             if (g_GameManager.currentStage != STAGE6A && g_GameManager.currentStage != STAGE6B &&
                 g_GameManager.currentStage != EXTRASTAGE)
             {
-                g_GuiResultAnm0->SetAndExecuteScriptIdx(
+                g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(
                     reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x212C8), 3);
-                g_GuiResultAnm0->SetSprite(
+                g_AsciiManager.asciiAnm->SetSprite(
                     reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x212C8),
                     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x22E00) + 0x80);
             }
@@ -829,7 +815,7 @@ i32 GuiImpl::RunMsg()
             {
                 (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(&g_Gui) + 0x18))
                     ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x3778), 0);
-                g_GuiResultAnm1->SetAndExecuteScriptIdx(
+                g_AsciiManager.captureAnm->SetAndExecuteScriptIdx(
                     reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x3CC0), 1);
                 g_AnmManager->SetTextureCaptureParams(
                     3, 0x20, 0x10, 0x180, 0x1C0,
@@ -840,7 +826,7 @@ i32 GuiImpl::RunMsg()
 
                 for (i = 0; i < 8; i++)
                 {
-                    g_GuiResultAnm1->SetAndExecuteScriptIdx(
+                    g_AsciiManager.captureAnm->SetAndExecuteScriptIdx(
                         reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x3F64 + i * sizeof(AnmVm)), 2);
                     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x4084 + i * sizeof(AnmVm)) = i * 4 + 3;
                     *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4157 + i * sizeof(AnmVm)) = 64 - i * 2;
@@ -946,13 +932,13 @@ ZunResult GuiImpl::DrawDialogue()
         dialogueBoxHeight = 48.0f;
 
     VertexDiffuseXyzrhw vertices[4];
-    memcpy(&vertices[0].pos, &Float3(g_ItemAnmManagerScreenShakeOffset.x + 16.0f, 384.0f, 0.0f), sizeof(Float3));
+    memcpy(&vertices[0].pos, &Float3(g_GameManager.arcadeRegionTopLeftPos.x + 16.0f, 384.0f, 0.0f), sizeof(Float3));
     memcpy(&vertices[1].pos,
-           &Float3(g_ItemAnmManagerScreenShakeOffset.x + 384.0f - 16.0f, 384.0f, 0.0f), sizeof(Float3));
+           &Float3(g_GameManager.arcadeRegionTopLeftPos.x + 384.0f - 16.0f, 384.0f, 0.0f), sizeof(Float3));
     memcpy(&vertices[2].pos,
-           &Float3(g_ItemAnmManagerScreenShakeOffset.x + 16.0f, 384.0f + dialogueBoxHeight, 0.0f), sizeof(Float3));
+           &Float3(g_GameManager.arcadeRegionTopLeftPos.x + 16.0f, 384.0f + dialogueBoxHeight, 0.0f), sizeof(Float3));
     memcpy(&vertices[3].pos,
-           &Float3(g_ItemAnmManagerScreenShakeOffset.x + 384.0f - 16.0f, 384.0f + dialogueBoxHeight, 0.0f),
+           &Float3(g_GameManager.arcadeRegionTopLeftPos.x + 384.0f - 16.0f, 384.0f + dialogueBoxHeight, 0.0f),
            sizeof(Float3));
 
     vertices[0].diffuse = vertices[1].diffuse = 0xd0000000;
@@ -2140,7 +2126,7 @@ void Gui::FUN_00438a89()
 // FUNCTION: th08 0x438f58
 ZunResult Gui::FUN_00438f58()
 {
-    g_GuiResultAnm1->SetAndExecuteScriptIdx(&this->impl->vm3cc0, 1);
+    g_AsciiManager.captureAnm->SetAndExecuteScriptIdx(&this->impl->vm3cc0, 1);
     return g_AnmManager->SetTextureCaptureParams(
         3, 32, 16, 384, 448,
         (i32)this->impl->vm3cc0.loadedSprite->startPixelInclusive.x,
@@ -2152,20 +2138,20 @@ ZunResult Gui::FUN_00438f58()
 // FUNCTION: th08 0x438fe9
 i32 FUN_00438fe9()
 {
-    return g_GuiResourceReloadEnabled;
+    return IsResourceReloadEnabled();
 }
 
 
 // FUNCTION: th08 0x438ff3
 i32 FUN_00438ff3()
 {
-    return g_BulletManagerAnmReleaseRequired;
+    return g_Supervisor.unk168;
 }
 
 // FUNCTION: th08 0x438ffd
 i32 FUN_00438ffd()
 {
-    return g_GuiAnmReleaseRequired;
+    return g_Supervisor.unk16c;
 }
 
 
@@ -2230,24 +2216,24 @@ ZunResult Gui::ActualAddedCallback()
         if (this->loadingPortraitAnm == NULL)
             return ZUN_ERROR;
 
-        g_GuiResultAnm0->SetAndExecuteScriptIdx(&this->impl->vm5484, 26);
-        g_GuiResultAnm0->SetAndExecuteScriptIdx(&this->impl->vm22e14, 25);
+        g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->impl->vm5484, 26);
+        g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->impl->vm22e14, 25);
         if (g_GameManager.IsSpellPractice() && g_GameManager.currentSpellCardNumber >= 205)
-            g_GuiResultAnm0->SetSprite(&this->impl->vm22e14, 288);
+            g_AsciiManager.asciiAnm->SetSprite(&this->impl->vm22e14, 288);
         else
-            g_GuiResultAnm0->SetSprite(&this->impl->vm22e14, g_GameManager.difficulty + 283);
+            g_AsciiManager.asciiAnm->SetSprite(&this->impl->vm22e14, g_GameManager.difficulty + 283);
     }
     else
     {
         this->FUN_004396b8();
-        g_GuiResultAnm1->SetAndExecuteScriptIdx(&this->impl->vm3cc0, 1);
+        g_AsciiManager.captureAnm->SetAndExecuteScriptIdx(&this->impl->vm3cc0, 1);
         this->impl->vm3cc0.pendingInterrupt = 1;
 
         for (i = 0; i < 14; i++)
         {
             for (j = 0; j < 12; j++)
             {
-                g_GuiResultAnm1->SetAndExecuteScriptIdx(&this->impl->vm5728[i * 12 + j], ((i + j) & 1) + 3);
+                g_AsciiManager.captureAnm->SetAndExecuteScriptIdx(&this->impl->vm5728[i * 12 + j], ((i + j) & 1) + 3);
                 this->impl->vm5728[i * 12 + j].counterVar0 = i + j * 2;
                 this->impl->vm5728[i * 12 + j].pos.x = j * 32.0f - 0.5f + 16.0f;
                 this->impl->vm5728[i * 12 + j].pos.y = i * 32.0f - 0.5f + 16.0f;
@@ -2318,7 +2304,7 @@ ZunResult Gui::ActualAddedCallback()
     this->flags.powerDisplayUpdateFrames = 2;
     this->flags.timeDisplayUpdateFrames = 2;
 
-    g_GuiResultAnm0->SetAndExecuteScriptIdx(&this->impl->vm212c8, 3);
+    g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->impl->vm212c8, 3);
     g_GuiMessageScreenEffectDuration = 16;
     reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent = 0;
 

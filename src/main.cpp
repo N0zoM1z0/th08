@@ -17,6 +17,9 @@
 #include "diffbuild.hpp"
 #include "i18n.hpp"
 #include "inttypes.hpp"
+#ifdef TH08_MODERN_PORT
+#include "modern/windows_runtime.hpp"
+#endif
 #include <d3dx8.h>
 #include <direct.h>
 #include <shlguid.h>
@@ -91,6 +94,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pCmdLine
     i32 renderResult;
 
     renderResult = RENDER_RESULT_KEEP_RUNNING;
+
+#ifdef TH08_MODERN_PORT
+    modern::InstallCrashReporter();
+    if (!modern::ConfigureDataDirectory())
+        return EXIT_FAILURE;
+#endif
 
     g_Supervisor.hInstance = hInstance;
 

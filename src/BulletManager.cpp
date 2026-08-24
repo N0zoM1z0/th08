@@ -7,6 +7,7 @@
 #include "Player.hpp"
 #include "ReplayManager.hpp"
 #include "SoundPlayer.hpp"
+#include "Supervisor.hpp"
 
 namespace th08
 {
@@ -16,14 +17,11 @@ DIFFABLE_EXTERN(AnmLoaded *, g_AsciiManagerDemoAnm0577EB4);
 DIFFABLE_STATIC(BulletManager, g_BulletManager);
 DIFFABLE_STATIC(ChainElem, g_BulletManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_BulletManagerDrawChain);
-DIFFABLE_STATIC(i32, g_ResourceReloadEnabled);
-DIFFABLE_STATIC(i32, g_BulletManagerAnmReleaseRequired);
 
 void __fastcall CopyBulletAnmVmCore(AnmVm *dst, const AnmVm *src);
 void __fastcall SelectBulletSprite(AnmVm *dst, AnmVm *base, AnmVm *sizeSource, i32 offset);
 
 
-DIFFABLE_STATIC(i32, g_BulletCancelItemType);
 void __fastcall fsincos(f32 *sine, f32 *cosine, f32 angle) {}
 
 // FUNCTION: th08 0x42a410
@@ -496,7 +494,7 @@ void BulletManager::RemoveAllBullets(i32 mode)
                                                       reinterpret_cast<Float3 *>(bullet + 0xD34));
         if (g_Player.FUN_00449ff0(reinterpret_cast<Float3 *>(bullet + 0xD44), reinterpret_cast<Float3 *>(bullet + 0xD34)) == 2)
         {
-            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), static_cast<ItemType>(g_BulletCancelItemType), 1);
+            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
             memset(bullet, 0, 0x10B8);
         }
         else if (mode != 4)
@@ -583,7 +581,7 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
                                  reinterpret_cast<Float3 *>(bullet + 0xD34)) == 2)
         {
             g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44),
-                                    static_cast<ItemType>(g_BulletCancelItemType), 1);
+                                    static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
         }
         else
         {
@@ -891,14 +889,14 @@ updateBullet:
                     if (collisionResult == 2 && (*reinterpret_cast<u32 *>(bullet + 0xDB0) & 0x1000) == 0)
                     {
                         *reinterpret_cast<u16 *>(bullet + 0xDB8) = 5;
-                        if (g_BulletCancelItemType == 9)
+                        if (g_Player.bulletCancelItemType == 9)
                         {
                             g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
                             g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
                         }
-                        else if (g_BulletCancelItemType >= 0)
+                        else if (g_Player.bulletCancelItemType >= 0)
                             g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44),
-                                                    static_cast<ItemType>(g_BulletCancelItemType), 1);
+                                                    static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
                     }
                     goto executeBulletScript;
                 }
@@ -912,14 +910,14 @@ lethalCollision:
                     *reinterpret_cast<u16 *>(bullet + 0xDB8) = 5;
                     if (collisionResult == 2)
                     {
-                        if (g_BulletCancelItemType == 9)
+                        if (g_Player.bulletCancelItemType == 9)
                         {
                             g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
                             g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
                         }
-                        else if (g_BulletCancelItemType >= 0)
+                        else if (g_Player.bulletCancelItemType >= 0)
                             g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44),
-                                                    static_cast<ItemType>(g_BulletCancelItemType), 1);
+                                                    static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
                     }
                 }
             }
@@ -940,14 +938,14 @@ executeBulletScript:
                 if (*reinterpret_cast<u8 *>(bullet + 0xDBE) != 0)
                 {
                     *reinterpret_cast<u16 *>(bullet + 0xDB8) = 5;
-                    if (g_BulletCancelItemType == 9)
+                    if (g_Player.bulletCancelItemType == 9)
                     {
                         g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
                         g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
                     }
-                    else if (g_BulletCancelItemType >= 0)
+                    else if (g_Player.bulletCancelItemType >= 0)
                         g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44),
-                                                static_cast<ItemType>(g_BulletCancelItemType), 1);
+                                                static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
                 }
                 goto activateBullet;
             case 3:
@@ -963,14 +961,14 @@ executeBulletScript:
                 if (*reinterpret_cast<u8 *>(bullet + 0xDBE) != 0)
                 {
                     *reinterpret_cast<u16 *>(bullet + 0xDB8) = 5;
-                    if (g_BulletCancelItemType == 9)
+                    if (g_Player.bulletCancelItemType == 9)
                     {
                         g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
                         g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
                     }
-                    else if (g_BulletCancelItemType >= 0)
+                    else if (g_Player.bulletCancelItemType >= 0)
                         g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44),
-                                                static_cast<ItemType>(g_BulletCancelItemType), 1);
+                                                static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
                 }
                 goto activateBullet;
             case 4:
@@ -986,14 +984,14 @@ executeBulletScript:
                 if (*reinterpret_cast<u8 *>(bullet + 0xDBE) != 0)
                 {
                     *reinterpret_cast<u16 *>(bullet + 0xDB8) = 5;
-                    if (g_BulletCancelItemType == 9)
+                    if (g_Player.bulletCancelItemType == 9)
                     {
                         g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
                         g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
                     }
-                    else if (g_BulletCancelItemType >= 0)
+                    else if (g_Player.bulletCancelItemType >= 0)
                         g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44),
-                                                static_cast<ItemType>(g_BulletCancelItemType), 1);
+                                                static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
                 }
                 goto activateBullet;
             case 5:
@@ -1471,7 +1469,7 @@ ChainCallbackResult BulletManager::OnDraw(BulletManager *bulletManager)
     f32 cosine;
     Bullet *node;
 
-    if ((*reinterpret_cast<u32 *>(0x164D0B4) >> 10) & 1)
+    if (g_GameManager.flags.unk10)
         g_AnmManager->SetMixColor(0xfff01010);
 
     laser = bulletManager->lasers;
@@ -1495,8 +1493,8 @@ ChainCallbackResult BulletManager::OnDraw(BulletManager *bulletManager)
         laser->vm0.pos.operator float *()[2] = 0.06f;
         *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(laser) + 0x596) =
             (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(laser) + 0x596) & 0xff000000) | 0xffffff;
-        laser->vm0.pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-        laser->vm0.pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+        laser->vm0.pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+        laser->vm0.pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
         g_AnmManager->Draw2D(&laser->vm0);
 
         if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x558) < 16.0f ||
@@ -1526,8 +1524,8 @@ ChainCallbackResult BulletManager::OnDraw(BulletManager *bulletManager)
                         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x564) / 10.0f;
                     laser->vm1.scale.y = laser->vm1.scale.x;
                 }
-                laser->vm1.pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-                laser->vm1.pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                laser->vm1.pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+                laser->vm1.pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
                 g_AnmManager->Draw2D(&laser->vm1);
             }
         }
@@ -1544,7 +1542,7 @@ ChainCallbackResult BulletManager::OnDraw(BulletManager *bulletManager)
     }
 
     g_EffectManager.DrawUnkTypeEffects();
-    if ((*reinterpret_cast<u32 *>(0x164D0B4) >> 10) & 1)
+    if (g_GameManager.flags.unk10)
         g_AnmManager->SetMixColorDefault();
 
     return CHAIN_CALLBACK_RESULT_CONTINUE;
@@ -1575,9 +1573,9 @@ ZunResult Bullet::DrawSingleBullet()
     }
 
     vm->pos.operator float *()[0] =
-        g_ItemAnmManagerScreenShakeOffset.x + this->position0.operator float *()[0];
+        g_GameManager.arcadeRegionTopLeftPos.x + this->position0.operator float *()[0];
     vm->pos.operator float *()[1] =
-        g_ItemAnmManagerScreenShakeOffset.y + this->position0.operator float *()[1];
+        g_GameManager.arcadeRegionTopLeftPos.y + this->position0.operator float *()[1];
     vm->pos.operator float *()[2] = 0.05f;
     vm->color1.d3dColor = (vm->color1.d3dColor & 0xff000000) | 0xffffff;
 
@@ -1731,13 +1729,13 @@ void BulletManager::CutChain()
 // FUNCTION: th08 0x4338b0
 i32 IsResourceReloadEnabled()
 {
-    return g_ResourceReloadEnabled;
+    return g_Supervisor.unk164;
 }
 
 // FUNCTION: th08 0x4338c0
 i32 IsBulletManagerAnmReleaseRequired()
 {
-    return g_BulletManagerAnmReleaseRequired;
+    return g_Supervisor.unk168;
 }
 
 } /* namespace th08 */

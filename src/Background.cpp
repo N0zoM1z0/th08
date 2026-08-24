@@ -112,6 +112,32 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 9, g_StageStdFiles) = {
 DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 9, g_StageStdFilesSpell) = {
     "stage1_s.std", "stage2_s.std", "stage3_s.std", "stage4a_s.std", "stage4b_s.std",
     "stage5_s.std", "stage6_s.std", "stage7_s.std", "stage8_s.std"};
+DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 9, g_StageEnemyAnms) = {
+    "stg1enm.anm", "stg2enm.anm", "stg3enm.anm", "stg4aenm.anm", "stg4benm.anm",
+    "stg5enm.anm", "stg6enm.anm", "stg7enm.anm", "stg8enm.anm"};
+DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 17, g_SpellEnemyAnms) = {
+    "stg1enm.anm", "stg2enm.anm", "stg3enm.anm", "stg5enm.anm", "stg6enm.anm",
+    "stg7enm.anm", "stg8enm.anm", "stg5enm.anm", "stg8enm.anm", "stg4aenm.anm",
+    "stg4benm.anm", "stgenm_sk.anm", "stgenm_ym.anm", "stgenm_al.anm", "stgenm_rm.anm",
+    "stgenm_yy.anm", "stgenm_yk.anm"};
+DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 9, g_StageEclFiles) = {
+    "ecldata1.ecl", "ecldata2.ecl", "ecldata3.ecl", "ecldata4a.ecl", "ecldata4b.ecl",
+    "ecldata5.ecl", "ecldata6.ecl", "ecldata7.ecl", "ecldata8.ecl"};
+DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 9, g_StageSpellEclFiles) = {
+    "ecldata1sp.ecl", "ecldata2sp.ecl", "ecldata3sp.ecl", "ecldata4asp.ecl", "ecldata4bsp.ecl",
+    "ecldata5sp.ecl", "ecldata6sp.ecl", "ecldata7sp.ecl", "ecldata8sp.ecl"};
+DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 17, g_SpellEclFiles) = {
+    "ecldata1sp.ecl", "ecldata2sp.ecl", "ecldata3sp.ecl", "ecldata5sp.ecl", "ecldata6sp.ecl",
+    "ecldata7sp.ecl", "ecldata8sp.ecl", "ecldata5sp.ecl", "ecldata8sp.ecl", "ecldata4asp.ecl",
+    "ecldata4bsp.ecl", "ecldata_sk.ecl", "ecldata_ym.ecl", "ecldata_al.ecl", "ecldata_rm.ecl",
+    "ecldata_yy.ecl", "ecldata_yk.ecl"};
+DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 9, g_GuiStageTextAnmPaths) = {
+    "stg1txt.anm", "stg2txt.anm", "stg3txt.anm", "stg4atxt.anm", "stg4btxt.anm", "stg5txt.anm",
+    "stg6txt.anm", "stg7txt.anm", "stg8txt.anm"};
+DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 15, g_EffectAnms) = {
+    "eff01.anm", "eff02.anm", "eff03.anm", "eff04a.anm", "eff04b.anm",
+    "eff05.anm", "eff06.anm", "eff07.anm", "eff08.anm", "eff09sk.anm",
+    "eff09ym.anm", "eff09al.anm", "eff09rm.anm", "eff09yy.anm", "eff09yk.anm"};
 
 // FUNCTION: th08 0x4071a0
 Background::Background()
@@ -146,7 +172,7 @@ ChainCallbackResult Background::OnUpdate(Background *background)
     {
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
-    if ((*reinterpret_cast<u32 *>(0x164D0B4) >> 10) & 1)
+    if (g_GameManager.flags.unk10)
     {
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }

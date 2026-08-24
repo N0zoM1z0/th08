@@ -694,12 +694,12 @@ ZunResult Spellcard::Init()
         this->playerFaceAnm0->SetAndExecuteScriptIdx(&this->vm3C4, 0);
     }
 
-    (*reinterpret_cast<AnmLoaded **>(0x017CE8F4))->SetAndExecuteScriptIdx(&this->vm10F8, 4);
-    (*reinterpret_cast<AnmLoaded **>(0x017CE8F4))->SetAndExecuteScriptIdx(&this->vm139C, 5);
-    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->SetAndExecuteScriptIdx(&this->vm1B88, 1);
-    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->SetAndExecuteScriptIdx(&this->vm1E2C, 0);
-    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->SetAndExecuteScriptIdx(&this->vm2374, 2);
-    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->SetAndExecuteScriptIdx(&this->vm20D0, 4);
+    g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->vm10F8, 4);
+    g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->vm139C, 5);
+    g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->vm1B88, 1);
+    g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->vm1E2C, 0);
+    g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->vm2374, 2);
+    g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->vm20D0, 4);
 
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm120) + 0x220) = 0;
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm668) + 0x220) = 0;
@@ -1590,7 +1590,7 @@ i32 Spellcard::OnDrawImpl()
                 if (leading != 0 || divisor == 1)
                 {
                     this->vm20D0.loadedSprite =
-                        (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->GetSprite(value + 136);
+                        g_AsciiManager.asciiAnm->GetSprite(value + 136);
                     g_AnmManager->DrawNoRotation(&this->vm20D0);
                 }
                 this->vm20D0.pos.x += 7.0f;
@@ -1610,7 +1610,7 @@ i32 Spellcard::OnDrawImpl()
             if (value / 100 != 0)
             {
                 this->vm20D0.loadedSprite =
-                    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->GetSprite(value / 100 + 136);
+                    g_AsciiManager.asciiAnm->GetSprite(value / 100 + 136);
                 g_AnmManager->DrawNoRotation(&this->vm20D0);
                 value %= 100;
                 leading = 1;
@@ -1619,12 +1619,12 @@ i32 Spellcard::OnDrawImpl()
             if (value / 10 != 0 || leading != 0)
             {
                 this->vm20D0.loadedSprite =
-                    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->GetSprite(value / 10 + 136);
+                    g_AsciiManager.asciiAnm->GetSprite(value / 10 + 136);
                 g_AnmManager->DrawNoRotation(&this->vm20D0);
                 value %= 10;
             }
             this->vm20D0.pos.x += 7.0f;
-            this->vm20D0.loadedSprite = (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->GetSprite(value + 136);
+            this->vm20D0.loadedSprite = g_AsciiManager.asciiAnm->GetSprite(value + 136);
             g_AnmManager->DrawNoRotation(&this->vm20D0);
 
             value = g_GameManager.IsSpellPractice()
@@ -1638,7 +1638,7 @@ i32 Spellcard::OnDrawImpl()
             if (value / 100 != 0)
             {
                 this->vm20D0.loadedSprite =
-                    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->GetSprite(value / 100 + 136);
+                    g_AsciiManager.asciiAnm->GetSprite(value / 100 + 136);
                 g_AnmManager->DrawNoRotation(&this->vm20D0);
                 value %= 100;
                 leading = 1;
@@ -1647,13 +1647,13 @@ i32 Spellcard::OnDrawImpl()
             if (value / 10 != 0 || leading != 0)
             {
                 this->vm20D0.loadedSprite =
-                    (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->GetSprite(value / 10 + 136);
+                    g_AsciiManager.asciiAnm->GetSprite(value / 10 + 136);
                 g_AnmManager->DrawNoRotation(&this->vm20D0);
                 value %= 10;
             }
             this->vm20D0.pos.x += 7.0f;
             this->vm20D0.loadedSprite =
-                (*reinterpret_cast<AnmLoaded **>(0x004D50A8))->GetSprite(value % 10 + 136);
+                g_AsciiManager.asciiAnm->GetSprite(value % 10 + 136);
             g_AnmManager->DrawNoRotation(&this->vm20D0);
         }
         g_AnmManager->SetMixColorDefault();

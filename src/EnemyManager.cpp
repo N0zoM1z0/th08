@@ -3,6 +3,7 @@
 #include "EnemyManager.hpp"
 #include "AnmManager.hpp"
 #include "AsciiManager.hpp"
+#include "Background.hpp"
 #include "BulletManager.hpp"
 #include "EclManager.hpp"
 #include "EclOperands.hpp"
@@ -21,12 +22,6 @@ f32 __stdcall FUN_0042eb10(f32 angle1, f32 angle2, f32 factor);
 
 DIFFABLE_STATIC(EnemyManager, g_EnemyManager);
 DIFFABLE_STATIC(u16, g_EnemyDropCounter);
-DIFFABLE_STATIC(ItemTimeOrbTimerStorage, g_EnemyAttachedTimer30);
-DIFFABLE_STATIC(ItemTimeOrbTimerStorage, g_EnemyAttachedTimer0);
-DIFFABLE_STATIC(ZunTimer, g_EnemyManagerUpdatePlayerTimer);
-DIFFABLE_STATIC(D3DXVECTOR3, g_EnemyManagerUpdateTrackedPosition);
-DIFFABLE_STATIC(Enemy *, g_EnemyTrackedEnemy);
-DIFFABLE_STATIC(i32, g_EnemyManagerUpdateTrackedPositionValid);
 DIFFABLE_STATIC(u16, g_EnemyDropScheduleIndex);
 DIFFABLE_STATIC_ARRAY_ASSIGN(u8, 32, g_EnemyDropSchedule) = {
     0, 0, 1, 0, 1, 0, 0, 0,
@@ -350,7 +345,7 @@ void EnemyOverlay::FUN_0042adb0(i32 mode)
             }
             g_Player.FUN_0044df00(reinterpret_cast<Float3 *>(this->bytes + 0x2D88),
                                   32.0f, 1.0f, 16, 7);
-            *reinterpret_cast<ZunTimer *>(&g_ItemTimeOrbTimerStorage) = 0;
+            *reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) = 0;
         }
     }
 
@@ -358,9 +353,9 @@ void EnemyOverlay::FUN_0042adb0(i32 mode)
     {
         Float3 attachedPosition;
         g_GameManager.AddToYoukaiGauge(-g_GameManager.GetYoukaiGauge() / 12, 0);
-        *reinterpret_cast<ZunTimer *>(&g_EnemyAttachedTimer0) = 0;
-        *reinterpret_cast<ZunTimer *>(&g_EnemyAttachedTimer30) = 30;
-        *reinterpret_cast<ZunTimer *>(&g_ItemTimeOrbTimerStorage) = 50;
+        *reinterpret_cast<ZunTimer *>(&g_Player.timerE2AE8) = 0;
+        *reinterpret_cast<ZunTimer *>(&g_Player.timerE2AD0) = 30;
+        *reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) = 50;
         *reinterpret_cast<Float3 *>(this->bytes + 0x2D88) =
             *reinterpret_cast<Float3 *>(this->bytes + 0x2D34) +
             *reinterpret_cast<Float3 *>(this->bytes + 0x2D40);
@@ -484,7 +479,7 @@ i32 Enemy::FUN_0042b490()
                 *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4);
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2e04) =
                 *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc);
-            reinterpret_cast<EclManager *>(0x4ECCB8)->CallEclSub(
+            g_EclManager.CallEclSub(
                 reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(this) + 0x7f8),
                 *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x3368 + i * 4));
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4) = -1;
@@ -519,7 +514,7 @@ i32 Enemy::FUN_0042b490()
                 *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2dfc) = 0;
                 if (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee) >= 0)
                 {
-                    reinterpret_cast<EclManager *>(0x4ECCB8)->CallEclSub(
+                    g_EclManager.CallEclSub(
                         reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(enemyCursor) + 0x7f8),
                         *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee));
                     *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee) = -1;
@@ -529,7 +524,7 @@ i32 Enemy::FUN_0042b490()
             if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) != 0 &&
                 g_Player.playerState == 0)
             {
-                g_EnemyManagerUpdatePlayerTimer = 70;
+                g_Player.timer = 70;
                 g_Player.playerState = 3;
             }
             return 1;
@@ -670,7 +665,7 @@ i32 Enemy::FUN_0042b930()
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + selectedOrK * 4) = -1;
     }
 
-    reinterpret_cast<EclManager *>(0x4ECCB8)->CallEclSub(
+    g_EclManager.CallEclSub(
         reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(this) + 0x7f8),
         *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x337c));
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) = -1;
@@ -687,7 +682,7 @@ i32 Enemy::FUN_0042b930()
     if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) != 0 &&
         g_Player.playerState == 0)
     {
-        g_EnemyManagerUpdatePlayerTimer = 70;
+        g_Player.timer = 70;
         g_Player.playerState = 3;
     }
 
@@ -702,7 +697,7 @@ i32 Enemy::FUN_0042b930()
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2dfc) = 0;
         if (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee) >= 0)
         {
-            reinterpret_cast<EclManager *>(0x4ECCB8)->CallEclSub(
+            g_EclManager.CallEclSub(
                 reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(enemyCursor) + 0x7f8),
                 *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee));
             *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee) = -1;
@@ -794,8 +789,8 @@ void Enemy::FUN_0042bcf0()
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) = -1;
 
     this->FUN_0042bc90();
-    if (g_EnemyTrackedEnemy == this)
-        g_EnemyTrackedEnemy = NULL;
+    if (g_Player.optionHomingTarget == this)
+        g_Player.optionHomingTarget = NULL;
 }
 
 // FUNCTION: th08 0x42bea0
@@ -888,7 +883,7 @@ void Enemy::FUN_0042c290(Float3 *position, Float3 *size)
         g_Player.FUN_0044a470(position, &collisionSize);
     }
 
-    if (g_TargetByte0164D0B1 == 0 || g_TargetByte0164D0B1 == 4)
+    if (g_GameManager.shotType == 0 || g_GameManager.shotType == 4)
     {
         if (reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(this)->HasAttachedEnemy())
             return;
@@ -996,12 +991,6 @@ ZunResult EnemyManager::RegisterChain()
     return ZUN_SUCCESS;
 }
 
-// STUB: th08 0x42c660
-ChainCallbackResult EnemyManager::OnUpdate()
-{
-    return CHAIN_CALLBACK_RESULT_CONTINUE;
-}
-
 // FUNCTION: th08 0x42deb0
 void Enemy::FUN_0042deb0()
 {
@@ -1097,8 +1086,8 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                                   *reinterpret_cast<Float3 *>(enemy + 0x294);
 
                     vm->pos.z = 0.3f;
-                    vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-                    vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                    vm->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+                    vm->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
                     g_AnmManager->Draw2D(vm);
                 }
             }
@@ -1108,8 +1097,8 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
 
             reinterpret_cast<AnmVm *>(enemy + 0xC)->pos =
                 *reinterpret_cast<Float3 *>(enemy + 0x2D88) + *reinterpret_cast<Float3 *>(enemy + 0x294);
-            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
             reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.z = 0.25f;
 
             if (*reinterpret_cast<u8 *>(enemy + 0x534C))
@@ -1144,8 +1133,8 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                                 *reinterpret_cast<Float3 *>(enemy + 0x3394 + k * 0x1C) +
                                 *reinterpret_cast<Float3 *>(enemy + 0x294);
                             reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.z = 0.3f;
-                            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-                            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+                            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
                         g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(enemy + 0xC));
                     }
                 }
@@ -1280,8 +1269,8 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                                   *reinterpret_cast<Float3 *>(enemy + 0x294);
 
                     vm->pos.z = 0.3f;
-                    vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-                    vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                    vm->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+                    vm->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
                     g_AnmManager->Draw2D(vm);
                 }
             }
@@ -1365,7 +1354,7 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
             *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBB0) < 0xCD)
         {
             *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(enemyManager) + 0x9DCEF0) =
-                g_AnmManager->PreloadAnm(8, reinterpret_cast<const char **>(0x4C7364)[g_GameManager.currentStage]);
+                g_AnmManager->PreloadAnm(8, g_StageEnemyAnms[g_GameManager.currentStage]);
             if (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(enemyManager) + 0x9DCEF0) == NULL)
             {
                 return ZUN_ERROR;
@@ -1375,8 +1364,8 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
         {
             *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(enemyManager) + 0x9DCEF0) =
                 g_AnmManager->PreloadAnm(
-                    8, reinterpret_cast<const char **>(
-                           0x4C7054)[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBB0)]);
+                    8, g_SpellEnemyAnms[
+                           *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBB0) - 0xCD]);
             if (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(enemyManager) + 0x9DCEF0) == NULL)
             {
                 return ZUN_ERROR;
@@ -1390,11 +1379,12 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
 
     if (!IsDisableResourceReload())
     {
-        memset(reinterpret_cast<void *>(0x4ECCB8), 0, 0x188);
+        memset(&g_EclManager, 0, sizeof(g_EclManager));
+        memset(&EclRunLowProposal::g_EclCallParameters, 0,
+               sizeof(EclRunLowProposal::g_EclCallParameters));
         if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBAC) >> 14) & 1) == 0)
         {
-            if (reinterpret_cast<EclManager *>(0x4ECCB8)->Load(
-                    const_cast<char *>(reinterpret_cast<const char **>(0x4C73CC)[g_GameManager.currentStage])) !=
+            if (g_EclManager.Load(const_cast<char *>(g_StageEclFiles[g_GameManager.currentStage])) !=
                 ZUN_SUCCESS)
             {
                 return ZUN_ERROR;
@@ -1402,9 +1392,8 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
         }
         else if (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBB0) >= 0xCD)
         {
-            if (reinterpret_cast<EclManager *>(0x4ECCB8)->Load(
-                    const_cast<char *>(reinterpret_cast<const char **>(
-                        0x4C70E4)[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBB0)])) !=
+            if (g_EclManager.Load(const_cast<char *>(g_SpellEclFiles[
+                    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBB0) - 0xCD])) !=
                 ZUN_SUCCESS)
             {
                 return ZUN_ERROR;
@@ -1412,8 +1401,7 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
         }
         else
         {
-            if (reinterpret_cast<EclManager *>(0x4ECCB8)->Load(
-                    const_cast<char *>(reinterpret_cast<const char **>(0x4C73F0)[g_GameManager.currentStage])) !=
+            if (g_EclManager.Load(const_cast<char *>(g_StageSpellEclFiles[g_GameManager.currentStage])) !=
                 ZUN_SUCCESS)
             {
                 return ZUN_ERROR;
@@ -1422,11 +1410,13 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
     }
     else
     {
-        savedEcl0 = *reinterpret_cast<i32 *>(0x4ECCB8);
-        savedEcl1 = *reinterpret_cast<i32 *>(0x4ECCBC);
-        memset(reinterpret_cast<void *>(0x4ECCB8), 0, 0x188);
-        *reinterpret_cast<i32 *>(0x4ECCB8) = savedEcl0;
-        *reinterpret_cast<i32 *>(0x4ECCBC) = savedEcl1;
+        savedEcl0 = reinterpret_cast<i32 *>(&g_EclManager)[0];
+        savedEcl1 = reinterpret_cast<i32 *>(&g_EclManager)[1];
+        memset(&g_EclManager, 0, sizeof(g_EclManager));
+        memset(&EclRunLowProposal::g_EclCallParameters, 0,
+               sizeof(EclRunLowProposal::g_EclCallParameters));
+        reinterpret_cast<i32 *>(&g_EclManager)[0] = savedEcl0;
+        reinterpret_cast<i32 *>(&g_EclManager)[1] = savedEcl1;
     }
 
     *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(enemyManager) + 0x9DCDC0) = g_Rng.GetRandomU16InRange(3);
@@ -1461,7 +1451,7 @@ ZunResult EnemyManager::DeletedCallback(EnemyManager *enemyManager)
     }
     if (!IsDisableResourceReload())
     {
-        reinterpret_cast<EclManager *>(0x4ECCB8)->Unload();
+        g_EclManager.Unload();
     }
 
     D3DXVECTOR3 markerPosition(-999.0f, -999.0f, -999.0f);
@@ -1547,7 +1537,7 @@ i32 EnemyManager::FUN_0042efb0(i32 maxScore, i32 initialScore)
         reinterpret_cast<Enemy *>(enemy)->FUN_0042b2f0();
         if (*reinterpret_cast<i16 *>(enemy + 0x2CEE) >= 0)
         {
-            reinterpret_cast<EclManager *>(0x4ECCB8)->CallEclSub(
+            g_EclManager.CallEclSub(
                 reinterpret_cast<EnemyEclContext *>(enemy + 0x7F8), *reinterpret_cast<i16 *>(enemy + 0x2CEE));
             *reinterpret_cast<i16 *>(enemy + 0x2CEE) = -1;
         }

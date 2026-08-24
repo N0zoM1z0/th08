@@ -11,15 +11,20 @@ not replace the VC7 exact build or change authored/library ledgers.
 
 As verified on 2026-08-24:
 
-- CMake compiles and links all 44 production-authored source files with the
+- CMake compiles and links the complete production-authored source set with the
   32-bit MinGW toolchain into `build/modern-windows/th08-modern.exe`;
 - the output is an i386 Windows GUI PE and has no MinGW support-DLL dependency;
 - Wine loads the executable and its D3D8, DirectInput, DirectSound, WinMM, and
-  local SDK-only D3DX8 debug dependencies, creates the game window, and reaches
-  the reconstructed startup/error path;
-- title-screen validation is currently blocked by the absence of legally obtained
-  `th08.dat` and BGM assets under `/home/pentester`; Xvfb also has no audio
-  device, so sound should be disabled for the headless probe;
+  local SDK-only D3DX8 debug dependencies, creates the game window, reaches the
+  title screen, and runs the Stage 5 demo with the player, enemies, and bullets
+  visible at 60 FPS;
+- `--data-dir <directory>` accepts a Unicode directory containing `th08.dat`
+  and `thbgm.dat`; this was smoke-tested from an unrelated working directory
+  using a data path containing both spaces and CJK characters;
+- the playable lane restores target-proven global ownership for the active
+  `GameManager` state and playfield bounds, uses relocatable function symbols
+  for Player option/shot/bomb callback tables, and connects the complete
+  `EnemyManager::OnUpdate` implementation to the calculation chain;
 - the MinGW bring-up build temporarily uses the non-redistributable SDK
   `d3dx8d.dll`. A distributable build must replace the remaining D3DX calls.
 
@@ -32,9 +37,17 @@ cmake -S . -B build/modern-windows -G Ninja \
 cmake --build build/modern-windows --parallel 1
 ```
 
-Run the executable with the original game-data directory as its working
-directory. Keep executable, SDK DLL, game archives, generated configuration,
-and runtime screenshots under `build/` or outside the repository.
+Run the executable without copying or linking the original archives:
+
+```text
+th08-modern.exe --data-dir "D:\path\to\the\original\TH08\directory"
+```
+
+The selected directory becomes the runtime working directory, matching the
+original game's relative-file behavior for configuration, score, replay, and
+BGM files. Keep the executable, SDK DLL, generated test data, and runtime
+screenshots under `build/` or outside the repository; never commit the original
+archives.
 
 ## Current status
 

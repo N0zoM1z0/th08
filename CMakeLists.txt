@@ -73,6 +73,7 @@ set(TH08_GAME_SOURCES
     src/TextHelper.cpp
     src/TitleScreen.cpp
     src/main.cpp
+    src/modern/windows_runtime.cpp
     src/utils.cpp
     src/zwave.cpp
     src/pbg/Lzss.cpp
@@ -122,7 +123,7 @@ if(MINGW)
         # API through an import library, which is suitable for bring-up builds.
         "${TH08_DX8_SDK_ROOT}/lib/d3dx8d.lib"
         dxguid dinput8 dsound d3d8 winmm
-        kernel32 user32 gdi32 advapi32 shell32 ole32 oleaut32 uuid
+        kernel32 user32 gdi32 advapi32 shell32 ole32 oleaut32 uuid dbghelp
     )
     set(TH08_D3DX8_DEBUG_DLL
         "${TH08_DX8_SDK_ROOT}/samples/multimedia/support/d3dx8d.dll")
@@ -141,7 +142,7 @@ elseif(MSVC)
     target_compile_options(th08-modern PRIVATE /W3)
     target_link_libraries(th08-modern PRIVATE
         dxguid d3dx8 dinput8 dsound d3d8 winmm
-        kernel32 user32 gdi32 advapi32 shell32 ole32 oleaut32 uuid
+        kernel32 user32 gdi32 advapi32 shell32 ole32 oleaut32 uuid dbghelp
     )
 else()
     message(FATAL_ERROR "The modern Windows target currently supports MSVC and MinGW.")

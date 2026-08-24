@@ -613,8 +613,8 @@ i32 __fastcall FUN_00450ad0(Player *player, PlayerShot *slot)
         slot->vm.pos.z = slot->vectors[i].z;
         if (i != 0)
             slot->vm.color1.a = color - ((color / 2) * i) / *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x46A);
-        slot->vm.pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-        slot->vm.pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+        slot->vm.pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+        slot->vm.pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
         if (g_GameManager.GaugeIsExtremelyYoukai())
         {
             slot->vm.color1.r = 0xFF;

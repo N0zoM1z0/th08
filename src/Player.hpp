@@ -183,13 +183,16 @@ struct Player
     i32 playerStateSlotCooldown;
     PlayerRawShtFile *primaryShtFile;
     PlayerRawShtFile *secondaryShtFile;
-    unknown_fields(0xE2A7C, 0x1C);
+    i32 itemTimeOrbMode;
+    unknown_fields(0xE2A80, 0x10);
+    i32 bulletCancelItemType;
+    unknown_fields(0xE2A94, 0x4);
     i32 movementDirection;
     unknown_fields(0xE2A9C, 8);
     Float3 tailPosition0;
     Float3 tailPosition1;
     Enemy *optionHomingTarget;
-    unknown_fields(0xE2AC0, 4);
+    i32 enemyTrackedPositionValid;
     ZunTimer timerE2AC4;
     ZunTimer timerE2AD0;
     ZunTimer timerE2ADC;
@@ -264,12 +267,17 @@ C_ASSERT(offsetof(Player, playerSlotsC) == 0xBB834);
 C_ASSERT(offsetof(Player, shots) == 0xBE838);
 C_ASSERT(offsetof(Player, timelines) == 0xE2A38);
 C_ASSERT(offsetof(Player, playerStateSlotCooldown) == 0xE2A70);
+C_ASSERT(offsetof(Player, primaryShtFile) == 0xE2A74);
+C_ASSERT(offsetof(Player, itemTimeOrbMode) == 0xE2A7C);
+C_ASSERT(offsetof(Player, bulletCancelItemType) == 0xE2A90);
 C_ASSERT(offsetof(Player, movementDirection) == 0xE2A98);
+C_ASSERT(offsetof(Player, tailPosition0) == 0xE2AA4);
+C_ASSERT(offsetof(Player, optionHomingTarget) == 0xE2ABC);
+C_ASSERT(offsetof(Player, enemyTrackedPositionValid) == 0xE2AC0);
 C_ASSERT(offsetof(Player, timer) == 0xE2AF4);
+C_ASSERT(offsetof(Player, calcChain) == 0xE2B10);
 C_ASSERT(offsetof(Player, damageAccumulatorThreshold) == 0xE2B2C);
 
 DIFFABLE_EXTERN(Player, g_Player);
-DIFFABLE_EXTERN(PlayerRawShtFile *, g_PlayerPrimaryShtFile);
-DIFFABLE_EXTERN(PlayerRawShtFile *, g_PlayerSecondaryShtFile);
 
 } /* namespace th08 */

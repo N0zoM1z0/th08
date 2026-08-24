@@ -13,12 +13,7 @@ namespace th08
 {
 
 DIFFABLE_STATIC(ItemManager, g_ItemManager);
-DIFFABLE_STATIC(i32, g_ItemTimeOrbMode);
-DIFFABLE_STATIC(ItemTimeOrbTimerStorage, g_ItemTimeOrbTimerStorage);
-DIFFABLE_STATIC(ItemTimeOrbTimerStorage, g_ItemScatterTimerStorage);
-DIFFABLE_STATIC(f32, g_ItemPlayfieldBottom);
 DIFFABLE_STATIC(i32, g_MaxValuePointItemsCollected);
-DIFFABLE_STATIC(Float2, g_ItemAnmManagerScreenShakeOffset);
 DIFFABLE_STATIC_ARRAY_ASSIGN(i32, 6, g_PowerUpThresholds) = {8, 24, 48, 80, 128, 999};
 
 // FUNCTION: th08 0x441830
@@ -201,13 +196,13 @@ void ItemManager::OnUpdate()
     f32 angle;
     i32 soundIndex = 0;
     Item *item = this->itemListHead.next;
-    Float3 itemBox(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x18),
-                   *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x18), 16.0f);
+    Float3 itemBox(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x18),
+                   *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x18), 16.0f);
 
     this->itemCount = 0;
     speed = *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&g_Player) + 3)
-                ? *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerSecondaryShtFile) + 0x34)
-                : *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x34);
+                ? *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.secondaryShtFile) + 0x34)
+                : *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x34);
     speed *= g_EclGameTimeScale;
 
     while (item != NULL)
@@ -234,7 +229,7 @@ void ItemManager::OnUpdate()
         {
             item->startPositionOrVelocity.y += 0.05f * g_EclGameTimeScale;
             if (item->startPositionOrVelocity.y > 0.0f ||
-                *reinterpret_cast<ZunTimer *>(&g_ItemScatterTimerStorage) < 0)
+                *reinterpret_cast<ZunTimer *>(&g_Player.timerE2AC4) < 0)
             {
                 item->state = ITEM_STATE_AUTOCOLLECT;
             }
@@ -271,16 +266,16 @@ void ItemManager::OnUpdate()
         else
         {
             if (item->state == ITEM_STATE_AUTOCOLLECT ||
-                (g_Player.position.y < g_PlayerPrimaryShtFile->pointItemValueLine &&
+                (g_Player.position.y < g_Player.primaryShtFile->pointItemValueLine &&
                  (g_GameManager.GetPower() >= 0.0 ||
                   *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&g_Player) + 3) != 0 ||
-                  g_TargetByte0164D0B1 == 1 || g_TargetByte0164D0B1 == 6)))
+                  g_GameManager.shotType == 1 || g_GameManager.shotType == 6)))
             {
                 if (g_Player.playerState != PLAYER_STATE_DYING && g_Player.playerState != PLAYER_STATE_SPAWNING)
                 {
                     angle = g_Player.FUN_0044c1b0(&item->currentPosition);
                     item->startPositionOrVelocity.FromAngleMagnitude(
-                        angle, *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_PlayerPrimaryShtFile) + 0x14));
+                        angle, *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x14));
                     item->state = ITEM_STATE_AUTOCOLLECT;
                     item->currentPosition += item->startPositionOrVelocity * g_EclGameTimeScale;
                     goto pickup;
@@ -299,7 +294,7 @@ void ItemManager::OnUpdate()
 
 moveItem:
         item->currentPosition += item->startPositionOrVelocity * speed;
-        if (item->state == ITEM_STATE_DEFAULT && g_ItemPlayfieldBottom + 16.0f <= item->currentPosition.y)
+        if (item->state == ITEM_STATE_DEFAULT && g_GameManager.arcadeRegionSize.y + 16.0f <= item->currentPosition.y)
         {
             g_GameManager.DecreaseSubrank(3);
             item->Delete();
@@ -356,7 +351,7 @@ pickup:
                 g_Gui.flags.powerDisplayUpdateFrames = 2;
                 break;
             case ITEM_POINT_STAR:
-                if (g_ItemTimeOrbMode == 0)
+                if (g_Player.itemTimeOrbMode == 0)
                 {
                     pickupScore = (g_GameManager.globals->graze / 40) * 10 + 300;
                     if (pickupScore <= 0)
@@ -393,11 +388,11 @@ executeOnly:
     if (soundIndex != 0)
         g_SoundPlayer.PlaySoundByIdx((SoundIdx)soundIndex, 0);
 
-    if (*reinterpret_cast<ZunTimer *>(&g_ItemTimeOrbTimerStorage) != 0)
+    if (*reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) != 0)
     {
-        (*reinterpret_cast<ZunTimer *>(&g_ItemTimeOrbTimerStorage))--;
-        if (*reinterpret_cast<ZunTimer *>(&g_ItemTimeOrbTimerStorage) <= 0)
-            *reinterpret_cast<ZunTimer *>(&g_ItemTimeOrbTimerStorage) = 0;
+        (*reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC))--;
+        if (*reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) <= 0)
+            *reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) = 0;
     }
 }
 
@@ -463,10 +458,10 @@ void Item::CollectPoint()
     i32 pointItemValueBase = g_GameManager.globals->pointItemValue;
     i32 currentPointItemValue;
 
-    currentPointItemValue = static_cast<ZunBool>(this->currentPosition.y < g_PlayerPrimaryShtFile->pointItemValueLine)
+    currentPointItemValue = static_cast<ZunBool>(this->currentPosition.y < g_Player.primaryShtFile->pointItemValueLine)
                                 ? pointItemValueBase
                                 : pointItemValueBase / 2 -
-                                      (i32)(this->currentPosition.y - g_PlayerPrimaryShtFile->pointItemValueLine) *
+                                      (i32)(this->currentPosition.y - g_Player.primaryShtFile->pointItemValueLine) *
                                           (g_GameManager.globals->pointItemValue / 1000);
     if (this->isMaxValue == 1)
     {
@@ -521,10 +516,10 @@ void Item::CollectPointSmall()
     i32 pointItemValueBase = g_GameManager.globals->pointItemValue;
     i32 currentPointItemValue;
 
-    currentPointItemValue = static_cast<ZunBool>(this->currentPosition.y < g_PlayerPrimaryShtFile->pointItemValueLine)
+    currentPointItemValue = static_cast<ZunBool>(this->currentPosition.y < g_Player.primaryShtFile->pointItemValueLine)
                                 ? pointItemValueBase
                                 : pointItemValueBase / 2 -
-                                      (i32)(this->currentPosition.y - g_PlayerPrimaryShtFile->pointItemValueLine) *
+                                      (i32)(this->currentPosition.y - g_Player.primaryShtFile->pointItemValueLine) *
                                           (g_GameManager.globals->pointItemValue / 1000);
     if (this->isMaxValue == 1)
     {
@@ -606,7 +601,7 @@ void Item::CollectTimeOrb()
 {
     i32 score;
 
-    if (g_ItemTimeOrbMode == 0)
+    if (g_Player.itemTimeOrbMode == 0)
     {
         if (g_GameManager.globals->pointItemsCollectedInStage >= 2000)
         {
@@ -636,7 +631,7 @@ void Item::CollectTimeOrb()
     g_GameManager.AddTimeOrbs(1);
     g_Spellcard.spellcard_fun_00416b10(8000);
 
-    if (*reinterpret_cast<ZunTimer *>(&g_ItemTimeOrbTimerStorage) == 0)
+    if (*reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) == 0)
     {
         score = 111;
         g_GameManager.AddToYoukaiGauge(
@@ -705,13 +700,13 @@ void ItemManager::OnDraw()
 
     while (item != NULL)
     {
-        item->sprite.pos.x = g_ItemAnmManagerScreenShakeOffset.x + item->currentPosition.x;
-        item->sprite.pos.y = g_ItemAnmManagerScreenShakeOffset.y + item->currentPosition.y;
+        item->sprite.pos.x = g_GameManager.arcadeRegionTopLeftPos.x + item->currentPosition.x;
+        item->sprite.pos.y = g_GameManager.arcadeRegionTopLeftPos.y + item->currentPosition.y;
         item->sprite.pos.z = 0.15f;
 
         if (((f32 *)item->currentPosition)[1] < -8.0f)
         {
-            item->sprite.pos.y = 8.0f + g_ItemAnmManagerScreenShakeOffset.y;
+            item->sprite.pos.y = 8.0f + g_GameManager.arcadeRegionTopLeftPos.y;
             if (item->isOnscreen)
             {
                 g_BulletManager.bulletAnm->SetSprite(&item->sprite, item->itemType + 0xb6);

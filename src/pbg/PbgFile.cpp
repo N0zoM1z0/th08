@@ -57,9 +57,17 @@ bool CPbgFile::Open(const char *filename, char *mode)
         return false;
     }
 
+#ifdef TH08_MODERN_PORT
+    WCHAR wideFilename[MAX_PATH];
+    if (MultiByteToWideChar(CP_ACP, 0, filename, -1, wideFilename, MAX_PATH) == 0)
+        return false;
+    m_hFile = CreateFileW(wideFilename, m_DesiredAccess, FILE_SHARE_READ, NULL, creationDisposition,
+                          FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN, NULL);
+#else
     GetFullFilePath(filePathBuffer, filename);
     m_hFile = CreateFileA(filePathBuffer, m_DesiredAccess, FILE_SHARE_READ, NULL, creationDisposition,
                           FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN, NULL);
+#endif
 
     if (m_hFile == INVALID_HANDLE_VALUE)
     {

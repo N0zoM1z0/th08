@@ -1,5 +1,9 @@
 #include "th_pch.h"
 
+#ifdef TH08_MODERN_PORT
+#include "modern/windows_runtime.hpp"
+#endif
+
 #include "Global.hpp"
 #include "Supervisor.hpp"
 #include "ZunMath.hpp"
@@ -980,6 +984,10 @@ LPBYTE FileSystem::OpenFile(LPCSTR path, i32 *fileSize, BOOL isExternalResource)
     LPBYTE data;
     HANDLE handle;
     i32 unused = -1;
+
+#ifdef TH08_MODERN_PORT
+    modern::LogArchiveRequest(path);
+#endif
 
     g_Supervisor.EnterCriticalSectionWrapper(2);
 

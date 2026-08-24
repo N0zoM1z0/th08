@@ -81,7 +81,7 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
     case 0x2739: return (f32)g_GameManager.rank;
     case 0x2741: return (f32)ENEMY_INT(this, 0x2E1C);
     case 0x2743: return (f32)ENEMY_INT(this, 0x2DFC);
-    case 0x2744: return (f32)::th08::g_TargetByte0164D0B1;
+    case 0x2744: return (f32)::th08::g_GameManager.shotType;
     case 0x276C: return (f32)ENEMY_INT(this, 0x3304);
     case 0x276D: return (f32)ENEMY_INT(this, 0x2E08);
     case 0x274D: return (f32)EclRunLowProposal::g_EclCallParameters.ints[0];

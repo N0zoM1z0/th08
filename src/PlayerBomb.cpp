@@ -355,8 +355,8 @@ void __fastcall FUN_0040c820(Player *player)
             continue;
         vm = &workItem->vms[0];
         vm->pos = workItem->anchor + vm->pos2;
-        vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-        vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+        vm->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+        vm->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
         vm->pos.z = 0.0f;
         g_AnmManager->DrawNoRotation(vm);
     }
@@ -514,8 +514,8 @@ void __fastcall FUN_0040d010(Player *player)
             continue;
         vm = &workItem->vms[0];
         vm->pos = workItem->anchor + vm->pos2;
-        vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-        vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+        vm->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+        vm->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
         vm->pos.z = 0.0f;
         g_AnmManager->DrawNoRotation(vm);
     }
@@ -1026,8 +1026,8 @@ void __fastcall FUN_0040e610(Player *player)
         vm->pos.x += cosf(angle) * vm->loadedSprite->widthPx * vm->scale.x / 2.0f;
         vm->pos.y += sinf(angle) * vm->loadedSprite->widthPx * vm->scale.x / 2.0f;
         vm->SetZRotation(angle);
-        vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-        vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+        vm->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+        vm->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
         vm->pos.z = 0.0f;
         g_AnmManager->Draw2D(vm);
     }
@@ -1647,8 +1647,8 @@ void __fastcall FUN_00410300(Player *player)
             continue;
         workItem->vms[0].SetZRotation(workItem->rotation);
         workItem->vms[0].pos = workItem->anchor;
-        workItem->vms[0].pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-        workItem->vms[0].pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+        workItem->vms[0].pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+        workItem->vms[0].pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
         workItem->vms[0].pos.z = 0.0f;
         g_AnmManager->Draw2D(&workItem->vms[0]);
     }
@@ -1669,8 +1669,8 @@ void __fastcall FUN_00410ac0(Player *player)
             continue;
         workItem->vms[0].SetZRotation(workItem->rotation);
         workItem->vms[0].pos = workItem->anchor;
-        workItem->vms[0].pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-        workItem->vms[0].pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+        workItem->vms[0].pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+        workItem->vms[0].pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
         workItem->vms[0].pos.z = 0.0f;
         g_AnmManager->Draw2D(&workItem->vms[0]);
     }
@@ -2298,15 +2298,15 @@ void __fastcall FUN_004113a0(Player *player)
     FUN_0040bc60(player, 0x802020d0);
     vm = &workItem->vms[0];
     vm->pos = workItem->anchor + vm->pos2;
-    vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-    vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+    vm->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+    vm->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
     vm->pos.z = 0.01f;
     g_AnmManager->Draw2D(vm);
 
     vm++;
     vm->pos = workItem->anchor + vm->pos2;
-    vm->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-    vm->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+    vm->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+    vm->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
     vm->pos.z = 0.0f;
     g_AnmManager->Draw2D(vm);
 }
@@ -2644,8 +2644,8 @@ void __fastcall FUN_00413890(Player *player)
             continue;
         workItem->vms[0].SetZRotation(VectorAngle(workItem->points[1].y, workItem->points[1].x));
         workItem->vms[0].pos = workItem->anchor;
-        workItem->vms[0].pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-        workItem->vms[0].pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+        workItem->vms[0].pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+        workItem->vms[0].pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
         workItem->vms[0].pos.z = 0.0f;
         g_AnmManager->Draw2D(&workItem->vms[0]);
     }
@@ -2666,8 +2666,8 @@ void __fastcall FUN_004142c0(Player *player)
             continue;
         workItem->vms[0].SetZRotation(VectorAngle(workItem->points[1].y, workItem->points[1].x));
         workItem->vms[0].pos = workItem->anchor;
-        workItem->vms[0].pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-        workItem->vms[0].pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+        workItem->vms[0].pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+        workItem->vms[0].pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
         workItem->vms[0].pos.z = 0.0f;
         g_AnmManager->Draw2D(&workItem->vms[0]);
     }

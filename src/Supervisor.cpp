@@ -1081,7 +1081,7 @@ calculateFps:
                 g_SupervisorFpsFrameCount = 0;
                 sprintf(g_SupervisorFpsBuffer, "%.02ffps", fps);
 
-                if (((*reinterpret_cast<u32 *>(0x164D0B4) >> 2) & 1) != 0 && shouldDraw)
+                if (g_GameManager.flags.unk2 && shouldDraw)
                 {
                     framerate = 60.0f;
                     g_Supervisor.lagDenominator += framerate;
@@ -1095,7 +1095,7 @@ calculateFps:
                     else
                         g_Supervisor.lagNumerator += framerate * 0.5f;
 
-                    if (((*reinterpret_cast<u32 *>(0x164D0B4) >> 3) & 1) == 0)
+                    if (!g_GameManager.flags.isReplay)
                         *reinterpret_cast<i16 *>(&g_Supervisor.unk198) = (i16)(fps + 0.5f);
                     else
                         sprintf(g_SupervisorFpsDebugBuffer, "%2d", *reinterpret_cast<i16 *>(&g_Supervisor.unk198));
@@ -1134,8 +1134,7 @@ calculateFps:
         fpsCounterPos.z = 0.0f;
         g_AsciiManager.AddString(&fpsCounterPos, g_SupervisorFpsBuffer);
 
-        if (((*reinterpret_cast<u32 *>(0x164D0B4) >> 3) & 1) != 0 &&
-            ((*reinterpret_cast<u32 *>(0x164D0B4) >> 2) & 1) != 0)
+        if (g_GameManager.flags.isReplay && g_GameManager.flags.unk2)
         {
             debugCounterPos.x = 384.0f;
             debugCounterPos.y = 448.0f;
@@ -1832,6 +1831,19 @@ ZunResult Supervisor::CheckVersion(const char *version, i32 exeSize, i32 exeChec
     u32 versionDataSize;
     i32 versionDataExeSize;
     i32 versionDataExeChecksum;
+
+#ifdef TH08_MODERN_PORT
+    // A reconstructed executable cannot have one of the retail executable
+    // sizes or checksums recorded in th08_0100d.ver. The serialized score and
+    // replay formats are already structurally validated by their loaders. A
+    // portable build has no retail executable identity to compare, including
+    // for the bundled demo replays, so leave the integrity whitelist intact
+    // only for the reconstruction build.
+    (void)version;
+    (void)exeSize;
+    (void)exeChecksum;
+    return ZUN_SUCCESS;
+#endif
 
     if (this->versionData == NULL)
     {

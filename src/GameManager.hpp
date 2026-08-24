@@ -348,6 +348,16 @@ struct GameManager
 };
 
 C_ASSERT(sizeof(GameManager) == 0x3de3c);
+C_ASSERT(offsetof(GameManager, character) == 0x3DBA8);
+C_ASSERT(offsetof(GameManager, shotType) == 0x3DBA9);
+C_ASSERT(offsetof(GameManager, flags) == 0x3DBAC);
+C_ASSERT(offsetof(GameManager, currentSpellCardNumber) == 0x3DBB0);
+C_ASSERT(offsetof(GameManager, isInGameMenu) == 0x3DBB2);
+C_ASSERT(offsetof(GameManager, showRetryMenu) == 0x3DBB3);
+C_ASSERT(offsetof(GameManager, arcadeRegionTopLeftPos) == 0x3DDD4);
+C_ASSERT(offsetof(GameManager, arcadeRegionSize) == 0x3DDDC);
+C_ASSERT(offsetof(GameManager, playerMovementTopLeftPos) == 0x3DDE4);
+C_ASSERT(offsetof(GameManager, playerMovementAreaSize) == 0x3DDEC);
 
 DIFFABLE_EXTERN(GameManager, g_GameManager);
 }; // Namespace th08

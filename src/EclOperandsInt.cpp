@@ -76,7 +76,7 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x2739: return g_GameManager.rank;
     case 0x2741: return INT_FIELD(0x2e1c);
     case 0x2743: return INT_FIELD(0x2dfc);
-    case 0x2744: return ::th08::g_TargetByte0164D0B1;
+    case 0x2744: return ::th08::g_GameManager.shotType;
     case 0x276e: return (i32)CONTEXT_FLOAT(0x68);
     case 0x276f: return (i32)CONTEXT_FLOAT(0x6c);
 

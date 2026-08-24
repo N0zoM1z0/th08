@@ -705,7 +705,7 @@ enter_subroutine:
                    0x8A * sizeof(i32));
         }
 
-        reinterpret_cast<EclManager *>(0x004ECCB8)->CallEclSub(
+        g_EclManager.CallEclSub(
             reinterpret_cast<EnemyEclContext *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x7F8),
             TH08_ECL_AT(ctx, u16, 0x2CF0 +
                 TH08_ECL_AT(ctx, i16, 0x2D30) * 2));
@@ -777,7 +777,7 @@ enter_subroutine:
             {
                 memset(TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4), 0, 0x24B0);
                 *(i32 *)TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) = TH08_ECL_READ_I(ctx, 1);
-                reinterpret_cast<EclManager *>(0x004ECCB8)->CallEclSub(
+                g_EclManager.CallEclSub(
                     reinterpret_cast<EnemyEclContext *>(TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) + 8),
                     *(u16 *)TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4));
                 memcpy(TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) + 0x20,

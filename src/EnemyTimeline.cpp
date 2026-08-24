@@ -10,7 +10,6 @@
 namespace th08
 {
 
-extern u8 g_PlayerNoLivesFlag;
 
 // FUNCTION: th08 0x42a4e0
 #pragma var_order(i, enemy, this)
@@ -44,9 +43,9 @@ void *EnemyManager::SpawnEnemy1(i32 type, const D3DXVECTOR3 *position, i32 a, i3
         if (a >= 0)
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2dfc) = a;
         enemy->vector2d34 = *reinterpret_cast<const Float3 *>(position);
-        reinterpret_cast<EclManager *>(0x4ECCB8)->CallEclSub(
+        g_EclManager.CallEclSub(
             reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(enemy) + 0x7f8), (i16)type);
-        if (reinterpret_cast<EclManager *>(0x4ECCB8)->RunEcl(enemy) == ZUN_ERROR)
+        if (g_EclManager.RunEcl(enemy) == ZUN_ERROR)
         {
             reinterpret_cast<EnemySpawnFlags *>(reinterpret_cast<u8 *>(enemy) + 0x3324)->active = 0;
             i = 480;
@@ -102,11 +101,11 @@ void *EnemyManager::SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i3
         if (a >= 0)
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2dfc) = a;
         enemy->vector2d34 = *reinterpret_cast<const Float3 *>(position);
-        reinterpret_cast<EclManager *>(0x4ECCB8)->CallEclSub(
+        g_EclManager.CallEclSub(
             reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(enemy) + 0x7f8), (i16)type);
         *reinterpret_cast<EnemyContextCopy *>(reinterpret_cast<u8 *>(enemy) + 0x810) =
             *reinterpret_cast<const EnemyContextCopy *>(contextInts);
-        if (reinterpret_cast<EclManager *>(0x4ECCB8)->RunEcl(enemy) == ZUN_ERROR)
+        if (g_EclManager.RunEcl(enemy) == ZUN_ERROR)
         {
             reinterpret_cast<EnemySpawnFlags *>(reinterpret_cast<u8 *>(enemy) + 0x3324)->active = 0;
             i = 480;
@@ -150,7 +149,7 @@ void EclTimeline::Run()
             switch (this->instruction->opcode)
             {
             case 16:
-                g_PlayerNoLivesFlag = 1;
+                g_GameManager.showRetryMenu = 1;
                 break;
 
             case 1:

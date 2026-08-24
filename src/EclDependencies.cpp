@@ -492,7 +492,7 @@ void __fastcall CallSubOnEnemy(
             **reinterpret_cast<EnemyEclContext **>(DEP_BYTES(enemy) + 0x2ca0);
     }
 
-    reinterpret_cast<EclManager *>(0x004ECCB8)->CallEclSub(
+    g_EclManager.CallEclSub(
         *reinterpret_cast<EnemyEclContext **>(DEP_BYTES(enemy) + 0x2ca0),
         static_cast<i16>(rawSubId));
 

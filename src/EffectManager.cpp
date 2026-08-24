@@ -866,15 +866,15 @@ i32 __fastcall FUN_00427450(Effect *effect)
                 vertex->pos.z = 0.0f;
                 vertex->pos.FromAngleMagnitude(angle, radius);
                 vertex->pos += effect->vector5;
-                vertex->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-                vertex->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                vertex->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+                vertex->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
                 vertex++;
 
                 vertex->pos.z = 0.0f;
                 vertex->pos.FromAngleMagnitude(angle, innerRadius);
                 vertex->pos += effect->vector5;
-                vertex->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-                vertex->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                vertex->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+                vertex->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
                 vertex++;
 
                 angle += angleStep;
@@ -898,16 +898,16 @@ i32 __fastcall FUN_00427450(Effect *effect)
                 point.FromRotatedVec2(angle, radius, outerEllipseRadius);
                 Rotate(&vertex->pos, &point, *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330));
                 vertex->pos += effect->vector5;
-                vertex->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-                vertex->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                vertex->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+                vertex->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
                 vertex->pos.z = 0.0f;
                 vertex++;
 
                 point.FromRotatedVec2(angle, innerRadius, innerEllipseRadius);
                 Rotate(&vertex->pos, &point, *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330));
                 vertex->pos += effect->vector5;
-                vertex->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-                vertex->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                vertex->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+                vertex->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
                 vertex->pos.z = 0.0f;
                 vertex++;
 
@@ -941,15 +941,15 @@ i32 __fastcall FUN_00427450(Effect *effect)
                                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c);
                 vertex->pos.FromAngleMagnitude(angle, radius + radialOffset);
                 vertex->pos += effect->vector5;
-                vertex->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-                vertex->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                vertex->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+                vertex->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
                 vertex->pos.z = 0.0f;
                 vertex++;
 
                 vertex->pos.FromAngleMagnitude(angle, innerRadius + radialOffset);
                 vertex->pos += effect->vector5;
-                vertex->pos.x += g_ItemAnmManagerScreenShakeOffset.x;
-                vertex->pos.y += g_ItemAnmManagerScreenShakeOffset.y;
+                vertex->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+                vertex->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
                 vertex->pos.z = 0.0f;
                 vertex++;
 
@@ -1081,7 +1081,7 @@ ChainCallbackResult EffectManager::OnUpdate(EffectManager *effectManager)
         }
 
         (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effectManager) + 0x8))++;
-        if (((*reinterpret_cast<u32 *>(0x164D0B4) >> 10) & 1) == 0 ||
+        if (!g_GameManager.flags.unk10 ||
             *reinterpret_cast<i8 *>(effect + 0x357) != 0)
         {
             if (*reinterpret_cast<void **>(effect + 0x348) != NULL &&
@@ -1154,8 +1154,8 @@ ChainCallbackResult EffectManager::OnDraw(EffectManager *effectManager)
         else
         {
             *reinterpret_cast<Float3 *>(effect + 0x208) = *reinterpret_cast<Float3 *>(effect + 0x2A4);
-            *reinterpret_cast<f32 *>(effect + 0x208) += g_ItemAnmManagerScreenShakeOffset.x;
-            *reinterpret_cast<f32 *>(effect + 0x20C) += g_ItemAnmManagerScreenShakeOffset.y;
+            *reinterpret_cast<f32 *>(effect + 0x208) += g_GameManager.arcadeRegionTopLeftPos.x;
+            *reinterpret_cast<f32 *>(effect + 0x20C) += g_GameManager.arcadeRegionTopLeftPos.y;
             *reinterpret_cast<f32 *>(effect + 0x210) = 0.07f;
             reinterpret_cast<Float3 *>(effect + 0x208)->operator+=(
                 *reinterpret_cast<Float3 *>(effect + 0x288));
@@ -1182,8 +1182,8 @@ ChainCallbackResult EffectManager::OnDraw(EffectManager *effectManager)
         else
         {
             *reinterpret_cast<Float3 *>(effect + 0x208) = *reinterpret_cast<Float3 *>(effect + 0x2A4);
-            *reinterpret_cast<f32 *>(effect + 0x208) += g_ItemAnmManagerScreenShakeOffset.x;
-            *reinterpret_cast<f32 *>(effect + 0x20C) += g_ItemAnmManagerScreenShakeOffset.y;
+            *reinterpret_cast<f32 *>(effect + 0x208) += g_GameManager.arcadeRegionTopLeftPos.x;
+            *reinterpret_cast<f32 *>(effect + 0x20C) += g_GameManager.arcadeRegionTopLeftPos.y;
             *reinterpret_cast<f32 *>(effect + 0x210) = 0.07f;
             reinterpret_cast<Float3 *>(effect + 0x208)->operator+=(
                 *reinterpret_cast<Float3 *>(effect + 0x288));
@@ -1210,8 +1210,8 @@ i32 EffectManager::DrawUnkTypeEffects()
         else
         {
             *reinterpret_cast<Float3 *>(effect + 0x208) = *reinterpret_cast<Float3 *>(effect + 0x2a4);
-            *reinterpret_cast<f32 *>(effect + 0x208) += g_ItemAnmManagerScreenShakeOffset.x;
-            *reinterpret_cast<f32 *>(effect + 0x20c) += g_ItemAnmManagerScreenShakeOffset.y;
+            *reinterpret_cast<f32 *>(effect + 0x208) += g_GameManager.arcadeRegionTopLeftPos.x;
+            *reinterpret_cast<f32 *>(effect + 0x20c) += g_GameManager.arcadeRegionTopLeftPos.y;
             reinterpret_cast<Float3 *>(effect + 0x208)->operator+=(
                 *reinterpret_cast<Float3 *>(effect + 0x288));
             *reinterpret_cast<f32 *>(effect + 0x210) = 0.04f;
@@ -1277,7 +1277,7 @@ void __fastcall FUN_00428310(AnmVm *effect, D3DXVECTOR3 *base)
     D3DXVECTOR3 delta;
     D3DXVECTOR3 point;
 
-    if (*(u8 *)0x164D0BA == 0 && *(u8 *)0x164D0BB == 0)
+    if (!g_GameManager.isInGameMenu && !g_GameManager.showRetryMenu)
     {
         point = *base + *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x244);
         delta = *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x288) - point;
@@ -1312,20 +1312,20 @@ ZunResult EffectManager::AddedCallback(EffectManager *effectManager)
     effectManager->ResetEffects();
     *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B054) = g_AnmManager->GetAnm(6);
     g_GuiMessageStageMode = 0;
-    *reinterpret_cast<i32 *>(0x4E4B60) = 2;
+    g_Background.EclExBarrierState().mode = 2;
 
     if (!IsDisableResourceReload())
     {
         if (!g_GameManager.IsSpellPractice() || g_GameManager.currentSpellCardNumber < 216)
         {
             *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B058) =
-                g_AnmManager->PreloadAnm(9, reinterpret_cast<const char **>(0x4C7480)[g_GameManager.currentStage]);
+                g_AnmManager->PreloadAnm(9, g_EffectAnms[g_GameManager.currentStage]);
         }
         else
         {
             *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B058) =
                 g_AnmManager->PreloadAnm(
-                    9, reinterpret_cast<const char **>(0x4C7144)[g_GameManager.currentSpellCardNumber]);
+                    9, g_EffectAnms[g_GameManager.currentSpellCardNumber - 216 + 9]);
         }
         if (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B058) == NULL)
             return ZUN_ERROR;

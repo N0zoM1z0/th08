@@ -99,14 +99,11 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(void *, 32, g_EclExInsn) = {
 
 DIFFABLE_STATIC(i32, g_EclCallbackPublishedEnemyField24);
 DIFFABLE_STATIC(i32, g_EclCallbackPublishedEnemyField56);
-DIFFABLE_STATIC(void *, g_EclExUpdateCallback);
 DIFFABLE_STATIC(i32, g_EclGlobal004EA290);
 DIFFABLE_STATIC(i32, g_EclGlobal004ECCA8);
-DIFFABLE_STATIC(EclExBarrierRenderState, g_EclExBarrierRenderState);
 DIFFABLE_STATIC(i8, g_EclScriptedGlobalUpdateFreeze);
 DIFFABLE_STATIC(f32, g_EclGameTimeScale);
 DIFFABLE_STATIC(u32, g_EclGameTimeScaleFlags);
-DIFFABLE_STATIC(u8, g_TargetByte0164D0B1);
 DIFFABLE_STATIC(EclManager, g_EclManager);
 
 namespace EclRunLowProposal

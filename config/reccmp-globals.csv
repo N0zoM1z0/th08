@@ -52,7 +52,11 @@ th08::g_EffectTemplates,0x4c6d30,global
 th08::g_StageAnmFiles,0x4c72f8,global
 th08::g_StageStdFiles,0x4c731c,global
 th08::g_StageStdFilesSpell,0x4c7340,global
-g_StageEnemyAnms,0x4c7364,global
+th08::g_StageEnemyAnms,0x4c7364,global
+th08::g_SpellEnemyAnms,0x4c7388,global
+th08::g_StageEclFiles,0x4c73cc,global
+th08::g_StageSpellEclFiles,0x4c73f0,global
+th08::g_SpellEclFiles,0x4c7418,global
 th08::g_EffectAnms,0x4c7480,global
 g_TimeRequirementParams,0x4c77f0,global
 g_RankParams,0x4c7880,global

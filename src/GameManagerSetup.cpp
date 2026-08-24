@@ -140,8 +140,8 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
         GLOBAL_F32(gameManager, 0x98) = 0.0f;
         gameManager->UpdateAntiTamper();
         gameManager->unk3de04 = 0;
-        *reinterpret_cast<i32 *>(0x164D0AC) = 0;
-        *reinterpret_cast<i32 *>(0x164D0A8) = 0;
+        gameManager->unk3DBA4 = 0;
+        gameManager->unk3DBA0 = 0;
         GLOBAL_I32(gameManager, 0x00) = 0;
         GLOBAL_I32(gameManager, 0x08) = 0;
         GLOBAL_I32(gameManager, 0x10) = 0;

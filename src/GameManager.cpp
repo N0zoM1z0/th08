@@ -79,7 +79,7 @@ i32 FUN_00439916(i32 unused)
     i = 0;
     while (*reinterpret_cast<i32 *>(0x4C7670 + i * 0x14) >= 0)
     {
-        if (static_cast<i32>(*reinterpret_cast<i16 *>(0x164D0B8)) <=
+        if (static_cast<i32>(g_GameManager.currentSpellCardNumber) <=
             *reinterpret_cast<i32 *>(0x4C7670 + i * 0x14))
         {
             return *reinterpret_cast<i32 *>(0x4C7680 + i * 0x14);
@@ -97,7 +97,7 @@ i32 FUN_00439961(i32 unused)
     i = 0;
     while (*reinterpret_cast<i32 *>(0x4C7670 + i * 0x14) >= 0)
     {
-        if (static_cast<i32>(*reinterpret_cast<i16 *>(0x164D0B8)) <=
+        if (static_cast<i32>(g_GameManager.currentSpellCardNumber) <=
             *reinterpret_cast<i32 *>(0x4C7670 + i * 0x14))
         {
             return *reinterpret_cast<i32 *>(0x4C767C + i * 0x14);
@@ -769,8 +769,8 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
         GLOBAL_F32(gameManager, 0x98) = 0.0f;
         gameManager->UpdateAntiTamper();
         gameManager->unk3de04 = 0;
-        *reinterpret_cast<i32 *>(0x164D0AC) = 0;
-        *reinterpret_cast<i32 *>(0x164D0A8) = 0;
+        gameManager->unk3DBA4 = 0;
+        gameManager->unk3DBA0 = 0;
         GLOBAL_I32(gameManager, 0x00) = 0;
         GLOBAL_I32(gameManager, 0x08) = 0;
         GLOBAL_I32(gameManager, 0x10) = 0;
@@ -1013,11 +1013,12 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
         }
         else
         {
-            g_Supervisor.LoadMusic(0, reinterpret_cast<char *>(*reinterpret_cast<u8 **>(0x4E4824) + 0x290));
-            if (*reinterpret_cast<i8 *>(*reinterpret_cast<u8 **>(0x4E4824) + 0x310) != 0x20)
-                g_Supervisor.LoadMusic(1, reinterpret_cast<char *>(*reinterpret_cast<u8 **>(0x4E4824) + 0x310));
-            if (*reinterpret_cast<i8 *>(*reinterpret_cast<u8 **>(0x4E4824) + 0x390) != 0x20)
-                g_Supervisor.LoadMusic(2, reinterpret_cast<char *>(*reinterpret_cast<u8 **>(0x4E4824) + 0x390));
+            u8 *stageData = reinterpret_cast<u8 *>(g_Background.stageAnmSecondary);
+            g_Supervisor.LoadMusic(0, reinterpret_cast<char *>(stageData + 0x290));
+            if (*reinterpret_cast<i8 *>(stageData + 0x310) != 0x20)
+                g_Supervisor.LoadMusic(1, reinterpret_cast<char *>(stageData + 0x310));
+            if (*reinterpret_cast<i8 *>(stageData + 0x390) != 0x20)
+                g_Supervisor.LoadMusic(2, reinterpret_cast<char *>(stageData + 0x390));
         }
     }
 

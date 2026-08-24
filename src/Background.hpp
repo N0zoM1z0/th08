@@ -9,6 +9,8 @@
 
 namespace th08
 {
+struct EclExBarrierRenderState;
+
 struct BackgroundUnkVectors
 {
     BackgroundUnkVectors();
@@ -53,6 +55,16 @@ struct Background
     u32 FUN_00409f40();
     void background_fun_00415ce0();
     void background_fun_00416ad0();
+
+    EclExBarrierRenderState &EclExBarrierState()
+    {
+        return *reinterpret_cast<EclExBarrierRenderState *>(&this->spellVmCount);
+    }
+
+    void *&EclExUpdateCallback()
+    {
+        return *reinterpret_cast<void **>(&this->onDrawLowPrioCallback);
+    }
 
     void *stageAnm;
     AnmVm stageVm0;
@@ -103,6 +115,15 @@ struct Background
     Float3 vectors6480[0x20];
 };
 C_ASSERT(sizeof(Background) == 0x6600);
+C_ASSERT(offsetof(Background, spellVmCount) == 0xB30);
+C_ASSERT(offsetof(Background, onDrawLowPrioCallback) == 0x625C);
 
 DIFFABLE_EXTERN(Background, g_Background);
+DIFFABLE_EXTERN_ARRAY(const char *, 9, g_StageEnemyAnms);
+DIFFABLE_EXTERN_ARRAY(const char *, 17, g_SpellEnemyAnms);
+DIFFABLE_EXTERN_ARRAY(const char *, 9, g_StageEclFiles);
+DIFFABLE_EXTERN_ARRAY(const char *, 9, g_StageSpellEclFiles);
+DIFFABLE_EXTERN_ARRAY(const char *, 17, g_SpellEclFiles);
+DIFFABLE_EXTERN_ARRAY(const char *, 9, g_GuiStageTextAnmPaths);
+DIFFABLE_EXTERN_ARRAY(const char *, 15, g_EffectAnms);
 }; // Namespace th08
