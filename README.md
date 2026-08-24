@@ -1,6 +1,6 @@
 # 東方永夜抄 ～ Imperishable Night
 
-<h3 align="center">☾「永夜已明」Authored reconstruction complete — Linux playable ✓ · Windows/macOS in progress · Web edition is the next spell card ✦</h3>
+<h3 align="center">🌙「永夜已明」Authored reconstruction complete — Linux playable ✓ · Windows/macOS in progress · Web edition is the next spell card 💫</h3>
 
 <p align="center">
   <img
