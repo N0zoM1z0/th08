@@ -8,12 +8,15 @@
 </p>
 
 <p align="center">
-  <img src="resources/progress.svg" alt="TH08 exact source reconstruction progress">
+  <img src="resources/progress.svg" alt="TH08 exact-source and playable-platform progress">
 </p>
 
-This project aims to reconstruct the source code of the original Japanese
-`東方永夜抄 ～ Imperishable Night` version 1.00d executable, with reproducible
-binary comparison as the acceptance criterion.
+This project reconstructs the source code of the original Japanese
+`東方永夜抄 ～ Imperishable Night` version 1.00d executable. All 1,107 authored
+functions are now present in source, and 1,105 are accepted as byte-exact by
+reproducible comparison. The authored-source recovery milestone is complete;
+current work focuses on whole-image reconstruction, compiler/runtime libraries,
+and playable Windows, Linux, and macOS products.
 
 The repository continues the work of
 [GensokyoClub/th08](https://github.com/GensokyoClub/th08). Its complete Git
@@ -21,10 +24,10 @@ history was imported rather than squashed, preserving the authorship and
 contribution record of the original project. New infrastructure and
 reconstruction work build on that baseline.
 
-The project remains active reverse-engineering work. Existing source, symbol
-mappings, or generated progress artwork must not be interpreted as a new exact
-matching percentage without a reproducible report against the target binary.
-Current source-presence inventory is generated in
+The project remains active reconstruction and platform-engineering work.
+Existing source, symbol mappings, or generated progress artwork must not be
+interpreted as a new exact matching percentage without a reproducible report
+against the target binary. Current source-presence inventory is generated in
 [docs/PROGRESS.md](docs/PROGRESS.md) and is deliberately labeled separately
 from strict exact-match coverage.
 
@@ -71,13 +74,58 @@ python scripts/build.py
 See [Build and exact matching](docs/BUILD_MATCHING.md) for dependency,
 build-mode, reccmp, and objdiff details.
 
-### Playable modern Windows build
+### Playable modern ports
 
-An independent CMake target now compiles the production-authored sources as a
-32-bit modern Windows executable. It does not replace or make an exactness
-claim about the VC7 build. For the current MinGW/MSVC requirements, runtime
-asset expectations, and the Windows-to-Linux/macOS port sequence, see
+An independent CMake target compiles the production-authored sources for
+modern hosts. It does not replace or make an exactness claim about the VC7
+build.
+
+| Platform | Status | Delivery |
+| --- | --- | --- |
+| Linux i386 | **Done** | Local one-command build/run and CI portable archive |
+| Windows x86 | **In progress** | Native startup and redistributable packaging are not complete |
+| macOS | **In progress** | Native backend and packaging remain to be implemented |
+
+For build dependencies, runtime asset expectations, `--data-dir`, and the
+remaining platform sequence, see
 [Playable reconstruction ports](docs/PORTING.md).
+
+For a source checkout on Debian or Ubuntu, the Linux quick start installs
+missing i386 dependencies, builds, and runs using only the original data
+directory:
+
+```bash
+scripts/setup-modern-linux.sh "/path/to/the/original/TH08 directory"
+```
+
+The [Portable Linux build workflow](.github/workflows/portable-linux.yml)
+also publishes `th08-modern-linux-i386.tar.gz` as a downloadable Actions
+artifact. Extract it and pass only the original game-data directory:
+
+```bash
+./run-th08.sh "/path/to/the/original/TH08 directory"
+```
+
+Neither path embeds the original executable or DAT archives.
+
+The portable Linux window uses the project-owned
+[`resources/modern-icon.png`](resources/modern-icon.png), derived from the
+Touhou Lab artwork supplied for this reconstruction. It is not an icon
+extracted from the original executable.
+
+#### Known Linux issue
+
+- During the Stage 4-to-5 transition, a dynamic text texture can still tile
+  across the outer frame and HUD (most visibly as repeated `Yakumo Yukari`
+  text). This is a known renderer/texture-state bug in the Linux port, not a
+  damaged DAT archive; gameplay testing can continue past it.
+
+<p align="center">
+  <img
+    src="resources/linux-stage5-texture-tiling.png"
+    width="640"
+    alt="Known Linux Stage 5 dynamic text texture tiling bug">
+</p>
 
 ## Analysis status
 
@@ -100,6 +148,7 @@ python3 scripts/analysis/report-reconstruction-status.py --summary
 - [IDA and analysis safety](docs/IDA_MCP.md)
 - [Build and exact matching](docs/BUILD_MATCHING.md)
 - [Playable reconstruction ports](docs/PORTING.md)
+- [Native Linux playable reconstruction](docs/LINUX_PORTING.md)
 - [Tool selection and command recipes](docs/TOOLS.md)
 - [Reusable knowledge map and contribution policy](docs/KNOWLEDGE_BASE.md)
 - [Current handoff and next milestones](docs/RE_HANDOFF.md)

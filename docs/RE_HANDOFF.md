@@ -6,31 +6,61 @@ come from the ledgers, not this prose.
 
 ## Active playable-port branch
 
-`port/modern-windows` is the independent playable reconstruction lane. It does
-not replace the VC7 exact build or change authored/library ledgers.
+`port/modern-windows-linux` is the independent playable reconstruction lane.
+It does not replace the VC7 exact build or change authored/library ledgers.
 
-As verified on 2026-08-24:
+Playable-port state on 2026-08-24:
 
 - CMake compiles and links the complete production-authored source set with the
   32-bit MinGW toolchain into `build/modern-windows/th08-modern.exe`;
-- the output is an i386 Windows GUI PE and has no MinGW support-DLL dependency;
-- Wine loads the executable and its D3D8, DirectInput, DirectSound, WinMM, and
-  local SDK-only D3DX8 debug dependencies, creates the game window, reaches the
-  title screen, and runs the Stage 5 demo with the player, enemies, and bullets
-  visible at 60 FPS;
-- native Windows 11 host execution is also verified through the generated BAT:
-  the process reaches the title screen and Stage 5 demo without Wine. The
-  modern PE deliberately disables ASLR and retains image base `0x00400000`
-  while reconstructed source still contains target absolute data references;
-- `--data-dir <directory>` accepts a Unicode directory containing `th08.dat`
-  and `thbgm.dat`; this was smoke-tested from an unrelated working directory
-  using a data path containing both spaces and CJK characters;
+- the output is an i386 Windows GUI PE and has no MinGW support-DLL dependency,
+  but the user reports that the current native BAT/startup path does not launch
+  a usable application. Prior smoke observations are insufficient to call the
+  Windows product verified; Windows remains in progress;
+- `--data-dir <directory>` is the intended Windows interface for a Unicode
+  directory containing `th08.dat` and `thbgm.dat`, but it must be revalidated
+  as part of the native startup fix;
 - the playable lane restores target-proven global ownership for the active
   `GameManager` state and playfield bounds, uses relocatable function symbols
   for Player option/shot/bomb callback tables, and connects the complete
   `EnemyManager::OnUpdate` implementation to the calculation chain;
 - the MinGW bring-up build temporarily uses the non-redistributable SDK
-  `d3dx8d.dll`. A distributable build must replace the remaining D3DX calls.
+  `d3dx8d.dll`. A distributable Windows build must replace the remaining D3DX
+  calls;
+- CMake also builds `th08-modern` as a native i386 ELF using repository-owned
+  SDL2/OpenGL compatibility backends. `scripts/build-modern-linux.sh` is the
+  default host multilib entry; the i386 container is optional CI/build
+  isolation rather than a runtime dependency;
+- native i386 ELF execution under WSLg has completed a full Lunatic story
+  endurance pass, with player/enemy/bullet simulation, score awards, Boss
+  bars, Bomb animations, focus marker, Stage 2 fog, Japanese dialogue,
+  keyboard input, sound effects, streamed WAV BGM, and the ending transition
+  active. The endurance run used an external GDB command that suppressed life
+  decrement only; that test aid is ignored and never shipped. No fatal signal
+  occurred. A real Linux desktop remains a separate release-validation
+  requirement;
+- `th08-layout.ld` now aliases target-owned manager, callback-chain, and known
+  aggregate-field views to their original addresses. This prevents duplicate
+  spell/ECL callbacks across reloads, which had manifested as negative spell
+  bonuses, saturated scores, missing scripted visuals, and later-stage exits;
+- the OpenGL backend uses a texture-backed FBO plus a stable dialogue-entry
+  snapshot, explicit eye-space linear fog, and independent RGB/alpha
+  texture-stage combiners. A Stage 4-to-5 transition can still tile the dynamic
+  player-name texture across the frame/HUD; it is documented as a deferred
+  Linux renderer issue rather than a release blocker. Fatal Linux signals
+  write a symbolizable `modern-crash.txt`; MIDI remains a follow-up;
+- `scripts/setup-modern-linux.sh <data-directory>` is the one-command
+  Debian/Ubuntu setup/build/run entry, while `scripts/play-modern-linux.sh`
+  performs the normal incremental build and launch. Both accept only the
+  original data directory and require `th08.dat` plus `thbgm.dat`;
+- `.github/workflows/portable-linux.yml` builds and verifies the i386 ELF and
+  uploads a tar archive with a standalone data-directory launcher. No original
+  executable or archives enter the artifact. The project-owned Touhou Lab icon
+  is copied beside the ELF and loaded as the SDL window icon;
+- after the endurance pass, a fresh normal container build was linked without
+  GDB or runtime patches, passed the ELF/layout/dependency/package checks, and
+  was user-smoke-tested successfully under WSLg. Normal life decrement remains
+  active in this build.
 
 Reproduce the build with:
 
@@ -46,6 +76,21 @@ Run the executable without copying or linking the original archives:
 ```text
 th08-modern.exe --data-dir "D:\path\to\the\original\TH08\directory"
 ```
+
+Build and run the native Linux target with:
+
+```bash
+scripts/setup-modern-linux.sh "/path/to/the/original/TH08 directory"
+```
+
+After first-time dependency setup, use
+`scripts/play-modern-linux.sh "/path/to/the/original/TH08 directory"`.
+
+The optional isolated build is `scripts/build-modern-linux-container.sh` and
+outputs `build/modern-linux-container/th08-modern`.
+
+See `docs/LINUX_PORTING.md` for the platform boundary, environment overrides,
+validation matrix, and reusable lessons from the Linux reconstruction.
 
 The selected directory becomes the runtime working directory, matching the
 original game's relative-file behavior for configuration, score, replay, and

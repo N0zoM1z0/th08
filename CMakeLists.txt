@@ -2,19 +2,15 @@ cmake_minimum_required(VERSION 3.20)
 
 project(th08-modern LANGUAGES CXX)
 
-if(NOT WIN32)
-    message(FATAL_ERROR "The first modern port target is Windows. Use a Windows or MinGW toolchain.")
-endif()
-
 if(NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
-    message(FATAL_ERROR "TH08 currently requires a 32-bit Windows toolchain (-A Win32 or i686-w64-mingw32).")
+    message(FATAL_ERROR "TH08 currently requires a 32-bit toolchain.")
 endif()
 
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
 set(TH08_DX8_SDK_ROOT "${CMAKE_SOURCE_DIR}/scripts/prefix/mssdk" CACHE PATH
     "DirectX 8 SDK root containing include/ and lib/")
-if(NOT EXISTS "${TH08_DX8_SDK_ROOT}/include/d3dx8.h")
+if(WIN32 AND NOT EXISTS "${TH08_DX8_SDK_ROOT}/include/d3dx8.h")
     message(FATAL_ERROR
         "DirectX 8 SDK headers were not found. Set TH08_DX8_SDK_ROOT or run the existing prefix setup first.")
 endif()
@@ -73,7 +69,6 @@ set(TH08_GAME_SOURCES
     src/TextHelper.cpp
     src/TitleScreen.cpp
     src/main.cpp
-    src/modern/windows_runtime.cpp
     src/utils.cpp
     src/zwave.cpp
     src/pbg/Lzss.cpp
@@ -81,7 +76,20 @@ set(TH08_GAME_SOURCES
     src/pbg/PbgFile.cpp
 )
 
-add_executable(th08-modern WIN32 ${TH08_GAME_SOURCES})
+if(WIN32)
+    list(APPEND TH08_GAME_SOURCES src/modern/windows_runtime.cpp)
+    add_executable(th08-modern WIN32 ${TH08_GAME_SOURCES})
+elseif(UNIX AND NOT APPLE)
+    list(APPEND TH08_GAME_SOURCES
+        src/modern/linux/d3d8_compat.cpp
+        src/modern/linux/d3dx8_compat.cpp
+        src/modern/linux/linux_compat.cpp
+        src/modern/linux/linux_runtime.cpp
+    )
+    add_executable(th08-modern ${TH08_GAME_SOURCES})
+else()
+    message(FATAL_ERROR "The modern target currently supports Windows and Linux.")
+endif()
 add_dependencies(th08-modern th08-modern-generated)
 target_compile_features(th08-modern PRIVATE cxx_std_98)
 target_compile_definitions(th08-modern PRIVATE
@@ -110,6 +118,9 @@ if(MINGW)
     endforeach()
 
     target_compile_options(th08-modern PRIVATE
+        # The reconstructed source preserves the original VC7 /Od boundaries;
+        # cross-TU inline bodies are not available for modern optimization.
+        -O0
         -fpermissive
         -mms-bitfields
         -Wno-write-strings
@@ -151,6 +162,59 @@ elseif(MSVC)
     target_link_libraries(th08-modern PRIVATE
         dxguid d3dx8 dinput8 dsound d3d8 winmm
         kernel32 user32 gdi32 advapi32 shell32 ole32 oleaut32 uuid dbghelp
+    )
+elseif(UNIX AND NOT APPLE)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(SDL2 REQUIRED IMPORTED_TARGET sdl2)
+    pkg_check_modules(SDL2_IMAGE REQUIRED IMPORTED_TARGET SDL2_image)
+    pkg_check_modules(SDL2_TTF REQUIRED IMPORTED_TARGET SDL2_ttf)
+    find_package(Fontconfig REQUIRED)
+    # Prefer the broadly deployed libGL.so.1 runtime ABI over GLVND's separate
+    # libOpenGL.so.0 dispatch library for the 32-bit portable build.
+    set(OpenGL_GL_PREFERENCE LEGACY)
+    find_package(OpenGL REQUIRED)
+    find_package(Threads REQUIRED)
+
+    target_compile_definitions(th08-modern PRIVATE
+        TH08_MODERN_LINUX
+        _FILE_OFFSET_BITS=64
+        _TIME_BITS=64
+    )
+    target_compile_options(th08-modern PRIVATE
+        # Keep the original /Od-style TU boundaries in every CMake build type.
+        -O0
+        -fpermissive
+        -fdata-sections
+        -fno-omit-frame-pointer
+        -fno-pie
+        -Wno-write-strings
+        "-include${CMAKE_SOURCE_DIR}/src/modern/linux/linux_compat.hpp"
+    )
+    target_link_options(th08-modern PRIVATE
+        -no-pie
+        -rdynamic
+        "-Wl,-T,${CMAKE_SOURCE_DIR}/src/modern/linux/th08-layout.ld"
+    )
+    set_property(TARGET th08-modern APPEND PROPERTY LINK_DEPENDS
+        "${CMAKE_SOURCE_DIR}/src/modern/linux/th08-layout.ld"
+    )
+    target_include_directories(th08-modern BEFORE PRIVATE
+        "${CMAKE_SOURCE_DIR}/src/modern/linux/include"
+    )
+    target_link_libraries(th08-modern PRIVATE
+        PkgConfig::SDL2
+        PkgConfig::SDL2_IMAGE
+        PkgConfig::SDL2_TTF
+        Fontconfig::Fontconfig
+        OpenGL::GL
+        Threads::Threads
+        dl
+    )
+    add_custom_command(TARGET th08-modern POST_BUILD
+        COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+                "${CMAKE_SOURCE_DIR}/resources/modern-icon.png"
+                "$<TARGET_FILE_DIR:th08-modern>/th08-modern.png"
+        VERBATIM
     )
 else()
     message(FATAL_ERROR "The modern Windows target currently supports MSVC and MinGW.")

@@ -77,11 +77,12 @@ boundaries.
 - `.analysis/`: ignored, disposable scratch evidence for the active bounded
   investigation. It must not be treated as status or durable instructions.
 
-`scripts/progress.py` derives both source-presence and strict exact-match views
-in `docs/PROGRESS.md` and its SVG. Source presence comes from
-`config/implemented.csv`; exact coverage counts only accepted rows in
-`config/matches.csv`. CI checks these generated files but cannot replay private
-target comparisons.
+`scripts/progress.py` derives source-presence and strict exact-match views in
+`docs/PROGRESS.md`. Its SVG uses authored exact bytes for the progress bar and
+adds explicitly separate playable-platform delivery cards. Source presence
+comes from `config/implemented.csv`; exact coverage counts only accepted rows
+in `config/matches.csv`. CI checks these generated files but cannot replay
+private target comparisons.
 
 The `library` rows in `config/reccmp-functions.csv` describe code linked into
 the original TH08 image, principally VC7 CRT/runtime and D3DX bodies. They are

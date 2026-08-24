@@ -14,8 +14,9 @@ Generated from `config/reccmp-functions.csv`, `config/mapping.csv`,
 - Exact library functions: **260 / 1,119 (23.24%)**
 - Exact library bytes: **52,955 / 217,165 (24.38%)**
 
-The public SVG visualizes exact bytes only;
-source presence never fills the progress bar.
+The public SVG's progress bar visualizes authored exact bytes only;
+source presence never fills that bar. Its platform cards separately
+track playable-port delivery and are not binary-exactness claims.
 
 Function sizes and library classification are imported analysis seeds and
 must be reconciled against the hash-attested target before exact acceptance.

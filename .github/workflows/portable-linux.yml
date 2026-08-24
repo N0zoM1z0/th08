@@ -1,0 +1,47 @@
+name: Portable Linux build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: th08-portable-linux-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-linux-i386:
+    name: Build Linux i386 package
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Validate launcher scripts
+        run: bash -n scripts/*modern-linux*.sh
+
+      - name: Build in the repository i386 environment
+        run: scripts/build-modern-linux-container.sh
+
+      - name: Verify ELF architecture and fixed layout
+        run: scripts/verify-modern-linux.sh build/modern-linux-container/th08-modern
+
+      - name: Create portable archive
+        run: scripts/package-modern-linux.sh build/modern-linux-container/th08-modern
+
+      - name: Record archive checksum
+        working-directory: build
+        run: sha256sum th08-modern-linux-i386.tar.gz > th08-modern-linux-i386.tar.gz.sha256
+
+      - name: Upload portable Linux package
+        uses: actions/upload-artifact@v4
+        with:
+          name: th08-modern-linux-i386
+          path: |
+            build/th08-modern-linux-i386.tar.gz
+            build/th08-modern-linux-i386.tar.gz.sha256
+          if-no-files-found: error
+          retention-days: 14

@@ -126,8 +126,9 @@ def render() -> tuple[str, str]:
             f"- Exact library functions: **{len(library_exact_rows):,} / {library_count:,} ({library_exact_function_pct:.2f}%)**",
             f"- Exact library bytes: **{library_exact_bytes:,} / {library_total_bytes:,} ({library_exact_byte_pct:.2f}%)**",
             "",
-            "The public SVG visualizes exact bytes only;",
-            "source presence never fills the progress bar.",
+            "The public SVG's progress bar visualizes authored exact bytes only;",
+            "source presence never fills that bar. Its platform cards separately",
+            "track playable-port delivery and are not binary-exactness claims.",
             "",
             "Function sizes and library classification are imported analysis seeds and",
             "must be reconciled against the hash-attested target before exact acceptance.",
@@ -137,8 +138,7 @@ def render() -> tuple[str, str]:
 
     bar_width = 512
     authored_filled = bar_width * exact_byte_pct / 100
-    library_filled = bar_width * library_exact_byte_pct / 100
-    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="560" height="176" role="img" aria-label="TH08 reconstruction progress: authored {exact_byte_pct:.2f}% exact bytes, library {library_exact_byte_pct:.2f}% exact bytes">
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="560" height="176" role="img" aria-label="TH08 reconstruction progress: authored {exact_byte_pct:.2f}% exact bytes; Linux done; Windows and macOS in progress">
   <rect width="560" height="176" rx="8" fill="#1f2335"/>
   <text x="24" y="28" fill="#f4f4f5" font-family="sans-serif" font-size="16" font-weight="600">TH08 reconstruction progress</text>
 
@@ -148,11 +148,22 @@ def render() -> tuple[str, str]:
   <rect x="24" y="60" width="{authored_filled:.2f}" height="12" rx="6" fill="#9b6de3"/>
   <text x="24" y="89" fill="#c8cad2" font-family="sans-serif" font-size="12">{len(exact_rows):,} / {len(authored):,} functions · {exact_bytes:,} / {total_bytes:,} bytes</text>
 
-  <text x="24" y="116" fill="#f4f4f5" font-family="sans-serif" font-size="13" font-weight="600">Library exact</text>
-  <text x="536" y="116" fill="#f4f4f5" text-anchor="end" font-family="monospace" font-size="13">{library_exact_byte_pct:.2f}%</text>
-  <rect x="24" y="124" width="{bar_width}" height="12" rx="6" fill="#3b4058"/>
-  <rect x="24" y="124" width="{library_filled:.2f}" height="12" rx="6" fill="#9b6de3"/>
-  <text x="24" y="153" fill="#c8cad2" font-family="sans-serif" font-size="12">{len(library_exact_rows):,} / {library_count:,} functions · {library_exact_bytes:,} / {library_total_bytes:,} bytes</text>
+  <text x="24" y="116" fill="#f4f4f5" font-family="sans-serif" font-size="13" font-weight="600">Playable platforms</text>
+
+  <rect x="24" y="126" width="154" height="30" rx="7" fill="#29364a" stroke="#48c78e" stroke-opacity="0.55"/>
+  <circle cx="39" cy="141" r="4" fill="#48c78e"/>
+  <text x="51" y="145" fill="#f4f4f5" font-family="sans-serif" font-size="12" font-weight="600">Linux</text>
+  <text x="166" y="145" fill="#48c78e" text-anchor="end" font-family="monospace" font-size="10" font-weight="700">DONE</text>
+
+  <rect x="191" y="126" width="166" height="30" rx="7" fill="#333344" stroke="#e4a853" stroke-opacity="0.5"/>
+  <circle cx="206" cy="141" r="4" fill="#e4a853"/>
+  <text x="218" y="145" fill="#f4f4f5" font-family="sans-serif" font-size="12" font-weight="600">Windows</text>
+  <text x="345" y="145" fill="#e4a853" text-anchor="end" font-family="monospace" font-size="9" font-weight="700">IN PROGRESS</text>
+
+  <rect x="370" y="126" width="166" height="30" rx="7" fill="#303248" stroke="#8f9ef7" stroke-opacity="0.5"/>
+  <circle cx="385" cy="141" r="4" fill="#8f9ef7"/>
+  <text x="397" y="145" fill="#f4f4f5" font-family="sans-serif" font-size="12" font-weight="600">macOS</text>
+  <text x="524" y="145" fill="#8f9ef7" text-anchor="end" font-family="monospace" font-size="9" font-weight="700">IN PROGRESS</text>
 </svg>
 '''
     return markdown, svg
