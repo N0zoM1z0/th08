@@ -1,5 +1,7 @@
 # 東方永夜抄 ～ Imperishable Night
 
+<h3 align="center">☾「永夜已明」Authored reconstruction complete — Linux playable ✓ · Windows/macOS in progress · Web edition is the next spell card ✦</h3>
+
 <p align="center">
   <img
     src="resources/title-screen.png"
@@ -10,6 +12,17 @@
 <p align="center">
   <img src="resources/progress.svg" alt="TH08 exact-source and playable-platform progress">
 </p>
+
+## Platform guides
+
+| Platform | Guide | Status |
+| --- | --- | --- |
+| Linux | **[Download, install, and play](docs/PLAY_LINUX.md)** | **Playable** |
+| Windows | [Native Windows guide](docs/PLAY_WINDOWS.md) | In progress |
+| macOS | [Native macOS guide](docs/PLAY_MACOS.md) | In progress |
+
+The Web edition is planned as a future playable target after the native
+desktop ports. It is not available yet.
 
 This project reconstructs the source code of the original Japanese
 `東方永夜抄 ～ Imperishable Night` version 1.00d executable. All 1,107 authored
@@ -165,6 +178,9 @@ python3 scripts/analysis/report-reconstruction-status.py --summary
 
 ## Project map
 
+- [Linux download, installation, and play guide](docs/PLAY_LINUX.md)
+- [Native Windows user guide and status](docs/PLAY_WINDOWS.md)
+- [Native macOS user guide and status](docs/PLAY_MACOS.md)
 - [Architecture and binary inventory](docs/ARCHITECTURE.md)
 - [Reverse-engineering workflow](docs/RE_WORKFLOW.md)
 - [IDA and analysis safety](docs/IDA_MCP.md)
