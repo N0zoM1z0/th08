@@ -116,7 +116,14 @@ if(MINGW)
         "-include${CMAKE_SOURCE_DIR}/src/modern/windows_compat.hpp"
         "-idirafter${TH08_DX8_SANITIZED_INCLUDE}"
     )
-    target_link_options(th08-modern PRIVATE -static -static-libgcc -static-libstdc++)
+    target_link_options(th08-modern PRIVATE
+        -static
+        -static-libgcc
+        -static-libstdc++
+        # Some reconstructed data references still use target absolute VAs.
+        # Keep the original image base until every such owner is symbolic.
+        -Wl,--disable-dynamicbase
+    )
     target_link_libraries(th08-modern PRIVATE
         # The retail D3DX8 library is a static MSVC C++ archive and cannot be
         # mixed with MinGW's C++ ABI. The SDK's debug DLL exposes the same C
@@ -140,6 +147,7 @@ elseif(MSVC)
     target_include_directories(th08-modern SYSTEM PRIVATE "${TH08_DX8_SDK_ROOT}/include")
     target_link_directories(th08-modern PRIVATE "${TH08_DX8_SDK_ROOT}/lib")
     target_compile_options(th08-modern PRIVATE /W3)
+    target_link_options(th08-modern PRIVATE /DYNAMICBASE:NO)
     target_link_libraries(th08-modern PRIVATE
         dxguid d3dx8 dinput8 dsound d3d8 winmm
         kernel32 user32 gdi32 advapi32 shell32 ole32 oleaut32 uuid dbghelp

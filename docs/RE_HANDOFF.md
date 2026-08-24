@@ -18,6 +18,10 @@ As verified on 2026-08-24:
   local SDK-only D3DX8 debug dependencies, creates the game window, reaches the
   title screen, and runs the Stage 5 demo with the player, enemies, and bullets
   visible at 60 FPS;
+- native Windows 11 host execution is also verified through the generated BAT:
+  the process reaches the title screen and Stage 5 demo without Wine. The
+  modern PE deliberately disables ASLR and retains image base `0x00400000`
+  while reconstructed source still contains target absolute data references;
 - `--data-dir <directory>` accepts a Unicode directory containing `th08.dat`
   and `thbgm.dat`; this was smoke-tested from an unrelated working directory
   using a data path containing both spaces and CJK characters;
