@@ -434,7 +434,16 @@ HANDLE FindFirstFileA(LPCSTR pattern, WIN32_FIND_DATAA *data)
 }
 
 BOOL FindNextFileA(HANDLE raw, WIN32_FIND_DATAA *data) { return FillFindData(static_cast<FindHandle *>(raw), data); }
-BOOL FindClose(HANDLE raw) { delete static_cast<FindHandle *>(raw); return TRUE; }
+BOOL FindClose(HANDLE raw)
+{
+    if (raw == NULL || raw == INVALID_HANDLE_VALUE)
+        return FALSE;
+    LinuxHandle *handle = static_cast<LinuxHandle *>(raw);
+    if (handle->kind != HANDLE_FIND)
+        return FALSE;
+    delete static_cast<FindHandle *>(handle);
+    return TRUE;
+}
 void Sleep(DWORD milliseconds) { usleep(static_cast<useconds_t>(milliseconds) * 1000); }
 
 DWORD timeGetTime(void)

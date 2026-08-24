@@ -107,10 +107,12 @@ embedded or copied into the modern build.
 
 Only `th08.dat` and `thbgm.dat` are required at runtime; an A/B launch verified
 that the Linux executable does not read `th08.exe`. A fresh two-DAT directory
-generates its own configuration and score files. On low-resource virtual
-machines without accelerated OpenGL, the fresh fullscreen configuration and
-first-run FPS/vsync calibration can appear stalled, so reusing an existing
-`th08.cfg` or selecting the complete installation directory is recommended.
+generates its own configuration, score, backup, and log files. The Linux
+`FindClose` compatibility boundary explicitly rejects the invalid search handle
+returned for an initially empty backup directory, matching Win32's harmless
+failure instead of dereferencing the sentinel. On low-resource virtual machines
+without accelerated OpenGL, first-run fullscreen FPS/vsync calibration can
+still appear stalled; reusing `th08.cfg` is an optional performance convenience.
 
 The Linux renderer keeps the D3D8 backbuffer in an OpenGL framebuffer object
 and restores a clean scene snapshot while dialogue deliberately pauses

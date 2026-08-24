@@ -121,13 +121,14 @@ the remainder plays at the recorded speed.
 </p>
 
 Only `th08.dat` and `thbgm.dat` are runtime data requirements. The Linux port
-does not open or execute the original `th08.exe`; a two-DAT directory was
-verified to start and create `th08.cfg` and `score.dat`. On a software-rendered
-VM, however, that fresh configuration defaults to fullscreen and the first-run
-FPS/vsync calibration can take long enough to look stalled. If a complete game
-directory starts faster, the relevant extra file is normally its existing
-`th08.cfg`, not the original EXE. Reusing that configuration, or selecting the
-complete installation directory, is the most convenient current VM path.
+does not open or execute the original `th08.exe`. A clean two-DAT directory
+previously exposed a Linux compatibility bug during the first score-backup
+rotation: Win32 rejects an invalid search handle harmlessly, while the Linux
+backend tried to delete it and crashed. The corrected backend now creates the
+backup and continues into the title assets with an initially empty `backup/`
+directory. On a software-rendered VM, a fresh configuration's fullscreen
+FPS/vsync calibration can still be slow; reusing an existing `th08.cfg` is an
+optional startup convenience, not a data requirement.
 
 The portable Linux window uses the project-owned
 [`resources/modern-icon.png`](resources/modern-icon.png), derived from the

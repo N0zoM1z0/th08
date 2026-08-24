@@ -63,12 +63,16 @@ Playable-port state on 2026-08-24:
   subsequently user-tested in a Kali Linux x86-64 GUI VM with native filesystem
   data, low memory, and no 3D acceleration. Normal life decrement remains
   active in this build;
-- a runtime A/B test verified that `th08.exe` is not opened and that a directory
-  with only `th08.dat` and `thbgm.dat` starts and creates configuration, score,
-  and log files. On the unaccelerated Kali VM, a fresh configuration's
-  fullscreen mode and first-run FPS/vsync calibration can look stalled; the
-  complete original directory appeared necessary only because it supplied an
-  existing `th08.cfg`.
+- the Kali artifact's clean-data-directory exit was reproduced locally with
+  the exact CI package: status 139, fault address `0xffffffff`, and a stack from
+  `FindClose` into `Supervisor::StartupThread`. The report was written under
+  `backup/modern-crash.txt` because the authored score-rotation code had already
+  changed directories. The Linux `FindClose` backend now returns `FALSE` for
+  null, `INVALID_HANDLE_VALUE`, or wrong-kind handles instead of deleting an
+  invalid pointer. A clean two-DAT regression with an empty backup directory
+  stayed alive, created the first score backup, and continued through the title
+  assets. `th08.exe` is not opened; an existing `th08.cfg` is only useful for
+  avoiding slow fullscreen calibration on unaccelerated VMs.
 
 Reproduce the build with:
 

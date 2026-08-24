@@ -45,15 +45,25 @@ relative-file behavior therefore reads and writes configuration, score,
 replay, screenshots, and diagnostic files there. The original executable is
 not read or executed by the Linux port.
 
-A runtime A/B test also verified that a directory containing only `th08.dat`
-and `thbgm.dat` starts without `th08.exe`, then creates `th08.cfg`, `score.dat`,
-and its logs. The apparent exception on an unaccelerated Kali VM was a first-run
-configuration effect: a newly generated configuration selects fullscreen and
-runs FPS/vsync calibration, which can saturate a software renderer long enough
-to look hung. A copied complete installation starts sooner because it normally
-brings an existing `th08.cfg`; the original EXE is not the dependency. Reusing
-that configuration is the current practical recommendation for low-resource
-VMs.
+A runtime A/B test verifies that a directory containing only `th08.dat` and
+`thbgm.dat` starts without `th08.exe`, then creates configuration, score,
+backup, and log files. The first version of that test was stopped during slow
+software-rendered calibration and therefore did not cover the subsequent
+score-backup path. On Kali, the exact CI artifact later exited with status 139
+immediately after its final `score.dat` access. Its crash report was easy to
+miss because `StartupThread` had already changed into `backup/`; the report was
+`backup/modern-crash.txt`, and its stack identified `FindClose` with fault
+address `0xffffffff`.
+
+The authored startup code follows the Win32 behavior of calling `FindClose`
+even when `FindFirstFileA` found no matching backup. Windows returns failure for
+`INVALID_HANDLE_VALUE`, but the initial Linux compatibility implementation
+deleted that sentinel as a pointer. The backend now rejects null, invalid, and
+wrong-kind find handles before deletion. A clean-directory regression creates
+the first score backup and reaches the title assets without a crash. A fresh
+fullscreen configuration can still make FPS/vsync calibration slow on a VM
+without accelerated OpenGL; reusing `th08.cfg` is optional and unrelated to the
+fixed exit.
 
 ## Downloadable CI package
 
