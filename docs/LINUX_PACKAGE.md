@@ -27,6 +27,14 @@ The directory must contain `th08.dat` and `thbgm.dat`. It may live anywhere;
 neither the launcher nor the executable has a hard-coded data path. The
 selected directory becomes the working directory, so configuration, score,
 replay, screenshot, and crash-diagnostic files are read or written there.
+The original `th08.exe` is not read or executed.
+
+A directory containing only the two DAT files is sufficient and the port will
+create `th08.cfg` and `score.dat`. On a VM without accelerated OpenGL, the
+fresh configuration's fullscreen startup and first-run FPS/vsync calibration
+may be very slow. Reusing an existing `th08.cfg`, or selecting the complete
+original installation directory that contains it, avoids that misleading
+first-start delay; the EXE's presence in that directory is incidental.
 
 ## Runtime requirements
 

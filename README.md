@@ -108,6 +108,27 @@ artifact. Extract it and pass only the original game-data directory:
 
 Neither path embeds the original executable or DAT archives.
 
+The native i386 build has been exercised under both WSLg and a Kali Linux
+x86-64 virtual machine. The Kali recording below was made in a low-memory VM
+without 3D acceleration; its slow first 45 seconds are shown at 8x speed, while
+the remainder plays at the recorded speed.
+
+<p align="center">
+  <img
+    src="resources/kali-linux-port.gif"
+    width="800"
+    alt="TH08 native Linux reconstruction starting and running on Kali Linux">
+</p>
+
+Only `th08.dat` and `thbgm.dat` are runtime data requirements. The Linux port
+does not open or execute the original `th08.exe`; a two-DAT directory was
+verified to start and create `th08.cfg` and `score.dat`. On a software-rendered
+VM, however, that fresh configuration defaults to fullscreen and the first-run
+FPS/vsync calibration can take long enough to look stalled. If a complete game
+directory starts faster, the relevant extra file is normally its existing
+`th08.cfg`, not the original EXE. Reusing that configuration, or selecting the
+complete installation directory, is the most convenient current VM path.
+
 The portable Linux window uses the project-owned
 [`resources/modern-icon.png`](resources/modern-icon.png), derived from the
 Touhou Lab artwork supplied for this reconstruction. It is not an icon

@@ -37,8 +37,8 @@ Playable-port state on 2026-08-24:
   keyboard input, sound effects, streamed WAV BGM, and the ending transition
   active. The endurance run used an external GDB command that suppressed life
   decrement only; that test aid is ignored and never shipped. No fatal signal
-  occurred. A real Linux desktop remains a separate release-validation
-  requirement;
+  occurred. A real Linux desktop with hardware OpenGL remains additional
+  release coverage;
 - `th08-layout.ld` now aliases target-owned manager, callback-chain, and known
   aggregate-field views to their original addresses. This prevents duplicate
   spell/ECL callbacks across reloads, which had manifested as negative spell
@@ -59,8 +59,16 @@ Playable-port state on 2026-08-24:
   is copied beside the ELF and loaded as the SDL window icon;
 - after the endurance pass, a fresh normal container build was linked without
   GDB or runtime patches, passed the ELF/layout/dependency/package checks, and
-  was user-smoke-tested successfully under WSLg. Normal life decrement remains
-  active in this build.
+  was user-smoke-tested successfully under WSLg. The CI portable package was
+  subsequently user-tested in a Kali Linux x86-64 GUI VM with native filesystem
+  data, low memory, and no 3D acceleration. Normal life decrement remains
+  active in this build;
+- a runtime A/B test verified that `th08.exe` is not opened and that a directory
+  with only `th08.dat` and `thbgm.dat` starts and creates configuration, score,
+  and log files. On the unaccelerated Kali VM, a fresh configuration's
+  fullscreen mode and first-run FPS/vsync calibration can look stalled; the
+  complete original directory appeared necessary only because it supplied an
+  existing `th08.cfg`.
 
 Reproduce the build with:
 

@@ -45,6 +45,16 @@ relative-file behavior therefore reads and writes configuration, score,
 replay, screenshots, and diagnostic files there. The original executable is
 not read or executed by the Linux port.
 
+A runtime A/B test also verified that a directory containing only `th08.dat`
+and `thbgm.dat` starts without `th08.exe`, then creates `th08.cfg`, `score.dat`,
+and its logs. The apparent exception on an unaccelerated Kali VM was a first-run
+configuration effect: a newly generated configuration selects fullscreen and
+runs FPS/vsync calibration, which can saturate a software renderer long enough
+to look hung. A copied complete installation starts sooner because it normally
+brings an existing `th08.cfg`; the original EXE is not the dependency. Reusing
+that configuration is the current practical recommendation for low-resource
+VMs.
+
 ## Downloadable CI package
 
 `.github/workflows/portable-linux.yml` builds the same source in the
@@ -233,16 +243,21 @@ Linux failures symbolizable without altering authored code. Runtime GDB
 patches used for endurance testing are analysis aids only and are never part
 of the shipped executable.
 
-### WSLg is useful but is not the final Linux host
+### Validated Linux environments
 
 WSLg exercises the native ELF, SDL, OpenGL, audio, Unicode path, and 32-bit
 runtime, so it is valuable for rapid iteration. Its window lifecycle, process
 signaling, GPU translation, and host-filesystem behavior differ from a normal
-Linux desktop. Final release validation still needs at least one real Linux
-GUI session with hardware OpenGL and native filesystem data. The WSLg
-endurance pass has reached a complete Lunatic story clear without a fatal
-signal; its external no-life-decrement GDB command was a test aid only and is
-not part of the executable or portable archive.
+Linux desktop. The WSLg endurance pass reached a complete Lunatic story clear
+without a fatal signal; its external no-life-decrement GDB command was a test
+aid only and is not part of the executable or portable archive.
+
+The downloadable portable package was also user-tested successfully in a Kali
+Linux x86-64 GUI virtual machine using native filesystem data. That VM had low
+memory and no 3D acceleration, making initial software-rendered calibration
+unusually slow, but the game started and ran. A physical Linux desktop with
+hardware OpenGL remains useful final release coverage rather than a prerequisite
+for calling the existing WSLg and Kali paths validated.
 
 ## Current limitations
 

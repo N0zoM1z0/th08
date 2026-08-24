@@ -105,6 +105,13 @@ directory. `--data-dir` changes to the selected directory before the original
 relative-file logic runs. The original executable and archives are never
 embedded or copied into the modern build.
 
+Only `th08.dat` and `thbgm.dat` are required at runtime; an A/B launch verified
+that the Linux executable does not read `th08.exe`. A fresh two-DAT directory
+generates its own configuration and score files. On low-resource virtual
+machines without accelerated OpenGL, the fresh fullscreen configuration and
+first-run FPS/vsync calibration can appear stalled, so reusing an existing
+`th08.cfg` or selecting the complete installation directory is recommended.
+
 The Linux renderer keeps the D3D8 backbuffer in an OpenGL framebuffer object
 and restores a clean scene snapshot while dialogue deliberately pauses
 background redraw. Its fixed-function mapping handles eye-space linear fog and
@@ -114,10 +121,11 @@ conversion provide the GDI text path used by Japanese dialogue.
 The currently validated Linux path reaches the title/menu, playable stages,
 and a complete story/ending transition with the player, enemies, bullets,
 backgrounds, HUD, Japanese dialogue text, keyboard input, sound effects, and
-streamed WAV BGM active. A fatal Linux signal writes `modern-crash.txt` next
-to the selected game data, with addresses that can be resolved against the
-non-PIE debug executable. MIDI output remains a compatibility follow-up;
-ordinary WAV-mode gameplay does not depend on it.
+streamed WAV BGM active. It has been exercised under WSLg and from the portable
+archive in a Kali Linux x86-64 GUI VM. A fatal Linux signal writes
+`modern-crash.txt` next to the selected game data, with addresses that can be
+resolved against the non-PIE debug executable. MIDI output remains a
+compatibility follow-up; ordinary WAV-mode gameplay does not depend on it.
 
 See [Native Linux playable reconstruction](LINUX_PORTING.md) for distribution
 notes, development overrides, architecture boundaries, failure analysis, and
