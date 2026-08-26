@@ -1,4 +1,5 @@
 #include "linux_compat.hpp"
+#include "solver_bridge.hpp"
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -298,6 +299,20 @@ void PumpSdlEvents(MSG *message, bool *hasMessage)
 void FillKeyboard(BYTE *state, bool directInput)
 {
     memset(state, 0, 256);
+    uint16_t solverInput = 0;
+    if (directInput && th08::modern::SolverBridgeReadInput(&solverInput))
+    {
+#define MAP_SOLVER_KEY(mask, key) state[(key)] = (solverInput & (mask)) ? 0x80 : 0
+        MAP_SOLVER_KEY(0x0010, DIK_UP); MAP_SOLVER_KEY(0x0020, DIK_DOWN);
+        MAP_SOLVER_KEY(0x0040, DIK_LEFT); MAP_SOLVER_KEY(0x0080, DIK_RIGHT);
+        MAP_SOLVER_KEY(0x0001, DIK_Z); MAP_SOLVER_KEY(0x0004, DIK_LSHIFT);
+        MAP_SOLVER_KEY(0x0008, DIK_ESCAPE); MAP_SOLVER_KEY(0x0100, DIK_LCONTROL);
+        MAP_SOLVER_KEY(0x0200, DIK_Q); MAP_SOLVER_KEY(0x0400, DIK_S);
+        MAP_SOLVER_KEY(0x0800, DIK_HOME); MAP_SOLVER_KEY(0x1000, DIK_RETURN);
+        MAP_SOLVER_KEY(0x2000, DIK_D); MAP_SOLVER_KEY(0x4000, DIK_R);
+#undef MAP_SOLVER_KEY
+        return;
+    }
     SDL_PumpEvents();
     const Uint8 *keys = SDL_GetKeyboardState(NULL);
 #define MAP_KEY(win, sdl) state[(win)] = keys[(sdl)] ? 0x80 : 0
@@ -449,14 +464,16 @@ void Sleep(DWORD milliseconds) { usleep(static_cast<useconds_t>(milliseconds) * 
 DWORD timeGetTime(void)
 {
     struct timeval value; gettimeofday(&value, NULL);
-    return static_cast<DWORD>(value.tv_sec * 1000ULL + value.tv_usec / 1000);
+    const uint64_t real = static_cast<uint64_t>(value.tv_sec) * 1000000ULL + value.tv_usec;
+    return static_cast<DWORD>(th08::modern::SolverBridgeVirtualMicroseconds(real) / 1000);
 }
 
 BOOL QueryPerformanceFrequency(LARGE_INTEGER *value) { value->QuadPart = 1000000; return TRUE; }
 BOOL QueryPerformanceCounter(LARGE_INTEGER *value)
 {
     struct timeval time; gettimeofday(&time, NULL);
-    value->QuadPart = time.tv_sec * 1000000LL + time.tv_usec; return TRUE;
+    const uint64_t real = static_cast<uint64_t>(time.tv_sec) * 1000000ULL + time.tv_usec;
+    value->QuadPart = th08::modern::SolverBridgeVirtualMicroseconds(real); return TRUE;
 }
 DWORD GetCurrentThreadId(void) { return CurrentThreadIdImpl(); }
 

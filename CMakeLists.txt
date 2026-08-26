@@ -85,6 +85,7 @@ elseif(UNIX AND NOT APPLE)
         src/modern/linux/d3dx8_compat.cpp
         src/modern/linux/linux_compat.cpp
         src/modern/linux/linux_runtime.cpp
+        src/modern/linux/solver_bridge.cpp
     )
     add_executable(th08-modern ${TH08_GAME_SOURCES})
 else()
