@@ -305,7 +305,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
         // outer/inner semantics.
         D3DXVECTOR3 lowerBounds(384.0f, 448.0f, 0.0f);
         D3DXVECTOR3 upperBounds(192.0f, 224.0f, 0.0f);
-        g_Player.FUN_00451670(
+        g_Player.CalcDamageToEnemy(
             reinterpret_cast<Float3 *>(&upperBounds), reinterpret_cast<Float3 *>(&lowerBounds),
             &reinterpret_cast<EnemyManager *>(this)->bosses[0]->playerShotHitAccumulator,
             &bombHit);
@@ -538,7 +538,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 if (!g_Spellcard.IsActive() || !reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(enemy)->HasAttachedEnemy() ||
                     !*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Player) + 0xFDC))
                 {
-                    damage = g_Player.FUN_00451670(
+                    damage = g_Player.CalcDamageToEnemy(
                         &reinterpret_cast<Enemy *>(enemy)->worldPosition,
                         &reinterpret_cast<Enemy *>(enemy)->hitboxDimensions,
                         &reinterpret_cast<Enemy *>(enemy)->playerShotHitAccumulator, &bombHit);
@@ -550,7 +550,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
 
                 if (reinterpret_cast<Enemy *>(enemy)->secondaryHitboxDimensions.x > 0.0f)
                 {
-                    extraDamage = g_Player.FUN_00451670(
+                    extraDamage = g_Player.CalcDamageToEnemy(
                         &reinterpret_cast<Enemy *>(enemy)->worldPosition,
                         &reinterpret_cast<Enemy *>(enemy)->secondaryHitboxDimensions,
                         &reinterpret_cast<Enemy *>(enemy)->playerShotHitAccumulator, &bombHit);

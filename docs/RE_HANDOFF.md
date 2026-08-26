@@ -276,6 +276,24 @@ components, several gauge timers, PlayerShot internals, and most PlayerBomb
 work-item protocols remain open.  The next coherent batch is PlayerShot runtime
 and SHT descriptors, followed by the adjacent PlayerBomb work-item callbacks.
 
+The second accepted Player-core batch closes that PlayerShot/SHT family.  The
+SHT owner now exposes its power-level rows and `0x38`-byte shot descriptors,
+including schedule, geometry, damage/type/animation/sound metadata and four
+typed callbacks.  `PlayerShot` remains `0x484` bytes while naming its VM,
+position history, hitbox/velocity/speed/angle, timer/state/type, persistent
+timeline metadata, tint, callbacks, and originating descriptor.  Player owns
+the persistent descriptor slots, shot-hit effect counter, and base shot angle.
+Twenty-one helpers now carry behavior-backed initialization, scheduled spawn,
+homing/falling/persistent/trail, update/draw, hit-behavior, and damage names;
+`CalcDamageToEnemy @ 0x00451670` matches TH07 only as corroboration and remains
+accepted against TH08 target bytes.  Focused Player plus EnemyManagerUpdate
+replay passes **52 / 52**, including all 22 directly edited units.  The shared
+header replay then passed **1,105 / 1,105** accepted units from a single-job
+cold VC7 build; the normal VC7 image linked, and the complete i386 Linux build
+and fixed-layout verifier passed.  Remaining neutral fields include SHT
+header `+0x20/+0x34`, shot `+0x448/+0x46D/+0x471`, and the wider PlayerBomb
+work-item protocol.  PlayerBomb is the next coherent Player-core family.
+
 Select the next independent field family with:
 
 ```bash

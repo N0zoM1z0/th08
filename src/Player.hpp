@@ -9,10 +9,19 @@ namespace th08
 {
 
 struct AnmLoaded;
+struct PlayerShotDescriptor;
+
+struct PlayerShotPowerLevel
+{
+    PlayerShotDescriptor *descriptors;
+    i32 minimumPower;
+};
+C_ASSERT(sizeof(PlayerShotPowerLevel) == 0x8);
 
 struct PlayerRawShtFile
 {
-    unknown_fields(0x0, 0x4);
+    u16 unknownHeaderWord;
+    u16 shotPowerLevelCount;
     f32 initialBombCount;
     i32 deathbombWindowFrames;
     f32 hurtboxSize;
@@ -25,7 +34,10 @@ struct PlayerRawShtFile
     f32 focusedAxisSpeed;
     f32 normalDiagonalSpeed;
     f32 focusedDiagonalSpeed;
+    u32 unknownHeaderValue;
+    PlayerShotPowerLevel shotPowerLevels[1];
 };
+C_ASSERT(offsetof(PlayerRawShtFile, shotPowerLevelCount) == 0x2);
 C_ASSERT(offsetof(PlayerRawShtFile, initialBombCount) == 0x4);
 C_ASSERT(offsetof(PlayerRawShtFile, deathbombWindowFrames) == 0x8);
 C_ASSERT(offsetof(PlayerRawShtFile, hurtboxSize) == 0xC);
@@ -37,7 +49,7 @@ C_ASSERT(offsetof(PlayerRawShtFile, normalAxisSpeed) == 0x24);
 C_ASSERT(offsetof(PlayerRawShtFile, focusedAxisSpeed) == 0x28);
 C_ASSERT(offsetof(PlayerRawShtFile, normalDiagonalSpeed) == 0x2C);
 C_ASSERT(offsetof(PlayerRawShtFile, focusedDiagonalSpeed) == 0x30);
-C_ASSERT(sizeof(PlayerRawShtFile) == 0x34);
+C_ASSERT(offsetof(PlayerRawShtFile, shotPowerLevels) == 0x38);
 
 struct PlayerUnkStruct0x40
 {
@@ -176,7 +188,50 @@ C_ASSERT(offsetof(PlayerBombState, drawCallbacks) == 0x38);
 C_ASSERT(offsetof(PlayerBombState, workItems) == 0x4C);
 
 struct PlayerShot;
+typedef i32 (__fastcall *PlayerShotSpawnCallback)(Player *player, PlayerShot *shot,
+                                                  i32 shotTimer,
+                                                  PlayerShotDescriptor *descriptor);
+typedef i32 (__fastcall *PlayerShotUpdateCallback)(Player *player, PlayerShot *shot);
+typedef i32 (__fastcall *PlayerShotDrawCallback)(Player *player, PlayerShot *shot);
 typedef i32 (__fastcall *PlayerShotCollisionCallback)(Player *player, PlayerShot *shot, Float3 *enemyPosition);
+
+struct PlayerShotDescriptor
+{
+    i16 fireInterval;
+    i16 fireFrame;
+    Float2 positionOffset;
+    Float2 hitboxSize;
+    f32 angle;
+    f32 speed;
+    i16 damage;
+    i16 extremeGaugeBehavior;
+    i16 sourceOptionIndex;
+    i16 shotType;
+    i16 animationIndex;
+    i16 soundIndex;
+    PlayerShotSpawnCallback spawnCallback;
+    PlayerShotUpdateCallback updateCallback;
+    PlayerShotDrawCallback drawCallback;
+    PlayerShotCollisionCallback collisionCallback;
+};
+C_ASSERT(sizeof(PlayerShotDescriptor) == 0x38);
+C_ASSERT(offsetof(PlayerShotDescriptor, positionOffset) == 0x4);
+C_ASSERT(offsetof(PlayerShotDescriptor, hitboxSize) == 0xC);
+C_ASSERT(offsetof(PlayerShotDescriptor, angle) == 0x14);
+C_ASSERT(offsetof(PlayerShotDescriptor, speed) == 0x18);
+C_ASSERT(offsetof(PlayerShotDescriptor, damage) == 0x1C);
+C_ASSERT(offsetof(PlayerShotDescriptor, sourceOptionIndex) == 0x20);
+C_ASSERT(offsetof(PlayerShotDescriptor, spawnCallback) == 0x28);
+C_ASSERT(offsetof(PlayerShotDescriptor, updateCallback) == 0x2C);
+C_ASSERT(offsetof(PlayerShotDescriptor, drawCallback) == 0x30);
+C_ASSERT(offsetof(PlayerShotDescriptor, collisionCallback) == 0x34);
+
+enum PlayerShotState
+{
+    PLAYER_SHOT_INACTIVE,
+    PLAYER_SHOT_ACTIVE,
+    PLAYER_SHOT_HIT,
+};
 
 struct PlayerShotVelocity
 {
@@ -184,28 +239,59 @@ struct PlayerShotVelocity
     f32 y;
     f32 z;
 };
+C_ASSERT(sizeof(PlayerShotVelocity) == 0xC);
 
 struct PlayerShot
 {
     AnmVm vm;
     Float3 position;
-    Float3 vectors[32];
+    Float3 positionHistory[32];
     Float3 hitboxSize;
     PlayerShotVelocity velocity;
-    unknown_fields(0x448, 0xC);
+    f32 auxiliaryValue;
+    f32 speed;
+    f32 angle;
     ZunTimer timer;
     i16 damage;
     i16 state;
-    i16 type;
-    unknown_fields(0x466, 8);
+    i16 shotType;
+    i16 timelineIndex;
+    i16 sourceOptionIndex;
+    i16 trailSegmentCount;
+    u8 optionModeFlag;
+    u8 unknown46D;
     i16 animationIndex;
-    unknown_fields(0x470, 0xC);
+    i8 tintInExtremeYoukai;
+    u8 unknown471[3];
+    PlayerShotUpdateCallback updateCallback;
+    PlayerShotDrawCallback drawCallback;
     PlayerShotCollisionCallback collisionCallback;
-    void *shtEntry;
+    PlayerShotDescriptor *descriptor;
 
     PlayerShot();
 };
 C_ASSERT(sizeof(PlayerShot) == 0x484);
+C_ASSERT(offsetof(PlayerShot, position) == 0x2A4);
+C_ASSERT(offsetof(PlayerShot, positionHistory) == 0x2B0);
+C_ASSERT(offsetof(PlayerShot, hitboxSize) == 0x430);
+C_ASSERT(offsetof(PlayerShot, velocity) == 0x43C);
+C_ASSERT(offsetof(PlayerShot, auxiliaryValue) == 0x448);
+C_ASSERT(offsetof(PlayerShot, speed) == 0x44C);
+C_ASSERT(offsetof(PlayerShot, angle) == 0x450);
+C_ASSERT(offsetof(PlayerShot, timer) == 0x454);
+C_ASSERT(offsetof(PlayerShot, damage) == 0x460);
+C_ASSERT(offsetof(PlayerShot, state) == 0x462);
+C_ASSERT(offsetof(PlayerShot, shotType) == 0x464);
+C_ASSERT(offsetof(PlayerShot, timelineIndex) == 0x466);
+C_ASSERT(offsetof(PlayerShot, sourceOptionIndex) == 0x468);
+C_ASSERT(offsetof(PlayerShot, trailSegmentCount) == 0x46A);
+C_ASSERT(offsetof(PlayerShot, optionModeFlag) == 0x46C);
+C_ASSERT(offsetof(PlayerShot, animationIndex) == 0x46E);
+C_ASSERT(offsetof(PlayerShot, tintInExtremeYoukai) == 0x470);
+C_ASSERT(offsetof(PlayerShot, updateCallback) == 0x474);
+C_ASSERT(offsetof(PlayerShot, drawCallback) == 0x478);
+C_ASSERT(offsetof(PlayerShot, collisionCallback) == 0x47C);
+C_ASSERT(offsetof(PlayerShot, descriptor) == 0x480);
 
 struct Player
 {
@@ -249,9 +335,10 @@ struct Player
     PlayerRawShtFile *primaryShtFile;
     PlayerRawShtFile *secondaryShtFile;
     i32 itemTimeOrbMode;
-    unknown_fields(0xE2A80, 0x10);
+    PlayerShotDescriptor *persistentShotDescriptors[4];
     i32 bulletCancelItemType;
-    unknown_fields(0xE2A94, 0x4);
+    u8 shotHitEffectCounter;
+    u8 unknownE2A95[3];
     PlayerMovementDirection movementDirection;
     f32 currentHorizontalSpeed;
     f32 currentVerticalSpeed;
@@ -265,7 +352,7 @@ struct Player
     ZunTimer timerE2AE8;
     ZunTimer timer;
     ZunTimer timerE2B00;
-    unknown_fields(0xE2B0C, 4);
+    f32 baseShotAngle;
     ChainElem *calcChain;
     ChainElem *drawChainHighPrio;
     ChainElem *drawChainLowPrio;
@@ -296,17 +383,21 @@ struct Player
     void FUN_0044d180();
     i32 UpdateMovementAndOptions();
     void FUN_0044d420();
-    i32 __fastcall FUN_0044fd80(u8 *slot, i32 value, u8 *entry);
-    void __fastcall FUN_0044fb70(u8 *slot, u8 *entry);
-    i32 __fastcall FUN_0044fdd0(u8 *slot, i32 value, u8 *entry);
-    i32 __fastcall FUN_0044fe20(u8 *slot, i32 value, u8 *entry);
-    i32 __fastcall FUN_0044ffa0(u8 *slot, i32 value, u8 *entry);
-    void FUN_00451150();
-    void FUN_004512f0();
-    void FUN_00451400();
+    i32 __fastcall SpawnShotOnSchedule(PlayerShot *shot, i32 value,
+                                       PlayerShotDescriptor *descriptor);
+    void __fastcall InitializeShot(PlayerShot *shot, PlayerShotDescriptor *descriptor);
+    i32 __fastcall SpawnShotOnScheduleUnlessBombing(PlayerShot *shot, i32 value,
+                                                    PlayerShotDescriptor *descriptor);
+    i32 __fastcall SpawnPersistentShot(PlayerShot *shot, i32 value,
+                                       PlayerShotDescriptor *descriptor);
+    i32 __fastcall SpawnShotAimedAtTrackedPoint(PlayerShot *shot, i32 value,
+                                                PlayerShotDescriptor *descriptor);
+    void UpdateShots();
+    void DrawActiveShots();
+    void DrawHitShots();
     i32 UpdateShooting();
     void StartShooting();
-    i32 FUN_00451670(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccumulator, i32 *bombHit);
+    i32 CalcDamageToEnemy(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccumulator, i32 *bombHit);
     void __fastcall SpawnShots(i32 value);
     i32 IsBombShotSuppressed();
 
@@ -355,7 +446,9 @@ C_ASSERT(offsetof(Player, playerStateSlotCooldown) == 0xE2A70);
 C_ASSERT(offsetof(Player, primaryShtFile) == 0xE2A74);
 C_ASSERT(offsetof(Player, secondaryShtFile) == 0xE2A78);
 C_ASSERT(offsetof(Player, itemTimeOrbMode) == 0xE2A7C);
+C_ASSERT(offsetof(Player, persistentShotDescriptors) == 0xE2A80);
 C_ASSERT(offsetof(Player, bulletCancelItemType) == 0xE2A90);
+C_ASSERT(offsetof(Player, shotHitEffectCounter) == 0xE2A94);
 C_ASSERT(offsetof(Player, movementDirection) == 0xE2A98);
 C_ASSERT(offsetof(Player, currentHorizontalSpeed) == 0xE2A9C);
 C_ASSERT(offsetof(Player, currentVerticalSpeed) == 0xE2AA0);
@@ -363,6 +456,7 @@ C_ASSERT(offsetof(Player, tailPosition0) == 0xE2AA4);
 C_ASSERT(offsetof(Player, optionHomingTarget) == 0xE2ABC);
 C_ASSERT(offsetof(Player, enemyTrackedPositionValid) == 0xE2AC0);
 C_ASSERT(offsetof(Player, shotTimer) == 0xE2AC4);
+C_ASSERT(offsetof(Player, baseShotAngle) == 0xE2B0C);
 C_ASSERT(offsetof(Player, timer) == 0xE2AF4);
 C_ASSERT(offsetof(Player, calcChain) == 0xE2B10);
 C_ASSERT(offsetof(Player, extremeGaugeEffect) == 0xE2B24);

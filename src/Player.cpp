@@ -102,9 +102,6 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerBombCallbacks, 24, g_PlayerBombCallbackTable)
     {{FUN_00413140, FUN_00413140, FUN_00413990, FUN_00413990, FUN_0040d100}},
     {{FUN_00413890, FUN_00413890, FUN_004142c0, FUN_004142c0, FUN_0040d310}},
 };
-typedef i32 (__fastcall *PlayerShotUpdateCallback)(Player *, PlayerShot *, i32, u8 *);
-typedef i32 (__fastcall *PlayerShotRenderCallback)(Player *, PlayerShot *);
-
 i32 __fastcall FUN_0044e3a0(Player *player, PlayerOptionState *option);
 i32 __fastcall FUN_0044ea40(Player *player, PlayerOptionState *option);
 i32 __fastcall FUN_0044eb70(Player *player, PlayerOptionState *option);
@@ -113,31 +110,40 @@ i32 __fastcall FUN_0044f2d0(Player *player, PlayerOptionState *option);
 i32 __fastcall FUN_0044f5e0(Player *player, PlayerOptionState *option);
 i32 __fastcall FUN_0044f930(Player *player, PlayerOptionState *option);
 i32 __fastcall PlayerRoute2OptionRender(Player *player, u8 *option);
-i32 __fastcall FUN_00450080(Player *player, PlayerShot *slot, i32 value, u8 *entry);
-i32 __fastcall FUN_00450110(Player *player, PlayerShot *slot, i32 value, u8 *entry);
-i32 __fastcall FUN_004501b0(Player *player, PlayerShot *slot, i32 value, u8 *entry);
-i32 __fastcall FUN_00450240(Player *player, PlayerShot *slot, i32 value, u8 *entry);
-i32 __fastcall FUN_00450320(Player *player, PlayerShot *slot);
-i32 __fastcall FUN_00450580(Player *player, PlayerShot *slot);
-i32 __fastcall FUN_004505d0(Player *player, PlayerShot *slot);
-i32 __fastcall FUN_00450840(Player *player, PlayerShot *slot);
-i32 __fastcall FUN_00450ad0(Player *player, PlayerShot *slot);
-i32 __fastcall FUN_00450c50(Player *player, PlayerShot *slot, Float3 *effectPosition);
-i32 __fastcall FUN_00450ee0(Player *player, PlayerShot *slot, Float3 *effectPosition);
+i32 __fastcall SpawnShotAlongPlayerAngle(Player *player, PlayerShot *shot, i32 value,
+                                         PlayerShotDescriptor *descriptor);
+i32 __fastcall SpawnShotAlongOptionAngle(Player *player, PlayerShot *shot, i32 value,
+                                         PlayerShotDescriptor *descriptor);
+i32 __fastcall SpawnRandomizedShot(Player *player, PlayerShot *shot, i32 value,
+                                   PlayerShotDescriptor *descriptor);
+i32 __fastcall SpawnHomingShot(Player *player, PlayerShot *shot, i32 value,
+                               PlayerShotDescriptor *descriptor);
+i32 __fastcall UpdateHomingShot(Player *player, PlayerShot *shot);
+i32 __fastcall UpdateFallingShot(Player *player, PlayerShot *shot);
+i32 __fastcall UpdatePersistentShot(Player *player, PlayerShot *shot);
+i32 __fastcall UpdateShotTrail(Player *player, PlayerShot *shot);
+i32 __fastcall DrawShotTrail(Player *player, PlayerShot *shot);
+i32 __fastcall ApplyShotHitBehavior(Player *player, PlayerShot *shot, Float3 *effectPosition);
+i32 __fastcall SpawnPeriodicShotHitEffect(Player *player, PlayerShot *shot,
+                                          Float3 *effectPosition);
 
-static i32 __fastcall PlayerShotUpdateFdd0(Player *player, PlayerShot *slot, i32 value, u8 *entry)
+static i32 __fastcall SpawnShotUnlessBombingCallback(Player *player, PlayerShot *shot,
+                                                     i32 value, PlayerShotDescriptor *descriptor)
 {
-    return player->FUN_0044fdd0(reinterpret_cast<u8 *>(slot), value, entry);
+    return player->SpawnShotOnScheduleUnlessBombing(shot, value, descriptor);
 }
 
-static i32 __fastcall PlayerShotUpdateFe20(Player *player, PlayerShot *slot, i32 value, u8 *entry)
+static i32 __fastcall SpawnPersistentShotCallback(Player *player, PlayerShot *shot,
+                                                  i32 value, PlayerShotDescriptor *descriptor)
 {
-    return player->FUN_0044fe20(reinterpret_cast<u8 *>(slot), value, entry);
+    return player->SpawnPersistentShot(shot, value, descriptor);
 }
 
-static i32 __fastcall PlayerShotUpdateFfa0(Player *player, PlayerShot *slot, i32 value, u8 *entry)
+static i32 __fastcall SpawnShotAimedAtTrackedPointCallback(Player *player, PlayerShot *shot,
+                                                           i32 value,
+                                                           PlayerShotDescriptor *descriptor)
 {
-    return player->FUN_0044ffa0(reinterpret_cast<u8 *>(slot), value, entry);
+    return player->SpawnShotAimedAtTrackedPoint(shot, value, descriptor);
 }
 
 struct PlayerOptionCallbackRow
@@ -185,19 +191,20 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerOptionCallback, 4, g_PlayerRoute3ExitUpdateCa
 DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerOptionCallback, 4, g_PlayerRoute3ExitRenderCallbacks) = {
     NULL, NULL, reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender), NULL};
 
-DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotUpdateCallback, 9, g_PlayerShotUpdateCallbacks) = {
-    NULL, FUN_00450240, PlayerShotUpdateFdd0, PlayerShotUpdateFdd0, PlayerShotUpdateFe20,
-    PlayerShotUpdateFfa0, FUN_00450080, FUN_004501b0, FUN_00450110};
-DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotRenderCallback, 6, g_PlayerShotRenderCallbacks) = {
-    NULL, FUN_00450320, NULL, FUN_00450580, FUN_004505d0, FUN_00450840};
-DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotRenderCallback, 2, g_PlayerShotTimerCallbacks) = {
-    NULL, FUN_00450ad0};
+DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotSpawnCallback, 9, g_PlayerShotSpawnCallbacks) = {
+    NULL, SpawnHomingShot, SpawnShotUnlessBombingCallback, SpawnShotUnlessBombingCallback,
+    SpawnPersistentShotCallback, SpawnShotAimedAtTrackedPointCallback,
+    SpawnShotAlongPlayerAngle, SpawnRandomizedShot, SpawnShotAlongOptionAngle};
+DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotUpdateCallback, 6, g_PlayerShotUpdateCallbacks) = {
+    NULL, UpdateHomingShot, NULL, UpdateFallingShot, UpdatePersistentShot, UpdateShotTrail};
+DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotDrawCallback, 2, g_PlayerShotDrawCallbacks) = {
+    NULL, DrawShotTrail};
 typedef void *PlayerShotCollisionOrDifficultyEntry;
 DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotCollisionOrDifficultyEntry, 9,
                              g_PlayerShotCollisionOrDifficultyTable) = {
     NULL,
-    reinterpret_cast<void *>(FUN_00450c50),
-    reinterpret_cast<void *>(FUN_00450ee0),
+    reinterpret_cast<void *>(ApplyShotHitBehavior),
+    reinterpret_cast<void *>(SpawnPeriodicShotHitEffect),
     const_cast<char *>("Easy"),
     const_cast<char *>("Normal"),
     const_cast<char *>("Hard"),
@@ -1075,7 +1082,7 @@ updateD180:
         player->UpdateMovementAndOptions();
     }
     g_AnmManager->ExecuteScript(&player->mainVm);
-    player->FUN_00451150();
+    player->UpdateShots();
     player->UpdateShooting();
     player->FUN_0044d420();
     if (!g_Gui.IsDialogPresent())
@@ -1502,7 +1509,7 @@ ChainCallbackResult Player::OnDrawHighPrio(Player *player)
 {
     u32 i;
 
-    player->FUN_004512f0();
+    player->DrawActiveShots();
 
     if (player->bombState.isInUse != 0)
     {
@@ -1533,7 +1540,7 @@ ChainCallbackResult Player::OnDrawHighPrio(Player *player)
 // FUNCTION: th08 0x44d630
 ChainCallbackResult Player::OnDrawLowPrio(Player *player)
 {
-    player->FUN_00451400();
+    player->DrawHitShots();
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
@@ -1721,11 +1728,11 @@ void Player::CutChain()
 }
 
 // FUNCTION: th08 0x44dd70
-#pragma var_order(i, entry, header, path)
+#pragma var_order(i, descriptor, header, path)
 ZunResult Player::LoadShtFile(PlayerRawShtFile **header, const char *path)
 {
     i32 i;
-    u8 *entry;
+    PlayerShotDescriptor *descriptor;
 
     *header = reinterpret_cast<PlayerRawShtFile *>(FileSystem::OpenFile(path, NULL, 0));
     if (*header == NULL)
@@ -1733,24 +1740,25 @@ ZunResult Player::LoadShtFile(PlayerRawShtFile **header, const char *path)
         return ZUN_ERROR;
     }
 
-    for (i = 0; i < *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(*header) + 0x2); i++)
+    for (i = 0; i < (*header)->shotPowerLevelCount; i++)
     {
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(*header) + i * 8 + 0x38) +=
+        reinterpret_cast<u32 &>((*header)->shotPowerLevels[i].descriptors) +=
             reinterpret_cast<u32>(*header);
-        entry = *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(*header) + i * 8 + 0x38);
+        descriptor = (*header)->shotPowerLevels[i].descriptors;
 
-        while (*reinterpret_cast<i16 *>(entry) >= 0)
+        while (descriptor->fireInterval >= 0)
         {
-            *reinterpret_cast<PlayerShotUpdateCallback *>(entry + 0x28) =
-                g_PlayerShotUpdateCallbacks[*reinterpret_cast<u32 *>(entry + 0x28)];
-            *reinterpret_cast<PlayerShotRenderCallback *>(entry + 0x2C) =
-                g_PlayerShotRenderCallbacks[*reinterpret_cast<u32 *>(entry + 0x2C)];
-            *reinterpret_cast<PlayerShotRenderCallback *>(entry + 0x30) =
-                g_PlayerShotTimerCallbacks[*reinterpret_cast<u32 *>(entry + 0x30)];
+            descriptor->spawnCallback =
+                g_PlayerShotSpawnCallbacks[reinterpret_cast<u32>(descriptor->spawnCallback)];
+            descriptor->updateCallback =
+                g_PlayerShotUpdateCallbacks[reinterpret_cast<u32>(descriptor->updateCallback)];
+            descriptor->drawCallback =
+                g_PlayerShotDrawCallbacks[reinterpret_cast<u32>(descriptor->drawCallback)];
 
-            *reinterpret_cast<PlayerShotCollisionOrDifficultyEntry *>(entry + 0x34) =
-                g_PlayerShotCollisionOrDifficultyTable[*reinterpret_cast<u32 *>(entry + 0x34)];
-            entry += 0x38;
+            descriptor->collisionCallback = reinterpret_cast<PlayerShotCollisionCallback>(
+                g_PlayerShotCollisionOrDifficultyTable[
+                    reinterpret_cast<u32>(descriptor->collisionCallback)]);
+            descriptor++;
         }
     }
 
@@ -2572,62 +2580,61 @@ i32 __fastcall FUN_0044f930(Player *player, PlayerOptionState *option)
 }
 
 // FUNCTION: th08 0x44fb70
-void __fastcall Player::FUN_0044fb70(u8 *slot, u8 *entry)
+void __fastcall Player::InitializeShot(PlayerShot *slot, PlayerShotDescriptor *entry)
 {
-    if (*reinterpret_cast<i16 *>(entry + 0x20) == 0)
+    if (entry->sourceOptionIndex == 0)
     {
-        *reinterpret_cast<Float3 *>(slot + 0x2A4) = this->position;
+        slot->position = this->position;
     }
     else
     {
-        *reinterpret_cast<Float3 *>(slot + 0x2A4) = *reinterpret_cast<Float3 *>(
-            reinterpret_cast<u8 *>(this) + ((*reinterpret_cast<i16 *>(entry + 0x20) - 1) * 0x2F4) + 0x6B0);
+        slot->position = this->optionStates[entry->sourceOptionIndex - 1].position;
     }
 
-    reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[0] += *reinterpret_cast<f32 *>(entry + 0x4);
-    reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[1] += *reinterpret_cast<f32 *>(entry + 0x8);
-    reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[2] = 0.495f;
+    slot->position.operator float *()[0] += entry->positionOffset.x;
+    slot->position.operator float *()[1] += entry->positionOffset.y;
+    slot->position.operator float *()[2] = 0.495f;
 
-    *reinterpret_cast<u32 *>(slot + 0x430) = *reinterpret_cast<u32 *>(entry + 0x0C);
-    *reinterpret_cast<u32 *>(slot + 0x434) = *reinterpret_cast<u32 *>(entry + 0x10);
-    *reinterpret_cast<f32 *>(slot + 0x438) = 1.0f;
-    *reinterpret_cast<u32 *>(slot + 0x450) = *reinterpret_cast<u32 *>(entry + 0x14);
-    *reinterpret_cast<u32 *>(slot + 0x44C) = *reinterpret_cast<u32 *>(entry + 0x18);
-    *reinterpret_cast<f32 *>(slot + 0x43C) = cosf(*reinterpret_cast<f32 *>(entry + 0x14)) * *reinterpret_cast<f32 *>(entry + 0x18);
-    *reinterpret_cast<f32 *>(slot + 0x440) = sinf(*reinterpret_cast<f32 *>(entry + 0x14)) * *reinterpret_cast<f32 *>(entry + 0x18);
+    slot->hitboxSize.x = entry->hitboxSize.x;
+    slot->hitboxSize.y = entry->hitboxSize.y;
+    slot->hitboxSize.z = 1.0f;
+    slot->angle = entry->angle;
+    slot->speed = entry->speed;
+    slot->velocity.x = cosf(entry->angle) * entry->speed;
+    slot->velocity.y = sinf(entry->angle) * entry->speed;
 
-    *reinterpret_cast<ZunTimer *>(slot + 0x454) = 0;
-    *reinterpret_cast<u8 *>(slot + 0x46C) = *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3);
-    *reinterpret_cast<i16 *>(slot + 0x464) = *reinterpret_cast<i16 *>(entry + 0x22);
-    *reinterpret_cast<i16 *>(slot + 0x460) = *reinterpret_cast<i16 *>(entry + 0x1C);
-    *reinterpret_cast<i16 *>(slot + 0x46E) = *reinterpret_cast<i16 *>(entry + 0x24);
+    slot->timer = 0;
+    slot->optionModeFlag = this->optionModeFlag;
+    slot->shotType = entry->shotType;
+    slot->damage = entry->damage;
+    slot->animationIndex = entry->animationIndex;
 
-    if (*reinterpret_cast<i16 *>(entry + 0x26) >= 0)
+    if (entry->soundIndex >= 0)
     {
-        g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(*reinterpret_cast<i16 *>(entry + 0x26)),
+        g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(entry->soundIndex),
                                                this->position.x);
     }
 
-    this->anmFile->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(slot),
-                                          *reinterpret_cast<i16 *>(entry + 0x24) + 10);
+    this->anmFile->SetAndExecuteScriptIdx(&slot->vm, entry->animationIndex + 10);
 
-    *reinterpret_cast<u8 *>(slot + 0x470) = 0;
+    slot->tintInExtremeYoukai = 0;
     if (g_GameManager.GaugeIsExtremelyYoukai())
     {
-        if (*reinterpret_cast<i16 *>(entry + 0x1E) > 0)
+        if (entry->extremeGaugeBehavior > 0)
         {
-            *reinterpret_cast<u8 *>(slot + 0x470) = 1;
+            slot->tintInExtremeYoukai = 1;
         }
     }
 }
 
 // FUNCTION: th08 0x44fd80
 #pragma var_order(slot, this)
-i32 __fastcall Player::FUN_0044fd80(u8 *slot, i32 value, u8 *entry)
+i32 __fastcall Player::SpawnShotOnSchedule(PlayerShot *slot, i32 value,
+                                           PlayerShotDescriptor *entry)
 {
-    if (value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
+    if (value % entry->fireInterval == entry->fireFrame)
     {
-        this->FUN_0044fb70(slot, entry);
+        this->InitializeShot(slot, entry);
         return 1;
     }
 
@@ -2637,12 +2644,13 @@ i32 __fastcall Player::FUN_0044fd80(u8 *slot, i32 value, u8 *entry)
 
 // FUNCTION: th08 0x44fdd0
 #pragma var_order(slot, this)
-i32 __fastcall Player::FUN_0044fdd0(u8 *slot, i32 value, u8 *entry)
+i32 __fastcall Player::SpawnShotOnScheduleUnlessBombing(PlayerShot *slot, i32 value,
+                                                        PlayerShotDescriptor *entry)
 {
     if (this->bombState.isInUse == 0 &&
-        value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
+        value % entry->fireInterval == entry->fireFrame)
     {
-        this->FUN_0044fb70(slot, entry);
+        this->InitializeShot(slot, entry);
         return 1;
     }
 
@@ -2651,12 +2659,13 @@ i32 __fastcall Player::FUN_0044fdd0(u8 *slot, i32 value, u8 *entry)
 
 // FUNCTION: th08 0x44fe20
 #pragma var_order(index, i, this, slot)
-i32 __fastcall Player::FUN_0044fe20(u8 *slot, i32 value, u8 *entry)
+i32 __fastcall Player::SpawnPersistentShot(PlayerShot *slot, i32 value,
+                                           PlayerShotDescriptor *entry)
 {
     i32 index;
     i32 i;
 
-    index = *reinterpret_cast<i16 *>(entry + 2);
+    index = entry->fireFrame;
     if (this->bombState.isInUse != 0)
     {
         return 0;
@@ -2666,54 +2675,55 @@ i32 __fastcall Player::FUN_0044fe20(u8 *slot, i32 value, u8 *entry)
         return 0;
     }
 
-    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xE2A44 + (index << 4)) != 0)
+    if (this->timelines[index].instruction != NULL)
     {
-        if (*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2A80 + index * 4) != entry)
+        if (this->persistentShotDescriptors[index] != entry)
         {
-            *reinterpret_cast<i16 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2A44 + (index << 4)) + 0x1FE) = 1;
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xE2A44 + (index << 4)) = 0;
+            reinterpret_cast<PlayerShot *>(this->timelines[index].instruction)->vm.pendingInterrupt = 1;
+            this->timelines[index].instruction = NULL;
         }
         return 0;
     }
 
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2A38 + (index << 4)) = 999;
-    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2A44 + (index << 4)) = slot;
-    *reinterpret_cast<i16 *>(slot + 0x466) = index;
-    *reinterpret_cast<i16 *>(slot + 0x468) = *reinterpret_cast<i16 *>(entry + 0x20);
-    *reinterpret_cast<u32 *>(slot + 0x444) = *reinterpret_cast<u32 *>(entry + 4);
-    *reinterpret_cast<u32 *>(slot + 0x448) = *reinterpret_cast<u32 *>(entry + 8);
-    *reinterpret_cast<i16 *>(slot + 0x46A) = *reinterpret_cast<i16 *>(entry);
-    this->FUN_0044fb70(slot, entry);
+    this->timelines[index].timer = 999;
+    this->timelines[index].instruction = reinterpret_cast<EclTimelineInstruction *>(slot);
+    slot->timelineIndex = static_cast<i16>(index);
+    slot->sourceOptionIndex = entry->sourceOptionIndex;
+    slot->velocity.z = entry->positionOffset.x;
+    slot->auxiliaryValue = entry->positionOffset.y;
+    slot->trailSegmentCount = entry->fireInterval;
+    this->InitializeShot(slot, entry);
 
     for (i = 31; i >= 0; i--)
     {
-        *reinterpret_cast<u32 *>(slot + i * 0xC + 0x2B0) = 0xC479C000;
+        *reinterpret_cast<u32 *>(&slot->positionHistory[i].x) = 0xC479C000;
     }
-    *reinterpret_cast<u32 *>(slot + 0x2A4) = 0xC479C000;
-    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2A80 + index * 4) = entry;
+    *reinterpret_cast<u32 *>(&slot->position.x) = 0xC479C000;
+    this->persistentShotDescriptors[index] = entry;
 
     return 1;
 }
 
 // FUNCTION: th08 0x44ffa0
 #pragma var_order(magnitude, angle, this, slot)
-i32 __fastcall Player::FUN_0044ffa0(u8 *slot, i32 value, u8 *entry)
+i32 __fastcall Player::SpawnShotAimedAtTrackedPoint(PlayerShot *slot, i32 value,
+                                                    PlayerShotDescriptor *entry)
 {
     f32 angle;
     f32 magnitude;
 
-    if (value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
+    if (value % entry->fireInterval == entry->fireFrame)
     {
-        this->FUN_0044fb70(slot, entry);
-        if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2AB0) > -100.0f)
+        this->InitializeShot(slot, entry);
+        if (this->tailPosition1.x > -100.0f)
         {
             angle = AddNormalizeAngle(
-                VectorAngle(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2AB4) - *reinterpret_cast<f32 *>(slot + 0x2A8),
-                            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2AB0) - *reinterpret_cast<f32 *>(slot + 0x2A4)),
-                *reinterpret_cast<f32 *>(entry + 0x14) + ZUN_PI / 2.0f);
-            magnitude = *reinterpret_cast<f32 *>(entry + 0x18) * 1.5f;
-            reinterpret_cast<Float3 *>(slot + 0x43C)->FromAngleMagnitude(angle, magnitude);
-            *reinterpret_cast<u32 *>(slot + 0x450) = *reinterpret_cast<u32 *>(&angle);
+                VectorAngle(this->tailPosition1.y - slot->position.y,
+                            this->tailPosition1.x - slot->position.x),
+                entry->angle + ZUN_PI / 2.0f);
+            magnitude = entry->speed * 1.5f;
+            reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
+            *reinterpret_cast<u32 *>(&slot->angle) = *reinterpret_cast<u32 *>(&angle);
         }
         return 1;
     }
@@ -2723,20 +2733,20 @@ i32 __fastcall Player::FUN_0044ffa0(u8 *slot, i32 value, u8 *entry)
 
 // FUNCTION: th08 0x00450080
 #pragma var_order(magnitude, angle)
-i32 __fastcall FUN_00450080(Player *player, PlayerShot *slot, i32 value, u8 *entry)
+i32 __fastcall SpawnShotAlongPlayerAngle(Player *player, PlayerShot *slot, i32 value,
+                                         PlayerShotDescriptor *entry)
 {
     f32 angle;
     f32 magnitude;
 
-    if (value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
+    if (value % entry->fireInterval == entry->fireFrame)
     {
-        player->FUN_0044fb70(reinterpret_cast<u8 *>(slot), entry);
+        player->InitializeShot(slot, entry);
         angle = AddNormalizeAngle(
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0xE2B0C),
-            *reinterpret_cast<f32 *>(entry + 0x14) + ZUN_PI / 2.0f);
-        magnitude = *reinterpret_cast<f32 *>(entry + 0x18);
+            player->baseShotAngle, entry->angle + ZUN_PI / 2.0f);
+        magnitude = entry->speed;
         reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x450) = angle;
+        slot->angle = angle;
         return 1;
     }
     return 0;
@@ -2744,35 +2754,34 @@ i32 __fastcall FUN_00450080(Player *player, PlayerShot *slot, i32 value, u8 *ent
 
 // FUNCTION: th08 0x00450110
 #pragma var_order(magnitude, angle)
-i32 __fastcall FUN_00450110(Player *player, PlayerShot *slot, i32 value, u8 *entry)
+i32 __fastcall SpawnShotAlongOptionAngle(Player *player, PlayerShot *slot, i32 value,
+                                         PlayerShotDescriptor *entry)
 {
     f32 angle;
     f32 magnitude;
 
     if (player->bombState.isInUse == 0 &&
-        value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
+        value % entry->fireInterval == entry->fireFrame)
     {
-        player->FUN_0044fb70(reinterpret_cast<u8 *>(slot), entry);
-        angle = AddNormalizeAngle(player->optionStates[2].facingAngle, *reinterpret_cast<f32 *>(entry + 0x14));
-        magnitude = *reinterpret_cast<f32 *>(entry + 0x18);
+        player->InitializeShot(slot, entry);
+        angle = AddNormalizeAngle(player->optionStates[2].facingAngle, entry->angle);
+        magnitude = entry->speed;
         reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x450) = angle;
+        slot->angle = angle;
         return 1;
     }
     return 0;
 }
 
 // FUNCTION: th08 0x004501b0
-i32 __fastcall FUN_004501b0(Player *player, PlayerShot *slot, i32 value, u8 *entry)
+i32 __fastcall SpawnRandomizedShot(Player *player, PlayerShot *slot, i32 value,
+                                   PlayerShotDescriptor *entry)
 {
-    if (value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
+    if (value % entry->fireInterval == entry->fireFrame)
     {
-        player->FUN_0044fb70(reinterpret_cast<u8 *>(slot), entry);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x450) =
-            g_Rng.GetRandomF32() * ZUN_PI / 48.0f - ZUN_PI / 2.0f;
-        reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x450),
-            *reinterpret_cast<f32 *>(entry + 0x18));
+        player->InitializeShot(slot, entry);
+        slot->angle = g_Rng.GetRandomF32() * ZUN_PI / 48.0f - ZUN_PI / 2.0f;
+        reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(slot->angle, entry->speed);
         return 1;
     }
     return 0;
@@ -2780,23 +2789,24 @@ i32 __fastcall FUN_004501b0(Player *player, PlayerShot *slot, i32 value, u8 *ent
 
 // FUNCTION: th08 0x00450240
 #pragma var_order(magnitude, angle)
-i32 __fastcall FUN_00450240(Player *player, PlayerShot *slot, i32 value, u8 *entry)
+i32 __fastcall SpawnHomingShot(Player *player, PlayerShot *slot, i32 value,
+                               PlayerShotDescriptor *entry)
 {
     f32 angle;
     f32 magnitude;
 
-    if (value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
+    if (value % entry->fireInterval == entry->fireFrame)
     {
-        player->FUN_0044fb70(reinterpret_cast<u8 *>(slot), entry);
+        player->InitializeShot(slot, entry);
         if (player->optionHomingTarget != NULL)
         {
             angle = AddNormalizeAngle(
                 VectorAngle(player->optionHomingTarget->position.y - slot->position.y,
                             player->optionHomingTarget->position.x - slot->position.x),
-                *reinterpret_cast<f32 *>(entry + 0x14) + ZUN_PI / 2.0f);
-            magnitude = *reinterpret_cast<f32 *>(entry + 0x18) * 1.5f;
+                entry->angle + ZUN_PI / 2.0f);
+            magnitude = entry->speed * 1.5f;
             reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x450) = angle;
+            slot->angle = angle;
         }
         return 1;
     }
@@ -2805,7 +2815,7 @@ i32 __fastcall FUN_00450240(Player *player, PlayerShot *slot, i32 value, u8 *ent
 
 // FUNCTION: th08 0x00450320
 #pragma var_order(yDelta, xDelta, magnitude)
-i32 __fastcall FUN_00450320(Player *player, PlayerShot *slot)
+i32 __fastcall UpdateHomingShot(Player *player, PlayerShot *slot)
 {
     f32 xDelta;
     f32 yDelta;
@@ -2816,32 +2826,32 @@ i32 __fastcall FUN_00450320(Player *player, PlayerShot *slot)
         {
             xDelta = player->tailPosition0.x - slot->position.operator float *()[0];
             yDelta = player->tailPosition0.y - slot->position.operator float *()[1];
-            magnitude = sqrtf(xDelta * xDelta + yDelta * yDelta) / (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) / 4.0f);
+            magnitude = sqrtf(xDelta * xDelta + yDelta * yDelta) / (slot->speed / 4.0f);
             if (magnitude < 1.0f) magnitude = 1.0f;
             xDelta = xDelta / magnitude + slot->velocity.x;
             yDelta = yDelta / magnitude + slot->velocity.y;
             magnitude = sqrtf(xDelta * xDelta + yDelta * yDelta);
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) = magnitude > 10.0f ? 10.0f : magnitude;
-            if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) < 1.0f) *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) = 1.0f;
-            slot->velocity.x = xDelta * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) / magnitude;
-            slot->velocity.y = yDelta * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) / magnitude;
+            slot->speed = magnitude > 10.0f ? 10.0f : magnitude;
+            if (slot->speed < 1.0f) slot->speed = 1.0f;
+            slot->velocity.x = xDelta * slot->speed / magnitude;
+            slot->velocity.y = yDelta * slot->speed / magnitude;
         }
-        else if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) < 10.0f)
+        else if (slot->speed < 10.0f)
         {
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) += 1.0f / 3.0f;
+            slot->speed += 1.0f / 3.0f;
             xDelta = slot->velocity.x;
             yDelta = slot->velocity.y;
             magnitude = sqrtf(xDelta * xDelta + yDelta * yDelta);
-            slot->velocity.x = xDelta * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) / magnitude;
-            slot->velocity.y = yDelta * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) / magnitude;
+            slot->velocity.x = xDelta * slot->speed / magnitude;
+            slot->velocity.y = yDelta * slot->speed / magnitude;
         }
     }
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x450) = VectorAngle(slot->velocity.y, slot->velocity.x);
+    slot->angle = VectorAngle(slot->velocity.y, slot->velocity.x);
     return 0;
 }
 
 // FUNCTION: th08 0x00450580
-i32 __fastcall FUN_00450580(Player *player, PlayerShot *slot)
+i32 __fastcall UpdateFallingShot(Player *player, PlayerShot *slot)
 {
     if (slot->state == 1)
         slot->velocity.y -= g_Rng.GetRandomF32InRange(0.1f) + 0.27f;
@@ -2849,37 +2859,37 @@ i32 __fastcall FUN_00450580(Player *player, PlayerShot *slot)
 }
 
 // FUNCTION: th08 0x004505d0
-i32 __fastcall FUN_004505d0(Player *player, PlayerShot *slot)
+i32 __fastcall UpdatePersistentShot(Player *player, PlayerShot *slot)
 {
-    if (player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].instruction !=
+    if (player->timelines[slot->timelineIndex].instruction !=
         reinterpret_cast<EclTimelineInstruction *>(slot))
     {
         if (slot->vm.FUN_004396f8()) slot->vm.pendingInterrupt = 1;
     }
     if (g_Gui.IsDialogPresent() || player->bombState.isInUse != 0 || g_GameManager.flags.unk13)
     {
-        if ((i32)player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer > 20)
-            player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer = 20;
+        if ((i32)player->timelines[slot->timelineIndex].timer > 20)
+            player->timelines[slot->timelineIndex].timer = 20;
     }
-    if (player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer <= 0)
+    if (player->timelines[slot->timelineIndex].timer <= 0)
     {
-        player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer = 0;
-        player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].instruction = NULL;
+        player->timelines[slot->timelineIndex].timer = 0;
+        player->timelines[slot->timelineIndex].instruction = NULL;
         slot->state = 0;
         return 1;
     }
-    if (player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer <= 70)
+    if (player->timelines[slot->timelineIndex].timer <= 70)
     {
         if (slot->vm.FUN_004396f8()) slot->vm.pendingInterrupt = 1;
     }
-    slot->position.x += *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x444);
+    slot->position.x += slot->velocity.z;
     slot->position.z = 0.44f;
     if (player->playerState == PLAYER_STATE_DYING) return 1;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x1C) = slot->position.y / 14.0f;
+    slot->vm.scale.y = slot->position.y / 14.0f;
     slot->hitboxSize.y = slot->position.y;
     slot->position.y /= 2.0f;
-    if (player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer < 100)
-        player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer--;
+    if (player->timelines[slot->timelineIndex].timer < 100)
+        player->timelines[slot->timelineIndex].timer--;
     if (g_GameManager.GaugeIsExtremelyYoukai())
     {
         slot->vm.color1.r = 0xFF; slot->vm.color1.g = 0xD0; slot->vm.color1.b = 0xB0;
@@ -2893,11 +2903,11 @@ i32 __fastcall FUN_004505d0(Player *player, PlayerShot *slot)
 
 // FUNCTION: th08 0x00450840
 #pragma var_order(damageSlot, i)
-i32 __fastcall FUN_00450840(Player *player, PlayerShot *slot)
+i32 __fastcall UpdateShotTrail(Player *player, PlayerShot *slot)
 {
     PlayerUnkStruct0x40 *damageSlot;
     i32 i;
-    if (player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].instruction !=
+    if (player->timelines[slot->timelineIndex].instruction !=
             reinterpret_cast<EclTimelineInstruction *>(slot) ||
         g_Gui.IsDialogPresent() ||
         (i32)player->shotTimer < 0 ||
@@ -2906,28 +2916,28 @@ i32 __fastcall FUN_00450840(Player *player, PlayerShot *slot)
         g_GameManager.flags.unk13)
     {
         slot->vm.pendingInterrupt = 1;
-        player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].instruction = NULL;
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(slot) + 0x474) = 0;
+        player->timelines[slot->timelineIndex].instruction = NULL;
+        slot->updateCallback = NULL;
     }
     if (player->optionStates[0].state2C8 == 0)
     {
-        player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].instruction = NULL;
+        player->timelines[slot->timelineIndex].instruction = NULL;
         return 1;
     }
-    for (i = 0; i < *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x46A); i++)
+    for (i = 0; i < slot->trailSegmentCount; i++)
     {
-        if (slot->vectors[i * 2].x >= -900.0f)
+        if (slot->positionHistory[i * 2].x >= -900.0f)
         {
-            damageSlot = player->FUN_0044dfa0(&slot->vectors[i * 2], 16.0f, 448.0f, 1, 0);
-            reinterpret_cast<u8 *>(damageSlot)[0x3D] = 1;
+            damageSlot = player->FUN_0044dfa0(&slot->positionHistory[i * 2], 16.0f, 448.0f, 1, 0);
+            damageSlot->mode = 1;
         }
     }
     for (i = 31; i > 0; i--)
     {
-        slot->vectors[i] = slot->vectors[i - 1];
-        slot->vectors[i].y -= 1.0f;
+        slot->positionHistory[i] = slot->positionHistory[i - 1];
+        slot->positionHistory[i].y -= 1.0f;
     }
-    slot->vectors[0] = slot->position;
+    slot->positionHistory[0] = slot->position;
     slot->position = player->optionStates[0].position;
     slot->position.z = 0.44f;
     slot->hitboxSize.y = 448.0f;
@@ -2945,7 +2955,7 @@ i32 __fastcall FUN_00450840(Player *player, PlayerShot *slot)
 
 // FUNCTION: th08 0x00450ad0
 #pragma var_order(color, i, originalColor)
-i32 __fastcall FUN_00450ad0(Player *player, PlayerShot *slot)
+i32 __fastcall DrawShotTrail(Player *player, PlayerShot *slot)
 {
     i32 color;
     i32 i;
@@ -2954,15 +2964,15 @@ i32 __fastcall FUN_00450ad0(Player *player, PlayerShot *slot)
     color = slot->vm.color1.a;
     originalColor = color;
     color = color * 3 / 4;
-    for (i = 0; i < *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x46A) * 2; i += 2)
+    for (i = 0; i < slot->trailSegmentCount * 2; i += 2)
     {
-        if (slot->vectors[i].x == -999.0f)
+        if (slot->positionHistory[i].x == -999.0f)
             break;
-        slot->vm.pos.x = slot->vectors[i].x;
-        slot->vm.pos.y = slot->vectors[i].y;
-        slot->vm.pos.z = slot->vectors[i].z;
+        slot->vm.pos.x = slot->positionHistory[i].x;
+        slot->vm.pos.y = slot->positionHistory[i].y;
+        slot->vm.pos.z = slot->positionHistory[i].z;
         if (i != 0)
-            slot->vm.color1.a = color - ((color / 2) * i) / *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x46A);
+            slot->vm.color1.a = color - ((color / 2) * i) / slot->trailSegmentCount;
         slot->vm.pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
         slot->vm.pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
         if (g_GameManager.GaugeIsExtremelyYoukai())
@@ -2978,7 +2988,7 @@ i32 __fastcall FUN_00450ad0(Player *player, PlayerShot *slot)
 }
 
 // FUNCTION: th08 0x00450c50
-i32 __fastcall FUN_00450c50(Player *player, PlayerShot *slot, Float3 *effectPosition)
+i32 __fastcall ApplyShotHitBehavior(Player *player, PlayerShot *slot, Float3 *effectPosition)
 {
     f32 angle;
 
@@ -3013,10 +3023,11 @@ i32 __fastcall FUN_00450c50(Player *player, PlayerShot *slot, Float3 *effectPosi
 }
 
 // FUNCTION: th08 0x00450ee0
-i32 __fastcall FUN_00450ee0(Player *player, PlayerShot *slot, Float3 *effectPosition)
+i32 __fastcall SpawnPeriodicShotHitEffect(Player *player, PlayerShot *slot,
+                                          Float3 *effectPosition)
 {
-    (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(player) + 0xE2A94))++;
-    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(player) + 0xE2A94) % 8 == 0)
+    player->shotHitEffectCounter++;
+    if (player->shotHitEffectCounter % 8 == 0)
     {
         Float3 position;
         position = *effectPosition;
@@ -3030,15 +3041,15 @@ i32 __fastcall FUN_00450ee0(Player *player, PlayerShot *slot, Float3 *effectPosi
 #pragma var_order(i, table, slot, result, entry, this, value)
 void __fastcall Player::SpawnShots(i32 value)
 {
-    unsigned __int64 *table;
-    u8 *entry;
-    u8 *slot;
+    PlayerShotPowerLevel *table;
+    PlayerShotDescriptor *entry;
+    PlayerShot *slot;
     i32 result;
     i32 i;
 
     table = (this->optionModeFlag == 0)
-                ? reinterpret_cast<unsigned __int64 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2A74) + 0x38)
-                : reinterpret_cast<unsigned __int64 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2A78) + 0x38);
+                ? this->primaryShtFile->shotPowerLevels
+                : this->secondaryShtFile->shotPowerLevels;
 
     if (this->bombState.isInUse != 0 &&
         ((g_GameManager.shotType == 2 &&
@@ -3050,47 +3061,43 @@ void __fastcall Player::SpawnShots(i32 value)
     }
     else
     {
-        while (g_GameManager.GetPower() >= *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(table) + 4))
+        while (g_GameManager.GetPower() >= table->minimumPower)
         {
             table++;
         }
     }
 
-    entry = *reinterpret_cast<u8 **>(table);
-    slot = reinterpret_cast<u8 *>(this) + 0xBE838;
-    for (i = 0; i < 0x80; i++, slot += 0x484)
+    entry = table->descriptors;
+    slot = this->shots;
+    for (i = 0; i < ARRAY_SIZE_SIGNED(this->shots); i++, slot++)
     {
-        if (*reinterpret_cast<i16 *>(slot + 0x462) != 0)
+        if (slot->state != PLAYER_SHOT_INACTIVE)
         {
             continue;
         }
 
 processEntry:
-        if (*reinterpret_cast<u32 *>(entry + 0x28) != 0)
+        if (entry->spawnCallback != NULL)
         {
-            result = reinterpret_cast<i32 (__fastcall *)(Player *, u8 *, i32, u8 *)>(
-                *reinterpret_cast<u32 *>(entry + 0x28))(this, slot, value, entry);
+            result = entry->spawnCallback(this, slot, value, entry);
         }
         else
         {
-            result = this->FUN_0044fd80(slot, value, entry);
+            result = this->SpawnShotOnSchedule(slot, value, entry);
         }
 
         if (result == 1)
         {
-            *reinterpret_cast<u32 *>(slot + 0x1F8) |= 0x2000;
-            *reinterpret_cast<i16 *>(slot + 0x462) = 1;
-            *reinterpret_cast<u8 **>(slot + 0x480) = entry;
-            *reinterpret_cast<u32 *>(slot + 0x474) =
-                *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(slot + 0x480) + 0x2C);
-            *reinterpret_cast<u32 *>(slot + 0x478) =
-                *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(slot + 0x480) + 0x30);
-            *reinterpret_cast<u32 *>(slot + 0x47C) =
-                *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(slot + 0x480) + 0x34);
+            slot->vm.zWriteDisabled = 1;
+            slot->state = PLAYER_SHOT_ACTIVE;
+            slot->descriptor = entry;
+            slot->updateCallback = slot->descriptor->updateCallback;
+            slot->drawCallback = slot->descriptor->drawCallback;
+            slot->collisionCallback = slot->descriptor->collisionCallback;
         }
 
-        entry += 0x38;
-        if (*reinterpret_cast<i16 *>(entry) < 0)
+        entry++;
+        if (entry->fireInterval < 0)
         {
             return;
         }
@@ -3103,9 +3110,9 @@ processEntry:
 
 // FUNCTION: th08 0x451150
 #pragma var_order(i, slot, this)
-void Player::FUN_00451150()
+void Player::UpdateShots()
 {
-    u8 *slot;
+    PlayerShot *slot;
     i32 i;
 
     if (g_GameManager.flags.unk10)
@@ -3113,110 +3120,110 @@ void Player::FUN_00451150()
         return;
     }
 
-    slot = reinterpret_cast<u8 *>(this) + 0xBE838;
-    for (i = 0; i < 0x80; i++, slot += 0x484)
+    slot = this->shots;
+    for (i = 0; i < ARRAY_SIZE_SIGNED(this->shots); i++, slot++)
     {
-        if (*reinterpret_cast<i16 *>(slot + 0x462) == 0)
+        if (slot->state == PLAYER_SHOT_INACTIVE)
         {
             continue;
         }
 
-        if (*reinterpret_cast<u32 *>(slot + 0x474) != 0)
+        if (slot->updateCallback != NULL)
         {
-            if (reinterpret_cast<i32 (__fastcall *)(Player *, u8 *)>(*reinterpret_cast<u32 *>(slot + 0x474))(this, slot) != 0)
+            if (slot->updateCallback(this, slot) != 0)
             {
-                *reinterpret_cast<i16 *>(slot + 0x462) = 0;
+                slot->state = PLAYER_SHOT_INACTIVE;
                 continue;
             }
         }
 
-        reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[0] +=
-            *reinterpret_cast<f32 *>(0x17CE8E0) * *reinterpret_cast<f32 *>(slot + 0x43C);
-        reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[1] +=
-            *reinterpret_cast<f32 *>(0x17CE8E0) * *reinterpret_cast<f32 *>(slot + 0x440);
+        slot->position.operator float *()[0] +=
+            *reinterpret_cast<f32 *>(0x17CE8E0) * slot->velocity.x;
+        slot->position.operator float *()[1] +=
+            *reinterpret_cast<f32 *>(0x17CE8E0) * slot->velocity.y;
 
-        if (*reinterpret_cast<i16 *>(slot + 0x464) != 4 && *reinterpret_cast<i16 *>(slot + 0x464) != 5)
+        if (slot->shotType != 4 && slot->shotType != 5)
         {
             if (!g_GameManager.IsWithinPlayfield(
-                    reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[0],
-                    reinterpret_cast<Float3 *>(slot + 0x2A4)->operator float *()[1],
-                    *reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(slot + 0x224) + 0x34),
-                    *reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(slot + 0x224) + 0x30)))
+                    slot->position.operator float *()[0],
+                    slot->position.operator float *()[1],
+                    slot->vm.loadedSprite->widthPx,
+                    slot->vm.loadedSprite->heightPx))
             {
-                *reinterpret_cast<i16 *>(slot + 0x462) = 0;
+                slot->state = PLAYER_SHOT_INACTIVE;
             }
         }
 
-        if (g_AnmManager->ExecuteScript(reinterpret_cast<AnmVm *>(slot)) != ZUN_SUCCESS)
+        if (g_AnmManager->ExecuteScript(&slot->vm) != ZUN_SUCCESS)
         {
-            *reinterpret_cast<i16 *>(slot + 0x462) = 0;
+            slot->state = PLAYER_SHOT_INACTIVE;
         }
-        (*reinterpret_cast<ZunTimer *>(slot + 0x454))++;
+        slot->timer++;
     }
 }
 // FUNCTION: th08 0x4512f0
 #pragma var_order(i, slot, this)
-void Player::FUN_004512f0()
+void Player::DrawActiveShots()
 {
-    u8 *slot;
+    PlayerShot *slot;
     i32 i;
 
-    slot = reinterpret_cast<u8 *>(this) + 0xBE838;
-    for (i = 0; i < 0x80; i++, slot += 0x484)
+    slot = this->shots;
+    for (i = 0; i < ARRAY_SIZE_SIGNED(this->shots); i++, slot++)
     {
-        if (*reinterpret_cast<i16 *>(slot + 0x462) != 1)
+        if (slot->state != PLAYER_SHOT_ACTIVE)
         {
             continue;
         }
-        if (*reinterpret_cast<i16 *>(slot + 0x1FC) != 0)
+        if (slot->vm.type != 0)
         {
-            reinterpret_cast<AnmVm *>(slot)->SetZRotation(*reinterpret_cast<f32 *>(slot + 0x450));
+            slot->vm.SetZRotation(slot->angle);
         }
-        *reinterpret_cast<f32 *>(slot + 0x208) = g_GameManager.arcadeRegionTopLeftPos.x + *reinterpret_cast<f32 *>(slot + 0x2A4);
-        *reinterpret_cast<f32 *>(slot + 0x20C) = g_GameManager.arcadeRegionTopLeftPos.y + *reinterpret_cast<f32 *>(slot + 0x2A8);
-        *reinterpret_cast<f32 *>(slot + 0x210) = 0.4f;
-        if (*reinterpret_cast<i8 *>(slot + 0x470) != 0)
+        slot->vm.pos.x = g_GameManager.arcadeRegionTopLeftPos.x + slot->position.x;
+        slot->vm.pos.y = g_GameManager.arcadeRegionTopLeftPos.y + slot->position.y;
+        slot->vm.pos.z = 0.4f;
+        if (slot->tintInExtremeYoukai != 0)
         {
-            *reinterpret_cast<u8 *>(slot + 0x1F2) = 0xff;
-            *reinterpret_cast<u8 *>(slot + 0x1F1) = 0x40;
-            *reinterpret_cast<u8 *>(slot + 0x1F0) = 0x40;
+            slot->vm.color1.r = 0xff;
+            slot->vm.color1.g = 0x40;
+            slot->vm.color1.b = 0x40;
         }
-        g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(slot));
-        if (*reinterpret_cast<u32 *>(slot + 0x478) != 0)
+        g_AnmManager->Draw2D(&slot->vm);
+        if (slot->drawCallback != NULL)
         {
-            reinterpret_cast<void (__fastcall *)(Player *, u8 *)>(*reinterpret_cast<u32 *>(slot + 0x478))(this, slot);
+            slot->drawCallback(this, slot);
         }
     }
 }
 
 // FUNCTION: th08 0x451400
 #pragma var_order(i, slot, this)
-void Player::FUN_00451400()
+void Player::DrawHitShots()
 {
-    u8 *slot;
+    PlayerShot *slot;
     i32 i;
 
-    slot = reinterpret_cast<u8 *>(this) + 0xBE838;
-    for (i = 0; i < 0x80; i++, slot += 0x484)
+    slot = this->shots;
+    for (i = 0; i < ARRAY_SIZE_SIGNED(this->shots); i++, slot++)
     {
-        if (*reinterpret_cast<i16 *>(slot + 0x462) != 2)
+        if (slot->state != PLAYER_SHOT_HIT)
         {
             continue;
         }
-        if (*reinterpret_cast<i16 *>(slot + 0x1FC) != 0)
+        if (slot->vm.type != 0)
         {
-            reinterpret_cast<AnmVm *>(slot)->SetZRotation(*reinterpret_cast<f32 *>(slot + 0x450));
+            slot->vm.SetZRotation(slot->angle);
         }
-        *reinterpret_cast<f32 *>(slot + 0x208) = g_GameManager.arcadeRegionTopLeftPos.x + *reinterpret_cast<f32 *>(slot + 0x2A4);
-        *reinterpret_cast<f32 *>(slot + 0x20C) = g_GameManager.arcadeRegionTopLeftPos.y + *reinterpret_cast<f32 *>(slot + 0x2A8);
-        *reinterpret_cast<f32 *>(slot + 0x210) = 0.2f;
-        if (*reinterpret_cast<i8 *>(slot + 0x470) != 0)
+        slot->vm.pos.x = g_GameManager.arcadeRegionTopLeftPos.x + slot->position.x;
+        slot->vm.pos.y = g_GameManager.arcadeRegionTopLeftPos.y + slot->position.y;
+        slot->vm.pos.z = 0.2f;
+        if (slot->tintInExtremeYoukai != 0)
         {
-            *reinterpret_cast<u8 *>(slot + 0x1F2) = 0xff;
-            *reinterpret_cast<u8 *>(slot + 0x1F1) = 0x40;
-            *reinterpret_cast<u8 *>(slot + 0x1F0) = 0x40;
+            slot->vm.color1.r = 0xff;
+            slot->vm.color1.g = 0x40;
+            slot->vm.color1.b = 0x40;
         }
-        g_AnmManager->DrawPlayerBullet(reinterpret_cast<AnmVm *>(slot));
+        g_AnmManager->DrawPlayerBullet(&slot->vm);
     }
 }
 // FUNCTION: th08 0x451500
@@ -3282,7 +3289,8 @@ void Player::StartShooting()
 
 // FUNCTION: th08 0x451670
 #pragma var_order(bullet, i, enemyBottomRight, savedRotation, bulletBottomRight, enemyTopLeft, damage, region, bulletTopLeft)
-i32 Player::FUN_00451670(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccumulator, i32 *bombHit)
+i32 Player::CalcDamageToEnemy(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccumulator,
+                              i32 *bombHit)
 {
     Float3 enemyTopLeft;
     Float3 enemyBottomRight;
@@ -3295,17 +3303,18 @@ i32 Player::FUN_00451670(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccum
     PlayerShot *bullet;
 
     damage = 0;
-    if (!reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4)->FUN_0040d3d0())
+    if (!this->timer.FUN_0040d3d0())
         return 0;
 
     PlayerBuildAabb(&enemyTopLeft, &enemyBottomRight, enemyPosition, enemySize);
-    bullet = reinterpret_cast<PlayerShot *>(reinterpret_cast<u8 *>(this) + 0xBE838);
+    bullet = this->shots;
     if (bombHit != NULL)
         *bombHit = 0;
 
     for (i = 0; i < 128; i++, bullet++)
     {
-        if (bullet->state == 0 || (bullet->state != 1 && bullet->type != 3))
+        if (bullet->state == PLAYER_SHOT_INACTIVE ||
+            (bullet->state != PLAYER_SHOT_ACTIVE && bullet->shotType != 3))
             continue;
 
         PlayerBuildAabb(&bulletTopLeft, &bulletBottomRight, &bullet->position, &bullet->hitboxSize);
@@ -3313,7 +3322,7 @@ i32 Player::FUN_00451670(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccum
             bulletBottomRight.y < enemyTopLeft.y || bulletBottomRight.x < enemyTopLeft.x)
             continue;
 
-        if ((bullet->type == 4 || bullet->type == 5) && (bullet->timer % 2) != 0)
+        if ((bullet->shotType == 4 || bullet->shotType == 5) && (bullet->timer % 2) != 0)
             continue;
         if (bullet->collisionCallback != NULL && bullet->collisionCallback(this, bullet, enemyPosition))
             continue;
@@ -3327,15 +3336,15 @@ i32 Player::FUN_00451670(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccum
         {
             if (g_GameManager.GaugeIsExtremelyHuman())
             {
-                if (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(bullet->shtEntry) + 0x1E) < 0)
+                if (bullet->descriptor->extremeGaugeBehavior < 0)
                     g_ItemManager.SpawnItem(&bullet->position, static_cast<ItemType>(7), 3);
             }
             *hitAccumulator -= g_Player.damageAccumulatorThreshold;
         }
 
-        if (bullet->type != 4 && bullet->type != 5 && bullet->type != 6)
+        if (bullet->shotType != 4 && bullet->shotType != 5 && bullet->shotType != 6)
         {
-            if (bullet->state == 1)
+            if (bullet->state == PLAYER_SHOT_ACTIVE)
             {
                 savedRotation = *reinterpret_cast<i32 *>(&bullet->vm.rotation.z);
                 this->anmFile->SetAndExecuteScriptIdx(&bullet->vm, bullet->animationIndex + 11);
@@ -3343,8 +3352,8 @@ i32 Player::FUN_00451670(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccum
                 g_EffectManager.SpawnEffect(5, reinterpret_cast<D3DXVECTOR3 *>(&bullet->position), 1, -1);
                 bullet->position.operator float *()[2] = 0.1f;
             }
-            bullet->state = 2;
-            if (bullet->type != 3)
+            bullet->state = PLAYER_SHOT_HIT;
+            if (bullet->shotType != 3)
             {
                 bullet->velocity.x /= 8.0f;
                 bullet->velocity.y /= 8.0f;
@@ -3400,7 +3409,7 @@ i32 Player::FUN_00451670(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccum
                 damage -= region->hitAccumulator - region->hitCap;
             }
 
-            if (region->mode == 0 && (++*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0xE2A94) % 4) == 0)
+            if (region->mode == 0 && (++this->shotHitEffectCounter % 4) == 0)
             {
                 if (i < 192)
                     g_EffectManager.SpawnEffect(3, reinterpret_cast<D3DXVECTOR3 *>(enemyPosition), 1, -1);

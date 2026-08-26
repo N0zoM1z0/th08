@@ -479,7 +479,7 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 
 ### Collision predicates: preserve branch ownership and x87 operand order
 
-- `Player::FUN_00451670 @ 0x451670` shows that `!(a <= b && c <= d && ...)` is not a byte-equivalent replacement for the target's direct separating-axis `a > b || c > d || ...` test. VC7 changes the x87 status mask and parity-branch direction even though the predicates are mathematically equivalent. Preserve the target comparison orientation instead of normalizing boolean algebra.
+- `Player::CalcDamageToEnemy @ 0x451670` shows that `!(a <= b && c <= d && ...)` is not a byte-equivalent replacement for the target's direct separating-axis `a > b || c > d || ...` test. VC7 changes the x87 status mask and parity-branch direction even though the predicates are mathematically equivalent. Preserve the target comparison orientation instead of normalizing boolean algebra.
 - Two independent early exits should remain two source `if` statements when the target has two distinct short trampolines. Combining `if (!active) continue; if (frame % interval != 0) continue;` into one `if (!active || frame % interval != 0)` made this function exactly two bytes short; splitting them restored the target 0x66E extent.
 - Rotated AABB and circle tests are sensitive to comparison operand order. Writing the target's bound on the left (`-halfWidth > projectedRight`, `halfWidth < projectedLeft`, `radius * radius < distanceSquared`) restored the target x87 load order and `test ah`/`jp`/`jnp` sequence. Reversing the comparison while preserving semantics produced a different instruction stream.
 

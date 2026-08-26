@@ -692,7 +692,7 @@ Spawn assigns the pool cursor index to `+0x2E0C`.  Linked-child visual paths
 use its low bit to mirror alternating effects, while Spellcard start snapshots
 the full dword and the update path compares that snapshot against the active
 Enemy.  `+0x2E10` is passed by address as the per-Enemy hit accumulator to
-`Player::FUN_00451670`, which consumes thresholds and adds capped damage; the
+`Player::CalcDamageToEnemy`, which consumes thresholds and adds capped damage; the
 Player added callback initializes the template copy from
 `Player::damageAccumulatorThreshold`.  Finally, `+0x2E20` is initialized from
 the primary ANM VM color and copied into/out of that VM around script
@@ -1309,3 +1309,72 @@ and `PlayerBomb.cpp`, raw-member candidates fall from 555 to 319.  These are
 routing aids, not completion percentages.  The next coherent batch is the
 PlayerShot runtime/SHT descriptor family, followed by the PlayerBomb work-item
 protocol; whole-program semantic completion remains open.
+
+### PlayerShot runtime and SHT descriptors — 2026-08-26
+
+Scope: `Player::LoadShtFile @ 0x0044DD70`, the descriptor-driven spawn family
+at `0x0044FB70..0x00450240`, shot update/draw/hit callbacks at
+`0x00450320..0x00450EE0`, `SpawnShots @ 0x00450F60`, the runtime controller at
+`0x00451150..0x004514F1`, and `CalcDamageToEnemy @ 0x00451670` together with
+its EnemyManager callers.
+
+Observed: the variable SHT header contains a count at `+0x2` and an array of
+eight-byte power-level rows at `+0x38`; each row owns a descriptor pointer and
+minimum-power threshold.  Loader relocation proves every shot descriptor is
+`0x38` bytes.  Its fields are the fire interval/frame, position offset,
+hitbox size, angle, speed, damage, extreme-gauge behavior, source option,
+shot type, animation, sound, and spawn/update/draw/collision callbacks at
+`+0x28/+0x2C/+0x30/+0x34`.
+
+The runtime `PlayerShot` remains `0x484` bytes and now exposes its VM, position,
+32-entry position history, hitbox, velocity, auxiliary value, speed, angle,
+timer, damage/state/type, persistent-timeline metadata, option-mode snapshot,
+animation/tint state, three runtime callbacks, and originating descriptor.
+The owning Player now names the four persistent-descriptor slots at
+`+0xE2A80`, the shared shot-hit effect counter at `+0xE2A94`, and the base
+shot angle at `+0xE2B0C`.  Layout assertions pin all descriptor and runtime
+callback offsets without changing `sizeof(Player) == 0xE2B30`.
+
+Names: the member helpers are `InitializeShot`, `SpawnShotOnSchedule`,
+`SpawnShotOnScheduleUnlessBombing`, `SpawnPersistentShot`,
+`SpawnShotAimedAtTrackedPoint`, `UpdateShots`, `DrawActiveShots`,
+`DrawHitShots`, and `CalcDamageToEnemy`.  Descriptor callbacks use
+behavior-backed names for player/option-relative, randomized, and homing
+spawns; homing/falling/persistent/trail updates; trail drawing; and two hit
+behaviors.  All mapping, implementation, accepted-match, match-unit, decorated
+COFF, table-relocation, and EnemyManager caller identities moved together.
+
+VC7 source-shape evidence: typed `PlayerShot *` iteration and direct named
+fields preserve the accepted loop bodies.  `vm.zWriteDisabled = 1` is the
+natural typed expression that retains the target dword `OR 0x2000`; assigning
+through the public 16-bit aggregate `flags` instead emitted two extra bytes.
+The tint selector is target-observed as signed `i8`: an unsigned byte changed
+the target `movsx` to `movzx`.  The SHT loader also requires its renamed
+descriptor local in `#pragma var_order` to retain the original stack homes.
+
+Inference and unknowns: the first SHT header word, header `+0x20/+0x34`,
+`PlayerShot::auxiliaryValue @ +0x448`, the unconsumed byte at `+0x46D`, and
+three bytes at `+0x471` remain deliberately neutral.  The descriptor
+`extremeGaugeBehavior` name records its two proven consumers—positive values
+enable youkai tint and negative values enable human item drops—but does not
+assert a serialized enum.  `velocity.z` is copied from the descriptor offset
+and used as the persistent-shot horizontal increment; no broader 3D motion
+claim is made.
+
+Oracle status at the focused checkpoint: all 22 directly edited Player/SHT
+units replay exact, including the `1,646`-byte damage function; the complete
+Player plus EnemyManagerUpdate object set passes **52 / 52** accepted units.
+The final single-job cold VC7 replay passes **1,105 / 1,105** accepted units,
+the normal VC7 image links, and the complete i386 Linux build plus fixed-layout
+verifier passes.  During that replay, using `Float3` directly for shot velocity
+was rejected because its implicit constructor enlarged `PlayerShot::PlayerShot`;
+the accepted layout therefore uses a named three-float POD and an explicit
+`Float3` method view at the behavior call sites.
+
+Result: the heuristic whole-source router falls from 850 to 779 raw-member
+candidates and from 73 to 66 opaque-storage candidates; anonymous identifiers
+rise from 592 to 595 because three byte ranges remain explicitly unknown, and
+absolute-address candidates remain 82.  In `Player.cpp`/`Player.hpp`, the raw
+candidate count falls from 151 to 80 and opaque storage from 18 to 11.  These
+are routing aids, not completion percentages.  The next coherent family is the
+PlayerBomb work-item protocol.

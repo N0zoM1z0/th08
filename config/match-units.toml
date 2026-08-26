@@ -9770,7 +9770,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x114
 type = "REL32"
-symbol = "?FUN_00451670@Player@th08@@QAEHPAUFloat3@2@0PAH1@Z"
+symbol = "?CalcDamageToEnemy@Player@th08@@QAEHPAUFloat3@2@0PAH1@Z"
 target = 0x00451670
 
 [[units.relocations]]
@@ -10082,7 +10082,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0xA7B
 type = "REL32"
-symbol = "?FUN_00451670@Player@th08@@QAEHPAUFloat3@2@0PAH1@Z"
+symbol = "?CalcDamageToEnemy@Player@th08@@QAEHPAUFloat3@2@0PAH1@Z"
 target = 0x00451670
 
 [[units.relocations]]
@@ -10100,7 +10100,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0xAC8
 type = "REL32"
-symbol = "?FUN_00451670@Player@th08@@QAEHPAUFloat3@2@0PAH1@Z"
+symbol = "?CalcDamageToEnemy@Player@th08@@QAEHPAUFloat3@2@0PAH1@Z"
 target = 0x00451670
 
 [[units.relocations]]
@@ -61258,7 +61258,7 @@ target = 0x0045EA00
 [[units.relocations]]
 offset = 0x156
 type = "REL32"
-symbol = "?FUN_00451150@Player@th08@@QAEXXZ"
+symbol = "?UpdateShots@Player@th08@@QAEXXZ"
 target = 0x00451150
 
 [[units.relocations]]
@@ -62531,7 +62531,7 @@ size = 0x18
 [[units.relocations]]
 offset = 0xB
 type = "REL32"
-symbol = "?FUN_00451400@Player@th08@@QAEXXZ"
+symbol = "?DrawHitShots@Player@th08@@QAEXXZ"
 target = 0x00451400
 
 [[units]]
@@ -62570,9 +62570,9 @@ target = 0x017CE758
 addend = 0x0C
 
 [[units]]
-name = "player-fun-00451400"
+name = "player-draw-hit-shots"
 object = "build/Player.obj"
-symbol = "?FUN_00451400@Player@th08@@QAEXXZ"
+symbol = "?DrawHitShots@Player@th08@@QAEXXZ"
 target_address = 0x00451400
 size = 0xF1
 
@@ -62609,9 +62609,9 @@ symbol = "?DrawPlayerBullet@AnmManager@th08@@QAEXPAUAnmVm@2@@Z"
 target = 0x0045E960
 
 [[units]]
-name = "player-fun-00451150"
+name = "player-update-shots"
 object = "build/Player.obj"
-symbol = "?FUN_00451150@Player@th08@@QAEXXZ"
+symbol = "?UpdateShots@Player@th08@@QAEXXZ"
 target_address = 0x00451150
 size = 0x194
 
@@ -62790,16 +62790,16 @@ target_address = 0x0040D3D0
 size = 0x1B
 
 [[units]]
-name = "player-fun-0044fd80"
+name = "player-spawn-shot-on-schedule"
 object = "build/Player.obj"
-symbol = "?FUN_0044fd80@Player@th08@@QAIHPAEH0@Z"
+symbol = "?SpawnShotOnSchedule@Player@th08@@QAIHPAUPlayerShot@2@HPAUPlayerShotDescriptor@2@@Z"
 target_address = 0x0044FD80
 size = 0x41
 
 [[units.relocations]]
 offset = 0x2E
 type = "REL32"
-symbol = "?FUN_0044fb70@Player@th08@@QAIXPAE0@Z"
+symbol = "?InitializeShot@Player@th08@@QAIXPAUPlayerShot@2@PAUPlayerShotDescriptor@2@@Z"
 target = 0x0044FB70
 
 [[units]]
@@ -62824,11 +62824,11 @@ target = 0x017CE758
 addend = 0x14
 
 [[units]]
-name = "player-fun-0044fb70"
+name = "player-initialize-shot"
 target_address = 0x0044fb70
 size = 0x20c
 object = "build/Player.obj"
-symbol = "?FUN_0044fb70@Player@th08@@QAIXPAE0@Z"
+symbol = "?InitializeShot@Player@th08@@QAIXPAUPlayerShot@2@PAUPlayerShotDescriptor@2@@Z"
 
 [[units.relocations]]
 offset = 0x77
@@ -62938,7 +62938,7 @@ target = 0x00422480
 [[units.relocations]]
 offset = 0x142
 type = "REL32"
-symbol = "?FUN_0044fd80@Player@th08@@QAIHPAEH0@Z"
+symbol = "?SpawnShotOnSchedule@Player@th08@@QAIHPAUPlayerShot@2@HPAUPlayerShotDescriptor@2@@Z"
 target = 0x0044FD80
 
 [[units]]
@@ -62951,7 +62951,7 @@ size = 0xF1
 [[units.relocations]]
 offset = 0x0E
 type = "REL32"
-symbol = "?FUN_004512f0@Player@th08@@QAEXXZ"
+symbol = "?DrawActiveShots@Player@th08@@QAEXXZ"
 target = 0x004512F0
 
 [[units.relocations]]
@@ -62988,9 +62988,9 @@ symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00462FF0
 
 [[units]]
-name = "player-fun-004512f0"
+name = "player-draw-active-shots"
 object = "build/Player.obj"
-symbol = "?FUN_004512f0@Player@th08@@QAEXXZ"
+symbol = "?DrawActiveShots@Player@th08@@QAEXXZ"
 target_address = 0x004512F0
 size = 0x10C
 
@@ -63244,19 +63244,19 @@ target = 0x0043E660
 [[units.relocations]]
 offset = 0x93
 type = "DIR32"
-symbol = "?g_PlayerShotUpdateCallbacks@th08@@3PAP6IHPAUPlayer@1@PAUPlayerShot@1@HPAE@ZA"
+symbol = "?g_PlayerShotSpawnCallbacks@th08@@3PAP6IHPAUPlayer@1@PAUPlayerShot@1@HPAUPlayerShotDescriptor@1@@ZA"
 target = 0x004C7EE0
 
 [[units.relocations]]
 offset = 0xA6
 type = "DIR32"
-symbol = "?g_PlayerShotRenderCallbacks@th08@@3PAP6IHPAUPlayer@1@PAUPlayerShot@1@@ZA"
+symbol = "?g_PlayerShotUpdateCallbacks@th08@@3PAP6IHPAUPlayer@1@PAUPlayerShot@1@@ZA"
 target = 0x004C7F04
 
 [[units.relocations]]
 offset = 0xB9
 type = "DIR32"
-symbol = "?g_PlayerShotTimerCallbacks@th08@@3PAP6IHPAUPlayer@1@PAUPlayerShot@1@@ZA"
+symbol = "?g_PlayerShotDrawCallbacks@th08@@3PAP6IHPAUPlayer@1@PAUPlayerShot@1@@ZA"
 target = 0x004C7F1C
 
 [[units.relocations]]
@@ -63266,22 +63266,22 @@ symbol = "?g_PlayerShotCollisionOrDifficultyTable@th08@@3PAPAXA"
 target = 0x004C7F24
 
 [[units]]
-name = "player-fun-0044fdd0"
+name = "player-spawn-shot-unless-bombing"
 object = "build/Player.obj"
-symbol = "?FUN_0044fdd0@Player@th08@@QAIHPAEH0@Z"
+symbol = "?SpawnShotOnScheduleUnlessBombing@Player@th08@@QAIHPAUPlayerShot@2@HPAUPlayerShotDescriptor@2@@Z"
 target_address = 0x0044FDD0
 size = 0x4D
 
 [[units.relocations]]
 offset = 0x3A
 type = "REL32"
-symbol = "?FUN_0044fb70@Player@th08@@QAIXPAE0@Z"
+symbol = "?InitializeShot@Player@th08@@QAIXPAUPlayerShot@2@PAUPlayerShotDescriptor@2@@Z"
 target = 0x0044FB70
 
 [[units]]
-name = "player-fun-0044fe20"
+name = "player-spawn-persistent-shot"
 object = "build/Player.obj"
-symbol = "?FUN_0044fe20@Player@th08@@QAIHPAEH0@Z"
+symbol = "?SpawnPersistentShot@Player@th08@@QAIHPAUPlayerShot@2@HPAUPlayerShotDescriptor@2@@Z"
 target_address = 0x0044FE20
 size = 0x177
 
@@ -63301,20 +63301,20 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x11D
 type = "REL32"
-symbol = "?FUN_0044fb70@Player@th08@@QAIXPAE0@Z"
+symbol = "?InitializeShot@Player@th08@@QAIXPAUPlayerShot@2@PAUPlayerShotDescriptor@2@@Z"
 target = 0x0044FB70
 
 [[units]]
-name = "player-fun-0044ffa0"
+name = "player-spawn-shot-aimed-at-tracked-point"
 object = "build/Player.obj"
-symbol = "?FUN_0044ffa0@Player@th08@@QAIHPAEH0@Z"
+symbol = "?SpawnShotAimedAtTrackedPoint@Player@th08@@QAIHPAUPlayerShot@2@HPAUPlayerShotDescriptor@2@@Z"
 target_address = 0x0044FFA0
 size = 0xD9
 
 [[units.relocations]]
 offset = 0x32
 type = "REL32"
-symbol = "?FUN_0044fb70@Player@th08@@QAIXPAE0@Z"
+symbol = "?InitializeShot@Player@th08@@QAIXPAUPlayerShot@2@PAUPlayerShotDescriptor@2@@Z"
 target = 0x0044FB70
 
 [[units.relocations]]
@@ -92327,9 +92327,9 @@ target_address = 0x0040D410
 size = 0x19
 
 [[units]]
-name = "player-fun-00451670"
+name = "player-calc-damage-to-enemy"
 object = "build/objdiff/reimpl/Player.obj"
-symbol = "th08::Player::FUN_00451670"
+symbol = "th08::Player::CalcDamageToEnemy"
 target_address = 0x00451670
 size = 0x66E
 
@@ -118749,16 +118749,16 @@ type = "REL32"
 symbol = "??OZunTimer@th08@@QAEIH@Z"
 target = 0x004066C0
 [[units]]
-name = "player-shot-callback-00450080"
+name = "player-shot-spawn-along-player-angle"
 object = "build/Player.obj"
-symbol = "?FUN_00450080@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@HPAE@Z"
+symbol = "?SpawnShotAlongPlayerAngle@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@HPAUPlayerShotDescriptor@1@@Z"
 target_address = 0x00450080
 size = 0x8E
 
 [[units.relocations]]
 offset = 0x2E
 type = "REL32"
-symbol = "?FUN_0044fb70@Player@th08@@QAIXPAE0@Z"
+symbol = "?InitializeShot@Player@th08@@QAIXPAUPlayerShot@2@PAUPlayerShotDescriptor@2@@Z"
 target = 0x0044FB70
 
 [[units.relocations]]
@@ -118779,16 +118779,16 @@ type = "REL32"
 symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
 target = 0x004286E0
 [[units]]
-name = "player-shot-callback-00450110"
+name = "player-shot-spawn-along-option-angle"
 object = "build/Player.obj"
-symbol = "?FUN_00450110@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@HPAE@Z"
+symbol = "?SpawnShotAlongOptionAngle@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@HPAUPlayerShotDescriptor@1@@Z"
 target_address = 0x00450110
 size = 0x91
 
 [[units.relocations]]
 offset = 0x3A
 type = "REL32"
-symbol = "?FUN_0044fb70@Player@th08@@QAIXPAE0@Z"
+symbol = "?InitializeShot@Player@th08@@QAIXPAUPlayerShot@2@PAUPlayerShotDescriptor@2@@Z"
 target = 0x0044FB70
 
 [[units.relocations]]
@@ -118803,16 +118803,16 @@ type = "REL32"
 symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
 target = 0x004286E0
 [[units]]
-name = "player-shot-callback-004501b0"
+name = "player-shot-spawn-randomized"
 object = "build/Player.obj"
-symbol = "?FUN_004501b0@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@HPAE@Z"
+symbol = "?SpawnRandomizedShot@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@HPAUPlayerShotDescriptor@1@@Z"
 target_address = 0x004501B0
 size = 0x85
 
 [[units.relocations]]
 offset = 0x2E
 type = "REL32"
-symbol = "?FUN_0044fb70@Player@th08@@QAIXPAE0@Z"
+symbol = "?InitializeShot@Player@th08@@QAIXPAUPlayerShot@2@PAUPlayerShotDescriptor@2@@Z"
 target = 0x0044FB70
 
 [[units.relocations]]
@@ -118851,16 +118851,16 @@ type = "REL32"
 symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
 target = 0x004286E0
 [[units]]
-name = "player-shot-callback-00450240"
+name = "player-shot-spawn-homing"
 object = "build/Player.obj"
-symbol = "?FUN_00450240@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@HPAE@Z"
+symbol = "?SpawnHomingShot@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@HPAUPlayerShotDescriptor@1@@Z"
 target_address = 0x00450240
 size = 0xDF
 
 [[units.relocations]]
 offset = 0x32
 type = "REL32"
-symbol = "?FUN_0044fb70@Player@th08@@QAIXPAE0@Z"
+symbol = "?InitializeShot@Player@th08@@QAIXPAUPlayerShot@2@PAUPlayerShotDescriptor@2@@Z"
 target = 0x0044FB70
 
 [[units.relocations]]
@@ -118893,9 +118893,9 @@ type = "REL32"
 symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
 target = 0x004286E0
 [[units]]
-name = "player-shot-steering-00450320"
+name = "player-shot-update-homing"
 object = "build/Player.obj"
-symbol = "?FUN_00450320@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@@Z"
+symbol = "?UpdateHomingShot@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@@Z"
 target_address = 0x00450320
 size = 0x257
 
@@ -118989,9 +118989,9 @@ type = "REL32"
 symbol = "?VectorAngle@th08@@YIMMM@Z"
 target = 0x0040C7B0
 [[units]]
-name = "player-shot-random-drift-00450580"
+name = "player-shot-update-falling"
 object = "build/Player.obj"
-symbol = "?FUN_00450580@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@@Z"
+symbol = "?UpdateFallingShot@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@@Z"
 target_address = 0x00450580
 size = 0x48
 
@@ -119013,9 +119013,9 @@ type = "DIR32"
 symbol = "__real@3e8a3d71"
 target = 0x004B6FDC
 [[units]]
-name = "player-shot-timeline-update-004505d0"
+name = "player-shot-update-persistent"
 object = "build/Player.obj"
-symbol = "?FUN_004505d0@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@@Z"
+symbol = "?UpdatePersistentShot@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@@Z"
 target_address = 0x004505D0
 size = 0x261
 
@@ -119115,9 +119115,9 @@ type = "REL32"
 symbol = "?GaugeIsExtremelyYoukai@GameManager@th08@@QAEIXZ"
 target = 0x00406D70
 [[units]]
-name = "player-shot-trail-update-00450840"
+name = "player-shot-update-trail"
 object = "build/Player.obj"
-symbol = "?FUN_00450840@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@@Z"
+symbol = "?UpdateShotTrail@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@@Z"
 target_address = 0x00450840
 size = 0x283
 
@@ -119181,9 +119181,9 @@ type = "REL32"
 symbol = "?GaugeIsExtremelyYoukai@GameManager@th08@@QAEIXZ"
 target = 0x00406D70
 [[units]]
-name = "player-shot-trail-draw-00450ad0"
+name = "player-shot-draw-trail"
 object = "build/Player.obj"
-symbol = "?FUN_00450ad0@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@@Z"
+symbol = "?DrawShotTrail@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@@Z"
 target_address = 0x00450AD0
 size = 0x174
 
@@ -119232,9 +119232,9 @@ symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463210
 
 [[units]]
-name = "player-shot-script-update-00450c50"
+name = "player-shot-apply-hit-behavior"
 object = "build/Player.obj"
-symbol = "?FUN_00450c50@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@PAUFloat3@1@@Z"
+symbol = "?ApplyShotHitBehavior@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@PAUFloat3@1@@Z"
 target_address = 0x00450C50
 size = 0x263
 compare_size = 0x287
@@ -119401,9 +119401,9 @@ type = "DIR32"
 symbol = "$L70200"
 target = 0x00450E4C
 [[units]]
-name = "player-shot-effect-tick-00450ee0"
+name = "player-shot-periodic-hit-effect"
 object = "build/Player.obj"
-symbol = "?FUN_00450ee0@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@PAUFloat3@1@@Z"
+symbol = "?SpawnPeriodicShotHitEffect@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@PAUFloat3@1@@Z"
 target_address = 0x00450EE0
 size = 0x80
 
