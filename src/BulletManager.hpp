@@ -18,6 +18,12 @@ struct BulletTransformRecord
     i32 allowWhileActive;
 };
 C_ASSERT(sizeof(BulletTransformRecord) == 0x18);
+C_ASSERT(offsetof(BulletTransformRecord, float0) == 0x0);
+C_ASSERT(offsetof(BulletTransformRecord, float1) == 0x4);
+C_ASSERT(offsetof(BulletTransformRecord, int0) == 0x8);
+C_ASSERT(offsetof(BulletTransformRecord, int1) == 0xc);
+C_ASSERT(offsetof(BulletTransformRecord, kind) == 0x10);
+C_ASSERT(offsetof(BulletTransformRecord, allowWhileActive) == 0x14);
 
 enum BulletTransformKind
 {
@@ -37,12 +43,27 @@ enum BulletTransformKind
     BULLET_TRANSFORM_CANCEL_IMMUNE = 0x1000,
     BULLET_TRANSFORM_SET_CULL_DELAY = 0x2000,
     BULLET_TRANSFORM_SET_SPRITE = 0x4000,
+    BULLET_TRANSFORM_ONLY_WHEN_PLAYER_YOUKAI = 0x8000,
+    BULLET_TRANSFORM_ONLY_WHEN_PLAYER_HUMAN = 0x10000,
     BULLET_TRANSFORM_WAIT = 0x20000,
     BULLET_TRANSFORM_DESPAWN = 0x40000,
     BULLET_TRANSFORM_PLAY_SOUND = 0x80000,
     BULLET_TRANSFORM_WRAP_X = 0x400000,
     BULLET_TRANSFORM_WRAP_Y = 0x800000,
     BULLET_TRANSFORM_SPAWN_CHILD_PATTERN = 0x1000000,
+};
+
+enum BulletAimMode
+{
+    BULLET_AIM_FAN_AIMED = 0,
+    BULLET_AIM_FAN = 1,
+    BULLET_AIM_CIRCLE_AIMED = 2,
+    BULLET_AIM_CIRCLE = 3,
+    BULLET_AIM_OFFSET_CIRCLE_AIMED = 4,
+    BULLET_AIM_OFFSET_CIRCLE = 5,
+    BULLET_AIM_RANDOM_ANGLE = 6,
+    BULLET_AIM_RANDOM_SPEED = 7,
+    BULLET_AIM_RANDOM = 8,
 };
 
 struct BulletSpawnDescriptor
@@ -77,6 +98,20 @@ struct BulletSpawnDescriptor
     BulletSpawnDescriptor();
 };
 C_ASSERT(sizeof(BulletSpawnDescriptor) == 0x210);
+C_ASSERT(offsetof(BulletSpawnDescriptor, position) == 0x4);
+C_ASSERT(offsetof(BulletSpawnDescriptor, angle) == 0x10);
+C_ASSERT(offsetof(BulletSpawnDescriptor, angleStep) == 0x14);
+C_ASSERT(offsetof(BulletSpawnDescriptor, speed1) == 0x18);
+C_ASSERT(offsetof(BulletSpawnDescriptor, speed2) == 0x1c);
+C_ASSERT(offsetof(BulletSpawnDescriptor, transforms) == 0x20);
+C_ASSERT(offsetof(BulletSpawnDescriptor, laserStartOffset) == 0x1d0);
+C_ASSERT(offsetof(BulletSpawnDescriptor, count1) == 0x1f4);
+C_ASSERT(offsetof(BulletSpawnDescriptor, aimMode) == 0x1f8);
+C_ASSERT(offsetof(BulletSpawnDescriptor, transformFlags) == 0x1fc);
+C_ASSERT(offsetof(BulletSpawnDescriptor, spawnSound) == 0x200);
+C_ASSERT(offsetof(BulletSpawnDescriptor, transformSound) == 0x204);
+C_ASSERT(offsetof(BulletSpawnDescriptor, transformStartIndex) == 0x208);
+C_ASSERT(offsetof(BulletSpawnDescriptor, templateSprites) == 0x20c);
 
 i32 IsBulletManagerAnmReleaseRequired();
 

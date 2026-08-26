@@ -72,10 +72,10 @@ struct Enemy
     unknown_fields(0x2de8, 0x2c);
     ZunTimer timer2e14;
     unknown_fields(0x2e20, 4);
-    BulletSpawnDescriptor bullet2e24;
+    BulletSpawnDescriptor bulletSpawnDescriptor;
     unknown_fields(0x3034, 0x30);
     ZunTimer timer3064;
-    BulletSpawnDescriptor bullet3070;
+    BulletSpawnDescriptor laserSpawnDescriptor;
     unknown_fields(0x3280, 0x98);
     ZunTimer timer3318;
     unknown_fields(0x3324, 0x70);
@@ -102,6 +102,8 @@ struct Enemy
     void FUN_0042deb0();
 };
 C_ASSERT(sizeof(Enemy) == 0x53d0);
+C_ASSERT(offsetof(Enemy, bulletSpawnDescriptor) == 0x2e24);
+C_ASSERT(offsetof(Enemy, laserSpawnDescriptor) == 0x3070);
 
 struct EclTimelineInstruction
 {

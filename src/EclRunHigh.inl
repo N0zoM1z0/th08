@@ -73,6 +73,31 @@ struct RawInstruction
     u8 operands[1];
 };
 
+struct LaserSpawnArgs
+{
+    u16 bulletType;
+    i16 color;
+    f32 angle;
+    f32 speed;
+    f32 startOffset;
+    f32 endOffset;
+    f32 startLength;
+    f32 width;
+    i32 startTime;
+    i32 duration;
+    i32 despawnDuration;
+    i32 hitboxStartTime;
+    i32 hitboxEndDelay;
+    u32 transformFlags;
+};
+C_ASSERT(sizeof(LaserSpawnArgs) == 0x34);
+C_ASSERT(offsetof(LaserSpawnArgs, angle) == 0x4);
+C_ASSERT(offsetof(LaserSpawnArgs, speed) == 0x8);
+C_ASSERT(offsetof(LaserSpawnArgs, startOffset) == 0xc);
+C_ASSERT(offsetof(LaserSpawnArgs, startTime) == 0x1c);
+C_ASSERT(offsetof(LaserSpawnArgs, hitboxStartTime) == 0x28);
+C_ASSERT(offsetof(LaserSpawnArgs, transformFlags) == 0x30);
+
 // Provisional semantic name for target FUN_00422720.  Both its caller and
 // callee establish Enemy in ECX and the current ECL instruction in EDX.
 void __fastcall DispatchShotInstruction(u8 *enemy,
@@ -408,15 +433,17 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
 
     case 111:
     {
-        u8 *entry = TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E44 + TH08_ECL_READ_I(ctx, 0) * 0x18;
-        *reinterpret_cast<i32 *>(entry + 0x10) = TH08_ECL_READ_I(ctx, 1);
-        *reinterpret_cast<i32 *>(entry + 0x14) = TH08_ECL_READ_I(ctx, 2);
-        *reinterpret_cast<i32 *>(entry + 0x08) = TH08_ECL_READ_I(ctx, 3);
-        *reinterpret_cast<i32 *>(entry + 0x0C) = TH08_ECL_READ_I(ctx, 4);
-        *reinterpret_cast<f32 *>(entry + 0x00) = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 5))
+        BulletTransformRecord *entry =
+            &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))
+                 ->bulletSpawnDescriptor.transforms[TH08_ECL_READ_I(ctx, 0)];
+        entry->kind = TH08_ECL_READ_I(ctx, 1);
+        entry->allowWhileActive = TH08_ECL_READ_I(ctx, 2);
+        entry->int0 = TH08_ECL_READ_I(ctx, 3);
+        entry->int1 = TH08_ECL_READ_I(ctx, 4);
+        entry->float0 = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 5))
             ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 5)))
             : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 5)));
-        *reinterpret_cast<f32 *>(entry + 0x04) = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 6))
+        entry->float1 = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 6))
             ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 6)))
             : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 6)));
         break;
@@ -453,11 +480,15 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
 
     case 109:
     {
-        *reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2E28)) =
-            *reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)) +
-            *reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2DB8));
+        *reinterpret_cast<D3DXVECTOR3 *>(
+            &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))
+                 ->bulletSpawnDescriptor.position) =
+            *reinterpret_cast<D3DXVECTOR3 *>(
+                &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->vector2d34) +
+            *reinterpret_cast<D3DXVECTOR3 *>(
+                &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->vector2db8);
         g_BulletManager.FUN_00430e10(
-            reinterpret_cast<BulletSpawnDescriptor *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E24));
+            &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bulletSpawnDescriptor);
         break;
     }
     case 110:
@@ -473,70 +504,72 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
     case 114:
     case 115:
     {
-#pragma var_order(state, operands)
-        u8 *operands = TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands;
-        u8 *state = TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3070;
-        *reinterpret_cast<D3DXVECTOR3 *>(state + 0x04) =
+#pragma var_order(descriptor, args)
+        LaserSpawnArgs *args =
+            reinterpret_cast<LaserSpawnArgs *>(TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands);
+        BulletSpawnDescriptor *descriptor =
+            &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->laserSpawnDescriptor;
+        *reinterpret_cast<D3DXVECTOR3 *>(&descriptor->position) =
             *reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D88)) +
             *reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2DB8));
-        *(u16 *)(state + 0x00) = *reinterpret_cast<u16 *>(operands);
-        *(u16 *)(state + 0x02) = (u16)((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & 2U) ? EclOperands::ResolveInt(reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx)), static_cast<i32>(*reinterpret_cast<i16 *>(operands + 2))) : static_cast<i32>(*reinterpret_cast<i16 *>(operands + 2)));
-        *(f32 *)(state + 0x10) =
+        descriptor->bulletType = args->bulletType;
+        descriptor->color = (u16)((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & 2U) ? EclOperands::ResolveInt(reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx)), static_cast<i32>(args->color)) : static_cast<i32>(args->color));
+        descriptor->angle =
             (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2))
                 ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
-                      *reinterpret_cast<f32 *>(operands + 4))
-                : *reinterpret_cast<f32 *>(operands + 4);
-        *(f32 *)(state + 0x18) =
+                      args->angle)
+                : args->angle;
+        descriptor->speed1 =
             (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
                 ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
-                      *reinterpret_cast<f32 *>(operands + 8))
-                : *reinterpret_cast<f32 *>(operands + 8);
-        *(f32 *)(state + 0x1D0) =
+                      args->speed)
+                : args->speed;
+        descriptor->laserStartOffset =
             (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 4))
                 ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
-                      *reinterpret_cast<f32 *>(operands + 12))
-                : *reinterpret_cast<f32 *>(operands + 12);
-        *(f32 *)(state + 0x1D4) =
+                      args->startOffset)
+                : args->startOffset;
+        descriptor->laserEndOffset =
             (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 5))
                 ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
-                      *reinterpret_cast<f32 *>(operands + 16))
-                : *reinterpret_cast<f32 *>(operands + 16);
-        *(f32 *)(state + 0x1D8) =
+                      args->endOffset)
+                : args->endOffset;
+        descriptor->laserStartLength =
             (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 6))
                 ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
-                      *reinterpret_cast<f32 *>(operands + 20))
-                : *reinterpret_cast<f32 *>(operands + 20);
-        *(f32 *)(state + 0x1DC) =
+                      args->startLength)
+                : args->startLength;
+        descriptor->laserWidth =
             (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 7))
                 ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
-                      *reinterpret_cast<f32 *>(operands + 24))
-                : *reinterpret_cast<f32 *>(operands + 24);
-        *(i32 *)(state + 0x1E0) =
+                      args->width)
+                : args->width;
+        descriptor->laserStartTime =
             (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 8))
                 ? EclOperands::ResolveInt(
                       reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx)),
-                      *reinterpret_cast<i32 *>(operands + 28))
-                : *reinterpret_cast<i32 *>(operands + 28);
-        *(i32 *)(state + 0x1E4) =
+                      args->startTime)
+                : args->startTime;
+        descriptor->laserDuration =
             (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 9))
                 ? EclOperands::ResolveInt(
                       reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx)),
-                      *reinterpret_cast<i32 *>(operands + 32))
-                : *reinterpret_cast<i32 *>(operands + 32);
-        *(i32 *)(state + 0x1E8) =
+                      args->duration)
+                : args->duration;
+        descriptor->laserDespawnDuration =
             (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 10))
                 ? EclOperands::ResolveInt(
                       reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx)),
-                      *reinterpret_cast<i32 *>(operands + 36))
-                : *reinterpret_cast<i32 *>(operands + 36);
-        *(i32 *)(state + 0x1EC) = *reinterpret_cast<i32 *>(operands + 40);
-        *(i32 *)(state + 0x1F0) = *reinterpret_cast<i32 *>(operands + 44);
-        *(i32 *)(state + 0x1FC) = *reinterpret_cast<i32 *>(operands + 48);
+                      args->despawnDuration)
+                : args->despawnDuration;
+        descriptor->laserHitboxStartTime = args->hitboxStartTime;
+        descriptor->laserHitboxEndDelay = args->hitboxEndDelay;
+        descriptor->transformFlags = args->transformFlags;
         if (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->opcode == 115)
-            *(u16 *)(state + 0x1F8) = 0;
+            descriptor->aimMode = BULLET_AIM_FAN_AIMED;
         else
-            *(u16 *)(state + 0x1F8) = 1;
-        TH08_ECL_AT(ctx, void *, 0x3280 + TH08_ECL_AT(ctx, i32, 0x3300) * 4) = g_BulletManager.SpawnLaserPattern(reinterpret_cast<BulletSpawnDescriptor *>(state));
+            descriptor->aimMode = BULLET_AIM_FAN;
+        TH08_ECL_AT(ctx, void *, 0x3280 + TH08_ECL_AT(ctx, i32, 0x3300) * 4) = g_BulletManager.SpawnLaserPattern(descriptor);
         break;
     }
     case 116: TH08_ECL_AT(ctx, i32, 0x3300) = TH08_ECL_READ_I(ctx, 0); break;
@@ -948,12 +981,16 @@ enter_subroutine:
     case 113:
         if (TH08_ECL_READ_I(ctx, 0) >= 0)
         {
-            TH08_ECL_AT(ctx, i32, 0x3024) = TH08_ECL_READ_I(ctx, 0);
-            TH08_ECL_AT(ctx, u32, 0x3020) |= 0x200;
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))
+                ->bulletSpawnDescriptor.spawnSound = TH08_ECL_READ_I(ctx, 0);
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))
+                ->bulletSpawnDescriptor.transformFlags |= BULLET_TRANSFORM_PLAY_SPAWN_SOUND;
         }
         else
-            TH08_ECL_AT(ctx, u32, 0x3020) &= ~0x200;
-        TH08_ECL_AT(ctx, i32, 0x3028) = TH08_ECL_READ_I(ctx, 1);
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))
+                ->bulletSpawnDescriptor.transformFlags &= ~BULLET_TRANSFORM_PLAY_SPAWN_SOUND;
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))
+            ->bulletSpawnDescriptor.transformSound = TH08_ECL_READ_I(ctx, 1);
         break;
     case 151:
         reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->op151Bit26 =

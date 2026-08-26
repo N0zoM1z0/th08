@@ -110,6 +110,28 @@ i386 Linux build/layout verifier passed.  The semantic router for
 layout, construction order, or state operation changed.  The adjacent bullet
 spawn/ECL descriptor family is the next bounded milestone-closing batch.
 
+The following accepted batch closes that adjacent bullet/laser spawn and ECL
+descriptor family.  `Enemy + 0x2E24/+0x3070` are now asserted
+`bulletSpawnDescriptor` and `laserSpawnDescriptor` owners; ECL opcodes 109,
+111, and 113..115 use typed descriptor, transform-record, sound, aim, and laser
+operand fields, while the exact shot dispatcher at `0x00422720` uses the same
+bullet owner.  The nine target-observed aim modes and player-human/youkai shot
+conditions are named; tagged transform operands and descriptor `unknown1FA`
+remain deliberately neutral.  Focused replay across the five affected objects
+passed **102 / 102**, a required non-reuse cold replay passed **1,105 / 1,105**,
+the normal VC7 image linked, and the complete i386 Linux build/layout verifier
+passed.  No match manifest, ledger, ABI, construction order, or state operation
+changed.
+
+This formally closes the first semantic milestone, **core bullet-gameplay loop
+semantic closure**: Player deathbomb/Bomb, Laser lifecycle, Bullet core
+lifecycle, Bullet transform runtime state, and the adjacent spawn/ECL
+descriptor family are all typed and dual-oracle locked.  The claim is limited
+to those bounded families and does not imply whole-program semantic
+completion.  A useful next milestone is Enemy/ECL orchestration closure,
+starting from the still-raw Enemy motion/rank/phase fields adjacent to these
+descriptors rather than reopening the now-closed bullet loop.
+
 Select the next independent field family with:
 
 ```bash
@@ -856,9 +878,9 @@ restored the real `g_EclManager @ 0x004ECCB8` data owner; its `0x168`-byte
 extent ends exactly at `g_EclCallParameters @ 0x004ECE20`. It also rebound
 GameManager/Player/subsystem singletons, ZunTimer calls, Enemy methods, the ECL
 timeline lane, canonical `fabsf`, and the target-exact `0x0041FD20` /
-`0x0042ADB0` helpers. The last data alias was proven to be
-`g_EnemyManager.firstEnemy.bullet2e24`: `BulletSpawnDescriptor` is exactly
-`0x210` bytes and its address is `0x00577F20 + 0x2E24 = 0x0057AD44`, matching
+`0x0042ADB0` helpers. The last data alias was proven to be the member now named
+`g_EnemyManager.firstEnemy.bulletSpawnDescriptor`: `BulletSpawnDescriptor` is
+exactly `0x210` bytes and its address is `0x00577F20 + 0x2E24 = 0x0057AD44`, matching
 the target `memcpy` source. A no-`/FORCE` diagnostic link of production objects
 plus EclRun, EclDependencies, EclHelpers, EclOperandsInt/Float, EnemyTimeline,
 EclExIns, and EnemyManagerUpdate now exits successfully with **zero unresolved

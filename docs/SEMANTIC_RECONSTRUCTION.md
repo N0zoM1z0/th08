@@ -518,3 +518,81 @@ The semantic router for `src/BulletManager.cpp` falls from 97 to 29 candidates.
 That delta is a review aid, not a completion percentage; retained candidates
 are primarily ANM internals, two explicitly unknown bytes/vectors, replay
 storage, and the adjacent ECL descriptor family.
+
+### Bullet spawn and ECL descriptor family — 2026-08-26
+
+Scope: `EclManager::RunEcl @ 0x004184B0`, in particular shot opcodes 96..104
+and descriptor opcodes 109, 111, and 113..115; the shot dispatcher at
+`0x00422720`; Enemy initialization, construction, phase reset, and update at
+`0x00429E00`, `0x0042A280`, `0x0042B490`, `0x0042B930`, and `0x0042C660`; and
+the bullet/laser spawn consumers at `0x0042F5F0`, `0x00430E10`, and
+`0x00430F20`.  Shared declarations live in `src/BulletManager.hpp` and
+`src/EnemyManager.hpp`; typed producers and reset users span
+`src/EclRunHigh.inl`, `src/EclDependencies.cpp`, `src/EnemyManager.cpp`, and
+`src/EnemyManagerUpdate.cpp`.
+
+Observed: `Enemy` owns two separately constructed 0x210-byte
+`BulletSpawnDescriptor` members: the bullet pattern descriptor at `+0x2E24`
+and the laser descriptor at `+0x3070`.  Constructor order, phase-reset copies,
+and the target absolute source `g_EnemyManager.firstEnemy + 0x2E24` agree on
+those owners.  The descriptor contains an 18-element array of 0x18-byte
+`BulletTransformRecord` values at `+0x20`, followed by the laser geometry and
+timing block at `+0x1D0`, count/aim fields at `+0x1F4`, transform flags at
+`+0x1FC`, sound fields at `+0x200/+0x204`, the starting transform index at
+`+0x208`, and the resolved sprite-template pointer at `+0x20C`.
+
+TH08 ECL dataflow establishes the protocol.  Opcodes 96..104 decode a
+0x20-byte `ShotArgs` packet into the bullet descriptor and select aim mode by
+`opcode - 0x60`.  Opcode 109 spawns the stored bullet descriptor; opcode 111
+writes all six members of one indexed transform record; opcode 113 controls
+the spawn sound flag/index and transform sound index.  Opcodes 114/115 decode
+a 0x34-byte `LaserSpawnArgs` packet into the separate laser descriptor and
+select aimed/fixed laser angle behavior.  The shot dispatcher also proves the
+two player-state conditional flags: one suppresses the shot unless the player
+is youkai, and the other suppresses it unless the player is human.
+
+Corroborated: TH06 independently supplies the nine fan/circle/offset/random aim
+mode names and the same stable spawn-sound behavior.  TH08's own switch,
+position arithmetic, rank scaling, transform-record writes, laser packet
+decode, and consumers establish the final field ownership and all TH08
+offsets.  The adjacent version is not used to infer the two Enemy member
+locations or the laser packet layout.
+
+Inference: `bulletSpawnDescriptor`, `laserSpawnDescriptor`, `BulletAimMode`,
+`LaserSpawnArgs`, and the two player-state conditional transform flags are
+high-confidence names from paired TH08 producers and consumers.  The tagged
+record operands `float0/float1/int0/int1` remain neutral because their meaning
+varies by transform kind.  `BulletSpawnDescriptor::unknown1FA` remains unknown:
+the target clears it before bullet spawn, but this family provides no
+independent nonzero use from which to recover a role.
+
+Layout: assertions pin every `BulletTransformRecord` member, the relied-on
+`BulletSpawnDescriptor` fields and 0x210-byte size, both descriptor positions
+inside `Enemy`, the 0x20-byte shot packet, and the 0x34-byte laser packet.
+Construction order, copy sizes, field widths, calling conventions, and object
+sizes are unchanged.
+
+VC7 oracle: focused production/canonical replay across `EclRun.obj`,
+`EclDependencies.obj`, `BulletManager.obj`, `EnemyManager.obj`, and
+`EnemyManagerUpdate.obj` passed **102 / 102** accepted units.  An intermediate
+pass found a two-byte source-shape mismatch in `EnemyManager::Initialize` when
+the typed write bypassed the target's existing `enemy` local; expressing the
+same typed owner through that local restored **1,029 / 1,029** exact bytes.
+The required final non-reuse replay cold-built all 75 configured objects and
+passed **1,105 / 1,105**.  A subsequent normal VC7 production image linked
+successfully; no match manifest or exact ledger changed.
+
+Portable oracle: the complete Linux i386 container build linked, and
+`scripts/verify-modern-linux.sh build/modern-linux-container/th08-modern`
+verified ELF32/ET_EXEC/i386 plus every fixed target-owned layout symbol.  No
+isolated automated ECL-shot gameplay smoke exists, so no runtime smoke is
+claimed.
+
+Result: all known bullet/laser spawn-descriptor producers, reset/copy paths,
+and consumers now share asserted typed owners; the corresponding ECL transform
+record, sound, aim, and laser operand offsets are gone from authored gameplay
+code.  Together with the accepted Player deathbomb/Bomb, Laser lifecycle,
+Bullet core lifecycle, and Bullet transform-state batches, this closes the
+first semantic milestone: **core bullet-gameplay loop semantic closure**.
+This milestone is a bounded subsystem claim backed by the listed target and
+portable oracles, not a whole-program semantic-completion percentage.

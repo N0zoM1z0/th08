@@ -119,40 +119,40 @@ i32 BulletManager::FUN_0042f5f0(BulletSpawnDescriptor *descriptor, i32 index1, i
 
     switch (descriptor->aimMode)
     {
-    case 0:
-    case 1:
+    case BULLET_AIM_FAN_AIMED:
+    case BULLET_AIM_FAN:
         if ((descriptor->count1 & 1) != 0)
             angle += (f32)((index1 + 1) / 2) * descriptor->angleStep;
         else
             angle += (f32)(index1 / 2) * descriptor->angleStep + descriptor->angleStep * 0.5f;
         if ((index1 & 1) != 0)
             angle *= -1.0f;
-        if (descriptor->aimMode == 0)
+        if (descriptor->aimMode == BULLET_AIM_FAN_AIMED)
             angle += angleToPlayer;
         angle += descriptor->angle;
         break;
-    case 2:
+    case BULLET_AIM_CIRCLE_AIMED:
         angle += angleToPlayer;
-    case 3:
+    case BULLET_AIM_CIRCLE:
         angle += (f32)index1 * (ZUN_PI * 2.0f) / (f32)descriptor->count1;
         angle += (f32)index2 * descriptor->angleStep + descriptor->angle;
         break;
-    case 4:
+    case BULLET_AIM_OFFSET_CIRCLE_AIMED:
         angle += angleToPlayer;
-    case 5:
+    case BULLET_AIM_OFFSET_CIRCLE:
         angle += ZUN_PI / (f32)descriptor->count1;
         angle += (f32)index1 * (ZUN_PI * 2.0f) / (f32)descriptor->count1;
         angle += descriptor->angle;
         break;
-    case 6:
+    case BULLET_AIM_RANDOM_ANGLE:
         angle = g_Rng.GetRandomF32InRange(descriptor->angle - descriptor->angleStep) + descriptor->angleStep;
         break;
-    case 7:
+    case BULLET_AIM_RANDOM_SPEED:
         speed = g_Rng.GetRandomF32InRange(descriptor->speed1 - descriptor->speed2) + descriptor->speed2;
         angle += (f32)index1 * (ZUN_PI * 2.0f) / (f32)descriptor->count1;
         angle += (f32)index2 * descriptor->angleStep + descriptor->angle;
         break;
-    case 8:
+    case BULLET_AIM_RANDOM:
         angle = g_Rng.GetRandomF32InRange(descriptor->angle - descriptor->angleStep) + descriptor->angleStep;
         speed = g_Rng.GetRandomF32InRange(descriptor->speed1 - descriptor->speed2) + descriptor->speed2;
         break;
@@ -725,7 +725,7 @@ Laser *BulletManager::SpawnLaserPattern(BulletSpawnDescriptor *descriptor)
         laser->color = descriptor->color;
         laser->inUse = 1;
         laser->angle = descriptor->angle;
-        if (descriptor->aimMode == 0)
+        if (descriptor->aimMode == BULLET_AIM_FAN_AIMED)
             laser->angle = g_Player.FUN_0044c1b0(&descriptor->position) + laser->angle;
         laser->flags = static_cast<u16>(descriptor->transformFlags);
         laser->timer = 0;

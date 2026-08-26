@@ -202,8 +202,8 @@ void EnemyManager::Initialize()
     *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFDFFFFFF;
     *reinterpret_cast<u32 *>(enemy + 0x2DEC) = 0xBE19999A;
     *reinterpret_cast<u32 *>(enemy + 0x2DF0) = 0x3E19999A;
-    *reinterpret_cast<i32 *>(enemy + 0x3024) = 7;
-    *reinterpret_cast<i32 *>(enemy + 0x3028) = 25;
+    reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor.spawnSound = 7;
+    reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor.transformSound = 25;
     *reinterpret_cast<u32 *>(enemy + 0x3350) = 0x44800000;
     *reinterpret_cast<i32 *>(enemy + 0x2E10) = *reinterpret_cast<i32 *>(0x18B8A24);
 }
@@ -499,7 +499,7 @@ i32 Enemy::FUN_0042b490()
             this->enemy_fun_00415c80();
             *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2cea) = 0;
             *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) &= 0xffffffcf;
-            this->bullet2e24 = g_EnemyManager.firstEnemy.bullet2e24;
+            this->bulletSpawnDescriptor = g_EnemyManager.firstEnemy.bulletSpawnDescriptor;
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3060) = 0;
             reinterpret_cast<EclOperands::EnemyOverlay *>(this)->FUN_0042adb0(1);
 
@@ -713,7 +713,7 @@ i32 Enemy::FUN_0042b930()
         }
     }
 
-    this->bullet2e24 = g_EnemyManager.firstEnemy.bullet2e24;
+    this->bulletSpawnDescriptor = g_EnemyManager.firstEnemy.bulletSpawnDescriptor;
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3060) = 0;
     this->enemy_fun_00415c80();
     *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2cea) = 0;

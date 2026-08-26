@@ -713,6 +713,10 @@ struct ShotArgs
     u32 transformFlags;
 };
 C_ASSERT(sizeof(ShotArgs) == 0x20);
+C_ASSERT(offsetof(ShotArgs, count1) == 0x4);
+C_ASSERT(offsetof(ShotArgs, speed1) == 0xc);
+C_ASSERT(offsetof(ShotArgs, angle) == 0x14);
+C_ASSERT(offsetof(ShotArgs, transformFlags) == 0x1c);
 
 // FUNCTION: th08 0x422720
 void __fastcall DispatchShotInstruction(u8 *enemy, RawInstruction *instruction)
@@ -722,11 +726,11 @@ void __fastcall DispatchShotInstruction(u8 *enemy, RawInstruction *instruction)
     i32 packed;
 
     args = reinterpret_cast<ShotArgs *>(instruction->operands);
-    descriptor = reinterpret_cast<BulletSpawnDescriptor *>(enemy + 0x2e24);
+    descriptor = &reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor;
 
-    if (((args->transformFlags & 0x8000) != 0 &&
+    if (((args->transformFlags & BULLET_TRANSFORM_ONLY_WHEN_PLAYER_YOUKAI) != 0 &&
          ((*reinterpret_cast<u32 *>(enemy + 0x3324) >> 11) & 1) == 0) ||
-        ((args->transformFlags & 0x10000) != 0 &&
+        ((args->transformFlags & BULLET_TRANSFORM_ONLY_WHEN_PLAYER_HUMAN) != 0 &&
          ((*reinterpret_cast<u32 *>(enemy + 0x3324) >> 11) & 1) != 0))
         return;
     if ((*reinterpret_cast<f32 *>(enemy + 0x3350) > 0.0f) &&
@@ -738,8 +742,8 @@ void __fastcall DispatchShotInstruction(u8 *enemy, RawInstruction *instruction)
         return;
 
             descriptor->position =
-                *reinterpret_cast<Float3 *>(enemy + 0x2d88) +
-                *reinterpret_cast<Float3 *>(enemy + 0x2db8);
+                reinterpret_cast<Enemy *>(enemy)->vector2d88 +
+                reinterpret_cast<Enemy *>(enemy)->vector2db8;
 
             packed = args->bulletType;
             descriptor->bulletType = (instruction->operandFlags & 1)
