@@ -464,8 +464,27 @@ passes.  `Spellcard.cpp` is now zero-candidate in all router categories; the
 unproven `Spellcard::unknown_044` range remains neutral.  The whole-source
 router is 87 raw-member, 82 absolute, 271 anonymous, and 49 opaque candidates.
 
-The next dense semantic owners are EnemyManagerUpdate and AsciiManager
-presentation state, followed by the remaining GameManager setup/runtime views.
+The Enemy update/render batch is now accepted.  The complete
+`EnemyManager::OnUpdate @ 0x0042C660` uses the shared Enemy, Player,
+GameManager, ReplayManager, VM, sprite, and draw-list owners instead of its
+private raw overlay family; `EnemyManager::OnDrawImpl @ 0x0042E140` consumes
+the same typed VM and `Enemy::nextInDrawGroup` fields.  Target replay also
+caught two important false hypotheses: `Player +0x000` is the Player state
+machine rather than character type, and loaded-sprite `+0x30/+0x34` are the
+pixel height/width fields.  The phase-capture helper at `0x0042BC50` now uses
+Spellcard flags and `bonusProgress` directly while retaining its ABI.
+
+Focused replay matches OnUpdate **6,198 / 6,198**, canonical EnemyManager
+**23 / 23** including OnDrawImpl **2,504 / 2,504**, and the production subset
+**16 / 16**.  The required single-job non-reuse cold replay passes **1,106 /
+1,106**, the normal VC7 image links, and the complete i386 Linux build plus
+fixed-layout verifier passes.  `EnemyManagerUpdate.cpp` is zero-candidate in
+all router categories.  The dword at absolute `0x018B8A24` remains explicitly
+unknown because it lacks independent ownership evidence.  The whole-source
+router is now 60 raw-member, 82 absolute, 255 anonymous, and 49 opaque.
+
+The next dense semantic owner is AsciiManager presentation state, followed by
+the remaining GameManager setup/runtime views.
 
 Select the next independent field family with:
 

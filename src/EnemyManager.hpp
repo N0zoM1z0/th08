@@ -249,7 +249,8 @@ struct Enemy
     void Despawn();
     void UpdateEffects();
 
-    unknown_fields(0x0, 0xc);
+    Enemy *nextInDrawGroup;
+    unknown_fields(0x4, 0x8);
     AnmVm vm;
     AnmVm secondaryVms[2];
     EnemyUnkStruct2 mainEclContextStorage;
@@ -361,6 +362,7 @@ struct Enemy
     void IntegrateVelocity();
 };
 C_ASSERT(sizeof(Enemy) == 0x53d0);
+C_ASSERT(offsetof(Enemy, nextInDrawGroup) == 0x0);
 C_ASSERT(offsetof(Enemy, mainEclContextStorage) == 0x7f8);
 C_ASSERT(offsetof(Enemy, mainEclCallStackStorage) == 0xa20);
 C_ASSERT(offsetof(Enemy, activeEclContext) == 0x2ca0);

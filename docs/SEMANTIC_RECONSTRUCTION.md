@@ -1850,3 +1850,58 @@ is the intentionally retained unknown range.  The whole-source router reports
 87 raw-member, 82 absolute-address, 271 anonymous-identifier, and 49 opaque-
 storage candidates.  These counts route the next bounded owner; they are not a
 semantic-completion percentage.
+
+### Enemy update and render ownership — 2026-08-27
+
+Scope: `EnemyManager::OnUpdate @ 0x0042C660`,
+`EnemyManager::OnDrawImpl @ 0x0042E140`, the phase-capture helper at
+`0x0042BC50`, and the shared `Enemy` prefix consumed by the update and four
+draw lists.
+
+Observed: `Enemy +0x000` is the singly linked next pointer installed when an
+active visible Enemy is assigned to one of the manager's four draw groups and
+consumed by `OnDrawImpl`; it is now `Enemy::nextInDrawGroup`.  The primary VM
+at `+0x00C` and two secondary VMs at `+0x2B0` are the existing asserted
+`AnmVm` objects.  Their loaded-sprite pixel width/height, colors, visibility,
+script, position, and auxiliary trail VMs replace the update TU's private raw
+facades and every render-side offset.  The target's damage flash writes the
+individual `color2` channels, while normal display tint uses `color1`.
+
+The same update body now uses the shared owners for Enemy life, timers,
+hitboxes, flags, phase callbacks, movement, effects, Boss state, Player-shot
+damage, and draw-list publication.  Its external state reads are likewise
+typed: total play time and humanity-rate counters, deathbomb freeze and shot-
+suppression flags, Player Bomb activity, Player option mode, replay state, and
+the Player state machine.  In particular the target access at `Player +0x000`
+is `Player::playerState`, not the unrelated character-type concept from the
+discarded local overlay.  The death path therefore starts the 90-frame
+invulnerable state through the real owner.  The helper at `0x0042BC50` retains
+its target ABI while expressing its three operations as Spellcard flag and
+`bonusProgress` field accesses.
+
+Unknowns: the absolute dword at `0x018B8A24`, sampled once at the start of the
+update, has no independent global-owner or behavioral evidence and remains an
+explicit address instead of receiving a speculative name.  The unused bytes
+at `Enemy +0x004..+0x00B`, unobserved flag bits, and neutral ranges elsewhere
+in `Enemy.hpp` remain unknown.  Existing method names and field roles outside
+this bounded owner family are not strengthened by this batch.
+
+VC7 oracle: focused `EnemyManagerUpdate.obj` replay matches the complete
+`OnUpdate` body at **6,198 / 6,198 bytes**.  The canonical transformed
+`EnemyManager.obj` replay passes **23 / 23**, including `OnDrawImpl` at
+**2,504 / 2,504** and the phase-capture helper at **50 / 50**.  The production
+object's configured subset also passes **16 / 16**.  Because `Enemy.hpp` is a
+shared layout, the required single-job non-reuse cold build of all 75
+comparison objects was run and passes **1,106 / 1,106 exact**; the normal VC7
+production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies ELF32/ET_EXEC/i386 plus every fixed
+target-owned layout symbol.
+
+Result: `EnemyManagerUpdate.cpp` has zero candidates in every semantic-router
+category.  Across the update source, draw source, and Enemy header, the only
+non-header-layout candidate is the deliberately unresolved absolute dword.
+The whole-source router reports 60 raw-member, 82 absolute-address, 255
+anonymous-identifier, and 49 opaque-storage candidates.  These are routing
+counts, not a whole-program completion claim.

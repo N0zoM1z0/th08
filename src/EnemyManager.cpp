@@ -686,9 +686,9 @@ i32 Enemy::HandleTimerCallback()
 // FUNCTION: th08 0x42bc50
 void __fastcall FUN_0042bc50(void *self)
 {
-    *reinterpret_cast<u32 *>(self) &= ~4u;
-    *reinterpret_cast<u32 *>(self) |= 8u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(self) + 0xfc) = 0;
+    reinterpret_cast<Spellcard *>(self)->flags &= ~4u;
+    reinterpret_cast<Spellcard *>(self)->flags |= 8u;
+    reinterpret_cast<Spellcard *>(self)->bonusProgress = 0;
 }
 
 // FUNCTION: th08 0x42bc90
@@ -1001,7 +1001,7 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
     u32 savedColor;
     AnmVm *vm;
     i32 k;
-    u8 *enemy;
+    Enemy *enemy;
     f32 halfWidth;
     f32 halfCenter;
     i32 vertexCount;
@@ -1016,23 +1016,23 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
 
     for (i = drawGroup; i < chainPriority; ++i)
     {
-        enemy = reinterpret_cast<u8 *>(this->drawGroupHeads[i]);
+        enemy = this->drawGroupHeads[i];
         while (enemy != NULL)
         {
-            vm = reinterpret_cast<AnmVm *>(enemy + 0x2B0);
+            vm = &enemy->secondaryVms[0];
             for (k = 0; k < 1; ++k, ++vm)
             {
                 if (vm->scriptIndex >= 0)
                 {
                     if (vm->type)
-                        vm->SetZRotation(reinterpret_cast<Enemy *>(enemy)->movementAngle);
+                        vm->SetZRotation(enemy->movementAngle);
 
-                    if (((reinterpret_cast<Enemy *>(enemy)->flags2 >>
+                    if (((enemy->flags2 >>
                           ENEMY_FLAG2_EXTRA_VM_FIXED_OFFSET_SHIFT) & 1) == 0)
-                        vm->pos = reinterpret_cast<Enemy *>(enemy)->worldPosition + vm->pos2;
+                        vm->pos = enemy->worldPosition + vm->pos2;
                     else
-                        vm->pos = reinterpret_cast<Enemy *>(enemy)->worldPosition +
-                                  *reinterpret_cast<Float3 *>(enemy + 0x294);
+                        vm->pos = enemy->worldPosition +
+                                  enemy->vm.pos2;
 
                     vm->pos.z = 0.3f;
                     vm->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
@@ -1041,101 +1041,101 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                 }
             }
 
-            if (((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+            if (((enemy->flags1 >>
                   ENEMY_FLAG_ROTATE_ANM_WITH_MOVEMENT_SHIFT) & 1) != 0)
-                reinterpret_cast<AnmVm *>(enemy + 0xC)->SetZRotation(
-                    reinterpret_cast<Enemy *>(enemy)->movementAngle);
+                enemy->vm.SetZRotation(
+                    enemy->movementAngle);
 
-            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos =
-                reinterpret_cast<Enemy *>(enemy)->worldPosition + *reinterpret_cast<Float3 *>(enemy + 0x294);
-            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
-            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
-            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.z = 0.25f;
+            enemy->vm.pos =
+                enemy->worldPosition + enemy->vm.pos2;
+            enemy->vm.pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+            enemy->vm.pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
+            enemy->vm.pos.z = 0.25f;
 
-            if (reinterpret_cast<Enemy *>(enemy)->trailFlags)
+            if (enemy->trailFlags)
             {
-                *reinterpret_cast<Float2 *>(&savedScaleX) = reinterpret_cast<AnmVm *>(enemy + 0xC)->scale;
-                savedColor = reinterpret_cast<AnmVm *>(enemy + 0xC)->color1.d3dColor;
+                *reinterpret_cast<Float2 *>(&savedScaleX) = enemy->vm.scale;
+                savedColor = enemy->vm.color1.d3dColor;
 
-                if ((reinterpret_cast<Enemy *>(enemy)->trailFlags & ENEMY_TRAIL_RENDER_AS_STRIP) == 0)
+                if ((enemy->trailFlags & ENEMY_TRAIL_RENDER_AS_STRIP) == 0)
                 {
-                    for (k = reinterpret_cast<Enemy *>(enemy)->trailHistoryLength - 1; k > 0;
-                         k -= reinterpret_cast<Enemy *>(enemy)->trailSampleStride)
+                    for (k = enemy->trailHistoryLength - 1; k > 0;
+                         k -= enemy->trailSampleStride)
                     {
-                        if (reinterpret_cast<Enemy *>(enemy)->trailSamples[k].position.x < -990.0f)
+                        if (enemy->trailSamples[k].position.x < -990.0f)
                             continue;
 
-                        if (((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+                        if (((enemy->flags1 >>
                               ENEMY_FLAG_ROTATE_ANM_WITH_MOVEMENT_SHIFT) & 1) != 0)
-                                reinterpret_cast<AnmVm *>(enemy + 0xC)->SetZRotation(
-                                    reinterpret_cast<Enemy *>(enemy)->trailSamples[k].angle);
+                                enemy->vm.SetZRotation(
+                                    enemy->trailSamples[k].angle);
 
-                            if ((reinterpret_cast<Enemy *>(enemy)->trailFlags & ENEMY_TRAIL_TAPER) != 0)
-                                reinterpret_cast<AnmVm *>(enemy + 0xC)->scale.x =
+                            if ((enemy->trailFlags & ENEMY_TRAIL_TAPER) != 0)
+                                enemy->vm.scale.x =
                                     savedScaleX - (f32)k * savedScaleX /
-                                                      (f32)reinterpret_cast<Enemy *>(enemy)->trailHistoryLength;
+                                                      (f32)enemy->trailHistoryLength;
 
-                            if ((reinterpret_cast<Enemy *>(enemy)->trailFlags & ENEMY_TRAIL_FADE) != 0)
-                                reinterpret_cast<AnmVm *>(enemy + 0xC)->color1.a =
+                            if ((enemy->trailFlags & ENEMY_TRAIL_FADE) != 0)
+                                enemy->vm.color1.a =
                                     reinterpret_cast<u8 *>(&savedColor)[3] -
                                     reinterpret_cast<u8 *>(&savedColor)[3] * k /
-                                        reinterpret_cast<Enemy *>(enemy)->trailHistoryLength;
+                                        enemy->trailHistoryLength;
 
-                            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos =
-                                reinterpret_cast<Enemy *>(enemy)->trailSamples[k].position +
-                                *reinterpret_cast<Float3 *>(enemy + 0x294);
-                            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.z = 0.3f;
-                            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
-                            reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
-                        g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(enemy + 0xC));
+                            enemy->vm.pos =
+                                enemy->trailSamples[k].position +
+                                enemy->vm.pos2;
+                            enemy->vm.pos.z = 0.3f;
+                            enemy->vm.pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+                            enemy->vm.pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
+                        g_AnmManager->Draw2D(&enemy->vm);
                     }
                 }
                 else
                 {
                     vertexCount = 0;
-                    for (k = 0; k < reinterpret_cast<Enemy *>(enemy)->trailHistoryLength;
-                         k += reinterpret_cast<Enemy *>(enemy)->trailSampleStride)
+                    for (k = 0; k < enemy->trailHistoryLength;
+                         k += enemy->trailSampleStride)
                     {
-                        if (reinterpret_cast<Enemy *>(enemy)->trailSamples[k].position.x < -990.0f)
+                        if (enemy->trailSamples[k].position.x < -990.0f)
                             break;
                         vertexCount += 2;
                     }
 
                     if (vertexCount > 2)
                     {
-                        uvSpan = reinterpret_cast<AnmVm *>(enemy + 0xC)->loadedSprite->uvEnd.x -
-                                 reinterpret_cast<AnmVm *>(enemy + 0xC)->loadedSprite->uvStart.x;
+                        uvSpan = enemy->vm.loadedSprite->uvEnd.x -
+                                 enemy->vm.loadedSprite->uvStart.x;
                         uvStep = uvSpan / ((vertexCount + 1) / 2 - 1);
-                        uv = reinterpret_cast<AnmVm *>(enemy + 0xC)->loadedSprite->uvEnd.x +
-                             reinterpret_cast<AnmVm *>(enemy + 0xC)->uvScrollPos.x;
-                        vertices = reinterpret_cast<Enemy *>(enemy)->trailVertices;
+                        uv = enemy->vm.loadedSprite->uvEnd.x +
+                             enemy->vm.uvScrollPos.x;
+                        vertices = enemy->trailVertices;
 
-                        for (k = 0; k < reinterpret_cast<Enemy *>(enemy)->trailHistoryLength;
-                             k += reinterpret_cast<Enemy *>(enemy)->trailSampleStride, uv -= uvStep)
+                        for (k = 0; k < enemy->trailHistoryLength;
+                             k += enemy->trailSampleStride, uv -= uvStep)
                         {
-                            if (reinterpret_cast<Enemy *>(enemy)->trailSamples[k].position.x < -990.0f)
+                            if (enemy->trailSamples[k].position.x < -990.0f)
                                 break;
 
                             if (k == 0)
                             {
-                                angle = reinterpret_cast<Enemy *>(enemy)->trailSamples[0].angle;
+                                angle = enemy->trailSamples[0].angle;
                             }
                             else
                             {
                                 angle = FUN_0042eb10(
-                                    reinterpret_cast<Enemy *>(enemy)->trailSamples[k - 1].angle,
-                                    reinterpret_cast<Enemy *>(enemy)->trailSamples[k].angle, 0.5f);
+                                    enemy->trailSamples[k - 1].angle,
+                                    enemy->trailSamples[k].angle, 0.5f);
                             }
 
-                            if ((reinterpret_cast<Enemy *>(enemy)->trailFlags & ENEMY_TRAIL_TAPER) != 0 && k > 0 &&
-                                k + reinterpret_cast<Enemy *>(enemy)->trailSampleStride <
-                                    reinterpret_cast<Enemy *>(enemy)->trailHistoryLength)
+                            if ((enemy->trailFlags & ENEMY_TRAIL_TAPER) != 0 && k > 0 &&
+                                k + enemy->trailSampleStride <
+                                    enemy->trailHistoryLength)
                             {
                                 sinAngle = FUN_0042eb10(
-                                    reinterpret_cast<Enemy *>(enemy)->trailSamples[
-                                        k + reinterpret_cast<Enemy *>(enemy)->trailSampleStride - 1].angle,
-                                    reinterpret_cast<Enemy *>(enemy)->trailSamples[
-                                        reinterpret_cast<Enemy *>(enemy)->trailSampleStride].angle,
+                                    enemy->trailSamples[
+                                        k + enemy->trailSampleStride - 1].angle,
+                                    enemy->trailSamples[
+                                        enemy->trailSampleStride].angle,
                                     0.5f);
                                 if (fabsf(previousAngle - angle) < 0.00001f &&
                                     fabsf(angle - sinAngle) < 0.00001f)
@@ -1150,61 +1150,61 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                             cosAngle = cosf(angle);
                             halfCenter = 0.0f;
                             halfWidth = savedScaleY *
-                                        reinterpret_cast<AnmVm *>(enemy + 0xC)->loadedSprite->heightPx / 2.0f;
-                            if ((reinterpret_cast<Enemy *>(enemy)->trailFlags & ENEMY_TRAIL_TAPER) != 0)
+                                        enemy->vm.loadedSprite->heightPx / 2.0f;
+                            if ((enemy->trailFlags & ENEMY_TRAIL_TAPER) != 0)
                             {
-                                angle = 1.0f - (f32)k / (f32)reinterpret_cast<Enemy *>(enemy)->trailHistoryLength;
+                                angle = 1.0f - (f32)k / (f32)enemy->trailHistoryLength;
                                 halfCenter *= angle;
                                 halfWidth *= angle;
                             }
 
-                            vertices[1].diffuse = reinterpret_cast<AnmVm *>(enemy + 0xC)->color1.d3dColor;
+                            vertices[1].diffuse = enemy->vm.color1.d3dColor;
                             vertices[0].diffuse = vertices[1].diffuse;
-                            if ((reinterpret_cast<Enemy *>(enemy)->trailFlags & ENEMY_TRAIL_FADE) != 0)
+                            if ((enemy->trailFlags & ENEMY_TRAIL_FADE) != 0)
                             {
                                 reinterpret_cast<u8 *>(&vertices[1].diffuse)[3] =
                                     reinterpret_cast<u8 *>(&savedColor)[3] -
                                     reinterpret_cast<u8 *>(&savedColor)[3] * k /
-                                        reinterpret_cast<Enemy *>(enemy)->trailHistoryLength;
+                                        enemy->trailHistoryLength;
                                 reinterpret_cast<u8 *>(&vertices[0].diffuse)[3] =
                                     reinterpret_cast<u8 *>(&vertices[1].diffuse)[3];
                             }
 
-                            vertices[0].pos = reinterpret_cast<Enemy *>(enemy)->trailSamples[k].position;
+                            vertices[0].pos = enemy->trailSamples[k].position;
                             vertices[0].pos.x += cosAngle * halfCenter - sinAngle * halfWidth + 32.0f;
                             vertices[0].pos.y += sinAngle * halfCenter + cosAngle * halfWidth + 16.0f;
                             vertices[0].textureUV.x = uv;
                             vertices[0].textureUV.y =
-                                reinterpret_cast<AnmVm *>(enemy + 0xC)->loadedSprite->uvStart.y +
-                                reinterpret_cast<AnmVm *>(enemy + 0xC)->uvScrollPos.y;
+                                enemy->vm.loadedSprite->uvStart.y +
+                                enemy->vm.uvScrollPos.y;
                             ++vertices;
 
-                            vertices[0].pos = reinterpret_cast<Enemy *>(enemy)->trailSamples[k].position;
+                            vertices[0].pos = enemy->trailSamples[k].position;
                             vertices[0].pos.x += cosAngle * halfCenter + sinAngle * halfWidth + 32.0f;
                             vertices[0].pos.y += sinAngle * halfCenter - cosAngle * halfWidth + 16.0f;
                             vertices[0].textureUV.x = uv;
                             vertices[0].textureUV.y =
-                                reinterpret_cast<AnmVm *>(enemy + 0xC)->loadedSprite->uvEnd.y +
-                                reinterpret_cast<AnmVm *>(enemy + 0xC)->uvScrollPos.y;
+                                enemy->vm.loadedSprite->uvEnd.y +
+                                enemy->vm.uvScrollPos.y;
                             ++vertices;
                         }
 
                         if (vertexCount > 2)
                             g_AnmManager->DrawVertices(
-                                reinterpret_cast<AnmVm *>(enemy + 0xC),
-                                reinterpret_cast<Enemy *>(enemy)->trailVertices, vertexCount);
+                                &enemy->vm,
+                                enemy->trailVertices, vertexCount);
                     }
                 }
 
-                reinterpret_cast<AnmVm *>(enemy + 0xC)->scale = *reinterpret_cast<Float2 *>(&savedScaleX);
-                reinterpret_cast<AnmVm *>(enemy + 0xC)->color1.d3dColor = savedColor;
+                enemy->vm.scale = *reinterpret_cast<Float2 *>(&savedScaleX);
+                enemy->vm.color1.d3dColor = savedColor;
             }
 
-            if ((reinterpret_cast<Enemy *>(enemy)->trailFlags & ENEMY_TRAIL_HIDE_HEAD_ANM) == 0 &&
-                ((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+            if ((enemy->trailFlags & ENEMY_TRAIL_HIDE_HEAD_ANM) == 0 &&
+                ((enemy->flags1 >>
                   ENEMY_FLAG_HIDE_PRIMARY_ANM_SHIFT) & 1) == 0)
             {
-                g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(enemy + 0xC));
+                g_AnmManager->Draw2D(&enemy->vm);
             }
 
             for (k = 1; k < 2; ++k, ++vm)
@@ -1212,14 +1212,14 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                 if (vm->scriptIndex >= 0)
                 {
                     if (vm->type)
-                        vm->SetZRotation(-reinterpret_cast<Enemy *>(enemy)->movementAngle);
+                        vm->SetZRotation(-enemy->movementAngle);
 
-                    if (((reinterpret_cast<Enemy *>(enemy)->flags2 >>
+                    if (((enemy->flags2 >>
                           ENEMY_FLAG2_EXTRA_VM_FIXED_OFFSET_SHIFT) & 1) == 0)
-                        vm->pos = reinterpret_cast<Enemy *>(enemy)->worldPosition + vm->pos2;
+                        vm->pos = enemy->worldPosition + vm->pos2;
                     else
-                        vm->pos = reinterpret_cast<Enemy *>(enemy)->worldPosition +
-                                  *reinterpret_cast<Float3 *>(enemy + 0x294);
+                        vm->pos = enemy->worldPosition +
+                                  enemy->vm.pos2;
 
                     vm->pos.z = 0.3f;
                     vm->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
@@ -1228,7 +1228,7 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                 }
             }
 
-            enemy = *reinterpret_cast<u8 **>(enemy);
+            enemy = enemy->nextInDrawGroup;
         }
     }
 
@@ -1302,8 +1302,8 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
 
     if (!IsDisableResourceReload())
     {
-        if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBAC) >> 14) & 1) == 0 ||
-            *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBB0) < 0xCD)
+        if (!g_GameManager.flags.isSpellPractice ||
+            g_GameManager.currentSpellCardNumber < 0xCD)
         {
             enemyManager->alternateEnemyAnm =
                 g_AnmManager->PreloadAnm(8, g_StageEnemyAnms[g_GameManager.currentStage]);
@@ -1316,8 +1316,7 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
         {
             enemyManager->alternateEnemyAnm =
                 g_AnmManager->PreloadAnm(
-                    8, g_SpellEnemyAnms[
-                           *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBB0) - 0xCD]);
+                    8, g_SpellEnemyAnms[g_GameManager.currentSpellCardNumber - 0xCD]);
             if (enemyManager->alternateEnemyAnm == NULL)
             {
                 return ZUN_ERROR;
@@ -1339,7 +1338,7 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
         memset(&g_EclManager, 0,
                sizeof(g_EclManager) + sizeof(EclRunLowProposal::g_EclCallParameters));
 #endif
-        if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBAC) >> 14) & 1) == 0)
+        if (!g_GameManager.flags.isSpellPractice)
         {
             if (g_EclManager.Load(const_cast<char *>(g_StageEclFiles[g_GameManager.currentStage])) !=
                 ZUN_SUCCESS)
@@ -1347,10 +1346,10 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
                 return ZUN_ERROR;
             }
         }
-        else if (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBB0) >= 0xCD)
+        else if (g_GameManager.currentSpellCardNumber >= 0xCD)
         {
             if (g_EclManager.Load(const_cast<char *>(g_SpellEclFiles[
-                    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBB0) - 0xCD])) !=
+                    g_GameManager.currentSpellCardNumber - 0xCD])) !=
                 ZUN_SUCCESS)
             {
                 return ZUN_ERROR;
