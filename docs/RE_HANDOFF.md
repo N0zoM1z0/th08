@@ -95,6 +95,21 @@ router falls from 294 to 97 candidates in `BulletManager.cpp` and 25 to 18 in
 manifest, ledger, global identity, state operation, or rendering sequence
 changed.
 
+The next accepted batch closes `BulletExState[7]`, the transform-specific
+runtime family at `Bullet + 0xF80..+0x10B3`.  The dispatcher, update path, and
+nine handlers now use asserted state slots and named timer, acceleration,
+direction-change, bounce, wait, and wrap fields; the transform flag namespace
+also names spawn modes, runtime actions, spawn sound, and cancel immunity.
+The seven-element nontrivial array remains intact because its VC7 vector
+construction is target-visible.  Generic tagged-record operands and the
+deceleration slot's unconsumed `Float3::z` role remain explicitly neutral.
+Focused `BulletManager.obj` replay passed **37 / 37**; a required non-reuse cold
+replay passed **1,105 / 1,105**, the normal VC7 image linked, and the complete
+i386 Linux build/layout verifier passed.  The semantic router for
+`BulletManager.cpp` falls from 97 to 29 candidates.  No match manifest, ledger,
+layout, construction order, or state operation changed.  The adjacent bullet
+spawn/ECL descriptor family is the next bounded milestone-closing batch.
+
 Select the next independent field family with:
 
 ```bash

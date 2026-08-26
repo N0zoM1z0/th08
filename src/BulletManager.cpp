@@ -218,7 +218,7 @@ i32 BulletManager::FUN_0042f5f0(BulletSpawnDescriptor *descriptor, i32 index1, i
     }
 
     transformFlags = descriptor->transformFlags;
-    if ((descriptor->transformFlags & 2) != 0)
+    if ((descriptor->transformFlags & BULLET_TRANSFORM_SPAWN_FAST) != 0)
     {
         CopyBulletAnmVmCore(&bullet->sprites.spawnFastVm, &descriptor->templateSprites->spawnFastVm);
         SelectBulletSprite(&bullet->sprites.spawnFastVm,
@@ -227,7 +227,7 @@ i32 BulletManager::FUN_0042f5f0(BulletSpawnDescriptor *descriptor, i32 index1, i
         bullet->state = BULLET_STATE_SPAWNING_FAST;
         bullet->position -= bullet->velocity * 4.0f;
     }
-    else if ((descriptor->transformFlags & 4) != 0)
+    else if ((descriptor->transformFlags & BULLET_TRANSFORM_SPAWN_NORMAL) != 0)
     {
         CopyBulletAnmVmCore(&bullet->sprites.spawnNormalVm, &descriptor->templateSprites->spawnNormalVm);
         SelectBulletSprite(&bullet->sprites.spawnNormalVm,
@@ -236,7 +236,7 @@ i32 BulletManager::FUN_0042f5f0(BulletSpawnDescriptor *descriptor, i32 index1, i
         bullet->state = BULLET_STATE_SPAWNING_NORMAL;
         bullet->position -= bullet->velocity * 4.0f;
     }
-    else if ((descriptor->transformFlags & 8) != 0)
+    else if ((descriptor->transformFlags & BULLET_TRANSFORM_SPAWN_SLOW) != 0)
     {
         CopyBulletAnmVmCore(&bullet->sprites.spawnSlowVm, &descriptor->templateSprites->spawnSlowVm);
         SelectBulletSprite(&bullet->sprites.spawnSlowVm,
@@ -253,7 +253,7 @@ i32 BulletManager::FUN_0042f5f0(BulletSpawnDescriptor *descriptor, i32 index1, i
     bullet->FUN_0042ffc0();
 
     if (this->spawnSuppressionFrames != 0 &&
-        (bullet->transformFlags & 0x1000) == 0)
+        (bullet->transformFlags & BULLET_TRANSFORM_CANCEL_IMMUNE) == 0)
         bullet->state = BULLET_STATE_DESPAWNING;
 
     bullet++;
@@ -319,7 +319,7 @@ nextRecord:
         return;
 
     record = &this->transforms[this->transformIndex];
-    if (record->kind == 0)
+    if (record->kind == BULLET_TRANSFORM_NONE)
         return;
     if (record->allowWhileActive == 0 && this->activeTransformFlags != 0)
         return;
@@ -331,86 +331,93 @@ nextRecord:
 
     switch (record->kind)
     {
-    case 1:
-        this->activeTransformFlags |= 1;
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xF80) = 0;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xF9C) = 0;
+    case BULLET_TRANSFORM_DECELERATE:
+        this->activeTransformFlags |= BULLET_TRANSFORM_DECELERATE;
+        this->exStates[BULLET_TRANSFORM_STATE_DECELERATION].timer = 0;
+        *reinterpret_cast<i32 *>(
+            &this->exStates[BULLET_TRANSFORM_STATE_DECELERATION].vector.z) = 0;
         break;
 
-    case 0x10:
-        this->activeTransformFlags |= 0x10;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFB8) = record->float0;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFBC) =
+    case BULLET_TRANSFORM_ACCELERATE_VECTOR:
+        this->activeTransformFlags |= BULLET_TRANSFORM_ACCELERATE_VECTOR;
+        this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].accelerationMagnitude =
+            record->float0;
+        this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].accelerationAngle =
             record->float1 > -990.0f ? record->float1
                                     : this->angle;
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFAC) = 0;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFCC) = record->int0;
-        reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xFC0)->FromAngleMagnitude(
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFBC),
-            g_EclGameTimeScale * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFB8));
+        this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].timer = 0;
+        this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].durationFrames =
+            record->int0;
+        this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].vector.FromAngleMagnitude(
+            this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].accelerationAngle,
+            g_EclGameTimeScale *
+                this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].accelerationMagnitude);
         if (this->transformIndex != 0 && this->transformSound >= 0)
             g_SoundPlayer.PlaySoundByIdx(
                 static_cast<SoundIdx>(this->transformSound), 0);
         break;
 
-    case 0x20:
-        this->activeTransformFlags |= 0x20;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFE4) = record->float0;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFE8) = record->float1;
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFD8) = 0;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFF8) = record->int0;
+    case BULLET_TRANSFORM_ACCELERATE_POLAR:
+        this->activeTransformFlags |= BULLET_TRANSFORM_ACCELERATE_POLAR;
+        this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].speedDelta = record->float0;
+        this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].angleDelta = record->float1;
+        this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].timer = 0;
+        this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].durationFrames = record->int0;
         if (this->transformIndex != 0 && this->transformSound >= 0)
             g_SoundPlayer.PlaySoundByIdx(
                 static_cast<SoundIdx>(this->transformSound), 0);
         break;
 
-    case 0x40:
-    case 0x80:
-    case 0x100:
+    case BULLET_TRANSFORM_CHANGE_DIRECTION_RELATIVE:
+    case BULLET_TRANSFORM_CHANGE_DIRECTION_AIMED:
+    case BULLET_TRANSFORM_CHANGE_DIRECTION_ABSOLUTE:
         this->activeTransformFlags |= record->kind;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x1014) = record->float0;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x1010) =
+        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeAngle =
+            record->float0;
+        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeSpeed =
             record->float1 > -999.0f ? record->float1
                                     : this->speed;
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) = 0;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1024) = record->int0;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1028) = record->int1;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x102C) = 0;
+        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].timer = 0;
+        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeIntervalFrames =
+            record->int0;
+        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeRepeatCount =
+            record->int1;
+        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangesCompleted = 0;
         break;
 
-    case 0x400:
-    case 0x800:
+    case BULLET_TRANSFORM_BOUNCE_ALL_EDGES:
+    case BULLET_TRANSFORM_BOUNCE_EXCEPT_BOTTOM:
         this->activeTransformFlags |= record->kind;
         if (record->float0 >= 0.0f)
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x103C) = record->float0;
+            this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bounceSpeed = record->float0;
         else
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x103C) =
+            this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bounceSpeed =
                 this->speed;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1054) = record->int0;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1050) = 0;
+        this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bounceLimit = record->int0;
+        this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bouncesCompleted = 0;
         break;
 
-    case 0x400000:
+    case BULLET_TRANSFORM_WRAP_X:
         this->activeTransformFlags |= record->kind;
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1088) = record->int0;
+        this->exStates[BULLET_TRANSFORM_STATE_WRAP].timer = record->int0;
         break;
 
-    case 0x800000:
+    case BULLET_TRANSFORM_WRAP_Y:
         this->activeTransformFlags |= record->kind;
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1088) = record->int0;
+        this->exStates[BULLET_TRANSFORM_STATE_WRAP].timer = record->int0;
         break;
 
-    case 0x20000:
+    case BULLET_TRANSFORM_WAIT:
         this->activeTransformFlags |= record->kind;
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x105C) = record->int0;
+        this->exStates[BULLET_TRANSFORM_STATE_WAIT].timer = record->int0;
         break;
 
-    case 0x2000:
+    case BULLET_TRANSFORM_SET_CULL_DELAY:
         this->offscreenCullDelayFrames = record->int0;
         ++this->transformIndex;
         goto nextRecord;
 
-    case 0x4000:
+    case BULLET_TRANSFORM_SET_SPRITE:
         this->sprites = g_BulletManager.bulletTypeSprites[record->int0];
         g_BulletManager.bulletAnm->SetSprite(
             &this->sprites.bulletVm,
@@ -418,16 +425,16 @@ nextRecord:
         ++this->transformIndex;
         goto nextRecord;
 
-    case 0x40000:
+    case BULLET_TRANSFORM_DESPAWN:
         this->state = BULLET_STATE_DESPAWNING;
         break;
 
-    case 0x80000:
+    case BULLET_TRANSFORM_PLAY_SOUND:
         g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(record->int0), this->position.x);
         ++this->transformIndex;
         goto nextRecord;
 
-    case 0x1000000:
+    case BULLET_TRANSFORM_SPAWN_CHILD_PATTERN:
         {
             BulletSpawnDescriptor pattern;
             i32 fadeParent;
@@ -687,7 +694,7 @@ i32 BulletManager::FUN_00430e10(BulletSpawnDescriptor *descriptor)
     }
 
 doneSpawning:
-    if ((descriptor->transformFlags & 0x200) != 0)
+    if ((descriptor->transformFlags & BULLET_TRANSFORM_PLAY_SPAWN_SOUND) != 0)
         g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(descriptor->spawnSound), descriptor->position.x);
     return 0;
 }
@@ -701,7 +708,7 @@ Laser *BulletManager::SpawnLaserPattern(BulletSpawnDescriptor *descriptor)
 
     laser = &this->lasers[0];
     if (this->spawnSuppressionFrames != 0 &&
-        (descriptor->transformFlags & 4) == 0)
+        (descriptor->transformFlags & BULLET_TRANSFORM_SPAWN_NORMAL) == 0)
         return laser;
 
     for (i = 0; i < 0x100; i++, laser++)
@@ -807,30 +814,32 @@ updateBullet:
             bullet->FUN_0042ffc0();
             if (bullet->activeTransformFlags != 0)
             {
-                if ((bullet->activeTransformFlags & 1) != 0)
+                if ((bullet->activeTransformFlags & BULLET_TRANSFORM_DECELERATE) != 0)
                     bullet->FUN_00432210();
-                if ((bullet->activeTransformFlags & 0x10) != 0)
+                if ((bullet->activeTransformFlags & BULLET_TRANSFORM_ACCELERATE_VECTOR) != 0)
                     bullet->FUN_004322b0();
-                if ((bullet->activeTransformFlags & 0x20) != 0)
+                if ((bullet->activeTransformFlags & BULLET_TRANSFORM_ACCELERATE_POLAR) != 0)
                     bullet->FUN_00432390();
-                if ((bullet->activeTransformFlags & 0x40) != 0)
+                if ((bullet->activeTransformFlags & BULLET_TRANSFORM_CHANGE_DIRECTION_RELATIVE) != 0)
                     bullet->FUN_00432460();
-                if ((bullet->activeTransformFlags & 0x100) != 0)
+                if ((bullet->activeTransformFlags & BULLET_TRANSFORM_CHANGE_DIRECTION_ABSOLUTE) != 0)
                     bullet->FUN_004325a0();
-                if ((bullet->activeTransformFlags & 0x80) != 0)
+                if ((bullet->activeTransformFlags & BULLET_TRANSFORM_CHANGE_DIRECTION_AIMED) != 0)
                     bullet->FUN_004326e0();
-                if ((bullet->activeTransformFlags & 0xC00) != 0)
+                if ((bullet->activeTransformFlags &
+                     (BULLET_TRANSFORM_BOUNCE_ALL_EDGES |
+                      BULLET_TRANSFORM_BOUNCE_EXCEPT_BOTTOM)) != 0)
                     bullet->FUN_00432830();
-                if ((bullet->activeTransformFlags & 0x400000) != 0)
+                if ((bullet->activeTransformFlags & BULLET_TRANSFORM_WRAP_X) != 0)
                     bullet->FUN_004329f0();
-                if ((bullet->activeTransformFlags & 0x800000) != 0)
+                if ((bullet->activeTransformFlags & BULLET_TRANSFORM_WRAP_Y) != 0)
                     bullet->FUN_00432aa0();
-                if ((bullet->activeTransformFlags & 0x20000) != 0)
+                if ((bullet->activeTransformFlags & BULLET_TRANSFORM_WAIT) != 0)
                 {
-                    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(bullet) + 0x105C) <= 0)
-                        bullet->activeTransformFlags ^= 0x20000;
+                    if (bullet->exStates[BULLET_TRANSFORM_STATE_WAIT].timer <= 0)
+                        bullet->activeTransformFlags ^= BULLET_TRANSFORM_WAIT;
                     else
-                        (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(bullet) + 0x105C))--;
+                        bullet->exStates[BULLET_TRANSFORM_STATE_WAIT].timer--;
                 }
             }
 
@@ -847,7 +856,12 @@ updateBullet:
                         bullet->sprites.bulletVm.loadedSprite->widthPx,
                         bullet->sprites.bulletVm.loadedSprite->heightPx))
                 {
-                    if ((bullet->activeTransformFlags & 0xDC0) != 0)
+                    if ((bullet->activeTransformFlags &
+                         (BULLET_TRANSFORM_CHANGE_DIRECTION_RELATIVE |
+                          BULLET_TRANSFORM_CHANGE_DIRECTION_AIMED |
+                          BULLET_TRANSFORM_CHANGE_DIRECTION_ABSOLUTE |
+                          BULLET_TRANSFORM_BOUNCE_ALL_EDGES |
+                          BULLET_TRANSFORM_BOUNCE_EXCEPT_BOTTOM)) != 0)
                     {
                         ++bullet->offscreenFrames;
                         if (bullet->offscreenFrames >= 0x80)
@@ -882,7 +896,8 @@ updateBullet:
                         bullet->isGrazed = 1;
                         goto lethalCollision;
                     }
-                    if (collisionResult == 2 && (bullet->transformFlags & 0x1000) == 0)
+                    if (collisionResult == 2 &&
+                        (bullet->transformFlags & BULLET_TRANSFORM_CANCEL_IMMUNE) == 0)
                     {
                         bullet->state = BULLET_STATE_DESPAWNING;
                         if (g_Player.bulletCancelItemType == 9)
@@ -901,7 +916,8 @@ lethalCollision:
                 collisionResult = g_Player.FUN_0044a230(&bullet->position,
                                                         &bullet->sprites.collisionSize);
                 if (collisionResult != 0 &&
-                    (collisionResult != 2 || (bullet->transformFlags & 0x1000) == 0))
+                    (collisionResult != 2 ||
+                     (bullet->transformFlags & BULLET_TRANSFORM_CANCEL_IMMUNE) == 0))
                 {
                     bullet->state = BULLET_STATE_DESPAWNING;
                     if (collisionResult == 2)
@@ -924,7 +940,7 @@ executeBulletScript:
             case BULLET_STATE_SPAWNING_FAST:
                 bullet->activeTimer--;
                 bullet->position += bullet->velocity / 2.0f;
-                if ((bullet->transformFlags & 0x1000) == 0 &&
+                if ((bullet->transformFlags & BULLET_TRANSFORM_CANCEL_IMMUNE) == 0 &&
                     g_Player.FUN_00449ff0(&bullet->position,
                                          &bullet->sprites.collisionSize) == 2)
                     bullet->cancelledDuringSpawn = 1;
@@ -946,7 +962,7 @@ executeBulletScript:
             case BULLET_STATE_SPAWNING_NORMAL:
                 bullet->activeTimer--;
                 bullet->position += bullet->velocity / 2.5f;
-                if ((bullet->transformFlags & 0x1000) == 0 &&
+                if ((bullet->transformFlags & BULLET_TRANSFORM_CANCEL_IMMUNE) == 0 &&
                     g_Player.FUN_00449ff0(&bullet->position,
                                          &bullet->sprites.collisionSize) == 2)
                     bullet->cancelledDuringSpawn = 1;
@@ -968,7 +984,7 @@ executeBulletScript:
             case BULLET_STATE_SPAWNING_SLOW:
                 bullet->activeTimer--;
                 bullet->position += bullet->velocity / 3.0f;
-                if ((bullet->transformFlags & 0x1000) == 0 &&
+                if ((bullet->transformFlags & BULLET_TRANSFORM_CANCEL_IMMUNE) == 0 &&
                     g_Player.FUN_00449ff0(&bullet->position,
                                          &bullet->sprites.collisionSize) == 2)
                     bullet->cancelledDuringSpawn = 1;
@@ -1149,20 +1165,22 @@ void Bullet::FUN_00432210()
 {
     f32 magnitude;
 
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xF80) <= 16)
+    if (this->exStates[BULLET_TRANSFORM_STATE_DECELERATION].timer <= 16)
     {
         magnitude =
-            5.0f - ((f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xF80) * 5.0f) / 16.0f;
+            5.0f -
+            ((f32)this->exStates[BULLET_TRANSFORM_STATE_DECELERATION].timer * 5.0f) /
+                16.0f;
         this->velocity.FromAngleMagnitude(this->angle,
                                  (magnitude + this->speed) *
                                      *reinterpret_cast<f32 *>(0x17CE8E0));
     }
     else
     {
-        this->activeTransformFlags ^= 0x1;
+        this->activeTransformFlags ^= BULLET_TRANSFORM_DECELERATE;
     }
 
-    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xF80))++;
+    this->exStates[BULLET_TRANSFORM_STATE_DECELERATION].timer++;
 }
 
 
@@ -1170,15 +1188,15 @@ void Bullet::FUN_00432210()
 #pragma var_order(delta, this)
 void Bullet::FUN_004322b0()
 {
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFAC) >=
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFCC))
+    if (this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].timer >=
+        this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].durationFrames)
     {
-        this->activeTransformFlags &= ~0x10;
+        this->activeTransformFlags &= ~BULLET_TRANSFORM_ACCELERATE_VECTOR;
     }
     else
     {
         this->velocity +=
-            *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xFC0) *
+            this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].vector *
             *reinterpret_cast<f32 *>(0x17CE8E0);
 
         if (fabsf(this->velocity.x) > 0.0001f ||
@@ -1188,31 +1206,32 @@ void Bullet::FUN_004322b0()
         }
     }
 
-    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFAC))++;
+    this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].timer++;
 }
 
 // FUNCTION: th08 0x432390
 void Bullet::FUN_00432390()
 {
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFD8) >=
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFF8))
+    if (this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].timer >=
+        this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].durationFrames)
     {
-        this->activeTransformFlags &= ~0x20;
+        this->activeTransformFlags &= ~BULLET_TRANSFORM_ACCELERATE_POLAR;
     }
     else
     {
         this->angle =
             AddNormalizeAngle(this->angle,
                               *reinterpret_cast<f32 *>(0x17CE8E0) *
-                                  *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFE8));
+                                  this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].angleDelta);
         this->speed +=
-            *reinterpret_cast<f32 *>(0x17CE8E0) * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFE4);
+            *reinterpret_cast<f32 *>(0x17CE8E0) *
+            this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].speedDelta;
         this->velocity.FromAngleMagnitude(this->angle,
                                  *reinterpret_cast<f32 *>(0x17CE8E0) *
                                      this->speed);
     }
 
-    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFD8))++;
+    this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].timer++;
 }
 
 // FUNCTION: th08 0x432460
@@ -1221,37 +1240,38 @@ void Bullet::FUN_00432460()
 {
     f32 magnitude;
 
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) >=
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1024))
+    if (this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].timer >=
+        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeIntervalFrames)
     {
         if (this->transformSound >= 0)
         {
             g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(this->transformSound), 0);
         }
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x102C) += 1;
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x102C) >=
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1028))
+        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangesCompleted += 1;
+        if (this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangesCompleted >=
+            this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeRepeatCount)
         {
-            this->activeTransformFlags &= ~0x40;
+            this->activeTransformFlags &= ~BULLET_TRANSFORM_CHANGE_DIRECTION_RELATIVE;
         }
         this->angle +=
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x1014);
+            this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeAngle;
         *reinterpret_cast<i32 *>(&this->speed) =
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1010);
+            *reinterpret_cast<i32 *>(
+                &this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeSpeed);
         magnitude = this->speed;
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) = 0;
+        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].timer = 0;
     }
     else
     {
         magnitude = this->speed -
-                    ((f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) *
+                    ((f32)this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].timer *
                      this->speed) /
-                        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1024);
+                        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeIntervalFrames;
     }
 
     this->velocity.FromAngleMagnitude(this->angle,
                              magnitude * *reinterpret_cast<f32 *>(0x17CE8E0));
-    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004))++;
+    this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].timer++;
 }
 
 // FUNCTION: th08 0x4325a0
@@ -1260,37 +1280,39 @@ void Bullet::FUN_004325a0()
 {
     f32 magnitude;
 
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) >=
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1024))
+    if (this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].timer >=
+        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeIntervalFrames)
     {
         if (this->transformSound >= 0)
         {
             g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(this->transformSound), 0);
         }
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x102C) += 1;
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x102C) >=
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1028))
+        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangesCompleted += 1;
+        if (this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangesCompleted >=
+            this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeRepeatCount)
         {
-            this->activeTransformFlags &= ~0x100;
+            this->activeTransformFlags &= ~BULLET_TRANSFORM_CHANGE_DIRECTION_ABSOLUTE;
         }
         *reinterpret_cast<i32 *>(&this->angle) =
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1014);
+            *reinterpret_cast<i32 *>(
+                &this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeAngle);
         *reinterpret_cast<i32 *>(&this->speed) =
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1010);
+            *reinterpret_cast<i32 *>(
+                &this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeSpeed);
         magnitude = this->speed;
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) = 0;
+        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].timer = 0;
     }
     else
     {
         magnitude = this->speed -
-                    ((f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) *
+                    ((f32)this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].timer *
                      this->speed) /
-                        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1024);
+                        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeIntervalFrames;
     }
 
     this->velocity.FromAngleMagnitude(this->angle,
                              magnitude * *reinterpret_cast<f32 *>(0x17CE8E0));
-    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004))++;
+    this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].timer++;
 }
 
 // FUNCTION: th08 0x4326e0
@@ -1299,38 +1321,39 @@ void Bullet::FUN_004326e0()
 {
     f32 magnitude;
 
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) >=
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1024))
+    if (this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].timer >=
+        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeIntervalFrames)
     {
         if (this->transformSound >= 0)
         {
             g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(this->transformSound), 0);
         }
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x102C) += 1;
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x102C) >=
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1028))
+        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangesCompleted += 1;
+        if (this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangesCompleted >=
+            this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeRepeatCount)
         {
-            this->activeTransformFlags &= ~0x80;
+            this->activeTransformFlags &= ~BULLET_TRANSFORM_CHANGE_DIRECTION_AIMED;
         }
         this->angle =
             AddNormalizeAngle(g_Player.FUN_0044c1b0(&this->position),
-                              *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x1014));
+                              this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeAngle);
         *reinterpret_cast<i32 *>(&this->speed) =
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1010);
+            *reinterpret_cast<i32 *>(
+                &this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeSpeed);
         magnitude = this->speed;
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) = 0;
+        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].timer = 0;
     }
     else
     {
         magnitude = this->speed -
-                    ((f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) *
+                    ((f32)this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].timer *
                      this->speed) /
-                        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1024);
+                        this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeIntervalFrames;
     }
 
     this->velocity.FromAngleMagnitude(this->angle,
                              magnitude * *reinterpret_cast<f32 *>(0x17CE8E0));
-    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004))++;
+    this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].timer++;
 }
 
 
@@ -1358,21 +1381,24 @@ void Bullet::FUN_00432830()
 
         if (this->position.y < 0.0f ||
             (this->position.y >= 448.0f &&
-             (this->activeTransformFlags & 0x400) != 0))
+             (this->activeTransformFlags & BULLET_TRANSFORM_BOUNCE_ALL_EDGES) != 0))
         {
             this->angle = -this->angle;
         }
 
         *reinterpret_cast<i32 *>(&this->speed) =
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x103C);
+            *reinterpret_cast<i32 *>(
+                &this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bounceSpeed);
         magnitude = this->speed;
         this->velocity.FromAngleMagnitude(this->angle,
                                  magnitude * *reinterpret_cast<f32 *>(0x17CE8E0));
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1050) += 1;
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1050) >=
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1054))
+        this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bouncesCompleted += 1;
+        if (this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bouncesCompleted >=
+            this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bounceLimit)
         {
-            this->activeTransformFlags &= ~0xC00;
+            this->activeTransformFlags &=
+                ~(BULLET_TRANSFORM_BOUNCE_ALL_EDGES |
+                  BULLET_TRANSFORM_BOUNCE_EXCEPT_BOTTOM);
         }
     }
 }
@@ -1389,13 +1415,13 @@ void Bullet::FUN_004329f0()
         this->position.x -= 384.0f;
     }
 
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1088) <= 0)
+    if (this->exStates[BULLET_TRANSFORM_STATE_WRAP].timer <= 0)
     {
-        this->activeTransformFlags ^= 0x400000;
+        this->activeTransformFlags ^= BULLET_TRANSFORM_WRAP_X;
     }
     else
     {
-        (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1088))--;
+        this->exStates[BULLET_TRANSFORM_STATE_WRAP].timer--;
     }
 }
 
@@ -1411,13 +1437,13 @@ void Bullet::FUN_00432aa0()
         this->position.y -= 448.0f;
     }
 
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1088) <= 0)
+    if (this->exStates[BULLET_TRANSFORM_STATE_WRAP].timer <= 0)
     {
-        this->activeTransformFlags ^= 0x800000;
+        this->activeTransformFlags ^= BULLET_TRANSFORM_WRAP_Y;
     }
     else
     {
-        (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1088))--;
+        this->exStates[BULLET_TRANSFORM_STATE_WRAP].timer--;
     }
 }
 

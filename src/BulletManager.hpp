@@ -19,6 +19,32 @@ struct BulletTransformRecord
 };
 C_ASSERT(sizeof(BulletTransformRecord) == 0x18);
 
+enum BulletTransformKind
+{
+    BULLET_TRANSFORM_NONE = 0,
+    BULLET_TRANSFORM_DECELERATE = 0x1,
+    BULLET_TRANSFORM_SPAWN_FAST = 0x2,
+    BULLET_TRANSFORM_SPAWN_NORMAL = 0x4,
+    BULLET_TRANSFORM_SPAWN_SLOW = 0x8,
+    BULLET_TRANSFORM_ACCELERATE_VECTOR = 0x10,
+    BULLET_TRANSFORM_ACCELERATE_POLAR = 0x20,
+    BULLET_TRANSFORM_CHANGE_DIRECTION_RELATIVE = 0x40,
+    BULLET_TRANSFORM_CHANGE_DIRECTION_AIMED = 0x80,
+    BULLET_TRANSFORM_CHANGE_DIRECTION_ABSOLUTE = 0x100,
+    BULLET_TRANSFORM_PLAY_SPAWN_SOUND = 0x200,
+    BULLET_TRANSFORM_BOUNCE_ALL_EDGES = 0x400,
+    BULLET_TRANSFORM_BOUNCE_EXCEPT_BOTTOM = 0x800,
+    BULLET_TRANSFORM_CANCEL_IMMUNE = 0x1000,
+    BULLET_TRANSFORM_SET_CULL_DELAY = 0x2000,
+    BULLET_TRANSFORM_SET_SPRITE = 0x4000,
+    BULLET_TRANSFORM_WAIT = 0x20000,
+    BULLET_TRANSFORM_DESPAWN = 0x40000,
+    BULLET_TRANSFORM_PLAY_SOUND = 0x80000,
+    BULLET_TRANSFORM_WRAP_X = 0x400000,
+    BULLET_TRANSFORM_WRAP_Y = 0x800000,
+    BULLET_TRANSFORM_SPAWN_CHILD_PATTERN = 0x1000000,
+};
+
 struct BulletSpawnDescriptor
 {
     i16 bulletType;
@@ -83,11 +109,59 @@ struct BulletExState
     BulletExState();
 
     ZunTimer timer;
-    unknown_fields(0xc, 8);
-    Float3 position;
-    unknown_fields(0x20, 0xc);
+    union
+    {
+        f32 float0;
+        f32 accelerationMagnitude;
+        f32 speedDelta;
+        f32 directionChangeSpeed;
+        f32 bounceSpeed;
+    };
+    union
+    {
+        f32 float1;
+        f32 accelerationAngle;
+        f32 angleDelta;
+        f32 directionChangeAngle;
+    };
+    Float3 vector;
+    union
+    {
+        i32 int0;
+        i32 durationFrames;
+        i32 directionChangeIntervalFrames;
+        i32 bouncesCompleted;
+    };
+    union
+    {
+        i32 int1;
+        i32 directionChangeRepeatCount;
+        i32 bounceLimit;
+    };
+    union
+    {
+        i32 int2;
+        i32 directionChangesCompleted;
+    };
 };
 C_ASSERT(sizeof(BulletExState) == 0x2c);
+C_ASSERT(offsetof(BulletExState, float0) == 0xc);
+C_ASSERT(offsetof(BulletExState, float1) == 0x10);
+C_ASSERT(offsetof(BulletExState, vector) == 0x14);
+C_ASSERT(offsetof(BulletExState, int0) == 0x20);
+C_ASSERT(offsetof(BulletExState, int1) == 0x24);
+C_ASSERT(offsetof(BulletExState, int2) == 0x28);
+
+enum BulletTransformStateSlot
+{
+    BULLET_TRANSFORM_STATE_DECELERATION = 0,
+    BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION = 1,
+    BULLET_TRANSFORM_STATE_POLAR_ACCELERATION = 2,
+    BULLET_TRANSFORM_STATE_DIRECTION_CHANGE = 3,
+    BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE = 4,
+    BULLET_TRANSFORM_STATE_WAIT = 5,
+    BULLET_TRANSFORM_STATE_WRAP = 6,
+};
 
 enum LaserState
 {

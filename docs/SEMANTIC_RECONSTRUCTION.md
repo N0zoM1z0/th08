@@ -452,3 +452,69 @@ raw-member candidates and `src/EclExIns.cpp` from 25 to 18.  Those deltas are
 review aids, not semantic-completion percentages.  The retained candidates are
 primarily transform-specific state, ANM VM internals, and explicitly unknown
 bytes rather than the core Bullet lifecycle family completed here.
+
+### Bullet transform runtime state — 2026-08-26
+
+Scope: the transform dispatcher at `Bullet::FUN_0042ffc0 @ 0x0042FFC0`, the
+bullet update path at `BulletManager::OnUpdate @ 0x00431240`, and the nine
+transform handlers at `0x00432210..0x00432AA0`.  Single-bullet and pattern
+spawn at `0x0042F5F0`, `0x00430E10`, and `0x00430F20` provide the adjacent
+flag users.  Shared declarations live in `src/BulletManager.hpp`; this batch
+changes only that header and `src/BulletManager.cpp`.
+
+Observed: each `Bullet` contains seven consecutively constructed 0x2C-byte
+`BulletExState` objects at `+0xF80`.  TH08's dispatcher and handlers assign
+those slots to deceleration, vector acceleration, polar acceleration, the
+three direction-change modes, boundary bounce, wait, and X/Y wrap.  Within a
+slot, target accesses establish a `ZunTimer @ +0x0`, two floats at `+0xC/+0x10`,
+a `Float3 @ +0x14`, and three dwords at `+0x20/+0x24/+0x28`.  The paired
+dispatcher/handler dataflow establishes acceleration magnitude and angle,
+speed and angle deltas, duration, direction-change speed/angle/interval/repeat
+and completion counts, bounce speed/count/limit, and the wait/wrap countdowns.
+Target disassembly independently confirms every relied-on width and offset;
+target-pinned typed-re packets cover the dispatcher, update path, and all nine
+handlers.
+
+Corroborated: TH06 independently uses the same spawn-speed bits, vector and
+polar acceleration bits, three direction-change bits, two boundary-bounce
+bits, and spawn-sound bit with the same stable behavior.  This supports the
+cross-version names only; TH08's target dataflow establishes the final slot
+layout, added action bits, cancel-immunity behavior, and program sequencing.
+
+Inference: the transform constants are high-confidence behavior names from
+their TH08 dispatch actions and update-side gates.  `BULLET_TRANSFORM_CANCEL_IMMUNE`
+names the bit that bypasses spawn suppression and every collision-result-2
+cancel path.  The seven `BulletTransformStateSlot` names and role-specific
+union aliases are high-confidence because each is initialized by one transform
+case and consumed by its corresponding handler.  The generic
+`BulletTransformRecord::float0/float1/int0/int1` fields remain deliberately
+neutral because their meaning depends on the tagged transform kind.  The
+deceleration slot's bitwise-zeroed `Float3::z` field remains unnamed because no
+consumer establishes its gameplay role.
+
+Layout: assertions pin `sizeof(BulletExState) == 0x2C`, every payload member
+offset, `Bullet::exStates @ +0xF80`, and the existing `sizeof(Bullet) ==
+0x10B8`.  The seven-element array is retained because its nontrivial VC7 vector
+construction is target-visible.  Field widths, construction order, calling
+conventions, pool layout, and state operations are unchanged.
+
+VC7 oracle: the focused production/canonical replay passed **37 / 37** accepted
+`BulletManager.obj` units after both the state typing and the final flag-name
+cleanup.  The required non-reuse `verify-exact-units.py --all` then cold-built
+all 75 configured objects and passed **1,105 / 1,105** with no failures.  A
+subsequent normal VC7 production image linked successfully; no match manifest
+or exact ledger changed.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiled and linked
+the complete i386 target, and `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 plus all
+fixed target-owned layout symbols.  No isolated automated transform gameplay
+smoke exists, so no runtime smoke is claimed.
+
+Result: raw byte-offset views of the complete `BulletExState[7]` transform
+runtime family are replaced by asserted typed owners, slot names, and
+role-specific fields without changing accepted VC7 bytes or portable behavior.
+The semantic router for `src/BulletManager.cpp` falls from 97 to 29 candidates.
+That delta is a review aid, not a completion percentage; retained candidates
+are primarily ANM internals, two explicitly unknown bytes/vectors, replay
+storage, and the adjacent ECL descriptor family.
