@@ -103149,7 +103149,7 @@ target = 0x018B8A28
 [[units.relocations]]
 offset = 0xE7
 type = "DIR32"
-symbol = "?OnUpdateHighPrio@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+symbol = "?RecordInputAndFps@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
 target = 0x00452310
 
 [[units.relocations]]
@@ -103167,13 +103167,13 @@ target = 0x0043CE60
 [[units.relocations]]
 offset = 0x10A
 type = "DIR32"
-symbol = "?AddedCallback@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
+symbol = "?BeginRecordingStage@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
 target = 0x00452830
 
 [[units.relocations]]
 offset = 0x11A
 type = "DIR32"
-symbol = "?DeletedCallback@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
+symbol = "?DeleteReplayManager@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
 target = 0x00453080
 
 [[units.relocations]]
@@ -103191,7 +103191,7 @@ target = 0x0043C880
 [[units.relocations]]
 offset = 0x15D
 type = "DIR32"
-symbol = "?OnUpdateLowPrio@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+symbol = "?CaptureFrameSyncState@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
 target = 0x004522A0
 
 [[units.relocations]]
@@ -103221,13 +103221,13 @@ target = 0x0043C880
 [[units.relocations]]
 offset = 0x19D
 type = "REL32"
-symbol = "?OnUpdateLowPrio@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+symbol = "?CaptureFrameSyncState@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
 target = 0x004522A0
 
 [[units.relocations]]
 offset = 0x1A7
 type = "DIR32"
-symbol = "?OnUpdateHighPrioDemo@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+symbol = "?PlaybackInputAndFps@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
 target = 0x00452550
 
 [[units.relocations]]
@@ -103245,13 +103245,13 @@ target = 0x0043CE60
 [[units.relocations]]
 offset = 0x1CA
 type = "DIR32"
-symbol = "?AddedCallbackDemo@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
+symbol = "?BeginPlaybackStage@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
 target = 0x00452D60
 
 [[units.relocations]]
 offset = 0x1DA
 type = "DIR32"
-symbol = "?DeletedCallback@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
+symbol = "?DeleteReplayManager@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
 target = 0x00453080
 
 [[units.relocations]]
@@ -103269,13 +103269,13 @@ target = 0x0043C880
 [[units.relocations]]
 offset = 0x229
 type = "DIR32"
-symbol = "?OnUpdateHighPrioDemo2@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+symbol = "?PlaybackExtendedInputAndFps@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
 target = 0x004526C0
 
 [[units.relocations]]
 offset = 0x22E
 type = "DIR32"
-symbol = "?OnUpdateFrameControl@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+symbol = "?ControlPlaybackFrameAdvance@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
 target = 0x00452490
 
 [[units.relocations]]
@@ -103305,7 +103305,7 @@ target = 0x0043C880
 [[units.relocations]]
 offset = 0x286
 type = "DIR32"
-symbol = "?OnUpdateLowPrio@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+symbol = "?CaptureFrameSyncState@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
 target = 0x004522A0
 
 [[units.relocations]]
@@ -103335,7 +103335,7 @@ target = 0x0043C880
 [[units.relocations]]
 offset = 0x2C6
 type = "REL32"
-symbol = "?OnUpdateLowPrio@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+symbol = "?CaptureFrameSyncState@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
 target = 0x004522A0
 
 [[units.relocations]]
@@ -103347,7 +103347,7 @@ target = 0x018B8A28
 [[units.relocations]]
 offset = 0x2E7
 type = "REL32"
-symbol = "?AddedCallback@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
+symbol = "?BeginRecordingStage@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
 target = 0x00452830
 
 [[units.relocations]]
@@ -103359,7 +103359,7 @@ target = 0x018B8A28
 [[units.relocations]]
 offset = 0x2F4
 type = "REL32"
-symbol = "?AddedCallbackDemo@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
+symbol = "?BeginPlaybackStage@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
 target = 0x00452D60
 
 [[units.relocations]]
@@ -103368,11 +103368,11 @@ type = "DIR32"
 symbol = "__except_list"
 target = 0x00000000
 
-# Ledger name: th08::ReplayManager::OnUpdateLowPrio
+# Ledger name: th08::ReplayManager::CaptureFrameSyncState
 [[units]]
-name = "replay-manager-on-update-low-prio"
+name = "replay-manager-capture-frame-sync-state"
 object = "build/ReplayManager.obj"
-symbol = "?OnUpdateLowPrio@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+symbol = "?CaptureFrameSyncState@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
 target_address = 0x004522A0
 size = 0x66
 
@@ -103412,11 +103412,11 @@ type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
-# Ledger name: th08::ReplayManager::OnUpdateHighPrio
+# Ledger name: th08::ReplayManager::RecordInputAndFps
 [[units]]
-name = "replay-manager-on-update-high-prio"
+name = "replay-manager-record-input-and-fps"
 object = "build/ReplayManager.obj"
-symbol = "?OnUpdateHighPrio@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+symbol = "?RecordInputAndFps@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
 target_address = 0x00452310
 size = 0x174
 
@@ -103510,11 +103510,11 @@ type = "DIR32"
 symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
 target = 0x017CE758
 
-# Ledger name: th08::ReplayManager::OnUpdateFrameControl
+# Ledger name: th08::ReplayManager::ControlPlaybackFrameAdvance
 [[units]]
-name = "replay-manager-frame-control"
+name = "replay-manager-control-playback-frame-advance"
 object = "build/ReplayManager.obj"
-symbol = "?OnUpdateFrameControl@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+symbol = "?ControlPlaybackFrameAdvance@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
 target_address = 0x00452490
 size = 0xB8
 
@@ -103578,11 +103578,11 @@ type = "REL32"
 symbol = "?HasBoss@EnemyManager@th08@@QAEHXZ"
 target = 0x0042F1F0
 
-# Ledger name: th08::ReplayManager::OnUpdateHighPrioDemo
+# Ledger name: th08::ReplayManager::PlaybackInputAndFps
 [[units]]
-name = "replay-manager-on-update-high-prio-demo"
+name = "replay-manager-playback-input-and-fps"
 object = "build/ReplayManager.obj"
-symbol = "?OnUpdateHighPrioDemo@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+symbol = "?PlaybackInputAndFps@ReplayManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
 target_address = 0x00452550
 size = 0x16A
 
@@ -103700,11 +103700,11 @@ type = "DIR32"
 symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
 target = 0x017CE758
 
-# Ledger name: th08::ReplayManager::AddedCallback
+# Ledger name: th08::ReplayManager::BeginRecordingStage
 [[units]]
-name = "replay-manager-added-callback"
+name = "replay-manager-begin-recording-stage"
 object = "build/ReplayManager.obj"
-symbol = "?AddedCallback@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
+symbol = "?BeginRecordingStage@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
 target_address = 0x00452830
 size = 0x523
 
@@ -104158,11 +104158,11 @@ type = "REL32"
 symbol = "?GetSeed@Rng@th08@@QAEGXZ"
 target = 0x00453C20
 
-# Ledger name: th08::ReplayManager::AddedCallbackDemo
+# Ledger name: th08::ReplayManager::BeginPlaybackStage
 [[units]]
-name = "replay-manager-added-callback-demo"
+name = "replay-manager-begin-playback-stage"
 object = "build/ReplayManager.obj"
-symbol = "?AddedCallbackDemo@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
+symbol = "?BeginPlaybackStage@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
 target_address = 0x00452D60
 size = 0x313
 
@@ -104358,11 +104358,11 @@ type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
-# Ledger name: th08::ReplayManager::DeletedCallback
+# Ledger name: th08::ReplayManager::DeleteReplayManager
 [[units]]
-name = "replay-manager-deleted-callback"
+name = "replay-manager-delete-replay-manager"
 object = "build/ReplayManager.obj"
-symbol = "?DeletedCallback@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
+symbol = "?DeleteReplayManager@ReplayManager@th08@@SI?AW4ZunResult@@PAU12@@Z"
 target_address = 0x00453080
 size = 0xD1
 

@@ -19,6 +19,12 @@ namespace th08
 
 struct ChainElem;
 
+enum ReplayManagerMode
+{
+    REPLAY_MANAGER_RECORD = 0,
+    REPLAY_MANAGER_PLAYBACK = 1,
+};
+
 struct StageReplayData
 {
     u32 score;
@@ -48,16 +54,16 @@ struct ReplayDataHeader
 {
     u32 magic;
     u16 version;
-    u8 unk0x6;
-    u8 unk0x7;
+    u8 usesExtendedInputRecords;
+    u8 hasUserDataSection;
 
     unknown_fields(0x8, 0x4);
 
     i32 fileSize;
     i32 checksum;
 
-    u8 unk0x14;
-    u8 value1;
+    u8 randomHeaderByte;
+    u8 obfuscationKey;
     u8 unk0x16;
     u8 unk0x17;
 
@@ -67,12 +73,18 @@ struct ReplayDataHeader
     StageReplayData *stageReplayData[MAX_STAGES];
     StageReplayData *stageReplayFpsData[MAX_STAGES];
 };
+C_ASSERT(sizeof(ReplayDataHeader) == 0x68);
+C_ASSERT(offsetof(ReplayDataHeader, usesExtendedInputRecords) == 0x6);
+C_ASSERT(offsetof(ReplayDataHeader, hasUserDataSection) == 0x7);
+C_ASSERT(offsetof(ReplayDataHeader, obfuscationKey) == 0x15);
+C_ASSERT(offsetof(ReplayDataHeader, stageReplayData) == 0x20);
+C_ASSERT(offsetof(ReplayDataHeader, stageReplayFpsData) == 0x44);
 
 struct ReplayData
 {
     ReplayDataHeader header;
 
-    u8 unk0x68;
+    u8 randomPayloadByte;
     u8 minorVersion;
     u8 shotType;
     u8 difficulty;
@@ -106,15 +118,18 @@ struct ReplayData
 };
 
 C_ASSERT(sizeof(ReplayData) == 0x134);
+C_ASSERT(offsetof(ReplayData, randomPayloadByte) == 0x68);
 
 struct ReplayInputSync
 {
     u16 input;
-    u16 unk2;
+    u16 eventFlags;
     u16 rngSeed;
 };
 
 C_ASSERT(sizeof(ReplayInputSync) == 0x6);
+C_ASSERT(offsetof(ReplayInputSync, eventFlags) == 0x2);
+C_ASSERT(offsetof(ReplayInputSync, rngSeed) == 0x4);
 
 struct ReplayManager
 {
@@ -134,26 +149,26 @@ struct ReplayManager
     u16 unk4e;
     u8 *replayInputCursor;
     u8 *replayInputEnds[MAX_STAGES];
-    ReplayInputSync *replayInputRecordCursor;
+    ReplayInputSync *extendedInputCursor;
     unknown_fields(0x7c, 0x24);
     u8 *replayFpsSampleCursor;
     u8 *replayFpsSampleEnds[MAX_STAGES];
     ChainElem *calcChain;
     unknown_fields(0xcc, 0x4);
-    ChainElem *frameControlChain;
-    ChainElem *rngSyncChain;
+    ChainElem *playbackFrameControlChain;
+    ChainElem *frameSyncChain;
     u16 frameRngSeed;
     u16 frameEventFlags;
 
     static ZunResult RegisterChain(i32 replayMode, const char *replayPath);
-    static ChainCallbackResult OnUpdateLowPrio(ReplayManager *replayManager);
-    static ChainCallbackResult OnUpdateHighPrio(ReplayManager *replayManager);
-    static ChainCallbackResult OnUpdateHighPrioDemo(ReplayManager *replayManager);
-    static ChainCallbackResult OnUpdateHighPrioDemo2(ReplayManager *replayManager);
-    static ChainCallbackResult OnUpdateFrameControl(ReplayManager *replayManager);
-    static ZunResult AddedCallback(ReplayManager *replayManager);
-    static ZunResult AddedCallbackDemo(ReplayManager *replayManager);
-    static ZunResult DeletedCallback(ReplayManager *replayManager);
+    static ChainCallbackResult CaptureFrameSyncState(ReplayManager *replayManager);
+    static ChainCallbackResult RecordInputAndFps(ReplayManager *replayManager);
+    static ChainCallbackResult PlaybackInputAndFps(ReplayManager *replayManager);
+    static ChainCallbackResult PlaybackExtendedInputAndFps(ReplayManager *replayManager);
+    static ChainCallbackResult ControlPlaybackFrameAdvance(ReplayManager *replayManager);
+    static ZunResult BeginRecordingStage(ReplayManager *replayManager);
+    static ZunResult BeginPlaybackStage(ReplayManager *replayManager);
+    static ZunResult DeleteReplayManager(ReplayManager *replayManager);
 
     static void SaveReplay(const char *replayPath, const char *replayName);
     static ReplayData *LoadReplayData(void *replayData, int fileSize);
@@ -170,12 +185,12 @@ C_ASSERT(offsetof(ReplayManager, unk18) == 0x18);
 C_ASSERT(offsetof(ReplayManager, unk4e) == 0x4e);
 C_ASSERT(offsetof(ReplayManager, replayInputCursor) == 0x50);
 C_ASSERT(offsetof(ReplayManager, replayInputEnds) == 0x54);
-C_ASSERT(offsetof(ReplayManager, replayInputRecordCursor) == 0x78);
+C_ASSERT(offsetof(ReplayManager, extendedInputCursor) == 0x78);
 C_ASSERT(offsetof(ReplayManager, replayFpsSampleCursor) == 0xa0);
 C_ASSERT(offsetof(ReplayManager, replayFpsSampleEnds) == 0xa4);
 C_ASSERT(offsetof(ReplayManager, calcChain) == 0xc8);
-C_ASSERT(offsetof(ReplayManager, frameControlChain) == 0xd0);
-C_ASSERT(offsetof(ReplayManager, rngSyncChain) == 0xd4);
+C_ASSERT(offsetof(ReplayManager, playbackFrameControlChain) == 0xd0);
+C_ASSERT(offsetof(ReplayManager, frameSyncChain) == 0xd4);
 C_ASSERT(offsetof(ReplayManager, frameRngSeed) == 0xd8);
 C_ASSERT(offsetof(ReplayManager, frameEventFlags) == 0xda);
 

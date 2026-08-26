@@ -412,7 +412,7 @@ upstream provenance, not a target-observed string claim.  A new single-job
 non-reuse cold replay passes **1,106 / 1,106**, the normal VC7 image links,
 and the complete i386 Linux build/layout verifier passes.  Authored exact is
 now **1,106 / 1,107 functions** and **459,396 / 459,757 bytes**; only
-`ReplayManager::OnUpdateHighPrioDemo2 @ 0x004526C0` remains unaccepted.
+`ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0` remains unaccepted.
 
 The first accepted GUI-core batch closes its message, Boss HUD, stage-element,
 stage-clear, popup, capture, transition, and clock ownership.  `GuiImpl` is
@@ -598,6 +598,26 @@ reports 5 raw, 0 absolute, 121 anonymous, and 44 opaque candidates.  The next
 batch should continue from behavior-backed UI/result or remaining manager
 state; do not invent meanings for the residual reset-only audio words.
 
+The Replay file-envelope/callback batch is now focused-accepted.  Generic
+callback names now state whether a callback captures frame sync,
+records input/FPS, plays ordinary or extended input/FPS, or controls playback
+frame advancement.  Recording/playback stage setup and manager teardown have
+matching lifecycle names, and their chain members share those roles.  Header
+`+0x06/+0x07/+0x15` now expose extended-record selection, the appended USER
+section marker, and the byte-obfuscation key; the random header/payload bytes
+remain deliberately role-neutral.
+
+Focused ReplayManager replay passes **17 / 17 exact**, including RegisterChain
+**777 / 777**, recording setup **1,315 / 1,315**, playback setup **787 / 787**,
+and all accepted callback bodies.  The sole authored backlog entry is still
+`ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0`: its behaviorally
+reconstructed six-byte-record source emits 362 bytes versus the 361-byte target
+because of the documented VC7 register-allocation phase.  It is not added to
+the exact ledger.  The required single-job cold replay passes **1,106 / 1,106
+exact**, the normal VC7 image links, and the complete i386 Linux build plus
+fixed-layout verifier passes.  The whole-source router is now 5 raw, 0
+absolute, 116 anonymous, and 44 opaque candidates.
+
 Select the next independent field family with:
 
 ```bash
@@ -757,7 +777,7 @@ python3 scripts/ci.py
 One authored function remains unaccepted. Do not count it as exact or
 restart broad brute-force matrices without a new target-backed hypothesis.
 
-- `ReplayManager::OnUpdateHighPrioDemo2 @ 0x004526C0`, 361 bytes: the natural
+- `ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0`, 361 bytes: the natural
   source object is one byte longer and the residual is a register-allocation
   phase difference. Its adjacent callback family is exact.  The ordinary
   pointer/cast/increment/local-order variants are exhausted and recorded in
@@ -1177,7 +1197,7 @@ runs / 58,804 span** to **43 / 0 / 1 / 51,658**.
 The fifteenth bounded pass repaired `ReplayManager.obj`. The object mixed plain
 lexical disorder with two same-owner deferred header bodies. `LoadReplayData @
 0x00451D90` is now the first Replay definition, the constructor moved from the
-file head to its target slot after `DeletedCallback @ 0x00453080`, and the
+file head to its target slot after `DeleteReplayManager @ 0x00453080`, and the
 existing `AppendFormat @ 0x00453B80` tail is followed by explicit
 `GameManager::SetClockTime @ 0x00453C60` and `ReplayManager::IsDemo @
 0x00453CC0`. The latter two were declaration-only header repairs; each has only

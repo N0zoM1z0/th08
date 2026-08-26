@@ -824,14 +824,14 @@ th08::PlayerBuildAabb,0x451ce0,0x6c,__fastcall,,void,Float3*,Float3*,Float3*,Flo
 th08::Player::IsBombShotSuppressed,0x451d50,0x38,__thiscall,,i32,Player*
 th08::ReplayManager::LoadReplayData,0x451d90,0x1ff,__fastcall,,ReplayData*,void*,i32
 th08::ReplayManager::RegisterChain,0x451f90,0x309,__fastcall,,ZunResult,i32,const char*
-th08::ReplayManager::OnUpdateLowPrio,0x4522a0,0x66,__fastcall,,ChainCallbackResult,ReplayManager*
-th08::ReplayManager::OnUpdateHighPrio,0x452310,0x174,__fastcall,,ChainCallbackResult,ReplayManager*
-th08::ReplayManager::OnUpdateFrameControl,0x452490,0xb8,__fastcall,,ChainCallbackResult,ReplayManager*
-th08::ReplayManager::OnUpdateHighPrioDemo,0x452550,0x16a,__fastcall,,ChainCallbackResult,ReplayManager*
-th08::ReplayManager::OnUpdateHighPrioDemo2,0x4526c0,0x169,__fastcall,,ChainCallbackResult,ReplayManager*
-th08::ReplayManager::AddedCallback,0x452830,0x523,__fastcall,,ZunResult,ReplayManager*
-th08::ReplayManager::AddedCallbackDemo,0x452d60,0x313,__fastcall,,ZunResult,ReplayManager*
-th08::ReplayManager::DeletedCallback,0x453080,0xd1,__fastcall,,ZunResult,ReplayManager*
+th08::ReplayManager::CaptureFrameSyncState,0x4522a0,0x66,__fastcall,,ChainCallbackResult,ReplayManager*
+th08::ReplayManager::RecordInputAndFps,0x452310,0x174,__fastcall,,ChainCallbackResult,ReplayManager*
+th08::ReplayManager::ControlPlaybackFrameAdvance,0x452490,0xb8,__fastcall,,ChainCallbackResult,ReplayManager*
+th08::ReplayManager::PlaybackInputAndFps,0x452550,0x16a,__fastcall,,ChainCallbackResult,ReplayManager*
+th08::ReplayManager::PlaybackExtendedInputAndFps,0x4526c0,0x169,__fastcall,,ChainCallbackResult,ReplayManager*
+th08::ReplayManager::BeginRecordingStage,0x452830,0x523,__fastcall,,ZunResult,ReplayManager*
+th08::ReplayManager::BeginPlaybackStage,0x452d60,0x313,__fastcall,,ZunResult,ReplayManager*
+th08::ReplayManager::DeleteReplayManager,0x453080,0xd1,__fastcall,,ZunResult,ReplayManager*
 th08::ReplayManager::ReplayManager,0x453160,0x3a,__thiscall,,ReplayManager*,ReplayManager*
 th08::ReplayManager::StopRecording,0x4531a0,0x4d,__fastcall,,void
 th08::ReplayManager::SaveReplay,0x4531f0,0x98d,__fastcall,,void,char*,char*

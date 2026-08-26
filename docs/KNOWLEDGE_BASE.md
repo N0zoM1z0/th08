@@ -44,7 +44,7 @@ before repeating target analysis or compiler-shape probes.
 Fast lookup recipes:
 
 ```bash
-rg -n "0x004526C0|OnUpdateHighPrioDemo2" docs config src
+rg -n "0x004526C0|PlaybackExtendedInputAndFps" docs config src
 rg -n "compare_size|COMDAT|DIR32|REL32" docs/BUILD_MATCHING.md
 rg -n "pragma var_order|frame|stack home" docs/VC7_ZUN_PATTERNS.md
 rg -n "cold-build|stale object|aggregate exact" docs/BUILD_MATCHING.md docs/RE_WORKFLOW.md

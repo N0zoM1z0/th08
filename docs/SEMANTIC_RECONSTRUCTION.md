@@ -2247,3 +2247,60 @@ audio-output claim is made.
 Result: the whole-source semantic router now reports 5 raw-member, 0
 absolute-address, 121 anonymous-identifier, and 44 opaque-storage candidates.
 These remain work-selection counts, not a semantic-completion percentage.
+
+### Replay file envelope and callback protocol — 2026-08-27
+
+Scope: the replay header's format-selection and obfuscation fields, the
+six-byte extended input record, ReplayManager's callback-chain ownership, and
+the record/playback/frame-control callback family at
+`0x004522A0..0x00453080`.
+
+Callback roles: `CaptureFrameSyncState @ 0x004522A0` snapshots the frame RNG
+seed and event flags before the gameplay update;
+`RecordInputAndFps @ 0x00452310` appends ordinary two-byte input samples and
+periodic FPS samples; `ControlPlaybackFrameAdvance @ 0x00452490` throttles
+dialogue and replay-mode frame advancement; and
+`PlaybackInputAndFps @ 0x00452550` consumes the ordinary input stream.
+`PlaybackExtendedInputAndFps @ 0x004526C0` consumes six-byte records instead.
+The lifetime callbacks are now `BeginRecordingStage @ 0x00452830`,
+`BeginPlaybackStage @ 0x00452D60`, and
+`DeleteReplayManager @ 0x00453080`; the frame-control and frame-sync chain
+members use the same roles.
+
+File protocol: `ReplayDataHeader::usesExtendedInputRecords @ +0x06` selects
+the six-byte playback callback and its frame-sync chain.
+`hasUserDataSection @ +0x07` changes from zero to one only when SaveReplay
+appends the trailing `USER` record.  `obfuscationKey @ +0x15` seeds the target's
+seven-step byte addition/subtraction and is also the first byte in the checksum
+range.  The independently randomized header and payload bytes are named only
+as random bytes; no cryptographic or compatibility purpose is inferred.
+`ReplayInputSync` is asserted as input/event-flags/RNG-seed words at
+`+0/+2/+4`; the event-field role is inference-limited because the current
+authored target path initializes it but does not consume it.
+
+Exact boundary: `PlaybackExtendedInputAndFps` remains the sole authored
+non-exact function.  The target is **361 bytes** and uses the post-cursor
+register phase EAX/ECX/EDX; the natural VC7 object is **362 bytes** and uses
+EDX/EAX/ECX, making signed `% 8` choose the six-byte generic `and` instead of
+the five-byte EAX form.  The existing syntax matrix remains exhausted; this
+semantic batch does not add an exact unit or claim the function.  The adjacent
+accepted functions and all callers prove the six-byte record and observable
+behavior independently.
+
+VC7 oracle: after every function, decorated symbol, mapping, accepted ledger,
+and relocation reference moved together, the focused ReplayManager selection
+passes **17 / 17 exact**.  The accepted callbacks reproduce 102, 372, 184, 362,
+1,315, 787, and 209 bytes respectively; RegisterChain reproduces **777 / 777**.
+The required single-job cold build of all 75 comparison objects passes
+**1,106 / 1,106 exact**, and the normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links and
+`verify-modern-linux.sh build/modern-linux-container/th08-modern` verifies the
+ELF32 executable and every fixed target-owned layout symbol.  No isolated
+automated playback harness exercises both replay record formats, so no live
+runtime claim is made.
+
+Result: the whole-source router reports 5 raw-member, 0 absolute-address, 116
+anonymous-identifier, and 44 opaque-storage candidates.  This five-candidate
+drop reflects names made explicit in the replay protocol; it is not a semantic
+completion percentage.
