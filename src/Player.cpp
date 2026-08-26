@@ -16,6 +16,10 @@
 #include "ScreenEffect.hpp"
 #include "utils.hpp"
 
+#ifdef TH08_MODERN_LINUX
+#include "modern/linux/solver_bridge.hpp"
+#endif
+
 namespace th08
 {
 
@@ -1385,7 +1389,14 @@ i32 Player::FUN_0044cbf0()
         }
         else
         {
+#ifdef TH08_MODERN_LINUX
+            // The retail analysis runtime rewrites the immediate operand of
+            // push -1 at 0x0044D0F9, yielding AddLives(0).  Keep the call so
+            // GameManager's anti-tamper state is refreshed identically.
+            g_GameManager.AddLives(modern::SolverBridgePreserveLives() ? 0 : -1);
+#else
             g_GameManager.AddLives(-1);
+#endif
             g_Gui.flags.lifeDisplayUpdateFrames = 2;
             g_GameManager.SetBombCount((i32)*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 4));
             g_Gui.flags.bombDisplayUpdateFrames = 2;

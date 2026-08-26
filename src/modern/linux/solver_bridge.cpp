@@ -323,6 +323,12 @@ bool SolverBridgeReadInput(uint16_t *inputMask)
     return true;
 }
 
+bool SolverBridgePreserveLives()
+{
+    InitializeBridge();
+    return g_bridge.configured;
+}
+
 uint64_t SolverBridgeVirtualMicroseconds(uint64_t realMicroseconds)
 {
     pthread_mutex_lock(&g_clockMutex);
