@@ -843,7 +843,7 @@ updateBullet:
 
             if (bullet->offscreenCullDelayFrames != 0)
                 --bullet->offscreenCullDelayFrames;
-            if (!g_EclScriptedGlobalUpdateFreeze)
+            if (!g_GameManager.scriptedUpdateFreeze)
                 bullet->position += bullet->velocity;
 
             if (bullet->offscreenCullDelayFrames == 0)

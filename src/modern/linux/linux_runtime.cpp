@@ -108,15 +108,6 @@ void InstallSignalHandler(int signalNumber)
     sigaction(signalNumber, &action, NULL);
 }
 
-struct SpellPracticeMusic
-{
-    int32_t lastSpell;
-    int32_t track;
-    const char *path;
-    int32_t visible;
-    int32_t alternate;
-};
-
 struct ModernEffectTemplate
 {
     int32_t scriptIdx;
@@ -132,11 +123,6 @@ uintptr_t CodeAddress(int (__fastcall *callback)(AnmVm *))
 uintptr_t CodeAddress(int (__fastcall *callback)(Effect *))
 {
     return reinterpret_cast<uintptr_t>(callback);
-}
-
-void CopyTargetString(uintptr_t address, const char *value)
-{
-    memcpy(reinterpret_cast<void *>(address), value, strlen(value) + 1);
 }
 
 void InitializeTargetData()
@@ -219,39 +205,10 @@ void InitializeTargetData()
         {0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0},
         {0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0},
     };
-    static const int32_t stageMusicContexts[9][3] = {
-        {1, 2, 0}, {3, 4, 0}, {5, 6, 0}, {7, 8, 0}, {7, 9, 0},
-        {10, 11, 0}, {12, 13, 15}, {12, 14, 15}, {16, 17, 0},
-    };
-    static const SpellPracticeMusic spellPracticeMusic[] = {
-        {1, 1, "th08_00.mid", 0, 0}, {12, 2, "th08_03.mid", 1, 0},
-        {16, 3, "th08_04.mid", 0, 0}, {31, 4, "th08_05.mid", 1, 0},
-        {35, 5, "th08_06.mid", 0, 0}, {53, 6, "th08_07.mid", 1, 0},
-        {76, 8, "th08_09.mid", 1, 0}, {99, 9, "th08_10.mid", 1, 0},
-        {118, 11, "th08_12.mid", 1, 0}, {122, 12, "th08_13.mid", 0, 0},
-        {142, 13, "th08_14.mid", 1, 0}, {146, 15, "th08_13b.mid", 2, 1},
-        {150, 12, "th08_13.mid", 0, 0}, {170, 14, "th08_15.mid", 1, 0},
-        {190, 15, "th08_13b.mid", 2, 1}, {193, 16, "th08_18.mid", 0, 0},
-        {204, 17, "th08_19.mid", 1, 0}, {222, 20, "th08_20.mid", 2, 0},
-        {-1, 0, "", 0, 0},
-    };
-
     *reinterpret_cast<int32_t *>(0x004c6c3c) = 43;
     memcpy(reinterpret_cast<void *>(0x004c6d30), effectTemplates, sizeof(effectTemplates));
     memcpy(reinterpret_cast<void *>(0x004c7158), stageScoreTables, sizeof(stageScoreTables));
     memcpy(reinterpret_cast<void *>(0x004c7180), messageTextColors, sizeof(messageTextColors));
-    memcpy(reinterpret_cast<void *>(0x004c7240), stageMusicContexts, sizeof(stageMusicContexts));
-    memcpy(reinterpret_cast<void *>(0x004c7670), spellPracticeMusic, sizeof(spellPracticeMusic));
-
-    CopyTargetString(0x004b4ca0, "etama.anm");
-    CopyTargetString(0x004b5820, "replay/th8_00.rpy");
-    CopyTargetString(0x004b5834, "error: spell card initialization failed\n");
-    CopyTargetString(0x004b5864, "error: 2D initialization failed\n");
-    CopyTargetString(0x004b588c, "error: effect initialization failed\n");
-    CopyTargetString(0x004b58b8, "error: enemy initialization failed\n");
-    CopyTargetString(0x004b58dc, "error: bullet initialization failed\n");
-    CopyTargetString(0x004b5904, "error: background initialization failed\n");
-    CopyTargetString(0x004b5930, "error: player initialization failed\n");
 }
 }
 

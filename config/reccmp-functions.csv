@@ -315,7 +315,7 @@ th08::FUN_00424fc0,0x424fc0,function
 th08::EclExIns::MokouResurrection,0x424ff0,function
 th08::FUN_00425020,0x425020,function
 th08::FUN_00425040,0x425040,function
-th08::FUN_00425070,0x425070,function
+th08::EclExIns::SetScriptedUpdateFreeze,0x425070,function
 th08::FUN_004250d0,0x4250d0,function
 th08::FUN_004251b0,0x4251b0,function
 th08::FUN_00425290,0x425290,function
@@ -519,8 +519,8 @@ th08::GameManager::AddToBombCount,0x439883,function
 th08::GameManager::GetBombsRemaining,0x4398ce,function
 th08::AsciiManager::SetColor,0x4398e8,function
 th08::AsciiManager::SetIsGuiMode,0x4398ff,function
-th08::FUN_00439916,0x439916,function
-th08::FUN_00439961,0x439961,function
+th08::GameManager::ShouldPauseMusicInSpellPractice,0x439916,function
+th08::GameManager::GetSongNameSpriteIdx,0x439961,function
 th08::GameManager::IsWithinPlayfield,0x4399ac,function
 th08::GameManager::CalcAntiTamperChecksum,0x439a2e,function
 th08::GameManager::CalcChecksum,0x439ac5,function

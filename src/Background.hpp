@@ -15,6 +15,21 @@ struct RawStageInstr;
 struct RawStageObject;
 struct RawStageObjectInstance;
 
+struct RawStageHeader
+{
+    i16 objectCount;
+    i16 quadCount;
+    i32 objectInstancesOffset;
+    i32 scriptOffset;
+    i32 unknown0C;
+    char stageName[128];
+    char songNames[4][128];
+    char songPaths[4][128];
+};
+C_ASSERT(sizeof(RawStageHeader) == 0x490);
+C_ASSERT(offsetof(RawStageHeader, songNames) == 0x90);
+C_ASSERT(offsetof(RawStageHeader, songPaths) == 0x290);
+
 struct BackgroundCamera
 {
     BackgroundCamera();
@@ -83,7 +98,7 @@ struct Background
     AnmVm stageVm1;
     AnmVm stageVm2;
     AnmLoaded *stageAnmFile;
-    void *stageData;
+    RawStageHeader *stageData;
     i32 stageQuadCount;
     i32 stageObjectCount;
     RawStageObject **stageObjects;

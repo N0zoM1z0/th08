@@ -49,7 +49,6 @@ extern AsciiManager g_AsciiManager;
 extern ReplayManager *g_ReplayManager;
 extern ZunMemory g_ZunMemory;
 extern EnemyManager g_EnemyManager;
-extern i8 g_EclScriptedGlobalUpdateFreeze;
 
 extern "C" f32 __stdcall EnemyManagerUpdateFabs(f32 value);
 
@@ -673,7 +672,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
         }
 
         enemy->UpdateEffects();
-        if (!g_EclScriptedGlobalUpdateFreeze)
+        if (!g_GameManager.scriptedUpdateFreeze)
             enemy->bossTimer++;
         if (enemy->damageReductionTimer > 0)
             enemy->damageReductionTimer--;

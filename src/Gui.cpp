@@ -36,11 +36,18 @@ struct GuiMessageTextColorSet
 };
 DIFFABLE_STATIC_ARRAY(GuiMessageTextColorSet, SHOT_ALL, g_GuiMessageTextColors);
 
-struct GuiStageMusicContextSet
-{
-    i32 values[3];
+DIFFABLE_STATIC_ARRAY_ASSIGN(
+    GuiStageMusicContextSet, GUI_STAGE_MUSIC_CONTEXT_COUNT, g_GuiStageMusicContexts) = {
+    {{1, 2, 0}},
+    {{3, 4, 0}},
+    {{5, 6, 0}},
+    {{7, 8, 0}},
+    {{7, 9, 0}},
+    {{10, 11, 0}},
+    {{12, 13, 15}},
+    {{12, 14, 15}},
+    {{16, 17, 0}},
 };
-DIFFABLE_STATIC_ARRAY(GuiStageMusicContextSet, MAX_STAGES, g_GuiStageMusicContexts);
 DIFFABLE_STATIC_ARRAY_ASSIGN(u32, 4, g_GuiBossTimerColors) = {0x00a0d0ff, 0x00a080ff, 0x00e080c0, 0x00ff4040};
 DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 2, g_GuiTimePeriodLabels) = {"AM", "PM"};
 
@@ -64,15 +71,6 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(GuiMessagePathRow, MAX_STAGES, g_GuiMessagePaths) =
 
 
 
-i32 FUN_00439916(i32 unused);
-i32 FUN_00439961(i32 unused);
-
-struct GuiStageMusicDataOverlay
-{
-    unknown_fields(0x0, 0x290);
-    char songPaths[4][128];
-};
-
 void __fastcall DecryptGuiMessageText(char *out, const char *encoded);
 i32 IsInitialStageLoad();
 i32 ReleaseResourcesOnRestart();
@@ -81,7 +79,7 @@ i32 KeepStageResources();
 // FUNCTION: th08 0x4338ca
 ChainCallbackResult Gui::OnUpdate(Gui *gui)
 {
-    if (g_EclScriptedGlobalUpdateFreeze)
+    if (g_GameManager.scriptedUpdateFreeze)
         return CHAIN_CALLBACK_RESULT_CONTINUE;
 
     gui->UpdateStageElements();
@@ -626,13 +624,13 @@ i32 GuiImpl::RunMsg()
                 if (g_Supervisor.PlayMusic(
                         this->message.currentInstr->args.music.musicIndex,
                         reinterpret_cast<char *>(g_GuiStageMusicContexts[g_GameManager.currentStage]
-                                                    .values[this->message.currentInstr->args.music.musicIndex])))
+                                                    .songNumbers[this->message.currentInstr->args.music.musicIndex])))
                 {
                     g_Supervisor.PlayAudio(
-                        reinterpret_cast<GuiStageMusicDataOverlay *>(g_Background.stageData)
+                        g_Background.stageData
                             ->songPaths[this->message.currentInstr->args.music.musicIndex],
                         g_GuiStageMusicContexts[g_GameManager.currentStage]
-                            .values[this->message.currentInstr->args.music.musicIndex]);
+                            .songNumbers[this->message.currentInstr->args.music.musicIndex]);
                 }
             }
             break;
@@ -659,7 +657,7 @@ i32 GuiImpl::RunMsg()
             this->stageClear.clockDisplayCurrent = this->stageClear.clockDisplayStart;
             this->stageClear.clockDisplayTimer &= 0;
             this->stageClearScreenState = 1;
-            g_GameManager.flags.unk9 = 1;
+            g_GameManager.flags.stageClearSequenceActive = 1;
 
             if (g_GameManager.currentStage != STAGE6A && g_GameManager.currentStage != STAGE6B &&
                 g_GameManager.currentStage != EXTRASTAGE)
@@ -2133,10 +2131,13 @@ ZunResult Gui::ActualAddedCallback()
     {
         this->stageTextAnm->ExecuteAnmIdxArray(&this->impl->stageTextVms[0], 0, 4);
     }
-    else if (!KeepStageResources() || FUN_00439916(g_GameManager.currentSpellCardNumber))
+    else if (!KeepStageResources() ||
+             GameManager::ShouldPauseMusicInSpellPractice(g_GameManager.currentSpellCardNumber))
     {
         this->stageTextAnm->ExecuteAnmIdxArray(&this->impl->stageTextVms[0], 3, 1);
-        this->stageTextAnm->SetSprite(&this->impl->stageTextVms[0], FUN_00439961(g_GameManager.currentSpellCardNumber) + 3);
+        this->stageTextAnm->SetSprite(
+            &this->impl->stageTextVms[0],
+            GameManager::GetSongNameSpriteIdx(g_GameManager.currentSpellCardNumber) + 3);
     }
 
     this->impl->message.currentMsgIdx = -1;

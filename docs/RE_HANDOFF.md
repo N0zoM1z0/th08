@@ -509,8 +509,47 @@ unidentified script-9 VM, reset-only bool, and unused popup tail field.  The
 whole-source router is now 60 raw-member, 82 absolute, 218 anonymous, and 48
 opaque candidates.
 
-The next dense semantic owner is the remaining GameManager setup/runtime
-state, followed by the adjacent Supervisor and replay-storage views.
+The GameManager setup/runtime batch is now accepted.  The target's nineteen
+0x14-byte spell-practice music records at `0x004C7670`, nine three-song stage
+contexts at `0x004C7240`, and the STD header's `+0x90/+0x290` song-name/path
+arrays now have shared typed owners.  The helpers at `0x00439916/0x00439961`
+are `GameManager::ShouldPauseMusicInSpellPractice` and
+`GetSongNameSpriteIdx`; setup error/resource addresses are source literals
+with target-replayed relocations.  GensokyoClub supplied strong table/name
+hypotheses, but canonical TH08 data and VC7 replay remain the acceptance
+evidence.
+
+The byte at `0x0160F534` is now correctly owned as
+`g_GameManager.scriptedUpdateFreeze @ +0x2C`.  The ECL setter at `0x00425070`
+and all Bullet, Enemy, GUI, Player, Spellcard, and ScreenEffect consumers use
+that owner; eight manifest relocations now require `g_GameManager + 0x2C`, and
+the false standalone global/storage/Linux alias is gone.  The same batch names
+the Supervisor viewport, recorded replay FPS, loading-VM and worker-thread
+state; active Bullet count; Background sky-fog color; RNG saved seed;
+stage-clear replay gate; anti-tamper heap-jitter allocation; and restart play
+count.  Unused/reset-only GameManager tail fields remain neutral.
+
+Focused replay passed EclExIns **33 / 33**, Background **24 / 24**,
+GameManager **33 / 33**, the broad affected selection **333 / 333**,
+SpellCard **29 / 29**, and the final setup/Supervisor/replay/title selection
+**251 / 251**.  The normal VC7 image and probes link, and a required single-job
+cold replay of all 75 comparison objects passes **1,106 / 1,106 exact**.  The
+complete i386 Linux container build links and its fixed-layout verifier passes
+after removing the duplicate initialization/alias shims.  No isolated runtime
+smoke exists for spell-practice music or scripted whole-update freeze, so none
+is claimed.  The semantic router now reports 60 raw-member, 18 absolute, 194
+anonymous, and 45 opaque candidates; these remain routing counts only.
+
+The Gensokyo `TitleScreen::RegisterChain` side hypothesis is conclusively
+confirmed in this cold environment: the existing `ZUN_NEW(TitleScreen,
+"TitleInf")` source replays all **281 / 281** bytes and 20 relocations at
+`0x0047146D`, including its `0x40` target frame.  It is already committed in
+the earlier GameManager/title checkpoint; no new merge is required.
+
+The next dense semantic owners are the remaining Bullet transform helper names
+and ECL extension callbacks, followed by ReplayManager serialized state and
+Supervisor timing/subthread status fields whose behavior has enough
+independent target use to name safely.
 
 Select the next independent field family with:
 

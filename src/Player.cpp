@@ -519,7 +519,7 @@ void Player::Die()
     AnmVm *effectVm;
 
     utils::DebugPrint("player DEAD");
-    g_EclScriptedGlobalUpdateFreeze = 0;
+    g_GameManager.scriptedUpdateFreeze = 0;
     g_GameManager.UpdateAntiTamper();
     g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 16, -1);
     this->playerState = PLAYER_STATE_DYING;
@@ -1032,7 +1032,7 @@ ZunResult Player::RegisterChain(u32 playerType)
 // FUNCTION: th08 0x44c390
 ChainCallbackResult Player::OnUpdate(Player *player)
 {
-    if (g_GameManager.unk2C != 0)
+    if (g_GameManager.scriptedUpdateFreeze != 0)
     {
         if (player->focusEffect != NULL)
         {

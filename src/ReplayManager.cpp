@@ -248,7 +248,7 @@ ChainCallbackResult ReplayManager::OnUpdateHighPrio(ReplayManager *replayManager
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
 
-    if (g_GameManager.flags.unk9)
+    if (g_GameManager.flags.stageClearSequenceActive)
     {
         if (replayManager->inputDelay >= 3)
         {
@@ -269,8 +269,8 @@ ChainCallbackResult ReplayManager::OnUpdateHighPrio(ReplayManager *replayManager
     if (replayManager->frameCounter % 30 == 0)
     {
         replayManager->replayRngInputs[0] =
-            (u8)g_Supervisor.unk198 | (g_Supervisor.unk0x338 != 0 ? 0x80 : 0);
-        replayManager->replayRngInputs[1] = (u8)g_Supervisor.unk198;
+            (u8)g_Supervisor.recordedFps | (g_Supervisor.unk0x338 != 0 ? 0x80 : 0);
+        replayManager->replayRngInputs[1] = (u8)g_Supervisor.recordedFps;
         replayManager->replayInputStageBookmarks2[stage] = replayManager->replayRngInputs + 2;
         replayManager->replayRngInputs++;
     }
@@ -286,7 +286,7 @@ ChainCallbackResult ReplayManager::OnUpdateFrameControl(ReplayManager *replayMan
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
 
-    if (g_GameManager.flags.unk9)
+    if (g_GameManager.flags.stageClearSequenceActive)
     {
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
@@ -296,7 +296,7 @@ ChainCallbackResult ReplayManager::OnUpdateFrameControl(ReplayManager *replayMan
         return CHAIN_CALLBACK_RESULT_RESTART_FROM_FIRST_JOB;
     }
 
-    if (!g_GameManager.flags.unk9 && g_GameManager.replayMode == 2 && !g_EnemyManager.HasBoss() &&
+    if (!g_GameManager.flags.stageClearSequenceActive && g_GameManager.replayMode == 2 && !g_EnemyManager.HasBoss() &&
         replayManager->frameCounter % 5 != 4)
     {
         return CHAIN_CALLBACK_RESULT_RESTART_FROM_FIRST_JOB;
@@ -319,7 +319,7 @@ ChainCallbackResult ReplayManager::OnUpdateHighPrioDemo(ReplayManager *replayMan
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
 
-    if (g_GameManager.flags.unk9)
+    if (g_GameManager.flags.stageClearSequenceActive)
     {
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
@@ -353,7 +353,7 @@ ChainCallbackResult ReplayManager::OnUpdateHighPrioDemo(ReplayManager *replayMan
 
     if (replayManager->frameCounter % 30 == 0)
     {
-        *reinterpret_cast<u16 *>(&g_Supervisor.unk198) = (i8)replayManager->replayRngInputs[1] & 0x7f;
+        g_Supervisor.recordedFps = (i8)replayManager->replayRngInputs[1] & 0x7f;
         g_Supervisor.unk0x33c = (i8)replayManager->replayRngInputs[1] >> 7;
         replayManager->replayRngInputs++;
     }
@@ -376,7 +376,7 @@ ChainCallbackResult ReplayManager::OnUpdateHighPrioDemo2(ReplayManager *replayMa
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
 
-    if (g_GameManager.flags.unk9)
+    if (g_GameManager.flags.stageClearSequenceActive)
     {
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
@@ -410,7 +410,7 @@ ChainCallbackResult ReplayManager::OnUpdateHighPrioDemo2(ReplayManager *replayMa
 
     if (replayManager->frameCounter % 30 == 0)
     {
-        *reinterpret_cast<u16 *>(&g_Supervisor.unk198) = (i8)replayManager->replayRngInputs[1] & 0x7f;
+        g_Supervisor.recordedFps = (i8)replayManager->replayRngInputs[1] & 0x7f;
         g_Supervisor.unk0x33c = (i8)replayManager->replayRngInputs[1] >> 7;
         replayManager->replayRngInputs++;
     }

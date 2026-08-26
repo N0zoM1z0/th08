@@ -41,7 +41,7 @@ struct GameManagerFlags
     u32 stageTransitionState : 2;
     // Nonzero selects the alternate player-death dissolve path.
     u32 playerDeathDissolveMode : 2;
-    u32 unk9 : 1;
+    u32 stageClearSequenceActive : 1;
     u32 deathbombFreezeActive : 1;
     u32 finalStageRoute : 2;
     u32 suppressPlayerShots : 1;
@@ -73,9 +73,24 @@ enum StageStartupMode
     STAGE_STARTUP_WITHOUT_MUSIC,
 };
 
+struct SpellcardMusicEntry
+{
+    i32 spellcardNumber;
+    i32 songNumber;
+    const char *songPath;
+    i32 songNameSpriteIdx;
+    ZunBool musicPausesInSpellPractice;
+};
+C_ASSERT(sizeof(SpellcardMusicEntry) == 0x14);
+
+DIFFABLE_EXTERN_ARRAY(SpellcardMusicEntry, 19, g_SpellcardMusicInfo);
+
 struct GameManager
 {
     GameManager();
+
+    static ZunBool ShouldPauseMusicInSpellPractice(i32 spellcardNumber);
+    static i32 GetSongNameSpriteIdx(i32 spellcardNumber);
 
     ZunBool IsWithinPlayfield(f32 x, f32 y, f32 width, f32 height);
     i32 CalcAntiTamperChecksum();
@@ -294,11 +309,11 @@ struct GameManager
         return this->skipCurrentFrame;
     }
 
-    i32 unk0x0;
+    i32 antiTamperHeapJitterAllocation;
     GameConfiguration *cfg;
     ZunGlobals *globals;
     Flsp flsp;
-    i8 unk2C;
+    i8 scriptedUpdateFreeze;
     i8 skipCurrentFrame;
     /* 2 bytes pad */
     i32 difficulty;
@@ -369,6 +384,8 @@ struct GameManager
 };
 
 C_ASSERT(sizeof(GameManager) == 0x3de3c);
+C_ASSERT(offsetof(GameManager, antiTamperHeapJitterAllocation) == 0x0);
+C_ASSERT(offsetof(GameManager, scriptedUpdateFreeze) == 0x2c);
 C_ASSERT(offsetof(GameManager, character) == 0x3DBA8);
 C_ASSERT(offsetof(GameManager, shotType) == 0x3DBA9);
 C_ASSERT(offsetof(GameManager, flags) == 0x3DBAC);

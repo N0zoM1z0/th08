@@ -10,6 +10,20 @@ namespace th08
 #define GUI_TRANSITION_ROWS 14
 #define GUI_TRANSITION_COLUMNS 12
 
+enum
+{
+    GUI_STAGE_MUSIC_CONTEXT_COUNT = 9,
+};
+
+struct GuiStageMusicContextSet
+{
+    i32 songNumbers[3];
+};
+C_ASSERT(sizeof(GuiStageMusicContextSet) == 0xc);
+
+DIFFABLE_EXTERN_ARRAY(
+    GuiStageMusicContextSet, GUI_STAGE_MUSIC_CONTEXT_COUNT, g_GuiStageMusicContexts);
+
 struct GuiFormattedText
 {
     GuiFormattedText();

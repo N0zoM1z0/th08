@@ -684,8 +684,8 @@ th08::IncrementTruncate
 th08::GameManager::IsStageClearedWithoutRetries
 th08::GameManager::IsStageClearedWithRetries
 th08::Gui::MsgRead
-th08::FUN_00439916
-th08::FUN_00439961
+th08::GameManager::ShouldPauseMusicInSpellPractice
+th08::GameManager::GetSongNameSpriteIdx
 th08::Player::OnDrawLowPrio
 th08::Supervisor::EnumGameControllersCb
 th08::Player::DrawHitShots
@@ -1060,7 +1060,7 @@ th08::FUN_00424fc0
 th08::EclExIns::MokouResurrection
 th08::FUN_00425020
 th08::FUN_00425040
-th08::FUN_00425070
+th08::EclExIns::SetScriptedUpdateFreeze
 th08::FUN_004250d0
 th08::FUN_004251b0
 th08::FUN_00425290

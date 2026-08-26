@@ -29,6 +29,7 @@ namespace EclExIns
 {
 void __fastcall ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
 void __fastcall MokouResurrection(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
+void __fastcall SetScriptedUpdateFreeze(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
 }
 
 void __fastcall ConfigureNightBlindness(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
@@ -55,7 +56,6 @@ void __fastcall FUN_00423e20(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 void __fastcall FUN_00425020(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
 void __fastcall FUN_00425040(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
 void __fastcall FUN_00424910(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
-void __fastcall FUN_00425070(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
 void __fastcall FUN_004250d0(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
 void __fastcall FUN_004251b0(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
 void __fastcall FUN_00425290(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
@@ -89,7 +89,7 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(void *, 32, g_EclExInsn) = {
     reinterpret_cast<void *>(&FUN_00425020),
     reinterpret_cast<void *>(&FUN_00425040),
     reinterpret_cast<void *>(&FUN_00424910),
-    reinterpret_cast<void *>(&FUN_00425070),
+    reinterpret_cast<void *>(&EclExIns::SetScriptedUpdateFreeze),
     reinterpret_cast<void *>(&FUN_004250d0),
     reinterpret_cast<void *>(&FUN_004251b0),
     reinterpret_cast<void *>(&FUN_00425290),
@@ -104,7 +104,6 @@ DIFFABLE_STATIC(i32, g_EclGlobal004ECCA8);
 #ifndef TH08_MODERN_PORT
 DIFFABLE_STATIC(EclExBarrierRenderState, g_EclExBarrierRenderState);
 #endif
-DIFFABLE_STATIC(i8, g_EclScriptedGlobalUpdateFreeze);
 DIFFABLE_STATIC(f32, g_EclGameTimeScale);
 DIFFABLE_STATIC(u32, g_EclGameTimeScaleFlags);
 DIFFABLE_STATIC(EclManager, g_EclManager);

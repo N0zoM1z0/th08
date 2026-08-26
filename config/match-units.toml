@@ -10896,8 +10896,9 @@ target = 0x0042E010
 [[units.relocations]]
 offset = 0x174F
 type = "DIR32"
-symbol = "?g_EclScriptedGlobalUpdateFreeze@th08@@3DA"
-target = 0x0160F534
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x2C
 
 [[units.relocations]]
 offset = 0x1763
@@ -42872,6 +42873,12 @@ symbol = "?ReleaseSurface@AnmManager@th08@@QAEXH@Z"
 target = 0x00466AE0
 
 [[units.relocations]]
+offset = 0x447
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
 offset = 0x459
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
@@ -42882,6 +42889,12 @@ offset = 0x468
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x471
+type = "DIR32"
+symbol = "?g_GuiStageMusicContexts@th08@@3PAUGuiStageMusicContextSet@1@A"
+target = 0x004C7240
 
 [[units.relocations]]
 offset = 0x478
@@ -42896,10 +42909,28 @@ symbol = "?PlayMusic@Supervisor@th08@@QAEIHPAD@Z"
 target = 0x00447E47
 
 [[units.relocations]]
+offset = 0x48F
+type = "DIR32"
+symbol = "?g_SpellcardMusicInfo@th08@@3PAUSpellcardMusicEntry@1@A"
+target = 0x004C7670
+
+[[units.relocations]]
 offset = 0x499
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x4A5
+type = "DIR32"
+symbol = "?g_SpellcardMusicInfo@th08@@3PAUSpellcardMusicEntry@1@A"
+target = 0x004C7670
+
+[[units.relocations]]
+offset = 0x4B3
+type = "DIR32"
+symbol = "?g_SpellcardMusicInfo@th08@@3PAUSpellcardMusicEntry@1@A"
+target = 0x004C7670
 
 [[units.relocations]]
 offset = 0x4BA
@@ -43028,6 +43059,12 @@ symbol = "?g_Rng@th08@@3VRng@1@A"
 target = 0x0164D520
 
 [[units.relocations]]
+offset = 0x5C9
+type = "DIR32"
+symbol = "?g_Rng@th08@@3VRng@1@A"
+target = 0x0164D520
+
+[[units.relocations]]
 offset = 0x5E1
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
@@ -43038,6 +43075,12 @@ offset = 0x5E6
 type = "REL32"
 symbol = "?UpdateAntiTamper@GameManager@th08@@QAEXXZ"
 target = 0x00406E50
+
+[[units.relocations]]
+offset = 0x5EC
+type = "DIR32"
+symbol = "?g_Rng@th08@@3VRng@1@A"
+target = 0x0164D520
 
 [[units.relocations]]
 offset = 0x5F2
@@ -43052,10 +43095,22 @@ symbol = "__ftol2"
 target = 0x004A3E70
 
 [[units.relocations]]
+offset = 0x605
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
 offset = 0x613
 type = "REL32"
 symbol = "__ftol2"
 target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x618
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
 
 [[units.relocations]]
 offset = 0x626
@@ -43064,10 +43119,34 @@ symbol = "__ftol2"
 target = 0x004A3E70
 
 [[units.relocations]]
+offset = 0x62B
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
 offset = 0x639
 type = "REL32"
 symbol = "__ftol2"
 target = 0x004A3E70
+
+[[units.relocations]]
+offset = 0x63E
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x646
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x64E
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
 
 [[units.relocations]]
 offset = 0x653
@@ -43098,6 +43177,48 @@ offset = 0x68D
 type = "REL32"
 symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
 target = 0x004358BB
+
+[[units.relocations]]
+offset = 0x6AF
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x6D3
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x6DF
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x6FF
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x70B
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x72B
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x737
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
 
 [[units.relocations]]
 offset = 0x775
@@ -43256,6 +43377,12 @@ symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
+offset = 0xAA7
+type = "DIR32"
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+
+[[units.relocations]]
 offset = 0xAB2
 type = "DIR32"
 symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
@@ -43340,10 +43467,46 @@ symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
+offset = 0xD82
+type = "DIR32"
+symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
+target = 0x00F54E90
+
+[[units.relocations]]
+offset = 0xDA2
+type = "DIR32"
+symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
+target = 0x00F54E90
+
+[[units.relocations]]
+offset = 0xDAE
+type = "DIR32"
+symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
+target = 0x00F54E90
+
+[[units.relocations]]
+offset = 0xDCE
+type = "DIR32"
+symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
+target = 0x00F54E90
+
+[[units.relocations]]
+offset = 0xDDA
+type = "DIR32"
+symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
+target = 0x00F54E90
+
+[[units.relocations]]
 offset = 0xDFA
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xE06
+type = "DIR32"
+symbol = "?g_BulletManager@th08@@3UBulletManager@1@A"
+target = 0x00F54E90
 
 [[units.relocations]]
 offset = 0xE1B
@@ -62494,25 +62657,17 @@ symbol = "?StartMessage@GuiImpl@th08@@QAEXH@Z"
 target = 0x0043396D
 
 [[units]]
-name = "fun-00439916"
+name = "game-manager-should-pause-music-in-spell-practice"
 object = "build/GameManager.obj"
-symbol = "?FUN_00439916@th08@@YIHH@Z"
+symbol = "?ShouldPauseMusicInSpellPractice@GameManager@th08@@SIIH@Z"
 target_address = 0x00439916
 size = 0x4B
 
 [[units.relocations]]
-offset = 0x1E
+offset = 0x14
 type = "DIR32"
-symbol = "?g_GameManager@th08@@3UGameManager@1@A"
-target = 0x0160F508
-addend = 0x3DBB0
-
-[[units]]
-name = "fun-00439961"
-object = "build/GameManager.obj"
-symbol = "?FUN_00439961@th08@@YIHH@Z"
-target_address = 0x00439961
-size = 0x4B
+symbol = "?g_SpellcardMusicInfo@th08@@3PAUSpellcardMusicEntry@1@A"
+target = 0x004C7670
 
 [[units.relocations]]
 offset = 0x1E
@@ -62520,6 +62675,50 @@ type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 addend = 0x3DBB0
+
+[[units.relocations]]
+offset = 0x2A
+type = "DIR32"
+symbol = "?g_SpellcardMusicInfo@th08@@3PAUSpellcardMusicEntry@1@A"
+target = 0x004C7670
+
+[[units.relocations]]
+offset = 0x38
+type = "DIR32"
+symbol = "?g_SpellcardMusicInfo@th08@@3PAUSpellcardMusicEntry@1@A"
+target = 0x004C7670
+
+[[units]]
+name = "game-manager-get-song-name-sprite-idx"
+object = "build/GameManager.obj"
+symbol = "?GetSongNameSpriteIdx@GameManager@th08@@SIHH@Z"
+target_address = 0x00439961
+size = 0x4B
+
+[[units.relocations]]
+offset = 0x14
+type = "DIR32"
+symbol = "?g_SpellcardMusicInfo@th08@@3PAUSpellcardMusicEntry@1@A"
+target = 0x004C7670
+
+[[units.relocations]]
+offset = 0x1E
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBB0
+
+[[units.relocations]]
+offset = 0x2A
+type = "DIR32"
+symbol = "?g_SpellcardMusicInfo@th08@@3PAUSpellcardMusicEntry@1@A"
+target = 0x004C7670
+
+[[units.relocations]]
+offset = 0x38
+type = "DIR32"
+symbol = "?g_SpellcardMusicInfo@th08@@3PAUSpellcardMusicEntry@1@A"
+target = 0x004C7670
 
 [[units]]
 name = "player-on-draw-low-prio"
@@ -68929,8 +69128,9 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0x21
 type = "DIR32"
-symbol = "?g_EclScriptedGlobalUpdateFreeze@th08@@3DA"
-target = 0x0160F534
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x2C
 
 [[units.relocations]]
 offset = 0x7D
@@ -75717,8 +75917,9 @@ size = 93
 [[units.relocations]]
 offset = 10
 type = "DIR32"
-symbol = "?g_EclScriptedGlobalUpdateFreeze@th08@@3DA"
-target = 23131444
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x2C
 
 [[units.relocations]]
 offset = 27
@@ -78471,8 +78672,9 @@ addend = 0x3DBAC
 [[units.relocations]]
 offset = 37
 type = "DIR32"
-symbol = "?g_EclScriptedGlobalUpdateFreeze@th08@@3DA"
-target = 0x0160F534
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x2C
 
 [[units.relocations]]
 offset = 80
@@ -82055,8 +82257,9 @@ target = 0x00421DD0
 [[units.relocations]]
 offset = 25
 type = "DIR32"
-symbol = "?g_EclScriptedGlobalUpdateFreeze@th08@@3DA"
-target = 0x0160F534
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x2C
 
 [[units.relocations]]
 offset = 31
@@ -83543,8 +83746,9 @@ target = 0x00418110
 [[units.relocations]]
 offset = 0x253
 type = "DIR32"
-symbol = "?g_EclScriptedGlobalUpdateFreeze@th08@@3DA"
-target = 0x0160F534
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x2C
 
 [[units.relocations]]
 offset = 0x26F
@@ -104573,7 +104777,7 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0x492
 type = "REL32"
-symbol = "?FUN_00439916@th08@@YIHH@Z"
+symbol = "?ShouldPauseMusicInSpellPractice@GameManager@th08@@SIIH@Z"
 target = 0x00439916
 
 [[units.relocations]]
@@ -104591,7 +104795,7 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0x4BD
 type = "REL32"
-symbol = "?FUN_00439961@th08@@YIHH@Z"
+symbol = "?GetSongNameSpriteIdx@GameManager@th08@@SIHH@Z"
 target = 0x00439961
 
 [[units.relocations]]
@@ -110984,23 +111188,25 @@ symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units]]
-name = "ecl-ex-callback-00425070"
+name = "ecl-ex-set-scripted-update-freeze-00425070"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00425070@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?SetScriptedUpdateFreeze@EclExIns@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclExInstruction@2@@Z"
 target_address = 0x00425070
 size = 0x59
 
 [[units.relocations]]
 offset = 0x14
 type = "DIR32"
-symbol = "?g_EclScriptedGlobalUpdateFreeze@th08@@3DA"
-target = 0x0160F534
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x2C
 
 [[units.relocations]]
 offset = 0x1B
 type = "DIR32"
-symbol = "?g_EclScriptedGlobalUpdateFreeze@th08@@3DA"
-target = 0x0160F534
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x2C
 
 [[units.relocations]]
 offset = 0x26
@@ -112006,6 +112212,12 @@ symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
 target = 0x017CE758
 
 [[units.relocations]]
+offset = 0x232
+type = "DIR32"
+symbol = "??_C@_0CF@CMLLMLNH@error?3?5player?5initialization?5fai@"
+target = 0x004B5930
+
+[[units.relocations]]
 offset = 0x237
 type = "DIR32"
 symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
@@ -112302,6 +112514,12 @@ symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
 target = 0x017CE758
 
 [[units.relocations]]
+offset = 0x5C2
+type = "DIR32"
+symbol = "??_C@_0CF@CMLLMLNH@error?3?5player?5initialization?5fai@"
+target = 0x004B5930
+
+[[units.relocations]]
 offset = 0x5C7
 type = "DIR32"
 symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
@@ -112458,6 +112676,12 @@ symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
 target = 0x017CE758
 
 [[units.relocations]]
+offset = 0x823
+type = "DIR32"
+symbol = "??_C@_0CJ@HFNFAIKF@error?3?5background?5initialization@"
+target = 0x004B5904
+
+[[units.relocations]]
 offset = 0x828
 type = "DIR32"
 symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
@@ -112470,6 +112694,12 @@ symbol = "?Log@GameErrorContext@th08@@QAAPBDPBDZZ"
 target = 0x0043EA00
 
 [[units.relocations]]
+offset = 0x839
+type = "DIR32"
+symbol = "??_C@_09NMANGJFI@etama?4anm?$AA@"
+target = 0x004B4CA0
+
+[[units.relocations]]
 offset = 0x83E
 type = "REL32"
 symbol = "?RegisterChain@BulletManager@th08@@SI?AW4ZunResult@@PAD@Z"
@@ -112480,6 +112710,12 @@ offset = 0x848
 type = "DIR32"
 symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
 target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x855
+type = "DIR32"
+symbol = "??_C@_0CF@FPCKPGDA@error?3?5bullet?5initialization?5fai@"
+target = 0x004B58DC
 
 [[units.relocations]]
 offset = 0x85A
@@ -112506,6 +112742,12 @@ symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
 target = 0x017CE758
 
 [[units.relocations]]
+offset = 0x882
+type = "DIR32"
+symbol = "??_C@_0CE@JNOJFPKK@error?3?5enemy?5initialization?5fail@"
+target = 0x004B58B8
+
+[[units.relocations]]
 offset = 0x887
 type = "DIR32"
 symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
@@ -112528,6 +112770,12 @@ offset = 0x8A2
 type = "DIR32"
 symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
 target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x8AF
+type = "DIR32"
+symbol = "??_C@_0CF@FENMLLMJ@error?3?5effect?5initialization?5fai@"
+target = 0x004B588C
 
 [[units.relocations]]
 offset = 0x8B4
@@ -112554,6 +112802,12 @@ symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
 target = 0x017CE758
 
 [[units.relocations]]
+offset = 0x8DC
+type = "DIR32"
+symbol = "??_C@_0CB@PHCJOIOG@error?3?52D?5initialization?5failed?6@"
+target = 0x004B5864
+
+[[units.relocations]]
 offset = 0x8E1
 type = "DIR32"
 symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
@@ -112578,6 +112832,12 @@ symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
 target = 0x017CE758
 
 [[units.relocations]]
+offset = 0x909
+type = "DIR32"
+symbol = "??_C@_0CJ@FBCDFIGM@error?3?5spell?5card?5initialization@"
+target = 0x004B5834
+
+[[units.relocations]]
 offset = 0x90E
 type = "DIR32"
 symbol = "?g_GameErrorContext@th08@@3VGameErrorContext@1@A"
@@ -112594,6 +112854,12 @@ offset = 0x91F
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x92E
+type = "DIR32"
+symbol = "??_C@_0BC@GBFOGAGI@replay?1th8_00?4rpy?$AA@"
+target = 0x004B5820
 
 [[units.relocations]]
 offset = 0x935
@@ -112722,10 +112988,28 @@ symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
+offset = 0xB00
+type = "DIR32"
+symbol = "?g_SpellcardMusicInfo@th08@@3PAUSpellcardMusicEntry@1@A"
+target = 0x004C7670
+
+[[units.relocations]]
 offset = 0xB0A
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xB16
+type = "DIR32"
+symbol = "?g_SpellcardMusicInfo@th08@@3PAUSpellcardMusicEntry@1@A"
+target = 0x004C7670
+
+[[units.relocations]]
+offset = 0xB24
+type = "DIR32"
+symbol = "?g_SpellcardMusicInfo@th08@@3PAUSpellcardMusicEntry@1@A"
+target = 0x004C7670
 
 [[units.relocations]]
 offset = 0xB2B
@@ -112831,7 +113115,7 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0xBE7
 type = "REL32"
-symbol = "?FUN_00439916@th08@@YIHH@Z"
+symbol = "?ShouldPauseMusicInSpellPractice@GameManager@th08@@SIIH@Z"
 target = 0x00439916
 
 [[units.relocations]]
@@ -121049,7 +121333,7 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0xE75
 type = "REL32"
-symbol = "?FUN_00439916@th08@@YIHH@Z"
+symbol = "?ShouldPauseMusicInSpellPractice@GameManager@th08@@SIIH@Z"
 target = 0x00439916
 
 [[units.relocations]]
@@ -121420,7 +121704,7 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0x14A
 type = "REL32"
-symbol = "?FUN_00439916@th08@@YIHH@Z"
+symbol = "?ShouldPauseMusicInSpellPractice@GameManager@th08@@SIIH@Z"
 target = 0x00439916
 
 [[units.relocations]]
@@ -121732,7 +122016,7 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0x4BF
 type = "REL32"
-symbol = "?FUN_00439916@th08@@YIHH@Z"
+symbol = "?ShouldPauseMusicInSpellPractice@GameManager@th08@@SIIH@Z"
 target = 0x00439916
 
 [[units.relocations]]

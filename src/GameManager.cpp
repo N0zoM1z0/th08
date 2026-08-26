@@ -51,6 +51,28 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(TimeRequirementRow, MAX_STAGES, g_TimeRequirementPa
     {0, 0, 0, 0},
 };
 
+DIFFABLE_STATIC_ARRAY_ASSIGN(SpellcardMusicEntry, 19, g_SpellcardMusicInfo) = {
+    {1, 1, "th08_00.mid", 0, FALSE},
+    {12, 2, "th08_03.mid", 1, FALSE},
+    {16, 3, "th08_04.mid", 0, FALSE},
+    {31, 4, "th08_05.mid", 1, FALSE},
+    {35, 5, "th08_06.mid", 0, FALSE},
+    {53, 6, "th08_07.mid", 1, FALSE},
+    {76, 8, "th08_09.mid", 1, FALSE},
+    {99, 9, "th08_10.mid", 1, FALSE},
+    {118, 11, "th08_12.mid", 1, FALSE},
+    {122, 12, "th08_13.mid", 0, FALSE},
+    {142, 13, "th08_14.mid", 1, FALSE},
+    {146, 15, "th08_13b.mid", 2, TRUE},
+    {150, 12, "th08_13.mid", 0, FALSE},
+    {170, 14, "th08_15.mid", 1, FALSE},
+    {190, 15, "th08_13b.mid", 2, TRUE},
+    {193, 16, "th08_18.mid", 0, FALSE},
+    {204, 17, "th08_19.mid", 1, FALSE},
+    {222, 20, "th08_20.mid", 2, FALSE},
+    {-1, 0, " ", 0, FALSE},
+};
+
 DIFFABLE_STATIC(GameManager, g_GameManager);
 DIFFABLE_STATIC(ChainElem, g_GameManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_GameManagerDrawChain);
@@ -71,17 +93,17 @@ ZunBool GameManager::IsStageClearedWithRetries(i32 stage, i32 character, i32 dif
 }
 
 // FUNCTION: th08 0x439916
-i32 FUN_00439916(i32 unused)
+ZunBool GameManager::ShouldPauseMusicInSpellPractice(i32 unused)
 {
     i32 i;
 
     i = 0;
-    while (*reinterpret_cast<i32 *>(0x4C7670 + i * 0x14) >= 0)
+    while (g_SpellcardMusicInfo[i].spellcardNumber >= 0)
     {
         if (static_cast<i32>(g_GameManager.currentSpellCardNumber) <=
-            *reinterpret_cast<i32 *>(0x4C7670 + i * 0x14))
+            g_SpellcardMusicInfo[i].spellcardNumber)
         {
-            return *reinterpret_cast<i32 *>(0x4C7680 + i * 0x14);
+            return g_SpellcardMusicInfo[i].musicPausesInSpellPractice;
         }
         i++;
     }
@@ -89,17 +111,17 @@ i32 FUN_00439916(i32 unused)
 }
 
 // FUNCTION: th08 0x439961
-i32 FUN_00439961(i32 unused)
+i32 GameManager::GetSongNameSpriteIdx(i32 unused)
 {
     i32 i;
 
     i = 0;
-    while (*reinterpret_cast<i32 *>(0x4C7670 + i * 0x14) >= 0)
+    while (g_SpellcardMusicInfo[i].spellcardNumber >= 0)
     {
         if (static_cast<i32>(g_GameManager.currentSpellCardNumber) <=
-            *reinterpret_cast<i32 *>(0x4C7670 + i * 0x14))
+            g_SpellcardMusicInfo[i].spellcardNumber)
         {
-            return *reinterpret_cast<i32 *>(0x4C767C + i * 0x14);
+            return g_SpellcardMusicInfo[i].songNameSpriteIdx;
         }
         i++;
     }
@@ -248,15 +270,7 @@ void GameManager::CollectExtend()
 }
 
 // FUNCTION: th08 0x439bc7
-#define GM_U8(gm, off) (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(gm) + (off)))
 #define GM_FLAGS_WORD(gm) (*reinterpret_cast<u32 *>(&(gm)->flags))
-#define ABS_U8(addr) (*reinterpret_cast<u8 *>(addr))
-#define ABS_I8(addr) (*reinterpret_cast<i8 *>(addr))
-#define ABS_U16(addr) (*reinterpret_cast<u16 *>(addr))
-#define ABS_I16(addr) (*reinterpret_cast<i16 *>(addr))
-#define ABS_I32(addr) (*reinterpret_cast<i32 *>(addr))
-#define ABS_U32(addr) (*reinterpret_cast<u32 *>(addr))
-#define ABS_F32(addr) (*reinterpret_cast<f32 *>(addr))
 
 #pragma var_order(checksum, antiTamperIdx, value, stageIdx, stage, musicIdx, clockTime, anmManager)
 ChainCallbackResult GameManager::OnUpdate(GameManager *gameManager)
@@ -386,21 +400,24 @@ ChainCallbackResult GameManager::OnUpdate(GameManager *gameManager)
     {
         Gui::CopyCurrentStageEnemyNameTexture();
         g_AnmManager->ReleaseSurface(8);
-        ABS_I32(0x17CEA54) = 0;
+        g_Supervisor.loadingVmsHaveBeenSetup = 0;
         if (gameManager->stageStartupMode == STAGE_STARTUP_PLAY_MUSIC)
         {
             if (!g_GameManager.flags.isSpellPractice)
             {
-                g_Supervisor.PlayMusic(0, reinterpret_cast<char *>(*reinterpret_cast<u32 *>(0x4C7240 + g_GameManager.currentStage * 0x0c)));
+                g_Supervisor.PlayMusic(
+                    0,
+                    reinterpret_cast<char *>(g_GuiStageMusicContexts[g_GameManager.currentStage].songNumbers[0]));
             }
             else
             {
                 musicIdx = 0;
-                while (*reinterpret_cast<i32 *>(0x4C7670 + musicIdx * 0x14) >= 0)
+                while (g_SpellcardMusicInfo[musicIdx].spellcardNumber >= 0)
                 {
-                    if (g_GameManager.currentSpellCardNumber <= *reinterpret_cast<i32 *>(0x4C7670 + musicIdx * 0x14))
+                    if (g_GameManager.currentSpellCardNumber <= g_SpellcardMusicInfo[musicIdx].spellcardNumber)
                     {
-                        g_Supervisor.PlayMusic(0, reinterpret_cast<char *>(*reinterpret_cast<u32 *>(0x4C7674 + musicIdx * 0x14)));
+                        g_Supervisor.PlayMusic(
+                            0, reinterpret_cast<char *>(g_SpellcardMusicInfo[musicIdx].songNumber));
                         break;
                     }
                     musicIdx++;
@@ -423,28 +440,31 @@ ChainCallbackResult GameManager::OnUpdate(GameManager *gameManager)
         g_SoundPlayer.QueueCommand(6, 0, "Pause");
         g_SoundPlayer.PlaySoundByIdx(SOUND_PAUSE, 0);
         g_Supervisor.UpdateGameTime();
-        *reinterpret_cast<u16 *>(0x164D522) = *reinterpret_cast<u16 *>(&g_Rng);
+        g_Rng.SaveSeed();
         gameManager->hscr.numPauses++;
         g_GameManager.UpdateAntiTamper();
-        *reinterpret_cast<u16 *>(&g_Rng) = *reinterpret_cast<u16 *>(0x164D522);
+        g_Rng.RestoreSavedSeed();
     }
 
-    ABS_I32(0x17CE820) = (i32)gameManager->arcadeRegionTopLeftPos.x;
-    ABS_I32(0x17CE824) = (i32)gameManager->arcadeRegionTopLeftPos.y;
-    ABS_I32(0x17CE828) = (i32)gameManager->arcadeRegionSize.x;
-    ABS_I32(0x17CE82C) = (i32)gameManager->arcadeRegionSize.y;
-    ABS_F32(0x17CE830) = 0.0f;
-    ABS_F32(0x17CE834) = 1.0f;
+    g_Supervisor.viewport.X = (i32)gameManager->arcadeRegionTopLeftPos.x;
+    g_Supervisor.viewport.Y = (i32)gameManager->arcadeRegionTopLeftPos.y;
+    g_Supervisor.viewport.Width = (i32)gameManager->arcadeRegionSize.x;
+    g_Supervisor.viewport.Height = (i32)gameManager->arcadeRegionSize.y;
+    g_Supervisor.viewport.MinZ = 0.0f;
+    g_Supervisor.viewport.MaxZ = 1.0f;
     anmManager = g_AnmManager;
     anmManager->cameraMode |= AnmCameraMode_Unset;
 
     if (g_GameManager.flags.isReplay && g_GameManager.replayMode == 1 && !g_Gui.IsDialoguePresent())
     {
         gameManager->frameSkipCounter++;
-        if ((ABS_I16(0x17CE8F0) < 20 && gameManager->frameSkipCounter % 3 != 0) ||
-            (ABS_I16(0x17CE8F0) >= 20 && ABS_I16(0x17CE8F0) < 30 && gameManager->frameSkipCounter % 2 != 0) ||
-            (ABS_I16(0x17CE8F0) >= 30 && ABS_I16(0x17CE8F0) < 40 && gameManager->frameSkipCounter % 3 == 0) ||
-            (ABS_I16(0x17CE8F0) >= 40 && ABS_I16(0x17CE8F0) < 50 && gameManager->frameSkipCounter % 6 == 0))
+        if ((g_Supervisor.recordedFps < 20 && gameManager->frameSkipCounter % 3 != 0) ||
+            (g_Supervisor.recordedFps >= 20 && g_Supervisor.recordedFps < 30 &&
+             gameManager->frameSkipCounter % 2 != 0) ||
+            (g_Supervisor.recordedFps >= 30 && g_Supervisor.recordedFps < 40 &&
+             gameManager->frameSkipCounter % 3 == 0) ||
+            (g_Supervisor.recordedFps >= 40 && g_Supervisor.recordedFps < 50 &&
+             gameManager->frameSkipCounter % 6 == 0))
             return CHAIN_CALLBACK_RESULT_BREAK;
     }
 
@@ -492,7 +512,8 @@ ChainCallbackResult GameManager::OnUpdate(GameManager *gameManager)
         if (gameManager->globals->rng7[antiTamperIdx] < 6543 || gameManager->globals->rng7[antiTamperIdx] > 106543)
             g_GameManager.antiTamperExpectedValue = -9999.0f;
 
-    g_Supervisor.d3dDevice->Clear(0, NULL, D3DCLEAR_ZBUFFER, ABS_U32(0x4E4B24), 1.0f, 0);
+    g_Supervisor.d3dDevice->Clear(
+        0, NULL, D3DCLEAR_ZBUFFER, g_Background.skyFog.color.d3dColor, 1.0f, 0);
 
     if (gameManager->isInGameMenu == 1 || gameManager->isInGameMenu == 2 || gameManager->showRetryMenu)
         return CHAIN_CALLBACK_RESULT_BREAK;
@@ -540,14 +561,16 @@ ChainCallbackResult GameManager::OnUpdate(GameManager *gameManager)
     {
         g_GameManager.skipCurrentFrame = 0;
         gameManager->frameSkipCounter++;
-        if ((ABS_I32(0x160F3C8) >= 320 && gameManager->frameSkipCounter % 3 == 0) ||
-            (ABS_I32(0x160F3C8) < 320 && ABS_I32(0x160F3C8) >= 224 && gameManager->frameSkipCounter % 4 == 0) ||
-            (ABS_I32(0x160F3C8) < 224 && ABS_I32(0x160F3C8) >= 128 && gameManager->frameSkipCounter % 5 == 0))
+        if ((g_BulletManager.activeBulletCount >= 320 && gameManager->frameSkipCounter % 3 == 0) ||
+            (g_BulletManager.activeBulletCount < 320 && g_BulletManager.activeBulletCount >= 224 &&
+             gameManager->frameSkipCounter % 4 == 0) ||
+            (g_BulletManager.activeBulletCount < 224 && g_BulletManager.activeBulletCount >= 128 &&
+             gameManager->frameSkipCounter % 5 == 0))
         {
             g_GameManager.skipCurrentFrame = 1;
             return CHAIN_CALLBACK_RESULT_BREAK;
         }
-        if (ABS_I32(0x160F3C8) < 128)
+        if (g_BulletManager.activeBulletCount < 128)
             gameManager->frameSkipCounter = 0;
     }
 
@@ -556,15 +579,7 @@ ChainCallbackResult GameManager::OnUpdate(GameManager *gameManager)
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-#undef ABS_F32
-#undef ABS_U32
-#undef ABS_I32
-#undef ABS_I16
-#undef ABS_U16
-#undef ABS_I8
-#undef ABS_U8
 #undef GM_FLAGS_WORD
-#undef GM_U8
 
 // FUNCTION: th08 0x43aa03
 ChainCallbackResult GameManager::OnDraw(GameManager *gameManager)
@@ -713,14 +728,14 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
         }
 
         size = g_Rng.GetRandomU32InRange(0xffff) + 16;
-        gameManager->unk0x0 = reinterpret_cast<i32>(malloc(size));
+        gameManager->antiTamperHeapJitterAllocation = reinterpret_cast<i32>(malloc(size));
         newCfg = static_cast<GameConfiguration *>(operator new(sizeof(GameConfiguration)));
         gameManager->cfg = newCfg;
         newGlobals = static_cast<ZunGlobals *>(operator new(sizeof(ZunGlobals)));
         gameManager->globals = newGlobals;
         GameManager::InitializeAntiTamper();
         *gameManager->cfg = g_Supervisor.cfg;
-        allocation = reinterpret_cast<void *>(gameManager->unk0x0);
+        allocation = reinterpret_cast<void *>(gameManager->antiTamperHeapJitterAllocation);
         free(allocation);
 
         gameManager->character = 0;
@@ -739,7 +754,7 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
         {
             if (g_Supervisor.subthreadCloseRequestActive)
                 goto thread_done;
-            g_GameErrorContext.Log(reinterpret_cast<char *>(0x4B5930));
+            g_GameErrorContext.Log("error: player initialization failed\n");
             goto setup_error;
         }
 
@@ -815,10 +830,10 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
                 IncrementTruncate(&reinterpret_cast<SetupPlayCountTable *>(&g_GameManager.plst)->counts[MAX_DIFFICULTIES + 1].attemptsTotal, 999999);
                 IncrementTruncate(reinterpret_cast<u32 *>(&g_GameManager.plst.playDataByDifficulty[g_GameManager.difficulty].attemptsPerCharacter[gameManager->shotType]), 999999);
                 IncrementTruncate(reinterpret_cast<u32 *>(&g_GameManager.plst.playDataTotals.attemptsPerCharacter[gameManager->shotType]), 999999);
-                if (g_Supervisor.curState == 10)
+                if (g_Supervisor.curState == SupervisorState_GameManagerRestartFromBeginning)
                 {
-                    IncrementTruncate(reinterpret_cast<u32 *>(&g_GameManager.plst.playDataByDifficulty[g_GameManager.difficulty].unk0x34), 999999);
-                    IncrementTruncate(reinterpret_cast<u32 *>(&reinterpret_cast<SetupPlayCountTable *>(&g_GameManager.plst)->counts[MAX_DIFFICULTIES + 1].unk0x34), 999999);
+                    IncrementTruncate(&g_GameManager.plst.playDataByDifficulty[g_GameManager.difficulty].restarts, 999999);
+                    IncrementTruncate(&reinterpret_cast<SetupPlayCountTable *>(&g_GameManager.plst)->counts[MAX_DIFFICULTIES + 1].restarts, 999999);
                 }
                 if (g_GameManager.flags.isPracticeMode && !g_GameManager.flags.isSpellPractice)
                 {
@@ -844,7 +859,7 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
         {
             if (g_Supervisor.subthreadCloseRequestActive)
                 goto thread_done;
-            g_GameErrorContext.Log(reinterpret_cast<char *>(0x4B5930));
+            g_GameErrorContext.Log("error: player initialization failed\n");
             goto setup_error;
         }
     }
@@ -920,47 +935,47 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
     {
         if (g_Supervisor.subthreadCloseRequestActive)
             goto thread_done;
-        g_GameErrorContext.Log(reinterpret_cast<char *>(0x4B5904));
+        g_GameErrorContext.Log("error: background initialization failed\n");
         goto setup_error;
     }
-    if (BulletManager::RegisterChain(reinterpret_cast<char *>(0x4B4CA0)))
+    if (BulletManager::RegisterChain(const_cast<char *>("etama.anm")))
     {
         if (g_Supervisor.subthreadCloseRequestActive)
             goto thread_done;
-        g_GameErrorContext.Log(reinterpret_cast<char *>(0x4B58DC));
+        g_GameErrorContext.Log("error: bullet initialization failed\n");
         goto setup_error;
     }
     if (EnemyManager::RegisterChain())
     {
         if (g_Supervisor.subthreadCloseRequestActive)
             goto thread_done;
-        g_GameErrorContext.Log(reinterpret_cast<char *>(0x4B58B8));
+        g_GameErrorContext.Log("error: enemy initialization failed\n");
         goto setup_error;
     }
     if (EffectManager::RegisterChain())
     {
         if (g_Supervisor.subthreadCloseRequestActive)
             goto thread_done;
-        g_GameErrorContext.Log(reinterpret_cast<char *>(0x4B588C));
+        g_GameErrorContext.Log("error: effect initialization failed\n");
         goto setup_error;
     }
     if (Gui::RegisterChain())
     {
         if (g_Supervisor.subthreadCloseRequestActive)
             goto thread_done;
-        g_GameErrorContext.Log(reinterpret_cast<char *>(0x4B5864));
+        g_GameErrorContext.Log("error: 2D initialization failed\n");
         goto setup_error;
     }
     if (Spellcard::RegisterChain())
     {
         if (g_Supervisor.subthreadCloseRequestActive)
             goto thread_done;
-        g_GameErrorContext.Log(reinterpret_cast<char *>(0x4B5834));
+        g_GameErrorContext.Log("error: spell card initialization failed\n");
         goto setup_error;
     }
 
     if (!g_GameManager.flags.isReplay)
-        ReplayManager::RegisterChain(0, reinterpret_cast<const char *>(0x4B5820));
+        ReplayManager::RegisterChain(0, "replay/th8_00.rpy");
 
     if (g_GameManager.flags.isSpellPractice)
     {
@@ -990,11 +1005,11 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
         if (g_GameManager.flags.isSpellPractice)
         {
             i = 0;
-            while (*reinterpret_cast<i32 *>(0x4C7670 + i * 0x14) >= 0)
+            while (g_SpellcardMusicInfo[i].spellcardNumber >= 0)
             {
-                if (g_GameManager.currentSpellCardNumber <= *reinterpret_cast<i32 *>(0x4C7670 + i * 0x14))
+                if (g_GameManager.currentSpellCardNumber <= g_SpellcardMusicInfo[i].spellcardNumber)
                 {
-                    g_Supervisor.LoadMusic(0, *reinterpret_cast<char **>(0x4C7678 + i * 0x14));
+                    g_Supervisor.LoadMusic(0, const_cast<char *>(g_SpellcardMusicInfo[i].songPath));
                     break;
                 }
                 ++i;
@@ -1002,32 +1017,29 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
         }
         else
         {
-            g_Supervisor.LoadMusic(
-                0, reinterpret_cast<char *>(g_Background.stageData) + 0x290);
-            if (*(reinterpret_cast<i8 *>(g_Background.stageData) + 0x310) != 0x20)
-                g_Supervisor.LoadMusic(
-                    1, reinterpret_cast<char *>(g_Background.stageData) + 0x310);
-            if (*(reinterpret_cast<i8 *>(g_Background.stageData) + 0x390) != 0x20)
-                g_Supervisor.LoadMusic(
-                    2, reinterpret_cast<char *>(g_Background.stageData) + 0x390);
+            g_Supervisor.LoadMusic(0, g_Background.stageData->songPaths[0]);
+            if (g_Background.stageData->songPaths[1][0] != 0x20)
+                g_Supervisor.LoadMusic(1, g_Background.stageData->songPaths[1]);
+            if (g_Background.stageData->songPaths[2][0] != 0x20)
+                g_Supervisor.LoadMusic(2, g_Background.stageData->songPaths[2]);
         }
     }
 
     gameManager->showRetryMenu = 0;
     GM_FLAGS_WORD(gameManager) |= 4U;
     if (g_Supervisor.keepStageResources && g_GameManager.flags.isSpellPractice &&
-        !FUN_00439916(g_GameManager.currentSpellCardNumber))
+        !GameManager::ShouldPauseMusicInSpellPractice(g_GameManager.currentSpellCardNumber))
         gameManager->stageStartupMode = STAGE_STARTUP_WITHOUT_MUSIC;
     else
         gameManager->stageStartupMode = STAGE_STARTUP_PLAY_MUSIC;
 
-    if (g_Supervisor.curState != 3)
+    if (g_Supervisor.curState != SupervisorState_GameManagerReInit)
     {
         g_Supervisor.lagNumerator = 0.0f;
         g_Supervisor.lagDenominator = 0.0f;
     }
 
-    gameManager->unk2C = 0;
+    gameManager->scriptedUpdateFreeze = 0;
     gameManager->globals->score = 0;
     GM_FLAGS_WORD(gameManager) &= ~0x10U;
     g_AsciiManager.Reset();
@@ -1054,7 +1066,7 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
     g_GameManager.gameplaySetupState = GAMEPLAY_SETUP_COMPLETE;
     g_Supervisor.runningSubthreadHandle = NULL;
     g_Supervisor.subthreadCloseRequestActive = FALSE;
-    g_Supervisor.unk290 = FALSE;
+    g_Supervisor.subthreadActive = FALSE;
     g_Supervisor.screenTransitionCountdown = 60;
     GM_FLAGS_WORD(gameManager) &= ~0x200U;
     g_Supervisor.keepStageResources = 0;
@@ -1066,7 +1078,7 @@ setup_error:
     g_Supervisor.FUN_00448972();
     g_Supervisor.runningSubthreadHandle = NULL;
     g_Supervisor.subthreadCloseRequestActive = FALSE;
-    g_Supervisor.unk290 = FALSE;
+    g_Supervisor.subthreadActive = FALSE;
     g_Supervisor.keepStageResources = 0;
     g_ScreenEffectCounter = 2;
 

@@ -471,7 +471,7 @@ ChainCallbackResult ScreenEffect::CalcShake(ScreenEffect *screenEffect)
     {
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
-    if (g_GameManager.unk2C != 0)
+    if (g_GameManager.scriptedUpdateFreeze != 0)
     {
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
@@ -528,7 +528,7 @@ ChainCallbackResult ScreenEffect::FUN_0045bf10(ScreenEffect *screenEffect)
 
     if (g_GameManager.flags.deathbombFreezeActive)
         return CHAIN_CALLBACK_RESULT_CONTINUE;
-    if (g_EclScriptedGlobalUpdateFreeze)
+    if (g_GameManager.scriptedUpdateFreeze)
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     if (*reinterpret_cast<i32 *>(0x164D2C8) <= 1)
         return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;

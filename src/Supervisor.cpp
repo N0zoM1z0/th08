@@ -102,7 +102,7 @@ ChainCallbackResult Supervisor::OnUpdate(Supervisor *s)
         {
             return CHAIN_CALLBACK_RESULT_EXIT_GAME_SUCCESS;
         }
-        if (s->unk290 == 0)
+        if (s->subthreadActive == 0)
         {
             s->unk294 = 0;
         }
@@ -874,7 +874,7 @@ void Supervisor::StartupThread(Supervisor *s)
 
     g_Supervisor.runningSubthreadHandle = NULL;
     g_Supervisor.subthreadCloseRequestActive = FALSE;
-    g_Supervisor.unk290 = 0;
+    g_Supervisor.subthreadActive = 0;
     g_Supervisor.unk294 = 0;
     g_Supervisor.flags.unk8 = false;
 
@@ -883,7 +883,7 @@ void Supervisor::StartupThread(Supervisor *s)
 err:
     g_Supervisor.runningSubthreadHandle = NULL;
     g_Supervisor.subthreadCloseRequestActive = FALSE;
-    g_Supervisor.unk290 = 0;
+    g_Supervisor.subthreadActive = 0;
     g_Supervisor.unk294 = 2;
     g_Supervisor.flags.receivedCloseMsg = true;
 }
@@ -1096,9 +1096,9 @@ calculateFps:
                         g_Supervisor.lagNumerator += framerate * 0.5f;
 
                     if (!g_GameManager.flags.isReplay)
-                        *reinterpret_cast<i16 *>(&g_Supervisor.unk198) = (i16)(fps + 0.5f);
+                        g_Supervisor.recordedFps = (i16)(fps + 0.5f);
                     else
-                        sprintf(g_SupervisorFpsDebugBuffer, "%2d", *reinterpret_cast<i16 *>(&g_Supervisor.unk198));
+                        sprintf(g_SupervisorFpsDebugBuffer, "%2d", g_Supervisor.recordedFps);
                 }
             }
         }
@@ -1915,7 +1915,7 @@ ZunResult Supervisor::ThreadStart(LPTHREAD_START_ROUTINE startFunction, void *st
 
     this->runningSubthreadHandle = CreateThread(NULL, 0, startFunction, startParam, 0, &this->runningSubthreadID);
 
-    this->unk290 = TRUE;
+    this->subthreadActive = TRUE;
 
     return (this->runningSubthreadHandle != NULL) ? ZUN_SUCCESS : ZUN_ERROR;
 }

@@ -3866,7 +3866,7 @@ void TitleScreen::TitleSetupThread(TitleScreen *titleScreen)
     g_Supervisor.HideLoadingVms();
     g_Supervisor.runningSubthreadHandle = NULL;
     g_Supervisor.subthreadCloseRequestActive = FALSE;
-    g_Supervisor.unk290 = 0;
+    g_Supervisor.subthreadActive = 0;
 }
 
 #define TITLE_IMAGE_INFO_MAX_FRAMES 6000

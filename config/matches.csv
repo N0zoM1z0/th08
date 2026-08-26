@@ -674,8 +674,8 @@ address,name,size,status,match_percent,unit,evidence
 0x00439829,th08::GameManager::IsStageClearedWithoutRetries,45,matching,100.00,game-manager-stage-cleared-without-retries,python3 scripts/compare-function.py game-manager-stage-cleared-without-retries --json
 0x00439856,th08::GameManager::IsStageClearedWithRetries,45,matching,100.00,game-manager-stage-cleared-with-retries,python3 scripts/compare-function.py game-manager-stage-cleared-with-retries --json
 0x00439810,th08::Gui::MsgRead,25,matching,100.00,gui-fun-00439810,python3 scripts/compare-function.py gui-fun-00439810 --json
-0x00439916,th08::FUN_00439916,75,matching,100.00,fun-00439916,python3 scripts/compare-function.py fun-00439916 --json
-0x00439961,th08::FUN_00439961,75,matching,100.00,fun-00439961,python3 scripts/compare-function.py fun-00439961 --json
+0x00439916,th08::GameManager::ShouldPauseMusicInSpellPractice,75,matching,100.00,game-manager-should-pause-music-in-spell-practice,python3 scripts/compare-function.py game-manager-should-pause-music-in-spell-practice --json
+0x00439961,th08::GameManager::GetSongNameSpriteIdx,75,matching,100.00,game-manager-get-song-name-sprite-idx,python3 scripts/compare-function.py game-manager-get-song-name-sprite-idx --json
 0x0044D630,th08::Player::OnDrawLowPrio,24,matching,100.00,player-on-draw-low-prio,python3 scripts/compare-function.py player-on-draw-low-prio --json
 0x00446CC7,th08::Supervisor::EnumGameControllersCb,63,matching,100.00,supervisor-enum-game-controllers-cb,python3 scripts/compare-function.py supervisor-enum-game-controllers-cb --json
 0x00451400,th08::Player::DrawHitShots,241,matching,100.00,player-draw-hit-shots,python3 scripts/compare-function.py player-draw-hit-shots --json
@@ -1055,7 +1055,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00424FF0,th08::EclExIns::MokouResurrection,35,matching,100.00,ecl-ex-mokou-resurrection-00424ff0,python3 scripts/compare-function.py ecl-ex-mokou-resurrection-00424ff0 --json
 0x00425020,th08::FUN_00425020,26,matching,100.00,ecl-ex-callback-00425020,python3 scripts/compare-function.py ecl-ex-callback-00425020 --json
 0x00425040,th08::FUN_00425040,37,matching,100.00,ecl-ex-callback-00425040,python3 scripts/compare-function.py ecl-ex-callback-00425040 --json
-0x00425070,th08::FUN_00425070,89,matching,100.00,ecl-ex-callback-00425070,python3 scripts/compare-function.py ecl-ex-callback-00425070 --json
+0x00425070,th08::EclExIns::SetScriptedUpdateFreeze,89,matching,100.00,ecl-ex-set-scripted-update-freeze-00425070,python3 scripts/compare-function.py ecl-ex-set-scripted-update-freeze-00425070 --json
 0x004250D0,th08::FUN_004250d0,213,matching,100.00,ecl-ex-callback-004250d0,python3 scripts/compare-function.py ecl-ex-callback-004250d0 --json
 0x004251B0,th08::FUN_004251b0,213,matching,100.00,ecl-ex-callback-004251b0,python3 scripts/compare-function.py ecl-ex-callback-004251b0 --json
 0x00425290,th08::FUN_00425290,255,matching,100.00,ecl-ex-callback-00425290,python3 scripts/compare-function.py ecl-ex-callback-00425290 --json

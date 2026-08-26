@@ -197,6 +197,16 @@ class Rng
     void SetSeed(u16 newSeed);
     u16 GetSeed();
 
+    void SaveSeed()
+    {
+        this->seedBackup = this->seed;
+    }
+
+    void RestoreSavedSeed()
+    {
+        this->seed = this->seedBackup;
+    }
+
     u16 GetRandomU16InRange(u16 range)
     {
         return range != 0 ? GetRandomU16() % range : 0;

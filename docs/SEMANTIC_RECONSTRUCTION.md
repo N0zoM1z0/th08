@@ -1973,3 +1973,83 @@ all explicitly retained unknowns above.  The whole-source router reports 60
 raw-member, 82 absolute-address, 218 anonymous-identifier, and 48 opaque-
 storage candidates.  These counts select future work; they do not express a
 semantic-completion percentage.
+
+### GameManager music, setup, and scripted-freeze ownership — 2026-08-27
+
+Scope: the spell-practice music helpers at `0x00439916/0x00439961`,
+`GameManager::OnUpdate @ 0x00439BC7`, `GameplaySetupThread @ 0x0043ABD7`,
+the ECL extension callback at `0x00425070`, and the Bullet, Enemy, GUI,
+Player, Spellcard, ScreenEffect, Supervisor, ReplayManager, and Background
+consumers of the same runtime state.
+
+Observed: target data at `0x004C7670` is exactly nineteen 0x14-byte records:
+a signed spell-number ceiling, song number, song-path pointer, song-name
+sprite index, and dword pause policy, terminated by spell number `-1`.
+`0x00439916` returns the pause policy and `0x00439961` returns the sprite
+index from the first record whose ceiling contains the current spell.
+`g_GuiStageMusicContexts @ 0x004C7240` is a nine-row, three-dword song-number
+table.  The loaded STD header independently places four 128-byte song-name
+rows at `+0x90` and four song-path rows at `+0x290`; setup and GUI playback
+now share that asserted `RawStageHeader` rather than private offset views.
+
+The byte at absolute `0x0160F534` is `g_GameManager + 0x2C`, not a standalone
+ECL global.  `EclExIns::SetScriptedUpdateFreeze @ 0x00425070` copies the
+signed instruction byte at `+0x10` into it and selects barrier interrupts 1
+or 2.  Independent target users at Spellcard `0x00416B90`, Enemy update
+`0x0042C660`, Bullet update `0x00431240`, GUI update `0x004338CA`, Player
+death/update `0x0044AB40/0x0044C390`, and ScreenEffect
+`0x0045BDC0/0x0045BF10` prove a scripted whole-gameplay update freeze.  Every
+COFF relocation now names `g_GameManager` with addend `0x2C`; the redundant
+global ledger row, storage definition, and Linux linker alias were removed.
+
+Additional target ownership in `GameManager::OnUpdate` establishes
+`Supervisor::viewport @ +0xC8`, replay-recorded FPS at `+0x198`, loading-VM
+setup state at `+0x2FC`, `Background::skyFog.color @ +0xAF4`,
+`BulletManager::activeBulletCount @ +0x6BA538`, and the RNG saved seed at
+`g_Rng + 0x2`.  Setup dataflow names the random malloc/free slot at
+`GameManager +0x0` as an anti-tamper heap-jitter allocation, the Supervisor
+worker flag at `+0x290` as `subthreadActive`, GameManager flag bit 9 as the
+stage-clear sequence gate used by replay control, and play-count `+0x34` as
+`restarts`: it increments only for
+`SupervisorState_GameManagerRestartFromBeginning`.  Reset-only GameManager
+tail fields remain neutral.
+
+Corroborated: GensokyoClub's current spell-practice record/table and the two
+music helper names agree with the TH08 records and control flow.  As with its
+previous `TitleScreen::RegisterChain` fix, this was treated only as a strong
+source hypothesis.  Acceptance came from target data inspection, canonical
+owner/addend reconciliation, and the strict repository oracle.  The setup
+error paths and resource names are now ordinary source literals whose COFF
+relocations replay the original target strings.
+
+Layout: assertions pin `sizeof(SpellcardMusicEntry) == 0x14`,
+`sizeof(GuiStageMusicContextSet) == 0x0C`,
+`sizeof(RawStageHeader) == 0x490`, its song arrays at `+0x90/+0x290`,
+`GameManager::scriptedUpdateFreeze @ +0x2C`, Supervisor recorded FPS,
+subthread state, and loading-VM state at `+0x198/+0x290/+0x2FC`, and the
+existing manager extents.  No field width, class size, calling convention, or
+state transition changed.
+
+VC7 oracle: focused replay passed `EclExIns.obj` **33 / 33**,
+`Background.obj` **24 / 24**, `GameManager.obj` **33 / 33**, the broad
+freeze/music caller selection **333 / 333**, `SpellCard.obj` **29 / 29**, and
+the final setup/Supervisor/replay/title selection **251 / 251**.  The normal
+production image and probe graph link.  The required single-job cold rebuild
+of all 75 configured comparison objects passes **1,106 / 1,106 exact**;
+`TitleScreen::RegisterChain` is independently present in that replay at
+**281 / 281**.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiles and links
+the complete ELF32/i386 target after source-owned initialization replaces the
+Linux table-copy shim.  `verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verifies the executable and every
+fixed target-owned layout symbol.  No isolated automated gameplay smoke exists
+for spell-practice music or the ECL whole-update freeze, so no runtime smoke is
+claimed.
+
+Result: `GameManager.cpp` and its setup probe now have zero raw-member,
+absolute-address, or anonymous-identifier candidates; the six unused/reset-
+only GameManager tail fields remain explicit unknowns.  The whole-source router
+reports 60 raw-member, 18 absolute-address, 194 anonymous-identifier, and 45
+opaque-storage candidates.  These are routing observations, not a semantic-
+completion percentage or a new authored-exact claim.

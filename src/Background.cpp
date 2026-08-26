@@ -15,19 +15,6 @@ ZunBool IsDisableResourceReload();
 f32 __stdcall CubicHermiteInterpolate(f32 value0, f32 value1, f32 value2, f32 value3, f32 time);
 u8 MixColors(u8 color1, u8 color2);
 
-struct RawStageHeader
-{
-    i16 nbObjects;
-    i16 nbFaces;
-    i32 facesOffset;
-    i32 scriptOffset;
-    i32 unkC;
-    char stageName[128];
-    char songNames[4][128];
-    char songPaths[4][128];
-};
-C_ASSERT(sizeof(RawStageHeader) == 0x490);
-
 struct RawStageQuadBasic
 {
     i16 type;
@@ -959,7 +946,7 @@ ZunResult Background::AddedCallback(Background *background)
 ZunResult Background::RegisterChain(i32 param)
 {
     Background *background = &g_Background;
-    void *stageData;
+    RawStageHeader *stageData;
 
     if (IsDisableResourceReload())
     {
@@ -1033,7 +1020,7 @@ ZunResult Background::LoadStageData(const char *path)
 
     if (!IsDisableResourceReload())
     {
-        this->stageData = FileSystem::OpenFile(path, NULL, 0);
+        this->stageData = reinterpret_cast<RawStageHeader *>(FileSystem::OpenFile(path, NULL, 0));
         if (this->stageData == NULL)
         {
             g_GameErrorContext.Log("ステージデータが見つかりません。データが壊れています\r\n");
@@ -1041,12 +1028,12 @@ ZunResult Background::LoadStageData(const char *path)
         }
     }
 
-    this->stageObjectCount = ((RawStageHeader *)this->stageData)->nbObjects;
-    this->stageQuadCount = ((RawStageHeader *)this->stageData)->nbFaces;
+    this->stageObjectCount = this->stageData->objectCount;
+    this->stageQuadCount = this->stageData->quadCount;
     this->stageObjectInstances = reinterpret_cast<RawStageObjectInstance *>(
-        ((RawStageHeader *)this->stageData)->facesOffset + (i32)this->stageData);
+        this->stageData->objectInstancesOffset + (i32)this->stageData);
     this->stageScript = reinterpret_cast<RawStageInstr *>(
-        ((RawStageHeader *)this->stageData)->scriptOffset + (i32)this->stageData);
+        this->stageData->scriptOffset + (i32)this->stageData);
     this->stageObjects = reinterpret_cast<RawStageObject **>(
         (u8 *)this->stageData + sizeof(RawStageHeader));
 

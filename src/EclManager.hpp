@@ -149,7 +149,6 @@ C_ASSERT(offsetof(EclExBarrierRenderState, vm1) == 0x2ac);
 #ifndef TH08_MODERN_PORT
 DIFFABLE_EXTERN(EclExBarrierRenderState, g_EclExBarrierRenderState);
 #endif
-DIFFABLE_EXTERN(i8, g_EclScriptedGlobalUpdateFreeze);
 DIFFABLE_EXTERN(f32, g_EclGameTimeScale);
 DIFFABLE_EXTERN(u32, g_EclGameTimeScaleFlags);
 struct EclRawInstruction

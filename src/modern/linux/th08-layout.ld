@@ -59,7 +59,6 @@ SECTIONS
     _ZN4th0814g_GuiDrawChainE = 0x0160f4c4;
     _ZN4th0814g_GuiCalcChainE = 0x0160f4e4;
     _ZN4th0813g_GameManagerE = 0x0160f508;
-    _ZN4th0831g_EclScriptedGlobalUpdateFreezeE = 0x0160f534;
     _ZN4th0823g_PlayerNormalBombCountE = 0x0164cfa8;
     _ZN4th0822g_PlayerDeathbombCountE = 0x0164cfac;
     _ZN4th0829g_MaxValuePointItemsCollectedE = 0x0164cf9c;

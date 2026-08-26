@@ -295,7 +295,8 @@ struct Supervisor
     MidiOutput *midiOutput;
     float lagNumerator;
     float lagDenominator;
-    u32 unk198;
+    i16 recordedFps;
+    u16 padding19a;
     AnmLoaded *textAnm;
     AnmLoaded *loadingAnm;
     SupervisorFlags flags;
@@ -305,7 +306,7 @@ struct Supervisor
     HANDLE runningSubthreadHandle;
     DWORD runningSubthreadID;
     BOOL subthreadCloseRequestActive;
-    BOOL unk290;
+    BOOL subthreadActive;
     u32 unk294;
     CRITICAL_SECTION criticalSections[4];
     u8 lockCounts[4];
@@ -333,6 +334,9 @@ C_ASSERT(sizeof(Supervisor) == 0x364);
 C_ASSERT(offsetof(Supervisor, isInitialStageLoad) == 0x164);
 C_ASSERT(offsetof(Supervisor, releaseResourcesOnRestart) == 0x168);
 C_ASSERT(offsetof(Supervisor, keepStageResources) == 0x16c);
+C_ASSERT(offsetof(Supervisor, recordedFps) == 0x198);
+C_ASSERT(offsetof(Supervisor, loadingVmsHaveBeenSetup) == 0x2fc);
+C_ASSERT(offsetof(Supervisor, subthreadActive) == 0x290);
 DIFFABLE_EXTERN(Supervisor, g_Supervisor);
 
 #define CRASH_GAME() memset(&g_Supervisor, -1, sizeof(g_Supervisor))

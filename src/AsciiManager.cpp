@@ -106,9 +106,6 @@ enum
     RETRY_MENU_STATE_EXIT_TO_TITLE = 4,
 };
 
-// Recovered target 0x00439916; /Gr makes this fastcall in this TU.
-i32 FUN_00439916(i32 unused);
-
 // FUNCTION: th08 0x402000
 AsciiManager::AsciiManager()
 {
@@ -1158,7 +1155,8 @@ i32 PauseMenu::OnUpdate()
             }
             else
             {
-                if (g_GameManager.IsSpellPractice() && !FUN_00439916(g_GameManager.currentSpellCardNumber))
+                if (g_GameManager.IsSpellPractice() &&
+                    !GameManager::ShouldPauseMusicInSpellPractice(g_GameManager.currentSpellCardNumber))
                 {
                     g_SoundPlayer.UnPause();
                     g_SoundPlayer.FadeIn(2.0f);
@@ -1276,7 +1274,8 @@ i32 RetryMenu::OnUpdate()
                 return 1;
             }
 
-            if (g_GameManager.IsSpellPractice() && !FUN_00439916(g_GameManager.currentSpellCardNumber))
+            if (g_GameManager.IsSpellPractice() &&
+                !GameManager::ShouldPauseMusicInSpellPractice(g_GameManager.currentSpellCardNumber))
             {
                 g_SoundPlayer.PartialFadeOut(1.0f);
             }
@@ -1375,8 +1374,8 @@ i32 RetryMenu::OnUpdate()
                 }
                 else
                 {
-                    if (g_GameManager.IsSpellPractice()
-                        && !FUN_00439916(g_GameManager.currentSpellCardNumber))
+                    if (g_GameManager.IsSpellPractice() &&
+                        !GameManager::ShouldPauseMusicInSpellPractice(g_GameManager.currentSpellCardNumber))
                     {
                         g_GameManager.showRetryMenu = FALSE;
                         g_SoundPlayer.UnPause();

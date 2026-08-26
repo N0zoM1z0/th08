@@ -30,6 +30,7 @@ namespace EclExIns
 {
 void __fastcall ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
 void __fastcall MokouResurrection(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
+void __fastcall SetScriptedUpdateFreeze(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
 }
 
 // The retail image gives these ECL extension views their own target symbols.
@@ -829,11 +830,12 @@ void __fastcall FUN_00425040(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 }
 
 // FUNCTION: th08 0x425070
-void __fastcall FUN_00425070(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall EclExIns::SetScriptedUpdateFreeze(
+    EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    g_EclScriptedGlobalUpdateFreeze =
+    g_GameManager.scriptedUpdateFreeze =
         *reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(instruction) + 0x10);
-    if (g_EclScriptedGlobalUpdateFreeze)
+    if (g_GameManager.scriptedUpdateFreeze)
     {
         g_EclExBarrierRenderState.vm0.SetInterrupt(2);
         g_EclExBarrierRenderState.vm1.SetInterrupt(2);
