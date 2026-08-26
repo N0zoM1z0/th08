@@ -23,8 +23,14 @@ struct EclExInstruction
     u8 unknown08;
     u8 difficultyMask;
     u16 operandFlags;
-    u8 operands[1];
+    u8 unknown0C[4];
+    union
+    {
+        i32 value;
+        i8 byteValue;
+    };
 };
+C_ASSERT(offsetof(EclExInstruction, value) == 0x10);
 
 namespace EclExIns
 {
@@ -364,8 +370,8 @@ void __fastcall FUN_00423e20(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 // FUNCTION: th08 0x424130
 void __fastcall FUN_00424130(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(g_EffectManager.FUN_004253e0(9)) + 0x350) = 0;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(g_EffectManager.FUN_004253e0(10)) + 0x350) = 0;
+    reinterpret_cast<Effect *>(g_EffectManager.FUN_004253e0(9))->active = 0;
+    reinterpret_cast<Effect *>(g_EffectManager.FUN_004253e0(10))->active = 0;
     g_EclExBarrierRenderState.mode = 2;
 }
 
@@ -539,7 +545,7 @@ void __fastcall FUN_004246e0(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 // FUNCTION: th08 0x424a00
 void __fastcall FUN_00424a00(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    g_ScreenEffectCounter = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(instruction) + 0x10);
+    g_ScreenEffectCounter = instruction->value;
 }
 
 // FUNCTION: th08 0x424730
@@ -633,28 +639,27 @@ void __fastcall EclExIns::ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, 
         if (bullet->sprites.bulletVm.type == 1)
         {
             bullet->sprites.bulletVm.type = 0;
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bullet->sprites.bulletVm) + 0x1f8) =
-                (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bullet->sprites.bulletVm) + 0x1f8) & 0xffffffcfU) | 0x10U;
+            bullet->sprites.bulletVm.blendMode = AnmBlendMode_Additive;
             g_BulletManager.bulletAnm->SetSprite(
                 &bullet->sprites.bulletVm,
                 bullet->sprites.bulletVm.activeSpriteIndex + 16);
             bullet->collisionDisabled = 1;
             bullet->velocity.FromAngleMagnitude(
                 ECL_EX_CONTEXT(enemy)->floatVariables[0],
-                g_EclGameTimeScale *
+                g_Supervisor.framerateMultiplier *
                     ECL_EX_CONTEXT(enemy)->floatVariables[1]);
         }
         else
         {
             bullet->sprites.bulletVm.type = 1;
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bullet->sprites.bulletVm) + 0x1f8) &= 0xffffffcfU;
+            bullet->sprites.bulletVm.blendMode = AnmBlendMode_Normal;
             g_BulletManager.bulletAnm->SetSprite(
                 &bullet->sprites.bulletVm,
                 bullet->sprites.bulletVm.activeSpriteIndex - 16);
             bullet->collisionDisabled = 0;
             bullet->velocity.FromAngleMagnitude(
                 bullet->angle,
-                g_EclGameTimeScale * bullet->speed);
+                g_Supervisor.framerateMultiplier * bullet->speed);
         }
         }
     }
@@ -700,35 +705,34 @@ void __fastcall FUN_00424c40(EclOperands::EnemyOverlay *enemy, EclExInstruction 
         if (bullet->sprites.bulletVm.type == 1)
         {
             bullet->sprites.bulletVm.type = 0;
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bullet->sprites.bulletVm) + 0x1f8) =
-                (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bullet->sprites.bulletVm) + 0x1f8) & 0xffffffcfU) | 0x10U;
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&bullet->sprites.bulletVm) + 0x1f3) = 0;
+            bullet->sprites.bulletVm.blendMode = AnmBlendMode_Additive;
+            bullet->sprites.bulletVm.color1.a = 0;
             g_BulletManager.bulletAnm->SetSprite(
                 &bullet->sprites.bulletVm,
                 bullet->sprites.bulletVm.activeSpriteIndex + 16);
             bullet->collisionDisabled = 1;
             bullet->velocity.FromAngleMagnitude(
                 bullet->angle,
-                g_EclGameTimeScale *
+                g_Supervisor.framerateMultiplier *
                     ECL_EX_CONTEXT(enemy)->floatVariables[1]);
         }
         else if (bullet->sprites.bulletVm.type == 0)
         {
             bullet->sprites.bulletVm.type = 2;
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&bullet->sprites.bulletVm) + 0x1f3) = 0;
+            bullet->sprites.bulletVm.color1.a = 0;
             bullet->sprites.bulletVm.StartColor1AlphaInterpolation(15, AnmInterpMode_Linear, 0, 255);
         }
         else
         {
             bullet->sprites.bulletVm.type = 1;
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bullet->sprites.bulletVm) + 0x1f8) &= 0xffffffcfU;
+            bullet->sprites.bulletVm.blendMode = AnmBlendMode_Normal;
             g_BulletManager.bulletAnm->SetSprite(
                 &bullet->sprites.bulletVm,
                 bullet->sprites.bulletVm.activeSpriteIndex - 16);
             bullet->collisionDisabled = 0;
             bullet->velocity.FromAngleMagnitude(
                 bullet->angle,
-                g_EclGameTimeScale * bullet->speed);
+                g_Supervisor.framerateMultiplier * bullet->speed);
         }
         }
     }
@@ -796,9 +800,9 @@ void __fastcall FUN_00424f90(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     i32 value;
     f32 scale;
 
-    value = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(instruction) + 0x10);
+    value = instruction->value;
     scale = 1.0f / static_cast<f32>(value);
-    g_EclGameTimeScale = scale;
+    g_Supervisor.framerateMultiplier = scale;
 }
 
 // FUNCTION: th08 0x424fc0
@@ -834,7 +838,7 @@ void __fastcall EclExIns::SetScriptedUpdateFreeze(
     EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
     g_GameManager.scriptedUpdateFreeze =
-        *reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(instruction) + 0x10);
+        instruction->byteValue;
     if (g_GameManager.scriptedUpdateFreeze)
     {
         g_EclExBarrierRenderState.vm0.SetInterrupt(2);
@@ -879,8 +883,8 @@ void __fastcall FUN_004251b0(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     i32 i;
     Bullet *bullet;
 
-    g_EclGameTimeScale =
-        1.0f / static_cast<f32>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(instruction) + 0x10));
+    g_Supervisor.framerateMultiplier =
+        1.0f / static_cast<f32>(instruction->value);
     g_EclExBarrierRenderState.vm0.SetInterrupt(2);
     g_EclExBarrierRenderState.vm1.SetInterrupt(2);
 
@@ -889,7 +893,7 @@ void __fastcall FUN_004251b0(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     {
         if (bullet->state == BULLET_STATE_UNUSED)
             continue;
-        bullet->velocity *= g_EclGameTimeScale;
+        bullet->velocity *= g_Supervisor.framerateMultiplier;
         bullet->sprites.bulletVm.baseSpriteIndex = bullet->sprites.bulletVm.activeSpriteIndex;
         if (bullet->sprites.bulletVm.activeSpriteIndex >= 96 &&
             bullet->sprites.bulletVm.activeSpriteIndex <= 111)
@@ -907,7 +911,7 @@ void __fastcall FUN_00425290(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     f32 scale;
     Bullet *bullet = &g_BulletManager.bullets[0];
 
-    scale = 1.0f / g_EclGameTimeScale;
+    scale = 1.0f / g_Supervisor.framerateMultiplier;
     for (i = 0; i < 0x600; ++i, bullet++)
     {
         if (bullet->state == BULLET_STATE_UNUSED)
@@ -921,11 +925,11 @@ void __fastcall FUN_00425290(EclOperands::EnemyOverlay *enemy, EclExInstruction 
         }
     }
 
-    g_EclGameTimeScale =
-        1.0f / static_cast<f32>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(instruction) + 0x10));
-    if (g_EclGameTimeScale < 1.0f)
+    g_Supervisor.framerateMultiplier =
+        1.0f / static_cast<f32>(instruction->value);
+    if (g_Supervisor.framerateMultiplier < 1.0f)
         g_EclGameTimeScaleFlags |= 0x20U;
-    g_EclGameTimeScale = 1.0f;
+    g_Supervisor.framerateMultiplier = 1.0f;
     g_EclExBarrierRenderState.vm0.SetInterrupt(1);
     g_EclExBarrierRenderState.vm1.SetInterrupt(1);
 }
@@ -934,7 +938,7 @@ void __fastcall FUN_00425290(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 // FUNCTION: th08 0x425390
 void __fastcall FUN_00425390(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Player) + 0xfdc) != 0)
+    if (g_Player.bombState.isInUse != 0)
         g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(enemy)->position, static_cast<ItemType>(3), 0);
     else
         g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(enemy)->position, static_cast<ItemType>(5), 0);

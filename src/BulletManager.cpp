@@ -87,7 +87,7 @@ BulletExState::BulletExState()
 
 // FUNCTION: th08 0x42f5f0
 #pragma var_order(speed, i, bullet, angle, transformFlags, this)
-i32 BulletManager::FUN_0042f5f0(BulletSpawnDescriptor *descriptor, i32 index1, i32 index2, f32 angleToPlayer)
+i32 BulletManager::SpawnSingleBullet(BulletSpawnDescriptor *descriptor, i32 index1, i32 index2, f32 angleToPlayer)
 {
     f32 speed;
     i32 i;
@@ -169,7 +169,7 @@ i32 BulletManager::FUN_0042f5f0(BulletSpawnDescriptor *descriptor, i32 index1, i
     bullet->position = descriptor->position;
     bullet->position.operator float *()[2] = 0.1f;
     bullet->velocity.FromAngleMagnitude(
-        angle, speed * g_EclGameTimeScale);
+        angle, speed * g_Supervisor.framerateMultiplier);
 
     bullet->activeTransformFlags = descriptor->transformFlags;
     bullet->color = descriptor->color;
@@ -248,7 +248,7 @@ i32 BulletManager::FUN_0042f5f0(BulletSpawnDescriptor *descriptor, i32 index1, i
     bullet->transformFlags = descriptor->transformFlags;
     bullet->activeTransformFlags = 0;
     bullet->transformIndex = descriptor->transformStartIndex;
-    bullet->FUN_0042ffc0();
+    bullet->AdvanceTransformProgram();
 
     if (this->spawnSuppressionFrames != 0 &&
         (bullet->transformFlags & BULLET_TRANSFORM_CANCEL_IMMUNE) == 0)
@@ -271,23 +271,22 @@ void __fastcall CopyBulletAnmVmCore(AnmVm *dst, const AnmVm *src)
 // FUNCTION: th08 0x42fea0
 void __fastcall SelectBulletSprite(AnmVm *dst, AnmVm *base, AnmVm *sizeSource, i32 offset)
 {
-    if (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(dst) + 0x214) !=
-        *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(base) + 0x214) + offset)
+    if (dst->activeSpriteIndex != base->activeSpriteIndex + offset)
     {
-        if (*reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(sizeSource) + 0x224) + 0x30) <= 16.0f)
+        if (sizeSource->loadedSprite->heightPx <= 16.0f)
         {
             g_BulletManager.bulletAnm->SetSprite(
-                dst, *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(base) + 0x214) + g_BulletSpriteOffsetSmall[offset]);
+                dst, base->activeSpriteIndex + g_BulletSpriteOffsetSmall[offset]);
         }
-        else if (*reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(sizeSource) + 0x224) + 0x30) <= 32.0f)
+        else if (sizeSource->loadedSprite->heightPx <= 32.0f)
         {
             g_BulletManager.bulletAnm->SetSprite(
-                dst, *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(base) + 0x214) + g_BulletSpriteOffsetMedium[offset]);
+                dst, base->activeSpriteIndex + g_BulletSpriteOffsetMedium[offset]);
         }
         else
         {
             g_BulletManager.bulletAnm->SetSprite(
-                dst, *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(base) + 0x214) + offset);
+                dst, base->activeSpriteIndex + offset);
         }
     }
 }
@@ -308,7 +307,7 @@ static BulletSpriteScriptRow g_BulletSpriteScripts[21] = {
 };
 
 // FUNCTION: th08 0x42ffc0
-void Bullet::FUN_0042ffc0()
+void Bullet::AdvanceTransformProgram()
 {
     BulletTransformRecord *record;
 
@@ -348,7 +347,7 @@ nextRecord:
             record->int0;
         this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].vector.FromAngleMagnitude(
             this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].accelerationAngle,
-            g_EclGameTimeScale *
+            g_Supervisor.framerateMultiplier *
                 this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].accelerationMagnitude);
         if (this->transformIndex != 0 && this->transformSound >= 0)
             g_SoundPlayer.PlaySoundByIdx(
@@ -453,7 +452,7 @@ nextRecord:
             pattern.angle = record->float0;
             pattern.angleStep = record->float1;
             memcpy(pattern.transforms, this->transforms, sizeof(pattern.transforms));
-            g_BulletManager.FUN_00430e10(&pattern);
+            g_BulletManager.SpawnBulletPattern(&pattern);
             ++this->transformIndex;
             if (fadeParent != 0)
                 this->state = BULLET_STATE_DESPAWNING;
@@ -670,13 +669,13 @@ void BulletManager::RemoveBulletsInRadius(const Float3 *position, f32 radius)
 
 // FUNCTION: th08 0x430e10
 #pragma var_order(i, angleToPlayer, j, this)
-i32 BulletManager::FUN_00430e10(BulletSpawnDescriptor *descriptor)
+i32 BulletManager::SpawnBulletPattern(BulletSpawnDescriptor *descriptor)
 {
     i32 i;
     f32 angleToPlayer;
     i32 j;
 
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x800;
+    g_ReplayManager->flags |= 0x800;
     if (g_BulletManager.activeBulletCount >= 0x600)
         return 0;
 
@@ -686,7 +685,7 @@ i32 BulletManager::FUN_00430e10(BulletSpawnDescriptor *descriptor)
     {
         for (i = 0; i < descriptor->count1; i++)
         {
-            if (this->FUN_0042f5f0(descriptor, i, j, angleToPlayer) != 0)
+            if (this->SpawnSingleBullet(descriptor, i, j, angleToPlayer) != 0)
                 goto doneSpawning;
         }
     }
@@ -794,7 +793,7 @@ ChainCallbackResult BulletManager::OnUpdate(BulletManager *bulletManager)
 
     g_ItemManager.OnUpdate();
     bulletManager->activeBulletCount = 0;
-    bulletManager->FUN_004321b0();
+    bulletManager->ClearDrawBuckets();
 
     for (i = 0; i < 0x600; i++)
     {
@@ -809,29 +808,29 @@ activateBullet:
             bullet->stateTimer = 0;
             case BULLET_STATE_FIRED:
 updateBullet:
-            bullet->FUN_0042ffc0();
+            bullet->AdvanceTransformProgram();
             if (bullet->activeTransformFlags != 0)
             {
                 if ((bullet->activeTransformFlags & BULLET_TRANSFORM_DECELERATE) != 0)
-                    bullet->FUN_00432210();
+                    bullet->UpdateDeceleration();
                 if ((bullet->activeTransformFlags & BULLET_TRANSFORM_ACCELERATE_VECTOR) != 0)
-                    bullet->FUN_004322b0();
+                    bullet->UpdateVectorAcceleration();
                 if ((bullet->activeTransformFlags & BULLET_TRANSFORM_ACCELERATE_POLAR) != 0)
-                    bullet->FUN_00432390();
+                    bullet->UpdatePolarAcceleration();
                 if ((bullet->activeTransformFlags & BULLET_TRANSFORM_CHANGE_DIRECTION_RELATIVE) != 0)
-                    bullet->FUN_00432460();
+                    bullet->UpdateRelativeDirectionChange();
                 if ((bullet->activeTransformFlags & BULLET_TRANSFORM_CHANGE_DIRECTION_ABSOLUTE) != 0)
-                    bullet->FUN_004325a0();
+                    bullet->UpdateAbsoluteDirectionChange();
                 if ((bullet->activeTransformFlags & BULLET_TRANSFORM_CHANGE_DIRECTION_AIMED) != 0)
-                    bullet->FUN_004326e0();
+                    bullet->UpdateAimedDirectionChange();
                 if ((bullet->activeTransformFlags &
                      (BULLET_TRANSFORM_BOUNCE_ALL_EDGES |
                       BULLET_TRANSFORM_BOUNCE_EXCEPT_BOTTOM)) != 0)
-                    bullet->FUN_00432830();
+                    bullet->UpdateBoundaryBounce();
                 if ((bullet->activeTransformFlags & BULLET_TRANSFORM_WRAP_X) != 0)
-                    bullet->FUN_004329f0();
+                    bullet->UpdateHorizontalWrap();
                 if ((bullet->activeTransformFlags & BULLET_TRANSFORM_WRAP_Y) != 0)
-                    bullet->FUN_00432aa0();
+                    bullet->UpdateVerticalWrap();
                 if ((bullet->activeTransformFlags & BULLET_TRANSFORM_WAIT) != 0)
                 {
                     if (bullet->exStates[BULLET_TRANSFORM_STATE_WAIT].timer <= 0)
@@ -864,7 +863,7 @@ updateBullet:
                         ++bullet->offscreenFrames;
                         if (bullet->offscreenFrames >= 0x80)
                         {
-                            bullet->FUN_00432170();
+                            bullet->Deactivate();
                             goto nextBullet;
                         }
                     }
@@ -872,7 +871,7 @@ updateBullet:
                     {
                         if (bullet->offscreenFrames == 0)
                         {
-                            bullet->FUN_00432170();
+                            bullet->Deactivate();
                             goto nextBullet;
                         }
                         --bullet->offscreenFrames;
@@ -1005,7 +1004,7 @@ executeBulletScript:
                 bullet->position += bullet->velocity / 2.0f;
                 if (g_AnmManager->ExecuteScript(&bullet->sprites.despawnVm) != 0)
                 {
-                    bullet->FUN_00432170();
+                    bullet->Deactivate();
                     goto nextBullet;
                 }
                 break;
@@ -1037,7 +1036,7 @@ nextBullet:
             if (laser->inUse == 0)
                 continue;
 
-            laser->endOffset += g_EclGameTimeScale * laser->speed;
+            laser->endOffset += g_Supervisor.framerateMultiplier * laser->speed;
             if (laser->endOffset - laser->startOffset > laser->startLength)
                 laser->startOffset = laser->endOffset - laser->startLength;
             if (laser->startOffset < 0.0f)
@@ -1139,7 +1138,7 @@ nextBullet:
 }
 
 // FUNCTION: th08 0x432170
-void Bullet::FUN_00432170()
+void Bullet::Deactivate()
 {
     this->state = BULLET_STATE_UNUSED;
     this->stateTimer = 0;
@@ -1147,7 +1146,7 @@ void Bullet::FUN_00432170()
 }
 
 // FUNCTION: th08 0x4321b0
-void BulletManager::FUN_004321b0()
+void BulletManager::ClearDrawBuckets()
 {
     this->drawBuckets[5] = NULL;
     this->drawBuckets[4] = NULL;
@@ -1159,7 +1158,7 @@ void BulletManager::FUN_004321b0()
 
 // FUNCTION: th08 0x432210
 #pragma var_order(magnitude, this)
-void Bullet::FUN_00432210()
+void Bullet::UpdateDeceleration()
 {
     f32 magnitude;
 
@@ -1171,7 +1170,7 @@ void Bullet::FUN_00432210()
                 16.0f;
         this->velocity.FromAngleMagnitude(this->angle,
                                  (magnitude + this->speed) *
-                                     *reinterpret_cast<f32 *>(0x17CE8E0));
+                                     g_Supervisor.framerateMultiplier);
     }
     else
     {
@@ -1184,7 +1183,7 @@ void Bullet::FUN_00432210()
 
 // FUNCTION: th08 0x4322b0
 #pragma var_order(delta, this)
-void Bullet::FUN_004322b0()
+void Bullet::UpdateVectorAcceleration()
 {
     if (this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].timer >=
         this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].durationFrames)
@@ -1195,7 +1194,7 @@ void Bullet::FUN_004322b0()
     {
         this->velocity +=
             this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].vector *
-            *reinterpret_cast<f32 *>(0x17CE8E0);
+            g_Supervisor.framerateMultiplier;
 
         if (fabsf(this->velocity.x) > 0.0001f ||
             fabsf(this->velocity.y) > 0.0001f)
@@ -1208,7 +1207,7 @@ void Bullet::FUN_004322b0()
 }
 
 // FUNCTION: th08 0x432390
-void Bullet::FUN_00432390()
+void Bullet::UpdatePolarAcceleration()
 {
     if (this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].timer >=
         this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].durationFrames)
@@ -1219,13 +1218,13 @@ void Bullet::FUN_00432390()
     {
         this->angle =
             AddNormalizeAngle(this->angle,
-                              *reinterpret_cast<f32 *>(0x17CE8E0) *
+                              g_Supervisor.framerateMultiplier *
                                   this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].angleDelta);
         this->speed +=
-            *reinterpret_cast<f32 *>(0x17CE8E0) *
+            g_Supervisor.framerateMultiplier *
             this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].speedDelta;
         this->velocity.FromAngleMagnitude(this->angle,
-                                 *reinterpret_cast<f32 *>(0x17CE8E0) *
+                                 g_Supervisor.framerateMultiplier *
                                      this->speed);
     }
 
@@ -1234,7 +1233,7 @@ void Bullet::FUN_00432390()
 
 // FUNCTION: th08 0x432460
 #pragma var_order(magnitude, this)
-void Bullet::FUN_00432460()
+void Bullet::UpdateRelativeDirectionChange()
 {
     f32 magnitude;
 
@@ -1268,13 +1267,13 @@ void Bullet::FUN_00432460()
     }
 
     this->velocity.FromAngleMagnitude(this->angle,
-                             magnitude * *reinterpret_cast<f32 *>(0x17CE8E0));
+                             magnitude * g_Supervisor.framerateMultiplier);
     this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].timer++;
 }
 
 // FUNCTION: th08 0x4325a0
 #pragma var_order(magnitude, this)
-void Bullet::FUN_004325a0()
+void Bullet::UpdateAbsoluteDirectionChange()
 {
     f32 magnitude;
 
@@ -1309,13 +1308,13 @@ void Bullet::FUN_004325a0()
     }
 
     this->velocity.FromAngleMagnitude(this->angle,
-                             magnitude * *reinterpret_cast<f32 *>(0x17CE8E0));
+                             magnitude * g_Supervisor.framerateMultiplier);
     this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].timer++;
 }
 
 // FUNCTION: th08 0x4326e0
 #pragma var_order(magnitude, this)
-void Bullet::FUN_004326e0()
+void Bullet::UpdateAimedDirectionChange()
 {
     f32 magnitude;
 
@@ -1350,14 +1349,14 @@ void Bullet::FUN_004326e0()
     }
 
     this->velocity.FromAngleMagnitude(this->angle,
-                             magnitude * *reinterpret_cast<f32 *>(0x17CE8E0));
+                             magnitude * g_Supervisor.framerateMultiplier);
     this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].timer++;
 }
 
 
 // FUNCTION: th08 0x432830
 #pragma var_order(magnitude, this)
-void Bullet::FUN_00432830()
+void Bullet::UpdateBoundaryBounce()
 {
     f32 magnitude;
 
@@ -1389,7 +1388,7 @@ void Bullet::FUN_00432830()
                 &this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bounceSpeed);
         magnitude = this->speed;
         this->velocity.FromAngleMagnitude(this->angle,
-                                 magnitude * *reinterpret_cast<f32 *>(0x17CE8E0));
+                                 magnitude * g_Supervisor.framerateMultiplier);
         this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bouncesCompleted += 1;
         if (this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bouncesCompleted >=
             this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bounceLimit)
@@ -1402,7 +1401,7 @@ void Bullet::FUN_00432830()
 }
 
 // FUNCTION: th08 0x4329f0
-void Bullet::FUN_004329f0()
+void Bullet::UpdateHorizontalWrap()
 {
     if (this->position.x < 0.0)
     {
@@ -1424,7 +1423,7 @@ void Bullet::FUN_004329f0()
 }
 
 // FUNCTION: th08 0x432aa0
-void Bullet::FUN_00432aa0()
+void Bullet::UpdateVerticalWrap()
 {
     if (this->position.y < 0.0)
     {
@@ -1592,11 +1591,11 @@ ZunResult BulletManager::AddedCallback(BulletManager *bulletManager)
         bulletManager->bulletAnm->SetAndExecuteScriptIdx(&bulletManager->bulletTypeSprites[i].spawnSlowVm, g_BulletSpriteScripts[i].scripts[3]);
         bulletManager->bulletAnm->SetAndExecuteScriptIdx(&bulletManager->bulletTypeSprites[i].despawnVm, g_BulletSpriteScripts[i].scripts[4]);
 
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].bulletVm) + 0x1f8) |= 0x2000;
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].spawnFastVm) + 0x1f8) |= 0x2000;
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].spawnNormalVm) + 0x1f8) |= 0x2000;
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].spawnSlowVm) + 0x1f8) |= 0x2000;
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].despawnVm) + 0x1f8) |= 0x2000;
+        bulletManager->bulletTypeSprites[i].bulletVm.zWriteDisabled = TRUE;
+        bulletManager->bulletTypeSprites[i].spawnFastVm.zWriteDisabled = TRUE;
+        bulletManager->bulletTypeSprites[i].spawnNormalVm.zWriteDisabled = TRUE;
+        bulletManager->bulletTypeSprites[i].spawnSlowVm.zWriteDisabled = TRUE;
+        bulletManager->bulletTypeSprites[i].despawnVm.zWriteDisabled = TRUE;
 
         bulletManager->bulletTypeSprites[i].bulletVm.baseSpriteIndex =
             bulletManager->bulletTypeSprites[i].bulletVm.activeSpriteIndex;

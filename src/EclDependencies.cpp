@@ -795,7 +795,7 @@ void __fastcall DispatchShotInstruction(u8 *enemy, RawInstruction *instruction)
                                     ? EclOperands::ResolveInt(
                                           reinterpret_cast<EclOperands::EnemyOverlay *>(enemy), packed)
                                     : packed;
-            g_BulletManager.FUN_00430e10(descriptor);
+            g_BulletManager.SpawnBulletPattern(descriptor);
 }
 } // namespace EclRunHighProposal
 

@@ -90,7 +90,6 @@ SECTIONS
     _ZN4th0832g_GuiMessageScreenEffectDurationE = 0x017ce8cc;
 
     /* These target globals are overlapping views into aggregate owners. */
-    _ZN4th0818g_EclGameTimeScaleE = 0x017ce8e0;
     _ZN4th0823g_EclGameTimeScaleFlagsE = 0x017ce8fc;
     _ZN4th088g_PlayerE = 0x017d5ef8;
     _ZN4th0811EclOperands30g_TargetPlayerPosition017D61ACE = 0x017d61ac;

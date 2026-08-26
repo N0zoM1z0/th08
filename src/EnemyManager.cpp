@@ -51,9 +51,9 @@ void Enemy::UpdateMovement()
         this->orbitAngle =
             AddNormalizeAngle(
                 this->orbitAngle,
-                g_EclGameTimeScale * this->orbitAngularVelocity);
+                g_Supervisor.framerateMultiplier * this->orbitAngularVelocity);
         this->orbitRadius =
-            g_EclGameTimeScale * this->radialVelocity + this->orbitRadius;
+            g_Supervisor.framerateMultiplier * this->radialVelocity + this->orbitRadius;
         polarVelocity.FromAngleMagnitude(
             this->orbitAngle, this->orbitRadius);
         this->velocity.x = polarVelocity.x + this->movementInterpolationOrigin.x - this->position.x;
@@ -72,8 +72,8 @@ void Enemy::UpdateMovement()
         this->movementAngle =
             AddNormalizeAngle(
                 this->movementAngle,
-                g_EclGameTimeScale * this->angularVelocity);
-        this->speed = g_EclGameTimeScale * this->acceleration + this->speed;
+                g_Supervisor.framerateMultiplier * this->angularVelocity);
+        this->speed = g_Supervisor.framerateMultiplier * this->acceleration + this->speed;
         this->velocity.FromAngleMagnitude(
             this->movementAngle, this->speed);
         this->velocity.operator float *()[2] = 0.0f;
@@ -948,11 +948,11 @@ void Enemy::IntegrateVelocity()
     this->lastFrameDisplacement = this->position - this->previousPosition;
     this->previousPosition = this->position;
     if (((this->flags1 >> ENEMY_FLAG_MIRROR_MOVEMENT_X_SHIFT) & 1) == 0)
-        this->position.x += g_EclGameTimeScale * this->velocity.x;
+        this->position.x += g_Supervisor.framerateMultiplier * this->velocity.x;
     else
-        this->position.x -= g_EclGameTimeScale * this->velocity.x;
-    this->position.y += g_EclGameTimeScale * this->velocity.y;
-    this->position.z += g_EclGameTimeScale * this->velocity.z;
+        this->position.x -= g_Supervisor.framerateMultiplier * this->velocity.x;
+    this->position.y += g_Supervisor.framerateMultiplier * this->velocity.y;
+    this->position.z += g_Supervisor.framerateMultiplier * this->velocity.z;
 }
 
 // FUNCTION: th08 0x42e010

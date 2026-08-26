@@ -1296,7 +1296,7 @@ i32 Spellcard::OnUpdateImpl()
                   ENEMY_FLAG_TIMEOUT_SPELL_SHIFT) & 1) == 0)
             {
                 this->bonusProgress -=
-                    (i32)((f64)((u32)this->bonusCounter / 60u) * g_EclGameTimeScale);
+                    (i32)((f64)((u32)this->bonusCounter / 60u) * g_Supervisor.framerateMultiplier);
                 this->bonusProgress -= (u32)this->bonusProgress % 10u;
             }
         }

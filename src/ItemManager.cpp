@@ -203,7 +203,7 @@ void ItemManager::OnUpdate()
     speed = *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&g_Player) + 3)
                 ? *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.secondaryShtFile) + 0x34)
                 : *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x34);
-    speed *= g_EclGameTimeScale;
+    speed *= g_Supervisor.framerateMultiplier;
 
     while (item != NULL)
     {
@@ -227,7 +227,7 @@ void ItemManager::OnUpdate()
         }
         else if (item->state == ITEM_STATE_UNK3)
         {
-            item->startPositionOrVelocity.y += 0.05f * g_EclGameTimeScale;
+            item->startPositionOrVelocity.y += 0.05f * g_Supervisor.framerateMultiplier;
             if (item->startPositionOrVelocity.y > 0.0f ||
                 *reinterpret_cast<ZunTimer *>(&g_Player.shotTimer) < 0)
             {
@@ -244,7 +244,7 @@ void ItemManager::OnUpdate()
         }
         else if (item->state == ITEM_STATE_UNK5)
         {
-            item->startPositionOrVelocity.y += 0.05f * g_EclGameTimeScale;
+            item->startPositionOrVelocity.y += 0.05f * g_Supervisor.framerateMultiplier;
             item->currentPosition += item->startPositionOrVelocity * speed;
             if (item->startPositionOrVelocity.y > 0.0f)
             {
@@ -277,7 +277,7 @@ void ItemManager::OnUpdate()
                     item->startPositionOrVelocity.FromAngleMagnitude(
                         angle, g_Player.primaryShtFile->itemAutoCollectSpeed);
                     item->state = ITEM_STATE_AUTOCOLLECT;
-                    item->currentPosition += item->startPositionOrVelocity * g_EclGameTimeScale;
+                    item->currentPosition += item->startPositionOrVelocity * g_Supervisor.framerateMultiplier;
                     goto pickup;
                 }
                 item->startPositionOrVelocity.y = -0.7f;

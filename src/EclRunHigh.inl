@@ -491,7 +491,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
                 &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position) +
             *reinterpret_cast<D3DXVECTOR3 *>(
                 &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootOffset);
-        g_BulletManager.FUN_00430e10(
+        g_BulletManager.SpawnBulletPattern(
             &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bulletSpawnDescriptor);
         break;
     }

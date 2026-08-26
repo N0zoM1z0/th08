@@ -546,8 +546,20 @@ confirmed in this cold environment: the existing `ZUN_NEW(TitleScreen,
 `0x0047146D`, including its `0x40` target frame.  It is already committed in
 the earlier GameManager/title checkpoint; no new merge is required.
 
-The next dense semantic owners are the remaining Bullet transform helper names
-and ECL extension callbacks, followed by ReplayManager serialized state and
+The Bullet transform/runtime-owner batch is now accepted.  Absolute
+`0x017CE8E0` is `g_Supervisor.framerateMultiplier @ +0x188`, not an
+independent ECL global: all 43 existing relocations and 11 newly manifested
+raw-address uses replay with the aggregate owner/addend, and the duplicate
+storage, global row, and Linux linker alias are gone.  Bullet transform
+helpers at `0x0042F5F0`, `0x0042FFC0`, `0x00430E10`, and
+`0x00432170` through `0x00432AA0` now carry lifecycle/action names; their ANM,
+ReplayManager, Effect, Player bomb-state, and ECL-instruction accesses use
+asserted fields.  Focused replay passes **70 / 70**, the required cold replay
+passes **1,106 / 1,106 exact**, the normal VC7 image links, and the complete
+i386 Linux build plus fixed-layout verifier passes.  The remaining
+`Bullet +0xDBC` and template `+0xD40` observations stay neutral.
+
+The next dense semantic owners are ReplayManager serialized stage state and
 Supervisor timing/subthread status fields whose behavior has enough
 independent target use to name safely.
 

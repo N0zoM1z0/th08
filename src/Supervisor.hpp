@@ -334,6 +334,7 @@ C_ASSERT(sizeof(Supervisor) == 0x364);
 C_ASSERT(offsetof(Supervisor, isInitialStageLoad) == 0x164);
 C_ASSERT(offsetof(Supervisor, releaseResourcesOnRestart) == 0x168);
 C_ASSERT(offsetof(Supervisor, keepStageResources) == 0x16c);
+C_ASSERT(offsetof(Supervisor, framerateMultiplier) == 0x188);
 C_ASSERT(offsetof(Supervisor, recordedFps) == 0x198);
 C_ASSERT(offsetof(Supervisor, loadingVmsHaveBeenSetup) == 0x2fc);
 C_ASSERT(offsetof(Supervisor, subthreadActive) == 0x290);

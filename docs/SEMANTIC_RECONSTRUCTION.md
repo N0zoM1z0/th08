@@ -457,7 +457,7 @@ bytes rather than the core Bullet lifecycle family completed here.
 
 ### Bullet transform runtime state — 2026-08-26
 
-Scope: the transform dispatcher at `Bullet::FUN_0042ffc0 @ 0x0042FFC0`, the
+Scope: the transform dispatcher at `Bullet::AdvanceTransformProgram @ 0x0042FFC0`, the
 bullet update path at `BulletManager::OnUpdate @ 0x00431240`, and the nine
 transform handlers at `0x00432210..0x00432AA0`.  Single-bullet and pattern
 spawn at `0x0042F5F0`, `0x00430E10`, and `0x00430F20` provide the adjacent
@@ -2053,3 +2053,75 @@ only GameManager tail fields remain explicit unknowns.  The whole-source router
 reports 60 raw-member, 18 absolute-address, 194 anonymous-identifier, and 45
 opaque-storage candidates.  These are routing observations, not a semantic-
 completion percentage or a new authored-exact claim.
+
+### Supervisor frame-time ownership and Bullet transform semantics — 2026-08-27
+
+Scope: the Bullet spawn, transform-program, per-frame transform, deactivation,
+and draw-bucket helpers at `0x0042F5F0`, `0x0042FFC0`, `0x00430E10`, and
+`0x00432170` through `0x00432AA0`; the ECL extension callbacks that manipulate
+the same bullets and effects; and every authored reader of absolute
+`0x017CE8E0` in Bullet, Enemy, Effect, Item, Player, PlayerBomb, and Spellcard.
+
+Observed ownership: `g_Supervisor @ 0x017CE758` plus `0x188` is exactly
+`0x017CE8E0`.  Supervisor initialization and the ECL slow-time path write this
+float, while the independent gameplay systems above multiply their movement
+or timers by it.  The existing `Supervisor::framerateMultiplier` field at
+`+0x188` is therefore the single aggregate owner; the formerly declared
+`g_EclGameTimeScale` was an overlapping false global.  The separate state word
+`g_EclGameTimeScaleFlags @ 0x017CE8FC` remains independent and is not folded
+into Supervisor.
+
+All 43 pre-existing time-scale relocation manifests now require
+`g_Supervisor + 0x188`.  Eleven source expressions which formerly embedded the
+absolute address gained explicit owner/addend relocation records: nine across
+the Bullet transform helpers and two in `Player::UpdateShots`.  The duplicate
+global ledger row, storage definition, declaration, redundant extern, and
+Linux linker alias were removed together.  `offsetof(Supervisor,
+framerateMultiplier) == 0x188` pins the source interpretation.
+
+Bullet semantics: the helpers are now `SpawnSingleBullet @ 0x0042F5F0`,
+`AdvanceTransformProgram @ 0x0042FFC0`, `SpawnBulletPattern @ 0x00430E10`,
+`Deactivate @ 0x00432170`, `ClearDrawBuckets @ 0x004321B0`,
+`UpdateDeceleration @ 0x00432210`, `UpdateVectorAcceleration @ 0x004322B0`,
+`UpdatePolarAcceleration @ 0x00432390`,
+`UpdateRelativeDirectionChange @ 0x00432460`,
+`UpdateAbsoluteDirectionChange @ 0x004325A0`,
+`UpdateAimedDirectionChange @ 0x004326E0`,
+`UpdateBoundaryBounce @ 0x00432830`, `UpdateHorizontalWrap @ 0x004329F0`, and
+`UpdateVerticalWrap @ 0x00432AA0`.  Source, decorated symbols, mappings,
+implemented/exact ledgers, and match-unit identifiers moved together.
+
+The same target bodies establish ordinary field ownership for
+`AnmVm::activeSpriteIndex`, `AnmVm::loadedSprite`, sprite height,
+`AnmVm::zWriteDisabled`, additive/normal blend mode, VM alpha,
+`ReplayManager::flags`, `Effect::active`, and
+`Player::bombState.isInUse`.  The ECL extension instruction view now asserts a
+value/byte union at `+0x10`; its four bytes at `+0x0C` remain explicitly
+unknown.  Natural VC7 bitfield assignment for the ANM blend mode reproduces
+the target dword read/modify/write, so no byte-oriented compatibility shim is
+needed.
+
+Unknowns: the Bullet field at `+0xDBC` and bullet-template field at `+0xD40`
+do not yet have independent behavioral evidence and retain neutral names.  No
+meaning is inferred for the ECL instruction's `+0x08/+0x0C` fields.  The
+ReplayManager flag write caused by bullet-pattern spawn is named only at the
+known aggregate field; this batch does not guess a narrower event-bit enum.
+
+VC7 oracle: the final Bullet production/reimplementation plus ECL-extension
+selection passes **70 / 70 exact** after all owner, field, and symbol changes.
+The normal production image links.  The required single-job cold rebuild of
+all 75 configured comparison objects passes **1,106 / 1,106 exact**, with no
+accepted authored unit lost.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` builds and links
+the complete ELF32/i386 executable without the removed time-scale alias.
+`verify-modern-linux.sh build/modern-linux-container/th08-modern` verifies the
+portable executable and every fixed target-owned layout symbol.  No isolated
+gameplay smoke harness exists for the transform program or slow-time path, so
+none is claimed.
+
+Result: the whole-source semantic router now reports 31 raw-member, 7
+absolute-address, 195 anonymous-identifier, and 45 opaque-storage candidates.
+These are work-selection observations only, not a semantic-completion
+percentage.  ReplayManager serialized state and Supervisor timing/subthread
+status are the next core owners.

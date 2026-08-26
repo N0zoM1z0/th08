@@ -104,7 +104,6 @@ DIFFABLE_STATIC(i32, g_EclGlobal004ECCA8);
 #ifndef TH08_MODERN_PORT
 DIFFABLE_STATIC(EclExBarrierRenderState, g_EclExBarrierRenderState);
 #endif
-DIFFABLE_STATIC(f32, g_EclGameTimeScale);
 DIFFABLE_STATIC(u32, g_EclGameTimeScaleFlags);
 DIFFABLE_STATIC(EclManager, g_EclManager);
 

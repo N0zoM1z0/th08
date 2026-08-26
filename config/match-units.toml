@@ -3749,7 +3749,7 @@ target = 0x00F54E90
 [[units.relocations]]
 offset = 0x3438
 type = "REL32"
-symbol = "?FUN_00430e10@BulletManager@th08@@QAEHPAUBulletSpawnDescriptor@2@@Z"
+symbol = "?SpawnBulletPattern@BulletManager@th08@@QAEHPAUBulletSpawnDescriptor@2@@Z"
 target = 0x00430E10
 
 [[units.relocations]]
@@ -61912,9 +61912,9 @@ symbol = "?AddToDrawChain@Chain@th08@@QAEHPAVChainElem@2@H@Z"
 target = 0x0043C960
 
 [[units]]
-name = "bullet-fun-00432170"
+name = "bullet-deactivate"
 object = "build/BulletManager.obj"
-symbol = "?FUN_00432170@Bullet@th08@@QAEXXZ"
+symbol = "?Deactivate@Bullet@th08@@QAEXXZ"
 target_address = 0x00432170
 size = 0x37
 
@@ -61931,16 +61931,16 @@ symbol = "??4ZunTimer@th08@@QAEXH@Z"
 target = 0x004065F0
 
 [[units]]
-name = "bullet-manager-fun-004321b0"
+name = "bullet-manager-clear-draw-buckets"
 object = "build/BulletManager.obj"
-symbol = "?FUN_004321b0@BulletManager@th08@@QAEXXZ"
+symbol = "?ClearDrawBuckets@BulletManager@th08@@QAEXXZ"
 target_address = 0x004321B0
 size = 0x59
 
 [[units]]
-name = "bullet-fun-004329f0"
+name = "bullet-update-horizontal-wrap"
 object = "build/BulletManager.obj"
-symbol = "?FUN_004329f0@Bullet@th08@@QAEXXZ"
+symbol = "?UpdateHorizontalWrap@Bullet@th08@@QAEXXZ"
 target_address = 0x004329F0
 size = 0xA7
 
@@ -61981,9 +61981,9 @@ symbol = "??FZunTimer@th08@@QAEXH@Z"
 target = 0x00418110
 
 [[units]]
-name = "bullet-fun-00432aa0"
+name = "bullet-update-vertical-wrap"
 object = "build/BulletManager.obj"
-symbol = "?FUN_00432aa0@Bullet@th08@@QAEXXZ"
+symbol = "?UpdateVerticalWrap@Bullet@th08@@QAEXXZ"
 target_address = 0x00432AA0
 size = 0xA7
 
@@ -62024,9 +62024,9 @@ symbol = "??FZunTimer@th08@@QAEXH@Z"
 target = 0x00418110
 
 [[units]]
-name = "bullet-fun-00432390"
+name = "bullet-update-polar-acceleration"
 object = "build/BulletManager.obj"
-symbol = "?FUN_00432390@Bullet@th08@@QAEXXZ"
+symbol = "?UpdatePolarAcceleration@Bullet@th08@@QAEXXZ"
 target_address = 0x00432390
 size = 0xC5
 
@@ -62037,10 +62037,31 @@ symbol = "??PZunTimer@th08@@QAEIH@Z"
 target = 0x0040B8E0
 
 [[units.relocations]]
+offset = 0x3F
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
+
+[[units.relocations]]
 offset = 0x58
 type = "REL32"
 symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
 target = 0x0043EDB0
+
+[[units.relocations]]
+offset = 0x6A
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
+
+[[units.relocations]]
+offset = 0x8B
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0xAD
@@ -62055,9 +62076,9 @@ symbol = "??EZunTimer@th08@@QAEXH@Z"
 target = 0x00406640
 
 [[units]]
-name = "bullet-fun-00432210"
+name = "bullet-update-deceleration"
 object = "build/BulletManager.obj"
-symbol = "?FUN_00432210@Bullet@th08@@QAEXXZ"
+symbol = "?UpdateDeceleration@Bullet@th08@@QAEXXZ"
 target_address = 0x00432210
 size = 0x99
 
@@ -62092,6 +62113,13 @@ symbol = "__real@40a00000"
 target = 0x004B4304
 
 [[units.relocations]]
+offset = 0x4E
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
+
+[[units.relocations]]
 offset = 0x6A
 type = "REL32"
 symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
@@ -62104,9 +62132,9 @@ symbol = "??EZunTimer@th08@@QAEXH@Z"
 target = 0x00406640
 
 [[units]]
-name = "bullet-fun-004326e0"
+name = "bullet-update-aimed-direction-change"
 object = "build/BulletManager.obj"
-symbol = "?FUN_004326e0@Bullet@th08@@QAEXXZ"
+symbol = "?UpdateAimedDirectionChange@Bullet@th08@@QAEXXZ"
 target_address = 0x004326E0
 size = 0x150
 
@@ -62159,6 +62187,13 @@ symbol = "??BZunTimer@th08@@QAEMXZ"
 target = 0x0040B8C0
 
 [[units.relocations]]
+offset = 0x11C
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
+
+[[units.relocations]]
 offset = 0x138
 type = "REL32"
 symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
@@ -62170,13 +62205,13 @@ type = "REL32"
 symbol = "??EZunTimer@th08@@QAEXH@Z"
 target = 0x00406640
 
-# Mapping name: th08::Bullet::FUN_00432460
-# Source symbol name: th08::Bullet::FUN_00432460
-# Evidence: 7 relocations; 6 direct calls; full replay exact; implemented ledger=False.
+# Mapping name: th08::Bullet::UpdateRelativeDirectionChange
+# Source symbol name: th08::Bullet::UpdateRelativeDirectionChange
+# Evidence: 8 relocations; 6 direct calls; full replay exact; implemented ledger=False.
 [[units]]
-name = "bullet-fun-00432460"
+name = "bullet-update-relative-direction-change"
 object = "build/BulletManager.obj"
-symbol = "?FUN_00432460@Bullet@th08@@QAEXXZ"
+symbol = "?UpdateRelativeDirectionChange@Bullet@th08@@QAEXXZ"
 target_address = 0x00432460
 size = 0x139
 
@@ -62211,6 +62246,13 @@ symbol = "??BZunTimer@th08@@QAEMXZ"
 target = 0x0040B8C0
 
 [[units.relocations]]
+offset = 0x105
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
+
+[[units.relocations]]
 offset = 0x121
 type = "REL32"
 symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
@@ -62222,13 +62264,13 @@ type = "REL32"
 symbol = "??EZunTimer@th08@@QAEXH@Z"
 target = 0x00406640
 
-# Mapping name: th08::Bullet::FUN_004325a0
-# Source symbol name: th08::Bullet::FUN_004325a0
-# Evidence: 7 relocations; 6 direct calls; full replay exact; implemented ledger=False.
+# Mapping name: th08::Bullet::UpdateAbsoluteDirectionChange
+# Source symbol name: th08::Bullet::UpdateAbsoluteDirectionChange
+# Evidence: 8 relocations; 6 direct calls; full replay exact; implemented ledger=False.
 [[units]]
-name = "bullet-fun-004325a0"
+name = "bullet-update-absolute-direction-change"
 object = "build/BulletManager.obj"
-symbol = "?FUN_004325a0@Bullet@th08@@QAEXXZ"
+symbol = "?UpdateAbsoluteDirectionChange@Bullet@th08@@QAEXXZ"
 target_address = 0x004325A0
 size = 0x132
 
@@ -62261,6 +62303,13 @@ offset = 0xD7
 type = "REL32"
 symbol = "??BZunTimer@th08@@QAEMXZ"
 target = 0x0040B8C0
+
+[[units.relocations]]
+offset = 0xFE
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x11A
@@ -62389,9 +62438,9 @@ symbol = "?VectorAngle@th08@@YIMMM@Z"
 target = 0x0040C7B0
 
 [[units]]
-name = "bullet-fun-004322b0"
+name = "bullet-update-vector-acceleration"
 object = "build/BulletManager.obj"
-symbol = "?FUN_004322b0@Bullet@th08@@QAEXXZ"
+symbol = "?UpdateVectorAcceleration@Bullet@th08@@QAEXXZ"
 target_address = 0x004322B0
 size = 0xD5
 
@@ -62400,6 +62449,13 @@ offset = 0x1D
 type = "REL32"
 symbol = "??PZunTimer@th08@@QAEIH@Z"
 target = 0x0040B8E0
+
+[[units.relocations]]
+offset = 0x41
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x54
@@ -62450,9 +62506,9 @@ symbol = "??EZunTimer@th08@@QAEXH@Z"
 target = 0x00406640
 
 [[units]]
-name = "bullet-fun-00432830"
+name = "bullet-update-boundary-bounce"
 object = "build/BulletManager.obj"
-symbol = "?FUN_00432830@Bullet@th08@@QAEXXZ"
+symbol = "?UpdateBoundaryBounce@Bullet@th08@@QAEXXZ"
 target_address = 0x00432830
 size = 0x1B4
 
@@ -62527,6 +62583,13 @@ offset = 0xFB
 type = "DIR32"
 symbol = "__real@43e00000"
 target = 0x004B4940
+
+[[units.relocations]]
+offset = 0x14F
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x16B
@@ -62828,10 +62891,24 @@ symbol = "??BFloat3@th08@@QAEPAMXZ"
 target = 0x0040B460
 
 [[units.relocations]]
+offset = 0xA6
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
+
+[[units.relocations]]
 offset = 0xC4
 type = "REL32"
 symbol = "??BFloat3@th08@@QAEPAMXZ"
 target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xD3
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x129
@@ -69165,8 +69242,9 @@ target = 0x004B42C8
 [[units.relocations]]
 offset = 0x17A
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x17F
@@ -80207,8 +80285,9 @@ addend = 0xE2A74
 [[units.relocations]]
 offset = 125
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 194
@@ -80273,8 +80352,9 @@ target = 0x004B5B38
 [[units.relocations]]
 offset = 421
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 454
@@ -80310,8 +80390,9 @@ target = 0x004B5B38
 [[units.relocations]]
 offset = 584
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 624
@@ -80430,8 +80511,9 @@ target = 0x004286E0
 [[units.relocations]]
 offset = 949
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 968
@@ -83656,7 +83738,7 @@ target = 0x00440500
 [[units.relocations]]
 offset = 0x51
 type = "REL32"
-symbol = "th08::BulletManager::FUN_004321b0"
+symbol = "th08::BulletManager::ClearDrawBuckets"
 target = 0x004321B0
 
 [[units.relocations]]
@@ -83674,61 +83756,61 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0xE6
 type = "REL32"
-symbol = "?FUN_0042ffc0@Bullet@th08@@QAEXXZ"
+symbol = "?AdvanceTransformProgram@Bullet@th08@@QAEXXZ"
 target = 0x0042FFC0
 
 [[units.relocations]]
 offset = 0x10E
 type = "REL32"
-symbol = "?FUN_00432210@Bullet@th08@@QAEXXZ"
+symbol = "?UpdateDeceleration@Bullet@th08@@QAEXXZ"
 target = 0x00432210
 
 [[units.relocations]]
 offset = 0x126
 type = "REL32"
-symbol = "?FUN_004322b0@Bullet@th08@@QAEXXZ"
+symbol = "?UpdateVectorAcceleration@Bullet@th08@@QAEXXZ"
 target = 0x004322B0
 
 [[units.relocations]]
 offset = 0x13E
 type = "REL32"
-symbol = "?FUN_00432390@Bullet@th08@@QAEXXZ"
+symbol = "?UpdatePolarAcceleration@Bullet@th08@@QAEXXZ"
 target = 0x00432390
 
 [[units.relocations]]
 offset = 0x156
 type = "REL32"
-symbol = "?FUN_00432460@Bullet@th08@@QAEXXZ"
+symbol = "?UpdateRelativeDirectionChange@Bullet@th08@@QAEXXZ"
 target = 0x00432460
 
 [[units.relocations]]
 offset = 0x170
 type = "REL32"
-symbol = "?FUN_004325a0@Bullet@th08@@QAEXXZ"
+symbol = "?UpdateAbsoluteDirectionChange@Bullet@th08@@QAEXXZ"
 target = 0x004325A0
 
 [[units.relocations]]
 offset = 0x18B
 type = "REL32"
-symbol = "?FUN_004326e0@Bullet@th08@@QAEXXZ"
+symbol = "?UpdateAimedDirectionChange@Bullet@th08@@QAEXXZ"
 target = 0x004326E0
 
 [[units.relocations]]
 offset = 0x1A6
 type = "REL32"
-symbol = "?FUN_00432830@Bullet@th08@@QAEXXZ"
+symbol = "?UpdateBoundaryBounce@Bullet@th08@@QAEXXZ"
 target = 0x00432830
 
 [[units.relocations]]
 offset = 0x1C0
 type = "REL32"
-symbol = "?FUN_004329f0@Bullet@th08@@QAEXXZ"
+symbol = "?UpdateHorizontalWrap@Bullet@th08@@QAEXXZ"
 target = 0x004329F0
 
 [[units.relocations]]
 offset = 0x1DB
 type = "REL32"
-symbol = "?FUN_00432aa0@Bullet@th08@@QAEXXZ"
+symbol = "?UpdateVerticalWrap@Bullet@th08@@QAEXXZ"
 target = 0x00432AA0
 
 [[units.relocations]]
@@ -83783,13 +83865,13 @@ target = 0x004399AC
 [[units.relocations]]
 offset = 0x312
 type = "REL32"
-symbol = "?FUN_00432170@Bullet@th08@@QAEXXZ"
+symbol = "?Deactivate@Bullet@th08@@QAEXXZ"
 target = 0x00432170
 
 [[units.relocations]]
 offset = 0x32F
 type = "REL32"
-symbol = "?FUN_00432170@Bullet@th08@@QAEXXZ"
+symbol = "?Deactivate@Bullet@th08@@QAEXXZ"
 target = 0x00432170
 
 [[units.relocations]]
@@ -84272,7 +84354,7 @@ target = 0x0045EA00
 [[units.relocations]]
 offset = 0x8A5
 type = "REL32"
-symbol = "?FUN_00432170@Bullet@th08@@QAEXXZ"
+symbol = "?Deactivate@Bullet@th08@@QAEXXZ"
 target = 0x00432170
 
 [[units.relocations]]
@@ -84302,8 +84384,9 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 0x98B
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x9EF
@@ -84578,7 +84661,7 @@ target = 0x00431AA2
 [[units]]
 name = "bullet-manager-spawn-pattern-dispatch"
 object = "build/objdiff/reimpl/BulletManager.obj"
-symbol = "th08::BulletManager::FUN_00430e10"
+symbol = "th08::BulletManager::SpawnBulletPattern"
 target_address = 0x00430E10
 size = 0x103
 
@@ -84615,7 +84698,7 @@ target = 0x0044C1B0
 [[units.relocations]]
 offset = 0xBF
 type = "REL32"
-symbol = "th08::BulletManager::FUN_0042f5f0"
+symbol = "th08::BulletManager::SpawnSingleBullet"
 target = 0x0042F5F0
 
 [[units.relocations]]
@@ -84633,7 +84716,7 @@ target = 0x0045D660
 [[units]]
 name = "bullet-manager-spawn-single-bullet"
 object = "build/objdiff/reimpl/BulletManager.obj"
-symbol = "th08::BulletManager::FUN_0042f5f0"
+symbol = "th08::BulletManager::SpawnSingleBullet"
 target_address = 0x0042F5F0
 size = 0x85A
 compare_size = 0x87E
@@ -84755,8 +84838,9 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 0x386
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x39C
@@ -84899,7 +84983,7 @@ target = 0x0042FF70
 [[units.relocations]]
 offset = 0x7E7
 type = "REL32"
-symbol = "?FUN_0042ffc0@Bullet@th08@@QAEXXZ"
+symbol = "?AdvanceTransformProgram@Bullet@th08@@QAEXXZ"
 target = 0x0042FFC0
 
 [[units.relocations]]
@@ -85040,7 +85124,7 @@ size = 0x43
 [[units]]
 name = "bullet-transform-program-runner"
 object = "build/objdiff/reimpl/BulletManager.obj"
-symbol = "?FUN_0042ffc0@Bullet@th08@@QAEXXZ"
+symbol = "?AdvanceTransformProgram@Bullet@th08@@QAEXXZ"
 target_address = 0x0042FFC0
 size = 0x81B
 compare_size = 0x86F
@@ -85078,8 +85162,9 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x2B9
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x2E1
@@ -85198,7 +85283,7 @@ target = 0x00F54E90
 [[units.relocations]]
 offset = 0x7BF
 type = "REL32"
-symbol = "th08::BulletManager::FUN_00430e10"
+symbol = "th08::BulletManager::SpawnBulletPattern"
 target = 0x00430E10
 
 [[units.relocations]]
@@ -85800,14 +85885,16 @@ target = 0x004069F0
 [[units.relocations]]
 offset = 0xBAC
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0xBBE
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0xBD5
@@ -86106,8 +86193,9 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x1010
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x1015
@@ -86244,8 +86332,9 @@ target = 0x00406D10
 [[units.relocations]]
 offset = 0x112C
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x1131
@@ -89325,8 +89414,9 @@ target = 0x0040C7D0
 [[units.relocations]]
 offset = 0xBE
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0xCD
@@ -89337,8 +89427,9 @@ target = 0x00423D70
 [[units.relocations]]
 offset = 0xD3
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0xE2
@@ -89446,8 +89537,9 @@ target = 0x0040C7D0
 [[units.relocations]]
 offset = 0xCA
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0xD9
@@ -89458,8 +89550,9 @@ target = 0x00423D70
 [[units.relocations]]
 offset = 0xDF
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0xEE
@@ -97210,14 +97303,16 @@ target = 0x0045B8B0
 [[units.relocations]]
 offset = 0x67F
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x69A
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x74E
@@ -101513,8 +101608,9 @@ target = 0x004143C0
 [[units.relocations]]
 offset = 0x196
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x1A9
@@ -101525,8 +101621,9 @@ target = 0x00409120
 [[units.relocations]]
 offset = 0x1C8
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x1DB
@@ -101718,8 +101815,9 @@ target = 0x004143C0
 [[units.relocations]]
 offset = 0x192
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x1A5
@@ -101730,8 +101828,9 @@ target = 0x00409120
 [[units.relocations]]
 offset = 0x1C4
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x1D7
@@ -101947,8 +102046,9 @@ target = 0x004B456C
 [[units.relocations]]
 offset = 0x1A4
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x1B7
@@ -101959,8 +102059,9 @@ target = 0x00409120
 [[units.relocations]]
 offset = 0x1D6
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x1E9
@@ -102606,26 +102707,30 @@ target = 0x004090D0
 [[units.relocations]]
 offset = 0x77
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x9A
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0xBB
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0xDC
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units]]
 name = "enemy-phase-health-transition-0042b490"
@@ -105648,8 +105753,9 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 0x4F
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x68
@@ -105660,8 +105766,9 @@ target = 0x0043EDB0
 [[units.relocations]]
 offset = 0x7A
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0xAE
@@ -105690,8 +105797,9 @@ target = 0x0040E390
 [[units.relocations]]
 offset = 0x162
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x17B
@@ -105702,8 +105810,9 @@ target = 0x0043EDB0
 [[units.relocations]]
 offset = 0x18D
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x1C7
@@ -106154,7 +106263,7 @@ target = 0x00F54E90
 [[units.relocations]]
 offset = 0x44E
 type = "REL32"
-symbol = "?FUN_00430e10@BulletManager@th08@@QAEHPAUBulletSpawnDescriptor@2@@Z"
+symbol = "?SpawnBulletPattern@BulletManager@th08@@QAEHPAUBulletSpawnDescriptor@2@@Z"
 target = 0x00430E10
 
 [[units]]
@@ -110868,8 +110977,9 @@ target = 0x0045E430
 [[units.relocations]]
 offset = 0xD0
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0xF2
@@ -110892,8 +111002,9 @@ target = 0x0045E430
 [[units.relocations]]
 offset = 0x145
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x167
@@ -110977,8 +111088,9 @@ target = 0x0045E430
 [[units.relocations]]
 offset = 0xDE
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0xFD
@@ -111007,8 +111119,9 @@ target = 0x0045E430
 [[units.relocations]]
 offset = 0x18C
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x1AE
@@ -111114,8 +111227,9 @@ target = 0x004B4338
 [[units.relocations]]
 offset = 0x26
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units]]
 name = "ecl-ex-callback-00424fc0"
@@ -111303,8 +111417,9 @@ target = 0x004B4338
 [[units.relocations]]
 offset = 0x1A
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x21
@@ -111339,8 +111454,9 @@ target = 0x00F54E90
 [[units.relocations]]
 offset = 0x76
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x85
@@ -111382,8 +111498,9 @@ target = 0x004B4338
 [[units.relocations]]
 offset = 0x1B
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0x67
@@ -111412,14 +111529,16 @@ target = 0x004B4338
 [[units.relocations]]
 offset = 0xB3
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0xB9
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0xBF
@@ -111442,8 +111561,9 @@ target = 0x017CE8FC
 [[units.relocations]]
 offset = 0xDB
 type = "DIR32"
-symbol = "?g_EclGameTimeScale@th08@@3MA"
-target = 0x017CE8E0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x188
 
 [[units.relocations]]
 offset = 0xE6

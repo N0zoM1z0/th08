@@ -294,8 +294,8 @@ void __fastcall UpdateFantasyOrbBomb(Player *player)
                     }
             }
 
-            workItem->position.x += g_EclGameTimeScale * workItem->motion.x;
-            workItem->position.y += g_EclGameTimeScale * workItem->motion.y;
+            workItem->position.x += g_Supervisor.framerateMultiplier * workItem->motion.x;
+            workItem->position.y += g_Supervisor.framerateMultiplier * workItem->motion.y;
         }
     }
 

@@ -855,8 +855,8 @@ i32 Player::UpdateMovementAndOptions()
 
     this->currentHorizontalSpeed = horizontalSpeed;
     this->currentVerticalSpeed = verticalSpeed;
-    this->velocity.x = horizontalSpeed * g_EclGameTimeScale;
-    this->velocity.y = verticalSpeed * g_EclGameTimeScale;
+    this->velocity.x = horizontalSpeed * g_Supervisor.framerateMultiplier;
+    this->velocity.y = verticalSpeed * g_Supervisor.framerateMultiplier;
     this->position.operator float *()[0] += this->velocity.x;
     this->position.operator float *()[1] += this->velocity.y;
 
@@ -913,7 +913,7 @@ i32 Player::UpdateMovementAndOptions()
                                        : (f32)this->timerE2AE8 / 15.0f);
                 if (this->optionModeFlag == 0)
                     gaugeDelta = -gaugeDelta;
-                g_GameManager.AddToYoukaiGauge((i32)((f32)gaugeDelta * g_EclGameTimeScale), 0);
+                g_GameManager.AddToYoukaiGauge((i32)((f32)gaugeDelta * g_Supervisor.framerateMultiplier), 0);
                 this->timerE2AE8++;
             }
         }
@@ -935,7 +935,7 @@ i32 Player::UpdateMovementAndOptions()
                     else if (!g_GameManager.GaugeIsModeratelyHuman()) gaugeDelta = 2;
                     else if (!g_GameManager.GaugeIsExtremelyHuman()) gaugeDelta = 3;
                     else gaugeDelta = 5;
-                    g_GameManager.AddToYoukaiGauge((i32)((f32)gaugeDelta * g_EclGameTimeScale), 0);
+                    g_GameManager.AddToYoukaiGauge((i32)((f32)gaugeDelta * g_Supervisor.framerateMultiplier), 0);
                 }
             }
             else
@@ -3123,9 +3123,9 @@ void Player::UpdateShots()
         }
 
         slot->position.operator float *()[0] +=
-            *reinterpret_cast<f32 *>(0x17CE8E0) * slot->velocity.x;
+            g_Supervisor.framerateMultiplier * slot->velocity.x;
         slot->position.operator float *()[1] +=
-            *reinterpret_cast<f32 *>(0x17CE8E0) * slot->velocity.y;
+            g_Supervisor.framerateMultiplier * slot->velocity.y;
 
         if (slot->shotType != 4 && slot->shotType != 5)
         {

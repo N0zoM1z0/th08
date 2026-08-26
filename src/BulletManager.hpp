@@ -268,17 +268,17 @@ enum BulletState
 struct Bullet
 {
     Bullet();
-    void FUN_00432170();
-    void FUN_0042ffc0();
-    void FUN_00432390();
-    void FUN_004325a0();
-    void FUN_004326e0();
-    void FUN_00432830();
-    void FUN_00432460();
-    void FUN_00432210();
-    void FUN_004322b0();
-    void FUN_00432aa0();
-    void FUN_004329f0();
+    void Deactivate();
+    void AdvanceTransformProgram();
+    void UpdatePolarAcceleration();
+    void UpdateAbsoluteDirectionChange();
+    void UpdateAimedDirectionChange();
+    void UpdateBoundaryBounce();
+    void UpdateRelativeDirectionChange();
+    void UpdateDeceleration();
+    void UpdateVectorAcceleration();
+    void UpdateVerticalWrap();
+    void UpdateHorizontalWrap();
     ZunResult DrawSingleBullet();
 
     BulletTypeSprites sprites;
@@ -357,10 +357,10 @@ struct BulletManager
     void bulletmanager_fun_00415c60();
     void RemoveAllBullets(i32 mode);
     i32 DespawnBullets(i32 maxScore, i32 awardLaserItems);
-    void FUN_004321b0();
-    i32 FUN_0042f5f0(BulletSpawnDescriptor *descriptor, i32 index1, i32 index2, f32 angleToPlayer);
+    void ClearDrawBuckets();
+    i32 SpawnSingleBullet(BulletSpawnDescriptor *descriptor, i32 index1, i32 index2, f32 angleToPlayer);
     void RemoveBulletsInRadius(const Float3 *position, f32 radius);
-    i32 FUN_00430e10(BulletSpawnDescriptor *descriptor);
+    i32 SpawnBulletPattern(BulletSpawnDescriptor *descriptor);
     Laser *SpawnLaserPattern(BulletSpawnDescriptor *descriptor);
 
     static ZunResult RegisterChain(char *bulletAnmPath);

@@ -67,8 +67,6 @@ extern i32 g_GuiMessageStageMode;
 
 
 
-extern f32 g_EclGameTimeScale;
-
 
 
 
@@ -392,8 +390,8 @@ i32 __fastcall EffectRandomSplashInit(AnmVm *effect)
     reinterpret_cast<Effect *>(effect)->vector2.operator float *()[1] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) / 12.0f;
     reinterpret_cast<Effect *>(effect)->vector2.operator float *()[2] = 0.0f;
     reinterpret_cast<Effect *>(effect)->vector3 = -reinterpret_cast<Effect *>(effect)->vector2 / 19.0f;
-    reinterpret_cast<Effect *>(effect)->vector2 *= g_EclGameTimeScale;
-    reinterpret_cast<Effect *>(effect)->vector3 *= g_EclGameTimeScale;
+    reinterpret_cast<Effect *>(effect)->vector2 *= g_Supervisor.framerateMultiplier;
+    reinterpret_cast<Effect *>(effect)->vector3 *= g_Supervisor.framerateMultiplier;
     return 0;
 }
 
@@ -412,8 +410,8 @@ i32 __fastcall EffectRandomSplashBigInit(AnmVm *effect)
     reinterpret_cast<Effect *>(effect)->vector2.operator float *()[1] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) * 4.0f / 33.0f;
     reinterpret_cast<Effect *>(effect)->vector2.operator float *()[2] = 0.0f;
     reinterpret_cast<Effect *>(effect)->vector3 = -reinterpret_cast<Effect *>(effect)->vector2 / 20.0f;
-    reinterpret_cast<Effect *>(effect)->vector2 *= g_EclGameTimeScale;
-    reinterpret_cast<Effect *>(effect)->vector3 *= g_EclGameTimeScale;
+    reinterpret_cast<Effect *>(effect)->vector2 *= g_Supervisor.framerateMultiplier;
+    reinterpret_cast<Effect *>(effect)->vector3 *= g_Supervisor.framerateMultiplier;
     return 0;
 }
 
@@ -497,8 +495,8 @@ i32 __fastcall FUN_00426280(Effect *effect)
     effect->vector3.x = g_Rng.GetRandomF32SignedInRange(0.0001f);
     effect->vector3.y = g_Rng.GetRandomF32SignedInRange(0.0001f);
     effect->vector3.z = -0.0003f;
-    effect->vector2 = effect->vector2 * g_EclGameTimeScale;
-    effect->vector3 = effect->vector3 * g_EclGameTimeScale;
+    effect->vector2 = effect->vector2 * g_Supervisor.framerateMultiplier;
+    effect->vector3 = effect->vector3 * g_Supervisor.framerateMultiplier;
     effect->drawGroup = 1;
     effect->vm.pos2.x = -9999.0f;
     effect->vm.posInitial.x = 0.0f;
@@ -573,8 +571,8 @@ i32 __fastcall FUN_00426720(Effect *effect)
     effect->vector3.x = g_Rng.GetRandomF32SignedInRange(0.0001f);
     effect->vector3.y = g_Rng.GetRandomF32SignedInRange(0.0001f);
     effect->vector3.z = -0.0003f;
-    effect->vector2 = effect->vector2 * g_EclGameTimeScale;
-    effect->vector3 = effect->vector3 * g_EclGameTimeScale;
+    effect->vector2 = effect->vector2 * g_Supervisor.framerateMultiplier;
+    effect->vector3 = effect->vector3 * g_Supervisor.framerateMultiplier;
     effect->drawGroup = 1;
     effect->vm.pos2.x = -9999.0f;
     effect->vm.posInitial.x = 0.0f;
@@ -731,8 +729,8 @@ i32 __fastcall FUN_00426e70(Effect *effect)
     effect->vector2.z = g_Rng.GetRandomF32InRange(0.1f) + 0.03f + effect->vector1.z;
     effect->vector3.x = g_Rng.GetRandomF32InRange(0.0002f) - 0.0001f;
     effect->vector3.y = g_Rng.GetRandomF32InRange(0.0002f) - 0.0001f;
-    effect->vector2 = effect->vector2 * g_EclGameTimeScale;
-    effect->vector3 = effect->vector3 * g_EclGameTimeScale;
+    effect->vector2 = effect->vector2 * g_Supervisor.framerateMultiplier;
+    effect->vector3 = effect->vector3 * g_Supervisor.framerateMultiplier;
     effect->drawGroup = 1;
     effect->vm.rotation.z = g_Rng.GetRandomF32InRange(ZUN_2PI) - ZUN_PI;
     effect->vm.rotation.x = g_Rng.GetRandomF32InRange(0.03141592815518379f) - 0.015707964077591896f;
