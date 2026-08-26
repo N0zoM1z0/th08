@@ -96,9 +96,9 @@ i32 TargetEnemyHelpersOverlay::HasParentChain()
 // FUNCTION: th08 0x0041F040
 void Spellcard::SetStoredVector(f32 x, f32 y, f32 z)
 {
-    *(f32 *)(this->spellEffect + 0x2A4) = x;
-    *(f32 *)(this->spellEffect + 0x2A8) = y;
-    *(f32 *)(this->spellEffect + 0x2AC) = z;
+    this->spellEffect->position.x = x;
+    this->spellEffect->position.y = y;
+    this->spellEffect->position.z = z;
 }
 
 struct SpellcardEclFlagBits

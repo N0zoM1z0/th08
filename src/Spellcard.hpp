@@ -8,6 +8,8 @@
 
 namespace th08
 {
+struct Effect;
+
 // Naming scheme:
 // SPELLCARD_[STAGE]_[ENEMY]_(LAST SPELL)(NUM)(DIFFICULTY)
 // [] fields are mandatory
@@ -272,8 +274,8 @@ struct Spellcard
     u8 unknown_044[0x30];            // +0x044
     char spellCommentLine1[64];      // +0x074
     char spellCommentLine2[64];      // +0x0B4
-    u8 *spellEffect;                 // +0x0F4
-    u8 *rewardEffect;                // +0x0F8
+    Effect *spellEffect;             // +0x0F4
+    Effect *rewardEffect;            // +0x0F8
     i32 bonusProgress;               // +0x0FC
     i32 bonusCounter;                // +0x100
     i32 bonusAward;                  // +0x104

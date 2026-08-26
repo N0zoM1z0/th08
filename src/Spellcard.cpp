@@ -37,30 +37,6 @@ struct SpellcardResetFlagBits
     u32 rest : 24;
 };
 
-struct SpellEffectDword
-{
-    u32 value;
-};
-
-struct SpellEffectCopyOverlay
-{
-    u8 pad000[0x208];
-    SpellEffectDword field208;
-    SpellEffectDword field20C;
-    u8 pad210[0x28];
-    SpellEffectDword field238;
-    SpellEffectDword field23C;
-    u8 pad240[0x28];
-    SpellEffectDword field268;
-    u8 pad26C[0xC];
-    SpellEffectDword field278;
-    u8 pad27C[0x98];
-    SpellEffectDword field314;
-    u8 pad318[0x8];
-    SpellEffectDword field320;
-    u8 pad324[0x8];
-    SpellEffectDword field32C;
-};
 // clang-format off
 // TODO: stop clang-format from fucking with whitespace formatting
 
@@ -701,23 +677,23 @@ ZunResult Spellcard::Init()
     g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->vm2374, 2);
     g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->vm20D0, 4);
 
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm120) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm668) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vmBB0) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm10F8) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm3C4) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm90C) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vmE54) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm139C) + 0x220) = 0;
+    this->vm120.currentInstruction = NULL;
+    this->vm668.currentInstruction = NULL;
+    this->vmBB0.currentInstruction = NULL;
+    this->vm10F8.currentInstruction = NULL;
+    this->vm3C4.currentInstruction = NULL;
+    this->vm90C.currentInstruction = NULL;
+    this->vmE54.currentInstruction = NULL;
+    this->vm139C.currentInstruction = NULL;
 
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm120) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm668) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vmBB0) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm10F8) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm3C4) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm90C) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vmE54) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm139C) + 0x1F8) &= ~1u;
+    this->vm120.flagsWord &= ~1u;
+    this->vm668.flagsWord &= ~1u;
+    this->vmBB0.flagsWord &= ~1u;
+    this->vm10F8.flagsWord &= ~1u;
+    this->vm3C4.flagsWord &= ~1u;
+    this->vm90C.flagsWord &= ~1u;
+    this->vmE54.flagsWord &= ~1u;
+    this->vm139C.flagsWord &= ~1u;
 
     this->vm10F8.fontWidth = 15;
     this->vm10F8.fontHeight = 15;
@@ -793,26 +769,24 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
     }
 
     this->flags &= ~0x800;
-    this->spellEffect = reinterpret_cast<u8 *>(g_EffectManager.FUN_00425870(
+    this->spellEffect = reinterpret_cast<Effect *>(g_EffectManager.FUN_00425870(
         (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0) ? 52 : 39,
         reinterpret_cast<D3DXVECTOR3 *>(
             &reinterpret_cast<Enemy *>(this->activeEnemy)->position), 1, 1, -1));
-    *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x50) = 0;
-    *reinterpret_cast<ZunTimer *>(this->spellEffect + 0xA4) = 100;
-    *reinterpret_cast<u8 *>(this->spellEffect + 0xF8) = 6;
-    *reinterpret_cast<f32 *>(this->spellEffect + 0x238) = 8.0f;
-    *reinterpret_cast<f32 *>(this->spellEffect + 0x244) = 256.0f;
-    *reinterpret_cast<f32 *>(this->spellEffect + 0x23C) = 64.0f;
-    *reinterpret_cast<f32 *>(this->spellEffect + 0x248) = 0.0f;
-    *reinterpret_cast<f32 *>(this->spellEffect + 0x20C) = 64.0f;
-    *reinterpret_cast<D3DXVECTOR3 *>(this->spellEffect + 0x2A4) =
-        *reinterpret_cast<D3DXVECTOR3 *>(
-            &reinterpret_cast<Enemy *>(this->activeEnemy)->position);
-    *reinterpret_cast<i32 *>(this->spellEffect + 0x324) = 64;
-    *reinterpret_cast<i32 *>(this->spellEffect + 0x318) = 0;
-    *reinterpret_cast<f32 *>(this->spellEffect + 0x314) = 256.0f;
-    *reinterpret_cast<f32 *>(this->spellEffect + 0x320) = 15.0f;
-    *reinterpret_cast<f32 *>(this->spellEffect + 0x334) = 6.0f;
+    this->spellEffect->vm.interpCurrentTimers[AnmInterp_Pos] = 0;
+    this->spellEffect->vm.interpEndTimers[AnmInterp_Pos] = 100;
+    this->spellEffect->vm.interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOutQuartic;
+    this->spellEffect->vm.posInitial.x = 8.0f;
+    this->spellEffect->vm.posFinal.x = 256.0f;
+    this->spellEffect->vm.posInitial.y = 64.0f;
+    this->spellEffect->vm.posFinal.y = 0.0f;
+    this->spellEffect->vm.pos.y = 64.0f;
+    this->spellEffect->position = reinterpret_cast<Enemy *>(this->activeEnemy)->position;
+    this->spellEffect->vertexSegmentCount = 64;
+    this->spellEffect->angle = 0.0f;
+    this->spellEffect->radius = 256.0f;
+    this->spellEffect->shapeThickness = 15.0f;
+    this->spellEffect->radialWaveCount = 6.0f;
 
     reinterpret_cast<SpellcardFlagBits *>(&this->flags)->unk5 =
         (*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3;
@@ -1188,7 +1162,7 @@ void Spellcard::EndSpell()
                 {
                     *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFE7F;
                 }
-                *reinterpret_cast<u8 *>(this->spellEffect + 0x350) = 0;
+                this->spellEffect->active = 0;
                 this->spellEffect = NULL;
                 g_Gui.ShowPopupText(0, (((this->flags >> 5) & 1) != 0) + 5);
             }
@@ -1201,31 +1175,30 @@ void Spellcard::EndSpell()
                         (*reinterpret_cast<u32 *>(&g_GameManager.flags) & 0xFFFFFE7F) | 0x100;
                 }
 
-                *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x50) = 0;
-                *reinterpret_cast<ZunTimer *>(this->spellEffect + 0xA4) = 30;
-                *reinterpret_cast<u8 *>(this->spellEffect + 0xF8) = 6;
-                *reinterpret_cast<u32 *>(this->spellEffect + 0x238) =
-                    *reinterpret_cast<u32 *>(this->spellEffect + 0x314);
-                *reinterpret_cast<f32 *>(this->spellEffect + 0x244) = 256.0f;
-                *reinterpret_cast<u32 *>(this->spellEffect + 0x23C) =
-                    *reinterpret_cast<u32 *>(this->spellEffect + 0x32C);
-                *reinterpret_cast<u32 *>(this->spellEffect + 0x248) = 0;
-                *reinterpret_cast<u32 *>(this->spellEffect + 0x208) =
-                    *reinterpret_cast<u32 *>(this->spellEffect + 0x314);
-                *reinterpret_cast<u32 *>(this->spellEffect + 0x20C) =
-                    *reinterpret_cast<u32 *>(this->spellEffect + 0x32C);
+                this->spellEffect->vm.interpCurrentTimers[AnmInterp_Pos] = 0;
+                this->spellEffect->vm.interpEndTimers[AnmInterp_Pos] = 30;
+                this->spellEffect->vm.interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOutQuartic;
+                *reinterpret_cast<u32 *>(&this->spellEffect->vm.posInitial.x) =
+                    *reinterpret_cast<u32 *>(&this->spellEffect->radius);
+                this->spellEffect->vm.posFinal.x = 256.0f;
+                *reinterpret_cast<u32 *>(&this->spellEffect->vm.posInitial.y) =
+                    *reinterpret_cast<u32 *>(&this->spellEffect->secondaryRadius);
+                *reinterpret_cast<u32 *>(&this->spellEffect->vm.posFinal.y) = 0;
+                *reinterpret_cast<u32 *>(&this->spellEffect->vm.pos.x) =
+                    *reinterpret_cast<u32 *>(&this->spellEffect->radius);
+                *reinterpret_cast<u32 *>(&this->spellEffect->vm.pos.y) =
+                    *reinterpret_cast<u32 *>(&this->spellEffect->secondaryRadius);
 
-                *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x5C) = 0;
-                *reinterpret_cast<ZunTimer *>(this->spellEffect + 0xB0) = 60;
-                *reinterpret_cast<u8 *>(this->spellEffect + 0xF9) = 3;
-                reinterpret_cast<AnmVm *>(this->spellEffect)->color1Initial =
-                    reinterpret_cast<AnmVm *>(this->spellEffect)->color1;
-                *reinterpret_cast<u8 *>(this->spellEffect + 0x27E) = 0xD0;
-                *reinterpret_cast<u8 *>(this->spellEffect + 0x27D) = 0x80;
-                *reinterpret_cast<u8 *>(this->spellEffect + 0x27C) = 0xA0;
-                *reinterpret_cast<u8 *>(this->spellEffect + 0x27F) = 0x20;
-                *reinterpret_cast<f32 *>(this->spellEffect + 0x334) = 6.0f;
-                *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x338) = 0;
+                this->spellEffect->vm.interpCurrentTimers[AnmInterp_RGB1] = 0;
+                this->spellEffect->vm.interpEndTimers[AnmInterp_RGB1] = 60;
+                this->spellEffect->vm.interpModes[AnmInterp_RGB1] = AnmInterpMode_EaseInQuartic;
+                this->spellEffect->vm.color1Initial = this->spellEffect->vm.color1;
+                this->spellEffect->vm.color1Final.r = 0xD0;
+                this->spellEffect->vm.color1Final.g = 0x80;
+                this->spellEffect->vm.color1Final.b = 0xA0;
+                this->spellEffect->vm.color1Final.a = 0x20;
+                this->spellEffect->radialWaveCount = 6.0f;
+                this->spellEffect->timer = 0;
 
                 this->rewardEffect = this->spellEffect;
                 this->spellEffect = NULL;
@@ -1328,86 +1301,86 @@ i32 Spellcard::OnUpdateImpl()
                 this->bonusProgress -= (u32)this->bonusProgress % 10u;
             }
         }
-        else if (*reinterpret_cast<i16 *>(this->spellEffect + 0x214) == 221)
+        else if (this->spellEffect->vm.activeSpriteIndex == 221)
         {
-            g_AsciiManagerDemoAnm0577EB4->SetSprite(reinterpret_cast<AnmVm *>(this->spellEffect), 222);
-            *reinterpret_cast<f32 *>(this->spellEffect + 0x270) = 4.0f;
-            *reinterpret_cast<f32 *>(this->spellEffect + 0x18) = 4.0f;
+            g_AsciiManagerDemoAnm0577EB4->SetSprite(&this->spellEffect->vm, 222);
+            this->spellEffect->vm.scaleFinal.x = 4.0f;
+            this->spellEffect->vm.scale.x = 4.0f;
         }
 
-        if (*reinterpret_cast<f32 *>(this->spellEffect + 0x334) != 0.0f)
+        if (this->spellEffect->radialWaveCount != 0.0f)
         {
-            *reinterpret_cast<u32 *>(this->spellEffect + 0x32C) =
-                *reinterpret_cast<u32 *>(this->spellEffect + 0x20C);
-            if (*reinterpret_cast<f32 *>(this->spellEffect + 0x32C) == 0.0f)
+            *reinterpret_cast<u32 *>(&this->spellEffect->secondaryRadius) =
+                *reinterpret_cast<u32 *>(&this->spellEffect->vm.pos.y);
+            if (this->spellEffect->secondaryRadius == 0.0f)
             {
-                *reinterpret_cast<f32 *>(this->spellEffect + 0x334) = 0.0f;
+                this->spellEffect->radialWaveCount = 0.0f;
             }
         }
 
-        if ((i32)*reinterpret_cast<ZunTimer *>(this->spellEffect + 0xA4) == 0)
+        if ((i32)this->spellEffect->vm.interpEndTimers[AnmInterp_Pos] == 0)
         {
-            *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x50) = 0;
-            *reinterpret_cast<ZunTimer *>(this->spellEffect + 0xA4) =
+            this->spellEffect->vm.interpCurrentTimers[AnmInterp_Pos] = 0;
+            this->spellEffect->vm.interpEndTimers[AnmInterp_Pos] =
                 reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames - 100;
-            *reinterpret_cast<u8 *>(this->spellEffect + 0xF8) = 0;
-            *reinterpret_cast<f32 *>(this->spellEffect + 0x238) = 256.0f;
-            *reinterpret_cast<f32 *>(this->spellEffect + 0x244) = 8.0f;
-            *reinterpret_cast<f32 *>(this->spellEffect + 0x23C) = 0.0f;
-            *reinterpret_cast<f32 *>(this->spellEffect + 0x248) = 0.0f;
+            this->spellEffect->vm.interpModes[AnmInterp_Pos] = AnmInterpMode_Linear;
+            this->spellEffect->vm.posInitial.x = 256.0f;
+            this->spellEffect->vm.posFinal.x = 8.0f;
+            this->spellEffect->vm.posInitial.y = 0.0f;
+            this->spellEffect->vm.posFinal.y = 0.0f;
         }
 
         if (((this->flags >> 6) & 1) == 0)
         {
-        *reinterpret_cast<Float3 *>(this->spellEffect + 0x2E0) =
-            ((reinterpret_cast<Enemy *>(this->activeEnemy)->position +
-              reinterpret_cast<Enemy *>(this->activeEnemy)->positionOffset) -
-             *reinterpret_cast<Float3 *>(this->spellEffect + 0x2E0)) /
-                16.0f +
-            *reinterpret_cast<Float3 *>(this->spellEffect + 0x2E0);
-        *reinterpret_cast<f32 *>(this->spellEffect + 0x2E8) = 0.0f;
+            this->spellEffect->vector5 =
+                ((reinterpret_cast<Enemy *>(this->activeEnemy)->position +
+                  reinterpret_cast<Enemy *>(this->activeEnemy)->positionOffset) -
+                 this->spellEffect->vector5) /
+                    16.0f +
+                this->spellEffect->vector5;
+            this->spellEffect->vector5.z = 0.0f;
         }
 
-        *reinterpret_cast<f32 *>(this->spellEffect + 0x318) = AddNormalizeAngle(
-            *reinterpret_cast<f32 *>(this->spellEffect + 0x318),
+        this->spellEffect->angle = AddNormalizeAngle(
+            this->spellEffect->angle,
             this->FUN_00417860() ? -0.031415928f : 0.015707964f);
     }
     else if (this->rewardEffect != NULL)
     {
-        if (*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) == 30)
+        if (this->rewardEffect->timer == 30)
         {
-            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x80) = 0;
-            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0xD4) = 20;
-            *reinterpret_cast<u8 *>(this->rewardEffect + 0xFC) = 1;
-            *reinterpret_cast<u32 *>(this->rewardEffect + 0x268) =
-                *reinterpret_cast<u32 *>(this->rewardEffect + 0x320);
-            *reinterpret_cast<f32 *>(this->rewardEffect + 0x270) = 64.0f;
-            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x50) = 0;
-            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0xA4) = 100;
-            *reinterpret_cast<u8 *>(this->rewardEffect + 0xF8) = 4;
-            *reinterpret_cast<u32 *>(this->rewardEffect + 0x238) =
-                *reinterpret_cast<u32 *>(this->rewardEffect + 0x314);
-            *reinterpret_cast<f32 *>(this->rewardEffect + 0x244) = 0.0f;
-            *reinterpret_cast<u32 *>(this->rewardEffect + 0x23C) =
-                *reinterpret_cast<u32 *>(this->rewardEffect + 0x32C);
-            *reinterpret_cast<f32 *>(this->rewardEffect + 0x248) = 60.0f;
-            *reinterpret_cast<u32 *>(this->rewardEffect + 0x208) =
-                *reinterpret_cast<u32 *>(this->rewardEffect + 0x314);
-            *reinterpret_cast<u32 *>(this->rewardEffect + 0x20C) =
-                *reinterpret_cast<u32 *>(this->rewardEffect + 0x32C);
+            this->rewardEffect->vm.interpCurrentTimers[AnmInterp_Scale] = 0;
+            this->rewardEffect->vm.interpEndTimers[AnmInterp_Scale] = 20;
+            this->rewardEffect->vm.interpModes[AnmInterp_Scale] = AnmInterpMode_EaseIn;
+            *reinterpret_cast<u32 *>(&this->rewardEffect->vm.scaleInitial.x) =
+                *reinterpret_cast<u32 *>(&this->rewardEffect->shapeThickness);
+            this->rewardEffect->vm.scaleFinal.x = 64.0f;
+            this->rewardEffect->vm.interpCurrentTimers[AnmInterp_Pos] = 0;
+            this->rewardEffect->vm.interpEndTimers[AnmInterp_Pos] = 100;
+            this->rewardEffect->vm.interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOut;
+            *reinterpret_cast<u32 *>(&this->rewardEffect->vm.posInitial.x) =
+                *reinterpret_cast<u32 *>(&this->rewardEffect->radius);
+            this->rewardEffect->vm.posFinal.x = 0.0f;
+            *reinterpret_cast<u32 *>(&this->rewardEffect->vm.posInitial.y) =
+                *reinterpret_cast<u32 *>(&this->rewardEffect->secondaryRadius);
+            this->rewardEffect->vm.posFinal.y = 60.0f;
+            *reinterpret_cast<u32 *>(&this->rewardEffect->vm.pos.x) =
+                *reinterpret_cast<u32 *>(&this->rewardEffect->radius);
+            *reinterpret_cast<u32 *>(&this->rewardEffect->vm.pos.y) =
+                *reinterpret_cast<u32 *>(&this->rewardEffect->secondaryRadius);
         }
-        else if (*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) == 60)
+        else if (this->rewardEffect->timer == 60)
         {
-            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x80) = 0;
-            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0xD4) = 70;
-            *reinterpret_cast<u8 *>(this->rewardEffect + 0xFC) = 1;
-            *reinterpret_cast<u32 *>(this->rewardEffect + 0x268) =
-                *reinterpret_cast<u32 *>(this->rewardEffect + 0x320);
-            *reinterpret_cast<f32 *>(this->rewardEffect + 0x270) = 0.0f;
+            this->rewardEffect->vm.interpCurrentTimers[AnmInterp_Scale] = 0;
+            this->rewardEffect->vm.interpEndTimers[AnmInterp_Scale] = 70;
+            this->rewardEffect->vm.interpModes[AnmInterp_Scale] = AnmInterpMode_EaseIn;
+            *reinterpret_cast<u32 *>(&this->rewardEffect->vm.scaleInitial.x) =
+                *reinterpret_cast<u32 *>(&this->rewardEffect->shapeThickness);
+            this->rewardEffect->vm.scaleFinal.x = 0.0f;
         }
-        else if (*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) == 130)
+        else if (this->rewardEffect->timer == 130)
         {
-            *reinterpret_cast<u8 *>(this->rewardEffect + 0x350) = 0;
+            this->rewardEffect->active = 0;
             this->rewardEffect = NULL;
             g_Gui.ShowSpellcardBonus(this->bonusAward);
             g_GameManager.AddScore(this->bonusAward);
@@ -1422,44 +1395,43 @@ i32 Spellcard::OnUpdateImpl()
 
         if (this->rewardEffect != NULL)
         {
-            if (*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) <= 80)
+            if (this->rewardEffect->timer <= 80)
             {
-                *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0) =
+                this->rewardEffect->vector5 =
                     (reinterpret_cast<const Float3 &>(EclOperands::g_TargetPlayerPosition017D61AC) -
-                     *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0)) /
+                     this->rewardEffect->vector5) /
                         16.0f +
-                    *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0);
-                *reinterpret_cast<f32 *>(this->rewardEffect + 0x2E8) = 0.0f;
-                *reinterpret_cast<f32 *>(this->rewardEffect + 0x318) = AddNormalizeAngle(
-                    *reinterpret_cast<f32 *>(this->rewardEffect + 0x318), -0.015707964f);
+                    this->rewardEffect->vector5;
+                this->rewardEffect->vector5.z = 0.0f;
+                this->rewardEffect->angle = AddNormalizeAngle(
+                    this->rewardEffect->angle, -0.015707964f);
             }
             else
             {
-                *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0) =
+                this->rewardEffect->vector5 =
                     (reinterpret_cast<const Float3 &>(EclOperands::g_TargetPlayerPosition017D61AC) -
-                     *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0)) /
+                     this->rewardEffect->vector5) /
                         4.0f +
-                    *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0);
-                *reinterpret_cast<f32 *>(this->rewardEffect + 0x2E8) = 0.0f;
-                *reinterpret_cast<f32 *>(this->rewardEffect + 0x318) = AddNormalizeAngle(
-                    *reinterpret_cast<f32 *>(this->rewardEffect + 0x318), -0.05235988f);
+                    this->rewardEffect->vector5;
+                this->rewardEffect->vector5.z = 0.0f;
+                this->rewardEffect->angle = AddNormalizeAngle(
+                    this->rewardEffect->angle, -0.05235988f);
             }
 
-            *reinterpret_cast<u32 *>(this->rewardEffect + 0x32C) =
-                *reinterpret_cast<u32 *>(this->rewardEffect + 0x20C);
+            *reinterpret_cast<u32 *>(&this->rewardEffect->secondaryRadius) =
+                *reinterpret_cast<u32 *>(&this->rewardEffect->vm.pos.y);
 
-            if (*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) > 8 &&
+            if (this->rewardEffect->timer > 8 &&
                 this->pendingTimeOrbs > 0)
             {
                 D3DXVECTOR3 itemPosition;
                 f32 angle =
-                    ((f32)*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) - 10.0f) *
+                    ((f32)this->rewardEffect->timer - 10.0f) *
                         6.2831855f / 40.0f -
                     1.5707964f;
                 angle = AddNormalizeAngle(angle, 0.0f);
                 reinterpret_cast<Float3 *>(&itemPosition)->FromAngleMagnitude(angle, 128.0f);
-                *reinterpret_cast<Float3 *>(&itemPosition) +=
-                    *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0);
+                *reinterpret_cast<Float3 *>(&itemPosition) += this->rewardEffect->vector5;
                 itemPosition.z = 0.0f;
 
                 itemCount = this->pendingTimeOrbs > 7 ? 7 : this->pendingTimeOrbs;
@@ -1472,8 +1444,7 @@ i32 Spellcard::OnUpdateImpl()
 
                 angle = AddNormalizeAngle(angle, 3.1415927f);
                 reinterpret_cast<Float3 *>(&itemPosition)->FromAngleMagnitude(angle, 128.0f);
-                *reinterpret_cast<Float3 *>(&itemPosition) +=
-                    *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0);
+                *reinterpret_cast<Float3 *>(&itemPosition) += this->rewardEffect->vector5;
                 itemPosition.z = 0.0f;
 
                 itemCount = this->pendingTimeOrbs > 7 ? 7 : this->pendingTimeOrbs;

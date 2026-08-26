@@ -450,9 +450,22 @@ bytes** and its full **5,689-byte code-plus-table extent**.  A single-job
 non-reuse cold build passes **1,106 / 1,106**, the normal VC7 image links, and
 the complete i386 Linux build plus fixed-layout verifier passes.
 
-The next dense semantic owners are the remaining GameManager/Spellcard
-cross-state fields, then EnemyManagerUpdate and AsciiManager presentation
-state.
+The Spellcard effect/reward lifecycle is now accepted across `Init`,
+`StartSpell`, `EndSpell`, `OnUpdateImpl`, and the ECL-facing
+`SetStoredVector`.  `Spellcard +0xF4/+0xF8` are typed `Effect *` owners; their
+ANM position/RGB/scale interpolation banks, sprite/visibility state, effect
+position/tracking vector, ring geometry, lifetime timer, and active state
+replace every raw effect offset in `Spellcard.cpp`.  Target-visible float
+field transfers remain explicit dword bit copies.  Focused Spellcard replay
+passes **29 / 29**, focused EclManager replay **10 / 10**, and a required
+single-job non-reuse cold replay passes **1,106 / 1,106**.  The normal VC7
+image links, and the complete i386 Linux build plus fixed-layout verifier
+passes.  `Spellcard.cpp` is now zero-candidate in all router categories; the
+unproven `Spellcard::unknown_044` range remains neutral.  The whole-source
+router is 87 raw-member, 82 absolute, 271 anonymous, and 49 opaque candidates.
+
+The next dense semantic owners are EnemyManagerUpdate and AsciiManager
+presentation state, followed by the remaining GameManager setup/runtime views.
 
 Select the next independent field family with:
 

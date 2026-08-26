@@ -1802,3 +1802,51 @@ protocol without changing instruction order, state transitions, or accepted
 bytes.  This closes the deferred message-protocol portion of the GUI model; it
 does not claim meanings for unconsumed payload bytes or whole-program semantic
 completion.
+
+### Spellcard effect and reward lifecycle — 2026-08-27
+
+Scope: `Spellcard::Init @ 0x00414590`, `StartSpell @ 0x004152A0`,
+`EndSpell @ 0x004161B0`, `OnUpdateImpl @ 0x00416B90`, and the ECL-facing
+`SetStoredVector @ 0x0041F040`.  The owner boundary spans `Spellcard.hpp`,
+`Spellcard.cpp`, and the one `EclManager.cpp` consumer.
+
+Observed: `Spellcard +0xF4/+0xF8` are pointers to the existing asserted
+`Effect` object, whose `AnmVm` prefix occupies `+0x000..+0x2A3`.  The target
+uses the VM position, RGB1, and scale interpolation timer/mode banks; initial,
+final, and current position/scale/color fields; active sprite and visibility
+state; and the Effect position, tracking vector, radius, angle, thickness,
+segment count, secondary radius, radial-wave count, lifetime timer, and active
+byte.  `SetStoredVector` independently confirms the three dword writes to
+`Effect::position @ +0x2A4/+0x2A8/+0x2AC`.
+
+The transition from the active spell ring to its capture-reward effect is now
+expressed through those owners: position and color interpolation are restarted,
+the ring tracks the enemy while active and the player after capture, and its
+timer drives scale changes, time-orb emission, and final release.  Target-
+visible dword copies between float fields deliberately retain bit-copy source
+shape instead of introducing x87 loads/stores.  The eight VM script resets in
+`Init` use `currentInstruction` and `flagsWord` directly.  An unused local raw
+effect overlay was removed; it had no consumers and supplied no independent
+layout evidence.
+
+Unknowns: `Spellcard::unknown_044` remains neutral storage because this batch
+does not establish its contents.  No new interpretation is claimed for the
+packed Spellcard flag bits outside their already-observed behavior.
+
+VC7 oracle: focused `SpellCard.obj` replay passes **29 / 29**.  In particular,
+`StartSpell` is **2,483 / 2,483**, `EndSpell` **2,331 / 2,331**, and
+`OnUpdateImpl` **3,269 / 3,269**.  Focused `EclManager.obj` replay passes
+**10 / 10**, including `SetStoredVector` at **67 / 67**.  The required
+single-job non-reuse cold build of all 75 comparison objects passes
+**1,106 / 1,106 exact**, and the normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies ELF32/ET_EXEC/i386 plus every fixed
+target-owned layout symbol.
+
+Result: `Spellcard.cpp` now has zero raw-member, absolute-address, anonymous-
+identifier, or opaque-storage candidates.  The sole Spellcard-header candidate
+is the intentionally retained unknown range.  The whole-source router reports
+87 raw-member, 82 absolute-address, 271 anonymous-identifier, and 49 opaque-
+storage candidates.  These counts route the next bounded owner; they are not a
+semantic-completion percentage.
