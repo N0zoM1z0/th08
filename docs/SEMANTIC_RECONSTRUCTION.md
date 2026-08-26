@@ -275,12 +275,14 @@ borrowed; TH08's own table copies, indirect calls, gates, and state transitions
 establish the two five-callback groups and all final offsets.
 
 Inference: `deathbombWindowFrames`, `bombInputLockFrames`, `isInUse`,
-`callbackSetIndex`, `duration`, `bombsConsumed`, `calcCallbacks`,
+`callbackVariant`, `duration`, `bombsConsumed`, `updateCallbacks`,
 `drawCallbacks`, and `deathbombEffectVm` are high-confidence dataflow names.
 `bombsConsumed` is supported by all three writes but has no independent read in
-the authored source, so its downstream purpose remains unknown.  The
-individual meanings of callback slots 0..4, `PlayerBombState + 0xC`, and
-`Player + 0xE2B20/+0xE2B24` remain deliberately unnamed.
+the authored source, so its downstream purpose remains unknown.  The later
+PlayerBomb callback reconstruction identifies slots 0..4 as primary,
+secondary, their two deathbomb variants, and the special callback.  The
+`PlayerBombState + 0xC` and `Player + 0xE2B20/+0xE2B24` fields remain
+deliberately unnamed.
 
 Layout: assertions pin the SHT deathbomb default at `+0x8`, the 0x14 callback
 group size, Bomb state fields/groups through `workItems + 0x4C`, Player fields
@@ -1378,3 +1380,63 @@ absolute-address candidates remain 82.  In `Player.cpp`/`Player.hpp`, the raw
 candidate count falls from 151 to 80 and opaque storage from 18 to 11.  These
 are routing aids, not completion percentages.  The next coherent family is the
 PlayerBomb work-item protocol.
+
+### PlayerBomb callback and work-item protocol — 2026-08-26
+
+Scope: the complete Bomb callback cluster at `0x0040BC60..0x004142C0`, its
+24-row callback table at `0x004C7AD0`, the shared `PlayerBombState` and
+`PlayerBombWorkItem` layouts, and the three timer predicates used by these
+state machines and adjacent Enemy/ECL/Player consumers.
+
+Observed: `Player::AddedCallback` selects two adjacent callback rows with
+`shotType * 2`; the first is copied to `updateCallbacks` and the second to
+`drawCallbacks`.  Each row contains five function pointers selected by
+`callbackVariant`.  Bomb acceptance establishes variants 0/1 as the primary
+and secondary Bombs, adds two for the corresponding deathbomb callbacks, and
+uses variant 4 for the special path.  The 16 update callbacks independently
+embed their Shift-JIS cut-in names, directly identifying Fantasy Orb, Fantasy
+Seal -Blink-, Quadruple Barrier, Eternal Night Quadruple Barrier, Master
+Spark, Artful Sacrifice, Final Spark, Return Inanimateness, Killing Doll,
+Night Mist Phantom Killer, Red the Nightless Castle, Scarlet Devil, Slash of
+the Present World, Slash of Future Eternity, Ghastly Dream, and Eternal Sleep
+in Dreamland.  Their paired draw callbacks and table relocations establish the
+remaining names without relying on adjacent-version labels.
+
+The `0x16F0`-byte work item now pins `state/stateTimer @ +0x0/+0x4`,
+`motionStep/speed/angle @ +0x8/+0xC/+0x10`, current `position @ +0x14`, 32
+path points at `+0x20`, generic motion vectors at `+0x1A0/+0x1AC`, eight VMs
+at `+0x1B8`, the effect VM at `+0x16D8`, its timer at `+0x16DC`, and damage
+and cancellation regions at `+0x16E8/+0x16EC`.  The generic `motion` and
+`auxiliaryMotion` names are deliberate because different character callbacks
+reuse those vectors as velocity, interpolation endpoints, or radial state.
+`stateTimer` is proven by its reset and 30-frame finishing transition; the
+three-state enum records only the observed inactive, active, and finishing
+values.
+
+The callback aggregate is now `PlayerBombCallbackSet`, and
+`g_PlayerBombCallbacksByShotType` makes the shot-type ownership explicit.
+`ZunTimer::HasTicked`, `JustReached`, and `IsPeriodic` state their exact
+predicates: `current != previous`, the same gate plus equality to one frame,
+and the same gate plus a zero interval remainder.  TH06's independently named
+`HasTicked` is corroboration only; all three TH08 bodies and call boundaries
+remain target-attested.
+
+Unknowns: `PlayerBombState +0xC` remains opaque, and the downstream purpose of
+its saved tail position is not yet visible in authored source.  Effect fields
+accessed through an `AnmVm *` at `+0x2A4..+0x35C` belong to the adjacent shared
+Effect/ANM semantic batch and are not guessed here.
+
+Oracle status at the focused checkpoint: accepted replay passes **59 / 59**
+for PlayerBomb, **77 / 77** for Player, **39 / 39** for EnemyManager, and
+**33 / 33** for the ECL extension object.  The renamed table relocations,
+timer call relocations, and all spell callbacks remain exact.  The final cold
+aggregate passes **1,105 / 1,105** in a single-job cold VC7 replay, the normal
+VC7 image links, and the complete i386 Linux build and fixed-layout verifier
+pass.
+
+Result: the PlayerBomb/Player header router falls from 168 to 160 raw-member
+candidates and from 11 to 10 opaque-storage candidates.  The principal gain
+is that all 24 callback rows and their 32 distinct update/draw functions are
+now readable by gameplay role instead of address.  These counts remain routing
+aids, not completion percentages.  The next coherent family is the Effect and
+ANM interpolation state consumed by these callbacks.

@@ -294,6 +294,22 @@ and fixed-layout verifier passed.  Remaining neutral fields include SHT
 header `+0x20/+0x34`, shot `+0x448/+0x46D/+0x471`, and the wider PlayerBomb
 work-item protocol.  PlayerBomb is the next coherent Player-core family.
 
+The third accepted Player-core batch closes the PlayerBomb callback protocol.
+The 24-row table is now `g_PlayerBombCallbacksByShotType`, with typed
+primary/secondary/deathbomb/special variants and paired update/draw rows.  The
+16 Shift-JIS cut-in strings directly name the Fantasy Orb, Quadruple Barrier,
+Master Spark/Artful Sacrifice, Killing Doll/Red Nightless Castle, and
+Present-World Slash/Ghastly Dream families plus their deathbomb forms.  The
+`0x16F0` work item now exposes its state timer, motion scalar/vector state,
+path points, eight VMs, effect VM, timer, and damage/cancellation regions with
+assertions through `+0x16EC`.  Timer predicates are now `HasTicked`,
+`JustReached`, and `IsPeriodic`.  Focused replay passes PlayerBomb **59 / 59**,
+Player **77 / 77**, EnemyManager **39 / 39**, and ECL extensions **33 / 33**.
+The single-job cold VC7 replay passes **1,105 / 1,105**, the normal VC7 image
+links, and the complete i386 Linux build and fixed-layout verifier pass.
+`PlayerBombState +0xC` remains unknown; the next coherent batch is shared
+Effect/ANM interpolation state.
+
 Select the next independent field family with:
 
 ```bash

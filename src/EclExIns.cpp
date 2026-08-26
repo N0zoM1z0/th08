@@ -557,7 +557,7 @@ void __fastcall FUN_00424730(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     Float3 innerSize(590.0f, 128.0f, 0.0f);
     Float3 position(outerSize.x / 2.0f + origin.x, origin.y, 0.0f);
 
-    if (reinterpret_cast<Enemy *>(enemy)->bossTimer.FUN_0040ebc0(12))
+    if (reinterpret_cast<Enemy *>(enemy)->bossTimer.IsPeriodic(12))
     {
         g_Player.CalcLaserHitbox(&position, &innerSize, &origin,
                                  *reinterpret_cast<f32 *>(enemy->bytes + 0x14), 1);
@@ -582,7 +582,7 @@ void __fastcall FUN_00424820(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     Float3 innerSize(590.0f, 192.0f, 0.0f);
     Float3 position(outerSize.x / 2.0f + origin.x, origin.y, 0.0f);
 
-    if (reinterpret_cast<Enemy *>(enemy)->bossTimer.FUN_0040ebc0(12))
+    if (reinterpret_cast<Enemy *>(enemy)->bossTimer.IsPeriodic(12))
     {
         g_Player.CalcLaserHitbox(&position, &innerSize, &origin,
                                  *reinterpret_cast<f32 *>(enemy->bytes + 0x14), 1);
@@ -606,7 +606,7 @@ void __fastcall FUN_00424910(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     Float3 innerSize(590.0f, 224.0f, 0.0f);
     Float3 position(outerSize.x / 2.0f + origin.x, origin.y, 0.0f);
 
-    if (reinterpret_cast<Enemy *>(enemy)->bossTimer.FUN_0040ebc0(12))
+    if (reinterpret_cast<Enemy *>(enemy)->bossTimer.IsPeriodic(12))
     {
         g_Player.CalcLaserHitbox(&position, &innerSize, &origin,
                                  *reinterpret_cast<f32 *>(enemy->bytes + 0x14), 1);

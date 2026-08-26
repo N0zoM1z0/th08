@@ -119,22 +119,29 @@ struct PlayerOptionState
 };
 C_ASSERT(sizeof(PlayerOptionState) == 0x2F4);
 
+enum PlayerBombWorkItemState
+{
+    PLAYER_BOMB_WORK_ITEM_INACTIVE,
+    PLAYER_BOMB_WORK_ITEM_ACTIVE,
+    PLAYER_BOMB_WORK_ITEM_FINISHING,
+};
+
 struct PlayerBombWorkItem
 {
-    i32 active;
-    unknown_fields(0x0004, 4);
-    f32 rotationStep;
+    i32 state;
+    i32 stateTimer;
+    f32 motionStep;
     f32 speed;
-    f32 rotation;
-    Float3 anchor;
-    Float3 points[32];
+    f32 angle;
     Float3 position;
-    Float3 velocity;
+    Float3 pathPoints[32];
+    Float3 motion;
+    Float3 auxiliaryMotion;
     AnmVm vms[8];
-    AnmVm *effect;
+    AnmVm *effectVm;
     ZunTimer timer;
-    PlayerUnkStruct0x40 *damageSlot;
-    PlayerUnkStruct0x40 *cancelSlot;
+    PlayerUnkStruct0x40 *damageRegion;
+    PlayerUnkStruct0x40 *cancelRegion;
 
     PlayerBombWorkItem();
 };
@@ -152,26 +159,48 @@ enum PlayerMovementDirection
     PLAYER_DIRECTION_DOWN_RIGHT,
 };
 C_ASSERT(sizeof(PlayerBombWorkItem) == 0x16F0);
+C_ASSERT(offsetof(PlayerBombWorkItem, stateTimer) == 0x4);
+C_ASSERT(offsetof(PlayerBombWorkItem, motionStep) == 0x8);
+C_ASSERT(offsetof(PlayerBombWorkItem, speed) == 0xC);
+C_ASSERT(offsetof(PlayerBombWorkItem, angle) == 0x10);
+C_ASSERT(offsetof(PlayerBombWorkItem, position) == 0x14);
+C_ASSERT(offsetof(PlayerBombWorkItem, pathPoints) == 0x20);
+C_ASSERT(offsetof(PlayerBombWorkItem, motion) == 0x1A0);
+C_ASSERT(offsetof(PlayerBombWorkItem, auxiliaryMotion) == 0x1AC);
+C_ASSERT(offsetof(PlayerBombWorkItem, vms) == 0x1B8);
+C_ASSERT(offsetof(PlayerBombWorkItem, effectVm) == 0x16D8);
+C_ASSERT(offsetof(PlayerBombWorkItem, timer) == 0x16DC);
+C_ASSERT(offsetof(PlayerBombWorkItem, damageRegion) == 0x16E8);
+C_ASSERT(offsetof(PlayerBombWorkItem, cancelRegion) == 0x16EC);
 
 typedef void (__fastcall *PlayerBombCallback)(Player *player);
 
-struct PlayerBombCallbacks
+struct PlayerBombCallbackSet
 {
     PlayerBombCallback callbacks[5];
 };
-C_ASSERT(sizeof(PlayerBombCallbacks) == 0x14);
+C_ASSERT(sizeof(PlayerBombCallbackSet) == 0x14);
+
+enum PlayerBombCallbackVariant
+{
+    PLAYER_BOMB_CALLBACK_PRIMARY,
+    PLAYER_BOMB_CALLBACK_SECONDARY,
+    PLAYER_BOMB_CALLBACK_PRIMARY_DEATHBOMB,
+    PLAYER_BOMB_CALLBACK_SECONDARY_DEATHBOMB,
+    PLAYER_BOMB_CALLBACK_SPECIAL,
+};
 
 struct PlayerBombState
 {
     i32 isInUse;
-    i32 callbackSetIndex;
+    i32 callbackVariant;
     i32 duration;
     unknown_fields(0x00000C, 0x4);
     i32 bombsConsumed;
-    i32 secondaryWorkIndex;
+    i32 secondaryWorkCursor;
     ZunTimer timer;
-    PlayerBombCallbacks calcCallbacks;
-    PlayerBombCallbacks drawCallbacks;
+    PlayerBombCallbackSet updateCallbacks;
+    PlayerBombCallbackSet drawCallbacks;
     PlayerBombWorkItem workItems[128];
     Float3 tailPosition;
 
@@ -179,11 +208,11 @@ struct PlayerBombState
 };
 C_ASSERT(sizeof(PlayerBombState) == 0xB7858);
 C_ASSERT(offsetof(PlayerBombState, isInUse) == 0x0);
-C_ASSERT(offsetof(PlayerBombState, callbackSetIndex) == 0x4);
+C_ASSERT(offsetof(PlayerBombState, callbackVariant) == 0x4);
 C_ASSERT(offsetof(PlayerBombState, duration) == 0x8);
 C_ASSERT(offsetof(PlayerBombState, bombsConsumed) == 0x10);
 C_ASSERT(offsetof(PlayerBombState, timer) == 0x18);
-C_ASSERT(offsetof(PlayerBombState, calcCallbacks) == 0x24);
+C_ASSERT(offsetof(PlayerBombState, updateCallbacks) == 0x24);
 C_ASSERT(offsetof(PlayerBombState, drawCallbacks) == 0x38);
 C_ASSERT(offsetof(PlayerBombState, workItems) == 0x4C);
 
@@ -374,7 +403,7 @@ struct Player
     PlayerUnkStruct0x40 *FUN_0044df00(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
     PlayerUnkStruct0x40 *FUN_0044dfa0(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
     PlayerUnkStruct0x40 *FUN_0044e040(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
-    void FUN_0040bf00();
+    void SpawnBombStateEffect();
     void FUN_0044c5b0();
     void FUN_0044d2c0();
 

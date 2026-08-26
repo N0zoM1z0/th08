@@ -43,64 +43,64 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 12, g_Player2ShtFile) = {
     "ply02a.sht", "ply02as.sht", "ply03a.sht", "ply03as.sht",
 };
 
-void __fastcall FUN_0040c010(Player *player);
-void __fastcall FUN_0040c820(Player *player);
-void __fastcall FUN_0040c910(Player *player);
-void __fastcall FUN_0040d010(Player *player);
-void __fastcall FUN_0040d100(Player *player);
-void __fastcall FUN_0040d310(Player *player);
-void __fastcall FUN_0040d430(Player *player);
-void __fastcall FUN_0040d950(Player *player);
-void __fastcall FUN_0040d970(Player *player);
-void __fastcall FUN_0040dee0(Player *player);
-void __fastcall FUN_0040e3b0(Player *player);
-void __fastcall FUN_0040e610(Player *player);
-void __fastcall FUN_0040e780(Player *player);
-void __fastcall FUN_0040ee10(Player *player);
-void __fastcall FUN_0040f550(Player *player);
-void __fastcall FUN_0040f570(Player *player);
-void __fastcall FUN_0040fcb0(Player *player);
-void __fastcall FUN_0040fcd0(Player *player);
-void __fastcall FUN_00410300(Player *player);
-void __fastcall FUN_004103f0(Player *player);
-void __fastcall FUN_00410ac0(Player *player);
-void __fastcall FUN_00410c40(Player *player);
-void __fastcall FUN_00410fe0(Player *player);
-void __fastcall FUN_004113a0(Player *player);
-void __fastcall FUN_00411b10(Player *player);
-void __fastcall FUN_00412300(Player *player);
-void __fastcall FUN_004123d0(Player *player);
-void __fastcall FUN_00412fa0(Player *player);
-void __fastcall FUN_00413140(Player *player);
-void __fastcall FUN_00413890(Player *player);
-void __fastcall FUN_00413990(Player *player);
-void __fastcall FUN_004142c0(Player *player);
+void __fastcall UpdateFantasyOrbBomb(Player *player);
+void __fastcall DrawFantasyOrbBomb(Player *player);
+void __fastcall UpdateFantasySealBlinkDeathbomb(Player *player);
+void __fastcall DrawFantasySealBlinkDeathbomb(Player *player);
+void __fastcall UpdateDissolveSpell(Player *player);
+void __fastcall DrawDissolveSpell(Player *player);
+void __fastcall UpdateArtfulSacrificeBomb(Player *player);
+void __fastcall DrawDefaultBombTint(Player *player);
+void __fastcall UpdateReturnInanimatenessDeathbomb(Player *player);
+void __fastcall DrawReturnInanimatenessDeathbomb(Player *player);
+void __fastcall UpdateMasterSparkBomb(Player *player);
+void __fastcall DrawMasterSparkBomb(Player *player);
+void __fastcall UpdateFinalSparkDeathbomb(Player *player);
+void __fastcall UpdateRedNightlessCastleBomb(Player *player);
+void __fastcall DrawRedNightlessCastleBomb(Player *player);
+void __fastcall UpdateScarletDevilDeathbomb(Player *player);
+void __fastcall DrawScarletDevilDeathbomb(Player *player);
+void __fastcall UpdateKillingDollBomb(Player *player);
+void __fastcall DrawKillingDollBomb(Player *player);
+void __fastcall UpdateNightMistPhantomKillerDeathbomb(Player *player);
+void __fastcall DrawNightMistPhantomKillerDeathbomb(Player *player);
+void __fastcall UpdateQuadrupleBarrierBomb(Player *player);
+void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player);
+void __fastcall DrawEternalNightQuadrupleBarrierDeathbomb(Player *player);
+void __fastcall UpdateSlashOfPresentWorldBomb(Player *player);
+void __fastcall DrawSlashOfPresentWorldBomb(Player *player);
+void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player);
+void __fastcall DrawSlashOfFutureEternityDeathbomb(Player *player);
+void __fastcall UpdateGhastlyDreamBomb(Player *player);
+void __fastcall DrawGhastlyDreamBomb(Player *player);
+void __fastcall UpdateEternalSleepInDreamlandDeathbomb(Player *player);
+void __fastcall DrawEternalSleepInDreamlandDeathbomb(Player *player);
 
-DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerBombCallbacks, 24, g_PlayerBombCallbackTable) = {
-    {{FUN_0040c010, FUN_00410c40, FUN_0040c910, FUN_00410fe0, FUN_0040d100}},
-    {{FUN_0040c820, FUN_0040d950, FUN_0040d010, FUN_004113a0, FUN_0040d310}},
-    {{FUN_0040e3b0, FUN_0040d430, FUN_0040e780, FUN_0040d970, FUN_0040d100}},
-    {{FUN_0040e610, FUN_0040d950, FUN_0040e610, FUN_0040dee0, FUN_0040d310}},
-    {{FUN_0040fcd0, FUN_0040ee10, FUN_004103f0, FUN_0040f570, FUN_0040d100}},
-    {{FUN_00410300, FUN_0040f550, FUN_00410ac0, FUN_0040fcb0, FUN_0040d310}},
-    {{FUN_00411b10, FUN_00413140, FUN_004123d0, FUN_00413990, FUN_0040d100}},
-    {{FUN_00412300, FUN_00413890, FUN_00412fa0, FUN_004142c0, FUN_0040d310}},
-    {{FUN_0040c010, FUN_0040c010, FUN_0040c910, FUN_0040c910, FUN_0040d100}},
-    {{FUN_0040c820, FUN_0040c820, FUN_0040d010, FUN_0040d010, FUN_0040d310}},
-    {{FUN_00410c40, FUN_00410c40, FUN_00410fe0, FUN_00410fe0, FUN_0040d100}},
-    {{FUN_0040d950, FUN_0040d950, FUN_004113a0, FUN_004113a0, FUN_0040d310}},
-    {{FUN_0040e3b0, FUN_0040e3b0, FUN_0040e780, FUN_0040e780, FUN_0040d100}},
-    {{FUN_0040e610, FUN_0040e610, FUN_0040e610, FUN_0040e610, FUN_0040d310}},
-    {{FUN_0040d430, FUN_0040d430, FUN_0040d970, FUN_0040d970, FUN_0040d100}},
-    {{FUN_0040d950, FUN_0040d950, FUN_0040dee0, FUN_0040dee0, FUN_0040d310}},
-    {{FUN_0040fcd0, FUN_0040fcd0, FUN_004103f0, FUN_004103f0, FUN_0040d100}},
-    {{FUN_00410300, FUN_00410300, FUN_00410ac0, FUN_00410ac0, FUN_0040d310}},
-    {{FUN_0040ee10, FUN_0040ee10, FUN_0040f570, FUN_0040f570, FUN_0040d100}},
-    {{FUN_0040f550, FUN_0040f550, FUN_0040fcb0, FUN_0040fcb0, FUN_0040d310}},
-    {{FUN_00411b10, FUN_00411b10, FUN_004123d0, FUN_004123d0, FUN_0040d100}},
-    {{FUN_00412300, FUN_00412300, FUN_00412fa0, FUN_00412fa0, FUN_0040d310}},
-    {{FUN_00413140, FUN_00413140, FUN_00413990, FUN_00413990, FUN_0040d100}},
-    {{FUN_00413890, FUN_00413890, FUN_004142c0, FUN_004142c0, FUN_0040d310}},
+DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerBombCallbackSet, 24, g_PlayerBombCallbacksByShotType) = {
+    {{UpdateFantasyOrbBomb, UpdateQuadrupleBarrierBomb, UpdateFantasySealBlinkDeathbomb, UpdateEternalNightQuadrupleBarrierDeathbomb, UpdateDissolveSpell}},
+    {{DrawFantasyOrbBomb, DrawDefaultBombTint, DrawFantasySealBlinkDeathbomb, DrawEternalNightQuadrupleBarrierDeathbomb, DrawDissolveSpell}},
+    {{UpdateMasterSparkBomb, UpdateArtfulSacrificeBomb, UpdateFinalSparkDeathbomb, UpdateReturnInanimatenessDeathbomb, UpdateDissolveSpell}},
+    {{DrawMasterSparkBomb, DrawDefaultBombTint, DrawMasterSparkBomb, DrawReturnInanimatenessDeathbomb, DrawDissolveSpell}},
+    {{UpdateKillingDollBomb, UpdateRedNightlessCastleBomb, UpdateNightMistPhantomKillerDeathbomb, UpdateScarletDevilDeathbomb, UpdateDissolveSpell}},
+    {{DrawKillingDollBomb, DrawRedNightlessCastleBomb, DrawNightMistPhantomKillerDeathbomb, DrawScarletDevilDeathbomb, DrawDissolveSpell}},
+    {{UpdateSlashOfPresentWorldBomb, UpdateGhastlyDreamBomb, UpdateSlashOfFutureEternityDeathbomb, UpdateEternalSleepInDreamlandDeathbomb, UpdateDissolveSpell}},
+    {{DrawSlashOfPresentWorldBomb, DrawGhastlyDreamBomb, DrawSlashOfFutureEternityDeathbomb, DrawEternalSleepInDreamlandDeathbomb, DrawDissolveSpell}},
+    {{UpdateFantasyOrbBomb, UpdateFantasyOrbBomb, UpdateFantasySealBlinkDeathbomb, UpdateFantasySealBlinkDeathbomb, UpdateDissolveSpell}},
+    {{DrawFantasyOrbBomb, DrawFantasyOrbBomb, DrawFantasySealBlinkDeathbomb, DrawFantasySealBlinkDeathbomb, DrawDissolveSpell}},
+    {{UpdateQuadrupleBarrierBomb, UpdateQuadrupleBarrierBomb, UpdateEternalNightQuadrupleBarrierDeathbomb, UpdateEternalNightQuadrupleBarrierDeathbomb, UpdateDissolveSpell}},
+    {{DrawDefaultBombTint, DrawDefaultBombTint, DrawEternalNightQuadrupleBarrierDeathbomb, DrawEternalNightQuadrupleBarrierDeathbomb, DrawDissolveSpell}},
+    {{UpdateMasterSparkBomb, UpdateMasterSparkBomb, UpdateFinalSparkDeathbomb, UpdateFinalSparkDeathbomb, UpdateDissolveSpell}},
+    {{DrawMasterSparkBomb, DrawMasterSparkBomb, DrawMasterSparkBomb, DrawMasterSparkBomb, DrawDissolveSpell}},
+    {{UpdateArtfulSacrificeBomb, UpdateArtfulSacrificeBomb, UpdateReturnInanimatenessDeathbomb, UpdateReturnInanimatenessDeathbomb, UpdateDissolveSpell}},
+    {{DrawDefaultBombTint, DrawDefaultBombTint, DrawReturnInanimatenessDeathbomb, DrawReturnInanimatenessDeathbomb, DrawDissolveSpell}},
+    {{UpdateKillingDollBomb, UpdateKillingDollBomb, UpdateNightMistPhantomKillerDeathbomb, UpdateNightMistPhantomKillerDeathbomb, UpdateDissolveSpell}},
+    {{DrawKillingDollBomb, DrawKillingDollBomb, DrawNightMistPhantomKillerDeathbomb, DrawNightMistPhantomKillerDeathbomb, DrawDissolveSpell}},
+    {{UpdateRedNightlessCastleBomb, UpdateRedNightlessCastleBomb, UpdateScarletDevilDeathbomb, UpdateScarletDevilDeathbomb, UpdateDissolveSpell}},
+    {{DrawRedNightlessCastleBomb, DrawRedNightlessCastleBomb, DrawScarletDevilDeathbomb, DrawScarletDevilDeathbomb, DrawDissolveSpell}},
+    {{UpdateSlashOfPresentWorldBomb, UpdateSlashOfPresentWorldBomb, UpdateSlashOfFutureEternityDeathbomb, UpdateSlashOfFutureEternityDeathbomb, UpdateDissolveSpell}},
+    {{DrawSlashOfPresentWorldBomb, DrawSlashOfPresentWorldBomb, DrawSlashOfFutureEternityDeathbomb, DrawSlashOfFutureEternityDeathbomb, DrawDissolveSpell}},
+    {{UpdateGhastlyDreamBomb, UpdateGhastlyDreamBomb, UpdateEternalSleepInDreamlandDeathbomb, UpdateEternalSleepInDreamlandDeathbomb, UpdateDissolveSpell}},
+    {{DrawGhastlyDreamBomb, DrawGhastlyDreamBomb, DrawEternalSleepInDreamlandDeathbomb, DrawEternalSleepInDreamlandDeathbomb, DrawDissolveSpell}},
 };
 i32 __fastcall FUN_0044e3a0(Player *player, PlayerOptionState *option);
 i32 __fastcall FUN_0044ea40(Player *player, PlayerOptionState *option);
@@ -655,7 +655,7 @@ i32 Player::UpdateMovementAndOptions()
         this->movementDirection = PLAYER_DIRECTION_NONE;
 
     focus = this->bombState.isInUse
-                ? (this->bombState.callbackSetIndex & 1)
+                ? (this->bombState.callbackVariant & 1)
                 : (g_GuiMessageInputCurrent & 4);
 
     if (focus)
@@ -1146,7 +1146,7 @@ void Player::FUN_0044c650()
 
     if (this->bombState.isInUse != 0)
     {
-        if (this->bombState.timer.FUN_0040d3d0())
+        if (this->bombState.timer.HasTicked())
             g_Gui.flags.pointDisplayUpdateFrames = 2;
 
         if (this->bombState.timer >= this->bombState.duration)
@@ -1156,7 +1156,7 @@ void Player::FUN_0044c650()
             this->verticalSpeedMultiplier = 1.0f;
             this->horizontalSpeedMultiplier = 1.0f;
 
-            if (this->bombState.callbackSetIndex == 4)
+            if (this->bombState.callbackVariant == PLAYER_BOMB_CALLBACK_SPECIAL)
             {
                 *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFE7Fu;
                 for (i = 0; i < 8; i++)
@@ -1174,13 +1174,13 @@ void Player::FUN_0044c650()
         }
         else
         {
-            this->bombState.calcCallbacks.callbacks[this->bombState.callbackSetIndex](this);
+            this->bombState.updateCallbacks.callbacks[this->bombState.callbackVariant](this);
             this->bombState.timer++;
         }
 
-        if (this->bombState.callbackSetIndex < 4)
+        if (this->bombState.callbackVariant < PLAYER_BOMB_CALLBACK_SPECIAL)
         {
-            if ((this->bombState.callbackSetIndex & 1) != 0)
+            if ((this->bombState.callbackVariant & 1) != 0)
                 g_GameManager.AddToYoukaiGauge(26000 / this->bombState.duration, 1);
             else
                 g_GameManager.AddToYoukaiGauge(-26000 / this->bombState.duration, 1);
@@ -1209,7 +1209,7 @@ acceptBomb:
     *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x6) = 0;
     if (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0)
     {
-        this->bombState.callbackSetIndex = 4;
+        this->bombState.callbackVariant = PLAYER_BOMB_CALLBACK_SPECIAL;
     }
     else
     {
@@ -1222,13 +1222,13 @@ acceptBomb:
         *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFBFFu;
         g_AnmManager->SetMixColorDefault();
 
-        this->bombState.callbackSetIndex = this->optionModeFlag;
+        this->bombState.callbackVariant = this->optionModeFlag;
         if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4))
-            this->bombState.callbackSetIndex = 1 - this->bombState.callbackSetIndex;
+            this->bombState.callbackVariant = 1 - this->bombState.callbackVariant;
 
         if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4))
         {
-            this->bombState.callbackSetIndex += 2;
+            this->bombState.callbackVariant += 2;
             if (isForced)
             {
                 this->bombState.bombsConsumed = g_GameManager.GetBombsRemaining();
@@ -1265,7 +1265,7 @@ acceptBomb:
     this->bombState.duration = 999;
 
     {
-        this->bombState.calcCallbacks.callbacks[this->bombState.callbackSetIndex](this);
+        this->bombState.updateCallbacks.callbacks[this->bombState.callbackVariant](this);
     }
     this->bombState.timer++;
     g_GameManager.DecreaseSubrank(200);
@@ -1513,7 +1513,7 @@ ChainCallbackResult Player::OnDrawHighPrio(Player *player)
 
     if (player->bombState.isInUse != 0)
     {
-        player->bombState.drawCallbacks.callbacks[player->bombState.callbackSetIndex](player);
+        player->bombState.drawCallbacks.callbacks[player->bombState.callbackVariant](player);
     }
 
     if (!g_GameManager.showRetryMenu)
@@ -1603,8 +1603,8 @@ ZunResult Player::AddedCallback(Player *player)
     player->timerE2AD0 = 0;
     player->timerE2AE8 = 0;
 
-    player->bombState.calcCallbacks = g_PlayerBombCallbackTable[g_GameManager.shotType * 2];
-    player->bombState.drawCallbacks = g_PlayerBombCallbackTable[g_GameManager.shotType * 2 + 1];
+    player->bombState.updateCallbacks = g_PlayerBombCallbacksByShotType[g_GameManager.shotType * 2];
+    player->bombState.drawCallbacks = g_PlayerBombCallbacksByShotType[g_GameManager.shotType * 2 + 1];
 
     player->bombState.isInUse = 0;
     *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xE2B0C) = 0xBFC90FDB;
@@ -2822,7 +2822,7 @@ i32 __fastcall UpdateHomingShot(Player *player, PlayerShot *slot)
     f32 magnitude;
     if (slot->state == 1)
     {
-        if (player->tailPosition0.x > -100.0f && (i32)slot->timer < 40 && slot->timer.FUN_0040d3d0())
+        if (player->tailPosition0.x > -100.0f && (i32)slot->timer < 40 && slot->timer.HasTicked())
         {
             xDelta = player->tailPosition0.x - slot->position.operator float *()[0];
             yDelta = player->tailPosition0.y - slot->position.operator float *()[1];
@@ -3053,11 +3053,11 @@ void __fastcall Player::SpawnShots(i32 value)
 
     if (this->bombState.isInUse != 0 &&
         ((g_GameManager.shotType == 2 &&
-          (this->bombState.callbackSetIndex & 1) != 0) ||
+          (this->bombState.callbackVariant & 1) != 0) ||
          g_GameManager.shotType == 9) &&
         this->bombState.timer >= 60)
     {
-        table += ((this->bombState.callbackSetIndex & 2) ? 7 : 6);
+        table += ((this->bombState.callbackVariant & 2) ? 7 : 6);
     }
     else
     {
@@ -3244,7 +3244,7 @@ i32 Player::UpdateShooting()
         return 0;
     }
 
-    if (this->shotTimer.FUN_0040d3d0())
+    if (this->shotTimer.HasTicked())
     {
         if (*reinterpret_cast<i32 *>(0x17D6ED4) == 0 ||
             (g_GameManager.shotType != 1 && g_GameManager.shotType != 7 &&
@@ -3303,7 +3303,7 @@ i32 Player::CalcDamageToEnemy(Float3 *enemyPosition, Float3 *enemySize, i32 *hit
     PlayerShot *bullet;
 
     damage = 0;
-    if (!this->timer.FUN_0040d3d0())
+    if (!this->timer.HasTicked())
         return 0;
 
     PlayerBuildAabb(&enemyTopLeft, &enemyBottomRight, enemyPosition, enemySize);
@@ -3438,6 +3438,6 @@ void __fastcall PlayerBuildAabb(Float3 *topLeft, Float3 *bottomRight, const Floa
 // FUNCTION: th08 0x451d50
 i32 Player::IsBombShotSuppressed()
 {
-    return this->bombState.isInUse != 0 && this->bombState.callbackSetIndex == 4;
+    return this->bombState.isInUse != 0 && this->bombState.callbackVariant == PLAYER_BOMB_CALLBACK_SPECIAL;
 }
 } /* namespace th08 */

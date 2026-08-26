@@ -62698,7 +62698,7 @@ target = 0x00451D50
 [[units.relocations]]
 offset = 0x4D
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -62783,9 +62783,9 @@ symbol = "??4ZunTimer@th08@@QAEXH@Z"
 target = 0x004065F0
 
 [[units]]
-name = "zun-timer-fun-0040d3d0"
+name = "zun-timer-has-ticked"
 object = "build/PlayerBomb.obj"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target_address = 0x0040D3D0
 size = 0x1B
 
@@ -82327,7 +82327,7 @@ size = 1352
 [[units.relocations]]
 offset = 110
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -86503,7 +86503,7 @@ addend = 0x3DBA9
 [[units.relocations]]
 offset = 0x2E2
 type = "DIR32"
-symbol = "?g_PlayerBombCallbackTable@th08@@3PAUPlayerBombCallbacks@1@A"
+symbol = "?g_PlayerBombCallbacksByShotType@th08@@3PAUPlayerBombCallbackSet@1@A"
 target = 0x004C7AD0
 
 [[units.relocations]]
@@ -86516,7 +86516,7 @@ addend = 0x3DBA9
 [[units.relocations]]
 offset = 0x306
 type = "DIR32"
-symbol = "?g_PlayerBombCallbackTable@th08@@3PAUPlayerBombCallbacks@1@A"
+symbol = "?g_PlayerBombCallbacksByShotType@th08@@3PAUPlayerBombCallbackSet@1@A"
 target = 0x004C7AD0
 
 [[units.relocations]]
@@ -92360,7 +92360,7 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 0x3A
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -92767,9 +92767,9 @@ symbol = "??0ZunTimer@th08@@QAE@XZ"
 target = 0x004065A0
 
 [[units]]
-name = "player-bomb-background-color"
+name = "player-bomb-set-background-tint"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target_address = 0x0040BC60
 size = 0x1C2
 
@@ -92853,16 +92853,16 @@ target = 0x004E4030
 
 
 [[units]]
-name = "player-bomb-draw-white-flash"
+name = "player-bomb-draw-slash-present-world"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_00412300@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?DrawSlashOfPresentWorldBomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00412300
 size = 0xCF
 
 [[units.relocations]]
 offset = 0x1D
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 [[units.relocations]]
@@ -92874,7 +92874,7 @@ target = 0x0040B8E0
 [[units.relocations]]
 offset = 0x3F
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 [[units.relocations]]
@@ -92903,16 +92903,16 @@ target = 0x0045B1E0
 
 
 [[units]]
-name = "player-bomb-draw-red-flash"
+name = "player-deathbomb-draw-slash-future-eternity"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_00412fa0@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?DrawSlashOfFutureEternityDeathbomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00412FA0
 size = 0xCF
 
 [[units.relocations]]
 offset = 0x1D
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 [[units.relocations]]
@@ -92924,7 +92924,7 @@ target = 0x0040B8E0
 [[units.relocations]]
 offset = 0x3F
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 [[units.relocations]]
@@ -92952,16 +92952,16 @@ symbol = "?DrawSquare@ScreenEffect@th08@@SIXPAUZunRect@2@K@Z"
 target = 0x0045B1E0
 
 [[units]]
-name = "player-bomb-callback-0040c820"
+name = "player-bomb-draw-fantasy-orb"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040c820@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?DrawFantasyOrbBomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040C820
 size = 0xE6
 
 [[units.relocations]]
 offset = 0x12
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 [[units.relocations]]
@@ -92997,16 +92997,16 @@ symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00462FF0
 
 [[units]]
-name = "player-bomb-callback-0040d010"
+name = "player-deathbomb-draw-fantasy-seal-blink"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040d010@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?DrawFantasySealBlinkDeathbomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040D010
 size = 0xE9
 
 [[units.relocations]]
 offset = 0x12
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 [[units.relocations]]
@@ -93042,9 +93042,9 @@ symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00462FF0
 
 [[units]]
-name = "player-bomb-callback-0040d310"
+name = "player-bomb-draw-dissolve-spell"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040d310@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?DrawDissolveSpell@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040D310
 size = 0x79
 
@@ -93057,7 +93057,7 @@ target = 0x004066A0
 [[units.relocations]]
 offset = 0x2E
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 [[units.relocations]]
@@ -93069,28 +93069,28 @@ target = 0x0040D3B0
 [[units.relocations]]
 offset = 0x71
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 
 [[units]]
-name = "player-bomb-callback-0040d950"
+name = "player-bomb-draw-default-tint"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040d950@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?DrawDefaultBombTint@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040D950
 size = 0x18
 
 [[units.relocations]]
 offset = 0x10
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 
 [[units]]
-name = "player-bomb-callback-0040dee0"
+name = "player-deathbomb-draw-return-inanimateness"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040dee0@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?DrawReturnInanimatenessDeathbomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040DEE0
 size = 0x15D
 
@@ -93103,7 +93103,7 @@ target = 0x004066A0
 [[units.relocations]]
 offset = 0x3A
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 [[units.relocations]]
@@ -93121,7 +93121,7 @@ target = 0x0040D3B0
 [[units.relocations]]
 offset = 0xA7
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 [[units.relocations]]
@@ -93151,21 +93151,21 @@ target = 0x0045B1E0
 [[units.relocations]]
 offset = 0x155
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 
 [[units]]
-name = "player-bomb-callback-0040e610"
+name = "player-bomb-draw-master-spark"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040e610@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?DrawMasterSparkBomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040E610
 size = 0x16A
 
 [[units.relocations]]
 offset = 0x12
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 [[units.relocations]]
@@ -93243,44 +93243,44 @@ symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463210
 
 [[units]]
-name = "player-bomb-callback-0040f550"
+name = "player-bomb-draw-red-nightless-castle"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040f550@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?DrawRedNightlessCastleBomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040F550
 size = 0x18
 
 [[units.relocations]]
 offset = 0x10
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 
 [[units]]
-name = "player-bomb-callback-0040fcb0"
+name = "player-deathbomb-draw-scarlet-devil"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040fcb0@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?DrawScarletDevilDeathbomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040FCB0
 size = 0x18
 
 [[units.relocations]]
 offset = 0x10
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 
 [[units]]
-name = "player-bomb-callback-00410300"
+name = "player-bomb-draw-killing-doll"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_00410300@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?DrawKillingDollBomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00410300
 size = 0xE1
 
 [[units.relocations]]
 offset = 0x12
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 [[units.relocations]]
@@ -93316,16 +93316,16 @@ symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463210
 
 [[units]]
-name = "player-bomb-callback-00410ac0"
+name = "player-deathbomb-draw-night-mist-phantom-killer"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_00410ac0@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?DrawNightMistPhantomKillerDeathbomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00410AC0
 size = 0xE1
 
 [[units.relocations]]
 offset = 0x12
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 [[units.relocations]]
@@ -93361,16 +93361,16 @@ symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463210
 
 [[units]]
-name = "player-bomb-callback-004113a0"
+name = "player-deathbomb-draw-eternal-night-quadruple-barrier"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_004113a0@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?DrawEternalNightQuadrupleBarrierDeathbomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x004113A0
 size = 0x139
 
 [[units.relocations]]
 offset = 0x1D
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 [[units.relocations]]
@@ -93438,9 +93438,9 @@ symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463210
 
 [[units]]
-name = "player-bomb-common-init"
+name = "player-bomb-begin-spell"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target_address = 0x0040BE30
 size = 0xC2
 
@@ -93465,7 +93465,7 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x52
 type = "REL32"
-symbol = "th08::Player::FUN_0040bf00"
+symbol = "th08::Player::SpawnBombStateEffect"
 target = 0x0040BF00
 
 [[units.relocations]]
@@ -93482,9 +93482,9 @@ target = 0x004413E0
 
 
 [[units]]
-name = "player-bomb-state-effect"
+name = "player-bomb-spawn-state-effect"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "th08::Player::FUN_0040bf00"
+symbol = "th08::Player::SpawnBombStateEffect"
 target_address = 0x0040BF00
 size = 0x108
 
@@ -93520,16 +93520,16 @@ target = 0x004B438C
 
 
 [[units]]
-name = "player-bomb-callback-0040e3b0"
+name = "player-bomb-update-master-spark"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040e3b0@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?UpdateMasterSparkBomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040E3B0
 size = 0x258
 
 [[units.relocations]]
 offset = 0x1B
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -93547,7 +93547,7 @@ target = 0x004B4444
 [[units.relocations]]
 offset = 0x53
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -93601,7 +93601,7 @@ target = 0x0045B8B0
 [[units.relocations]]
 offset = 0x140
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -93660,16 +93660,16 @@ target = 0x00462310
 
 
 [[units]]
-name = "player-bomb-callback-00413890"
+name = "player-bomb-draw-ghastly-dream"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_00413890@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?DrawGhastlyDreamBomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00413890
 size = 0xF1
 
 [[units.relocations]]
 offset = 0x12
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 [[units.relocations]]
@@ -93711,16 +93711,16 @@ symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463210
 
 [[units]]
-name = "player-bomb-callback-004142c0"
+name = "player-deathbomb-draw-eternal-sleep-dreamland"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_004142c0@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?DrawEternalSleepInDreamlandDeathbomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x004142C0
 size = 0xF4
 
 [[units.relocations]]
 offset = 0x12
 type = "REL32"
-symbol = "?FUN_0040bc60@th08@@YIXPAUPlayer@1@K@Z"
+symbol = "?SetBombBackgroundTint@th08@@YIXPAUPlayer@1@K@Z"
 target = 0x0040BC60
 
 [[units.relocations]]
@@ -93762,16 +93762,16 @@ symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463210
 
 [[units]]
-name = "player-bomb-callback-0040d100"
+name = "player-bomb-update-dissolve-spell"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040d100@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?UpdateDissolveSpell@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040D100
 size = 0x209
 
 [[units.relocations]]
 offset = 0x1B
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -93801,7 +93801,7 @@ target = 0x004B43D4
 [[units.relocations]]
 offset = 0x5F
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -93813,7 +93813,7 @@ target = 0x004B43D4
 [[units.relocations]]
 offset = 0x7A
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -93970,22 +93970,22 @@ target = 0x018B8A28
 [[units]]
 name = "zun-timer-just-reached"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target_address = 0x0040E350
 size = 0x3A
 
 
 [[units]]
-name = "player-bomb-callback-00410c40"
+name = "player-bomb-update-quadruple-barrier"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_00410c40@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?UpdateQuadrupleBarrierBomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00410C40
 size = 0x39A
 
 [[units.relocations]]
 offset = 0x1B
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -94003,7 +94003,7 @@ target = 0x004B44F4
 [[units.relocations]]
 offset = 0x56
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -94051,7 +94051,7 @@ target = 0x004259E0
 [[units.relocations]]
 offset = 0x120
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -94099,7 +94099,7 @@ target = 0x004069F0
 [[units.relocations]]
 offset = 0x1EC
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -94147,7 +94147,7 @@ target = 0x004069F0
 [[units.relocations]]
 offset = 0x2B9
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -94205,16 +94205,16 @@ symbol = "?ExecuteScriptArray@AnmManager@th08@@QAEXPAUAnmVm@2@H@Z"
 target = 0x00462310
 
 [[units]]
-name = "player-bomb-callback-00410fe0"
+name = "player-deathbomb-update-eternal-night-quadruple-barrier"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_00410fe0@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?UpdateEternalNightQuadrupleBarrierDeathbomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00410FE0
 size = 0x3BF
 
 [[units.relocations]]
 offset = 0x1B
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -94232,7 +94232,7 @@ target = 0x004B4508
 [[units.relocations]]
 offset = 0x56
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -94292,7 +94292,7 @@ target = 0x004259E0
 [[units.relocations]]
 offset = 0x14E
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -94340,7 +94340,7 @@ target = 0x004069F0
 [[units.relocations]]
 offset = 0x218
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -94388,7 +94388,7 @@ target = 0x004069F0
 [[units.relocations]]
 offset = 0x2E4
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -94905,16 +94905,16 @@ symbol = "?FUN_004117b0@th08@@YIHPAUAnmVm@1@@Z"
 target = 0x004117B0
 
 [[units]]
-name = "player-bomb-callback-00411b10"
+name = "player-bomb-update-slash-present-world"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_00411b10@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?UpdateSlashOfPresentWorldBomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00411B10
 size = 0x7F0
 
 [[units.relocations]]
 offset = 0x3B
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -94932,7 +94932,7 @@ target = 0x004B453C
 [[units.relocations]]
 offset = 0x76
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -95016,7 +95016,7 @@ target = 0x00409080
 [[units.relocations]]
 offset = 0x1C8
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -95034,7 +95034,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x1FE
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -95088,7 +95088,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x30F
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -95160,7 +95160,7 @@ target = 0x0045B8B0
 [[units.relocations]]
 offset = 0x453
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -95232,7 +95232,7 @@ target = 0x0045B8B0
 [[units.relocations]]
 offset = 0x596
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -95364,20 +95364,20 @@ target = 0x00409080
 [[units.relocations]]
 offset = 0x7C4
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units]]
-name = "player-bomb-callback-004123d0"
+name = "player-deathbomb-update-slash-future-eternity"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_004123d0@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?UpdateSlashOfFutureEternityDeathbomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x004123D0
 size = 0xBC8
 
 [[units.relocations]]
 offset = 0x3B
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -95395,7 +95395,7 @@ target = 0x004B4558
 [[units.relocations]]
 offset = 0x76
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -95479,7 +95479,7 @@ target = 0x00409080
 [[units.relocations]]
 offset = 0x1CB
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -95497,7 +95497,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x201
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -95551,7 +95551,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x312
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -95623,7 +95623,7 @@ target = 0x0045B8B0
 [[units.relocations]]
 offset = 0x456
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -95695,7 +95695,7 @@ target = 0x0045B8B0
 [[units.relocations]]
 offset = 0x599
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -95767,7 +95767,7 @@ target = 0x0045B8B0
 [[units.relocations]]
 offset = 0x6DD
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -95839,7 +95839,7 @@ target = 0x0045B8B0
 [[units.relocations]]
 offset = 0x820
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -95911,7 +95911,7 @@ target = 0x0045B8B0
 [[units.relocations]]
 offset = 0x967
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -96043,28 +96043,28 @@ target = 0x00409080
 [[units.relocations]]
 offset = 0xB9C
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units]]
 name = "zun-timer-periodic"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040ebc0@ZunTimer@th08@@QAEIH@Z"
+symbol = "?IsPeriodic@ZunTimer@th08@@QAEIH@Z"
 target_address = 0x0040EBC0
 size = 0x3D
 
 
 [[units]]
-name = "player-bomb-callback-00413140"
+name = "player-bomb-update-ghastly-dream"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_00413140@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?UpdateGhastlyDreamBomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00413140
 size = 0x743
 
 [[units.relocations]]
 offset = 0x1B
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -96082,7 +96082,7 @@ target = 0x004B4574
 [[units.relocations]]
 offset = 0x56
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -96303,16 +96303,16 @@ target = 0x0045EA00
 
 
 [[units]]
-name = "player-bomb-callback-00413990"
+name = "player-deathbomb-update-eternal-sleep-dreamland"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_00413990@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?UpdateEternalSleepInDreamlandDeathbomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x00413990
 size = 0x928
 
 [[units.relocations]]
 offset = 0x1B
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -96330,7 +96330,7 @@ target = 0x004B4590
 [[units.relocations]]
 offset = 0x56
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -96522,7 +96522,7 @@ target = 0x004066A0
 [[units.relocations]]
 offset = 0x5BD
 type = "REL32"
-symbol = "?FUN_0040ebc0@ZunTimer@th08@@QAEIH@Z"
+symbol = "?IsPeriodic@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040EBC0
 
 [[units.relocations]]
@@ -96649,7 +96649,7 @@ size = 0x70
 [[units.relocations]]
 offset = 0x37
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3B0
 
 [[units.relocations]]
@@ -96739,16 +96739,16 @@ symbol = "??4ZunTimer@th08@@QAEXH@Z"
 target = 0x004065F0
 
 [[units]]
-name = "player-bomb-callback-0040c010"
+name = "player-bomb-update-fantasy-orb"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040c010@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?UpdateFantasyOrbBomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040C010
 size = 0x795
 
 [[units.relocations]]
 offset = 0x1B
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -96766,7 +96766,7 @@ target = 0x004B43A0
 [[units.relocations]]
 offset = 0x53
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -96868,7 +96868,7 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 0x2F2
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040D3F0
 
 [[units.relocations]]
@@ -96886,7 +96886,7 @@ target = 0x0040C7B0
 [[units.relocations]]
 offset = 0x3E4
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -97018,7 +97018,7 @@ target = 0x017CE8E0
 [[units.relocations]]
 offset = 0x74E
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -97034,16 +97034,16 @@ symbol = "?ExecuteScript@AnmManager@th08@@QAEIPAUAnmVm@2@@Z"
 target = 0x0045EA00
 
 [[units]]
-name = "player-bomb-callback-0040c910"
+name = "player-deathbomb-update-fantasy-seal-blink"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040c910@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?UpdateFantasySealBlinkDeathbomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040C910
 size = 0x6FE
 
 [[units.relocations]]
 offset = 0x1B
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -97061,7 +97061,7 @@ target = 0x004B43BC
 [[units.relocations]]
 offset = 0x53
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -97377,16 +97377,16 @@ symbol = "?ExecuteScript@AnmManager@th08@@QAEIPAUAnmVm@2@@Z"
 target = 0x0045EA00
 
 [[units]]
-name = "player-bomb-callback-0040d430"
+name = "player-bomb-update-artful-sacrifice"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040d430@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?UpdateArtfulSacrificeBomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040D430
 size = 0x517
 
 [[units.relocations]]
 offset = 0x24
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -97404,7 +97404,7 @@ target = 0x004B43F0
 [[units.relocations]]
 offset = 0x57
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -97500,7 +97500,7 @@ target = 0x0040B8E0
 [[units.relocations]]
 offset = 0x1CA
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -97518,7 +97518,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x1F9
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -97536,7 +97536,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x22C
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -97554,7 +97554,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x25F
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -97572,7 +97572,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x291
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -97590,7 +97590,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x2C4
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -97668,7 +97668,7 @@ target = 0x0045B8B0
 [[units.relocations]]
 offset = 0x3BF
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -97686,7 +97686,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x3F2
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -97704,7 +97704,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x427
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -97722,7 +97722,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x460
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -97740,7 +97740,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x499
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -97770,7 +97770,7 @@ target = 0x0045D550
 [[units.relocations]]
 offset = 0x4EE
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -97781,16 +97781,16 @@ target = 0x004065F0
 
 
 [[units]]
-name = "player-bomb-callback-0040d970"
+name = "player-deathbomb-update-return-inanimateness"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040d970@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?UpdateReturnInanimatenessDeathbomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040D970
 size = 0x56E
 
 [[units.relocations]]
 offset = 0x24
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -97808,7 +97808,7 @@ target = 0x004B4414
 [[units.relocations]]
 offset = 0x57
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -97892,7 +97892,7 @@ target = 0x0040B8E0
 [[units.relocations]]
 offset = 0x1BC
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -97910,7 +97910,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x1EB
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -97928,7 +97928,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x21E
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -97946,7 +97946,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x251
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -97964,7 +97964,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x283
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -97982,7 +97982,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x2B6
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -98102,7 +98102,7 @@ target = 0x0044E040
 [[units.relocations]]
 offset = 0x414
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -98120,7 +98120,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x449
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -98138,7 +98138,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x482
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -98156,7 +98156,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x4BB
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -98174,7 +98174,7 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x4F3
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -98204,7 +98204,7 @@ target = 0x0045D550
 [[units.relocations]]
 offset = 0x545
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -98214,16 +98214,16 @@ symbol = "??4ZunTimer@th08@@QAEXH@Z"
 target = 0x004065F0
 
 [[units]]
-name = "player-bomb-callback-0040e780"
+name = "player-deathbomb-update-final-spark"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040e780@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?UpdateFinalSparkDeathbomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040E780
 size = 0x3C8
 
 [[units.relocations]]
 offset = 0x1B
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -98241,7 +98241,7 @@ target = 0x004B446C
 [[units.relocations]]
 offset = 0x53
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -98307,7 +98307,7 @@ target = 0x0045B8B0
 [[units.relocations]]
 offset = 0x157
 type = "REL32"
-symbol = "?FUN_0040ebc0@ZunTimer@th08@@QAEIH@Z"
+symbol = "?IsPeriodic@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040EBC0
 
 [[units.relocations]]
@@ -98397,7 +98397,7 @@ target = 0x0045D660
 [[units.relocations]]
 offset = 0x2B0
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -98455,16 +98455,16 @@ symbol = "?ExecuteScriptArray@AnmManager@th08@@QAEXPAUAnmVm@2@H@Z"
 target = 0x00462310
 
 [[units]]
-name = "player-bomb-callback-0040ee10"
+name = "player-bomb-update-red-nightless-castle"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040ee10@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?UpdateRedNightlessCastleBomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040EE10
 size = 0x73D
 
 [[units.relocations]]
 offset = 0x2D
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -98482,7 +98482,7 @@ target = 0x004B4488
 [[units.relocations]]
 offset = 0x6B
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -98644,7 +98644,7 @@ target = 0x00409080
 [[units.relocations]]
 offset = 0x357
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -98722,7 +98722,7 @@ target = 0x0044DF00
 [[units.relocations]]
 offset = 0x4DE
 type = "REL32"
-symbol = "?FUN_0040ebc0@ZunTimer@th08@@QAEIH@Z"
+symbol = "?IsPeriodic@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040EBC0
 
 [[units.relocations]]
@@ -98830,7 +98830,7 @@ target = 0x0044DE60
 [[units.relocations]]
 offset = 0x6A1
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -98859,16 +98859,16 @@ target = 0x004065F0
 
 
 [[units]]
-name = "player-bomb-callback-0040f570"
+name = "player-deathbomb-update-scarlet-devil"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040f570@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?UpdateScarletDevilDeathbomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040F570
 size = 0x73D
 
 [[units.relocations]]
 offset = 0x2D
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -98886,7 +98886,7 @@ target = 0x004B44A0
 [[units.relocations]]
 offset = 0x6B
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -99048,7 +99048,7 @@ target = 0x00409080
 [[units.relocations]]
 offset = 0x357
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -99126,7 +99126,7 @@ target = 0x004B42CC
 [[units.relocations]]
 offset = 0x4DE
 type = "REL32"
-symbol = "?FUN_0040ebc0@ZunTimer@th08@@QAEIH@Z"
+symbol = "?IsPeriodic@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040EBC0
 
 [[units.relocations]]
@@ -99234,7 +99234,7 @@ target = 0x0044DE60
 [[units.relocations]]
 offset = 0x6A1
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -99262,16 +99262,16 @@ symbol = "??4ZunTimer@th08@@QAEXH@Z"
 target = 0x004065F0
 
 [[units]]
-name = "player-bomb-callback-0040fcd0"
+name = "player-bomb-update-killing-doll"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040fcd0@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?UpdateKillingDollBomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x0040FCD0
 size = 0x625
 
 [[units.relocations]]
 offset = 0x1B
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -99289,7 +99289,7 @@ target = 0x004B44C4
 [[units.relocations]]
 offset = 0x53
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -99343,7 +99343,7 @@ target = 0x004066A0
 [[units.relocations]]
 offset = 0x199
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -99499,7 +99499,7 @@ target = 0x0040D3B0
 [[units.relocations]]
 offset = 0x3C7
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -99600,16 +99600,16 @@ target = 0x00406640
 
 
 [[units]]
-name = "player-bomb-callback-004103f0"
+name = "player-deathbomb-update-night-mist-phantom-killer"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_004103f0@th08@@YIXPAUPlayer@1@@Z"
+symbol = "?UpdateNightMistPhantomKillerDeathbomb@th08@@YIXPAUPlayer@1@@Z"
 target_address = 0x004103F0
 size = 0x677
 
 [[units.relocations]]
 offset = 0x1B
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -99627,7 +99627,7 @@ target = 0x004B44D8
 [[units.relocations]]
 offset = 0x53
 type = "REL32"
-symbol = "?FUN_0040be30@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
+symbol = "?BeginBombSpell@th08@@YIXPAUPlayer@1@HPBDHHH@Z"
 target = 0x0040BE30
 
 [[units.relocations]]
@@ -99687,7 +99687,7 @@ target = 0x004066A0
 [[units.relocations]]
 offset = 0x1BE
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -99843,7 +99843,7 @@ target = 0x0040D3B0
 [[units.relocations]]
 offset = 0x3E3
 type = "REL32"
-symbol = "?FUN_0040e350@ZunTimer@th08@@QAEIH@Z"
+symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040E350
 
 [[units.relocations]]
@@ -102139,7 +102139,7 @@ target = 0x0040C7D0
 [[units.relocations]]
 offset = 0x50
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -102232,7 +102232,7 @@ target = 0x0042F2B0
 [[units.relocations]]
 offset = 0x40
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]
@@ -102305,7 +102305,7 @@ target = 0x0045D550
 [[units.relocations]]
 offset = 0x9D
 type = "REL32"
-symbol = "?FUN_0040ebc0@ZunTimer@th08@@QAEIH@Z"
+symbol = "?IsPeriodic@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040EBC0
 
 [[units.relocations]]
@@ -110475,7 +110475,7 @@ target = 0x00404720
 [[units.relocations]]
 offset = 0x9A
 type = "REL32"
-symbol = "?FUN_0040ebc0@ZunTimer@th08@@QAEIH@Z"
+symbol = "?IsPeriodic@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040EBC0
 
 [[units.relocations]]
@@ -110542,7 +110542,7 @@ target = 0x00404720
 [[units.relocations]]
 offset = 0x9A
 type = "REL32"
-symbol = "?FUN_0040ebc0@ZunTimer@th08@@QAEIH@Z"
+symbol = "?IsPeriodic@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040EBC0
 
 [[units.relocations]]
@@ -110609,7 +110609,7 @@ target = 0x00404720
 [[units.relocations]]
 offset = 0x9A
 type = "REL32"
-symbol = "?FUN_0040ebc0@ZunTimer@th08@@QAEIH@Z"
+symbol = "?IsPeriodic@ZunTimer@th08@@QAEIH@Z"
 target = 0x0040EBC0
 
 [[units.relocations]]
@@ -118914,7 +118914,7 @@ target = 0x0040D3B0
 [[units.relocations]]
 offset = 0x5A
 type = "REL32"
-symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
+symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
 
 [[units.relocations]]

@@ -204,7 +204,7 @@ th08::g_PlayerNormalBombCount,0x164cfa8,global
 th08::g_PlayerDeathbombCount,0x164cfac,global
 th08::g_BulletSpriteOffsetSmall,0x4c70f8,global
 th08::g_BulletSpriteOffsetMedium,0x4c7138,global
-th08::g_PlayerBombCallbackTable,0x4c7ad0,global
+th08::g_PlayerBombCallbacksByShotType,0x4c7ad0,global
 th08::g_PlayerOptionUpdateCallbacks,0x4c7d40,global
 th08::g_PlayerRoute3ExitUpdateCallbacks,0x4c7e00,global
 th08::g_PlayerOptionRenderCallbacks,0x4c7e10,global

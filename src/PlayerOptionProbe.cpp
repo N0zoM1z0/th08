@@ -461,7 +461,7 @@ i32 __fastcall UpdateHomingShot(Player *player, PlayerShot *slot)
     f32 magnitude;
     if (slot->state == 1)
     {
-        if (player->tailPosition0.x > -100.0f && (i32)slot->timer < 40 && slot->timer.FUN_0040d3d0())
+        if (player->tailPosition0.x > -100.0f && (i32)slot->timer < 40 && slot->timer.HasTicked())
         {
             xDelta = player->tailPosition0.x - slot->position.operator float *()[0];
             yDelta = player->tailPosition0.y - slot->position.operator float *()[1];

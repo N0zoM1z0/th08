@@ -835,7 +835,7 @@ void Enemy::CheckPlayerCollision(Float3 *position, Float3 *size)
 
     collisionSize = *size / 0.7f;
     if (((this->flags1 >> ENEMY_FLAG_SPECIAL_INTERACTION_SHIFT) & 1) != 0 &&
-        this->bossTimer.FUN_0040d3d0() && this->bossTimer % 6 == 0)
+        this->bossTimer.HasTicked() && this->bossTimer % 6 == 0)
     {
         g_Player.CheckGrazeCollision(position, &collisionSize);
     }
@@ -869,7 +869,7 @@ void EnemyManager::UpdateSubrank()
     {
         interval = 2400;
         interval -= g_GameManager.GetLives() * 4 * 60;
-        if (this->timer.FUN_0040d3d0())
+        if (this->timer.HasTicked())
         {
             if ((i32)this->timer % interval == 0)
                 g_GameManager.IncreaseSubrank(100);
@@ -892,7 +892,7 @@ void Enemy::UpdateYoukaiAlignment()
         }
 
         if (((this->flags2 >> ENEMY_FLAG2_FORM_EFFECT_SHIFT) & 1) != 0 &&
-            this->bossTimer.FUN_0040ebc0(2))
+            this->bossTimer.IsPeriodic(2))
         {
             g_EffectManager.SpawnEffect(38, reinterpret_cast<D3DXVECTOR3 *>(&this->worldPosition), 1, -1);
         }
