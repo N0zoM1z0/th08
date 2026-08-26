@@ -12,9 +12,12 @@ struct AnmLoaded;
 
 struct PlayerRawShtFile
 {
-    unknown_fields(0x0, 0x1c);
+    unknown_fields(0x0, 0x8);
+    i32 deathbombWindowFrames;
+    unknown_fields(0xC, 0x10);
     f32 pointItemValueLine;
 };
+C_ASSERT(offsetof(PlayerRawShtFile, deathbombWindowFrames) == 0x8);
 
 struct PlayerUnkStruct0x40
 {
@@ -96,23 +99,41 @@ struct PlayerBombWorkItem
 };
 C_ASSERT(sizeof(PlayerBombWorkItem) == 0x16F0);
 
+struct Player;
+typedef void (__fastcall *PlayerBombCallback)(Player *player);
+
+struct PlayerBombCallbacks
+{
+    PlayerBombCallback callbacks[5];
+};
+C_ASSERT(sizeof(PlayerBombCallbacks) == 0x14);
+
 struct PlayerBombState
 {
-    i32 frameStop;
-    i32 unknown4;
+    i32 isInUse;
+    i32 callbackSetIndex;
     i32 duration;
-    unknown_fields(0x00000C, 0x8);
+    unknown_fields(0x00000C, 0x4);
+    i32 bombsConsumed;
     i32 secondaryWorkIndex;
     ZunTimer timer;
-    unknown_fields(0x000024, 0x28);
+    PlayerBombCallbacks calcCallbacks;
+    PlayerBombCallbacks drawCallbacks;
     PlayerBombWorkItem workItems[128];
     Float3 tailPosition;
 
     PlayerBombState();
 };
 C_ASSERT(sizeof(PlayerBombState) == 0xB7858);
+C_ASSERT(offsetof(PlayerBombState, isInUse) == 0x0);
+C_ASSERT(offsetof(PlayerBombState, callbackSetIndex) == 0x4);
+C_ASSERT(offsetof(PlayerBombState, duration) == 0x8);
+C_ASSERT(offsetof(PlayerBombState, bombsConsumed) == 0x10);
+C_ASSERT(offsetof(PlayerBombState, timer) == 0x18);
+C_ASSERT(offsetof(PlayerBombState, calcCallbacks) == 0x24);
+C_ASSERT(offsetof(PlayerBombState, drawCallbacks) == 0x38);
+C_ASSERT(offsetof(PlayerBombState, workItems) == 0x4C);
 
-struct Player;
 struct PlayerShot;
 typedef i32 (__fastcall *PlayerShotCollisionCallback)(Player *player, PlayerShot *shot, Float3 *enemyPosition);
 
@@ -179,7 +200,8 @@ struct Player
     unknown_fields(0xBE834, 4);
     PlayerShot shots[128];
     EclTimeline timelines[3];
-    unknown_fields(0xE2A68, 8);
+    i32 deathbombWindowFrames;
+    i32 bombInputLockFrames;
     i32 playerStateSlotCooldown;
     PlayerRawShtFile *primaryShtFile;
     PlayerRawShtFile *secondaryShtFile;
@@ -204,7 +226,8 @@ struct Player
     ChainElem *drawChainHighPrio;
     ChainElem *drawChainLowPrio;
     PlayerStateEffect *stateEffect;
-    unknown_fields(0xE2B20, 0xC);
+    unknown_fields(0xE2B20, 0x8);
+    AnmVm *deathbombEffectVm;
     i32 damageAccumulatorThreshold;
 
     static ZunResult RegisterChain(u32 playerType);
@@ -266,6 +289,8 @@ C_ASSERT(offsetof(Player, playerSlotsB) == 0xB8834);
 C_ASSERT(offsetof(Player, playerSlotsC) == 0xBB834);
 C_ASSERT(offsetof(Player, shots) == 0xBE838);
 C_ASSERT(offsetof(Player, timelines) == 0xE2A38);
+C_ASSERT(offsetof(Player, deathbombWindowFrames) == 0xE2A68);
+C_ASSERT(offsetof(Player, bombInputLockFrames) == 0xE2A6C);
 C_ASSERT(offsetof(Player, playerStateSlotCooldown) == 0xE2A70);
 C_ASSERT(offsetof(Player, primaryShtFile) == 0xE2A74);
 C_ASSERT(offsetof(Player, itemTimeOrbMode) == 0xE2A7C);
@@ -276,6 +301,7 @@ C_ASSERT(offsetof(Player, optionHomingTarget) == 0xE2ABC);
 C_ASSERT(offsetof(Player, enemyTrackedPositionValid) == 0xE2AC0);
 C_ASSERT(offsetof(Player, timer) == 0xE2AF4);
 C_ASSERT(offsetof(Player, calcChain) == 0xE2B10);
+C_ASSERT(offsetof(Player, deathbombEffectVm) == 0xE2B28);
 C_ASSERT(offsetof(Player, damageAccumulatorThreshold) == 0xE2B2C);
 
 DIFFABLE_EXTERN(Player, g_Player);

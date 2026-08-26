@@ -243,3 +243,67 @@ fixed target-owned layout symbols.
 Result: the branch-baseline blocker is closed without weakening a comparison.
 The manifest now records the evidence-backed semantic owners/addends emitted by
 the shared source, while all configured accepted target bytes remain exact.
+
+### Player deathbomb and Bomb lifecycle — 2026-08-26
+
+Scope: `Player::Die @ 0x0044AB40`, the movement/update paths at
+`0x0044AEC0` and `0x0044C650`, the death transition at `0x0044CBF0`, the
+respawn/draw/add callbacks at `0x0044D180`, `0x0044D530`, and `0x0044D650`,
+`Spellcard::EndSpell @ 0x004161B0`, and the exact Player shot/collision users
+of the Bomb-active state.  The shared layout lives in `src/Player.hpp`; source
+users span Player, PlayerBomb, SpellCard, GameManager, EnemyManager, and the
+non-canonical Player option probe.
+
+Observed: TH08 uses dword accesses for `Player + 0xFDC/+0xFE0/+0xFE4/+0xFEC`
+and calls two five-entry callback groups at `Player + 0x1000/+0x1014`, indexed
+by the `+0xFE0` value.  `AddedCallback` copies adjacent 0x14-byte rows from the
+target callback table into those groups; the update path calls the first group
+and `OnDrawHighPrio` calls the second.  `Player + 0xE2A68` is initialized from
+SHT header `+0x8`, recomputed by `Die`, decremented once per dying frame, and
+must remain nonzero for Bomb acceptance.  `Player + 0xE2A6C` is written to 16
+by `Spellcard::EndSpell`, decremented by the Bomb-input path, and blocks that
+input until zero.  `Player + 0xE2B28` stores the effect VM created for the
+deathbomb window and is disabled/cleared when the window expires or a Bomb is
+accepted.  Target-pinned fact packets confirm the full exact extents and ABIs
+of `0x0044AB40`, `0x0044C650`, `0x0044CBF0`, `0x0044D650`, and
+`0x004161B0`; the latter independently records the `0x018B8964` dword write.
+
+Corroborated: TH06 independently models the corresponding Bomb aggregate with
+`isInUse`, `duration`, `timer`, calculation, and draw callbacks.  TH08 changes
+the callback representation substantially, so only those stable roles are
+borrowed; TH08's own table copies, indirect calls, gates, and state transitions
+establish the two five-callback groups and all final offsets.
+
+Inference: `deathbombWindowFrames`, `bombInputLockFrames`, `isInUse`,
+`callbackSetIndex`, `duration`, `bombsConsumed`, `calcCallbacks`,
+`drawCallbacks`, and `deathbombEffectVm` are high-confidence dataflow names.
+`bombsConsumed` is supported by all three writes but has no independent read in
+the authored source, so its downstream purpose remains unknown.  The
+individual meanings of callback slots 0..4, `PlayerBombState + 0xC`, and
+`Player + 0xE2B20/+0xE2B24` remain deliberately unnamed.
+
+Layout: assertions pin the SHT deathbomb default at `+0x8`, the 0x14 callback
+group size, Bomb state fields/groups through `workItems + 0x4C`, Player fields
+at `+0xE2A68/+0xE2A6C/+0xE2B28`, `sizeof(PlayerBombState) == 0xB7858`, and
+`sizeof(Player) == 0xE2B30`.  No field width, class size, calling convention,
+vtable, global identity, or initialization order changed.
+
+VC7 oracle: serial focused object builds followed by accepted replay passed
+**249 / 249** across Player, PlayerBomb, SpellCard, GameManager, and
+EnemyManager production/reimplementation objects.  The required non-reuse
+`verify-exact-units.py --all --json` cold-built all 75 configured objects and
+passed **1,105 / 1,105** with no failures.  The normal VC7 production image
+also linked successfully; no match manifest or exact ledger changed.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiled and linked
+the complete i386 target, and `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 plus all
+fixed target-owned layout symbols.  A runtime state-transition smoke is not
+claimed: this batch changes only names/typed member expressions, and the
+portable callback identities, state operations, and initialization sequence
+are unchanged.
+
+Result: 79 raw-member candidates in `src/Player.cpp` were replaced by asserted
+typed fields and callback-group expressions (442 to 363 in the routing report).
+That delta is a review aid, not a semantic-completion percentage; the retained
+unknown storage and unrelated Player offsets remain future bounded families.

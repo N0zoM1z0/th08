@@ -53,6 +53,19 @@ blocker without changing authored progress or weakening the comparator; see the
 post-port reconciliation entry in `docs/SEMANTIC_RECONSTRUCTION.md` for the
 evidence split and reusable compatibility pattern.
 
+The next accepted source batch recovers the Player deathbomb/Bomb lifecycle.
+It replaces the raw `Player + 0xFDC..+0x1014` active/type/duration/timer and
+calculation/draw callback views, plus the `+0xE2A68/+0xE2A6C/+0xE2B28`
+deathbomb window, Bomb-input lock, and effect pointer, with asserted typed
+fields.  TH08 target users cover `Die`, the Bomb update/draw paths, the dying
+transition, initialization, shot/collision gates, and `Spellcard::EndSpell`;
+TH06 only corroborates the stable active/duration/timer/calc/draw roles.  The
+individual callback-slot meanings and retained opaque fields remain unknown.
+Focused replay passed **249 / 249**, a new non-reuse cold replay passed **1,105
+/ 1,105**, the normal VC7 link passed, and the complete i386 Linux build/layout
+verifier passed.  No match manifest, authored/exact ledger, global identity, or
+runtime state operation changed.
+
 Select the next independent field family with:
 
 ```bash

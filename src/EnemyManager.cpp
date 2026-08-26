@@ -288,7 +288,7 @@ void EnemyOverlay::FUN_0042adb0(i32 mode)
                 else
                     dropLocals.itemCount = j >= 8 ? 26 : j * 2 + 10;
 
-                if (g_Player.bombState.frameStop != 0)
+                if (g_Player.bombState.isInUse != 0)
                     j /= 3;
 
                 g_AsciiManager.CreateTimePopup(
@@ -409,7 +409,7 @@ void Enemy::FUN_0042b370(i32 amount)
 
     if (!reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(this)->HasAttachedEnemy())
         return;
-    if (g_Player.bombState.frameStop != 0)
+    if (g_Player.bombState.isInUse != 0)
         return;
 
     maxHp = 0;

@@ -1227,7 +1227,7 @@ void Spellcard::EndSpell()
             }
         }
 
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Player) + 0xE2A6C) = 16;
+        g_Player.bombInputLockFrames = 16;
         if (g_Player.playerState == PLAYER_STATE_ALIVE)
         {
             g_Player.timer = 70;

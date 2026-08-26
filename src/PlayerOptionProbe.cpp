@@ -401,7 +401,7 @@ i32 __fastcall FUN_00450110(Player *player, PlayerShot *slot, i32 value, u8 *ent
     f32 angle;
     f32 magnitude;
 
-    if (player->bombState.frameStop == 0 &&
+    if (player->bombState.isInUse == 0 &&
         value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
     {
         player->FUN_0044fb70(reinterpret_cast<u8 *>(slot), entry);
@@ -506,7 +506,7 @@ i32 __fastcall FUN_004505d0(Player *player, PlayerShot *slot)
     {
         if (slot->vm.FUN_004396f8()) slot->vm.pendingInterrupt = 1;
     }
-    if (g_Gui.IsDialogPresent() || player->bombState.frameStop != 0 || g_GameManager.flags.unk13)
+    if (g_Gui.IsDialogPresent() || player->bombState.isInUse != 0 || g_GameManager.flags.unk13)
     {
         if ((i32)player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer > 20)
             player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer = 20;
@@ -552,7 +552,7 @@ i32 __fastcall FUN_00450840(Player *player, PlayerShot *slot)
         g_Gui.IsDialogPresent() ||
         (i32)player->timerE2AC4 < 0 ||
         player->playerState == PLAYER_STATE_DYING ||
-        player->bombState.frameStop != 0 ||
+        player->bombState.isInUse != 0 ||
         g_GameManager.flags.unk13)
     {
         slot->vm.pendingInterrupt = 1;

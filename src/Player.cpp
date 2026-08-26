@@ -43,8 +43,6 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 12, g_Player2ShtFile) = {
     "ply02a.sht", "ply02as.sht", "ply03a.sht", "ply03as.sht",
 };
 
-typedef void (__fastcall *PlayerBombCallback)(Player *);
-
 void __fastcall FUN_0040c010(Player *player);
 void __fastcall FUN_0040c820(Player *player);
 void __fastcall FUN_0040c910(Player *player);
@@ -78,10 +76,6 @@ void __fastcall FUN_00413890(Player *player);
 void __fastcall FUN_00413990(Player *player);
 void __fastcall FUN_004142c0(Player *player);
 
-struct PlayerBombCallbacks
-{
-    PlayerBombCallback callbacks[5];
-};
 DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerBombCallbacks, 24, g_PlayerBombCallbackTable) = {
     {{FUN_0040c010, FUN_00410c40, FUN_0040c910, FUN_00410fe0, FUN_0040d100}},
     {{FUN_0040c820, FUN_0040d950, FUN_0040d010, FUN_004113a0, FUN_0040d310}},
@@ -480,7 +474,7 @@ void Player::FUN_0044a930(Float3 *position, i32 suppressExtraItems)
     i32 gaugeGain;
     i32 score;
 
-    if (g_Player.bombState.frameStop == 0)
+    if (g_Player.bombState.isInUse == 0)
     {
         gaugeGain = g_GameManager.GaugeIsExtremelyHuman()
                         ? 3
@@ -543,7 +537,7 @@ void Player::Die()
          GameManagerFlags::PLAYER_DEATH_DISSOLVE_MASK) != 0)
     {
         utils::DebugPrint(" desolve\n");
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) = 2;
+        this->deathbombWindowFrames = 2;
         *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x6) = 1;
     }
     else
@@ -551,30 +545,27 @@ void Player::Die()
         g_GameManager.SetYoukaiGauge(0);
         if (g_GameManager.GetBombsRemaining() >= 1)
         {
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) =
-                g_GameManager.GetBombsRemaining() * 6;
+            this->deathbombWindowFrames = g_GameManager.GetBombsRemaining() * 6;
             if (g_GameManager.GetTimeOrbs() >= g_GameManager.GetLastSpellTimeOrbThreshold())
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) += 7;
-            if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) > 15)
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) = 15;
+                this->deathbombWindowFrames += 7;
+            if (this->deathbombWindowFrames > 15)
+                this->deathbombWindowFrames = 15;
 
             if (g_Spellcard.IsActive())
             {
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) +=
-                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68);
-                if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) > 30)
-                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) = 30;
+                this->deathbombWindowFrames += this->deathbombWindowFrames;
+                if (this->deathbombWindowFrames > 30)
+                    this->deathbombWindowFrames = 30;
             }
 
             if (g_GameManager.shotType == 0 || g_GameManager.shotType == 4 ||
                 g_GameManager.shotType == 5)
             {
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) *= 9;
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) /= 5;
+                this->deathbombWindowFrames *= 9;
+                this->deathbombWindowFrames /= 5;
             }
 
-            utils::DebugPrint(" preDeadCount %d\n",
-                              *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68));
+            utils::DebugPrint(" preDeadCount %d\n", this->deathbombWindowFrames);
             *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x206) = 0xFF;
             *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x205) = 0xFF;
             *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x204) = 0xFF;
@@ -582,13 +573,13 @@ void Player::Die()
                 *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x203);
             *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x208) |= 0x20000;
 
-            *reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0xE2B28) =
+            this->deathbombEffectVm =
                 g_EffectManager.FUN_00425870(59, reinterpret_cast<D3DXVECTOR3 *>(&this->position),
                                               11, 1, 0xFFF0404F);
-            effectVm = *reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0xE2B28);
+            effectVm = this->deathbombEffectVm;
             *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effectVm) + 0x50) = 0;
             *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effectVm) + 0xA4) =
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68);
+                this->deathbombWindowFrames;
             *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effectVm) + 0xF8) = 4;
             *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x238) = 128.0f;
             *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x244) = 8.0f;
@@ -608,7 +599,7 @@ void Player::Die()
         }
         else
         {
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) = 2;
+            this->deathbombWindowFrames = 2;
             utils::DebugPrint(" Miss\n");
         }
     }
@@ -659,8 +650,8 @@ i32 Player::FUN_0044aec0()
     else
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 0;
 
-    focus = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFDC)
-                ? (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) & 1)
+    focus = this->bombState.isInUse
+                ? (this->bombState.callbackSetIndex & 1)
                 : (g_GuiMessageInputCurrent & 4);
 
     if (focus)
@@ -919,7 +910,7 @@ i32 Player::FUN_0044aec0()
         this->FUN_00451640();
 
     if (!g_Gui.IsDialogPresent() && *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8) >= 30 &&
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) == 0)
+        this->bombState.isInUse == 0)
     {
         gaugeDelta = 0;
         if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) >= 0)
@@ -1145,28 +1136,28 @@ void Player::FUN_0044c650()
     i32 isForced;
     isForced = 0;
     if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x6) != 0 &&
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) == 1)
+        this->deathbombWindowFrames == 1)
     {
         isForced = 1;
         goto acceptBomb;
     }
 
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A6C) != 0)
-        --*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A6C);
+    if (this->bombInputLockFrames != 0)
+        --this->bombInputLockFrames;
 
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) != 0)
+    if (this->bombState.isInUse != 0)
     {
-        if (reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4)->FUN_0040d3d0())
+        if (this->bombState.timer.FUN_0040d3d0())
             g_Gui.flags.pointDisplayUpdateFrames = 2;
 
-        if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4) >= *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE4))
+        if (this->bombState.timer >= this->bombState.duration)
         {
             g_Spellcard.spellcard_fun_00416130();
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) = 0;
+            this->bombState.isInUse = 0;
             *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x408) = 1.0f;
             *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x404) = 1.0f;
 
-            if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) == 4)
+            if (this->bombState.callbackSetIndex == 4)
             {
                 *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFE7Fu;
                 for (i = 0; i < 8; i++)
@@ -1183,25 +1174,24 @@ void Player::FUN_0044c650()
         }
         else
         {
-            reinterpret_cast<void (__fastcall **)(Player *)>(reinterpret_cast<u8 *>(this) + 0x1000)
-                [*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0)](this);
-            (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4))++;
+            this->bombState.calcCallbacks.callbacks[this->bombState.callbackSetIndex](this);
+            this->bombState.timer++;
         }
 
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) < 4)
+        if (this->bombState.callbackSetIndex < 4)
         {
-            if ((*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) & 1) != 0)
-                g_GameManager.AddToYoukaiGauge(26000 / *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE4), 1);
+            if ((this->bombState.callbackSetIndex & 1) != 0)
+                g_GameManager.AddToYoukaiGauge(26000 / this->bombState.duration, 1);
             else
-                g_GameManager.AddToYoukaiGauge(-26000 / *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE4), 1);
+                g_GameManager.AddToYoukaiGauge(-26000 / this->bombState.duration, 1);
         }
         return;
     }
 
     if ((g_GuiMessageInputCurrent & 2) != 0 && !g_GameManager.IsTampered() && !g_Gui.IsDialogPresent() &&
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) != 0 &&
+        this->deathbombWindowFrames != 0 &&
         g_GameManager.GetBombsRemaining() > 0 &&
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A6C) == 0)
+        this->bombInputLockFrames == 0)
     {
         if ((((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0) ||
             (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 14) & 1) != 0))
@@ -1219,43 +1209,41 @@ acceptBomb:
     *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x6) = 0;
     if (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0)
     {
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) = 4;
+        this->bombState.callbackSetIndex = 4;
     }
     else
     {
         *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x208) &= 0xFFFDFFFFu;
-        if (*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) != NULL)
+        if (this->deathbombEffectVm != NULL)
         {
-            *reinterpret_cast<u8 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) + 0x350) = 0;
-            *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) = NULL;
+            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->deathbombEffectVm) + 0x350) = 0;
+            this->deathbombEffectVm = NULL;
         }
         *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFBFFu;
         g_AnmManager->SetMixColorDefault();
 
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) =
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3);
+        this->bombState.callbackSetIndex = this->optionModeFlag;
         if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4))
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) =
-                1 - *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0);
+            this->bombState.callbackSetIndex = 1 - this->bombState.callbackSetIndex;
 
         if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4))
         {
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) += 2;
+            this->bombState.callbackSetIndex += 2;
             if (isForced)
             {
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFEC) = g_GameManager.GetBombsRemaining();
+                this->bombState.bombsConsumed = g_GameManager.GetBombsRemaining();
                 g_GameManager.SetBombCount(0);
             }
             else
             {
                 if (g_GameManager.GetBombsRemaining() < 2)
                 {
-                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFEC) = g_GameManager.GetBombsRemaining();
+                    this->bombState.bombsConsumed = g_GameManager.GetBombsRemaining();
                     g_GameManager.SetBombCount(0);
                 }
                 else
                 {
-                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFEC) = 2;
+                    this->bombState.bombsConsumed = 2;
                     g_GameManager.AddToBombCount(-2);
                 }
             }
@@ -1271,25 +1259,22 @@ acceptBomb:
 
     *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4) = 0;
     g_Gui.flags.bombDisplayUpdateFrames = 2;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) = 1;
+    this->bombState.isInUse = 1;
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A7C) = 1;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE4) = 999;
+    this->bombState.timer = 0;
+    this->bombState.duration = 999;
 
     {
-        reinterpret_cast<void (__fastcall **)(Player *)>(reinterpret_cast<u8 *>(this) + 0x1000)
-            [*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFE0)](this);
+        this->bombState.calcCallbacks.callbacks[this->bombState.callbackSetIndex](this);
     }
-    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4))++;
+    this->bombState.timer++;
     g_GameManager.DecreaseSubrank(200);
     g_Spellcard.FUN_0044cba0();
 
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) += 6;
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) >
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x8))
+    this->deathbombWindowFrames += 6;
+    if (this->deathbombWindowFrames > g_Player.primaryShtFile->deathbombWindowFrames)
     {
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) =
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x8);
+        this->deathbombWindowFrames = g_Player.primaryShtFile->deathbombWindowFrames;
     }
         goto done;
     }
@@ -1307,17 +1292,17 @@ i32 Player::FUN_0044cbf0()
 {
     f32 value;
 
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) != 0)
+    if (this->deathbombWindowFrames != 0)
     {
         g_GameManager.AddTimeOrbs(-15);
-        --*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68);
+        --this->deathbombWindowFrames;
         *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 4) = 1;
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) == 0)
+        if (this->deathbombWindowFrames == 0)
         {
-            if (*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) != NULL)
+            if (this->deathbombEffectVm != NULL)
             {
-                *reinterpret_cast<u8 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) + 0x350) = 0;
-                *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B28) = NULL;
+                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->deathbombEffectVm) + 0x350) = 0;
+                this->deathbombEffectVm = NULL;
             }
             g_EffectManager.FUN_00425870(12, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 3, 1, 0xFF4040FF);
             g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 16, -1);
@@ -1425,7 +1410,7 @@ void Player::FUN_0044d180()
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x404) = 1.0f;
     *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x200) =
         (((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) * 0xFF) / 30 << 24) | 0xFFFFFF;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) = 0;
+    this->deathbombWindowFrames = 0;
 
     if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) >= 30)
     {
@@ -1438,8 +1423,7 @@ void Player::FUN_0044d180()
         {
             *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) = 240;
         }
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) =
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x8);
+        this->deathbombWindowFrames = g_Player.primaryShtFile->deathbombWindowFrames;
     }
 }
 // FUNCTION: th08 0x44d2c0
@@ -1529,12 +1513,9 @@ ChainCallbackResult Player::OnDrawHighPrio(Player *player)
 
     player->FUN_004512f0();
 
-    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xFDC) != 0)
+    if (player->bombState.isInUse != 0)
     {
-        reinterpret_cast<void (__fastcall *)(Player *)>(
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) +
-                                      (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xFE0) * 4) +
-                                      0x1014))(player);
+        player->bombState.drawCallbacks.callbacks[player->bombState.callbackSetIndex](player);
     }
 
     if (!g_GameManager.showRetryMenu)
@@ -1635,17 +1616,14 @@ ZunResult Player::AddedCallback(Player *player)
     *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AD0) = 0;
     *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AE8) = 0;
 
-    *reinterpret_cast<PlayerBombCallbacks *>(reinterpret_cast<u8 *>(player) + 0x1000) =
-        g_PlayerBombCallbackTable[g_GameManager.shotType * 2];
-    *reinterpret_cast<PlayerBombCallbacks *>(reinterpret_cast<u8 *>(player) + 0x1014) =
-        g_PlayerBombCallbackTable[g_GameManager.shotType * 2 + 1];
+    player->bombState.calcCallbacks = g_PlayerBombCallbackTable[g_GameManager.shotType * 2];
+    player->bombState.drawCallbacks = g_PlayerBombCallbackTable[g_GameManager.shotType * 2 + 1];
 
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xFDC) = 0;
+    player->bombState.isInUse = 0;
     *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xE2B0C) = 0xBFC90FDB;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 1.0f;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 1.0f;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2A68) =
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 8);
+    player->deathbombWindowFrames = g_Player.primaryShtFile->deathbombWindowFrames;
 
     if (IsResourceReloadEnabled())
         g_AsciiManager.SetGaugeInterrupt(1);
@@ -2159,7 +2137,7 @@ i32 __fastcall FUN_0044ea40(Player *player, PlayerOptionState *option)
         option->state2C8 = 2;
         // Fall through: the option starts following immediately.
     case 2:
-        if (player->bombState.frameStop == 0)
+        if (player->bombState.isInUse == 0)
         {
             option->position = player->position;
             option->position.y -= 32.0f;
@@ -2682,7 +2660,7 @@ i32 __fastcall Player::FUN_0044fd80(u8 *slot, i32 value, u8 *entry)
 #pragma var_order(slot, this)
 i32 __fastcall Player::FUN_0044fdd0(u8 *slot, i32 value, u8 *entry)
 {
-    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) == 0 &&
+    if (this->bombState.isInUse == 0 &&
         value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
     {
         this->FUN_0044fb70(slot, entry);
@@ -2700,7 +2678,7 @@ i32 __fastcall Player::FUN_0044fe20(u8 *slot, i32 value, u8 *entry)
     i32 i;
 
     index = *reinterpret_cast<i16 *>(entry + 2);
-    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) != 0)
+    if (this->bombState.isInUse != 0)
     {
         return 0;
     }
@@ -2792,7 +2770,7 @@ i32 __fastcall FUN_00450110(Player *player, PlayerShot *slot, i32 value, u8 *ent
     f32 angle;
     f32 magnitude;
 
-    if (player->bombState.frameStop == 0 &&
+    if (player->bombState.isInUse == 0 &&
         value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
     {
         player->FUN_0044fb70(reinterpret_cast<u8 *>(slot), entry);
@@ -2899,7 +2877,7 @@ i32 __fastcall FUN_004505d0(Player *player, PlayerShot *slot)
     {
         if (slot->vm.FUN_004396f8()) slot->vm.pendingInterrupt = 1;
     }
-    if (g_Gui.IsDialogPresent() || player->bombState.frameStop != 0 || g_GameManager.flags.unk13)
+    if (g_Gui.IsDialogPresent() || player->bombState.isInUse != 0 || g_GameManager.flags.unk13)
     {
         if ((i32)player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer > 20)
             player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer = 20;
@@ -2945,7 +2923,7 @@ i32 __fastcall FUN_00450840(Player *player, PlayerShot *slot)
         g_Gui.IsDialogPresent() ||
         (i32)player->timerE2AC4 < 0 ||
         player->playerState == PLAYER_STATE_DYING ||
-        player->bombState.frameStop != 0 ||
+        player->bombState.isInUse != 0 ||
         g_GameManager.flags.unk13)
     {
         slot->vm.pendingInterrupt = 1;
@@ -3083,13 +3061,13 @@ void __fastcall Player::FUN_00450f60(i32 value)
                 ? reinterpret_cast<unsigned __int64 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2A74) + 0x38)
                 : reinterpret_cast<unsigned __int64 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2A78) + 0x38);
 
-    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xFDC) != 0 &&
+    if (this->bombState.isInUse != 0 &&
         ((g_GameManager.shotType == 2 &&
-          (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) & 1) != 0) ||
+          (this->bombState.callbackSetIndex & 1) != 0) ||
          g_GameManager.shotType == 9) &&
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFF4) >= 60)
+        this->bombState.timer >= 60)
     {
-        table += ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xFE0) & 2) ? 7 : 6);
+        table += ((this->bombState.callbackSetIndex & 2) ? 7 : 6);
     }
     else
     {
@@ -3361,7 +3339,7 @@ i32 Player::FUN_00451670(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccum
         if (bullet->collisionCallback != NULL && bullet->collisionCallback(this, bullet, enemyPosition))
             continue;
 
-        if (this->bombState.frameStop == 0)
+        if (this->bombState.isInUse == 0)
             damage += bullet->damage;
         else
             damage += bullet->damage / 5 ? bullet->damage / 5 : 1;
@@ -3450,7 +3428,7 @@ i32 Player::FUN_00451670(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccum
                 else
                     g_EffectManager.SpawnEffect(5, reinterpret_cast<D3DXVECTOR3 *>(enemyPosition), 1, -1);
             }
-            if (this->bombState.frameStop != 0 && bombHit != NULL)
+            if (this->bombState.isInUse != 0 && bombHit != NULL)
                 *bombHit = 1;
         }
     }
