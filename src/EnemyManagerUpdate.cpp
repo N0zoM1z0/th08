@@ -114,16 +114,16 @@ struct EnemyManagerUpdateEnemy
     D3DXVECTOR3 *Position() { return reinterpret_cast<D3DXVECTOR3 *>(raw + 0x2D88); }
     D3DXVECTOR3 *Hitbox() { return reinterpret_cast<D3DXVECTOR3 *>(raw + 0x2D70); }
     D3DXVECTOR3 *SecondaryHitbox() { return reinterpret_cast<D3DXVECTOR3 *>(raw + 0x2D7C); }
-    void *DamageData() { return raw + 0x2E10; }
+    void *DamageData() { return &reinterpret_cast<Enemy *>(this)->playerShotHitAccumulator; }
     void *EclContext() { return raw + 0x7F8; }
 
     i16 &DeathCallbackSub() { return *reinterpret_cast<i16 *>(raw + 0x2CEE); }
     i16 &Unknown2CEA() { return *reinterpret_cast<i16 *>(raw + 0x2CEA); }
-    i32 &Life() { return *reinterpret_cast<i32 *>(raw + 0x2DFC); }
-    i32 &MaxLife() { return *reinterpret_cast<i32 *>(raw + 0x2E00); }
-    i32 &Score() { return *reinterpret_cast<i32 *>(raw + 0x2E08); }
-    EnemyManagerUpdateTimer *BossTimer() { return reinterpret_cast<EnemyManagerUpdateTimer *>(raw + 0x2E14); }
-    u32 &DisplayColor() { return *reinterpret_cast<u32 *>(raw + 0x2E20); }
+    i32 &Life() { return reinterpret_cast<Enemy *>(this)->life; }
+    i32 &MaxLife() { return reinterpret_cast<Enemy *>(this)->maxLife; }
+    i32 &Score() { return reinterpret_cast<Enemy *>(this)->score; }
+    EnemyManagerUpdateTimer *BossTimer() { return reinterpret_cast<EnemyManagerUpdateTimer *>(&reinterpret_cast<Enemy *>(this)->bossTimer); }
+    D3DCOLOR &DisplayColor() { return reinterpret_cast<Enemy *>(this)->displayColor; }
     u32 &Flags1() { return *reinterpret_cast<u32 *>(raw + 0x3324); }
     u32 &Flags2() { return *reinterpret_cast<u32 *>(raw + 0x3328); }
     i8 &DeathAnm1() { return *reinterpret_cast<i8 *>(raw + 0x3310); }
@@ -418,7 +418,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
         D3DXVECTOR3 upperBounds(192.0f, 224.0f, 0.0f);
         g_Player.FUN_00451670(
             reinterpret_cast<Float3 *>(&upperBounds), reinterpret_cast<Float3 *>(&lowerBounds),
-            reinterpret_cast<i32 *>((*reinterpret_cast<EnemyManagerUpdateEnemy **>(raw + 0x9DCDA0))->raw + 0x2E10),
+            &reinterpret_cast<Enemy *>(*reinterpret_cast<EnemyManagerUpdateEnemy **>(raw + 0x9DCDA0))->playerShotHitAccumulator,
             &bombHit);
     }
 
@@ -465,7 +465,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
              (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Player) + 0xFDC) || reinterpret_cast<EnemyManagerUpdatePlayer *>(&g_Player)->playerType)) ||
             reinterpret_cast<EnemyManagerUpdateFlag2Bits *>(enemy->raw + 0x3328)->forcePause)
         {
-            (*reinterpret_cast<ZunTimer *>(enemy->raw + 0x2E14))--;
+            reinterpret_cast<Enemy *>(enemy)->bossTimer--;
             goto update_damage_flash;
         }
 
@@ -592,9 +592,9 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
         if (*reinterpret_cast<i32 *>(enemy->raw + 0x3378) >= 0 && reinterpret_cast<Enemy *>(enemy)->FUN_0042b930())
             goto run_enemy_ecl_after_pause;
 
-        reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->color = *reinterpret_cast<u32 *>(enemy->raw + 0x2E20);
+        reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->color = reinterpret_cast<Enemy *>(enemy)->displayColor;
         g_AnmManager->ExecuteScript(reinterpret_cast<AnmVm *>(enemy->raw + 0xC));
-        *reinterpret_cast<u32 *>(enemy->raw + 0x2E20) = reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->color;
+        reinterpret_cast<Enemy *>(enemy)->displayColor = reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->color;
         for (trailIndex = 0; trailIndex < 2; ++trailIndex)
         {
             if (reinterpret_cast<EnemyManagerUpdateAnmVm *>(
@@ -642,7 +642,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                     !*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Player) + 0xFDC))
                 {
                     damage = g_Player.FUN_00451670(
-                        reinterpret_cast<Float3 *>(enemy->raw + 0x2D88), reinterpret_cast<Float3 *>(enemy->raw + 0x2D70), reinterpret_cast<i32 *>(enemy->raw + 0x2E10), &bombHit);
+                        reinterpret_cast<Float3 *>(enemy->raw + 0x2D88), reinterpret_cast<Float3 *>(enemy->raw + 0x2D70), &reinterpret_cast<Enemy *>(enemy)->playerShotHitAccumulator, &bombHit);
                 }
                 else
                 {
@@ -652,7 +652,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 if (reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x2D7C)->x > 0.0f)
                 {
                     extraDamage = g_Player.FUN_00451670(
-                        reinterpret_cast<Float3 *>(enemy->raw + 0x2D88), reinterpret_cast<Float3 *>(enemy->raw + 0x2D7C), reinterpret_cast<i32 *>(enemy->raw + 0x2E10), &bombHit);
+                        reinterpret_cast<Float3 *>(enemy->raw + 0x2D88), reinterpret_cast<Float3 *>(enemy->raw + 0x2D7C), &reinterpret_cast<Enemy *>(enemy)->playerShotHitAccumulator, &bombHit);
                     if (!bombHit)
                     {
                         if (g_GameManager.shotType == 3 ||
@@ -675,7 +675,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                         if (rankAmount > 70)
                             rankAmount = 70;
                         if (!rankAmount &&
-                            (!reinterpret_cast<EnemyManagerUpdatePlayer *>(&g_Player)->mode || ((i32)*reinterpret_cast<ZunTimer *>(enemy->raw + 0x2E14) & 1)))
+                            (!reinterpret_cast<EnemyManagerUpdatePlayer *>(&g_Player)->mode || ((i32)reinterpret_cast<Enemy *>(enemy)->bossTimer & 1)))
                             rankAmount = 10;
                     }
 
@@ -713,7 +713,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                                 damage = 0;
                         }
 
-                        *reinterpret_cast<i32 *>(enemy->raw + 0x2DFC) -= damage;
+                        reinterpret_cast<Enemy *>(enemy)->life -= damage;
                         *reinterpret_cast<i32 *>(enemy->raw + 0x3354) = damage;
                         reinterpret_cast<Enemy *>(enemy)->FUN_0042b370(damage);
                     }
@@ -757,10 +757,10 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
         }
 
         if (reinterpret_cast<EnemyManagerUpdateFlag2Bits *>(enemy->raw + 0x3328)->deathLatch &&
-            *reinterpret_cast<i32 *>(enemy->raw + 0x2DFC) > 0)
+            reinterpret_cast<Enemy *>(enemy)->life > 0)
             *reinterpret_cast<u32 *>(enemy->raw + 0x3328) &= ~EMUF2_DEATH_LATCH;
 
-        if (*reinterpret_cast<i32 *>(enemy->raw + 0x2DFC) <= 0 &&
+        if (reinterpret_cast<Enemy *>(enemy)->life <= 0 &&
             !reinterpret_cast<EnemyManagerUpdateFlag2Bits *>(enemy->raw + 0x3328)->deathLatch &&
             !reinterpret_cast<EnemyManagerUpdateFlag2Bits *>(enemy->raw + 0x3328)->noDeath)
         {
@@ -775,7 +775,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
             D3DXVECTOR3 bonus;
             i32 deathPosition;
             *reinterpret_cast<i32 *>(enemy->raw + 0x53CC) =
-                (*reinterpret_cast<i32 *>(enemy->raw + 0x3378) - (i32)*reinterpret_cast<ZunTimer *>(enemy->raw + 0x2E14)) / 60;
+                (*reinterpret_cast<i32 *>(enemy->raw + 0x3378) - (i32)reinterpret_cast<Enemy *>(enemy)->bossTimer) / 60;
             *reinterpret_cast<i32 *>(enemy->raw + 0x3378) = -1;
             for (deathPosition = 0; deathPosition < 4; ++deathPosition)
                 reinterpret_cast<i32 *>(enemy->raw + 0x3358)[deathPosition] = -1;
@@ -805,7 +805,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
             switch ((*reinterpret_cast<u32 *>(enemy->raw + 0x3324) >> 20) & 7)
             {
             case 3:
-                *reinterpret_cast<i32 *>(enemy->raw + 0x2DFC) = 1;
+                reinterpret_cast<Enemy *>(enemy)->life = 1;
                 *reinterpret_cast<u32 *>(enemy->raw + 0x3324) &= ~EMUF1_DAMAGEABLE;
                 *reinterpret_cast<u32 *>(enemy->raw + 0x3324) &= ~EMUF1_DEATH_MODE_MASK;
                 g_Gui.SetBossPresent(false);
@@ -832,7 +832,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 goto death_audio_and_callback;
 
             case 1:
-                g_GameManager.AddScore(*reinterpret_cast<i32 *>(enemy->raw + 0x2E08));
+                g_GameManager.AddScore(reinterpret_cast<Enemy *>(enemy)->score);
                 *reinterpret_cast<u32 *>(enemy->raw + 0x3324) |= EMUF1_PERSIST_AFTER_DEATH;
                 *reinterpret_cast<u32 *>(enemy->raw + 0x3324) &= ~EMUF1_COLLISION;
                 *reinterpret_cast<u32 *>(enemy->raw + 0x3324) &= ~EMUF1_DAMAGEABLE;
@@ -840,7 +840,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 goto common_death_mode;
 
             case 0:
-                g_GameManager.AddScore(*reinterpret_cast<i32 *>(enemy->raw + 0x2E08));
+                g_GameManager.AddScore(reinterpret_cast<Enemy *>(enemy)->score);
                 *reinterpret_cast<u32 *>(enemy->raw + 0x3324) &= ~1U;
                 if (*reinterpret_cast<EnemyManagerUpdateAnmVm **>(enemy->raw + 0x53C8) != 0)
                 {
@@ -869,7 +869,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                         g_Gui.FUN_00437ddd(deathVmIndex);
                     }
                 }
-                *reinterpret_cast<i32 *>(enemy->raw + 0x2DFC) = 0;
+                reinterpret_cast<Enemy *>(enemy)->life = 0;
                 reinterpret_cast<EnemyManagerUpdateReplayManager *>(g_ReplayManager)->flags |= 0x20;
                 break;
             }
@@ -953,7 +953,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
             D3DXVECTOR3 markerPosition;
 
             if (!g_Gui.IsDialogPresent() && !*reinterpret_cast<u8 *>(enemy->raw + 0x3313))
-                g_Gui.FUN_004230c0((f32)*reinterpret_cast<i32 *>(enemy->raw + 0x2DFC) / (f32)*reinterpret_cast<i32 *>(enemy->raw + 0x2E00));
+                g_Gui.FUN_004230c0((f32)reinterpret_cast<Enemy *>(enemy)->life / (f32)reinterpret_cast<Enemy *>(enemy)->maxLife);
 
             if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->boss < 4)
             {
@@ -978,7 +978,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
 
         reinterpret_cast<Enemy *>(enemy)->FUN_0042e010();
         if (!g_EclScriptedGlobalUpdateFreeze)
-            (*reinterpret_cast<ZunTimer *>(enemy->raw + 0x2E14))++;
+            reinterpret_cast<Enemy *>(enemy)->bossTimer++;
         if (*reinterpret_cast<ZunTimer *>(enemy->raw + 0x5354) > 0)
             (*reinterpret_cast<ZunTimer *>(enemy->raw + 0x5354))--;
 

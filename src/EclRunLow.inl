@@ -1053,7 +1053,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                     reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) +
                                                           0x3324)->
                             effectMirrored != 0;
-                if (U32At(child, 0x2E0C) & 1)
+                if (reinterpret_cast<Enemy *>(child)->enemyIndex & 1)
                 {
                     reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
                         ->angleVel.z =
@@ -1111,7 +1111,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                     reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) +
                                                           0x3324)->
                             effectMirrored != 0;
-                if (U32At(child, 0x2E0C) & 1)
+                if (reinterpret_cast<Enemy *>(child)->enemyIndex & 1)
                 {
                     reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
                         ->angleVel.z =
@@ -1175,7 +1175,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                     reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) +
                                                           0x3324)->
                             effectMirrored != 0;
-                if (U32At(child, 0x2E0C) & 1)
+                if (reinterpret_cast<Enemy *>(child)->enemyIndex & 1)
                 {
                     reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
                         ->angleVel.z =

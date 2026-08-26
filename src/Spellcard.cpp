@@ -749,7 +749,7 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
     this->flags &= ~0x400;
     this->spellCardNumber = spellCardNumber;
     this->activeEnemy = enemy;
-    this->enemySpellFlagsSnapshot = *reinterpret_cast<u32 *>(this->activeEnemy + 0x2E0C);
+    this->activeEnemyIndexSnapshot = reinterpret_cast<Enemy *>(this->activeEnemy)->enemyIndex;
     this->bonusProgress = bonus;
     this->scoreLimit = bonus;
     if (((*reinterpret_cast<u32 *>(this->activeEnemy + 0x3324) >> 27) & 1) != 0)
@@ -1293,7 +1293,7 @@ i32 Spellcard::OnUpdateImpl()
     if ((this->flags & 1) != 0)
     {
         if ((*reinterpret_cast<u32 *>(this->activeEnemy + 0x3324) & 1) == 0 ||
-            this->enemySpellFlagsSnapshot != *reinterpret_cast<u32 *>(this->activeEnemy + 0x2E0C))
+            this->activeEnemyIndexSnapshot != reinterpret_cast<Enemy *>(this->activeEnemy)->enemyIndex)
         {
             this->spellcard_fun_00416af0();
         }

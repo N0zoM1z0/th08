@@ -266,7 +266,7 @@ struct Spellcard
     u32 flags;                       // +0x000
     u8 *activeEnemy;                 // +0x004
     i32 spellCardNumber;             // +0x008
-    u32 enemySpellFlagsSnapshot;     // +0x00C
+    i32 activeEnemyIndexSnapshot;    // +0x00C
     i32 pendingTimeOrbs;             // +0x010
     char spellName[48];              // +0x014
     u8 unknown_044[0x30];            // +0x044

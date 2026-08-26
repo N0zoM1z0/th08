@@ -608,7 +608,7 @@ EclOperands::EnemyOverlay *__fastcall SpawnChildStandard0041F110(
     EclOperands::EnemyOverlay *child;
 
     child = reinterpret_cast<EclOperands::EnemyOverlay *>(&g_EnemyManager.enemies[480]);
-    if (*reinterpret_cast<i32 *>(parent->bytes + 0x2dfc) > 0 &&
+    if (reinterpret_cast<Enemy *>(parent)->life > 0 &&
         (((*reinterpret_cast<u32 *>(parent->bytes + 0x3324) >> 10) & 1) == 0))
     {
         Float3 position;
@@ -640,7 +640,7 @@ EclOperands::EnemyOverlay *__fastcall SpawnChildAlternate0041F280(
     EclOperands::EnemyOverlay *child;
 
     child = reinterpret_cast<EclOperands::EnemyOverlay *>(&g_EnemyManager.enemies[480]);
-    if (*reinterpret_cast<i32 *>(parent->bytes + 0x2dfc) > 0 &&
+    if (reinterpret_cast<Enemy *>(parent)->life > 0 &&
         (((*reinterpret_cast<u32 *>(parent->bytes + 0x3324) >> 10) & 1) == 0))
     {
         Float3 position;
@@ -818,7 +818,7 @@ void Enemy::FUN_00423150()
     i32 direction;
     AnmLoaded *anm;
 
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc) > 0)
+    if (this->life > 0)
     {
         if (this->shootIntervalFrames > 0)
         {

@@ -128,7 +128,7 @@ low_advance_instruction:
     // Target 0x0041E7F8..0x0041ECBD is part of RunEcl itself.  Keep the
     // complete frame tail lexical so VC7 can share RunEcl's locals and emit
     // the observed in-function easing switch and child-context back edge.
-    if (TH08_ECL_AT(unusedContext, i32, 0x2DFC) > 0)
+    if (enemy->life > 0)
     {
 #pragma var_order(i, progress, restorePosition, entry, savedPosition)
         i32 i;

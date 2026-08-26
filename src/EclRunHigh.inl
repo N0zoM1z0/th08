@@ -420,7 +420,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
     case 102:
     case 103:
     case 104:
-        if (TH08_ECL_AT(ctx, i32, 0x2DFC) <= 0)
+        if (reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->life <= 0)
             break;
         if (((TH08_ECL_AT(ctx, u32, 0x3324) >> 17) & 1) == 1)
         {
@@ -755,9 +755,9 @@ enter_subroutine:
         TH08_ECL_RUN_HIGH_YIELD(DISPATCH_ENTER_SUBROUTINE);
 #endif
     case 131:
-        TH08_ECL_AT(ctx, i32, 0x2E04) =
-            TH08_ECL_AT(ctx, i32, 0x2DFC) =
-            TH08_ECL_AT(ctx, i32, 0x2E00) = TH08_ECL_READ_I(ctx, 0);
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->phaseStartingLife =
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->life =
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->maxLife = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_AT(ctx, u8, 0x3313) == 0 && (((TH08_ECL_AT(ctx, u32, 0x3324) >> 1) & 1) != 0))
             for (i32 i = 0; i < 8; ++i)
                 g_Gui.SetBossGaugeSlot(i, 0.0f, 0.0f);
@@ -767,15 +767,15 @@ enter_subroutine:
         i32 index = TH08_ECL_READ_I(ctx, 0);
         g_Gui.SetBossGaugeSlot(
             index,
-            (f32)TH08_ECL_READ_I(ctx, 1) / (f32)TH08_ECL_AT(ctx, i32, 0x2E00),
-            (f32)TH08_ECL_READ_I(ctx, 2) / (f32)TH08_ECL_AT(ctx, i32, 0x2E00));
+            (f32)TH08_ECL_READ_I(ctx, 1) / (f32)reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->maxLife,
+            (f32)TH08_ECL_READ_I(ctx, 2) / (f32)reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->maxLife);
         g_Gui.SetBossGaugeValue(
             index, TH08_ECL_READ_I(ctx, 3));
         break;
     }
     case 122: StartEnemySpell(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_CONTEXT_INSTRUCTION(ctx)); break;
     case 123: EndEnemySpell(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_CONTEXT_INSTRUCTION(ctx)); break;
-    case 132: *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E14) = TH08_ECL_READ_I(ctx, 0); break;
+    case 132: reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossTimer = TH08_ECL_READ_I(ctx, 0); break;
     case 133:
         if (TH08_ECL_PRESENTATION_WRITES_ALLOWED())
         {
@@ -797,7 +797,7 @@ enter_subroutine:
         }
         else
             TH08_ECL_AT(ctx, i32, 0x3378) = TH08_ECL_READ_I(ctx, 0);
-        *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E14) = 0;
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossTimer = 0;
         break;
 
     case 135:
@@ -915,7 +915,7 @@ enter_subroutine:
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3E04) += 0x708;
         break;
     case 93:
-        if (TH08_ECL_AT(ctx, i32, 0x2DFC) > 0)
+        if (reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->life > 0)
         {
             SpawnPacketTyped packet93;
             void *spawned93;
@@ -944,7 +944,7 @@ enter_subroutine:
         }
         break;
     case 94:
-        if (TH08_ECL_AT(ctx, i32, 0x2DFC) > 0)
+        if (reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->life > 0)
         {
             SpawnPacketTyped packet94;
             void *spawned94;
@@ -1014,7 +1014,7 @@ enter_subroutine:
         break;
     case 153:
         TH08_ECL_AT(ctx, i32, 0x337C) = (i32)TH08_ECL_AT(ctx, i16, 0x2CEE);
-        *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2E14) = 0;
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossTimer = 0;
         break;
     case 155:
         reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->op155Bit27 =
@@ -1133,13 +1133,13 @@ enter_subroutine:
                 1, -1));
         reinterpret_cast<AnmVmBase *>(
             TH08_ECL_AT(ctx, u8 *, 0x53C8))->SetInterrupt(g_Player.IsYoukai() ? 2 : 1);
-        if (TH08_ECL_AT(ctx, u32, 0x2E0C) & 1)
+        if (reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->enemyIndex & 1)
             *(f32 *)(TH08_ECL_AT(ctx, u8 *, 0x53C8) + 0x14) =
                 -*(f32 *)(TH08_ECL_AT(ctx, u8 *, 0x53C8) + 0x14);
         break;
     }
     case 175: reinterpret_cast<i32 *>(EclRunLowProposal::g_EclEnemyTableF54CC0)[91] = TH08_ECL_READ_I(ctx, 0); break;
-    case 177: TH08_ECL_AT(ctx, i32, 0x2E04) = TH08_ECL_READ_I(ctx, 0); break;
+    case 177: reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->phaseStartingLife = TH08_ECL_READ_I(ctx, 0); break;
 #if !defined(TH08_ECL_RUN_HIGH_BODY)
     case 178: TH08_ECL_CONTEXT_API(ctx)->Call004224A0(TH08_ECL_CONTEXT_ENEMY(ctx)); break;
 #endif

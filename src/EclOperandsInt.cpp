@@ -1,6 +1,7 @@
 #include "EclOperands.hpp"
 
 #include "EclManager.hpp"
+#include "EnemyManager.hpp"
 #include "GameManager.hpp"
 #include "Global.hpp"
 #include "ItemManager.hpp"
@@ -74,8 +75,8 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x2733: return (i32)g_Rng.GetRandomF32Signed();
     case 0x2738: return g_GameManager.difficulty;
     case 0x2739: return g_GameManager.rank;
-    case 0x2741: return INT_FIELD(0x2e1c);
-    case 0x2743: return INT_FIELD(0x2dfc);
+    case 0x2741: return reinterpret_cast<Enemy *>(enemy)->bossTimer.current;
+    case 0x2743: return reinterpret_cast<Enemy *>(enemy)->life;
     case 0x2744: return ::th08::g_GameManager.shotType;
     case 0x276e: return (i32)CONTEXT_FLOAT(0x68);
     case 0x276f: return (i32)CONTEXT_FLOAT(0x6c);
@@ -134,7 +135,7 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x2763: return INT_FIELD(0x3354);
     case 0x2764: return *(u8 *)(enemy->bytes + 0x3313);
     case 0x276c: return INT_FIELD(0x3304);
-    case 0x276d: return INT_FIELD(0x2e08);
+    case 0x276d: return reinterpret_cast<Enemy *>(enemy)->score;
 
     case 0x2770:
         return ENEMY_HELPERS->HasParentChain()
@@ -202,10 +203,10 @@ i32 *__fastcall ResolveIntLValue(EnemyOverlay *enemy, i32 *operand, u16 flags, i
     case 0x2737: return &CONTEXT_INT(0x64);
     case 0x2738: return &g_GameManager.difficulty;
     case 0x2739: return &g_GameManager.rank;
-    case 0x2741: return &INT_FIELD(0x2e1c);
-    case 0x2743: return &INT_FIELD(0x2dfc);
+    case 0x2741: return &reinterpret_cast<Enemy *>(enemy)->bossTimer.current;
+    case 0x2743: return &reinterpret_cast<Enemy *>(enemy)->life;
     case 0x276c: return &INT_FIELD(0x3304);
-    case 0x276d: return &INT_FIELD(0x2e08);
+    case 0x276d: return &reinterpret_cast<Enemy *>(enemy)->score;
     case 0x274d: return &EclRunLowProposal::g_EclCallParameters.ints[0];
     case 0x274e: return &EclRunLowProposal::g_EclCallParameters.ints[1];
     case 0x274f: return &EclRunLowProposal::g_EclCallParameters.ints[2];

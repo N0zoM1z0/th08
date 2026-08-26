@@ -38,10 +38,10 @@ void *EnemyManager::SpawnEnemy1(i32 type, const D3DXVECTOR3 *position, i32 a, i3
 
         *reinterpret_cast<EnemySpawnCopy *>(enemy) =
             *reinterpret_cast<const EnemySpawnCopy *>(&this->firstEnemy);
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e0c) = i;
+        enemy->enemyIndex = i;
         reinterpret_cast<EnemySpawnFlags *>(reinterpret_cast<u8 *>(enemy) + 0x3324)->spawnVariant = flags;
         if (a >= 0)
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2dfc) = a;
+            enemy->life = a;
         enemy->vector2d34 = *reinterpret_cast<const Float3 *>(position);
         g_EclManager.CallEclSub(
             reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(enemy) + 0x7f8), (i16)type);
@@ -52,15 +52,13 @@ void *EnemyManager::SpawnEnemy1(i32 type, const D3DXVECTOR3 *position, i32 a, i3
         }
         else
         {
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e20) =
+            enemy->displayColor =
                 *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x1fc);
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x3304) = (i8)b;
             if (c >= 0)
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e08) = c;
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e00) =
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2dfc);
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e04) =
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e00);
+                enemy->score = c;
+            enemy->maxLife = enemy->life;
+            enemy->phaseStartingLife = enemy->maxLife;
         }
         break;
     }
@@ -97,9 +95,9 @@ void *EnemyManager::SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i3
 
         *reinterpret_cast<EnemySpawnCopy *>(enemy) =
             *reinterpret_cast<const EnemySpawnCopy *>(&this->firstEnemy);
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e0c) = i;
+        enemy->enemyIndex = i;
         if (a >= 0)
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2dfc) = a;
+            enemy->life = a;
         enemy->vector2d34 = *reinterpret_cast<const Float3 *>(position);
         g_EclManager.CallEclSub(
             reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(enemy) + 0x7f8), (i16)type);
@@ -112,17 +110,15 @@ void *EnemyManager::SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i3
         }
         else
         {
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e20) =
+            enemy->displayColor =
                 *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x1fc);
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x3304) = (i8)b;
             if (a >= 0)
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2dfc) = a;
+                enemy->life = a;
             if (c >= 0)
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e08) = c;
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e00) =
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2dfc);
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e04) =
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e00);
+                enemy->score = c;
+            enemy->maxLife = enemy->life;
+            enemy->phaseStartingLife = enemy->maxLife;
         }
         break;
     }

@@ -1,6 +1,7 @@
 #include "EclOperands.hpp"
 
 #include "EclManager.hpp"
+#include "EnemyManager.hpp"
 #include "GameManager.hpp"
 #include "Global.hpp"
 #include "ItemManager.hpp"
@@ -79,11 +80,11 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
     case 0x2762: return g_Rng.GetRandomF32InRange(6.2831855f) - 3.1415927f;
     case 0x2738: return (f32)g_GameManager.difficulty;
     case 0x2739: return (f32)g_GameManager.rank;
-    case 0x2741: return (f32)ENEMY_INT(this, 0x2E1C);
-    case 0x2743: return (f32)ENEMY_INT(this, 0x2DFC);
+    case 0x2741: return (f32)reinterpret_cast<Enemy *>(this)->bossTimer.current;
+    case 0x2743: return (f32)reinterpret_cast<Enemy *>(this)->life;
     case 0x2744: return (f32)::th08::g_GameManager.shotType;
     case 0x276C: return (f32)ENEMY_INT(this, 0x3304);
-    case 0x276D: return (f32)ENEMY_INT(this, 0x2E08);
+    case 0x276D: return (f32)reinterpret_cast<Enemy *>(this)->score;
     case 0x274D: return (f32)EclRunLowProposal::g_EclCallParameters.ints[0];
     case 0x274E: return (f32)EclRunLowProposal::g_EclCallParameters.ints[1];
     case 0x274F: return (f32)EclRunLowProposal::g_EclCallParameters.ints[2];

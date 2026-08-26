@@ -1165,7 +1165,7 @@ void Player::FUN_0044c650()
                     if (reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i] != NULL)
                     {
                         reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]->FUN_0042adb0(0);
-                        *reinterpret_cast<i32 *>(reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]->bytes + 0x2DFC) = 0;
+                        reinterpret_cast<Enemy *>(reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i])->life = 0;
                         *reinterpret_cast<u32 *>(reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]->bytes + 0x3324) &= 0xBFFFFFFFu;
                     }
                 }
@@ -1697,8 +1697,8 @@ ZunResult Player::AddedCallback(Player *player)
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2B2C) = 27;
     else
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2B2C) = 40;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x2E10) =
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2B2C);
+    g_EnemyManager.firstEnemy.playerShotHitAccumulator =
+        player->damageAccumulatorThreshold;
     return ZUN_SUCCESS;
 }
 

@@ -159,7 +159,7 @@ void EnemyManager::Initialize()
         *reinterpret_cast<i32 *>(enemy + i * 0x1C + 0x3394) = 0xC479C000;
 
     *reinterpret_cast<u32 *>(enemy + 0x3324) |= 1;
-    *reinterpret_cast<ZunTimer *>(enemy + 0x2E14) = 0;
+    reinterpret_cast<Enemy *>(enemy)->bossTimer = 0;
     *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFEFFFFFF;
 
     *reinterpret_cast<D3DXVECTOR3 *>(enemy + 0x2D70) = D3DXVECTOR3(24.0f, 24.0f, 24.0f);
@@ -173,8 +173,8 @@ void EnemyManager::Initialize()
     *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFBFFFF;
     *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFFFFFD;
     *reinterpret_cast<i16 *>(enemy + 0x2CEA) = 0;
-    *reinterpret_cast<i32 *>(enemy + 0x2DFC) = 1;
-    *reinterpret_cast<i32 *>(enemy + 0x2E08) = 100;
+    reinterpret_cast<Enemy *>(enemy)->life = 1;
+    reinterpret_cast<Enemy *>(enemy)->score = 100;
     *reinterpret_cast<u8 *>(enemy + 0x3310) = 0;
     *reinterpret_cast<u8 *>(enemy + 0x3311) = 0;
     *reinterpret_cast<u8 *>(enemy + 0x3312) = 0;
@@ -205,7 +205,7 @@ void EnemyManager::Initialize()
     reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor.spawnSound = 7;
     reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor.transformSound = 25;
     *reinterpret_cast<u32 *>(enemy + 0x3350) = 0x44800000;
-    *reinterpret_cast<i32 *>(enemy + 0x2E10) = *reinterpret_cast<i32 *>(0x18B8A24);
+    reinterpret_cast<Enemy *>(enemy)->playerShotHitAccumulator = *reinterpret_cast<i32 *>(0x18B8A24);
 }
 
 // FUNCTION: th08 0x42a210
@@ -441,14 +441,13 @@ void Enemy::FUN_0042b370(i32 amount)
     if (damage == 0)
         return;
 
-    *reinterpret_cast<i32 *>(
-        *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x2da4) + 0x2dfc) -= damage;
-    if (*reinterpret_cast<i32 *>(
-            *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x2da4) + 0x2dfc) <=
-        maxHp)
+    reinterpret_cast<Enemy *>(
+        *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x2da4))->life -= damage;
+    if (reinterpret_cast<Enemy *>(
+            *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x2da4))->life <= maxHp)
     {
-        *reinterpret_cast<i32 *>(
-            *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x2da4) + 0x2dfc) = maxHp;
+        reinterpret_cast<Enemy *>(
+            *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x2da4))->life = maxHp;
     }
 }
 
@@ -472,19 +471,18 @@ i32 Enemy::FUN_0042b490()
             continue;
 
         phaseCount++;
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc) <
+        if (this->life <
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4))
         {
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc) =
+            this->life =
                 *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4);
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2e04) =
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc);
+            this->phaseStartingLife = this->life;
             g_EclManager.CallEclSub(
                 reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(this) + 0x7f8),
                 *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x3368 + i * 4));
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4) = -1;
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53cc) =
-                (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) - (i32)this->timer2e14) / 60;
+                (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) - (i32)this->bossTimer) / 60;
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) = -1;
 
             for (work = 0; work < 4; work++)
@@ -511,7 +509,7 @@ i32 Enemy::FUN_0042b490()
                 if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x3324) >> 1) & 1) != 0)
                     continue;
 
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2dfc) = 0;
+                enemyCursor->life = 0;
                 if (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee) >= 0)
                 {
                     g_EclManager.CallEclSub(
@@ -530,7 +528,7 @@ i32 Enemy::FUN_0042b490()
             return 1;
         }
 
-        work = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc) -
+        work = this->life -
                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4);
         if (g_Spellcard.IsActive())
         {
@@ -569,7 +567,7 @@ i32 Enemy::FUN_0042b490()
 
     if (phaseCount == 0)
     {
-        work = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc);
+        work = this->life;
         if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) != 0)
         {
             if (g_Spellcard.IsActive())
@@ -638,10 +636,10 @@ i32 Enemy::FUN_0042b930()
         *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3313) == 0)
     {
         g_Gui.FUN_0042f340(
-            (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) - (i32)this->timer2e14) / 60);
+            (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) - (i32)this->bossTimer) / 60);
     }
 
-    if (this->timer2e14 >= *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378))
+    if (this->bossTimer >= *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378))
     {
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53cc) = 0;
     maxThreshold = 0;
@@ -658,10 +656,9 @@ i32 Enemy::FUN_0042b930()
 
     if (maxThreshold > 0)
     {
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc) =
+        this->life =
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + selectedOrK * 4);
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2e04) =
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc);
+        this->phaseStartingLife = this->life;
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + selectedOrK * 4) = -1;
     }
 
@@ -671,7 +668,7 @@ i32 Enemy::FUN_0042b930()
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) = -1;
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x337c) =
         *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2cee);
-    this->timer2e14 = 0;
+    this->bossTimer = 0;
 
     if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 27) & 1) == 0)
     {
@@ -694,7 +691,7 @@ i32 Enemy::FUN_0042b930()
             continue;
         if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x3324) >> 1) & 1) != 0)
             continue;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2dfc) = 0;
+        enemyCursor->life = 0;
         if (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee) >= 0)
         {
             g_EclManager.CallEclSub(
@@ -878,7 +875,7 @@ void Enemy::FUN_0042c290(Float3 *position, Float3 *size)
 
     collisionSize = *size / 0.7f;
     if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 7) & 1) != 0 &&
-        this->timer2e14.FUN_0040d3d0() && this->timer2e14 % 6 == 0)
+        this->bossTimer.FUN_0040d3d0() && this->bossTimer % 6 == 0)
     {
         g_Player.FUN_0044a470(position, &collisionSize);
     }
@@ -896,7 +893,7 @@ void Enemy::FUN_0042c290(Float3 *position, Float3 *size)
             if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) == 0 &&
                 ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 7) & 1) == 0)
             {
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc) -= 10;
+                this->life -= 10;
             }
         }
     }
@@ -935,7 +932,7 @@ void Enemy::FUN_0042c420()
         }
 
         if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) >> 1) & 1) != 0 &&
-            this->timer2e14.FUN_0040ebc0(2))
+            this->bossTimer.FUN_0040ebc0(2))
         {
             g_EffectManager.SpawnEffect(38, reinterpret_cast<D3DXVECTOR3 *>(&this->vector2d88), 1, -1);
         }
@@ -1508,7 +1505,7 @@ i32 EnemyManager::FUN_0042efb0(i32 maxScore, i32 initialScore)
             continue;
         }
 
-        *reinterpret_cast<i32 *>(enemy + 0x2DFC) = 0;
+        reinterpret_cast<Enemy *>(enemy)->life = 0;
         if (((*reinterpret_cast<u32 *>(enemy + 0x3324) >> 7) & 1) != 0)
         {
             *reinterpret_cast<Float3 *>(enemy + 0x2D88) =

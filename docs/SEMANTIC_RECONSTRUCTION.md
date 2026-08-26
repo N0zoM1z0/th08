@@ -665,3 +665,82 @@ shot snapshot, repeat interval, and interval timer are replaced by one
 asserted Enemy owner while the serialized instruction remains honestly
 byte-oriented.  The routing report falls from 1,449 to 1,438 raw-member
 candidates; that delta is a review aid, not a semantic-completion percentage.
+
+### Enemy combat identity and life state — 2026-08-26
+
+Scope: Enemy template initialization at `0x00429E00`; spawning at
+`0x0042A4E0/0x0042A680`; linked-enemy damage and phase transitions at
+`0x0042B370`, `0x0042B490`, and `0x0042B930`; the complete update at
+`0x0042C660`; the complete ECL dispatcher at `0x004184B0`; integer/float ECL
+operand resolvers at `0x0041F420`, `0x0041FE10`, and `0x00420120`; Spellcard
+start/update; Player enemy-hit accumulation at `0x00451670`; and three ECL EX
+laser-hit callbacks at `0x00424730..0x00424910`.  Shared declarations live in
+`src/EnemyManager.hpp` and `src/Spellcard.hpp`; consumers span ten production
+objects.
+
+Observed: TH08 reads and writes `Enemy + 0x2DFC` as signed current life and
+uses `+0x2E00` as the divisor for the Boss life ratio and gauge-segment
+fractions.  Spawn and ECL opcode 131 initialize both from the same value;
+damage and death paths decrement/test/clear current life.  `+0x2E08` is the
+spawn-configurable value awarded by both scored death modes and is exposed as
+an ECL integer/float lvalue.  `+0x2E14` is a complete `ZunTimer`: the main
+update advances it, pause paths decrement it, phase changes clear it, ECL
+opcodes set/clear it, ECL operands expose its `current` member, and three EX
+callbacks use its interval predicate.
+
+Spawn assigns the pool cursor index to `+0x2E0C`.  Linked-child visual paths
+use its low bit to mirror alternating effects, while Spellcard start snapshots
+the full dword and the update path compares that snapshot against the active
+Enemy.  `+0x2E10` is passed by address as the per-Enemy hit accumulator to
+`Player::FUN_00451670`, which consumes thresholds and adds capped damage; the
+Player added callback initializes the template copy from
+`Player::damageAccumulatorThreshold`.  Finally, `+0x2E20` is initialized from
+the primary ANM VM color and copied into/out of that VM around script
+execution.
+
+The dword at `+0x2E04` is initialized from maximum life on spawn/opcode 131,
+updated to current life at phase transitions, and independently writable by
+opcode 177.  No authored TH08 consumer currently reads it.  Those writes prove
+phase-local life ownership and width, but not a narrower display or damage
+role.
+
+Corroborated: TH06 independently places current life, maximum life, score,
+Boss timer, and display color together after the same bullet-rank aggregate.
+It supports the stable names only.  TH08's own spawn, ECL, damage, death,
+Spellcard, ANM, and Player-hit dataflow establishes all final TH08 offsets and
+the added index/accumulator/phase fields.
+
+Inference: `life`, `maxLife`, `score`, `enemyIndex`,
+`playerShotHitAccumulator`, `bossTimer`, and `displayColor` are
+high-confidence behavior names.  `phaseStartingLife` is deliberately neutral
+and moderate-confidence: it records the common spawn/phase write pattern
+without claiming an unobserved consumer.  The Spellcard snapshot is renamed
+`activeEnemyIndexSnapshot`; its target type and StartSpell ABI remain
+unchanged.
+
+Layout: assertions pin all eight consecutive fields at `Enemy +
+0x2DFC..+0x2E20`, including the complete 0x0C `ZunTimer`, while the existing
+rank/descriptor and `sizeof(Enemy) == 0x53D0` assertions still pass.  No
+calling convention, decorated function type, construction order, global
+identity, field width, or state operation changed.
+
+VC7 oracle: focused replay passed **163 / 163** accepted units across
+`EclRun`, `EclDependencies`, both operand resolvers, `EclExIns`,
+`EnemyTimeline`, `EnemyManager`, `EnemyManagerUpdate`, `SpellCard`, and
+`Player`.  Target-pinned fact packets independently replayed exact spawn,
+linked-damage, update, and Player-hit functions.  The required non-reuse
+`verify-exact-units.py --all --json` cold-built all 75 configured objects and
+passed **1,105 / 1,105** with no failures.  A subsequent normal VC7 production
+image linked successfully; no match manifest or exact ledger changed.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiled and linked
+the complete i386 target, and `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 plus all
+fixed target-owned layout symbols.  No isolated automated Enemy combat smoke
+exists, so no runtime smoke is claimed.
+
+Result: every authored raw offset view in the `Enemy + 0x2DFC..+0x2E20`
+combat-state range is replaced by the asserted Enemy owner, including ECL
+resolver lvalues and cross-subsystem Player/Spellcard users.  The routing
+report falls from 1,438 to 1,406 raw-member candidates and from 75 to 73 opaque
+storage candidates; those deltas are review aids, not completion percentages.

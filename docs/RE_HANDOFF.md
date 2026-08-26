@@ -146,6 +146,19 @@ build/layout verifier passed.  The next coherent family is the adjacent Enemy
 combat identity/life/score/boss-timer state at `+0x2DFC..+0x2E20`, followed by
 its phase threshold/callback owners.
 
+The second Enemy/ECL orchestration batch closes that adjacent combat-state
+range.  `Enemy + 0x2DFC..+0x2E20` now exposes current/maximum life, a neutral
+phase-starting-life value, death score, pool index, per-Enemy Player-shot hit
+accumulator, Boss timer, and ANM display color.  All spawn, ECL, phase, damage,
+death, Player, Spellcard, operand-resolver, and EX callback users share the
+asserted owner; `phaseStartingLife` remains explicitly inference-limited
+because the target proves its writes but no current authored reader.
+Focused replay passed **163 / 163**, a non-reuse cold replay passed **1,105 /
+1,105**, the normal VC7 image linked, and the complete i386 Linux build/layout
+verifier passed.  The next coherent family is the Boss life/timer threshold and
+callback table at `Enemy + 0x3358..+0x3384`, together with the adjacent ECL
+subroutine identifiers and phase-gauge state that consume it.
+
 Select the next independent field family with:
 
 ```bash
