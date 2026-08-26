@@ -77897,6 +77897,13 @@ target_address = 0x0045BDC0
 size = 332
 
 [[units.relocations]]
+offset = 10
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
+
+[[units.relocations]]
 offset = 37
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
@@ -78036,6 +78043,13 @@ object = "build/objdiff/reimpl/ScreenEffect.obj"
 symbol = "th08::ScreenEffect::FUN_0045bf10"
 target_address = 0x0045BF10
 size = 459
+
+[[units.relocations]]
+offset = 10
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 37
