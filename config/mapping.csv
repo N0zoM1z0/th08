@@ -849,8 +849,8 @@ th08::ResultScreen::GetCharacterName,0x453cfa,0x13,__fastcall,,u8,u32
 th08::ResultScreen::WriteScore,0x453d0d,0x55c,__fastcall,,void,ResultScreen*
 th08::AppendLogFormat,0x454269,0x2f,__cdecl,varargs,char*,char*,const char*
 th08::ResultScreen::LogScoreDataToFile,0x454298,0x9c1,__fastcall,,void,ResultScreen*
-th08::ResultScreen::LinkScoreEx,0x454c59,0x2e,__thiscall,,void,ResultScreen*,void*,i32,i32
-th08::ResultScreen::FreeScore,0x454c87,0x2b,__thiscall,,void,ResultScreen*,i32,i32
+th08::ResultScreen::InsertScore,0x454c59,0x2e,__thiscall,,i32,ResultScreen*,Hscr*,i32,i32
+th08::ResultScreen::FreeScoreNodes,0x454c87,0x2b,__thiscall,,void,ResultScreen*,i32,i32
 th08::ResultScreen::HandleCategorySelectScreen,0x454cb2,0x405,__thiscall,,u8,ResultScreen*
 th08::ResultScreen::SetState,0x4550b7,0x45,__thiscall,,void,ResultScreen*,ResultScreenState
 th08::ResultScreen::HandleHighScoreDifficultySelect,0x4550fc,0x581,__thiscall,,u32,ResultScreen*
@@ -859,7 +859,7 @@ th08::ResultScreen::HandleHighScoreScreen,0x455925,0x10e,__thiscall,,u32,ResultS
 th08::ResultScreen::HandleSpellCardDifficultySelect,0x455a33,0x27d,__thiscall,,u8,ResultScreen*
 th08::ResultScreen::HandleSpellCardCharacterSelect,0x455cb0,0x2bb,__thiscall,,u8,ResultScreen*
 th08::ResultScreen::HandleSpellCardScreen,0x455f6b,0x2b3,__thiscall,,u8,ResultScreen*
-th08::ResultScreen::HandleResultKeyboard,0x45621e,0x71a,__thiscall,,u8,ResultScreen*
+th08::ResultScreen::HandleResultKeyboard,0x45621e,0x71a,__thiscall,,i32,ResultScreen*
 th08::ResultScreen::FormatDate,0x456938,0x37,__fastcall,,void,char*
 th08::ResultScreen::HandleReplaySaveKeyboard,0x45696f,0xe73,__thiscall,,i32,ResultScreen*
 th08::ResultScreen::CheckConfirmButton,0x4577e2,0xc8,__thiscall,,ZunResult,ResultScreen*
@@ -868,8 +868,8 @@ th08::ResultScreen::DrawFinalStats,0x457e00,0x4a0,__thiscall,,u32,ResultScreen*
 th08::ResultScreen::RegisterChain,0x4582a0,0x18b,__fastcall,,ZunResult,u32
 th08::ResultScreen::ResultScreen,0x45842b,0x85,__thiscall,,ResultScreen*,ResultScreen*
 th08::ResultScreen::OnUpdate,0x4584b0,0x1a8,__fastcall,,u8,u32
-th08::ResultScreen::OnDraw,0x4586b4,0xf99,__fastcall,,u8,u32
-th08::ResultScreen::AddedCallback,0x45964d,0x985,__fastcall,,u32,ResultScreen*
+th08::ResultScreen::OnDraw,0x4586b4,0xf99,__fastcall,,ChainCallbackResult,ResultScreen*
+th08::ResultScreen::AddedCallback,0x45964d,0x985,__fastcall,,ZunResult,ResultScreen*
 th08::ResultScreen::DeletedCallback,0x459fd2,0xe1,__fastcall,,u8,u32
 th08::ResultScreen::`scalar_deleting_destructor',0x45a0b3,0x29,__thiscall,,void*,ResultScreen*,u32
 th08::ResultScreen::~ResultScreen,0x45a0dc,0x18,__thiscall,,void,ResultScreen*
@@ -879,8 +879,8 @@ th08::ResultScreen::MoveCursorHorizontally,0x45a2f2,0x10b,__fastcall,,i32,Result
 th08::AnmManager::ReplaceSurface,0x45a3fd,0xa3,__thiscall,,void,AnmManager*,i32,i32
 th08::Catk::WasAttemptedWithShot,0x45a4a0,0x3c,__thiscall,,i32,Catk*,i32
 th08::ScoreListNode::ScoreListNode,0x45a4dc,0x20,__thiscall,,ScoreListNode*,ScoreListNode*
-th08::ScoreDat::LinkScore,0x45a500,0x9f,__fastcall,,i32,ScoreListNode*,Hscr*
-th08::ScoreDat::FreeAllScores,0x45a5a0,0x3b,__fastcall,,u8,ScoreListNode*
+th08::ScoreDat::InsertScore,0x45a500,0x9f,__fastcall,,i32,ScoreListNode*,Hscr*
+th08::ScoreDat::FreeScoreNodes,0x45a5a0,0x3b,__fastcall,,void,ScoreListNode*
 th08::ScoreDat::OpenScore,0x45a5e0,0x361,__fastcall,,ScoreDat*,char*
 th08::ScoreDat::GetHighScore,0x45a950,0x16a,__fastcall,,u32,ScoreDat*,u32,u32,u32,uchar*
 th08::ScoreDat::ParseCATK,0x45aac0,0xaf,__fastcall,,ZunResult,ScoreDat*,Catk*

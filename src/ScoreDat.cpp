@@ -32,7 +32,7 @@ ScoreListNode::ScoreListNode()
 }
 #pragma optimize("", on)
 
-i32 ScoreDat::LinkScore(ScoreListNode *node, Hscr *newScore)
+i32 ScoreDat::InsertScore(ScoreListNode *node, Hscr *newScore)
 {
     i32 i;
     ScoreListNode *next;
@@ -63,7 +63,7 @@ i32 ScoreDat::LinkScore(ScoreListNode *node, Hscr *newScore)
     return i;
 }
 
-void ScoreDat::FreeAllScores(ScoreListNode *scores)
+void ScoreDat::FreeScoreNodes(ScoreListNode *scores)
 {
     ScoreListNode *next;
 
@@ -228,7 +228,7 @@ u32 ScoreDat::GetHighScore(ScoreDat *scoreDat, ScoreListNode *node, u32 characte
 
     if (node == NULL)
     {
-        ScoreDat::FreeAllScores(scoreDat2->scores);
+        ScoreDat::FreeScoreNodes(scoreDat2->scores);
         scoreDat2->scores->next = NULL;
         scoreDat2->scores->data = NULL;
         scoreDat2->scores->prev = NULL;
@@ -245,11 +245,11 @@ u32 ScoreDat::GetHighScore(ScoreDat *scoreDat, ScoreListNode *node, u32 characte
         {
             if (node != NULL)
             {
-                ScoreDat::LinkScore(node, hscr);
+                ScoreDat::InsertScore(node, hscr);
             }
             else
             {
-                ScoreDat::LinkScore(scoreDat2->scores, hscr);
+                ScoreDat::InsertScore(scoreDat2->scores, hscr);
             }
         }
 
@@ -430,7 +430,7 @@ i32 ScoreDat::ParsePSCR(ScoreDat *scoreDat, Pscr *outPscr)
         pscr2->base.chapterSize = sizeof(Pscr);
         pscr2->base.version = PSCR_VERSION;
         pscr2->shotNumber = pscrIdx;
-        pscr2->unk0x175 = 0;
+        pscr2->shouldSerialize = 0;
     }
 
     pscr = (Pscr *)((u8 *)scoreDat2 + scoreDat2->headerSize);
@@ -486,7 +486,7 @@ i32 ScoreDat::ParsePLST(ScoreDat *scoreDat, Plst *outPlst)
 
 void ScoreDat::ReleaseScore(ScoreDat *score)
 {
-    ScoreDat::FreeAllScores(score->scores);
+    ScoreDat::FreeScoreNodes(score->scores);
     g_ZunMemory.Free(score->scores);
     g_ZunMemory.Free(score);
 }

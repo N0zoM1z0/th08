@@ -22072,7 +22072,7 @@ size = 0x3C
 [[units]]
 name = "discovered-exact-0045a5a0"
 object = "build/ScoreDat.obj"
-symbol = "?FreeAllScores@ScoreDat@th08@@SIXPAUScoreListNode@2@@Z"
+symbol = "?FreeScoreNodes@ScoreDat@th08@@SIXPAUScoreListNode@2@@Z"
 target_address = 0x0045A5A0
 size = 0x3B
 
@@ -22117,7 +22117,7 @@ size = 0x35
 [[units.relocations]]
 offset = 0xE
 type = "REL32"
-symbol = "?FreeAllScores@ScoreDat@th08@@SIXPAUScoreListNode@2@@Z"
+symbol = "?FreeScoreNodes@ScoreDat@th08@@SIXPAUScoreListNode@2@@Z"
 target = 0x0045A5A0
 
 [[units.relocations]]
@@ -26544,7 +26544,7 @@ type = "DIR32"
 symbol = "?g_CharacterList@th08@@3PAPBDA"
 target = 0x004C7F4C
 
-# Ledger name: th08::ResultScreen::LinkScoreEx
+# Ledger name: th08::ResultScreen::InsertScore
 # Extent: 0x00454C59..0x00454C87 (0x2e bytes)
 # Next trusted mapping start: 0x00454C87; gap 0x0 (contiguous)
 # Evidence: unique isolated pure-code section, full decode ends in ret;
@@ -26553,17 +26553,17 @@ target = 0x004C7F4C
 [[units]]
 name = "result-screen-remaining-exact-00454c59"
 object = "build/ResultScreen.obj"
-symbol = "?LinkScoreEx@ResultScreen@th08@@QAEHPAUHscr@2@HH@Z"
+symbol = "?InsertScore@ResultScreen@th08@@QAEHPAUHscr@2@HH@Z"
 target_address = 0x00454C59
 size = 0x2E
 
 [[units.relocations]]
 offset = 0x26
 type = "REL32"
-symbol = "?LinkScore@ScoreDat@th08@@SIHPAUScoreListNode@2@PAUHscr@2@@Z"
+symbol = "?InsertScore@ScoreDat@th08@@SIHPAUScoreListNode@2@PAUHscr@2@@Z"
 target = 0x0045A500
 
-# Ledger name: th08::ResultScreen::FreeScore
+# Ledger name: th08::ResultScreen::FreeScoreNodes
 # Extent: 0x00454C87..0x00454CB2 (0x2b bytes)
 # Next trusted mapping start: 0x00454CB2; gap 0x0 (contiguous)
 # Evidence: unique isolated pure-code section, full decode ends in ret;
@@ -26572,14 +26572,14 @@ target = 0x0045A500
 [[units]]
 name = "result-screen-remaining-exact-00454c87"
 object = "build/ResultScreen.obj"
-symbol = "?FreeScore@ResultScreen@th08@@QAEXHH@Z"
+symbol = "?FreeScoreNodes@ResultScreen@th08@@QAEXHH@Z"
 target_address = 0x00454C87
 size = 0x2B
 
 [[units.relocations]]
 offset = 0x23
 type = "REL32"
-symbol = "?FreeAllScores@ScoreDat@th08@@SIXPAUScoreListNode@2@@Z"
+symbol = "?FreeScoreNodes@ScoreDat@th08@@SIXPAUScoreListNode@2@@Z"
 target = 0x0045A5A0
 
 # Ledger name: th08::ResultScreen::HandleCategorySelectScreen
@@ -27543,7 +27543,7 @@ target = 0x0045AFC0
 [[units.relocations]]
 offset = 0x59
 type = "REL32"
-symbol = "?FreeScore@ResultScreen@th08@@QAEXHH@Z"
+symbol = "?FreeScoreNodes@ResultScreen@th08@@QAEXHH@Z"
 target = 0x00454C87
 
 [[units.relocations]]
@@ -30766,14 +30766,14 @@ target = 0x004B4228
 # header-aware destination ledger, no local/EH relocation, full exact replay.
 # Totals: 9 functions / 2625 authored bytes / 46 relocations / 24 direct calls.
 
-# th08::ScoreDat::LinkScore
+# th08::ScoreDat::InsertScore
 # Extent: 0x0045A500..0x0045A59F (0x9f bytes)
 # Evidence: 3 relocations; 1 calls; full replay exact; unique ScoreDat.obj emission.
 # Destination ledgers: mapping.csv, reccmp-functions.csv, reccmp-globals.csv, reccmp-strings.csv
 [[units]]
 name = "score-dat-roi-exact-0045a500"
 object = "build/ScoreDat.obj"
-symbol = "?LinkScore@ScoreDat@th08@@SIHPAUScoreListNode@2@PAUHscr@2@@Z"
+symbol = "?InsertScore@ScoreDat@th08@@SIHPAUScoreListNode@2@PAUHscr@2@@Z"
 target_address = 0x0045A500
 size = 0x9F
 
@@ -31060,19 +31060,19 @@ size = 0x16A
 [[units.relocations]]
 offset = 0x1F
 type = "REL32"
-symbol = "?FreeAllScores@ScoreDat@th08@@SIXPAUScoreListNode@2@@Z"
+symbol = "?FreeScoreNodes@ScoreDat@th08@@SIXPAUScoreListNode@2@@Z"
 target = 0x0045A5A0
 
 [[units.relocations]]
 offset = 0xAC
 type = "REL32"
-symbol = "?LinkScore@ScoreDat@th08@@SIHPAUScoreListNode@2@PAUHscr@2@@Z"
+symbol = "?InsertScore@ScoreDat@th08@@SIHPAUScoreListNode@2@PAUHscr@2@@Z"
 target = 0x0045A500
 
 [[units.relocations]]
 offset = 0xBC
 type = "REL32"
-symbol = "?LinkScore@ScoreDat@th08@@SIHPAUScoreListNode@2@PAUHscr@2@@Z"
+symbol = "?InsertScore@ScoreDat@th08@@SIHPAUScoreListNode@2@PAUHscr@2@@Z"
 target = 0x0045A500
 
 # th08::ScoreDat::ParseCATK
@@ -32982,7 +32982,7 @@ target = 0x004B4980
 [[units.relocations]]
 offset = 0x237
 type = "REL32"
-symbol = "?LinkScoreEx@ResultScreen@th08@@QAEHPAUHscr@2@HH@Z"
+symbol = "?InsertScore@ResultScreen@th08@@QAEHPAUHscr@2@HH@Z"
 target = 0x00454C59
 
 [[units.relocations]]
@@ -34658,7 +34658,7 @@ target = 0x004B7D58
 [[units.relocations]]
 offset = 0x28F
 type = "REL32"
-symbol = "?LinkScoreEx@ResultScreen@th08@@QAEHPAUHscr@2@HH@Z"
+symbol = "?InsertScore@ResultScreen@th08@@QAEHPAUHscr@2@HH@Z"
 target = 0x00454C59
 
 [[units.relocations]]

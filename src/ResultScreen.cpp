@@ -184,7 +184,7 @@ void ResultScreen::WriteScore(ResultScreen *result)
                     currentCharacter->data->base.chapterSizeCopy = sizeof(Hscr);
                     currentCharacter->data->base.chapterSize = sizeof(Hscr);
                     currentCharacter->data->base.version = HSCR_VERSION;
-                    currentCharacter->data->base.unk_9 = 0;
+                    currentCharacter->data->base.runtimeMarker = TH8K_RUNTIME_MARKER_NONE;
 
                     COPY(currentCharacter->data, sizeof(Hscr));
                 }
@@ -225,7 +225,7 @@ void ResultScreen::WriteScore(ResultScreen *result)
 
     for (pscr = g_GameManager.pscrData, i = 0; i < SHOT_ALL; i++, pscr++)
     {
-        if (pscr->unk0x175 != 0)
+        if (pscr->shouldSerialize != 0)
         {
             COPY(pscr, sizeof(Pscr));
         }
@@ -246,7 +246,7 @@ void ResultScreen::WriteScore(ResultScreen *result)
     vrsm.base.version = VRSM_VERSION;
     vrsm.base.chapterSizeCopy = sizeof(Vrsm);
     vrsm.base.chapterSize = sizeof(Vrsm);
-    vrsm.base.unk_9 = 0;
+    vrsm.base.runtimeMarker = TH8K_RUNTIME_MARKER_NONE;
 
     strcpy(vrsm.version, CONFIG_VERSION_STRING);
 
@@ -531,14 +531,14 @@ void ResultScreen::LogScoreDataToFile(ResultScreen *resultScreen)
     g_ZunMemory.Free(outputStart);
 }
 
-i32 ResultScreen::LinkScoreEx(Hscr *out, i32 difficulty, i32 character)
+i32 ResultScreen::InsertScore(Hscr *score, i32 difficulty, i32 character)
 {
-    return ScoreDat::LinkScore(&this->scores[difficulty][character], out);
+    return ScoreDat::InsertScore(&this->scores[difficulty][character], score);
 }
 
-void ResultScreen::FreeScore(i32 difficulty, i32 character)
+void ResultScreen::FreeScoreNodes(i32 difficulty, i32 character)
 {
-    ScoreDat::FreeAllScores(&this->scores[difficulty][character]);
+    ScoreDat::FreeScoreNodes(&this->scores[difficulty][character]);
 }
 
 i32 ResultScreen::HandleCategorySelectScreen()
@@ -546,10 +546,10 @@ i32 ResultScreen::HandleCategorySelectScreen()
     AnmVm *vm;
     i32 i;
 
-    switch (this->menuDepth)
+    switch (this->statePhase)
     {
     case 0:
-        if (this->frameTimer2 == 0)
+        if (this->statePhaseTimer == 0)
         {
             vm = this->spriteVms;
 
@@ -573,12 +573,12 @@ i32 ResultScreen::HandleCategorySelectScreen()
             }
         }
 
-        if (this->frameTimer2 < 20)
+        if (this->statePhaseTimer < 20)
         {
             break;
         }
-        this->menuDepth++;
-        this->frameTimer2 = 0;
+        this->statePhase++;
+        this->statePhaseTimer = 0;
     case 1:
         i = ResultScreen::MoveCursor(this, 4);
         if (i != 0)
@@ -685,7 +685,7 @@ i32 ResultScreen::HandleCategorySelectScreen()
         }
     }
 
-    this->frameTimer2++;
+    this->statePhaseTimer++;
 
     return 0;
 }
@@ -698,10 +698,10 @@ i32 ResultScreen::HandleHighScoreDifficultySelect()
     i32 i2;
     i32 j;
 
-    switch (this->menuDepth)
+    switch (this->statePhase)
     {
     case 0:
-        if (this->frameTimer2 == 0)
+        if (this->statePhaseTimer == 0)
         {
             this->cursor = this->selectedDifficulty;
 
@@ -720,12 +720,12 @@ i32 ResultScreen::HandleHighScoreDifficultySelect()
             }
         }
 
-        if (this->frameTimer2 < 6)
+        if (this->statePhaseTimer < 6)
         {
             break;
         }
-        this->menuDepth++;
-        this->frameTimer2 = 0;
+        this->statePhase++;
+        this->statePhaseTimer = 0;
     case 1:
         i = ResultScreen::MoveCursor(this, MAX_DIFFICULTIES);
         if (i != 0)
@@ -855,7 +855,7 @@ i32 ResultScreen::HandleHighScoreDifficultySelect()
         this->cheatCodeStep = 0;
     }
 
-    this->frameTimer2++;
+    this->statePhaseTimer++;
 
     return 0;
 }
@@ -865,10 +865,10 @@ i32 ResultScreen::HandleHighScoreCharacterSelect()
     AnmVm *vm;
     i32 i;
 
-    switch (this->menuDepth)
+    switch (this->statePhase)
     {
     case 0:
-        if (this->frameTimer2 == 0)
+        if (this->statePhaseTimer == 0)
         {
             this->cursor = this->selectedHighScoreCharacter;
 
@@ -887,12 +887,12 @@ i32 ResultScreen::HandleHighScoreCharacterSelect()
             }
         }
 
-        if (this->frameTimer2 < 6)
+        if (this->statePhaseTimer < 6)
         {
             break;
         }
-        this->menuDepth++;
-        this->frameTimer2 = 0;
+        this->statePhase++;
+        this->statePhaseTimer = 0;
     case 1:
         i = ResultScreen::MoveCursor(this, SHOT_ALL);
         if (i != 0)
@@ -953,7 +953,7 @@ i32 ResultScreen::HandleHighScoreCharacterSelect()
         break;
     }
 
-    this->frameTimer2++;
+    this->statePhaseTimer++;
 
     return 0;
 }
@@ -995,7 +995,7 @@ i32 ResultScreen::HandleHighScoreScreen()
         return 1;
     }
 
-    this->frameTimer2++;
+    this->statePhaseTimer++;
 
     return 0;
 }
@@ -1005,10 +1005,10 @@ i32 ResultScreen::HandleSpellCardDifficultySelect()
     AnmVm *vm;
     i32 i;
 
-    switch (this->menuDepth)
+    switch (this->statePhase)
     {
     case 0:
-        if (this->frameTimer2 == 0)
+        if (this->statePhaseTimer == 0)
         {
             this->cursor = this->selectedSpellcardDifficulty;
 
@@ -1027,12 +1027,12 @@ i32 ResultScreen::HandleSpellCardDifficultySelect()
             }
         }
 
-        if (this->frameTimer2 < 6)
+        if (this->statePhaseTimer < 6)
         {
             break;
         }
-        this->menuDepth++;
-        this->frameTimer2 = 0;
+        this->statePhase++;
+        this->statePhaseTimer = 0;
     case 1:
         i = ResultScreen::MoveCursor(this, MAX_DIFFICULTIES + 1);
         if (i != 0)
@@ -1086,7 +1086,7 @@ i32 ResultScreen::HandleSpellCardDifficultySelect()
         break;
     }
 
-    this->frameTimer2++;
+    this->statePhaseTimer++;
 
     return 0;
 }
@@ -1096,10 +1096,10 @@ i32 ResultScreen::HandleSpellCardCharacterSelect()
     AnmVm *vm;
     i32 i;
 
-    switch (this->menuDepth)
+    switch (this->statePhase)
     {
     case 0:
-        if (this->frameTimer2 == 0)
+        if (this->statePhaseTimer == 0)
         {
             this->cursor = this->shotTypeCursor;
 
@@ -1118,12 +1118,12 @@ i32 ResultScreen::HandleSpellCardCharacterSelect()
             }
         }
 
-        if (this->frameTimer2 < 6)
+        if (this->statePhaseTimer < 6)
         {
             break;
         }
-        this->menuDepth++;
-        this->frameTimer2 = 0;
+        this->statePhase++;
+        this->statePhaseTimer = 0;
     case 1:
         i = ResultScreen::MoveCursor(this, SHOT_ALL + 1);
         if (i != 0)
@@ -1186,7 +1186,7 @@ i32 ResultScreen::HandleSpellCardCharacterSelect()
         break;
     }
 
-    this->frameTimer2++;
+    this->statePhaseTimer++;
 
     return 0;
 }
@@ -1198,7 +1198,7 @@ i32 ResultScreen::HandleSpellCardScreen()
     i32 spellCardNumber;
     i32 i;
 
-    if (this->exitingSpellcardResults && this->frameTimer >= 10)
+    if (this->isExitingSpellcardResults && this->frameTimer >= 10)
     {
         this->SetState(RESULT_SCREEN_STATE_SPELLCARDS_CHOOSING_CHARACTER);
     }
@@ -1277,7 +1277,7 @@ i32 ResultScreen::HandleSpellCardScreen()
 
     if (WAS_PRESSED(TH_BUTTON_RETURNMENU))
     {
-        this->exitingSpellcardResults = 1;
+        this->isExitingSpellcardResults = 1;
         this->frameTimer = 0;
         g_SoundPlayer.PlaySoundByIdx(SOUND_BACK, 0);
         this->spriteVms[RESULT_SCRIPT_LISTING].pendingInterrupt = RESULT_INTERRUPT_HIDE;
@@ -1285,7 +1285,7 @@ i32 ResultScreen::HandleSpellCardScreen()
         return 1;
     }
 
-    this->frameTimer2++;
+    this->statePhaseTimer++;
 
     return 0;
 }
@@ -1341,7 +1341,7 @@ i32 ResultScreen::HandleResultKeyboard()
             this->hscr.stage = 99;
         }
 
-        this->hscr.base.unk_9 = 1;
+        this->hscr.base.runtimeMarker = TH8K_RUNTIME_MARKER_CURRENT_RUN_SCORE;
 
         strcpy(this->hscr.name, this->lsnm.name);
 
@@ -1360,16 +1360,16 @@ i32 ResultScreen::HandleResultKeyboard()
         this->hscr.lagPercentage = (1 - slowdownRate) * 100.0f;
 
         // Skip the result keyboard if the score doesn't come in the top 10 high scores
-        if (ResultScreen::LinkScoreEx(&this->hscr, this->selectedDifficulty, this->selectedHighScoreCharacter) >= 10)
+        if (ResultScreen::InsertScore(&this->hscr, this->selectedDifficulty, this->selectedHighScoreCharacter) >= 10)
         {
             goto skip;
         }
 
         this->cursor = 0;
 
-        if (this->lastNameSavedInScore)
+        if (this->hasSavedLastName)
         {
-            this->selectedCharacter = RESULT_KEYBOARD_KEY_END;
+            this->keyboardSelection = RESULT_KEYBOARD_KEY_END;
         }
 
         strcpy(this->lastName, "");
@@ -1383,14 +1383,14 @@ i32 ResultScreen::HandleResultKeyboard()
     if (WAS_PRESSED_SCROLLING(TH_BUTTON_UP))
     {
     up_pressed:
-        this->selectedCharacter -= RESULT_KEYBOARD_COLUMNS;
-        if (this->selectedCharacter < 0)
+        this->keyboardSelection -= RESULT_KEYBOARD_COLUMNS;
+        if (this->keyboardSelection < 0)
         {
-            this->selectedCharacter += RESULT_KEYBOARD_CHARACTERS;
+            this->keyboardSelection += RESULT_KEYBOARD_CHARACTERS;
         }
 
         // ?! Use a do while loop!
-        if (g_AlphabetList[this->selectedCharacter] == ' ')
+        if (g_AlphabetList[this->keyboardSelection] == ' ')
         {
             goto up_pressed;
         }
@@ -1401,13 +1401,13 @@ i32 ResultScreen::HandleResultKeyboard()
     if (WAS_PRESSED_SCROLLING(TH_BUTTON_DOWN))
     {
     down_pressed:
-        this->selectedCharacter += RESULT_KEYBOARD_COLUMNS;
-        if (this->selectedCharacter >= RESULT_KEYBOARD_CHARACTERS)
+        this->keyboardSelection += RESULT_KEYBOARD_COLUMNS;
+        if (this->keyboardSelection >= RESULT_KEYBOARD_CHARACTERS)
         {
-            this->selectedCharacter -= RESULT_KEYBOARD_CHARACTERS;
+            this->keyboardSelection -= RESULT_KEYBOARD_CHARACTERS;
         }
 
-        if (g_AlphabetList[this->selectedCharacter] == ' ')
+        if (g_AlphabetList[this->keyboardSelection] == ' ')
         {
             goto down_pressed;
         }
@@ -1418,17 +1418,17 @@ i32 ResultScreen::HandleResultKeyboard()
     if (WAS_PRESSED_SCROLLING(TH_BUTTON_LEFT))
     {
     left_pressed:
-        this->selectedCharacter--;
-        if (this->selectedCharacter % RESULT_KEYBOARD_COLUMNS == (RESULT_KEYBOARD_COLUMNS - 1))
+        this->keyboardSelection--;
+        if (this->keyboardSelection % RESULT_KEYBOARD_COLUMNS == (RESULT_KEYBOARD_COLUMNS - 1))
         {
-            this->selectedCharacter += RESULT_KEYBOARD_COLUMNS;
+            this->keyboardSelection += RESULT_KEYBOARD_COLUMNS;
         }
-        if (this->selectedCharacter < 0)
+        if (this->keyboardSelection < 0)
         {
-            this->selectedCharacter = RESULT_KEYBOARD_COLUMNS - 1;
+            this->keyboardSelection = RESULT_KEYBOARD_COLUMNS - 1;
         }
 
-        if (g_AlphabetList[this->selectedCharacter] == ' ')
+        if (g_AlphabetList[this->keyboardSelection] == ' ')
         {
             goto left_pressed;
         }
@@ -1439,13 +1439,13 @@ i32 ResultScreen::HandleResultKeyboard()
     if (WAS_PRESSED_SCROLLING(TH_BUTTON_RIGHT))
     {
     right_pressed:
-        this->selectedCharacter++;
-        if (this->selectedCharacter % RESULT_KEYBOARD_COLUMNS == 0)
+        this->keyboardSelection++;
+        if (this->keyboardSelection % RESULT_KEYBOARD_COLUMNS == 0)
         {
-            this->selectedCharacter -= RESULT_KEYBOARD_COLUMNS;
+            this->keyboardSelection -= RESULT_KEYBOARD_COLUMNS;
         }
 
-        if (g_AlphabetList[this->selectedCharacter] == ' ')
+        if (g_AlphabetList[this->keyboardSelection] == ' ')
         {
             goto right_pressed;
         }
@@ -1457,11 +1457,11 @@ i32 ResultScreen::HandleResultKeyboard()
     {
         i32 playerNameIdx = this->cursor >= 8 ? 7 : this->cursor;
 
-        if (this->selectedCharacter < RESULT_KEYBOARD_KEY_SPACE)
+        if (this->keyboardSelection < RESULT_KEYBOARD_KEY_SPACE)
         {
-            this->hscr.name[playerNameIdx] = g_AlphabetList[this->selectedCharacter];
+            this->hscr.name[playerNameIdx] = g_AlphabetList[this->keyboardSelection];
         }
-        else if (this->selectedCharacter == RESULT_KEYBOARD_KEY_SPACE)
+        else if (this->keyboardSelection == RESULT_KEYBOARD_KEY_SPACE)
         {
             this->hscr.name[playerNameIdx] = ' ';
         }
@@ -1475,7 +1475,7 @@ i32 ResultScreen::HandleResultKeyboard()
             this->cursor++;
             if (this->cursor == 8)
             {
-                this->selectedCharacter = RESULT_KEYBOARD_KEY_END;
+                this->keyboardSelection = RESULT_KEYBOARD_KEY_END;
             }
         }
 
@@ -1731,10 +1731,10 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
             }
 
             this->cursor = 0;
-            this->selectedCharacter = 0;
-            if (this->lastNameSavedInScore)
+            this->keyboardSelection = 0;
+            if (this->hasSavedLastName)
             {
-                this->selectedCharacter = RESULT_KEYBOARD_KEY_END;
+                this->keyboardSelection = RESULT_KEYBOARD_KEY_END;
             }
         }
 
@@ -1761,14 +1761,14 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
         if (WAS_PRESSED_SCROLLING(TH_BUTTON_UP))
         {
         up_pressed:
-            this->selectedCharacter -= RESULT_KEYBOARD_COLUMNS;
-            if (this->selectedCharacter < 0)
+            this->keyboardSelection -= RESULT_KEYBOARD_COLUMNS;
+            if (this->keyboardSelection < 0)
             {
-                this->selectedCharacter += RESULT_KEYBOARD_CHARACTERS;
+                this->keyboardSelection += RESULT_KEYBOARD_CHARACTERS;
             }
 
             // ?! Use a do while loop!
-            if (g_AlphabetList[this->selectedCharacter] == ' ')
+            if (g_AlphabetList[this->keyboardSelection] == ' ')
             {
                 goto up_pressed;
             }
@@ -1779,13 +1779,13 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
         if (WAS_PRESSED_SCROLLING(TH_BUTTON_DOWN))
         {
         down_pressed:
-            this->selectedCharacter += RESULT_KEYBOARD_COLUMNS;
-            if (this->selectedCharacter >= RESULT_KEYBOARD_CHARACTERS)
+            this->keyboardSelection += RESULT_KEYBOARD_COLUMNS;
+            if (this->keyboardSelection >= RESULT_KEYBOARD_CHARACTERS)
             {
-                this->selectedCharacter -= RESULT_KEYBOARD_CHARACTERS;
+                this->keyboardSelection -= RESULT_KEYBOARD_CHARACTERS;
             }
 
-            if (g_AlphabetList[this->selectedCharacter] == ' ')
+            if (g_AlphabetList[this->keyboardSelection] == ' ')
             {
                 goto down_pressed;
             }
@@ -1796,17 +1796,17 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
         if (WAS_PRESSED_SCROLLING(TH_BUTTON_LEFT))
         {
         left_pressed:
-            this->selectedCharacter--;
-            if (this->selectedCharacter % RESULT_KEYBOARD_COLUMNS == (RESULT_KEYBOARD_COLUMNS - 1))
+            this->keyboardSelection--;
+            if (this->keyboardSelection % RESULT_KEYBOARD_COLUMNS == (RESULT_KEYBOARD_COLUMNS - 1))
             {
-                this->selectedCharacter += RESULT_KEYBOARD_COLUMNS;
+                this->keyboardSelection += RESULT_KEYBOARD_COLUMNS;
             }
-            if (this->selectedCharacter < 0)
+            if (this->keyboardSelection < 0)
             {
-                this->selectedCharacter = RESULT_KEYBOARD_COLUMNS - 1;
+                this->keyboardSelection = RESULT_KEYBOARD_COLUMNS - 1;
             }
 
-            if (g_AlphabetList[this->selectedCharacter] == ' ')
+            if (g_AlphabetList[this->keyboardSelection] == ' ')
             {
                 goto left_pressed;
             }
@@ -1817,13 +1817,13 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
         if (WAS_PRESSED_SCROLLING(TH_BUTTON_RIGHT))
         {
         right_pressed:
-            this->selectedCharacter++;
-            if (this->selectedCharacter % RESULT_KEYBOARD_COLUMNS == 0)
+            this->keyboardSelection++;
+            if (this->keyboardSelection % RESULT_KEYBOARD_COLUMNS == 0)
             {
-                this->selectedCharacter -= RESULT_KEYBOARD_COLUMNS;
+                this->keyboardSelection -= RESULT_KEYBOARD_COLUMNS;
             }
 
-            if (g_AlphabetList[this->selectedCharacter] == ' ')
+            if (g_AlphabetList[this->keyboardSelection] == ' ')
             {
                 goto right_pressed;
             }
@@ -1840,11 +1840,11 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
 
             i32 replayNameIdx = this->cursor >= 8 ? 7 : this->cursor;
 
-            if (this->selectedCharacter < RESULT_KEYBOARD_KEY_SPACE)
+            if (this->keyboardSelection < RESULT_KEYBOARD_KEY_SPACE)
             {
-                this->lastName[replayNameIdx] = g_AlphabetList[this->selectedCharacter];
+                this->lastName[replayNameIdx] = g_AlphabetList[this->keyboardSelection];
             }
-            else if (this->selectedCharacter == RESULT_KEYBOARD_KEY_SPACE)
+            else if (this->keyboardSelection == RESULT_KEYBOARD_KEY_SPACE)
             {
                 this->lastName[replayNameIdx] = ' ';
             }
@@ -1873,7 +1873,7 @@ i32 ResultScreen::HandleReplaySaveKeyboard()
                 this->cursor++;
                 if (this->cursor == 8)
                 {
-                    this->selectedCharacter = RESULT_KEYBOARD_KEY_END;
+                    this->keyboardSelection = RESULT_KEYBOARD_KEY_END;
                 }
             }
         }
@@ -2010,7 +2010,7 @@ i32 ResultScreen::HandleOtherStatsScreen()
 
             g_Supervisor.UpdatePlayTime();
 
-            this->totalSeconds = g_GameManager.plst.totalSeconds;
+            this->lastDisplayedTotalSeconds = g_GameManager.plst.totalSeconds;
 
             vm++;
             pos.y += 17.0f;
@@ -2110,14 +2110,14 @@ i32 ResultScreen::HandleOtherStatsScreen()
         {
             g_Supervisor.UpdatePlayTime();
 
-            if (g_GameManager.plst.totalSeconds != this->totalSeconds)
+            if (g_GameManager.plst.totalSeconds != this->lastDisplayedTotalSeconds)
             {
                 vm = &this->textVms[0];
 
                 g_AnmManager->DrawTextLeft(vm, COLOR_TEXT_WHITE, 0, TH_RESULT_TOTAL_TIME, g_GameManager.plst.totalHours,
                                            g_GameManager.plst.totalMinutes, g_GameManager.plst.totalSeconds);
 
-                this->totalSeconds = g_GameManager.plst.totalSeconds;
+                this->lastDisplayedTotalSeconds = g_GameManager.plst.totalSeconds;
             }
         }
 
@@ -2492,7 +2492,7 @@ ChainCallbackResult ResultScreen::OnDraw(ResultScreen *result)
             {
                 if (result->currentState == RESULT_SCREEN_STATE_WRITING_HIGHSCORE_NAME)
                 {
-                    if (node->data->base.unk_9 != 0)
+                    if (node->data->base.runtimeMarker != TH8K_RUNTIME_MARKER_NONE)
                     {
                         g_AsciiManager.SetColor(0xfff0f0ff);
                     }
@@ -2510,7 +2510,8 @@ ChainCallbackResult ResultScreen::OnDraw(ResultScreen *result)
 
                 pos.x += 48.0f;
 
-                if (result->currentState == RESULT_SCREEN_STATE_WRITING_HIGHSCORE_NAME && node->data->base.unk_9 != 0)
+                if (result->currentState == RESULT_SCREEN_STATE_WRITING_HIGHSCORE_NAME &&
+                    node->data->base.runtimeMarker != TH8K_RUNTIME_MARKER_NONE)
                 {
                     // Yes, I know this is so ugly, but there is no other way
                     // that I know of to get the codegen exact. ZUN must have
@@ -2700,7 +2701,7 @@ ChainCallbackResult ResultScreen::OnDraw(ResultScreen *result)
                 local_5c = 0;
                 local_60 = 0;
 
-                if (result->selectedCharacter == (i * RESULT_KEYBOARD_COLUMNS) + local_2c)
+                if (result->keyboardSelection == (i * RESULT_KEYBOARD_COLUMNS) + local_2c)
                 {
                     g_AsciiManager.SetColor(0xffffffc0);
 
@@ -2868,11 +2869,11 @@ ZunResult ResultScreen::AddedCallback(ResultScreen *result)
                 result->defaultScore[i][shotType][stage].base.chapterSizeCopy = sizeof(Hscr);
                 result->defaultScore[i][shotType][stage].base.chapterSize = sizeof(Hscr);
                 result->defaultScore[i][shotType][stage].stage = STAGE1;
-                result->defaultScore[i][shotType][stage].base.unk_9 = 0;
+                result->defaultScore[i][shotType][stage].base.runtimeMarker = TH8K_RUNTIME_MARKER_NONE;
                 result->defaultScore[i][shotType][stage].numRetries = 0;
                 result->defaultScore[i][shotType][stage].unk0x166 = 1;
 
-                result->LinkScoreEx(&result->defaultScore[i][shotType][stage], i, shotType);
+                result->InsertScore(&result->defaultScore[i][shotType][stage], i, shotType);
 
                 strcpy(result->defaultScore[i][shotType][stage].name, "--------");
                 strcpy(result->defaultScore[i][shotType][stage].date, "--/--");
@@ -2947,7 +2948,7 @@ ZunResult ResultScreen::AddedCallback(ResultScreen *result)
 
     strcpy(result->lsnm.name, "        ");
 
-    result->lastNameSavedInScore = ScoreDat::ParseLSNM(result->scoreDat, &result->lsnm);
+    result->hasSavedLastName = ScoreDat::ParseLSNM(result->scoreDat, &result->lsnm);
 
     if (result->currentState != RESULT_SCREEN_STATE_WRITING_HIGHSCORE_NAME &&
         result->currentState != RESULT_SCREEN_STATE_PRACTICE &&
@@ -3072,7 +3073,7 @@ ZunResult ResultScreen::DeletedCallback(ResultScreen *result)
     {
         for (shotType = 0; shotType < SHOT_ALL; shotType++)
         {
-            result->FreeScore(difficulty, shotType);
+            result->FreeScoreNodes(difficulty, shotType);
         }
     }
 

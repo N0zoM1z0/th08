@@ -318,8 +318,8 @@ th08::EnemyManager::OnUpdate
 th08::Enemy::ClampPosition
 th08::CSoundManager::CSoundManager
 th08::ResultScreen::GetCharacterName
-th08::ResultScreen::LinkScoreEx
-th08::ResultScreen::FreeScore
+th08::ResultScreen::InsertScore
+th08::ResultScreen::FreeScoreNodes
 th08::ResultScreen::HandleCategorySelectScreen
 th08::ResultScreen::SetState
 th08::ResultScreen::HandleHighScoreDifficultySelect
@@ -408,7 +408,7 @@ th08::SoundPlayer::InitSoundBuffers
 th08::SoundPlayer::PlaySoundByIdx
 th08::SoundPlayer::PlaySoundPositionedByIdx
 th08::SoundPlayer::QueueCommand
-th08::ScoreDat::LinkScore
+th08::ScoreDat::InsertScore
 th08::ScoreDat::OpenScore
 th08::ScoreDat::GetHighScore
 th08::ScoreDat::ParseCATK
@@ -458,7 +458,7 @@ th08::GameManager::AddToBombCount
 th08::SoundPlayer::FreePreloadedBGM
 th08::GameManager::AddLives
 th08::TextHelper::TextHelper
-th08::ScoreDat::FreeAllScores
+th08::ScoreDat::FreeScoreNodes
 th08::CStreamingSound::FadeOut
 th08::ScoreDat::ReleaseScore
 th08::SoundPlayer::LoadFmt

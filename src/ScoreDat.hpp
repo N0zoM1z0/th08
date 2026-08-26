@@ -84,17 +84,24 @@ enum Stage
     MAX_STAGES_AND_LAST_WORD
 };
 
+enum Th8kRuntimeMarker
+{
+    TH8K_RUNTIME_MARKER_NONE = 0,
+    TH8K_RUNTIME_MARKER_CURRENT_RUN_SCORE = 1,
+};
+
 struct Th8k
 {
     u32 magic;
     u16 chapterSize;
     u16 chapterSizeCopy;
     u8 version;
-    u8 unk_9;
+    u8 runtimeMarker;
 };
 C_ASSERT(sizeof(Th8k) == 0xC);
 C_ASSERT(offsetof(Th8k, chapterSize) == 0x4);
 C_ASSERT(offsetof(Th8k, chapterSizeCopy) == 0x6);
+C_ASSERT(offsetof(Th8k, runtimeMarker) == 0x9);
 
 struct PlstPlayCounts
 {
@@ -202,10 +209,11 @@ struct Pscr
     i32 attempts[MAX_STAGES][MAX_DIFFICULTIES];
     i32 highScores[MAX_STAGES][MAX_DIFFICULTIES];
     u8 shotNumber;
-    u8 unk0x175;
+    u8 shouldSerialize;
 };
 
 C_ASSERT(sizeof(Pscr) == 0x178);
+C_ASSERT(offsetof(Pscr, shouldSerialize) == 0x175);
 
 struct Hscr
 {
@@ -265,8 +273,8 @@ C_ASSERT(sizeof(ScoreListNode) == 0xc);
 
 struct ScoreDat
 {
-    static i32 LinkScore(ScoreListNode *prevNode, Hscr *newScore);
-    static void FreeAllScores(ScoreListNode *score);
+    static i32 InsertScore(ScoreListNode *prevNode, Hscr *newScore);
+    static void FreeScoreNodes(ScoreListNode *score);
     static ScoreDat *OpenScore(const char *filename);
     static u32 GetHighScore(ScoreDat *score, ScoreListNode *node, u32 character, u32 difficulty, u8 *continuesUsed);
     static i32 ParseCATK(ScoreDat *score, Catk *outCatk);

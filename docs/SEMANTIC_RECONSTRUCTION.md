@@ -2665,9 +2665,11 @@ same `sizeof(...)` value at `+0x06`, so that field is conservatively
 `chapterSizeCopy`; no stronger purpose is claimed.  `Catk::historyChecksum @
 +0x0E` is compared with the low byte of the spell-name-plus-history sum,
 causes both history arrays to reset on mismatch, and is recomputed after
-attempt/capture changes.  `Th8k::unk_9`, PSCR/Hscr residual bytes, CATK
-`+0x228`, and Ending `+0x2A98` remain neutral because their producers or stable
-roles are not proven.
+attempt/capture changes.  At this batch boundary, `Th8k +0x09`, PSCR/Hscr
+residual bytes, CATK `+0x228`, and Ending `+0x2A98` remained neutral because
+their producers or stable roles were not yet proven.  The ResultScreen batch
+below resolves the first byte and PSCR `+0x175` without extending the claim to
+the other residual fields.
 
 VC7 oracle: focused Ending replay passes **11 / 11 exact**.  The directly
 affected ScoreDat, SpellCard, ResultScreen, GameManager, Supervisor, and
@@ -2683,3 +2685,68 @@ four-file router falls from 14 anonymous identifiers plus one opaque range to
 seven anonymous identifiers plus that retained range; the whole-source router
 is now 5 raw-member, 0 absolute-address, 106 anonymous-identifier, and 44
 opaque-storage candidates.  These counts are routing evidence only.
+
+### ResultScreen high-score, keyboard, and phase protocol — 2026-08-27
+
+Scope: `ResultScreen::WriteScore @ 0x00453D0D`, the score-list wrappers at
+`0x00454C59/0x00454C87`, category and spell-card state handlers beginning at
+`0x00454CB2`, `HandleResultKeyboard @ 0x0045621E`,
+`HandleOtherStatsScreen @ 0x004578AA`, `OnDraw @ 0x004586B4`,
+`AddedCallback @ 0x0045964D`, and `ScoreDat` list operations at
+`0x0045A500/0x0045A5A0`.  Eight post-rename target-pinned packets replay these
+important functions exact.  Target-safe objdump against the canonical image
+supplies the field-level observations below; IDA was not used.
+
+High-score marker protocol: `HandleResultKeyboard @ 0x004563B7` stores byte 1
+at `ResultScreen::hscr.base + 0x09` before inserting the current run into its
+difficulty/character list.  `OnDraw @ 0x004588BC/0x0045892B` reads that same
+byte from each list entry to choose the active name-entry color and draw the
+edit cursor.  `WriteScore @ 0x00453E4C` clears it immediately before copying
+the complete 0x168-byte HSCR chapter to the persisted buffer.  The shared
+header byte is therefore `Th8k::runtimeMarker`, with named values for no marker
+and current-run score; the name deliberately does not assign it a file-format
+meaning.
+
+PSCR serialization protocol: `WriteScore @ 0x00453FA3` performs the sole
+authored read of byte `Pscr +0x175` and copies the complete 0x178-byte chapter
+only when it is nonzero.  `ParsePSCR` initializes the byte to zero, then an
+accepted persisted chapter can replace the full record.  No authored producer
+sets a fresh nonzero value, so `shouldSerialize` states only the observed gate;
+the gameplay condition or older-version producer remains unknown.
+
+ResultScreen state: target dword accesses at `+0x10/+0x18` select a handler's
+entry/interactive phase and time its transition, so they are `statePhase` and
+`statePhaseTimer`.  `+0x2C` is the shared alphabet-grid selection for both
+high-score and replay names.  `+0x50` stores the success result of parsing LSNM
+and selects the END key when a saved name exists.  `+0x54` is set only while
+the spell-card list is exiting and is consumed with the ten-frame delay.
+`HandleOtherStatsScreen @ 0x0045796F/0x00457CF7/0x00457D49` stores and compares
+the byte at `+0x19C` solely to refresh displayed play time when the seconds
+value changes.  Assertions pin all six offsets without changing
+`sizeof(ResultScreen) == 0x477B0`.
+
+List behavior: `ScoreDat::InsertScore` scans the descending score list,
+allocates and links one node, and returns its zero-based insertion rank;
+`ResultScreen::InsertScore` selects the difficulty/character head.
+`FreeScoreNodes` names the fact that only list nodes, not the referenced HSCR
+records, are released.  Mapping rows now record the source/target ABI for these
+functions and for the inspected ResultScreen callbacks.  Addresses, extents,
+relocation targets, authored coverage, and accepted exact counts are unchanged.
+
+Evidence limits: `Hscr +0x166` has one default-score write and no consumer;
+ResultScreen `+0x20`, its unused `+0x24/+0x11448`, and the reset-only anonymous
+VM remain unknown.  They were not promoted from presentation guesses.
+
+VC7 oracle: fresh focused replay passes ResultScreen **30 / 30 exact** and
+ScoreDat **13 / 13 exact**.  A required single-job cold build of all 75
+comparison objects passes **1,106 / 1,106 exact** with zero failures, and the
+normal VC7 production image links.  The one authored unit outside the accepted
+ledger remains unchanged.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiles and links
+the complete i386 target, and `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verifies ELF32/ET_EXEC/i386 plus all
+fixed target-owned layout symbols.  The focused four-file router falls from 15
+to 12 anonymous-identifier candidates; the whole-source router is now 5 raw,
+0 absolute, 103 anonymous, and 44 opaque candidates.  These are routing deltas,
+not completion percentages.

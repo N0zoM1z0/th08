@@ -726,6 +726,29 @@ identifiers plus the retained opaque range; the whole-source router is now 5
 raw-member, 0 absolute-address, 106 anonymous-identifier, and 44 opaque-storage
 candidates.  These remain routing counts, not a completion percentage.
 
+The accepted ResultScreen/high-score batch closes the current-run score marker,
+PSCR serialization gate, score-list operations, menu phase timer, shared name
+keyboard selection, saved-name presence, spell-card exit, and displayed-time
+refresh state.  Target writes/reads prove that `Th8k::runtimeMarker @ +0x09`
+marks the current run only in memory and is cleared immediately before HSCR
+serialization.  `Pscr::shouldSerialize @ +0x175` gates copying the full PSCR
+chapter, but its nonzero gameplay producer remains unknown.  ResultScreen
+offset assertions pin `statePhase @ +0x10`, `statePhaseTimer @ +0x18`,
+`keyboardSelection @ +0x2C`, `hasSavedLastName @ +0x50`,
+`isExitingSpellcardResults @ +0x54`, and
+`lastDisplayedTotalSeconds @ +0x19C`.
+
+`ScoreDat::InsertScore @ 0x0045A500` and the ResultScreen wrapper now state the
+descending-list insertion/rank behavior; both release helpers explicitly name
+that they free score-list nodes.  Eight post-rename typed packets replay exact.
+Fresh focused replay passes ResultScreen **30 / 30 exact** and ScoreDat **13 /
+13 exact**.  The required final single-job cold replay passes **1,106 / 1,106
+exact**, the normal VC7 image links, and the complete i386 Linux build plus
+fixed-layout verifier passes.  Four-file anonymous candidates fall from 15 to
+12 and the whole-source router is now 5 raw, 0 absolute, 103 anonymous, and 44
+opaque.  `Hscr +0x166` and the reset-only/unused ResultScreen fields remain
+unknown rather than receiving speculative names.
+
 Select the next independent field family with:
 
 ```bash

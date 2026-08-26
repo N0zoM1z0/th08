@@ -56,8 +56,8 @@ struct ResultScreen
     static const char *GetCharacterName(i32 character);
     static void WriteScore(ResultScreen *resultScreen);
     static void LogScoreDataToFile(ResultScreen *resultScreen);
-    i32 LinkScoreEx(Hscr *out, i32 difficulty, i32 character);
-    void FreeScore(i32 difficulty, i32 character);
+    i32 InsertScore(Hscr *score, i32 difficulty, i32 character);
+    void FreeScoreNodes(i32 difficulty, i32 character);
     i32 HandleCategorySelectScreen();
 
     void SetState(ResultScreenState state)
@@ -65,10 +65,10 @@ struct ResultScreen
         this->previousState = this->currentState;
         this->currentState = state;
         this->currentState2 = state;
-        this->menuDepth = 0;
-        this->frameTimer2 = 0;
+        this->statePhase = 0;
+        this->statePhaseTimer = 0;
         this->frameTimer = 0;
-        this->exitingSpellcardResults = 0;
+        this->isExitingSpellcardResults = 0;
     }
 
     i32 HandleHighScoreDifficultySelect();
@@ -101,14 +101,14 @@ struct ResultScreen
     ResultScreenState currentState;
 
     ResultScreenState currentState2;
-    i32 menuDepth;
+    i32 statePhase;
     ResultScreenState previousState;
-    i32 frameTimer2;
+    i32 statePhaseTimer;
     i32 cursor;
     i32 unk0x20; // is set to 0 when loading the score, never used
     i32 unk0x24; // unused
     i32 selectedReplay;
-    i32 selectedCharacter;
+    i32 keyboardSelection;
     i32 shotTypeCursor;
     i32 previousShotType;
     ZunBool updateSpellcardResults;
@@ -118,15 +118,15 @@ struct ResultScreen
     i32 selectedSpellcardDifficulty;
 
     i32 cheatCodeStep;
-    ZunBool lastNameSavedInScore;
+    ZunBool hasSavedLastName;
 
-    ZunBool exitingSpellcardResults;
+    ZunBool isExitingSpellcardResults;
 
     char lastName[9];
 
     i32 capturedSpellCards[MAX_DIFFICULTIES + 1][SHOT_ALL + 1];
 
-    u8 totalSeconds;
+    u8 lastDisplayedTotalSeconds;
 
     AnmVm spriteVms[72];
     AnmVm textVms[30];
@@ -152,5 +152,11 @@ struct ResultScreen
 };
 
 C_ASSERT(sizeof(ResultScreen) == 0x477b0);
+C_ASSERT(offsetof(ResultScreen, statePhase) == 0x10);
+C_ASSERT(offsetof(ResultScreen, statePhaseTimer) == 0x18);
+C_ASSERT(offsetof(ResultScreen, keyboardSelection) == 0x2c);
+C_ASSERT(offsetof(ResultScreen, hasSavedLastName) == 0x50);
+C_ASSERT(offsetof(ResultScreen, isExitingSpellcardResults) == 0x54);
+C_ASSERT(offsetof(ResultScreen, lastDisplayedTotalSeconds) == 0x19c);
 
 }; // namespace th08
