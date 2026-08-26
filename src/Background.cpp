@@ -166,7 +166,7 @@ ChainCallbackResult Background::OnUpdate(Background *background)
         {
             Float3 zeroVector(0.0f, 0.0f, 0.0f);
             background->stageEffect = reinterpret_cast<Effect *>(
-                g_EffectManager.FUN_00425870(0x40, reinterpret_cast<D3DXVECTOR3 *>(&zeroVector), 0xC, 1, -1));
+                g_EffectManager.SpawnEffectInFixedSlot(0x40, reinterpret_cast<D3DXVECTOR3 *>(&zeroVector), 0xC, 1, -1));
             spawnedStageEffect = &background->stageEffect->vm;
             background->stageAnmFile->SetAndExecuteScriptIdx(spawnedStageEffect, 11);
         }
@@ -276,7 +276,7 @@ read_instruction:
         if (background->compensateCameraJump)
         {
             Float3 cameraDelta = *reinterpret_cast<Float3 *>(curInsn->args) - background->cameraTarget.position;
-            FUN_00426d10(&cameraDelta);
+            ShiftStageEffectOrigins(&cameraDelta);
             background->compensateCameraJump = 0;
         }
         background->cameraInterpolationStart.position = background->cameraTarget.position;
@@ -810,7 +810,7 @@ ChainCallbackResult Background::OnDrawLowPrio(Background *background)
         {
             g_Supervisor.DisableFog();
         }
-        g_EffectManager.FUN_004281e0();
+        g_EffectManager.DrawBackgroundEffects();
         if (background->spellBackgroundState == SPELL_BACKGROUND_FADING_IN)
         {
             rect.left = 32.0f;

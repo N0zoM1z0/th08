@@ -515,7 +515,7 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 - A non-trivial local's declaration point is code-generation-visible even when its final stack slot is already correct. In `UpdateQuadrupleBarrierBomb`, declaring each `Float3 velocity(...)` at the top of its branch emitted the constructor before the target's common-init/collision calls. Moving the declaration to the exact point where the target constructs the vector fixed the first-difference without changing the 0x5C frame.
 - Block-local pointer declaration order can invert shallow/deep stack ownership around a non-trivial local. The 10/20/30-frame burst blocks require the spawned-effect pointer at the shallower slot and the collision pointer below it; matching that required preserving the target lexical declaration order rather than assigning both through a shared temporary.
 - Float macro algebra can lose a target ULP at compile time. `ZUN_PI` is explicitly narrowed to `f32`, so `ZUN_PI * 5.0f / 8.0f` folds to `0x3FFB53D1`; the shipped target stores `0x3FFB53D2`, the correctly rounded high-precision 5π/8 value. Where the target proves the stored float, use a float literal that rounds to that exact mathematical value rather than forcing arithmetic through an already-narrowed macro.
-- A parameter can be target-visible purely through calling convention. `EffectManager::FUN_004259e0` never reads its fifth source parameter, but retaining it is required for the target six-stack-argument `ret 0x18`; deleting the apparently unused parameter would change the ABI even if the body stayed equivalent.
+- A parameter can be target-visible purely through calling convention. `EffectManager::SpawnEffectInFixedSlotWithVelocity` never reads its fifth source parameter, but retaining it is required for the target six-stack-argument `ret 0x18`; deleting the apparently unused parameter would change the ABI even if the body stayed equivalent.
 
 ### Effect-strip vertices and bomb effect callback families
 
@@ -558,7 +558,8 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
   array.  `EffectManager::EffectManager` emits five independent constructor
   calls after the 654-row vector constructor.  Keep the sentinels as separate
   named members so the target constructor lowering remains intact.
-- In `EffectManager::FUN_00425870` and `FUN_004259E0`, natural
+- In `EffectManager::SpawnEffectInFixedSlot` and
+  `SpawnEffectInFixedSlotWithVelocity`, natural
   `effects[slotIndex + 0x280]` indexing is two bytes shorter than the target
   under `/Od`.  The exact ordinary-C++ source shape forms the byte address from
   `this`, `(slotIndex + 0x280) * sizeof(Effect)`, and
@@ -628,13 +629,13 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 
 - The effect-trail family at `0x4272e0..0x427b50` gives a consistent target-observed tail layout for the 0x360-byte `Effect`: `+0x314/+0x318/+0x320` feed the primary radius/angle/strip-width geometry, `+0x324` is the segment count, `+0x32c/+0x330/+0x334` select and parameterize ellipse/phase modes, `+0x34c` is the custom draw callback, `+0x356` is the geometry-dirty byte, and `+0x358` owns the allocated textured-vertex buffer. These names describe the proven trail mode; do not assume every effect type gives the overlapping storage the same semantics.
 - `AnmManager::FUN_004649a0` and `FUN_00464b00` are source-shaped siblings. Both use two lexical odd/even `for` walks over 0x1c-byte textured vertices; `0x4649a0` decrements U while holding V at the sprite's start/end edges, whereas `0x464b00` decrements V while holding U at the two edges. Preserve the `for` spelling: in this VC7 `/Od` family, replacing the walks with equivalent `while` loops changes the entry trampoline bytes.
-- `#pragma var_order` fixes physical slots but not the lifetime point of a non-trivial local. In `FUN_00427450`, the dead branch-local `Float3` belongs at `-0x4c`, but the target constructs it only after storing the two phase angles and computing the phase step. Declaring it with the scalar locals kept the same frame and slot yet moved the constructor call earlier; moving only the lexical declaration point removed the final 49 byte differences.
+- `#pragma var_order` fixes physical slots but not the lifetime point of a non-trivial local. In `DrawRadialTrail`, the dead branch-local `Float3` belongs at `-0x4c`, but the target constructs it only after storing the two phase angles and computing the phase step. Declaring it with the scalar locals kept the same frame and slot yet moved the constructor call earlier; moving only the lexical declaration point removed the final 49 byte differences.
 
 ### Effect camera-relative initializers and canonical aggregate owners
 
 - Target absolute references inside Effect callbacks should be reconciled against nearby aggregate bases before inventing globals. The camera vectors at `0x4EA3C4`, `0x4EA3D0`, and `0x4EA3E8` are exactly `g_Background + 0x6394/+0x63a0/+0x63b8`, i.e. `g_Background.unk6394.vectors[0/1/3]`. Expressing them through the real `Background` aggregate makes the COFF relocation target `g_Background` with the corresponding addend and reproduces the shipped bytes in the `0x426280`, `0x426720`, and `0x426e70` random initializers.
 - The small timer-driven Effect updates at `0x426bb0`, `0x426c90`, and `0x4271a0` naturally produce their target 0x20/0x2c frames from class-valued arithmetic temporaries. Keep expressions such as `vector6 * alpha + vector5` and `vector6 * alpha * 128.0f + vector5` intact instead of naming the intermediate `Float3`s; explicit source temporaries move the compiler-owned hidden return buffers.
-- `FUN_004270c0` confirms that a seemingly redundant trailing `+ 0.0f` can be target-visible even in random scalar setup: `GetRandomF32InRange(1.5f) + 0.0f` preserves the target float-zero relocation before `Float3::operator*=`. Do not remove neutral floating terms until strict comparison proves they were folded in the original source.
+- `InitializeDirectionalOffset` confirms that a seemingly redundant trailing `+ 0.0f` can be target-visible even in random scalar setup: `GetRandomF32InRange(1.5f) + 0.0f` preserves the target float-zero relocation before `Float3::operator*=`. Do not remove neutral floating terms until strict comparison proves they were folded in the original source.
 
 ### Tiny accessors: avoid convenience pointer homes
 

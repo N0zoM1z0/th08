@@ -568,7 +568,7 @@ void Player::Die()
             this->mainVm.flagsWord |= 0x20000;
 
             this->deathbombEffectVm =
-                g_EffectManager.FUN_00425870(59, reinterpret_cast<D3DXVECTOR3 *>(&this->position),
+                g_EffectManager.SpawnEffectInFixedSlot(59, reinterpret_cast<D3DXVECTOR3 *>(&this->position),
                                               11, 1, 0xFFF0404F);
             effectVm = this->deathbombEffectVm;
             effectVm->interpCurrentTimers[AnmInterp_Pos] = 0;
@@ -682,7 +682,7 @@ i32 Player::UpdateMovementAndOptions()
             if (this->focusEffect == NULL)
             {
                 this->focusEffect = reinterpret_cast<Effect *>(
-                    g_EffectManager.FUN_00425870(22, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 2, 1, -1));
+                    g_EffectManager.SpawnEffectInFixedSlot(22, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 2, 1, -1));
             }
             this->focusTransitionFrames = 0;
             this->timerE2AE8 = 0;
@@ -944,7 +944,7 @@ i32 Player::UpdateMovementAndOptions()
         this->extremeGaugeEffect == NULL)
     {
         this->extremeGaugeEffect = reinterpret_cast<Effect *>(
-            g_EffectManager.FUN_00425870(25, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 8, 1, -1));
+            g_EffectManager.SpawnEffectInFixedSlot(25, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 8, 1, -1));
     }
     if (this->extremeGaugeEffect != NULL)
     {
@@ -1291,7 +1291,7 @@ i32 Player::UpdateDeathAndRespawn()
                 reinterpret_cast<Effect *>(this->deathbombEffectVm)->active = 0;
                 this->deathbombEffectVm = NULL;
             }
-            g_EffectManager.FUN_00425870(12, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 3, 1, 0xFF4040FF);
+            g_EffectManager.SpawnEffectInFixedSlot(12, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 3, 1, 0xFF4040FF);
             g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 16, -1);
             g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), this->position.x);
             *reinterpret_cast<u32 *>(&g_GameManager.flags) &= ~0x400u;

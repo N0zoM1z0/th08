@@ -192,7 +192,7 @@ struct TargetApi
     void PlayPositioned(i32 id, i32 xBits);                     // 0x0045D660
     void *SpawnEffect00425430(i32 id, const Vec3 *position,
                                       i32 count, i32 color);
-    void *SpawnEffect00425B70(i32 id, const Vec3 *position,
+    void *SpawnEffectInSecondaryPool(i32 id, const Vec3 *position,
                                       i32 count, i32 color);
     void *SpawnEffectWithVector(i32 id, const Vec3 *position,
                                         const Vec3 *vector, i32 count,
@@ -867,7 +867,7 @@ enter_subroutine:
         vector.z = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 5))
             ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 5)))
             : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 5)));
-        g_EffectManager.SpawnEffectAngle(
+        g_EffectManager.SpawnEffectWithVelocity(
             TH08_ECL_READ_I(ctx, 0),
             reinterpret_cast<D3DXVECTOR3 *>(
                 &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position),
@@ -1166,7 +1166,7 @@ enter_subroutine:
         if (reinterpret_cast<th08::Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->alignmentEffect)
             reinterpret_cast<th08::Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->alignmentEffect->active = 0;
         reinterpret_cast<th08::Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->alignmentEffect =
-            reinterpret_cast<Effect *>(g_EffectManager.SpawnEffect00425B70(
+            reinterpret_cast<Effect *>(g_EffectManager.SpawnEffectInSecondaryPool(
                 TH08_ECL_READ_I(ctx, 0) + 0x20,
                 reinterpret_cast<D3DXVECTOR3 *>(
                     &reinterpret_cast<th08::Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->worldPosition),

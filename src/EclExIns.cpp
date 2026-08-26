@@ -110,8 +110,8 @@ void __fastcall FUN_00423400(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 void __fastcall FUN_00423530(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
     AnmVm *effect;
-    effect = g_EffectManager.FUN_00425870(56, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
-    effect = g_EffectManager.FUN_00425870(56, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
+    effect = g_EffectManager.SpawnEffectInFixedSlot(56, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
+    effect = g_EffectManager.SpawnEffectInFixedSlot(56, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
     g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 97);
     g_EclExUpdateCallback = reinterpret_cast<void *>(&FUN_004235a0);
 }
@@ -129,8 +129,8 @@ void __fastcall FUN_004235a0()
     Effect *effect10;
     f32 radius10;
 
-    effect9 = reinterpret_cast<Effect *>(g_EffectManager.FUN_004253e0(9));
-    effect10 = reinterpret_cast<Effect *>(g_EffectManager.FUN_004253e0(10));
+    effect9 = reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(9));
+    effect10 = reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(10));
     unusedVm = &g_EclExBarrierRenderState.vm0;
 
     radius9 = effect9->vm.pos.x * 0.7071068286895752f;
@@ -284,8 +284,8 @@ void __fastcall FUN_00423a60(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 void __fastcall FUN_00423db0(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
     AnmVm *effect;
-    effect = g_EffectManager.FUN_00425870(65, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
-    effect = g_EffectManager.FUN_00425870(65, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
+    effect = g_EffectManager.SpawnEffectInFixedSlot(65, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
+    effect = g_EffectManager.SpawnEffectInFixedSlot(65, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
     g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 99);
     g_EclExUpdateCallback = reinterpret_cast<void *>(&FUN_004235a0);
 }
@@ -370,8 +370,8 @@ void __fastcall FUN_00423e20(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 // FUNCTION: th08 0x424130
 void __fastcall FUN_00424130(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    reinterpret_cast<Effect *>(g_EffectManager.FUN_004253e0(9))->active = 0;
-    reinterpret_cast<Effect *>(g_EffectManager.FUN_004253e0(10))->active = 0;
+    reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(9))->active = 0;
+    reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(10))->active = 0;
     g_EclExBarrierRenderState.mode = 2;
 }
 
@@ -379,8 +379,8 @@ void __fastcall FUN_00424130(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 void __fastcall FUN_00424170(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
     AnmVm *effect;
-    effect = g_EffectManager.FUN_00425870(58, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
-    effect = g_EffectManager.FUN_00425870(58, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
+    effect = g_EffectManager.SpawnEffectInFixedSlot(58, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
+    effect = g_EffectManager.SpawnEffectInFixedSlot(58, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
     g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 101);
     g_EclExUpdateCallback = reinterpret_cast<void *>(&FUN_004235a0);
 }

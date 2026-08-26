@@ -1518,7 +1518,7 @@ ChainCallbackResult BulletManager::OnDraw(BulletManager *bulletManager)
         }
     }
 
-    g_EffectManager.DrawUnkTypeEffects();
+    g_EffectManager.DrawBulletLayerEffects();
     if (g_GameManager.flags.deathbombFreezeActive)
         g_AnmManager->SetMixColorDefault();
 

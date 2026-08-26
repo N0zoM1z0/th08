@@ -137,7 +137,7 @@ void Player::SpawnBombStateEffect()
     if (this->stateEffect != NULL)
         this->stateEffect->active = false;
 
-    effect = g_EffectManager.FUN_00425870(23, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 0, 1, -1);
+    effect = g_EffectManager.SpawnEffectInFixedSlot(23, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 0, 1, -1);
     effect->interpCurrentTimers[AnmInterp_Scale] = 0;
     effect->interpEndTimers[AnmInterp_Scale] = this->timer;
     effect->interpModes[AnmInterp_Scale] = AnmInterpMode_Linear;
@@ -541,7 +541,7 @@ void __fastcall UpdateDissolveSpell(Player *player)
                          40, 200, 0);
 
         g_EffectManager.SpawnEffect(12, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, 0xff4040ff);
-        effect = g_EffectManager.FUN_00425870(50, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 4, 1,
+        effect = g_EffectManager.SpawnEffectInFixedSlot(50, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 4, 1,
                                               0xff4040ff);
         effect->interpCurrentTimers[AnmInterp_Pos] = 0;
         if (!g_GameManager.IsSpellPractice())
@@ -1063,7 +1063,7 @@ void __fastcall UpdateFinalSparkDeathbomb(Player *player)
     if (bomb->timer.IsPeriodic(10))
     {
 #pragma var_order(effect, position1, position0, scale1, scale0)
-        AnmVm *effect = g_EffectManager.FUN_00425870(
+        AnmVm *effect = g_EffectManager.SpawnEffectInFixedSlot(
             53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkCursor % 4 + 4, 1, -1);
         if (bomb->secondaryWorkCursor & 1)
             g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 92);
@@ -1193,7 +1193,7 @@ void __fastcall UpdateRedNightlessCastleBomb(Player *player)
         if (bomb->timer.IsPeriodic(10))
         {
 #pragma var_order(effect, position1, position0, scale1, scale0)
-            AnmVm *effect = g_EffectManager.FUN_00425870(
+            AnmVm *effect = g_EffectManager.SpawnEffectInFixedSlot(
                 53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkCursor % 4 + 4, 1, -1);
             reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 32;
             reinterpret_cast<Effect *>(effect)->radialWaveCount = 4.0f;
@@ -1324,7 +1324,7 @@ void __fastcall UpdateScarletDevilDeathbomb(Player *player)
         if (bomb->timer.IsPeriodic(10))
         {
 #pragma var_order(effect, position1, position0, scale1, scale0)
-            AnmVm *effect = g_EffectManager.FUN_00425870(
+            AnmVm *effect = g_EffectManager.SpawnEffectInFixedSlot(
                 53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkCursor % 4 + 4, 1, -1);
             reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 32;
             reinterpret_cast<Effect *>(effect)->radialWaveCount = 4.0f;
@@ -1697,7 +1697,7 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI / 4.0f, 1.0f, 4.0f);
-        g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position),
+        g_EffectManager.SpawnEffectInFixedSlotWithVelocity(36, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position),
                                      reinterpret_cast<D3DXVECTOR3 *>(&velocity), 4, 1, -1);
     }
 
@@ -1710,7 +1710,7 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI * 3.0f / 8.0f, 1.0f, 4.0f);
-        effect = g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
+        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 5, 1, -1);
         g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 89);
         bomb->workItems[1].position = player->position;
@@ -1725,7 +1725,7 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI / 2.0f, 1.0f, 4.0f);
-        effect = g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
+        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 6, 1, -1);
         g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 90);
         bomb->workItems[2].position = player->position;
@@ -1740,7 +1740,7 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(1.9634954929351807f, 1.0f, 4.0f);
-        effect = g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
+        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 7, 1, -1);
         g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 91);
         bomb->workItems[3].position = player->position;
@@ -2181,7 +2181,7 @@ i32 __fastcall FUN_00411720(AnmVm *effect)
     Float3 position = reinterpret_cast<Effect *>(effect)->position;
     Float3 velocity = reinterpret_cast<Effect *>(effect)->vector1;
 
-    g_EffectManager.FUN_004259e0(35, reinterpret_cast<D3DXVECTOR3 *>(&position),
+    g_EffectManager.SpawnEffectInFixedSlotWithVelocity(35, reinterpret_cast<D3DXVECTOR3 *>(&position),
                                  reinterpret_cast<D3DXVECTOR3 *>(&velocity),
                                  reinterpret_cast<Effect *>(effect)->slotIndex, 1, -1);
     reinterpret_cast<Effect *>(effect)->updateCallback = reinterpret_cast<void *>(FUN_004114e0);
@@ -2197,7 +2197,7 @@ i32 __fastcall FUN_00411a80(AnmVm *effect)
     Float3 position = reinterpret_cast<Effect *>(effect)->position;
     Float3 velocity = reinterpret_cast<Effect *>(effect)->vector1;
 
-    g_EffectManager.FUN_004259e0(35, reinterpret_cast<D3DXVECTOR3 *>(&position),
+    g_EffectManager.SpawnEffectInFixedSlotWithVelocity(35, reinterpret_cast<D3DXVECTOR3 *>(&position),
                                  reinterpret_cast<D3DXVECTOR3 *>(&velocity),
                                  reinterpret_cast<Effect *>(effect)->slotIndex, 1, -1);
     reinterpret_cast<Effect *>(effect)->updateCallback = reinterpret_cast<void *>(FUN_004117b0);
@@ -2232,7 +2232,7 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI / 4.0f, 1.0f, 4.0f);
-        g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position),
+        g_EffectManager.SpawnEffectInFixedSlotWithVelocity(37, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position),
                                      reinterpret_cast<D3DXVECTOR3 *>(&velocity), 4, 1, -1);
     }
 
@@ -2245,7 +2245,7 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI * 3.0f / 8.0f, 1.0f, 4.0f);
-        effect = g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
+        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 5, 1, -1);
         g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 93);
         bomb->workItems[1].position = player->position;
@@ -2260,7 +2260,7 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI / 2.0f, 1.0f, 4.0f);
-        effect = g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
+        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 6, 1, -1);
         g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 94);
         bomb->workItems[2].position = player->position;
@@ -2275,7 +2275,7 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(1.9634954929351807f, 1.0f, 4.0f);
-        effect = g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
+        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 7, 1, -1);
         g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 95);
         bomb->workItems[3].position = player->position;

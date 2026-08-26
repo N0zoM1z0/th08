@@ -633,6 +633,23 @@ VC7 image links, and the complete i386 Linux build plus fixed-layout verifier
 passes.  `ScreenEffect.cpp` has zero router candidates; the whole-source router
 is now 5 raw, 0 absolute, 113 anonymous, and 44 opaque candidates.
 
+The Effect factory/draw/trail batch is now accepted.  Factory names distinguish
+the primary 0x200-entry ring, secondary `[0x200, 0x280)` pool, and fixed slots
+at `slotIndex + 0x280`, including their velocity-taking variants.  Bullet and
+Background callers now name their draw-layer ownership; stage-origin
+compensation, stage-position adjustment, resource load/release, and the
+animation-end predicate use behavior-backed names.  Directional-offset and
+radial-trail callbacks now expose their exact initialization, synchronization,
+timed/fading, anchored, and alternate-layer roles.
+
+The complete EffectManager selection passes **52 / 52 exact**.  A required
+single-job cold replay passes **1,106 / 1,106 exact**, the normal VC7 image
+links, and the complete i386 Linux build plus fixed-layout verifier passes.
+Six stage-specific particle callbacks remain address-named because their exact
+bodies prove motion and camera relations but not stable visual identities.  The
+whole-source router remains at 5 raw, 0 absolute, 113 anonymous, and 44 opaque
+candidates; `EffectManager.cpp` itself has zero candidates.
+
 Select the next independent field family with:
 
 ```bash
@@ -1236,8 +1253,9 @@ mapped function definitions in heavily scrambled lexical order while file-scope
 statics and the `g_EffectTemplates` data definition were interspersed between
 them. Rebuilding the source as the same declarations/data in their original
 relative order followed by all real function bodies sorted by mapped target
-address required only natural forward declarations for `FUN_00428310` and
-`FUN_00428720`. No behavior or owner changed. Focused replay passed **52 / 52**
+address required only natural forward declarations for
+`AdjustStageEffectDrawPosition` and `HasAnimationEnded`. No behavior or owner
+changed. Focused replay passed **52 / 52**
 and the cold aggregate replay passed **1,105 / 1,105**. `EffectManager.obj`
 improved from **8 anchors / 17 inversions / 4 runs / 23,424 span** to **8 / 0 /
 1 / 304**.

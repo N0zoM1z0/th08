@@ -18,9 +18,9 @@ namespace th08
 
 ZunBool IsDisableResourceReload();
 
-void __fastcall FUN_00428310(AnmVm *effect, D3DXVECTOR3 *base);
-i32 __fastcall FUN_00428720(Effect *effect);
-i32 __fastcall FUN_00427450(Effect *effect);
+void __fastcall AdjustStageEffectDrawPosition(AnmVm *effect, D3DXVECTOR3 *base);
+i32 __fastcall HasAnimationEnded(Effect *effect);
+i32 __fastcall DrawRadialTrail(Effect *effect);
 
 
 
@@ -95,7 +95,7 @@ Float3 *Float3::operator*=(f32 scalar)
 }
 
 // FUNCTION: th08 0x4253e0
-AnmVm *EffectManager::FUN_004253e0(i32 index)
+AnmVm *EffectManager::GetFixedSlotVm(i32 index)
 {
     return &this->effects[index + 0x280].vm;
 }
@@ -181,7 +181,7 @@ AnmVm *EffectManager::SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 
 
 // FUNCTION: th08 0x425650
 #pragma var_order(effect, i)
-AnmVm *EffectManager::SpawnEffectAngle(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 count, i32 color)
+AnmVm *EffectManager::SpawnEffectWithVelocity(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 count, i32 color)
 {
     Effect *effect = this->effects + this->nextEffectIndex;
     i32 i;
@@ -254,7 +254,7 @@ AnmVm *EffectManager::SpawnEffectAngle(i32 id, D3DXVECTOR3 *position, D3DXVECTOR
 
 // FUNCTION: th08 0x425870
 #pragma var_order(effect)
-AnmVm *EffectManager::FUN_00425870(i32 id, D3DXVECTOR3 *position, i32 slotIndex, i32 unused, i32 color)
+AnmVm *EffectManager::SpawnEffectInFixedSlot(i32 id, D3DXVECTOR3 *position, i32 slotIndex, i32 unused, i32 color)
 {
     Effect *effect = &this->effects[slotIndex + 0x280];
 
@@ -293,7 +293,7 @@ AnmVm *EffectManager::FUN_00425870(i32 id, D3DXVECTOR3 *position, i32 slotIndex,
 
 // FUNCTION: th08 0x4259e0
 #pragma var_order(effect)
-AnmVm *EffectManager::FUN_004259e0(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 slotIndex,
+AnmVm *EffectManager::SpawnEffectInFixedSlotWithVelocity(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 slotIndex,
                                    i32 unused, i32 color)
 {
     Effect *effect = &this->effects[slotIndex + 0x280];
@@ -332,7 +332,7 @@ AnmVm *EffectManager::FUN_004259e0(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *v
 
 // FUNCTION: th08 0x425b70
 #pragma var_order(effect, i, zeroVector)
-AnmVm *EffectManager::SpawnEffect00425B70(i32 id, D3DXVECTOR3 *position, i32 count, i32 color)
+AnmVm *EffectManager::SpawnEffectInSecondaryPool(i32 id, D3DXVECTOR3 *position, i32 count, i32 color)
 {
     Effect *effect = this->effects + 0x200;
     i32 i;
@@ -626,7 +626,7 @@ i32 __fastcall FUN_00426990(Effect *effect)
 
 // FUNCTION: th08 0x426b20
 #pragma var_order(angle, effect)
-i32 __fastcall FUN_00426b20(Effect *effect)
+i32 __fastcall InitializeRandomDirectionalOffset(Effect *effect)
 {
     f32 angle;
 
@@ -641,7 +641,7 @@ i32 __fastcall FUN_00426b20(Effect *effect)
 
 // FUNCTION: th08 0x426bb0
 #pragma var_order(alpha, effect)
-i32 __fastcall FUN_00426bb0(Effect *effect)
+i32 __fastcall UpdateDirectionalOffset60(Effect *effect)
 {
     f32 alpha;
 
@@ -652,9 +652,9 @@ i32 __fastcall FUN_00426bb0(Effect *effect)
 }
 
 // FUNCTION: th08 0x426c40
-i32 __fastcall FUN_00426c40(Effect *effect)
+i32 __fastcall TrackPlayerUntilAnimationEnds(Effect *effect)
 {
-    if (FUN_00428720(effect))
+    if (HasAnimationEnded(effect))
         return 0;
 
     reinterpret_cast<EclOperands::Vector3 &>(effect->position) =
@@ -664,7 +664,7 @@ i32 __fastcall FUN_00426c40(Effect *effect)
 
 // FUNCTION: th08 0x426c90
 #pragma var_order(alpha, effect)
-i32 __fastcall FUN_00426c90(Effect *effect)
+i32 __fastcall UpdateDirectionalOffset240(Effect *effect)
 {
     f32 alpha;
 
@@ -675,7 +675,7 @@ i32 __fastcall FUN_00426c90(Effect *effect)
 
 // FUNCTION: th08 0x426d10
 #pragma var_order(effect, i, delta)
-void __fastcall FUN_00426d10(Float3 *delta)
+void __fastcall ShiftStageEffectOrigins(Float3 *delta)
 {
     Effect *effect = g_EffectManager.effects;
     i32 i;
@@ -740,7 +740,7 @@ i32 __fastcall FUN_00426e70(Effect *effect)
 
 // FUNCTION: th08 0x4270c0
 #pragma var_order(angle, effect)
-i32 __fastcall FUN_004270c0(Effect *effect)
+i32 __fastcall InitializeDirectionalOffset(Effect *effect)
 {
     f32 angle;
 
@@ -760,7 +760,7 @@ i32 __fastcall FUN_004270c0(Effect *effect)
 
 // FUNCTION: th08 0x4271a0
 #pragma var_order(alpha, effect)
-i32 __fastcall FUN_004271a0(Effect *effect)
+i32 __fastcall UpdateEasedDirectionalOffset(Effect *effect)
 {
     f32 alpha;
 
@@ -772,14 +772,14 @@ i32 __fastcall FUN_004271a0(Effect *effect)
 }
 
 // FUNCTION: th08 0x427250
-i32 __fastcall FUN_00427250(Effect *effect)
+i32 __fastcall KeepTrailAlive(Effect *effect)
 {
     return 1;
 }
 
 // FUNCTION: th08 0x427260
 #pragma var_order(offset, effect)
-i32 __fastcall FUN_00427260(Effect *effect)
+i32 __fastcall InitializeTrailOffset(Effect *effect)
 {
     Float3 offset;
 
@@ -791,7 +791,7 @@ i32 __fastcall FUN_00427260(Effect *effect)
 }
 
 // FUNCTION: th08 0x4272e0
-i32 __fastcall FUN_004272e0(Effect *effect)
+i32 __fastcall InitializeRadialTrail(Effect *effect)
 {
     effect->vertices = static_cast<VertexTex1DiffuseXyzrhw *>(g_ZunMemory.Alloc(0x1c38, "Effect"));
     if (effect->vertices == NULL)
@@ -811,7 +811,7 @@ i32 __fastcall FUN_004272e0(Effect *effect)
 
     g_AnmManager->FUN_004649a0(&effect->vm, effect->vertices, effect->vertexSegmentCount * 2);
     effect->verticesDirty = 1;
-    effect->drawCallback = reinterpret_cast<void *>(&FUN_00427450);
+    effect->drawCallback = reinterpret_cast<void *>(&DrawRadialTrail);
     effect->secondaryRadius = 0.0f;
     effect->secondaryAngle = 0.0f;
     effect->radialWaveCount = 0.0f;
@@ -821,7 +821,7 @@ i32 __fastcall FUN_004272e0(Effect *effect)
 
 // FUNCTION: th08 0x427450
 #pragma var_order(i, innerRadius, vertex, angleStep, radius)
-i32 __fastcall FUN_00427450(Effect *effect)
+i32 __fastcall DrawRadialTrail(Effect *effect)
 {
     i32 i;
     f32 innerRadius;
@@ -949,15 +949,15 @@ i32 __fastcall FUN_00427450(Effect *effect)
 }
 
 // FUNCTION: th08 0x427970
-i32 __fastcall FUN_00427970(Effect *effect)
+i32 __fastcall InitializeAlternateLayerRadialTrail(Effect *effect)
 {
-    FUN_004272e0(effect);
+    InitializeRadialTrail(effect);
     effect->alternateDrawGroup = 1;
     return 0;
 }
 
 // FUNCTION: th08 0x427990
-i32 __fastcall FUN_00427990(Effect *effect)
+i32 __fastcall SyncRadialTrailRadius(Effect *effect)
 {
     effect->verticesDirty = 1;
     effect->shapeThickness = effect->vm.scale.x;
@@ -966,7 +966,7 @@ i32 __fastcall FUN_00427990(Effect *effect)
 }
 
 // FUNCTION: th08 0x4279d0
-i32 __fastcall FUN_004279d0(Effect *effect)
+i32 __fastcall SyncRadialTrailShape(Effect *effect)
 {
     effect->vertexSegmentCount = effect->vm.intVar0;
     effect->radialWaveCount = (f32)effect->vm.intVar1;
@@ -980,7 +980,7 @@ i32 __fastcall FUN_004279d0(Effect *effect)
 }
 
 // FUNCTION: th08 0x427a60
-i32 __fastcall FUN_00427a60(Effect *effect)
+i32 __fastcall UpdateTimedRadialTrail(Effect *effect)
 {
     effect->vertexSegmentCount = 32;
     effect->shapeThickness = effect->vm.scale.x;
@@ -993,7 +993,7 @@ i32 __fastcall FUN_00427a60(Effect *effect)
 }
 
 // FUNCTION: th08 0x427ae0
-i32 __fastcall FUN_00427ae0(Effect *effect)
+i32 __fastcall UpdateFadingRadialTrail(Effect *effect)
 {
     effect->verticesDirty = 1;
     effect->shapeThickness = effect->vm.scale.x;
@@ -1006,7 +1006,7 @@ i32 __fastcall FUN_00427ae0(Effect *effect)
 }
 
 // FUNCTION: th08 0x427b50
-i32 __fastcall FUN_00427b50(Effect *effect)
+i32 __fastcall SyncAnchoredRadialTrail(Effect *effect)
 {
     effect->vertexSegmentCount = effect->vm.intVar0;
     effect->radialWaveCount = (f32)effect->vm.intVar1;
@@ -1166,7 +1166,7 @@ ChainCallbackResult EffectManager::OnDraw(EffectManager *effectManager)
 
 // FUNCTION: th08 0x428100
 #pragma var_order(effect, this)
-i32 EffectManager::DrawUnkTypeEffects()
+i32 EffectManager::DrawBulletLayerEffects()
 {
     Effect *effect = this->drawGroupSentinel3.nextInDrawGroup;
 
@@ -1194,7 +1194,7 @@ i32 EffectManager::DrawUnkTypeEffects()
 
 // FUNCTION: th08 0x4281e0
 #pragma var_order(effect, i, this)
-i32 EffectManager::FUN_004281e0()
+i32 EffectManager::DrawBackgroundEffects()
 {
     Effect *effect = this->drawGroupSentinel1.nextInDrawGroup;
     i32 i = 0;
@@ -1221,7 +1221,7 @@ i32 EffectManager::FUN_004281e0()
         {
             if (effect->effectId == 0x33 || effect->effectId == 0x3F)
             {
-                g_AnmManager->DrawWithCallback(&effect->vm, (void *)FUN_00428310);
+                g_AnmManager->DrawWithCallback(&effect->vm, (void *)AdjustStageEffectDrawPosition);
             }
             else
             {
@@ -1240,7 +1240,7 @@ i32 EffectManager::FUN_004281e0()
 
 // FUNCTION: th08 0x428310
 #pragma var_order(delta, point)
-void __fastcall FUN_00428310(AnmVm *effect, D3DXVECTOR3 *base)
+void __fastcall AdjustStageEffectDrawPosition(AnmVm *effect, D3DXVECTOR3 *base)
 {
     D3DXVECTOR3 delta;
     D3DXVECTOR3 point;
@@ -1274,7 +1274,7 @@ void __fastcall FUN_00428310(AnmVm *effect, D3DXVECTOR3 *base)
 }
 
 // FUNCTION: th08 0x4284b0
-ZunResult EffectManager::AddedCallback(EffectManager *effectManager)
+ZunResult EffectManager::LoadEffectResources(EffectManager *effectManager)
 {
     effectManager->ResetEffects();
     effectManager->effectAnm = g_AnmManager->GetAnm(6);
@@ -1304,7 +1304,7 @@ ZunResult EffectManager::AddedCallback(EffectManager *effectManager)
 
 // FUNCTION: th08 0x428590
 #pragma var_order(effect, i)
-ZunResult EffectManager::DeletedCallback(EffectManager *effectManager)
+ZunResult EffectManager::ReleaseEffectResources(EffectManager *effectManager)
 {
     Effect *effect = effectManager->effects;
     i32 i;
@@ -1327,8 +1327,8 @@ ZunResult EffectManager::RegisterChain()
     EffectManager *effectManager = &g_EffectManager;
     effectManager->ResetEffects();
     g_EffectManagerCalcChain.SetCallback((ChainCallback)EffectManager::OnUpdate);
-    g_EffectManagerCalcChain.addedCallback = (ChainLifetimeCallback)EffectManager::AddedCallback;
-    g_EffectManagerCalcChain.deletedCallback = (ChainLifetimeCallback)EffectManager::DeletedCallback;
+    g_EffectManagerCalcChain.addedCallback = (ChainLifetimeCallback)EffectManager::LoadEffectResources;
+    g_EffectManagerCalcChain.deletedCallback = (ChainLifetimeCallback)EffectManager::ReleaseEffectResources;
     g_EffectManagerCalcChain.arg = effectManager;
     if (g_Chain.AddToCalcChain(&g_EffectManagerCalcChain, 13) != ZUN_SUCCESS)
         return ZUN_ERROR;
@@ -1347,7 +1347,7 @@ void EffectManager::CutChain()
 }
 
 // FUNCTION: th08 0x428720
-i32 __fastcall FUN_00428720(Effect *effect)
+i32 __fastcall HasAnimationEnded(Effect *effect)
 {
     return effect->vm.currentInstruction == NULL;
 }

@@ -768,7 +768,7 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
     }
 
     this->flags &= ~0x800;
-    this->spellEffect = reinterpret_cast<Effect *>(g_EffectManager.FUN_00425870(
+    this->spellEffect = reinterpret_cast<Effect *>(g_EffectManager.SpawnEffectInFixedSlot(
         (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0) ? 52 : 39,
         reinterpret_cast<D3DXVECTOR3 *>(
             &reinterpret_cast<Enemy *>(this->activeEnemy)->position), 1, 1, -1));

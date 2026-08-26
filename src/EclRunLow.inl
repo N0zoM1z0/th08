@@ -995,7 +995,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
             if (reinterpret_cast<Enemy *>(child)->alignmentEffect == 0)
             {
                 reinterpret_cast<Enemy *>(child)->alignmentEffect = reinterpret_cast<Effect *>(
-                    g_EffectManager.SpawnEffect00425B70(
+                    g_EffectManager.SpawnEffectInSecondaryPool(
                     0x20,
                     reinterpret_cast<D3DXVECTOR3 *>(
                         &reinterpret_cast<Enemy *>(child)->position),
@@ -1055,7 +1055,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
             if (reinterpret_cast<Enemy *>(child)->alignmentEffect == 0)
             {
                 reinterpret_cast<Enemy *>(child)->alignmentEffect = reinterpret_cast<Effect *>(
-                    g_EffectManager.SpawnEffect00425B70(
+                    g_EffectManager.SpawnEffectInSecondaryPool(
                     0x20,
                     reinterpret_cast<D3DXVECTOR3 *>(
                         &reinterpret_cast<Enemy *>(child)->position),
@@ -1126,7 +1126,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
             if (reinterpret_cast<Enemy *>(child)->alignmentEffect == 0)
             {
                 reinterpret_cast<Enemy *>(child)->alignmentEffect = reinterpret_cast<Effect *>(
-                    g_EffectManager.SpawnEffect00425B70(
+                    g_EffectManager.SpawnEffectInSecondaryPool(
                     0x20,
                     reinterpret_cast<D3DXVECTOR3 *>(
                         &reinterpret_cast<Enemy *>(child)->worldPosition),

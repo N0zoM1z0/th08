@@ -2358,3 +2358,79 @@ Result: `ScreenEffect.cpp` now has zero candidates in every semantic-router
 category.  The whole-source router reports 5 raw-member, 0 absolute-address,
 113 anonymous-identifier, and 44 opaque-storage candidates.  These counts are
 work-selection observations, not a semantic-completion percentage.
+
+### Effect factory, draw layers, and radial-trail protocol — 2026-08-27
+
+Scope: the EffectManager factory block at `0x004253E0..0x00425D6C`,
+directional and radial-trail callbacks at `0x00426B20..0x00427BEF`, stage-origin
+and draw routing at `0x00426D10/0x00428100..0x004284AF`, and the resource and
+animation-lifetime helpers at `0x004284B0..0x0042873F`.  All mapped names,
+decorated symbols, match-unit selectors, accepted ledgers, callback tables, and
+production callers moved together; no implementation, layout, callback value,
+or state transition changed.
+
+Factory ownership: `SpawnEffect` scans the primary 0x200-entry ring,
+`SpawnEffectInSecondaryPool` scans `[0x200, 0x280)`, and the fixed-slot helpers
+address entries at `slotIndex + 0x280`.  The velocity-taking siblings are now
+`SpawnEffectWithVelocity` and `SpawnEffectInFixedSlotWithVelocity`;
+`GetFixedSlotVm` exposes the same fixed-slot address rule to ECL extension
+callbacks.  These pool boundaries come directly from exact target loops and
+address arithmetic, not from an adjacent-version name.
+
+Draw ownership: BulletManager calls `DrawBulletLayerEffects` for the linked
+group whose default Z is 0.04.  Background calls `DrawBackgroundEffects`, which
+applies the target's minimum/moderate effect-quality gates and dispatches the
+stage-effect draw modes.  `AdjustStageEffectDrawPosition` is the callback used
+for effect ids 0x33 and 0x3F; its name is limited to the proven stage-effect
+call path and position adjustment.  `ShiftStageEffectOrigins` updates the
+stored origin of active id-0x33 effects after a compensated camera jump.
+
+Directional and trail ownership: the `0x00426B20..0x004271FF` initializers
+store an origin plus a normalized XY direction, and their updates apply the
+observed 60-frame, 240-frame, or eased 90-frame displacement.  The
+`0x004272E0..0x00427BEF` family allocates and owns a textured-vertex strip,
+builds circular, elliptical, or radially modulated geometry, marks it dirty
+when VM parameters change, and optionally selects the alternate draw group.
+The source therefore names initialization, synchronization, timed/fading, and
+anchored radial-trail roles while leaving overlapping generic Effect storage
+neutral outside this mode.
+
+Lifecycle: `LoadEffectResources` resets the pool and resolves/preloads the
+common and stage ANM owners; `ReleaseEffectResources` frees per-effect vertex
+buffers and releases the stage ANM when reload is enabled.  RegisterChain uses
+those functions as its add/delete callbacks.  `HasAnimationEnded` is only the
+exact `vm.currentInstruction == NULL` predicate and is not generalized into a
+broader effect-state claim.
+
+Evidence boundary: six stage-specific particle callbacks remain deliberately
+address-named: the init/update pairs `0x00426280/0x004264F0`,
+`0x00426720/0x00426990`, and `0x00426D70/0x00426E70`.  Their exact bodies prove
+camera-relative random initialization, motion, visibility, and draw-group
+behavior, but the authored corpus does not prove a stable visual identity for
+any pair.  Renaming them from appearance guesses would reduce readability
+honesty rather than semantic debt.
+
+VC7 oracle: twelve representative factory/draw/lifecycle targets were first
+replayed through target-pinned typed packets, and the complete EffectManager
+selection then passed **52 / 52 exact**.  Representative exact extents include
+`SpawnEffect` **529 / 529**, `SpawnEffectWithVelocity` **533 / 533**,
+`SpawnEffectInFixedSlot` **365 / 365**,
+`SpawnEffectInFixedSlotWithVelocity` **394 / 394**,
+`SpawnEffectInSecondaryPool` **509 / 509**, `DrawBulletLayerEffects`
+**219 / 219**, `DrawBackgroundEffects` **290 / 290**, and
+`AdjustStageEffectDrawPosition` **411 / 411**.  The required single-job cold
+build of all 75 comparison objects passes **1,106 / 1,106 exact**, and the
+normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links and
+`verify-modern-linux.sh build/modern-linux-container/th08-modern` verifies the
+ELF32 executable and every fixed target-owned layout symbol.  Its reconstructed
+Effect callback table was updated to the same semantic symbols.  There is no
+isolated automated particle-rendering smoke, so no live visual claim is made.
+
+Result: `EffectManager.cpp` has zero semantic-router candidates.  The
+whole-source router remains at 5 raw-member, 0 absolute-address, 113
+anonymous-identifier, and 44 opaque-storage candidates because the six
+evidence-limited callbacks are outside the heuristic's current identifier
+pattern.  These counts are work-selection observations, not a semantic-
+completion percentage.

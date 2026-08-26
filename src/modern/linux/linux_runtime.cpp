@@ -36,23 +36,23 @@ int __fastcall FUN_00426280(Effect *);
 int __fastcall FUN_004264f0(Effect *);
 int __fastcall FUN_00426720(Effect *);
 int __fastcall FUN_00426990(Effect *);
-int __fastcall FUN_00426b20(Effect *);
-int __fastcall FUN_00426bb0(Effect *);
-int __fastcall FUN_00426c40(Effect *);
-int __fastcall FUN_00426c90(Effect *);
+int __fastcall InitializeRandomDirectionalOffset(Effect *);
+int __fastcall UpdateDirectionalOffset60(Effect *);
+int __fastcall TrackPlayerUntilAnimationEnds(Effect *);
+int __fastcall UpdateDirectionalOffset240(Effect *);
 int __fastcall FUN_00426d70(Effect *);
 int __fastcall FUN_00426e70(Effect *);
-int __fastcall FUN_004270c0(Effect *);
-int __fastcall FUN_004271a0(Effect *);
-int __fastcall FUN_00427250(Effect *);
-int __fastcall FUN_00427260(Effect *);
-int __fastcall FUN_004272e0(Effect *);
-int __fastcall FUN_00427970(Effect *);
-int __fastcall FUN_00427990(Effect *);
-int __fastcall FUN_004279d0(Effect *);
-int __fastcall FUN_00427a60(Effect *);
-int __fastcall FUN_00427ae0(Effect *);
-int __fastcall FUN_00427b50(Effect *);
+int __fastcall InitializeDirectionalOffset(Effect *);
+int __fastcall UpdateEasedDirectionalOffset(Effect *);
+int __fastcall KeepTrailAlive(Effect *);
+int __fastcall InitializeTrailOffset(Effect *);
+int __fastcall InitializeRadialTrail(Effect *);
+int __fastcall InitializeAlternateLayerRadialTrail(Effect *);
+int __fastcall SyncRadialTrailRadius(Effect *);
+int __fastcall SyncRadialTrailShape(Effect *);
+int __fastcall UpdateTimedRadialTrail(Effect *);
+int __fastcall UpdateFadingRadialTrail(Effect *);
+int __fastcall SyncAnchoredRadialTrail(Effect *);
 
 // This retail table entry points at an AnmVm member. On the 32-bit Linux ABI
 // its code entry receives `this` as the first stack argument, matching the
@@ -143,50 +143,50 @@ void InitializeTargetData()
         {45, CodeAddress(EffectOrbitUpdate), CodeAddress(EffectOrbitInit)},
         {45, CodeAddress(EffectOrbitUpdate), CodeAddress(EffectOrbitInit)},
         {0, 0, 0},
-        {32, CodeAddress(FUN_00426bb0), CodeAddress(FUN_00426b20)},
-        {33, CodeAddress(FUN_00426c90), CodeAddress(FUN_00426b20)},
+        {32, CodeAddress(UpdateDirectionalOffset60), CodeAddress(InitializeRandomDirectionalOffset)},
+        {33, CodeAddress(UpdateDirectionalOffset240), CodeAddress(InitializeRandomDirectionalOffset)},
         {51, CodeAddress(FUN_00426d70), CodeAddress(FUN_00426e70)},
         {56, 0, 0},
-        {52, CodeAddress(FUN_004271a0), CodeAddress(FUN_004270c0)},
-        {54, CodeAddress(FUN_00426c40), 0},
-        {104, CodeAddress(FUN_00427250), 0},
-        {104, CodeAddress(FUN_00427250), 0},
+        {52, CodeAddress(UpdateEasedDirectionalOffset), CodeAddress(InitializeDirectionalOffset)},
+        {54, CodeAddress(TrackPlayerUntilAnimationEnds), 0},
+        {104, CodeAddress(KeepTrailAlive), 0},
+        {104, CodeAddress(KeepTrailAlive), 0},
         {35, 0, 0},
-        {53, CodeAddress(FUN_004271a0), CodeAddress(FUN_004270c0)},
-        {34, CodeAddress(FUN_00426bb0), CodeAddress(FUN_00426b20)},
+        {53, CodeAddress(UpdateEasedDirectionalOffset), CodeAddress(InitializeDirectionalOffset)},
+        {34, CodeAddress(UpdateDirectionalOffset60), CodeAddress(InitializeRandomDirectionalOffset)},
         {57, 0, 0}, {58, 0, 0}, {59, 0, 0}, {60, 0, 0},
         {48, 0, 0}, {49, 0, 0}, {50, 0, 0},
-        {88, CodeAddress(FUN_00427990), CodeAddress(FUN_004272e0)},
+        {88, CodeAddress(SyncRadialTrailRadius), CodeAddress(InitializeRadialTrail)},
         {88, CodeAddress(FUN_004114e0), CodeAddress(FUN_00411720)},
         {92, CodeAddress(FUN_004114e0), CodeAddress(FUN_00411a80)},
         {71, 0, 0},
-        {76, CodeAddress(FUN_00427990), CodeAddress(FUN_004272e0)},
-        {81, CodeAddress(FUN_004279d0), CodeAddress(FUN_004272e0)},
-        {82, CodeAddress(AnmVmUpdate0040eb50), CodeAddress(FUN_004272e0)},
-        {83, CodeAddress(FUN_0040e040), CodeAddress(FUN_004272e0)},
-        {83, CodeAddress(FUN_0040e120), CodeAddress(FUN_004272e0)},
-        {83, CodeAddress(FUN_0040e200), CodeAddress(FUN_004272e0)},
-        {83, CodeAddress(FUN_0040e2d0), CodeAddress(FUN_004272e0)},
-        {84, CodeAddress(FUN_00410bb0), CodeAddress(FUN_004272e0)},
+        {76, CodeAddress(SyncRadialTrailRadius), CodeAddress(InitializeRadialTrail)},
+        {81, CodeAddress(SyncRadialTrailShape), CodeAddress(InitializeRadialTrail)},
+        {82, CodeAddress(AnmVmUpdate0040eb50), CodeAddress(InitializeRadialTrail)},
+        {83, CodeAddress(FUN_0040e040), CodeAddress(InitializeRadialTrail)},
+        {83, CodeAddress(FUN_0040e120), CodeAddress(InitializeRadialTrail)},
+        {83, CodeAddress(FUN_0040e200), CodeAddress(InitializeRadialTrail)},
+        {83, CodeAddress(FUN_0040e2d0), CodeAddress(InitializeRadialTrail)},
+        {84, CodeAddress(FUN_00410bb0), CodeAddress(InitializeRadialTrail)},
         {72, 0, 0},
-        {85, CodeAddress(FUN_00413070), CodeAddress(FUN_004272e0)},
-        {86, CodeAddress(FUN_00427990), CodeAddress(FUN_004272e0)},
-        {80, CodeAddress(FUN_00427a60), CodeAddress(FUN_004272e0)},
+        {85, CodeAddress(FUN_00413070), CodeAddress(InitializeRadialTrail)},
+        {86, CodeAddress(SyncRadialTrailRadius), CodeAddress(InitializeRadialTrail)},
+        {80, CodeAddress(UpdateTimedRadialTrail), CodeAddress(InitializeRadialTrail)},
         {73, CodeAddress(FUN_004264f0), CodeAddress(FUN_00426280)},
-        {77, CodeAddress(FUN_00427990), CodeAddress(FUN_004272e0)},
-        {88, CodeAddress(FUN_00427ae0), CodeAddress(FUN_004272e0)},
-        {88, CodeAddress(FUN_00427ae0), CodeAddress(FUN_004272e0)},
-        {87, CodeAddress(FUN_004279d0), CodeAddress(FUN_004272e0)},
-        {96, CodeAddress(FUN_004279d0), CodeAddress(FUN_00427970)},
+        {77, CodeAddress(SyncRadialTrailRadius), CodeAddress(InitializeRadialTrail)},
+        {88, CodeAddress(UpdateFadingRadialTrail), CodeAddress(InitializeRadialTrail)},
+        {88, CodeAddress(UpdateFadingRadialTrail), CodeAddress(InitializeRadialTrail)},
+        {87, CodeAddress(SyncRadialTrailShape), CodeAddress(InitializeRadialTrail)},
+        {96, CodeAddress(SyncRadialTrailShape), CodeAddress(InitializeAlternateLayerRadialTrail)},
         {55, 0, 0},
-        {100, CodeAddress(FUN_004279d0), CodeAddress(FUN_00427970)},
-        {78, CodeAddress(FUN_00427990), CodeAddress(FUN_004272e0)},
-        {102, 0, CodeAddress(FUN_00427260)},
-        {103, 0, CodeAddress(FUN_00427260)},
+        {100, CodeAddress(SyncRadialTrailShape), CodeAddress(InitializeAlternateLayerRadialTrail)},
+        {78, CodeAddress(SyncRadialTrailRadius), CodeAddress(InitializeRadialTrail)},
+        {102, 0, CodeAddress(InitializeTrailOffset)},
+        {103, 0, CodeAddress(InitializeTrailOffset)},
         {75, 0, 0},
         {74, CodeAddress(FUN_00426990), CodeAddress(FUN_00426720)},
-        {77, CodeAddress(FUN_00427b50), CodeAddress(FUN_004272e0)},
-        {98, CodeAddress(FUN_004279d0), CodeAddress(FUN_00427970)},
+        {77, CodeAddress(SyncAnchoredRadialTrail), CodeAddress(InitializeRadialTrail)},
+        {98, CodeAddress(SyncRadialTrailShape), CodeAddress(InitializeAlternateLayerRadialTrail)},
     };
     static const int32_t stageScoreTables[9] = {
         1000000, 1500000, 2000000, 2500000, 2500000, 3000000, 4000000, 6000000, 6660000,

@@ -524,7 +524,7 @@ another opcode-local source-shape fact, not a global raw-float rule.
 ## Opcode 140: all three vector components use explicit raw-dword branches
 
 Opcode 140 constructs a local `Float3` from operands 3, 4, and 5 before calling
-`SpawnEffectAngle`. The target unresolved branches for all three components copy
+`SpawnEffectWithVelocity`. The target unresolved branches for all three components copy
 the raw operand dword into the compiler float result homes with integer moves;
 the resolved branches still call `ResolveFloat` and store the x87 result.
 
