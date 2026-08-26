@@ -34,15 +34,24 @@ header byte-for-byte.  Focused VC7 replay passed `ScreenEffect.obj` **16 / 16**
 and its canonical objdiff path **5 / 5**; the normal VC7 image linked, the
 complete i386 container build linked, and the fixed-layout verifier passed.
 
-The required cold aggregate diagnostic exposed a branch-baseline blocker:
-`verify-exact-units.py --all --json` rebuilt 75 objects but returned
-**1,017 / 1,105**, with the same 88 failures outside ScreenEffect both before
-and after restoring `ScreenEffect.hpp` byte-for-byte.  Therefore the historical
-**1,105 / 1,105** prose snapshot later in this file is not a current reproducible
-cold result and must not be published as one.  Keep the ScreenEffect focused
-exact result distinct; investigate the aggregate manifest/source drift as its
-own bounded maintenance batch before any future aggregate claim.  See
-`docs/SEMANTIC_RECONSTRUCTION.md` for the full evidence record.
+The required cold aggregate diagnostic initially exposed a reproducible
+branch-baseline blocker at **1,017 / 1,105**.  The follow-up bounded maintenance
+batch has now closed it.  It restored target-observed direct-global and source-
+expression shapes where the portable-owner pass had changed VC7 extent/codegen,
+introduced target/modern storage bridges where the two linkers intentionally
+differ, and migrated only relocation entries whose masked function bytes were
+otherwise identical.  All 79 final relocation-only failures had zero
+non-relocation byte differences; all 338 changed/new relocation entries inferred
+the existing target bases without conflict and had mapping/global-ledger
+evidence.
+
+The current attested result is a non-reuse cold build of all 75 configured
+comparison objects followed by **1,105 / 1,105 exact** accepted units with no
+failures.  A normal VC7 production link passes.  The complete i386 Linux
+container build and fixed-layout verifier also pass.  This closes the aggregate
+blocker without changing authored progress or weakening the comparator; see the
+post-port reconciliation entry in `docs/SEMANTIC_RECONSTRUCTION.md` for the
+evidence split and reusable compatibility pattern.
 
 Select the next independent field family with:
 

@@ -1379,9 +1379,14 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
 
     if (!IsDisableResourceReload())
     {
+#ifdef TH08_MODERN_PORT
         memset(&g_EclManager, 0, sizeof(g_EclManager));
         memset(&EclRunLowProposal::g_EclCallParameters, 0,
                sizeof(EclRunLowProposal::g_EclCallParameters));
+#else
+        memset(&g_EclManager, 0,
+               sizeof(g_EclManager) + sizeof(EclRunLowProposal::g_EclCallParameters));
+#endif
         if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBAC) >> 14) & 1) == 0)
         {
             if (g_EclManager.Load(const_cast<char *>(g_StageEclFiles[g_GameManager.currentStage])) !=
@@ -1412,9 +1417,14 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
     {
         savedEcl0 = reinterpret_cast<i32 *>(&g_EclManager)[0];
         savedEcl1 = reinterpret_cast<i32 *>(&g_EclManager)[1];
+#ifdef TH08_MODERN_PORT
         memset(&g_EclManager, 0, sizeof(g_EclManager));
         memset(&EclRunLowProposal::g_EclCallParameters, 0,
                sizeof(EclRunLowProposal::g_EclCallParameters));
+#else
+        memset(&g_EclManager, 0,
+               sizeof(g_EclManager) + sizeof(EclRunLowProposal::g_EclCallParameters));
+#endif
         reinterpret_cast<i32 *>(&g_EclManager)[0] = savedEcl0;
         reinterpret_cast<i32 *>(&g_EclManager)[1] = savedEcl1;
     }

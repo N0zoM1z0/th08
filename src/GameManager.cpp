@@ -769,8 +769,10 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
         GLOBAL_F32(gameManager, 0x98) = 0.0f;
         gameManager->UpdateAntiTamper();
         gameManager->unk3de04 = 0;
-        gameManager->unk3DBA4 = 0;
-        gameManager->unk3DBA0 = 0;
+        // The target deliberately uses the global owner here instead of the
+        // cached local used by adjacent setup fields.
+        g_GameManager.unk3DBA4 = 0;
+        g_GameManager.unk3DBA0 = 0;
         GLOBAL_I32(gameManager, 0x00) = 0;
         GLOBAL_I32(gameManager, 0x08) = 0;
         GLOBAL_I32(gameManager, 0x10) = 0;
@@ -1013,12 +1015,14 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
         }
         else
         {
-            u8 *stageData = reinterpret_cast<u8 *>(g_Background.stageAnmSecondary);
-            g_Supervisor.LoadMusic(0, reinterpret_cast<char *>(stageData + 0x290));
-            if (*reinterpret_cast<i8 *>(stageData + 0x310) != 0x20)
-                g_Supervisor.LoadMusic(1, reinterpret_cast<char *>(stageData + 0x310));
-            if (*reinterpret_cast<i8 *>(stageData + 0x390) != 0x20)
-                g_Supervisor.LoadMusic(2, reinterpret_cast<char *>(stageData + 0x390));
+            g_Supervisor.LoadMusic(
+                0, reinterpret_cast<char *>(g_Background.stageAnmSecondary) + 0x290);
+            if (*(reinterpret_cast<i8 *>(g_Background.stageAnmSecondary) + 0x310) != 0x20)
+                g_Supervisor.LoadMusic(
+                    1, reinterpret_cast<char *>(g_Background.stageAnmSecondary) + 0x310);
+            if (*(reinterpret_cast<i8 *>(g_Background.stageAnmSecondary) + 0x390) != 0x20)
+                g_Supervisor.LoadMusic(
+                    2, reinterpret_cast<char *>(g_Background.stageAnmSecondary) + 0x390);
         }
     }
 

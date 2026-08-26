@@ -199,8 +199,18 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotRenderCallback, 6, g_PlayerShotRenderCall
     NULL, FUN_00450320, NULL, FUN_00450580, FUN_004505d0, FUN_00450840};
 DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotRenderCallback, 2, g_PlayerShotTimerCallbacks) = {
     NULL, FUN_00450ad0};
-DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 6, g_PlayerShotDifficultyNames) = {
-    "Easy", "Normal", "Hard", "Lunatic", "Extra", "LastWord"};
+typedef void *PlayerShotCollisionOrDifficultyEntry;
+DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotCollisionOrDifficultyEntry, 9,
+                             g_PlayerShotCollisionOrDifficultyTable) = {
+    NULL,
+    reinterpret_cast<void *>(FUN_00450c50),
+    reinterpret_cast<void *>(FUN_00450ee0),
+    const_cast<char *>("Easy"),
+    const_cast<char *>("Normal"),
+    const_cast<char *>("Hard"),
+    const_cast<char *>("Lunatic"),
+    const_cast<char *>("Extra"),
+    const_cast<char *>("LastWord")};
 
 extern u16 g_GuiMessageInputCurrent;
 extern u16 g_GuiMessageInputPrevious;
@@ -525,7 +535,12 @@ void Player::Die()
     g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_PICHUN, this->position.x);
     *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x200;
 
-    if (g_GameManager.flags.unk7 || g_GameManager.flags.unk8)
+    // VC7 lowers the two-bit field read as two independent tests at /Od.
+    // Read the typed flag storage once so the target's single extraction is
+    // retained while the layout remains described by GameManagerFlags.
+    if (((*reinterpret_cast<const u32 *>(&g_GameManager.flags) >>
+          GameManagerFlags::PLAYER_DEATH_DISSOLVE_SHIFT) &
+         GameManagerFlags::PLAYER_DEATH_DISSOLVE_MASK) != 0)
     {
         utils::DebugPrint(" desolve\n");
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A68) = 2;
@@ -1748,12 +1763,11 @@ void Player::CutChain()
 }
 
 // FUNCTION: th08 0x44dd70
-#pragma var_order(callbackIndex, i, entry, header, path)
+#pragma var_order(i, entry, header, path)
 ZunResult Player::LoadShtFile(PlayerRawShtFile **header, const char *path)
 {
     i32 i;
     u8 *entry;
-    u32 callbackIndex;
 
     *header = reinterpret_cast<PlayerRawShtFile *>(FileSystem::OpenFile(path, NULL, 0));
     if (*header == NULL)
@@ -1776,15 +1790,8 @@ ZunResult Player::LoadShtFile(PlayerRawShtFile **header, const char *path)
             *reinterpret_cast<PlayerShotRenderCallback *>(entry + 0x30) =
                 g_PlayerShotTimerCallbacks[*reinterpret_cast<u32 *>(entry + 0x30)];
 
-            callbackIndex = *reinterpret_cast<u32 *>(entry + 0x34);
-            if (callbackIndex == 0)
-                *reinterpret_cast<void **>(entry + 0x34) = NULL;
-            else if (callbackIndex == 1)
-                *reinterpret_cast<PlayerShotCollisionCallback *>(entry + 0x34) = FUN_00450c50;
-            else if (callbackIndex == 2)
-                *reinterpret_cast<PlayerShotCollisionCallback *>(entry + 0x34) = FUN_00450ee0;
-            else
-                *reinterpret_cast<const char **>(entry + 0x34) = g_PlayerShotDifficultyNames[callbackIndex - 3];
+            *reinterpret_cast<PlayerShotCollisionOrDifficultyEntry *>(entry + 0x34) =
+                g_PlayerShotCollisionOrDifficultyTable[*reinterpret_cast<u32 *>(entry + 0x34)];
             entry += 0x38;
         }
     }

@@ -26,6 +26,12 @@ void __fastcall IncrementTruncate(u32 *value, i32 unused);
 
 struct GameManagerFlags
 {
+    enum
+    {
+        PLAYER_DEATH_DISSOLVE_SHIFT = 7,
+        PLAYER_DEATH_DISSOLVE_MASK = 3,
+    };
+
     u32 isPracticeMode : 1;
     u32 isDemoMode : 1;
     u32 unk2 : 1;
@@ -33,8 +39,8 @@ struct GameManagerFlags
     u32 unk4 : 1;
     // Observed as a two-bit state at bits 5..6 by GameManager::OnDraw.
     u32 unk5_6 : 2;
-    u32 unk7 : 1;
-    u32 unk8 : 1;
+    // Nonzero selects the alternate player-death dissolve path.
+    u32 playerDeathDissolveMode : 2;
     u32 unk9 : 1;
     u32 unk10 : 1;
     u32 isGoingToFinalB : 2; // why 2 bits?

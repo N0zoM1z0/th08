@@ -79,6 +79,9 @@ DIFFABLE_EXTERN(ChainElem, g_EffectManagerDrawChain);
 // the observed callback ownership and width.
 DIFFABLE_EXTERN(i32, g_EclCallbackPublishedEnemyField24);
 DIFFABLE_EXTERN(i32, g_EclCallbackPublishedEnemyField56);
+#ifndef TH08_MODERN_PORT
+DIFFABLE_EXTERN(void *, g_EclExUpdateCallback);
+#endif
 struct EclExBarrierRenderState
 {
     i32 mode;
@@ -88,6 +91,9 @@ struct EclExBarrierRenderState
 };
 C_ASSERT(offsetof(EclExBarrierRenderState, vm0) == 0x8);
 C_ASSERT(offsetof(EclExBarrierRenderState, vm1) == 0x2ac);
+#ifndef TH08_MODERN_PORT
+DIFFABLE_EXTERN(EclExBarrierRenderState, g_EclExBarrierRenderState);
+#endif
 DIFFABLE_EXTERN(i8, g_EclScriptedGlobalUpdateFreeze);
 DIFFABLE_EXTERN(f32, g_EclGameTimeScale);
 DIFFABLE_EXTERN(u32, g_EclGameTimeScaleFlags);

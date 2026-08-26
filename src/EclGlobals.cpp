@@ -99,8 +99,14 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(void *, 32, g_EclExInsn) = {
 
 DIFFABLE_STATIC(i32, g_EclCallbackPublishedEnemyField24);
 DIFFABLE_STATIC(i32, g_EclCallbackPublishedEnemyField56);
+#ifndef TH08_MODERN_PORT
+DIFFABLE_STATIC(void *, g_EclExUpdateCallback);
+#endif
 DIFFABLE_STATIC(i32, g_EclGlobal004EA290);
 DIFFABLE_STATIC(i32, g_EclGlobal004ECCA8);
+#ifndef TH08_MODERN_PORT
+DIFFABLE_STATIC(EclExBarrierRenderState, g_EclExBarrierRenderState);
+#endif
 DIFFABLE_STATIC(i8, g_EclScriptedGlobalUpdateFreeze);
 DIFFABLE_STATIC(f32, g_EclGameTimeScale);
 DIFFABLE_STATIC(u32, g_EclGameTimeScaleFlags);

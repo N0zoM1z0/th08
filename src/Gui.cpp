@@ -2138,7 +2138,7 @@ ZunResult Gui::FUN_00438f58()
 // FUNCTION: th08 0x438fe9
 i32 FUN_00438fe9()
 {
-    return IsResourceReloadEnabled();
+    return g_Supervisor.unk164;
 }
 
 

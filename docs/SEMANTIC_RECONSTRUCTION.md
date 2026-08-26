@@ -176,7 +176,9 @@ configured objects and checked all 1,105 selected units, but returned
 restoring `ScreenEffect.hpp` byte-for-byte reproduced the identical failure
 set.  This is an aggregate branch-baseline blocker, not an aggregate exact
 claim or a ScreenEffect regression; the generated report remains under
-`build/accepted-unit-replay-semantic-screen-effect.json`.
+`build/accepted-unit-replay-semantic-screen-effect.json`.  The maintenance
+batch below subsequently resolved this blocker; these numbers remain the
+historical observation that routed that work.
 
 Portable oracle: `scripts/build-modern-linux-container.sh` compiled and linked
 the complete i386 target, then `scripts/verify-modern-linux.sh
@@ -187,3 +189,57 @@ Result: all 21 scattered raw byte-offset expressions for the three ScreenEffect
 parameter slots were replaced by one asserted typed boundary plus role-specific
 members.  The semantic-debt router reports zero raw-member-access candidates in
 this source.  Authored/exact progress ledgers are unchanged.
+
+### Post-port exact-oracle reconciliation — 2026-08-26
+
+Scope: the 88-unit cold failure set exposed after the playable-port owner
+canonicalization; `EclExIns`, `EffectManager`, `EnemyManager`, `GameManager`,
+`Gui`, `Player`, and the shared `ZUN_MIN` source shape.  This was one bounded
+oracle-maintenance batch, not a new authored recovery lane.
+
+Observed: 74 initial failures were relocation-manifest disagreements and 14
+were function-extent disagreements.  After restoring the target source shapes,
+the remaining 79 relocation-only units all had zero non-relocation byte
+differences when relocation fields were masked.  Independent target-value plus
+COFF-addend inference for all 338 changed/new entries agreed with the existing
+canonical target bases, with no conflicts.  The two real code differences were
+`Gui::FUN_00438fe9 @ 0x00438FE9`, whose target directly reads
+`g_Supervisor.unk164`, and `AnmManager::DrawInner @ 0x004628B0`, whose float
+minimum follows the Windows `min` predicate `x < y ? x : y` and therefore has
+distinct NaN/code-generation behavior from the former equivalent-on-normal-
+values expression.
+
+Corroborated: the target-pinned fact packet for
+`GameManager::GameplaySetupThread @ 0x0043ABD7` confirms the deliberate mix of
+the cached member owner and direct `g_GameManager` accesses.  Existing mapping,
+function, global, and accepted-relocation entries corroborate the inferred
+owners.  The Player data lane identifies six callback arrays plus the mixed
+collision-callback/difficulty-name table at `0x004C7E00..0x004C7F24`.
+
+Inference: target-only ECL extension storage remains directly named in VC7
+translation units, while TU-local `TH08_MODERN_PORT` bridges route the same
+logical state through `Background` in the portable build.  The target can clear
+the adjacent `g_EclManager` and call-parameter storage with one typed `memset`;
+the portable build uses two clears because its linker does not promise that
+adjacency.  `GameManagerFlags::playerDeathDissolveMode` is a two-bit state at
+bits 7..8; its gameplay role is supported by the alternate death-dissolve path,
+while the individual values remain unknown.
+
+Layout: existing assertions continue to pin the ECL barrier VM offsets and
+manager sizes.  No class size, field width, calling convention, or vtable order
+changed.  Six target-backed Player table owners were added to the global
+ledger; `config/claims.csv` remains header-only.
+
+VC7 oracle: affected-object replay passed **238 / 238** after the cold build.
+The required non-reuse command `verify-exact-units.py --all --json` cleared and
+rebuilt all 75 configured objects and passed **1,105 / 1,105** with no failures.
+The normal VC7 production image also linked successfully.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiled and linked
+the complete i386 target.  `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 and all
+fixed target-owned layout symbols.
+
+Result: the branch-baseline blocker is closed without weakening a comparison.
+The manifest now records the evidence-backed semantic owners/addends emitted by
+the shared source, while all configured accepted target bytes remain exact.

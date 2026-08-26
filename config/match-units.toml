@@ -242,8 +242,9 @@ size = 0xA
 [[units.relocations]]
 offset = 0x4
 type = "DIR32"
-symbol = "?g_ResourceReloadEnabled@th08@@3HA"
-target = 0x017CE8BC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x164
 
 [[units]]
 name = "resource-reload-disabled"
@@ -268,8 +269,9 @@ size = 0x55
 [[units.relocations]]
 offset = 0x4
 type = "DIR32"
-symbol = "?g_PlayerCalcChain@th08@@3PAVChainElem@1@A"
-target = 0x018B8A08
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2B10
 
 [[units.relocations]]
 offset = 0xA
@@ -286,14 +288,16 @@ target = 0x0043CF10
 [[units.relocations]]
 offset = 0x15
 type = "DIR32"
-symbol = "?g_PlayerCalcChain@th08@@3PAVChainElem@1@A"
-target = 0x018B8A08
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2B10
 
 [[units.relocations]]
 offset = 0x1F
 type = "DIR32"
-symbol = "?g_PlayerDrawChainHighPrio@th08@@3PAVChainElem@1@A"
-target = 0x018B8A0C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2B14
 
 [[units.relocations]]
 offset = 0x25
@@ -310,14 +314,16 @@ target = 0x0043CF10
 [[units.relocations]]
 offset = 0x30
 type = "DIR32"
-symbol = "?g_PlayerDrawChainHighPrio@th08@@3PAVChainElem@1@A"
-target = 0x018B8A0C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2B14
 
 [[units.relocations]]
 offset = 0x3A
 type = "DIR32"
-symbol = "?g_PlayerDrawChainLowPrio@th08@@3PAVChainElem@1@A"
-target = 0x018B8A10
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2B18
 
 [[units.relocations]]
 offset = 0x40
@@ -334,8 +340,9 @@ target = 0x0043CF10
 [[units.relocations]]
 offset = 0x4B
 type = "DIR32"
-symbol = "?g_PlayerDrawChainLowPrio@th08@@3PAVChainElem@1@A"
-target = 0x018B8A10
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2B18
 
 [[units]]
 name = "player-register-chain"
@@ -546,14 +553,16 @@ target = 0x00422BB0
 [[units.relocations]]
 offset = 0x59
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
 offset = 0x61
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
 offset = 0x67
@@ -570,20 +579,23 @@ target = 0x0040B8A0
 [[units.relocations]]
 offset = 0x72
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
 offset = 0x7C
 type = "DIR32"
-symbol = "?g_PlayerSecondaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B8970
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A78
 
 [[units.relocations]]
 offset = 0x85
 type = "DIR32"
-symbol = "?g_PlayerSecondaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B8970
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A78
 
 [[units.relocations]]
 offset = 0x8B
@@ -600,8 +612,9 @@ target = 0x0040B8A0
 [[units.relocations]]
 offset = 0x96
 type = "DIR32"
-symbol = "?g_PlayerSecondaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B8970
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A78
 
 [[units]]
 name = "ascii-manager-set-gauge-interrupt"
@@ -690,8 +703,9 @@ size = 0xA
 [[units.relocations]]
 offset = 0x4
 type = "DIR32"
-symbol = "?g_BulletManagerAnmReleaseRequired@th08@@3HA"
-target = 0x017CE8C0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x168
 
 [[units]]
 name = "gui-anm-release-required"
@@ -703,8 +717,9 @@ size = 0xA
 [[units.relocations]]
 offset = 0x4
 type = "DIR32"
-symbol = "?g_GuiAnmReleaseRequired@th08@@3HA"
-target = 0x017CE8C4
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x16C
 
 [[units]]
 name = "gui-deleted-callback"
@@ -1545,8 +1560,9 @@ size = 0xA
 [[units.relocations]]
 offset = 0x4
 type = "DIR32"
-symbol = "?g_BulletManagerAnmReleaseRequired@th08@@3HA"
-target = 0x017CE8C0
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x168
 
 [[units]]
 name = "bullet-manager-deleted-callback"
@@ -4186,6 +4202,12 @@ symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
 target = 0x0041F420
 
 [[units.relocations]]
+offset = 0x4450
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
 offset = 0x4455
 type = "REL32"
 symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
@@ -4416,6 +4438,12 @@ offset = 0x4A55
 type = "REL32"
 symbol = "?ResolveInt@EclOperands@th08@@YIHPAUEnemyOverlay@12@H@Z"
 target = 0x0041F420
+
+[[units.relocations]]
+offset = 0x4AA5
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
 
 [[units.relocations]]
 offset = 0x4AAA
@@ -6976,8 +7004,9 @@ addend = 0x3DE2C
 [[units.relocations]]
 offset = 0x231
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x247
@@ -8480,8 +8509,9 @@ addend = 0x3DE2C
 [[units.relocations]]
 offset = 0x256
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x283
@@ -9620,6 +9650,7 @@ symbol = "?OnUpdate@EnemyManagerUpdateOverlay@th08@@QAEHXZ"
 target_address = 0x0042C660
 size = 0x1836
 compare_size = 0x1846
+
 [[units.relocations]]
 offset = 0x1C
 type = "REL32"
@@ -9781,14 +9812,16 @@ target = 0x0042A8A0
 [[units.relocations]]
 offset = 0x231
 type = "DIR32"
-symbol = "?g_EnemyTrackedEnemy@th08@@3PAUEnemy@1@A"
-target = 0x018B89B4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2ABC
 
 [[units.relocations]]
 offset = 0x23C
 type = "DIR32"
-symbol = "?g_EnemyTrackedEnemy@th08@@3PAUEnemy@1@A"
-target = 0x018B89B4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2ABC
 
 [[units.relocations]]
 offset = 0x27B
@@ -10073,14 +10106,16 @@ target = 0x00451670
 [[units.relocations]]
 offset = 0xAD8
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0xAE4
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0xAF5
@@ -10213,8 +10248,9 @@ addend = 0x2B4
 [[units.relocations]]
 offset = 0xD31
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateTrackedPosition@th08@@3UD3DXVECTOR3@@A"
-target = 0x018B899C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2AA4
 
 [[units.relocations]]
 offset = 0xD36
@@ -10238,8 +10274,9 @@ target = 0x004090D0
 [[units.relocations]]
 offset = 0xD78
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateTrackedPositionValid@th08@@3HA"
-target = 0x018B89B8
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2AC0
 
 [[units.relocations]]
 offset = 0xD84
@@ -10256,43 +10293,49 @@ target = 0x004031E0
 [[units.relocations]]
 offset = 0xDB0
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateTrackedPosition@th08@@3UD3DXVECTOR3@@A"
-target = 0x018B899C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2AA4
 
 [[units.relocations]]
 offset = 0xDB9
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateTrackedPosition@th08@@3UD3DXVECTOR3@@A"
-target = 0x018B899C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2AA8
 
 [[units.relocations]]
 offset = 0xDC1
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateTrackedPosition@th08@@3UD3DXVECTOR3@@A"
-target = 0x018B899C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2AAC
 
 [[units.relocations]]
 offset = 0xDC7
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateTrackedPositionValid@th08@@3HA"
-target = 0x018B89B8
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2AC0
 
 [[units.relocations]]
 offset = 0xDD1
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateTrackedPositionValid@th08@@3HA"
-target = 0x018B89B8
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2AC0
 
 [[units.relocations]]
 offset = 0xDD9
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateTrackedPosition@th08@@3UD3DXVECTOR3@@A"
-target = 0x018B899C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2AA4
 
 [[units.relocations]]
 offset = 0xDDE
 type = "REL32"
-symbol = "??BD3DXVECTOR3@@QAEPAMXZ"
+symbol = "??BFloat3@th08@@QAEPAMXZ"
 target = 0x0040B460
 
 [[units.relocations]]
@@ -10304,20 +10347,23 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 0xE0C
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateTrackedPosition@th08@@3UD3DXVECTOR3@@A"
-target = 0x018B899C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2AA4
 
 [[units.relocations]]
 offset = 0xE14
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateTrackedPosition@th08@@3UD3DXVECTOR3@@A"
-target = 0x018B899C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2AA8
 
 [[units.relocations]]
 offset = 0xE1D
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdateTrackedPosition@th08@@3UD3DXVECTOR3@@A"
-target = 0x018B899C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2AAC
 
 [[units.relocations]]
 offset = 0xE2C
@@ -10347,20 +10393,23 @@ target = 0x0041FD20
 [[units.relocations]]
 offset = 0xE54
 type = "DIR32"
-symbol = "?g_EnemyTrackedEnemy@th08@@3PAUEnemy@1@A"
-target = 0x018B89B4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2ABC
 
 [[units.relocations]]
 offset = 0xE5C
 type = "DIR32"
-symbol = "?g_EnemyTrackedEnemy@th08@@3PAUEnemy@1@A"
-target = 0x018B89B4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2ABC
 
 [[units.relocations]]
 offset = 0xE7B
 type = "DIR32"
-symbol = "?g_EnemyTrackedEnemy@th08@@3PAUEnemy@1@A"
-target = 0x018B89B4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2ABC
 
 [[units.relocations]]
 offset = 0xF0A
@@ -10497,8 +10546,9 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x1166
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdatePlayerTimer@th08@@3UZunTimer@1@A"
-target = 0x018B89EC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2AF4
 
 [[units.relocations]]
 offset = 0x116B
@@ -54670,14 +54720,16 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0x1A
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
 offset = 0x5A
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
 offset = 0x68
@@ -54858,6 +54910,7 @@ offset = 0x1CE
 type = "REL32"
 symbol = "?UpdateAntiTamper@GameManager@th08@@QAEXXZ"
 target = 0x00406E50
+
 [[units]]
 name = "item-collect-point-small"
 object = "build/ItemManager.obj"
@@ -54874,14 +54927,16 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0x1A
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
 offset = 0x5A
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
 offset = 0x68
@@ -54930,7 +54985,6 @@ offset = 0x132
 type = "REL32"
 symbol = "?AddScore@GameManager@th08@@QAEXH@Z"
 target = 0x004181F0
-
 
 [[units]]
 name = "item-manager-constructor"
@@ -55491,10 +55545,11 @@ target_address = 0x00438FE9
 size = 0x0A
 
 [[units.relocations]]
-offset = 0x04
+offset = 0x4
 type = "DIR32"
-symbol = "?g_GuiResourceReloadEnabled@th08@@3HA"
-target = 0x017CE8BC
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x164
 
 [[units]]
 name = "gui-register-chain"
@@ -57406,14 +57461,16 @@ size = 0x1C3
 [[units.relocations]]
 offset = 0x24
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x3C
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0x66
@@ -57436,8 +57493,9 @@ target = 0x004B4300
 [[units.relocations]]
 offset = 0x86
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0xB8
@@ -57607,7 +57665,7 @@ target = 0x00429E00
 [[units.relocations]]
 offset = 0x1D
 type = "DIR32"
-symbol = "?OnUpdate@EnemyManager@th08@@SI?AW4ChainCallbackResult@2@XZ"
+symbol = "?OnUpdate@EnemyManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
 target = 0x0042C660
 
 [[units.relocations]]
@@ -57753,7 +57811,6 @@ offset = 0xB8
 type = "REL32"
 symbol = "?AddToDrawChain@Chain@th08@@QAEHPAVChainElem@2@H@Z"
 target = 0x0043C960
-
 
 [[units]]
 name = "background-register-chain"
@@ -58536,6 +58593,12 @@ offset = 0x72
 type = "REL32"
 symbol = "?IsDisableResourceReload@th08@@YIIXZ"
 target = 0x0040B900
+
+[[units.relocations]]
+offset = 0x7B
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
 
 [[units.relocations]]
 offset = 0x80
@@ -59482,8 +59545,9 @@ target = 0x00449FF0
 [[units.relocations]]
 offset = 0xA1
 type = "DIR32"
-symbol = "?g_BulletCancelItemType@th08@@3HA"
-target = 0x018B8988
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A90
 
 [[units.relocations]]
 offset = 0xB1
@@ -60356,6 +60420,12 @@ symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
+offset = 0x99
+type = "DIR32"
+symbol = "?g_StageEnemyAnms@th08@@3PAPBDA"
+target = 0x004C7364
+
+[[units.relocations]]
 offset = 0xA2
 type = "DIR32"
 symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
@@ -60372,6 +60442,12 @@ offset = 0xCD
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
+
+[[units.relocations]]
+offset = 0xD4
+type = "DIR32"
+symbol = "?g_SpellEnemyAnms@th08@@3PAPBDA"
+target = 0x004C7388
 
 [[units.relocations]]
 offset = 0xDD
@@ -60404,6 +60480,12 @@ symbol = "?IsDisableResourceReload@th08@@YIIXZ"
 target = 0x0040B900
 
 [[units.relocations]]
+offset = 0x130
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
 offset = 0x138
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
@@ -60414,6 +60496,18 @@ offset = 0x147
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
+
+[[units.relocations]]
+offset = 0x14E
+type = "DIR32"
+symbol = "?g_StageEclFiles@th08@@3PAPBDA"
+target = 0x004C73CC
+
+[[units.relocations]]
+offset = 0x154
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
 
 [[units.relocations]]
 offset = 0x159
@@ -60434,6 +60528,18 @@ symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
+offset = 0x184
+type = "DIR32"
+symbol = "?g_SpellEclFiles@th08@@3PAPBDA"
+target = 0x004C7418
+
+[[units.relocations]]
+offset = 0x18A
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
 offset = 0x18F
 type = "REL32"
 symbol = "?Load@EclManager@th08@@QAE?AW4ZunResult@@PAD@Z"
@@ -60446,10 +60552,54 @@ symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units.relocations]]
+offset = 0x1AA
+type = "DIR32"
+symbol = "?g_StageSpellEclFiles@th08@@3PAPBDA"
+target = 0x004C73F0
+
+[[units.relocations]]
+offset = 0x1B0
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
 offset = 0x1B5
 type = "REL32"
 symbol = "?Load@EclManager@th08@@QAE?AW4ZunResult@@PAD@Z"
 target = 0x00418330
+
+[[units.relocations]]
+offset = 0x1C9
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
+offset = 0x1D2
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
+addend = 0x4
+
+[[units.relocations]]
+offset = 0x1E1
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
+offset = 0x1EB
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
+offset = 0x1F4
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
+addend = 0x4
 
 [[units.relocations]]
 offset = 0x1FB
@@ -60584,6 +60734,20 @@ offset = 0x18
 type = "REL32"
 symbol = "??0D3DXVECTOR3@@QAE@XZ"
 target = 0x0040B460
+
+[[units.relocations]]
+offset = 0x1F
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBB2
+
+[[units.relocations]]
+offset = 0x2E
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBB3
 
 [[units.relocations]]
 offset = 0x4C
@@ -62336,12 +62500,26 @@ symbol = "?FUN_00439916@th08@@YIHH@Z"
 target_address = 0x00439916
 size = 0x4B
 
+[[units.relocations]]
+offset = 0x1E
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBB0
+
 [[units]]
 name = "fun-00439961"
 object = "build/GameManager.obj"
 symbol = "?FUN_00439961@th08@@YIHH@Z"
 target_address = 0x00439961
 size = 0x4B
+
+[[units.relocations]]
+offset = 0x1E
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBB0
 
 [[units]]
 name = "player-on-draw-low-prio"
@@ -62407,14 +62585,16 @@ target = 0x0040EC00
 [[units.relocations]]
 offset = 0x75
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x8D
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0xDF
@@ -62427,12 +62607,20 @@ offset = 0xE4
 type = "REL32"
 symbol = "?DrawPlayerBullet@AnmManager@th08@@QAEXPAUAnmVm@2@@Z"
 target = 0x0045E960
+
 [[units]]
 name = "player-fun-00451150"
 object = "build/Player.obj"
 symbol = "?FUN_00451150@Player@th08@@QAEXXZ"
 target_address = 0x00451150
 size = 0x194
+
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 0x9A
@@ -62512,6 +62700,27 @@ offset = 0x4D
 type = "REL32"
 symbol = "?FUN_0040d3d0@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
+
+[[units.relocations]]
+offset = 0x61
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
+
+[[units.relocations]]
+offset = 0x6D
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
+
+[[units.relocations]]
+offset = 0x79
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x8C
@@ -62695,6 +62904,20 @@ object = "build/Player.obj"
 symbol = "?FUN_00450f60@Player@th08@@QAIXH@Z"
 
 [[units.relocations]]
+offset = 0x4C
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
+
+[[units.relocations]]
+offset = 0x68
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
+
+[[units.relocations]]
 offset = 0x7D
 type = "REL32"
 symbol = "??PZunTimer@th08@@QAEIH@Z"
@@ -62732,17 +62955,25 @@ symbol = "?FUN_004512f0@Player@th08@@QAEXXZ"
 target = 0x004512F0
 
 [[units.relocations]]
+offset = 0x37
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBB3
+
+[[units.relocations]]
 offset = 0x44
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x5C
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
-addend = 0x4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0x85
@@ -62772,15 +63003,16 @@ target = 0x0040EC00
 [[units.relocations]]
 offset = 0x75
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x8D
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
-addend = 0x4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0xDF
@@ -62977,6 +63209,13 @@ symbol = "?SetBlendModeNormal@AnmVmBase@th08@@QAEXXZ"
 target = 0x0044E120
 
 [[units.relocations]]
+offset = 0x103
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
+
+[[units.relocations]]
 offset = 0x120
 type = "REL32"
 symbol = "??4ZunTimer@th08@@QAEXH@Z"
@@ -62985,8 +63224,9 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x129
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units]]
 name = "player-load-sht-file"
@@ -63000,6 +63240,30 @@ offset = 0x14
 type = "REL32"
 symbol = "?OpenFile@FileSystem@th08@@YIPAEPBDPAHH@Z"
 target = 0x0043E660
+
+[[units.relocations]]
+offset = 0x93
+type = "DIR32"
+symbol = "?g_PlayerShotUpdateCallbacks@th08@@3PAP6IHPAUPlayer@1@PAUPlayerShot@1@HPAE@ZA"
+target = 0x004C7EE0
+
+[[units.relocations]]
+offset = 0xA6
+type = "DIR32"
+symbol = "?g_PlayerShotRenderCallbacks@th08@@3PAP6IHPAUPlayer@1@PAUPlayerShot@1@@ZA"
+target = 0x004C7F04
+
+[[units.relocations]]
+offset = 0xB9
+type = "DIR32"
+symbol = "?g_PlayerShotTimerCallbacks@th08@@3PAP6IHPAUPlayer@1@PAUPlayerShot@1@@ZA"
+target = 0x004C7F1C
+
+[[units.relocations]]
+offset = 0xCC
+type = "DIR32"
+symbol = "?g_PlayerShotCollisionOrDifficultyTable@th08@@3PAPAXA"
+target = 0x004C7F24
 
 [[units]]
 name = "player-fun-0044fdd0"
@@ -63020,6 +63284,13 @@ object = "build/Player.obj"
 symbol = "?FUN_0044fe20@Player@th08@@QAIHPAEH0@Z"
 target_address = 0x0044FE20
 size = 0x177
+
+[[units.relocations]]
+offset = 0x2A
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 0xAE
@@ -65761,6 +66032,13 @@ symbol = "??0D3DXVECTOR3@@QAE@XZ"
 target = 0x0040B460
 
 [[units.relocations]]
+offset = 0x34
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
+
+[[units.relocations]]
 offset = 0x72
 type = "REL32"
 symbol = "??0Float3@th08@@QAE@MMM@Z"
@@ -66571,6 +66849,7 @@ symbol = "$L*"
 target = 0x004085A6
 
 # th08::Spellcard::Spellcard
+
 [[units]]
 name = "spellcard-constructor"
 object = "build/SpellCard.obj"
@@ -67129,6 +67408,13 @@ symbol = "__real@3f800000"
 target = 0x004B4338
 
 [[units.relocations]]
+offset = 0x315
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
+
+[[units.relocations]]
 offset = 0x31A
 type = "REL32"
 symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
@@ -67183,6 +67469,13 @@ symbol = "__real@42000000"
 target = 0x004B42CC
 
 [[units.relocations]]
+offset = 0x3FF
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
+
+[[units.relocations]]
 offset = 0x404
 type = "REL32"
 symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
@@ -67207,6 +67500,13 @@ symbol = "__real@40e00000"
 target = 0x004B42F4
 
 [[units.relocations]]
+offset = 0x47A
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
+
+[[units.relocations]]
 offset = 0x47F
 type = "REL32"
 symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
@@ -67229,6 +67529,13 @@ offset = 0x4B9
 type = "DIR32"
 symbol = "__real@40e00000"
 target = 0x004B42F4
+
+[[units.relocations]]
+offset = 0x4D2
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
 
 [[units.relocations]]
 offset = 0x4D7
@@ -67279,6 +67586,13 @@ symbol = "__real@41500000"
 target = 0x004B4804
 
 [[units.relocations]]
+offset = 0x580
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
+
+[[units.relocations]]
 offset = 0x585
 type = "REL32"
 symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
@@ -67303,6 +67617,13 @@ symbol = "__real@40e00000"
 target = 0x004B42F4
 
 [[units.relocations]]
+offset = 0x5FB
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
+
+[[units.relocations]]
 offset = 0x600
 type = "REL32"
 symbol = "?GetSprite@AnmLoaded@th08@@QAEPAUAnmLoadedSprite@2@H@Z"
@@ -67325,6 +67646,13 @@ offset = 0x63A
 type = "DIR32"
 symbol = "__real@40e00000"
 target = 0x004B42F4
+
+[[units.relocations]]
+offset = 0x65B
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
 
 [[units.relocations]]
 offset = 0x660
@@ -67357,6 +67685,7 @@ symbol = "?SetMixColorDefault@AnmManager@th08@@QAEXXZ"
 target = 0x0040BAB0
 
 # Ledger name: th08::GameManager::IsSpellNumberInRange
+
 [[units]]
 name = "gamemanager-is-spell-number-in-range"
 object = "build/SpellCard.obj"
@@ -68010,6 +68339,12 @@ symbol = "?FUN_0042b2f0@Enemy@th08@@QAEXXZ"
 target = 0x0042B2F0
 
 [[units.relocations]]
+offset = 0x21C
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
 offset = 0x221
 type = "REL32"
 symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
@@ -68017,6 +68352,7 @@ target = 0x00418450
 
 # Ledger name: th08::BulletManager::DespawnBullets
 # Boundary evidence: target has one prologue at 0x00430AA0 and one ret 0x8 at 0x00430D28; VC7 COFF auxiliary extent is exactly 0x28B.
+
 [[units]]
 name = "bullet-manager-despawn-bullets"
 object = "build/BulletManager.obj"
@@ -68045,8 +68381,9 @@ target = 0x00449FF0
 [[units.relocations]]
 offset = 0x86
 type = "DIR32"
-symbol = "?g_BulletCancelItemType@th08@@3HA"
-target = 0x018B8988
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A90
 
 [[units.relocations]]
 offset = 0x96
@@ -68134,6 +68471,7 @@ target = 0x004B42CC
 
 # Ledger name: th08::Spellcard::EndSpell
 # Evidence: VC7 COFF auxiliary extent is 0x91B and the target has one void __thiscall body from 0x004161B0 through 0x00416ACA.
+
 [[units]]
 name = "spellcard-end-spell"
 object = "build/SpellCard.obj"
@@ -70267,10 +70605,24 @@ symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
 target = 0x004069F0
 
 [[units.relocations]]
+offset = 0xAE2
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x19C
+
+[[units.relocations]]
 offset = 0xAE7
 type = "REL32"
 symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
 target = 0x004069F0
+
+[[units.relocations]]
+offset = 0xAF8
+type = "DIR32"
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x19C
 
 [[units.relocations]]
 offset = 0xAFD
@@ -70279,10 +70631,24 @@ symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
 target = 0x004069F0
 
 [[units.relocations]]
+offset = 0xB0F
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
+
+[[units.relocations]]
 offset = 0xB14
 type = "REL32"
 symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
 target = 0x004069F0
+
+[[units.relocations]]
+offset = 0xB26
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
 
 [[units.relocations]]
 offset = 0xB2B
@@ -70291,10 +70657,24 @@ symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
 target = 0x004069F0
 
 [[units.relocations]]
+offset = 0xB3C
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
+
+[[units.relocations]]
 offset = 0xB41
 type = "REL32"
 symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
 target = 0x004069F0
+
+[[units.relocations]]
+offset = 0xB53
+type = "DIR32"
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
 
 [[units.relocations]]
 offset = 0xB58
@@ -70762,26 +71142,30 @@ target = 0x004E4B64
 [[units.relocations]]
 offset = 0x86
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm1@th08@@3PAUAnmLoaded@1@A"
-target = 0x004ECC9C
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x262C
 
 [[units.relocations]]
 offset = 0x8E
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm2@th08@@3PAUAnmLoaded@1@A"
-target = 0x004ECCA0
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x2630
 
 [[units.relocations]]
 offset = 0x93
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm1@th08@@3PAUAnmLoaded@1@A"
-target = 0x004ECC9C
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x262C
 
 [[units.relocations]]
 offset = 0x9B
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm2@th08@@3PAUAnmLoaded@1@A"
-target = 0x004ECCA0
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x2630
 
 [[units.relocations]]
 offset = 0xA1
@@ -70798,26 +71182,30 @@ target = 0x00437F5C
 [[units.relocations]]
 offset = 0xB4
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm1@th08@@3PAUAnmLoaded@1@A"
-target = 0x004ECC9C
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x262C
 
 [[units.relocations]]
 offset = 0xBC
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm2@th08@@3PAUAnmLoaded@1@A"
-target = 0x004ECCA0
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x2630
 
 [[units.relocations]]
 offset = 0xC1
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm1@th08@@3PAUAnmLoaded@1@A"
-target = 0x004ECC9C
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x262C
 
 [[units.relocations]]
 offset = 0xC9
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm2@th08@@3PAUAnmLoaded@1@A"
-target = 0x004ECCA0
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x2630
 
 [[units.relocations]]
 offset = 0xCF
@@ -71182,10 +71570,11 @@ symbol = "$L69998"
 target = 4412304
 
 [[units.relocations]]
-offset = 551
+offset = 0x227
 type = "DIR32"
-symbol = "?g_GuiPortraitAnmPrimary@th08@@3PAUAnmLoaded@1@A"
-target = 5164180
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x2624
 
 [[units.relocations]]
 offset = 556
@@ -71194,10 +71583,11 @@ symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
 target = 4580400
 
 [[units.relocations]]
-offset = 589
+offset = 0x24D
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm0@th08@@3PAUAnmLoaded@1@A"
-target = 5164184
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x2628
 
 [[units.relocations]]
 offset = 594
@@ -71206,10 +71596,11 @@ symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
 target = 4580400
 
 [[units.relocations]]
-offset = 627
+offset = 0x273
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm1@th08@@3PAUAnmLoaded@1@A"
-target = 5164188
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x262C
 
 [[units.relocations]]
 offset = 632
@@ -71218,10 +71609,11 @@ symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
 target = 4580400
 
 [[units.relocations]]
-offset = 665
+offset = 0x299
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm2@th08@@3PAUAnmLoaded@1@A"
-target = 5164192
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x2630
 
 [[units.relocations]]
 offset = 670
@@ -71230,10 +71622,11 @@ symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
 target = 4580400
 
 [[units.relocations]]
-offset = 1036
+offset = 0x40C
 type = "DIR32"
-symbol = "?g_GuiPortraitAnmPrimary@th08@@3PAUAnmLoaded@1@A"
-target = 5164180
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x2624
 
 [[units.relocations]]
 offset = 1041
@@ -71242,10 +71635,11 @@ symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
 target = 4580400
 
 [[units.relocations]]
-offset = 1067
+offset = 0x42B
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm0@th08@@3PAUAnmLoaded@1@A"
-target = 5164184
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x2628
 
 [[units.relocations]]
 offset = 1072
@@ -71254,10 +71648,11 @@ symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
 target = 4580400
 
 [[units.relocations]]
-offset = 1098
+offset = 0x44A
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm1@th08@@3PAUAnmLoaded@1@A"
-target = 5164188
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x262C
 
 [[units.relocations]]
 offset = 1103
@@ -71266,10 +71661,11 @@ symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
 target = 4580400
 
 [[units.relocations]]
-offset = 1129
+offset = 0x469
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm2@th08@@3PAUAnmLoaded@1@A"
-target = 5164192
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x2630
 
 [[units.relocations]]
 offset = 1134
@@ -71278,10 +71674,11 @@ symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
 target = 4580400
 
 [[units.relocations]]
-offset = 1266
+offset = 0x4F2
 type = "DIR32"
-symbol = "?g_GuiPortraitAnmPrimary@th08@@3PAUAnmLoaded@1@A"
-target = 5164180
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x2624
 
 [[units.relocations]]
 offset = 1271
@@ -71290,10 +71687,11 @@ symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
 target = 4221424
 
 [[units.relocations]]
-offset = 1299
+offset = 0x513
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm0@th08@@3PAUAnmLoaded@1@A"
-target = 5164184
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x2628
 
 [[units.relocations]]
 offset = 1304
@@ -71302,10 +71700,11 @@ symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
 target = 4221424
 
 [[units.relocations]]
-offset = 1332
+offset = 0x534
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm1@th08@@3PAUAnmLoaded@1@A"
-target = 5164188
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x262C
 
 [[units.relocations]]
 offset = 1337
@@ -71314,10 +71713,11 @@ symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
 target = 4221424
 
 [[units.relocations]]
-offset = 1365
+offset = 0x555
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm2@th08@@3PAUAnmLoaded@1@A"
-target = 5164192
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x2630
 
 [[units.relocations]]
 offset = 1370
@@ -71338,10 +71738,11 @@ symbol = "__real@c2e00000"
 target = 4934860
 
 [[units.relocations]]
-offset = 1573
+offset = 0x625
 type = "DIR32"
-symbol = "?g_GuiPortraitAnmPrimary@th08@@3PAUAnmLoaded@1@A"
-target = 5164180
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x2624
 
 [[units.relocations]]
 offset = 1578
@@ -71350,10 +71751,11 @@ symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
 target = 4580400
 
 [[units.relocations]]
-offset = 1606
+offset = 0x646
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm0@th08@@3PAUAnmLoaded@1@A"
-target = 5164184
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x2628
 
 [[units.relocations]]
 offset = 1611
@@ -71362,10 +71764,11 @@ symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
 target = 4580400
 
 [[units.relocations]]
-offset = 1639
+offset = 0x667
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm1@th08@@3PAUAnmLoaded@1@A"
-target = 5164188
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x262C
 
 [[units.relocations]]
 offset = 1644
@@ -71374,10 +71777,11 @@ symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
 target = 4580400
 
 [[units.relocations]]
-offset = 1672
+offset = 0x688
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm2@th08@@3PAUAnmLoaded@1@A"
-target = 5164192
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x2630
 
 [[units.relocations]]
 offset = 1677
@@ -71434,10 +71838,11 @@ symbol = "?DrawTextLeft@AnmManager@th08@@QAAXPAUAnmVm@2@KKPBDZZ"
 target = 4613040
 
 [[units.relocations]]
-offset = 2044
+offset = 0x7FC
 type = "DIR32"
-symbol = "?g_GuiMessageAnm@th08@@3PAUAnmLoaded@1@A"
-target = 24963316
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x19C
 
 [[units.relocations]]
 offset = 2049
@@ -71482,10 +71887,11 @@ symbol = "?DrawTextLeft@AnmManager@th08@@QAAXPAUAnmVm@2@KKPBDZZ"
 target = 4613040
 
 [[units.relocations]]
-offset = 2455
+offset = 0x997
 type = "DIR32"
-symbol = "?g_GuiMessageAnm@th08@@3PAUAnmLoaded@1@A"
-target = 24963316
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x19C
 
 [[units.relocations]]
 offset = 2460
@@ -71512,10 +71918,11 @@ symbol = "?DrawTextLeft@AnmManager@th08@@QAAXPAUAnmVm@2@KKPBDZZ"
 target = 4613040
 
 [[units.relocations]]
-offset = 2783
+offset = 0xADF
 type = "DIR32"
-symbol = "?g_GuiMessageAnm@th08@@3PAUAnmLoaded@1@A"
-target = 24963316
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x19C
 
 [[units.relocations]]
 offset = 2788
@@ -71542,10 +71949,11 @@ symbol = "?DrawTextLeft@AnmManager@th08@@QAAXPAUAnmVm@2@KKPBDZZ"
 target = 4613040
 
 [[units.relocations]]
-offset = 2963
+offset = 0xB93
 type = "DIR32"
-symbol = "?g_GuiMessageAnm@th08@@3PAUAnmLoaded@1@A"
-target = 24963316
+symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
+target = 0x017CE758
+addend = 0x19C
 
 [[units.relocations]]
 offset = 2968
@@ -71800,10 +72208,11 @@ symbol = "?PlayAudio@Supervisor@th08@@QAE?AW4ZunResult@@PADH@Z"
 target = 4488993
 
 [[units.relocations]]
-offset = 4167
+offset = 0x1047
 type = "DIR32"
-symbol = "?g_GuiPortraitAnm1@th08@@3PAUAnmLoaded@1@A"
-target = 5164188
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
+addend = 0x262C
 
 [[units.relocations]]
 offset = 4172
@@ -71938,10 +72347,11 @@ symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 23131400
 
 [[units.relocations]]
-offset = 4527
+offset = 0x11AF
 type = "DIR32"
-symbol = "?g_GuiResultAnm0@th08@@3PAUAnmLoaded@1@A"
-target = 5066920
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
 
 [[units.relocations]]
 offset = 4532
@@ -71950,10 +72360,11 @@ symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
 target = 4221424
 
 [[units.relocations]]
-offset = 4568
+offset = 0x11D8
 type = "DIR32"
-symbol = "?g_GuiResultAnm0@th08@@3PAUAnmLoaded@1@A"
-target = 5066920
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
 
 [[units.relocations]]
 offset = 4573
@@ -71998,10 +72409,11 @@ symbol = "?SetAndExecuteScriptIdx@AnmLoaded@th08@@QAEXPAUAnmVm@2@H@Z"
 target = 4221424
 
 [[units.relocations]]
-offset = 4691
+offset = 0x1253
 type = "DIR32"
-symbol = "?g_GuiResultAnm1@th08@@3PAUAnmLoaded@1@A"
-target = 5066924
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x828C
 
 [[units.relocations]]
 offset = 4696
@@ -72046,10 +72458,11 @@ symbol = "?SetTextureCaptureParams@AnmManager@th08@@QAE?AW4ZunResult@@IIIIIIIII@
 target = 4221488
 
 [[units.relocations]]
-offset = 4872
+offset = 0x1308
 type = "DIR32"
-symbol = "?g_GuiResultAnm1@th08@@3PAUAnmLoaded@1@A"
-target = 5066924
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x828C
 
 [[units.relocations]]
 offset = 4877
@@ -75393,10 +75806,11 @@ symbol = "__real@43c00000"
 target = 4932904
 
 [[units.relocations]]
-offset = 142
+offset = 0x8E
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 23384796
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 148
@@ -75417,10 +75831,11 @@ symbol = "__real@43c00000"
 target = 4932904
 
 [[units.relocations]]
-offset = 190
+offset = 0xBE
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 23384796
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 196
@@ -75447,10 +75862,11 @@ symbol = "__real@43c00000"
 target = 4932904
 
 [[units.relocations]]
-offset = 247
+offset = 0xF7
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 23384796
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 253
@@ -75471,10 +75887,11 @@ symbol = "__real@43c00000"
 target = 4932904
 
 [[units.relocations]]
-offset = 298
+offset = 0x12A
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 23384796
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 304
@@ -78718,10 +79135,11 @@ symbol = "??BFloat3@th08@@QAEPAMXZ"
 target = 0x0040B460
 
 [[units.relocations]]
-offset = 124
+offset = 0x7C
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 143
@@ -78736,11 +79154,11 @@ symbol = "??BFloat3@th08@@QAEPAMXZ"
 target = 0x0040B460
 
 [[units.relocations]]
-offset = 168
+offset = 0xA8
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
-addend = 4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 188
@@ -78816,17 +79234,18 @@ target_address = 0x00428100
 size = 219
 
 [[units.relocations]]
-offset = 99
+offset = 0x63
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
-offset = 123
+offset = 0x7B
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
-addend = 4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 161
@@ -78852,6 +79271,13 @@ object = "build/objdiff/reimpl/BulletManager.obj"
 symbol = "th08::BulletManager::OnDraw"
 target_address = 0x00432B50
 size = 969
+
+[[units.relocations]]
+offset = 0xA
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 31
@@ -78920,17 +79346,18 @@ symbol = "??BFloat3@th08@@QAEPAMXZ"
 target = 0x0040B460
 
 [[units.relocations]]
-offset = 323
+offset = 0x143
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
-offset = 347
+offset = 0x15B
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
-addend = 4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 372
@@ -79017,17 +79444,18 @@ symbol = "__real@41200000"
 target = 0x004B4390
 
 [[units.relocations]]
-offset = 785
+offset = 0x311
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
-offset = 809
+offset = 0x329
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
-addend = 4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 839
@@ -79058,6 +79486,13 @@ offset = 929
 type = "REL32"
 symbol = "?DrawUnkTypeEffects@EffectManager@th08@@QAEHXZ"
 target = 0x00428100
+
+[[units.relocations]]
+offset = 0x3A7
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 951
@@ -79332,10 +79767,11 @@ target_address = 0x004412B0
 size = 293
 
 [[units.relocations]]
-offset = 12
+offset = 0xC
 type = "DIR32"
-symbol = "?g_ItemTimeOrbMode@th08@@3HA"
-target = 0x018B8974
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A7C
 
 [[units.relocations]]
 offset = 20
@@ -79436,10 +79872,11 @@ symbol = "?spellcard_fun_00416b10@Spellcard@th08@@QAEXH@Z"
 target = 0x00416B10
 
 [[units.relocations]]
-offset = 225
+offset = 0xE1
 type = "DIR32"
-symbol = "?g_ItemTimeOrbTimerStorage@th08@@3UItemTimeOrbTimerStorage@1@A"
-target = 0x018B89D4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2ADC
 
 [[units.relocations]]
 offset = 230
@@ -79525,16 +79962,18 @@ size = 1989
 compare_size = 2025
 
 [[units.relocations]]
-offset = 38
+offset = 0x26
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
-offset = 48
+offset = 0x30
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
 offset = 60
@@ -79550,16 +79989,18 @@ target = 0x017D5EF8
 addend = 3
 
 [[units.relocations]]
-offset = 90
+offset = 0x5A
 type = "DIR32"
-symbol = "?g_PlayerSecondaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B8970
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A78
 
 [[units.relocations]]
-offset = 104
+offset = 0x68
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
 offset = 125
@@ -79640,10 +80081,11 @@ symbol = "__real@00000000"
 target = 0x004B4384
 
 [[units.relocations]]
-offset = 468
+offset = 0x1D4
 type = "DIR32"
-symbol = "?g_ItemScatterTimerStorage@th08@@3UItemTimeOrbTimerStorage@1@A"
-target = 0x018B89BC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2AC4
 
 [[units.relocations]]
 offset = 473
@@ -79694,10 +80136,11 @@ symbol = "?g_Player@th08@@3UPlayer@1@A"
 target = 0x017D5EF8
 
 [[units.relocations]]
-offset = 765
+offset = 0x2FD
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
 offset = 771
@@ -79732,16 +80175,18 @@ target = 0x017D5EF8
 addend = 3
 
 [[units.relocations]]
-offset = 838
+offset = 0x346
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
-offset = 850
+offset = 0x352
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 866
@@ -79768,10 +80213,11 @@ symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
 target = 0x0044C1B0
 
 [[units.relocations]]
-offset = 912
+offset = 0x390
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
 offset = 934
@@ -79816,10 +80262,11 @@ symbol = "??YFloat3@th08@@QAEPAU01@ABU01@@Z"
 target = 0x00410A70
 
 [[units.relocations]]
-offset = 1131
+offset = 0x46B
 type = "DIR32"
-symbol = "?g_ItemPlayfieldBottom@th08@@3MA"
-target = 0x0164D2E8
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDE0
 
 [[units.relocations]]
 offset = 1137
@@ -80096,10 +80543,11 @@ target = 0x0160F428
 addend = 4
 
 [[units.relocations]]
-offset = 1688
+offset = 0x698
 type = "DIR32"
-symbol = "?g_ItemTimeOrbMode@th08@@3HA"
-target = 0x018B8974
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A7C
 
 [[units.relocations]]
 offset = 1696
@@ -80175,10 +80623,11 @@ symbol = "?PlaySoundByIdx@SoundPlayer@th08@@QAEXW4SoundIdx@2@H@Z"
 target = 0x0045D550
 
 [[units.relocations]]
-offset = 1932
+offset = 0x78C
 type = "DIR32"
-symbol = "?g_ItemTimeOrbTimerStorage@th08@@3UItemTimeOrbTimerStorage@1@A"
-target = 0x018B89D4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2ADC
 
 [[units.relocations]]
 offset = 1937
@@ -80187,10 +80636,11 @@ symbol = "??9ZunTimer@th08@@QAEIH@Z"
 target = 0x00441830
 
 [[units.relocations]]
-offset = 1948
+offset = 0x79C
 type = "DIR32"
-symbol = "?g_ItemTimeOrbTimerStorage@th08@@3UItemTimeOrbTimerStorage@1@A"
-target = 0x018B89D4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2ADC
 
 [[units.relocations]]
 offset = 1953
@@ -80199,10 +80649,11 @@ symbol = "??FZunTimer@th08@@QAEXH@Z"
 target = 0x00418110
 
 [[units.relocations]]
-offset = 1960
+offset = 0x7A8
 type = "DIR32"
-symbol = "?g_ItemTimeOrbTimerStorage@th08@@3UItemTimeOrbTimerStorage@1@A"
-target = 0x018B89D4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2ADC
 
 [[units.relocations]]
 offset = 1965
@@ -80211,10 +80662,11 @@ symbol = "??NZunTimer@th08@@QAEIH@Z"
 target = 0x0040E390
 
 [[units.relocations]]
-offset = 1976
+offset = 0x7B8
 type = "DIR32"
-symbol = "?g_ItemTimeOrbTimerStorage@th08@@3UItemTimeOrbTimerStorage@1@A"
-target = 0x018B89D4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2ADC
 
 [[units.relocations]]
 offset = 1981
@@ -80503,6 +80955,12 @@ symbol = "?g_GuiMessageStageMode@th08@@3HA"
 target = 0x004E4B64
 
 [[units.relocations]]
+offset = 0x31
+type = "DIR32"
+symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
+target = 0x004E4B60
+
+[[units.relocations]]
 offset = 58
 type = "REL32"
 symbol = "?IsDisableResourceReload@th08@@YIIXZ"
@@ -80535,6 +80993,12 @@ target = 0x0160F508
 addend = 0x3DBB0
 
 [[units.relocations]]
+offset = 0x67
+type = "DIR32"
+symbol = "?g_EffectAnms@th08@@3PAPBDA"
+target = 0x004C7480
+
+[[units.relocations]]
 offset = 112
 type = "DIR32"
 symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
@@ -80552,6 +81016,12 @@ type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 addend = 0x3DDC4
+
+[[units.relocations]]
+offset = 0x8E
+type = "DIR32"
+symbol = "?g_EffectAnms@th08@@3PAPBDA"
+target = 0x004C7480
 
 [[units.relocations]]
 offset = 151
@@ -80753,17 +81223,18 @@ target_address = 0x00427F00
 size = 501
 
 [[units.relocations]]
-offset = 99
+offset = 0x63
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
-offset = 123
+offset = 0x7B
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
-addend = 4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 175
@@ -80796,17 +81267,18 @@ symbol = "?FUN_00463cf0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463CF0
 
 [[units.relocations]]
-offset = 381
+offset = 0x17D
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
-offset = 405
+offset = 0x195
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
-addend = 4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 456
@@ -80844,6 +81316,13 @@ offset = 266
 type = "REL32"
 symbol = "?Free@ZunMemory@th08@@QAEXPAX@Z"
 target = 0x0040B8A0
+
+[[units.relocations]]
+offset = 0x12E
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 380
@@ -81307,6 +81786,13 @@ symbol = "?IsSoloHuman@GameManager@th08@@QAEIXZ"
 target = 0x0042F230
 
 [[units.relocations]]
+offset = 0x167
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
+
+[[units.relocations]]
 offset = 369
 type = "DIR32"
 symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
@@ -81627,6 +82113,13 @@ symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
 target = 0x018B8A28
 
 [[units.relocations]]
+offset = 0x8E
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
+
+[[units.relocations]]
 offset = 157
 type = "DIR32"
 symbol = "??_C@_09EIOLBJFK@?5desolve?6?$AA@"
@@ -81711,6 +82204,27 @@ symbol = "?IsActive@Spellcard@th08@@QAEHXZ"
 target = 0x004178A0
 
 [[units.relocations]]
+offset = 0x184
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
+
+[[units.relocations]]
+offset = 0x18F
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
+
+[[units.relocations]]
+offset = 0x19B
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
+
+[[units.relocations]]
 offset = 478
 type = "DIR32"
 symbol = "??_C@_0BC@CKJLBBKK@?5preDeadCount?5?$CFd?6?$AA@"
@@ -81757,6 +82271,20 @@ offset = 819
 type = "REL32"
 symbol = "?IsActive@Spellcard@th08@@QAEHXZ"
 target = 0x004178A0
+
+[[units.relocations]]
+offset = 0x33D
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
+
+[[units.relocations]]
+offset = 0x349
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 861
@@ -82211,16 +82739,18 @@ symbol = "?FUN_0044cba0@Spellcard@th08@@QAEXXZ"
 target = 0x0044CBA0
 
 [[units.relocations]]
-offset = 1300
+offset = 0x514
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
-offset = 1320
+offset = 0x528
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units]]
 name = "enemy-drop-items"
@@ -82771,10 +83301,11 @@ symbol = "?FUN_0044df00@Player@th08@@QAEPAUPlayerUnkStruct0x40@2@PBUFloat3@2@MMH
 target = 0x0044DF00
 
 [[units.relocations]]
-offset = 1068
+offset = 0x42C
 type = "DIR32"
-symbol = "?g_ItemTimeOrbTimerStorage@th08@@3UItemTimeOrbTimerStorage@1@A"
-target = 0x018B89D4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2ADC
 
 [[units.relocations]]
 offset = 1073
@@ -82819,10 +83350,11 @@ symbol = "?AddToYoukaiGauge@GameManager@th08@@QAEXHH@Z"
 target = 0x0043C0BB
 
 [[units.relocations]]
-offset = 1147
+offset = 0x47B
 type = "DIR32"
-symbol = "?g_EnemyAttachedTimer0@th08@@3UItemTimeOrbTimerStorage@1@A"
-target = 0x018B89E0
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2AE8
 
 [[units.relocations]]
 offset = 1152
@@ -82831,10 +83363,11 @@ symbol = "??4ZunTimer@th08@@QAEXH@Z"
 target = 0x004065F0
 
 [[units.relocations]]
-offset = 1159
+offset = 0x487
 type = "DIR32"
-symbol = "?g_EnemyAttachedTimer30@th08@@3UItemTimeOrbTimerStorage@1@A"
-target = 0x018B89C8
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2AD0
 
 [[units.relocations]]
 offset = 1164
@@ -82843,10 +83376,11 @@ symbol = "??4ZunTimer@th08@@QAEXH@Z"
 target = 0x004065F0
 
 [[units.relocations]]
-offset = 1171
+offset = 0x493
 type = "DIR32"
-symbol = "?g_ItemTimeOrbTimerStorage@th08@@3UItemTimeOrbTimerStorage@1@A"
-target = 0x018B89D4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2ADC
 
 [[units.relocations]]
 offset = 1176
@@ -83075,8 +83609,9 @@ target = 0x0044A470
 [[units.relocations]]
 offset = 0x3F6
 type = "DIR32"
-symbol = "th08::g_BulletCancelItemType"
-target = 0x018B8988
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A90
 
 [[units.relocations]]
 offset = 0x40C
@@ -83105,14 +83640,16 @@ target = 0x004400A0
 [[units.relocations]]
 offset = 0x431
 type = "DIR32"
-symbol = "th08::g_BulletCancelItemType"
-target = 0x018B8988
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A90
 
 [[units.relocations]]
 offset = 0x43B
 type = "DIR32"
-symbol = "th08::g_BulletCancelItemType"
-target = 0x018B8988
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A90
 
 [[units.relocations]]
 offset = 0x44B
@@ -83141,8 +83678,9 @@ target = 0x0044A230
 [[units.relocations]]
 offset = 0x4B0
 type = "DIR32"
-symbol = "th08::g_BulletCancelItemType"
-target = 0x018B8988
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A90
 
 [[units.relocations]]
 offset = 0x4C6
@@ -83171,14 +83709,16 @@ target = 0x004400A0
 [[units.relocations]]
 offset = 0x4EB
 type = "DIR32"
-symbol = "th08::g_BulletCancelItemType"
-target = 0x018B8988
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A90
 
 [[units.relocations]]
 offset = 0x4F5
 type = "DIR32"
-symbol = "th08::g_BulletCancelItemType"
-target = 0x018B8988
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A90
 
 [[units.relocations]]
 offset = 0x505
@@ -83249,8 +83789,9 @@ target = 0x0045EA00
 [[units.relocations]]
 offset = 0x5DD
 type = "DIR32"
-symbol = "th08::g_BulletCancelItemType"
-target = 0x018B8988
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A90
 
 [[units.relocations]]
 offset = 0x5F3
@@ -83279,14 +83820,16 @@ target = 0x004400A0
 [[units.relocations]]
 offset = 0x617
 type = "DIR32"
-symbol = "th08::g_BulletCancelItemType"
-target = 0x018B8988
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A90
 
 [[units.relocations]]
 offset = 0x622
 type = "DIR32"
-symbol = "th08::g_BulletCancelItemType"
-target = 0x018B8988
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A90
 
 [[units.relocations]]
 offset = 0x632
@@ -83345,8 +83888,9 @@ target = 0x0045EA00
 [[units.relocations]]
 offset = 0x6EE
 type = "DIR32"
-symbol = "th08::g_BulletCancelItemType"
-target = 0x018B8988
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A90
 
 [[units.relocations]]
 offset = 0x704
@@ -83375,14 +83919,16 @@ target = 0x004400A0
 [[units.relocations]]
 offset = 0x729
 type = "DIR32"
-symbol = "th08::g_BulletCancelItemType"
-target = 0x018B8988
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A90
 
 [[units.relocations]]
 offset = 0x733
 type = "DIR32"
-symbol = "th08::g_BulletCancelItemType"
-target = 0x018B8988
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A90
 
 [[units.relocations]]
 offset = 0x743
@@ -83441,8 +83987,9 @@ target = 0x0045EA00
 [[units.relocations]]
 offset = 0x800
 type = "DIR32"
-symbol = "th08::g_BulletCancelItemType"
-target = 0x018B8988
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A90
 
 [[units.relocations]]
 offset = 0x815
@@ -83471,14 +84018,16 @@ target = 0x004400A0
 [[units.relocations]]
 offset = 0x83A
 type = "DIR32"
-symbol = "th08::g_BulletCancelItemType"
-target = 0x018B8988
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A90
 
 [[units.relocations]]
 offset = 0x845
 type = "DIR32"
-symbol = "th08::g_BulletCancelItemType"
-target = 0x018B8988
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A90
 
 [[units.relocations]]
 offset = 0x854
@@ -84556,20 +85105,35 @@ target = 0x0164D52C
 [[units.relocations]]
 offset = 0x190
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x1DF
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
+
+[[units.relocations]]
+offset = 0x1EF
+type = "DIR32"
+symbol = "?g_PlayerOptionUpdateCallbacks@th08@@3PAUPlayerOptionCallbackRow@1@A"
+target = 0x004C7D40
 
 [[units.relocations]]
 offset = 0x1FC
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
+
+[[units.relocations]]
+offset = 0x20C
+type = "DIR32"
+symbol = "?g_PlayerOptionRenderCallbacks@th08@@3PAUPlayerOptionCallbackRow@1@A"
+target = 0x004C7E10
 
 [[units.relocations]]
 offset = 0x23B
@@ -84580,8 +85144,9 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x262
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x27B
@@ -84622,8 +85187,9 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x347
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x3A5
@@ -84634,14 +85200,27 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x3B3
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x415
 type = "REL32"
 symbol = "??4ZunTimer@th08@@QAEXH@Z"
 target = 0x004065F0
+
+[[units.relocations]]
+offset = 0x430
+type = "DIR32"
+symbol = "?g_PlayerRoute3ExitUpdateCallbacks@th08@@3PAP6IHPAUPlayer@1@PAUPlayerOptionState@1@@ZA"
+target = 0x004C7E00
+
+[[units.relocations]]
+offset = 0x443
+type = "DIR32"
+symbol = "?g_PlayerRoute3ExitRenderCallbacks@th08@@3PAP6IHPAUPlayer@1@PAUPlayerOptionState@1@@ZA"
+target = 0x004C7ED0
 
 [[units.relocations]]
 offset = 0x466
@@ -84652,8 +85231,9 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x4BC
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x4D5
@@ -84688,14 +85268,16 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x57A
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x586
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x5E4
@@ -84712,8 +85294,9 @@ target = 0x0044C181
 [[units.relocations]]
 offset = 0x7A2
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x7C3
@@ -84862,8 +85445,9 @@ target = 0x004069F0
 [[units.relocations]]
 offset = 0x9A3
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x9B7
@@ -85040,16 +85624,58 @@ symbol = "??BFloat3@th08@@QAEPAMXZ"
 target = 0x0040B460
 
 [[units.relocations]]
+offset = 0xC3A
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDE4
+
+[[units.relocations]]
 offset = 0xC4F
 type = "REL32"
 symbol = "??BFloat3@th08@@QAEPAMXZ"
 target = 0x0040B460
 
 [[units.relocations]]
+offset = 0xC55
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDE4
+
+[[units.relocations]]
 offset = 0xC67
 type = "REL32"
 symbol = "??BFloat3@th08@@QAEPAMXZ"
 target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xC6D
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDE4
+
+[[units.relocations]]
+offset = 0xC73
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDEC
+
+[[units.relocations]]
+offset = 0xC82
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDE4
+
+[[units.relocations]]
+offset = 0xC88
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDEC
 
 [[units.relocations]]
 offset = 0xC9C
@@ -85064,16 +85690,58 @@ symbol = "??BFloat3@th08@@QAEPAMXZ"
 target = 0x0040B460
 
 [[units.relocations]]
+offset = 0xCBB
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDE8
+
+[[units.relocations]]
 offset = 0xCD0
 type = "REL32"
 symbol = "??BFloat3@th08@@QAEPAMXZ"
 target = 0x0040B460
 
 [[units.relocations]]
+offset = 0xCD6
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDE8
+
+[[units.relocations]]
 offset = 0xCE9
 type = "REL32"
 symbol = "??BFloat3@th08@@QAEPAMXZ"
 target = 0x0040B460
+
+[[units.relocations]]
+offset = 0xCEF
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDE8
+
+[[units.relocations]]
+offset = 0xCF5
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDF0
+
+[[units.relocations]]
+offset = 0xD05
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDE8
+
+[[units.relocations]]
+offset = 0xD0B
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDF0
 
 [[units.relocations]]
 offset = 0xD1F
@@ -85602,8 +86270,9 @@ target = 0x004338B0
 [[units.relocations]]
 offset = 0x1B
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x2B
@@ -85620,8 +86289,9 @@ target = 0x0044DD70
 [[units.relocations]]
 offset = 0x43
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x52
@@ -85638,8 +86308,9 @@ target = 0x0044DD70
 [[units.relocations]]
 offset = 0x6C
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x73
@@ -85674,14 +86345,16 @@ target = 0x0040BB60
 [[units.relocations]]
 offset = 0xB4
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0xC0
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0xDB
@@ -85698,8 +86371,9 @@ target = 0x004069F0
 [[units.relocations]]
 offset = 0xF7
 type = "DIR32"
-symbol = "?g_PlayerPlayfieldWidth@th08@@3MA"
-target = 0x0164D2E4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDDC
 
 [[units.relocations]]
 offset = 0xFD
@@ -85716,8 +86390,9 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 0x119
 type = "DIR32"
-symbol = "?g_ItemPlayfieldBottom@th08@@3MA"
-target = 0x0164D2E8
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDE0
 
 [[units.relocations]]
 offset = 0x11F
@@ -85746,8 +86421,9 @@ target = 0x0044E370
 [[units.relocations]]
 offset = 0x183
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
 offset = 0x18C
@@ -85758,8 +86434,9 @@ target = 0x004B42EC
 [[units.relocations]]
 offset = 0x1BA
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
 offset = 0x1C3
@@ -85770,8 +86447,9 @@ target = 0x004B42EC
 [[units.relocations]]
 offset = 0x1F1
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
 offset = 0x1FA
@@ -85818,8 +86496,9 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x2D7
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x2E2
@@ -85830,8 +86509,9 @@ target = 0x004C7AD0
 [[units.relocations]]
 offset = 0x2F9
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x306
@@ -85842,8 +86522,9 @@ target = 0x004C7AD0
 [[units.relocations]]
 offset = 0x352
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
 offset = 0x360
@@ -85938,8 +86619,9 @@ target = 0x0164D300
 [[units.relocations]]
 offset = 0x3D7
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x3E3
@@ -85962,8 +86644,9 @@ target = 0x0164D300
 [[units.relocations]]
 offset = 0x403
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x40F
@@ -86064,14 +86747,16 @@ target = 0x0164D300
 [[units.relocations]]
 offset = 0x4F1
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x540
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x550
@@ -86082,8 +86767,9 @@ target = 0x004C7D40
 [[units.relocations]]
 offset = 0x55D
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x56D
@@ -86268,6 +86954,13 @@ symbol = "_sprintf"
 target = 0x004A4857
 
 [[units.relocations]]
+offset = 0xF1
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
+
+[[units.relocations]]
 offset = 0x10F
 type = "DIR32"
 symbol = "__real@42700000"
@@ -86368,6 +87061,13 @@ offset = 0x1AE
 type = "DIR32"
 symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
 target = 0x017CE758
+
+[[units.relocations]]
+offset = 0x1B3
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 0x1C6
@@ -86542,6 +87242,20 @@ offset = 0x2CE
 type = "REL32"
 symbol = "?AddString@AsciiManager@th08@@QAEXPAUFloat3@2@PBD@Z"
 target = 0x00402920
+
+[[units.relocations]]
+offset = 0x2D3
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
+
+[[units.relocations]]
+offset = 0x2E2
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBAC
 
 [[units.relocations]]
 offset = 0x2F2
@@ -87235,14 +87949,16 @@ size = 0x5E
 [[units.relocations]]
 offset = 0x11
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x29
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0x4F
@@ -87255,7 +87971,6 @@ offset = 0x54
 type = "REL32"
 symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463210
-
 
 [[units]]
 name = "anm-project-facing-quad"
@@ -88952,8 +89667,9 @@ target = 0x018B8A28
 [[units.relocations]]
 offset = 0x11C
 type = "DIR32"
-symbol = "?g_PlayerRouteStateFlag@th08@@3EA"
-target = 0x0164D0B0
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA8
 
 [[units.relocations]]
 offset = 0x129
@@ -89150,20 +89866,23 @@ target = 0x004398CE
 [[units.relocations]]
 offset = 0x26B
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x277
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x283
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x29A
@@ -89378,8 +90097,9 @@ target = 0x0040D3B0
 [[units.relocations]]
 offset = 0x427
 type = "DIR32"
-symbol = "?g_PlayerPlayfieldWidth@th08@@3MA"
-target = 0x0164D2E4
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDDC
 
 [[units.relocations]]
 offset = 0x42D
@@ -89396,8 +90116,9 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 0x449
 type = "DIR32"
-symbol = "?g_ItemPlayfieldBottom@th08@@3MA"
-target = 0x0164D2E8
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDE0
 
 [[units.relocations]]
 offset = 0x44F
@@ -89426,14 +90147,16 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x4A6
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x4BD
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x4D8
@@ -89462,8 +90185,9 @@ target = 0x0042F2B0
 [[units.relocations]]
 offset = 0x502
 type = "DIR32"
-symbol = "?g_PlayerNoLivesFlag@th08@@3EA"
-target = 0x0164D0BB
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBB3
 
 [[units.relocations]]
 offset = 0x50C
@@ -89492,8 +90216,9 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x527
 type = "DIR32"
-symbol = "?g_PlayerPrimaryShtFile@th08@@3PAUPlayerRawShtFile@1@A"
-target = 0x018B896C
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2A74
 
 [[units.relocations]]
 offset = 0x52F
@@ -89572,14 +90297,16 @@ target = 0x00409080
 [[units.relocations]]
 offset = 0x149
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x161
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0x17A
@@ -89608,14 +90335,16 @@ target = 0x00409080
 [[units.relocations]]
 offset = 0x1EA
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x202
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0x2A4
@@ -89638,14 +90367,16 @@ target = 0x00409080
 [[units.relocations]]
 offset = 0x399
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x3B1
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0x3CD
@@ -89800,14 +90531,16 @@ target = 0x00409080
 [[units.relocations]]
 offset = 0x96B
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x983
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0x99C
@@ -92240,14 +92973,16 @@ target = 0x00409080
 [[units.relocations]]
 offset = 0x96
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0xAE
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0xD4
@@ -92260,7 +92995,6 @@ offset = 0xD9
 type = "REL32"
 symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00462FF0
-
 
 [[units]]
 name = "player-bomb-callback-0040d010"
@@ -92284,14 +93018,16 @@ target = 0x00409080
 [[units.relocations]]
 offset = 0x99
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0xB1
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0xD7
@@ -92304,7 +93040,6 @@ offset = 0xDC
 type = "REL32"
 symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00462FF0
-
 
 [[units]]
 name = "player-bomb-callback-0040d310"
@@ -92484,14 +93219,16 @@ target = 0x0040EC00
 [[units.relocations]]
 offset = 0x11A
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x132
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0x158
@@ -92504,7 +93241,6 @@ offset = 0x15D
 type = "REL32"
 symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463210
-
 
 [[units]]
 name = "player-bomb-callback-0040f550"
@@ -92556,14 +93292,16 @@ target = 0x0040EC00
 [[units.relocations]]
 offset = 0x8C
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0xA4
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0xCF
@@ -92576,7 +93314,6 @@ offset = 0xD4
 type = "REL32"
 symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463210
-
 
 [[units]]
 name = "player-bomb-callback-00410ac0"
@@ -92600,14 +93337,16 @@ target = 0x0040EC00
 [[units.relocations]]
 offset = 0x8C
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0xA4
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0xCF
@@ -92620,7 +93359,6 @@ offset = 0xD4
 type = "REL32"
 symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463210
-
 
 [[units]]
 name = "player-bomb-callback-004113a0"
@@ -92644,14 +93382,16 @@ target = 0x00409080
 [[units.relocations]]
 offset = 0x64
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x7C
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0xA2
@@ -92674,14 +93414,16 @@ target = 0x00409080
 [[units.relocations]]
 offset = 0xEE
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x106
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0x12C
@@ -92945,14 +93687,16 @@ target = 0x0040EC00
 [[units.relocations]]
 offset = 0x9B
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0xB3
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0xDF
@@ -92965,7 +93709,6 @@ offset = 0xE4
 type = "REL32"
 symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463210
-
 
 [[units]]
 name = "player-bomb-callback-004142c0"
@@ -92995,14 +93738,16 @@ target = 0x0040EC00
 [[units.relocations]]
 offset = 0x9E
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0xB6
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0xE2
@@ -100092,14 +100837,16 @@ target = 0x00410A70
 [[units.relocations]]
 offset = 0x139
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x149
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0x175
@@ -100116,14 +100863,16 @@ target = 0x00410A70
 [[units.relocations]]
 offset = 0x190
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x1A0
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0x1D4
@@ -100158,14 +100907,16 @@ target = 0x00410A70
 [[units.relocations]]
 offset = 0x291
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x2A1
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0x2D1
@@ -100188,14 +100939,16 @@ target = 0x00410A70
 [[units.relocations]]
 offset = 0x300
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x310
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0x360
@@ -100254,14 +101007,16 @@ target = 0x00410A70
 [[units.relocations]]
 offset = 0x439
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x449
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0x47B
@@ -100278,14 +101033,16 @@ target = 0x00410A70
 [[units.relocations]]
 offset = 0x496
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x4A6
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0x505
@@ -101406,14 +102163,16 @@ target = 0x0044A470
 [[units.relocations]]
 offset = 0x81
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x8C
 type = "DIR32"
-symbol = "?g_TargetByte0164D0B1@th08@@3EA"
-target = 0x0164D0B1
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA9
 
 [[units.relocations]]
 offset = 0x99
@@ -101672,6 +102431,12 @@ target_address = 0x0042B490
 size = 0x49C
 
 [[units.relocations]]
+offset = 0xC3
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
 offset = 0xC8
 type = "REL32"
 symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
@@ -101720,6 +102485,12 @@ symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
 target = 0x00577F20
 
 [[units.relocations]]
+offset = 0x242
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
 offset = 0x247
 type = "REL32"
 symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
@@ -101734,8 +102505,9 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x27C
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdatePlayerTimer@th08@@3UZunTimer@1@A"
-target = 0x018B89EC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2AF4
 
 [[units.relocations]]
 offset = 0x281
@@ -101817,6 +102589,12 @@ symbol = "??PZunTimer@th08@@QAEIH@Z"
 target = 0x0040B8E0
 
 [[units.relocations]]
+offset = 0x135
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
 offset = 0x13A
 type = "REL32"
 symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
@@ -101861,8 +102639,9 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x1B7
 type = "DIR32"
-symbol = "?g_EnemyManagerUpdatePlayerTimer@th08@@3UZunTimer@1@A"
-target = 0x018B89EC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2AF4
 
 [[units.relocations]]
 offset = 0x1BC
@@ -101887,6 +102666,12 @@ offset = 0x1D4
 type = "DIR32"
 symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
 target = 0x00577F20
+
+[[units.relocations]]
+offset = 0x255
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
 
 [[units.relocations]]
 offset = 0x25A
@@ -103452,8 +104237,9 @@ target = 0x00465A40
 [[units.relocations]]
 offset = 0xC2
 type = "DIR32"
-symbol = "?g_GuiResultAnm0@th08@@3PAUAnmLoaded@1@A"
-target = 0x004D50A8
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
 
 [[units.relocations]]
 offset = 0xC7
@@ -103464,8 +104250,9 @@ target = 0x004069F0
 [[units.relocations]]
 offset = 0xDB
 type = "DIR32"
-symbol = "?g_GuiResultAnm0@th08@@3PAUAnmLoaded@1@A"
-target = 0x004D50A8
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
 
 [[units.relocations]]
 offset = 0xE0
@@ -103494,8 +104281,9 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0x113
 type = "DIR32"
-symbol = "?g_GuiResultAnm0@th08@@3PAUAnmLoaded@1@A"
-target = 0x004D50A8
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
 
 [[units.relocations]]
 offset = 0x118
@@ -103512,8 +104300,9 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0x137
 type = "DIR32"
-symbol = "?g_GuiResultAnm0@th08@@3PAUAnmLoaded@1@A"
-target = 0x004D50A8
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
 
 [[units.relocations]]
 offset = 0x13C
@@ -103530,8 +104319,9 @@ target = 0x004396B8
 [[units.relocations]]
 offset = 0x15D
 type = "DIR32"
-symbol = "?g_GuiResultAnm1@th08@@3PAUAnmLoaded@1@A"
-target = 0x004D50AC
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x828C
 
 [[units.relocations]]
 offset = 0x162
@@ -103542,8 +104332,9 @@ target = 0x004069F0
 [[units.relocations]]
 offset = 0x1CF
 type = "DIR32"
-symbol = "?g_GuiResultAnm1@th08@@3PAUAnmLoaded@1@A"
-target = 0x004D50AC
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x828C
 
 [[units.relocations]]
 offset = 0x1D4
@@ -103812,8 +104603,9 @@ target = 0x0045E430
 [[units.relocations]]
 offset = 0x5A5
 type = "DIR32"
-symbol = "?g_GuiResultAnm0@th08@@3PAUAnmLoaded@1@A"
-target = 0x004D50A8
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x8288
 
 [[units.relocations]]
 offset = 0x5AA
@@ -103828,6 +104620,7 @@ symbol = "?g_GuiMessageScreenEffectDuration@th08@@3HA"
 target = 0x017CE8CC
 
 # Ledger name: th08::Gui::FUN_004396b8
+
 [[units]]
 name = "gui-vm-grid-reset-004396b8"
 object = "build/Gui.obj"
@@ -104052,10 +104845,22 @@ symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
 target = 0x018B8A28
 
 [[units.relocations]]
+offset = 0xEA
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
 offset = 0xEF
 type = "REL32"
 symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
 target = 0x00418450
+
+[[units.relocations]]
+offset = 0xF8
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
 
 [[units.relocations]]
 offset = 0xFD
@@ -104064,6 +104869,7 @@ symbol = "?RunEcl@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemy@2@@Z"
 target = 0x004184B0
 
 # Ledger name: th08::EnemyManager::SpawnEnemy2
+
 [[units]]
 name = "enemy-manager-spawn-enemy2-0042a680"
 object = "build/EnemyTimeline.obj"
@@ -104084,10 +104890,22 @@ symbol = "?g_ReplayManager@th08@@3PAUReplayManager@1@A"
 target = 0x018B8A28
 
 [[units.relocations]]
+offset = 0xC9
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
 offset = 0xCE
 type = "REL32"
 symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
 target = 0x00418450
+
+[[units.relocations]]
+offset = 0xEA
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
 
 [[units.relocations]]
 offset = 0xEF
@@ -104097,6 +104915,7 @@ target = 0x004184B0
 
 # Ledger name: th08::EclTimeline::Run
 # Associated switch table: target 0x0042AD60..0x0042ADA4 (0x44 bytes; 17 relocations; compared, excluded from authored bytes)
+
 [[units]]
 name = "ecl-timeline-run-0042a8a0"
 object = "build/EnemyTimeline.obj"
@@ -104126,8 +104945,9 @@ target = 0x0042AD60
 [[units.relocations]]
 offset = 0x7B
 type = "DIR32"
-symbol = "?g_PlayerNoLivesFlag@th08@@3EA"
-target = 0x0164D0BB
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBB3
 
 [[units.relocations]]
 offset = 0x8D
@@ -104526,6 +105346,7 @@ symbol = "$L*"
 target = 0x0042A919
 
 # Ledger name: th08::Gui::IsBossPresent
+
 [[units]]
 name = "gui-is-boss-present-0042f320"
 object = "build/AsciiManagerScale.obj"
@@ -105952,6 +106773,12 @@ target_address = 0x00421BD0
 size = 0xD6
 
 [[units.relocations]]
+offset = 0x73
+type = "DIR32"
+symbol = "?g_EclManager@th08@@3UEclManager@1@A"
+target = 0x004ECCB8
+
+[[units.relocations]]
 offset = 0x78
 type = "REL32"
 symbol = "?CallEclSub@EclManager@th08@@QAE?AW4ZunResult@@PAUEnemyEclContext@2@F@Z"
@@ -107204,8 +108031,9 @@ size = 0x91
 [[units.relocations]]
 offset = 0x17
 type = "DIR32"
-symbol = "?g_GuiResultAnm1@th08@@3PAUAnmLoaded@1@A"
-target = 0x004D50AC
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
+addend = 0x828C
 
 [[units.relocations]]
 offset = 0x1C
@@ -107517,14 +108345,16 @@ target = 0x0042BC90
 [[units.relocations]]
 offset = 0x199
 type = "DIR32"
-symbol = "?g_EnemyTrackedEnemy@th08@@3PAUEnemy@1@A"
-target = 0x018B89B4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2ABC
 
 [[units.relocations]]
 offset = 0x1A4
 type = "DIR32"
-symbol = "?g_EnemyTrackedEnemy@th08@@3PAUEnemy@1@A"
-target = 0x018B89B4
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2ABC
 
 [[units]]
 name = "enemy-sync-effects-0042e010"
@@ -108748,6 +109578,12 @@ offset = 0x27
 type = "REL32"
 symbol = "?FUN_004253e0@EffectManager@th08@@QAEPAUAnmVm@2@H@Z"
 target = 0x004253E0
+
+[[units.relocations]]
+offset = 0x34
+type = "DIR32"
+symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
+target = 0x004E4B60
 
 [[units]]
 name = "ecl-ex-bullet-zone-callback-004241e0"
@@ -111242,6 +112078,20 @@ symbol = "?UpdateAntiTamper@GameManager@th08@@QAEXXZ"
 target = 0x00406E50
 
 [[units.relocations]]
+offset = 0x2BA
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA4
+
+[[units.relocations]]
+offset = 0x2C1
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DBA0
+
+[[units.relocations]]
 offset = 0x345
 type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
@@ -111890,6 +112740,13 @@ symbol = "?LoadMusic@Supervisor@th08@@QAEIHPAD@Z"
 target = 0x00447D56
 
 [[units.relocations]]
+offset = 0xB42
+type = "DIR32"
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+addend = 0x7F4
+
+[[units.relocations]]
 offset = 0xB4F
 type = "DIR32"
 symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
@@ -111902,6 +112759,20 @@ symbol = "?LoadMusic@Supervisor@th08@@QAEIHPAD@Z"
 target = 0x00447D56
 
 [[units.relocations]]
+offset = 0xB59
+type = "DIR32"
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+addend = 0x7F4
+
+[[units.relocations]]
+offset = 0xB6A
+type = "DIR32"
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+addend = 0x7F4
+
+[[units.relocations]]
 offset = 0xB77
 type = "DIR32"
 symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
@@ -111912,6 +112783,20 @@ offset = 0xB7C
 type = "REL32"
 symbol = "?LoadMusic@Supervisor@th08@@QAEIHPAD@Z"
 target = 0x00447D56
+
+[[units.relocations]]
+offset = 0xB81
+type = "DIR32"
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+addend = 0x7F4
+
+[[units.relocations]]
+offset = 0xB92
+type = "DIR32"
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
+addend = 0x7F4
 
 [[units.relocations]]
 offset = 0xB9F
@@ -118311,14 +119196,16 @@ target = 0x004B4C7C
 [[units.relocations]]
 offset = 0xF7
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD4
 
 [[units.relocations]]
 offset = 0x10F
 type = "DIR32"
-symbol = "?g_ItemAnmManagerScreenShakeOffset@th08@@3UFloat2@1@A"
-target = 0x0164D2DC
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDD8
 
 [[units.relocations]]
 offset = 0x123
@@ -118343,6 +119230,7 @@ offset = 0x159
 type = "REL32"
 symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463210
+
 [[units]]
 name = "player-shot-script-update-00450c50"
 object = "build/Player.obj"

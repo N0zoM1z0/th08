@@ -45,6 +45,30 @@ field width/signedness, hide uncertainty behind a union/accessor, or combine a
 typed cleanup with unrelated control-flow refactoring.  Serialization,
 instruction decoding, and platform ABI glue may be correctly byte-oriented.
 
+## Reconcile post-port aggregate drift
+
+When a portable-owner change breaks a previously accepted cold aggregate,
+classify every failure before editing source: function extent, non-relocation
+bytes, or relocation metadata.  For relocation failures, mask the relocation
+fields on both sides and require zero remaining byte differences before
+migrating the manifest.  Infer each target symbol base independently from the
+target field value and COFF addend, then reject the migration if it conflicts
+with an existing accepted base or lacks mapping/global-ledger evidence.  Keep
+intentional nonzero addends; do not normalize them merely because a modern
+owner provides a more convenient spelling.
+
+An unoptimized VC7 translation unit may need a direct logical target symbol
+even when the portable build stores that state inside a canonical aggregate.
+In that case, keep the direct target declaration/storage and use a TU-local
+`TH08_MODERN_PORT` macro bridge so the function body has one semantic spelling.
+Do not replace a target-observed direct access with a non-inlined accessor.
+
+Likewise, target-adjacent globals may support one typed contiguous operation
+without promising adjacency in the portable linker.  Use the target operation
+only in the VC7 build and explicit per-object operations in the portable build.
+Both forms must describe the same initialized state and pass their respective
+oracles.
+
 ## Validate and record
 
 Use `$th08-matching` for the smallest VC7 object build and replay every accepted

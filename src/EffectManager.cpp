@@ -12,6 +12,10 @@
 namespace th08
 {
 
+#ifdef TH08_MODERN_PORT
+#define g_EclExBarrierRenderState (g_Background.EclExBarrierState())
+#endif
+
 ZunBool IsDisableResourceReload();
 
 void __fastcall FUN_00428310(AnmVm *effect, D3DXVECTOR3 *base);
@@ -1312,7 +1316,7 @@ ZunResult EffectManager::AddedCallback(EffectManager *effectManager)
     effectManager->ResetEffects();
     *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(effectManager) + 0x8B054) = g_AnmManager->GetAnm(6);
     g_GuiMessageStageMode = 0;
-    g_Background.EclExBarrierState().mode = 2;
+    g_EclExBarrierRenderState.mode = 2;
 
     if (!IsDisableResourceReload())
     {
@@ -1402,5 +1406,9 @@ Effect::Effect()
 {
 }
 
+
+#ifdef TH08_MODERN_PORT
+#undef g_EclExBarrierRenderState
+#endif
 
 } // namespace th08

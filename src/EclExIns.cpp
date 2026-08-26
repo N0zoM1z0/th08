@@ -33,6 +33,14 @@ void __fastcall MokouResurrection(EclOperands::EnemyOverlay *enemy, EclExInstruc
 DIFFABLE_EXTERN(AnmLoaded *, g_AsciiManagerDemoAnm0577EB4);
 extern i32 g_EclCallbackPublishedEnemyField56;
 
+// The retail image gives these ECL extension views their own target symbols.
+// The modern port stores the same bytes in Background, so keep one semantic
+// spelling in the instruction bodies while preserving both storage models.
+#ifdef TH08_MODERN_PORT
+#define g_EclExUpdateCallback (g_Background.EclExUpdateCallback())
+#define g_EclExBarrierRenderState (g_Background.EclExBarrierState())
+#endif
+
 void __fastcall FUN_004235a0();
 
 // FUNCTION: th08 0x423390
@@ -100,7 +108,7 @@ void __fastcall FUN_00423530(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     effect = g_EffectManager.FUN_00425870(56, reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2d34), 9, 1, -1);
     effect = g_EffectManager.FUN_00425870(56, reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2d34), 10, 1, -1);
     g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 97);
-    g_Background.EclExUpdateCallback() = reinterpret_cast<void *>(&FUN_004235a0);
+    g_EclExUpdateCallback = reinterpret_cast<void *>(&FUN_004235a0);
 }
 
 // FUNCTION: th08 0x4235a0
@@ -118,7 +126,7 @@ void __fastcall FUN_004235a0()
 
     effect9 = reinterpret_cast<Effect *>(g_EffectManager.FUN_004253e0(9));
     effect10 = reinterpret_cast<Effect *>(g_EffectManager.FUN_004253e0(10));
-    unusedVm = &g_Background.EclExBarrierState().vm0;
+    unusedVm = &g_EclExBarrierRenderState.vm0;
 
     radius9 = effect9->vm.pos.x * 0.7071068286895752f;
     radius10 = effect10->vm.pos.x * 0.7071068286895752f;
@@ -166,29 +174,29 @@ void __fastcall FUN_004235a0()
     g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
 
     g_Supervisor.SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
-    g_Background.EclExBarrierState().vm0.scale.x = -1.5f;
-    g_Background.EclExBarrierState().vm0.scale.y = -1.75f;
-    g_Background.EclExBarrierState().vm0.pos.z = 0.7f;
-    g_Background.EclExBarrierState().vm0.pos.x = 416.0f;
-    g_Background.EclExBarrierState().vm0.pos.y = 464.0f;
-    savedColor = g_Background.EclExBarrierState().vm0.color1.d3dColor;
-    g_Background.EclExBarrierState().vm0.color1.d3dColor = 0xffe0c0c0;
-    g_AnmManager->Draw2D(&g_Background.EclExBarrierState().vm0);
-    g_Background.EclExBarrierState().vm0.scale.x = 1.5f;
-    g_Background.EclExBarrierState().vm0.scale.y = 1.75f;
-    g_Background.EclExBarrierState().vm0.pos.z = 0.5f;
-    g_Background.EclExBarrierState().vm0.pos.x = 32.0f;
-    g_Background.EclExBarrierState().vm0.pos.y = 16.0f;
-    g_Background.EclExBarrierState().vm0.color1.d3dColor = savedColor;
+    g_EclExBarrierRenderState.vm0.scale.x = -1.5f;
+    g_EclExBarrierRenderState.vm0.scale.y = -1.75f;
+    g_EclExBarrierRenderState.vm0.pos.z = 0.7f;
+    g_EclExBarrierRenderState.vm0.pos.x = 416.0f;
+    g_EclExBarrierRenderState.vm0.pos.y = 464.0f;
+    savedColor = g_EclExBarrierRenderState.vm0.color1.d3dColor;
+    g_EclExBarrierRenderState.vm0.color1.d3dColor = 0xffe0c0c0;
+    g_AnmManager->Draw2D(&g_EclExBarrierRenderState.vm0);
+    g_EclExBarrierRenderState.vm0.scale.x = 1.5f;
+    g_EclExBarrierRenderState.vm0.scale.y = 1.75f;
+    g_EclExBarrierRenderState.vm0.pos.z = 0.5f;
+    g_EclExBarrierRenderState.vm0.pos.x = 32.0f;
+    g_EclExBarrierRenderState.vm0.pos.y = 16.0f;
+    g_EclExBarrierRenderState.vm0.color1.d3dColor = savedColor;
 
-    g_Background.EclExBarrierState().vm1.rotation.z *= -1.0f;
-    g_Background.EclExBarrierState().vm1.pos.z = 0.6f;
-    savedColor = g_Background.EclExBarrierState().vm1.color1.d3dColor;
-    g_Background.EclExBarrierState().vm1.color1.d3dColor = 0xffe0c0c0;
-    g_AnmManager->Draw2DAndFlush(&g_Background.EclExBarrierState().vm1);
-    g_Background.EclExBarrierState().vm1.rotation.z *= -1.0f;
-    g_Background.EclExBarrierState().vm1.pos.z = 0.5f;
-    g_Background.EclExBarrierState().vm1.color1.d3dColor = savedColor;
+    g_EclExBarrierRenderState.vm1.rotation.z *= -1.0f;
+    g_EclExBarrierRenderState.vm1.pos.z = 0.6f;
+    savedColor = g_EclExBarrierRenderState.vm1.color1.d3dColor;
+    g_EclExBarrierRenderState.vm1.color1.d3dColor = 0xffe0c0c0;
+    g_AnmManager->Draw2DAndFlush(&g_EclExBarrierRenderState.vm1);
+    g_EclExBarrierRenderState.vm1.rotation.z *= -1.0f;
+    g_EclExBarrierRenderState.vm1.pos.z = 0.5f;
+    g_EclExBarrierRenderState.vm1.color1.d3dColor = savedColor;
     g_Supervisor.SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
 }
 
@@ -276,7 +284,7 @@ void __fastcall FUN_00423db0(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     effect = g_EffectManager.FUN_00425870(65, reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2d34), 9, 1, -1);
     effect = g_EffectManager.FUN_00425870(65, reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2d34), 10, 1, -1);
     g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 99);
-    g_Background.EclExUpdateCallback() = reinterpret_cast<void *>(&FUN_004235a0);
+    g_EclExUpdateCallback = reinterpret_cast<void *>(&FUN_004235a0);
 }
 
 
@@ -363,7 +371,7 @@ void __fastcall FUN_00424130(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 {
     *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(g_EffectManager.FUN_004253e0(9)) + 0x350) = 0;
     *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(g_EffectManager.FUN_004253e0(10)) + 0x350) = 0;
-    g_Background.EclExBarrierState().mode = 2;
+    g_EclExBarrierRenderState.mode = 2;
 }
 
 // FUNCTION: th08 0x424170
@@ -373,7 +381,7 @@ void __fastcall FUN_00424170(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     effect = g_EffectManager.FUN_00425870(58, reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2d34), 9, 1, -1);
     effect = g_EffectManager.FUN_00425870(58, reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2d34), 10, 1, -1);
     g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 101);
-    g_Background.EclExUpdateCallback() = reinterpret_cast<void *>(&FUN_004235a0);
+    g_EclExUpdateCallback = reinterpret_cast<void *>(&FUN_004235a0);
 }
 
 
@@ -687,8 +695,8 @@ void __fastcall EclExIns::ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, 
             setCursor = *reinterpret_cast<EclOperands::EnemyOverlay **>(setCursor->bytes + 0x8);
             *reinterpret_cast<u32 *>(setCursor->bytes + 0x3328) |= 0x80U;
         }
-        g_Background.EclExBarrierState().vm0.SetInterrupt(2);
-        g_Background.EclExBarrierState().vm1.SetInterrupt(2);
+        g_EclExBarrierRenderState.vm0.SetInterrupt(2);
+        g_EclExBarrierRenderState.vm1.SetInterrupt(2);
     }
     else
     {
@@ -698,8 +706,8 @@ void __fastcall EclExIns::ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, 
             clearCursor = *reinterpret_cast<EclOperands::EnemyOverlay **>(clearCursor->bytes + 0x8);
             *reinterpret_cast<u32 *>(clearCursor->bytes + 0x3328) &= ~0x80U;
         }
-        g_Background.EclExBarrierState().vm0.SetInterrupt(1);
-        g_Background.EclExBarrierState().vm1.SetInterrupt(1);
+        g_EclExBarrierRenderState.vm0.SetInterrupt(1);
+        g_EclExBarrierRenderState.vm1.SetInterrupt(1);
     }
 }
 
@@ -865,13 +873,13 @@ void __fastcall FUN_00425070(EclOperands::EnemyOverlay *enemy, EclExInstruction 
         *reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(instruction) + 0x10);
     if (g_EclScriptedGlobalUpdateFreeze)
     {
-        g_Background.EclExBarrierState().vm0.SetInterrupt(2);
-        g_Background.EclExBarrierState().vm1.SetInterrupt(2);
+        g_EclExBarrierRenderState.vm0.SetInterrupt(2);
+        g_EclExBarrierRenderState.vm1.SetInterrupt(2);
     }
     else
     {
-        g_Background.EclExBarrierState().vm0.SetInterrupt(1);
-        g_Background.EclExBarrierState().vm1.SetInterrupt(1);
+        g_EclExBarrierRenderState.vm0.SetInterrupt(1);
+        g_EclExBarrierRenderState.vm1.SetInterrupt(1);
     }
 }
 
@@ -913,8 +921,8 @@ void __fastcall FUN_004251b0(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 
     g_EclGameTimeScale =
         1.0f / static_cast<f32>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(instruction) + 0x10));
-    g_Background.EclExBarrierState().vm0.SetInterrupt(2);
-    g_Background.EclExBarrierState().vm1.SetInterrupt(2);
+    g_EclExBarrierRenderState.vm0.SetInterrupt(2);
+    g_EclExBarrierRenderState.vm1.SetInterrupt(2);
 
     bullet = reinterpret_cast<u8 *>(&g_BulletManager) + 0x1a880;
     for (i = 0; i < 0x600; ++i, bullet += 0x10b8)
@@ -958,8 +966,8 @@ void __fastcall FUN_00425290(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     if (g_EclGameTimeScale < 1.0f)
         g_EclGameTimeScaleFlags |= 0x20U;
     g_EclGameTimeScale = 1.0f;
-    g_Background.EclExBarrierState().vm0.SetInterrupt(1);
-    g_Background.EclExBarrierState().vm1.SetInterrupt(1);
+    g_EclExBarrierRenderState.vm0.SetInterrupt(1);
+    g_EclExBarrierRenderState.vm1.SetInterrupt(1);
 }
 
 
@@ -973,3 +981,8 @@ void __fastcall FUN_00425390(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 }
 
 } // namespace th08
+
+#ifdef TH08_MODERN_PORT
+#undef g_EclExUpdateCallback
+#undef g_EclExBarrierRenderState
+#endif
