@@ -22,15 +22,15 @@ int __fastcall EffectRandomSplashBigInit(AnmVm *);
 int __fastcall EffectOrbitInit(AnmVm *);
 int __fastcall EffectOrbitUpdate(AnmVm *);
 
-int __fastcall FUN_0040e040(AnmVm *);
-int __fastcall FUN_0040e120(AnmVm *);
-int __fastcall FUN_0040e200(AnmVm *);
-int __fastcall FUN_0040e2d0(AnmVm *);
-int __fastcall FUN_00410bb0(AnmVm *);
-int __fastcall FUN_004114e0(AnmVm *);
-int __fastcall FUN_00411720(AnmVm *);
-int __fastcall FUN_00411a80(AnmVm *);
-int __fastcall FUN_00413070(AnmVm *);
+int __fastcall UpdateExpandingWavyRadialTrail(AnmVm *);
+int __fastcall UpdateExpandingPositiveDiagonalRadialTrail(AnmVm *);
+int __fastcall UpdateExpandingNegativeDiagonalRadialTrail(AnmVm *);
+int __fastcall UpdateExpandingOctagonalRadialTrail(AnmVm *);
+int __fastcall UpdateExpandingTwelveSegmentRadialTrail(AnmVm *);
+int __fastcall UpdateBarrierRadialEffect(AnmVm *);
+int __fastcall InitializeBarrierRadialEffect(AnmVm *);
+int __fastcall InitializeRotatingBarrierRadialEffect(AnmVm *);
+int __fastcall UpdateExpandingOrthogonalRadialTrail(AnmVm *);
 
 int __fastcall FUN_00426280(Effect *);
 int __fastcall FUN_004264f0(Effect *);
@@ -157,19 +157,19 @@ void InitializeTargetData()
         {57, 0, 0}, {58, 0, 0}, {59, 0, 0}, {60, 0, 0},
         {48, 0, 0}, {49, 0, 0}, {50, 0, 0},
         {88, CodeAddress(SyncRadialTrailRadius), CodeAddress(InitializeRadialTrail)},
-        {88, CodeAddress(FUN_004114e0), CodeAddress(FUN_00411720)},
-        {92, CodeAddress(FUN_004114e0), CodeAddress(FUN_00411a80)},
+        {88, CodeAddress(UpdateBarrierRadialEffect), CodeAddress(InitializeBarrierRadialEffect)},
+        {92, CodeAddress(UpdateBarrierRadialEffect), CodeAddress(InitializeRotatingBarrierRadialEffect)},
         {71, 0, 0},
         {76, CodeAddress(SyncRadialTrailRadius), CodeAddress(InitializeRadialTrail)},
         {81, CodeAddress(SyncRadialTrailShape), CodeAddress(InitializeRadialTrail)},
         {82, CodeAddress(UpdatePulsingRadialTrailCallback), CodeAddress(InitializeRadialTrail)},
-        {83, CodeAddress(FUN_0040e040), CodeAddress(InitializeRadialTrail)},
-        {83, CodeAddress(FUN_0040e120), CodeAddress(InitializeRadialTrail)},
-        {83, CodeAddress(FUN_0040e200), CodeAddress(InitializeRadialTrail)},
-        {83, CodeAddress(FUN_0040e2d0), CodeAddress(InitializeRadialTrail)},
-        {84, CodeAddress(FUN_00410bb0), CodeAddress(InitializeRadialTrail)},
+        {83, CodeAddress(UpdateExpandingWavyRadialTrail), CodeAddress(InitializeRadialTrail)},
+        {83, CodeAddress(UpdateExpandingPositiveDiagonalRadialTrail), CodeAddress(InitializeRadialTrail)},
+        {83, CodeAddress(UpdateExpandingNegativeDiagonalRadialTrail), CodeAddress(InitializeRadialTrail)},
+        {83, CodeAddress(UpdateExpandingOctagonalRadialTrail), CodeAddress(InitializeRadialTrail)},
+        {84, CodeAddress(UpdateExpandingTwelveSegmentRadialTrail), CodeAddress(InitializeRadialTrail)},
         {72, 0, 0},
-        {85, CodeAddress(FUN_00413070), CodeAddress(InitializeRadialTrail)},
+        {85, CodeAddress(UpdateExpandingOrthogonalRadialTrail), CodeAddress(InitializeRadialTrail)},
         {86, CodeAddress(SyncRadialTrailRadius), CodeAddress(InitializeRadialTrail)},
         {80, CodeAddress(UpdateTimedRadialTrail), CodeAddress(InitializeRadialTrail)},
         {73, CodeAddress(FUN_004264f0), CodeAddress(FUN_00426280)},

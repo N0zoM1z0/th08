@@ -178,7 +178,7 @@ bool Gui::SetBossPresent(bool value)
 // FUNCTION: th08 0x42dfb0
 i32 EclManager::GetTimelineCount()
 {
-    return this->eclFile->unknown06;
+    return this->eclFile->timelineCount;
 }
 
 // FUNCTION: th08 0x42dfd0

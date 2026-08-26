@@ -182,7 +182,7 @@ void __fastcall BeginBoundaryAwareMove(
 }
 
 // FUNCTION: th08 0x4224a0
-void __fastcall FUN_004224a0(u8 *rawEnemy, void *rawInstruction)
+void __fastcall ApplyRandomBiasedMove(u8 *rawEnemy, void *rawInstruction)
 {
     f32 wrappedPlayerX;
     f32 angle;

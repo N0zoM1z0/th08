@@ -167,16 +167,19 @@ struct EclRawHeader
 {
     u32 version;
     i16 subCount;
-    i16 unknown06;
+    i16 timelineCount;
     u32 timelineOffsets[16];
     u32 subOffsets[1];
 };
+typedef char EclRawHeaderTimelineCountOffsetCheck[offsetof(EclRawHeader, timelineCount) == 0x6 ? 1 : -1];
 typedef char EclRawHeaderSubTableOffsetCheck[offsetof(EclRawHeader, subOffsets) == 0x48 ? 1 : -1];
 
 typedef void (__fastcall *EnemyEclContextCallback)(Enemy *enemy, void *argument);
 
 struct EnemyEclInterpolationSlot
 {
+    EnemyEclInterpolationSlot();
+
     void *callback;
     ZunTimer timer;
     i32 duration;
@@ -194,6 +197,8 @@ C_ASSERT(offsetof(EnemyEclInterpolationSlot, affectedVariable) == 0x2c);
 // ABI view names the state consumed by EclManager and the exact interpreter.
 struct EnemyEclContext
 {
+    EnemyEclContext();
+
     EclRawInstruction *currentInstr;
     ZunTimer time;
     EnemyEclContextCallback callback;

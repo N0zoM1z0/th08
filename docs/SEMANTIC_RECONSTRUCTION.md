@@ -860,10 +860,9 @@ Corroborated: no adjacent-version layout was imported.  The exact TH08 1.00d
 indexed displacements, `0x78` variable copy, `0x228` context-copy/stride, the
 child slot at context `+0x220`, signed word loads/stores, direct CallEclSub
 calls, and the complete authored producer/consumer set establish the
-structure.  The imported class names
-`EnemyUnkStruct2/3` are retained because their constructor symbols are part of
-the target ABI; their formerly opaque interiors now mirror the proven context
-and interpolation layout.
+structure.  The constructor-bearing storage now directly uses the proven
+`EnemyEclContext` and `EnemyEclInterpolationSlot` types; their renamed VC7
+constructor symbols and all caller relocations are tracked explicitly.
 
 Inference: pointer ownership, variable families, callback/call-parameter
 roles, call depths, death callback, subroutine table, and pending index are
@@ -2793,3 +2792,65 @@ representing the two unknown Bullet bytes moves their repeated occurrences
 from opaque storage into the anonymous-identifier category, yielding 110
 anonymous and 42 opaque candidates; this category migration is not semantic
 progress for those bytes.
+
+### Address-name and ECL type closure — 2026-08-27
+
+Scope: the remaining behavior-recoverable address-named authored helpers, the
+ECL timeline header word used by `EclManager::Load @ 0x00418330` and its two
+accessors at `0x0042DFB0/0x0042DFD0`, and the duplicate constructor-bearing ECL
+context shells.  Each renamed function was first checked with a target-pinned
+typed packet, then replayed as its smallest configured VC7 comparison unit.
+
+ECL and lifecycle behavior: `EclRawHeader::timelineCount @ +0x06` now names the
+word that bounds and indexes the file's timeline-offset table.
+`Supervisor::BeginLoadingCompletion @ 0x00448972` begins the loading-finish
+transition, `EnemyOverlay::DetachEnemyChain @ 0x0042ADB0` separates an Enemy
+attachment chain and conditionally awards its death rewards,
+`InterpolateWrappedAngle @ 0x0042EB10` interpolates across the shortest wrapped
+angular path, and `EclRunLowProposal::ApplyRandomBiasedMove @ 0x004224A0`
+applies the ECL instruction's randomized, bias-adjusted movement.  The names
+state directly observed state transitions and arithmetic rather than inferred
+script or presentation identities.
+
+Player Bomb callbacks: the exact functions at `0x0040E040..0x0040E2D0`,
+`0x00410BB0`, `0x004114E0..0x00411A80`, and `0x00413070` now distinguish the
+wavy, positive/negative diagonal, octagonal, twelve-segment, barrier, rotating
+barrier, and orthogonal radial update/initialization paths.  Their callback
+table entries and the portable Linux callback bridge use the same symbols.
+These are geometry- and lifecycle-based names; no character, spell-card, or
+artistic effect identity is asserted.
+
+ECL ownership: the storage formerly represented by duplicate imported
+`EnemyUnkStruct2/3` shells now directly uses `EnemyEclContext` and
+`EnemyEclInterpolationSlot`.  Their target constructors at
+`0x0042A450/0x0042A4C0`, all constructor relocations, the primary context, and
+the sixteen-entry Enemy call stack therefore share one asserted type model.
+This removes duplicate opaque types without changing their layout or VC7 ABI.
+
+Evidence boundary: the six stage-specific Effect callbacks at
+`0x00426280`, `0x004264F0`, `0x00426720`, `0x00426990`, `0x00426D70`, and
+`0x00426E70` deliberately remain address-named.  Their bodies prove particle
+motion and camera relationships but not stable visual identities.  The two
+comments that retain target `FUN_00422720` and `FUN_00422020` are provenance
+for already named dispatcher helpers, not anonymous function definitions.
+Reset-only, unused, serialization-reserved, and producerless fields likewise
+remain neutral rather than receiving presentation guesses.
+
+VC7 oracle: the ECL load/accessor units replay **239**, **20**, and **25** exact
+bytes; the four lifecycle/math helpers replay **88**, **1,336**, **114**, and
+**630** exact bytes.  The ten Bomb callbacks independently replay **209**,
+**209**, **196**, **119**, **76**, **567**, **139**, **708**, **139**, and
+**204** exact bytes, and the unified ECL constructors plus `Enemy::Enemy`
+replay **62**, **25**, and **394** exact bytes.  A required single-job cold
+build of all 75 comparison objects passes **1,106 / 1,106 exact** with zero
+failures, and the normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links and
+`verify-modern-linux.sh build/modern-linux-container/th08-modern` verifies the
+ELF32 executable and every fixed target-owned layout symbol.  The whole-source
+router now reports **0 raw-member**, **0 absolute-address**, **107 anonymous-
+identifier**, and **41 opaque-storage** candidates.  With all recoverable
+address-named authored definitions closed except the six evidence-limited
+Effect callbacks, this closes the current source-readability milestone.  The
+remaining counts are an evidence-directed backlog, not a completion
+percentage and not permission to guess meanings for inert storage.

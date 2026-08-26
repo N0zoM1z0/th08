@@ -491,7 +491,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 --enemy->parentEnemy->linkedChildCount;
             }
 
-            reinterpret_cast<EclOperands::EnemyOverlay *>(enemy)->FUN_0042adb0(1);
+            reinterpret_cast<EclOperands::EnemyOverlay *>(enemy)->DetachEnemyChain(1);
             if (!g_Player.optionModeFlag)
                 deathPosition = -200;
             else

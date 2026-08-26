@@ -154,10 +154,10 @@ th08::UpdateArtfulSacrificeBomb,0x40d430,0x517,__fastcall,,void,Player*
 th08::DrawDefaultBombTint,0x40d950,0x18,__fastcall,,void,Player*
 th08::UpdateReturnInanimatenessDeathbomb,0x40d970,0x56e,__fastcall,,void,Player*
 th08::DrawReturnInanimatenessDeathbomb,0x40dee0,0x15d,__fastcall,,void,Player*
-th08::FUN_0040e040,0x40e040,0xd1,__fastcall,,i32,AnmVm*
-th08::FUN_0040e120,0x40e120,0xd1,__fastcall,,i32,AnmVm*
-th08::FUN_0040e200,0x40e200,0xc4,__fastcall,,i32,AnmVm*
-th08::FUN_0040e2d0,0x40e2d0,0x77,__fastcall,,i32,AnmVm*
+th08::UpdateExpandingWavyRadialTrail,0x40e040,0xd1,__fastcall,,i32,AnmVm*
+th08::UpdateExpandingPositiveDiagonalRadialTrail,0x40e120,0xd1,__fastcall,,i32,AnmVm*
+th08::UpdateExpandingNegativeDiagonalRadialTrail,0x40e200,0xc4,__fastcall,,i32,AnmVm*
+th08::UpdateExpandingOctagonalRadialTrail,0x40e2d0,0x77,__fastcall,,i32,AnmVm*
 th08::ZunTimer::JustReached,0x40e350,0x3a,__thiscall,,ZunBool,ZunTimer*,i32
 th08::ZunTimer::operator<=,0x40e390,0x1b,__thiscall,,ZunBool,ZunTimer*,i32
 th08::UpdateMasterSparkBomb,0x40e3b0,0x258,__fastcall,,void,Player*
@@ -179,20 +179,20 @@ th08::DrawKillingDollBomb,0x410300,0xe1,__fastcall,,void,Player*
 th08::UpdateNightMistPhantomKillerDeathbomb,0x4103f0,0x677,__fastcall,,void,Player*
 th08::Float3::operator+=,0x410a70,0x43,__thiscall,,Float3*,Float3*,const Float3*
 th08::DrawNightMistPhantomKillerDeathbomb,0x410ac0,0xe1,__fastcall,,void,Player*
-th08::FUN_00410bb0,0x410bb0,0x4c,__fastcall,,i32,AnmVm*
+th08::UpdateExpandingTwelveSegmentRadialTrail,0x410bb0,0x4c,__fastcall,,i32,AnmVm*
 th08::Rng::GetRandomU16InRange,0x410c00,0x39,__thiscall,,u16,Rng*,u16
 th08::UpdateQuadrupleBarrierBomb,0x410c40,0x39a,__fastcall,,void,Player*
 th08::UpdateEternalNightQuadrupleBarrierDeathbomb,0x410fe0,0x3bf,__fastcall,,void,Player*
 th08::DrawEternalNightQuadrupleBarrierDeathbomb,0x4113a0,0x139,__fastcall,,void,Player*
-th08::FUN_004114e0,0x4114e0,0x237,__fastcall,,i32,AnmVm*
-th08::FUN_00411720,0x411720,0x8b,__fastcall,,i32,AnmVm*
-th08::FUN_004117b0,0x4117b0,0x2c4,__fastcall,,i32,AnmVm*
-th08::FUN_00411a80,0x411a80,0x8b,__fastcall,,i32,AnmVm*
+th08::UpdateBarrierRadialEffect,0x4114e0,0x237,__fastcall,,i32,AnmVm*
+th08::InitializeBarrierRadialEffect,0x411720,0x8b,__fastcall,,i32,AnmVm*
+th08::UpdateRotatingBarrierRadialEffect,0x4117b0,0x2c4,__fastcall,,i32,AnmVm*
+th08::InitializeRotatingBarrierRadialEffect,0x411a80,0x8b,__fastcall,,i32,AnmVm*
 th08::UpdateSlashOfPresentWorldBomb,0x411b10,0x7f0,__fastcall,,void,Player*
 th08::DrawSlashOfPresentWorldBomb,0x412300,0xcf,__fastcall,,void,Player*
 th08::UpdateSlashOfFutureEternityDeathbomb,0x4123d0,0xbc8,__fastcall,,void,Player*
 th08::DrawSlashOfFutureEternityDeathbomb,0x412fa0,0xcf,__fastcall,,void,Player*
-th08::FUN_00413070,0x413070,0xcc,__fastcall,,i32,AnmVm*
+th08::UpdateExpandingOrthogonalRadialTrail,0x413070,0xcc,__fastcall,,i32,AnmVm*
 th08::UpdateGhastlyDreamBomb,0x413140,0x743,__fastcall,,void,Player*
 th08::DrawGhastlyDreamBomb,0x413890,0xf1,__fastcall,,void,Player*
 th08::UpdateEternalSleepInDreamlandDeathbomb,0x413990,0x928,__fastcall,,void,Player*
@@ -273,7 +273,7 @@ th08::EclRunLowProposal::SetExtraAnmScript,0x421e50,0x1c6,__fastcall,,void,EclOp
 th08::EclRunLowProposal::BeginBoundaryAwareMove,0x422020,0x28a,__fastcall,,void,EclOperands::EnemyOverlay*,EclRawInstruction*
 th08::EclRunLowProposal::StartTimedPolarDisplacement,0x4222b0,0x1cd,__fastcall,,void,EclOperands::EnemyOverlay*,EclRawInstruction*,f32
 th08::GameManager::GetPower,0x422480,0x1c,__thiscall,,ulonglong,GameManager*
-th08::EclRunLowProposal::FUN_004224a0,0x4224a0,0x276,__fastcall,,void,u8*,void*
+th08::EclRunLowProposal::ApplyRandomBiasedMove,0x4224a0,0x276,__fastcall,,void,u8*,void*
 th08::EclRunHighProposal::DispatchShotInstruction,0x422720,0x456,__fastcall,,void,u8*,EclRunHighProposal::RawInstruction*
 th08::GameManager::ScaleFloatBasedOnRank,0x422b80,0x27,__thiscall,,float10,GameManager*,f32,f32
 th08::AsciiManager::SetBossMarkerInterrupt,0x422bb0,0x2a,__thiscall,,void,AsciiManager*,i32,i16
@@ -385,14 +385,14 @@ th08::EnemyManager::Initialize,0x429e00,0x405,__thiscall,,void,EnemyManager*
 th08::EnemyManager::EnemyManager,0x42a210,0x61,__thiscall,,EnemyManager*,EnemyManager*
 th08::Enemy::Enemy,0x42a280,0x18a,__thiscall,,Enemy*,Enemy*
 th08::BulletSpawnDescriptor::BulletSpawnDescriptor,0x42a410,0x34,__thiscall,,BulletSpawnDescriptor*,BulletSpawnDescriptor*
-th08::EnemyUnkStruct2::EnemyUnkStruct2,0x42a450,0x3e,__thiscall,,EnemyUnkStruct2*,EnemyUnkStruct2*
+th08::EnemyEclContext::EnemyEclContext,0x42a450,0x3e,__thiscall,,EnemyEclContext*,EnemyEclContext*
 th08::EnemyTrailSample::EnemyTrailSample,0x42a490,0x21,__thiscall,,EnemyTrailSample*,EnemyTrailSample*
-th08::EnemyUnkStruct3::EnemyUnkStruct3,0x42a4c0,0x19,__thiscall,,EnemyUnkStruct3*,EnemyUnkStruct3*
+th08::EnemyEclInterpolationSlot::EnemyEclInterpolationSlot,0x42a4c0,0x19,__thiscall,,EnemyEclInterpolationSlot*,EnemyEclInterpolationSlot*
 th08::EnemyManager::SpawnEnemy1,0x42a4e0,0x199,__thiscall,,void*,EnemyManager*,i32,const D3DXVECTOR3*,i32,i32,i32,i32
 th08::EnemyManager::SpawnEnemy2,0x42a680,0x19d,__thiscall,,void*,EnemyManager*,i32,const D3DXVECTOR3*,i32,i32,i32,i32*
 th08::Enemy::ReleaseAttachedEffects,0x42a820,0x73,__thiscall,,void,Enemy*
 th08::EclTimeline::Run,0x42a8a0,0x4c0,__thiscall,,void,EclTimeline*
-th08::EclOperands::EnemyOverlay::FUN_0042adb0,0x42adb0,0x538,__thiscall,,void,EnemyOverlay*,i32
+th08::EclOperands::EnemyOverlay::DetachEnemyChain,0x42adb0,0x538,__thiscall,,void,EnemyOverlay*,i32
 th08::Enemy::DetachFromParentChain,0x42b2f0,0x75,__thiscall,,void,Enemy*
 th08::Enemy::ApplyDamageToParent,0x42b370,0x120,__thiscall,,void,Enemy*,i32
 th08::Enemy::HandleLifeCallback,0x42b490,0x49c,__thiscall,,i32,Enemy*
@@ -414,7 +414,7 @@ th08::Spellcard::IsBombDamageEnabled,0x42dff0,0x16,__thiscall,,i32,Spellcard*
 th08::Enemy::UpdateEffects,0x42e010,0x101,__thiscall,,void,Enemy*
 th08::EnemyManager::OnDrawHighPrio,0x42e120,0x17,__fastcall,,ChainCallbackResult,EnemyManager*
 th08::EnemyManager::OnDrawImpl,0x42e140,0x9c8,__fastcall,,ChainCallbackResult,EnemyManager*,i32,i32
-th08::FUN_0042eb10,0x42eb10,0x72,__stdcall,,f32,f32,f32,f32
+th08::InterpolateWrappedAngle,0x42eb10,0x72,__stdcall,,f32,f32,f32,f32
 th08::EnemyManager::OnDrawLowPrio,0x42eb90,0x5c,__fastcall,,ChainCallbackResult,EnemyManager*
 th08::EnemyManager::AddedCallback,0x42ebf0,0x282,__thiscall,,u32,EnemyManager*
 th08::EnemyManager::DeletedCallback,0x42ee80,0xe1,__fastcall,,ZunResult,EnemyManager*
@@ -728,7 +728,7 @@ th08::Supervisor::ThreadClose,0x44871b,0x75,__thiscall,,void,Supervisor*
 th08::Supervisor::SetupLoadingVms,0x448790,0x8a,__thiscall,,void,Supervisor*,_D3DVECTOR*
 th08::Supervisor::HideLoadingVms,0x44881a,0x55,__thiscall,,void,Supervisor*
 th08::Supervisor::SetupLoadingVmsAndInitCapture,0x44886f,0x103,__thiscall,,void,Supervisor*,Float3*
-th08::Supervisor::FUN_00448972,0x448972,0x58,__thiscall,,void,Supervisor*
+th08::Supervisor::BeginLoadingCompletion,0x448972,0x58,__thiscall,,void,Supervisor*
 th08::Supervisor::StartEffect,0x4489ca,0x2f,__thiscall,,void,Supervisor*,i32
 th08::Supervisor::InitializeCriticalSections,0x4489f9,0x36,__thiscall,,void,Supervisor*
 th08::Supervisor::DeleteCriticalSections,0x448a2f,0x36,__thiscall,,void,Supervisor*

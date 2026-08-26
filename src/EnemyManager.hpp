@@ -12,55 +12,6 @@ namespace th08
 struct EnemyEclContext;
 struct Spellcard;
 
-struct EnemyUnkStruct3
-{
-    void *callback;
-    ZunTimer timer;
-    i32 duration;
-    i32 callbackIndex;
-    i32 easing;
-    f32 parameters[4];
-    f32 affectedVariable;
-
-    EnemyUnkStruct3();
-};
-C_ASSERT(sizeof(EnemyUnkStruct3) == 0x30);
-C_ASSERT(offsetof(EnemyUnkStruct3, duration) == 0x10);
-C_ASSERT(offsetof(EnemyUnkStruct3, affectedVariable) == 0x2c);
-
-struct EnemyUnkStruct2
-{
-    EclRawInstruction *currentInstr;
-    ZunTimer time;
-    EnemyEclContextCallback callback;
-    void *callbackArgument;
-    i32 intVariables[8];
-    f32 floatVariables[8];
-    i32 extraIntVariables[4];
-    f32 extraFloatVariables[2];
-    i32 callParameterInts[4];
-    f32 callParameterFloats[4];
-    ZunTimer secondaryTime;
-    EnemyUnkStruct3 interpolationSlots[8];
-    i32 unknown21c;
-    i32 childContextSlot;
-    i16 subId;
-    unknown_fields(0x226, 2);
-
-    EnemyUnkStruct2();
-};
-C_ASSERT(sizeof(EnemyUnkStruct2) == 0x228);
-C_ASSERT(offsetof(EnemyUnkStruct2, callback) == 0x10);
-C_ASSERT(offsetof(EnemyUnkStruct2, intVariables) == 0x18);
-C_ASSERT(offsetof(EnemyUnkStruct2, floatVariables) == 0x38);
-C_ASSERT(offsetof(EnemyUnkStruct2, extraIntVariables) == 0x58);
-C_ASSERT(offsetof(EnemyUnkStruct2, extraFloatVariables) == 0x68);
-C_ASSERT(offsetof(EnemyUnkStruct2, callParameterInts) == 0x70);
-C_ASSERT(offsetof(EnemyUnkStruct2, secondaryTime) == 0x90);
-C_ASSERT(offsetof(EnemyUnkStruct2, interpolationSlots) == 0x9c);
-C_ASSERT(offsetof(EnemyUnkStruct2, childContextSlot) == 0x220);
-C_ASSERT(offsetof(EnemyUnkStruct2, subId) == 0x224);
-
 struct EnemyTrailSample
 {
     Float3 position;
@@ -254,8 +205,8 @@ struct Enemy
     unknown_fields(0x4, 0x8);
     AnmVm vm;
     AnmVm secondaryVms[2];
-    EnemyUnkStruct2 mainEclContextStorage;
-    EnemyUnkStruct2 mainEclCallStackStorage[16];
+    EnemyEclContext mainEclContextStorage;
+    EnemyEclContext mainEclCallStackStorage[16];
     EnemyEclContext *activeEclContext;
     EnemyEclContext *activeEclCallStack;
     i32 eclIntVariables[8];

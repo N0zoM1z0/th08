@@ -18,7 +18,7 @@ namespace th08
 
 ZunBool IsDisableResourceReload();
 i32 IsResourceReloadEnabled();
-f32 __stdcall FUN_0042eb10(f32 angle1, f32 angle2, f32 factor);
+f32 __stdcall InterpolateWrappedAngle(f32 angle1, f32 angle2, f32 factor);
 
 DIFFABLE_STATIC(EnemyManager, g_EnemyManager);
 DIFFABLE_STATIC_ARRAY_ASSIGN(u8, 32, g_EnemyDropSchedule) = {
@@ -208,13 +208,13 @@ EnemyManager::EnemyManager()
 Enemy::Enemy() {}
 
 // FUNCTION: th08 0x42a450
-EnemyUnkStruct2::EnemyUnkStruct2() {}
+EnemyEclContext::EnemyEclContext() {}
 
 // FUNCTION: th08 0x42a490
 EnemyTrailSample::EnemyTrailSample() {}
 
 // FUNCTION: th08 0x42a4c0
-EnemyUnkStruct3::EnemyUnkStruct3() {}
+EnemyEclInterpolationSlot::EnemyEclInterpolationSlot() {}
 
 // FUNCTION: th08 0x42a820
 #pragma var_order(i, this)
@@ -237,7 +237,7 @@ namespace EclOperands
 
 // FUNCTION: th08 0x42adb0
 #pragma var_order(j, nextEnemy, enemy, popupColor, chainIndex, position, dropLocals, itemType, attachedPosition)
-void EnemyOverlay::FUN_0042adb0(i32 mode)
+void EnemyOverlay::DetachEnemyChain(i32 awardRewards)
 {
     i32 j;
     EnemyOverlay *nextEnemy;
@@ -268,7 +268,7 @@ void EnemyOverlay::FUN_0042adb0(i32 mode)
             *reinterpret_cast<void **>(enemy->bytes + 8) = NULL;
             *reinterpret_cast<void **>(enemy->bytes + 4) = NULL;
 
-            if (mode != 0)
+            if (awardRewards != 0)
             {
                 itemType = (((reinterpret_cast<Enemy *>(this)->flags1 >>
                               ENEMY_FLAG_BOSS_SHIFT) & 1) != 0) ? 7 : 9;
@@ -317,7 +317,7 @@ void EnemyOverlay::FUN_0042adb0(i32 mode)
             ++chainIndex;
         }
 
-        if (mode != 0)
+        if (awardRewards != 0)
         {
             g_AsciiManager.SetScale(2.0f, 2.0f);
             g_AsciiManager.CreateTimePopup(
@@ -340,7 +340,7 @@ void EnemyOverlay::FUN_0042adb0(i32 mode)
         }
     }
 
-    if (reinterpret_cast<TargetEnemyHelpersOverlay *>(this)->HasAttachedEnemy() && mode != 0)
+    if (reinterpret_cast<TargetEnemyHelpersOverlay *>(this)->HasAttachedEnemy() && awardRewards != 0)
     {
         Float3 attachedPosition;
         g_GameManager.AddToYoukaiGauge(-g_GameManager.GetYoukaiGauge() / 12, 0);
@@ -477,7 +477,7 @@ i32 Enemy::HandleLifeCallback()
             this->flags2 &= ~ENEMY_FLAG2_DAMAGE_FEEDBACK_MASK;
             this->bulletSpawnDescriptor = g_EnemyManager.spawnTemplate.bulletSpawnDescriptor;
             this->shootIntervalFrames = 0;
-            reinterpret_cast<EclOperands::EnemyOverlay *>(this)->FUN_0042adb0(1);
+            reinterpret_cast<EclOperands::EnemyOverlay *>(this)->DetachEnemyChain(1);
 
             enemyCursor = &g_EnemyManager.enemies[0];
             for (k = 0; k < 480; k++, enemyCursor++)
@@ -646,7 +646,7 @@ i32 Enemy::HandleTimerCallback()
         g_Player.playerState = 3;
     }
 
-    reinterpret_cast<EclOperands::EnemyOverlay *>(this)->FUN_0042adb0(0);
+    reinterpret_cast<EclOperands::EnemyOverlay *>(this)->DetachEnemyChain(0);
     enemyCursor = &g_EnemyManager.enemies[0];
     for (j = 0; j < 480; j++, enemyCursor++)
     {
@@ -710,7 +710,7 @@ void Enemy::Despawn()
 {
     i32 i;
 
-    reinterpret_cast<EclOperands::EnemyOverlay *>(this)->FUN_0042adb0(0);
+    reinterpret_cast<EclOperands::EnemyOverlay *>(this)->DetachEnemyChain(0);
 
     if (((this->flags1 >> ENEMY_FLAG_DEATH_MODE_SHIFT) & 7) == 0)
         this->flags1 &= ~ENEMY_FLAG_ACTIVE;
@@ -1122,7 +1122,7 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                             }
                             else
                             {
-                                angle = FUN_0042eb10(
+                                angle = InterpolateWrappedAngle(
                                     enemy->trailSamples[k - 1].angle,
                                     enemy->trailSamples[k].angle, 0.5f);
                             }
@@ -1131,7 +1131,7 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                                 k + enemy->trailSampleStride <
                                     enemy->trailHistoryLength)
                             {
-                                sinAngle = FUN_0042eb10(
+                                sinAngle = InterpolateWrappedAngle(
                                     enemy->trailSamples[
                                         k + enemy->trailSampleStride - 1].angle,
                                     enemy->trailSamples[
@@ -1237,7 +1237,7 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
 
 // FUNCTION: th08 0x42eb10
 #pragma var_order(wrapDelta, shortDelta)
-f32 __stdcall FUN_0042eb10(f32 angle1, f32 angle2, f32 factor)
+f32 __stdcall InterpolateWrappedAngle(f32 angle1, f32 angle2, f32 factor)
 {
     f32 shortDelta;
     f32 wrapDelta;

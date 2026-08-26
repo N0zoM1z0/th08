@@ -101,7 +101,7 @@ EclOperands::EnemyOverlay *__fastcall SpawnChildStandard0041F110(
     EclOperands::EnemyOverlay *parent, EclRawInstruction *instruction);
 EclOperands::EnemyOverlay *__fastcall SpawnChildAlternate0041F280(
     EclOperands::EnemyOverlay *parent, EclRawInstruction *instruction);
-void __fastcall FUN_004224a0(u8 *enemy, void *instruction);
+void __fastcall ApplyRandomBiasedMove(u8 *enemy, void *instruction);
 
 // The returned effect begins with an ANM VM.  Keep the call out-of-line: the
 // target dispatch calls AnmVm::SetInterrupt at 0x00407120 rather than inlining
@@ -750,7 +750,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
 #ifdef TH08_ECL_RUN_LOW_BODY
     // Target physical order places opcode 178 between opcodes 67 and 68.
     case 178:
-        FUN_004224a0(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_CONTEXT_INSTRUCTION(ctx));
+        ApplyRandomBiasedMove(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_CONTEXT_INSTRUCTION(ctx));
         break;
 #endif
     case 68:

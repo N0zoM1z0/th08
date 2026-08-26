@@ -881,7 +881,7 @@ void __fastcall DrawReturnInanimatenessDeathbomb(Player *player)
 }
 
 // FUNCTION: th08 0x40e040
-i32 __fastcall FUN_0040e040(AnmVm *effect)
+i32 __fastcall UpdateExpandingWavyRadialTrail(AnmVm *effect)
 {
     f32 interp = 1.0f - (f32)reinterpret_cast<Effect *>(effect)->timer / 40.0f;
     interp *= interp;
@@ -904,7 +904,7 @@ i32 __fastcall FUN_0040e040(AnmVm *effect)
 }
 
 // FUNCTION: th08 0x40e120
-i32 __fastcall FUN_0040e120(AnmVm *effect)
+i32 __fastcall UpdateExpandingPositiveDiagonalRadialTrail(AnmVm *effect)
 {
     f32 interp = 1.0f - (f32)reinterpret_cast<Effect *>(effect)->timer / 40.0f;
     interp *= interp;
@@ -923,7 +923,7 @@ i32 __fastcall FUN_0040e120(AnmVm *effect)
 }
 
 // FUNCTION: th08 0x40e200
-i32 __fastcall FUN_0040e200(AnmVm *effect)
+i32 __fastcall UpdateExpandingNegativeDiagonalRadialTrail(AnmVm *effect)
 {
     f32 interp = 1.0f - (f32)reinterpret_cast<Effect *>(effect)->timer / 40.0f;
     interp *= interp;
@@ -941,7 +941,7 @@ i32 __fastcall FUN_0040e200(AnmVm *effect)
 }
 
 // FUNCTION: th08 0x40e2d0
-i32 __fastcall FUN_0040e2d0(AnmVm *effect)
+i32 __fastcall UpdateExpandingOctagonalRadialTrail(AnmVm *effect)
 {
     f32 interp = 1.0f - (f32)reinterpret_cast<Effect *>(effect)->timer / 40.0f;
     interp *= interp;
@@ -1751,7 +1751,7 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
 
 // FUNCTION: th08 0x4114e0
 #pragma var_order(interp, i, slot, angle)
-i32 __fastcall FUN_004114e0(AnmVm *effect)
+i32 __fastcall UpdateBarrierRadialEffect(AnmVm *effect)
 {
     f32 interp;
     i32 i;
@@ -2110,7 +2110,7 @@ void __fastcall UpdateSlashOfPresentWorldBomb(Player *player)
 
 // FUNCTION: th08 0x4117b0
 #pragma var_order(interp, radialBase, i, slot, angle)
-i32 __fastcall FUN_004117b0(AnmVm *effect)
+i32 __fastcall UpdateRotatingBarrierRadialEffect(AnmVm *effect)
 {
     f32 interp;
     f32 radialBase;
@@ -2176,7 +2176,7 @@ i32 __fastcall FUN_004117b0(AnmVm *effect)
 
 // FUNCTION: th08 0x411720
 #pragma var_order(velocity, position)
-i32 __fastcall FUN_00411720(AnmVm *effect)
+i32 __fastcall InitializeBarrierRadialEffect(AnmVm *effect)
 {
     Float3 position = reinterpret_cast<Effect *>(effect)->position;
     Float3 velocity = reinterpret_cast<Effect *>(effect)->vector1;
@@ -2184,7 +2184,7 @@ i32 __fastcall FUN_00411720(AnmVm *effect)
     g_EffectManager.SpawnEffectInFixedSlotWithVelocity(35, reinterpret_cast<D3DXVECTOR3 *>(&position),
                                  reinterpret_cast<D3DXVECTOR3 *>(&velocity),
                                  reinterpret_cast<Effect *>(effect)->slotIndex, 1, -1);
-    reinterpret_cast<Effect *>(effect)->updateCallback = reinterpret_cast<void *>(FUN_004114e0);
+    reinterpret_cast<Effect *>(effect)->updateCallback = reinterpret_cast<void *>(UpdateBarrierRadialEffect);
     reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 44;
     reinterpret_cast<Effect *>(effect)->shapeThickness = 4.0f;
     return 0;
@@ -2192,7 +2192,7 @@ i32 __fastcall FUN_00411720(AnmVm *effect)
 
 // FUNCTION: th08 0x411a80
 #pragma var_order(velocity, position)
-i32 __fastcall FUN_00411a80(AnmVm *effect)
+i32 __fastcall InitializeRotatingBarrierRadialEffect(AnmVm *effect)
 {
     Float3 position = reinterpret_cast<Effect *>(effect)->position;
     Float3 velocity = reinterpret_cast<Effect *>(effect)->vector1;
@@ -2200,7 +2200,7 @@ i32 __fastcall FUN_00411a80(AnmVm *effect)
     g_EffectManager.SpawnEffectInFixedSlotWithVelocity(35, reinterpret_cast<D3DXVECTOR3 *>(&position),
                                  reinterpret_cast<D3DXVECTOR3 *>(&velocity),
                                  reinterpret_cast<Effect *>(effect)->slotIndex, 1, -1);
-    reinterpret_cast<Effect *>(effect)->updateCallback = reinterpret_cast<void *>(FUN_004117b0);
+    reinterpret_cast<Effect *>(effect)->updateCallback = reinterpret_cast<void *>(UpdateRotatingBarrierRadialEffect);
     reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 54;
     reinterpret_cast<Effect *>(effect)->shapeThickness = 6.0f;
     return 0;
@@ -2309,7 +2309,7 @@ void __fastcall DrawEternalNightQuadrupleBarrierDeathbomb(Player *player)
 }
 
 // FUNCTION: th08 0x410bb0
-i32 __fastcall FUN_00410bb0(AnmVm *effect)
+i32 __fastcall UpdateExpandingTwelveSegmentRadialTrail(AnmVm *effect)
 {
     reinterpret_cast<Effect *>(effect)->radius += 8.0f;
     reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
@@ -2319,7 +2319,7 @@ i32 __fastcall FUN_00410bb0(AnmVm *effect)
 }
 
 // FUNCTION: th08 0x413070
-i32 __fastcall FUN_00413070(AnmVm *effect)
+i32 __fastcall UpdateExpandingOrthogonalRadialTrail(AnmVm *effect)
 {
     f32 interp;
     if (reinterpret_cast<Effect *>(effect)->timer < 30)

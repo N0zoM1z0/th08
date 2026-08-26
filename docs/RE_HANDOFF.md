@@ -180,9 +180,9 @@ The constructor-bearing primary context at `Enemy + 0x07F8`, its sixteen-entry
 call stack at `+0x0A20`, active context/stack pointers, local and per-Enemy ECL
 variable families, call parameters, callback/interpolation state, primary and
 active call depths, death callback, 32-entry subroutine table, and pending
-subroutine index now share asserted owners.  The imported
-`EnemyUnkStruct2/3` names remain intact for their target constructor ABI; only
-their proven interiors are exposed.  The `+0x2CEC` word, context `+0x21C`
+subroutine index now share asserted owners.  The constructor-bearing storage
+uses the same `EnemyEclContext` and `EnemyEclInterpolationSlot` types as the
+interpreter instead of duplicate imported `UnkStruct` shells.  The `+0x2CEC` word, context `+0x21C`
 dword, callback argument payload, and stage-specific meanings of extra ECL
 variables remain explicitly unknown.  Focused replay passed **124 / 124**,
 target-pinned CallSubOnEnemy/PopEclContext packets replayed exact, a non-reuse
@@ -769,14 +769,37 @@ neutral members intentionally migrates repeated occurrences to the anonymous
 category, so the remaining router totals are 110 anonymous and 42 opaque; no
 semantic meaning is claimed for those bytes.
 
-Select the next independent field family with:
+The address-name/ECL-type closure is now accepted.  `EclRawHeader::timelineCount`
+names the word consumed by the exact ECL load and accessor path.  The loading
+completion transition, Enemy attachment-chain teardown, wrapped-angle
+interpolator, and random-biased ECL move helper now have behavior-backed names.
+Ten Player Bomb callbacks expose their radial geometry and lifecycle roles,
+with the portable callback bridge updated to the same symbols.  Duplicate
+`EnemyUnkStruct2/3` shells are gone: the primary context, sixteen-entry call
+stack, and target constructors now directly share `EnemyEclContext` and
+`EnemyEclInterpolationSlot`.
+
+Target-pinned packets and focused comparison replay every renamed function
+exact, including the 1,336-byte Enemy chain helper, 630-byte movement helper,
+and all ten Bomb callbacks.  The required single-job cold replay passes
+**1,106 / 1,106 exact**, the normal VC7 image links, and the complete i386
+Linux build plus fixed-layout verifier passes.  The final router totals are
+**0 raw-member**, **0 absolute-address**, **107 anonymous-identifier**, and
+**41 opaque-storage** candidates.
+
+This closes the current whole-source semantic-readability milestone: all
+behavior-recoverable authored `FUN_` definitions have semantic names except
+the six stage-specific Effect callbacks whose target bodies do not prove
+stable visual identities.  Reset-only, unused, producerless, and reserved
+serialization storage remains explicitly neutral.  Future semantic work must
+start from new producer/consumer or runtime evidence, not from the size of the
+remaining heuristic categories.  Re-audit that evidence boundary with:
 
 ```bash
 python3 scripts/analysis/report-semantic-debt.py
 ```
 
-Then prefer a small exact-backed field family over the largest anonymous
-manager.  Whole-executable TU/layout work below is deferred, not invalidated.
+Whole-executable TU/layout work below remains deferred, not invalidated.
 
 ## Active playable-port branch
 
@@ -1313,7 +1336,7 @@ The thirteenth bounded pass repaired `EnemyManager.obj`. Its five runs mixed
 ordinary explicit-definition disorder with one target-contiguous cross-class
 tail. Sorting only function bodies by mapped target address (leaving file-scope
 statics in place) required one natural forward declaration for
-`FUN_0042eb10`; focused replay remained **44 / 44** exact and reduced the
+`InterpolateWrappedAngle`; focused replay remained **44 / 44** exact and reduced the
 linked object to three residual inversions.
 
 Those three inversions proved a real owner boundary. The target sequence is

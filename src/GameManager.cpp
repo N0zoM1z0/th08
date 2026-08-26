@@ -1059,7 +1059,7 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
             Sleep(17);
     }
 
-    g_Supervisor.FUN_00448972();
+    g_Supervisor.BeginLoadingCompletion();
     while (gameManager->flags.stageTransitionState != 0)
         Sleep(17);
 
@@ -1075,7 +1075,7 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
 
 setup_error:
     g_GameManager.gameplaySetupState = GAMEPLAY_SETUP_FAILED;
-    g_Supervisor.FUN_00448972();
+    g_Supervisor.BeginLoadingCompletion();
     g_Supervisor.runningSubthreadHandle = NULL;
     g_Supervisor.subthreadCloseRequestActive = FALSE;
     g_Supervisor.subthreadActive = FALSE;

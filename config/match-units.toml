@@ -2987,7 +2987,7 @@ target = 0x00422020
 [[units.relocations]]
 offset = 0x1B47
 type = "REL32"
-symbol = "?FUN_004224a0@EclRunLowProposal@th08@@YIXPAEPAX@Z"
+symbol = "?ApplyRandomBiasedMove@EclRunLowProposal@th08@@YIXPAEPAX@Z"
 target = 0x004224A0
 
 [[units.relocations]]
@@ -10444,7 +10444,7 @@ target = 0x0041FD20
 [[units.relocations]]
 offset = 0xFF8
 type = "REL32"
-symbol = "?FUN_0042adb0@EnemyOverlay@EclOperands@th08@@QAEXH@Z"
+symbol = "?DetachEnemyChain@EnemyOverlay@EclOperands@th08@@QAEXH@Z"
 target = 0x0042ADB0
 
 [[units.relocations]]
@@ -82719,7 +82719,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 304
 type = "REL32"
-symbol = "?FUN_0042adb0@EnemyOverlay@EclOperands@th08@@QAEXH@Z"
+symbol = "?DetachEnemyChain@EnemyOverlay@EclOperands@th08@@QAEXH@Z"
 target = 0x0042ADB0
 
 [[units.relocations]]
@@ -83370,7 +83370,7 @@ target = 0x004400A0
 [[units]]
 name = "enemy-parent-chain-cleanup"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "?FUN_0042adb0@EnemyOverlay@EclOperands@th08@@QAEXH@Z"
+symbol = "?DetachEnemyChain@EnemyOverlay@EclOperands@th08@@QAEXH@Z"
 target_address = 0x0042ADB0
 size = 1336
 
@@ -90597,7 +90597,7 @@ target = 0x0160F428
 [[units]]
 name = "enemy-angle-interpolate"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "?FUN_0042eb10@th08@@YGMMMM@Z"
+symbol = "?InterpolateWrappedAngle@th08@@YGMMMM@Z"
 target_address = 0x0042EB10
 size = 0x72
 
@@ -90749,13 +90749,13 @@ target = 0x004B4AC4
 [[units.relocations]]
 offset = 0x539
 type = "REL32"
-symbol = "?FUN_0042eb10@th08@@YGMMMM@Z"
+symbol = "?InterpolateWrappedAngle@th08@@YGMMMM@Z"
 target = 0x0042EB10
 
 [[units.relocations]]
 offset = 0x5BD
 type = "REL32"
-symbol = "?FUN_0042eb10@th08@@YGMMMM@Z"
+symbol = "?InterpolateWrappedAngle@th08@@YGMMMM@Z"
 target = 0x0042EB10
 
 [[units.relocations]]
@@ -92112,9 +92112,9 @@ symbol = "?g_SpellcardNumbersPerDifficulty@th08@@3PAPAHA"
 target = 0x004C67D0
 
 [[units]]
-name = "enemy-unk-struct3-ctor"
+name = "enemy-ecl-interpolation-slot-ctor"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "??0EnemyUnkStruct3@th08@@QAE@XZ"
+symbol = "??0EnemyEclInterpolationSlot@th08@@QAE@XZ"
 target_address = 0x0042A4C0
 size = 0x19
 
@@ -92125,9 +92125,9 @@ symbol = "??0ZunTimer@th08@@QAE@XZ"
 target = 0x004065A0
 
 [[units]]
-name = "enemy-unk-struct2-ctor"
+name = "enemy-ecl-context-ctor"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "??0EnemyUnkStruct2@th08@@QAE@XZ"
+symbol = "??0EnemyEclContext@th08@@QAE@XZ"
 target_address = 0x0042A450
 size = 0x3E
 
@@ -92146,7 +92146,7 @@ target = 0x004065A0
 [[units.relocations]]
 offset = 0x21
 type = "DIR32"
-symbol = "??0EnemyUnkStruct3@th08@@QAE@XZ"
+symbol = "??0EnemyEclInterpolationSlot@th08@@QAE@XZ"
 target = 0x0042A4C0
 
 [[units.relocations]]
@@ -92202,13 +92202,13 @@ target = 0x00406850
 [[units.relocations]]
 offset = 0x36
 type = "REL32"
-symbol = "??0EnemyUnkStruct2@th08@@QAE@XZ"
+symbol = "??0EnemyEclContext@th08@@QAE@XZ"
 target = 0x0042A450
 
 [[units.relocations]]
 offset = 0x3B
 type = "DIR32"
-symbol = "??0EnemyUnkStruct2@th08@@QAE@XZ"
+symbol = "??0EnemyEclContext@th08@@QAE@XZ"
 target = 0x0042A450
 
 [[units.relocations]]
@@ -94800,7 +94800,7 @@ size = 0x160
 [[units]]
 name = "player-bomb-effect-update-004114e0"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_004114e0@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateBarrierRadialEffect@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x004114E0
 size = 0x237
 
@@ -94988,7 +94988,7 @@ target = 0x0044DE60
 [[units]]
 name = "player-bomb-effect-init-00411720"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_00411720@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?InitializeBarrierRadialEffect@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x00411720
 size = 0x8B
 
@@ -95007,14 +95007,14 @@ target = 0x004259E0
 [[units.relocations]]
 offset = 0x67
 type = "DIR32"
-symbol = "?FUN_004114e0@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateBarrierRadialEffect@th08@@YIHPAUAnmVm@1@@Z"
 target = 0x004114E0
 
 
 [[units]]
 name = "player-bomb-effect-update-004117b0"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_004117b0@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateRotatingBarrierRadialEffect@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x004117B0
 size = 0x2C4
 
@@ -95226,7 +95226,7 @@ target = 0x0044DE60
 [[units]]
 name = "player-bomb-effect-init-00411a80"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_00411a80@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?InitializeRotatingBarrierRadialEffect@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x00411A80
 size = 0x8B
 
@@ -95245,7 +95245,7 @@ target = 0x004259E0
 [[units.relocations]]
 offset = 0x67
 type = "DIR32"
-symbol = "?FUN_004117b0@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateRotatingBarrierRadialEffect@th08@@YIHPAUAnmVm@1@@Z"
 target = 0x004117B0
 
 [[units]]
@@ -100309,7 +100309,7 @@ target = 0x00406640
 [[units]]
 name = "player-effect-callback-0040e040"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040e040@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateExpandingWavyRadialTrail@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x0040E040
 size = 0xD1
 
@@ -100365,7 +100365,7 @@ target = 0x004B42EC
 [[units]]
 name = "player-effect-callback-0040e120"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040e120@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateExpandingPositiveDiagonalRadialTrail@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x0040E120
 size = 0xD1
 
@@ -100421,7 +100421,7 @@ target = 0x004B4438
 [[units]]
 name = "player-effect-callback-0040e200"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040e200@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateExpandingNegativeDiagonalRadialTrail@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x0040E200
 size = 0xC4
 
@@ -100477,7 +100477,7 @@ target = 0x004B4438
 [[units]]
 name = "player-effect-callback-0040e2d0"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040e2d0@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateExpandingOctagonalRadialTrail@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x0040E2D0
 size = 0x77
 
@@ -100515,7 +100515,7 @@ target = 0x004B4440
 [[units]]
 name = "player-effect-callback-00410bb0"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_00410bb0@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateExpandingTwelveSegmentRadialTrail@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x00410BB0
 size = 0x4C
 
@@ -100529,7 +100529,7 @@ target = 0x004B4300
 [[units]]
 name = "player-effect-callback-00413070"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_00413070@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateExpandingOrthogonalRadialTrail@th08@@YIHPAUAnmVm@1@@Z"
 target_address = 0x00413070
 size = 0xCC
 
@@ -102831,7 +102831,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x1BA
 type = "REL32"
-symbol = "?FUN_0042adb0@EnemyOverlay@EclOperands@th08@@QAEXH@Z"
+symbol = "?DetachEnemyChain@EnemyOverlay@EclOperands@th08@@QAEXH@Z"
 target = 0x0042ADB0
 
 [[units.relocations]]
@@ -103014,7 +103014,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x1CD
 type = "REL32"
-symbol = "?FUN_0042adb0@EnemyOverlay@EclOperands@th08@@QAEXH@Z"
+symbol = "?DetachEnemyChain@EnemyOverlay@EclOperands@th08@@QAEXH@Z"
 target = 0x0042ADB0
 
 [[units.relocations]]
@@ -106576,7 +106576,7 @@ target = 0x0041F420
 [[units]]
 name = "ecl-random-biased-move-004224a0"
 object = "build/EclDependencies.obj"
-symbol = "?FUN_004224a0@EclRunLowProposal@th08@@YIXPAEPAX@Z"
+symbol = "?ApplyRandomBiasedMove@EclRunLowProposal@th08@@YIXPAEPAX@Z"
 target_address = 0x004224A0
 size = 0x276
 
@@ -108505,7 +108505,7 @@ target = 0x017CE750
 [[units]]
 name = "supervisor-loading-vms-mode2-00448972"
 object = "build/objdiff/reimpl/Supervisor.obj"
-symbol = "th08::Supervisor::FUN_00448972"
+symbol = "th08::Supervisor::BeginLoadingCompletion"
 target_address = 0x00448972
 size = 0x58
 
@@ -108615,7 +108615,7 @@ size = 0x1B0
 [[units.relocations]]
 offset = 0xF
 type = "REL32"
-symbol = "?FUN_0042adb0@EnemyOverlay@EclOperands@th08@@QAEXH@Z"
+symbol = "?DetachEnemyChain@EnemyOverlay@EclOperands@th08@@QAEXH@Z"
 target = 0x0042ADB0
 
 [[units.relocations]]
@@ -113372,7 +113372,7 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0xCB0
 type = "REL32"
-symbol = "?FUN_00448972@Supervisor@th08@@QAEXXZ"
+symbol = "?BeginLoadingCompletion@Supervisor@th08@@QAEXXZ"
 target = 0x00448972
 
 [[units.relocations]]
@@ -113438,7 +113438,7 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0xD31
 type = "REL32"
-symbol = "?FUN_00448972@Supervisor@th08@@QAEXXZ"
+symbol = "?BeginLoadingCompletion@Supervisor@th08@@QAEXXZ"
 target = 0x00448972
 
 [[units.relocations]]

@@ -1969,7 +1969,7 @@ void Supervisor::HideLoadingVms(void)
 }
 
 // FUNCTION: th08 0x448972
-void Supervisor::FUN_00448972()
+void Supervisor::BeginLoadingCompletion()
 {
     if (this->loadingVmsHaveBeenSetup == 1)
     {
