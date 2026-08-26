@@ -2750,3 +2750,46 @@ fixed target-owned layout symbols.  The focused four-file router falls from 15
 to 12 anonymous-identifier candidates; the whole-source router is now 5 raw,
 0 absolute, 103 anonymous, and 44 opaque candidates.  These are routing deltas,
 not completion percentages.
+
+### Residual raw-member closure — 2026-08-27
+
+Scope: the final five router-selected raw member expressions in
+`ItemManager::OnUpdate @ 0x00440500` and
+`BulletManager::SpawnSingleBullet @ 0x0042F5F0`, together with their asserted
+`PlayerRawShtFile`, `BulletTypeSprites`, and `Bullet` owners.  Post-change
+target-pinned packets replay both complete functions exact.  This is a source-
+readability closure for raw member arithmetic, not a claim that every retained
+anonymous byte is semantically understood.
+
+SHT evidence: target `0x0044054D` reads `Player::optionModeFlag @ +0x03`, then
+`0x00440558..0x0044056F` selects the dword at `PlayerRawShtFile +0x34` from the
+secondary or primary SHT owner.  `0x00440578` immediately loads it as a float
+and multiplies it by the frame-rate multiplier.  The resulting step scales
+ordinary/scattered item displacement and gravity; auto-collection instead
+uses the independent `itemAutoCollectSpeed @ +0x14`.  The field is therefore
+`itemMovementSpeed @ +0x34`, extending the previously asserted SHT prefix
+without guessing a more specific file-format label.
+
+Bullet evidence limit: full target `.text` inspection finds exactly one access
+to `Bullet +0xDBC`, the byte-one store at `0x0042F8E2`, and exactly two accesses
+to `BulletTypeSprites +0xD40`, the template-to-live byte copy at
+`0x0042FA2C/0x0042FA32`.  No consumer exists in the authored target corpus.
+The bytes are now directly addressable, offset-asserted `unknownDBC` and
+`unknownD40` members so the spawn code no longer needs nested byte-pointer
+casts, but their names and documentation remain explicitly neutral.
+
+VC7 oracle: fresh ItemManager replay passes **19 / 19 exact** and fresh
+BulletManager replay passes **24 / 24 exact**.  A required single-job cold
+build of all 75 comparison objects passes **1,106 / 1,106 exact** with zero
+failures, and the normal VC7 production image links.  No mapping, match,
+authored, global, or relocation ledger changed.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiles and links
+the complete i386 target, and `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verifies ELF32/ET_EXEC/i386 plus all
+fixed target-owned layout symbols.  Whole-source raw-member candidates fall
+from 5 to **0** while absolute-address candidates remain **0**.  Explicitly
+representing the two unknown Bullet bytes moves their repeated occurrences
+from opaque storage into the anonymous-identifier category, yielding 110
+anonymous and 42 opaque candidates; this category migration is not semantic
+progress for those bytes.

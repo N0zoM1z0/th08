@@ -126,7 +126,7 @@ struct BulletTypeSprites
     AnmVm spawnSlowVm;
     AnmVm despawnVm;
     Float3 collisionSize;
-    unknown_fields(0xd40, 1);
+    u8 unknownD40;
     u8 height;
     u8 drawBucketIndex;
     unknown_fields(0xd43, 1);
@@ -137,6 +137,7 @@ C_ASSERT(offsetof(BulletTypeSprites, spawnNormalVm) == 0x548);
 C_ASSERT(offsetof(BulletTypeSprites, spawnSlowVm) == 0x7ec);
 C_ASSERT(offsetof(BulletTypeSprites, despawnVm) == 0xa90);
 C_ASSERT(offsetof(BulletTypeSprites, collisionSize) == 0xd34);
+C_ASSERT(offsetof(BulletTypeSprites, unknownD40) == 0xd40);
 C_ASSERT(offsetof(BulletTypeSprites, height) == 0xd41);
 C_ASSERT(offsetof(BulletTypeSprites, drawBucketIndex) == 0xd42);
 
@@ -300,7 +301,7 @@ struct Bullet
     unknown_fields(0xdb6, 2);
     u16 state;
     u16 offscreenFrames;
-    unknown_fields(0xdbc, 1);
+    u8 unknownDBC;
     u8 isGrazed;
     u8 cancelledDuringSpawn;
     unknown_fields(0xdbf, 1);
@@ -327,6 +328,7 @@ C_ASSERT(offsetof(Bullet, transformFlags) == 0xdb0);
 C_ASSERT(offsetof(Bullet, color) == 0xdb4);
 C_ASSERT(offsetof(Bullet, state) == 0xdb8);
 C_ASSERT(offsetof(Bullet, offscreenFrames) == 0xdba);
+C_ASSERT(offsetof(Bullet, unknownDBC) == 0xdbc);
 C_ASSERT(offsetof(Bullet, isGrazed) == 0xdbd);
 C_ASSERT(offsetof(Bullet, cancelledDuringSpawn) == 0xdbe);
 C_ASSERT(offsetof(Bullet, nextInDrawBucket) == 0xdc0);

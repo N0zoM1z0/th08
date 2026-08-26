@@ -159,7 +159,7 @@ i32 BulletManager::SpawnSingleBullet(BulletSpawnDescriptor *descriptor, i32 inde
     }
 
     bullet->state = BULLET_STATE_FIRED;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(bullet) + 0xDBC) = 1;
+    bullet->unknownDBC = 1;
     bullet->isGrazed = 0;
     bullet->stateTimer = 0;
     bullet->collisionDisabled = 0;
@@ -179,8 +179,7 @@ i32 BulletManager::SpawnSingleBullet(BulletSpawnDescriptor *descriptor, i32 inde
     CopyBulletAnmVmCore(&bullet->sprites.bulletVm, &descriptor->templateSprites->bulletVm);
     CopyBulletAnmVmCore(&bullet->sprites.despawnVm, &descriptor->templateSprites->despawnVm);
     bullet->sprites.collisionSize = descriptor->templateSprites->collisionSize;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&bullet->sprites) + 0xD40) =
-        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0xD40);
+    bullet->sprites.unknownD40 = descriptor->templateSprites->unknownD40;
     bullet->sprites.height = descriptor->templateSprites->height;
     bullet->sprites.drawBucketIndex = descriptor->templateSprites->drawBucketIndex;
     bullet->transformSound = descriptor->transformSound;

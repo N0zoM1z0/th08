@@ -34,7 +34,7 @@ struct PlayerRawShtFile
     f32 focusedAxisSpeed;
     f32 normalDiagonalSpeed;
     f32 focusedDiagonalSpeed;
-    u32 unknownHeaderValue;
+    f32 itemMovementSpeed;
     PlayerShotPowerLevel shotPowerLevels[1];
 };
 C_ASSERT(offsetof(PlayerRawShtFile, shotPowerLevelCount) == 0x2);
@@ -49,6 +49,7 @@ C_ASSERT(offsetof(PlayerRawShtFile, normalAxisSpeed) == 0x24);
 C_ASSERT(offsetof(PlayerRawShtFile, focusedAxisSpeed) == 0x28);
 C_ASSERT(offsetof(PlayerRawShtFile, normalDiagonalSpeed) == 0x2C);
 C_ASSERT(offsetof(PlayerRawShtFile, focusedDiagonalSpeed) == 0x30);
+C_ASSERT(offsetof(PlayerRawShtFile, itemMovementSpeed) == 0x34);
 C_ASSERT(offsetof(PlayerRawShtFile, shotPowerLevels) == 0x38);
 
 struct PlayerCollisionRegion

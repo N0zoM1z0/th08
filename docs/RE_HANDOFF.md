@@ -749,6 +749,26 @@ fixed-layout verifier passes.  Four-file anonymous candidates fall from 15 to
 opaque.  `Hscr +0x166` and the reset-only/unused ResultScreen fields remain
 unknown rather than receiving speculative names.
 
+The residual raw-member batch closes all five remaining router-selected raw
+offset expressions.  `ItemManager::OnUpdate @ 0x00440500` now reads the
+asserted `PlayerRawShtFile::itemMovementSpeed @ +0x34` from the primary or
+secondary SHT according to `Player::optionModeFlag`; target dataflow uses it as
+the ordinary/scattered item movement and gravity step, distinct from
+autocollection speed.  `SpawnSingleBullet @ 0x0042F5F0` addresses the remaining
+`Bullet +0xDBC` and template `+0xD40` bytes through asserted direct members.
+Target-wide inspection still finds only one initialization and one copy with
+no consumer, so both Bullet names remain explicitly unknown.
+
+Post-change typed packets for both complete functions replay exact.  Fresh
+focused replay passes ItemManager **19 / 19 exact** and BulletManager **24 / 24
+exact**.  The required final single-job cold replay passes **1,106 / 1,106
+exact**, the normal VC7 image links, and the complete i386 Linux build plus
+fixed-layout verifier passes.  Whole-source raw-member and absolute-address
+candidates are now both **0**.  Replacing two opaque Bullet bytes with direct
+neutral members intentionally migrates repeated occurrences to the anonymous
+category, so the remaining router totals are 110 anonymous and 42 opaque; no
+semantic meaning is claimed for those bytes.
+
 Select the next independent field family with:
 
 ```bash

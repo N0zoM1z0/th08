@@ -200,9 +200,8 @@ void ItemManager::OnUpdate()
                    g_Player.primaryShtFile->itemCollectionBoxSize, 16.0f);
 
     this->itemCount = 0;
-    speed = *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&g_Player) + 3)
-                ? *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.secondaryShtFile) + 0x34)
-                : *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x34);
+    speed = g_Player.optionModeFlag ? g_Player.secondaryShtFile->itemMovementSpeed
+                                    : g_Player.primaryShtFile->itemMovementSpeed;
     speed *= g_Supervisor.framerateMultiplier;
 
     while (item != NULL)
