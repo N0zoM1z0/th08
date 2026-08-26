@@ -11,6 +11,7 @@ before repeating target analysis or compiler-shape probes.
 | Target identity, sections, inventory classes, repository layout | [ARCHITECTURE.md](ARCHITECTURE.md) | Stable project facts and evidence boundaries. |
 | Current milestone, deferred work, next bounded lane | [RE_HANDOFF.md](RE_HANDOFF.md) | Short, replaceable current state only. |
 | Evidence ranking and reconstruction loop | [RE_WORKFLOW.md](RE_WORKFLOW.md) | Durable operating method and acceptance language. |
+| Semantic field/type recovery and two-oracle acceptance | [SEMANTIC_RECONSTRUCTION.md](SEMANTIC_RECONSTRUCTION.md) | Evidence classes, bounded batch format, typed-layout rules, and VC7/portable validation matrix. |
 | Command selection and scratch lifecycle | [TOOLS.md](TOOLS.md) | Public entry points, copyable recipes, and tool limits. |
 | Exact authored totals | [PROGRESS.md](PROGRESS.md) and `config/matches.csv` | Generated totals and accepted per-address evidence. |
 | Target mappings and types | `config/mapping.csv`, `config/reccmp-*.csv` | Imported/reconciled leads; mapping alone is not exactness. |
@@ -38,6 +39,7 @@ before repeating target analysis or compiler-shape probes.
 | Translation-unit partition candidates | `scripts/analysis/report-tu-partition-candidates.py` | Deterministic ranking by target-order inversions/drift jumps, plus bounded per-object anchor details. This is routing evidence, not a boundary claim. |
 | Library candidate discovery | `scripts/analysis/propose-library-units.py` | Conservative review queue from one pinned archive; candidate status is not exact acceptance and must be promoted through an explicit unit plus `compare-library.py`. |
 | Stale object/PCH exact-state failures | Search `BUILD_MATCHING.md` for `cold-build` | Why focused historical successes cannot be promoted to a current aggregate without a cold full replay. |
+| Raw offsets, anonymous fields, and semantic naming | [SEMANTIC_RECONSTRUCTION.md](SEMANTIC_RECONSTRUCTION.md), `$th08-semantic`, then `scripts/analysis/report-semantic-debt.py` | Candidate scans are routing only. Accept one field family from target evidence plus applicable VC7 and portable oracle results. |
 
 Fast lookup recipes:
 

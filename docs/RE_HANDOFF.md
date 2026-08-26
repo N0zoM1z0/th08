@@ -4,6 +4,37 @@ This file records only the current durable state. Historical investigations
 belong in focused notes such as `RUNECL_FUNCTION_EXACT_NOTES.md`; live counts
 come from the ledgers, not this prose.
 
+## Active semantic reconstruction branch
+
+`semantic/typed-reconstruction` starts from `main@4cffb2a` and makes semantic
+source recovery the active bounded lane.  The bootstrap scope changes no game
+layout, function mapping, authored ledger, or accepted exact unit.  It adds the
+evidence/acceptance guide in `docs/SEMANTIC_RECONSTRUCTION.md`, the
+`$th08-semantic` workflow, and the read-only
+`scripts/analysis/report-semantic-debt.py` candidate router.
+
+The verified starting baseline is authored **1,107 / 1,107** and strict exact
+**1,105 / 1,107**; `config/claims.csv` is header-only.  Work one structure and
+one coherent field family at a time.  VC7 focused/aggregate replay remains the
+exact-code oracle, while the modern build and relevant Linux layout/runtime
+checks remain the portable behavior oracle.  Do not publish candidate counts as
+semantic progress.
+
+The expensive portable Linux package workflow is temporarily manual-only on
+this branch to accelerate push/PR iteration.  Local Linux build, layout, and
+runtime commands remain available and must still be used when a semantic batch
+touches their acceptance surface.  Restore the workflow's automatic
+`push`/`pull_request` triggers before merging this phase into a release lane.
+
+The first source batch has not been selected yet.  Start with:
+
+```bash
+python3 scripts/analysis/report-semantic-debt.py
+```
+
+Then prefer a small exact-backed field family over the largest anonymous
+manager.  Whole-executable TU/layout work below is deferred, not invalidated.
+
 ## Active playable-port branch
 
 `port/modern-windows-linux` is the independent playable reconstruction lane.

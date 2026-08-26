@@ -124,14 +124,38 @@ remain available for later diagnosis in `config/match-units.toml`; see
 `docs/RE_HANDOFF.md` for the bounded list. Do not treat a configured unit as an
 accepted result.
 
-The primary lane is now whole-executable reconstruction. Authored source is
-complete, all library inventory rows have bounded extents, exact archives are
-hash-pinned, and a reviewed subset of library members has a separate accepted
-ledger. Broad library/runtime scanning is paused: a normal executable already
-links, so additional library work must be requested by a concrete whole-image
-difference rather than by inventory percentage alone.
+The active lane on `semantic/typed-reconstruction` is semantic source recovery.
+Replace raw object offsets, anonymous fields, and absolute field views one
+coherent structure family at a time, following
+`docs/SEMANTIC_RECONSTRUCTION.md`. Existing accepted VC7 units are the binary
+oracle; the modern Windows/Linux source products are the portability and
+behavior oracle. Candidate counts from
+`scripts/analysis/report-semantic-debt.py` select work but are not a progress
+percentage or proof that every match should be rewritten.
 
-1. Start from a single-job cold normal build:
+Whole-executable layout reconstruction remains a valid deferred lane. Authored
+source is complete, all library inventory rows have bounded extents, exact
+archives are hash-pinned, and a reviewed subset of library members has a
+separate accepted ledger. Broad library/runtime scanning remains paused: a
+normal executable already links, so additional library work must be requested
+by a concrete whole-image difference rather than by inventory percentage alone.
+
+For one semantic batch:
+
+1. select one structure/field family and record the target users, offsets,
+   widths, evidence classes, affected exact units, and portable surface;
+2. add or preserve focused `sizeof`/`offsetof` assertions, then replace only
+   the layout-shaped expressions supported by that evidence;
+3. replay all affected accepted VC7 units and compile/link the modern target;
+4. after a shared layout, PCH, inline, owner, or fixed-address change, run the
+   cold aggregate VC7 gate and the applicable Linux layout/runtime checks;
+5. record the accepted batch in `docs/SEMANTIC_RECONSTRUCTION.md`, without
+   changing authored/exact totals for a naming-only improvement.
+
+For the deferred whole-executable lane, start from a single-job cold normal
+build:
+
+1. Run:
 
    ```bash
    python3 scripts/build.py --fresh
