@@ -794,7 +794,8 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
     this->flags &= ~0x800;
     this->spellEffect = reinterpret_cast<u8 *>(g_EffectManager.FUN_00425870(
         (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0) ? 52 : 39,
-        reinterpret_cast<D3DXVECTOR3 *>(this->activeEnemy + 0x2D34), 1, 1, -1));
+        reinterpret_cast<D3DXVECTOR3 *>(
+            &reinterpret_cast<Enemy *>(this->activeEnemy)->position), 1, 1, -1));
     *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x50) = 0;
     *reinterpret_cast<ZunTimer *>(this->spellEffect + 0xA4) = 100;
     *reinterpret_cast<u8 *>(this->spellEffect + 0xF8) = 6;
@@ -803,7 +804,9 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
     *reinterpret_cast<f32 *>(this->spellEffect + 0x23C) = 64.0f;
     *reinterpret_cast<f32 *>(this->spellEffect + 0x248) = 0.0f;
     *reinterpret_cast<f32 *>(this->spellEffect + 0x20C) = 64.0f;
-    *reinterpret_cast<D3DXVECTOR3 *>(this->spellEffect + 0x2A4) = *reinterpret_cast<D3DXVECTOR3 *>(this->activeEnemy + 0x2D34);
+    *reinterpret_cast<D3DXVECTOR3 *>(this->spellEffect + 0x2A4) =
+        *reinterpret_cast<D3DXVECTOR3 *>(
+            &reinterpret_cast<Enemy *>(this->activeEnemy)->position);
     *reinterpret_cast<i32 *>(this->spellEffect + 0x324) = 64;
     *reinterpret_cast<i32 *>(this->spellEffect + 0x318) = 0;
     *reinterpret_cast<f32 *>(this->spellEffect + 0x314) = 256.0f;
@@ -1354,8 +1357,8 @@ i32 Spellcard::OnUpdateImpl()
         if (((this->flags >> 6) & 1) == 0)
         {
         *reinterpret_cast<Float3 *>(this->spellEffect + 0x2E0) =
-            ((*reinterpret_cast<Float3 *>(this->activeEnemy + 0x2D34) +
-              *reinterpret_cast<Float3 *>(this->activeEnemy + 0x2D40)) -
+            ((reinterpret_cast<Enemy *>(this->activeEnemy)->position +
+              reinterpret_cast<Enemy *>(this->activeEnemy)->positionOffset) -
              *reinterpret_cast<Float3 *>(this->spellEffect + 0x2E0)) /
                 16.0f +
             *reinterpret_cast<Float3 *>(this->spellEffect + 0x2E0);

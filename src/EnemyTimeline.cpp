@@ -42,7 +42,7 @@ void *EnemyManager::SpawnEnemy1(i32 type, const D3DXVECTOR3 *position, i32 a, i3
         reinterpret_cast<EnemySpawnFlags *>(reinterpret_cast<u8 *>(enemy) + 0x3324)->spawnVariant = flags;
         if (a >= 0)
             enemy->life = a;
-        enemy->vector2d34 = *reinterpret_cast<const Float3 *>(position);
+        enemy->position = *reinterpret_cast<const Float3 *>(position);
         g_EclManager.CallEclSub(
             reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage), (i16)type);
         if (g_EclManager.RunEcl(enemy) == ZUN_ERROR)
@@ -98,7 +98,7 @@ void *EnemyManager::SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i3
         enemy->enemyIndex = i;
         if (a >= 0)
             enemy->life = a;
-        enemy->vector2d34 = *reinterpret_cast<const Float3 *>(position);
+        enemy->position = *reinterpret_cast<const Float3 *>(position);
         g_EclManager.CallEclSub(
             reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage), (i16)type);
         *reinterpret_cast<EnemyContextCopy *>(

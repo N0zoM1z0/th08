@@ -899,3 +899,81 @@ candidates, anonymous identifiers from 601 to 600, and opaque storage from 73
 to 72.  Those counts are routing aids, not completion percentages.  The next
 coherent Enemy/ECL family is the motion controller at `+0x2D34..+0x2DEB`,
 followed by its control flags and boundary/presentation state.
+
+### Enemy motion controller — 2026-08-26
+
+Scope: `EclManager::RunEcl @ 0x004184B0`, the motion helpers at
+`0x00420D10/0x00420F40/0x004222B0`, `Enemy::UpdateMovement @ 0x00422C40`,
+`EnemyManager::OnUpdate @ 0x0042C660`, `Enemy::IntegrateVelocity @
+0x0042DEB0`, both operand resolvers, the ECL extension/timeline paths, and all
+Player, Effect, Spellcard, and Enemy users of `Enemy + 0x2D34..+0x2DEB`.
+
+Observed: `position @ +0x2D34` is the logical/local position manipulated by
+ECL motion opcodes.  `positionOffset @ +0x2D40` is added by the attachment
+path, and `worldPosition @ +0x2D88` is the resulting collision/render
+position.  `velocity @ +0x2D4C` is integrated into the logical position;
+`previousPosition @ +0x2D58` retains its pre-update value, while
+`lastFrameDisplacement @ +0x2D64` records the completed-frame delta before
+the next integration.  `hitboxDimensions @ +0x2D70` is the primary collision
+box and `secondaryHitboxDimensions @ +0x2D7C` gates the optional secondary
+Player-shot damage test.
+
+The linear controller uses `movementAngle @ +0x2D94`,
+`angularVelocity @ +0x2D98`, `speed @ +0x2DA8`, and
+`acceleration @ +0x2DAC`.  The polar
+controller uses `orbitAngle @ +0x2D9C`, `orbitAngularVelocity @ +0x2DA0`,
+`orbitRadius @ +0x2DB0`, `radialVelocity @ +0x2DB4`, and the shared origin at
+`movementInterpolationOrigin @ +0x2DD0`.  `parentEnemy @ +0x2DA4` links child
+spawn, follow, and death behavior.  `shootOffset @ +0x2DB8` feeds bullet and
+laser spawn positions.  Timed displacement uses
+`movementInterpolationDelta @ +0x2DC4`, the same origin,
+`movementTimer @ +0x2DDC`, and `movementDuration @ +0x2DE8`.
+
+Corroborated: TH06 preserves the earlier sequence of position, primary
+hitbox, axis speed, angle/angular velocity, speed/acceleration, shoot offset,
+interpolation state, timer, and duration.  TH08 target dataflow independently
+establishes the additional prior/displacement/world position, secondary
+hitbox, orbit, and parent layers; no TH06 offset or field extent is imported.
+
+Inference: the movement, collision, ownership, and timing names are
+high-confidence behavior names because every producer and consumer agrees.
+The flags at `Enemy + 0x3324` remain locally viewed in this batch: their
+movement-mode, easing, mirroring, and attachment bits need to be recovered as
+one adjacent control-state family rather than hidden inside this continuous
+field layout.
+
+Layout: assertions pin every field from `+0x2D34` through `+0x2DE8`, including
+all `Float3` extents, the parent pointer, `ZunTimer`, and the unchanged
+`sizeof(Enemy) == 0x53D0`.  No member width, arithmetic order, callback ABI,
+timer operation, or ECL operand identity changed.
+
+VC7 source-shape note: ECL opcode 169 in `RunEcl` retains a named,
+layout-asserted byte view of `position` through
+`TH08_ECL_ENEMY_POSITION_OFFSET`.  A direct C++ member expression changes the
+target's chained x87 comparison by six bytes under VC7 even though its value
+and offset are identical.  The exception is confined to that handler and is
+not evidence for an anonymous layout.
+
+VC7 oracle: post-rename focused replay passed **287 / 287** accepted units.
+Target-pinned fact packets for `UpdateMovement`, `IntegrateVelocity`, and the
+polar-motion helper independently replayed exact.  The required non-reuse
+`verify-exact-units.py --all --json` cold-built all 75 configured objects and
+passed **1,105 / 1,105** with no failures.  A subsequent normal VC7 production
+image linked successfully; the two formerly anonymous core functions are now
+tracked consistently as `Enemy::UpdateMovement` and
+`Enemy::IntegrateVelocity`.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiled and linked
+the complete i386 target, and `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 plus all
+fixed target-owned layout symbols.  No isolated automated Enemy-motion
+gameplay smoke exists, so no runtime smoke is claimed.
+
+Result: every authored raw view of the continuous Enemy motion range
+`+0x2D34..+0x2DEB` is replaced by an asserted owner, apart from the documented
+VC7 source-shape view of the same named `position` field.  The routing report
+falls from 1,344 to 1,295 raw-member candidates; anonymous identifiers remain
+600 and opaque storage falls from 72 to 70.  Those counts are routing aids,
+not completion percentages.  The next coherent Enemy/ECL family is the
+control flags at `+0x3324/+0x3328` and their adjacent boundary/presentation
+state.

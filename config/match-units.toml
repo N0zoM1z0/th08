@@ -5709,7 +5709,7 @@ target = 0x00406640
 [[units.relocations]]
 offset = 0x67F8
 type = "REL32"
-symbol = "?FUN_00422c40@Enemy@th08@@QAEXXZ"
+symbol = "?UpdateMovement@Enemy@th08@@QAEXXZ"
 target = 0x00422C40
 
 [[units.relocations]]
@@ -9881,7 +9881,7 @@ target = 0x0042C180
 [[units.relocations]]
 offset = 0x387
 type = "REL32"
-symbol = "?FUN_0042deb0@Enemy@th08@@QAEXXZ"
+symbol = "?IntegrateVelocity@Enemy@th08@@QAEXXZ"
 target = 0x0042DEB0
 
 [[units.relocations]]
@@ -102389,7 +102389,7 @@ target = 0x0040BC40
 [[units]]
 name = "enemy-integrate-motion-0042deb0"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "th08::Enemy::FUN_0042deb0"
+symbol = "th08::Enemy::IntegrateVelocity"
 target_address = 0x0042DEB0
 size = 0xFC
 
@@ -105424,7 +105424,7 @@ size = 0x16
 [[units]]
 name = "enemy-motion-integrator-00422c40"
 object = "build/EnemyManager.obj"
-symbol = "?FUN_00422c40@Enemy@th08@@QAEXXZ"
+symbol = "?UpdateMovement@Enemy@th08@@QAEXXZ"
 target_address = 0x00422C40
 size = 0x462
 compare_size = 0x47A

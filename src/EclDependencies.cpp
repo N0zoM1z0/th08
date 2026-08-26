@@ -107,17 +107,17 @@ C_ASSERT(sizeof(TimedPolarFlags) == 4);
 void __fastcall StartTimedPolarDisplacement(
     EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction, f32 angle)
 {
-    *reinterpret_cast<f32 *>(DEP_BYTES(enemy) + 0x2dc4) =
+    reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.x =
         cosf(angle) * DEP_READ_FLOAT(enemy, instruction, 2) *
         DEP_READ_INT(enemy, instruction, 0);
-    *reinterpret_cast<f32 *>(DEP_BYTES(enemy) + 0x2dc8) =
+    reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.y =
         sinf(angle) * DEP_READ_FLOAT(enemy, instruction, 2) *
         DEP_READ_INT(enemy, instruction, 0);
-    *reinterpret_cast<f32 *>(DEP_BYTES(enemy) + 0x2dcc) = 0.0f;
-    *reinterpret_cast<Float3 *>(DEP_BYTES(enemy) + 0x2dd0) =
-        *reinterpret_cast<Float3 *>(DEP_BYTES(enemy) + 0x2d88);
-    *reinterpret_cast<ZunTimer *>(DEP_BYTES(enemy) + 0x2ddc) =
-        (*reinterpret_cast<i32 *>(DEP_BYTES(enemy) + 0x2de8) =
+    reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.z = 0.0f;
+    reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin =
+        reinterpret_cast<Enemy *>(enemy)->worldPosition;
+    reinterpret_cast<Enemy *>(enemy)->movementTimer =
+        (reinterpret_cast<Enemy *>(enemy)->movementDuration =
              DEP_READ_INT(enemy, instruction, 0));
     reinterpret_cast<TimedPolarFlags *>(DEP_BYTES(enemy) + 0x3324)->easingMode =
         DEP_READ_INT(enemy, instruction, 1);
@@ -131,7 +131,7 @@ void __fastcall BeginBoundaryAwareMove(
     f32 angle;
 
     if (EclOperands::g_TargetPlayerPosition017D61AC.x <
-        *reinterpret_cast<f32 *>(DEP_BYTES(enemy) + 0x2d34))
+        reinterpret_cast<Enemy *>(enemy)->position.x)
     {
         angle = AddNormalizeAngle(
             g_Rng.GetRandomF32InRange(1.5707964f) + 2.3561945f, 0.0f);
@@ -141,7 +141,7 @@ void __fastcall BeginBoundaryAwareMove(
         angle = g_Rng.GetRandomF32InRange(1.5707964f) - 0.78539819f;
     }
 
-    if (reinterpret_cast<Float3 *>(DEP_BYTES(enemy) + 0x2d34)->operator float *()[0] <
+    if (reinterpret_cast<Enemy *>(enemy)->position.operator float *()[0] <
         *reinterpret_cast<f32 *>(DEP_BYTES(enemy) + 0x3340) + 96.0f)
     {
         if (angle > 1.5707964f)
@@ -150,23 +150,23 @@ void __fastcall BeginBoundaryAwareMove(
             angle = -3.1415927f - angle;
     }
 
-    if (reinterpret_cast<Float3 *>(DEP_BYTES(enemy) + 0x2d34)->operator float *()[0] >
+    if (reinterpret_cast<Enemy *>(enemy)->position.operator float *()[0] >
         *reinterpret_cast<f32 *>(DEP_BYTES(enemy) + 0x3348) - 96.0f)
     {
         if (angle < 1.5707964f && angle >= 0.0f)
-            angle = 3.1415927f - *reinterpret_cast<f32 *>(DEP_BYTES(enemy) + 0x2d94);
+            angle = 3.1415927f - reinterpret_cast<Enemy *>(enemy)->movementAngle;
         else if (angle > -1.5707964f && angle <= 0.0f)
             angle = -3.1415927f - angle;
     }
 
-    if (reinterpret_cast<Float3 *>(DEP_BYTES(enemy) + 0x2d34)->operator float *()[1] <
+    if (reinterpret_cast<Enemy *>(enemy)->position.operator float *()[1] <
             *reinterpret_cast<f32 *>(DEP_BYTES(enemy) + 0x3344) + 48.0f &&
         angle < 0.0f)
     {
         angle = -angle;
     }
 
-    if (reinterpret_cast<Float3 *>(DEP_BYTES(enemy) + 0x2d34)->operator float *()[1] >
+    if (reinterpret_cast<Enemy *>(enemy)->position.operator float *()[1] >
             *reinterpret_cast<f32 *>(DEP_BYTES(enemy) + 0x334c) - 48.0f &&
         angle > 0.0f)
     {
@@ -175,14 +175,14 @@ void __fastcall BeginBoundaryAwareMove(
 
     if (DEP_READ_INT(enemy, instruction, 0) <= 0)
     {
-        *reinterpret_cast<f32 *>(DEP_BYTES(enemy) + 0x2d94) = angle;
-        *reinterpret_cast<f32 *>(DEP_BYTES(enemy) + 0x2da8) =
+        reinterpret_cast<Enemy *>(enemy)->movementAngle = angle;
+        reinterpret_cast<Enemy *>(enemy)->speed =
             DEP_READ_FLOAT(enemy, instruction, 2);
         *reinterpret_cast<u32 *>(DEP_BYTES(enemy) + 0x3324) =
             (*reinterpret_cast<u32 *>(DEP_BYTES(enemy) + 0x3324) & 0xffffcfffU) |
             0x1000U;
-        *reinterpret_cast<i32 *>(DEP_BYTES(enemy) + 0x2de8) = 0;
-        *reinterpret_cast<ZunTimer *>(DEP_BYTES(enemy) + 0x2ddc) = 0;
+        reinterpret_cast<Enemy *>(enemy)->movementDuration = 0;
+        reinterpret_cast<Enemy *>(enemy)->movementTimer = 0;
     }
     else
     {
@@ -210,11 +210,11 @@ void __fastcall FUN_004224a0(u8 *rawEnemy, void *rawInstruction)
 
     if (g_Rng.GetRandomU32InRange(4) != 0)
     {
-        if (EclOperands::g_TargetPlayerPosition017D61AC.x < reinterpret_cast<Enemy *>(rawEnemy)->vector2d34.x)
+        if (EclOperands::g_TargetPlayerPosition017D61AC.x < reinterpret_cast<Enemy *>(rawEnemy)->position.x)
         {
             wrappedPlayerX = EclOperands::g_TargetPlayerPosition017D61AC.x + 384.0f;
-            if (reinterpret_cast<Enemy *>(rawEnemy)->vector2d34.x - EclOperands::g_TargetPlayerPosition017D61AC.x <
-                wrappedPlayerX - reinterpret_cast<Enemy *>(rawEnemy)->vector2d34.x)
+            if (reinterpret_cast<Enemy *>(rawEnemy)->position.x - EclOperands::g_TargetPlayerPosition017D61AC.x <
+                wrappedPlayerX - reinterpret_cast<Enemy *>(rawEnemy)->position.x)
             {
                 angle = AddNormalizeAngle(
                     g_Rng.GetRandomF32InRange(1.5707964f) + 2.3561945f, 0.0f);
@@ -228,8 +228,8 @@ void __fastcall FUN_004224a0(u8 *rawEnemy, void *rawInstruction)
         else
         {
             wrappedPlayerX = EclOperands::g_TargetPlayerPosition017D61AC.x - 384.0f;
-            if (EclOperands::g_TargetPlayerPosition017D61AC.x - reinterpret_cast<Enemy *>(rawEnemy)->vector2d34.x <
-                reinterpret_cast<Enemy *>(rawEnemy)->vector2d34.x - wrappedPlayerX)
+            if (EclOperands::g_TargetPlayerPosition017D61AC.x - reinterpret_cast<Enemy *>(rawEnemy)->position.x <
+                reinterpret_cast<Enemy *>(rawEnemy)->position.x - wrappedPlayerX)
             {
                 angle = g_Rng.GetRandomF32InRange(1.5707964f) - 0.78539819f;
             }
@@ -245,13 +245,13 @@ void __fastcall FUN_004224a0(u8 *rawEnemy, void *rawInstruction)
         angle = g_Rng.GetRandomF32SignedInRange(3.1415927f);
     }
 
-    if (reinterpret_cast<Float3 *>(rawEnemy + 0x2d34)->operator float *()[1] <
+    if (reinterpret_cast<Enemy *>(rawEnemy)->position.operator float *()[1] <
             RM_FLOAT(0x3344) + 48.0f &&
         angle < 0.0f)
     {
         angle = -angle;
     }
-    if (reinterpret_cast<Float3 *>(rawEnemy + 0x2d34)->operator float *()[1] >
+    if (reinterpret_cast<Enemy *>(rawEnemy)->position.operator float *()[1] >
             RM_FLOAT(0x334c) - 48.0f &&
         angle > 0.0f)
     {
@@ -260,12 +260,12 @@ void __fastcall FUN_004224a0(u8 *rawEnemy, void *rawInstruction)
 
     if (RM_READ_INT(0) <= 0)
     {
-        RM_FLOAT(0x2d94) = angle;
-        RM_FLOAT(0x2da8) = RM_READ_FLOAT(2);
+        reinterpret_cast<Enemy *>(rawEnemy)->movementAngle = angle;
+        reinterpret_cast<Enemy *>(rawEnemy)->speed = RM_READ_FLOAT(2);
         *reinterpret_cast<u32 *>(rawEnemy + 0x3324) =
             (*reinterpret_cast<u32 *>(rawEnemy + 0x3324) & 0xffffcfffU) | 0x1000U;
-        *reinterpret_cast<i32 *>(rawEnemy + 0x2de8) = 0;
-        *reinterpret_cast<ZunTimer *>(rawEnemy + 0x2ddc) = 0;
+        reinterpret_cast<Enemy *>(rawEnemy)->movementDuration = 0;
+        reinterpret_cast<Enemy *>(rawEnemy)->movementTimer = 0;
     }
     else
     {
@@ -639,7 +639,7 @@ EclOperands::EnemyOverlay *__fastcall SpawnChildAlternate0041F280(
         position.x = DEP_READ_FLOAT(parent, instruction, 1);
         position.y = DEP_READ_FLOAT(parent, instruction, 2);
         position.z = 0.0f;
-        position += *reinterpret_cast<Float3 *>(parent->bytes + 0x2d88);
+        position += reinterpret_cast<Enemy *>(parent)->worldPosition;
         child = reinterpret_cast<EclOperands::EnemyOverlay *>(
             g_EnemyManager.SpawnEnemy2(
                 *reinterpret_cast<i32 *>(instruction->operands),
@@ -725,16 +725,16 @@ void __fastcall DispatchShotInstruction(u8 *enemy, RawInstruction *instruction)
          ((*reinterpret_cast<u32 *>(enemy + 0x3324) >> 11) & 1) != 0))
         return;
     if ((*reinterpret_cast<f32 *>(enemy + 0x3350) > 0.0f) &&
-        (((*reinterpret_cast<f32 *>(enemy + 0x2d88) - EclOperands::g_TargetPlayerPosition017D61AC.x) *
-             (*reinterpret_cast<f32 *>(enemy + 0x2d88) - EclOperands::g_TargetPlayerPosition017D61AC.x) +
-         (*reinterpret_cast<f32 *>(enemy + 0x2d8c) - EclOperands::g_TargetPlayerPosition017D61AC.y) *
-             (*reinterpret_cast<f32 *>(enemy + 0x2d8c) - EclOperands::g_TargetPlayerPosition017D61AC.y)) <
+        (((reinterpret_cast<Enemy *>(enemy)->worldPosition.x - EclOperands::g_TargetPlayerPosition017D61AC.x) *
+             (reinterpret_cast<Enemy *>(enemy)->worldPosition.x - EclOperands::g_TargetPlayerPosition017D61AC.x) +
+         (reinterpret_cast<Enemy *>(enemy)->worldPosition.y - EclOperands::g_TargetPlayerPosition017D61AC.y) *
+             (reinterpret_cast<Enemy *>(enemy)->worldPosition.y - EclOperands::g_TargetPlayerPosition017D61AC.y)) <
         *reinterpret_cast<f32 *>(enemy + 0x3350)))
         return;
 
             descriptor->position =
-                reinterpret_cast<Enemy *>(enemy)->vector2d88 +
-                reinterpret_cast<Enemy *>(enemy)->vector2db8;
+                reinterpret_cast<Enemy *>(enemy)->worldPosition +
+                reinterpret_cast<Enemy *>(enemy)->shootOffset;
 
             packed = args->bulletType;
             descriptor->bulletType = (instruction->operandFlags & 1)
@@ -829,16 +829,16 @@ void Enemy::FUN_00423150()
             direction = 0;
             if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 18) & 1) == 0)
             {
-                if (this->vector2d4c.x < -0.01f)
+                if (this->velocity.x < -0.01f)
                     direction = 1;
-                else if (this->vector2d4c.x > 0.01f)
+                else if (this->velocity.x > 0.01f)
                     direction = 2;
             }
             else
             {
-                if (this->vector2d4c.x < -0.01f)
+                if (this->velocity.x < -0.01f)
                     direction = 2;
-                else if (this->vector2d4c.x > 0.01f)
+                else if (this->velocity.x > 0.01f)
                     direction = 1;
             }
 

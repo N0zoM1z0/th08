@@ -280,7 +280,7 @@ th08::GameManager::ScaleFloatBasedOnRank,0x422b80,function
 th08::AsciiManager::FUN_00422bb0,0x422bb0,function
 th08::AsciiManager::SetBossMarkerPosition,0x422be0,function
 th08::Gui::SetBossPresent,0x422c20,function
-th08::Enemy::FUN_00422c40,0x422c40,function
+th08::Enemy::UpdateMovement,0x422c40,function
 th08::Gui::FUN_004230c0,0x4230c0,function
 th08::Gui::SetBossGaugeSlot,0x4230e0,function
 th08::Gui::SetBossGaugeValue,0x423110,function
@@ -408,7 +408,7 @@ th08::EnemyManager::FUN_0042c3b0,0x42c3b0,function
 th08::Enemy::FUN_0042c420,0x42c420,function
 th08::EnemyManager::RegisterChain,0x42c590,function
 th08::EnemyManager::OnUpdate,0x42c660,function
-th08::Enemy::FUN_0042deb0,0x42deb0,function
+th08::Enemy::IntegrateVelocity,0x42deb0,function
 th08::EclManager::GetTimelineCount,0x42dfb0,function
 th08::EclManager::GetTimeline,0x42dfd0,function
 th08::Spellcard::FUN_0042DFF0,0x42dff0,function

@@ -66,38 +66,38 @@ void __fastcall FUN_00423400(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     i32 changed;
 
     changed = 0;
-    if (*reinterpret_cast<f32 *>(enemy->bytes + 0x2d34) <= 0.0f ||
-        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d34) >= 384.0f)
+    if (reinterpret_cast<Enemy *>(enemy)->position.x <= 0.0f ||
+        reinterpret_cast<Enemy *>(enemy)->position.x >= 384.0f)
     {
-        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d4c) =
-            -*reinterpret_cast<f32 *>(enemy->bytes + 0x2d4c);
+        reinterpret_cast<Enemy *>(enemy)->velocity.x =
+            -reinterpret_cast<Enemy *>(enemy)->velocity.x;
         changed = 1;
     }
 
-    if (*reinterpret_cast<f32 *>(enemy->bytes + 0x2d50) <
+    if (reinterpret_cast<Enemy *>(enemy)->velocity.y <
         ECL_EX_CONTEXT(enemy)->floatVariables[7])
     {
-        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d50) +=
+        reinterpret_cast<Enemy *>(enemy)->velocity.y +=
             ECL_EX_CONTEXT(enemy)->floatVariables[6];
         changed = 1;
     }
 
-    if (*reinterpret_cast<f32 *>(enemy->bytes + 0x2d38) < -64.0f)
+    if (reinterpret_cast<Enemy *>(enemy)->position.y < -64.0f)
     {
-        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d50) =
-            -*reinterpret_cast<f32 *>(enemy->bytes + 0x2d50);
+        reinterpret_cast<Enemy *>(enemy)->velocity.y =
+            -reinterpret_cast<Enemy *>(enemy)->velocity.y;
         changed = 1;
     }
-    else if (*reinterpret_cast<f32 *>(enemy->bytes + 0x2d38) >= 480.0f)
+    else if (reinterpret_cast<Enemy *>(enemy)->position.y >= 480.0f)
     {
         *reinterpret_cast<u32 *>(enemy->bytes + 0x3324) &= ~0x10000000U;
     }
 
     if (changed)
     {
-        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d94) =
-            VectorAngle(*reinterpret_cast<f32 *>(enemy->bytes + 0x2d50),
-                        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d4c));
+        reinterpret_cast<Enemy *>(enemy)->movementAngle =
+            VectorAngle(reinterpret_cast<Enemy *>(enemy)->velocity.y,
+                        reinterpret_cast<Enemy *>(enemy)->velocity.x);
     }
 }
 
@@ -105,8 +105,8 @@ void __fastcall FUN_00423400(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 void __fastcall FUN_00423530(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
     AnmVm *effect;
-    effect = g_EffectManager.FUN_00425870(56, reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2d34), 9, 1, -1);
-    effect = g_EffectManager.FUN_00425870(56, reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2d34), 10, 1, -1);
+    effect = g_EffectManager.FUN_00425870(56, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
+    effect = g_EffectManager.FUN_00425870(56, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
     g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 97);
     g_EclExUpdateCallback = reinterpret_cast<void *>(&FUN_004235a0);
 }
@@ -279,8 +279,8 @@ void __fastcall FUN_00423a60(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 void __fastcall FUN_00423db0(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
     AnmVm *effect;
-    effect = g_EffectManager.FUN_00425870(65, reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2d34), 9, 1, -1);
-    effect = g_EffectManager.FUN_00425870(65, reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2d34), 10, 1, -1);
+    effect = g_EffectManager.FUN_00425870(65, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
+    effect = g_EffectManager.FUN_00425870(65, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
     g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 99);
     g_EclExUpdateCallback = reinterpret_cast<void *>(&FUN_004235a0);
 }
@@ -374,8 +374,8 @@ void __fastcall FUN_00424130(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 void __fastcall FUN_00424170(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
     AnmVm *effect;
-    effect = g_EffectManager.FUN_00425870(58, reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2d34), 9, 1, -1);
-    effect = g_EffectManager.FUN_00425870(58, reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2d34), 10, 1, -1);
+    effect = g_EffectManager.FUN_00425870(58, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
+    effect = g_EffectManager.FUN_00425870(58, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
     g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 101);
     g_EclExUpdateCallback = reinterpret_cast<void *>(&FUN_004235a0);
 }
@@ -471,7 +471,8 @@ void __fastcall FUN_004244f0(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     EclOperands::EnemyOverlay *cursor;
 
     groupId = ECL_EX_CONTEXT(enemy)->extraIntVariables[2];
-    cursor = *reinterpret_cast<EclOperands::EnemyOverlay **>(enemy->bytes + 0x2da4);
+    cursor = reinterpret_cast<EclOperands::EnemyOverlay *>(
+        reinterpret_cast<Enemy *>(enemy)->parentEnemy);
     if (cursor == NULL)
         return;
 
@@ -503,25 +504,25 @@ void __fastcall FUN_004244f0(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     if (groupId != 0)
     {
         targetAngle = AddNormalizeAngle(
-            *reinterpret_cast<f32 *>(firstChild->bytes + 0x2d9c),
+            reinterpret_cast<Enemy *>(firstChild)->orbitAngle,
             static_cast<f32>(groupId) * 6.2831854820251465f / static_cast<f32>(count));
         if (ECL_EX_CONTEXT(firstChild)->intVariables[7] !=
             ECL_EX_CONTEXT(enemy)->intVariables[7])
         {
             targetAngle = AddNormalizeAngle(
-                targetAngle, *reinterpret_cast<f32 *>(firstChild->bytes + 0x2da0));
+                targetAngle, reinterpret_cast<Enemy *>(firstChild)->orbitAngularVelocity);
         }
 
-        delta = AddNormalizeAngle(*reinterpret_cast<f32 *>(enemy->bytes + 0x2d9c),
-                                  *reinterpret_cast<f32 *>(enemy->bytes + 0x2da0));
+        delta = AddNormalizeAngle(reinterpret_cast<Enemy *>(enemy)->orbitAngle,
+                                  reinterpret_cast<Enemy *>(enemy)->orbitAngularVelocity);
         delta = targetAngle - delta;
         if (fabsf(delta) > ZUN_PI)
         {
             delta = delta > 0.0f ? -6.2831854820251465f + delta : 6.2831854820251465f + delta;
         }
         delta *= 0.02f;
-        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d9c) =
-            AddNormalizeAngle(*reinterpret_cast<f32 *>(enemy->bytes + 0x2d9c), delta);
+        reinterpret_cast<Enemy *>(enemy)->orbitAngle =
+            AddNormalizeAngle(reinterpret_cast<Enemy *>(enemy)->orbitAngle, delta);
     }
 }
 
@@ -547,9 +548,9 @@ void __fastcall FUN_00424a00(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 void __fastcall FUN_00424730(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
     Float3 origin(
-        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d88) -
+        reinterpret_cast<Enemy *>(enemy)->worldPosition.x -
             ECL_EX_CONTEXT(enemy)->floatVariables[0],
-        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d8c) -
+        reinterpret_cast<Enemy *>(enemy)->worldPosition.y -
             ECL_EX_CONTEXT(enemy)->floatVariables[1],
         0.0f);
     Float3 outerSize(590.0f, 160.0f, 0.0f);
@@ -572,9 +573,9 @@ void __fastcall FUN_00424730(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 void __fastcall FUN_00424820(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
     Float3 origin(
-        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d34) -
+        reinterpret_cast<Enemy *>(enemy)->position.x -
             ECL_EX_CONTEXT(enemy)->floatVariables[0],
-        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d38) -
+        reinterpret_cast<Enemy *>(enemy)->position.y -
             ECL_EX_CONTEXT(enemy)->floatVariables[1],
         0.0f);
     Float3 outerSize(590.0f, 240.0f, 0.0f);
@@ -596,9 +597,9 @@ void __fastcall FUN_00424820(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 void __fastcall FUN_00424910(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
     Float3 origin(
-        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d88) -
+        reinterpret_cast<Enemy *>(enemy)->worldPosition.x -
             ECL_EX_CONTEXT(enemy)->floatVariables[0],
-        *reinterpret_cast<f32 *>(enemy->bytes + 0x2d8c) -
+        reinterpret_cast<Enemy *>(enemy)->worldPosition.y -
             ECL_EX_CONTEXT(enemy)->floatVariables[1],
         0.0f);
     Float3 outerSize(590.0f, 288.0f, 0.0f);
@@ -769,8 +770,7 @@ void __fastcall FUN_00424e50(EclOperands::EnemyOverlay *enemy, EclExInstruction 
         {
             if (ECL_EX_CONTEXT(child)->extraIntVariables[2] == 0)
             {
-                delta = bullet->position -
-                        *reinterpret_cast<Float3 *>(child->bytes + 0x2d34);
+                delta = bullet->position - reinterpret_cast<Enemy *>(child)->position;
                 if (D3DXVec3LengthSq(reinterpret_cast<D3DXVECTOR3 *>(&delta)) < 4096.0f)
                 {
                     ECL_EX_CONTEXT(child)->extraIntVariables[2] = 60;
@@ -935,9 +935,9 @@ void __fastcall FUN_00425290(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 void __fastcall FUN_00425390(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
     if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Player) + 0xfdc) != 0)
-        g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(enemy->bytes + 0x2d34), static_cast<ItemType>(3), 0);
+        g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(enemy)->position, static_cast<ItemType>(3), 0);
     else
-        g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(enemy->bytes + 0x2d34), static_cast<ItemType>(5), 0);
+        g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(enemy)->position, static_cast<ItemType>(5), 0);
 }
 
 #undef ECL_EX_CONTEXT

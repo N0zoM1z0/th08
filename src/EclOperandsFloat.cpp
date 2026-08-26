@@ -112,36 +112,36 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
     case 0x274A: return ECL_CONTEXT(this)->callParameterFloats[1];
     case 0x274B: return ECL_CONTEXT(this)->callParameterFloats[2];
     case 0x274C: return ECL_CONTEXT(this)->callParameterFloats[3];
-    case 0x273A: return ENEMY_FLOAT(this, 0x2D88);
-    case 0x273B: return ENEMY_FLOAT(this, 0x2D8C);
-    case 0x273C: return ENEMY_FLOAT(this, 0x2D90);
+    case 0x273A: return reinterpret_cast<Enemy *>(this)->worldPosition.x;
+    case 0x273B: return reinterpret_cast<Enemy *>(this)->worldPosition.y;
+    case 0x273C: return reinterpret_cast<Enemy *>(this)->worldPosition.z;
     case 0x273D: return (*reinterpret_cast<TargetVector3 *>(&g_Player.position)).x;
     case 0x273E: return (*reinterpret_cast<TargetVector3 *>(&g_Player.position)).y;
     case 0x273F: return (*reinterpret_cast<TargetVector3 *>(&g_Player.position)).z;
     case 0x276E: return ECL_CONTEXT(this)->extraFloatVariables[0];
     case 0x276F: return ECL_CONTEXT(this)->extraFloatVariables[1];
-    case 0x275A: return ENEMY_FLOAT(this, 0x2DD0);
-    case 0x275B: return ENEMY_FLOAT(this, 0x2DD4);
-    case 0x275C: return ENEMY_FLOAT(this, 0x2DD8);
-    case 0x275F: return ENEMY_FLOAT(this, 0x2DC4);
-    case 0x2760: return ENEMY_FLOAT(this, 0x2DC8);
-    case 0x2761: return ENEMY_FLOAT(this, 0x2DCC);
-    case 0x2765: return ENEMY_FLOAT(this, 0x2D64);
-    case 0x2766: return ENEMY_FLOAT(this, 0x2D68);
-    case 0x2767: return ENEMY_FLOAT(this, 0x2D6C);
+    case 0x275A: return reinterpret_cast<Enemy *>(this)->movementInterpolationOrigin.x;
+    case 0x275B: return reinterpret_cast<Enemy *>(this)->movementInterpolationOrigin.y;
+    case 0x275C: return reinterpret_cast<Enemy *>(this)->movementInterpolationOrigin.z;
+    case 0x275F: return reinterpret_cast<Enemy *>(this)->movementInterpolationDelta.x;
+    case 0x2760: return reinterpret_cast<Enemy *>(this)->movementInterpolationDelta.y;
+    case 0x2761: return reinterpret_cast<Enemy *>(this)->movementInterpolationDelta.z;
+    case 0x2765: return reinterpret_cast<Enemy *>(this)->lastFrameDisplacement.x;
+    case 0x2766: return reinterpret_cast<Enemy *>(this)->lastFrameDisplacement.y;
+    case 0x2767: return reinterpret_cast<Enemy *>(this)->lastFrameDisplacement.z;
     case 0x2768: return (f32)reinterpret_cast<Enemy *>(this)->lifeCallbackThresholds[0];
     case 0x2769: return (f32)reinterpret_cast<Enemy *>(this)->lifeCallbackThresholds[1];
     case 0x276A: return (f32)reinterpret_cast<Enemy *>(this)->lifeCallbackThresholds[2];
     case 0x276B: return (f32)reinterpret_cast<Enemy *>(this)->lifeCallbackThresholds[3];
     case 0x2740:
-        return g_Player.FUN_0044c1b0(reinterpret_cast<Float3 *>(&ENEMY_VECTOR(this, 0x2D88)));
-    case 0x2755: return ENEMY_FLOAT(this, 0x2D94);
-    case 0x2756: return ENEMY_FLOAT(this, 0x2D98);
-    case 0x2757: return ENEMY_FLOAT(this, 0x2DA8);
-    case 0x2758: return ENEMY_FLOAT(this, 0x2DAC);
-    case 0x2759: return ENEMY_FLOAT(this, 0x2DB0);
-    case 0x275D: return ENEMY_FLOAT(this, 0x2D9C);
-    case 0x275E: return ENEMY_FLOAT(this, 0x2DA0);
+        return g_Player.FUN_0044c1b0(&reinterpret_cast<Enemy *>(this)->worldPosition);
+    case 0x2755: return reinterpret_cast<Enemy *>(this)->movementAngle;
+    case 0x2756: return reinterpret_cast<Enemy *>(this)->angularVelocity;
+    case 0x2757: return reinterpret_cast<Enemy *>(this)->speed;
+    case 0x2758: return reinterpret_cast<Enemy *>(this)->acceleration;
+    case 0x2759: return reinterpret_cast<Enemy *>(this)->orbitRadius;
+    case 0x275D: return reinterpret_cast<Enemy *>(this)->orbitAngle;
+    case 0x275E: return reinterpret_cast<Enemy *>(this)->orbitAngularVelocity;
     case 0x2764: return (f32)*(u8 *)(bytes + 0x3313);
     case 0x2763: return (f32)reinterpret_cast<Enemy *>(this)->lastDamage;
 
@@ -149,12 +149,13 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
         return (f32)(ENEMY_HELPERS(this)->HasParentChain()
                          ? ENEMY_HELPERS(this)->CountParentChain()
                          : ENEMY_HELPERS(this)->HasAttachedEnemy()
-                               ? ((TargetEnemyHelpersOverlay *)*(void **)(bytes + 0x2DA4))->CountParentChain()
+                               ? reinterpret_cast<TargetEnemyHelpersOverlay *>(
+                                     reinterpret_cast<Enemy *>(this)->parentEnemy)->CountParentChain()
                                : 0);
 
     case 0x2742:
     {
-        Float3 delta = g_Player.position - *reinterpret_cast<Float3 *>(&ENEMY_VECTOR(this, 0x2D88));
+        Float3 delta = g_Player.position - reinterpret_cast<Enemy *>(this)->worldPosition;
         return D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&delta));
     }
     case 0x2771: return (f32)g_Player.IsYoukai();
@@ -199,9 +200,9 @@ f32 *__fastcall ResolveFloatLValue(EnemyOverlay *enemy, f32 *operand, u16 flags,
     case 0x274A: return &ECL_CONTEXT(enemy)->callParameterFloats[1];
     case 0x274B: return &ECL_CONTEXT(enemy)->callParameterFloats[2];
     case 0x274C: return &ECL_CONTEXT(enemy)->callParameterFloats[3];
-    case 0x273A: return &ENEMY_FLOAT(enemy, 0x2D34);
-    case 0x273B: return &ENEMY_FLOAT(enemy, 0x2D38);
-    case 0x273C: return &ENEMY_FLOAT(enemy, 0x2D3C);
+    case 0x273A: return &reinterpret_cast<Enemy *>(enemy)->position.x;
+    case 0x273B: return &reinterpret_cast<Enemy *>(enemy)->position.y;
+    case 0x273C: return &reinterpret_cast<Enemy *>(enemy)->position.z;
     case 0x273D: return &(*reinterpret_cast<TargetVector3 *>(&g_Player.position)).x;
     case 0x273E: return &(*reinterpret_cast<TargetVector3 *>(&g_Player.position)).y;
     case 0x273F: return &(*reinterpret_cast<TargetVector3 *>(&g_Player.position)).z;
@@ -212,19 +213,19 @@ f32 *__fastcall ResolveFloatLValue(EnemyOverlay *enemy, f32 *operand, u16 flags,
     case 0x2753: return &EclRunLowProposal::g_EclCallParameters.floats[2];
     case 0x2754: return &EclRunLowProposal::g_EclCallParameters.floats[3];
 
-    case 0x275A: return &ENEMY_FLOAT(enemy, 0x2DD0);
-    case 0x275B: return &ENEMY_FLOAT(enemy, 0x2DD4);
-    case 0x275C: return &ENEMY_FLOAT(enemy, 0x2DD8);
-    case 0x275F: return &ENEMY_FLOAT(enemy, 0x2DC4);
-    case 0x2760: return &ENEMY_FLOAT(enemy, 0x2DC8);
-    case 0x2761: return &ENEMY_FLOAT(enemy, 0x2DCC);
-    case 0x2755: return &ENEMY_FLOAT(enemy, 0x2D94);
-    case 0x2756: return &ENEMY_FLOAT(enemy, 0x2D98);
-    case 0x2757: return &ENEMY_FLOAT(enemy, 0x2DA8);
-    case 0x2758: return &ENEMY_FLOAT(enemy, 0x2DAC);
-    case 0x2759: return &ENEMY_FLOAT(enemy, 0x2DB0);
-    case 0x275D: return &ENEMY_FLOAT(enemy, 0x2D9C);
-    case 0x275E: return &ENEMY_FLOAT(enemy, 0x2DA0);
+    case 0x275A: return &reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin.x;
+    case 0x275B: return &reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin.y;
+    case 0x275C: return &reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin.z;
+    case 0x275F: return &reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.x;
+    case 0x2760: return &reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.y;
+    case 0x2761: return &reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.z;
+    case 0x2755: return &reinterpret_cast<Enemy *>(enemy)->movementAngle;
+    case 0x2756: return &reinterpret_cast<Enemy *>(enemy)->angularVelocity;
+    case 0x2757: return &reinterpret_cast<Enemy *>(enemy)->speed;
+    case 0x2758: return &reinterpret_cast<Enemy *>(enemy)->acceleration;
+    case 0x2759: return &reinterpret_cast<Enemy *>(enemy)->orbitRadius;
+    case 0x275D: return &reinterpret_cast<Enemy *>(enemy)->orbitAngle;
+    case 0x275E: return &reinterpret_cast<Enemy *>(enemy)->orbitAngularVelocity;
 
     default: return operand;
     }

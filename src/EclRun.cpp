@@ -57,9 +57,9 @@ restart_context:
             goto enter_subroutine;
 
 low_redispatch_instruction:
-        *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(enemy) + 0x2D88) =
-            *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(enemy) + 0x2D34) +
-            *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(enemy) + 0x2D40);
+        *reinterpret_cast<D3DXVECTOR3 *>(&enemy->worldPosition) =
+            *reinterpret_cast<D3DXVECTOR3 *>(&enemy->position) +
+            *reinterpret_cast<D3DXVECTOR3 *>(&enemy->positionOffset);
 
         if ((int)enemy->activeEclContext->secondaryTime > 0)
         {
@@ -129,7 +129,7 @@ low_advance_instruction:
         i32 restorePosition = 0;
         Interpolator *entry = reinterpret_cast<Interpolator *>(
             enemy->activeEclContext->interpolationSlots);
-        Vec3 savedPosition = TH08_ECL_AT(unusedContext, Vec3, 0x2D34);
+        Vec3 savedPosition = *reinterpret_cast<Vec3 *>(&enemy->position);
 
         if (enemy->activeEclContext->callback)
             enemy->activeEclContext->callback(
@@ -179,15 +179,10 @@ low_advance_instruction:
 
         if (restorePosition)
         {
-            TH08_ECL_AT(unusedContext, f32, 0x2D4C) =
-                TH08_ECL_AT(unusedContext, f32, 0x2D34) - savedPosition.x;
-            TH08_ECL_AT(unusedContext, f32, 0x2D50) =
-                TH08_ECL_AT(unusedContext, f32, 0x2D38) - savedPosition.y;
-            TH08_ECL_AT(unusedContext, f32, 0x2D94) =
-                VectorAngle(
-                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(enemy) + 0x2D50),
-                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(enemy) + 0x2D4C));
-            TH08_ECL_AT(unusedContext, Vec3, 0x2D34) = savedPosition;
+            enemy->velocity.x = enemy->position.x - savedPosition.x;
+            enemy->velocity.y = enemy->position.y - savedPosition.y;
+            enemy->movementAngle = VectorAngle(enemy->velocity.y, enemy->velocity.x);
+            *reinterpret_cast<Vec3 *>(&enemy->position) = savedPosition;
         }
     }
 
@@ -222,7 +217,7 @@ low_select_next_context:
         reinterpret_cast<EnemyEclContext *>(&enemy->mainEclCallStackStorage[0]);
     enemy->activeEclContext =
         reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage);
-    enemy->FUN_00422c40();
+    enemy->UpdateMovement();
     enemy->FUN_00423150();
 
     return ZUN_SUCCESS;

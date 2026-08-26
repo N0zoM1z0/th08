@@ -107,29 +107,29 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x2752: return (i32)EclRunLowProposal::g_EclCallParameters.floats[1];
     case 0x2753: return (i32)EclRunLowProposal::g_EclCallParameters.floats[2];
     case 0x2754: return (i32)EclRunLowProposal::g_EclCallParameters.floats[3];
-    case 0x273a: return (i32)FLOAT_FIELD(0x2d88);
-    case 0x273b: return (i32)FLOAT_FIELD(0x2d8c);
-    case 0x273c: return (i32)FLOAT_FIELD(0x2d90);
+    case 0x273a: return (i32)reinterpret_cast<Enemy *>(enemy)->worldPosition.x;
+    case 0x273b: return (i32)reinterpret_cast<Enemy *>(enemy)->worldPosition.y;
+    case 0x273c: return (i32)reinterpret_cast<Enemy *>(enemy)->worldPosition.z;
     case 0x273d: return (i32)(*reinterpret_cast<Vector3 *>(&g_Player.position)).x;
     case 0x273e: return (i32)(*reinterpret_cast<Vector3 *>(&g_Player.position)).y;
     case 0x273f: return (i32)(*reinterpret_cast<Vector3 *>(&g_Player.position)).z;
-    case 0x275a: return (i32)FLOAT_FIELD(0x2dd0);
-    case 0x275b: return (i32)FLOAT_FIELD(0x2dd4);
-    case 0x275c: return (i32)FLOAT_FIELD(0x2dd8);
-    case 0x2765: return (i32)FLOAT_FIELD(0x2d64);
-    case 0x2766: return (i32)FLOAT_FIELD(0x2d68);
-    case 0x2767: return (i32)FLOAT_FIELD(0x2d6c);
+    case 0x275a: return (i32)reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin.x;
+    case 0x275b: return (i32)reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin.y;
+    case 0x275c: return (i32)reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin.z;
+    case 0x2765: return (i32)reinterpret_cast<Enemy *>(enemy)->lastFrameDisplacement.x;
+    case 0x2766: return (i32)reinterpret_cast<Enemy *>(enemy)->lastFrameDisplacement.y;
+    case 0x2767: return (i32)reinterpret_cast<Enemy *>(enemy)->lastFrameDisplacement.z;
     case 0x2768: return reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[0];
     case 0x2769: return reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[1];
     case 0x276a: return reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[2];
     case 0x276b: return reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[3];
-    case 0x2755: return (i32)FLOAT_FIELD(0x2d94);
-    case 0x2756: return (i32)FLOAT_FIELD(0x2d98);
-    case 0x2757: return (i32)FLOAT_FIELD(0x2da8);
-    case 0x2758: return (i32)FLOAT_FIELD(0x2dac);
-    case 0x2759: return (i32)FLOAT_FIELD(0x2db0);
-    case 0x275d: return (i32)FLOAT_FIELD(0x2d9c);
-    case 0x275e: return (i32)FLOAT_FIELD(0x2da0);
+    case 0x2755: return (i32)reinterpret_cast<Enemy *>(enemy)->movementAngle;
+    case 0x2756: return (i32)reinterpret_cast<Enemy *>(enemy)->angularVelocity;
+    case 0x2757: return (i32)reinterpret_cast<Enemy *>(enemy)->speed;
+    case 0x2758: return (i32)reinterpret_cast<Enemy *>(enemy)->acceleration;
+    case 0x2759: return (i32)reinterpret_cast<Enemy *>(enemy)->orbitRadius;
+    case 0x275d: return (i32)reinterpret_cast<Enemy *>(enemy)->orbitAngle;
+    case 0x275e: return (i32)reinterpret_cast<Enemy *>(enemy)->orbitAngularVelocity;
     case 0x2763: return reinterpret_cast<Enemy *>(enemy)->lastDamage;
     case 0x2764: return *(u8 *)(enemy->bytes + 0x3313);
     case 0x276c: return INT_FIELD(0x3304);
@@ -139,13 +139,14 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
         return ENEMY_HELPERS->HasParentChain()
                    ? ENEMY_HELPERS->CountParentChain()
                    : ENEMY_HELPERS->HasAttachedEnemy()
-                         ? (*(TargetEnemyHelpersOverlay **)(enemy->bytes + 0x2da4))->CountParentChain()
+                         ? reinterpret_cast<TargetEnemyHelpersOverlay *>(
+                               reinterpret_cast<Enemy *>(enemy)->parentEnemy)->CountParentChain()
                          : 0;
     case 0x2740:
-        return (i32)g_Player.FUN_0044c1b0(reinterpret_cast<Float3 *>(&VECTOR_FIELD(0x2d88)));
+        return (i32)g_Player.FUN_0044c1b0(&reinterpret_cast<Enemy *>(enemy)->worldPosition);
     case 0x2742:
     {
-        Float3 delta = g_Player.position - *reinterpret_cast<Float3 *>(&VECTOR_FIELD(0x2d88));
+        Float3 delta = g_Player.position - reinterpret_cast<Enemy *>(enemy)->worldPosition;
         return (i32)D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&delta));
     }
     case 0x2771: return g_Player.IsYoukai();

@@ -334,6 +334,11 @@ struct Context
 // hundreds of non-target Context/accessor COMDAT calls.
 #define TH08_ECL_AT(ctx, type, offset) \
     (*reinterpret_cast<type *>(TH08_ECL_CONTEXT_ENEMY(ctx) + (offset)))
+// RunEcl opcode 169 needs the target's byte-view source shape for its chained
+// x87 comparisons.  Keep the literal behind a semantic constant and pin it to
+// the public Enemy member rather than repeating an anonymous object offset.
+#define TH08_ECL_ENEMY_POSITION_OFFSET 0x2D34
+C_ASSERT(TH08_ECL_ENEMY_POSITION_OFFSET == offsetof(Enemy, position));
 #define TH08_ECL_RAW_I(ctx, index) \
     (*reinterpret_cast<i32 *>(TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands + (index) * 4))
 #define TH08_ECL_RAW_F(ctx, index) \
@@ -489,21 +494,21 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))
                  ->bulletSpawnDescriptor.position) =
             *reinterpret_cast<D3DXVECTOR3 *>(
-                &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->vector2d34) +
+                &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position) +
             *reinterpret_cast<D3DXVECTOR3 *>(
-                &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->vector2db8);
+                &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootOffset);
         g_BulletManager.FUN_00430e10(
             &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bulletSpawnDescriptor);
         break;
     }
     case 110:
-        TH08_ECL_AT(ctx, f32, 0x2DB8) = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 0))
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootOffset.x = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 0))
             ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0)))
             : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0)));
-        TH08_ECL_AT(ctx, f32, 0x2DBC) = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootOffset.y = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
             ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)))
             : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)));
-        TH08_ECL_AT(ctx, i32, 0x2DC0) = 0;
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootOffset.z = 0.0f;
         break;
 
     case 114:
@@ -515,8 +520,10 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         BulletSpawnDescriptor *descriptor =
             &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->laserSpawnDescriptor;
         *reinterpret_cast<D3DXVECTOR3 *>(&descriptor->position) =
-            *reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D88)) +
-            *reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2DB8));
+            *reinterpret_cast<D3DXVECTOR3 *>(
+                &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->worldPosition) +
+            *reinterpret_cast<D3DXVECTOR3 *>(
+                &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootOffset);
         descriptor->bulletType = args->bulletType;
         descriptor->color = (u16)((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & 2U) ? EclOperands::ResolveInt(reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx)), static_cast<i32>(args->color)) : static_cast<i32>(args->color));
         descriptor->angle =
@@ -607,15 +614,15 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->position.x = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
                     ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
                           *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)))
-                    : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))) + TH08_ECL_AT(ctx, Vec3, 0x2D88).x;
+                    : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))) + reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->worldPosition.x;
             reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->position.y = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2))
                     ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
                           *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2)))
-                    : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2))) + TH08_ECL_AT(ctx, Vec3, 0x2D88).y;
+                    : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2))) + reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->worldPosition.y;
             reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->position.z = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
                     ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
                           *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)))
-                    : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3))) + TH08_ECL_AT(ctx, Vec3, 0x2D88).z;
+                    : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3))) + reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->worldPosition.z;
         }
         break;
     case 170:
@@ -704,7 +711,8 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         u8 *operands = TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands;
         TH08_ECL_AT(ctx, u8 *, 0x5360 + TH08_ECL_AT(ctx, i32, 0x53C0) * 4) =
             reinterpret_cast<u8 *>(g_EffectManager.SpawnEffect(
-                13, reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)),
+                13, reinterpret_cast<D3DXVECTOR3 *>(
+                        &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position),
                 1, 0xFF6060D0));
         *reinterpret_cast<Vec3 *>(
             TH08_ECL_AT(ctx, u8 *, 0x5360 + TH08_ECL_AT(ctx, i32, 0x53C0) * 4) +
@@ -714,7 +722,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         break;
     }
     case 159: TH08_ECL_AT(ctx, u8, 0x332F) = (u8)TH08_ECL_READ_I(ctx, 0); break;
-    case 124: g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(TH08_ECL_READ_I(ctx, 0)), *reinterpret_cast<f32 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x2D34)); break;
+    case 124: g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(TH08_ECL_READ_I(ctx, 0)), reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position.x); break;
     case 129:
         if (TH08_ECL_PRESENTATION_WRITES_ALLOWED())
             reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->op129Bits20_22 = TH08_ECL_RAW_BYTE(ctx, 0);
@@ -843,7 +851,8 @@ enter_subroutine:
         break;
     }
     case 139:
-        g_EffectManager.SpawnEffect(TH08_ECL_READ_I(ctx, 0), reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)),
+        g_EffectManager.SpawnEffect(TH08_ECL_READ_I(ctx, 0), reinterpret_cast<D3DXVECTOR3 *>(
+                                         &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position),
                                      TH08_ECL_READ_I(ctx, 1), *TH08_ECL_WRITE_I(ctx, 2));
         break;
     case 140:
@@ -860,7 +869,8 @@ enter_subroutine:
             : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 5)));
         g_EffectManager.SpawnEffectAngle(
             TH08_ECL_READ_I(ctx, 0),
-            reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)),
+            reinterpret_cast<D3DXVECTOR3 *>(
+                &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position),
             reinterpret_cast<D3DXVECTOR3 *>(&vector),
             TH08_ECL_READ_I(ctx, 1), *TH08_ECL_WRITE_I(ctx, 2));
         break;
@@ -880,8 +890,7 @@ enter_subroutine:
         i32 count = TH08_ECL_READ_I(ctx, 0);
         for (locals.i = 0; locals.i < count; ++locals.i)
         {
-            locals.position = *reinterpret_cast<Float3 *>(
-                &TH08_ECL_AT(ctx, Vec3, 0x2D34));
+            locals.position = reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position;
             ((f32 *)locals.position)[0] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             ((f32 *)locals.position)[1] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             if (g_GameManager.GetPower() < 0x80)
@@ -902,8 +911,7 @@ enter_subroutine:
         i32 count = TH08_ECL_READ_I(ctx, 0);
         for (locals.i = 0; locals.i < count; ++locals.i)
         {
-            locals.position = *reinterpret_cast<Float3 *>(
-                &TH08_ECL_AT(ctx, Vec3, 0x2D34));
+            locals.position = reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position;
             ((f32 *)locals.position)[0] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             ((f32 *)locals.position)[1] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&locals.position), static_cast<ItemType>(1), 0);
@@ -929,7 +937,7 @@ enter_subroutine:
         reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclContext->time +=
             TH08_ECL_READ_I(ctx, 0);
         break;
-    case 141: g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)), static_cast<ItemType>(TH08_ECL_READ_I(ctx, 0)), 0); break;
+    case 141: g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position, static_cast<ItemType>(TH08_ECL_READ_I(ctx, 0)), 0); break;
     case 147: g_EclGlobal004EA290 = TH08_ECL_READ_I(ctx, 0); break;
     case 148:
         g_Gui.FUN_00423130(TH08_ECL_READ_I(ctx, 0));
@@ -985,7 +993,7 @@ enter_subroutine:
                         ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(packet94.position.z)
                         : packet94.position.z;
                 reinterpret_cast<Float3 *>(&position94)->operator+=(
-                    *reinterpret_cast<Float3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)));
+                    reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position);
                 spawned94 = g_EnemyManager.SpawnEnemy2(
                     packet94.type, &position94,
                     TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
@@ -1062,7 +1070,7 @@ enter_subroutine:
     case 160: *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x5354) = TH08_ECL_READ_I(ctx, 0); break;
     case 161:
         g_BulletManager.RemoveBulletsInRadius(
-            reinterpret_cast<Float3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D88)), ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 0)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0))));
+            &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->worldPosition, ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 0)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0))));
         break;
     case 162: g_BulletManager.RemoveAllBullets(4); break;
     case 164:
@@ -1092,9 +1100,9 @@ enter_subroutine:
     case 169:
         if (
             reinterpret_cast<Vec3 *>(reinterpret_cast<u8 *>(&g_Player) + 0x2B4)->x <
-                TH08_ECL_AT(ctx, Vec3, 0x2D34).x &&
-            96.0f < TH08_ECL_AT(ctx, f32, 0x2D34) ||
-            288.0f < TH08_ECL_AT(ctx, f32, 0x2D34))
+                TH08_ECL_AT(ctx, Vec3, TH08_ECL_ENEMY_POSITION_OFFSET).x &&
+            96.0f < TH08_ECL_AT(ctx, f32, TH08_ECL_ENEMY_POSITION_OFFSET) ||
+            288.0f < TH08_ECL_AT(ctx, f32, TH08_ECL_ENEMY_POSITION_OFFSET))
             *TH08_ECL_WRITE_F(ctx, 0) = AddNormalizeAngle(
                 g_Rng.GetRandomF32InRange(1.5707964f) + 2.3561945f, 0.0f);
         else
@@ -1151,7 +1159,8 @@ enter_subroutine:
         TH08_ECL_AT(ctx, u8 *, 0x53C8) =
             reinterpret_cast<u8 *>(g_EffectManager.SpawnEffect00425B70(
                 TH08_ECL_READ_I(ctx, 0) + 0x20,
-                reinterpret_cast<D3DXVECTOR3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D88)),
+                reinterpret_cast<D3DXVECTOR3 *>(
+                    &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->worldPosition),
                 1, -1));
         reinterpret_cast<AnmVmBase *>(
             TH08_ECL_AT(ctx, u8 *, 0x53C8))->SetInterrupt(g_Player.IsYoukai() ? 2 : 1);

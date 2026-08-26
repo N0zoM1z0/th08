@@ -2100,8 +2100,8 @@ void __fastcall PlayerOptionHomingToTarget(Player *player, u8 *option)
     Float3 target;
     Float3 delta;
 
-    target = *reinterpret_cast<Float3 *>(
-        reinterpret_cast<u8 *>(*reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2ABC)) + 0x2D88);
+    target = reinterpret_cast<Enemy *>(
+        *reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2ABC))->worldPosition;
     target.y += 32.0f;
     if (target.y < 32.0f)
         target.y = 32.0f;
@@ -2812,8 +2812,8 @@ i32 __fastcall FUN_00450240(Player *player, PlayerShot *slot, i32 value, u8 *ent
         if (player->optionHomingTarget != NULL)
         {
             angle = AddNormalizeAngle(
-                VectorAngle(player->optionHomingTarget->vector2d34.y - slot->position.y,
-                            player->optionHomingTarget->vector2d34.x - slot->position.x),
+                VectorAngle(player->optionHomingTarget->position.y - slot->position.y,
+                            player->optionHomingTarget->position.x - slot->position.x),
                 *reinterpret_cast<f32 *>(entry + 0x14) + ZUN_PI / 2.0f);
             magnitude = *reinterpret_cast<f32 *>(entry + 0x18) * 1.5f;
             reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, magnitude);

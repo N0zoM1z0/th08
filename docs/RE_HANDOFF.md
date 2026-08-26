@@ -191,6 +191,22 @@ complete i386 Linux build/layout verifier passed.  The next coherent family is
 the Enemy motion controller at `+0x2D34..+0x2DEB`, then its phase/control flags
 and boundary/presentation state.
 
+The fifth Enemy/ECL orchestration batch closes the continuous motion
+controller at `Enemy + 0x2D34..+0x2DEB`.  Logical, offset, previous,
+last-frame-displacement, and world positions; velocity; both hitboxes; linear
+and polar movement parameters; parent linkage; shot offset; and timed
+interpolation state now share asserted owners across ECL, Enemy, Player,
+Effect, and Spellcard users.  The two anonymous core functions are tracked as
+`Enemy::UpdateMovement @ 0x00422C40` and
+`Enemy::IntegrateVelocity @ 0x0042DEB0`.  ECL opcode 169 retains one
+named/layout-asserted offset constant
+because a direct member expression changes six VC7 x87 bytes; the complete
+RunEcl function remains exact.  Focused replay passed **287 / 287**, three
+target-pinned motion packets replayed exact, a non-reuse cold replay passed
+**1,105 / 1,105**, the normal VC7 image linked, and the complete i386 Linux
+build/layout verifier passed.  The next coherent family is the control flags
+at `+0x3324/+0x3328` and the adjacent boundary/presentation state.
+
 Select the next independent field family with:
 
 ```bash

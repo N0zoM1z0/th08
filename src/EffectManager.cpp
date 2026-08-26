@@ -542,13 +542,13 @@ i32 __fastcall FUN_004264f0(Effect *effect)
         {
             if (effect->vm.pos2.x <= -9999.0f)
             {
-                effect->vm.pos2 = *reinterpret_cast<Float3 *>(
-                    EclRunLowProposal::g_EclEnemyTableF54CC0[0]->bytes + 0x2d34);
+                effect->vm.pos2 = reinterpret_cast<Enemy *>(
+                    EclRunLowProposal::g_EclEnemyTableF54CC0[0])->position;
             }
             else
             {
                 effect->vm.pos2 =
-                    (*reinterpret_cast<Float3 *>(EclRunLowProposal::g_EclEnemyTableF54CC0[0]->bytes + 0x2d34) -
+                    (reinterpret_cast<Enemy *>(EclRunLowProposal::g_EclEnemyTableF54CC0[0])->position -
                      effect->vm.pos2) * 0.1f + effect->vm.pos2;
             }
         }
@@ -622,13 +622,13 @@ i32 __fastcall FUN_00426990(Effect *effect)
         {
             if (effect->vm.pos2.x <= -9999.0f)
             {
-                effect->vm.pos2 = *reinterpret_cast<Float3 *>(
-                    EclRunLowProposal::g_EclEnemyTableF54CC0[0]->bytes + 0x2d34);
+                effect->vm.pos2 = reinterpret_cast<Enemy *>(
+                    EclRunLowProposal::g_EclEnemyTableF54CC0[0])->position;
             }
             else
             {
                 effect->vm.pos2 =
-                    (*reinterpret_cast<Float3 *>(EclRunLowProposal::g_EclEnemyTableF54CC0[0]->bytes + 0x2d34) -
+                    (reinterpret_cast<Enemy *>(EclRunLowProposal::g_EclEnemyTableF54CC0[0])->position -
                      effect->vm.pos2) * 0.1f + effect->vm.pos2;
             }
         }

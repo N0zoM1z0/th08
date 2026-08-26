@@ -2,6 +2,7 @@
 
 #include "EclManager.hpp"
 #include "EclOperands.hpp"
+#include "EnemyManager.hpp"
 #include "Gui.hpp"
 #include "Spellcard.hpp"
 #include "Supervisor.hpp"
@@ -86,7 +87,7 @@ namespace EclOperands
 // FUNCTION: th08 0x0041F000
 i32 TargetEnemyHelpersOverlay::HasParentChain()
 {
-    return *(void **)((u8 *)this + 0x2DA4) == 0 &&
+    return reinterpret_cast<Enemy *>(this)->parentEnemy == 0 &&
            *(void **)((u8 *)this + 8) != 0;
 }
 
@@ -128,7 +129,7 @@ namespace EclOperands
 // FUNCTION: th08 0x0041FD20
 i32 TargetEnemyHelpersOverlay::HasAttachedEnemy()
 {
-    return *(void **)((u8 *)this + 0x2DA4) != 0;
+    return reinterpret_cast<Enemy *>(this)->parentEnemy != 0;
 }
 
 // FUNCTION: th08 0x0041FD40
