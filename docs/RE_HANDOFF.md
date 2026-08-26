@@ -66,6 +66,19 @@ Focused replay passed **249 / 249**, a new non-reuse cold replay passed **1,105
 verifier passed.  No match manifest, authored/exact ledger, global identity, or
 runtime state operation changed.
 
+The next accepted batch closes the `Laser` lifecycle family across
+`BulletManager::RemoveAllBullets`, `DespawnBullets`, `SpawnLaserPattern`,
+`OnUpdate`, `OnDraw`, and seven Laser-control opcodes in the complete exact
+`EclManager::RunEcl`.  Raw `+0x548..+0x599` views now use the asserted Laser
+owner for position, beam geometry, speed, timers, hitbox windows, active state,
+and the starting/active/despawning state machine.  The `+0x599` byte is named
+`hideCapDuringStartup` from its RunEcl write and draw-side gate; flag-bit
+meanings, the color convention, and the final two bytes remain unknown.
+Focused replay passed BulletManager **24 / 24** and RunEcl **1 / 1**; a new
+non-reuse cold replay passed **1,105 / 1,105**, the normal VC7 link passed, and
+the complete i386 Linux build/layout verifier passed.  No match manifest,
+ledger, global identity, initialization order, or state operation changed.
+
 Select the next independent field family with:
 
 ```bash

@@ -79,6 +79,13 @@ struct BulletExState
 };
 C_ASSERT(sizeof(BulletExState) == 0x2c);
 
+enum LaserState
+{
+    LASER_STATE_STARTING = 0,
+    LASER_STATE_ACTIVE = 1,
+    LASER_STATE_DESPAWNING = 2,
+};
+
 struct Laser
 {
     Laser();
@@ -103,10 +110,30 @@ struct Laser
     u16 flags;                 // +0x594
     i16 color;                 // +0x596
     u8 state;                  // +0x598
-    u8 unknown599;
+    u8 hideCapDuringStartup;   // +0x599
     u8 unknown59A[2];
 };
 C_ASSERT(sizeof(Laser) == 0x59c);
+C_ASSERT(offsetof(Laser, vm1) == 0x2a4);
+C_ASSERT(offsetof(Laser, position) == 0x548);
+C_ASSERT(offsetof(Laser, angle) == 0x554);
+C_ASSERT(offsetof(Laser, startOffset) == 0x558);
+C_ASSERT(offsetof(Laser, endOffset) == 0x55c);
+C_ASSERT(offsetof(Laser, startLength) == 0x560);
+C_ASSERT(offsetof(Laser, width) == 0x564);
+C_ASSERT(offsetof(Laser, currentWidth) == 0x568);
+C_ASSERT(offsetof(Laser, speed) == 0x56c);
+C_ASSERT(offsetof(Laser, startTime) == 0x570);
+C_ASSERT(offsetof(Laser, hitboxStartTime) == 0x574);
+C_ASSERT(offsetof(Laser, duration) == 0x578);
+C_ASSERT(offsetof(Laser, despawnDuration) == 0x57c);
+C_ASSERT(offsetof(Laser, hitboxEndDelay) == 0x580);
+C_ASSERT(offsetof(Laser, inUse) == 0x584);
+C_ASSERT(offsetof(Laser, timer) == 0x588);
+C_ASSERT(offsetof(Laser, flags) == 0x594);
+C_ASSERT(offsetof(Laser, color) == 0x596);
+C_ASSERT(offsetof(Laser, state) == 0x598);
+C_ASSERT(offsetof(Laser, hideCapDuringStartup) == 0x599);
 
 struct Bullet
 {

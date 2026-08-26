@@ -543,38 +543,38 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
     case 117:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x554) =
+            reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->angle =
                 AddNormalizeAngle(
-                    *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x554),
+                    reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->angle,
                     ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))));
         break;
     case 167:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x554) =
+            reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->angle =
                 ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)));
         break;
     case 118:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
-            *(f32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x554) =
+            reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->angle =
                 g_Player.FUN_0044c1b0(
-                    reinterpret_cast<Float3 *>(TH08_ECL_OBJECT(ctx, lhsInt) + 0x548)) +
+                    &reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->position) +
                 ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)));
         break;
     case 119:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
         {
-            reinterpret_cast<Vec3 *>(TH08_ECL_OBJECT(ctx, lhsInt) + 0x548)->x = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
+            reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->position.x = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
                     ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
                           *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)))
                     : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))) + TH08_ECL_AT(ctx, Vec3, 0x2D88).x;
-            reinterpret_cast<Vec3 *>(TH08_ECL_OBJECT(ctx, lhsInt) + 0x548)->y = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2))
+            reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->position.y = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2))
                     ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
                           *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2)))
                     : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2))) + TH08_ECL_AT(ctx, Vec3, 0x2D88).y;
-            reinterpret_cast<Vec3 *>(TH08_ECL_OBJECT(ctx, lhsInt) + 0x548)->z = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
+            reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->position.z = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 3))
                     ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
                           *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3)))
                     : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 3))) + TH08_ECL_AT(ctx, Vec3, 0x2D88).z;
@@ -583,13 +583,13 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
     case 170:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
-            *(u8 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x599) =
+            reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->hideCapDuringStartup =
                 (u8)TH08_ECL_READ_I(ctx, 1);
         break;
     case 120:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt) &&
-            *(i32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x584))
+            reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->inUse)
             *(i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x60) = 1;
         else
             *(i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x60) = 0;
@@ -597,13 +597,13 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
     case 121:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt) &&
-            *(i32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x584) &&
-            *(u8 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x598) < 2)
+            reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->inUse &&
+            reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->state < LASER_STATE_DESPAWNING)
         {
-            *(u8 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x598) = 2;
-            *reinterpret_cast<ZunTimer *>(TH08_ECL_OBJECT(ctx, lhsInt) + 0x588) = 0;
-            *(i32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x564) =
-                *(i32 *)(TH08_ECL_OBJECT(ctx, lhsInt) + 0x568);
+            reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->state = LASER_STATE_DESPAWNING;
+            reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->timer = 0;
+            *reinterpret_cast<i32 *>(&reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->width) =
+                *reinterpret_cast<i32 *>(&reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->currentWidth);
         }
         break;
     case 154:

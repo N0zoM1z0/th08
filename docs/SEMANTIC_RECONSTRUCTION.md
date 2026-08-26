@@ -307,3 +307,69 @@ Result: 79 raw-member candidates in `src/Player.cpp` were replaced by asserted
 typed fields and callback-group expressions (442 to 363 in the routing report).
 That delta is a review aid, not a semantic-completion percentage; the retained
 unknown storage and unrelated Player offsets remain future bounded families.
+
+### BulletManager Laser lifecycle — 2026-08-26
+
+Scope: `BulletManager::RemoveAllBullets @ 0x00430830`, `DespawnBullets @
+0x00430AA0`, `SpawnLaserPattern @ 0x00430F20`, `OnUpdate @ 0x00431240`, and
+`OnDraw @ 0x00432B50`, plus the Laser-control cases inside
+`EclManager::RunEcl @ 0x004184B0`.  The shared layout is `Laser` in
+`src/BulletManager.hpp`; its target size remains 0x59C.
+
+Observed: TH08 accesses `Laser + 0x548/+0x554..+0x588` as dword position,
+angle, length, width, speed, timing, active-state, and `ZunTimer` storage;
+`+0x594/+0x596` are word accesses, while `+0x598/+0x599` are byte accesses.
+`SpawnLaserPattern` initializes position, angle, length/width/timing fields,
+sets `inUse`, and chooses state 0 or 1 from whether `startTime` is nonzero.
+`OnUpdate` advances the beam endpoints, builds its collision box, changes
+state 0 to 1 after `startTime`, changes state 1 to 2 after `duration`, and
+clears `inUse` after the despawn duration.  Both clear paths force state 2,
+reset the timer, preserve the current rendered width bit-for-bit, and remove
+the remaining hitbox delay.  `OnDraw` uses `+0x599` only to suppress the cap
+VM while the beam is still in state 0.  RunEcl opcodes 117/118/167 update the
+angle, opcode 119 updates position, opcode 170 writes that cap gate, opcode
+120 reads `inUse`, and opcode 121 performs the same active-to-despawning
+transition.  Target-pinned packets cover all six complete exact function
+extents; target disassembly independently confirms each access width.
+
+Corroborated: TH06 independently lays out Laser as two ANM VMs followed by
+position, angle, start/end offsets, start length, width, speed, start/hitbox/
+duration/despawn timing, `inUse`, timer, flags, color, and state.  Its update
+and draw paths use the same starting/active/despawning sequence.  TH08 itself
+establishes the added `currentWidth` and cap-gate fields and remains the source
+of truth for all final offsets and behavior.
+
+Inference: `LASER_STATE_STARTING`, `LASER_STATE_ACTIVE`, and
+`LASER_STATE_DESPAWNING` are high-confidence transition names.
+`hideCapDuringStartup` is a high-confidence dataflow name: a nonzero value
+suppresses only the secondary/cap VM while state is starting, and never
+suppresses the active or despawning cap.  The individual meanings of flag bits
+`0x1` and `0x4`, the 16-bit `color` convention, and `Laser + 0x59A/+0x59B`
+remain deliberately unnamed or unrefined.
+
+Layout: focused assertions pin the second VM at `+0x2A4`, every relied-on
+Laser field from position `+0x548` through the cap gate `+0x599`, and
+`sizeof(Laser) == 0x59C`.  Field widths, object size, construction order,
+calling conventions, vtables, and global ownership are unchanged.
+
+VC7 oracle: serial focused builds and replay passed **24 / 24** accepted
+BulletManager units and **1 / 1** complete RunEcl unit.  The required
+non-reuse `verify-exact-units.py --all --json` then cold-built all 75
+configured objects and passed **1,105 / 1,105** with no failures.  The normal
+VC7 production image linked successfully; no match manifest or exact ledger
+changed.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiled and linked
+the complete i386 target, and `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 plus all
+fixed target-owned layout symbols.  No isolated automated Laser gameplay smoke
+exists, so no runtime smoke is claimed; the state operations, callback/global
+identity, initialization order, and rendering call sequence are unchanged.
+
+Result: the five core BulletManager functions and seven RunEcl Laser-control
+opcodes now use the asserted `Laser` owner, named lifecycle states, and typed
+members instead of raw Laser offsets.  The routing report for
+`src/BulletManager.cpp` falls from 323 to 294 raw-member candidates.  That
+29-location delta is a work-selection aid, not a semantic-completion metric;
+unrelated Bullet runtime, sprite-template, and manager-tail storage remains
+future bounded work.

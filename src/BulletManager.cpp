@@ -477,7 +477,7 @@ void BulletManager::RemoveAllBullets(i32 mode)
     u8 *bullet = reinterpret_cast<u8 *>(&g_BulletManager) + 0x1A880;
     i32 bulletIndex;
     i32 playerCollisionResult;
-    u8 *laser;
+    Laser *laser;
     f32 position[3];
     f32 sine;
     f32 cosine;
@@ -509,33 +509,34 @@ void BulletManager::RemoveAllBullets(i32 mode)
         }
     }
 
-    laser = reinterpret_cast<u8 *>(this) + 0x660938;
+    laser = &this->lasers[0];
     reinterpret_cast<Float3 *>(position)->operator float *();
-    for (bulletIndex = 0; bulletIndex < 0x100; bulletIndex++, laser += 0x59C)
+    for (bulletIndex = 0; bulletIndex < 0x100; bulletIndex++, laser++)
     {
-        if (*reinterpret_cast<i32 *>(laser + 0x584) == 0)
+        if (laser->inUse == 0)
         {
             continue;
         }
-        if ((*reinterpret_cast<u16 *>(laser + 0x594) & 4) != 0 && mode != 4)
+        if ((laser->flags & 4) != 0 && mode != 4)
         {
             continue;
         }
 
-        if (*reinterpret_cast<u8 *>(laser + 0x598) < 2)
+        if (laser->state < LASER_STATE_DESPAWNING)
         {
-            *reinterpret_cast<u8 *>(laser + 0x598) = 2;
-            *reinterpret_cast<ZunTimer *>(laser + 0x588) = 0;
-            *reinterpret_cast<i32 *>(laser + 0x564) = *reinterpret_cast<i32 *>(laser + 0x568);
+            laser->state = LASER_STATE_DESPAWNING;
+            laser->timer = 0;
+            *reinterpret_cast<i32 *>(&laser->width) =
+                *reinterpret_cast<i32 *>(&laser->currentWidth);
 
             if (mode != 4)
             {
-                radius = *reinterpret_cast<f32 *>(laser + 0x558);
-                fsincos(&sine, &cosine, *reinterpret_cast<f32 *>(laser + 0x554));
-                while (*reinterpret_cast<f32 *>(laser + 0x55C) > radius)
+                radius = laser->startOffset;
+                fsincos(&sine, &cosine, laser->angle);
+                while (laser->endOffset > radius)
                 {
-                    position[0] = cosine * radius + *reinterpret_cast<f32 *>(laser + 0x548);
-                    position[1] = sine * radius + *reinterpret_cast<f32 *>(laser + 0x54C);
+                    position[0] = cosine * radius + laser->position.x;
+                    position[1] = sine * radius + laser->position.y;
                     position[2] = 0.0f;
                     g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(position),
                                             static_cast<ItemType>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA570)), mode);
@@ -544,7 +545,7 @@ void BulletManager::RemoveAllBullets(i32 mode)
             }
         }
 
-        *reinterpret_cast<i32 *>(laser + 0x580) = 0;
+        laser->hitboxEndDelay = 0;
     }
 
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA53C) = 10;
@@ -557,7 +558,7 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
 {
     f32 radius;
     f32 cosine;
-    u8 *laser;
+    Laser *laser;
     f32 position[3];
     u8 *bullet;
     f32 sine;
@@ -602,32 +603,33 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
         *reinterpret_cast<u16 *>(bullet + 0xDB8) = 5;
     }
 
-    laser = reinterpret_cast<u8 *>(this) + 0x660938;
+    laser = &this->lasers[0];
     reinterpret_cast<Float3 *>(position)->operator float *();
-    for (bulletIndex = 0; bulletIndex < 0x100; bulletIndex++, laser += 0x59C)
+    for (bulletIndex = 0; bulletIndex < 0x100; bulletIndex++, laser++)
     {
-        if (*reinterpret_cast<i32 *>(laser + 0x584) == 0)
+        if (laser->inUse == 0)
         {
             continue;
         }
 
-        if (*reinterpret_cast<u8 *>(laser + 0x598) < 2)
+        if (laser->state < LASER_STATE_DESPAWNING)
         {
-            *reinterpret_cast<u8 *>(laser + 0x598) = 2;
-            *reinterpret_cast<ZunTimer *>(laser + 0x588) = 0;
-            *reinterpret_cast<i32 *>(laser + 0x564) = *reinterpret_cast<i32 *>(laser + 0x568);
+            laser->state = LASER_STATE_DESPAWNING;
+            laser->timer = 0;
+            *reinterpret_cast<i32 *>(&laser->width) =
+                *reinterpret_cast<i32 *>(&laser->currentWidth);
 
             if (awardLaserItems)
             {
                 g_ItemManager.SpawnItem(
-                    reinterpret_cast<Float3 *>(laser + 0x548),
+                    &laser->position,
                     static_cast<ItemType>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA570)), 1);
-                radius = *reinterpret_cast<f32 *>(laser + 0x558);
-                fsincos(&sine, &cosine, *reinterpret_cast<f32 *>(laser + 0x554));
-                while (*reinterpret_cast<f32 *>(laser + 0x55C) > radius)
+                radius = laser->startOffset;
+                fsincos(&sine, &cosine, laser->angle);
+                while (laser->endOffset > radius)
                 {
-                    position[0] = cosine * radius + *reinterpret_cast<f32 *>(laser + 0x548);
-                    position[1] = sine * radius + *reinterpret_cast<f32 *>(laser + 0x54C);
+                    position[0] = cosine * radius + laser->position.x;
+                    position[1] = sine * radius + laser->position.y;
                     position[2] = 0.0f;
                     g_ItemManager.SpawnItem(
                         reinterpret_cast<Float3 *>(position),
@@ -637,7 +639,7 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
             }
         }
 
-        *reinterpret_cast<i32 *>(laser + 0x580) = 0;
+        laser->hitboxEndDelay = 0;
     }
 
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA53C) = 10;
@@ -736,11 +738,11 @@ Laser *BulletManager::SpawnLaserPattern(BulletSpawnDescriptor *descriptor)
         laser->despawnDuration = descriptor->laserDespawnDuration;
         laser->hitboxStartTime = descriptor->laserHitboxStartTime;
         laser->hitboxEndDelay = descriptor->laserHitboxEndDelay;
-        laser->unknown599 = 0;
+        laser->hideCapDuringStartup = 0;
         if (laser->startTime == 0)
-            laser->state = 1;
+            laser->state = LASER_STATE_ACTIVE;
         else
-            laser->state = 0;
+            laser->state = LASER_STATE_STARTING;
         break;
     }
     return laser;
@@ -782,7 +784,7 @@ ChainCallbackResult BulletManager::OnUpdate(BulletManager *bulletManager)
     f32 laserSize[3];
     u8 *bullet;
     i32 alpha;
-    u8 *laser;
+    Laser *laser;
     f32 laserCenter[3];
     i32 rampWindow;
 
@@ -1025,121 +1027,106 @@ nextBullet:
         bullet -= 0x10B8;
     }
 
-    laser = reinterpret_cast<u8 *>(bulletManager) + 0x660938;
+    laser = &bulletManager->lasers[0];
     reinterpret_cast<Float3 *>(laserCenter)->operator float *();
     reinterpret_cast<Float3 *>(laserSize)->operator float *();
-    for (i = 0; i < 0x100; i++, laser += 0x59C)
+    for (i = 0; i < 0x100; i++, laser++)
     {
-            if (*reinterpret_cast<i32 *>(laser + 0x584) == 0)
+            if (laser->inUse == 0)
                 continue;
 
-            *reinterpret_cast<f32 *>(laser + 0x55C) += g_EclGameTimeScale * *reinterpret_cast<f32 *>(laser + 0x56C);
-            if (*reinterpret_cast<f32 *>(laser + 0x55C) - *reinterpret_cast<f32 *>(laser + 0x558) >
-                *reinterpret_cast<f32 *>(laser + 0x560))
-                *reinterpret_cast<f32 *>(laser + 0x558) =
-                    *reinterpret_cast<f32 *>(laser + 0x55C) - *reinterpret_cast<f32 *>(laser + 0x560);
-            if (*reinterpret_cast<f32 *>(laser + 0x558) < 0.0f)
-                *reinterpret_cast<f32 *>(laser + 0x558) = 0.0f;
+            laser->endOffset += g_EclGameTimeScale * laser->speed;
+            if (laser->endOffset - laser->startOffset > laser->startLength)
+                laser->startOffset = laser->endOffset - laser->startLength;
+            if (laser->startOffset < 0.0f)
+                laser->startOffset = 0.0f;
 
-            laserSize[1] = *reinterpret_cast<f32 *>(laser + 0x564) / 2.0f;
-            if (*reinterpret_cast<f32 *>(laser + 0x558) <= 0.0f)
-                laserSize[0] = *reinterpret_cast<f32 *>(laser + 0x55C) - *reinterpret_cast<f32 *>(laser + 0x558);
+            laserSize[1] = laser->width / 2.0f;
+            if (laser->startOffset <= 0.0f)
+                laserSize[0] = laser->endOffset - laser->startOffset;
             else
-                laserSize[0] = (*reinterpret_cast<f32 *>(laser + 0x55C) - *reinterpret_cast<f32 *>(laser + 0x558)) * 0.7f;
-            laserCenter[0] = (*reinterpret_cast<f32 *>(laser + 0x55C) - *reinterpret_cast<f32 *>(laser + 0x558)) / 2.0f +
-                            *reinterpret_cast<f32 *>(laser + 0x558) + *reinterpret_cast<f32 *>(laser + 0x548);
-            laserCenter[1] = *reinterpret_cast<f32 *>(laser + 0x54C);
-            *reinterpret_cast<f32 *>(laser + 0x18) =
-                *reinterpret_cast<f32 *>(laser + 0x564) /
-                *reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(laser + 0x224) + 0x34);
-            currentWidth = *reinterpret_cast<f32 *>(laser + 0x55C) - *reinterpret_cast<f32 *>(laser + 0x558);
-            *reinterpret_cast<f32 *>(laser + 0x1C) =
-                currentWidth / *reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(laser + 0x224) + 0x30);
-            reinterpret_cast<AnmVm *>(laser)->SetZRotation(
-                AddNormalizeAngle(ZUN_PI / 2.0f + *reinterpret_cast<f32 *>(laser + 0x554), 0.0f));
+                laserSize[0] = (laser->endOffset - laser->startOffset) * 0.7f;
+            laserCenter[0] = (laser->endOffset - laser->startOffset) / 2.0f +
+                            laser->startOffset + laser->position.x;
+            laserCenter[1] = laser->position.y;
+            laser->vm0.scale.x = laser->width / laser->vm0.loadedSprite->widthPx;
+            currentWidth = laser->endOffset - laser->startOffset;
+            laser->vm0.scale.y = currentWidth / laser->vm0.loadedSprite->heightPx;
+            laser->vm0.SetZRotation(
+                AddNormalizeAngle(ZUN_PI / 2.0f + laser->angle, 0.0f));
 
-            switch (*reinterpret_cast<u8 *>(laser + 0x598))
+            switch (laser->state)
             {
-            case 0:
-                if ((*reinterpret_cast<u16 *>(laser + 0x594) & 1) != 0)
+            case LASER_STATE_STARTING:
+                if ((laser->flags & 1) != 0)
                 {
-                    alpha = (i32)((f32)*reinterpret_cast<ZunTimer *>(laser + 0x588) * 255.0f /
-                                  *reinterpret_cast<i32 *>(laser + 0x570));
+                    alpha = (i32)((f32)laser->timer * 255.0f / laser->startTime);
                     if (alpha > 255)
                         alpha = 255;
-                    *reinterpret_cast<u32 *>(laser + 0x1F0) = alpha << 24;
+                    laser->vm0.color1.d3dColor = alpha << 24;
                 }
                 else
                 {
-                    rampWindow = *reinterpret_cast<i32 *>(laser + 0x570) > 30
+                    rampWindow = laser->startTime > 30
                                      ? 30
-                                     : *reinterpret_cast<i32 *>(laser + 0x570);
-                    if (*reinterpret_cast<i32 *>(laser + 0x570) - rampWindow <
-                        (i32)*reinterpret_cast<ZunTimer *>(laser + 0x588))
-                        currentWidth = (f32)*reinterpret_cast<ZunTimer *>(laser + 0x588) *
-                                       *reinterpret_cast<f32 *>(laser + 0x564) /
-                                       *reinterpret_cast<i32 *>(laser + 0x570);
+                                     : laser->startTime;
+                    if (laser->startTime - rampWindow < (i32)laser->timer)
+                        currentWidth = (f32)laser->timer * laser->width / laser->startTime;
                     else
                         currentWidth = 1.2f;
-                    *reinterpret_cast<f32 *>(laser + 0x568) = currentWidth;
-                    *reinterpret_cast<f32 *>(laser + 0x18) = currentWidth / 16.0f;
+                    laser->currentWidth = currentWidth;
+                    laser->vm0.scale.x = currentWidth / 16.0f;
                     laserSize[0] = currentWidth / 2.0f;
                 }
-                if (*reinterpret_cast<ZunTimer *>(laser + 0x588) >= *reinterpret_cast<i32 *>(laser + 0x574))
+                if (laser->timer >= laser->hitboxStartTime)
                     g_Player.CalcLaserHitbox(reinterpret_cast<Float3 *>(laserCenter), reinterpret_cast<Float3 *>(laserSize),
-                                             reinterpret_cast<Float3 *>(laser + 0x548),
-                                             *reinterpret_cast<f32 *>(laser + 0x554), 0);
-                if (*reinterpret_cast<ZunTimer *>(laser + 0x588) < *reinterpret_cast<i32 *>(laser + 0x570))
+                                             &laser->position, laser->angle, 0);
+                if (laser->timer < laser->startTime)
                     break;
-                *reinterpret_cast<ZunTimer *>(laser + 0x588) = 0;
-                ++*reinterpret_cast<u8 *>(laser + 0x598);
-                *reinterpret_cast<f32 *>(laser + 0x568) = *reinterpret_cast<f32 *>(laser + 0x564);
-            case 1:
+                laser->timer = 0;
+                ++laser->state;
+                laser->currentWidth = laser->width;
+            case LASER_STATE_ACTIVE:
                 g_Player.CalcLaserHitbox(reinterpret_cast<Float3 *>(laserCenter), reinterpret_cast<Float3 *>(laserSize),
-                                         reinterpret_cast<Float3 *>(laser + 0x548),
-                                         *reinterpret_cast<f32 *>(laser + 0x554),
-                                         ((i32)*reinterpret_cast<ZunTimer *>(laser + 0x588)) % 20 == 0);
-                if (*reinterpret_cast<ZunTimer *>(laser + 0x588) < *reinterpret_cast<i32 *>(laser + 0x578))
+                                         &laser->position, laser->angle,
+                                         ((i32)laser->timer) % 20 == 0);
+                if (laser->timer < laser->duration)
                     break;
-                *reinterpret_cast<ZunTimer *>(laser + 0x588) = 0;
-                ++*reinterpret_cast<u8 *>(laser + 0x598);
-                if (*reinterpret_cast<i32 *>(laser + 0x57C) == 0)
+                laser->timer = 0;
+                ++laser->state;
+                if (laser->despawnDuration == 0)
                 {
-                    *reinterpret_cast<i32 *>(laser + 0x584) = 0;
+                    laser->inUse = 0;
                     continue;
                 }
-            case 2:
-                if ((*reinterpret_cast<u16 *>(laser + 0x594) & 1) != 0)
+            case LASER_STATE_DESPAWNING:
+                if ((laser->flags & 1) != 0)
                 {
-                    alpha = (i32)((f32)*reinterpret_cast<ZunTimer *>(laser + 0x588) * 255.0f /
-                                  *reinterpret_cast<i32 *>(laser + 0x570));
+                    alpha = (i32)((f32)laser->timer * 255.0f / laser->startTime);
                     if (alpha > 255)
                         alpha = 255;
-                    *reinterpret_cast<u32 *>(laser + 0x1F0) = alpha << 24;
+                    laser->vm0.color1.d3dColor = alpha << 24;
                 }
-                else if (*reinterpret_cast<i32 *>(laser + 0x57C) > 0)
+                else if (laser->despawnDuration > 0)
                 {
-                    currentWidth = *reinterpret_cast<f32 *>(laser + 0x564) -
-                                   (f32)*reinterpret_cast<ZunTimer *>(laser + 0x588) *
-                                       *reinterpret_cast<f32 *>(laser + 0x564) /
-                                       *reinterpret_cast<i32 *>(laser + 0x57C);
-                    *reinterpret_cast<f32 *>(laser + 0x18) = currentWidth / 16.0f;
+                    currentWidth = laser->width -
+                                   (f32)laser->timer * laser->width / laser->despawnDuration;
+                    laser->vm0.scale.x = currentWidth / 16.0f;
                     laserSize[0] = currentWidth / 2.0f;
                 }
-                if (*reinterpret_cast<ZunTimer *>(laser + 0x588) < *reinterpret_cast<i32 *>(laser + 0x580))
+                if (laser->timer < laser->hitboxEndDelay)
                     g_Player.CalcLaserHitbox(reinterpret_cast<Float3 *>(laserCenter), reinterpret_cast<Float3 *>(laserSize),
-                                             reinterpret_cast<Float3 *>(laser + 0x548),
-                                             *reinterpret_cast<f32 *>(laser + 0x554), 0);
-                if (*reinterpret_cast<ZunTimer *>(laser + 0x588) < *reinterpret_cast<i32 *>(laser + 0x57C))
+                                             &laser->position, laser->angle, 0);
+                if (laser->timer < laser->despawnDuration)
                     break;
-                *reinterpret_cast<i32 *>(laser + 0x584) = 0;
+                laser->inUse = 0;
                 continue;
             }
 
-            if (*reinterpret_cast<f32 *>(laser + 0x558) >= 640.0f)
-                *reinterpret_cast<i32 *>(laser + 0x584) = 0;
-            (*reinterpret_cast<ZunTimer *>(laser + 0x588))++;
-            g_AnmManager->ExecuteScript(reinterpret_cast<AnmVm *>(laser));
+            if (laser->startOffset >= 640.0f)
+                laser->inUse = 0;
+            laser->timer++;
+            g_AnmManager->ExecuteScript(&laser->vm0);
         }
 
     if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(bulletManager) + 0x6BA53C) != 0)
@@ -1477,51 +1464,42 @@ ChainCallbackResult BulletManager::OnDraw(BulletManager *bulletManager)
 
     for (i = 0; i < ARRAY_SIZE_SIGNED(bulletManager->lasers); i++, laser++)
     {
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(laser) + 0x584) == 0)
+        if (laser->inUse == 0)
             continue;
 
-        fsincos(&sine, &cosine, *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x554));
-        halfLength = (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x55c) -
-                      *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x558)) /
-                         2.0f +
-                     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x558);
+        fsincos(&sine, &cosine, laser->angle);
+        halfLength = (laser->endOffset - laser->startOffset) / 2.0f + laser->startOffset;
 
         laser->vm0.pos.operator float *()[0] =
             laser->position.operator float *()[0] + cosine * halfLength;
         laser->vm0.pos.operator float *()[1] =
             laser->position.operator float *()[1] + sine * halfLength;
         laser->vm0.pos.operator float *()[2] = 0.06f;
-        *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(laser) + 0x596) =
-            (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(laser) + 0x596) & 0xff000000) | 0xffffff;
+        laser->color = (laser->color & 0xff000000) | 0xffffff;
         laser->vm0.pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
         laser->vm0.pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
         g_AnmManager->Draw2D(&laser->vm0);
 
-        if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x558) < 16.0f ||
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x56c) == 0.0f)
+        if (laser->startOffset < 16.0f || laser->speed == 0.0f)
         {
-            if (!*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(laser) + 0x599) ||
-                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(laser) + 0x598))
+            if (!laser->hideCapDuringStartup || laser->state != LASER_STATE_STARTING)
             {
                 laser->vm1.pos.operator float *()[0] =
                     laser->position.operator float *()[0] +
-                    cosine * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x558);
+                    cosine * laser->startOffset;
                 laser->vm1.pos.operator float *()[1] =
                     laser->position.operator float *()[1] +
-                    sine * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x558);
+                    sine * laser->startOffset;
                 laser->vm1.pos.operator float *()[2] = 0.05f;
-                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(laser) + 0x494) =
-                    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(laser) + 0x1f0);
-                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&laser->vm1) + 0x1f8) |= 0x40;
+                laser->vm1.color1.d3dColor = laser->vm0.color1.d3dColor;
+                *reinterpret_cast<u32 *>(&laser->vm1.flags) |= 0x40;
                 laser->vm1.color1.d3dColor = (laser->vm1.color1.d3dColor & 0xffffff) | 0xff000000;
                 laser->vm1.scale.x =
-                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x564) / 10.0f *
-                    ((16.0f - *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x558)) / 16.0f);
+                    laser->width / 10.0f * ((16.0f - laser->startOffset) / 16.0f);
                 laser->vm1.scale.y = laser->vm1.scale.x;
                 if (laser->vm1.scale.y <= 0.0f)
                 {
-                    laser->vm1.scale.x =
-                        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(laser) + 0x564) / 10.0f;
+                    laser->vm1.scale.x = laser->width / 10.0f;
                     laser->vm1.scale.y = laser->vm1.scale.x;
                 }
                 laser->vm1.pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
