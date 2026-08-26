@@ -404,7 +404,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
         if (reinterpret_cast<Enemy *>(enemy)->alignmentEffect != 0)
         {
             *reinterpret_cast<D3DXVECTOR3 *>(
-                &reinterpret_cast<Enemy *>(enemy)->alignmentEffect->vector0) =
+                &reinterpret_cast<Enemy *>(enemy)->alignmentEffect->position) =
                 *reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->worldPosition);
         }
 

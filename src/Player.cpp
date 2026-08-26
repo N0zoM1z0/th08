@@ -583,22 +583,21 @@ void Player::Die()
                 g_EffectManager.FUN_00425870(59, reinterpret_cast<D3DXVECTOR3 *>(&this->position),
                                               11, 1, 0xFFF0404F);
             effectVm = this->deathbombEffectVm;
-            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effectVm) + 0x50) = 0;
-            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effectVm) + 0xA4) =
-                this->deathbombWindowFrames;
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effectVm) + 0xF8) = 4;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x238) = 128.0f;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x244) = 8.0f;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x23C) = 32.0f;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x248) = 0.0f;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x208) = 128.0f;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x20C) = 32.0f;
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effectVm) + 0x324) = 64;
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effectVm) + 0x318) = 0;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x314) = 128.0f;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x320) = 15.0f;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effectVm) + 0x334) = 6.0f;
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effectVm) + 0x357) = 1;
+            effectVm->interpCurrentTimers[AnmInterp_Pos] = 0;
+            effectVm->interpEndTimers[AnmInterp_Pos] = this->deathbombWindowFrames;
+            effectVm->interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOut;
+            effectVm->posInitial.x = 128.0f;
+            effectVm->posFinal.x = 8.0f;
+            effectVm->posInitial.y = 32.0f;
+            effectVm->posFinal.y = 0.0f;
+            effectVm->pos.x = 128.0f;
+            effectVm->pos.y = 32.0f;
+            reinterpret_cast<Effect *>(effectVm)->vertexSegmentCount = 64;
+            reinterpret_cast<Effect *>(effectVm)->angle = 0.0f;
+            reinterpret_cast<Effect *>(effectVm)->radius = 128.0f;
+            reinterpret_cast<Effect *>(effectVm)->shapeThickness = 15.0f;
+            reinterpret_cast<Effect *>(effectVm)->radialWaveCount = 6.0f;
+            reinterpret_cast<Effect *>(effectVm)->updateDuringFreeze = 1;
 
             if (g_Spellcard.IsActive())
                 g_GameManager.flags.unk10 = 1;
@@ -1216,7 +1215,7 @@ acceptBomb:
         *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x208) &= 0xFFFDFFFFu;
         if (this->deathbombEffectVm != NULL)
         {
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->deathbombEffectVm) + 0x350) = 0;
+            reinterpret_cast<Effect *>(this->deathbombEffectVm)->active = 0;
             this->deathbombEffectVm = NULL;
         }
         *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFBFFu;
@@ -1301,7 +1300,7 @@ i32 Player::FUN_0044cbf0()
         {
             if (this->deathbombEffectVm != NULL)
             {
-                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this->deathbombEffectVm) + 0x350) = 0;
+                reinterpret_cast<Effect *>(this->deathbombEffectVm)->active = 0;
                 this->deathbombEffectVm = NULL;
             }
             g_EffectManager.FUN_00425870(12, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 3, 1, 0xFF4040FF);

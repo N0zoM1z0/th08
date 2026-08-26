@@ -1440,3 +1440,62 @@ is that all 24 callback rows and their 32 distinct update/draw functions are
 now readable by gameplay role instead of address.  These counts remain routing
 aids, not completion percentages.  The next coherent family is the Effect and
 ANM interpolation state consumed by these callbacks.
+
+### Effect and ANM interpolation state — 2026-08-26
+
+Scope: `EffectManager @ 0x004ECE60`, its 654 pooled `Effect` rows and five
+draw-list sentinels, all accepted Effect callbacks at
+`0x004253E0..0x00428880`, the Player/PlayerBomb Effect callbacks, and the four
+ANM interpolation setters at `0x0040EC30..0x0040EE10`.
+
+Observed: every Effect is exactly `0x360` bytes.  Its leading `AnmVm` ends at
+`+0x2A4`; the target then constructs nine distinct `Float3` members through
+`+0x310`, followed by primary radius/angle, strip thickness and segment count,
+pool slot index, secondary radius/angle, radial wave count, timer, update/draw
+callbacks, eight signed lifecycle/draw bytes, a vertex buffer pointer, and a
+draw-list link.  Target `movsx` consumers prove that release request/timer,
+alternate draw group, dirty flag, and update-during-freeze state are signed
+bytes.  Player and ECL callers now use the same asserted owner instead of
+treating an allocated Effect as an open-ended `AnmVm`.
+
+`EffectManager` is exactly `0x8B05C` bytes.  The pool begins at `+0x1C`; the
+five sentinels begin at `+0x89F5C` and are independent objects, followed by
+five draw-list tails, the tamper-check counter, and the two loaded ANM banks.
+Constructor lowering independently confirms this layout: one vector
+constructor covers the 654 pool rows, while each sentinel receives a separate
+constructor call.
+
+The four ANM helpers are now `StartPositionInterpolation`,
+`StartColor1RgbInterpolation`, `StartColor1AlphaInterpolation`, and
+`StartScaleInterpolation`.  Their two timer arrays, mode-byte array, and typed
+initial/final payloads are shared by ECL, Player, and Bomb callers.  The
+dissolve ring's target byte 5 is `EaseOutCubic`; the deathbomb ring's byte 4 is
+`EaseOut`.  RGB channel unpacking follows the target `ZunColor` byte order and
+is not replaced with a packed assignment.
+
+VC7 source-shape limits: the `+0x304` member must remain a `Float3` axis plus a
+separate `orientationW`, not `D3DXQUATERNION`, because the former's constructor
+relocation is target-visible.  The five manager sentinels cannot be collapsed
+into an array for the same reason.  The two fixed-slot spawners retain an
+explicit `sizeof(Effect)`/`offsetof(EffectManager, effects)` address expression;
+natural typed array indexing is semantically equivalent but two bytes shorter
+under VC7 `/Od`.
+
+Unknowns: `vector1..vector7` are deliberately generic because effect kinds
+reuse them for velocities, interpolation endpoints, camera-relative anchors,
+and trail state.  The dword at `+0x31C`, dword at `+0x344`, callback signatures,
+and exact gameplay role of the four orientation components remain unclaimed.
+The compatibility-facing callbacks therefore retain their existing `AnmVm *`
+ABI and use an explicit `Effect` view internally.
+
+Oracle status: focused replay passes Player/PlayerBomb **136 / 136**, ECL,
+EnemyManagerUpdate, and EffectManager **86 / 86**, including all four renamed
+setter bodies and caller relocations.  A single-job non-reuse cold VC7 replay
+passes **1,105 / 1,105**, the normal VC7 image links, and the complete i386
+Linux build plus fixed-layout verifier passes.  `PlayerBomb.cpp` has no
+remaining Effect-tail raw access; its sole raw-member candidate is the
+separate Background tint flag.  The nine EffectManager candidates are Replay,
+Supervisor, and the two intentional exact-source fixed-slot expressions, not
+untyped Effect fields.  These are routing observations, not completion
+percentages.  The next high-value family is the remaining Player core state,
+followed by the Background camera/stage object model.

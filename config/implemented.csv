@@ -893,10 +893,10 @@ th08::ZunTimer::IsPeriodic
 th08::UpdateGhastlyDreamBomb
 th08::UpdateEternalSleepInDreamlandDeathbomb
 th08::AnmVm::FUN_0040eb50
-th08::AnmVm::FUN_0040ec30
-th08::AnmVm::FUN_0040eca0
-th08::AnmVm::FUN_0040ed50
-th08::AnmVm::FUN_0040eda0
+th08::AnmVm::StartPositionInterpolation
+th08::AnmVm::StartColor1RgbInterpolation
+th08::AnmVm::StartColor1AlphaInterpolation
+th08::AnmVm::StartScaleInterpolation
 th08::UpdateFantasyOrbBomb
 th08::UpdateFantasySealBlinkDeathbomb
 th08::UpdateArtfulSacrificeBomb

@@ -96660,9 +96660,9 @@ target = 0x004B42C8
 
 
 [[units]]
-name = "anm-vm-fun-0040ec30"
+name = "anm-vm-start-position-interpolation"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040ec30@AnmVm@th08@@QAEXHHPAUFloat3@2@0@Z"
+symbol = "?StartPositionInterpolation@AnmVm@th08@@QAEXHHPAUFloat3@2@0@Z"
 target_address = 0x0040EC30
 size = 0x70
 
@@ -96680,9 +96680,9 @@ target = 0x004065F0
 
 
 [[units]]
-name = "anm-vm-fun-0040eca0"
+name = "anm-vm-start-color1-rgb-interpolation"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040eca0@AnmVm@th08@@QAEXHHII@Z"
+symbol = "?StartColor1RgbInterpolation@AnmVm@th08@@QAEXHHII@Z"
 target_address = 0x0040ECA0
 size = 0xAE
 
@@ -96700,9 +96700,9 @@ target = 0x004065F0
 
 
 [[units]]
-name = "anm-vm-fun-0040ed50"
+name = "anm-vm-start-color1-alpha-interpolation"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040ed50@AnmVm@th08@@QAEXHHHH@Z"
+symbol = "?StartColor1AlphaInterpolation@AnmVm@th08@@QAEXHHHH@Z"
 target_address = 0x0040ED50
 size = 0x50
 
@@ -96720,9 +96720,9 @@ target = 0x004065F0
 
 
 [[units]]
-name = "anm-vm-fun-0040eda0"
+name = "anm-vm-start-scale-interpolation"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040eda0@AnmVm@th08@@QAEXHHPAUFloat2@2@0@Z"
+symbol = "?StartScaleInterpolation@AnmVm@th08@@QAEXHHPAUFloat2@2@0@Z"
 target_address = 0x0040EDA0
 size = 0x69
 
@@ -98349,25 +98349,25 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 0x218
 type = "REL32"
-symbol = "?FUN_0040ec30@AnmVm@th08@@QAEXHHPAUFloat3@2@0@Z"
+symbol = "?StartPositionInterpolation@AnmVm@th08@@QAEXHHPAUFloat3@2@0@Z"
 target = 0x0040EC30
 
 [[units.relocations]]
 offset = 0x248
 type = "REL32"
-symbol = "?FUN_0040eda0@AnmVm@th08@@QAEXHHPAUFloat2@2@0@Z"
+symbol = "?StartScaleInterpolation@AnmVm@th08@@QAEXHHPAUFloat2@2@0@Z"
 target = 0x0040EDA0
 
 [[units.relocations]]
 offset = 0x25B
 type = "REL32"
-symbol = "?FUN_0040ed50@AnmVm@th08@@QAEXHHHH@Z"
+symbol = "?StartColor1AlphaInterpolation@AnmVm@th08@@QAEXHHHH@Z"
 target = 0x0040ED50
 
 [[units.relocations]]
 offset = 0x26E
 type = "REL32"
-symbol = "?FUN_0040eca0@AnmVm@th08@@QAEXHHII@Z"
+symbol = "?StartColor1RgbInterpolation@AnmVm@th08@@QAEXHHII@Z"
 target = 0x0040ECA0
 
 [[units.relocations]]
@@ -98764,25 +98764,25 @@ target = 0x0040D390
 [[units.relocations]]
 offset = 0x58F
 type = "REL32"
-symbol = "?FUN_0040ec30@AnmVm@th08@@QAEXHHPAUFloat3@2@0@Z"
+symbol = "?StartPositionInterpolation@AnmVm@th08@@QAEXHHPAUFloat3@2@0@Z"
 target = 0x0040EC30
 
 [[units.relocations]]
 offset = 0x5BF
 type = "REL32"
-symbol = "?FUN_0040eda0@AnmVm@th08@@QAEXHHPAUFloat2@2@0@Z"
+symbol = "?StartScaleInterpolation@AnmVm@th08@@QAEXHHPAUFloat2@2@0@Z"
 target = 0x0040EDA0
 
 [[units.relocations]]
 offset = 0x5D2
 type = "REL32"
-symbol = "?FUN_0040ed50@AnmVm@th08@@QAEXHHHH@Z"
+symbol = "?StartColor1AlphaInterpolation@AnmVm@th08@@QAEXHHHH@Z"
 target = 0x0040ED50
 
 [[units.relocations]]
 offset = 0x5E5
 type = "REL32"
-symbol = "?FUN_0040eca0@AnmVm@th08@@QAEXHHII@Z"
+symbol = "?StartColor1RgbInterpolation@AnmVm@th08@@QAEXHHII@Z"
 target = 0x0040ECA0
 
 [[units.relocations]]
@@ -99168,25 +99168,25 @@ target = 0x0040D390
 [[units.relocations]]
 offset = 0x58F
 type = "REL32"
-symbol = "?FUN_0040ec30@AnmVm@th08@@QAEXHHPAUFloat3@2@0@Z"
+symbol = "?StartPositionInterpolation@AnmVm@th08@@QAEXHHPAUFloat3@2@0@Z"
 target = 0x0040EC30
 
 [[units.relocations]]
 offset = 0x5BF
 type = "REL32"
-symbol = "?FUN_0040eda0@AnmVm@th08@@QAEXHHPAUFloat2@2@0@Z"
+symbol = "?StartScaleInterpolation@AnmVm@th08@@QAEXHHPAUFloat2@2@0@Z"
 target = 0x0040EDA0
 
 [[units.relocations]]
 offset = 0x5D2
 type = "REL32"
-symbol = "?FUN_0040ed50@AnmVm@th08@@QAEXHHHH@Z"
+symbol = "?StartColor1AlphaInterpolation@AnmVm@th08@@QAEXHHHH@Z"
 target = 0x0040ED50
 
 [[units.relocations]]
 offset = 0x5E5
 type = "REL32"
-symbol = "?FUN_0040eca0@AnmVm@th08@@QAEXHHII@Z"
+symbol = "?StartColor1RgbInterpolation@AnmVm@th08@@QAEXHHII@Z"
 target = 0x0040ECA0
 
 [[units.relocations]]
@@ -110785,7 +110785,7 @@ target = 0x004286E0
 [[units.relocations]]
 offset = 0x139
 type = "REL32"
-symbol = "?FUN_0040ed50@AnmVm@th08@@QAEXHHHH@Z"
+symbol = "?StartColor1AlphaInterpolation@AnmVm@th08@@QAEXHHHH@Z"
 target = 0x0040ED50
 
 [[units.relocations]]

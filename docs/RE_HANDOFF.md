@@ -310,6 +310,25 @@ links, and the complete i386 Linux build and fixed-layout verifier pass.
 `PlayerBombState +0xC` remains unknown; the next coherent batch is shared
 Effect/ANM interpolation state.
 
+The fourth accepted Player-core batch closes that shared Effect/ANM family.
+`Effect` remains exactly `0x360` bytes and now exposes its leading VM, nine
+constructor-bearing vectors, radius/angle and strip geometry, pool slot,
+secondary radial state, timer, callbacks, signed lifecycle/draw bytes, vertex
+storage, and draw-list link.  `EffectManager` now asserts the 654-row pool,
+five individually constructed sentinels, five draw tails, tamper counter, and
+two ANM banks through its exact `0x8B05C` extent.  Player/PlayerBomb/ECL/Enemy
+users share those owners.  The four interpolation setters are behavior-named,
+and their timer/mode/initial/final fields replace open-coded offsets; mode 5 is
+recorded as `EaseOutCubic` and mode 4 as `EaseOut`.  Focused replay passes
+Player/PlayerBomb **136 / 136** and ECL/EnemyManagerUpdate/EffectManager
+**86 / 86**.  The single-job cold VC7 replay passes **1,105 / 1,105**, the
+normal VC7 image links, and the complete i386 Linux build and fixed-layout
+verifier pass.  Constructor evidence requires `Float3 + f32` at Effect
+`+0x304`, five separate sentinel members, and signed lifecycle bytes; the two
+fixed-slot spawners retain their target-shaped `sizeof`/`offsetof` expression.
+Generic per-effect vectors and callback signatures remain evidence-limited.
+The next coherent family is remaining Player core state, then Background.
+
 Select the next independent field family with:
 
 ```bash

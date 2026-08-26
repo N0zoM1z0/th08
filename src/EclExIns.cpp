@@ -131,22 +131,22 @@ void __fastcall FUN_004235a0()
     radius9 = effect9->vm.pos.x * 0.7071068286895752f;
     radius10 = effect10->vm.pos.x * 0.7071068286895752f;
 
-    vertices[0].pos.x = 32.0f + effect9->vector0.x - radius9;
-    vertices[0].pos.y = 16.0f + effect9->vector0.y - radius9;
-    vertices[1].pos.x = 32.0f + effect9->vector0.x - radius10;
-    vertices[1].pos.y = 16.0f + effect9->vector0.y - radius10;
-    vertices[2].pos.x = 32.0f + effect9->vector0.x + radius9;
-    vertices[2].pos.y = 16.0f + effect9->vector0.y - radius9;
-    vertices[3].pos.x = 32.0f + effect9->vector0.x + radius10;
-    vertices[3].pos.y = 16.0f + effect9->vector0.y - radius10;
-    vertices[4].pos.x = 32.0f + effect9->vector0.x + radius9;
-    vertices[4].pos.y = 16.0f + effect9->vector0.y + radius9;
-    vertices[5].pos.x = 32.0f + effect9->vector0.x + radius10;
-    vertices[5].pos.y = 16.0f + effect9->vector0.y + radius10;
-    vertices[6].pos.x = 32.0f + effect9->vector0.x - radius9;
-    vertices[6].pos.y = 16.0f + effect9->vector0.y + radius9;
-    vertices[7].pos.x = 32.0f + effect9->vector0.x - radius10;
-    vertices[7].pos.y = 16.0f + effect9->vector0.y + radius10;
+    vertices[0].pos.x = 32.0f + effect9->position.x - radius9;
+    vertices[0].pos.y = 16.0f + effect9->position.y - radius9;
+    vertices[1].pos.x = 32.0f + effect9->position.x - radius10;
+    vertices[1].pos.y = 16.0f + effect9->position.y - radius10;
+    vertices[2].pos.x = 32.0f + effect9->position.x + radius9;
+    vertices[2].pos.y = 16.0f + effect9->position.y - radius9;
+    vertices[3].pos.x = 32.0f + effect9->position.x + radius10;
+    vertices[3].pos.y = 16.0f + effect9->position.y - radius10;
+    vertices[4].pos.x = 32.0f + effect9->position.x + radius9;
+    vertices[4].pos.y = 16.0f + effect9->position.y + radius9;
+    vertices[5].pos.x = 32.0f + effect9->position.x + radius10;
+    vertices[5].pos.y = 16.0f + effect9->position.y + radius10;
+    vertices[6].pos.x = 32.0f + effect9->position.x - radius9;
+    vertices[6].pos.y = 16.0f + effect9->position.y + radius9;
+    vertices[7].pos.x = 32.0f + effect9->position.x - radius10;
+    vertices[7].pos.y = 16.0f + effect9->position.y + radius10;
     vertices[8].pos = vertices[0].pos;
     vertices[9].pos = vertices[1].pos;
 
@@ -717,7 +717,7 @@ void __fastcall FUN_00424c40(EclOperands::EnemyOverlay *enemy, EclExInstruction 
         {
             bullet->sprites.bulletVm.type = 2;
             *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&bullet->sprites.bulletVm) + 0x1f3) = 0;
-            bullet->sprites.bulletVm.FUN_0040ed50(15, 0, 0, 255);
+            bullet->sprites.bulletVm.StartColor1AlphaInterpolation(15, AnmInterpMode_Linear, 0, 255);
         }
         else
         {

@@ -166,10 +166,10 @@ th08::UpdateFinalSparkDeathbomb,0x40e780,0x3c8,__fastcall,,void,Player*
 th08::AnmVm::FUN_0040eb50,0x40eb50,0x70,__thiscall,,i32,AnmVm*
 th08::ZunTimer::IsPeriodic,0x40ebc0,0x3d,__thiscall,,ZunBool,ZunTimer*,i32
 th08::AnmVm::SetZRotation,0x40ec00,0x2b,__thiscall,,void,AnmVm*,f32
-th08::AnmVm::FUN_0040ec30,0x40ec30,0x70,__thiscall,,void,AnmVm*,i32,i32,Float3*,Float3*
-th08::AnmVm::FUN_0040eca0,0x40eca0,0xae,__thiscall,,void,AnmVm*,i32,i32,u32,u32
-th08::AnmVm::FUN_0040ed50,0x40ed50,0x50,__thiscall,,void,AnmVm*,i32,i32,i32,i32
-th08::AnmVm::FUN_0040eda0,0x40eda0,0x69,__thiscall,,void,AnmVm*,i32,i32,Float2*,Float2*
+th08::AnmVm::StartPositionInterpolation,0x40ec30,0x70,__thiscall,,void,AnmVm*,i32,i32,Float3*,Float3*
+th08::AnmVm::StartColor1RgbInterpolation,0x40eca0,0xae,__thiscall,,void,AnmVm*,i32,i32,u32,u32
+th08::AnmVm::StartColor1AlphaInterpolation,0x40ed50,0x50,__thiscall,,void,AnmVm*,i32,i32,i32,i32
+th08::AnmVm::StartScaleInterpolation,0x40eda0,0x69,__thiscall,,void,AnmVm*,i32,i32,Float2*,Float2*
 th08::UpdateRedNightlessCastleBomb,0x40ee10,0x73d,__fastcall,,void,Player*
 th08::DrawRedNightlessCastleBomb,0x40f550,0x18,__fastcall,,void,Player*
 th08::UpdateScarletDevilDeathbomb,0x40f570,0x73d,__fastcall,,void,Player*

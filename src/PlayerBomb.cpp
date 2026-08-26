@@ -66,57 +66,57 @@ void __fastcall SetBombBackgroundTint(Player *player, D3DCOLOR color)
 // FUNCTION: th08 0x40eb50
 i32 AnmVm::FUN_0040eb50()
 {
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x356) = 1;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x324) = 48;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x320) = 32.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x314) =
-        64.0f + (f32)((reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x338)->HasTicked() & 1) ? 8 : 0);
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x318) = 0.0f;
+    reinterpret_cast<Effect *>(this)->verticesDirty = 1;
+    reinterpret_cast<Effect *>(this)->vertexSegmentCount = 48;
+    reinterpret_cast<Effect *>(this)->shapeThickness = 32.0f;
+    reinterpret_cast<Effect *>(this)->radius =
+        64.0f + (f32)((reinterpret_cast<Effect *>(this)->timer.HasTicked() & 1) ? 8 : 0);
+    reinterpret_cast<Effect *>(this)->angle = 0.0f;
     return 1;
 }
 
 // FUNCTION: th08 0x40ec30
-void AnmVm::FUN_0040ec30(i32 duration, i32 mode, Float3 *value0, Float3 *value1)
+void AnmVm::StartPositionInterpolation(i32 duration, i32 mode, Float3 *initial, Float3 *final)
 {
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x50) = 0;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xA4) = duration;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0xF8) = mode;
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x238) = *value0;
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x244) = *value1;
+    this->interpCurrentTimers[AnmInterp_Pos] = 0;
+    this->interpEndTimers[AnmInterp_Pos] = duration;
+    this->interpModes[AnmInterp_Pos] = mode;
+    this->posInitial = *initial;
+    this->posFinal = *final;
 }
 
 // FUNCTION: th08 0x40eca0
-void AnmVm::FUN_0040eca0(i32 duration, i32 mode, u32 color0, u32 color1)
+void AnmVm::StartColor1RgbInterpolation(i32 duration, i32 mode, u32 initial, u32 final)
 {
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x5C) = 0;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xB0) = duration;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0xF9) = mode;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27A) = (color0 >> 16) & 0xFF;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x279) = (color0 >> 8) & 0xFF;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x278) = color0 & 0xFF;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27E) = (color1 >> 16) & 0xFF;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27D) = (color1 >> 8) & 0xFF;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27C) = color1 & 0xFF;
+    this->interpCurrentTimers[AnmInterp_RGB1] = 0;
+    this->interpEndTimers[AnmInterp_RGB1] = duration;
+    this->interpModes[AnmInterp_RGB1] = mode;
+    this->color1Initial.r = (initial >> 16) & 0xFF;
+    this->color1Initial.g = (initial >> 8) & 0xFF;
+    this->color1Initial.b = initial & 0xFF;
+    this->color1Final.r = (final >> 16) & 0xFF;
+    this->color1Final.g = (final >> 8) & 0xFF;
+    this->color1Final.b = final & 0xFF;
 }
 
 // FUNCTION: th08 0x40ed50
-void AnmVm::FUN_0040ed50(i32 duration, i32 mode, i32 alpha0, i32 alpha1)
+void AnmVm::StartColor1AlphaInterpolation(i32 duration, i32 mode, i32 initial, i32 final)
 {
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x68) = 0;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xBC) = duration;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0xFA) = mode;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27B) = alpha0;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x27F) = alpha1;
+    this->interpCurrentTimers[AnmInterp_Alpha1] = 0;
+    this->interpEndTimers[AnmInterp_Alpha1] = duration;
+    this->interpModes[AnmInterp_Alpha1] = mode;
+    this->color1Initial.a = initial;
+    this->color1Final.a = final;
 }
 
 // FUNCTION: th08 0x40eda0
-void AnmVm::FUN_0040eda0(i32 duration, i32 mode, Float2 *value0, Float2 *value1)
+void AnmVm::StartScaleInterpolation(i32 duration, i32 mode, Float2 *initial, Float2 *final)
 {
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x80) = 0;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xD4) = duration;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0xFC) = mode;
-    *reinterpret_cast<Float2 *>(reinterpret_cast<u8 *>(this) + 0x268) = *value0;
-    *reinterpret_cast<Float2 *>(reinterpret_cast<u8 *>(this) + 0x270) = *value1;
+    this->interpCurrentTimers[AnmInterp_Scale] = 0;
+    this->interpEndTimers[AnmInterp_Scale] = duration;
+    this->interpModes[AnmInterp_Scale] = mode;
+    this->scaleInitial = *initial;
+    this->scaleFinal = *final;
 }
 
 // FUNCTION: th08 0x40ebc0
@@ -139,17 +139,17 @@ void Player::SpawnBombStateEffect()
         this->stateEffect->active = false;
 
     effect = g_EffectManager.FUN_00425870(23, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 0, 1, -1);
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x80) = 0;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0xD4) = this->timer;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0xFC) = 0;
-    *reinterpret_cast<Float2 *>(reinterpret_cast<u8 *>(effect) + 0x268) = effect->scale;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x270) = 0.0625f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x274) = 0.0625f;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x100) = (i32)this->timer;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x14) *= -1.0f;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x1F2) = 0xFF;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x1F1) = 0x40;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x1F0) = 0x40;
+    effect->interpCurrentTimers[AnmInterp_Scale] = 0;
+    effect->interpEndTimers[AnmInterp_Scale] = this->timer;
+    effect->interpModes[AnmInterp_Scale] = AnmInterpMode_Linear;
+    effect->scaleInitial = effect->scale;
+    effect->scaleFinal.x = 0.0625f;
+    effect->scaleFinal.y = 0.0625f;
+    effect->intVar0 = (i32)this->timer;
+    effect->angleVel.z *= -1.0f;
+    effect->color1.r = 0xFF;
+    effect->color1.g = 0x40;
+    effect->color1.b = 0x40;
     this->stateEffect = reinterpret_cast<PlayerStateEffect *>(effect);
 }
 
@@ -544,23 +544,23 @@ void __fastcall UpdateDissolveSpell(Player *player)
         g_EffectManager.SpawnEffect(12, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, 0xff4040ff);
         effect = g_EffectManager.FUN_00425870(50, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 4, 1,
                                               0xff4040ff);
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x50) = 0;
+        effect->interpCurrentTimers[AnmInterp_Pos] = 0;
         if (!g_GameManager.IsSpellPractice())
-            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0xA4) = 90;
+            effect->interpEndTimers[AnmInterp_Pos] = 90;
         else
-            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0xA4) = 30;
-        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0xF8) = 5;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x238) = 8.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x244) = 128.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x23C) = 64.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x248) = 0.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x208) = 8.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x20C) = 64.0f;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 64;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x318) = 0;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 8.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 15.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 6.0f;
+            effect->interpEndTimers[AnmInterp_Pos] = 30;
+        effect->interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOutCubic;
+        effect->posInitial.x = 8.0f;
+        effect->posFinal.x = 128.0f;
+        effect->posInitial.y = 64.0f;
+        effect->posFinal.y = 0.0f;
+        effect->pos.x = 8.0f;
+        effect->pos.y = 64.0f;
+        reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 64;
+        reinterpret_cast<Effect *>(effect)->angle = 0.0f;
+        reinterpret_cast<Effect *>(effect)->radius = 8.0f;
+        reinterpret_cast<Effect *>(effect)->shapeThickness = 15.0f;
+        reinterpret_cast<Effect *>(effect)->radialWaveCount = 6.0f;
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
         player->verticalSpeedMultiplier = 0.0f;
         player->horizontalSpeedMultiplier = 0.0f;
@@ -884,22 +884,22 @@ void __fastcall DrawReturnInanimatenessDeathbomb(Player *player)
 // FUNCTION: th08 0x40e040
 i32 __fastcall FUN_0040e040(AnmVm *effect)
 {
-    f32 interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 40.0f;
+    f32 interp = 1.0f - (f32)reinterpret_cast<Effect *>(effect)->timer / 40.0f;
     interp *= interp;
     interp = 1.0f - interp;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 256.0f * interp;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 64;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 5.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330) = 0.0f;
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 40)
+    reinterpret_cast<Effect *>(effect)->radius = 256.0f * interp;
+    reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 64;
+    reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
+    reinterpret_cast<Effect *>(effect)->radialWaveCount = 5.0f;
+    reinterpret_cast<Effect *>(effect)->secondaryAngle = 0.0f;
+    if (reinterpret_cast<Effect *>(effect)->timer < 40)
     {
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 8.0f;
+        reinterpret_cast<Effect *>(effect)->shapeThickness = 8.0f;
     }
     else
     {
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = 64.0f * interp;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) += 2.0f;
+        reinterpret_cast<Effect *>(effect)->secondaryRadius = 64.0f * interp;
+        reinterpret_cast<Effect *>(effect)->shapeThickness += 2.0f;
     }
     return 1;
 }
@@ -907,50 +907,50 @@ i32 __fastcall FUN_0040e040(AnmVm *effect)
 // FUNCTION: th08 0x40e120
 i32 __fastcall FUN_0040e120(AnmVm *effect)
 {
-    f32 interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 40.0f;
+    f32 interp = 1.0f - (f32)reinterpret_cast<Effect *>(effect)->timer / 40.0f;
     interp *= interp;
     interp = 1.0f - interp;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 256.0f * interp;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 48;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 0.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = 128.0f * interp;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330) = ZUN_PI / 4.0f;
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 40)
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 8.0f;
+    reinterpret_cast<Effect *>(effect)->radius = 256.0f * interp;
+    reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 48;
+    reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
+    reinterpret_cast<Effect *>(effect)->radialWaveCount = 0.0f;
+    reinterpret_cast<Effect *>(effect)->secondaryRadius = 128.0f * interp;
+    reinterpret_cast<Effect *>(effect)->secondaryAngle = ZUN_PI / 4.0f;
+    if (reinterpret_cast<Effect *>(effect)->timer < 40)
+        reinterpret_cast<Effect *>(effect)->shapeThickness = 8.0f;
     else
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) += 1.5f;
+        reinterpret_cast<Effect *>(effect)->shapeThickness += 1.5f;
     return 1;
 }
 
 // FUNCTION: th08 0x40e200
 i32 __fastcall FUN_0040e200(AnmVm *effect)
 {
-    f32 interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 40.0f;
+    f32 interp = 1.0f - (f32)reinterpret_cast<Effect *>(effect)->timer / 40.0f;
     interp *= interp;
     interp = 1.0f - interp;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 256.0f * interp;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 48;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = 128.0f * interp;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330) = -ZUN_PI / 4.0f;
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 40)
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 8.0f;
+    reinterpret_cast<Effect *>(effect)->radius = 256.0f * interp;
+    reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 48;
+    reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
+    reinterpret_cast<Effect *>(effect)->secondaryRadius = 128.0f * interp;
+    reinterpret_cast<Effect *>(effect)->secondaryAngle = -ZUN_PI / 4.0f;
+    if (reinterpret_cast<Effect *>(effect)->timer < 40)
+        reinterpret_cast<Effect *>(effect)->shapeThickness = 8.0f;
     else
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) += 1.5f;
+        reinterpret_cast<Effect *>(effect)->shapeThickness += 1.5f;
     return 1;
 }
 
 // FUNCTION: th08 0x40e2d0
 i32 __fastcall FUN_0040e2d0(AnmVm *effect)
 {
-    f32 interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 40.0f;
+    f32 interp = 1.0f - (f32)reinterpret_cast<Effect *>(effect)->timer / 40.0f;
     interp *= interp;
     interp = 1.0f - interp;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 192.0f * interp;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 8;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 8.0f;
+    reinterpret_cast<Effect *>(effect)->radius = 192.0f * interp;
+    reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 8;
+    reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
+    reinterpret_cast<Effect *>(effect)->shapeThickness = 8.0f;
     return 1;
 }
 
@@ -1068,8 +1068,8 @@ void __fastcall UpdateFinalSparkDeathbomb(Player *player)
             53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkCursor % 4 + 4, 1, -1);
         if (bomb->secondaryWorkCursor & 1)
             g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 92);
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 32;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 0;
+        reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 32;
+        reinterpret_cast<Effect *>(effect)->radialWaveCount = 0;
 
         Float3 position0;
         Float3 position1;
@@ -1079,7 +1079,7 @@ void __fastcall UpdateFinalSparkDeathbomb(Player *player)
         position1.x = 128.0f;
         position1.y = 0.0f;
         position1.z = 0.0f;
-        effect->FUN_0040ec30(30, 4, &position0, &position1);
+        effect->StartPositionInterpolation(30, AnmInterpMode_EaseOut, &position0, &position1);
 
         Float2 scale0;
         Float2 scale1;
@@ -1087,9 +1087,9 @@ void __fastcall UpdateFinalSparkDeathbomb(Player *player)
         scale0.y = 0.0f;
         scale1.x = 64.0f;
         scale1.y = 0.0f;
-        effect->FUN_0040eda0(30, 1, &scale0, &scale1);
-        effect->FUN_0040ed50(30, 3, 255, 0);
-        effect->FUN_0040eca0(30, 0, -1, 0xffff0000);
+        effect->StartScaleInterpolation(30, AnmInterpMode_EaseIn, &scale0, &scale1);
+        effect->StartColor1AlphaInterpolation(30, AnmInterpMode_EaseInQuartic, 255, 0);
+        effect->StartColor1RgbInterpolation(30, AnmInterpMode_Linear, -1, 0xffff0000);
         g_AnmManager->ExecuteScript(effect);
         bomb->secondaryWorkCursor++;
         g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(17), player->position.x);
@@ -1196,8 +1196,8 @@ void __fastcall UpdateRedNightlessCastleBomb(Player *player)
 #pragma var_order(effect, position1, position0, scale1, scale0)
             AnmVm *effect = g_EffectManager.FUN_00425870(
                 53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkCursor % 4 + 4, 1, -1);
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 32;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 4.0f;
+            reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 32;
+            reinterpret_cast<Effect *>(effect)->radialWaveCount = 4.0f;
 
             Float3 position0;
             Float3 position1;
@@ -1207,7 +1207,7 @@ void __fastcall UpdateRedNightlessCastleBomb(Player *player)
             position1.x = 192.0f;
             position1.y = g_Rng.GetRandomF32InRange(128.0f);
             position1.z = 0.0f;
-            effect->FUN_0040ec30(30, 4, &position0, &position1);
+            effect->StartPositionInterpolation(30, AnmInterpMode_EaseOut, &position0, &position1);
 
             Float2 scale0;
             Float2 scale1;
@@ -1215,9 +1215,9 @@ void __fastcall UpdateRedNightlessCastleBomb(Player *player)
             scale0.y = 0.0f;
             scale1.x = 64.0f;
             scale1.y = 0.0f;
-            effect->FUN_0040eda0(30, 1, &scale0, &scale1);
-            effect->FUN_0040ed50(30, 3, 255, 0);
-            effect->FUN_0040eca0(30, 0, -1, 0xffff0000);
+            effect->StartScaleInterpolation(30, AnmInterpMode_EaseIn, &scale0, &scale1);
+            effect->StartColor1AlphaInterpolation(30, AnmInterpMode_EaseInQuartic, 255, 0);
+            effect->StartColor1RgbInterpolation(30, AnmInterpMode_Linear, -1, 0xffff0000);
             bomb->secondaryWorkCursor++;
             g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(17), player->position.x);
             g_AnmManager->ExecuteScript(effect);
@@ -1327,8 +1327,8 @@ void __fastcall UpdateScarletDevilDeathbomb(Player *player)
 #pragma var_order(effect, position1, position0, scale1, scale0)
             AnmVm *effect = g_EffectManager.FUN_00425870(
                 53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkCursor % 4 + 4, 1, -1);
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 32;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 4.0f;
+            reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 32;
+            reinterpret_cast<Effect *>(effect)->radialWaveCount = 4.0f;
 
             Float3 position0;
             Float3 position1;
@@ -1338,7 +1338,7 @@ void __fastcall UpdateScarletDevilDeathbomb(Player *player)
             position1.x = 192.0f;
             position1.y = g_Rng.GetRandomF32InRange(128.0f);
             position1.z = 0.0f;
-            effect->FUN_0040ec30(30, 4, &position0, &position1);
+            effect->StartPositionInterpolation(30, AnmInterpMode_EaseOut, &position0, &position1);
 
             Float2 scale0;
             Float2 scale1;
@@ -1346,9 +1346,9 @@ void __fastcall UpdateScarletDevilDeathbomb(Player *player)
             scale0.y = 0.0f;
             scale1.x = 128.0f;
             scale1.y = 0.0f;
-            effect->FUN_0040eda0(30, 1, &scale0, &scale1);
-            effect->FUN_0040ed50(30, 3, 255, 0);
-            effect->FUN_0040eca0(30, 0, -1, 0xffff0000);
+            effect->StartScaleInterpolation(30, AnmInterpMode_EaseIn, &scale0, &scale1);
+            effect->StartColor1AlphaInterpolation(30, AnmInterpMode_EaseInQuartic, 255, 0);
+            effect->StartColor1RgbInterpolation(30, AnmInterpMode_Linear, -1, 0xffff0000);
             bomb->secondaryWorkCursor++;
             g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(17), player->position.x);
             g_AnmManager->ExecuteScript(effect);
@@ -1408,7 +1408,7 @@ void __fastcall UpdateKillingDollBomb(Player *player)
 
     if (bomb->timer >= 0 && bomb->timer <= 60)
     {
-        reinterpret_cast<Effect *>(bomb->workItems[0].effectVm)->vector0 = player->position;
+        reinterpret_cast<Effect *>(bomb->workItems[0].effectVm)->position = player->position;
     }
 
     if (bomb->timer >= 20 && bomb->timer < 116)
@@ -1532,7 +1532,7 @@ void __fastcall UpdateNightMistPhantomKillerDeathbomb(Player *player)
 
     if (bomb->timer >= 0 && bomb->timer <= 60)
     {
-        reinterpret_cast<Effect *>(bomb->workItems[0].effectVm)->vector0 = player->position;
+        reinterpret_cast<Effect *>(bomb->workItems[0].effectVm)->position = player->position;
     }
 
     if (bomb->timer >= 20 && bomb->timer < 148)
@@ -1759,49 +1759,49 @@ i32 __fastcall FUN_004114e0(AnmVm *effect)
     PlayerUnkStruct0x40 *slot;
     f32 angle;
 
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 40)
+    if (reinterpret_cast<Effect *>(effect)->timer < 40)
     {
-        interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 40.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) =
-            88.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) * 80.0f / 40.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) =
+        interp = 1.0f - (f32)reinterpret_cast<Effect *>(effect)->timer / 40.0f;
+        reinterpret_cast<Effect *>(effect)->shapeThickness =
+            88.0f - (f32)reinterpret_cast<Effect *>(effect)->timer * 80.0f / 40.0f;
+        reinterpret_cast<Effect *>(effect)->radius =
             192.0f - 384.0f * interp * interp;
-        --*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324);
-        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+        --reinterpret_cast<Effect *>(effect)->vertexSegmentCount;
+        reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
     }
     else
     {
-        if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) == 40)
+        if (reinterpret_cast<Effect *>(effect)->timer == 40)
         {
 #pragma var_order(position, radius)
             f32 radius;
             ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8ff08080, 0, 21);
-            angle = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318) + ZUN_PI / 4.0f;
-            radius = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) * 0.7071067094802856f;
+            angle = reinterpret_cast<Effect *>(effect)->angle + ZUN_PI / 4.0f;
+            radius = reinterpret_cast<Effect *>(effect)->radius * 0.7071067094802856f;
             Float3 position;
             g_AnmManager->FUN_00464b00(
                 effect,
-                reinterpret_cast<VertexTex1DiffuseXyzrhw *>(*reinterpret_cast<void **>(reinterpret_cast<u8 *>(effect) + 0x358)),
-                2 * *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) + 2);
+                reinterpret_cast<Effect *>(effect)->vertices,
+                2 * reinterpret_cast<Effect *>(effect)->vertexSegmentCount + 2);
             for (i = 0; i < 4; i++)
             {
                 if (angle >= ZUN_PI)
                     angle -= ZUN_2PI;
                 position.FromAngleMagnitude(angle, radius);
-                position += *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2E0);
+                position += reinterpret_cast<Effect *>(effect)->vector5;
                 slot = g_Player.FUN_0044dfa0(
                     &position, radius * 8.0f,
-                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) * 4.0f, 60, 70);
+                    reinterpret_cast<Effect *>(effect)->shapeThickness * 4.0f, 60, 70);
                 slot->collisionInterval = 4;
                 slot->angle = AddNormalizeAngle(angle, ZUN_PI / 2.0f);
                 angle = slot->angle;
                 slot = g_Player.FUN_0044de60(
                     &position, radius * 4.0f,
-                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) * 4.0f, 6, 100);
+                    reinterpret_cast<Effect *>(effect)->shapeThickness * 4.0f, 6, 100);
                 slot->angle = angle;
             }
         }
-        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+        reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
     }
     return 1;
 }
@@ -2119,58 +2119,58 @@ i32 __fastcall FUN_004117b0(AnmVm *effect)
     PlayerUnkStruct0x40 *slot;
     f32 angle;
 
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318) =
-        AddNormalizeAngle(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318),
-                          ((*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x328) & 1) != 0)
+    reinterpret_cast<Effect *>(effect)->angle =
+        AddNormalizeAngle(reinterpret_cast<Effect *>(effect)->angle,
+                          ((reinterpret_cast<Effect *>(effect)->slotIndex & 1) != 0)
                               ? 0.039269909f
                               : -0.039269909f);
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+    reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
 
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 50)
+    if (reinterpret_cast<Effect *>(effect)->timer < 50)
     {
-        interp = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) / 50.0f;
-        radialBase = (f32)(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x328) - 4) * 32.0f + 384.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) =
-            88.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) * 80.0f / 50.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) =
-            (f32)(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x328) - 4) * 32.0f + 192.0f -
+        interp = 1.0f - (f32)reinterpret_cast<Effect *>(effect)->timer / 50.0f;
+        radialBase = (f32)(reinterpret_cast<Effect *>(effect)->slotIndex - 4) * 32.0f + 384.0f;
+        reinterpret_cast<Effect *>(effect)->shapeThickness =
+            88.0f - (f32)reinterpret_cast<Effect *>(effect)->timer * 80.0f / 50.0f;
+        reinterpret_cast<Effect *>(effect)->radius =
+            (f32)(reinterpret_cast<Effect *>(effect)->slotIndex - 4) * 32.0f + 192.0f -
             radialBase * interp * interp;
-        --*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324);
+        --reinterpret_cast<Effect *>(effect)->vertexSegmentCount;
     }
     else
     {
-        if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) == 50)
+        if (reinterpret_cast<Effect *>(effect)->timer == 50)
         {
 #pragma var_order(position, radius)
             f32 radius;
             ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 16, 8, 0, 0, 21);
             ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8f6060f0, 0, 21);
-            angle = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318) + ZUN_PI / 4.0f;
-            radius = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) * 0.7071067094802856f;
+            angle = reinterpret_cast<Effect *>(effect)->angle + ZUN_PI / 4.0f;
+            radius = reinterpret_cast<Effect *>(effect)->radius * 0.7071067094802856f;
             Float3 position;
             g_AnmManager->FUN_00464b00(
                 effect,
-                reinterpret_cast<VertexTex1DiffuseXyzrhw *>(*reinterpret_cast<void **>(reinterpret_cast<u8 *>(effect) + 0x358)),
-                2 * *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) + 2);
+                reinterpret_cast<Effect *>(effect)->vertices,
+                2 * reinterpret_cast<Effect *>(effect)->vertexSegmentCount + 2);
             for (i = 0; i < 4; i++)
             {
                 if (angle >= ZUN_PI)
                     angle -= ZUN_2PI;
                 position.FromAngleMagnitude(angle, radius);
-                position += *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2E0);
+                position += reinterpret_cast<Effect *>(effect)->vector5;
                 slot = g_Player.FUN_0044dfa0(
                     &position, radius * 8.0f,
-                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) * 4.0f, 60, 100);
+                    reinterpret_cast<Effect *>(effect)->shapeThickness * 4.0f, 60, 100);
                 slot->collisionInterval = 2;
                 slot->angle = AddNormalizeAngle(angle, ZUN_PI / 2.0f);
                 angle = slot->angle;
                 slot = g_Player.FUN_0044de60(
                     &position, radius * 4.0f,
-                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) * 4.0f, 6, 150);
+                    reinterpret_cast<Effect *>(effect)->shapeThickness * 4.0f, 6, 150);
                 slot->angle = angle;
             }
         }
-        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+        reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
     }
     return 1;
 }
@@ -2179,15 +2179,15 @@ i32 __fastcall FUN_004117b0(AnmVm *effect)
 #pragma var_order(velocity, position)
 i32 __fastcall FUN_00411720(AnmVm *effect)
 {
-    Float3 position = *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2A4);
-    Float3 velocity = *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2B0);
+    Float3 position = reinterpret_cast<Effect *>(effect)->position;
+    Float3 velocity = reinterpret_cast<Effect *>(effect)->vector1;
 
     g_EffectManager.FUN_004259e0(35, reinterpret_cast<D3DXVECTOR3 *>(&position),
                                  reinterpret_cast<D3DXVECTOR3 *>(&velocity),
-                                 *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x328), 1, -1);
-    *reinterpret_cast<void **>(reinterpret_cast<u8 *>(effect) + 0x348) = reinterpret_cast<void *>(FUN_004114e0);
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 44;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 4.0f;
+                                 reinterpret_cast<Effect *>(effect)->slotIndex, 1, -1);
+    reinterpret_cast<Effect *>(effect)->updateCallback = reinterpret_cast<void *>(FUN_004114e0);
+    reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 44;
+    reinterpret_cast<Effect *>(effect)->shapeThickness = 4.0f;
     return 0;
 }
 
@@ -2195,15 +2195,15 @@ i32 __fastcall FUN_00411720(AnmVm *effect)
 #pragma var_order(velocity, position)
 i32 __fastcall FUN_00411a80(AnmVm *effect)
 {
-    Float3 position = *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2A4);
-    Float3 velocity = *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2B0);
+    Float3 position = reinterpret_cast<Effect *>(effect)->position;
+    Float3 velocity = reinterpret_cast<Effect *>(effect)->vector1;
 
     g_EffectManager.FUN_004259e0(35, reinterpret_cast<D3DXVECTOR3 *>(&position),
                                  reinterpret_cast<D3DXVECTOR3 *>(&velocity),
-                                 *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x328), 1, -1);
-    *reinterpret_cast<void **>(reinterpret_cast<u8 *>(effect) + 0x348) = reinterpret_cast<void *>(FUN_004117b0);
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 54;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 6.0f;
+                                 reinterpret_cast<Effect *>(effect)->slotIndex, 1, -1);
+    reinterpret_cast<Effect *>(effect)->updateCallback = reinterpret_cast<void *>(FUN_004117b0);
+    reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 54;
+    reinterpret_cast<Effect *>(effect)->shapeThickness = 6.0f;
     return 0;
 }
 
@@ -2312,10 +2312,10 @@ void __fastcall DrawEternalNightQuadrupleBarrierDeathbomb(Player *player)
 // FUNCTION: th08 0x410bb0
 i32 __fastcall FUN_00410bb0(AnmVm *effect)
 {
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) += 8.0f;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 12;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 32.0f;
+    reinterpret_cast<Effect *>(effect)->radius += 8.0f;
+    reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
+    reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 12;
+    reinterpret_cast<Effect *>(effect)->shapeThickness = 32.0f;
     return 1;
 }
 
@@ -2323,23 +2323,23 @@ i32 __fastcall FUN_00410bb0(AnmVm *effect)
 i32 __fastcall FUN_00413070(AnmVm *effect)
 {
     f32 interp;
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) < 30)
+    if (reinterpret_cast<Effect *>(effect)->timer < 30)
     {
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 192.0f;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 48;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 3.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = 0.0001f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330) = ZUN_PI / 2.0f;
+        reinterpret_cast<Effect *>(effect)->radius = 192.0f;
+        reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 48;
+        reinterpret_cast<Effect *>(effect)->shapeThickness = 3.0f;
+        reinterpret_cast<Effect *>(effect)->secondaryRadius = 0.0001f;
+        reinterpret_cast<Effect *>(effect)->secondaryAngle = ZUN_PI / 2.0f;
     }
     else
     {
-        interp = ((f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(effect) + 0x338) - 30.0f) / 30.0f;
+        interp = ((f32)reinterpret_cast<Effect *>(effect)->timer - 30.0f) / 30.0f;
         interp *= interp;
         interp *= interp;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = 192.0f * interp + 0.0001f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 80.0f * interp + 3.0f;
+        reinterpret_cast<Effect *>(effect)->secondaryRadius = 192.0f * interp + 0.0001f;
+        reinterpret_cast<Effect *>(effect)->shapeThickness = 80.0f * interp + 3.0f;
     }
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
+    reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
     return 1;
 }
 

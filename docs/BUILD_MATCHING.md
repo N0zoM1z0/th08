@@ -547,6 +547,29 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 - Small interpolation setter families are best recovered as real `AnmVm` members rather than open-coded raw writes in each consumer. `FUN_0040EC30/ECA0/ED50/EDA0` share the same two-timer-plus-mode-byte pattern but write different aggregate/color payloads; keeping four separate member bodies preserves their target call boundaries and argument cleanup (`ret 0x10`).
 - RGB unpack order is target-visible. `FUN_0040ECA0` writes red, green, blue as independent byte stores extracted from the same dword, in the exact order target uses; replacing that with a packed color assignment would change both shifts and store order.
 
+### Effect aggregate layout and fixed-slot address generation
+
+- A semantically plausible platform type can still be the wrong source owner.
+  `Effect +0x304` is emitted as a ninth ordinary `Float3` constructor followed
+  by a scalar at `+0x310`; declaring one `D3DXQUATERNION` removes the target
+  `Float3` relocation even though both layouts occupy 16 bytes.  Preserve the
+  constructor family proven by the object, not just size and alignment.
+- Five adjacent manager sentinels are likewise not source-equivalent to an
+  array.  `EffectManager::EffectManager` emits five independent constructor
+  calls after the 654-row vector constructor.  Keep the sentinels as separate
+  named members so the target constructor lowering remains intact.
+- In `EffectManager::FUN_00425870` and `FUN_004259E0`, natural
+  `effects[slotIndex + 0x280]` indexing is two bytes shorter than the target
+  under `/Od`.  The exact ordinary-C++ source shape forms the byte address from
+  `this`, `(slotIndex + 0x280) * sizeof(Effect)`, and
+  `offsetof(EffectManager, effects)`.  This expression is intentional semantic
+  pointer arithmetic, not unresolved layout debt.
+- Signed byte fields are target-visible through load extension.  The Effect
+  release request/timer, alternate draw group, vertex-dirty flag, and
+  update-during-freeze fields must remain `i8`; changing them to `u8` replaces
+  target `movsx` consumers with `movzx` even though stored values are currently
+  small.
+
 ### Branch-local vector lifetime and indexed-owner recovery in Player bomb callbacks
 
 - `UpdateFantasyOrbBomb` shows that mutually exclusive class-valued locals must retain branch-local lifetime under VC7 `/Od`. Hoisting the `<40` `previousPosition` and the later `targetPosition` to function scope enlarged the frame from target `0x5C` to `0x74` and inserted two entry constructors. Keeping them inside their respective branches restores the target slots (`previousPosition` at `-0x1C`, `targetPosition` at `-0x34`) and allows the compiler to reuse the frame.

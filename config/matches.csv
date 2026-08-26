@@ -888,10 +888,10 @@ address,name,size,status,match_percent,unit,evidence
 0x00413140,th08::UpdateGhastlyDreamBomb,1859,matching,100.00,player-bomb-update-ghastly-dream,python3 scripts/compare-function.py player-bomb-update-ghastly-dream --json
 0x00413990,th08::UpdateEternalSleepInDreamlandDeathbomb,2344,matching,100.00,player-deathbomb-update-eternal-sleep-dreamland,python3 scripts/compare-function.py player-deathbomb-update-eternal-sleep-dreamland --json
 0x0040EB50,th08::AnmVm::FUN_0040eb50,112,matching,100.00,anm-vm-fun-0040eb50,python3 scripts/compare-function.py anm-vm-fun-0040eb50 --json
-0x0040EC30,th08::AnmVm::FUN_0040ec30,112,matching,100.00,anm-vm-fun-0040ec30,python3 scripts/compare-function.py anm-vm-fun-0040ec30 --json
-0x0040ECA0,th08::AnmVm::FUN_0040eca0,174,matching,100.00,anm-vm-fun-0040eca0,python3 scripts/compare-function.py anm-vm-fun-0040eca0 --json
-0x0040ED50,th08::AnmVm::FUN_0040ed50,80,matching,100.00,anm-vm-fun-0040ed50,python3 scripts/compare-function.py anm-vm-fun-0040ed50 --json
-0x0040EDA0,th08::AnmVm::FUN_0040eda0,105,matching,100.00,anm-vm-fun-0040eda0,python3 scripts/compare-function.py anm-vm-fun-0040eda0 --json
+0x0040EC30,th08::AnmVm::StartPositionInterpolation,112,matching,100.00,anm-vm-start-position-interpolation,python3 scripts/compare-function.py anm-vm-start-position-interpolation --json
+0x0040ECA0,th08::AnmVm::StartColor1RgbInterpolation,174,matching,100.00,anm-vm-start-color1-rgb-interpolation,python3 scripts/compare-function.py anm-vm-start-color1-rgb-interpolation --json
+0x0040ED50,th08::AnmVm::StartColor1AlphaInterpolation,80,matching,100.00,anm-vm-start-color1-alpha-interpolation,python3 scripts/compare-function.py anm-vm-start-color1-alpha-interpolation --json
+0x0040EDA0,th08::AnmVm::StartScaleInterpolation,105,matching,100.00,anm-vm-start-scale-interpolation,python3 scripts/compare-function.py anm-vm-start-scale-interpolation --json
 0x0040C010,th08::UpdateFantasyOrbBomb,1941,matching,100.00,player-bomb-update-fantasy-orb,python3 scripts/compare-function.py player-bomb-update-fantasy-orb --json
 0x0040C910,th08::UpdateFantasySealBlinkDeathbomb,1790,matching,100.00,player-deathbomb-update-fantasy-seal-blink,python3 scripts/compare-function.py player-deathbomb-update-fantasy-seal-blink --json
 0x0040D430,th08::UpdateArtfulSacrificeBomb,1303,matching,100.00,player-bomb-update-artful-sacrifice,python3 scripts/compare-function.py player-bomb-update-artful-sacrifice --json
