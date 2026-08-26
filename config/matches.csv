@@ -46,7 +46,7 @@ address,name,size,status,match_percent,unit,evidence
 0x004021D0,th08::AsciiManagerPopup::AsciiManagerPopup,36,matching,100.00,ascii-manager-popup-constructor,python3 scripts/compare-function.py ascii-manager-popup-constructor --json
 0x00402430,th08::AsciiManager::OnDrawHighPrio,24,matching,100.00,ascii-manager-draw-high,python3 scripts/compare-function.py ascii-manager-draw-high --json
 0x004070B0,th08::AsciiManager::SetGaugeInterrupt,101,matching,100.00,ascii-manager-set-gauge-interrupt,python3 scripts/compare-function.py ascii-manager-set-gauge-interrupt --json
-0x00422BB0,th08::AsciiManager::FUN_00422bb0,42,matching,100.00,ascii-manager-boss-marker-interrupt,python3 scripts/compare-function.py ascii-manager-boss-marker-interrupt --json
+0x00422BB0,th08::AsciiManager::SetBossMarkerInterrupt,42,matching,100.00,ascii-manager-boss-marker-interrupt,python3 scripts/compare-function.py ascii-manager-boss-marker-interrupt --json
 0x004028C0,th08::AsciiManager::DeletedCallback,39,matching,100.00,ascii-manager-deleted-callback,python3 scripts/compare-function.py ascii-manager-deleted-callback --json
 0x004028F0,th08::AsciiManager::CutChain,35,matching,100.00,ascii-manager-cut-chain,python3 scripts/compare-function.py ascii-manager-cut-chain --json
 0x00437D45,th08::GuiFormattedText::GuiFormattedText,31,matching,100.00,gui-formatted-text-constructor,python3 scripts/compare-function.py gui-formatted-text-constructor --json
@@ -568,7 +568,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00414540,th08::Spellcard::IsLastSpell,68,matching,100.00,spellcard-is-last-spell,python3 scripts/compare-function.py spellcard-is-last-spell --json
 0x00417860,th08::Spellcard::FUN_00417860,59,matching,100.00,spellcard-fun-00417860,python3 scripts/compare-function.py spellcard-fun-00417860 --json
 0x0042DFF0,th08::Spellcard::FUN_0042DFF0,22,matching,100.00,spellcard-fun-0042dff0,python3 scripts/compare-function.py spellcard-fun-0042dff0 --json
-0x0042F2D0,th08::AsciiManager::FUN_0042f2d0,29,matching,100.00,ascii-fun-0042f2d0,python3 scripts/compare-function.py ascii-fun-0042f2d0 --json
+0x0042F2D0,th08::AsciiManager::SetBossMarkerState,29,matching,100.00,ascii-manager-set-boss-marker-state,python3 scripts/compare-function.py ascii-manager-set-boss-marker-state --json
 0x0042F2F0,th08::AsciiManager::SetScale,37,matching,100.00,ascii-set-scale,python3 scripts/compare-function.py ascii-set-scale --json
 0x004398FF,th08::AsciiManager::SetIsGuiMode,23,matching,100.00,ascii-set-is-gui-mode,python3 scripts/compare-function.py ascii-set-is-gui-mode --json
 0x004396F8,th08::AnmVm::FUN_004396f8,24,matching,100.00,anm-vm-fun-004396f8,python3 scripts/compare-function.py anm-vm-fun-004396f8 --json
@@ -619,7 +619,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00465070,th08::AnmManager::AnmManager,466,matching,100.00,anm-manager-constructor,python3 scripts/compare-function.py anm-manager-constructor --json
 0x00465250,th08::AnmManager::SetupVertexBuffer,700,matching,100.00,anm-manager-setup-vertex-buffer,python3 scripts/compare-function.py anm-manager-setup-vertex-buffer --json
 0x00402200,th08::AsciiManager::OnUpdate,460,matching,100.00,ascii-manager-on-update,python3 scripts/compare-function.py ascii-manager-on-update --json
-0x00406FD0,th08::AsciiManager::FUN_00406fd0,217,matching,100.00,ascii-manager-fun-00406fd0,python3 scripts/compare-function.py ascii-manager-fun-00406fd0 --json
+0x00406FD0,th08::AsciiManager::UpdateVms,217,matching,100.00,ascii-manager-update-vms,python3 scripts/compare-function.py ascii-manager-update-vms --json
 0x00425430,th08::EffectManager::SpawnEffect,529,matching,100.00,effect-manager-spawn-effect,python3 scripts/compare-function.py effect-manager-spawn-effect --json
 0x00425650,th08::EffectManager::SpawnEffectAngle,533,matching,100.00,effect-manager-spawn-effect-angle,python3 scripts/compare-function.py effect-manager-spawn-effect-angle --json
 0x00425B70,th08::EffectManager::SpawnEffect00425B70,509,matching,100.00,effect-manager-spawn-effect-00425b70,python3 scripts/compare-function.py effect-manager-spawn-effect-00425b70 --json
@@ -1028,7 +1028,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00472040,th08::CSound::`scalar_deleting_destructor',46,matching,100.00,csound-scalar-deleting-dtor-00472040,python3 scripts/compare-function.py csound-scalar-deleting-dtor-00472040 --json
 0x00474A80,th08::PbgArchiveEntry::`vector_deleting_destructor',112,matching,100.00,pbg-entry-vector-deleting-dtor-00474a80,python3 scripts/compare-function.py pbg-entry-vector-deleting-dtor-00474a80 --json
 0x00446F42,th08::DummyMidiTimer::~DummyMidiTimer,17,matching,100.00,dummy-midi-timer-dtor-00446f42,python3 scripts/compare-function.py dummy-midi-timer-dtor-00446f42 --json
-0x00423390,th08::FUN_00423390,52,matching,100.00,ecl-ex-callback-00423390,python3 scripts/compare-function.py ecl-ex-callback-00423390 --json
+0x00423390,th08::ConfigureNightBlindness,52,matching,100.00,ecl-ex-configure-night-blindness,python3 scripts/compare-function.py ecl-ex-configure-night-blindness --json
 0x004233D0,th08::FUN_004233d0,39,matching,100.00,ecl-ex-callback-004233d0,python3 scripts/compare-function.py ecl-ex-callback-004233d0 --json
 0x00423530,th08::FUN_00423530,104,matching,100.00,ecl-ex-callback-00423530,python3 scripts/compare-function.py ecl-ex-callback-00423530 --json
 0x00423A60,th08::FUN_00423a60,784,matching,100.00,ecl-ex-bullet-zone-callback-00423a60,python3 scripts/compare-function.py ecl-ex-bullet-zone-callback-00423a60 --json

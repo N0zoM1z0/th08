@@ -134,11 +134,6 @@ void __fastcall FUN_00426d10(Float3 *delta);
 DIFFABLE_EXTERN(ChainElem, g_EffectManagerCalcChain);
 DIFFABLE_EXTERN(ChainElem, g_EffectManagerDrawChain);
 
-// A dword published by an ECL enemy callback from the target object's +0x18
-// field.  Its consumer semantics are still unknown; this name records only
-// the observed callback ownership and width.
-DIFFABLE_EXTERN(i32, g_EclCallbackPublishedEnemyField24);
-DIFFABLE_EXTERN(i32, g_EclCallbackPublishedEnemyField56);
 #ifndef TH08_MODERN_PORT
 DIFFABLE_EXTERN(void *, g_EclExUpdateCallback);
 #endif

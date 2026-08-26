@@ -12,8 +12,6 @@
 namespace th08
 {
 
-DIFFABLE_EXTERN(AnmLoaded *, g_AsciiManagerDemoAnm0577EB4);
-
 DIFFABLE_STATIC(BulletManager, g_BulletManager);
 DIFFABLE_STATIC(ChainElem, g_BulletManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_BulletManagerDrawChain);
@@ -1576,8 +1574,8 @@ ZunResult BulletManager::AddedCallback(BulletManager *bulletManager)
 
     if (IsResourceReloadEnabled())
     {
-        g_AsciiManagerDemoAnm0577EB4 = g_AnmManager->PreloadAnm(6, "etama.anm");
-        bulletManager->bulletAnm = g_AsciiManagerDemoAnm0577EB4;
+        g_EffectManager.effectAnm = g_AnmManager->PreloadAnm(6, "etama.anm");
+        bulletManager->bulletAnm = g_EffectManager.effectAnm;
         if (bulletManager->bulletAnm == NULL)
             return ZUN_ERROR;
     }

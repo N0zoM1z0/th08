@@ -523,7 +523,7 @@ target = 0x004CCE20
 [[units.relocations]]
 offset = 0x37
 type = "REL32"
-symbol = "?FUN_00422bb0@AsciiManager@th08@@QAEXHF@Z"
+symbol = "?SetBossMarkerInterrupt@AsciiManager@th08@@QAEXHF@Z"
 target = 0x00422BB0
 
 [[units.relocations]]
@@ -535,7 +535,7 @@ target = 0x004CCE20
 [[units.relocations]]
 offset = 0x45
 type = "REL32"
-symbol = "?FUN_00422bb0@AsciiManager@th08@@QAEXHF@Z"
+symbol = "?SetBossMarkerInterrupt@AsciiManager@th08@@QAEXHF@Z"
 target = 0x00422BB0
 
 [[units.relocations]]
@@ -547,7 +547,7 @@ target = 0x004CCE20
 [[units.relocations]]
 offset = 0x53
 type = "REL32"
-symbol = "?FUN_00422bb0@AsciiManager@th08@@QAEXHF@Z"
+symbol = "?SetBossMarkerInterrupt@AsciiManager@th08@@QAEXHF@Z"
 target = 0x00422BB0
 
 [[units.relocations]]
@@ -650,7 +650,7 @@ target = 0x00407120
 [[units]]
 name = "ascii-manager-boss-marker-interrupt"
 object = "build/AsciiManagerBossMarker.obj"
-symbol = "?FUN_00422bb0@AsciiManager@th08@@QAEXHF@Z"
+symbol = "?SetBossMarkerInterrupt@AsciiManager@th08@@QAEXHF@Z"
 target_address = 0x00422BB0
 size = 0x2A
 
@@ -4062,7 +4062,7 @@ target = 0x004CCE20
 [[units.relocations]]
 offset = 0x40CB
 type = "REL32"
-symbol = "?FUN_00422bb0@AsciiManager@th08@@QAEXHF@Z"
+symbol = "?SetBossMarkerInterrupt@AsciiManager@th08@@QAEXHF@Z"
 target = 0x00422BB0
 
 [[units.relocations]]
@@ -4092,7 +4092,7 @@ target = 0x004CCE20
 [[units.relocations]]
 offset = 0x4139
 type = "REL32"
-symbol = "?FUN_00422bb0@AsciiManager@th08@@QAEXHF@Z"
+symbol = "?SetBossMarkerInterrupt@AsciiManager@th08@@QAEXHF@Z"
 target = 0x00422BB0
 
 [[units.relocations]]
@@ -10872,7 +10872,7 @@ target = 0x004CCE20
 [[units.relocations]]
 offset = 0x1716
 type = "REL32"
-symbol = "?FUN_0042f2d0@AsciiManager@th08@@QAEXHI@Z"
+symbol = "?SetBossMarkerState@AsciiManager@th08@@QAEXHI@Z"
 target = 0x0042F2D0
 
 [[units.relocations]]
@@ -10884,7 +10884,7 @@ target = 0x004CCE20
 [[units.relocations]]
 offset = 0x1740
 type = "REL32"
-symbol = "?FUN_0042f2d0@AsciiManager@th08@@QAEXHI@Z"
+symbol = "?SetBossMarkerState@AsciiManager@th08@@QAEXHI@Z"
 target = 0x0042F2D0
 
 [[units.relocations]]
@@ -43647,8 +43647,8 @@ target = 0x018B8A2C
 [[units.relocations]]
 offset = 0x14
 type = "DIR32"
-symbol = "?g_EclCallbackPublishedEnemyField24@th08@@3HA"
-target = 0x004E3D28
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
 
 [[units.relocations]]
 offset = 0x1B
@@ -44720,8 +44720,8 @@ target = 0x0045b1e0
 [[units.relocations]]
 offset = 0x437
 type = "DIR32"
-symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
-target = 0x00577eb4
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x43c
@@ -55276,9 +55276,9 @@ size = 0x16
 
 
 [[units]]
-name = "ascii-fun-0042f2d0"
+name = "ascii-manager-set-boss-marker-state"
 object = "build/AsciiManagerScale.obj"
-symbol = "?FUN_0042f2d0@AsciiManager@th08@@QAEXHI@Z"
+symbol = "?SetBossMarkerState@AsciiManager@th08@@QAEXHI@Z"
 target_address = 0x0042F2D0
 size = 0x1D
 
@@ -59140,7 +59140,7 @@ target = 0x00404890
 [[units.relocations]]
 offset = 0x152
 type = "REL32"
-symbol = "?FUN_00406fd0@AsciiManager@th08@@QAEXXZ"
+symbol = "?UpdateVms@AsciiManager@th08@@QAEXXZ"
 target = 0x00406FD0
 
 [[units.relocations]]
@@ -59174,9 +59174,9 @@ symbol = "?ExecuteScript@AnmManager@th08@@QAEIPAUAnmVm@2@@Z"
 target = 0x0045EA00
 
 [[units]]
-name = "ascii-manager-fun-00406fd0"
+name = "ascii-manager-update-vms"
 object = "build/AsciiManagerGauge.obj"
-symbol = "?FUN_00406fd0@AsciiManager@th08@@QAEXXZ"
+symbol = "?UpdateVms@AsciiManager@th08@@QAEXXZ"
 target_address = 0x00406FD0
 size = 0xD9
 
@@ -68482,8 +68482,8 @@ size = 0x91B
 [[units.relocations]]
 offset = 0xC
 type = "DIR32"
-symbol = "?g_EclCallbackPublishedEnemyField24@th08@@3HA"
-target = 0x004E3D28
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
 
 [[units.relocations]]
 offset = 0x3C
@@ -68977,8 +68977,8 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x1FD
 type = "DIR32"
-symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
-target = 0x00577EB4
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x202
@@ -79548,14 +79548,14 @@ target = 0x00465A40
 [[units.relocations]]
 offset = 38
 type = "DIR32"
-symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
-target = 0x00577EB4
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
 
 [[units.relocations]]
 offset = 47
 type = "DIR32"
-symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
-target = 0x00577EB4
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
 
 [[units.relocations]]
 offset = 83
@@ -86553,7 +86553,7 @@ target = 0x004CCE20
 [[units.relocations]]
 offset = 0x37E
 type = "REL32"
-symbol = "?FUN_00422bb0@AsciiManager@th08@@QAEXHF@Z"
+symbol = "?SetBossMarkerInterrupt@AsciiManager@th08@@QAEXHF@Z"
 target = 0x00422BB0
 
 [[units.relocations]]
@@ -86565,7 +86565,7 @@ target = 0x004CCE20
 [[units.relocations]]
 offset = 0x38C
 type = "REL32"
-symbol = "?FUN_00422bb0@AsciiManager@th08@@QAEXHF@Z"
+symbol = "?SetBossMarkerInterrupt@AsciiManager@th08@@QAEXHF@Z"
 target = 0x00422BB0
 
 [[units.relocations]]
@@ -86577,7 +86577,7 @@ target = 0x004CCE20
 [[units.relocations]]
 offset = 0x39A
 type = "REL32"
-symbol = "?FUN_00422bb0@AsciiManager@th08@@QAEXHF@Z"
+symbol = "?SetBossMarkerInterrupt@AsciiManager@th08@@QAEXHF@Z"
 target = 0x00422BB0
 
 [[units.relocations]]
@@ -94087,8 +94087,8 @@ target = 0x004259E0
 [[units.relocations]]
 offset = 0x1B9
 type = "DIR32"
-symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
-target = 0x00577EB4
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x1BE
@@ -94135,8 +94135,8 @@ target = 0x004259E0
 [[units.relocations]]
 offset = 0x286
 type = "DIR32"
-symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
-target = 0x00577EB4
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x28B
@@ -94183,8 +94183,8 @@ target = 0x004259E0
 [[units.relocations]]
 offset = 0x354
 type = "DIR32"
-symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
-target = 0x00577EB4
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x359
@@ -94328,8 +94328,8 @@ target = 0x004259E0
 [[units.relocations]]
 offset = 0x1E5
 type = "DIR32"
-symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
-target = 0x00577EB4
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x1EA
@@ -94376,8 +94376,8 @@ target = 0x004259E0
 [[units.relocations]]
 offset = 0x2B0
 type = "DIR32"
-symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
-target = 0x00577EB4
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x2B5
@@ -94424,8 +94424,8 @@ target = 0x004259E0
 [[units.relocations]]
 offset = 0x37B
 type = "DIR32"
-symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
-target = 0x00577EB4
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x380
@@ -98325,8 +98325,8 @@ target = 0x00425870
 [[units.relocations]]
 offset = 0x1AB
 type = "DIR32"
-symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
-target = 0x00577EB4
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x1B0
@@ -108285,7 +108285,7 @@ target = 0x004CCE20
 [[units.relocations]]
 offset = 0xA9
 type = "REL32"
-symbol = "?FUN_00422bb0@AsciiManager@th08@@QAEXHF@Z"
+symbol = "?SetBossMarkerInterrupt@AsciiManager@th08@@QAEXHF@Z"
 target = 0x00422BB0
 
 [[units.relocations]]
@@ -109119,8 +109119,8 @@ target = 0x00425870
 [[units.relocations]]
 offset = 0x51
 type = "DIR32"
-symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
-target = 0x00577EB4
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x56
@@ -109174,8 +109174,8 @@ target = 0x00425870
 [[units.relocations]]
 offset = 0x51
 type = "DIR32"
-symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
-target = 0x00577EB4
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x56
@@ -109229,8 +109229,8 @@ target = 0x00425870
 [[units.relocations]]
 offset = 0x51
 type = "DIR32"
-symbol = "?g_AsciiManagerDemoAnm0577EB4@th08@@3PAUAnmLoaded@1@A"
-target = 0x00577EB4
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x56
@@ -109251,23 +109251,23 @@ symbol = "?FUN_004235a0@th08@@YIXXZ"
 target = 0x004235A0
 
 [[units]]
-name = "ecl-ex-callback-00423390"
+name = "ecl-ex-configure-night-blindness"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00423390@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?ConfigureNightBlindness@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00423390
 size = 0x34
 
 [[units.relocations]]
 offset = 0x1A
 type = "DIR32"
-symbol = "?g_EclCallbackPublishedEnemyField24@th08@@3HA"
-target = 0x004E3D28
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
 
 [[units.relocations]]
 offset = 0x2C
 type = "DIR32"
-symbol = "?g_EclCallbackPublishedEnemyField56@th08@@3HA"
-target = 0x004E3D24
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
 
 [[units]]
 name = "ecl-ex-callback-004233d0"
@@ -112885,8 +112885,8 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0xC67
 type = "DIR32"
-symbol = "?g_EclCallbackPublishedEnemyField24@th08@@3HA"
-target = 0x004E3D28
+symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
+target = 0x004CCE20
 
 [[units.relocations]]
 offset = 0xC6F

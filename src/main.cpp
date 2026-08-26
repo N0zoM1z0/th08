@@ -208,7 +208,7 @@ restart:
                     }
 
                     GameWindow::ResetRenderState();
-                    g_Supervisor.unk174 = 3;
+                    g_Supervisor.screenTransitionCountdown = 3;
                     g_Supervisor.flags.d3dDevDisconnectFlag = 1;
                 }
             }
@@ -387,7 +387,7 @@ void GameWindow::Present()
         g_Supervisor.d3dDevice->Reset(&g_Supervisor.presentParameters);
         ResetRenderState();
 
-        g_Supervisor.unk174 = 2;
+        g_Supervisor.screenTransitionCountdown = 2;
     }
 
     g_AnmManager->TakeScreencaptures();
@@ -412,9 +412,9 @@ void GameWindow::Present()
         }
     }
 
-    if (g_Supervisor.unk174 != 0 && !g_GameManager.isInGameMenu)
+    if (g_Supervisor.screenTransitionCountdown != 0 && !g_GameManager.isInGameMenu)
     {
-        g_Supervisor.unk174--;
+        g_Supervisor.screenTransitionCountdown--;
     }
 }
 

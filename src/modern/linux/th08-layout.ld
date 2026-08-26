@@ -19,8 +19,6 @@ SECTIONS
     _ZN4th0823g_GuiStageMusicContextsE = 0x004c7240;
     _ZN4th0830g_AsciiManagerDrawChainLowPrioE = 0x004cce00;
     _ZN4th0814g_AsciiManagerE = 0x004cce20;
-    _ZN4th0834g_EclCallbackPublishedEnemyField56E = 0x004e3d24;
-    _ZN4th0834g_EclCallbackPublishedEnemyField24E = 0x004e3d28;
     _ZN4th0823g_AsciiManagerCalcChainE = 0x004e3fd0;
     _ZN4th0831g_AsciiManagerDrawChainHighPrioE = 0x004e3ff0;
     _ZN4th0829g_BackgroundDrawChainHighPrioE = 0x004e4010;
@@ -42,12 +40,10 @@ SECTIONS
     _ZN4th0815g_EffectManagerE = 0x004ece60;
 
     /*
-     * The original linker laid the two EffectManager ANM pointers at the end
-     * of the aggregate directly before its chain elements.  Spellcard.cpp
-     * names the second pointer as a separate global, while EffectManager.cpp
-     * writes it through g_EffectManager + 0x8b058.  Keep those views aliased.
+     * The original linker placed EffectManager::stageEffectAnm at the
+     * aggregate tail directly before its chain elements.  Spellcard.cpp
+     * names that pointer as a separate global, so keep both views aliased.
      */
-    _ZN4th0828g_AsciiManagerDemoAnm0577EB4E = 0x00577eb4;
     _ZN4th0824g_SpellcardBackgroundAnmE = 0x00577eb8;
     _ZN4th0824g_EffectManagerCalcChainE = 0x00577ebc;
     _ZN4th0824g_EffectManagerDrawChainE = 0x00577edc;

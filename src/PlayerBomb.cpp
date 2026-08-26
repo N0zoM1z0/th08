@@ -21,7 +21,6 @@
 // cluster; it does not claim the original source filename.
 namespace th08
 {
-DIFFABLE_EXTERN(AnmLoaded *, g_AsciiManagerDemoAnm0577EB4);
 // FUNCTION: th08 0x40bc20
 i32 Player::IsHuman()
 {
@@ -1067,7 +1066,7 @@ void __fastcall UpdateFinalSparkDeathbomb(Player *player)
         AnmVm *effect = g_EffectManager.FUN_00425870(
             53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkCursor % 4 + 4, 1, -1);
         if (bomb->secondaryWorkCursor & 1)
-            g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 92);
+            g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 92);
         reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 32;
         reinterpret_cast<Effect *>(effect)->radialWaveCount = 0;
 
@@ -1713,7 +1712,7 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
         Float3 velocity(ZUN_PI * 3.0f / 8.0f, 1.0f, 4.0f);
         effect = g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 5, 1, -1);
-        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 89);
+        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 89);
         bomb->workItems[1].position = player->position;
     }
 
@@ -1728,7 +1727,7 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
         Float3 velocity(ZUN_PI / 2.0f, 1.0f, 4.0f);
         effect = g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 6, 1, -1);
-        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 90);
+        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 90);
         bomb->workItems[2].position = player->position;
     }
 
@@ -1743,7 +1742,7 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
         Float3 velocity(1.9634954929351807f, 1.0f, 4.0f);
         effect = g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 7, 1, -1);
-        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 91);
+        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 91);
         bomb->workItems[3].position = player->position;
     }
 
@@ -2248,7 +2247,7 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
         Float3 velocity(ZUN_PI * 3.0f / 8.0f, 1.0f, 4.0f);
         effect = g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 5, 1, -1);
-        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 93);
+        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 93);
         bomb->workItems[1].position = player->position;
     }
 
@@ -2263,7 +2262,7 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
         Float3 velocity(ZUN_PI / 2.0f, 1.0f, 4.0f);
         effect = g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 6, 1, -1);
-        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 94);
+        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 94);
         bomb->workItems[2].position = player->position;
     }
 
@@ -2278,7 +2277,7 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
         Float3 velocity(1.9634954929351807f, 1.0f, 4.0f);
         effect = g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 7, 1, -1);
-        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 95);
+        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 95);
         bomb->workItems[3].position = player->position;
     }
 

@@ -1,5 +1,6 @@
 #include "th_pch.h"
 
+#include "AsciiManager.hpp"
 #include "EclManager.hpp"
 #include "EclOperands.hpp"
 #include "EnemyManager.hpp"
@@ -31,9 +32,6 @@ void __fastcall ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, EclExInstr
 void __fastcall MokouResurrection(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
 }
 
-DIFFABLE_EXTERN(AnmLoaded *, g_AsciiManagerDemoAnm0577EB4);
-extern i32 g_EclCallbackPublishedEnemyField56;
-
 // The retail image gives these ECL extension views their own target symbols.
 // The modern port stores the same bytes in Background, so keep one semantic
 // spelling in the instruction bodies while preserving both storage models.
@@ -47,10 +45,10 @@ void __fastcall FUN_004235a0();
 #define ECL_EX_CONTEXT(enemy) (reinterpret_cast<Enemy *>(enemy)->activeEclContext)
 
 // FUNCTION: th08 0x423390
-void __fastcall FUN_00423390(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall ConfigureNightBlindness(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    g_EclCallbackPublishedEnemyField24 = ECL_EX_CONTEXT(enemy)->intVariables[0];
-    g_EclCallbackPublishedEnemyField56 =
+    g_AsciiManager.nightBlindnessAlpha = ECL_EX_CONTEXT(enemy)->intVariables[0];
+    *reinterpret_cast<i32 *>(&g_AsciiManager.nightBlindnessRadius) =
         *reinterpret_cast<i32 *>(&ECL_EX_CONTEXT(enemy)->floatVariables[0]);
 }
 
@@ -107,7 +105,7 @@ void __fastcall FUN_00423530(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     AnmVm *effect;
     effect = g_EffectManager.FUN_00425870(56, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
     effect = g_EffectManager.FUN_00425870(56, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
-    g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 97);
+    g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 97);
     g_EclExUpdateCallback = reinterpret_cast<void *>(&FUN_004235a0);
 }
 
@@ -281,7 +279,7 @@ void __fastcall FUN_00423db0(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     AnmVm *effect;
     effect = g_EffectManager.FUN_00425870(65, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
     effect = g_EffectManager.FUN_00425870(65, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
-    g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 99);
+    g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 99);
     g_EclExUpdateCallback = reinterpret_cast<void *>(&FUN_004235a0);
 }
 
@@ -376,7 +374,7 @@ void __fastcall FUN_00424170(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     AnmVm *effect;
     effect = g_EffectManager.FUN_00425870(58, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
     effect = g_EffectManager.FUN_00425870(58, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
-    g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(effect, 101);
+    g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 101);
     g_EclExUpdateCallback = reinterpret_cast<void *>(&FUN_004235a0);
 }
 

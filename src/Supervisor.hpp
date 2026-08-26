@@ -285,7 +285,7 @@ struct Supervisor
     i32 releaseResourcesOnRestart;
     i32 keepStageResources;
     i32 unk170;
-    i32 unk174; // Commonly set for screen transitions and decremented once per frame, but never actually used for
+    i32 screenTransitionCountdown; // Commonly set for screen transitions and decremented once per frame, but never actually used for
                 // anything
     i32 unk178;
     BOOL disableVsync;

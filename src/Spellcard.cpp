@@ -16,7 +16,6 @@
 namespace th08
 {
 ZunBool IsDisableResourceReload();
-DIFFABLE_EXTERN(AnmLoaded *, g_AsciiManagerDemoAnm0577EB4);
 DIFFABLE_STATIC(Spellcard, g_Spellcard);
 DIFFABLE_STATIC(ChainElem *, g_SpellcardCalcChain);
 DIFFABLE_STATIC(i32, g_LastSpellCount);
@@ -1007,7 +1006,7 @@ void Spellcard::EndSpell()
     i32 captured;
     i32 enemyScore;
 
-    g_EclCallbackPublishedEnemyField24 = 0;
+    g_AsciiManager.nightBlindnessAlpha = 0;
     if ((this->flags & 1) != 0)
     {
         captured = 0;
@@ -1303,7 +1302,7 @@ i32 Spellcard::OnUpdateImpl()
         }
         else if (this->spellEffect->vm.activeSpriteIndex == 221)
         {
-            g_AsciiManagerDemoAnm0577EB4->SetSprite(&this->spellEffect->vm, 222);
+            g_EffectManager.effectAnm->SetSprite(&this->spellEffect->vm, 222);
             this->spellEffect->vm.scaleFinal.x = 4.0f;
             this->spellEffect->vm.scale.x = 4.0f;
         }

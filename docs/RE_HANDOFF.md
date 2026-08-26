@@ -483,8 +483,34 @@ all router categories.  The dword at absolute `0x018B8A24` remains explicitly
 unknown because it lacks independent ownership evidence.  The whole-source
 router is now 60 raw-member, 82 absolute, 255 anonymous, and 49 opaque.
 
-The next dense semantic owner is AsciiManager presentation state, followed by
-the remaining GameManager setup/runtime views.
+The Ascii presentation batch is now accepted.  Boss-marker state/interrupts,
+the shared VM update, frame timer, retry initial-Bomb read, and Supervisor
+transition countdown now have behavior-backed owners and names.  The
+`AsciiManager +0x16F04/+0x16F08/+0x16F0C` tail is the Mystia night-blindness
+radius, integer alpha, and center VM protocol, with
+`ConfigureNightBlindness @ 0x00423390` publishing its ECL parameters.
+GensokyoClub's current names corroborated this interpretation; target access
+patterns and strict replay accepted it, while the target-observed integer
+alpha was retained instead of upstream's `ZunColor` view.
+
+The former globals at `0x004E3D24/0x004E3D28` are retired as overlapping
+aliases inside `g_AsciiManager`.  The former
+`g_AsciiManagerDemoAnm0577EB4` is likewise retired: `0x00577EB4` is exactly
+`g_EffectManager.effectAnm @ +0x8B054`, now shared directly by Bullet,
+PlayerBomb, Spellcard, ECL extensions, and Ascii rendering.  Their source,
+relocation, global-ledger, and Linux layout identities moved together.
+
+The rebuilt affected-object selection passes **353 / 353**, with the Ascii
+object at **63 / 63** and a separately regenerated canonical selection at
+**72 / 72**.  A required single-job non-reuse cold replay passes **1,106 /
+1,106**, the normal VC7 image links, and the complete i386 Linux build plus
+fixed-layout verifier passes.  Only five Ascii candidates remain: the
+unidentified script-9 VM, reset-only bool, and unused popup tail field.  The
+whole-source router is now 60 raw-member, 82 absolute, 218 anonymous, and 48
+opaque candidates.
+
+The next dense semantic owner is the remaining GameManager setup/runtime
+state, followed by the adjacent Supervisor and replay-storage views.
 
 Select the next independent field family with:
 

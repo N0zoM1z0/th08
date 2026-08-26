@@ -720,7 +720,7 @@ void Enemy::Despawn()
         g_Gui.SetBossPresent(false);
         g_EnemyManager.bosses[this->bossSlot] = NULL;
         this->flags1 &= ~ENEMY_FLAG_BOSS;
-        g_AsciiManager.FUN_00422bb0(
+        g_AsciiManager.SetBossMarkerInterrupt(
             this->bossSlot, 2);
         g_AsciiManager.SetBossMarkerPosition(
             this->bossSlot,

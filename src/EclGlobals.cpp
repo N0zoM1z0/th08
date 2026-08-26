@@ -31,7 +31,7 @@ void __fastcall ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, EclExInstr
 void __fastcall MokouResurrection(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
 }
 
-void __fastcall FUN_00423390(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
+void __fastcall ConfigureNightBlindness(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
 void __fastcall FUN_004233d0(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
 void __fastcall FUN_00423400(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
 void __fastcall FUN_00423530(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
@@ -63,7 +63,7 @@ void __fastcall FUN_00424a00(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 void __fastcall FUN_00425390(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
 
 DIFFABLE_STATIC_ARRAY_ASSIGN(void *, 32, g_EclExInsn) = {
-    reinterpret_cast<void *>(&FUN_00423390),
+    reinterpret_cast<void *>(&ConfigureNightBlindness),
     reinterpret_cast<void *>(&FUN_004233d0),
     reinterpret_cast<void *>(&FUN_00423400),
     reinterpret_cast<void *>(&FUN_00423530),
@@ -97,8 +97,6 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(void *, 32, g_EclExInsn) = {
     reinterpret_cast<void *>(&FUN_00425390),
 };
 
-DIFFABLE_STATIC(i32, g_EclCallbackPublishedEnemyField24);
-DIFFABLE_STATIC(i32, g_EclCallbackPublishedEnemyField56);
 #ifndef TH08_MODERN_PORT
 DIFFABLE_STATIC(void *, g_EclExUpdateCallback);
 #endif

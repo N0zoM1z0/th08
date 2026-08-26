@@ -77,7 +77,7 @@ th08::GameManager::UpdateAntiTamper,0x406e50,function
 th08::Rng::GetRandomU32InRange,0x406ef0,function
 th08::GameManager::SetBombCount,0x406f30,function
 th08::GameManager::SetPower,0x406fa0,function
-th08::AsciiManager::FUN_00406fd0,0x406fd0,function
+th08::AsciiManager::UpdateVms,0x406fd0,function
 th08::AsciiManager::SetGaugeInterrupt,0x4070b0,function
 th08::AnmVmBase::SetInterrupt,0x407120,function
 th08::AsciiManager::GetGaugeInterrupt,0x407140,function
@@ -277,7 +277,7 @@ th08::GameManager::GetPower,0x422480,function
 th08::EclRunLowProposal::FUN_004224a0,0x4224a0,function
 th08::EclRunHighProposal::DispatchShotInstruction,0x422720,function
 th08::GameManager::ScaleFloatBasedOnRank,0x422b80,function
-th08::AsciiManager::FUN_00422bb0,0x422bb0,function
+th08::AsciiManager::SetBossMarkerInterrupt,0x422bb0,function
 th08::AsciiManager::SetBossMarkerPosition,0x422be0,function
 th08::Gui::SetBossPresent,0x422c20,function
 th08::Enemy::UpdateMovement,0x422c40,function
@@ -286,7 +286,7 @@ th08::Gui::SetBossGaugeSlot,0x4230e0,function
 th08::Gui::SetBossGaugeColor,0x423110,function
 th08::Gui::SetBossLifeMarkerCount,0x423130,function
 th08::Enemy::UpdateShotAndAnm,0x423150,function
-th08::FUN_00423390,0x423390,function
+th08::ConfigureNightBlindness,0x423390,function
 th08::FUN_004233d0,0x4233d0,function
 th08::FUN_00423400,0x423400,function
 th08::FUN_00423530,0x423530,function
@@ -425,7 +425,7 @@ th08::EnemyManager::HasBoss,0x42f1f0,function
 th08::GameManager::IsSoloHuman,0x42f230,function
 th08::GameManager::IsSoloYoukai,0x42f270,function
 th08::GameManager::GetLives,0x42f2b0,function
-th08::AsciiManager::FUN_0042f2d0,0x42f2d0,function
+th08::AsciiManager::SetBossMarkerState,0x42f2d0,function
 th08::AsciiManager::SetScale,0x42f2f0,function
 th08::Gui::IsBossPresent,0x42f320,function
 th08::Gui::SetBossTimerSeconds,0x42f340,function

@@ -662,11 +662,11 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 g_AsciiManager.SetBossMarkerPosition(enemy->bossSlot, &markerPosition);
 
                 if (reinterpret_cast<EnemyFlag2Bits *>(&enemy->flags2)->damageFeedbackLevel == 0)
-                    g_AsciiManager.FUN_0042f2d0(
+                    g_AsciiManager.SetBossMarkerState(
                         enemy->bossSlot,
                         enemy->vm.flag17 != 0);
                 else
-                    g_AsciiManager.FUN_0042f2d0(
+                    g_AsciiManager.SetBossMarkerState(
                         enemy->bossSlot,
                         reinterpret_cast<EnemyFlag2Bits *>(&enemy->flags2)->damageFeedbackLevel + 1);
             }

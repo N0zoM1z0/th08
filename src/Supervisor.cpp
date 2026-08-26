@@ -721,7 +721,7 @@ void Supervisor::StartupThread(Supervisor *s)
     tm *currentLocalTime;
 
     g_Supervisor.unk178 = 0;
-    g_Supervisor.unk174 = 0;
+    g_Supervisor.screenTransitionCountdown = 0;
     g_Supervisor.totalPlayTime = timeGetTime();
 
     *reinterpret_cast<u16 *>(&g_Rng) = static_cast<u16>(g_Supervisor.totalPlayTime);

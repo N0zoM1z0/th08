@@ -10,9 +10,9 @@ namespace th08
 // it between the GameManager solo-character predicates and the final
 // EnemyManager helper, so it cannot remain in the early AsciiManager object.
 // FUNCTION: th08 0x0042F2D0
-void AsciiManager::FUN_0042f2d0(i32 index, u32 value)
+void AsciiManager::SetBossMarkerState(i32 index, u32 value)
 {
-    *(u32 *)((u8 *)this + 0x2254 + index * 4) = value;
+    this->bossMarkerStates[index] = value;
 }
 
 // FUNCTION: th08 0x0042F2F0

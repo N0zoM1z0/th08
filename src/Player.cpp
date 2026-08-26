@@ -1604,9 +1604,9 @@ ZunResult Player::AddedCallback(Player *player)
 
     if (IsResourceReloadEnabled())
         g_AsciiManager.SetGaugeInterrupt(1);
-    g_AsciiManager.FUN_00422bb0(0, 2);
-    g_AsciiManager.FUN_00422bb0(1, 2);
-    g_AsciiManager.FUN_00422bb0(2, 2);
+    g_AsciiManager.SetBossMarkerInterrupt(0, 2);
+    g_AsciiManager.SetBossMarkerInterrupt(1, 2);
+    g_AsciiManager.SetBossMarkerInterrupt(2, 2);
 
     g_PlayerGaugeBounds[0] = -10000;
     g_PlayerGaugeBounds[2] = -8000;
@@ -1686,9 +1686,9 @@ ZunResult Player::DeletedCallback(Player *player)
     {
         g_AnmManager->ReleaseAnm(5);
         g_AsciiManager.SetGaugeInterrupt(99);
-        g_AsciiManager.FUN_00422bb0(0, 99);
-        g_AsciiManager.FUN_00422bb0(1, 99);
-        g_AsciiManager.FUN_00422bb0(2, 99);
+        g_AsciiManager.SetBossMarkerInterrupt(0, 99);
+        g_AsciiManager.SetBossMarkerInterrupt(1, 99);
+        g_AsciiManager.SetBossMarkerInterrupt(2, 99);
 
         if (g_Player.primaryShtFile != NULL)
         {

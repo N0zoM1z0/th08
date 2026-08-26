@@ -15,9 +15,6 @@
 namespace th08
 {
 
-// Placeholder for the unledgered global AnmLoaded* observed at 0x00577eb4.
-DIFFABLE_STATIC(AnmLoaded *, g_AsciiManagerDemoAnm0577EB4);
-
 namespace EclOperands
 {
 struct Vector3
@@ -112,12 +109,6 @@ enum
 // Recovered target 0x00439916; /Gr makes this fastcall in this TU.
 i32 FUN_00439916(i32 unused);
 
-struct PauseRetryShtFileView
-{
-    unknown_fields(0x0, 4);
-    f32 bombCount;
-};
-
 // FUNCTION: th08 0x402000
 AsciiManager::AsciiManager()
 {
@@ -194,7 +185,7 @@ ChainCallbackResult AsciiManager::OnUpdate(AsciiManager *ascii)
         ascii->retryMenu.OnUpdate();
     }
 
-    ascii->FUN_00406fd0();
+    ascii->UpdateVms();
     if (g_GameManager.IsDemoMode())
     {
         if (ascii->demoIcon.scriptIndex == 0)
@@ -207,7 +198,7 @@ ChainCallbackResult AsciiManager::OnUpdate(AsciiManager *ascii)
     {
         ascii->demoIcon.scriptIndex = 0;
     }
-    ascii->unk_8284++;
+    ascii->frameTimer++;
 
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
@@ -528,7 +519,7 @@ void AsciiManager::OnDrawLowPrioImpl()
                 this->bossMarkers[i].color1.b = 64;
                 break;
             case 2:
-                if (this->unk_8284 % 8 == 0)
+                if (this->frameTimer % 8 == 0)
                 {
                     this->bossMarkers[i].loadedSprite = this->asciiAnm->GetSprite(158);
                     this->bossMarkers[i].color1.a = 255;
@@ -542,7 +533,7 @@ void AsciiManager::OnDrawLowPrioImpl()
                 }
                 break;
             case 3:
-                if (this->unk_8284 % 4 == 0)
+                if (this->frameTimer % 4 == 0)
                 {
                     this->bossMarkers[i].loadedSprite = this->asciiAnm->GetSprite(158);
                     this->bossMarkers[i].color1.a = 255;
@@ -556,7 +547,7 @@ void AsciiManager::OnDrawLowPrioImpl()
                 }
                 break;
             case 4:
-                if (this->unk_8284 % 2 == 0)
+                if (this->frameTimer % 2 == 0)
                 {
                     this->bossMarkers[i].loadedSprite = this->asciiAnm->GetSprite(158);
                     this->bossMarkers[i].color1.a = 255;
@@ -1495,7 +1486,7 @@ selected_no:
 
             g_GameManager.SetLives(g_GameManager.cfg->lifeCount);
 
-            g_GameManager.SetBombCount(reinterpret_cast<PauseRetryShtFileView *>(g_Player.primaryShtFile)->bombCount);
+            g_GameManager.SetBombCount(g_Player.primaryShtFile->initialBombCount);
 
             g_GameManager.globals->grazeInStage = 0;
             g_GameManager.globals->pointItemsCollectedInStage = 0;
@@ -1506,7 +1497,7 @@ selected_no:
             g_GameManager.globals->pointItemExtendsSoFar = 0;
             g_GameManager.globals->nextPointItemExtendThreshold = 100;
 
-            g_Supervisor.unk174 = 8;
+            g_Supervisor.screenTransitionCountdown = 8;
 
             IncrementIfBelow(&g_GameManager.plst.playData[g_GameManager.difficulty].attemptsTotal, 999999);
             IncrementIfBelow(&g_GameManager.plst.playData[MAX_DIFFICULTIES + 1].attemptsTotal, 999999);
@@ -1647,23 +1638,23 @@ void AsciiManager::OnDrawHighPrioImpl()
         }
     }
 
-    if (this->unk_16f08 > 0)
+    if (this->nightBlindnessAlpha > 0)
     {
-        alphaColor.a = this->unk_16f08;
+        alphaColor.a = this->nightBlindnessAlpha;
         alphaColor.r = 0;
         alphaColor.g = 0;
         alphaColor.b = 0;
 
         rect.left = 32.0f;
         rect.top = 16.0f;
-        rect.right = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f - this->unk_16f04 + g_AnmManager->screenShakeOffset.x;
+        rect.right = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f - this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.x;
         rect.bottom = 464.0f;
         if (rect.right > rect.left)
         {
             ScreenEffect::DrawSquare(&rect, alphaColor.d3dColor);
         }
 
-        rect.left = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f + this->unk_16f04 + g_AnmManager->screenShakeOffset.x;
+        rect.left = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f + this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.x;
         rect.top = 16.0f;
         rect.right = 416.0f;
         rect.bottom = 464.0f;
@@ -1672,38 +1663,38 @@ void AsciiManager::OnDrawHighPrioImpl()
             ScreenEffect::DrawSquare(&rect, alphaColor.d3dColor);
         }
 
-        rect.left = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f - this->unk_16f04 + g_AnmManager->screenShakeOffset.x;
+        rect.left = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f - this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.x;
         if (rect.left < 32.0f)
         {
             rect.left = 32.0f;
         }
         rect.top = 16.0f;
-        rect.right = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f + this->unk_16f04 + g_AnmManager->screenShakeOffset.x;
+        rect.right = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f + this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.x;
         if (rect.right > 416.0f)
         {
             rect.right = 416.0f;
         }
-        rect.bottom = EclOperands::g_TargetPlayerPosition017D61AC.y + 16.0f - this->unk_16f04 + g_AnmManager->screenShakeOffset.y;
+        rect.bottom = EclOperands::g_TargetPlayerPosition017D61AC.y + 16.0f - this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.y;
         if (rect.bottom > rect.top)
         {
             ScreenEffect::DrawSquare(&rect, alphaColor.d3dColor);
         }
 
-        rect.top = EclOperands::g_TargetPlayerPosition017D61AC.y + 16.0f + this->unk_16f04 + g_AnmManager->screenShakeOffset.y;
+        rect.top = EclOperands::g_TargetPlayerPosition017D61AC.y + 16.0f + this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.y;
         rect.bottom = 464.0f;
         if (rect.bottom > rect.top)
         {
             ScreenEffect::DrawSquare(&rect, alphaColor.d3dColor);
         }
 
-        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(&this->unk_16f0c, 105);
-        this->unk_16f0c.scale.y = this->unk_16f04 / 63.0f;
-        this->unk_16f0c.scale.x = this->unk_16f0c.scale.y;
-        this->unk_16f0c.pos = *(Float3 *)&EclOperands::g_TargetPlayerPosition017D61AC;
-        this->unk_16f0c.pos.x += 32.0f;
-        this->unk_16f0c.pos.y += 16.0f;
-        this->unk_16f0c.color1.a = this->unk_16f08;
-        g_AnmManager->DrawNoRotation(&this->unk_16f0c);
+        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&this->nightBlindnessVm, 105);
+        this->nightBlindnessVm.scale.y = this->nightBlindnessRadius / 63.0f;
+        this->nightBlindnessVm.scale.x = this->nightBlindnessVm.scale.y;
+        this->nightBlindnessVm.pos = *(Float3 *)&EclOperands::g_TargetPlayerPosition017D61AC;
+        this->nightBlindnessVm.pos.x += 32.0f;
+        this->nightBlindnessVm.pos.y += 16.0f;
+        this->nightBlindnessVm.color1.a = this->nightBlindnessAlpha;
+        g_AnmManager->DrawNoRotation(&this->nightBlindnessVm);
     }
 
     popup = this->timePopups;

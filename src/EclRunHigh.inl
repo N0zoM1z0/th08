@@ -680,7 +680,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             }
             reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1 |= ENEMY_FLAG_BOSS;
             reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossSlot = (u8)TH08_ECL_READ_I(ctx, 0);
-            g_AsciiManager.FUN_00422bb0(
+            g_AsciiManager.SetBossMarkerInterrupt(
                 reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossSlot, 1);
             reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->minimumPlayerDistanceSquared = 0.0f;
         }
@@ -691,7 +691,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             g_EnemyManager.bosses[
                 reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossSlot] = 0;
             reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1 &= ~ENEMY_FLAG_BOSS;
-            g_AsciiManager.FUN_00422bb0(
+            g_AsciiManager.SetBossMarkerInterrupt(
                 reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossSlot, 2);
             reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ReleaseAttachedEffects();
             g_AsciiManager.SetBossMarkerPosition(

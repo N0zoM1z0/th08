@@ -1905,3 +1905,71 @@ non-header-layout candidate is the deliberately unresolved absolute dword.
 The whole-source router reports 60 raw-member, 82 absolute-address, 255
 anonymous-identifier, and 49 opaque-storage candidates.  These are routing
 counts, not a whole-program completion claim.
+
+### Ascii presentation and night-blindness protocol — 2026-08-27
+
+Scope: the asserted `AsciiManager` presentation owner, its update and low/high
+priority draw paths, Boss-marker helpers, the ECL extension callback at
+`0x00423390`, and the shared effect-ANM resource used by Bullet, PlayerBomb,
+Spellcard, ECL extensions, and the night-blindness renderer.
+
+Observed: `AsciiManager +0x8284` advances once per manager update and supplies
+the modulo-8/4/2 Boss-marker flicker phases; it is `frameTimer`.
+`+0x2254` is the four-dword state array paired with the four Boss-marker VMs,
+and the helper at `0x0042F2D0` is now `SetBossMarkerState`.  The helper at
+`0x00422BB0` applies the marker VM interrupt and is
+`SetBossMarkerInterrupt`.  The repeated VM execution body at `0x00406FD0` is
+the real out-of-line `UpdateVms`, not a second anonymous operation.  The retry
+path now reads the already-asserted `PlayerRawShtFile::initialBombCount`
+instead of a local two-field overlay.  The cross-owner dword at
+`Supervisor +0x174`, set around menu/stage transitions and decremented each
+frame, is conservatively named `screenTransitionCountdown`; no consumer
+effect beyond that observed lifecycle is claimed.
+
+The Ascii tail is Mystia's night-blindness presentation protocol.
+`+0x16F04` is the clear radius around Player position, `+0x16F08` is its
+integer alpha parameter, and `+0x16F0C` is the script-105 center VM.  The draw
+path shades the four regions outside the clear square, scales the center VM by
+`radius / 63`, and applies the same low-byte alpha.  ECL callback
+`ConfigureNightBlindness @ 0x00423390` publishes float variable 0 by an exact
+dword bit copy and integer variable 0 as the alpha.  Game setup, Spellcard end,
+and teardown reset that owner directly.
+
+This also closes two overlapping-analysis aliases.  Absolute
+`0x004E3D24/0x004E3D28` are `g_AsciiManager +0x16F04/+0x16F08`, not standalone
+ECL globals.  Absolute `0x00577EB4` is
+`g_EffectManager.effectAnm @ +0x8B054`, not an Ascii-owned ANM pointer.  All
+source consumers, relocation identities, global ledgers, and Linux fixed-
+layout aliases now use the true aggregate owners.  GensokyoClub's current
+`frameTimer` and `nightBlindness*` declarations corroborate the behavioral
+names, but TH08 target accesses and this repository's replay are the accepting
+evidence.  In particular this source keeps the target-observed integer alpha
+rather than importing upstream's `ZunColor` interpretation.
+
+Unknowns: the VM at `AsciiManager +0x1520` is initialized with script 9 and
+executed each frame, but this batch does not prove its presentation role.  The
+bool at `+0x829C` is only reset by authored code, and
+`AsciiManagerPopup +0x34` has no authored consumer.  All three retain neutral
+names.  No semantic claim is made for unused Supervisor transition-countdown
+values after they are decremented.
+
+VC7 oracle: the rebuilt focused affected-object selection passes **353 / 353**
+accepted units.  The Ascii object contributes **63 / 63**; important complete
+bodies include `OnUpdate` **460 / 460**, `OnDrawLowPrioImpl`
+**1,698 / 1,698**, `OnDrawHighPrioImpl` **2,538 / 2,538**, `UpdateVms`
+**217 / 217**, `SetBossMarkerInterrupt` **42 / 42**, and
+`SetBossMarkerState` **29 / 29**.  `ConfigureNightBlindness` is **52 / 52**,
+and the separately regenerated canonical Ascii/Bullet/PlayerBomb/Spellcard
+selection passes **72 / 72**.  The required single-job non-reuse cold build of
+all 75 comparison objects passes **1,106 / 1,106 exact**, and the normal VC7
+production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies ELF32/ET_EXEC/i386 plus every fixed
+target-owned layout symbol after the three redundant aliases are removed.
+
+Result: the Ascii source/header/marker-state router falls to five candidates,
+all explicitly retained unknowns above.  The whole-source router reports 60
+raw-member, 82 absolute-address, 218 anonymous-identifier, and 48 opaque-
+storage candidates.  These counts select future work; they do not express a
+semantic-completion percentage.

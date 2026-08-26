@@ -17,7 +17,7 @@ f32 GameManager::ScaleFloatBasedOnRank(f32 upper, f32 lower)
 #pragma optimize("", on)
 
 // FUNCTION: th08 0x422bb0
-void AsciiManager::FUN_00422bb0(i32 slot, i16 state)
+void AsciiManager::SetBossMarkerInterrupt(i32 slot, i16 state)
 {
     this->bossMarkers[slot].SetInterrupt(state);
 }
