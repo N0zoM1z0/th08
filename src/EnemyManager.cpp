@@ -837,7 +837,7 @@ void Enemy::CheckPlayerCollision(Float3 *position, Float3 *size)
     if (((this->flags1 >> ENEMY_FLAG_SPECIAL_INTERACTION_SHIFT) & 1) != 0 &&
         this->bossTimer.FUN_0040d3d0() && this->bossTimer % 6 == 0)
     {
-        g_Player.FUN_0044a470(position, &collisionSize);
+        g_Player.CheckGrazeCollision(position, &collisionSize);
     }
 
     if (g_GameManager.shotType == 0 || g_GameManager.shotType == 4)
@@ -848,7 +848,7 @@ void Enemy::CheckPlayerCollision(Float3 *position, Float3 *size)
 
     {
         collisionSize = *size / 1.5f;
-        if (g_Player.FUN_0044a360(position, &collisionSize) == 1)
+        if (g_Player.CheckLethalCollision(position, &collisionSize) == 1)
         {
             if (((this->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) == 0 &&
                 ((this->flags1 >> ENEMY_FLAG_SPECIAL_INTERACTION_SHIFT) & 1) == 0)

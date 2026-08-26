@@ -598,7 +598,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt))
             reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->angle =
-                g_Player.FUN_0044c1b0(
+                g_Player.AngleToPoint(
                     &reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->position) +
                 ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)));
         break;
@@ -1105,7 +1105,7 @@ enter_subroutine:
         break;
     case 169:
         if (
-            reinterpret_cast<Vec3 *>(reinterpret_cast<u8 *>(&g_Player) + 0x2B4)->x <
+            reinterpret_cast<Vec3 *>(&g_Player.position)->x <
                 TH08_ECL_AT(ctx, Vec3, TH08_ECL_ENEMY_POSITION_OFFSET).x &&
             96.0f < TH08_ECL_AT(ctx, f32, TH08_ECL_ENEMY_POSITION_OFFSET) ||
             288.0f < TH08_ECL_AT(ctx, f32, TH08_ECL_ENEMY_POSITION_OFFSET))

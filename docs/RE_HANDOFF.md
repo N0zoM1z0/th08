@@ -258,6 +258,24 @@ orchestration semantic milestone**.  The next high-value milestone is Player
 core state together with its adjacent PlayerBomb protocol; whole-program
 semantic completion remains open.
 
+The first accepted Player-core batch closes movement, collision/graze/item
+bounds, option focus transitions, and the 20-frame shooting cycle.  The Player
+owner now exposes its 16-position movement history, three AABB pairs and half-
+sizes, time-scaled velocity, axis multipliers, current speeds, movement
+direction enum, focus/extreme-gauge effects, typed option callbacks, and
+`shotTimer`.  The linked SHT header now names the target-proven initial Bomb,
+deathbomb, hitbox/graze/autocollect/item/point-line, and normal/focused speed
+fields.  Strict replay caught and corrected the point-line displacement from
+the initial `+0x20` hypothesis to target `+0x1C`; the accepted layout keeps
+`+0x20` unknown.  Eleven important helpers now carry behavior-backed collision,
+graze, movement, angle, and shooting names.  Focused replay passed **242 / 242**,
+eleven target-pinned packets replayed exact, a non-reuse cold replay passed
+**1,105 / 1,105**, the normal VC7 image linked, and the complete i386 Linux
+build/layout verifier passed.  `position2 @ +0x2C0`, unconsumed vector
+components, several gauge timers, PlayerShot internals, and most PlayerBomb
+work-item protocols remain open.  The next coherent batch is PlayerShot runtime
+and SHT descriptors, followed by the adjacent PlayerBomb work-item callbacks.
+
 Select the next independent field family with:
 
 ```bash

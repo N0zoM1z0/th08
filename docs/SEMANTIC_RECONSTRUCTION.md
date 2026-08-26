@@ -1221,3 +1221,91 @@ update/draw state are typed and dual-oracle locked.  The claim is limited to
 those recovered families and does not imply whole-program semantic
 completion.  The next high-value milestone should recover the still-dense
 Player core state and its adjacent PlayerBomb protocol.
+
+### Player movement, collision, options, and shooting — 2026-08-26
+
+Scope: `Player::CheckBulletCancelCollision @ 0x00449FF0`, the lethal and
+graze collision family at `0x0044A230..0x0044A930`,
+`UpdateMovementAndOptions @ 0x0044AEC0`, `AngleToPoint @ 0x0044C1B0`, Player
+initialization/update/draw, `SpawnShots @ 0x00450F60`,
+`UpdateShooting @ 0x00451500`, `StartShooting @ 0x00451640`, and all linked
+Bullet, Enemy, Item, ECL, option, and Bomb consumers of the recovered fields.
+
+Observed: `positionHistory[16] @ +0x2CC` is initialized from Player position,
+shifted only on movement, and consumed by the route-3 trailing options.  The
+range `+0x38C..+0x3F7` contains hurtbox, graze, and item-collection AABB
+minimum/maximum pairs followed by their three half-sizes.  Initialization reads
+the corresponding SHT sizes, while every movement frame recomputes all six
+bounds from `position` and the half-sizes.
+
+`velocity @ +0x3F8` is the time-scaled per-frame displacement added to Player
+position.  `horizontalSpeedMultiplier/verticalSpeedMultiplier @ +0x404/+0x408`
+are independently written by Bomb callbacks and multiply the selected SHT
+speed before animation and movement.  `currentHorizontalSpeed/currentVerticalSpeed
+@ +0xE2A9C/+0xE2AA0` retain the unscaled result for facing-animation
+transitions.  The nine-value `PlayerMovementDirection` enum covers none, four
+cardinal, and four diagonal input states without changing its dword ABI.
+
+The focus path now owns `focusTransitionFrames @ +0x8`, typed option update and
+render callbacks, `focusEffect @ +0xBE834`, and
+`extremeGaugeEffect @ +0xE2B24`.  Both effects share the target-observed VM
+flags at `+0x1F8`; the extreme-gauge effect also exposes position at `+0x2A4`
+and active state at `+0x350`.  `shotTimer @ +0xE2AC4` starts at zero on fire
+input, drives shot spawning for twenty frames, and returns to `-1`; option and
+shot callbacks use the same owner to gate firing behavior.
+
+The loaded `PlayerRawShtFile` header is pinned through `+0x33`: initial Bomb
+count at `+0x4`, deathbomb window at `+0x8`, hurtbox/graze sizes at
+`+0xC/+0x10`, item autocollect speed at `+0x14`, item-collection size at
+`+0x18`, point-item value line at `+0x1C`, an unknown dword at `+0x20`, and
+normal/focused axis and diagonal speeds at `+0x24..+0x30`.  The first typed
+layout hypothesis placed the point line at `+0x20`; strict ItemManager replay
+rejected three units with only the field displacement differing.  Restoring
+the target `+0x1C` owner and retaining `+0x20` as unknown returned all three to
+exact, so the correction is compiler- and consumer-backed rather than an
+upstream-name assumption.
+
+Names: the collision family is tracked as `CheckBulletCancelCollision`,
+`CheckBulletCollision`, `CheckLethalCollision`, `CheckGrazeCollision`, and
+`AwardGraze`; the adjacent core helpers are `UpdateMovementAndOptions`,
+`AngleToPoint`, `SpawnShots`, `UpdateShooting`, `StartShooting`, and
+`IsBombShotSuppressed`.  Each mapping, accepted match unit, caller relocation,
+and decorated COFF symbol was updated together.
+
+Inference and unknowns: `position2 @ +0x2C0`, `velocity.z`, the detailed roles
+of `timerE2AD0/timerE2ADC/timerE2AE8`, option state/substate values outside the
+observed transitions, SHT `+0x20`, and most PlayerShot/PlayerBomb work-item
+internals remain deliberately neutral.  The effect type name describes the
+shared target layout used here; it does not assert that all EffectManager
+objects use these fields identically.
+
+Layout: assertions pin the complete SHT prefix, callback widths, effect fields,
+all movement/collision members, both effect pointers, both current speeds,
+`shotTimer`, and unchanged `sizeof(Player) == 0xE2B30`.
+
+VC7 source-shape note: the collision range-test negations, nested graze reward
+ternary, laser-overlap gates, and movement switch lexical order remain intact.
+Direct named member expressions reproduced the accepted instructions.  The
+shooting timer remains lexically repeated rather than cached in a pointer local,
+preserving the target hidden-`this` stack ownership.
+
+VC7 oracle: focused replay across the nine affected objects passed **242 /
+242** accepted units.  Target-pinned packets for all eleven renamed helpers
+independently replayed exact.  The required non-reuse
+`verify-exact-units.py --all --json` cold-built all 75 configured objects and
+passed **1,105 / 1,105** with no failures.  A subsequent normal VC7 production
+image linked successfully.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiled and linked
+the complete i386 target, and `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 plus all
+fixed target-owned layout symbols.  No isolated automated Player gameplay
+smoke exists, so no runtime smoke is claimed.
+
+Result: the semantic router falls from 1,091 to 850 raw-member candidates and
+opaque-storage candidates from 75 to 73; absolute-address and anonymous-
+identifier candidates remain 82 and 592.  Within `Player.cpp`, `Player.hpp`,
+and `PlayerBomb.cpp`, raw-member candidates fall from 555 to 319.  These are
+routing aids, not completion percentages.  The next coherent batch is the
+PlayerShot runtime/SHT descriptor family, followed by the PlayerBomb work-item
+protocol; whole-program semantic completion remains open.

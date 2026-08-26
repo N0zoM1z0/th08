@@ -757,7 +757,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         reinterpret_cast<Enemy *>(enemy)->movementAngle =
             AddNormalizeAngle(
                 ((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0))),
-                g_Player.FUN_0044c1b0(
+                g_Player.AngleToPoint(
                     &reinterpret_cast<Enemy *>(enemy)->position));
         reinterpret_cast<Enemy *>(enemy)->speed = ((instruction->operandFlags & (1U << 1)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
         break;
@@ -767,7 +767,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
             reinterpret_cast<Enemy *>(enemy)->movementAngle =
                 AddNormalizeAngle(
                     ((instruction->operandFlags & (1U << 2)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))),
-                    g_Player.FUN_0044c1b0(
+                    g_Player.AngleToPoint(
                         &reinterpret_cast<Enemy *>(enemy)->position));
             reinterpret_cast<Enemy *>(enemy)->speed = ((instruction->operandFlags & (1U << 3)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
             reinterpret_cast<Enemy *>(enemy)->flags1 =

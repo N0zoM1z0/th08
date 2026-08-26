@@ -625,10 +625,10 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 {
                     previousTargetDelta =
                         *reinterpret_cast<D3DXVECTOR3 *>(&g_Player.tailPosition0) -
-                        (*reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(&g_Player) + 0x2B4));
+                        *reinterpret_cast<D3DXVECTOR3 *>(&g_Player.position);
                     currentTargetDelta = *reinterpret_cast<D3DXVECTOR3 *>(
                                              &reinterpret_cast<Enemy *>(enemy)->worldPosition) -
-                        (*reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(&g_Player) + 0x2B4));
+                        *reinterpret_cast<D3DXVECTOR3 *>(&g_Player.position);
                     if (!g_Player.enemyTrackedPositionValid ||
                         fabsf(previousTargetDelta.x) >
                             fabsf(currentTargetDelta.x))
@@ -648,7 +648,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
 
                 if (fabsf(
                         reinterpret_cast<Enemy *>(enemy)->worldPosition.x -
-                        (*reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(&g_Player) + 0x2B4)).x) < 64.0f &&
+                        reinterpret_cast<D3DXVECTOR3 *>(&g_Player.position)->x) < 64.0f &&
                     !reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(enemy)->HasAttachedEnemy() &&
                     (g_Player.optionHomingTarget == 0 ||
                      reinterpret_cast<Enemy *>(g_Player.optionHomingTarget)->position.y >

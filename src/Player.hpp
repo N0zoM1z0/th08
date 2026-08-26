@@ -12,12 +12,32 @@ struct AnmLoaded;
 
 struct PlayerRawShtFile
 {
-    unknown_fields(0x0, 0x8);
+    unknown_fields(0x0, 0x4);
+    f32 initialBombCount;
     i32 deathbombWindowFrames;
-    unknown_fields(0xC, 0x10);
+    f32 hurtboxSize;
+    f32 grazeBoxSize;
+    f32 itemAutoCollectSpeed;
+    f32 itemCollectionBoxSize;
     f32 pointItemValueLine;
+    unknown_fields(0x20, 0x4);
+    f32 normalAxisSpeed;
+    f32 focusedAxisSpeed;
+    f32 normalDiagonalSpeed;
+    f32 focusedDiagonalSpeed;
 };
+C_ASSERT(offsetof(PlayerRawShtFile, initialBombCount) == 0x4);
 C_ASSERT(offsetof(PlayerRawShtFile, deathbombWindowFrames) == 0x8);
+C_ASSERT(offsetof(PlayerRawShtFile, hurtboxSize) == 0xC);
+C_ASSERT(offsetof(PlayerRawShtFile, grazeBoxSize) == 0x10);
+C_ASSERT(offsetof(PlayerRawShtFile, itemAutoCollectSpeed) == 0x14);
+C_ASSERT(offsetof(PlayerRawShtFile, itemCollectionBoxSize) == 0x18);
+C_ASSERT(offsetof(PlayerRawShtFile, pointItemValueLine) == 0x1C);
+C_ASSERT(offsetof(PlayerRawShtFile, normalAxisSpeed) == 0x24);
+C_ASSERT(offsetof(PlayerRawShtFile, focusedAxisSpeed) == 0x28);
+C_ASSERT(offsetof(PlayerRawShtFile, normalDiagonalSpeed) == 0x2C);
+C_ASSERT(offsetof(PlayerRawShtFile, focusedDiagonalSpeed) == 0x30);
+C_ASSERT(sizeof(PlayerRawShtFile) == 0x34);
 
 struct PlayerUnkStruct0x40
 {
@@ -52,11 +72,20 @@ enum PlayerState
 
 struct PlayerStateEffect
 {
-    unknown_fields(0x0, 0x2a4);
+    unknown_fields(0x0, 0x1F8);
+    u32 vmFlags;
+    unknown_fields(0x1FC, 0xA8);
     Float3 position;
     unknown_fields(0x2b0, 0xa0);
     i8 active;
 };
+C_ASSERT(offsetof(PlayerStateEffect, vmFlags) == 0x1F8);
+C_ASSERT(offsetof(PlayerStateEffect, position) == 0x2A4);
+C_ASSERT(offsetof(PlayerStateEffect, active) == 0x350);
+
+struct Player;
+struct PlayerOptionState;
+typedef i32 (__fastcall *PlayerOptionCallback)(Player *, PlayerOptionState *);
 
 struct PlayerOptionState
 {
@@ -71,8 +100,8 @@ struct PlayerOptionState
     f32 orbitAngle;
     f32 facingAngle;
     ZunTimer timer;
-    void *updateCallback;
-    void *renderCallback;
+    PlayerOptionCallback updateCallback;
+    PlayerOptionCallback renderCallback;
 
     PlayerOptionState();
 };
@@ -97,9 +126,21 @@ struct PlayerBombWorkItem
 
     PlayerBombWorkItem();
 };
+
+enum PlayerMovementDirection
+{
+    PLAYER_DIRECTION_NONE,
+    PLAYER_DIRECTION_UP,
+    PLAYER_DIRECTION_DOWN,
+    PLAYER_DIRECTION_LEFT,
+    PLAYER_DIRECTION_RIGHT,
+    PLAYER_DIRECTION_UP_LEFT,
+    PLAYER_DIRECTION_UP_RIGHT,
+    PLAYER_DIRECTION_DOWN_LEFT,
+    PLAYER_DIRECTION_DOWN_RIGHT,
+};
 C_ASSERT(sizeof(PlayerBombWorkItem) == 0x16F0);
 
-struct Player;
 typedef void (__fastcall *PlayerBombCallback)(Player *player);
 
 struct PlayerBombCallbacks
@@ -176,28 +217,30 @@ struct Player
     u8 optionModeFlag;
     i8 stateFlag;
     u8 isYoukai;
-    unknown_fields(0x6, 0x6);
+    unknown_fields(0x6, 0x2);
+    i32 focusTransitionFrames;
     AnmLoaded *anmFile;
     AnmVm mainVm;
     Float3 position;
     Float3 position2;
-    Float3 vectors2CC[16];
-    Float3 vector38C;
-    Float3 vector398;
-    Float3 vector3A4;
-    Float3 vector3B0;
-    Float3 vector3BC;
-    Float3 vector3C8;
-    Float3 vector3D4;
-    Float3 vector3E0;
-    Float3 vector3EC;
-    Float3 vector3F8;
-    unknown_fields(0x404, 8);
+    Float3 positionHistory[16];
+    Float3 hurtboxBoundsMin;
+    Float3 hurtboxBoundsMax;
+    Float3 grazeBoundsMin;
+    Float3 grazeBoundsMax;
+    Float3 itemCollectionBoundsMin;
+    Float3 itemCollectionBoundsMax;
+    Float3 hurtboxHalfSize;
+    Float3 grazeHalfSize;
+    Float3 itemCollectionHalfSize;
+    Float3 velocity;
+    f32 horizontalSpeedMultiplier;
+    f32 verticalSpeedMultiplier;
     PlayerOptionState optionStates[4];
     PlayerBombState bombState;
     PlayerUnkStruct0x40 playerSlotsB[192];
     PlayerUnkStruct0x40 playerSlotsC[192];
-    unknown_fields(0xBE834, 4);
+    PlayerStateEffect *focusEffect;
     PlayerShot shots[128];
     EclTimeline timelines[3];
     i32 deathbombWindowFrames;
@@ -209,13 +252,14 @@ struct Player
     unknown_fields(0xE2A80, 0x10);
     i32 bulletCancelItemType;
     unknown_fields(0xE2A94, 0x4);
-    i32 movementDirection;
-    unknown_fields(0xE2A9C, 8);
+    PlayerMovementDirection movementDirection;
+    f32 currentHorizontalSpeed;
+    f32 currentVerticalSpeed;
     Float3 tailPosition0;
     Float3 tailPosition1;
     Enemy *optionHomingTarget;
     i32 enemyTrackedPositionValid;
-    ZunTimer timerE2AC4;
+    ZunTimer shotTimer;
     ZunTimer timerE2AD0;
     ZunTimer timerE2ADC;
     ZunTimer timerE2AE8;
@@ -226,7 +270,8 @@ struct Player
     ChainElem *drawChainHighPrio;
     ChainElem *drawChainLowPrio;
     PlayerStateEffect *stateEffect;
-    unknown_fields(0xE2B20, 0x8);
+    unknown_fields(0xE2B20, 0x4);
+    PlayerStateEffect *extremeGaugeEffect;
     AnmVm *deathbombEffectVm;
     i32 damageAccumulatorThreshold;
 
@@ -249,7 +294,7 @@ struct Player
     void FUN_0044c650();
     i32 FUN_0044cbf0();
     void FUN_0044d180();
-    i32 FUN_0044aec0();
+    i32 UpdateMovementAndOptions();
     void FUN_0044d420();
     i32 __fastcall FUN_0044fd80(u8 *slot, i32 value, u8 *entry);
     void __fastcall FUN_0044fb70(u8 *slot, u8 *entry);
@@ -259,48 +304,68 @@ struct Player
     void FUN_00451150();
     void FUN_004512f0();
     void FUN_00451400();
-    i32 FUN_00451500();
-    void FUN_00451640();
+    i32 UpdateShooting();
+    void StartShooting();
     i32 FUN_00451670(Float3 *enemyPosition, Float3 *enemySize, i32 *hitAccumulator, i32 *bombHit);
-    void __fastcall FUN_00450f60(i32 value);
-    i32 FUN_00451d50();
+    void __fastcall SpawnShots(i32 value);
+    i32 IsBombShotSuppressed();
 
     static ZunResult LoadShtFile(PlayerRawShtFile **header, const char *path);
     i32 IsHuman();
     i32 IsYoukai();
-    f32 FUN_0044c1b0(Float3 *position);
-    i32 FUN_0044a230(Float3 *position, Float3 *size);
-    i32 FUN_0044a360(Float3 *position, Float3 *size);
-    i32 FUN_0044a470(Float3 *position, Float3 *size);
+    f32 AngleToPoint(Float3 *position);
+    i32 CheckBulletCollision(Float3 *position, Float3 *size);
+    i32 CheckLethalCollision(Float3 *position, Float3 *size);
+    i32 CheckGrazeCollision(Float3 *position, Float3 *size);
     u32 CalcItemBoxCollision(Float3 *position, Float3 *size);
     u32 CalcLaserHitbox(Float3 *position, Float3 *size, Float3 *origin, f32 angle, i32 graze);
-    void FUN_0044a930(Float3 *position, i32 suppressExtraItems);
+    void AwardGraze(Float3 *position, i32 suppressExtraItems);
     void Die();
-    i32 FUN_00449ff0(Float3 *position, Float3 *position2);
+    i32 CheckBulletCancelCollision(Float3 *position, Float3 *position2);
 };
 C_ASSERT(sizeof(Player) == 0xe2b30);
 C_ASSERT(offsetof(Player, optionModeFlag) == 0x3);
+C_ASSERT(offsetof(Player, focusTransitionFrames) == 0x8);
 C_ASSERT(offsetof(Player, mainVm) == 0x10);
 C_ASSERT(offsetof(Player, position) == 0x2B4);
+C_ASSERT(offsetof(Player, positionHistory) == 0x2CC);
+C_ASSERT(offsetof(Player, hurtboxBoundsMin) == 0x38C);
+C_ASSERT(offsetof(Player, hurtboxBoundsMax) == 0x398);
+C_ASSERT(offsetof(Player, grazeBoundsMin) == 0x3A4);
+C_ASSERT(offsetof(Player, grazeBoundsMax) == 0x3B0);
+C_ASSERT(offsetof(Player, itemCollectionBoundsMin) == 0x3BC);
+C_ASSERT(offsetof(Player, itemCollectionBoundsMax) == 0x3C8);
+C_ASSERT(offsetof(Player, hurtboxHalfSize) == 0x3D4);
+C_ASSERT(offsetof(Player, grazeHalfSize) == 0x3E0);
+C_ASSERT(offsetof(Player, itemCollectionHalfSize) == 0x3EC);
+C_ASSERT(offsetof(Player, velocity) == 0x3F8);
+C_ASSERT(offsetof(Player, horizontalSpeedMultiplier) == 0x404);
+C_ASSERT(offsetof(Player, verticalSpeedMultiplier) == 0x408);
 C_ASSERT(offsetof(Player, optionStates) == 0x40C);
 C_ASSERT(offsetof(PlayerOptionState, facingAngle) == 0x2DC);
 C_ASSERT(offsetof(Player, bombState) == 0xFDC);
 C_ASSERT(offsetof(Player, playerSlotsB) == 0xB8834);
 C_ASSERT(offsetof(Player, playerSlotsC) == 0xBB834);
+C_ASSERT(offsetof(Player, focusEffect) == 0xBE834);
 C_ASSERT(offsetof(Player, shots) == 0xBE838);
 C_ASSERT(offsetof(Player, timelines) == 0xE2A38);
 C_ASSERT(offsetof(Player, deathbombWindowFrames) == 0xE2A68);
 C_ASSERT(offsetof(Player, bombInputLockFrames) == 0xE2A6C);
 C_ASSERT(offsetof(Player, playerStateSlotCooldown) == 0xE2A70);
 C_ASSERT(offsetof(Player, primaryShtFile) == 0xE2A74);
+C_ASSERT(offsetof(Player, secondaryShtFile) == 0xE2A78);
 C_ASSERT(offsetof(Player, itemTimeOrbMode) == 0xE2A7C);
 C_ASSERT(offsetof(Player, bulletCancelItemType) == 0xE2A90);
 C_ASSERT(offsetof(Player, movementDirection) == 0xE2A98);
+C_ASSERT(offsetof(Player, currentHorizontalSpeed) == 0xE2A9C);
+C_ASSERT(offsetof(Player, currentVerticalSpeed) == 0xE2AA0);
 C_ASSERT(offsetof(Player, tailPosition0) == 0xE2AA4);
 C_ASSERT(offsetof(Player, optionHomingTarget) == 0xE2ABC);
 C_ASSERT(offsetof(Player, enemyTrackedPositionValid) == 0xE2AC0);
+C_ASSERT(offsetof(Player, shotTimer) == 0xE2AC4);
 C_ASSERT(offsetof(Player, timer) == 0xE2AF4);
 C_ASSERT(offsetof(Player, calcChain) == 0xE2B10);
+C_ASSERT(offsetof(Player, extremeGaugeEffect) == 0xE2B24);
 C_ASSERT(offsetof(Player, deathbombEffectVm) == 0xE2B28);
 C_ASSERT(offsetof(Player, damageAccumulatorThreshold) == 0xE2B2C);
 

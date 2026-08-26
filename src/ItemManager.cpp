@@ -229,7 +229,7 @@ void ItemManager::OnUpdate()
         {
             item->startPositionOrVelocity.y += 0.05f * g_EclGameTimeScale;
             if (item->startPositionOrVelocity.y > 0.0f ||
-                *reinterpret_cast<ZunTimer *>(&g_Player.timerE2AC4) < 0)
+                *reinterpret_cast<ZunTimer *>(&g_Player.shotTimer) < 0)
             {
                 item->state = ITEM_STATE_AUTOCOLLECT;
             }
@@ -273,9 +273,9 @@ void ItemManager::OnUpdate()
             {
                 if (g_Player.playerState != PLAYER_STATE_DYING && g_Player.playerState != PLAYER_STATE_SPAWNING)
                 {
-                    angle = g_Player.FUN_0044c1b0(&item->currentPosition);
+                    angle = g_Player.AngleToPoint(&item->currentPosition);
                     item->startPositionOrVelocity.FromAngleMagnitude(
-                        angle, *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x14));
+                        angle, g_Player.primaryShtFile->itemAutoCollectSpeed);
                     item->state = ITEM_STATE_AUTOCOLLECT;
                     item->currentPosition += item->startPositionOrVelocity * g_EclGameTimeScale;
                     goto pickup;

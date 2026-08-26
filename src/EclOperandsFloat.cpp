@@ -134,7 +134,7 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
     case 0x276A: return (f32)reinterpret_cast<Enemy *>(this)->lifeCallbackThresholds[2];
     case 0x276B: return (f32)reinterpret_cast<Enemy *>(this)->lifeCallbackThresholds[3];
     case 0x2740:
-        return g_Player.FUN_0044c1b0(&reinterpret_cast<Enemy *>(this)->worldPosition);
+        return g_Player.AngleToPoint(&reinterpret_cast<Enemy *>(this)->worldPosition);
     case 0x2755: return reinterpret_cast<Enemy *>(this)->movementAngle;
     case 0x2756: return reinterpret_cast<Enemy *>(this)->angularVelocity;
     case 0x2757: return reinterpret_cast<Enemy *>(this)->speed;

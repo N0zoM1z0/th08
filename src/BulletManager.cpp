@@ -491,9 +491,9 @@ void BulletManager::RemoveAllBullets(i32 mode)
             continue;
         }
 
-        playerCollisionResult = g_Player.FUN_00449ff0(&bullet->position,
+        playerCollisionResult = g_Player.CheckBulletCancelCollision(&bullet->position,
                                                       &bullet->sprites.collisionSize);
-        if (g_Player.FUN_00449ff0(&bullet->position, &bullet->sprites.collisionSize) == 2)
+        if (g_Player.CheckBulletCancelCollision(&bullet->position, &bullet->sprites.collisionSize) == 2)
         {
             g_ItemManager.SpawnItem(&bullet->position, static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
             memset(bullet, 0, 0x10B8);
@@ -579,7 +579,7 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
             continue;
         }
 
-        if (g_Player.FUN_00449ff0(&bullet->position,
+        if (g_Player.CheckBulletCancelCollision(&bullet->position,
                                  &bullet->sprites.collisionSize) == 2)
         {
             g_ItemManager.SpawnItem(&bullet->position,
@@ -683,7 +683,7 @@ i32 BulletManager::FUN_00430e10(BulletSpawnDescriptor *descriptor)
         return 0;
 
     descriptor->templateSprites = &this->bulletTypeSprites[descriptor->bulletType];
-    angleToPlayer = g_Player.FUN_0044c1b0(&descriptor->position);
+    angleToPlayer = g_Player.AngleToPoint(&descriptor->position);
     for (j = 0; j < descriptor->count2; j++)
     {
         for (i = 0; i < descriptor->count1; i++)
@@ -726,7 +726,7 @@ Laser *BulletManager::SpawnLaserPattern(BulletSpawnDescriptor *descriptor)
         laser->inUse = 1;
         laser->angle = descriptor->angle;
         if (descriptor->aimMode == BULLET_AIM_FAN_AIMED)
-            laser->angle = g_Player.FUN_0044c1b0(&descriptor->position) + laser->angle;
+            laser->angle = g_Player.AngleToPoint(&descriptor->position) + laser->angle;
         laser->flags = static_cast<u16>(descriptor->transformFlags);
         laser->timer = 0;
         laser->startOffset = descriptor->laserStartOffset;
@@ -889,7 +889,7 @@ updateBullet:
                 if (bullet->isGrazed == 0 &&
                     (i32)bullet->activeTimer >= 16)
                 {
-                    collisionResult = g_Player.FUN_0044a470(&bullet->position,
+                    collisionResult = g_Player.CheckGrazeCollision(&bullet->position,
                                                             &bullet->sprites.collisionSize);
                     if (collisionResult == 1)
                     {
@@ -913,7 +913,7 @@ updateBullet:
                 }
 
 lethalCollision:
-                collisionResult = g_Player.FUN_0044a230(&bullet->position,
+                collisionResult = g_Player.CheckBulletCollision(&bullet->position,
                                                         &bullet->sprites.collisionSize);
                 if (collisionResult != 0 &&
                     (collisionResult != 2 ||
@@ -941,7 +941,7 @@ executeBulletScript:
                 bullet->activeTimer--;
                 bullet->position += bullet->velocity / 2.0f;
                 if ((bullet->transformFlags & BULLET_TRANSFORM_CANCEL_IMMUNE) == 0 &&
-                    g_Player.FUN_00449ff0(&bullet->position,
+                    g_Player.CheckBulletCancelCollision(&bullet->position,
                                          &bullet->sprites.collisionSize) == 2)
                     bullet->cancelledDuringSpawn = 1;
                 if (g_AnmManager->ExecuteScript(&bullet->sprites.spawnFastVm) == 0)
@@ -963,7 +963,7 @@ executeBulletScript:
                 bullet->activeTimer--;
                 bullet->position += bullet->velocity / 2.5f;
                 if ((bullet->transformFlags & BULLET_TRANSFORM_CANCEL_IMMUNE) == 0 &&
-                    g_Player.FUN_00449ff0(&bullet->position,
+                    g_Player.CheckBulletCancelCollision(&bullet->position,
                                          &bullet->sprites.collisionSize) == 2)
                     bullet->cancelledDuringSpawn = 1;
                 if (g_AnmManager->ExecuteScript(&bullet->sprites.spawnNormalVm) == 0)
@@ -985,7 +985,7 @@ executeBulletScript:
                 bullet->activeTimer--;
                 bullet->position += bullet->velocity / 3.0f;
                 if ((bullet->transformFlags & BULLET_TRANSFORM_CANCEL_IMMUNE) == 0 &&
-                    g_Player.FUN_00449ff0(&bullet->position,
+                    g_Player.CheckBulletCancelCollision(&bullet->position,
                                          &bullet->sprites.collisionSize) == 2)
                     bullet->cancelledDuringSpawn = 1;
                 if (g_AnmManager->ExecuteScript(&bullet->sprites.spawnSlowVm) == 0)
@@ -1335,7 +1335,7 @@ void Bullet::FUN_004326e0()
             this->activeTransformFlags &= ~BULLET_TRANSFORM_CHANGE_DIRECTION_AIMED;
         }
         this->angle =
-            AddNormalizeAngle(g_Player.FUN_0044c1b0(&this->position),
+            AddNormalizeAngle(g_Player.AngleToPoint(&this->position),
                               this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeAngle);
         *reinterpret_cast<i32 *>(&this->speed) =
             *reinterpret_cast<i32 *>(

@@ -102,7 +102,6 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerBombCallbacks, 24, g_PlayerBombCallbackTable)
     {{FUN_00413140, FUN_00413140, FUN_00413990, FUN_00413990, FUN_0040d100}},
     {{FUN_00413890, FUN_00413890, FUN_004142c0, FUN_004142c0, FUN_0040d310}},
 };
-typedef i32 (__fastcall *PlayerOptionCallback)(Player *, PlayerOptionState *);
 typedef i32 (__fastcall *PlayerShotUpdateCallback)(Player *, PlayerShot *, i32, u8 *);
 typedef i32 (__fastcall *PlayerShotRenderCallback)(Player *, PlayerShot *);
 
@@ -232,7 +231,7 @@ PlayerBombWorkItem::PlayerBombWorkItem() {}
 
 // FUNCTION: th08 0x449ff0
 #pragma var_order(halfSize, yDelta, xDelta, i, rotated, delta, slot, boundsMax)
-i32 Player::FUN_00449ff0(Float3 *position, Float3 *position2)
+i32 Player::CheckBulletCancelCollision(Float3 *position, Float3 *position2)
 {
     Float3 delta;
     Float3 rotated;
@@ -301,13 +300,13 @@ hit:
 
 // FUNCTION: th08 0x44a230
 #pragma var_order(boundsMax, boundsMin)
-i32 Player::FUN_0044a230(Float3 *position, Float3 *size)
+i32 Player::CheckBulletCollision(Float3 *position, Float3 *size)
 {
     Float3 boundsMin;
     Float3 boundsMax;
 
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A90) = 6;
-    if (this->FUN_00449ff0(position, size))
+    if (this->CheckBulletCancelCollision(position, size))
         return 2;
 
     boundsMin.x = position->x - size->x / 2.0f;
@@ -315,10 +314,10 @@ i32 Player::FUN_0044a230(Float3 *position, Float3 *size)
     boundsMax.x = size->x / 2.0f + position->x;
     boundsMax.y = size->y / 2.0f + position->y;
 
-    if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x38C) > boundsMax.x ||
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x390) > boundsMax.y ||
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x398) < boundsMin.x ||
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x39C) < boundsMin.y)
+    if (this->hurtboxBoundsMin.x > boundsMax.x ||
+        this->hurtboxBoundsMin.y > boundsMax.y ||
+        this->hurtboxBoundsMax.x < boundsMin.x ||
+        this->hurtboxBoundsMax.y < boundsMin.y)
         return 0;
 
     *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 2;
@@ -331,7 +330,7 @@ i32 Player::FUN_0044a230(Float3 *position, Float3 *size)
 
 // FUNCTION: th08 0x44a360
 #pragma var_order(boundsMax, boundsMin)
-i32 Player::FUN_0044a360(Float3 *position, Float3 *size)
+i32 Player::CheckLethalCollision(Float3 *position, Float3 *size)
 {
     Float3 boundsMin;
     Float3 boundsMax;
@@ -342,10 +341,10 @@ i32 Player::FUN_0044a360(Float3 *position, Float3 *size)
     boundsMax.x = size->x / 2.0f + position->x;
     boundsMax.y = size->y / 2.0f + position->y;
 
-    if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x38C) > boundsMax.x ||
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x390) > boundsMax.y ||
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x398) < boundsMin.x ||
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x39C) < boundsMin.y)
+    if (this->hurtboxBoundsMin.x > boundsMax.x ||
+        this->hurtboxBoundsMin.y > boundsMax.y ||
+        this->hurtboxBoundsMax.x < boundsMin.x ||
+        this->hurtboxBoundsMax.y < boundsMin.y)
         return 0;
 
     *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 2;
@@ -358,13 +357,13 @@ i32 Player::FUN_0044a360(Float3 *position, Float3 *size)
 
 // FUNCTION: th08 0x44a470
 #pragma var_order(boundsMax, boundsMin)
-i32 Player::FUN_0044a470(Float3 *position, Float3 *size)
+i32 Player::CheckGrazeCollision(Float3 *position, Float3 *size)
 {
     Float3 boundsMin;
     Float3 boundsMax;
 
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A90) = 6;
-    if (this->FUN_00449ff0(position, size))
+    if (this->CheckBulletCancelCollision(position, size))
         return 2;
 
     boundsMin.x = position->x - size->x / 2.0f - 20.0f;
@@ -375,13 +374,13 @@ i32 Player::FUN_0044a470(Float3 *position, Float3 *size)
     if (this->playerState == PLAYER_STATE_DYING || this->playerState == PLAYER_STATE_SPAWNING)
         return 0;
 
-    if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3A4) > boundsMax.x ||
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3B0) < boundsMin.x ||
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3A8) > boundsMax.y ||
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3B4) < boundsMin.y)
+    if (this->grazeBoundsMin.x > boundsMax.x ||
+        this->grazeBoundsMax.x < boundsMin.x ||
+        this->grazeBoundsMin.y > boundsMax.y ||
+        this->grazeBoundsMax.y < boundsMin.y)
         return 0;
 
-    this->FUN_0044a930(position, 0);
+    this->AwardGraze(position, 0);
     return 1;
 }
 
@@ -398,10 +397,10 @@ u32 Player::CalcItemBoxCollision(Float3 *position, Float3 *size)
     itemMin = *position - *size / 2.0f;
     itemMax = *position + *size / 2.0f;
 
-    if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3bc) > itemMax.x ||
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3c8) < itemMin.x ||
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3c0) > itemMax.y ||
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3cc) < itemMin.y)
+    if (this->itemCollectionBoundsMin.x > itemMax.x ||
+        this->itemCollectionBoundsMax.x < itemMin.x ||
+        this->itemCollectionBoundsMin.y > itemMax.y ||
+        this->itemCollectionBoundsMax.y < itemMin.y)
         return 0;
     return 1;
 }
@@ -420,8 +419,8 @@ u32 Player::CalcLaserHitbox(Float3 *position, Float3 *size, Float3 *origin, f32 
     incomingMax.z = 0.0f;
     incomingMin = incomingMax + *origin;
 
-    playerMin = incomingMin - *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3D4);
-    playerMax = incomingMin + *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3D4);
+    playerMin = incomingMin - this->hurtboxHalfSize;
+    playerMax = incomingMin + this->hurtboxHalfSize;
     incomingMin = *position - *size / 2.0f;
     incomingMax = *position + *size / 2.0f;
 
@@ -453,7 +452,7 @@ grazePath:
 
         if (this->playerState == PLAYER_STATE_DYING || this->playerState == PLAYER_STATE_SPAWNING)
             return 0;
-        this->FUN_0044a930(&this->position, 1);
+        this->AwardGraze(&this->position, 1);
         return 2;
     }
 
@@ -468,7 +467,7 @@ lethalPath:
 
 // FUNCTION: th08 0x44a930
 #pragma var_order(midpoint, gaugeGain, score)
-void Player::FUN_0044a930(Float3 *position, i32 suppressExtraItems)
+void Player::AwardGraze(Float3 *position, i32 suppressExtraItems)
 {
     Float3 midpoint;
     i32 gaugeGain;
@@ -609,17 +608,15 @@ void Player::Die()
 
 // FUNCTION: th08 0x44aec0
 #pragma var_order(oldDirection, verticalSpeed, horizontalSpeed, focus, option, optionIndex, option2, optionExitIndex, route3Index, historyInitIndex, optionUpdateIndex, gaugeDelta, historyIndex, this)
-i32 Player::FUN_0044aec0()
+i32 Player::UpdateMovementAndOptions()
 {
-    typedef void (__fastcall *OptionUpdateCallback)(Player *, u8 *);
-
     i32 oldDirection;
     f32 verticalSpeed;
     f32 horizontalSpeed;
     i32 focus;
-    u8 *option;
+    PlayerOptionState *option;
     u32 optionIndex;
-    u8 *option2;
+    PlayerOptionState *option2;
     u32 optionExitIndex;
     i32 route3Index;
     u32 historyInitIndex;
@@ -629,26 +626,26 @@ i32 Player::FUN_0044aec0()
 
     horizontalSpeed = 0.0f;
     verticalSpeed = 0.0f;
-    oldDirection = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98);
+    oldDirection = this->movementDirection;
 
     if ((g_GuiMessageInputCurrent & 0x50) == 0x50)
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 5;
+        this->movementDirection = PLAYER_DIRECTION_UP_LEFT;
     else if ((g_GuiMessageInputCurrent & 0x60) == 0x60)
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 7;
+        this->movementDirection = PLAYER_DIRECTION_DOWN_LEFT;
     else if ((g_GuiMessageInputCurrent & 0x90) == 0x90)
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 6;
+        this->movementDirection = PLAYER_DIRECTION_UP_RIGHT;
     else if ((g_GuiMessageInputCurrent & 0xA0) == 0xA0)
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 8;
+        this->movementDirection = PLAYER_DIRECTION_DOWN_RIGHT;
     else if ((g_GuiMessageInputCurrent & 0x20) != 0)
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 2;
+        this->movementDirection = PLAYER_DIRECTION_DOWN;
     else if ((g_GuiMessageInputCurrent & 0x10) != 0)
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 1;
+        this->movementDirection = PLAYER_DIRECTION_UP;
     else if ((g_GuiMessageInputCurrent & 0x40) != 0)
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 3;
+        this->movementDirection = PLAYER_DIRECTION_LEFT;
     else if ((g_GuiMessageInputCurrent & 0x80) != 0)
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 4;
+        this->movementDirection = PLAYER_DIRECTION_RIGHT;
     else
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98) = 0;
+        this->movementDirection = PLAYER_DIRECTION_NONE;
 
     focus = this->bombState.isInUse
                 ? (this->bombState.callbackSetIndex & 1)
@@ -656,183 +653,179 @@ i32 Player::FUN_0044aec0()
 
     if (focus)
     {
-        if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) != 1)
+        if (this->optionModeFlag != 1)
         {
             if (g_GameManager.shotType <= 3)
             {
-                option = reinterpret_cast<u8 *>(this) + 0x40C;
-                for (optionIndex = 0; optionIndex < 4; optionIndex++, option += 0x2F4)
+                option = this->optionStates;
+                for (optionIndex = 0; optionIndex < 4; optionIndex++, option++)
                 {
                     memset(option, 0, 0x2F4);
-                    *reinterpret_cast<PlayerOptionCallback *>(option + 0x2EC) =
+                    option->updateCallback =
                         g_PlayerOptionUpdateCallbacks[g_GameManager.shotType].callbacks[optionIndex];
-                    *reinterpret_cast<PlayerOptionCallback *>(option + 0x2F0) =
+                    option->renderCallback =
                         g_PlayerOptionRenderCallbacks[g_GameManager.shotType].callbacks[optionIndex];
-                    if (*reinterpret_cast<void **>(option + 0x2EC) != NULL)
+                    if (option->updateCallback != NULL)
                     {
-                        *reinterpret_cast<i32 *>(option + 0x2C8) = 1;
-                        *reinterpret_cast<ZunTimer *>(option + 0x2E0) = 0;
-                        *reinterpret_cast<i32 *>(option + 0x2D0) = optionIndex;
+                        option->state2C8 = 1;
+                        option->timer = 0;
+                        option->optionIndex = optionIndex;
                     }
                     else
                     {
-                        *reinterpret_cast<i32 *>(option + 0x2C8) = 0;
+                        option->state2C8 = 0;
                     }
                 }
             }
 
             if (g_GameManager.shotType < 4)
             {
-                (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0xC))
-                    ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x10), 5);
-                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) = 0.0f;
-                if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8) >= 4)
+                this->anmFile->SetAndExecuteScriptIdx(&this->mainVm, 5);
+                this->currentHorizontalSpeed = 0.0f;
+                if (this->focusTransitionFrames >= 4)
                     g_EffectManager.SpawnEffect(29, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 1, 0x80FF8080);
             }
-            if (*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0xBE834) == NULL)
+            if (this->focusEffect == NULL)
             {
-                *reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0xBE834) =
-                    g_EffectManager.FUN_00425870(22, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 2, 1, -1);
+                this->focusEffect = reinterpret_cast<PlayerStateEffect *>(
+                    g_EffectManager.FUN_00425870(22, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 2, 1, -1));
             }
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8) = 0;
-            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AE8) = 0;
+            this->focusTransitionFrames = 0;
+            this->timerE2AE8 = 0;
         }
         else
         {
-            ++*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8);
+            ++this->focusTransitionFrames;
         }
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8) >= 7)
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 5) = 1;
-        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) = 1;
+        if (this->focusTransitionFrames >= 7)
+            this->isYoukai = 1;
+        this->optionModeFlag = 1;
     }
     else
     {
-        if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) != 0)
+        if (this->optionModeFlag != 0)
         {
-            option2 = reinterpret_cast<u8 *>(this) + 0x40C;
+            option2 = this->optionStates;
             if (g_GameManager.shotType < 3)
             {
-                for (optionExitIndex = 0; optionExitIndex < 4; optionExitIndex++, option2 += 0x2F4)
+                for (optionExitIndex = 0; optionExitIndex < 4; optionExitIndex++, option2++)
                 {
-                    if (*reinterpret_cast<i32 *>(option2 + 0x2C8) != 0 &&
-                        *reinterpret_cast<i32 *>(option2 + 0x2C8) != 3)
+                    if (option2->state2C8 != 0 && option2->state2C8 != 3)
                     {
-                        *reinterpret_cast<i32 *>(option2 + 0x2C8) = 3;
-                        *reinterpret_cast<ZunTimer *>(option2 + 0x2E0) = 0;
+                        option2->state2C8 = 3;
+                        option2->timer = 0;
                     }
                 }
             }
             else if (g_GameManager.shotType == 3)
             {
-                for (route3Index = 0; route3Index < 2; route3Index++, option2 += 0x2F4)
+                for (route3Index = 0; route3Index < 2; route3Index++, option2++)
                 {
-                    if (*reinterpret_cast<i32 *>(option2 + 0x2C8) != 0 &&
-                        *reinterpret_cast<i32 *>(option2 + 0x2C8) != 3)
+                    if (option2->state2C8 != 0 && option2->state2C8 != 3)
                     {
-                        *reinterpret_cast<i32 *>(option2 + 0x2C8) = 3;
-                        *reinterpret_cast<ZunTimer *>(option2 + 0x2E0) = 0;
+                        option2->state2C8 = 3;
+                        option2->timer = 0;
                     }
                 }
                 memset(option2, 0, 0x2F4);
-                *reinterpret_cast<PlayerOptionCallback *>(option2 + 0x2EC) =
+                option2->updateCallback =
                     g_PlayerRoute3ExitUpdateCallbacks[route3Index];
-                *reinterpret_cast<PlayerOptionCallback *>(option2 + 0x2F0) =
+                option2->renderCallback =
                     g_PlayerRoute3ExitRenderCallbacks[route3Index];
-                *reinterpret_cast<i32 *>(option2 + 0x2C8) = 1;
-                *reinterpret_cast<ZunTimer *>(option2 + 0x2E0) = 0;
-                *reinterpret_cast<i32 *>(option2 + 0x2D0) = route3Index;
+                option2->state2C8 = 1;
+                option2->timer = 0;
+                option2->optionIndex = route3Index;
                 for (historyInitIndex = 0; historyInitIndex < 16; ++historyInitIndex)
-                    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2CC + historyInitIndex * 12) = this->position;
+                    this->positionHistory[historyInitIndex] = this->position;
             }
 
             if (g_GameManager.shotType < 4)
             {
-                (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0xC))
-                    ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x10), 0);
-                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) = 0.0f;
-                if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8) >= 4)
+                this->anmFile->SetAndExecuteScriptIdx(&this->mainVm, 0);
+                this->currentHorizontalSpeed = 0.0f;
+                if (this->focusTransitionFrames >= 4)
                     g_EffectManager.SpawnEffect(28, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 1, 0x808080FF);
             }
-            if (*reinterpret_cast<AnmVmBase **>(reinterpret_cast<u8 *>(this) + 0xBE834) != NULL)
-                (*reinterpret_cast<AnmVmBase **>(reinterpret_cast<u8 *>(this) + 0xBE834))->SetInterrupt(1);
-            *reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0xBE834) = NULL;
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8) = 0;
-            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AE8) = 0;
+            if (this->focusEffect != NULL)
+                reinterpret_cast<AnmVmBase *>(this->focusEffect)->SetInterrupt(1);
+            this->focusEffect = NULL;
+            this->focusTransitionFrames = 0;
+            this->timerE2AE8 = 0;
         }
         else
         {
-            ++*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8);
+            ++this->focusTransitionFrames;
         }
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8) >= 7)
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 5) = 0;
-        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) = 0;
+        if (this->focusTransitionFrames >= 7)
+            this->isYoukai = 0;
+        this->optionModeFlag = 0;
     }
 
     if (g_GameManager.shotType >= 4)
     {
         if ((g_GameManager.shotType & 1) != 0)
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 5) = 1;
+            this->isYoukai = 1;
         else
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 5) = 0;
+            this->isYoukai = 0;
     }
 
-    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) != 0)
+    if (this->optionModeFlag != 0)
     {
-        switch (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98))
+        switch (this->movementDirection)
         {
-        case 4: horizontalSpeed =  *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->secondaryShtFile) + 0x28); break;
-        case 3: horizontalSpeed = -*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->secondaryShtFile) + 0x28); break;
-        case 1: verticalSpeed =   -*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->secondaryShtFile) + 0x28); break;
-        case 2: verticalSpeed =    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->secondaryShtFile) + 0x28); break;
-        case 5: horizontalSpeed = -*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->secondaryShtFile) + 0x30); verticalSpeed = horizontalSpeed; break;
-        case 7: verticalSpeed =    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->secondaryShtFile) + 0x30); horizontalSpeed = -verticalSpeed; break;
-        case 6: horizontalSpeed =  *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->secondaryShtFile) + 0x30); verticalSpeed = -horizontalSpeed; break;
-        case 8: horizontalSpeed =  *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->secondaryShtFile) + 0x30); verticalSpeed = horizontalSpeed; break;
+        case PLAYER_DIRECTION_RIGHT: horizontalSpeed =  this->secondaryShtFile->focusedAxisSpeed; break;
+        case PLAYER_DIRECTION_LEFT: horizontalSpeed = -this->secondaryShtFile->focusedAxisSpeed; break;
+        case PLAYER_DIRECTION_UP: verticalSpeed =   -this->secondaryShtFile->focusedAxisSpeed; break;
+        case PLAYER_DIRECTION_DOWN: verticalSpeed =    this->secondaryShtFile->focusedAxisSpeed; break;
+        case PLAYER_DIRECTION_UP_LEFT: horizontalSpeed = -this->secondaryShtFile->focusedDiagonalSpeed; verticalSpeed = horizontalSpeed; break;
+        case PLAYER_DIRECTION_DOWN_LEFT: verticalSpeed =    this->secondaryShtFile->focusedDiagonalSpeed; horizontalSpeed = -verticalSpeed; break;
+        case PLAYER_DIRECTION_UP_RIGHT: horizontalSpeed =  this->secondaryShtFile->focusedDiagonalSpeed; verticalSpeed = -horizontalSpeed; break;
+        case PLAYER_DIRECTION_DOWN_RIGHT: horizontalSpeed =  this->secondaryShtFile->focusedDiagonalSpeed; verticalSpeed = horizontalSpeed; break;
         default: break;
         }
     }
     else
     {
-        switch (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A98))
+        switch (this->movementDirection)
         {
-        case 4: horizontalSpeed =  *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->primaryShtFile) + 0x24); break;
-        case 3: horizontalSpeed = -*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->primaryShtFile) + 0x24); break;
-        case 1: verticalSpeed =   -*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->primaryShtFile) + 0x24); break;
-        case 2: verticalSpeed =    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->primaryShtFile) + 0x24); break;
-        case 5: horizontalSpeed = -*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->primaryShtFile) + 0x2C); verticalSpeed = horizontalSpeed; break;
-        case 7: verticalSpeed =    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->primaryShtFile) + 0x2C); horizontalSpeed = -verticalSpeed; break;
-        case 6: horizontalSpeed =  *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->primaryShtFile) + 0x2C); verticalSpeed = -horizontalSpeed; break;
-        case 8: horizontalSpeed =  *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this->primaryShtFile) + 0x2C); verticalSpeed = horizontalSpeed; break;
+        case PLAYER_DIRECTION_RIGHT: horizontalSpeed =  this->primaryShtFile->normalAxisSpeed; break;
+        case PLAYER_DIRECTION_LEFT: horizontalSpeed = -this->primaryShtFile->normalAxisSpeed; break;
+        case PLAYER_DIRECTION_UP: verticalSpeed =   -this->primaryShtFile->normalAxisSpeed; break;
+        case PLAYER_DIRECTION_DOWN: verticalSpeed =    this->primaryShtFile->normalAxisSpeed; break;
+        case PLAYER_DIRECTION_UP_LEFT: horizontalSpeed = -this->primaryShtFile->normalDiagonalSpeed; verticalSpeed = horizontalSpeed; break;
+        case PLAYER_DIRECTION_DOWN_LEFT: verticalSpeed =    this->primaryShtFile->normalDiagonalSpeed; horizontalSpeed = -verticalSpeed; break;
+        case PLAYER_DIRECTION_UP_RIGHT: horizontalSpeed =  this->primaryShtFile->normalDiagonalSpeed; verticalSpeed = -horizontalSpeed; break;
+        case PLAYER_DIRECTION_DOWN_RIGHT: horizontalSpeed =  this->primaryShtFile->normalDiagonalSpeed; verticalSpeed = horizontalSpeed; break;
         default: break;
         }
     }
 
-    horizontalSpeed *= *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x404);
-    verticalSpeed *= *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x408);
+    horizontalSpeed *= this->horizontalSpeedMultiplier;
+    verticalSpeed *= this->verticalSpeedMultiplier;
 
-#define SET_PLAYER_SCRIPT(idx) ((*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0xC))->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x10), (idx)))
+#define SET_PLAYER_SCRIPT(idx) (this->anmFile->SetAndExecuteScriptIdx(&this->mainVm, (idx)))
     if (g_GameManager.shotType < 4)
     {
-        if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) == 0)
+        if (this->optionModeFlag == 0)
         {
-            if (horizontalSpeed < 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) >= 0.0f)
+            if (horizontalSpeed < 0.0f && this->currentHorizontalSpeed >= 0.0f)
                 SET_PLAYER_SCRIPT(1);
-            else if (horizontalSpeed == 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) < 0.0f)
+            else if (horizontalSpeed == 0.0f && this->currentHorizontalSpeed < 0.0f)
                 SET_PLAYER_SCRIPT(2);
-            if (horizontalSpeed > 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) <= 0.0f)
+            if (horizontalSpeed > 0.0f && this->currentHorizontalSpeed <= 0.0f)
                 SET_PLAYER_SCRIPT(3);
-            else if (horizontalSpeed == 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) > 0.0f)
+            else if (horizontalSpeed == 0.0f && this->currentHorizontalSpeed > 0.0f)
                 SET_PLAYER_SCRIPT(4);
         }
         else
         {
-            if (horizontalSpeed < 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) >= 0.0f)
+            if (horizontalSpeed < 0.0f && this->currentHorizontalSpeed >= 0.0f)
                 SET_PLAYER_SCRIPT(6);
-            else if (horizontalSpeed == 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) < 0.0f)
+            else if (horizontalSpeed == 0.0f && this->currentHorizontalSpeed < 0.0f)
                 SET_PLAYER_SCRIPT(7);
-            if (horizontalSpeed > 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) <= 0.0f)
+            if (horizontalSpeed > 0.0f && this->currentHorizontalSpeed <= 0.0f)
                 SET_PLAYER_SCRIPT(8);
-            else if (horizontalSpeed == 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) > 0.0f)
+            else if (horizontalSpeed == 0.0f && this->currentHorizontalSpeed > 0.0f)
                 SET_PLAYER_SCRIPT(9);
         }
     }
@@ -840,35 +833,35 @@ i32 Player::FUN_0044aec0()
     {
         if ((g_GameManager.shotType & 1) != 0)
         {
-            if (horizontalSpeed < 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) >= 0.0f)
+            if (horizontalSpeed < 0.0f && this->currentHorizontalSpeed >= 0.0f)
                 SET_PLAYER_SCRIPT(6);
-            else if (horizontalSpeed == 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) < 0.0f)
+            else if (horizontalSpeed == 0.0f && this->currentHorizontalSpeed < 0.0f)
                 SET_PLAYER_SCRIPT(7);
-            if (horizontalSpeed > 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) <= 0.0f)
+            if (horizontalSpeed > 0.0f && this->currentHorizontalSpeed <= 0.0f)
                 SET_PLAYER_SCRIPT(8);
-            else if (horizontalSpeed == 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) > 0.0f)
+            else if (horizontalSpeed == 0.0f && this->currentHorizontalSpeed > 0.0f)
                 SET_PLAYER_SCRIPT(9);
         }
         else
         {
-            if (horizontalSpeed < 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) >= 0.0f)
+            if (horizontalSpeed < 0.0f && this->currentHorizontalSpeed >= 0.0f)
                 SET_PLAYER_SCRIPT(1);
-            else if (horizontalSpeed == 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) < 0.0f)
+            else if (horizontalSpeed == 0.0f && this->currentHorizontalSpeed < 0.0f)
                 SET_PLAYER_SCRIPT(2);
-            if (horizontalSpeed > 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) <= 0.0f)
+            if (horizontalSpeed > 0.0f && this->currentHorizontalSpeed <= 0.0f)
                 SET_PLAYER_SCRIPT(3);
-            else if (horizontalSpeed == 0.0f && *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) > 0.0f)
+            else if (horizontalSpeed == 0.0f && this->currentHorizontalSpeed > 0.0f)
                 SET_PLAYER_SCRIPT(4);
         }
     }
 #undef SET_PLAYER_SCRIPT
 
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) = horizontalSpeed;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xE2AA0) = verticalSpeed;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3F8) = horizontalSpeed * g_EclGameTimeScale;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3FC) = verticalSpeed * g_EclGameTimeScale;
-    this->position.operator float *()[0] += *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3F8);
-    this->position.operator float *()[1] += *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3FC);
+    this->currentHorizontalSpeed = horizontalSpeed;
+    this->currentVerticalSpeed = verticalSpeed;
+    this->velocity.x = horizontalSpeed * g_EclGameTimeScale;
+    this->velocity.y = verticalSpeed * g_EclGameTimeScale;
+    this->position.operator float *()[0] += this->velocity.x;
+    this->position.operator float *()[1] += this->velocity.y;
 
     if (this->position.operator float *()[0] < g_GameManager.playerMovementTopLeftPos.x)
         this->position.operator float *()[0] = g_GameManager.playerMovementTopLeftPos.x;
@@ -887,52 +880,51 @@ i32 Player::FUN_0044aec0()
             g_GameManager.playerMovementTopLeftPos.y + g_GameManager.playerMovementAreaSize.y;
     }
 
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x38C) = this->position - *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3D4);
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x398) = this->position + *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3D4);
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3A4) = this->position - *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3E0);
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3B0) = this->position + *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3E0);
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3BC) = this->position - *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3EC);
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3C8) = this->position + *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x3EC);
+    this->hurtboxBoundsMin = this->position - this->hurtboxHalfSize;
+    this->hurtboxBoundsMax = this->position + this->hurtboxHalfSize;
+    this->grazeBoundsMin = this->position - this->grazeHalfSize;
+    this->grazeBoundsMax = this->position + this->grazeHalfSize;
+    this->itemCollectionBoundsMin = this->position - this->itemCollectionHalfSize;
+    this->itemCollectionBoundsMax = this->position + this->itemCollectionHalfSize;
 
     for (optionUpdateIndex = 0; optionUpdateIndex < 4; ++optionUpdateIndex)
     {
-        if (*reinterpret_cast<OptionUpdateCallback *>(reinterpret_cast<u8 *>(this) + 0x6F8 + optionUpdateIndex * 0x2F4) != NULL)
+        if (this->optionStates[optionUpdateIndex].updateCallback != NULL)
         {
-            (*reinterpret_cast<OptionUpdateCallback *>(reinterpret_cast<u8 *>(this) + 0x6F8 + optionUpdateIndex * 0x2F4))(
-                this, reinterpret_cast<u8 *>(this) + 0x40C + optionUpdateIndex * 0x2F4);
-            g_AnmManager->ExecuteScript(
-                reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x40C + optionUpdateIndex * 0x2F4));
-            (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x6EC + optionUpdateIndex * 0x2F4))++;
+            this->optionStates[optionUpdateIndex].updateCallback(
+                this, &this->optionStates[optionUpdateIndex]);
+            g_AnmManager->ExecuteScript(&this->optionStates[optionUpdateIndex].vm);
+            this->optionStates[optionUpdateIndex].timer++;
         }
     }
 
     if ((g_GuiMessageInputCurrent & 1) != 0 && !g_Gui.IsDialogPresent() && !g_GameManager.IsTampered())
-        this->FUN_00451640();
+        this->StartShooting();
 
-    if (!g_Gui.IsDialogPresent() && *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 8) >= 30 &&
+    if (!g_Gui.IsDialogPresent() && this->focusTransitionFrames >= 30 &&
         this->bombState.isInUse == 0)
     {
         gaugeDelta = 0;
-        if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) >= 0)
+        if (this->shotTimer >= 0)
         {
-            if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AD0) > 0)
-                (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AD0))--;
+            if (this->timerE2AD0 > 0)
+                this->timerE2AD0--;
             else
             {
-                gaugeDelta = (i32)((f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AE8) > 300.0f
+                gaugeDelta = (i32)((f32)this->timerE2AE8 > 300.0f
                                        ? 21.0f
-                                       : (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AE8) / 15.0f);
-                if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) == 0)
+                                       : (f32)this->timerE2AE8 / 15.0f);
+                if (this->optionModeFlag == 0)
                     gaugeDelta = -gaugeDelta;
                 g_GameManager.AddToYoukaiGauge((i32)((f32)gaugeDelta * g_EclGameTimeScale), 0);
-                (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AE8))++;
+                this->timerE2AE8++;
             }
         }
         else
         {
-            if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AD0) >= 4)
-                *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AE8) = 0;
-            if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AD0) >= 30)
+            if (this->timerE2AD0 >= 4)
+                this->timerE2AE8 = 0;
+            if (this->timerE2AD0 >= 30)
             {
                 if (fabs((double)g_GameManager.GetYoukaiGauge()) <= 9.0)
                 {
@@ -950,44 +942,44 @@ i32 Player::FUN_0044aec0()
                 }
             }
             else
-                (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AD0))++;
+                this->timerE2AD0++;
         }
     }
 
     if ((g_GameManager.GaugeIsExtremelyHuman() || g_GameManager.GaugeIsExtremelyYoukai()) &&
-        *reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0xE2B24) == NULL)
+        this->extremeGaugeEffect == NULL)
     {
-        *reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0xE2B24) =
-            g_EffectManager.FUN_00425870(25, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 8, 1, -1);
+        this->extremeGaugeEffect = reinterpret_cast<PlayerStateEffect *>(
+            g_EffectManager.FUN_00425870(25, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 8, 1, -1));
     }
-    if (*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0xE2B24) != NULL)
+    if (this->extremeGaugeEffect != NULL)
     {
-        *reinterpret_cast<Float3 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B24) + 0x2A4) = this->position;
+        this->extremeGaugeEffect->position = this->position;
         if (!g_GameManager.GaugeIsExtremelyHuman() && !g_GameManager.GaugeIsExtremelyYoukai())
         {
-            *reinterpret_cast<u8 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2B24) + 0x350) = 0;
-            *reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0xE2B24) = NULL;
+            this->extremeGaugeEffect->active = 0;
+            this->extremeGaugeEffect = NULL;
         }
     }
 
     if (verticalSpeed != 0.0f || horizontalSpeed != 0.0f)
     {
         for (historyIndex = 15; historyIndex > 0; --historyIndex)
-            *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2CC + historyIndex * 12) =
-                *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2CC + (historyIndex - 1) * 12);
-        *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2CC) = this->position;
+            this->positionHistory[historyIndex] =
+                this->positionHistory[historyIndex - 1];
+        this->positionHistory[0] = this->position;
     }
     return 0;
 }
 // FUNCTION: th08 0x44c1b0
 #pragma var_order(yDelta, xDelta, this)
-f32 Player::FUN_0044c1b0(Float3 *position)
+f32 Player::AngleToPoint(Float3 *position)
 {
     f32 yDelta;
     f32 xDelta;
 
-    xDelta = reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2B4)->operator float *()[0] - position->x;
-    yDelta = reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2B4)->operator float *()[1] - position->y;
+    xDelta = this->position.operator float *()[0] - position->x;
+    yDelta = this->position.operator float *()[1] - position->y;
 
     if (yDelta == 0.0f && xDelta == 0.0f)
     {
@@ -1045,23 +1037,23 @@ ChainCallbackResult Player::OnUpdate(Player *player)
 {
     if (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x2C) != 0)
     {
-        if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xBE834) != 0)
+        if (player->focusEffect != NULL)
         {
-            *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(player) + 0xBE834) + 0x1F8) |= 0x80000;
+            player->focusEffect->vmFlags |= 0x80000;
         }
-        if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xE2B24) != 0)
+        if (player->extremeGaugeEffect != NULL)
         {
-            *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(player) + 0xE2B24) + 0x1F8) |= 0x80000;
+            player->extremeGaugeEffect->vmFlags |= 0x80000;
         }
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
-    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xBE834) != 0)
+    if (player->focusEffect != NULL)
     {
-        *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(player) + 0xBE834) + 0x1F8) &= 0xfff7ffff;
+        player->focusEffect->vmFlags &= 0xfff7ffff;
     }
-    if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xE2B24) != 0)
+    if (player->extremeGaugeEffect != NULL)
     {
-        *reinterpret_cast<u32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(player) + 0xE2B24) + 0x1F8) &= 0xfff7ffff;
+        player->extremeGaugeEffect->vmFlags &= 0xfff7ffff;
     }
     player->FUN_0044c5b0();
     player->FUN_0044c650();
@@ -1080,11 +1072,11 @@ updateD180:
     player->FUN_0044d2c0();
     if (player->playerState != PLAYER_STATE_DYING && player->playerState != PLAYER_STATE_SPAWNING)
     {
-        player->FUN_0044aec0();
+        player->UpdateMovementAndOptions();
     }
-    g_AnmManager->ExecuteScript(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(player) + 0x10));
+    g_AnmManager->ExecuteScript(&player->mainVm);
     player->FUN_00451150();
-    player->FUN_00451500();
+    player->UpdateShooting();
     player->FUN_0044d420();
     if (!g_Gui.IsDialogPresent())
     {
@@ -1154,8 +1146,8 @@ void Player::FUN_0044c650()
         {
             g_Spellcard.spellcard_fun_00416130();
             this->bombState.isInUse = 0;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x408) = 1.0f;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x404) = 1.0f;
+            this->verticalSpeedMultiplier = 1.0f;
+            this->horizontalSpeedMultiplier = 1.0f;
 
             if (this->bombState.callbackSetIndex == 4)
             {
@@ -1359,9 +1351,9 @@ i32 Player::FUN_0044cbf0()
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 1.0f - 1.0f * value;
     *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x200) =
         ((i32)(255.0f - (f32)this->timer * 255.0f / 30.0f) << 24) | 0xFFFFFF;
-    reinterpret_cast<AnmVmBase *>(reinterpret_cast<u8 *>(this) + 0x10)->SetBlendModeAdditive();
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A9C) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2AA0) = 0;
+    reinterpret_cast<AnmVmBase *>(&this->mainVm)->SetBlendModeAdditive();
+    this->currentHorizontalSpeed = 0;
+    this->currentVerticalSpeed = 0;
 
     if ((i32)this->timer >= 30)
     {
@@ -1372,13 +1364,11 @@ i32 Player::FUN_0044cbf0()
         this->timer = 0;
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 3.0f;
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 3.0f;
-        if ((g_GameManager.shotType < 4 && *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) == 0) ||
+        if ((g_GameManager.shotType < 4 && this->optionModeFlag == 0) ||
             (g_GameManager.shotType & 1) == 0)
-            (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0xC))
-                ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x10), 0);
+            this->anmFile->SetAndExecuteScriptIdx(&this->mainVm, 0);
         else
-            (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(this) + 0xC))
-                ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(this) + 0x10), 5);
+            this->anmFile->SetAndExecuteScriptIdx(&this->mainVm, 5);
 
         if (g_GameManager.GetLives() <= 0)
         {
@@ -1388,7 +1378,7 @@ i32 Player::FUN_0044cbf0()
         {
             g_GameManager.AddLives(-1);
             g_Gui.flags.lifeDisplayUpdateFrames = 2;
-            g_GameManager.SetBombCount((i32)*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 4));
+            g_GameManager.SetBombCount((i32)g_Player.primaryShtFile->initialBombCount);
             g_Gui.flags.bombDisplayUpdateFrames = 2;
             return 1;
         }
@@ -1406,9 +1396,9 @@ void Player::FUN_0044d180()
     value = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) / 60.0f;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 2.0f * value + 1.0f;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 1.0f - 1.0f * value;
-    reinterpret_cast<AnmVmBase *>(reinterpret_cast<u8 *>(this) + 0x10)->SetBlendModeAdditive();
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x408) = 1.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x404) = 1.0f;
+    reinterpret_cast<AnmVmBase *>(&this->mainVm)->SetBlendModeAdditive();
+    this->verticalSpeedMultiplier = 1.0f;
+    this->horizontalSpeedMultiplier = 1.0f;
     *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x200) =
         (((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) * 0xFF) / 30 << 24) | 0xFFFFFF;
     this->deathbombWindowFrames = 0;
@@ -1419,7 +1409,7 @@ void Player::FUN_0044d180()
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 1.0f;
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 1.0f;
         *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x200) = 0xFFFFFFFF;
-        reinterpret_cast<AnmVmBase *>(reinterpret_cast<u8 *>(this) + 0x10)->SetBlendModeNormal();
+        reinterpret_cast<AnmVmBase *>(&this->mainVm)->SetBlendModeNormal();
         if (!g_GameManager.flags.isSpellPractice)
         {
             *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) = 240;
@@ -1482,7 +1472,7 @@ void Player::FUN_0044d420()
     {
         if (g_AsciiManager.GetGaugeInterrupt() != 2)
         {
-            if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2B4) < 160.0f)
+            if (this->position.x < 160.0f)
             {
                 g_AsciiManager.SetGaugeInterrupt(2);
                 goto doneTop;
@@ -1491,7 +1481,7 @@ void Player::FUN_0044d420()
 
         if (g_AsciiManager.GetGaugeInterrupt() == 2)
         {
-            if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2B4) > 160.0f)
+            if (this->position.x > 160.0f)
             {
                 g_AsciiManager.SetGaugeInterrupt(3);
             }
@@ -1522,20 +1512,18 @@ ChainCallbackResult Player::OnDrawHighPrio(Player *player)
     if (!g_GameManager.showRetryMenu)
     {
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x218) =
-            g_GameManager.arcadeRegionTopLeftPos.x + *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x2B4);
+            g_GameManager.arcadeRegionTopLeftPos.x + player->position.x;
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x21C) =
-            g_GameManager.arcadeRegionTopLeftPos.y + *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x2B8);
+            g_GameManager.arcadeRegionTopLeftPos.y + player->position.y;
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x220) = 0.1f;
-        g_AnmManager->DrawNoRotation(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(player) + 0x10));
+        g_AnmManager->DrawNoRotation(&player->mainVm);
     }
 
     for (i = 0; i < 4; i++)
     {
-        if (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + i * 0x2F4 + 0x6FC) != 0)
+        if (player->optionStates[i].renderCallback != NULL)
         {
-            reinterpret_cast<void (__fastcall *)(Player *, u8 *)>(
-                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + i * 0x2F4 + 0x6FC))(
-                player, reinterpret_cast<u8 *>(player) + i * 0x2F4 + 0x40C);
+            player->optionStates[i].renderCallback(player, &player->optionStates[i]);
         }
     }
 
@@ -1555,7 +1543,7 @@ ZunResult Player::AddedCallback(Player *player)
 {
     u32 i;
     u8 *shotSlot;
-    u8 *option;
+    PlayerOptionState *option;
     u32 m;
 
     if (IsResourceReloadEnabled())
@@ -1564,22 +1552,19 @@ ZunResult Player::AddedCallback(Player *player)
             return ZUN_ERROR;
         if (Player::LoadShtFile(&player->secondaryShtFile, g_Player2ShtFile[g_GameManager.shotType]) != ZUN_SUCCESS)
             return ZUN_ERROR;
-        *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC) =
-            g_AnmManager->PreloadAnm(5, g_PlayerAnmFilenames[g_GameManager.shotType]);
-        if (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC) == NULL)
+        player->anmFile = g_AnmManager->PreloadAnm(5, g_PlayerAnmFilenames[g_GameManager.shotType]);
+        if (player->anmFile == NULL)
             return ZUN_ERROR;
     }
     else
     {
-        *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC) = g_AnmManager->GetAnm(5);
+        player->anmFile = g_AnmManager->GetAnm(5);
     }
 
     if (g_GameManager.shotType < 4 || (g_GameManager.shotType & 1) == 0)
-        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC))
-            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(player) + 0x10), 0);
+        player->anmFile->SetAndExecuteScriptIdx(&player->mainVm, 0);
     else
-        (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(player) + 0xC))
-            ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(player) + 0x10), 5);
+        player->anmFile->SetAndExecuteScriptIdx(&player->mainVm, 5);
 
     player->position.operator float *()[0] = g_GameManager.arcadeRegionSize.x / 2.0f;
     player->position.operator float *()[1] = g_GameManager.arcadeRegionSize.y - 64.0f;
@@ -1588,23 +1573,17 @@ ZunResult Player::AddedCallback(Player *player)
     for (i = 0; i < 0x180; ++i)
         reinterpret_cast<PlayerUnkStruct0x40 *>(player->playerSlotsB)[i].Reset();
 
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3D8) =
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0xC) / 2.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3D4) =
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3D8);
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3DC) = 5.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3E4) =
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x10) / 2.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3E0) =
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3E4);
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3E8) = 5.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3F0) =
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x18) / 2.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3EC) =
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3F0);
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x3F4) = 5.0f;
+    player->hurtboxHalfSize.y = g_Player.primaryShtFile->hurtboxSize / 2.0f;
+    player->hurtboxHalfSize.x = player->hurtboxHalfSize.y;
+    player->hurtboxHalfSize.z = 5.0f;
+    player->grazeHalfSize.y = g_Player.primaryShtFile->grazeBoxSize / 2.0f;
+    player->grazeHalfSize.x = player->grazeHalfSize.y;
+    player->grazeHalfSize.z = 5.0f;
+    player->itemCollectionHalfSize.y = g_Player.primaryShtFile->itemCollectionBoxSize / 2.0f;
+    player->itemCollectionHalfSize.x = player->itemCollectionHalfSize.y;
+    player->itemCollectionHalfSize.z = 5.0f;
 
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2A98) = 0;
+    player->movementDirection = PLAYER_DIRECTION_NONE;
     player->playerState = PLAYER_STATE_SPAWNING;
     player->timer = g_GameManager.IsSpellPractice() ? 10 : 120;
     *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(player) + 2) = 1;
@@ -1613,17 +1592,17 @@ ZunResult Player::AddedCallback(Player *player)
     for (i = 0; (i32)i < 0x80; ++i, shotSlot += 0x484)
         *reinterpret_cast<i16 *>(shotSlot + 0x462) = 0;
 
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AC4) = -1;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AD0) = 0;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AE8) = 0;
+    player->shotTimer = -1;
+    player->timerE2AD0 = 0;
+    player->timerE2AE8 = 0;
 
     player->bombState.calcCallbacks = g_PlayerBombCallbackTable[g_GameManager.shotType * 2];
     player->bombState.drawCallbacks = g_PlayerBombCallbackTable[g_GameManager.shotType * 2 + 1];
 
     player->bombState.isInUse = 0;
     *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xE2B0C) = 0xBFC90FDB;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 1.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 1.0f;
+    player->verticalSpeedMultiplier = 1.0f;
+    player->horizontalSpeedMultiplier = 1.0f;
     player->deathbombWindowFrames = g_Player.primaryShtFile->deathbombWindowFrames;
 
     if (IsResourceReloadEnabled())
@@ -1666,38 +1645,38 @@ ZunResult Player::AddedCallback(Player *player)
         g_PlayerGaugeBounds[4] = -2001;
     }
 
-    *reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2B24) = NULL;
+    player->extremeGaugeEffect = NULL;
     for (i = 0; i < 16; ++i)
-        *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(player) + 0x2CC + i * 12) = player->position;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(player) + 3) = 2;
+        player->positionHistory[i] = player->position;
+    player->optionModeFlag = 2;
 
     if (g_GameManager.shotType > 3)
     {
-        option = reinterpret_cast<u8 *>(player) + 0x40C;
-        for (m = 0; m < 4; ++m, option += 0x2F4)
+        option = player->optionStates;
+        for (m = 0; m < 4; ++m, option++)
         {
             memset(option, 0, 0x2F4);
-            *reinterpret_cast<PlayerOptionCallback *>(option + 0x2EC) =
+            option->updateCallback =
                 g_PlayerOptionUpdateCallbacks[g_GameManager.shotType].callbacks[m];
-            *reinterpret_cast<PlayerOptionCallback *>(option + 0x2F0) =
+            option->renderCallback =
                 g_PlayerOptionRenderCallbacks[g_GameManager.shotType].callbacks[m];
-            if (*reinterpret_cast<void **>(option + 0x2EC) != NULL)
+            if (option->updateCallback != NULL)
             {
-                *reinterpret_cast<i32 *>(option + 0x2C8) = 1;
-                *reinterpret_cast<ZunTimer *>(option + 0x2E0) = 0;
-                *reinterpret_cast<i32 *>(option + 0x2D0) = m;
+                option->state2C8 = 1;
+                option->timer = 0;
+                option->optionIndex = m;
             }
             else
             {
-                *reinterpret_cast<i32 *>(option + 0x2C8) = 0;
+                option->state2C8 = 0;
             }
         }
     }
 
     if (g_GameManager.IsSoloHuman())
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2B2C) = 27;
+        player->damageAccumulatorThreshold = 27;
     else
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2B2C) = 40;
+        player->damageAccumulatorThreshold = 40;
     g_EnemyManager.spawnTemplate.playerShotHitAccumulator =
         player->damageAccumulatorThreshold;
     return ZUN_SUCCESS;
@@ -2032,7 +2011,7 @@ i32 __fastcall FUN_0044e3a0(Player *player, PlayerOptionState *option)
         case 3:
             if (player->optionHomingTarget != NULL)
                 PlayerOptionHomingToTarget(player, reinterpret_cast<u8 *>(option));
-            if (((player->timerE2AC4 < 0) && ((g_CurFrameInput & 1) == 0)) ||
+            if (((player->shotTimer < 0) && ((g_CurFrameInput & 1) == 0)) ||
                 player->optionHomingTarget == NULL)
             {
                 player->optionHomingTarget = NULL;
@@ -2081,7 +2060,7 @@ void __fastcall PlayerOptionHomingToPlayer(Player *player, u8 *option)
     if (fabsf(*reinterpret_cast<f32 *>(option + 0x2BC)) < 0.05f)
         *reinterpret_cast<f32 *>(option + 0x2BC) = 0.0f;
 
-    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(player) + 0xE2AC4) >= 0 &&
+    if (player->shotTimer >= 0 &&
         *reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2ABC) != NULL &&
         *reinterpret_cast<ZunTimer *>(option + 0x2E0) >= 10)
     {
@@ -2355,14 +2334,14 @@ i32 __fastcall FUN_0044f2d0(Player *player, PlayerOptionState *option)
     case 1:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 21);
         option->state2C8 = 2;
-        option->target = player->vectors2CC[15];
+        option->target = player->positionHistory[15];
         option->orbitAngle = 0.0f;
         option->facingAngle = -ZUN_PI / 2.0f;
         // Fall through into the normal update.
     case 2:
         option->orbitAngle = AddNormalizeAngle(option->orbitAngle, 0.052359879016876221f);
         option->position.FromAngleMagnitude(option->orbitAngle, 8.0f);
-        option->target = (player->vectors2CC[15] - option->target) * 0.05f + option->target;
+        option->target = (player->positionHistory[15] - option->target) * 0.05f + option->target;
         option->position += option->target;
         option->position.z = 0.0f;
         g_EffectManager.SpawnEffect(
@@ -2370,30 +2349,30 @@ i32 __fastcall FUN_0044f2d0(Player *player, PlayerOptionState *option)
 
         switch (player->movementDirection)
         {
-        case 0:
+        case PLAYER_DIRECTION_NONE:
             goto optionUpdateDone;
-        case 1:
+        case PLAYER_DIRECTION_UP:
             targetAngle = ZUN_PI / 2.0f;
             break;
-        case 2:
+        case PLAYER_DIRECTION_DOWN:
             targetAngle = -ZUN_PI / 2.0f;
             break;
-        case 3:
+        case PLAYER_DIRECTION_LEFT:
             targetAngle = 0.0f;
             break;
-        case 4:
+        case PLAYER_DIRECTION_RIGHT:
             targetAngle = ZUN_PI;
             break;
-        case 5:
+        case PLAYER_DIRECTION_UP_LEFT:
             targetAngle = ZUN_PI / 4.0f;
             break;
-        case 6:
+        case PLAYER_DIRECTION_UP_RIGHT:
             targetAngle = 3.0f * ZUN_PI / 4.0f;
             break;
-        case 7:
+        case PLAYER_DIRECTION_DOWN_LEFT:
             targetAngle = -ZUN_PI / 4.0f;
             break;
-        case 8:
+        case PLAYER_DIRECTION_DOWN_RIGHT:
             targetAngle = -3.0f * ZUN_PI / 4.0f;
             break;
         default:
@@ -2444,14 +2423,14 @@ i32 __fastcall FUN_0044f5e0(Player *player, PlayerOptionState *option)
     case 1:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 21);
         option->state2C8 = 2;
-        option->target = player->vectors2CC[15];
+        option->target = player->positionHistory[15];
         option->orbitAngle = 0.0f;
         option->facingAngle = -ZUN_PI / 2.0f;
         // Fall through into the normal update.
     case 2:
         option->orbitAngle = AddNormalizeAngle(option->orbitAngle, 0.052359879016876221f);
         option->position.FromAngleMagnitude(option->orbitAngle, 8.0f);
-        option->target = (player->vectors2CC[15] - option->target) * 0.05f + option->target;
+        option->target = (player->positionHistory[15] - option->target) * 0.05f + option->target;
         option->position += option->target;
         option->position.z = 0.0f;
         option->vm.color1.d3dColor = 0xFFFF8080;
@@ -2461,30 +2440,30 @@ i32 __fastcall FUN_0044f5e0(Player *player, PlayerOptionState *option)
             option->vm.color1.d3dColor = 0xFFFFFFFF;
             switch (player->movementDirection)
             {
-            case 0:
+            case PLAYER_DIRECTION_NONE:
                 goto optionUpdateDone;
-            case 1:
+            case PLAYER_DIRECTION_UP:
                 targetAngle = ZUN_PI / 2.0f;
                 break;
-            case 2:
+            case PLAYER_DIRECTION_DOWN:
                 targetAngle = -ZUN_PI / 2.0f;
                 break;
-            case 3:
+            case PLAYER_DIRECTION_LEFT:
                 targetAngle = 0.0f;
                 break;
-            case 4:
+            case PLAYER_DIRECTION_RIGHT:
                 targetAngle = ZUN_PI;
                 break;
-            case 5:
+            case PLAYER_DIRECTION_UP_LEFT:
                 targetAngle = ZUN_PI / 4.0f;
                 break;
-            case 6:
+            case PLAYER_DIRECTION_UP_RIGHT:
                 targetAngle = 3.0f * ZUN_PI / 4.0f;
                 break;
-            case 7:
+            case PLAYER_DIRECTION_DOWN_LEFT:
                 targetAngle = -ZUN_PI / 4.0f;
                 break;
-            case 8:
+            case PLAYER_DIRECTION_DOWN_RIGHT:
                 targetAngle = -3.0f * ZUN_PI / 4.0f;
                 break;
             default:
@@ -2597,8 +2576,7 @@ void __fastcall Player::FUN_0044fb70(u8 *slot, u8 *entry)
 {
     if (*reinterpret_cast<i16 *>(entry + 0x20) == 0)
     {
-        *reinterpret_cast<Float3 *>(slot + 0x2A4) =
-            *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0x2B4);
+        *reinterpret_cast<Float3 *>(slot + 0x2A4) = this->position;
     }
     else
     {
@@ -2627,11 +2605,11 @@ void __fastcall Player::FUN_0044fb70(u8 *slot, u8 *entry)
     if (*reinterpret_cast<i16 *>(entry + 0x26) >= 0)
     {
         g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(*reinterpret_cast<i16 *>(entry + 0x26)),
-                                               *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2B4));
+                                               this->position.x);
     }
 
-    reinterpret_cast<AnmLoaded *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xC))
-        ->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(slot), *reinterpret_cast<i16 *>(entry + 0x24) + 10);
+    this->anmFile->SetAndExecuteScriptIdx(reinterpret_cast<AnmVm *>(slot),
+                                          *reinterpret_cast<i16 *>(entry + 0x24) + 10);
 
     *reinterpret_cast<u8 *>(slot + 0x470) = 0;
     if (g_GameManager.GaugeIsExtremelyYoukai())
@@ -2922,7 +2900,7 @@ i32 __fastcall FUN_00450840(Player *player, PlayerShot *slot)
     if (player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].instruction !=
             reinterpret_cast<EclTimelineInstruction *>(slot) ||
         g_Gui.IsDialogPresent() ||
-        (i32)player->timerE2AC4 < 0 ||
+        (i32)player->shotTimer < 0 ||
         player->playerState == PLAYER_STATE_DYING ||
         player->bombState.isInUse != 0 ||
         g_GameManager.flags.unk13)
@@ -3050,7 +3028,7 @@ i32 __fastcall FUN_00450ee0(Player *player, PlayerShot *slot, Float3 *effectPosi
 
 // FUNCTION: th08 0x450f60
 #pragma var_order(i, table, slot, result, entry, this, value)
-void __fastcall Player::FUN_00450f60(i32 value)
+void __fastcall Player::SpawnShots(i32 value)
 {
     unsigned __int64 *table;
     u8 *entry;
@@ -3058,7 +3036,7 @@ void __fastcall Player::FUN_00450f60(i32 value)
     i32 result;
     i32 i;
 
-    table = (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 3) == 0)
+    table = (this->optionModeFlag == 0)
                 ? reinterpret_cast<unsigned __int64 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2A74) + 0x38)
                 : reinterpret_cast<unsigned __int64 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0xE2A78) + 0x38);
 
@@ -3242,64 +3220,64 @@ void Player::FUN_00451400()
     }
 }
 // FUNCTION: th08 0x451500
-i32 Player::FUN_00451500()
+i32 Player::UpdateShooting()
 {
     if (*reinterpret_cast<i32 *>(0x164D2C8) < 20)
     {
         return 0;
     }
 
-    if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) < 0)
+    if ((i32)this->shotTimer < 0)
     {
         return 0;
     }
 
-    if (this->FUN_00451d50())
+    if (this->IsBombShotSuppressed())
     {
         return 0;
     }
 
-    if (reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4)->FUN_0040d3d0())
+    if (this->shotTimer.FUN_0040d3d0())
     {
         if (*reinterpret_cast<i32 *>(0x17D6ED4) == 0 ||
             (g_GameManager.shotType != 1 && g_GameManager.shotType != 7 &&
              g_GameManager.shotType != 6))
         {
-            this->FUN_00450f60((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4));
+            this->SpawnShots((i32)this->shotTimer);
         }
     }
 
-    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4))++;
+    this->shotTimer++;
 
-    if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) >= 20)
+    if ((i32)this->shotTimer >= 20)
     {
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) = -1;
+        this->shotTimer = -1;
     }
 
     if ((*reinterpret_cast<u16 *>(0x164D52C) & 1) != 0)
     {
-        if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) < 0)
+        if ((i32)this->shotTimer < 0)
         {
             if (!g_Gui.IsDialogPresent())
             {
-                *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) = 0;
+                this->shotTimer = 0;
             }
         }
     }
 
-    if (*reinterpret_cast<i8 *>(this) == 2 || *reinterpret_cast<i8 *>(this) == 1)
+    if (this->playerState == PLAYER_STATE_DYING || this->playerState == PLAYER_STATE_SPAWNING)
     {
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) = -1;
+        this->shotTimer = -1;
     }
 
     return 0;
 }
 
 // FUNCTION: th08 0x451640
-void Player::FUN_00451640()
+void Player::StartShooting()
 {
-    if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) < 0)
-        *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AC4) = 0;
+    if ((i32)this->shotTimer < 0)
+        this->shotTimer = 0;
 }
 
 // FUNCTION: th08 0x451670
@@ -3449,9 +3427,8 @@ void __fastcall PlayerBuildAabb(Float3 *topLeft, Float3 *bottomRight, const Floa
 }
 
 // FUNCTION: th08 0x451d50
-i32 Player::FUN_00451d50()
+i32 Player::IsBombShotSuppressed()
 {
-    return *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xfdc) != 0 &&
-           *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xfe0) == 4;
+    return this->bombState.isInUse != 0 && this->bombState.callbackSetIndex == 4;
 }
 } /* namespace th08 */

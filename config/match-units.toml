@@ -3005,7 +3005,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x1B90
 type = "REL32"
-symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
+symbol = "?AngleToPoint@Player@th08@@QAEMPAUFloat3@2@@Z"
 target = 0x0044C1B0
 
 [[units.relocations]]
@@ -3041,7 +3041,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x1C70
 type = "REL32"
-symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
+symbol = "?AngleToPoint@Player@th08@@QAEMPAUFloat3@2@@Z"
 target = 0x0044C1B0
 
 [[units.relocations]]
@@ -3899,7 +3899,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x3A45
 type = "REL32"
-symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
+symbol = "?AngleToPoint@Player@th08@@QAEMPAUFloat3@2@@Z"
 target = 0x0044C1B0
 
 [[units.relocations]]
@@ -7387,7 +7387,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x6A8
 type = "REL32"
-symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
+symbol = "?AngleToPoint@Player@th08@@QAEMPAUFloat3@2@@Z"
 target = 0x0044C1B0
 
 [[units.relocations]]
@@ -8598,7 +8598,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x553
 type = "REL32"
-symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
+symbol = "?AngleToPoint@Player@th08@@QAEMPAUFloat3@2@@Z"
 target = 0x0044C1B0
 
 [[units.relocations]]
@@ -59527,7 +59527,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x74
 type = "REL32"
-symbol = "?FUN_00449ff0@Player@th08@@QAEHPAUFloat3@2@0@Z"
+symbol = "?CheckBulletCancelCollision@Player@th08@@QAEHPAUFloat3@2@0@Z"
 target = 0x00449FF0
 
 [[units.relocations]]
@@ -59539,7 +59539,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x94
 type = "REL32"
-symbol = "?FUN_00449ff0@Player@th08@@QAEHPAUFloat3@2@0@Z"
+symbol = "?CheckBulletCancelCollision@Player@th08@@QAEHPAUFloat3@2@0@Z"
 target = 0x00449FF0
 
 [[units.relocations]]
@@ -61240,7 +61240,7 @@ target = 0x0044D2C0
 [[units.relocations]]
 offset = 0x13C
 type = "REL32"
-symbol = "?FUN_0044aec0@Player@th08@@QAEHXZ"
+symbol = "?UpdateMovementAndOptions@Player@th08@@QAEHXZ"
 target = 0x0044AEC0
 
 [[units.relocations]]
@@ -61264,7 +61264,7 @@ target = 0x00451150
 [[units.relocations]]
 offset = 0x15E
 type = "REL32"
-symbol = "?FUN_00451500@Player@th08@@QAEHXZ"
+symbol = "?UpdateShooting@Player@th08@@QAEHXZ"
 target = 0x00451500
 
 [[units.relocations]]
@@ -61974,7 +61974,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0xA5
 type = "REL32"
-symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
+symbol = "?AngleToPoint@Player@th08@@QAEMPAUFloat3@2@@Z"
 target = 0x0044C1B0
 
 [[units.relocations]]
@@ -62183,9 +62183,9 @@ symbol = "__CIatan2"
 target = 0x004A42FA
 
 [[units]]
-name = "player-fun-0044c1b0"
+name = "player-angle-to-point"
 object = "build/Player.obj"
-symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
+symbol = "?AngleToPoint@Player@th08@@QAEMPAUFloat3@2@@Z"
 target_address = 0x0044C1B0
 size = 0x76
 
@@ -62677,9 +62677,9 @@ symbol = "??EZunTimer@th08@@QAEXH@Z"
 target = 0x00406640
 
 [[units]]
-name = "player-fun-00451500"
+name = "player-update-shooting"
 object = "build/Player.obj"
-symbol = "?FUN_00451500@Player@th08@@QAEHXZ"
+symbol = "?UpdateShooting@Player@th08@@QAEHXZ"
 target_address = 0x00451500
 size = 0x137
 
@@ -62692,7 +62692,7 @@ target = 0x0040D3B0
 [[units.relocations]]
 offset = 0x34
 type = "REL32"
-symbol = "?FUN_00451d50@Player@th08@@QAEHXZ"
+symbol = "?IsBombShotSuppressed@Player@th08@@QAEHXZ"
 target = 0x00451D50
 
 [[units.relocations]]
@@ -62731,7 +62731,7 @@ target = 0x0040D3B0
 [[units.relocations]]
 offset = 0x96
 type = "REL32"
-symbol = "?FUN_00450f60@Player@th08@@QAIXH@Z"
+symbol = "?SpawnShots@Player@th08@@QAIXH@Z"
 target = 0x00450F60
 
 [[units.relocations]]
@@ -62897,11 +62897,11 @@ symbol = "?GaugeIsExtremelyYoukai@GameManager@th08@@QAEIXZ"
 target = 0x00406D70
 
 [[units]]
-name = "player-fun-00450f60"
+name = "player-spawn-shots"
 target_address = 0x00450F60
 size = 0x1E7
 object = "build/Player.obj"
-symbol = "?FUN_00450f60@Player@th08@@QAIXH@Z"
+symbol = "?SpawnShots@Player@th08@@QAIXH@Z"
 
 [[units.relocations]]
 offset = 0x4C
@@ -68375,7 +68375,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x7A
 type = "REL32"
-symbol = "?FUN_00449ff0@Player@th08@@QAEHPAUFloat3@2@0@Z"
+symbol = "?CheckBulletCancelCollision@Player@th08@@QAEHPAUFloat3@2@0@Z"
 target = 0x00449FF0
 
 [[units.relocations]]
@@ -78195,9 +78195,9 @@ symbol = "th08::Gui::FUN_00438a89"
 target = 4426377
 
 [[units]]
-name = "player-state-predicate-451d50"
+name = "player-bomb-shot-suppressed"
 object = "build/objdiff/reimpl/Player.obj"
-symbol = "th08::Player::FUN_00451d50"
+symbol = "th08::Player::IsBombShotSuppressed"
 target_address = 0x00451D50
 size = 56
 
@@ -79030,9 +79030,9 @@ symbol = "th08::AnmManager::DrawTextInner"
 target = 0x00466310
 
 [[units]]
-name = "player-cancel-region-test"
+name = "player-bullet-cancel-collision"
 object = "build/objdiff/reimpl/Player.obj"
-symbol = "th08::Player::FUN_00449ff0"
+symbol = "th08::Player::CheckBulletCancelCollision"
 target_address = 0x00449FF0
 size = 563
 
@@ -80209,7 +80209,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 903
 type = "REL32"
-symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
+symbol = "?AngleToPoint@Player@th08@@QAEMPAUFloat3@2@@Z"
 target = 0x0044C1B0
 
 [[units.relocations]]
@@ -81355,9 +81355,9 @@ symbol = "?IsTampered@GameManager@th08@@QAEIXZ"
 target = 0x0040BB80
 
 [[units]]
-name = "player-bullet-collision-or-cancel"
+name = "player-bullet-collision"
 object = "build/objdiff/reimpl/Player.obj"
-symbol = "th08::Player::FUN_0044a230"
+symbol = "th08::Player::CheckBulletCollision"
 target_address = 0x0044A230
 size = 302
 
@@ -81376,7 +81376,7 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 50
 type = "REL32"
-symbol = "th08::Player::FUN_00449ff0"
+symbol = "th08::Player::CheckBulletCancelCollision"
 target = 0x00449FF0
 
 [[units.relocations]]
@@ -81434,9 +81434,9 @@ symbol = "th08::Player::Die"
 target = 0x0044AB40
 
 [[units]]
-name = "player-deadly-aabb-contact"
+name = "player-lethal-collision"
 object = "build/objdiff/reimpl/Player.obj"
-symbol = "th08::Player::FUN_0044a360"
+symbol = "th08::Player::CheckLethalCollision"
 target_address = 0x0044A360
 size = 272
 
@@ -81507,9 +81507,9 @@ symbol = "th08::Player::Die"
 target = 0x0044AB40
 
 [[units]]
-name = "player-aux-collision-graze"
+name = "player-graze-collision"
 object = "build/objdiff/reimpl/Player.obj"
-symbol = "th08::Player::FUN_0044a470"
+symbol = "th08::Player::CheckGrazeCollision"
 target_address = 0x0044A470
 size = 303
 
@@ -81528,7 +81528,7 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 50
 type = "REL32"
-symbol = "th08::Player::FUN_00449ff0"
+symbol = "th08::Player::CheckBulletCancelCollision"
 target = 0x00449FF0
 
 [[units.relocations]]
@@ -81582,7 +81582,7 @@ target = 0x004B6E98
 [[units.relocations]]
 offset = 288
 type = "REL32"
-symbol = "th08::Player::FUN_0044a930"
+symbol = "th08::Player::AwardGraze"
 target = 0x0044A930
 
 [[units]]
@@ -81593,9 +81593,9 @@ target_address = 0x0042F1F0
 size = 64
 
 [[units]]
-name = "player-graze-reward"
+name = "player-award-graze"
 object = "build/objdiff/reimpl/Player.obj"
-symbol = "th08::Player::FUN_0044a930"
+symbol = "th08::Player::AwardGraze"
 target_address = 0x0044A930
 size = 521
 
@@ -82000,7 +82000,7 @@ target = 0x004B48C8
 [[units.relocations]]
 offset = 562
 type = "REL32"
-symbol = "th08::Player::FUN_0044a930"
+symbol = "th08::Player::AwardGraze"
 target = 0x0044A930
 
 [[units.relocations]]
@@ -83603,7 +83603,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x3B3
 type = "REL32"
-symbol = "?FUN_0044a470@Player@th08@@QAEHPAUFloat3@2@0@Z"
+symbol = "?CheckGrazeCollision@Player@th08@@QAEHPAUFloat3@2@0@Z"
 target = 0x0044A470
 
 [[units.relocations]]
@@ -83672,7 +83672,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x472
 type = "REL32"
-symbol = "?FUN_0044a230@Player@th08@@QAEHPAUFloat3@2@0@Z"
+symbol = "?CheckBulletCollision@Player@th08@@QAEHPAUFloat3@2@0@Z"
 target = 0x0044A230
 
 [[units.relocations]]
@@ -83771,7 +83771,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x590
 type = "REL32"
-symbol = "?FUN_00449ff0@Player@th08@@QAEHPAUFloat3@2@0@Z"
+symbol = "?CheckBulletCancelCollision@Player@th08@@QAEHPAUFloat3@2@0@Z"
 target = 0x00449FF0
 
 [[units.relocations]]
@@ -83870,7 +83870,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x6A2
 type = "REL32"
-symbol = "?FUN_00449ff0@Player@th08@@QAEHPAUFloat3@2@0@Z"
+symbol = "?CheckBulletCancelCollision@Player@th08@@QAEHPAUFloat3@2@0@Z"
 target = 0x00449FF0
 
 [[units.relocations]]
@@ -83969,7 +83969,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x7B3
 type = "REL32"
-symbol = "?FUN_00449ff0@Player@th08@@QAEHPAUFloat3@2@0@Z"
+symbol = "?CheckBulletCancelCollision@Player@th08@@QAEHPAUFloat3@2@0@Z"
 target = 0x00449FF0
 
 [[units.relocations]]
@@ -84405,7 +84405,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x62
 type = "REL32"
-symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
+symbol = "?AngleToPoint@Player@th08@@QAEMPAUFloat3@2@@Z"
 target = 0x0044C1B0
 
 [[units.relocations]]
@@ -85041,9 +85041,9 @@ symbol = "??0Float3@th08@@QAE@XZ"
 target = 0x0040B460
 
 [[units]]
-name = "player-main-input-focus-gauge-update"
+name = "player-update-movement-and-options"
 object = "build/objdiff/reimpl/Player.obj"
-symbol = "th08::Player::FUN_0044aec0"
+symbol = "th08::Player::UpdateMovementAndOptions"
 target_address = 0x0044AEC0
 size = 0x12A1
 compare_size = 0x12E1
@@ -85836,7 +85836,7 @@ target = 0x0040BB80
 [[units.relocations]]
 offset = 0xF2C
 type = "REL32"
-symbol = "th08::Player::FUN_00451640"
+symbol = "th08::Player::StartShooting"
 target = 0x00451640
 
 [[units.relocations]]
@@ -86236,9 +86236,9 @@ symbol = "$L69952"
 target = 0x0044B62C
 
 [[units]]
-name = "player-clamp-e2ac4-timer"
+name = "player-start-shooting"
 object = "build/objdiff/reimpl/Player.obj"
-symbol = "th08::Player::FUN_00451640"
+symbol = "th08::Player::StartShooting"
 target_address = 0x00451640
 size = 0x2D
 
@@ -102157,7 +102157,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x7A
 type = "REL32"
-symbol = "?FUN_0044a470@Player@th08@@QAEHPAUFloat3@2@0@Z"
+symbol = "?CheckGrazeCollision@Player@th08@@QAEHPAUFloat3@2@0@Z"
 target = 0x0044A470
 
 [[units.relocations]]
@@ -102195,7 +102195,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0xD3
 type = "REL32"
-symbol = "?FUN_0044a360@Player@th08@@QAEHPAUFloat3@2@0@Z"
+symbol = "?CheckLethalCollision@Player@th08@@QAEHPAUFloat3@2@0@Z"
 target = 0x0044A360
 
 [[units]]
@@ -107164,7 +107164,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x15F
 type = "REL32"
-symbol = "?FUN_0044c1b0@Player@th08@@QAEMPAUFloat3@2@@Z"
+symbol = "?AngleToPoint@Player@th08@@QAEMPAUFloat3@2@@Z"
 target = 0x0044C1B0
 
 [[units.relocations]]

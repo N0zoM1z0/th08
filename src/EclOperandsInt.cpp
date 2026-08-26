@@ -143,7 +143,7 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
                                reinterpret_cast<Enemy *>(enemy)->parentEnemy)->CountParentChain()
                          : 0;
     case 0x2740:
-        return (i32)g_Player.FUN_0044c1b0(&reinterpret_cast<Enemy *>(enemy)->worldPosition);
+        return (i32)g_Player.AngleToPoint(&reinterpret_cast<Enemy *>(enemy)->worldPosition);
     case 0x2742:
     {
         Float3 delta = g_Player.position - reinterpret_cast<Enemy *>(enemy)->worldPosition;

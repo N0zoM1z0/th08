@@ -138,14 +138,14 @@ i32 __fastcall FUN_0044f2d0(Player *player, PlayerOptionState *option)
     case 1:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 21);
         option->state2C8 = 2;
-        option->target = player->vectors2CC[15];
+        option->target = player->positionHistory[15];
         option->orbitAngle = 0.0f;
         option->facingAngle = -ZUN_PI / 2.0f;
         // Fall through into the normal update.
     case 2:
         option->orbitAngle = AddNormalizeAngle(option->orbitAngle, 0.052359879016876221f);
         option->position.FromAngleMagnitude(option->orbitAngle, 8.0f);
-        option->target = (player->vectors2CC[15] - option->target) * 0.05f + option->target;
+        option->target = (player->positionHistory[15] - option->target) * 0.05f + option->target;
         option->position += option->target;
         option->position.z = 0.0f;
         g_EffectManager.SpawnEffect(
@@ -153,30 +153,30 @@ i32 __fastcall FUN_0044f2d0(Player *player, PlayerOptionState *option)
 
         switch (player->movementDirection)
         {
-        case 0:
+        case PLAYER_DIRECTION_NONE:
             goto optionUpdateDone;
-        case 1:
+        case PLAYER_DIRECTION_UP:
             targetAngle = ZUN_PI / 2.0f;
             break;
-        case 2:
+        case PLAYER_DIRECTION_DOWN:
             targetAngle = -ZUN_PI / 2.0f;
             break;
-        case 3:
+        case PLAYER_DIRECTION_LEFT:
             targetAngle = 0.0f;
             break;
-        case 4:
+        case PLAYER_DIRECTION_RIGHT:
             targetAngle = ZUN_PI;
             break;
-        case 5:
+        case PLAYER_DIRECTION_UP_LEFT:
             targetAngle = ZUN_PI / 4.0f;
             break;
-        case 6:
+        case PLAYER_DIRECTION_UP_RIGHT:
             targetAngle = 3.0f * ZUN_PI / 4.0f;
             break;
-        case 7:
+        case PLAYER_DIRECTION_DOWN_LEFT:
             targetAngle = -ZUN_PI / 4.0f;
             break;
-        case 8:
+        case PLAYER_DIRECTION_DOWN_RIGHT:
             targetAngle = -3.0f * ZUN_PI / 4.0f;
             break;
         default:
@@ -227,14 +227,14 @@ i32 __fastcall FUN_0044f5e0(Player *player, PlayerOptionState *option)
     case 1:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 21);
         option->state2C8 = 2;
-        option->target = player->vectors2CC[15];
+        option->target = player->positionHistory[15];
         option->orbitAngle = 0.0f;
         option->facingAngle = -ZUN_PI / 2.0f;
         // Fall through into the normal update.
     case 2:
         option->orbitAngle = AddNormalizeAngle(option->orbitAngle, 0.052359879016876221f);
         option->position.FromAngleMagnitude(option->orbitAngle, 8.0f);
-        option->target = (player->vectors2CC[15] - option->target) * 0.05f + option->target;
+        option->target = (player->positionHistory[15] - option->target) * 0.05f + option->target;
         option->position += option->target;
         option->position.z = 0.0f;
         option->vm.color1.d3dColor = 0xFFFF8080;
@@ -244,30 +244,30 @@ i32 __fastcall FUN_0044f5e0(Player *player, PlayerOptionState *option)
             option->vm.color1.d3dColor = 0xFFFFFFFF;
             switch (player->movementDirection)
             {
-            case 0:
+            case PLAYER_DIRECTION_NONE:
                 goto optionUpdateDone;
-            case 1:
+            case PLAYER_DIRECTION_UP:
                 targetAngle = ZUN_PI / 2.0f;
                 break;
-            case 2:
+            case PLAYER_DIRECTION_DOWN:
                 targetAngle = -ZUN_PI / 2.0f;
                 break;
-            case 3:
+            case PLAYER_DIRECTION_LEFT:
                 targetAngle = 0.0f;
                 break;
-            case 4:
+            case PLAYER_DIRECTION_RIGHT:
                 targetAngle = ZUN_PI;
                 break;
-            case 5:
+            case PLAYER_DIRECTION_UP_LEFT:
                 targetAngle = ZUN_PI / 4.0f;
                 break;
-            case 6:
+            case PLAYER_DIRECTION_UP_RIGHT:
                 targetAngle = 3.0f * ZUN_PI / 4.0f;
                 break;
-            case 7:
+            case PLAYER_DIRECTION_DOWN_LEFT:
                 targetAngle = -ZUN_PI / 4.0f;
                 break;
-            case 8:
+            case PLAYER_DIRECTION_DOWN_RIGHT:
                 targetAngle = -3.0f * ZUN_PI / 4.0f;
                 break;
             default:
@@ -550,7 +550,7 @@ i32 __fastcall FUN_00450840(Player *player, PlayerShot *slot)
     if (player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].instruction !=
             reinterpret_cast<EclTimelineInstruction *>(slot) ||
         g_Gui.IsDialogPresent() ||
-        (i32)player->timerE2AC4 < 0 ||
+        (i32)player->shotTimer < 0 ||
         player->playerState == PLAYER_STATE_DYING ||
         player->bombState.isInUse != 0 ||
         g_GameManager.flags.unk13)

@@ -562,8 +562,8 @@ void __fastcall FUN_0040d100(Player *player)
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = 15.0f;
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) = 6.0f;
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.0f;
+        player->verticalSpeedMultiplier = 0.0f;
+        player->horizontalSpeedMultiplier = 0.0f;
 
         for (i = 0; i < 8; i++)
         {
@@ -978,8 +978,8 @@ void __fastcall FUN_0040e3b0(Player *player)
         player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[2], 32);
         player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[3], 33);
         player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[4], 34);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.2f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.2f;
+        player->verticalSpeedMultiplier = 0.2f;
+        player->horizontalSpeedMultiplier = 0.2f;
         ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK7, 16, 120, 60, 120, 21);
     }
 
@@ -1056,8 +1056,8 @@ void __fastcall FUN_0040e780(Player *player)
         player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[3], 38);
         player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[4], 39);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK7, 16, 120, 60, 120, 21);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.2f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.2f;
+        player->verticalSpeedMultiplier = 0.2f;
+        player->horizontalSpeedMultiplier = 0.2f;
         bomb->secondaryWorkIndex = 0;
     }
 
@@ -1138,8 +1138,8 @@ void __fastcall FUN_0040ee10(Player *player)
         workItem[3].anchor = player->optionStates[3].target;
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
         bomb->secondaryWorkIndex = 0;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.0f;
+        player->verticalSpeedMultiplier = 0.0f;
+        player->horizontalSpeedMultiplier = 0.0f;
     }
 
     if (bomb->timer < 60)
@@ -1168,8 +1168,8 @@ void __fastcall FUN_0040ee10(Player *player)
     {
         if (bomb->timer.FUN_0040e350(60))
         {
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 2.0f;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 2.0f;
+            player->verticalSpeedMultiplier = 2.0f;
+            player->horizontalSpeedMultiplier = 2.0f;
             player->optionStates[0].vm.SetInterrupt(2);
             player->optionStates[1].vm.SetInterrupt(2);
             player->optionStates[2].vm.SetInterrupt(2);
@@ -1223,7 +1223,7 @@ void __fastcall FUN_0040ee10(Player *player)
             g_AnmManager->ExecuteScript(effect);
         }
 
-        if (player->timerE2AC4 >= 5)
+        if (player->shotTimer >= 5)
         {
             workItem->cancelSlot = player->FUN_0044de60(&player->position, 96.0f, 800.0f, 6, 0);
             workItem->cancelSlot = player->FUN_0044de60(&player->position, 800.0f, 96.0f, 6, 0);
@@ -1270,8 +1270,8 @@ void __fastcall FUN_0040f570(Player *player)
         workItem[3].anchor = player->optionStates[3].target;
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
         bomb->secondaryWorkIndex = 0;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.0f;
+        player->verticalSpeedMultiplier = 0.0f;
+        player->horizontalSpeedMultiplier = 0.0f;
     }
 
     if (bomb->timer < 60)
@@ -1300,8 +1300,8 @@ void __fastcall FUN_0040f570(Player *player)
     {
         if (bomb->timer.FUN_0040e350(60))
         {
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 3.0f;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 3.0f;
+            player->verticalSpeedMultiplier = 3.0f;
+            player->horizontalSpeedMultiplier = 3.0f;
             player->optionStates[0].vm.SetInterrupt(2);
             player->optionStates[1].vm.SetInterrupt(2);
             player->optionStates[2].vm.SetInterrupt(2);
@@ -1354,7 +1354,7 @@ void __fastcall FUN_0040f570(Player *player)
             g_AnmManager->ExecuteScript(effect);
         }
 
-        if (player->timerE2AC4 >= 5)
+        if (player->shotTimer >= 5)
         {
             workItem->cancelSlot = player->FUN_0044de60(&player->position, 96.0f, 800.0f, 6, 0);
             workItem->cancelSlot = player->FUN_0044de60(&player->position, 800.0f, 96.0f, 6, 0);
@@ -1399,8 +1399,8 @@ void __fastcall FUN_0040fcd0(Player *player)
         workItem = bomb->workItems;
         for (i = 0; i < 96; i++, workItem++)
             workItem->active = 0;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.5f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.5f;
+        player->verticalSpeedMultiplier = 0.5f;
+        player->horizontalSpeedMultiplier = 0.5f;
         bomb->workItems[0].effect =
             g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
@@ -1522,8 +1522,8 @@ void __fastcall FUN_004103f0(Player *player)
         workItem = bomb->workItems;
         for (i = 0; i < 128; i++, workItem++)
             workItem->active = 0;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.5f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.5f;
+        player->verticalSpeedMultiplier = 0.5f;
+        player->horizontalSpeedMultiplier = 0.5f;
         bomb->workItems[0].effect =
             g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
@@ -1827,8 +1827,8 @@ void __fastcall FUN_004123d0(Player *player)
                      "\x90\x6C\x8B\x53\x81\x75\x96\xA2\x97\x88\x89\x69\x8D\x85\x8E\x61\x81\x76",
                      250, 300, 0);
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.0f;
+        player->verticalSpeedMultiplier = 0.0f;
+        player->horizontalSpeedMultiplier = 0.0f;
         player->anmFile->SetAndExecuteScriptIdx(&player->mainVm, 0);
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
         workItem->anchor = player->position;
@@ -1978,8 +1978,8 @@ void __fastcall FUN_004123d0(Player *player)
     }
     else if (bomb->timer.FUN_0040e350(180))
     {
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 1.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 1.0f;
+        player->verticalSpeedMultiplier = 1.0f;
+        player->horizontalSpeedMultiplier = 1.0f;
     }
 }
 
@@ -2004,8 +2004,8 @@ void __fastcall FUN_00411b10(Player *player)
                      "\x90\x6C\x95\x84\x81\x75\x8C\xBB\x90\xA2\x8E\x61\x81\x76",
                      220, 270, 0);
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.0f;
+        player->verticalSpeedMultiplier = 0.0f;
+        player->horizontalSpeedMultiplier = 0.0f;
         player->anmFile->SetAndExecuteScriptIdx(&player->mainVm, 0);
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
         workItem->anchor = player->position;
@@ -2104,8 +2104,8 @@ void __fastcall FUN_00411b10(Player *player)
     }
     else if (bomb->timer.FUN_0040e350(150))
     {
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 1.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 1.0f;
+        player->verticalSpeedMultiplier = 1.0f;
+        player->horizontalSpeedMultiplier = 1.0f;
     }
 }
 
@@ -2423,8 +2423,8 @@ void __fastcall FUN_00413140(Player *player)
             workItem->position.y = 1.5f;
         }
 
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.8f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.8f;
+        player->verticalSpeedMultiplier = 0.8f;
+        player->horizontalSpeedMultiplier = 0.8f;
         bomb->workItems[0].effect =
             g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
@@ -2553,8 +2553,8 @@ void __fastcall FUN_00413990(Player *player)
             workItem->position.y = 1.5f;
         }
 
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x408) = 0.8f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x404) = 0.8f;
+        player->verticalSpeedMultiplier = 0.8f;
+        player->horizontalSpeedMultiplier = 0.8f;
         bomb->workItems[0].effect =
             g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
