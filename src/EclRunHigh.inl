@@ -779,46 +779,57 @@ enter_subroutine:
     case 133:
         if (TH08_ECL_PRESENTATION_WRITES_ALLOWED())
         {
-            TH08_ECL_AT(ctx, i32, 0x3358 + TH08_ECL_READ_I(ctx, 0) * 4) =
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->lifeCallbackThresholds[
+                TH08_ECL_READ_I(ctx, 0)] =
                 TH08_ECL_READ_I(ctx, 1);
-            TH08_ECL_AT(ctx, i32, 0x3368 + TH08_ECL_READ_I(ctx, 0) * 4) =
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->lifeCallbackSubIds[
+                TH08_ECL_READ_I(ctx, 0)] =
                 TH08_ECL_READ_I(ctx, 2);
         }
         else
-            TH08_ECL_AT(ctx, i32, 0x3358 + TH08_ECL_READ_I(ctx, 0) * 4) =
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->lifeCallbackThresholds[
+                TH08_ECL_READ_I(ctx, 0)] =
                 TH08_ECL_READ_I(ctx, 1);
         break;
     case 134:
         if (((((*reinterpret_cast<u32 *>(&g_GameManager.flags)) >> 14) & 1) == 0) ||
             ((((*reinterpret_cast<u32 *>(&g_GameManager.flags)) >> 7) & 3) == 0))
         {
-            TH08_ECL_AT(ctx, i32, 0x3378) = TH08_ECL_READ_I(ctx, 0);
-            TH08_ECL_AT(ctx, i32, 0x337C) = TH08_ECL_READ_I(ctx, 1);
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->timerCallbackThresholdFrames =
+                TH08_ECL_READ_I(ctx, 0);
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->timerCallbackSubId =
+                TH08_ECL_READ_I(ctx, 1);
         }
         else
-            TH08_ECL_AT(ctx, i32, 0x3378) = TH08_ECL_READ_I(ctx, 0);
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->timerCallbackThresholdFrames =
+                TH08_ECL_READ_I(ctx, 0);
         reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossTimer = 0;
         break;
 
     case 135:
     {
         lhsInt = TH08_ECL_READ_I(ctx, 0);
-        if (TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4))
-            g_ZunMemory.Free(TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4));
-        TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) = 0;
+        if (reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->childEclBlocks[lhsInt])
+            g_ZunMemory.Free(
+                reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->childEclBlocks[lhsInt]);
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->childEclBlocks[lhsInt] = 0;
 
         if (TH08_ECL_READ_I(ctx, 1) >= 0)
         {
-            TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) =
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->childEclBlocks[lhsInt] =
                 (u8 *)g_ZunMemory.Alloc(0x24B0, "ECLInt");
-            if (TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4))
+            if (reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->childEclBlocks[lhsInt])
             {
-                memset(TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4), 0, 0x24B0);
-                *(i32 *)TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) = TH08_ECL_READ_I(ctx, 1);
+                memset(
+                    reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->childEclBlocks[lhsInt],
+                    0, 0x24B0);
+                *(i32 *)reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->childEclBlocks[lhsInt] =
+                    TH08_ECL_READ_I(ctx, 1);
                 g_EclManager.CallEclSub(
-                    reinterpret_cast<EnemyEclContext *>(TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) + 8),
-                    *(u16 *)TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4));
-                memcpy(TH08_ECL_AT(ctx, u8 *, 0x3384 + lhsInt * 4) + 0x20,
+                    reinterpret_cast<EnemyEclContext *>(
+                        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->childEclBlocks[lhsInt] + 8),
+                    *(u16 *)reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->childEclBlocks[lhsInt]);
+                memcpy(reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->childEclBlocks[lhsInt] + 0x20,
                        TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18, 0x1E * sizeof(i32));
             }
         }
@@ -1013,7 +1024,8 @@ enter_subroutine:
         reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bulletRankInfluence.count2High = (i16)TH08_ECL_READ_I(ctx, 5);
         break;
     case 153:
-        TH08_ECL_AT(ctx, i32, 0x337C) = (i32)TH08_ECL_AT(ctx, i16, 0x2CEE);
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->timerCallbackSubId =
+            (i32)TH08_ECL_AT(ctx, i16, 0x2CEE);
         reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossTimer = 0;
         break;
     case 155:

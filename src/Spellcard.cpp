@@ -757,9 +757,10 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
         this->scoreLimit = 99999990;
     }
     this->bonusCounter =
-        (this->bonusProgress - this->bonusProgress / 7u) / (*reinterpret_cast<i32 *>(this->activeEnemy + 0x3378) / 60);
-    this->timer108 = *reinterpret_cast<i32 *>(this->activeEnemy + 0x3378);
-    this->timer114 = *reinterpret_cast<i32 *>(this->activeEnemy + 0x3378);
+        (this->bonusProgress - this->bonusProgress / 7u) /
+        (reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames / 60);
+    this->timer108 = reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames;
+    this->timer114 = reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames;
 
     for (i = 0; i < 0x30; i++)
     {
@@ -1342,7 +1343,7 @@ i32 Spellcard::OnUpdateImpl()
         {
             *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x50) = 0;
             *reinterpret_cast<ZunTimer *>(this->spellEffect + 0xA4) =
-                *reinterpret_cast<i32 *>(this->activeEnemy + 0x3378) - 100;
+                reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames - 100;
             *reinterpret_cast<u8 *>(this->spellEffect + 0xF8) = 0;
             *reinterpret_cast<f32 *>(this->spellEffect + 0x238) = 256.0f;
             *reinterpret_cast<f32 *>(this->spellEffect + 0x244) = 8.0f;

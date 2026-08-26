@@ -131,10 +131,6 @@ struct EnemyManagerUpdateEnemy
     u8 &BossSlot() { return *reinterpret_cast<u8 *>(raw + 0x3313); }
     u8 &DamageFlashTimer() { return *reinterpret_cast<u8 *>(raw + 0x3314); }
     u8 &DrawGroup() { return *reinterpret_cast<u8 *>(raw + 0x332F); }
-    i32 &LastDamage() { return *reinterpret_cast<i32 *>(raw + 0x3354); }
-    i32 *LifeCallbacks() { return reinterpret_cast<i32 *>(raw + 0x3358); }
-    i32 &TimerCallbackThreshold() { return *reinterpret_cast<i32 *>(raw + 0x3378); }
-    void **Effects() { return reinterpret_cast<void **>(raw + 0x3384); }
     u8 &TrailFlags() { return *reinterpret_cast<u8 *>(raw + 0x534C); }
     i16 &TrailHistoryCount() { return *reinterpret_cast<i16 *>(raw + 0x534E); }
     i16 &TrailSampleCount() { return *reinterpret_cast<i16 *>(raw + 0x5350); }
@@ -589,7 +585,8 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
 
         if (reinterpret_cast<Enemy *>(enemy)->FUN_0042b490())
             goto run_enemy_ecl_after_pause;
-        if (*reinterpret_cast<i32 *>(enemy->raw + 0x3378) >= 0 && reinterpret_cast<Enemy *>(enemy)->FUN_0042b930())
+        if (reinterpret_cast<Enemy *>(enemy)->timerCallbackThresholdFrames >= 0 &&
+            reinterpret_cast<Enemy *>(enemy)->FUN_0042b930())
             goto run_enemy_ecl_after_pause;
 
         reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->color = reinterpret_cast<Enemy *>(enemy)->displayColor;
@@ -635,7 +632,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 }
             }
 
-            *reinterpret_cast<i32 *>(enemy->raw + 0x3354) = 0;
+            reinterpret_cast<Enemy *>(enemy)->lastDamage = 0;
             if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->acceptsDamage)
             {
                 if (!g_Spellcard.IsActive() || !reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(enemy)->HasAttachedEnemy() ||
@@ -714,7 +711,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                         }
 
                         reinterpret_cast<Enemy *>(enemy)->life -= damage;
-                        *reinterpret_cast<i32 *>(enemy->raw + 0x3354) = damage;
+                        reinterpret_cast<Enemy *>(enemy)->lastDamage = damage;
                         reinterpret_cast<Enemy *>(enemy)->FUN_0042b370(damage);
                     }
                     damageOccurred = 1;
@@ -775,24 +772,24 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
             D3DXVECTOR3 bonus;
             i32 deathPosition;
             *reinterpret_cast<i32 *>(enemy->raw + 0x53CC) =
-                (*reinterpret_cast<i32 *>(enemy->raw + 0x3378) - (i32)reinterpret_cast<Enemy *>(enemy)->bossTimer) / 60;
-            *reinterpret_cast<i32 *>(enemy->raw + 0x3378) = -1;
+                (reinterpret_cast<Enemy *>(enemy)->timerCallbackThresholdFrames -
+                 (i32)reinterpret_cast<Enemy *>(enemy)->bossTimer) / 60;
+            reinterpret_cast<Enemy *>(enemy)->timerCallbackThresholdFrames = -1;
             for (deathPosition = 0; deathPosition < 4; ++deathPosition)
-                reinterpret_cast<i32 *>(enemy->raw + 0x3358)[deathPosition] = -1;
+                reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[deathPosition] = -1;
             for (deathPosition = 0; deathPosition < 4; ++deathPosition)
             {
-                if (reinterpret_cast<void **>(enemy->raw + 0x3384)[deathPosition] != 0)
+                if (reinterpret_cast<Enemy *>(enemy)->childEclBlocks[deathPosition] != 0)
                 {
-                    g_ZunMemory.Free(reinterpret_cast<void **>(enemy->raw + 0x3384)[deathPosition]);
-                    reinterpret_cast<void **>(enemy->raw + 0x3384)[deathPosition] = 0;
+                    g_ZunMemory.Free(reinterpret_cast<Enemy *>(enemy)->childEclBlocks[deathPosition]);
+                    reinterpret_cast<Enemy *>(enemy)->childEclBlocks[deathPosition] = 0;
                 }
             }
 
             if (reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(enemy)->HasAttachedEnemy())
             {
-                --*reinterpret_cast<i32 *>(
-                    (*reinterpret_cast<EnemyManagerUpdateEnemy **>(
-                        enemy->raw + 0x2DA4))->raw + 0x3380);
+                --reinterpret_cast<Enemy *>(*reinterpret_cast<EnemyManagerUpdateEnemy **>(
+                    enemy->raw + 0x2DA4))->linkedChildCount;
             }
 
             reinterpret_cast<EclOperands::EnemyOverlay *>(enemy)->FUN_0042adb0(1);
@@ -898,8 +895,8 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 reinterpret_cast<Enemy *>(enemy)->enemy_fun_00415c80();
                 *reinterpret_cast<i16 *>(enemy->raw + 0x2CEA) = 0;
                 for (callbackVmIndex = 0; callbackVmIndex < 4; ++callbackVmIndex)
-                    reinterpret_cast<i32 *>(enemy->raw + 0x3358)[callbackVmIndex] = -1;
-                *reinterpret_cast<i32 *>(enemy->raw + 0x3378) = -1;
+                    reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[callbackVmIndex] = -1;
+                reinterpret_cast<Enemy *>(enemy)->timerCallbackThresholdFrames = -1;
                 reinterpret_cast<Enemy *>(enemy)->FUN_0042bc90();
                 memcpy(&reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor,
                        &g_EnemyManager.firstEnemy.bulletSpawnDescriptor,

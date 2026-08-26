@@ -97,7 +97,14 @@ struct Enemy
     BulletSpawnDescriptor laserSpawnDescriptor;
     unknown_fields(0x3280, 0x98);
     ZunTimer timer3318;
-    unknown_fields(0x3324, 0x70);
+    unknown_fields(0x3324, 0x30);
+    i32 lastDamage;
+    i32 lifeCallbackThresholds[4];
+    i32 lifeCallbackSubIds[4];
+    i32 timerCallbackThresholdFrames;
+    i32 timerCallbackSubId;
+    i32 linkedChildCount;
+    u8 *childEclBlocks[4];
     EnemyUnkStruct0x1c trail[96];
     VertexTex1DiffuseXyzrhw vertices[194];
     unknown_fields(0x534c, 8);
@@ -135,6 +142,14 @@ C_ASSERT(offsetof(Enemy, pendingShotInstruction) == 0x3034);
 C_ASSERT(offsetof(Enemy, shootIntervalFrames) == 0x3060);
 C_ASSERT(offsetof(Enemy, shootIntervalTimer) == 0x3064);
 C_ASSERT(offsetof(Enemy, laserSpawnDescriptor) == 0x3070);
+C_ASSERT(offsetof(Enemy, lastDamage) == 0x3354);
+C_ASSERT(offsetof(Enemy, lifeCallbackThresholds) == 0x3358);
+C_ASSERT(offsetof(Enemy, lifeCallbackSubIds) == 0x3368);
+C_ASSERT(offsetof(Enemy, timerCallbackThresholdFrames) == 0x3378);
+C_ASSERT(offsetof(Enemy, timerCallbackSubId) == 0x337c);
+C_ASSERT(offsetof(Enemy, linkedChildCount) == 0x3380);
+C_ASSERT(offsetof(Enemy, childEclBlocks) == 0x3384);
+C_ASSERT(offsetof(Enemy, trail) == 0x3394);
 
 struct EclTimelineInstruction
 {

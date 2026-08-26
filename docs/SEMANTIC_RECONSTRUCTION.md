@@ -744,3 +744,77 @@ combat-state range is replaced by the asserted Enemy owner, including ECL
 resolver lvalues and cross-subsystem Player/Spellcard users.  The routing
 report falls from 1,438 to 1,406 raw-member candidates and from 75 to 73 opaque
 storage candidates; those deltas are review aids, not completion percentages.
+
+### Enemy Boss phase callbacks and child ECL ownership — 2026-08-26
+
+Scope: `EclManager::RunEcl @ 0x004184B0`, `PopEclContext @ 0x00421CB0`,
+`Enemy::FUN_0042B370`, the life transition at `0x0042B490`, the timer
+transition at `0x0042B930`, child-block cleanup at `0x0042BC90`,
+`EnemyManager::OnUpdate @ 0x0042C660`, and the Spellcard/GUI/operand consumers
+of `Enemy + 0x3354..+0x3393`.
+
+Observed: `+0x3354` is cleared before Player collision processing, receives
+the final applied damage, and is exposed as ECL operand `0x2763`.  Opcode 133
+writes four dword life thresholds at `+0x3358` and four parallel dword
+subroutine identifiers at `+0x3368`.  The phase transition scans the threshold
+table, clamps life to the crossed threshold, and invokes the corresponding
+subroutine by loading the low signed 16 bits of its dword slot.  Operands
+`0x2768..0x276B` expose the four thresholds.
+
+Opcode 134 writes a frame threshold at `+0x3378` and a dword subroutine
+identifier at `+0x337C`; the timer transition compares the Boss timer against
+the threshold, calls through the identifier's low signed 16 bits, and resets
+both timer state and phase resources.  Opcode 153 copies the existing signed
+16-bit death callback identifier into the same dword slot.  Spellcard and GUI
+consumers use the threshold as the phase duration.
+
+The dword at `+0x3380` is incremented by all three linked-child spawn paths,
+decremented when an attached child dies, and displayed/converted into item
+drops by the parent.  The four pointers at `+0x3384` own separately allocated
+`0x24B0` child ECL blocks.  Opcode 135 allocates, clears, seeds, and starts a
+block; RunEcl rotates through the blocks; PopEclContext and every phase/death
+cleanup path free the owning slot and set it to null.
+
+Corroborated: no adjacent-version name is needed for this batch.  The imported
+TH08 baseline supplied control-flow hypotheses only; the exact TH08 1.00d
+instruction widths, indexed displacements, direct calls, allocation extent,
+and all authored producers/consumers establish the final layout and roles.
+
+Inference: `lastDamage`, `lifeCallbackThresholds`,
+`timerCallbackThresholdFrames`, `linkedChildCount`, and `childEclBlocks` are
+high-confidence behavior/ownership names.  `lifeCallbackSubIds` and
+`timerCallbackSubId` deliberately remain dword fields because their ECL
+opcodes write 32 bits, while the call sites explicitly view only their low
+signed 16 bits.  `childEclBlocks` remains byte-oriented: the target proves the
+allocation ownership and several internal offsets, but not a complete
+`0x24B0` C++ object layout.
+
+Layout: assertions pin the complete consecutive family at
+`+0x3354/+0x3358/+0x3368/+0x3378/+0x337C/+0x3380/+0x3384`, the following
+trail array at `+0x3394`, and the unchanged `sizeof(Enemy) == 0x53D0`.
+No field width, array extent, pointer ownership operation, call ABI, timer
+operation, or ECL presentation-write condition changed.
+
+VC7 oracle: focused replay passed **110 / 110** accepted units across
+`EclRun`, `EclDependencies`, both operand resolvers, `EnemyManager`,
+`EnemyManagerUpdate`, `SpellCard`, and `Gui`.  Target-pinned fact packets for
+the life transition, timer transition, and child-block cleanup independently
+replayed exact.  The required non-reuse `verify-exact-units.py --all --json`
+cold-built all 75 configured objects and passed **1,105 / 1,105** with no
+failures.  A subsequent normal VC7 production image linked successfully; no
+match manifest or exact ledger changed.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiled and linked
+the complete i386 target, and `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 plus all
+fixed target-owned layout symbols.  No isolated automated Boss-phase gameplay
+smoke exists, so no runtime smoke is claimed.
+
+Result: every authored raw view of `Enemy + 0x3354..+0x3393` is replaced by
+the asserted owner, including the Spellcard and GUI cross-subsystem users.
+The routing report falls from 1,406 to 1,377 raw-member candidates; opaque
+storage remains 73 because the now-owned child blocks correctly retain their
+unknown byte-oriented representation.  Those counts are routing aids, not a
+semantic completion percentage.  The next coherent Enemy/ECL family is the
+active ECL context/subroutine state around `+0x2CA0..+0x2D30`, followed by the
+motion vectors and phase/control flags that consume it.

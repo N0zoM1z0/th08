@@ -1065,7 +1065,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
             PointerAt(child, 0x2DA4) = enemy;
             PointerAt(tail, 8) = child;
             PointerAt(child, 4) = tail;
-            ++I32At(enemy, 0x3380);
+            ++reinterpret_cast<Enemy *>(enemy)->linkedChildCount;
         }
 
         g_SoundPlayer.PlaySoundPositionedByIdx(
@@ -1123,7 +1123,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
             PointerAt(child, 0x2DA4) = enemy;
             PointerAt(tail, 8) = child;
             PointerAt(child, 4) = tail;
-            ++I32At(enemy, 0x3380);
+            ++reinterpret_cast<Enemy *>(enemy)->linkedChildCount;
         }
 
         g_SoundPlayer.PlaySoundPositionedByIdx(
@@ -1189,7 +1189,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
             PointerAt(child, 0x2DA4) = enemy;
             PointerAt(tail, 8) = child;
             PointerAt(child, 4) = tail;
-            ++I32At(enemy, 0x3380);
+            ++reinterpret_cast<Enemy *>(enemy)->linkedChildCount;
         }
 
         g_SoundPlayer.PlaySoundPositionedByIdx(

@@ -526,10 +526,9 @@ int __fastcall PopEclContext(
                 reinterpret_cast<u8 *>(
                     *reinterpret_cast<EnemyEclContext **>(DEP_BYTES(enemy) + 0x2ca0)) + 0x220) -
             1;
-        if (*reinterpret_cast<void **>(DEP_BYTES(enemy) + 0x3384 + contextIndex * 4) != NULL)
-            g_ZunMemory.Free(
-                *reinterpret_cast<void **>(DEP_BYTES(enemy) + 0x3384 + contextIndex * 4));
-        *reinterpret_cast<void **>(DEP_BYTES(enemy) + 0x3384 + contextIndex * 4) = NULL;
+        if (reinterpret_cast<Enemy *>(enemy)->childEclBlocks[contextIndex] != NULL)
+            g_ZunMemory.Free(reinterpret_cast<Enemy *>(enemy)->childEclBlocks[contextIndex]);
+        reinterpret_cast<Enemy *>(enemy)->childEclBlocks[contextIndex] = NULL;
         *reinterpret_cast<u8 **>(DEP_BYTES(enemy) + 0x2ca4) = DEP_BYTES(enemy) + 0x0a20;
         *reinterpret_cast<u8 **>(DEP_BYTES(enemy) + 0x2ca0) = DEP_BYTES(enemy) + 0x07f8;
         *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x2cea) =

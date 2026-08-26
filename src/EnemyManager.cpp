@@ -195,8 +195,8 @@ void EnemyManager::Initialize()
     *reinterpret_cast<i32 *>(enemy + 0x53C0) = 0;
     *reinterpret_cast<i16 *>(enemy + 0x2D30) = -1;
     for (i = 0; i < 4; i++)
-        *reinterpret_cast<i32 *>(enemy + 0x3358 + i * 4) = -1;
-    *reinterpret_cast<i32 *>(enemy + 0x3378) = -1;
+        reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[i] = -1;
+    reinterpret_cast<Enemy *>(enemy)->timerCallbackThresholdFrames = -1;
     *reinterpret_cast<i32 *>(enemy + 0x3300) = 0;
     *reinterpret_cast<u8 *>(enemy + 0x3314) = 0;
     *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFDFFFFFF;
@@ -331,10 +331,10 @@ void EnemyOverlay::FUN_0042adb0(i32 mode)
             g_AsciiManager.SetScale(2.0f, 2.0f);
             g_AsciiManager.CreateTimePopup(
                 reinterpret_cast<Float3 *>(this->bytes + 0x2D88),
-                *reinterpret_cast<i32 *>(this->bytes + 0x3380), 0, 0xFFF0F00F);
+                reinterpret_cast<Enemy *>(this)->linkedChildCount, 0, 0xFFF0F00F);
             g_AsciiManager.SetScale(1.0f, 1.0f);
 
-            for (j = 0; j < 2 * *reinterpret_cast<i32 *>(this->bytes + 0x3380); j++)
+            for (j = 0; j < 2 * reinterpret_cast<Enemy *>(this)->linkedChildCount; j++)
             {
                 position.FromAngleMagnitude(
                     g_Rng.GetRandomF32SignedInRange(ZUN_PI),
@@ -415,13 +415,13 @@ void Enemy::FUN_0042b370(i32 amount)
     maxHp = 0;
     for (i = 0; i < 4; ++i)
     {
-        if (maxHp < *reinterpret_cast<i32 *>(
-                        *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x2da4) +
-                        0x3358 + i * 4))
+        if (maxHp < reinterpret_cast<Enemy *>(
+                        *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x2da4))->
+                        lifeCallbackThresholds[i])
         {
-            maxHp = *reinterpret_cast<i32 *>(
-                *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x2da4) +
-                0x3358 + i * 4);
+            maxHp = reinterpret_cast<Enemy *>(
+                *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x2da4))->
+                lifeCallbackThresholds[i];
         }
     }
 
@@ -467,30 +467,28 @@ i32 Enemy::FUN_0042b490()
     *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) &= 0xffffffcf;
     for (i = 0; i < 4; i++)
     {
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4) < 0)
+        if (this->lifeCallbackThresholds[i] < 0)
             continue;
 
         phaseCount++;
-        if (this->life <
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4))
+        if (this->life < this->lifeCallbackThresholds[i])
         {
-            this->life =
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4);
+            this->life = this->lifeCallbackThresholds[i];
             this->phaseStartingLife = this->life;
             g_EclManager.CallEclSub(
                 reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(this) + 0x7f8),
-                *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x3368 + i * 4));
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4) = -1;
+                *reinterpret_cast<i16 *>(&this->lifeCallbackSubIds[i]));
+            this->lifeCallbackThresholds[i] = -1;
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53cc) =
-                (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) - (i32)this->bossTimer) / 60;
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) = -1;
+                (this->timerCallbackThresholdFrames - (i32)this->bossTimer) / 60;
+            this->timerCallbackThresholdFrames = -1;
 
             for (work = 0; work < 4; work++)
             {
-                if (*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + work * 4) != NULL)
+                if (this->childEclBlocks[work] != NULL)
                 {
-                    g_ZunMemory.Free(*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + work * 4));
-                    *reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + work * 4) = NULL;
+                    g_ZunMemory.Free(this->childEclBlocks[work]);
+                    this->childEclBlocks[work] = NULL;
                 }
             }
 
@@ -528,8 +526,7 @@ i32 Enemy::FUN_0042b490()
             return 1;
         }
 
-        work = this->life -
-               *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4);
+        work = this->life - this->lifeCallbackThresholds[i];
         if (g_Spellcard.IsActive())
         {
             if (work < 120)
@@ -636,37 +633,36 @@ i32 Enemy::FUN_0042b930()
         *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3313) == 0)
     {
         g_Gui.FUN_0042f340(
-            (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) - (i32)this->bossTimer) / 60);
+            (this->timerCallbackThresholdFrames - (i32)this->bossTimer) / 60);
     }
 
-    if (this->bossTimer >= *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378))
+    if (this->bossTimer >= this->timerCallbackThresholdFrames)
     {
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53cc) = 0;
     maxThreshold = 0;
     for (i = 0; i < 4; i++)
     {
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4) < 0)
+        if (this->lifeCallbackThresholds[i] < 0)
             continue;
-        if (maxThreshold < *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4))
+        if (maxThreshold < this->lifeCallbackThresholds[i])
         {
-            maxThreshold = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4);
+            maxThreshold = this->lifeCallbackThresholds[i];
             selectedOrK = i;
         }
     }
 
     if (maxThreshold > 0)
     {
-        this->life =
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + selectedOrK * 4);
+        this->life = this->lifeCallbackThresholds[selectedOrK];
         this->phaseStartingLife = this->life;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + selectedOrK * 4) = -1;
+        this->lifeCallbackThresholds[selectedOrK] = -1;
     }
 
     g_EclManager.CallEclSub(
         reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(this) + 0x7f8),
-        *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x337c));
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) = -1;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x337c) =
+        *reinterpret_cast<i16 *>(&this->timerCallbackSubId));
+    this->timerCallbackThresholdFrames = -1;
+    this->timerCallbackSubId =
         *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2cee);
     this->bossTimer = 0;
 
@@ -703,10 +699,10 @@ i32 Enemy::FUN_0042b930()
 
     for (selectedOrK = 0; selectedOrK < 4; selectedOrK++)
     {
-        if (*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + selectedOrK * 4) != NULL)
+        if (this->childEclBlocks[selectedOrK] != NULL)
         {
-            g_ZunMemory.Free(*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + selectedOrK * 4));
-            *reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + selectedOrK * 4) = NULL;
+            g_ZunMemory.Free(this->childEclBlocks[selectedOrK]);
+            this->childEclBlocks[selectedOrK] = NULL;
         }
     }
 
@@ -733,10 +729,10 @@ void Enemy::FUN_0042bc90()
 {
     for (i32 i = 0; i < 4; i++)
     {
-        if (*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + i * 4) != NULL)
+        if (this->childEclBlocks[i] != NULL)
         {
-            g_ZunMemory.Free(*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + i * 4));
-            *reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x3384 + i * 4) = NULL;
+            g_ZunMemory.Free(this->childEclBlocks[i]);
+            this->childEclBlocks[i] = NULL;
         }
     }
 }
@@ -782,8 +778,8 @@ void Enemy::FUN_0042bcf0()
     }
 
     for (i = 0; i < 4; ++i)
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3358 + i * 4) = -1;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3378) = -1;
+        this->lifeCallbackThresholds[i] = -1;
+    this->timerCallbackThresholdFrames = -1;
 
     this->FUN_0042bc90();
     if (g_Player.optionHomingTarget == this)

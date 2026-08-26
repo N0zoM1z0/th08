@@ -121,10 +121,10 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x2765: return (i32)FLOAT_FIELD(0x2d64);
     case 0x2766: return (i32)FLOAT_FIELD(0x2d68);
     case 0x2767: return (i32)FLOAT_FIELD(0x2d6c);
-    case 0x2768: return INT_FIELD(0x3358);
-    case 0x2769: return INT_FIELD(0x335c);
-    case 0x276a: return INT_FIELD(0x3360);
-    case 0x276b: return INT_FIELD(0x3364);
+    case 0x2768: return reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[0];
+    case 0x2769: return reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[1];
+    case 0x276a: return reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[2];
+    case 0x276b: return reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[3];
     case 0x2755: return (i32)FLOAT_FIELD(0x2d94);
     case 0x2756: return (i32)FLOAT_FIELD(0x2d98);
     case 0x2757: return (i32)FLOAT_FIELD(0x2da8);
@@ -132,7 +132,7 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x2759: return (i32)FLOAT_FIELD(0x2db0);
     case 0x275d: return (i32)FLOAT_FIELD(0x2d9c);
     case 0x275e: return (i32)FLOAT_FIELD(0x2da0);
-    case 0x2763: return INT_FIELD(0x3354);
+    case 0x2763: return reinterpret_cast<Enemy *>(enemy)->lastDamage;
     case 0x2764: return *(u8 *)(enemy->bytes + 0x3313);
     case 0x276c: return INT_FIELD(0x3304);
     case 0x276d: return reinterpret_cast<Enemy *>(enemy)->score;

@@ -204,7 +204,7 @@ low_advance_instruction:
     if (activeChildContext == -1)
         TH08_ECL_AT(unusedContext, i16, 0x2CE8) = TH08_ECL_AT(unusedContext, i16, 0x2CEA);
     else
-        *(i16 *)(TH08_ECL_AT(unusedContext, u8 *, 0x3384 + activeChildContext * 4) + 6) =
+        *(i16 *)(enemy->childEclBlocks[activeChildContext] + 6) =
             TH08_ECL_AT(unusedContext, i16, 0x2CEA);
 
     *(RawInstruction **)TH08_ECL_CURRENT_CONTEXT(unusedContext) =
@@ -214,9 +214,9 @@ low_advance_instruction:
 low_select_next_context:
     for (i32 next = activeChildContext + 1; next < 4; ++next)
     {
-        if (TH08_ECL_AT(unusedContext, u8 *, 0x3384 + next * 4))
+        if (enemy->childEclBlocks[next])
         {
-            u8 *childContext = TH08_ECL_AT(unusedContext, u8 *, 0x3384 + next * 4);
+            u8 *childContext = enemy->childEclBlocks[next];
             TH08_ECL_AT(unusedContext, u8 *, 0x2CA4) =
                 childContext + 0x230;
             TH08_ECL_AT(unusedContext, u8 *, 0x2CA0) =

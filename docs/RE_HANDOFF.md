@@ -159,6 +159,22 @@ verifier passed.  The next coherent family is the Boss life/timer threshold and
 callback table at `Enemy + 0x3358..+0x3384`, together with the adjacent ECL
 subroutine identifiers and phase-gauge state that consume it.
 
+The third Enemy/ECL orchestration batch closes the Boss phase callback and
+child-ECL ownership range at `Enemy + 0x3354..+0x3393`.  The shared owner now
+names last applied damage, four life thresholds and their parallel dword ECL
+subroutine identifiers, the timer threshold/subroutine pair, linked-child
+count, and four owned child ECL block pointers.  The dword callback IDs retain
+their exact write width while call sites explicitly consume their low signed
+16 bits; each `0x24B0` child block remains byte-oriented because only its
+allocation protocol and partial internal offsets are proven.  All opcode,
+RunEcl, PopEclContext, phase/death cleanup, Spellcard, GUI, resolver, spawn,
+and update consumers share the asserted fields.  Focused replay passed **110 /
+110**, target-pinned packets for both transitions and cleanup replayed exact,
+a non-reuse cold replay passed **1,105 / 1,105**, the normal VC7 image linked,
+and the complete i386 Linux build/layout verifier passed.  The next coherent
+family is active ECL context/subroutine state around `+0x2CA0..+0x2D30`, then
+the motion vectors and phase/control flags that consume it.
+
 Select the next independent field family with:
 
 ```bash

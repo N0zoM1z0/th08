@@ -131,10 +131,10 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
     case 0x2765: return ENEMY_FLOAT(this, 0x2D64);
     case 0x2766: return ENEMY_FLOAT(this, 0x2D68);
     case 0x2767: return ENEMY_FLOAT(this, 0x2D6C);
-    case 0x2768: return (f32)ENEMY_INT(this, 0x3358);
-    case 0x2769: return (f32)ENEMY_INT(this, 0x335C);
-    case 0x276A: return (f32)ENEMY_INT(this, 0x3360);
-    case 0x276B: return (f32)ENEMY_INT(this, 0x3364);
+    case 0x2768: return (f32)reinterpret_cast<Enemy *>(this)->lifeCallbackThresholds[0];
+    case 0x2769: return (f32)reinterpret_cast<Enemy *>(this)->lifeCallbackThresholds[1];
+    case 0x276A: return (f32)reinterpret_cast<Enemy *>(this)->lifeCallbackThresholds[2];
+    case 0x276B: return (f32)reinterpret_cast<Enemy *>(this)->lifeCallbackThresholds[3];
     case 0x2740:
         return g_Player.FUN_0044c1b0(reinterpret_cast<Float3 *>(&ENEMY_VECTOR(this, 0x2D88)));
     case 0x2755: return ENEMY_FLOAT(this, 0x2D94);
@@ -145,7 +145,7 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
     case 0x275D: return ENEMY_FLOAT(this, 0x2D9C);
     case 0x275E: return ENEMY_FLOAT(this, 0x2DA0);
     case 0x2764: return (f32)*(u8 *)(bytes + 0x3313);
-    case 0x2763: return (f32)ENEMY_INT(this, 0x3354);
+    case 0x2763: return (f32)reinterpret_cast<Enemy *>(this)->lastDamage;
 
     case 0x2770:
         return (f32)(ENEMY_HELPERS(this)->HasParentChain()

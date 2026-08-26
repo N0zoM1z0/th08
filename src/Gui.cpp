@@ -1639,8 +1639,8 @@ void Gui::FUN_0043741d()
                     &textPos,
                     reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(
                         EclRunLowProposal::g_EclEnemyTableF54CC0[0])->CountParentChain(),
-                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-                        EclRunLowProposal::g_EclEnemyTableF54CC0[0]) + 0x3380),
+                    reinterpret_cast<Enemy *>(
+                        EclRunLowProposal::g_EclEnemyTableF54CC0[0])->linkedChildCount,
                     0xfff0f00f);
             }
         }
