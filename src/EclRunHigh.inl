@@ -874,7 +874,9 @@ enter_subroutine:
     case 147: g_EclGlobal004EA290 = TH08_ECL_READ_I(ctx, 0); break;
     case 148:
         g_Gui.FUN_00423130(TH08_ECL_READ_I(ctx, 0));
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3E04) += 0x708;
+        // Target 0x0041D6C7 updates absolute 0x0164D30C.  Relative to
+        // g_GameManager (0x0160F508), that is offset 0x3DE04.
+        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE04) += 0x708;
         break;
     case 93:
         if (TH08_ECL_AT(ctx, i32, 0x2DFC) > 0)
