@@ -91812,9 +91812,9 @@ symbol = "??_H@YGXPAXIHP6EPAX0@Z@Z"
 target = 0x00406850
 
 [[units]]
-name = "enemy-unk-struct0x1c-ctor"
+name = "enemy-trail-sample-ctor"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "??0EnemyUnkStruct0x1c@th08@@QAE@XZ"
+symbol = "??0EnemyTrailSample@th08@@QAE@XZ"
 target_address = 0x0042A490
 size = 0x21
 
@@ -91978,7 +91978,7 @@ target = 0x004065A0
 [[units.relocations]]
 offset = 0x144
 type = "DIR32"
-symbol = "??0EnemyUnkStruct0x1c@th08@@QAE@XZ"
+symbol = "??0EnemyTrailSample@th08@@QAE@XZ"
 target = 0x0042A490
 
 [[units.relocations]]

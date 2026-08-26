@@ -846,7 +846,7 @@ th08::Spellcard::GetDifficultyFromSpellCard
 th08::EnemyManager::EnemyManager
 th08::Enemy::Enemy
 th08::EnemyUnkStruct2::EnemyUnkStruct2
-th08::EnemyUnkStruct0x1c::EnemyUnkStruct0x1c
+th08::EnemyTrailSample::EnemyTrailSample
 th08::EnemyUnkStruct3::EnemyUnkStruct3
 th08::EclTimeline::EclTimeline
 th08::EffectManager::EffectManager

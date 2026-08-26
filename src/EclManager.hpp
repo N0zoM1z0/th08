@@ -25,13 +25,26 @@ struct Effect
     Float3 vector6;
     Float3 vector7;
     Float3 vector8;
-    unknown_fields(0x310, 0x28);
+    unknown_fields(0x310, 4);
+    f32 radius;
+    f32 angle;
+    unknown_fields(0x31c, 0x1c);
     ZunTimer timer;
-    unknown_fields(0x344, 0x1c);
+    unknown_fields(0x344, 0xc);
+    i8 active;
+    unknown_fields(0x351, 1);
+    u8 releaseRequested;
+    unknown_fields(0x353, 0xd);
 
     Effect();
 };
 C_ASSERT(sizeof(Effect) == 0x360);
+C_ASSERT(offsetof(Effect, vector5) == 0x2e0);
+C_ASSERT(offsetof(Effect, vector6) == 0x2ec);
+C_ASSERT(offsetof(Effect, radius) == 0x314);
+C_ASSERT(offsetof(Effect, angle) == 0x318);
+C_ASSERT(offsetof(Effect, active) == 0x350);
+C_ASSERT(offsetof(Effect, releaseRequested) == 0x352);
 
 struct EffectManager
 {

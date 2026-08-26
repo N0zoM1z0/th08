@@ -148,7 +148,7 @@ void EnemyManager::Initialize()
     for (i = 0; i < 2; i++)
         *reinterpret_cast<i16 *>(enemy + i * 0x2A4 + 0x4CA) = -1;
     for (i = 0; i < 0x60; i++)
-        *reinterpret_cast<i32 *>(enemy + i * 0x1C + 0x3394) = 0xC479C000;
+        reinterpret_cast<Enemy *>(enemy)->trailSamples[i].position.x = -999.0f;
 
     reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_ACTIVE;
     reinterpret_cast<Enemy *>(enemy)->bossTimer = 0;
@@ -184,7 +184,7 @@ void EnemyManager::Initialize()
     reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_DEATH_MODE_MASK;
     reinterpret_cast<Enemy *>(enemy)->deathCallbackSubId = -1;
     reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_CLAMP_POSITION;
-    *reinterpret_cast<i32 *>(enemy + 0x53C0) = 0;
+    reinterpret_cast<Enemy *>(enemy)->attachedEffectCount = 0;
     reinterpret_cast<Enemy *>(enemy)->pendingEclSubroutineIndex = -1;
     for (i = 0; i < 4; i++)
         reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[i] = -1;
@@ -213,7 +213,7 @@ Enemy::Enemy() {}
 EnemyUnkStruct2::EnemyUnkStruct2() {}
 
 // FUNCTION: th08 0x42a490
-EnemyUnkStruct0x1c::EnemyUnkStruct0x1c() {}
+EnemyTrailSample::EnemyTrailSample() {}
 
 // FUNCTION: th08 0x42a4c0
 EnemyUnkStruct3::EnemyUnkStruct3() {}
@@ -224,15 +224,14 @@ void Enemy::ReleaseAttachedEffects()
 {
     i32 i;
 
-    for (i = 0; i < *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53c0); i++)
+    for (i = 0; i < this->attachedEffectCount; i++)
     {
-        if (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x5360 + i * 4) == NULL)
+        if (this->attachedEffects[i] == NULL)
             continue;
-        *reinterpret_cast<u8 *>(
-            reinterpret_cast<u8 *>(*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x5360 + i * 4)) + 0x352) = 1;
-        *reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x5360 + i * 4) = NULL;
+        this->attachedEffects[i]->releaseRequested = 1;
+        this->attachedEffects[i] = NULL;
     }
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53c0) = 0;
+    this->attachedEffectCount = 0;
 }
 
 namespace EclOperands
@@ -416,7 +415,7 @@ void Enemy::ApplyDamageToParent(i32 amount)
     }
 
     damage = amount / 2;
-    if (this->parentEnemy->timer5354 > 0)
+    if (this->parentEnemy->damageReductionTimer > 0)
     {
         if (((this->parentEnemy->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0)
             damage /= 9;
@@ -462,7 +461,7 @@ i32 Enemy::HandleLifeCallback()
                 reinterpret_cast<EnemyEclContext *>(&this->mainEclContextStorage),
                 *reinterpret_cast<i16 *>(&this->lifeCallbackSubIds[i]));
             this->lifeCallbackThresholds[i] = -1;
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53cc) =
+            this->phaseEndTimeRemainingSeconds =
                 (this->timerCallbackThresholdFrames - (i32)this->bossTimer) / 60;
             this->timerCallbackThresholdFrames = -1;
 
@@ -608,7 +607,7 @@ i32 Enemy::HandleTimerCallback()
 
     if (this->bossTimer >= this->timerCallbackThresholdFrames)
     {
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53cc) = 0;
+    this->phaseEndTimeRemainingSeconds = 0;
     maxThreshold = 0;
     for (i = 0; i < 4; i++)
     {
@@ -731,7 +730,7 @@ void Enemy::Despawn()
             reinterpret_cast<D3DXVECTOR3 *>(&Float3(-999.0f, -999.0f, 0.0f)));
     }
 
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53c0) != 0)
+    if (this->attachedEffectCount != 0)
         this->ReleaseAttachedEffects();
 
     if (((this->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0)
@@ -740,10 +739,10 @@ void Enemy::Despawn()
 
     g_ReplayManager->flags |= 0x20;
 
-    if (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8) != NULL)
+    if (this->alignmentEffect != NULL)
     {
-        (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8))->SetInterrupt(3);
-        *reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8) = NULL;
+        this->alignmentEffect->vm.SetInterrupt(3);
+        this->alignmentEffect = NULL;
     }
 
     for (i = 0; i < 4; ++i)
@@ -890,8 +889,8 @@ void Enemy::UpdateYoukaiAlignment()
         if (g_Player.IsYoukai())
         {
             g_EffectManager.SpawnEffect(31, reinterpret_cast<D3DXVECTOR3 *>(&this->worldPosition), 1, 0x80303080);
-            if (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8) != NULL)
-                (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8))->SetInterrupt(2);
+            if (this->alignmentEffect != NULL)
+                this->alignmentEffect->vm.SetInterrupt(2);
             g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(40), 0);
             this->drawGroup = 0;
         }
@@ -907,8 +906,8 @@ void Enemy::UpdateYoukaiAlignment()
         if (!g_Player.IsYoukai())
         {
             g_EffectManager.SpawnEffect(30, reinterpret_cast<D3DXVECTOR3 *>(&this->worldPosition), 1, 0x80803030);
-            if (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8) != NULL)
-                (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8))->SetInterrupt(1);
+            if (this->alignmentEffect != NULL)
+                this->alignmentEffect->vm.SetInterrupt(1);
             g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(39), 0);
             this->drawGroup = 2;
         }
@@ -964,32 +963,29 @@ void Enemy::IntegrateVelocity()
 #pragma var_order(effect, i, this)
 void Enemy::UpdateEffects()
 {
-    u8 *effect;
+    Effect *effect;
     i32 i;
 
-    for (i = 0; i < *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53c0); ++i)
+    for (i = 0; i < this->attachedEffectCount; ++i)
     {
-        effect = *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x5360 + i * 4);
+        effect = this->attachedEffects[i];
         if (effect == NULL)
             continue;
 
-        reinterpret_cast<AnmVmBase *>(effect)->flag1 =
+        effect->vm.flag1 =
             ((this->flags1 >> ENEMY_FLAG_NO_SPRITE_SHIFT) & 1) == 0;
-        *reinterpret_cast<Float3 *>(effect + 0x2e0) = this->position;
+        effect->vector5 = this->position;
 
-        if (*reinterpret_cast<f32 *>(effect + 0x314) <
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x53c4))
+        if (effect->radius < this->attachedEffectDistance)
         {
-            *reinterpret_cast<f32 *>(effect + 0x314) += 0.3f;
+            effect->radius += 0.3f;
         }
         else
         {
-            *reinterpret_cast<f32 *>(effect + 0x314) =
-                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x53c4);
+            effect->radius = this->attachedEffectDistance;
         }
 
-        *reinterpret_cast<f32 *>(effect + 0x318) =
-            AddNormalizeAngle(*reinterpret_cast<f32 *>(effect + 0x318), 0.031415928f);
+        effect->angle = AddNormalizeAngle(effect->angle, 0.031415928f);
     }
 }
 
@@ -1060,37 +1056,37 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
             reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
             reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.z = 0.25f;
 
-            if (*reinterpret_cast<u8 *>(enemy + 0x534C))
+            if (reinterpret_cast<Enemy *>(enemy)->trailFlags)
             {
                 *reinterpret_cast<Float2 *>(&savedScaleX) = reinterpret_cast<AnmVm *>(enemy + 0xC)->scale;
                 savedColor = reinterpret_cast<AnmVm *>(enemy + 0xC)->color1.d3dColor;
 
-                if ((*reinterpret_cast<u8 *>(enemy + 0x534C) & 8) == 0)
+                if ((reinterpret_cast<Enemy *>(enemy)->trailFlags & ENEMY_TRAIL_RENDER_AS_STRIP) == 0)
                 {
-                    for (k = *reinterpret_cast<i16 *>(enemy + 0x534E) - 1; k > 0;
-                         k -= *reinterpret_cast<i16 *>(enemy + 0x5352))
+                    for (k = reinterpret_cast<Enemy *>(enemy)->trailHistoryLength - 1; k > 0;
+                         k -= reinterpret_cast<Enemy *>(enemy)->trailSampleStride)
                     {
-                        if (*reinterpret_cast<f32 *>(enemy + 0x3394 + k * 0x1C) < -990.0f)
+                        if (reinterpret_cast<Enemy *>(enemy)->trailSamples[k].position.x < -990.0f)
                             continue;
 
                         if (((reinterpret_cast<Enemy *>(enemy)->flags1 >>
                               ENEMY_FLAG_ROTATE_ANM_WITH_MOVEMENT_SHIFT) & 1) != 0)
                                 reinterpret_cast<AnmVm *>(enemy + 0xC)->SetZRotation(
-                                    *reinterpret_cast<f32 *>(enemy + 0x33AC + k * 0x1C));
+                                    reinterpret_cast<Enemy *>(enemy)->trailSamples[k].angle);
 
-                            if ((*reinterpret_cast<u8 *>(enemy + 0x534C) & 2) != 0)
+                            if ((reinterpret_cast<Enemy *>(enemy)->trailFlags & ENEMY_TRAIL_TAPER) != 0)
                                 reinterpret_cast<AnmVm *>(enemy + 0xC)->scale.x =
                                     savedScaleX - (f32)k * savedScaleX /
-                                                      (f32)*reinterpret_cast<i16 *>(enemy + 0x534E);
+                                                      (f32)reinterpret_cast<Enemy *>(enemy)->trailHistoryLength;
 
-                            if ((*reinterpret_cast<u8 *>(enemy + 0x534C) & 4) != 0)
+                            if ((reinterpret_cast<Enemy *>(enemy)->trailFlags & ENEMY_TRAIL_FADE) != 0)
                                 reinterpret_cast<AnmVm *>(enemy + 0xC)->color1.a =
                                     reinterpret_cast<u8 *>(&savedColor)[3] -
                                     reinterpret_cast<u8 *>(&savedColor)[3] * k /
-                                        *reinterpret_cast<i16 *>(enemy + 0x534E);
+                                        reinterpret_cast<Enemy *>(enemy)->trailHistoryLength;
 
                             reinterpret_cast<AnmVm *>(enemy + 0xC)->pos =
-                                *reinterpret_cast<Float3 *>(enemy + 0x3394 + k * 0x1C) +
+                                reinterpret_cast<Enemy *>(enemy)->trailSamples[k].position +
                                 *reinterpret_cast<Float3 *>(enemy + 0x294);
                             reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.z = 0.3f;
                             reinterpret_cast<AnmVm *>(enemy + 0xC)->pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
@@ -1101,10 +1097,10 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                 else
                 {
                     vertexCount = 0;
-                    for (k = 0; k < *reinterpret_cast<i16 *>(enemy + 0x534E);
-                         k += *reinterpret_cast<i16 *>(enemy + 0x5352))
+                    for (k = 0; k < reinterpret_cast<Enemy *>(enemy)->trailHistoryLength;
+                         k += reinterpret_cast<Enemy *>(enemy)->trailSampleStride)
                     {
-                        if (*reinterpret_cast<f32 *>(enemy + 0x3394 + k * 0x1C) < -990.0f)
+                        if (reinterpret_cast<Enemy *>(enemy)->trailSamples[k].position.x < -990.0f)
                             break;
                         vertexCount += 2;
                     }
@@ -1116,35 +1112,34 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                         uvStep = uvSpan / ((vertexCount + 1) / 2 - 1);
                         uv = reinterpret_cast<AnmVm *>(enemy + 0xC)->loadedSprite->uvEnd.x +
                              reinterpret_cast<AnmVm *>(enemy + 0xC)->uvScrollPos.x;
-                        vertices = reinterpret_cast<VertexTex1DiffuseXyzrhw *>(enemy + 0x3E14);
+                        vertices = reinterpret_cast<Enemy *>(enemy)->trailVertices;
 
-                        for (k = 0; k < *reinterpret_cast<i16 *>(enemy + 0x534E);
-                             k += *reinterpret_cast<i16 *>(enemy + 0x5352), uv -= uvStep)
+                        for (k = 0; k < reinterpret_cast<Enemy *>(enemy)->trailHistoryLength;
+                             k += reinterpret_cast<Enemy *>(enemy)->trailSampleStride, uv -= uvStep)
                         {
-                            if (*reinterpret_cast<f32 *>(enemy + 0x3394 + k * 0x1C) < -990.0f)
+                            if (reinterpret_cast<Enemy *>(enemy)->trailSamples[k].position.x < -990.0f)
                                 break;
 
                             if (k == 0)
                             {
-                                angle = *reinterpret_cast<f32 *>(enemy + 0x33AC);
+                                angle = reinterpret_cast<Enemy *>(enemy)->trailSamples[0].angle;
                             }
                             else
                             {
                                 angle = FUN_0042eb10(
-                                    *reinterpret_cast<f32 *>(enemy + 0x33AC + (k - 1) * 0x1C),
-                                    *reinterpret_cast<f32 *>(enemy + 0x33AC + k * 0x1C), 0.5f);
+                                    reinterpret_cast<Enemy *>(enemy)->trailSamples[k - 1].angle,
+                                    reinterpret_cast<Enemy *>(enemy)->trailSamples[k].angle, 0.5f);
                             }
 
-                            if ((*reinterpret_cast<u8 *>(enemy + 0x534C) & 2) != 0 && k > 0 &&
-                                k + *reinterpret_cast<i16 *>(enemy + 0x5352) <
-                                    *reinterpret_cast<i16 *>(enemy + 0x534E))
+                            if ((reinterpret_cast<Enemy *>(enemy)->trailFlags & ENEMY_TRAIL_TAPER) != 0 && k > 0 &&
+                                k + reinterpret_cast<Enemy *>(enemy)->trailSampleStride <
+                                    reinterpret_cast<Enemy *>(enemy)->trailHistoryLength)
                             {
                                 sinAngle = FUN_0042eb10(
-                                    *reinterpret_cast<f32 *>(
-                                        enemy + 0x33AC +
-                                        (k + *reinterpret_cast<i16 *>(enemy + 0x5352) - 1) * 0x1C),
-                                    *reinterpret_cast<f32 *>(
-                                        enemy + 0x33AC + *reinterpret_cast<i16 *>(enemy + 0x5352) * 0x1C),
+                                    reinterpret_cast<Enemy *>(enemy)->trailSamples[
+                                        k + reinterpret_cast<Enemy *>(enemy)->trailSampleStride - 1].angle,
+                                    reinterpret_cast<Enemy *>(enemy)->trailSamples[
+                                        reinterpret_cast<Enemy *>(enemy)->trailSampleStride].angle,
                                     0.5f);
                                 if (fabsf(previousAngle - angle) < 0.00001f &&
                                     fabsf(angle - sinAngle) < 0.00001f)
@@ -1160,26 +1155,26 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                             halfCenter = 0.0f;
                             halfWidth = savedScaleY *
                                         reinterpret_cast<AnmVm *>(enemy + 0xC)->loadedSprite->heightPx / 2.0f;
-                            if ((*reinterpret_cast<u8 *>(enemy + 0x534C) & 2) != 0)
+                            if ((reinterpret_cast<Enemy *>(enemy)->trailFlags & ENEMY_TRAIL_TAPER) != 0)
                             {
-                                angle = 1.0f - (f32)k / (f32)*reinterpret_cast<i16 *>(enemy + 0x534E);
+                                angle = 1.0f - (f32)k / (f32)reinterpret_cast<Enemy *>(enemy)->trailHistoryLength;
                                 halfCenter *= angle;
                                 halfWidth *= angle;
                             }
 
                             vertices[1].diffuse = reinterpret_cast<AnmVm *>(enemy + 0xC)->color1.d3dColor;
                             vertices[0].diffuse = vertices[1].diffuse;
-                            if ((*reinterpret_cast<u8 *>(enemy + 0x534C) & 4) != 0)
+                            if ((reinterpret_cast<Enemy *>(enemy)->trailFlags & ENEMY_TRAIL_FADE) != 0)
                             {
                                 reinterpret_cast<u8 *>(&vertices[1].diffuse)[3] =
                                     reinterpret_cast<u8 *>(&savedColor)[3] -
                                     reinterpret_cast<u8 *>(&savedColor)[3] * k /
-                                        *reinterpret_cast<i16 *>(enemy + 0x534E);
+                                        reinterpret_cast<Enemy *>(enemy)->trailHistoryLength;
                                 reinterpret_cast<u8 *>(&vertices[0].diffuse)[3] =
                                     reinterpret_cast<u8 *>(&vertices[1].diffuse)[3];
                             }
 
-                            vertices[0].pos = *reinterpret_cast<Float3 *>(enemy + 0x3394 + k * 0x1C);
+                            vertices[0].pos = reinterpret_cast<Enemy *>(enemy)->trailSamples[k].position;
                             vertices[0].pos.x += cosAngle * halfCenter - sinAngle * halfWidth + 32.0f;
                             vertices[0].pos.y += sinAngle * halfCenter + cosAngle * halfWidth + 16.0f;
                             vertices[0].textureUV.x = uv;
@@ -1188,7 +1183,7 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                                 reinterpret_cast<AnmVm *>(enemy + 0xC)->uvScrollPos.y;
                             ++vertices;
 
-                            vertices[0].pos = *reinterpret_cast<Float3 *>(enemy + 0x3394 + k * 0x1C);
+                            vertices[0].pos = reinterpret_cast<Enemy *>(enemy)->trailSamples[k].position;
                             vertices[0].pos.x += cosAngle * halfCenter + sinAngle * halfWidth + 32.0f;
                             vertices[0].pos.y += sinAngle * halfCenter - cosAngle * halfWidth + 16.0f;
                             vertices[0].textureUV.x = uv;
@@ -1201,7 +1196,7 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                         if (vertexCount > 2)
                             g_AnmManager->DrawVertices(
                                 reinterpret_cast<AnmVm *>(enemy + 0xC),
-                                reinterpret_cast<VertexTex1DiffuseXyzrhw *>(enemy + 0x3E14), vertexCount);
+                                reinterpret_cast<Enemy *>(enemy)->trailVertices, vertexCount);
                     }
                 }
 
@@ -1209,7 +1204,7 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                 reinterpret_cast<AnmVm *>(enemy + 0xC)->color1.d3dColor = savedColor;
             }
 
-            if ((*reinterpret_cast<u8 *>(enemy + 0x534C) & 0x10) == 0 &&
+            if ((reinterpret_cast<Enemy *>(enemy)->trailFlags & ENEMY_TRAIL_HIDE_HEAD_ANM) == 0 &&
                 ((reinterpret_cast<Enemy *>(enemy)->flags1 >>
                   ENEMY_FLAG_HIDE_PRIMARY_ANM_SHIFT) & 1) == 0)
             {
@@ -1488,15 +1483,15 @@ i32 EnemyManager::FUN_0042efb0(i32 maxScore, i32 initialScore)
                 score = maxScore;
             }
 
-            if (*reinterpret_cast<u8 *>(enemy + 0x534C) != 0)
+            if (reinterpret_cast<Enemy *>(enemy)->trailFlags != 0)
             {
-                for (itemIndex = 0; itemIndex < *reinterpret_cast<i16 *>(enemy + 0x534E); itemIndex += 6)
+                for (itemIndex = 0; itemIndex < reinterpret_cast<Enemy *>(enemy)->trailHistoryLength; itemIndex += 6)
                 {
                     g_ItemManager.SpawnItem(
-                        reinterpret_cast<Float3 *>(enemy + itemIndex * 0x1C + 0x3394), ITEM_POINT_STAR,
+                        &reinterpret_cast<Enemy *>(enemy)->trailSamples[itemIndex].position, ITEM_POINT_STAR,
                         ITEM_STATE_AUTOCOLLECT);
                     g_AsciiManager.CreateScorePopup(
-                        reinterpret_cast<Float3 *>(enemy + itemIndex * 0x1C + 0x3394), score,
+                        &reinterpret_cast<Enemy *>(enemy)->trailSamples[itemIndex].position, score,
                         score >= maxScore ? -256 : -1);
                     totalScore += score;
                     score += 30;

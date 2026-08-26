@@ -892,8 +892,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         if (lhsInt & 2)
         {
             reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_COLLISION;
-            if (PointerAt(enemy, 0x53C8))
-                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(PointerAt(enemy, 0x53C8)) + 0x1F8) &= ~0x20000U;
+            if (reinterpret_cast<Enemy *>(enemy)->alignmentEffect)
+                reinterpret_cast<Enemy *>(enemy)->alignmentEffect->vm.flag17 = 0;
         }
         if (lhsInt & 4) reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_DAMAGEABLE;
         if (lhsInt & 8) reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_NO_SPRITE;
@@ -907,8 +907,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         if (lhsInt & 2)
         {
             reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_COLLISION;
-            if (PointerAt(enemy, 0x53C8))
-                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(PointerAt(enemy, 0x53C8)) + 0x1F8) |= 0x20000U;
+            if (reinterpret_cast<Enemy *>(enemy)->alignmentEffect)
+                reinterpret_cast<Enemy *>(enemy)->alignmentEffect->vm.flag17 = 1;
         }
         if (lhsInt & 4) reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_DAMAGEABLE;
         if (lhsInt & 8) reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_NO_SPRITE;
@@ -998,28 +998,29 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                                 2);
             reinterpret_cast<Enemy *>(child)->flags1 &= ~ENEMY_FLAG_COLLISION;
 
-            if (PointerAt(child, 0x53C8) == 0)
+            if (reinterpret_cast<Enemy *>(child)->alignmentEffect == 0)
             {
-                PointerAt(child, 0x53C8) = g_EffectManager.SpawnEffect00425B70(
+                reinterpret_cast<Enemy *>(child)->alignmentEffect = reinterpret_cast<Effect *>(
+                    g_EffectManager.SpawnEffect00425B70(
                     0x20,
                     reinterpret_cast<D3DXVECTOR3 *>(
                         &reinterpret_cast<Enemy *>(child)->position),
-                    1, -1);
+                    1, -1));
                 reinterpret_cast<AnmVmBase *>(
-                    PointerAt(child, 0x53C8))
+                    reinterpret_cast<Enemy *>(child)->alignmentEffect)
                     ->SetInterrupt(
                         g_Player.IsYoukai()
                             ? 2
                             : 1);
-                reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))->flag17 =
+                reinterpret_cast<AnmVm *>(reinterpret_cast<Enemy *>(child)->alignmentEffect)->flag17 =
                     reinterpret_cast<EnemyFlag1Bits *>(
                         &reinterpret_cast<Enemy *>(child)->flags1)->
                             collision != 0;
                 if (reinterpret_cast<Enemy *>(child)->enemyIndex & 1)
                 {
-                    reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
+                    reinterpret_cast<AnmVm *>(reinterpret_cast<Enemy *>(child)->alignmentEffect)
                         ->angleVel.z =
-                        -reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
+                        -reinterpret_cast<AnmVm *>(reinterpret_cast<Enemy *>(child)->alignmentEffect)
                              ->angleVel.z;
                 }
             }
@@ -1058,28 +1059,29 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                                 2);
             reinterpret_cast<Enemy *>(child)->flags1 &= ~ENEMY_FLAG_COLLISION;
 
-            if (PointerAt(child, 0x53C8) == 0)
+            if (reinterpret_cast<Enemy *>(child)->alignmentEffect == 0)
             {
-                PointerAt(child, 0x53C8) = g_EffectManager.SpawnEffect00425B70(
+                reinterpret_cast<Enemy *>(child)->alignmentEffect = reinterpret_cast<Effect *>(
+                    g_EffectManager.SpawnEffect00425B70(
                     0x20,
                     reinterpret_cast<D3DXVECTOR3 *>(
                         &reinterpret_cast<Enemy *>(child)->position),
-                    1, -1);
+                    1, -1));
                 reinterpret_cast<AnmVmBase *>(
-                    PointerAt(child, 0x53C8))
+                    reinterpret_cast<Enemy *>(child)->alignmentEffect)
                     ->SetInterrupt(
                         g_Player.IsYoukai()
                             ? 2
                             : 1);
-                reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))->flag17 =
+                reinterpret_cast<AnmVm *>(reinterpret_cast<Enemy *>(child)->alignmentEffect)->flag17 =
                     reinterpret_cast<EnemyFlag1Bits *>(
                         &reinterpret_cast<Enemy *>(child)->flags1)->
                             collision != 0;
                 if (reinterpret_cast<Enemy *>(child)->enemyIndex & 1)
                 {
-                    reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
+                    reinterpret_cast<AnmVm *>(reinterpret_cast<Enemy *>(child)->alignmentEffect)
                         ->angleVel.z =
-                        -reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
+                        -reinterpret_cast<AnmVm *>(reinterpret_cast<Enemy *>(child)->alignmentEffect)
                              ->angleVel.z;
                 }
             }
@@ -1129,28 +1131,29 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                     &reinterpret_cast<Enemy *>(child)->position);
             reinterpret_cast<Enemy *>(child)->flags1 &= ~ENEMY_FLAG_COLLISION;
 
-            if (PointerAt(child, 0x53C8) == 0)
+            if (reinterpret_cast<Enemy *>(child)->alignmentEffect == 0)
             {
-                PointerAt(child, 0x53C8) = g_EffectManager.SpawnEffect00425B70(
+                reinterpret_cast<Enemy *>(child)->alignmentEffect = reinterpret_cast<Effect *>(
+                    g_EffectManager.SpawnEffect00425B70(
                     0x20,
                     reinterpret_cast<D3DXVECTOR3 *>(
                         &reinterpret_cast<Enemy *>(child)->worldPosition),
-                    1, -1);
+                    1, -1));
                 reinterpret_cast<AnmVmBase *>(
-                    PointerAt(child, 0x53C8))
+                    reinterpret_cast<Enemy *>(child)->alignmentEffect)
                     ->SetInterrupt(
                         g_Player.IsYoukai()
                             ? 2
                             : 1);
-                reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))->flag17 =
+                reinterpret_cast<AnmVm *>(reinterpret_cast<Enemy *>(child)->alignmentEffect)->flag17 =
                     reinterpret_cast<EnemyFlag1Bits *>(
                         &reinterpret_cast<Enemy *>(child)->flags1)->
                             collision != 0;
                 if (reinterpret_cast<Enemy *>(child)->enemyIndex & 1)
                 {
-                    reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
+                    reinterpret_cast<AnmVm *>(reinterpret_cast<Enemy *>(child)->alignmentEffect)
                         ->angleVel.z =
-                        -reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
+                        -reinterpret_cast<AnmVm *>(reinterpret_cast<Enemy *>(child)->alignmentEffect)
                              ->angleVel.z;
                 }
             }

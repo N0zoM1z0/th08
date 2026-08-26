@@ -224,6 +224,22 @@ family is the trail/effect/death tail at `+0x534C..+0x53CC`, followed by the
 EnemyManager pool/list owners needed to close the Enemy/ECL orchestration
 milestone.
 
+The seventh Enemy/ECL orchestration batch closes the Enemy trail and attached-
+effect tail.  The 96 position/velocity/angle samples, trail flags and three
+length/stride controls, damage-reduction timer, 24 attached Effect pointers,
+Effect count/target distance, alignment Effect, and phase-end seconds now
+share asserted owners across RunEcl, update, draw, collision, culling, linked-
+child, phase/death, and score-drop paths.  The shared Effect radius, angle,
+active, and release-requested fields are also asserted.  The anonymous
+`0x1C` record constructor is tracked as `EnemyTrailSample::EnemyTrailSample`.
+Focused replay passed **93 / 93**, four target-pinned packets replayed exact,
+a non-reuse cold replay passed **1,105 / 1,105**, the normal VC7 image linked,
+and the complete i386 Linux build/layout verifier passed.  The one retained
+padding byte, unused trail bits, generic cross-effect vector roles, and a
+producer-only phase-end value remain evidence-limited.  The EnemyManager
+pool/list and global update-state fields are the final coherent family before
+declaring Enemy/ECL orchestration closure.
+
 Select the next independent field family with:
 
 ```bash

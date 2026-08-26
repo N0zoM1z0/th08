@@ -60,15 +60,27 @@ C_ASSERT(offsetof(EnemyUnkStruct2, interpolationSlots) == 0x9c);
 C_ASSERT(offsetof(EnemyUnkStruct2, childContextSlot) == 0x220);
 C_ASSERT(offsetof(EnemyUnkStruct2, subId) == 0x224);
 
-struct EnemyUnkStruct0x1c
+struct EnemyTrailSample
 {
     Float3 position;
     Float3 velocity;
-    i32 unknown18;
+    f32 angle;
 
-    EnemyUnkStruct0x1c();
+    EnemyTrailSample();
 };
-C_ASSERT(sizeof(EnemyUnkStruct0x1c) == 0x1c);
+C_ASSERT(sizeof(EnemyTrailSample) == 0x1c);
+C_ASSERT(offsetof(EnemyTrailSample, position) == 0x0);
+C_ASSERT(offsetof(EnemyTrailSample, velocity) == 0xc);
+C_ASSERT(offsetof(EnemyTrailSample, angle) == 0x18);
+
+enum EnemyTrailFlagMask
+{
+    ENEMY_TRAIL_ENABLED = 1U << 0,
+    ENEMY_TRAIL_TAPER = 1U << 1,
+    ENEMY_TRAIL_FADE = 1U << 2,
+    ENEMY_TRAIL_RENDER_AS_STRIP = 1U << 3,
+    ENEMY_TRAIL_HIDE_HEAD_ANM = 1U << 4,
+};
 
 struct EnemyBulletRankInfluence
 {
@@ -318,11 +330,19 @@ struct Enemy
     i32 timerCallbackSubId;
     i32 linkedChildCount;
     u8 *childEclBlocks[4];
-    EnemyUnkStruct0x1c trail[96];
-    VertexTex1DiffuseXyzrhw vertices[194];
-    unknown_fields(0x534c, 8);
-    ZunTimer timer5354;
-    unknown_fields(0x5360, 0x70);
+    EnemyTrailSample trailSamples[96];
+    VertexTex1DiffuseXyzrhw trailVertices[194];
+    u8 trailFlags;
+    unknown_fields(0x534d, 1);
+    i16 trailHistoryLength;
+    i16 trailCollisionLength;
+    i16 trailSampleStride;
+    ZunTimer damageReductionTimer;
+    Effect *attachedEffects[24];
+    i32 attachedEffectCount;
+    f32 attachedEffectDistance;
+    Effect *alignmentEffect;
+    i32 phaseEndTimeRemainingSeconds;
 
     // Target-observed RunEcl post-dispatch calls.  Both receive the current
     // enemy in ECX and take no explicit arguments.
@@ -410,7 +430,18 @@ C_ASSERT(offsetof(Enemy, timerCallbackThresholdFrames) == 0x3378);
 C_ASSERT(offsetof(Enemy, timerCallbackSubId) == 0x337c);
 C_ASSERT(offsetof(Enemy, linkedChildCount) == 0x3380);
 C_ASSERT(offsetof(Enemy, childEclBlocks) == 0x3384);
-C_ASSERT(offsetof(Enemy, trail) == 0x3394);
+C_ASSERT(offsetof(Enemy, trailSamples) == 0x3394);
+C_ASSERT(offsetof(Enemy, trailVertices) == 0x3e14);
+C_ASSERT(offsetof(Enemy, trailFlags) == 0x534c);
+C_ASSERT(offsetof(Enemy, trailHistoryLength) == 0x534e);
+C_ASSERT(offsetof(Enemy, trailCollisionLength) == 0x5350);
+C_ASSERT(offsetof(Enemy, trailSampleStride) == 0x5352);
+C_ASSERT(offsetof(Enemy, damageReductionTimer) == 0x5354);
+C_ASSERT(offsetof(Enemy, attachedEffects) == 0x5360);
+C_ASSERT(offsetof(Enemy, attachedEffectCount) == 0x53c0);
+C_ASSERT(offsetof(Enemy, attachedEffectDistance) == 0x53c4);
+C_ASSERT(offsetof(Enemy, alignmentEffect) == 0x53c8);
+C_ASSERT(offsetof(Enemy, phaseEndTimeRemainingSeconds) == 0x53cc);
 
 struct EclTimelineInstruction
 {

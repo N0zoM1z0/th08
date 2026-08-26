@@ -387,7 +387,7 @@ th08::EnemyManager::EnemyManager,0x42a210,function
 th08::Enemy::Enemy,0x42a280,function
 th08::BulletSpawnDescriptor::BulletSpawnDescriptor,0x42a410,function
 th08::EnemyUnkStruct2::EnemyUnkStruct2,0x42a450,function
-th08::EnemyUnkStruct0x1c::EnemyUnkStruct0x1c,0x42a490,function
+th08::EnemyTrailSample::EnemyTrailSample,0x42a490,function
 th08::EnemyUnkStruct3::EnemyUnkStruct3,0x42a4c0,function
 th08::EnemyManager::SpawnEnemy1,0x42a4e0,function
 th08::EnemyManager::SpawnEnemy2,0x42a680,function

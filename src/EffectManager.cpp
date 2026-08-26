@@ -437,7 +437,7 @@ i32 __fastcall EffectOrbitInit(AnmVm *effect)
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x2ec) = 0.0f;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x2f0) = 0.0f;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x2f4) = 0.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = 0.0f;
+    reinterpret_cast<Effect *>(effect)->radius = 0.0f;
     return 0;
 }
 
@@ -452,8 +452,8 @@ i32 __fastcall EffectOrbitUpdate(AnmVm *effect)
     f32 horizontalAngle;
     f32 alpha;
     D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&normalizedPos), reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(effect) + 0x2ec));
-    verticalAngle = sinf(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318));
-    horizontalAngle = cosf(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318));
+    verticalAngle = sinf(reinterpret_cast<Effect *>(effect)->angle);
+    horizontalAngle = cosf(reinterpret_cast<Effect *>(effect)->angle);
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x304) = normalizedPos.x * verticalAngle;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x308) = normalizedPos.y * verticalAngle;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x30c) = normalizedPos.z * verticalAngle;
@@ -466,7 +466,7 @@ i32 __fastcall EffectOrbitUpdate(AnmVm *effect)
         normalizedPos = Float3(1.0f, 0.0f, 0.0f);
     else
         D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&posOffset), reinterpret_cast<D3DXVECTOR3 *>(&posOffset));
-    posOffset *= *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314);
+    posOffset *= reinterpret_cast<Effect *>(effect)->radius;
     D3DXVec3TransformCoord(reinterpret_cast<D3DXVECTOR3 *>(&posOffset), reinterpret_cast<D3DXVECTOR3 *>(&posOffset), &localMatrix);
     posOffset.z *= 6.0f;
     *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2a4) = posOffset + *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(effect) + 0x2e0);
@@ -820,8 +820,8 @@ i32 __fastcall FUN_004272e0(Effect *effect)
     effect->vector7.x = 0.0f;
     effect->vector7.y = -1.0f;
     effect->vector7.z = 0.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318) = effect->vector1.x;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = effect->vector1.y;
+    effect->angle = effect->vector1.x;
+    effect->radius = effect->vector1.y;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = effect->vector1.z;
 
     g_AnmManager->FUN_004649a0(
@@ -861,9 +861,9 @@ i32 __fastcall FUN_00427450(Effect *effect)
         if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) == 0.0f)
         {
             f32 angle;
-            angle = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318);
-            innerRadius = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) - radius;
-            radius += *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314);
+            angle = effect->angle;
+            innerRadius = effect->radius - radius;
+            radius += effect->radius;
             for (i = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) + 1; i > 0; --i)
             {
                 if (angle >= ZUN_PI)
@@ -896,8 +896,8 @@ i32 __fastcall FUN_00427450(Effect *effect)
 
             outerEllipseRadius = radius + *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c);
             innerEllipseRadius = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) - radius;
-            innerRadius = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) - radius;
-            radius += *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314);
+            innerRadius = effect->radius - radius;
+            radius += effect->radius;
 
             for (i = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) + 1; i > 0; --i)
             {
@@ -929,12 +929,12 @@ i32 __fastcall FUN_00427450(Effect *effect)
             f32 radialOffset;
 
             secondAngle = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330);
-            angle = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318);
+            angle = effect->angle;
             secondAngleStep = ZUN_2PI * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) /
                               *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324);
             Float3 unused;
-            innerRadius = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) - radius;
-            radius += *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314);
+            innerRadius = effect->radius - radius;
+            radius += effect->radius;
 
             for (i = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) + 1; i > 0; --i)
             {
@@ -986,7 +986,7 @@ i32 __fastcall FUN_00427990(Effect *effect)
 {
     *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = effect->vm.scale.x;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = effect->vm.pos.x;
+    effect->radius = effect->vm.pos.x;
     return 1;
 }
 
@@ -998,9 +998,9 @@ i32 __fastcall FUN_004279d0(Effect *effect)
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) =
         (f32)*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x104);
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = effect->vm.scale.x;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = effect->vm.pos.x;
+    effect->radius = effect->vm.pos.x;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = effect->vm.pos.y;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318) = effect->vm.rotation.z;
+    effect->angle = effect->vm.rotation.z;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330) = effect->vm.rotation.y;
     *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
     return 1;
@@ -1011,7 +1011,7 @@ i32 __fastcall FUN_00427a60(Effect *effect)
 {
     *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x324) = 32;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = effect->vm.scale.x;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = effect->vm.pos.x;
+    effect->radius = effect->vm.pos.x;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = effect->vm.pos.y;
     *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
     if (effect->timer >= 120)
@@ -1024,9 +1024,9 @@ i32 __fastcall FUN_00427ae0(Effect *effect)
 {
     *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = effect->vm.scale.x;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) = effect->vm.pos.x;
+    effect->radius = effect->vm.pos.x;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x32c) = effect->vm.pos.y;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318) = effect->vm.rotation.z;
+    effect->angle = effect->vm.rotation.z;
     if (effect->vm.color1.a == 0)
         return 0;
     return 1;
@@ -1040,9 +1040,9 @@ i32 __fastcall FUN_00427b50(Effect *effect)
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x334) =
         (f32)*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(effect) + 0x104);
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x320) = effect->vm.scale.x;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x314) =
+    effect->radius =
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x114);
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x318) = effect->vm.rotation.z;
+    effect->angle = effect->vm.rotation.z;
     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(effect) + 0x330) = effect->vm.rotation.y;
     *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(effect) + 0x356) = 1;
     effect->vector5 = effect->vm.pos;

@@ -122,15 +122,6 @@ struct EnemyManagerUpdateEnemy
     u8 &BossSlot() { return reinterpret_cast<Enemy *>(this)->bossSlot; }
     u8 &DamageFlashTimer() { return reinterpret_cast<Enemy *>(this)->damageFlashTimer; }
     u8 &DrawGroup() { return reinterpret_cast<Enemy *>(this)->drawGroup; }
-    u8 &TrailFlags() { return *reinterpret_cast<u8 *>(raw + 0x534C); }
-    i16 &TrailHistoryCount() { return *reinterpret_cast<i16 *>(raw + 0x534E); }
-    i16 &TrailSampleCount() { return *reinterpret_cast<i16 *>(raw + 0x5350); }
-    EnemyManagerUpdateTimer *FreezeTimer() { return reinterpret_cast<EnemyManagerUpdateTimer *>(raw + 0x5354); }
-    EnemyManagerUpdateAnmVm *&DeathVm()
-    {
-        return *reinterpret_cast<EnemyManagerUpdateAnmVm **>(raw + 0x53C8);
-    }
-    i32 &DeathTimeSeconds() { return *reinterpret_cast<i32 *>(raw + 0x53CC); }
     EnemyManagerUpdateEnemy *&DrawNext()
     {
         return *reinterpret_cast<EnemyManagerUpdateEnemy **>(raw);
@@ -432,36 +423,38 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
             reinterpret_cast<Enemy *>(enemy)->worldPosition.z = 0.0f;
         }
 
-        if (*reinterpret_cast<EnemyManagerUpdateAnmVm **>(enemy->raw + 0x53C8) != 0)
+        if (reinterpret_cast<Enemy *>(enemy)->alignmentEffect != 0)
         {
             *reinterpret_cast<D3DXVECTOR3 *>(
-                reinterpret_cast<u8 *>(*reinterpret_cast<EnemyManagerUpdateAnmVm **>(
-                    enemy->raw + 0x53C8)) + 0x2A4) =
+                &reinterpret_cast<Enemy *>(enemy)->alignmentEffect->vector0) =
                 *reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->worldPosition);
         }
 
-        if (*reinterpret_cast<u8 *>(enemy->raw + 0x534C))
+        if (reinterpret_cast<Enemy *>(enemy)->trailFlags)
         {
-            for (trailIndex = *reinterpret_cast<i16 *>(enemy->raw + 0x534E) - 1;
+            for (trailIndex = reinterpret_cast<Enemy *>(enemy)->trailHistoryLength - 1;
                  trailIndex > 0; --trailIndex)
             {
-                *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x3394 + 0x1C * trailIndex) =
+                *reinterpret_cast<D3DXVECTOR3 *>(
+                    &reinterpret_cast<Enemy *>(enemy)->trailSamples[trailIndex].position) =
                     *reinterpret_cast<D3DXVECTOR3 *>(
-                        enemy->raw + 0x3394 + 0x1C * (trailIndex - 1));
-                *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x33A0 + 0x1C * trailIndex) =
+                        &reinterpret_cast<Enemy *>(enemy)->trailSamples[trailIndex - 1].position);
+                *reinterpret_cast<D3DXVECTOR3 *>(
+                    &reinterpret_cast<Enemy *>(enemy)->trailSamples[trailIndex].velocity) =
                     *reinterpret_cast<D3DXVECTOR3 *>(
-                        enemy->raw + 0x33A0 + 0x1C * (trailIndex - 1));
-                *reinterpret_cast<u32 *>(enemy->raw + 0x33AC + 0x1C * trailIndex) =
-                    *reinterpret_cast<u32 *>(
-                        enemy->raw + 0x33AC + 0x1C * (trailIndex - 1));
+                        &reinterpret_cast<Enemy *>(enemy)->trailSamples[trailIndex - 1].velocity);
+                reinterpret_cast<Enemy *>(enemy)->trailSamples[trailIndex].angle =
+                    reinterpret_cast<Enemy *>(enemy)->trailSamples[trailIndex - 1].angle;
             }
 
-            *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x3394) =
+            *reinterpret_cast<D3DXVECTOR3 *>(
+                &reinterpret_cast<Enemy *>(enemy)->trailSamples[0].position) =
                 *reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->worldPosition);
-            *reinterpret_cast<D3DXVECTOR3 *>(enemy->raw + 0x33A0) =
+            *reinterpret_cast<D3DXVECTOR3 *>(
+                &reinterpret_cast<Enemy *>(enemy)->trailSamples[0].velocity) =
                 *reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->velocity);
-            *reinterpret_cast<u32 *>(enemy->raw + 0x33AC) =
-                *reinterpret_cast<u32 *>(&reinterpret_cast<Enemy *>(enemy)->movementAngle);
+            reinterpret_cast<Enemy *>(enemy)->trailSamples[0].angle =
+                reinterpret_cast<Enemy *>(enemy)->movementAngle;
         }
 
         if (reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->sprite == 0)
@@ -481,25 +474,23 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
         else if (reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(enemy)->flags1)->hasBeenInBounds == 1 &&
             !reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(enemy)->flags1)->allowOffscreen)
         {
-            if ((!*reinterpret_cast<u8 *>(enemy->raw + 0x534C) &&
+            if ((!reinterpret_cast<Enemy *>(enemy)->trailFlags &&
                  !g_GameManager.IsWithinPlayfield(
                      reinterpret_cast<Enemy *>(enemy)->worldPosition.x,
                      reinterpret_cast<Enemy *>(enemy)->worldPosition.y,
                      reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->sprite->width,
                      reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->sprite->height)) ||
-                (*reinterpret_cast<u8 *>(enemy->raw + 0x534C) &&
+                (reinterpret_cast<Enemy *>(enemy)->trailFlags &&
                  !g_GameManager.IsWithinPlayfield(
                      reinterpret_cast<Enemy *>(enemy)->worldPosition.x,
                      reinterpret_cast<Enemy *>(enemy)->worldPosition.y,
                      reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->sprite->width,
                      reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->sprite->height) &&
                  !g_GameManager.IsWithinPlayfield(
-                     reinterpret_cast<D3DXVECTOR3 *>(
-                         enemy->raw + 0x3394 + 0x1C *
-                         (*reinterpret_cast<i16 *>(enemy->raw + 0x534E) - 1))->x,
-                     reinterpret_cast<D3DXVECTOR3 *>(
-                         enemy->raw + 0x3394 + 0x1C *
-                         (*reinterpret_cast<i16 *>(enemy->raw + 0x534E) - 1))->y,
+                     reinterpret_cast<Enemy *>(enemy)->trailSamples[
+                         reinterpret_cast<Enemy *>(enemy)->trailHistoryLength - 1].position.x,
+                     reinterpret_cast<Enemy *>(enemy)->trailSamples[
+                         reinterpret_cast<Enemy *>(enemy)->trailHistoryLength - 1].position.y,
                      reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->sprite->width,
                      reinterpret_cast<EnemyManagerUpdateAnmVm *>(enemy->raw + 0xC)->sprite->height)))
             {
@@ -542,23 +533,22 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 reinterpret_cast<Enemy *>(enemy)->CheckPlayerCollision(
                     &reinterpret_cast<Enemy *>(enemy)->worldPosition,
                     &reinterpret_cast<Enemy *>(enemy)->hitboxDimensions);
-                if (*reinterpret_cast<u8 *>(enemy->raw + 0x534C))
+                if (reinterpret_cast<Enemy *>(enemy)->trailFlags)
                 {
                     secondaryHitbox = *reinterpret_cast<D3DXVECTOR3 *>(
                         &reinterpret_cast<Enemy *>(enemy)->hitboxDimensions);
-                    for (trailIndex = 1; trailIndex < *reinterpret_cast<i16 *>(enemy->raw + 0x5350); trailIndex += 6)
+                    for (trailIndex = 1; trailIndex < reinterpret_cast<Enemy *>(enemy)->trailCollisionLength; trailIndex += 6)
                     {
-                        if (*reinterpret_cast<u8 *>(enemy->raw + 0x534C) & 2)
+                        if (reinterpret_cast<Enemy *>(enemy)->trailFlags & ENEMY_TRAIL_TAPER)
                         {
                             secondaryHitbox = *reinterpret_cast<D3DXVECTOR3 *>(
                                                   &reinterpret_cast<Enemy *>(enemy)->hitboxDimensions) -
                                 (*reinterpret_cast<D3DXVECTOR3 *>(
                                      &reinterpret_cast<Enemy *>(enemy)->hitboxDimensions) *
-                                 (f32)trailIndex / (f32)*reinterpret_cast<i16 *>(enemy->raw + 0x5350));
+                                 (f32)trailIndex / (f32)reinterpret_cast<Enemy *>(enemy)->trailCollisionLength);
                         }
                         reinterpret_cast<Enemy *>(enemy)->CheckPlayerCollision(
-                            reinterpret_cast<Float3 *>(
-                                enemy->raw + 0x3394 + 0x1C * trailIndex),
+                            &reinterpret_cast<Enemy *>(enemy)->trailSamples[trailIndex].position,
                             reinterpret_cast<Float3 *>(&secondaryHitbox));
                     }
                 }
@@ -638,7 +628,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                                 damage = 0;
                         }
 
-                        if (*reinterpret_cast<ZunTimer *>(enemy->raw + 0x5354) > 0)
+                        if (reinterpret_cast<Enemy *>(enemy)->damageReductionTimer > 0)
                         {
                             if (reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(enemy)->flags1)->boss)
                                 damage /= 9;
@@ -709,7 +699,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
             reinterpret_cast<Enemy *>(enemy)->flags2 |= ENEMY_FLAG2_DEATH_LATCH;
             D3DXVECTOR3 bonus;
             i32 deathPosition;
-            *reinterpret_cast<i32 *>(enemy->raw + 0x53CC) =
+            reinterpret_cast<Enemy *>(enemy)->phaseEndTimeRemainingSeconds =
                 (reinterpret_cast<Enemy *>(enemy)->timerCallbackThresholdFrames -
                  (i32)reinterpret_cast<Enemy *>(enemy)->bossTimer) / 60;
             reinterpret_cast<Enemy *>(enemy)->timerCallbackThresholdFrames = -1;
@@ -750,11 +740,10 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                     g_EffectManager.SpawnEffect(reinterpret_cast<Enemy *>(enemy)->deathAnm1, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->worldPosition), 1, -1);
                     g_EffectManager.SpawnEffect(reinterpret_cast<Enemy *>(enemy)->deathAnm1, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->worldPosition), 1, -1);
                 }
-                if (*reinterpret_cast<EnemyManagerUpdateAnmVm **>(enemy->raw + 0x53C8) != 0)
+                if (reinterpret_cast<Enemy *>(enemy)->alignmentEffect != 0)
                 {
-                    reinterpret_cast<AnmVmBase *>(*reinterpret_cast<EnemyManagerUpdateAnmVm **>(
-                        enemy->raw + 0x53C8))->SetInterrupt(3);
-                    *reinterpret_cast<EnemyManagerUpdateAnmVm **>(enemy->raw + 0x53C8) = 0;
+                    reinterpret_cast<Enemy *>(enemy)->alignmentEffect->vm.SetInterrupt(3);
+                    reinterpret_cast<Enemy *>(enemy)->alignmentEffect = 0;
                 }
                 if (!reinterpret_cast<EnemyManagerUpdatePlayer *>(&g_Player)->playerType)
                 {
@@ -776,11 +765,10 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
             case 0:
                 g_GameManager.AddScore(reinterpret_cast<Enemy *>(enemy)->score);
                 reinterpret_cast<Enemy *>(enemy)->flags1 &= ~1U;
-                if (*reinterpret_cast<EnemyManagerUpdateAnmVm **>(enemy->raw + 0x53C8) != 0)
+                if (reinterpret_cast<Enemy *>(enemy)->alignmentEffect != 0)
                 {
-                    reinterpret_cast<AnmVmBase *>(*reinterpret_cast<EnemyManagerUpdateAnmVm **>(
-                        enemy->raw + 0x53C8))->SetInterrupt(3);
-                    *reinterpret_cast<EnemyManagerUpdateAnmVm **>(enemy->raw + 0x53C8) = 0;
+                    reinterpret_cast<Enemy *>(enemy)->alignmentEffect->vm.SetInterrupt(3);
+                    reinterpret_cast<Enemy *>(enemy)->alignmentEffect = 0;
                 }
                 goto common_death_mode;
 
@@ -916,8 +904,8 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
         reinterpret_cast<Enemy *>(enemy)->UpdateEffects();
         if (!g_EclScriptedGlobalUpdateFreeze)
             reinterpret_cast<Enemy *>(enemy)->bossTimer++;
-        if (*reinterpret_cast<ZunTimer *>(enemy->raw + 0x5354) > 0)
-            (*reinterpret_cast<ZunTimer *>(enemy->raw + 0x5354))--;
+        if (reinterpret_cast<Enemy *>(enemy)->damageReductionTimer > 0)
+            reinterpret_cast<Enemy *>(enemy)->damageReductionTimer--;
 
         if (!reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(enemy)->flags1)->noSprite &&
             reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(enemy)->flags1)->active)

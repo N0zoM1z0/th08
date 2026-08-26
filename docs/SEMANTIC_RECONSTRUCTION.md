@@ -1063,3 +1063,83 @@ unknown span was split into three explicit retained gaps.  These are routing
 aids, not completion percentages.  The next coherent Enemy/ECL family is the
 trail/effect/death tail at `+0x534C..+0x53CC`, followed by the EnemyManager
 pool/list owners needed to close the orchestration milestone.
+
+### Enemy trail and attached-effect tail — 2026-08-26
+
+Scope: `EclManager::RunEcl @ 0x004184B0`,
+`Enemy::ReleaseAttachedEffects @ 0x0042A820`, parent-damage and phase/death
+paths at `0x0042B370/0x0042B490/0x0042BCF0`,
+`EnemyManager::OnUpdate @ 0x0042C660`, alignment/effect update at
+`0x0042C420/0x0042E010`, `EnemyManager::OnDrawImpl @ 0x0042E140`, the score-
+drop sweep at `0x0042EFB0`, and all linked-child/opcode users of
+`Enemy + 0x3394..+0x53CC`.  The adjacent shared `Effect + 0x314/+0x318/
++0x350/+0x352` fields are included because they are the concrete objects
+owned by this Enemy tail.
+
+Observed: the 96-element `EnemyTrailSample` history stores world position,
+velocity, and movement angle at each frame.  `trailHistoryLength @ +0x534E`
+controls history shifting, culling, drawing, and score-drop traversal;
+`trailCollisionLength @ +0x5350` bounds secondary collision sampling, and
+`trailSampleStride @ +0x5352` controls render sampling and strip allocation.
+The flag byte at `+0x534C` enables the trail and independently selects taper,
+alpha fade, strip rendering, and head-ANM suppression.
+
+`damageReductionTimer @ +0x5354` is set by ECL opcode 160, decremented by the
+Enemy update, and reduces Boss damage to one ninth while suppressing ordinary
+Enemy damage.  `attachedEffects[24] @ +0x5360`, count at `+0x53C0`, and target
+distance at `+0x53C4` own ECL opcode 128's orbit-effect family.  Their
+`Effect::vector5/vector6` members are the target-observed center and axis
+storage; the shared `Effect::radius/angle` fields drive growth and rotation.
+`alignmentEffect @ +0x53C8` follows world position and receives human/youkai,
+collision, and death interrupts.  `phaseEndTimeRemainingSeconds @ +0x53CC`
+records `(timer threshold - Boss timer) / 60` on either a phase callback or
+death.
+
+Corroborated: TH06 preserves the earlier `effectArray`, effect index, and
+effect-distance sequence and the same grow-toward-distance update.  TH08
+target producers and consumers independently establish the larger 24-pointer
+array, every trail field, the damage timer, alignment effect, and phase-end
+value; no TH06 offset or array extent is imported.
+
+Inference and unknowns: `phaseEndTimeRemainingSeconds` is a producer-backed
+behavior name because no current authored TH08 reader is present.  The one
+padding byte at `+0x534D`, unobserved trail-flag bits, generic meanings of
+`Effect::vector5/vector6` outside this attached-effect protocol, and the
+remaining Effect tail bytes stay unknown.  Splitting the Enemy and Effect
+opaque spans accounts for the routing increase in opaque-storage candidates;
+unknown byte coverage did not grow.
+
+Layout: assertions pin all three `EnemyTrailSample` members and its `0x1C`
+extent, both arrays, every tail scalar/pointer, the selected Effect fields and
+unchanged `sizeof(Effect) == 0x360`, and unchanged
+`sizeof(Enemy) == 0x53D0`.  The formerly anonymous trail-record constructor at
+`0x0042A490` is now tracked as `EnemyTrailSample::EnemyTrailSample`.
+
+VC7 source-shape note: ECL opcodes 80/81 must assign the semantic
+`AnmVm::flag17` bitfield.  Treating the overlapping `flags` member as a
+16-bit mask enlarged exact `RunEcl` by four bytes; the bitfield expression
+emits the target dword mask operation.  All other direct field and array
+expressions in this batch reproduced the accepted bytes naturally.
+
+VC7 oracle: focused replay passed **93 / 93** accepted units across
+`EclRun`, `EffectManager`, `EnemyManager`, and `EnemyManagerUpdate`.
+Target-pinned packets for `RunEcl`, `ReleaseAttachedEffects`, `OnUpdate`, and
+`OnDrawImpl` independently replayed exact.  The required non-reuse
+`verify-exact-units.py --all --json` cold-built all 75 configured objects and
+passed **1,105 / 1,105** with no failures.  A subsequent normal VC7 production
+image linked successfully.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiled and linked
+the complete i386 target, and `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 plus all
+fixed target-owned layout symbols.  No isolated automated trail/effect
+gameplay smoke exists, so no runtime smoke is claimed.
+
+Result: target-backed raw Enemy-tail accesses are replaced by asserted owners,
+and the Effect radius/angle/release state used by that protocol is exposed.
+The semantic router falls from 1,185 to 1,127 raw-member candidates and
+anonymous identifiers from 593 to 592; opaque-storage candidates rise from
+73 to 75 because two broad ranges became narrower explicit gaps.  These are
+routing aids, not completion percentages.  The EnemyManager pool/list and
+global update-state fields are the remaining coherent family before declaring
+Enemy/ECL orchestration closure.
