@@ -92,9 +92,6 @@ inline LowResult MakeLowResult(LowControl control,
     return result;
 }
 
-// Target pointer table at 0x00F54CC0, indexed by the ECL enemy selector.
-extern EclOperands::EnemyOverlay *g_EclEnemyTableF54CC0[];
-
 // Observed helper ABIs for opcodes 90..92.  Both constructors receive the
 // parent in ECX and the current instruction in EDX; the list-tail lookup uses
 // only ECX.  Names remain provisional until the owning Enemy layout lands.
@@ -649,8 +646,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         TH08_ECL_RUN_LOW_YIELD(LOW_SELECT_NEXT_CONTEXT, 0);
 
     case 54:
-        (*reinterpret_cast<AnmLoaded **>(
-            reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCEEC))
+        g_EnemyManager.enemyAnm
             ->SetAndExecuteScriptIdx(
             reinterpret_cast<AnmVm *>(Bytes(enemy) + 0xC),
             ReadInt(enemy, instruction, 0));
@@ -678,8 +674,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         reinterpret_cast<Enemy *>(enemy)->flags2 &= ~4U;
         break;
     case 58:
-        (*reinterpret_cast<AnmLoaded **>(
-            reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCEF0))
+        g_EnemyManager.alternateEnemyAnm
             ->SetAndExecuteScriptIdx(
             reinterpret_cast<AnmVm *>(Bytes(enemy) + 0xC),
             ReadInt(enemy, instruction, 0));
@@ -708,16 +703,14 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     case 62:
         if (((reinterpret_cast<Enemy *>(enemy)->flags2 >> 2) & 1U) == 0)
         {
-            (*reinterpret_cast<AnmLoaded **>(
-                reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCEEC))
+            g_EnemyManager.enemyAnm
                 ->SetAndExecuteScriptIdx(
                 reinterpret_cast<AnmVm *>(Bytes(enemy) + 0xC),
                 reinterpret_cast<Enemy *>(enemy)->anmScripts.special);
         }
         else
         {
-            (*reinterpret_cast<AnmLoaded **>(
-                reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCEF0))
+            g_EnemyManager.alternateEnemyAnm
                 ->SetAndExecuteScriptIdx(
                 reinterpret_cast<AnmVm *>(Bytes(enemy) + 0xC),
                 reinterpret_cast<Enemy *>(enemy)->anmScripts.special);
@@ -935,16 +928,18 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         *WriteInt(enemy, instruction, 0) =
             (instruction->operandFlags & 2U)
                 ? EclOperands::ResolveInt(
-                      g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)],
+                      reinterpret_cast<EclOperands::EnemyOverlay *>(
+                          g_EnemyManager.bosses[ReadInt(enemy, instruction, 2)]),
                       RawInt(instruction, 1))
                 : RawInt(instruction, 1);
         break;
 
     case 87:
-        if (g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)])
+        if (g_EnemyManager.bosses[ReadInt(enemy, instruction, 2)])
             *WriteFloat(enemy, instruction, 0) =
                 (instruction->operandFlags & 2U)
-                    ? g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)]->ResolveFloat(
+                    ? reinterpret_cast<EclOperands::EnemyOverlay *>(
+                          g_EnemyManager.bosses[ReadInt(enemy, instruction, 2)])->ResolveFloat(
                           *reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
                     : *reinterpret_cast<f32 *>(&RawInt(instruction, 1));
         break;
@@ -952,18 +947,18 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     case 88:
         lhsInt = ReadInt(enemy, instruction, 0);
         CallSubOnEnemy(
-            g_EclEnemyTableF54CC0[lhsInt],
+            reinterpret_cast<EclOperands::EnemyOverlay *>(g_EnemyManager.bosses[lhsInt]),
             reinterpret_cast<Enemy *>(
-                g_EclEnemyTableF54CC0[lhsInt])->activeEclContext->currentInstr,
+                g_EnemyManager.bosses[lhsInt])->activeEclContext->currentInstr,
             RawInt(instruction, 1));
         break;
 
     case 89:
-        if (g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 0)])
+        if (g_EnemyManager.bosses[ReadInt(enemy, instruction, 0)])
         {
             // Target resolves operand 0 a second time before the store.
             reinterpret_cast<Enemy *>(
-                g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 0)])->pendingEclSubroutineIndex =
+                g_EnemyManager.bosses[ReadInt(enemy, instruction, 0)])->pendingEclSubroutineIndex =
                 static_cast<i16>(ReadInt(enemy, instruction, 1));
         }
         break;
@@ -982,8 +977,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         EclOperands::EnemyOverlay *child =
             SpawnChildStandard0041F110(enemy, instruction);
 
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_EnemyManager) +
-                                    0x9DCEF8) == 0)
+        if (!g_EnemyManager.lastSpawnFailed)
         {
             reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(child)->flags1)->
                 linkedChild = 1;
@@ -1043,8 +1037,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         EclOperands::EnemyOverlay *child =
             SpawnChildAlternate0041F280(enemy, instruction);
 
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_EnemyManager) +
-                                    0x9DCEF8) == 0)
+        if (!g_EnemyManager.lastSpawnFailed)
         {
             reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(child)->flags1)->
                 linkedChild = 1;
@@ -1104,8 +1097,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         EclOperands::EnemyOverlay *child =
             SpawnChildStandard0041F110(enemy, instruction);
 
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_EnemyManager) +
-                                    0x9DCEF8) == 0)
+        if (!g_EnemyManager.lastSpawnFailed)
         {
             reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(child)->flags1)->
                 linkedChild = 1;

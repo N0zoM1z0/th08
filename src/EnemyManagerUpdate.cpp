@@ -248,30 +248,6 @@ struct EnemyManagerUpdateOverlay
 {
     u8 raw[1];
 
-    EnemyManagerUpdateEnemy *Enemies()
-    {
-        return reinterpret_cast<EnemyManagerUpdateEnemy *>(raw + 0x53D0);
-    }
-
-    EnemyManagerUpdateEnemy *&SpecialEnemy()
-    {
-        return *reinterpret_cast<EnemyManagerUpdateEnemy **>(raw + 0x9DCDA0);
-    }
-
-    i32 &EnemyCount() { return *reinterpret_cast<i32 *>(raw + 0x9DCDC4); }
-    EnemyManagerUpdateTimelineLane *TimelineLanes()
-    {
-        return reinterpret_cast<EnemyManagerUpdateTimelineLane *>(raw + 0x9DCDD0);
-    }
-    EnemyManagerUpdateTimer *Timer()
-    {
-        return reinterpret_cast<EnemyManagerUpdateTimer *>(raw + 0x9DCED0);
-    }
-    EnemyManagerUpdateEnemy **DrawHeads()
-    {
-        return reinterpret_cast<EnemyManagerUpdateEnemy **>(raw + 0x9DCEDC);
-    }
-
     void PrepareFrame();
     i32 ConvertBulletBonus(i32 base, i32 bullets);
     i32 OnUpdate();
@@ -308,7 +284,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
     if (!g_Gui.IsDialogPresent())
     {
         ++(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE04));
-        if ((i32)*reinterpret_cast<ZunTimer *>(raw + 0x9DCED0) >= 16)
+        if ((i32)reinterpret_cast<EnemyManager *>(this)->timer >= 16)
         {
             ++(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBA4));
             if (!reinterpret_cast<EnemyManagerUpdatePlayer *>(&g_Player)->mode)
@@ -322,7 +298,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
 
     if (reinterpret_cast<EnemyManagerUpdateManagerFlagBits *>(
             reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBAC)->damageBoss &&
-        *reinterpret_cast<EnemyManagerUpdateEnemy **>(raw + 0x9DCDA0) != 0)
+        reinterpret_cast<EnemyManager *>(this)->bosses[0] != 0)
     {
         // These target-pinned identifiers preserve VC7's block-local hash
         // order.  The initializer values and argument order carry the actual
@@ -331,29 +307,31 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
         D3DXVECTOR3 upperBounds(192.0f, 224.0f, 0.0f);
         g_Player.FUN_00451670(
             reinterpret_cast<Float3 *>(&upperBounds), reinterpret_cast<Float3 *>(&lowerBounds),
-            &reinterpret_cast<Enemy *>(*reinterpret_cast<EnemyManagerUpdateEnemy **>(raw + 0x9DCDA0))->playerShotHitAccumulator,
+            &reinterpret_cast<EnemyManager *>(this)->bosses[0]->playerShotHitAccumulator,
             &bombHit);
     }
 
-    reinterpret_cast<EnemyManager *>(this)->FUN_0042c3b0();
+    reinterpret_cast<EnemyManager *>(this)->UpdateSubrank();
 
-    reinterpret_cast<EnemyManagerUpdateEnemy **>(raw + 0x9DCEDC)[3] = 0;
-    reinterpret_cast<EnemyManagerUpdateEnemy **>(raw + 0x9DCEDC)[2] = 0;
-    reinterpret_cast<EnemyManagerUpdateEnemy **>(raw + 0x9DCEDC)[1] = 0;
-    reinterpret_cast<EnemyManagerUpdateEnemy **>(raw + 0x9DCEDC)[0] = 0;
+    reinterpret_cast<EnemyManager *>(this)->drawGroupHeads[3] = 0;
+    reinterpret_cast<EnemyManager *>(this)->drawGroupHeads[2] = 0;
+    reinterpret_cast<EnemyManager *>(this)->drawGroupHeads[1] = 0;
+    reinterpret_cast<EnemyManager *>(this)->drawGroupHeads[0] = 0;
 
     for (enemyIndex = 0; enemyIndex < g_EclManager.GetTimelineCount(); ++enemyIndex)
     {
-        if (reinterpret_cast<EnemyManagerUpdateTimelineLane *>(raw + 0x9DCDD0)[enemyIndex].instruction == 0)
+        if (reinterpret_cast<EnemyManager *>(this)->timelines[enemyIndex].instruction == 0)
         {
-            reinterpret_cast<EnemyManagerUpdateTimelineLane *>(raw + 0x9DCDD0)[enemyIndex].instruction =
-                reinterpret_cast<void *>(g_EclManager.GetTimeline(enemyIndex));
+            reinterpret_cast<EnemyManager *>(this)->timelines[enemyIndex].instruction =
+                reinterpret_cast<EclTimelineInstruction *>(
+                    g_EclManager.GetTimeline(enemyIndex));
         }
-        reinterpret_cast<EclTimeline *>(raw + 0x9DCDD0)[enemyIndex].Run();
+        reinterpret_cast<EnemyManager *>(this)->timelines[enemyIndex].Run();
     }
 
-    enemy = reinterpret_cast<EnemyManagerUpdateEnemy *>(raw + 0x53D0);
-    *reinterpret_cast<i32 *>(raw + 0x9DCDC4) = 0;
+    enemy = reinterpret_cast<EnemyManagerUpdateEnemy *>(
+        &reinterpret_cast<EnemyManager *>(this)->enemies[0]);
+    reinterpret_cast<EnemyManager *>(this)->activeEnemyCount = 0;
     for (enemyIndex = 0; enemyIndex < 480; ++enemyIndex, ++enemy)
     {
         if ((reinterpret_cast<Enemy *>(enemy)->flags1 & ENEMY_FLAG_ACTIVE) == 0)
@@ -374,7 +352,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
             goto process_enemy_death;
         }
 
-        ++*reinterpret_cast<i32 *>(raw + 0x9DCDC4);
+        ++reinterpret_cast<EnemyManager *>(this)->activeEnemyCount;
 
         if ((reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(enemy)->flags1)->pauseTimer &&
              (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Player) + 0xFDC) || reinterpret_cast<EnemyManagerUpdatePlayer *>(&g_Player)->playerType)) ||
@@ -784,7 +762,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                     !g_Spellcard.IsActive())
                 {
                     deathVmIndex = g_BulletManager.DespawnBullets(8000, 1);
-                    deathVmIndex = g_EnemyManager.FUN_0042efb0(8000, deathVmIndex);
+                    deathVmIndex = g_EnemyManager.KillAllNonBossEnemies(8000, deathVmIndex);
                     if (deathVmIndex)
                     {
                         g_GameManager.AddScore(deathVmIndex);
@@ -824,7 +802,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 reinterpret_cast<Enemy *>(enemy)->timerCallbackThresholdFrames = -1;
                 reinterpret_cast<Enemy *>(enemy)->ReleaseChildEclBlocks();
                 memcpy(&reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor,
-                       &g_EnemyManager.firstEnemy.bulletSpawnDescriptor,
+                       &g_EnemyManager.spawnTemplate.bulletSpawnDescriptor,
                        sizeof(BulletSpawnDescriptor));
                 reinterpret_cast<Enemy *>(enemy)->shootIntervalFrames = 0;
                 g_EclManager.CallEclSub(
@@ -911,18 +889,19 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
             reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(enemy)->flags1)->active)
         {
             *reinterpret_cast<EnemyManagerUpdateEnemy **>(enemy->raw) =
-                reinterpret_cast<EnemyManagerUpdateEnemy **>(
-                    raw + 0x9DCEDC)[reinterpret_cast<Enemy *>(enemy)->drawGroup];
-            reinterpret_cast<EnemyManagerUpdateEnemy **>(
-                raw + 0x9DCEDC)[reinterpret_cast<Enemy *>(enemy)->drawGroup] = enemy;
+                reinterpret_cast<EnemyManagerUpdateEnemy *>(
+                    reinterpret_cast<EnemyManager *>(this)->drawGroupHeads[
+                        reinterpret_cast<Enemy *>(enemy)->drawGroup]);
+            reinterpret_cast<EnemyManager *>(this)->drawGroupHeads[
+                reinterpret_cast<Enemy *>(enemy)->drawGroup] = reinterpret_cast<Enemy *>(enemy);
         }
     }
 
-    if ((*reinterpret_cast<ZunTimer *>(raw + 0x9DCED0) % 200) == 0 &&
+    if ((reinterpret_cast<EnemyManager *>(this)->timer % 200) == 0 &&
         g_GameManager.IsTampered())
         return 4;
 
-    (*reinterpret_cast<ZunTimer *>(raw + 0x9DCED0))++;
+    reinterpret_cast<EnemyManager *>(this)->timer++;
     return 1;
 }
 

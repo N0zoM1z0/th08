@@ -324,7 +324,7 @@ void GuiImpl::FUN_0043396d(i32 value)
     reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentPortrait = 0xff;
 
     g_BulletManager.bulletmanager_fun_00415c60();
-    g_EnemyManager.FUN_0042efb0(0, 0);
+    g_EnemyManager.KillAllNonBossEnemies(0, 0);
     g_ItemManager.AutoCollectAllItems();
 }
 
@@ -1631,16 +1631,15 @@ void Gui::FUN_0043741d()
             this->previousSpellcardSecondsRemaining = this->spellcardSecondsRemaining;
 
             if (!g_GameManager.isInGameMenu && !g_GameManager.showRetryMenu && !g_GameManager.flags.unk10 &&
-                EclRunLowProposal::g_EclEnemyTableF54CC0[0] != NULL)
+                g_EnemyManager.bosses[0] != NULL)
             {
                 textPos = Float3(2.0f, 29.0f, 0.0f);
                 g_AsciiManager.SetScale(1.0f, 1.0f);
                 g_AsciiManager.CreateFamiliarPopup(
                     &textPos,
                     reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(
-                        EclRunLowProposal::g_EclEnemyTableF54CC0[0])->CountParentChain(),
-                    reinterpret_cast<Enemy *>(
-                        EclRunLowProposal::g_EclEnemyTableF54CC0[0])->linkedChildCount,
+                        g_EnemyManager.bosses[0])->CountParentChain(),
+                    g_EnemyManager.bosses[0]->linkedChildCount,
                     0xfff0f00f);
             }
         }

@@ -115,7 +115,6 @@ DIFFABLE_STATIC(EclManager, g_EclManager);
 namespace EclRunLowProposal
 {
 DIFFABLE_STATIC(EclCallParameterCopy, g_EclCallParameters);
-DIFFABLE_STATIC_ARRAY(EclOperands::EnemyOverlay *, 92, g_EclEnemyTableF54CC0);
 } // namespace EclRunLowProposal
 
 } // namespace th08

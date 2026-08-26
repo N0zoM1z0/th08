@@ -534,7 +534,7 @@ the bullet/laser spawn consumers at `0x0042F5F0`, `0x00430E10`, and
 Observed: `Enemy` owns two separately constructed 0x210-byte
 `BulletSpawnDescriptor` members: the bullet pattern descriptor at `+0x2E24`
 and the laser descriptor at `+0x3070`.  Constructor order, phase-reset copies,
-and the target absolute source `g_EnemyManager.firstEnemy + 0x2E24` agree on
+and the target absolute source `g_EnemyManager.spawnTemplate + 0x2E24` agree on
 those owners.  The descriptor contains an 18-element array of 0x18-byte
 `BulletTransformRecord` values at `+0x20`, followed by the laser geometry and
 timing block at `+0x1D0`, count/aim fields at `+0x1F4`, transform flags at
@@ -1143,3 +1143,81 @@ anonymous identifiers from 593 to 592; opaque-storage candidates rise from
 routing aids, not completion percentages.  The EnemyManager pool/list and
 global update-state fields are the remaining coherent family before declaring
 Enemy/ECL orchestration closure.
+
+### EnemyManager pool and orchestration state — 2026-08-26
+
+Scope: `EnemyManager::Initialize @ 0x00429E00`, both spawn paths at
+`0x0042A4E0/0x0042A680`, `EclTimeline::Run @ 0x0042A8A0`,
+`EnemyManager::OnUpdate @ 0x0042C660`, `OnDrawImpl @ 0x0042E140`, the
+added/deleted callbacks and non-Boss cleanup at `0x0042EBF0/0x0042EE80/
+0x0042EFB0`, the complete `EclManager::RunEcl @ 0x004184B0`, and every
+Player, Bomb, Spellcard, Effect, GUI, helper, and dependency user of
+`EnemyManager + 0x000000..+0x9DCF0F`.
+
+Observed: `g_EnemyManager @ 0x00577F20` owns one spawn template at `+0`, one
+nontrivial `Enemy enemies[481]` array at `+0x53D0`, and the orchestration tail
+beginning at `+0x9DCDA0`.  Spawn scans only elements 0..479; element 480 is
+the target-returned failure sentinel.  The 481-element array deliberately
+remains intact because its VC7 vector construction is target-visible.
+
+The tail contains eight Boss pointers, the two 16-bit Enemy drop scheduler
+values, active-Enemy count, ECL opcode 163 state, sixteen timeline lanes, the
+manager timer, four draw-list heads, the normal and alternate Enemy ANM banks,
+the last-spawn-failed flag, four timeline event slots, and the timeline-spawn
+suppression flag.  Producers and consumers establish the distinct integer,
+pointer, timer, and array widths; this is not one homogeneous pointer table.
+
+The earlier analysis identity `g_EclEnemyTableF54CC0 @ 0x00F54CC0` is now
+retired.  That address is exactly `g_EnemyManager + 0x9DCDA0`: its indices
+0..7 happened to name the Boss pointers, but index 11 reached opcode-163
+state, indices 87..90 reached the four timeline event integers, and index 91
+reached timeline-spawn suppression.  The old declaration therefore described
+an overlapping analysis view, not a standalone production array.  The former
+drop-counter globals at `0x00F54CE0/0x00F54CE2` are likewise adjacent members
+of the same manager object.  Their standalone storage declarations, Linux
+fixed aliases, global-ledger rows, and relocation identities are removed;
+accepted relocations now name `g_EnemyManager` with the target field addend.
+
+Inference and unknowns: `opcode163Value` is intentionally named for its only
+proven producer/consumer protocol rather than a guessed stage-specific role.
+The four bytes at `+0x9DCDC8` and `+0x9DCEF4` remain unknown.  The failure and
+suppression names are behavior-backed by all spawn/child and timeline gates;
+no narrower game-design meaning is asserted.
+
+Layout: assertions pin the spawn template, pool, every tail owner, and the
+unchanged `sizeof(EnemyManager) == 0x9DCF10`.  Three high-confidence anonymous
+methods are now tracked as `UpdateSubrank @ 0x0042C3B0`,
+`KillAllNonBossEnemies @ 0x0042EFB0`, and `HasBoss @ 0x0042F1F0`.
+
+VC7 source-shape note: remote Boss-register opcodes retain target-observed
+repeated selector resolution; no Boss pointer is cached across those reads.
+Direct manager-member expressions otherwise reproduce the original
+instructions naturally.  During migration, the first focused comparison
+correctly rejected relocation metadata that combined the new manager symbol
+with the old field address as its base; rebasing those entries to
+`g_EnemyManager @ 0x00577F20` restored the field addend and exact target
+resolution without masking a byte difference.
+
+VC7 oracle: post-rename focused replay passed **316 / 316** accepted units.
+Target-pinned packets for `Initialize`, `OnUpdate`, `OnDrawImpl`, both spawn
+paths, `EclTimeline::Run`, and `RunEcl` independently replayed exact.  The
+required non-reuse `verify-exact-units.py --all --json` cold-built all 75
+configured objects and passed **1,105 / 1,105** with no failures.  A
+subsequent normal VC7 production image linked successfully.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiled and linked
+the complete i386 target, and `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 plus all
+fixed target-owned layout symbols.  No isolated automated EnemyManager
+gameplay smoke exists, so no runtime smoke is claimed.
+
+Result: the semantic router falls from 1,127 to 1,091 raw-member candidates;
+absolute-address, anonymous-identifier, and opaque-storage candidates remain
+82, 592, and 75.  These are routing aids, not completion percentages.  This
+formally closes the **Enemy/ECL orchestration semantic milestone**: combat,
+phase callbacks, interpreter context, motion, control/presentation, trail and
+attached effects, spawn/pool ownership, Boss routing, timelines, and manager
+update/draw state are typed and dual-oracle locked.  The claim is limited to
+those recovered families and does not imply whole-program semantic
+completion.  The next high-value milestone should recover the still-dense
+Player core state and its adjacent PlayerBomb protocol.

@@ -240,6 +240,24 @@ producer-only phase-end value remain evidence-limited.  The EnemyManager
 pool/list and global update-state fields are the final coherent family before
 declaring Enemy/ECL orchestration closure.
 
+The eighth Enemy/ECL orchestration batch closes that final manager family.
+The spawn template, 481-element Enemy array (480 active pool entries plus the
+target-visible failure sentinel), eight Boss slots, drop scheduler, active
+count, opcode-163 state, sixteen timelines, manager timer, four draw-list
+heads, two Enemy ANM banks, spawn-failure state, four timeline event slots,
+and timeline-spawn suppression now share asserted `EnemyManager` owners.  The
+old `g_EclEnemyTableF54CC0` and two drop-counter globals were overlapping
+analysis aliases inside `g_EnemyManager`, not separate production storage;
+their declarations, Linux aliases, ledgers, and relocation identities are
+retired.  Important helpers are tracked as `UpdateSubrank`,
+`KillAllNonBossEnemies`, and `HasBoss`.  Focused replay passed **316 / 316**,
+seven target-pinned packets replayed exact, a non-reuse cold replay passed
+**1,105 / 1,105**, the normal VC7 image linked, and the complete i386 Linux
+build/layout verifier passed.  This formally closes the bounded **Enemy/ECL
+orchestration semantic milestone**.  The next high-value milestone is Player
+core state together with its adjacent PlayerBomb protocol; whole-program
+semantic completion remains open.
+
 Select the next independent field family with:
 
 ```bash
@@ -987,7 +1005,7 @@ extent ends exactly at `g_EclCallParameters @ 0x004ECE20`. It also rebound
 GameManager/Player/subsystem singletons, ZunTimer calls, Enemy methods, the ECL
 timeline lane, canonical `fabsf`, and the target-exact `0x0041FD20` /
 `0x0042ADB0` helpers. The last data alias was proven to be the member now named
-`g_EnemyManager.firstEnemy.bulletSpawnDescriptor`: `BulletSpawnDescriptor` is
+`g_EnemyManager.spawnTemplate.bulletSpawnDescriptor`: `BulletSpawnDescriptor` is
 exactly `0x210` bytes and its address is `0x00577F20 + 0x2E24 = 0x0057AD44`, matching
 the target `memcpy` source. A no-`/FORCE` diagnostic link of production objects
 plus EclRun, EclDependencies, EclHelpers, EclOperandsInt/Float, EnemyTimeline,

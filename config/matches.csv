@@ -733,7 +733,7 @@ address,name,size,status,match_percent,unit,evidence
 0x004152A0,th08::Spellcard::StartSpell,2483,matching,100.00,spellcard-start-spell,python3 scripts/compare-function.py spellcard-start-spell --json
 0x00437DDD,th08::Gui::FUN_00437ddd,128,matching,100.00,gui-fun-00437ddd,python3 scripts/compare-function.py gui-fun-00437ddd --json
 0x0042B2F0,th08::Enemy::DetachFromParentChain,117,matching,100.00,enemy-fun-0042b2f0,python3 scripts/compare-function.py enemy-fun-0042b2f0 --json
-0x0042EFB0,th08::EnemyManager::FUN_0042efb0,575,matching,100.00,enemy-manager-fun-0042efb0,python3 scripts/compare-function.py enemy-manager-fun-0042efb0 --json
+0x0042EFB0,th08::EnemyManager::KillAllNonBossEnemies,575,matching,100.00,enemy-manager-kill-all-non-boss-enemies,python3 scripts/compare-function.py enemy-manager-kill-all-non-boss-enemies --json
 0x00430AA0,th08::BulletManager::DespawnBullets,651,matching,100.00,bullet-manager-despawn-bullets,python3 scripts/compare-function.py bullet-manager-despawn-bullets --json
 0x004161B0,th08::Spellcard::EndSpell,2331,matching,100.00,spellcard-end-spell,python3 scripts/compare-function.py spellcard-end-spell --json
 0x00418050,th08::Spellcard::DeletedCallback,157,matching,100.00,spellcard-deleted-callback,python3 scripts/compare-function.py spellcard-deleted-callback --json
@@ -788,7 +788,7 @@ address,name,size,status,match_percent,unit,evidence
 0x004284B0,th08::EffectManager::AddedCallback,216,matching,100.00,effect-manager-added-callback,python3 scripts/compare-function.py effect-manager-added-callback --json
 0x00428590,th08::EffectManager::DeletedCallback,132,matching,100.00,effect-manager-deleted-callback,python3 scripts/compare-function.py effect-manager-deleted-callback --json
 0x00428620,th08::EffectManager::RegisterChain,135,matching,100.00,effect-manager-register-chain,python3 scripts/compare-function.py effect-manager-register-chain --json
-0x0042F1F0,th08::EnemyManager::FUN_0042f1f0,64,matching,100.00,enemy-manager-has-indexed-enemy,python3 scripts/compare-function.py enemy-manager-has-indexed-enemy --json
+0x0042F1F0,th08::EnemyManager::HasBoss,64,matching,100.00,enemy-manager-has-boss,python3 scripts/compare-function.py enemy-manager-has-boss --json
 0x0044A230,th08::Player::FUN_0044a230,302,matching,100.00,player-bullet-collision-or-cancel,python3 scripts/compare-function.py player-bullet-collision-or-cancel --json
 0x0044A360,th08::Player::FUN_0044a360,272,matching,100.00,player-deadly-aabb-contact,python3 scripts/compare-function.py player-deadly-aabb-contact --json
 0x0044A470,th08::Player::FUN_0044a470,303,matching,100.00,player-aux-collision-graze,python3 scripts/compare-function.py player-aux-collision-graze --json
@@ -938,7 +938,7 @@ address,name,size,status,match_percent,unit,evidence
 0x0042DFB0,th08::EclManager::GetTimelineCount,20,matching,100.00,ecl-manager-get-timeline-count,python3 scripts/compare-function.py ecl-manager-get-timeline-count --json
 0x0042DFD0,th08::EclManager::GetTimeline,25,matching,100.00,ecl-manager-get-timeline,python3 scripts/compare-function.py ecl-manager-get-timeline --json
 0x0042C290,th08::Enemy::CheckPlayerCollision,284,matching,100.00,enemy-player-contact-0042c290,python3 scripts/compare-function.py enemy-player-contact-0042c290 --json
-0x0042C3B0,th08::EnemyManager::FUN_0042c3b0,110,matching,100.00,enemy-manager-rank-timer-0042c3b0,python3 scripts/compare-function.py enemy-manager-rank-timer-0042c3b0 --json
+0x0042C3B0,th08::EnemyManager::UpdateSubrank,110,matching,100.00,enemy-manager-update-subrank,python3 scripts/compare-function.py enemy-manager-update-subrank --json
 0x0042C420,th08::Enemy::UpdateYoukaiAlignment,367,matching,100.00,enemy-youkai-state-sync-0042c420,python3 scripts/compare-function.py enemy-youkai-state-sync-0042c420 --json
 0x0042DEB0,th08::Enemy::IntegrateVelocity,252,matching,100.00,enemy-integrate-motion-0042deb0,python3 scripts/compare-function.py enemy-integrate-motion-0042deb0 --json
 0x0042B490,th08::Enemy::HandleLifeCallback,1180,matching,100.00,enemy-phase-health-transition-0042b490,python3 scripts/compare-function.py enemy-phase-health-transition-0042b490 --json

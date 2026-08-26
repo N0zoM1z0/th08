@@ -739,7 +739,7 @@ th08::Gui::gui_fun_00437edc
 th08::Spellcard::StartSpell
 th08::Gui::FUN_00437ddd
 th08::Enemy::DetachFromParentChain
-th08::EnemyManager::FUN_0042efb0
+th08::EnemyManager::KillAllNonBossEnemies
 th08::BulletManager::DespawnBullets
 th08::Spellcard::EndSpell
 th08::Spellcard::DeletedCallback
@@ -793,7 +793,7 @@ th08::EffectManager::OnDraw
 th08::EffectManager::AddedCallback
 th08::EffectManager::DeletedCallback
 th08::EffectManager::RegisterChain
-th08::EnemyManager::FUN_0042f1f0
+th08::EnemyManager::HasBoss
 th08::Player::FUN_0044a230
 th08::Player::FUN_0044a360
 th08::Player::FUN_0044a470
@@ -943,7 +943,7 @@ th08::FUN_0042bc50
 th08::EclManager::GetTimelineCount
 th08::EclManager::GetTimeline
 th08::Enemy::CheckPlayerCollision
-th08::EnemyManager::FUN_0042c3b0
+th08::EnemyManager::UpdateSubrank
 th08::Enemy::UpdateYoukaiAlignment
 th08::Enemy::IntegrateVelocity
 th08::Enemy::HandleLifeCallback

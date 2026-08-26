@@ -253,7 +253,7 @@ than an opcode-127-local expression problem.
 ## Opcode 87: a hidden float temporary is the RunEcl frame-size hinge
 
 The decisive frame mismatch was not caused by the tail.  Target opcode 87
-performs `if (enemyTable[ReadInt(2)])` directly, then assigns a conditional
+performs `if (bosses[ReadInt(2)])` directly, then assigns a conditional
 float expression straight into `*WriteFloat(...)`.  This makes VC7 allocate a
 hidden float result home at `[ebp-0x370]` after the two existing integer
 resolver homes at `-0x368/-0x36C`.
@@ -268,10 +268,11 @@ home bytes.
 Target-faithful source shape:
 
 ```cpp
-if (g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)])
+if (g_EnemyManager.bosses[ReadInt(enemy, instruction, 2)])
     *WriteFloat(enemy, instruction, 0) =
         (instruction->operandFlags & 2U)
-            ? g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)]
+            ? reinterpret_cast<EclOperands::EnemyOverlay *>(
+                  g_EnemyManager.bosses[ReadInt(enemy, instruction, 2)])
                   ->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 1));
 ```

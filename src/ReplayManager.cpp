@@ -296,7 +296,7 @@ ChainCallbackResult ReplayManager::OnUpdateFrameControl(ReplayManager *replayMan
         return CHAIN_CALLBACK_RESULT_RESTART_FROM_FIRST_JOB;
     }
 
-    if (!g_GameManager.flags.unk9 && g_GameManager.replayMode == 2 && !g_EnemyManager.FUN_0042f1f0() &&
+    if (!g_GameManager.flags.unk9 && g_GameManager.replayMode == 2 && !g_EnemyManager.HasBoss() &&
         replayManager->frameCounter % 5 != 4)
     {
         return CHAIN_CALLBACK_RESULT_RESTART_FROM_FIRST_JOB;

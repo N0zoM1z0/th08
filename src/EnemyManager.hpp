@@ -469,15 +469,26 @@ struct EnemyManager
 {
     EnemyManager();
 
-    Enemy firstEnemy;
+    Enemy spawnTemplate;
     Enemy enemies[481];
-    unknown_fields(0x9dcda0, 0x30);
+    Enemy *bosses[8];
+    u16 enemyDropCounter;
+    u16 enemyDropScheduleIndex;
+    i32 activeEnemyCount;
+    unknown_fields(0x9dcdc8, 4);
+    i32 opcode163Value;
     EclTimeline timelines[16];
     ZunTimer timer;
-    unknown_fields(0x9dcedc, 0x34);
+    Enemy *drawGroupHeads[4];
+    AnmLoaded *enemyAnm;
+    AnmLoaded *alternateEnemyAnm;
+    unknown_fields(0x9dcef4, 4);
+    i32 lastSpawnFailed;
+    i32 timelineEventSlots[4];
+    i32 suppressTimelineSpawns;
 
     void Initialize();
-    void FUN_0042c3b0();
+    void UpdateSubrank();
     static ZunResult RegisterChain();
     static ChainCallbackResult OnUpdate(EnemyManager *enemyManager);
     static ChainCallbackResult OnDrawHighPrio(EnemyManager *enemyManager);
@@ -487,11 +498,26 @@ struct EnemyManager
     static ZunResult DeletedCallback(EnemyManager *enemyManager);
     void *SpawnEnemy1(i32 type, const D3DXVECTOR3 *position, i32 a, i32 b, i32 c, i32 flags);
     void *SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i32 b, i32 c, i32 *contextInts);
-    i32 FUN_0042efb0(i32 maxScore, i32 totalScore);
-    i32 FUN_0042f1f0();
+    i32 KillAllNonBossEnemies(i32 maxScore, i32 totalScore);
+    i32 HasBoss();
     static void CutChain();
 };
 C_ASSERT(sizeof(EnemyManager) == 0x9dcf10);
+C_ASSERT(offsetof(EnemyManager, spawnTemplate) == 0x0);
+C_ASSERT(offsetof(EnemyManager, enemies) == 0x53d0);
+C_ASSERT(offsetof(EnemyManager, bosses) == 0x9dcda0);
+C_ASSERT(offsetof(EnemyManager, enemyDropCounter) == 0x9dcdc0);
+C_ASSERT(offsetof(EnemyManager, enemyDropScheduleIndex) == 0x9dcdc2);
+C_ASSERT(offsetof(EnemyManager, activeEnemyCount) == 0x9dcdc4);
+C_ASSERT(offsetof(EnemyManager, opcode163Value) == 0x9dcdcc);
+C_ASSERT(offsetof(EnemyManager, timelines) == 0x9dcdd0);
+C_ASSERT(offsetof(EnemyManager, timer) == 0x9dced0);
+C_ASSERT(offsetof(EnemyManager, drawGroupHeads) == 0x9dcedc);
+C_ASSERT(offsetof(EnemyManager, enemyAnm) == 0x9dceec);
+C_ASSERT(offsetof(EnemyManager, alternateEnemyAnm) == 0x9dcef0);
+C_ASSERT(offsetof(EnemyManager, lastSpawnFailed) == 0x9dcef8);
+C_ASSERT(offsetof(EnemyManager, timelineEventSlots) == 0x9dcefc);
+C_ASSERT(offsetof(EnemyManager, suppressTimelineSpawns) == 0x9dcf0c);
 
 DIFFABLE_EXTERN(EnemyManager, g_EnemyManager);
 

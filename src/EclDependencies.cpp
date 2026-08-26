@@ -546,8 +546,7 @@ void __fastcall SetExtraAnmScript(
         if (((reinterpret_cast<Enemy *>(enemy)->flags2 >>
               ENEMY_FLAG2_ALTERNATE_ANM_BANK_SHIFT) & 1) != 0)
         {
-            (*reinterpret_cast<AnmLoaded **>(
-                reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9dcef0))
+            g_EnemyManager.alternateEnemyAnm
                 ->SetAndExecuteScriptIdx(
                     reinterpret_cast<AnmVm *>(
                         DEP_BYTES(enemy) + 0x2b0 +
@@ -556,8 +555,7 @@ void __fastcall SetExtraAnmScript(
         }
         else
         {
-            (*reinterpret_cast<AnmLoaded **>(
-                reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9dceec))
+            g_EnemyManager.enemyAnm
                 ->SetAndExecuteScriptIdx(
                     reinterpret_cast<AnmVm *>(
                         DEP_BYTES(enemy) + 0x2b0 +
@@ -616,8 +614,7 @@ EclOperands::EnemyOverlay *__fastcall SpawnChildStandard0041F110(
     }
     else
     {
-        *reinterpret_cast<i32 *>(
-            reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9dcef8) = 1;
+        g_EnemyManager.lastSpawnFailed = 1;
     }
     return child;
 }
@@ -649,8 +646,7 @@ EclOperands::EnemyOverlay *__fastcall SpawnChildAlternate0041F280(
     }
     else
     {
-        *reinterpret_cast<i32 *>(
-            reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9dcef8) = 1;
+        g_EnemyManager.lastSpawnFailed = 1;
     }
     return child;
 }
@@ -845,8 +841,8 @@ void Enemy::UpdateShotAndAnm()
             if (this->anmDirection != direction)
             {
                 anm = (((this->flags2 >> ENEMY_FLAG2_ALTERNATE_ANM_BANK_SHIFT) & 1) != 0)
-                          ? *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9dcef0)
-                          : *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9dceec);
+                          ? g_EnemyManager.alternateEnemyAnm
+                          : g_EnemyManager.enemyAnm;
 
                 switch (direction)
                 {

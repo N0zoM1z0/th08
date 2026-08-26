@@ -499,7 +499,7 @@ void Player::FUN_0044a930(Float3 *position, i32 suppressExtraItems)
 
     if (!g_GameManager.IsSoloHuman() || g_GameManager.shotType == 10)
     {
-        if (g_EnemyManager.FUN_0042f1f0() && g_GameManager.GaugeIsExtremelyYoukai())
+        if (g_EnemyManager.HasBoss() && g_GameManager.GaugeIsExtremelyYoukai())
         {
             g_ItemManager.SpawnItem(position, ITEM_TIME2, 1);
             if (!suppressExtraItems && g_Spellcard.IsActive())
@@ -1162,11 +1162,12 @@ void Player::FUN_0044c650()
                 *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFE7Fu;
                 for (i = 0; i < 8; i++)
                 {
-                    if (reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i] != NULL)
+                    if (g_EnemyManager.bosses[i] != NULL)
                     {
-                        reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]->FUN_0042adb0(0);
-                        reinterpret_cast<Enemy *>(reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i])->life = 0;
-                        reinterpret_cast<Enemy *>(reinterpret_cast<EclOperands::EnemyOverlay **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i])->flags1 &= ~ENEMY_FLAG_PAUSE_TIMER;
+                        reinterpret_cast<EclOperands::EnemyOverlay *>(
+                            g_EnemyManager.bosses[i])->FUN_0042adb0(0);
+                        g_EnemyManager.bosses[i]->life = 0;
+                        g_EnemyManager.bosses[i]->flags1 &= ~ENEMY_FLAG_PAUSE_TIMER;
                     }
                 }
                 ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 30, 1, -1, 0, 21);
@@ -1697,7 +1698,7 @@ ZunResult Player::AddedCallback(Player *player)
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2B2C) = 27;
     else
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(player) + 0xE2B2C) = 40;
-    g_EnemyManager.firstEnemy.playerShotHitAccumulator =
+    g_EnemyManager.spawnTemplate.playerShotHitAccumulator =
         player->damageAccumulatorThreshold;
     return ZUN_SUCCESS;
 }

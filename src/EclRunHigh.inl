@@ -668,13 +668,12 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
                 ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 2)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 2)));
         }
         break;
-    case 163: reinterpret_cast<i32 *>(EclRunLowProposal::g_EclEnemyTableF54CC0)[11] = TH08_ECL_READ_I(ctx, 0); break;
+    case 163: g_EnemyManager.opcode163Value = TH08_ECL_READ_I(ctx, 0); break;
     case 127:
         if (TH08_ECL_READ_I(ctx, 0) >= 0)
         {
-            EclRunLowProposal::g_EclEnemyTableF54CC0[TH08_ECL_READ_I(ctx, 0)] =
-                reinterpret_cast<EclOperands::EnemyOverlay *>(
-                    TH08_ECL_CONTEXT_ENEMY(ctx));
+            g_EnemyManager.bosses[TH08_ECL_READ_I(ctx, 0)] =
+                reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx));
             if (TH08_ECL_READ_I(ctx, 0) == 0)
             {
                 g_Gui.SetBossPresent(true);
@@ -690,7 +689,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         {
             if (reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossSlot < 4)
                 g_Gui.SetBossPresent(false);
-            EclRunLowProposal::g_EclEnemyTableF54CC0[
+            g_EnemyManager.bosses[
                 reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossSlot] = 0;
             reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1 &= ~ENEMY_FLAG_BOSS;
             g_AsciiManager.FUN_00422bb0(
@@ -1007,7 +1006,7 @@ enter_subroutine:
         }
         break;
     case 95:
-        g_EnemyManager.FUN_0042efb0(8000, 0);
+        g_EnemyManager.KillAllNonBossEnemies(8000, 0);
         break;
     case 149: TH08_ECL_AT(ctx, u16, 0x20A) = (u16)TH08_ECL_READ_I(ctx, 0); break;
     case 150:
@@ -1179,7 +1178,7 @@ enter_subroutine:
                 -reinterpret_cast<th08::Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->alignmentEffect->vm.angleVel.z;
         break;
     }
-    case 175: reinterpret_cast<i32 *>(EclRunLowProposal::g_EclEnemyTableF54CC0)[91] = TH08_ECL_READ_I(ctx, 0); break;
+    case 175: g_EnemyManager.suppressTimelineSpawns = TH08_ECL_READ_I(ctx, 0); break;
     case 177: reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->phaseStartingLife = TH08_ECL_READ_I(ctx, 0); break;
 #if !defined(TH08_ECL_RUN_HIGH_BODY)
     case 178: TH08_ECL_CONTEXT_API(ctx)->Call004224A0(TH08_ECL_CONTEXT_ENEMY(ctx)); break;

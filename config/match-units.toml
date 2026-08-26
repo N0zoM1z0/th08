@@ -3263,8 +3263,8 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x286F
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x2874
@@ -3287,8 +3287,8 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x28EA
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x291B
@@ -3299,8 +3299,8 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x2943
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x2948
@@ -3323,14 +3323,14 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x29CB
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x29DD
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x29E2
@@ -3347,8 +3347,8 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x2A24
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x2A43
@@ -3365,8 +3365,8 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x2A94
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x2AAF
@@ -3995,8 +3995,8 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x3F8A
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 addend = 0x2C
 
 [[units.relocations]]
@@ -4014,8 +4014,8 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x400C
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x4028
@@ -4080,8 +4080,8 @@ target = 0x00422C20
 [[units.relocations]]
 offset = 0x4109
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x4134
@@ -4982,7 +4982,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x55DA
 type = "REL32"
-symbol = "?FUN_0042efb0@EnemyManager@th08@@QAEHHH@Z"
+symbol = "?KillAllNonBossEnemies@EnemyManager@th08@@QAEHHH@Z"
 target = 0x0042EFB0
 
 [[units.relocations]]
@@ -5474,8 +5474,8 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x61D7
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 addend = 0x16C
 
 [[units.relocations]]
@@ -9776,7 +9776,7 @@ target = 0x00451670
 [[units.relocations]]
 offset = 0x11F
 type = "REL32"
-symbol = "?FUN_0042c3b0@EnemyManager@th08@@QAEXXZ"
+symbol = "?UpdateSubrank@EnemyManager@th08@@QAEXXZ"
 target = 0x0042C3B0
 
 [[units.relocations]]
@@ -10649,7 +10649,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x12DD
 type = "REL32"
-symbol = "?FUN_0042efb0@EnemyManager@th08@@QAEHHH@Z"
+symbol = "?KillAllNonBossEnemies@EnemyManager@th08@@QAEHHH@Z"
 target = 0x0042EFB0
 
 [[units.relocations]]
@@ -68270,11 +68270,11 @@ symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
 target = 0x0041FD20
 
 
-# Ledger name: th08::EnemyManager::FUN_0042efb0
+# Ledger name: th08::EnemyManager::KillAllNonBossEnemies
 [[units]]
-name = "enemy-manager-fun-0042efb0"
+name = "enemy-manager-kill-all-non-boss-enemies"
 object = "build/EnemyManager.obj"
-symbol = "?FUN_0042efb0@EnemyManager@th08@@QAEHHH@Z"
+symbol = "?KillAllNonBossEnemies@EnemyManager@th08@@QAEHHH@Z"
 target_address = 0x0042EFB0
 size = 0x23F
 
@@ -68512,7 +68512,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x76
 type = "REL32"
-symbol = "?FUN_0042efb0@EnemyManager@th08@@QAEHHH@Z"
+symbol = "?KillAllNonBossEnemies@EnemyManager@th08@@QAEHHH@Z"
 target = 0x0042EFB0
 
 [[units.relocations]]
@@ -71504,7 +71504,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x433
 type = "REL32"
-symbol = "?FUN_0042efb0@EnemyManager@th08@@QAEHHH@Z"
+symbol = "?KillAllNonBossEnemies@EnemyManager@th08@@QAEHHH@Z"
 target = 0x0042EFB0
 
 [[units.relocations]]
@@ -75199,8 +75199,8 @@ target = 23131400
 [[units.relocations]]
 offset = 1414
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 16075968
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 5734176
 
 [[units.relocations]]
 offset = 1429
@@ -75235,14 +75235,14 @@ target = 4387568
 [[units.relocations]]
 offset = 1491
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 16075968
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 5734176
 
 [[units.relocations]]
 offset = 1503
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 16075968
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 5734176
 
 [[units.relocations]]
 offset = 1508
@@ -81586,9 +81586,9 @@ symbol = "th08::Player::FUN_0044a930"
 target = 0x0044A930
 
 [[units]]
-name = "enemy-manager-has-indexed-enemy"
+name = "enemy-manager-has-boss"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "th08::EnemyManager::FUN_0042f1f0"
+symbol = "th08::EnemyManager::HasBoss"
 target_address = 0x0042F1F0
 size = 64
 
@@ -81801,7 +81801,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 374
 type = "REL32"
-symbol = "?FUN_0042f1f0@EnemyManager@th08@@QAEHXZ"
+symbol = "?HasBoss@EnemyManager@th08@@QAEHXZ"
 target = 0x0042F1F0
 
 [[units.relocations]]
@@ -82792,8 +82792,8 @@ target = 0x004400A0
 [[units.relocations]]
 offset = 131
 type = "DIR32"
-symbol = "?g_EnemyDropCounter@th08@@3GA"
-target = 0x00F54CE0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 176
@@ -82810,8 +82810,8 @@ target = 0x00425430
 [[units.relocations]]
 offset = 198
 type = "DIR32"
-symbol = "?g_EnemyDropScheduleIndex@th08@@3GA"
-target = 0x00F54CE2
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 205
@@ -82834,38 +82834,38 @@ target = 0x004400A0
 [[units.relocations]]
 offset = 232
 type = "DIR32"
-symbol = "?g_EnemyDropScheduleIndex@th08@@3GA"
-target = 0x00F54CE2
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 242
 type = "DIR32"
-symbol = "?g_EnemyDropScheduleIndex@th08@@3GA"
-target = 0x00F54CE2
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 249
 type = "DIR32"
-symbol = "?g_EnemyDropScheduleIndex@th08@@3GA"
-target = 0x00F54CE2
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 261
 type = "DIR32"
-symbol = "?g_EnemyDropScheduleIndex@th08@@3GA"
-target = 0x00F54CE2
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 270
 type = "DIR32"
-symbol = "?g_EnemyDropCounter@th08@@3GA"
-target = 0x00F54CE0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 281
 type = "DIR32"
-symbol = "?g_EnemyDropCounter@th08@@3GA"
-target = 0x00F54CE0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 367
@@ -83171,7 +83171,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 677
 type = "REL32"
-symbol = "th08::EnemyManager::FUN_0042f1f0"
+symbol = "th08::EnemyManager::HasBoss"
 target = 0x0042F1F0
 
 [[units.relocations]]
@@ -102199,9 +102199,9 @@ symbol = "?FUN_0044a360@Player@th08@@QAEHPAUFloat3@2@0@Z"
 target = 0x0044A360
 
 [[units]]
-name = "enemy-manager-rank-timer-0042c3b0"
+name = "enemy-manager-update-subrank"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "th08::EnemyManager::FUN_0042c3b0"
+symbol = "th08::EnemyManager::UpdateSubrank"
 target_address = 0x0042C3B0
 size = 0x6E
 
@@ -103219,7 +103219,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x8E
 type = "REL32"
-symbol = "?FUN_0042f1f0@EnemyManager@th08@@QAEHXZ"
+symbol = "?HasBoss@EnemyManager@th08@@QAEHXZ"
 target = 0x0042F1F0
 
 # Ledger name: th08::ReplayManager::OnUpdateHighPrioDemo
@@ -104964,8 +104964,8 @@ target = 0x0042F320
 [[units.relocations]]
 offset = 0x9F
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0xB6
@@ -105018,8 +105018,8 @@ target = 0x0042F320
 [[units.relocations]]
 offset = 0x17E
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x195
@@ -105054,8 +105054,8 @@ target = 0x0042F320
 [[units.relocations]]
 offset = 0x21A
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x231
@@ -105102,8 +105102,8 @@ target = 0x0042F320
 [[units.relocations]]
 offset = 0x2B4
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x2CB
@@ -105168,8 +105168,8 @@ target = 0x00418110
 [[units.relocations]]
 offset = 0x370
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x38F
@@ -105186,14 +105186,14 @@ target = 0x00406FA0
 [[units.relocations]]
 offset = 0x3A9
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x3BC
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x3D3
@@ -105204,14 +105204,14 @@ target = 0x00418110
 [[units.relocations]]
 offset = 0x40C
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x424
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x43A
@@ -105222,14 +105222,14 @@ target = 0x00418110
 [[units.relocations]]
 offset = 0x460
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x478
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x48D
@@ -107386,14 +107386,14 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0xC3
 type = "REL32"
-symbol = "?FUN_0042f1f0@EnemyManager@th08@@QAEHXZ"
+symbol = "?HasBoss@EnemyManager@th08@@QAEHXZ"
 target = 0x0042F1F0
 
 [[units.relocations]]
 offset = 0xD0
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0xF3
@@ -107404,14 +107404,14 @@ target = 0x004B4984
 [[units.relocations]]
 offset = 0xFF
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x14A
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x155
@@ -107525,14 +107525,14 @@ target = 0x004B4988
 [[units.relocations]]
 offset = 0xBF
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0xCB
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0xEE
@@ -107543,14 +107543,14 @@ target = 0x004B4984
 [[units.relocations]]
 offset = 0xFA
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x145
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x150
@@ -108273,8 +108273,8 @@ target = 0x00422C20
 [[units.relocations]]
 offset = 0x79
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0xA4
@@ -108315,8 +108315,8 @@ target = 0x0042A820
 [[units.relocations]]
 offset = 0x10A
 type = "DIR32"
-symbol = "?g_EclEnemyTableF54CC0@EclRunLowProposal@th08@@3PAPAUEnemyOverlay@EclOperands@2@A"
-target = 0x00F54CC0
+symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
+target = 0x00577F20
 
 [[units.relocations]]
 offset = 0x114

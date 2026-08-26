@@ -1043,7 +1043,7 @@ void Spellcard::EndSpell()
         if (((this->flags >> 3) & 1) == 0)
         {
             enemyScore = g_BulletManager.DespawnBullets(8000, 1);
-            enemyScore = g_EnemyManager.FUN_0042efb0(8000, enemyScore);
+            enemyScore = g_EnemyManager.KillAllNonBossEnemies(8000, enemyScore);
             if (enemyScore != 0)
             {
                 g_GameManager.AddScore(enemyScore);

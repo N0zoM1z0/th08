@@ -403,7 +403,7 @@ th08::Enemy::Despawn,0x42bcf0,0x1b0,__thiscall,,void,Enemy*
 th08::Enemy::DropItems,0x42bea0,0x2de,__thiscall,,void,Enemy*,i32
 th08::Enemy::ClampPosition,0x42c180,0x10e,__thiscall,,void,Enemy*
 th08::Enemy::CheckPlayerCollision,0x42c290,0x11c,__thiscall,,void,Enemy*,Float3*,Float3*
-th08::EnemyManager::FUN_0042c3b0,0x42c3b0,0x6e,__thiscall,,void,EnemyManager*
+th08::EnemyManager::UpdateSubrank,0x42c3b0,0x6e,__thiscall,,void,EnemyManager*
 th08::Enemy::UpdateYoukaiAlignment,0x42c420,0x16f,__thiscall,,void,Enemy*
 th08::EnemyManager::RegisterChain,0x42c590,0xcb,__fastcall,,ZunResult
 th08::EnemyManager::OnUpdate,0x42c660,0x1836,__thiscall,,u32,EnemyManager*
@@ -419,8 +419,8 @@ th08::EnemyManager::OnDrawLowPrio,0x42eb90,0x5c,__fastcall,,ChainCallbackResult,
 th08::EnemyManager::AddedCallback,0x42ebf0,0x282,__thiscall,,u32,EnemyManager*
 th08::EnemyManager::DeletedCallback,0x42ee80,0xe1,__fastcall,,ZunResult,EnemyManager*
 th08::EnemyManager::CutChain,0x42ef70,0x32,__cdecl,,void
-th08::EnemyManager::FUN_0042efb0,0x42efb0,0x23f,__thiscall,,i32,EnemyManager*,i32,i32
-th08::EnemyManager::FUN_0042f1f0,0x42f1f0,0x40,__thiscall,,i32,EnemyManager*
+th08::EnemyManager::KillAllNonBossEnemies,0x42efb0,0x23f,__thiscall,,i32,EnemyManager*,i32,i32
+th08::EnemyManager::HasBoss,0x42f1f0,0x40,__thiscall,,i32,EnemyManager*
 th08::GameManager::IsSoloHuman,0x42f230,0x40,__thiscall,,i32,GameManager*
 th08::GameManager::IsSoloYoukai,0x42f270,0x40,__thiscall,,i32,GameManager*
 th08::GameManager::GetLives,0x42f2b0,0x19,__thiscall,,ulonglong,GameManager*

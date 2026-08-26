@@ -55,9 +55,6 @@ SECTIONS
 
     _ZN4th0831g_EnemyManagerDrawChainHighPrioE = 0x00577f00;
     _ZN4th0814g_EnemyManagerE = 0x00577f20;
-    _ZN4th0817EclRunLowProposal21g_EclEnemyTableF54CC0E = 0x00f54cc0;
-    _ZN4th0818g_EnemyDropCounterE = 0x00f54ce0;
-    _ZN4th0824g_EnemyDropScheduleIndexE = 0x00f54ce2;
     _ZN4th0823g_EnemyManagerCalcChainE = 0x00f54e30;
     _ZN4th0830g_EnemyManagerDrawChainLowPrioE = 0x00f54e50;
     _ZN4th0824g_BulletManagerDrawChainE = 0x00f54e70;

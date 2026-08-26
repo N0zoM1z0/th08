@@ -21,8 +21,6 @@ i32 IsResourceReloadEnabled();
 f32 __stdcall FUN_0042eb10(f32 angle1, f32 angle2, f32 factor);
 
 DIFFABLE_STATIC(EnemyManager, g_EnemyManager);
-DIFFABLE_STATIC(u16, g_EnemyDropCounter);
-DIFFABLE_STATIC(u16, g_EnemyDropScheduleIndex);
 DIFFABLE_STATIC_ARRAY_ASSIGN(u8, 32, g_EnemyDropSchedule) = {
     0, 0, 1, 0, 1, 0, 0, 0,
     1, 1, 0, 0, 1, 1, 1, 0,
@@ -136,14 +134,14 @@ void Enemy::UpdateMovement()
 #pragma var_order(i, enemy, this)
 void EnemyManager::Initialize()
 {
-    u8 *enemy = reinterpret_cast<u8 *>(this) + 0x53D0;
+    u8 *enemy = reinterpret_cast<u8 *>(&this->enemies[0]);
     i32 i;
 
     memset(this, 0, 0x9DCF10);
     for (i = 0; (u32)i < 4; i++)
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x9DCEFC + i * 4) = -1;
+        this->timelineEventSlots[i] = -1;
 
-    enemy = reinterpret_cast<u8 *>(this);
+    enemy = reinterpret_cast<u8 *>(&this->spawnTemplate);
     memset(enemy, 0, 0x53D0);
     for (i = 0; i < 2; i++)
         *reinterpret_cast<i16 *>(enemy + i * 0x2A4 + 0x4CA) = -1;
@@ -302,7 +300,7 @@ void EnemyOverlay::FUN_0042adb0(i32 mode)
                     g_ItemManager.SpawnItem(&position, ITEM_TIME, 3);
                 }
 
-                if (!g_EnemyManager.FUN_0042f1f0() || g_Spellcard.IsActive())
+                if (!g_EnemyManager.HasBoss() || g_Spellcard.IsActive())
                 {
                     reinterpret_cast<Enemy *>(enemy)->itemDropType = 8;
                     reinterpret_cast<Enemy *>(enemy)->DropItems(0);
@@ -477,7 +475,7 @@ i32 Enemy::HandleLifeCallback()
             this->enemy_fun_00415c80();
             this->activeEclCallStackDepth = 0;
             this->flags2 &= ~ENEMY_FLAG2_DAMAGE_FEEDBACK_MASK;
-            this->bulletSpawnDescriptor = g_EnemyManager.firstEnemy.bulletSpawnDescriptor;
+            this->bulletSpawnDescriptor = g_EnemyManager.spawnTemplate.bulletSpawnDescriptor;
             this->shootIntervalFrames = 0;
             reinterpret_cast<EclOperands::EnemyOverlay *>(this)->FUN_0042adb0(1);
 
@@ -675,7 +673,7 @@ i32 Enemy::HandleTimerCallback()
         }
     }
 
-    this->bulletSpawnDescriptor = g_EnemyManager.firstEnemy.bulletSpawnDescriptor;
+    this->bulletSpawnDescriptor = g_EnemyManager.spawnTemplate.bulletSpawnDescriptor;
     this->shootIntervalFrames = 0;
     this->enemy_fun_00415c80();
     this->activeEclCallStackDepth = 0;
@@ -720,8 +718,7 @@ void Enemy::Despawn()
     if (((this->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0 && this->bossSlot < 4)
     {
         g_Gui.SetBossPresent(false);
-        EclRunLowProposal::g_EclEnemyTableF54CC0[
-            this->bossSlot] = NULL;
+        g_EnemyManager.bosses[this->bossSlot] = NULL;
         this->flags1 &= ~ENEMY_FLAG_BOSS;
         g_AsciiManager.FUN_00422bb0(
             this->bossSlot, 2);
@@ -734,8 +731,7 @@ void Enemy::Despawn()
         this->ReleaseAttachedEffects();
 
     if (((this->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0)
-        EclRunLowProposal::g_EclEnemyTableF54CC0[
-            this->bossSlot] = NULL;
+        g_EnemyManager.bosses[this->bossSlot] = NULL;
 
     g_ReplayManager->flags |= 0x20;
 
@@ -771,19 +767,19 @@ void Enemy::DropItems(i32 mode)
     }
     else if (this->itemDropType == -1)
     {
-        if ((g_EnemyDropCounter % 3) == 0)
+        if ((g_EnemyManager.enemyDropCounter % 3) == 0)
         {
             g_EffectManager.SpawnEffect(
                 this->deathAnm2 + 4,
                 reinterpret_cast<D3DXVECTOR3 *>(&this->worldPosition), 6, -1);
             g_ItemManager.SpawnItem(&this->worldPosition,
-                                    static_cast<ItemType>(g_EnemyDropSchedule[g_EnemyDropScheduleIndex]),
+                                    static_cast<ItemType>(g_EnemyDropSchedule[g_EnemyManager.enemyDropScheduleIndex]),
                                     mode != 0);
-            ++g_EnemyDropScheduleIndex;
-            if (g_EnemyDropScheduleIndex >= 32)
-                g_EnemyDropScheduleIndex = 0;
+            ++g_EnemyManager.enemyDropScheduleIndex;
+            if (g_EnemyManager.enemyDropScheduleIndex >= 32)
+                g_EnemyManager.enemyDropScheduleIndex = 0;
         }
-        ++g_EnemyDropCounter;
+        ++g_EnemyManager.enemyDropCounter;
     }
 
     if (this->powerOrPointItemDropCount != 0)
@@ -865,7 +861,7 @@ void Enemy::CheckPlayerCollision(Float3 *position, Float3 *size)
 
 // FUNCTION: th08 0x42c3b0
 #pragma var_order(interval, this)
-void EnemyManager::FUN_0042c3b0()
+void EnemyManager::UpdateSubrank()
 {
     i32 interval;
 
@@ -1020,7 +1016,7 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
 
     for (i = drawGroup; i < chainPriority; ++i)
     {
-        enemy = *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x9DCEDC + i * 4);
+        enemy = reinterpret_cast<u8 *>(this->drawGroupHeads[i]);
         while (enemy != NULL)
         {
             vm = reinterpret_cast<AnmVm *>(enemy + 0x2B0);
@@ -1287,22 +1283,21 @@ ChainCallbackResult EnemyManager::OnDrawLowPrio(EnemyManager *enemyManager)
 #pragma var_order(enemy, savedEcl0, savedEcl1, markerPosition, enemyManager)
 ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
 {
-    Enemy *enemy = reinterpret_cast<Enemy *>(reinterpret_cast<u8 *>(enemyManager) + 0x53D0);
+    Enemy *enemy = &enemyManager->enemies[0];
     i32 savedEcl0;
     i32 savedEcl1;
 
     if (IsResourceReloadEnabled())
     {
-        *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(enemyManager) + 0x9DCEEC) =
-            g_AnmManager->PreloadAnm(7, "enemy.anm");
-        if (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(enemyManager) + 0x9DCEEC) == NULL)
+        enemyManager->enemyAnm = g_AnmManager->PreloadAnm(7, "enemy.anm");
+        if (enemyManager->enemyAnm == NULL)
         {
             return ZUN_ERROR;
         }
     }
     else
     {
-        *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(enemyManager) + 0x9DCEEC) = g_AnmManager->GetAnm(7);
+        enemyManager->enemyAnm = g_AnmManager->GetAnm(7);
     }
 
     if (!IsDisableResourceReload())
@@ -1310,20 +1305,20 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
         if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBAC) >> 14) & 1) == 0 ||
             *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBB0) < 0xCD)
         {
-            *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(enemyManager) + 0x9DCEF0) =
+            enemyManager->alternateEnemyAnm =
                 g_AnmManager->PreloadAnm(8, g_StageEnemyAnms[g_GameManager.currentStage]);
-            if (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(enemyManager) + 0x9DCEF0) == NULL)
+            if (enemyManager->alternateEnemyAnm == NULL)
             {
                 return ZUN_ERROR;
             }
         }
         else
         {
-            *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(enemyManager) + 0x9DCEF0) =
+            enemyManager->alternateEnemyAnm =
                 g_AnmManager->PreloadAnm(
                     8, g_SpellEnemyAnms[
                            *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DBB0) - 0xCD]);
-            if (*reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(enemyManager) + 0x9DCEF0) == NULL)
+            if (enemyManager->alternateEnemyAnm == NULL)
             {
                 return ZUN_ERROR;
             }
@@ -1331,7 +1326,7 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
     }
     else
     {
-        *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(enemyManager) + 0x9DCEF0) = g_AnmManager->GetAnm(8);
+        enemyManager->alternateEnemyAnm = g_AnmManager->GetAnm(8);
     }
 
     if (!IsDisableResourceReload())
@@ -1386,8 +1381,8 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
         reinterpret_cast<i32 *>(&g_EclManager)[1] = savedEcl1;
     }
 
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(enemyManager) + 0x9DCDC0) = g_Rng.GetRandomU16InRange(3);
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(enemyManager) + 0x9DCDC2) = g_Rng.GetRandomU16InRange(8);
+    enemyManager->enemyDropCounter = g_Rng.GetRandomU16InRange(3);
+    enemyManager->enemyDropScheduleIndex = g_Rng.GetRandomU16InRange(8);
     D3DXVECTOR3 markerPosition(-999.0f, -999.0f, -999.0f);
     g_AsciiManager.SetBossMarkerPosition(0, &markerPosition);
     g_AsciiManager.SetBossMarkerPosition(1, &markerPosition);
@@ -1400,10 +1395,10 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
 #pragma var_order(i, enemy, markerPosition, enemyManager)
 ZunResult EnemyManager::DeletedCallback(EnemyManager *enemyManager)
 {
-    Enemy *enemy = reinterpret_cast<Enemy *>(reinterpret_cast<u8 *>(enemyManager) + 0x53D0);
+    Enemy *enemy = &enemyManager->enemies[0];
     i32 i = 0;
 
-    for (; i < 0x1E0; ++i, enemy = reinterpret_cast<Enemy *>(reinterpret_cast<u8 *>(enemy) + 0x53D0))
+    for (; i < 0x1E0; ++i, enemy++)
     {
         enemy->ReleaseChildEclBlocks();
     }
@@ -1439,7 +1434,7 @@ void EnemyManager::CutChain()
 
 // FUNCTION: th08 0x42efb0
 #pragma var_order(score, totalScore, enemy, enemyIndex, itemIndex, this)
-i32 EnemyManager::FUN_0042efb0(i32 maxScore, i32 initialScore)
+i32 EnemyManager::KillAllNonBossEnemies(i32 maxScore, i32 initialScore)
 {
     i32 itemIndex;
     i32 enemyIndex;
@@ -1447,7 +1442,7 @@ i32 EnemyManager::FUN_0042efb0(i32 maxScore, i32 initialScore)
     i32 totalScore;
     i32 score;
 
-    enemy = reinterpret_cast<u8 *>(this) + 0x53D0;
+    enemy = reinterpret_cast<u8 *>(&this->enemies[0]);
     totalScore = initialScore;
     score = 2000;
     for (enemyIndex = 0; enemyIndex < 480; enemyIndex++, enemy += 0x53D0)
@@ -1518,12 +1513,12 @@ i32 EnemyManager::FUN_0042efb0(i32 maxScore, i32 initialScore)
 }
 
 // FUNCTION: th08 0x42f1f0
-i32 EnemyManager::FUN_0042f1f0()
+i32 EnemyManager::HasBoss()
 {
     i32 i;
     for (i = 0; i < 8; i++)
     {
-        if (*reinterpret_cast<void **>(reinterpret_cast<u8 *>(this) + 0x9DCDA0 + i * 4) != NULL)
+        if (this->bosses[i] != NULL)
             return 1;
     }
     return 0;

@@ -621,7 +621,7 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 ### Enemy contact and motion branch ownership
 
 - `Enemy::CheckPlayerCollision @ 0x42c290` uses one source-visible `Float3 collisionSize` plus two compiler-owned return buffers for `size / 0.7f` and `size / 1.5f`. The route/attachment gate is not byte-equivalent as one OR expression: the target calls `HasAttachedEnemy()` only for route ids 0/4 and uses a short `je` into the collision body followed by a near jump to the epilogue when an attached enemy exists. Preserve that nested early-return ownership.
-- `EnemyManager::FUN_0042c3b0` preserves the arithmetic grouping `GetLives() * 4 * 60`, which VC7 lowers to `shl eax,2; imul eax,eax,0x3c`; replacing it with `* 240` changes the target instruction shape. Its dialog gate likewise matches as one outer `if (!IsDialogPresent())` block rather than an explicit early return.
+- `EnemyManager::UpdateSubrank` preserves the arithmetic grouping `GetLives() * 4 * 60`, which VC7 lowers to `shl eax,2; imul eax,eax,0x3c`; replacing it with `* 240` changes the target instruction shape. Its dialog gate likewise matches as one outer `if (!IsDialogPresent())` block rather than an explicit early return.
 - `Enemy::IntegrateVelocity` places the normal X integration block before the mirrored-X block: spell bit 18 is tested as `if (bit == 0) add; else subtract`. Reversing the lexical arms leaves semantics unchanged but swaps the target `jne` and the physical `fadd/fsubr` opcodes.
 
 ### Enemy phase transitions: shared return blocks and tiny-member TU ownership

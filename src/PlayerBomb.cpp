@@ -567,10 +567,9 @@ void __fastcall FUN_0040d100(Player *player)
 
         for (i = 0; i < 8; i++)
         {
-            if (reinterpret_cast<Enemy **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i] != NULL)
+            if (g_EnemyManager.bosses[i] != NULL)
             {
-                reinterpret_cast<Enemy **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]->flags1 &=
-                    ~ENEMY_FLAG_ACCEPTS_DAMAGE;
+                g_EnemyManager.bosses[i]->flags1 &= ~ENEMY_FLAG_ACCEPTS_DAMAGE;
             }
         }
     }

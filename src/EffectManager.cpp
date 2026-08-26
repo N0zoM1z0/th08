@@ -536,20 +536,19 @@ i32 __fastcall FUN_004264f0(Effect *effect)
     if (dot < 0.94f)
         return 0;
 
-    if (g_EnemyManager.FUN_0042f1f0())
+    if (g_EnemyManager.HasBoss())
     {
-        if (((reinterpret_cast<Enemy *>(EclRunLowProposal::g_EclEnemyTableF54CC0[0])->flags1 >>
+        if (((g_EnemyManager.bosses[0]->flags1 >>
               ENEMY_FLAG_DAMAGEABLE_SHIFT) & 1) != 0)
         {
             if (effect->vm.pos2.x <= -9999.0f)
             {
-                effect->vm.pos2 = reinterpret_cast<Enemy *>(
-                    EclRunLowProposal::g_EclEnemyTableF54CC0[0])->position;
+                effect->vm.pos2 = g_EnemyManager.bosses[0]->position;
             }
             else
             {
                 effect->vm.pos2 =
-                    (reinterpret_cast<Enemy *>(EclRunLowProposal::g_EclEnemyTableF54CC0[0])->position -
+                    (g_EnemyManager.bosses[0]->position -
                      effect->vm.pos2) * 0.1f + effect->vm.pos2;
             }
         }
@@ -617,20 +616,19 @@ i32 __fastcall FUN_00426990(Effect *effect)
     if (dot < 0.94f)
         return 0;
 
-    if (EclRunLowProposal::g_EclEnemyTableF54CC0[0] != NULL)
+    if (g_EnemyManager.bosses[0] != NULL)
     {
-        if (((reinterpret_cast<Enemy *>(EclRunLowProposal::g_EclEnemyTableF54CC0[0])->flags1 >>
+        if (((g_EnemyManager.bosses[0]->flags1 >>
               ENEMY_FLAG_DAMAGEABLE_SHIFT) & 1) != 0)
         {
             if (effect->vm.pos2.x <= -9999.0f)
             {
-                effect->vm.pos2 = reinterpret_cast<Enemy *>(
-                    EclRunLowProposal::g_EclEnemyTableF54CC0[0])->position;
+                effect->vm.pos2 = g_EnemyManager.bosses[0]->position;
             }
             else
             {
                 effect->vm.pos2 =
-                    (reinterpret_cast<Enemy *>(EclRunLowProposal::g_EclEnemyTableF54CC0[0])->position -
+                    (g_EnemyManager.bosses[0]->position -
                      effect->vm.pos2) * 0.1f + effect->vm.pos2;
             }
         }

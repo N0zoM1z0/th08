@@ -49,6 +49,5 @@ struct EclCallParameterCopy
     f32 floats[4];
 };
 extern EclCallParameterCopy g_EclCallParameters;
-extern EclOperands::EnemyOverlay *g_EclEnemyTableF54CC0[];
 } // namespace EclRunLowProposal
 } // namespace th08
