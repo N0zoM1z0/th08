@@ -369,10 +369,10 @@ th08::Float3::FromRotatedVec2,0x428700,0x20,__thiscall,,void,Float3*,f32,f32,f32
 th08::HasAnimationEnded,0x428720,0x1c,__fastcall,,i32,Effect*
 th08::EffectManager::EffectManager,0x428740,0x9f,unknown,,u8
 th08::Effect::Effect,0x4287e0,0xa2,__thiscall,,Effect*,Effect*
-th08::Ending::ReadEndFileParameter,0x428890,0x73,__thiscall,,i32,Ending*
-th08::Ending::FadingEffect,0x428910,0x24f,__thiscall,,void,Ending*
-th08::Ending::ParseEndFile,0x428b80,0x97c,__thiscall,,ZunResult,Ending*
-th08::Ending::LoadEnding,0x4295e0,0xb4,__thiscall,,ZunResult,Ending*,char*
+th08::Ending::ReadScriptParameter,0x428890,0x73,__thiscall,,i32,Ending*
+th08::Ending::UpdateAndDrawFade,0x428910,0x24f,__thiscall,,void,Ending*
+th08::Ending::RunEndingScript,0x428b80,0x97c,__thiscall,,ZunResult,Ending*
+th08::Ending::LoadEndingScript,0x4295e0,0xb4,__thiscall,,ZunResult,Ending*,const char*
 th08::Ending::RegisterChain,0x4296a0,0x10a,__fastcall,,ZunResult
 th08::Ending::Ending,0x4297b0,0xa9,__thiscall,,Ending*,Ending*
 th08::Ending::OnUpdate,0x429860,0x8d,__fastcall,,ChainCallbackResult,Ending*

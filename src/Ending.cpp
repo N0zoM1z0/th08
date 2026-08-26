@@ -20,26 +20,26 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 12, g_EndingFiles[3]) = {
     {"end00c.end", "end01c.end", "end02c.end", "end03c.end", "end00c.end", "end00c.end", "end01c.end", "end01c.end",
      "end02c.end", "end02c.end", "end03c.end", "end03c.end"}};
 
-ZunResult Ending::ReadEndFileParameter()
+ZunResult Ending::ReadScriptParameter()
 {
     i32 param;
 
-    param = atol(this->cursorPtr);
+    param = atol(this->scriptCursor);
 
-    while (*this->cursorPtr != '\0')
+    while (*this->scriptCursor != '\0')
     {
-        this->cursorPtr++;
+        this->scriptCursor++;
     }
-    while (*this->cursorPtr == '\0')
+    while (*this->scriptCursor == '\0')
     {
-        this->cursorPtr++;
+        this->scriptCursor++;
     }
 
     return (ZunResult)param;
 }
 
 #pragma var_order(rect, alpha)
-void Ending::FadingEffect()
+void Ending::UpdateAndDrawFade()
 {
     ZunRect rect;
     i32 alpha;
@@ -122,7 +122,7 @@ void Ending::FadingEffect()
 
 #pragma var_order(lineEndDisplayed, textBuffer, index, i, anmScriptIdx, vmIndex, anmSpriteIdx, firstRead, secondRead,  \
                   spriteIdx, fadeTime)
-ZunResult Ending::ParseEndFile()
+ZunResult Ending::RunEndingScript()
 {
     char textBuffer[68];
     i32 index;
@@ -142,29 +142,29 @@ ZunResult Ending::ParseEndFile()
 
     memset(textBuffer, 0, sizeof(textBuffer));
 
-    if (this->timer3 > 0)
+    if (this->pageWaitTimer > 0)
     {
-        this->timer3--;
+        this->pageWaitTimer--;
 
-        if (this->minWaitResetFrames != 0)
+        if (this->pageSkipLockFrames != 0)
         {
-            this->minWaitResetFrames--;
+            this->pageSkipLockFrames--;
         }
         else
         {
             if ((WAS_PRESSED(TH_BUTTON_SELECTMENU)) || ((this->hasSeenEnding && (IS_PRESSED(TH_BUTTON_SKIP) != 0))))
             {
-                this->timer3 = 0;
+                this->pageWaitTimer = 0;
             }
         }
 
-        if (this->timer3 <= 0)
+        if (this->pageWaitTimer <= 0)
         {
-            for (i = 0; i < ARRAY_SIZE_SIGNED(this->vms) - 1; i++)
+            for (i = 0; i < ARRAY_SIZE_SIGNED(this->endingVms) - 1; i++)
             {
-                this->vms[i].SetInterrupt(2);
+                this->endingVms[i].SetInterrupt(2);
             }
-            this->timesFileParsed = 0;
+            this->nextTextVmIndex = 0;
         }
         else
         {
@@ -172,18 +172,18 @@ ZunResult Ending::ParseEndFile()
         }
     }
 
-    if (this->timer2 > 0)
+    if (this->lineWaitTimer > 0)
     {
-        this->timer2--;
-        if (this->minWaitFrames != 0)
+        this->lineWaitTimer--;
+        if (this->lineSkipLockFrames != 0)
         {
-            this->minWaitFrames--;
+            this->lineSkipLockFrames--;
         }
         else
         {
             if ((WAS_PRESSED(TH_BUTTON_SELECTMENU)) || ((this->hasSeenEnding && (IS_PRESSED(TH_BUTTON_SKIP) != 0))))
             {
-                this->timer2 = 0;
+                this->lineWaitTimer = 0;
             }
         }
         goto end_of_parse;
@@ -191,147 +191,147 @@ ZunResult Ending::ParseEndFile()
 
     while (true)
     {
-        switch (*this->cursorPtr)
+        switch (*this->scriptCursor)
         {
         case END_READ_OPCODE:
 
-            this->cursorPtr++;
-            switch (*this->cursorPtr)
+            this->scriptCursor++;
+            switch (*this->scriptCursor)
             {
             case END_OPCODE_BACKGROUND:
-                if (g_AnmManager->LoadSurface(0, (this->cursorPtr + 1)))
+                if (g_AnmManager->LoadSurface(0, (this->scriptCursor + 1)))
                 {
                     return ZUN_ERROR;
                 }
                 break;
 
             case END_OPCODE_EXECUTE_ANM:
-                this->cursorPtr++;
-                vmIndex = this->ReadEndFileParameter();
-                anmScriptIdx = this->ReadEndFileParameter();
-                anmSpriteIdx = this->ReadEndFileParameter();
-                this->anmFile->ExecuteAnmIdx(&this->vms[vmIndex], anmScriptIdx);
-                this->anmFile->SetSprite(&this->vms[vmIndex], anmSpriteIdx);
+                this->scriptCursor++;
+                vmIndex = this->ReadScriptParameter();
+                anmScriptIdx = this->ReadScriptParameter();
+                anmSpriteIdx = this->ReadScriptParameter();
+                this->endingAnm->ExecuteAnmIdx(&this->endingVms[vmIndex], anmScriptIdx);
+                this->endingAnm->SetSprite(&this->endingVms[vmIndex], anmSpriteIdx);
                 break;
 
             case END_OPCODE_SCROLL_BACKGROUND:
-                this->cursorPtr++;
-                firstRead = this->ReadEndFileParameter();
-                secondRead = this->ReadEndFileParameter();
+                this->scriptCursor++;
+                firstRead = this->ReadScriptParameter();
+                secondRead = this->ReadScriptParameter();
                 this->backgroundScrollSpeed = (f32)firstRead / (f32)secondRead;
                 break;
 
             case END_OPCODE_SET_VERTICAL_SCROLL_POS:
-                this->cursorPtr++;
-                this->backgroundPos.y = (f32)this->ReadEndFileParameter();
+                this->scriptCursor++;
+                this->backgroundPos.y = (f32)this->ReadScriptParameter();
                 break;
 
             case END_OPCODE_EXEC_END_FILE:
-                if (this->LoadEnding(this->cursorPtr + 1) != ZUN_SUCCESS)
+                if (this->LoadEndingScript(this->scriptCursor + 1) != ZUN_SUCCESS)
                 {
                     return ZUN_ERROR;
                 }
                 index = 0;
                 lineEndDisplayed = false;
-                this->hasSeenEnding = this->unk2a5c;
+                this->hasSeenEnding = this->canSkipChainedEnding;
 
             case END_OPCODE_ROLL_STAFF:
-                for (spriteIdx = 0; spriteIdx < ARRAY_SIZE_SIGNED(this->vms); spriteIdx++)
+                for (spriteIdx = 0; spriteIdx < ARRAY_SIZE_SIGNED(this->endingVms); spriteIdx++)
                 {
-                    this->vms[spriteIdx].scriptIndex = 0;
+                    this->endingVms[spriteIdx].scriptIndex = 0;
                 }
                 break;
 
             case END_OPCODE_PLAY_MUSIC:
-                g_Supervisor.LoadMusic(0, this->cursorPtr + 1);
+                g_Supervisor.LoadMusic(0, this->scriptCursor + 1);
                 g_Supervisor.PlayMusic(0, 0);
                 break;
 
             case END_OPCODE_FADE_MUSIC:
-                this->cursorPtr++;
-                fadeTime = (f32)this->ReadEndFileParameter();
+                this->scriptCursor++;
+                fadeTime = (f32)this->ReadScriptParameter();
                 g_Supervisor.FadeOutMusic(fadeTime);
                 break;
 
             case END_OPCODE_SET_DELAY:
-                this->cursorPtr++;
-                this->line2Delay = this->ReadEndFileParameter();
-                this->topLineDelay = this->ReadEndFileParameter();
+                this->scriptCursor++;
+                this->defaultLineWaitFrames = this->ReadScriptParameter();
+                this->minimumLineWaitFrames = this->ReadScriptParameter();
                 break;
 
             case END_OPCODE_COLOR:
-                this->cursorPtr++;
-                this->textColor = this->ReadEndFileParameter();
+                this->scriptCursor++;
+                this->textColor = this->ReadScriptParameter();
                 break;
 
             case END_OPCODE_WAIT_RESET:
-                this->cursorPtr++;
-                this->timer3 = this->ReadEndFileParameter();
-                this->minWaitResetFrames = this->ReadEndFileParameter();
-                this->timer2 = 0;
-                this->minWaitFrames = 0;
-                while (*this->cursorPtr != '\n' && *this->cursorPtr != '\r')
+                this->scriptCursor++;
+                this->pageWaitTimer = this->ReadScriptParameter();
+                this->pageSkipLockFrames = this->ReadScriptParameter();
+                this->lineWaitTimer = 0;
+                this->lineSkipLockFrames = 0;
+                while (*this->scriptCursor != '\n' && *this->scriptCursor != '\r')
                 {
-                    this->cursorPtr++;
+                    this->scriptCursor++;
                 }
-                while (*this->cursorPtr == '\n' || *this->cursorPtr == '\r')
+                while (*this->scriptCursor == '\n' || *this->scriptCursor == '\r')
                 {
-                    this->cursorPtr++;
+                    this->scriptCursor++;
                 }
                 goto end_of_parse;
 
             case END_OPCODE_WAIT:
-                this->cursorPtr++;
-                this->timer2 = this->ReadEndFileParameter();
-                this->minWaitFrames = this->ReadEndFileParameter();
-                while (*this->cursorPtr != '\n' && *this->cursorPtr != '\r')
+                this->scriptCursor++;
+                this->lineWaitTimer = this->ReadScriptParameter();
+                this->lineSkipLockFrames = this->ReadScriptParameter();
+                while (*this->scriptCursor != '\n' && *this->scriptCursor != '\r')
                 {
-                    this->cursorPtr++;
+                    this->scriptCursor++;
                 }
-                while (*this->cursorPtr == '\n' || *this->cursorPtr == '\r')
+                while (*this->scriptCursor == '\n' || *this->scriptCursor == '\r')
                 {
-                    this->cursorPtr++;
+                    this->scriptCursor++;
                 }
                 goto end_of_parse;
 
             case END_OPCODE_FADE_IN_BLACK:
-                this->cursorPtr++;
+                this->scriptCursor++;
                 this->fadeMode = ENDING_FADE_TYPE_FADE_IN_BLACK;
                 this->fadeTimer = 0;
-                this->fadeDuration = this->ReadEndFileParameter();
+                this->fadeDuration = this->ReadScriptParameter();
                 break;
 
             case END_OPCODE_FADE_OUT_BLACK:
-                this->cursorPtr++;
+                this->scriptCursor++;
                 this->fadeMode = ENDING_FADE_TYPE_FADE_OUT_BLACK;
                 this->fadeTimer = 0;
-                this->fadeDuration = this->ReadEndFileParameter();
+                this->fadeDuration = this->ReadScriptParameter();
                 break;
 
             case END_OPCODE_FADE_IN:
-                this->cursorPtr++;
+                this->scriptCursor++;
                 this->fadeMode = ENDING_FADE_TYPE_FADE_IN_WHITE;
                 this->fadeTimer = 0;
-                this->fadeDuration = this->ReadEndFileParameter();
+                this->fadeDuration = this->ReadScriptParameter();
                 break;
 
             case END_OPCODE_FADE_OUT:
-                this->cursorPtr++;
+                this->scriptCursor++;
                 this->fadeMode = ENDING_FADE_TYPE_FADE_OUT_WHITE;
                 this->fadeTimer = 0;
-                this->fadeDuration = this->ReadEndFileParameter();
+                this->fadeDuration = this->ReadScriptParameter();
                 break;
 
             case END_OPCODE_END:
                 return ZUN_ERROR;
             }
-            while (*this->cursorPtr != '\n' && *this->cursorPtr != '\r')
+            while (*this->scriptCursor != '\n' && *this->scriptCursor != '\r')
             {
-                this->cursorPtr++;
+                this->scriptCursor++;
             }
-            while (*this->cursorPtr == '\n' || *this->cursorPtr == '\r')
+            while (*this->scriptCursor == '\n' || *this->scriptCursor == '\r')
             {
-                this->cursorPtr++;
+                this->scriptCursor++;
             }
             break;
 
@@ -340,38 +340,39 @@ ZunResult Ending::ParseEndFile()
         case '\r':
             if (index != 0)
             {
-                g_AnmManager->DrawTextLeft(&this->vms[this->timesFileParsed], this->textColor, COLOR_WHITE, textBuffer);
-                this->vms[this->timesFileParsed].SetInterrupt(1);
+                g_AnmManager->DrawTextLeft(&this->endingVms[this->nextTextVmIndex], this->textColor, COLOR_WHITE,
+                                           textBuffer);
+                this->endingVms[this->nextTextVmIndex].SetInterrupt(1);
             }
-            while (*this->cursorPtr == '\n' || *this->cursorPtr == '\0' || *this->cursorPtr == '\r')
+            while (*this->scriptCursor == '\n' || *this->scriptCursor == '\0' || *this->scriptCursor == '\r')
             {
-                this->cursorPtr++;
+                this->scriptCursor++;
             }
             if (IS_PRESSED(TH_BUTTON_SELECTMENU))
             {
-                this->timer2 = this->topLineDelay;
-                this->minWaitFrames = this->topLineDelay;
+                this->lineWaitTimer = this->minimumLineWaitFrames;
+                this->lineSkipLockFrames = this->minimumLineWaitFrames;
             }
             else
             {
-                this->timer2 = this->line2Delay;
-                this->minWaitFrames = this->topLineDelay;
+                this->lineWaitTimer = this->defaultLineWaitFrames;
+                this->lineSkipLockFrames = this->minimumLineWaitFrames;
             }
-            this->timesFileParsed++;
+            this->nextTextVmIndex++;
             goto end_of_parse;
 
         default:
-            textBuffer[index] = *this->cursorPtr;
-            textBuffer[index + 1] = *(this->cursorPtr + 1);
+            textBuffer[index] = *this->scriptCursor;
+            textBuffer[index + 1] = *(this->scriptCursor + 1);
             index += 2;
-            this->cursorPtr += 2;
+            this->scriptCursor += 2;
             break;
 
-        } // switch(*this->cursorPtr)
+        } // switch(*this->scriptCursor)
     } // while(true)
 
 end_of_parse:
-    this->timer1++;
+    this->elapsedTimer++;
     this->backgroundPos.y -= this->backgroundScrollSpeed;
 
     if (this->backgroundPos.y <= 0.0f)
@@ -382,22 +383,22 @@ end_of_parse:
     return ZUN_SUCCESS;
 }
 
-ZunResult Ending::LoadEnding(const char *path)
+ZunResult Ending::LoadEndingScript(const char *path)
 {
-    char *prevFile = this->fileData;
-    this->fileData = (char *)FileSystem::OpenFile(path, NULL, 0);
+    char *prevFile = this->scriptData;
+    this->scriptData = (char *)FileSystem::OpenFile(path, NULL, 0);
 
-    if (this->fileData == NULL)
+    if (this->scriptData == NULL)
     {
-        this->fileData = prevFile;
+        this->scriptData = prevFile;
         g_GameErrorContext.Log(TH_ERR_ENDING_FILE_UNREADABLE);
         return ZUN_ERROR;
     }
 
-    this->cursorPtr = this->fileData;
-    this->line2Delay = 8;
-    this->timer2 = 0;
-    this->timer1 = 0;
+    this->scriptCursor = this->scriptData;
+    this->defaultLineWaitFrames = 8;
+    this->lineWaitTimer = 0;
+    this->elapsedTimer = 0;
 
     if (prevFile != NULL)
     {
@@ -429,9 +430,9 @@ ZunResult Ending::RegisterChain()
 Ending::Ending()
 {
     memset(this, 0, sizeof(Ending));
-    this->line2Delay = 8;
-    this->timer2 = 0;
-    this->timer1 = 0;
+    this->defaultLineWaitFrames = 8;
+    this->lineWaitTimer = 0;
+    this->elapsedTimer = 0;
     this->backgroundPos.x = 0;
     this->backgroundPos.y = 0;
     this->backgroundScrollSpeed = 0;
@@ -442,14 +443,14 @@ ChainCallbackResult Ending::OnUpdate(Ending *ending)
     i32 frameSkip = 0;
 
 loop:
-    if (ending->ParseEndFile() != ZUN_SUCCESS)
+    if (ending->RunEndingScript() != ZUN_SUCCESS)
     {
         return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
     }
 
-    for (i32 i = 0; i < ARRAY_SIZE_SIGNED(ending->vms) - 1; i++)
+    for (i32 i = 0; i < ARRAY_SIZE_SIGNED(ending->endingVms) - 1; i++)
     {
-        g_AnmManager->ExecuteScript(&ending->vms[i]);
+        g_AnmManager->ExecuteScript(&ending->endingVms[i]);
     }
 
     if (ending->hasSeenEnding)
@@ -472,11 +473,11 @@ ChainCallbackResult Ending::OnDraw(Ending *ending)
 
     g_AnmManager->CopySurfaceToBackbuffer2(0, 0, 0, ending->backgroundPos.x, ending->backgroundPos.y, GAME_WINDOW_WIDTH,
                                            GAME_WINDOW_HEIGHT);
-    for (idx = 0; idx < ARRAY_SIZE_SIGNED(ending->vms) - 1; idx++)
+    for (idx = 0; idx < ARRAY_SIZE_SIGNED(ending->endingVms) - 1; idx++)
     {
-        g_AnmManager->Draw2D(&ending->vms[idx]);
+        g_AnmManager->Draw2D(&ending->endingVms[idx]);
     }
-    ending->FadingEffect();
+    ending->UpdateAndDrawFade();
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
@@ -498,7 +499,7 @@ ZunResult Ending::AddedCallback(Ending *ending)
     ScreenEffect::Clear(COLOR_WHITE);
     g_Supervisor.suppressFpsDisplay = TRUE;
 
-    ending->anmFile = g_AnmManager->LoadAnm(0x18, "staff01.anm");
+    ending->endingAnm = g_AnmManager->LoadAnm(0x18, "staff01.anm");
 
     if (g_GameManager.flags.gameCleared)
     {
@@ -511,12 +512,12 @@ ZunResult Ending::AddedCallback(Ending *ending)
         g_GameManager.plst.playDataTotals.clears++;
 
         ending->hasSeenEnding = false;
-        ending->unk2a5c = 0;
+        ending->canSkipChainedEnding = 0;
 
         if ((g_GameManager.currentStage == STAGE6B && g_GameManager.IsExtraUnlocked()) ||
             (g_GameManager.currentStage == STAGE6A && g_GameManager.IsSpellPracticeUnlocked()))
         {
-            ending->unk2a5c = 1;
+            ending->canSkipChainedEnding = 1;
         }
 
         if ((g_GameManager.globals)->numRetries == 0)
@@ -550,16 +551,16 @@ ZunResult Ending::AddedCallback(Ending *ending)
     }
     else
     {
-        ending->hasSeenEnding = g_GameManager.clrdData[g_GameManager.shotType].unk_20;
-        g_GameManager.clrdData[g_GameManager.shotType].unk_20 = 0;
+        ending->hasSeenEnding = g_GameManager.clrdData[g_GameManager.shotType].pendingEndingSkip;
+        g_GameManager.clrdData[g_GameManager.shotType].pendingEndingSkip = 0;
         g_GameManager.plst.bgmUnlocked[18] = 0x12;
     }
 
 execute_anms:
-    for (i = 0; i < ARRAY_SIZE_SIGNED(ending->vms) - 1; i++)
+    for (i = 0; i < ARRAY_SIZE_SIGNED(ending->endingVms) - 1; i++)
     {
-        g_Supervisor.textAnm->ExecuteAnmIdx(&ending->vms[i], i + 0x12);
-        ending->vms[i].pos = Float3(64.0f, i * 16.0f + 400.0f, 0.0f);
+        g_Supervisor.textAnm->ExecuteAnmIdx(&ending->endingVms[i], i + 0x12);
+        ending->endingVms[i].pos = Float3(64.0f, i * 16.0f + 400.0f, 0.0f);
     }
 
     if (g_GameManager.flags.gameCleared == 0)
@@ -575,7 +576,7 @@ execute_anms:
         endingFile = g_EndingFiles[2][g_GameManager.shotType];
     }
 
-    if (ending->LoadEnding(endingFile) != ZUN_SUCCESS)
+    if (ending->LoadEndingScript(endingFile) != ZUN_SUCCESS)
     {
         return ZUN_ERROR;
     }
@@ -590,7 +591,7 @@ ZunResult Ending::DeletedCallback(Ending *ending)
     g_AnmManager->ReleaseAnm(24);
     g_Supervisor.curState = SupervisorState_ResultScreenFromGame;
     g_AnmManager->ReleaseSurface(0);
-    g_ZunMemory.Free(ending->fileData);
+    g_ZunMemory.Free(ending->scriptData);
     g_Chain.Cut(ending->drawChain);
     ending->drawChain = NULL;
     ZUN_DELETE(ending);

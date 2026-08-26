@@ -29235,14 +29235,14 @@ symbol = "?ClearSprite@AnmManager@th08@@QAEXXZ"
 target_address = 0x0040BA50
 size = 0x18
 
-# th08::Ending::LoadEnding
+# th08::Ending::LoadEndingScript
 # Extent: 0x004295E0..0x00429694 (0xb4 bytes)
 # Evidence: 8 relocations; 5 calls; full replay exact; unique Ending.obj emission.
 # Destination ledgers: mapping.csv, reccmp-functions.csv, reccmp-globals.csv, reccmp-strings.csv
 [[units]]
-name = "ascii-ending-roi-exact-004295e0"
+name = "ending-load-script-004295e0"
 object = "build/Ending.obj"
-symbol = "?LoadEnding@Ending@th08@@QAE?AW4ZunResult@@PBD@Z"
+symbol = "?LoadEndingScript@Ending@th08@@QAE?AW4ZunResult@@PBD@Z"
 target_address = 0x004295E0
 size = 0xB4
 
@@ -29361,7 +29361,7 @@ size = 0x8D
 [[units.relocations]]
 offset = 0x14
 type = "REL32"
-symbol = "?ParseEndFile@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?RunEndingScript@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428B80
 
 [[units.relocations]]
@@ -29432,7 +29432,7 @@ target = 0x00463210
 [[units.relocations]]
 offset = 0x76
 type = "REL32"
-symbol = "?FadingEffect@Ending@th08@@QAEXXZ"
+symbol = "?UpdateAndDrawFade@Ending@th08@@QAEXXZ"
 target = 0x00428910
 
 # th08::Ending::DeletedCallback
@@ -49859,12 +49859,12 @@ type = "DIR32"
 symbol = "$L68318"
 target = 0x0045D7E6
 
-# Ledger name: th08::Ending::ParseEndFile
+# Ledger name: th08::Ending::RunEndingScript
 # Evidence: source-emitted function body is byte-identical after full relocation replay against TH08 1.00d target.
 [[units]]
-name = "accepted-source-exact-00428b80"
+name = "ending-run-script-00428b80"
 object = "build/Ending.obj"
-symbol = "?ParseEndFile@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?RunEndingScript@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target_address = 0x00428B80
 size = 0x97C
 compare_size = 0xA5C
@@ -50004,19 +50004,19 @@ target = 0x004667C0
 [[units.relocations]]
 offset = 0x293
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
 offset = 0x29E
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
 offset = 0x2A9
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
@@ -50034,25 +50034,25 @@ target = 0x0045E430
 [[units.relocations]]
 offset = 0x314
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
 offset = 0x31F
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
 offset = 0x350
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
 offset = 0x37C
 type = "REL32"
-symbol = "?LoadEnding@Ending@th08@@QAE?AW4ZunResult@@PBD@Z"
+symbol = "?LoadEndingScript@Ending@th08@@QAE?AW4ZunResult@@PBD@Z"
 target = 0x004295E0
 
 [[units.relocations]]
@@ -50082,7 +50082,7 @@ target = 0x00447E47
 [[units.relocations]]
 offset = 0x426
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
@@ -50100,25 +50100,25 @@ target = 0x004480F8
 [[units.relocations]]
 offset = 0x465
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
 offset = 0x476
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
 offset = 0x4A1
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
 offset = 0x4CC
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
@@ -50130,7 +50130,7 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x4E3
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
@@ -50142,7 +50142,7 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x59D
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
@@ -50154,31 +50154,31 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x5B4
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
 offset = 0x66B
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
 offset = 0x6B0
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
 offset = 0x6F5
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
 offset = 0x737
 type = "REL32"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00428890
 
 [[units.relocations]]
@@ -53070,12 +53070,12 @@ type = "DIR32"
 symbol = "__except_list"
 target = 0x00000000
 
-# Ledger name: th08::Ending::FadingEffect
+# Ledger name: th08::Ending::UpdateAndDrawFade
 # Evidence: source-emitted function body is byte-identical after full relocation replay against TH08 1.00d target.
 [[units]]
-name = "accepted-source-exact-00428910"
+name = "ending-update-and-draw-fade-00428910"
 object = "build/Ending.obj"
-symbol = "?FadingEffect@Ending@th08@@QAEXXZ"
+symbol = "?UpdateAndDrawFade@Ending@th08@@QAEXXZ"
 target_address = 0x00428910
 size = 0x24F
 compare_size = 0x263
@@ -54383,7 +54383,7 @@ target = 0x004C7048
 [[units.relocations]]
 offset = 0x3A4
 type = "REL32"
-symbol = "?LoadEnding@Ending@th08@@QAE?AW4ZunResult@@PBD@Z"
+symbol = "?LoadEndingScript@Ending@th08@@QAE?AW4ZunResult@@PBD@Z"
 target = 0x004295E0
 
 # Ledger name: th08::CSoundManager::CreateStreaming
@@ -54590,12 +54590,12 @@ type = "DIR32"
 symbol = "__except_list"
 target = 0x00000000
 
-# Ledger name: th08::Ending::ReadEndFileParameter
+# Ledger name: th08::Ending::ReadScriptParameter
 # Evidence: source-emitted function body identified from VC7 map/COFF and byte-identical after full relocation replay.
 [[units]]
-name = "accepted-demangle-exact-00428890"
+name = "ending-read-script-parameter-00428890"
 object = "build/Ending.obj"
-symbol = "?ReadEndFileParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?ReadScriptParameter@Ending@th08@@QAE?AW4ZunResult@@XZ"
 target_address = 0x00428890
 size = 0x73
 

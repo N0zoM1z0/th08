@@ -370,7 +370,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00402A80,th08::AsciiManager::AddFormatText2,146,matching,100.00,ascii-ending-roi-exact-00402a80,python3 scripts/compare-function.py ascii-ending-roi-exact-00402a80 --json
 0x00407180,th08::AsciiManager::SetSpaceWidth,25,matching,100.00,ascii-ending-roi-exact-00407180,python3 scripts/compare-function.py ascii-ending-roi-exact-00407180 --json
 0x0040BA50,th08::AnmManager::ClearSprite,24,matching,100.00,ascii-ending-roi-exact-0040ba50,python3 scripts/compare-function.py ascii-ending-roi-exact-0040ba50 --json
-0x004295E0,th08::Ending::LoadEnding,180,matching,100.00,ascii-ending-roi-exact-004295e0,python3 scripts/compare-function.py ascii-ending-roi-exact-004295e0 --json
+0x004295E0,th08::Ending::LoadEndingScript,180,matching,100.00,ending-load-script-004295e0,python3 scripts/compare-function.py ending-load-script-004295e0 --json
 0x004297B0,th08::Ending::Ending,169,matching,100.00,ascii-ending-roi-exact-004297b0,python3 scripts/compare-function.py ascii-ending-roi-exact-004297b0 --json
 0x00429860,th08::Ending::OnUpdate,141,matching,100.00,ascii-ending-roi-exact-00429860,python3 scripts/compare-function.py ascii-ending-roi-exact-00429860 --json
 0x004298F0,th08::Ending::OnDraw,131,matching,100.00,ascii-ending-roi-exact-004298f0,python3 scripts/compare-function.py ascii-ending-roi-exact-004298f0 --json
@@ -521,13 +521,13 @@ address,name,size,status,match_percent,unit,evidence
 0x00406C30,th08::SoundPlayer::Pause,28,matching,100.00,soundplayer-command-exact-00406c30,python3 scripts/compare-function.py soundplayer-command-exact-00406c30 --json
 0x00406C50,th08::SoundPlayer::UnPause,28,matching,100.00,soundplayer-command-exact-00406c50,python3 scripts/compare-function.py soundplayer-command-exact-00406c50 --json
 0x0045D790,th08::SoundPlayer::ProcessQueues,2358,matching,100.00,soundplayer-process-queues-exact-0045d790,python3 scripts/compare-function.py soundplayer-process-queues-exact-0045d790 --json
-0x00428B80,th08::Ending::ParseEndFile,2428,matching,100.00,accepted-source-exact-00428b80,python3 scripts/compare-function.py accepted-source-exact-00428b80 --json
+0x00428B80,th08::Ending::RunEndingScript,2428,matching,100.00,ending-run-script-00428b80,python3 scripts/compare-function.py ending-run-script-00428b80 --json
 0x00457E00,th08::ResultScreen::DrawFinalStats,1184,matching,100.00,accepted-source-exact-00457e00,python3 scripts/compare-function.py accepted-source-exact-00457e00 --json
 0x0046EF8D,th08::TitleScreen::DrawReplayMenu,1180,matching,100.00,accepted-source-exact-0046ef8d,python3 scripts/compare-function.py accepted-source-exact-0046ef8d --json
 0x0043F9C8,th08::TextHelper::RenderTextToTextureBold,801,matching,100.00,accepted-source-exact-0043f9c8,python3 scripts/compare-function.py accepted-source-exact-0043f9c8 --json
 0x0043FCE9,th08::TextHelper::RenderTextToTexture,793,matching,100.00,accepted-source-exact-0043fce9,python3 scripts/compare-function.py accepted-source-exact-0043fce9 --json
 0x0045C190,th08::SoundPlayer::InitializeDSound,746,matching,100.00,accepted-source-exact-0045c190,python3 scripts/compare-function.py accepted-source-exact-0045c190 --json
-0x00428910,th08::Ending::FadingEffect,591,matching,100.00,accepted-source-exact-00428910,python3 scripts/compare-function.py accepted-source-exact-00428910 --json
+0x00428910,th08::Ending::UpdateAndDrawFade,591,matching,100.00,ending-update-and-draw-fade-00428910,python3 scripts/compare-function.py ending-update-and-draw-fade-00428910 --json
 0x0045D0F0,th08::SoundPlayer::LoadBGM,470,matching,100.00,accepted-source-exact-0045d0f0,python3 scripts/compare-function.py accepted-source-exact-0045d0f0 --json
 0x004582A0,th08::ResultScreen::RegisterChain,395,matching,100.00,accepted-source-exact-004582a0,python3 scripts/compare-function.py accepted-source-exact-004582a0 --json
 0x0045CC70,th08::SoundPlayer::StartBGM,386,matching,100.00,accepted-source-exact-0045cc70,python3 scripts/compare-function.py accepted-source-exact-0045cc70 --json
@@ -539,7 +539,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00429980,th08::Ending::AddedCallback,951,matching,100.00,accepted-demangle-exact-00429980,python3 scripts/compare-function.py accepted-demangle-exact-00429980 --json
 0x004718D0,th08::CSoundManager::CreateStreaming,819,matching,100.00,accepted-demangle-exact-004718d0,python3 scripts/compare-function.py accepted-demangle-exact-004718d0 --json
 0x00471C40,th08::CSoundManager::CreateStreamingFromMemory,795,matching,100.00,accepted-demangle-exact-00471c40,python3 scripts/compare-function.py accepted-demangle-exact-00471c40 --json
-0x00428890,th08::Ending::ReadEndFileParameter,115,matching,100.00,accepted-demangle-exact-00428890,python3 scripts/compare-function.py accepted-demangle-exact-00428890 --json
+0x00428890,th08::Ending::ReadScriptParameter,115,matching,100.00,ending-read-script-parameter-00428890,python3 scripts/compare-function.py ending-read-script-parameter-00428890 --json
 0x004181F0,th08::GameManager::AddScore,44,matching,100.00,game-manager-add-score,python3 scripts/compare-function.py game-manager-add-score --json
 0x00418220,th08::GameManager::AddTimeOrbs,180,matching,100.00,game-manager-add-time-orbs,python3 scripts/compare-function.py game-manager-add-time-orbs --json
 0x00406FA0,th08::GameManager::SetPower,36,matching,100.00,game-manager-set-power,python3 scripts/compare-function.py game-manager-set-power --json

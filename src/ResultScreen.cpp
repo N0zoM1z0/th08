@@ -162,8 +162,8 @@ void ResultScreen::WriteScore(ResultScreen *result)
     COPY(result->scoreDat, sizeof(*result->scoreDat));
 
     result->fileHeader.magic = TH8K_MAGIC;
-    result->fileHeader.unkLen = sizeof(result->fileHeader);
-    result->fileHeader.th8kLen = sizeof(result->fileHeader);
+    result->fileHeader.chapterSizeCopy = sizeof(result->fileHeader);
+    result->fileHeader.chapterSize = sizeof(result->fileHeader);
     result->fileHeader.version = SCORE_DAT_VERSION;
 
     COPY(&result->fileHeader, sizeof(result->fileHeader));
@@ -181,8 +181,8 @@ void ResultScreen::WriteScore(ResultScreen *result)
                 {
                     currentCharacter->data->character = character;
                     currentCharacter->data->difficulty = i;
-                    currentCharacter->data->base.unkLen = sizeof(Hscr);
-                    currentCharacter->data->base.th8kLen = sizeof(Hscr);
+                    currentCharacter->data->base.chapterSizeCopy = sizeof(Hscr);
+                    currentCharacter->data->base.chapterSize = sizeof(Hscr);
                     currentCharacter->data->base.version = HSCR_VERSION;
                     currentCharacter->data->base.unk_9 = 0;
 
@@ -203,8 +203,8 @@ void ResultScreen::WriteScore(ResultScreen *result)
     for (clrd = g_GameManager.clrdData, i = 0; i < SHOT_ALL + 1; i++, clrd++)
     {
         clrd->base.magic = CLRD_MAGIC;
-        clrd->base.unkLen = sizeof(Clrd);
-        clrd->base.th8kLen = sizeof(Clrd);
+        clrd->base.chapterSizeCopy = sizeof(Clrd);
+        clrd->base.chapterSize = sizeof(Clrd);
         clrd->base.version = CLRD_VERSION;
 
         COPY(clrd, sizeof(Clrd));
@@ -215,8 +215,8 @@ void ResultScreen::WriteScore(ResultScreen *result)
         if (catk->base.magic == CATK_MAGIC)
         {
             catk->spellcardNumber = i;
-            catk->base.unkLen = sizeof(Catk);
-            catk->base.th8kLen = sizeof(Catk);
+            catk->base.chapterSizeCopy = sizeof(Catk);
+            catk->base.chapterSize = sizeof(Catk);
             catk->base.version = CATK_VERSION;
 
             COPY(catk, sizeof(Catk));
@@ -235,7 +235,7 @@ void ResultScreen::WriteScore(ResultScreen *result)
 
     g_GameManager.flsp.base.magic = FLSP_MAGIC;
     g_GameManager.flsp.base.version = FLSP_VERSION;
-    g_GameManager.flsp.base.unkLen = g_GameManager.flsp.base.th8kLen = sizeof(Flsp);
+    g_GameManager.flsp.base.chapterSizeCopy = g_GameManager.flsp.base.chapterSize = sizeof(Flsp);
 
     COPY(&g_GameManager.flsp, sizeof(Flsp));
 
@@ -244,8 +244,8 @@ void ResultScreen::WriteScore(ResultScreen *result)
 
     vrsm.base.magic = VRSM_MAGIC;
     vrsm.base.version = VRSM_VERSION;
-    vrsm.base.unkLen = sizeof(Vrsm);
-    vrsm.base.th8kLen = sizeof(Vrsm);
+    vrsm.base.chapterSizeCopy = sizeof(Vrsm);
+    vrsm.base.chapterSize = sizeof(Vrsm);
     vrsm.base.unk_9 = 0;
 
     strcpy(vrsm.version, CONFIG_VERSION_STRING);
@@ -2865,8 +2865,8 @@ ZunResult ResultScreen::AddedCallback(ResultScreen *result)
                 result->defaultScore[i][shotType][stage].base.magic = *(i32 *)"DMYS";
                 result->defaultScore[i][shotType][stage].difficulty = i;
                 result->defaultScore[i][shotType][stage].base.version = HSCR_VERSION;
-                result->defaultScore[i][shotType][stage].base.unkLen = sizeof(Hscr);
-                result->defaultScore[i][shotType][stage].base.th8kLen = sizeof(Hscr);
+                result->defaultScore[i][shotType][stage].base.chapterSizeCopy = sizeof(Hscr);
+                result->defaultScore[i][shotType][stage].base.chapterSize = sizeof(Hscr);
                 result->defaultScore[i][shotType][stage].stage = STAGE1;
                 result->defaultScore[i][shotType][stage].base.unk_9 = 0;
                 result->defaultScore[i][shotType][stage].numRetries = 0;
@@ -2942,8 +2942,8 @@ ZunResult ResultScreen::AddedCallback(ResultScreen *result)
 
     result->lsnm.base.magic = LSNM_MAGIC;
     result->lsnm.base.version = LSNM_VERSION;
-    result->lsnm.base.unkLen = sizeof(Lsnm);
-    result->lsnm.base.th8kLen = sizeof(Lsnm);
+    result->lsnm.base.chapterSizeCopy = sizeof(Lsnm);
+    result->lsnm.base.chapterSize = sizeof(Lsnm);
 
     strcpy(result->lsnm.name, "        ");
 

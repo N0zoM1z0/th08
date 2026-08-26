@@ -195,13 +195,13 @@ ScoreDat *ScoreDat::OpenScore(const char *filename)
                 goto recreate_score_file;
             }
         }
-        if (chapter->th8kLen == 0)
+        if (chapter->chapterSize == 0)
         {
             utils::DebugPrint("warning : score.dat chapter size is ZERO\r\n");
             goto recreate_score_file;
         }
-        bytesToRead -= chapter->th8kLen;
-        chapter = (Th8k *)(((u8 *)chapter) + chapter->th8kLen);
+        bytesToRead -= chapter->chapterSize;
+        chapter = (Th8k *)(((u8 *)chapter) + chapter->chapterSize);
     }
 
     if (!hasFoundTH8K || th8kChapter->version != 1)
@@ -253,8 +253,8 @@ u32 ScoreDat::GetHighScore(ScoreDat *scoreDat, ScoreListNode *node, u32 characte
             }
         }
 
-        bytesToRead -= hscr->base.th8kLen;
-        hscr = (Hscr *)((u8 *)hscr + hscr->base.th8kLen);
+        bytesToRead -= hscr->base.chapterSize;
+        hscr = (Hscr *)((u8 *)hscr + hscr->base.chapterSize);
     }
 
     if (continuesUsed != NULL)
@@ -293,8 +293,8 @@ i32 ScoreDat::ParseCATK(ScoreDat *scoreDat, Catk *outCatk)
             outCatk[catk->spellcardNumber] = *catk;
         }
 
-        bytesToRead -= catk->base.th8kLen;
-        catk = (Catk *)((u8 *)catk + catk->base.th8kLen);
+        bytesToRead -= catk->base.chapterSize;
+        catk = (Catk *)((u8 *)catk + catk->base.chapterSize);
     }
 
     return ZUN_SUCCESS;
@@ -319,8 +319,8 @@ i32 ScoreDat::ParseLSNM(ScoreDat *scoreDat, Lsnm *outLsnm)
             return TRUE;
         }
 
-        bytesToRead -= lsnm->base.th8kLen;
-        lsnm = (Lsnm *)((u8 *)lsnm + lsnm->base.th8kLen);
+        bytesToRead -= lsnm->base.chapterSize;
+        lsnm = (Lsnm *)((u8 *)lsnm + lsnm->base.chapterSize);
     }
 
     return FALSE;
@@ -344,8 +344,8 @@ i32 ScoreDat::ParseFLSP(ScoreDat *scoreDat, Flsp *outFlsp)
             return TRUE;
         }
 
-        bytesToRead -= flsp->base.th8kLen;
-        flsp = (Flsp *)((u8 *)flsp + flsp->base.th8kLen);
+        bytesToRead -= flsp->base.chapterSize;
+        flsp = (Flsp *)((u8 *)flsp + flsp->base.chapterSize);
     }
 
     return FALSE;
@@ -370,8 +370,8 @@ i32 ScoreDat::ParseCLRD(ScoreDat *scoreDat, Clrd *outClrd)
         memset(&outClrd[clrdIdx], 0, sizeof(Clrd));
 
         outClrd[clrdIdx].base.magic = CLRD_MAGIC;
-        outClrd[clrdIdx].base.unkLen = sizeof(Clrd);
-        outClrd[clrdIdx].base.th8kLen = sizeof(Clrd);
+        outClrd[clrdIdx].base.chapterSizeCopy = sizeof(Clrd);
+        outClrd[clrdIdx].base.chapterSize = sizeof(Clrd);
         outClrd[clrdIdx].base.version = CLRD_VERSION;
         outClrd[clrdIdx].shotNumber = clrdIdx;
 
@@ -398,8 +398,8 @@ i32 ScoreDat::ParseCLRD(ScoreDat *scoreDat, Clrd *outClrd)
             outClrd[clrd->shotNumber] = *clrd;
         }
 
-        bytesToRead -= clrd->base.th8kLen;
-        clrd = (Clrd *)((u8 *)clrd + clrd->base.th8kLen);
+        bytesToRead -= clrd->base.chapterSize;
+        clrd = (Clrd *)((u8 *)clrd + clrd->base.chapterSize);
     }
 
     return ZUN_SUCCESS;
@@ -426,8 +426,8 @@ i32 ScoreDat::ParsePSCR(ScoreDat *scoreDat, Pscr *outPscr)
         memset(pscr2, 0, sizeof(Pscr));
 
         pscr2->base.magic = PSCR_MAGIC;
-        pscr2->base.unkLen = sizeof(Pscr);
-        pscr2->base.th8kLen = sizeof(Pscr);
+        pscr2->base.chapterSizeCopy = sizeof(Pscr);
+        pscr2->base.chapterSize = sizeof(Pscr);
         pscr2->base.version = PSCR_VERSION;
         pscr2->shotNumber = pscrIdx;
         pscr2->unk0x175 = 0;
@@ -451,8 +451,8 @@ i32 ScoreDat::ParsePSCR(ScoreDat *scoreDat, Pscr *outPscr)
             outPscr[pscr2->shotNumber] = *pscr2;
         }
 
-        bytesToRead -= pscr->base.th8kLen;
-        pscr = (Pscr *)((u8 *)pscr + pscr->base.th8kLen);
+        bytesToRead -= pscr->base.chapterSize;
+        pscr = (Pscr *)((u8 *)pscr + pscr->base.chapterSize);
     }
 
     return ZUN_SUCCESS;
@@ -477,8 +477,8 @@ i32 ScoreDat::ParsePLST(ScoreDat *scoreDat, Plst *outPlst)
             *outPlst = *plst;
         }
 
-        bytesToRead -= plst->base.th8kLen;
-        plst = (Plst *)((u8 *)plst + plst->base.th8kLen);
+        bytesToRead -= plst->base.chapterSize;
+        plst = (Plst *)((u8 *)plst + plst->base.chapterSize);
     }
 
     return 0;

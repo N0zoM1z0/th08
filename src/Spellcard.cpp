@@ -829,7 +829,7 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
             checksum += catk->spellPracticeHistory.maxBonus[j];
         }
 
-        if (catk->unk0xe != (u8)checksum)
+        if (catk->historyChecksum != (u8)checksum)
         {
             for (j = 0; j < SHOT_ALL + 1; j++)
             {
@@ -875,7 +875,7 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
             nameChecksum += catk->spellPracticeHistory.maxBonus[j];
         }
         catk->difficulty = (u8)g_GameManager.difficulty;
-        catk->unk0xe = (u8)nameChecksum;
+        catk->historyChecksum = (u8)nameChecksum;
     }
 }
 
@@ -1070,7 +1070,7 @@ void Spellcard::EndSpell()
                         checksum += catk->spellPracticeHistory.maxBonus[i];
                     }
 
-                    if (catk->unk0xe != (u8)checksum)
+                    if (catk->historyChecksum != (u8)checksum)
                     {
                         for (i = 0; i < SHOT_ALL + 1; i++)
                         {
@@ -1143,7 +1143,7 @@ void Spellcard::EndSpell()
                         baseChecksum += catk->spellPracticeHistory.attempts[i];
                         baseChecksum += catk->spellPracticeHistory.maxBonus[i];
                     }
-                    catk->unk0xe = (u8)baseChecksum;
+                    catk->historyChecksum = (u8)baseChecksum;
                     g_GameManager.hscr.spellCounters[this->spellCardNumber]++;
                 }
 

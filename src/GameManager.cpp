@@ -1153,8 +1153,8 @@ i32 InitializeScoreData()
     for (i = 0; i < SPELLCARD_COUNT_SPELLCARDS; ++i, ++catk)
     {
         catk->base.magic = CATK_MAGIC;
-        catk->base.unkLen = sizeof(Catk);
-        catk->base.th8kLen = sizeof(Catk);
+        catk->base.chapterSizeCopy = sizeof(Catk);
+        catk->base.chapterSize = sizeof(Catk);
         catk->base.version = 3;
         catk->spellcardNumber = static_cast<u16>(i);
         for (j = 0; j < 7; ++j)

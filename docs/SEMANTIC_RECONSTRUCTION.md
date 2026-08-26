@@ -2627,3 +2627,59 @@ changed.  The whole-source router remains at 5 raw-member, 0 absolute-address,
 113 anonymous-identifier, and 44 opaque-storage candidates because it does not
 count these address names or offset-derived VM identifiers; these are routing
 counts, not a semantic-completion percentage.
+
+### Ending script and persisted score protocol — 2026-08-27
+
+Scope: the exact Ending script functions at `0x00428890..0x00429694`, callbacks
+through `AddedCallback @ 0x00429980`, TH8K chapter iteration and construction
+across `ScoreDat::OpenScore @ 0x0045A5E0` through `ParsePLST @ 0x0045AF30`,
+`ResultScreen::WriteScore @ 0x00453D0D`, `InitializeScoreData @ 0x0043BBE1`,
+and the CATK checksum consumers in `Spellcard::StartSpell @ 0x004152A0` and
+`EndSpell @ 0x004161B0`.  Target-pinned typed packets were captured before
+renaming, and the canonical executable was also inspected with target-safe
+objdump for the persisted CLRD byte.
+
+Ending protocol: `RunEndingScript` owns the ending bytecode cursor, dispatches
+the `@` opcode family, renders text through the next VM, and enforces separate
+line/page waits with independent skip-lock countdowns.  The buffer, cursor,
+ending ANM, sixteen VMs, elapsed timer, configured normal/minimum line waits,
+and next text-VM index now expose those roles.  `ReadScriptParameter`,
+`UpdateAndDrawFade`, and `LoadEndingScript` replace file-format-shaped names
+with their exact behavior.  Layout assertions pin every relied-on member,
+including `scriptData @ +0x2A54`, `canSkipChainedEnding @ +0x2A5C`,
+`pageWaitTimer @ +0x2A7C`, and `scriptCursor @ +0x2AB4`.
+
+Skip evidence: `AddedCallback` clears `canSkipChainedEnding`, then sets it only
+when entering stage 6B with Extra already unlocked or stage 6A with Spell
+Practice already unlocked.  Opcode `@F` loads the chained script and copies
+that value into `hasSeenEnding`, which gates SELECT/SKIP acceleration.  The
+persisted `Clrd::pendingEndingSkip @ +0x20` is read into the same gate and
+immediately cleared only on the non-clear ending path.  Full target `.text`
+inspection finds exactly those two references and no producer, so the name
+states its one-shot consumer protocol without guessing an artistic ending
+identity.
+
+Score record evidence: `Th8k::chapterSize @ +0x04` is checked for zero and
+advances every chapter iterator.  All authored chapter producers write the
+same `sizeof(...)` value at `+0x06`, so that field is conservatively
+`chapterSizeCopy`; no stronger purpose is claimed.  `Catk::historyChecksum @
++0x0E` is compared with the low byte of the spell-name-plus-history sum,
+causes both history arrays to reset on mismatch, and is recomputed after
+attempt/capture changes.  `Th8k::unk_9`, PSCR/Hscr residual bytes, CATK
+`+0x228`, and Ending `+0x2A98` remain neutral because their producers or stable
+roles are not proven.
+
+VC7 oracle: focused Ending replay passes **11 / 11 exact**.  The directly
+affected ScoreDat, SpellCard, ResultScreen, GameManager, Supervisor, and
+TitleScreen selection passes **172 / 172 exact**, including all checksum and
+chapter-size consumers.  After adding the shared-header offset assertions, a
+fresh single-job cold build of all 75 comparison objects passes **1,106 / 1,106
+exact**, and the normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links and
+`verify-modern-linux.sh build/modern-linux-container/th08-modern` verifies the
+ELF32 executable and all fixed target-owned layout symbols.  The focused
+four-file router falls from 14 anonymous identifiers plus one opaque range to
+seven anonymous identifiers plus that retained range; the whole-source router
+is now 5 raw-member, 0 absolute-address, 106 anonymous-identifier, and 44
+opaque-storage candidates.  These counts are routing evidence only.

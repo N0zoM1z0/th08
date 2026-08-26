@@ -87,12 +87,14 @@ enum Stage
 struct Th8k
 {
     u32 magic;
-    u16 th8kLen;
-    u16 unkLen;
+    u16 chapterSize;
+    u16 chapterSizeCopy;
     u8 version;
     u8 unk_9;
 };
 C_ASSERT(sizeof(Th8k) == 0xC);
+C_ASSERT(offsetof(Th8k, chapterSize) == 0x4);
+C_ASSERT(offsetof(Th8k, chapterSizeCopy) == 0x6);
 
 struct PlstPlayCounts
 {
@@ -163,7 +165,7 @@ struct Catk
 {
     Th8k base;
     u16 spellcardNumber;
-    u8 unk0xe;
+    u8 historyChecksum;
     u8 difficulty;
 
     char spellName[48];
@@ -178,6 +180,7 @@ struct Catk
 };
 
 C_ASSERT(sizeof(Catk) == 0x22c);
+C_ASSERT(offsetof(Catk, historyChecksum) == 0xe);
 C_ASSERT(offsetof(Catk, inGameHistory) == 0xf0);
 
 struct Clrd
@@ -185,11 +188,12 @@ struct Clrd
     Th8k base;
     u16 difficultiesClearedWithoutRetries[5];
     u16 difficultiesClearedWithRetries[5];
-    bool unk_20;
+    bool pendingEndingSkip;
     u8 shotNumber;
 };
 
 C_ASSERT(sizeof(Clrd) == 0x24);
+C_ASSERT(offsetof(Clrd, pendingEndingSkip) == 0x20);
 
 struct Pscr
 {

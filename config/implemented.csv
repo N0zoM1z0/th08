@@ -438,7 +438,7 @@ th08::AsciiManager::SetGaugeInterrupt
 th08::AsciiManager::SetSpaceWidth
 th08::AnmManager::ClearSprite
 th08::AnmVm::SetZRotation
-th08::Ending::LoadEnding
+th08::Ending::LoadEndingScript
 th08::Ending::Ending
 th08::Ending::OnUpdate
 th08::Ending::OnDraw
@@ -532,7 +532,7 @@ th08::CStreamingSound::PartialFadeIn
 th08::SoundPlayer::Pause
 th08::SoundPlayer::UnPause
 th08::SoundPlayer::ProcessQueues
-th08::Ending::ParseEndFile
+th08::Ending::RunEndingScript
 th08::TitleScreen::DrawSpellStageSelect
 th08::ResultScreen::DrawFinalStats
 th08::TitleScreen::DrawReplayMenu
@@ -541,7 +541,7 @@ th08::DrawPieChart
 th08::TextHelper::RenderTextToTextureBold
 th08::TextHelper::RenderTextToTexture
 th08::SoundPlayer::InitializeDSound
-th08::Ending::FadingEffect
+th08::Ending::UpdateAndDrawFade
 th08::SoundPlayer::LoadBGM
 th08::ResultScreen::RegisterChain
 th08::SoundPlayer::StartBGM
@@ -553,7 +553,7 @@ th08::GameErrorContext::Flush
 th08::Ending::AddedCallback
 th08::CSoundManager::CreateStreaming
 th08::CSoundManager::CreateStreamingFromMemory
-th08::Ending::ReadEndFileParameter
+th08::Ending::ReadScriptParameter
 th08::GameManager::GetTimeOrbs
 th08::GameManager::GetLastSpellTimeOrbThreshold
 th08::GameManager::GetLives

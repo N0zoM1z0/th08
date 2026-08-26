@@ -370,10 +370,10 @@ th08::Float3::FromRotatedVec2,0x428700,function
 th08::HasAnimationEnded,0x428720,function
 th08::EffectManager::EffectManager,0x428740,function
 th08::Effect::Effect,0x4287e0,function
-th08::Ending::ReadEndFileParameter,0x428890,function
-th08::Ending::FadingEffect,0x428910,function
-th08::Ending::ParseEndFile,0x428b80,function
-th08::Ending::LoadEnding,0x4295e0,function
+th08::Ending::ReadScriptParameter,0x428890,function
+th08::Ending::UpdateAndDrawFade,0x428910,function
+th08::Ending::RunEndingScript,0x428b80,function
+th08::Ending::LoadEndingScript,0x4295e0,function
 th08::Ending::RegisterChain,0x4296a0,function
 th08::Ending::Ending,0x4297b0,function
 th08::Ending::OnUpdate,0x429860,function

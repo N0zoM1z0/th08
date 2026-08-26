@@ -534,7 +534,7 @@ int Supervisor::AddedCallback(Supervisor *s)
     ScoreDat *score = ScoreDat::OpenScore("score.dat");
 
     memset(&g_GameManager.plst, 0, sizeof(g_GameManager.plst));
-    g_GameManager.plst.base.unkLen = g_GameManager.plst.base.th8kLen = sizeof(Plst);
+    g_GameManager.plst.base.chapterSizeCopy = g_GameManager.plst.base.chapterSize = sizeof(Plst);
     g_GameManager.plst.base.magic = PLST_MAGIC;
     g_GameManager.plst.base.version = PLST_VERSION;
 

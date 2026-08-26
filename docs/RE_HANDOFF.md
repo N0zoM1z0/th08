@@ -697,6 +697,35 @@ helper separately passes **50 / 50**.  The required cold replay passes **1,106
 plus fixed-layout verifier passes.  The remaining evidence gaps are flag bit 4,
 `unknown_044`, and the two draw-only VMs.
 
+The accepted Ending/score-record batch makes the complete ending-script path
+behavior-readable.  `ReadScriptParameter @ 0x00428890`,
+`UpdateAndDrawFade @ 0x00428910`, `RunEndingScript @ 0x00428B80`, and
+`LoadEndingScript @ 0x004295E0` now name their actual protocol, while the
+Ending owner exposes its script buffer/cursor, ending ANM/VMs, line/page wait
+timers, skip-lock countdowns, configured line delays, and next text-VM index.
+`canSkipChainedEnding @ +0x2A5C` is set from the already-unlocked route in
+`AddedCallback @ 0x00429980` and copied into the active skip gate after opcode
+`@F` loads another ending script.
+
+The persisted score chapter header now exposes `chapterSize` and the second
+size word that every authored producer writes equally as `chapterSizeCopy`;
+CATK `historyChecksum @ +0x0E` names the byte checksum
+seeded by the spell name and accumulated over both history arrays.  CLRD
+`pendingEndingSkip @ +0x20` is deliberately conservative: target-wide `.text`
+inspection finds only the non-clear Ending read followed by an immediate clear,
+and no TH08 1.00d producer.  Ending `+0x2A98` and the seven remaining ScoreDat
+fields stay neutral because current evidence does not prove their roles.
+
+Focused replay passes Ending **11 / 11 exact** and the six directly affected
+ScoreDat/SpellCard/ResultScreen/GameManager/Supervisor/TitleScreen objects
+**172 / 172 exact**.  The required final single-job cold replay passes **1,106
+/ 1,106 exact**, the normal VC7 image links, and the complete i386 Linux build
+plus fixed-layout verifier passes.  The four-file Ending/ScoreDat router falls
+from 14 anonymous identifiers plus one opaque range to seven anonymous
+identifiers plus the retained opaque range; the whole-source router is now 5
+raw-member, 0 absolute-address, 106 anonymous-identifier, and 44 opaque-storage
+candidates.  These remain routing counts, not a completion percentage.
+
 Select the next independent field family with:
 
 ```bash

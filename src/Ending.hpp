@@ -48,10 +48,10 @@ struct Ending
 {
     Ending();
 
-    ZunResult ReadEndFileParameter();
-    void FadingEffect();
-    ZunResult ParseEndFile();
-    ZunResult LoadEnding(const char *path);
+    ZunResult ReadScriptParameter();
+    void UpdateAndDrawFade();
+    ZunResult RunEndingScript();
+    ZunResult LoadEndingScript(const char *path);
 
     static ZunResult RegisterChain();
     static ChainCallbackResult OnUpdate(Ending *ending);
@@ -63,30 +63,38 @@ struct Ending
     ChainElem *drawChain;      // 0x4
     Float2 backgroundPos;      // 0x08 + //0x0c
     f32 backgroundScrollSpeed; // 0x10
-    AnmVm vms[16];             // 0x14
-    char *fileData;            // 0x2a54
-    ZunBool hasSeenEnding;     // 0x2a58
-    i32 unk2a5c;
-    AnmLoaded *anmFile;     // 0x2a60
-    ZunTimer timer1;        // 0x2a64
-    ZunTimer timer2;        // 0x2a70
-    ZunTimer timer3;        // 0x2a7c
-    i32 minWaitResetFrames; // 0x2a88
-    i32 minWaitFrames;      // 0x2a8c
-    i32 line2Delay;         // 0x2a90
-    i32 topLineDelay;       // 0x2a94
+    AnmVm endingVms[16];                 // 0x14
+    char *scriptData;                    // 0x2a54
+    ZunBool hasSeenEnding;               // 0x2a58
+    i32 canSkipChainedEnding;            // 0x2a5c
+    AnmLoaded *endingAnm;                // 0x2a60
+    ZunTimer elapsedTimer;               // 0x2a64
+    ZunTimer lineWaitTimer;              // 0x2a70
+    ZunTimer pageWaitTimer;              // 0x2a7c
+    i32 pageSkipLockFrames;              // 0x2a88
+    i32 lineSkipLockFrames;              // 0x2a8c
+    i32 defaultLineWaitFrames;           // 0x2a90
+    i32 minimumLineWaitFrames;           // 0x2a94
 
     unknown_fields(0x2a98, 0x4);
 
-    i32 timesFileParsed;     // 0x2a9c
-    i32 textColor;           // 0x2aa0
-    D3DCOLOR fadeColor;      // 0x2aa4
-    i32 fadeTimer;           // 0x2aa8
-    i32 fadeDuration;        // 0x2aac
-    EndingFadeType fadeMode; // 0x2ab0
-    char *cursorPtr;         // 0x2ab4
+    i32 nextTextVmIndex;      // 0x2a9c
+    i32 textColor;            // 0x2aa0
+    D3DCOLOR fadeColor;       // 0x2aa4
+    i32 fadeTimer;            // 0x2aa8
+    i32 fadeDuration;         // 0x2aac
+    EndingFadeType fadeMode;  // 0x2ab0
+    char *scriptCursor;       // 0x2ab4
 };
 
 C_ASSERT(sizeof(Ending) == 0x2ab8);
+C_ASSERT(offsetof(Ending, endingVms) == 0x14);
+C_ASSERT(offsetof(Ending, scriptData) == 0x2a54);
+C_ASSERT(offsetof(Ending, canSkipChainedEnding) == 0x2a5c);
+C_ASSERT(offsetof(Ending, endingAnm) == 0x2a60);
+C_ASSERT(offsetof(Ending, pageWaitTimer) == 0x2a7c);
+C_ASSERT(offsetof(Ending, pageSkipLockFrames) == 0x2a88);
+C_ASSERT(offsetof(Ending, nextTextVmIndex) == 0x2a9c);
+C_ASSERT(offsetof(Ending, scriptCursor) == 0x2ab4);
 
 } // namespace th08
