@@ -73,40 +73,7 @@ struct GuiStageMusicDataOverlay
     char songPaths[4][128];
 };
 
-struct GuiRawMessageInstruction
-{
-    u16 time;
-    u8 opcode;
-    u8 argSize;
-    u8 args[1];
-};
-
-struct GuiMessagePortraitArgs
-{
-    i32 portraitIndex;
-    i32 scriptOrSprite;
-};
-
-struct GuiMessagePortraitShortArgs
-{
-    i16 portraitIndex;
-    i16 scriptOrSprite;
-};
-
-struct GuiMessageScriptsArgs
-{
-    i32 portraitIndex;
-    i32 scripts[4];
-};
-
-struct GuiMessageTextArgs
-{
-    i16 colorIndex;
-    i16 lineIndex;
-    char text[1];
-};
-
-void __fastcall FUN_004353ec(char *out, const char *encoded);
+void __fastcall DecryptGuiMessageText(char *out, const char *encoded);
 i32 IsInitialStageLoad();
 i32 ReleaseResourcesOnRestart();
 i32 KeepStageResources();
@@ -140,7 +107,7 @@ ChainCallbackResult Gui::OnDraw(Gui *gui)
 // FUNCTION: th08 0x43396d
 void GuiImpl::StartMessage(i32 messageIndex)
 {
-    void *msgFile;
+    GuiMessageFile *msgFile;
 
     utils::GuiDebugPrint("msg start %d\n\r", messageIndex);
     msgFile = this->message.msgFile;
@@ -254,7 +221,7 @@ void GuiImpl::StartMessage(i32 messageIndex)
     }
 
     this->message.currentMsgIdx = messageIndex;
-    this->message.currentInstr = reinterpret_cast<u8 **>(this->message.msgFile)[messageIndex + 1];
+    this->message.currentInstr = this->message.msgFile->messages[messageIndex];
     this->message.dialogueLines[0].scriptIndex = -1;
     this->message.dialogueLines[1].scriptIndex = -1;
     this->message.textBoxVisible = 1;
@@ -283,11 +250,11 @@ void GuiImpl::StartMessage(i32 messageIndex)
 #pragma var_order(args, j, portraitArgs, k, portraitSpriteArgs, text3, text16, text19, text20, i)
 i32 GuiImpl::RunMsg()
 {
-    GuiMessagePortraitArgs *args;
+    GuiMessageInstructionArgs *args;
     u32 j;
-    GuiMessagePortraitArgs *portraitArgs;
+    GuiMessageConfigureAllPortraitsArgs *portraitArgs;
     u32 k;
-    GuiMessagePortraitArgs *portraitSpriteArgs;
+    GuiMessageConfigurePortraitArgs *portraitSpriteArgs;
     char text3[64];
     char text19[64];
     char text20[64];
@@ -304,37 +271,31 @@ i32 GuiImpl::RunMsg()
         (g_GuiMessageInputCurrent & TH_BUTTON_SKIP))
     {
         this->message.timer =
-            reinterpret_cast<GuiRawMessageInstruction *>(
-                this->message.currentInstr)->time;
+            this->message.currentInstr->time;
     }
 
     if (g_Player.playerState != PLAYER_STATE_DYING)
         g_ItemManager.AutoCollectAllItems();
 
-    while (this->message.timer >= (i32)
-           reinterpret_cast<GuiRawMessageInstruction *>(
-               this->message.currentInstr)->time)
+    while (this->message.timer >= (i32)this->message.currentInstr->time)
     {
-        switch (reinterpret_cast<GuiRawMessageInstruction *>(
-                   this->message.currentInstr)->opcode)
+        switch (this->message.currentInstr->opcode)
         {
-        case 0:
+        case GUI_MSG_DELETE:
             this->message.currentMsgIdx = -1;
             return -1;
 
-        case 0xF:
-            portraitArgs = reinterpret_cast<GuiMessagePortraitArgs *>(
-                reinterpret_cast<GuiRawMessageInstruction *>(
-                    this->message.currentInstr)->args);
+        case GUI_MSG_CONFIGURE_ALL_PORTRAITS:
+            portraitArgs = &this->message.currentInstr->args.configureAllPortraits;
             if (this->message.currentPortraitIndex !=
-                reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->portraitIndex)
+                portraitArgs->portraitIndex)
             {
                 for (j = 0; j < 4; j++)
                 {
                     if (this->message.currentPortraitIndex == j)
                     {
                         if ((this->message.currentPortraitIndex / 2) !=
-                            (reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->portraitIndex / 2))
+                            (portraitArgs->portraitIndex / 2))
                             this->message.portraits[j].pendingInterrupt = 6;
                         else
                             this->message.portraits[j].pendingInterrupt = 4;
@@ -343,35 +304,33 @@ i32 GuiImpl::RunMsg()
                         this->message.portraits[j].pendingInterrupt = 4;
                 }
             }
-            this->message.portraits[reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->portraitIndex]
+            this->message.portraits[portraitArgs->portraitIndex]
                 .pendingInterrupt = 3;
             this->message.currentPortraitIndex =
-                reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->portraitIndex;
-            if (reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[0] >= 0)
+                portraitArgs->portraitIndex;
+            if (portraitArgs->spriteIndices[0] >= 0)
                 g_Spellcard.playerFaceAnm0->SetSprite(
                     &this->message.portraits[0],
-                    reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[0]);
-            if (reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[1] >= 0)
+                    portraitArgs->spriteIndices[0]);
+            if (portraitArgs->spriteIndices[1] >= 0)
                 g_Spellcard.playerFaceAnm1->SetSprite(
                     &this->message.portraits[1],
-                    reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[1]);
-            if (reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[2] >= 0)
+                    portraitArgs->spriteIndices[1]);
+            if (portraitArgs->spriteIndices[2] >= 0)
                 g_Spellcard.enemyFaceAnm0->SetSprite(
                     &this->message.portraits[2],
-                    reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[2]);
-            if (reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[3] >= 0)
+                    portraitArgs->spriteIndices[2]);
+            if (portraitArgs->spriteIndices[3] >= 0)
                 g_Spellcard.enemyFaceAnm1->SetSprite(
                     &this->message.portraits[3],
-                    reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->scripts[3]);
+                    portraitArgs->spriteIndices[3]);
             this->message.textColorIndex =
-                reinterpret_cast<GuiMessageScriptsArgs *>(portraitArgs)->portraitIndex;
+                portraitArgs->portraitIndex;
             this->message.resetDialogueLines = 1;
             break;
 
-        case 0x11:
-            portraitSpriteArgs = reinterpret_cast<GuiMessagePortraitArgs *>(
-                reinterpret_cast<GuiRawMessageInstruction *>(
-                    this->message.currentInstr)->args);
+        case GUI_MSG_CONFIGURE_PORTRAIT:
+            portraitSpriteArgs = &this->message.currentInstr->args.configurePortrait;
             if (this->message.currentPortraitIndex !=
                 portraitSpriteArgs->portraitIndex)
             {
@@ -394,29 +353,29 @@ i32 GuiImpl::RunMsg()
             this->message.portraits[portraitSpriteArgs->portraitIndex].pendingInterrupt = 3;
             this->message.currentPortraitIndex =
                 portraitSpriteArgs->portraitIndex;
-            if (portraitSpriteArgs->scriptOrSprite >= 0)
+            if (portraitSpriteArgs->spriteIndex >= 0)
             {
                 switch (portraitSpriteArgs->portraitIndex)
                 {
                 case 0:
                     g_Spellcard.playerFaceAnm0->SetSprite(
                         &this->message.portraits[0],
-                        portraitSpriteArgs->scriptOrSprite);
+                        portraitSpriteArgs->spriteIndex);
                     break;
                 case 1:
                     g_Spellcard.playerFaceAnm1->SetSprite(
                         &this->message.portraits[1],
-                        portraitSpriteArgs->scriptOrSprite);
+                        portraitSpriteArgs->spriteIndex);
                     break;
                 case 2:
                     g_Spellcard.enemyFaceAnm0->SetSprite(
                         &this->message.portraits[2],
-                        portraitSpriteArgs->scriptOrSprite);
+                        portraitSpriteArgs->spriteIndex);
                     break;
                 case 3:
                     g_Spellcard.enemyFaceAnm1->SetSprite(
                         &this->message.portraits[3],
-                        portraitSpriteArgs->scriptOrSprite);
+                        portraitSpriteArgs->spriteIndex);
                     break;
                 }
             }
@@ -425,117 +384,109 @@ i32 GuiImpl::RunMsg()
             this->message.resetDialogueLines = 1;
             break;
 
-        case 1:
-            args = reinterpret_cast<GuiMessagePortraitArgs *>(
-                reinterpret_cast<GuiRawMessageInstruction *>(
-                    this->message.currentInstr)->args);
-            switch (reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex)
+        case GUI_MSG_SET_PORTRAIT_ANM_SCRIPT:
+            args = &this->message.currentInstr->args;
+            switch (args->portraitAnmScript.portraitIndex)
             {
             case 0:
                 g_Spellcard.playerFaceAnm0->SetAndExecuteScriptIdx(
                     &this->message.portraits[0],
-                    reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
+                    args->portraitAnmScript.scriptIndex);
                 break;
             case 1:
                 g_Spellcard.playerFaceAnm1->SetAndExecuteScriptIdx(
                     &this->message.portraits[1],
-                    reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
+                    args->portraitAnmScript.scriptIndex);
                 break;
             case 2:
                 g_Spellcard.enemyFaceAnm0->SetAndExecuteScriptIdx(
                     &this->message.portraits[2],
-                    reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
+                    args->portraitAnmScript.scriptIndex);
                 break;
             case 3:
                 g_Spellcard.enemyFaceAnm1->SetAndExecuteScriptIdx(
                     &this->message.portraits[3],
-                    reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
+                    args->portraitAnmScript.scriptIndex);
                 break;
             }
-            if (this->message.portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]
+            if (this->message.portraits[args->portraitAnmScript.portraitIndex]
                     .loadedSprite->widthPx > 128.0f)
-                this->message.portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]
+                this->message.portraits[args->portraitAnmScript.portraitIndex]
                     .pos2.x = -112.0f;
             else
-                this->message.portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]
+                this->message.portraits[args->portraitAnmScript.portraitIndex]
                     .pos2.x = 0.0f;
             break;
 
-        case 2:
-            args = reinterpret_cast<GuiMessagePortraitArgs *>(
-                reinterpret_cast<GuiRawMessageInstruction *>(
-                    this->message.currentInstr)->args);
-            switch (reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex)
+        case GUI_MSG_SET_PORTRAIT_SPRITE:
+            args = &this->message.currentInstr->args;
+            switch (args->portraitSprite.portraitIndex)
             {
             case 0:
                 g_Spellcard.playerFaceAnm0->SetSprite(
                     &this->message.portraits[0],
-                    reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
+                    args->portraitSprite.spriteIndex);
                 break;
             case 1:
                 g_Spellcard.playerFaceAnm1->SetSprite(
                     &this->message.portraits[1],
-                    reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
+                    args->portraitSprite.spriteIndex);
                 break;
             case 2:
                 g_Spellcard.enemyFaceAnm0->SetSprite(
                     &this->message.portraits[2],
-                    reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
+                    args->portraitSprite.spriteIndex);
                 break;
             case 3:
                 g_Spellcard.enemyFaceAnm1->SetSprite(
                     &this->message.portraits[3],
-                    reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->scriptOrSprite);
+                    args->portraitSprite.spriteIndex);
                 break;
             }
-            if (this->message.portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]
+            if (this->message.portraits[args->portraitSprite.portraitIndex]
                     .loadedSprite->widthPx > 256.0f)
             {
-                this->message.portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]
+                this->message.portraits[args->portraitSprite.portraitIndex]
                     .pos2.x = -208.0f;
-                this->message.portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]
+                this->message.portraits[args->portraitSprite.portraitIndex]
                     .pos2.y = -50.0f;
             }
-            else if (this->message.portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]
+            else if (this->message.portraits[args->portraitSprite.portraitIndex]
                          .loadedSprite->widthPx > 128.0f)
             {
-                this->message.portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]
+                this->message.portraits[args->portraitSprite.portraitIndex]
                     .pos2.x = -80.0f;
             }
             else
             {
-                this->message.portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]
+                this->message.portraits[args->portraitSprite.portraitIndex]
                     .pos2.x = 0.0f;
             }
             break;
 
-        case 3:
-            args = reinterpret_cast<GuiMessagePortraitArgs *>(
-                reinterpret_cast<GuiRawMessageInstruction *>(
-                    this->message.currentInstr)->args);
-            if (reinterpret_cast<GuiMessageTextArgs *>(args)->lineIndex == 0 &&
+        case GUI_MSG_SHOW_DIALOGUE_TEXT:
+            args = &this->message.currentInstr->args;
+            if (args->dialogueText.lineIndex == 0 &&
                 this->message.dialogueLines[1].scriptIndex >= 0)
             {
                 g_AnmManager->DrawTextLeft(&this->message.dialogueLines[1],
-                                           this->message.textColors[reinterpret_cast<GuiMessageTextArgs *>(args)->colorIndex],
-                                           this->message.shadowColors[reinterpret_cast<GuiMessageTextArgs *>(args)->colorIndex], " ");
+                                           this->message.textColors[args->dialogueText.colorIndex],
+                                           this->message.shadowColors[args->dialogueText.colorIndex], " ");
             }
             g_Supervisor.textAnm->SetAndExecuteScriptIdx(
-                &this->message.dialogueLines[reinterpret_cast<GuiMessageTextArgs *>(args)->lineIndex], reinterpret_cast<GuiMessageTextArgs *>(args)->lineIndex);
-            this->message.dialogueLines[reinterpret_cast<GuiMessageTextArgs *>(args)->lineIndex].fontWidth =
-                this->message.dialogueLines[reinterpret_cast<GuiMessageTextArgs *>(args)->lineIndex].fontHeight =
+                &this->message.dialogueLines[args->dialogueText.lineIndex], args->dialogueText.lineIndex);
+            this->message.dialogueLines[args->dialogueText.lineIndex].fontWidth =
+                this->message.dialogueLines[args->dialogueText.lineIndex].fontHeight =
                 this->message.fontSize;
-            FUN_004353ec(text3, reinterpret_cast<GuiMessageTextArgs *>(args)->text);
-            g_AnmManager->DrawTextLeft(&this->message.dialogueLines[reinterpret_cast<GuiMessageTextArgs *>(args)->lineIndex],
-                                       this->message.textColors[reinterpret_cast<GuiMessageTextArgs *>(args)->colorIndex],
-                                       this->message.shadowColors[reinterpret_cast<GuiMessageTextArgs *>(args)->colorIndex], text3);
+            DecryptGuiMessageText(text3, args->dialogueText.encryptedText);
+            g_AnmManager->DrawTextLeft(&this->message.dialogueLines[args->dialogueText.lineIndex],
+                                       this->message.textColors[args->dialogueText.colorIndex],
+                                       this->message.shadowColors[args->dialogueText.colorIndex], text3);
             this->message.framesElapsedDuringPause = 0;
             break;
 
-        case 0x10:
-            args = reinterpret_cast<GuiMessagePortraitArgs *>(
-                reinterpret_cast<GuiRawMessageInstruction *>(
-                    this->message.currentInstr)->args);
+        case GUI_MSG_SHOW_SPEAKER_TEXT:
+            args = &this->message.currentInstr->args;
             if (this->message.resetDialogueLines)
             {
                 if (this->message.dialogueLines[1].scriptIndex >= 0)
@@ -552,7 +503,7 @@ i32 GuiImpl::RunMsg()
             this->message.dialogueLines[this->message.dialogueLineIndex].fontWidth =
                 this->message.dialogueLines[this->message.dialogueLineIndex].fontHeight =
                 this->message.fontSize;
-            FUN_004353ec(text16, reinterpret_cast<const char *>(args));
+            DecryptGuiMessageText(text16, args->plainText.encryptedText);
             g_AnmManager->DrawTextLeft(
                 &this->message.dialogueLines[this->message.dialogueLineIndex],
                 this->message.textColors[this->message.textColorIndex],
@@ -562,35 +513,33 @@ i32 GuiImpl::RunMsg()
             this->message.dialogueLineIndex++;
             break;
 
-        case 0x13:
-            args = reinterpret_cast<GuiMessagePortraitArgs *>(
-                reinterpret_cast<GuiRawMessageInstruction *>(this->message.currentInstr)->args);
+        case GUI_MSG_SHOW_TOP_TEXT:
+            args = &this->message.currentInstr->args;
             g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->message.dialogueLines[0], 0);
             this->message.dialogueLines[0].fontWidth =
                 this->message.dialogueLines[0].fontHeight =
                 this->message.fontSize;
-            FUN_004353ec(text19, reinterpret_cast<const char *>(args));
+            DecryptGuiMessageText(text19, args->plainText.encryptedText);
             g_AnmManager->DrawTextLeft(&this->message.dialogueLines[0],
                 this->message.textColors[0],
                 this->message.shadowColors[0], text19);
             this->message.framesElapsedDuringPause = 0;
             break;
 
-        case 0x14:
-            args = reinterpret_cast<GuiMessagePortraitArgs *>(
-                reinterpret_cast<GuiRawMessageInstruction *>(this->message.currentInstr)->args);
+        case GUI_MSG_SHOW_BOTTOM_TEXT:
+            args = &this->message.currentInstr->args;
             g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->message.dialogueLines[1], 1);
             this->message.dialogueLines[1].fontWidth =
                 this->message.dialogueLines[1].fontHeight =
                 this->message.fontSize;
-            FUN_004353ec(text20, reinterpret_cast<const char *>(args));
+            DecryptGuiMessageText(text20, args->plainText.encryptedText);
             g_AnmManager->DrawTextLeft(&this->message.dialogueLines[1],
                 this->message.textColors[0],
                 this->message.shadowColors[0], text20);
             this->message.framesElapsedDuringPause = 0;
             break;
 
-        case 0x15:
+        case GUI_MSG_SHOW_SELECTION:
             if ((g_GuiMessageInputCurrent & TH_BUTTON_UP) &&
                 (g_GuiMessageInputCurrent & TH_BUTTON_UP) != (g_GuiMessageInputPrevious & TH_BUTTON_UP))
             {
@@ -613,8 +562,7 @@ i32 GuiImpl::RunMsg()
                 this->message.framesElapsedDuringPause < 60)
             {
                 if (this->message.framesElapsedDuringPause >=
-                    *reinterpret_cast<i32 *>(reinterpret_cast<GuiRawMessageInstruction *>(
-                        this->message.currentInstr)->args))
+                    this->message.currentInstr->args.wait.frames)
                 {
                     this->message.resetDialogueLines = 1;
                     this->message.waitThreshold = 30;
@@ -625,11 +573,11 @@ i32 GuiImpl::RunMsg()
             }
             g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
             break;
-        case 0x16:
+        case GUI_MSG_READ_SELECTED_MESSAGE:
             g_GameManager.flags.finalStageRoute = this->message.selectedOption;
             g_Gui.MsgRead(this->message.selectedOption + 1);
             continue;
-        case 4:
+        case GUI_MSG_WAIT:
             if (!this->message.dialogueSkippable ||
                 !(g_GuiMessageInputCurrent & TH_BUTTON_SKIP))
             {
@@ -640,8 +588,7 @@ i32 GuiImpl::RunMsg()
                         this->message.waitThreshold)
                 {
                     if (this->message.framesElapsedDuringPause >=
-                        *reinterpret_cast<i32 *>(reinterpret_cast<GuiRawMessageInstruction *>(
-                            this->message.currentInstr)->args))
+                        this->message.currentInstr->args.wait.frames)
                     {
                         this->message.resetDialogueLines = 1;
                         this->message.waitThreshold = 30;
@@ -655,22 +602,18 @@ i32 GuiImpl::RunMsg()
             }
             break;
 
-        case 5:
-            args = reinterpret_cast<GuiMessagePortraitArgs *>(
-                reinterpret_cast<GuiRawMessageInstruction *>(
-                    this->message.currentInstr)->args);
-            this->message.portraits[reinterpret_cast<GuiMessagePortraitShortArgs *>(args)->portraitIndex]
-                .pendingInterrupt =
-                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(args) + 2);
+        case GUI_MSG_INTERRUPT_PORTRAIT_ANM:
+            args = &this->message.currentInstr->args;
+            this->message.portraits[args->portraitInterrupt.portraitIndex]
+                .pendingInterrupt = args->portraitInterrupt.interrupt;
             break;
 
-        case 6:
+        case GUI_MSG_RESUME_ECL:
             this->message.ignoreWaitCounter++;
             break;
 
-        case 7:
-            if (*reinterpret_cast<i32 *>(reinterpret_cast<GuiRawMessageInstruction *>(
-                    this->message.currentInstr)->args) < 0)
+        case GUI_MSG_SET_MUSIC:
+            if (this->message.currentInstr->args.music.musicIndex < 0)
             {
                 g_Supervisor.StopAudio();
             }
@@ -679,37 +622,29 @@ i32 GuiImpl::RunMsg()
                 g_Gui.stageTextAnm->SetAndExecuteScriptIdx(&this->stageTextVms[3], 3);
                 g_Gui.stageTextAnm->SetSprite(
                     &this->stageTextVms[3],
-                    *reinterpret_cast<i32 *>(reinterpret_cast<GuiRawMessageInstruction *>(
-                        this->message.currentInstr)->args) + 3);
+                    this->message.currentInstr->args.music.musicIndex + 3);
                 if (g_Supervisor.PlayMusic(
-                        *reinterpret_cast<i32 *>(reinterpret_cast<GuiRawMessageInstruction *>(
-                            this->message.currentInstr)->args),
+                        this->message.currentInstr->args.music.musicIndex,
                         reinterpret_cast<char *>(g_GuiStageMusicContexts[g_GameManager.currentStage]
-                                                    .values[*reinterpret_cast<i32 *>(
-                                                        reinterpret_cast<GuiRawMessageInstruction *>(
-                                                            this->message.currentInstr)->args)])))
+                                                    .values[this->message.currentInstr->args.music.musicIndex])))
                 {
                     g_Supervisor.PlayAudio(
                         reinterpret_cast<GuiStageMusicDataOverlay *>(g_Background.stageData)
-                            ->songPaths[*reinterpret_cast<i32 *>(reinterpret_cast<GuiRawMessageInstruction *>(
-                                this->message.currentInstr)->args)],
+                            ->songPaths[this->message.currentInstr->args.music.musicIndex],
                         g_GuiStageMusicContexts[g_GameManager.currentStage]
-                            .values[*reinterpret_cast<i32 *>(reinterpret_cast<GuiRawMessageInstruction *>(
-                                this->message.currentInstr)->args)]);
+                            .values[this->message.currentInstr->args.music.musicIndex]);
                 }
             }
             break;
 
-        case 8:
-            args = reinterpret_cast<GuiMessagePortraitArgs *>(
-                reinterpret_cast<GuiRawMessageInstruction *>(
-                    this->message.currentInstr)->args);
+        case GUI_MSG_SHOW_INTRO_TEXT:
+            args = &this->message.currentInstr->args;
             g_Spellcard.enemyFaceAnm0->SetAndExecuteScriptIdx(
                 &this->message.introLines[0], 1);
             this->message.framesElapsedDuringPause = 0;
             break;
 
-        case 9:
+        case GUI_MSG_SHOW_STAGE_RESULTS:
             this->stageClear.power = g_GameManager.GetPower();
             this->stageClear.pointItemsCollected = g_GameManager.globals->pointItemsCollectedInStage;
             this->stageClear.timeOrbs = g_GameManager.GetTimeOrbs();
@@ -777,38 +712,35 @@ i32 GuiImpl::RunMsg()
                 g_Gui.flags.bombDisplayUpdateFrames = 2;
             }
             break;
-        case 0xA:
+        case GUI_MSG_HALT:
             goto run_scripts;
-        case 0xC:
+        case GUI_MSG_FADE_OUT_MUSIC:
             g_Supervisor.FadeOutMusic(4.0f);
             break;
-        case 0xE:
+        case GUI_MSG_FADE_SCREEN:
             ScreenEffect::RegisterChain((ScreenEffectType)4, 442, 0xffffff, 0, 0, 21);
             g_GuiMessageScreenEffectDuration = 442;
             break;
-        case 0xB:
+        case GUI_MSG_END_STAGE:
             if (g_GameManager.currentStage == STAGE6A || g_GameManager.currentStage == STAGE6B ||
                 g_GameManager.currentStage == EXTRASTAGE)
                 g_GameManager.flags.stageTransitionState = 2;
             goto run_scripts;
-        case 0xD:
+        case GUI_MSG_SET_DIALOGUE_SKIPPABLE:
             this->message.dialogueSkippable =
-                reinterpret_cast<GuiRawMessageInstruction *>(
-                    this->message.currentInstr)->args[0];
+                this->message.currentInstr->args.toggle.enabled;
             break;
-        case 0x12:
+        case GUI_MSG_SET_TEXT_BOX_VISIBLE:
             this->message.textBoxVisible =
-                reinterpret_cast<GuiRawMessageInstruction *>(this->message.currentInstr)->args[0];
+                this->message.currentInstr->args.toggle.enabled;
             break;
 
         }
 
         this->message.currentInstr =
-            reinterpret_cast<u8 *>(
-                reinterpret_cast<i32>(&reinterpret_cast<GuiRawMessageInstruction *>(
-                    this->message.currentInstr)->args) +
-                reinterpret_cast<GuiRawMessageInstruction *>(
-                    this->message.currentInstr)->argSize);
+            reinterpret_cast<GuiMessageInstruction *>(
+                reinterpret_cast<i32>(&this->message.currentInstr->args) +
+                this->message.currentInstr->instructionSize);
     }
 
     this->message.timer++;
@@ -833,7 +765,7 @@ run_scripts:
 
 // FUNCTION: th08 0x4353ec
 #pragma var_order(i, decoded)
-void __fastcall FUN_004353ec(char *out, const char *encoded)
+void __fastcall DecryptGuiMessageText(char *out, const char *encoded)
 {
     char decoded;
     i32 i = 0;
@@ -2246,7 +2178,8 @@ u32 AnmVm::FUN_004396f8()
 ZunResult Gui::LoadMsg(const char *path)
 {
     this->FreeMsgFile();
-    this->impl->message.msgFile = FileSystem::OpenFile(path, NULL, 0);
+    this->impl->message.msgFile =
+        reinterpret_cast<GuiMessageFile *>(FileSystem::OpenFile(path, NULL, 0));
     if (this->impl->message.msgFile == NULL)
     {
         g_GameErrorContext.Log("\x65\x72\x72\x6f\x72\x20\x3a\x20\x83\x81\x83\x62\x83\x5a\x81\x5b\x83\x57\x83\x74\x83\x40\x83\x43\x83\x8b\x20\x25\x73\x20\x82\xaa\x93\xc7\x82\xdd\x8d\x9e\x82\xdf\x82\xdc\x82\xb9\x82\xf1\x82\xc5\x82\xb5\x82\xbd\x0d\x0a", path);
@@ -2254,7 +2187,7 @@ ZunResult Gui::LoadMsg(const char *path)
     }
     this->impl->message.currentMsgIdx = -1;
     this->impl->message.currentInstr = NULL;
-    for (i32 i = 0; i < *(i32 *)this->impl->message.msgFile; ++i)
+    for (i32 i = 0; i < this->impl->message.msgFile->messageCount; ++i)
     {
         ((i32 *)this->impl->message.msgFile)[i + 1] += (i32)this->impl->message.msgFile;
     }

@@ -744,7 +744,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00418130,th08::GameManager::IsSpellNumberEqualTo,67,matching,100.00,gamemanager-is-spell-number-equal-to,python3 scripts/compare-function.py gamemanager-is-spell-number-equal-to --json
 0x00417F60,th08::Spellcard::RegisterChain,175,matching,100.00,spellcard-register-chain,python3 scripts/compare-function.py spellcard-register-chain --json
 0x00440E40,th08::Item::CollectPoint,472,matching,100.00,item-collect-point,python3 scripts/compare-function.py item-collect-point --json
-0x004353EC,th08::FUN_004353ec,63,matching,100.00,gui-decode-message-text,python3 scripts/compare-function.py gui-decode-message-text --json
+0x004353EC,th08::DecryptGuiMessageText,63,matching,100.00,gui-decode-message-text,python3 scripts/compare-function.py gui-decode-message-text --json
 0x00467040,th08::AnmManager::CopyTextureRect,307,matching,100.00,anm-copy-texture-rect,python3 scripts/compare-function.py anm-copy-texture-rect --json
 0x00437F5C,th08::Gui::CopyEnemyNameTexture,234,matching,100.00,gui-copy-message-texture-rect,python3 scripts/compare-function.py gui-copy-message-texture-rect --json
 0x0043396D,th08::GuiImpl::StartMessage,1094,matching,100.00,gui-message-start,python3 scripts/compare-function.py gui-message-start --json

@@ -438,11 +438,21 @@ Linux build plus fixed-layout verifier passes.  `Gui.cpp` now has zero raw-
 member candidates; the whole-source router is 116 raw-member, 82 absolute,
 280 anonymous, and 49 opaque candidates.  These counts are routing aids only.
 
+The adjacent GUI message-protocol batch is now accepted.  The complete 0..22
+opcode set has behavior names, and the variable-size record/file format now
+uses asserted typed payloads and pointers while retaining its real byte-stream
+advance and in-place offset fixups.  Target evidence proves the signed-word,
+unsigned-byte, dword, portrait, wait/music, and encrypted-text accesses;
+GensokyoClub's current declarations are corroboration only.  The XOR helper at
+`0x004353EC` is now `DecryptGuiMessageText` in source and all ledgers.
+Focused GUI replay passes **41 / 41**; `RunMsg` is exact over **5,597 authored
+bytes** and its full **5,689-byte code-plus-table extent**.  A single-job
+non-reuse cold build passes **1,106 / 1,106**, the normal VC7 image links, and
+the complete i386 Linux build plus fixed-layout verifier passes.
+
 The next dense semantic owners are the remaining GameManager/Spellcard
 cross-state fields, then EnemyManagerUpdate and AsciiManager presentation
-state.  The message opcode payload union remains a useful smaller follow-up;
-its serialized byte orientation is deliberate until that batch is separately
-replayed.
+state.
 
 Select the next independent field family with:
 

@@ -1741,3 +1741,64 @@ view.  The whole-source router now reports 116 raw-member, 82 absolute-address,
 observations, not completion percentages.  The next dense owners are the
 remaining GameManager/Spellcard cross-state fields, followed by
 EnemyManagerUpdate and AsciiManager presentation state.
+
+### GUI serialized message instruction protocol — 2026-08-27
+
+Scope: `GuiImpl::StartMessage @ 0x0043396D`, `RunMsg @ 0x00433DB3`, message
+text decryption at `0x004353EC`, and `Gui::LoadMsg @ 0x00439710`.  Shared
+wire-format declarations live in `src/Gui.hpp`; the interpreter remains in
+`src/Gui.cpp` under its exact `/Os` profile.
+
+Observed: the target dispatches the complete byte-opcode range 0 through 22
+through a 23-entry jump table.  Each variable-size record starts with
+`u16 time`, `u8 opcode`, and `u8 instructionSize`; the target advances from
+the payload address by `instructionSize`.  Payload accesses independently
+establish signed 16-bit portrait/line/color indices, unsigned one-byte ANM
+interrupt and boolean controls, dword waits/music indices, a five-dword
+all-portrait descriptor, a two-dword single-portrait descriptor, and encrypted
+text beginning at payload offset zero or four.  `LoadMsg` reads a dword count
+and fixes each following dword offset into an in-memory instruction pointer.
+The decoder at `0x004353EC` XORs every byte, including the terminator, with
+`0x77` and is now named `DecryptGuiMessageText` in source and all ledgers.
+
+Corroborated: GensokyoClub's current `MsgOpcode`, payload union, raw record,
+and file-header declarations agree with these TH08 widths and the interpreter's
+behavior.  They supplied the naming hypothesis only; the final declarations
+were checked against the canonical target packet and strict comparator rather
+than copied as an exactness claim.
+
+Inference: opcode names describe the target-observed action: portrait ANM or
+sprite selection, dialogue/speaker/top/bottom text, waits and selection,
+music/fade, stage result/end, screen fade, textbox/skipping controls, and
+selected-message routing.  `GUI_MSG_RESUME_ECL` and the intro-text label retain
+upstream corroboration because their target cases respectively adjust the
+message wait gate and initialize the intro ANM without independently naming
+the external protocol.  The unused trailing message byte and the opaque prefix
+of Background stage music data remain outside this batch.
+
+Layout: assertions pin every relied-on payload size/offset,
+`GuiMessageInstruction::args @ +0x4`, its maximum compile-time extent of
+`0x18`, `GuiMessageFile::messages @ +0x4`, and the unchanged
+`sizeof(GuiMsgVm) == 0x1570`.  Comments explicitly preserve the variable-size
+record and in-place pointer-fixup semantics instead of pretending the serialized
+stream is a fixed C++ array.
+
+VC7 oracle: focused replay across both `build/Gui.obj` and the canonical
+transformed GUI object passes **41 / 41**.  `RunMsg` matches all **5,597 / 5,597**
+authored bytes and the complete **5,689 / 5,689** code-plus-jump-table extent;
+the renamed decoder is **63 / 63**, `StartMessage` **1,094 / 1,094**, and
+`LoadMsg` **197 / 197**.  The required single-job non-reuse cold build of all
+75 comparison objects passes **1,106 / 1,106 exact**, and the normal VC7 image
+links.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiles and links
+the complete portable target.  `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verifies ELF32/ET_EXEC/i386 and every
+fixed target-owned layout symbol.
+
+Result: all numeric message opcode cases, local raw-instruction facades, and
+payload reinterpret casts in `RunMsg` are replaced by the asserted typed
+protocol without changing instruction order, state transitions, or accepted
+bytes.  This closes the deferred message-protocol portion of the GUI model; it
+does not claim meanings for unconsumed payload bytes or whole-program semantic
+completion.

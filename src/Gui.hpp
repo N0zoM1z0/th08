@@ -33,10 +33,137 @@ enum GuiDisplayMode
     GUI_DISPLAY_LAST_SPELL_FAILED = 6,
 };
 
+enum GuiMessageOpcode
+{
+    GUI_MSG_DELETE = 0,
+    GUI_MSG_SET_PORTRAIT_ANM_SCRIPT = 1,
+    GUI_MSG_SET_PORTRAIT_SPRITE = 2,
+    GUI_MSG_SHOW_DIALOGUE_TEXT = 3,
+    GUI_MSG_WAIT = 4,
+    GUI_MSG_INTERRUPT_PORTRAIT_ANM = 5,
+    GUI_MSG_RESUME_ECL = 6,
+    GUI_MSG_SET_MUSIC = 7,
+    GUI_MSG_SHOW_INTRO_TEXT = 8,
+    GUI_MSG_SHOW_STAGE_RESULTS = 9,
+    GUI_MSG_HALT = 10,
+    GUI_MSG_END_STAGE = 11,
+    GUI_MSG_FADE_OUT_MUSIC = 12,
+    GUI_MSG_SET_DIALOGUE_SKIPPABLE = 13,
+    GUI_MSG_FADE_SCREEN = 14,
+    GUI_MSG_CONFIGURE_ALL_PORTRAITS = 15,
+    GUI_MSG_SHOW_SPEAKER_TEXT = 16,
+    GUI_MSG_CONFIGURE_PORTRAIT = 17,
+    GUI_MSG_SET_TEXT_BOX_VISIBLE = 18,
+    GUI_MSG_SHOW_TOP_TEXT = 19,
+    GUI_MSG_SHOW_BOTTOM_TEXT = 20,
+    GUI_MSG_SHOW_SELECTION = 21,
+    GUI_MSG_READ_SELECTED_MESSAGE = 22,
+};
+
+struct GuiMessageConfigureAllPortraitsArgs
+{
+    i32 portraitIndex;
+    i32 spriteIndices[4];
+};
+C_ASSERT(sizeof(GuiMessageConfigureAllPortraitsArgs) == 0x14);
+
+struct GuiMessageConfigurePortraitArgs
+{
+    i32 portraitIndex;
+    i32 spriteIndex;
+};
+C_ASSERT(sizeof(GuiMessageConfigurePortraitArgs) == 0x8);
+
+struct GuiMessagePortraitAnmScriptArgs
+{
+    i16 portraitIndex;
+    i16 scriptIndex;
+};
+C_ASSERT(sizeof(GuiMessagePortraitAnmScriptArgs) == 0x4);
+
+struct GuiMessagePortraitSpriteArgs
+{
+    i16 portraitIndex;
+    i16 spriteIndex;
+};
+C_ASSERT(sizeof(GuiMessagePortraitSpriteArgs) == 0x4);
+
+struct GuiMessageDialogueTextArgs
+{
+    i16 colorIndex;
+    i16 lineIndex;
+    char encryptedText[1];
+};
+C_ASSERT(offsetof(GuiMessageDialogueTextArgs, encryptedText) == 0x4);
+
+struct GuiMessagePlainTextArgs
+{
+    char encryptedText[1];
+};
+
+struct GuiMessageWaitArgs
+{
+    i32 frames;
+};
+
+struct GuiMessagePortraitInterruptArgs
+{
+    i16 portraitIndex;
+    u8 interrupt;
+};
+C_ASSERT(offsetof(GuiMessagePortraitInterruptArgs, interrupt) == 0x2);
+
+struct GuiMessageMusicArgs
+{
+    i32 musicIndex;
+};
+
+struct GuiMessageByteToggleArgs
+{
+    u8 enabled;
+};
+
+union GuiMessageInstructionArgs
+{
+    GuiMessageConfigureAllPortraitsArgs configureAllPortraits;
+    GuiMessageConfigurePortraitArgs configurePortrait;
+    GuiMessagePortraitAnmScriptArgs portraitAnmScript;
+    GuiMessagePortraitSpriteArgs portraitSprite;
+    GuiMessageDialogueTextArgs dialogueText;
+    GuiMessagePlainTextArgs plainText;
+    GuiMessageWaitArgs wait;
+    GuiMessagePortraitInterruptArgs portraitInterrupt;
+    GuiMessageMusicArgs music;
+    GuiMessageByteToggleArgs toggle;
+    u8 raw[1];
+};
+C_ASSERT(sizeof(GuiMessageInstructionArgs) == 0x14);
+
+// Message records are variable-sized. instructionSize is measured from the
+// payload start, so the next record begins at &args + instructionSize.
+struct GuiMessageInstruction
+{
+    u16 time;
+    u8 opcode;
+    u8 instructionSize;
+    GuiMessageInstructionArgs args;
+};
+C_ASSERT(offsetof(GuiMessageInstruction, args) == 0x4);
+C_ASSERT(sizeof(GuiMessageInstruction) == 0x18);
+
+// The on-disk pointer table contains message-relative offsets. LoadMsg fixes
+// every entry up in place before the interpreter consumes it.
+struct GuiMessageFile
+{
+    i32 messageCount;
+    GuiMessageInstruction *messages[1];
+};
+C_ASSERT(offsetof(GuiMessageFile, messages) == 0x4);
+
 struct GuiMsgVm
 {
-    void *msgFile;
-    u8 *currentInstr;
+    GuiMessageFile *msgFile;
+    GuiMessageInstruction *currentInstr;
     i32 currentMsgIdx;
     ZunTimer timer;
     i32 framesElapsedDuringPause;

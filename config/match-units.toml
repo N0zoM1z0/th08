@@ -70909,7 +70909,7 @@ target = 0x0043C960
 [[units]]
 name = "gui-decode-message-text"
 object = "build/Gui.obj"
-symbol = "?FUN_004353ec@th08@@YIXPADPBD@Z"
+symbol = "?DecryptGuiMessageText@th08@@YIXPADPBD@Z"
 target_address = 0x004353EC
 size = 0x3F
 
@@ -71853,7 +71853,7 @@ target = 4221424
 [[units.relocations]]
 offset = 2153
 type = "REL32"
-symbol = "?FUN_004353ec@th08@@YIXPADPBD@Z"
+symbol = "?DecryptGuiMessageText@th08@@YIXPADPBD@Z"
 target = 4412396
 
 [[units.relocations]]
@@ -71902,7 +71902,7 @@ target = 4221424
 [[units.relocations]]
 offset = 2582
 type = "REL32"
-symbol = "?FUN_004353ec@th08@@YIXPADPBD@Z"
+symbol = "?DecryptGuiMessageText@th08@@YIXPADPBD@Z"
 target = 4412396
 
 [[units.relocations]]
@@ -71933,7 +71933,7 @@ target = 4221424
 [[units.relocations]]
 offset = 2850
 type = "REL32"
-symbol = "?FUN_004353ec@th08@@YIXPADPBD@Z"
+symbol = "?DecryptGuiMessageText@th08@@YIXPADPBD@Z"
 target = 4412396
 
 [[units.relocations]]
@@ -71964,7 +71964,7 @@ target = 4221424
 [[units.relocations]]
 offset = 3030
 type = "REL32"
-symbol = "?FUN_004353ec@th08@@YIXPADPBD@Z"
+symbol = "?DecryptGuiMessageText@th08@@YIXPADPBD@Z"
 target = 4412396
 
 [[units.relocations]]
