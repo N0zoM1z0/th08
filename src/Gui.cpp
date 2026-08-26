@@ -757,7 +757,7 @@ i32 GuiImpl::RunMsg()
                                                                 &this->msgVm)->currentInstr)->args)])))
                 {
                     g_Supervisor.PlayAudio(
-                        reinterpret_cast<GuiStageMusicDataOverlay *>(g_Background.stageAnmSecondary)
+                        reinterpret_cast<GuiStageMusicDataOverlay *>(g_Background.stageData)
                             ->songPaths[*reinterpret_cast<i32 *>(reinterpret_cast<GuiRawMessageInstruction *>(
                                 reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->currentInstr)->args)],
                         g_GuiStageMusicContexts[g_GameManager.currentStage]

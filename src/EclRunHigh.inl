@@ -41,7 +41,6 @@
 namespace th08
 {
 extern void *g_EclExInsn[];
-extern i32 g_EclGlobal004EA290; // target 0x004EA290
 extern i32 g_EclGlobal004ECCA8; // target 0x004ECCA8
 void __fastcall StartEnemySpell(u8 *enemy, void *instruction);
 void __fastcall EndEnemySpell(u8 *enemy, void *instruction);
@@ -940,7 +939,7 @@ enter_subroutine:
             TH08_ECL_READ_I(ctx, 0);
         break;
     case 141: g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position, static_cast<ItemType>(TH08_ECL_READ_I(ctx, 0)), 0); break;
-    case 147: g_EclGlobal004EA290 = TH08_ECL_READ_I(ctx, 0); break;
+    case 147: g_Background.pendingStageScriptLabel = TH08_ECL_READ_I(ctx, 0); break;
     case 148:
         g_Gui.FUN_00423130(TH08_ECL_READ_I(ctx, 0));
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3E04) += 0x708;

@@ -102,7 +102,6 @@ DIFFABLE_STATIC(i32, g_EclCallbackPublishedEnemyField56);
 #ifndef TH08_MODERN_PORT
 DIFFABLE_STATIC(void *, g_EclExUpdateCallback);
 #endif
-DIFFABLE_STATIC(i32, g_EclGlobal004EA290);
 DIFFABLE_STATIC(i32, g_EclGlobal004ECCA8);
 #ifndef TH08_MODERN_PORT
 DIFFABLE_STATIC(EclExBarrierRenderState, g_EclExBarrierRenderState);

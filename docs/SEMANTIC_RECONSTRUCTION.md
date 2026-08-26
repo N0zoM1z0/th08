@@ -1559,3 +1559,63 @@ are explicit unknown serialized fields, global-address owners not yet
 recovered, and neutral callback operands.  These counts are routing aids, not
 completion percentages.  The next high-value family is the Background camera,
 stage-object, and spell-tint model.
+
+### Background camera, stage, and spell-background model — 2026-08-26
+
+Scope: `Background @ 0x004E4030`, its constructor and camera constructor at
+`0x004071A0/0x004073B0`, update/draw lifecycle at
+`0x00407400..0x0040984F`, stage loading and rendering at
+`0x00409CE0..0x0040B42F`, and the spell-background transitions at
+`0x00415CE0/0x00416AD0`.
+
+Observed: the `0x6600`-byte owner now exposes the loaded stage buffer, object
+and quad counts, object-offset and instance tables, stage instruction stream,
+instruction timer/index, stage position interpolation, clear color, stage
+text VM, stage Effect, sky-fog interpolation, spell VM bank, draw callback,
+and the stage-script label selected by ECL opcode 147.  File records are
+bounded as `RawStageHeader`, `RawStageObject`, `RawStageObjectInstance`,
+`RawStageQuadBasic/Type1`, and `RawStageInstr`; neutral names are retained where
+the serialized role is not proven.
+
+The five `0x4C` camera records are now `BackgroundCamera`: target,
+interpolation start, Hermite end/start tangents, and current.  Each record owns
+position, look-at offset, up/forward/right vectors, position offset, and field
+of view.  Target instructions in `OnUpdate`, `SetCamera1/2`, stage rendering,
+ANM projection, and Effect camera-relative callbacks establish the individual
+roles.  Five parallel duration/timer/mode lanes control position, look-at, up,
+field-of-view, and camera-motion interpolation.  The scalar interpolator at
+`0x00408FC0` has target-observed `__stdcall` cleanup of 20 bytes and is named
+`CubicHermiteInterpolate`; the vector dispatcher is
+`InterpolateCameraVector`.
+
+Spell background state values 0, 1, and 2 are named inactive, fading in, and
+active.  Tint accumulation, the one-frame retain flag, culling distance, camera
+motion mode, and the 32 special-effect points now share asserted fields across
+Background, PlayerBomb, Spellcard, ANM, Effect, GameManager, and GUI.  The old
+`g_EclGlobal004EA290` was an overlapping analysis alias: target address
+`0x004EA290` is exactly `g_Background + 0x6260`, so RunEcl now writes
+`pendingStageScriptLabel` and the duplicate VC7/Linux storage identity is
+retired.
+
+VC7 source-shape limit: the stage-7 check at target `OnUpdate + 0x4D` retains
+an explicitly documented absolute view of `0x0164D2CC`, even though that
+address is `g_GameManager.currentStage`.  A natural member expression changes
+the COFF relocation shape; restoring the target operand is required for strict
+accepted replay.  Snapshotting the stage Effect VM also retains a raw
+`BackgroundAnmVmSnapshot` carrier because adding convenient typed local
+pointers changes `/Od` stack/code shape.  These are localized compiler-shape
+constraints, not unknown field ownership.
+
+Oracle status: focused `Background.obj` replay passes **29 / 29** and all
+selected affected consumer objects pass **487 / 487**.  RunEcl remains
+**26,638 / 26,638** authored bytes exact after its relocation owner changes to
+`g_Background + 0x6260`.  The non-reuse single-job cold VC7 replay passes
+**1,105 / 1,105**, the normal VC7 image links, and the complete i386 Linux
+build plus fixed-layout verifier passes.
+
+Result: the whole-source router reports 207 raw-member, 82 absolute-address,
+432 anonymous-identifier, and 54 opaque-storage candidates.  Background source
+and header have zero raw-member candidates; the one PlayerBomb Background tint
+candidate is also gone.  Counts remain routing aids, not completion
+percentages.  The next largest coherent semantic owner is GameManager and its
+GUI/setup consumers.

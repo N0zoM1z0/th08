@@ -769,13 +769,13 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
     }
     this->CutInEnemy(enemyFace, this->spellName, 0);
     g_BulletManager.bulletmanager_fun_00415c60();
-    g_Background.background_fun_00415ce0();
+    g_Background.StartSpellBackground();
     for (i = 0; (i32)i < g_Background.spellVmCount; i++)
     {
-        g_SpellcardBackgroundAnm->SetAndExecuteScriptIdx(&g_Background.anmVmArray[i],
+        g_SpellcardBackgroundAnm->SetAndExecuteScriptIdx(&g_Background.spellVms[i],
                                                          i + g_Background.spellVmScriptBase);
     }
-    g_Background.onDrawLowPrioCallback = NULL;
+    g_Background.spellBackgroundDrawCallback = NULL;
     reinterpret_cast<Enemy *>(this->activeEnemy)->enemy_fun_00415c80();
     this->mixColor = 0x80808080;
 
@@ -924,7 +924,7 @@ void Enemy::enemy_fun_00415c80()
 }
 
 // FUNCTION: th08 0x415ce0
-void Background::background_fun_00415ce0()
+void Background::StartSpellBackground()
 {
     this->spellBackgroundState = 1;
     this->spellBackgroundTimer = 0;
@@ -1242,7 +1242,7 @@ void Spellcard::EndSpell()
         g_Gui.flags.bombDisplayUpdateFrames = 3;
         g_Gui.flags.lifeDisplayUpdateFrames = 3;
         g_SoundPlayer.PlaySoundByIdx((SoundIdx)15, 0);
-        g_Background.background_fun_00416ad0();
+        g_Background.StopSpellBackground();
     }
 
     if (this->activeEnemy != NULL)
@@ -1254,7 +1254,7 @@ void Spellcard::EndSpell()
 }
 
 // FUNCTION: th08 0x416ad0
-void Background::background_fun_00416ad0()
+void Background::StopSpellBackground()
 {
     this->spellBackgroundState = 0;
 }

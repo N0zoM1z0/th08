@@ -739,7 +739,7 @@ void __fastcall FUN_00424c40(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 // FUNCTION: th08 0x424e00
 void __fastcall FUN_00424e00(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    g_Background.FUN_00409160(0xffc03030U);
+    g_Background.AccumulateTint(0xffc03030U);
 }
 
 // FUNCTION: th08 0x424e20

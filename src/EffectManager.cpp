@@ -485,8 +485,8 @@ i32 __fastcall FUN_00426280(Effect *effect)
 {
     Float3 backgroundOffset;
 
-    backgroundOffset = -g_Background.unk6394.vector1;
-    effect->vector4 = g_Background.unk6394.vector1 + g_Background.unk6394.vector0;
+    backgroundOffset = -g_Background.cameraCurrent.lookAtOffset;
+    effect->vector4 = g_Background.cameraCurrent.lookAtOffset + g_Background.cameraCurrent.position;
     effect->vector4.x += g_Rng.GetRandomF32SignedInRange(60.0f) + backgroundOffset.x / 2.0f;
     effect->vector4.y += g_Rng.GetRandomF32SignedInRange(100.0f) - 50.0f + backgroundOffset.y / 2.0f;
     effect->vector4.z += g_Rng.GetRandomF32InRange(100.0f) - 100.0f + backgroundOffset.z / 2.0f;
@@ -522,9 +522,9 @@ i32 __fastcall FUN_004264f0(Effect *effect)
     effect->position = effect->vector4;
 
     Float3 delta;
-    delta = effect->position - g_Background.unk6394.vector0;
+    delta = effect->position - g_Background.cameraCurrent.position;
     D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&delta), reinterpret_cast<D3DXVECTOR3 *>(&delta));
-    dot = D3DXVec3Dot(reinterpret_cast<D3DXVECTOR3 *>(&g_Background.unk6394.vector3),
+    dot = D3DXVec3Dot(reinterpret_cast<D3DXVECTOR3 *>(&g_Background.cameraCurrent.forward),
                       reinterpret_cast<D3DXVECTOR3 *>(&delta));
     if (dot < 0.94f)
         return 0;
@@ -548,10 +548,10 @@ i32 __fastcall FUN_004264f0(Effect *effect)
     }
 
     *reinterpret_cast<u32 *>(&effect->vm.flags) |= 0x20000;
-    effect->vm.color2.r = ((u32)effect->vm.color1.r * g_Background.textAnmVm.color1.r) >> 8;
-    effect->vm.color2.g = ((u32)effect->vm.color1.g * g_Background.textAnmVm.color1.g) >> 8;
-    effect->vm.color2.b = ((u32)effect->vm.color1.b * g_Background.textAnmVm.color1.b) >> 8;
-    effect->vm.color2.a = ((u32)effect->vm.color1.a * g_Background.textAnmVm.color1.a) >> 8;
+    effect->vm.color2.r = ((u32)effect->vm.color1.r * g_Background.stageTextVm.color1.r) >> 8;
+    effect->vm.color2.g = ((u32)effect->vm.color1.g * g_Background.stageTextVm.color1.g) >> 8;
+    effect->vm.color2.b = ((u32)effect->vm.color1.b * g_Background.stageTextVm.color1.b) >> 8;
+    effect->vm.color2.a = ((u32)effect->vm.color1.a * g_Background.stageTextVm.color1.a) >> 8;
     return 1;
 }
 
@@ -561,8 +561,8 @@ i32 __fastcall FUN_00426720(Effect *effect)
 {
     Float3 backgroundOffset;
 
-    backgroundOffset = -g_Background.unk6394.vector1;
-    effect->vector4 = g_Background.unk6394.vector1 + g_Background.unk6394.vector0;
+    backgroundOffset = -g_Background.cameraCurrent.lookAtOffset;
+    effect->vector4 = g_Background.cameraCurrent.lookAtOffset + g_Background.cameraCurrent.position;
     effect->vector4.x += g_Rng.GetRandomF32SignedInRange(60.0f) + backgroundOffset.x / 2.0f;
     effect->vector4.y += g_Rng.GetRandomF32SignedInRange(200.0f) - 200.0f + backgroundOffset.y / 2.0f;
     effect->vector4.z += g_Rng.GetRandomF32InRange(100.0f) - 100.0f + backgroundOffset.z / 2.0f;
@@ -598,9 +598,9 @@ i32 __fastcall FUN_00426990(Effect *effect)
     effect->position = effect->vector4;
 
     Float3 delta;
-    delta = effect->position - g_Background.unk6394.vector0;
+    delta = effect->position - g_Background.cameraCurrent.position;
     D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&delta), reinterpret_cast<D3DXVECTOR3 *>(&delta));
-    dot = D3DXVec3Dot(reinterpret_cast<D3DXVECTOR3 *>(&g_Background.unk6394.vector3),
+    dot = D3DXVec3Dot(reinterpret_cast<D3DXVECTOR3 *>(&g_Background.cameraCurrent.forward),
                       reinterpret_cast<D3DXVECTOR3 *>(&delta));
     if (dot < 0.94f)
         return 0;
@@ -701,9 +701,9 @@ i32 __fastcall FUN_00426d70(Effect *effect)
     effect->position = effect->vector4;
 
     Float3 delta;
-    delta = effect->position - g_Background.unk6394.vector0;
+    delta = effect->position - g_Background.cameraCurrent.position;
     D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&delta), reinterpret_cast<D3DXVECTOR3 *>(&delta));
-    dot = D3DXVec3Dot(reinterpret_cast<D3DXVECTOR3 *>(&g_Background.unk6394.vector3),
+    dot = D3DXVec3Dot(reinterpret_cast<D3DXVECTOR3 *>(&g_Background.cameraCurrent.forward),
                       reinterpret_cast<D3DXVECTOR3 *>(&delta));
     if (dot < 0.94f)
         return 0;
@@ -720,8 +720,8 @@ i32 __fastcall FUN_00426e70(Effect *effect)
 {
     Float3 backgroundOffset;
 
-    backgroundOffset = -g_Background.unk6394.vector1;
-    effect->vector4 = g_Background.unk6394.vector1 + g_Background.unk6394.vector0;
+    backgroundOffset = -g_Background.cameraCurrent.lookAtOffset;
+    effect->vector4 = g_Background.cameraCurrent.lookAtOffset + g_Background.cameraCurrent.position;
     effect->vector4.x += g_Rng.GetRandomF32InRange(120.0f) - 60.0f + backgroundOffset.x / 2.0f;
     effect->vector4.y += g_Rng.GetRandomF32InRange(200.0f) - 100.0f + backgroundOffset.y / 2.0f;
     effect->vector4.z += g_Rng.GetRandomF32InRange(100.0f) - 100.0f + backgroundOffset.z / 2.0f;

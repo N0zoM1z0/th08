@@ -30,7 +30,6 @@ SECTIONS
     _ZN4th0821g_BackgroundCalcChainE = 0x004ea650;
 
     /* ECL opcode 147 names Background::unk6260 as a standalone global. */
-    _ZN4th0819g_EclGlobal004EA290E = 0x004ea290;
 
     _ZN4th0811g_SpellcardE = 0x004ea670;
     _ZN4th0820g_SpellcardCalcChainE = 0x004eccac;

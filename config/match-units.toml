@@ -4814,8 +4814,8 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x51CD
 type = "DIR32"
-symbol = "?g_EclGlobal004EA290@th08@@3HA"
-target = 0x004EA290
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x51EE
@@ -59685,31 +59685,31 @@ target = 0x00406720
 [[units.relocations]]
 offset = 0xAA
 type = "REL32"
-symbol = "??0BackgroundUnkVectors@th08@@QAE@XZ"
+symbol = "??0BackgroundCamera@th08@@QAE@XZ"
 target = 0x004073B0
 
 [[units.relocations]]
 offset = 0xB8
 type = "REL32"
-symbol = "??0BackgroundUnkVectors@th08@@QAE@XZ"
+symbol = "??0BackgroundCamera@th08@@QAE@XZ"
 target = 0x004073B0
 
 [[units.relocations]]
 offset = 0xC6
 type = "REL32"
-symbol = "??0BackgroundUnkVectors@th08@@QAE@XZ"
+symbol = "??0BackgroundCamera@th08@@QAE@XZ"
 target = 0x004073B0
 
 [[units.relocations]]
 offset = 0xD4
 type = "REL32"
-symbol = "??0BackgroundUnkVectors@th08@@QAE@XZ"
+symbol = "??0BackgroundCamera@th08@@QAE@XZ"
 target = 0x004073B0
 
 [[units.relocations]]
 offset = 0xE2
 type = "REL32"
-symbol = "??0BackgroundUnkVectors@th08@@QAE@XZ"
+symbol = "??0BackgroundCamera@th08@@QAE@XZ"
 target = 0x004073B0
 
 [[units.relocations]]
@@ -64169,12 +64169,12 @@ type = "REL32"
 symbol = "?RenderObjects@Background@th08@@QAE?AW4ZunResult@@H@Z"
 target = 0x0040A1B0
 
-# Ledger name: th08::Background::FUN_00409160
+# Ledger name: th08::Background::AccumulateTint
 # Evidence: 0 relocations; 0 direct calls; full replay exact; implemented ledger=False.
 [[units]]
-name = "background-fun-00409160"
+name = "background-accumulate-tint"
 object = "build/Background.obj"
-symbol = "?FUN_00409160@Background@th08@@QAEXK@Z"
+symbol = "?AccumulateTint@Background@th08@@QAEXK@Z"
 target_address = 0x00409160
 size = 0x9D
 
@@ -64187,12 +64187,12 @@ symbol = "?IsHuman@Player@th08@@QAEHXZ"
 target_address = 0x0040BC20
 size = 0x17
 
-# Ledger name: th08::Background::FUN_00409f40
+# Ledger name: th08::Background::UpdateStageObjectVms
 # Evidence: 15 relocations; 10 direct calls; full replay exact; implemented ledger=False.
 [[units]]
-name = "background-fun-00409f40"
+name = "background-update-stage-object-vms"
 object = "build/Background.obj"
-symbol = "?FUN_00409f40@Background@th08@@QAEIXZ"
+symbol = "?UpdateStageObjectVms@Background@th08@@QAEIXZ"
 target_address = 0x00409F40
 size = 0x262
 
@@ -65711,12 +65711,12 @@ type = "REL32"
 symbol = "?AddSpriteToDrawBuffer@AnmManager@th08@@QAE?AW4ZunResult@@PAUVertexTex1DiffuseXyzrhw@2@@Z"
 target = 0x00462F10
 
-# Ledger name: FUN_00408fc0
+# Ledger name: CubicHermiteInterpolate
 # Evidence: 9 relocations; 0 direct calls; full replay exact; implemented ledger=False.
 [[units]]
-name = "fun-00408fc0"
+name = "background-cubic-hermite-interpolate"
 object = "build/Background.obj"
-symbol = "?FUN_00408fc0@th08@@YGMMMMMM@Z"
+symbol = "?CubicHermiteInterpolate@th08@@YGMMMMMM@Z"
 target_address = 0x00408FC0
 size = 0x98
 
@@ -65774,14 +65774,14 @@ type = "DIR32"
 symbol = "__real@3f800000"
 target = 0x004B4338
 
-# Ledger name: th08::Background::FUN_00408d60
+# Ledger name: th08::Background::InterpolateCameraVector
 # Authored extent: 0x00408D60..0x00408FA1 (0x241 bytes)
 # Associated switch table: 0x00408FA1..0x00408FB9 (0x18 bytes)
 # Evidence: source-emitted helper plus compiler-owned switch table; strict COFF relocation replay against pinned target.
 [[units]]
-name = "background-fun-00408d60"
+name = "background-interpolate-camera-vector"
 object = "build/Background.obj"
-symbol = "?FUN_00408d60@Background@th08@@QAIXHPAUFloat3@2@PBU32@111@Z"
+symbol = "?InterpolateCameraVector@Background@th08@@QAIXHPAUFloat3@2@PBU32@111@Z"
 target_address = 0x00408D60
 size = 0x241
 compare_size = 0x259
@@ -65873,19 +65873,19 @@ target = 0x00409080
 [[units.relocations]]
 offset = 0x1DC
 type = "REL32"
-symbol = "?FUN_00408fc0@th08@@YGMMMMMM@Z"
+symbol = "?CubicHermiteInterpolate@th08@@YGMMMMMM@Z"
 target = 0x00408FC0
 
 [[units.relocations]]
 offset = 0x206
 type = "REL32"
-symbol = "?FUN_00408fc0@th08@@YGMMMMMM@Z"
+symbol = "?CubicHermiteInterpolate@th08@@YGMMMMMM@Z"
 target = 0x00408FC0
 
 [[units.relocations]]
 offset = 0x231
 type = "REL32"
-symbol = "?FUN_00408fc0@th08@@YGMMMMMM@Z"
+symbol = "?CubicHermiteInterpolate@th08@@YGMMMMMM@Z"
 target = 0x00408FC0
 
 [[units.relocations]]
@@ -66203,19 +66203,19 @@ target = 0x0040B910
 [[units.relocations]]
 offset = 0xED0
 type = "REL32"
-symbol = "?FUN_00408d60@Background@th08@@QAIXHPAUFloat3@2@PBU32@111@Z"
+symbol = "?InterpolateCameraVector@Background@th08@@QAIXHPAUFloat3@2@PBU32@111@Z"
 target = 0x00408D60
 
 [[units.relocations]]
 offset = 0xF41
 type = "REL32"
-symbol = "?FUN_00408d60@Background@th08@@QAIXHPAUFloat3@2@PBU32@111@Z"
+symbol = "?InterpolateCameraVector@Background@th08@@QAIXHPAUFloat3@2@PBU32@111@Z"
 target = 0x00408D60
 
 [[units.relocations]]
 offset = 0xFB1
 type = "REL32"
-symbol = "?FUN_00408d60@Background@th08@@QAIXHPAUFloat3@2@PBU32@111@Z"
+symbol = "?InterpolateCameraVector@Background@th08@@QAIXHPAUFloat3@2@PBU32@111@Z"
 target = 0x00408D60
 
 [[units.relocations]]
@@ -66515,7 +66515,7 @@ target = 0x00406640
 [[units.relocations]]
 offset = 0x161D
 type = "REL32"
-symbol = "?FUN_00409f40@Background@th08@@QAEIXZ"
+symbol = "?UpdateStageObjectVms@Background@th08@@QAEIXZ"
 target = 0x00409F40
 
 [[units.relocations]]
@@ -67900,20 +67900,20 @@ target_address = 0x00415C80
 size = 0x55
 
 
-# Ledger name: th08::Background::background_fun_00415ce0
+# Ledger name: th08::Background::StartSpellBackground
 [[units]]
 name = "background-spell-phase-start"
 object = "build/SpellCard.obj"
-symbol = "?background_fun_00415ce0@Background@th08@@QAEXXZ"
+symbol = "?StartSpellBackground@Background@th08@@QAEXXZ"
 target_address = 0x00415CE0
 size = 0x25
 
 
-# Ledger name: th08::Background::background_fun_00416ad0
+# Ledger name: th08::Background::StopSpellBackground
 [[units]]
 name = "background-spell-phase-end"
 object = "build/SpellCard.obj"
-symbol = "?background_fun_00416ad0@Background@th08@@QAEXXZ"
+symbol = "?StopSpellBackground@Background@th08@@QAEXXZ"
 target_address = 0x00416AD0
 size = 0x18
 
@@ -68003,7 +68003,7 @@ target = 0x004E4030
 [[units.relocations]]
 offset = 0x219
 type = "REL32"
-symbol = "?background_fun_00415ce0@Background@th08@@QAEXXZ"
+symbol = "?StartSpellBackground@Background@th08@@QAEXXZ"
 target = 0x00415CE0
 
 [[units.relocations]]
@@ -68818,7 +68818,7 @@ target = 0x004E4030
 [[units.relocations]]
 offset = 0x8D2
 type = "REL32"
-symbol = "?background_fun_00416ad0@Background@th08@@QAEXXZ"
+symbol = "?StopSpellBackground@Background@th08@@QAEXXZ"
 target = 0x00416AD0
 
 # Ledger name: th08::Spellcard::DeletedCallback
@@ -92842,7 +92842,7 @@ target = 0x004E4030
 [[units.relocations]]
 offset = 0x1AF
 type = "REL32"
-symbol = "?FUN_00409160@Background@th08@@QAEXK@Z"
+symbol = "?AccumulateTint@Background@th08@@QAEXK@Z"
 target = 0x00409160
 
 [[units.relocations]]
@@ -107272,9 +107272,9 @@ symbol = "??0D3DXVECTOR3@@QAE@XZ"
 target = 0x0040B460
 
 [[units]]
-name = "background-unk-vectors-ctor-004073b0"
+name = "background-camera-constructor"
 object = "build/objdiff/reimpl/Background.obj"
-symbol = "??0BackgroundUnkVectors@th08@@QAE@XZ"
+symbol = "??0BackgroundCamera@th08@@QAE@XZ"
 target_address = 0x004073B0
 size = 0x4D
 
@@ -110828,7 +110828,7 @@ target = 0x004E4030
 [[units.relocations]]
 offset = 0x17
 type = "REL32"
-symbol = "?FUN_00409160@Background@th08@@QAEXK@Z"
+symbol = "?AccumulateTint@Background@th08@@QAEXK@Z"
 target = 0x00409160
 
 [[units]]

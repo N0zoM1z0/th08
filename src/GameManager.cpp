@@ -1016,13 +1016,13 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
         else
         {
             g_Supervisor.LoadMusic(
-                0, reinterpret_cast<char *>(g_Background.stageAnmSecondary) + 0x290);
-            if (*(reinterpret_cast<i8 *>(g_Background.stageAnmSecondary) + 0x310) != 0x20)
+                0, reinterpret_cast<char *>(g_Background.stageData) + 0x290);
+            if (*(reinterpret_cast<i8 *>(g_Background.stageData) + 0x310) != 0x20)
                 g_Supervisor.LoadMusic(
-                    1, reinterpret_cast<char *>(g_Background.stageAnmSecondary) + 0x310);
-            if (*(reinterpret_cast<i8 *>(g_Background.stageAnmSecondary) + 0x390) != 0x20)
+                    1, reinterpret_cast<char *>(g_Background.stageData) + 0x310);
+            if (*(reinterpret_cast<i8 *>(g_Background.stageData) + 0x390) != 0x20)
                 g_Supervisor.LoadMusic(
-                    2, reinterpret_cast<char *>(g_Background.stageAnmSecondary) + 0x390);
+                    2, reinterpret_cast<char *>(g_Background.stageData) + 0x390);
         }
     }
 

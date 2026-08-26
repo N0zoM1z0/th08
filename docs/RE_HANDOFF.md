@@ -353,6 +353,30 @@ The Player source/header/Bomb router is down to one raw-member candidate, the
 separate Background tint byte.  The next high-value family is the Background
 camera/stage object model; whole-program semantic completion remains open.
 
+The first accepted Background batch closes the camera, stage-object,
+stage-script, fog, spell-background, and tint model.  `Background` retains its
+exact `0x6600` extent while naming the loaded stage buffer and serialized
+records, object/quad tables, stage position and script state, text and Effect
+owners, five `BackgroundCamera` records, interpolation lanes, spell VM bank,
+culling/tint state, and special-effect points.  Important helpers are now
+`InterpolateCameraVector`, `CubicHermiteInterpolate`, `AccumulateTint`,
+`UpdateStageObjectVms`, `StartSpellBackground`, and `StopSpellBackground`.
+
+ECL opcode 147's former `g_EclGlobal004EA290` identity is proven to be
+`g_Background.pendingStageScriptLabel @ +0x6260`; the overlapping VC7/Linux
+storage alias is retired and RunEcl remains **26,638 / 26,638 exact**.  One
+documented target-source constraint remains in `Background::OnUpdate`: the
+stage-7 check uses absolute address `0x0164D2CC` because a natural
+`g_GameManager.currentStage` expression changes the target COFF relocation
+shape.  Focused replay passes Background **29 / 29** and the selected affected
+consumer objects **487 / 487**.  A non-reuse single-job cold VC7 replay passes
+**1,105 / 1,105**, the normal VC7 image links, and the complete i386 Linux
+build plus fixed-layout verifier passes.  The whole-source router now reports
+207 raw-member, 82 absolute-address, 432 anonymous-identifier, and 54 opaque-
+storage candidates; Background itself has zero raw-member candidates.  These
+are routing observations, not completion percentages.  GameManager and its
+GUI/setup consumers are the next high-value coherent family.
+
 Select the next independent field family with:
 
 ```bash

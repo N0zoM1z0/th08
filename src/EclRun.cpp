@@ -3,6 +3,7 @@
 #include "AsciiManager.hpp"
 #include "Gui.hpp"
 #include "BulletManager.hpp"
+#include "Background.hpp"
 #include "GameManager.hpp"
 #include "ItemManager.hpp"
 #include "Player.hpp"

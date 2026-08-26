@@ -10,20 +10,24 @@
 namespace th08
 {
 struct EclExBarrierRenderState;
+struct Effect;
+struct RawStageInstr;
+struct RawStageObject;
+struct RawStageObjectInstance;
 
-struct BackgroundUnkVectors
+struct BackgroundCamera
 {
-    BackgroundUnkVectors();
+    BackgroundCamera();
 
-    Float3 vector0;
-    Float3 vector1;
-    Float3 vector2;
-    Float3 vector3;
-    Float3 vector4;
-    Float3 vector5;
-    f32 unk48;
+    Float3 position;
+    Float3 lookAtOffset;
+    Float3 up;
+    Float3 forward;
+    Float3 right;
+    Float3 positionOffset;
+    f32 fieldOfView;
 };
-C_ASSERT(sizeof(BackgroundUnkVectors) == 0x4c);
+C_ASSERT(sizeof(BackgroundCamera) == 0x4c);
 
 struct BackgroundFog
 {
@@ -32,6 +36,13 @@ struct BackgroundFog
     ZunColor color;
 };
 C_ASSERT(sizeof(BackgroundFog) == 0xc);
+
+enum SpellBackgroundState
+{
+    SPELL_BACKGROUND_INACTIVE,
+    SPELL_BACKGROUND_FADING_IN,
+    SPELL_BACKGROUND_ACTIVE,
+};
 
 struct Background
 {
@@ -49,12 +60,13 @@ struct Background
 
     void SetCamera1();
     void SetCamera2();
-    void __fastcall FUN_00408d60(i32 index, Float3 *out, const Float3 *start, const Float3 *end,
-                                  const Float3 *control2, const Float3 *control3);
-    void FUN_00409160(D3DCOLOR color);
-    u32 FUN_00409f40();
-    void background_fun_00415ce0();
-    void background_fun_00416ad0();
+    void __fastcall InterpolateCameraVector(i32 index, Float3 *out, const Float3 *start,
+                                            const Float3 *end, const Float3 *tangentStart,
+                                            const Float3 *tangentEnd);
+    void AccumulateTint(D3DCOLOR color);
+    u32 UpdateStageObjectVms();
+    void StartSpellBackground();
+    void StopSpellBackground();
 
     EclExBarrierRenderState &EclExBarrierState()
     {
@@ -63,60 +75,90 @@ struct Background
 
     void *&EclExUpdateCallback()
     {
-        return *reinterpret_cast<void **>(&this->onDrawLowPrioCallback);
+        return *reinterpret_cast<void **>(&this->spellBackgroundDrawCallback);
     }
 
-    void *stageAnm;
+    AnmVm *stageObjectVms;
     AnmVm stageVm0;
     AnmVm stageVm1;
     AnmVm stageVm2;
     AnmLoaded *stageAnmFile;
-    void *stageAnmSecondary;
-    i32 stageVmCount;
+    void *stageData;
+    i32 stageQuadCount;
     i32 stageObjectCount;
-    void *stageOffsets;
-    void *stageUnknown804;
-    void *stageUnknown808;
-    ZunTimer timer80c;
-    unknown_fields(0x818, 0xc);
-    Float3 vector824;
-    unknown_fields(0x830, 0x8);
-    ZunTimer timer838;
-    AnmVm textAnmVm;
-    AnmVm *stageEffect;
+    RawStageObject **stageObjects;
+    RawStageObjectInstance *stageObjectInstances;
+    RawStageInstr *stageScript;
+    ZunTimer stageScriptTimer;
+    i32 stageScriptInstructionIndex;
+    i32 frameCounter;
+    i32 registeredStage;
+    Float3 stagePosition;
+    D3DCOLOR clearColor;
+    u8 stageTextUsesYoukaiMode;
+    unknown_fields(0x835, 3);
+    ZunTimer stageTextTimer;
+    AnmVm stageTextVm;
+    Effect *stageEffect;
     BackgroundFog skyFog;
     BackgroundFog skyFogInterpInitial;
     BackgroundFog skyFogInterpFinal;
     i32 skyFogInterpDuration;
-    ZunTimer timerB14;
+    ZunTimer skyFogInterpTimer;
     u8 skyFogNeedsSetup;
     unknown_fields(0xb21, 0x3);
     i32 spellBackgroundState;
     i32 spellBackgroundTimer;
-    unknown_fields(0xb2c, 0x4);
+    i32 clearPending;
     i32 spellVmCount;
     i32 spellVmScriptBase;
-    AnmVm anmVmArray[0x20];
-    AnmVm anmVm5fb8;
-    void (*onDrawLowPrioCallback)();
-    i32 unk6260;
-    BackgroundUnkVectors unk6264;
-    BackgroundUnkVectors unk62b0;
-    BackgroundUnkVectors unk62fc;
-    BackgroundUnkVectors unk6348;
-    BackgroundUnkVectors unk6394;
-    i32 interpolationDuration[5];
-    ZunTimer interpolationTimers[5];
-    i32 interpolationMode[5];
-    Float3 vector6444;
-    unknown_fields(0x6450, 0x4);
-    Float3 vector6454;
-    unknown_fields(0x6460, 0x20);
-    Float3 vectors6480[0x20];
+    AnmVm spellVms[0x20];
+    AnmVm spellAuxVm;
+    void (*spellBackgroundDrawCallback)();
+    i32 pendingStageScriptLabel;
+    BackgroundCamera cameraTarget;
+    BackgroundCamera cameraInterpolationStart;
+    BackgroundCamera cameraInterpolationTangentEnd;
+    BackgroundCamera cameraInterpolationTangentStart;
+    BackgroundCamera cameraCurrent;
+    i32 cameraInterpolationDuration[5];
+    ZunTimer cameraInterpolationTimers[5];
+    i32 cameraInterpolationModes[5];
+    Float3 stagePositionTarget;
+    i32 stagePositionEndFrame;
+    Float3 stagePositionInitial;
+    i32 stagePositionStartFrame;
+    u8 compensateCameraJump;
+    unknown_fields(0x6465, 3);
+    ZunColor tint;
+    i32 retainTint;
+    f32 cullingDistanceSq;
+    u8 cameraMotionMode;
+    unknown_fields(0x6475, 3);
+    i32 specialEffectPointCount;
+    i32 collectSpecialEffectPoints;
+    Float3 specialEffectPoints[0x20];
 };
 C_ASSERT(sizeof(Background) == 0x6600);
+C_ASSERT(offsetof(Background, stageData) == 0x7F4);
+C_ASSERT(offsetof(Background, stageScriptInstructionIndex) == 0x818);
+C_ASSERT(offsetof(Background, stagePosition) == 0x824);
+C_ASSERT(offsetof(Background, clearColor) == 0x830);
+C_ASSERT(offsetof(Background, stageTextUsesYoukaiMode) == 0x834);
+C_ASSERT(offsetof(Background, stageEffect) == 0xAE8);
+C_ASSERT(offsetof(Background, skyFog) == 0xAEC);
+C_ASSERT(offsetof(Background, spellBackgroundState) == 0xB24);
 C_ASSERT(offsetof(Background, spellVmCount) == 0xB30);
-C_ASSERT(offsetof(Background, onDrawLowPrioCallback) == 0x625C);
+C_ASSERT(offsetof(Background, spellVms) == 0xB38);
+C_ASSERT(offsetof(Background, spellBackgroundDrawCallback) == 0x625C);
+C_ASSERT(offsetof(Background, pendingStageScriptLabel) == 0x6260);
+C_ASSERT(offsetof(Background, cameraTarget) == 0x6264);
+C_ASSERT(offsetof(Background, cameraCurrent) == 0x6394);
+C_ASSERT(offsetof(Background, cameraInterpolationDuration) == 0x63E0);
+C_ASSERT(offsetof(Background, stagePositionTarget) == 0x6444);
+C_ASSERT(offsetof(Background, tint) == 0x6468);
+C_ASSERT(offsetof(Background, cullingDistanceSq) == 0x6470);
+C_ASSERT(offsetof(Background, specialEffectPoints) == 0x6480);
 
 DIFFABLE_EXTERN(Background, g_Background);
 DIFFABLE_EXTERN_ARRAY(const char *, 9, g_StageEnemyAnms);

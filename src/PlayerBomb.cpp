@@ -59,8 +59,8 @@ void __fastcall SetBombBackgroundTint(Player *player, D3DCOLOR color)
     }
     mixedColor.a = 0x80;
     g_AnmManager->SetMixColorDefault();
-    g_Background.FUN_00409160(mixedColor.d3dColor);
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Background) + 0x646C) = 1;
+    g_Background.AccumulateTint(mixedColor.d3dColor);
+    g_Background.retainTint = 1;
 }
 
 // FUNCTION: th08 0x40eb50
