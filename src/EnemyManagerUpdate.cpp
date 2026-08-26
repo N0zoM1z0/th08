@@ -505,7 +505,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 enemy->flags1 &= ~ENEMY_FLAG_DAMAGEABLE;
                 enemy->flags1 &= ~ENEMY_FLAG_DEATH_MODE_MASK;
                 g_Gui.SetBossPresent(false);
-                g_ReplayManager->flags |= 0x20;
+                g_ReplayManager->frameEventFlags |= 0x20;
                 if (enemy->deathAnm1 >= 0)
                 {
                     g_EffectManager.SpawnEffect(enemy->deathAnm1, reinterpret_cast<D3DXVECTOR3 *>(&enemy->worldPosition), 1, -1);
@@ -564,7 +564,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                     }
                 }
                 enemy->life = 0;
-                g_ReplayManager->flags |= 0x20;
+                g_ReplayManager->frameEventFlags |= 0x20;
                 break;
             }
 

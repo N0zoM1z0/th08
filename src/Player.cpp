@@ -204,9 +204,6 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotCollisionOrDifficultyEntry, 9,
     const_cast<char *>("Extra"),
     const_cast<char *>("LastWord")};
 
-extern u16 g_GuiMessageInputCurrent;
-extern u16 g_GuiMessageInputPrevious;
-
 ZunBool IsResourceReloadDisabled();
 void __fastcall PlayerBuildAabb(Float3 *topLeft, Float3 *bottomRight,
                                 const Float3 *center, const Float3 *size);
@@ -319,7 +316,7 @@ i32 Player::CheckBulletCollision(Float3 *position, Float3 *size)
         this->hurtboxBoundsMax.y < boundsMin.y)
         return 0;
 
-    g_ReplayManager->flags |= 2;
+    g_ReplayManager->frameEventFlags |= 2;
     if (this->playerState != PLAYER_STATE_ALIVE)
         return 1;
     g_GameManager.RandomizeAntiTamper();
@@ -346,7 +343,7 @@ i32 Player::CheckLethalCollision(Float3 *position, Float3 *size)
         this->hurtboxBoundsMax.y < boundsMin.y)
         return 0;
 
-    g_ReplayManager->flags |= 2;
+    g_ReplayManager->frameEventFlags |= 2;
     if (this->playerState != PLAYER_STATE_ALIVE)
         return 1;
     g_GameManager.RandomizeAntiTamper();
@@ -456,7 +453,7 @@ grazePath:
     }
 
 lethalPath:
-    g_ReplayManager->flags |= 2;
+    g_ReplayManager->frameEventFlags |= 2;
     if (this->playerState != PLAYER_STATE_ALIVE)
         return 0;
     g_GameManager.RandomizeAntiTamper();
@@ -509,7 +506,7 @@ void Player::AwardGraze(Float3 *position, i32 suppressExtraItems)
         }
     }
 
-    g_ReplayManager->flags |= 0x2000;
+    g_ReplayManager->frameEventFlags |= 0x2000;
 }
 
 // FUNCTION: th08 0x44ab40
@@ -525,7 +522,7 @@ void Player::Die()
     this->playerState = PLAYER_STATE_DYING;
     this->timer = 0;
     g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_PICHUN, this->position.x);
-    g_ReplayManager->flags |= 0x200;
+    g_ReplayManager->frameEventFlags |= 0x200;
 
     // VC7 lowers the two-bit field read as two independent tests at /Od.
     // Read the typed flag storage once so the target's single extraction is
@@ -1195,7 +1192,7 @@ void Player::UpdateBombState()
         }
 
 acceptBomb:
-    g_ReplayManager->flags |= 1;
+    g_ReplayManager->frameEventFlags |= 1;
     this->forceDeathbombAtWindowEnd = 0;
     if (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0)
     {
@@ -1300,7 +1297,7 @@ i32 Player::UpdateDeathAndRespawn()
             *reinterpret_cast<u32 *>(&g_GameManager.flags) &= ~0x400u;
             g_AnmManager->SetMixColorDefault();
             this->mainVm.flagsWord &= ~0x20000u;
-            g_ReplayManager->flags |= 4;
+            g_ReplayManager->frameEventFlags |= 4;
             g_GameManager.character = 0;
             this->deathbombPending = 0;
             g_Spellcard.FUN_0044d150();
@@ -3214,7 +3211,7 @@ void Player::DrawHitShots()
 // FUNCTION: th08 0x451500
 i32 Player::UpdateShooting()
 {
-    if (*reinterpret_cast<i32 *>(0x164D2C8) < 20)
+    if ((i32)g_GameManager.gameplayFrameCounter < 20)
     {
         return 0;
     }
@@ -3231,7 +3228,7 @@ i32 Player::UpdateShooting()
 
     if (this->shotTimer.HasTicked())
     {
-        if (*reinterpret_cast<i32 *>(0x17D6ED4) == 0 ||
+        if (g_Player.bombState.isInUse == 0 ||
             (g_GameManager.shotType != 1 && g_GameManager.shotType != 7 &&
              g_GameManager.shotType != 6))
         {
@@ -3246,7 +3243,7 @@ i32 Player::UpdateShooting()
         this->shotTimer = -1;
     }
 
-    if ((*reinterpret_cast<u16 *>(0x164D52C) & 1) != 0)
+    if ((g_GuiMessageInputCurrent & TH_BUTTON_SHOOT) != 0)
     {
         if ((i32)this->shotTimer < 0)
         {

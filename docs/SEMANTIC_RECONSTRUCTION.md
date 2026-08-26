@@ -1597,11 +1597,12 @@ Background, PlayerBomb, Spellcard, ANM, Effect, GameManager, and GUI.  The old
 `pendingStageScriptLabel` and the duplicate VC7/Linux storage identity is
 retired.
 
-VC7 source-shape limit: the stage-7 check at target `OnUpdate + 0x4D` retains
-an explicitly documented absolute view of `0x0164D2CC`, even though that
-address is `g_GameManager.currentStage`.  A natural member expression changes
-the COFF relocation shape; restoring the target operand is required for strict
-accepted replay.  Snapshotting the stage Effect VM also retains a raw
+The stage-7 check at target `OnUpdate + 0x4D` was initially retained as an
+absolute view of `0x0164D2CC`.  The later replay-runtime ownership batch proved
+that a natural `g_GameManager.currentStage == STAGE6B` expression emits the
+same instruction bytes once the resulting `g_GameManager + 0x3DDC4` COFF
+relocation is represented in the match manifest.  Snapshotting the stage
+Effect VM still retains a raw
 `BackgroundAnmVmSnapshot` carrier because adding convenient typed local
 pointers changes `/Od` stack/code shape.  These are localized compiler-shape
 constraints, not unknown field ownership.
@@ -1879,9 +1880,11 @@ invulnerable state through the real owner.  The helper at `0x0042BC50` retains
 its target ABI while expressing its three operations as Spellcard flag and
 `bonusProgress` field accesses.
 
-Unknowns: the absolute dword at `0x018B8A24`, sampled once at the start of the
-update, has no independent global-owner or behavioral evidence and remains an
-explicit address instead of receiving a speculative name.  The unused bytes
+The dword at `0x018B8A24` was conservatively retained during this bounded
+batch.  Later cross-function reconciliation proved it is
+`g_Player.damageAccumulatorThreshold @ +0xE2B2C`: Player compares and
+subtracts the same threshold while the Enemy initializer publishes it.  The
+unused bytes
 at `Enemy +0x004..+0x00B`, unobserved flag bits, and neutral ranges elsewhere
 in `Enemy.hpp` remain unknown.  Existing method names and field roles outside
 this bounded owner family are not strengthened by this batch.
@@ -2125,3 +2128,69 @@ absolute-address, 195 anonymous-identifier, and 45 opaque-storage candidates.
 These are work-selection observations only, not a semantic-completion
 percentage.  ReplayManager serialized state and Supervisor timing/subthread
 status are the next core owners.
+
+### Replay runtime protocol and residual absolute-owner closure — 2026-08-27
+
+Scope: ReplayManager's per-stage serialized payload and live playback/recording
+cursors; Supervisor's worker/FPS control state; Effect spawn callbacks; and
+the remaining safe absolute-address consumers in Background, Player,
+ScreenEffect, Enemy, ANM, and ECL opcode 148.
+
+Replay protocol: `StageReplayData +0x21` is the captured-spellcard byte and
+`+0x24..+0x3F` is the stage input payload.  ReplayManager now distinguishes the
+playback input cursor/end table, recording cursor, FPS-sample cursor/end table,
+per-frame RNG seed, and per-frame event flags.  The second stage-data pointer
+table is named `stageReplayFpsData` from its production and playback use.  The
+reset-only word at `ReplayManager +0x4E` and the replay-header obfuscation fields
+remain neutral.
+
+Supervisor state: `+0x294` is a three-state startup-worker result
+(idle/running/failed), `+0x178` suppresses FPS display, and `+0x338/+0x33C`
+are recording/playback FPS warnings.  The other four dwords cleared by
+`ResetUnknownStuff` remain unnamed.  Effect templates now expose separate
+initialization and per-frame update callbacks; the two raw pool-slot address
+expressions use the real `effects[]` owner, and quality gates use
+`g_Supervisor.cfg.effectQuality` with the existing quality enum.
+
+Absolute owners: target `0x0164D2CC` is
+`g_GameManager.currentStage @ +0x3DDC4` and the special Background path is
+stage 6B.  Player and ScreenEffect reads of `0x0164D2C8` are
+`gameplayFrameCounter`; the target performs signed comparisons, preserved by
+explicit `i32` casts.  `Player::UpdateShooting` also proves the target's
+singleton-shaped `g_Player.bombState.isInUse` read and the GUI shoot input at
+`g_GuiMessageInputCurrent`.  Target `0x018B8A24` is
+`g_Player.damageAccumulatorThreshold @ +0xE2B2C`.  ECL opcode 148 addresses
+`g_GameManager.catkData[SPELLCARD_ST2_BOSS_3L].inGameHistory.maxBonus[SHOT_MARISA_ALICE]`;
+layout assertions pin each nested offset.  ANM visibility/alpha tests, the
+Enemy VM color write, Spellcard time remaining/limit, and the Item collection
+box now use their asserted owners as well.
+
+Compiler evidence: natural aggregate-member expressions introduce genuine
+COFF relocations even where the old raw source embedded absolute immediates.
+The manifests now require the corresponding target base/addend pairs; no
+comparison range or mask was weakened.  The Background stage constant and the
+signed frame-counter branches were caught as ordinary byte mismatches before
+acceptance.
+
+Unknowns: only five raw-member candidates remain.  They are the independently
+unproven Bullet field at `+0xDBC`, bullet-template field at `+0xD40` (two
+consumers), and the primary/secondary SHT value at `+0x34` used by Item
+collection.  They retain explicit raw views rather than speculative names.
+
+VC7 oracle: the broad focused affected-object replay passes **319 / 319**
+accepted units, including RunEcl **26,638 / 26,638**, Background OnUpdate
+**6,291 / 6,291**, Enemy OnUpdate **6,198 / 6,198**,
+Player::UpdateShooting **311 / 311**, and the ScreenEffect reimplementation
+**459 / 459**.  The required single-job cold build of all 75 configured
+comparison objects passes **1,106 / 1,106 exact**; the normal VC7 production
+image links.
+
+Portable oracle: the complete i386 Linux container build links and
+`verify-modern-linux.sh` verifies ELF32/ET_EXEC/i386 plus every fixed
+target-owned layout symbol.  No isolated automated gameplay smoke exists for
+replay recording/playback or FPS-warning transitions, so none is claimed.
+
+Result: the whole-source semantic router reports 5 raw-member, 0
+absolute-address, 166 anonymous-identifier, and 44 opaque-storage candidates.
+The counts are work-selection observations, not a semantic-completion
+percentage.  MIDI and SoundPlayer are the next dense behavior-backed owners.

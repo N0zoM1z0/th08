@@ -159,7 +159,7 @@ i32 Spellcard::GetActiveState()
 // FUNCTION: th08 0x0041FDD0
 i32 Spellcard::GetTimerFrames()
 {
-    return *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x108);
+    return this->timeRemaining;
 }
 
 // FUNCTION: th08 0x41fdf0

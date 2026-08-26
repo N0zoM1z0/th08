@@ -364,11 +364,10 @@ culling/tint state, and special-effect points.  Important helpers are now
 
 ECL opcode 147's former `g_EclGlobal004EA290` identity is proven to be
 `g_Background.pendingStageScriptLabel @ +0x6260`; the overlapping VC7/Linux
-storage alias is retired and RunEcl remains **26,638 / 26,638 exact**.  One
-documented target-source constraint remains in `Background::OnUpdate`: the
-stage-7 check uses absolute address `0x0164D2CC` because a natural
-`g_GameManager.currentStage` expression changes the target COFF relocation
-shape.  Focused replay passes Background **29 / 29** and the selected affected
+storage alias is retired and RunEcl remains **26,638 / 26,638 exact**.  The
+later replay-runtime batch also closes the former stage-7 absolute view as
+`g_GameManager.currentStage == STAGE6B`, with its target owner/addend recorded
+as a COFF relocation.  Focused replay passes Background **29 / 29** and the selected affected
 consumer objects **487 / 487**.  A non-reuse single-job cold VC7 replay passes
 **1,105 / 1,105**, the normal VC7 image links, and the complete i386 Linux
 build plus fixed-layout verifier passes.  The whole-source router now reports
@@ -479,8 +478,9 @@ Focused replay matches OnUpdate **6,198 / 6,198**, canonical EnemyManager
 **16 / 16**.  The required single-job non-reuse cold replay passes **1,106 /
 1,106**, the normal VC7 image links, and the complete i386 Linux build plus
 fixed-layout verifier passes.  `EnemyManagerUpdate.cpp` is zero-candidate in
-all router categories.  The dword at absolute `0x018B8A24` remains explicitly
-unknown because it lacks independent ownership evidence.  The whole-source
+all router categories.  The later replay-runtime batch proves former absolute
+`0x018B8A24` as `g_Player.damageAccumulatorThreshold @ +0xE2B2C` from its
+Player compare/subtract consumers and Enemy initialization.  The whole-source
 router is now 60 raw-member, 82 absolute, 255 anonymous, and 49 opaque.
 
 The Ascii presentation batch is now accepted.  Boss-marker state/interrupts,
@@ -559,9 +559,25 @@ passes **1,106 / 1,106 exact**, the normal VC7 image links, and the complete
 i386 Linux build plus fixed-layout verifier passes.  The remaining
 `Bullet +0xDBC` and template `+0xD40` observations stay neutral.
 
-The next dense semantic owners are ReplayManager serialized stage state and
-Supervisor timing/subthread status fields whose behavior has enough
-independent target use to name safely.
+The Replay/Supervisor runtime batch is now accepted.  Replay stage payloads and
+live state distinguish captured spellcards, input bytes, playback and recording
+cursors/end tables, FPS samples, per-frame RNG seed, and event flags.
+Supervisor now exposes startup-worker result, FPS-display suppression, and
+recording/playback FPS warnings.  Effect initialization/update callbacks,
+quality selection, pool slots, Spellcard time limits, ANM flags, and Item
+collection bounds use their asserted owners.
+
+All safely attributable absolute views are closed: Background stage 6B,
+GameManager gameplay-frame reads, Player singleton Bomb/input reads,
+`g_Player.damageAccumulatorThreshold`, and ECL opcode 148's nested CATK maximum
+bonus now use aggregate members.  Their COFF owner/addend relocations are
+explicit in the manifests; signed target comparisons remain signed.  Broad
+focused replay passes **319 / 319**, a required single-job cold replay passes
+**1,106 / 1,106 exact**, the normal VC7 image links, and the complete i386
+Linux build plus fixed-layout verifier passes.  The router now reports 5 raw,
+0 absolute, 166 anonymous, and 44 opaque candidates.  The five raw candidates
+are deliberately retained evidence gaps in Bullet/template and SHT item
+collection state.  MIDI and SoundPlayer are the next dense semantic owners.
 
 Select the next independent field family with:
 

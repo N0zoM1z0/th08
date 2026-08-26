@@ -157,6 +157,7 @@ struct CatkHistory
     u32 attempts[SHOT_ALL + 1];
     u32 captures[SHOT_ALL + 1];
 };
+C_ASSERT(offsetof(CatkHistory, maxBonus) == 0x0);
 
 struct Catk
 {
@@ -177,6 +178,7 @@ struct Catk
 };
 
 C_ASSERT(sizeof(Catk) == 0x22c);
+C_ASSERT(offsetof(Catk, inGameHistory) == 0xf0);
 
 struct Clrd
 {

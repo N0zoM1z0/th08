@@ -116,6 +116,13 @@ enum SupervisorState
     SupervisorState_GameManagerNextStageWeird = 12,
 };
 
+enum SupervisorStartupThreadState
+{
+    SupervisorStartupThreadState_Idle = 0,
+    SupervisorStartupThreadState_Running = 1,
+    SupervisorStartupThreadState_Failed = 2,
+};
+
 /* This forward declaration is to prevent including AnmManager.hpp */
 struct AnmLoaded;
 
@@ -167,7 +174,7 @@ struct Supervisor
 
     void ResetUnknownStuff()
     {
-        this->unk0x338 = 0;
+        this->recordingFpsWarning = 0;
         this->unk0x340 = 0;
         this->unk0x34c = 0;
         this->unk0x344 = 0;
@@ -287,7 +294,7 @@ struct Supervisor
     i32 unk170;
     i32 screenTransitionCountdown; // Commonly set for screen transitions and decremented once per frame, but never actually used for
                 // anything
-    i32 unk178;
+    i32 suppressFpsDisplay;
     BOOL disableVsync;
     ZunBool couldSetRefreshRate;
     i32 lastFrameTime; // Unused in IN
@@ -307,7 +314,7 @@ struct Supervisor
     DWORD runningSubthreadID;
     BOOL subthreadCloseRequestActive;
     BOOL subthreadActive;
-    u32 unk294;
+    SupervisorStartupThreadState startupThreadState;
     CRITICAL_SECTION criticalSections[4];
     u8 lockCounts[4];
     i32 loadingVmsHaveBeenSetup;
@@ -316,8 +323,8 @@ struct Supervisor
     u32 fpsPerformanceFrequency;
     unknown_fields(0x304, 0x34);
 
-    u32 unk0x338;
-    u32 unk0x33c;
+    u32 recordingFpsWarning;
+    u32 playbackFpsWarning;
     u32 unk0x340;
     u32 unk0x344;
     u32 unk0x348;
@@ -334,10 +341,14 @@ C_ASSERT(sizeof(Supervisor) == 0x364);
 C_ASSERT(offsetof(Supervisor, isInitialStageLoad) == 0x164);
 C_ASSERT(offsetof(Supervisor, releaseResourcesOnRestart) == 0x168);
 C_ASSERT(offsetof(Supervisor, keepStageResources) == 0x16c);
+C_ASSERT(offsetof(Supervisor, suppressFpsDisplay) == 0x178);
 C_ASSERT(offsetof(Supervisor, framerateMultiplier) == 0x188);
 C_ASSERT(offsetof(Supervisor, recordedFps) == 0x198);
 C_ASSERT(offsetof(Supervisor, loadingVmsHaveBeenSetup) == 0x2fc);
 C_ASSERT(offsetof(Supervisor, subthreadActive) == 0x290);
+C_ASSERT(offsetof(Supervisor, startupThreadState) == 0x294);
+C_ASSERT(offsetof(Supervisor, recordingFpsWarning) == 0x338);
+C_ASSERT(offsetof(Supervisor, playbackFpsWarning) == 0x33c);
 DIFFABLE_EXTERN(Supervisor, g_Supervisor);
 
 #define CRASH_GAME() memset(&g_Supervisor, -1, sizeof(g_Supervisor))

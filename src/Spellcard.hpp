@@ -279,8 +279,8 @@ struct Spellcard
     i32 bonusProgress;               // +0x0FC
     i32 bonusCounter;                // +0x100
     i32 bonusAward;                  // +0x104
-    ZunTimer timer108;               // +0x108
-    ZunTimer timer114;               // +0x114
+    ZunTimer timeRemaining;          // +0x108
+    ZunTimer timeLimit;              // +0x114
     AnmVm vm120;                     // +0x120
     AnmVm vm3C4;                     // +0x3C4
     AnmVm vm668;                     // +0x668
@@ -346,6 +346,8 @@ struct Spellcard
     static i32 GetDifficultyFromSpellCard(i32 spellcardNumber);
     static void CutChain();
 };
+C_ASSERT(offsetof(Spellcard, timeRemaining) == 0x108);
+C_ASSERT(offsetof(Spellcard, timeLimit) == 0x114);
 C_ASSERT(sizeof(Spellcard) == 0x2644);
 
 DIFFABLE_EXTERN_ARRAY(i32 *, 6, g_SpellcardNumbersPerDifficulty);

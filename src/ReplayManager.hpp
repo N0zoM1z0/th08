@@ -24,7 +24,7 @@ struct StageReplayData
     u32 score;
     i32 pointItemsCollected;
     i32 graze;
-    i32 pointItemExteds;
+    i32 pointItemExtends;
     i32 nextPointItemExtendThreshold;
     i32 pointItemValue;
     i16 youkaiGauge;
@@ -34,13 +34,15 @@ struct StageReplayData
     u8 bombs;
     u8 rank;
     u8 character;
-    u8 unk0x21;
+    u8 spellcardsCaptured;
     i8 clockTime;
-
-    unknown_fields(0x23, 0x1d);
+    u8 padding23;
+    u8 inputData[0x1c];
 };
 
 C_ASSERT(sizeof(StageReplayData) == 0x40);
+C_ASSERT(offsetof(StageReplayData, spellcardsCaptured) == 0x21);
+C_ASSERT(offsetof(StageReplayData, inputData) == 0x24);
 
 struct ReplayDataHeader
 {
@@ -63,7 +65,7 @@ struct ReplayDataHeader
     i32 decompressedSize;
 
     StageReplayData *stageReplayData[MAX_STAGES];
-    StageReplayData *stageReplayData2[MAX_STAGES];
+    StageReplayData *stageReplayFpsData[MAX_STAGES];
 };
 
 struct ReplayData
@@ -130,18 +132,18 @@ struct ReplayManager
     Float3 unk3c;
     unknown_fields(0x48, 0x6);
     u16 unk4e;
-    u8 *replayInputs;
-    u8 *replayInputStageBookmarks[MAX_STAGES];
-    ReplayInputSync *replayInputs2;
+    u8 *replayInputCursor;
+    u8 *replayInputEnds[MAX_STAGES];
+    ReplayInputSync *replayInputRecordCursor;
     unknown_fields(0x7c, 0x24);
-    u8 *replayRngInputs;
-    u8 *replayInputStageBookmarks2[MAX_STAGES];
+    u8 *replayFpsSampleCursor;
+    u8 *replayFpsSampleEnds[MAX_STAGES];
     ChainElem *calcChain;
     unknown_fields(0xcc, 0x4);
     ChainElem *frameControlChain;
     ChainElem *rngSyncChain;
-    u16 rngSeed;
-    u16 flags;
+    u16 frameRngSeed;
+    u16 frameEventFlags;
 
     static ZunResult RegisterChain(i32 replayMode, const char *replayPath);
     static ChainCallbackResult OnUpdateLowPrio(ReplayManager *replayManager);
@@ -166,16 +168,16 @@ C_ASSERT(offsetof(ReplayManager, replayFileData) == 0xc);
 C_ASSERT(offsetof(ReplayManager, replayPath) == 0x14);
 C_ASSERT(offsetof(ReplayManager, unk18) == 0x18);
 C_ASSERT(offsetof(ReplayManager, unk4e) == 0x4e);
-C_ASSERT(offsetof(ReplayManager, replayInputs) == 0x50);
-C_ASSERT(offsetof(ReplayManager, replayInputStageBookmarks) == 0x54);
-C_ASSERT(offsetof(ReplayManager, replayInputs2) == 0x78);
-C_ASSERT(offsetof(ReplayManager, replayRngInputs) == 0xa0);
-C_ASSERT(offsetof(ReplayManager, replayInputStageBookmarks2) == 0xa4);
+C_ASSERT(offsetof(ReplayManager, replayInputCursor) == 0x50);
+C_ASSERT(offsetof(ReplayManager, replayInputEnds) == 0x54);
+C_ASSERT(offsetof(ReplayManager, replayInputRecordCursor) == 0x78);
+C_ASSERT(offsetof(ReplayManager, replayFpsSampleCursor) == 0xa0);
+C_ASSERT(offsetof(ReplayManager, replayFpsSampleEnds) == 0xa4);
 C_ASSERT(offsetof(ReplayManager, calcChain) == 0xc8);
 C_ASSERT(offsetof(ReplayManager, frameControlChain) == 0xd0);
 C_ASSERT(offsetof(ReplayManager, rngSyncChain) == 0xd4);
-C_ASSERT(offsetof(ReplayManager, rngSeed) == 0xd8);
-C_ASSERT(offsetof(ReplayManager, flags) == 0xda);
+C_ASSERT(offsetof(ReplayManager, frameRngSeed) == 0xd8);
+C_ASSERT(offsetof(ReplayManager, frameEventFlags) == 0xda);
 
 DIFFABLE_EXTERN(ReplayManager *, g_ReplayManager);
 

@@ -77,9 +77,12 @@ extern i32 g_GuiMessageStageMode;
 struct EffectTemplate
 {
     i32 scriptIdx;
-    i32 field348;
-    i32 (__fastcall *callback)(AnmVm *effect);
+    void *updateCallback;
+    i32 (__fastcall *initializeCallback)(AnmVm *effect);
 };
+C_ASSERT(sizeof(EffectTemplate) == 0xc);
+C_ASSERT(offsetof(EffectTemplate, updateCallback) == 0x4);
+C_ASSERT(offsetof(EffectTemplate, initializeCallback) == 0x8);
 DIFFABLE_STATIC_ARRAY(EffectTemplate, 20, g_EffectTemplates);
 
 // FUNCTION: th08 0x423d70
@@ -146,11 +149,11 @@ AnmVm *EffectManager::SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 
         effect->vm.pos2.x = 0.0f;
         effect->vm.pos2.y = 0.0f;
         effect->vm.pos2.z = 0.0f;
-        effect->updateCallback = reinterpret_cast<void *>(g_EffectTemplates[id].field348);
+        effect->updateCallback = g_EffectTemplates[id].updateCallback;
 
-        if (g_EffectTemplates[id].callback != NULL)
+        if (g_EffectTemplates[id].initializeCallback != NULL)
         {
-            if (g_EffectTemplates[id].callback(&effect->vm) != 0)
+            if (g_EffectTemplates[id].initializeCallback(&effect->vm) != 0)
             {
                 effect->active = 0;
             }
@@ -172,7 +175,7 @@ AnmVm *EffectManager::SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 
         }
     }
 
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x400;
+    g_ReplayManager->frameEventFlags |= 0x400;
     return i >= 0x200 ? &this->effects[653].vm : &effect->vm;
 }
 
@@ -218,12 +221,12 @@ AnmVm *EffectManager::SpawnEffectAngle(i32 id, D3DXVECTOR3 *position, D3DXVECTOR
         effect->vm.pos2.x = 0.0f;
         effect->vm.pos2.y = 0.0f;
         effect->vm.pos2.z = 0.0f;
-        effect->updateCallback = reinterpret_cast<void *>(g_EffectTemplates[id].field348);
+        effect->updateCallback = g_EffectTemplates[id].updateCallback;
         effect->vector1 = *reinterpret_cast<Float3 *>(velocity);
 
-        if (g_EffectTemplates[id].callback != NULL)
+        if (g_EffectTemplates[id].initializeCallback != NULL)
         {
-            if (g_EffectTemplates[id].callback(&effect->vm) != 0)
+            if (g_EffectTemplates[id].initializeCallback(&effect->vm) != 0)
             {
                 effect->active = 0;
             }
@@ -245,7 +248,7 @@ AnmVm *EffectManager::SpawnEffectAngle(i32 id, D3DXVECTOR3 *position, D3DXVECTOR
         }
     }
 
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x400;
+    g_ReplayManager->frameEventFlags |= 0x400;
     return i >= 0x200 ? &this->effects[653].vm : &effect->vm;
 }
 
@@ -253,8 +256,7 @@ AnmVm *EffectManager::SpawnEffectAngle(i32 id, D3DXVECTOR3 *position, D3DXVECTOR
 #pragma var_order(effect)
 AnmVm *EffectManager::FUN_00425870(i32 id, D3DXVECTOR3 *position, i32 slotIndex, i32 unused, i32 color)
 {
-    Effect *effect = reinterpret_cast<Effect *>(
-        reinterpret_cast<u8 *>(this) + (slotIndex + 0x280) * sizeof(Effect) + offsetof(EffectManager, effects));
+    Effect *effect = &this->effects[slotIndex + 0x280];
 
     if (effect->vertices != NULL)
     {
@@ -277,15 +279,15 @@ AnmVm *EffectManager::FUN_00425870(i32 id, D3DXVECTOR3 *position, i32 slotIndex,
     effect->vm.pos2.x = 0.0f;
     effect->vm.pos2.y = 0.0f;
     effect->vm.pos2.z = 0.0f;
-    effect->updateCallback = reinterpret_cast<void *>(g_EffectTemplates[id].field348);
+    effect->updateCallback = g_EffectTemplates[id].updateCallback;
 
-    if (g_EffectTemplates[id].callback != NULL &&
-        g_EffectTemplates[id].callback(&effect->vm) != 0)
+    if (g_EffectTemplates[id].initializeCallback != NULL &&
+        g_EffectTemplates[id].initializeCallback(&effect->vm) != 0)
     {
         effect->active = 0;
     }
 
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x400;
+    g_ReplayManager->frameEventFlags |= 0x400;
     return &effect->vm;
 }
 
@@ -294,8 +296,7 @@ AnmVm *EffectManager::FUN_00425870(i32 id, D3DXVECTOR3 *position, i32 slotIndex,
 AnmVm *EffectManager::FUN_004259e0(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 slotIndex,
                                    i32 unused, i32 color)
 {
-    Effect *effect = reinterpret_cast<Effect *>(
-        reinterpret_cast<u8 *>(this) + (slotIndex + 0x280) * sizeof(Effect) + offsetof(EffectManager, effects));
+    Effect *effect = &this->effects[slotIndex + 0x280];
 
     if (effect->vertices != NULL)
         g_ZunMemory.Free(effect->vertices);
@@ -317,15 +318,15 @@ AnmVm *EffectManager::FUN_004259e0(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *v
     effect->vm.pos2.x = 0.0f;
     effect->vm.pos2.y = 0.0f;
     effect->vm.pos2.z = 0.0f;
-    effect->updateCallback = reinterpret_cast<void *>(g_EffectTemplates[id].field348);
+    effect->updateCallback = g_EffectTemplates[id].updateCallback;
 
-    if (g_EffectTemplates[id].callback != NULL &&
-        g_EffectTemplates[id].callback(&effect->vm) != 0)
+    if (g_EffectTemplates[id].initializeCallback != NULL &&
+        g_EffectTemplates[id].initializeCallback(&effect->vm) != 0)
     {
         effect->active = 0;
     }
 
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x400;
+    g_ReplayManager->frameEventFlags |= 0x400;
     return &effect->vm;
 }
 
@@ -358,15 +359,15 @@ AnmVm *EffectManager::SpawnEffect00425B70(i32 id, D3DXVECTOR3 *position, i32 cou
         effect->vm.pos2.x = 0.0f;
         effect->vm.pos2.y = 0.0f;
         effect->vm.pos2.z = 0.0f;
-        effect->updateCallback = reinterpret_cast<void *>(g_EffectTemplates[id].field348);
+        effect->updateCallback = g_EffectTemplates[id].updateCallback;
         effect->timer = 0;
         effect->releaseRequested = 0;
         effect->releaseTimer = 0;
         *reinterpret_cast<D3DXVECTOR3 *>(&effect->vector1) = D3DXVECTOR3(0, 0, 0);
 
-        if (g_EffectTemplates[id].callback != NULL)
+        if (g_EffectTemplates[id].initializeCallback != NULL)
         {
-            if (g_EffectTemplates[id].callback(&effect->vm) != 0)
+            if (g_EffectTemplates[id].initializeCallback(&effect->vm) != 0)
             {
                 effect->active = 0;
             }
@@ -379,7 +380,7 @@ AnmVm *EffectManager::SpawnEffect00425B70(i32 id, D3DXVECTOR3 *position, i32 cou
         }
     }
 
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x400;
+    g_ReplayManager->frameEventFlags |= 0x400;
     return i >= 0x80 ? &this->effects[653].vm : &effect->vm;
 }
 
@@ -1198,7 +1199,7 @@ i32 EffectManager::FUN_004281e0()
     Effect *effect = this->drawGroupSentinel1.nextInDrawGroup;
     i32 i = 0;
 
-    if (*reinterpret_cast<u8 *>((u8 *)&g_Supervisor + 0x13C) == 0)
+    if (g_Supervisor.cfg.effectQuality == MINIMUM)
     {
         return 1;
     }
@@ -1206,7 +1207,7 @@ i32 EffectManager::FUN_004281e0()
     while (effect != NULL)
     {
         i++;
-        if (*reinterpret_cast<u8 *>((u8 *)&g_Supervisor + 0x13C) == 1 && (i & 1) != 0)
+        if (g_Supervisor.cfg.effectQuality == MODERATE && (i & 1) != 0)
         {
             return 1;
         }
@@ -1260,7 +1261,7 @@ void __fastcall FUN_00428310(AnmVm *effect, D3DXVECTOR3 *base)
             }
         }
 
-        delta = point - *reinterpret_cast<D3DXVECTOR3 *>(0x17D61AC);
+        delta = point - reinterpret_cast<const D3DXVECTOR3 &>(EclOperands::g_TargetPlayerPosition017D61AC);
         delta.x -= 32.0f;
         delta.y -= 16.0f;
         delta.z = 0.0f;

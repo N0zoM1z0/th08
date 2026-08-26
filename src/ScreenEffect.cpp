@@ -530,7 +530,7 @@ ChainCallbackResult ScreenEffect::FUN_0045bf10(ScreenEffect *screenEffect)
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     if (g_GameManager.scriptedUpdateFreeze)
         return CHAIN_CALLBACK_RESULT_CONTINUE;
-    if (*reinterpret_cast<i32 *>(0x164D2C8) <= 1)
+    if ((i32)g_GameManager.gameplayFrameCounter <= 1)
         return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
 
     screenEffect->timer++;

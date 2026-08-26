@@ -23,7 +23,7 @@ void *EnemyManager::SpawnEnemy1(i32 type, const D3DXVECTOR3 *position, i32 a, i3
     Enemy *enemy;
 
     enemy = &this->enemies[0];
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xda) |= 0x1000;
+    g_ReplayManager->frameEventFlags |= 0x1000;
     for (i = 0; i < 480; i++, enemy++)
     {
         if ((enemy->flags1 & ENEMY_FLAG_ACTIVE) != 0)
@@ -45,8 +45,7 @@ void *EnemyManager::SpawnEnemy1(i32 type, const D3DXVECTOR3 *position, i32 a, i3
         }
         else
         {
-            enemy->displayColor =
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x1fc);
+            enemy->displayColor = enemy->vm.color1.d3dColor;
             enemy->itemDropType = (i8)b;
             if (c >= 0)
                 enemy->score = c;
@@ -75,7 +74,7 @@ void *EnemyManager::SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i3
     Enemy *enemy;
 
     enemy = &this->enemies[0];
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xda) |= 0x1000;
+    g_ReplayManager->frameEventFlags |= 0x1000;
     for (i = 0; i < 480; i++, enemy++)
     {
         if ((enemy->flags1 & ENEMY_FLAG_ACTIVE) != 0)
@@ -99,8 +98,7 @@ void *EnemyManager::SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i3
         }
         else
         {
-            enemy->displayColor =
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x1fc);
+            enemy->displayColor = enemy->vm.color1.d3dColor;
             enemy->itemDropType = (i8)b;
             if (a >= 0)
                 enemy->life = a;

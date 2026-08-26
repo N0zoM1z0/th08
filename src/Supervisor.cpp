@@ -96,15 +96,15 @@ ChainCallbackResult Supervisor::OnUpdate(Supervisor *s)
         return CHAIN_CALLBACK_RESULT_EXIT_GAME_SUCCESS;
     }
 
-    if (s->unk294 != 0)
+    if (s->startupThreadState != SupervisorStartupThreadState_Idle)
     {
-        if (s->unk294 == 2)
+        if (s->startupThreadState == SupervisorStartupThreadState_Failed)
         {
             return CHAIN_CALLBACK_RESULT_EXIT_GAME_SUCCESS;
         }
         if (s->subthreadActive == 0)
         {
-            s->unk294 = 0;
+            s->startupThreadState = SupervisorStartupThreadState_Idle;
         }
         else
         {
@@ -455,7 +455,7 @@ ChainCallbackResult Supervisor::DrawLoadingVms(Supervisor *s)
         g_SupervisorLoadingVms[i].pos -= g_SupervisorLoadingVms[i].pos2;
     }
 
-    if (s->unk294 != 0)
+    if (s->startupThreadState != SupervisorStartupThreadState_Idle)
     {
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
@@ -563,7 +563,7 @@ int Supervisor::AddedCallback(Supervisor *s)
         return ZUN_ERROR;
     }
 
-    g_Supervisor.unk178 = 1;
+    g_Supervisor.suppressFpsDisplay = TRUE;
 
     if (!g_Supervisor.disableVsync && Supervisor::CheckFps() != ZUN_SUCCESS)
     {
@@ -578,7 +578,7 @@ int Supervisor::AddedCallback(Supervisor *s)
 
     g_Supervisor.SetupLoadingVms(&position);
 
-    g_Supervisor.unk294 = 1;
+    g_Supervisor.startupThreadState = SupervisorStartupThreadState_Running;
     g_Supervisor.ThreadStart((LPTHREAD_START_ROUTINE)Supervisor::StartupThread, s);
 
     return ZUN_SUCCESS;
@@ -720,7 +720,7 @@ void Supervisor::StartupThread(Supervisor *s)
     time_t currentTime;
     tm *currentLocalTime;
 
-    g_Supervisor.unk178 = 0;
+    g_Supervisor.suppressFpsDisplay = FALSE;
     g_Supervisor.screenTransitionCountdown = 0;
     g_Supervisor.totalPlayTime = timeGetTime();
 
@@ -875,7 +875,7 @@ void Supervisor::StartupThread(Supervisor *s)
     g_Supervisor.runningSubthreadHandle = NULL;
     g_Supervisor.subthreadCloseRequestActive = FALSE;
     g_Supervisor.subthreadActive = 0;
-    g_Supervisor.unk294 = 0;
+    g_Supervisor.startupThreadState = SupervisorStartupThreadState_Idle;
     g_Supervisor.flags.unk8 = false;
 
     return;
@@ -884,7 +884,7 @@ err:
     g_Supervisor.runningSubthreadHandle = NULL;
     g_Supervisor.subthreadCloseRequestActive = FALSE;
     g_Supervisor.subthreadActive = 0;
-    g_Supervisor.unk294 = 2;
+    g_Supervisor.startupThreadState = SupervisorStartupThreadState_Failed;
     g_Supervisor.flags.receivedCloseMsg = true;
 }
 
@@ -1127,7 +1127,7 @@ calculateFps:
         }
     }
 
-    if (g_Supervisor.unk178 == 0 && shouldDraw)
+    if (!g_Supervisor.suppressFpsDisplay && shouldDraw)
     {
         fpsCounterPos.x = 512.0f;
         fpsCounterPos.y = 464.0f;
@@ -1140,7 +1140,7 @@ calculateFps:
             debugCounterPos.y = 448.0f;
             debugCounterPos.z = 0.0f;
 
-            if (g_Supervisor.unk0x33c != 0)
+            if (g_Supervisor.playbackFpsWarning != 0)
                 g_AsciiManager.color.d3dColor = 0xffff4040;
             else
                 g_AsciiManager.color.d3dColor = 0xffffffd0;

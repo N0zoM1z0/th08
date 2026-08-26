@@ -195,7 +195,7 @@ void EnemyManager::Initialize()
     reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor.spawnSound = 7;
     reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor.transformSound = 25;
     reinterpret_cast<Enemy *>(enemy)->minimumPlayerDistanceSquared = 1024.0f;
-    reinterpret_cast<Enemy *>(enemy)->playerShotHitAccumulator = *reinterpret_cast<i32 *>(0x18B8A24);
+    reinterpret_cast<Enemy *>(enemy)->playerShotHitAccumulator = g_Player.damageAccumulatorThreshold;
 }
 
 // FUNCTION: th08 0x42a210
@@ -733,7 +733,7 @@ void Enemy::Despawn()
     if (((this->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0)
         g_EnemyManager.bosses[this->bossSlot] = NULL;
 
-    g_ReplayManager->flags |= 0x20;
+    g_ReplayManager->frameEventFlags |= 0x20;
 
     if (this->alignmentEffect != NULL)
     {

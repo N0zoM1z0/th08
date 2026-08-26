@@ -386,6 +386,7 @@ struct GameManager
 C_ASSERT(sizeof(GameManager) == 0x3de3c);
 C_ASSERT(offsetof(GameManager, antiTamperHeapJitterAllocation) == 0x0);
 C_ASSERT(offsetof(GameManager, scriptedUpdateFreeze) == 0x2c);
+C_ASSERT(offsetof(GameManager, catkData) == 0x40);
 C_ASSERT(offsetof(GameManager, character) == 0x3DBA8);
 C_ASSERT(offsetof(GameManager, shotType) == 0x3DBA9);
 C_ASSERT(offsetof(GameManager, flags) == 0x3DBAC);

@@ -363,6 +363,7 @@ struct Enemy
 };
 C_ASSERT(sizeof(Enemy) == 0x53d0);
 C_ASSERT(offsetof(Enemy, nextInDrawGroup) == 0x0);
+C_ASSERT(offsetof(Enemy, vm) == 0xc);
 C_ASSERT(offsetof(Enemy, mainEclContextStorage) == 0x7f8);
 C_ASSERT(offsetof(Enemy, mainEclCallStackStorage) == 0xa20);
 C_ASSERT(offsetof(Enemy, activeEclContext) == 0x2ca0);

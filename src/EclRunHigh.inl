@@ -942,7 +942,8 @@ enter_subroutine:
     case 147: g_Background.pendingStageScriptLabel = TH08_ECL_READ_I(ctx, 0); break;
     case 148:
         g_Gui.SetBossLifeMarkerCount(TH08_ECL_READ_I(ctx, 0));
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3E04) += 0x708;
+        g_GameManager.catkData[SPELLCARD_ST2_BOSS_3L]
+            .inGameHistory.maxBonus[SHOT_MARISA_ALICE] += 0x708;
         break;
     case 93:
         if (reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->life > 0)

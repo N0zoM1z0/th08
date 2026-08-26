@@ -60879,6 +60879,13 @@ type = "REL32"
 symbol = "??0D3DXVECTOR3@@QAE@MMM@Z"
 target = 0x00404720
 
+[[units.relocations]]
+offset = 0x3F6
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xE2B2C
+
 [[units]]
 name = "effect-fun-00428310"
 object = "build/EffectManager.obj"
@@ -60971,6 +60978,12 @@ offset = 0x10B
 type = "REL32"
 symbol = "??YD3DXVECTOR3@@QAEAAU0@ABU0@@Z"
 target = 0x00410A70
+
+[[units.relocations]]
+offset = 0x110
+type = "DIR32"
+symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
+target = 0x017D61AC
 
 [[units.relocations]]
 offset = 0x11C
@@ -62960,6 +62973,13 @@ target_address = 0x00451500
 size = 0x137
 
 [[units.relocations]]
+offset = 0x9
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDC0
+
+[[units.relocations]]
 offset = 0x21
 type = "REL32"
 symbol = "??BZunTimer@th08@@QAEHXZ"
@@ -62976,6 +62996,13 @@ offset = 0x4D
 type = "REL32"
 symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
 target = 0x0040D3D0
+
+[[units.relocations]]
+offset = 0x57
+type = "DIR32"
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
+addend = 0xFDC
 
 [[units.relocations]]
 offset = 0x61
@@ -63027,6 +63054,12 @@ offset = 0xC9
 type = "REL32"
 symbol = "??4ZunTimer@th08@@QAEXH@Z"
 target = 0x004065F0
+
+[[units.relocations]]
+offset = 0xD0
+type = "DIR32"
+symbol = "?g_GuiMessageInputCurrent@th08@@3GA"
+target = 0x0164D52C
 
 [[units.relocations]]
 offset = 0xE5
@@ -66313,6 +66346,13 @@ type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 addend = 0x3DBAC
+
+[[units.relocations]]
+offset = 0x4E
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDC4
 
 [[units.relocations]]
 offset = 0x72
@@ -78753,6 +78793,13 @@ type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 addend = 0x2C
+
+[[units.relocations]]
+offset = 57
+type = "DIR32"
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDC0
 
 [[units.relocations]]
 offset = 80

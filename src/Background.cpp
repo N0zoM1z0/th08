@@ -160,10 +160,7 @@ ChainCallbackResult Background::OnUpdate(Background *background)
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
 
-    // VC7 encodes this target field view as an absolute operand rather than a
-    // relocation against g_GameManager. Keep that source shape here; the
-    // address is g_GameManager.currentStage (0x3ddc4) in the 1.00d image.
-    if (*reinterpret_cast<i32 *>(0x164D2CC) == 7)
+    if (g_GameManager.currentStage == STAGE6B)
     {
         if (background->stageEffect == NULL)
         {

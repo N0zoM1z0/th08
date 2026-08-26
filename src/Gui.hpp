@@ -350,5 +350,7 @@ struct Gui
 C_ASSERT(sizeof(Gui) == 0x9c);
 
 DIFFABLE_EXTERN(Gui, g_Gui);
+DIFFABLE_EXTERN(u16, g_GuiMessageInputCurrent);
+DIFFABLE_EXTERN(u16, g_GuiMessageInputPrevious);
 
 } /* namespace th08 */

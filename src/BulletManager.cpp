@@ -675,7 +675,7 @@ i32 BulletManager::SpawnBulletPattern(BulletSpawnDescriptor *descriptor)
     f32 angleToPlayer;
     i32 j;
 
-    g_ReplayManager->flags |= 0x800;
+    g_ReplayManager->frameEventFlags |= 0x800;
     if (g_BulletManager.activeBulletCount >= 0x600)
         return 0;
 

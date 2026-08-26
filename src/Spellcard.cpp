@@ -735,8 +735,8 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
     this->bonusCounter =
         (this->bonusProgress - this->bonusProgress / 7u) /
         (reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames / 60);
-    this->timer108 = reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames;
-    this->timer114 = reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames;
+    this->timeRemaining = reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames;
+    this->timeLimit = reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames;
 
     for (i = 0; i < 0x30; i++)
     {
@@ -1034,14 +1034,14 @@ void Spellcard::EndSpell()
                 }
                 else
                 {
-                    i = (i32)this->timer114 - (i32)this->timer114 / 7;
-                    if ((i32)this->timer108 >= i)
+                    i = (i32)this->timeLimit - (i32)this->timeLimit / 7;
+                    if ((i32)this->timeRemaining >= i)
                     {
                         this->pendingTimeOrbs = 1000;
                     }
-                    else if ((i32)this->timer108 >= 180)
+                    else if ((i32)this->timeRemaining >= 180)
                     {
-                        this->pendingTimeOrbs = 900 * ((i32)this->timer108 - 180) / (i - 180) + 100;
+                        this->pendingTimeOrbs = 900 * ((i32)this->timeRemaining - 180) / (i - 180) + 100;
                     }
                     else
                     {
@@ -1474,7 +1474,7 @@ i32 Spellcard::OnUpdateImpl()
     g_AnmManager->ExecuteScript(&this->vm18E4);
     g_AnmManager->ExecuteScript(&this->vm1E2C);
     g_AnmManager->ExecuteScript(&this->vm2374);
-    this->timer108--;
+    this->timeRemaining--;
 
     return 1;
 }

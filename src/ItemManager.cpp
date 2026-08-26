@@ -196,8 +196,8 @@ void ItemManager::OnUpdate()
     f32 angle;
     i32 soundIndex = 0;
     Item *item = this->itemListHead.next;
-    Float3 itemBox(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x18),
-                   *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x18), 16.0f);
+    Float3 itemBox(g_Player.primaryShtFile->itemCollectionBoxSize,
+                   g_Player.primaryShtFile->itemCollectionBoxSize, 16.0f);
 
     this->itemCount = 0;
     speed = *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&g_Player) + 3)
@@ -310,7 +310,7 @@ moveItem:
 pickup:
         if (item->state != ITEM_STATE_UNK3 && g_Player.CalcItemBoxCollision(&item->currentPosition, &itemBox))
         {
-            *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xda) |= 0x40;
+            g_ReplayManager->frameEventFlags |= 0x40;
             switch (item->itemType)
             {
             case ITEM_POWER_SMALL:

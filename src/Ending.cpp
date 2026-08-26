@@ -496,7 +496,7 @@ ZunResult Ending::AddedCallback(Ending *ending)
     g_AnmManager->ClearBlendMode();
     g_AnmManager->ClearVertexShader();
     ScreenEffect::Clear(COLOR_WHITE);
-    g_Supervisor.unk178 = 1;
+    g_Supervisor.suppressFpsDisplay = TRUE;
 
     ending->anmFile = g_AnmManager->LoadAnm(0x18, "staff01.anm");
 
@@ -594,7 +594,7 @@ ZunResult Ending::DeletedCallback(Ending *ending)
     g_Chain.Cut(ending->drawChain);
     ending->drawChain = NULL;
     ZUN_DELETE(ending);
-    g_Supervisor.unk178 = 0;
+    g_Supervisor.suppressFpsDisplay = FALSE;
     return ZUN_SUCCESS;
 }
 

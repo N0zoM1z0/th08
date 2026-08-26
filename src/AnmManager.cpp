@@ -1619,9 +1619,9 @@ ZunResult AnmManager::FUN_00463cf0(AnmVm *vm)
 {
     if (!vm->IsVisible())
         return ZUN_ERROR;
-    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(vm) + 0x1F8) >> 1) & 1) == 0)
+    if (!vm->flag1)
         return ZUN_ERROR;
-    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(vm) + 0x1F3) == 0)
+    if (vm->color1.a == 0)
         return ZUN_ERROR;
     if (this->FUN_004639e0(vm) != ZUN_SUCCESS)
         return ZUN_ERROR;
@@ -1690,9 +1690,9 @@ ZunResult AnmManager::FUN_00464070(AnmVm *vm)
 {
     if (!vm->IsVisible())
         return ZUN_ERROR;
-    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(vm) + 0x1F8) >> 1) & 1) == 0)
+    if (!vm->flag1)
         return ZUN_ERROR;
-    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(vm) + 0x1F3) == 0)
+    if (vm->color1.a == 0)
         return ZUN_ERROR;
     this->FUN_00463d60(vm);
     return this->DrawInner(vm, 0);
@@ -1776,9 +1776,9 @@ ZunResult AnmManager::DrawWithCallback(AnmVm *vm, void *callback)
 {
     if (!vm->IsVisible())
         return ZUN_ERROR;
-    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(vm) + 0x1F8) >> 1) & 1) == 0)
+    if (!vm->flag1)
         return ZUN_ERROR;
-    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(vm) + 0x1F3) == 0)
+    if (vm->color1.a == 0)
         return ZUN_ERROR;
     if (this->FUN_004640e0(vm, callback) != ZUN_SUCCESS)
         return ZUN_ERROR;
