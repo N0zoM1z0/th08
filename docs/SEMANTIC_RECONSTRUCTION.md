@@ -2497,3 +2497,74 @@ render or VM roles.  The whole-source router remains at 5 raw-member,
 0 absolute-address, 113 anonymous-identifier, and 44 opaque-storage
 candidates; those remaining counts are work-selection observations, not a
 semantic-completion percentage.
+
+### ECL EX gameplay callback protocol — 2026-08-27
+
+Scope: the complete 32-entry `g_EclExInsn @ 0x004C6CB0` callback table and its
+33 exact functions at `0x00423390..0x004253D9`.  Twenty-nine remaining address
+names, their declarations, table entries, decorated symbols, accepted ledgers,
+relocation manifests, and unit selectors moved together.  The four already
+semantic handlers—`ConfigureNightBlindness`, `ReisenFreezeBullets`,
+`MokouResurrection`, and `SetScriptedUpdateFreeze`—retain their source names.
+
+Barrier protocol: three start handlers allocate paired fixed-slot effects and
+install `DrawBulletWarpBarrier`; the narrow, medium, and wide update handlers
+detect crossings between concentric rectangular zones, invert velocity, scale
+position between the zones, rotate the bullet angle by pi, and apply a
+two-frame transition cooldown.  `StopBulletWarpBarrier` deactivates the paired
+effects and changes the shared render mode.  The size qualifiers come from the
+exact bounds and scale ratios; no spell-card or visual identity is inferred.
+
+Enemy and hitbox protocol: `UpdateBouncingEnemyMotion` reflects horizontal or
+top-boundary motion, accelerates vertical velocity toward the ECL limit, and
+clears the offscreen permission after the bottom boundary.  The three rotating
+laser handlers publish narrow, medium, and wide inner/outer hitboxes through
+`Player::CalcLaserHitbox`.  `SynchronizeOrbitingChildFormation` enumerates
+same-group children, publishes group count/change state, and eases each
+child's orbit angle toward uniform spacing.
+
+Stage-specific control: the table now directly names short/long arcade pulses,
+the combined pulse-and-shake envelope, a shake-only envelope, red Background
+tint accumulation, the screen-effect counter setter, spell-number and capture-
+count publishers, spell-presentation dismissal, marked-bullet child triggers,
+enemy spawning from marked bullets, and Bomb-versus-Extend item spawning.
+`BULLET_TRANSFORM_ECL_EX_TRIGGER_MARKER` names the target-observed
+`0x100000` bit only as this callback family's marker; its presentation meaning
+remains deliberately unspecified.
+
+Reisen and time-scale protocol: `AdvanceReisenBulletPhase` cycles the selected
+bullets through additive/collision-disabled, alpha-restoring, and normal
+states beside the already named freeze handler.  `SetFrameRateDivisor`,
+`EnterScaledBulletTime`, and `ExitScaledBulletTime` scale active bullet
+velocities, preserve and restore their sprite indices, select the paired
+barrier interrupts, and restore the global multiplier.  These names describe
+the exact state transitions and do not claim that the global time-scale flag's
+other bits are understood.
+
+Evidence boundary: target-pinned typed packets were generated for all 33
+addresses before renaming, including stack homes, direct calls, relocations,
+and exact compiler comparison.  The instruction header bytes at `+0x08` and
+`+0x0C` remain unknown, as do unrelated ECL globals and the artistic identity
+of the generic barrier effects.
+
+VC7 oracle: the baseline and final focused `EclExIns.obj` selections both pass
+**33 / 33 exact**.  Representative extents include the barrier renderer
+**1,203 / 1,203**, each zone transformer **784 / 784**, orbit formation
+**494 / 494**, Reisen phase update **443 / 443**, bullet freeze
+**536 / 536**, and scaled-time entry/exit **213 / 213** and **255 / 255**.
+After the shared Bullet flag enum changed, the required single-job cold build
+of all 75 comparison objects passes **1,106 / 1,106 exact**, and the normal
+VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links and
+`verify-modern-linux.sh build/modern-linux-container/th08-modern` verifies the
+ELF32 executable and every fixed target-owned layout symbol.  There is no
+automated stage-script/render smoke for all EX callbacks, so no live visual or
+spell-specific claim is made.
+
+Result: every entry in the ECL EX callback table now has a behavior-readable
+function name, with unknown instruction bytes and effect identities retained.
+The whole-source router remains at 5 raw-member, 0 absolute-address,
+113 anonymous-identifier, and 44 opaque-storage candidates because its current
+heuristic does not count address-named functions; these are routing counts,
+not a semantic-completion percentage.

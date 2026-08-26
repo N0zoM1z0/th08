@@ -662,6 +662,19 @@ VC7 image links, and the complete i386 Linux build plus fixed-layout verifier
 passes.  The old `QueueSpriteQuad` ledger ABI was also corrected from two byte
 arguments to its target-proven VM/vertex pointer types.
 
+The complete ECL EX callback table is now behavior-readable.  Twenty-nine
+remaining address names at `0x004233D0..0x00425390` now expose the narrow,
+medium, and wide bullet-warp barriers, bouncing-enemy motion, rotating laser
+hitboxes, child-orbit formation, Reisen bullet phases, screen effects, spell
+state publishers, marked-bullet triggers, scaled bullet time, and conditional
+item spawning.  All 33 table functions were first replayed through target-
+pinned typed packets and then pass the focused `EclExIns.obj` selection
+**33 / 33 exact**.  The shared Bullet flags name `0x100000` only as an ECL EX
+trigger marker; instruction-header bytes and artistic identities remain
+unknown.  The required cold replay passes **1,106 / 1,106 exact**, the normal
+VC7 image links, and the complete i386 Linux build plus fixed-layout verifier
+passes.
+
 Select the next independent field family with:
 
 ```bash

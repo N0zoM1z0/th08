@@ -109217,9 +109217,9 @@ symbol = "??1MidiTimer@th08@@QAE@XZ"
 target = 0x00443E20
 
 [[units]]
-name = "ecl-ex-bullet-zone-callback-00423a60"
+name = "ecl-ex-warp-bullets-across-narrow-barrier"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00423a60@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?WarpBulletsAcrossNarrowBarrier@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00423A60
 size = 0x310
 
@@ -109446,9 +109446,9 @@ symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
 target = 0x0043EDB0
 
 [[units]]
-name = "ecl-ex-callback-00423530"
+name = "ecl-ex-start-narrow-bullet-warp-barrier"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00423530@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?StartNarrowBulletWarpBarrier@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00423530
 size = 0x68
 
@@ -109497,13 +109497,13 @@ target = 0x004EA28C
 [[units.relocations]]
 offset = 0x60
 type = "DIR32"
-symbol = "?FUN_004235a0@th08@@YIXXZ"
+symbol = "?DrawBulletWarpBarrier@th08@@YIXXZ"
 target = 0x004235A0
 
 [[units]]
-name = "ecl-ex-callback-00423db0"
+name = "ecl-ex-start-medium-bullet-warp-barrier"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00423db0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?StartMediumBulletWarpBarrier@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00423DB0
 size = 0x68
 
@@ -109552,13 +109552,13 @@ target = 0x004EA28C
 [[units.relocations]]
 offset = 0x60
 type = "DIR32"
-symbol = "?FUN_004235a0@th08@@YIXXZ"
+symbol = "?DrawBulletWarpBarrier@th08@@YIXXZ"
 target = 0x004235A0
 
 [[units]]
-name = "ecl-ex-callback-00424170"
+name = "ecl-ex-start-wide-bullet-warp-barrier"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00424170@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?StartWideBulletWarpBarrier@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424170
 size = 0x68
 
@@ -109607,7 +109607,7 @@ target = 0x004EA28C
 [[units.relocations]]
 offset = 0x60
 type = "DIR32"
-symbol = "?FUN_004235a0@th08@@YIXXZ"
+symbol = "?DrawBulletWarpBarrier@th08@@YIXXZ"
 target = 0x004235A0
 
 [[units]]
@@ -109630,9 +109630,9 @@ symbol = "?g_AsciiManager@th08@@3UAsciiManager@1@A"
 target = 0x004CCE20
 
 [[units]]
-name = "ecl-ex-callback-004233d0"
+name = "ecl-ex-trigger-short-screen-pulse"
 object = "build/EclExIns.obj"
-symbol = "?FUN_004233d0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?TriggerShortScreenPulse@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x004233D0
 size = 0x27
 
@@ -109643,9 +109643,9 @@ symbol = "?RegisterChain@ScreenEffect@th08@@SIPAU12@W4ScreenEffectType@2@HHHHH@Z
 target = 0x0045B8B0
 
 [[units]]
-name = "ecl-ex-enemy-bounce-00423400"
+name = "ecl-ex-update-bouncing-enemy-motion"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00423400@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?UpdateBouncingEnemyMotion@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00423400
 size = 0x128
 
@@ -109680,9 +109680,9 @@ symbol = "?VectorAngle@th08@@YIMMM@Z"
 target = 0x0040C7B0
 
 [[units]]
-name = "ecl-ex-bullet-zone-callback-00423e20"
+name = "ecl-ex-warp-bullets-across-medium-barrier"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00423e20@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?WarpBulletsAcrossMediumBarrier@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00423E20
 size = 0x310
 
@@ -109909,9 +109909,9 @@ symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
 target = 0x0043EDB0
 
 [[units]]
-name = "ecl-ex-disable-barrier-00424130"
+name = "ecl-ex-stop-bullet-warp-barrier"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00424130@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?StopBulletWarpBarrier@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424130
 size = 0x40
 
@@ -109946,9 +109946,9 @@ symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
 target = 0x004E4B60
 
 [[units]]
-name = "ecl-ex-bullet-zone-callback-004241e0"
+name = "ecl-ex-warp-bullets-across-wide-barrier"
 object = "build/EclExIns.obj"
-symbol = "?FUN_004241e0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?WarpBulletsAcrossWideBarrier@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x004241E0
 size = 0x310
 
@@ -110182,9 +110182,9 @@ target_address = 0x004253E0
 size = 0x22
 
 [[units]]
-name = "ecl-ex-barrier-render-callback-004235a0"
+name = "ecl-ex-draw-bullet-warp-barrier"
 object = "build/EclExIns.obj"
-symbol = "?FUN_004235a0@th08@@YIXXZ"
+symbol = "?DrawBulletWarpBarrier@th08@@YIXXZ"
 target_address = 0x004235A0
 size = 0x4B3
 
@@ -110723,9 +110723,9 @@ symbol = "?SetRenderState@Supervisor@th08@@QAEXW4_D3DRENDERSTATETYPE@@H@Z"
 target = 0x00448270
 
 [[units]]
-name = "ecl-ex-callback-004244f0"
+name = "ecl-ex-synchronize-orbiting-child-formation"
 object = "build/EclExIns.obj"
-symbol = "?FUN_004244f0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?SynchronizeOrbitingChildFormation@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x004244F0
 size = 0x1EE
 
@@ -110796,9 +110796,9 @@ symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
 target = 0x0043EDB0
 
 [[units]]
-name = "ecl-ex-callback-00424730"
+name = "ecl-ex-update-narrow-rotating-laser-hitbox"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00424730@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?UpdateNarrowRotatingLaserHitbox@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424730
 size = 0xE4
 
@@ -110863,9 +110863,9 @@ symbol = "?CalcLaserHitbox@Player@th08@@QAEIPAUFloat3@2@00MH@Z"
 target = 0x0044A6A0
 
 [[units]]
-name = "ecl-ex-callback-00424820"
+name = "ecl-ex-update-medium-rotating-laser-hitbox"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00424820@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?UpdateMediumRotatingLaserHitbox@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424820
 size = 0xE4
 
@@ -110930,9 +110930,9 @@ symbol = "?CalcLaserHitbox@Player@th08@@QAEIPAUFloat3@2@00MH@Z"
 target = 0x0044A6A0
 
 [[units]]
-name = "ecl-ex-callback-00424910"
+name = "ecl-ex-update-wide-rotating-laser-hitbox"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00424910@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?UpdateWideRotatingLaserHitbox@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424910
 size = 0xE4
 
@@ -110997,7 +110997,7 @@ symbol = "?CalcLaserHitbox@Player@th08@@QAEIPAUFloat3@2@00MH@Z"
 target = 0x0044A6A0
 
 [[units]]
-name = "ecl-ex-reisen-freeze-bullets-00424a20"
+name = "ecl-ex-reisen-freeze-bullets"
 object = "build/EclExIns.obj"
 symbol = "?ReisenFreezeBullets@EclExIns@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclExInstruction@2@@Z"
 target_address = 0x00424A20
@@ -111108,9 +111108,9 @@ symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
 target = 0x00407120
 
 [[units]]
-name = "ecl-ex-callback-00424c40"
+name = "ecl-ex-advance-reisen-bullet-phase"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00424c40@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?AdvanceReisenBulletPhase@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424C40
 size = 0x1BB
 
@@ -111177,9 +111177,9 @@ symbol = "?FromAngleMagnitude@Float3@th08@@QAEXMM@Z"
 target = 0x004286E0
 
 [[units]]
-name = "ecl-ex-callback-00424e00"
+name = "ecl-ex-apply-red-background-tint"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00424e00@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?ApplyRedBackgroundTint@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424E00
 size = 0x1F
 
@@ -111196,9 +111196,9 @@ symbol = "?AccumulateTint@Background@th08@@QAEXK@Z"
 target = 0x00409160
 
 [[units]]
-name = "ecl-ex-callback-00424e20"
+name = "ecl-ex-trigger-screen-shake"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00424e20@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?TriggerScreenShake@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424E20
 size = 0x27
 
@@ -111209,9 +111209,9 @@ symbol = "?RegisterChain@ScreenEffect@th08@@SIPAU12@W4ScreenEffectType@2@HHHHH@Z
 target = 0x0045B8B0
 
 [[units]]
-name = "ecl-ex-callback-00424e50"
+name = "ecl-ex-trigger-children-near-marked-bullets"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00424e50@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?TriggerChildrenNearMarkedBullets@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424E50
 size = 0x110
 
@@ -111246,9 +111246,9 @@ symbol = "__real@45800000"
 target = 0x004B4958
 
 [[units]]
-name = "ecl-ex-callback-00424f60"
+name = "ecl-ex-trigger-long-screen-pulse"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00424f60@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?TriggerLongScreenPulse@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424F60
 size = 0x27
 
@@ -111259,9 +111259,9 @@ symbol = "?RegisterChain@ScreenEffect@th08@@SIPAU12@W4ScreenEffectType@2@HHHHH@Z
 target = 0x0045B8B0
 
 [[units]]
-name = "ecl-ex-callback-00424f90"
+name = "ecl-ex-set-frame-rate-divisor"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00424f90@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?SetFrameRateDivisor@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424F90
 size = 0x2E
 
@@ -111279,9 +111279,9 @@ target = 0x017CE758
 addend = 0x188
 
 [[units]]
-name = "ecl-ex-callback-00424fc0"
+name = "ecl-ex-publish-current-spell-card-number"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00424fc0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?PublishCurrentSpellCardNumber@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424FC0
 size = 0x23
 
@@ -111292,7 +111292,7 @@ symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units]]
-name = "ecl-ex-mokou-resurrection-00424ff0"
+name = "ecl-ex-mokou-resurrection"
 object = "build/EclExIns.obj"
 symbol = "?MokouResurrection@EclExIns@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclExInstruction@2@@Z"
 target_address = 0x00424FF0
@@ -111317,9 +111317,9 @@ symbol = "?CutInEnemyNoPortrait@Spellcard@th08@@QAEXPBDH@Z"
 target = 0x00415D10
 
 [[units]]
-name = "ecl-ex-callback-00425020"
+name = "ecl-ex-hide-spell-card-presentation"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00425020@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?HideSpellCardPresentation@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00425020
 size = 0x1A
 
@@ -111336,9 +111336,9 @@ symbol = "?spellcard_fun_00416160@Spellcard@th08@@QAEXXZ"
 target = 0x00416160
 
 [[units]]
-name = "ecl-ex-callback-00425040"
+name = "ecl-ex-publish-captured-spell-card-count"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00425040@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?PublishCapturedSpellCardCount@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00425040
 size = 0x25
 
@@ -111349,7 +111349,7 @@ symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
 [[units]]
-name = "ecl-ex-set-scripted-update-freeze-00425070"
+name = "ecl-ex-set-scripted-update-freeze"
 object = "build/EclExIns.obj"
 symbol = "?SetScriptedUpdateFreeze@EclExIns@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclExInstruction@2@@Z"
 target_address = 0x00425070
@@ -111418,9 +111418,9 @@ symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
 target = 0x00407120
 
 [[units]]
-name = "ecl-ex-callback-004250d0"
+name = "ecl-ex-spawn-enemies-from-marked-bullets"
 object = "build/EclExIns.obj"
-symbol = "?FUN_004250d0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?SpawnEnemiesFromMarkedBullets@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x004250D0
 size = 0xD5
 
@@ -111449,9 +111449,9 @@ symbol = "?SpawnEnemy2@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHPAH@Z"
 target = 0x0042A680
 
 [[units]]
-name = "ecl-ex-callback-004251b0"
+name = "ecl-ex-enter-scaled-bullet-time"
 object = "build/EclExIns.obj"
-symbol = "?FUN_004251b0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?EnterScaledBulletTime@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x004251B0
 size = 0xD5
 
@@ -111524,9 +111524,9 @@ symbol = "?SetSprite@AnmLoaded@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
 target = 0x0045E430
 
 [[units]]
-name = "ecl-ex-callback-00425290"
+name = "ecl-ex-exit-scaled-bullet-time"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00425290@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?ExitScaledBulletTime@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00425290
 size = 0xFF
 
@@ -111637,9 +111637,9 @@ symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
 target = 0x00407120
 
 [[units]]
-name = "ecl-ex-callback-00425390"
+name = "ecl-ex-spawn-bomb-or-extend-item"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00425390@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?SpawnBombOrExtendItem@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00425390
 size = 0x4A
 
@@ -112181,9 +112181,9 @@ symbol = "$L69557"
 target = 0x00403107
 
 [[units]]
-name = "ecl-ex-screen-effects-004246e0"
+name = "ecl-ex-trigger-screen-pulse-and-shake"
 object = "build/EclExIns.obj"
-symbol = "?FUN_004246e0@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?TriggerScreenPulseAndShake@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x004246E0
 size = 0x44
 
@@ -112200,9 +112200,9 @@ symbol = "?RegisterChain@ScreenEffect@th08@@SIPAU12@W4ScreenEffectType@2@HHHHH@Z
 target = 0x0045B8B0
 
 [[units]]
-name = "ecl-ex-publish-screen-counter-00424a00"
+name = "ecl-ex-set-screen-effect-counter"
 object = "build/EclExIns.obj"
-symbol = "?FUN_00424a00@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
+symbol = "?SetScreenEffectCounter@th08@@YIXPAUEnemyOverlay@EclOperands@1@PAUEclExInstruction@1@@Z"
 target_address = 0x00424A00
 size = 0x1C
 
