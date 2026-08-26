@@ -1904,12 +1904,12 @@ void Gui::FUN_0043826b()
     g_AsciiManager.SetColor(0xffd0d0ff);
     stringPos.y += 16.0f;
     g_AsciiManager.AddFormatText(&stringPos, "over-80%% = %3d.%.2d%%",
-                                 100 * (i32)g_GameManager.unk3de24 / (i32)g_GameManager.unk3de14,
-                                 10000 * (i32)g_GameManager.unk3de24 / (i32)g_GameManager.unk3de14 % 100);
+                                 100 * (i32)g_GameManager.stageExtremeHumanFrames / (i32)g_GameManager.stageActiveFrames,
+                                 10000 * (i32)g_GameManager.stageExtremeHumanFrames / (i32)g_GameManager.stageActiveFrames % 100);
     stringPos.y += 16.0f;
     g_AsciiManager.AddFormatText(&stringPos, "over 80%% = %3d.%.2d%%",
-                                 100 * (i32)g_GameManager.unk3de20 / (i32)g_GameManager.unk3de14,
-                                 10000 * (i32)g_GameManager.unk3de20 / (i32)g_GameManager.unk3de14 % 100);
+                                 100 * (i32)g_GameManager.stageExtremeYoukaiFrames / (i32)g_GameManager.stageActiveFrames,
+                                 10000 * (i32)g_GameManager.stageExtremeYoukaiFrames / (i32)g_GameManager.stageActiveFrames % 100);
 
     if (g_GameManager.currentStage >= STAGE6A && !g_GameManager.IsPracticeMode() && !g_GameManager.IsReplayPractice())
     {

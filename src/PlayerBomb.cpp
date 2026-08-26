@@ -150,7 +150,7 @@ void Player::SpawnBombStateEffect()
     effect->color1.r = 0xFF;
     effect->color1.g = 0x40;
     effect->color1.b = 0x40;
-    this->stateEffect = reinterpret_cast<PlayerStateEffect *>(effect);
+    this->stateEffect = reinterpret_cast<Effect *>(effect);
 }
 
 // FUNCTION: th08 0x40be30
@@ -165,7 +165,7 @@ void __fastcall BeginBombSpell(Player *player, i32 cutInType, const char *cutInT
     g_Spellcard.CutInPlayer(cutInType, cutInText, cutInArg);
     bomb->duration = duration;
     player->timer = timer;
-    player->playerState = PLAYER_STATE_DEAD;
+    player->playerState = PLAYER_STATE_INVULNERABLE;
     player->SpawnBombStateEffect();
     i = 0;
     workItem = bomb->workItems;
@@ -202,8 +202,8 @@ void __fastcall UpdateFantasyOrbBomb(Player *player)
             workItem->pathPoints[0] = workItem->position;
             workItem->motionStep = 0.0f;
             workItem->state = PLAYER_BOMB_WORK_ITEM_ACTIVE;
-            workItem->cancelRegion = player->FUN_0044df00(&player->position, 96.0f, 0.0f, 200, 6);
-            workItem->damageRegion = player->FUN_0044e040(&workItem->position, 64.0f, 0.0f, 5, 200);
+            workItem->cancelRegion = player->CreateCircleCancelRegion(&player->position, 96.0f, 0.0f, 200, 6);
+            workItem->damageRegion = player->CreateCircleDamageRegion(&workItem->position, 64.0f, 0.0f, 5, 200);
             workItem->damageRegion->collisionInterval = 2;
             workItem->damageRegion->hitCap = 200;
             workItem->damageRegion->mode = 1;
@@ -233,7 +233,7 @@ void __fastcall UpdateFantasyOrbBomb(Player *player)
         f32 speed;
         f32 xDelta;
         f32 yDelta;
-        PlayerUnkStruct0x40 *slot;
+        PlayerCollisionRegion *slot;
         if (bomb->timer.JustReached(40))
         {
             workItem = bomb->workItems;
@@ -276,14 +276,14 @@ void __fastcall UpdateFantasyOrbBomb(Player *player)
                     workItem->motion.x = xDelta * workItem->motionStep / speed;
                     workItem->motion.y = yDelta * workItem->motionStep / speed;
 
-                    player->FUN_0044df00(&workItem->position, 128.0f, 0.0f, 0, 6);
+                    player->CreateCircleCancelRegion(&workItem->position, 128.0f, 0.0f, 0, 6);
                     if (workItem->damageRegion->hitAccumulator >= workItem->damageRegion->hitCap ||
                         bomb->timer >= bomb->duration - 30)
                     {
                         workItem->cancelRegion->active = 0;
                         workItem->damageRegion->active = 0;
-                        player->FUN_0044df00(&player->position, 64.0f, 4.266666889190674f, 30, 6);
-                        slot = player->FUN_0044e040(&workItem->position, 64.0f, 12.800000190734863f, 500, 12);
+                        player->CreateCircleCancelRegion(&player->position, 64.0f, 4.266666889190674f, 30, 6);
+                        slot = player->CreateCircleDamageRegion(&workItem->position, 64.0f, 12.800000190734863f, 500, 12);
                         slot->collisionInterval = 4;
                         slot->hitCap = 0;
                         g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position), 8, -1);
@@ -394,8 +394,8 @@ void __fastcall UpdateFantasySealBlinkDeathbomb(Player *player)
             workItem->pathPoints[0] = workItem->position;
             workItem->motionStep = 0.0f;
             workItem->state = PLAYER_BOMB_WORK_ITEM_ACTIVE;
-            workItem->cancelRegion = player->FUN_0044df00(&player->position, 96.0f, 0.0f, 200, 6);
-            workItem->damageRegion = player->FUN_0044e040(&workItem->position, 64.0f, 0.0f, 5, 200);
+            workItem->cancelRegion = player->CreateCircleCancelRegion(&player->position, 96.0f, 0.0f, 200, 6);
+            workItem->damageRegion = player->CreateCircleDamageRegion(&workItem->position, 64.0f, 0.0f, 5, 200);
             workItem->damageRegion->collisionInterval = 2;
             workItem->damageRegion->hitCap = 200;
             workItem->damageRegion->mode = 1;
@@ -428,9 +428,9 @@ void __fastcall UpdateFantasySealBlinkDeathbomb(Player *player)
             {
                 workItem->cancelRegion->active = 0;
                 workItem->damageRegion->active = 0;
-                player->FUN_0044df00(&player->position, 64.0f, 4.266666889190674f, 30, 6);
-                PlayerUnkStruct0x40 *slot =
-                    player->FUN_0044e040(&workItem->position, 64.0f, 8.533333778381348f, 25, 15);
+                player->CreateCircleCancelRegion(&player->position, 64.0f, 4.266666889190674f, 30, 6);
+                PlayerCollisionRegion *slot =
+                    player->CreateCircleDamageRegion(&workItem->position, 64.0f, 8.533333778381348f, 25, 15);
                 slot->collisionInterval = 5;
                 slot->hitCap = 50;
                 g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position), 8, -1);
@@ -454,7 +454,7 @@ void __fastcall UpdateFantasySealBlinkDeathbomb(Player *player)
 #pragma var_order(color, spawnPosition, slot)
         Float3 spawnPosition;
         u32 color;
-        PlayerUnkStruct0x40 *slot;
+        PlayerCollisionRegion *slot;
         if (bomb->timer % 20 == 0)
         {
             workItem = &bomb->workItems[bomb->secondaryWorkCursor + 16];
@@ -473,8 +473,8 @@ void __fastcall UpdateFantasySealBlinkDeathbomb(Player *player)
             workItem->position = spawnPosition;
             g_EffectManager.SpawnEffect(49, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position), 1, color);
             g_EffectManager.SpawnEffect(55, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position), 1, color);
-            workItem->cancelRegion = player->FUN_0044df00(&spawnPosition, 64.0f, 4.266666889190674f, 30, 6);
-            workItem->damageRegion = player->FUN_0044e040(&spawnPosition, 64.0f, 8.533333778381348f, 400, 15);
+            workItem->cancelRegion = player->CreateCircleCancelRegion(&spawnPosition, 64.0f, 4.266666889190674f, 30, 6);
+            workItem->damageRegion = player->CreateCircleDamageRegion(&spawnPosition, 64.0f, 8.533333778381348f, 400, 15);
             slot = workItem->damageRegion;
             slot->collisionInterval = 2;
             g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), workItem->position.x);
@@ -628,8 +628,8 @@ void __fastcall UpdateArtfulSacrificeBomb(Player *player)
         player->optionStates[0].position =
             (target - workItem->position) * interp + workItem->position;
         player->optionStates[0].vm.rotation.z += -0.31415927410125732f;
-        player->FUN_0044df00(&player->optionStates[0].position, 32.0f, 0.0f, 0, 6);
-        player->FUN_0044e040(&player->optionStates[0].position, 32.0f, 0.0f, 40, 0);
+        player->CreateCircleCancelRegion(&player->optionStates[0].position, 32.0f, 0.0f, 0, 6);
+        player->CreateCircleDamageRegion(&player->optionStates[0].position, 32.0f, 0.0f, 40, 0);
     }
     else
     {
@@ -663,13 +663,13 @@ void __fastcall UpdateArtfulSacrificeBomb(Player *player)
         {
 #pragma var_order(effect, damageSlot)
             AnmVm *effect;
-            PlayerUnkStruct0x40 *damageSlot;
+            PlayerCollisionRegion *damageSlot;
             g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(15), 0);
             effect = g_EffectManager.SpawnEffect(42, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
             effect = g_EffectManager.SpawnEffect(43, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
             effect = g_EffectManager.SpawnEffect(44, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
-            player->FUN_0044df00(&player->optionStates[0].position, 1.0f, 5.0f, 110, 6);
-            damageSlot = player->FUN_0044e040(&player->optionStates[0].position, 1.0f, 5.0f, 70, 110);
+            player->CreateCircleCancelRegion(&player->optionStates[0].position, 1.0f, 5.0f, 110, 6);
+            damageSlot = player->CreateCircleDamageRegion(&player->optionStates[0].position, 1.0f, 5.0f, 70, 110);
             damageSlot->collisionInterval = 5;
             ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 24, 8, 0, 0, 21);
             ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8fffffff, 0, 21);
@@ -740,8 +740,8 @@ void __fastcall UpdateReturnInanimatenessDeathbomb(Player *player)
         player->optionStates[0].position =
             (target - workItem->position) * interp + workItem->position;
         player->optionStates[0].vm.rotation.z += -0.31415927410125732f;
-        player->FUN_0044df00(&player->optionStates[0].position, 32.0f, 0.0f, 0, 6);
-        player->FUN_0044e040(&player->optionStates[0].position, 32.0f, 0.0f, 40, 0);
+        player->CreateCircleCancelRegion(&player->optionStates[0].position, 32.0f, 0.0f, 0, 6);
+        player->CreateCircleDamageRegion(&player->optionStates[0].position, 32.0f, 0.0f, 40, 0);
     }
     else
     {
@@ -775,7 +775,7 @@ void __fastcall UpdateReturnInanimatenessDeathbomb(Player *player)
         {
 #pragma var_order(effect, damageSlot, burstPosition)
             AnmVm *effect;
-            PlayerUnkStruct0x40 *damageSlot;
+            PlayerCollisionRegion *damageSlot;
             g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(15), 0);
             effect = g_EffectManager.SpawnEffect(42, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
             effect = g_EffectManager.SpawnEffect(43, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
@@ -788,8 +788,8 @@ void __fastcall UpdateReturnInanimatenessDeathbomb(Player *player)
             effect = g_EffectManager.SpawnEffect(45, reinterpret_cast<D3DXVECTOR3 *>(&burstPosition), 1, 0xff00f000);
             burstPosition.y = 96.0f;
             effect = g_EffectManager.SpawnEffect(45, reinterpret_cast<D3DXVECTOR3 *>(&burstPosition), 1, 0xff00f0f0);
-            player->FUN_0044df00(&player->optionStates[0].position, 1.0f, 5.0f, 110, 6);
-            damageSlot = player->FUN_0044e040(&player->optionStates[0].position, 1.0f, 5.0f, 70, 110);
+            player->CreateCircleCancelRegion(&player->optionStates[0].position, 1.0f, 5.0f, 110, 6);
+            damageSlot = player->CreateCircleDamageRegion(&player->optionStates[0].position, 1.0f, 5.0f, 70, 110);
             damageSlot->collisionInterval = 5;
         }
         else if (bomb->timer.JustReached(130))
@@ -961,7 +961,7 @@ void __fastcall UpdateMasterSparkBomb(Player *player)
     PlayerBombState *bomb;
     PlayerBombWorkItem *workItem;
     f32 angle;
-    PlayerUnkStruct0x40 *slot;
+    PlayerCollisionRegion *slot;
 
     bomb = &player->bombState;
     if (bomb->timer.HasTicked() && bomb->timer == 0)
@@ -989,14 +989,14 @@ void __fastcall UpdateMasterSparkBomb(Player *player)
         position = player->position;
         position.x = 192.0f;
         position.y /= 2.0f;
-        player->FUN_0044de60(&position, 384.0f, position.y * 2.0f, 6, 0);
+        player->CreateRectCancelRegion(&position, 384.0f, position.y * 2.0f, 6, 0);
 
         position = player->position;
         position.y /= 2.0f;
-        slot = player->FUN_0044dfa0(&position, 128.0f, position.y * 2.0f, 12, 0);
+        slot = player->CreateRectDamageRegion(&position, 128.0f, position.y * 2.0f, 12, 0);
         slot->mode = 1;
         position.x = 192.0f;
-        slot = player->FUN_0044dfa0(&position, 384.0f, position.y * 2.0f, 6, 0);
+        slot = player->CreateRectDamageRegion(&position, 384.0f, position.y * 2.0f, 6, 0);
         slot->mode = 1;
     }
 
@@ -1099,18 +1099,18 @@ void __fastcall UpdateFinalSparkDeathbomb(Player *player)
     {
 #pragma var_order(slot, position)
         Float3 position;
-        PlayerUnkStruct0x40 *slot;
+        PlayerCollisionRegion *slot;
         position = player->position;
         position.x = 192.0f;
         position.y /= 2.0f;
-        player->FUN_0044de60(&position, 384.0f, position.y * 2.0f, 6, 0);
+        player->CreateRectCancelRegion(&position, 384.0f, position.y * 2.0f, 6, 0);
 
         position = player->position;
         position.y /= 2.0f;
-        slot = player->FUN_0044dfa0(&position, 128.0f, position.y * 2.0f, 12, 0);
+        slot = player->CreateRectDamageRegion(&position, 128.0f, position.y * 2.0f, 12, 0);
         slot->mode = 1;
         position.x = 192.0f;
-        slot = player->FUN_0044dfa0(&position, 384.0f, position.y * 2.0f, 7, 0);
+        slot = player->CreateRectDamageRegion(&position, 384.0f, position.y * 2.0f, 7, 0);
         slot->mode = 1;
     }
 
@@ -1189,7 +1189,7 @@ void __fastcall UpdateRedNightlessCastleBomb(Player *player)
         position.y -= 32.0f;
         player->optionStates[3].target = position;
 
-        workItem->cancelRegion = player->FUN_0044df00(&player->position, 96.0f, 0.0f, 0, 6);
+        workItem->cancelRegion = player->CreateCircleCancelRegion(&player->position, 96.0f, 0.0f, 0, 6);
 
         if (bomb->timer.IsPeriodic(10))
         {
@@ -1225,8 +1225,8 @@ void __fastcall UpdateRedNightlessCastleBomb(Player *player)
 
         if (player->shotTimer >= 5)
         {
-            workItem->cancelRegion = player->FUN_0044de60(&player->position, 96.0f, 800.0f, 6, 0);
-            workItem->cancelRegion = player->FUN_0044de60(&player->position, 800.0f, 96.0f, 6, 0);
+            workItem->cancelRegion = player->CreateRectCancelRegion(&player->position, 96.0f, 800.0f, 6, 0);
+            workItem->cancelRegion = player->CreateRectCancelRegion(&player->position, 800.0f, 96.0f, 6, 0);
         }
 
         if (bomb->timer.JustReached(239))
@@ -1309,7 +1309,7 @@ void __fastcall UpdateScarletDevilDeathbomb(Player *player)
         }
 
         Float3 position;
-        workItem->cancelRegion = player->FUN_0044df00(&player->position, 96.0f, 0.0f, 0, 6);
+        workItem->cancelRegion = player->CreateCircleCancelRegion(&player->position, 96.0f, 0.0f, 0, 6);
         position = player->position;
         position.x -= 32.0f;
         player->optionStates[0].target = position;
@@ -1356,8 +1356,8 @@ void __fastcall UpdateScarletDevilDeathbomb(Player *player)
 
         if (player->shotTimer >= 5)
         {
-            workItem->cancelRegion = player->FUN_0044de60(&player->position, 96.0f, 800.0f, 6, 0);
-            workItem->cancelRegion = player->FUN_0044de60(&player->position, 800.0f, 96.0f, 6, 0);
+            workItem->cancelRegion = player->CreateRectCancelRegion(&player->position, 96.0f, 800.0f, 6, 0);
+            workItem->cancelRegion = player->CreateRectCancelRegion(&player->position, 800.0f, 96.0f, 6, 0);
         }
 
         if (bomb->timer.JustReached(279))
@@ -1434,8 +1434,8 @@ void __fastcall UpdateKillingDollBomb(Player *player)
                 workItem->position = player->position + workItem->motion;
                 workItem->timer = 0;
                 workItem->motion.z = 0.0f;
-                workItem->cancelRegion = player->FUN_0044df00(&workItem->position, 32.0f, 0.0f, 500, 6);
-            workItem->damageRegion = player->FUN_0044e040(&workItem->position, 32.0f, 0.0f, 20, 500);
+                workItem->cancelRegion = player->CreateCircleCancelRegion(&workItem->position, 32.0f, 0.0f, 500, 6);
+            workItem->damageRegion = player->CreateCircleDamageRegion(&workItem->position, 32.0f, 0.0f, 20, 500);
         }
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 120, 4, 1, 0, 21);
@@ -1558,8 +1558,8 @@ void __fastcall UpdateNightMistPhantomKillerDeathbomb(Player *player)
             workItem->position = player->position + workItem->motion;
             workItem->timer = 0;
             workItem->motion.z = 0.0f;
-            workItem->cancelRegion = player->FUN_0044df00(&workItem->position, 32.0f, 0.0f, 500, 6);
-            workItem->damageRegion = player->FUN_0044e040(&workItem->position, 32.0f, 0.0f, 30, 500);
+            workItem->cancelRegion = player->CreateCircleCancelRegion(&workItem->position, 32.0f, 0.0f, 500, 6);
+            workItem->damageRegion = player->CreateCircleDamageRegion(&workItem->position, 32.0f, 0.0f, 30, 500);
         }
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
     }
@@ -1685,7 +1685,7 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
     bomb = &player->bombState;
     if (bomb->timer.HasTicked() && bomb->timer == 0)
     {
-        PlayerUnkStruct0x40 *slot;
+        PlayerCollisionRegion *slot;
 
         BeginBombSpell(player, 1,
                      "\x8B\xAB\x95\x84\x81\x75\x8E\x6C\x8F\x64\x8C\x8B\x8A\x45\x81\x76",
@@ -1694,8 +1694,8 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
         workItem = &bomb->workItems[0];
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
         workItem->position = player->position;
-        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 40, 6);
-        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
+        player->CreateCircleCancelRegion(&player->position, 100.0f, 1.0f, 40, 6);
+        slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI / 4.0f, 1.0f, 4.0f);
         g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position),
@@ -1704,11 +1704,11 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
 
     if (bomb->timer.JustReached(10))
     {
-        PlayerUnkStruct0x40 *slot;
+        PlayerCollisionRegion *slot;
         AnmVm *effect;
 
-        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 40, 6);
-        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
+        player->CreateCircleCancelRegion(&player->position, 100.0f, 1.0f, 40, 6);
+        slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI * 3.0f / 8.0f, 1.0f, 4.0f);
         effect = g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
@@ -1719,11 +1719,11 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
 
     if (bomb->timer.JustReached(20))
     {
-        PlayerUnkStruct0x40 *slot;
+        PlayerCollisionRegion *slot;
         AnmVm *effect;
 
-        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 40, 6);
-        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
+        player->CreateCircleCancelRegion(&player->position, 100.0f, 1.0f, 40, 6);
+        slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI / 2.0f, 1.0f, 4.0f);
         effect = g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
@@ -1734,11 +1734,11 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
 
     if (bomb->timer.JustReached(30))
     {
-        PlayerUnkStruct0x40 *slot;
+        PlayerCollisionRegion *slot;
         AnmVm *effect;
 
-        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 40, 6);
-        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
+        player->CreateCircleCancelRegion(&player->position, 100.0f, 1.0f, 40, 6);
+        slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(1.9634954929351807f, 1.0f, 4.0f);
         effect = g_EffectManager.FUN_004259e0(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
@@ -1756,7 +1756,7 @@ i32 __fastcall FUN_004114e0(AnmVm *effect)
 {
     f32 interp;
     i32 i;
-    PlayerUnkStruct0x40 *slot;
+    PlayerCollisionRegion *slot;
     f32 angle;
 
     if (reinterpret_cast<Effect *>(effect)->timer < 40)
@@ -1789,13 +1789,13 @@ i32 __fastcall FUN_004114e0(AnmVm *effect)
                     angle -= ZUN_2PI;
                 position.FromAngleMagnitude(angle, radius);
                 position += reinterpret_cast<Effect *>(effect)->vector5;
-                slot = g_Player.FUN_0044dfa0(
+                slot = g_Player.CreateRectDamageRegion(
                     &position, radius * 8.0f,
                     reinterpret_cast<Effect *>(effect)->shapeThickness * 4.0f, 60, 70);
                 slot->collisionInterval = 4;
                 slot->angle = AddNormalizeAngle(angle, ZUN_PI / 2.0f);
                 angle = slot->angle;
-                slot = g_Player.FUN_0044de60(
+                slot = g_Player.CreateRectCancelRegion(
                     &position, radius * 4.0f,
                     reinterpret_cast<Effect *>(effect)->shapeThickness * 4.0f, 6, 100);
                 slot->angle = angle;
@@ -1857,9 +1857,9 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         position.y = 224.0f;
         ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xefffffff, 0, 21);
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(42), 0);
-        workItem->cancelRegion = player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 500, 0);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 60);
+        workItem->cancelRegion = player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 500, 0);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 60);
         workItem->damageRegion->collisionInterval = 5;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
         return;
@@ -1869,13 +1869,13 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         Float3 position = player->position;
         position.y = 224.0f;
         position.x -= 32.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 2;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
         position.x += 64.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xcfffffff, 0, 21);
@@ -1886,13 +1886,13 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         Float3 position = player->position;
         position.y = 224.0f;
         position.x -= 64.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 2;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
         position.x += 128.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xafffffff, 0, 21);
@@ -1903,13 +1903,13 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         Float3 position = player->position;
         position.y = 224.0f;
         position.x -= 96.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 80, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 80, 40);
         workItem->damageRegion->collisionInterval = 2;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
         position.x += 192.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 80, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 80, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8fffffff, 0, 21);
@@ -1920,13 +1920,13 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         Float3 position = player->position;
         position.y = 224.0f;
         position.x -= 128.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 60, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 60, 40);
         workItem->damageRegion->collisionInterval = 2;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
         position.x += 256.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 60, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 60, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x6fffffff, 0, 21);
@@ -1937,13 +1937,13 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         Float3 position = player->position;
         position.y = 224.0f;
         position.x -= 160.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 50, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 50, 40);
         workItem->damageRegion->collisionInterval = 2;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
         position.x += 320.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 50, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 50, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x5fffffff, 0, 21);
@@ -1954,13 +1954,13 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         Float3 position = player->position;
         position.y = 224.0f;
         position.x -= 192.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 40, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 40, 40);
         workItem->damageRegion->collisionInterval = 2;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
         position.x += 384.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 40, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 40, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x5fffffff, 0, 21);
@@ -2034,9 +2034,9 @@ void __fastcall UpdateSlashOfPresentWorldBomb(Player *player)
         position.y = 224.0f;
         ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xefffffff, 0, 21);
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(42), 0);
-        workItem->cancelRegion = player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 300, 10);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 80, 60);
+        workItem->cancelRegion = player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 300, 10);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 80, 60);
         workItem->damageRegion->collisionInterval = 5;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
         return;
@@ -2046,13 +2046,13 @@ void __fastcall UpdateSlashOfPresentWorldBomb(Player *player)
         Float3 position = player->position;
         position.y = 224.0f;
         position.x -= 32.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 2;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
         position.x += 64.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xcfffffff, 0, 21);
@@ -2063,13 +2063,13 @@ void __fastcall UpdateSlashOfPresentWorldBomb(Player *player)
         Float3 position = player->position;
         position.y = 224.0f;
         position.x -= 64.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 2;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
         position.x += 128.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 100, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xbfffffff, 0, 21);
@@ -2080,13 +2080,13 @@ void __fastcall UpdateSlashOfPresentWorldBomb(Player *player)
         Float3 position = player->position;
         position.y = 224.0f;
         position.x -= 96.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 80, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 80, 40);
         workItem->damageRegion->collisionInterval = 2;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
         position.x += 192.0f;
-        player->FUN_0044de60(&position, 96.0f, 448.0f, 6, 60);
-        workItem->damageRegion = player->FUN_0044dfa0(&position, 96.0f, 448.0f, 80, 40);
+        player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
+        workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 80, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8fffffff, 0, 21);
@@ -2116,7 +2116,7 @@ i32 __fastcall FUN_004117b0(AnmVm *effect)
     f32 interp;
     f32 radialBase;
     i32 i;
-    PlayerUnkStruct0x40 *slot;
+    PlayerCollisionRegion *slot;
     f32 angle;
 
     reinterpret_cast<Effect *>(effect)->angle =
@@ -2158,13 +2158,13 @@ i32 __fastcall FUN_004117b0(AnmVm *effect)
                     angle -= ZUN_2PI;
                 position.FromAngleMagnitude(angle, radius);
                 position += reinterpret_cast<Effect *>(effect)->vector5;
-                slot = g_Player.FUN_0044dfa0(
+                slot = g_Player.CreateRectDamageRegion(
                     &position, radius * 8.0f,
                     reinterpret_cast<Effect *>(effect)->shapeThickness * 4.0f, 60, 100);
                 slot->collisionInterval = 2;
                 slot->angle = AddNormalizeAngle(angle, ZUN_PI / 2.0f);
                 angle = slot->angle;
-                slot = g_Player.FUN_0044de60(
+                slot = g_Player.CreateRectCancelRegion(
                     &position, radius * 4.0f,
                     reinterpret_cast<Effect *>(effect)->shapeThickness * 4.0f, 6, 150);
                 slot->angle = angle;
@@ -2218,7 +2218,7 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
     bomb = &player->bombState;
     if (bomb->timer.HasTicked() && bomb->timer == 0)
     {
-        PlayerUnkStruct0x40 *slot;
+        PlayerCollisionRegion *slot;
 
         BeginBombSpell(player, 1,
                      "\x8B\xAB\x8A\x45\x81\x75\x89\x69\x96\xE9\x8E\x6C\x8F\x64\x8C\x8B\x8A\x45\x81\x76",
@@ -2229,8 +2229,8 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
         workItem->position = player->position;
         player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[0], 21);
         player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[1], 22);
-        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 100, 6);
-        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
+        player->CreateCircleCancelRegion(&player->position, 100.0f, 1.0f, 100, 6);
+        slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI / 4.0f, 1.0f, 4.0f);
         g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position),
@@ -2239,11 +2239,11 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
 
     if (bomb->timer.JustReached(10))
     {
-        PlayerUnkStruct0x40 *slot;
+        PlayerCollisionRegion *slot;
         AnmVm *effect;
 
-        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 40, 6);
-        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
+        player->CreateCircleCancelRegion(&player->position, 100.0f, 1.0f, 40, 6);
+        slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI * 3.0f / 8.0f, 1.0f, 4.0f);
         effect = g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
@@ -2254,11 +2254,11 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
 
     if (bomb->timer.JustReached(20))
     {
-        PlayerUnkStruct0x40 *slot;
+        PlayerCollisionRegion *slot;
         AnmVm *effect;
 
-        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 100, 6);
-        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
+        player->CreateCircleCancelRegion(&player->position, 100.0f, 1.0f, 100, 6);
+        slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI / 2.0f, 1.0f, 4.0f);
         effect = g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
@@ -2269,11 +2269,11 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
 
     if (bomb->timer.JustReached(30))
     {
-        PlayerUnkStruct0x40 *slot;
+        PlayerCollisionRegion *slot;
         AnmVm *effect;
 
-        player->FUN_0044df00(&player->position, 100.0f, 1.0f, 100, 6);
-        slot = player->FUN_0044e040(&player->position, 100.0f, 1.0f, 70, 40);
+        player->CreateCircleCancelRegion(&player->position, 100.0f, 1.0f, 100, 6);
+        slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(1.9634954929351807f, 1.0f, 4.0f);
         effect = g_EffectManager.FUN_004259e0(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
@@ -2371,8 +2371,8 @@ void __fastcall UpdateGhastlyDreamBomb(Player *player)
             workItem->motionStep = 0.013089969754219055f;
             workItem->pathPoints[0] = player->position;
             workItem->position = workItem->pathPoints[0];
-            workItem->damageRegion = player->FUN_0044e040(&workItem->position, 24.0f, 0.0f, 50, 500);
-            workItem->cancelRegion = player->FUN_0044df00(&workItem->position, 24.0f, 0.0f, 500, 6);
+            workItem->damageRegion = player->CreateCircleDamageRegion(&workItem->position, 24.0f, 0.0f, 50, 500);
+            workItem->cancelRegion = player->CreateCircleCancelRegion(&workItem->position, 24.0f, 0.0f, 500, 6);
             workItem->damageRegion->hitCap = 800;
             workItem->motion.x = 0.0f;
             workItem->motion.y = 2.0f;
@@ -2386,8 +2386,8 @@ void __fastcall UpdateGhastlyDreamBomb(Player *player)
             workItem->motionStep = -0.013089969754219055f;
             workItem->pathPoints[0] = player->position;
             workItem->position = workItem->pathPoints[0];
-            workItem->damageRegion = player->FUN_0044e040(&workItem->position, 24.0f, 0.0f, 50, 500);
-            workItem->cancelRegion = player->FUN_0044df00(&workItem->position, 24.0f, 0.0f, 500, 6);
+            workItem->damageRegion = player->CreateCircleDamageRegion(&workItem->position, 24.0f, 0.0f, 50, 500);
+            workItem->cancelRegion = player->CreateCircleCancelRegion(&workItem->position, 24.0f, 0.0f, 500, 6);
             workItem->damageRegion->hitCap = 800;
             workItem->motion.x = 0.0f;
             workItem->motion.y = 2.0f;
@@ -2401,8 +2401,8 @@ void __fastcall UpdateGhastlyDreamBomb(Player *player)
             workItem->motionStep = 0.015707964077591896f;
             workItem->pathPoints[0] = player->position;
             workItem->position = workItem->pathPoints[0];
-            workItem->damageRegion = player->FUN_0044e040(&workItem->position, 24.0f, 0.0f, 50, 500);
-            workItem->cancelRegion = player->FUN_0044df00(&workItem->position, 24.0f, 0.0f, 500, 6);
+            workItem->damageRegion = player->CreateCircleDamageRegion(&workItem->position, 24.0f, 0.0f, 50, 500);
+            workItem->cancelRegion = player->CreateCircleCancelRegion(&workItem->position, 24.0f, 0.0f, 500, 6);
             workItem->damageRegion->hitCap = 800;
             workItem->motion.x = 0.0f;
             workItem->motion.y = 1.5f;
@@ -2416,8 +2416,8 @@ void __fastcall UpdateGhastlyDreamBomb(Player *player)
             workItem->motionStep = -0.015707964077591896f;
             workItem->pathPoints[0] = player->position;
             workItem->position = workItem->pathPoints[0];
-            workItem->damageRegion = player->FUN_0044e040(&workItem->position, 24.0f, 0.0f, 50, 500);
-            workItem->cancelRegion = player->FUN_0044df00(&workItem->position, 24.0f, 0.0f, 500, 6);
+            workItem->damageRegion = player->CreateCircleDamageRegion(&workItem->position, 24.0f, 0.0f, 50, 500);
+            workItem->cancelRegion = player->CreateCircleCancelRegion(&workItem->position, 24.0f, 0.0f, 500, 6);
             workItem->damageRegion->hitCap = 800;
             workItem->motion.x = 0.0f;
             workItem->motion.y = 1.5f;
@@ -2501,8 +2501,8 @@ void __fastcall UpdateEternalSleepInDreamlandDeathbomb(Player *player)
             workItem->motionStep = 0.013089969754219055f;
             workItem->pathPoints[0] = player->position;
             workItem->position = workItem->pathPoints[0];
-            workItem->damageRegion = player->FUN_0044e040(&workItem->position, 24.0f, 0.0f, 50, 500);
-            workItem->cancelRegion = player->FUN_0044df00(&workItem->position, 24.0f, 0.0f, 500, 6);
+            workItem->damageRegion = player->CreateCircleDamageRegion(&workItem->position, 24.0f, 0.0f, 50, 500);
+            workItem->cancelRegion = player->CreateCircleCancelRegion(&workItem->position, 24.0f, 0.0f, 500, 6);
             workItem->damageRegion->hitCap = 800;
             workItem->motion.x = 0.0f;
             workItem->motion.y = 2.0f;
@@ -2516,8 +2516,8 @@ void __fastcall UpdateEternalSleepInDreamlandDeathbomb(Player *player)
             workItem->motionStep = -0.013089969754219055f;
             workItem->pathPoints[0] = player->position;
             workItem->position = workItem->pathPoints[0];
-            workItem->damageRegion = player->FUN_0044e040(&workItem->position, 24.0f, 0.0f, 50, 500);
-            workItem->cancelRegion = player->FUN_0044df00(&workItem->position, 24.0f, 0.0f, 500, 6);
+            workItem->damageRegion = player->CreateCircleDamageRegion(&workItem->position, 24.0f, 0.0f, 50, 500);
+            workItem->cancelRegion = player->CreateCircleCancelRegion(&workItem->position, 24.0f, 0.0f, 500, 6);
             workItem->damageRegion->hitCap = 800;
             workItem->motion.x = 0.0f;
             workItem->motion.y = 2.0f;
@@ -2531,8 +2531,8 @@ void __fastcall UpdateEternalSleepInDreamlandDeathbomb(Player *player)
             workItem->motionStep = 0.015707964077591896f;
             workItem->pathPoints[0] = player->position;
             workItem->position = workItem->pathPoints[0];
-            workItem->damageRegion = player->FUN_0044e040(&workItem->position, 24.0f, 0.0f, 50, 500);
-            workItem->cancelRegion = player->FUN_0044df00(&workItem->position, 24.0f, 0.0f, 500, 6);
+            workItem->damageRegion = player->CreateCircleDamageRegion(&workItem->position, 24.0f, 0.0f, 50, 500);
+            workItem->cancelRegion = player->CreateCircleCancelRegion(&workItem->position, 24.0f, 0.0f, 500, 6);
             workItem->damageRegion->hitCap = 800;
             workItem->motion.x = 0.0f;
             workItem->motion.y = 1.5f;
@@ -2546,8 +2546,8 @@ void __fastcall UpdateEternalSleepInDreamlandDeathbomb(Player *player)
             workItem->motionStep = -0.015707964077591896f;
             workItem->pathPoints[0] = player->position;
             workItem->position = workItem->pathPoints[0];
-            workItem->damageRegion = player->FUN_0044e040(&workItem->position, 24.0f, 0.0f, 50, 500);
-            workItem->cancelRegion = player->FUN_0044df00(&workItem->position, 24.0f, 0.0f, 500, 6);
+            workItem->damageRegion = player->CreateCircleDamageRegion(&workItem->position, 24.0f, 0.0f, 50, 500);
+            workItem->cancelRegion = player->CreateCircleCancelRegion(&workItem->position, 24.0f, 0.0f, 500, 6);
             workItem->damageRegion->hitCap = 800;
             workItem->motion.x = 0.0f;
             workItem->motion.y = 1.5f;
@@ -2576,9 +2576,9 @@ void __fastcall UpdateEternalSleepInDreamlandDeathbomb(Player *player)
             workItem->angle = AddNormalizeAngle((f32)i * ZUN_PI / 8.0f, signedScaled);
             workItem->pathPoints[0] = player->position;
             workItem->position = workItem->pathPoints[0];
-            workItem->damageRegion = player->FUN_0044e040(&workItem->position, 64.0f, 0.0f, 100, 500);
+            workItem->damageRegion = player->CreateCircleDamageRegion(&workItem->position, 64.0f, 0.0f, 100, 500);
             workItem->damageRegion->hitCap = 1200;
-            workItem->cancelRegion = player->FUN_0044df00(&workItem->position, 64.0f, 0.0f, 500, 6);
+            workItem->cancelRegion = player->CreateCircleCancelRegion(&workItem->position, 64.0f, 0.0f, 500, 6);
             workItem->motion.x = 0.0f;
             workItem->motion.y = 8.0f;
             if (++spawned >= 16)

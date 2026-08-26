@@ -287,7 +287,7 @@ void EnemyOverlay::FUN_0042adb0(i32 mode)
                 reinterpret_cast<Enemy *>(enemy)->worldPosition =
                     reinterpret_cast<Enemy *>(enemy)->position +
                     reinterpret_cast<Enemy *>(enemy)->positionOffset;
-                g_Player.FUN_0044df00(&reinterpret_cast<Enemy *>(enemy)->worldPosition,
+                g_Player.CreateCircleCancelRegion(&reinterpret_cast<Enemy *>(enemy)->worldPosition,
                                       32.0f, 2.0f, 8, itemType);
 
                 for (dropLocals.i = 0; dropLocals.i < dropLocals.itemCount; dropLocals.i++)
@@ -334,7 +334,7 @@ void EnemyOverlay::FUN_0042adb0(i32 mode)
                 position += reinterpret_cast<Enemy *>(this)->worldPosition;
                 g_ItemManager.SpawnItem(&position, ITEM_TIME, 1);
             }
-            g_Player.FUN_0044df00(&reinterpret_cast<Enemy *>(this)->worldPosition,
+            g_Player.CreateCircleCancelRegion(&reinterpret_cast<Enemy *>(this)->worldPosition,
                                   32.0f, 1.0f, 16, 7);
             *reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) = 0;
         }

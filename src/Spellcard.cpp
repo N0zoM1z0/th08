@@ -1237,7 +1237,7 @@ void Spellcard::EndSpell()
         if (g_Player.playerState == PLAYER_STATE_ALIVE)
         {
             g_Player.timer = 70;
-            g_Player.playerState = PLAYER_STATE_DEAD;
+            g_Player.playerState = PLAYER_STATE_INVULNERABLE;
         }
         g_Gui.flags.bombDisplayUpdateFrames = 3;
         g_Gui.flags.lifeDisplayUpdateFrames = 3;

@@ -1,5 +1,7 @@
 #pragma once
 #include "Supervisor.hpp"
+
+#include <stddef.h>
 #include "ZunColor.hpp"
 #include "ZunMath.hpp"
 #include "ZunResult.hpp"
@@ -340,6 +342,7 @@ struct AnmVmBase
     ZunColor color2;
     union {
         u16 flags;
+        u32 flagsWord;
         struct
         {
             u32 visible : 1;
@@ -368,6 +371,10 @@ struct AnmVmBase
 };
 
 C_ASSERT(sizeof(AnmVmBase) == 0x208);
+C_ASSERT(offsetof(AnmVmBase, scale) == 0x18);
+C_ASSERT(offsetof(AnmVmBase, color1) == 0x1F0);
+C_ASSERT(offsetof(AnmVmBase, color2) == 0x1F4);
+C_ASSERT(offsetof(AnmVmBase, flagsWord) == 0x1F8);
 
 struct AnmVm : AnmVmBase
 {
@@ -425,6 +432,7 @@ struct AnmVm : AnmVmBase
 };
 
 C_ASSERT(sizeof(AnmVm) == 0x2a4);
+C_ASSERT(offsetof(AnmVm, pos) == 0x208);
 
 struct AnmLoaded
 {

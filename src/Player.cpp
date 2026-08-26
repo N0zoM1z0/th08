@@ -102,14 +102,14 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerBombCallbackSet, 24, g_PlayerBombCallbacksByS
     {{UpdateGhastlyDreamBomb, UpdateGhastlyDreamBomb, UpdateEternalSleepInDreamlandDeathbomb, UpdateEternalSleepInDreamlandDeathbomb, UpdateDissolveSpell}},
     {{DrawGhastlyDreamBomb, DrawGhastlyDreamBomb, DrawEternalSleepInDreamlandDeathbomb, DrawEternalSleepInDreamlandDeathbomb, DrawDissolveSpell}},
 };
-i32 __fastcall FUN_0044e3a0(Player *player, PlayerOptionState *option);
-i32 __fastcall FUN_0044ea40(Player *player, PlayerOptionState *option);
-i32 __fastcall FUN_0044eb70(Player *player, PlayerOptionState *option);
-i32 __fastcall FUN_0044ee70(Player *player, PlayerOptionState *option);
-i32 __fastcall FUN_0044f2d0(Player *player, PlayerOptionState *option);
-i32 __fastcall FUN_0044f5e0(Player *player, PlayerOptionState *option);
-i32 __fastcall FUN_0044f930(Player *player, PlayerOptionState *option);
-i32 __fastcall PlayerRoute2OptionRender(Player *player, u8 *option);
+i32 __fastcall UpdateHomingOption(Player *player, PlayerOptionState *option);
+i32 __fastcall UpdateBombAnchorOption(Player *player, PlayerOptionState *option);
+i32 __fastcall UpdateOrbitingOption(Player *player, PlayerOptionState *option);
+i32 __fastcall UpdateModeSensitiveOrbitingOption(Player *player, PlayerOptionState *option);
+i32 __fastcall UpdateFacingTrailOption(Player *player, PlayerOptionState *option);
+i32 __fastcall UpdateModeSensitiveFacingOption(Player *player, PlayerOptionState *option);
+i32 __fastcall UpdateTwinOrbitingOption(Player *player, PlayerOptionState *option);
+i32 __fastcall DrawPlayerOption(Player *player, PlayerOptionState *option);
 i32 __fastcall SpawnShotAlongPlayerAngle(Player *player, PlayerShot *shot, i32 value,
                                          PlayerShotDescriptor *descriptor);
 i32 __fastcall SpawnShotAlongOptionAngle(Player *player, PlayerShot *shot, i32 value,
@@ -151,45 +151,37 @@ struct PlayerOptionCallbackRow
     PlayerOptionCallback callbacks[4];
 };
 DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerOptionCallbackRow, 12, g_PlayerOptionUpdateCallbacks) = {
-    {{FUN_0044e3a0, NULL, NULL, NULL}},
-    {{FUN_0044ea40, NULL, NULL, NULL}},
-    {{FUN_0044eb70, FUN_0044eb70, FUN_0044eb70, FUN_0044eb70}},
-    {{FUN_0044f930, FUN_0044f930, NULL, NULL}},
+    {{UpdateHomingOption, NULL, NULL, NULL}},
+    {{UpdateBombAnchorOption, NULL, NULL, NULL}},
+    {{UpdateOrbitingOption, UpdateOrbitingOption, UpdateOrbitingOption, UpdateOrbitingOption}},
+    {{UpdateTwinOrbitingOption, UpdateTwinOrbitingOption, NULL, NULL}},
     {{NULL, NULL, NULL, NULL}},
-    {{FUN_0044e3a0, NULL, NULL, NULL}},
+    {{UpdateHomingOption, NULL, NULL, NULL}},
     {{NULL, NULL, NULL, NULL}},
-    {{FUN_0044ea40, NULL, NULL, NULL}},
+    {{UpdateBombAnchorOption, NULL, NULL, NULL}},
     {{NULL, NULL, NULL, NULL}},
-    {{FUN_0044ee70, FUN_0044ee70, FUN_0044ee70, FUN_0044ee70}},
-    {{NULL, NULL, FUN_0044f5e0, NULL}},
-    {{FUN_0044f930, FUN_0044f930, NULL, NULL}},
+    {{UpdateModeSensitiveOrbitingOption, UpdateModeSensitiveOrbitingOption, UpdateModeSensitiveOrbitingOption, UpdateModeSensitiveOrbitingOption}},
+    {{NULL, NULL, UpdateModeSensitiveFacingOption, NULL}},
+    {{UpdateTwinOrbitingOption, UpdateTwinOrbitingOption, NULL, NULL}},
 };
 DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerOptionCallbackRow, 12, g_PlayerOptionRenderCallbacks) = {
-    {{reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender), NULL, NULL, NULL}},
-    {{reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender), NULL, NULL, NULL}},
-    {{reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender),
-      reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender),
-      reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender),
-      reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender)}},
-    {{reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender),
-      reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender), NULL, NULL}},
+    {{DrawPlayerOption, NULL, NULL, NULL}},
+    {{DrawPlayerOption, NULL, NULL, NULL}},
+    {{DrawPlayerOption, DrawPlayerOption, DrawPlayerOption, DrawPlayerOption}},
+    {{DrawPlayerOption, DrawPlayerOption, NULL, NULL}},
     {{NULL, NULL, NULL, NULL}},
-    {{reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender), NULL, NULL, NULL}},
+    {{DrawPlayerOption, NULL, NULL, NULL}},
     {{NULL, NULL, NULL, NULL}},
-    {{reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender), NULL, NULL, NULL}},
+    {{DrawPlayerOption, NULL, NULL, NULL}},
     {{NULL, NULL, NULL, NULL}},
-    {{reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender),
-      reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender),
-      reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender),
-      reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender)}},
-    {{NULL, NULL, reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender), NULL}},
-    {{reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender),
-      reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender), NULL, NULL}},
+    {{DrawPlayerOption, DrawPlayerOption, DrawPlayerOption, DrawPlayerOption}},
+    {{NULL, NULL, DrawPlayerOption, NULL}},
+    {{DrawPlayerOption, DrawPlayerOption, NULL, NULL}},
 };
 DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerOptionCallback, 4, g_PlayerRoute3ExitUpdateCallbacks) = {
-    NULL, NULL, FUN_0044f2d0, NULL};
+    NULL, NULL, UpdateFacingTrailOption, NULL};
 DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerOptionCallback, 4, g_PlayerRoute3ExitRenderCallbacks) = {
-    NULL, NULL, reinterpret_cast<PlayerOptionCallback>(PlayerRoute2OptionRender), NULL};
+    NULL, NULL, DrawPlayerOption, NULL};
 
 DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotSpawnCallback, 9, g_PlayerShotSpawnCallbacks) = {
     NULL, SpawnHomingShot, SpawnShotUnlessBombingCallback, SpawnShotUnlessBombingCallback,
@@ -244,12 +236,12 @@ i32 Player::CheckBulletCancelCollision(Float3 *position, Float3 *position2)
     Float3 rotated;
     Float3 halfSize;
     Float3 boundsMax;
-    PlayerUnkStruct0x40 *slot = this->playerSlotsC;
+    PlayerCollisionRegion *slot = this->cancelRegions;
     i32 i;
     f32 xDelta;
     f32 yDelta;
 
-    for (i = 0; i < ARRAY_SIZE_SIGNED(this->playerSlotsC); i++, slot++)
+    for (i = 0; i < ARRAY_SIZE_SIGNED(this->cancelRegions); i++, slot++)
     {
         if (!slot->active)
             continue;
@@ -300,7 +292,7 @@ i32 Player::CheckBulletCancelCollision(Float3 *position, Float3 *position2)
     return 0;
 
 hit:
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xe2a90) = slot->collisionValue;
+    this->bulletCancelItemType = slot->collisionValue;
     slot->hitAccumulator++;
     return 2;
 }
@@ -312,7 +304,7 @@ i32 Player::CheckBulletCollision(Float3 *position, Float3 *size)
     Float3 boundsMin;
     Float3 boundsMax;
 
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A90) = 6;
+    this->bulletCancelItemType = 6;
     if (this->CheckBulletCancelCollision(position, size))
         return 2;
 
@@ -327,7 +319,7 @@ i32 Player::CheckBulletCollision(Float3 *position, Float3 *size)
         this->hurtboxBoundsMax.y < boundsMin.y)
         return 0;
 
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 2;
+    g_ReplayManager->flags |= 2;
     if (this->playerState != PLAYER_STATE_ALIVE)
         return 1;
     g_GameManager.RandomizeAntiTamper();
@@ -342,7 +334,7 @@ i32 Player::CheckLethalCollision(Float3 *position, Float3 *size)
     Float3 boundsMin;
     Float3 boundsMax;
 
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A90) = 6;
+    this->bulletCancelItemType = 6;
     boundsMin.x = position->x - size->x / 2.0f;
     boundsMin.y = position->y - size->y / 2.0f;
     boundsMax.x = size->x / 2.0f + position->x;
@@ -354,7 +346,7 @@ i32 Player::CheckLethalCollision(Float3 *position, Float3 *size)
         this->hurtboxBoundsMax.y < boundsMin.y)
         return 0;
 
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 2;
+    g_ReplayManager->flags |= 2;
     if (this->playerState != PLAYER_STATE_ALIVE)
         return 1;
     g_GameManager.RandomizeAntiTamper();
@@ -369,7 +361,7 @@ i32 Player::CheckGrazeCollision(Float3 *position, Float3 *size)
     Float3 boundsMin;
     Float3 boundsMax;
 
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A90) = 6;
+    this->bulletCancelItemType = 6;
     if (this->CheckBulletCancelCollision(position, size))
         return 2;
 
@@ -464,7 +456,7 @@ grazePath:
     }
 
 lethalPath:
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 2;
+    g_ReplayManager->flags |= 2;
     if (this->playerState != PLAYER_STATE_ALIVE)
         return 0;
     g_GameManager.RandomizeAntiTamper();
@@ -517,7 +509,7 @@ void Player::AwardGraze(Float3 *position, i32 suppressExtraItems)
         }
     }
 
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x2000;
+    g_ReplayManager->flags |= 0x2000;
 }
 
 // FUNCTION: th08 0x44ab40
@@ -533,7 +525,7 @@ void Player::Die()
     this->playerState = PLAYER_STATE_DYING;
     this->timer = 0;
     g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_PICHUN, this->position.x);
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x200;
+    g_ReplayManager->flags |= 0x200;
 
     // VC7 lowers the two-bit field read as two independent tests at /Od.
     // Read the typed flag storage once so the target's single extraction is
@@ -544,7 +536,7 @@ void Player::Die()
     {
         utils::DebugPrint(" desolve\n");
         this->deathbombWindowFrames = 2;
-        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x6) = 1;
+        this->forceDeathbombAtWindowEnd = 1;
     }
     else
     {
@@ -572,12 +564,11 @@ void Player::Die()
             }
 
             utils::DebugPrint(" preDeadCount %d\n", this->deathbombWindowFrames);
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x206) = 0xFF;
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x205) = 0xFF;
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x204) = 0xFF;
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x207) =
-                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x203);
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x208) |= 0x20000;
+            this->mainVm.color2.r = 0xFF;
+            this->mainVm.color2.g = 0xFF;
+            this->mainVm.color2.b = 0xFF;
+            this->mainVm.color2.a = this->mainVm.color1.a;
+            this->mainVm.flagsWord |= 0x20000;
 
             this->deathbombEffectVm =
                 g_EffectManager.FUN_00425870(59, reinterpret_cast<D3DXVECTOR3 *>(&this->position),
@@ -693,7 +684,7 @@ i32 Player::UpdateMovementAndOptions()
             }
             if (this->focusEffect == NULL)
             {
-                this->focusEffect = reinterpret_cast<PlayerStateEffect *>(
+                this->focusEffect = reinterpret_cast<Effect *>(
                     g_EffectManager.FUN_00425870(22, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 2, 1, -1));
             }
             this->focusTransitionFrames = 0;
@@ -753,7 +744,7 @@ i32 Player::UpdateMovementAndOptions()
                     g_EffectManager.SpawnEffect(28, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 1, 0x808080FF);
             }
             if (this->focusEffect != NULL)
-                reinterpret_cast<AnmVmBase *>(this->focusEffect)->SetInterrupt(1);
+                this->focusEffect->vm.SetInterrupt(1);
             this->focusEffect = NULL;
             this->focusTransitionFrames = 0;
             this->timerE2AE8 = 0;
@@ -955,7 +946,7 @@ i32 Player::UpdateMovementAndOptions()
     if ((g_GameManager.GaugeIsExtremelyHuman() || g_GameManager.GaugeIsExtremelyYoukai()) &&
         this->extremeGaugeEffect == NULL)
     {
-        this->extremeGaugeEffect = reinterpret_cast<PlayerStateEffect *>(
+        this->extremeGaugeEffect = reinterpret_cast<Effect *>(
             g_EffectManager.FUN_00425870(25, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 8, 1, -1));
     }
     if (this->extremeGaugeEffect != NULL)
@@ -1041,31 +1032,31 @@ ZunResult Player::RegisterChain(u32 playerType)
 // FUNCTION: th08 0x44c390
 ChainCallbackResult Player::OnUpdate(Player *player)
 {
-    if (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x2C) != 0)
+    if (g_GameManager.unk2C != 0)
     {
         if (player->focusEffect != NULL)
         {
-            player->focusEffect->vmFlags |= 0x80000;
+            player->focusEffect->vm.flagsWord |= 0x80000;
         }
         if (player->extremeGaugeEffect != NULL)
         {
-            player->extremeGaugeEffect->vmFlags |= 0x80000;
+            player->extremeGaugeEffect->vm.flagsWord |= 0x80000;
         }
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
     if (player->focusEffect != NULL)
     {
-        player->focusEffect->vmFlags &= 0xfff7ffff;
+        player->focusEffect->vm.flagsWord &= 0xfff7ffff;
     }
     if (player->extremeGaugeEffect != NULL)
     {
-        player->extremeGaugeEffect->vmFlags &= 0xfff7ffff;
+        player->extremeGaugeEffect->vm.flagsWord &= 0xfff7ffff;
     }
-    player->FUN_0044c5b0();
-    player->FUN_0044c650();
+    player->UpdateCollisionRegions();
+    player->UpdateBombState();
     if (player->playerState == PLAYER_STATE_DYING)
     {
-        if (player->FUN_0044cbf0() != 0)
+        if (player->UpdateDeathAndRespawn() != 0)
         {
             goto updateD180;
         }
@@ -1073,9 +1064,9 @@ ChainCallbackResult Player::OnUpdate(Player *player)
     else if (player->playerState == PLAYER_STATE_SPAWNING)
     {
 updateD180:
-        player->FUN_0044d180();
+        player->UpdateRespawnAnimation();
     }
-    player->FUN_0044d2c0();
+    player->UpdateInvulnerability();
     if (player->playerState != PLAYER_STATE_DYING && player->playerState != PLAYER_STATE_SPAWNING)
     {
         player->UpdateMovementAndOptions();
@@ -1083,21 +1074,21 @@ updateD180:
     g_AnmManager->ExecuteScript(&player->mainVm);
     player->UpdateShots();
     player->UpdateShooting();
-    player->FUN_0044d420();
+    player->UpdateGaugePosition();
     if (!g_Gui.IsDialogPresent())
     {
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE10) += 1;
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE14) += 1;
+        g_GameManager.runActiveFrames += 1;
+        g_GameManager.stageActiveFrames += 1;
         if (g_GameManager.GaugeIsExtremelyHuman())
         {
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE1C) += 1;
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE24) += 1;
+            g_GameManager.runExtremeHumanFrames += 1;
+            g_GameManager.stageExtremeHumanFrames += 1;
             g_GameManager.AddScore(100);
         }
         else if (g_GameManager.GaugeIsExtremelyYoukai())
         {
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE18) += 1;
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE20) += 1;
+            g_GameManager.runExtremeYoukaiFrames += 1;
+            g_GameManager.stageExtremeYoukaiFrames += 1;
             g_GameManager.AddScore(100);
         }
     }
@@ -1106,9 +1097,9 @@ updateD180:
 
 #pragma var_order(index, slot)
 // FUNCTION: th08 0x44c5b0
-void Player::FUN_0044c5b0()
+void Player::UpdateCollisionRegions()
 {
-    PlayerUnkStruct0x40 *slot = this->playerSlotsB;
+    PlayerCollisionRegion *slot = this->damageRegions;
     i32 index;
 
     for (index = 0; index < 384; index++, slot++)
@@ -1128,12 +1119,12 @@ void Player::FUN_0044c5b0()
 
 // FUNCTION: th08 0x44c650
 #pragma var_order(isForced, i)
-void Player::FUN_0044c650()
+void Player::UpdateBombState()
 {
     u32 i;
     i32 isForced;
     isForced = 0;
-    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x6) != 0 &&
+    if (this->forceDeathbombAtWindowEnd != 0 &&
         this->deathbombWindowFrames == 1)
     {
         isForced = 1;
@@ -1204,15 +1195,15 @@ void Player::FUN_0044c650()
         }
 
 acceptBomb:
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 1;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x6) = 0;
+    g_ReplayManager->flags |= 1;
+    this->forceDeathbombAtWindowEnd = 0;
     if (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0)
     {
         this->bombState.callbackVariant = PLAYER_BOMB_CALLBACK_SPECIAL;
     }
     else
     {
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x208) &= 0xFFFDFFFFu;
+        this->mainVm.flagsWord &= 0xFFFDFFFFu;
         if (this->deathbombEffectVm != NULL)
         {
             reinterpret_cast<Effect *>(this->deathbombEffectVm)->active = 0;
@@ -1222,10 +1213,10 @@ acceptBomb:
         g_AnmManager->SetMixColorDefault();
 
         this->bombState.callbackVariant = this->optionModeFlag;
-        if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4))
+        if (this->deathbombPending)
             this->bombState.callbackVariant = 1 - this->bombState.callbackVariant;
 
-        if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4))
+        if (this->deathbombPending)
         {
             this->bombState.callbackVariant += 2;
             if (isForced)
@@ -1256,10 +1247,10 @@ acceptBomb:
         g_GameManager.AddToBombsUsed(1);
     }
 
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x4) = 0;
+    this->deathbombPending = 0;
     g_Gui.flags.bombDisplayUpdateFrames = 2;
     this->bombState.isInUse = 1;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A7C) = 1;
+    this->itemTimeOrbMode = 1;
     this->bombState.timer = 0;
     this->bombState.duration = 999;
 
@@ -1279,7 +1270,7 @@ acceptBomb:
     }
     else
     {
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A7C) = 0;
+        this->itemTimeOrbMode = 0;
     }
 
 done:
@@ -1287,7 +1278,7 @@ done:
 }
 // FUNCTION: th08 0x44cbf0
 #pragma var_order(value, this)
-i32 Player::FUN_0044cbf0()
+i32 Player::UpdateDeathAndRespawn()
 {
     f32 value;
 
@@ -1295,7 +1286,7 @@ i32 Player::FUN_0044cbf0()
     {
         g_GameManager.AddTimeOrbs(-15);
         --this->deathbombWindowFrames;
-        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 4) = 1;
+        this->deathbombPending = 1;
         if (this->deathbombWindowFrames == 0)
         {
             if (this->deathbombEffectVm != NULL)
@@ -1308,10 +1299,10 @@ i32 Player::FUN_0044cbf0()
             g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), this->position.x);
             *reinterpret_cast<u32 *>(&g_GameManager.flags) &= ~0x400u;
             g_AnmManager->SetMixColorDefault();
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x208) &= ~0x20000u;
-            *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 4;
+            this->mainVm.flagsWord &= ~0x20000u;
+            g_ReplayManager->flags |= 4;
             g_GameManager.character = 0;
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 4) = 0;
+            this->deathbombPending = 0;
             g_Spellcard.FUN_0044d150();
             g_GameManager.AddToDeaths(1);
             g_Gui.flags.timeDisplayUpdateFrames = 2;
@@ -1353,9 +1344,9 @@ i32 Player::FUN_0044cbf0()
     else
     {
         value = (f32)this->timer / 30.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 3.0f * value + 1.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 1.0f - 1.0f * value;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x200) =
+    this->mainVm.scale.y = 3.0f * value + 1.0f;
+    this->mainVm.scale.x = 1.0f - 1.0f * value;
+    this->mainVm.color1.d3dColor =
         ((i32)(255.0f - (f32)this->timer * 255.0f / 30.0f) << 24) | 0xFFFFFF;
     reinterpret_cast<AnmVmBase *>(&this->mainVm)->SetBlendModeAdditive();
     this->currentHorizontalSpeed = 0;
@@ -1368,8 +1359,8 @@ i32 Player::FUN_0044cbf0()
         this->position.operator float *()[1] = g_GameManager.arcadeRegionSize.y - 64.0f;
         this->position.operator float *()[2] = 0.2f;
         this->timer = 0;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 3.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 3.0f;
+        this->mainVm.scale.x = 3.0f;
+        this->mainVm.scale.y = 3.0f;
         if ((g_GameManager.shotType < 4 && this->optionModeFlag == 0) ||
             (g_GameManager.shotType & 1) == 0)
             this->anmFile->SetAndExecuteScriptIdx(&this->mainVm, 0);
@@ -1394,47 +1385,47 @@ i32 Player::FUN_0044cbf0()
 }
 // FUNCTION: th08 0x44d180
 #pragma var_order(value, this)
-void Player::FUN_0044d180()
+void Player::UpdateRespawnAnimation()
 {
     f32 value;
 
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2A70) = 60;
-    value = 1.0f - (f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) / 60.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 2.0f * value + 1.0f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 1.0f - 1.0f * value;
+    this->playerStateSlotCooldown = 60;
+    value = 1.0f - (f32)this->timer / 60.0f;
+    this->mainVm.scale.y = 2.0f * value + 1.0f;
+    this->mainVm.scale.x = 1.0f - 1.0f * value;
     reinterpret_cast<AnmVmBase *>(&this->mainVm)->SetBlendModeAdditive();
     this->verticalSpeedMultiplier = 1.0f;
     this->horizontalSpeedMultiplier = 1.0f;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x200) =
-        (((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) * 0xFF) / 30 << 24) | 0xFFFFFF;
+    this->mainVm.color1.d3dColor =
+        (((i32)this->timer * 0xFF) / 30 << 24) | 0xFFFFFF;
     this->deathbombWindowFrames = 0;
 
-    if ((i32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) >= 30)
+    if ((i32)this->timer >= 30)
     {
-        *reinterpret_cast<i8 *>(this) = 3;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x28) = 1.0f;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2C) = 1.0f;
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x200) = 0xFFFFFFFF;
+        this->playerState = PLAYER_STATE_INVULNERABLE;
+        this->mainVm.scale.x = 1.0f;
+        this->mainVm.scale.y = 1.0f;
+        this->mainVm.color1.d3dColor = 0xFFFFFFFF;
         reinterpret_cast<AnmVmBase *>(&this->mainVm)->SetBlendModeNormal();
         if (!g_GameManager.flags.isSpellPractice)
         {
-            *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xE2AF4) = 240;
+            this->timer = 240;
         }
         this->deathbombWindowFrames = g_Player.primaryShtFile->deathbombWindowFrames;
     }
 }
 // FUNCTION: th08 0x44d2c0
-void Player::FUN_0044d2c0()
+void Player::UpdateInvulnerability()
 {
     if (this->playerStateSlotCooldown != 0)
     {
         this->playerStateSlotCooldown--;
-        this->FUN_0044de60(&this->position, 768.0f, 896.0f, -1, 0);
+        this->CreateRectCancelRegion(&this->position, 768.0f, 896.0f, -1, 0);
     }
 
-    if (this->playerState == PLAYER_STATE_DEAD)
+    if (this->playerState == PLAYER_STATE_INVULNERABLE)
     {
-        this->stateFlag = false;
+        this->deathbombPending = false;
 
         if (this->stateEffect != NULL)
             this->stateEffect->position = this->position;
@@ -1468,13 +1459,13 @@ void Player::FUN_0044d2c0()
 }
 
 // FUNCTION: th08 0x44d420
-void Player::FUN_0044d420()
+void Player::UpdateGaugePosition()
 {
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xE2AA4) = Float3(-999.0f, -999.0f, 0.0f);
-    *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xE2AB0) = Float3(-999.0f, -999.0f, 0.0f);
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xE2AC0) = 0;
+    this->tailPosition0 = Float3(-999.0f, -999.0f, 0.0f);
+    this->tailPosition1 = Float3(-999.0f, -999.0f, 0.0f);
+    this->enemyTrackedPositionValid = 0;
 
-    if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2B8) >= 400.0f)
+    if (this->position.y >= 400.0f)
     {
         if (g_AsciiManager.GetGaugeInterrupt() != 2)
         {
@@ -1517,11 +1508,11 @@ ChainCallbackResult Player::OnDrawHighPrio(Player *player)
 
     if (!g_GameManager.showRetryMenu)
     {
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x218) =
+        player->mainVm.pos.x =
             g_GameManager.arcadeRegionTopLeftPos.x + player->position.x;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x21C) =
+        player->mainVm.pos.y =
             g_GameManager.arcadeRegionTopLeftPos.y + player->position.y;
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0x220) = 0.1f;
+        player->mainVm.pos.z = 0.1f;
         g_AnmManager->DrawNoRotation(&player->mainVm);
     }
 
@@ -1548,7 +1539,7 @@ ChainCallbackResult Player::OnDrawLowPrio(Player *player)
 ZunResult Player::AddedCallback(Player *player)
 {
     u32 i;
-    u8 *shotSlot;
+    PlayerShot *shotSlot;
     PlayerOptionState *option;
     u32 m;
 
@@ -1577,7 +1568,7 @@ ZunResult Player::AddedCallback(Player *player)
     player->position.operator float *()[2] = 0.49f;
 
     for (i = 0; i < 0x180; ++i)
-        reinterpret_cast<PlayerUnkStruct0x40 *>(player->playerSlotsB)[i].Reset();
+        reinterpret_cast<PlayerCollisionRegion *>(player->damageRegions)[i].Reset();
 
     player->hurtboxHalfSize.y = g_Player.primaryShtFile->hurtboxSize / 2.0f;
     player->hurtboxHalfSize.x = player->hurtboxHalfSize.y;
@@ -1592,11 +1583,11 @@ ZunResult Player::AddedCallback(Player *player)
     player->movementDirection = PLAYER_DIRECTION_NONE;
     player->playerState = PLAYER_STATE_SPAWNING;
     player->timer = g_GameManager.IsSpellPractice() ? 10 : 120;
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(player) + 2) = 1;
+    player->unknown2 = 1;
 
-    shotSlot = reinterpret_cast<u8 *>(player) + 0xBE838;
-    for (i = 0; (i32)i < 0x80; ++i, shotSlot += 0x484)
-        *reinterpret_cast<i16 *>(shotSlot + 0x462) = 0;
+    shotSlot = player->shots;
+    for (i = 0; (i32)i < 0x80; ++i, shotSlot++)
+        shotSlot->state = PLAYER_SHOT_INACTIVE;
 
     player->shotTimer = -1;
     player->timerE2AD0 = 0;
@@ -1606,7 +1597,7 @@ ZunResult Player::AddedCallback(Player *player)
     player->bombState.drawCallbacks = g_PlayerBombCallbacksByShotType[g_GameManager.shotType * 2 + 1];
 
     player->bombState.isInUse = 0;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(player) + 0xE2B0C) = 0xBFC90FDB;
+    player->baseShotAngle = -ZUN_PI / 2.0f;
     player->verticalSpeedMultiplier = 1.0f;
     player->horizontalSpeedMultiplier = 1.0f;
     player->deathbombWindowFrames = g_Player.primaryShtFile->deathbombWindowFrames;
@@ -1766,9 +1757,9 @@ ZunResult Player::LoadShtFile(PlayerRawShtFile **header, const char *path)
 
 #pragma var_order(slot, index)
 // FUNCTION: th08 0x44de60
-PlayerUnkStruct0x40 *Player::FUN_0044de60(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+PlayerCollisionRegion *Player::CreateRectCancelRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
 {
-    PlayerUnkStruct0x40 *slot = this->playerSlotsC;
+    PlayerCollisionRegion *slot = this->cancelRegions;
     i32 index;
 
     for (index = 0; index < 191; index++, slot++)
@@ -1791,9 +1782,9 @@ PlayerUnkStruct0x40 *Player::FUN_0044de60(const Float3 *center, f32 value1, f32 
 
 #pragma var_order(slot, index)
 // FUNCTION: th08 0x44df00
-PlayerUnkStruct0x40 *Player::FUN_0044df00(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+PlayerCollisionRegion *Player::CreateCircleCancelRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
 {
-    PlayerUnkStruct0x40 *slot = this->playerSlotsC;
+    PlayerCollisionRegion *slot = this->cancelRegions;
     i32 index;
 
     for (index = 0; index < 191; index++, slot++)
@@ -1816,9 +1807,9 @@ PlayerUnkStruct0x40 *Player::FUN_0044df00(const Float3 *center, f32 value1, f32 
 
 #pragma var_order(slot, index)
 // FUNCTION: th08 0x44dfa0
-PlayerUnkStruct0x40 *Player::FUN_0044dfa0(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+PlayerCollisionRegion *Player::CreateRectDamageRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
 {
-    PlayerUnkStruct0x40 *slot = this->playerSlotsB;
+    PlayerCollisionRegion *slot = this->damageRegions;
     i32 index;
 
     for (index = 0; index < 191; index++, slot++)
@@ -1841,9 +1832,9 @@ PlayerUnkStruct0x40 *Player::FUN_0044dfa0(const Float3 *center, f32 value1, f32 
 
 #pragma var_order(slot, index)
 // FUNCTION: th08 0x44e040
-PlayerUnkStruct0x40 *Player::FUN_0044e040(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+PlayerCollisionRegion *Player::CreateCircleDamageRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
 {
-    PlayerUnkStruct0x40 *slot = this->playerSlotsB;
+    PlayerCollisionRegion *slot = this->damageRegions;
     i32 index;
 
     for (index = 0; index < 191; index++, slot++)
@@ -1911,7 +1902,7 @@ void GameManager::AddToDeaths(i32 amount)
     }
     this->globals->deaths += (f32)amount;
     this->globals->deathInStage += (f32)amount;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3DA9C) += 1;
+    this->hscr.numDeaths += 1;
     this->UpdateAntiTamper();
 }
 
@@ -1928,23 +1919,23 @@ void GameManager::AddToBombsUsed(i32 amount)
 }
 
 // FUNCTION: th08 0x44e350
-void PlayerUnkStruct0x40::Deactivate()
+void PlayerCollisionRegion::Deactivate()
 {
     this->active = false;
 }
 
 // FUNCTION: th08 0x44e370
-void PlayerUnkStruct0x40::Reset()
+void PlayerCollisionRegion::Reset()
 {
     memset(this, 0, sizeof(*this));
     this->collisionInterval = 1;
 }
 
-void __fastcall PlayerOptionHomingToPlayer(Player *player, u8 *option);
-void __fastcall PlayerOptionHomingToTarget(Player *player, u8 *option);
+void __fastcall UpdateOptionHomingToPlayer(Player *player, PlayerOptionState *option);
+void __fastcall UpdateOptionHomingToTarget(Player *player, PlayerOptionState *option);
 
 // FUNCTION: th08 0x44e3a0
-i32 __fastcall FUN_0044e3a0(Player *player, PlayerOptionState *option)
+i32 __fastcall UpdateHomingOption(Player *player, PlayerOptionState *option)
 {
     switch (option->state2C8)
     {
@@ -1962,7 +1953,7 @@ i32 __fastcall FUN_0044e3a0(Player *player, PlayerOptionState *option)
         switch (option->substate2CC)
         {
         case 0:
-            PlayerOptionHomingToPlayer(player, reinterpret_cast<u8 *>(option));
+            UpdateOptionHomingToPlayer(player, option);
             if (option->velocity.x < 0.0f)
             {
                 option->vm.SetInterrupt(2);
@@ -1980,7 +1971,7 @@ i32 __fastcall FUN_0044e3a0(Player *player, PlayerOptionState *option)
             break;
 
         case 1:
-            PlayerOptionHomingToPlayer(player, reinterpret_cast<u8 *>(option));
+            UpdateOptionHomingToPlayer(player, option);
             if (option->velocity.x == 0.0f)
             {
                 option->vm.SetInterrupt(1);
@@ -1998,7 +1989,7 @@ i32 __fastcall FUN_0044e3a0(Player *player, PlayerOptionState *option)
             break;
 
         case 2:
-            PlayerOptionHomingToPlayer(player, reinterpret_cast<u8 *>(option));
+            UpdateOptionHomingToPlayer(player, option);
             if (option->velocity.x == 0.0f)
             {
                 option->vm.SetInterrupt(1);
@@ -2017,7 +2008,7 @@ i32 __fastcall FUN_0044e3a0(Player *player, PlayerOptionState *option)
 
         case 3:
             if (player->optionHomingTarget != NULL)
-                PlayerOptionHomingToTarget(player, reinterpret_cast<u8 *>(option));
+                UpdateOptionHomingToTarget(player, option);
             if (((player->shotTimer < 0) && ((g_CurFrameInput & 1) == 0)) ||
                 player->optionHomingTarget == NULL)
             {
@@ -2048,7 +2039,7 @@ i32 __fastcall FUN_0044e3a0(Player *player, PlayerOptionState *option)
 
 // FUNCTION: th08 0x44e770
 #pragma var_order(delta, target, player, option)
-void __fastcall PlayerOptionHomingToPlayer(Player *player, u8 *option)
+void __fastcall UpdateOptionHomingToPlayer(Player *player, PlayerOptionState *option)
 {
     Float3 target;
     Float3 delta;
@@ -2058,64 +2049,59 @@ void __fastcall PlayerOptionHomingToPlayer(Player *player, u8 *option)
     if (target.y < 32.0f)
         target.y = 32.0f;
 
-    delta = target - *reinterpret_cast<Float3 *>(option + 0x2A4);
+    delta = target - option->position;
     delta /= 16.0f;
-    *reinterpret_cast<Float3 *>(option + 0x2BC) +=
-        (delta - *reinterpret_cast<Float3 *>(option + 0x2BC)) * 0.2f;
-    *reinterpret_cast<Float3 *>(option + 0x2A4) += *reinterpret_cast<Float3 *>(option + 0x2BC);
+    option->velocity += (delta - option->velocity) * 0.2f;
+    option->position += option->velocity;
 
-    if (fabsf(*reinterpret_cast<f32 *>(option + 0x2BC)) < 0.05f)
-        *reinterpret_cast<f32 *>(option + 0x2BC) = 0.0f;
+    if (fabsf(option->velocity.x) < 0.05f)
+        option->velocity.x = 0.0f;
 
     if (player->shotTimer >= 0 &&
-        *reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2ABC) != NULL &&
-        *reinterpret_cast<ZunTimer *>(option + 0x2E0) >= 10)
+        player->optionHomingTarget != NULL &&
+        option->timer >= 10)
     {
-        reinterpret_cast<AnmVmBase *>(option)->SetInterrupt(3);
-        *reinterpret_cast<i32 *>(option + 0x2CC) = 3;
+        option->vm.SetInterrupt(3);
+        option->substate2CC = 3;
     }
     else
     {
-        *reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2ABC) = NULL;
+        player->optionHomingTarget = NULL;
     }
 }
 
 // FUNCTION: th08 0x44e8d0
 #pragma var_order(delta, target, player, option)
-void __fastcall PlayerOptionHomingToTarget(Player *player, u8 *option)
+void __fastcall UpdateOptionHomingToTarget(Player *player, PlayerOptionState *option)
 {
     Float3 target;
     Float3 delta;
 
-    target = reinterpret_cast<Enemy *>(
-        *reinterpret_cast<void **>(reinterpret_cast<u8 *>(player) + 0xE2ABC))->worldPosition;
+    target = player->optionHomingTarget->worldPosition;
     target.y += 32.0f;
     if (target.y < 32.0f)
         target.y = 32.0f;
 
-    delta = target - *reinterpret_cast<Float3 *>(option + 0x2A4);
+    delta = target - option->position;
     delta /= 16.0f;
-    *reinterpret_cast<Float3 *>(option + 0x2BC) +=
-        (delta - *reinterpret_cast<Float3 *>(option + 0x2BC)) * 0.2f;
-    *reinterpret_cast<Float3 *>(option + 0x2A4) += *reinterpret_cast<Float3 *>(option + 0x2BC);
+    option->velocity += (delta - option->velocity) * 0.2f;
+    option->position += option->velocity;
 
-    if (fabsf(*reinterpret_cast<f32 *>(option + 0x2BC)) < 0.05f)
-        *reinterpret_cast<f32 *>(option + 0x2BC) = 0.0f;
+    if (fabsf(option->velocity.x) < 0.05f)
+        option->velocity.x = 0.0f;
 }
 
 // FUNCTION: th08 0x44e9e0
-i32 __fastcall PlayerRoute2OptionRender(Player *, u8 *option)
+i32 __fastcall DrawPlayerOption(Player *, PlayerOptionState *option)
 {
-    reinterpret_cast<AnmVm *>(option)->pos.x =
-        g_GameManager.arcadeRegionTopLeftPos.x + *reinterpret_cast<f32 *>(option + 0x2A4);
-    reinterpret_cast<AnmVm *>(option)->pos.y =
-        g_GameManager.arcadeRegionTopLeftPos.y + *reinterpret_cast<f32 *>(option + 0x2A8);
-    reinterpret_cast<AnmVm *>(option)->pos.z = 0.49f;
-    g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(option));
+    option->vm.pos.x = g_GameManager.arcadeRegionTopLeftPos.x + option->position.x;
+    option->vm.pos.y = g_GameManager.arcadeRegionTopLeftPos.y + option->position.y;
+    option->vm.pos.z = 0.49f;
+    g_AnmManager->Draw2D(&option->vm);
     return 0;
 }
 // FUNCTION: th08 0x44ea40
-i32 __fastcall FUN_0044ea40(Player *player, PlayerOptionState *option)
+i32 __fastcall UpdateBombAnchorOption(Player *player, PlayerOptionState *option)
 {
     switch (option->state2C8)
     {
@@ -2148,7 +2134,7 @@ i32 __fastcall FUN_0044ea40(Player *player, PlayerOptionState *option)
 }
 
 // FUNCTION: th08 0x44eb70
-i32 __fastcall FUN_0044eb70(Player *player, PlayerOptionState *option)
+i32 __fastcall UpdateOrbitingOption(Player *player, PlayerOptionState *option)
 {
     switch (option->state2C8)
     {
@@ -2222,7 +2208,7 @@ i32 __fastcall FUN_0044eb70(Player *player, PlayerOptionState *option)
 }
 
 // FUNCTION: th08 0x0044ee70
-i32 __fastcall FUN_0044ee70(Player *player, PlayerOptionState *option)
+i32 __fastcall UpdateModeSensitiveOrbitingOption(Player *player, PlayerOptionState *option)
 {
     Float3 desired;
 
@@ -2331,7 +2317,7 @@ i32 __fastcall FUN_0044ee70(Player *player, PlayerOptionState *option)
 
 // FUNCTION: th08 0x0044f2d0
 #pragma var_order(angleDifference, targetAngle)
-i32 __fastcall FUN_0044f2d0(Player *player, PlayerOptionState *option)
+i32 __fastcall UpdateFacingTrailOption(Player *player, PlayerOptionState *option)
 {
     f32 targetAngle;
     f32 angleDifference;
@@ -2420,7 +2406,7 @@ optionUpdateDone:
 
 // FUNCTION: th08 0x0044f5e0
 #pragma var_order(angleDifference, targetAngle)
-i32 __fastcall FUN_0044f5e0(Player *player, PlayerOptionState *option)
+i32 __fastcall UpdateModeSensitiveFacingOption(Player *player, PlayerOptionState *option)
 {
     f32 targetAngle;
     f32 angleDifference;
@@ -2519,7 +2505,7 @@ optionUpdateDone:
 }
 
 // FUNCTION: th08 0x0044f930
-i32 __fastcall FUN_0044f930(Player *player, PlayerOptionState *option)
+i32 __fastcall UpdateTwinOrbitingOption(Player *player, PlayerOptionState *option)
 {
     Float3 base = player->position;
 
@@ -2904,7 +2890,7 @@ i32 __fastcall UpdatePersistentShot(Player *player, PlayerShot *slot)
 #pragma var_order(damageSlot, i)
 i32 __fastcall UpdateShotTrail(Player *player, PlayerShot *slot)
 {
-    PlayerUnkStruct0x40 *damageSlot;
+    PlayerCollisionRegion *damageSlot;
     i32 i;
     if (player->timelines[slot->timelineIndex].instruction !=
             reinterpret_cast<EclTimelineInstruction *>(slot) ||
@@ -2927,7 +2913,7 @@ i32 __fastcall UpdateShotTrail(Player *player, PlayerShot *slot)
     {
         if (slot->positionHistory[i * 2].x >= -900.0f)
         {
-            damageSlot = player->FUN_0044dfa0(&slot->positionHistory[i * 2], 16.0f, 448.0f, 1, 0);
+            damageSlot = player->CreateRectDamageRegion(&slot->positionHistory[i * 2], 16.0f, 448.0f, 1, 0);
             damageSlot->mode = 1;
         }
     }
@@ -3298,7 +3284,7 @@ i32 Player::CalcDamageToEnemy(Float3 *enemyPosition, Float3 *enemySize, i32 *hit
     i32 damage;
     i32 i;
     i32 savedRotation;
-    PlayerUnkStruct0x40 *region;
+    PlayerCollisionRegion *region;
     PlayerShot *bullet;
 
     damage = 0;
@@ -3363,7 +3349,7 @@ i32 Player::CalcDamageToEnemy(Float3 *enemyPosition, Float3 *enemySize, i32 *hit
     *hitAccumulator += damage > 50 ? 50 : damage;
 
     {
-        region = this->playerSlotsB;
+        region = this->damageRegions;
         for (i = 0; i < 192; i++, region++)
         {
             if (!region->active)

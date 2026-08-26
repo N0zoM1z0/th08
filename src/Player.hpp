@@ -51,7 +51,7 @@ C_ASSERT(offsetof(PlayerRawShtFile, normalDiagonalSpeed) == 0x2C);
 C_ASSERT(offsetof(PlayerRawShtFile, focusedDiagonalSpeed) == 0x30);
 C_ASSERT(offsetof(PlayerRawShtFile, shotPowerLevels) == 0x38);
 
-struct PlayerUnkStruct0x40
+struct PlayerCollisionRegion
 {
     void Deactivate();
     void Reset();
@@ -72,28 +72,15 @@ struct PlayerUnkStruct0x40
     u8 mode;
     unknown_fields(0x3e, 2);
 };
-C_ASSERT(sizeof(PlayerUnkStruct0x40) == 0x40);
+C_ASSERT(sizeof(PlayerCollisionRegion) == 0x40);
 
 enum PlayerState
 {
     PLAYER_STATE_ALIVE,
     PLAYER_STATE_SPAWNING,
     PLAYER_STATE_DYING = 2,
-    PLAYER_STATE_DEAD = 3,
+    PLAYER_STATE_INVULNERABLE = 3,
 };
-
-struct PlayerStateEffect
-{
-    unknown_fields(0x0, 0x1F8);
-    u32 vmFlags;
-    unknown_fields(0x1FC, 0xA8);
-    Float3 position;
-    unknown_fields(0x2b0, 0xa0);
-    i8 active;
-};
-C_ASSERT(offsetof(PlayerStateEffect, vmFlags) == 0x1F8);
-C_ASSERT(offsetof(PlayerStateEffect, position) == 0x2A4);
-C_ASSERT(offsetof(PlayerStateEffect, active) == 0x350);
 
 struct Player;
 struct PlayerOptionState;
@@ -140,8 +127,8 @@ struct PlayerBombWorkItem
     AnmVm vms[8];
     AnmVm *effectVm;
     ZunTimer timer;
-    PlayerUnkStruct0x40 *damageRegion;
-    PlayerUnkStruct0x40 *cancelRegion;
+    PlayerCollisionRegion *damageRegion;
+    PlayerCollisionRegion *cancelRegion;
 
     PlayerBombWorkItem();
 };
@@ -328,11 +315,12 @@ struct Player
 
     i8 playerState;
     u8 playerType;
-    unknown_fields(0x2, 1);
+    u8 unknown2;
     u8 optionModeFlag;
-    i8 stateFlag;
+    u8 deathbombPending;
     u8 isYoukai;
-    unknown_fields(0x6, 0x2);
+    u8 forceDeathbombAtWindowEnd;
+    u8 unknown7;
     i32 focusTransitionFrames;
     AnmLoaded *anmFile;
     AnmVm mainVm;
@@ -353,9 +341,9 @@ struct Player
     f32 verticalSpeedMultiplier;
     PlayerOptionState optionStates[4];
     PlayerBombState bombState;
-    PlayerUnkStruct0x40 playerSlotsB[192];
-    PlayerUnkStruct0x40 playerSlotsC[192];
-    PlayerStateEffect *focusEffect;
+    PlayerCollisionRegion damageRegions[192];
+    PlayerCollisionRegion cancelRegions[192];
+    Effect *focusEffect;
     PlayerShot shots[128];
     EclTimeline timelines[3];
     i32 deathbombWindowFrames;
@@ -385,9 +373,9 @@ struct Player
     ChainElem *calcChain;
     ChainElem *drawChainHighPrio;
     ChainElem *drawChainLowPrio;
-    PlayerStateEffect *stateEffect;
+    Effect *stateEffect;
     unknown_fields(0xE2B20, 0x4);
-    PlayerStateEffect *extremeGaugeEffect;
+    Effect *extremeGaugeEffect;
     AnmVm *deathbombEffectVm;
     i32 damageAccumulatorThreshold;
 
@@ -399,19 +387,19 @@ struct Player
     static ZunResult DeletedCallback(Player *player);
     static void CutChain();
 
-    PlayerUnkStruct0x40 *FUN_0044de60(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
-    PlayerUnkStruct0x40 *FUN_0044df00(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
-    PlayerUnkStruct0x40 *FUN_0044dfa0(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
-    PlayerUnkStruct0x40 *FUN_0044e040(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
+    PlayerCollisionRegion *CreateRectCancelRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
+    PlayerCollisionRegion *CreateCircleCancelRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
+    PlayerCollisionRegion *CreateRectDamageRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
+    PlayerCollisionRegion *CreateCircleDamageRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
     void SpawnBombStateEffect();
-    void FUN_0044c5b0();
-    void FUN_0044d2c0();
+    void UpdateCollisionRegions();
+    void UpdateInvulnerability();
 
-    void FUN_0044c650();
-    i32 FUN_0044cbf0();
-    void FUN_0044d180();
+    void UpdateBombState();
+    i32 UpdateDeathAndRespawn();
+    void UpdateRespawnAnimation();
     i32 UpdateMovementAndOptions();
-    void FUN_0044d420();
+    void UpdateGaugePosition();
     i32 __fastcall SpawnShotOnSchedule(PlayerShot *shot, i32 value,
                                        PlayerShotDescriptor *descriptor);
     void __fastcall InitializeShot(PlayerShot *shot, PlayerShotDescriptor *descriptor);
@@ -444,7 +432,10 @@ struct Player
     i32 CheckBulletCancelCollision(Float3 *position, Float3 *position2);
 };
 C_ASSERT(sizeof(Player) == 0xe2b30);
+C_ASSERT(offsetof(Player, unknown2) == 0x2);
 C_ASSERT(offsetof(Player, optionModeFlag) == 0x3);
+C_ASSERT(offsetof(Player, deathbombPending) == 0x4);
+C_ASSERT(offsetof(Player, forceDeathbombAtWindowEnd) == 0x6);
 C_ASSERT(offsetof(Player, focusTransitionFrames) == 0x8);
 C_ASSERT(offsetof(Player, mainVm) == 0x10);
 C_ASSERT(offsetof(Player, position) == 0x2B4);
@@ -464,8 +455,8 @@ C_ASSERT(offsetof(Player, verticalSpeedMultiplier) == 0x408);
 C_ASSERT(offsetof(Player, optionStates) == 0x40C);
 C_ASSERT(offsetof(PlayerOptionState, facingAngle) == 0x2DC);
 C_ASSERT(offsetof(Player, bombState) == 0xFDC);
-C_ASSERT(offsetof(Player, playerSlotsB) == 0xB8834);
-C_ASSERT(offsetof(Player, playerSlotsC) == 0xBB834);
+C_ASSERT(offsetof(Player, damageRegions) == 0xB8834);
+C_ASSERT(offsetof(Player, cancelRegions) == 0xBB834);
 C_ASSERT(offsetof(Player, focusEffect) == 0xBE834);
 C_ASSERT(offsetof(Player, shots) == 0xBE838);
 C_ASSERT(offsetof(Player, timelines) == 0xE2A38);

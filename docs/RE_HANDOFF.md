@@ -329,6 +329,30 @@ fixed-slot spawners retain their target-shaped `sizeof`/`offsetof` expression.
 Generic per-effect vectors and callback signatures remain evidence-limited.
 The next coherent family is remaining Player core state, then Background.
 
+The fifth accepted Player-core batch closes that remaining state/controller
+family.  The two 192-entry collision pools are now asserted
+`damageRegions`/`cancelRegions` of `PlayerCollisionRegion`; their four
+allocators distinguish rectangular/circular damage and cancellation regions,
+and every PlayerBomb/Enemy consumer shares the same type.  The Player state
+machine now names Bomb/deathbomb update, death and respawn, respawn animation,
+invulnerability, collision-region lifetime, and gauge-position updates.  State
+3 is `PLAYER_STATE_INVULNERABLE`, matching its timer, flashing, and collision
+suppression behavior rather than the former `DEAD` label.
+
+The option controller now has a uniform `PlayerOptionState *` callback ABI.
+Homing helpers use typed position/velocity/timer/VM members, the draw callback
+uses the embedded VM directly, and seven table callbacks carry conservative
+behavior names for homing, Bomb anchoring, orbit, facing, and paired-option
+motion.  `AnmVmBase` exposes the scale/color/flag word used by Player, and the
+six run/stage active/extreme-gauge frame counters in `GameManager` are named
+across setup, Player, and GUI consumers.  Focused replay across the seven
+directly affected production objects passes **258 / 258**.  A non-reuse
+single-job cold VC7 replay passes **1,105 / 1,105**, the normal VC7 image
+links, and the complete i386 Linux build plus fixed-layout verifier passes.
+The Player source/header/Bomb router is down to one raw-member candidate, the
+separate Background tint byte.  The next high-value family is the Background
+camera/stage object model; whole-program semantic completion remains open.
+
 Select the next independent field family with:
 
 ```bash

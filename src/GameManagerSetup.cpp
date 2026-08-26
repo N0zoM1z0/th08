@@ -185,9 +185,9 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
         GLOBAL_F32(gameManager, 0x88) = 0.0f;
         gameManager->UpdateAntiTamper();
         GLOBAL_I32(gameManager, 0x1c) = 0;
-        gameManager->unk3de10 = 0;
-        gameManager->unk3de18 = 0;
-        gameManager->unk3de1c = 0;
+        gameManager->runActiveFrames = 0;
+        gameManager->runExtremeYoukaiFrames = 0;
+        gameManager->runExtremeHumanFrames = 0;
 
         if (!g_GameManager.flags.isReplay && !g_GameManager.flags.isSpellPractice)
         {
@@ -237,9 +237,9 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
     gameManager->isInGameMenu = 0;
     GM_U32(gameManager, 0x3DBAC) &= ~0x180U;
     GM_U32(gameManager, 0x3DBAC) &= ~0x2000U;
-    gameManager->unk3de14 = 0;
-    gameManager->unk3de20 = 0;
-    gameManager->unk3de24 = 0;
+    gameManager->stageActiveFrames = 0;
+    gameManager->stageExtremeYoukaiFrames = 0;
+    gameManager->stageExtremeHumanFrames = 0;
     GLOBAL_WORD(gameManager, 0x20) = GLOBAL_WORD(gameManager, 0x22);
     GLOBAL_I32(gameManager, 0x3c) = 0;
     GLOBAL_I32(gameManager, 0x44) = 0;

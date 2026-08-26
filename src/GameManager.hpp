@@ -339,12 +339,12 @@ struct GameManager
     i32 unk3de04;
     u32 unk3de08;
     u32 unk3de0c;
-    u32 unk3de10;
-    u32 unk3de14;
-    u32 unk3de18;
-    u32 unk3de1c;
-    u32 unk3de20;
-    u32 unk3de24;
+    u32 runActiveFrames;
+    u32 stageActiveFrames;
+    u32 runExtremeYoukaiFrames;
+    u32 runExtremeHumanFrames;
+    u32 stageExtremeYoukaiFrames;
+    u32 stageExtremeHumanFrames;
     u32 unk3de28;
 
     i32 rank;
@@ -364,6 +364,12 @@ C_ASSERT(offsetof(GameManager, arcadeRegionTopLeftPos) == 0x3DDD4);
 C_ASSERT(offsetof(GameManager, arcadeRegionSize) == 0x3DDDC);
 C_ASSERT(offsetof(GameManager, playerMovementTopLeftPos) == 0x3DDE4);
 C_ASSERT(offsetof(GameManager, playerMovementAreaSize) == 0x3DDEC);
+C_ASSERT(offsetof(GameManager, runActiveFrames) == 0x3DE10);
+C_ASSERT(offsetof(GameManager, stageActiveFrames) == 0x3DE14);
+C_ASSERT(offsetof(GameManager, runExtremeYoukaiFrames) == 0x3DE18);
+C_ASSERT(offsetof(GameManager, runExtremeHumanFrames) == 0x3DE1C);
+C_ASSERT(offsetof(GameManager, stageExtremeYoukaiFrames) == 0x3DE20);
+C_ASSERT(offsetof(GameManager, stageExtremeHumanFrames) == 0x3DE24);
 
 DIFFABLE_EXTERN(GameManager, g_GameManager);
 }; // Namespace th08

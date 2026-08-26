@@ -1499,3 +1499,63 @@ Supervisor, and the two intentional exact-source fixed-slot expressions, not
 untyped Effect fields.  These are routing observations, not completion
 percentages.  The next high-value family is the remaining Player core state,
 followed by the Background camera/stage object model.
+
+### Remaining Player core state and option protocol — 2026-08-26
+
+Scope: the Player state-machine functions at `0x0044C5B0..0x0044D52A`, the
+two collision-region pools and their allocators at
+`0x0044DE60..0x0044E393`, the option callbacks at
+`0x0044E3A0..0x0044FB6A`, and the adjacent GameManager frame statistics read
+by Player and GUI.
+
+Observed: the contiguous 384 `0x40`-byte records split into two 192-entry
+pools.  One pool is consumed as per-Enemy Player-shot damage and owns the
+`damage` field; the other is consumed by bullet cancellation and owns
+`collisionValue`.  Each has rectangular and circular producers, distinguished
+by size versus radius/radius-growth writes.  They are therefore
+`damageRegions` and `cancelRegions` of `PlayerCollisionRegion`, with
+`CreateRectDamageRegion`, `CreateCircleDamageRegion`,
+`CreateRectCancelRegion`, and `CreateCircleCancelRegion` as their four
+allocation paths.  PlayerBomb work-item pointers and every direct Enemy caller
+now share that owner.
+
+The state controller is named from its complete behavior rather than its old
+addresses: `UpdateCollisionRegions`, `UpdateBombState`,
+`UpdateDeathAndRespawn`, `UpdateRespawnAnimation`, `UpdateInvulnerability`,
+and `UpdateGaugePosition`.  State 3 is `PLAYER_STATE_INVULNERABLE`: entry
+follows respawn, it suppresses lethal collision, counts down, flashes the
+Player VM, follows the state Effect, and returns to `ALIVE`.  The deathbomb
+pending flag remains unsigned because the target reads it with `movzx`; an
+initial signed-byte declaration changed two instructions and was rejected.
+
+The option callback protocol now uniformly takes `PlayerOptionState *`.
+`UpdateOptionHomingToPlayer` and `UpdateOptionHomingToTarget` use typed
+position, velocity, timer, substate, and VM members, while `DrawPlayerOption`
+uses the embedded VM and world position directly.  The table callbacks are
+named conservatively as homing, Bomb-anchor, orbiting, mode-sensitive orbiting,
+facing-trail, mode-sensitive facing, and twin-orbiting controllers; those
+labels describe their proven motion/control behavior without assigning a
+character or shot identity to table rows that are shared.  The uniform type
+removes all callback casts without changing the fastcall ABI.
+
+Adjacent owners: `AnmVmBase` now asserts scale at `+0x18`, colors at
+`+0x1F0/+0x1F4`, the complete flags word at `+0x1F8`, and `AnmVm::pos` at
+`+0x208`.  `GameManager` names the run/stage active-frame counters and the
+parallel run/stage extremely-youkai/extremely-human frame counters through
+`+0x3DE24`; setup, Player, and GUI consumers agree on those roles.
+
+Oracle status: focused replay across Player, PlayerBomb, EnemyManager,
+Spellcard, GameManager, GameManagerSetup, and GUI passes **258 / 258** accepted
+units.  The single-job non-reuse cold VC7 replay passes **1,105 / 1,105**, the
+normal VC7 production image links, and the complete i386 Linux build plus
+fixed-layout verifier passes.  Source/header/config COFF identities and unit
+names moved together; no authored or accepted-exact ledger row changed.
+
+Result: the whole-source router reports 345 raw-member, 82 absolute-address,
+570 anonymous-identifier, and 56 opaque-storage candidates.  In
+`Player.cpp`/`Player.hpp`/`PlayerBomb.cpp`, only one raw-member candidate
+remains: the separate Background tint byte.  The remaining Player candidates
+are explicit unknown serialized fields, global-address owners not yet
+recovered, and neutral callback operands.  These counts are routing aids, not
+completion percentages.  The next high-value family is the Background camera,
+stage-object, and spell-tint model.

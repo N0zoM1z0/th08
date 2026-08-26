@@ -20,7 +20,7 @@ namespace th08
 {
 
 // Claim-safe exact owners for the in-progress Player TU.
-i32 __fastcall FUN_0044ee70(Player *player, PlayerOptionState *option)
+i32 __fastcall UpdateModeSensitiveOrbitingOption(Player *player, PlayerOptionState *option)
 {
     Float3 desired;
 
@@ -128,7 +128,7 @@ i32 __fastcall FUN_0044ee70(Player *player, PlayerOptionState *option)
 }
 
 #pragma var_order(angleDifference, targetAngle)
-i32 __fastcall FUN_0044f2d0(Player *player, PlayerOptionState *option)
+i32 __fastcall UpdateFacingTrailOption(Player *player, PlayerOptionState *option)
 {
     f32 targetAngle;
     f32 angleDifference;
@@ -217,7 +217,7 @@ optionUpdateDone:
 
 
 #pragma var_order(angleDifference, targetAngle)
-i32 __fastcall FUN_0044f5e0(Player *player, PlayerOptionState *option)
+i32 __fastcall UpdateModeSensitiveFacingOption(Player *player, PlayerOptionState *option)
 {
     f32 targetAngle;
     f32 angleDifference;
@@ -315,7 +315,7 @@ optionUpdateDone:
     return 0;
 }
 
-i32 __fastcall FUN_0044f930(Player *player, PlayerOptionState *option)
+i32 __fastcall UpdateTwinOrbitingOption(Player *player, PlayerOptionState *option)
 {
     Float3 base = player->position;
 
@@ -544,7 +544,7 @@ i32 __fastcall UpdatePersistentShot(Player *player, PlayerShot *slot)
 #pragma var_order(damageSlot, i)
 i32 __fastcall UpdateShotTrail(Player *player, PlayerShot *slot)
 {
-    PlayerUnkStruct0x40 *damageSlot;
+    PlayerCollisionRegion *damageSlot;
     i32 i;
     if (player->timelines[slot->timelineIndex].instruction !=
             reinterpret_cast<EclTimelineInstruction *>(slot) ||
@@ -567,7 +567,7 @@ i32 __fastcall UpdateShotTrail(Player *player, PlayerShot *slot)
     {
         if (slot->positionHistory[i * 2].x >= -900.0f)
         {
-            damageSlot = player->FUN_0044dfa0(&slot->positionHistory[i * 2], 16.0f, 448.0f, 1, 0);
+            damageSlot = player->CreateRectDamageRegion(&slot->positionHistory[i * 2], 16.0f, 448.0f, 1, 0);
             damageSlot->mode = 1;
         }
     }

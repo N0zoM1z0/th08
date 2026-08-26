@@ -104,43 +104,43 @@ target_address = 0x0044E120
 size = 0x20
 
 [[units]]
-name = "player-region-deactivate"
+name = "player-collision-region-deactivate"
 object = "build/Player.obj"
-symbol = "?Deactivate@PlayerUnkStruct0x40@th08@@QAEXXZ"
+symbol = "?Deactivate@PlayerCollisionRegion@th08@@QAEXXZ"
 target_address = 0x0044E350
 size = 0x12
 
 [[units]]
-name = "player-region-reset"
+name = "player-collision-region-reset"
 object = "build/Player.obj"
-symbol = "?Reset@PlayerUnkStruct0x40@th08@@QAEXXZ"
+symbol = "?Reset@PlayerCollisionRegion@th08@@QAEXXZ"
 target_address = 0x0044E370
 size = 0x23
 
 [[units]]
-name = "player-slot-allocate-c"
+name = "player-create-rect-cancel-region"
 object = "build/Player.obj"
-symbol = "?FUN_0044de60@Player@th08@@QAEPAUPlayerUnkStruct0x40@2@PBUFloat3@2@MMHH@Z"
+symbol = "?CreateRectCancelRegion@Player@th08@@QAEPAUPlayerCollisionRegion@2@PBUFloat3@2@MMHH@Z"
 target_address = 0x0044DE60
 size = 0x99
 
 [[units.relocations]]
 offset = 0x4B
 type = "REL32"
-symbol = "?Reset@PlayerUnkStruct0x40@th08@@QAEXXZ"
+symbol = "?Reset@PlayerCollisionRegion@th08@@QAEXXZ"
 target = 0x0044E370
 
 [[units]]
-name = "player-state-timer-update"
+name = "player-update-invulnerability"
 object = "build/Player.obj"
-symbol = "?FUN_0044d2c0@Player@th08@@QAEXXZ"
+symbol = "?UpdateInvulnerability@Player@th08@@QAEXXZ"
 target_address = 0x0044D2C0
 size = 0x152
 
 [[units.relocations]]
 offset = 0x44
 type = "REL32"
-symbol = "?FUN_0044de60@Player@th08@@QAEPAUPlayerUnkStruct0x40@2@PBUFloat3@2@MMHH@Z"
+symbol = "?CreateRectCancelRegion@Player@th08@@QAEPAUPlayerCollisionRegion@2@PBUFloat3@2@MMHH@Z"
 target = 0x0044DE60
 
 [[units.relocations]]
@@ -174,55 +174,55 @@ symbol = "??EZunTimer@th08@@QAEXH@Z"
 target = 0x00406640
 
 [[units]]
-name = "player-slot-pool-update"
+name = "player-update-collision-regions"
 object = "build/Player.obj"
-symbol = "?FUN_0044c5b0@Player@th08@@QAEXXZ"
+symbol = "?UpdateCollisionRegions@Player@th08@@QAEXXZ"
 target_address = 0x0044C5B0
 size = 0x9F
 
 [[units.relocations]]
 offset = 0x95
 type = "REL32"
-symbol = "?Deactivate@PlayerUnkStruct0x40@th08@@QAEXXZ"
+symbol = "?Deactivate@PlayerCollisionRegion@th08@@QAEXXZ"
 target = 0x0044E350
 
 [[units]]
-name = "player-slot-allocate-c-radius"
+name = "player-create-circle-cancel-region"
 object = "build/Player.obj"
-symbol = "?FUN_0044df00@Player@th08@@QAEPAUPlayerUnkStruct0x40@2@PBUFloat3@2@MMHH@Z"
+symbol = "?CreateCircleCancelRegion@Player@th08@@QAEPAUPlayerCollisionRegion@2@PBUFloat3@2@MMHH@Z"
 target_address = 0x0044DF00
 size = 0x99
 
 [[units.relocations]]
 offset = 0x4B
 type = "REL32"
-symbol = "?Reset@PlayerUnkStruct0x40@th08@@QAEXXZ"
+symbol = "?Reset@PlayerCollisionRegion@th08@@QAEXXZ"
 target = 0x0044E370
 
 [[units]]
-name = "player-slot-allocate-b"
+name = "player-create-rect-damage-region"
 object = "build/Player.obj"
-symbol = "?FUN_0044dfa0@Player@th08@@QAEPAUPlayerUnkStruct0x40@2@PBUFloat3@2@MMHH@Z"
+symbol = "?CreateRectDamageRegion@Player@th08@@QAEPAUPlayerCollisionRegion@2@PBUFloat3@2@MMHH@Z"
 target_address = 0x0044DFA0
 size = 0x99
 
 [[units.relocations]]
 offset = 0x4B
 type = "REL32"
-symbol = "?Reset@PlayerUnkStruct0x40@th08@@QAEXXZ"
+symbol = "?Reset@PlayerCollisionRegion@th08@@QAEXXZ"
 target = 0x0044E370
 
 [[units]]
-name = "player-slot-allocate-b-radius"
+name = "player-create-circle-damage-region"
 object = "build/Player.obj"
-symbol = "?FUN_0044e040@Player@th08@@QAEPAUPlayerUnkStruct0x40@2@PBUFloat3@2@MMHH@Z"
+symbol = "?CreateCircleDamageRegion@Player@th08@@QAEPAUPlayerCollisionRegion@2@PBUFloat3@2@MMHH@Z"
 target_address = 0x0044E040
 size = 0x99
 
 [[units.relocations]]
 offset = 0x4B
 type = "REL32"
-symbol = "?Reset@PlayerUnkStruct0x40@th08@@QAEXXZ"
+symbol = "?Reset@PlayerCollisionRegion@th08@@QAEXXZ"
 target = 0x0044E370
 
 [[units]]
@@ -61210,31 +61210,31 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0xE0
 type = "REL32"
-symbol = "?FUN_0044c5b0@Player@th08@@QAEXXZ"
+symbol = "?UpdateCollisionRegions@Player@th08@@QAEXXZ"
 target = 0x0044C5B0
 
 [[units.relocations]]
 offset = 0xE8
 type = "REL32"
-symbol = "?FUN_0044c650@Player@th08@@QAEXXZ"
+symbol = "?UpdateBombState@Player@th08@@QAEXXZ"
 target = 0x0044C650
 
 [[units.relocations]]
 offset = 0xFB
 type = "REL32"
-symbol = "?FUN_0044cbf0@Player@th08@@QAEHXZ"
+symbol = "?UpdateDeathAndRespawn@Player@th08@@QAEHXZ"
 target = 0x0044CBF0
 
 [[units.relocations]]
 offset = 0x116
 type = "REL32"
-symbol = "?FUN_0044d180@Player@th08@@QAEXXZ"
+symbol = "?UpdateRespawnAnimation@Player@th08@@QAEXXZ"
 target = 0x0044D180
 
 [[units.relocations]]
 offset = 0x11E
 type = "REL32"
-symbol = "?FUN_0044d2c0@Player@th08@@QAEXXZ"
+symbol = "?UpdateInvulnerability@Player@th08@@QAEXXZ"
 target = 0x0044D2C0
 
 [[units.relocations]]
@@ -61270,7 +61270,7 @@ target = 0x00451500
 [[units.relocations]]
 offset = 0x166
 type = "REL32"
-symbol = "?FUN_0044d420@Player@th08@@QAEXXZ"
+symbol = "?UpdateGaugePosition@Player@th08@@QAEXXZ"
 target = 0x0044D420
 
 [[units.relocations]]
@@ -63027,9 +63027,9 @@ symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463210
 
 [[units]]
-name = "player-fun-0044d420"
+name = "player-update-gauge-position"
 object = "build/Player.obj"
-symbol = "?FUN_0044d420@Player@th08@@QAEXXZ"
+symbol = "?UpdateGaugePosition@Player@th08@@QAEXXZ"
 target_address = 0x0044D420
 size = 0x10B
 
@@ -63136,11 +63136,11 @@ symbol = "?SetGaugeInterrupt@AsciiManager@th08@@QAEXH@Z"
 target = 0x004070B0
 
 [[units]]
-name = "player-fun-0044d180"
+name = "player-update-respawn-animation"
 target_address = 0x0044D180
 size = 0x13A
 object = "build/Player.obj"
-symbol = "?FUN_0044d180@Player@th08@@QAEXXZ"
+symbol = "?UpdateRespawnAnimation@Player@th08@@QAEXXZ"
 
 [[units.relocations]]
 offset = 0x20
@@ -82318,9 +82318,9 @@ target_address = 0x0044CBA0
 size = 69
 
 [[units]]
-name = "player-deathbomb-transition"
+name = "player-update-bomb-state"
 object = "build/objdiff/reimpl/Player.obj"
-symbol = "th08::Player::FUN_0044c650"
+symbol = "th08::Player::UpdateBombState"
 target_address = 0x0044C650
 size = 1352
 
@@ -83111,7 +83111,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 546
 type = "REL32"
-symbol = "?FUN_0044df00@Player@th08@@QAEPAUPlayerUnkStruct0x40@2@PBUFloat3@2@MMHH@Z"
+symbol = "?CreateCircleCancelRegion@Player@th08@@QAEPAUPlayerCollisionRegion@2@PBUFloat3@2@MMHH@Z"
 target = 0x0044DF00
 
 [[units.relocations]]
@@ -83297,7 +83297,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 1061
 type = "REL32"
-symbol = "?FUN_0044df00@Player@th08@@QAEPAUPlayerUnkStruct0x40@2@PBUFloat3@2@MMHH@Z"
+symbol = "?CreateCircleCancelRegion@Player@th08@@QAEPAUPlayerCollisionRegion@2@PBUFloat3@2@MMHH@Z"
 target = 0x0044DF00
 
 [[units.relocations]]
@@ -86415,7 +86415,7 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 0x17B
 type = "REL32"
-symbol = "?Reset@PlayerUnkStruct0x40@th08@@QAEXXZ"
+symbol = "?Reset@PlayerCollisionRegion@th08@@QAEXXZ"
 target = 0x0044E370
 
 [[units.relocations]]
@@ -87766,7 +87766,7 @@ target = 0x00477178
 [[units]]
 name = "player-option-homing-to-player"
 object = "build/objdiff/reimpl/Player.obj"
-symbol = "?PlayerOptionHomingToPlayer@th08@@YIXPAUPlayer@1@PAE@Z"
+symbol = "?UpdateOptionHomingToPlayer@th08@@YIXPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target_address = 0x0044E770
 size = 0x160
 
@@ -87863,7 +87863,7 @@ target = 0x00407120
 [[units]]
 name = "player-option-homing-to-target"
 object = "build/objdiff/reimpl/Player.obj"
-symbol = "?PlayerOptionHomingToTarget@th08@@YIXPAUPlayer@1@PAE@Z"
+symbol = "?UpdateOptionHomingToTarget@th08@@YIXPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target_address = 0x0044E8D0
 size = 0x10D
 
@@ -87940,9 +87940,9 @@ symbol = "__real@3d4ccccd"
 target = 0x004B5B38
 
 [[units]]
-name = "player-route2-option-render"
+name = "player-draw-option"
 object = "build/objdiff/reimpl/Player.obj"
-symbol = "?PlayerRoute2OptionRender@th08@@YIHPAUPlayer@1@PAE@Z"
+symbol = "?DrawPlayerOption@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target_address = 0x0044E9E0
 size = 0x5E
 
@@ -89574,9 +89574,9 @@ symbol = "__real@45cc7800"
 target = 0x004B5810
 
 [[units]]
-name = "player-fun-0044cbf0"
+name = "player-update-death-and-respawn"
 object = "build/Player.obj"
-symbol = "?FUN_0044cbf0@Player@th08@@QAEHXZ"
+symbol = "?UpdateDeathAndRespawn@Player@th08@@QAEHXZ"
 target_address = 0x0044CBF0
 size = 0x55D
 
@@ -93625,7 +93625,7 @@ target = 0x004B42EC
 [[units.relocations]]
 offset = 0x1BC
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
@@ -93637,13 +93637,13 @@ target = 0x004B42EC
 [[units.relocations]]
 offset = 0x200
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
 offset = 0x22F
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -94021,13 +94021,13 @@ target = 0x0045D550
 [[units.relocations]]
 offset = 0xB2
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0xD2
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -94057,13 +94057,13 @@ target = 0x0040E350
 [[units.relocations]]
 offset = 0x148
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x167
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -94105,13 +94105,13 @@ target = 0x0040E350
 [[units.relocations]]
 offset = 0x213
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x233
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -94153,13 +94153,13 @@ target = 0x0040E350
 [[units.relocations]]
 offset = 0x2E1
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x301
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -94262,13 +94262,13 @@ target = 0x004069F0
 [[units.relocations]]
 offset = 0xE0
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x100
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -94298,13 +94298,13 @@ target = 0x0040E350
 [[units.relocations]]
 offset = 0x175
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x195
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -94346,13 +94346,13 @@ target = 0x0040E350
 [[units.relocations]]
 offset = 0x240
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x260
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -94394,13 +94394,13 @@ target = 0x0040E350
 [[units.relocations]]
 offset = 0x30C
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x32B
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -94607,7 +94607,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x1B3
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -94637,7 +94637,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x20F
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 
@@ -94845,7 +94845,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x23D
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -94875,7 +94875,7 @@ target = 0x017D5EF8
 [[units.relocations]]
 offset = 0x29C
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 
@@ -95058,19 +95058,19 @@ target = 0x0045D550
 [[units.relocations]]
 offset = 0x27E
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x2A7
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
 offset = 0x2CD
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95100,13 +95100,13 @@ target = 0x004B42CC
 [[units.relocations]]
 offset = 0x364
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x381
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95130,13 +95130,13 @@ target = 0x004B42C8
 [[units.relocations]]
 offset = 0x3DA
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x3F7
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95172,13 +95172,13 @@ target = 0x004B42C8
 [[units.relocations]]
 offset = 0x4A7
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x4C4
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95202,13 +95202,13 @@ target = 0x004B443C
 [[units.relocations]]
 offset = 0x51D
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x53A
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95244,13 +95244,13 @@ target = 0x004B42C4
 [[units.relocations]]
 offset = 0x5EB
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x608
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95274,13 +95274,13 @@ target = 0x004B4440
 [[units.relocations]]
 offset = 0x661
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x67E
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95521,19 +95521,19 @@ target = 0x0045D550
 [[units.relocations]]
 offset = 0x281
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x2AA
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
 offset = 0x2D0
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95563,13 +95563,13 @@ target = 0x004B42CC
 [[units.relocations]]
 offset = 0x367
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x384
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95593,13 +95593,13 @@ target = 0x004B42C8
 [[units.relocations]]
 offset = 0x3DD
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x3FA
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95635,13 +95635,13 @@ target = 0x004B42C8
 [[units.relocations]]
 offset = 0x4AA
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x4C7
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95665,13 +95665,13 @@ target = 0x004B443C
 [[units.relocations]]
 offset = 0x520
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x53D
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95707,13 +95707,13 @@ target = 0x004B42C4
 [[units.relocations]]
 offset = 0x5EE
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x60B
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95737,13 +95737,13 @@ target = 0x004B4440
 [[units.relocations]]
 offset = 0x664
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x681
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95779,13 +95779,13 @@ target = 0x004B443C
 [[units.relocations]]
 offset = 0x731
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x74E
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95809,13 +95809,13 @@ target = 0x004B4434
 [[units.relocations]]
 offset = 0x7A7
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x7C4
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95851,13 +95851,13 @@ target = 0x004B4554
 [[units.relocations]]
 offset = 0x875
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x892
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95881,13 +95881,13 @@ target = 0x004B4550
 [[units.relocations]]
 offset = 0x8EB
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x908
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95923,13 +95923,13 @@ target = 0x004B4440
 [[units.relocations]]
 offset = 0x9BB
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x9D8
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -95953,13 +95953,13 @@ target = 0x004B4528
 [[units.relocations]]
 offset = 0xA31
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0xA4E
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -96112,13 +96112,13 @@ target = 0x004B4334
 [[units.relocations]]
 offset = 0x15D
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
 offset = 0x183
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
@@ -96148,13 +96148,13 @@ target = 0x004B4334
 [[units.relocations]]
 offset = 0x27F
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
 offset = 0x2A5
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
@@ -96184,13 +96184,13 @@ target = 0x004B4334
 [[units.relocations]]
 offset = 0x3A1
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
 offset = 0x3C7
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
@@ -96220,13 +96220,13 @@ target = 0x004B4334
 [[units.relocations]]
 offset = 0x4C3
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
 offset = 0x4E9
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
@@ -96360,13 +96360,13 @@ target = 0x004B4334
 [[units.relocations]]
 offset = 0x15D
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
 offset = 0x183
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
@@ -96396,13 +96396,13 @@ target = 0x004B4334
 [[units.relocations]]
 offset = 0x27F
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
 offset = 0x2A5
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
@@ -96432,13 +96432,13 @@ target = 0x004B4334
 [[units.relocations]]
 offset = 0x3A1
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
 offset = 0x3C7
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
@@ -96468,13 +96468,13 @@ target = 0x004B4334
 [[units.relocations]]
 offset = 0x4C3
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
 offset = 0x4E9
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
@@ -96564,13 +96564,13 @@ target = 0x0043EDB0
 [[units.relocations]]
 offset = 0x6B6
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
 offset = 0x6EC
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
@@ -96796,13 +96796,13 @@ target = 0x004B439C
 [[units.relocations]]
 offset = 0x155
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x17B
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -96946,7 +96946,7 @@ target = 0x004B4338
 [[units.relocations]]
 offset = 0x562
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
@@ -96958,13 +96958,13 @@ target = 0x0040B8E0
 [[units.relocations]]
 offset = 0x5D2
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x5F2
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -97091,13 +97091,13 @@ target = 0x004B439C
 [[units.relocations]]
 offset = 0x155
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x17B
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -97169,13 +97169,13 @@ target = 0x0040B8E0
 [[units.relocations]]
 offset = 0x35D
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x37A
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -97331,13 +97331,13 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x5C4
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x5EA
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -97482,13 +97482,13 @@ target = 0x004B43EC
 [[units.relocations]]
 offset = 0x156
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x173
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -97644,13 +97644,13 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x350
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x36F
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -97874,13 +97874,13 @@ target = 0x004B43EC
 [[units.relocations]]
 offset = 0x148
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x165
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -98090,13 +98090,13 @@ target = 0x00425430
 [[units.relocations]]
 offset = 0x3D2
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x3F2
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -98421,7 +98421,7 @@ target = 0x004B42EC
 [[units.relocations]]
 offset = 0x32D
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
@@ -98433,13 +98433,13 @@ target = 0x004B42EC
 [[units.relocations]]
 offset = 0x370
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
 offset = 0x39F
 type = "REL32"
-symbol = "th08::Player::FUN_0044dfa0"
+symbol = "th08::Player::CreateRectDamageRegion"
 target = 0x0044DFA0
 
 [[units.relocations]]
@@ -98716,7 +98716,7 @@ target = 0x004B42CC
 [[units.relocations]]
 offset = 0x4C8
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
@@ -98818,13 +98818,13 @@ target = 0x0040B8E0
 [[units.relocations]]
 offset = 0x659
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x688
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
@@ -99084,7 +99084,7 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 0x3F1
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
@@ -99222,13 +99222,13 @@ target = 0x0040B8E0
 [[units.relocations]]
 offset = 0x659
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
 offset = 0x688
 type = "REL32"
-symbol = "th08::Player::FUN_0044de60"
+symbol = "th08::Player::CreateRectCancelRegion"
 target = 0x0044DE60
 
 [[units.relocations]]
@@ -99457,13 +99457,13 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x2F9
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x31F
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -99807,13 +99807,13 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x329
 type = "REL32"
-symbol = "th08::Player::FUN_0044df00"
+symbol = "th08::Player::CreateCircleCancelRegion"
 target = 0x0044DF00
 
 [[units.relocations]]
 offset = 0x34F
 type = "REL32"
-symbol = "th08::Player::FUN_0044e040"
+symbol = "th08::Player::CreateCircleDamageRegion"
 target = 0x0044E040
 
 [[units.relocations]]
@@ -100236,9 +100236,9 @@ symbol = "__real@40400000"
 target = 0x004B42DC
 
 [[units]]
-name = "player-option-update-0044e3a0"
+name = "player-update-homing-option"
 object = "build/objdiff/reimpl/Player.obj"
-symbol = "?FUN_0044e3a0@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
+symbol = "?UpdateHomingOption@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target_address = 0x0044E3A0
 size = 0x3B5
 compare_size = 0x3C5
@@ -100270,7 +100270,7 @@ target = 0x0044E755
 [[units.relocations]]
 offset = 0xEB
 type = "REL32"
-symbol = "?PlayerOptionHomingToPlayer@th08@@YIXPAUPlayer@1@PAE@Z"
+symbol = "?UpdateOptionHomingToPlayer@th08@@YIXPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target = 0x0044E770
 
 [[units.relocations]]
@@ -100312,7 +100312,7 @@ target = 0x004B4384
 [[units.relocations]]
 offset = 0x199
 type = "REL32"
-symbol = "?PlayerOptionHomingToPlayer@th08@@YIXPAUPlayer@1@PAE@Z"
+symbol = "?UpdateOptionHomingToPlayer@th08@@YIXPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target = 0x0044E770
 
 [[units.relocations]]
@@ -100354,7 +100354,7 @@ target = 0x004B4384
 [[units.relocations]]
 offset = 0x247
 type = "REL32"
-symbol = "?PlayerOptionHomingToPlayer@th08@@YIXPAUPlayer@1@PAE@Z"
+symbol = "?UpdateOptionHomingToPlayer@th08@@YIXPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target = 0x0044E770
 
 [[units.relocations]]
@@ -100396,7 +100396,7 @@ target = 0x004B4384
 [[units.relocations]]
 offset = 0x2FE
 type = "REL32"
-symbol = "?PlayerOptionHomingToTarget@th08@@YIXPAUPlayer@1@PAE@Z"
+symbol = "?UpdateOptionHomingToTarget@th08@@YIXPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target = 0x0044E8D0
 
 [[units.relocations]]
@@ -100461,9 +100461,9 @@ target = 0x0044E68B
 
 
 [[units]]
-name = "player-option-update-0044ea40"
+name = "player-update-bomb-anchor-option"
 object = "build/objdiff/reimpl/Player.obj"
-symbol = "?FUN_0044ea40@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
+symbol = "?UpdateBombAnchorOption@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target_address = 0x0044EA40
 size = 0x12F
 
@@ -100505,9 +100505,9 @@ target = 0x004066C0
 
 
 [[units]]
-name = "player-option-update-0044eb70"
+name = "player-update-orbiting-option"
 object = "build/objdiff/reimpl/Player.obj"
-symbol = "?FUN_0044eb70@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
+symbol = "?UpdateOrbitingOption@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target_address = 0x0044EB70
 size = 0x2DB
 compare_size = 0x2FB
@@ -116577,9 +116577,9 @@ type = "DIR32"
 symbol = "$L69497"
 target = 0x00467464
 [[units]]
-name = "player-option-orbit-0044ee70"
+name = "player-update-mode-sensitive-orbiting-option"
 object = "build/Player.obj"
-symbol = "?FUN_0044ee70@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
+symbol = "?UpdateModeSensitiveOrbitingOption@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target_address = 0x0044EE70
 size = 0x423
 compare_size = 0x453
@@ -116873,9 +116873,9 @@ symbol = "$L69821"
 target = 0x0044F187
 
 [[units]]
-name = "player-option-facing-0044f2d0"
+name = "player-update-facing-trail-option"
 object = "build/Player.obj"
-symbol = "?FUN_0044f2d0@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
+symbol = "?UpdateFacingTrailOption@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target_address = 0x0044F2D0
 size = 0x2E1
 compare_size = 0x305
@@ -118466,9 +118466,9 @@ symbol = "?DrawNoRotation@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00462FF0
 
 [[units]]
-name = "player-option-aim-0044f5e0"
+name = "player-update-mode-sensitive-facing-option"
 object = "build/Player.obj"
-symbol = "?FUN_0044f5e0@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
+symbol = "?UpdateModeSensitiveFacingOption@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target_address = 0x0044F5E0
 size = 0x32A
 compare_size = 0x34E
@@ -118653,9 +118653,9 @@ type = "DIR32"
 symbol = "$L69919"
 target = 0x0044F7AE
 [[units]]
-name = "player-option-sway-0044f930"
+name = "player-update-twin-orbiting-option"
 object = "build/Player.obj"
-symbol = "?FUN_0044f930@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
+symbol = "?UpdateTwinOrbitingOption@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z"
 target_address = 0x0044F930
 size = 0x23A
 
@@ -119154,7 +119154,7 @@ target = 0x004B6FE0
 [[units.relocations]]
 offset = 0x139
 type = "REL32"
-symbol = "?FUN_0044dfa0@Player@th08@@QAEPAUPlayerUnkStruct0x40@2@PBUFloat3@2@MMHH@Z"
+symbol = "?CreateRectDamageRegion@Player@th08@@QAEPAUPlayerCollisionRegion@2@PBUFloat3@2@MMHH@Z"
 target = 0x0044DFA0
 
 [[units.relocations]]
