@@ -207,6 +207,23 @@ target-pinned motion packets replayed exact, a non-reuse cold replay passed
 build/layout verifier passed.  The next coherent family is the control flags
 at `+0x3324/+0x3328` and the adjacent boundary/presentation state.
 
+The sixth Enemy/ECL orchestration batch closes the adjacent control and
+presentation range at `Enemy + 0x3304..+0x3353`.  Item-drop policy/counts,
+death animations, Boss slot, damage flash, both flag dwords, animation
+direction/draw group/difficulty override, the six-script animation table,
+movement bounds, and minimum Player shot distance now share asserted owners
+across ECL, Enemy, Player, Bomb, Spellcard, Effect, and timeline users.  Named
+shift constants preserve target-observed VC7 shift-and-test source shape; a
+mask-test trial changed 26 units and was rejected.  Twelve important Enemy
+methods now carry behavior-backed names.  Focused replay passed **328 / 328**,
+three target-pinned packets replayed exact, a non-reuse cold replay passed
+**1,105 / 1,105**, the normal VC7 image linked, and the complete i386 Linux
+build/layout verifier passed.  Retained padding, `timer3318`, neutral flag
+labels, and unobserved bits remain explicit unknowns.  The next coherent
+family is the trail/effect/death tail at `+0x534C..+0x53CC`, followed by the
+EnemyManager pool/list owners needed to close the Enemy/ECL orchestration
+milestone.
+
 Select the next independent field family with:
 
 ```bash

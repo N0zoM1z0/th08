@@ -12,18 +12,6 @@ namespace EclHelpers
 
 using EclOperands::EnemyOverlay;
 
-struct EnemyMotionFlags
-{
-    u32 lowBits : 12;
-    u32 interpolationMode : 2;
-    u32 motionMode : 3;
-    u32 bit17 : 1;
-    u32 mirrorX : 1;
-    u32 highBits : 13;
-};
-
-#define MotionFlags(enemy) (*reinterpret_cast<EnemyMotionFlags *>((enemy)->bytes + 0x3324))
-
 #define ReadInt(enemy, instruction, index)                                                   \
     ((instruction)->operandFlags & (1 << (index))                                           \
          ? EclOperands::ResolveInt((enemy), ((i32 *)(instruction)->operands)[index])        \
@@ -56,9 +44,13 @@ void __fastcall ConfigurePolarMotion(EnemyOverlay *enemy, EclRawInstruction *ins
     reinterpret_cast<Enemy *>(enemy)->movementTimer =
         (reinterpret_cast<Enemy *>(enemy)->movementDuration = ReadInt(enemy, instruction, 0));
 
-    MotionFlags(enemy).motionMode = ReadInt(enemy, instruction, 1);
-    MotionFlags(enemy).interpolationMode = 2;
-    if (MotionFlags(enemy).mirrorX)
+    reinterpret_cast<EnemyFlag1Bits *>(
+        &reinterpret_cast<Enemy *>(enemy)->flags1)->movementEasing =
+        ReadInt(enemy, instruction, 1);
+    reinterpret_cast<EnemyFlag1Bits *>(
+        &reinterpret_cast<Enemy *>(enemy)->flags1)->movementMode = 2;
+    if (reinterpret_cast<EnemyFlag1Bits *>(
+            &reinterpret_cast<Enemy *>(enemy)->flags1)->mirrorMovementX)
         reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.x =
             -reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.x;
 }
@@ -83,17 +75,20 @@ void __fastcall ConfigureRelativeMotion(EnemyOverlay *enemy, EclRawInstruction *
     reinterpret_cast<Enemy *>(enemy)->movementTimer =
         (reinterpret_cast<Enemy *>(enemy)->movementDuration = ReadInt(enemy, instruction, 0));
 
-    MotionFlags(enemy).motionMode = ReadInt(enemy, instruction, 1);
-    MotionFlags(enemy).interpolationMode = 2;
+    reinterpret_cast<EnemyFlag1Bits *>(
+        &reinterpret_cast<Enemy *>(enemy)->flags1)->movementEasing =
+        ReadInt(enemy, instruction, 1);
+    reinterpret_cast<EnemyFlag1Bits *>(
+        &reinterpret_cast<Enemy *>(enemy)->flags1)->movementMode = 2;
     *reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->velocity) =
         D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-    if (MotionFlags(enemy).mirrorX)
+    if (reinterpret_cast<EnemyFlag1Bits *>(
+            &reinterpret_cast<Enemy *>(enemy)->flags1)->mirrorMovementX)
         reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.x =
             -reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.x;
 }
 
 #undef ReadFloat
 #undef ReadInt
-#undef MotionFlags
 } // namespace EclHelpers
 } // namespace th08

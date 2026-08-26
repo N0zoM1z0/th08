@@ -56,12 +56,6 @@ struct Vec3
     f32 z;
 };
 
-struct Op82EnemyFieldOverlay
-{
-    u8 padding00[0x3350];
-    f32 squaredValue;
-};
-
 struct RawInstruction
 {
     i32 time;
@@ -427,7 +421,8 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
     case 104:
         if (reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->life <= 0)
             break;
-        if (((TH08_ECL_AT(ctx, u32, 0x3324) >> 17) & 1) == 1)
+        if (((reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1 >>
+              ENEMY_FLAG_DEFER_BULLET_PATTERN_SHIFT) & 1) == 1)
         {
             memcpy(reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->pendingShotInstruction,
                    TH08_ECL_CONTEXT_INSTRUCTION(ctx),
@@ -456,9 +451,9 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         break;
     }
     case 138:
-        TH08_ECL_AT(ctx, u8, 0x3310) = TH08_ECL_RAW_BYTE(ctx, 0);
-        TH08_ECL_AT(ctx, u8, 0x3311) = TH08_ECL_RAW_BYTE(ctx, 1);
-        TH08_ECL_AT(ctx, u8, 0x3312) = TH08_ECL_RAW_BYTE(ctx, 2);
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->deathAnm1 = TH08_ECL_RAW_BYTE(ctx, 0);
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->deathAnm2 = TH08_ECL_RAW_BYTE(ctx, 1);
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->deathAnm3 = TH08_ECL_RAW_BYTE(ctx, 2);
         break;
 
     case 105:
@@ -485,8 +480,8 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
                     reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootIntervalFrames);
         }
         break;
-    case 107: TH08_ECL_AT(ctx, u32, 0x3324) |= 0x00020000; break;
-    case 108: TH08_ECL_AT(ctx, u32, 0x3324) &= ~0x00020000; break;
+    case 107: reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1 |= ENEMY_FLAG_DEFER_BULLET_PATTERN; break;
+    case 108: reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1 &= ~ENEMY_FLAG_DEFER_BULLET_PATTERN; break;
 
     case 109:
     {
@@ -685,23 +680,24 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
                 g_Gui.SetBossPresent(true);
                 g_Gui.FUN_004230c0(1.0f);
             }
-            TH08_ECL_AT(ctx, u32, 0x3324) |= 2;
-            TH08_ECL_AT(ctx, u8, 0x3313) = (u8)TH08_ECL_READ_I(ctx, 0);
-            g_AsciiManager.FUN_00422bb0(TH08_ECL_AT(ctx, u8, 0x3313), 1);
-            TH08_ECL_AT(ctx, i32, 0x3350) = 0;
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1 |= ENEMY_FLAG_BOSS;
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossSlot = (u8)TH08_ECL_READ_I(ctx, 0);
+            g_AsciiManager.FUN_00422bb0(
+                reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossSlot, 1);
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->minimumPlayerDistanceSquared = 0.0f;
         }
         else
         {
-            if (TH08_ECL_AT(ctx, u8, 0x3313) < 4)
+            if (reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossSlot < 4)
                 g_Gui.SetBossPresent(false);
             EclRunLowProposal::g_EclEnemyTableF54CC0[
-                TH08_ECL_AT(ctx, u8, 0x3313)] = 0;
-            TH08_ECL_AT(ctx, u32, 0x3324) &= ~2U;
+                reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossSlot] = 0;
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1 &= ~ENEMY_FLAG_BOSS;
             g_AsciiManager.FUN_00422bb0(
-                TH08_ECL_AT(ctx, u8, 0x3313), 2);
-            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->FUN_0042a820();
+                reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossSlot, 2);
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ReleaseAttachedEffects();
             g_AsciiManager.SetBossMarkerPosition(
-                TH08_ECL_AT(ctx, u8, 0x3313),
+                reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossSlot,
                 &D3DXVECTOR3(-999.0f, -999.0f, 0.0f));
         }
         break;
@@ -721,11 +717,12 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         TH08_ECL_AT(ctx, i32, 0x53C0)++;
         break;
     }
-    case 159: TH08_ECL_AT(ctx, u8, 0x332F) = (u8)TH08_ECL_READ_I(ctx, 0); break;
+    case 159: reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->drawGroup = (u8)TH08_ECL_READ_I(ctx, 0); break;
     case 124: g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(TH08_ECL_READ_I(ctx, 0)), reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position.x); break;
     case 129:
         if (TH08_ECL_PRESENTATION_WRITES_ALLOWED())
-            reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->op129Bits20_22 = TH08_ECL_RAW_BYTE(ctx, 0);
+            reinterpret_cast<EnemyFlag1Bits *>(
+                &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1)->deathMode = TH08_ECL_RAW_BYTE(ctx, 0);
         break;
     case 130:
         if (((((*reinterpret_cast<u32 *>(&g_GameManager.flags)) >> 14) & 1) == 0) ||
@@ -748,7 +745,8 @@ enter_subroutine:
         reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclContext->currentInstr =
             reinterpret_cast<EclRawInstruction *>((u8 *)instruction + instruction->nextOffset);
 
-        if (((TH08_ECL_AT(ctx, u32, 0x3324) >> 26) & 1) == 0)
+        if (((reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1 >>
+              ENEMY_FLAG_DISABLE_ECL_CALL_STACK_SHIFT) & 1) == 0)
         {
             memcpy(reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclCallStack +
                        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclCallStackDepth,
@@ -772,7 +770,9 @@ enter_subroutine:
         reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->phaseStartingLife =
             reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->life =
             reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->maxLife = TH08_ECL_READ_I(ctx, 0);
-        if (TH08_ECL_AT(ctx, u8, 0x3313) == 0 && (((TH08_ECL_AT(ctx, u32, 0x3324) >> 1) & 1) != 0))
+        if (reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossSlot == 0 &&
+            (((reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1 >>
+               ENEMY_FLAG_BOSS_SHIFT) & 1) != 0))
             for (i32 i = 0; i < 8; ++i)
                 g_Gui.SetBossGaugeSlot(i, 0.0f, 0.0f);
         break;
@@ -875,10 +875,10 @@ enter_subroutine:
             TH08_ECL_READ_I(ctx, 1), *TH08_ECL_WRITE_I(ctx, 2));
         break;
     }
-    case 143: TH08_ECL_AT(ctx, i32, 0x3304) = TH08_ECL_READ_I(ctx, 0); break;
+    case 143: reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->itemDropType = TH08_ECL_READ_I(ctx, 0); break;
     case 144:
-        TH08_ECL_AT(ctx, i32, 0x3308) = TH08_ECL_READ_I(ctx, 0);
-        TH08_ECL_AT(ctx, i32, 0x330C) = TH08_ECL_READ_I(ctx, 1);
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->pointItemDropCount = TH08_ECL_READ_I(ctx, 0);
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->powerOrPointItemDropCount = TH08_ECL_READ_I(ctx, 1);
         break;
     case 142:
     {
@@ -919,7 +919,8 @@ enter_subroutine:
         break;
     }
     case 145:
-        reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->op145Bit25 = TH08_ECL_RAW_BYTE(ctx, 0);
+        reinterpret_cast<EnemyFlag1Bits *>(
+            &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1)->rotateAnmWithMovement = TH08_ECL_RAW_BYTE(ctx, 0);
         break;
     case 136: reinterpret_cast<void (__fastcall *)(u8 *, RawInstruction *)>(g_EclExInsn[TH08_ECL_READ_I(ctx, 0)])(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_CONTEXT_INSTRUCTION(ctx)); break;
     case 137:
@@ -1027,7 +1028,8 @@ enter_subroutine:
             ->bulletSpawnDescriptor.transformSound = TH08_ECL_READ_I(ctx, 1);
         break;
     case 151:
-        reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->op151Bit26 =
+        reinterpret_cast<EnemyFlag1Bits *>(
+            &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1)->disableEclCallStack =
             TH08_ECL_RAW_BYTE(ctx, 0);
         break;
     case 152:
@@ -1047,14 +1049,16 @@ enter_subroutine:
         reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossTimer = 0;
         break;
     case 155:
-        reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->op155Bit27 =
+        reinterpret_cast<EnemyFlag1Bits *>(
+            &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1)->timeoutSpell =
             TH08_ECL_RAW_BYTE(ctx, 0);
         g_EclGlobal004ECCA8 = 0x05F5E0F6;
         break;
     case 156:
-        reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->op156Bit7 =
+        reinterpret_cast<EnemyFlag1Bits *>(
+            &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1)->specialInteraction =
             TH08_ECL_RAW_BYTE(ctx, 0);
-        TH08_ECL_AT(ctx, u8, 0x332F) = 2;
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->drawGroup = 2;
         break;
     case 157:
         TH08_ECL_AT(ctx, u8, 0x534C) = TH08_ECL_RAW_BYTE(ctx, 0);
@@ -1110,10 +1114,12 @@ enter_subroutine:
                 g_Rng.GetRandomF32InRange(1.5707964f) - 0.78539819f;
         break;
     case 173:
-        reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->pauseTimer = TH08_ECL_READ_I(ctx, 0);
+        reinterpret_cast<EnemyFlag1Bits *>(
+            &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1)->pauseTimer = TH08_ECL_READ_I(ctx, 0);
         break;
     case 183:
-        reinterpret_cast<EclRunLowProposal::LinkedChildFlags1 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3324)->noDamageDuringStop = TH08_ECL_READ_I(ctx, 0);
+        reinterpret_cast<EnemyFlag1Bits *>(
+            &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1)->noDamageDuringStop = TH08_ECL_READ_I(ctx, 0);
         break;
     case 176:
     {
@@ -1130,7 +1136,7 @@ enter_subroutine:
                  (g_GameManager.currentSpellCardNumber >= 0xAB &&
                   g_GameManager.currentSpellCardNumber <= 0xBE))
             *reinterpret_cast<u32 *>(&g_GameManager.flags) |= 0x2000U;
-        TH08_ECL_AT(ctx, u32, 0x3324) |= 0x40000000;
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1 |= ENEMY_FLAG_PAUSE_TIMER;
         break;
     }
 #ifdef TH08_ECL_RUN_HIGH_BODY
@@ -1138,17 +1144,18 @@ enter_subroutine:
     // the target's late physical handler order.  Their standalone low-opcode
     // forms remain in EclRunLow.inl for source ownership and audit coverage.
     case 82:
-        reinterpret_cast<Op82EnemyFieldOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->squaredValue =
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->minimumPlayerDistanceSquared =
             (TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & 1U)
                 ? reinterpret_cast<EclOperands::EnemyOverlay *>(
                       TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
                       *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0)))
                 : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0));
-        reinterpret_cast<Op82EnemyFieldOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->squaredValue *=
-            reinterpret_cast<Op82EnemyFieldOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->squaredValue;
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->minimumPlayerDistanceSquared *=
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->minimumPlayerDistanceSquared;
         break;
     case 83:
-        reinterpret_cast<EclRunLowProposal::Op79Flags2 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3328)->op83Bit1 =
+        reinterpret_cast<EnemyFlag2Bits *>(
+            &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags2)->formEffect =
             TH08_ECL_READ_I(ctx, 0);
         break;
 #endif
@@ -1188,7 +1195,8 @@ enter_subroutine:
         }
         break;
     case 182:
-        reinterpret_cast<EclRunLowProposal::Op79Flags2 *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3328)->op182Bit8 = TH08_ECL_READ_I(ctx, 0);
+        reinterpret_cast<EnemyFlag2Bits *>(
+            &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags2)->extraVmFixedOffset = TH08_ECL_READ_I(ctx, 0);
         break;
     case 184: g_Spellcard.FUN_0041f0e0(TH08_ECL_READ_I(ctx, 0)); break;
 #if !defined(TH08_ECL_RUN_SHARED_SWITCH)

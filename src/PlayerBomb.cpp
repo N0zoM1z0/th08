@@ -569,9 +569,8 @@ void __fastcall FUN_0040d100(Player *player)
         {
             if (reinterpret_cast<Enemy **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i] != NULL)
             {
-                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(
-                    reinterpret_cast<Enemy **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]) + 0x3324) &=
-                    ~0x40u;
+                reinterpret_cast<Enemy **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCDA0)[i]->flags1 &=
+                    ~ENEMY_FLAG_ACCEPTS_DAMAGE;
             }
         }
     }

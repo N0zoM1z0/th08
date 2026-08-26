@@ -72,9 +72,9 @@ low_redispatch_instruction:
         {
             if ((instruction->difficultyMask &
                  (static_cast<u32>(g_GameManager.difficultyMask) |
-                  *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(enemy) + 0x3330))) !=
+                  enemy->eclDifficultyMaskOverride)) !=
                 (static_cast<u32>(g_GameManager.difficultyMask) |
-                 *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(enemy) + 0x3330)))
+                 enemy->eclDifficultyMaskOverride))
             {
                 goto low_advance_instruction;
             }
@@ -218,7 +218,7 @@ low_select_next_context:
     enemy->activeEclContext =
         reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage);
     enemy->UpdateMovement();
-    enemy->FUN_00423150();
+    enemy->UpdateShotAndAnm();
 
     return ZUN_SUCCESS;
 }

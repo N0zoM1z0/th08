@@ -92,17 +92,6 @@ namespace EclRunLowProposal
          ? (enemy)->ResolveFloat(*reinterpret_cast<f32 *>((instruction)->operands + (index) * 4)) \
          : *reinterpret_cast<f32 *>((instruction)->operands + (index) * 4))
 
-struct TimedPolarFlags
-{
-    u32 lowBits : 12;
-    u32 movementMode : 2;
-    u32 easingMode : 3;
-    u32 bit17 : 1;
-    u32 mirrorX : 1;
-    u32 highBits : 13;
-};
-C_ASSERT(sizeof(TimedPolarFlags) == 4);
-
 // FUNCTION: th08 0x4222b0
 void __fastcall StartTimedPolarDisplacement(
     EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction, f32 angle)
@@ -119,9 +108,11 @@ void __fastcall StartTimedPolarDisplacement(
     reinterpret_cast<Enemy *>(enemy)->movementTimer =
         (reinterpret_cast<Enemy *>(enemy)->movementDuration =
              DEP_READ_INT(enemy, instruction, 0));
-    reinterpret_cast<TimedPolarFlags *>(DEP_BYTES(enemy) + 0x3324)->easingMode =
+    reinterpret_cast<EnemyFlag1Bits *>(
+        &reinterpret_cast<Enemy *>(enemy)->flags1)->movementEasing =
         DEP_READ_INT(enemy, instruction, 1);
-    reinterpret_cast<TimedPolarFlags *>(DEP_BYTES(enemy) + 0x3324)->movementMode = 2;
+    reinterpret_cast<EnemyFlag1Bits *>(
+        &reinterpret_cast<Enemy *>(enemy)->flags1)->movementMode = 2;
 }
 
 // FUNCTION: th08 0x422020
@@ -142,7 +133,7 @@ void __fastcall BeginBoundaryAwareMove(
     }
 
     if (reinterpret_cast<Enemy *>(enemy)->position.operator float *()[0] <
-        *reinterpret_cast<f32 *>(DEP_BYTES(enemy) + 0x3340) + 96.0f)
+        reinterpret_cast<Enemy *>(enemy)->movementBounds.lower.x + 96.0f)
     {
         if (angle > 1.5707964f)
             angle = 3.1415927f - angle;
@@ -151,7 +142,7 @@ void __fastcall BeginBoundaryAwareMove(
     }
 
     if (reinterpret_cast<Enemy *>(enemy)->position.operator float *()[0] >
-        *reinterpret_cast<f32 *>(DEP_BYTES(enemy) + 0x3348) - 96.0f)
+        reinterpret_cast<Enemy *>(enemy)->movementBounds.upper.x - 96.0f)
     {
         if (angle < 1.5707964f && angle >= 0.0f)
             angle = 3.1415927f - reinterpret_cast<Enemy *>(enemy)->movementAngle;
@@ -160,14 +151,14 @@ void __fastcall BeginBoundaryAwareMove(
     }
 
     if (reinterpret_cast<Enemy *>(enemy)->position.operator float *()[1] <
-            *reinterpret_cast<f32 *>(DEP_BYTES(enemy) + 0x3344) + 48.0f &&
+            reinterpret_cast<Enemy *>(enemy)->movementBounds.lower.y + 48.0f &&
         angle < 0.0f)
     {
         angle = -angle;
     }
 
     if (reinterpret_cast<Enemy *>(enemy)->position.operator float *()[1] >
-            *reinterpret_cast<f32 *>(DEP_BYTES(enemy) + 0x334c) - 48.0f &&
+            reinterpret_cast<Enemy *>(enemy)->movementBounds.upper.y - 48.0f &&
         angle > 0.0f)
     {
         angle = -angle;
@@ -178,8 +169,8 @@ void __fastcall BeginBoundaryAwareMove(
         reinterpret_cast<Enemy *>(enemy)->movementAngle = angle;
         reinterpret_cast<Enemy *>(enemy)->speed =
             DEP_READ_FLOAT(enemy, instruction, 2);
-        *reinterpret_cast<u32 *>(DEP_BYTES(enemy) + 0x3324) =
-            (*reinterpret_cast<u32 *>(DEP_BYTES(enemy) + 0x3324) & 0xffffcfffU) |
+        reinterpret_cast<Enemy *>(enemy)->flags1 =
+            (reinterpret_cast<Enemy *>(enemy)->flags1 & ~ENEMY_FLAG_MOVEMENT_MODE_MASK) |
             0x1000U;
         reinterpret_cast<Enemy *>(enemy)->movementDuration = 0;
         reinterpret_cast<Enemy *>(enemy)->movementTimer = 0;
@@ -246,13 +237,13 @@ void __fastcall FUN_004224a0(u8 *rawEnemy, void *rawInstruction)
     }
 
     if (reinterpret_cast<Enemy *>(rawEnemy)->position.operator float *()[1] <
-            RM_FLOAT(0x3344) + 48.0f &&
+            reinterpret_cast<Enemy *>(rawEnemy)->movementBounds.lower.y + 48.0f &&
         angle < 0.0f)
     {
         angle = -angle;
     }
     if (reinterpret_cast<Enemy *>(rawEnemy)->position.operator float *()[1] >
-            RM_FLOAT(0x334c) - 48.0f &&
+            reinterpret_cast<Enemy *>(rawEnemy)->movementBounds.upper.y - 48.0f &&
         angle > 0.0f)
     {
         angle = -angle;
@@ -262,8 +253,9 @@ void __fastcall FUN_004224a0(u8 *rawEnemy, void *rawInstruction)
     {
         reinterpret_cast<Enemy *>(rawEnemy)->movementAngle = angle;
         reinterpret_cast<Enemy *>(rawEnemy)->speed = RM_READ_FLOAT(2);
-        *reinterpret_cast<u32 *>(rawEnemy + 0x3324) =
-            (*reinterpret_cast<u32 *>(rawEnemy + 0x3324) & 0xffffcfffU) | 0x1000U;
+        reinterpret_cast<Enemy *>(rawEnemy)->flags1 =
+            (reinterpret_cast<Enemy *>(rawEnemy)->flags1 & ~ENEMY_FLAG_MOVEMENT_MODE_MASK) |
+            0x1000U;
         reinterpret_cast<Enemy *>(rawEnemy)->movementDuration = 0;
         reinterpret_cast<Enemy *>(rawEnemy)->movementTimer = 0;
     }
@@ -462,13 +454,13 @@ void __fastcall SetPrimaryAnmScripts(
     EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction,
     i32 script0, i32 script1, i32 script2, i32 script3, i32 script4, i32 script5)
 {
-    *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x3332) = static_cast<i16>(script0);
-    *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x3338) = static_cast<i16>(script1);
-    *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x333a) = static_cast<i16>(script2);
-    *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x3334) = static_cast<i16>(script3);
-    *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x3336) = static_cast<i16>(script4);
-    *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x333c) = static_cast<i16>(script5);
-    *reinterpret_cast<u8 *>(DEP_BYTES(enemy) + 0x332e) = 0xff;
+    reinterpret_cast<Enemy *>(enemy)->anmScripts.idleInitial = static_cast<i16>(script0);
+    reinterpret_cast<Enemy *>(enemy)->anmScripts.moveLeft = static_cast<i16>(script1);
+    reinterpret_cast<Enemy *>(enemy)->anmScripts.moveRight = static_cast<i16>(script2);
+    reinterpret_cast<Enemy *>(enemy)->anmScripts.idleFromLeft = static_cast<i16>(script3);
+    reinterpret_cast<Enemy *>(enemy)->anmScripts.idleFromRight = static_cast<i16>(script4);
+    reinterpret_cast<Enemy *>(enemy)->anmScripts.special = static_cast<i16>(script5);
+    reinterpret_cast<Enemy *>(enemy)->anmDirection = 0xff;
 }
 
 
@@ -482,7 +474,8 @@ void __fastcall CallSubOnEnemy(
         reinterpret_cast<EclRawInstruction *>(
             reinterpret_cast<u8 *>(instruction) + instruction->nextOffset);
 
-    if (((*reinterpret_cast<u32 *>(DEP_BYTES(enemy) + 0x3324) >> 26) & 1) == 0)
+    if (((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+          ENEMY_FLAG_DISABLE_ECL_CALL_STACK_SHIFT) & 1) == 0)
     {
         reinterpret_cast<Enemy *>(enemy)->activeEclCallStack[
             reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth] =
@@ -497,7 +490,8 @@ void __fastcall CallSubOnEnemy(
         &reinterpret_cast<Enemy *>(enemy)->activeEclContext->callParameterInts[0]) =
         g_EclCallParameters;
 
-    if (((*reinterpret_cast<u32 *>(DEP_BYTES(enemy) + 0x3324) >> 26) & 1) == 0 &&
+    if (((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+          ENEMY_FLAG_DISABLE_ECL_CALL_STACK_SHIFT) & 1) == 0 &&
         reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth < 15)
     {
         ++reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth;
@@ -511,7 +505,8 @@ int __fastcall PopEclContext(
 {
     i32 contextIndex;
 
-    if (((*reinterpret_cast<u32 *>(DEP_BYTES(enemy) + 0x3324) >> 26) & 1) != 0)
+    if (((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+          ENEMY_FLAG_DISABLE_ECL_CALL_STACK_SHIFT) & 1) != 0)
         utils::DebugPrint("error : no Stack Ret\r\n");
 
     --reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth;
@@ -548,7 +543,8 @@ void __fastcall SetExtraAnmScript(
 
     if (DEP_READ_INT(enemy, instruction, 1) >= 0)
     {
-        if (((*reinterpret_cast<u32 *>(DEP_BYTES(enemy) + 0x3328) >> 2) & 1) != 0)
+        if (((reinterpret_cast<Enemy *>(enemy)->flags2 >>
+              ENEMY_FLAG2_ALTERNATE_ANM_BANK_SHIFT) & 1) != 0)
         {
             (*reinterpret_cast<AnmLoaded **>(
                 reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9dcef0))
@@ -602,7 +598,8 @@ EclOperands::EnemyOverlay *__fastcall SpawnChildStandard0041F110(
 
     child = reinterpret_cast<EclOperands::EnemyOverlay *>(&g_EnemyManager.enemies[480]);
     if (reinterpret_cast<Enemy *>(parent)->life > 0 &&
-        (((*reinterpret_cast<u32 *>(parent->bytes + 0x3324) >> 10) & 1) == 0))
+        (((reinterpret_cast<Enemy *>(parent)->flags1 >>
+           ENEMY_FLAG_SUPPRESS_DEATH_EFFECTS_SHIFT) & 1) == 0))
     {
         Float3 position;
         position.x = DEP_READ_FLOAT(parent, instruction, 1);
@@ -633,7 +630,8 @@ EclOperands::EnemyOverlay *__fastcall SpawnChildAlternate0041F280(
 
     child = reinterpret_cast<EclOperands::EnemyOverlay *>(&g_EnemyManager.enemies[480]);
     if (reinterpret_cast<Enemy *>(parent)->life > 0 &&
-        (((*reinterpret_cast<u32 *>(parent->bytes + 0x3324) >> 10) & 1) == 0))
+        (((reinterpret_cast<Enemy *>(parent)->flags1 >>
+           ENEMY_FLAG_SUPPRESS_DEATH_EFFECTS_SHIFT) & 1) == 0))
     {
         Float3 position;
         position.x = DEP_READ_FLOAT(parent, instruction, 1);
@@ -720,16 +718,18 @@ void __fastcall DispatchShotInstruction(u8 *enemy, RawInstruction *instruction)
     descriptor = &reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor;
 
     if (((args->transformFlags & BULLET_TRANSFORM_ONLY_WHEN_PLAYER_YOUKAI) != 0 &&
-         ((*reinterpret_cast<u32 *>(enemy + 0x3324) >> 11) & 1) == 0) ||
+         ((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+           ENEMY_FLAG_YOUKAI_ALIGNED_SHIFT) & 1) == 0) ||
         ((args->transformFlags & BULLET_TRANSFORM_ONLY_WHEN_PLAYER_HUMAN) != 0 &&
-         ((*reinterpret_cast<u32 *>(enemy + 0x3324) >> 11) & 1) != 0))
+         ((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+           ENEMY_FLAG_YOUKAI_ALIGNED_SHIFT) & 1) != 0))
         return;
-    if ((*reinterpret_cast<f32 *>(enemy + 0x3350) > 0.0f) &&
+    if ((reinterpret_cast<Enemy *>(enemy)->minimumPlayerDistanceSquared > 0.0f) &&
         (((reinterpret_cast<Enemy *>(enemy)->worldPosition.x - EclOperands::g_TargetPlayerPosition017D61AC.x) *
              (reinterpret_cast<Enemy *>(enemy)->worldPosition.x - EclOperands::g_TargetPlayerPosition017D61AC.x) +
          (reinterpret_cast<Enemy *>(enemy)->worldPosition.y - EclOperands::g_TargetPlayerPosition017D61AC.y) *
              (reinterpret_cast<Enemy *>(enemy)->worldPosition.y - EclOperands::g_TargetPlayerPosition017D61AC.y)) <
-        *reinterpret_cast<f32 *>(enemy + 0x3350)))
+        reinterpret_cast<Enemy *>(enemy)->minimumPlayerDistanceSquared))
         return;
 
             descriptor->position =
@@ -804,7 +804,7 @@ void __fastcall DispatchShotInstruction(u8 *enemy, RawInstruction *instruction)
 } // namespace EclRunHighProposal
 
 // FUNCTION: th08 0x423150
-void Enemy::FUN_00423150()
+void Enemy::UpdateShotAndAnm()
 {
     i32 direction;
     AnmLoaded *anm;
@@ -824,10 +824,10 @@ void Enemy::FUN_00423150()
             }
         }
 
-        if (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x3338) >= 0)
+        if (this->anmScripts.moveLeft >= 0)
         {
             direction = 0;
-            if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 18) & 1) == 0)
+            if (((this->flags1 >> ENEMY_FLAG_MIRROR_MOVEMENT_X_SHIFT) & 1) == 0)
             {
                 if (this->velocity.x < -0.01f)
                     direction = 1;
@@ -842,35 +842,35 @@ void Enemy::FUN_00423150()
                     direction = 1;
             }
 
-            if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x332e) != direction)
+            if (this->anmDirection != direction)
             {
-                anm = (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) >> 2) & 1) != 0)
+                anm = (((this->flags2 >> ENEMY_FLAG2_ALTERNATE_ANM_BANK_SHIFT) & 1) != 0)
                           ? *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9dcef0)
                           : *reinterpret_cast<AnmLoaded **>(reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9dceec);
 
                 switch (direction)
                 {
                 case 0:
-                    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x332e) == 0xff)
+                    if (this->anmDirection == 0xff)
                         anm->SetAndExecuteScriptIdx(
-                            &this->vm, *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x3332));
-                    else if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x332e) == 1)
+                            &this->vm, this->anmScripts.idleInitial);
+                    else if (this->anmDirection == 1)
                         anm->SetAndExecuteScriptIdx(
-                            &this->vm, *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x3334));
+                            &this->vm, this->anmScripts.idleFromLeft);
                     else
                         anm->SetAndExecuteScriptIdx(
-                            &this->vm, *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x3336));
+                            &this->vm, this->anmScripts.idleFromRight);
                     break;
                 case 1:
                     anm->SetAndExecuteScriptIdx(
-                        &this->vm, *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x3338));
+                        &this->vm, this->anmScripts.moveLeft);
                     break;
                 case 2:
                     anm->SetAndExecuteScriptIdx(
-                        &this->vm, *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x333a));
+                        &this->vm, this->anmScripts.moveRight);
                     break;
                 }
-                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x332e) = static_cast<u8>(direction);
+                this->anmDirection = static_cast<u8>(direction);
             }
         }
     }

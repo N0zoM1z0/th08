@@ -752,7 +752,8 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
     this->activeEnemyIndexSnapshot = reinterpret_cast<Enemy *>(this->activeEnemy)->enemyIndex;
     this->bonusProgress = bonus;
     this->scoreLimit = bonus;
-    if (((*reinterpret_cast<u32 *>(this->activeEnemy + 0x3324) >> 27) & 1) != 0)
+    if (((reinterpret_cast<Enemy *>(this->activeEnemy)->flags1 >>
+          ENEMY_FLAG_TIMEOUT_SPELL_SHIFT) & 1) != 0)
     {
         this->scoreLimit = 99999990;
     }
@@ -1053,7 +1054,8 @@ void Spellcard::EndSpell()
             {
                 catk = &g_GameManager.catkData[this->spellCardNumber];
                 this->bonusAward = this->bonusProgress;
-                if (((*reinterpret_cast<u32 *>(this->activeEnemy + 0x3324) >> 27) & 1) != 0)
+                if (((reinterpret_cast<Enemy *>(this->activeEnemy)->flags1 >>
+                      ENEMY_FLAG_TIMEOUT_SPELL_SHIFT) & 1) != 0)
                 {
                     this->pendingTimeOrbs = 700;
                 }
@@ -1245,7 +1247,7 @@ void Spellcard::EndSpell()
 
     if (this->activeEnemy != NULL)
     {
-        *reinterpret_cast<u32 *>(this->activeEnemy + 0x3324) &= 0xF7FFFFFF;
+        reinterpret_cast<Enemy *>(this->activeEnemy)->flags1 &= ~ENEMY_FLAG_TIMEOUT_SPELL;
     }
     this->activeEnemy = NULL;
     this->flags &= ~0x800;
@@ -1296,7 +1298,7 @@ i32 Spellcard::OnUpdateImpl()
 
     if ((this->flags & 1) != 0)
     {
-        if ((*reinterpret_cast<u32 *>(this->activeEnemy + 0x3324) & 1) == 0 ||
+        if ((reinterpret_cast<Enemy *>(this->activeEnemy)->flags1 & ENEMY_FLAG_ACTIVE) == 0 ||
             this->activeEnemyIndexSnapshot != reinterpret_cast<Enemy *>(this->activeEnemy)->enemyIndex)
         {
             this->spellcard_fun_00416af0();
@@ -1318,7 +1320,8 @@ i32 Spellcard::OnUpdateImpl()
         if (((this->flags >> 2) & 1) != 0)
         {
             if (((this->flags >> 11) & 1) == 0 &&
-                ((*reinterpret_cast<u32 *>(this->activeEnemy + 0x3324) >> 27) & 1) == 0)
+                ((reinterpret_cast<Enemy *>(this->activeEnemy)->flags1 >>
+                  ENEMY_FLAG_TIMEOUT_SPELL_SHIFT) & 1) == 0)
             {
                 this->bonusProgress -=
                     (i32)((f64)((u32)this->bonusCounter / 60u) * g_EclGameTimeScale);

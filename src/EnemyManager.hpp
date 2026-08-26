@@ -81,14 +81,161 @@ struct EnemyBulletRankInfluence
 };
 C_ASSERT(sizeof(EnemyBulletRankInfluence) == 0x10);
 
+enum EnemyFlag1Mask
+{
+    ENEMY_FLAG_ACTIVE = 1U << 0,
+    ENEMY_FLAG_BOSS = 1U << 1,
+    ENEMY_FLAG_COLLISION = 1U << 2,
+    ENEMY_FLAG_DAMAGEABLE = 1U << 3,
+    ENEMY_FLAG_NO_SPRITE = 1U << 4,
+    ENEMY_FLAG_HIDE_PRIMARY_ANM = 1U << 5,
+    ENEMY_FLAG_ACCEPTS_DAMAGE = 1U << 6,
+    ENEMY_FLAG_SPECIAL_INTERACTION = 1U << 7,
+    ENEMY_FLAG_LINKED_CHILD = 1U << 8,
+    ENEMY_FLAG_INHERIT_PARENT_POSITION = 1U << 9,
+    ENEMY_FLAG_SUPPRESS_DEATH_EFFECTS = 1U << 10,
+    ENEMY_FLAG_YOUKAI_ALIGNED = 1U << 11,
+    ENEMY_FLAG_MOVEMENT_MODE_MASK = 3U << 12,
+    ENEMY_FLAG_MOVEMENT_EASING_MASK = 7U << 14,
+    ENEMY_FLAG_DEFER_BULLET_PATTERN = 1U << 17,
+    ENEMY_FLAG_MIRROR_MOVEMENT_X = 1U << 18,
+    ENEMY_FLAG_CLAMP_POSITION = 1U << 19,
+    ENEMY_FLAG_DEATH_MODE_MASK = 7U << 20,
+    ENEMY_FLAG_PERSIST_AFTER_DEATH = 1U << 23,
+    ENEMY_FLAG_HAS_BEEN_IN_BOUNDS = 1U << 24,
+    ENEMY_FLAG_ROTATE_ANM_WITH_MOVEMENT = 1U << 25,
+    ENEMY_FLAG_DISABLE_ECL_CALL_STACK = 1U << 26,
+    ENEMY_FLAG_TIMEOUT_SPELL = 1U << 27,
+    ENEMY_FLAG_ALLOW_OFFSCREEN = 1U << 28,
+    ENEMY_FLAG_SKIP_MOVEMENT = 1U << 29,
+    ENEMY_FLAG_PAUSE_TIMER = 1U << 30,
+    ENEMY_FLAG_NO_DAMAGE_DURING_STOP = 1U << 31
+};
+
+enum EnemyFlag1Shift
+{
+    ENEMY_FLAG_ACTIVE_SHIFT = 0,
+    ENEMY_FLAG_BOSS_SHIFT = 1,
+    ENEMY_FLAG_COLLISION_SHIFT = 2,
+    ENEMY_FLAG_DAMAGEABLE_SHIFT = 3,
+    ENEMY_FLAG_NO_SPRITE_SHIFT = 4,
+    ENEMY_FLAG_HIDE_PRIMARY_ANM_SHIFT = 5,
+    ENEMY_FLAG_ACCEPTS_DAMAGE_SHIFT = 6,
+    ENEMY_FLAG_SPECIAL_INTERACTION_SHIFT = 7,
+    ENEMY_FLAG_LINKED_CHILD_SHIFT = 8,
+    ENEMY_FLAG_INHERIT_PARENT_POSITION_SHIFT = 9,
+    ENEMY_FLAG_SUPPRESS_DEATH_EFFECTS_SHIFT = 10,
+    ENEMY_FLAG_YOUKAI_ALIGNED_SHIFT = 11,
+    ENEMY_FLAG_MOVEMENT_MODE_SHIFT = 12,
+    ENEMY_FLAG_MOVEMENT_EASING_SHIFT = 14,
+    ENEMY_FLAG_DEFER_BULLET_PATTERN_SHIFT = 17,
+    ENEMY_FLAG_MIRROR_MOVEMENT_X_SHIFT = 18,
+    ENEMY_FLAG_CLAMP_POSITION_SHIFT = 19,
+    ENEMY_FLAG_DEATH_MODE_SHIFT = 20,
+    ENEMY_FLAG_HAS_BEEN_IN_BOUNDS_SHIFT = 24,
+    ENEMY_FLAG_ROTATE_ANM_WITH_MOVEMENT_SHIFT = 25,
+    ENEMY_FLAG_DISABLE_ECL_CALL_STACK_SHIFT = 26,
+    ENEMY_FLAG_TIMEOUT_SPELL_SHIFT = 27,
+    ENEMY_FLAG_ALLOW_OFFSCREEN_SHIFT = 28,
+    ENEMY_FLAG_SKIP_MOVEMENT_SHIFT = 29,
+    ENEMY_FLAG_PAUSE_TIMER_SHIFT = 30,
+    ENEMY_FLAG_NO_DAMAGE_DURING_STOP_SHIFT = 31
+};
+
+struct EnemyFlag1Bits
+{
+    u32 active : 1;
+    u32 boss : 1;
+    u32 collision : 1;
+    u32 damageable : 1;
+    u32 noSprite : 1;
+    u32 hidePrimaryAnm : 1;
+    u32 acceptsDamage : 1;
+    u32 specialInteraction : 1;
+    u32 linkedChild : 1;
+    u32 inheritParentPosition : 1;
+    u32 suppressDeathEffects : 1;
+    u32 youkaiAligned : 1;
+    u32 movementMode : 2;
+    u32 movementEasing : 3;
+    u32 deferBulletPattern : 1;
+    u32 mirrorMovementX : 1;
+    u32 clampPosition : 1;
+    u32 deathMode : 3;
+    u32 persistAfterDeath : 1;
+    u32 hasBeenInBounds : 1;
+    u32 rotateAnmWithMovement : 1;
+    u32 disableEclCallStack : 1;
+    u32 timeoutSpell : 1;
+    u32 allowOffscreen : 1;
+    u32 skipMovement : 1;
+    u32 pauseTimer : 1;
+    u32 noDamageDuringStop : 1;
+};
+C_ASSERT(sizeof(EnemyFlag1Bits) == 4);
+
+enum EnemyFlag2Mask
+{
+    ENEMY_FLAG2_FORM_EFFECT = 1U << 1,
+    ENEMY_FLAG2_ALTERNATE_ANM_BANK = 1U << 2,
+    ENEMY_FLAG2_DEATH_LATCH = 1U << 3,
+    ENEMY_FLAG2_DAMAGE_FEEDBACK_MASK = 3U << 4,
+    ENEMY_FLAG2_NO_DEATH = 1U << 6,
+    ENEMY_FLAG2_FORCE_PAUSE = 1U << 7,
+    ENEMY_FLAG2_EXTRA_VM_FIXED_OFFSET = 1U << 8
+};
+
+enum EnemyFlag2Shift
+{
+    ENEMY_FLAG2_FORM_EFFECT_SHIFT = 1,
+    ENEMY_FLAG2_ALTERNATE_ANM_BANK_SHIFT = 2,
+    ENEMY_FLAG2_DEATH_LATCH_SHIFT = 3,
+    ENEMY_FLAG2_DAMAGE_FEEDBACK_SHIFT = 4,
+    ENEMY_FLAG2_NO_DEATH_SHIFT = 6,
+    ENEMY_FLAG2_FORCE_PAUSE_SHIFT = 7,
+    ENEMY_FLAG2_EXTRA_VM_FIXED_OFFSET_SHIFT = 8
+};
+
+struct EnemyFlag2Bits
+{
+    u32 unknown00 : 1;
+    u32 formEffect : 1;
+    u32 alternateAnmBank : 1;
+    u32 deathLatch : 1;
+    u32 damageFeedbackLevel : 2;
+    u32 noDeath : 1;
+    u32 forcePause : 1;
+    u32 extraVmFixedOffset : 1;
+    u32 unknown09_31 : 23;
+};
+C_ASSERT(sizeof(EnemyFlag2Bits) == 4);
+
+struct EnemyAnmScripts
+{
+    i16 idleInitial;
+    i16 idleFromLeft;
+    i16 idleFromRight;
+    i16 moveLeft;
+    i16 moveRight;
+    i16 special;
+};
+C_ASSERT(sizeof(EnemyAnmScripts) == 0xc);
+
+struct EnemyMovementBounds
+{
+    Float2 lower;
+    Float2 upper;
+};
+C_ASSERT(sizeof(EnemyMovementBounds) == 0x10);
+
 void __fastcall FUN_0042bc50(void *self);
 
 struct Enemy
 {
     Enemy();
-    void FUN_0042b370(i32 amount);
-    void FUN_0042bcf0();
-    void FUN_0042e010();
+    void ApplyDamageToParent(i32 amount);
+    void Despawn();
+    void UpdateEffects();
 
     unknown_fields(0x0, 0xc);
     AnmVm vm;
@@ -142,9 +289,28 @@ struct Enemy
     i32 shootIntervalFrames;
     ZunTimer shootIntervalTimer;
     BulletSpawnDescriptor laserSpawnDescriptor;
-    unknown_fields(0x3280, 0x98);
+    unknown_fields(0x3280, 0x84);
+    i32 itemDropType;
+    i32 pointItemDropCount;
+    i32 powerOrPointItemDropCount;
+    i8 deathAnm1;
+    u8 deathAnm2;
+    u8 deathAnm3;
+    u8 bossSlot;
+    u8 damageFlashTimer;
+    unknown_fields(0x3315, 3);
     ZunTimer timer3318;
-    unknown_fields(0x3324, 0x30);
+    u32 flags1;
+    u32 flags2;
+    unknown_fields(0x332c, 2);
+    u8 anmDirection;
+    u8 drawGroup;
+    u8 eclDifficultyMaskOverride;
+    unknown_fields(0x3331, 1);
+    EnemyAnmScripts anmScripts;
+    unknown_fields(0x333e, 2);
+    EnemyMovementBounds movementBounds;
+    f32 minimumPlayerDistanceSquared;
     i32 lastDamage;
     i32 lifeCallbackThresholds[4];
     i32 lifeCallbackSubIds[4];
@@ -160,18 +326,18 @@ struct Enemy
 
     // Target-observed RunEcl post-dispatch calls.  Both receive the current
     // enemy in ECX and take no explicit arguments.
-    void FUN_0042a820();
+    void ReleaseAttachedEffects();
     void UpdateMovement();
-    void FUN_00423150();
-    void FUN_0042bc90();
+    void UpdateShotAndAnm();
+    void ReleaseChildEclBlocks();
     void enemy_fun_00415c80();
-    void FUN_0042b2f0();
-    void FUN_0042bea0(i32 mode);
-    i32 FUN_0042b490();
-    i32 FUN_0042b930();
+    void DetachFromParentChain();
+    void DropItems(i32 mode);
+    i32 HandleLifeCallback();
+    i32 HandleTimerCallback();
     void ClampPosition();
-    void FUN_0042c290(Float3 *position, Float3 *size);
-    void FUN_0042c420();
+    void CheckPlayerCollision(Float3 *position, Float3 *size);
+    void UpdateYoukaiAlignment();
     void IntegrateVelocity();
 };
 C_ASSERT(sizeof(Enemy) == 0x53d0);
@@ -222,6 +388,21 @@ C_ASSERT(offsetof(Enemy, pendingShotInstruction) == 0x3034);
 C_ASSERT(offsetof(Enemy, shootIntervalFrames) == 0x3060);
 C_ASSERT(offsetof(Enemy, shootIntervalTimer) == 0x3064);
 C_ASSERT(offsetof(Enemy, laserSpawnDescriptor) == 0x3070);
+C_ASSERT(offsetof(Enemy, itemDropType) == 0x3304);
+C_ASSERT(offsetof(Enemy, pointItemDropCount) == 0x3308);
+C_ASSERT(offsetof(Enemy, powerOrPointItemDropCount) == 0x330c);
+C_ASSERT(offsetof(Enemy, deathAnm1) == 0x3310);
+C_ASSERT(offsetof(Enemy, bossSlot) == 0x3313);
+C_ASSERT(offsetof(Enemy, damageFlashTimer) == 0x3314);
+C_ASSERT(offsetof(Enemy, timer3318) == 0x3318);
+C_ASSERT(offsetof(Enemy, flags1) == 0x3324);
+C_ASSERT(offsetof(Enemy, flags2) == 0x3328);
+C_ASSERT(offsetof(Enemy, anmDirection) == 0x332e);
+C_ASSERT(offsetof(Enemy, drawGroup) == 0x332f);
+C_ASSERT(offsetof(Enemy, eclDifficultyMaskOverride) == 0x3330);
+C_ASSERT(offsetof(Enemy, anmScripts) == 0x3332);
+C_ASSERT(offsetof(Enemy, movementBounds) == 0x3340);
+C_ASSERT(offsetof(Enemy, minimumPlayerDistanceSquared) == 0x3350);
 C_ASSERT(offsetof(Enemy, lastDamage) == 0x3354);
 C_ASSERT(offsetof(Enemy, lifeCallbackThresholds) == 0x3358);
 C_ASSERT(offsetof(Enemy, lifeCallbackSubIds) == 0x3368);

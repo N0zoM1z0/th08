@@ -977,3 +977,89 @@ falls from 1,344 to 1,295 raw-member candidates; anonymous identifiers remain
 not completion percentages.  The next coherent Enemy/ECL family is the
 control flags at `+0x3324/+0x3328` and their adjacent boundary/presentation
 state.
+
+### Enemy control and presentation state — 2026-08-26
+
+Scope: `EclManager::RunEcl @ 0x004184B0`,
+`Enemy::SetPrimaryAnmScripts @ 0x00421DE0`, the shot dispatcher at
+`0x00422720`, `Enemy::UpdateShotAndAnm @ 0x00423150`, initialization and both
+spawn paths at `0x00429E00/0x0042A4E0/0x0042A680`, the life/timer callbacks at
+`0x0042B490/0x0042B930`, despawn/item-drop/bounds/collision/alignment/update/
+draw paths at `0x0042BCF0/0x0042BEA0/0x0042C180/0x0042C290/0x0042C420/
+0x0042C660/0x0042E010/0x0042E140`, and all Player, Bomb, Spellcard, Effect,
+timeline, extension, helper, and operand-resolver consumers of
+`Enemy + 0x3304..+0x3353`.
+
+Observed: `itemDropType @ +0x3304` selects an explicit item for nonnegative
+values, schedules the normal drop policy at `-1`, and suppresses it at `-2`.
+`pointItemDropCount @ +0x3308` and `powerOrPointItemDropCount @ +0x330C`
+control the two repeated drop groups.  The latter emits small power below the
+Player power cap and point items otherwise.  Three death-animation bytes,
+`bossSlot`, and the one-byte `damageFlashTimer` retain their target widths.
+
+The two dword flag owners at `+0x3324/+0x3328` now provide named masks and
+shift constants for every target-observed role.  These include active/Boss,
+collision and damage gates, sprite/primary-ANM visibility, linked-child and
+parent-position behavior, death-effect and death-mode policy, human/youkai
+alignment, movement mode/easing/mirroring/clamping, deferred shot dispatch,
+timer and movement pauses, offscreen persistence, timeout-spell state, and
+the smaller secondary bank/form/death/damage-feedback controls.  Bits without
+an authored producer or consumer remain unnamed.
+
+`anmDirection @ +0x332E` and `drawGroup @ +0x332F` drive animation selection
+and draw routing.  `eclDifficultyMaskOverride @ +0x3330` gates ECL execution.
+The six-script `EnemyAnmScripts @ +0x3332` owner records initial idle, the
+left/right idle returns, left/right movement, and the special script.
+`movementBounds @ +0x3340` supplies asserted lower/upper `Float2` limits, and
+`minimumPlayerDistanceSquared @ +0x3350` is written by ECL opcode 82 after
+squaring its distance operand and suppresses shot dispatch while the Player
+is inside that radius.
+
+Corroborated: TH06 preserves the earlier item/death/Boss/timer/flag sequence,
+the default/left/right animation-script family, and lower/upper movement
+limits.  TH08 target producers and consumers independently establish every
+field offset, width, and role used here; no TH06 offset or extent is imported.
+
+Inference and unknowns: `hidePrimaryAnm` and `specialInteraction` deliberately
+use behavior-neutral names because the target establishes their gates but not
+a narrower game-design label.  `timer3318`, bytes `+0x3315..+0x3317`,
+`+0x332C..+0x332D`, `+0x3331`, and `+0x333E..+0x333F`, plus every unobserved
+flag bit, remain explicitly unknown.  Splitting one broad opaque range into
+those retained gaps increases the router's opaque-storage count without
+adding unknown bytes.
+
+Layout: assertions pin every recovered scalar, both flag dwords, the
+six-word script table, both bounds vectors, and the unchanged
+`sizeof(Enemy) == 0x53D0`.  Twelve target-backed anonymous methods are now
+tracked consistently as `ReleaseAttachedEffects`, `UpdateShotAndAnm`,
+`DetachFromParentChain`, `ApplyDamageToParent`, `HandleLifeCallback`,
+`HandleTimerCallback`, `ReleaseChildEclBlocks`, `Despawn`, `DropItems`,
+`CheckPlayerCollision`, `UpdateYoukaiAlignment`, and `UpdateEffects`.
+
+VC7 source-shape note: target reads of individual flag bits use a right shift
+followed by `& 1`.  Replacing them with semantically equivalent mask tests
+changed 26 accepted units under VC7.  Shared named shift constants preserve
+that observed expression shape; mask constants remain natural for writes and
+multi-bit updates.
+
+VC7 oracle: post-source-shape focused replay passed **328 / 328** accepted
+units.  Target-pinned packets for `OnUpdate`, `ClampPosition`, and
+`SetPrimaryAnmScripts` independently replayed exact.  The required non-reuse
+`verify-exact-units.py --all --json` cold-built all 75 configured objects and
+passed **1,105 / 1,105** with no failures.  A subsequent normal VC7 production
+image linked successfully.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiled and linked
+the complete i386 target, and `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 plus all
+fixed target-owned layout symbols.  No isolated automated Enemy-control
+gameplay smoke exists, so no runtime smoke is claimed.
+
+Result: all target-backed raw accesses in the bounded control/presentation
+range are routed through asserted owners.  The semantic router falls from
+1,295 to 1,185 raw-member candidates and anonymous identifiers from 600 to
+593; opaque-storage candidates rise from 70 to 73 solely because the broad
+unknown span was split into three explicit retained gaps.  These are routing
+aids, not completion percentages.  The next coherent Enemy/ECL family is the
+trail/effect/death tail at `+0x534C..+0x53CC`, followed by the EnemyManager
+pool/list owners needed to close the orchestration milestone.

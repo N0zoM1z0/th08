@@ -90,7 +90,7 @@ void __fastcall FUN_00423400(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     }
     else if (reinterpret_cast<Enemy *>(enemy)->position.y >= 480.0f)
     {
-        *reinterpret_cast<u32 *>(enemy->bytes + 0x3324) &= ~0x10000000U;
+        reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_ALLOW_OFFSCREEN;
     }
 
     if (changed)
@@ -666,7 +666,7 @@ void __fastcall EclExIns::ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, 
         while (*reinterpret_cast<EclOperands::EnemyOverlay **>(setCursor->bytes + 0x8) != NULL)
         {
             setCursor = *reinterpret_cast<EclOperands::EnemyOverlay **>(setCursor->bytes + 0x8);
-            *reinterpret_cast<u32 *>(setCursor->bytes + 0x3328) |= 0x80U;
+            reinterpret_cast<Enemy *>(setCursor)->flags2 |= ENEMY_FLAG2_FORCE_PAUSE;
         }
         g_EclExBarrierRenderState.vm0.SetInterrupt(2);
         g_EclExBarrierRenderState.vm1.SetInterrupt(2);
@@ -677,7 +677,7 @@ void __fastcall EclExIns::ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, 
         while (*reinterpret_cast<EclOperands::EnemyOverlay **>(clearCursor->bytes + 0x8) != NULL)
         {
             clearCursor = *reinterpret_cast<EclOperands::EnemyOverlay **>(clearCursor->bytes + 0x8);
-            *reinterpret_cast<u32 *>(clearCursor->bytes + 0x3328) &= ~0x80U;
+            reinterpret_cast<Enemy *>(clearCursor)->flags2 &= ~ENEMY_FLAG2_FORCE_PAUSE;
         }
         g_EclExBarrierRenderState.vm0.SetInterrupt(1);
         g_EclExBarrierRenderState.vm1.SetInterrupt(1);

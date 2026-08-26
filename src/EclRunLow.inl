@@ -114,48 +114,6 @@ struct SpawnedEffectAnmVm
     void SetInterrupt(i16 interrupt);
 };
 
-// Observed first flag word at Enemy +0x3324.  Opcode 90..92 assign bit 11
-// from Player::IsYoukai through VC7's bitfield-assignment path; opcodes 173
-// and 183 likewise assign bits 30 and 31 as one-bit fields.  Preserving the
-// bitfield is necessary both for semantics and for the call-result stack home.
-struct LinkedChildFlags1
-{
-    u32 unknown00 : 2;
-    u32 effectMirrored : 1;
-    u32 op79Bit3 : 1;
-    u32 op79Bit4 : 1;
-    u32 unknown05 : 1;
-    u32 op79Bit6 : 1;
-    u32 op156Bit7 : 1;
-    u32 linkedChild : 1;
-    u32 inheritParentPosition : 1;
-    u32 unknown0A : 1;
-    u32 isYoukai : 1;
-    u32 unknown0C_13 : 8;
-    u32 op129Bits20_22 : 3;
-    u32 unknown17_18 : 2;
-    u32 op145Bit25 : 1;
-    u32 op151Bit26 : 1;
-    u32 op155Bit27 : 1;
-    u32 op79Bit28 : 1;
-    u32 unknown1D : 1;
-    u32 pauseTimer : 1;
-    u32 noDamageDuringStop : 1;
-};
-C_ASSERT(sizeof(LinkedChildFlags1) == 4);
-
-struct Op79Flags2
-{
-    u32 unknown00 : 1;
-    u32 op83Bit1 : 1;
-    u32 unknown02_05 : 4;
-    u32 op79Bit6 : 1;
-    u32 unknown07 : 1;
-    u32 op182Bit8 : 1;
-    u32 unknown09_31 : 23;
-};
-C_ASSERT(sizeof(Op79Flags2) == 4);
-
 void __fastcall ApplyInterpolationOperation(
     EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction);
 void __fastcall InstallInterpolationSlot(
@@ -348,7 +306,7 @@ static EclRawInstruction *__fastcall CompareOperands(
 
 inline void SetMovementState1(EclOperands::EnemyOverlay *enemy)
 {
-    U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & 0xFFFFCFFFU) | 0x1000U;
+    reinterpret_cast<Enemy *>(enemy)->flags1 = (reinterpret_cast<Enemy *>(enemy)->flags1 & 0xFFFFCFFFU) | 0x1000U;
 }
 
 inline void ResetMovementTimer(EclOperands::EnemyOverlay *enemy,
@@ -382,10 +340,10 @@ inline void BeginTimedMoveAtAngle(EclOperands::EnemyOverlay *enemy,
     ResetMovementTimer(enemy, services, ReadInt(enemy, instruction, 0));
 
     const i32 mode = ReadInt(enemy, instruction, 1);
-    U32At(enemy, 0x3324) =
-        (U32At(enemy, 0x3324) & 0xFFFE3FFFU) | ((mode & 7) << 14);
-    U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & 0xFFFFCFFFU) | 0x2000U;
-    if (U32At(enemy, 0x3324) & 0x40000U)
+    reinterpret_cast<Enemy *>(enemy)->flags1 =
+        (reinterpret_cast<Enemy *>(enemy)->flags1 & 0xFFFE3FFFU) | ((mode & 7) << 14);
+    reinterpret_cast<Enemy *>(enemy)->flags1 = (reinterpret_cast<Enemy *>(enemy)->flags1 & 0xFFFFCFFFU) | 0x2000U;
+    if (reinterpret_cast<Enemy *>(enemy)->flags1 & 0x40000U)
         reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.x =
             -reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.x;
 }
@@ -696,14 +654,14 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
             ->SetAndExecuteScriptIdx(
             reinterpret_cast<AnmVm *>(Bytes(enemy) + 0xC),
             ReadInt(enemy, instruction, 0));
-        U32At(enemy, 0x3328) &= ~4U;
+        reinterpret_cast<Enemy *>(enemy)->flags2 &= ~4U;
         break;
     case 55:
         lhsInt = ReadInt(enemy, instruction, 0);
         SetPrimaryAnmScripts(enemy, instruction, lhsInt, lhsInt + 1,
                              lhsInt + 2, lhsInt + 3, lhsInt + 4,
                              lhsInt + 5);
-        U32At(enemy, 0x3328) &= ~4U;
+        reinterpret_cast<Enemy *>(enemy)->flags2 &= ~4U;
         break;
     case 56:
         SetPrimaryAnmScripts(enemy, instruction,
@@ -713,11 +671,11 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                              ReadInt(enemy, instruction, 3),
                              ReadInt(enemy, instruction, 4),
                              ReadInt(enemy, instruction, 5));
-        U32At(enemy, 0x3328) &= ~4U;
+        reinterpret_cast<Enemy *>(enemy)->flags2 &= ~4U;
         break;
     case 57:
         SetExtraAnmScript(enemy, instruction);
-        U32At(enemy, 0x3328) &= ~4U;
+        reinterpret_cast<Enemy *>(enemy)->flags2 &= ~4U;
         break;
     case 58:
         (*reinterpret_cast<AnmLoaded **>(
@@ -725,13 +683,13 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
             ->SetAndExecuteScriptIdx(
             reinterpret_cast<AnmVm *>(Bytes(enemy) + 0xC),
             ReadInt(enemy, instruction, 0));
-        U32At(enemy, 0x3328) |= 4U;
+        reinterpret_cast<Enemy *>(enemy)->flags2 |= 4U;
         break;
     case 59:
         lhsInt = ReadInt(enemy, instruction, 0);
         SetPrimaryAnmScripts(enemy, instruction, lhsInt, lhsInt + 1, lhsInt + 2,
                              lhsInt + 3, lhsInt + 4, lhsInt + 5);
-        U32At(enemy, 0x3328) |= 4U;
+        reinterpret_cast<Enemy *>(enemy)->flags2 |= 4U;
         break;
     case 60:
         SetPrimaryAnmScripts(enemy, instruction,
@@ -741,20 +699,20 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                              ReadInt(enemy, instruction, 3),
                              ReadInt(enemy, instruction, 4),
                              ReadInt(enemy, instruction, 5));
-        U32At(enemy, 0x3328) |= 4U;
+        reinterpret_cast<Enemy *>(enemy)->flags2 |= 4U;
         break;
     case 61:
-        U32At(enemy, 0x3328) |= 4U;
+        reinterpret_cast<Enemy *>(enemy)->flags2 |= 4U;
         SetExtraAnmScript(enemy, instruction);
         break;
     case 62:
-        if (((U32At(enemy, 0x3328) >> 2) & 1U) == 0)
+        if (((reinterpret_cast<Enemy *>(enemy)->flags2 >> 2) & 1U) == 0)
         {
             (*reinterpret_cast<AnmLoaded **>(
                 reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCEEC))
                 ->SetAndExecuteScriptIdx(
                 reinterpret_cast<AnmVm *>(Bytes(enemy) + 0xC),
-                I16At(enemy, 0x333C));
+                reinterpret_cast<Enemy *>(enemy)->anmScripts.special);
         }
         else
         {
@@ -762,7 +720,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                 reinterpret_cast<u8 *>(&g_EnemyManager) + 0x9DCEF0))
                 ->SetAndExecuteScriptIdx(
                 reinterpret_cast<AnmVm *>(Bytes(enemy) + 0xC),
-                I16At(enemy, 0x333C));
+                reinterpret_cast<Enemy *>(enemy)->anmScripts.special);
         }
         break;
 
@@ -778,7 +736,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     case 65:
         reinterpret_cast<Enemy *>(enemy)->movementAngle = AddNormalizeAngle(((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0))), 0.0f);
         reinterpret_cast<Enemy *>(enemy)->speed = ((instruction->operandFlags & (1U << 1)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & ~0x3000U) | 0x1000U;
+        reinterpret_cast<Enemy *>(enemy)->flags1 = (reinterpret_cast<Enemy *>(enemy)->flags1 & ~0x3000U) | 0x1000U;
         reinterpret_cast<Enemy *>(enemy)->movementDuration = 0;
         reinterpret_cast<Enemy *>(enemy)->movementTimer = 0;
         break;
@@ -787,7 +745,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         {
             reinterpret_cast<Enemy *>(enemy)->movementAngle = AddNormalizeAngle(((instruction->operandFlags & (1U << 2)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))), 0.0f);
             reinterpret_cast<Enemy *>(enemy)->speed = ((instruction->operandFlags & (1U << 3)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
-            U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & 0xFFFFCFFFU) | 0x1000U;
+            reinterpret_cast<Enemy *>(enemy)->flags1 = (reinterpret_cast<Enemy *>(enemy)->flags1 & 0xFFFFCFFFU) | 0x1000U;
             reinterpret_cast<Enemy *>(enemy)->movementDuration = 0;
             reinterpret_cast<Enemy *>(enemy)->movementTimer = 0;
         }
@@ -819,8 +777,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                     g_Player.FUN_0044c1b0(
                         &reinterpret_cast<Enemy *>(enemy)->position));
             reinterpret_cast<Enemy *>(enemy)->speed = ((instruction->operandFlags & (1U << 3)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
-            U32At(enemy, 0x3324) =
-                (U32At(enemy, 0x3324) & 0xFFFFCFFFU) | 0x1000U;
+            reinterpret_cast<Enemy *>(enemy)->flags1 =
+                (reinterpret_cast<Enemy *>(enemy)->flags1 & 0xFFFFCFFFU) | 0x1000U;
             // The target resolves operand 0 again before timer assignment.
             reinterpret_cast<Enemy *>(enemy)->movementTimer =
                 (reinterpret_cast<Enemy *>(enemy)->movementDuration = ReadInt(enemy, instruction, 0));
@@ -833,11 +791,11 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
 
     case 70:
         reinterpret_cast<Enemy *>(enemy)->angularVelocity = ((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0)));
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & 0xFFFFCFFFU) | 0x1000U;
+        reinterpret_cast<Enemy *>(enemy)->flags1 = (reinterpret_cast<Enemy *>(enemy)->flags1 & 0xFFFFCFFFU) | 0x1000U;
         break;
     case 71:
         reinterpret_cast<Enemy *>(enemy)->acceleration = ((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0)));
-        U32At(enemy, 0x3324) = (U32At(enemy, 0x3324) & 0xFFFFCFFFU) | 0x1000U;
+        reinterpret_cast<Enemy *>(enemy)->flags1 = (reinterpret_cast<Enemy *>(enemy)->flags1 & 0xFFFFCFFFU) | 0x1000U;
         break;
     case 72:
         reinterpret_cast<Enemy *>(enemy)->movementTimer =
@@ -858,7 +816,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         reinterpret_cast<Enemy *>(enemy)->radialVelocity = ((instruction->operandFlags & (1U << 6))
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 6)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 6)));
-        U32At(enemy, 0x3324) |= 0x3000U;
+        reinterpret_cast<Enemy *>(enemy)->flags1 |= 0x3000U;
         break;
     case 73:
         reinterpret_cast<Enemy *>(enemy)->movementTimer =
@@ -876,30 +834,30 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         reinterpret_cast<Enemy *>(enemy)->radialVelocity = ((instruction->operandFlags & (1U << 3))
                 ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3)))
                 : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
-        U32At(enemy, 0x3324) |= 0x3000U;
+        reinterpret_cast<Enemy *>(enemy)->flags1 |= 0x3000U;
         break;
     case 74:
         reinterpret_cast<Enemy *>(enemy)->movementTimer =
             (reinterpret_cast<Enemy *>(enemy)->movementDuration = ReadInt(enemy, instruction, 0));
         reinterpret_cast<Enemy *>(enemy)->orbitAngularVelocity = ((instruction->operandFlags & (1U << 1)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
         reinterpret_cast<Enemy *>(enemy)->radialVelocity = ((instruction->operandFlags & (1U << 2)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 2)));
-        U32At(enemy, 0x3324) |= 0x3000U;
+        reinterpret_cast<Enemy *>(enemy)->flags1 |= 0x3000U;
         break;
     case 75:
-        F32At(enemy, 0x3340) = ((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0)));
-        F32At(enemy, 0x3344) = ((instruction->operandFlags & (1U << 1))
+        reinterpret_cast<Enemy *>(enemy)->movementBounds.lower.x = ((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0)));
+        reinterpret_cast<Enemy *>(enemy)->movementBounds.lower.y = ((instruction->operandFlags & (1U << 1))
                 ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
                 : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
-        F32At(enemy, 0x3348) = ((instruction->operandFlags & (1U << 2))
+        reinterpret_cast<Enemy *>(enemy)->movementBounds.upper.x = ((instruction->operandFlags & (1U << 2))
                 ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
                 : *reinterpret_cast<f32 *>(&RawInt(instruction, 2)));
-        F32At(enemy, 0x334C) = ((instruction->operandFlags & (1U << 3))
+        reinterpret_cast<Enemy *>(enemy)->movementBounds.upper.y = ((instruction->operandFlags & (1U << 3))
                 ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3)))
                 : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
-        U32At(enemy, 0x3324) |= 0x80000U;
+        reinterpret_cast<Enemy *>(enemy)->flags1 |= 0x80000U;
         break;
     case 76:
-        U32At(enemy, 0x3324) &= ~0x80000U;
+        reinterpret_cast<Enemy *>(enemy)->flags1 &= ~0x80000U;
         break;
     case 77:
         reinterpret_cast<Enemy *>(enemy)->hitboxDimensions.x = ((instruction->operandFlags & (1U << 0))
@@ -920,52 +878,52 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
 
     case 79:
         lhsInt = ReadInt(enemy, instruction, 0);
-        reinterpret_cast<LinkedChildFlags1 *>(Bytes(enemy) + 0x3324)->op79Bit6 = (lhsInt & 1) == 0;
-        reinterpret_cast<LinkedChildFlags1 *>(Bytes(enemy) + 0x3324)->effectMirrored = (lhsInt & 2) == 0;
-        reinterpret_cast<LinkedChildFlags1 *>(Bytes(enemy) + 0x3324)->op79Bit3 = (lhsInt & 4) == 0;
-        reinterpret_cast<LinkedChildFlags1 *>(Bytes(enemy) + 0x3324)->op79Bit4 = (lhsInt & 8) != 0;
-        reinterpret_cast<LinkedChildFlags1 *>(Bytes(enemy) + 0x3324)->op79Bit28 = (lhsInt & 0x10) != 0;
-        reinterpret_cast<Op79Flags2 *>(Bytes(enemy) + 0x3328)->op79Bit6 = (lhsInt & 0x20) != 0;
+        reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(enemy)->flags1)->acceptsDamage = (lhsInt & 1) == 0;
+        reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(enemy)->flags1)->collision = (lhsInt & 2) == 0;
+        reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(enemy)->flags1)->damageable = (lhsInt & 4) == 0;
+        reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(enemy)->flags1)->noSprite = (lhsInt & 8) != 0;
+        reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(enemy)->flags1)->allowOffscreen = (lhsInt & 0x10) != 0;
+        reinterpret_cast<EnemyFlag2Bits *>(&reinterpret_cast<Enemy *>(enemy)->flags2)->noDeath = (lhsInt & 0x20) != 0;
         break;
 
     case 80:
         lhsInt = ReadInt(enemy, instruction, 0);
-        if (lhsInt & 1) U32At(enemy, 0x3324) &= ~0x40U;
+        if (lhsInt & 1) reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_ACCEPTS_DAMAGE;
         if (lhsInt & 2)
         {
-            U32At(enemy, 0x3324) &= ~0x4U;
+            reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_COLLISION;
             if (PointerAt(enemy, 0x53C8))
                 *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(PointerAt(enemy, 0x53C8)) + 0x1F8) &= ~0x20000U;
         }
-        if (lhsInt & 4) U32At(enemy, 0x3324) &= ~0x8U;
-        if (lhsInt & 8) U32At(enemy, 0x3324) |= 0x10U;
-        if (lhsInt & 0x10) U32At(enemy, 0x3324) |= 0x10000000U;
-        if (lhsInt & 0x20) U32At(enemy, 0x3328) |= 0x40U;
+        if (lhsInt & 4) reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_DAMAGEABLE;
+        if (lhsInt & 8) reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_NO_SPRITE;
+        if (lhsInt & 0x10) reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_ALLOW_OFFSCREEN;
+        if (lhsInt & 0x20) reinterpret_cast<Enemy *>(enemy)->flags2 |= ENEMY_FLAG2_NO_DEATH;
         break;
 
     case 81:
         lhsInt = ReadInt(enemy, instruction, 0);
-        if (lhsInt & 1) U32At(enemy, 0x3324) |= 0x40U;
+        if (lhsInt & 1) reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_ACCEPTS_DAMAGE;
         if (lhsInt & 2)
         {
-            U32At(enemy, 0x3324) |= 0x4U;
+            reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_COLLISION;
             if (PointerAt(enemy, 0x53C8))
                 *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(PointerAt(enemy, 0x53C8)) + 0x1F8) |= 0x20000U;
         }
-        if (lhsInt & 4) U32At(enemy, 0x3324) |= 0x8U;
-        if (lhsInt & 8) U32At(enemy, 0x3324) &= ~0x10U;
-        if (lhsInt & 0x10) U32At(enemy, 0x3324) &= ~0x10000000U;
-        if (lhsInt & 0x20) U32At(enemy, 0x3328) &= ~0x40U;
+        if (lhsInt & 4) reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_DAMAGEABLE;
+        if (lhsInt & 8) reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_NO_SPRITE;
+        if (lhsInt & 0x10) reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_ALLOW_OFFSCREEN;
+        if (lhsInt & 0x20) reinterpret_cast<Enemy *>(enemy)->flags2 &= ~ENEMY_FLAG2_NO_DEATH;
         break;
 
 #if !defined(TH08_ECL_RUN_LOW_BODY)
     case 82:
-        F32At(enemy, 0x3350) = ReadFloat(enemy, instruction, 0);
-        F32At(enemy, 0x3350) *= F32At(enemy, 0x3350);
+        reinterpret_cast<Enemy *>(enemy)->minimumPlayerDistanceSquared = ReadFloat(enemy, instruction, 0);
+        reinterpret_cast<Enemy *>(enemy)->minimumPlayerDistanceSquared *= reinterpret_cast<Enemy *>(enemy)->minimumPlayerDistanceSquared;
         break;
     case 83:
-        U32At(enemy, 0x3328) =
-            (U32At(enemy, 0x3328) & ~2U) | ((ReadInt(enemy, instruction, 0) & 1) << 1);
+        reinterpret_cast<Enemy *>(enemy)->flags2 =
+            (reinterpret_cast<Enemy *>(enemy)->flags2 & ~ENEMY_FLAG2_FORM_EFFECT) | ((ReadInt(enemy, instruction, 0) & 1) << 1);
         break;
 #endif
 
@@ -1027,18 +985,18 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_EnemyManager) +
                                     0x9DCEF8) == 0)
         {
-            reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
+            reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(child)->flags1)->
                 linkedChild = 1;
-            reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
-                isYoukai =
+            reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(child)->flags1)->
+                youkaiAligned =
                 g_Player.IsYoukai();
-            *reinterpret_cast<u8 *>(Bytes(child) + 0x332F) =
+            reinterpret_cast<Enemy *>(child)->drawGroup =
                 static_cast<u8>(((g_Player.IsYoukai()
                                   ? -1
                                   : 0) &
                                  -2) +
                                 2);
-            U32At(child, 0x3324) &= ~4U;
+            reinterpret_cast<Enemy *>(child)->flags1 &= ~ENEMY_FLAG_COLLISION;
 
             if (PointerAt(child, 0x53C8) == 0)
             {
@@ -1054,9 +1012,9 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                             ? 2
                             : 1);
                 reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))->flag17 =
-                    reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) +
-                                                          0x3324)->
-                            effectMirrored != 0;
+                    reinterpret_cast<EnemyFlag1Bits *>(
+                        &reinterpret_cast<Enemy *>(child)->flags1)->
+                            collision != 0;
                 if (reinterpret_cast<Enemy *>(child)->enemyIndex & 1)
                 {
                     reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
@@ -1087,18 +1045,18 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_EnemyManager) +
                                     0x9DCEF8) == 0)
         {
-            reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
+            reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(child)->flags1)->
                 linkedChild = 1;
-            reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
-                isYoukai =
+            reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(child)->flags1)->
+                youkaiAligned =
                 g_Player.IsYoukai();
-            *reinterpret_cast<u8 *>(Bytes(child) + 0x332F) =
+            reinterpret_cast<Enemy *>(child)->drawGroup =
                 static_cast<u8>(((g_Player.IsYoukai()
                                   ? -1
                                   : 0) &
                                  -2) +
                                 2);
-            U32At(child, 0x3324) &= ~4U;
+            reinterpret_cast<Enemy *>(child)->flags1 &= ~ENEMY_FLAG_COLLISION;
 
             if (PointerAt(child, 0x53C8) == 0)
             {
@@ -1114,9 +1072,9 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                             ? 2
                             : 1);
                 reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))->flag17 =
-                    reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) +
-                                                          0x3324)->
-                            effectMirrored != 0;
+                    reinterpret_cast<EnemyFlag1Bits *>(
+                        &reinterpret_cast<Enemy *>(child)->flags1)->
+                            collision != 0;
                 if (reinterpret_cast<Enemy *>(child)->enemyIndex & 1)
                 {
                     reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
@@ -1147,12 +1105,12 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_EnemyManager) +
                                     0x9DCEF8) == 0)
         {
-            reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
+            reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(child)->flags1)->
                 linkedChild = 1;
-            reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
-                isYoukai =
+            reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(child)->flags1)->
+                youkaiAligned =
                 g_Player.IsYoukai();
-            *reinterpret_cast<u8 *>(Bytes(child) + 0x332F) =
+            reinterpret_cast<Enemy *>(child)->drawGroup =
                 static_cast<u8>(((g_Player.IsYoukai()
                                   ? -1
                                   : 0) &
@@ -1169,7 +1127,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                     &reinterpret_cast<Enemy *>(child)->positionOffset) +
                 *reinterpret_cast<D3DXVECTOR3 *>(
                     &reinterpret_cast<Enemy *>(child)->position);
-            U32At(child, 0x3324) &= ~4U;
+            reinterpret_cast<Enemy *>(child)->flags1 &= ~ENEMY_FLAG_COLLISION;
 
             if (PointerAt(child, 0x53C8) == 0)
             {
@@ -1185,9 +1143,9 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                             ? 2
                             : 1);
                 reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))->flag17 =
-                    reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) +
-                                                          0x3324)->
-                            effectMirrored != 0;
+                    reinterpret_cast<EnemyFlag1Bits *>(
+                        &reinterpret_cast<Enemy *>(child)->flags1)->
+                            collision != 0;
                 if (reinterpret_cast<Enemy *>(child)->enemyIndex & 1)
                 {
                     reinterpret_cast<AnmVm *>(PointerAt(child, 0x53C8))
@@ -1197,7 +1155,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                 }
             }
 
-            reinterpret_cast<LinkedChildFlags1 *>(Bytes(child) + 0x3324)->
+            reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(child)->flags1)->
                 inheritParentPosition = 1;
             reinterpret_cast<Enemy *>(child)->parentEnemy =
                 reinterpret_cast<Enemy *>(enemy);

@@ -4098,7 +4098,7 @@ target = 0x00422BB0
 [[units.relocations]]
 offset = 0x4141
 type = "REL32"
-symbol = "?FUN_0042a820@Enemy@th08@@QAEXXZ"
+symbol = "?ReleaseAttachedEffects@Enemy@th08@@QAEXXZ"
 target = 0x0042A820
 
 [[units.relocations]]
@@ -5715,7 +5715,7 @@ target = 0x00422C40
 [[units.relocations]]
 offset = 0x6800
 type = "REL32"
-symbol = "?FUN_00423150@Enemy@th08@@QAEXXZ"
+symbol = "?UpdateShotAndAnm@Enemy@th08@@QAEXXZ"
 target = 0x00423150
 
 [[units.relocations]]
@@ -9851,7 +9851,7 @@ target = 0x00418110
 [[units.relocations]]
 offset = 0x32B
 type = "REL32"
-symbol = "?FUN_0042c420@Enemy@th08@@QAEXXZ"
+symbol = "?UpdateYoukaiAlignment@Enemy@th08@@QAEXXZ"
 target = 0x0042C420
 
 [[units.relocations]]
@@ -9869,7 +9869,7 @@ target = 0x004184B0
 [[units.relocations]]
 offset = 0x35B
 type = "REL32"
-symbol = "?FUN_0042bcf0@Enemy@th08@@QAEXXZ"
+symbol = "?Despawn@Enemy@th08@@QAEXXZ"
 target = 0x0042BCF0
 
 [[units.relocations]]
@@ -9965,19 +9965,19 @@ target = 0x004399AC
 [[units.relocations]]
 offset = 0x7A8
 type = "REL32"
-symbol = "?FUN_0042bcf0@Enemy@th08@@QAEXXZ"
+symbol = "?Despawn@Enemy@th08@@QAEXXZ"
 target = 0x0042BCF0
 
 [[units.relocations]]
 offset = 0x7B5
 type = "REL32"
-symbol = "?FUN_0042b490@Enemy@th08@@QAEHXZ"
+symbol = "?HandleLifeCallback@Enemy@th08@@QAEHXZ"
 target = 0x0042B490
 
 [[units.relocations]]
 offset = 0x7D2
 type = "REL32"
-symbol = "?FUN_0042b930@Enemy@th08@@QAEHXZ"
+symbol = "?HandleTimerCallback@Enemy@th08@@QAEHXZ"
 target = 0x0042B930
 
 [[units.relocations]]
@@ -10021,7 +10021,7 @@ addend = 0xFDC
 [[units.relocations]]
 offset = 0x91B
 type = "REL32"
-symbol = "?FUN_0042c290@Enemy@th08@@QAEXPAUFloat3@2@0@Z"
+symbol = "?CheckPlayerCollision@Enemy@th08@@QAEXPAUFloat3@2@0@Z"
 target = 0x0042C290
 
 [[units.relocations]]
@@ -10045,7 +10045,7 @@ target = 0x004090D0
 [[units.relocations]]
 offset = 0xA04
 type = "REL32"
-symbol = "?FUN_0042c290@Enemy@th08@@QAEXPAUFloat3@2@0@Z"
+symbol = "?CheckPlayerCollision@Enemy@th08@@QAEXPAUFloat3@2@0@Z"
 target = 0x0042C290
 
 [[units.relocations]]
@@ -10235,7 +10235,7 @@ target = 0x004066C0
 [[units.relocations]]
 offset = 0xD03
 type = "REL32"
-symbol = "?FUN_0042b370@Enemy@th08@@QAEXH@Z"
+symbol = "?ApplyDamageToParent@Enemy@th08@@QAEXH@Z"
 target = 0x0042B370
 
 [[units.relocations]]
@@ -10607,13 +10607,13 @@ target = 0x00422C20
 [[units.relocations]]
 offset = 0x128A
 type = "REL32"
-symbol = "?FUN_0042a820@Enemy@th08@@QAEXXZ"
+symbol = "?ReleaseAttachedEffects@Enemy@th08@@QAEXXZ"
 target = 0x0042A820
 
 [[units.relocations]]
 offset = 0x1296
 type = "REL32"
-symbol = "?FUN_0042bea0@Enemy@th08@@QAEXH@Z"
+symbol = "?DropItems@Enemy@th08@@QAEXH@Z"
 target = 0x0042BEA0
 
 [[units.relocations]]
@@ -10769,7 +10769,7 @@ target = 0x00415C80
 [[units.relocations]]
 offset = 0x145B
 type = "REL32"
-symbol = "?FUN_0042bc90@Enemy@th08@@QAEXXZ"
+symbol = "?ReleaseChildEclBlocks@Enemy@th08@@QAEXXZ"
 target = 0x0042BC90
 
 [[units.relocations]]
@@ -10890,7 +10890,7 @@ target = 0x0042F2D0
 [[units.relocations]]
 offset = 0x1748
 type = "REL32"
-symbol = "?FUN_0042e010@Enemy@th08@@QAEXXZ"
+symbol = "?UpdateEffects@Enemy@th08@@QAEXXZ"
 target = 0x0042E010
 
 [[units.relocations]]
@@ -58549,7 +58549,7 @@ size = 0xE1
 [[units.relocations]]
 offset = 0x3F
 type = "REL32"
-symbol = "?FUN_0042bc90@Enemy@th08@@QAEXXZ"
+symbol = "?ReleaseChildEclBlocks@Enemy@th08@@QAEXXZ"
 target = 0x0042BC90
 
 [[units.relocations]]
@@ -68255,11 +68255,11 @@ symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
 target = 0x017CE8CC
 
 
-# Ledger name: th08::Enemy::FUN_0042b2f0
+# Ledger name: th08::Enemy::DetachFromParentChain
 [[units]]
 name = "enemy-fun-0042b2f0"
 object = "build/EnemyManager.obj"
-symbol = "?FUN_0042b2f0@Enemy@th08@@QAEXXZ"
+symbol = "?DetachFromParentChain@Enemy@th08@@QAEXXZ"
 target_address = 0x0042B2F0
 size = 0x75
 
@@ -68335,7 +68335,7 @@ target = 0x00403200
 [[units.relocations]]
 offset = 0x1F4
 type = "REL32"
-symbol = "?FUN_0042b2f0@Enemy@th08@@QAEXXZ"
+symbol = "?DetachFromParentChain@Enemy@th08@@QAEXXZ"
 target = 0x0042B2F0
 
 [[units.relocations]]
@@ -78204,7 +78204,7 @@ size = 56
 [[units]]
 name = "enemy-free-ecl-slots"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "th08::Enemy::FUN_0042bc90"
+symbol = "th08::Enemy::ReleaseChildEclBlocks"
 target_address = 0x0042BC90
 size = 96
 
@@ -82755,7 +82755,7 @@ addend = 0xE2A74
 [[units]]
 name = "enemy-drop-items"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "th08::Enemy::FUN_0042bea0"
+symbol = "th08::Enemy::DropItems"
 target_address = 0x0042BEA0
 size = 734
 
@@ -83189,7 +83189,7 @@ target = 0x004178A0
 [[units.relocations]]
 offset = 718
 type = "REL32"
-symbol = "th08::Enemy::FUN_0042bea0"
+symbol = "th08::Enemy::DropItems"
 target = 0x0042BEA0
 
 [[units.relocations]]
@@ -83421,7 +83421,7 @@ target = 0x004400A0
 [[units.relocations]]
 offset = 1326
 type = "REL32"
-symbol = "th08::Enemy::FUN_0042b2f0"
+symbol = "th08::Enemy::DetachFromParentChain"
 target = 0x0042B2F0
 
 [[units]]
@@ -102092,7 +102092,7 @@ size = 0x1C
 [[units]]
 name = "enemy-cleanup-linked-vms-0042a820"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "th08::Enemy::FUN_0042a820"
+symbol = "th08::Enemy::ReleaseAttachedEffects"
 target_address = 0x0042A820
 size = 0x73
 
@@ -102120,7 +102120,7 @@ size = 0x19
 [[units]]
 name = "enemy-player-contact-0042c290"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "th08::Enemy::FUN_0042c290"
+symbol = "th08::Enemy::CheckPlayerCollision"
 target_address = 0x0042C290
 size = 0x11C
 
@@ -102256,7 +102256,7 @@ target = 0x0043BFC3
 [[units]]
 name = "enemy-youkai-state-sync-0042c420"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "th08::Enemy::FUN_0042c420"
+symbol = "th08::Enemy::UpdateYoukaiAlignment"
 target_address = 0x0042C420
 size = 0x16F
 
@@ -102426,7 +102426,7 @@ target = 0x017CE8E0
 [[units]]
 name = "enemy-phase-health-transition-0042b490"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "th08::Enemy::FUN_0042b490"
+symbol = "th08::Enemy::HandleLifeCallback"
 target_address = 0x0042B490
 size = 0x49C
 
@@ -102560,7 +102560,7 @@ target = 0x004178A0
 [[units]]
 name = "enemy-phase-timeout-transition-0042b930"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "th08::Enemy::FUN_0042b930"
+symbol = "th08::Enemy::HandleTimerCallback"
 target_address = 0x0042B930
 size = 0x31C
 
@@ -105672,7 +105672,7 @@ target = 0x00422F53
 [[units]]
 name = "enemy-post-ecl-shot-anm-00423150"
 object = "build/EclDependencies.obj"
-symbol = "?FUN_00423150@Enemy@th08@@QAEXXZ"
+symbol = "?UpdateShotAndAnm@Enemy@th08@@QAEXXZ"
 target_address = 0x00423150
 size = 0x237
 
@@ -108222,7 +108222,7 @@ target = 0x017CE750
 [[units]]
 name = "enemy-attached-hp-clamp-0042b370"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "th08::Enemy::FUN_0042b370"
+symbol = "th08::Enemy::ApplyDamageToParent"
 target_address = 0x0042B370
 size = 0x120
 
@@ -108248,7 +108248,7 @@ target = 0x004066C0
 [[units]]
 name = "enemy-cleanup-0042bcf0"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "th08::Enemy::FUN_0042bcf0"
+symbol = "th08::Enemy::Despawn"
 target_address = 0x0042BCF0
 size = 0x1B0
 
@@ -108309,7 +108309,7 @@ target = 0x00422BE0
 [[units.relocations]]
 offset = 0xE7
 type = "REL32"
-symbol = "th08::Enemy::FUN_0042a820"
+symbol = "th08::Enemy::ReleaseAttachedEffects"
 target = 0x0042A820
 
 [[units.relocations]]
@@ -108339,7 +108339,7 @@ target = 0x00407120
 [[units.relocations]]
 offset = 0x194
 type = "REL32"
-symbol = "th08::Enemy::FUN_0042bc90"
+symbol = "th08::Enemy::ReleaseChildEclBlocks"
 target = 0x0042BC90
 
 [[units.relocations]]
@@ -108359,7 +108359,7 @@ addend = 0xE2ABC
 [[units]]
 name = "enemy-sync-effects-0042e010"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "th08::Enemy::FUN_0042e010"
+symbol = "th08::Enemy::UpdateEffects"
 target_address = 0x0042E010
 size = 0x101
 

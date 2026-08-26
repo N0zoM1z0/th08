@@ -81,7 +81,7 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
     case 0x2741: return (f32)reinterpret_cast<Enemy *>(this)->bossTimer.current;
     case 0x2743: return (f32)reinterpret_cast<Enemy *>(this)->life;
     case 0x2744: return (f32)::th08::g_GameManager.shotType;
-    case 0x276C: return (f32)ENEMY_INT(this, 0x3304);
+    case 0x276C: return (f32)reinterpret_cast<Enemy *>(this)->itemDropType;
     case 0x276D: return (f32)reinterpret_cast<Enemy *>(this)->score;
     case 0x274D: return (f32)EclRunLowProposal::g_EclCallParameters.ints[0];
     case 0x274E: return (f32)EclRunLowProposal::g_EclCallParameters.ints[1];
@@ -142,7 +142,7 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
     case 0x2759: return reinterpret_cast<Enemy *>(this)->orbitRadius;
     case 0x275D: return reinterpret_cast<Enemy *>(this)->orbitAngle;
     case 0x275E: return reinterpret_cast<Enemy *>(this)->orbitAngularVelocity;
-    case 0x2764: return (f32)*(u8 *)(bytes + 0x3313);
+    case 0x2764: return (f32)reinterpret_cast<Enemy *>(this)->bossSlot;
     case 0x2763: return (f32)reinterpret_cast<Enemy *>(this)->lastDamage;
 
     case 0x2770:

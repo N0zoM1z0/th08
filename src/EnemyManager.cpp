@@ -41,7 +41,7 @@ namespace EclOperands
 // FUNCTION: th08 0x422c40
 void Enemy::UpdateMovement()
 {
-    switch ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 12) & 3)
+    switch ((this->flags1 >> ENEMY_FLAG_MOVEMENT_MODE_SHIFT) & 3)
     {
     case 3:
     {
@@ -65,7 +65,7 @@ void Enemy::UpdateMovement()
         {
             this->movementTimer--;
             if (this->movementTimer <= 0)
-                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) &= 0xffffcfff;
+                this->flags1 &= ~ENEMY_FLAG_MOVEMENT_MODE_MASK;
         }
         break;
     }
@@ -83,7 +83,7 @@ void Enemy::UpdateMovement()
         {
             this->movementTimer--;
             if (this->movementTimer <= 0)
-                *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) &= 0xffffcfff;
+                this->flags1 &= ~ENEMY_FLAG_MOVEMENT_MODE_MASK;
         }
         break;
 
@@ -95,7 +95,7 @@ void Enemy::UpdateMovement()
         progress = 1.0f - (f32)this->movementTimer / this->movementDuration;
         if (progress < 0.0f)
             progress = 0.0f;
-        switch ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 14) & 7)
+        switch ((this->flags1 >> ENEMY_FLAG_MOVEMENT_EASING_SHIFT) & 7)
         {
         case 1: progress *= progress; break;
         case 2: progress = progress * progress * progress; break;
@@ -118,12 +118,12 @@ void Enemy::UpdateMovement()
         }
 
         this->velocity = this->movementInterpolationOrigin + this->movementInterpolationDelta * progress - this->position;
-        if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 18) & 1) != 0)
+        if (((this->flags1 >> ENEMY_FLAG_MIRROR_MOVEMENT_X_SHIFT) & 1) != 0)
             this->velocity.x = -this->velocity.x;
         this->movementAngle = VectorAngle(this->velocity.y, this->velocity.x);
         if (this->movementTimer <= 0)
         {
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) &= 0xffffcfff;
+            this->flags1 &= ~ENEMY_FLAG_MOVEMENT_MODE_MASK;
             this->position = this->movementInterpolationOrigin + this->movementInterpolationDelta;
             this->velocity = Float3(0.0f, 0.0f, 0.0f);
         }
@@ -150,9 +150,9 @@ void EnemyManager::Initialize()
     for (i = 0; i < 0x60; i++)
         *reinterpret_cast<i32 *>(enemy + i * 0x1C + 0x3394) = 0xC479C000;
 
-    *reinterpret_cast<u32 *>(enemy + 0x3324) |= 1;
+    reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_ACTIVE;
     reinterpret_cast<Enemy *>(enemy)->bossTimer = 0;
-    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFEFFFFFF;
+    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_HAS_BEEN_IN_BOUNDS;
 
     *reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->hitboxDimensions) = D3DXVECTOR3(24.0f, 24.0f, 24.0f);
     *reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->velocity) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -160,43 +160,43 @@ void EnemyManager::Initialize()
     *reinterpret_cast<i32 *>(&reinterpret_cast<Enemy *>(enemy)->movementAngle) = 0;
     *reinterpret_cast<i32 *>(&reinterpret_cast<Enemy *>(enemy)->acceleration) = 0;
     *reinterpret_cast<i32 *>(&reinterpret_cast<Enemy *>(enemy)->speed) = 0;
-    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFFCFFF;
-    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFDFFFF;
-    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFBFFFF;
-    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFFFFFD;
+    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_MOVEMENT_MODE_MASK;
+    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_DEFER_BULLET_PATTERN;
+    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_MIRROR_MOVEMENT_X;
+    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_BOSS;
     reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth = 0;
     reinterpret_cast<Enemy *>(enemy)->life = 1;
     reinterpret_cast<Enemy *>(enemy)->score = 100;
-    *reinterpret_cast<u8 *>(enemy + 0x3310) = 0;
-    *reinterpret_cast<u8 *>(enemy + 0x3311) = 0;
-    *reinterpret_cast<u8 *>(enemy + 0x3312) = 0;
+    reinterpret_cast<Enemy *>(enemy)->deathAnm1 = 0;
+    reinterpret_cast<Enemy *>(enemy)->deathAnm2 = 0;
+    reinterpret_cast<Enemy *>(enemy)->deathAnm3 = 0;
     reinterpret_cast<Enemy *>(enemy)->shootIntervalFrames = 0;
     reinterpret_cast<Enemy *>(enemy)->shootIntervalTimer = 0;
     *reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->shootOffset) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-    *reinterpret_cast<i16 *>(enemy + 0x3338) = -1;
-    *reinterpret_cast<i16 *>(enemy + 0x333A) = -1;
-    *reinterpret_cast<i16 *>(enemy + 0x3332) = -1;
-    *reinterpret_cast<u32 *>(enemy + 0x3324) |= 4;
-    *reinterpret_cast<u32 *>(enemy + 0x3324) |= 8;
-    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFFFFEF;
-    *reinterpret_cast<u32 *>(enemy + 0x3324) |= 0x40;
-    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFFFF7F;
-    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFF8FFFFF;
+    reinterpret_cast<Enemy *>(enemy)->anmScripts.moveLeft = -1;
+    reinterpret_cast<Enemy *>(enemy)->anmScripts.moveRight = -1;
+    reinterpret_cast<Enemy *>(enemy)->anmScripts.idleInitial = -1;
+    reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_COLLISION;
+    reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_DAMAGEABLE;
+    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_NO_SPRITE;
+    reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_ACCEPTS_DAMAGE;
+    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_SPECIAL_INTERACTION;
+    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_DEATH_MODE_MASK;
     reinterpret_cast<Enemy *>(enemy)->deathCallbackSubId = -1;
-    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFF7FFFF;
+    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_CLAMP_POSITION;
     *reinterpret_cast<i32 *>(enemy + 0x53C0) = 0;
     reinterpret_cast<Enemy *>(enemy)->pendingEclSubroutineIndex = -1;
     for (i = 0; i < 4; i++)
         reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[i] = -1;
     reinterpret_cast<Enemy *>(enemy)->timerCallbackThresholdFrames = -1;
     *reinterpret_cast<i32 *>(enemy + 0x3300) = 0;
-    *reinterpret_cast<u8 *>(enemy + 0x3314) = 0;
-    *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFDFFFFFF;
+    reinterpret_cast<Enemy *>(enemy)->damageFlashTimer = 0;
+    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_ROTATE_ANM_WITH_MOVEMENT;
     reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.speedLow = -0.15f;
     reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.speedHigh = 0.15f;
     reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor.spawnSound = 7;
     reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor.transformSound = 25;
-    *reinterpret_cast<u32 *>(enemy + 0x3350) = 0x44800000;
+    reinterpret_cast<Enemy *>(enemy)->minimumPlayerDistanceSquared = 1024.0f;
     reinterpret_cast<Enemy *>(enemy)->playerShotHitAccumulator = *reinterpret_cast<i32 *>(0x18B8A24);
 }
 
@@ -220,7 +220,7 @@ EnemyUnkStruct3::EnemyUnkStruct3() {}
 
 // FUNCTION: th08 0x42a820
 #pragma var_order(i, this)
-void Enemy::FUN_0042a820()
+void Enemy::ReleaseAttachedEffects()
 {
     i32 i;
 
@@ -260,19 +260,21 @@ void EnemyOverlay::FUN_0042adb0(i32 mode)
 
         while (enemy != NULL)
         {
-            if (((*reinterpret_cast<u32 *>(enemy->bytes + 0x3324) >> 9) & 1) != 0)
+            if (((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+                  ENEMY_FLAG_INHERIT_PARENT_POSITION_SHIFT) & 1) != 0)
                 reinterpret_cast<Enemy *>(enemy)->positionOffset =
                     reinterpret_cast<Enemy *>(this)->position;
 
             nextEnemy = *reinterpret_cast<EnemyOverlay **>(enemy->bytes + 8);
-            *reinterpret_cast<u32 *>(enemy->bytes + 0x3324) |= 0x400;
+            reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_SUPPRESS_DEATH_EFFECTS;
             reinterpret_cast<Enemy *>(enemy)->parentEnemy = NULL;
             *reinterpret_cast<void **>(enemy->bytes + 8) = NULL;
             *reinterpret_cast<void **>(enemy->bytes + 4) = NULL;
 
             if (mode != 0)
             {
-                itemType = (((*reinterpret_cast<u32 *>(this->bytes + 0x3324) >> 1) & 1) != 0) ? 7 : 9;
+                itemType = (((reinterpret_cast<Enemy *>(this)->flags1 >>
+                              ENEMY_FLAG_BOSS_SHIFT) & 1) != 0) ? 7 : 9;
                 if (g_GameManager.IsSoloYoukai())
                     dropLocals.itemCount = j >= 10 ? 26 : j * 2 + 6;
                 else if (g_GameManager.IsSoloHuman())
@@ -303,17 +305,17 @@ void EnemyOverlay::FUN_0042adb0(i32 mode)
 
                 if (!g_EnemyManager.FUN_0042f1f0() || g_Spellcard.IsActive())
                 {
-                    *reinterpret_cast<i32 *>(enemy->bytes + 0x3304) = 8;
-                    reinterpret_cast<Enemy *>(enemy)->FUN_0042bea0(0);
+                    reinterpret_cast<Enemy *>(enemy)->itemDropType = 8;
+                    reinterpret_cast<Enemy *>(enemy)->DropItems(0);
                 }
                 g_SoundPlayer.PlaySoundPositionedByIdx(
                     static_cast<SoundIdx>(chainIndex % 2 + 2),
                     reinterpret_cast<Enemy *>(enemy)->worldPosition.x);
             }
 
-            *reinterpret_cast<f32 *>(enemy->bytes + 0x330C) = 0.0f;
-            *reinterpret_cast<f32 *>(enemy->bytes + 0x3308) = 0.0f;
-            *reinterpret_cast<i32 *>(enemy->bytes + 0x3304) = -2;
+            reinterpret_cast<Enemy *>(enemy)->powerOrPointItemDropCount = 0;
+            reinterpret_cast<Enemy *>(enemy)->pointItemDropCount = 0;
+            reinterpret_cast<Enemy *>(enemy)->itemDropType = -2;
             enemy = nextEnemy;
             ++chainIndex;
         }
@@ -354,18 +356,18 @@ void EnemyOverlay::FUN_0042adb0(i32 mode)
         g_AsciiManager.CreateTimePopup(
             &reinterpret_cast<Enemy *>(this)->worldPosition, 1, 0, 0xFFFFFFFF);
         g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(this)->worldPosition, ITEM_TIME, 1);
-        *reinterpret_cast<i32 *>(this->bytes + 0x330C) = 0;
-        *reinterpret_cast<i32 *>(this->bytes + 0x3308) = 0;
-        *reinterpret_cast<i32 *>(this->bytes + 0x3304) = -2;
+        reinterpret_cast<Enemy *>(this)->powerOrPointItemDropCount = 0;
+        reinterpret_cast<Enemy *>(this)->pointItemDropCount = 0;
+        reinterpret_cast<Enemy *>(this)->itemDropType = -2;
     }
 
-    reinterpret_cast<Enemy *>(this)->FUN_0042b2f0();
+    reinterpret_cast<Enemy *>(this)->DetachFromParentChain();
 }
 
 } // namespace EclOperands
 
 // FUNCTION: th08 0x42b2f0
-void Enemy::FUN_0042b2f0()
+void Enemy::DetachFromParentChain()
 {
     if (reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(this)->HasAttachedEnemy())
     {
@@ -393,7 +395,7 @@ DIFFABLE_STATIC(ChainElem, g_EnemyManagerDrawChainLowPrio);
 
 // FUNCTION: th08 0x42b370
 #pragma var_order(damage, i, maxHp, this)
-void Enemy::FUN_0042b370(i32 amount)
+void Enemy::ApplyDamageToParent(i32 amount)
 {
     i32 damage;
     i32 i;
@@ -416,10 +418,7 @@ void Enemy::FUN_0042b370(i32 amount)
     damage = amount / 2;
     if (this->parentEnemy->timer5354 > 0)
     {
-        if (((*reinterpret_cast<u32 *>(
-                  reinterpret_cast<u8 *>(this->parentEnemy) + 0x3324) >>
-              1) &
-             1) != 0)
+        if (((this->parentEnemy->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0)
             damage /= 9;
         else
             damage = 0;
@@ -437,7 +436,7 @@ void Enemy::FUN_0042b370(i32 amount)
 
 // FUNCTION: th08 0x42b490
 #pragma var_order(state, phaseCount, i, work, enemyCursor, k, this)
-i32 Enemy::FUN_0042b490()
+i32 Enemy::HandleLifeCallback()
 {
     u32 state;
     i32 phaseCount;
@@ -448,7 +447,7 @@ i32 Enemy::FUN_0042b490()
 
     phaseCount = 0;
     state = 0;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) &= 0xffffffcf;
+    this->flags2 &= ~ENEMY_FLAG2_DAMAGE_FEEDBACK_MASK;
     for (i = 0; i < 4; i++)
     {
         if (this->lifeCallbackThresholds[i] < 0)
@@ -478,7 +477,7 @@ i32 Enemy::FUN_0042b490()
 
             this->enemy_fun_00415c80();
             this->activeEclCallStackDepth = 0;
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) &= 0xffffffcf;
+            this->flags2 &= ~ENEMY_FLAG2_DAMAGE_FEEDBACK_MASK;
             this->bulletSpawnDescriptor = g_EnemyManager.firstEnemy.bulletSpawnDescriptor;
             this->shootIntervalFrames = 0;
             reinterpret_cast<EclOperands::EnemyOverlay *>(this)->FUN_0042adb0(1);
@@ -486,9 +485,9 @@ i32 Enemy::FUN_0042b490()
             enemyCursor = &g_EnemyManager.enemies[0];
             for (k = 0; k < 480; k++, enemyCursor++)
             {
-                if ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x3324) & 1) == 0)
+                if ((enemyCursor->flags1 & ENEMY_FLAG_ACTIVE) == 0)
                     continue;
-                if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x3324) >> 1) & 1) != 0)
+                if (((enemyCursor->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0)
                     continue;
 
                 enemyCursor->life = 0;
@@ -501,7 +500,7 @@ i32 Enemy::FUN_0042b490()
                 }
             }
 
-            if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) != 0 &&
+            if (((this->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0 &&
                 g_Player.playerState == 0)
             {
                 g_Player.timer = 70;
@@ -534,22 +533,16 @@ i32 Enemy::FUN_0042b490()
                 state = 0;
         }
 
-        if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) >> 4) & 3) < state)
+        if (((this->flags2 >> ENEMY_FLAG2_DAMAGE_FEEDBACK_SHIFT) & 3) < state)
         {
-            struct EnemyPhaseBits
-            {
-                u32 pad0 : 4;
-                u32 state : 2;
-                u32 pad6 : 26;
-            };
-            reinterpret_cast<EnemyPhaseBits *>(reinterpret_cast<u8 *>(this) + 0x3328)->state = state;
+            reinterpret_cast<EnemyFlag2Bits *>(&this->flags2)->damageFeedbackLevel = state;
         }
     }
 
     if (phaseCount == 0)
     {
         work = this->life;
-        if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) != 0)
+        if (((this->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0)
         {
             if (g_Spellcard.IsActive())
             {
@@ -589,15 +582,9 @@ i32 Enemy::FUN_0042b490()
                 state = 0;
         }
 
-        if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) >> 4) & 3) < state)
+        if (((this->flags2 >> ENEMY_FLAG2_DAMAGE_FEEDBACK_SHIFT) & 3) < state)
         {
-            struct EnemyPhaseBits
-            {
-                u32 pad0 : 4;
-                u32 state : 2;
-                u32 pad6 : 26;
-            };
-            reinterpret_cast<EnemyPhaseBits *>(reinterpret_cast<u8 *>(this) + 0x3328)->state = state;
+            reinterpret_cast<EnemyFlag2Bits *>(&this->flags2)->damageFeedbackLevel = state;
         }
     }
     return 0;
@@ -605,7 +592,7 @@ i32 Enemy::FUN_0042b490()
 
 // FUNCTION: th08 0x42b930
 #pragma var_order(i, maxThreshold, selectedOrK, enemyCursor, j, this)
-i32 Enemy::FUN_0042b930()
+i32 Enemy::HandleTimerCallback()
 {
     i32 i;
     i32 maxThreshold;
@@ -613,8 +600,7 @@ i32 Enemy::FUN_0042b930()
     Enemy *enemyCursor;
     i32 j;
 
-    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) != 0 &&
-        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3313) == 0)
+    if (((this->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0 && this->bossSlot == 0)
     {
         g_Gui.FUN_0042f340(
             (this->timerCallbackThresholdFrames - (i32)this->bossTimer) / 60);
@@ -650,13 +636,13 @@ i32 Enemy::FUN_0042b930()
         this->deathCallbackSubId;
     this->bossTimer = 0;
 
-    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 27) & 1) == 0)
+    if (((this->flags1 >> ENEMY_FLAG_TIMEOUT_SPELL_SHIFT) & 1) == 0)
     {
         FUN_0042bc50(&g_Spellcard);
         g_BulletManager.RemoveAllBullets(4);
     }
 
-    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) != 0 &&
+    if (((this->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0 &&
         g_Player.playerState == 0)
     {
         g_Player.timer = 70;
@@ -667,9 +653,9 @@ i32 Enemy::FUN_0042b930()
     enemyCursor = &g_EnemyManager.enemies[0];
     for (j = 0; j < 480; j++, enemyCursor++)
     {
-        if ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x3324) & 1) == 0)
+        if ((enemyCursor->flags1 & ENEMY_FLAG_ACTIVE) == 0)
             continue;
-        if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x3324) >> 1) & 1) != 0)
+        if (((enemyCursor->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0)
             continue;
         enemyCursor->life = 0;
         if (enemyCursor->deathCallbackSubId >= 0)
@@ -694,7 +680,7 @@ i32 Enemy::FUN_0042b930()
     this->shootIntervalFrames = 0;
     this->enemy_fun_00415c80();
     this->activeEclCallStackDepth = 0;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) &= 0xffffffcf;
+    this->flags2 &= ~ENEMY_FLAG2_DAMAGE_FEEDBACK_MASK;
     return 1;
     }
     return 0;
@@ -709,7 +695,7 @@ void __fastcall FUN_0042bc50(void *self)
 }
 
 // FUNCTION: th08 0x42bc90
-void Enemy::FUN_0042bc90()
+void Enemy::ReleaseChildEclBlocks()
 {
     for (i32 i = 0; i < 4; i++)
     {
@@ -723,35 +709,34 @@ void Enemy::FUN_0042bc90()
 
 // FUNCTION: th08 0x42bcf0
 #pragma var_order(i, this)
-void Enemy::FUN_0042bcf0()
+void Enemy::Despawn()
 {
     i32 i;
 
     reinterpret_cast<EclOperands::EnemyOverlay *>(this)->FUN_0042adb0(0);
 
-    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 20) & 7) == 0)
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) &= ~1U;
+    if (((this->flags1 >> ENEMY_FLAG_DEATH_MODE_SHIFT) & 7) == 0)
+        this->flags1 &= ~ENEMY_FLAG_ACTIVE;
 
-    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) != 0 &&
-        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3313) < 4)
+    if (((this->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0 && this->bossSlot < 4)
     {
         g_Gui.SetBossPresent(false);
         EclRunLowProposal::g_EclEnemyTableF54CC0[
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3313)] = NULL;
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) &= ~2U;
+            this->bossSlot] = NULL;
+        this->flags1 &= ~ENEMY_FLAG_BOSS;
         g_AsciiManager.FUN_00422bb0(
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3313), 2);
+            this->bossSlot, 2);
         g_AsciiManager.SetBossMarkerPosition(
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3313),
+            this->bossSlot,
             reinterpret_cast<D3DXVECTOR3 *>(&Float3(-999.0f, -999.0f, 0.0f)));
     }
 
     if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53c0) != 0)
-        this->FUN_0042a820();
+        this->ReleaseAttachedEffects();
 
-    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) != 0)
+    if (((this->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0)
         EclRunLowProposal::g_EclEnemyTableF54CC0[
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3313)] = NULL;
+            this->bossSlot] = NULL;
 
     g_ReplayManager->flags |= 0x20;
 
@@ -765,32 +750,32 @@ void Enemy::FUN_0042bcf0()
         this->lifeCallbackThresholds[i] = -1;
     this->timerCallbackThresholdFrames = -1;
 
-    this->FUN_0042bc90();
+    this->ReleaseChildEclBlocks();
     if (g_Player.optionHomingTarget == this)
         g_Player.optionHomingTarget = NULL;
 }
 
 // FUNCTION: th08 0x42bea0
 #pragma var_order(i, position)
-void Enemy::FUN_0042bea0(i32 mode)
+void Enemy::DropItems(i32 mode)
 {
     Float3 position;
     i32 i;
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3304) >= 0)
+    if (this->itemDropType >= 0)
     {
         g_EffectManager.SpawnEffect(
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3311) + 4,
+            this->deathAnm2 + 4,
             reinterpret_cast<D3DXVECTOR3 *>(&this->worldPosition), 3, -1);
         g_ItemManager.SpawnItem(&this->worldPosition,
-                                static_cast<ItemType>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3304)),
+                                static_cast<ItemType>(this->itemDropType),
                                 mode != 0);
     }
-    else if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3304) == -1)
+    else if (this->itemDropType == -1)
     {
         if ((g_EnemyDropCounter % 3) == 0)
         {
             g_EffectManager.SpawnEffect(
-                *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3311) + 4,
+                this->deathAnm2 + 4,
                 reinterpret_cast<D3DXVECTOR3 *>(&this->worldPosition), 6, -1);
             g_ItemManager.SpawnItem(&this->worldPosition,
                                     static_cast<ItemType>(g_EnemyDropSchedule[g_EnemyDropScheduleIndex]),
@@ -802,9 +787,9 @@ void Enemy::FUN_0042bea0(i32 mode)
         ++g_EnemyDropCounter;
     }
 
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x330C) != 0)
+    if (this->powerOrPointItemDropCount != 0)
     {
-        for (i = 0; i < *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x330C); i++)
+        for (i = 0; i < this->powerOrPointItemDropCount; i++)
         {
             position = this->worldPosition;
             position.operator float *()[0] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
@@ -814,47 +799,47 @@ void Enemy::FUN_0042bea0(i32 mode)
             else
                 g_ItemManager.SpawnItem(&position, ITEM_POINT, 0);
         }
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x330C) = 0;
+        this->powerOrPointItemDropCount = 0;
     }
 
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3308) != 0)
+    if (this->pointItemDropCount != 0)
     {
-        for (i = 0; i < *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3308); i++)
+        for (i = 0; i < this->pointItemDropCount; i++)
         {
             position = this->worldPosition;
             position.operator float *()[0] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             position.operator float *()[1] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             g_ItemManager.SpawnItem(&position, ITEM_POINT, 0);
         }
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3308) = 0;
+        this->pointItemDropCount = 0;
     }
 }
 
 // FUNCTION: th08 0x42c180
 void Enemy::ClampPosition()
 {
-    if ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 19) & 1)
+    if (((this->flags1 >> ENEMY_FLAG_CLAMP_POSITION_SHIFT) & 1) != 0)
     {
-        if ((*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[0] < *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3340))
-            (*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[0] = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3340);
-        else if ((*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[0] > *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3348))
-            (*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[0] = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3348);
+        if ((*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[0] < this->movementBounds.lower.x)
+            (*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[0] = this->movementBounds.lower.x;
+        else if ((*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[0] > this->movementBounds.upper.x)
+            (*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[0] = this->movementBounds.upper.x;
 
-        if ((*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[1] < *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3344))
-            (*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[1] = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x3344);
-        else if ((*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[1] > *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x334C))
-            (*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[1] = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x334C);
+        if ((*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[1] < this->movementBounds.lower.y)
+            (*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[1] = this->movementBounds.lower.y;
+        else if ((*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[1] > this->movementBounds.upper.y)
+            (*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[1] = this->movementBounds.upper.y;
     }
 }
 
 // FUNCTION: th08 0x42c290
 #pragma var_order(collisionSize)
-void Enemy::FUN_0042c290(Float3 *position, Float3 *size)
+void Enemy::CheckPlayerCollision(Float3 *position, Float3 *size)
 {
     Float3 collisionSize;
 
     collisionSize = *size / 0.7f;
-    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 7) & 1) != 0 &&
+    if (((this->flags1 >> ENEMY_FLAG_SPECIAL_INTERACTION_SHIFT) & 1) != 0 &&
         this->bossTimer.FUN_0040d3d0() && this->bossTimer % 6 == 0)
     {
         g_Player.FUN_0044a470(position, &collisionSize);
@@ -870,8 +855,8 @@ void Enemy::FUN_0042c290(Float3 *position, Float3 *size)
         collisionSize = *size / 1.5f;
         if (g_Player.FUN_0044a360(position, &collisionSize) == 1)
         {
-            if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 1) & 1) == 0 &&
-                ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 7) & 1) == 0)
+            if (((this->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) == 0 &&
+                ((this->flags1 >> ENEMY_FLAG_SPECIAL_INTERACTION_SHIFT) & 1) == 0)
             {
                 this->life -= 10;
             }
@@ -898,9 +883,9 @@ void EnemyManager::FUN_0042c3b0()
 }
 
 // FUNCTION: th08 0x42c420
-void Enemy::FUN_0042c420()
+void Enemy::UpdateYoukaiAlignment()
 {
-    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 11) & 1) == 0)
+    if (((this->flags1 >> ENEMY_FLAG_YOUKAI_ALIGNED_SHIFT) & 1) == 0)
     {
         if (g_Player.IsYoukai())
         {
@@ -908,10 +893,10 @@ void Enemy::FUN_0042c420()
             if (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8) != NULL)
                 (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8))->SetInterrupt(2);
             g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(40), 0);
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x332f) = 0;
+            this->drawGroup = 0;
         }
 
-        if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) >> 1) & 1) != 0 &&
+        if (((this->flags2 >> ENEMY_FLAG2_FORM_EFFECT_SHIFT) & 1) != 0 &&
             this->bossTimer.FUN_0040ebc0(2))
         {
             g_EffectManager.SpawnEffect(38, reinterpret_cast<D3DXVECTOR3 *>(&this->worldPosition), 1, -1);
@@ -925,18 +910,12 @@ void Enemy::FUN_0042c420()
             if (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8) != NULL)
                 (*reinterpret_cast<AnmVm **>(reinterpret_cast<u8 *>(this) + 0x53c8))->SetInterrupt(1);
             g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(39), 0);
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x332f) = 2;
+            this->drawGroup = 2;
         }
     }
 
-    struct EnemyYoukaiFlagBits
-    {
-        u32 pad0 : 11;
-        u32 isYoukai : 1;
-        u32 pad12 : 20;
-    };
-    reinterpret_cast<EnemyYoukaiFlagBits *>(reinterpret_cast<u8 *>(this) + 0x3324)->isYoukai = g_Player.IsYoukai();
-    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(this) + 0x3330) = g_Player.IsYoukai() ? 64 : 32;
+    reinterpret_cast<EnemyFlag1Bits *>(&this->flags1)->youkaiAligned = g_Player.IsYoukai();
+    this->eclDifficultyMaskOverride = g_Player.IsYoukai() ? 64 : 32;
 }
 
 // FUNCTION: th08 0x42c590
@@ -973,7 +952,7 @@ void Enemy::IntegrateVelocity()
 {
     this->lastFrameDisplacement = this->position - this->previousPosition;
     this->previousPosition = this->position;
-    if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 18) & 1) == 0)
+    if (((this->flags1 >> ENEMY_FLAG_MIRROR_MOVEMENT_X_SHIFT) & 1) == 0)
         this->position.x += g_EclGameTimeScale * this->velocity.x;
     else
         this->position.x -= g_EclGameTimeScale * this->velocity.x;
@@ -983,7 +962,7 @@ void Enemy::IntegrateVelocity()
 
 // FUNCTION: th08 0x42e010
 #pragma var_order(effect, i, this)
-void Enemy::FUN_0042e010()
+void Enemy::UpdateEffects()
 {
     u8 *effect;
     i32 i;
@@ -995,7 +974,7 @@ void Enemy::FUN_0042e010()
             continue;
 
         reinterpret_cast<AnmVmBase *>(effect)->flag1 =
-            ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 4) & 1) == 0;
+            ((this->flags1 >> ENEMY_FLAG_NO_SPRITE_SHIFT) & 1) == 0;
         *reinterpret_cast<Float3 *>(effect + 0x2e0) = this->position;
 
         if (*reinterpret_cast<f32 *>(effect + 0x314) <
@@ -1056,7 +1035,8 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                     if (vm->type)
                         vm->SetZRotation(reinterpret_cast<Enemy *>(enemy)->movementAngle);
 
-                    if (((*reinterpret_cast<u32 *>(enemy + 0x3328) >> 8) & 1) == 0)
+                    if (((reinterpret_cast<Enemy *>(enemy)->flags2 >>
+                          ENEMY_FLAG2_EXTRA_VM_FIXED_OFFSET_SHIFT) & 1) == 0)
                         vm->pos = reinterpret_cast<Enemy *>(enemy)->worldPosition + vm->pos2;
                     else
                         vm->pos = reinterpret_cast<Enemy *>(enemy)->worldPosition +
@@ -1069,7 +1049,8 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                 }
             }
 
-            if (((*reinterpret_cast<u32 *>(enemy + 0x3324) >> 25) & 1) != 0)
+            if (((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+                  ENEMY_FLAG_ROTATE_ANM_WITH_MOVEMENT_SHIFT) & 1) != 0)
                 reinterpret_cast<AnmVm *>(enemy + 0xC)->SetZRotation(
                     reinterpret_cast<Enemy *>(enemy)->movementAngle);
 
@@ -1092,7 +1073,8 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                         if (*reinterpret_cast<f32 *>(enemy + 0x3394 + k * 0x1C) < -990.0f)
                             continue;
 
-                        if (((*reinterpret_cast<u32 *>(enemy + 0x3324) >> 25) & 1) != 0)
+                        if (((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+                              ENEMY_FLAG_ROTATE_ANM_WITH_MOVEMENT_SHIFT) & 1) != 0)
                                 reinterpret_cast<AnmVm *>(enemy + 0xC)->SetZRotation(
                                     *reinterpret_cast<f32 *>(enemy + 0x33AC + k * 0x1C));
 
@@ -1228,7 +1210,8 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
             }
 
             if ((*reinterpret_cast<u8 *>(enemy + 0x534C) & 0x10) == 0 &&
-                ((*reinterpret_cast<u32 *>(enemy + 0x3324) >> 5) & 1) == 0)
+                ((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+                  ENEMY_FLAG_HIDE_PRIMARY_ANM_SHIFT) & 1) == 0)
             {
                 g_AnmManager->Draw2D(reinterpret_cast<AnmVm *>(enemy + 0xC));
             }
@@ -1240,7 +1223,8 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                     if (vm->type)
                         vm->SetZRotation(-reinterpret_cast<Enemy *>(enemy)->movementAngle);
 
-                    if (((*reinterpret_cast<u32 *>(enemy + 0x3328) >> 8) & 1) == 0)
+                    if (((reinterpret_cast<Enemy *>(enemy)->flags2 >>
+                          ENEMY_FLAG2_EXTRA_VM_FIXED_OFFSET_SHIFT) & 1) == 0)
                         vm->pos = reinterpret_cast<Enemy *>(enemy)->worldPosition + vm->pos2;
                     else
                         vm->pos = reinterpret_cast<Enemy *>(enemy)->worldPosition +
@@ -1426,7 +1410,7 @@ ZunResult EnemyManager::DeletedCallback(EnemyManager *enemyManager)
 
     for (; i < 0x1E0; ++i, enemy = reinterpret_cast<Enemy *>(reinterpret_cast<u8 *>(enemy) + 0x53D0))
     {
-        enemy->FUN_0042bc90();
+        enemy->ReleaseChildEclBlocks();
     }
 
     if (!IsDisableResourceReload())
@@ -1473,21 +1457,22 @@ i32 EnemyManager::FUN_0042efb0(i32 maxScore, i32 initialScore)
     score = 2000;
     for (enemyIndex = 0; enemyIndex < 480; enemyIndex++, enemy += 0x53D0)
     {
-        if ((*reinterpret_cast<u32 *>(enemy + 0x3324) & 1) == 0)
+        if ((reinterpret_cast<Enemy *>(enemy)->flags1 & ENEMY_FLAG_ACTIVE) == 0)
         {
             continue;
         }
-        if (((*reinterpret_cast<u32 *>(enemy + 0x3324) >> 1) & 1) != 0)
+        if (((reinterpret_cast<Enemy *>(enemy)->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0)
         {
             continue;
         }
-        if (((*reinterpret_cast<u32 *>(enemy + 0x3328) >> 6) & 1) != 0)
+        if (((reinterpret_cast<Enemy *>(enemy)->flags2 >> ENEMY_FLAG2_NO_DEATH_SHIFT) & 1) != 0)
         {
             continue;
         }
 
         reinterpret_cast<Enemy *>(enemy)->life = 0;
-        if (((*reinterpret_cast<u32 *>(enemy + 0x3324) >> 7) & 1) != 0)
+        if (((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+              ENEMY_FLAG_SPECIAL_INTERACTION_SHIFT) & 1) != 0)
         {
             reinterpret_cast<Enemy *>(enemy)->worldPosition =
                 reinterpret_cast<Enemy *>(enemy)->position +
@@ -1523,7 +1508,7 @@ i32 EnemyManager::FUN_0042efb0(i32 maxScore, i32 initialScore)
             }
         }
 
-        reinterpret_cast<Enemy *>(enemy)->FUN_0042b2f0();
+        reinterpret_cast<Enemy *>(enemy)->DetachFromParentChain();
         if (reinterpret_cast<Enemy *>(enemy)->deathCallbackSubId >= 0)
         {
             g_EclManager.CallEclSub(

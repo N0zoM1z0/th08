@@ -131,8 +131,8 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x275d: return (i32)reinterpret_cast<Enemy *>(enemy)->orbitAngle;
     case 0x275e: return (i32)reinterpret_cast<Enemy *>(enemy)->orbitAngularVelocity;
     case 0x2763: return reinterpret_cast<Enemy *>(enemy)->lastDamage;
-    case 0x2764: return *(u8 *)(enemy->bytes + 0x3313);
-    case 0x276c: return INT_FIELD(0x3304);
+    case 0x2764: return reinterpret_cast<Enemy *>(enemy)->bossSlot;
+    case 0x276c: return reinterpret_cast<Enemy *>(enemy)->itemDropType;
     case 0x276d: return reinterpret_cast<Enemy *>(enemy)->score;
 
     case 0x2770:
@@ -204,7 +204,7 @@ i32 *__fastcall ResolveIntLValue(EnemyOverlay *enemy, i32 *operand, u16 flags, i
     case 0x2739: return &g_GameManager.rank;
     case 0x2741: return &reinterpret_cast<Enemy *>(enemy)->bossTimer.current;
     case 0x2743: return &reinterpret_cast<Enemy *>(enemy)->life;
-    case 0x276c: return &INT_FIELD(0x3304);
+    case 0x276c: return &reinterpret_cast<Enemy *>(enemy)->itemDropType;
     case 0x276d: return &reinterpret_cast<Enemy *>(enemy)->score;
     case 0x274d: return &EclRunLowProposal::g_EclCallParameters.ints[0];
     case 0x274e: return &EclRunLowProposal::g_EclCallParameters.ints[1];
