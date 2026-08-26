@@ -53,9 +53,9 @@ void __fastcall EndEnemySpell(u8 *enemy, void *instruction)
 }
 
 // FUNCTION: th08 0x4230c0
-void Gui::FUN_004230c0(f32 value)
+void Gui::SetBossLifeBarTarget(f32 value)
 {
-    this->bossLifeBarSize = value;
+    this->bossLifeBarTargetSize = value;
 }
 
 // FUNCTION: th08 0x4230e0
@@ -66,15 +66,15 @@ void Gui::SetBossGaugeSlot(i32 index, f32 start, f32 stop)
 }
 
 // FUNCTION: th08 0x423110
-void Gui::SetBossGaugeValue(i32 index, i32 value)
+void Gui::SetBossGaugeColor(i32 index, i32 color)
 {
-    this->bossLifeBarSegmentColor[index] = value;
+    this->bossLifeBarSegmentColor[index] = color;
 }
 
 // FUNCTION: th08 0x423130
-void Gui::FUN_00423130(i32 value)
+void Gui::SetBossLifeMarkerCount(i32 count)
 {
-    this->eclSetLives = value;
+    this->eclSetLives = count;
 }
 
 

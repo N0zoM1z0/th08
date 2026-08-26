@@ -70,7 +70,7 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
     g_Supervisor.framerateMultiplier = 1.0f;
     GM_FLAGS_WORD(gameManager) &= ~0x400U;
 
-    if (g_Supervisor.unk164 || gameManager->flags.isSpellPractice ||
+    if (g_Supervisor.isInitialStageLoad || gameManager->flags.isSpellPractice ||
         g_GameManager.flags.isPracticeMode || g_GameManager.difficulty >= 4)
     {
         if (gameManager->cfg)
@@ -357,7 +357,7 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
         }
     }
 
-    if (!g_Supervisor.unk16c)
+    if (!g_Supervisor.keepStageResources)
     {
         if (g_GameManager.flags.isSpellPractice)
         {
@@ -384,7 +384,7 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
 
     gameManager->showRetryMenu = 0;
     GM_FLAGS_WORD(gameManager) |= 4U;
-    if (g_Supervisor.unk16c && g_GameManager.flags.isSpellPractice &&
+    if (g_Supervisor.keepStageResources && g_GameManager.flags.isSpellPractice &&
         !FUN_00439916(g_GameManager.currentSpellCardNumber))
         gameManager->stageStartupMode = STAGE_STARTUP_WITHOUT_MUSIC;
     else
@@ -426,7 +426,7 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
     g_Supervisor.unk290 = FALSE;
     g_Supervisor.unk174 = 60;
     GM_FLAGS_WORD(gameManager) &= ~0x200U;
-    g_Supervisor.unk16c = 0;
+    g_Supervisor.keepStageResources = 0;
     g_ScreenEffectCounter = 2;
     goto thread_done;
 
@@ -436,7 +436,7 @@ setup_error:
     g_Supervisor.runningSubthreadHandle = NULL;
     g_Supervisor.subthreadCloseRequestActive = FALSE;
     g_Supervisor.unk290 = FALSE;
-    g_Supervisor.unk16c = 0;
+    g_Supervisor.keepStageResources = 0;
     g_ScreenEffectCounter = 2;
 
 thread_done:

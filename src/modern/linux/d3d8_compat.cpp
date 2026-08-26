@@ -556,7 +556,7 @@ class LinuxDevice : public IDirect3DDevice8
     }
     HRESULT BeginScene()
     {
-        const bool dialogPresent = th08::g_Gui.IsDialogPresent() != 0;
+        const bool dialogPresent = th08::g_Gui.IsDialoguePresent() != 0;
         if (dialogPresent && !wasDialogPresent)
             CaptureDialogueSnapshot();
         if (dialogPresent && dialogueSnapshotReady)

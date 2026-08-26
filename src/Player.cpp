@@ -895,10 +895,10 @@ i32 Player::UpdateMovementAndOptions()
         }
     }
 
-    if ((g_GuiMessageInputCurrent & 1) != 0 && !g_Gui.IsDialogPresent() && !g_GameManager.IsTampered())
+    if ((g_GuiMessageInputCurrent & 1) != 0 && !g_Gui.IsDialoguePresent() && !g_GameManager.IsTampered())
         this->StartShooting();
 
-    if (!g_Gui.IsDialogPresent() && this->focusTransitionFrames >= 30 &&
+    if (!g_Gui.IsDialoguePresent() && this->focusTransitionFrames >= 30 &&
         this->bombState.isInUse == 0)
     {
         gaugeDelta = 0;
@@ -1075,7 +1075,7 @@ updateD180:
     player->UpdateShots();
     player->UpdateShooting();
     player->UpdateGaugePosition();
-    if (!g_Gui.IsDialogPresent())
+    if (!g_Gui.IsDialoguePresent())
     {
         g_GameManager.runActiveFrames += 1;
         g_GameManager.stageActiveFrames += 1;
@@ -1178,7 +1178,7 @@ void Player::UpdateBombState()
         return;
     }
 
-    if ((g_GuiMessageInputCurrent & 2) != 0 && !g_GameManager.IsTampered() && !g_Gui.IsDialogPresent() &&
+    if ((g_GuiMessageInputCurrent & 2) != 0 && !g_GameManager.IsTampered() && !g_Gui.IsDialoguePresent() &&
         this->deathbombWindowFrames != 0 &&
         g_GameManager.GetBombsRemaining() > 0 &&
         this->bombInputLockFrames == 0)
@@ -2851,7 +2851,7 @@ i32 __fastcall UpdatePersistentShot(Player *player, PlayerShot *slot)
     {
         if (slot->vm.FUN_004396f8()) slot->vm.pendingInterrupt = 1;
     }
-    if (g_Gui.IsDialogPresent() || player->bombState.isInUse != 0 || g_GameManager.flags.suppressPlayerShots)
+    if (g_Gui.IsDialoguePresent() || player->bombState.isInUse != 0 || g_GameManager.flags.suppressPlayerShots)
     {
         if ((i32)player->timelines[slot->timelineIndex].timer > 20)
             player->timelines[slot->timelineIndex].timer = 20;
@@ -2894,7 +2894,7 @@ i32 __fastcall UpdateShotTrail(Player *player, PlayerShot *slot)
     i32 i;
     if (player->timelines[slot->timelineIndex].instruction !=
             reinterpret_cast<EclTimelineInstruction *>(slot) ||
-        g_Gui.IsDialogPresent() ||
+        g_Gui.IsDialoguePresent() ||
         (i32)player->shotTimer < 0 ||
         player->playerState == PLAYER_STATE_DYING ||
         player->bombState.isInUse != 0 ||
@@ -3250,7 +3250,7 @@ i32 Player::UpdateShooting()
     {
         if ((i32)this->shotTimer < 0)
         {
-            if (!g_Gui.IsDialogPresent())
+            if (!g_Gui.IsDialoguePresent())
             {
                 this->shotTimer = 0;
             }

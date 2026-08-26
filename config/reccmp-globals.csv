@@ -183,7 +183,7 @@ th08::g_GuiPortraitAnm1,0x4ecc9c,global
 th08::g_GuiPortraitAnm2,0x4ecca0,global
 th08::g_GuiPortraitAnmPrimary,0x4ecc94,global
 th08::g_GuiStageMusicContexts,0x4c7240,global
-th08::g_GuiStageScoreTables,0x4c7158,global
+th08::g_GuiStageClearBonuses,0x4c7158,global
 th08::g_GuiResultAnm0,0x4d50a8,global
 th08::g_GuiResultAnm1,0x4d50ac,global
 th08::g_GuiMessageAnm,0x17ce8f4,global

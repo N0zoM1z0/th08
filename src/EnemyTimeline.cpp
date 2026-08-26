@@ -219,7 +219,7 @@ void EclTimeline::Run()
                 break;
 
             case 6:
-                g_Gui.FUN_00439810(this->instruction->args.ints[0]);
+                g_Gui.MsgRead(this->instruction->args.ints[0]);
                 break;
 
             case 7:

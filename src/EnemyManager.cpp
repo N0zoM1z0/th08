@@ -599,7 +599,7 @@ i32 Enemy::HandleTimerCallback()
 
     if (((this->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0 && this->bossSlot == 0)
     {
-        g_Gui.FUN_0042f340(
+        g_Gui.SetBossTimerSeconds(
             (this->timerCallbackThresholdFrames - (i32)this->bossTimer) / 60);
     }
 
@@ -865,7 +865,7 @@ void EnemyManager::UpdateSubrank()
 {
     i32 interval;
 
-    if (!g_Gui.IsDialogPresent())
+    if (!g_Gui.IsDialoguePresent())
     {
         interval = 2400;
         interval -= g_GameManager.GetLives() * 4 * 60;

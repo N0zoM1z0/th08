@@ -166,7 +166,7 @@ struct EnemyManagerUpdateEclManager
 
 struct EnemyManagerUpdateGui
 {
-    i32 IsDialogPresent();
+    i32 IsDialoguePresent();
     void ResetBossUi(i32 value);
     void SetBossHealth(f32 health);
     void ShowBonus(i32 score);
@@ -281,7 +281,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
 
     difficultyScale = 10;
 
-    if (!g_Gui.IsDialogPresent())
+    if (!g_Gui.IsDialoguePresent())
     {
         ++(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3DE04));
         if ((i32)reinterpret_cast<EnemyManager *>(this)->timer >= 16)
@@ -766,7 +766,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                     if (deathVmIndex)
                     {
                         g_GameManager.AddScore(deathVmIndex);
-                        g_Gui.FUN_00437ddd(deathVmIndex);
+                        g_Gui.ShowBonusScore(deathVmIndex);
                     }
                 }
                 reinterpret_cast<Enemy *>(enemy)->life = 0;
@@ -855,8 +855,8 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
         {
             D3DXVECTOR3 markerPosition;
 
-            if (!g_Gui.IsDialogPresent() && !reinterpret_cast<Enemy *>(enemy)->bossSlot)
-                g_Gui.FUN_004230c0((f32)reinterpret_cast<Enemy *>(enemy)->life / (f32)reinterpret_cast<Enemy *>(enemy)->maxLife);
+            if (!g_Gui.IsDialoguePresent() && !reinterpret_cast<Enemy *>(enemy)->bossSlot)
+                g_Gui.SetBossLifeBarTarget((f32)reinterpret_cast<Enemy *>(enemy)->life / (f32)reinterpret_cast<Enemy *>(enemy)->maxLife);
 
             if (reinterpret_cast<EnemyFlag1Bits *>(&reinterpret_cast<Enemy *>(enemy)->flags1)->boss < 4)
             {

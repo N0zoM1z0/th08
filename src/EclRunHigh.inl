@@ -207,7 +207,7 @@ struct TargetApi
     void SetBossHealth(f32 value);                              // 0x004230C0
     void SetBossMarker(i32 slot, const Vec3 *position);         // 0x00422BE0
     void SetBossGaugeSlot(i32 slot, f32 a, f32 b);              // 0x004230E0
-    void SetBossGaugeValue(i32 slot, i32 value);                // 0x00423110
+    void SetBossGaugeColor(i32 slot, i32 value);                // 0x00423110
     i32 IsYoukai();                                            // 0x0040BC40
     void SelectPlayerMode(i32 value);                           // 0x00407120
 
@@ -676,7 +676,7 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             if (TH08_ECL_READ_I(ctx, 0) == 0)
             {
                 g_Gui.SetBossPresent(true);
-                g_Gui.FUN_004230c0(1.0f);
+                g_Gui.SetBossLifeBarTarget(1.0f);
             }
             reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1 |= ENEMY_FLAG_BOSS;
             reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossSlot = (u8)TH08_ECL_READ_I(ctx, 0);
@@ -783,7 +783,7 @@ enter_subroutine:
             index,
             (f32)TH08_ECL_READ_I(ctx, 1) / (f32)reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->maxLife,
             (f32)TH08_ECL_READ_I(ctx, 2) / (f32)reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->maxLife);
-        g_Gui.SetBossGaugeValue(
+        g_Gui.SetBossGaugeColor(
             index, TH08_ECL_READ_I(ctx, 3));
         break;
     }
@@ -941,7 +941,7 @@ enter_subroutine:
     case 141: g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position, static_cast<ItemType>(TH08_ECL_READ_I(ctx, 0)), 0); break;
     case 147: g_Background.pendingStageScriptLabel = TH08_ECL_READ_I(ctx, 0); break;
     case 148:
-        g_Gui.FUN_00423130(TH08_ECL_READ_I(ctx, 0));
+        g_Gui.SetBossLifeMarkerCount(TH08_ECL_READ_I(ctx, 0));
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3E04) += 0x708;
         break;
     case 93:
@@ -1183,16 +1183,16 @@ enter_subroutine:
     case 178: TH08_ECL_CONTEXT_API(ctx)->Call004224A0(TH08_ECL_CONTEXT_ENEMY(ctx)); break;
 #endif
     case 179: g_Gui.StartStageBackgroundSequence(); break;
-    case 180: g_Gui.FUN_004390d6(); break;
+    case 180: g_Gui.HideClockTime(); break;
     case 181:
         if (static_cast<i8>(g_GameManager.GetClockTime()) < 12)
         {
             g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(0x2D), 0);
             g_GameManager.AddToClockTime(1);
             if (static_cast<i8>(g_GameManager.GetClockTime()) == 12)
-                g_Gui.FUN_00439093();
+                g_Gui.FlashClockTimeFast();
             else
-                g_Gui.FUN_00439050();
+                g_Gui.FlashClockTimeSlow();
         }
         break;
     case 182:

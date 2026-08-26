@@ -1179,7 +1179,7 @@ i32 PauseMenu::OnUpdate()
 
                 g_Supervisor.curState = SupervisorState_SpellcardPracticeRestart;
 
-                g_Gui.FUN_00438f58();
+                g_Gui.CaptureArcade();
 
                 g_GameManager.isInGameMenu = FALSE;
                 g_Supervisor.systemTime = timeGetTime();
@@ -1397,7 +1397,7 @@ i32 RetryMenu::OnUpdate()
                     }
 
                     g_Supervisor.curState = SupervisorState_SpellcardPracticeRestart;
-                    g_Gui.FUN_00438f58();
+                    g_Gui.CaptureArcade();
                     g_GameManager.showRetryMenu = FALSE;
                     g_Supervisor.systemTime = timeGetTime();
 

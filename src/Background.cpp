@@ -739,7 +739,7 @@ ChainCallbackResult Background::OnDrawHighPrio(Background *background)
     background->tint.b = 0x80;
 
     if (background->spellBackgroundState <= SPELL_BACKGROUND_FADING_IN &&
-        !g_Gui.IsDialogPresent())
+        !g_Gui.IsDialoguePresent())
     {
         if (background->stageVm0.activeSpriteIndex > 0)
         {
@@ -799,7 +799,7 @@ ChainCallbackResult Background::OnDrawHighPrio(Background *background)
     }
 
     if (background->spellBackgroundState <= SPELL_BACKGROUND_FADING_IN &&
-        !g_Gui.IsDialogPresent())
+        !g_Gui.IsDialoguePresent())
     {
         background->RenderObjects(0);
         background->RenderObjects(1);
@@ -818,7 +818,7 @@ ChainCallbackResult Background::OnDrawLowPrio(Background *background)
     f32 zValue;
 
     if (background->spellBackgroundState <= SPELL_BACKGROUND_FADING_IN &&
-        !g_Gui.IsDialogPresent())
+        !g_Gui.IsDialoguePresent())
     {
         background->RenderObjects(2);
         background->RenderObjects(3);
@@ -1624,7 +1624,7 @@ void Background::SetCamera2()
 // FUNCTION: th08 0x40b900
 ZunBool IsDisableResourceReload()
 {
-    return g_Supervisor.unk16c;
+    return g_Supervisor.keepStageResources;
 }
 
 }; // Namespace th08

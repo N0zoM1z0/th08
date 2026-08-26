@@ -696,7 +696,7 @@ size = 0x2B
 [[units]]
 name = "gui-bullet-anm-release-required"
 object = "build/Gui.obj"
-symbol = "?FUN_00438ff3@th08@@YIHXZ"
+symbol = "?ReleaseResourcesOnRestart@th08@@YIHXZ"
 target_address = 0x00438FF3
 size = 0xA
 
@@ -710,7 +710,7 @@ addend = 0x168
 [[units]]
 name = "gui-anm-release-required"
 object = "build/Gui.obj"
-symbol = "?FUN_00438ffd@th08@@YIHXZ"
+symbol = "?KeepStageResources@th08@@YIHXZ"
 target_address = 0x00438FFD
 size = 0xA
 
@@ -731,7 +731,7 @@ size = 0x90
 [[units.relocations]]
 offset = 0x9
 type = "REL32"
-symbol = "?FUN_00438ffd@th08@@YIHXZ"
+symbol = "?KeepStageResources@th08@@YIHXZ"
 target = 0x00438FFD
 
 [[units.relocations]]
@@ -755,7 +755,7 @@ target = 0x004397D5
 [[units.relocations]]
 offset = 0x27
 type = "REL32"
-symbol = "?FUN_00438ff3@th08@@YIHXZ"
+symbol = "?ReleaseResourcesOnRestart@th08@@YIHXZ"
 target = 0x00438FF3
 
 [[units.relocations]]
@@ -4044,7 +4044,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x4060
 type = "REL32"
-symbol = "?FUN_004230c0@Gui@th08@@QAEXM@Z"
+symbol = "?SetBossLifeBarTarget@Gui@th08@@QAEXM@Z"
 target = 0x004230C0
 
 [[units.relocations]]
@@ -4276,7 +4276,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x464D
 type = "REL32"
-symbol = "?SetBossGaugeValue@Gui@th08@@QAEXHH@Z"
+symbol = "?SetBossGaugeColor@Gui@th08@@QAEXHH@Z"
 target = 0x00423110
 
 [[units.relocations]]
@@ -4832,7 +4832,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x5213
 type = "REL32"
-symbol = "?FUN_00423130@Gui@th08@@QAEXH@Z"
+symbol = "?SetBossLifeMarkerCount@Gui@th08@@QAEXH@Z"
 target = 0x00423130
 
 [[units.relocations]]
@@ -5505,7 +5505,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x6239
 type = "REL32"
-symbol = "?FUN_004390d6@Gui@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?HideClockTime@Gui@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x004390D6
 
 [[units.relocations]]
@@ -5565,7 +5565,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x6286
 type = "REL32"
-symbol = "?FUN_00439093@Gui@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?FlashClockTimeFast@Gui@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00439093
 
 [[units.relocations]]
@@ -5577,7 +5577,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x6292
 type = "REL32"
-symbol = "?FUN_00439050@Gui@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?FlashClockTimeSlow@Gui@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00439050
 
 [[units.relocations]]
@@ -9678,7 +9678,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x3D
 type = "REL32"
-symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
 target = 0x004358BB
 
 [[units.relocations]]
@@ -10673,7 +10673,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x1302
 type = "REL32"
-symbol = "?FUN_00437ddd@Gui@th08@@QAEXH@Z"
+symbol = "?ShowBonusScore@Gui@th08@@QAEXH@Z"
 target = 0x00437DDD
 
 [[units.relocations]]
@@ -10830,7 +10830,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x1631
 type = "REL32"
-symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
 target = 0x004358BB
 
 [[units.relocations]]
@@ -10842,7 +10842,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x1663
 type = "REL32"
-symbol = "?FUN_004230c0@Gui@th08@@QAEXM@Z"
+symbol = "?SetBossLifeBarTarget@Gui@th08@@QAEXM@Z"
 target = 0x004230C0
 
 [[units.relocations]]
@@ -42790,7 +42790,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x371
 type = "REL32"
-symbol = "?FUN_00438f58@Gui@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?CaptureArcade@Gui@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00438F58
 
 [[units.relocations]]
@@ -42856,7 +42856,7 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0x434
 type = "REL32"
-symbol = "?FUN_00438046@th08@@YIXXZ"
+symbol = "?CopyCurrentStageEnemyNameTexture@Gui@th08@@SIXXZ"
 target = 0x00438046
 
 [[units.relocations]]
@@ -43096,7 +43096,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x68D
 type = "REL32"
-symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
 target = 0x004358BB
 
 [[units.relocations]]
@@ -55058,7 +55058,7 @@ size = 0x26
 [[units]]
 name = "gui-fun-00439050"
 object = "build/Gui.obj"
-symbol = "?FUN_00439050@Gui@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?FlashClockTimeSlow@Gui@th08@@QAE?AW4ZunResult@@XZ"
 target_address = 0x00439050
 size = 0x43
 
@@ -55089,7 +55089,7 @@ target = 0x00407120
 [[units]]
 name = "gui-fun-00439093"
 object = "build/Gui.obj"
-symbol = "?FUN_00439093@Gui@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?FlashClockTimeFast@Gui@th08@@QAE?AW4ZunResult@@XZ"
 target_address = 0x00439093
 size = 0x43
 
@@ -55320,7 +55320,7 @@ size = 0x3D
 [[units]]
 name = "gui-is-dialog-present"
 object = "build/Gui.obj"
-symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
 target_address = 0x004358BB
 size = 0x45
 
@@ -55540,7 +55540,7 @@ target = 0x0043EA00
 [[units]]
 name = "gui-resource-reload-enabled"
 object = "build/Gui.obj"
-symbol = "?FUN_00438fe9@th08@@YIHXZ"
+symbol = "?IsInitialStageLoad@th08@@YIHXZ"
 target_address = 0x00438FE9
 size = 0x0A
 
@@ -55579,7 +55579,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x16
 type = "REL32"
-symbol = "?FUN_00438fe9@th08@@YIHXZ"
+symbol = "?IsInitialStageLoad@th08@@YIHXZ"
 target = 0x00438FE9
 
 [[units.relocations]]
@@ -56957,7 +56957,7 @@ target = 0x004069F0
 [[units]]
 name = "gui-fun-00437e5d"
 object = "build/Gui.obj"
-symbol = "?FUN_00437e5d@Gui@th08@@QAEXHH@Z"
+symbol = "?ShowPopupText@Gui@th08@@QAEXHH@Z"
 target_address = 0x00437E5D
 size = 0x7F
 
@@ -57104,7 +57104,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0xA2
 type = "REL32"
-symbol = "?FUN_00437e5d@Gui@th08@@QAEXHH@Z"
+symbol = "?ShowPopupText@Gui@th08@@QAEXHH@Z"
 target = 0x00437E5D
 
 [[units.relocations]]
@@ -57317,7 +57317,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x9B
 type = "REL32"
-symbol = "?FUN_00437e5d@Gui@th08@@QAEXHH@Z"
+symbol = "?ShowPopupText@Gui@th08@@QAEXHH@Z"
 target = 0x00437E5D
 
 [[units.relocations]]
@@ -59782,7 +59782,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x1F
 type = "REL32"
-symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
 target = 0x00437D87
 
 [[units.relocations]]
@@ -61282,7 +61282,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x170
 type = "REL32"
-symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
 target = 0x004358BB
 
 [[units.relocations]]
@@ -62483,14 +62483,14 @@ size = 0x2D
 [[units]]
 name = "gui-fun-00439810"
 object = "build/Gui.obj"
-symbol = "?FUN_00439810@Gui@th08@@QAEXH@Z"
+symbol = "?MsgRead@Gui@th08@@QAEXH@Z"
 target_address = 0x00439810
 size = 0x19
 
 [[units.relocations]]
 offset = 0x11
 type = "REL32"
-symbol = "?FUN_0043396d@GuiImpl@th08@@QAEXH@Z"
+symbol = "?StartMessage@GuiImpl@th08@@QAEXH@Z"
 target = 0x0043396D
 
 [[units]]
@@ -62767,7 +62767,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0xF3
 type = "REL32"
-symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
 target = 0x004358BB
 
 [[units.relocations]]
@@ -63950,7 +63950,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x1F5
 type = "REL32"
-symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
 target = 0x00437D87
 
 [[units.relocations]]
@@ -64154,7 +64154,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x41A
 type = "REL32"
-symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
 target = 0x00437D87
 
 [[units.relocations]]
@@ -67917,11 +67917,11 @@ symbol = "?StopSpellBackground@Background@th08@@QAEXXZ"
 target_address = 0x00416AD0
 size = 0x18
 
-# Ledger name: th08::Gui::gui_fun_00437edc
+# Ledger name: th08::Gui::ShowSpellcardBonus
 [[units]]
 name = "gui-fun-00437edc"
 object = "build/Gui.obj"
-symbol = "?gui_fun_00437edc@Gui@th08@@QAEXH@Z"
+symbol = "?ShowSpellcardBonus@Gui@th08@@QAEXH@Z"
 target_address = 0x00437EDC
 size = 0x80
 
@@ -68057,7 +68057,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x2C2
 type = "REL32"
-symbol = "?gui_fun_00437edc@Gui@th08@@QAEXH@Z"
+symbol = "?ShowSpellcardBonus@Gui@th08@@QAEXH@Z"
 target = 0x00437EDC
 
 [[units.relocations]]
@@ -68216,11 +68216,11 @@ type = "DIR32"
 symbol = "?g_GameManager@th08@@3UGameManager@1@A"
 target = 0x0160F508
 
-# Ledger name: th08::Gui::FUN_00437ddd
+# Ledger name: th08::Gui::ShowBonusScore
 [[units]]
 name = "gui-fun-00437ddd"
 object = "build/Gui.obj"
-symbol = "?FUN_00437ddd@Gui@th08@@QAEXH@Z"
+symbol = "?ShowBonusScore@Gui@th08@@QAEXH@Z"
 target_address = 0x00437DDD
 size = 0x80
 
@@ -68536,7 +68536,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x9B
 type = "REL32"
-symbol = "?FUN_00437ddd@Gui@th08@@QAEXH@Z"
+symbol = "?ShowBonusScore@Gui@th08@@QAEXH@Z"
 target = 0x00437DDD
 
 [[units.relocations]]
@@ -68680,7 +68680,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x674
 type = "REL32"
-symbol = "?FUN_00437e5d@Gui@th08@@QAEXHH@Z"
+symbol = "?ShowPopupText@Gui@th08@@QAEXHH@Z"
 target = 0x00437E5D
 
 [[units.relocations]]
@@ -69115,7 +69115,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x742
 type = "REL32"
-symbol = "?gui_fun_00437edc@Gui@th08@@QAEXH@Z"
+symbol = "?ShowSpellcardBonus@Gui@th08@@QAEXH@Z"
 target = 0x00437EDC
 
 [[units.relocations]]
@@ -70942,7 +70942,7 @@ target = 0x0047ABAB
 [[units]]
 name = "gui-copy-message-texture-rect"
 object = "build/Gui.obj"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "?CopyEnemyNameTexture@Gui@th08@@SIXH@Z"
 target_address = 0x00437F5C
 size = 0xEA
 
@@ -71105,7 +71105,7 @@ target = 0x00467040
 [[units]]
 name = "gui-message-start"
 object = "build/Gui.obj"
-symbol = "?FUN_0043396d@GuiImpl@th08@@QAEXH@Z"
+symbol = "?StartMessage@GuiImpl@th08@@QAEXH@Z"
 target_address = 0x0043396D
 size = 0x446
 
@@ -71130,7 +71130,7 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0x73
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "?CopyEnemyNameTexture@Gui@th08@@SIXH@Z"
 target = 0x00437F5C
 
 [[units.relocations]]
@@ -71176,7 +71176,7 @@ target = 0x004E4B64
 [[units.relocations]]
 offset = 0xAD
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "?CopyEnemyNameTexture@Gui@th08@@SIXH@Z"
 target = 0x00437F5C
 
 [[units.relocations]]
@@ -71216,7 +71216,7 @@ target = 0x004E4B64
 [[units.relocations]]
 offset = 0xDB
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "?CopyEnemyNameTexture@Gui@th08@@SIXH@Z"
 target = 0x00437F5C
 
 [[units.relocations]]
@@ -72090,7 +72090,7 @@ target = 23131176
 [[units.relocations]]
 offset = 3573
 type = "REL32"
-symbol = "th08::Gui::FUN_00439810"
+symbol = "th08::Gui::MsgRead"
 target = 4429840
 
 [[units.relocations]]
@@ -72301,7 +72301,7 @@ target = 23131400
 [[units.relocations]]
 offset = 4373
 type = "DIR32"
-symbol = "?g_GuiStageScoreTables@th08@@3PAPAHA"
+symbol = "?g_GuiStageClearBonuses@th08@@3PAHA"
 target = 5009752
 
 [[units.relocations]]
@@ -74772,7 +74772,7 @@ target = 4205104
 [[units]]
 name = "gui-boss-stage-elements"
 object = "build/objdiff/reimpl/Gui.obj"
-symbol = "th08::Gui::FUN_0043741d"
+symbol = "th08::Gui::DrawStageElements"
 target_address = 4420637
 size = 1554
 
@@ -75277,7 +75277,7 @@ target = 4599792
 [[units]]
 name = "gui-update-implementation"
 object = "build/objdiff/reimpl/Gui.obj"
-symbol = "th08::Gui::FUN_00435900"
+symbol = "th08::Gui::UpdateStageElements"
 target_address = 4413696
 size = 2397
 
@@ -75723,7 +75723,7 @@ target = 23131444
 [[units.relocations]]
 offset = 27
 type = "REL32"
-symbol = "th08::Gui::FUN_00435900"
+symbol = "th08::Gui::UpdateStageElements"
 target = 4413696
 
 [[units.relocations]]
@@ -76286,7 +76286,7 @@ target = 4599792
 [[units]]
 name = "gui-result-overlay-draw"
 object = "build/objdiff/reimpl/Gui.obj"
-symbol = "th08::Gui::FUN_0043826b"
+symbol = "th08::Gui::DrawStageClearScreen"
 target_address = 4424299
 size = 1982
 
@@ -77439,7 +77439,7 @@ target = 4430056
 [[units]]
 name = "gui-formatted-popup-draw"
 object = "build/objdiff/reimpl/Gui.obj"
-symbol = "th08::Gui::FUN_00438a89"
+symbol = "th08::Gui::DrawAsciiText"
 target_address = 4426377
 size = 1231
 
@@ -78167,7 +78167,7 @@ size = 70
 [[units.relocations]]
 offset = 26
 type = "REL32"
-symbol = "th08::Gui::FUN_0043826b"
+symbol = "th08::Gui::DrawStageClearScreen"
 target = 4424299
 
 [[units.relocations]]
@@ -78179,7 +78179,7 @@ target = 4412459
 [[units.relocations]]
 offset = 45
 type = "REL32"
-symbol = "th08::Gui::FUN_0043741d"
+symbol = "th08::Gui::DrawStageElements"
 target = 4420637
 
 [[units.relocations]]
@@ -78191,7 +78191,7 @@ target = 4416093
 [[units.relocations]]
 offset = 61
 type = "REL32"
-symbol = "th08::Gui::FUN_00438a89"
+symbol = "th08::Gui::DrawAsciiText"
 target = 4426377
 
 [[units]]
@@ -80459,7 +80459,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 1552
 type = "REL32"
-symbol = "?FUN_00437e5d@Gui@th08@@QAEXHH@Z"
+symbol = "?ShowPopupText@Gui@th08@@QAEXHH@Z"
 target = 0x00437E5D
 
 [[units.relocations]]
@@ -82471,7 +82471,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 564
 type = "REL32"
-symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
 target = 0x004358BB
 
 [[units.relocations]]
@@ -85818,7 +85818,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0xF12
 type = "REL32"
-symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
 target = 0x004358BB
 
 [[units.relocations]]
@@ -85848,7 +85848,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0xF36
 type = "REL32"
-symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
 target = 0x004358BB
 
 [[units.relocations]]
@@ -102214,7 +102214,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0xF
 type = "REL32"
-symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
 target = 0x004358BB
 
 [[units.relocations]]
@@ -102579,7 +102579,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x55
 type = "REL32"
-symbol = "?FUN_0042f340@Gui@th08@@QAEXH@Z"
+symbol = "?SetBossTimerSeconds@Gui@th08@@QAEXH@Z"
 target = 0x0042F340
 
 [[units.relocations]]
@@ -102706,7 +102706,7 @@ target = 0x00415C80
 [[units]]
 name = "gui-boss-timer-setter-0042f340"
 object = "build/AsciiManagerScale.obj"
-symbol = "?FUN_0042f340@Gui@th08@@QAEXH@Z"
+symbol = "?SetBossTimerSeconds@Gui@th08@@QAEXH@Z"
 target_address = 0x0042F340
 size = 0x16
 
@@ -103183,7 +103183,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x3D
 type = "REL32"
-symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
 target = 0x004358BB
 
 [[units.relocations]]
@@ -103195,7 +103195,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x4B
 type = "REL32"
-symbol = "?FUN_00437dc7@Gui@th08@@QAEHXZ"
+symbol = "?IsDialogueSkippable@Gui@th08@@QAEHXZ"
 target = 0x00437DC7
 
 [[units.relocations]]
@@ -104138,19 +104138,19 @@ type = "REL32"
 symbol = "??0Float3@th08@@QAE@XZ"
 target = 0x0040B460
 
-# Ledger name: th08::Gui::FUN_00437dc7
+# Ledger name: th08::Gui::IsDialogueSkippable
 [[units]]
 name = "gui-message-state-helper-00437dc7"
 object = "build/Gui.obj"
-symbol = "?FUN_00437dc7@Gui@th08@@QAEHXZ"
+symbol = "?IsDialogueSkippable@Gui@th08@@QAEHXZ"
 target_address = 0x00437DC7
 size = 0x16
 
-# Ledger name: th08::Gui::FUN_004390d6
+# Ledger name: th08::Gui::HideClockTime
 [[units]]
 name = "gui-stage-background-sequence-disable-004390d6"
 object = "build/Gui.obj"
-symbol = "?FUN_004390d6@Gui@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?HideClockTime@Gui@th08@@QAE?AW4ZunResult@@XZ"
 target_address = 0x004390D6
 size = 0x18
 
@@ -104165,7 +104165,7 @@ size = 0x5CA
 [[units.relocations]]
 offset = 0xB
 type = "REL32"
-symbol = "?FUN_00438fe9@th08@@YIHXZ"
+symbol = "?IsInitialStageLoad@th08@@YIHXZ"
 target = 0x00438FE9
 
 [[units.relocations]]
@@ -104189,7 +104189,7 @@ target = 0x00465A40
 [[units.relocations]]
 offset = 0x53
 type = "REL32"
-symbol = "?FUN_004396b8@Gui@th08@@QAEXXZ"
+symbol = "?InitStageClearScreen@Gui@th08@@QAEXXZ"
 target = 0x004396B8
 
 [[units.relocations]]
@@ -104313,7 +104313,7 @@ target = 0x0045E430
 [[units.relocations]]
 offset = 0x149
 type = "REL32"
-symbol = "?FUN_004396b8@Gui@th08@@QAEXXZ"
+symbol = "?InitStageClearScreen@Gui@th08@@QAEXXZ"
 target = 0x004396B8
 
 [[units.relocations]]
@@ -104411,7 +104411,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x2F3
 type = "REL32"
-symbol = "?FUN_004390d6@Gui@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?HideClockTime@Gui@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x004390D6
 
 [[units.relocations]]
@@ -104477,7 +104477,7 @@ target = 0x00439710
 [[units.relocations]]
 offset = 0x36E
 type = "REL32"
-symbol = "?FUN_00438ffd@th08@@YIHXZ"
+symbol = "?KeepStageResources@th08@@YIHXZ"
 target = 0x00438FFD
 
 [[units.relocations]]
@@ -104537,7 +104537,7 @@ target = 0x00465A40
 [[units.relocations]]
 offset = 0x3F0
 type = "REL32"
-symbol = "?FUN_00438fe9@th08@@YIHXZ"
+symbol = "?IsInitialStageLoad@th08@@YIHXZ"
 target = 0x00438FE9
 
 [[units.relocations]]
@@ -104561,7 +104561,7 @@ target = 0x00462360
 [[units.relocations]]
 offset = 0x482
 type = "REL32"
-symbol = "?FUN_00438ffd@th08@@YIHXZ"
+symbol = "?KeepStageResources@th08@@YIHXZ"
 target = 0x00438FFD
 
 [[units.relocations]]
@@ -104619,12 +104619,12 @@ type = "DIR32"
 symbol = "?g_GuiMessageScreenEffectDuration@th08@@3HA"
 target = 0x017CE8CC
 
-# Ledger name: th08::Gui::FUN_004396b8
+# Ledger name: th08::Gui::InitStageClearScreen
 
 [[units]]
 name = "gui-vm-grid-reset-004396b8"
 object = "build/Gui.obj"
-symbol = "?FUN_004396b8@Gui@th08@@QAEXXZ"
+symbol = "?InitStageClearScreen@Gui@th08@@QAEXXZ"
 target_address = 0x004396B8
 size = 0x40
 
@@ -105144,7 +105144,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x333
 type = "REL32"
-symbol = "?FUN_00439810@Gui@th08@@QAEXH@Z"
+symbol = "?MsgRead@Gui@th08@@QAEXH@Z"
 target = 0x00439810
 
 [[units.relocations]]
@@ -105402,19 +105402,19 @@ type = "REL32"
 symbol = "?EndSpell@Spellcard@th08@@QAEXXZ"
 target = 0x004161B0
 
-# Ledger name: th08::Gui::FUN_004230c0
+# Ledger name: th08::Gui::SetBossLifeBarTarget
 [[units]]
 name = "gui-boss-life-ratio-setter-004230c0"
 object = "build/EclDependencies.obj"
-symbol = "?FUN_004230c0@Gui@th08@@QAEXM@Z"
+symbol = "?SetBossLifeBarTarget@Gui@th08@@QAEXM@Z"
 target_address = 0x004230C0
 size = 0x16
 
-# Ledger name: th08::Gui::FUN_00423130
+# Ledger name: th08::Gui::SetBossLifeMarkerCount
 [[units]]
 name = "gui-ecl-lives-setter-00423130"
 object = "build/EclDependencies.obj"
-symbol = "?FUN_00423130@Gui@th08@@QAEXH@Z"
+symbol = "?SetBossLifeMarkerCount@Gui@th08@@QAEXH@Z"
 target_address = 0x00423130
 size = 0x16
 
@@ -107221,7 +107221,7 @@ size = 0x27
 [[units]]
 name = "gui-set-boss-gauge-value-00423110"
 object = "build/EclDependencies.obj"
-symbol = "?SetBossGaugeValue@Gui@th08@@QAEXHH@Z"
+symbol = "?SetBossGaugeColor@Gui@th08@@QAEXHH@Z"
 target_address = 0x00423110
 size = 0x1A
 
@@ -107654,7 +107654,7 @@ target = 0x004B4384
 [[units]]
 name = "gui-stage-spell-sprite-00438046"
 object = "build/objdiff/reimpl/Gui.obj"
-symbol = "?FUN_00438046@th08@@YIXXZ"
+symbol = "th08::Gui::CopyCurrentStageEnemyNameTexture"
 target_address = 0x00438046
 size = 0x205
 compare_size = 0x225
@@ -107675,19 +107675,19 @@ target = 0x0043824B
 [[units.relocations]]
 offset = 0x27
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
 offset = 0x34
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
 offset = 0x41
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
@@ -107717,7 +107717,7 @@ target = 0x00418130
 [[units.relocations]]
 offset = 0x6F
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
@@ -107735,7 +107735,7 @@ target = 0x00418130
 [[units.relocations]]
 offset = 0x8F
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
@@ -107753,7 +107753,7 @@ target = 0x00418130
 [[units.relocations]]
 offset = 0xAF
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
@@ -107771,7 +107771,7 @@ target = 0x00418130
 [[units.relocations]]
 offset = 0xCC
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
@@ -107789,7 +107789,7 @@ target = 0x00418130
 [[units.relocations]]
 offset = 0xE9
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
@@ -107807,7 +107807,7 @@ target = 0x00418130
 [[units.relocations]]
 offset = 0x106
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
@@ -107825,13 +107825,13 @@ target = 0x00418130
 [[units.relocations]]
 offset = 0x123
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
 offset = 0x130
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
@@ -107861,19 +107861,19 @@ target = 0x00418130
 [[units.relocations]]
 offset = 0x15E
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
 offset = 0x168
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
 offset = 0x175
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
@@ -107903,13 +107903,13 @@ target = 0x00418180
 [[units.relocations]]
 offset = 0x1A8
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
 offset = 0x1B2
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
@@ -107951,13 +107951,13 @@ target = 0x00418130
 [[units.relocations]]
 offset = 0x1F5
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
 offset = 0x1FF
 type = "REL32"
-symbol = "?FUN_00437f5c@th08@@YIXH@Z"
+symbol = "th08::Gui::CopyEnemyNameTexture"
 target = 0x00437F5C
 
 [[units.relocations]]
@@ -108011,7 +108011,7 @@ target = 0x004381FE
 [[units]]
 name = "gui-dialog-vm-ready-00437d87"
 object = "build/objdiff/reimpl/Gui.obj"
-symbol = "th08::Gui::FUN_00437d87"
+symbol = "th08::Gui::IsStageFinished"
 target_address = 0x00437D87
 size = 0x40
 
@@ -108024,7 +108024,7 @@ target = 0x004396F8
 [[units]]
 name = "gui-result-texture-capture-00438f58"
 object = "build/objdiff/reimpl/Gui.obj"
-symbol = "th08::Gui::FUN_00438f58"
+symbol = "th08::Gui::CaptureArcade"
 target_address = 0x00438F58
 size = 0x91
 
@@ -119034,7 +119034,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x46
 type = "REL32"
-symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
 target = 0x004358BB
 
 [[units.relocations]]
@@ -119130,7 +119130,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x2E
 type = "REL32"
-symbol = "?IsDialogPresent@Gui@th08@@QAEHXZ"
+symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
 target = 0x004358BB
 
 [[units.relocations]]
@@ -121103,7 +121103,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0xEB2
 type = "REL32"
-symbol = "?FUN_00438f58@Gui@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?CaptureArcade@Gui@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00438F58
 
 [[units.relocations]]
@@ -121792,7 +121792,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x503
 type = "REL32"
-symbol = "?FUN_00438f58@Gui@th08@@QAE?AW4ZunResult@@XZ"
+symbol = "?CaptureArcade@Gui@th08@@QAE?AW4ZunResult@@XZ"
 target = 0x00438F58
 
 [[units.relocations]]

@@ -1680,3 +1680,64 @@ remaining seven anonymous fields are the explicit unknowns above; the raw
 offset concentration now belongs to GUI.  Counts remain routing aids, not
 completion percentages.  The next bounded owner is GUI boss/status/message
 state.
+
+### GUI message, Boss HUD, and stage-clear model — 2026-08-27
+
+Scope: `GuiImpl @ g_Gui.impl`, message start/update/draw at
+`0x0043396D..0x004358BB`, stage/HUD update and drawing at
+`0x00435900..0x004390D6`, stage-clear initialization at `0x004396B8`, and the
+Boss-gauge setters at `0x004230C0..0x00423130`.  The accepted callers span
+ECL, GameManager, Enemy, Player, Item, Spellcard, Replay, Background, and the
+portable renderer.
+
+Observed: `GuiImpl` remains exactly `0x230B8` bytes.  Its sixteen front VMs,
+Boss-life-bar presentation state, four stage-text VMs, clock/loading/capture
+VMs, eight motion-blur VMs, spell-nullify VM, 168 transition VMs, stage-rank
+and clock VMs, and active-transition count now have asserted owners.  The
+message controller is exactly `0x1570` bytes at `GuiImpl + 0x21814`; portraits,
+dialogue and intro lines, text/shadow colors, instruction/timer state, wait and
+skip state, current portrait/line/color, textbox visibility, and selected
+route are named through its last target-used byte.  This corrects the former
+`0x1578` overlay: the following dwords at `+0x22D84/+0x22D88` are the
+stage-clear screen state and clear-bonus total, not message fields.
+
+The `+0x22DEC..+0x22E13` stage-clear owner now names stage, power, point-item,
+graze, time-orb, clock-increment, and old/target/displayed clock values.  The
+target's indexed dword read at VA `0x004C7158` proves the old
+`i32 *[MAX_STAGES]` declaration was a type lie; it is now the integer array
+`g_GuiStageClearBonuses`, with its COFF identity and Linux fixed-layout symbol
+moved together.  `Gui::bossLifeBarTargetSize` is the ECL/Enemy-written value,
+while `bossLifeBarDisplayedSize` is the interpolated value consumed by the
+draw path.  Supervisor `+0x164/+0x168/+0x16C` are respectively initial-stage
+load, release-on-restart, and keep-stage-resources flags across every producer
+and consumer.
+
+Behavior-backed names replace the public address labels for message reading,
+stage-element update/draw, stage completion/skipping, bonus and status popups,
+Boss timer/life/gauge/marker setters, enemy-name texture selection, stage-clear
+draw and initialization, ASCII popup draw, arcade capture, and clock flashing
+or hiding.  The source, mappings, implemented/reccmp ledgers, accepted rows,
+and COFF relocation manifest moved together.  GensokyoClub's current GUI model
+corroborated the layout and roles; acceptance remains the TH08 1.00d target
+replay below.
+
+Unknowns: the unused final message byte, `Gui + 0x38`, and the prefix of the
+Background stage-data view used only for music paths remain explicit neutral
+storage.  Opcode payloads are still byte-oriented in this batch; their widths
+and behavior are visible, but promoting the serialized instruction union is a
+separate source-shape change.
+
+Oracle status: focused `Gui.obj` replay passes **41 / 41** and the selected
+caller set passes **224 / 224**, including complete `RunEcl` at **26,638 /
+26,638** bytes.  A single-job non-reuse cold VC7 replay of all 75 comparison
+objects passes **1,106 / 1,106**.  The normal VC7 production image links, the
+complete Linux container build links as ELF32/i386, and
+`verify-modern-linux.sh` reports all fixed target-owned layout symbols OK.
+
+Result: `Gui.cpp` has zero raw-member, absolute-address, or anonymous-identifier
+candidates; its one opaque candidate is the retained Background-owned music
+view.  The whole-source router now reports 116 raw-member, 82 absolute-address,
+280 anonymous-identifier, and 49 opaque-storage candidates.  These are routing
+observations, not completion percentages.  The next dense owners are the
+remaining GameManager/Spellcard cross-state fields, followed by
+EnemyManagerUpdate and AsciiManager presentation state.

@@ -55,7 +55,6 @@ DIFFABLE_STATIC(GameManager, g_GameManager);
 DIFFABLE_STATIC(ChainElem, g_GameManagerCalcChain);
 DIFFABLE_STATIC(ChainElem, g_GameManagerDrawChain);
 
-void FUN_00438046();
 i32 InitializeScoreData();
 extern i32 g_GuiMessageStageMode;
 
@@ -362,7 +361,7 @@ ChainCallbackResult GameManager::OnUpdate(GameManager *gameManager)
         }
 
             if (g_GameManager.nextSupervisorState < 0)
-                g_Gui.FUN_00438f58();
+                g_Gui.CaptureArcade();
         }
 
         if ((((g_CurFrameInput & 0x1001) != 0) && ((g_CurFrameInput & 0x1001) != (g_LastFrameInput & 0x1001))) ||
@@ -385,7 +384,7 @@ ChainCallbackResult GameManager::OnUpdate(GameManager *gameManager)
 
     if (gameManager->stageStartupMode != 0)
     {
-        FUN_00438046();
+        Gui::CopyCurrentStageEnemyNameTexture();
         g_AnmManager->ReleaseSurface(8);
         ABS_I32(0x17CEA54) = 0;
         if (gameManager->stageStartupMode == STAGE_STARTUP_PLAY_MUSIC)
@@ -439,7 +438,7 @@ ChainCallbackResult GameManager::OnUpdate(GameManager *gameManager)
     anmManager = g_AnmManager;
     anmManager->cameraMode |= AnmCameraMode_Unset;
 
-    if (g_GameManager.flags.isReplay && g_GameManager.replayMode == 1 && !g_Gui.IsDialogPresent())
+    if (g_GameManager.flags.isReplay && g_GameManager.replayMode == 1 && !g_Gui.IsDialoguePresent())
     {
         gameManager->frameSkipCounter++;
         if ((ABS_I16(0x17CE8F0) < 20 && gameManager->frameSkipCounter % 3 != 0) ||
@@ -621,11 +620,11 @@ ZunResult GameManager::AddedCallback(GameManager *gameManager)
         g_Supervisor.curState != SupervisorState_SpellcardPracticeRestart &&
         g_Supervisor.curState != SupervisorState_GameManagerNextStageWeird)
     {
-        g_Supervisor.unk164 = TRUE;
+        g_Supervisor.isInitialStageLoad = TRUE;
     }
     else
     {
-        g_Supervisor.unk164 = FALSE;
+        g_Supervisor.isInitialStageLoad = FALSE;
     }
     g_GameManager.gameplaySetupState = GAMEPLAY_SETUP_IN_PROGRESS;
 
@@ -697,7 +696,7 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
     g_Supervisor.framerateMultiplier = 1.0f;
     GM_FLAGS_WORD(gameManager) &= ~0x400U;
 
-    if (g_Supervisor.unk164 || gameManager->flags.isSpellPractice ||
+    if (g_Supervisor.isInitialStageLoad || gameManager->flags.isSpellPractice ||
         g_GameManager.flags.isPracticeMode || g_GameManager.difficulty >= 4)
     {
         if (gameManager->cfg)
@@ -986,7 +985,7 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
         }
     }
 
-    if (!g_Supervisor.unk16c)
+    if (!g_Supervisor.keepStageResources)
     {
         if (g_GameManager.flags.isSpellPractice)
         {
@@ -1016,7 +1015,7 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
 
     gameManager->showRetryMenu = 0;
     GM_FLAGS_WORD(gameManager) |= 4U;
-    if (g_Supervisor.unk16c && g_GameManager.flags.isSpellPractice &&
+    if (g_Supervisor.keepStageResources && g_GameManager.flags.isSpellPractice &&
         !FUN_00439916(g_GameManager.currentSpellCardNumber))
         gameManager->stageStartupMode = STAGE_STARTUP_WITHOUT_MUSIC;
     else
@@ -1058,7 +1057,7 @@ void __fastcall GameManager::GameplaySetupThread(void *unused)
     g_Supervisor.unk290 = FALSE;
     g_Supervisor.unk174 = 60;
     GM_FLAGS_WORD(gameManager) &= ~0x200U;
-    g_Supervisor.unk16c = 0;
+    g_Supervisor.keepStageResources = 0;
     g_ScreenEffectCounter = 2;
     goto thread_done;
 
@@ -1068,7 +1067,7 @@ setup_error:
     g_Supervisor.runningSubthreadHandle = NULL;
     g_Supervisor.subthreadCloseRequestActive = FALSE;
     g_Supervisor.unk290 = FALSE;
-    g_Supervisor.unk16c = 0;
+    g_Supervisor.keepStageResources = 0;
     g_ScreenEffectCounter = 2;
 
 thread_done:
@@ -1208,14 +1207,14 @@ ZunResult GameManager::DeletedCallback(GameManager *gameManager)
         g_Supervisor.curState != SupervisorState_SpellcardPracticeRestart &&
         g_Supervisor.curState != SupervisorState_GameManagerNextStageWeird)
     {
-        g_Supervisor.unk168 = TRUE;
+        g_Supervisor.releaseResourcesOnRestart = TRUE;
     }
     else
     {
-        g_Supervisor.unk168 = FALSE;
+        g_Supervisor.releaseResourcesOnRestart = FALSE;
     }
 
-    if (!g_GameManager.flags.isSpellPractice || g_Supervisor.unk168)
+    if (!g_GameManager.flags.isSpellPractice || g_Supervisor.releaseResourcesOnRestart)
     {
         g_Supervisor.StopAudio();
         if (g_Supervisor.cfg.musicMode == MIDI && g_Supervisor.midiOutput != NULL)

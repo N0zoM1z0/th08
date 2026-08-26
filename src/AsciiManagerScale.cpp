@@ -29,9 +29,9 @@ bool Gui::IsBossPresent()
 }
 
 // FUNCTION: th08 0x42f340
-void Gui::FUN_0042f340(i32 value)
+void Gui::SetBossTimerSeconds(i32 seconds)
 {
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x24) = value;
+    this->spellcardSecondsRemaining = seconds;
 }
 
 } // namespace th08

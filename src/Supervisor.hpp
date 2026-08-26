@@ -281,9 +281,9 @@ struct Supervisor
     i32 wantedState;
     i32 curState;
     i32 wantedState2;
-    i32 unk164;
-    i32 unk168;
-    i32 unk16c;
+    i32 isInitialStageLoad;
+    i32 releaseResourcesOnRestart;
+    i32 keepStageResources;
     i32 unk170;
     i32 unk174; // Commonly set for screen transitions and decremented once per frame, but never actually used for
                 // anything
@@ -330,6 +330,9 @@ struct Supervisor
     char *versionData;
 };
 C_ASSERT(sizeof(Supervisor) == 0x364);
+C_ASSERT(offsetof(Supervisor, isInitialStageLoad) == 0x164);
+C_ASSERT(offsetof(Supervisor, releaseResourcesOnRestart) == 0x168);
+C_ASSERT(offsetof(Supervisor, keepStageResources) == 0x16c);
 DIFFABLE_EXTERN(Supervisor, g_Supervisor);
 
 #define CRASH_GAME() memset(&g_Supervisor, -1, sizeof(g_Supervisor))

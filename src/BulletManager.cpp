@@ -1709,13 +1709,13 @@ void BulletManager::CutChain()
 // FUNCTION: th08 0x4338b0
 i32 IsResourceReloadEnabled()
 {
-    return g_Supervisor.unk164;
+    return g_Supervisor.isInitialStageLoad;
 }
 
 // FUNCTION: th08 0x4338c0
 i32 IsBulletManagerAnmReleaseRequired()
 {
-    return g_Supervisor.unk168;
+    return g_Supervisor.releaseResourcesOnRestart;
 }
 
 } /* namespace th08 */

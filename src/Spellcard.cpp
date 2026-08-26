@@ -782,7 +782,7 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
     if (((this->flags >> 8) & 1) != 0)
     {
         this->rewardEffect = NULL;
-        g_Gui.gui_fun_00437edc(this->bonusAward);
+        g_Gui.ShowSpellcardBonus(this->bonusAward);
         g_GameManager.AddScore(this->bonusAward);
         this->flags &= ~0x100;
         if (this->pendingTimeOrbs > 0)
@@ -1047,7 +1047,7 @@ void Spellcard::EndSpell()
             if (enemyScore != 0)
             {
                 g_GameManager.AddScore(enemyScore);
-                g_Gui.FUN_00437ddd(enemyScore);
+                g_Gui.ShowBonusScore(enemyScore);
             }
 
             if (((this->flags >> 2) & 1) != 0)
@@ -1190,7 +1190,7 @@ void Spellcard::EndSpell()
                 }
                 *reinterpret_cast<u8 *>(this->spellEffect + 0x350) = 0;
                 this->spellEffect = NULL;
-                g_Gui.FUN_00437e5d(0, (((this->flags >> 5) & 1) != 0) + 5);
+                g_Gui.ShowPopupText(0, (((this->flags >> 5) & 1) != 0) + 5);
             }
             else
             {
@@ -1409,7 +1409,7 @@ i32 Spellcard::OnUpdateImpl()
         {
             *reinterpret_cast<u8 *>(this->rewardEffect + 0x350) = 0;
             this->rewardEffect = NULL;
-            g_Gui.gui_fun_00437edc(this->bonusAward);
+            g_Gui.ShowSpellcardBonus(this->bonusAward);
             g_GameManager.AddScore(this->bonusAward);
             this->flags &= ~0x100;
             if (this->pendingTimeOrbs > 0)

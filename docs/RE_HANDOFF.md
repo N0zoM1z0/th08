@@ -415,6 +415,35 @@ and the complete i386 Linux build/layout verifier passes.  Authored exact is
 now **1,106 / 1,107 functions** and **459,396 / 459,757 bytes**; only
 `ReplayManager::OnUpdateHighPrioDemo2 @ 0x004526C0` remains unaccepted.
 
+The first accepted GUI-core batch closes its message, Boss HUD, stage-element,
+stage-clear, popup, capture, transition, and clock ownership.  `GuiImpl` is
+asserted through its exact `0x230B8` extent; the message state is correctly
+bounded at `0x1570`, leaving the following stage-clear state/total dwords as
+their own fields.  The `+0x22DEC` stage-clear record, all important VM banks,
+Boss-life target/display interpolation, formatted-popup mode, and the three
+Supervisor stage-resource flags now have shared typed owners.  The clear-stage
+bonus global at `0x004C7158` is corrected from a pointer array to the target-
+observed integer array `g_GuiStageClearBonuses`.
+
+Twenty-five high-use GUI and helper symbols now carry behavior-backed names,
+including `StartMessage`, `UpdateStageElements`, `DrawStageElements`,
+`DrawStageClearScreen`, `ShowBonusScore`, `ShowPopupText`,
+`ShowSpellcardBonus`, `SetBossLifeBarTarget`, `SetBossTimerSeconds`,
+`CopyCurrentStageEnemyNameTexture`, `CaptureArcade`, and the clock controls.
+All mapping/implemented/reccmp/match and relocation identities moved with the
+source.  Focused GUI replay passes **41 / 41**; selected affected callers pass
+**224 / 224**; a single-job non-reuse cold build of all 75 comparison objects
+passes **1,106 / 1,106**.  The normal VC7 image links, and the complete i386
+Linux build plus fixed-layout verifier passes.  `Gui.cpp` now has zero raw-
+member candidates; the whole-source router is 116 raw-member, 82 absolute,
+280 anonymous, and 49 opaque candidates.  These counts are routing aids only.
+
+The next dense semantic owners are the remaining GameManager/Spellcard
+cross-state fields, then EnemyManagerUpdate and AsciiManager presentation
+state.  The message opcode payload union remains a useful smaller follow-up;
+its serialized byte orientation is deliberate until that batch is separately
+replayed.
+
 Select the next independent field family with:
 
 ```bash

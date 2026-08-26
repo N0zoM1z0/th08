@@ -340,7 +340,7 @@ pickup:
                 if (g_GameManager.GetPower() < 128)
                 {
                     g_BulletManager.bulletmanager_fun_00415c60();
-                    g_Gui.FUN_00437e5d(0, 1);
+                    g_Gui.ShowPopupText(0, 1);
                     g_SoundPlayer.PlaySoundByIdx(SOUND_POWERUP, 0);
                     g_AsciiManager.CreatePlayerPointPopup(&item->currentPosition, -1, 0xffffc0a0);
                     this->ConvertAllPowerItemsToTimeOrbs(item);
@@ -425,7 +425,7 @@ void Item::CollectPowerSmall()
         {
             g_BulletManager.bulletmanager_fun_00415c60();
         }
-        g_Gui.FUN_00437e5d(0, 1);
+        g_Gui.ShowPopupText(0, 1);
         g_ItemManager.ConvertAllPowerItemsToTimeOrbs(this);
     }
 
@@ -572,7 +572,7 @@ void Item::CollectPowerBig()
         {
             g_BulletManager.bulletmanager_fun_00415c60();
         }
-        g_Gui.FUN_00437e5d(0, 1);
+        g_Gui.ShowPopupText(0, 1);
         g_ItemManager.ConvertAllPowerItemsToTimeOrbs(this);
     }
 

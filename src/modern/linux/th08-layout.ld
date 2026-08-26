@@ -14,7 +14,7 @@ SECTIONS
 
     _ZN4th0816g_LastSpellCountE = 0x004c6c3c;
     _ZN4th0817g_EffectTemplatesE = 0x004c6d30;
-    _ZN4th0821g_GuiStageScoreTablesE = 0x004c7158;
+    _ZN4th0822g_GuiStageClearBonusesE = 0x004c7158;
     _ZN4th0822g_GuiMessageTextColorsE = 0x004c7180;
     _ZN4th0823g_GuiStageMusicContextsE = 0x004c7240;
     _ZN4th0830g_AsciiManagerDrawChainLowPrioE = 0x004cce00;

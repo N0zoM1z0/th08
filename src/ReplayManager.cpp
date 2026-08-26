@@ -291,7 +291,7 @@ ChainCallbackResult ReplayManager::OnUpdateFrameControl(ReplayManager *replayMan
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
 
-    if (g_Gui.IsDialogPresent() && g_Gui.FUN_00437dc7() && replayManager->frameCounter % 3 != 2)
+    if (g_Gui.IsDialoguePresent() && g_Gui.IsDialogueSkippable() && replayManager->frameCounter % 3 != 2)
     {
         return CHAIN_CALLBACK_RESULT_RESTART_FROM_FIRST_JOB;
     }
