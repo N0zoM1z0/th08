@@ -1278,7 +1278,7 @@ i32 RetryMenu::OnUpdate()
                 }
                 else
                 {
-                    g_GameManager.flags.unk4 = FALSE;
+                    g_GameManager.flags.gameCleared = FALSE;
                     g_Supervisor.curState = SupervisorState_Ending;
                 }
 
@@ -1490,7 +1490,7 @@ selected_no:
             // multiple of 10, so the last digit of your score is the number
             // of continues/retries used.
             g_GameManager.globals->displayScore = g_GameManager.globals->numRetries;
-            g_GameManager.globals->unk0x10 = 0;
+            g_GameManager.globals->scoreDisplayStep = 0;
             g_GameManager.globals->score = g_GameManager.globals->displayScore;
 
             g_GameManager.SetLives(g_GameManager.cfg->lifeCount);

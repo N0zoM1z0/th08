@@ -1619,3 +1619,64 @@ and header have zero raw-member candidates; the one PlayerBomb Background tint
 candidate is also gone.  Counts remain routing aids, not completion
 percentages.  The next largest coherent semantic owner is GameManager and its
 GUI/setup consumers.
+
+### GameManager core runtime and setup state — 2026-08-26
+
+Scope: `GameManager::OnUpdate @ 0x00439BC7`, the target-pinned setup callback
+at `0x0043ABD7`, score-data initialization at `0x0043BBE1`, and the Replay,
+Player, GUI, Background, Enemy, Effect, Spellcard, ResultScreen, Ending, and
+Supervisor consumers of the same state.  The two primary typed-RE packets are
+`build/typed-re-00439bc7.json` and `build/typed-re-0043abd7.json`; both attest
+the canonical 1.00d image and exact target extents.
+
+Observed: setup state `0/1/2` is complete/in-progress/failed, while the
+stage-start music selector `0/1/2` is none/play/without-music.  The owner now
+names the setup wait count, skip-current-frame latch, playtime and gameplay
+frame counters, replay pause recording, the next Supervisor state, run
+humanity-rate numerator/denominator, character-list index, stage RNG seed,
+stage-at-start, current-stage clear bit, aggregate stage playtime, frame-skip
+counter, and the startup selector.  Flag roles shared across update and setup
+are replay-input enabled, game cleared, stage-transition state,
+deathbomb-freeze active, final-stage route, and player-shot suppression.
+
+Setup's former raw global/config views are now asserted `ZunGlobals` and
+`GameConfiguration` fields.  A layout assertion rejected an initially
+plausible bomb-field interpretation: target offsets `+0x80`, `+0x84`, and
+`+0x88` are `bombsRemaining`, `bombsUsed`, and `bombsUsedInStage`, not three
+interchangeable counters.  `scoreDisplayStep @ +0x10`, life count, power,
+score/high-score state, time orbs, graze, and retries likewise use common
+owners throughout setup and normal gameplay.
+
+The complete routine at `0x0043BBE1` initializes all CATK records, opens and
+parses score.dat, selects the displayed high score, updates practice attempts,
+copies the active CATK table, initializes the HSCR record, and resets run
+playtime.  It is therefore named `InitializeScoreData`; the source symbol,
+mapping, implemented/reccmp ledgers, accepted match row, relocation metadata,
+and comparison-unit name moved together.
+
+VC7 source-shape limit: packed `GameManagerFlags` writes in setup retain the
+ownership-aware `GM_FLAGS_WORD(gameManager)` view.  Expressing each mask as
+separate bitfield assignments changes the target-visible mask-operation
+sequence even though the logical state is equivalent.  The stage RNG seed is
+written as the observed low `u16` of `g_Rng`, with a layout assertion at
+`GameManager + 0x3DDBC`.  This is typed ownership with a compiler-shape view,
+not an unowned raw offset.
+
+Unknowns: the bytes at `+0x3DBB6/+0x3DBB7`, the high halfword at `+0x3DDBE`,
+and fields at `+0x3DDCC/+0x3DDD2/+0x3DE0C` remain neutral because their full
+cross-state roles are not established.  They were not renamed from adjacency
+alone.
+
+Oracle status: focused `GameManager.obj` replay passes **42 / 42**, including
+the complete 3,644-byte update, 3,423-byte setup callback, and 552-byte
+`InitializeScoreData`.  Selected affected consumers pass **493 / 493**.  A
+single-job non-reuse cold VC7 replay passes **1,105 / 1,105**, the normal VC7
+production image links (including setup/score/option probes), and the complete
+i386 Linux container build plus fixed-layout verifier passes.
+
+Result: the whole-source router reports 201 raw-member, 82 absolute-address,
+310 anonymous-identifier, and 54 opaque-storage candidates.  GameManager's
+remaining seven anonymous fields are the explicit unknowns above; the raw
+offset concentration now belongs to GUI.  Counts remain routing aids, not
+completion percentages.  The next bounded owner is GUI boss/status/message
+state.

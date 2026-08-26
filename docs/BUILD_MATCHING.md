@@ -828,7 +828,10 @@ This corpus attests the natural VC7 emissions for ResultScreen/AnmManager/MidiOu
 
 - A function that is exact only in a dirty production translation unit must not be ledgered against that uncommitted object. Extract the minimal exact source body into a separate probe TU, preserve the production TU, and point the canonical match unit at the probe object. `TitleScreen::OnUpdateReplayMenu @ 0x0046E136` was promoted this way: the minimal probe needs only the function body, `g_StageNames`, `TITLE_MENU_ITEM_START_REPLAY`, and the small `InitializeTitleVmAndSetSprite` helper, yet still reproduces all 3671 bytes and 107 relocations.
 - Keep the probe on the same compile rule as the owning production TU. The replay-menu probe uses `cc_TitleScreen` (`/Os /Oi- /Ob1`), so source-shape conclusions remain comparable to the active Title lane while the normal executable link continues to use the production object.
-- Do not bundle nearby near-matches into the exact anchor. `TitleScreen::RegisterChain` and `DrawPieChart` were investigated in the same probe but deliberately removed from the stable ReplayMenu commit until they reach strict zero-diff.
+- Do not bundle nearby near-matches into an exact anchor. `DrawPieChart` was
+  accepted independently; `TitleScreen::RegisterChain` remained separate
+  until GensokyoClub commit `1b630bb` supplied the later strict-zero-diff
+  `ZUN_NEW` hypothesis described below.
 
 ### Title `/Os` switch tails and local-owner details
 
@@ -855,14 +858,20 @@ This corpus attests the natural VC7 emissions for ResultScreen/AnmManager/MidiOu
   `/Os /Oi- /Ob1` profile, replacing all three stale calls restores the exact
   0x369-byte body.  `TitleSetupThread @ 0x00470E10` uses the same direct
   `flags.isDemoMode` fingerprint at unit offset `0x2D0`.
-- `TitleScreen::RegisterChain @ 0x0047146D` remains a deliberately unaccepted
-  281-byte near match.  Its 20 relocations and all control flow agree; only the
-  `0x5C` versus target `0x40` hidden-new frame and four related displacements
-  differ.  Moving `TitleScreen()` out of line shrinks the frame too far to
-  `0x14`.  Moving `AnmVm()` out of line reaches `0x38` but breaks the already
-  exact 203-byte TitleScreen constructor.  Do not repeat either shared-header
-  experiment or add an artificial stack pad without new target-backed source
-  evidence.
+- `TitleScreen::RegisterChain @ 0x0047146D` is now accepted exact.  The missing
+  source shape was `ZUN_NEW(TitleScreen, "TitleInf")`, imported as a hypothesis
+  from GensokyoClub commit `1b630bb` and reproved locally against canonical
+  Japanese 1.00d.  Although non-DEBUG `ZunMemory::AddToRegistry` inlines to
+  its pointer argument, keeping the macro call around the new-expression
+  changes VC7's hidden allocation/EH lifetime and restores the target `0x40`
+  frame.  The complete 0x119-byte body and all 20 relocations replay exactly.
+  The debug label itself is optimized out, so its spelling is upstream
+  provenance rather than target-observed semantics.
+- The rejected shared-header experiments remain useful negative evidence.
+  Moving `TitleScreen()` out of line shrinks the frame too far to `0x14`;
+  moving `AnmVm()` out of line reaches `0x38` but breaks the already exact
+  203-byte TitleScreen constructor.  No artificial stack pad is involved in
+  the accepted solution.
 - The exact `TitleScreen::TitleScreen @ 0x00471586` frame is `0x4C` in both
   target and object, so `RegisterChain` is not reporting a wrong aggregate
   layout or a wrong emitted constructor body.  Further bounded probes also
@@ -873,7 +882,8 @@ This corpus attests the natural VC7 emissions for ResultScreen/AnmManager/MidiOu
   the `AnmVm()` body later in the same TU.  A TU-local factory remains a real
   call even with `__forceinline`; `/O1` changes the whole function rather than
   only its frame; nothrow/`throw()` removes the target-observed new-expression
-  EH contract.  These are eliminated hypotheses, not candidate fixes.
+  EH contract.  These are eliminated hypotheses, not candidate fixes; the
+  macro-level allocation expression was the missing dimension.
 - Any header/TU experiment in this lane must rebuild the PCH as well as the
   selected object.  Use `scripts/build.py --build-type=objdiffbuild --fresh
   --object-name TitleScreen.obj`; a warm selected-object build can otherwise

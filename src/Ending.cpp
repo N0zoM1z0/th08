@@ -500,7 +500,7 @@ ZunResult Ending::AddedCallback(Ending *ending)
 
     ending->anmFile = g_AnmManager->LoadAnm(0x18, "staff01.anm");
 
-    if (g_GameManager.flags.unk4)
+    if (g_GameManager.flags.gameCleared)
     {
 
         shotType2 = g_GameManager.shotType;
@@ -562,7 +562,7 @@ execute_anms:
         ending->vms[i].pos = Float3(64.0f, i * 16.0f + 400.0f, 0.0f);
     }
 
-    if (g_GameManager.flags.unk4 == 0)
+    if (g_GameManager.flags.gameCleared == 0)
     {
         endingFile = g_EndingFiles[0][g_GameManager.shotType];
     }

@@ -1321,9 +1321,9 @@ i32 ResultScreen::HandleResultKeyboard()
 
         this->textVms[0].color1.a = 255;
 
-        g_GameManager.hscr.playtimeFrames = g_GameManager.unk3DB94;
+        g_GameManager.hscr.playtimeFrames = g_GameManager.playtimeFrames;
 
-        g_GameManager.hscr.humanityRate = ((float)g_GameManager.unk3DBA0 / g_GameManager.unk3DBA4) * 10000.0f;
+        g_GameManager.hscr.humanityRate = ((float)g_GameManager.humanityRateNumerator / g_GameManager.humanityRateDenominator) * 10000.0f;
 
         this->hscr = g_GameManager.hscr;
 
@@ -1332,7 +1332,7 @@ i32 ResultScreen::HandleResultKeyboard()
         this->hscr.base.version = HSCR_VERSION;
         this->hscr.base.magic = HSCR_MAGIC;
 
-        if (!g_GameManager.flags.unk4)
+        if (!g_GameManager.flags.gameCleared)
         {
             this->hscr.stage = g_GameManager.currentStage;
         }
@@ -2170,7 +2170,7 @@ i32 ResultScreen::DrawFinalStats()
         unknownFloat = 0.0f;
 
         completion =
-            g_GameManager.difficulty < EXTRA ? g_GameManager.unk3de04 / 195559.0f : g_GameManager.unk3de04 / 80000.0f;
+            g_GameManager.difficulty < EXTRA ? g_GameManager.stagePlayTimeAll / 195559.0f : g_GameManager.stagePlayTimeAll / 80000.0f;
 
         strPos = vm->pos;
 
@@ -2204,7 +2204,7 @@ i32 ResultScreen::DrawFinalStats()
         strPos.x += g_AsciiManager.spaceWidth;
         strPos.y += 22.0f;
 
-        if (!g_GameManager.flags.unk4)
+        if (!g_GameManager.flags.gameCleared)
         {
             if (completion >= 1.0f)
             {
@@ -2294,7 +2294,7 @@ ZunResult ResultScreen::RegisterChain(u32 unk)
 
     g_ScreenEffectCounter = 0;
 
-    utils::GuiDebugPrint("Stg.PlayTimeAll = %d\r\n", g_GameManager.unk3de04);
+    utils::GuiDebugPrint("Stg.PlayTimeAll = %d\r\n", g_GameManager.stagePlayTimeAll);
 
     if (unk == 1) // When writing the score after a game
     {

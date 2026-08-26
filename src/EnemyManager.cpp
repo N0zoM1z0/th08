@@ -1264,14 +1264,14 @@ ChainCallbackResult EnemyManager::OnDrawLowPrio(EnemyManager *enemyManager)
 {
     ChainCallbackResult result;
 
-    if (g_GameManager.flags.unk10)
+    if (g_GameManager.flags.deathbombFreezeActive)
     {
         g_AnmManager->SetMixColor(0xfff01010);
     }
 
     result = enemyManager->OnDrawImpl(2, 4);
 
-    if (g_GameManager.flags.unk10)
+    if (g_GameManager.flags.deathbombFreezeActive)
     {
         g_AnmManager->SetMixColorDefault();
     }

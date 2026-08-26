@@ -1053,7 +1053,7 @@ ChainCallbackResult EffectManager::OnUpdate(EffectManager *effectManager)
         }
 
         effectManager->activeCount++;
-        if (!g_GameManager.flags.unk10 ||
+        if (!g_GameManager.flags.deathbombFreezeActive ||
             effect->updateDuringFreeze != 0)
         {
             if (effect->updateCallback != NULL &&

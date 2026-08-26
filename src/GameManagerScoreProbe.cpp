@@ -11,7 +11,7 @@ namespace th08
 
 // FUNCTION: th08 0x43bbe1
 #pragma var_order(catk, i, scoreDat, j)
-i32 FUN_0043bbe1()
+i32 InitializeScoreData()
 {
     Catk *catk;
     i32 i;
@@ -67,7 +67,7 @@ i32 FUN_0043bbe1()
     g_GameManager.hscr.character = g_GameManager.shotType;
     g_GameManager.hscr.difficulty = static_cast<u8>(g_GameManager.difficulty);
     g_GameManager.hscr.cfg = g_Supervisor.cfg;
-    g_GameManager.unk3DB94 = 0;
+    g_GameManager.playtimeFrames = 0;
     return ZUN_SUCCESS;
 }
 

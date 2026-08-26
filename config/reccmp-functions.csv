@@ -532,7 +532,7 @@ th08::GameManager::AddedCallback,0x43aaf4,function
 th08::GameManager::GameplaySetupThread,0x43abd7,function
 th08::GameManager::InitRankParams,0x43b936,function
 th08::GameManager::InitializeAntiTamper,0x43b984,function
-FUN_0043bbe1,0x43bbe1,function
+InitializeScoreData,0x43bbe1,function
 th08::IncrementTruncate,0x43be09,function
 th08::GameManager::DeletedCallback,0x43be2c,function
 th08::GameManager::CutChain,0x43bf6e,function

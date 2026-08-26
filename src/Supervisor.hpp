@@ -82,6 +82,8 @@ struct GameConfiguration
     i8 unk29[15];
     GameConfigOpts opts;
 };
+C_ASSERT(offsetof(GameConfiguration, lifeCount) == 0x1C);
+C_ASSERT(offsetof(GameConfiguration, slowMode) == 0x25);
 
 struct SupervisorFlags
 {

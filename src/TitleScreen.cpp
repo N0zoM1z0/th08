@@ -3967,7 +3967,10 @@ ZunResult TitleScreen::Release()
 
 ZunResult TitleScreen::RegisterChain(int param)
 {
-    TitleScreen *titleScreen = new TitleScreen();
+    // GensokyoClub commit 1b630bb supplied this retail-exact allocation
+    // shape. The registry label is compiled out of the non-DEBUG target, so
+    // "TitleInf" remains upstream provenance rather than a target observation.
+    TitleScreen *titleScreen = ZUN_NEW(TitleScreen, "TitleInf");
     g_TitleScreen = titleScreen;
 
     memset(titleScreen, 0, sizeof(TitleScreen));

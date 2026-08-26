@@ -1098,7 +1098,7 @@ UpdateShotTrail
 DrawShotTrail
 ApplyShotHitBehavior
 SpawnPeriodicShotHitEffect
-FUN_0043bbe1
+InitializeScoreData
 th08::PauseMenu::OnDraw
 th08::RetryMenu::OnDraw
 th08::PauseMenu::OnUpdate

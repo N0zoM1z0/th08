@@ -1,12 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="560" height="214" role="img" aria-label="TH08 reconstruction progress: authored 99.86% exact bytes; Linux and Web playable; Windows and macOS in progress">
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="214" role="img" aria-label="TH08 reconstruction progress: authored 99.92% exact bytes; Linux and Web playable; Windows and macOS in progress">
   <rect width="560" height="214" rx="8" fill="#1f2335"/>
   <text x="24" y="28" fill="#f4f4f5" font-family="sans-serif" font-size="16" font-weight="600">TH08 reconstruction progress</text>
 
   <text x="24" y="52" fill="#f4f4f5" font-family="sans-serif" font-size="13" font-weight="600">Authored exact</text>
-  <text x="536" y="52" fill="#f4f4f5" text-anchor="end" font-family="monospace" font-size="13">99.86%</text>
+  <text x="536" y="52" fill="#f4f4f5" text-anchor="end" font-family="monospace" font-size="13">99.92%</text>
   <rect x="24" y="60" width="512" height="12" rx="6" fill="#3b4058"/>
-  <rect x="24" y="60" width="511.29" height="12" rx="6" fill="#9b6de3"/>
-  <text x="24" y="89" fill="#c8cad2" font-family="sans-serif" font-size="12">1,105 / 1,107 functions · 459,115 / 459,757 bytes</text>
+  <rect x="24" y="60" width="511.60" height="12" rx="6" fill="#9b6de3"/>
+  <text x="24" y="89" fill="#c8cad2" font-family="sans-serif" font-size="12">1,106 / 1,107 functions · 459,396 / 459,757 bytes</text>
 
   <text x="24" y="116" fill="#f4f4f5" font-family="sans-serif" font-size="13" font-weight="600">Playable platforms</text>
 

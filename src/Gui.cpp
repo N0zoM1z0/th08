@@ -281,7 +281,7 @@ void GuiImpl::FUN_0043396d(i32 value)
                     reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice = 0;
                 }
             }
-            g_GameManager.flags.isGoingToFinalB = reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice;
+            g_GameManager.flags.finalStageRoute = reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice;
             break;
         default:
             break;
@@ -692,7 +692,7 @@ i32 GuiImpl::RunMsg()
             g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
             break;
         case 0x16:
-            g_GameManager.flags.isGoingToFinalB = reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice;
+            g_GameManager.flags.finalStageRoute = reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice;
             g_Gui.FUN_00439810(reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->routeChoice + 1);
             continue;
         case 4:
@@ -859,7 +859,7 @@ i32 GuiImpl::RunMsg()
         case 0xB:
             if (g_GameManager.currentStage == STAGE6A || g_GameManager.currentStage == STAGE6B ||
                 g_GameManager.currentStage == EXTRASTAGE)
-                g_GameManager.flags.unk5_6 = 2;
+                g_GameManager.flags.stageTransitionState = 2;
             goto run_scripts;
         case 0xD:
             reinterpret_cast<GuiMessageStateOverlay *>(&this->msgVm)->dialogueSkippable =
@@ -1206,7 +1206,7 @@ void Gui::FUN_00435900()
             break;
         }
 
-        switch (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(g_GameManager.cfg) + 0x1c))
+        switch (static_cast<i8>(g_GameManager.cfg->lifeCount))
         {
         case 3:
             score = score * 5 / 10;
@@ -1234,9 +1234,9 @@ void Gui::FUN_00435900()
         reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent != 0 &&
         reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent >=
             reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayTarget &&
-        g_GameManager.flags.unk5_6 == 0)
+        g_GameManager.flags.stageTransitionState == 0)
     {
-        g_GameManager.flags.unk5_6 = 2;
+        g_GameManager.flags.stageTransitionState = 2;
     }
 
     if (reinterpret_cast<GuiStageResultUpdateOverlay *>(reinterpret_cast<u8 *>(this->impl) + 0x22dec)->clockDisplayCurrent != 0 &&
@@ -1630,7 +1630,7 @@ void Gui::FUN_0043741d()
             g_AsciiManager.SetColor(0xffffffff);
             this->previousSpellcardSecondsRemaining = this->spellcardSecondsRemaining;
 
-            if (!g_GameManager.isInGameMenu && !g_GameManager.showRetryMenu && !g_GameManager.flags.unk10 &&
+            if (!g_GameManager.isInGameMenu && !g_GameManager.showRetryMenu && !g_GameManager.flags.deathbombFreezeActive &&
                 g_EnemyManager.bosses[0] != NULL)
             {
                 textPos = Float3(2.0f, 29.0f, 0.0f);
@@ -1972,7 +1972,7 @@ void Gui::FUN_0043826b()
     if (g_GameManager.difficulty < EXTRA && !g_GameManager.flags.isPracticeMode)
     {
         stringPos.y += 16.0f;
-        switch (*reinterpret_cast<i8 *>(reinterpret_cast<u8 *>(g_GameManager.cfg) + 0x1c))
+        switch (static_cast<i8>(g_GameManager.cfg->lifeCount))
         {
         case 3:
             g_AsciiManager.SetColor(0xffff8080);

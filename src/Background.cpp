@@ -168,7 +168,7 @@ ChainCallbackResult Background::OnUpdate(Background *background)
     {
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
-    if (g_GameManager.flags.unk10)
+    if (g_GameManager.flags.deathbombFreezeActive)
     {
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }

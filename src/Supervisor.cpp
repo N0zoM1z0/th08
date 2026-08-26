@@ -115,7 +115,7 @@ ChainCallbackResult Supervisor::OnUpdate(Supervisor *s)
     g_Supervisor.ClearFogState();
     g_SoundPlayer.UpdateFades();
 
-    if (!g_GameManager.IsUnknown())
+    if (!g_GameManager.ShouldSkipCurrentFrame())
     {
         g_LastFrameInput = g_CurFrameInput;
         g_CurFrameInput = Controller::GetInput();
@@ -1053,7 +1053,7 @@ void Supervisor::CalculateFps(ZunBool shouldDraw)
     Float3 fpsCounterPos;
     Float3 debugCounterPos;
 
-    if ((i8)g_GameManager.unk2D == 0)
+    if ((i8)g_GameManager.skipCurrentFrame == 0)
     {
         g_SupervisorFpsFrameCount += (u8)g_Supervisor.cfg.frameskipConfig + 1;
 
@@ -1081,7 +1081,7 @@ calculateFps:
                 g_SupervisorFpsFrameCount = 0;
                 sprintf(g_SupervisorFpsBuffer, "%.02ffps", fps);
 
-                if (g_GameManager.flags.unk2 && shouldDraw)
+                if (g_GameManager.flags.replayInputEnabled && shouldDraw)
                 {
                     framerate = 60.0f;
                     g_Supervisor.lagDenominator += framerate;
@@ -1134,7 +1134,7 @@ calculateFps:
         fpsCounterPos.z = 0.0f;
         g_AsciiManager.AddString(&fpsCounterPos, g_SupervisorFpsBuffer);
 
-        if (g_GameManager.flags.isReplay && g_GameManager.flags.unk2)
+        if (g_GameManager.flags.isReplay && g_GameManager.flags.replayInputEnabled)
         {
             debugCounterPos.x = 384.0f;
             debugCounterPos.y = 448.0f;

@@ -467,7 +467,7 @@ ChainCallbackResult ScreenEffect::CalcShake(ScreenEffect *screenEffect)
 {
     f32 shakeAmount;
 
-    if (g_GameManager.flags.unk10)
+    if (g_GameManager.flags.deathbombFreezeActive)
     {
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
@@ -526,7 +526,7 @@ ChainCallbackResult ScreenEffect::FUN_0045bf10(ScreenEffect *screenEffect)
 {
     f32 shakeAmount;
 
-    if (g_GameManager.flags.unk10)
+    if (g_GameManager.flags.deathbombFreezeActive)
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     if (g_EclScriptedGlobalUpdateFreeze)
         return CHAIN_CALLBACK_RESULT_CONTINUE;

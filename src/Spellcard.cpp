@@ -1291,7 +1291,7 @@ i32 Spellcard::OnUpdateImpl()
     i32 i;
     i32 itemCount;
 
-    if (g_GameManager.flags.unk10 || g_EclScriptedGlobalUpdateFreeze)
+    if (g_GameManager.flags.deathbombFreezeActive || g_EclScriptedGlobalUpdateFreeze)
     {
         return 1;
     }

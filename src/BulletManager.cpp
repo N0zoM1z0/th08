@@ -1458,7 +1458,7 @@ ChainCallbackResult BulletManager::OnDraw(BulletManager *bulletManager)
     f32 cosine;
     Bullet *node;
 
-    if (g_GameManager.flags.unk10)
+    if (g_GameManager.flags.deathbombFreezeActive)
         g_AnmManager->SetMixColor(0xfff01010);
 
     laser = bulletManager->lasers;
@@ -1522,7 +1522,7 @@ ChainCallbackResult BulletManager::OnDraw(BulletManager *bulletManager)
     }
 
     g_EffectManager.DrawUnkTypeEffects();
-    if (g_GameManager.flags.unk10)
+    if (g_GameManager.flags.deathbombFreezeActive)
         g_AnmManager->SetMixColorDefault();
 
     return CHAIN_CALLBACK_RESULT_CONTINUE;

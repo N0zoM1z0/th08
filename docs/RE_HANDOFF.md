@@ -377,6 +377,44 @@ storage candidates; Background itself has zero raw-member candidates.  These
 are routing observations, not completion percentages.  GameManager and its
 GUI/setup consumers are the next high-value coherent family.
 
+The first accepted GameManager-core batch recovers the runtime/setup state
+used by `OnUpdate @ 0x00439BC7`, `GameplaySetupThread @ 0x0043ABD7`, replay,
+Player, GUI, and stage teardown.  The typed owner now names gameplay setup and
+startup states, frame skipping, run/stage playtime, humanity-rate counters,
+stage-at-start and clear-mask state, replay pause recording, next Supervisor
+state, character-list index, and the stage RNG seed.  Setup writes now use
+asserted `ZunGlobals` and `GameConfiguration` members; in particular the
+target's `+0x80/+0x84/+0x88` bomb triplet is respectively bombs remaining,
+bombs used, and bombs used in the current stage.  The score.dat/CATK/CLRD/PSCR
+initializer at `0x0043BBE1` is now `InitializeScoreData` in source and every
+mapping/comparison ledger.  Packed flag masks retain one ownership-aware word
+view where VC7's emitted mask operations are target-visible.
+
+Focused GameManager replay passes **42 / 42**, selected affected consumers
+pass **493 / 493**, a new single-job non-reuse cold replay passes **1,105 /
+1,105**, the normal VC7 production image links, and the complete i386 Linux
+build/layout verifier passes.  Evidence-limited bytes at
+`+0x3DBB6/+0x3DBB7/+0x3DDBE`, plus unresolved fields at
+`+0x3DDCC/+0x3DDD2/+0x3DE0C`, remain explicitly unknown.  The whole-source
+router now reports 201 raw-member, 82 absolute-address, 310 anonymous-
+identifier, and 54 opaque-storage candidates.  GUI's boss/status/message
+state is the next coherent owner.
+
+The adjacent authored-exact side investigation resolves
+`TitleScreen::RegisterChain @ 0x0047146D`.  GensokyoClub commit `1b630bb`
+supplied the decisive natural source-shape hypothesis:
+`ZUN_NEW(TitleScreen, "TitleInf")` instead of raw `new TitleScreen()`.  In the
+retail build the inline registry wrapper returns the allocation directly, but
+the macro expression changes VC7's hidden-new/EH local lifetime and restores
+the target `0x40` frame.  The dedicated comparator replays the complete **281
+/ 281 bytes** and all 20 relocations, including local EH metadata.  The
+`"TitleInf"` debug registry label is compiled out and therefore remains
+upstream provenance, not a target-observed string claim.  A new single-job
+non-reuse cold replay passes **1,106 / 1,106**, the normal VC7 image links,
+and the complete i386 Linux build/layout verifier passes.  Authored exact is
+now **1,106 / 1,107 functions** and **459,396 / 459,757 bytes**; only
+`ReplayManager::OnUpdateHighPrioDemo2 @ 0x004526C0` remains unaccepted.
+
 Select the next independent field family with:
 
 ```bash
@@ -494,16 +532,16 @@ archives.
 
 ## Current status
 
-As cold-built and replayed on 2026-08-20 against the original Japanese TH08
+As cold-built and replayed on 2026-08-26 against the original Japanese TH08
 1.00d target:
 
 - authored source: **1,107 / 1,107 functions**, **459,757 / 459,757 bytes**;
-- strict authored exact: **1,105 / 1,107 functions**, **459,115 / 459,757 bytes**;
+- strict authored exact: **1,106 / 1,107 functions**, **459,396 / 459,757 bytes**;
 - library inventory: **1,119 classified functions**; all **1,119 / 1,119** now have
   mapping sizes totaling **217,165 bytes**; the independent library exact ledger currently accepts **260 functions / 52,955 body bytes**;
 - `config/claims.csv` is header-only;
 - a cold normal VC7 build links `build/th08.exe` successfully;
-- a cold objdiff build followed by full replay passes **1,105 / 1,105**
+- a cold objdiff build followed by full replay passes **1,106 / 1,106**
   accepted units;
 - the completed production-layout passes cover the Ascii target clusters,
   Player bomb/main regions, misplaced `main.cpp` helpers, Anm render helpers,
@@ -533,7 +571,7 @@ python3 scripts/ci.py
 
 ## Authored exact backlog
 
-Two authored functions remain unaccepted. Do not count them as exact or
+One authored function remains unaccepted. Do not count it as exact or
 restart broad brute-force matrices without a new target-backed hypothesis.
 
 - `ReplayManager::OnUpdateHighPrioDemo2 @ 0x004526C0`, 361 bytes: the natural
@@ -541,14 +579,12 @@ restart broad brute-force matrices without a new target-backed hypothesis.
   phase difference. Its adjacent callback family is exact.  The ordinary
   pointer/cast/increment/local-order variants are exhausted and recorded in
   `BUILD_MATCHING.md`; resume only from a new allocator/TU hypothesis.
-- `TitleScreen::RegisterChain @ 0x0047146D`, 281 bytes: target and object have
-  the same extent; five stack-displacement bytes differ because the target
-  frame is `0x40` while the current natural object frame is `0x5C`.  The
-  constructor itself remains exact with frame `0x4C`; declaration order, PCH,
-  inline-depth, default-init, factory, optimizer-preset, and exception-spec
-  probes did not reproduce the target caller contract.
+`TitleScreen::RegisterChain @ 0x0047146D` is no longer backlog.  The
+GensokyoClub `ZUN_NEW(TitleScreen, "TitleInf")` hypothesis restores the target
+`0x40` frame and replays the full 281-byte body plus all 20 relocations exactly.
 
-The source for both is present and behaviorally reconstructed. Exact coverage
+The source for the remaining function is present and behaviorally
+reconstructed. Exact coverage
 will increase only when the canonical comparator returns `exact` for a natural,
 evidence-backed C++ form.
 

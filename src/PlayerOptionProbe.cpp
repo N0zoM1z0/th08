@@ -505,7 +505,7 @@ i32 __fastcall UpdatePersistentShot(Player *player, PlayerShot *slot)
     {
         if (slot->vm.FUN_004396f8()) slot->vm.pendingInterrupt = 1;
     }
-    if (g_Gui.IsDialogPresent() || player->bombState.isInUse != 0 || g_GameManager.flags.unk13)
+    if (g_Gui.IsDialogPresent() || player->bombState.isInUse != 0 || g_GameManager.flags.suppressPlayerShots)
     {
         if ((i32)player->timelines[slot->timelineIndex].timer > 20)
             player->timelines[slot->timelineIndex].timer = 20;
@@ -552,7 +552,7 @@ i32 __fastcall UpdateShotTrail(Player *player, PlayerShot *slot)
         (i32)player->shotTimer < 0 ||
         player->playerState == PLAYER_STATE_DYING ||
         player->bombState.isInUse != 0 ||
-        g_GameManager.flags.unk13)
+        g_GameManager.flags.suppressPlayerShots)
     {
         slot->vm.pendingInterrupt = 1;
         player->timelines[slot->timelineIndex].instruction = NULL;

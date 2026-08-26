@@ -6,6 +6,7 @@
 #include "pbg/PbgArchive.hpp"
 #include "utils.hpp"
 #include <d3dx8.h>
+#include <stddef.h>
 #include <windows.h>
 
 namespace th08
@@ -307,7 +308,7 @@ struct ZunGlobals
     i32 grazeInStage;
     u32 score;
     i32 graze;
-    i32 unk0x10;
+    i32 scoreDisplayStep;
     u32 displayedHighScore;
     u8 continuesUsedInHighScore;
     /* 3 bytes pad */
@@ -345,6 +346,31 @@ struct ZunGlobals
 };
 
 C_ASSERT(sizeof(ZunGlobals) == 0xe4);
+C_ASSERT(offsetof(ZunGlobals, displayScore) == 0x0);
+C_ASSERT(offsetof(ZunGlobals, grazeInStage) == 0x4);
+C_ASSERT(offsetof(ZunGlobals, score) == 0x8);
+C_ASSERT(offsetof(ZunGlobals, graze) == 0xC);
+C_ASSERT(offsetof(ZunGlobals, scoreDisplayStep) == 0x10);
+C_ASSERT(offsetof(ZunGlobals, displayedHighScore) == 0x14);
+C_ASSERT(offsetof(ZunGlobals, spellcardsCaptured) == 0x1C);
+C_ASSERT(offsetof(ZunGlobals, youkaiGaugeCopy) == 0x20);
+C_ASSERT(offsetof(ZunGlobals, youkaiGauge) == 0x22);
+C_ASSERT(offsetof(ZunGlobals, pointItemValue) == 0x24);
+C_ASSERT(offsetof(ZunGlobals, clockTime) == 0x28);
+C_ASSERT(offsetof(ZunGlobals, numRetries) == 0x29);
+C_ASSERT(offsetof(ZunGlobals, pointItemsCollectedInStage) == 0x2C);
+C_ASSERT(offsetof(ZunGlobals, pointItemsCollected) == 0x30);
+C_ASSERT(offsetof(ZunGlobals, pointItemExtendsSoFar) == 0x34);
+C_ASSERT(offsetof(ZunGlobals, currentTimeOrbs) == 0x3C);
+C_ASSERT(offsetof(ZunGlobals, lastSpellTimeOrbThreshold) == 0x40);
+C_ASSERT(offsetof(ZunGlobals, totalTimeOrbs) == 0x44);
+C_ASSERT(offsetof(ZunGlobals, deaths) == 0x64);
+C_ASSERT(offsetof(ZunGlobals, deathInStage) == 0x68);
+C_ASSERT(offsetof(ZunGlobals, livesRemaining) == 0x74);
+C_ASSERT(offsetof(ZunGlobals, bombsRemaining) == 0x80);
+C_ASSERT(offsetof(ZunGlobals, bombsUsed) == 0x84);
+C_ASSERT(offsetof(ZunGlobals, bombsUsedInStage) == 0x88);
+C_ASSERT(offsetof(ZunGlobals, playerPower) == 0x98);
 
 DIFFABLE_EXTERN(Rng, g_Rng);
 DIFFABLE_EXTERN(u16, g_CurFrameInput);

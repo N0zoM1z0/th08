@@ -215,12 +215,12 @@ ChainCallbackResult ReplayManager::OnUpdateLowPrio(ReplayManager *replayManager)
     replayManager->rngSeed = g_Rng.GetSeed();
     g_Rng.ResetGenerationCount();
 
-    if (g_GameManager.unk3DB98 != 0)
+    if (g_GameManager.replayPauseRecorded != 0)
     {
         replayManager->flags |= 0x100;
     }
 
-    g_GameManager.unk3DB98 = 0;
+    g_GameManager.replayPauseRecorded = 0;
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
@@ -230,7 +230,7 @@ ChainCallbackResult ReplayManager::OnUpdateHighPrio(ReplayManager *replayManager
     i32 stage;
     u16 input;
 
-    if (!g_GameManager.flags.unk2)
+    if (!g_GameManager.flags.replayInputEnabled)
     {
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
@@ -258,7 +258,7 @@ ChainCallbackResult ReplayManager::OnUpdateHighPrio(ReplayManager *replayManager
         replayManager->inputDelay++;
     }
 
-    stage = g_GameManager.currentStage2;
+    stage = g_GameManager.stageAtStart;
     input = g_CurFrameInput;
     g_GuiMessageInputCurrent = input;
 
@@ -281,7 +281,7 @@ ChainCallbackResult ReplayManager::OnUpdateHighPrio(ReplayManager *replayManager
 
 ChainCallbackResult ReplayManager::OnUpdateFrameControl(ReplayManager *replayManager)
 {
-    if (!g_GameManager.flags.unk2)
+    if (!g_GameManager.flags.replayInputEnabled)
     {
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
@@ -309,7 +309,7 @@ ChainCallbackResult ReplayManager::OnUpdateHighPrioDemo(ReplayManager *replayMan
 {
     i32 unused;
 
-    if (!g_GameManager.flags.unk2)
+    if (!g_GameManager.flags.replayInputEnabled)
     {
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
@@ -366,7 +366,7 @@ ChainCallbackResult ReplayManager::OnUpdateHighPrioDemo2(ReplayManager *replayMa
 {
     i32 unused;
 
-    if (!g_GameManager.flags.unk2)
+    if (!g_GameManager.flags.replayInputEnabled)
     {
         return CHAIN_CALLBACK_RESULT_CONTINUE;
     }
@@ -513,7 +513,7 @@ ZunResult ReplayManager::AddedCallback(ReplayManager *replayManager)
     stageData->power = (u8)g_GameManager.GetPower();
     stageData->rank = (u8)g_GameManager.rank;
     stageData->pointItemsCollected = g_GameManager.globals->pointItemsCollected;
-    stageData->rngSeed = *reinterpret_cast<u16 *>(&g_GameManager.unk3ddbc);
+    stageData->rngSeed = g_GameManager.stageRngSeed;
     stageData->character = g_GameManager.character;
     stageData->unk0x21 = (u8)g_GameManager.globals->spellcardsCaptured;
     stageData->pointItemExteds = g_GameManager.globals->pointItemExtendsSoFar;
@@ -726,7 +726,7 @@ void ReplayManager::SaveReplay(const char *replayPath, const char *replayName)
 
     ReplayManager::StopRecording();
 
-    i = g_GameManager.currentStage2;
+    i = g_GameManager.stageAtStart;
     mgr->replayData->header.stageReplayData[i]->score = g_GameManager.globals->score;
 
     currentOffset = sizeof(ReplayDataHeader);
@@ -801,14 +801,14 @@ void ReplayManager::SaveReplay(const char *replayPath, const char *replayName)
     else
     {
         infoCursor = AppendFormat(infoCursor, TH_REPLAY_INFO_FINAL_STAGE,
-                                  g_GameManager.flags.unk4 ? "Clear" : ResultScreen::GetStageName(g_GameManager.currentStage2));
+                                  g_GameManager.flags.gameCleared ? "Clear" : ResultScreen::GetStageName(g_GameManager.stageAtStart));
     }
 
     infoCursor = AppendFormat(infoCursor, TH_REPLAY_INFO_DEATHS, g_GameManager.GetDeaths());
     infoCursor = AppendFormat(infoCursor, TH_REPLAY_INFO_BOMBS, g_GameManager.GetBombsUsed());
     infoCursor = AppendFormat(infoCursor, TH_REPLAY_INFO_SLOWDOWN, replayCopy.slowDownRate);
 
-    g_GameManager.hscr.humanityRate = (i32)(((float)g_GameManager.unk3DBA0 / g_GameManager.unk3DBA4) * 10.0f);
+    g_GameManager.hscr.humanityRate = (i32)(((float)g_GameManager.humanityRateNumerator / g_GameManager.humanityRateDenominator) * 10.0f);
     infoCursor =
         AppendFormat(infoCursor, TH_REPLAY_INFO_HUMAN_RATE, (float)g_GameManager.hscr.humanityRate / 100.0f);
     infoCursor = AppendFormat(infoCursor, TH_REPLAY_INFO_VERSION, 1, 0, 'd');
