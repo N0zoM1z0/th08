@@ -33,6 +33,7 @@ const uint16_t DOWN_MASK = 0x0020;
 const uint16_t LEFT_MASK = 0x0040;
 const uint16_t RIGHT_MASK = 0x0080;
 const uint32_t REQUEST_FLAG_REPLAY_TARGET_STAMPED = 1;
+const uint32_t REQUEST_FLAG_LIVES_PRESERVED = 2;
 const uint32_t ORIGINAL_EXE_SIZE = 840704;
 const uint32_t ORIGINAL_EXE_CHECKSUM = 2724749753U;
 
@@ -272,7 +273,9 @@ bool ExchangeInput(uint16_t *inputMask)
     PutU16(request, 16, g_CurFrameInput);
     PutU16(request, 18, g_LastFrameInput);
     PutU16(request, 20, g_Rng.GetSeed());
-    PutU32(request, 24, REQUEST_FLAG_REPLAY_TARGET_STAMPED);
+    PutU32(request, 24,
+           REQUEST_FLAG_REPLAY_TARGET_STAMPED |
+               REQUEST_FLAG_LIVES_PRESERVED);
     PutU32(request, 28, PausedMilliseconds());
 
     unsigned char response[RESPONSE_SIZE];
