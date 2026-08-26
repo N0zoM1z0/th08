@@ -437,7 +437,7 @@ ChainCallbackResult GameManager::OnUpdate(GameManager *gameManager)
         g_GameManager.arcadeRegionSize.x = 384.0f;
         g_GameManager.arcadeRegionSize.y = 448.0f;
         gameManager->replayPauseRecorded = 1;
-        g_SoundPlayer.QueueCommand(6, 0, "Pause");
+        g_SoundPlayer.QueueCommand(SOUNDPLAYER_COMMAND_PAUSE, 0, "Pause");
         g_SoundPlayer.PlaySoundByIdx(SOUND_PAUSE, 0);
         g_Supervisor.UpdateGameTime();
         g_Rng.SaveSeed();

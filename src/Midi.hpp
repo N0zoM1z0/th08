@@ -70,18 +70,40 @@ enum MidiOpcode
     MIDI_OPCODE_SYSTEM_RESET = 0xFF,
 };
 
+enum MidiController
+{
+    MIDI_CONTROLLER_BANK_SELECT = 0,
+    MIDI_CONTROLLER_LOOP_START = 2,
+    MIDI_CONTROLLER_LOOP_END = 4,
+    MIDI_CONTROLLER_CHANNEL_VOLUME = 7,
+    MIDI_CONTROLLER_PAN = 10,
+    MIDI_CONTROLLER_EFFECT_ONE_DEPTH = 91,
+    MIDI_CONTROLLER_EFFECT_THREE_DEPTH = 93,
+};
+
+enum MidiMetaEvent
+{
+    MIDI_META_END_OF_TRACK = 0x2f,
+    MIDI_META_SET_TEMPO = 0x51,
+};
+
 struct MidiTrack
 {
     BOOL trackPlaying;
-    i32 trackLengthOther;
-    u32 trackLength;
-    u8 opcode;
-    LPBYTE trackData;
-    u8 *curTrackDataCursor;
-    u8 *startTrackDataMaybe;
-    u32 unk1c;
+    i32 nextEventTick;
+    u32 dataSize;
+    u8 runningStatus;
+    LPBYTE data;
+    u8 *cursor;
+    u8 *loopCursor;
+    u32 loopNextEventTick;
 };
 C_ASSERT(sizeof(MidiTrack) == 0x20);
+C_ASSERT(offsetof(MidiTrack, nextEventTick) == 0x4);
+C_ASSERT(offsetof(MidiTrack, runningStatus) == 0xc);
+C_ASSERT(offsetof(MidiTrack, cursor) == 0x14);
+C_ASSERT(offsetof(MidiTrack, loopCursor) == 0x18);
+C_ASSERT(offsetof(MidiTrack, loopNextEventTick) == 0x1c);
 
 class MidiDevice
 {
@@ -112,6 +134,7 @@ struct MidiChannel
     u8 channelVolume;
     u8 modifiedVolume;
 };
+C_ASSERT(sizeof(MidiChannel) == 0x17);
 
 class MidiOutput : MidiTimer
 {
@@ -150,33 +173,33 @@ class MidiOutput : MidiTimer
     static u32 Ntohl(u32 val);
 
   private:
-    i32 midiFileIndex;
-    LPMIDIHDR midiHeaders[32];
-    i32 midiHeadersCursor;
-    LPBYTE midiFileData[32];
+    i32 activeFileIndex;
+    LPMIDIHDR pendingLongMessageHeaders[32];
+    i32 pendingLongMessageHeaderCursor;
+    LPBYTE fileData[32];
     i32 numTracks;
-    u32 format;
-    i32 divisions;
-    i32 tempo;
-    ULONGLONG volume;
-    ULONGLONG unk130;
+    u32 fileFormat;
+    i32 ticksPerQuarterNote;
+    i32 microsecondsPerQuarterNote;
+    ULONGLONG elapsedMillisecondsAtCurrentTempo;
+    ULONGLONG elapsedTicksBeforeTempoChange;
     MidiTrack *tracks;
-    MidiDevice midiOutDev;
+    MidiDevice outputDevice;
     u8 unk144[16];
     MidiChannel channels[16];
-    i8 unk2c4;
+    i8 noteTranspose;
     f32 fadeOutVolumeMultiplier;
     u32 fadeOutLastSetVolume;
     u32 unk2d0;
-    u32 unk2d4;
+    u32 volumeUpdatesSuppressed;
     u32 unk2d8;
     u32 unk2dc;
-    BOOL fadeOutFlag;
-    i32 fadeOutInterval;
-    i32 fadeOutElapsedMS;
+    BOOL fadeOutActive;
+    i32 fadeOutDurationMs;
+    i32 fadeOutElapsedMs;
     u32 tempoAtLoopPoint;
-    ULONGLONG volumeAtLoopPoint;
-    ULONGLONG unk2f8;
+    ULONGLONG elapsedMillisecondsAtLoopPoint;
+    ULONGLONG elapsedTicksAtLoopPoint;
 };
 C_ASSERT(sizeof(MidiOutput) == 0x300);
 

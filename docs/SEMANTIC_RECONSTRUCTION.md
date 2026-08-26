@@ -2194,3 +2194,56 @@ Result: the whole-source semantic router reports 5 raw-member, 0
 absolute-address, 166 anonymous-identifier, and 44 opaque-storage candidates.
 The counts are work-selection observations, not a semantic-completion
 percentage.  MIDI and SoundPlayer are the next dense behavior-backed owners.
+
+### MIDI timeline and streaming-audio protocol — 2026-08-27
+
+Scope: the Standard MIDI File track cursor/timing state, MIDI output scheduling
+and controller/meta-event dispatch, and SoundPlayer's asynchronous sound/BGM
+command protocol and preloaded streaming buffers.  The affected target anchors
+include `MidiOutput::ProcessMsg @ 0x00444A90`,
+`MidiOutput::FadeOutSetVolume @ 0x00445340`,
+`SoundPlayer::LoadBGM @ 0x0045D0F0`, and
+`SoundPlayer::ProcessQueues @ 0x0045D790`.
+
+MIDI protocol: each `MidiTrack` now distinguishes data size, byte cursor,
+running status, next-event tick, and loop cursor/tick.  `MidiOutput` names the
+active file, pending long-message headers, file format, ticks per quarter note,
+tempo, elapsed ticks/milliseconds across tempo changes and loop points, output
+device, note transposition, fade state, and the target-observed volume-update
+gate.  Controller and meta-event constants replace numeric dispatch literals
+for bank select, loop start/end, channel volume, pan, effects, end-of-track,
+and set-tempo messages.  The reset-only track/output words and
+`DummyMidiTimer +0x10` remain neutral because current target-backed source does
+not establish their roles.
+
+Streaming-audio protocol: queued operations now use a typed command opcode and
+named argument, step, and path fields for preload, load, stop, release, fade,
+pause, unpause, and volume changes.  SoundPlayer's per-effect request counts,
+preload allocations/data, loaded BGM slot, and BGM file-base offset use shared
+owners across GameManager, Supervisor, SoundPlayer, and zwave.  The file-base
+offset is independently supported by Supervisor's BGM selection and zwave's
+`SetFilePointer` use.  Reset-only/unconsumed SoundPlayer fields, including the
+remaining `unk408`, `unk61c`, and `unk5210`, retain neutral names.
+
+Evidence boundary: GensokyoClub TH08 and the adjacent TH07/TH06 sources
+corroborate stable class/record layouts, but they retain most of the same
+anonymous audio fields.  The semantic names above therefore come from TH08
+producer/consumer behavior and target-exact code generation; no adjacent source
+name is treated as proof.
+
+VC7 oracle: the final affected-object selection across Midi, SoundPlayer,
+Supervisor, GameManager, and zwave passes **169 / 169 exact**.
+`MidiOutput::ProcessMsg` reproduces **1,871 / 1,871** target bytes and
+`SoundPlayer::ProcessQueues` reproduces **2,358 / 2,358**.  The required
+single-job cold build of all 75 configured comparison objects passes
+**1,106 / 1,106 exact**, and the normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links and
+`verify-modern-linux.sh build/modern-linux-container/th08-modern` verifies the
+ELF32 executable and every fixed target-owned layout symbol.  There is no
+isolated automated MIDI-device or streaming-BGM runtime harness, so no live
+audio-output claim is made.
+
+Result: the whole-source semantic router now reports 5 raw-member, 0
+absolute-address, 121 anonymous-identifier, and 44 opaque-storage candidates.
+These remain work-selection counts, not a semantic-completion percentage.

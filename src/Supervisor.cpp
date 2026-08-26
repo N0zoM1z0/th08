@@ -786,7 +786,7 @@ void Supervisor::StartupThread(Supervisor *s)
         g_SoundPlayer.unkVolume = SOUNDPLAYER_SILENT_VOLUME;
     }
 
-    if (g_SoundPlayer.unusedBgmSeekOffset == 0)
+    if (g_SoundPlayer.bgmFileBaseOffset == 0)
     {
         if (!g_Supervisor.IsMusicPreloadEnabled())
         {
@@ -997,7 +997,7 @@ ZunResult Supervisor::DeletedCallback(Supervisor *s)
 
     AsciiManager::CutChain();
 
-    g_SoundPlayer.QueueCommand(4, 0, "dummy");
+    g_SoundPlayer.QueueCommand(SOUNDPLAYER_COMMAND_RELEASE_BGM, 0, "dummy");
     if (g_Supervisor.cfg.musicMode == MIDI && g_Supervisor.midiOutput != NULL)
     {
         g_Supervisor.midiOutput->PlayFile(30);
@@ -1552,7 +1552,7 @@ ZunBool Supervisor::LoadMusic(int param_1, char *path)
         periodLoc[2] = 'a';
         periodLoc[3] = 'v';
 
-        g_SoundPlayer.QueueCommand(1, param_1, wavPathBuf);
+        g_SoundPlayer.QueueCommand(SOUNDPLAYER_COMMAND_PRELOAD_BGM, param_1, wavPathBuf);
     }
 
     return TRUE;
@@ -1583,9 +1583,9 @@ ZunBool Supervisor::PlayMusic(int param_1, char *param_2)
     {
         if (g_Supervisor.cfg.opts.preloadMusic)
         {
-            g_SoundPlayer.QueueCommand(4, 0, "dummy");
+            g_SoundPlayer.QueueCommand(SOUNDPLAYER_COMMAND_RELEASE_BGM, 0, "dummy");
         }
-        g_SoundPlayer.QueueCommand(2, param_1, "dummy");
+        g_SoundPlayer.QueueCommand(SOUNDPLAYER_COMMAND_LOAD_BGM, param_1, "dummy");
         if (((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 3) & 1) == 0 &&
             ((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 1) & 1) == 0)
         {
@@ -1627,7 +1627,7 @@ ZunResult Supervisor::PlayAudio(char *path, int param_2)
         periodLoc[2] = 'a';
         periodLoc[3] = 'v';
 
-        g_SoundPlayer.QueueCommand(2, -1, wavPathBuf);
+        g_SoundPlayer.QueueCommand(SOUNDPLAYER_COMMAND_LOAD_BGM, -1, wavPathBuf);
         if (((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 3) & 1) == 0 &&
             ((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 1) & 1) == 0)
         {
@@ -1655,11 +1655,11 @@ ZunResult Supervisor::StopAudio()
     {
         if (g_Supervisor.IsMusicPreloadEnabled())
         {
-            g_SoundPlayer.QueueCommand(4, 0, "dummy");
+            g_SoundPlayer.QueueCommand(SOUNDPLAYER_COMMAND_RELEASE_BGM, 0, "dummy");
         }
         else
         {
-            g_SoundPlayer.QueueCommand(3, 0, "dummy");
+            g_SoundPlayer.QueueCommand(SOUNDPLAYER_COMMAND_STOP_BGM, 0, "dummy");
         }
     }
     else
@@ -1690,7 +1690,7 @@ ZunResult Supervisor::FadeOutMusic(float param_1)
         else
             fadeTime = param_1 / this->framerateMultiplier;
 
-        g_SoundPlayer.QueueCommand(5, (i32)fadeTime, "");
+        g_SoundPlayer.QueueCommand(SOUNDPLAYER_COMMAND_FADE_OUT, (i32)fadeTime, "");
     }
     else
     {

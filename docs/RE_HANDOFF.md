@@ -579,6 +579,25 @@ Linux build plus fixed-layout verifier passes.  The router now reports 5 raw,
 are deliberately retained evidence gaps in Bullet/template and SHT item
 collection state.  MIDI and SoundPlayer are the next dense semantic owners.
 
+The MIDI/SoundPlayer protocol batch is now accepted.  MIDI track and output
+state distinguish data/running-status cursors, event ticks, loop points, tempo
+epochs, elapsed ticks/milliseconds, pending long messages, controller/meta
+events, device/transposition state, and fade handling.  SoundPlayer command
+records use typed preload/load/stop/release/fade/pause/unpause/volume opcodes;
+their arguments, paths, per-effect queue counts, preloaded BGM storage, loaded
+slot, and streaming-file base offset now have shared owners across GameManager,
+Supervisor, SoundPlayer, and zwave.  Fields with only reset or no authored
+consumer remain explicitly neutral.
+
+Focused replay across the five affected objects passes **169 / 169 exact**,
+including `MidiOutput::ProcessMsg` at **1,871 / 1,871** bytes and
+`SoundPlayer::ProcessQueues` at **2,358 / 2,358** bytes.  A required single-job
+cold replay passes **1,106 / 1,106 exact**, the normal VC7 image links, and the
+complete i386 Linux build plus fixed-layout verifier passes.  The router now
+reports 5 raw, 0 absolute, 121 anonymous, and 44 opaque candidates.  The next
+batch should continue from behavior-backed UI/result or remaining manager
+state; do not invent meanings for the residual reset-only audio words.
+
 Select the next independent field family with:
 
 ```bash
