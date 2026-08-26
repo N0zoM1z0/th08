@@ -571,7 +571,7 @@ address,name,size,status,match_percent,unit,evidence
 0x0042F2D0,th08::AsciiManager::SetBossMarkerState,29,matching,100.00,ascii-manager-set-boss-marker-state,python3 scripts/compare-function.py ascii-manager-set-boss-marker-state --json
 0x0042F2F0,th08::AsciiManager::SetScale,37,matching,100.00,ascii-set-scale,python3 scripts/compare-function.py ascii-set-scale --json
 0x004398FF,th08::AsciiManager::SetIsGuiMode,23,matching,100.00,ascii-set-is-gui-mode,python3 scripts/compare-function.py ascii-set-is-gui-mode --json
-0x004396F8,th08::AnmVm::FUN_004396f8,24,matching,100.00,anm-vm-fun-004396f8,python3 scripts/compare-function.py anm-vm-fun-004396f8 --json
+0x004396F8,th08::AnmVm::IsStopped,24,matching,100.00,anm-vm-is-stopped,python3 scripts/compare-function.py anm-vm-is-stopped --json
 0x00407120,th08::AnmVmBase::SetInterrupt,27,matching,100.00,anm-vm-base-set-interrupt,python3 scripts/compare-function.py anm-vm-base-set-interrupt --json
 0x0043587E,th08::Gui::MsgWait,61,matching,100.00,gui-msg-wait,python3 scripts/compare-function.py gui-msg-wait --json
 0x004358BB,th08::Gui::IsDialoguePresent,69,matching,100.00,gui-is-dialog-present,python3 scripts/compare-function.py gui-is-dialog-present --json
@@ -629,8 +629,8 @@ address,name,size,status,match_percent,unit,evidence
 0x0040BA90,th08::AnmManager::SetCameraMode,25,matching,100.00,anm-manager-set-camera-mode,python3 scripts/compare-function.py anm-manager-set-camera-mode --json
 0x0040BAF0,th08::AnmManager::Draw2DAndFlush,33,matching,100.00,anm-manager-draw2d-and-flush,python3 scripts/compare-function.py anm-manager-draw2d-and-flush --json
 0x004281E0,th08::EffectManager::DrawBackgroundEffects,290,matching,100.00,effect-manager-draw-background-effects,python3 scripts/compare-function.py effect-manager-draw-background-effects --json
-0x00463CF0,th08::AnmManager::FUN_00463cf0,107,matching,100.00,anm-manager-fun-00463cf0,python3 scripts/compare-function.py anm-manager-fun-00463cf0 --json
-0x00464070,th08::AnmManager::FUN_00464070,98,matching,100.00,anm-manager-fun-00464070,python3 scripts/compare-function.py anm-manager-fun-00464070 --json
+0x00463CF0,th08::AnmManager::DrawCameraFacingQuad,107,matching,100.00,anm-draw-camera-facing-quad,python3 scripts/compare-function.py anm-draw-camera-facing-quad --json
+0x00464070,th08::AnmManager::DrawProjected3DQuad,98,matching,100.00,anm-draw-projected-3d-quad,python3 scripts/compare-function.py anm-draw-projected-3d-quad --json
 0x00464400,th08::AnmManager::DrawWithCallback,111,matching,100.00,anm-manager-draw-with-callback,python3 scripts/compare-function.py anm-manager-draw-with-callback --json
 0x00409850,th08::Background::AddedCallback,706,matching,100.00,background-added-callback,python3 scripts/compare-function.py background-added-callback --json
 0x0040BB60,th08::AnmManager::GetAnm,26,matching,100.00,anm-manager-get-anm,python3 scripts/compare-function.py anm-manager-get-anm --json
@@ -708,7 +708,7 @@ address,name,size,status,match_percent,unit,evidence
 0x0040B470,th08::Float3::operator/=,73,matching,100.00,float3-operator-div-equals,python3 scripts/compare-function.py float3-operator-div-equals --json
 0x004623C0,th08::AnmManager::SetRenderStateForVm3D,912,matching,100.00,anm-manager-set-render-state-for-vm3d,python3 scripts/compare-function.py anm-manager-set-render-state-for-vm3d --json
 0x00464470,th08::AnmManager::Draw3D,1318,matching,100.00,anm-manager-draw3d,python3 scripts/compare-function.py anm-manager-draw3d --json
-0x00464DD0,th08::AnmManager::FUN_00464dd0,225,matching,100.00,anm-manager-fun-00464dd0,python3 scripts/compare-function.py anm-manager-fun-00464dd0 --json
+0x00464DD0,th08::AnmManager::QueueSpriteQuad,225,matching,100.00,anm-queue-sprite-quad,python3 scripts/compare-function.py anm-queue-sprite-quad --json
 0x00408D60,th08::Background::InterpolateCameraVector,577,matching,100.00,background-interpolate-camera-vector,python3 scripts/compare-function.py background-interpolate-camera-vector --json
 0x00408FC0,th08::CubicHermiteInterpolate,152,matching,100.00,background-cubic-hermite-interpolate,python3 scripts/compare-function.py background-cubic-hermite-interpolate --json
 0x00425870,th08::EffectManager::SpawnEffectInFixedSlot,365,matching,100.00,effect-manager-spawn-effect-in-fixed-slot,python3 scripts/compare-function.py effect-manager-spawn-effect-in-fixed-slot --json
@@ -813,13 +813,13 @@ address,name,size,status,match_percent,unit,evidence
 0x0044D150,th08::Spellcard::FUN_0044d150,37,matching,100.00,spellcard-clear-death-state,python3 scripts/compare-function.py spellcard-clear-death-state --json
 0x00446232,th08::Supervisor::CheckFps,662,matching,100.00,supervisor-check-fps,python3 scripts/compare-function.py supervisor-check-fps --json
 0x00446F53,th08::Supervisor::CalculateFps,834,matching,100.00,supervisor-calculate-fps,python3 scripts/compare-function.py supervisor-calculate-fps --json
-0x00463D60,th08::AnmManager::FUN_00463d60,779,matching,100.00,anm-project-3d-quad,python3 scripts/compare-function.py anm-project-3d-quad --json
+0x00463D60,th08::AnmManager::Project3DQuad,779,matching,100.00,anm-project-3d-quad,python3 scripts/compare-function.py anm-project-3d-quad --json
 0x0044E770,th08::UpdateOptionHomingToPlayer,352,matching,100.00,player-option-homing-to-player,python3 scripts/compare-function.py player-option-homing-to-player --json
 0x0044E8D0,th08::UpdateOptionHomingToTarget,269,matching,100.00,player-option-homing-to-target,python3 scripts/compare-function.py player-option-homing-to-target --json
 0x0044E9E0,th08::DrawPlayerOption,94,matching,100.00,player-draw-option,python3 scripts/compare-function.py player-draw-option --json
-0x004639E0,th08::AnmManager::FUN_004639e0,771,matching,100.00,anm-project-facing-quad,python3 scripts/compare-function.py anm-project-facing-quad --json
-0x004640E0,th08::AnmManager::FUN_004640e0,786,matching,100.00,anm-project-facing-quad-callback,python3 scripts/compare-function.py anm-project-facing-quad-callback --json
-0x00463470,th08::AnmManager::FUN_00463470,912,matching,100.00,anm-draw-rotated-or-axis-quad,python3 scripts/compare-function.py anm-draw-rotated-or-axis-quad --json
+0x004639E0,th08::AnmManager::ProjectCameraFacingQuad,771,matching,100.00,anm-project-camera-facing-quad,python3 scripts/compare-function.py anm-project-camera-facing-quad --json
+0x004640E0,th08::AnmManager::ProjectCameraFacingQuadWithCallback,786,matching,100.00,anm-project-camera-facing-quad-with-callback,python3 scripts/compare-function.py anm-project-camera-facing-quad-with-callback --json
+0x00463470,th08::AnmManager::Draw2DRotatedOrAxisAligned,912,matching,100.00,anm-draw-2d-rotated-or-axis-aligned,python3 scripts/compare-function.py anm-draw-2d-rotated-or-axis-aligned --json
 0x00423D70,th08::Float3::operator*=,59,matching,100.00,float3-multiply-assign,python3 scripts/compare-function.py float3-multiply-assign --json
 0x00425FA0,th08::Float3::operator-() const,59,matching,100.00,float3-unary-minus,python3 scripts/compare-function.py float3-unary-minus --json
 0x00425D70,th08::EffectRandomSplashInit,236,matching,100.00,effect-random-splash-init,python3 scripts/compare-function.py effect-random-splash-init --json
@@ -877,7 +877,7 @@ address,name,size,status,match_percent,unit,evidence
 0x0040E350,th08::ZunTimer::JustReached,58,matching,100.00,zun-timer-just-reached,python3 scripts/compare-function.py zun-timer-just-reached --json
 0x00410C40,th08::UpdateQuadrupleBarrierBomb,922,matching,100.00,player-bomb-update-quadruple-barrier,python3 scripts/compare-function.py player-bomb-update-quadruple-barrier --json
 0x00410FE0,th08::UpdateEternalNightQuadrupleBarrierDeathbomb,959,matching,100.00,player-deathbomb-update-eternal-night-quadruple-barrier,python3 scripts/compare-function.py player-deathbomb-update-eternal-night-quadruple-barrier --json
-0x00464B00,th08::AnmManager::FUN_00464b00,352,matching,100.00,anm-manager-fun-00464b00,python3 scripts/compare-function.py anm-manager-fun-00464b00 --json
+0x00464B00,th08::AnmManager::InitializeVerticalTextureStrip,352,matching,100.00,anm-initialize-vertical-texture-strip,python3 scripts/compare-function.py anm-initialize-vertical-texture-strip --json
 0x004114E0,th08::FUN_004114e0,567,matching,100.00,player-bomb-effect-update-004114e0,python3 scripts/compare-function.py player-bomb-effect-update-004114e0 --json
 0x00411720,th08::FUN_00411720,139,matching,100.00,player-bomb-effect-init-00411720,python3 scripts/compare-function.py player-bomb-effect-init-00411720 --json
 0x004117B0,th08::FUN_004117b0,708,matching,100.00,player-bomb-effect-update-004117b0,python3 scripts/compare-function.py player-bomb-effect-update-004117b0 --json
@@ -887,7 +887,7 @@ address,name,size,status,match_percent,unit,evidence
 0x0040EBC0,th08::ZunTimer::IsPeriodic,61,matching,100.00,zun-timer-periodic,python3 scripts/compare-function.py zun-timer-periodic --json
 0x00413140,th08::UpdateGhastlyDreamBomb,1859,matching,100.00,player-bomb-update-ghastly-dream,python3 scripts/compare-function.py player-bomb-update-ghastly-dream --json
 0x00413990,th08::UpdateEternalSleepInDreamlandDeathbomb,2344,matching,100.00,player-deathbomb-update-eternal-sleep-dreamland,python3 scripts/compare-function.py player-deathbomb-update-eternal-sleep-dreamland --json
-0x0040EB50,th08::AnmVm::FUN_0040eb50,112,matching,100.00,anm-vm-fun-0040eb50,python3 scripts/compare-function.py anm-vm-fun-0040eb50 --json
+0x0040EB50,th08::AnmVm::UpdatePulsingRadialTrail,112,matching,100.00,anm-update-pulsing-radial-trail,python3 scripts/compare-function.py anm-update-pulsing-radial-trail --json
 0x0040EC30,th08::AnmVm::StartPositionInterpolation,112,matching,100.00,anm-vm-start-position-interpolation,python3 scripts/compare-function.py anm-vm-start-position-interpolation --json
 0x0040ECA0,th08::AnmVm::StartColor1RgbInterpolation,174,matching,100.00,anm-vm-start-color1-rgb-interpolation,python3 scripts/compare-function.py anm-vm-start-color1-rgb-interpolation --json
 0x0040ED50,th08::AnmVm::StartColor1AlphaInterpolation,80,matching,100.00,anm-vm-start-color1-alpha-interpolation,python3 scripts/compare-function.py anm-vm-start-color1-alpha-interpolation --json
@@ -922,7 +922,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00427B50,th08::SyncAnchoredRadialTrail,158,matching,100.00,effect-sync-anchored-radial-trail,python3 scripts/compare-function.py effect-sync-anchored-radial-trail --json
 0x004286E0,th08::Float3::FromAngleMagnitude,32,matching,100.00,float3-from-angle-magnitude,python3 scripts/compare-function.py float3-from-angle-magnitude --json
 0x00428700,th08::Float3::FromRotatedVec2,32,matching,100.00,float3-from-rotated-vec2,python3 scripts/compare-function.py float3-from-rotated-vec2 --json
-0x004649A0,th08::AnmManager::FUN_004649a0,352,matching,100.00,anm-manager-fun-004649a0,python3 scripts/compare-function.py anm-manager-fun-004649a0 --json
+0x004649A0,th08::AnmManager::InitializeHorizontalTextureStrip,352,matching,100.00,anm-initialize-horizontal-texture-strip,python3 scripts/compare-function.py anm-initialize-horizontal-texture-strip --json
 0x00426280,th08::FUN_00426280,624,matching,100.00,effect-random-camera-init-00426280,python3 scripts/compare-function.py effect-random-camera-init-00426280 --json
 0x00426720,th08::FUN_00426720,620,matching,100.00,effect-random-camera-init-00426720,python3 scripts/compare-function.py effect-random-camera-init-00426720 --json
 0x00426E70,th08::FUN_00426e70,587,matching,100.00,effect-random-camera-init-00426e70,python3 scripts/compare-function.py effect-random-camera-init-00426e70 --json

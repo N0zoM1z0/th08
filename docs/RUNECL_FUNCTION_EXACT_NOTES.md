@@ -732,7 +732,7 @@ byte-exact and rotates opcode 157 into its target ECX/EDX/EAX phase.
 Opcode 157's final call is also owned by the real animation manager, not the
 RunEcl/EclManager provisional adapter.  Target 0x4649A0 is a thiscall with ECX
 =`g_AnmManager`, three stack arguments, and `ret 0x0C`; declare it as
-`AnmManager::FUN_004649a0(AnmVm *, void *, i32)` and call it through
+`AnmManager::InitializeHorizontalTextureStrip(AnmVm *, void *, i32)` and call it through
 `g_AnmManager`.
 
 The complete trio keeps function/code extents and all handler span deltas at

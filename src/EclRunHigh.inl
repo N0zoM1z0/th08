@@ -1067,7 +1067,7 @@ enter_subroutine:
         reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->trailCollisionLength = (u16)TH08_ECL_READ_I(ctx, 2);
         reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->trailSampleStride = (u16)TH08_ECL_READ_I(ctx, 3);
         if (reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->trailFlags & ENEMY_TRAIL_RENDER_AS_STRIP)
-            g_AnmManager->FUN_004649a0(
+            g_AnmManager->InitializeHorizontalTextureStrip(
                 reinterpret_cast<AnmVm *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x0C),
                 reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->trailVertices,
                 (reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->trailHistoryLength /

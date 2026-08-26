@@ -650,6 +650,18 @@ bodies prove motion and camera relations but not stable visual identities.  The
 whole-source router remains at 5 raw, 0 absolute, 113 anonymous, and 44 opaque
 candidates; `EffectManager.cpp` itself has zero candidates.
 
+The accepted ANM render batch names the central 2D, camera-facing, and 3D quad
+projection/draw paths at `0x00463470..0x004640E0`, the horizontal/vertical
+texture-strip initializers, and the buffered sprite-quad queue.  It also closes
+`AnmVm::IsStopped @ 0x004396F8` and the effect-table callback
+`UpdatePulsingRadialTrail @ 0x0040EB50`.  Target dataflow proves the projection,
+UV-axis, submission, and pulsing-strip roles; unused ANM storage remains
+unknown.  All nine central functions and both VM helpers pass focused exact
+comparison, the required cold replay passes **1,106 / 1,106 exact**, the normal
+VC7 image links, and the complete i386 Linux build plus fixed-layout verifier
+passes.  The old `QueueSpriteQuad` ledger ABI was also corrected from two byte
+arguments to its target-proven VM/vertex pointer types.
+
 Select the next independent field family with:
 
 ```bash
@@ -1019,7 +1031,7 @@ with the number of anchors and is not directly comparable to the earlier
 The fourth bounded pass addressed `AnmManager.obj`. Seven exact helper bodies
 were mixed into the donor despite target-neighbor production consumers:
 `AnmVmBase::Initialize` and `SetTextureCaptureParams` route to the early
-Ascii cluster, `SetZRotation` to `PlayerBomb`, `FUN_004396f8` to `Gui`, and
+Ascii cluster, `SetZRotation` to `PlayerBomb`, `IsStopped` to `Gui`, and
 `SetCameraMode`/`Draw2DAndFlush`/`GetAnm` to `Background`. Six can remain
 natural consumer-emitted header bodies. `Initialize` must instead be an
 explicit `/Od` definition in `AsciiManager.cpp`: exposing its body globally
@@ -1119,7 +1131,7 @@ definition disorder rather than evidence for twelve original source files. The
 file-local helpers needed by earlier callers received forward declarations.
 
 One residual remained after that reorder: header-inline
-`AnmVm::FUN_004396f8 @ 0x004396F8` emitted at its first Gui use, placing it far
+`AnmVm::IsStopped @ 0x004396F8` emitted at its first Gui use, placing it far
 earlier than the target. Production callers are confined to Gui, while the two
 PlayerOption probe callers retain target-proven REL32 calls. Making the header
 declaration-only and placing the unchanged body explicitly between

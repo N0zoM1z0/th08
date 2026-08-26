@@ -1398,7 +1398,7 @@ ZunResult AnmManager::Draw2D(AnmVm *vm)
 
 // FUNCTION: th08 0x00463470
 #pragma var_order(sine, rotation, cosine, halfWidth, halfHeight, yOffset, xOffset, zeroHalfWidth, zeroHalfHeight, this)
-ZunResult AnmManager::FUN_00463470(AnmVm *vm)
+ZunResult AnmManager::Draw2DRotatedOrAxisAligned(AnmVm *vm)
 {
     f32 rotation;
     f32 sine;
@@ -1546,7 +1546,7 @@ ZunResult AnmManager::DrawNoRotationNoRound(AnmVm *vm)
 
 // FUNCTION: th08 0x4639e0
 #pragma var_order(halfWidth, halfHeight, yOffset, xOffset, sine, worldMatrix, rotation, projectedReference, projectedPosition, delta, cosine, origin, this)
-ZunResult AnmManager::FUN_004639e0(AnmVm *vm)
+ZunResult AnmManager::ProjectCameraFacingQuad(AnmVm *vm)
 {
     f32 rotation;
     f32 sine;
@@ -1615,7 +1615,7 @@ ZunResult AnmManager::FUN_004639e0(AnmVm *vm)
 }
 
 // FUNCTION: th08 0x463cf0
-ZunResult AnmManager::FUN_00463cf0(AnmVm *vm)
+ZunResult AnmManager::DrawCameraFacingQuad(AnmVm *vm)
 {
     if (!vm->IsVisible())
         return ZUN_ERROR;
@@ -1623,14 +1623,14 @@ ZunResult AnmManager::FUN_00463cf0(AnmVm *vm)
         return ZUN_ERROR;
     if (vm->color1.a == 0)
         return ZUN_ERROR;
-    if (this->FUN_004639e0(vm) != ZUN_SUCCESS)
+    if (this->ProjectCameraFacingQuad(vm) != ZUN_SUCCESS)
         return ZUN_ERROR;
     return this->DrawInner(vm, 0);
 }
 
 // FUNCTION: th08 0x463d60
 #pragma var_order(rotationMatrix, worldTransformMatrix, this)
-void AnmManager::FUN_00463d60(AnmVm *vm)
+void AnmManager::Project3DQuad(AnmVm *vm)
 {
     D3DXMATRIX worldTransformMatrix;
     D3DXMATRIX rotationMatrix;
@@ -1686,7 +1686,7 @@ void AnmManager::FUN_00463d60(AnmVm *vm)
 }
 
 // FUNCTION: th08 0x464070
-ZunResult AnmManager::FUN_00464070(AnmVm *vm)
+ZunResult AnmManager::DrawProjected3DQuad(AnmVm *vm)
 {
     if (!vm->IsVisible())
         return ZUN_ERROR;
@@ -1694,13 +1694,13 @@ ZunResult AnmManager::FUN_00464070(AnmVm *vm)
         return ZUN_ERROR;
     if (vm->color1.a == 0)
         return ZUN_ERROR;
-    this->FUN_00463d60(vm);
+    this->Project3DQuad(vm);
     return this->DrawInner(vm, 0);
 }
 
 // FUNCTION: th08 0x4640e0
 #pragma var_order(halfWidth, halfHeight, yOffset, xOffset, sine, worldMatrix, rotation, projectedReference, projectedPosition, delta, cosine, origin, this)
-ZunResult AnmManager::FUN_004640e0(AnmVm *vm, void *callback)
+ZunResult AnmManager::ProjectCameraFacingQuadWithCallback(AnmVm *vm, void *callback)
 {
     f32 rotation;
     f32 sine;
@@ -1780,7 +1780,7 @@ ZunResult AnmManager::DrawWithCallback(AnmVm *vm, void *callback)
         return ZUN_ERROR;
     if (vm->color1.a == 0)
         return ZUN_ERROR;
-    if (this->FUN_004640e0(vm, callback) != ZUN_SUCCESS)
+    if (this->ProjectCameraFacingQuadWithCallback(vm, callback) != ZUN_SUCCESS)
         return ZUN_ERROR;
     return this->DrawInner(vm, 0);
 }
@@ -1905,7 +1905,7 @@ ZunResult AnmManager::Draw3D(AnmVm *vm)
 
 // FUNCTION: th08 0x4649a0
 #pragma var_order(y, i, vertex, x, currentX, step, xSpan)
-ZunResult AnmManager::FUN_004649a0(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount)
+ZunResult AnmManager::InitializeHorizontalTextureStrip(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount)
 {
     f32 y;
     i32 i;
@@ -1949,7 +1949,7 @@ ZunResult AnmManager::FUN_004649a0(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices,
 
 // FUNCTION: th08 0x464b00
 #pragma var_order(x, i, vertex, y, currentY, step, ySpan)
-ZunResult AnmManager::FUN_00464b00(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount)
+ZunResult AnmManager::InitializeVerticalTextureStrip(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount)
 {
     f32 x;
     i32 i;
@@ -2034,7 +2034,7 @@ ZunResult AnmManager::DrawVertices(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices,
 }
 
 // FUNCTION: th08 0x00464dd0
-ZunResult AnmManager::FUN_00464dd0(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices)
+ZunResult AnmManager::QueueSpriteQuad(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices)
 {
     if (!vm->IsVisible())
     {
@@ -3177,13 +3177,13 @@ void AnmManager::DrawPlayerBullet(AnmVm *vm)
         this->Draw2D(vm);
         break;
     case 3:
-        this->FUN_00463470(vm);
+        this->Draw2DRotatedOrAxisAligned(vm);
         break;
     case 4:
-        this->FUN_00463cf0(vm);
+        this->DrawCameraFacingQuad(vm);
         break;
     case 5:
-        this->FUN_00464070(vm);
+        this->DrawProjected3DQuad(vm);
         break;
     }
 }

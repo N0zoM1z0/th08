@@ -327,7 +327,7 @@ reset without changing function behavior. Necessary forward declarations are
 preferable to wrappers when an earlier caller now precedes a file-local helper.
 
 That residual also refines the inline-ownership rule.
-`AnmVm::FUN_004396f8 @ 0x004396F8` had the correct production owner (`Gui.obj`)
+`AnmVm::IsStopped @ 0x004396F8` had the correct production owner (`Gui.obj`)
 but header visibility forced VC7 to emit it at first use. Its production caller
 set is Gui-only, while two exact PlayerOption probe callers prove real REL32
 call boundaries. Converting the header body to a declaration and placing the

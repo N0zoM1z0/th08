@@ -57,7 +57,7 @@ int __fastcall SyncAnchoredRadialTrail(Effect *);
 // This retail table entry points at an AnmVm member. On the 32-bit Linux ABI
 // its code entry receives `this` as the first stack argument, matching the
 // reconstructed effect callback invocation.
-extern "C" int AnmVmUpdate0040eb50(AnmVm *) asm("_ZN4th085AnmVm12FUN_0040eb50Ev");
+extern "C" int UpdatePulsingRadialTrailCallback(AnmVm *) asm("_ZN4th085AnmVm24UpdatePulsingRadialTrailEv");
 
 namespace modern
 {
@@ -162,7 +162,7 @@ void InitializeTargetData()
         {71, 0, 0},
         {76, CodeAddress(SyncRadialTrailRadius), CodeAddress(InitializeRadialTrail)},
         {81, CodeAddress(SyncRadialTrailShape), CodeAddress(InitializeRadialTrail)},
-        {82, CodeAddress(AnmVmUpdate0040eb50), CodeAddress(InitializeRadialTrail)},
+        {82, CodeAddress(UpdatePulsingRadialTrailCallback), CodeAddress(InitializeRadialTrail)},
         {83, CodeAddress(FUN_0040e040), CodeAddress(InitializeRadialTrail)},
         {83, CodeAddress(FUN_0040e120), CodeAddress(InitializeRadialTrail)},
         {83, CodeAddress(FUN_0040e200), CodeAddress(InitializeRadialTrail)},

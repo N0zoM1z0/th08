@@ -1531,7 +1531,7 @@ ZunResult Background::RenderObjects(i32 mode)
                                 }
                                 fogState = 0;
                             }
-                            g_AnmManager->FUN_00464dd0(curQuadVm, reinterpret_cast<VertexTex1DiffuseXyzrhw *>(vertices));
+                            g_AnmManager->QueueSpriteQuad(curQuadVm, reinterpret_cast<VertexTex1DiffuseXyzrhw *>(vertices));
                             break;
                         }
                         }

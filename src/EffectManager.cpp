@@ -809,7 +809,7 @@ i32 __fastcall InitializeRadialTrail(Effect *effect)
     effect->radius = effect->vector1.y;
     effect->shapeThickness = effect->vector1.z;
 
-    g_AnmManager->FUN_004649a0(&effect->vm, effect->vertices, effect->vertexSegmentCount * 2);
+    g_AnmManager->InitializeHorizontalTextureStrip(&effect->vm, effect->vertices, effect->vertexSegmentCount * 2);
     effect->verticesDirty = 1;
     effect->drawCallback = reinterpret_cast<void *>(&DrawRadialTrail);
     effect->secondaryRadius = 0.0f;
@@ -835,7 +835,7 @@ i32 __fastcall DrawRadialTrail(Effect *effect)
         radius = effect->shapeThickness /
                  sinf((ZUN_PI - angleStep) / 2.0f);
         vertex = effect->vertices;
-        g_AnmManager->FUN_00464b00(
+        g_AnmManager->InitializeVerticalTextureStrip(
             &effect->vm, effect->vertices, effect->vertexSegmentCount * 2 + 2);
 
         if (effect->secondaryRadius == 0.0f)
@@ -1138,7 +1138,7 @@ ChainCallbackResult EffectManager::OnDraw(EffectManager *effectManager)
     while (effect != NULL)
     {
         effect->vm.pos = effect->position;
-        g_AnmManager->FUN_00463cf0(&effect->vm);
+        g_AnmManager->DrawCameraFacingQuad(&effect->vm);
         effect = effect->nextInDrawGroup;
     }
 
@@ -1225,12 +1225,12 @@ i32 EffectManager::DrawBackgroundEffects()
             }
             else
             {
-                g_AnmManager->FUN_00463cf0(&effect->vm);
+                g_AnmManager->DrawCameraFacingQuad(&effect->vm);
             }
         }
         else
         {
-            g_AnmManager->FUN_00464070(&effect->vm);
+            g_AnmManager->DrawProjected3DQuad(&effect->vm);
         }
 
         effect = effect->nextInDrawGroup;

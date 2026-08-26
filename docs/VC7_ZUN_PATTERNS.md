@@ -51,14 +51,14 @@ For a conservative review artifact from existing objects, use
 ## Optimize pragma for `leave` epilogues
 
 Verified examples: `AsciiManager::SetIsGuiMode` (0x004398FF) and
-`AnmVm::FUN_004396f8` (0x004396F8).  Some tiny state helpers only match the
+`AnmVm::IsStopped` (0x004396F8).  Some tiny state helpers only match the
 target when compiled under `#pragma optimize("s", on)`, which makes VC7 emit
 `leave` instead of `mov esp, ebp; pop ebp`.  Prefer proving this with a real
 comparator before changing a function globally.
 
 ## Raw-width flag loads
 
-Verified example: `AnmVm::FUN_004396f8`.  If target reads a flags word as a
+Verified example: `AnmVm::IsStopped`.  If target reads a flags word as a
 32-bit dword (`mov eax, [this+off]; shr eax, imm`) but the public field is a
 bitfield or narrower typed member, use an explicit raw-width access in the
 small helper.  Typed access may emit `movzx`/`sar` and miss the target even when

@@ -63,7 +63,7 @@ void __fastcall SetBombBackgroundTint(Player *player, D3DCOLOR color)
 }
 
 // FUNCTION: th08 0x40eb50
-i32 AnmVm::FUN_0040eb50()
+i32 AnmVm::UpdatePulsingRadialTrail()
 {
     reinterpret_cast<Effect *>(this)->verticesDirty = 1;
     reinterpret_cast<Effect *>(this)->vertexSegmentCount = 48;
@@ -1778,7 +1778,7 @@ i32 __fastcall FUN_004114e0(AnmVm *effect)
             angle = reinterpret_cast<Effect *>(effect)->angle + ZUN_PI / 4.0f;
             radius = reinterpret_cast<Effect *>(effect)->radius * 0.7071067094802856f;
             Float3 position;
-            g_AnmManager->FUN_00464b00(
+            g_AnmManager->InitializeVerticalTextureStrip(
                 effect,
                 reinterpret_cast<Effect *>(effect)->vertices,
                 2 * reinterpret_cast<Effect *>(effect)->vertexSegmentCount + 2);
@@ -2147,7 +2147,7 @@ i32 __fastcall FUN_004117b0(AnmVm *effect)
             angle = reinterpret_cast<Effect *>(effect)->angle + ZUN_PI / 4.0f;
             radius = reinterpret_cast<Effect *>(effect)->radius * 0.7071067094802856f;
             Float3 position;
-            g_AnmManager->FUN_00464b00(
+            g_AnmManager->InitializeVerticalTextureStrip(
                 effect,
                 reinterpret_cast<Effect *>(effect)->vertices,
                 2 * reinterpret_cast<Effect *>(effect)->vertexSegmentCount + 2);

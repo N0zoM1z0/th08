@@ -2434,3 +2434,66 @@ anonymous-identifier, and 44 opaque-storage candidates because the six
 evidence-limited callbacks are outside the heuristic's current identifier
 pattern.  These counts are work-selection observations, not a semantic-
 completion percentage.
+
+### ANM projection, draw, and texture-strip protocol — 2026-08-27
+
+Scope: the central ANM render lane at `0x00463470..0x00464EB0`, together with
+`AnmVm::IsStopped @ 0x004396F8` and the effect-table callback
+`AnmVm::UpdatePulsingRadialTrail @ 0x0040EB50`.  Source declarations,
+production callers, decorated symbols, mapping/accepted ledgers, relocation
+manifests, and the modern callback table moved together.  Implementations and
+render-state order did not change.
+
+Projection and draw roles: `Draw2DRotatedOrAxisAligned @ 0x00463470` is the
+rotated/scaled 2D draw path selected beside the existing non-rotation paths.
+`ProjectCameraFacingQuad @ 0x004639E0` projects the VM origin and the
+Background camera-right vector, then scales the sprite quad by their projected
+unit distance; `DrawCameraFacingQuad @ 0x00463CF0` submits that result.
+`ProjectCameraFacingQuadWithCallback @ 0x004640E0` performs the same projection
+but calls the supplied position callback before constructing the vertices.
+`Project3DQuad @ 0x00463D60` applies translation, scale, rotation, and anchor
+state to the manager's four 3D quad vertices, projects them, and caches the
+matrix; `DrawProjected3DQuad @ 0x00464070` submits that result.
+
+Strip and queue roles: `InitializeHorizontalTextureStrip @ 0x004649A0` and
+`InitializeVerticalTextureStrip @ 0x00464B00` initialize diffuse/RHW vertices
+while advancing UVs along U or V respectively.  Independent TH08 callers use
+the same helpers for ECL enemy trails, Effect radial trails, and PlayerBomb
+geometry.  `QueueSpriteQuad @ 0x00464DD0` rejects hidden/disabled/transparent
+VMs, flushes on texture or shader-state changes, applies the target render
+state, and appends four vertices to the sprite buffer.  Its old ledger ABI of
+two `u8` arguments was corrected to `AnmVm *` and
+`VertexTex1DiffuseXyzrhw *`: target stack dword reads and the exact VC7
+decorated symbol independently require those pointer types.
+
+VM helpers: `IsStopped` is exactly the VM `stopped` bit predicate.
+`UpdatePulsingRadialTrail` marks the Effect vertex strip dirty and configures
+48 segments, thickness 32, angle zero, and an alternating radius of 64/72 for
+effect-table id 82.  Its class membership and effect callback use are both
+target-visible; the Linux ABI bridge retains that shared object identity.
+
+Evidence boundary: unused `AnmTextureHeader`, `AnmLoadedSprite`, `AnmVm`, and
+`AnmManager` storage with no authored behavioral reads remains neutral or
+opaque.  No visual identity is inferred for those fields, and the successful
+portable link is not treated as a live-rendering observation.
+
+VC7 oracle: all nine central functions pass focused strict comparison:
+**912 / 912**, **771 / 771**, **107 / 107**, **779 / 779**, **98 / 98**,
+**786 / 786**, **352 / 352**, **352 / 352**, and **225 / 225** bytes.
+`IsStopped` passes **24 / 24** and `UpdatePulsingRadialTrail` passes
+**112 / 112**.  After the shared-header and caller renames, the required
+single-job cold build of all 75 comparison objects passes **1,106 / 1,106
+exact**, and the normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links and
+`verify-modern-linux.sh build/modern-linux-container/th08-modern` verifies the
+ELF32 executable and every fixed target-owned layout symbol.  The first link
+caught a stale Itanium name-length in the renamed callback bridge; correcting
+that mechanical alias to the emitted member symbol made the oracle pass without
+changing target source or VC7 bytes.
+
+Result: all eleven bounded address-named functions now expose their proven
+render or VM roles.  The whole-source router remains at 5 raw-member,
+0 absolute-address, 113 anonymous-identifier, and 44 opaque-storage
+candidates; those remaining counts are work-selection observations, not a
+semantic-completion percentage.

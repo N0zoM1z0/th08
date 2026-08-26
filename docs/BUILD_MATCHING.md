@@ -422,8 +422,8 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 - Commutative integer addition can determine register ownership. `CalculateFps` requires `currentQpc >= lastQpc + (frequency >> 1)` in that operand order to emit `eax=frequency/2; ecx=last; add ecx,eax; cmp current,ecx; jb`. Equivalent orderings folded one operand into memory or reversed the compare.
 ### D3DX projection owners and x87 comparison width
 
-- Call arity plus the shipped push sequence can recover imported D3DX helpers without guessing library bodies. In `AnmManager::FUN_00463d60`, `0x477178` is `D3DXVec3Project` (out, input, viewport, projection, view, world), `0x477612` is `D3DXMatrixMultiply`, and `0x477F42/0x477FC2/0x478043` are `D3DXMatrixRotationX/Y/Z`. Use the standard D3DX API so production source remains ordinary C++ and the import thunks stay compiler/linker-owned.
-- A floating zero literal's type is target-visible. The three rotation gates in `FUN_00463d60` are exact only as `rotation.axis != 0.0` (double literal); `0.0f` emits single-precision x87 compares and leaves exactly one opcode byte wrong at each of the X/Y/Z gates.
+- Call arity plus the shipped push sequence can recover imported D3DX helpers without guessing library bodies. In `AnmManager::Project3DQuad`, `0x477178` is `D3DXVec3Project` (out, input, viewport, projection, view, world), `0x477612` is `D3DXMatrixMultiply`, and `0x477F42/0x477FC2/0x478043` are `D3DXMatrixRotationX/Y/Z`. Use the standard D3DX API so production source remains ordinary C++ and the import thunks stay compiler/linker-owned.
+- A floating zero literal's type is target-visible. The three rotation gates in `Project3DQuad` are exact only as `rotation.axis != 0.0` (double literal); `0.0f` emits single-precision x87 compares and leaves exactly one opcode byte wrong at each of the X/Y/Z gates.
 - A contiguous 64-byte `rep movsd` target copy is stronger layout evidence than an old field guess. `AnmManager+0x1C24..+0x1C63` is a cached `D3DXMATRIX`, not `Float3` followed by padding. Recovering the aggregate type lets VC7 emit the target matrix copy naturally.
 - Do not route new reconstruction through the repository's `sincos` macro when inline assembly is disallowed. VC7 `sin`/`cos` intrinsics do not fuse into `fsincos`; functions whose target specifically requires that instruction should remain unclaimed until a non-inline-assembly source mechanism is found.
 
@@ -434,7 +434,7 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 
 ### Constructor lifetime placement and recovering absolute-address owners
 
-- `#pragma var_order` controls physical slots but does not move constructor calls. In `AnmManager::FUN_004639e0` / `FUN_004640e0`, declaring `D3DXMATRIX` and four `Float3` locals at function entry emitted their constructors before the target's `rotation -> fsincos` sequence even though every slot was correct. Keeping scalar declarations first, executing `fsincos`, and only then declaring the class-valued locals moved the five constructors to the exact target offsets without changing the 0xA0 frame.
+- `#pragma var_order` controls physical slots but does not move constructor calls. In `AnmManager::ProjectCameraFacingQuad` / `ProjectCameraFacingQuadWithCallback`, declaring `D3DXMATRIX` and four `Float3` locals at function entry emitted their constructors before the target's `rotation -> fsincos` sequence even though every slot was correct. Keeping scalar declarations first, executing `fsincos`, and only then declaring the class-valued locals moved the five constructors to the exact target offsets without changing the 0xA0 frame.
 - Before creating a new production global for a target absolute address, subtract nearby known object bases. The projection reference at `0x004EA3F4` is exactly `g_Background + 0x63C4`, i.e. `g_Background.unk6394.vectors[4]`. Referencing the real aggregate owner preserves the correct `g_Background` relocation plus field addend and avoids overlapping storage aliases.
 
 ### Byte-lane writes versus packed-color RMW
@@ -519,7 +519,7 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 
 ### Effect-strip vertices and bomb effect callback families
 
-- `while` and `for` are not interchangeable at VC7 `/Od` even when their update expressions are identical. `AnmManager::FUN_00464b00` was four bytes short as two `while` loops; spelling the two odd/even vertex walks as `for` loops restored one two-byte entry trampoline per loop. The loop preheader order is also visible: target emits `i = N; currentY = y; jmp condition`, not `currentY = y; for (i = N; ...)`.
+- `while` and `for` are not interchangeable at VC7 `/Od` even when their update expressions are identical. `AnmManager::InitializeVerticalTextureStrip` was four bytes short as two `while` loops; spelling the two odd/even vertex walks as `for` loops restored one two-byte entry trampoline per loop. The loop preheader order is also visible: target emits `i = N; currentY = y; jmp condition`, not `currentY = y; for (i = N; ...)`.
 - A block-scope `#pragma var_order(position, radius)` can place a later-declared class local and an earlier scalar into the target slots without moving the class constructor. `FUN_004114e0` and `FUN_004117b0` require `Float3 position` immediately after the radius calculation while physically assigning the three-vector above the scalar on the stack; function-scope ordering cannot express that shape.
 - Copy-initialized trivial `Float3` locals can be target-visible without a default-constructor call. The 139-byte effect initializer wrappers copy `effect+0x2A4` and `effect+0x2B0` into two 12-byte locals; `#pragma var_order(velocity, position)` reverses their physical slots while preserving the target's lexical copy order.
 - Do not cache repeated `effect+0x338` timer access merely to shorten source. In `FUN_004114e0`, a `ZunTimer *timer` cache made the function 18 bytes too short. The target reloads the full displacement for each comparison/conversion, and that repeated address formation is part of the source-shape evidence.
@@ -628,7 +628,7 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 ### Effect trail geometry: transposed UV strips and constructor timing
 
 - The effect-trail family at `0x4272e0..0x427b50` gives a consistent target-observed tail layout for the 0x360-byte `Effect`: `+0x314/+0x318/+0x320` feed the primary radius/angle/strip-width geometry, `+0x324` is the segment count, `+0x32c/+0x330/+0x334` select and parameterize ellipse/phase modes, `+0x34c` is the custom draw callback, `+0x356` is the geometry-dirty byte, and `+0x358` owns the allocated textured-vertex buffer. These names describe the proven trail mode; do not assume every effect type gives the overlapping storage the same semantics.
-- `AnmManager::FUN_004649a0` and `FUN_00464b00` are source-shaped siblings. Both use two lexical odd/even `for` walks over 0x1c-byte textured vertices; `0x4649a0` decrements U while holding V at the sprite's start/end edges, whereas `0x464b00` decrements V while holding U at the two edges. Preserve the `for` spelling: in this VC7 `/Od` family, replacing the walks with equivalent `while` loops changes the entry trampoline bytes.
+- `AnmManager::InitializeHorizontalTextureStrip` and `InitializeVerticalTextureStrip` are source-shaped siblings. Both use two lexical odd/even `for` walks over 0x1c-byte textured vertices; `0x4649a0` decrements U while holding V at the sprite's start/end edges, whereas `0x464b00` decrements V while holding U at the two edges. Preserve the `for` spelling: in this VC7 `/Od` family, replacing the walks with equivalent `while` loops changes the entry trampoline bytes.
 - `#pragma var_order` fixes physical slots but not the lifetime point of a non-trivial local. In `DrawRadialTrail`, the dead branch-local `Float3` belongs at `-0x4c`, but the target constructs it only after storing the two phase angles and computing the phase step. Declaring it with the scalar locals kept the same frame and slot yet moved the constructor call earlier; moving only the lexical declaration point removed the final 49 byte differences.
 
 ### Effect camera-relative initializers and canonical aggregate owners
@@ -900,7 +900,7 @@ This corpus attests the natural VC7 emissions for ResultScreen/AnmManager/MidiOu
   do not wildcard a decoration or accept by positional bytes alone.
 - This occurred at the callers of
   `AnmLoaded::SetAndExecuteScriptIdx @ 0x004069F0`, at
-  `Player::UpdateShooting`, `AnmManager::FUN_00463470`, and
+  `Player::UpdateShooting`, `AnmManager::Draw2DRotatedOrAxisAligned`, and
   `AnmManager::CreateTextureFromFile`. After the identity corrections, a cold
   canonical replay restored seven accepted functions without source changes.
 - A header-inline member may emit an out-of-line COMDAT in more than one `/Od`

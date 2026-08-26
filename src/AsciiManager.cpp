@@ -1746,7 +1746,7 @@ void AsciiManager::OnDrawHighPrioImpl()
     {
         this->youkaiGaugeCursor.pos.x =
             (f32)g_GameManager.GetYoukaiGauge() * 112.0f / 2.0f / 10000.0f + this->youkaiGauge.pos.x + 64.0f;
-        g_AnmManager->FUN_00463470(&this->youkaiGaugeCursor);
+        g_AnmManager->Draw2DRotatedOrAxisAligned(&this->youkaiGaugeCursor);
 
         this->percentageText.pos.x =
             (f32)g_GameManager.GetYoukaiGauge() * 80.0f / 2.0f / 10000.0f + this->youkaiGauge.pos.x + 64.0f;

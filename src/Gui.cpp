@@ -904,7 +904,7 @@ void Gui::UpdateStageElements()
             }
             else
             {
-                if (this->impl->frontVms[12].FUN_004396f8())
+                if (this->impl->frontVms[12].IsStopped())
                     this->impl->bossLifeBarState = 2;
                 if (this->bossUIOpacity < 0xfc)
                     this->bossUIOpacity += 4;
@@ -923,7 +923,7 @@ void Gui::UpdateStageElements()
                 this->bossUIOpacity -= 4;
             else
                 this->bossUIOpacity = 0;
-            if (this->impl->frontVms[12].FUN_004396f8())
+            if (this->impl->frontVms[12].IsStopped())
             {
                 this->impl->bossLifeBarState = 0;
                 this->bossLifeBarDisplayedSize = 0.0f;
@@ -1381,9 +1381,9 @@ void Gui::DrawStageElements()
     if (this->impl->loadingPortraitVm.activeSpriteIndex >= 0)
     {
         g_AnmManager->DrawNoRotation(&this->impl->loadingPortraitVm);
-        g_AnmManager->FUN_00464070(&this->impl->arcadeCaptureVm);
+        g_AnmManager->DrawProjected3DQuad(&this->impl->arcadeCaptureVm);
         for (i = 0; i < ARRAY_SIZE(this->impl->arcadeBlurVms); i++)
-            g_AnmManager->FUN_00464070(&this->impl->arcadeBlurVms[i]);
+            g_AnmManager->DrawProjected3DQuad(&this->impl->arcadeBlurVms[i]);
         if (this->impl->loadingOverlayVm.activeSpriteIndex >= 0)
         {
             this->impl->loadingOverlayVm.pos = Float3(304.0f, 448.0f, 0.0f);
@@ -1395,7 +1395,7 @@ void Gui::DrawStageElements()
     {
         for (i = 0; i < 0xa8; i++)
         {
-            g_AnmManager->FUN_00464070(&this->impl->stageTransitionVms[i]);
+            g_AnmManager->DrawProjected3DQuad(&this->impl->stageTransitionVms[i]);
             g_AnmManager->ClearSprite();
         }
     }
@@ -1582,7 +1582,7 @@ void Gui::CutChain()
 i32 Gui::IsStageFinished()
 {
     return this->impl->loadingPortraitVm.activeSpriteIndex >= 0 &&
-           this->impl->loadingPortraitVm.FUN_004396f8();
+           this->impl->loadingPortraitVm.IsStopped();
 }
 
 // FUNCTION: th08 0x437dc7
@@ -2170,9 +2170,9 @@ void Gui::InitStageClearScreen()
 }
 
 // FUNCTION: th08 0x4396f8
-u32 AnmVm::FUN_004396f8()
+u32 AnmVm::IsStopped()
 {
-    return (*(u32 *)((u8 *)this + 0x1F8) >> 14) & 1;
+    return this->stopped;
 }
 
 // FUNCTION: th08 0x439710

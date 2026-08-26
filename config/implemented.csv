@@ -580,7 +580,7 @@ th08::Spellcard::FUN_0042DFF0
 th08::AsciiManager::SetBossMarkerState
 th08::AsciiManager::SetScale
 th08::AsciiManager::SetIsGuiMode
-th08::AnmVm::FUN_004396f8
+th08::AnmVm::IsStopped
 th08::AnmVmBase::SetInterrupt
 th08::Gui::MsgWait
 th08::Gui::IsDialoguePresent
@@ -638,8 +638,8 @@ th08::Background::OnDrawLowPrio
 th08::AnmManager::SetCameraMode
 th08::AnmManager::Draw2DAndFlush
 th08::EffectManager::DrawBackgroundEffects
-th08::AnmManager::FUN_00463cf0
-th08::AnmManager::FUN_00464070
+th08::AnmManager::DrawCameraFacingQuad
+th08::AnmManager::DrawProjected3DQuad
 th08::AnmManager::DrawWithCallback
 th08::Background::AddedCallback
 th08::AnmManager::GetAnm
@@ -715,7 +715,7 @@ th08::Background::RenderObjects
 th08::Float3::operator/=
 th08::AnmManager::SetRenderStateForVm3D
 th08::AnmManager::Draw3D
-th08::AnmManager::FUN_00464dd0
+th08::AnmManager::QueueSpriteQuad
 th08::Background::InterpolateCameraVector
 th08::CubicHermiteInterpolate
 th08::EffectManager::SpawnEffectInFixedSlot
@@ -819,13 +819,13 @@ th08::Player::UpdateDeathAndRespawn
 th08::Spellcard::FUN_0044d150
 th08::Supervisor::CheckFps
 th08::Supervisor::CalculateFps
-th08::AnmManager::FUN_00463d60
+th08::AnmManager::Project3DQuad
 th08::UpdateOptionHomingToPlayer
 th08::UpdateOptionHomingToTarget
 th08::DrawPlayerOption
-th08::AnmManager::FUN_004639e0
-th08::AnmManager::FUN_004640e0
-th08::AnmManager::FUN_00463470
+th08::AnmManager::ProjectCameraFacingQuad
+th08::AnmManager::ProjectCameraFacingQuadWithCallback
+th08::AnmManager::Draw2DRotatedOrAxisAligned
 th08::Float3::operator*=
 th08::EffectRandomSplashInit
 th08::EffectRandomSplashBigInit
@@ -882,7 +882,7 @@ th08::EffectManager::SpawnEffectInFixedSlotWithVelocity
 th08::ZunTimer::JustReached
 th08::UpdateQuadrupleBarrierBomb
 th08::UpdateEternalNightQuadrupleBarrierDeathbomb
-th08::AnmManager::FUN_00464b00
+th08::AnmManager::InitializeVerticalTextureStrip
 th08::FUN_004114e0
 th08::FUN_00411720
 th08::FUN_004117b0
@@ -892,7 +892,7 @@ th08::UpdateSlashOfFutureEternityDeathbomb
 th08::ZunTimer::IsPeriodic
 th08::UpdateGhastlyDreamBomb
 th08::UpdateEternalSleepInDreamlandDeathbomb
-th08::AnmVm::FUN_0040eb50
+th08::AnmVm::UpdatePulsingRadialTrail
 th08::AnmVm::StartPositionInterpolation
 th08::AnmVm::StartColor1RgbInterpolation
 th08::AnmVm::StartColor1AlphaInterpolation
@@ -927,7 +927,7 @@ th08::UpdateFadingRadialTrail
 th08::SyncAnchoredRadialTrail
 th08::Float3::FromAngleMagnitude
 th08::Float3::FromRotatedVec2
-th08::AnmManager::FUN_004649a0
+th08::AnmManager::InitializeHorizontalTextureStrip
 th08::FUN_00426280
 th08::FUN_00426720
 th08::FUN_00426e70

@@ -503,7 +503,7 @@ i32 __fastcall UpdatePersistentShot(Player *player, PlayerShot *slot)
     if (player->timelines[slot->timelineIndex].instruction !=
         reinterpret_cast<EclTimelineInstruction *>(slot))
     {
-        if (slot->vm.FUN_004396f8()) slot->vm.pendingInterrupt = 1;
+        if (slot->vm.IsStopped()) slot->vm.pendingInterrupt = 1;
     }
     if (g_Gui.IsDialoguePresent() || player->bombState.isInUse != 0 || g_GameManager.flags.suppressPlayerShots)
     {
@@ -519,7 +519,7 @@ i32 __fastcall UpdatePersistentShot(Player *player, PlayerShot *slot)
     }
     if (player->timelines[slot->timelineIndex].timer <= 70)
     {
-        if (slot->vm.FUN_004396f8()) slot->vm.pendingInterrupt = 1;
+        if (slot->vm.IsStopped()) slot->vm.pendingInterrupt = 1;
     }
     slot->position.x += slot->velocity.z;
     slot->position.z = 0.44f;

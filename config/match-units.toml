@@ -5096,7 +5096,7 @@ target = 0x018BDC90
 [[units.relocations]]
 offset = 0x5AA7
 type = "REL32"
-symbol = "?FUN_004649a0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@H@Z"
+symbol = "?InitializeHorizontalTextureStrip@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@H@Z"
 target = 0x004649A0
 
 [[units.relocations]]
@@ -45051,7 +45051,7 @@ target = 0x018bdc90
 [[units.relocations]]
 offset = 0x728
 type = "REL32"
-symbol = "?FUN_00463470@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+symbol = "?Draw2DRotatedOrAxisAligned@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463470
 
 [[units.relocations]]
@@ -55460,9 +55460,9 @@ target_address = 0x004398FF
 size = 0x17
 
 [[units]]
-name = "anm-vm-fun-004396f8"
+name = "anm-vm-is-stopped"
 object = "build/Gui.obj"
-symbol = "?FUN_004396f8@AnmVm@th08@@QAEIXZ"
+symbol = "?IsStopped@AnmVm@th08@@QAEIXZ"
 target_address = 0x004396F8
 size = 0x18
 
@@ -60267,7 +60267,7 @@ target = 0x018BDC90
 [[units.relocations]]
 offset = 0xF3
 type = "REL32"
-symbol = "?FUN_00463cf0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+symbol = "?DrawCameraFacingQuad@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463CF0
 
 [[units.relocations]]
@@ -60279,14 +60279,14 @@ target = 0x018BDC90
 [[units.relocations]]
 offset = 0x104
 type = "REL32"
-symbol = "?FUN_00464070@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+symbol = "?DrawProjected3DQuad@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00464070
 
 
 [[units]]
-name = "anm-manager-fun-00463cf0"
+name = "anm-draw-camera-facing-quad"
 object = "build/AnmManager.obj"
-symbol = "?FUN_00463cf0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+symbol = "?DrawCameraFacingQuad@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target_address = 0x00463CF0
 size = 0x6B
 
@@ -60299,7 +60299,7 @@ target = 0x004066E0
 [[units.relocations]]
 offset = 0x4A
 type = "REL32"
-symbol = "?FUN_004639e0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+symbol = "?ProjectCameraFacingQuad@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x004639E0
 
 [[units.relocations]]
@@ -60309,9 +60309,9 @@ symbol = "?DrawInner@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@H@Z"
 target = 0x004628B0
 
 [[units]]
-name = "anm-manager-fun-00464070"
+name = "anm-draw-projected-3d-quad"
 object = "build/AnmManager.obj"
-symbol = "?FUN_00464070@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+symbol = "?DrawProjected3DQuad@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target_address = 0x00464070
 size = 0x62
 
@@ -60324,7 +60324,7 @@ target = 0x004066E0
 [[units.relocations]]
 offset = 0x4A
 type = "REL32"
-symbol = "?FUN_00463d60@AnmManager@th08@@QAEXPAUAnmVm@2@@Z"
+symbol = "?Project3DQuad@AnmManager@th08@@QAEXPAUAnmVm@2@@Z"
 target = 0x00463D60
 
 [[units.relocations]]
@@ -60349,7 +60349,7 @@ target = 0x004066E0
 [[units.relocations]]
 offset = 0x4E
 type = "REL32"
-symbol = "?FUN_004640e0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAX@Z"
+symbol = "?ProjectCameraFacingQuadWithCallback@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAX@Z"
 target = 0x004640E0
 
 [[units.relocations]]
@@ -65357,7 +65357,7 @@ target = 0x018BDC90
 [[units.relocations]]
 offset = 0x1249
 type = "REL32"
-symbol = "?FUN_00464dd0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@@Z"
+symbol = "?QueueSpriteQuad@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@@Z"
 target = 0x00464DD0
 
 # Ledger name: th08::Float3::operator/=
@@ -65969,12 +65969,12 @@ type = "DIR32"
 symbol = "?g_Supervisor@th08@@3USupervisor@1@A"
 target = 0x017CE758
 
-# Ledger name: th08::AnmManager::FUN_00464dd0
+# Ledger name: th08::AnmManager::QueueSpriteQuad
 # Evidence: source-emitted function; strict COFF relocation replay against pinned target.
 [[units]]
-name = "anm-manager-fun-00464dd0"
+name = "anm-queue-sprite-quad"
 object = "build/AnmManager.obj"
-symbol = "?FUN_00464dd0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@@Z"
+symbol = "?QueueSpriteQuad@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@@Z"
 target_address = 0x00464DD0
 size = 0xE1
 
@@ -75151,7 +75151,7 @@ target = 25943184
 [[units.relocations]]
 offset = 175
 type = "REL32"
-symbol = "?FUN_00464070@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+symbol = "?DrawProjected3DQuad@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 4604016
 
 [[units.relocations]]
@@ -75163,7 +75163,7 @@ target = 25943184
 [[units.relocations]]
 offset = 228
 type = "REL32"
-symbol = "?FUN_00464070@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+symbol = "?DrawProjected3DQuad@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 4604016
 
 [[units.relocations]]
@@ -75205,7 +75205,7 @@ target = 25943184
 [[units.relocations]]
 offset = 392
 type = "REL32"
-symbol = "?FUN_00464070@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+symbol = "?DrawProjected3DQuad@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 4604016
 
 [[units.relocations]]
@@ -75608,7 +75608,7 @@ target = 4223264
 [[units.relocations]]
 offset = 114
 type = "REL32"
-symbol = "?FUN_004396f8@AnmVm@th08@@QAEIXZ"
+symbol = "?IsStopped@AnmVm@th08@@QAEIXZ"
 target = 4429560
 
 [[units.relocations]]
@@ -75620,7 +75620,7 @@ target = 4223264
 [[units.relocations]]
 offset = 296
 type = "REL32"
-symbol = "?FUN_004396f8@AnmVm@th08@@QAEIXZ"
+symbol = "?IsStopped@AnmVm@th08@@QAEIXZ"
 target = 4429560
 
 [[units.relocations]]
@@ -78574,19 +78574,19 @@ target = 0x00463210
 [[units.relocations]]
 offset = 87
 type = "REL32"
-symbol = "th08::AnmManager::FUN_00463470"
+symbol = "th08::AnmManager::Draw2DRotatedOrAxisAligned"
 target = 0x00463470
 
 [[units.relocations]]
 offset = 101
 type = "REL32"
-symbol = "th08::AnmManager::FUN_00463cf0"
+symbol = "th08::AnmManager::DrawCameraFacingQuad"
 target = 0x00463CF0
 
 [[units.relocations]]
 offset = 115
 type = "REL32"
-symbol = "th08::AnmManager::FUN_00464070"
+symbol = "th08::AnmManager::DrawProjected3DQuad"
 target = 0x00464070
 
 [[units.relocations]]
@@ -81594,7 +81594,7 @@ target = 0x018BDC90
 [[units.relocations]]
 offset = 274
 type = "REL32"
-symbol = "?FUN_00463cf0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
+symbol = "?DrawCameraFacingQuad@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463CF0
 
 [[units.relocations]]
@@ -87889,7 +87889,7 @@ target = 0x017CE758
 [[units]]
 name = "anm-project-3d-quad"
 object = "build/objdiff/reimpl/AnmManager.obj"
-symbol = "th08::AnmManager::FUN_00463d60"
+symbol = "th08::AnmManager::Project3DQuad"
 target_address = 0x00463D60
 size = 0x30B
 
@@ -88313,9 +88313,9 @@ symbol = "?Draw2D@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@@Z"
 target = 0x00463210
 
 [[units]]
-name = "anm-project-facing-quad"
+name = "anm-project-camera-facing-quad"
 object = "build/objdiff/reimpl/AnmManager.obj"
-symbol = "th08::AnmManager::FUN_004639e0"
+symbol = "th08::AnmManager::ProjectCameraFacingQuad"
 target_address = 0x004639E0
 size = 0x303
 
@@ -88644,9 +88644,9 @@ symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
 target = 0x018BDC98
 
 [[units]]
-name = "anm-project-facing-quad-callback"
+name = "anm-project-camera-facing-quad-with-callback"
 object = "build/objdiff/reimpl/AnmManager.obj"
-symbol = "th08::AnmManager::FUN_004640e0"
+symbol = "th08::AnmManager::ProjectCameraFacingQuadWithCallback"
 target_address = 0x004640E0
 size = 0x312
 
@@ -88975,9 +88975,9 @@ symbol = "?g_QuadVertices@th08@@3PAUVertexTex1DiffuseXyzrhw@1@A"
 target = 0x018BDC98
 
 [[units]]
-name = "anm-draw-rotated-or-axis-quad"
+name = "anm-draw-2d-rotated-or-axis-aligned"
 object = "build/objdiff/reimpl/AnmManager.obj"
-symbol = "th08::AnmManager::FUN_00463470"
+symbol = "th08::AnmManager::Draw2DRotatedOrAxisAligned"
 target_address = 0x00463470
 size = 0x390
 
@@ -94790,9 +94790,9 @@ symbol = "?ExecuteScriptArray@AnmManager@th08@@QAEXPAUAnmVm@2@H@Z"
 target = 0x00462310
 
 [[units]]
-name = "anm-manager-fun-00464b00"
+name = "anm-initialize-vertical-texture-strip"
 object = "build/objdiff/reimpl/AnmManager.obj"
-symbol = "th08::AnmManager::FUN_00464b00"
+symbol = "th08::AnmManager::InitializeVerticalTextureStrip"
 target_address = 0x00464B00
 size = 0x160
 
@@ -94903,7 +94903,7 @@ target = 0x018BDC90
 [[units.relocations]]
 offset = 0x127
 type = "REL32"
-symbol = "?FUN_00464b00@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@H@Z"
+symbol = "?InitializeVerticalTextureStrip@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@H@Z"
 target = 0x00464B00
 
 [[units.relocations]]
@@ -95141,7 +95141,7 @@ target = 0x018BDC90
 [[units.relocations]]
 offset = 0x1B2
 type = "REL32"
-symbol = "?FUN_00464b00@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@H@Z"
+symbol = "?InitializeVerticalTextureStrip@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@H@Z"
 target = 0x00464B00
 
 [[units.relocations]]
@@ -96984,9 +96984,9 @@ symbol = "?ExecuteScript@AnmManager@th08@@QAEIPAUAnmVm@2@@Z"
 target = 0x0045EA00
 
 [[units]]
-name = "anm-vm-fun-0040eb50"
+name = "anm-update-pulsing-radial-trail"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?FUN_0040eb50@AnmVm@th08@@QAEHXZ"
+symbol = "?UpdatePulsingRadialTrail@AnmVm@th08@@QAEHXZ"
 target_address = 0x0040EB50
 size = 0x70
 
@@ -101098,7 +101098,7 @@ target = 0x018BDC90
 [[units.relocations]]
 offset = 0x10C
 type = "REL32"
-symbol = "?FUN_004649a0@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@H@Z"
+symbol = "?InitializeHorizontalTextureStrip@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@H@Z"
 target = 0x004649A0
 
 [[units.relocations]]
@@ -101147,7 +101147,7 @@ target = 0x018BDC90
 [[units.relocations]]
 offset = 0x80
 type = "REL32"
-symbol = "?FUN_00464b00@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@H@Z"
+symbol = "?InitializeVerticalTextureStrip@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAUVertexTex1DiffuseXyzrhw@2@H@Z"
 target = 0x00464B00
 
 [[units.relocations]]
@@ -101471,9 +101471,9 @@ target_address = 0x00428700
 size = 0x20
 
 [[units]]
-name = "anm-manager-fun-004649a0"
+name = "anm-initialize-horizontal-texture-strip"
 object = "build/objdiff/reimpl/AnmManager.obj"
-symbol = "th08::AnmManager::FUN_004649a0"
+symbol = "th08::AnmManager::InitializeHorizontalTextureStrip"
 target_address = 0x004649A0
 size = 0x160
 
@@ -108378,7 +108378,7 @@ size = 0x40
 [[units.relocations]]
 offset = 0x26
 type = "REL32"
-symbol = "?FUN_004396f8@AnmVm@th08@@QAEIXZ"
+symbol = "?IsStopped@AnmVm@th08@@QAEIXZ"
 target = 0x004396F8
 
 [[units]]
@@ -119473,7 +119473,7 @@ size = 0x261
 [[units.relocations]]
 offset = 0x2C
 type = "REL32"
-symbol = "?FUN_004396f8@AnmVm@th08@@QAEIXZ"
+symbol = "?IsStopped@AnmVm@th08@@QAEIXZ"
 target = 0x004396F8
 
 [[units.relocations]]
@@ -119527,7 +119527,7 @@ target = 0x0040E390
 [[units.relocations]]
 offset = 0x13F
 type = "REL32"
-symbol = "?FUN_004396f8@AnmVm@th08@@QAEIXZ"
+symbol = "?IsStopped@AnmVm@th08@@QAEIXZ"
 target = 0x004396F8
 
 [[units.relocations]]
