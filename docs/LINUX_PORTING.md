@@ -120,6 +120,7 @@ Useful development overrides are:
 | `TH08_LINUX_BINARY` | Executable selected by `run-modern-linux.sh` |
 | `TH08_LINUX_PKG_CONFIG_LIBDIR` | i386-only pkg-config search path |
 | `TH08_FONT` | Explicit readable Japanese font file |
+| `TH08_SOLVER_SOCKET` | Opt in to the experimental hard-no-bomb lockstep bridge; see `LINUX_SOLVER_BRIDGE.md` |
 
 ## Port boundary
 

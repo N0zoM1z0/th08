@@ -4,6 +4,16 @@ This file records only the current durable state. Historical investigations
 belong in focused notes such as `RUNECL_FUNCTION_EXACT_NOTES.md`; live counts
 come from the ledgers, not this prose.
 
+## Experimental solver bridge branch
+
+`solver/linux-lockstep-replay-bridge` is a derived Linux-port integration lane.
+It does not change the exact-build ledgers and must not be merged as evidence
+of VC7 or whole-image matching. The opt-in backend bridge is documented in
+`docs/LINUX_SOLVER_BRIDGE.md`. Its first source checkpoint compiles and passes
+the portable i386/fixed-layout verifier; a neutral live handshake completed.
+Replay determinism, cross-runtime fingerprints, and original playback remain
+pending, so no NMNB or platform-equivalence claim follows.
+
 ## Active playable-port branch
 
 `port/modern-windows-linux` is the independent playable reconstruction lane.
