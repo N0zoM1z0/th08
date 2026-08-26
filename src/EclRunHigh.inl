@@ -312,7 +312,8 @@ struct Context
 
     u8 *CurrentEclContext()
     {
-        return At<u8 *>(0x2CA0);
+        return reinterpret_cast<u8 *>(
+            reinterpret_cast<Enemy *>(enemy)->activeEclContext);
     }
 
     u8 *Object(i32 index)
@@ -374,7 +375,6 @@ struct Context
     EclOperands::ResolveFloatLValue( \
         reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx)), \
         &TH08_ECL_RAW_F((ctx), (index)), TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags, (index))
-#define TH08_ECL_CURRENT_CONTEXT(ctx) TH08_ECL_AT((ctx), u8 *, 0x2CA0)
 #define TH08_ECL_OBJECT(ctx, index) TH08_ECL_AT((ctx), u8 *, 0x3280 + (index) * 4)
 #define TH08_ECL_PRESENTATION_WRITES_ALLOWED() \
     (((((*reinterpret_cast<u32 *>(&g_GameManager.flags)) >> 14) & 1) == 0) || \
@@ -628,9 +628,11 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         lhsInt = TH08_ECL_READ_I(ctx, 0);
         if (TH08_ECL_OBJECT(ctx, lhsInt) &&
             reinterpret_cast<Laser *>(TH08_ECL_OBJECT(ctx, lhsInt))->inUse)
-            *(i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x60) = 1;
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclContext->
+                extraIntVariables[2] = 1;
         else
-            *(i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x60) = 0;
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclContext->
+                extraIntVariables[2] = 0;
         break;
     case 121:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
@@ -720,36 +722,40 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
     case 130:
         if (((((*reinterpret_cast<u32 *>(&g_GameManager.flags)) >> 14) & 1) == 0) ||
             ((((*reinterpret_cast<u32 *>(&g_GameManager.flags)) >> 7) & 3) == 0))
-            TH08_ECL_AT(ctx, u16, 0x2CEE) = TH08_ECL_RAW_U16(ctx, 0);
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->deathCallbackSubId =
+                TH08_ECL_RAW_U16(ctx, 0);
         break;
     case 126:
-        TH08_ECL_AT(ctx, i16, 0x2CF0 + TH08_ECL_READ_I(ctx, 1) * 2) = (i16)TH08_ECL_READ_I(ctx, 0);
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->eclSubroutineIds[
+            TH08_ECL_READ_I(ctx, 1)] = (i16)TH08_ECL_READ_I(ctx, 0);
         break;
     case 125:
-        TH08_ECL_AT(ctx, i16, 0x2D30) = (i16)TH08_ECL_READ_I(ctx, 0);
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->pendingEclSubroutineIndex =
+            (i16)TH08_ECL_READ_I(ctx, 0);
 #ifdef TH08_ECL_RUN_HIGH_BODY
 enter_subroutine:
         // Target 0x0041C88A is shared by opcode 125 and the pending-subroutine
         // check at the top of RunEcl's dispatch loop.  Keeping it lexical at
         // this case preserves the target's handler ordering.
-        *(RawInstruction **)TH08_ECL_CURRENT_CONTEXT(ctx) =
-            (RawInstruction *)((u8 *)instruction + instruction->nextOffset);
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclContext->currentInstr =
+            reinterpret_cast<EclRawInstruction *>((u8 *)instruction + instruction->nextOffset);
 
         if (((TH08_ECL_AT(ctx, u32, 0x3324) >> 26) & 1) == 0)
         {
-            memcpy(TH08_ECL_AT(ctx, u8 *, 0x2CA4) +
-                       TH08_ECL_AT(ctx, i16, 0x2CEA) * 0x228,
-                   TH08_ECL_CONTEXT_ENEMY(ctx) + 0x7F8,
+            memcpy(reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclCallStack +
+                       reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclCallStackDepth,
+                   &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->mainEclContextStorage,
                    0x8A * sizeof(i32));
         }
 
         g_EclManager.CallEclSub(
-            reinterpret_cast<EnemyEclContext *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x7F8),
-            TH08_ECL_AT(ctx, u16, 0x2CF0 +
-                TH08_ECL_AT(ctx, i16, 0x2D30) * 2));
-        if (TH08_ECL_AT(ctx, i16, 0x2CEA) < 15)
-            ++TH08_ECL_AT(ctx, i16, 0x2CEA);
-        TH08_ECL_AT(ctx, i16, 0x2D30) = -1;
+            reinterpret_cast<EnemyEclContext *>(
+                &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->mainEclContextStorage),
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->eclSubroutineIds[
+                reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->pendingEclSubroutineIndex]);
+        if (reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclCallStackDepth < 15)
+            ++reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclCallStackDepth;
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->pendingEclSubroutineIndex = -1;
         goto restart_context;
 #else
         TH08_ECL_RUN_HIGH_YIELD(DISPATCH_ENTER_SUBROUTINE);
@@ -830,7 +836,8 @@ enter_subroutine:
                         reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->childEclBlocks[lhsInt] + 8),
                     *(u16 *)reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->childEclBlocks[lhsInt]);
                 memcpy(reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->childEclBlocks[lhsInt] + 0x20,
-                       TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18, 0x1E * sizeof(i32));
+                       reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclContext->intVariables,
+                       0x1E * sizeof(i32));
             }
         }
         break;
@@ -910,14 +917,17 @@ enter_subroutine:
     case 137:
         if (TH08_ECL_READ_I(ctx, 0) >= 0)
         {
-            *(void **)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x10) = g_EclExInsn[TH08_ECL_READ_I(ctx, 0)];
-            *(RawInstruction **)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x14) = TH08_ECL_CONTEXT_INSTRUCTION(ctx);
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclContext->callback =
+                reinterpret_cast<EnemyEclContextCallback>(g_EclExInsn[TH08_ECL_READ_I(ctx, 0)]);
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclContext->callbackArgument =
+                TH08_ECL_CONTEXT_INSTRUCTION(ctx);
         }
         else
-            *(void **)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x10) = 0;
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclContext->callback = 0;
         break;
     case 146:
-        reinterpret_cast<ZunTimer *>(TH08_ECL_CURRENT_CONTEXT(ctx) + 4)->operator+=(TH08_ECL_READ_I(ctx, 0));
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclContext->time +=
+            TH08_ECL_READ_I(ctx, 0);
         break;
     case 141: g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&TH08_ECL_AT(ctx, Vec3, 0x2D34)), static_cast<ItemType>(TH08_ECL_READ_I(ctx, 0)), 0); break;
     case 147: g_EclGlobal004EA290 = TH08_ECL_READ_I(ctx, 0); break;
@@ -949,7 +959,7 @@ enter_subroutine:
                     packet93.type, &position93,
                     TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
                     TH08_ECL_READ_I(ctx, 6),
-                    (i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18));
+                    reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclContext->intVariables);
             }
             (void)spawned93;
         }
@@ -980,7 +990,7 @@ enter_subroutine:
                     packet94.type, &position94,
                     TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
                     TH08_ECL_READ_I(ctx, 6),
-                    (i32 *)(TH08_ECL_CURRENT_CONTEXT(ctx) + 0x18));
+                    reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclContext->intVariables);
             }
             (void)spawned94;
         }
@@ -1025,7 +1035,7 @@ enter_subroutine:
         break;
     case 153:
         reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->timerCallbackSubId =
-            (i32)TH08_ECL_AT(ctx, i16, 0x2CEE);
+            (i32)reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->deathCallbackSubId;
         reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bossTimer = 0;
         break;
     case 155:

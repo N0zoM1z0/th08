@@ -44,13 +44,14 @@ extern i32 g_EclCallbackPublishedEnemyField56;
 
 void __fastcall FUN_004235a0();
 
+#define ECL_EX_CONTEXT(enemy) (reinterpret_cast<Enemy *>(enemy)->activeEclContext)
+
 // FUNCTION: th08 0x423390
 void __fastcall FUN_00423390(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    g_EclCallbackPublishedEnemyField24 = *reinterpret_cast<i32 *>(
-        reinterpret_cast<u8 *>(*reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x18);
-    g_EclCallbackPublishedEnemyField56 = *reinterpret_cast<i32 *>(
-        reinterpret_cast<u8 *>(*reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x38);
+    g_EclCallbackPublishedEnemyField24 = ECL_EX_CONTEXT(enemy)->intVariables[0];
+    g_EclCallbackPublishedEnemyField56 =
+        *reinterpret_cast<i32 *>(&ECL_EX_CONTEXT(enemy)->floatVariables[0]);
 }
 
 // FUNCTION: th08 0x4233d0
@@ -74,12 +75,10 @@ void __fastcall FUN_00423400(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     }
 
     if (*reinterpret_cast<f32 *>(enemy->bytes + 0x2d50) <
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
-            *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x54))
+        ECL_EX_CONTEXT(enemy)->floatVariables[7])
     {
         *reinterpret_cast<f32 *>(enemy->bytes + 0x2d50) +=
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
-                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x50);
+            ECL_EX_CONTEXT(enemy)->floatVariables[6];
         changed = 1;
     }
 
@@ -471,8 +470,7 @@ void __fastcall FUN_004244f0(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     f32 targetAngle;
     EclOperands::EnemyOverlay *cursor;
 
-    groupId = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-        *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x60);
+    groupId = ECL_EX_CONTEXT(enemy)->extraIntVariables[2];
     cursor = *reinterpret_cast<EclOperands::EnemyOverlay **>(enemy->bytes + 0x2da4);
     if (cursor == NULL)
         return;
@@ -481,45 +479,34 @@ void __fastcall FUN_004244f0(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     while (*reinterpret_cast<EclOperands::EnemyOverlay **>(cursor->bytes + 0x8) != NULL)
     {
         cursor = *reinterpret_cast<EclOperands::EnemyOverlay **>(cursor->bytes + 0x8);
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-                *reinterpret_cast<EnemyEclContext **>(cursor->bytes + 0x2ca0)) + 0x60) == groupId)
+        if (ECL_EX_CONTEXT(cursor)->extraIntVariables[2] == groupId)
         {
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-                *reinterpret_cast<EnemyEclContext **>(cursor->bytes + 0x2ca0)) + 0x5c) = count;
+            ECL_EX_CONTEXT(cursor)->extraIntVariables[1] = count;
             if (count == 0)
                 firstChild = cursor;
             ++count;
         }
     }
 
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-        *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x2c) = 0;
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-            *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x30) != count)
+    ECL_EX_CONTEXT(enemy)->intVariables[5] = 0;
+    if (ECL_EX_CONTEXT(enemy)->intVariables[6] != count)
     {
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x30) != 0)
+        if (ECL_EX_CONTEXT(enemy)->intVariables[6] != 0)
         {
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x2c) = 1;
+            ECL_EX_CONTEXT(enemy)->intVariables[5] = 1;
         }
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-            *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x30) = count;
+        ECL_EX_CONTEXT(enemy)->intVariables[6] = count;
     }
 
-    groupId = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-        *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x5c);
-    ++*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-        *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x34);
+    groupId = ECL_EX_CONTEXT(enemy)->extraIntVariables[1];
+    ++ECL_EX_CONTEXT(enemy)->intVariables[7];
     if (groupId != 0)
     {
         targetAngle = AddNormalizeAngle(
             *reinterpret_cast<f32 *>(firstChild->bytes + 0x2d9c),
             static_cast<f32>(groupId) * 6.2831854820251465f / static_cast<f32>(count));
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-                *reinterpret_cast<EnemyEclContext **>(firstChild->bytes + 0x2ca0)) + 0x34) !=
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x34))
+        if (ECL_EX_CONTEXT(firstChild)->intVariables[7] !=
+            ECL_EX_CONTEXT(enemy)->intVariables[7])
         {
             targetAngle = AddNormalizeAngle(
                 targetAngle, *reinterpret_cast<f32 *>(firstChild->bytes + 0x2da0));
@@ -561,11 +548,9 @@ void __fastcall FUN_00424730(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 {
     Float3 origin(
         *reinterpret_cast<f32 *>(enemy->bytes + 0x2d88) -
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
-                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x38),
+            ECL_EX_CONTEXT(enemy)->floatVariables[0],
         *reinterpret_cast<f32 *>(enemy->bytes + 0x2d8c) -
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
-                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x3c),
+            ECL_EX_CONTEXT(enemy)->floatVariables[1],
         0.0f);
     Float3 outerSize(590.0f, 160.0f, 0.0f);
     Float3 innerSize(590.0f, 128.0f, 0.0f);
@@ -588,11 +573,9 @@ void __fastcall FUN_00424820(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 {
     Float3 origin(
         *reinterpret_cast<f32 *>(enemy->bytes + 0x2d34) -
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
-                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x38),
+            ECL_EX_CONTEXT(enemy)->floatVariables[0],
         *reinterpret_cast<f32 *>(enemy->bytes + 0x2d38) -
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
-                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x3c),
+            ECL_EX_CONTEXT(enemy)->floatVariables[1],
         0.0f);
     Float3 outerSize(590.0f, 240.0f, 0.0f);
     Float3 innerSize(590.0f, 192.0f, 0.0f);
@@ -614,11 +597,9 @@ void __fastcall FUN_00424910(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 {
     Float3 origin(
         *reinterpret_cast<f32 *>(enemy->bytes + 0x2d88) -
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
-                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x38),
+            ECL_EX_CONTEXT(enemy)->floatVariables[0],
         *reinterpret_cast<f32 *>(enemy->bytes + 0x2d8c) -
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
-                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x3c),
+            ECL_EX_CONTEXT(enemy)->floatVariables[1],
         0.0f);
     Float3 outerSize(590.0f, 288.0f, 0.0f);
     Float3 innerSize(590.0f, 224.0f, 0.0f);
@@ -647,8 +628,7 @@ void __fastcall EclExIns::ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, 
         if (bullet->state == BULLET_STATE_UNUSED)
             continue;
         if ((bullet->transformFlags &
-             *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(
-                 *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x18)) != 0)
+             *reinterpret_cast<u32 *>(&ECL_EX_CONTEXT(enemy)->intVariables[0])) != 0)
         {
         if (bullet->sprites.bulletVm.type == 1)
         {
@@ -660,11 +640,9 @@ void __fastcall EclExIns::ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, 
                 bullet->sprites.bulletVm.activeSpriteIndex + 16);
             bullet->collisionDisabled = 1;
             bullet->velocity.FromAngleMagnitude(
-                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
-                    *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x38),
+                ECL_EX_CONTEXT(enemy)->floatVariables[0],
                 g_EclGameTimeScale *
-                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
-                        *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x3c));
+                    ECL_EX_CONTEXT(enemy)->floatVariables[1]);
         }
         else
         {
@@ -681,8 +659,7 @@ void __fastcall EclExIns::ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, 
         }
     }
 
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-            *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x1c) == 0)
+    if (ECL_EX_CONTEXT(enemy)->intVariables[1] == 0)
     {
         setCursor = enemy;
         while (*reinterpret_cast<EclOperands::EnemyOverlay **>(setCursor->bytes + 0x8) != NULL)
@@ -718,8 +695,7 @@ void __fastcall FUN_00424c40(EclOperands::EnemyOverlay *enemy, EclExInstruction 
         if (bullet->state == BULLET_STATE_UNUSED)
             continue;
         if ((bullet->transformFlags &
-             *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(
-                 *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x18)) != 0)
+             *reinterpret_cast<u32 *>(&ECL_EX_CONTEXT(enemy)->intVariables[0])) != 0)
         {
         if (bullet->sprites.bulletVm.type == 1)
         {
@@ -734,8 +710,7 @@ void __fastcall FUN_00424c40(EclOperands::EnemyOverlay *enemy, EclExInstruction 
             bullet->velocity.FromAngleMagnitude(
                 bullet->angle,
                 g_EclGameTimeScale *
-                    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
-                        *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x3c));
+                    ECL_EX_CONTEXT(enemy)->floatVariables[1]);
         }
         else if (bullet->sprites.bulletVm.type == 0)
         {
@@ -792,19 +767,15 @@ void __fastcall FUN_00424e50(EclOperands::EnemyOverlay *enemy, EclExInstruction 
         child = *reinterpret_cast<EclOperands::EnemyOverlay **>(enemy->bytes + 0x8);
         while (child != NULL)
         {
-            if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-                    *reinterpret_cast<EnemyEclContext **>(child->bytes + 0x2ca0)) + 0x60) == 0)
+            if (ECL_EX_CONTEXT(child)->extraIntVariables[2] == 0)
             {
                 delta = bullet->position -
                         *reinterpret_cast<Float3 *>(child->bytes + 0x2d34);
                 if (D3DXVec3LengthSq(reinterpret_cast<D3DXVECTOR3 *>(&delta)) < 4096.0f)
                 {
-                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-                        *reinterpret_cast<EnemyEclContext **>(child->bytes + 0x2ca0)) + 0x60) = 60;
-                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-                        *reinterpret_cast<EnemyEclContext **>(child->bytes + 0x2ca0)) + 0x34) =
-                        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-                            *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x34);
+                    ECL_EX_CONTEXT(child)->extraIntVariables[2] = 60;
+                    ECL_EX_CONTEXT(child)->intVariables[7] =
+                        ECL_EX_CONTEXT(enemy)->intVariables[7];
                 }
             }
             child = *reinterpret_cast<EclOperands::EnemyOverlay **>(child->bytes + 0x8);
@@ -834,8 +805,7 @@ void __fastcall FUN_00424f90(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 // FUNCTION: th08 0x424fc0
 void __fastcall FUN_00424fc0(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-        *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x18) =
+    ECL_EX_CONTEXT(enemy)->intVariables[0] =
         static_cast<i32>(g_GameManager.currentSpellCardNumber);
 }
 
@@ -856,8 +826,7 @@ void __fastcall FUN_00425020(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 // FUNCTION: th08 0x425040
 void __fastcall FUN_00425040(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-        *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x18) =
+    ECL_EX_CONTEXT(enemy)->intVariables[0] =
         g_GameManager.globals->spellcardsCaptured;
 }
 
@@ -893,15 +862,11 @@ void __fastcall FUN_004250d0(EclOperands::EnemyOverlay *enemy, EclExInstruction 
             continue;
         if ((bullet->transformFlags & 0x100000U) != 0)
         {
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(
-                *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x38) =
-                bullet->angle;
+            ECL_EX_CONTEXT(enemy)->floatVariables[0] = bullet->angle;
             g_EnemyManager.SpawnEnemy2(
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-                    *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x60),
+                ECL_EX_CONTEXT(enemy)->extraIntVariables[2],
                 reinterpret_cast<D3DXVECTOR3 *>(&bullet->position), 800, -2, 10,
-                reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(
-                    *reinterpret_cast<EnemyEclContext **>(enemy->bytes + 0x2ca0)) + 0x18));
+                ECL_EX_CONTEXT(enemy)->intVariables);
             bullet->transformFlags &= ~0x100000U;
         }
     }
@@ -974,6 +939,8 @@ void __fastcall FUN_00425390(EclOperands::EnemyOverlay *enemy, EclExInstruction 
     else
         g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(enemy->bytes + 0x2d34), static_cast<ItemType>(5), 0);
 }
+
+#undef ECL_EX_CONTEXT
 
 } // namespace th08
 

@@ -365,7 +365,7 @@ void __fastcall InstallInterpolationSlot(
     i32 i;
 
     slot = reinterpret_cast<InterpolationSlot *>(
-        *reinterpret_cast<u8 **>(DEP_BYTES(enemy) + 0x2ca0) + 0x9c);
+        reinterpret_cast<Enemy *>(enemy)->activeEclContext->interpolationSlots);
     for (i = 0; i < 8; i++, slot++)
     {
         if (slot->callback != NULL &&
@@ -444,8 +444,7 @@ EclRawInstruction *__fastcall CompareOperands(
         goto compare_failure;
 
 compare_success:
-        *reinterpret_cast<i32 *>(
-            *reinterpret_cast<u8 **>(DEP_BYTES(enemy) + 0x2ca0) + 0x0c) =
+        reinterpret_cast<Enemy *>(enemy)->activeEclContext->time.current =
             *reinterpret_cast<i32 *>(instruction->operands + 8);
         return reinterpret_cast<EclRawInstruction *>(
             reinterpret_cast<u8 *>(instruction) +
@@ -479,32 +478,29 @@ C_ASSERT(sizeof(EclCallParameterCopy) == 0x20);
 void __fastcall CallSubOnEnemy(
     EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction, i32 rawSubId)
 {
-    (*reinterpret_cast<EnemyEclContext **>(DEP_BYTES(enemy) + 0x2ca0))->currentInstr =
+    reinterpret_cast<Enemy *>(enemy)->activeEclContext->currentInstr =
         reinterpret_cast<EclRawInstruction *>(
             reinterpret_cast<u8 *>(instruction) + instruction->nextOffset);
 
     if (((*reinterpret_cast<u32 *>(DEP_BYTES(enemy) + 0x3324) >> 26) & 1) == 0)
     {
-        *reinterpret_cast<EnemyEclContext *>(
-            *reinterpret_cast<u8 **>(DEP_BYTES(enemy) + 0x2ca4) +
-            static_cast<i16>(*reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x2cea)) *
-                sizeof(EnemyEclContext)) =
-            **reinterpret_cast<EnemyEclContext **>(DEP_BYTES(enemy) + 0x2ca0);
+        reinterpret_cast<Enemy *>(enemy)->activeEclCallStack[
+            reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth] =
+            *reinterpret_cast<Enemy *>(enemy)->activeEclContext;
     }
 
     g_EclManager.CallEclSub(
-        *reinterpret_cast<EnemyEclContext **>(DEP_BYTES(enemy) + 0x2ca0),
+        reinterpret_cast<Enemy *>(enemy)->activeEclContext,
         static_cast<i16>(rawSubId));
 
     *reinterpret_cast<EclCallParameterCopy *>(
-        reinterpret_cast<u8 *>(
-            *reinterpret_cast<EnemyEclContext **>(DEP_BYTES(enemy) + 0x2ca0)) + 0x70) =
+        &reinterpret_cast<Enemy *>(enemy)->activeEclContext->callParameterInts[0]) =
         g_EclCallParameters;
 
     if (((*reinterpret_cast<u32 *>(DEP_BYTES(enemy) + 0x3324) >> 26) & 1) == 0 &&
-        *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x2cea) < 15)
+        reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth < 15)
     {
-        ++*reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x2cea);
+        ++reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth;
     }
 }
 
@@ -518,29 +514,27 @@ int __fastcall PopEclContext(
     if (((*reinterpret_cast<u32 *>(DEP_BYTES(enemy) + 0x3324) >> 26) & 1) != 0)
         utils::DebugPrint("error : no Stack Ret\r\n");
 
-    --*reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x2cea);
-    if (*reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x2cea) < 0)
+    --reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth;
+    if (reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth < 0)
     {
-        contextIndex =
-            *reinterpret_cast<i32 *>(
-                reinterpret_cast<u8 *>(
-                    *reinterpret_cast<EnemyEclContext **>(DEP_BYTES(enemy) + 0x2ca0)) + 0x220) -
-            1;
+        contextIndex = reinterpret_cast<Enemy *>(enemy)->activeEclContext->childContextSlot - 1;
         if (reinterpret_cast<Enemy *>(enemy)->childEclBlocks[contextIndex] != NULL)
             g_ZunMemory.Free(reinterpret_cast<Enemy *>(enemy)->childEclBlocks[contextIndex]);
         reinterpret_cast<Enemy *>(enemy)->childEclBlocks[contextIndex] = NULL;
-        *reinterpret_cast<u8 **>(DEP_BYTES(enemy) + 0x2ca4) = DEP_BYTES(enemy) + 0x0a20;
-        *reinterpret_cast<u8 **>(DEP_BYTES(enemy) + 0x2ca0) = DEP_BYTES(enemy) + 0x07f8;
-        *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x2cea) =
-            *reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x2ce8);
+        reinterpret_cast<Enemy *>(enemy)->activeEclCallStack =
+            reinterpret_cast<EnemyEclContext *>(
+                &reinterpret_cast<Enemy *>(enemy)->mainEclCallStackStorage[0]);
+        reinterpret_cast<Enemy *>(enemy)->activeEclContext =
+            reinterpret_cast<EnemyEclContext *>(
+                &reinterpret_cast<Enemy *>(enemy)->mainEclContextStorage);
+        reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth =
+            reinterpret_cast<Enemy *>(enemy)->mainEclCallStackDepth;
         return 1;
     }
 
-    **reinterpret_cast<EnemyEclContext **>(DEP_BYTES(enemy) + 0x2ca0) =
-        *reinterpret_cast<EnemyEclContext *>(
-            *reinterpret_cast<u8 **>(DEP_BYTES(enemy) + 0x2ca4) +
-            static_cast<i16>(*reinterpret_cast<i16 *>(DEP_BYTES(enemy) + 0x2cea)) *
-                sizeof(EnemyEclContext));
+    *reinterpret_cast<Enemy *>(enemy)->activeEclContext =
+        reinterpret_cast<Enemy *>(enemy)->activeEclCallStack[
+            reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth];
     return 0;
 }
 
@@ -621,8 +615,7 @@ EclOperands::EnemyOverlay *__fastcall SpawnChildStandard0041F110(
                 DEP_READ_INT(parent, instruction, 3),
                 DEP_READ_INT(parent, instruction, 4),
                 DEP_READ_INT(parent, instruction, 5),
-                reinterpret_cast<i32 *>(
-                    *reinterpret_cast<u8 **>(parent->bytes + 0x2ca0) + 0x18)));
+                reinterpret_cast<Enemy *>(parent)->activeEclContext->intVariables));
     }
     else
     {
@@ -654,8 +647,7 @@ EclOperands::EnemyOverlay *__fastcall SpawnChildAlternate0041F280(
                 DEP_READ_INT(parent, instruction, 3),
                 DEP_READ_INT(parent, instruction, 4),
                 DEP_READ_INT(parent, instruction, 5),
-                reinterpret_cast<i32 *>(
-                    *reinterpret_cast<u8 **>(parent->bytes + 0x2ca0) + 0x18)));
+                reinterpret_cast<Enemy *>(parent)->activeEclContext->intVariables));
     }
     else
     {

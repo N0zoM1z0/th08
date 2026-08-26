@@ -120,19 +120,53 @@ struct EclRawHeader
 };
 typedef char EclRawHeaderSubTableOffsetCheck[offsetof(EclRawHeader, subOffsets) == 0x48 ? 1 : -1];
 
-// Target-observed TH08 per-enemy ECL context. Unknown spans deliberately keep
-// the public ABI narrower than the still-unrecovered interpreter state.
+typedef void (__fastcall *EnemyEclContextCallback)(Enemy *enemy, void *argument);
+
+struct EnemyEclInterpolationSlot
+{
+    void *callback;
+    ZunTimer timer;
+    i32 duration;
+    i32 callbackIndex;
+    i32 easing;
+    f32 parameters[4];
+    f32 affectedVariable;
+};
+C_ASSERT(sizeof(EnemyEclInterpolationSlot) == 0x30);
+C_ASSERT(offsetof(EnemyEclInterpolationSlot, duration) == 0x10);
+C_ASSERT(offsetof(EnemyEclInterpolationSlot, affectedVariable) == 0x2c);
+
+// Target-observed TH08 per-enemy ECL interpreter context. The constructor-
+// bearing Enemy storage type retains its target symbol separately, while this
+// ABI view names the state consumed by EclManager and the exact interpreter.
 struct EnemyEclContext
 {
-    EclRawInstruction *currentInstr; // +0x000
-    ZunTimer time;                   // +0x004
-    u8 unknown10[0x80];
-    ZunTimer secondaryTime; // +0x090
-    u8 unknown9C[0x188];
-    i16 subId; // +0x224
+    EclRawInstruction *currentInstr;
+    ZunTimer time;
+    EnemyEclContextCallback callback;
+    void *callbackArgument;
+    i32 intVariables[8];
+    f32 floatVariables[8];
+    i32 extraIntVariables[4];
+    f32 extraFloatVariables[2];
+    i32 callParameterInts[4];
+    f32 callParameterFloats[4];
+    ZunTimer secondaryTime;
+    EnemyEclInterpolationSlot interpolationSlots[8];
+    i32 unknown21c;
+    i32 childContextSlot;
+    i16 subId;
     u8 unknown226[2];
 };
+typedef char EnemyEclContextCallbackOffsetCheck[offsetof(EnemyEclContext, callback) == 0x10 ? 1 : -1];
+typedef char EnemyEclContextIntVariablesOffsetCheck[offsetof(EnemyEclContext, intVariables) == 0x18 ? 1 : -1];
+typedef char EnemyEclContextFloatVariablesOffsetCheck[offsetof(EnemyEclContext, floatVariables) == 0x38 ? 1 : -1];
+typedef char EnemyEclContextExtraIntVariablesOffsetCheck[offsetof(EnemyEclContext, extraIntVariables) == 0x58 ? 1 : -1];
+typedef char EnemyEclContextExtraFloatVariablesOffsetCheck[offsetof(EnemyEclContext, extraFloatVariables) == 0x68 ? 1 : -1];
+typedef char EnemyEclContextCallParametersOffsetCheck[offsetof(EnemyEclContext, callParameterInts) == 0x70 ? 1 : -1];
 typedef char EnemyEclContextSecondaryTimerOffsetCheck[offsetof(EnemyEclContext, secondaryTime) == 0x90 ? 1 : -1];
+typedef char EnemyEclContextInterpolationSlotsOffsetCheck[offsetof(EnemyEclContext, interpolationSlots) == 0x9c ? 1 : -1];
+typedef char EnemyEclContextChildSlotOffsetCheck[offsetof(EnemyEclContext, childContextSlot) == 0x220 ? 1 : -1];
 typedef char EnemyEclContextSubIdOffsetCheck[offsetof(EnemyEclContext, subId) == 0x224 ? 1 : -1];
 typedef char EnemyEclContextSizeCheck[sizeof(EnemyEclContext) == 0x228 ? 1 : -1];
 

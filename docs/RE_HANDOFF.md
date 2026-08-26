@@ -175,6 +175,22 @@ and the complete i386 Linux build/layout verifier passed.  The next coherent
 family is active ECL context/subroutine state around `+0x2CA0..+0x2D30`, then
 the motion vectors and phase/control flags that consume it.
 
+The fourth Enemy/ECL orchestration batch closes the interpreter/context state.
+The constructor-bearing primary context at `Enemy + 0x07F8`, its sixteen-entry
+call stack at `+0x0A20`, active context/stack pointers, local and per-Enemy ECL
+variable families, call parameters, callback/interpolation state, primary and
+active call depths, death callback, 32-entry subroutine table, and pending
+subroutine index now share asserted owners.  The imported
+`EnemyUnkStruct2/3` names remain intact for their target constructor ABI; only
+their proven interiors are exposed.  The `+0x2CEC` word, context `+0x21C`
+dword, callback argument payload, and stage-specific meanings of extra ECL
+variables remain explicitly unknown.  Focused replay passed **124 / 124**,
+target-pinned CallSubOnEnemy/PopEclContext packets replayed exact, a non-reuse
+cold replay passed **1,105 / 1,105**, the normal VC7 image linked, and the
+complete i386 Linux build/layout verifier passed.  The next coherent family is
+the Enemy motion controller at `+0x2D34..+0x2DEB`, then its phase/control flags
+and boundary/presentation state.
+
 Select the next independent field family with:
 
 ```bash

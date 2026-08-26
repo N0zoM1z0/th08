@@ -818,3 +818,84 @@ unknown byte-oriented representation.  Those counts are routing aids, not a
 semantic completion percentage.  The next coherent Enemy/ECL family is the
 active ECL context/subroutine state around `+0x2CA0..+0x2D30`, followed by the
 motion vectors and phase/control flags that consume it.
+
+### Enemy ECL interpreter and subroutine state — 2026-08-26
+
+Scope: `EclManager::RunEcl @ 0x004184B0`, operand resolvers at
+`0x0041F420..0x00420950`, `CallSubOnEnemy @ 0x00421BD0`,
+`PopEclContext @ 0x00421CB0`, the ECL extension handlers, both Enemy spawn
+paths, the Enemy timeline pending-call opcode, and all phase/death users of
+`Enemy + 0x07F8..+0x2D33`.
+
+Observed: the constructor-bearing context at `Enemy + 0x07F8` and sixteen
+`0x228`-byte snapshots at `+0x0A20` form the primary interpreter context and
+its call stack.  `+0x2CA0` points at the currently executing primary or child
+context; `+0x2CA4` points at that context's snapshot stack.  RunEcl selects
+child blocks by replacing both pointers, preserves each context's signed
+16-bit call depth, then restores the primary pointers before its post-dispatch
+Enemy updates.
+
+Within each `EnemyEclContext`, the target accesses the current instruction and
+two timers, a fastcall callback/opaque argument pair, eight integer and eight
+floating-point script variables, four extra integers and two extra floats,
+four integer and four floating call parameters, eight `0x30` interpolation
+slots, a child-context slot, and the signed 16-bit current subroutine ID.  The
+interpolation slots contain callback storage, a timer, duration, callback
+index, easing mode, four parameters, and the affected-variable selector.
+
+The per-Enemy arrays at `+0x2CA8/+0x2CC8` are a second set of eight integer and
+eight floating ECL variables exposed by operand IDs `0x2718..0x271F` and
+`0x2728..0x272F`.  SpawnEnemy2 copies the exact `0x78`-byte context-variable
+range beginning at a parent's local integer variables into the child's
+primary context.  `+0x2CE8/+0x2CEA` retain primary/current signed call depths;
+`+0x2CEE` is the phase/death callback subroutine ID.  Opcodes 126 and 125 write
+the 32-entry signed-16-bit subroutine table at `+0x2CF0` and its pending index
+at `+0x2D30`; RunEcl consumes the pending index through the table and clears it
+to `-1`.
+
+Corroborated: no adjacent-version layout was imported.  The exact TH08 1.00d
+indexed displacements, `0x78` variable copy, `0x228` context-copy/stride, the
+child slot at context `+0x220`, signed word loads/stores, direct CallEclSub
+calls, and the complete authored producer/consumer set establish the
+structure.  The imported class names
+`EnemyUnkStruct2/3` are retained because their constructor symbols are part of
+the target ABI; their formerly opaque interiors now mirror the proven context
+and interpolation layout.
+
+Inference: pointer ownership, variable families, callback/call-parameter
+roles, call depths, death callback, subroutine table, and pending index are
+high-confidence behavior names.  `extraIntVariables` and
+`extraFloatVariables` deliberately describe only their ECL namespace rather
+than assigning stage-specific gameplay meanings.  The 2-byte gap at
+`Enemy + 0x2CEC`, context dword `+0x21C`, callback argument payload, and the
+individual interpolation parameter meanings remain explicitly unknown.
+
+Layout: assertions pin both `0x228` context representations, every known
+context subrange through `subId @ +0x224`, primary storage at
+`Enemy + 0x07F8/+0x0A20`, and all outer fields from `+0x2CA0` through the
+pending index at `+0x2D30`.  The existing `sizeof(Enemy) == 0x53D0` remains
+unchanged.  No constructor symbol, callback convention, stack depth width,
+copy extent, ECL operand identity, or context-switch operation changed.
+
+VC7 oracle: focused replay passed **124 / 124** accepted units across
+`EclManager`, `EclRun`, `EclDependencies`, both operand resolvers, `EclExIns`,
+`EnemyTimeline`, `EnemyManager`, and `EnemyManagerUpdate`.  Target-pinned fact
+packets for CallSubOnEnemy and PopEclContext independently replayed exact.
+The required non-reuse `verify-exact-units.py --all --json` cold-built all 75
+configured objects and passed **1,105 / 1,105** with no failures.  A subsequent
+normal VC7 production image linked successfully; no match manifest or exact
+ledger changed.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiled and linked
+the complete i386 target, and `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 plus all
+fixed target-owned layout symbols.  No isolated automated ECL gameplay smoke
+exists, so no runtime smoke is claimed.
+
+Result: authored raw views of the active context, its proven internal fields,
+and the outer `Enemy + 0x2CA0..+0x2D30` interpreter state are replaced by the
+asserted owners.  The routing report falls from 1,377 to 1,344 raw-member
+candidates, anonymous identifiers from 601 to 600, and opaque storage from 73
+to 72.  Those counts are routing aids, not completion percentages.  The next
+coherent Enemy/ECL family is the motion controller at `+0x2D34..+0x2DEB`,
+followed by its control flags and boundary/presentation state.

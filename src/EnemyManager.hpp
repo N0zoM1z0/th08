@@ -2,34 +2,63 @@
 #include "Global.hpp"
 #include "AnmManager.hpp"
 #include "BulletManager.hpp"
+#include "EclManager.hpp"
 #include "ZunResult.hpp"
 #include "diffbuild.hpp"
 
 namespace th08
 {
 
+struct EnemyEclContext;
+
 struct EnemyUnkStruct3
 {
-    i32 unknown0;
+    void *callback;
     ZunTimer timer;
-    unknown_fields(0x10, 0x20);
+    i32 duration;
+    i32 callbackIndex;
+    i32 easing;
+    f32 parameters[4];
+    f32 affectedVariable;
 
     EnemyUnkStruct3();
 };
 C_ASSERT(sizeof(EnemyUnkStruct3) == 0x30);
+C_ASSERT(offsetof(EnemyUnkStruct3, duration) == 0x10);
+C_ASSERT(offsetof(EnemyUnkStruct3, affectedVariable) == 0x2c);
 
 struct EnemyUnkStruct2
 {
-    i32 unknown0;
-    ZunTimer timer4;
-    unknown_fields(0x10, 0x80);
-    ZunTimer timer90;
-    EnemyUnkStruct3 rows[8];
-    unknown_fields(0x21c, 0xc);
+    EclRawInstruction *currentInstr;
+    ZunTimer time;
+    EnemyEclContextCallback callback;
+    void *callbackArgument;
+    i32 intVariables[8];
+    f32 floatVariables[8];
+    i32 extraIntVariables[4];
+    f32 extraFloatVariables[2];
+    i32 callParameterInts[4];
+    f32 callParameterFloats[4];
+    ZunTimer secondaryTime;
+    EnemyUnkStruct3 interpolationSlots[8];
+    i32 unknown21c;
+    i32 childContextSlot;
+    i16 subId;
+    unknown_fields(0x226, 2);
 
     EnemyUnkStruct2();
 };
 C_ASSERT(sizeof(EnemyUnkStruct2) == 0x228);
+C_ASSERT(offsetof(EnemyUnkStruct2, callback) == 0x10);
+C_ASSERT(offsetof(EnemyUnkStruct2, intVariables) == 0x18);
+C_ASSERT(offsetof(EnemyUnkStruct2, floatVariables) == 0x38);
+C_ASSERT(offsetof(EnemyUnkStruct2, extraIntVariables) == 0x58);
+C_ASSERT(offsetof(EnemyUnkStruct2, extraFloatVariables) == 0x68);
+C_ASSERT(offsetof(EnemyUnkStruct2, callParameterInts) == 0x70);
+C_ASSERT(offsetof(EnemyUnkStruct2, secondaryTime) == 0x90);
+C_ASSERT(offsetof(EnemyUnkStruct2, interpolationSlots) == 0x9c);
+C_ASSERT(offsetof(EnemyUnkStruct2, childContextSlot) == 0x220);
+C_ASSERT(offsetof(EnemyUnkStruct2, subId) == 0x224);
 
 struct EnemyUnkStruct0x1c
 {
@@ -64,9 +93,19 @@ struct Enemy
     unknown_fields(0x0, 0xc);
     AnmVm vm;
     AnmVm secondaryVms[2];
-    EnemyUnkStruct2 firstContext;
-    EnemyUnkStruct2 contexts[16];
-    unknown_fields(0x2ca0, 0x94);
+    EnemyUnkStruct2 mainEclContextStorage;
+    EnemyUnkStruct2 mainEclCallStackStorage[16];
+    EnemyEclContext *activeEclContext;
+    EnemyEclContext *activeEclCallStack;
+    i32 eclIntVariables[8];
+    f32 eclFloatVariables[8];
+    i16 mainEclCallStackDepth;
+    i16 activeEclCallStackDepth;
+    unknown_fields(0x2cec, 2);
+    i16 deathCallbackSubId;
+    i16 eclSubroutineIds[32];
+    i16 pendingEclSubroutineIndex;
+    unknown_fields(0x2d32, 2);
     Float3 vector2d34;
     Float3 vector2d40;
     Float3 vector2d4c;
@@ -128,6 +167,17 @@ struct Enemy
     void FUN_0042deb0();
 };
 C_ASSERT(sizeof(Enemy) == 0x53d0);
+C_ASSERT(offsetof(Enemy, mainEclContextStorage) == 0x7f8);
+C_ASSERT(offsetof(Enemy, mainEclCallStackStorage) == 0xa20);
+C_ASSERT(offsetof(Enemy, activeEclContext) == 0x2ca0);
+C_ASSERT(offsetof(Enemy, activeEclCallStack) == 0x2ca4);
+C_ASSERT(offsetof(Enemy, eclIntVariables) == 0x2ca8);
+C_ASSERT(offsetof(Enemy, eclFloatVariables) == 0x2cc8);
+C_ASSERT(offsetof(Enemy, mainEclCallStackDepth) == 0x2ce8);
+C_ASSERT(offsetof(Enemy, activeEclCallStackDepth) == 0x2cea);
+C_ASSERT(offsetof(Enemy, deathCallbackSubId) == 0x2cee);
+C_ASSERT(offsetof(Enemy, eclSubroutineIds) == 0x2cf0);
+C_ASSERT(offsetof(Enemy, pendingEclSubroutineIndex) == 0x2d30);
 C_ASSERT(offsetof(Enemy, bulletRankInfluence) == 0x2dec);
 C_ASSERT(offsetof(Enemy, life) == 0x2dfc);
 C_ASSERT(offsetof(Enemy, maxLife) == 0x2e00);

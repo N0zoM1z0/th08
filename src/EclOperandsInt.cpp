@@ -28,9 +28,7 @@ namespace EclOperands
 #define INT_FIELD(offset) (*(i32 *)(enemy->bytes + (offset)))
 #define FLOAT_FIELD(offset) (*(f32 *)(enemy->bytes + (offset)))
 #define VECTOR_FIELD(offset) (*(Vector3 *)(enemy->bytes + (offset)))
-#define ECL_CONTEXT (*(u8 **)(enemy->bytes + 0x2ca0))
-#define CONTEXT_INT(offset) (*(i32 *)(ECL_CONTEXT + (offset)))
-#define CONTEXT_FLOAT(offset) (*(f32 *)(ECL_CONTEXT + (offset)))
+#define ECL_CONTEXT (reinterpret_cast<Enemy *>(enemy)->activeEclContext)
 #define ENEMY_HELPERS ((TargetEnemyHelpersOverlay *)enemy)
 
 
@@ -42,33 +40,33 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
 {
     switch (operand)
     {
-    case 0x2710: return CONTEXT_INT(0x18);
-    case 0x2711: return CONTEXT_INT(0x1c);
-    case 0x2712: return CONTEXT_INT(0x20);
-    case 0x2713: return CONTEXT_INT(0x24);
-    case 0x2714: return CONTEXT_INT(0x28);
-    case 0x2715: return CONTEXT_INT(0x2c);
-    case 0x2716: return CONTEXT_INT(0x30);
-    case 0x2717: return CONTEXT_INT(0x34);
-    case 0x2718: return INT_FIELD(0x2ca8);
-    case 0x2719: return INT_FIELD(0x2cac);
-    case 0x271a: return INT_FIELD(0x2cb0);
-    case 0x271b: return INT_FIELD(0x2cb4);
-    case 0x271c: return INT_FIELD(0x2cb8);
-    case 0x271d: return INT_FIELD(0x2cbc);
-    case 0x271e: return INT_FIELD(0x2cc0);
-    case 0x271f: return INT_FIELD(0x2cc4);
+    case 0x2710: return ECL_CONTEXT->intVariables[0];
+    case 0x2711: return ECL_CONTEXT->intVariables[1];
+    case 0x2712: return ECL_CONTEXT->intVariables[2];
+    case 0x2713: return ECL_CONTEXT->intVariables[3];
+    case 0x2714: return ECL_CONTEXT->intVariables[4];
+    case 0x2715: return ECL_CONTEXT->intVariables[5];
+    case 0x2716: return ECL_CONTEXT->intVariables[6];
+    case 0x2717: return ECL_CONTEXT->intVariables[7];
+    case 0x2718: return reinterpret_cast<Enemy *>(enemy)->eclIntVariables[0];
+    case 0x2719: return reinterpret_cast<Enemy *>(enemy)->eclIntVariables[1];
+    case 0x271a: return reinterpret_cast<Enemy *>(enemy)->eclIntVariables[2];
+    case 0x271b: return reinterpret_cast<Enemy *>(enemy)->eclIntVariables[3];
+    case 0x271c: return reinterpret_cast<Enemy *>(enemy)->eclIntVariables[4];
+    case 0x271d: return reinterpret_cast<Enemy *>(enemy)->eclIntVariables[5];
+    case 0x271e: return reinterpret_cast<Enemy *>(enemy)->eclIntVariables[6];
+    case 0x271f: return reinterpret_cast<Enemy *>(enemy)->eclIntVariables[7];
 
     // Case-body order follows the target jump-table emission order rather
     // than numeric selector order.
-    case 0x2745: return CONTEXT_INT(0x70);
-    case 0x2746: return CONTEXT_INT(0x74);
-    case 0x2747: return CONTEXT_INT(0x78);
-    case 0x2748: return CONTEXT_INT(0x7c);
-    case 0x2734: return CONTEXT_INT(0x58);
-    case 0x2735: return CONTEXT_INT(0x5c);
-    case 0x2736: return CONTEXT_INT(0x60);
-    case 0x2737: return CONTEXT_INT(0x64);
+    case 0x2745: return ECL_CONTEXT->callParameterInts[0];
+    case 0x2746: return ECL_CONTEXT->callParameterInts[1];
+    case 0x2747: return ECL_CONTEXT->callParameterInts[2];
+    case 0x2748: return ECL_CONTEXT->callParameterInts[3];
+    case 0x2734: return ECL_CONTEXT->extraIntVariables[0];
+    case 0x2735: return ECL_CONTEXT->extraIntVariables[1];
+    case 0x2736: return ECL_CONTEXT->extraIntVariables[2];
+    case 0x2737: return ECL_CONTEXT->extraIntVariables[3];
     case 0x2730: return (i32)(g_Rng.GetRandomU32() & 0x7fffffff);
     case 0x2731: return (i32)g_Rng.GetRandomF32();
     case 0x2732: return (i32)g_Rng.GetRandomU32();
@@ -78,29 +76,29 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x2741: return reinterpret_cast<Enemy *>(enemy)->bossTimer.current;
     case 0x2743: return reinterpret_cast<Enemy *>(enemy)->life;
     case 0x2744: return ::th08::g_GameManager.shotType;
-    case 0x276e: return (i32)CONTEXT_FLOAT(0x68);
-    case 0x276f: return (i32)CONTEXT_FLOAT(0x6c);
+    case 0x276e: return (i32)ECL_CONTEXT->extraFloatVariables[0];
+    case 0x276f: return (i32)ECL_CONTEXT->extraFloatVariables[1];
 
-    case 0x2720: return (i32)CONTEXT_FLOAT(0x38);
-    case 0x2721: return (i32)CONTEXT_FLOAT(0x3c);
-    case 0x2722: return (i32)CONTEXT_FLOAT(0x40);
-    case 0x2723: return (i32)CONTEXT_FLOAT(0x44);
-    case 0x2724: return (i32)CONTEXT_FLOAT(0x48);
-    case 0x2725: return (i32)CONTEXT_FLOAT(0x4c);
-    case 0x2726: return (i32)CONTEXT_FLOAT(0x50);
-    case 0x2727: return (i32)CONTEXT_FLOAT(0x54);
-    case 0x2728: return (i32)FLOAT_FIELD(0x2cc8);
-    case 0x2729: return (i32)FLOAT_FIELD(0x2ccc);
-    case 0x272a: return (i32)FLOAT_FIELD(0x2cd0);
-    case 0x272b: return (i32)FLOAT_FIELD(0x2cd4);
-    case 0x272c: return (i32)FLOAT_FIELD(0x2cd8);
-    case 0x272d: return (i32)FLOAT_FIELD(0x2cdc);
-    case 0x272e: return (i32)FLOAT_FIELD(0x2ce0);
-    case 0x272f: return (i32)FLOAT_FIELD(0x2ce4);
-    case 0x2749: return (i32)CONTEXT_FLOAT(0x80);
-    case 0x274a: return (i32)CONTEXT_FLOAT(0x84);
-    case 0x274b: return (i32)CONTEXT_FLOAT(0x88);
-    case 0x274c: return (i32)CONTEXT_FLOAT(0x8c);
+    case 0x2720: return (i32)ECL_CONTEXT->floatVariables[0];
+    case 0x2721: return (i32)ECL_CONTEXT->floatVariables[1];
+    case 0x2722: return (i32)ECL_CONTEXT->floatVariables[2];
+    case 0x2723: return (i32)ECL_CONTEXT->floatVariables[3];
+    case 0x2724: return (i32)ECL_CONTEXT->floatVariables[4];
+    case 0x2725: return (i32)ECL_CONTEXT->floatVariables[5];
+    case 0x2726: return (i32)ECL_CONTEXT->floatVariables[6];
+    case 0x2727: return (i32)ECL_CONTEXT->floatVariables[7];
+    case 0x2728: return (i32)reinterpret_cast<Enemy *>(enemy)->eclFloatVariables[0];
+    case 0x2729: return (i32)reinterpret_cast<Enemy *>(enemy)->eclFloatVariables[1];
+    case 0x272a: return (i32)reinterpret_cast<Enemy *>(enemy)->eclFloatVariables[2];
+    case 0x272b: return (i32)reinterpret_cast<Enemy *>(enemy)->eclFloatVariables[3];
+    case 0x272c: return (i32)reinterpret_cast<Enemy *>(enemy)->eclFloatVariables[4];
+    case 0x272d: return (i32)reinterpret_cast<Enemy *>(enemy)->eclFloatVariables[5];
+    case 0x272e: return (i32)reinterpret_cast<Enemy *>(enemy)->eclFloatVariables[6];
+    case 0x272f: return (i32)reinterpret_cast<Enemy *>(enemy)->eclFloatVariables[7];
+    case 0x2749: return (i32)ECL_CONTEXT->callParameterFloats[0];
+    case 0x274a: return (i32)ECL_CONTEXT->callParameterFloats[1];
+    case 0x274b: return (i32)ECL_CONTEXT->callParameterFloats[2];
+    case 0x274c: return (i32)ECL_CONTEXT->callParameterFloats[3];
     case 0x274d: return EclRunLowProposal::g_EclCallParameters.ints[0];
     case 0x274e: return EclRunLowProposal::g_EclCallParameters.ints[1];
     case 0x274f: return EclRunLowProposal::g_EclCallParameters.ints[2];
@@ -177,30 +175,30 @@ i32 *__fastcall ResolveIntLValue(EnemyOverlay *enemy, i32 *operand, u16 flags, i
 
     switch (*operand)
     {
-    case 0x2710: return &CONTEXT_INT(0x18);
-    case 0x2711: return &CONTEXT_INT(0x1c);
-    case 0x2712: return &CONTEXT_INT(0x20);
-    case 0x2713: return &CONTEXT_INT(0x24);
-    case 0x2714: return &CONTEXT_INT(0x28);
-    case 0x2715: return &CONTEXT_INT(0x2c);
-    case 0x2716: return &CONTEXT_INT(0x30);
-    case 0x2717: return &CONTEXT_INT(0x34);
-    case 0x2718: return &INT_FIELD(0x2ca8);
-    case 0x2719: return &INT_FIELD(0x2cac);
-    case 0x271a: return &INT_FIELD(0x2cb0);
-    case 0x271b: return &INT_FIELD(0x2cb4);
-    case 0x271c: return &INT_FIELD(0x2cb8);
-    case 0x271d: return &INT_FIELD(0x2cbc);
-    case 0x271e: return &INT_FIELD(0x2cc0);
-    case 0x271f: return &INT_FIELD(0x2cc4);
-    case 0x2745: return &CONTEXT_INT(0x70);
-    case 0x2746: return &CONTEXT_INT(0x74);
-    case 0x2747: return &CONTEXT_INT(0x78);
-    case 0x2748: return &CONTEXT_INT(0x7c);
-    case 0x2734: return &CONTEXT_INT(0x58);
-    case 0x2735: return &CONTEXT_INT(0x5c);
-    case 0x2736: return &CONTEXT_INT(0x60);
-    case 0x2737: return &CONTEXT_INT(0x64);
+    case 0x2710: return &ECL_CONTEXT->intVariables[0];
+    case 0x2711: return &ECL_CONTEXT->intVariables[1];
+    case 0x2712: return &ECL_CONTEXT->intVariables[2];
+    case 0x2713: return &ECL_CONTEXT->intVariables[3];
+    case 0x2714: return &ECL_CONTEXT->intVariables[4];
+    case 0x2715: return &ECL_CONTEXT->intVariables[5];
+    case 0x2716: return &ECL_CONTEXT->intVariables[6];
+    case 0x2717: return &ECL_CONTEXT->intVariables[7];
+    case 0x2718: return &reinterpret_cast<Enemy *>(enemy)->eclIntVariables[0];
+    case 0x2719: return &reinterpret_cast<Enemy *>(enemy)->eclIntVariables[1];
+    case 0x271a: return &reinterpret_cast<Enemy *>(enemy)->eclIntVariables[2];
+    case 0x271b: return &reinterpret_cast<Enemy *>(enemy)->eclIntVariables[3];
+    case 0x271c: return &reinterpret_cast<Enemy *>(enemy)->eclIntVariables[4];
+    case 0x271d: return &reinterpret_cast<Enemy *>(enemy)->eclIntVariables[5];
+    case 0x271e: return &reinterpret_cast<Enemy *>(enemy)->eclIntVariables[6];
+    case 0x271f: return &reinterpret_cast<Enemy *>(enemy)->eclIntVariables[7];
+    case 0x2745: return &ECL_CONTEXT->callParameterInts[0];
+    case 0x2746: return &ECL_CONTEXT->callParameterInts[1];
+    case 0x2747: return &ECL_CONTEXT->callParameterInts[2];
+    case 0x2748: return &ECL_CONTEXT->callParameterInts[3];
+    case 0x2734: return &ECL_CONTEXT->extraIntVariables[0];
+    case 0x2735: return &ECL_CONTEXT->extraIntVariables[1];
+    case 0x2736: return &ECL_CONTEXT->extraIntVariables[2];
+    case 0x2737: return &ECL_CONTEXT->extraIntVariables[3];
     case 0x2738: return &g_GameManager.difficulty;
     case 0x2739: return &g_GameManager.rank;
     case 0x2741: return &reinterpret_cast<Enemy *>(enemy)->bossTimer.current;
@@ -216,8 +214,6 @@ i32 *__fastcall ResolveIntLValue(EnemyOverlay *enemy, i32 *operand, u16 flags, i
 }
 
 #undef ENEMY_HELPERS
-#undef CONTEXT_FLOAT
-#undef CONTEXT_INT
 #undef ECL_CONTEXT
 #undef VECTOR_FIELD
 #undef FLOAT_FIELD

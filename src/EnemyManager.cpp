@@ -172,7 +172,7 @@ void EnemyManager::Initialize()
     *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFDFFFF;
     *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFBFFFF;
     *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFFFFFD;
-    *reinterpret_cast<i16 *>(enemy + 0x2CEA) = 0;
+    reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth = 0;
     reinterpret_cast<Enemy *>(enemy)->life = 1;
     reinterpret_cast<Enemy *>(enemy)->score = 100;
     *reinterpret_cast<u8 *>(enemy + 0x3310) = 0;
@@ -190,10 +190,10 @@ void EnemyManager::Initialize()
     *reinterpret_cast<u32 *>(enemy + 0x3324) |= 0x40;
     *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFFFFF7F;
     *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFF8FFFFF;
-    *reinterpret_cast<i16 *>(enemy + 0x2CEE) = -1;
+    reinterpret_cast<Enemy *>(enemy)->deathCallbackSubId = -1;
     *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFFF7FFFF;
     *reinterpret_cast<i32 *>(enemy + 0x53C0) = 0;
-    *reinterpret_cast<i16 *>(enemy + 0x2D30) = -1;
+    reinterpret_cast<Enemy *>(enemy)->pendingEclSubroutineIndex = -1;
     for (i = 0; i < 4; i++)
         reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[i] = -1;
     reinterpret_cast<Enemy *>(enemy)->timerCallbackThresholdFrames = -1;
@@ -476,7 +476,7 @@ i32 Enemy::FUN_0042b490()
             this->life = this->lifeCallbackThresholds[i];
             this->phaseStartingLife = this->life;
             g_EclManager.CallEclSub(
-                reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(this) + 0x7f8),
+                reinterpret_cast<EnemyEclContext *>(&this->mainEclContextStorage),
                 *reinterpret_cast<i16 *>(&this->lifeCallbackSubIds[i]));
             this->lifeCallbackThresholds[i] = -1;
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x53cc) =
@@ -493,7 +493,7 @@ i32 Enemy::FUN_0042b490()
             }
 
             this->enemy_fun_00415c80();
-            *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2cea) = 0;
+            this->activeEclCallStackDepth = 0;
             *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) &= 0xffffffcf;
             this->bulletSpawnDescriptor = g_EnemyManager.firstEnemy.bulletSpawnDescriptor;
             this->shootIntervalFrames = 0;
@@ -508,12 +508,12 @@ i32 Enemy::FUN_0042b490()
                     continue;
 
                 enemyCursor->life = 0;
-                if (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee) >= 0)
+                if (enemyCursor->deathCallbackSubId >= 0)
                 {
                     g_EclManager.CallEclSub(
-                        reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(enemyCursor) + 0x7f8),
-                        *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee));
-                    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee) = -1;
+                        reinterpret_cast<EnemyEclContext *>(&enemyCursor->mainEclContextStorage),
+                        enemyCursor->deathCallbackSubId);
+                    enemyCursor->deathCallbackSubId = -1;
                 }
             }
 
@@ -659,11 +659,11 @@ i32 Enemy::FUN_0042b930()
     }
 
     g_EclManager.CallEclSub(
-        reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(this) + 0x7f8),
+        reinterpret_cast<EnemyEclContext *>(&this->mainEclContextStorage),
         *reinterpret_cast<i16 *>(&this->timerCallbackSubId));
     this->timerCallbackThresholdFrames = -1;
     this->timerCallbackSubId =
-        *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2cee);
+        this->deathCallbackSubId;
     this->bossTimer = 0;
 
     if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3324) >> 27) & 1) == 0)
@@ -688,12 +688,12 @@ i32 Enemy::FUN_0042b930()
         if (((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x3324) >> 1) & 1) != 0)
             continue;
         enemyCursor->life = 0;
-        if (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee) >= 0)
+        if (enemyCursor->deathCallbackSubId >= 0)
         {
             g_EclManager.CallEclSub(
-                reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(enemyCursor) + 0x7f8),
-                *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee));
-            *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemyCursor) + 0x2cee) = -1;
+                reinterpret_cast<EnemyEclContext *>(&enemyCursor->mainEclContextStorage),
+                enemyCursor->deathCallbackSubId);
+            enemyCursor->deathCallbackSubId = -1;
         }
     }
 
@@ -709,7 +709,7 @@ i32 Enemy::FUN_0042b930()
     this->bulletSpawnDescriptor = g_EnemyManager.firstEnemy.bulletSpawnDescriptor;
     this->shootIntervalFrames = 0;
     this->enemy_fun_00415c80();
-    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2cea) = 0;
+    this->activeEclCallStackDepth = 0;
     *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) &= 0xffffffcf;
     return 1;
     }
@@ -1538,11 +1538,13 @@ i32 EnemyManager::FUN_0042efb0(i32 maxScore, i32 initialScore)
         }
 
         reinterpret_cast<Enemy *>(enemy)->FUN_0042b2f0();
-        if (*reinterpret_cast<i16 *>(enemy + 0x2CEE) >= 0)
+        if (reinterpret_cast<Enemy *>(enemy)->deathCallbackSubId >= 0)
         {
             g_EclManager.CallEclSub(
-                reinterpret_cast<EnemyEclContext *>(enemy + 0x7F8), *reinterpret_cast<i16 *>(enemy + 0x2CEE));
-            *reinterpret_cast<i16 *>(enemy + 0x2CEE) = -1;
+                reinterpret_cast<EnemyEclContext *>(
+                    &reinterpret_cast<Enemy *>(enemy)->mainEclContextStorage),
+                reinterpret_cast<Enemy *>(enemy)->deathCallbackSubId);
+            reinterpret_cast<Enemy *>(enemy)->deathCallbackSubId = -1;
         }
     }
 

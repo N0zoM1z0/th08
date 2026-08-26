@@ -44,7 +44,7 @@ void *EnemyManager::SpawnEnemy1(i32 type, const D3DXVECTOR3 *position, i32 a, i3
             enemy->life = a;
         enemy->vector2d34 = *reinterpret_cast<const Float3 *>(position);
         g_EclManager.CallEclSub(
-            reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(enemy) + 0x7f8), (i16)type);
+            reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage), (i16)type);
         if (g_EclManager.RunEcl(enemy) == ZUN_ERROR)
         {
             reinterpret_cast<EnemySpawnFlags *>(reinterpret_cast<u8 *>(enemy) + 0x3324)->active = 0;
@@ -100,8 +100,9 @@ void *EnemyManager::SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i3
             enemy->life = a;
         enemy->vector2d34 = *reinterpret_cast<const Float3 *>(position);
         g_EclManager.CallEclSub(
-            reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(enemy) + 0x7f8), (i16)type);
-        *reinterpret_cast<EnemyContextCopy *>(reinterpret_cast<u8 *>(enemy) + 0x810) =
+            reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage), (i16)type);
+        *reinterpret_cast<EnemyContextCopy *>(
+            reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage)->intVariables) =
             *reinterpret_cast<const EnemyContextCopy *>(contextInts);
         if (g_EclManager.RunEcl(enemy) == ZUN_ERROR)
         {
@@ -242,8 +243,9 @@ void EclTimeline::Run()
                 break;
 
             case 8:
-                *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(
-                    EclRunLowProposal::g_EclEnemyTableF54CC0[this->instruction->args.ints[0]]) + 0x2d30) =
+                reinterpret_cast<Enemy *>(
+                    EclRunLowProposal::g_EclEnemyTableF54CC0[
+                        this->instruction->args.ints[0]])->pendingEclSubroutineIndex =
                     static_cast<i16>(this->instruction->args.ints[1]);
                 break;
 

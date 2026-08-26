@@ -115,10 +115,6 @@ struct EnemyManagerUpdateEnemy
     D3DXVECTOR3 *Hitbox() { return reinterpret_cast<D3DXVECTOR3 *>(raw + 0x2D70); }
     D3DXVECTOR3 *SecondaryHitbox() { return reinterpret_cast<D3DXVECTOR3 *>(raw + 0x2D7C); }
     void *DamageData() { return &reinterpret_cast<Enemy *>(this)->playerShotHitAccumulator; }
-    void *EclContext() { return raw + 0x7F8; }
-
-    i16 &DeathCallbackSub() { return *reinterpret_cast<i16 *>(raw + 0x2CEE); }
-    i16 &Unknown2CEA() { return *reinterpret_cast<i16 *>(raw + 0x2CEA); }
     i32 &Life() { return reinterpret_cast<Enemy *>(this)->life; }
     i32 &MaxLife() { return reinterpret_cast<Enemy *>(this)->maxLife; }
     i32 &Score() { return reinterpret_cast<Enemy *>(this)->score; }
@@ -888,12 +884,12 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 }
             }
 
-            if (*reinterpret_cast<i16 *>(enemy->raw + 0x2CEE) >= 0)
+            if (reinterpret_cast<Enemy *>(enemy)->deathCallbackSubId >= 0)
             {
                 i32 callbackVmIndex;
 
                 reinterpret_cast<Enemy *>(enemy)->enemy_fun_00415c80();
-                *reinterpret_cast<i16 *>(enemy->raw + 0x2CEA) = 0;
+                reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth = 0;
                 for (callbackVmIndex = 0; callbackVmIndex < 4; ++callbackVmIndex)
                     reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[callbackVmIndex] = -1;
                 reinterpret_cast<Enemy *>(enemy)->timerCallbackThresholdFrames = -1;
@@ -902,8 +898,11 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                        &g_EnemyManager.firstEnemy.bulletSpawnDescriptor,
                        sizeof(BulletSpawnDescriptor));
                 reinterpret_cast<Enemy *>(enemy)->shootIntervalFrames = 0;
-                g_EclManager.CallEclSub(reinterpret_cast<EnemyEclContext *>(enemy->raw + 0x7F8), *reinterpret_cast<i16 *>(enemy->raw + 0x2CEE));
-                *reinterpret_cast<i16 *>(enemy->raw + 0x2CEE) = -1;
+                g_EclManager.CallEclSub(
+                    reinterpret_cast<EnemyEclContext *>(
+                        &reinterpret_cast<Enemy *>(enemy)->mainEclContextStorage),
+                    reinterpret_cast<Enemy *>(enemy)->deathCallbackSubId);
+                reinterpret_cast<Enemy *>(enemy)->deathCallbackSubId = -1;
             }
         }
 

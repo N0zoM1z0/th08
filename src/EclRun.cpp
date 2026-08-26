@@ -42,20 +42,18 @@ ZunResult EclManager::RunEcl(Enemy *enemy)
     i32 activeChildContext = -1;
     i32 lhsInt;
 
-    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(enemy) + 0x2CA4) =
-        reinterpret_cast<u8 *>(enemy) + 0xA20;
-    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(enemy) + 0x2CA0) =
-        reinterpret_cast<u8 *>(enemy) + 0x7F8;
-    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemy) + 0x2CEA) =
-        *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemy) + 0x2CE8);
+    enemy->activeEclCallStack =
+        reinterpret_cast<EnemyEclContext *>(&enemy->mainEclCallStackStorage[0]);
+    enemy->activeEclContext =
+        reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage);
+    enemy->activeEclCallStackDepth = enemy->mainEclCallStackDepth;
 
 restart_context:
-    instruction = (*reinterpret_cast<EnemyEclContext **>(
-        reinterpret_cast<u8 *>(enemy) + 0x2CA0))->currentInstr;
+    instruction = enemy->activeEclContext->currentInstr;
 
     for (;;)
     {
-        if (*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(enemy) + 0x2D30) >= 0)
+        if (enemy->pendingEclSubroutineIndex >= 0)
             goto enter_subroutine;
 
 low_redispatch_instruction:
@@ -63,18 +61,14 @@ low_redispatch_instruction:
             *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(enemy) + 0x2D34) +
             *reinterpret_cast<D3DXVECTOR3 *>(reinterpret_cast<u8 *>(enemy) + 0x2D40);
 
-        if ((int)(*reinterpret_cast<EnemyEclContext **>(
-                reinterpret_cast<u8 *>(enemy) + 0x2CA0))->secondaryTime > 0)
+        if ((int)enemy->activeEclContext->secondaryTime > 0)
         {
-            (*reinterpret_cast<EnemyEclContext **>(
-                reinterpret_cast<u8 *>(enemy) + 0x2CA0))->secondaryTime--;
-            (*reinterpret_cast<EnemyEclContext **>(
-                reinterpret_cast<u8 *>(enemy) + 0x2CA0))->time--;
+            enemy->activeEclContext->secondaryTime--;
+            enemy->activeEclContext->time--;
             break;
         }
 
-        if ((*reinterpret_cast<EnemyEclContext **>(
-                reinterpret_cast<u8 *>(enemy) + 0x2CA0))->time == instruction->time)
+        if (enemy->activeEclContext->time == instruction->time)
         {
             if ((instruction->difficultyMask &
                  (static_cast<u32>(g_GameManager.difficultyMask) |
@@ -87,8 +81,7 @@ low_redispatch_instruction:
 
             {
 #define enemy reinterpret_cast<EclOperands::EnemyOverlay *>(enemy)
-#define context (*reinterpret_cast<EnemyEclContext **>( \
-    reinterpret_cast<u8 *>(enemy) + 0x2CA0))
+#define context (reinterpret_cast<Enemy *>(enemy)->activeEclContext)
 #define services (*reinterpret_cast<Services *>(this))
 #define ctx unusedContext
 #define TH08_ECL_RUN_LOW_BODY
@@ -135,15 +128,12 @@ low_advance_instruction:
         f32 progress;
         i32 restorePosition = 0;
         Interpolator *entry = reinterpret_cast<Interpolator *>(
-            TH08_ECL_CURRENT_CONTEXT(unusedContext) + 0x9C);
+            enemy->activeEclContext->interpolationSlots);
         Vec3 savedPosition = TH08_ECL_AT(unusedContext, Vec3, 0x2D34);
 
-        if (*reinterpret_cast<EclContextCallback *>(
-                TH08_ECL_CURRENT_CONTEXT(unusedContext) + 0x10))
-            (*reinterpret_cast<EclContextCallback *>(
-                TH08_ECL_CURRENT_CONTEXT(unusedContext) + 0x10))(
-                enemy, *reinterpret_cast<void **>(
-                    TH08_ECL_CURRENT_CONTEXT(unusedContext) + 0x14));
+        if (enemy->activeEclContext->callback)
+            enemy->activeEclContext->callback(
+                enemy, enemy->activeEclContext->callbackArgument);
 
         for (i = 0; i < 8; ++i, ++entry)
         {
@@ -202,14 +192,13 @@ low_advance_instruction:
     }
 
     if (activeChildContext == -1)
-        TH08_ECL_AT(unusedContext, i16, 0x2CE8) = TH08_ECL_AT(unusedContext, i16, 0x2CEA);
+        enemy->mainEclCallStackDepth = enemy->activeEclCallStackDepth;
     else
         *(i16 *)(enemy->childEclBlocks[activeChildContext] + 6) =
-            TH08_ECL_AT(unusedContext, i16, 0x2CEA);
+            enemy->activeEclCallStackDepth;
 
-    *(RawInstruction **)TH08_ECL_CURRENT_CONTEXT(unusedContext) =
-        reinterpret_cast<RawInstruction *>(instruction);
-    reinterpret_cast<ZunTimer *>(TH08_ECL_CURRENT_CONTEXT(unusedContext) + 4)->operator++(0);
+    enemy->activeEclContext->currentInstr = instruction;
+    enemy->activeEclContext->time.operator++(0);
 
 low_select_next_context:
     for (i32 next = activeChildContext + 1; next < 4; ++next)
@@ -217,24 +206,22 @@ low_select_next_context:
         if (enemy->childEclBlocks[next])
         {
             u8 *childContext = enemy->childEclBlocks[next];
-            TH08_ECL_AT(unusedContext, u8 *, 0x2CA4) =
-                childContext + 0x230;
-            TH08_ECL_AT(unusedContext, u8 *, 0x2CA0) =
-                childContext + 8;
-            instruction = reinterpret_cast<EclRawInstruction *>(
-                *(RawInstruction **)TH08_ECL_CURRENT_CONTEXT(unusedContext));
-            *(i32 *)(TH08_ECL_CURRENT_CONTEXT(unusedContext) + 0x220) = next + 1;
-            TH08_ECL_AT(unusedContext, i16, 0x2CEA) =
-                *(i16 *)(childContext + 6);
+            enemy->activeEclCallStack =
+                reinterpret_cast<EnemyEclContext *>(childContext + 0x230);
+            enemy->activeEclContext =
+                reinterpret_cast<EnemyEclContext *>(childContext + 8);
+            instruction = enemy->activeEclContext->currentInstr;
+            enemy->activeEclContext->childContextSlot = next + 1;
+            enemy->activeEclCallStackDepth = *(i16 *)(childContext + 6);
             activeChildContext = next;
             goto low_redispatch_instruction;
         }
     }
 
-    TH08_ECL_AT(unusedContext, u8 *, 0x2CA4) =
-        reinterpret_cast<u8 *>(enemy) + 0xA20;
-    TH08_ECL_AT(unusedContext, u8 *, 0x2CA0) =
-        reinterpret_cast<u8 *>(enemy) + 0x7F8;
+    enemy->activeEclCallStack =
+        reinterpret_cast<EnemyEclContext *>(&enemy->mainEclCallStackStorage[0]);
+    enemy->activeEclContext =
+        reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage);
     enemy->FUN_00422c40();
     enemy->FUN_00423150();
 

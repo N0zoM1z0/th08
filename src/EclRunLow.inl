@@ -340,8 +340,7 @@ static EclRawInstruction *__fastcall CompareOperands(
     if (!takeBranch)
         return NULL;
 
-    EnemyEclContext *context =
-        *reinterpret_cast<EnemyEclContext **>(Bytes(enemy) + 0x2CA0);
+    EnemyEclContext *context = reinterpret_cast<Enemy *>(enemy)->activeEclContext;
     context->time.current = RawInt(instruction, 2);
     return reinterpret_cast<EclRawInstruction *>(
         reinterpret_cast<u8 *>(instruction) + RawInt(instruction, 3));
@@ -993,8 +992,8 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         lhsInt = ReadInt(enemy, instruction, 0);
         CallSubOnEnemy(
             g_EclEnemyTableF54CC0[lhsInt],
-            *reinterpret_cast<EclRawInstruction **>(
-                *reinterpret_cast<u8 **>(Bytes(g_EclEnemyTableF54CC0[lhsInt]) + 0x2CA0)),
+            reinterpret_cast<Enemy *>(
+                g_EclEnemyTableF54CC0[lhsInt])->activeEclContext->currentInstr,
             RawInt(instruction, 1));
         break;
 
@@ -1002,8 +1001,9 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         if (g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 0)])
         {
             // Target resolves operand 0 a second time before the store.
-            I16At(g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 0)],
-                  0x2D30) = static_cast<i16>(ReadInt(enemy, instruction, 1));
+            reinterpret_cast<Enemy *>(
+                g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 0)])->pendingEclSubroutineIndex =
+                static_cast<i16>(ReadInt(enemy, instruction, 1));
         }
         break;
 
