@@ -255,6 +255,34 @@ enum SpellcardNumber
     SPELLCARD_COUNT_LAST_WORD_SPELLCARDS = SPELLCARD_COUNT_SPELLCARDS - SPELLCARD_COUNT_IN_GAME_SPELLCARDS,
 };
 
+enum SpellcardFlagShift
+{
+    SPELLCARD_FLAG_ACTIVE_SHIFT = 0,
+    SPELLCARD_FLAG_CAPTURE_VALID_SHIFT = 2,
+    SPELLCARD_FLAG_TIMER_CALLBACK_TRANSITION_SHIFT = 3,
+    SPELLCARD_FLAG_ALTERNATE_EFFECT_STYLE_SHIFT = 5,
+    SPELLCARD_FLAG_EFFECT_TRACKING_DISABLED_SHIFT = 6,
+    SPELLCARD_FLAG_BOMB_DAMAGE_ENABLED_SHIFT = 7,
+    SPELLCARD_FLAG_CAPTURE_REWARD_PENDING_SHIFT = 8,
+    SPELLCARD_FLAG_CAPTURED_SHIFT = 9,
+    SPELLCARD_FLAG_SUPPRESS_BONUS_PRESENTATION_SHIFT = 10,
+    SPELLCARD_FLAG_BONUS_UPDATES_DISABLED_SHIFT = 11,
+};
+
+enum SpellcardFlagMask
+{
+    SPELLCARD_FLAG_ACTIVE = ZUN_BIT(SPELLCARD_FLAG_ACTIVE_SHIFT),
+    SPELLCARD_FLAG_CAPTURE_VALID = ZUN_BIT(SPELLCARD_FLAG_CAPTURE_VALID_SHIFT),
+    SPELLCARD_FLAG_TIMER_CALLBACK_TRANSITION = ZUN_BIT(SPELLCARD_FLAG_TIMER_CALLBACK_TRANSITION_SHIFT),
+    SPELLCARD_FLAG_ALTERNATE_EFFECT_STYLE = ZUN_BIT(SPELLCARD_FLAG_ALTERNATE_EFFECT_STYLE_SHIFT),
+    SPELLCARD_FLAG_EFFECT_TRACKING_DISABLED = ZUN_BIT(SPELLCARD_FLAG_EFFECT_TRACKING_DISABLED_SHIFT),
+    SPELLCARD_FLAG_BOMB_DAMAGE_ENABLED = ZUN_BIT(SPELLCARD_FLAG_BOMB_DAMAGE_ENABLED_SHIFT),
+    SPELLCARD_FLAG_CAPTURE_REWARD_PENDING = ZUN_BIT(SPELLCARD_FLAG_CAPTURE_REWARD_PENDING_SHIFT),
+    SPELLCARD_FLAG_CAPTURED = ZUN_BIT(SPELLCARD_FLAG_CAPTURED_SHIFT),
+    SPELLCARD_FLAG_SUPPRESS_BONUS_PRESENTATION = ZUN_BIT(SPELLCARD_FLAG_SUPPRESS_BONUS_PRESENTATION_SHIFT),
+    SPELLCARD_FLAG_BONUS_UPDATES_DISABLED = ZUN_BIT(SPELLCARD_FLAG_BONUS_UPDATES_DISABLED_SHIFT),
+};
+
 struct Spellcard
 {
     Spellcard();
@@ -262,7 +290,7 @@ struct Spellcard
 
     ZunBool IsCaptured()
     {
-        return (this->flags >> 9) & 1;
+        return (this->flags >> SPELLCARD_FLAG_CAPTURED_SHIFT) & 1;
     }
 
     u32 flags;                       // +0x000
@@ -281,20 +309,20 @@ struct Spellcard
     i32 bonusAward;                  // +0x104
     ZunTimer timeRemaining;          // +0x108
     ZunTimer timeLimit;              // +0x114
-    AnmVm vm120;                     // +0x120
-    AnmVm vm3C4;                     // +0x3C4
-    AnmVm vm668;                     // +0x668
+    AnmVm playerPortraitVm;                     // +0x120
+    AnmVm enemyPortraitVm;                     // +0x3C4
+    AnmVm portraitBackdropVm;                     // +0x668
     AnmVm vm90C;                     // +0x90C
-    AnmVm vmBB0;                     // +0xBB0
+    AnmVm portraitOverlayVm;                     // +0xBB0
     AnmVm vmE54;                     // +0xE54
-    AnmVm vm10F8;                    // +0x10F8
-    AnmVm vm139C;                    // +0x139C
-    AnmVm vm1640;                    // +0x1640
-    AnmVm vm18E4;                    // +0x18E4
-    AnmVm vm1B88;                    // +0x1B88
-    AnmVm vm1E2C;                    // +0x1E2C
-    AnmVm vm20D0;                    // +0x20D0
-    AnmVm vm2374;                    // +0x2374
+    AnmVm playerSpellNameVm;                    // +0x10F8
+    AnmVm enemySpellNameVm;                    // +0x139C
+    AnmVm enemySpellNameLayer1Vm;                    // +0x1640
+    AnmVm enemySpellNameLayer2Vm;                    // +0x18E4
+    AnmVm playerSpellNameFrameVm;                    // +0x1B88
+    AnmVm enemySpellNameFrameVm;                    // +0x1E2C
+    AnmVm spellBonusDigitsVm;                    // +0x20D0
+    AnmVm spellBonusFrameVm;                    // +0x2374
     f32 playerSpellNameWidth;        // +0x2618
     f32 enemySpellNameWidth;         // +0x261C
     D3DCOLOR mixColor;                 // +0x2620
@@ -312,13 +340,13 @@ struct Spellcard
     void CutInEnemyNoPortrait(const char *name, i32 unused);
     void CutInPlayer(i32 playerFace, const char *name, i32 sprite);
     void CutInEnemy(i32 enemyFace, const char *name, i32 sprite);
-    void spellcard_fun_00416130();
-    void spellcard_fun_00416160();
-    void FUN_0044cba0();
-    void FUN_0044d150();
+    void HidePlayerSpellPresentation();
+    void HideEnemySpellPresentation();
+    void InvalidateCaptureAndEnableBombDamage();
+    void InvalidateCapture();
     void EndSpell();
-    void spellcard_fun_00416af0();
-    void spellcard_fun_00416b10(i32 amount);
+    void DeactivateWithoutCleanup();
+    void AddBonusProgress(i32 amount);
     i32 OnUpdateImpl();
     i32 OnDrawImpl();
 
@@ -326,18 +354,18 @@ struct Spellcard
     static ChainCallbackResult OnDraw(Spellcard *spellcard);
 
     void SetStoredVector(f32 x, f32 y, f32 z);
-    void FUN_0041f0b0(i32 value);
-    void FUN_0041f0e0(i32 value);
+    void SetEffectTrackingDisabled(i32 value);
+    void SetBonusUpdatesDisabled(i32 value);
     i32 IsActive();
-    i32 GetInactiveState();
-    i32 GetActiveState();
+    i32 WasCaptured();
+    i32 IsCaptureValid();
     i32 GetTimerFrames();
     i32 GetPendingTimeOrbs()
     {
         return this->pendingTimeOrbs;
     }
-    i32 FUN_00417860();
-    i32 FUN_0042DFF0();
+    i32 UsesAlternateEffectStyle();
+    i32 IsBombDamageEnabled();
 
     static ZunResult RegisterChain();
     static ZunResult DeletedCallback(Spellcard *spellcard);

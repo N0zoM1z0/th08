@@ -823,7 +823,7 @@ void __fastcall EclExIns::MokouResurrection(EclOperands::EnemyOverlay *enemy, Ec
 // FUNCTION: th08 0x425020
 void __fastcall HideSpellCardPresentation(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    g_Spellcard.spellcard_fun_00416160();
+    g_Spellcard.HideEnemySpellPresentation();
 }
 
 // FUNCTION: th08 0x425040

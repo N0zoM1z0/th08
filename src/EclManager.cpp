@@ -104,23 +104,23 @@ void Spellcard::SetStoredVector(f32 x, f32 y, f32 z)
 struct SpellcardEclFlagBits
 {
     u32 lowBits : 6;
-    u32 bit6 : 1;
+    u32 effectTrackingDisabled : 1;
     u32 bits7To10 : 4;
-    u32 bit11 : 1;
+    u32 bonusUpdatesDisabled : 1;
     u32 highBits : 20;
 };
 C_ASSERT(sizeof(SpellcardEclFlagBits) == 4);
 
 // FUNCTION: th08 0x0041F0B0
-void Spellcard::FUN_0041f0b0(i32 value)
+void Spellcard::SetEffectTrackingDisabled(i32 value)
 {
-    reinterpret_cast<SpellcardEclFlagBits *>(&this->flags)->bit6 = value;
+    reinterpret_cast<SpellcardEclFlagBits *>(&this->flags)->effectTrackingDisabled = value;
 }
 
 // FUNCTION: th08 0x0041F0E0
-void Spellcard::FUN_0041f0e0(i32 value)
+void Spellcard::SetBonusUpdatesDisabled(i32 value)
 {
-    reinterpret_cast<SpellcardEclFlagBits *>(&this->flags)->bit11 = value;
+    reinterpret_cast<SpellcardEclFlagBits *>(&this->flags)->bonusUpdatesDisabled = value;
 }
 
 namespace EclOperands
@@ -151,9 +151,9 @@ i32 TargetEnemyHelpersOverlay::CountParentChain()
 } // namespace EclOperands
 
 // FUNCTION: th08 0x0041FD90
-i32 Spellcard::GetActiveState()
+i32 Spellcard::IsCaptureValid()
 {
-    return this->IsActive() && ((this->flags >> 2) & 1);
+    return this->IsActive() && ((this->flags >> SPELLCARD_FLAG_CAPTURE_VALID_SHIFT) & 1);
 }
 
 // FUNCTION: th08 0x0041FDD0
@@ -188,9 +188,9 @@ u32 EclManager::GetTimeline(i32 index)
 }
 
 // FUNCTION: th08 0x0042DFF0
-i32 Spellcard::FUN_0042DFF0()
+i32 Spellcard::IsBombDamageEnabled()
 {
-    return (this->flags >> 7) & 1;
+    return (this->flags >> SPELLCARD_FLAG_BOMB_DAMAGE_ENABLED_SHIFT) & 1;
 }
 
 } // namespace th08

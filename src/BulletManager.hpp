@@ -355,7 +355,7 @@ struct BulletManager
     BulletManager();
 
     void Initialize();
-    void bulletmanager_fun_00415c60();
+    void ClearBulletsForTransition();
     void RemoveAllBullets(i32 mode);
     i32 DespawnBullets(i32 maxScore, i32 awardLaserItems);
     void ClearDrawBuckets();

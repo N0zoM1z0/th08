@@ -9,8 +9,8 @@ Several target functions materialize a `this` local and a result local even when
 Verified examples:
 
 - `EclOperands::TargetEnemyHelpersOverlay::HasParentChain` at `0x0041F000`
-- `Spellcard::GetActiveState` at `0x0041FD90`
-- `Spellcard::FUN_00417860` at `0x00417860`
+- `Spellcard::IsCaptureValid` at `0x0041FD90`
+- `Spellcard::UsesAlternateEffectStyle` at `0x00417860`
 
 Shape:
 

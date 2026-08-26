@@ -5000,7 +5000,7 @@ target = 0x00F54E90
 [[units.relocations]]
 offset = 0x5652
 type = "REL32"
-symbol = "?bulletmanager_fun_00415c60@BulletManager@th08@@QAEXXZ"
+symbol = "?ClearBulletsForTransition@BulletManager@th08@@QAEXXZ"
 target = 0x00415C60
 
 [[units.relocations]]
@@ -5156,7 +5156,7 @@ target = 0x004EA670
 [[units.relocations]]
 offset = 0x5B9F
 type = "REL32"
-symbol = "?FUN_0041f0b0@Spellcard@th08@@QAEXH@Z"
+symbol = "?SetEffectTrackingDisabled@Spellcard@th08@@QAEXH@Z"
 target = 0x0041F0B0
 
 [[units.relocations]]
@@ -5601,7 +5601,7 @@ target = 0x004EA670
 [[units.relocations]]
 offset = 0x6330
 type = "REL32"
-symbol = "?FUN_0041f0e0@Spellcard@th08@@QAEXH@Z"
+symbol = "?SetBonusUpdatesDisabled@Spellcard@th08@@QAEXH@Z"
 target = 0x0041F0E0
 
 [[units.relocations]]
@@ -7502,7 +7502,7 @@ target = 0x004EA670
 [[units.relocations]]
 offset = 0x73C
 type = "REL32"
-symbol = "?GetActiveState@Spellcard@th08@@QAEHXZ"
+symbol = "?IsCaptureValid@Spellcard@th08@@QAEHXZ"
 target = 0x0041FD90
 
 [[units.relocations]]
@@ -7514,7 +7514,7 @@ target = 0x004EA670
 [[units.relocations]]
 offset = 0x74B
 type = "REL32"
-symbol = "?GetInactiveState@Spellcard@th08@@QAEHXZ"
+symbol = "?WasCaptured@Spellcard@th08@@QAEHXZ"
 target = 0x00405260
 
 [[units.relocations]]
@@ -8677,7 +8677,7 @@ target = 0x004EA670
 [[units.relocations]]
 offset = 0x673
 type = "REL32"
-symbol = "?GetActiveState@Spellcard@th08@@QAEHXZ"
+symbol = "?IsCaptureValid@Spellcard@th08@@QAEHXZ"
 target = 0x0041FD90
 
 [[units.relocations]]
@@ -8689,7 +8689,7 @@ target = 0x004EA670
 [[units.relocations]]
 offset = 0x682
 type = "REL32"
-symbol = "?GetInactiveState@Spellcard@th08@@QAEHXZ"
+symbol = "?WasCaptured@Spellcard@th08@@QAEHXZ"
 target = 0x00405260
 
 [[units.relocations]]
@@ -10205,7 +10205,7 @@ target = 0x004EA670
 [[units.relocations]]
 offset = 0xC5A
 type = "REL32"
-symbol = "?FUN_0042DFF0@Spellcard@th08@@QAEHXZ"
+symbol = "?IsBombDamageEnabled@Spellcard@th08@@QAEHXZ"
 target = 0x0042DFF0
 
 [[units.relocations]]
@@ -10763,7 +10763,7 @@ target = 0x004400A0
 [[units.relocations]]
 offset = 0x140F
 type = "REL32"
-symbol = "?enemy_fun_00415c80@Enemy@th08@@QAEXXZ"
+symbol = "?ResetBulletRankInfluence@Enemy@th08@@QAEXXZ"
 target = 0x00415C80
 
 [[units.relocations]]
@@ -55279,12 +55279,12 @@ offset = 0x3B
 type = "REL32"
 symbol = "?SetInterrupt@AnmVmBase@th08@@QAEXF@Z"
 target = 0x00407120
-# Ledger name: th08::BulletManager::bulletmanager_fun_00415c60
+# Ledger name: th08::BulletManager::ClearBulletsForTransition
 # Evidence: target StartSpell service cluster; exact 21-byte thiscall forwards mode 1 to RemoveAllBullets and is emitted by SpellCard.cpp.
 [[units]]
-name = "bullet-manager-clear-all-wrapper"
+name = "bullet-manager-clear-bullets-for-transition"
 object = "build/SpellCard.obj"
-symbol = "?bulletmanager_fun_00415c60@BulletManager@th08@@QAEXXZ"
+symbol = "?ClearBulletsForTransition@BulletManager@th08@@QAEXXZ"
 target_address = 0x00415C60
 size = 0x15
 
@@ -55309,9 +55309,9 @@ target_address = 0x004178A0
 size = 0x13
 
 [[units]]
-name = "spellcard-get-inactive-state"
+name = "spellcard-was-captured"
 object = "build/SpellCard.obj"
-symbol = "?GetInactiveState@Spellcard@th08@@QAEHXZ"
+symbol = "?WasCaptured@Spellcard@th08@@QAEHXZ"
 target_address = 0x00405260
 size = 0x16
 
@@ -55371,9 +55371,9 @@ target = 0x0041F000
 
 
 [[units]]
-name = "spellcard-get-active-state"
+name = "spellcard-is-capture-valid"
 object = "build/EclManager.obj"
-symbol = "?GetActiveState@Spellcard@th08@@QAEHXZ"
+symbol = "?IsCaptureValid@Spellcard@th08@@QAEHXZ"
 target_address = 0x0041FD90
 size = 0x3B
 
@@ -55418,9 +55418,9 @@ symbol = "?g_LastSpellNumbers@th08@@3PAHA"
 target = 0x004C6B90
 
 [[units]]
-name = "spellcard-fun-00417860"
+name = "spellcard-uses-alternate-effect-style"
 object = "build/SpellCard.obj"
-symbol = "?FUN_00417860@Spellcard@th08@@QAEHXZ"
+symbol = "?UsesAlternateEffectStyle@Spellcard@th08@@QAEHXZ"
 target_address = 0x00417860
 size = 0x3B
 
@@ -55431,9 +55431,9 @@ symbol = "?IsActive@Spellcard@th08@@QAEHXZ"
 target = 0x004178A0
 
 [[units]]
-name = "spellcard-fun-0042dff0"
+name = "spellcard-is-bomb-damage-enabled"
 object = "build/EclManager.obj"
-symbol = "?FUN_0042DFF0@Spellcard@th08@@QAEHXZ"
+symbol = "?IsBombDamageEnabled@Spellcard@th08@@QAEHXZ"
 target_address = 0x0042DFF0
 size = 0x16
 
@@ -57255,7 +57255,7 @@ target = 0x00F54E90
 [[units.relocations]]
 offset = 0x94
 type = "REL32"
-symbol = "?bulletmanager_fun_00415c60@BulletManager@th08@@QAEXXZ"
+symbol = "?ClearBulletsForTransition@BulletManager@th08@@QAEXXZ"
 target = 0x00415C60
 
 [[units.relocations]]
@@ -57468,7 +57468,7 @@ target = 0x00F54E90
 [[units.relocations]]
 offset = 0x8D
 type = "REL32"
-symbol = "?bulletmanager_fun_00415c60@BulletManager@th08@@QAEXXZ"
+symbol = "?ClearBulletsForTransition@BulletManager@th08@@QAEXXZ"
 target = 0x00415C60
 
 [[units.relocations]]
@@ -67437,17 +67437,17 @@ target = 0x017CE8CC
 
 # Spellcard exact candidate 0x00416B10
 [[units]]
-name = "spellcard-fun-00416b10"
+name = "spellcard-add-bonus-progress"
 object = "build/SpellCard.obj"
-symbol = "?spellcard_fun_00416b10@Spellcard@th08@@QAEXH@Z"
+symbol = "?AddBonusProgress@Spellcard@th08@@QAEXH@Z"
 target_address = 0x00416B10
 size = 0x76
 
 # Spellcard exact candidate 0x00416160
 [[units]]
-name = "spellcard-fun-00416160"
+name = "spellcard-hide-enemy-spell-presentation"
 object = "build/SpellCard.obj"
-symbol = "?spellcard_fun_00416160@Spellcard@th08@@QAEXXZ"
+symbol = "?HideEnemySpellPresentation@Spellcard@th08@@QAEXXZ"
 target_address = 0x00416160
 size = 0x46
 
@@ -67465,9 +67465,9 @@ target = 0x00407120
 
 # Spellcard exact candidate 0x00416130
 [[units]]
-name = "spellcard-fun-00416130"
+name = "spellcard-hide-player-spell-presentation"
 object = "build/SpellCard.obj"
-symbol = "?spellcard_fun_00416130@Spellcard@th08@@QAEXXZ"
+symbol = "?HidePlayerSpellPresentation@Spellcard@th08@@QAEXXZ"
 target_address = 0x00416130
 size = 0x27
 
@@ -67479,16 +67479,16 @@ target = 0x00407120
 
 # Spellcard exact candidate 0x00416AF0
 [[units]]
-name = "spellcard-fun-00416af0"
+name = "spellcard-deactivate-without-cleanup"
 object = "build/SpellCard.obj"
-symbol = "?spellcard_fun_00416af0@Spellcard@th08@@QAEXXZ"
+symbol = "?DeactivateWithoutCleanup@Spellcard@th08@@QAEXXZ"
 target_address = 0x00416AF0
 size = 0x20
 
 [[units.relocations]]
 offset = 0x18
 type = "REL32"
-symbol = "?spellcard_fun_00416160@Spellcard@th08@@QAEXXZ"
+symbol = "?HideEnemySpellPresentation@Spellcard@th08@@QAEXXZ"
 target = 0x00416160
 
 # Ledger name: th08::Spellcard::OnDrawImpl
@@ -68207,11 +68207,11 @@ type = "DIR32"
 symbol = "?g_GuiFullPowerModeFrames@th08@@3HA"
 target = 0x017CE8CC
 
-# Ledger name: th08::Enemy::enemy_fun_00415c80
+# Ledger name: th08::Enemy::ResetBulletRankInfluence
 [[units]]
-name = "enemy-spell-phase-reset"
+name = "enemy-reset-bullet-rank-influence"
 object = "build/SpellCard.obj"
-symbol = "?enemy_fun_00415c80@Enemy@th08@@QAEXXZ"
+symbol = "?ResetBulletRankInfluence@Enemy@th08@@QAEXXZ"
 target_address = 0x00415C80
 size = 0x55
 
@@ -68307,7 +68307,7 @@ target = 0x00F54E90
 [[units.relocations]]
 offset = 0x20F
 type = "REL32"
-symbol = "?bulletmanager_fun_00415c60@BulletManager@th08@@QAEXXZ"
+symbol = "?ClearBulletsForTransition@BulletManager@th08@@QAEXXZ"
 target = 0x00415C60
 
 [[units.relocations]]
@@ -68361,7 +68361,7 @@ target = 0x004E4030
 [[units.relocations]]
 offset = 0x275
 type = "REL32"
-symbol = "?enemy_fun_00415c80@Enemy@th08@@QAEXXZ"
+symbol = "?ResetBulletRankInfluence@Enemy@th08@@QAEXXZ"
 target = 0x00415C80
 
 [[units.relocations]]
@@ -68804,7 +68804,7 @@ target = 0x004CCE20
 [[units.relocations]]
 offset = 0x3C
 type = "REL32"
-symbol = "?spellcard_fun_00416160@Spellcard@th08@@QAEXXZ"
+symbol = "?HideEnemySpellPresentation@Spellcard@th08@@QAEXXZ"
 target = 0x00416160
 
 [[units.relocations]]
@@ -69252,7 +69252,7 @@ addend = 0x2C
 [[units.relocations]]
 offset = 0x7D
 type = "REL32"
-symbol = "?spellcard_fun_00416af0@Spellcard@th08@@QAEXXZ"
+symbol = "?DeactivateWithoutCleanup@Spellcard@th08@@QAEXXZ"
 target = 0x00416AF0
 
 [[units.relocations]]
@@ -69361,7 +69361,7 @@ target = 0x00409080
 [[units.relocations]]
 offset = 0x439
 type = "REL32"
-symbol = "?FUN_00417860@Spellcard@th08@@QAEHXZ"
+symbol = "?UsesAlternateEffectStyle@Spellcard@th08@@QAEHXZ"
 target = 0x00417860
 
 [[units.relocations]]
@@ -71810,7 +71810,7 @@ target = 0x00F54E90
 [[units.relocations]]
 offset = 0x425
 type = "REL32"
-symbol = "?bulletmanager_fun_00415c60@BulletManager@th08@@QAEXXZ"
+symbol = "?ClearBulletsForTransition@BulletManager@th08@@QAEXXZ"
 target = 0x00415C60
 
 [[units.relocations]]
@@ -80195,7 +80195,7 @@ target = 0x004EA670
 [[units.relocations]]
 offset = 218
 type = "REL32"
-symbol = "?spellcard_fun_00416b10@Spellcard@th08@@QAEXH@Z"
+symbol = "?AddBonusProgress@Spellcard@th08@@QAEXH@Z"
 target = 0x00416B10
 
 [[units.relocations]]
@@ -80778,7 +80778,7 @@ target = 0x00F54E90
 [[units.relocations]]
 offset = 1538
 type = "REL32"
-symbol = "?bulletmanager_fun_00415c60@BulletManager@th08@@QAEXXZ"
+symbol = "?ClearBulletsForTransition@BulletManager@th08@@QAEXXZ"
 target = 0x00415C60
 
 [[units.relocations]]
@@ -82643,9 +82643,9 @@ symbol = "?CancelAutoCollect@ItemManager@th08@@QAEXXZ"
 target = 0x00441530
 
 [[units]]
-name = "spellcard-reset-deathbomb-state"
+name = "spellcard-invalidate-capture-enable-bomb-damage"
 object = "build/objdiff/reimpl/SpellCard.obj"
-symbol = "th08::Spellcard::FUN_0044cba0"
+symbol = "th08::Spellcard::InvalidateCaptureAndEnableBombDamage"
 target_address = 0x0044CBA0
 size = 69
 
@@ -82689,7 +82689,7 @@ target = 0x004EA670
 [[units.relocations]]
 offset = 180
 type = "REL32"
-symbol = "?spellcard_fun_00416130@Spellcard@th08@@QAEXXZ"
+symbol = "?HidePlayerSpellPresentation@Spellcard@th08@@QAEXXZ"
 target = 0x00416130
 
 [[units.relocations]]
@@ -83067,7 +83067,7 @@ target = 0x004EA670
 [[units.relocations]]
 offset = 1270
 type = "REL32"
-symbol = "?FUN_0044cba0@Spellcard@th08@@QAEXXZ"
+symbol = "?InvalidateCaptureAndEnableBombDamage@Spellcard@th08@@QAEXXZ"
 target = 0x0044CBA0
 
 [[units.relocations]]
@@ -87142,9 +87142,9 @@ symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
 target = 0x00577F20
 
 [[units]]
-name = "spellcard-clear-death-state"
+name = "spellcard-invalidate-capture"
 object = "build/objdiff/reimpl/SpellCard.obj"
-symbol = "th08::Spellcard::FUN_0044d150"
+symbol = "th08::Spellcard::InvalidateCapture"
 target_address = 0x0044D150
 size = 0x25
 
@@ -90024,7 +90024,7 @@ target = 0x004EA670
 [[units.relocations]]
 offset = 0x12E
 type = "REL32"
-symbol = "?FUN_0044d150@Spellcard@th08@@QAEXXZ"
+symbol = "?InvalidateCapture@Spellcard@th08@@QAEXXZ"
 target = 0x0044D150
 
 [[units.relocations]]
@@ -102449,9 +102449,9 @@ target_address = 0x0042A820
 size = 0x73
 
 [[units]]
-name = "enemy-helper-0042bc50"
+name = "spellcard-prepare-for-timer-callback"
 object = "build/objdiff/reimpl/EnemyManager.obj"
-symbol = "?FUN_0042bc50@th08@@YIXPAX@Z"
+symbol = "?PrepareSpellcardForTimerCallback@th08@@YIXPAUSpellcard@1@@Z"
 target_address = 0x0042BC50
 size = 0x32
 
@@ -102819,7 +102819,7 @@ target = 0x0040B8A0
 [[units.relocations]]
 offset = 0x16D
 type = "REL32"
-symbol = "th08::Enemy::enemy_fun_00415c80"
+symbol = "th08::Enemy::ResetBulletRankInfluence"
 target = 0x00415C80
 
 [[units.relocations]]
@@ -102971,7 +102971,7 @@ target = 0x004EA670
 [[units.relocations]]
 offset = 0x187
 type = "REL32"
-symbol = "?FUN_0042bc50@th08@@YIXPAX@Z"
+symbol = "?PrepareSpellcardForTimerCallback@th08@@YIXPAUSpellcard@1@@Z"
 target = 0x0042BC50
 
 [[units.relocations]]
@@ -103056,7 +103056,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x2E8
 type = "REL32"
-symbol = "th08::Enemy::enemy_fun_00415c80"
+symbol = "th08::Enemy::ResetBulletRankInfluence"
 target = 0x00415C80
 
 [[units]]
@@ -107427,16 +107427,16 @@ symbol = "?g_EnemyManager@th08@@3UEnemyManager@1@A"
 target = 0x00577F20
 
 [[units]]
-name = "spellcard-ecl-flag-bit6-0041f0b0"
+name = "spellcard-set-effect-tracking-disabled"
 object = "build/EclManager.obj"
-symbol = "?FUN_0041f0b0@Spellcard@th08@@QAEXH@Z"
+symbol = "?SetEffectTrackingDisabled@Spellcard@th08@@QAEXH@Z"
 target_address = 0x0041F0B0
 size = 0x25
 
 [[units]]
-name = "spellcard-ecl-flag-bit11-0041f0e0"
+name = "spellcard-set-bonus-updates-disabled"
 object = "build/EclManager.obj"
-symbol = "?FUN_0041f0e0@Spellcard@th08@@QAEXH@Z"
+symbol = "?SetBonusUpdatesDisabled@Spellcard@th08@@QAEXH@Z"
 target_address = 0x0041F0E0
 size = 0x28
 
@@ -111332,7 +111332,7 @@ target = 0x004EA670
 [[units.relocations]]
 offset = 0x12
 type = "REL32"
-symbol = "?spellcard_fun_00416160@Spellcard@th08@@QAEXXZ"
+symbol = "?HideEnemySpellPresentation@Spellcard@th08@@QAEXXZ"
 target = 0x00416160
 
 [[units]]

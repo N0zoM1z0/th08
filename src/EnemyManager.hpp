@@ -10,6 +10,7 @@ namespace th08
 {
 
 struct EnemyEclContext;
+struct Spellcard;
 
 struct EnemyUnkStruct3
 {
@@ -240,7 +241,7 @@ struct EnemyMovementBounds
 };
 C_ASSERT(sizeof(EnemyMovementBounds) == 0x10);
 
-void __fastcall FUN_0042bc50(void *self);
+void __fastcall PrepareSpellcardForTimerCallback(Spellcard *spellcard);
 
 struct Enemy
 {
@@ -351,7 +352,7 @@ struct Enemy
     void UpdateMovement();
     void UpdateShotAndAnm();
     void ReleaseChildEclBlocks();
-    void enemy_fun_00415c80();
+    void ResetBulletRankInfluence();
     void DetachFromParentChain();
     void DropItems(i32 mode);
     i32 HandleLifeCallback();

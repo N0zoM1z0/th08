@@ -2568,3 +2568,62 @@ The whole-source router remains at 5 raw-member, 0 absolute-address,
 113 anonymous-identifier, and 44 opaque-storage candidates because its current
 heuristic does not count address-named functions; these are routing counts,
 not a semantic-completion percentage.
+
+### Spellcard control, capture, and presentation protocol — 2026-08-27
+
+Scope: fifteen exact helpers at `0x00405260`, `0x00415C60..0x00416B85`,
+`0x00417860`, `0x0041F0B0..0x0041F107`, `0x0041FD90`, `0x0042BC50`,
+`0x0042DFF0`, and `0x0044CBA0..0x0044D174`, together with every production
+caller and the shared Spellcard flag and presentation-VM owners.  Target-pinned
+typed packets were captured for all fifteen addresses before renaming.  The
+source, declarations, mapping/implemented/reccmp ledgers, accepted selectors,
+and decorated symbols then moved together.
+
+Control protocol: the shared flag namespace now distinguishes active state,
+capture validity, timer-callback transition, alternate effect style, disabled
+effect tracking, enabled Bomb damage, pending capture reward, captured state,
+suppressed bonus presentation, and disabled bonus updates.  The exact shift-
+and-test expressions and three VC7-visible bitfield assignments remain intact.
+In particular, `InvalidateCaptureAndEnableBombDamage @ 0x0044CBA0` still copies
+the active bit into the Bomb-damage bit through one-bit fields; simplifying it
+to whole-word arithmetic is known to change VC7 register ownership.
+
+Lifecycle names: `HidePlayerSpellPresentation @ 0x00416130` and
+`HideEnemySpellPresentation @ 0x00416160` interrupt the paired name/frame VMs;
+`DeactivateWithoutCleanup @ 0x00416AF0` is the active-enemy-loss path;
+`AddBonusProgress @ 0x00416B10` updates the capped bonus and decay rate;
+`SetEffectTrackingDisabled @ 0x0041F0B0` and
+`SetBonusUpdatesDisabled @ 0x0041F0E0` expose the two ECL controls.
+`IsCaptureValid`, `WasCaptured`, `UsesAlternateEffectStyle`, and
+`IsBombDamageEnabled` name the four exact state queries.
+
+Transition helpers: `ClearBulletsForTransition @ 0x00415C60` is the mode-1
+bullet-clear wrapper shared by dialogue, full-power collection, ECL, and spell
+start; `ResetBulletRankInfluence @ 0x00415C80` restores the six per-Enemy rank
+endpoints.  `PrepareSpellcardForTimerCallback @ 0x0042BC50` has a target-proven
+`Spellcard *` fastcall receiver: its sole caller is the non-timeout Boss timer
+transition, and its three stores invalidate capture, mark the transition so
+`EndSpell` skips duplicate clear/reward work, and zero the bonus.
+
+Presentation ownership: twelve offset-derived VM members now expose player and
+enemy portraits, their backdrop/overlay, player/enemy spell-name text and
+frames, two extra enemy-name layers, and the bonus frame/digit renderer.  The
+two draw-only VMs at `+0x90C/+0xE54`, flag bit 4, and `unknown_044` retain
+neutral names because the authored corpus does not prove their producers or
+stable presentation roles.
+
+VC7 oracle: the directly affected eleven-object selection passes **192 / 192
+exact**, including `StartSpell`, `EndSpell`, `OnUpdateImpl`, `OnDrawImpl`,
+RunEcl, Player Bomb/death, Enemy timer update, and all fifteen renamed helpers.
+The typed `Spellcard *` fastcall refinement independently replays **50 / 50**
+bytes.  The required single-job cold build of all 75 comparison objects passes
+**1,106 / 1,106 exact**, and the normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links and
+`verify-modern-linux.sh build/modern-linux-container/th08-modern` verifies the
+ELF32 executable and every fixed target-owned layout symbol.  No layout,
+callback ordering, gameplay state operation, or initialization sequence
+changed.  The whole-source router remains at 5 raw-member, 0 absolute-address,
+113 anonymous-identifier, and 44 opaque-storage candidates because it does not
+count these address names or offset-derived VM identifiers; these are routing
+counts, not a semantic-completion percentage.

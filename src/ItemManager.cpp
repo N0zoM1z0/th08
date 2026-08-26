@@ -339,7 +339,7 @@ pickup:
             case ITEM_POWER_FULL:
                 if (g_GameManager.GetPower() < 128)
                 {
-                    g_BulletManager.bulletmanager_fun_00415c60();
+                    g_BulletManager.ClearBulletsForTransition();
                     g_Gui.ShowPopupText(0, 1);
                     g_SoundPlayer.PlaySoundByIdx(SOUND_POWERUP, 0);
                     g_AsciiManager.CreatePlayerPointPopup(&item->currentPosition, -1, 0xffffc0a0);
@@ -423,7 +423,7 @@ void Item::CollectPowerSmall()
         g_GameManager.SetPower(0x80);
         if (!g_Spellcard.IsActive())
         {
-            g_BulletManager.bulletmanager_fun_00415c60();
+            g_BulletManager.ClearBulletsForTransition();
         }
         g_Gui.ShowPopupText(0, 1);
         g_ItemManager.ConvertAllPowerItemsToTimeOrbs(this);
@@ -570,7 +570,7 @@ void Item::CollectPowerBig()
         g_GameManager.SetPower(0x80);
         if (!g_Spellcard.IsActive())
         {
-            g_BulletManager.bulletmanager_fun_00415c60();
+            g_BulletManager.ClearBulletsForTransition();
         }
         g_Gui.ShowPopupText(0, 1);
         g_ItemManager.ConvertAllPowerItemsToTimeOrbs(this);
@@ -629,7 +629,7 @@ void Item::CollectTimeOrb()
     g_Gui.flags.timeDisplayUpdateFrames = 2;
     g_GameManager.AddScore(score);
     g_GameManager.AddTimeOrbs(1);
-    g_Spellcard.spellcard_fun_00416b10(8000);
+    g_Spellcard.AddBonusProgress(8000);
 
     if (*reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) == 0)
     {

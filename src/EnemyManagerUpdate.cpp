@@ -389,7 +389,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                                 else if (damage != 0)
                                     damage = 1;
                             }
-                            else if (g_Spellcard.FUN_0042DFF0() && !reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(enemy)->HasAttachedEnemy())
+                            else if (g_Spellcard.IsBombDamageEnabled() && !reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(enemy)->HasAttachedEnemy())
                             {
                                 if (damage > 2)
                                     damage = (i32)((f32)damage / 2.5f);
@@ -589,7 +589,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
             {
                 i32 callbackVmIndex;
 
-                enemy->enemy_fun_00415c80();
+                enemy->ResetBulletRankInfluence();
                 enemy->activeEclCallStackDepth = 0;
                 for (callbackVmIndex = 0; callbackVmIndex < 4; ++callbackVmIndex)
                     enemy->lifeCallbackThresholds[callbackVmIndex] = -1;

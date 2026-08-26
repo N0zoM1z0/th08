@@ -161,8 +161,8 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
     case 0x2771: return (f32)g_Player.IsYoukai();
     case 0x2773:
         return (f32)(g_Spellcard.IsActive()
-                         ? g_Spellcard.GetActiveState()
-                         : g_Spellcard.GetInactiveState());
+                         ? g_Spellcard.IsCaptureValid()
+                         : g_Spellcard.WasCaptured());
 
     case 0x2772:
     default: return operand;

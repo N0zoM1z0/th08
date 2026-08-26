@@ -1138,7 +1138,7 @@ void Player::UpdateBombState()
 
         if (this->bombState.timer >= this->bombState.duration)
         {
-            g_Spellcard.spellcard_fun_00416130();
+            g_Spellcard.HidePlayerSpellPresentation();
             this->bombState.isInUse = 0;
             this->verticalSpeedMultiplier = 1.0f;
             this->horizontalSpeedMultiplier = 1.0f;
@@ -1256,7 +1256,7 @@ acceptBomb:
     }
     this->bombState.timer++;
     g_GameManager.DecreaseSubrank(200);
-    g_Spellcard.FUN_0044cba0();
+    g_Spellcard.InvalidateCaptureAndEnableBombDamage();
 
     this->deathbombWindowFrames += 6;
     if (this->deathbombWindowFrames > g_Player.primaryShtFile->deathbombWindowFrames)
@@ -1300,7 +1300,7 @@ i32 Player::UpdateDeathAndRespawn()
             g_ReplayManager->frameEventFlags |= 4;
             g_GameManager.character = 0;
             this->deathbombPending = 0;
-            g_Spellcard.FUN_0044d150();
+            g_Spellcard.InvalidateCapture();
             g_GameManager.AddToDeaths(1);
             g_Gui.flags.timeDisplayUpdateFrames = 2;
             g_GameManager.AddTimeOrbs(g_GameManager.globals->currentTimeOrbs > 5000

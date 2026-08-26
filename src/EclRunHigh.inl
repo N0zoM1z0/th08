@@ -1012,7 +1012,7 @@ enter_subroutine:
     case 150:
         TH08_ECL_AT(ctx, u16, 0x4AE + TH08_ECL_RAW_I(ctx, 0) * 0x2A4) = TH08_ECL_RAW_U16(ctx, 4);
         break;
-    case 112: g_BulletManager.bulletmanager_fun_00415c60(); break;
+    case 112: g_BulletManager.ClearBulletsForTransition(); break;
 
     case 113:
         if (TH08_ECL_READ_I(ctx, 0) >= 0)
@@ -1081,7 +1081,7 @@ enter_subroutine:
     case 162: g_BulletManager.RemoveAllBullets(4); break;
     case 164:
         lhsInt = TH08_ECL_READ_I(ctx, 0);
-        g_Spellcard.FUN_0041f0b0(lhsInt);
+        g_Spellcard.SetEffectTrackingDisabled(lhsInt);
         if (lhsInt == 0)
             g_Spellcard.SetStoredVector(((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
             ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)))
@@ -1200,7 +1200,7 @@ enter_subroutine:
         reinterpret_cast<EnemyFlag2Bits *>(
             &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags2)->extraVmFixedOffset = TH08_ECL_READ_I(ctx, 0);
         break;
-    case 184: g_Spellcard.FUN_0041f0e0(TH08_ECL_READ_I(ctx, 0)); break;
+    case 184: g_Spellcard.SetBonusUpdatesDisabled(TH08_ECL_READ_I(ctx, 0)); break;
 #if !defined(TH08_ECL_RUN_SHARED_SWITCH)
     }
 

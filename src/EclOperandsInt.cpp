@@ -157,8 +157,8 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
                ? 2
                : 0;
     case 0x2773:
-        return g_Spellcard.IsActive() ? g_Spellcard.GetActiveState()
-                                                    : g_Spellcard.GetInactiveState();
+        return g_Spellcard.IsActive() ? g_Spellcard.IsCaptureValid()
+                                                    : g_Spellcard.WasCaptured();
     case 0x2774: return g_Spellcard.GetTimerFrames();
     default: return operand;
     }

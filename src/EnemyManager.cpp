@@ -472,7 +472,7 @@ i32 Enemy::HandleLifeCallback()
                 }
             }
 
-            this->enemy_fun_00415c80();
+            this->ResetBulletRankInfluence();
             this->activeEclCallStackDepth = 0;
             this->flags2 &= ~ENEMY_FLAG2_DAMAGE_FEEDBACK_MASK;
             this->bulletSpawnDescriptor = g_EnemyManager.spawnTemplate.bulletSpawnDescriptor;
@@ -635,7 +635,7 @@ i32 Enemy::HandleTimerCallback()
 
     if (((this->flags1 >> ENEMY_FLAG_TIMEOUT_SPELL_SHIFT) & 1) == 0)
     {
-        FUN_0042bc50(&g_Spellcard);
+        PrepareSpellcardForTimerCallback(&g_Spellcard);
         g_BulletManager.RemoveAllBullets(4);
     }
 
@@ -675,7 +675,7 @@ i32 Enemy::HandleTimerCallback()
 
     this->bulletSpawnDescriptor = g_EnemyManager.spawnTemplate.bulletSpawnDescriptor;
     this->shootIntervalFrames = 0;
-    this->enemy_fun_00415c80();
+    this->ResetBulletRankInfluence();
     this->activeEclCallStackDepth = 0;
     this->flags2 &= ~ENEMY_FLAG2_DAMAGE_FEEDBACK_MASK;
     return 1;
@@ -684,11 +684,11 @@ i32 Enemy::HandleTimerCallback()
 }
 
 // FUNCTION: th08 0x42bc50
-void __fastcall FUN_0042bc50(void *self)
+void __fastcall PrepareSpellcardForTimerCallback(Spellcard *spellcard)
 {
-    reinterpret_cast<Spellcard *>(self)->flags &= ~4u;
-    reinterpret_cast<Spellcard *>(self)->flags |= 8u;
-    reinterpret_cast<Spellcard *>(self)->bonusProgress = 0;
+    spellcard->flags &= ~SPELLCARD_FLAG_CAPTURE_VALID;
+    spellcard->flags |= SPELLCARD_FLAG_TIMER_CALLBACK_TRANSITION;
+    spellcard->bonusProgress = 0;
 }
 
 // FUNCTION: th08 0x42bc90

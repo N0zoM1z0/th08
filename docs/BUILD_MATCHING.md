@@ -385,7 +385,7 @@ The death-flow closures at 0x42ADB0, 0x42BEA0, 0x44C650, and 0x44CBA0 add severa
 - Algebraic equivalence is not instruction equivalence on x87. `(f32)itemCount * 2.0f` lowers to target `fild; fadd st,st`; adding two separately cast copies can lower to a longer integer-memory add. Likewise, random coordinate updates in `Enemy::DropItems` must use compound `+=` so the lvalue pointer returned by `Float3::operator float*()` survives the RNG call in the target compiler temporary.
 - Do not deduplicate repeated source bodies just because they are semantically identical. `Player::UpdateBombState` contains two copies of the “consume all remaining Bombs” path under the forced/non-forced deathbomb branches. Combining them with `isForced || bombs < 2` removes 39 target-authored bytes.
 - A probe alias is not automatically a production global. The analysis name `g_EclEnemyTableF54CC0` resolves to `g_EnemyManager + 0x9DCDA0` in the shipped image. Production code should reference the real `EnemyManager` storage and let the COFF relocation carry the field addend instead of creating a second global at the same address.
-- Bitfield-to-bitfield assignment can be target-visible. `Spellcard::FUN_0044cba0` only reproduces VC7's redundant-looking mask sequence when bit 7 is assigned from bit 0 through a one-bit overlay; simplifying it to whole-word arithmetic changes register ownership and bytes.
+- Bitfield-to-bitfield assignment can be target-visible. `Spellcard::InvalidateCaptureAndEnableBombDamage` only reproduces VC7's redundant-looking mask sequence when bit 7 is assigned from bit 0 through a one-bit overlay; simplifying it to whole-word arithmetic changes register ownership and bytes.
 
 If a header change is correct but VC7 reports a newly declared member as absent, verify the precompiled header timestamp. This repository's object-only path can reuse a stale `build/th_pch.pch`; forcing a PCH rebuild is preferable to changing valid declarations to satisfy stale compiler state.
 
@@ -639,7 +639,7 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 
 ### Tiny accessors: avoid convenience pointer homes
 
-- `FUN_0042bc50 @ 0x42bc50` is exact only when its three stores operate directly from the fastcall receiver. Caching `reinterpret_cast<u8 *>(self)` in a local enlarges the target 0x32-byte helper to 0x3a by adding an extra stack home. For tiny `/Od` accessors and bit-manipulation helpers, start from repeated direct receiver expressions and introduce a pointer local only if the shipped frame proves one exists.
+- `PrepareSpellcardForTimerCallback @ 0x42bc50` is exact only when its three stores operate directly from the typed `Spellcard *` fastcall receiver. Caching a separate byte-pointer alias in a local enlarges the target 0x32-byte helper to 0x3a by adding an extra stack home. For tiny `/Od` accessors and bit-manipulation helpers, start from repeated direct receiver expressions and introduce a pointer local only if the shipped frame proves one exists.
 - `EclManager::GetTimelineCount/GetTimeline @ 0x42dfb0/0x42dfd0` independently prove the ECL header word at `+0x06` is the timeline count and the relocated timeline pointer table begins at `+0x08`. Keep the underlying header layout stable for claimed ECL interpreter work; a semantic accessor can expose the proven meaning without forcing an immediate shared-field rename.
 
 ### Enemy contact and motion branch ownership

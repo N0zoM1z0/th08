@@ -675,6 +675,28 @@ unknown.  The required cold replay passes **1,106 / 1,106 exact**, the normal
 VC7 image links, and the complete i386 Linux build plus fixed-layout verifier
 passes.
 
+The accepted Spellcard control batch closes fifteen remaining address-named
+helpers and their shared flag/presentation ownership.  Capture validity,
+timer-callback transition, Bomb damage, pending/captured reward state, effect
+tracking, bonus updates, alternate effect style, and bonus-presentation
+suppression now use named shifts and masks while preserving the target-visible
+shift tests and bitfield assignments.  Twelve offset-derived VMs now identify
+the player/enemy portraits, name/frame presentation, layered enemy name, and
+bonus digit/frame roles; two draw-only VMs and flag bit 4 remain neutral.
+
+Important helpers now include `HidePlayerSpellPresentation @ 0x00416130`,
+`HideEnemySpellPresentation @ 0x00416160`, `DeactivateWithoutCleanup @
+0x00416AF0`, `AddBonusProgress @ 0x00416B10`, `IsCaptureValid @ 0x0041FD90`,
+`PrepareSpellcardForTimerCallback @ 0x0042BC50`,
+`IsBombDamageEnabled @ 0x0042DFF0`, and the Bomb/death capture invalidators at
+`0x0044CBA0/0x0044D150`.  The timer helper now has its proven `Spellcard *`
+fastcall receiver rather than `void *`.  Fifteen target-pinned packets and the
+affected eleven-object selection pass **192 / 192 exact**; the typed fastcall
+helper separately passes **50 / 50**.  The required cold replay passes **1,106
+/ 1,106 exact**, the normal VC7 image links, and the complete i386 Linux build
+plus fixed-layout verifier passes.  The remaining evidence gaps are flag bit 4,
+`unknown_044`, and the two draw-only VMs.
+
 Select the next independent field family with:
 
 ```bash
@@ -1189,7 +1211,7 @@ methods were not Background-TU bodies at all in the shipped layout: the only
 production callers are in `Spellcard.cpp`, and target addresses place
 `background_fun_00415ce0 @ 0x00415CE0` between `StartSpell` and the cut-in
 sequence, and `background_fun_00416ad0 @ 0x00416AD0` between `EndSpell` and
-`spellcard_fun_00416af0`. Their unchanged definitions and canonical match-unit
+`DeactivateWithoutCleanup`. Their unchanged definitions and canonical match-unit
 owners now live in `SpellCard.obj`. Background donor/SpellCard recipient
 focused replay passed **29 / 29** and **36 / 36** respectively.
 
@@ -1331,8 +1353,8 @@ mapping shows `EclManager::RunEcl @ 0x004184B0` followed by the ECL operand/run
 neighborhood at `0x0041F000..0x0041FDF0`; all four donor/recipient TUs use the
 same `/Od /Yu"th_pch.h"` profile. The unchanged `HasParentChain`,
 `SetStoredVector`, spellcard ECL flag helpers, attached/parent-chain helpers,
-`GetActiveState`, `GetTimerFrames`, and `ZunTimer::operator+=` bodies now live
-in production `EclManager.cpp`, with `Spellcard::FUN_0042DFF0 @ 0x0042DFF0`
+`IsCaptureValid`, `GetTimerFrames`, and `ZunTimer::operator+=` bodies now live
+in production `EclManager.cpp`, with `Spellcard::IsBombDamageEnabled @ 0x0042DFF0`
 also following the EclManager timeline getters. Canonical match-unit owners were
 updated with the bodies. Focused replay passed **18 / 18** EclManager, **39 /
 39** EnemyManager, **30 / 30** SpellCard, and **30 / 30** main units. Cold
@@ -1385,8 +1407,8 @@ The twenty-sixth bounded pass restored the `Spellcard::StartSpell` service
 cluster at `0x00415C60..0x00415CE0`. Two exact helper bodies had been placed in
 their class implementation TUs during early local matching even though target
 layout puts them immediately after `StartSpell`:
-`BulletManager::bulletmanager_fun_00415c60 @ 0x00415C60` and
-`Enemy::enemy_fun_00415c80 @ 0x00415C80`, followed by the already-correct
+`BulletManager::ClearBulletsForTransition @ 0x00415C60` and
+`Enemy::ResetBulletRankInfluence @ 0x00415C80`, followed by the already-correct
 `Background::background_fun_00415ce0 @ 0x00415CE0` in `Spellcard.cpp`. Moving
 the unchanged bodies into `Spellcard.cpp` and rebinding their canonical exact
 owners preserved focused replay at **32 / 32** SpellCard, **37 / 37**

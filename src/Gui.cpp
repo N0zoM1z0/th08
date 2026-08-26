@@ -239,7 +239,7 @@ void GuiImpl::StartMessage(i32 messageIndex)
     this->message.dialogueLineIndex = 0;
     this->message.currentPortraitIndex = 0xff;
 
-    g_BulletManager.bulletmanager_fun_00415c60();
+    g_BulletManager.ClearBulletsForTransition();
     g_EnemyManager.KillAllNonBossEnemies(0, 0);
     g_ItemManager.AutoCollectAllItems();
 }
