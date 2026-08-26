@@ -1963,7 +1963,7 @@ void Supervisor::HideLoadingVms(void)
     }
     if (g_SupervisorScreenEffect != NULL)
     {
-        g_SupervisorScreenEffect->FUN_0045c160();
+        g_SupervisorScreenEffect->BeginFadeRelease();
         g_SupervisorScreenEffect = NULL;
     }
 }
@@ -1980,7 +1980,7 @@ void Supervisor::FUN_00448972()
     }
     if (g_SupervisorScreenEffect != NULL)
     {
-        g_SupervisorScreenEffect->FUN_0045c160();
+        g_SupervisorScreenEffect->BeginFadeRelease();
         g_SupervisorScreenEffect = NULL;
     }
 }
@@ -2008,7 +2008,7 @@ void Supervisor::StartEffect(i32 idx)
     if (g_SupervisorScreenEffect == NULL)
     {
         g_SupervisorScreenEffect =
-            ScreenEffect::RegisterChain((ScreenEffectType)(idx + SCREEN_EFFECT_UNK5), 60, 0, 0, 0, 1);
+            ScreenEffect::RegisterChain((ScreenEffectType)(idx + SCREEN_EFFECT_FULL_FADE_HOLD), 60, 0, 0, 0, 1);
     }
 }
 

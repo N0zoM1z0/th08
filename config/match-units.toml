@@ -1488,9 +1488,9 @@ symbol = "?CalculateFps@Supervisor@th08@@SIXI@Z"
 target = 0x00446F53
 
 [[units]]
-name = "screen-effect-added"
+name = "screen-effect-initialize-timer"
 object = "build/ScreenEffect.obj"
-symbol = "?AddedCallback@ScreenEffect@th08@@SI?AW4ZunResult@@PAU12@@Z"
+symbol = "?InitializeTimer@ScreenEffect@th08@@SI?AW4ZunResult@@PAU12@@Z"
 target_address = 0x0045C0E0
 size = 0x1A
 
@@ -1501,9 +1501,9 @@ symbol = "??4ZunTimer@th08@@QAEXH@Z"
 target = 0x004065F0
 
 [[units]]
-name = "screen-effect-deleted"
+name = "screen-effect-delete-screen-effect"
 object = "build/ScreenEffect.obj"
-symbol = "?DeletedCallback@ScreenEffect@th08@@SI?AW4ZunResult@@PAU12@@Z"
+symbol = "?DeleteScreenEffect@ScreenEffect@th08@@SI?AW4ZunResult@@PAU12@@Z"
 target_address = 0x0045C100
 size = 0x5E
 
@@ -56865,9 +56865,9 @@ target = 0x017CE758
 addend = 0x8
 
 [[units]]
-name = "screen-effect-calc-partial-fade-out"
+name = "screen-effect-calc-fade-hold"
 object = "build/ScreenEffect.obj"
-symbol = "?CalcPartialFadeOut@ScreenEffect@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+symbol = "?CalcFadeHold@ScreenEffect@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
 target_address = 0x0045B800
 size = 0xA9
 
@@ -56945,9 +56945,9 @@ symbol = "?DrawSquare@ScreenEffect@th08@@SIXPAUZunRect@2@K@Z"
 target = 0x0045B1E0
 
 [[units]]
-name = "screen-effect-fun-0045bd70"
+name = "screen-effect-draw-arcade-pulse"
 object = "build/ScreenEffect.obj"
-symbol = "?FUN_0045bd70@ScreenEffect@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+symbol = "?DrawArcadePulse@ScreenEffect@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
 target_address = 0x0045BD70
 size = 0x4C
 
@@ -78731,9 +78731,9 @@ symbol = "?g_AnmManager@th08@@3PAUAnmManager@1@A"
 target = 0x018BDC90
 
 [[units]]
-name = "screen-effect-fun-0045bc90"
+name = "screen-effect-calc-arcade-pulse"
 object = "build/objdiff/reimpl/ScreenEffect.obj"
-symbol = "th08::ScreenEffect::FUN_0045bc90"
+symbol = "th08::ScreenEffect::CalcArcadePulse"
 target_address = 0x0045BC90
 size = 210
 
@@ -78774,9 +78774,9 @@ symbol = "??EZunTimer@th08@@QAEXH@Z"
 target = 0x00406640
 
 [[units]]
-name = "screen-effect-fun-0045bf10"
+name = "screen-effect-calc-shake-envelope"
 object = "build/objdiff/reimpl/ScreenEffect.obj"
-symbol = "th08::ScreenEffect::FUN_0045bf10"
+symbol = "th08::ScreenEffect::CalcShakeEnvelope"
 target_address = 0x0045BF10
 size = 459
 
@@ -79088,7 +79088,7 @@ target = 0x0043CE60
 [[units.relocations]]
 offset = 329
 type = "DIR32"
-symbol = "th08::ScreenEffect::FUN_0045bc90"
+symbol = "th08::ScreenEffect::CalcArcadePulse"
 target = 0x0045BC90
 
 [[units.relocations]]
@@ -79106,7 +79106,7 @@ target = 0x0043CE60
 [[units.relocations]]
 offset = 347
 type = "DIR32"
-symbol = "th08::ScreenEffect::FUN_0045bd70"
+symbol = "th08::ScreenEffect::DrawArcadePulse"
 target = 0x0045BD70
 
 [[units.relocations]]
@@ -79124,7 +79124,7 @@ target = 0x0043CE60
 [[units.relocations]]
 offset = 367
 type = "DIR32"
-symbol = "th08::ScreenEffect::CalcPartialFadeOut"
+symbol = "th08::ScreenEffect::CalcFadeHold"
 target = 0x0045B800
 
 [[units.relocations]]
@@ -79160,7 +79160,7 @@ target = 0x0043CE60
 [[units.relocations]]
 offset = 405
 type = "DIR32"
-symbol = "th08::ScreenEffect::CalcPartialFadeOut"
+symbol = "th08::ScreenEffect::CalcFadeHold"
 target = 0x0045B800
 
 [[units.relocations]]
@@ -79196,7 +79196,7 @@ target = 0x0043CE60
 [[units.relocations]]
 offset = 443
 type = "DIR32"
-symbol = "th08::ScreenEffect::FUN_0045bf10"
+symbol = "th08::ScreenEffect::CalcShakeEnvelope"
 target = 0x0045BF10
 
 [[units.relocations]]
@@ -79214,13 +79214,13 @@ target = 0x0043CE60
 [[units.relocations]]
 offset = 466
 type = "DIR32"
-symbol = "th08::ScreenEffect::AddedCallback"
+symbol = "th08::ScreenEffect::InitializeTimer"
 target = 0x0045C0E0
 
 [[units.relocations]]
 offset = 476
 type = "DIR32"
-symbol = "th08::ScreenEffect::DeletedCallback"
+symbol = "th08::ScreenEffect::DeleteScreenEffect"
 target = 0x0045C100
 
 [[units.relocations]]
@@ -108438,9 +108438,9 @@ symbol = "?SetTextureCaptureParams@AnmManager@th08@@QAE?AW4ZunResult@@IIIIIIIII@
 target = 0x00406A30
 
 [[units]]
-name = "screen-effect-reset-0045c160"
+name = "screen-effect-begin-fade-release"
 object = "build/objdiff/reimpl/ScreenEffect.obj"
-symbol = "th08::ScreenEffect::FUN_0045c160"
+symbol = "th08::ScreenEffect::BeginFadeRelease"
 target_address = 0x0045C160
 size = 0x22
 
@@ -108493,7 +108493,7 @@ target = 0x017CE750
 [[units.relocations]]
 offset = 0x48
 type = "REL32"
-symbol = "?FUN_0045c160@ScreenEffect@th08@@QAEXXZ"
+symbol = "?BeginFadeRelease@ScreenEffect@th08@@QAEXXZ"
 target = 0x0045C160
 
 [[units.relocations]]
@@ -108545,7 +108545,7 @@ target = 0x017CE750
 [[units.relocations]]
 offset = 0x4B
 type = "REL32"
-symbol = "?FUN_0045c160@ScreenEffect@th08@@QAEXXZ"
+symbol = "?BeginFadeRelease@ScreenEffect@th08@@QAEXXZ"
 target = 0x0045C160
 
 [[units.relocations]]

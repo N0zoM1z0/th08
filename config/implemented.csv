@@ -118,8 +118,8 @@ th08::PlayerCollisionRegion::Reset
 th08::AnmVmBase::SetBlendModeAdditive
 th08::AnmVmBase::SetBlendModeNormal
 th08::AnmVmBase::Initialize
-th08::ScreenEffect::AddedCallback
-th08::ScreenEffect::DeletedCallback
+th08::ScreenEffect::InitializeTimer
+th08::ScreenEffect::DeleteScreenEffect
 th08::ScreenEffect::DrawArcadeFade
 th08::Supervisor::OnUpdate
 th08::Supervisor::Supervisor
@@ -603,9 +603,9 @@ th08::ZunTimer::operator<=
 th08::VertexDiffuseXyzrhw::VertexDiffuseXyzrhw
 th08::ScreenEffect::DrawSquare
 th08::ScreenEffect::DrawSquareShaded
-th08::ScreenEffect::CalcPartialFadeOut
+th08::ScreenEffect::CalcFadeHold
 th08::ScreenEffect::DrawPartialFade
-th08::ScreenEffect::FUN_0045bd70
+th08::ScreenEffect::DrawArcadePulse
 th08::ItemManager::SpawnItem
 th08::Gui::ShowPopupText
 th08::Item::CollectPowerSmall
@@ -767,8 +767,8 @@ th08::Player::IsBombShotSuppressed
 th08::Enemy::ReleaseChildEclBlocks
 th08::AnmManager::DrawPlayerBullet
 th08::ScreenEffect::CalcShake
-th08::ScreenEffect::FUN_0045bc90
-th08::ScreenEffect::FUN_0045bf10
+th08::ScreenEffect::CalcArcadePulse
+th08::ScreenEffect::CalcShakeEnvelope
 th08::ScreenEffect::RegisterChain
 th08::AnmManager::DrawTextCentered
 th08::Player::CheckBulletCancelCollision
@@ -1008,7 +1008,7 @@ th08::FUN_00426d70
 th08::Gui::CopyCurrentStageEnemyNameTexture
 th08::Gui::IsStageFinished
 th08::Gui::CaptureArcade
-th08::ScreenEffect::FUN_0045c160
+th08::ScreenEffect::BeginFadeRelease
 th08::Supervisor::HideLoadingVms
 th08::Supervisor::FUN_00448972
 th08::Supervisor::StartEffect

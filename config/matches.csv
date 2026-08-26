@@ -37,8 +37,8 @@ address,name,size,status,match_percent,unit,evidence
 0x0044E370,th08::PlayerCollisionRegion::Reset,35,matching,100.00,player-collision-region-reset,python3 scripts/compare-function.py player-collision-region-reset --json
 0x0044EE70,th08::UpdateModeSensitiveOrbitingOption,1059,matching,100.00,player-update-mode-sensitive-orbiting-option,python3 scripts/compare-function.py player-update-mode-sensitive-orbiting-option --json
 0x0044F2D0,th08::UpdateFacingTrailOption,737,matching,100.00,player-update-facing-trail-option,python3 scripts/compare-function.py player-update-facing-trail-option --json
-0x0045C0E0,th08::ScreenEffect::AddedCallback,26,matching,100.00,screen-effect-added,python3 scripts/compare-function.py screen-effect-added --json
-0x0045C100,th08::ScreenEffect::DeletedCallback,94,matching,100.00,screen-effect-deleted,python3 scripts/compare-function.py screen-effect-deleted --json
+0x0045C0E0,th08::ScreenEffect::InitializeTimer,26,matching,100.00,screen-effect-initialize-timer,python3 scripts/compare-function.py screen-effect-initialize-timer --json
+0x0045C100,th08::ScreenEffect::DeleteScreenEffect,94,matching,100.00,screen-effect-delete-screen-effect,python3 scripts/compare-function.py screen-effect-delete-screen-effect --json
 0x0045BC40,th08::ScreenEffect::DrawArcadeFade,69,matching,100.00,screen-effect-draw-arcade-fade,python3 scripts/compare-function.py screen-effect-draw-arcade-fade --json
 0x00402130,th08::AsciiManagerString::AsciiManagerString,25,matching,100.00,ascii-manager-string-constructor,python3 scripts/compare-function.py ascii-manager-string-constructor --json
 0x00402150,th08::PauseMenu::PauseMenu,52,matching,100.00,pause-menu-constructor,python3 scripts/compare-function.py pause-menu-constructor --json
@@ -594,9 +594,9 @@ address,name,size,status,match_percent,unit,evidence
 0x0040B580,th08::VertexDiffuseXyzrhw::VertexDiffuseXyzrhw,22,matching,100.00,vertex-diffuse-ctor,python3 scripts/compare-function.py vertex-diffuse-ctor --json
 0x0045B1E0,th08::ScreenEffect::DrawSquare,687,matching,100.00,screen-effect-draw-square,python3 scripts/compare-function.py screen-effect-draw-square --json
 0x0045B490,th08::ScreenEffect::DrawSquareShaded,717,matching,100.00,screen-effect-draw-square-shaded,python3 scripts/compare-function.py screen-effect-draw-square-shaded --json
-0x0045B800,th08::ScreenEffect::CalcPartialFadeOut,169,matching,100.00,screen-effect-calc-partial-fade-out,python3 scripts/compare-function.py screen-effect-calc-partial-fade-out --json
+0x0045B800,th08::ScreenEffect::CalcFadeHold,169,matching,100.00,screen-effect-calc-fade-hold,python3 scripts/compare-function.py screen-effect-calc-fade-hold --json
 0x0045BBF0,th08::ScreenEffect::DrawPartialFade,69,matching,100.00,screen-effect-draw-partial-fade,python3 scripts/compare-function.py screen-effect-draw-partial-fade --json
-0x0045BD70,th08::ScreenEffect::FUN_0045bd70,76,matching,100.00,screen-effect-fun-0045bd70,python3 scripts/compare-function.py screen-effect-fun-0045bd70 --json
+0x0045BD70,th08::ScreenEffect::DrawArcadePulse,76,matching,100.00,screen-effect-draw-arcade-pulse,python3 scripts/compare-function.py screen-effect-draw-arcade-pulse --json
 0x004400A0,th08::ItemManager::SpawnItem,970,matching,100.00,item-manager-spawn-item,python3 scripts/compare-function.py item-manager-spawn-item --json
 0x00437E5D,th08::Gui::ShowPopupText,127,matching,100.00,gui-fun-00437e5d,python3 scripts/compare-function.py gui-fun-00437e5d --json
 0x00440CF0,th08::Item::CollectPowerSmall,334,matching,100.00,item-collect-power-small,python3 scripts/compare-function.py item-collect-power-small --json
@@ -762,8 +762,8 @@ address,name,size,status,match_percent,unit,evidence
 0x0042BC90,th08::Enemy::ReleaseChildEclBlocks,96,matching,100.00,enemy-free-ecl-slots,python3 scripts/compare-function.py enemy-free-ecl-slots --json
 0x0045E960,th08::AnmManager::DrawPlayerBullet,125,matching,100.00,anm-draw-player-bullet,python3 scripts/compare-function.py anm-draw-player-bullet --json
 0x0045BDC0,th08::ScreenEffect::CalcShake,332,matching,100.00,screen-effect-calc-shake,python3 scripts/compare-function.py screen-effect-calc-shake --json
-0x0045BC90,th08::ScreenEffect::FUN_0045bc90,210,matching,100.00,screen-effect-fun-0045bc90,python3 scripts/compare-function.py screen-effect-fun-0045bc90 --json
-0x0045BF10,th08::ScreenEffect::FUN_0045bf10,459,matching,100.00,screen-effect-fun-0045bf10,python3 scripts/compare-function.py screen-effect-fun-0045bf10 --json
+0x0045BC90,th08::ScreenEffect::CalcArcadePulse,210,matching,100.00,screen-effect-calc-arcade-pulse,python3 scripts/compare-function.py screen-effect-calc-arcade-pulse --json
+0x0045BF10,th08::ScreenEffect::CalcShakeEnvelope,459,matching,100.00,screen-effect-calc-shake-envelope,python3 scripts/compare-function.py screen-effect-calc-shake-envelope --json
 0x0045B8B0,th08::ScreenEffect::RegisterChain,628,matching,100.00,screen-effect-register-chain,python3 scripts/compare-function.py screen-effect-register-chain --json
 0x00466650,th08::AnmManager::DrawTextCentered,366,matching,100.00,anm-manager-draw-text-centered,python3 scripts/compare-function.py anm-manager-draw-text-centered --json
 0x00449FF0,th08::Player::CheckBulletCancelCollision,563,matching,100.00,player-bullet-cancel-collision,python3 scripts/compare-function.py player-bullet-cancel-collision --json
@@ -1003,7 +1003,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00438046,th08::Gui::CopyCurrentStageEnemyNameTexture,517,matching,100.00,gui-stage-spell-sprite-00438046,python3 scripts/compare-function.py gui-stage-spell-sprite-00438046 --json
 0x00437D87,th08::Gui::IsStageFinished,64,matching,100.00,gui-dialog-vm-ready-00437d87,python3 scripts/compare-function.py gui-dialog-vm-ready-00437d87 --json
 0x00438F58,th08::Gui::CaptureArcade,145,matching,100.00,gui-result-texture-capture-00438f58,python3 scripts/compare-function.py gui-result-texture-capture-00438f58 --json
-0x0045C160,th08::ScreenEffect::FUN_0045c160,34,matching,100.00,screen-effect-reset-0045c160,python3 scripts/compare-function.py screen-effect-reset-0045c160 --json
+0x0045C160,th08::ScreenEffect::BeginFadeRelease,34,matching,100.00,screen-effect-begin-fade-release,python3 scripts/compare-function.py screen-effect-begin-fade-release --json
 0x0044881A,th08::Supervisor::HideLoadingVms,85,matching,100.00,supervisor-hide-loading-vms-0044881a,python3 scripts/compare-function.py supervisor-hide-loading-vms-0044881a --json
 0x00448972,th08::Supervisor::FUN_00448972,88,matching,100.00,supervisor-loading-vms-mode2-00448972,python3 scripts/compare-function.py supervisor-loading-vms-mode2-00448972 --json
 0x004489CA,th08::Supervisor::StartEffect,47,matching,100.00,supervisor-start-effect-004489ca,python3 scripts/compare-function.py supervisor-start-effect-004489ca --json

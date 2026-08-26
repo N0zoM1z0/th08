@@ -157,11 +157,12 @@ Inference: a TU-local 0x0C `ScreenEffectParameters` overlay now exposes raw
 initialization, fade color, shake amplitudes, pulse repeat/color, and shake-
 envelope views from one cast boundary anchored to the existing `+0x18` member.
 Keeping the overlay private avoids changing the widely included VC7 header.
-These role names have high dataflow confidence.  The still-unknown effect enum
-names and `ScreenEffect::unk24` were deliberately left outside this batch.
+These role names have high dataflow confidence.  The then-unknown effect enum
+names and `ScreenEffect +0x24` were deliberately left outside this batch and
+are recovered by the later ScreenEffect lifecycle batch below.
 
 Layout: assertions pin the overlay/raw sizes, its inner `+0x4/+0x8` members,
-and the existing `ScreenEffect::arcadeFadeColor` anchor at `+0x18`; the existing
+and the current `ScreenEffect::rawParameter0` anchor at `+0x18`; the existing
 header assertion continues to pin `sizeof(ScreenEffect) == 0x34`.
 
 VC7 oracle: `verify-exact-units.py --object build/ScreenEffect.obj` passed
@@ -2304,3 +2305,56 @@ Result: the whole-source router reports 5 raw-member, 0 absolute-address, 116
 anonymous-identifier, and 44 opaque-storage candidates.  This five-candidate
 drop reflects names made explicit in the replay protocol; it is not a semantic
 completion percentage.
+
+### ScreenEffect lifecycle and visual modes — 2026-08-27
+
+Scope: `CalcFadeHold @ 0x0045B800`, `RegisterChain @ 0x0045B8B0`,
+`CalcArcadePulse @ 0x0045BC90`, `DrawArcadePulse @ 0x0045BD70`,
+`CalcShakeEnvelope @ 0x0045BF10`, the lifecycle callbacks at
+`0x0045C0E0/0x0045C100`, and `BeginFadeRelease @ 0x0045C160`, together with
+the Player, PlayerBomb, ECL, and Supervisor callers that select those modes.
+
+Observed modes: effect 3 takes a repeat count and ARGB color, fades the
+playfield overlay's alpha to zero, decrements the count, and repeats; it is now
+`SCREEN_EFFECT_ARCADE_PULSE`.  Effect 7 treats the first registration value as
+shake amplitude and the three variant parameters as ramp-up, hold, and
+ramp-down frames; it is `SCREEN_EFFECT_SHAKE_ENVELOPE`.  Effects 5 and 6 raise
+alpha from zero to 128 over the requested duration and then retain it until an
+external release request.  Supervisor creates those two adjacent modes for
+the full-screen and playfield loading overlays, so they are
+`SCREEN_EFFECT_FULL_FADE_HOLD` and `SCREEN_EFFECT_ARCADE_FADE_HOLD`.
+
+Lifecycle: `HideLoadingVms` and the parallel loading transition call
+`BeginFadeRelease`, which writes `fadeReleaseRequested @ +0x24`, resets the
+timer, and lets `CalcFadeHold` lower alpha from 128 to zero over eight frames
+before removing the job.  The chain's add callback is now `InitializeTimer`;
+its delete callback cuts the paired draw element and destroys the object as
+`DeleteScreenEffect`.  The common alpha at `+0x10` is `overlayAlpha`, the
+discriminator at `+0x00` is a typed `ScreenEffectType`, and the variant storage
+at `+0x18/+0x1C/+0x20` has neutral raw owners beneath the existing typed
+TU-local overlay.  `+0x0C` remains `unk0c` because no authored read establishes
+a role.
+
+Evidence boundary: the names come from exact TH08 callback behavior and all
+authored call sites.  They do not rely on an adjacent-version label.  Layout
+assertions pin `ScreenEffect` at 0x34 bytes and the discriminator, alpha,
+variant storage, release flag, and timer at `+0x00/+0x10/+0x18/+0x24/+0x28`.
+
+VC7 oracle: the two ScreenEffect comparison-object selections pass **16 / 16**
+and **5 / 5 exact**, including RegisterChain **628 / 628**, pulse calculation
+**210 / 210**, shake-envelope calculation **459 / 459**, and release
+**34 / 34**.  A focused production-object selection across ECL, Player,
+Supervisor, and their accepted dependencies passes **132 / 132 exact**.  The
+required single-job cold build of all 75 comparison objects passes
+**1,106 / 1,106 exact**, including all 54 PlayerBomb accepted units, and the
+normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links and
+`verify-modern-linux.sh build/modern-linux-container/th08-modern` verifies the
+ELF32 executable and every fixed target-owned layout symbol.  There is no
+isolated automated visual-effect smoke, so no live-rendering claim is made.
+
+Result: `ScreenEffect.cpp` now has zero candidates in every semantic-router
+category.  The whole-source router reports 5 raw-member, 0 absolute-address,
+113 anonymous-identifier, and 44 opaque-storage candidates.  These counts are
+work-selection observations, not a semantic-completion percentage.

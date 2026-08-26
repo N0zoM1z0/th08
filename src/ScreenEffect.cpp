@@ -56,14 +56,14 @@ union ScreenEffectParameters
 
 C_ASSERT(sizeof(ScreenEffectParameters) == 0xc);
 C_ASSERT(sizeof(ScreenEffectRawParameters) == 0xc);
-C_ASSERT(offsetof(ScreenEffect, arcadeFadeColor) == 0x18);
+C_ASSERT(offsetof(ScreenEffect, rawParameter0) == 0x18);
 C_ASSERT(offsetof(ScreenEffectShakeParameters, finalAmplitude) == 0x4);
 C_ASSERT(offsetof(ScreenEffectPulseParameters, color) == 0x4);
 C_ASSERT(offsetof(ScreenEffectShakeEnvelopeParameters, holdFrames) == 0x4);
 C_ASSERT(offsetof(ScreenEffectShakeEnvelopeParameters, rampDownFrames) == 0x8);
 
 #define SCREEN_EFFECT_PARAMETERS(screenEffect)                                                                         \
-    (*reinterpret_cast<ScreenEffectParameters *>(&(screenEffect)->arcadeFadeColor))
+    (*reinterpret_cast<ScreenEffectParameters *>(&(screenEffect)->rawParameter0))
 
 }; // Anonymous namespace
 
@@ -110,11 +110,11 @@ ChainCallbackResult ScreenEffect::CalcFadeIn(ScreenEffect *screenEffect)
 {
     if (screenEffect->duration != 0)
     {
-        screenEffect->arcadeFadeAlpha =
+        screenEffect->overlayAlpha =
             (i32)(255.0f - ((255.0f * (f32)screenEffect->timer) / screenEffect->duration));
-        if (screenEffect->arcadeFadeAlpha < 0)
+        if (screenEffect->overlayAlpha < 0)
         {
-            screenEffect->arcadeFadeAlpha = 0;
+            screenEffect->overlayAlpha = 0;
         }
     }
 
@@ -244,10 +244,10 @@ ChainCallbackResult ScreenEffect::CalcFadeOut(ScreenEffect *screenEffect)
 
     if (screenEffect->duration != 0)
     {
-        screenEffect->arcadeFadeAlpha = (i32)((255.0f * (f32)screenEffect->timer) / screenEffect->duration);
-        if (screenEffect->arcadeFadeAlpha < 0)
+        screenEffect->overlayAlpha = (i32)((255.0f * (f32)screenEffect->timer) / screenEffect->duration);
+        if (screenEffect->overlayAlpha < 0)
         {
-            screenEffect->arcadeFadeAlpha = 0;
+            screenEffect->overlayAlpha = 0;
         }
     }
 
@@ -266,20 +266,20 @@ ChainCallbackResult ScreenEffect::CalcFadeOut(ScreenEffect *screenEffect)
 
 
 // FUNCTION: th08 0x45b800
-ChainCallbackResult ScreenEffect::CalcPartialFadeOut(ScreenEffect *screenEffect)
+ChainCallbackResult ScreenEffect::CalcFadeHold(ScreenEffect *screenEffect)
 {
-    if (screenEffect->unk24 == 0)
+    if (screenEffect->fadeReleaseRequested == 0)
     {
         if (screenEffect->duration != 0 && screenEffect->timer <= screenEffect->duration)
         {
-            screenEffect->arcadeFadeAlpha = (i32)(((f32)screenEffect->timer * 128.0f) / screenEffect->duration);
+            screenEffect->overlayAlpha = (i32)(((f32)screenEffect->timer * 128.0f) / screenEffect->duration);
         }
     }
     else
     {
         if (screenEffect->timer <= 8)
         {
-            screenEffect->arcadeFadeAlpha = 128 - (i32)(((f32)screenEffect->timer * 128.0f) / 8.0f);
+            screenEffect->overlayAlpha = 128 - (i32)(((f32)screenEffect->timer * 128.0f) / 8.0f);
         }
         else
         {
@@ -322,25 +322,25 @@ ScreenEffect *ScreenEffect::RegisterChain(ScreenEffectType effect, i32 ticks, i3
         calcChain = g_Chain.CreateElem((ChainCallback)ScreenEffect::CalcFadeOut);
         drawChain = g_Chain.CreateElem((ChainCallback)ScreenEffect::DrawFullFade);
         break;
-    case SCREEN_EFFECT_UNK3:
-        calcChain = g_Chain.CreateElem((ChainCallback)ScreenEffect::FUN_0045bc90);
-        drawChain = g_Chain.CreateElem((ChainCallback)ScreenEffect::FUN_0045bd70);
+    case SCREEN_EFFECT_ARCADE_PULSE:
+        calcChain = g_Chain.CreateElem((ChainCallback)ScreenEffect::CalcArcadePulse);
+        drawChain = g_Chain.CreateElem((ChainCallback)ScreenEffect::DrawArcadePulse);
         break;
-    case SCREEN_EFFECT_UNK5:
-        calcChain = g_Chain.CreateElem((ChainCallback)ScreenEffect::CalcPartialFadeOut);
+    case SCREEN_EFFECT_FULL_FADE_HOLD:
+        calcChain = g_Chain.CreateElem((ChainCallback)ScreenEffect::CalcFadeHold);
         drawChain = g_Chain.CreateElem((ChainCallback)ScreenEffect::DrawPartialFade);
         break;
-    case SCREEN_EFFECT_UNK6:
-        calcChain = g_Chain.CreateElem((ChainCallback)ScreenEffect::CalcPartialFadeOut);
+    case SCREEN_EFFECT_ARCADE_FADE_HOLD:
+        calcChain = g_Chain.CreateElem((ChainCallback)ScreenEffect::CalcFadeHold);
         drawChain = g_Chain.CreateElem((ChainCallback)ScreenEffect::DrawArcadeFade);
         break;
-    case SCREEN_EFFECT_UNK7:
-        calcChain = g_Chain.CreateElem((ChainCallback)ScreenEffect::FUN_0045bf10);
+    case SCREEN_EFFECT_SHAKE_ENVELOPE:
+        calcChain = g_Chain.CreateElem((ChainCallback)ScreenEffect::CalcShakeEnvelope);
         break;
     }
 
-    calcChain->addedCallback = (ChainLifetimeCallback)ScreenEffect::AddedCallback;
-    calcChain->deletedCallback = (ChainLifetimeCallback)ScreenEffect::DeletedCallback;
+    calcChain->addedCallback = (ChainLifetimeCallback)ScreenEffect::InitializeTimer;
+    calcChain->deletedCallback = (ChainLifetimeCallback)ScreenEffect::DeleteScreenEffect;
     calcChain->arg = screenEffect;
 
     screenEffect->type = effect;
@@ -364,9 +364,9 @@ ScreenEffect *ScreenEffect::RegisterChain(ScreenEffectType effect, i32 ticks, i3
 }
 
 // FUNCTION: th08 0x45c160
-void ScreenEffect::FUN_0045c160()
+void ScreenEffect::BeginFadeRelease()
 {
-    this->unk24 = 1;
+    this->fadeReleaseRequested = 1;
     this->timer = 0;
 }
 
@@ -388,7 +388,7 @@ ChainCallbackResult ScreenEffect::DrawFullFade(ScreenEffect *screenEffect)
     g_Supervisor.d3dDevice->SetViewport(&g_Supervisor.viewport);
 
     ScreenEffect::DrawSquare(
-        &rect, (screenEffect->arcadeFadeAlpha << 24) | SCREEN_EFFECT_PARAMETERS(screenEffect).fade.color);
+        &rect, (screenEffect->overlayAlpha << 24) | SCREEN_EFFECT_PARAMETERS(screenEffect).fade.color);
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
@@ -401,7 +401,7 @@ ChainCallbackResult ScreenEffect::DrawPartialFade(ScreenEffect *screenEffect)
     rect.right = 640.0f;
     rect.bottom = 480.0f;
     ScreenEffect::DrawSquare(
-        &rect, (screenEffect->arcadeFadeAlpha << 24) | SCREEN_EFFECT_PARAMETERS(screenEffect).fade.color);
+        &rect, (screenEffect->overlayAlpha << 24) | SCREEN_EFFECT_PARAMETERS(screenEffect).fade.color);
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
@@ -416,12 +416,12 @@ ChainCallbackResult ScreenEffect::DrawArcadeFade(ScreenEffect *screenEffect)
     rect.right = 416.0f;
     rect.bottom = 464.0f;
     ScreenEffect::DrawSquare(
-        &rect, (screenEffect->arcadeFadeAlpha << 24) | SCREEN_EFFECT_PARAMETERS(screenEffect).fade.color);
+        &rect, (screenEffect->overlayAlpha << 24) | SCREEN_EFFECT_PARAMETERS(screenEffect).fade.color);
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
 // FUNCTION: th08 0x45bc90
-ChainCallbackResult ScreenEffect::FUN_0045bc90(ScreenEffect *screenEffect)
+ChainCallbackResult ScreenEffect::CalcArcadePulse(ScreenEffect *screenEffect)
 {
     u32 alpha = (SCREEN_EFFECT_PARAMETERS(screenEffect).pulse.color >> 24) & 0xff;
 
@@ -430,14 +430,14 @@ ChainCallbackResult ScreenEffect::FUN_0045bc90(ScreenEffect *screenEffect)
 
     if (screenEffect->timer < screenEffect->duration)
     {
-        screenEffect->arcadeFadeAlpha =
+        screenEffect->overlayAlpha =
             alpha - (i32)((f32)screenEffect->timer * alpha / screenEffect->duration);
-        if (screenEffect->arcadeFadeAlpha < 0)
-            screenEffect->arcadeFadeAlpha = 0;
+        if (screenEffect->overlayAlpha < 0)
+            screenEffect->overlayAlpha = 0;
     }
     else
     {
-        screenEffect->arcadeFadeAlpha = 0;
+        screenEffect->overlayAlpha = 0;
         SCREEN_EFFECT_PARAMETERS(screenEffect).pulse.repeatCount--;
         if (SCREEN_EFFECT_PARAMETERS(screenEffect).pulse.repeatCount <= 0)
             return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
@@ -449,7 +449,7 @@ ChainCallbackResult ScreenEffect::FUN_0045bc90(ScreenEffect *screenEffect)
 }
 
 // FUNCTION: th08 0x45bd70
-ChainCallbackResult ScreenEffect::FUN_0045bd70(ScreenEffect *screenEffect)
+ChainCallbackResult ScreenEffect::DrawArcadePulse(ScreenEffect *screenEffect)
 {
     ZunRect rect;
 
@@ -457,7 +457,7 @@ ChainCallbackResult ScreenEffect::FUN_0045bd70(ScreenEffect *screenEffect)
     rect.top = 16.0f;
     rect.right = 416.0f;
     rect.bottom = 464.0f;
-    ScreenEffect::DrawSquare(&rect, (screenEffect->arcadeFadeAlpha << 24) |
+    ScreenEffect::DrawSquare(&rect, (screenEffect->overlayAlpha << 24) |
                                        (SCREEN_EFFECT_PARAMETERS(screenEffect).pulse.color & 0xFFFFFF));
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
@@ -522,7 +522,7 @@ ChainCallbackResult ScreenEffect::CalcShake(ScreenEffect *screenEffect)
 }
 
 // FUNCTION: th08 0x45bf10
-ChainCallbackResult ScreenEffect::FUN_0045bf10(ScreenEffect *screenEffect)
+ChainCallbackResult ScreenEffect::CalcShakeEnvelope(ScreenEffect *screenEffect)
 {
     f32 shakeAmount;
 
@@ -598,13 +598,13 @@ ChainCallbackResult ScreenEffect::FUN_0045bf10(ScreenEffect *screenEffect)
 
 #undef SCREEN_EFFECT_PARAMETERS
 
-ZunResult ScreenEffect::AddedCallback(ScreenEffect *screenEffect)
+ZunResult ScreenEffect::InitializeTimer(ScreenEffect *screenEffect)
 {
     screenEffect->timer = 0;
     return ZUN_SUCCESS;
 }
 
-ZunResult ScreenEffect::DeletedCallback(ScreenEffect *screenEffect)
+ZunResult ScreenEffect::DeleteScreenEffect(ScreenEffect *screenEffect)
 {
     screenEffect->calcChainElement->deletedCallback = NULL;
     g_Chain.Cut(screenEffect->drawChainElement);

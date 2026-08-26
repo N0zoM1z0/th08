@@ -62,7 +62,7 @@ void __fastcall ConfigureNightBlindness(EclOperands::EnemyOverlay *enemy, EclExI
 // FUNCTION: th08 0x4233d0
 void __fastcall FUN_004233d0(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 60, 1, -1, 0, 21);
+    ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 60, 1, -1, 0, 21);
 }
 
 // FUNCTION: th08 0x423400
@@ -538,8 +538,8 @@ void __fastcall FUN_004244f0(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 // FUNCTION: th08 0x4246e0
 void __fastcall FUN_004246e0(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    ScreenEffect::RegisterChain(static_cast<ScreenEffectType>(3), 30, 5, 0x40ffffff, 0, 21);
-    ScreenEffect::RegisterChain(static_cast<ScreenEffectType>(7), 4, 120, 190, 60, 21);
+    ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 30, 5, 0x40ffffff, 0, 21);
+    ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE_ENVELOPE, 4, 120, 190, 60, 21);
 }
 
 // FUNCTION: th08 0x424a00
@@ -748,7 +748,7 @@ void __fastcall FUN_00424e00(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 // FUNCTION: th08 0x424e20
 void __fastcall FUN_00424e20(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    ScreenEffect::RegisterChain(static_cast<ScreenEffectType>(7), 16, 20, 20, 20, 21);
+    ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE_ENVELOPE, 16, 20, 20, 20, 21);
 }
 
 
@@ -790,7 +790,7 @@ void __fastcall FUN_00424e50(EclOperands::EnemyOverlay *enemy, EclExInstruction 
 // FUNCTION: th08 0x424f60
 void __fastcall FUN_00424f60(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    ScreenEffect::RegisterChain(static_cast<ScreenEffectType>(3), 180, 1, -1, 0, 21);
+    ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 180, 1, -1, 0, 21);
 }
 
 // FUNCTION: th08 0x424f90

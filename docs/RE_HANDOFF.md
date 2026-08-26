@@ -618,6 +618,21 @@ exact**, the normal VC7 image links, and the complete i386 Linux build plus
 fixed-layout verifier passes.  The whole-source router is now 5 raw, 0
 absolute, 116 anonymous, and 44 opaque candidates.
 
+The ScreenEffect lifecycle/mode batch is now accepted.  The formerly numeric
+mode family now distinguishes playfield pulses, full/playfield loading-overlay
+holds, and amplitude-envelope shake.  The pulse, draw, envelope, initialization,
+deletion, and release functions all have behavior-based names; `+0x10` is the
+shared overlay alpha and `+0x24` is the loading-overlay release request.  The
+three variant words retain neutral storage names underneath their already
+typed TU-local views, and unused `+0x0C` remains unknown.
+
+ScreenEffect's two focused selections pass **16 / 16** and **5 / 5 exact**;
+the affected ECL/Player/Supervisor production selection passes **132 / 132**.
+A required single-job cold replay passes **1,106 / 1,106 exact**, the normal
+VC7 image links, and the complete i386 Linux build plus fixed-layout verifier
+passes.  `ScreenEffect.cpp` has zero router candidates; the whole-source router
+is now 5 raw, 0 absolute, 113 anonymous, and 44 opaque candidates.
+
 Select the next independent field family with:
 
 ```bash

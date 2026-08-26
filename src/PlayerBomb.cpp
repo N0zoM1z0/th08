@@ -478,7 +478,7 @@ void __fastcall UpdateFantasySealBlinkDeathbomb(Player *player)
             slot->collisionInterval = 2;
             g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), workItem->position.x);
             ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 16, 8, 0, 0, 21);
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, color, 0, 21);
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, color, 0, 21);
         }
     }
 
@@ -671,7 +671,7 @@ void __fastcall UpdateArtfulSacrificeBomb(Player *player)
             damageSlot = player->CreateCircleDamageRegion(&player->optionStates[0].position, 1.0f, 5.0f, 70, 110);
             damageSlot->collisionInterval = 5;
             ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 24, 8, 0, 0, 21);
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8fffffff, 0, 21);
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0x8fffffff, 0, 21);
         }
         else if (bomb->timer.JustReached(100))
         {
@@ -695,7 +695,7 @@ void __fastcall UpdateArtfulSacrificeBomb(Player *player)
         }
         else if (bomb->timer.JustReached(150))
         {
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8fffffff, 0, 21);
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0x8fffffff, 0, 21);
             ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 24, 8, 0, 0, 21);
             g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(25), 0);
         }
@@ -813,7 +813,7 @@ void __fastcall UpdateReturnInanimatenessDeathbomb(Player *player)
         }
         else if (bomb->timer.JustReached(180))
         {
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, -1, 0, 21);
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, -1, 0, 21);
             ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 24, 8, 0, 0, 21);
             g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(25), 0);
         }
@@ -979,7 +979,7 @@ void __fastcall UpdateMasterSparkBomb(Player *player)
         player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[4], 34);
         player->verticalSpeedMultiplier = 0.2f;
         player->horizontalSpeedMultiplier = 0.2f;
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK7, 16, 120, 60, 120, 21);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE_ENVELOPE, 16, 120, 60, 120, 21);
     }
 
     if (player->bombState.timer.HasTicked() && ((i32)player->bombState.timer % 4) != 0)
@@ -1054,7 +1054,7 @@ void __fastcall UpdateFinalSparkDeathbomb(Player *player)
         player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[2], 37);
         player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[3], 38);
         player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[4], 39);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK7, 16, 120, 60, 120, 21);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE_ENVELOPE, 16, 120, 60, 120, 21);
         player->verticalSpeedMultiplier = 0.2f;
         player->horizontalSpeedMultiplier = 0.2f;
         bomb->secondaryWorkCursor = 0;
@@ -1611,7 +1611,7 @@ void __fastcall UpdateNightMistPhantomKillerDeathbomb(Player *player)
             else if (workItem->damageRegion->hitAccumulator > 0)
             {
                 if (i % 3 == 0)
-                    ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 2, 1, 0x208080ff, 0, 21);
+                    ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 2, 1, 0x208080ff, 0, 21);
                 g_EffectManager.SpawnEffect(
                     0, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position), 1, 0xffff80ff);
                 player->anmFile->ExecuteAnmIdx(&workItem->vms[0], 21);
@@ -1774,7 +1774,7 @@ i32 __fastcall FUN_004114e0(AnmVm *effect)
         {
 #pragma var_order(position, radius)
             f32 radius;
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8ff08080, 0, 21);
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0x8ff08080, 0, 21);
             angle = reinterpret_cast<Effect *>(effect)->angle + ZUN_PI / 4.0f;
             radius = reinterpret_cast<Effect *>(effect)->radius * 0.7071067094802856f;
             Float3 position;
@@ -1854,7 +1854,7 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         player->position.y = 32.0f;
         Float3 position = player->position;
         position.y = 224.0f;
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xefffffff, 0, 21);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0xefffffff, 0, 21);
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(42), 0);
         workItem->cancelRegion = player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 500, 0);
@@ -1877,7 +1877,7 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xcfffffff, 0, 21);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0xcfffffff, 0, 21);
         return;
     }
     else if (bomb->timer.JustReached(90))
@@ -1894,7 +1894,7 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xafffffff, 0, 21);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0xafffffff, 0, 21);
         return;
     }
     else if (bomb->timer.JustReached(100))
@@ -1911,7 +1911,7 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 80, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8fffffff, 0, 21);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0x8fffffff, 0, 21);
         return;
     }
     else if (bomb->timer.JustReached(110))
@@ -1928,7 +1928,7 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 60, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x6fffffff, 0, 21);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0x6fffffff, 0, 21);
         return;
     }
     else if (bomb->timer.JustReached(120))
@@ -1945,7 +1945,7 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 50, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x5fffffff, 0, 21);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0x5fffffff, 0, 21);
         return;
     }
     else if (bomb->timer.JustReached(130))
@@ -1962,7 +1962,7 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 40, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x5fffffff, 0, 21);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0x5fffffff, 0, 21);
         workItem->motion = player->position;
         return;
     }
@@ -2031,7 +2031,7 @@ void __fastcall UpdateSlashOfPresentWorldBomb(Player *player)
         player->position.y = 32.0f;
         Float3 position = player->position;
         position.y = 224.0f;
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xefffffff, 0, 21);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0xefffffff, 0, 21);
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(42), 0);
         workItem->cancelRegion = player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 300, 10);
@@ -2054,7 +2054,7 @@ void __fastcall UpdateSlashOfPresentWorldBomb(Player *player)
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xcfffffff, 0, 21);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0xcfffffff, 0, 21);
         return;
     }
     else if (bomb->timer.JustReached(90))
@@ -2071,7 +2071,7 @@ void __fastcall UpdateSlashOfPresentWorldBomb(Player *player)
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xbfffffff, 0, 21);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0xbfffffff, 0, 21);
         return;
     }
     else if (bomb->timer.JustReached(100))
@@ -2088,7 +2088,7 @@ void __fastcall UpdateSlashOfPresentWorldBomb(Player *player)
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 80, 40);
         workItem->damageRegion->collisionInterval = 3;
         g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8fffffff, 0, 21);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0x8fffffff, 0, 21);
         workItem->motion = player->position;
         return;
     }
@@ -2143,7 +2143,7 @@ i32 __fastcall FUN_004117b0(AnmVm *effect)
 #pragma var_order(position, radius)
             f32 radius;
             ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 16, 8, 0, 0, 21);
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0x8f6060f0, 0, 21);
+            ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0x8f6060f0, 0, 21);
             angle = reinterpret_cast<Effect *>(effect)->angle + ZUN_PI / 4.0f;
             radius = reinterpret_cast<Effect *>(effect)->radius * 0.7071067094802856f;
             Float3 position;
@@ -2585,7 +2585,7 @@ void __fastcall UpdateEternalSleepInDreamlandDeathbomb(Player *player)
         }
         g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), workItem->position.x);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 30, 8, 0, 0, 21);
-        ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 8, 1, 0xe0f0f0f0, 0, 21);
+        ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0xe0f0f0f0, 0, 21);
     }
 
     workItem = bomb->workItems;

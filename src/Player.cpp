@@ -1156,7 +1156,7 @@ void Player::UpdateBombState()
                         g_EnemyManager.bosses[i]->flags1 &= ~ENEMY_FLAG_PAUSE_TIMER;
                     }
                 }
-                ScreenEffect::RegisterChain(SCREEN_EFFECT_UNK3, 30, 1, -1, 0, 21);
+                ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 30, 1, -1, 0, 21);
             }
         }
         else
