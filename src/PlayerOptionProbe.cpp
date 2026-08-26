@@ -419,8 +419,9 @@ i32 __fastcall FUN_004501b0(Player *player, PlayerShot *slot, i32 value, u8 *ent
     if (value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
     {
         player->FUN_0044fb70(reinterpret_cast<u8 *>(slot), entry);
+        // th08 v1.00d calls Rng::GetRandomF32Signed at 0x0043ED80 here.
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x450) =
-            g_Rng.GetRandomF32() * ZUN_PI / 48.0f - ZUN_PI / 2.0f;
+            g_Rng.GetRandomF32Signed() * ZUN_PI / 48.0f - ZUN_PI / 2.0f;
         reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(
             *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x450),
             *reinterpret_cast<f32 *>(entry + 0x18));
