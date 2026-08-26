@@ -33,6 +33,13 @@ Preserve opaque storage when only its extent is known.  Add focused `C_ASSERT`
 checks for relied-on sizes and offsets, remembering that layout assertions do
 not prove names.
 
+When one fixed storage range has several target-proven roles selected by a
+discriminator, a translation-unit-local typed union overlay may be safer than
+changing a widely included VC7 header.  Anchor the single cast boundary to a
+real member with `offsetof`/`sizeof` assertions, keep generic initialization
+explicit, and use role-specific members everywhere else.  This exception is
+for evidenced variant storage, not a way to assign meaning to unknown bytes.
+
 Do not create a new global for a view inside an existing aggregate, change
 field width/signedness, hide uncertainty behind a union/accessor, or combine a
 typed cleanup with unrelated control-flow refactoring.  Serialization,
@@ -43,6 +50,11 @@ instruction decoding, and platform ABI glue may be correctly byte-oriented.
 Use `$th08-matching` for the smallest VC7 object build and replay every accepted
 unit in affected objects.  A shared header, PCH, inline-body, layout, or object-
 owner change requires cold aggregate replay.
+
+If a cold aggregate replay contradicts the accepted ledger, record the exact
+command and generated failure set as a branch-baseline blocker.  Do not publish
+the ledger total as a fresh exact result, broaden the semantic batch to repair
+unrelated units, or weaken the focused oracle that covers the edited object.
 
 Compile and link the modern target for shared-source changes.  Run the Linux
 layout verifier and a relevant state-transition smoke when the batch changes

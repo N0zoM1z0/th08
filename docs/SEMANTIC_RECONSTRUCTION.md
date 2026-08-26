@@ -130,6 +130,60 @@ Promote a pattern to `docs/VC7_ZUN_PATTERNS.md` or
 
 ## Completed batches
 
-No source batch has been accepted on `semantic/typed-reconstruction` yet.  The
-branch bootstrap adds the evidence model and candidate router without changing
-reconstruction layouts or authored ledgers.
+### ScreenEffect variant parameters — 2026-08-26
+
+Scope: `RegisterChain @ 0x0045B8B0`, the draw/calc callbacks at
+`0x0045BB50..0x0045C0DB`, and `src/ScreenEffect.cpp` under the
+`/Od /Yu"th_pch.h"` ScreenEffect profile.  `src/ScreenEffect.hpp` remains
+byte-for-byte identical to the branch parent.
+
+Observed: `RegisterChain` stores its three generic dword parameters at
+`ScreenEffect + 0x18/+0x1C/+0x20`.  Full/partial/arcade fades read the first
+dword as RGB color.  The `0x0045BC90/0x0045BD70` pair decrements the first
+dword as a repeat count and splits alpha/RGB from the second dword.  `CalcShake`
+interpolates between signed amplitudes in the first two dwords.  The
+`0x0045BF10` callback treats all three as ramp-up, hold, and ramp-down frame
+counts and multiplies the resulting envelope by `duration` as the amplitude.
+Independent TH08 callers pass count/color pairs for effect 3, amplitude pairs
+for effect 1, and three phase lengths for effect 7.
+
+Corroborated: TH06 calls the first two slots a generic effect parameter and a
+shake parameter; the bounded TH07 fade reconstruction independently identifies
+the `+0x18` slot as the fade RGB parameter.  Those adjacent versions support
+the stable layout, while the TH08 callbacks and callers establish the variant-
+specific roles used here.
+
+Inference: a TU-local 0x0C `ScreenEffectParameters` overlay now exposes raw
+initialization, fade color, shake amplitudes, pulse repeat/color, and shake-
+envelope views from one cast boundary anchored to the existing `+0x18` member.
+Keeping the overlay private avoids changing the widely included VC7 header.
+These role names have high dataflow confidence.  The still-unknown effect enum
+names and `ScreenEffect::unk24` were deliberately left outside this batch.
+
+Layout: assertions pin the overlay/raw sizes, its inner `+0x4/+0x8` members,
+and the existing `ScreenEffect::arcadeFadeColor` anchor at `+0x18`; the existing
+header assertion continues to pin `sizeof(ScreenEffect) == 0x34`.
+
+VC7 oracle: `verify-exact-units.py --object build/ScreenEffect.obj` passed
+**16 / 16**; the canonical objdiff path passed **5 / 5**.  The latter baseline
+first required restoring two target-observed `g_GameManager + 0x3DBAC` DIR32
+manifest entries at relocation offset 10; that ledger repair is the separate
+commit immediately before this batch.
+
+Cold aggregate diagnostic: `verify-exact-units.py --all --json` rebuilt all 75
+configured objects and checked all 1,105 selected units, but returned
+**1,017 / 1,105** with 88 failures outside ScreenEffect.  Repeating after
+restoring `ScreenEffect.hpp` byte-for-byte reproduced the identical failure
+set.  This is an aggregate branch-baseline blocker, not an aggregate exact
+claim or a ScreenEffect regression; the generated report remains under
+`build/accepted-unit-replay-semantic-screen-effect.json`.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiled and linked
+the complete i386 target, then `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 and all
+required fixed target-owned layout symbols.
+
+Result: all 21 scattered raw byte-offset expressions for the three ScreenEffect
+parameter slots were replaced by one asserted typed boundary plus role-specific
+members.  The semantic-debt router reports zero raw-member-access candidates in
+this source.  Authored/exact progress ledgers are unchanged.

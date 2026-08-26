@@ -26,7 +26,25 @@ runtime commands remain available and must still be used when a semantic batch
 touches their acceptance surface.  Restore the workflow's automatic
 `push`/`pull_request` triggers before merging this phase into a release lane.
 
-The first source batch has not been selected yet.  Start with:
+The first accepted source batch is the `ScreenEffect +0x18/+0x1C/+0x20`
+variant-parameter family.  A TU-local typed overlay records fade color, shake
+amplitude, pulse repeat/color, and three-phase shake-envelope views while
+preserving both the generic `RegisterChain` initialization ABI and the shared
+header byte-for-byte.  Focused VC7 replay passed `ScreenEffect.obj` **16 / 16**
+and its canonical objdiff path **5 / 5**; the normal VC7 image linked, the
+complete i386 container build linked, and the fixed-layout verifier passed.
+
+The required cold aggregate diagnostic exposed a branch-baseline blocker:
+`verify-exact-units.py --all --json` rebuilt 75 objects but returned
+**1,017 / 1,105**, with the same 88 failures outside ScreenEffect both before
+and after restoring `ScreenEffect.hpp` byte-for-byte.  Therefore the historical
+**1,105 / 1,105** prose snapshot later in this file is not a current reproducible
+cold result and must not be published as one.  Keep the ScreenEffect focused
+exact result distinct; investigate the aggregate manifest/source drift as its
+own bounded maintenance batch before any future aggregate claim.  See
+`docs/SEMANTIC_RECONSTRUCTION.md` for the full evidence record.
+
+Select the next independent field family with:
 
 ```bash
 python3 scripts/analysis/report-semantic-debt.py

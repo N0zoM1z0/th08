@@ -11,6 +11,62 @@ namespace th08
 DIFFABLE_STATIC(i32, g_ScreenEffectCounter);
 DIFFABLE_STATIC(ScreenEffect, g_ScreenEffect);
 
+namespace
+{
+
+struct ScreenEffectRawParameters
+{
+    i32 primary;
+    i32 secondary;
+    i32 tertiary;
+};
+
+struct ScreenEffectFadeParameters
+{
+    D3DCOLOR color;
+};
+
+struct ScreenEffectShakeParameters
+{
+    i32 initialAmplitude;
+    i32 finalAmplitude;
+};
+
+struct ScreenEffectPulseParameters
+{
+    i32 repeatCount;
+    D3DCOLOR color;
+};
+
+struct ScreenEffectShakeEnvelopeParameters
+{
+    i32 rampUpFrames;
+    i32 holdFrames;
+    i32 rampDownFrames;
+};
+
+union ScreenEffectParameters
+{
+    ScreenEffectRawParameters raw;
+    ScreenEffectFadeParameters fade;
+    ScreenEffectShakeParameters shake;
+    ScreenEffectPulseParameters pulse;
+    ScreenEffectShakeEnvelopeParameters shakeEnvelope;
+};
+
+C_ASSERT(sizeof(ScreenEffectParameters) == 0xc);
+C_ASSERT(sizeof(ScreenEffectRawParameters) == 0xc);
+C_ASSERT(offsetof(ScreenEffect, arcadeFadeColor) == 0x18);
+C_ASSERT(offsetof(ScreenEffectShakeParameters, finalAmplitude) == 0x4);
+C_ASSERT(offsetof(ScreenEffectPulseParameters, color) == 0x4);
+C_ASSERT(offsetof(ScreenEffectShakeEnvelopeParameters, holdFrames) == 0x4);
+C_ASSERT(offsetof(ScreenEffectShakeEnvelopeParameters, rampDownFrames) == 0x8);
+
+#define SCREEN_EFFECT_PARAMETERS(screenEffect)                                                                         \
+    (*reinterpret_cast<ScreenEffectParameters *>(&(screenEffect)->arcadeFadeColor))
+
+}; // Anonymous namespace
+
 // FUNCTION: th08 0x45b000
 ScreenEffect::ScreenEffect()
 {
@@ -237,8 +293,8 @@ ChainCallbackResult ScreenEffect::CalcPartialFadeOut(ScreenEffect *screenEffect)
 
 // FUNCTION: th08 0x45b8b0
 #pragma var_order(calcChain, drawChain, screenEffect)
-ScreenEffect *ScreenEffect::RegisterChain(ScreenEffectType effect, i32 ticks, i32 param_3, i32 param_4, i32 param_5,
-                                          i32 param_6)
+ScreenEffect *ScreenEffect::RegisterChain(ScreenEffectType effect, i32 ticks, i32 primaryParameter,
+                                          i32 secondaryParameter, i32 tertiaryParameter, i32 drawPriority)
 {
     ChainElem *calcChain = NULL;
     ChainElem *drawChain = NULL;
@@ -289,9 +345,9 @@ ScreenEffect *ScreenEffect::RegisterChain(ScreenEffectType effect, i32 ticks, i3
 
     screenEffect->type = effect;
     screenEffect->duration = ticks;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x18) = param_3;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x1c) = param_4;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x20) = param_5;
+    SCREEN_EFFECT_PARAMETERS(screenEffect).raw.primary = primaryParameter;
+    SCREEN_EFFECT_PARAMETERS(screenEffect).raw.secondary = secondaryParameter;
+    SCREEN_EFFECT_PARAMETERS(screenEffect).raw.tertiary = tertiaryParameter;
 
     if (g_Chain.AddToCalcChain(calcChain, 3) != ZUN_SUCCESS)
         return NULL;
@@ -299,7 +355,7 @@ ScreenEffect *ScreenEffect::RegisterChain(ScreenEffectType effect, i32 ticks, i3
     if (drawChain != NULL)
     {
         drawChain->arg = screenEffect;
-        g_Chain.AddToDrawChain(drawChain, param_6);
+        g_Chain.AddToDrawChain(drawChain, drawPriority);
     }
 
     screenEffect->calcChainElement = calcChain;
@@ -331,7 +387,8 @@ ChainCallbackResult ScreenEffect::DrawFullFade(ScreenEffect *screenEffect)
     g_Supervisor.viewport.Height = 480;
     g_Supervisor.d3dDevice->SetViewport(&g_Supervisor.viewport);
 
-    ScreenEffect::DrawSquare(&rect, (screenEffect->arcadeFadeAlpha << 24) | screenEffect->arcadeFadeColor);
+    ScreenEffect::DrawSquare(
+        &rect, (screenEffect->arcadeFadeAlpha << 24) | SCREEN_EFFECT_PARAMETERS(screenEffect).fade.color);
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
@@ -343,7 +400,8 @@ ChainCallbackResult ScreenEffect::DrawPartialFade(ScreenEffect *screenEffect)
     rect.top = 0.0f;
     rect.right = 640.0f;
     rect.bottom = 480.0f;
-    ScreenEffect::DrawSquare(&rect, (screenEffect->arcadeFadeAlpha << 24) | screenEffect->arcadeFadeColor);
+    ScreenEffect::DrawSquare(
+        &rect, (screenEffect->arcadeFadeAlpha << 24) | SCREEN_EFFECT_PARAMETERS(screenEffect).fade.color);
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
@@ -357,14 +415,15 @@ ChainCallbackResult ScreenEffect::DrawArcadeFade(ScreenEffect *screenEffect)
     rect.top = 16.0f;
     rect.right = 416.0f;
     rect.bottom = 464.0f;
-    ScreenEffect::DrawSquare(&rect, (screenEffect->arcadeFadeAlpha << 24) | screenEffect->arcadeFadeColor);
+    ScreenEffect::DrawSquare(
+        &rect, (screenEffect->arcadeFadeAlpha << 24) | SCREEN_EFFECT_PARAMETERS(screenEffect).fade.color);
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
 // FUNCTION: th08 0x45bc90
 ChainCallbackResult ScreenEffect::FUN_0045bc90(ScreenEffect *screenEffect)
 {
-    u32 alpha = (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x1c) >> 24) & 0xff;
+    u32 alpha = (SCREEN_EFFECT_PARAMETERS(screenEffect).pulse.color >> 24) & 0xff;
 
     if (g_ScreenEffectCounter != 0)
         return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
@@ -379,8 +438,8 @@ ChainCallbackResult ScreenEffect::FUN_0045bc90(ScreenEffect *screenEffect)
     else
     {
         screenEffect->arcadeFadeAlpha = 0;
-        (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x18))--;
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x18) <= 0)
+        SCREEN_EFFECT_PARAMETERS(screenEffect).pulse.repeatCount--;
+        if (SCREEN_EFFECT_PARAMETERS(screenEffect).pulse.repeatCount <= 0)
             return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
         screenEffect->timer = 0;
     }
@@ -398,9 +457,8 @@ ChainCallbackResult ScreenEffect::FUN_0045bd70(ScreenEffect *screenEffect)
     rect.top = 16.0f;
     rect.right = 416.0f;
     rect.bottom = 464.0f;
-    ScreenEffect::DrawSquare(
-        &rect, (screenEffect->arcadeFadeAlpha << 24) |
-                       (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x1C) & 0xFFFFFF));
+    ScreenEffect::DrawSquare(&rect, (screenEffect->arcadeFadeAlpha << 24) |
+                                       (SCREEN_EFFECT_PARAMETERS(screenEffect).pulse.color & 0xFFFFFF));
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
@@ -429,10 +487,10 @@ ChainCallbackResult ScreenEffect::CalcShake(ScreenEffect *screenEffect)
     }
 
     shakeAmount = (f32)screenEffect->timer *
-                  (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x1c) -
-                   *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x18));
+                  (SCREEN_EFFECT_PARAMETERS(screenEffect).shake.finalAmplitude -
+                   SCREEN_EFFECT_PARAMETERS(screenEffect).shake.initialAmplitude);
     shakeAmount = shakeAmount / screenEffect->duration;
-    shakeAmount = *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x18) + shakeAmount;
+    shakeAmount = SCREEN_EFFECT_PARAMETERS(screenEffect).shake.initialAmplitude + shakeAmount;
 
     switch (g_Rng.GetRandomU32InRange(3))
     {
@@ -476,30 +534,30 @@ ChainCallbackResult ScreenEffect::FUN_0045bf10(ScreenEffect *screenEffect)
         return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
 
     screenEffect->timer++;
-    if (screenEffect->timer < *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x18))
+    if (screenEffect->timer < SCREEN_EFFECT_PARAMETERS(screenEffect).shakeEnvelope.rampUpFrames)
     {
-        shakeAmount = (f32)screenEffect->timer /
-                      *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x18);
+        shakeAmount =
+            (f32)screenEffect->timer / SCREEN_EFFECT_PARAMETERS(screenEffect).shakeEnvelope.rampUpFrames;
     }
     else if (screenEffect->timer <
-             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x18) +
-                 *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x1c))
+             SCREEN_EFFECT_PARAMETERS(screenEffect).shakeEnvelope.rampUpFrames +
+                 SCREEN_EFFECT_PARAMETERS(screenEffect).shakeEnvelope.holdFrames)
     {
         shakeAmount = 1.0f;
     }
     else
     {
         if (screenEffect->timer <
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x18) +
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x1c) +
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x20))
+            SCREEN_EFFECT_PARAMETERS(screenEffect).shakeEnvelope.rampUpFrames +
+                SCREEN_EFFECT_PARAMETERS(screenEffect).shakeEnvelope.holdFrames +
+                SCREEN_EFFECT_PARAMETERS(screenEffect).shakeEnvelope.rampDownFrames)
         {
             shakeAmount =
-                ((f32)(u32)(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x18) +
-                            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x1c) +
-                            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x20)) -
+                ((f32)(u32)(SCREEN_EFFECT_PARAMETERS(screenEffect).shakeEnvelope.rampUpFrames +
+                            SCREEN_EFFECT_PARAMETERS(screenEffect).shakeEnvelope.holdFrames +
+                            SCREEN_EFFECT_PARAMETERS(screenEffect).shakeEnvelope.rampDownFrames) -
                  (f32)screenEffect->timer) /
-                (u32)*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(screenEffect) + 0x20);
+                (u32)SCREEN_EFFECT_PARAMETERS(screenEffect).shakeEnvelope.rampDownFrames;
         }
         else
         {
@@ -537,6 +595,8 @@ ChainCallbackResult ScreenEffect::FUN_0045bf10(ScreenEffect *screenEffect)
 
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
+
+#undef SCREEN_EFFECT_PARAMETERS
 
 ZunResult ScreenEffect::AddedCallback(ScreenEffect *screenEffect)
 {
