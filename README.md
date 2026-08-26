@@ -1,7 +1,5 @@
 # 東方永夜抄 ～ Imperishable Night
 
-<h3 align="center">🌙「永夜已明」Authored reconstruction complete — Linux + Web playable ✓ · Windows/macOS in progress 💫</h3>
-
 <p align="center">
   <img
     src="resources/title-screen.png"
@@ -13,45 +11,181 @@
   <img src="resources/progress.svg" alt="TH08 exact-source and playable-platform progress">
 </p>
 
+## Repository status
+
+This repository reconstructs the source code of the original Japanese
+`東方永夜抄 ～ Imperishable Night` version 1.00d executable. The authored-source
+recovery milestone is complete: all 1,107 authored functions are present in
+source. Strict comparison currently accepts 1,105 of those functions, covering
+459,115 of 459,757 authored bytes.
+
+| Area | Status | Current position |
+| --- | --- | --- |
+| Authored source | **Complete** | 1,107 / 1,107 functions are present in source |
+| Strict authored comparison | **99.86% by bytes** | 1,105 / 1,107 functions are accepted as exact |
+| Whole executable | **In progress** | PE layout, linked runtime/library code, and two authored near matches remain |
+| Web | **Playable** | Public WebAssembly/WebGL 2 build |
+| Linux | **Playable** | Native i386 ELF and portable CI package |
+| Windows | **In progress** | Native startup and redistributable packaging are incomplete |
+| macOS | **In progress** | Native backend and packaging have not been implemented |
+
+The exact-reconstruction lane and the playable-port lanes are independent.
+Running on a modern platform is not an exactness claim, and source presence is
+not counted as a byte-exact result. The progress bar above visualizes accepted
+authored bytes only; its platform cards report delivery status separately.
+
+Current reconstruction work focuses on the two remaining authored near
+matches, whole-image layout, and target-linked compiler/runtime and D3DX code.
+Live authored and library figures come from the repository ledgers rather than
+this README.
+
+### Contributing
+
+Contributions are welcome. Useful areas include:
+
+- evidence-backed exact reconstruction and whole-image layout work;
+- reliable native Windows startup and replacement of the non-redistributable
+  D3DX debug dependency;
+- a native macOS window, input, audio, renderer, and packaging backend;
+- Linux renderer fixes, MIDI support, and testing on additional hardware;
+- browser correctness, performance, and compatibility work in
+  [N0zoM1z0/th08-web](https://github.com/N0zoM1z0/th08-web).
+
+Before changing reconstruction state, read [AGENTS.md](AGENTS.md),
+[the reverse-engineering workflow](docs/RE_WORKFLOW.md), and
+[the current handoff](docs/RE_HANDOFF.md). Exact-match contributions must be
+supported by reproducible comparison against the specified target. Never
+commit the original executable, DAT archives, extracted retail assets, private
+analysis databases, or credentials.
+
 ## Platform guides
 
-| Platform | Guide | Status |
-| --- | --- | --- |
-| Linux | **[Download, install, and play](docs/PLAY_LINUX.md)** | **Playable** |
-| Web | **[Play in your browser](https://th08-web.pages.dev/)** · [source and docs](https://github.com/N0zoM1z0/th08-web) | **Playable** |
-| Windows | [Native Windows guide](docs/PLAY_WINDOWS.md) | In progress |
-| macOS | [Native macOS guide](docs/PLAY_MACOS.md) | In progress |
+Playable ports compile the reconstructed authored game code for modern hosts.
+They do not bundle the original executable or game archives; players must
+provide data from a legally obtained copy of TH08.
 
-The Web edition now lives in the dedicated
-**[N0zoM1z0/th08-web](https://github.com/N0zoM1z0/th08-web)** repository. It
-compiles this reconstructed C++ game code to WebAssembly and renders through
-WebGL 2; it is not a TypeScript approximation or an emulator around the
-original executable. Open the public build, select your own legal `th08.dat`
-and `thbgm.dat`, and the endless night runs locally in the browser.
+### Web
 
-This project reconstructs the source code of the original Japanese
-`東方永夜抄 ～ Imperishable Night` version 1.00d executable. All 1,107 authored
-functions are now present in source, and 1,105 are accepted as byte-exact by
-reproducible comparison. The authored-source recovery milestone is complete;
-current work focuses on whole-image reconstruction, compiler/runtime libraries,
-and the remaining native Windows and macOS products. The playable Linux and Web
-editions are maintained as independent delivery lanes and do not change the
-strict VC7 exactness ledger.
+**Status: Playable**
 
-The repository continues the work of
+<p align="center">
+  <a href="https://th08-web.pages.dev/">
+    <img
+      src="https://raw.githubusercontent.com/N0zoM1z0/th08-web/main/resources/th08-web-social-preview.jpg"
+      width="800"
+      alt="TH08 Web source-built browser port and Imperishable Night title screen">
+  </a>
+</p>
+
+[Play in the browser](https://th08-web.pages.dev/) ·
+[source and documentation](https://github.com/N0zoM1z0/th08-web) ·
+[latest release](https://github.com/N0zoM1z0/th08-web/releases/latest) ·
+[engineering the Web port](https://github.com/N0zoM1z0/th08-web/blob/main/docs/WEB_PORTING.md)
+
+TH08 Web compiles the reconstructed C++ game code with Emscripten and runs it
+as WebAssembly on a browser worker. WebGL 2, Web Audio, browser-local files,
+and IndexedDB-backed saves form the platform boundary. It is not a TypeScript
+reimplementation and does not emulate the original executable.
+
+Select `th08.dat` and `thbgm.dat` from a legal TH08 installation in the
+launcher. `th08.dat` remains in volatile session memory; `thbgm.dat` is
+range-read from its browser `File` object. Neither file is uploaded, bundled,
+cached by the site, or placed in persistent browser storage. Chrome is
+recommended for the best observed frame pacing; Firefox is supported but is
+usually slower.
+
+### Linux
+
+**Status: Playable**
+
+- [Download, installation, and player guide](docs/PLAY_LINUX.md)
+- [Native Linux porting architecture and validation](docs/LINUX_PORTING.md)
+- [Portable Linux build workflow](.github/workflows/portable-linux.yml)
+
+On Debian or Ubuntu, build and run against the original game-data directory:
+
+```bash
+scripts/setup-modern-linux.sh "/path/to/the/original/TH08 directory"
+```
+
+After first-time setup, use the incremental launcher:
+
+```bash
+scripts/play-modern-linux.sh "/path/to/the/original/TH08 directory"
+```
+
+The CI workflow publishes `th08-modern-linux-i386.tar.gz` as a portable
+Actions artifact. Extract it and pass the original data directory:
+
+```bash
+./run-th08.sh "/path/to/the/original/TH08 directory"
+```
+
+The native i386 ELF has been exercised under WSLg and in a Kali Linux x86-64
+virtual machine. It requires only `th08.dat` and `thbgm.dat`; it does not open
+or execute the original `th08.exe`. Settings, scores, replays, and backups stay
+in the selected data directory.
+
+<p align="center">
+  <img
+    src="resources/kali-linux-port.gif"
+    width="800"
+    alt="TH08 native Linux reconstruction starting and running on Kali Linux">
+</p>
+
+The portable window uses the project-owned
+[`resources/modern-icon.png`](resources/modern-icon.png), not an icon extracted
+from the original executable. On software-rendered systems, a fresh
+configuration's fullscreen FPS/vsync calibration can be slow; reusing an
+existing `th08.cfg` is optional.
+
+#### Known Linux issue
+
+During the Stage 4-to-5 transition, a dynamic text texture can tile across the
+outer frame and HUD, most visibly as repeated `Yakumo Yukari` text. This is a
+renderer/texture-state bug rather than a damaged DAT archive; gameplay can
+continue past it.
+
+<p align="center">
+  <img
+    src="resources/linux-stage5-texture-tiling.png"
+    width="640"
+    alt="Known Linux Stage 5 dynamic text texture tiling bug">
+</p>
+
+### Windows
+
+**Status: In progress**
+
+See the [native Windows guide](docs/PLAY_WINDOWS.md) for the current build and
+release requirements. The source can produce a 32-bit MinGW bring-up
+executable, but native startup is not yet reliable and the build still depends
+on a non-redistributable DirectX SDK debug DLL. There is no supported Windows
+release asset yet.
+
+The intended product will run natively, accept an arbitrary legal TH08 data
+directory, and ship without Wine or non-redistributable SDK components.
+
+### macOS
+
+**Status: In progress**
+
+See the [native macOS guide](docs/PLAY_MACOS.md) for the planned platform
+boundary. No native executable or package exists yet. The port needs macOS
+window, input, audio, rendering, and packaging implementations followed by
+validation on real hardware.
+
+## Exact reconstruction
+
+The exact target is one binary: the original Japanese TH08 version 1.00d. A
+localized, patched, trial, or earlier executable is a different target.
+
+This repository is a history-preserving continuation of
 [GensokyoClub/th08](https://github.com/GensokyoClub/th08). Its complete Git
-history was imported rather than squashed, preserving the authorship and
-contribution record of the original project. New infrastructure and
-reconstruction work build on that baseline.
+history was imported rather than squashed, preserving the original authorship
+and contribution record.
 
-The project remains active reconstruction and platform-engineering work.
-Existing source, symbol mappings, or generated progress artwork must not be
-interpreted as a new exact matching percentage without a reproducible report
-against the target binary. Current source-presence inventory is generated in
-[docs/PROGRESS.md](docs/PROGRESS.md) and is deliberately labeled separately
-from strict exact-match coverage.
-
-## Target executable
+### Target executable
 
 Supply your own original executable as `resources/th08.exe`:
 
@@ -63,18 +197,17 @@ Supply your own original executable as `resources/th08.exe`:
 | PE image base | `0x00400000` |
 | Entry point | `0x004A619E` |
 
-Localized or patched executables are different binaries and are intentionally
-out of scope. The executable and game data are copyrighted assets and are not
-included.
+The executable and game data are copyrighted assets and are not included.
+Verify the private target before analysis or comparison:
 
 ```bash
 python3 scripts/verify-target.py
 ```
 
-## Build
+### Build and compare
 
-Initialize the third-party submodules, then create the upstream Visual Studio
-.NET 2002/DirectX 8 environment. On Linux or macOS:
+Initialize the third-party submodules, then create the Visual Studio .NET
+2002/DirectX 8 environment. On Linux or macOS:
 
 ```bash
 git submodule update --init --recursive
@@ -82,140 +215,40 @@ git submodule update --init --recursive
 python3 ./scripts/build.py
 ```
 
-The prefix helper uses Wine by default; set `WINE` before invoking it when a
-different compatible runner is required. On Windows, use the upstream setup
-script directly:
+The prefix helper uses Wine by default. Set `WINE` before invoking it when a
+different compatible runner is required. On Windows, use the setup script
+directly:
 
 ```text
 python scripts/create_devenv.py scripts/dls scripts/prefix
 python scripts/build.py
 ```
 
-See [Build and exact matching](docs/BUILD_MATCHING.md) for dependency,
-build-mode, reccmp, and objdiff details.
+See [Build and exact matching](docs/BUILD_MATCHING.md) for dependencies,
+build modes, reccmp, objdiff, and acceptance rules.
 
-### Playable modern ports
+### Analysis and live progress
 
-The playable ports compile the production-authored sources for modern hosts.
-Native targets live in this repository; the browser target is developed in the
-Web-focused sibling repository. Neither lane replaces or makes an exactness
-claim about the VC7 build.
+IDA MCP follows whichever database is active in the GUI and has no reliable
+program selector. Use it for TH08 only after the active database passes
+[the documented attestation](docs/IDA_MCP.md). Otherwise use target-safe
+headless tools and the repository's target-pinned analysis scripts.
 
-| Platform | Status | Delivery |
-| --- | --- | --- |
-| Linux i386 | **Done** | Local one-command build/run and CI portable archive |
-| WebAssembly / WebGL 2 | **Done** | Public browser build and provenance-gated GitHub Release |
-| Windows x86 | **In progress** | Native startup and redistributable packaging are not complete |
-| macOS | **In progress** | Native backend and packaging remain to be implemented |
-
-For build dependencies, runtime asset expectations, `--data-dir`, and the
-remaining platform sequence, see
-[Playable reconstruction ports](docs/PORTING.md).
-
-#### Web: one tab, two legal DAT files, one endless night
-
-<p align="center">
-  <a href="https://th08-web.pages.dev/">
-    <img
-      src="https://raw.githubusercontent.com/N0zoM1z0/th08-web/main/resources/th08-web-social-preview.jpg"
-      width="800"
-      alt="TH08 Web source-built browser port and Imperishable Night title screen">
-  </a>
-</p>
-
-**[Enter the endless night](https://th08-web.pages.dev/)** ·
-[source and documentation](https://github.com/N0zoM1z0/th08-web) ·
-[latest release](https://github.com/N0zoM1z0/th08-web/releases/latest) ·
-[from-zero engineering story](https://github.com/N0zoM1z0/th08-web/blob/main/docs/WEB_PORTING.md)
-
-TH08 Web compiles the reconstructed C++ game code with Emscripten, runs it as
-WebAssembly on a browser worker, and connects it to WebGL 2, Web Audio, local
-file selection, and browser-local saves. Chrome is recommended for the best
-observed frame pacing; Firefox is supported but is usually slower.
-
-No retail data is included in the site, repository, deployment, or Release.
-Each player selects `th08.dat` and `thbgm.dat` from a legally obtained TH08
-installation. The files stay on that machine: `th08.dat` is held only in
-volatile session memory, while `thbgm.dat` is range-read from its browser
-`File` object. Neither archive is uploaded or placed in persistent browser
-storage.
-
-For a source checkout on Debian or Ubuntu, the Linux quick start installs
-missing i386 dependencies, builds, and runs using only the original data
-directory:
-
-```bash
-scripts/setup-modern-linux.sh "/path/to/the/original/TH08 directory"
-```
-
-The [Portable Linux build workflow](.github/workflows/portable-linux.yml)
-also publishes `th08-modern-linux-i386.tar.gz` as a downloadable Actions
-artifact. Extract it and pass only the original game-data directory:
-
-```bash
-./run-th08.sh "/path/to/the/original/TH08 directory"
-```
-
-Neither path embeds the original executable or DAT archives.
-
-The native i386 build has been exercised under both WSLg and a Kali Linux
-x86-64 virtual machine. The Kali recording below was made in a low-memory VM
-without 3D acceleration; its slow first 45 seconds are shown at 8x speed, while
-the remainder plays at the recorded speed.
-
-<p align="center">
-  <img
-    src="resources/kali-linux-port.gif"
-    width="800"
-    alt="TH08 native Linux reconstruction starting and running on Kali Linux">
-</p>
-
-Only `th08.dat` and `thbgm.dat` are runtime data requirements. The Linux port
-does not open or execute the original `th08.exe`. A clean two-DAT directory
-previously exposed a Linux compatibility bug during the first score-backup
-rotation: Win32 rejects an invalid search handle harmlessly, while the Linux
-backend tried to delete it and crashed. The corrected backend now creates the
-backup and continues into the title assets with an initially empty `backup/`
-directory. On a software-rendered VM, a fresh configuration's fullscreen
-FPS/vsync calibration can still be slow; reusing an existing `th08.cfg` is an
-optional startup convenience, not a data requirement.
-
-The portable Linux window uses the project-owned
-[`resources/modern-icon.png`](resources/modern-icon.png), derived from the
-Touhou Lab artwork supplied for this reconstruction. It is not an icon
-extracted from the original executable.
-
-#### Known Linux issue
-
-- During the Stage 4-to-5 transition, a dynamic text texture can still tile
-  across the outer frame and HUD (most visibly as repeated `Yakumo Yukari`
-  text). This is a known renderer/texture-state bug in the Linux port, not a
-  damaged DAT archive; gameplay testing can continue past it.
-
-<p align="center">
-  <img
-    src="resources/linux-stage5-texture-tiling.png"
-    width="640"
-    alt="Known Linux Stage 5 dynamic text texture tiling bug">
-</p>
-
-## Analysis status
-
-IDA MCP follows whichever database is active in the GUI; it has no reliable
-program selector. Use it for TH08 only after the active database passes the
-attestation in [IDA and analysis safety](docs/IDA_MCP.md). Otherwise use
-target-side `objdump`/`llvm-objdump`, the verified disposable Ghidra import, and
-the target-pinned repository tools.
-
-To see the live authored and library inventory instead of relying on prose:
+Read current figures directly from the ledgers:
 
 ```bash
 python3 scripts/analysis/report-reconstruction-status.py --summary
 ```
 
+Source mappings, generated progress artwork, a successful build, or inclusion
+in `config/implemented.csv` do not establish exactness. Only an accepted,
+reproducible comparison against the verified target supports an exact-match
+claim. Generated source-presence and strict-match figures are recorded in
+[docs/PROGRESS.md](docs/PROGRESS.md).
+
 ## Project map
 
-- [TH08 Web playable browser port and engineering documentation](https://github.com/N0zoM1z0/th08-web)
+- [TH08 Web browser port and engineering documentation](https://github.com/N0zoM1z0/th08-web)
 - [Linux download, installation, and play guide](docs/PLAY_LINUX.md)
 - [Native Windows user guide and status](docs/PLAY_WINDOWS.md)
 - [Native macOS user guide and status](docs/PLAY_MACOS.md)
@@ -233,11 +266,10 @@ python3 scripts/analysis/report-reconstruction-status.py --summary
 
 ## Credits and provenance
 
-This continuation exists because of the reconstruction and tooling work by
-the contributors to [GensokyoClub/th08](https://github.com/GensokyoClub/th08).
-Their commits retain their original author/committer metadata in this
-repository. The upstream project also credits @EstexNT for porting its
-`var_order` pragma to MSVC7.
+This continuation exists because of the reconstruction and tooling work by the
+contributors to [GensokyoClub/th08](https://github.com/GensokyoClub/th08).
+Their commits retain their original author/committer metadata. The upstream
+project also credits @EstexNT for porting its `var_order` pragma to MSVC7.
 
 The [N0zoM1z0/th07 reconstruction](https://github.com/N0zoM1z0/th07) supplies
 this repository's workflow, structure, target gates, matching, and
