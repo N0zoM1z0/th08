@@ -79,6 +79,22 @@ non-reuse cold replay passed **1,105 / 1,105**, the normal VC7 link passed, and
 the complete i386 Linux build/layout verifier passed.  No match manifest,
 ledger, global identity, initialization order, or state operation changed.
 
+The latest accepted batch closes the core `Bullet` lifecycle across spawn,
+transform dispatch, removal/despawn, update/collision/culling, six draw
+buckets, rendering, sprite-template setup, and nine exact ECL extension
+handlers.  Raw `Bullet + 0xD44..+0x10B4` and manager-tail views now use asserted
+owners for kinematics, timers, state, transform masks, graze/collision gates,
+draw links, and pool bookkeeping.  The transform-specific `BulletExState`
+payloads, ANM VM internals, `Bullet + 0xDBC`, template `+0xD40`, and the
+gameplay role of the proven-`Float3` member at `+0xD5C` remain explicitly
+unknown.  Focused production/canonical replay passed **70 / 70**; a final
+non-reuse cold replay passed **1,105 / 1,105**, the normal VC7 image linked,
+and the final complete i386 Linux build/layout verifier passed.  The semantic
+router falls from 294 to 97 candidates in `BulletManager.cpp` and 25 to 18 in
+`EclExIns.cpp`; these are review deltas, not progress percentages.  No match
+manifest, ledger, global identity, state operation, or rendering sequence
+changed.
+
 Select the next independent field family with:
 
 ```bash

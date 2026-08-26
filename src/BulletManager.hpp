@@ -58,15 +58,25 @@ struct BulletTypeSprites
 {
     BulletTypeSprites();
 
-    AnmVm sprite0;
-    AnmVm sprite1;
-    AnmVm sprite2;
-    AnmVm sprite3;
-    AnmVm sprite4;
-    Float3 position;
-    unknown_fields(0xd40, 4);
+    AnmVm bulletVm;
+    AnmVm spawnFastVm;
+    AnmVm spawnNormalVm;
+    AnmVm spawnSlowVm;
+    AnmVm despawnVm;
+    Float3 collisionSize;
+    unknown_fields(0xd40, 1);
+    u8 height;
+    u8 drawBucketIndex;
+    unknown_fields(0xd43, 1);
 };
 C_ASSERT(sizeof(BulletTypeSprites) == 0xd44);
+C_ASSERT(offsetof(BulletTypeSprites, spawnFastVm) == 0x2a4);
+C_ASSERT(offsetof(BulletTypeSprites, spawnNormalVm) == 0x548);
+C_ASSERT(offsetof(BulletTypeSprites, spawnSlowVm) == 0x7ec);
+C_ASSERT(offsetof(BulletTypeSprites, despawnVm) == 0xa90);
+C_ASSERT(offsetof(BulletTypeSprites, collisionSize) == 0xd34);
+C_ASSERT(offsetof(BulletTypeSprites, height) == 0xd41);
+C_ASSERT(offsetof(BulletTypeSprites, drawBucketIndex) == 0xd42);
 
 struct BulletExState
 {
@@ -135,6 +145,17 @@ C_ASSERT(offsetof(Laser, color) == 0x596);
 C_ASSERT(offsetof(Laser, state) == 0x598);
 C_ASSERT(offsetof(Laser, hideCapDuringStartup) == 0x599);
 
+enum BulletState
+{
+    BULLET_STATE_UNUSED = 0,
+    BULLET_STATE_FIRED = 1,
+    BULLET_STATE_SPAWNING_FAST = 2,
+    BULLET_STATE_SPAWNING_NORMAL = 3,
+    BULLET_STATE_SPAWNING_SLOW = 4,
+    BULLET_STATE_DESPAWNING = 5,
+    BULLET_STATE_SENTINEL = 6,
+};
+
 struct Bullet
 {
     Bullet();
@@ -152,30 +173,73 @@ struct Bullet
     ZunResult DrawSingleBullet();
 
     BulletTypeSprites sprites;
-    Float3 position0;
-    Float3 position1;
-    Float3 position2;
-    unknown_fields(0xd68, 0x18);
-    ZunTimer timer0;
-    ZunTimer timer1;
-    unknown_fields(0xd98, 0x1e8);
+    Float3 position;
+    Float3 velocity;
+    Float3 unknownVectorD5C;
+    f32 speed;
+    unknown_fields(0xd6c, 8);
+    f32 angle;
+    unknown_fields(0xd78, 8);
+    ZunTimer stateTimer;
+    ZunTimer activeTimer;
+    unknown_fields(0xd98, 0x10);
+    i32 offscreenCullDelayFrames;
+    u32 activeTransformFlags;
+    u32 transformFlags;
+    i16 color;
+    unknown_fields(0xdb6, 2);
+    u16 state;
+    u16 offscreenFrames;
+    unknown_fields(0xdbc, 1);
+    u8 isGrazed;
+    u8 cancelledDuringSpawn;
+    unknown_fields(0xdbf, 1);
+    Bullet *nextInDrawBucket;
+    i32 zoneTransitionCooldownFrames;
+    i32 transformSound;
+    i32 transformIndex;
+    BulletTransformRecord transforms[18];
     BulletExState exStates[7];
-    unknown_fields(0x10b4, 4);
+    i8 collisionDisabled;
+    unknown_fields(0x10b5, 3);
 };
 C_ASSERT(sizeof(Bullet) == 0x10b8);
+C_ASSERT(offsetof(Bullet, position) == 0xd44);
+C_ASSERT(offsetof(Bullet, velocity) == 0xd50);
+C_ASSERT(offsetof(Bullet, unknownVectorD5C) == 0xd5c);
+C_ASSERT(offsetof(Bullet, speed) == 0xd68);
+C_ASSERT(offsetof(Bullet, angle) == 0xd74);
+C_ASSERT(offsetof(Bullet, stateTimer) == 0xd80);
+C_ASSERT(offsetof(Bullet, activeTimer) == 0xd8c);
+C_ASSERT(offsetof(Bullet, offscreenCullDelayFrames) == 0xda8);
+C_ASSERT(offsetof(Bullet, activeTransformFlags) == 0xdac);
+C_ASSERT(offsetof(Bullet, transformFlags) == 0xdb0);
+C_ASSERT(offsetof(Bullet, color) == 0xdb4);
+C_ASSERT(offsetof(Bullet, state) == 0xdb8);
+C_ASSERT(offsetof(Bullet, offscreenFrames) == 0xdba);
+C_ASSERT(offsetof(Bullet, isGrazed) == 0xdbd);
+C_ASSERT(offsetof(Bullet, cancelledDuringSpawn) == 0xdbe);
+C_ASSERT(offsetof(Bullet, nextInDrawBucket) == 0xdc0);
+C_ASSERT(offsetof(Bullet, zoneTransitionCooldownFrames) == 0xdc4);
+C_ASSERT(offsetof(Bullet, transformSound) == 0xdc8);
+C_ASSERT(offsetof(Bullet, transformIndex) == 0xdcc);
+C_ASSERT(offsetof(Bullet, transforms) == 0xdd0);
+C_ASSERT(offsetof(Bullet, exStates) == 0xf80);
+C_ASSERT(offsetof(Bullet, collisionDisabled) == 0x10b4);
 
 struct BulletManager
 {
     BulletTypeSprites bulletTypeSprites[0x20];
     Bullet bullets[0x601];
     Laser lasers[0x100];
-    unknown_fields(0x6ba538, 8);
+    i32 activeBulletCount;
+    i32 spawnSuppressionFrames;
     ZunTimer timer;
-    unknown_fields(0x6ba54c, 4);
+    i32 frameCounter;
     char *bulletAnmPath;
-    unknown_fields(0x6ba554, 0x18);
-    u8 *bulletCursor;
-    i32 unk6ba570;
+    Bullet *drawBuckets[6];
+    Bullet *bulletCursor;
+    i32 cancelItemType;
     AnmLoaded *bulletAnm;
 
     BulletManager();
@@ -197,6 +261,17 @@ struct BulletManager
     static ZunResult DeletedCallback(BulletManager *bulletManager);
     static void CutChain();
 };
+C_ASSERT(sizeof(BulletManager) == 0x6ba578);
+C_ASSERT(offsetof(BulletManager, bullets) == 0x1a880);
+C_ASSERT(offsetof(BulletManager, lasers) == 0x660938);
+C_ASSERT(offsetof(BulletManager, activeBulletCount) == 0x6ba538);
+C_ASSERT(offsetof(BulletManager, spawnSuppressionFrames) == 0x6ba53c);
+C_ASSERT(offsetof(BulletManager, timer) == 0x6ba540);
+C_ASSERT(offsetof(BulletManager, frameCounter) == 0x6ba54c);
+C_ASSERT(offsetof(BulletManager, drawBuckets) == 0x6ba554);
+C_ASSERT(offsetof(BulletManager, bulletCursor) == 0x6ba56c);
+C_ASSERT(offsetof(BulletManager, cancelItemType) == 0x6ba570);
+C_ASSERT(offsetof(BulletManager, bulletAnm) == 0x6ba574);
 
 DIFFABLE_EXTERN(BulletManager, g_BulletManager);
 

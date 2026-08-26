@@ -42,22 +42,22 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(i32, 8, g_BulletSpriteOffsetMedium) = {
 #pragma var_order(i, bullet, this)
 void BulletManager::Initialize()
 {
-    u8 *bullet;
+    Bullet *bullet;
     i32 i;
 
     memset(this, 0, sizeof(BulletManager));
-    *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x6BA56C) = reinterpret_cast<u8 *>(this) + 0x1A880;
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(this) + 0x660638) = 6;
-    this->unk6ba570 = 6;
+    this->bulletCursor = &this->bullets[0];
+    this->bullets[0x600].state = BULLET_STATE_SENTINEL;
+    this->cancelItemType = 6;
 
-    bullet = reinterpret_cast<u8 *>(&g_BulletManager) + 0x1A880;
-    for (i = 0; i < 0x600; i++, bullet += 0x10B8)
+    bullet = &g_BulletManager.bullets[0];
+    for (i = 0; i < 0x600; i++, bullet++)
     {
-        *reinterpret_cast<u16 *>(bullet + 0x21A) = 0xFFFF;
-        *reinterpret_cast<u16 *>(bullet + 0xCAA) = 0xFFFF;
-        *reinterpret_cast<u16 *>(bullet + 0x4BE) = 0xFFFF;
-        *reinterpret_cast<u16 *>(bullet + 0x762) = 0xFFFF;
-        *reinterpret_cast<u16 *>(bullet + 0xA06) = 0xFFFF;
+        bullet->sprites.bulletVm.scriptIndex = -1;
+        bullet->sprites.despawnVm.scriptIndex = -1;
+        bullet->sprites.spawnFastVm.scriptIndex = -1;
+        bullet->sprites.spawnNormalVm.scriptIndex = -1;
+        bullet->sprites.spawnSlowVm.scriptIndex = -1;
     }
 }
 
@@ -93,7 +93,7 @@ i32 BulletManager::FUN_0042f5f0(BulletSpawnDescriptor *descriptor, i32 index1, i
 {
     f32 speed;
     i32 i;
-    u8 *bullet;
+    Bullet *bullet;
     f32 angle;
     u32 transformFlags;
 
@@ -101,11 +101,11 @@ i32 BulletManager::FUN_0042f5f0(BulletSpawnDescriptor *descriptor, i32 index1, i
     bullet = this->bulletCursor;
     for (i = 0; i < 0x600; i++)
     {
-        if (*reinterpret_cast<u16 *>(bullet + 0xDB8) == 0)
+        if (bullet->state == BULLET_STATE_UNUSED)
             break;
-        bullet += 0x10B8;
-        if (*reinterpret_cast<u16 *>(bullet + 0xDB8) == 6)
-            bullet = reinterpret_cast<u8 *>(this) + 0x1A880;
+        bullet++;
+        if (bullet->state == BULLET_STATE_SENTINEL)
+            bullet = &this->bullets[0];
     }
     if (i >= 0x600)
         return 1;
@@ -160,107 +160,105 @@ i32 BulletManager::FUN_0042f5f0(BulletSpawnDescriptor *descriptor, i32 index1, i
         break;
     }
 
-    *reinterpret_cast<u16 *>(bullet + 0xDB8) = 1;
-    *reinterpret_cast<u8 *>(bullet + 0xDBC) = 1;
-    *reinterpret_cast<u8 *>(bullet + 0xDBD) = 0;
-    *reinterpret_cast<ZunTimer *>(bullet + 0xD80) = 0;
-    *reinterpret_cast<u8 *>(bullet + 0x10B4) = 0;
-    *reinterpret_cast<ZunTimer *>(bullet + 0xD8C) = 0;
-    *reinterpret_cast<f32 *>(bullet + 0xD68) = speed;
-    *reinterpret_cast<f32 *>(bullet + 0xD74) = AddNormalizeAngle(angle, 0.0f);
-    *reinterpret_cast<Float3 *>(bullet + 0xD44) = descriptor->position;
-    reinterpret_cast<Float3 *>(bullet + 0xD44)->operator float *()[2] = 0.1f;
-    reinterpret_cast<Float3 *>(bullet + 0xD50)->FromAngleMagnitude(
+    bullet->state = BULLET_STATE_FIRED;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(bullet) + 0xDBC) = 1;
+    bullet->isGrazed = 0;
+    bullet->stateTimer = 0;
+    bullet->collisionDisabled = 0;
+    bullet->activeTimer = 0;
+    bullet->speed = speed;
+    bullet->angle = AddNormalizeAngle(angle, 0.0f);
+    bullet->position = descriptor->position;
+    bullet->position.operator float *()[2] = 0.1f;
+    bullet->velocity.FromAngleMagnitude(
         angle, speed * g_EclGameTimeScale);
 
-    *reinterpret_cast<u32 *>(bullet + 0xDAC) = descriptor->transformFlags;
-    *reinterpret_cast<i16 *>(bullet + 0xDB4) = descriptor->color;
-    *reinterpret_cast<i32 *>(bullet + 0xDC4) = 0;
-    *reinterpret_cast<u8 *>(bullet + 0xDBE) = 0;
+    bullet->activeTransformFlags = descriptor->transformFlags;
+    bullet->color = descriptor->color;
+    bullet->zoneTransitionCooldownFrames = 0;
+    bullet->cancelledDuringSpawn = 0;
 
-    CopyBulletAnmVmCore(reinterpret_cast<AnmVm *>(bullet), reinterpret_cast<AnmVm *>(descriptor->templateSprites));
-    CopyBulletAnmVmCore(reinterpret_cast<AnmVm *>(bullet + 0xA90), reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0xA90));
-    *reinterpret_cast<Float3 *>(bullet + 0xD34) = descriptor->templateSprites->position;
-    *reinterpret_cast<u8 *>(bullet + 0xD40) = *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0xD40);
-    *reinterpret_cast<u8 *>(bullet + 0xD41) = *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0xD41);
-    *reinterpret_cast<u8 *>(bullet + 0xD42) = *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0xD42);
-    *reinterpret_cast<i32 *>(bullet + 0xDC8) = descriptor->transformSound;
-    *reinterpret_cast<i32 *>(bullet + 0xDA8) = 0;
+    CopyBulletAnmVmCore(&bullet->sprites.bulletVm, &descriptor->templateSprites->bulletVm);
+    CopyBulletAnmVmCore(&bullet->sprites.despawnVm, &descriptor->templateSprites->despawnVm);
+    bullet->sprites.collisionSize = descriptor->templateSprites->collisionSize;
+    *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&bullet->sprites) + 0xD40) =
+        *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0xD40);
+    bullet->sprites.height = descriptor->templateSprites->height;
+    bullet->sprites.drawBucketIndex = descriptor->templateSprites->drawBucketIndex;
+    bullet->transformSound = descriptor->transformSound;
+    bullet->offscreenCullDelayFrames = 0;
 
-    if (*reinterpret_cast<i16 *>(bullet + 0x214) !=
-        *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0x214) + descriptor->color)
+    if (bullet->sprites.bulletVm.activeSpriteIndex !=
+        descriptor->templateSprites->bulletVm.activeSpriteIndex + descriptor->color)
     {
-        this->bulletAnm->SetSprite(reinterpret_cast<AnmVm *>(bullet),
-            *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0x214) + descriptor->color);
+        this->bulletAnm->SetSprite(&bullet->sprites.bulletVm,
+            descriptor->templateSprites->bulletVm.activeSpriteIndex + descriptor->color);
     }
 
-    if (*reinterpret_cast<i16 *>(bullet + 0xCA4) !=
-        *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0xCA4) + descriptor->color)
+    if (bullet->sprites.despawnVm.activeSpriteIndex !=
+        descriptor->templateSprites->despawnVm.activeSpriteIndex + descriptor->color)
     {
-        if (*reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(bullet + 0x224) + 0x30) <= 16.0f)
+        if (bullet->sprites.bulletVm.loadedSprite->heightPx <= 16.0f)
         {
-            this->bulletAnm->SetSprite(reinterpret_cast<AnmVm *>(bullet + 0xA90),
-                *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0xCA4) +
+            this->bulletAnm->SetSprite(&bullet->sprites.despawnVm,
+                descriptor->templateSprites->despawnVm.activeSpriteIndex +
                     g_BulletSpriteOffsetSmall[descriptor->color]);
         }
-        else if (*reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(bullet + 0x224) + 0x30) <= 32.0f)
+        else if (bullet->sprites.bulletVm.loadedSprite->heightPx <= 32.0f)
         {
-            this->bulletAnm->SetSprite(reinterpret_cast<AnmVm *>(bullet + 0xA90),
-                *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0xCA4) +
+            this->bulletAnm->SetSprite(&bullet->sprites.despawnVm,
+                descriptor->templateSprites->despawnVm.activeSpriteIndex +
                     g_BulletSpriteOffsetMedium[descriptor->color]);
         }
         else
         {
-            this->bulletAnm->SetSprite(reinterpret_cast<AnmVm *>(bullet + 0xA90),
-                *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0xCA4) + descriptor->color);
+            this->bulletAnm->SetSprite(&bullet->sprites.despawnVm,
+                descriptor->templateSprites->despawnVm.activeSpriteIndex + descriptor->color);
         }
     }
 
     transformFlags = descriptor->transformFlags;
     if ((descriptor->transformFlags & 2) != 0)
     {
-        CopyBulletAnmVmCore(reinterpret_cast<AnmVm *>(bullet + 0x2A4), reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0x2A4));
-        SelectBulletSprite(reinterpret_cast<AnmVm *>(bullet + 0x2A4),
-                           reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0x2A4),
-                           reinterpret_cast<AnmVm *>(bullet), descriptor->color);
-        *reinterpret_cast<u16 *>(bullet + 0xDB8) = 2;
-        *reinterpret_cast<Float3 *>(bullet + 0xD44) -=
-            *reinterpret_cast<Float3 *>(bullet + 0xD50) * 4.0f;
+        CopyBulletAnmVmCore(&bullet->sprites.spawnFastVm, &descriptor->templateSprites->spawnFastVm);
+        SelectBulletSprite(&bullet->sprites.spawnFastVm,
+                           &descriptor->templateSprites->spawnFastVm,
+                           &bullet->sprites.bulletVm, descriptor->color);
+        bullet->state = BULLET_STATE_SPAWNING_FAST;
+        bullet->position -= bullet->velocity * 4.0f;
     }
     else if ((descriptor->transformFlags & 4) != 0)
     {
-        CopyBulletAnmVmCore(reinterpret_cast<AnmVm *>(bullet + 0x548), reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0x548));
-        SelectBulletSprite(reinterpret_cast<AnmVm *>(bullet + 0x548),
-                           reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0x548),
-                           reinterpret_cast<AnmVm *>(bullet), descriptor->color);
-        *reinterpret_cast<u16 *>(bullet + 0xDB8) = 3;
-        *reinterpret_cast<Float3 *>(bullet + 0xD44) -=
-            *reinterpret_cast<Float3 *>(bullet + 0xD50) * 4.0f;
+        CopyBulletAnmVmCore(&bullet->sprites.spawnNormalVm, &descriptor->templateSprites->spawnNormalVm);
+        SelectBulletSprite(&bullet->sprites.spawnNormalVm,
+                           &descriptor->templateSprites->spawnNormalVm,
+                           &bullet->sprites.bulletVm, descriptor->color);
+        bullet->state = BULLET_STATE_SPAWNING_NORMAL;
+        bullet->position -= bullet->velocity * 4.0f;
     }
     else if ((descriptor->transformFlags & 8) != 0)
     {
-        CopyBulletAnmVmCore(reinterpret_cast<AnmVm *>(bullet + 0x7EC), reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0x7EC));
-        SelectBulletSprite(reinterpret_cast<AnmVm *>(bullet + 0x7EC),
-                           reinterpret_cast<AnmVm *>(reinterpret_cast<u8 *>(descriptor->templateSprites) + 0x7EC),
-                           reinterpret_cast<AnmVm *>(bullet), descriptor->color);
-        *reinterpret_cast<u16 *>(bullet + 0xDB8) = 4;
-        *reinterpret_cast<Float3 *>(bullet + 0xD44) -=
-            *reinterpret_cast<Float3 *>(bullet + 0xD50) * 4.0f;
+        CopyBulletAnmVmCore(&bullet->sprites.spawnSlowVm, &descriptor->templateSprites->spawnSlowVm);
+        SelectBulletSprite(&bullet->sprites.spawnSlowVm,
+                           &descriptor->templateSprites->spawnSlowVm,
+                           &bullet->sprites.bulletVm, descriptor->color);
+        bullet->state = BULLET_STATE_SPAWNING_SLOW;
+        bullet->position -= bullet->velocity * 4.0f;
     }
 
-    memcpy(bullet + 0xDD0, descriptor->transforms, sizeof(descriptor->transforms));
-    *reinterpret_cast<u32 *>(bullet + 0xDB0) = descriptor->transformFlags;
-    *reinterpret_cast<u32 *>(bullet + 0xDAC) = 0;
-    *reinterpret_cast<i32 *>(bullet + 0xDCC) = descriptor->transformStartIndex;
-    reinterpret_cast<Bullet *>(bullet)->FUN_0042ffc0();
+    memcpy(bullet->transforms, descriptor->transforms, sizeof(descriptor->transforms));
+    bullet->transformFlags = descriptor->transformFlags;
+    bullet->activeTransformFlags = 0;
+    bullet->transformIndex = descriptor->transformStartIndex;
+    bullet->FUN_0042ffc0();
 
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA53C) != 0 &&
-        (*reinterpret_cast<u32 *>(bullet + 0xDB0) & 0x1000) == 0)
-        *reinterpret_cast<u16 *>(bullet + 0xDB8) = 5;
+    if (this->spawnSuppressionFrames != 0 &&
+        (bullet->transformFlags & 0x1000) == 0)
+        bullet->state = BULLET_STATE_DESPAWNING;
 
-    bullet += 0x10B8;
-    if (*reinterpret_cast<u16 *>(bullet + 0xDB8) == 6)
-        this->bulletCursor = reinterpret_cast<u8 *>(this) + 0x1A880;
+    bullet++;
+    if (bullet->state == BULLET_STATE_SENTINEL)
+        this->bulletCursor = &this->bullets[0];
     else
         this->bulletCursor = bullet;
     return 0;
@@ -317,67 +315,63 @@ void Bullet::FUN_0042ffc0()
     BulletTransformRecord *record;
 
 nextRecord:
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDCC) >= 18)
+    if (this->transformIndex >= 18)
         return;
 
-    record = reinterpret_cast<BulletTransformRecord *>(
-        reinterpret_cast<u8 *>(this) + 0xDD0 +
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDCC) * sizeof(BulletTransformRecord));
+    record = &this->transforms[this->transformIndex];
     if (record->kind == 0)
         return;
-    if (record->allowWhileActive == 0 && *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) != 0)
+    if (record->allowWhileActive == 0 && this->activeTransformFlags != 0)
         return;
-    if ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDB0) & record->kind) == 0)
+    if ((this->transformFlags & record->kind) == 0)
     {
-        ++*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDCC);
+        ++this->transformIndex;
         goto nextRecord;
     }
 
     switch (record->kind)
     {
     case 1:
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) |= 1;
+        this->activeTransformFlags |= 1;
         *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xF80) = 0;
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xF9C) = 0;
         break;
 
     case 0x10:
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) |= 0x10;
+        this->activeTransformFlags |= 0x10;
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFB8) = record->float0;
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFBC) =
             record->float1 > -990.0f ? record->float1
-                                    : *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74);
+                                    : this->angle;
         *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFAC) = 0;
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFCC) = record->int0;
         reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xFC0)->FromAngleMagnitude(
             *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFBC),
             g_EclGameTimeScale * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFB8));
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDCC) != 0 &&
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDC8) >= 0)
+        if (this->transformIndex != 0 && this->transformSound >= 0)
             g_SoundPlayer.PlaySoundByIdx(
-                static_cast<SoundIdx>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDC8)), 0);
+                static_cast<SoundIdx>(this->transformSound), 0);
         break;
 
     case 0x20:
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) |= 0x20;
+        this->activeTransformFlags |= 0x20;
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFE4) = record->float0;
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFE8) = record->float1;
         *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFD8) = 0;
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFF8) = record->int0;
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDCC) != 0 &&
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDC8) >= 0)
+        if (this->transformIndex != 0 && this->transformSound >= 0)
             g_SoundPlayer.PlaySoundByIdx(
-                static_cast<SoundIdx>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDC8)), 0);
+                static_cast<SoundIdx>(this->transformSound), 0);
         break;
 
     case 0x40:
     case 0x80:
     case 0x100:
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) |= record->kind;
+        this->activeTransformFlags |= record->kind;
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x1014) = record->float0;
         *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x1010) =
             record->float1 > -999.0f ? record->float1
-                                    : *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68);
+                                    : this->speed;
         *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) = 0;
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1024) = record->int0;
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1028) = record->int1;
@@ -386,58 +380,58 @@ nextRecord:
 
     case 0x400:
     case 0x800:
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) |= record->kind;
+        this->activeTransformFlags |= record->kind;
         if (record->float0 >= 0.0f)
             *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x103C) = record->float0;
         else
             *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x103C) =
-                *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68);
+                this->speed;
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1054) = record->int0;
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1050) = 0;
         break;
 
     case 0x400000:
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) |= record->kind;
+        this->activeTransformFlags |= record->kind;
         *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1088) = record->int0;
         break;
 
     case 0x800000:
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) |= record->kind;
+        this->activeTransformFlags |= record->kind;
         *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1088) = record->int0;
         break;
 
     case 0x20000:
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) |= record->kind;
+        this->activeTransformFlags |= record->kind;
         *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x105C) = record->int0;
         break;
 
     case 0x2000:
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDA8) = record->int0;
-        ++*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDCC);
+        this->offscreenCullDelayFrames = record->int0;
+        ++this->transformIndex;
         goto nextRecord;
 
     case 0x4000:
         this->sprites = g_BulletManager.bulletTypeSprites[record->int0];
         g_BulletManager.bulletAnm->SetSprite(
-            &this->sprites.sprite0,
-            *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(&this->sprites.sprite0) + 0x214) + record->int1);
-        ++*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDCC);
+            &this->sprites.bulletVm,
+            this->sprites.bulletVm.activeSpriteIndex + record->int1);
+        ++this->transformIndex;
         goto nextRecord;
 
     case 0x40000:
-        *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(this) + 0xDB8) = 5;
+        this->state = BULLET_STATE_DESPAWNING;
         break;
 
     case 0x80000:
-        g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(record->int0), this->position0.x);
-        ++*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDCC);
+        g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(record->int0), this->position.x);
+        ++this->transformIndex;
         goto nextRecord;
 
     case 0x1000000:
         {
             BulletSpawnDescriptor pattern;
             i32 fadeParent;
-            pattern.position = this->position0;
+            pattern.position = this->position;
             fadeParent = record->int0 & 0x80000000;
             pattern.aimMode = (static_cast<u32>(record->int0) & 0x7F000000) >> 24;
             pattern.bulletType = (static_cast<u32>(record->int0) & 0x00FF0000) >> 16;
@@ -448,16 +442,16 @@ nextRecord:
             pattern.speed2 = record->float1;
 
             ++record;
-            ++*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDCC);
+            ++this->transformIndex;
             pattern.count2 = static_cast<i16>(record->int0);
             pattern.transformFlags = record->int1;
             pattern.angle = record->float0;
             pattern.angleStep = record->float1;
-            memcpy(pattern.transforms, reinterpret_cast<u8 *>(this) + 0xDD0, sizeof(pattern.transforms));
+            memcpy(pattern.transforms, this->transforms, sizeof(pattern.transforms));
             g_BulletManager.FUN_00430e10(&pattern);
-            ++*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDCC);
+            ++this->transformIndex;
             if (fadeParent != 0)
-                *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(this) + 0xDB8) = 5;
+                this->state = BULLET_STATE_DESPAWNING;
             else
                 goto nextRecord;
         }
@@ -467,14 +461,14 @@ nextRecord:
         break;
     }
 
-    ++*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDCC);
+    ++this->transformIndex;
 }
 
 // FUNCTION: th08 0x430830
 #pragma var_order(position, playerCollisionResult, bulletIndex, sine, bullet, laser, cosine, radius, this)
 void BulletManager::RemoveAllBullets(i32 mode)
 {
-    u8 *bullet = reinterpret_cast<u8 *>(&g_BulletManager) + 0x1A880;
+    Bullet *bullet = &g_BulletManager.bullets[0];
     i32 bulletIndex;
     i32 playerCollisionResult;
     Laser *laser;
@@ -483,29 +477,29 @@ void BulletManager::RemoveAllBullets(i32 mode)
     f32 cosine;
     f32 radius;
 
-    for (bulletIndex = 0; bulletIndex < 0x600; bulletIndex++, bullet += 0x10B8)
+    for (bulletIndex = 0; bulletIndex < 0x600; bulletIndex++, bullet++)
     {
-        if (*reinterpret_cast<u16 *>(bullet + 0xDB8) == 0 || *reinterpret_cast<u16 *>(bullet + 0xDB8) == 5)
+        if (bullet->state == BULLET_STATE_UNUSED || bullet->state == BULLET_STATE_DESPAWNING)
         {
             continue;
         }
 
-        playerCollisionResult = g_Player.FUN_00449ff0(reinterpret_cast<Float3 *>(bullet + 0xD44),
-                                                      reinterpret_cast<Float3 *>(bullet + 0xD34));
-        if (g_Player.FUN_00449ff0(reinterpret_cast<Float3 *>(bullet + 0xD44), reinterpret_cast<Float3 *>(bullet + 0xD34)) == 2)
+        playerCollisionResult = g_Player.FUN_00449ff0(&bullet->position,
+                                                      &bullet->sprites.collisionSize);
+        if (g_Player.FUN_00449ff0(&bullet->position, &bullet->sprites.collisionSize) == 2)
         {
-            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
+            g_ItemManager.SpawnItem(&bullet->position, static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
             memset(bullet, 0, 0x10B8);
         }
         else if (mode != 4)
         {
-            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44),
-                                    static_cast<ItemType>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA570)), mode);
+            g_ItemManager.SpawnItem(&bullet->position,
+                                    static_cast<ItemType>(this->cancelItemType), mode);
             memset(bullet, 0, 0x10B8);
         }
         else
         {
-            *reinterpret_cast<u16 *>(bullet + 0xDB8) = 5;
+            bullet->state = BULLET_STATE_DESPAWNING;
         }
     }
 
@@ -539,7 +533,7 @@ void BulletManager::RemoveAllBullets(i32 mode)
                     position[1] = sine * radius + laser->position.y;
                     position[2] = 0.0f;
                     g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(position),
-                                            static_cast<ItemType>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA570)), mode);
+                                            static_cast<ItemType>(this->cancelItemType), mode);
                     radius = radius + 1.0f;
                 }
             }
@@ -548,7 +542,7 @@ void BulletManager::RemoveAllBullets(i32 mode)
         laser->hitboxEndDelay = 0;
     }
 
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA53C) = 10;
+    this->spawnSuppressionFrames = 10;
 }
 
 
@@ -560,7 +554,7 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
     f32 cosine;
     Laser *laser;
     f32 position[3];
-    u8 *bullet;
+    Bullet *bullet;
     f32 sine;
     i32 bulletIndex;
     i32 bulletCount;
@@ -570,28 +564,28 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
     totalScore = 0;
     score = 2000;
     bulletCount = 0;
-    bullet = reinterpret_cast<u8 *>(&g_BulletManager) + 0x1A880;
-    for (bulletIndex = 0; bulletIndex < 0x600; bulletIndex++, bullet += 0x10B8)
+    bullet = &g_BulletManager.bullets[0];
+    for (bulletIndex = 0; bulletIndex < 0x600; bulletIndex++, bullet++)
     {
-        if (*reinterpret_cast<u16 *>(bullet + 0xDB8) == 0)
+        if (bullet->state == BULLET_STATE_UNUSED)
         {
             continue;
         }
 
-        if (g_Player.FUN_00449ff0(reinterpret_cast<Float3 *>(bullet + 0xD44),
-                                 reinterpret_cast<Float3 *>(bullet + 0xD34)) == 2)
+        if (g_Player.FUN_00449ff0(&bullet->position,
+                                 &bullet->sprites.collisionSize) == 2)
         {
-            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44),
+            g_ItemManager.SpawnItem(&bullet->position,
                                     static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
         }
         else
         {
             g_ItemManager.SpawnItem(
-                reinterpret_cast<Float3 *>(bullet + 0xD44),
-                static_cast<ItemType>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA570)), 1);
+                &bullet->position,
+                static_cast<ItemType>(this->cancelItemType), 1);
         }
 
-        g_AsciiManager.CreateScorePopup(reinterpret_cast<Float3 *>(bullet + 0xD44), score,
+        g_AsciiManager.CreateScorePopup(&bullet->position, score,
                                         score >= maxScore ? -256 : -1);
         totalScore += score;
         bulletCount++;
@@ -600,7 +594,7 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
         {
             score = maxScore;
         }
-        *reinterpret_cast<u16 *>(bullet + 0xDB8) = 5;
+        bullet->state = BULLET_STATE_DESPAWNING;
     }
 
     laser = &this->lasers[0];
@@ -623,7 +617,7 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
             {
                 g_ItemManager.SpawnItem(
                     &laser->position,
-                    static_cast<ItemType>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA570)), 1);
+                    static_cast<ItemType>(this->cancelItemType), 1);
                 radius = laser->startOffset;
                 fsincos(&sine, &cosine, laser->angle);
                 while (laser->endOffset > radius)
@@ -633,7 +627,7 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
                     position[2] = 0.0f;
                     g_ItemManager.SpawnItem(
                         reinterpret_cast<Float3 *>(position),
-                        static_cast<ItemType>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA570)), 1);
+                        static_cast<ItemType>(this->cancelItemType), 1);
                     radius += 32.0f;
                 }
             }
@@ -642,7 +636,7 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
         laser->hitboxEndDelay = 0;
     }
 
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA53C) = 10;
+    this->spawnSuppressionFrames = 10;
     return totalScore;
 }
 
@@ -658,13 +652,13 @@ void BulletManager::RemoveBulletsInRadius(const Float3 *position, f32 radius)
     radius *= radius;
     for (i = 0; i < 0x600; i++, bullet++)
     {
-        if (*reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(bullet) + 0xdb8) == 0 ||
-            *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(bullet) + 0xdb8) == 5)
+        if (bullet->state == BULLET_STATE_UNUSED ||
+            bullet->state == BULLET_STATE_DESPAWNING)
             continue;
-        delta = bullet->position0 - *position;
+        delta = bullet->position - *position;
         if (D3DXVec3LengthSq(reinterpret_cast<D3DXVECTOR3 *>(&delta)) > radius)
             continue;
-        g_ItemManager.SpawnItem(&bullet->position0, static_cast<ItemType>(6), 1);
+        g_ItemManager.SpawnItem(&bullet->position, static_cast<ItemType>(6), 1);
         memset(bullet, 0, sizeof(Bullet));
     }
 }
@@ -678,7 +672,7 @@ i32 BulletManager::FUN_00430e10(BulletSpawnDescriptor *descriptor)
     i32 j;
 
     *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xDA) |= 0x800;
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_BulletManager) + 0x6BA538) >= 0x600)
+    if (g_BulletManager.activeBulletCount >= 0x600)
         return 0;
 
     descriptor->templateSprites = &this->bulletTypeSprites[descriptor->bulletType];
@@ -706,7 +700,7 @@ Laser *BulletManager::SpawnLaserPattern(BulletSpawnDescriptor *descriptor)
     i32 i;
 
     laser = &this->lasers[0];
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA53C) != 0 &&
+    if (this->spawnSuppressionFrames != 0 &&
         (descriptor->transformFlags & 4) == 0)
         return laser;
 
@@ -782,226 +776,222 @@ ChainCallbackResult BulletManager::OnUpdate(BulletManager *bulletManager)
     f32 currentWidth;
     i32 bucketIndex;
     f32 laserSize[3];
-    u8 *bullet;
+    Bullet *bullet;
     i32 alpha;
     Laser *laser;
     f32 laserCenter[3];
     i32 rampWindow;
 
     bucketIndex = 0;
-    bullet = reinterpret_cast<u8 *>(bulletManager) + 0x1A880;
+    bullet = &bulletManager->bullets[0];
     if (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 10) & 1) != 0)
         return CHAIN_CALLBACK_RESULT_CONTINUE;
 
     g_ItemManager.OnUpdate();
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(bulletManager) + 0x6BA538) = 0;
+    bulletManager->activeBulletCount = 0;
     bulletManager->FUN_004321b0();
 
     for (i = 0; i < 0x600; i++)
     {
-        if (*reinterpret_cast<u16 *>(bullet + 0xDB8) == 0)
+        if (bullet->state == BULLET_STATE_UNUSED)
             goto nextBullet;
 
-        ++*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(bulletManager) + 0x6BA538);
-            switch (*reinterpret_cast<u16 *>(bullet + 0xDB8))
+        ++bulletManager->activeBulletCount;
+            switch (bullet->state)
             {
 activateBullet:
-            *reinterpret_cast<u16 *>(bullet + 0xDB8) = 1;
-            *reinterpret_cast<ZunTimer *>(bullet + 0xD80) = 0;
-            case 1:
+            bullet->state = BULLET_STATE_FIRED;
+            bullet->stateTimer = 0;
+            case BULLET_STATE_FIRED:
 updateBullet:
-            reinterpret_cast<Bullet *>(bullet)->FUN_0042ffc0();
-            if (*reinterpret_cast<u32 *>(bullet + 0xDAC) != 0)
+            bullet->FUN_0042ffc0();
+            if (bullet->activeTransformFlags != 0)
             {
-                if ((*reinterpret_cast<u32 *>(bullet + 0xDAC) & 1) != 0)
-                    reinterpret_cast<Bullet *>(bullet)->FUN_00432210();
-                if ((*reinterpret_cast<u32 *>(bullet + 0xDAC) & 0x10) != 0)
-                    reinterpret_cast<Bullet *>(bullet)->FUN_004322b0();
-                if ((*reinterpret_cast<u32 *>(bullet + 0xDAC) & 0x20) != 0)
-                    reinterpret_cast<Bullet *>(bullet)->FUN_00432390();
-                if ((*reinterpret_cast<u32 *>(bullet + 0xDAC) & 0x40) != 0)
-                    reinterpret_cast<Bullet *>(bullet)->FUN_00432460();
-                if ((*reinterpret_cast<u32 *>(bullet + 0xDAC) & 0x100) != 0)
-                    reinterpret_cast<Bullet *>(bullet)->FUN_004325a0();
-                if ((*reinterpret_cast<u32 *>(bullet + 0xDAC) & 0x80) != 0)
-                    reinterpret_cast<Bullet *>(bullet)->FUN_004326e0();
-                if ((*reinterpret_cast<u32 *>(bullet + 0xDAC) & 0xC00) != 0)
-                    reinterpret_cast<Bullet *>(bullet)->FUN_00432830();
-                if ((*reinterpret_cast<u32 *>(bullet + 0xDAC) & 0x400000) != 0)
-                    reinterpret_cast<Bullet *>(bullet)->FUN_004329f0();
-                if ((*reinterpret_cast<u32 *>(bullet + 0xDAC) & 0x800000) != 0)
-                    reinterpret_cast<Bullet *>(bullet)->FUN_00432aa0();
-                if ((*reinterpret_cast<u32 *>(bullet + 0xDAC) & 0x20000) != 0)
+                if ((bullet->activeTransformFlags & 1) != 0)
+                    bullet->FUN_00432210();
+                if ((bullet->activeTransformFlags & 0x10) != 0)
+                    bullet->FUN_004322b0();
+                if ((bullet->activeTransformFlags & 0x20) != 0)
+                    bullet->FUN_00432390();
+                if ((bullet->activeTransformFlags & 0x40) != 0)
+                    bullet->FUN_00432460();
+                if ((bullet->activeTransformFlags & 0x100) != 0)
+                    bullet->FUN_004325a0();
+                if ((bullet->activeTransformFlags & 0x80) != 0)
+                    bullet->FUN_004326e0();
+                if ((bullet->activeTransformFlags & 0xC00) != 0)
+                    bullet->FUN_00432830();
+                if ((bullet->activeTransformFlags & 0x400000) != 0)
+                    bullet->FUN_004329f0();
+                if ((bullet->activeTransformFlags & 0x800000) != 0)
+                    bullet->FUN_00432aa0();
+                if ((bullet->activeTransformFlags & 0x20000) != 0)
                 {
-                    if (*reinterpret_cast<ZunTimer *>(bullet + 0x105C) <= 0)
-                        *reinterpret_cast<u32 *>(bullet + 0xDAC) ^= 0x20000;
+                    if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(bullet) + 0x105C) <= 0)
+                        bullet->activeTransformFlags ^= 0x20000;
                     else
-                        (*reinterpret_cast<ZunTimer *>(bullet + 0x105C))--;
+                        (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(bullet) + 0x105C))--;
                 }
             }
 
-            if (*reinterpret_cast<i32 *>(bullet + 0xDA8) != 0)
-                --*reinterpret_cast<i32 *>(bullet + 0xDA8);
+            if (bullet->offscreenCullDelayFrames != 0)
+                --bullet->offscreenCullDelayFrames;
             if (!g_EclScriptedGlobalUpdateFreeze)
-                *reinterpret_cast<Float3 *>(bullet + 0xD44) += *reinterpret_cast<Float3 *>(bullet + 0xD50);
+                bullet->position += bullet->velocity;
 
-            if (*reinterpret_cast<i32 *>(bullet + 0xDA8) == 0)
+            if (bullet->offscreenCullDelayFrames == 0)
             {
                 if (!g_GameManager.IsWithinPlayfield(
-                        reinterpret_cast<Float3 *>(bullet + 0xD44)->operator float *()[0],
-                        reinterpret_cast<Float3 *>(bullet + 0xD44)->operator float *()[1],
-                        *reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(bullet + 0x224) + 0x34),
-                        *reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(bullet + 0x224) + 0x30)))
+                        bullet->position.operator float *()[0],
+                        bullet->position.operator float *()[1],
+                        bullet->sprites.bulletVm.loadedSprite->widthPx,
+                        bullet->sprites.bulletVm.loadedSprite->heightPx))
                 {
-                    if ((*reinterpret_cast<u32 *>(bullet + 0xDAC) & 0xDC0) != 0)
+                    if ((bullet->activeTransformFlags & 0xDC0) != 0)
                     {
-                        ++*reinterpret_cast<u16 *>(bullet + 0xDBA);
-                        if (*reinterpret_cast<u16 *>(bullet + 0xDBA) >= 0x80)
+                        ++bullet->offscreenFrames;
+                        if (bullet->offscreenFrames >= 0x80)
                         {
-                            reinterpret_cast<Bullet *>(bullet)->FUN_00432170();
+                            bullet->FUN_00432170();
                             goto nextBullet;
                         }
                     }
                     else
                     {
-                        if (*reinterpret_cast<u16 *>(bullet + 0xDBA) == 0)
+                        if (bullet->offscreenFrames == 0)
                         {
-                            reinterpret_cast<Bullet *>(bullet)->FUN_00432170();
+                            bullet->FUN_00432170();
                             goto nextBullet;
                         }
-                        --*reinterpret_cast<u16 *>(bullet + 0xDBA);
+                        --bullet->offscreenFrames;
                     }
                 }
                 else
-                    *reinterpret_cast<u16 *>(bullet + 0xDBA) = 0;
+                    bullet->offscreenFrames = 0;
             }
 
-            if (*reinterpret_cast<i8 *>(bullet + 0x10B4) == 0)
+            if (bullet->collisionDisabled == 0)
             {
-                if (*reinterpret_cast<u8 *>(bullet + 0xDBD) == 0 &&
-                    (i32)*reinterpret_cast<ZunTimer *>(bullet + 0xD8C) >= 16)
+                if (bullet->isGrazed == 0 &&
+                    (i32)bullet->activeTimer >= 16)
                 {
-                    collisionResult = g_Player.FUN_0044a470(reinterpret_cast<Float3 *>(bullet + 0xD44),
-                                                            reinterpret_cast<Float3 *>(bullet + 0xD34));
+                    collisionResult = g_Player.FUN_0044a470(&bullet->position,
+                                                            &bullet->sprites.collisionSize);
                     if (collisionResult == 1)
                     {
-                        *reinterpret_cast<u8 *>(bullet + 0xDBD) = 1;
+                        bullet->isGrazed = 1;
                         goto lethalCollision;
                     }
-                    if (collisionResult == 2 && (*reinterpret_cast<u32 *>(bullet + 0xDB0) & 0x1000) == 0)
+                    if (collisionResult == 2 && (bullet->transformFlags & 0x1000) == 0)
                     {
-                        *reinterpret_cast<u16 *>(bullet + 0xDB8) = 5;
+                        bullet->state = BULLET_STATE_DESPAWNING;
                         if (g_Player.bulletCancelItemType == 9)
                         {
-                            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
-                            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
+                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
+                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
                         }
                         else if (g_Player.bulletCancelItemType >= 0)
-                            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44),
+                            g_ItemManager.SpawnItem(&bullet->position,
                                                     static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
                     }
                     goto executeBulletScript;
                 }
 
 lethalCollision:
-                collisionResult = g_Player.FUN_0044a230(reinterpret_cast<Float3 *>(bullet + 0xD44),
-                                                        reinterpret_cast<Float3 *>(bullet + 0xD34));
+                collisionResult = g_Player.FUN_0044a230(&bullet->position,
+                                                        &bullet->sprites.collisionSize);
                 if (collisionResult != 0 &&
-                    (collisionResult != 2 || (*reinterpret_cast<u32 *>(bullet + 0xDB0) & 0x1000) == 0))
+                    (collisionResult != 2 || (bullet->transformFlags & 0x1000) == 0))
                 {
-                    *reinterpret_cast<u16 *>(bullet + 0xDB8) = 5;
+                    bullet->state = BULLET_STATE_DESPAWNING;
                     if (collisionResult == 2)
                     {
                         if (g_Player.bulletCancelItemType == 9)
                         {
-                            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
-                            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
+                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
+                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
                         }
                         else if (g_Player.bulletCancelItemType >= 0)
-                            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44),
+                            g_ItemManager.SpawnItem(&bullet->position,
                                                     static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
                     }
                 }
             }
 executeBulletScript:
-            if (*reinterpret_cast<void **>(bullet + 0x220) != NULL)
-                g_AnmManager->ExecuteScript(reinterpret_cast<AnmVm *>(bullet));
+            if (bullet->sprites.bulletVm.currentInstruction != NULL)
+                g_AnmManager->ExecuteScript(&bullet->sprites.bulletVm);
                 break;
-            case 2:
-                (*reinterpret_cast<ZunTimer *>(bullet + 0xD8C))--;
-                *reinterpret_cast<Float3 *>(bullet + 0xD44) +=
-                    *reinterpret_cast<Float3 *>(bullet + 0xD50) / 2.0f;
-                if ((*reinterpret_cast<u32 *>(bullet + 0xDB0) & 0x1000) == 0 &&
-                    g_Player.FUN_00449ff0(reinterpret_cast<Float3 *>(bullet + 0xD44),
-                                         reinterpret_cast<Float3 *>(bullet + 0xD34)) == 2)
-                    *reinterpret_cast<u8 *>(bullet + 0xDBE) = 1;
-                if (g_AnmManager->ExecuteScript(reinterpret_cast<AnmVm *>(bullet + 0x2A4)) == 0)
+            case BULLET_STATE_SPAWNING_FAST:
+                bullet->activeTimer--;
+                bullet->position += bullet->velocity / 2.0f;
+                if ((bullet->transformFlags & 0x1000) == 0 &&
+                    g_Player.FUN_00449ff0(&bullet->position,
+                                         &bullet->sprites.collisionSize) == 2)
+                    bullet->cancelledDuringSpawn = 1;
+                if (g_AnmManager->ExecuteScript(&bullet->sprites.spawnFastVm) == 0)
                     break;
-                if (*reinterpret_cast<u8 *>(bullet + 0xDBE) != 0)
+                if (bullet->cancelledDuringSpawn != 0)
                 {
-                    *reinterpret_cast<u16 *>(bullet + 0xDB8) = 5;
+                    bullet->state = BULLET_STATE_DESPAWNING;
                     if (g_Player.bulletCancelItemType == 9)
                     {
-                        g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
-                        g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
                     }
                     else if (g_Player.bulletCancelItemType >= 0)
-                        g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44),
+                        g_ItemManager.SpawnItem(&bullet->position,
                                                 static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
                 }
                 goto activateBullet;
-            case 3:
-                (*reinterpret_cast<ZunTimer *>(bullet + 0xD8C))--;
-                *reinterpret_cast<Float3 *>(bullet + 0xD44) +=
-                    *reinterpret_cast<Float3 *>(bullet + 0xD50) / 2.5f;
-                if ((*reinterpret_cast<u32 *>(bullet + 0xDB0) & 0x1000) == 0 &&
-                    g_Player.FUN_00449ff0(reinterpret_cast<Float3 *>(bullet + 0xD44),
-                                         reinterpret_cast<Float3 *>(bullet + 0xD34)) == 2)
-                    *reinterpret_cast<u8 *>(bullet + 0xDBE) = 1;
-                if (g_AnmManager->ExecuteScript(reinterpret_cast<AnmVm *>(bullet + 0x548)) == 0)
+            case BULLET_STATE_SPAWNING_NORMAL:
+                bullet->activeTimer--;
+                bullet->position += bullet->velocity / 2.5f;
+                if ((bullet->transformFlags & 0x1000) == 0 &&
+                    g_Player.FUN_00449ff0(&bullet->position,
+                                         &bullet->sprites.collisionSize) == 2)
+                    bullet->cancelledDuringSpawn = 1;
+                if (g_AnmManager->ExecuteScript(&bullet->sprites.spawnNormalVm) == 0)
                     break;
-                if (*reinterpret_cast<u8 *>(bullet + 0xDBE) != 0)
+                if (bullet->cancelledDuringSpawn != 0)
                 {
-                    *reinterpret_cast<u16 *>(bullet + 0xDB8) = 5;
+                    bullet->state = BULLET_STATE_DESPAWNING;
                     if (g_Player.bulletCancelItemType == 9)
                     {
-                        g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
-                        g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
                     }
                     else if (g_Player.bulletCancelItemType >= 0)
-                        g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44),
+                        g_ItemManager.SpawnItem(&bullet->position,
                                                 static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
                 }
                 goto activateBullet;
-            case 4:
-                (*reinterpret_cast<ZunTimer *>(bullet + 0xD8C))--;
-                *reinterpret_cast<Float3 *>(bullet + 0xD44) +=
-                    *reinterpret_cast<Float3 *>(bullet + 0xD50) / 3.0f;
-                if ((*reinterpret_cast<u32 *>(bullet + 0xDB0) & 0x1000) == 0 &&
-                    g_Player.FUN_00449ff0(reinterpret_cast<Float3 *>(bullet + 0xD44),
-                                         reinterpret_cast<Float3 *>(bullet + 0xD34)) == 2)
-                    *reinterpret_cast<u8 *>(bullet + 0xDBE) = 1;
-                if (g_AnmManager->ExecuteScript(reinterpret_cast<AnmVm *>(bullet + 0x7EC)) == 0)
+            case BULLET_STATE_SPAWNING_SLOW:
+                bullet->activeTimer--;
+                bullet->position += bullet->velocity / 3.0f;
+                if ((bullet->transformFlags & 0x1000) == 0 &&
+                    g_Player.FUN_00449ff0(&bullet->position,
+                                         &bullet->sprites.collisionSize) == 2)
+                    bullet->cancelledDuringSpawn = 1;
+                if (g_AnmManager->ExecuteScript(&bullet->sprites.spawnSlowVm) == 0)
                     break;
-                if (*reinterpret_cast<u8 *>(bullet + 0xDBE) != 0)
+                if (bullet->cancelledDuringSpawn != 0)
                 {
-                    *reinterpret_cast<u16 *>(bullet + 0xDB8) = 5;
+                    bullet->state = BULLET_STATE_DESPAWNING;
                     if (g_Player.bulletCancelItemType == 9)
                     {
-                        g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
-                        g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44), ITEM_TIME, 1);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
                     }
                     else if (g_Player.bulletCancelItemType >= 0)
-                        g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(bullet + 0xD44),
+                        g_ItemManager.SpawnItem(&bullet->position,
                                                 static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
                 }
                 goto activateBullet;
-            case 5:
-                *reinterpret_cast<Float3 *>(bullet + 0xD44) +=
-                    *reinterpret_cast<Float3 *>(bullet + 0xD50) / 2.0f;
-                if (g_AnmManager->ExecuteScript(reinterpret_cast<AnmVm *>(bullet + 0xA90)) != 0)
+            case BULLET_STATE_DESPAWNING:
+                bullet->position += bullet->velocity / 2.0f;
+                if (g_AnmManager->ExecuteScript(&bullet->sprites.despawnVm) != 0)
                 {
-                    reinterpret_cast<Bullet *>(bullet)->FUN_00432170();
+                    bullet->FUN_00432170();
                     goto nextBullet;
                 }
                 break;
@@ -1010,21 +1000,19 @@ executeBulletScript:
             }
 
 updateTimers:
-            (*reinterpret_cast<ZunTimer *>(bullet + 0xD80))++;
-            (*reinterpret_cast<ZunTimer *>(bullet + 0xD8C))++;
-            *reinterpret_cast<void **>(bullet + 0xDC0) =
-                *reinterpret_cast<void **>(reinterpret_cast<u8 *>(bulletManager) + 0x6BA554 +
-                                            *reinterpret_cast<u8 *>(bullet + 0xD42) * 4);
-            *reinterpret_cast<void **>(reinterpret_cast<u8 *>(bulletManager) + 0x6BA554 +
-                                       *reinterpret_cast<u8 *>(bullet + 0xD42) * 4) = bullet;
+            bullet->stateTimer++;
+            bullet->activeTimer++;
+            bullet->nextInDrawBucket =
+                bulletManager->drawBuckets[bullet->sprites.drawBucketIndex];
+            bulletManager->drawBuckets[bullet->sprites.drawBucketIndex] = bullet;
 nextBullet:
         --bucketIndex;
         if (bucketIndex < 0)
         {
             bucketIndex = 0x5FF;
-            bullet += 0x645000;
+            bullet += 0x600;
         }
-        bullet -= 0x10B8;
+        bullet--;
     }
 
     laser = &bulletManager->lasers[0];
@@ -1129,30 +1117,30 @@ nextBullet:
             g_AnmManager->ExecuteScript(&laser->vm0);
         }
 
-    if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(bulletManager) + 0x6BA53C) != 0)
-        --*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(bulletManager) + 0x6BA53C);
-    (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(bulletManager) + 0x6BA540))++;
-    ++*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(bulletManager) + 0x6BA54C);
+    if (bulletManager->spawnSuppressionFrames != 0)
+        --bulletManager->spawnSuppressionFrames;
+    bulletManager->timer++;
+    ++bulletManager->frameCounter;
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
 // FUNCTION: th08 0x432170
 void Bullet::FUN_00432170()
 {
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(this) + 0xDB8) = 0;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xD80) = 0;
-    *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xD8C) = 0;
+    this->state = BULLET_STATE_UNUSED;
+    this->stateTimer = 0;
+    this->activeTimer = 0;
 }
 
 // FUNCTION: th08 0x4321b0
 void BulletManager::FUN_004321b0()
 {
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA568) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA564) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA560) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA55C) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA558) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x6BA554) = 0;
+    this->drawBuckets[5] = NULL;
+    this->drawBuckets[4] = NULL;
+    this->drawBuckets[3] = NULL;
+    this->drawBuckets[2] = NULL;
+    this->drawBuckets[1] = NULL;
+    this->drawBuckets[0] = NULL;
 }
 
 // FUNCTION: th08 0x432210
@@ -1165,14 +1153,13 @@ void Bullet::FUN_00432210()
     {
         magnitude =
             5.0f - ((f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xF80) * 5.0f) / 16.0f;
-        reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xD50)
-            ->FromAngleMagnitude(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74),
-                                 (magnitude + *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68)) *
+        this->velocity.FromAngleMagnitude(this->angle,
+                                 (magnitude + this->speed) *
                                      *reinterpret_cast<f32 *>(0x17CE8E0));
     }
     else
     {
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) ^= 0x1;
+        this->activeTransformFlags ^= 0x1;
     }
 
     (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xF80))++;
@@ -1186,20 +1173,18 @@ void Bullet::FUN_004322b0()
     if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFAC) >=
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFCC))
     {
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) &= ~0x10;
+        this->activeTransformFlags &= ~0x10;
     }
     else
     {
-        *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xD50) +=
+        this->velocity +=
             *reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xFC0) *
             *reinterpret_cast<f32 *>(0x17CE8E0);
 
-        if (fabsf(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD50)) > 0.0001f ||
-            fabsf(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD54)) > 0.0001f)
+        if (fabsf(this->velocity.x) > 0.0001f ||
+            fabsf(this->velocity.y) > 0.0001f)
         {
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74) =
-                VectorAngle(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD54),
-                            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD50));
+            this->angle = VectorAngle(this->velocity.y, this->velocity.x);
         }
     }
 
@@ -1212,20 +1197,19 @@ void Bullet::FUN_00432390()
     if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFD8) >=
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xFF8))
     {
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) &= ~0x20;
+        this->activeTransformFlags &= ~0x20;
     }
     else
     {
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74) =
-            AddNormalizeAngle(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74),
+        this->angle =
+            AddNormalizeAngle(this->angle,
                               *reinterpret_cast<f32 *>(0x17CE8E0) *
                                   *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFE8));
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68) +=
+        this->speed +=
             *reinterpret_cast<f32 *>(0x17CE8E0) * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xFE4);
-        reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xD50)
-            ->FromAngleMagnitude(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74),
+        this->velocity.FromAngleMagnitude(this->angle,
                                  *reinterpret_cast<f32 *>(0x17CE8E0) *
-                                     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68));
+                                     this->speed);
     }
 
     (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0xFD8))++;
@@ -1240,33 +1224,32 @@ void Bullet::FUN_00432460()
     if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) >=
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1024))
     {
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDC8) >= 0)
+        if (this->transformSound >= 0)
         {
-            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDC8)), 0);
+            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(this->transformSound), 0);
         }
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x102C) += 1;
         if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x102C) >=
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1028))
         {
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) &= ~0x40;
+            this->activeTransformFlags &= ~0x40;
         }
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74) +=
+        this->angle +=
             *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x1014);
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xD68) =
+        *reinterpret_cast<i32 *>(&this->speed) =
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1010);
-        magnitude = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68);
+        magnitude = this->speed;
         *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) = 0;
     }
     else
     {
-        magnitude = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68) -
+        magnitude = this->speed -
                     ((f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) *
-                     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68)) /
+                     this->speed) /
                         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1024);
     }
 
-    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xD50)
-        ->FromAngleMagnitude(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74),
+    this->velocity.FromAngleMagnitude(this->angle,
                              magnitude * *reinterpret_cast<f32 *>(0x17CE8E0));
     (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004))++;
 }
@@ -1280,33 +1263,32 @@ void Bullet::FUN_004325a0()
     if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) >=
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1024))
     {
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDC8) >= 0)
+        if (this->transformSound >= 0)
         {
-            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDC8)), 0);
+            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(this->transformSound), 0);
         }
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x102C) += 1;
         if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x102C) >=
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1028))
         {
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) &= ~0x100;
+            this->activeTransformFlags &= ~0x100;
         }
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xD74) =
+        *reinterpret_cast<i32 *>(&this->angle) =
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1014);
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xD68) =
+        *reinterpret_cast<i32 *>(&this->speed) =
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1010);
-        magnitude = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68);
+        magnitude = this->speed;
         *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) = 0;
     }
     else
     {
-        magnitude = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68) -
+        magnitude = this->speed -
                     ((f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) *
-                     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68)) /
+                     this->speed) /
                         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1024);
     }
 
-    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xD50)
-        ->FromAngleMagnitude(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74),
+    this->velocity.FromAngleMagnitude(this->angle,
                              magnitude * *reinterpret_cast<f32 *>(0x17CE8E0));
     (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004))++;
 }
@@ -1320,34 +1302,33 @@ void Bullet::FUN_004326e0()
     if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) >=
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1024))
     {
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDC8) >= 0)
+        if (this->transformSound >= 0)
         {
-            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDC8)), 0);
+            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(this->transformSound), 0);
         }
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x102C) += 1;
         if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x102C) >=
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1028))
         {
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) &= ~0x80;
+            this->activeTransformFlags &= ~0x80;
         }
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74) =
-            AddNormalizeAngle(g_Player.FUN_0044c1b0(reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xD44)),
+        this->angle =
+            AddNormalizeAngle(g_Player.FUN_0044c1b0(&this->position),
                               *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x1014));
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xD68) =
+        *reinterpret_cast<i32 *>(&this->speed) =
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1010);
-        magnitude = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68);
+        magnitude = this->speed;
         *reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) = 0;
     }
     else
     {
-        magnitude = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68) -
+        magnitude = this->speed -
                     ((f32)*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004) *
-                     *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68)) /
+                     this->speed) /
                         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1024);
     }
 
-    reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xD50)
-        ->FromAngleMagnitude(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74),
+    this->velocity.FromAngleMagnitude(this->angle,
                              magnitude * *reinterpret_cast<f32 *>(0x17CE8E0));
     (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1004))++;
 }
@@ -1359,44 +1340,39 @@ void Bullet::FUN_00432830()
 {
     f32 magnitude;
 
-    if (!g_GameManager.IsWithinPlayfield((reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xD44)->operator float *())[0],
-                                         (reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xD44)->operator float *())[1],
-                                         *reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x224) + 0x34),
-                                         *reinterpret_cast<f32 *>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 0x224) + 0x30)))
+    if (!g_GameManager.IsWithinPlayfield(this->position.operator float *()[0],
+                                         this->position.operator float *()[1],
+                                         this->sprites.bulletVm.loadedSprite->widthPx,
+                                         this->sprites.bulletVm.loadedSprite->heightPx))
     {
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDC8) >= 0)
+        if (this->transformSound >= 0)
         {
-            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xDC8)), 0);
+            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(this->transformSound), 0);
         }
 
-        if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD44) < 0.0f ||
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD44) >= 384.0f)
+        if (this->position.x < 0.0f || this->position.x >= 384.0f)
         {
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74) =
-                -*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74) - ZUN_PI;
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74) =
-                AddNormalizeAngle(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74), 0.0f);
+            this->angle = -this->angle - ZUN_PI;
+            this->angle = AddNormalizeAngle(this->angle, 0.0f);
         }
 
-        if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD48) < 0.0f ||
-            (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD48) >= 448.0f &&
-             (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) & 0x400) != 0))
+        if (this->position.y < 0.0f ||
+            (this->position.y >= 448.0f &&
+             (this->activeTransformFlags & 0x400) != 0))
         {
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74) =
-                -*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74);
+            this->angle = -this->angle;
         }
 
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0xD68) =
+        *reinterpret_cast<i32 *>(&this->speed) =
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x103C);
-        magnitude = *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD68);
-        reinterpret_cast<Float3 *>(reinterpret_cast<u8 *>(this) + 0xD50)
-            ->FromAngleMagnitude(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD74),
+        magnitude = this->speed;
+        this->velocity.FromAngleMagnitude(this->angle,
                                  magnitude * *reinterpret_cast<f32 *>(0x17CE8E0));
         *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1050) += 1;
         if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1050) >=
             *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x1054))
         {
-            *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) &= ~0xC00;
+            this->activeTransformFlags &= ~0xC00;
         }
     }
 }
@@ -1404,18 +1380,18 @@ void Bullet::FUN_00432830()
 // FUNCTION: th08 0x4329f0
 void Bullet::FUN_004329f0()
 {
-    if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD44) < 0.0)
+    if (this->position.x < 0.0)
     {
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD44) += 384.0f;
+        this->position.x += 384.0f;
     }
-    else if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD44) > 384.0)
+    else if (this->position.x > 384.0)
     {
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD44) -= 384.0f;
+        this->position.x -= 384.0f;
     }
 
     if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1088) <= 0)
     {
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) ^= 0x400000;
+        this->activeTransformFlags ^= 0x400000;
     }
     else
     {
@@ -1426,18 +1402,18 @@ void Bullet::FUN_004329f0()
 // FUNCTION: th08 0x432aa0
 void Bullet::FUN_00432aa0()
 {
-    if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD48) < 0.0)
+    if (this->position.y < 0.0)
     {
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD48) += 448.0f;
+        this->position.y += 448.0f;
     }
-    else if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD48) > 448.0)
+    else if (this->position.y > 448.0)
     {
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xD48) -= 448.0f;
+        this->position.y -= 448.0f;
     }
 
     if (*reinterpret_cast<ZunTimer *>(reinterpret_cast<u8 *>(this) + 0x1088) <= 0)
     {
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0xDAC) ^= 0x800000;
+        this->activeTransformFlags ^= 0x800000;
     }
     else
     {
@@ -1511,11 +1487,11 @@ ChainCallbackResult BulletManager::OnDraw(BulletManager *bulletManager)
 
     for (i = 0; i < 6; i++)
     {
-        node = *reinterpret_cast<Bullet **>(reinterpret_cast<u8 *>(bulletManager) + 0x6ba554 + i * 4);
+        node = bulletManager->drawBuckets[i];
         while (node != NULL)
         {
             node->DrawSingleBullet();
-            node = *reinterpret_cast<Bullet **>(reinterpret_cast<u8 *>(node) + 0xdc0);
+            node = node->nextInDrawBucket;
         }
     }
 
@@ -1531,36 +1507,36 @@ ZunResult Bullet::DrawSingleBullet()
 {
     AnmVm *vm;
 
-    switch (*reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(this) + 0xdb8))
+    switch (this->state)
     {
-    case 2:
-        vm = &this->sprites.sprite1;
+    case BULLET_STATE_SPAWNING_FAST:
+        vm = &this->sprites.spawnFastVm;
         break;
-    case 3:
-        vm = &this->sprites.sprite2;
+    case BULLET_STATE_SPAWNING_NORMAL:
+        vm = &this->sprites.spawnNormalVm;
         break;
-    case 4:
-        vm = &this->sprites.sprite3;
+    case BULLET_STATE_SPAWNING_SLOW:
+        vm = &this->sprites.spawnSlowVm;
         break;
-    case 5:
-        vm = &this->sprites.sprite4;
+    case BULLET_STATE_DESPAWNING:
+        vm = &this->sprites.despawnVm;
         break;
     default:
-        vm = &this->sprites.sprite0;
+        vm = &this->sprites.bulletVm;
         break;
     }
 
     vm->pos.operator float *()[0] =
-        g_GameManager.arcadeRegionTopLeftPos.x + this->position0.operator float *()[0];
+        g_GameManager.arcadeRegionTopLeftPos.x + this->position.operator float *()[0];
     vm->pos.operator float *()[1] =
-        g_GameManager.arcadeRegionTopLeftPos.y + this->position0.operator float *()[1];
+        g_GameManager.arcadeRegionTopLeftPos.y + this->position.operator float *()[1];
     vm->pos.operator float *()[2] = 0.05f;
     vm->color1.d3dColor = (vm->color1.d3dColor & 0xff000000) | 0xffffff;
 
     if (vm->type != 0)
     {
         vm->SetZRotation(AddNormalizeAngle(
-            ZUN_PI / 2.0f + *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0xd74), 0.0f));
+            ZUN_PI / 2.0f + this->angle, 0.0f));
     }
 
     return g_AnmManager->Draw2D(vm);
@@ -1586,69 +1562,69 @@ ZunResult BulletManager::AddedCallback(BulletManager *bulletManager)
 
     for (i = 0; i < 21; i++)
     {
-        bulletManager->bulletAnm->SetAndExecuteScriptIdx(&bulletManager->bulletTypeSprites[i].sprite0, g_BulletSpriteScripts[i].scripts[0]);
-        bulletManager->bulletAnm->SetAndExecuteScriptIdx(&bulletManager->bulletTypeSprites[i].sprite1, g_BulletSpriteScripts[i].scripts[1]);
-        bulletManager->bulletAnm->SetAndExecuteScriptIdx(&bulletManager->bulletTypeSprites[i].sprite2, g_BulletSpriteScripts[i].scripts[2]);
-        bulletManager->bulletAnm->SetAndExecuteScriptIdx(&bulletManager->bulletTypeSprites[i].sprite3, g_BulletSpriteScripts[i].scripts[3]);
-        bulletManager->bulletAnm->SetAndExecuteScriptIdx(&bulletManager->bulletTypeSprites[i].sprite4, g_BulletSpriteScripts[i].scripts[4]);
+        bulletManager->bulletAnm->SetAndExecuteScriptIdx(&bulletManager->bulletTypeSprites[i].bulletVm, g_BulletSpriteScripts[i].scripts[0]);
+        bulletManager->bulletAnm->SetAndExecuteScriptIdx(&bulletManager->bulletTypeSprites[i].spawnFastVm, g_BulletSpriteScripts[i].scripts[1]);
+        bulletManager->bulletAnm->SetAndExecuteScriptIdx(&bulletManager->bulletTypeSprites[i].spawnNormalVm, g_BulletSpriteScripts[i].scripts[2]);
+        bulletManager->bulletAnm->SetAndExecuteScriptIdx(&bulletManager->bulletTypeSprites[i].spawnSlowVm, g_BulletSpriteScripts[i].scripts[3]);
+        bulletManager->bulletAnm->SetAndExecuteScriptIdx(&bulletManager->bulletTypeSprites[i].despawnVm, g_BulletSpriteScripts[i].scripts[4]);
 
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].sprite0) + 0x1f8) |= 0x2000;
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].sprite1) + 0x1f8) |= 0x2000;
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].sprite2) + 0x1f8) |= 0x2000;
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].sprite3) + 0x1f8) |= 0x2000;
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].sprite4) + 0x1f8) |= 0x2000;
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].bulletVm) + 0x1f8) |= 0x2000;
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].spawnFastVm) + 0x1f8) |= 0x2000;
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].spawnNormalVm) + 0x1f8) |= 0x2000;
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].spawnSlowVm) + 0x1f8) |= 0x2000;
+        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i].despawnVm) + 0x1f8) |= 0x2000;
 
-        bulletManager->bulletTypeSprites[i].sprite0.baseSpriteIndex =
-            bulletManager->bulletTypeSprites[i].sprite0.activeSpriteIndex;
-        *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd41) =
-            (u8)bulletManager->bulletTypeSprites[i].sprite0.loadedSprite->heightPx;
+        bulletManager->bulletTypeSprites[i].bulletVm.baseSpriteIndex =
+            bulletManager->bulletTypeSprites[i].bulletVm.activeSpriteIndex;
+        bulletManager->bulletTypeSprites[i].height =
+            (u8)bulletManager->bulletTypeSprites[i].bulletVm.loadedSprite->heightPx;
 
-        if (bulletManager->bulletTypeSprites[i].sprite0.loadedSprite->heightPx <= 8.0f)
+        if (bulletManager->bulletTypeSprites[i].bulletVm.loadedSprite->heightPx <= 8.0f)
         {
-            bulletManager->bulletTypeSprites[i].position.x = 4.0f;
-            bulletManager->bulletTypeSprites[i].position.y = 4.0f;
-            *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 5;
+            bulletManager->bulletTypeSprites[i].collisionSize.x = 4.0f;
+            bulletManager->bulletTypeSprites[i].collisionSize.y = 4.0f;
+            bulletManager->bulletTypeSprites[i].drawBucketIndex = 5;
         }
-        else if (bulletManager->bulletTypeSprites[i].sprite0.loadedSprite->heightPx <= 16.0f)
+        else if (bulletManager->bulletTypeSprites[i].bulletVm.loadedSprite->heightPx <= 16.0f)
         {
             switch (g_BulletSpriteScripts[i].scripts[0])
             {
             case 2:
             case 111:
             case 112:
-                bulletManager->bulletTypeSprites[i].position.x = 4.0f;
-                bulletManager->bulletTypeSprites[i].position.y = 4.0f;
-                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 4;
+                bulletManager->bulletTypeSprites[i].collisionSize.x = 4.0f;
+                bulletManager->bulletTypeSprites[i].collisionSize.y = 4.0f;
+                bulletManager->bulletTypeSprites[i].drawBucketIndex = 4;
                 break;
             case 4:
             case 6:
-                bulletManager->bulletTypeSprites[i].position.x = 4.0f;
-                bulletManager->bulletTypeSprites[i].position.y = 4.0f;
-                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 4;
+                bulletManager->bulletTypeSprites[i].collisionSize.x = 4.0f;
+                bulletManager->bulletTypeSprites[i].collisionSize.y = 4.0f;
+                bulletManager->bulletTypeSprites[i].drawBucketIndex = 4;
                 break;
             case 5:
-                bulletManager->bulletTypeSprites[i].position.x = 4.0f;
-                bulletManager->bulletTypeSprites[i].position.y = 4.0f;
-                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 3;
+                bulletManager->bulletTypeSprites[i].collisionSize.x = 4.0f;
+                bulletManager->bulletTypeSprites[i].collisionSize.y = 4.0f;
+                bulletManager->bulletTypeSprites[i].drawBucketIndex = 3;
             case 106:
-                bulletManager->bulletTypeSprites[i].position.x = 4.0f;
-                bulletManager->bulletTypeSprites[i].position.y = 4.0f;
-                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 4;
+                bulletManager->bulletTypeSprites[i].collisionSize.x = 4.0f;
+                bulletManager->bulletTypeSprites[i].collisionSize.y = 4.0f;
+                bulletManager->bulletTypeSprites[i].drawBucketIndex = 4;
                 break;
             case 107:
             case 108:
-                bulletManager->bulletTypeSprites[i].position.x = 4.0f;
-                bulletManager->bulletTypeSprites[i].position.y = 4.0f;
-                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 4;
+                bulletManager->bulletTypeSprites[i].collisionSize.x = 4.0f;
+                bulletManager->bulletTypeSprites[i].collisionSize.y = 4.0f;
+                bulletManager->bulletTypeSprites[i].drawBucketIndex = 4;
                 break;
             default:
-                bulletManager->bulletTypeSprites[i].position.x = 6.0f;
-                bulletManager->bulletTypeSprites[i].position.y = 6.0f;
-                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 3;
+                bulletManager->bulletTypeSprites[i].collisionSize.x = 6.0f;
+                bulletManager->bulletTypeSprites[i].collisionSize.y = 6.0f;
+                bulletManager->bulletTypeSprites[i].drawBucketIndex = 3;
                 break;
             }
         }
-        else if (bulletManager->bulletTypeSprites[i].sprite0.loadedSprite->heightPx <= 32.0f)
+        else if (bulletManager->bulletTypeSprites[i].bulletVm.loadedSprite->heightPx <= 32.0f)
         {
             switch (g_BulletSpriteScripts[i].scripts[0])
             {
@@ -1656,29 +1632,29 @@ ZunResult BulletManager::AddedCallback(BulletManager *bulletManager)
             case 113:
             case 114:
             case 115:
-                bulletManager->bulletTypeSprites[i].position.x = 5.0f;
-                bulletManager->bulletTypeSprites[i].position.y = 5.0f;
-                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 2;
+                bulletManager->bulletTypeSprites[i].collisionSize.x = 5.0f;
+                bulletManager->bulletTypeSprites[i].collisionSize.y = 5.0f;
+                bulletManager->bulletTypeSprites[i].drawBucketIndex = 2;
                 break;
             case 9:
             case 109:
             case 110:
-                bulletManager->bulletTypeSprites[i].position.x = 8.0f;
-                bulletManager->bulletTypeSprites[i].position.y = 8.0f;
-                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 1;
+                bulletManager->bulletTypeSprites[i].collisionSize.x = 8.0f;
+                bulletManager->bulletTypeSprites[i].collisionSize.y = 8.0f;
+                bulletManager->bulletTypeSprites[i].drawBucketIndex = 1;
                 break;
             default:
-                bulletManager->bulletTypeSprites[i].position.x = 10.0f;
-                bulletManager->bulletTypeSprites[i].position.y = 10.0f;
-                *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 1;
+                bulletManager->bulletTypeSprites[i].collisionSize.x = 10.0f;
+                bulletManager->bulletTypeSprites[i].collisionSize.y = 10.0f;
+                bulletManager->bulletTypeSprites[i].drawBucketIndex = 1;
                 break;
             }
         }
         else
         {
-            *(reinterpret_cast<u8 *>(&bulletManager->bulletTypeSprites[i]) + 0xd42) = 0;
-            bulletManager->bulletTypeSprites[i].position.x = 24.0f;
-            bulletManager->bulletTypeSprites[i].position.y = 24.0f;
+            bulletManager->bulletTypeSprites[i].drawBucketIndex = 0;
+            bulletManager->bulletTypeSprites[i].collisionSize.x = 24.0f;
+            bulletManager->bulletTypeSprites[i].collisionSize.y = 24.0f;
         }
     }
 

@@ -373,3 +373,82 @@ members instead of raw Laser offsets.  The routing report for
 29-location delta is a work-selection aid, not a semantic-completion metric;
 unrelated Bullet runtime, sprite-template, and manager-tail storage remains
 future bounded work.
+
+### Bullet core lifecycle and ECL controls — 2026-08-26
+
+Scope: `BulletManager::Initialize @ 0x0042F360`, single-bullet spawn at
+`0x0042F5F0`, the transform dispatcher at `0x0042FFC0`, removal/despawn paths
+at `0x00430830..0x00430E10`, `OnUpdate @ 0x00431240`, bullet reset and draw-
+bucket reset at `0x00432170/0x004321B0`, the transform handlers at
+`0x00432210..0x00432AA0`, `OnDraw @ 0x00432B50`, `DrawSingleBullet @
+0x00432F20`, and `AddedCallback @ 0x00433070`.  Nine exact ECL extension
+handlers at `0x00423A60`, `0x00423E20`, `0x004241E0`, and
+`0x00424A20..0x00425290` supply independent freeze, unfreeze, zone-transition,
+and bullet-control users.  Shared declarations live in
+`src/BulletManager.hpp`; users changed in `src/BulletManager.cpp` and
+`src/EclExIns.cpp`.
+
+Observed: TH08 uses a 0x10B8-byte `Bullet` pool with 0x600 usable entries and a
+sentinel entry whose 16-bit state is 6.  The target reads/writes position,
+velocity, speed, and angle as floats; two adjacent `ZunTimer` values begin at
+`+0xD80`; the configured and currently active transform masks at
+`+0xDB0/+0xDAC` are dwords.  State and consecutive-offscreen-frame count are
+words at `+0xDB8/+0xDBA`; graze and spawn-cancellation flags are bytes at
+`+0xDBD/+0xDBE`; the collision gate at `+0x10B4` is a signed byte.  A pointer
+at `+0xDC0` chains each live bullet into one of six manager draw buckets.
+Spawn, update, collision, removal, transform dispatch, ECL controls, and draw
+independently agree on those widths and owners.  The update path selects one
+of five sprite VMs from the 0..5 state machine, advances the relevant timer,
+performs collision/graze and offscreen culling, and links surviving bullets
+into the template-selected draw bucket.  Target-pinned fact packets cover
+spawn, update, draw, freeze, and a zone-transition handler; target disassembly
+independently confirms the relied-on access widths.
+
+Corroborated: TH06 independently models five bullet VMs followed by collision
+size, position, velocity, speed, angle, timers, lifecycle state, graze state,
+and transform flags.  It supports those stable roles only.  TH08's own pool
+walks, state transitions, ECL handlers, draw lists, and exact code generation
+establish the final offsets, widths, and TH08-specific manager tail.
+
+Inference: `BULLET_STATE_UNUSED`, `FIRED`, the three spawn-speed states,
+`DESPAWNING`, and `SENTINEL` are high-confidence transition names.
+`offscreenCullDelayFrames`, `activeTransformFlags`, `transformFlags`,
+`offscreenFrames`, `isGrazed`, `cancelledDuringSpawn`,
+`nextInDrawBucket`, `zoneTransitionCooldownFrames`, `collisionDisabled`, the
+five sprite-VM roles, `collisionSize`, and `drawBucketIndex` are
+high-confidence dataflow names.  `Bullet + 0xD5C` remains neutrally named
+`unknownVectorD5C`: constructor code generation proves that its type is
+`Float3`, but this batch does not establish its gameplay role.  The byte at
+`+0xDBC`, template byte `+0xD40`, transform-specific `BulletExState` meanings,
+individual transform-bit names, and ANM VM internals remain deliberately raw
+or opaque.
+
+Layout: assertions pin all relied-on `BulletTypeSprites`, `Bullet`, and
+`BulletManager` members, including `sizeof(BulletTypeSprites) == 0xD44`,
+`sizeof(Bullet) == 0x10B8`, the Bullet/Laser pool starts, the six draw buckets,
+and `sizeof(BulletManager) == 0x6BA578`.  Field widths, pool capacity,
+construction order, calling conventions, vtables, and global ownership are
+unchanged.
+
+VC7 oracle: focused production and canonical objdiff builds replayed **70 / 70**
+accepted units across `BulletManager.obj` and `EclExIns.obj`.  The first cold
+pass exposed three code-generation-visible implicit `Float3::operator float*`
+call shapes in spawn, update, and draw; restoring those natural typed calls
+made their canonical units exact.  The final required non-reuse
+`verify-exact-units.py --all --json` cold-built all 75 configured objects and
+passed **1,105 / 1,105** with no failures.  A subsequent normal VC7 production
+image linked successfully; no match manifest or exact ledger changed.
+
+Portable oracle: after the final source-shape correction,
+`scripts/build-modern-linux-container.sh` compiled and linked the complete
+i386 target, and `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 plus all
+fixed target-owned layout symbols.  No isolated automated Bullet gameplay
+smoke is claimed; this batch preserves the state operations, callback/global
+identity, initialization order, collision calls, and rendering sequence.
+
+Result: the routing report for `src/BulletManager.cpp` falls from 294 to 97
+raw-member candidates and `src/EclExIns.cpp` from 25 to 18.  Those deltas are
+review aids, not semantic-completion percentages.  The retained candidates are
+primarily transform-specific state, ANM VM internals, and explicitly unknown
+bytes rather than the core Bullet lifecycle family completed here.
