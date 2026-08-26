@@ -41,6 +41,17 @@ struct EnemyUnkStruct0x1c
 };
 C_ASSERT(sizeof(EnemyUnkStruct0x1c) == 0x1c);
 
+struct EnemyBulletRankInfluence
+{
+    f32 speedLow;
+    f32 speedHigh;
+    i16 count1Low;
+    i16 count1High;
+    i16 count2Low;
+    i16 count2High;
+};
+C_ASSERT(sizeof(EnemyBulletRankInfluence) == 0x10);
+
 void __fastcall FUN_0042bc50(void *self);
 
 struct Enemy
@@ -69,12 +80,15 @@ struct Enemy
     Float3 vector2dc4;
     Float3 vector2dd0;
     ZunTimer timer2ddc;
-    unknown_fields(0x2de8, 0x2c);
+    unknown_fields(0x2de8, 4);
+    EnemyBulletRankInfluence bulletRankInfluence;
+    unknown_fields(0x2dfc, 0x18);
     ZunTimer timer2e14;
     unknown_fields(0x2e20, 4);
     BulletSpawnDescriptor bulletSpawnDescriptor;
-    unknown_fields(0x3034, 0x30);
-    ZunTimer timer3064;
+    u8 pendingShotInstruction[0x2c];
+    i32 shootIntervalFrames;
+    ZunTimer shootIntervalTimer;
     BulletSpawnDescriptor laserSpawnDescriptor;
     unknown_fields(0x3280, 0x98);
     ZunTimer timer3318;
@@ -102,7 +116,11 @@ struct Enemy
     void FUN_0042deb0();
 };
 C_ASSERT(sizeof(Enemy) == 0x53d0);
+C_ASSERT(offsetof(Enemy, bulletRankInfluence) == 0x2dec);
 C_ASSERT(offsetof(Enemy, bulletSpawnDescriptor) == 0x2e24);
+C_ASSERT(offsetof(Enemy, pendingShotInstruction) == 0x3034);
+C_ASSERT(offsetof(Enemy, shootIntervalFrames) == 0x3060);
+C_ASSERT(offsetof(Enemy, shootIntervalTimer) == 0x3064);
 C_ASSERT(offsetof(Enemy, laserSpawnDescriptor) == 0x3070);
 
 struct EclTimelineInstruction

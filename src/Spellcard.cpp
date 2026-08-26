@@ -910,12 +910,12 @@ void BulletManager::bulletmanager_fun_00415c60()
 // FUNCTION: th08 0x415c80
 void Enemy::enemy_fun_00415c80()
 {
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2DEC) = -0.5f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2DF0) = 0.5f;
-    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2DF4) = 0;
-    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2DF6) = 0;
-    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2DF8) = 0;
-    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2DFA) = 0;
+    this->bulletRankInfluence.speedLow = -0.5f;
+    this->bulletRankInfluence.speedHigh = 0.5f;
+    this->bulletRankInfluence.count1Low = 0;
+    this->bulletRankInfluence.count1High = 0;
+    this->bulletRankInfluence.count2Low = 0;
+    this->bulletRankInfluence.count2High = 0;
 }
 
 // FUNCTION: th08 0x415ce0

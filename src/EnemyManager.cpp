@@ -178,8 +178,8 @@ void EnemyManager::Initialize()
     *reinterpret_cast<u8 *>(enemy + 0x3310) = 0;
     *reinterpret_cast<u8 *>(enemy + 0x3311) = 0;
     *reinterpret_cast<u8 *>(enemy + 0x3312) = 0;
-    *reinterpret_cast<i32 *>(enemy + 0x3060) = 0;
-    *reinterpret_cast<ZunTimer *>(enemy + 0x3064) = 0;
+    reinterpret_cast<Enemy *>(enemy)->shootIntervalFrames = 0;
+    reinterpret_cast<Enemy *>(enemy)->shootIntervalTimer = 0;
     *reinterpret_cast<D3DXVECTOR3 *>(enemy + 0x2DB8) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     *reinterpret_cast<i16 *>(enemy + 0x3338) = -1;
     *reinterpret_cast<i16 *>(enemy + 0x333A) = -1;
@@ -200,8 +200,8 @@ void EnemyManager::Initialize()
     *reinterpret_cast<i32 *>(enemy + 0x3300) = 0;
     *reinterpret_cast<u8 *>(enemy + 0x3314) = 0;
     *reinterpret_cast<u32 *>(enemy + 0x3324) &= 0xFDFFFFFF;
-    *reinterpret_cast<u32 *>(enemy + 0x2DEC) = 0xBE19999A;
-    *reinterpret_cast<u32 *>(enemy + 0x2DF0) = 0x3E19999A;
+    reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.speedLow = -0.15f;
+    reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.speedHigh = 0.15f;
     reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor.spawnSound = 7;
     reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor.transformSound = 25;
     *reinterpret_cast<u32 *>(enemy + 0x3350) = 0x44800000;
@@ -500,7 +500,7 @@ i32 Enemy::FUN_0042b490()
             *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2cea) = 0;
             *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) &= 0xffffffcf;
             this->bulletSpawnDescriptor = g_EnemyManager.firstEnemy.bulletSpawnDescriptor;
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3060) = 0;
+            this->shootIntervalFrames = 0;
             reinterpret_cast<EclOperands::EnemyOverlay *>(this)->FUN_0042adb0(1);
 
             enemyCursor = &g_EnemyManager.enemies[0];
@@ -714,7 +714,7 @@ i32 Enemy::FUN_0042b930()
     }
 
     this->bulletSpawnDescriptor = g_EnemyManager.firstEnemy.bulletSpawnDescriptor;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3060) = 0;
+    this->shootIntervalFrames = 0;
     this->enemy_fun_00415c80();
     *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2cea) = 0;
     *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(this) + 0x3328) &= 0xffffffcf;

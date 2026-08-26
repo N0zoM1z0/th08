@@ -904,7 +904,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 memcpy(&reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor,
                        &g_EnemyManager.firstEnemy.bulletSpawnDescriptor,
                        sizeof(BulletSpawnDescriptor));
-                *reinterpret_cast<i32 *>(enemy->raw + 0x3060) = 0;
+                reinterpret_cast<Enemy *>(enemy)->shootIntervalFrames = 0;
                 g_EclManager.CallEclSub(reinterpret_cast<EnemyEclContext *>(enemy->raw + 0x7F8), *reinterpret_cast<i16 *>(enemy->raw + 0x2CEE));
                 *reinterpret_cast<i16 *>(enemy->raw + 0x2CEE) = -1;
             }

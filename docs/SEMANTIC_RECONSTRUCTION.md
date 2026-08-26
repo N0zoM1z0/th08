@@ -596,3 +596,72 @@ Bullet core lifecycle, and Bullet transform-state batches, this closes the
 first semantic milestone: **core bullet-gameplay loop semantic closure**.
 This milestone is a bounded subsystem claim backed by the listed target and
 portable oracles, not a whole-program semantic-completion percentage.
+
+### Enemy bullet-rank and repeated-shot scheduling — 2026-08-26
+
+Scope: the complete `EclManager::RunEcl @ 0x004184B0`, especially shot
+opcodes 96..106 and rank-influence opcode 152; the shot dispatcher at
+`0x00422720`; the post-ECL shot scheduler at `0x00423150`; Enemy template
+initialization and phase reset at `0x00429E00`, `0x0042B490`, and
+`0x0042B930`; the spell-phase reset at `0x00415C80`; and the death-callback
+reset inside `EnemyManager::OnUpdate @ 0x0042C660`.  Shared layout is in
+`src/EnemyManager.hpp`; typed users span `src/EclRunHigh.inl`,
+`src/EclDependencies.cpp`, `src/EnemyManager.cpp`, `src/Spellcard.cpp`, and
+`src/EnemyManagerUpdate.cpp`.
+
+Observed: TH08 stores two float rank endpoints at `Enemy + 0x2DEC/+0x2DF0`
+and two signed-word endpoint pairs at `+0x2DF4..+0x2DFA`.  The shot dispatcher
+passes the float pair to `ScaleFloatBasedOnRank` for both bullet speeds and
+the two word pairs to `ScaleIntBasedOnRank` for the two pattern counts.
+Opcode 152 writes those six values with float operand resolution for the
+speed endpoints and integer operand resolution followed by 16-bit stores for
+the count endpoints.  The spell-phase reset writes `-0.5/+0.5` and zeroes all
+four count endpoints; the template initializer writes `-0.15/+0.15`.
+
+When Enemy flag bit 17 is set, opcodes 96..104 copy exactly 11 dwords
+(0x2C bytes) of the current ECL instruction to `Enemy + 0x3034` instead of
+dispatching it.  Opcodes 105/106 write the dword at `+0x3060`, adjust it by
+rank using `interval / 5` and `-interval / 5`, and initialize the `ZunTimer`
+at `+0x3064` either to zero or a random value below the adjusted interval.
+`Enemy::FUN_00423150` advances that timer while the Enemy is alive and, on
+expiry, redispatches the stored instruction and resets the timer.  Template,
+phase, and death-callback paths independently clear the interval.
+
+Corroborated: TH06 independently names the corresponding six endpoints
+`bulletRankSpeedLow/High`, `bulletRankAmount1Low/High`, and
+`bulletRankAmount2Low/High`, and uses the same rank-scaled repeat-shot
+interval formula.  TH08's own producer/consumer pairs establish all final
+offsets, widths, signedness, storage size, and scheduling behavior; the
+adjacent version supplies names only.
+
+Inference: `EnemyBulletRankInfluence`, its six endpoint members,
+`shootIntervalFrames`, and `shootIntervalTimer` are high-confidence behavior
+names.  `pendingShotInstruction` is intentionally a byte array rather than an
+embedded `EclRawInstruction`: TH08 performs a fixed-size protocol copy and the
+instruction type has a variable operand tail, so imposing a normal C++ object
+would overstate the recovered representation.
+
+Layout: assertions pin `sizeof(EnemyBulletRankInfluence) == 0x10`, the rank
+aggregate at `+0x2DEC`, the 0x2C-byte instruction snapshot at `+0x3034`, the
+interval at `+0x3060`, its timer at `+0x3064`, and the existing descriptor and
+Enemy sizes.  No field width, copy size, construction order, calling
+convention, or state operation changed.
+
+VC7 oracle: focused replay passed **71 / 71** accepted units across
+`EclRun.obj`, `EclDependencies.obj`, `EnemyManager.obj`, `SpellCard.obj`, and
+`EnemyManagerUpdate.obj`.  The required non-reuse
+`verify-exact-units.py --all --json` cold-built all 75 configured objects and
+passed **1,105 / 1,105** with no failures.  A subsequent normal VC7 production
+image linked successfully; no match manifest or exact ledger changed.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` compiled and linked
+the complete i386 target, and `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 plus all
+fixed target-owned layout symbols.  No isolated automated repeat-shot runtime
+smoke exists, so no runtime smoke is claimed.
+
+Result: raw offset views of the full bullet-rank influence aggregate, delayed
+shot snapshot, repeat interval, and interval timer are replaced by one
+asserted Enemy owner while the serialized instruction remains honestly
+byte-oriented.  The routing report falls from 1,449 to 1,438 raw-member
+candidates; that delta is a review aid, not a semantic-completion percentage.

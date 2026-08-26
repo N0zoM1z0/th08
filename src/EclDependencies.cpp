@@ -775,27 +775,27 @@ void __fastcall DispatchShotInstruction(u8 *enemy, RawInstruction *instruction)
             if (!g_Spellcard.IsActive())
             {
                 descriptor->count1 += g_GameManager.ScaleIntBasedOnRank(
-                    *reinterpret_cast<i16 *>(enemy + 0x2df4),
-                    *reinterpret_cast<i16 *>(enemy + 0x2df6));
+                    reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.count1Low,
+                    reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.count1High);
                 if (descriptor->count1 <= 0)
                     descriptor->count1 = 1;
                 descriptor->count2 += g_GameManager.ScaleIntBasedOnRank(
-                    *reinterpret_cast<i16 *>(enemy + 0x2df8),
-                    *reinterpret_cast<i16 *>(enemy + 0x2dfa));
+                    reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.count2Low,
+                    reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.count2High);
                 if (descriptor->count2 <= 0)
                     descriptor->count2 = 1;
 
                 if (descriptor->speed1 != 0.0f)
                 {
                     descriptor->speed1 += g_GameManager.ScaleFloatBasedOnRank(
-                        *reinterpret_cast<f32 *>(enemy + 0x2dec),
-                        *reinterpret_cast<f32 *>(enemy + 0x2df0));
+                        reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.speedLow,
+                        reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.speedHigh);
                     if (descriptor->speed1 < 0.3f)
                         descriptor->speed1 = 0.3f;
                 }
                 descriptor->speed2 += g_GameManager.ScaleFloatBasedOnRank(
-                                          *reinterpret_cast<f32 *>(enemy + 0x2dec),
-                                          *reinterpret_cast<f32 *>(enemy + 0x2df0)) /
+                                          reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.speedLow,
+                                          reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.speedHigh) /
                                       2.0f;
                 if (descriptor->speed2 < 0.3f)
                     descriptor->speed2 = 0.3f;
@@ -820,17 +820,16 @@ void Enemy::FUN_00423150()
 
     if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x2dfc) > 0)
     {
-        if (*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3060) > 0)
+        if (this->shootIntervalFrames > 0)
         {
-            this->timer3064++;
-            if (this->timer3064 >=
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x3060))
+            this->shootIntervalTimer++;
+            if (this->shootIntervalTimer >= this->shootIntervalFrames)
             {
                 EclRunHighProposal::DispatchShotInstruction(
                     reinterpret_cast<u8 *>(this),
                     reinterpret_cast<EclRunHighProposal::RawInstruction *>(
-                        reinterpret_cast<u8 *>(this) + 0x3034));
-                this->timer3064 = 0;
+                        this->pendingShotInstruction));
+                this->shootIntervalTimer = 0;
             }
         }
 

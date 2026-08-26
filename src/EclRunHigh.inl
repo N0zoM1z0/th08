@@ -424,7 +424,9 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
             break;
         if (((TH08_ECL_AT(ctx, u32, 0x3324) >> 17) & 1) == 1)
         {
-            memcpy(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3034, TH08_ECL_CONTEXT_INSTRUCTION(ctx), 11 * sizeof(i32));
+            memcpy(reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->pendingShotInstruction,
+                   TH08_ECL_CONTEXT_INSTRUCTION(ctx),
+                   sizeof(reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->pendingShotInstruction));
             break;
         }
         DispatchShotInstruction(TH08_ECL_CONTEXT_ENEMY(ctx),
@@ -455,24 +457,27 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
         break;
 
     case 105:
-        TH08_ECL_AT(ctx, i32, 0x3060) = TH08_ECL_READ_I(ctx, 0);
-        if (TH08_ECL_AT(ctx, i32, 0x3060) != 0)
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootIntervalFrames = TH08_ECL_READ_I(ctx, 0);
+        if (reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootIntervalFrames != 0)
         {
-            TH08_ECL_AT(ctx, i32, 0x3060) += g_GameManager.ScaleIntBasedOnRank(
-                TH08_ECL_AT(ctx, i32, 0x3060) / 5,
-                -TH08_ECL_AT(ctx, i32, 0x3060) / 5);
-            *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3064) = 0;
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootIntervalFrames +=
+                g_GameManager.ScaleIntBasedOnRank(
+                    reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootIntervalFrames / 5,
+                    -reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootIntervalFrames / 5);
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootIntervalTimer = 0;
         }
         break;
     case 106:
-        TH08_ECL_AT(ctx, i32, 0x3060) = TH08_ECL_READ_I(ctx, 0);
-        if (TH08_ECL_AT(ctx, i32, 0x3060) != 0)
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootIntervalFrames = TH08_ECL_READ_I(ctx, 0);
+        if (reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootIntervalFrames != 0)
         {
-            TH08_ECL_AT(ctx, i32, 0x3060) += g_GameManager.ScaleIntBasedOnRank(
-                TH08_ECL_AT(ctx, i32, 0x3060) / 5,
-                -TH08_ECL_AT(ctx, i32, 0x3060) / 5);
-            *reinterpret_cast<ZunTimer *>(TH08_ECL_CONTEXT_ENEMY(ctx) + 0x3064) =
-                g_Rng.GetRandomU32InRange(TH08_ECL_AT(ctx, i32, 0x3060));
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootIntervalFrames +=
+                g_GameManager.ScaleIntBasedOnRank(
+                    reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootIntervalFrames / 5,
+                    -reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootIntervalFrames / 5);
+            reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootIntervalTimer =
+                g_Rng.GetRandomU32InRange(
+                    reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->shootIntervalFrames);
         }
         break;
     case 107: TH08_ECL_AT(ctx, u32, 0x3324) |= 0x00020000; break;
@@ -997,15 +1002,15 @@ enter_subroutine:
             TH08_ECL_RAW_BYTE(ctx, 0);
         break;
     case 152:
-        TH08_ECL_AT(ctx, f32, 0x2DEC) = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 0)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0)));
-        TH08_ECL_AT(ctx, f32, 0x2DF0) = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bulletRankInfluence.speedLow = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 0)) ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0))) : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 0)));
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bulletRankInfluence.speedHigh = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 1))
             ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(
                   *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)))
             : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 1)));
-        TH08_ECL_AT(ctx, u16, 0x2DF4) = (u16)TH08_ECL_READ_I(ctx, 2);
-        TH08_ECL_AT(ctx, u16, 0x2DF6) = (u16)TH08_ECL_READ_I(ctx, 3);
-        TH08_ECL_AT(ctx, u16, 0x2DF8) = (u16)TH08_ECL_READ_I(ctx, 4);
-        TH08_ECL_AT(ctx, u16, 0x2DFA) = (u16)TH08_ECL_READ_I(ctx, 5);
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bulletRankInfluence.count1Low = (i16)TH08_ECL_READ_I(ctx, 2);
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bulletRankInfluence.count1High = (i16)TH08_ECL_READ_I(ctx, 3);
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bulletRankInfluence.count2Low = (i16)TH08_ECL_READ_I(ctx, 4);
+        reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->bulletRankInfluence.count2High = (i16)TH08_ECL_READ_I(ctx, 5);
         break;
     case 153:
         TH08_ECL_AT(ctx, i32, 0x337C) = (i32)TH08_ECL_AT(ctx, i16, 0x2CEE);

@@ -132,6 +132,20 @@ completion.  A useful next milestone is Enemy/ECL orchestration closure,
 starting from the still-raw Enemy motion/rank/phase fields adjacent to these
 descriptors rather than reopening the now-closed bullet loop.
 
+The first accepted batch toward Enemy/ECL orchestration closure types the
+Enemy bullet-rank and repeated-shot scheduling family.  The six
+`Enemy + 0x2DEC..+0x2DFA` rank endpoints now form an asserted
+`EnemyBulletRankInfluence`; the `+0x3034` delayed-shot snapshot remains an
+explicit 0x2C-byte ECL protocol buffer, followed by named
+`shootIntervalFrames @ +0x3060` and `shootIntervalTimer @ +0x3064` fields.
+Producers, consumers, and reset paths across RunEcl, the exact shot dispatcher,
+Enemy phase transitions, Spellcard reset, and EnemyManager update share those
+owners.  Focused replay passed **71 / 71**, a non-reuse cold replay passed
+**1,105 / 1,105**, the normal VC7 image linked, and the complete i386 Linux
+build/layout verifier passed.  The next coherent family is the adjacent Enemy
+combat identity/life/score/boss-timer state at `+0x2DFC..+0x2E20`, followed by
+its phase threshold/callback owners.
+
 Select the next independent field family with:
 
 ```bash
