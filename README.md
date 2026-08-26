@@ -1,6 +1,6 @@
 # 東方永夜抄 ～ Imperishable Night
 
-<h3 align="center">🌙「永夜已明」Authored reconstruction complete — Linux playable ✓ · Windows/macOS in progress · Web edition is the next spell card 💫</h3>
+<h3 align="center">🌙「永夜已明」Authored reconstruction complete — Linux + Web playable ✓ · Windows/macOS in progress 💫</h3>
 
 <p align="center">
   <img
@@ -18,18 +18,25 @@
 | Platform | Guide | Status |
 | --- | --- | --- |
 | Linux | **[Download, install, and play](docs/PLAY_LINUX.md)** | **Playable** |
+| Web | **[Play in your browser](https://th08-web.pages.dev/)** · [source and docs](https://github.com/N0zoM1z0/th08-web) | **Playable** |
 | Windows | [Native Windows guide](docs/PLAY_WINDOWS.md) | In progress |
 | macOS | [Native macOS guide](docs/PLAY_MACOS.md) | In progress |
 
-The Web edition is planned as a future playable target after the native
-desktop ports. It is not available yet.
+The Web edition now lives in the dedicated
+**[N0zoM1z0/th08-web](https://github.com/N0zoM1z0/th08-web)** repository. It
+compiles this reconstructed C++ game code to WebAssembly and renders through
+WebGL 2; it is not a TypeScript approximation or an emulator around the
+original executable. Open the public build, select your own legal `th08.dat`
+and `thbgm.dat`, and the endless night runs locally in the browser.
 
 This project reconstructs the source code of the original Japanese
 `東方永夜抄 ～ Imperishable Night` version 1.00d executable. All 1,107 authored
 functions are now present in source, and 1,105 are accepted as byte-exact by
 reproducible comparison. The authored-source recovery milestone is complete;
 current work focuses on whole-image reconstruction, compiler/runtime libraries,
-and playable Windows, Linux, and macOS products.
+and the remaining native Windows and macOS products. The playable Linux and Web
+editions are maintained as independent delivery lanes and do not change the
+strict VC7 exactness ledger.
 
 The repository continues the work of
 [GensokyoClub/th08](https://github.com/GensokyoClub/th08). Its complete Git
@@ -89,19 +96,49 @@ build-mode, reccmp, and objdiff details.
 
 ### Playable modern ports
 
-An independent CMake target compiles the production-authored sources for
-modern hosts. It does not replace or make an exactness claim about the VC7
-build.
+The playable ports compile the production-authored sources for modern hosts.
+Native targets live in this repository; the browser target is developed in the
+Web-focused sibling repository. Neither lane replaces or makes an exactness
+claim about the VC7 build.
 
 | Platform | Status | Delivery |
 | --- | --- | --- |
 | Linux i386 | **Done** | Local one-command build/run and CI portable archive |
+| WebAssembly / WebGL 2 | **Done** | Public browser build and provenance-gated GitHub Release |
 | Windows x86 | **In progress** | Native startup and redistributable packaging are not complete |
 | macOS | **In progress** | Native backend and packaging remain to be implemented |
 
 For build dependencies, runtime asset expectations, `--data-dir`, and the
 remaining platform sequence, see
 [Playable reconstruction ports](docs/PORTING.md).
+
+#### Web: one tab, two legal DAT files, one endless night
+
+<p align="center">
+  <a href="https://th08-web.pages.dev/">
+    <img
+      src="https://raw.githubusercontent.com/N0zoM1z0/th08-web/main/resources/th08-web-social-preview.jpg"
+      width="800"
+      alt="TH08 Web source-built browser port and Imperishable Night title screen">
+  </a>
+</p>
+
+**[Enter the endless night](https://th08-web.pages.dev/)** ·
+[source and documentation](https://github.com/N0zoM1z0/th08-web) ·
+[latest release](https://github.com/N0zoM1z0/th08-web/releases/latest) ·
+[from-zero engineering story](https://github.com/N0zoM1z0/th08-web/blob/main/docs/WEB_PORTING.md)
+
+TH08 Web compiles the reconstructed C++ game code with Emscripten, runs it as
+WebAssembly on a browser worker, and connects it to WebGL 2, Web Audio, local
+file selection, and browser-local saves. Chrome is recommended for the best
+observed frame pacing; Firefox is supported but is usually slower.
+
+No retail data is included in the site, repository, deployment, or Release.
+Each player selects `th08.dat` and `thbgm.dat` from a legally obtained TH08
+installation. The files stay on that machine: `th08.dat` is held only in
+volatile session memory, while `thbgm.dat` is range-read from its browser
+`File` object. Neither archive is uploaded or placed in persistent browser
+storage.
 
 For a source checkout on Debian or Ubuntu, the Linux quick start installs
 missing i386 dependencies, builds, and runs using only the original data
@@ -178,6 +215,7 @@ python3 scripts/analysis/report-reconstruction-status.py --summary
 
 ## Project map
 
+- [TH08 Web playable browser port and engineering documentation](https://github.com/N0zoM1z0/th08-web)
 - [Linux download, installation, and play guide](docs/PLAY_LINUX.md)
 - [Native Windows user guide and status](docs/PLAY_WINDOWS.md)
 - [Native macOS user guide and status](docs/PLAY_MACOS.md)
