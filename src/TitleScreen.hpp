@@ -168,7 +168,7 @@ struct TitleScreen
     i32 selectedReplayStage;
     i32 idleFrames;
     i32 currentNumberOfSpellCards;
-    i32 unk0xc29c;
+    i32 spellCardInfoRevealCountdown;
     float percentageCapturedSpellPracticePerShot;
     float percentageCapturedInGamePerShot;
     float percentageCapturedSpellPractice;
@@ -192,5 +192,6 @@ struct TitleScreen
     ControllerMapping controllerMapping;
     GameConfiguration currentGameConfig;
 };
+C_ASSERT(offsetof(TitleScreen, spellCardInfoRevealCountdown) == 0xc29c);
 
 } // namespace th08

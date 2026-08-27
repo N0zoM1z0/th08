@@ -2,6 +2,7 @@
 
 #include "AsciiManager.hpp"
 #include "GameManager.hpp"
+#include "ResultScreen.hpp"
 #include "ScoreDat.hpp"
 #include "ScreenEffect.hpp"
 #include "SoundPlayer.hpp"
@@ -180,6 +181,8 @@ DIFFABLE_STATIC_ASSIGN(const char *, g_FullWidthDigits[]) = {
     TH_TITLE_FULLWIDTH_DIGIT_4, TH_TITLE_FULLWIDTH_DIGIT_5, TH_TITLE_FULLWIDTH_DIGIT_6, TH_TITLE_FULLWIDTH_DIGIT_7,
     TH_TITLE_FULLWIDTH_DIGIT_8, TH_TITLE_FULLWIDTH_DIGIT_9,
 };
+
+DIFFABLE_STATIC_ARRAY(char, 64, g_FullWidthNumberBuffer);
 
 DIFFABLE_STATIC_ASSIGN(const char *, g_StartMenuHelpText[]) = {
     TH_TITLE_STARTMENU_HELPTEXT0, TH_TITLE_STARTMENU_HELPTEXT1, TH_TITLE_STARTMENU_HELPTEXT2,
@@ -2312,7 +2315,7 @@ ChainCallbackResult TitleScreen::OnUpdateSpellCardSelect()
             }
 
             this->FormatSpellCardInfo();
-            this->unk0xc29c = 0;
+            this->spellCardInfoRevealCountdown = 0;
         }
 
         if (this->stateTimer2 == 8)
@@ -2437,7 +2440,7 @@ ChainCallbackResult TitleScreen::OnUpdateSpellCardSelect()
                 this->spellCardInfoVms[i2].color1.a = 0;
             }
 
-            this->unk0xc29c = 21;
+            this->spellCardInfoRevealCountdown = 21;
         }
 
         this->FormatSpellCardInfo();
@@ -2539,11 +2542,7 @@ ChainCallbackResult TitleScreen::OnUpdateSpellCardSelect()
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-/* This function checks the conditions needed to unlock certain Last Word spell cards. */
-// STUB: th08 0x46cbbb
-void TitleScreen::UnlockLastWordSpellCards()
-{
-}
+#include "TitleUnlockLastWords.inl"
 
 #pragma var_order(vm, i2, i, position)
 ChainCallbackResult TitleScreen::DrawReplayMenu()
@@ -3204,10 +3203,9 @@ i32 TitleScreen::MoveCursorHorizontal(i32 menuLength)
     return 0;
 }
 
-// STUB: th08 0x46d7f9
-void TitleScreen::FormatSpellCardInfo()
-{
-}
+#include "TitleFullWidthDigits.inl"
+#include "TitleFormatSpellCardInfo.inl"
+#include "TitleSpellCardData.inl"
 
 // This function is 100% matching except for stack nonsense cause by AnmLoaded::InitializeAndSetSprite.
 #pragma var_order(i, firstFile, replayCount, fileSize, replayData, path, findData, fileSize2)

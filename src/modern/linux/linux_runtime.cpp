@@ -61,6 +61,24 @@ extern "C" int UpdatePulsingRadialTrailCallback(AnmVm *) asm("_ZN4th085AnmVm24Up
 
 namespace modern
 {
+struct ModernEffectTemplate
+{
+    int32_t scriptIdx;
+    uintptr_t update;
+    uintptr_t initialize;
+};
+
+// These aliases bind the semantic target globals exported at fixed addresses
+// by th08-layout.ld.  Keep the compatibility storage types local to the Linux
+// runtime: the reconstructed VC7 declarations retain their original owners.
+extern int32_t g_ModernLastSpellCountStorage asm("_ZN4th0816g_LastSpellCountE");
+extern ModernEffectTemplate g_ModernEffectTemplatesStorage[66]
+    asm("_ZN4th0817g_EffectTemplatesE");
+extern int32_t g_ModernGuiStageClearBonusesStorage[9]
+    asm("_ZN4th0822g_GuiStageClearBonusesE");
+extern uint32_t g_ModernGuiMessageTextColorsStorage[12][4]
+    asm("_ZN4th0822g_GuiMessageTextColorsE");
+
 namespace
 {
 int g_argumentCount;
@@ -107,13 +125,6 @@ void InstallSignalHandler(int signalNumber)
     action.sa_flags = SA_SIGINFO | SA_RESETHAND;
     sigaction(signalNumber, &action, NULL);
 }
-
-struct ModernEffectTemplate
-{
-    int32_t scriptIdx;
-    uintptr_t update;
-    uintptr_t initialize;
-};
 
 uintptr_t CodeAddress(int (__fastcall *callback)(AnmVm *))
 {
@@ -205,10 +216,10 @@ void InitializeTargetData()
         {0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0},
         {0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0},
     };
-    *reinterpret_cast<int32_t *>(0x004c6c3c) = 43;
-    memcpy(reinterpret_cast<void *>(0x004c6d30), effectTemplates, sizeof(effectTemplates));
-    memcpy(reinterpret_cast<void *>(0x004c7158), stageScoreTables, sizeof(stageScoreTables));
-    memcpy(reinterpret_cast<void *>(0x004c7180), messageTextColors, sizeof(messageTextColors));
+    g_ModernLastSpellCountStorage = 43;
+    memcpy(g_ModernEffectTemplatesStorage, effectTemplates, sizeof(effectTemplates));
+    memcpy(g_ModernGuiStageClearBonusesStorage, stageScoreTables, sizeof(stageScoreTables));
+    memcpy(g_ModernGuiMessageTextColorsStorage, messageTextColors, sizeof(messageTextColors));
 }
 }
 

@@ -129,15 +129,14 @@ struct Interpolator
     EclInterpolatorCallback callback; // +0x00, target calls with Enemy in ECX and entry in EDX
     ZunTimer timer;                 // +0x04
     i32 duration;         // +0x10
-    i32 unknown14;        // +0x14
+    i32 callbackIndex;    // +0x14
     i32 easing;           // +0x18, accepted values 1..6
-    i32 unknown1C;
-    i32 unknown20;
-    i32 unknown24;
-    i32 unknown28;
+    f32 parameters[4];    // +0x1C
     f32 affectedVariable; // +0x2C; 10042..10044 mean position motion
 };
 typedef char InterpolatorSizeCheck[sizeof(Interpolator) == 0x30 ? 1 : -1];
+typedef char InterpolatorCallbackIndexOffsetCheck[offsetof(Interpolator, callbackIndex) == 0x14 ? 1 : -1];
+typedef char InterpolatorParametersOffsetCheck[offsetof(Interpolator, parameters) == 0x1c ? 1 : -1];
 
 enum DispatchResult
 {

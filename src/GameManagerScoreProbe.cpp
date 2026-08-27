@@ -51,7 +51,7 @@ i32 InitializeScoreData()
     ScoreDat::ParseCLRD(scoreDat, g_GameManager.clrdData);
     ScoreDat::ParsePSCR(scoreDat, g_GameManager.pscrData);
 
-    if ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&g_GameManager) + 0x3dbac) & 1U) != 0)
+    if (g_GameManager.flags.isPracticeMode)
     {
         g_GameManager.globals->displayedHighScore =
             g_GameManager.pscrData[g_GameManager.shotType]

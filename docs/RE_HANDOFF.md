@@ -787,16 +787,40 @@ Linux build plus fixed-layout verifier passes.  The final router totals are
 **0 raw-member**, **0 absolute-address**, **107 anonymous-identifier**, and
 **41 opaque-storage** candidates.
 
-This closes the current whole-source semantic-readability milestone: all
-behavior-recoverable authored `FUN_` definitions have semantic names except
-the six stage-specific Effect callbacks whose target bodies do not prove
-stable visual identities.  Reset-only, unused, producerless, and reserved
-serialization storage remains explicitly neutral.  Future semantic work must
-start from new producer/consumer or runtime evidence, not from the size of the
-remaining heuristic categories.  Re-audit that evidence boundary with:
+The follow-up production/probe/modern audit found and closed a gap outside the
+router's categories: `TitleScreen.cpp` still contained the repository's only
+two game-source `STUB` bodies while their complete accepted implementations
+lived in `TitleReplayMenuProbe.cpp`.  `UnlockLastWordSpellCards @ 0x0046CBBB`,
+`ConvertToFullWidthDigits @ 0x0046D763`, and `FormatSpellCardInfo @ 0x0046D7F9`
+now have shared source owners consumed by both production and the exact probe.
+The production Title owner also restores the full-width number buffer, 18
+Last Word comment records, and six difficulty strings.  The target-pinned
+`verify-title-spell-card-data.py` check passes **18 / 18 records and 6 / 6
+strings exact**.
+
+The same batch names the ECL interpolation slot's callback index and four float
+parameters, the Title spell-info reveal countdown, and the GameManager
+practice-mode bit used by score initialization.  Four modern-runtime literal
+target-data writes now use mapped Linux-local ABI aliases.  Focused replay
+passes all **11 / 11** Title probe units, RunEcl **26,638 / 26,638**, and score
+initialization **552 / 552**.  The required non-reuse cold replay passes
+**1,106 / 1,106 exact**, the normal VC7 image links, and the complete i386
+Linux build plus fixed-layout verifier passes.
+
+This closes the current whole-source semantic-readability milestone more
+strictly: game production source contains no `STUB` marker, and scans including
+probes and modern sources contain **0 raw-member** and **0 absolute-address**
+candidates.  They retain 100 anonymous and 41 opaque candidates; production
+alone retains 99 and 41.  Those entries were reviewed as reset-only,
+unconsumed, padding, or reserved storage and remain neutral.  The six
+stage-specific Effect callbacks also remain address-named because target
+bodies do not prove stable visual identities.  Future semantic work must start
+from new producer/consumer or runtime evidence, not from heuristic category
+size.  Re-audit the evidence boundary with:
 
 ```bash
-python3 scripts/analysis/report-semantic-debt.py
+python3 scripts/analysis/report-semantic-debt.py --include-probes --include-modern
+python3 scripts/analysis/verify-title-spell-card-data.py
 ```
 
 Whole-executable TU/layout work below remains deferred, not invalidated.

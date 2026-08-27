@@ -2854,3 +2854,52 @@ address-named authored definitions closed except the six evidence-limited
 Effect callbacks, this closes the current source-readability milestone.  The
 remaining counts are an evidence-directed backlog, not a completion
 percentage and not permission to guess meanings for inert storage.
+
+### Probe, production, and portable semantic closure — 2026-08-27
+
+Scope: a follow-up audit of production source, exact probe TUs, and the modern
+runtime together.  This audit deliberately checked source markers outside the
+heuristic debt categories.  It found that `TitleScreen.cpp` still linked empty
+`UnlockLastWordSpellCards @ 0x0046CBBB` and
+`FormatSpellCardInfo @ 0x0046D7F9` bodies even though their exact
+implementations, plus `ConvertToFullWidthDigits @ 0x0046D763`, were accepted in
+`TitleReplayMenuProbe.cpp`.  The router did not classify ordinary empty
+functions, so its prior 0/0 raw/absolute result was necessary but not
+sufficient for production semantic closure.
+
+The three Title implementations now have single source owners in shared `.inl`
+files used by both the production and probe TUs.  Production also owns the
+64-byte full-width-number buffer and the target-backed Shift-JIS spell-card
+tables.  `g_TitleLastWordCommentFormats @ 0x004C82C8` is an asserted array of
+18 0x30-byte records, each containing two format pointers and two groups of
+five integer arguments; `g_TitleSpellDifficultyNames @ 0x004C8628` is the
+six-entry difficulty-name table.  The reproducible
+`scripts/analysis/verify-title-spell-card-data.py` oracle compares every
+integer, every pointed-to string byte, and the canonical target hash: **18 / 18
+records and 6 / 6 strings exact**.
+
+Adjacent cleanup closes four type-system escapes.  The common ECL interpolation
+slot now names `callbackIndex @ +0x14` and `parameters[4] @ +0x1C`, matching the
+already exact installer/callback protocol.  `TitleScreen +0xC29C` is
+`spellCardInfoRevealCountdown`, proven by its 21-frame start and the formatter's
+11/9/7/5/3 staged reveal gates.  `GameManager::InitializeScoreData @
+0x0043BBE1` reads the asserted `flags.isPracticeMode` bit instead of a raw
+`GameManager +0x3DBAC` cast.  The Linux target-data bootstrap now reaches the
+four already mapped Last Spell, Effect-template, stage-bonus, and GUI-color
+owners through local ABI aliases rather than writing literal addresses.
+
+VC7 oracle: focused replay passes ECL RunEcl **26,638 / 26,638**, GameManager
+score initialization **552 / 552**, and every Title probe unit **11 / 11**,
+including **2,984**, **150**, and **2,365** exact bytes for the three promoted
+Title implementations.  A required single-job cold build of all 75 comparison
+objects passes **1,106 / 1,106 exact** with zero failures, and the normal VC7
+production image links.
+
+Portable oracle: the complete i386 Linux container build links the promoted
+Title behavior and initialized data, and the fixed-layout verifier passes.  A
+scan including probes and modern sources reports **0 raw-member**, **0 absolute-
+address**, **100 anonymous-identifier**, and **41 opaque-storage** candidates;
+production-only is **0 / 0 / 99 / 41**.  The remaining anonymous/opaque entries
+were reviewed as padding, reset-only or unconsumed slots, reserved serialized
+bytes, or otherwise evidence-limited storage.  They are retained neutrally;
+these heuristic totals are not a completion percentage.
