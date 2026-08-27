@@ -177,7 +177,7 @@ ChainCallbackResult Supervisor::OnUpdate(Supervisor *s)
             case SupervisorState_ExitGame2:
                 return CHAIN_CALLBACK_RESULT_EXIT_GAME_ERROR;
             case SupervisorState_ResultScreen:
-                if (ResultScreen::RegisterChain(0) != ZUN_SUCCESS)
+                if (ResultScreen::RegisterChain(RESULT_SCREEN_REGISTER_BROWSE) != ZUN_SUCCESS)
                 {
                     return CHAIN_CALLBACK_RESULT_EXIT_GAME_SUCCESS;
                 }
@@ -220,7 +220,7 @@ ChainCallbackResult Supervisor::OnUpdate(Supervisor *s)
                 goto init_titlescreen;
             case SupervisorState_ResultScreenFromGame:
                 GameManager::CutChain();
-                if (ResultScreen::RegisterChain(1) != ZUN_SUCCESS)
+                if (ResultScreen::RegisterChain(RESULT_SCREEN_REGISTER_GAME_RESULT) != ZUN_SUCCESS)
                 {
                     return CHAIN_CALLBACK_RESULT_EXIT_GAME_SUCCESS;
                 }
@@ -330,7 +330,7 @@ ChainCallbackResult Supervisor::OnUpdate(Supervisor *s)
 
                 goto init_titlescreen;
             case SupervisorState_ResultScreenFromGame:
-                if (ResultScreen::RegisterChain(1) != ZUN_SUCCESS)
+                if (ResultScreen::RegisterChain(RESULT_SCREEN_REGISTER_GAME_RESULT) != ZUN_SUCCESS)
                 {
                     return CHAIN_CALLBACK_RESULT_EXIT_GAME_SUCCESS;
                 }

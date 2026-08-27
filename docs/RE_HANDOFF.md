@@ -867,6 +867,15 @@ passes **1,106 / 1,106 exact**.  Rebuilt AsciiManager/main/Supervisor diagnostic
 replay passes **134 / 134 exact**, the normal VC7 image links, and the complete
 i386 Linux container build plus fixed-layout verifier passes.
 
+The ResultScreen entry protocol is now explicit at every caller.  Mode 0 opens
+the standalone result browser, mode 1 handles the post-game result flow, and
+mode 2 performs synchronous score-data persistence without installing chains.
+`RegisterChain @ 0x004582A0` keeps its original `u32` ABI while named enum
+values replace all raw mode arguments and comparisons.  The function passes
+**395 / 395 exact**; the required cold 75-object replay passes **1,106 / 1,106
+exact**, the normal VC7 image links, and the complete i386 Linux container
+build plus fixed-layout verifier passes.
+
 Whole-executable TU/layout work below remains deferred, not invalidated.
 
 ## Active playable-port branch

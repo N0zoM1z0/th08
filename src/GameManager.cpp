@@ -1148,7 +1148,7 @@ i32 InitializeScoreData()
     i32 j;
 
     catk = g_GameManager.catkData;
-    ResultScreen::RegisterChain(2);
+    ResultScreen::RegisterChain(RESULT_SCREEN_REGISTER_SAVE_DATA);
     memset(g_GameManager.catkData, 0, sizeof(g_GameManager.catkData));
 
     for (i = 0; i < SPELLCARD_COUNT_SPELLCARDS; ++i, ++catk)

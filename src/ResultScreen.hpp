@@ -38,6 +38,13 @@ enum ResultScreenState
     RESULT_SCREEN_STATE_SPELL_PRACTICE = 22,
 };
 
+enum ResultScreenRegistrationMode
+{
+    RESULT_SCREEN_REGISTER_BROWSE = 0,
+    RESULT_SCREEN_REGISTER_GAME_RESULT = 1,
+    RESULT_SCREEN_REGISTER_SAVE_DATA = 2,
+};
+
 #define RESULT_REPLAY_MAX_RESULTS 15
 
 struct ResultScreen
@@ -86,7 +93,9 @@ struct ResultScreen
     i32 HandleOtherStatsScreen();
     i32 DrawFinalStats();
 
-    static ZunResult RegisterChain(u32 unk);
+    // Keep the u32 parameter for the original VC7 ABI; callers use the
+    // ResultScreenRegistrationMode values above.
+    static ZunResult RegisterChain(u32 registrationMode);
     static ChainCallbackResult OnUpdate(ResultScreen *resultScreen);
     static ChainCallbackResult OnDraw(ResultScreen *resultScreen);
     static ZunResult AddedCallback(ResultScreen *resultScreen);

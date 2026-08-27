@@ -3021,3 +3021,35 @@ verifier pass with the same named flags and asserted owner offset.  Router
 totals remain **0 / 0 / 100 / 41** including probes and modern source, or **0 /
 0 / 99 / 41** for production; the scanner intentionally does not treat every
 anonymous bitfield spelling as a completion count.
+
+### ResultScreen registration modes — 2026-08-27
+
+Scope: `ResultScreen::RegisterChain @ 0x004582A0` and all production/probe
+callers.  The previously anonymous `u32` parameter and the raw `0`, `1`, and
+`2` arguments now expose one three-mode entry protocol.  The parameter remains
+`u32` in the declaration and definition to preserve the original VC7 symbol
+and call ABI; `ResultScreenRegistrationMode` supplies semantic values to the
+body and callers only.
+
+Observed: target instructions compare the incoming word first with `1`, then
+with `2`.  Mode 0 leaves the zero-initialized state at
+`RESULT_SCREEN_STATE_INIT` and installs the normal calc/draw chains, matching
+the Supervisor path that enters the standalone result browser.  Mode 1 selects
+high-score name entry, ordinary practice results, or spell-practice results
+from the current GameManager mode before installing those chains.  Mode 2 sets
+`RESULT_SCREEN_STATE_INITIAL_SCORE_SAVE`, calls `AddedCallback` synchronously,
+and returns without registering either chain.  That callback opens and writes
+the score container through `DeletedCallback`; the exact callers use this path
+for score initialization, pause-menu exit, and final shutdown persistence.
+The names are therefore `BROWSE`, `GAME_RESULT`, and the deliberately broad
+`SAVE_DATA`, rather than claiming mode 2 is used only for first-file creation.
+
+VC7 oracle: the target-pinned 395-byte registration function replays **395 /
+395 exact**.  Because the enum and declaration live in a shared header, the
+required single-job cold build of all 75 comparison objects passes **1,106 /
+1,106 exact** with zero failures.  The normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links every named
+caller, and `verify-modern-linux.sh` verifies the ELF32 image and all fixed
+target-owned layout symbols.  No state value, branch, callback, priority,
+layout, target mapping, or accepted ledger entry changed.

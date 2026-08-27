@@ -1140,7 +1140,7 @@ i32 PauseMenu::OnUpdate()
             g_GameManager.isInGameMenu = FALSE;
             g_Supervisor.systemTime = timeGetTime();
 
-            ResultScreen::RegisterChain(2);
+            ResultScreen::RegisterChain(RESULT_SCREEN_REGISTER_SAVE_DATA);
         }
         break;
     case PAUSE_MENU_STATE_RESTART_GAME:

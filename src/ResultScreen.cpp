@@ -2288,7 +2288,7 @@ i32 ResultScreen::DrawFinalStats()
     return 0;
 }
 
-ZunResult ResultScreen::RegisterChain(u32 unk)
+ZunResult ResultScreen::RegisterChain(u32 registrationMode)
 {
     ResultScreen *resultScreen = ZUN_NEW(ResultScreen, "ResultSysInf");
 
@@ -2296,7 +2296,7 @@ ZunResult ResultScreen::RegisterChain(u32 unk)
 
     utils::GuiDebugPrint("Stg.PlayTimeAll = %d\r\n", g_GameManager.stagePlayTimeAll);
 
-    if (unk == 1) // When writing the score after a game
+    if (registrationMode == RESULT_SCREEN_REGISTER_GAME_RESULT)
     {
         if (!g_GameManager.IsPracticeMode())
         {
@@ -2311,7 +2311,7 @@ ZunResult ResultScreen::RegisterChain(u32 unk)
             resultScreen->currentState = RESULT_SCREEN_STATE_PRACTICE;
         }
     }
-    else if (unk == 2) // Writing the score file for the first time
+    else if (registrationMode == RESULT_SCREEN_REGISTER_SAVE_DATA)
     {
         resultScreen->currentState = RESULT_SCREEN_STATE_INITIAL_SCORE_SAVE;
         ResultScreen::AddedCallback(resultScreen);
