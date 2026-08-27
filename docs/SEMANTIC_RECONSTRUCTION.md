@@ -3294,3 +3294,46 @@ Portable oracle: the complete i386 Linux container build links, and the ELF32
 plus fixed-layout verifier passes.  No focus transition, option callback,
 gauge formula, timer value, item reward, Enemy rank/reward branch, field width,
 or accepted unit changed.
+
+### Replay serialization and stream ownership — 2026-08-27
+
+Scope: `ReplayManager::LoadReplayData @ 0x00451B80`, recording/playback stage
+setup at `0x00452830` and `0x00452D60`, `SaveReplay @ 0x004531E0`, and the
+serialized `ReplayDataHeader`, `ReplayData`, and `StageReplayData` layouts.
+
+The target writer and loader establish two parallel per-stage streams.  The
+first pointer table owns a `StageReplayData` prefix followed by input records,
+so its tail is now `inputStream`.  The second table is copied and advanced in
+single bytes and is therefore `u8 *stageFpsData[MAX_STAGES]`, rather than a
+second table of fictitious `StageReplayData` objects.  Recording/playback local
+pointers and save-time size arithmetic use those owners directly.  Header and
+payload gaps that are covered by the initial whole-`ReplayData` zero fill and
+have no target consumer are named reserved storage.  The payload dword at
+`+0x120` is written as 30 immediately before serialization but has no observed
+reader, so it remains the deliberately neutral `unconsumedConstant30` rather
+than receiving a guessed gameplay meaning.  The manager word at `+0x4E` is
+likewise named only for its proven stage-start reset protocol.
+
+Evidence limits remain explicit.  The four `Float3` objects at manager offsets
+`+0x18`, `+0x24`, `+0x30`, and `+0x3C` have no authored scalar consumers that
+would justify behavioral names.  They cannot be collapsed into byte storage:
+that trial removed four implicit constructors and shortened the retail
+constructor shape from 58 bytes to 14.  They therefore remain honest
+`unknownVector18/24/30/3C` objects.  The unconsumed manager ranges at `+0x48`,
+`+0x7C`, and `+0xCC` also stay opaque; in particular, no unsupported parallel
+end-pointer array is inferred for `+0x7C`.
+
+VC7 oracle: focused replay of `ReplayManager.obj` passes **18 / 18 exact**,
+including LoadReplayData **511 / 511**, BeginRecordingStage **1,315 / 1,315**,
+BeginPlaybackStage **787 / 787**, the constructor **58 / 58**, and SaveReplay
+**2,445 / 2,445**.  Because the serialized layouts are shared headers, the
+required single-job cold build of all 75 comparison objects passes **1,106 /
+1,106 exact** with zero failures, and the normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  The Replay two-file router falls from 14 anonymous identifiers
+plus 5 opaque ranges to 1 alignment identifier plus 3 evidence-limited opaque
+ranges; that is a review-routing delta, not a semantic completion percentage.
+No replay byte, pointer fixup, stream extent, checksum/obfuscation operation,
+constructor call, field offset, or accepted unit changed.

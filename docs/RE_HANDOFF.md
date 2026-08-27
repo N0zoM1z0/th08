@@ -1781,3 +1781,17 @@ exactness from successful linking or same-size sections.
 
 Use `docs/TOOLS.md` to choose commands. Keep `.analysis/` disposable and update
 this file whenever the active milestone or a durable blocker changes.
+
+The latest semantic checkpoint types the Replay serialization boundary without
+inventing meanings for unconsumed storage.  `StageReplayData::inputStream` owns
+the variable input tail, while `ReplayDataHeader::stageFpsData` is correctly a
+nine-entry table of byte-stream pointers.  Zero-filled serialized gaps are
+reserved storage; the payload constant at `+0x120` and manager reset word at
+`+0x4E` are named only for their proven write protocols.  Four manager
+`Float3`s remain explicit unknown vectors because an opaque-storage trial
+removed their target-visible implicit construction (constructor 58 -> 14
+bytes); the ranges at `+0x48/+0x7C/+0xCC` remain opaque for lack of consumers.
+Focused Replay replay passes **18 / 18 exact**, the required non-reuse cold
+aggregate passes **1,106 / 1,106 exact**, the normal VC7 image links, and the
+complete i386 Linux build plus fixed-layout verifier pass.  This is a bounded
+semantic checkpoint, not a whole-program semantic-completion claim.

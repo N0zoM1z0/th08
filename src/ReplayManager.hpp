@@ -43,12 +43,12 @@ struct StageReplayData
     u8 spellcardsCaptured;
     i8 clockTime;
     u8 padding23;
-    u8 inputData[0x1c];
+    u8 inputStream[0x1c];
 };
 
 C_ASSERT(sizeof(StageReplayData) == 0x40);
 C_ASSERT(offsetof(StageReplayData, spellcardsCaptured) == 0x21);
-C_ASSERT(offsetof(StageReplayData, inputData) == 0x24);
+C_ASSERT(offsetof(StageReplayData, inputStream) == 0x24);
 
 struct ReplayDataHeader
 {
@@ -57,28 +57,27 @@ struct ReplayDataHeader
     u8 usesExtendedInputRecords;
     u8 hasUserDataSection;
 
-    unknown_fields(0x8, 0x4);
+    u8 reserved08[4];
 
     i32 fileSize;
     i32 checksum;
 
     u8 randomHeaderByte;
     u8 obfuscationKey;
-    u8 unk0x16;
-    u8 unk0x17;
+    u8 reserved16[2];
 
     i32 compressedSize;
     i32 decompressedSize;
 
     StageReplayData *stageReplayData[MAX_STAGES];
-    StageReplayData *stageReplayFpsData[MAX_STAGES];
+    u8 *stageFpsData[MAX_STAGES];
 };
 C_ASSERT(sizeof(ReplayDataHeader) == 0x68);
 C_ASSERT(offsetof(ReplayDataHeader, usesExtendedInputRecords) == 0x6);
 C_ASSERT(offsetof(ReplayDataHeader, hasUserDataSection) == 0x7);
 C_ASSERT(offsetof(ReplayDataHeader, obfuscationKey) == 0x15);
 C_ASSERT(offsetof(ReplayDataHeader, stageReplayData) == 0x20);
-C_ASSERT(offsetof(ReplayDataHeader, stageReplayFpsData) == 0x44);
+C_ASSERT(offsetof(ReplayDataHeader, stageFpsData) == 0x44);
 
 struct ReplayData
 {
@@ -92,7 +91,7 @@ struct ReplayData
     char date[6];
     char playerName[8];
 
-    u8 unk0x7a;
+    u8 reserved7A;
     u8 isPractice;
     i16 spellcardNumber;
 
@@ -104,14 +103,14 @@ struct ReplayData
 
     GameConfiguration gameConfiguration;
 
-    unknown_fields(0xf0, 0x24);
+    u8 reservedF0[0x24];
 
     float slowDownRate2;
 
     float slowDownRate;
     u8 clearState;
 
-    i32 unk0x120;
+    i32 unconsumedConstant30;
     i32 exeSize;
     i32 exeChecksum;
     char exeVersion[6];
@@ -119,6 +118,8 @@ struct ReplayData
 
 C_ASSERT(sizeof(ReplayData) == 0x134);
 C_ASSERT(offsetof(ReplayData, randomPayloadByte) == 0x68);
+C_ASSERT(offsetof(ReplayData, reservedF0) == 0xF0);
+C_ASSERT(offsetof(ReplayData, unconsumedConstant30) == 0x120);
 
 struct ReplayInputSync
 {
@@ -141,12 +142,12 @@ struct ReplayManager
     u8 *replayFileData;
     i32 isDemo;
     const char *replayPath;
-    Float3 unk18;
-    Float3 unk24;
-    Float3 unk30;
-    Float3 unk3c;
+    Float3 unknownVector18;
+    Float3 unknownVector24;
+    Float3 unknownVector30;
+    Float3 unknownVector3C;
     unknown_fields(0x48, 0x6);
-    u16 unk4e;
+    u16 stageResetWord;
     u8 *replayInputCursor;
     u8 *replayInputEnds[MAX_STAGES];
     ReplayInputSync *extendedInputCursor;
@@ -181,8 +182,7 @@ C_ASSERT(sizeof(ReplayManager) == 0xdc);
 C_ASSERT(offsetof(ReplayManager, replayData) == 0x8);
 C_ASSERT(offsetof(ReplayManager, replayFileData) == 0xc);
 C_ASSERT(offsetof(ReplayManager, replayPath) == 0x14);
-C_ASSERT(offsetof(ReplayManager, unk18) == 0x18);
-C_ASSERT(offsetof(ReplayManager, unk4e) == 0x4e);
+C_ASSERT(offsetof(ReplayManager, stageResetWord) == 0x4e);
 C_ASSERT(offsetof(ReplayManager, replayInputCursor) == 0x50);
 C_ASSERT(offsetof(ReplayManager, replayInputEnds) == 0x54);
 C_ASSERT(offsetof(ReplayManager, extendedInputCursor) == 0x78);

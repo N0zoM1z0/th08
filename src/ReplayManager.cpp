@@ -27,7 +27,7 @@ struct ReplayUserDataHeader
 {
     u32 magic;
     i32 size;
-    u8 unk0x8;
+    u8 reserved;
     u8 padding[3];
 };
 
@@ -423,7 +423,7 @@ ChainCallbackResult ReplayManager::PlaybackExtendedInputAndFps(ReplayManager *re
 ZunResult ReplayManager::BeginRecordingStage(ReplayManager *replayManager)
 {
     StageReplayData *previousStage;
-    StageReplayData *stageFpsData;
+    u8 *stageFpsData;
     i32 stage;
     StageReplayData *stageData;
 
@@ -469,7 +469,7 @@ ZunResult ReplayManager::BeginRecordingStage(ReplayManager *replayManager)
         for (stage = 0; stage < MAX_STAGES; stage++)
         {
             replayManager->replayData->header.stageReplayData[stage] = NULL;
-            replayManager->replayData->header.stageReplayFpsData[stage] = NULL;
+            replayManager->replayData->header.stageFpsData[stage] = NULL;
         }
     }
     else
@@ -494,18 +494,18 @@ ZunResult ReplayManager::BeginRecordingStage(ReplayManager *replayManager)
     {
         g_ZunMemory.Free(replayManager->replayData->header.stageReplayData[stage]);
     }
-    if (replayManager->replayData->header.stageReplayFpsData[stage] != NULL)
+    if (replayManager->replayData->header.stageFpsData[stage] != NULL)
     {
-        g_ZunMemory.Free(replayManager->replayData->header.stageReplayFpsData[stage]);
+        g_ZunMemory.Free(replayManager->replayData->header.stageFpsData[stage]);
     }
 
     replayManager->replayData->header.stageReplayData[stage] =
         (StageReplayData *)g_ZunMemory.Alloc(0xd2f00, "rep data");
-    replayManager->replayData->header.stageReplayFpsData[stage] =
-        (StageReplayData *)g_ZunMemory.Alloc(0xd2f00, "rep data");
+    replayManager->replayData->header.stageFpsData[stage] =
+        (u8 *)g_ZunMemory.Alloc(0xd2f00, "rep data");
 
     stageData = replayManager->replayData->header.stageReplayData[stage];
-    stageFpsData = replayManager->replayData->header.stageReplayFpsData[stage];
+    stageFpsData = replayManager->replayData->header.stageFpsData[stage];
 
     stageData->graze = g_GameManager.globals->graze;
     stageData->bombs = (u8)g_GameManager.GetBombsRemaining();
@@ -522,14 +522,14 @@ ZunResult ReplayManager::BeginRecordingStage(ReplayManager *replayManager)
     stageData->clockTime = g_GameManager.GetClockTime();
     stageData->pointItemValue = g_GameManager.globals->pointItemValue;
 
-    replayManager->replayInputCursor = stageData->inputData;
+    replayManager->replayInputCursor = stageData->inputStream;
     replayManager->extendedInputCursor = reinterpret_cast<ReplayInputSync *>(replayManager->replayInputCursor);
-    replayManager->replayFpsSampleCursor = reinterpret_cast<u8 *>(stageFpsData);
+    replayManager->replayFpsSampleCursor = stageFpsData;
     *reinterpret_cast<u16 *>(replayManager->replayInputCursor) = 0;
     replayManager->extendedInputCursor->eventFlags = 0;
     replayManager->extendedInputCursor->rngSeed = g_Rng.GetSeed();
     replayManager->inputDelay = 0;
-    replayManager->unk4e = 0;
+    replayManager->stageResetWord = 0;
 
     return ZUN_SUCCESS;
 }
@@ -538,7 +538,7 @@ ZunResult ReplayManager::BeginRecordingStage(ReplayManager *replayManager)
 ZunResult ReplayManager::BeginPlaybackStage(ReplayManager *replayManager)
 {
     StageReplayData *previousStage;
-    StageReplayData *stageFpsData;
+    u8 *stageFpsData;
     i32 fileSize;
     i32 stage;
     StageReplayData *stageData;
@@ -564,11 +564,10 @@ ZunResult ReplayManager::BeginPlaybackStage(ReplayManager *replayManager)
                     (StageReplayData *)(reinterpret_cast<u8 *>(replayManager->replayData->header.stageReplayData[stage]) +
                                         reinterpret_cast<i32>(replayManager->replayData));
             }
-            if (replayManager->replayData->header.stageReplayFpsData[stage] != NULL)
+            if (replayManager->replayData->header.stageFpsData[stage] != NULL)
             {
-                replayManager->replayData->header.stageReplayFpsData[stage] =
-                    (StageReplayData *)(reinterpret_cast<u8 *>(replayManager->replayData->header.stageReplayFpsData[stage]) +
-                                        reinterpret_cast<i32>(replayManager->replayData));
+                replayManager->replayData->header.stageFpsData[stage] +=
+                    reinterpret_cast<i32>(replayManager->replayData);
             }
         }
     }
@@ -580,7 +579,7 @@ ZunResult ReplayManager::BeginPlaybackStage(ReplayManager *replayManager)
     }
 
     stageData = replayManager->replayData->header.stageReplayData[stage];
-    stageFpsData = replayManager->replayData->header.stageReplayFpsData[stage];
+    stageFpsData = replayManager->replayData->header.stageFpsData[stage];
 
     g_GameManager.shotType = replayManager->replayData->shotType / 1;
     g_GameManager.fullShotType = replayManager->replayData->shotType % 1;
@@ -594,7 +593,7 @@ ZunResult ReplayManager::BeginPlaybackStage(ReplayManager *replayManager)
     g_GameManager.SetPower(stageData->power);
     g_GameManager.globals->graze = stageData->graze;
 
-    replayManager->replayInputCursor = stageData->inputData;
+    replayManager->replayInputCursor = stageData->inputStream;
     replayManager->extendedInputCursor = reinterpret_cast<ReplayInputSync *>(replayManager->replayInputCursor);
     g_GameManager.character = stageData->character;
     g_GameManager.globals->pointItemValue = stageData->pointItemValue;
@@ -606,7 +605,7 @@ ZunResult ReplayManager::BeginPlaybackStage(ReplayManager *replayManager)
     g_GameManager.globals->youkaiGauge = stageData->youkaiGauge;
     g_GameManager.SetClockTime(stageData->clockTime);
 
-    replayManager->replayFpsSampleCursor = reinterpret_cast<u8 *>(stageFpsData);
+    replayManager->replayFpsSampleCursor = stageFpsData;
     replayManager->inputDelay = 0;
 
     previousStage = NULL;
@@ -746,12 +745,12 @@ void ReplayManager::SaveReplay(const char *replayPath, const char *replayName)
 
     for (i = 0; i < MAX_STAGES; i++)
     {
-        if (mgr->replayData->header.stageReplayFpsData[i] != NULL)
+        if (mgr->replayData->header.stageFpsData[i] != NULL)
         {
-            stageSize = mgr->replayFpsSampleEnds[i] - (u8 *)mgr->replayData->header.stageReplayFpsData[i];
+            stageSize = mgr->replayFpsSampleEnds[i] - mgr->replayData->header.stageFpsData[i];
             memcpy(tempBuffer + currentOffset - sizeof(ReplayDataHeader),
-                   mgr->replayData->header.stageReplayFpsData[i], stageSize);
-            replayCopy.header.stageReplayFpsData[i] = (StageReplayData *)currentOffset;
+                   mgr->replayData->header.stageFpsData[i], stageSize);
+            replayCopy.header.stageFpsData[i] = (u8 *)currentOffset;
             currentOffset += stageSize;
         }
     }
@@ -778,7 +777,7 @@ void ReplayManager::SaveReplay(const char *replayPath, const char *replayName)
     replayCopy.slowDownRate = (1.0f - slowDownRate) * 100.0f;
 
     infoHeader.magic = *(u32 *)"USER";
-    infoHeader.unk0x8 = 0;
+    infoHeader.reserved = 0;
     memset(infoBuffer, 0, sizeof(infoBuffer));
     infoCursor = infoBuffer;
 
@@ -824,7 +823,7 @@ void ReplayManager::SaveReplay(const char *replayPath, const char *replayName)
     replayCopy.randomPayloadByte = (u8)g_Rng.GetRandomU16InRange(0x100);
     replayCopy.header.randomHeaderByte = (u8)g_Rng.GetRandomU16InRange(0x100);
     replayCopy.slowDownRate2 = replayCopy.slowDownRate + 1.12f;
-    replayCopy.unk0x120 = 30;
+    replayCopy.unconsumedConstant30 = 30;
 
     memcpy(tempBuffer, &replayCopy.randomPayloadByte, sizeof(ReplayData) - sizeof(ReplayDataHeader));
 
@@ -896,9 +895,9 @@ release_stage_data:
             g_ZunMemory.Free(g_ReplayManager->replayData->header.stageReplayData[i]);
         }
 
-        if (mgr->replayData->header.stageReplayFpsData[i] != NULL)
+        if (mgr->replayData->header.stageFpsData[i] != NULL)
         {
-            g_ZunMemory.Free(g_ReplayManager->replayData->header.stageReplayFpsData[i]);
+            g_ZunMemory.Free(g_ReplayManager->replayData->header.stageFpsData[i]);
         }
     }
         }
