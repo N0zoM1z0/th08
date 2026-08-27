@@ -4642,3 +4642,60 @@ ELF32 executable and every fixed target-owned layout symbol.  No layout,
 target byte, object identity, or accepted-unit total changed.  Serialized
 reserved storage, exact-codegen unused locals, and fields explicitly named
 `unconsumed*` remain evidence boundaries rather than invented semantics.
+
+### Residual accessor closure and semantic completion audit — 2026-08-27
+
+Scope: the final structurally suspicious signatures found by joining all
+1,107 implemented functions to the mapping ledger, plus a production scan for
+weak identifiers and raw layout encodings.
+
+`EclManager::GetTimeline @ 0x0042DFD0` now exposes the state that already
+exists after `Load` rebases the raw ECL timeline offset table: it returns an
+`EclTimelineInstruction *`, and `EnemyManager::OnUpdate @ 0x0042C660` assigns
+that pointer without an integer-to-pointer cast.  The serialized
+`EclRawHeader::timelineOffsets` field remains an explicit `u32` wire view
+because it is file-relative before rebasing.  The rebuilt VC7 definition is
+`?GetTimeline@EclManager@th08@@QAEPAUEclTimelineInstruction@2@H@Z`; the sole
+caller relocation was migrated to that observed symbol.
+
+`AnmVm::IsStopped` now uses the existing `ZunBool` spelling for its one-bit
+result.  Fourteen residual ledger rows also catch up with exact source and
+COFF evidence: ANM visibility/dialogue receiver ownership and variable-access
+arguments; `Supervisor` construction; Player deletion ownership; sound and
+wave pointer getters; the BGM thread; MIDI timer, Win32 window-procedure, and
+WAVE-format API types.
+
+The completion audit is intentionally structural, not a percentage invented
+from naming taste:
+
+- all four semantic-debt router categories are zero across production source;
+- production contains no bare `m_unk*`, decompiler-style `param_*`, `arg_*`,
+  or `field_*` identifier;
+- `config/implemented.csv` intersects zero mapping rows whose calling
+  convention is `unknown`;
+- every implemented `__thiscall` mapping row has its actual class receiver,
+  and constructor plus Added/Deleted/OnUpdate/OnDraw lifecycle families are
+  typed;
+- the remaining suspicious-looking scalar returns were individually reviewed
+  and are real byte colors/clock values, controller masks, random values,
+  buffers, or multi-state collision results.
+
+This closes the authored semantic-readability milestone.  It does not claim
+knowledge that the executable does not supply: serialized reserved bytes,
+code-generation-only unused locals, and `unconsumed*` storage remain named as
+such; compiler-runtime/D3DX/library inventory remains a separate provenance
+lane.  The sole authored-but-unaccepted allocator residual is an exact-byte
+issue, not semantic debt.
+
+VC7 oracle: focused relocation-aware replay passes all **15 / 15** affected
+definition/caller units.  Because the ANM and ECL headers are shared, the
+required single-job non-reuse cold build of all 75 comparison objects passes
+**1,106 / 1,106 exact** with zero failures;
+`TitleScreen::RegisterChain` remains **281 / 281 exact**.  The normal VC7
+production image links.
+
+Portable oracle: the complete i386 Linux container rebuilds and links with
+the typed pointer-return ABI and boolean accessor, and
+`verify-modern-linux.sh` verifies the ELF32 executable and every fixed
+target-owned layout symbol.  No accepted target bytes, layout, or aggregate
+exact total changed.

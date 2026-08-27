@@ -425,7 +425,7 @@ struct AnmVm : AnmVmBase
         this->activeSpriteIndex = -1;
     }
 
-    u32 IsStopped();
+    ZunBool IsStopped();
     i32 UpdatePulsingRadialTrail();
     void StartPositionInterpolation(i32 duration, i32 mode, Float3 *initial, Float3 *final);
     void StartColor1RgbInterpolation(i32 duration, i32 mode, u32 initial, u32 final);

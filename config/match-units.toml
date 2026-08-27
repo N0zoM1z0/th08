@@ -9800,7 +9800,7 @@ target = 0x004ECCB8
 [[units.relocations]]
 offset = 0x1A4
 type = "REL32"
-symbol = "?GetTimeline@EclManager@th08@@QAEIH@Z"
+symbol = "?GetTimeline@EclManager@th08@@QAEPAUEclTimelineInstruction@2@H@Z"
 target = 0x0042DFD0
 
 [[units.relocations]]

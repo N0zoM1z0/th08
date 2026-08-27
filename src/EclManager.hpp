@@ -13,6 +13,7 @@ namespace th08
 struct Enemy;
 struct AnmVm;
 struct Effect;
+struct EclTimelineInstruction;
 
 typedef i32 (__fastcall *EffectUpdateCallback)(Effect *effect);
 typedef i32 (__fastcall *EffectInitializeCallback)(Effect *effect);
@@ -285,7 +286,7 @@ struct EclManager
     ZunResult CallEclSub(EnemyEclContext *context, i16 subId);
     ZunResult RunEcl(Enemy *enemy);
     i32 GetTimelineCount();
-    u32 GetTimeline(i32 index);
+    EclTimelineInstruction *GetTimeline(i32 index);
 
     EclRawHeader *eclFile;             // +0x000
     u32 *subTable;                     // +0x004

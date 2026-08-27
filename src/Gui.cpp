@@ -2169,7 +2169,7 @@ void Gui::InitStageClearScreen()
 }
 
 // FUNCTION: th08 0x4396f8
-u32 AnmVm::IsStopped()
+ZunBool AnmVm::IsStopped()
 {
     return this->stopped;
 }

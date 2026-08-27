@@ -41,7 +41,7 @@ th08::ZunTimer::operator++(int),0x406640,0x15,__thiscall,,void,ZunTimer*,i32
 th08::ZunTimer::Tick,0x406660,0x34,__thiscall,,i32,ZunTimer*
 th08::ZunTimer::operator<,0x4066a0,0x1b,__thiscall,,bool,ZunTimer*,i32
 th08::ZunTimer::operator>,0x4066c0,0x1b,__thiscall,,bool,ZunTimer*,i32
-th08::AnmVmBase::IsVisible,0x4066e0,0x17,__thiscall,,ZunBool,AnmVm*
+th08::AnmVmBase::IsVisible,0x4066e0,0x17,__thiscall,,ZunBool,AnmVmBase*
 th08::AnmVmBase::SetInvisible,0x406700,0x20,__thiscall,,void,AnmVmBase*
 th08::AnmVm::AnmVm,0x406720,0x92,__thiscall,,AnmVm*,AnmVm*
 th08::AnmVmBase::AnmVmBase,0x4067c0,0x8e,__thiscall,,AnmVmBase*,AnmVmBase*
@@ -409,7 +409,7 @@ th08::EnemyManager::RegisterChain,0x42c590,0xcb,__fastcall,,ZunResult
 th08::EnemyManager::OnUpdate,0x42c660,0x1836,__thiscall,,i32,EnemyManager*
 th08::Enemy::IntegrateVelocity,0x42deb0,0xfc,__thiscall,,void,Enemy*
 th08::EclManager::GetTimelineCount,0x42dfb0,0x14,__thiscall,,i32,EclManager*
-th08::EclManager::GetTimeline,0x42dfd0,0x19,__thiscall,,u32,EclManager*,i32
+th08::EclManager::GetTimeline,0x42dfd0,0x19,__thiscall,,EclTimelineInstruction*,EclManager*,i32
 th08::Spellcard::IsBombDamageEnabled,0x42dff0,0x16,__thiscall,,i32,Spellcard*
 th08::Enemy::UpdateEffects,0x42e010,0x101,__thiscall,,void,Enemy*
 th08::EnemyManager::OnDrawHighPrio,0x42e120,0x17,__fastcall,,ChainCallbackResult,EnemyManager*
@@ -473,7 +473,7 @@ th08::GuiImpl::RunMsg,0x433db3,0x15dd,__thiscall,,i32,GuiImpl*
 th08::DecryptGuiMessageText,0x4353ec,0x3f,__fastcall,,void,char*,const char*
 th08::GuiImpl::DrawDialogue,0x43542b,0x453,__thiscall,,ZunResult,GuiImpl*
 th08::Gui::MsgWait,0x43587e,0x3d,__thiscall,,bool,Gui*
-th08::Gui::IsDialoguePresent,0x4358bb,0x45,__thiscall,,i32
+th08::Gui::IsDialoguePresent,0x4358bb,0x45,__thiscall,,i32,Gui*
 th08::Gui::UpdateStageElements,0x435900,0x95d,__thiscall,,void,Gui*
 th08::Gui::DrawGameScene,0x43625d,0x11c0,__thiscall,,void,Gui*
 th08::Gui::DrawStageElements,0x43741d,0x612,__thiscall,,void,Gui*
@@ -508,7 +508,7 @@ th08::Gui::FlashClockTimeFast,0x439093,0x43,__thiscall,,ZunResult,Gui*
 th08::Gui::HideClockTime,0x4390d6,0x18,__thiscall,,ZunResult,Gui*
 th08::Gui::ActualAddedCallback,0x4390ee,0x5ca,__thiscall,,ZunResult,Gui*
 th08::Gui::InitStageClearScreen,0x4396b8,0x40,__thiscall,,void,Gui*
-th08::AnmVm::IsStopped,0x4396f8,0x18,__thiscall,,u32,AnmVm*
+th08::AnmVm::IsStopped,0x4396f8,0x18,__thiscall,,ZunBool,AnmVm*
 th08::Gui::LoadMsg,0x439710,0xc5,__thiscall,,ZunResult,Gui*,char*
 th08::Gui::FreeMsgFile,0x4397d5,0x3b,__thiscall,,void,Gui*
 th08::Gui::MsgRead,0x439810,0x19,__thiscall,,void,Gui*,i32
@@ -637,7 +637,7 @@ th08::GameWindow::Present,0x442060,0x127,__fastcall,,void
 th08::GameWindow::GetTimestamp,0x442190,0x70,__thiscall,,double,GameWindow*
 th08::GameWindow::InitD3DInterface,0x442200,0x38,__fastcall,,ZunBool
 th08::GameWindow::CreateGameWindow,0x442240,0x149,__fastcall,,ZunBool,HINSTANCE__*
-th08::GameWindow::WindowProc,0x442390,0x12f,__stdcall,,long,HWND__*,u32,u32,long
+th08::GameWindow::WindowProc,0x442390,0x12f,__stdcall,,LRESULT,HWND,UINT,WPARAM,LPARAM
 th08::GameWindow::InitD3DRendering,0x4424c0,0x5c0,__fastcall,,ZunBool
 th08::GameWindow::FormatD3DCapabilities,0x442a80,0x46a,__fastcall,,void,_D3DCAPS8*,char*
 th08::GameWindow::FormatCapability,0x442ef0,0x6b,__fastcall,,char*,char*,u32,u32,char*
@@ -663,7 +663,7 @@ th08::MidiDevice::SendLongMsg,0x443d50,0x4e,__thiscall,,bool,MidiDevice*,midihdr
 th08::MidiDevice::SendShortMsg,0x443da0,0x43,__thiscall,,bool,MidiDevice*,uchar,uchar
 th08::MidiTimer::MidiTimer,0x443df0,0x30,__thiscall,,MidiTimer*,MidiTimer*
 th08::MidiTimer::~MidiTimer,0x443e20,0x29,__thiscall,,void,MidiTimer*
-th08::MidiTimer::StartTimerImpl,0x443e50,0x73,__thiscall,,u32,MidiTimer*,u32,TIMECALLBACK*,unsigned long
+th08::MidiTimer::StartTimerImpl,0x443e50,0x73,__thiscall,,UINT,MidiTimer*,u32,LPTIMECALLBACK,DWORD_PTR
 th08::MidiTimer::StopTimerImpl,0x443ed0,0x3d,__thiscall,,BOOL,MidiTimer*
 th08::MidiTimer::DefaultTimerCallback,0x443f10,0x1a,__stdcall,,void,u32,u32,unsigned long,unsigned long,unsigned long
 th08::MidiOutput::Ntohs,0x443f30,0x1e,__fastcall,,u16,u16
@@ -688,7 +688,7 @@ th08::DummyMidiTimer::OnTimerElapsed,0x445400,0x16,__thiscall,,void,DummyMidiTim
 th08::MidiTimer::StartTimer,0x445420,0x19,__thiscall,,void,MidiTimer*
 th08::MidiTimer::StopTimer,0x445440,0x13,__thiscall,,void,MidiTimer*
 th08::Supervisor::OnUpdate,0x445453,0x727,__fastcall,,ChainCallbackResult,Supervisor*
-th08::Supervisor::Supervisor,0x445b7a,0x46,__thiscall,,u32*,Supervisor*
+th08::Supervisor::Supervisor,0x445b7a,0x46,__thiscall,,Supervisor*,Supervisor*
 th08::Supervisor::DrawFpsCounter,0x445bc0,0x14,__fastcall,,ChainCallbackResult,Supervisor*
 th08::Supervisor::OnDraw2,0x445bd4,0x16a,__fastcall,,ChainCallbackResult,Supervisor*
 th08::Supervisor::DrawLoadingVms,0x445d3e,0xff,__fastcall,,ChainCallbackResult,Supervisor*
@@ -771,7 +771,7 @@ th08::Player::UpdateGaugePosition,0x44d420,0x10b,__thiscall,,void,Player*
 th08::Player::OnDrawHighPrio,0x44d530,0xf1,__fastcall,,ChainCallbackResult,Player*
 th08::Player::OnDrawLowPrio,0x44d630,0x18,__fastcall,,ChainCallbackResult,Player*
 th08::Player::AddedCallback,0x44d650,0x601,__fastcall,,ZunResult,Player*
-th08::Player::DeletedCallback,0x44dc60,0xa4,__fastcall,,ZunResult,u32
+th08::Player::DeletedCallback,0x44dc60,0xa4,__fastcall,,ZunResult,Player*
 th08::Player::CutChain,0x44dd10,0x55,__stdcall,,void
 th08::Player::LoadShtFile,0x44dd70,0xe9,__fastcall,,ZunResult,PlayerRawShtFile**,const char*
 th08::Player::CreateRectCancelRegion,0x44de60,0x99,__thiscall,,PlayerCollisionRegion*,Player*,const Float3*,f32,f32,i32,i32
@@ -914,7 +914,7 @@ th08::CSoundManager::`scalar_deleting_destructor',0x45c480,0x2e,__thiscall,,void
 th08::SoundPlayer::Release,0x45c4b0,0x1fa,__thiscall,,ZunResult,SoundPlayer*
 th08::SoundPlayer::GetFmtIndexByName,0x45c6b0,0x20b,__thiscall,,i32,SoundPlayer*,char*
 th08::SoundPlayer::LoadSound,0x45c8c0,0x2fe,__thiscall,,ZunResult,SoundPlayer*,i32,char*
-th08::SoundPlayer::GetWavFormatData,0x45cbc0,0x64,__fastcall,,tWAVEFORMATEX*,u8*,char*,i32*,u32
+th08::SoundPlayer::GetWavFormatData,0x45cbc0,0x64,__fastcall,,WAVEFORMATEX*,u8*,char*,i32*,u32
 th08::SoundPlayer::LoadFmt,0x45cc30,0x32,__thiscall,,i32,SoundPlayer*,char*
 th08::SoundPlayer::StartBGM,0x45cc70,0x182,__thiscall,,ZunResult,SoundPlayer*,char*
 th08::SoundPlayer::ReopenBGM,0x45ce00,0x67,__thiscall,,ZunResult,SoundPlayer*,char*
@@ -925,11 +925,11 @@ th08::SoundPlayer::InitSoundBuffers,0x45d3f0,0x156,__thiscall,,ZunResult,SoundPl
 th08::SoundPlayer::PlaySoundByIdx,0x45d550,0x10b,__thiscall,,void,SoundPlayer*,i32,u32
 th08::SoundPlayer::PlaySoundPositionedByIdx,0x45d660,0x128,__thiscall,,void,SoundPlayer*,i32,f32
 th08::SoundPlayer::ProcessQueues,0x45d790,0x936,__thiscall,,i32,SoundPlayer*
-th08::SoundPlayer::BGMPlayerThread,0x45e0f0,0xe2,__stdcall,,u32,void*
+th08::SoundPlayer::BGMPlayerThread,0x45e0f0,0xe2,__stdcall,,DWORD,LPVOID
 th08::SoundPlayer::QueueCommand,0x45e1e0,0xe1,__thiscall,,void,SoundPlayer*,u32,u32,char*
 th08::CWaveFile::GetFormat,0x45e2d0,0x14,__thiscall,,ThBgmFormat*,CWaveFile*
-th08::CSoundManager::GetDirectSound,0x45e2f0,0x10,__thiscall,,u32,CSoundManager*
-th08::CSound::GetWaveFile,0x45e300,0x11,__thiscall,,u32,CSound*
+th08::CSoundManager::GetDirectSound,0x45e2f0,0x10,__thiscall,,IDirectSound*,CSoundManager*
+th08::CSound::GetWaveFile,0x45e300,0x11,__thiscall,,CWaveFile*,CSound*
 th08::SoundPlayer::SoundPlayer,0x45e320,0x4c,__thiscall,,SoundPlayer*,SoundPlayer*
 th08::SoundPlayer::FreePreloadedBGM,0x45e370,0x46,__thiscall,,void,SoundPlayer*,i32
 th08::SoundPlayer::FadeOut,0x45e3c0,0x2b,__thiscall,,void,SoundPlayer*,f32
@@ -938,8 +938,8 @@ th08::AnmLoaded::SetSprite,0x45e430,0x14d,__thiscall,,ZunResult,AnmLoaded*,AnmVm
 th08::AnmLoaded::SetAndExecuteScript,0x45e580,0xce,__thiscall,,void,AnmLoaded*,AnmVm*,AnmRawInstr*
 th08::AnmVm::GetFloatVar,0x45e650,0xa6,__thiscall,,float10,AnmVm*,f32
 th08::AnmVm::GetIntVar,0x45e720,0xba,__thiscall,,i32,AnmVm*,u32
-th08::AnmVm::GetFloatVarPtr,0x45e810,0x7c,__thiscall,,f32*,i32,f32*,u16,u8
-th08::AnmVm::GetIntVarPtr,0x45e8a0,0x8b,__thiscall,,i32*,AnmVm*,i32*,u16,u8
+th08::AnmVm::GetFloatVarPtr,0x45e810,0x7c,__thiscall,,f32*,AnmVm*,f32*,u16,u32
+th08::AnmVm::GetIntVarPtr,0x45e8a0,0x8b,__thiscall,,i32*,AnmVm*,i32*,u16,u32
 th08::AnmManager::DrawPlayerBullet,0x45e960,0x7d,__thiscall,,void,AnmManager*,AnmVm*
 th08::AnmManager::ExecuteScript,0x45ea00,0x366d,__thiscall,,ZunBool,AnmManager*,AnmVm*
 acosf,0x462210,0x15,unknown,,u8,u8

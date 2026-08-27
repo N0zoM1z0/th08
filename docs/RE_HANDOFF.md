@@ -2230,3 +2230,22 @@ failures; the normal VC7 image and complete Linux i386 image link; and the
 fixed-layout verifier passes.  Continue the repository-wide semantic
 completion audit on `semantic/typed-reconstruction`; commit and push stable
 checkpoints, but do not open a PR or merge until explicitly requested.
+
+The residual-accessor checkpoint completes the authored semantic-readability
+audit.  `EclManager::GetTimeline @ 0x0042DFD0` now returns the rebased
+`EclTimelineInstruction *`, and `EnemyManager::OnUpdate @ 0x0042C660` consumes
+it without an integer cast; the raw header keeps its correct pre-rebase wire
+offset view.  `AnmVm::IsStopped` uses `ZunBool`, and 14 residual API rows gain
+their exact receiver, pointer, callback, Win32, wave, or argument types.
+
+Focused replay passes **15 / 15 exact**; the required non-reuse cold aggregate
+passes **1,106 / 1,106 exact** with zero failures; the normal VC7 image and
+complete Linux i386 image link; and the fixed-layout verifier passes.  The
+production semantic-debt router is zero in all four categories, no bare
+`m_unk*`/decompiler placeholder remains, accepted mappings have zero unknown
+conventions and correct `__thiscall` receivers, and constructor/lifecycle
+families are typed.  Retained reserved/unconsumed storage and runtime/D3DX
+library work are explicit evidence boundaries.  The authored semantic phase
+is therefore broadly complete; remain on `semantic/typed-reconstruction`,
+commit and push the checkpoint, and do not open a PR or merge until explicitly
+requested.

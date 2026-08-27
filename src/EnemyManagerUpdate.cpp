@@ -112,9 +112,7 @@ i32 EnemyManager::OnUpdate()
     {
         if (this->timelines[enemyIndex].instruction == 0)
         {
-            this->timelines[enemyIndex].instruction =
-                reinterpret_cast<EclTimelineInstruction *>(
-                    g_EclManager.GetTimeline(enemyIndex));
+            this->timelines[enemyIndex].instruction = g_EclManager.GetTimeline(enemyIndex);
         }
         this->timelines[enemyIndex].Run();
     }
