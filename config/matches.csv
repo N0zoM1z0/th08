@@ -96,7 +96,7 @@ address,name,size,status,match_percent,unit,evidence
 0x004716E0,th08::CSoundManager::CSoundManager,23,matching,100.00,sound-manager-constructor,python3 scripts/compare-function.py sound-manager-constructor --json
 0x0041F420,th08::EclOperands::ResolveInt,1899,matching,100.00,ecl-resolve-int,python3 scripts/compare-function.py ecl-resolve-int --json
 0x0041FE10,th08::EclOperands::ResolveIntLValue,548,matching,100.00,ecl-resolve-int-lvalue,python3 scripts/compare-function.py ecl-resolve-int-lvalue --json
-0x00420120,th08::EclOperands::EnemyOverlay::ResolveFloat,1687,matching,100.00,ecl-resolve-float,python3 scripts/compare-function.py ecl-resolve-float --json
+0x00420120,th08::Enemy::ResolveFloat,1687,matching,100.00,ecl-resolve-float,python3 scripts/compare-function.py ecl-resolve-float --json
 0x00420950,th08::EclOperands::ResolveFloatLValue,696,matching,100.00,ecl-resolve-float-lvalue,python3 scripts/compare-function.py ecl-resolve-float-lvalue --json
 0x0045EA00,th08::AnmManager::ExecuteScript,13933,matching,100.00,anm-manager-execute-script,python3 scripts/compare-function.py anm-manager-execute-script --json
 0x0043D120,th08::Controller::GetControllerInput,1457,matching,100.00,controller-get-controller-input,python3 scripts/compare-function.py controller-get-controller-input --json
@@ -795,7 +795,7 @@ address,name,size,status,match_percent,unit,evidence
 0x0044A6A0,th08::Player::CalcLaserHitbox,651,matching,100.00,player-laser-hitbox,python3 scripts/compare-function.py player-laser-hitbox --json
 0x0044A930,th08::Player::AwardGraze,521,matching,100.00,player-award-graze,python3 scripts/compare-function.py player-award-graze --json
 0x0044AB40,th08::Player::Die,888,matching,100.00,player-die,python3 scripts/compare-function.py player-die --json
-0x0042ADB0,th08::EclOperands::EnemyOverlay::DetachEnemyChain,1336,matching,100.00,enemy-parent-chain-cleanup,python3 scripts/compare-function.py enemy-parent-chain-cleanup --json
+0x0042ADB0,th08::Enemy::DetachEnemyChain,1336,matching,100.00,enemy-parent-chain-cleanup,python3 scripts/compare-function.py enemy-parent-chain-cleanup --json
 0x0042BEA0,th08::Enemy::DropItems,734,matching,100.00,enemy-drop-items,python3 scripts/compare-function.py enemy-drop-items --json
 0x0044C650,th08::Player::UpdateBombState,1352,matching,100.00,player-update-bomb-state,python3 scripts/compare-function.py player-update-bomb-state --json
 0x0044CBA0,th08::Spellcard::InvalidateCaptureAndEnableBombDamage,69,matching,100.00,spellcard-invalidate-capture-enable-bomb-damage,python3 scripts/compare-function.py spellcard-invalidate-capture-enable-bomb-damage --json

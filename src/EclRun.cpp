@@ -19,18 +19,13 @@
 namespace th08
 {
 
-// The dispatcher is now source-complete, while target-address service binding
-// remains intentionally separate: subsystem owners can replace provisional
-// adapters without changing the recovered opcode/control-flow core.
+// The low/high opcode bodies are included lexically below so VC7 can reproduce
+// RunEcl's target handler order, shared labels, locals, and stack frame.
 #undef TH08_ECL_CONTEXT_ENEMY
 #undef TH08_ECL_CONTEXT_INSTRUCTION
-#undef TH08_ECL_CONTEXT_API
 #undef TH08_ECL_CONTEXT_CHILD
-#define TH08_ECL_CONTEXT_ENEMY(unusedContext) (reinterpret_cast<u8 *>(enemy))
-#define TH08_ECL_CONTEXT_INSTRUCTION(unusedContext) \
-    (reinterpret_cast<EclRawInstruction *>(instruction))
-#define TH08_ECL_CONTEXT_API(unusedContext) \
-    (reinterpret_cast<TargetApi *>(this))
+#define TH08_ECL_CONTEXT_ENEMY(unusedContext) (enemy)
+#define TH08_ECL_CONTEXT_INSTRUCTION(unusedContext) (instruction)
 #define TH08_ECL_CONTEXT_CHILD(unusedContext) (activeChildContext)
 
 // FUNCTION: th08 0x004184B0
@@ -81,9 +76,7 @@ low_redispatch_instruction:
             }
 
             {
-#define enemy reinterpret_cast<EclOperands::EnemyOverlay *>(enemy)
-#define context (reinterpret_cast<Enemy *>(enemy)->activeEclContext)
-#define services (*reinterpret_cast<Services *>(this))
+#define context (enemy->activeEclContext)
 #define ctx unusedContext
 #define TH08_ECL_RUN_LOW_BODY
 #define TH08_ECL_RUN_HIGH_BODY
@@ -103,9 +96,7 @@ low_redispatch_instruction:
 #undef TH08_ECL_RUN_HIGH_BODY
 #undef TH08_ECL_RUN_LOW_BODY
 #undef ctx
-#undef services
 #undef context
-#undef enemy
             }
 
 low_advance_instruction:
@@ -226,7 +217,6 @@ low_select_next_context:
 
 #undef TH08_ECL_CONTEXT_ENEMY
 #undef TH08_ECL_CONTEXT_INSTRUCTION
-#undef TH08_ECL_CONTEXT_API
 #undef TH08_ECL_CONTEXT_CHILD
 
 } // namespace th08

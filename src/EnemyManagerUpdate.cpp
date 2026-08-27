@@ -491,7 +491,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 --enemy->parentEnemy->linkedChildCount;
             }
 
-            reinterpret_cast<EclOperands::EnemyOverlay *>(enemy)->DetachEnemyChain(1);
+            enemy->DetachEnemyChain(1);
             if (!g_Player.focusMode)
                 deathPosition = -200;
             else

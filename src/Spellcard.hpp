@@ -9,6 +9,7 @@
 namespace th08
 {
 struct Effect;
+struct Enemy;
 
 // Naming scheme:
 // SPELLCARD_[STAGE]_[ENEMY]_(LAST SPELL)(NUM)(DIFFICULTY)
@@ -294,7 +295,7 @@ struct Spellcard
     }
 
     u32 flags;                       // +0x000
-    u8 *activeEnemy;                 // +0x004
+    Enemy *activeEnemy;              // +0x004
     i32 spellCardNumber;             // +0x008
     i32 activeEnemyIndexSnapshot;    // +0x00C
     i32 pendingTimeOrbs;             // +0x010
@@ -335,7 +336,7 @@ struct Spellcard
     void *lifetimeObject;            // +0x263C
     ChainElem *lifetimeChain;        // +0x2640
 
-    void StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemyFace, i32 bonus, u8 *enemy,
+    void StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemyFace, i32 bonus, Enemy *enemy,
                     const u8 *encodedOwner, const char *commentLine1, const char *commentLine2);
     void CutInEnemyNoPortrait(const char *name, i32 unused);
     void CutInPlayer(i32 playerFace, const char *name, i32 sprite);

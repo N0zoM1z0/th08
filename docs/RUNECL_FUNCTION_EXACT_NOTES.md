@@ -217,8 +217,8 @@ aggregate extent while destroying byte locality.
 ## VectorAngle tail call probe
 
 The target position-restore tail calls the global helper at `0x0040C7B0`
-(`th08::VectorAngle`) directly.  Current shape-exact source calls the provisional
-`TargetApi::VectorAngle` thiscall wrapper.  A direct source rewrite to:
+(`th08::VectorAngle`) directly.  An early shape-exact checkpoint still called
+it through a provisional thiscall wrapper.  The direct-source probe was:
 
 ```cpp
 VectorAngle(y, x)
@@ -232,8 +232,8 @@ frame=0x5C0
 op3=-10
 ```
 
-So the direct global call is likely part of the eventual byte-exact form, but it
-must be paired with other real tail-shape changes rather than applied alone.
+The direct call became exact when paired with the real tail-shape changes
+recorded below; current production source uses `th08::VectorAngle` directly.
 
 ## Opcode 127: basic-block order matters even when span is exact
 
@@ -271,8 +271,7 @@ Target-faithful source shape:
 if (g_EnemyManager.bosses[ReadInt(enemy, instruction, 2)])
     *WriteFloat(enemy, instruction, 0) =
         (instruction->operandFlags & 2U)
-            ? reinterpret_cast<EclOperands::EnemyOverlay *>(
-                  g_EnemyManager.bosses[ReadInt(enemy, instruction, 2)])
+            ? g_EnemyManager.bosses[ReadInt(enemy, instruction, 2)]
                   ->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 1));
 ```
@@ -580,7 +579,7 @@ change semantic (no padding) is:
 - replace the hand-written mark/done gotos with the natural
   `if (affectedVariable == ...) restorePosition = 1;`;
 - call the real global `th08::VectorAngle` rather than the provisional
-  EclManager `TargetApi` thiscall;
+  thiscall wrapper;
 - introduce the real `childContext` pointer in the child selection loop and use
   it for the recovered `+0x230`, `+8`, and `+6` accesses, while loading the
   current instruction and `+0x220` field through the current-context pointer.

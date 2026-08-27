@@ -197,6 +197,8 @@ void __fastcall PrepareSpellcardForTimerCallback(Spellcard *spellcard);
 struct Enemy
 {
     Enemy();
+    f32 ResolveFloat(f32 operand);
+    void DetachEnemyChain(i32 awardRewards);
     void ApplyDamageToParent(i32 amount);
     void Despawn();
     void UpdateEffects();

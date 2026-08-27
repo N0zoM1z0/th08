@@ -149,6 +149,27 @@ struct EclRawInstruction
     u8 operands[1];
 };
 
+struct EclExInstruction
+{
+    i32 time;
+    i16 opcode;
+    i16 nextOffset;
+    u8 serializedReserved08;
+    u8 difficultyMask;
+    u16 operandFlags;
+    u8 serializedReserved0C[4];
+    union
+    {
+        i32 value;
+        i8 byteValue;
+    };
+};
+C_ASSERT(offsetof(EclExInstruction, value) == 0x10);
+
+typedef void (__fastcall *EclExInstructionCallback)(
+    Enemy *enemy, EclExInstruction *instruction);
+extern EclExInstructionCallback g_EclExInsn[32];
+
 // Only the target-observed fixed header is named here. Both pointer tables are
 // stored as file-relative offsets and are rebased in place by Load.
 struct EclRawHeader

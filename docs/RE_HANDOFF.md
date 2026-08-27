@@ -938,8 +938,8 @@ all Enemy/ECL/GUI callers pass an `Enemy *`.  Their target-neighborhood
 placement in EclManager is retained as TU evidence rather than being confused
 with class ownership.  Both ECL operand resolvers also use typed Enemy chain
 links and `Player::position.x/y/z`; unused raw field macros and a private vector
-shell are gone.  The narrow `EclOperands::EnemyOverlay` remains only where the
-retail resolver/detach symbol ABI still requires it.
+shell are gone.  The temporary resolver/detach adapter described at this
+checkpoint was removed by the later Enemy/ECL owner migration.
 
 Focused replay across the seven affected objects passes **127 / 127 exact**;
 the helper bodies pass **53 / 53**, **28 / 28**, and **70 / 70**, and the
@@ -2060,8 +2060,8 @@ families from the temporary `EclRunLowProposal` / `EclRunHighProposal`
 namespaces to `EclRunLow` / `EclRunHigh`, migrating all 17 helper identities,
 the call-parameter global, and every source/configuration/COFF/linker reference
 together.  The dead private Player overlay is gone.  `ApplyRandomBiasedMove @
-0x004224A0` and `DispatchShotInstruction @ 0x00422720` now take the typed Enemy
-overlay and shared `EclRawInstruction`; RunEcl and the high dispatcher no
+0x004224A0` and `DispatchShotInstruction @ 0x00422720` now take the real
+`Enemy *` owner and shared `EclRawInstruction`; RunEcl and the high dispatcher no
 longer carry duplicate raw-instruction or vector shells.  The public
 `EnemyEclInterpolationSlot` is now shared by the ECL context, RunEcl,
 `InterpolateLinear @ 0x00421120`, `InterpolateHermite @ 0x00421180`, and slot
@@ -2072,3 +2072,27 @@ The normal VC7 image and complete Linux i386 image link, and the Linux fixed-
 layout verifier passes.  Continue the semantic audit on
 `semantic/typed-reconstruction`; commit and push stable checkpoints, but do
 not open or merge a PR until explicitly requested.
+
+The Enemy/ECL owner checkpoint removes the dormant standalone low/high
+dispatcher harness and its unused `Services`/`TargetApi` abstractions; the two
+`.inl` files now contain only the production lexical opcode bodies compiled by
+`EclManager::RunEcl`.  The temporary `EclOperands::EnemyOverlay` is gone:
+`Enemy::ResolveFloat @ 0x00420120`, `Enemy::DetachEnemyChain @ 0x0042ADB0`,
+both operand resolvers, all ECL helpers, and the EX-instruction family now use
+the real `Enemy *` owner.  Fifty-three function identities and 465 configured
+COFF relocation references move to the corresponding VC7 `Enemy *` symbols
+without changing their target addresses.
+
+`EclExInstruction` is now a shared serialized record, and `g_EclExInsn @
+0x004C6CB0` is a typed `__fastcall` callback table.  Opcode 136 calls that ABI
+directly; opcode 137 keeps an explicit compatibility cast because the target
+reuses the same table with a different second-argument interpretation.
+`StartEnemySpell @ 0x00421280`, `EndEnemySpell @ 0x004212E0`, and
+`Spellcard::StartSpell @ 0x004152A0` carry typed instruction/Enemy arguments,
+while `Spellcard::activeEnemy @ +0x004` names the same owner directly.  Focused
+replay across the 11 affected objects passes **213 / 213 exact**.  The required
+non-reuse cold aggregate passes **1,106 / 1,106 exact** with zero failures;
+the normal VC7 image and complete Linux i386 image link, and the Linux fixed-
+layout verifier passes.  Continue on `semantic/typed-reconstruction`; commit
+and push stable checkpoints, but do not open a PR or merge until explicitly
+requested.

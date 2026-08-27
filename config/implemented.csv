@@ -310,7 +310,7 @@ th08::EclManager::CallEclSub
 th08::EclManager::RunEcl
 th08::EclOperands::ResolveInt
 th08::EclOperands::ResolveIntLValue
-th08::EclOperands::EnemyOverlay::ResolveFloat
+th08::Enemy::ResolveFloat
 th08::EclOperands::ResolveFloatLValue
 th08::EclHelpers::ConfigurePolarMotion
 th08::EclHelpers::ConfigureRelativeMotion
@@ -800,7 +800,7 @@ th08::Player::CheckGrazeCollision
 th08::Player::CalcLaserHitbox
 th08::Player::AwardGraze
 th08::Player::Die
-th08::EclOperands::EnemyOverlay::DetachEnemyChain
+th08::Enemy::DetachEnemyChain
 th08::Enemy::DropItems
 th08::Player::UpdateBombState
 th08::Spellcard::InvalidateCaptureAndEnableBombDamage

@@ -252,7 +252,7 @@ th08::Spellcard::IsCaptureValid,0x41fd90,function
 th08::Spellcard::GetTimerFrames,0x41fdd0,function
 th08::ZunTimer::operator+=,0x41fdf0,function
 th08::EclOperands::ResolveIntLValue,0x41fe10,function
-th08::EclOperands::EnemyOverlay::ResolveFloat,0x420120,function
+th08::Enemy::ResolveFloat,0x420120,function
 th08::EclOperands::ResolveFloatLValue,0x420950,function
 th08::EclHelpers::ConfigurePolarMotion,0x420d10,function
 th08::EclHelpers::ConfigureRelativeMotion,0x420f40,function
@@ -393,7 +393,7 @@ th08::EnemyManager::SpawnEnemy1,0x42a4e0,function
 th08::EnemyManager::SpawnEnemy2,0x42a680,function
 th08::Enemy::ReleaseAttachedEffects,0x42a820,function
 th08::EclTimeline::Run,0x42a8a0,function
-th08::EclOperands::EnemyOverlay::DetachEnemyChain,0x42adb0,function
+th08::Enemy::DetachEnemyChain,0x42adb0,function
 th08::Enemy::DetachFromParentChain,0x42b2f0,function
 th08::Enemy::ApplyDamageToParent,0x42b370,function
 th08::Enemy::HandleLifeCallback,0x42b490,function

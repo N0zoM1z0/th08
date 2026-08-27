@@ -28,14 +28,6 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(u8, 32, g_EnemyDropSchedule) = {
     1, 0, 0, 1, 1, 1, 0, 0,
 };
 
-namespace EclOperands
-{
-
-
-
-
-} // namespace EclOperands
-
 // FUNCTION: th08 0x422c40
 void Enemy::UpdateMovement()
 {
@@ -232,28 +224,24 @@ void Enemy::ReleaseAttachedEffects()
     this->attachedEffectCount = 0;
 }
 
-namespace EclOperands
-{
-
 // FUNCTION: th08 0x42adb0
 #pragma var_order(j, nextEnemy, enemy, popupColor, chainIndex, position, dropLocals, itemType, attachedPosition)
-void EnemyOverlay::DetachEnemyChain(i32 awardRewards)
+void Enemy::DetachEnemyChain(i32 awardRewards)
 {
     i32 j;
-    EnemyOverlay *nextEnemy;
-    EnemyOverlay *enemy;
+    Enemy *nextEnemy;
+    Enemy *enemy;
     i32 popupColor;
     i32 chainIndex;
 
-    j = reinterpret_cast<Enemy *>(this)->CountParentChain();
+    j = this->CountParentChain();
     if (j != 0)
     {
         chainIndex = 0;
         Float3 position;
         struct DropLocals { i32 itemCount; i32 i; } dropLocals;
         i32 itemType;
-        enemy = reinterpret_cast<EnemyOverlay *>(
-            reinterpret_cast<Enemy *>(this)->nextInAttachmentChain);
+        enemy = this->nextInAttachmentChain;
         popupColor = j < 2 ? -1 : (j < 6 ? -48 : (j < 10 ? -80 : -128));
 
         while (enemy != NULL)
@@ -261,10 +249,9 @@ void EnemyOverlay::DetachEnemyChain(i32 awardRewards)
             if (((reinterpret_cast<Enemy *>(enemy)->flags1 >>
                   ENEMY_FLAG_INHERIT_PARENT_POSITION_SHIFT) & 1) != 0)
                 reinterpret_cast<Enemy *>(enemy)->positionOffset =
-                    reinterpret_cast<Enemy *>(this)->position;
+                    this->position;
 
-            nextEnemy = reinterpret_cast<EnemyOverlay *>(
-                reinterpret_cast<Enemy *>(enemy)->nextInAttachmentChain);
+            nextEnemy = enemy->nextInAttachmentChain;
             reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_SUPPRESS_DEATH_EFFECTS;
             reinterpret_cast<Enemy *>(enemy)->parentEnemy = NULL;
             reinterpret_cast<Enemy *>(enemy)->nextInAttachmentChain = NULL;
@@ -272,7 +259,7 @@ void EnemyOverlay::DetachEnemyChain(i32 awardRewards)
 
             if (awardRewards != 0)
             {
-                itemType = (((reinterpret_cast<Enemy *>(this)->flags1 >>
+                itemType = (((this->flags1 >>
                               ENEMY_FLAG_BOSS_SHIFT) & 1) != 0) ? 7 : 9;
                 if (g_GameManager.IsSoloYoukai())
                     dropLocals.itemCount = j >= 10 ? 26 : j * 2 + 6;
@@ -323,48 +310,46 @@ void EnemyOverlay::DetachEnemyChain(i32 awardRewards)
         {
             g_AsciiManager.SetScale(2.0f, 2.0f);
             g_AsciiManager.CreateTimePopup(
-                &reinterpret_cast<Enemy *>(this)->worldPosition,
-                reinterpret_cast<Enemy *>(this)->linkedChildCount, 0, 0xFFF0F00F);
+                &this->worldPosition,
+                this->linkedChildCount, 0, 0xFFF0F00F);
             g_AsciiManager.SetScale(1.0f, 1.0f);
 
-            for (j = 0; j < 2 * reinterpret_cast<Enemy *>(this)->linkedChildCount; j++)
+            for (j = 0; j < 2 * this->linkedChildCount; j++)
             {
                 position.FromAngleMagnitude(
                     g_Rng.GetRandomF32SignedInRange(ZUN_PI),
                     g_Rng.GetRandomF32InRange(128.0f));
                 position.z = 0.0f;
-                position += reinterpret_cast<Enemy *>(this)->worldPosition;
+                position += this->worldPosition;
                 g_ItemManager.SpawnItem(&position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
             }
-            g_Player.CreateCircleCancelRegion(&reinterpret_cast<Enemy *>(this)->worldPosition,
+            g_Player.CreateCircleCancelRegion(&this->worldPosition,
                                   32.0f, 1.0f, 16, 7);
             g_Player.timeOrbGaugeChangeSuppressionTimer = 0;
         }
     }
 
-    if (reinterpret_cast<Enemy *>(this)->HasAttachedEnemy() && awardRewards != 0)
+    if (this->HasAttachedEnemy() && awardRewards != 0)
     {
         Float3 attachedPosition;
         g_GameManager.AddToYoukaiGauge(-g_GameManager.GetYoukaiGauge() / 12, 0);
         g_Player.shootingGaugeChangeRampTimer = 0;
         g_Player.gaugeShiftDelayTimer = 30;
         g_Player.timeOrbGaugeChangeSuppressionTimer = 50;
-        reinterpret_cast<Enemy *>(this)->worldPosition =
-            reinterpret_cast<Enemy *>(this)->position +
-            reinterpret_cast<Enemy *>(this)->positionOffset;
+        this->worldPosition =
+            this->position +
+            this->positionOffset;
         g_AsciiManager.CreateTimePopup(
-            &reinterpret_cast<Enemy *>(this)->worldPosition, 1, 0, 0xFFFFFFFF);
-        g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(this)->worldPosition, ITEM_TIME,
+            &this->worldPosition, 1, 0, 0xFFFFFFFF);
+        g_ItemManager.SpawnItem(&this->worldPosition, ITEM_TIME,
                                 ITEM_STATE_AUTOCOLLECT);
-        reinterpret_cast<Enemy *>(this)->powerOrPointItemDropCount = 0;
-        reinterpret_cast<Enemy *>(this)->pointItemDropCount = 0;
-        reinterpret_cast<Enemy *>(this)->itemDropType = -2;
+        this->powerOrPointItemDropCount = 0;
+        this->pointItemDropCount = 0;
+        this->itemDropType = -2;
     }
 
-    reinterpret_cast<Enemy *>(this)->DetachFromParentChain();
+    this->DetachFromParentChain();
 }
-
-} // namespace EclOperands
 
 // FUNCTION: th08 0x42b2f0
 void Enemy::DetachFromParentChain()
@@ -480,7 +465,7 @@ i32 Enemy::HandleLifeCallback()
             this->flags2 &= ~ENEMY_FLAG2_DAMAGE_FEEDBACK_MASK;
             this->bulletSpawnDescriptor = g_EnemyManager.spawnTemplate.bulletSpawnDescriptor;
             this->shootIntervalFrames = 0;
-            reinterpret_cast<EclOperands::EnemyOverlay *>(this)->DetachEnemyChain(1);
+            this->DetachEnemyChain(1);
 
             enemyCursor = &g_EnemyManager.enemies[0];
             for (k = 0; k < 480; k++, enemyCursor++)
@@ -649,7 +634,7 @@ i32 Enemy::HandleTimerCallback()
         g_Player.playerState = 3;
     }
 
-    reinterpret_cast<EclOperands::EnemyOverlay *>(this)->DetachEnemyChain(0);
+    this->DetachEnemyChain(0);
     enemyCursor = &g_EnemyManager.enemies[0];
     for (j = 0; j < 480; j++, enemyCursor++)
     {
@@ -713,7 +698,7 @@ void Enemy::Despawn()
 {
     i32 i;
 
-    reinterpret_cast<EclOperands::EnemyOverlay *>(this)->DetachEnemyChain(0);
+    this->DetachEnemyChain(0);
 
     if (((this->flags1 >> ENEMY_FLAG_DEATH_MODE_SHIFT) & 7) == 0)
         this->flags1 &= ~ENEMY_FLAG_ACTIVE;

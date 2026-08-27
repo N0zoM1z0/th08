@@ -2841,7 +2841,7 @@ typed packet, then replayed as its smallest configured VC7 comparison unit.
 ECL and lifecycle behavior: `EclRawHeader::timelineCount @ +0x06` now names the
 word that bounds and indexes the file's timeline-offset table.
 `Supervisor::BeginLoadingCompletion @ 0x00448972` begins the loading-finish
-transition, `EnemyOverlay::DetachEnemyChain @ 0x0042ADB0` separates an Enemy
+transition, `Enemy::DetachEnemyChain @ 0x0042ADB0` separates an Enemy
 attachment chain and conditionally awards its death rewards,
 `InterpolateWrappedAngle @ 0x0042EB10` interpolates across the shortest wrapped
 angular path, and `EclRunLow::ApplyRandomBiasedMove @ 0x004224A0`
@@ -3271,9 +3271,9 @@ were updated without changing an address, size, status, or accepted count.
 
 The same pass removes unused raw resolver macros and its private vector shell.
 ECL player-position operands now use `Player::position.x/y/z`, and operand
-`0x2770` follows the typed Enemy attachment chain.  `EclOperands::EnemyOverlay`
-remains only as the ABI adapter required by the target resolver and detach-chain
-symbols; its implementations immediately recover the asserted Enemy owner.
+`0x2770` follows the typed Enemy attachment chain.  The temporary resolver and
+detach-chain adapter described at this checkpoint was removed by the later
+Enemy/ECL owner migration; both functions now belong directly to `Enemy`.
 
 VC7 oracle: focused replay of EclManager, both operand resolvers,
 EclDependencies, GUI, EnemyManager, and EnemyManagerUpdate passes **127 / 127
@@ -4199,8 +4199,8 @@ already access the public `g_Player` owner and its exact members directly.
 
 `ApplyRandomBiasedMove @ 0x004224A0` and `DispatchShotInstruction @
 0x00422720` now express their actual fastcall inputs as
-`EclOperands::EnemyOverlay *` and `EclRawInstruction *`, replacing `u8 *`,
-`void *`, and the high dispatcher's duplicate `RawInstruction`.  The main
+`Enemy *` and `EclRawInstruction *`, replacing `u8 *`, `void *`, and the high
+dispatcher's duplicate `RawInstruction`.  The main
 interpreter and opcode 169 likewise use the shared `Float3` instead of a local
 three-float shell.  These types make operand flags, serialized operands, Enemy
 state, and saved positions readable without changing the target-observed
@@ -4227,3 +4227,54 @@ namespace symbol, and `verify-modern-linux.sh` verifies the ELF32 executable
 and every fixed target-owned layout symbol.  No instruction layout,
 interpolation slot offset, callback ABI, target byte, accepted-unit identity,
 or aggregate exact total changed.
+
+### Enemy-owned ECL execution and typed EX dispatch — 2026-08-27
+
+Scope: the temporary Enemy ABI adapter, the dormant standalone low/high
+dispatcher harness, shared spell/EX instruction records, and the Spellcard
+field that stores the active Enemy owner.
+
+The lexical bodies in `EclRunLow.inl` and `EclRunHigh.inl` are production code
+included by `EclManager::RunEcl`; their unused standalone dispatcher branches
+and `Services`/`TargetApi` proposal shells had no callers and obscured that
+relationship.  They are removed.  The main interpreter still retains its
+target-authored lexical handler order and source shape.
+
+The complete target bodies at `Enemy::ResolveFloat @ 0x00420120` and
+`Enemy::DetachEnemyChain @ 0x0042ADB0` operate on the asserted `Enemy` layout.
+The temporary `EclOperands::EnemyOverlay` adapter is therefore retired.  Both
+operand resolvers, the low/high helper family, RunEcl, the EX handlers, Enemy
+updates, and Player callers now pass `Enemy *` directly.  All 53 affected
+function identities and 465 configured COFF relocation references were
+migrated to the actual VC7-decorated `Enemy *` symbols.  The method identity
+for `DetachEnemyChain` is used where the split object defines or calls it;
+external object relocations retain the exact VC7 decorated member symbol.
+
+`EclSpellCardInstructionArgs` now gives `StartEnemySpell @ 0x00421280` and
+`EndEnemySpell @ 0x004212E0` typed access to their serialized spell operands.
+The EX dispatcher shares one `EclExInstruction` record and exposes
+`g_EclExInsn @ 0x004C6CB0` as an array of
+`void (__fastcall *)(Enemy *, EclExInstruction *)`.  Opcode 136 invokes the
+table directly.  Opcode 137 deliberately retains an explicit function-pointer
+cast: target evidence shows it reuses the table with an ECL-context second
+argument, so erasing that distinction would assert an unsupported common ABI.
+
+Finally, `Spellcard::activeEnemy @ +0x004` and the fifth parameter of
+`Spellcard::StartSpell @ 0x004152A0` are `Enemy *`.  Spell presentation and
+damage/capture logic now read the owner without byte-pointer casts while class
+size, offset, calling convention, and decorated relocation identity remain
+pinned.
+
+VC7 oracle: focused relocation-aware replay of EclOperandsInt.obj,
+EclOperandsFloat.obj, EclHelpers.obj, EclRun.obj, EclDependencies.obj,
+EclExIns.obj, EclGlobals.obj, EnemyManager.obj, EnemyManagerUpdate.obj,
+Player.obj, and SpellCard.obj passes **213 / 213 exact**.  Because the batch
+changes shared headers and decorated identities, the required single-job
+non-reuse cold build of all 75 comparison objects passes **1,106 / 1,106
+exact** with zero failures.  The normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container image links with the typed
+callback and Enemy/Spellcard owners, and `verify-modern-linux.sh` verifies the
+ELF32 executable and every fixed target-owned layout symbol.  No serialized
+record layout, callback ABI, Enemy/Spellcard offset, target byte, accepted-unit
+identity, or aggregate exact total changed.

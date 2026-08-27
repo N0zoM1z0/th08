@@ -1155,7 +1155,7 @@ void Player::UpdateBombState()
                 {
                     if (g_EnemyManager.bosses[i] != NULL)
                     {
-                        reinterpret_cast<EclOperands::EnemyOverlay *>(
+                        reinterpret_cast<Enemy *>(
                             g_EnemyManager.bosses[i])->DetachEnemyChain(0);
                         g_EnemyManager.bosses[i]->life = 0;
                         g_EnemyManager.bosses[i]->flags1 &= ~ENEMY_FLAG_PAUSE_TIMER;
