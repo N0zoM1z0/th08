@@ -333,17 +333,17 @@ th08::EffectRandomSplashBigInit,0x425ea0,function
 th08::Float3::operator-() const,0x425fa0,function
 th08::EffectOrbitInit,0x425fe0,function
 th08::EffectOrbitUpdate,0x426030,function
-th08::FUN_00426280,0x426280,function
-th08::FUN_004264f0,0x4264f0,function
-th08::FUN_00426720,0x426720,function
-th08::FUN_00426990,0x426990,function
+th08::InitializeTintedBossTrackingCameraParticle,0x426280,function
+th08::UpdateTintedBossTrackingCameraParticle,0x4264f0,function
+th08::InitializeRisingBossTrackingCameraParticle,0x426720,function
+th08::UpdateRisingBossTrackingCameraParticle,0x426990,function
 th08::InitializeRandomDirectionalOffset,0x426b20,function
 th08::UpdateDirectionalOffset60,0x426bb0,function
 th08::TrackPlayerUntilAnimationEnds,0x426c40,function
 th08::UpdateDirectionalOffset240,0x426c90,function
 th08::ShiftStageEffectOrigins,0x426d10,function
-th08::FUN_00426d70,0x426d70,function
-th08::FUN_00426e70,0x426e70,function
+th08::UpdateSpinningCameraParticle,0x426d70,function
+th08::InitializeSpinningCameraParticle,0x426e70,function
 th08::InitializeDirectionalOffset,0x4270c0,function
 th08::UpdateEasedDirectionalOffset,0x4271a0,function
 th08::KeepTrailAlive,0x427250,function

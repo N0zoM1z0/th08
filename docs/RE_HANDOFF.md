@@ -1924,3 +1924,15 @@ now zero, but this is a layout-routing milestone rather than a whole-program
 semantic-completion claim.  Continue by auditing router-invisible neutral
 function names and evidence-limited state.  Keep all work on the branch until
 the user explicitly requests a PR/merge.
+
+The Effect camera-particle naming checkpoint replaces the last six authored
+`FUN_00426...` identities with three evidence-backed initializer/update pairs:
+tinted Boss-tracking, rising Boss-tracking, and spinning camera particles.
+Template slots 51, 63, and 19 respectively establish the pairings; names stop
+short of guessing the artwork.  Source, portable template mirror, tracking
+ledgers, accepted rows, and VC7 decorated-symbol units move together.  Focused
+`EffectManager.obj` replay passes **52 / 52 exact**, the required cold
+aggregate passes **1,106 / 1,106 exact**, the normal VC7 image and complete
+Linux i386 image link, and the Linux fixed-layout verifier passes.  Continue
+the router-invisible neutral-field audit on the branch; do not open or merge a
+PR until explicitly requested.

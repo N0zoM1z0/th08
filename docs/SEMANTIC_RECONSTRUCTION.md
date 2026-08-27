@@ -3786,3 +3786,47 @@ recoverable semantic name.  The sole authored non-accepted function remains
 versus the current natural 362-byte emission), tracked separately from this
 layout closure.  No replay behavior, constructor call, target byte, accepted-
 unit identity, or exact total changed.
+
+### Effect camera-particle callback naming — 2026-08-27
+
+Scope: the six remaining authored address-named Effect callbacks at
+`0x00426280`, `0x004264F0`, `0x00426720`, `0x00426990`, `0x00426D70`, and
+`0x00426E70`, plus their target and portable template-table identities.
+
+The Effect template table supplies three exact initializer/update pairs.
+Template slot 51 (ANM script 73) binds the `0x426280/0x4264F0` pair: its
+initializer seeds a randomized camera-relative position, velocity and
+acceleration, while its updater integrates that motion, rejects particles
+outside the forward view cone, smooths `vm.pos2` toward the damageable Boss,
+and multiplies the secondary color by the current stage-text tint.  These are
+now `Initialize/UpdateTintedBossTrackingCameraParticle`.
+
+Template slot 63 (ANM script 74) binds `0x426720/0x426990`.  It uses the same
+camera-relative protocol with a directly observed positive vertical-velocity
+base and the Boss-target smoothing path, but without the stage tint.  The pair
+is therefore `Initialize/UpdateRisingBossTrackingCameraParticle`.  Template
+slot 19 (ANM script 51) binds initializer `0x426E70` to updater `0x426D70`; the
+initializer randomizes camera-relative motion and Z rotation, and the updater
+integrates motion, advances rotation, and retires the particle at its view/Z
+boundaries.  That pair is `Initialize/UpdateSpinningCameraParticle`.  The
+names intentionally stop at proven motion, tracking and color behavior; no
+unobserved texture subject such as leaf, snow, or spark is inferred.
+
+The semantic identities move together through `EffectManager.cpp`, the Linux
+template mirror, mapping/reccmp/implemented/matches ledgers, and all six VC7
+decorated-symbol match units.  Match-unit IDs retain their stable address-
+bearing CLI names, while their selected COFF symbols now use the readable C++
+identities.
+
+VC7 oracle: focused replay of all configured `EffectManager.obj` units passes
+**52 / 52 exact** after the migration; the six renamed functions individually
+retain their accepted extents of 624, 545, 620, 388, 251, and 587 bytes.  The
+required single-job non-reuse cold build of all 75 comparison objects passes
+**1,106 / 1,106 exact** with zero failures, and the normal VC7 production
+image links.
+
+Portable oracle: the complete i386 Linux container build links with the same
+three template pairs, and `verify-modern-linux.sh` verifies the ELF32 image
+and every fixed target-owned layout symbol.  No Effect motion, Boss test,
+color operation, table slot, target address, relocation target, accepted-unit
+identity, or exact total changed.

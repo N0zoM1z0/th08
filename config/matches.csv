@@ -923,9 +923,9 @@ address,name,size,status,match_percent,unit,evidence
 0x004286E0,th08::Float3::FromAngleMagnitude,32,matching,100.00,float3-from-angle-magnitude,python3 scripts/compare-function.py float3-from-angle-magnitude --json
 0x00428700,th08::Float3::FromRotatedVec2,32,matching,100.00,float3-from-rotated-vec2,python3 scripts/compare-function.py float3-from-rotated-vec2 --json
 0x004649A0,th08::AnmManager::InitializeHorizontalTextureStrip,352,matching,100.00,anm-initialize-horizontal-texture-strip,python3 scripts/compare-function.py anm-initialize-horizontal-texture-strip --json
-0x00426280,th08::FUN_00426280,624,matching,100.00,effect-random-camera-init-00426280,python3 scripts/compare-function.py effect-random-camera-init-00426280 --json
-0x00426720,th08::FUN_00426720,620,matching,100.00,effect-random-camera-init-00426720,python3 scripts/compare-function.py effect-random-camera-init-00426720 --json
-0x00426E70,th08::FUN_00426e70,587,matching,100.00,effect-random-camera-init-00426e70,python3 scripts/compare-function.py effect-random-camera-init-00426e70 --json
+0x00426280,th08::InitializeTintedBossTrackingCameraParticle,624,matching,100.00,effect-random-camera-init-00426280,python3 scripts/compare-function.py effect-random-camera-init-00426280 --json
+0x00426720,th08::InitializeRisingBossTrackingCameraParticle,620,matching,100.00,effect-random-camera-init-00426720,python3 scripts/compare-function.py effect-random-camera-init-00426720 --json
+0x00426E70,th08::InitializeSpinningCameraParticle,587,matching,100.00,effect-random-camera-init-00426e70,python3 scripts/compare-function.py effect-random-camera-init-00426e70 --json
 0x00426B20,th08::InitializeRandomDirectionalOffset,134,matching,100.00,effect-initialize-random-directional-offset,python3 scripts/compare-function.py effect-initialize-random-directional-offset --json
 0x00426BB0,th08::UpdateDirectionalOffset60,133,matching,100.00,effect-update-directional-offset-60,python3 scripts/compare-function.py effect-update-directional-offset-60 --json
 0x00426C40,th08::TrackPlayerUntilAnimationEnds,66,matching,100.00,effect-track-player-until-animation-ends,python3 scripts/compare-function.py effect-track-player-until-animation-ends --json
@@ -997,9 +997,9 @@ address,name,size,status,match_percent,unit,evidence
 0x0040B540,D3DXVec3Dot,54,matching,100.00,d3dx-vec3-dot-0040b540,python3 scripts/compare-function.py d3dx-vec3-dot-0040b540 --json
 0x0040B7F0,D3DXVec3Cross,132,matching,100.00,d3dx-vec3-cross-0040b7f0,python3 scripts/compare-function.py d3dx-vec3-cross-0040b7f0 --json
 0x004073B0,th08::BackgroundCamera::BackgroundCamera,77,matching,100.00,background-camera-constructor,python3 scripts/compare-function.py background-camera-constructor --json
-0x004264F0,th08::FUN_004264f0,545,matching,100.00,effect-callback-004264f0,python3 scripts/compare-function.py effect-callback-004264f0 --json
-0x00426990,th08::FUN_00426990,388,matching,100.00,effect-callback-00426990,python3 scripts/compare-function.py effect-callback-00426990 --json
-0x00426D70,th08::FUN_00426d70,251,matching,100.00,effect-callback-00426d70,python3 scripts/compare-function.py effect-callback-00426d70 --json
+0x004264F0,th08::UpdateTintedBossTrackingCameraParticle,545,matching,100.00,effect-callback-004264f0,python3 scripts/compare-function.py effect-callback-004264f0 --json
+0x00426990,th08::UpdateRisingBossTrackingCameraParticle,388,matching,100.00,effect-callback-00426990,python3 scripts/compare-function.py effect-callback-00426990 --json
+0x00426D70,th08::UpdateSpinningCameraParticle,251,matching,100.00,effect-callback-00426d70,python3 scripts/compare-function.py effect-callback-00426d70 --json
 0x00438046,th08::Gui::CopyCurrentStageEnemyNameTexture,517,matching,100.00,gui-stage-spell-sprite-00438046,python3 scripts/compare-function.py gui-stage-spell-sprite-00438046 --json
 0x00437D87,th08::Gui::IsStageFinished,64,matching,100.00,gui-dialog-vm-ready-00437d87,python3 scripts/compare-function.py gui-dialog-vm-ready-00437d87 --json
 0x00438F58,th08::Gui::CaptureArcade,145,matching,100.00,gui-result-texture-capture-00438f58,python3 scripts/compare-function.py gui-result-texture-capture-00438f58 --json

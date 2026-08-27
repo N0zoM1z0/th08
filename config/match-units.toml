@@ -101508,7 +101508,7 @@ size = 0x160
 [[units]]
 name = "effect-random-camera-init-00426280"
 object = "build/objdiff/reimpl/EffectManager.obj"
-symbol = "?FUN_00426280@th08@@YIHPAUEffect@1@@Z"
+symbol = "?InitializeTintedBossTrackingCameraParticle@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x00426280
 size = 0x270
 
@@ -101709,7 +101709,7 @@ target = 0x00409120
 [[units]]
 name = "effect-random-camera-init-00426720"
 object = "build/objdiff/reimpl/EffectManager.obj"
-symbol = "?FUN_00426720@th08@@YIHPAUEffect@1@@Z"
+symbol = "?InitializeRisingBossTrackingCameraParticle@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x00426720
 size = 0x26C
 
@@ -101916,7 +101916,7 @@ target = 0x00409120
 [[units]]
 name = "effect-random-camera-init-00426e70"
 object = "build/objdiff/reimpl/EffectManager.obj"
-symbol = "?FUN_00426e70@th08@@YIHPAUEffect@1@@Z"
+symbol = "?InitializeSpinningCameraParticle@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x00426E70
 size = 0x24B
 
@@ -107705,7 +107705,7 @@ target = 0x0040B460
 [[units]]
 name = "effect-callback-004264f0"
 object = "build/objdiff/reimpl/EffectManager.obj"
-symbol = "?FUN_004264f0@th08@@YIHPAUEffect@1@@Z"
+symbol = "?UpdateTintedBossTrackingCameraParticle@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x004264F0
 size = 0x221
 
@@ -107850,7 +107850,7 @@ addend = 0xA37
 [[units]]
 name = "effect-callback-00426990"
 object = "build/objdiff/reimpl/EffectManager.obj"
-symbol = "?FUN_00426990@th08@@YIHPAUEffect@1@@Z"
+symbol = "?UpdateRisingBossTrackingCameraParticle@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x00426990
 size = 0x184
 
@@ -107961,7 +107961,7 @@ target = 0x00409080
 [[units]]
 name = "effect-callback-00426d70"
 object = "build/objdiff/reimpl/EffectManager.obj"
-symbol = "?FUN_00426d70@th08@@YIHPAUEffect@1@@Z"
+symbol = "?UpdateSpinningCameraParticle@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x00426D70
 size = 0xFB
 

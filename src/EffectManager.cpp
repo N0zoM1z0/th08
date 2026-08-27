@@ -480,7 +480,7 @@ i32 __fastcall EffectOrbitUpdate(AnmVm *effect)
 
 // FUNCTION: th08 0x426280
 #pragma var_order(backgroundOffset, effect)
-i32 __fastcall FUN_00426280(Effect *effect)
+i32 __fastcall InitializeTintedBossTrackingCameraParticle(Effect *effect)
 {
     Float3 backgroundOffset;
 
@@ -512,7 +512,7 @@ i32 __fastcall FUN_00426280(Effect *effect)
 
 // FUNCTION: th08 0x4264f0
 #pragma var_order(delta, dot, effect)
-i32 __fastcall FUN_004264f0(Effect *effect)
+i32 __fastcall UpdateTintedBossTrackingCameraParticle(Effect *effect)
 {
     f32 dot;
 
@@ -556,7 +556,7 @@ i32 __fastcall FUN_004264f0(Effect *effect)
 
 // FUNCTION: th08 0x426720
 #pragma var_order(backgroundOffset, effect)
-i32 __fastcall FUN_00426720(Effect *effect)
+i32 __fastcall InitializeRisingBossTrackingCameraParticle(Effect *effect)
 {
     Float3 backgroundOffset;
 
@@ -588,7 +588,7 @@ i32 __fastcall FUN_00426720(Effect *effect)
 
 // FUNCTION: th08 0x426990
 #pragma var_order(delta, dot, effect)
-i32 __fastcall FUN_00426990(Effect *effect)
+i32 __fastcall UpdateRisingBossTrackingCameraParticle(Effect *effect)
 {
     f32 dot;
 
@@ -691,7 +691,7 @@ void __fastcall ShiftStageEffectOrigins(Float3 *delta)
 
 // FUNCTION: th08 0x426d70
 #pragma var_order(delta, dot, effect)
-i32 __fastcall FUN_00426d70(Effect *effect)
+i32 __fastcall UpdateSpinningCameraParticle(Effect *effect)
 {
     f32 dot;
 
@@ -715,7 +715,7 @@ i32 __fastcall FUN_00426d70(Effect *effect)
 
 // FUNCTION: th08 0x426e70
 #pragma var_order(backgroundOffset, effect)
-i32 __fastcall FUN_00426e70(Effect *effect)
+i32 __fastcall InitializeSpinningCameraParticle(Effect *effect)
 {
     Float3 backgroundOffset;
 

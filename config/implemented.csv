@@ -928,9 +928,9 @@ th08::SyncAnchoredRadialTrail
 th08::Float3::FromAngleMagnitude
 th08::Float3::FromRotatedVec2
 th08::AnmManager::InitializeHorizontalTextureStrip
-th08::FUN_00426280
-th08::FUN_00426720
-th08::FUN_00426e70
+th08::InitializeTintedBossTrackingCameraParticle
+th08::InitializeRisingBossTrackingCameraParticle
+th08::InitializeSpinningCameraParticle
 th08::InitializeRandomDirectionalOffset
 th08::UpdateDirectionalOffset60
 th08::TrackPlayerUntilAnimationEnds
@@ -1002,9 +1002,9 @@ D3DXVec3Length
 D3DXVec3Dot
 D3DXVec3Cross
 th08::BackgroundCamera::BackgroundCamera
-th08::FUN_004264f0
-th08::FUN_00426990
-th08::FUN_00426d70
+th08::UpdateTintedBossTrackingCameraParticle
+th08::UpdateRisingBossTrackingCameraParticle
+th08::UpdateSpinningCameraParticle
 th08::Gui::CopyCurrentStageEnemyNameTexture
 th08::Gui::IsStageFinished
 th08::Gui::CaptureArcade
