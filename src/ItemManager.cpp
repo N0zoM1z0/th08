@@ -56,11 +56,11 @@ Item *ItemManager::SpawnItem(Float3 *position, ItemType itemType, i32 state)
     }
     if (itemType == ITEM_TIME)
     {
-        state = ITEM_STATE_UNK3;
+        state = ITEM_STATE_TIME_RISING;
     }
-    else if (itemType == ITEM_TIME2)
+    else if (itemType == ITEM_TIME_APEX_AUTOCOLLECT_REQUEST)
     {
-        state = ITEM_STATE_UNK5;
+        state = ITEM_STATE_TIME_RISING_TO_APEX;
         itemType = ITEM_TIME;
     }
 
@@ -102,14 +102,14 @@ Item *ItemManager::SpawnItem(Float3 *position, ItemType itemType, i32 state)
         item->state = state;
         item->timer = 0;
 
-        if (state == ITEM_STATE_UNK2)
+        if (state == ITEM_STATE_DEATH_DROP_SPREAD)
         {
             item->targetPosition.x = g_Rng.GetRandomF32InRange(288.0f) + 48.0f;
             item->targetPosition.y = g_Rng.GetRandomF32InRange(192.0f) - 64.0f;
             item->targetPosition.z = 0.0f;
             item->startPositionOrVelocity = item->currentPosition;
         }
-        else if (state == ITEM_STATE_UNK3)
+        else if (state == ITEM_STATE_TIME_RISING)
         {
             item->startPositionOrVelocity.y = -2.0f - g_Rng.GetRandomF32InRange(0.2f);
             item->startPositionOrVelocity.x = g_Rng.GetRandomF32SignedInRange(0.6f);
@@ -122,8 +122,8 @@ Item *ItemManager::SpawnItem(Float3 *position, ItemType itemType, i32 state)
                 item->startPositionOrVelocity.z = 0.0f;
             }
         }
-        // ZUN bloat: This is just a duplicate of the above state!
-        else if (state == ITEM_STATE_UNK5)
+        // The initialization is duplicated, but this state has a distinct update transition.
+        else if (state == ITEM_STATE_TIME_RISING_TO_APEX)
         {
             item->startPositionOrVelocity.y = -2.0f - g_Rng.GetRandomF32InRange(0.2f);
             item->startPositionOrVelocity.x = g_Rng.GetRandomF32SignedInRange(0.6f);
@@ -208,7 +208,7 @@ void ItemManager::OnUpdate()
     {
         this->itemCount++;
 
-        if (item->state == ITEM_STATE_UNK2)
+        if (item->state == ITEM_STATE_DEATH_DROP_SPREAD)
         {
             if (item->timer < 60)
             {
@@ -224,7 +224,7 @@ void ItemManager::OnUpdate()
             }
             goto moveItem;
         }
-        else if (item->state == ITEM_STATE_UNK3)
+        else if (item->state == ITEM_STATE_TIME_RISING)
         {
             item->startPositionOrVelocity.y += 0.05f * g_Supervisor.framerateMultiplier;
             if (item->startPositionOrVelocity.y > 0.0f ||
@@ -241,7 +241,7 @@ void ItemManager::OnUpdate()
             }
             goto moveItem;
         }
-        else if (item->state == ITEM_STATE_UNK5)
+        else if (item->state == ITEM_STATE_TIME_RISING_TO_APEX)
         {
             item->startPositionOrVelocity.y += 0.05f * g_Supervisor.framerateMultiplier;
             item->currentPosition += item->startPositionOrVelocity * speed;
@@ -307,7 +307,8 @@ moveItem:
             item->startPositionOrVelocity.y = 3.0f;
 
 pickup:
-        if (item->state != ITEM_STATE_UNK3 && g_Player.CalcItemBoxCollision(&item->currentPosition, &itemBox))
+        if (item->state != ITEM_STATE_TIME_RISING &&
+            g_Player.CalcItemBoxCollision(&item->currentPosition, &itemBox))
         {
             g_ReplayManager->frameEventFlags |= 0x40;
             switch (item->itemType)

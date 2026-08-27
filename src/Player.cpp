@@ -496,12 +496,15 @@ void Player::AwardGraze(Float3 *position, i32 suppressExtraItems)
     {
         if (g_EnemyManager.HasBoss() && g_GameManager.GaugeIsExtremelyYoukai())
         {
-            g_ItemManager.SpawnItem(position, ITEM_TIME2, 1);
+            g_ItemManager.SpawnItem(position, ITEM_TIME_APEX_AUTOCOLLECT_REQUEST,
+                                    ITEM_STATE_AUTOCOLLECT);
             if (!suppressExtraItems && g_Spellcard.IsActive())
             {
-                g_ItemManager.SpawnItem(position, ITEM_TIME2, 1);
+                g_ItemManager.SpawnItem(position, ITEM_TIME_APEX_AUTOCOLLECT_REQUEST,
+                                        ITEM_STATE_AUTOCOLLECT);
                 if (!g_GameManager.IsSoloYoukai())
-                    g_ItemManager.SpawnItem(position, ITEM_TIME2, 1);
+                    g_ItemManager.SpawnItem(position, ITEM_TIME_APEX_AUTOCOLLECT_REQUEST,
+                                            ITEM_STATE_AUTOCOLLECT);
             }
         }
     }
@@ -1316,26 +1319,26 @@ i32 Player::UpdateDeathAndRespawn()
                     g_GameManager.SetPower(0);
                 else
                     g_GameManager.AddPower(-16);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_BIG, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_BIG, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_DEATH_DROP_SPREAD);
                 if (g_GameManager.GetBombsRemaining() > 0 &&
                     (g_GameManager.shotType == 2 || g_GameManager.shotType == 8 || g_GameManager.shotType == 9))
-                    g_ItemManager.SpawnItem(&this->position, ITEM_BOMB, ITEM_STATE_UNK2);
+                    g_ItemManager.SpawnItem(&this->position, ITEM_BOMB, ITEM_STATE_DEATH_DROP_SPREAD);
                 g_Gui.flags.powerDisplayUpdateFrames = 2;
                 g_ItemManager.CancelAutoCollect();
             }
             else
             {
                 g_GameManager.SetPower(0);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_DEATH_DROP_SPREAD);
                 g_Gui.flags.powerDisplayUpdateFrames = 2;
             }
             g_GameManager.DecreaseSubrank(1600);
@@ -3322,7 +3325,7 @@ i32 Player::CalcDamageToEnemy(Float3 *enemyPosition, Float3 *enemySize, i32 *hit
             if (g_GameManager.GaugeIsExtremelyHuman())
             {
                 if (bullet->descriptor->extremeGaugeBehavior < 0)
-                    g_ItemManager.SpawnItem(&bullet->position, static_cast<ItemType>(7), 3);
+                    g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_TIME_RISING);
             }
             *hitAccumulator -= g_Player.damageAccumulatorThreshold;
         }

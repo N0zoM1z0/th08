@@ -299,7 +299,7 @@ void EnemyOverlay::DetachEnemyChain(i32 awardRewards)
                         g_Rng.GetRandomF32InRange((f32)dropLocals.itemCount * 2.0f));
                     position.z = 0.0f;
                     position += reinterpret_cast<Enemy *>(enemy)->worldPosition;
-                    g_ItemManager.SpawnItem(&position, ITEM_TIME, 3);
+                    g_ItemManager.SpawnItem(&position, ITEM_TIME, ITEM_STATE_TIME_RISING);
                 }
 
                 if (!g_EnemyManager.HasBoss() || g_Spellcard.IsActive())
@@ -334,7 +334,7 @@ void EnemyOverlay::DetachEnemyChain(i32 awardRewards)
                     g_Rng.GetRandomF32InRange(128.0f));
                 position.z = 0.0f;
                 position += reinterpret_cast<Enemy *>(this)->worldPosition;
-                g_ItemManager.SpawnItem(&position, ITEM_TIME, 1);
+                g_ItemManager.SpawnItem(&position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
             }
             g_Player.CreateCircleCancelRegion(&reinterpret_cast<Enemy *>(this)->worldPosition,
                                   32.0f, 1.0f, 16, 7);
@@ -354,7 +354,8 @@ void EnemyOverlay::DetachEnemyChain(i32 awardRewards)
             reinterpret_cast<Enemy *>(this)->positionOffset;
         g_AsciiManager.CreateTimePopup(
             &reinterpret_cast<Enemy *>(this)->worldPosition, 1, 0, 0xFFFFFFFF);
-        g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(this)->worldPosition, ITEM_TIME, 1);
+        g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(this)->worldPosition, ITEM_TIME,
+                                ITEM_STATE_AUTOCOLLECT);
         reinterpret_cast<Enemy *>(this)->powerOrPointItemDropCount = 0;
         reinterpret_cast<Enemy *>(this)->pointItemDropCount = 0;
         reinterpret_cast<Enemy *>(this)->itemDropType = -2;
@@ -792,9 +793,9 @@ void Enemy::DropItems(i32 mode)
             position.operator float *()[0] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             position.operator float *()[1] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             if (g_GameManager.GetPower() < 128)
-                g_ItemManager.SpawnItem(&position, ITEM_POWER_SMALL, 0);
+                g_ItemManager.SpawnItem(&position, ITEM_POWER_SMALL, ITEM_STATE_DEFAULT);
             else
-                g_ItemManager.SpawnItem(&position, ITEM_POINT, 0);
+                g_ItemManager.SpawnItem(&position, ITEM_POINT, ITEM_STATE_DEFAULT);
         }
         this->powerOrPointItemDropCount = 0;
     }
@@ -806,7 +807,7 @@ void Enemy::DropItems(i32 mode)
             position = this->worldPosition;
             position.operator float *()[0] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             position.operator float *()[1] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
-            g_ItemManager.SpawnItem(&position, ITEM_POINT, 0);
+            g_ItemManager.SpawnItem(&position, ITEM_POINT, ITEM_STATE_DEFAULT);
         }
         this->pointItemDropCount = 0;
     }

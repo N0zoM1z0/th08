@@ -503,7 +503,8 @@ void BulletManager::RemoveAllBullets(i32 mode)
                                                       &bullet->sprites.collisionSize);
         if (g_Player.CheckBulletCancelCollision(&bullet->position, &bullet->sprites.collisionSize) == 2)
         {
-            g_ItemManager.SpawnItem(&bullet->position, static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
+            g_ItemManager.SpawnItem(&bullet->position, static_cast<ItemType>(g_Player.bulletCancelItemType),
+                                    ITEM_STATE_AUTOCOLLECT);
             memset(bullet, 0, 0x10B8);
         }
         else if (mode != 4)
@@ -591,13 +592,14 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
                                  &bullet->sprites.collisionSize) == 2)
         {
             g_ItemManager.SpawnItem(&bullet->position,
-                                    static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
+                                    static_cast<ItemType>(g_Player.bulletCancelItemType),
+                                    ITEM_STATE_AUTOCOLLECT);
         }
         else
         {
             g_ItemManager.SpawnItem(
                 &bullet->position,
-                static_cast<ItemType>(this->cancelItemType), 1);
+                static_cast<ItemType>(this->cancelItemType), ITEM_STATE_AUTOCOLLECT);
         }
 
         g_AsciiManager.CreateScorePopup(&bullet->position, score,
@@ -632,7 +634,7 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
             {
                 g_ItemManager.SpawnItem(
                     &laser->position,
-                    static_cast<ItemType>(this->cancelItemType), 1);
+                    static_cast<ItemType>(this->cancelItemType), ITEM_STATE_AUTOCOLLECT);
                 radius = laser->startOffset;
                 fsincos(&sine, &cosine, laser->angle);
                 while (laser->endOffset > radius)
@@ -642,7 +644,7 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
                     position[2] = 0.0f;
                     g_ItemManager.SpawnItem(
                         reinterpret_cast<Float3 *>(position),
-                        static_cast<ItemType>(this->cancelItemType), 1);
+                        static_cast<ItemType>(this->cancelItemType), ITEM_STATE_AUTOCOLLECT);
                     radius += 32.0f;
                 }
             }
@@ -673,7 +675,7 @@ void BulletManager::RemoveBulletsInRadius(const Float3 *position, f32 radius)
         delta = bullet->position - *position;
         if (D3DXVec3LengthSq(reinterpret_cast<D3DXVECTOR3 *>(&delta)) > radius)
             continue;
-        g_ItemManager.SpawnItem(&bullet->position, static_cast<ItemType>(6), 1);
+        g_ItemManager.SpawnItem(&bullet->position, ITEM_POINT_STAR, ITEM_STATE_AUTOCOLLECT);
         memset(bullet, 0, sizeof(Bullet));
     }
 }
@@ -910,12 +912,13 @@ updateBullet:
                         bullet->state = BULLET_STATE_DESPAWNING;
                         if (g_Player.bulletCancelItemType == 9)
                         {
-                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
-                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
+                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
+                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
                         }
                         else if (g_Player.bulletCancelItemType >= 0)
                             g_ItemManager.SpawnItem(&bullet->position,
-                                                    static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
+                                                    static_cast<ItemType>(g_Player.bulletCancelItemType),
+                                                    ITEM_STATE_AUTOCOLLECT);
                     }
                     goto executeBulletScript;
                 }
@@ -932,12 +935,13 @@ lethalCollision:
                     {
                         if (g_Player.bulletCancelItemType == 9)
                         {
-                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
-                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
+                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
+                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
                         }
                         else if (g_Player.bulletCancelItemType >= 0)
                             g_ItemManager.SpawnItem(&bullet->position,
-                                                    static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
+                                                    static_cast<ItemType>(g_Player.bulletCancelItemType),
+                                                    ITEM_STATE_AUTOCOLLECT);
                     }
                 }
             }
@@ -959,12 +963,13 @@ executeBulletScript:
                     bullet->state = BULLET_STATE_DESPAWNING;
                     if (g_Player.bulletCancelItemType == 9)
                     {
-                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
-                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
                     }
                     else if (g_Player.bulletCancelItemType >= 0)
                         g_ItemManager.SpawnItem(&bullet->position,
-                                                static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
+                                                static_cast<ItemType>(g_Player.bulletCancelItemType),
+                                                ITEM_STATE_AUTOCOLLECT);
                 }
                 goto activateBullet;
             case BULLET_STATE_SPAWNING_NORMAL:
@@ -981,12 +986,13 @@ executeBulletScript:
                     bullet->state = BULLET_STATE_DESPAWNING;
                     if (g_Player.bulletCancelItemType == 9)
                     {
-                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
-                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
                     }
                     else if (g_Player.bulletCancelItemType >= 0)
                         g_ItemManager.SpawnItem(&bullet->position,
-                                                static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
+                                                static_cast<ItemType>(g_Player.bulletCancelItemType),
+                                                ITEM_STATE_AUTOCOLLECT);
                 }
                 goto activateBullet;
             case BULLET_STATE_SPAWNING_SLOW:
@@ -1003,12 +1009,13 @@ executeBulletScript:
                     bullet->state = BULLET_STATE_DESPAWNING;
                     if (g_Player.bulletCancelItemType == 9)
                     {
-                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
-                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
                     }
                     else if (g_Player.bulletCancelItemType >= 0)
                         g_ItemManager.SpawnItem(&bullet->position,
-                                                static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
+                                                static_cast<ItemType>(g_Player.bulletCancelItemType),
+                                                ITEM_STATE_AUTOCOLLECT);
                 }
                 goto activateBullet;
             case BULLET_STATE_DESPAWNING:

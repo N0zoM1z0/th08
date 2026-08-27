@@ -1438,7 +1438,8 @@ i32 Spellcard::OnUpdateImpl()
                 itemCount = this->pendingTimeOrbs > 7 ? 7 : this->pendingTimeOrbs;
                 for (i = 0; i < itemCount; i++)
                 {
-                    g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&itemPosition), ITEM_TIME2,
+                    g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&itemPosition),
+                                            ITEM_TIME_APEX_AUTOCOLLECT_REQUEST,
                                             ITEM_STATE_DEFAULT);
                 }
                 this->pendingTimeOrbs -= itemCount;
@@ -1451,7 +1452,8 @@ i32 Spellcard::OnUpdateImpl()
                 itemCount = this->pendingTimeOrbs > 7 ? 7 : this->pendingTimeOrbs;
                 for (i = 0; i < 6; i++)
                 {
-                    g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&itemPosition), ITEM_TIME2,
+                    g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&itemPosition),
+                                            ITEM_TIME_APEX_AUTOCOLLECT_REQUEST,
                                             ITEM_STATE_DEFAULT);
                 }
                 this->pendingTimeOrbs -= itemCount;

@@ -806,9 +806,10 @@ enter_subroutine:
             ((f32 *)locals.position)[1] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             if (g_GameManager.GetPower() < 0x80)
                 g_ItemManager.SpawnItem(&locals.position,
-                                        static_cast<ItemType>(locals.i != 0 ? 0 : 2), 0);
+                                        locals.i != 0 ? ITEM_POWER_SMALL : ITEM_POWER_BIG,
+                                        ITEM_STATE_DEFAULT);
             else
-                g_ItemManager.SpawnItem(&locals.position, static_cast<ItemType>(1), 0);
+                g_ItemManager.SpawnItem(&locals.position, ITEM_POINT, ITEM_STATE_DEFAULT);
         }
         break;
     }
@@ -825,7 +826,8 @@ enter_subroutine:
             locals.position = reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position;
             ((f32 *)locals.position)[0] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
             ((f32 *)locals.position)[1] += g_Rng.GetRandomF32() * 128.0f - 64.0f;
-            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&locals.position), static_cast<ItemType>(1), 0);
+            g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&locals.position), ITEM_POINT,
+                                    ITEM_STATE_DEFAULT);
         }
         break;
     }
@@ -849,7 +851,7 @@ enter_subroutine:
         reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclContext->time +=
             TH08_ECL_READ_I(ctx, 0);
         break;
-    case 141: g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position, static_cast<ItemType>(TH08_ECL_READ_I(ctx, 0)), 0); break;
+    case 141: g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position, static_cast<ItemType>(TH08_ECL_READ_I(ctx, 0)), ITEM_STATE_DEFAULT); break;
     case 147: g_Background.pendingStageScriptLabel = TH08_ECL_READ_I(ctx, 0); break;
     case 148:
         g_Gui.SetBossLifeMarkerCount(TH08_ECL_READ_I(ctx, 0));

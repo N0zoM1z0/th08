@@ -1950,3 +1950,16 @@ address-style `FUN_*` identifiers, while the four-category semantic router
 remains zero.  Continue auditing router-invisible weak names and intentionally
 neutral state on `semantic/typed-reconstruction`; do not open or merge a PR
 until explicitly requested.
+
+The Item spawn-state checkpoint replaces the remaining unknown item enums with
+behavior-backed death-drop spread, ordinary time-orb rise, and apex-gated
+time-orb request/state identities; the two unproduced values remain explicitly
+reserved.  All authored constant SpawnItem calls now use typed item/state
+names, while genuinely data-driven ECL/drop/cancel values retain casts.
+Target-pinned packets cover `SpawnItem @ 0x004400A0` and
+`OnUpdate @ 0x00440500`.  Focused cold replay of the eight affected objects
+passes **244 / 244 exact** before and after the edit; the required cold
+aggregate passes **1,106 / 1,106 exact**; the normal VC7 image and complete
+Linux i386 image link; and the Linux fixed-layout verifier passes.  Continue
+the router-invisible semantic audit on `semantic/typed-reconstruction`; do not
+open or merge a PR until explicitly requested.

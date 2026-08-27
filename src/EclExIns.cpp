@@ -948,9 +948,11 @@ void __fastcall ExitScaledBulletTime(EclOperands::EnemyOverlay *enemy, EclExInst
 void __fastcall SpawnBombOrExtendItem(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
     if (g_Player.bombState.isInUse != 0)
-        g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(enemy)->position, ITEM_BOMB, 0);
+        g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(enemy)->position, ITEM_BOMB,
+                                ITEM_STATE_DEFAULT);
     else
-        g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(enemy)->position, ITEM_EXTEND, 0);
+        g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(enemy)->position, ITEM_EXTEND,
+                                ITEM_STATE_DEFAULT);
 }
 
 #undef ECL_EX_CONTEXT

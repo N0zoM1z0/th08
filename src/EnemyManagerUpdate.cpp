@@ -581,7 +581,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 if (g_GameManager.GaugeIsExtremelyHuman() ||
                     g_GameManager.GaugeIsExtremelyYoukai())
                 {
-                    g_ItemManager.SpawnItem(&enemy->worldPosition, static_cast<ItemType>(7), 1);
+                    g_ItemManager.SpawnItem(&enemy->worldPosition, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
                 }
             }
 

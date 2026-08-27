@@ -3876,3 +3876,49 @@ semantic router remains zero.  Neutral `unconsumed`, `serializedReserved`, and
 not justify a stronger behavioral identity, so this is an identifier-closure
 checkpoint rather than a claim that every recoverable program concept has
 already been named.
+
+### Item spawn-state protocol — 2026-08-27
+
+Scope: the remaining unknown ItemType/ItemState identities and every authored
+constant `ItemManager::SpawnItem` call across ItemManager, Player, Spellcard,
+BulletManager, EnemyManager, ECL high instructions, and ECL extended
+instructions.
+
+Target-pinned packets for `ItemManager::SpawnItem @ 0x004400A0` and
+`ItemManager::OnUpdate @ 0x00440500` confirm the exact state values and the
+following transitions.  State 2 is produced only by
+`Player::UpdateDeathAndRespawn`: it records the death position, chooses a
+random playfield target, interpolates there for 60 frames, and then enters the
+default motion path.  It is now `ITEM_STATE_DEATH_DROP_SPREAD`.
+
+Every `ITEM_TIME` request is normalized by SpawnItem to state 3.  That state
+starts with randomized upward velocity, remains non-collectible while active,
+and switches to auto-collection when its vertical velocity passes the apex or
+the player's 20-frame shot cycle becomes inactive.  It is now
+`ITEM_STATE_TIME_RISING`.  Item type 10 is not retained in the spawned Item:
+it is a request code that is immediately converted to `ITEM_TIME` and state 5.
+State 5 advances without pickup while rising and enters auto-collection only
+after the apex, so the request and state are now
+`ITEM_TIME_APEX_AUTOCOLLECT_REQUEST` and
+`ITEM_STATE_TIME_RISING_TO_APEX`.
+
+No authored producer or dedicated branch uses item-type slot 9 or state slot
+4.  They remain explicitly `ITEM_RESERVED_9` and `ITEM_STATE_RESERVED_4`;
+this does not claim that data-driven ECL can never supply those numeric values.
+All constant SpawnItem call sites now use `ItemType` and `ItemState` names.
+Runtime item types sourced from ECL operands, enemy drop schedules, and bullet
+cancel configuration retain explicit casts because their values are data, not
+compile-time semantic identities.
+
+VC7 oracle: focused cold replay of the eight affected comparison objects
+passes **244 / 244 exact** before and after the edit, including SpawnItem at
+**970 / 970** and OnUpdate at **1,989 / 1,989**.  Because ItemManager.hpp is a
+shared header, the required single-job non-reuse cold build of all 75
+comparison objects passes **1,106 / 1,106 exact** with zero failures, and the
+normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links with the same
+state transitions, and `verify-modern-linux.sh` verifies the ELF32 image and
+every fixed target-owned layout symbol.  No item value, state value, call ABI,
+drop count, movement step, collection gate, target byte, accepted-unit
+identity, or exact total changed.
