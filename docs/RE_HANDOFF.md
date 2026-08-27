@@ -1910,3 +1910,17 @@ VC7 image and complete Linux i386 image link; and the Linux fixed-layout
 verifier passes.  Continue with the Replay constructor-sensitive residual
 storage and keep all work on the branch until the user explicitly requests a
 PR/merge.
+
+The Replay residual checkpoint preserves the four target-observed `Float3`
+constructor calls while classifying those objects and the three manager byte
+ranges as explicitly unconsumed; serialized stage byte `+0x23` is reserved
+wire storage rather than false compiler padding.  The now-unused
+`unknown_fields` macro is removed.  Target-pinned Replay constructor and
+RegisterChain packets are exact, focused Replay replay passes **18 / 18
+exact** before and after the edit, the required cold aggregate passes **1,106
+/ 1,106 exact**, the normal VC7 image and complete Linux i386 image link, and
+the Linux fixed-layout verifier passes.  The four-category source router is
+now zero, but this is a layout-routing milestone rather than a whole-program
+semantic-completion claim.  Continue by auditing router-invisible neutral
+function names and evidence-limited state.  Keep all work on the branch until
+the user explicitly requests a PR/merge.

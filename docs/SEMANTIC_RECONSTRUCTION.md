@@ -3736,3 +3736,53 @@ review-router categories; repository-wide anonymous/opaque routing moves from
 8/6 to 2/6.  Those counts are review aids, not completion percentages.  No
 gameplay state transition, stage setup, replay behavior, target byte,
 accepted-unit identity, or exact total changed.
+
+### Replay residual storage and router closure — 2026-08-27
+
+Scope: `StageReplayData +0x23`, the four constructor-visible vectors at
+`ReplayManager +0x18..+0x47`, and the otherwise unconsumed manager ranges at
+`+0x48..+0x4D`, `+0x7C..+0x9F`, and `+0xCC..+0xCF`.
+
+The stage byte at `+0x23` is carried in the serialized stage prefix between
+`clockTime` and the input stream but has no authored consumer.  It is now
+`serializedReserved23`, not generic padding: the following byte stream has
+one-byte alignment, so this position belongs to the wire record rather than
+compiler alignment.  Its offset and the adjacent serialized fields are
+asserted.
+
+The target-pinned `ReplayManager::ReplayManager @ 0x00453160` is exactly 58
+bytes and calls `Float3::Float3` four times with receivers at `+0x18`,
+`+0x24`, `+0x30`, and `+0x3C`.  Those type identities and implicit constructor
+calls are retained while the fields become neutral
+`unconsumedVector18/24/30/3C`: the authored corpus still provides no scalar
+producer or consumer that would support behavioral names.  The three byte
+ranges likewise have no independent access beyond the manager-wide clear and
+are now explicitly `unconsumedBytes48/7C/CC`; `+0x7C` is deliberately not
+misrepresented as an unsupported parallel end-pointer array.
+
+`ReplayManager::RegisterChain @ 0x00451F90` remains exactly 777 bytes.  Its
+target sequence allocates `0xDC` bytes, invokes the constructor above, then
+clears the complete manager with 55 dword stores before assigning the known
+replay and chain state.  Offset assertions pin every residual range and all
+following cursors or chain pointers.  With no remaining declaration using it,
+the generic `unknown_fields` macro is removed from `utils.hpp`; the named
+arrays now expose both the evidence boundary and their owning aggregates.
+
+VC7 oracle: focused replay of `ReplayManager.obj` passes **18 / 18 exact**
+before and after the edit, including the constructor at **58 / 58** and
+RegisterChain at **777 / 777**.  Because `ReplayManager.hpp` and `utils.hpp`
+are shared through the PCH, the required single-job non-reuse cold build of
+all 75 comparison objects passes **1,106 / 1,106 exact** with zero failures,
+and the normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  The source-wide heuristic router now reports zero candidates
+in raw-member access, absolute-address view, anonymous-identifier, and opaque-
+storage categories.  This closes the known offset/opaque-layout routing
+milestone; it is not proof that every function or evidence-limited field has a
+recoverable semantic name.  The sole authored non-accepted function remains
+`ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0` (361 target bytes
+versus the current natural 362-byte emission), tracked separately from this
+layout closure.  No replay behavior, constructor call, target byte, accepted-
+unit identity, or exact total changed.
