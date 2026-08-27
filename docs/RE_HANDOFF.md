@@ -876,6 +876,15 @@ values replace all raw mode arguments and comparisons.  The function passes
 exact**, the normal VC7 image links, and the complete i386 Linux container
 build plus fixed-layout verifier passes.
 
+TitleScreen's two registration arguments are also explicit, with a narrower
+claim: standard entry passes 0 and replay-completion return passes 1, but
+`RegisterChain @ 0x0047146D` only homes and never reads the `i32` argument.
+`TitleScreenRegistrationReason` documents those caller reasons without
+claiming different callee behavior.  Focused replay passes Title **281 / 281
+exact** and Supervisor **1,831 / 1,831 exact**.  The required cold 75-object
+replay passes **1,106 / 1,106 exact**, the normal VC7 image links, and the
+complete i386 Linux container build plus fixed-layout verifier passes.
+
 Whole-executable TU/layout work below remains deferred, not invalidated.
 
 ## Active playable-port branch

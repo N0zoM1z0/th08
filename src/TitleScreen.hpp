@@ -11,6 +11,12 @@
 namespace th08
 {
 
+enum TitleScreenRegistrationReason
+{
+    TITLE_SCREEN_REGISTER_STANDARD = 0,
+    TITLE_SCREEN_REGISTER_AFTER_REPLAY = 1,
+};
+
 enum TitleCurrentScreen
 {
     TitleCurrentScreen_StartMenu = 0,
@@ -88,7 +94,9 @@ struct TitleScreen
     ZunResult ActualAddedCallback();
     static void TitleSetupThread(TitleScreen *titleScreen);
     static void DisplayInfoImage(const char *path);
-    static ZunResult RegisterChain(int param);
+    // The retail function homes this reason but never reads it. Keep the i32
+    // parameter for the original VC7 ABI and to document its two callers.
+    static ZunResult RegisterChain(i32 registrationReason);
 
     static ZunResult AddedCallback(TitleScreen *titleScreen);
     static ZunResult DeletedCallback(TitleScreen *titleScreen);

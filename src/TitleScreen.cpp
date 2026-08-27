@@ -3965,7 +3965,7 @@ ZunResult TitleScreen::Release()
     return ZUN_SUCCESS;
 }
 
-ZunResult TitleScreen::RegisterChain(int param)
+ZunResult TitleScreen::RegisterChain(i32 registrationReason)
 {
     // GensokyoClub commit 1b630bb supplied this retail-exact allocation
     // shape. The registry label is compiled out of the non-DEBUG target, so

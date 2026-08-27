@@ -157,7 +157,7 @@ ChainCallbackResult Supervisor::OnUpdate(Supervisor *s)
         init_titlescreen:
             s->curState = SupervisorState_TitleScreen;
             g_Supervisor.d3dDevice->ResourceManagerDiscardBytes(0);
-            if (TitleScreen::RegisterChain(0) != ZUN_SUCCESS)
+            if (TitleScreen::RegisterChain(TITLE_SCREEN_REGISTER_STANDARD) != ZUN_SUCCESS)
             {
                 return CHAIN_CALLBACK_RESULT_EXIT_GAME_SUCCESS;
             }
@@ -281,7 +281,7 @@ ChainCallbackResult Supervisor::OnUpdate(Supervisor *s)
 
                 g_Supervisor.d3dDevice->ResourceManagerDiscardBytes(0);
 
-                if (TitleScreen::RegisterChain(1) != ZUN_SUCCESS)
+                if (TitleScreen::RegisterChain(TITLE_SCREEN_REGISTER_AFTER_REPLAY) != ZUN_SUCCESS)
                 {
                     return CHAIN_CALLBACK_RESULT_EXIT_GAME_SUCCESS;
                 }

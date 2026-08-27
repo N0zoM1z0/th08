@@ -3053,3 +3053,30 @@ Portable oracle: the complete i386 Linux container build links every named
 caller, and `verify-modern-linux.sh` verifies the ELF32 image and all fixed
 target-owned layout symbols.  No state value, branch, callback, priority,
 layout, target mapping, or accepted ledger entry changed.
+
+### TitleScreen registration reasons — 2026-08-27
+
+Scope: the `i32` argument to `TitleScreen::RegisterChain @ 0x0047146D` and its
+two Supervisor call shapes.  The argument remains `i32` to preserve the target
+ABI; `TitleScreenRegistrationReason` documents the standard entry value 0 and
+the replay-completion return value 1.
+
+Observed limitation: unlike ResultScreen's live mode selector, the retail
+Title function only homes this fastcall argument at `[ebp-0x48]`.  No later
+instruction reads it, and both values execute the identical allocation,
+initialization, and calc/draw registration path.  The enum therefore names the
+target-proven caller reason, not a behavioral Title mode.  The source comment
+records that the callee ignores it so future work does not invent a missing
+branch.
+
+VC7 focused oracle: the rebuilt 281-byte Title registration function passes
+**281 / 281 exact**, and the rebuilt 1,831-byte Supervisor dispatcher passes
+**1,831 / 1,831 exact**.  Because the enum and declaration live in a shared
+header, the required single-job cold build of all 75 comparison objects passes
+**1,106 / 1,106 exact** with zero failures.  The normal VC7 production image
+links.
+
+Portable oracle: the complete i386 Linux container build links both named
+call shapes, and the fixed-layout verifier passes.  No argument value, branch,
+allocation shape, callback, priority, ABI, mapping, or accepted ledger entry
+changed.
