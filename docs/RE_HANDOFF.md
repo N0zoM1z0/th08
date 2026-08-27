@@ -10,11 +10,14 @@ come from the ledgers, not this prose.
 on the earlier bridge work.
 It does not change the exact-build ledgers and must not be merged as evidence
 of VC7 or whole-image matching. The opt-in backend bridge is documented in
-`docs/LINUX_SOLVER_BRIDGE.md`. Protocol version 2 never waits for the solver,
+`docs/LINUX_SOLVER_BRIDGE.md`. Protocol version 3 never waits for the solver,
 never subtracts solver time from game-visible clocks, and discards late action
-packets instead of applying them to later frames. The portable i386/fixed-
-layout verifier passes, and a retained Windows-origin Stage-5 replay now has
-exact compact semantic parity across 12,000 samples through replay frames
+packets instead of applying them to later frames. It now packs a bounded
+post-update source root into one of two runtime-owned leased slots; slot-full
+or packing failure drops snapshot authority without pacing the game. This is a
+modern-only solver integration and is not an exact-reconstruction claim. The
+portable i386/fixed-layout verifier passes, and a retained Windows-origin
+Stage-5 replay now has exact compact semantic parity across 12,000 samples through replay frames
 1--12,494. The reverse gate is also observed for one naturally saved Linux-
 origin Easy Stage-1 replay: the unchanged replay terminates naturally in both
 a fresh Linux process and the unpatched original v1.00d executable, with 2,063

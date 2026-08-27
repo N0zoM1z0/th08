@@ -18,8 +18,10 @@ namespace modern
 // hard-no-Bomb run and a stale directional command cannot remain latched.
 bool SolverBridgeReadInput(uint16_t *inputMask);
 
-// Publish one completed-update notification for the next input epoch. The
-// packet send is non-blocking; a saturated client queue drops this publication.
+// Pack one immutable completed-update root into a leased runtime slot and
+// publish its certificate for the next input epoch. Packing never waits for
+// the solver; a saturated client queue drops this publication and releases
+// its slot.
 void SolverBridgePublishSnapshot();
 
 // Mirror the retail analysis patch at 0x0044D0FA while bridge mode is active,
