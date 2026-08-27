@@ -133,12 +133,12 @@ PbgArchiveEntry *PbgArchive::FindEntry(LPCSTR filename)
     return NULL;
 }
 
-#pragma var_order(entryBuffer, decompressedSize, magic, size, fileTableOffset, fileTableBuffer, header,                \
+#pragma var_order(entryBuffer, fileTableDecompressedSize, magic, size, fileTableOffset, fileTableBuffer, header,       \
                   decryptedHeader, decryptedFileTable)
 bool PbgArchive::ParseHeader(LPCSTR filename)
 {
     LPBYTE entryBuffer;
-    i32 decompressedSize;
+    i32 fileTableDecompressedSize;
     i32 magic;
     DWORD size;
     i32 fileTableOffset;
@@ -178,9 +178,9 @@ bool PbgArchive::ParseHeader(LPCSTR filename)
     memcpy(&header.asStruct, decryptedHeader, sizeof(header));
     g_ZunMemory.Free(decryptedHeader);
 
-    m_NumOfEntries = header.asStruct.numOfEntries - 123456;
-    fileTableOffset = header.asStruct.fileTableOffset - 345678;
-    decompressedSize = header.asStruct.unk - 567891;
+    m_NumOfEntries = header.asStruct.encodedEntryCount - 123456;
+    fileTableOffset = header.asStruct.encodedFileTableOffset - 345678;
+    fileTableDecompressedSize = header.asStruct.encodedFileTableDecompressedSize - 567891;
 
     if (m_NumOfEntries <= 0)
     {
@@ -210,7 +210,7 @@ bool PbgArchive::ParseHeader(LPCSTR filename)
     MemFree(fileTableBuffer);
     fileTableBuffer = decryptedFileTable;
 
-    entryBuffer = Lzss::Decode(fileTableBuffer, size, NULL, decompressedSize);
+    entryBuffer = Lzss::Decode(fileTableBuffer, size, NULL, fileTableDecompressedSize);
     if (entryBuffer == NULL)
     {
         goto parse_error;
@@ -260,7 +260,7 @@ PbgArchiveEntry *PbgArchive::AllocEntries(LPVOID entryBuffer, i32 count, u32 dat
         SeekPastInt(&entryData);
         buffer[i].decompressedSize = *(u32 *)entryData;
         SeekPastInt(&entryData);
-        buffer[i].unk = *(u32 *)entryData;
+        buffer[i].unconsumedMetadata = *(u32 *)entryData;
         SeekPastInt(&entryData);
     }
 

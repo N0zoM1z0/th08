@@ -885,6 +885,14 @@ exact** and Supervisor **1,831 / 1,831 exact**.  The required cold 75-object
 replay passes **1,106 / 1,106 exact**, the normal VC7 image links, and the
 complete i386 Linux container build plus fixed-layout verifier passes.
 
+The PBG archive loader now names its encoded entry count, encoded table offset,
+and encoded table decompressed size, and preserves the per-entry fourth word as
+neutral `unconsumedMetadata` because retail copies but never reads it.  Header
+and entry sizes/offsets are asserted.  Focused `PbgArchive.obj` replay passes
+**15 / 15 exact**.  The required cold 75-object replay passes **1,106 / 1,106
+exact**, the normal VC7 image links, and the complete i386 Linux container build
+plus fixed-layout verifier passes.
+
 Whole-executable TU/layout work below remains deferred, not invalidated.
 
 ## Active playable-port branch

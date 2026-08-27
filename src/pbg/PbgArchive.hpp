@@ -5,14 +5,18 @@
 #include "pbg/PbgFile.hpp"
 #include "pbg/PbgMemory.hpp"
 
+#include <stddef.h>
+
 namespace th08
 {
 struct PbgArchiveHeader
 {
-    i32 numOfEntries;
-    i32 fileTableOffset;
-    i32 unk;
+    i32 encodedEntryCount;
+    i32 encodedFileTableOffset;
+    i32 encodedFileTableDecompressedSize;
 };
+C_ASSERT(sizeof(PbgArchiveHeader) == 0xc);
+C_ASSERT(offsetof(PbgArchiveHeader, encodedFileTableDecompressedSize) == 0x8);
 
 struct PbgArchiveEntry
 {
@@ -27,8 +31,11 @@ struct PbgArchiveEntry
     char *filename;
     u32 dataOffset;
     u32 decompressedSize;
-    u32 unk;
+    // Copied from each table record, but never read by the retail loader.
+    u32 unconsumedMetadata;
 };
+C_ASSERT(sizeof(PbgArchiveEntry) == 0x10);
+C_ASSERT(offsetof(PbgArchiveEntry, unconsumedMetadata) == 0xc);
 
 class PbgArchive
 {

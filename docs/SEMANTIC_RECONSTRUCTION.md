@@ -3080,3 +3080,30 @@ Portable oracle: the complete i386 Linux container build links both named
 call shapes, and the fixed-layout verifier passes.  No argument value, branch,
 allocation shape, callback, priority, ABI, mapping, or accepted ledger entry
 changed.
+
+### PBG archive table metadata — 2026-08-27
+
+Scope: `PbgArchive::ParseHeader @ 0x00474CE0`, `AllocEntries @ 0x00474FA0`,
+and the two serialized record layouts in `PbgArchive.hpp`.
+
+Observed: after decrypting the twelve-byte archive header, the retail loader
+subtracts fixed biases `123456`, `345678`, and `567891`.  The three results
+directly become the entry count, compressed-table file offset, and the output
+size passed to `Lzss::Decode` for the file table.  The stored words are now
+`encodedEntryCount`, `encodedFileTableOffset`, and
+`encodedFileTableDecompressedSize`; the local decode bound is
+`fileTableDecompressedSize`.  Assertions pin the header to 0x0C bytes and its
+third word to +0x08.
+
+Each decoded entry contains filename, data offset, decompressed size, and one
+fourth word.  Target `AllocEntries` copies that word at entry +0x0C, but no
+retail loader path reads it.  It is therefore named the deliberately neutral
+`unconsumedMetadata`; no CRC, flag, timestamp, or compression meaning is
+claimed.  Assertions pin the entry to 0x10 bytes and that word to +0x0C.
+
+VC7 focused oracle: all 15 accepted `PbgArchive.obj` units pass **15 / 15
+exact**, including ParseHeader **701 / 701** and AllocEntries **420 / 420**.
+Because these declarations live in a shared header, the required cold build of
+all 75 comparison objects was also replayed and passes **1,106 / 1,106 exact**;
+the normal VC7 image links.  Portable oracle: the complete i386 Linux container
+build links and its fixed-layout verifier passes.
