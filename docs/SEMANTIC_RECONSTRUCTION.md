@@ -3953,3 +3953,41 @@ Portable oracle: the complete i386 Linux container build links, and
 `verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
 layout symbol.  No call ABI, argument order, pool selection, field write,
 target byte, accepted-unit identity, or exact total changed.
+
+### Shared helper parameter closure — 2026-08-27
+
+Scope: seven exact helper bodies and their public declarations across
+AsciiManager, TextHelper, Supervisor, ScreenEffect, and TitleScreen.
+
+AsciiManager's time/familiar popup encoders consume two independent integer
+digit sequences.  Their former `number/param3` names become the evidence-
+bounded `primaryNumber/secondaryNumber`; the second sequence's delimiter
+sprites are preserved without guessing a stronger UI label.  ScreenEffect's
+public declaration now agrees with its already typed implementation:
+`durationFrames`, three variant-owned raw parameters, and `drawPriority`.
+
+Supervisor's music loader passes its integer to either MidiOutput::ReadFileData
+or the WAV preload command and is therefore `preloadSlot`.  FadeOutMusic's
+float is converted to milliseconds for MIDI and frame-rate-adjusted for the
+WAV command, establishing `durationSeconds`.  TextHelper::InvertAlpha exposes
+its ignored first coordinate as `unusedX` and its A1R5G5B5 quarter-strength
+color-decay selector as `useGentleColorFalloff`; the byte-count, byte-offset,
+adjusted-channel, and format-index locals replace decompiler-style names.
+The A8R8G8B8 and A4R4G4B4 alpha-inversion paths remain independent of that
+selector.  DrawPieChart uses one float to scale the angular sweep and the
+other as twice the radial offset, now `fraction` and `diameter`.
+
+VC7 oracle: target-pinned packets pass at `0x00403460`, `0x00403600`,
+`0x0043F31C`, `0x00447D56`, `0x004480F8`, `0x0045B8B0`, and `0x0046FDC2`.
+Focused cold replay of the five affected objects passes **178 / 178 exact**
+before and after the edit.  The individual extents remain 411, 420, 1,292,
+241, 183, 628, and 510 bytes respectively.  Because four declarations live
+in shared headers, the required single-job non-reuse cold build of all 75
+comparison objects passes **1,106 / 1,106 exact** with zero failures, and the
+normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  No parameter type/order, encoded digit, color decay, fade
+duration, effect variant, draw priority, pie geometry, target byte, accepted-
+unit identity, or exact total changed.

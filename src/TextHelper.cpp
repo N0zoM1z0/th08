@@ -139,16 +139,18 @@ bool TextHelper::TryAllocateBuffer(i32 width, i32 height, D3DFORMAT format)
 
 FormatInfo *TextHelper::GetFormatInfo(D3DFORMAT format)
 {
-    i32 local_8;
+    i32 formatIndex;
 
-    for (local_8 = 0; g_FormatInfoArray[local_8].format != -1 && g_FormatInfoArray[local_8].format != format; local_8++)
+    for (formatIndex = 0;
+         g_FormatInfoArray[formatIndex].format != -1 && g_FormatInfoArray[formatIndex].format != format;
+         formatIndex++)
     {
     }
     if (format == -1)
     {
         return NULL;
     }
-    return &g_FormatInfoArray[local_8];
+    return &g_FormatInfoArray[formatIndex];
 }
 
 struct A1R5G5B5
@@ -159,68 +161,78 @@ struct A1R5G5B5
     u16 alpha : 1;
 };
 
-#pragma var_order(bufferRegion, idx, doubleArea, tempColor, bufferCursor, bufferStart)
-bool TextHelper::InvertAlpha(i32 x, i32 y, i32 spriteWidth, i32 fontHeight, BOOL param_5)
+#pragma var_order(bufferRegion, byteOffset, regionByteCount, adjustedChannel, bufferCursor, bufferStart)
+bool TextHelper::InvertAlpha(i32 unusedX, i32 y, i32 spriteWidth, i32 fontHeight, BOOL useGentleColorFalloff)
 {
-    i32 doubleArea;
+    i32 regionByteCount;
     u8 *bufferRegion;
-    i32 idx;
+    i32 byteOffset;
     A1R5G5B5 *bufferCursor;
 
-    i32 tempColor;
+    i32 adjustedChannel;
 
-    doubleArea = spriteWidth * fontHeight * 2;
+    regionByteCount = spriteWidth * fontHeight * 2;
     bufferRegion = &GetBuffer()[y * spriteWidth * 2];
     switch (this->format)
     {
     case D3DFMT_A8R8G8B8:
-        for (idx = 3; idx < doubleArea; idx += 4)
+        for (byteOffset = 3; byteOffset < regionByteCount; byteOffset += 4)
         {
-            bufferRegion[idx] = bufferRegion[idx] ^ 0xff;
+            bufferRegion[byteOffset] = bufferRegion[byteOffset] ^ 0xff;
         }
         break;
     case D3DFMT_A1R5G5B5:
-        for (bufferCursor = (A1R5G5B5 *)bufferRegion, idx = 0; idx < doubleArea; idx += 2, bufferCursor += 1)
+        for (bufferCursor = (A1R5G5B5 *)bufferRegion, byteOffset = 0;
+             byteOffset < regionByteCount;
+             byteOffset += 2, bufferCursor += 1)
         {
             bufferCursor->alpha ^= 1;
             if (bufferCursor->alpha)
             {
-                if (!param_5)
+                if (!useGentleColorFalloff)
                 {
                     if (bufferCursor->red >= bufferCursor->blue)
                     {
-                        tempColor = bufferCursor->red - bufferCursor->red * idx * 2 / doubleArea / 3;
-                        bufferCursor->red = tempColor >= 0x20 ? 0x1f : tempColor;
+                        adjustedChannel = bufferCursor->red -
+                                          bufferCursor->red * byteOffset * 2 / regionByteCount / 3;
+                        bufferCursor->red = adjustedChannel >= 0x20 ? 0x1f : adjustedChannel;
 
-                        tempColor = bufferCursor->green - bufferCursor->green * idx * 2 / doubleArea / 3;
-                        bufferCursor->green = tempColor >= 0x20 ? 0x1f : tempColor;
+                        adjustedChannel = bufferCursor->green -
+                                          bufferCursor->green * byteOffset * 2 / regionByteCount / 3;
+                        bufferCursor->green = adjustedChannel >= 0x20 ? 0x1f : adjustedChannel;
                     }
                     else
                     {
-                        tempColor = bufferCursor->blue - bufferCursor->blue * idx / doubleArea / 2;
-                        bufferCursor->blue = tempColor >= 0x20 ? 0x1f : tempColor;
+                        adjustedChannel = bufferCursor->blue -
+                                          bufferCursor->blue * byteOffset / regionByteCount / 2;
+                        bufferCursor->blue = adjustedChannel >= 0x20 ? 0x1f : adjustedChannel;
 
-                        tempColor = bufferCursor->green - bufferCursor->green * idx / doubleArea / 2;
-                        bufferCursor->green = tempColor >= 0x20 ? 0x1f : tempColor;
+                        adjustedChannel = bufferCursor->green -
+                                          bufferCursor->green * byteOffset / regionByteCount / 2;
+                        bufferCursor->green = adjustedChannel >= 0x20 ? 0x1f : adjustedChannel;
                     }
                 }
                 else
                 {
                     if (bufferCursor->red >= bufferCursor->blue)
                     {
-                        tempColor = bufferCursor->red - bufferCursor->red * idx / doubleArea / 4;
-                        bufferCursor->red = tempColor >= 0x20 ? 0x1f : tempColor;
+                        adjustedChannel = bufferCursor->red -
+                                          bufferCursor->red * byteOffset / regionByteCount / 4;
+                        bufferCursor->red = adjustedChannel >= 0x20 ? 0x1f : adjustedChannel;
 
-                        tempColor = bufferCursor->green - bufferCursor->green * idx / doubleArea / 4;
-                        bufferCursor->green = tempColor >= 0x20 ? 0x1f : tempColor;
+                        adjustedChannel = bufferCursor->green -
+                                          bufferCursor->green * byteOffset / regionByteCount / 4;
+                        bufferCursor->green = adjustedChannel >= 0x20 ? 0x1f : adjustedChannel;
                     }
                     else
                     {
-                        tempColor = bufferCursor->blue - bufferCursor->blue * idx / doubleArea / 4;
-                        bufferCursor->blue = tempColor >= 0x20 ? 0x1f : tempColor;
+                        adjustedChannel = bufferCursor->blue -
+                                          bufferCursor->blue * byteOffset / regionByteCount / 4;
+                        bufferCursor->blue = adjustedChannel >= 0x20 ? 0x1f : adjustedChannel;
 
-                        tempColor = bufferCursor->green - bufferCursor->green * idx / doubleArea / 4;
-                        bufferCursor->green = tempColor >= 0x20 ? 0x1f : tempColor;
+                        adjustedChannel = bufferCursor->green -
+                                          bufferCursor->green * byteOffset / regionByteCount / 4;
+                        bufferCursor->green = adjustedChannel >= 0x20 ? 0x1f : adjustedChannel;
                     }
                 }
             }
@@ -233,9 +245,9 @@ bool TextHelper::InvertAlpha(i32 x, i32 y, i32 spriteWidth, i32 fontHeight, BOOL
         }
         break;
     case D3DFMT_A4R4G4B4:
-        for (idx = 1; idx < doubleArea; idx = idx + 2)
+        for (byteOffset = 1; byteOffset < regionByteCount; byteOffset = byteOffset + 2)
         {
-            bufferRegion[idx] = bufferRegion[idx] ^ 0xf0;
+            bufferRegion[byteOffset] = bufferRegion[byteOffset] ^ 0xf0;
         }
         break;
     default:

@@ -214,7 +214,7 @@ DIFFABLE_STATIC_ASSIGN(const char *, g_ReplayDifficulties[]) = {
     "Easy    ", "Normal  ", "Hard    ", "Lunatic ", "Extra   ",
 };
 
-void DrawPieChart(Float3 *position, D3DCOLOR color, float param_3, float param_4);
+void DrawPieChart(Float3 *position, D3DCOLOR color, float fraction, float diameter);
 
 ChainCallbackResult TitleScreen::OnUpdate(TitleScreen *titleScreen)
 {
@@ -3000,9 +3000,8 @@ ZunBool GameManager::IsLastWordSpellCardAttempted(i32 spellCardNumber)
 }
 
 
-/* Is matching except for missing stack space. */
 #pragma var_order(center, vm, vertices, i, angle)
-void DrawPieChart(Float3 *position, D3DCOLOR color, float param_3, float param_4)
+void DrawPieChart(Float3 *position, D3DCOLOR color, float fraction, float diameter)
 {
     VertexDiffuseXyzrhw vertices[64];
     Float3 center;
@@ -3020,7 +3019,7 @@ void DrawPieChart(Float3 *position, D3DCOLOR color, float param_3, float param_4
     vertices[1].w = 1.0f;
     angle = -(ZUN_PI / 2.0f);
 
-    center.x = param_4 / 2.0f;
+    center.x = diameter / 2.0f;
     center.y = 0.0f;
 
     for (i = 1; i < ARRAY_SIZE_SIGNED(vertices); i++)
@@ -3033,7 +3032,7 @@ void DrawPieChart(Float3 *position, D3DCOLOR color, float param_3, float param_4
         vertices[i].diffuse = color;
         vertices[i].w = 1.0f;
 
-        angle = AddNormalizeAngle(angle, (ZUN_PI / 31.0f) * param_3);
+        angle = AddNormalizeAngle(angle, (ZUN_PI / 31.0f) * fraction);
     }
 
     g_AnmManager->DrawTriangleFan(&vm, vertices, ARRAY_SIZE(vertices));

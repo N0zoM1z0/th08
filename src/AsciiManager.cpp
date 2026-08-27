@@ -650,7 +650,7 @@ void AsciiManager::CreatePlayerPointPopup(Float3 *position, i32 number, D3DCOLOR
     this->nextPlayerPointPopupIndex++;
 }
 
-void AsciiManager::CreateTimePopup(Float3 *position, i32 number, i32 param3, D3DCOLOR color)
+void AsciiManager::CreateTimePopup(Float3 *position, i32 primaryNumber, i32 secondaryNumber, D3DCOLOR color)
 {
     AsciiManagerPopup *popup;
     int characterCount;
@@ -663,27 +663,27 @@ void AsciiManager::CreateTimePopup(Float3 *position, i32 number, i32 param3, D3D
     popup->inUse = true;
 
     characterCount = 0;
-    if (param3 > 0)
+    if (secondaryNumber > 0)
     {
         popup->text[characterCount] = 15;
         characterCount++;
-        while (param3 != 0)
+        while (secondaryNumber != 0)
         {
-            popup->text[characterCount] = param3 % 10;
+            popup->text[characterCount] = secondaryNumber % 10;
             characterCount++;
-            param3 /= 10;
+            secondaryNumber /= 10;
         }
         popup->text[characterCount] = 14;
         characterCount++;
     }
 
-    if (number > 0)
+    if (primaryNumber > 0)
     {
-        while (number != 0)
+        while (primaryNumber != 0)
         {
-            popup->text[characterCount] = number % 10;
+            popup->text[characterCount] = primaryNumber % 10;
             characterCount++;
-            number /= 10;
+            primaryNumber /= 10;
         }
     }
     else
@@ -706,7 +706,7 @@ void AsciiManager::CreateTimePopup(Float3 *position, i32 number, i32 param3, D3D
     this->nextTimePopupIndex++;
 }
 
-void AsciiManager::CreateFamiliarPopup(Float3 *position, i32 number, i32 param3, D3DCOLOR color)
+void AsciiManager::CreateFamiliarPopup(Float3 *position, i32 primaryNumber, i32 secondaryNumber, D3DCOLOR color)
 {
     AsciiManagerPopup *popup;
     int characterCount;
@@ -719,27 +719,27 @@ void AsciiManager::CreateFamiliarPopup(Float3 *position, i32 number, i32 param3,
     popup->inUse = true;
 
     characterCount = 0;
-    if (param3 > 0)
+    if (secondaryNumber > 0)
     {
         popup->text[characterCount] = 15;
         characterCount++;
-        while (param3 != 0)
+        while (secondaryNumber != 0)
         {
-            popup->text[characterCount] = param3 % 10;
+            popup->text[characterCount] = secondaryNumber % 10;
             characterCount++;
-            param3 /= 10;
+            secondaryNumber /= 10;
         }
         popup->text[characterCount] = 14;
         characterCount++;
     }
 
-    if (number > 0)
+    if (primaryNumber > 0)
     {
-        while (number != 0)
+        while (primaryNumber != 0)
         {
-            popup->text[characterCount] = number % 10;
+            popup->text[characterCount] = primaryNumber % 10;
             characterCount++;
-            number /= 10;
+            primaryNumber /= 10;
         }
     }
     else

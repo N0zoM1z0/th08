@@ -35,8 +35,8 @@ struct ScreenEffect
     static ChainCallbackResult CalcFadeOut(ScreenEffect *screenEffect);
     static ChainCallbackResult CalcFadeHold(ScreenEffect *screenEffect);
 
-    static ScreenEffect *RegisterChain(ScreenEffectType effect, i32 ticks, i32 param_3, i32 param_4, i32 param_5,
-                                       i32 param_6);
+    static ScreenEffect *RegisterChain(ScreenEffectType effect, i32 durationFrames, i32 primaryParameter,
+                                       i32 secondaryParameter, i32 tertiaryParameter, i32 drawPriority);
 
     static ChainCallbackResult DrawFullFade(ScreenEffect *screenEffect);
     static ChainCallbackResult DrawPartialFade(ScreenEffect *screenEffect);

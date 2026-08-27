@@ -1975,3 +1975,16 @@ exact**; the normal VC7 image and complete Linux i386 image link; and the Linux
 fixed-layout verifier passes.  Continue the weak-parameter audit on
 `semantic/typed-reconstruction`; do not open or merge a PR until explicitly
 requested.
+
+The shared-helper parameter checkpoint removes residual `paramN`/decompiler
+locals from seven exact helpers in AsciiManager, TextHelper, Supervisor,
+ScreenEffect, and TitleScreen.  Names are bounded to directly observed roles:
+two popup digit sequences, music preload slot/fade seconds, ScreenEffect
+duration/variant parameters/draw priority, TextHelper's A1R5G5B5 gentle
+falloff selector, and pie fraction/diameter.  Target-pinned packets cover all
+seven addresses; focused replay passes **178 / 178 exact** before and after
+the edit; the required cold aggregate passes **1,106 / 1,106 exact**; the
+normal VC7 image and complete Linux i386 image link; and the Linux fixed-
+layout verifier passes.  Continue the remaining generic-local/API audit on
+`semantic/typed-reconstruction`; do not open or merge a PR until explicitly
+requested.

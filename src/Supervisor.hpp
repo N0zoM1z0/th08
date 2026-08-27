@@ -151,12 +151,12 @@ struct Supervisor
     ZunResult CheckVersion(const char *version, i32 exeSize, i32 exeChecksum);
 
     ZunResult LoadConfig(char *configFile);
-    ZunBool LoadMusic(int param_1, char *param_2);
+    ZunBool LoadMusic(int preloadSlot, char *path);
     ZunBool PlayMusic(i32 musicIndex, i32 bgmUnlockIndex);
     ZunResult PlayAudio(char *path, i32 bgmUnlockIndex);
     ZunResult StopAudio();
     ZunBool IsSlowModeEnabled();
-    ZunResult FadeOutMusic(float param_1);
+    ZunResult FadeOutMusic(float durationSeconds);
 
     void ThreadClose();
     void SetupLoadingVms(Float3 *position);

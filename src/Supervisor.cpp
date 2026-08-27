@@ -1531,7 +1531,7 @@ ZunBool GameManager::IsExtraUnlockedWithAllTeams()
            this->IsExtraUnlockedForCharacter(SHOT_YOUMU_YUYUKO);
 }
 
-ZunBool Supervisor::LoadMusic(int param_1, char *path)
+ZunBool Supervisor::LoadMusic(int preloadSlot, char *path)
 {
     char wavPathBuf[256];
     char *periodLoc;
@@ -1540,7 +1540,7 @@ ZunBool Supervisor::LoadMusic(int param_1, char *path)
     {
         if (g_Supervisor.midiOutput != NULL)
         {
-            g_Supervisor.midiOutput->ReadFileData(param_1, path);
+            g_Supervisor.midiOutput->ReadFileData(preloadSlot, path);
         }
 
         return FALSE;
@@ -1554,7 +1554,7 @@ ZunBool Supervisor::LoadMusic(int param_1, char *path)
         periodLoc[2] = 'a';
         periodLoc[3] = 'v';
 
-        g_SoundPlayer.QueueCommand(SOUNDPLAYER_COMMAND_PRELOAD_BGM, param_1, wavPathBuf);
+        g_SoundPlayer.QueueCommand(SOUNDPLAYER_COMMAND_PRELOAD_BGM, preloadSlot, wavPathBuf);
     }
 
     return TRUE;
@@ -1670,23 +1670,23 @@ ZunResult Supervisor::StopAudio()
 
 // FUNCTION: th08 0x4480f8
 #pragma var_order(fadeTime, this)
-ZunResult Supervisor::FadeOutMusic(float param_1)
+ZunResult Supervisor::FadeOutMusic(float durationSeconds)
 {
     f32 fadeTime;
 
     if (g_Supervisor.cfg.musicMode == MIDI)
     {
         if (g_Supervisor.midiOutput != NULL)
-            g_Supervisor.midiOutput->SetFadeOut((u32)(1000.0f * param_1));
+            g_Supervisor.midiOutput->SetFadeOut((u32)(1000.0f * durationSeconds));
     }
     else if (g_Supervisor.cfg.musicMode == WAV)
     {
         if (this->framerateMultiplier == 0.0f)
-            fadeTime = param_1;
+            fadeTime = durationSeconds;
         else if (this->framerateMultiplier > 1.0f)
-            fadeTime = param_1;
+            fadeTime = durationSeconds;
         else
-            fadeTime = param_1 / this->framerateMultiplier;
+            fadeTime = durationSeconds / this->framerateMultiplier;
 
         g_SoundPlayer.QueueCommand(SOUNDPLAYER_COMMAND_FADE_OUT, (i32)fadeTime, "");
     }
