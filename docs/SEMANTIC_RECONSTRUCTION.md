@@ -3469,3 +3469,52 @@ identifiers and from 37 to 32 opaque ranges; these are routing deltas, not a
 semantic-completion percentage.  No configuration byte, timer branch, field
 width, serialized extent, aggregate size, target address, or accepted-unit
 count changed.
+
+### Bullet transform payload and residual storage closure — 2026-08-27
+
+Scope: `Bullet::AdvanceTransformProgram @ 0x0042FFC0`, ECL opcode 111 inside
+`EclManager::RunEcl @ 0x004184B0`, the shot descriptor producer at
+`0x00422720`, bullet spawn/setup at `0x0042F5F0` and `0x00433070`, and the
+shared Bullet/Laser layouts.
+
+Opcode 111 still writes one generic four-value transform payload because its
+meaning is selected later by the record's `kind`.  That on-wire/raw view is now
+one member of `BulletTransformPayload`; `AdvanceTransformProgram` uses tagged
+views for vector acceleration, polar acceleration, direction changes, boundary
+bounces, timed wrap/wait, cull delay, sprite selection, positioned sound, and
+the two-record child-pattern descriptor.  The role-specific names come from
+the exact consumers and retain the same four 32-bit slots.  This supersedes the
+earlier decision to expose `float0/float1/int0/int1` at every consumer while
+preserving those names only at the generic ECL write boundary.
+
+The remaining Bullet-family bytes stop at observed behavior.  Descriptor word
+`+0x1FA` is explicitly cleared before spawn but has no reader and is therefore
+`unconsumedWord1FA`.  `BulletTypeSprites +0xD40` is copied from template to
+live bullet but has no producer beyond aggregate zeroing; `Bullet +0xDBC` is
+set to one at spawn and has no consumer.  They are now
+`unconsumedTemplateByteD40` and `unconsumedSpawnMarkerDBC`, not guessed flags.
+The template's `+0xD41` byte is independently written from the loaded sprite
+height and is now `spriteHeightPx`.  Unaccessed Bullet dword ranges retain
+their exact extents as `unconsumed` storage, while the one- to three-byte
+structure tails are explicitly named alignment.  The constructor-visible
+`Float3 @ +0xD5C` remains typed and is merely renamed `unconsumedVectorD5C`.
+
+Layout assertions pin the 0x10-byte tagged payload, 0x18-byte transform record,
+0x210-byte spawn descriptor, 0xD44-byte sprite template, 0x59C-byte Laser, and
+0x10B8-byte Bullet together with every newly classified offset.  No field
+width, constructor-bearing member, array count, or aggregate extent changed.
+
+VC7 oracle: focused replay passes **94 / 94 exact** across BulletManager,
+EclDependencies, and EclExIns, and the separately rebuilt EclRun owner passes
+**1 / 1 exact**, including the complete code-plus-table `RunEcl` comparison.
+The required single-job non-reuse cold build of all 75 comparison objects then
+passes **1,106 / 1,106 exact** with zero failures, and the normal VC7
+production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  `BulletManager.hpp/.cpp` now has zero candidates in all four
+review-router categories; repository-wide anonymous/opaque routing moves from
+40/32 to 30/25.  Those counts are review aids, not completion percentages.  No
+transform opcode, branch, sound, spawn pattern, target byte, relocation,
+accepted-unit identity, or exact total changed.

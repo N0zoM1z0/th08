@@ -1829,3 +1829,15 @@ authored/non-accepted row is instead
 `ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0` (361 bytes), which
 has no configured match unit.  Treat adding and proving that unit as a
 separate Oracle-ledger closure task, not as evidence of a current mismatch.
+
+The current Bullet residual checkpoint replaces generic transform payload
+reads with kind-specific union views while preserving opcode 111's generic raw
+write boundary.  Descriptor `+0x1FA`, template `+0xD40`, live-bullet `+0xDBC`,
+and the remaining unaccessed ranges are classified only as unconsumed or
+alignment storage; sprite height `+0xD41` is named from its exact loaded-sprite
+producer.  `BulletManager.hpp/.cpp` now has zero semantic-router candidates.
+Focused replay passes **94 / 94** across BulletManager/EclDependencies/EclExIns
+plus **1 / 1** for EclRun; the cold aggregate passes **1,106 / 1,106 exact**;
+the normal VC7 image and complete Linux i386 image link; and the Linux fixed-
+layout verifier passes.  Continue with Enemy/ANM residual storage without
+weakening the sole Replay near-match blocker.

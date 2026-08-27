@@ -159,7 +159,7 @@ i32 BulletManager::SpawnSingleBullet(BulletSpawnDescriptor *descriptor, i32 inde
     }
 
     bullet->state = BULLET_STATE_FIRED;
-    bullet->unknownDBC = 1;
+    bullet->unconsumedSpawnMarkerDBC = 1;
     bullet->isGrazed = 0;
     bullet->stateTimer = 0;
     bullet->collisionDisabled = 0;
@@ -179,8 +179,9 @@ i32 BulletManager::SpawnSingleBullet(BulletSpawnDescriptor *descriptor, i32 inde
     CopyBulletAnmVmCore(&bullet->sprites.bulletVm, &descriptor->templateSprites->bulletVm);
     CopyBulletAnmVmCore(&bullet->sprites.despawnVm, &descriptor->templateSprites->despawnVm);
     bullet->sprites.collisionSize = descriptor->templateSprites->collisionSize;
-    bullet->sprites.unknownD40 = descriptor->templateSprites->unknownD40;
-    bullet->sprites.height = descriptor->templateSprites->height;
+    bullet->sprites.unconsumedTemplateByteD40 =
+        descriptor->templateSprites->unconsumedTemplateByteD40;
+    bullet->sprites.spriteHeightPx = descriptor->templateSprites->spriteHeightPx;
     bullet->sprites.drawBucketIndex = descriptor->templateSprites->drawBucketIndex;
     bullet->transformSound = descriptor->transformSound;
     bullet->offscreenCullDelayFrames = 0;
@@ -337,13 +338,14 @@ nextRecord:
     case BULLET_TRANSFORM_ACCELERATE_VECTOR:
         this->activeTransformFlags |= BULLET_TRANSFORM_ACCELERATE_VECTOR;
         this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].accelerationMagnitude =
-            record->float0;
+            record->payload.vectorAcceleration.magnitude;
         this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].accelerationAngle =
-            record->float1 > -990.0f ? record->float1
-                                    : this->angle;
+            record->payload.vectorAcceleration.angle > -990.0f
+                ? record->payload.vectorAcceleration.angle
+                : this->angle;
         this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].timer = 0;
         this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].durationFrames =
-            record->int0;
+            record->payload.vectorAcceleration.durationFrames;
         this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].vector.FromAngleMagnitude(
             this->exStates[BULLET_TRANSFORM_STATE_VECTOR_ACCELERATION].accelerationAngle,
             g_Supervisor.framerateMultiplier *
@@ -355,10 +357,13 @@ nextRecord:
 
     case BULLET_TRANSFORM_ACCELERATE_POLAR:
         this->activeTransformFlags |= BULLET_TRANSFORM_ACCELERATE_POLAR;
-        this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].speedDelta = record->float0;
-        this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].angleDelta = record->float1;
+        this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].speedDelta =
+            record->payload.polarAcceleration.speedDelta;
+        this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].angleDelta =
+            record->payload.polarAcceleration.angleDelta;
         this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].timer = 0;
-        this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].durationFrames = record->int0;
+        this->exStates[BULLET_TRANSFORM_STATE_POLAR_ACCELERATION].durationFrames =
+            record->payload.polarAcceleration.durationFrames;
         if (this->transformIndex != 0 && this->transformSound >= 0)
             g_SoundPlayer.PlaySoundByIdx(
                 static_cast<SoundIdx>(this->transformSound), 0);
@@ -369,55 +374,58 @@ nextRecord:
     case BULLET_TRANSFORM_CHANGE_DIRECTION_ABSOLUTE:
         this->activeTransformFlags |= record->kind;
         this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeAngle =
-            record->float0;
+            record->payload.directionChange.angle;
         this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeSpeed =
-            record->float1 > -999.0f ? record->float1
-                                    : this->speed;
+            record->payload.directionChange.speed > -999.0f
+                ? record->payload.directionChange.speed
+                : this->speed;
         this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].timer = 0;
         this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeIntervalFrames =
-            record->int0;
+            record->payload.directionChange.intervalFrames;
         this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangeRepeatCount =
-            record->int1;
+            record->payload.directionChange.repeatCount;
         this->exStates[BULLET_TRANSFORM_STATE_DIRECTION_CHANGE].directionChangesCompleted = 0;
         break;
 
     case BULLET_TRANSFORM_BOUNCE_ALL_EDGES:
     case BULLET_TRANSFORM_BOUNCE_EXCEPT_BOTTOM:
         this->activeTransformFlags |= record->kind;
-        if (record->float0 >= 0.0f)
-            this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bounceSpeed = record->float0;
+        if (record->payload.boundaryBounce.speed >= 0.0f)
+            this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bounceSpeed =
+                record->payload.boundaryBounce.speed;
         else
             this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bounceSpeed =
                 this->speed;
-        this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bounceLimit = record->int0;
+        this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bounceLimit =
+            record->payload.boundaryBounce.bounceLimit;
         this->exStates[BULLET_TRANSFORM_STATE_BOUNDARY_BOUNCE].bouncesCompleted = 0;
         break;
 
     case BULLET_TRANSFORM_WRAP_X:
         this->activeTransformFlags |= record->kind;
-        this->exStates[BULLET_TRANSFORM_STATE_WRAP].timer = record->int0;
+        this->exStates[BULLET_TRANSFORM_STATE_WRAP].timer = record->payload.timed.frames;
         break;
 
     case BULLET_TRANSFORM_WRAP_Y:
         this->activeTransformFlags |= record->kind;
-        this->exStates[BULLET_TRANSFORM_STATE_WRAP].timer = record->int0;
+        this->exStates[BULLET_TRANSFORM_STATE_WRAP].timer = record->payload.timed.frames;
         break;
 
     case BULLET_TRANSFORM_WAIT:
         this->activeTransformFlags |= record->kind;
-        this->exStates[BULLET_TRANSFORM_STATE_WAIT].timer = record->int0;
+        this->exStates[BULLET_TRANSFORM_STATE_WAIT].timer = record->payload.timed.frames;
         break;
 
     case BULLET_TRANSFORM_SET_CULL_DELAY:
-        this->offscreenCullDelayFrames = record->int0;
+        this->offscreenCullDelayFrames = record->payload.cullDelay.frames;
         ++this->transformIndex;
         goto nextRecord;
 
     case BULLET_TRANSFORM_SET_SPRITE:
-        this->sprites = g_BulletManager.bulletTypeSprites[record->int0];
+        this->sprites = g_BulletManager.bulletTypeSprites[record->payload.sprite.bulletType];
         g_BulletManager.bulletAnm->SetSprite(
             &this->sprites.bulletVm,
-            this->sprites.bulletVm.activeSpriteIndex + record->int1);
+            this->sprites.bulletVm.activeSpriteIndex + record->payload.sprite.color);
         ++this->transformIndex;
         goto nextRecord;
 
@@ -426,7 +434,8 @@ nextRecord:
         break;
 
     case BULLET_TRANSFORM_PLAY_SOUND:
-        g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(record->int0), this->position.x);
+        g_SoundPlayer.PlaySoundPositionedByIdx(
+            static_cast<SoundIdx>(record->payload.sound.soundIndex), this->position.x);
         ++this->transformIndex;
         goto nextRecord;
 
@@ -435,21 +444,24 @@ nextRecord:
             BulletSpawnDescriptor pattern;
             i32 fadeParent;
             pattern.position = this->position;
-            fadeParent = record->int0 & 0x80000000;
-            pattern.aimMode = (static_cast<u32>(record->int0) & 0x7F000000) >> 24;
-            pattern.bulletType = (static_cast<u32>(record->int0) & 0x00FF0000) >> 16;
-            pattern.color = (static_cast<u32>(record->int0) & 0x0000FF00) >> 8;
-            pattern.transformStartIndex = record->int0 & 0xFF;
-            pattern.count1 = static_cast<i16>(record->int1);
-            pattern.speed1 = record->float0;
-            pattern.speed2 = record->float1;
+            fadeParent = record->payload.childPrimary.packedPattern & 0x80000000;
+            pattern.aimMode =
+                (static_cast<u32>(record->payload.childPrimary.packedPattern) & 0x7F000000) >> 24;
+            pattern.bulletType =
+                (static_cast<u32>(record->payload.childPrimary.packedPattern) & 0x00FF0000) >> 16;
+            pattern.color =
+                (static_cast<u32>(record->payload.childPrimary.packedPattern) & 0x0000FF00) >> 8;
+            pattern.transformStartIndex = record->payload.childPrimary.packedPattern & 0xFF;
+            pattern.count1 = static_cast<i16>(record->payload.childPrimary.count1);
+            pattern.speed1 = record->payload.childPrimary.speed1;
+            pattern.speed2 = record->payload.childPrimary.speed2;
 
             ++record;
             ++this->transformIndex;
-            pattern.count2 = static_cast<i16>(record->int0);
-            pattern.transformFlags = record->int1;
-            pattern.angle = record->float0;
-            pattern.angleStep = record->float1;
+            pattern.count2 = static_cast<i16>(record->payload.childSecondary.count2);
+            pattern.transformFlags = record->payload.childSecondary.transformFlags;
+            pattern.angle = record->payload.childSecondary.angle;
+            pattern.angleStep = record->payload.childSecondary.angleStep;
             memcpy(pattern.transforms, this->transforms, sizeof(pattern.transforms));
             g_BulletManager.SpawnBulletPattern(&pattern);
             ++this->transformIndex;
@@ -1598,7 +1610,7 @@ ZunResult BulletManager::AddedCallback(BulletManager *bulletManager)
 
         bulletManager->bulletTypeSprites[i].bulletVm.baseSpriteIndex =
             bulletManager->bulletTypeSprites[i].bulletVm.activeSpriteIndex;
-        bulletManager->bulletTypeSprites[i].height =
+        bulletManager->bulletTypeSprites[i].spriteHeightPx =
             (u8)bulletManager->bulletTypeSprites[i].bulletVm.loadedSprite->heightPx;
 
         if (bulletManager->bulletTypeSprites[i].bulletVm.loadedSprite->heightPx <= 8.0f)

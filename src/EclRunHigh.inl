@@ -347,12 +347,12 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
                  ->bulletSpawnDescriptor.transforms[TH08_ECL_READ_I(ctx, 0)];
         entry->kind = TH08_ECL_READ_I(ctx, 1);
         entry->allowWhileActive = TH08_ECL_READ_I(ctx, 2);
-        entry->int0 = TH08_ECL_READ_I(ctx, 3);
-        entry->int1 = TH08_ECL_READ_I(ctx, 4);
-        entry->float0 = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 5))
+        entry->payload.raw.int0 = TH08_ECL_READ_I(ctx, 3);
+        entry->payload.raw.int1 = TH08_ECL_READ_I(ctx, 4);
+        entry->payload.raw.float0 = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 5))
             ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 5)))
             : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 5)));
-        entry->float1 = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 6))
+        entry->payload.raw.float1 = ((TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operandFlags & (1U << 6))
             ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(*reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 6)))
             : *reinterpret_cast<f32 *>(&TH08_ECL_RAW_I(ctx, 6)));
         break;
