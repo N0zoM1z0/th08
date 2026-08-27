@@ -852,6 +852,21 @@ exact**.  The normal VC7 image links, and the complete i386 Linux container
 build plus fixed-layout verifier passes.  Router totals remain **0 / 0 / 100 /
 41** with probes and modern source, or **0 / 0 / 99 / 41** for production.
 
+Three live Supervisor flag roles are also closed.  Bit 1 is
+`lockableBackbuffer`: `InitD3DRendering @ 0x004424C0` sets the corresponding
+D3D presentation flag and the bit, while all consumers gate pause/retry menu
+captures.  Bit 6 is `dummyMidiTimerEnabled`: the startup-info branch controls
+it and the startup thread uses it only to create/start that timer.  Bit 8 is
+`scoreBackupPending`: it guards one startup `score.dat` backup rotation and is
+then cleared.  The four-byte flags word and its `Supervisor + 0x1A4` offset are
+asserted; bit 5 remains unknown because no writer has been observed.
+
+A stale focused PCH first rejected the new names, as expected for this shared
+header.  The proof run discarded it: a fresh single-job build of all 75 objects
+passes **1,106 / 1,106 exact**.  Rebuilt AsciiManager/main/Supervisor diagnostic
+replay passes **134 / 134 exact**, the normal VC7 image links, and the complete
+i386 Linux container build plus fixed-layout verifier passes.
+
 Whole-executable TU/layout work below remains deferred, not invalidated.
 
 ## Active playable-port branch

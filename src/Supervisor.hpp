@@ -88,15 +88,16 @@ C_ASSERT(offsetof(GameConfiguration, slowMode) == 0x25);
 struct SupervisorFlags
 {
     u32 usingHardwareTL : 1;
-    u32 unk1 : 1; // Unconditionally set in InitD3DRendering. Never cleared?
+    u32 lockableBackbuffer : 1;
     u32 using32BitGraphics : 1;
     u32 speedhackDetected : 1; // Leftover from PCB. Is never set in IN, but is used.
     u32 d3dDevDisconnectFlag : 1;
     u32 unk5 : 1;
-    u32 unk6 : 1; // Set if LPTITLE is NULL in the startup info, which seems to never be true?
+    u32 dummyMidiTimerEnabled : 1;
     u32 receivedCloseMsg : 1;
-    u32 unk8 : 1;
+    u32 scoreBackupPending : 1;
 };
+C_ASSERT(sizeof(SupervisorFlags) == 0x4);
 
 enum SupervisorState
 {
@@ -344,6 +345,7 @@ C_ASSERT(offsetof(Supervisor, keepStageResources) == 0x16c);
 C_ASSERT(offsetof(Supervisor, suppressFpsDisplay) == 0x178);
 C_ASSERT(offsetof(Supervisor, framerateMultiplier) == 0x188);
 C_ASSERT(offsetof(Supervisor, recordedFps) == 0x198);
+C_ASSERT(offsetof(Supervisor, flags) == 0x1a4);
 C_ASSERT(offsetof(Supervisor, loadingVmsHaveBeenSetup) == 0x2fc);
 C_ASSERT(offsetof(Supervisor, subthreadActive) == 0x290);
 C_ASSERT(offsetof(Supervisor, startupThreadState) == 0x294);

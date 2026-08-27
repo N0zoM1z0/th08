@@ -636,7 +636,7 @@ ZunBool GameWindow::InitD3DRendering()
     presentParams.AutoDepthStencilFormat = D3DFMT_D16;
     presentParams.Flags = D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
 
-    g_Supervisor.flags.unk1 = true;
+    g_Supervisor.flags.lockableBackbuffer = true;
     g_Supervisor.couldSetRefreshRate = true;
     failedToSetFramerate = false;
 
@@ -1034,11 +1034,11 @@ ZunResult GameWindow::CheckForRunningGameInstance(HINSTANCE hInstance)
             }
         }
 
-        g_Supervisor.flags.unk6 = false;
+        g_Supervisor.flags.dummyMidiTimerEnabled = false;
     }
     else
     {
-        g_Supervisor.flags.unk6 = true;
+        g_Supervisor.flags.dummyMidiTimerEnabled = true;
     }
 
     if (g_ExclusiveMutex == NULL)

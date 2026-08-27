@@ -2979,3 +2979,45 @@ absolute-address**, **100 anonymous-identifier**, and **41 opaque-storage**
 candidates when probes and modern source are included; production-only remains
 **0 / 0 / 99 / 41**.  Those residual totals remain routing hints rather than a
 completion percentage.
+
+### Supervisor startup and capture flags — 2026-08-27
+
+Scope: three live bits in `SupervisorFlags @ Supervisor + 0x1A4`, together
+with their producers in `GameWindow`, the startup thread, and their Ascii/MIDI
+consumers.  The remaining anonymous flag bit 5 is outside this batch: it has
+timer consumers but no observed writer, so naming it would overstate the
+evidence.
+
+Observed: `GameWindow::InitD3DRendering @ 0x004424C0` sets
+`D3DPRESENTFLAG_LOCKABLE_BACKBUFFER`, then target instructions OR mask `0x2`
+into `g_Supervisor + 0x1A4`.  The only consumers gate pause/retry menu capture
+setup, animation, and drawing, so bit 1 is `lockableBackbuffer`.  This agrees
+with the upstream GensokyoClub name, but the TH08 D3D producer/consumer chain
+is the acceptance evidence.
+
+`Supervisor::Supervisor @ 0x00445B7A` initializes masks `0x40` and `0x100`.
+`GameWindow::CheckForRunningGameInstance @ 0x00443420` subsequently clears or
+sets mask `0x40` from the startup-info `lpTitle` branch; the sole runtime
+consumer at `Supervisor::StartupThread @ 0x004464C8` creates and starts the
+`DummyMidiTimer`.  Bit 6 is therefore named narrowly as
+`dummyMidiTimerEnabled`.  In the same startup thread, mask `0x100` guards the
+one-time `score.dat` backup rotation and is cleared afterward, so bit 8 is
+`scoreBackupPending`.
+
+Layout: assertions pin `sizeof(SupervisorFlags) == 0x4` and the flags word at
+`Supervisor + 0x1A4`.  No flag order, width, mask, branch, initialization, or
+side effect changed.
+
+VC7 oracle: after discarding the stale precompiled header, the required
+single-job cold build of all 75 comparison objects passes **1,106 / 1,106
+exact**.  A diagnostic focused replay of the rebuilt AsciiManager, main, and
+Supervisor objects passes **134 / 134 exact**, including the 1,472-byte D3D
+initializer, 625-byte startup-info producer, 70-byte Supervisor constructor,
+1,391-byte startup thread, and all four menu update/draw consumers.  The normal
+VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build and fixed-layout
+verifier pass with the same named flags and asserted owner offset.  Router
+totals remain **0 / 0 / 100 / 41** including probes and modern source, or **0 /
+0 / 99 / 41** for production; the scanner intentionally does not treat every
+anonymous bitfield spelling as a completion count.

@@ -859,7 +859,7 @@ i32 PauseMenu::OnUpdate()
         this->curState++;
         this->numFrames = 0;
 
-        if (g_Supervisor.flags.unk1)
+        if (g_Supervisor.flags.lockableBackbuffer)
         {
             g_AsciiManager.captureAnm->SetAndExecuteScriptIdx(&this->menuBackground, CAPTURE_SCRIPT_MENU_BACKGROUND);
 
@@ -1184,7 +1184,7 @@ i32 PauseMenu::OnUpdate()
         g_AnmManager->ExecuteScript(&this->menuSprites[i]);
     }
 
-    if (g_Supervisor.flags.unk1)
+    if (g_Supervisor.flags.lockableBackbuffer)
     {
         g_AnmManager->ExecuteScript(&this->menuBackground);
     }
@@ -1293,7 +1293,7 @@ i32 RetryMenu::OnUpdate()
             g_Gui.timesAnm->SetAndExecuteScriptIdx(&this->menuSprites[RETRY_SPRITE_CLOCKTIME], 1);
             g_Gui.timesAnm->SetSprite(&this->menuSprites[RETRY_SPRITE_CLOCKTIME], (i8)g_GameManager.GetClockTime());
 
-            if (g_Supervisor.flags.unk1)
+            if (g_Supervisor.flags.lockableBackbuffer)
             {
                 g_AsciiManager.captureAnm->SetAndExecuteScriptIdx(&this->menuBackground, 0);
 
@@ -1519,7 +1519,7 @@ selected_no:
         g_AnmManager->ExecuteScript(&this->menuSprites[i]);
     }
 
-    if (g_Supervisor.flags.unk1)
+    if (g_Supervisor.flags.lockableBackbuffer)
     {
         g_AnmManager->ExecuteScript(&this->menuBackground);
     }

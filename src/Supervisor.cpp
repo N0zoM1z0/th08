@@ -362,8 +362,8 @@ Supervisor::Supervisor()
 {
     memset(this, 0, sizeof(Supervisor));
 
-    this->flags.unk6 = true;
-    this->flags.unk8 = true;
+    this->flags.dummyMidiTimerEnabled = true;
+    this->flags.scoreBackupPending = true;
 }
 
 // FUNCTION: th08 0x445bc0
@@ -806,7 +806,8 @@ void Supervisor::StartupThread(Supervisor *s)
         strcpy(g_SoundPlayer.currentBgmFileName, "th08.dat");
     }
 
-    if (g_Supervisor.flags.unk8 && ((scoreFile = FileSystem::OpenFile("score.dat", &scoreFileSize, TRUE)) != NULL))
+    if (g_Supervisor.flags.scoreBackupPending &&
+        ((scoreFile = FileSystem::OpenFile("score.dat", &scoreFileSize, TRUE)) != NULL))
     {
         scoreBackupFileName = "score_4.??????.bak";
 
@@ -863,7 +864,7 @@ void Supervisor::StartupThread(Supervisor *s)
         _chdir("../");
     }
 
-    if (g_Supervisor.flags.unk6)
+    if (g_Supervisor.flags.dummyMidiTimerEnabled)
     {
         g_Supervisor.dummyMidiTimer = new DummyMidiTimer();
         if (g_Supervisor.dummyMidiTimer != NULL)
@@ -876,7 +877,7 @@ void Supervisor::StartupThread(Supervisor *s)
     g_Supervisor.subthreadCloseRequestActive = FALSE;
     g_Supervisor.subthreadActive = 0;
     g_Supervisor.startupThreadState = SupervisorStartupThreadState_Idle;
-    g_Supervisor.flags.unk8 = false;
+    g_Supervisor.flags.scoreBackupPending = false;
 
     return;
 
