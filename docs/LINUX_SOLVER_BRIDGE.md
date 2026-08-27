@@ -18,11 +18,14 @@ post-update source epoch, then continues through draw and `Present`. The solver
 may compute during that remaining wall-clock window. At the next DirectInput
 sample, the runtime consumes only a response naming that exact target epoch.
 
-If no exact response is ready, the complete current input mask remains held.
-A late response is counted and discarded; it is never applied on a later
-frame. Accept, receive, and publish operations are all non-blocking on the game
-thread. `enemy_manager_frame` is not used as the input clock because it can
-freeze while held input still moves the player. The exported ELF symbol
+If no exact response is ready, the runtime repeats the complete current input
+mask only when an earlier response installed a finite continuation lease and
+the current epoch, runtime context, held mask, and source generation still
+match that lease. Otherwise it selects neutral Shot+Focus and records an
+uncertified fallback. A late response is counted and discarded; it is never
+applied on a later frame. Accept, receive, and publish operations are all
+non-blocking on the game thread. `enemy_manager_frame` is not used as the input
+clock because it can freeze while input still moves the player. The exported ELF symbol
 `th08_solver_input_epoch` remains the final delivery-deadline check; gameplay
 sensing no longer brackets a collection of live `/proc/<pid>/mem` reads with
 that symbol.
@@ -65,8 +68,9 @@ deletes an existing path and does not unlink the path on exit; the launcher
 owns cleanup of its exact run directory. Before a client connects, after a
 disconnect, or after bridge failure, the runtime continues with neutral
 Shot+Focus rather than SDL input or a stale direction. A connected deadline
-miss alone preserves the complete held hard-no-Bomb mask. A protocol violation
-closes only that client and therefore returns input to neutral.
+miss also returns to neutral unless a versioned finite continuation lease
+remains applicable. A protocol violation closes only that client and therefore
+returns input to neutral.
 
 Bridge mode preserves lives by default for hit-counting diagnostics. Set
 `TH08_SOLVER_PRESERVE_LIVES=0` only for an explicitly diagnostic run that must
@@ -74,16 +78,16 @@ reach the retail game-over/result-screen replay-save path. The request flags
 attest the selected behavior; a preserved-life run is not itself an NMNB
 completion claim.
 
-## Version 3 wire format
+## Version 4 wire format
 
 Each packet is one complete little-endian `SOCK_SEQPACKET` record. Requests are
-80 bytes:
+104 bytes:
 
 | Offset | Type | Meaning |
 | --- | --- | --- |
 | `0` | `u32` | magic `0x51523854` (`T8RQ`) |
-| `4` | `u16` | protocol version `3` |
-| `6` | `u16` | request size `80` |
+| `4` | `u16` | protocol version `4` |
+| `6` | `u16` | request size `104` |
 | `8` | `u64` | completed-update source input epoch |
 | `16` | `u64` | exact target input epoch, always source + 1 |
 | `24` | `u16` | input active during the completed source update |
@@ -100,24 +104,36 @@ Each packet is one complete little-endian `SOCK_SEQPACKET` record. Requests are
 | `68` | `u32` | packed snapshot byte size, or zero |
 | `72` | `u32` | packed range-entry count, or zero |
 | `76` | `u32` | cumulative dropped snapshots, saturating |
+| `80` | `u32` | most recent runtime snapshot-pack time in microseconds, saturating |
+| `84` | `u32` | cumulative certified finite fallbacks, saturating |
+| `88` | `u32` | cumulative neutral uncertified fallbacks, saturating |
+| `92` | `u32` | current consecutive fallback count, saturating |
+| `96` | `u32` | maximum consecutive fallback count, saturating |
+| `100` | `u32` | cumulative rejected or context-revoked leases, saturating |
 
-Responses are 32 bytes:
+Responses are 40 bytes:
 
 | Offset | Type | Meaning |
 | --- | --- | --- |
 | `0` | `u32` | magic `0x53523854` (`T8RS`) |
-| `4` | `u16` | protocol version `3` |
-| `6` | `u16` | response size `32` |
+| `4` | `u16` | protocol version `4` |
+| `6` | `u16` | response size `40` |
 | `8` | `u64` | request source epoch |
 | `16` | `u64` | exact target epoch, always source + 1 |
 | `24` | `u16` | complete TH08 logical input mask |
-| `26` | `u16` | reserved, zero |
-| `28` | `u32` | reserved, zero |
+| `26` | `u16` | continuation frames, `0..8` |
+| `28` | `u64` | exact source snapshot generation, or zero without a lease |
+| `36` | `u32` | reserved, zero |
 
 Bomb (`0x0002`), unknown bits, up+down, left+right, wrong-sized packets,
-truncated packets, stale targets, and unrequested future targets are rejected.
-The runtime drains all available responses at an input boundary, discarding
-late packets and applying only the exact target.
+truncated packets, stale targets, unrequested future targets, and unleased
+snapshot generations are rejected. A continuation lease is installed only
+while its exact runtime-owned source slot is still leased. At use time the
+runtime additionally checks the input epoch and mask, gameplay/skip gates,
+manager and update clocks, stage/spell identity, player phase, Bomb-active
+state, dialogue/freeze gates, and time-scale bits. The runtime drains all
+available responses at an input boundary, discarding late packets and applying
+only the exact target.
 
 Snapshot releases are separate 24-byte `SOCK_SEQPACKET` records. They contain
 magic `0x4c523854` (`T8RL`), version/size, the exact `u64` generation, a `u16`
@@ -134,11 +150,14 @@ the solver rejects any mismatch before decoding.
 
 ## Verification boundary
 
-The native i386 build and fixed-layout verifier pass with protocol version 3,
+The native i386 build and fixed-layout verifier pass with protocol version 4,
 and `nm` exposes the 32-bit input-epoch deadline check. This proves
 compilation, layout, and the static lease/drop design. Focused process tests
 prove parser bounds, sparse local reconstruction, action-before-release wire
-ordering, and background scale binding. They do not prove 60 Hz deadline
-performance, route survival, replay determinism, or original-v1.00d playback.
+ordering, and background scale binding. It does not prove that a client-issued
+lease has sufficient local or global action authority. The current solver
+route therefore withholds continuation leases until its repeated action has a
+same-version second-layer global predecessor. These checks do not prove 60 Hz
+deadline performance, route survival, replay determinism, or original-v1.00d playback.
 Those require retained online telemetry and a Linux-generated `.rpy` replayed
 by the original executable under Wine.

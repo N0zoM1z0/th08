@@ -31,10 +31,11 @@ const uint32_t REQUEST_MAGIC = 0x51523854;  // "T8RQ" as little endian.
 const uint32_t RESPONSE_MAGIC = 0x53523854; // "T8RS" as little endian.
 const uint32_t SNAPSHOT_RELEASE_MAGIC = 0x4c523854; // "T8RL".
 const uint32_t SNAPSHOT_MAGIC = 0x4e533854;         // "T8SN".
-const uint16_t PROTOCOL_VERSION = 3;
-const size_t REQUEST_SIZE = 80;
-const size_t RESPONSE_SIZE = 32;
+const uint16_t PROTOCOL_VERSION = 4;
+const size_t REQUEST_SIZE = 104;
+const size_t RESPONSE_SIZE = 40;
 const size_t SNAPSHOT_RELEASE_SIZE = 24;
+const uint16_t MAXIMUM_CONTINUATION_FRAMES = 8;
 const uint16_t BOMB_MASK = 0x0002;
 const uint16_t KNOWN_INPUT_MASK = 0x7ffd;
 const uint16_t UP_MASK = 0x0010;
@@ -66,9 +67,16 @@ const uint32_t RANGE_KIND_ITEM = 4;
 
 const uint32_t ENGINE_FLAGS_ADDRESS = 0x0164d0b4;
 const uint32_t GAMEPLAY_ACTIVE_FLAG = 0x00000004;
+const uint32_t MANAGER_SKIP_UPDATE_FLAG = 0x00000400;
 const uint32_t UPDATE_SERIAL_ADDRESS = 0x0160f428;
+const uint32_t FRSCREEN_POINTER_ADDRESS = 0x0160f430;
+const uint32_t FRSCREEN_MSG_STATE_OFFSET = 0x0002181c;
+const uint32_t SCRIPTED_UPDATE_FREEZE_ADDRESS = 0x0160f534;
 const uint32_t ENEMY_MANAGER_FRAME_ADDRESS = 0x0164d30c;
+const uint32_t STAGE_ROUTE_INDEX_ADDRESS = 0x0164d2cc;
+const uint32_t TIME_SCALE_ADDRESS = 0x017ce8e0;
 const uint32_t PLAYER_BASE = 0x017d5ef8;
+const uint32_t PLAYER_BOMB_ACTIVE_OFFSET = 0x00000fdc;
 const uint32_t PLAYER_SNAPSHOT_SIZE = 0x000e2b00;
 const uint32_t PLAYER_PRIMARY_SHT_POINTER_OFFSET = 0x000e2a74;
 const uint32_t PLAYER_SECONDARY_SHT_POINTER_OFFSET = 0x000e2a78;
@@ -111,6 +119,9 @@ struct SnapshotSlot
 {
     SnapshotSlot()
         : data(NULL), generation(0), size(0), entryCount(0), leased(false)
+          , sourceEpoch(0), managerFrame(0), updateSerial(0), engineGate(0)
+          , stageRouteIndex(0), spellActive(false), spellId(0)
+          , playerPhase(0), timeScaleBits(0), contextSafe(false)
     {
     }
 
@@ -119,6 +130,43 @@ struct SnapshotSlot
     uint32_t size;
     uint32_t entryCount;
     bool leased;
+    uint64_t sourceEpoch;
+    uint32_t managerFrame;
+    uint32_t updateSerial;
+    uint32_t engineGate;
+    uint32_t stageRouteIndex;
+    bool spellActive;
+    uint32_t spellId;
+    unsigned char playerPhase;
+    uint32_t timeScaleBits;
+    bool contextSafe;
+};
+
+struct ContinuationLease
+{
+    ContinuationLease()
+        : valid(false), sourceEpoch(0), baseTargetEpoch(0), throughEpoch(0)
+          , snapshotGeneration(0), mask(0), managerFrame(0)
+          , updateSerial(0), engineGate(0), stageRouteIndex(0)
+          , spellActive(false), spellId(0), playerPhase(0)
+          , timeScaleBits(0)
+    {
+    }
+
+    bool valid;
+    uint64_t sourceEpoch;
+    uint64_t baseTargetEpoch;
+    uint64_t throughEpoch;
+    uint64_t snapshotGeneration;
+    uint16_t mask;
+    uint32_t managerFrame;
+    uint32_t updateSerial;
+    uint32_t engineGate;
+    uint32_t stageRouteIndex;
+    bool spellActive;
+    uint32_t spellId;
+    unsigned char playerPhase;
+    uint32_t timeScaleBits;
 };
 
 struct BridgeState
@@ -128,6 +176,9 @@ struct BridgeState
           client(-1), inputEpoch(0), lastPublishedInputEpoch(0),
           deadlineMisses(0), lateResponses(0), droppedRequests(0),
           droppedSnapshots(0), nextSnapshotGeneration(0),
+          snapshotPackUs(0), certifiedFallbacks(0),
+          uncertifiedFallbacks(0), consecutiveFallbacks(0),
+          maximumConsecutiveFallbacks(0), leaseRevocations(0),
           preserveLives(true)
     {
     }
@@ -144,7 +195,14 @@ struct BridgeState
     uint64_t droppedRequests;
     uint64_t droppedSnapshots;
     uint64_t nextSnapshotGeneration;
+    uint64_t snapshotPackUs;
+    uint64_t certifiedFallbacks;
+    uint64_t uncertifiedFallbacks;
+    uint64_t consecutiveFallbacks;
+    uint64_t maximumConsecutiveFallbacks;
+    uint64_t leaseRevocations;
     bool preserveLives;
+    ContinuationLease continuation;
     SnapshotSlot snapshots[SNAPSHOT_SLOT_COUNT];
 };
 
@@ -211,11 +269,34 @@ uint16_t LoadU16(uint32_t address)
     return value;
 }
 
+unsigned char LoadU8(uint32_t address)
+{
+    unsigned char value;
+    memcpy(&value, reinterpret_cast<const void *>(address), sizeof(value));
+    return value;
+}
+
 uint32_t LoadU32(uint32_t address)
 {
     uint32_t value;
     memcpy(&value, reinterpret_cast<const void *>(address), sizeof(value));
     return value;
+}
+
+int32_t LoadI32(uint32_t address)
+{
+    int32_t value;
+    memcpy(&value, reinterpret_cast<const void *>(address), sizeof(value));
+    return value;
+}
+
+bool DialogueBlocksManagerClock()
+{
+    const uint32_t frscreen = LoadU32(FRSCREEN_POINTER_ADDRESS);
+    if (frscreen == 0)
+        return false;
+    const int32_t state = LoadI32(frscreen + FRSCREEN_MSG_STATE_OFFSET);
+    return state >= 0 || state == -2;
 }
 
 bool AddressRangeLooksUsable(uint32_t address, uint32_t size)
@@ -500,6 +581,22 @@ bool BuildSnapshot(SnapshotSlot *slot, uint64_t generation, uint64_t sourceEpoch
     slot->generation = generation;
     slot->size = size;
     slot->entryCount = builder.entryCount;
+    slot->sourceEpoch = sourceEpoch;
+    slot->managerFrame = managerFrame;
+    slot->updateSerial = updateSerial;
+    slot->engineGate = LoadU32(ENGINE_FLAGS_ADDRESS) &
+        (GAMEPLAY_ACTIVE_FLAG | MANAGER_SKIP_UPDATE_FLAG);
+    slot->stageRouteIndex = LoadU32(STAGE_ROUTE_INDEX_ADDRESS);
+    slot->spellActive = (LoadU32(SPELL_STATE_ADDRESS) & 1U) != 0;
+    slot->spellId = LoadU32(SPELL_STATE_ADDRESS + 8);
+    slot->playerPhase = LoadU8(PLAYER_BASE);
+    slot->timeScaleBits = LoadU32(TIME_SCALE_ADDRESS);
+    slot->contextSafe =
+        slot->engineGate == GAMEPLAY_ACTIVE_FLAG &&
+        slot->playerPhase == 0 &&
+        LoadU32(PLAYER_BASE + PLAYER_BOMB_ACTIVE_OFFSET) == 0 &&
+        LoadU8(SCRIPTED_UPDATE_FREEZE_ADDRESS) == 0 &&
+        !DialogueBlocksManagerClock();
     return true;
 }
 
@@ -541,6 +638,7 @@ void CloseClient(const char *message)
         close(g_bridge.client);
         g_bridge.client = -1;
     }
+    g_bridge.continuation.valid = false;
     ReleaseAllSnapshots();
 }
 
@@ -663,10 +761,94 @@ bool InputMaskIsValid(uint16_t mask)
     return true;
 }
 
-uint16_t HeldFallbackMask()
+SnapshotSlot *FindLeasedSnapshot(uint64_t generation, uint64_t sourceEpoch)
 {
-    const uint16_t held = g_CurFrameInput;
-    return InputMaskIsValid(held) ? held : SAFE_NEUTRAL_MASK;
+    for (uint32_t index = 0; index < SNAPSHOT_SLOT_COUNT; ++index)
+    {
+        SnapshotSlot *slot = &g_bridge.snapshots[index];
+        if (slot->leased && slot->generation == generation &&
+            slot->sourceEpoch == sourceEpoch)
+            return slot;
+    }
+    return NULL;
+}
+
+void ClearContinuationLease()
+{
+    g_bridge.continuation.valid = false;
+}
+
+bool InstallContinuationLease(
+    uint64_t sourceEpoch,
+    uint64_t targetEpoch,
+    uint16_t mask,
+    uint16_t continuationFrames,
+    uint64_t snapshotGeneration)
+{
+    ClearContinuationLease();
+    if (continuationFrames == 0)
+        return snapshotGeneration == 0;
+    if (continuationFrames > MAXIMUM_CONTINUATION_FRAMES ||
+        snapshotGeneration == 0 ||
+        targetEpoch + continuationFrames < targetEpoch)
+        return false;
+    SnapshotSlot *slot = FindLeasedSnapshot(snapshotGeneration, sourceEpoch);
+    if (slot == NULL || !slot->contextSafe)
+        return false;
+    ContinuationLease &lease = g_bridge.continuation;
+    lease.valid = true;
+    lease.sourceEpoch = sourceEpoch;
+    lease.baseTargetEpoch = targetEpoch;
+    lease.throughEpoch = targetEpoch + continuationFrames;
+    lease.snapshotGeneration = snapshotGeneration;
+    lease.mask = mask;
+    lease.managerFrame = slot->managerFrame;
+    lease.updateSerial = slot->updateSerial;
+    lease.engineGate = slot->engineGate;
+    lease.stageRouteIndex = slot->stageRouteIndex;
+    lease.spellActive = slot->spellActive;
+    lease.spellId = slot->spellId;
+    lease.playerPhase = slot->playerPhase;
+    lease.timeScaleBits = slot->timeScaleBits;
+    return true;
+}
+
+bool ContinuationLeaseApplies(uint64_t inputEpoch)
+{
+    ContinuationLease &lease = g_bridge.continuation;
+    if (!lease.valid || inputEpoch <= lease.baseTargetEpoch ||
+        inputEpoch > lease.throughEpoch || g_CurFrameInput != lease.mask)
+        return false;
+    const uint64_t delta = inputEpoch - lease.baseTargetEpoch;
+    if (delta > 0xffffffffULL)
+        return false;
+    const uint32_t expectedManagerFrame =
+        lease.managerFrame + static_cast<uint32_t>(delta);
+    const uint32_t expectedUpdateSerial =
+        lease.updateSerial + static_cast<uint32_t>(delta);
+    const uint32_t engineGate = LoadU32(ENGINE_FLAGS_ADDRESS) &
+        (GAMEPLAY_ACTIVE_FLAG | MANAGER_SKIP_UPDATE_FLAG);
+    const bool spellActive = (LoadU32(SPELL_STATE_ADDRESS) & 1U) != 0;
+    const bool contextMatches =
+        engineGate == lease.engineGate &&
+        engineGate == GAMEPLAY_ACTIVE_FLAG &&
+        LoadU32(ENEMY_MANAGER_FRAME_ADDRESS) == expectedManagerFrame &&
+        LoadU32(UPDATE_SERIAL_ADDRESS) == expectedUpdateSerial &&
+        LoadU32(STAGE_ROUTE_INDEX_ADDRESS) == lease.stageRouteIndex &&
+        spellActive == lease.spellActive &&
+        (!spellActive || LoadU32(SPELL_STATE_ADDRESS + 8) == lease.spellId) &&
+        LoadU8(PLAYER_BASE) == lease.playerPhase &&
+        lease.playerPhase == 0 &&
+        LoadU32(PLAYER_BASE + PLAYER_BOMB_ACTIVE_OFFSET) == 0 &&
+        LoadU8(SCRIPTED_UPDATE_FREEZE_ADDRESS) == 0 &&
+        !DialogueBlocksManagerClock() &&
+        LoadU32(TIME_SCALE_ADDRESS) == lease.timeScaleBits;
+    if (!contextMatches)
+    {
+        lease.valid = false;
+        ++g_bridge.leaseRevocations;
+    }
+    return contextMatches;
 }
 
 bool DrainResponses(uint64_t inputEpoch, uint16_t *inputMask)
@@ -728,7 +910,7 @@ bool DrainResponses(uint64_t inputEpoch, uint16_t *inputMask)
             magic != RESPONSE_MAGIC ||
             GetU16(response, 4) != PROTOCOL_VERSION ||
             GetU16(response, 6) != RESPONSE_SIZE ||
-            GetU16(response, 26) != 0 || GetU32(response, 28) != 0)
+            GetU32(response, 36) != 0)
         {
             CloseClient("invalid response packet");
             break;
@@ -737,6 +919,8 @@ bool DrainResponses(uint64_t inputEpoch, uint16_t *inputMask)
         const uint64_t sourceEpoch = GetU64(response, 8);
         const uint64_t targetEpoch = GetU64(response, 16);
         const uint16_t mask = GetU16(response, 24);
+        const uint16_t continuationFrames = GetU16(response, 26);
+        const uint64_t snapshotGeneration = GetU64(response, 28);
         if (sourceEpoch + 1 != targetEpoch || !InputMaskIsValid(mask))
         {
             CloseClient("response contains an invalid epoch or input mask");
@@ -751,6 +935,15 @@ bool DrainResponses(uint64_t inputEpoch, uint16_t *inputMask)
         {
             CloseClient("response targets an unrequested future epoch");
             break;
+        }
+        if (!InstallContinuationLease(
+                sourceEpoch,
+                targetEpoch,
+                mask,
+                continuationFrames,
+                snapshotGeneration))
+        {
+            ++g_bridge.leaseRevocations;
         }
         *inputMask = mask;
         applied = true;
@@ -768,7 +961,7 @@ bool SolverBridgeReadInput(uint16_t *inputMask)
     if (!g_bridge.configured)
         return false;
 
-    *inputMask = HeldFallbackMask();
+    *inputMask = SAFE_NEUTRAL_MASK;
     ++g_bridge.inputEpoch;
     th08_solver_input_epoch = static_cast<uint32_t>(g_bridge.inputEpoch);
     if (g_bridge.failed)
@@ -781,8 +974,32 @@ bool SolverBridgeReadInput(uint16_t *inputMask)
     const bool applied = DrainResponses(g_bridge.inputEpoch, inputMask);
     if (g_bridge.client < 0)
         *inputMask = SAFE_NEUTRAL_MASK;
-    if (!applied && g_bridge.inputEpoch > 1)
+    if (applied)
+    {
+        g_bridge.consecutiveFallbacks = 0;
+    }
+    else if (g_bridge.inputEpoch > 1)
+    {
         ++g_bridge.deadlineMisses;
+        ++g_bridge.consecutiveFallbacks;
+        if (g_bridge.consecutiveFallbacks >
+            g_bridge.maximumConsecutiveFallbacks)
+        {
+            g_bridge.maximumConsecutiveFallbacks =
+                g_bridge.consecutiveFallbacks;
+        }
+        if (g_bridge.client >= 0 &&
+            ContinuationLeaseApplies(g_bridge.inputEpoch))
+        {
+            *inputMask = g_bridge.continuation.mask;
+            ++g_bridge.certifiedFallbacks;
+        }
+        else
+        {
+            *inputMask = SAFE_NEUTRAL_MASK;
+            ++g_bridge.uncertifiedFallbacks;
+        }
+    }
     return true;
 }
 
@@ -798,7 +1015,13 @@ void SolverBridgePublishSnapshot()
         return;
 
     uint16_t snapshotSlot = NO_SNAPSHOT_SLOT;
+    const uint64_t packStartedUs = MonotonicMicroseconds();
     const bool snapshotPresent = AcquireSnapshot(&snapshotSlot);
+    const uint64_t packFinishedUs = MonotonicMicroseconds();
+    g_bridge.snapshotPackUs =
+        packFinishedUs >= packStartedUs
+            ? packFinishedUs - packStartedUs
+            : 0;
     SnapshotSlot *snapshot =
         snapshotPresent ? &g_bridge.snapshots[snapshotSlot] : NULL;
 
@@ -834,6 +1057,15 @@ void SolverBridgePublishSnapshot()
         PutU32(request, 72, snapshot->entryCount);
     }
     PutU32(request, 76, SaturatingU32(g_bridge.droppedSnapshots));
+    PutU32(request, 80, SaturatingU32(g_bridge.snapshotPackUs));
+    PutU32(request, 84, SaturatingU32(g_bridge.certifiedFallbacks));
+    PutU32(request, 88, SaturatingU32(g_bridge.uncertifiedFallbacks));
+    PutU32(request, 92, SaturatingU32(g_bridge.consecutiveFallbacks));
+    PutU32(
+        request,
+        96,
+        SaturatingU32(g_bridge.maximumConsecutiveFallbacks));
+    PutU32(request, 100, SaturatingU32(g_bridge.leaseRevocations));
 
     g_bridge.lastPublishedInputEpoch = g_bridge.inputEpoch;
     const ssize_t written = send(
