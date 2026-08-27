@@ -3107,3 +3107,43 @@ Because these declarations live in a shared header, the required cold build of
 all 75 comparison objects was also replayed and passes **1,106 / 1,106 exact**;
 the normal VC7 image links.  Portable oracle: the complete i386 Linux container
 build links and its fixed-layout verifier passes.
+
+### Enemy attachment chains and ECL laser slots — 2026-08-27
+
+Scope: the doubly linked Enemy attachment chain at `Enemy + 0x04/+0x08`, the
+32 ECL-owned Laser pointers at `+0x3280`, their selected slot at `+0x3300`,
+and the primary/secondary ANM VM fields used by the same interpreter lane.
+
+Observed: ECL opcodes 90..92 splice children through the two attachment links;
+`FindLinkedChildTail`, `DetachFromParentChain`, `DetachEnemyChain`, and the EX
+handlers traverse or unlink the same pointers.  They are therefore named
+`previousInAttachmentChain` and `nextInAttachmentChain`, with asserted offsets.
+Opcodes 114/115 store newly spawned Lasers in the selected slot, opcode 116
+changes that slot, opcodes 117..121/167/170..172 operate on typed Laser members,
+and opcode 154 clears all 32 pointers.  This producer/consumer set establishes
+`laserSlots[32]` and `selectedLaserSlot`; assertions pin them to `+0x3280` and
+`+0x3300` without changing `sizeof(Enemy) == 0x53D0`.
+
+The same pass replaces byte views of `Enemy::vm`, its pending interrupt and
+rotation, and `secondaryVms[index]` with their existing typed owners.  The
+standalone RunEcl adapter also drops unused address-named API proposals and
+retains only the five services its body actually calls.  Two raw forms remain
+deliberately: opcode 169 keeps its layout-asserted position view because the
+direct member spelling changes the target VC7 x87 compare, and owned child ECL
+blocks remain byte-oriented because only offsets `+0x06`, `+0x08`, and
+`+0x230` are target-proven, not their full serialized layout.
+
+VC7 oracle: focused replay across EclRun, EclDependencies, EclExIns, and
+EnemyManager passes **74 / 74 exact**; the target-pinned parent-chain cleanup
+unit passes **1,336 / 1,336 bytes exact**.  Because `Enemy` is shared, the
+required single-job cold build of all 75 comparison objects passes **1,106 /
+1,106 exact** with zero failures.  The normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  No opcode, state transition, call ABI, mapping, accepted unit,
+or target-owned layout changed.
+
+The post-pass router reports **0 / 0 / 100 / 39** candidates including probes
+and modern source, or **0 / 0 / 99 / 39** for production.  The two opaque-range
+reductions are review routing only, not a whole-program completion percentage.

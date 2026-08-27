@@ -144,7 +144,7 @@ void EnemyManager::Initialize()
     enemy = reinterpret_cast<u8 *>(&this->spawnTemplate);
     memset(enemy, 0, 0x53D0);
     for (i = 0; i < 2; i++)
-        *reinterpret_cast<i16 *>(enemy + i * 0x2A4 + 0x4CA) = -1;
+        reinterpret_cast<Enemy *>(enemy)->secondaryVms[i].scriptIndex = -1;
     for (i = 0; i < 0x60; i++)
         reinterpret_cast<Enemy *>(enemy)->trailSamples[i].position.x = -999.0f;
 
@@ -187,7 +187,7 @@ void EnemyManager::Initialize()
     for (i = 0; i < 4; i++)
         reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[i] = -1;
     reinterpret_cast<Enemy *>(enemy)->timerCallbackThresholdFrames = -1;
-    *reinterpret_cast<i32 *>(enemy + 0x3300) = 0;
+    reinterpret_cast<Enemy *>(enemy)->selectedLaserSlot = 0;
     reinterpret_cast<Enemy *>(enemy)->damageFlashTimer = 0;
     reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_ROTATE_ANM_WITH_MOVEMENT;
     reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.speedLow = -0.15f;
@@ -252,7 +252,8 @@ void EnemyOverlay::DetachEnemyChain(i32 awardRewards)
         Float3 position;
         struct DropLocals { i32 itemCount; i32 i; } dropLocals;
         i32 itemType;
-        enemy = *reinterpret_cast<EnemyOverlay **>(this->bytes + 8);
+        enemy = reinterpret_cast<EnemyOverlay *>(
+            reinterpret_cast<Enemy *>(this)->nextInAttachmentChain);
         popupColor = j < 2 ? -1 : (j < 6 ? -48 : (j < 10 ? -80 : -128));
 
         while (enemy != NULL)
@@ -262,11 +263,12 @@ void EnemyOverlay::DetachEnemyChain(i32 awardRewards)
                 reinterpret_cast<Enemy *>(enemy)->positionOffset =
                     reinterpret_cast<Enemy *>(this)->position;
 
-            nextEnemy = *reinterpret_cast<EnemyOverlay **>(enemy->bytes + 8);
+            nextEnemy = reinterpret_cast<EnemyOverlay *>(
+                reinterpret_cast<Enemy *>(enemy)->nextInAttachmentChain);
             reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_SUPPRESS_DEATH_EFFECTS;
             reinterpret_cast<Enemy *>(enemy)->parentEnemy = NULL;
-            *reinterpret_cast<void **>(enemy->bytes + 8) = NULL;
-            *reinterpret_cast<void **>(enemy->bytes + 4) = NULL;
+            reinterpret_cast<Enemy *>(enemy)->nextInAttachmentChain = NULL;
+            reinterpret_cast<Enemy *>(enemy)->previousInAttachmentChain = NULL;
 
             if (awardRewards != 0)
             {
@@ -368,21 +370,21 @@ void Enemy::DetachFromParentChain()
 {
     if (reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(this)->HasAttachedEnemy())
     {
-        *reinterpret_cast<u8 **>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 4) + 8) =
-            *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 8);
-        if (*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 8) != NULL)
+        this->previousInAttachmentChain->nextInAttachmentChain =
+            this->nextInAttachmentChain;
+        if (this->nextInAttachmentChain != NULL)
         {
-            *reinterpret_cast<u8 **>(*reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 8) + 4) =
-                *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 4);
+            this->nextInAttachmentChain->previousInAttachmentChain =
+                this->previousInAttachmentChain;
         }
         this->parentEnemy = NULL;
-        *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 8) = NULL;
-        *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 4) = NULL;
+        this->nextInAttachmentChain = NULL;
+        this->previousInAttachmentChain = NULL;
     }
     else
     {
-        *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 4) = NULL;
-        *reinterpret_cast<u8 **>(reinterpret_cast<u8 *>(this) + 8) = NULL;
+        this->previousInAttachmentChain = NULL;
+        this->nextInAttachmentChain = NULL;
     }
 }
 

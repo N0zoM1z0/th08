@@ -186,36 +186,6 @@ struct Services
 
 };
 
-inline u8 *Bytes(EclOperands::EnemyOverlay *enemy)
-{
-    return reinterpret_cast<u8 *>(enemy);
-}
-
-inline u32 &U32At(EclOperands::EnemyOverlay *enemy, i32 offset)
-{
-    return *reinterpret_cast<u32 *>(Bytes(enemy) + offset);
-}
-
-inline i32 &I32At(EclOperands::EnemyOverlay *enemy, i32 offset)
-{
-    return *reinterpret_cast<i32 *>(Bytes(enemy) + offset);
-}
-
-inline i16 &I16At(EclOperands::EnemyOverlay *enemy, i32 offset)
-{
-    return *reinterpret_cast<i16 *>(Bytes(enemy) + offset);
-}
-
-inline f32 &F32At(EclOperands::EnemyOverlay *enemy, i32 offset)
-{
-    return *reinterpret_cast<f32 *>(Bytes(enemy) + offset);
-}
-
-inline void *&PointerAt(EclOperands::EnemyOverlay *enemy, i32 offset)
-{
-    return *reinterpret_cast<void **>(Bytes(enemy) + offset);
-}
-
 inline i32 &RawInt(EclRawInstruction *instruction, i32 index)
 {
     return *reinterpret_cast<i32 *>(instruction->operands + index * 4);
@@ -381,16 +351,6 @@ inline void BeginTimedMove(EclOperands::EnemyOverlay *enemy,
 #define TH08_ECL_RUN_LOW_YIELD(controlValue, instructionValue) \
     TH08_ECL_RUN_LOW_YIELD_SELECT(controlValue)(instructionValue)
 
-// The target RunEcl body performs these byte-overlay accesses directly.  VC7
-// /Ob0 emits even __forceinline helpers as separate COMDAT calls, so the
-// lexical fragment uses expression macros while the standalone proposal keeps
-// the readable helper functions above.
-#define Bytes(owner) (reinterpret_cast<u8 *>(owner))
-#define U32At(owner, offset) (*reinterpret_cast<u32 *>(Bytes(owner) + (offset)))
-#define I32At(owner, offset) (*reinterpret_cast<i32 *>(Bytes(owner) + (offset)))
-#define I16At(owner, offset) (*reinterpret_cast<i16 *>(Bytes(owner) + (offset)))
-#define F32At(owner, offset) (*reinterpret_cast<f32 *>(Bytes(owner) + (offset)))
-#define PointerAt(owner, offset) (*reinterpret_cast<void **>(Bytes(owner) + (offset)))
 #define RawInt(insn, index) \
     (*reinterpret_cast<i32 *>((insn)->operands + (index) * 4))
 #define RawFloat(insn, index) \
@@ -648,7 +608,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     case 54:
         g_EnemyManager.enemyAnm
             ->SetAndExecuteScriptIdx(
-            reinterpret_cast<AnmVm *>(Bytes(enemy) + 0xC),
+            &reinterpret_cast<Enemy *>(enemy)->vm,
             ReadInt(enemy, instruction, 0));
         reinterpret_cast<Enemy *>(enemy)->flags2 &= ~4U;
         break;
@@ -676,7 +636,7 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     case 58:
         g_EnemyManager.alternateEnemyAnm
             ->SetAndExecuteScriptIdx(
-            reinterpret_cast<AnmVm *>(Bytes(enemy) + 0xC),
+            &reinterpret_cast<Enemy *>(enemy)->vm,
             ReadInt(enemy, instruction, 0));
         reinterpret_cast<Enemy *>(enemy)->flags2 |= 4U;
         break;
@@ -705,14 +665,14 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
         {
             g_EnemyManager.enemyAnm
                 ->SetAndExecuteScriptIdx(
-                reinterpret_cast<AnmVm *>(Bytes(enemy) + 0xC),
+                &reinterpret_cast<Enemy *>(enemy)->vm,
                 reinterpret_cast<Enemy *>(enemy)->anmScripts.special);
         }
         else
         {
             g_EnemyManager.alternateEnemyAnm
                 ->SetAndExecuteScriptIdx(
-                reinterpret_cast<AnmVm *>(Bytes(enemy) + 0xC),
+                &reinterpret_cast<Enemy *>(enemy)->vm,
                 reinterpret_cast<Enemy *>(enemy)->anmScripts.special);
         }
         break;
@@ -1021,8 +981,10 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
 
             reinterpret_cast<Enemy *>(child)->parentEnemy =
                 reinterpret_cast<Enemy *>(enemy);
-            PointerAt(tail, 8) = child;
-            PointerAt(child, 4) = tail;
+            reinterpret_cast<Enemy *>(tail)->nextInAttachmentChain =
+                reinterpret_cast<Enemy *>(child);
+            reinterpret_cast<Enemy *>(child)->previousInAttachmentChain =
+                reinterpret_cast<Enemy *>(tail);
             ++reinterpret_cast<Enemy *>(enemy)->linkedChildCount;
         }
 
@@ -1081,8 +1043,10 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
 
             reinterpret_cast<Enemy *>(child)->parentEnemy =
                 reinterpret_cast<Enemy *>(enemy);
-            PointerAt(tail, 8) = child;
-            PointerAt(child, 4) = tail;
+            reinterpret_cast<Enemy *>(tail)->nextInAttachmentChain =
+                reinterpret_cast<Enemy *>(child);
+            reinterpret_cast<Enemy *>(child)->previousInAttachmentChain =
+                reinterpret_cast<Enemy *>(tail);
             ++reinterpret_cast<Enemy *>(enemy)->linkedChildCount;
         }
 
@@ -1154,8 +1118,10 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
                 inheritParentPosition = 1;
             reinterpret_cast<Enemy *>(child)->parentEnemy =
                 reinterpret_cast<Enemy *>(enemy);
-            PointerAt(tail, 8) = child;
-            PointerAt(child, 4) = tail;
+            reinterpret_cast<Enemy *>(tail)->nextInAttachmentChain =
+                reinterpret_cast<Enemy *>(child);
+            reinterpret_cast<Enemy *>(child)->previousInAttachmentChain =
+                reinterpret_cast<Enemy *>(tail);
             ++reinterpret_cast<Enemy *>(enemy)->linkedChildCount;
         }
 
@@ -1201,12 +1167,6 @@ low_dispatch_complete: ;
 #undef ReadInt
 #undef RawFloat
 #undef RawInt
-#undef PointerAt
-#undef F32At
-#undef I16At
-#undef I32At
-#undef U32At
-#undef Bytes
 #endif
 
 #endif // !TH08_ECL_RUN_DECLARATIONS_ONLY

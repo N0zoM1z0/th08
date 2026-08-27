@@ -482,9 +482,10 @@ void __fastcall SynchronizeOrbitingChildFormation(EclOperands::EnemyOverlay *ene
         return;
 
     count = 0;
-    while (*reinterpret_cast<EclOperands::EnemyOverlay **>(cursor->bytes + 0x8) != NULL)
+    while (reinterpret_cast<Enemy *>(cursor)->nextInAttachmentChain != NULL)
     {
-        cursor = *reinterpret_cast<EclOperands::EnemyOverlay **>(cursor->bytes + 0x8);
+        cursor = reinterpret_cast<EclOperands::EnemyOverlay *>(
+            reinterpret_cast<Enemy *>(cursor)->nextInAttachmentChain);
         if (ECL_EX_CONTEXT(cursor)->extraIntVariables[2] == groupId)
         {
             ECL_EX_CONTEXT(cursor)->extraIntVariables[1] = count;
@@ -567,10 +568,10 @@ void __fastcall UpdateNarrowRotatingLaserHitbox(EclOperands::EnemyOverlay *enemy
     if (reinterpret_cast<Enemy *>(enemy)->bossTimer.IsPeriodic(12))
     {
         g_Player.CalcLaserHitbox(&position, &innerSize, &origin,
-                                 *reinterpret_cast<f32 *>(enemy->bytes + 0x14), 1);
+                                 reinterpret_cast<Enemy *>(enemy)->vm.rotation.z, 1);
     }
     g_Player.CalcLaserHitbox(&position, &outerSize, &origin,
-                             *reinterpret_cast<f32 *>(enemy->bytes + 0x14), 0);
+                             reinterpret_cast<Enemy *>(enemy)->vm.rotation.z, 0);
 }
 
 
@@ -592,10 +593,10 @@ void __fastcall UpdateMediumRotatingLaserHitbox(EclOperands::EnemyOverlay *enemy
     if (reinterpret_cast<Enemy *>(enemy)->bossTimer.IsPeriodic(12))
     {
         g_Player.CalcLaserHitbox(&position, &innerSize, &origin,
-                                 *reinterpret_cast<f32 *>(enemy->bytes + 0x14), 1);
+                                 reinterpret_cast<Enemy *>(enemy)->vm.rotation.z, 1);
     }
     g_Player.CalcLaserHitbox(&position, &outerSize, &origin,
-                             *reinterpret_cast<f32 *>(enemy->bytes + 0x14), 0);
+                             reinterpret_cast<Enemy *>(enemy)->vm.rotation.z, 0);
 }
 
 
@@ -616,10 +617,10 @@ void __fastcall UpdateWideRotatingLaserHitbox(EclOperands::EnemyOverlay *enemy, 
     if (reinterpret_cast<Enemy *>(enemy)->bossTimer.IsPeriodic(12))
     {
         g_Player.CalcLaserHitbox(&position, &innerSize, &origin,
-                                 *reinterpret_cast<f32 *>(enemy->bytes + 0x14), 1);
+                                 reinterpret_cast<Enemy *>(enemy)->vm.rotation.z, 1);
     }
     g_Player.CalcLaserHitbox(&position, &outerSize, &origin,
-                             *reinterpret_cast<f32 *>(enemy->bytes + 0x14), 0);
+                             reinterpret_cast<Enemy *>(enemy)->vm.rotation.z, 0);
 }
 
 // FUNCTION: th08 0x424a20
@@ -669,9 +670,10 @@ void __fastcall EclExIns::ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, 
     if (ECL_EX_CONTEXT(enemy)->intVariables[1] == 0)
     {
         setCursor = enemy;
-        while (*reinterpret_cast<EclOperands::EnemyOverlay **>(setCursor->bytes + 0x8) != NULL)
+        while (reinterpret_cast<Enemy *>(setCursor)->nextInAttachmentChain != NULL)
         {
-            setCursor = *reinterpret_cast<EclOperands::EnemyOverlay **>(setCursor->bytes + 0x8);
+            setCursor = reinterpret_cast<EclOperands::EnemyOverlay *>(
+                reinterpret_cast<Enemy *>(setCursor)->nextInAttachmentChain);
             reinterpret_cast<Enemy *>(setCursor)->flags2 |= ENEMY_FLAG2_FORCE_PAUSE;
         }
         g_EclExBarrierRenderState.vm0.SetInterrupt(2);
@@ -680,9 +682,10 @@ void __fastcall EclExIns::ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, 
     else
     {
         clearCursor = enemy;
-        while (*reinterpret_cast<EclOperands::EnemyOverlay **>(clearCursor->bytes + 0x8) != NULL)
+        while (reinterpret_cast<Enemy *>(clearCursor)->nextInAttachmentChain != NULL)
         {
-            clearCursor = *reinterpret_cast<EclOperands::EnemyOverlay **>(clearCursor->bytes + 0x8);
+            clearCursor = reinterpret_cast<EclOperands::EnemyOverlay *>(
+                reinterpret_cast<Enemy *>(clearCursor)->nextInAttachmentChain);
             reinterpret_cast<Enemy *>(clearCursor)->flags2 &= ~ENEMY_FLAG2_FORCE_PAUSE;
         }
         g_EclExBarrierRenderState.vm0.SetInterrupt(1);
@@ -771,7 +774,8 @@ void __fastcall TriggerChildrenNearMarkedBullets(EclOperands::EnemyOverlay *enem
             continue;
         if ((bullet->transformFlags & BULLET_TRANSFORM_ECL_EX_TRIGGER_MARKER) != 0)
         {
-        child = *reinterpret_cast<EclOperands::EnemyOverlay **>(enemy->bytes + 0x8);
+        child = reinterpret_cast<EclOperands::EnemyOverlay *>(
+            reinterpret_cast<Enemy *>(enemy)->nextInAttachmentChain);
         while (child != NULL)
         {
             if (ECL_EX_CONTEXT(child)->extraIntVariables[2] == 0)
@@ -784,7 +788,8 @@ void __fastcall TriggerChildrenNearMarkedBullets(EclOperands::EnemyOverlay *enem
                         ECL_EX_CONTEXT(enemy)->intVariables[7];
                 }
             }
-            child = *reinterpret_cast<EclOperands::EnemyOverlay **>(child->bytes + 0x8);
+            child = reinterpret_cast<EclOperands::EnemyOverlay *>(
+                reinterpret_cast<Enemy *>(child)->nextInAttachmentChain);
         }
         }
     }

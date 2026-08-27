@@ -893,6 +893,21 @@ and entry sizes/offsets are asserted.  Focused `PbgArchive.obj` replay passes
 exact**, the normal VC7 image links, and the complete i386 Linux container build
 plus fixed-layout verifier passes.
 
+The Enemy/ECL attachment and laser-slot family is now typed end to end.
+`Enemy + 0x04/+0x08` expose the doubly linked attachment chain used by ECL
+insertion, traversal, and unlinking; `+0x3280` is a 32-entry Laser pointer
+array and `+0x3300` its selected slot.  ECL Laser controls and primary/secondary
+ANM VM users now use their asserted owners instead of raw byte views.  Opcode
+169's position view remains intentionally offset-shaped to preserve six
+target VC7 x87 bytes, and child ECL blocks remain byte-oriented beyond their
+three proven internal offsets.  Focused replay passes **74 / 74 exact**, the
+parent-chain cleanup packet passes **1,336 / 1,336 bytes exact**, and the
+required cold 75-object replay passes **1,106 / 1,106 exact**.  The normal VC7
+image links; the complete i386 Linux build and fixed-layout verifier pass.
+The semantic router now reports **0 / 0 / 100 / 39** including probes and
+modern source, or **0 / 0 / 99 / 39** for production; these are candidate
+counts, not semantic completion totals.
+
 Whole-executable TU/layout work below remains deferred, not invalidated.
 
 ## Active playable-port branch

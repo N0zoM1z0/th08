@@ -548,27 +548,24 @@ void __fastcall SetExtraAnmScript(
         {
             g_EnemyManager.alternateEnemyAnm
                 ->SetAndExecuteScriptIdx(
-                    reinterpret_cast<AnmVm *>(
-                        DEP_BYTES(enemy) + 0x2b0 +
-                        DEP_READ_INT(enemy, instruction, 0) * sizeof(AnmVm)),
+                    &reinterpret_cast<Enemy *>(enemy)
+                         ->secondaryVms[DEP_READ_INT(enemy, instruction, 0)],
                     DEP_READ_INT(enemy, instruction, 1));
         }
         else
         {
             g_EnemyManager.enemyAnm
                 ->SetAndExecuteScriptIdx(
-                    reinterpret_cast<AnmVm *>(
-                        DEP_BYTES(enemy) + 0x2b0 +
-                        DEP_READ_INT(enemy, instruction, 0) * sizeof(AnmVm)),
+                    &reinterpret_cast<Enemy *>(enemy)
+                         ->secondaryVms[DEP_READ_INT(enemy, instruction, 0)],
                     DEP_READ_INT(enemy, instruction, 1));
         }
     }
     else
     {
-        reinterpret_cast<AnmVm *>(
-            DEP_BYTES(enemy) + 0x2b0 +
-            DEP_READ_INT(enemy, instruction, 0) * sizeof(AnmVm))
-            ->scriptIndex = -1;
+        reinterpret_cast<Enemy *>(enemy)
+            ->secondaryVms[DEP_READ_INT(enemy, instruction, 0)]
+            .scriptIndex = -1;
     }
 }
 
@@ -582,8 +579,9 @@ EclOperands::EnemyOverlay *__fastcall FindLinkedChildTail0041EFC0(
     cursor = parent;
     if (reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(parent)->HasParentChain())
     {
-        while (*reinterpret_cast<EclOperands::EnemyOverlay **>(cursor->bytes + 8) != NULL)
-            cursor = *reinterpret_cast<EclOperands::EnemyOverlay **>(cursor->bytes + 8);
+        while (reinterpret_cast<Enemy *>(cursor)->nextInAttachmentChain != NULL)
+            cursor = reinterpret_cast<EclOperands::EnemyOverlay *>(
+                reinterpret_cast<Enemy *>(cursor)->nextInAttachmentChain);
     }
     return cursor;
 }

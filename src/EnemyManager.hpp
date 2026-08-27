@@ -202,7 +202,8 @@ struct Enemy
     void UpdateEffects();
 
     Enemy *nextInDrawGroup;
-    unknown_fields(0x4, 0x8);
+    Enemy *previousInAttachmentChain;
+    Enemy *nextInAttachmentChain;
     AnmVm vm;
     AnmVm secondaryVms[2];
     EnemyEclContext mainEclContextStorage;
@@ -254,7 +255,8 @@ struct Enemy
     i32 shootIntervalFrames;
     ZunTimer shootIntervalTimer;
     BulletSpawnDescriptor laserSpawnDescriptor;
-    unknown_fields(0x3280, 0x84);
+    Laser *laserSlots[32];
+    i32 selectedLaserSlot;
     i32 itemDropType;
     i32 pointItemDropCount;
     i32 powerOrPointItemDropCount;
@@ -315,6 +317,8 @@ struct Enemy
 };
 C_ASSERT(sizeof(Enemy) == 0x53d0);
 C_ASSERT(offsetof(Enemy, nextInDrawGroup) == 0x0);
+C_ASSERT(offsetof(Enemy, previousInAttachmentChain) == 0x4);
+C_ASSERT(offsetof(Enemy, nextInAttachmentChain) == 0x8);
 C_ASSERT(offsetof(Enemy, vm) == 0xc);
 C_ASSERT(offsetof(Enemy, mainEclContextStorage) == 0x7f8);
 C_ASSERT(offsetof(Enemy, mainEclCallStackStorage) == 0xa20);
@@ -363,6 +367,8 @@ C_ASSERT(offsetof(Enemy, pendingShotInstruction) == 0x3034);
 C_ASSERT(offsetof(Enemy, shootIntervalFrames) == 0x3060);
 C_ASSERT(offsetof(Enemy, shootIntervalTimer) == 0x3064);
 C_ASSERT(offsetof(Enemy, laserSpawnDescriptor) == 0x3070);
+C_ASSERT(offsetof(Enemy, laserSlots) == 0x3280);
+C_ASSERT(offsetof(Enemy, selectedLaserSlot) == 0x3300);
 C_ASSERT(offsetof(Enemy, itemDropType) == 0x3304);
 C_ASSERT(offsetof(Enemy, pointItemDropCount) == 0x3308);
 C_ASSERT(offsetof(Enemy, powerOrPointItemDropCount) == 0x330c);
