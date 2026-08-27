@@ -3518,3 +3518,38 @@ review-router categories; repository-wide anonymous/opaque routing moves from
 40/32 to 30/25.  Those counts are review aids, not completion percentages.  No
 transform opcode, branch, sound, spawn pattern, target byte, relocation,
 accepted-unit identity, or exact total changed.
+
+### Enemy residual layout-state classification — 2026-08-27
+
+Scope: the shared `Enemy` and `EnemyManager` layouts and their exact consumers
+in EnemyManager, EnemyManagerUpdate, EclRun, EclDependencies, EclExIns, Gui,
+and SpellCard.
+
+The unassigned low bit and upper 23 bits of `EnemyFlag2Bits` have no authored
+reader or writer beyond whole-word flag operations, so they remain neutral
+`reserved` bits rather than receiving speculative gameplay meanings.  The
+two words at `Enemy +0x2CEC` and `+0x332C`, and the manager dwords at
+`+0x9DCDC8` and `+0x9DCEF4`, likewise have no independent producer or consumer
+beyond aggregate clearing/copying and are now explicitly `unconsumed` storage.
+
+The ranges at `Enemy +0x2D32`, `+0x3315`, `+0x3331`, `+0x333E`, and `+0x534D`
+are structural alignment before the following position, timer, ANM-script,
+movement-bound, and trail-length fields.  They remain explicit byte arrays
+because the target-visible Enemy aggregate-copy source shape depends on those
+bytes being members.  Offset assertions pin every classified range and all
+following semantic fields; no width, bit position, aggregate extent, or copy
+boundary changed.
+
+VC7 oracle: focused replay across the seven affected comparison objects passes
+**171 / 171 exact**.  Because `EnemyManager.hpp` is shared through the PCH, the
+required single-job non-reuse cold build of all 75 comparison objects passes
+**1,106 / 1,106 exact** with zero failures, and the normal VC7 production image
+links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  `EnemyManager.hpp` now has zero candidates in all four
+review-router categories; repository-wide anonymous/opaque routing moves from
+30/25 to 29/16.  Those counts remain review aids, not completion percentages.
+No enemy behavior, ECL dispatch, target address, relocation, accepted-unit
+identity, or exact total changed.

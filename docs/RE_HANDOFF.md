@@ -1841,3 +1841,16 @@ plus **1 / 1** for EclRun; the cold aggregate passes **1,106 / 1,106 exact**;
 the normal VC7 image and complete Linux i386 image link; and the Linux fixed-
 layout verifier passes.  Continue with Enemy/ANM residual storage without
 weakening the sole Replay near-match blocker.
+
+The Enemy residual checkpoint classifies the remaining flag bits, neutral
+words/dwords, and structural alignment ranges in the shared `Enemy` and
+`EnemyManager` layouts without inventing gameplay meanings.  Explicit
+alignment arrays are retained where removing them would alter the
+target-visible Enemy aggregate-copy source shape, and every classified range
+is offset-asserted.  Focused replay across EnemyManager, EnemyManagerUpdate,
+EclRun, EclDependencies, EclExIns, Gui, and SpellCard passes **171 / 171
+exact**; the required cold aggregate passes **1,106 / 1,106 exact**; the normal
+VC7 image and complete Linux i386 image link; and the Linux fixed-layout
+verifier passes.  `EnemyManager.hpp` now has no semantic-router candidates.
+Continue with the ANM residual family while preserving the sole Replay
+near-match as a separately documented Oracle limitation.
