@@ -51,7 +51,7 @@ ZunResult SoundPlayer::InitializeDSound(HWND gameWindow)
 
     for (i32 i = 0; i < NUM_SOUND_BUFFERS; i++)
     {
-        this->unk408[i] = -1;
+        this->unconsumedMetadataBySound[i] = -1;
     }
     for (i32 i = 0; i < SFX_QUEUE_LENGTH; i++)
     {
@@ -486,10 +486,10 @@ ZunResult SoundPlayer::InitSoundBuffers()
 
 void SoundPlayer::PlaySoundByIdx(SoundIdx idx, i32 pan)
 {
-    i32 unk;
+    i32 unconsumedMetadata;
     i32 i;
 
-    unk = g_SoundBufferIdxVol[idx].unk;
+    unconsumedMetadata = g_SoundBufferIdxVol[idx].unconsumedMetadata;
     for (i = 0; i < SFX_QUEUE_LENGTH; i++)
     {
         if (this->soundQueue[i] < 0)
@@ -508,18 +508,18 @@ void SoundPlayer::PlaySoundByIdx(SoundIdx idx, i32 pan)
         return;
 
     this->soundQueue[i] = idx;
-    this->unk408[idx] = unk;
+    this->unconsumedMetadataBySound[idx] = unconsumedMetadata;
     this->soundQueuePanData[i][0] = pan;
     this->soundQueueRequestCounts[i]++;
 }
 
 void SoundPlayer::PlaySoundPositionedByIdx(SoundIdx idx, f32 pan)
 {
-    i32 unk;
+    i32 unconsumedMetadata;
     i32 panAsInt;
     i32 i;
 
-    unk = g_SoundBufferIdxVol[idx].unk;
+    unconsumedMetadata = g_SoundBufferIdxVol[idx].unconsumedMetadata;
     panAsInt = ((pan - 192) * 1000) / 192;
 
     for (i = 0; i < SFX_QUEUE_LENGTH; i++)
@@ -540,7 +540,7 @@ void SoundPlayer::PlaySoundPositionedByIdx(SoundIdx idx, f32 pan)
         return;
 
     this->soundQueue[i] = idx;
-    this->unk408[idx] = unk;
+    this->unconsumedMetadataBySound[idx] = unconsumedMetadata;
     this->soundQueuePanData[i][0] = panAsInt;
     this->soundQueueRequestCounts[i]++;
 }
@@ -940,7 +940,7 @@ SoundPlayer::SoundPlayer()
     ZeroMemory(this, sizeof(SoundPlayer));
     for (i32 i = 0; i < NUM_SOUND_BUFFERS; i++)
     {
-        this->unk408[i] = -1;
+        this->unconsumedMetadataBySound[i] = -1;
     }
 }
 

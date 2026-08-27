@@ -3337,3 +3337,46 @@ plus 5 opaque ranges to 1 alignment identifier plus 3 evidence-limited opaque
 ranges; that is a review-routing delta, not a semantic completion percentage.
 No replay byte, pointer fixup, stream extent, checksum/obfuscation operation,
 constructor call, field offset, or accepted unit changed.
+
+### Presentation and audio residual-state classification — 2026-08-27
+
+Scope: ANM frame diagnostics and serialized records, Ascii gauge VMs, the
+DirectSound queue metadata lane, and the MIDI output object's remaining
+constructor/reset-only fields.
+
+`AnmManager + 0x0C` is now `scriptsStartedThisFrame`: every successful
+`AnmLoaded::SetAndExecuteScript` increments it and `ResetFrameDebugInfo` clears
+it alongside the established execution/render/flush counters.  The ANM VM at
+`+0x1C64` has no observed consumer and is therefore `unconsumedVm1C64` rather
+than being assigned a speculative rendering role.  Unconsumed fields in the
+on-disk `AnmRawEntry`/`AnmTextureHeader` records and `AnmLoadedSprite` likewise
+retain neutral offset-bearing names, with their sizes and offsets asserted.
+
+Ascii script 9 is loaded into `auxiliaryGaugeVm @ +0x1520` and executed every
+frame.  That establishes its ownership by the gauge group, but not which
+specific artwork it represents; the name deliberately stops at the strongest
+available evidence.  The dword at `+0x829C` is only zeroed by `Reset`, so it is
+classified as `resetOnlyState829C`.  Sound-buffer table metadata is copied to
+a per-sound array when a queue request is accepted but has no authored reader,
+and the startup BGM attenuation curve is written without a current consumer.
+Both lanes are now explicitly `unconsumed` instead of pretending their values
+affect the reconstructed playback path.
+
+The MIDI byte array at `+0x144` is structurally per-channel, while the remaining
+dwords have no evidence-backed purpose.  The field at `+0x2DC` is cleared by
+construction, track loading, and fade-out setup, which supports only the
+`resetOnlyFadeState2DC` protocol.  No MIDI event, channel meaning, or fade
+calculation is inferred from those writes.
+
+VC7 oracle: focused replay of AnmManager, AsciiManager, AsciiManagerGauge,
+SoundPlayer, Midi, and Supervisor passes **259 / 259 exact**.  Because these
+changes touch shared layouts, the required single-job cold build of all 75
+comparison objects passes **1,106 / 1,106 exact** with zero failures, and the
+normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and fixed target-owned layout
+symbols.  The heuristic debt router now reports zero raw-member accesses and
+zero absolute-address field views repository-wide; its remaining unknown and
+opaque entries are evidence-routing leads, not failed exact units or a semantic
+completion percentage.

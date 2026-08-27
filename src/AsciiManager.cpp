@@ -239,7 +239,7 @@ void AsciiManager::Reset()
     this->nextScorePopupIndex = 0;
     this->nextPlayerPointPopupIndex = 0;
     /* nextTimePopupIndex is not set to 0?  */
-    this->unk0x829c = 0;
+    this->resetOnlyState829C = 0;
     this->color.d3dColor = 0xffffffff;
     this->scaleX = 1.0f;
     this->scaleY = 1.0f;
@@ -261,7 +261,7 @@ void AsciiManager::InitializeVms()
     this->asciiAnm->SetAndExecuteScriptIdx(&this->youkaiGaugeHumanIcon, 6);
     this->asciiAnm->SetAndExecuteScriptIdx(&this->youkaiGaugeCursor, 8);
     this->asciiAnm->SetAndExecuteScriptIdx(&this->percentageText, 4);
-    this->asciiAnm->SetAndExecuteScriptIdx(&this->unk_1520, 9);
+    this->asciiAnm->SetAndExecuteScriptIdx(&this->auxiliaryGaugeVm, 9);
     this->asciiAnm->SetAndExecuteScriptIdx(&this->bossMarkers[0], 10);
     this->asciiAnm->SetAndExecuteScriptIdx(&this->bossMarkers[1], 10);
     this->asciiAnm->SetAndExecuteScriptIdx(&this->bossMarkers[2], 10);

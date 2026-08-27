@@ -779,11 +779,12 @@ void Supervisor::StartupThread(Supervisor *s)
         bgmVolume *= bgmVolume;
         bgmVolume = (1.0f - bgmVolume);
 
-        g_SoundPlayer.unkVolume = ((int)(SOUNDPLAYER_VOLUME_RANGE * bgmVolume)) - SOUNDPLAYER_VOLUME_RANGE;
+        g_SoundPlayer.unconsumedBgmAttenuation =
+            ((int)(SOUNDPLAYER_VOLUME_RANGE * bgmVolume)) - SOUNDPLAYER_VOLUME_RANGE;
     }
     else
     {
-        g_SoundPlayer.unkVolume = SOUNDPLAYER_SILENT_VOLUME;
+        g_SoundPlayer.unconsumedBgmAttenuation = SOUNDPLAYER_SILENT_VOLUME;
     }
 
     if (g_SoundPlayer.bgmFileBaseOffset == 0)

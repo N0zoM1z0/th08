@@ -74,7 +74,7 @@ struct AsciiManagerPopup
     Float2 scale;
     bool inUse;
     BYTE characterCount;
-    u32 unk0x34;
+    u32 unknownDword34;
 };
 
 C_ASSERT(sizeof(AsciiManagerPopup) == 0x38);
@@ -135,7 +135,7 @@ struct AsciiManager
     AnmVm youkaiGaugeYoukaiIcon;
     AnmVm youkaiGaugeCursor;
     AnmVm percentageText;
-    AnmVm unk_1520;
+    AnmVm auxiliaryGaugeVm;
 
     AnmVm bossMarkers[4];
     i32 bossMarkerStates[4];
@@ -160,7 +160,7 @@ struct AsciiManager
     i32 nextPlayerPointPopupIndex;
     i32 nextTimePopupIndex;
 
-    ZunBool unk0x829c;
+    ZunBool resetOnlyState829C;
 
     PauseMenu pauseMenu;
     RetryMenu retryMenu;
@@ -177,8 +177,10 @@ struct AsciiManager
 };
 
 C_ASSERT(sizeof(AsciiManager) == 0x171b0);
+C_ASSERT(offsetof(AsciiManager, auxiliaryGaugeVm) == 0x1520);
 C_ASSERT(offsetof(AsciiManager, bossMarkerStates) == 0x2254);
 C_ASSERT(offsetof(AsciiManager, frameTimer) == 0x8284);
+C_ASSERT(offsetof(AsciiManager, resetOnlyState829C) == 0x829C);
 C_ASSERT(offsetof(AsciiManager, nightBlindnessRadius) == 0x16f04);
 C_ASSERT(offsetof(AsciiManager, nightBlindnessAlpha) == 0x16f08);
 C_ASSERT(offsetof(AsciiManager, nightBlindnessVm) == 0x16f0c);

@@ -20,7 +20,7 @@ void AsciiManager::UpdateVms()
     g_AnmManager->ExecuteScript(&this->bossMarkers[1]);
     g_AnmManager->ExecuteScript(&this->bossMarkers[2]);
     g_AnmManager->ExecuteScript(&this->bossMarkers[3]);
-    g_AnmManager->ExecuteScript(&this->unk_1520);
+    g_AnmManager->ExecuteScript(&this->auxiliaryGaugeVm);
 }
 
 // FUNCTION: th08 0x4070b0

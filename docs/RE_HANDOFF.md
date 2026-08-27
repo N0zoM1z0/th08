@@ -1794,3 +1794,20 @@ Focused Replay replay passes **18 / 18 exact**, the required non-reuse cold
 aggregate passes **1,106 / 1,106 exact**, the normal VC7 image links, and the
 complete i386 Linux build plus fixed-layout verifier pass.  This is a bounded
 semantic checkpoint, not a whole-program semantic-completion claim.
+
+PR #2 merged the first semantic reconstruction phase into `main` as merge
+commit `4fb955225ff9621d2eaa5ff2113a709ff5576407`; the continuing
+`semantic/typed-reconstruction` branch was then fast-forwarded from that exact
+mainline state.  The next checkpoint classifies residual ANM/Ascii/Sound/MIDI
+state without inventing consumers.  ANM `+0x0C` is proven to count scripts
+started during the frame, Ascii script 9 belongs to an auxiliary gauge VM, and
+several Sound/MIDI fields are now explicitly marked unconsumed or reset-only
+where the authored corpus supplies no stronger behavior.  Serialized ANM
+unknowns retain neutral offset-bearing names and layout assertions.
+
+Focused replay across the six affected production objects passes **259 / 259
+exact**.  The required non-reuse cold aggregate passes **1,106 / 1,106 exact**,
+the normal VC7 image links, and the complete i386 Linux container build plus
+fixed-layout verifier pass.  Continue treating the remaining heuristic
+anonymous/opaque list as evidence-routing work: it is neither an exactness
+regression nor proof that every residual byte has a recoverable semantic name.
