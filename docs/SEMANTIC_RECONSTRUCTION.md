@@ -3214,3 +3214,36 @@ Portable oracle: the complete i386 Linux container build links, and its
 fixed-layout verifier passes with both new owner assertions.  No item state,
 score/gauge update, rendering flag, timer operation, constructor value, or
 accepted unit changed.
+
+### Enemy chain helper ownership — 2026-08-27
+
+Scope: `HasParentChain @ 0x0041F000`, `HasAttachedEnemy @ 0x0041FD20`,
+`CountParentChain @ 0x0041FD40`, their Enemy/ECL/GUI callers, and the integer
+and float ECL operand resolvers.
+
+The three functions had been modeled as methods of a one-byte
+`EclOperands::TargetEnemyHelpersOverlay`, even though every observed `this`
+value is an `Enemy *` and their complete bodies read only the asserted Enemy
+attachment fields.  They now belong to `Enemy` and traverse
+`parentEnemy`/`nextInAttachmentChain` directly.  Their historical placement in
+the EclManager target neighborhood is translation-unit evidence, not semantic
+class ownership.  The qualified identities in every mapping and exact ledger
+were updated without changing an address, size, status, or accepted count.
+
+The same pass removes unused raw resolver macros and its private vector shell.
+ECL player-position operands now use `Player::position.x/y/z`, and operand
+`0x2770` follows the typed Enemy attachment chain.  `EclOperands::EnemyOverlay`
+remains only as the ABI adapter required by the target resolver and detach-chain
+symbols; its implementations immediately recover the asserted Enemy owner.
+
+VC7 oracle: focused replay of EclManager, both operand resolvers,
+EclDependencies, GUI, EnemyManager, and EnemyManagerUpdate passes **127 / 127
+exact**.  The three moved helpers pass **53 / 53**, **28 / 28**, and **70 / 70
+bytes exact**, while parent-chain cleanup remains **1,336 / 1,336**.  The
+required single-job cold build of all 75 comparison objects passes **1,106 /
+1,106 exact**, and the normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and fixed target-owned layout
+symbols.  No attachment traversal, branch, ECL operand value, call target,
+calling convention, target extent, or accepted unit changed.

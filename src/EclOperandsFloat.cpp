@@ -13,28 +13,11 @@ namespace th08
 namespace EclOperands
 {
 
-// These private overlays expose only the data and calls observed in the
-// hash-attested TH08 1.00d target.  Their owning lanes can replace the
-// address-based names once the complete Enemy/Player/Spellcard layouts land.
-struct TargetVector3
-{
-    f32 x;
-    f32 y;
-    f32 z;
-
-    TargetVector3 operator-(const TargetVector3 &other) const;
-    f32 Length() const;
-};
-
 // Observed: this target cluster was compiled with inlining disabled.  Even
 // __forceinline helpers become out-of-line COMDAT calls under the probe
-// profile, whereas both target bodies access the private layouts directly.
-// Keep the overlay private while retaining that direct expression shape.
+// profile, whereas both target bodies access the layouts directly.
 #define ECL_CONTEXT(owner) (reinterpret_cast<Enemy *>(owner)->activeEclContext)
-#define ENEMY_INT(owner, offset) (*(i32 *)((owner)->bytes + (offset)))
-#define ENEMY_FLOAT(owner, offset) (*(f32 *)((owner)->bytes + (offset)))
-#define ENEMY_VECTOR(owner, offset) (*(TargetVector3 *)((owner)->bytes + (offset)))
-#define ENEMY_HELPERS(owner) ((TargetEnemyHelpersOverlay *)(owner))
+#define ENEMY_OWNER(owner) (reinterpret_cast<Enemy *>(owner))
 
 // Target globals not yet represented by an owner-lane type are deliberately
 // named by address.  The addresses below are direct operands in 0x00420120.
@@ -115,9 +98,9 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
     case 0x273A: return reinterpret_cast<Enemy *>(this)->worldPosition.x;
     case 0x273B: return reinterpret_cast<Enemy *>(this)->worldPosition.y;
     case 0x273C: return reinterpret_cast<Enemy *>(this)->worldPosition.z;
-    case 0x273D: return (*reinterpret_cast<TargetVector3 *>(&g_Player.position)).x;
-    case 0x273E: return (*reinterpret_cast<TargetVector3 *>(&g_Player.position)).y;
-    case 0x273F: return (*reinterpret_cast<TargetVector3 *>(&g_Player.position)).z;
+    case 0x273D: return g_Player.position.x;
+    case 0x273E: return g_Player.position.y;
+    case 0x273F: return g_Player.position.z;
     case 0x276E: return ECL_CONTEXT(this)->extraFloatVariables[0];
     case 0x276F: return ECL_CONTEXT(this)->extraFloatVariables[1];
     case 0x275A: return reinterpret_cast<Enemy *>(this)->movementInterpolationOrigin.x;
@@ -146,11 +129,10 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
     case 0x2763: return (f32)reinterpret_cast<Enemy *>(this)->lastDamage;
 
     case 0x2770:
-        return (f32)(ENEMY_HELPERS(this)->HasParentChain()
-                         ? ENEMY_HELPERS(this)->CountParentChain()
-                         : ENEMY_HELPERS(this)->HasAttachedEnemy()
-                               ? reinterpret_cast<TargetEnemyHelpersOverlay *>(
-                                     reinterpret_cast<Enemy *>(this)->parentEnemy)->CountParentChain()
+        return (f32)(ENEMY_OWNER(this)->HasParentChain()
+                         ? ENEMY_OWNER(this)->CountParentChain()
+                         : ENEMY_OWNER(this)->HasAttachedEnemy()
+                               ? ENEMY_OWNER(this)->parentEnemy->CountParentChain()
                                : 0);
 
     case 0x2742:
@@ -203,9 +185,9 @@ f32 *__fastcall ResolveFloatLValue(EnemyOverlay *enemy, f32 *operand, u16 flags,
     case 0x273A: return &reinterpret_cast<Enemy *>(enemy)->position.x;
     case 0x273B: return &reinterpret_cast<Enemy *>(enemy)->position.y;
     case 0x273C: return &reinterpret_cast<Enemy *>(enemy)->position.z;
-    case 0x273D: return &(*reinterpret_cast<TargetVector3 *>(&g_Player.position)).x;
-    case 0x273E: return &(*reinterpret_cast<TargetVector3 *>(&g_Player.position)).y;
-    case 0x273F: return &(*reinterpret_cast<TargetVector3 *>(&g_Player.position)).z;
+    case 0x273D: return &g_Player.position.x;
+    case 0x273E: return &g_Player.position.y;
+    case 0x273F: return &g_Player.position.z;
     case 0x276E: return &ECL_CONTEXT(enemy)->extraFloatVariables[0];
     case 0x276F: return &ECL_CONTEXT(enemy)->extraFloatVariables[1];
     case 0x2751: return &EclRunLowProposal::g_EclCallParameters.floats[0];
@@ -230,6 +212,9 @@ f32 *__fastcall ResolveFloatLValue(EnemyOverlay *enemy, f32 *operand, u16 flags,
     default: return operand;
     }
 }
+
+#undef ENEMY_OWNER
+#undef ECL_CONTEXT
 
 } // namespace EclOperands
 } // namespace th08

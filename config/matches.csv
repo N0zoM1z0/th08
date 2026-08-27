@@ -559,10 +559,10 @@ address,name,size,status,match_percent,unit,evidence
 0x004178A0,th08::Spellcard::IsActive,19,matching,100.00,spellcard-is-active,python3 scripts/compare-function.py spellcard-is-active --json
 0x00405260,th08::Spellcard::WasCaptured,22,matching,100.00,spellcard-was-captured,python3 scripts/compare-function.py spellcard-was-captured --json
 0x0041FDD0,th08::Spellcard::GetTimerFrames,25,matching,100.00,spellcard-get-timer-frames,python3 scripts/compare-function.py spellcard-get-timer-frames --json
-0x0041FD20,th08::EclOperands::TargetEnemyHelpersOverlay::HasAttachedEnemy,28,matching,100.00,ecl-enemy-has-attached-enemy,python3 scripts/compare-function.py ecl-enemy-has-attached-enemy --json
+0x0041FD20,th08::Enemy::HasAttachedEnemy,28,matching,100.00,ecl-enemy-has-attached-enemy,python3 scripts/compare-function.py ecl-enemy-has-attached-enemy --json
 0x0041FDF0,th08::ZunTimer::operator+=,25,matching,100.00,zun-timer-plus-equals,python3 scripts/compare-function.py zun-timer-plus-equals --json
-0x0041F000,th08::EclOperands::TargetEnemyHelpersOverlay::HasParentChain,53,matching,100.00,ecl-enemy-has-parent-chain,python3 scripts/compare-function.py ecl-enemy-has-parent-chain --json
-0x0041FD40,th08::EclOperands::TargetEnemyHelpersOverlay::CountParentChain,70,matching,100.00,ecl-enemy-count-parent-chain,python3 scripts/compare-function.py ecl-enemy-count-parent-chain --json
+0x0041F000,th08::Enemy::HasParentChain,53,matching,100.00,ecl-enemy-has-parent-chain,python3 scripts/compare-function.py ecl-enemy-has-parent-chain --json
+0x0041FD40,th08::Enemy::CountParentChain,70,matching,100.00,ecl-enemy-count-parent-chain,python3 scripts/compare-function.py ecl-enemy-count-parent-chain --json
 0x0041FD90,th08::Spellcard::IsCaptureValid,59,matching,100.00,spellcard-is-capture-valid,python3 scripts/compare-function.py spellcard-is-capture-valid --json
 0x00418110,th08::ZunTimer::operator--(int),23,matching,100.00,zun-timer-post-decrement,python3 scripts/compare-function.py zun-timer-post-decrement --json
 0x00414540,th08::Spellcard::IsLastSpell,68,matching,100.00,spellcard-is-last-spell,python3 scripts/compare-function.py spellcard-is-last-spell --json

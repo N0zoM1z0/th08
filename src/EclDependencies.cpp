@@ -577,7 +577,7 @@ EclOperands::EnemyOverlay *__fastcall FindLinkedChildTail0041EFC0(
     EclOperands::EnemyOverlay *cursor;
 
     cursor = parent;
-    if (reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(parent)->HasParentChain())
+    if (reinterpret_cast<Enemy *>(parent)->HasParentChain())
     {
         while (reinterpret_cast<Enemy *>(cursor)->nextInAttachmentChain != NULL)
             cursor = reinterpret_cast<EclOperands::EnemyOverlay *>(

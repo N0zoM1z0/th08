@@ -81,17 +81,11 @@ ZunResult EclManager::CallEclSub(EnemyEclContext *context, i16 subId)
     return ZUN_SUCCESS;
 }
 
-namespace EclOperands
-{
-
 // FUNCTION: th08 0x0041F000
-i32 TargetEnemyHelpersOverlay::HasParentChain()
+i32 Enemy::HasParentChain()
 {
-    return reinterpret_cast<Enemy *>(this)->parentEnemy == 0 &&
-           *(void **)((u8 *)this + 8) != 0;
+    return this->parentEnemy == NULL && this->nextInAttachmentChain != NULL;
 }
-
-} // namespace EclOperands
 
 // FUNCTION: th08 0x0041F040
 void Spellcard::SetStoredVector(f32 x, f32 y, f32 z)
@@ -123,32 +117,27 @@ void Spellcard::SetBonusUpdatesDisabled(i32 value)
     reinterpret_cast<SpellcardEclFlagBits *>(&this->flags)->bonusUpdatesDisabled = value;
 }
 
-namespace EclOperands
-{
-
 // FUNCTION: th08 0x0041FD20
-i32 TargetEnemyHelpersOverlay::HasAttachedEnemy()
+i32 Enemy::HasAttachedEnemy()
 {
-    return reinterpret_cast<Enemy *>(this)->parentEnemy != 0;
+    return this->parentEnemy != NULL;
 }
 
 // FUNCTION: th08 0x0041FD40
-i32 TargetEnemyHelpersOverlay::CountParentChain()
+i32 Enemy::CountParentChain()
 {
-    TargetEnemyHelpersOverlay *cursor = this;
+    Enemy *cursor = this;
     i32 count = 0;
     if (this->HasParentChain())
     {
-        while (*(void **)((u8 *)cursor + 8) != 0)
+        while (cursor->nextInAttachmentChain != NULL)
         {
-            cursor = *(TargetEnemyHelpersOverlay **)((u8 *)cursor + 8);
+            cursor = cursor->nextInAttachmentChain;
             count++;
         }
     }
     return count;
 }
-
-} // namespace EclOperands
 
 // FUNCTION: th08 0x0041FD90
 i32 Spellcard::IsCaptureValid()

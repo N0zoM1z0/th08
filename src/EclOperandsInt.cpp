@@ -13,23 +13,10 @@ namespace th08
 namespace EclOperands
 {
 
-// These private overlays expose only behavior and offsets observed in the
-// hash-attested TH08 1.00d target. Their owning subsystem lanes can replace
-// the address-based names once the corresponding public layouts are proven.
-
-
-
-
-// This target cluster was built with inlining disabled.  Helper functions,
-// including __forceinline helpers, therefore become out-of-line COMDAT calls
-// and change both owned function bodies.  The original functions access their
-// private Enemy/ECL layouts directly; these expression macros retain that
-// target-observed shape without introducing a public Enemy ABI.
-#define INT_FIELD(offset) (*(i32 *)(enemy->bytes + (offset)))
-#define FLOAT_FIELD(offset) (*(f32 *)(enemy->bytes + (offset)))
-#define VECTOR_FIELD(offset) (*(Vector3 *)(enemy->bytes + (offset)))
+// This target cluster was built with inlining disabled.  Keep direct typed
+// expressions so helper calls and member access retain the retail shape.
 #define ECL_CONTEXT (reinterpret_cast<Enemy *>(enemy)->activeEclContext)
-#define ENEMY_HELPERS ((TargetEnemyHelpersOverlay *)enemy)
+#define ENEMY_OWNER (reinterpret_cast<Enemy *>(enemy))
 
 
 
@@ -110,9 +97,9 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x273a: return (i32)reinterpret_cast<Enemy *>(enemy)->worldPosition.x;
     case 0x273b: return (i32)reinterpret_cast<Enemy *>(enemy)->worldPosition.y;
     case 0x273c: return (i32)reinterpret_cast<Enemy *>(enemy)->worldPosition.z;
-    case 0x273d: return (i32)(*reinterpret_cast<Vector3 *>(&g_Player.position)).x;
-    case 0x273e: return (i32)(*reinterpret_cast<Vector3 *>(&g_Player.position)).y;
-    case 0x273f: return (i32)(*reinterpret_cast<Vector3 *>(&g_Player.position)).z;
+    case 0x273d: return (i32)g_Player.position.x;
+    case 0x273e: return (i32)g_Player.position.y;
+    case 0x273f: return (i32)g_Player.position.z;
     case 0x275a: return (i32)reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin.x;
     case 0x275b: return (i32)reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin.y;
     case 0x275c: return (i32)reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin.z;
@@ -136,11 +123,10 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x276d: return reinterpret_cast<Enemy *>(enemy)->score;
 
     case 0x2770:
-        return ENEMY_HELPERS->HasParentChain()
-                   ? ENEMY_HELPERS->CountParentChain()
-                   : ENEMY_HELPERS->HasAttachedEnemy()
-                         ? reinterpret_cast<TargetEnemyHelpersOverlay *>(
-                               reinterpret_cast<Enemy *>(enemy)->parentEnemy)->CountParentChain()
+        return ENEMY_OWNER->HasParentChain()
+                   ? ENEMY_OWNER->CountParentChain()
+                   : ENEMY_OWNER->HasAttachedEnemy()
+                         ? ENEMY_OWNER->parentEnemy->CountParentChain()
                          : 0;
     case 0x2740:
         return (i32)g_Player.AngleToPoint(&reinterpret_cast<Enemy *>(enemy)->worldPosition);
@@ -214,11 +200,8 @@ i32 *__fastcall ResolveIntLValue(EnemyOverlay *enemy, i32 *operand, u16 flags, i
     }
 }
 
-#undef ENEMY_HELPERS
+#undef ENEMY_OWNER
 #undef ECL_CONTEXT
-#undef VECTOR_FIELD
-#undef FLOAT_FIELD
-#undef INT_FIELD
 
 } // namespace EclOperands
 } // namespace th08

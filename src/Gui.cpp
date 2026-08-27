@@ -1494,8 +1494,7 @@ void Gui::DrawStageElements()
                 g_AsciiManager.SetScale(1.0f, 1.0f);
                 g_AsciiManager.CreateFamiliarPopup(
                     &textPos,
-                    reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(
-                        g_EnemyManager.bosses[0])->CountParentChain(),
+                    g_EnemyManager.bosses[0]->CountParentChain(),
                     g_EnemyManager.bosses[0]->linkedChildCount,
                     0xfff0f00f);
             }

@@ -245,7 +245,7 @@ void EnemyOverlay::DetachEnemyChain(i32 awardRewards)
     i32 popupColor;
     i32 chainIndex;
 
-    j = reinterpret_cast<TargetEnemyHelpersOverlay *>(this)->CountParentChain();
+    j = reinterpret_cast<Enemy *>(this)->CountParentChain();
     if (j != 0)
     {
         chainIndex = 0;
@@ -342,7 +342,7 @@ void EnemyOverlay::DetachEnemyChain(i32 awardRewards)
         }
     }
 
-    if (reinterpret_cast<TargetEnemyHelpersOverlay *>(this)->HasAttachedEnemy() && awardRewards != 0)
+    if (reinterpret_cast<Enemy *>(this)->HasAttachedEnemy() && awardRewards != 0)
     {
         Float3 attachedPosition;
         g_GameManager.AddToYoukaiGauge(-g_GameManager.GetYoukaiGauge() / 12, 0);
@@ -368,7 +368,7 @@ void EnemyOverlay::DetachEnemyChain(i32 awardRewards)
 // FUNCTION: th08 0x42b2f0
 void Enemy::DetachFromParentChain()
 {
-    if (reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(this)->HasAttachedEnemy())
+    if (this->HasAttachedEnemy())
     {
         this->previousInAttachmentChain->nextInAttachmentChain =
             this->nextInAttachmentChain;
@@ -400,7 +400,7 @@ void Enemy::ApplyDamageToParent(i32 amount)
     i32 i;
     i32 maxHp;
 
-    if (!reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(this)->HasAttachedEnemy())
+    if (!this->HasAttachedEnemy())
         return;
     if (g_Player.bombState.isInUse != 0)
         return;
@@ -844,7 +844,7 @@ void Enemy::CheckPlayerCollision(Float3 *position, Float3 *size)
 
     if (g_GameManager.shotType == 0 || g_GameManager.shotType == 4)
     {
-        if (reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(this)->HasAttachedEnemy())
+        if (this->HasAttachedEnemy())
             return;
     }
 

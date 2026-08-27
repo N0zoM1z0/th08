@@ -568,10 +568,10 @@ th08::Spellcard::SetStoredVector
 th08::Spellcard::IsActive
 th08::Spellcard::WasCaptured
 th08::Spellcard::GetTimerFrames
-th08::EclOperands::TargetEnemyHelpersOverlay::HasAttachedEnemy
+th08::Enemy::HasAttachedEnemy
 th08::ZunTimer::operator+=
-th08::EclOperands::TargetEnemyHelpersOverlay::HasParentChain
-th08::EclOperands::TargetEnemyHelpersOverlay::CountParentChain
+th08::Enemy::HasParentChain
+th08::Enemy::CountParentChain
 th08::Spellcard::IsCaptureValid
 th08::ZunTimer::operator--(int)
 th08::Spellcard::IsLastSpell

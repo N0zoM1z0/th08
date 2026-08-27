@@ -236,7 +236,7 @@ th08::EclManager::Unload,0x418420,0x2c,__thiscall,,void,EclManager*
 th08::EclManager::CallEclSub,0x418450,0x58,__thiscall,,u32,EclManager*,EnemyEclContext*,i16
 th08::EclManager::RunEcl,0x4184b0,0x680e,__thiscall,,u32,EclManager*,void*
 th08::EclRunLowProposal::FindLinkedChildTail0041EFC0,0x41efc0,0x36,__fastcall,,EclOperands::EnemyOverlay*,EclOperands::EnemyOverlay*
-th08::EclOperands::TargetEnemyHelpersOverlay::HasParentChain,0x41f000,0x35,__thiscall,,i32,TargetEnemyHelpersOverlay*
+th08::Enemy::HasParentChain,0x41f000,0x35,__thiscall,,i32,Enemy*
 th08::Spellcard::SetStoredVector,0x41f040,0x43,__thiscall,,void,Spellcard*,f32,f32,f32
 FUN_0041f090,0x41f090,0x18,unknown,,u8,u8,u8
 th08::Spellcard::SetEffectTrackingDisabled,0x41f0b0,0x25,__thiscall,,void,Spellcard*,i32
@@ -245,8 +245,8 @@ th08::EclRunLowProposal::SpawnChildStandard0041F110,0x41f110,0x16d,__fastcall,,E
 th08::EclRunLowProposal::SpawnChildAlternate0041F280,0x41f280,0x17f,__fastcall,,EclOperands::EnemyOverlay*,EclOperands::EnemyOverlay*,EclRawInstruction*
 th08::EclRunHighProposal::SpawnPacketTyped::SpawnPacketTyped,0x41f400,0x19,__thiscall,,EclRunHighProposal::SpawnPacketTyped*,EclRunHighProposal::SpawnPacketTyped*
 th08::EclOperands::ResolveInt,0x41f420,0x76b,__fastcall,,i32,EnemyOverlay*,i32
-th08::EclOperands::TargetEnemyHelpersOverlay::HasAttachedEnemy,0x41fd20,0x1c,__thiscall,,i32,TargetEnemyHelpersOverlay*
-th08::EclOperands::TargetEnemyHelpersOverlay::CountParentChain,0x41fd40,0x46,__thiscall,,i32,TargetEnemyHelpersOverlay*
+th08::Enemy::HasAttachedEnemy,0x41fd20,0x1c,__thiscall,,i32,Enemy*
+th08::Enemy::CountParentChain,0x41fd40,0x46,__thiscall,,i32,Enemy*
 th08::Spellcard::IsCaptureValid,0x41fd90,0x3b,__thiscall,,i32,Spellcard*
 th08::Spellcard::GetTimerFrames,0x41fdd0,0x19,__thiscall,,i32,Spellcard*
 th08::ZunTimer::operator+=,0x41fdf0,0x19,__thiscall,,void,ZunTimer*,i32

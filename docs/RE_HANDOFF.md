@@ -931,6 +931,25 @@ the conversion-shaped element accesses remain documented to preserve its
 exact**, and the required cold 75-object replay passes **1,106 / 1,106 exact**.
 The normal VC7 image links; the complete i386 Linux build and verifier pass.
 
+The Enemy chain-helper ownership follow-up removes the final fake helper class
+from this family.  `HasParentChain @ 0x0041F000`, `HasAttachedEnemy @
+0x0041FD20`, and `CountParentChain @ 0x0041FD40` are now real `Enemy` members:
+their complete target bodies consume only the asserted attachment fields, and
+all Enemy/ECL/GUI callers pass an `Enemy *`.  Their target-neighborhood
+placement in EclManager is retained as TU evidence rather than being confused
+with class ownership.  Both ECL operand resolvers also use typed Enemy chain
+links and `Player::position.x/y/z`; unused raw field macros and a private vector
+shell are gone.  The narrow `EclOperands::EnemyOverlay` remains only where the
+retail resolver/detach symbol ABI still requires it.
+
+Focused replay across the seven affected objects passes **127 / 127 exact**;
+the helper bodies pass **53 / 53**, **28 / 28**, and **70 / 70**, and the
+1,336-byte cleanup caller remains exact.  The required non-reuse cold replay
+passes **1,106 / 1,106 exact**, the normal VC7 image links, and the complete
+i386 Linux container build plus fixed-layout verifier passes.  Mapping and
+accepted ledgers now record the real Enemy identities without changing any
+address, size, status, or count.
+
 Whole-executable TU/layout work below remains deferred, not invalidated.
 
 ## Active playable-port branch

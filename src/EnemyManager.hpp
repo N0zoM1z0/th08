@@ -306,6 +306,9 @@ struct Enemy
     void UpdateShotAndAnm();
     void ReleaseChildEclBlocks();
     void ResetBulletRankInfluence();
+    i32 HasParentChain();
+    i32 HasAttachedEnemy();
+    i32 CountParentChain();
     void DetachFromParentChain();
     void DropItems(i32 mode);
     i32 HandleLifeCallback();

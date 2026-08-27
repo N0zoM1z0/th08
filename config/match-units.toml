@@ -7357,25 +7357,25 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x64F
 type = "REL32"
-symbol = "?HasParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?HasParentChain@Enemy@th08@@QAEHXZ"
 target = 0x0041F000
 
 [[units.relocations]]
 offset = 0x65B
 type = "REL32"
-symbol = "?CountParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?CountParentChain@Enemy@th08@@QAEHXZ"
 target = 0x0041FD40
 
 [[units.relocations]]
 offset = 0x668
 type = "REL32"
-symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?HasAttachedEnemy@Enemy@th08@@QAEHXZ"
 target = 0x0041FD20
 
 [[units.relocations]]
 offset = 0x67A
 type = "REL32"
-symbol = "?CountParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?CountParentChain@Enemy@th08@@QAEHXZ"
 target = 0x0041FD40
 
 [[units.relocations]]
@@ -8604,25 +8604,25 @@ target = 0x0044C1B0
 [[units.relocations]]
 offset = 0x5E5
 type = "REL32"
-symbol = "?HasParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?HasParentChain@Enemy@th08@@QAEHXZ"
 target = 0x0041F000
 
 [[units.relocations]]
 offset = 0x5F1
 type = "REL32"
-symbol = "?CountParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?CountParentChain@Enemy@th08@@QAEHXZ"
 target = 0x0041FD40
 
 [[units.relocations]]
 offset = 0x5FE
 type = "REL32"
-symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?HasAttachedEnemy@Enemy@th08@@QAEHXZ"
 target = 0x0041FD20
 
 [[units.relocations]]
 offset = 0x610
 type = "REL32"
-symbol = "?CountParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?CountParentChain@Enemy@th08@@QAEHXZ"
 target = 0x0041FD40
 
 [[units.relocations]]
@@ -10063,7 +10063,7 @@ target = 0x004178A0
 [[units.relocations]]
 offset = 0xA43
 type = "REL32"
-symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?HasAttachedEnemy@Enemy@th08@@QAEHXZ"
 target = 0x0041FD20
 
 [[units.relocations]]
@@ -10211,7 +10211,7 @@ target = 0x0042DFF0
 [[units.relocations]]
 offset = 0xC66
 type = "REL32"
-symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?HasAttachedEnemy@Enemy@th08@@QAEHXZ"
 target = 0x0041FD20
 
 [[units.relocations]]
@@ -10387,7 +10387,7 @@ target = 0x004B42C8
 [[units.relocations]]
 offset = 0xE4A
 type = "REL32"
-symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?HasAttachedEnemy@Enemy@th08@@QAEHXZ"
 target = 0x0041FD20
 
 [[units.relocations]]
@@ -10438,7 +10438,7 @@ target = 0x0040B8A0
 [[units.relocations]]
 offset = 0xFC9
 type = "REL32"
-symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?HasAttachedEnemy@Enemy@th08@@QAEHXZ"
 target = 0x0041FD20
 
 [[units.relocations]]
@@ -55331,7 +55331,7 @@ target = 0x0040D3B0
 [[units]]
 name = "ecl-enemy-has-attached-enemy"
 object = "build/EclManager.obj"
-symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?HasAttachedEnemy@Enemy@th08@@QAEHXZ"
 target_address = 0x0041FD20
 size = 0x1C
 
@@ -55352,21 +55352,21 @@ target = 0x00447295
 [[units]]
 name = "ecl-enemy-has-parent-chain"
 object = "build/EclManager.obj"
-symbol = "?HasParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?HasParentChain@Enemy@th08@@QAEHXZ"
 target_address = 0x0041F000
 size = 0x35
 
 [[units]]
 name = "ecl-enemy-count-parent-chain"
 object = "build/EclManager.obj"
-symbol = "?CountParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?CountParentChain@Enemy@th08@@QAEHXZ"
 target_address = 0x0041FD40
 size = 0x46
 
 [[units.relocations]]
 offset = 0x1A
 type = "REL32"
-symbol = "?HasParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?HasParentChain@Enemy@th08@@QAEHXZ"
 target = 0x0041F000
 
 
@@ -68610,7 +68610,7 @@ size = 0x75
 [[units.relocations]]
 offset = 0xB
 type = "REL32"
-symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?HasAttachedEnemy@Enemy@th08@@QAEHXZ"
 target = 0x0041FD20
 
 
@@ -75593,7 +75593,7 @@ target = 5734176
 [[units.relocations]]
 offset = 1508
 type = "REL32"
-symbol = "?CountParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?CountParentChain@Enemy@th08@@QAEHXZ"
 target = 4324672
 
 [[units.relocations]]
@@ -83405,7 +83405,7 @@ size = 1336
 [[units.relocations]]
 offset = 13
 type = "REL32"
-symbol = "?CountParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "th08::Enemy::CountParentChain"
 target = 0x0041FD40
 
 [[units.relocations]]
@@ -83676,7 +83676,7 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 1081
 type = "REL32"
-symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "th08::Enemy::HasAttachedEnemy"
 target = 0x0041FD20
 
 [[units.relocations]]
@@ -102557,7 +102557,7 @@ addend = 0x3DBA9
 [[units.relocations]]
 offset = 0x99
 type = "REL32"
-symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "th08::Enemy::HasAttachedEnemy"
 target = 0x0041FD20
 
 [[units.relocations]]
@@ -107311,7 +107311,7 @@ size = 0x36
 [[units.relocations]]
 offset = 0x13
 type = "REL32"
-symbol = "?HasParentChain@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "?HasParentChain@Enemy@th08@@QAEHXZ"
 target = 0x0041F000
 
 [[units]]
@@ -108617,7 +108617,7 @@ size = 0x120
 [[units.relocations]]
 offset = 0xD
 type = "REL32"
-symbol = "?HasAttachedEnemy@TargetEnemyHelpersOverlay@EclOperands@th08@@QAEHXZ"
+symbol = "th08::Enemy::HasAttachedEnemy"
 target = 0x0041FD20
 
 [[units.relocations]]

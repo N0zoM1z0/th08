@@ -329,7 +329,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
             enemy->lastDamage = 0;
             if (reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->acceptsDamage)
             {
-                if (!g_Spellcard.IsActive() || !reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(enemy)->HasAttachedEnemy() ||
+                if (!g_Spellcard.IsActive() || !enemy->HasAttachedEnemy() ||
                     !g_Player.bombState.isInUse)
                 {
                     damage = g_Player.CalcDamageToEnemy(
@@ -389,7 +389,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                                 else if (damage != 0)
                                     damage = 1;
                             }
-                            else if (g_Spellcard.IsBombDamageEnabled() && !reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(enemy)->HasAttachedEnemy())
+                            else if (g_Spellcard.IsBombDamageEnabled() && !enemy->HasAttachedEnemy())
                             {
                                 if (damage > 2)
                                     damage = (i32)((f32)damage / 2.5f);
@@ -443,7 +443,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 if (fabsf(
                         enemy->worldPosition.x -
                         reinterpret_cast<D3DXVECTOR3 *>(&g_Player.position)->x) < 64.0f &&
-                    !reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(enemy)->HasAttachedEnemy() &&
+                    !enemy->HasAttachedEnemy() &&
                     (g_Player.optionHomingTarget == 0 ||
                      reinterpret_cast<Enemy *>(g_Player.optionHomingTarget)->position.y >
                          enemy->worldPosition.y))
@@ -486,7 +486,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 }
             }
 
-            if (reinterpret_cast<EclOperands::TargetEnemyHelpersOverlay *>(enemy)->HasAttachedEnemy())
+            if (enemy->HasAttachedEnemy())
             {
                 --enemy->parentEnemy->linkedChildCount;
             }

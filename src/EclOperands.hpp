@@ -18,21 +18,14 @@ struct Vector3
 };
 extern Vector3 g_TargetPlayerPosition017D61AC;
 
-// Private byte overlay for target-observed Enemy offsets. The public Enemy
-// layout remains intentionally incomplete until its owning lane proves it.
+// ABI adapter retained for the target resolver and detach-chain symbols.
+// Implementations immediately recover the asserted public Enemy owner.
 struct EnemyOverlay
 {
     u8 bytes[1];
 
     f32 ResolveFloat(f32 operand);
     void DetachEnemyChain(i32 awardRewards);
-};
-
-struct TargetEnemyHelpersOverlay
-{
-    i32 HasParentChain();
-    i32 HasAttachedEnemy();
-    i32 CountParentChain();
 };
 
 i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand);
