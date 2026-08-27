@@ -1038,60 +1038,60 @@ th08::TitleScreen::AddedCallback,0x471651,0x11,__fastcall,,ZunResult,TitleScreen
 th08::TitleScreen::DeletedCallback,0x471662,0x7d,__fastcall,,ZunResult,TitleScreen*
 th08::CSoundManager::CSoundManager,0x4716e0,0x17,__thiscall,,CSoundManager*,CSoundManager*
 th08::CSoundManager::~CSoundManager,0x471700,0x2c,__thiscall,,void,CSoundManager*
-th08::CSoundManager::Initialize,0x471730,0x8e,__thiscall,,long,CSoundManager*,HWND__*,unsigned long,unsigned long,unsigned long,unsigned long
-th08::CSoundManager::SetPrimaryBufferFormat,0x4717c0,0x109,__thiscall,,i32,CSoundManager*,unsigned long,unsigned long,unsigned long
-th08::CSoundManager::CreateStreaming,0x4718d0,0x333,__thiscall,,u32,CSoundManager*,CStreamingSound**,char*,u32,GUID,unsigned long,unsigned long,void*
+th08::CSoundManager::Initialize,0x471730,0x8e,__thiscall,,HRESULT,CSoundManager*,HWND,DWORD,DWORD,DWORD,DWORD
+th08::CSoundManager::SetPrimaryBufferFormat,0x4717c0,0x109,__thiscall,,HRESULT,CSoundManager*,DWORD,DWORD,DWORD
+th08::CSoundManager::CreateStreaming,0x4718d0,0x333,__thiscall,,HRESULT,CSoundManager*,CStreamingSound**,char*,DWORD,GUID,DWORD,DWORD,HANDLE,ThBgmFormat*
 th08::CWaveFile::`scalar_deleting_destructor',0x471c10,0x2e,__thiscall,,CWaveFile*,CWaveFile*,u32
-th08::CSoundManager::CreateStreamingFromMemory,0x471c40,0x31b,__thiscall,,u32,CSoundManager*,CStreamingSound**,uchar*,unsigned long,tWAVEFORMATEX*,unsigned long,GUID,unsigned long,unsigned long,u32
-th08::CSound::CSound,0x471f60,0xdd,__thiscall,,u8,CSound*,IDirectSoundBuffer**,unsigned long,unsigned long,CWaveFile*
+th08::CSoundManager::CreateStreamingFromMemory,0x471c40,0x31b,__thiscall,,HRESULT,CSoundManager*,CStreamingSound**,u8*,ULONG,ThBgmFormat*,DWORD,GUID,DWORD,DWORD,HANDLE
+th08::CSound::CSound,0x471f60,0xdd,__thiscall,,CSound*,CSound*,IDirectSoundBuffer**,DWORD,DWORD,CWaveFile*
 th08::CSound::`scalar_deleting_destructor',0x472040,0x2e,__thiscall,,void*,CSound*,u32
-th08::CStreamingSound::InitSoundBuffers,0x472070,0x257,__thiscall,,u32,CStreamingSound*
-th08::CSound::~CSound,0x4722d0,0xd8,unknown,,u8
-th08::CSound::FillBufferWithSound,0x4723b0,0x1e4,__thiscall,,i32,CSound*,IDirectSoundBuffer*,i32
-th08::CSound::RestoreBuffer,0x4725a0,0xa3,unknown,,u8,u8,u8
-th08::CSound::GetFreeBuffer,0x472650,0xb6,__thiscall,,u32,CSound*
-th08::CSound::GetBuffer,0x472710,0x35,__thiscall,,u32,CSound*,unsigned long
-th08::CSound::Play,0x472750,0xec,__thiscall,,i32,CSound*,unsigned long,unsigned long
-th08::CSound::SetVolume,0x472840,0x94,__thiscall,,void,CSound*,i32
-th08::CSound::Stop,0x4728e0,0xab,__thiscall,,long,CSound*
-th08::CSound::Pause,0x472990,0x4f,__thiscall,,u32,CSound*
-th08::CSound::Unpause,0x4729e0,0x4e,__thiscall,,u32,CSound*
-th08::CSound::Reset,0x472a30,0x6e,__thiscall,,long,CSound*
-th08::CStreamingSound::CStreamingSound,0x472aa0,0x60,__thiscall,,CStreamingSound*,CStreamingSound*,IDirectSoundBuffer*,unsigned long,CWaveFile*,unsigned long
+th08::CStreamingSound::InitSoundBuffers,0x472070,0x257,__thiscall,,HRESULT,CStreamingSound*
+th08::CSound::~CSound,0x4722d0,0xd8,__thiscall,,void,CSound*
+th08::CSound::FillBufferWithSound,0x4723b0,0x1e4,__thiscall,,HRESULT,CSound*,IDirectSoundBuffer*,BOOL
+th08::CSound::RestoreBuffer,0x4725a0,0xa3,__thiscall,,HRESULT,CSound*,IDirectSoundBuffer*,BOOL*
+th08::CSound::GetFreeBuffer,0x472650,0xb6,__thiscall,,IDirectSoundBuffer*,CSound*
+th08::CSound::GetBuffer,0x472710,0x35,__thiscall,,IDirectSoundBuffer*,CSound*,DWORD
+th08::CSound::Play,0x472750,0xec,__thiscall,,HRESULT,CSound*,DWORD,DWORD
+th08::CSound::SetVolume,0x472840,0x94,__thiscall,,HRESULT,CSound*,i32
+th08::CSound::Stop,0x4728e0,0xab,__thiscall,,HRESULT,CSound*
+th08::CSound::Pause,0x472990,0x4f,__thiscall,,HRESULT,CSound*
+th08::CSound::Unpause,0x4729e0,0x4e,__thiscall,,HRESULT,CSound*
+th08::CSound::Reset,0x472a30,0x6e,__thiscall,,HRESULT,CSound*
+th08::CStreamingSound::CStreamingSound,0x472aa0,0x60,__thiscall,,CStreamingSound*,CStreamingSound*,IDirectSoundBuffer*,DWORD,CWaveFile*,DWORD
 th08::CStreamingSound::`scalar_deleting_destructor',0x472b00,0x2e,__thiscall,,void*,CStreamingSound*,u32
 th08::CStreamingSound::~CStreamingSound,0x472b30,0x1c,__thiscall,,void,CStreamingSound*
-th08::CStreamingSound::UpdateFadeOut,0x472b50,0x81,__thiscall,,u32,CStreamingSound*
-th08::CStreamingSound::UpdateFadeIn,0x472be0,0x6a,__thiscall,,u32,CStreamingSound*
-th08::CStreamingSound::UpdatePartialFadeIn,0x472c50,0x6a,__thiscall,,u32,CStreamingSound*
-th08::CStreamingSound::UpdatePartialFadeOut,0x472cc0,0x6b,__thiscall,,u32,CStreamingSound*
-th08::CStreamingSound::HandleWaveStreamNotification,0x472d30,0x3e8,__thiscall,,i32,CStreamingSound*,i32
-th08::CStreamingSound::Reset,0x473120,0xc2,__thiscall,,i32,CStreamingSound*
-th08::CWaveFile::CWaveFile,0x4731f0,0x38,__thiscall,,u32*,CWaveFile*
+th08::CStreamingSound::UpdateFadeOut,0x472b50,0x81,__thiscall,,HRESULT,CStreamingSound*
+th08::CStreamingSound::UpdateFadeIn,0x472be0,0x6a,__thiscall,,HRESULT,CStreamingSound*
+th08::CStreamingSound::UpdatePartialFadeIn,0x472c50,0x6a,__thiscall,,HRESULT,CStreamingSound*
+th08::CStreamingSound::UpdatePartialFadeOut,0x472cc0,0x6b,__thiscall,,HRESULT,CStreamingSound*
+th08::CStreamingSound::HandleWaveStreamNotification,0x472d30,0x3e8,__thiscall,,HRESULT,CStreamingSound*,BOOL
+th08::CStreamingSound::Reset,0x473120,0xc2,__thiscall,,HRESULT,CStreamingSound*
+th08::CWaveFile::CWaveFile,0x4731f0,0x38,__thiscall,,CWaveFile*,CWaveFile*
 th08::CWaveFile::~CWaveFile,0x473230,0x13,__thiscall,,void,CWaveFile*
-th08::CWaveFile::Open,0x473250,0xa3,unknown,,u8,u32,u32,u32
-th08::CWaveFile::Reopen,0x473300,0x54,__thiscall,,u32,CWaveFile*,ThBgmFormat*
-th08::CWaveFile::OpenFromMemory,0x473360,0x5c,__thiscall,,long,CWaveFile*,uchar*,unsigned long,tWAVEFORMATEX*,unsigned long
-th08::CWaveFile::GetSize,0x4733c0,0x11,__thiscall,,u32,CWaveFile*
-th08::CWaveFile::ResetFile,0x4733e0,0x148,__thiscall,,u32,CWaveFile*,bool
-th08::CWaveFile::Read,0x473530,0x148,__thiscall,,long,CWaveFile*,uchar*,unsigned long,unsigned long*
-th08::CWaveFile::Close,0x473680,0x33,__thiscall,,u32,CWaveFile*
+th08::CWaveFile::Open,0x473250,0xa3,__thiscall,,HRESULT,CWaveFile*,char*,ThBgmFormat*,DWORD
+th08::CWaveFile::Reopen,0x473300,0x54,__thiscall,,HRESULT,CWaveFile*,ThBgmFormat*
+th08::CWaveFile::OpenFromMemory,0x473360,0x5c,__thiscall,,HRESULT,CWaveFile*,u8*,ULONG,ThBgmFormat*,DWORD
+th08::CWaveFile::GetSize,0x4733c0,0x11,__thiscall,,DWORD,CWaveFile*
+th08::CWaveFile::ResetFile,0x4733e0,0x148,__thiscall,,HRESULT,CWaveFile*,bool
+th08::CWaveFile::Read,0x473530,0x148,__thiscall,,HRESULT,CWaveFile*,u8*,DWORD,DWORD*
+th08::CWaveFile::Close,0x473680,0x33,__thiscall,,HRESULT,CWaveFile*
 th08::CPbgFile::CPbgFile,0x4736c0,0x33,__thiscall,,CPbgFile*,CPbgFile*
 th08::CPbgFile::`scalar_deleting_destructor',0x473700,0x2e,__thiscall,,void*,CPbgFile*,u32
 th08::CPbgFile::~CPbgFile,0x473730,0x51,__thiscall,,void,CPbgFile*
-th08::CPbgFile::Open,0x473790,0x14a,__thiscall,,u32,CPbgFile*,char*,char*
+th08::CPbgFile::Open,0x473790,0x14a,__thiscall,,bool,CPbgFile*,const char*,char*
 th08::CPbgFile::Close,0x4738e0,0x35,__thiscall,,void,CPbgFile*
-th08::CPbgFile::Read,0x473920,0x44,unknown,,u8,u8,u8
-th08::CPbgFile::Write,0x473970,0x4a,unknown,,u8,u8,u8
-th08::CPbgFile::Tell,0x4739c0,0x2b,__thiscall,,u32,CPbgFile*
-th08::CPbgFile::GetSize,0x4739f0,0x27,__thiscall,,u32,CPbgFile*
-th08::CPbgFile::Seek,0x473a20,0x33,unknown,,u8,u8,u8
-th08::CPbgFile::ReadWholeFile,0x473a60,0xd2,unknown,,u8,u8
-th08::CPbgFile::GetFullFilePath,0x473b40,0xfd,unknown,,u8
-th08::IPbgFile::IPbgFile,0x473c40,0x17,__thiscall,,u32*,IPbgFile*
+th08::CPbgFile::Read,0x473920,0x44,__thiscall,,DWORD,CPbgFile*,void*,DWORD
+th08::CPbgFile::Write,0x473970,0x4a,__thiscall,,bool,CPbgFile*,void*,DWORD
+th08::CPbgFile::Tell,0x4739c0,0x2b,__thiscall,,DWORD,CPbgFile*
+th08::CPbgFile::GetSize,0x4739f0,0x27,__thiscall,,DWORD,CPbgFile*
+th08::CPbgFile::Seek,0x473a20,0x33,__thiscall,,bool,CPbgFile*,DWORD,DWORD
+th08::CPbgFile::ReadWholeFile,0x473a60,0xd2,__thiscall,,HGLOBAL,CPbgFile*,DWORD
+th08::CPbgFile::GetFullFilePath,0x473b40,0xfd,__fastcall,,void,char*,const char*
+th08::IPbgFile::IPbgFile,0x473c40,0x17,__thiscall,,IPbgFile*,IPbgFile*
 th08::IPbgFile::~IPbgFile,0x473c60,0x14,__thiscall,,void,IPbgFile*
 th08::IPbgFile::`scalar_deleting_destructor',0x473c80,0x2e,__thiscall,,void*,IPbgFile*,u32
-th08::Lzss::Encode,0x473cb0,0x429,unknown,,u8,u8
-th08::Lzss::Decode,0x4740e0,0x364,unknown,,u8,u8,u8
+th08::Lzss::Encode,0x473cb0,0x429,__fastcall,,u8*,u8*,i32,i32*
+th08::Lzss::Decode,0x4740e0,0x364,__fastcall,,u8*,u8*,i32,u8*,i32
 th08::Lzss::InitTree,0x474450,0x43,__fastcall,,void,i32
 th08::Lzss::InitEncoderState,0x4744a0,0x7c,__fastcall,,void
 th08::Lzss::AddString,0x474520,0x11c,__fastcall,,i32,i32,i32*
@@ -1100,19 +1100,19 @@ th08::Lzss::ContractNode,0x4746d0,0x84,__fastcall,,void,i32,i32
 th08::Lzss::ReplaceNode,0x474760,0xb7,__fastcall,,void,i32,i32
 th08::Lzss::FindNextNode,0x474820,0x3f,__fastcall,,i32,i32
 th08::PbgArchive::PbgArchive,0x474860,0x35,__thiscall,,PbgArchive*,PbgArchive*
-th08::PbgArchive::~PbgArchive,0x4748a0,0x13,unknown,,u8
-th08::PbgArchive::Load,0x4748c0,0xe5,unknown,,u8,u8
+th08::PbgArchive::~PbgArchive,0x4748a0,0x13,__thiscall,,void,PbgArchive*
+th08::PbgArchive::Load,0x4748c0,0xe5,__thiscall,,bool,PbgArchive*,const char*
 th08::PbgArchive::Release,0x4749b0,0xd0,__thiscall,,void,PbgArchive*
 th08::PbgArchiveEntry::`vector_deleting_destructor',0x474a80,0x70,__thiscall,,void*,PbgArchiveEntry*,u32
-th08::PbgArchive::ReadDecompressEntry,0x474af0,0x141,unknown,,u8,u8,u8
-th08::PbgArchive::GetEntryDecompressedSize,0x474c40,0x2e,__thiscall,,u8,PbgArchive*,char*
-th08::PbgArchive::FindEntry,0x474c70,0x65,__thiscall,,u32*,PbgArchive*,u8
-th08::PbgArchive::ParseHeader,0x474ce0,0x2bd,unknown,,u8,u8
-th08::PbgArchive::AllocEntries,0x474fa0,0x1a4,__thiscall,,i32*,PbgArchive*,i32*,i32,i32
-th08::PbgArchive::CopyFileName,0x475150,0x8b,__thiscall,,char*,PbgArchive*,char*
-th08::CPbgFile::ReadInt,0x4751e0,0x1e,__thiscall,,void,CPbgFile*,u32
-th08::PbgArchive::SeekPastInt,0x475200,0x1f,unknown,,u8
-th08::PbgArchive::SeekPastString,0x475220,0x4c,unknown,,u8
+th08::PbgArchive::ReadDecompressEntry,0x474af0,0x141,__thiscall,,u8*,PbgArchive*,const char*,u8*
+th08::PbgArchive::GetEntryDecompressedSize,0x474c40,0x2e,__thiscall,,DWORD,PbgArchive*,const char*
+th08::PbgArchive::FindEntry,0x474c70,0x65,__thiscall,,PbgArchiveEntry*,PbgArchive*,const char*
+th08::PbgArchive::ParseHeader,0x474ce0,0x2bd,__thiscall,,bool,PbgArchive*,const char*
+th08::PbgArchive::AllocEntries,0x474fa0,0x1a4,__thiscall,,PbgArchiveEntry*,PbgArchive*,void*,i32,u32
+th08::PbgArchive::CopyFileName,0x475150,0x8b,__thiscall,,char*,PbgArchive*,const char*
+th08::CPbgFile::ReadInt,0x4751e0,0x1e,__thiscall,,DWORD,CPbgFile*,i32*
+th08::PbgArchive::SeekPastInt,0x475200,0x1f,__fastcall,,i32,void**
+th08::PbgArchive::SeekPastString,0x475220,0x4c,__fastcall,,void*,void**
 th08::PbgArchiveEntry::~PbgArchiveEntry,0x475270,0x28,__thiscall,,void,PbgArchiveEntry*
 WithinEpsilon,0x476cf2,0x2d,unknown,,u8,u8,u8
 D3DXVec2Hermite,0x476d1f,0x8e,unknown,,u8,u8,u8,u8,u8,u8,u8

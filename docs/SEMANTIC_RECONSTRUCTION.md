@@ -4603,3 +4603,42 @@ ledger, no source body, object identity, accepted-unit result, or aggregate
 exact total changed.  The sole authored-but-unaccepted function remains the
 unchanged natural allocator residual in
 `ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0`.
+
+### Bundled helper API closure and honest residual fields — 2026-08-27
+
+Scope: all 54 stale mapping signatures in the accepted CSound/CWaveFile,
+CPbgFile/PbgArchive, and LZSS helper-source family, plus the last two
+production fields whose names still used a bare `unk` marker.
+
+The existing declarations, definitions, call sites, and exact VC7 decorated
+symbols agree on the helper APIs.  The ledger now records real `HRESULT`,
+`BOOL`, `DWORD`, buffer, archive-entry, `ThBgmFormat`, const filename, output
+pointer, and static/member boundaries.  This fixes more than the 16 rows whose
+convention was literally `unknown`: for example, `CSound` construction no
+longer claims to return `u8`, `CSound::SetVolume` returns `HRESULT`,
+`CSoundManager::CreateStreaming` includes its final `ThBgmFormat *`, and PBG
+getters return their real pointer/size types.  The reproducible intersection
+of `config/implemented.csv` with mapping rows whose convention is `unknown`
+is now empty.  This is deliberately narrower than claiming that every row in
+the complete 2,226-row authored-plus-library inventory is typed.
+
+`CSound` had the production corpus's last two bare unknown member names at
+`+0x28` and `+0x2C`.  No observed code consumes `+0x28`; target
+`CSound::Play @ 0x00472750` writes zero to `this + 0x2C`, and no authored use
+establishes a stronger meaning.  They are therefore named
+`unconsumedDword28` and `unconsumedDword2C`, not assigned speculative playback
+semantics.  Target-pinned typed-RE confirms the `+0x2C` write and the exact
+member ABI; the focused rebuilt Play body remains **236 / 236 exact**.
+
+VC7 oracle: relocation-aware focused replay passes all **54 / 54** affected
+accepted units.  Because `zwave.hpp` is shared, the required single-job
+non-reuse cold build of all 75 comparison objects passes **1,106 / 1,106
+exact** with zero failures; `TitleScreen::RegisterChain` remains **281 / 281
+exact**.  The normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container rebuilds and links after
+the shared-header names change, and `verify-modern-linux.sh` verifies the
+ELF32 executable and every fixed target-owned layout symbol.  No layout,
+target byte, object identity, or accepted-unit total changed.  Serialized
+reserved storage, exact-codegen unused locals, and fields explicitly named
+`unconsumed*` remain evidence boundaries rather than invented semantics.

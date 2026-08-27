@@ -2217,3 +2217,16 @@ separate audit lanes.  The single authored allocator residual is unchanged.
 Continue with a bounded semantic-completion audit on
 `semantic/typed-reconstruction`; commit and push stable checkpoints, but do
 not open a PR or merge until explicitly requested.
+
+The bundled-helper closure aligns 54 accepted CSound/CWaveFile, PBG, and LZSS
+mapping signatures with their exact source and VC7 decorated symbols.  The
+accepted implementation/mapping intersection now contains zero `unknown`
+calling conventions.  The two remaining production `m_unk*` fields in
+`CSound` are renamed to honest `unconsumedDword28/2C`; target-pinned evidence
+only proves that Play clears `+0x2C`, so no stronger meaning is invented.
+Focused replay passes **54 / 54 exact**, including Play **236 / 236**; the
+required non-reuse cold aggregate passes **1,106 / 1,106 exact** with zero
+failures; the normal VC7 image and complete Linux i386 image link; and the
+fixed-layout verifier passes.  Continue the repository-wide semantic
+completion audit on `semantic/typed-reconstruction`; commit and push stable
+checkpoints, but do not open a PR or merge until explicitly requested.

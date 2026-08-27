@@ -568,7 +568,7 @@ HRESULT CSound::Play(DWORD dwPriority, DWORD dwFlags)
     m_bIsPlaying = TRUE;
     m_dwPriority = dwPriority;
     m_dwFlags = dwFlags;
-    m_unk2c = 0;
+    unconsumedDword2C = 0;
 
     return pDSB->Play(0, dwPriority, dwFlags);
 }

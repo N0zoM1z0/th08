@@ -99,8 +99,8 @@ class CSound
     INT m_iFadeType;
     DWORD m_dwPriority;
     DWORD m_dwFlags;
-    DWORD m_unk28;
-    DWORD m_unk2c;
+    DWORD unconsumedDword28;
+    DWORD unconsumedDword2C;
     BOOL m_bIsPlaying;
     DSBUFFERDESC m_dsbd;
     CSoundManager *m_pSoundManager;
