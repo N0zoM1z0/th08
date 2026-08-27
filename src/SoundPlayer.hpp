@@ -69,7 +69,7 @@ struct SoundBufferIdxVolume
 {
     i32 bufferIdx;
     i16 volume;
-    i16 unk;
+    i16 unconsumedMetadata;
 };
 C_ASSERT(sizeof(SoundBufferIdxVolume) == 0x8);
 
@@ -169,16 +169,16 @@ class SoundPlayer
     ZunResult LoadFmt(char *path);
 
     LPDIRECTSOUND dsoundHdl;
-    i32 unk4;
+    i32 unknownDword04;
     LPDIRECTSOUNDBUFFER soundBuffers[NUM_SOUND_BUFFERS];
     LPDIRECTSOUNDBUFFER duplicateSoundBuffers[NUM_SOUND_BUFFERS];
-    i32 unk408[NUM_SOUND_BUFFERS];
+    i32 unconsumedMetadataBySound[NUM_SOUND_BUFFERS];
     LPDIRECTSOUNDBUFFER initSoundBuffer;
     HWND gameWindow;
     CSoundManager *manager;
     DWORD bgmThreadId;
     HANDLE bgmThreadHandle;
-    i32 unk61c;
+    i32 unknownDword61C;
     i32 soundQueue[SFX_QUEUE_LENGTH];
     i32 soundQueueRequestCounts[SFX_QUEUE_LENGTH];
     u32 soundQueuePanData[SFX_QUEUE_LENGTH][128];
@@ -193,13 +193,14 @@ class SoundPlayer
     char currentBgmFileName[256];
     CStreamingSound *bgm;
     HANDLE bgmUpdateEvent;
-    i32 unk5210;
+    i32 unknownDword5210;
     u32 bgmFileBaseOffset;
     i32 bgmVolume;
     i32 sfxVolume;
-    i32 unkVolume;
+    i32 unconsumedBgmAttenuation;
 };
 C_ASSERT(sizeof(SoundPlayer) == 0x5224);
+C_ASSERT(offsetof(SoundPlayer, unconsumedMetadataBySound) == 0x408);
 C_ASSERT(offsetof(SoundPlayer, soundQueue) == 0x620);
 C_ASSERT(offsetof(SoundPlayer, soundQueueRequestCounts) == 0x650);
 C_ASSERT(offsetof(SoundPlayer, soundQueuePanData) == 0x680);
@@ -208,7 +209,9 @@ C_ASSERT(offsetof(SoundPlayer, bgmPreloadAllocations) == 0x1ec0);
 C_ASSERT(offsetof(SoundPlayer, bgmPreloadData) == 0x1f00);
 C_ASSERT(offsetof(SoundPlayer, bgmPreloadAllocSizes) == 0x1f40);
 C_ASSERT(offsetof(SoundPlayer, loadedBgmSlot) == 0x1f80);
+C_ASSERT(offsetof(SoundPlayer, unknownDword5210) == 0x5210);
 C_ASSERT(offsetof(SoundPlayer, bgmFileBaseOffset) == 0x5214);
+C_ASSERT(offsetof(SoundPlayer, unconsumedBgmAttenuation) == 0x5220);
 
 DIFFABLE_EXTERN(SoundPlayer, g_SoundPlayer)
 }; // namespace th08

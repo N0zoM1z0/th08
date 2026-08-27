@@ -242,21 +242,27 @@ struct AnmRawEntry
     u8 hasData;
     /* 3 bytes pad for alignment */
     u32 nextOffset;
-    u32 unk2;
+    u32 unknown3C;
 };
 
 C_ASSERT(sizeof(AnmRawEntry) == 0x40);
+C_ASSERT(offsetof(AnmRawEntry, unknown3C) == 0x3C);
 
 struct AnmTextureHeader
 {
     char magic[4]; /* THTX */
-    u16 unk0x4;
+    u16 unknown04;
     i16 format;
     i16 width;
     i16 height;
-    u16 unk0x14;
-    u16 unk0x18;
+    u16 unknown0C;
+    u16 unknown0E;
 };
+
+C_ASSERT(sizeof(AnmTextureHeader) == 0x10);
+C_ASSERT(offsetof(AnmTextureHeader, unknown04) == 0x04);
+C_ASSERT(offsetof(AnmTextureHeader, unknown0C) == 0x0C);
+C_ASSERT(offsetof(AnmTextureHeader, unknown0E) == 0x0E);
 
 struct AnmLoadedSprite
 {
@@ -271,10 +277,11 @@ struct AnmLoadedSprite
     float heightPx;
     float widthPx;
     Float2 scaleFactor;
-    u32 unk0x40;
+    u32 unknown40;
 };
 
 C_ASSERT(sizeof(AnmLoadedSprite) == 0x44);
+C_ASSERT(offsetof(AnmLoadedSprite, unknown40) == 0x40);
 
 #define ANM_MAX_ARGS 10
 
@@ -617,7 +624,7 @@ struct AnmManager
     {
         this->scriptsExecutedThisFrame = 0;
         this->renderStateChangesThisFrame = 0;
-        this->unk0xc = 0;
+        this->scriptsStartedThisFrame = 0;
         this->flushesThisFrame = 0;
     }
 
@@ -721,14 +728,14 @@ struct AnmManager
     ZunColor color;
     ZunBool useMixColor;
     i32 captureSurfaceIdx;
-    u32 unk0xc;
+    u32 scriptsStartedThisFrame;
     u32 scriptsExecutedThisFrame;
     u32 renderStateChangesThisFrame;
     u32 flushesThisFrame;
     Float2 screenShakeOffset;
     AnmLoaded anmFiles[256];
     D3DXMATRIX cachedWorldMatrix;
-    AnmVm unk0x1c64;
+    AnmVm unconsumedVm1C64;
     unknown_fields(0x1f08, 0x130);
 
     IDirect3DSurface8 *surfaces[32];
@@ -774,6 +781,8 @@ struct AnmManager
 };
 C_ASSERT(sizeof(AnmManager) == 0x2a2570);
 C_ASSERT(offsetof(AnmManager, currentTextureFactor) == 0x24B8);
+C_ASSERT(offsetof(AnmManager, scriptsStartedThisFrame) == 0x0C);
+C_ASSERT(offsetof(AnmManager, unconsumedVm1C64) == 0x1C64);
 
 DIFFABLE_EXTERN(AnmManager *, g_AnmManager);
 

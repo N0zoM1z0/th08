@@ -39811,7 +39811,7 @@ target = 0x017CE758
 [[units.relocations]]
 offset = 0x226
 type = "REL32"
-symbol = "?ResetUnknownStuff@Supervisor@th08@@QAEXXZ"
+symbol = "?ClearRecordingFpsWarningState@Supervisor@th08@@QAEXXZ"
 target = 0x00470DD5
 
 [[units.relocations]]
@@ -39964,13 +39964,13 @@ type = "REL32"
 symbol = "?ThreadStart@Supervisor@th08@@QAE?AW4ZunResult@@P6GKPAX@Z0@Z"
 target = 0x004486BA
 
-# Ledger name: th08::Supervisor::ResetUnknownStuff
+# Ledger name: th08::Supervisor::ClearRecordingFpsWarningState
 # Extent: 0x00470DD5..0x00470E10 (0x3b bytes)
 # Evidence: exact relocation replay; 0 relocations; 0 direct calls.
 [[units]]
 name = "title-screen-roi-exact-00470dd5"
 object = "build/TitleScreen.obj"
-symbol = "?ResetUnknownStuff@Supervisor@th08@@QAEXXZ"
+symbol = "?ClearRecordingFpsWarningState@Supervisor@th08@@QAEXXZ"
 target_address = 0x00470DD5
 size = 0x3B
 

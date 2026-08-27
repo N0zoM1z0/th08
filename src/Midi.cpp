@@ -192,10 +192,10 @@ MidiOutput::MidiOutput()
     this->noteTranspose = 0;
     this->fadeOutVolumeMultiplier = 0;
     this->fadeOutLastSetVolume = 0;
-    this->unk2d0 = 0;
+    this->unknownDword2D0 = 0;
     this->volumeUpdatesSuppressed = 0;
-    this->unk2d8 = 0;
-    this->unk2dc = 0;
+    this->unknownDword2D8 = 0;
+    this->resetOnlyFadeState2DC = 0;
     this->fadeOutActive = FALSE;
 
     for (int i = 0; i < ARRAY_SIZE_SIGNED(this->fileData); i++)
@@ -359,7 +359,7 @@ void MidiOutput::LoadTracks()
     MidiTrack *track = this->tracks;
 
     this->fadeOutVolumeMultiplier = 1.0;
-    this->unk2dc = 0;
+    this->resetOnlyFadeState2DC = 0;
     this->fadeOutActive = FALSE;
     this->elapsedMillisecondsAtCurrentTempo = 0;
     this->elapsedTicksBeforeTempoChange = 0;
@@ -450,7 +450,7 @@ ZunResult MidiOutput::SetFadeOut(u32 ms)
     this->fadeOutVolumeMultiplier = 0.0;
     this->fadeOutDurationMs = ms;
     this->fadeOutElapsedMs = 0;
-    this->unk2dc = 0;
+    this->resetOnlyFadeState2DC = 0;
     this->fadeOutActive = TRUE;
 
     return ZUN_SUCCESS;

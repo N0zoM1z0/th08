@@ -2305,6 +2305,43 @@ anonymous-identifier, and 44 opaque-storage candidates.  This five-candidate
 drop reflects names made explicit in the replay protocol; it is not a semantic
 completion percentage.
 
+### Result and score persistence tails — 2026-08-27
+
+Scope: `ResultScreen::AddedCallback @ 0x0045964D`,
+`TitleScreen::OnUpdateReplayMenu @ 0x0046E136`, and the serialized `Hscr` and
+`Catk` score chapters.
+
+The ResultScreen dword at `+0x20` is cleared immediately before `OpenScore` and
+has no observed reader, so it is `scoreLoadResetWord20`; the VM at `+0x10EF8`
+has only its active sprite reset to -1 and is `resetOnlyVm10EF8`.  Two completely
+unconsumed ResultScreen dwords remain explicitly classified as such.  The
+TitleScreen dword at `+0xC284` is cleared after replay-file enumeration and has
+no later consumer, giving it the bounded `replayEnumerationResetState` name;
+the unaccessed `+0x14` dword is not assigned a menu meaning.
+
+`Hscr` and `Catk` are copied as complete score.dat chapters, so their residual
+bytes cannot be discarded merely because gameplay does not read them.  The
+alignment byte before `Hscr::cfg` and final byte are named reserved serialized
+storage, the `+0x6C` Hscr dword and `+0x228` Catk tail remain unconsumed, and
+`Hscr + 0x166` is `defaultScoreMarker` because the synthetic leaderboard
+records are its sole producer and write 1.  This does not claim a load-time
+consumer that the authored corpus does not contain.  Assertions pin every
+renamed owner and serialized offset.
+
+VC7 oracle: focused replay of ResultScreen, ScoreDat, TitleScreen, and
+GameManager passes **113 / 113 exact**.  The required single-job cold build of
+all 75 comparison objects passes **1,106 / 1,106 exact**, and the normal VC7
+production image links.  In particular, the current
+`TitleScreen::RegisterChain @ 0x0047146D` source independently replays **281 /
+281 exact**; the old 1105-era blocker snapshot is no longer current.
+
+Portable oracle: the complete i386 Linux container build links, and its ELF32
+and fixed-layout verifier passes.  The only authored row not represented by an
+accepted exact unit is now `ReplayManager::PlaybackExtendedInputAndFps @
+0x004526C0` (361 bytes), because it has no configured match unit; it is not a
+reported byte mismatch.  That ledger gap remains a separate bounded Oracle
+task.
+
 ### ScreenEffect lifecycle and visual modes — 2026-08-27
 
 Scope: `CalcFadeHold @ 0x0045B800`, `RegisterChain @ 0x0045B8B0`,
@@ -3337,3 +3374,182 @@ plus 5 opaque ranges to 1 alignment identifier plus 3 evidence-limited opaque
 ranges; that is a review-routing delta, not a semantic completion percentage.
 No replay byte, pointer fixup, stream extent, checksum/obfuscation operation,
 constructor call, field offset, or accepted unit changed.
+
+### Presentation and audio residual-state classification — 2026-08-27
+
+Scope: ANM frame diagnostics and serialized records, Ascii gauge VMs, the
+DirectSound queue metadata lane, and the MIDI output object's remaining
+constructor/reset-only fields.
+
+`AnmManager + 0x0C` is now `scriptsStartedThisFrame`: every successful
+`AnmLoaded::SetAndExecuteScript` increments it and `ResetFrameDebugInfo` clears
+it alongside the established execution/render/flush counters.  The ANM VM at
+`+0x1C64` has no observed consumer and is therefore `unconsumedVm1C64` rather
+than being assigned a speculative rendering role.  Unconsumed fields in the
+on-disk `AnmRawEntry`/`AnmTextureHeader` records and `AnmLoadedSprite` likewise
+retain neutral offset-bearing names, with their sizes and offsets asserted.
+
+Ascii script 9 is loaded into `auxiliaryGaugeVm @ +0x1520` and executed every
+frame.  That establishes its ownership by the gauge group, but not which
+specific artwork it represents; the name deliberately stops at the strongest
+available evidence.  The dword at `+0x829C` is only zeroed by `Reset`, so it is
+classified as `resetOnlyState829C`.  Sound-buffer table metadata is copied to
+a per-sound array when a queue request is accepted but has no authored reader,
+and the startup BGM attenuation curve is written without a current consumer.
+Both lanes are now explicitly `unconsumed` instead of pretending their values
+affect the reconstructed playback path.
+
+The MIDI byte array at `+0x144` is structurally per-channel, while the remaining
+dwords have no evidence-backed purpose.  The field at `+0x2DC` is cleared by
+construction, track loading, and fade-out setup, which supports only the
+`resetOnlyFadeState2DC` protocol.  No MIDI event, channel meaning, or fade
+calculation is inferred from those writes.
+
+VC7 oracle: focused replay of AnmManager, AsciiManager, AsciiManagerGauge,
+SoundPlayer, Midi, and Supervisor passes **259 / 259 exact**.  Because these
+changes touch shared layouts, the required single-job cold build of all 75
+comparison objects passes **1,106 / 1,106 exact** with zero failures, and the
+normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and fixed target-owned layout
+symbols.  The heuristic debt router now reports zero raw-member accesses and
+zero absolute-address field views repository-wide; its remaining unknown and
+opaque entries are evidence-routing leads, not failed exact units or a semantic
+completion percentage.
+
+### Supervisor and residual layout-state classification — 2026-08-27
+
+Scope: the serialized `GameConfiguration` tail, Supervisor timer and title-entry
+state, `RawStageHeader`, Background alignment, and the remaining neutral fields
+in ScreenEffect and Spellcard.
+
+The 60-byte configuration record is copied from disk and written back as one
+complete aggregate.  Its unreferenced `+0x29..+0x37` bytes are therefore named
+`serializedReserved29`, without assigning them an option meaning.  Assertions
+pin the record size, reserved range, and `opts @ +0x38`.  Supervisor flag bit 5
+is read only by `ZunTimer::Increment` and `Decrement`, where it first advances
+one whole frame and resets fractional history before the ordinary timer step.
+It is now `forceExtraTimerStep`.  The ECL scaled-time exit path's direct
+`g_EclGameTimeScaleFlags` access still retains its target-visible global
+identity, but its bit-5 write aliases the same target word and independently
+corroborates the timer behavior.
+
+Target `Supervisor::ClearRecordingFpsWarningState @ 0x00470DD5` clears the
+recording warning and four otherwise unconsumed dwords in the exact observed
+order `+0x338,+0x340,+0x34C,+0x344,+0x348`.  The former anonymous method and
+all mapping, implementation, accepted-match, relocation, and decorated-symbol
+identities moved together.  The four trailing fields stop at the strongest
+available evidence as `resetOnlyDword*`; the unused `+0x170` dword and
+`+0x304..+0x337` range remain explicitly `unconsumed`.  The two-byte gap after
+`recordedFps` is ordinary alignment and is now compiler-owned, with
+`textAnm @ +0x19C` asserted.
+
+The on-disk stage header dword at `+0x0C` has no authored consumer and is named
+`unconsumedDword0C`.  Four three-byte Background gaps are proven by the
+following four-byte-aligned members and are now implicit C++ padding rather
+than fictitious unknown state; the following timer, spell state, tint, and
+special-effect offsets remain asserted.  `ScreenEffect +0x0C` and
+`Spellcard +0x044..+0x073` likewise remain neutral `unconsumed` storage.  In
+particular, adjacent-game source and TH08 call sites do not prove that the
+Spellcard range contains an owner name: TH08 decodes the owner into a local
+buffer and copies it directly into CATK instead.
+
+VC7 oracle: focused replay across Supervisor, TitleScreen, Background,
+ScreenEffect, SpellCard, and EclExIns passes **188 / 188 exact**, including the
+renamed Supervisor clear helper at **59 / 59**.  Because the batch changes
+shared PCH layouts, the required single-job non-reuse cold build of all 75
+comparison objects passes **1,106 / 1,106 exact** with zero failures, and the
+normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  The review-only semantic router moves from 54 to 40 anonymous
+identifiers and from 37 to 32 opaque ranges; these are routing deltas, not a
+semantic-completion percentage.  No configuration byte, timer branch, field
+width, serialized extent, aggregate size, target address, or accepted-unit
+count changed.
+
+### Bullet transform payload and residual storage closure — 2026-08-27
+
+Scope: `Bullet::AdvanceTransformProgram @ 0x0042FFC0`, ECL opcode 111 inside
+`EclManager::RunEcl @ 0x004184B0`, the shot descriptor producer at
+`0x00422720`, bullet spawn/setup at `0x0042F5F0` and `0x00433070`, and the
+shared Bullet/Laser layouts.
+
+Opcode 111 still writes one generic four-value transform payload because its
+meaning is selected later by the record's `kind`.  That on-wire/raw view is now
+one member of `BulletTransformPayload`; `AdvanceTransformProgram` uses tagged
+views for vector acceleration, polar acceleration, direction changes, boundary
+bounces, timed wrap/wait, cull delay, sprite selection, positioned sound, and
+the two-record child-pattern descriptor.  The role-specific names come from
+the exact consumers and retain the same four 32-bit slots.  This supersedes the
+earlier decision to expose `float0/float1/int0/int1` at every consumer while
+preserving those names only at the generic ECL write boundary.
+
+The remaining Bullet-family bytes stop at observed behavior.  Descriptor word
+`+0x1FA` is explicitly cleared before spawn but has no reader and is therefore
+`unconsumedWord1FA`.  `BulletTypeSprites +0xD40` is copied from template to
+live bullet but has no producer beyond aggregate zeroing; `Bullet +0xDBC` is
+set to one at spawn and has no consumer.  They are now
+`unconsumedTemplateByteD40` and `unconsumedSpawnMarkerDBC`, not guessed flags.
+The template's `+0xD41` byte is independently written from the loaded sprite
+height and is now `spriteHeightPx`.  Unaccessed Bullet dword ranges retain
+their exact extents as `unconsumed` storage, while the one- to three-byte
+structure tails are explicitly named alignment.  The constructor-visible
+`Float3 @ +0xD5C` remains typed and is merely renamed `unconsumedVectorD5C`.
+
+Layout assertions pin the 0x10-byte tagged payload, 0x18-byte transform record,
+0x210-byte spawn descriptor, 0xD44-byte sprite template, 0x59C-byte Laser, and
+0x10B8-byte Bullet together with every newly classified offset.  No field
+width, constructor-bearing member, array count, or aggregate extent changed.
+
+VC7 oracle: focused replay passes **94 / 94 exact** across BulletManager,
+EclDependencies, and EclExIns, and the separately rebuilt EclRun owner passes
+**1 / 1 exact**, including the complete code-plus-table `RunEcl` comparison.
+The required single-job non-reuse cold build of all 75 comparison objects then
+passes **1,106 / 1,106 exact** with zero failures, and the normal VC7
+production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  `BulletManager.hpp/.cpp` now has zero candidates in all four
+review-router categories; repository-wide anonymous/opaque routing moves from
+40/32 to 30/25.  Those counts are review aids, not completion percentages.  No
+transform opcode, branch, sound, spawn pattern, target byte, relocation,
+accepted-unit identity, or exact total changed.
+
+### Enemy residual layout-state classification — 2026-08-27
+
+Scope: the shared `Enemy` and `EnemyManager` layouts and their exact consumers
+in EnemyManager, EnemyManagerUpdate, EclRun, EclDependencies, EclExIns, Gui,
+and SpellCard.
+
+The unassigned low bit and upper 23 bits of `EnemyFlag2Bits` have no authored
+reader or writer beyond whole-word flag operations, so they remain neutral
+`reserved` bits rather than receiving speculative gameplay meanings.  The
+two words at `Enemy +0x2CEC` and `+0x332C`, and the manager dwords at
+`+0x9DCDC8` and `+0x9DCEF4`, likewise have no independent producer or consumer
+beyond aggregate clearing/copying and are now explicitly `unconsumed` storage.
+
+The ranges at `Enemy +0x2D32`, `+0x3315`, `+0x3331`, `+0x333E`, and `+0x534D`
+are structural alignment before the following position, timer, ANM-script,
+movement-bound, and trail-length fields.  They remain explicit byte arrays
+because the target-visible Enemy aggregate-copy source shape depends on those
+bytes being members.  Offset assertions pin every classified range and all
+following semantic fields; no width, bit position, aggregate extent, or copy
+boundary changed.
+
+VC7 oracle: focused replay across the seven affected comparison objects passes
+**171 / 171 exact**.  Because `EnemyManager.hpp` is shared through the PCH, the
+required single-job non-reuse cold build of all 75 comparison objects passes
+**1,106 / 1,106 exact** with zero failures, and the normal VC7 production image
+links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  `EnemyManager.hpp` now has zero candidates in all four
+review-router categories; repository-wide anonymous/opaque routing moves from
+30/25 to 29/16.  Those counts remain review aids, not completion percentages.
+No enemy behavior, ECL dispatch, target address, relocation, accepted-unit
+identity, or exact total changed.

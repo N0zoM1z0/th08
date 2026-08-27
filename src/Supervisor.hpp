@@ -79,11 +79,14 @@ struct GameConfiguration
     u8 shotSlow;
     i8 musicVolume;
     i8 sfxVolume;
-    i8 unk29[15];
+    i8 serializedReserved29[15];
     GameConfigOpts opts;
 };
+C_ASSERT(sizeof(GameConfiguration) == 0x3C);
 C_ASSERT(offsetof(GameConfiguration, lifeCount) == 0x1C);
 C_ASSERT(offsetof(GameConfiguration, slowMode) == 0x25);
+C_ASSERT(offsetof(GameConfiguration, serializedReserved29) == 0x29);
+C_ASSERT(offsetof(GameConfiguration, opts) == 0x38);
 
 struct SupervisorFlags
 {
@@ -92,7 +95,7 @@ struct SupervisorFlags
     u32 using32BitGraphics : 1;
     u32 speedhackDetected : 1; // Leftover from PCB. Is never set in IN, but is used.
     u32 d3dDevDisconnectFlag : 1;
-    u32 unk5 : 1;
+    u32 forceExtraTimerStep : 1;
     u32 dummyMidiTimerEnabled : 1;
     u32 receivedCloseMsg : 1;
     u32 scoreBackupPending : 1;
@@ -173,13 +176,13 @@ struct Supervisor
 
     ZunResult ThreadStart(LPTHREAD_START_ROUTINE startFunction, void *startParam);
 
-    void ResetUnknownStuff()
+    void ClearRecordingFpsWarningState()
     {
         this->recordingFpsWarning = 0;
-        this->unk0x340 = 0;
-        this->unk0x34c = 0;
-        this->unk0x344 = 0;
-        this->unk0x348 = 0;
+        this->resetOnlyDword340 = 0;
+        this->resetOnlyDword34C = 0;
+        this->resetOnlyDword344 = 0;
+        this->resetOnlyDword348 = 0;
     }
 
     ZunBool IsShotSlowEnabled()
@@ -292,7 +295,7 @@ struct Supervisor
     i32 isInitialStageLoad;
     i32 releaseResourcesOnRestart;
     i32 keepStageResources;
-    i32 unk170;
+    i32 unconsumedDword170;
     i32 screenTransitionCountdown; // Commonly set for screen transitions and decremented once per frame, but never actually used for
                 // anything
     i32 suppressFpsDisplay;
@@ -304,7 +307,6 @@ struct Supervisor
     float lagNumerator;
     float lagDenominator;
     i16 recordedFps;
-    u16 padding19a;
     AnmLoaded *textAnm;
     AnmLoaded *loadingAnm;
     SupervisorFlags flags;
@@ -322,14 +324,14 @@ struct Supervisor
 
     // Target-observed FPS timing denominator at Supervisor + 0x300.
     u32 fpsPerformanceFrequency;
-    unknown_fields(0x304, 0x34);
+    u8 unconsumedStorage304[0x34];
 
     u32 recordingFpsWarning;
     u32 playbackFpsWarning;
-    u32 unk0x340;
-    u32 unk0x344;
-    u32 unk0x348;
-    u32 unk0x34c;
+    u32 resetOnlyDword340;
+    u32 resetOnlyDword344;
+    u32 resetOnlyDword348;
+    u32 resetOnlyDword34C;
 
     FogState fogState;
     u32 exeChecksum;
@@ -345,12 +347,16 @@ C_ASSERT(offsetof(Supervisor, keepStageResources) == 0x16c);
 C_ASSERT(offsetof(Supervisor, suppressFpsDisplay) == 0x178);
 C_ASSERT(offsetof(Supervisor, framerateMultiplier) == 0x188);
 C_ASSERT(offsetof(Supervisor, recordedFps) == 0x198);
+C_ASSERT(offsetof(Supervisor, textAnm) == 0x19c);
 C_ASSERT(offsetof(Supervisor, flags) == 0x1a4);
 C_ASSERT(offsetof(Supervisor, loadingVmsHaveBeenSetup) == 0x2fc);
 C_ASSERT(offsetof(Supervisor, subthreadActive) == 0x290);
 C_ASSERT(offsetof(Supervisor, startupThreadState) == 0x294);
+C_ASSERT(offsetof(Supervisor, unconsumedStorage304) == 0x304);
 C_ASSERT(offsetof(Supervisor, recordingFpsWarning) == 0x338);
 C_ASSERT(offsetof(Supervisor, playbackFpsWarning) == 0x33c);
+C_ASSERT(offsetof(Supervisor, resetOnlyDword340) == 0x340);
+C_ASSERT(offsetof(Supervisor, resetOnlyDword34C) == 0x34c);
 DIFFABLE_EXTERN(Supervisor, g_Supervisor);
 
 #define CRASH_GAME() memset(&g_Supervisor, -1, sizeof(g_Supervisor))

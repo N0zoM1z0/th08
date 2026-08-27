@@ -182,7 +182,7 @@ struct Catk
     char spellCommentLine2[64];
     CatkHistory inGameHistory;
     CatkHistory spellPracticeHistory;
-    i32 unk0x228;
+    i32 unconsumedTailDword228;
 
     ZunBool WasAttemptedWithShot(i32 shotType);
 };
@@ -190,6 +190,7 @@ struct Catk
 C_ASSERT(sizeof(Catk) == 0x22c);
 C_ASSERT(offsetof(Catk, historyChecksum) == 0xe);
 C_ASSERT(offsetof(Catk, inGameHistory) == 0xf0);
+C_ASSERT(offsetof(Catk, unconsumedTailDword228) == 0x228);
 
 struct Clrd
 {
@@ -227,11 +228,11 @@ struct Hscr
     char name[9];
     char date[6];
     i8 numRetries;
-    u8 unk0x27;
+    u8 reserved27;
     GameConfiguration cfg;
     i32 playtimeFrames;
     i32 numPointItemsCollected;
-    i32 unk_6c;
+    i32 unconsumedDword6C;
     i32 numDeaths;
     i32 numBombsUsed;
     i32 numLastSpells;
@@ -239,11 +240,15 @@ struct Hscr
     i32 numTimeOrbsCollected;
     i32 humanityRate;
     u8 spellCounters[SPELLCARD_COUNT_SPELLCARDS];
-    u8 unk0x166;
-    u8 unk0x167;
+    u8 defaultScoreMarker;
+    u8 reservedTail167;
 };
 
 C_ASSERT(sizeof(Hscr) == 0x168);
+C_ASSERT(offsetof(Hscr, reserved27) == 0x27);
+C_ASSERT(offsetof(Hscr, unconsumedDword6C) == 0x6C);
+C_ASSERT(offsetof(Hscr, defaultScoreMarker) == 0x166);
+C_ASSERT(offsetof(Hscr, reservedTail167) == 0x167);
 
 struct Lsnm
 {

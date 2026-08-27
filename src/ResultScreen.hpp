@@ -114,8 +114,8 @@ struct ResultScreen
     ResultScreenState previousState;
     i32 statePhaseTimer;
     i32 cursor;
-    i32 unk0x20; // is set to 0 when loading the score, never used
-    i32 unk0x24; // unused
+    i32 scoreLoadResetWord20;
+    i32 unconsumedDword24;
     i32 selectedReplay;
     i32 keyboardSelection;
     i32 shotTypeCursor;
@@ -139,13 +139,13 @@ struct ResultScreen
 
     AnmVm spriteVms[72];
     AnmVm textVms[30];
-    AnmVm unk_10ef8; // unused here and in PCB
+    AnmVm resetOnlyVm10EF8;
     AnmVm listingDividerSprite;
 
     AnmLoaded *resultAnm;
     AnmLoaded *resultTextAnm;
 
-    u32 unk0x11448; // unused
+    u32 unconsumedDword11448;
 
     ScoreListNode scores[MAX_DIFFICULTIES][SHOT_ALL];
     Hscr defaultScore[MAX_DIFFICULTIES][SHOT_ALL][MAX_STAGES_AND_LAST_WORD];
@@ -163,9 +163,12 @@ struct ResultScreen
 C_ASSERT(sizeof(ResultScreen) == 0x477b0);
 C_ASSERT(offsetof(ResultScreen, statePhase) == 0x10);
 C_ASSERT(offsetof(ResultScreen, statePhaseTimer) == 0x18);
+C_ASSERT(offsetof(ResultScreen, scoreLoadResetWord20) == 0x20);
 C_ASSERT(offsetof(ResultScreen, keyboardSelection) == 0x2c);
 C_ASSERT(offsetof(ResultScreen, hasSavedLastName) == 0x50);
 C_ASSERT(offsetof(ResultScreen, isExitingSpellcardResults) == 0x54);
 C_ASSERT(offsetof(ResultScreen, lastDisplayedTotalSeconds) == 0x19c);
+C_ASSERT(offsetof(ResultScreen, resetOnlyVm10EF8) == 0x10EF8);
+C_ASSERT(offsetof(ResultScreen, unconsumedDword11448) == 0x11448);
 
 }; // namespace th08

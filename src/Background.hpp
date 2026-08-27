@@ -21,12 +21,13 @@ struct RawStageHeader
     i16 quadCount;
     i32 objectInstancesOffset;
     i32 scriptOffset;
-    i32 unknown0C;
+    i32 unconsumedDword0C;
     char stageName[128];
     char songNames[4][128];
     char songPaths[4][128];
 };
 C_ASSERT(sizeof(RawStageHeader) == 0x490);
+C_ASSERT(offsetof(RawStageHeader, unconsumedDword0C) == 0x0C);
 C_ASSERT(offsetof(RawStageHeader, songNames) == 0x90);
 C_ASSERT(offsetof(RawStageHeader, songPaths) == 0x290);
 
@@ -111,7 +112,6 @@ struct Background
     Float3 stagePosition;
     D3DCOLOR clearColor;
     u8 stageTextUsesYoukaiMode;
-    unknown_fields(0x835, 3);
     ZunTimer stageTextTimer;
     AnmVm stageTextVm;
     Effect *stageEffect;
@@ -121,7 +121,6 @@ struct Background
     i32 skyFogInterpDuration;
     ZunTimer skyFogInterpTimer;
     u8 skyFogNeedsSetup;
-    unknown_fields(0xb21, 0x3);
     i32 spellBackgroundState;
     i32 spellBackgroundTimer;
     i32 clearPending;
@@ -144,12 +143,10 @@ struct Background
     Float3 stagePositionInitial;
     i32 stagePositionStartFrame;
     u8 compensateCameraJump;
-    unknown_fields(0x6465, 3);
     ZunColor tint;
     i32 retainTint;
     f32 cullingDistanceSq;
     u8 cameraMotionMode;
-    unknown_fields(0x6475, 3);
     i32 specialEffectPointCount;
     i32 collectSpecialEffectPoints;
     Float3 specialEffectPoints[0x20];
@@ -160,6 +157,7 @@ C_ASSERT(offsetof(Background, stageScriptInstructionIndex) == 0x818);
 C_ASSERT(offsetof(Background, stagePosition) == 0x824);
 C_ASSERT(offsetof(Background, clearColor) == 0x830);
 C_ASSERT(offsetof(Background, stageTextUsesYoukaiMode) == 0x834);
+C_ASSERT(offsetof(Background, stageTextTimer) == 0x838);
 C_ASSERT(offsetof(Background, stageEffect) == 0xAE8);
 C_ASSERT(offsetof(Background, skyFog) == 0xAEC);
 C_ASSERT(offsetof(Background, spellBackgroundState) == 0xB24);
@@ -173,6 +171,7 @@ C_ASSERT(offsetof(Background, cameraInterpolationDuration) == 0x63E0);
 C_ASSERT(offsetof(Background, stagePositionTarget) == 0x6444);
 C_ASSERT(offsetof(Background, tint) == 0x6468);
 C_ASSERT(offsetof(Background, cullingDistanceSq) == 0x6470);
+C_ASSERT(offsetof(Background, specialEffectPointCount) == 0x6478);
 C_ASSERT(offsetof(Background, specialEffectPoints) == 0x6480);
 
 DIFFABLE_EXTERN(Background, g_Background);

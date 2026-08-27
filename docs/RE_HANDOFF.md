@@ -1794,3 +1794,63 @@ Focused Replay replay passes **18 / 18 exact**, the required non-reuse cold
 aggregate passes **1,106 / 1,106 exact**, the normal VC7 image links, and the
 complete i386 Linux build plus fixed-layout verifier pass.  This is a bounded
 semantic checkpoint, not a whole-program semantic-completion claim.
+
+PR #2 merged the first semantic reconstruction phase into `main` as merge
+commit `4fb955225ff9621d2eaa5ff2113a709ff5576407`; the continuing
+`semantic/typed-reconstruction` branch was then fast-forwarded from that exact
+mainline state.  The next checkpoint classifies residual ANM/Ascii/Sound/MIDI
+state without inventing consumers.  ANM `+0x0C` is proven to count scripts
+started during the frame, Ascii script 9 belongs to an auxiliary gauge VM, and
+several Sound/MIDI fields are now explicitly marked unconsumed or reset-only
+where the authored corpus supplies no stronger behavior.  Serialized ANM
+unknowns retain neutral offset-bearing names and layout assertions.
+
+Focused replay across the six affected production objects passes **259 / 259
+exact**.  The required non-reuse cold aggregate passes **1,106 / 1,106 exact**,
+the normal VC7 image links, and the complete i386 Linux container build plus
+fixed-layout verifier pass.  Continue treating the remaining heuristic
+anonymous/opaque list as evidence-routing work: it is neither an exactness
+regression nor proof that every residual byte has a recoverable semantic name.
+
+The following score/result checkpoint classifies the remaining ResultScreen,
+TitleScreen replay-enumeration, `Hscr`, and `Catk` tail state.  Reset-only and
+unconsumed runtime fields are named only for their observed protocols, while
+serialized alignment/tail bytes remain explicit reserved storage.  The byte at
+`Hscr + 0x166` is now `defaultScoreMarker`: only the synthetic leaderboard
+producer writes it, and no unobserved consumer is claimed.  All renamed owner
+offsets are asserted.
+
+Focused replay across ResultScreen, ScoreDat, TitleScreen, and GameManager
+passes **113 / 113 exact**; cold aggregate replay passes **1,106 / 1,106
+exact**; the normal VC7 image and complete i386 Linux image both link; and the
+Linux fixed-layout verifier passes.  `TitleScreen::RegisterChain @ 0x0047146D`
+is currently **281 / 281 exact** under the repository Oracle.  The sole
+authored/non-accepted row is instead
+`ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0` (361 bytes), which
+has no configured match unit.  Treat adding and proving that unit as a
+separate Oracle-ledger closure task, not as evidence of a current mismatch.
+
+The current Bullet residual checkpoint replaces generic transform payload
+reads with kind-specific union views while preserving opcode 111's generic raw
+write boundary.  Descriptor `+0x1FA`, template `+0xD40`, live-bullet `+0xDBC`,
+and the remaining unaccessed ranges are classified only as unconsumed or
+alignment storage; sprite height `+0xD41` is named from its exact loaded-sprite
+producer.  `BulletManager.hpp/.cpp` now has zero semantic-router candidates.
+Focused replay passes **94 / 94** across BulletManager/EclDependencies/EclExIns
+plus **1 / 1** for EclRun; the cold aggregate passes **1,106 / 1,106 exact**;
+the normal VC7 image and complete Linux i386 image link; and the Linux fixed-
+layout verifier passes.  Continue with Enemy/ANM residual storage without
+weakening the sole Replay near-match blocker.
+
+The Enemy residual checkpoint classifies the remaining flag bits, neutral
+words/dwords, and structural alignment ranges in the shared `Enemy` and
+`EnemyManager` layouts without inventing gameplay meanings.  Explicit
+alignment arrays are retained where removing them would alter the
+target-visible Enemy aggregate-copy source shape, and every classified range
+is offset-asserted.  Focused replay across EnemyManager, EnemyManagerUpdate,
+EclRun, EclDependencies, EclExIns, Gui, and SpellCard passes **171 / 171
+exact**; the required cold aggregate passes **1,106 / 1,106 exact**; the normal
+VC7 image and complete Linux i386 image link; and the Linux fixed-layout
+verifier passes.  `EnemyManager.hpp` now has no semantic-router candidates.
+Continue with the ANM residual family while preserving the sole Replay
+near-match as a separately documented Oracle limitation.

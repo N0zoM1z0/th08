@@ -779,11 +779,12 @@ void Supervisor::StartupThread(Supervisor *s)
         bgmVolume *= bgmVolume;
         bgmVolume = (1.0f - bgmVolume);
 
-        g_SoundPlayer.unkVolume = ((int)(SOUNDPLAYER_VOLUME_RANGE * bgmVolume)) - SOUNDPLAYER_VOLUME_RANGE;
+        g_SoundPlayer.unconsumedBgmAttenuation =
+            ((int)(SOUNDPLAYER_VOLUME_RANGE * bgmVolume)) - SOUNDPLAYER_VOLUME_RANGE;
     }
     else
     {
-        g_SoundPlayer.unkVolume = SOUNDPLAYER_SILENT_VOLUME;
+        g_SoundPlayer.unconsumedBgmAttenuation = SOUNDPLAYER_SILENT_VOLUME;
     }
 
     if (g_SoundPlayer.bgmFileBaseOffset == 0)
@@ -1154,7 +1155,7 @@ calculateFps:
 
 void ZunTimer::Increment(int value)
 {
-    if (g_Supervisor.flags.unk5 != 0)
+    if (g_Supervisor.flags.forceExtraTimerStep != 0)
     {
         this->current++;
         this->subFrame = 0.0f;
@@ -1185,7 +1186,7 @@ void ZunTimer::Increment(int value)
 
 void ZunTimer::Decrement(int value)
 {
-    if (g_Supervisor.flags.unk5 != 0)
+    if (g_Supervisor.flags.forceExtraTimerStep != 0)
     {
         this->current--;
         this->subFrame = 0.0f;

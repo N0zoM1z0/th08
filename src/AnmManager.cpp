@@ -77,7 +77,7 @@ void AnmLoaded::SetAndExecuteScript(AnmVm *vm, AnmRawInstr *beginningOfScript)
         vm->currentTimeInScript = 0;
         vm->visible = FALSE;
         g_AnmManager->ExecuteScript(vm);
-        g_AnmManager->unk0xc++;
+        g_AnmManager->scriptsStartedThisFrame++;
     }
 }
 

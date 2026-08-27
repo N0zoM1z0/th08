@@ -786,7 +786,7 @@ void __fastcall DispatchShotInstruction(u8 *enemy, RawInstruction *instruction)
                     descriptor->speed2 = 0.3f;
             }
 
-            descriptor->unknown1FA = 0;
+            descriptor->unconsumedWord1FA = 0;
             descriptor->transformFlags = args->transformFlags;
             packed = args->color;
             descriptor->color = (instruction->operandFlags & 2)
