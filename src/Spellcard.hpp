@@ -299,7 +299,7 @@ struct Spellcard
     i32 activeEnemyIndexSnapshot;    // +0x00C
     i32 pendingTimeOrbs;             // +0x010
     char spellName[48];              // +0x014
-    u8 unknown_044[0x30];            // +0x044
+    u8 unconsumedStorage044[0x30];    // +0x044
     char spellCommentLine1[64];      // +0x074
     char spellCommentLine2[64];      // +0x0B4
     Effect *spellEffect;             // +0x0F4

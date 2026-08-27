@@ -54,7 +54,7 @@ struct ScreenEffect
     ScreenEffectType type;
     ChainElem *calcChainElement;
     ChainElem *drawChainElement;
-    i32 unk0c;
+    i32 unconsumedDword0C;
     i32 overlayAlpha;
     i32 duration;
     D3DCOLOR rawParameter0;
@@ -66,6 +66,7 @@ struct ScreenEffect
 
 C_ASSERT(sizeof(ScreenEffect) == 0x34);
 C_ASSERT(offsetof(ScreenEffect, type) == 0x0);
+C_ASSERT(offsetof(ScreenEffect, unconsumedDword0C) == 0x0C);
 C_ASSERT(offsetof(ScreenEffect, overlayAlpha) == 0x10);
 C_ASSERT(offsetof(ScreenEffect, rawParameter0) == 0x18);
 C_ASSERT(offsetof(ScreenEffect, fadeReleaseRequested) == 0x24);

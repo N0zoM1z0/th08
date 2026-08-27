@@ -1155,7 +1155,7 @@ calculateFps:
 
 void ZunTimer::Increment(int value)
 {
-    if (g_Supervisor.flags.unk5 != 0)
+    if (g_Supervisor.flags.forceExtraTimerStep != 0)
     {
         this->current++;
         this->subFrame = 0.0f;
@@ -1186,7 +1186,7 @@ void ZunTimer::Increment(int value)
 
 void ZunTimer::Decrement(int value)
 {
-    if (g_Supervisor.flags.unk5 != 0)
+    if (g_Supervisor.flags.forceExtraTimerStep != 0)
     {
         this->current--;
         this->subFrame = 0.0f;

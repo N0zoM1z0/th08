@@ -56,7 +56,7 @@ th08::TitleScreen::MoveCursorVertical
 th08::TitleScreen::MoveCursorHorizontal
 th08::TitleScreen::OnDraw
 th08::TitleScreen::ActualAddedCallback
-th08::Supervisor::ResetUnknownStuff
+th08::Supervisor::ClearRecordingFpsWarningState
 th08::TitleScreen::TitleSetupThread
 th08::TitleScreen::DisplayInfoImage
 th08::TitleScreen::Release

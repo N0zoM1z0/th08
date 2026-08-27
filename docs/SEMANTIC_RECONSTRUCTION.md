@@ -3417,3 +3417,55 @@ symbols.  The heuristic debt router now reports zero raw-member accesses and
 zero absolute-address field views repository-wide; its remaining unknown and
 opaque entries are evidence-routing leads, not failed exact units or a semantic
 completion percentage.
+
+### Supervisor and residual layout-state classification — 2026-08-27
+
+Scope: the serialized `GameConfiguration` tail, Supervisor timer and title-entry
+state, `RawStageHeader`, Background alignment, and the remaining neutral fields
+in ScreenEffect and Spellcard.
+
+The 60-byte configuration record is copied from disk and written back as one
+complete aggregate.  Its unreferenced `+0x29..+0x37` bytes are therefore named
+`serializedReserved29`, without assigning them an option meaning.  Assertions
+pin the record size, reserved range, and `opts @ +0x38`.  Supervisor flag bit 5
+is read only by `ZunTimer::Increment` and `Decrement`, where it first advances
+one whole frame and resets fractional history before the ordinary timer step.
+It is now `forceExtraTimerStep`.  The ECL scaled-time exit path's direct
+`g_EclGameTimeScaleFlags` access still retains its target-visible global
+identity, but its bit-5 write aliases the same target word and independently
+corroborates the timer behavior.
+
+Target `Supervisor::ClearRecordingFpsWarningState @ 0x00470DD5` clears the
+recording warning and four otherwise unconsumed dwords in the exact observed
+order `+0x338,+0x340,+0x34C,+0x344,+0x348`.  The former anonymous method and
+all mapping, implementation, accepted-match, relocation, and decorated-symbol
+identities moved together.  The four trailing fields stop at the strongest
+available evidence as `resetOnlyDword*`; the unused `+0x170` dword and
+`+0x304..+0x337` range remain explicitly `unconsumed`.  The two-byte gap after
+`recordedFps` is ordinary alignment and is now compiler-owned, with
+`textAnm @ +0x19C` asserted.
+
+The on-disk stage header dword at `+0x0C` has no authored consumer and is named
+`unconsumedDword0C`.  Four three-byte Background gaps are proven by the
+following four-byte-aligned members and are now implicit C++ padding rather
+than fictitious unknown state; the following timer, spell state, tint, and
+special-effect offsets remain asserted.  `ScreenEffect +0x0C` and
+`Spellcard +0x044..+0x073` likewise remain neutral `unconsumed` storage.  In
+particular, adjacent-game source and TH08 call sites do not prove that the
+Spellcard range contains an owner name: TH08 decodes the owner into a local
+buffer and copies it directly into CATK instead.
+
+VC7 oracle: focused replay across Supervisor, TitleScreen, Background,
+ScreenEffect, SpellCard, and EclExIns passes **188 / 188 exact**, including the
+renamed Supervisor clear helper at **59 / 59**.  Because the batch changes
+shared PCH layouts, the required single-job non-reuse cold build of all 75
+comparison objects passes **1,106 / 1,106 exact** with zero failures, and the
+normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  The review-only semantic router moves from 54 to 40 anonymous
+identifiers and from 37 to 32 opaque ranges; these are routing deltas, not a
+semantic-completion percentage.  No configuration byte, timer branch, field
+width, serialized extent, aggregate size, target address, or accepted-unit
+count changed.

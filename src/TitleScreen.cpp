@@ -3731,7 +3731,7 @@ ZunResult TitleScreen::ActualAddedCallback()
     this->UnlockLastWordSpellCards();
     this->currentScreen = TitleCurrentScreen_StartMenu;
 
-    g_Supervisor.ResetUnknownStuff();
+    g_Supervisor.ClearRecordingFpsWarningState();
 
     switch (g_Supervisor.wantedState2)
     {

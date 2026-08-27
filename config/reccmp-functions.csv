@@ -1029,7 +1029,7 @@ th08::TitleScreen::MoveCursorHorizontal,0x470424,function
 th08::TitleScreen::DrawCompletionStatusText,0x47052d,function
 th08::TitleScreen::OnDraw,0x47087f,function
 th08::TitleScreen::ActualAddedCallback,0x470a6c,function
-th08::Supervisor::ResetUnknownStuff,0x470dd5,function
+th08::Supervisor::ClearRecordingFpsWarningState,0x470dd5,function
 th08::TitleScreen::TitleSetupThread,0x470e10,function
 th08::TitleScreen::DisplayInfoImage,0x471181,function
 th08::TitleScreen::Release,0x471400,function

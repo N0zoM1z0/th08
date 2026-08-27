@@ -390,7 +390,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00470424,th08::TitleScreen::MoveCursorHorizontal,265,matching,100.00,title-screen-roi-exact-00470424,python3 scripts/compare-function.py title-screen-roi-exact-00470424 --json
 0x0047087F,th08::TitleScreen::OnDraw,493,matching,100.00,title-screen-roi-exact-0047087f,python3 scripts/compare-function.py title-screen-roi-exact-0047087f --json
 0x00470A6C,th08::TitleScreen::ActualAddedCallback,873,matching,100.00,title-screen-roi-exact-00470a6c,python3 scripts/compare-function.py title-screen-roi-exact-00470a6c --json
-0x00470DD5,th08::Supervisor::ResetUnknownStuff,59,matching,100.00,title-screen-roi-exact-00470dd5,python3 scripts/compare-function.py title-screen-roi-exact-00470dd5 --json
+0x00470DD5,th08::Supervisor::ClearRecordingFpsWarningState,59,matching,100.00,title-screen-roi-exact-00470dd5,python3 scripts/compare-function.py title-screen-roi-exact-00470dd5 --json
 0x00470E10,th08::TitleScreen::TitleSetupThread,881,matching,100.00,title-screen-roi-exact-00470e10,python3 scripts/compare-function.py title-screen-roi-exact-00470e10 --json
 0x00471181,th08::TitleScreen::DisplayInfoImage,639,matching,100.00,title-screen-roi-exact-00471181,python3 scripts/compare-function.py title-screen-roi-exact-00471181 --json
 0x00471400,th08::TitleScreen::Release,109,matching,100.00,title-screen-roi-exact-00471400,python3 scripts/compare-function.py title-screen-roi-exact-00471400 --json
