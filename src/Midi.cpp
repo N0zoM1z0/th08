@@ -456,13 +456,13 @@ ZunResult MidiOutput::SetFadeOut(u32 ms)
     return ZUN_SUCCESS;
 }
 
-#pragma var_order(trackIndex, local_14, trackLoaded)
+#pragma var_order(trackIndex, currentPlaybackTick, trackLoaded)
 void MidiOutput::OnTimerElapsed()
 {
     BOOL trackLoaded = FALSE;
-    ULONGLONG local_14 = this->elapsedTicksBeforeTempoChange +
-                         (this->elapsedMillisecondsAtCurrentTempo * this->ticksPerQuarterNote * 1000) /
-                             this->microsecondsPerQuarterNote;
+    ULONGLONG currentPlaybackTick = this->elapsedTicksBeforeTempoChange +
+                                    (this->elapsedMillisecondsAtCurrentTempo * this->ticksPerQuarterNote * 1000) /
+                                        this->microsecondsPerQuarterNote;
     if (this->fadeOutActive != FALSE)
     {
         if (this->fadeOutElapsedMs < this->fadeOutDurationMs)
@@ -489,12 +489,13 @@ void MidiOutput::OnTimerElapsed()
             trackLoaded = TRUE;
             while (this->tracks[trackIndex].trackPlaying)
             {
-                if (this->tracks[trackIndex].nextEventTick <= local_14)
+                if (this->tracks[trackIndex].nextEventTick <= currentPlaybackTick)
                 {
                     ProcessMsg(&this->tracks[trackIndex]);
-                    local_14 = this->elapsedTicksBeforeTempoChange +
-                               (this->elapsedMillisecondsAtCurrentTempo * this->ticksPerQuarterNote * 1000 /
-                                this->microsecondsPerQuarterNote);
+                    currentPlaybackTick =
+                        this->elapsedTicksBeforeTempoChange +
+                        (this->elapsedMillisecondsAtCurrentTempo * this->ticksPerQuarterNote * 1000 /
+                         this->microsecondsPerQuarterNote);
                     continue;
                 }
                 break;
@@ -508,90 +509,90 @@ void MidiOutput::OnTimerElapsed()
     }
 }
 
-#pragma var_order(nextTrackLength, idx, arg2, lVar5, opcodeLow, opcodeHigh, opcode, arg1, curTrackLength, midiHdr,     \
-                  cVar1, beatsPerMinute, local_2c, local_30)
+#pragma var_order(nextEventDeltaTicks, index, eventData2, adjustedChannelVolume, channel, messageType, statusByte,   \
+                  eventData1, eventDataLength, longMessageHeader, metaEventType, beatsPerMinute,                   \
+                  loopCheckpointTrack, loopResetTrack)
 void MidiOutput::ProcessMsg(MidiTrack *track)
 {
-    i32 lVar5;
-    i32 curTrackLength, nextTrackLength;
-    MidiTrack *local_30;
-    MidiTrack *local_2c;
-    u8 arg1, arg2;
-    u8 opcode, opcodeHigh, opcodeLow;
-    u8 cVar1;
-    LPMIDIHDR midiHdr;
-    i32 idx;
+    i32 adjustedChannelVolume;
+    i32 eventDataLength, nextEventDeltaTicks;
+    MidiTrack *loopResetTrack;
+    MidiTrack *loopCheckpointTrack;
+    u8 eventData1, eventData2;
+    u8 statusByte, messageType, channel;
+    u8 metaEventType;
+    LPMIDIHDR longMessageHeader;
+    i32 index;
     i32 beatsPerMinute;
 
-    opcode = *track->cursor;
-    if (opcode < MIDI_OPCODE_NOTE_OFF)
+    statusByte = *track->cursor;
+    if (statusByte < MIDI_OPCODE_NOTE_OFF)
     {
-        opcode = track->runningStatus;
+        statusByte = track->runningStatus;
     }
     else
     {
         track->cursor += 1;
     }
-    // we AND the opcode to filter out the channel
-    opcodeHigh = opcode & 0xf0;
-    opcodeLow = opcode & 0x0f;
+    messageType = statusByte & 0xf0;
+    channel = statusByte & 0x0f;
 
-    switch (opcodeHigh)
+    switch (messageType)
     {
     case MIDI_OPCODE_SYSTEM_EXCLUSIVE:
-        if (opcode == MIDI_OPCODE_SYSTEM_EXCLUSIVE)
+        if (statusByte == MIDI_OPCODE_SYSTEM_EXCLUSIVE)
         {
             if (this->pendingLongMessageHeaders[this->pendingLongMessageHeaderCursor] != NULL)
             {
                 UnprepareHeader(this->pendingLongMessageHeaders[this->pendingLongMessageHeaderCursor]);
             }
 
-            midiHdr = this->pendingLongMessageHeaders[this->pendingLongMessageHeaderCursor] =
+            longMessageHeader = this->pendingLongMessageHeaders[this->pendingLongMessageHeaderCursor] =
                 (LPMIDIHDR)g_ZunMemory.Alloc(sizeof(MIDIHDR), "midiHDR");
-            curTrackLength = MidiOutput::SkipVariableLength(&track->cursor);
-            memset(midiHdr, 0, sizeof(MIDIHDR));
-            midiHdr->lpData = (LPSTR)g_ZunMemory.Alloc(curTrackLength + 1, "midiHDR->lpData");
-            midiHdr->lpData[0] = MIDI_OPCODE_SYSTEM_EXCLUSIVE;
-            midiHdr->dwFlags = 0;
-            midiHdr->dwBufferLength = curTrackLength + 1;
-            for (idx = 0; idx < curTrackLength; idx++)
+            eventDataLength = MidiOutput::SkipVariableLength(&track->cursor);
+            memset(longMessageHeader, 0, sizeof(MIDIHDR));
+            longMessageHeader->lpData = (LPSTR)g_ZunMemory.Alloc(eventDataLength + 1, "midiHDR->lpData");
+            longMessageHeader->lpData[0] = MIDI_OPCODE_SYSTEM_EXCLUSIVE;
+            longMessageHeader->dwFlags = 0;
+            longMessageHeader->dwBufferLength = eventDataLength + 1;
+            for (index = 0; index < eventDataLength; index++)
             {
-                midiHdr->lpData[idx + 1] = *track->cursor;
+                longMessageHeader->lpData[index + 1] = *track->cursor;
                 track->cursor++;
             }
-            if (this->outputDevice.SendLongMsg(midiHdr))
+            if (this->outputDevice.SendLongMsg(longMessageHeader))
             {
-                g_ZunMemory.Free(midiHdr->lpData);
-                g_ZunMemory.Free(midiHdr);
+                g_ZunMemory.Free(longMessageHeader->lpData);
+                g_ZunMemory.Free(longMessageHeader);
                 this->pendingLongMessageHeaders[this->pendingLongMessageHeaderCursor] = NULL;
             }
             this->pendingLongMessageHeaderCursor += 1;
             this->pendingLongMessageHeaderCursor = this->pendingLongMessageHeaderCursor % 32;
         }
-        else if (opcode == MIDI_OPCODE_SYSTEM_RESET)
+        else if (statusByte == MIDI_OPCODE_SYSTEM_RESET)
         {
             // Meta-Event. In a MIDI file, SYSTEM_RESET gets reused as a
             // sort of escape code to introducde its own meta-events system,
             // which are events that make sense in the context of a MIDI
             // file, but not in the context of the MIDI protocol itself.
-            cVar1 = *track->cursor;
+            metaEventType = *track->cursor;
             track->cursor += 1;
-            curTrackLength = MidiOutput::SkipVariableLength(&track->cursor);
+            eventDataLength = MidiOutput::SkipVariableLength(&track->cursor);
             // End of Track meta-event.
-            if (cVar1 == MIDI_META_END_OF_TRACK)
+            if (metaEventType == MIDI_META_END_OF_TRACK)
             {
                 track->trackPlaying = 0;
                 return;
             }
             // Set Tempo meta-event.
-            if (cVar1 == MIDI_META_SET_TEMPO)
+            if (metaEventType == MIDI_META_SET_TEMPO)
             {
                 this->elapsedTicksBeforeTempoChange +=
                     (this->elapsedMillisecondsAtCurrentTempo * this->ticksPerQuarterNote * 1000 /
                      this->microsecondsPerQuarterNote);
                 this->elapsedMillisecondsAtCurrentTempo = 0;
                 this->microsecondsPerQuarterNote = 0;
-                for (idx = 0; idx < curTrackLength; idx += 1)
+                for (index = 0; index < eventDataLength; index += 1)
                 {
                     this->microsecondsPerQuarterNote +=
                         this->microsecondsPerQuarterNote * 0x100 + *track->cursor;
@@ -600,82 +601,84 @@ void MidiOutput::ProcessMsg(MidiTrack *track)
                 beatsPerMinute = 60000000 / this->microsecondsPerQuarterNote;
                 break;
             }
-            track->cursor = track->cursor + curTrackLength;
+            track->cursor = track->cursor + eventDataLength;
         }
         break;
     case MIDI_OPCODE_NOTE_OFF:
     case MIDI_OPCODE_NOTE_ON:
     case MIDI_OPCODE_POLYPHONIC_AFTERTOUCH:
-    case MIDI_OPCODE_MODE_CHANGE:
+    case MIDI_OPCODE_CONTROL_CHANGE:
     case MIDI_OPCODE_PITCH_BEND_CHANGE:
-        arg1 = *track->cursor;
+        eventData1 = *track->cursor;
         track->cursor += 1;
-        arg2 = *track->cursor;
+        eventData2 = *track->cursor;
         track->cursor += 1;
         break;
     case MIDI_OPCODE_PROGRAM_CHANGE:
     case MIDI_OPCODE_CHANNEL_AFTERTOUCH:
-        arg1 = *track->cursor;
+        eventData1 = *track->cursor;
         track->cursor += 1;
-        arg2 = 0;
+        eventData2 = 0;
         break;
     }
-    switch (opcodeHigh)
+    switch (messageType)
     {
     case MIDI_OPCODE_NOTE_ON:
-        if (arg2 != 0)
+        if (eventData2 != 0)
         {
-            arg1 += this->noteTranspose;
-            this->channels[opcodeLow].keyPressedFlags[arg1 >> 3] |= (u8)(1 << (arg1 & 7));
+            eventData1 += this->noteTranspose;
+            this->channels[channel].keyPressedFlags[eventData1 >> 3] |= (u8)(1 << (eventData1 & 7));
             break;
         }
     case MIDI_OPCODE_NOTE_OFF:
-        arg1 += this->noteTranspose;
-        this->channels[opcodeLow].keyPressedFlags[arg1 >> 3] &= (u8)(~(1 << (arg1 & 7)));
+        eventData1 += this->noteTranspose;
+        this->channels[channel].keyPressedFlags[eventData1 >> 3] &= (u8)(~(1 << (eventData1 & 7)));
         break;
     case MIDI_OPCODE_PROGRAM_CHANGE:
         // Program Change
-        this->channels[opcodeLow].instrument = arg1;
+        this->channels[channel].instrument = eventData1;
         break;
-    case MIDI_OPCODE_MODE_CHANGE:
-        switch (arg1)
+    case MIDI_OPCODE_CONTROL_CHANGE:
+        switch (eventData1)
         {
         case MIDI_CONTROLLER_BANK_SELECT:
             // Bank Select
-            this->channels[opcodeLow].instrumentBank = arg2;
+            this->channels[channel].instrumentBank = eventData2;
             break;
         case MIDI_CONTROLLER_CHANNEL_VOLUME:
             // Channel Volume
-            this->channels[opcodeLow].channelVolume = arg2;
-            lVar5 = (f32)arg2 * this->fadeOutVolumeMultiplier;
-            if (lVar5 < 0)
+            this->channels[channel].channelVolume = eventData2;
+            adjustedChannelVolume = (f32)eventData2 * this->fadeOutVolumeMultiplier;
+            if (adjustedChannelVolume < 0)
             {
-                lVar5 = 0;
+                adjustedChannelVolume = 0;
             }
-            else if (0x7f < lVar5)
+            else if (0x7f < adjustedChannelVolume)
             {
-                lVar5 = 0x7f;
+                adjustedChannelVolume = 0x7f;
             }
-            arg2 = this->channels[opcodeLow].modifiedVolume = lVar5;
+            eventData2 = this->channels[channel].modifiedVolume = adjustedChannelVolume;
             break;
         case MIDI_CONTROLLER_EFFECT_ONE_DEPTH:
             // Effects 1 Depth
-            this->channels[opcodeLow].effectOneDepth = arg2;
+            this->channels[channel].effectOneDepth = eventData2;
             break;
         case MIDI_CONTROLLER_EFFECT_THREE_DEPTH:
             // Effects 3 Depth
-            this->channels[opcodeLow].effectThreeDepth = arg2;
+            this->channels[channel].effectThreeDepth = eventData2;
             break;
         case MIDI_CONTROLLER_PAN:
             // Pan
-            this->channels[opcodeLow].pan = arg2;
+            this->channels[channel].pan = eventData2;
             break;
         case MIDI_CONTROLLER_LOOP_START:
             // TH08 repurposes breath control as the MIDI loop checkpoint.
-            for (local_2c = &this->tracks[0], idx = 0; idx < this->numTracks; idx += 1, local_2c += 1)
+            for (loopCheckpointTrack = &this->tracks[0], index = 0;
+                 index < this->numTracks;
+                 index += 1, loopCheckpointTrack += 1)
             {
-                local_2c->loopCursor = local_2c->cursor;
-                local_2c->loopNextEventTick = local_2c->nextEventTick;
+                loopCheckpointTrack->loopCursor = loopCheckpointTrack->cursor;
+                loopCheckpointTrack->loopNextEventTick = loopCheckpointTrack->nextEventTick;
             }
             this->tempoAtLoopPoint = this->microsecondsPerQuarterNote;
             this->elapsedMillisecondsAtLoopPoint = this->elapsedMillisecondsAtCurrentTempo;
@@ -683,10 +686,12 @@ void MidiOutput::ProcessMsg(MidiTrack *track)
             break;
         case MIDI_CONTROLLER_LOOP_END:
             // TH08 repurposes the foot controller as the loop jump.
-            for (local_30 = &this->tracks[0], idx = 0; idx < this->numTracks; idx += 1, local_30 += 1)
+            for (loopResetTrack = &this->tracks[0], index = 0;
+                 index < this->numTracks;
+                 index += 1, loopResetTrack += 1)
             {
-                local_30->cursor = (byte *)local_30->loopCursor;
-                local_30->nextEventTick = local_30->loopNextEventTick;
+                loopResetTrack->cursor = (byte *)loopResetTrack->loopCursor;
+                loopResetTrack->nextEventTick = loopResetTrack->loopNextEventTick;
             }
             this->microsecondsPerQuarterNote = this->tempoAtLoopPoint;
             this->elapsedMillisecondsAtCurrentTempo = this->elapsedMillisecondsAtLoopPoint;
@@ -694,33 +699,34 @@ void MidiOutput::ProcessMsg(MidiTrack *track)
         }
         break;
     }
-    if (opcode < MIDI_OPCODE_SYSTEM_EXCLUSIVE)
+    if (statusByte < MIDI_OPCODE_SYSTEM_EXCLUSIVE)
     {
-        this->outputDevice.SendShortMsg(opcode, arg1, arg2);
+        this->outputDevice.SendShortMsg(statusByte, eventData1, eventData2);
     }
-    track->runningStatus = opcode;
-    nextTrackLength = MidiOutput::SkipVariableLength(&track->cursor);
-    track->nextEventTick = track->nextEventTick + nextTrackLength;
+    track->runningStatus = statusByte;
+    nextEventDeltaTicks = MidiOutput::SkipVariableLength(&track->cursor);
+    track->nextEventTick = track->nextEventTick + nextEventDeltaTicks;
 }
 
-#pragma var_order(arg1, idx, volumeByte, midiStatus, volumeClamped)
-void MidiOutput::FadeOutSetVolume(i32 volume)
+#pragma var_order(controllerNumber, channelIndex, volumeByte, statusByte, volumeClamped)
+void MidiOutput::FadeOutSetVolume(i32 volumeOffset)
 {
     i32 volumeClamped;
     u32 volumeByte;
-    i32 idx;
-    i32 arg1;
-    u32 midiStatus;
+    i32 channelIndex;
+    i32 controllerNumber;
+    u32 statusByte;
 
     if (this->volumeUpdatesSuppressed != 0)
     {
         return;
     }
-    arg1 = 7;
-    for (idx = 0; idx < ARRAY_SIZE_SIGNED(this->channels); idx += 1)
+    controllerNumber = MIDI_CONTROLLER_CHANNEL_VOLUME;
+    for (channelIndex = 0; channelIndex < ARRAY_SIZE_SIGNED(this->channels); channelIndex += 1)
     {
-        midiStatus = (u8)(idx + 0xb0);
-        volumeClamped = (i32)(this->channels[idx].channelVolume * this->fadeOutVolumeMultiplier) + volume;
+        statusByte = (u8)(channelIndex + MIDI_OPCODE_CONTROL_CHANGE);
+        volumeClamped =
+            (i32)(this->channels[channelIndex].channelVolume * this->fadeOutVolumeMultiplier) + volumeOffset;
         if (volumeClamped < 0)
         {
             volumeClamped = 0;
@@ -730,7 +736,7 @@ void MidiOutput::FadeOutSetVolume(i32 volume)
             volumeClamped = 127;
         }
         volumeByte = (u8)volumeClamped;
-        this->outputDevice.SendShortMsg(midiStatus, arg1, volumeByte);
+        this->outputDevice.SendShortMsg(statusByte, controllerNumber, volumeByte);
     }
     return;
 }

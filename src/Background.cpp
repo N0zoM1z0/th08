@@ -12,7 +12,7 @@
 namespace th08
 {
 ZunBool IsDisableResourceReload();
-f32 __stdcall CubicHermiteInterpolate(f32 value0, f32 value1, f32 value2, f32 value3, f32 time);
+f32 __stdcall CubicHermiteInterpolate(f32 startValue, f32 endValue, f32 startTangent, f32 endTangent, f32 time);
 u8 MixColors(u8 color1, u8 color2);
 
 struct RawStageQuadBasic
@@ -559,7 +559,7 @@ instructions_done:
 
 // FUNCTION: th08 0x408d60
 void __fastcall Background::InterpolateCameraVector(i32 index, Float3 *out, const Float3 *start, const Float3 *end,
-                                         const Float3 *control2, const Float3 *control3)
+                                                     const Float3 *startTangent, const Float3 *endTangent)
 {
     f32 time;
 
@@ -607,15 +607,15 @@ void __fastcall Background::InterpolateCameraVector(i32 index, Float3 *out, cons
     }
     else
     {
-        out->x = CubicHermiteInterpolate(start->x, end->x, control2->x, control3->x, time);
-        out->y = CubicHermiteInterpolate(start->y, end->y, control2->y, control3->y, time);
-        out->z = CubicHermiteInterpolate(start->z, end->z, control2->z, control3->z, time);
+        out->x = CubicHermiteInterpolate(start->x, end->x, startTangent->x, endTangent->x, time);
+        out->y = CubicHermiteInterpolate(start->y, end->y, startTangent->y, endTangent->y, time);
+        out->z = CubicHermiteInterpolate(start->z, end->z, startTangent->z, endTangent->z, time);
     }
 }
 
 // FUNCTION: th08 0x408fc0
 #pragma var_order(weight3, weight1, weight2, weight0)
-f32 __stdcall CubicHermiteInterpolate(f32 value0, f32 value1, f32 value2, f32 value3, f32 time)
+f32 __stdcall CubicHermiteInterpolate(f32 startValue, f32 endValue, f32 startTangent, f32 endTangent, f32 time)
 {
     f32 weight0;
     f32 weight1;
@@ -626,7 +626,7 @@ f32 __stdcall CubicHermiteInterpolate(f32 value0, f32 value1, f32 value2, f32 va
     weight1 = time * time * (3.0f - 2.0f * time);
     weight2 = (1.0f - time) * (1.0f - time) * time;
     weight3 = (time - 1.0f) * time * time;
-    return weight0 * value0 + weight1 * value1 + weight2 * value2 + weight3 * value3;
+    return weight0 * startValue + weight1 * endValue + weight2 * startTangent + weight3 * endTangent;
 }
 
 // FUNCTION: th08 0x409080
@@ -942,7 +942,7 @@ ZunResult Background::AddedCallback(Background *background)
 
 // FUNCTION: th08 0x409b20
 #pragma var_order(stageData, background)
-ZunResult Background::RegisterChain(i32 param)
+ZunResult Background::RegisterChain(i32 stageIndex)
 {
     Background *background = &g_Background;
     RawStageHeader *stageData;
@@ -960,7 +960,7 @@ ZunResult Background::RegisterChain(i32 param)
     }
 
     background->frameCounter = 0;
-    background->registeredStage = param;
+    background->registeredStage = stageIndex;
 
     g_BackgroundCalcChain.SetCallback((ChainCallback)Background::OnUpdate);
     g_BackgroundCalcChain.addedCallback = (ChainLifetimeCallback)Background::AddedCallback;

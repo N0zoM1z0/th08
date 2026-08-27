@@ -3991,3 +3991,46 @@ Portable oracle: the complete i386 Linux container build links, and
 layout symbol.  No parameter type/order, encoded digit, color decay, fade
 duration, effect variant, draw priority, pie geometry, target byte, accepted-
 unit identity, or exact total changed.
+
+### Background interpolation, MIDI events, and spell portrait auxiliaries — 2026-08-27
+
+Scope: the exact Background interpolation/registration helpers, MidiOutput's
+timer-driven event decoder and fade-volume sender, and the two residual
+offset-named Spellcard portrait VMs.
+
+Background's mode-7 interpolation is the standard cubic Hermite basis.  The
+four former `valueN` inputs are now the start/end values and start/end
+tangents, consistent with the camera interpolation fields and all three
+component call sites.  `Background::RegisterChain` receives
+`GameManager::currentStage` at both production setup sites and stores it in
+`registeredStage`; its parameter is therefore `stageIndex`.
+
+MidiOutput's playback tick, status byte, message type, channel, two event data
+bytes, meta-event type, event data length, next delta ticks, loop checkpoint
+and reset cursors, and adjusted channel volume now describe the parser's
+observed MIDI roles.  FadeOutSetVolume sends controller 7 on status `0xB0 +
+channel`; those literals are expressed as the channel-volume controller and
+control-change status enums, with the incoming additive term named
+`volumeOffset`.
+
+Spellcard offsets `+0x90C` and `+0xE54` are executed beside the enemy portrait
+and drawn only while that portrait is visible.  They become
+`enemyPortraitAuxNoRotationVm` and `enemyPortraitAux2dVm`, respectively.  The
+names deliberately stop at target-observed context and draw path: no script is
+assigned to either VM in the recovered TH08 code, so no asset-specific role is
+claimed.
+
+VC7 oracle: target-pinned packets pass at `0x00408D60`, `0x00408FC0`,
+`0x00409B20`, `0x00414590`, `0x00416B90`, `0x004178C0`, `0x00444820`,
+`0x00444A90`, and `0x00445340`.  Focused post-edit replay of Background.obj,
+Midi.obj, and SpellCard.obj passes **94 / 94 exact**.  Their covered function
+extents remain 577, 152, 254, 3,237, 3,269, 1,685, 619, 1,871, and 187 bytes.
+Because the changes touch shared headers, the required single-job non-reuse
+cold build of all 75 comparison objects passes **1,106 / 1,106 exact** with
+zero failures, and the normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  No class size/offset, parser branch, running-status behavior,
+loop cursor, volume byte, camera interpolation, stage selection, target byte,
+accepted-unit identity, or exact total changed.

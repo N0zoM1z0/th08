@@ -312,9 +312,9 @@ struct Spellcard
     AnmVm playerPortraitVm;                     // +0x120
     AnmVm enemyPortraitVm;                     // +0x3C4
     AnmVm portraitBackdropVm;                     // +0x668
-    AnmVm vm90C;                     // +0x90C
+    AnmVm enemyPortraitAuxNoRotationVm;        // +0x90C
     AnmVm portraitOverlayVm;                     // +0xBB0
-    AnmVm vmE54;                     // +0xE54
+    AnmVm enemyPortraitAux2dVm;                // +0xE54
     AnmVm playerSpellNameVm;                    // +0x10F8
     AnmVm enemySpellNameVm;                    // +0x139C
     AnmVm enemySpellNameLayer1Vm;                    // +0x1640

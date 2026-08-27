@@ -48,7 +48,7 @@ enum MidiOpcode
     MIDI_OPCODE_NOTE_OFF = 0x80,
     MIDI_OPCODE_NOTE_ON = 0x90,
     MIDI_OPCODE_POLYPHONIC_AFTERTOUCH = 0xA0,
-    MIDI_OPCODE_MODE_CHANGE = 0xB0,
+    MIDI_OPCODE_CONTROL_CHANGE = 0xB0,
     MIDI_OPCODE_PROGRAM_CHANGE = 0xC0,
     MIDI_OPCODE_CHANNEL_AFTERTOUCH = 0xD0,
     MIDI_OPCODE_PITCH_BEND_CHANGE = 0xE0,
@@ -158,7 +158,7 @@ class MidiOutput : MidiTimer
     ZunResult Play();
 
     ZunResult SetFadeOut(u32 ms);
-    void FadeOutSetVolume(i32 volume);
+    void FadeOutSetVolume(i32 volumeOffset);
 
     static u16 Ntohs(u16 val);
     static u32 SkipVariableLength(LPBYTE *curTrackDataCursor);

@@ -1988,3 +1988,18 @@ normal VC7 image and complete Linux i386 image link; and the Linux fixed-
 layout verifier passes.  Continue the remaining generic-local/API audit on
 `semantic/typed-reconstruction`; do not open or merge a PR until explicitly
 requested.
+
+The background/MIDI/spell-portrait checkpoint closes three high-signal weak-
+identifier families.  Background cubic interpolation now exposes its
+start/end values and tangents, and RegisterChain's stage index is named from
+both production callers and the `registeredStage` write.  MidiOutput::ProcessMsg
+now reads as a running-status MIDI event decoder, including its TH08 loop
+checkpoint/jump controllers and fade-adjusted channel volume.  Spellcard's
+`+0x90C` and `+0xE54` VMs are named only as enemy-portrait auxiliaries with
+their observed draw modes; no absent asset role is guessed.  Target packets
+cover all nine affected exact functions; focused post-edit replay passes
+**94 / 94 exact**; the required cold aggregate passes **1,106 / 1,106 exact**;
+the normal VC7 image and complete Linux i386 image link; and the Linux fixed-
+layout verifier passes.  Continue on `semantic/typed-reconstruction`; commit
+and push stable checkpoints, but do not open or merge a PR until explicitly
+requested.

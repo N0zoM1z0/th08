@@ -681,8 +681,8 @@ ZunResult Spellcard::Init()
     this->portraitOverlayVm.currentInstruction = NULL;
     this->playerSpellNameVm.currentInstruction = NULL;
     this->enemyPortraitVm.currentInstruction = NULL;
-    this->vm90C.currentInstruction = NULL;
-    this->vmE54.currentInstruction = NULL;
+    this->enemyPortraitAuxNoRotationVm.currentInstruction = NULL;
+    this->enemyPortraitAux2dVm.currentInstruction = NULL;
     this->enemySpellNameVm.currentInstruction = NULL;
 
     this->playerPortraitVm.flagsWord &= ~1u;
@@ -690,8 +690,8 @@ ZunResult Spellcard::Init()
     this->portraitOverlayVm.flagsWord &= ~1u;
     this->playerSpellNameVm.flagsWord &= ~1u;
     this->enemyPortraitVm.flagsWord &= ~1u;
-    this->vm90C.flagsWord &= ~1u;
-    this->vmE54.flagsWord &= ~1u;
+    this->enemyPortraitAuxNoRotationVm.flagsWord &= ~1u;
+    this->enemyPortraitAux2dVm.flagsWord &= ~1u;
     this->enemySpellNameVm.flagsWord &= ~1u;
 
     this->playerSpellNameVm.fontWidth = 15;
@@ -1471,8 +1471,8 @@ i32 Spellcard::OnUpdateImpl()
     g_AnmManager->ExecuteScript(&this->playerSpellNameVm);
     g_AnmManager->ExecuteScript(&this->playerSpellNameFrameVm);
     g_AnmManager->ExecuteScript(&this->enemyPortraitVm);
-    g_AnmManager->ExecuteScript(&this->vm90C);
-    g_AnmManager->ExecuteScript(&this->vmE54);
+    g_AnmManager->ExecuteScript(&this->enemyPortraitAuxNoRotationVm);
+    g_AnmManager->ExecuteScript(&this->enemyPortraitAux2dVm);
     g_AnmManager->ExecuteScript(&this->enemySpellNameVm);
     g_AnmManager->ExecuteScript(&this->enemySpellNameLayer1Vm);
     g_AnmManager->ExecuteScript(&this->enemySpellNameLayer2Vm);
@@ -1526,8 +1526,8 @@ i32 Spellcard::OnDrawImpl()
         this->enemyPortraitVm.pos += this->enemyPortraitVm.pos2;
         g_AnmManager->DrawNoRotation(&this->enemyPortraitVm);
         *reinterpret_cast<SavedPosition *>(&this->enemyPortraitVm.pos) = savedPos;
-        g_AnmManager->DrawNoRotation(&this->vm90C);
-        g_AnmManager->Draw2D(&this->vmE54);
+        g_AnmManager->DrawNoRotation(&this->enemyPortraitAuxNoRotationVm);
+        g_AnmManager->Draw2D(&this->enemyPortraitAux2dVm);
     }
 
     if (this->playerSpellNameVm.IsVisible())
