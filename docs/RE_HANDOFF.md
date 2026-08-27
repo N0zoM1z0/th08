@@ -2111,3 +2111,18 @@ aggregate passes **1,106 / 1,106 exact** with zero failures; the normal VC7
 image and complete Linux i386 image link, and the fixed-layout verifier passes.
 Continue on `semantic/typed-reconstruction`; commit and push stable
 checkpoints, but do not open a PR or merge until explicitly requested.
+
+The runtime-pointer checkpoint types two residual owner fields with complete
+production-use evidence.  `Spellcard::lifetimeObject @ +0x263C` is a
+`ChainElem *` produced by `Chain::CreateElem`, submitted to the calc chain, and
+cleaned through ChainElem lifetime state; RegisterChain and DeletedCallback no
+longer reinterpret it.  `AnmManager::currentSprite @ +0x24C8` is an
+`AnmLoadedSprite *`, matching the sole value compared and assigned in
+`Draw3D`.  Focused replay passes **175 / 175**, **157 / 157**, and **1,318 /
+1,318 exact** for `Spellcard::RegisterChain @ 0x00417F60`,
+`Spellcard::DeletedCallback @ 0x00418050`, and `AnmManager::Draw3D @
+0x00464470`.  The required cold aggregate passes **1,106 / 1,106 exact** with
+zero failures; the normal VC7 image and complete Linux i386 image link, and
+the fixed-layout verifier passes.  Continue on `semantic/typed-reconstruction`;
+commit and push stable checkpoints, but do not open a PR or merge until
+explicitly requested.

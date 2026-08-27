@@ -4321,3 +4321,34 @@ spawn API and traversals, and `verify-modern-linux.sh` verifies the ELF32
 executable and every fixed target-owned layout symbol.  No Enemy size/stride,
 spawn behavior, ECL context, target byte, accepted-unit identity, or aggregate
 exact total changed.
+
+### Typed chain lifetime and ANM sprite cache owners — 2026-08-27
+
+Scope: two residual `void *` fields whose complete production use gives each a
+single concrete owner type.
+
+`Spellcard::lifetimeObject @ +0x263C` is created by `Chain::CreateElem`, receives
+`ChainElem::deletedCallback` and `ChainElem::arg`, is submitted to
+`Chain::AddToCalcChain`, and has its lifetime callback cleared during
+`Spellcard::DeletedCallback @ 0x00418050`.  It is now `ChainElem *`, matching
+the adjacent draw-chain field at `+0x2640`; `Spellcard::RegisterChain @
+0x00417F60` and deletion cleanup no longer reinterpret the stored owner.
+
+`AnmManager::currentSprite @ +0x24C8` is the render-state cache compared with
+and assigned only from `AnmVm::loadedSprite`.  That producer is an
+`AnmLoadedSprite *`, so the cache now carries the same type.  The change makes
+the state invalidation in `AnmManager::Draw3D @ 0x00464470` explicit without
+changing the four-byte VC7 field or the asserted modern-port offset.
+
+VC7 oracle: focused relocation-aware replay passes **175 / 175 exact** for
+`Spellcard::RegisterChain`, **157 / 157 exact** for
+`Spellcard::DeletedCallback`, and **1,318 / 1,318 exact** for
+`AnmManager::Draw3D`.  Because both declarations are in shared layout headers,
+the required single-job non-reuse cold build of all 75 comparison objects
+passes **1,106 / 1,106 exact** with zero failures.  The normal VC7 production
+image links.
+
+Portable oracle: the complete i386 Linux container image links with both typed
+pointers, and `verify-modern-linux.sh` verifies the ELF32 executable and every
+fixed target-owned layout symbol.  No object offset, callback ordering, render
+state, target byte, accepted-unit identity, or aggregate exact total changed.

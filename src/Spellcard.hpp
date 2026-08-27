@@ -333,7 +333,7 @@ struct Spellcard
     AnmLoaded *enemyFaceAnm1;        // +0x2630
     AnmLoaded *commonFaceAnm;        // +0x2634
     i32 scoreLimit;                  // +0x2638
-    void *lifetimeObject;            // +0x263C
+    ChainElem *lifetimeObject;       // +0x263C
     ChainElem *lifetimeChain;        // +0x2640
 
     void StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemyFace, i32 bonus, Enemy *enemy,

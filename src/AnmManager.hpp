@@ -754,7 +754,7 @@ struct AnmManager
     u8 disableZWrite;
     u8 cameraMode;
     u8 needsTextureFactorSetup;
-    void *currentSprite;
+    AnmLoadedSprite *currentSprite;
     IDirect3DVertexBuffer8 *quadVertexBuffer;
     VertexDiffuseXyzrhw untexturedVector[4];
     u32 spritesToDraw;

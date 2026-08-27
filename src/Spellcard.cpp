@@ -1653,12 +1653,10 @@ ZunResult Spellcard::RegisterChain()
 
     spellcard->lifetimeObject = g_Chain.CreateElem((ChainCallback)Spellcard::OnUpdate);
     spellcard->lifetimeChain = g_Chain.CreateElem((ChainCallback)Spellcard::OnDraw);
-    reinterpret_cast<ChainElem *>(spellcard->lifetimeObject)->deletedCallback =
-        (ChainLifetimeCallback)Spellcard::DeletedCallback;
-    reinterpret_cast<ChainElem *>(spellcard->lifetimeObject)->arg = spellcard;
+    spellcard->lifetimeObject->deletedCallback = (ChainLifetimeCallback)Spellcard::DeletedCallback;
+    spellcard->lifetimeObject->arg = spellcard;
     spellcard->lifetimeChain->arg = spellcard;
-    g_Chain.AddToCalcChain(
-        reinterpret_cast<ChainElem *>(spellcard->lifetimeObject), CHAIN_PRIO_CALC_SPELLCARD);
+    g_Chain.AddToCalcChain(spellcard->lifetimeObject, CHAIN_PRIO_CALC_SPELLCARD);
     g_Chain.AddToDrawChain(spellcard->lifetimeChain, CHAIN_PRIO_DRAW_SPELLCARD);
     return ZUN_SUCCESS;
 }
@@ -1693,7 +1691,7 @@ ZunResult Spellcard::DeletedCallback(Spellcard *spellcard)
 
     if (spellcard->lifetimeObject != NULL)
     {
-        reinterpret_cast<ChainElem *>(spellcard->lifetimeObject)->deletedCallback = NULL;
+        spellcard->lifetimeObject->deletedCallback = NULL;
     }
     g_Chain.Cut(spellcard->lifetimeChain);
     spellcard->lifetimeChain = NULL;
