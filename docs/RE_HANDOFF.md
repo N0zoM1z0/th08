@@ -1877,3 +1877,14 @@ and complete Linux i386 image link; and the Linux fixed-layout verifier
 passes.  `Player.hpp` now has no semantic-router candidates.  Continue on the
 branch with ECL/Game residual state, without opening or merging a PR until the
 user explicitly requests it.
+
+The ECL/Effect residual checkpoint classifies only storage with no independent
+consumer and serialized instruction bytes skipped by all exact dispatch
+views.  Context tail alignment stays explicit because whole-context assignment
+is target-visible.  Focused replay across EclManager, EclRun,
+EclDependencies, EclExIns, and EffectManager passes **128 / 128 exact** before
+and after the edit, including full RunEcl; the required cold aggregate passes
+**1,106 / 1,106 exact**; the normal VC7 image and complete Linux i386 image
+link; and the Linux fixed-layout verifier passes.  Continue with Game/GUI/
+Ending residual state on the branch.  Do not open or merge a PR until the user
+explicitly asks.

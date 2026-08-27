@@ -28,7 +28,7 @@ struct Effect
     f32 orientationW;
     f32 radius;
     f32 angle;
-    unknown_fields(0x31c, 4);
+    u32 unconsumedDword31C;
     f32 shapeThickness;
     i32 vertexSegmentCount;
     i32 slotIndex;
@@ -36,7 +36,7 @@ struct Effect
     f32 secondaryAngle;
     f32 radialWaveCount;
     ZunTimer timer;
-    unknown_fields(0x344, 4);
+    u32 unconsumedDword344;
     void *updateCallback;
     void *drawCallback;
     i8 active;
@@ -66,7 +66,9 @@ C_ASSERT(offsetof(Effect, secondaryAngle) == 0x330);
 C_ASSERT(offsetof(Effect, radialWaveCount) == 0x334);
 C_ASSERT(offsetof(Effect, radius) == 0x314);
 C_ASSERT(offsetof(Effect, angle) == 0x318);
+C_ASSERT(offsetof(Effect, unconsumedDword31C) == 0x31c);
 C_ASSERT(offsetof(Effect, timer) == 0x338);
+C_ASSERT(offsetof(Effect, unconsumedDword344) == 0x344);
 C_ASSERT(offsetof(Effect, updateCallback) == 0x348);
 C_ASSERT(offsetof(Effect, drawCallback) == 0x34c);
 C_ASSERT(offsetof(Effect, active) == 0x350);
@@ -85,7 +87,7 @@ struct EffectManager
     EffectManager();
 
     i32 nextEffectIndex;
-    i32 unknown4;
+    i32 unconsumedDword04;
     i32 activeCount;
     f32 scaleX;
     f32 scaleY;
@@ -119,6 +121,7 @@ struct EffectManager
     i32 DrawBackgroundEffects();
 };
 C_ASSERT(sizeof(EffectManager) == 0x8b05c);
+C_ASSERT(offsetof(EffectManager, unconsumedDword04) == 0x4);
 C_ASSERT(offsetof(EffectManager, effects) == 0x1c);
 C_ASSERT(offsetof(EffectManager, drawGroupSentinel0) == 0x89f5c);
 C_ASSERT(offsetof(EffectManager, drawGroupSentinel1) == 0x8a2bc);
@@ -140,10 +143,12 @@ DIFFABLE_EXTERN(void *, g_EclExUpdateCallback);
 struct EclExBarrierRenderState
 {
     i32 mode;
-    i32 unknown4;
+    i32 unconsumedDword04;
     AnmVm vm0;
     AnmVm vm1;
 };
+C_ASSERT(sizeof(EclExBarrierRenderState) == 0x550);
+C_ASSERT(offsetof(EclExBarrierRenderState, unconsumedDword04) == 0x4);
 C_ASSERT(offsetof(EclExBarrierRenderState, vm0) == 0x8);
 C_ASSERT(offsetof(EclExBarrierRenderState, vm1) == 0x2ac);
 #ifndef TH08_MODERN_PORT
@@ -155,7 +160,7 @@ struct EclRawInstruction
     i32 time;
     i16 opcode;
     i16 nextOffset;
-    u8 unknown08;
+    u8 serializedReserved08;
     u8 difficultyMask;
     u16 operandFlags;
     u8 operands[1];
@@ -211,10 +216,10 @@ struct EnemyEclContext
     f32 callParameterFloats[4];
     ZunTimer secondaryTime;
     EnemyEclInterpolationSlot interpolationSlots[8];
-    i32 unknown21c;
+    i32 unconsumedDword21C;
     i32 childContextSlot;
     i16 subId;
-    u8 unknown226[2];
+    u8 contextTailAlignment226[2];
 };
 typedef char EnemyEclContextCallbackOffsetCheck[offsetof(EnemyEclContext, callback) == 0x10 ? 1 : -1];
 typedef char EnemyEclContextIntVariablesOffsetCheck[offsetof(EnemyEclContext, intVariables) == 0x18 ? 1 : -1];
@@ -224,17 +229,22 @@ typedef char EnemyEclContextExtraFloatVariablesOffsetCheck[offsetof(EnemyEclCont
 typedef char EnemyEclContextCallParametersOffsetCheck[offsetof(EnemyEclContext, callParameterInts) == 0x70 ? 1 : -1];
 typedef char EnemyEclContextSecondaryTimerOffsetCheck[offsetof(EnemyEclContext, secondaryTime) == 0x90 ? 1 : -1];
 typedef char EnemyEclContextInterpolationSlotsOffsetCheck[offsetof(EnemyEclContext, interpolationSlots) == 0x9c ? 1 : -1];
+typedef char EnemyEclContextUnconsumedOffsetCheck[offsetof(EnemyEclContext, unconsumedDword21C) == 0x21c ? 1 : -1];
 typedef char EnemyEclContextChildSlotOffsetCheck[offsetof(EnemyEclContext, childContextSlot) == 0x220 ? 1 : -1];
 typedef char EnemyEclContextSubIdOffsetCheck[offsetof(EnemyEclContext, subId) == 0x224 ? 1 : -1];
+typedef char EnemyEclContextTailAlignmentOffsetCheck[offsetof(EnemyEclContext, contextTailAlignment226) == 0x226 ? 1 : -1];
 typedef char EnemyEclContextSizeCheck[sizeof(EnemyEclContext) == 0x228 ? 1 : -1];
 
 struct EclTimelineState
 {
     EclTimelineState();
 
-    u8 unknown000[0x100];
+    u8 unconsumedBytes000[0x100];
     D3DXVECTOR3 vectors[8];
 };
+C_ASSERT(sizeof(EclTimelineState) == 0x160);
+C_ASSERT(offsetof(EclTimelineState, unconsumedBytes000) == 0x0);
+C_ASSERT(offsetof(EclTimelineState, vectors) == 0x100);
 
 struct EclManager
 {
@@ -251,6 +261,7 @@ struct EclManager
     EclTimelineState timelineState;    // +0x008
 };
 C_ASSERT(sizeof(EclManager) == 0x168);
+C_ASSERT(offsetof(EclManager, timelineState) == 0x8);
 
 DIFFABLE_EXTERN(EclManager, g_EclManager);
 

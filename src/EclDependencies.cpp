@@ -677,7 +677,7 @@ struct RawInstruction
     i32 time;
     i16 opcode;
     i16 nextOffset;
-    u8 unknown08;
+    u8 serializedReserved08;
     u8 difficultyMask;
     u16 operandFlags;
     u8 operands[1];

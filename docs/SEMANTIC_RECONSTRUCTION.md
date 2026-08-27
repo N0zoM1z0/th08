@@ -3624,3 +3624,42 @@ categories; repository-wide anonymous/opaque routing moves from 19/13 to
 16/8.  Those counts are review aids, not completion percentages.  No movement,
 collision, option, Bomb, shot, target byte, accepted-unit identity, or exact
 total changed.
+
+### ECL and Effect residual-state closure — 2026-08-27
+
+Scope: shared Effect/EffectManager state, ECL raw-instruction views, the
+per-Enemy interpreter context, ECL extension barrier state, and the otherwise
+unconsumed timeline-state prefix.
+
+The dwords at `Effect +0x31C/+0x344`, `EffectManager +0x04`, barrier state
+`+0x04`, and interpreter context `+0x21C` have no independent authored
+producer or consumer beyond their owners' aggregate clearing/copying.  They
+are now explicitly `unconsumed`, preserving the evidence boundary recorded by
+the earlier Effect reconstruction.  The timeline-state prefix
+`+0x000..+0x0FF` is likewise unconsumed; its eight following vectors remain
+separately typed at `+0x100`.
+
+Every exact raw-instruction view now calls byte `+0x08`
+`serializedReserved08`: opcode dispatch consumes the adjacent difficulty mask
+and operand flags but never that byte.  The ECL extension view also retains
+its skipped `+0x0C..+0x0F` slot as `serializedReserved0C`, before the arguments
+actually consumed at `+0x10`.  No file-format meaning is inferred.  Context
+tail `+0x226..+0x227` remains an explicit alignment array rather than implicit
+padding because complete context assignment is target-visible in the ECL call
+stack.  Assertions pin every neutral range, following semantic field, context
+size, timeline-state size, and manager extent.
+
+VC7 oracle: focused replay across EclManager, EclRun, EclDependencies,
+EclExIns, and EffectManager passes **128 / 128 exact** before and after the
+edit, including the complete RunEcl code-plus-table unit.  Because the shared
+header reaches the PCH, the required single-job non-reuse cold build of all 75
+comparison objects passes **1,106 / 1,106 exact** with zero failures, and the
+normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  The four affected ECL source views now have zero candidates in
+all review-router categories; repository-wide anonymous/opaque routing moves
+from 16/8 to 8/6.  Those counts are review aids, not completion percentages.
+No opcode selection, operand resolution, interpolation, callback, Effect
+behavior, target byte, accepted-unit identity, or exact total changed.
