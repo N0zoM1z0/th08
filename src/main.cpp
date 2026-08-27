@@ -20,6 +20,9 @@
 #ifdef TH08_MODERN_PORT
 #include "modern/windows_runtime.hpp"
 #endif
+#ifdef TH08_MODERN_LINUX
+#include "modern/linux/solver_bridge.hpp"
+#endif
 #include <d3dx8.h>
 #include <direct.h>
 #include <shlguid.h>
@@ -348,6 +351,12 @@ RenderResult GameWindow::Render()
             g_Supervisor.ThreadClose();
             return RENDER_RESULT_EXIT_ERROR;
         }
+
+#ifdef TH08_MODERN_LINUX
+        // Publish only after the complete logical update. The solver computes
+        // during draw/present and the next input sample never waits for it.
+        th08::modern::SolverBridgePublishSnapshot();
+#endif
 
         this->framesSinceRedraw++;
 

@@ -464,16 +464,14 @@ void Sleep(DWORD milliseconds) { usleep(static_cast<useconds_t>(milliseconds) * 
 DWORD timeGetTime(void)
 {
     struct timeval value; gettimeofday(&value, NULL);
-    const uint64_t real = static_cast<uint64_t>(value.tv_sec) * 1000000ULL + value.tv_usec;
-    return static_cast<DWORD>(th08::modern::SolverBridgeVirtualMicroseconds(real) / 1000);
+    return static_cast<DWORD>(value.tv_sec * 1000ULL + value.tv_usec / 1000);
 }
 
 BOOL QueryPerformanceFrequency(LARGE_INTEGER *value) { value->QuadPart = 1000000; return TRUE; }
 BOOL QueryPerformanceCounter(LARGE_INTEGER *value)
 {
     struct timeval time; gettimeofday(&time, NULL);
-    const uint64_t real = static_cast<uint64_t>(time.tv_sec) * 1000000ULL + time.tv_usec;
-    value->QuadPart = th08::modern::SolverBridgeVirtualMicroseconds(real); return TRUE;
+    value->QuadPart = time.tv_sec * 1000000LL + time.tv_usec; return TRUE;
 }
 DWORD GetCurrentThreadId(void) { return CurrentThreadIdImpl(); }
 

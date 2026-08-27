@@ -4,7 +4,7 @@
 #include "Supervisor.hpp"
 
 #include <errno.h>
-#include <pthread.h>
+#include <fcntl.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,7 +12,13 @@
 #include <sys/socket.h>
 #include <sys/time.h>
 #include <sys/un.h>
+#include <time.h>
 #include <unistd.h>
+
+extern "C"
+{
+volatile uint32_t th08_solver_input_epoch = 0;
+}
 
 namespace th08
 {
@@ -23,15 +29,16 @@ namespace
 
 const uint32_t REQUEST_MAGIC = 0x51523854;  // "T8RQ" as little endian.
 const uint32_t RESPONSE_MAGIC = 0x53523854; // "T8RS" as little endian.
-const uint16_t PROTOCOL_VERSION = 1;
-const size_t REQUEST_SIZE = 32;
-const size_t RESPONSE_SIZE = 24;
+const uint16_t PROTOCOL_VERSION = 2;
+const size_t REQUEST_SIZE = 56;
+const size_t RESPONSE_SIZE = 32;
 const uint16_t BOMB_MASK = 0x0002;
 const uint16_t KNOWN_INPUT_MASK = 0x7ffd;
 const uint16_t UP_MASK = 0x0010;
 const uint16_t DOWN_MASK = 0x0020;
 const uint16_t LEFT_MASK = 0x0040;
 const uint16_t RIGHT_MASK = 0x0080;
+const uint16_t SAFE_NEUTRAL_MASK = 0x0005; // Shot + Focus.
 const uint32_t REQUEST_FLAG_REPLAY_TARGET_STAMPED = 1;
 const uint32_t REQUEST_FLAG_LIVES_PRESERVED = 2;
 const uint32_t ORIGINAL_EXE_SIZE = 840704;
@@ -41,7 +48,9 @@ struct BridgeState
 {
     BridgeState()
         : configured(false), initialized(false), failed(false), server(-1),
-          client(-1), epoch(0), preserveLives(true)
+          client(-1), inputEpoch(0), lastPublishedInputEpoch(0),
+          deadlineMisses(0), lateResponses(0), droppedRequests(0),
+          preserveLives(true)
     {
     }
 
@@ -50,56 +59,28 @@ struct BridgeState
     bool failed;
     int server;
     int client;
-    uint64_t epoch;
+    uint64_t inputEpoch;
+    uint64_t lastPublishedInputEpoch;
+    uint64_t deadlineMisses;
+    uint64_t lateResponses;
+    uint64_t droppedRequests;
     bool preserveLives;
 };
 
 BridgeState g_bridge;
-pthread_mutex_t g_clockMutex = PTHREAD_MUTEX_INITIALIZER;
-uint64_t g_totalPausedMicroseconds;
-uint64_t g_pauseStartedMicroseconds;
-unsigned int g_pauseDepth;
 
-uint64_t RealMicroseconds()
+uint64_t MonotonicMicroseconds()
 {
-    struct timeval value;
-    gettimeofday(&value, NULL);
+    struct timespec value;
+    if (clock_gettime(CLOCK_MONOTONIC, &value) != 0)
+        return 0;
     return static_cast<uint64_t>(value.tv_sec) * 1000000ULL +
-           static_cast<uint64_t>(value.tv_usec);
+           static_cast<uint64_t>(value.tv_nsec / 1000);
 }
 
-void BeginSolverWait()
+uint32_t SaturatingU32(uint64_t value)
 {
-    const uint64_t now = RealMicroseconds();
-    pthread_mutex_lock(&g_clockMutex);
-    if (g_pauseDepth++ == 0)
-        g_pauseStartedMicroseconds = now;
-    pthread_mutex_unlock(&g_clockMutex);
-}
-
-void EndSolverWait()
-{
-    const uint64_t now = RealMicroseconds();
-    pthread_mutex_lock(&g_clockMutex);
-    if (g_pauseDepth != 0 && --g_pauseDepth == 0)
-    {
-        if (now >= g_pauseStartedMicroseconds)
-            g_totalPausedMicroseconds += now - g_pauseStartedMicroseconds;
-        g_pauseStartedMicroseconds = 0;
-    }
-    pthread_mutex_unlock(&g_clockMutex);
-}
-
-uint32_t PausedMilliseconds()
-{
-    const uint64_t now = RealMicroseconds();
-    pthread_mutex_lock(&g_clockMutex);
-    uint64_t paused = g_totalPausedMicroseconds;
-    if (g_pauseDepth != 0 && now >= g_pauseStartedMicroseconds)
-        paused += now - g_pauseStartedMicroseconds;
-    pthread_mutex_unlock(&g_clockMutex);
-    paused /= 1000;
-    return paused > 0xffffffffULL ? 0xffffffffU : static_cast<uint32_t>(paused);
+    return value > 0xffffffffULL ? 0xffffffffU : static_cast<uint32_t>(value);
 }
 
 void PutU16(unsigned char *output, size_t offset, uint16_t value)
@@ -142,46 +123,29 @@ uint64_t GetU64(const unsigned char *input, size_t offset)
     return value;
 }
 
-bool WriteAll(int file, const unsigned char *data, size_t size)
+bool SetNonblocking(int file)
 {
-    while (size != 0)
-    {
-        const ssize_t written = send(file, data, size, MSG_NOSIGNAL);
-        if (written < 0 && errno == EINTR)
-            continue;
-        if (written <= 0)
-            return false;
-        data += written;
-        size -= static_cast<size_t>(written);
-    }
-    return true;
+    const int flags = fcntl(file, F_GETFL, 0);
+    return flags >= 0 && fcntl(file, F_SETFL, flags | O_NONBLOCK) == 0;
 }
 
-bool ReadAll(int file, unsigned char *data, size_t size)
+void CloseClient(const char *message)
 {
-    while (size != 0)
-    {
-        const ssize_t count = recv(file, data, size, 0);
-        if (count < 0 && errno == EINTR)
-            continue;
-        if (count <= 0)
-            return false;
-        data += count;
-        size -= static_cast<size_t>(count);
-    }
-    return true;
-}
-
-void FailBridge(const char *message)
-{
-    if (!g_bridge.failed)
-        fprintf(stderr, "th08-modern: solver bridge failed: %s\n", message);
-    g_bridge.failed = true;
+    if (message != NULL)
+        fprintf(stderr, "th08-modern: online solver client closed: %s\n", message);
     if (g_bridge.client >= 0)
     {
         close(g_bridge.client);
         g_bridge.client = -1;
     }
+}
+
+void FailBridge(const char *message)
+{
+    if (!g_bridge.failed)
+        fprintf(stderr, "th08-modern: online solver bridge failed: %s\n", message);
+    g_bridge.failed = true;
+    CloseClient(NULL);
     if (g_bridge.server >= 0)
     {
         close(g_bridge.server);
@@ -218,10 +182,10 @@ void InitializeBridge()
         return;
     }
 
-    g_bridge.server = socket(AF_UNIX, SOCK_STREAM, 0);
-    if (g_bridge.server < 0)
+    g_bridge.server = socket(AF_UNIX, SOCK_SEQPACKET, 0);
+    if (g_bridge.server < 0 || !SetNonblocking(g_bridge.server))
     {
-        FailBridge("unable to create Unix socket");
+        FailBridge("unable to create non-blocking Unix packet socket");
         return;
     }
 
@@ -240,26 +204,41 @@ void InitializeBridge()
         return;
     }
 
-    // ReplayManager::AddedCallback will later copy these fields.  This labels
+    // ReplayManager::AddedCallback will later copy these fields. This labels
     // the replay for the canonical target; it is not an ELF identity claim.
     g_Supervisor.exeSize = ORIGINAL_EXE_SIZE;
     g_Supervisor.exeChecksum = ORIGINAL_EXE_CHECKSUM;
-    fprintf(stderr, "th08-modern: solver bridge listening on %s (preserve lives: %s)\n",
+    fprintf(stderr,
+            "th08-modern: online solver bridge listening on %s (preserve lives: %s)\n",
             path, g_bridge.preserveLives ? "yes" : "no");
 }
 
-bool EnsureClient()
+void TryAcceptClient()
 {
-    if (g_bridge.client >= 0)
-        return true;
-    g_bridge.client = accept(g_bridge.server, NULL, NULL);
-    if (g_bridge.client < 0)
+    if (g_bridge.server < 0 || g_bridge.client >= 0)
+        return;
+    while (true)
     {
+        const int client = accept(g_bridge.server, NULL, NULL);
+        if (client >= 0)
+        {
+            if (!SetNonblocking(client))
+            {
+                close(client);
+                FailBridge("unable to make solver client non-blocking");
+                return;
+            }
+            g_bridge.client = client;
+            fprintf(stderr, "th08-modern: online solver bridge connected\n");
+            return;
+        }
+        if (errno == EINTR)
+            continue;
+        if (errno == EAGAIN || errno == EWOULDBLOCK)
+            return;
         FailBridge("unable to accept solver connection");
-        return false;
+        return;
     }
-    fprintf(stderr, "th08-modern: solver bridge connected\n");
-    return true;
 }
 
 bool InputMaskIsValid(uint16_t mask)
@@ -273,51 +252,72 @@ bool InputMaskIsValid(uint16_t mask)
     return true;
 }
 
-bool ExchangeInput(uint16_t *inputMask)
+uint16_t HeldFallbackMask()
 {
-    if (!EnsureClient())
-        return false;
+    const uint16_t held = g_CurFrameInput;
+    return InputMaskIsValid(held) ? held : SAFE_NEUTRAL_MASK;
+}
 
-    unsigned char request[REQUEST_SIZE];
-    memset(request, 0, sizeof(request));
-    PutU32(request, 0, REQUEST_MAGIC);
-    PutU16(request, 4, PROTOCOL_VERSION);
-    PutU16(request, 6, REQUEST_SIZE);
-    PutU64(request, 8, ++g_bridge.epoch);
-    PutU16(request, 16, g_CurFrameInput);
-    PutU16(request, 18, g_LastFrameInput);
-    PutU16(request, 20, g_Rng.GetSeed());
-    uint32_t requestFlags = REQUEST_FLAG_REPLAY_TARGET_STAMPED;
-    if (g_bridge.preserveLives)
-        requestFlags |= REQUEST_FLAG_LIVES_PRESERVED;
-    PutU32(request, 24, requestFlags);
-    PutU32(request, 28, PausedMilliseconds());
-
-    unsigned char response[RESPONSE_SIZE];
-    if (!WriteAll(g_bridge.client, request, sizeof(request)) ||
-        !ReadAll(g_bridge.client, response, sizeof(response)))
+bool DrainResponses(uint64_t inputEpoch, uint16_t *inputMask)
+{
+    bool applied = false;
+    while (g_bridge.client >= 0)
     {
-        FailBridge("solver disconnected during an input transaction");
-        return false;
-    }
+        unsigned char response[RESPONSE_SIZE];
+        struct iovec vector;
+        vector.iov_base = response;
+        vector.iov_len = sizeof(response);
+        struct msghdr message;
+        memset(&message, 0, sizeof(message));
+        message.msg_iov = &vector;
+        message.msg_iovlen = 1;
+        const ssize_t count = recvmsg(
+            g_bridge.client,
+            &message,
+            MSG_DONTWAIT);
+        if (count < 0 && errno == EINTR)
+            continue;
+        if (count < 0 && (errno == EAGAIN || errno == EWOULDBLOCK))
+            break;
+        if (count == 0)
+        {
+            CloseClient("solver disconnected");
+            break;
+        }
+        if ((message.msg_flags & MSG_TRUNC) != 0 ||
+            count != static_cast<ssize_t>(sizeof(response)) ||
+            GetU32(response, 0) != RESPONSE_MAGIC ||
+            GetU16(response, 4) != PROTOCOL_VERSION ||
+            GetU16(response, 6) != RESPONSE_SIZE ||
+            GetU16(response, 26) != 0 ||
+            GetU32(response, 28) != 0)
+        {
+            CloseClient("invalid response packet");
+            break;
+        }
 
-    if (GetU32(response, 0) != RESPONSE_MAGIC ||
-        GetU16(response, 4) != PROTOCOL_VERSION ||
-        GetU16(response, 6) != RESPONSE_SIZE ||
-        GetU64(response, 8) != g_bridge.epoch)
-    {
-        FailBridge("invalid or stale solver response");
-        return false;
+        const uint64_t sourceEpoch = GetU64(response, 8);
+        const uint64_t targetEpoch = GetU64(response, 16);
+        const uint16_t mask = GetU16(response, 24);
+        if (sourceEpoch + 1 != targetEpoch || !InputMaskIsValid(mask))
+        {
+            CloseClient("response contains an invalid epoch or input mask");
+            break;
+        }
+        if (targetEpoch < inputEpoch)
+        {
+            ++g_bridge.lateResponses;
+            continue;
+        }
+        if (targetEpoch > inputEpoch)
+        {
+            CloseClient("response targets an unrequested future epoch");
+            break;
+        }
+        *inputMask = mask;
+        applied = true;
     }
-
-    const uint16_t mask = GetU16(response, 16);
-    if (!InputMaskIsValid(mask))
-    {
-        FailBridge("response contains Bomb, unknown, or contradictory input");
-        return false;
-    }
-    *inputMask = mask;
-    return true;
+    return applied;
 }
 
 } // namespace
@@ -326,35 +326,78 @@ bool SolverBridgeReadInput(uint16_t *inputMask)
 {
     if (inputMask == NULL)
         return false;
-    *inputMask = 0;
     InitializeBridge();
     if (!g_bridge.configured)
         return false;
-    if (g_bridge.failed)
-        return true;
 
-    BeginSolverWait();
-    const bool exchanged = ExchangeInput(inputMask);
-    EndSolverWait();
-    if (!exchanged)
-        *inputMask = 0;
+    *inputMask = HeldFallbackMask();
+    ++g_bridge.inputEpoch;
+    th08_solver_input_epoch = static_cast<uint32_t>(g_bridge.inputEpoch);
+    if (g_bridge.failed)
+    {
+        *inputMask = SAFE_NEUTRAL_MASK;
+        return true;
+    }
+
+    TryAcceptClient();
+    const bool applied = DrainResponses(g_bridge.inputEpoch, inputMask);
+    if (g_bridge.client < 0)
+        *inputMask = SAFE_NEUTRAL_MASK;
+    if (!applied && g_bridge.inputEpoch > 1)
+        ++g_bridge.deadlineMisses;
     return true;
+}
+
+void SolverBridgePublishSnapshot()
+{
+    InitializeBridge();
+    if (!g_bridge.configured || g_bridge.failed || g_bridge.inputEpoch == 0 ||
+        g_bridge.lastPublishedInputEpoch == g_bridge.inputEpoch)
+        return;
+
+    TryAcceptClient();
+    if (g_bridge.client < 0)
+        return;
+
+    unsigned char request[REQUEST_SIZE];
+    memset(request, 0, sizeof(request));
+    PutU32(request, 0, REQUEST_MAGIC);
+    PutU16(request, 4, PROTOCOL_VERSION);
+    PutU16(request, 6, REQUEST_SIZE);
+    PutU64(request, 8, g_bridge.inputEpoch);
+    PutU64(request, 16, g_bridge.inputEpoch + 1);
+    PutU16(request, 24, g_CurFrameInput);
+    PutU16(request, 26, g_LastFrameInput);
+    PutU16(request, 28, g_Rng.GetSeed());
+    uint32_t requestFlags = REQUEST_FLAG_REPLAY_TARGET_STAMPED;
+    if (g_bridge.preserveLives)
+        requestFlags |= REQUEST_FLAG_LIVES_PRESERVED;
+    PutU32(request, 32, requestFlags);
+    PutU32(request, 36, SaturatingU32(g_bridge.deadlineMisses));
+    PutU32(request, 40, SaturatingU32(g_bridge.lateResponses));
+    PutU32(request, 44, SaturatingU32(g_bridge.droppedRequests));
+    PutU64(request, 48, MonotonicMicroseconds());
+
+    g_bridge.lastPublishedInputEpoch = g_bridge.inputEpoch;
+    const ssize_t written = send(
+        g_bridge.client,
+        request,
+        sizeof(request),
+        MSG_DONTWAIT | MSG_NOSIGNAL);
+    if (written == static_cast<ssize_t>(sizeof(request)))
+        return;
+    if (written < 0 && (errno == EAGAIN || errno == EWOULDBLOCK))
+    {
+        ++g_bridge.droppedRequests;
+        return;
+    }
+    CloseClient("unable to publish complete snapshot packet");
 }
 
 bool SolverBridgePreserveLives()
 {
     InitializeBridge();
     return g_bridge.configured && g_bridge.preserveLives;
-}
-
-uint64_t SolverBridgeVirtualMicroseconds(uint64_t realMicroseconds)
-{
-    pthread_mutex_lock(&g_clockMutex);
-    uint64_t paused = g_totalPausedMicroseconds;
-    if (g_pauseDepth != 0 && realMicroseconds >= g_pauseStartedMicroseconds)
-        paused += realMicroseconds - g_pauseStartedMicroseconds;
-    pthread_mutex_unlock(&g_clockMutex);
-    return realMicroseconds >= paused ? realMicroseconds - paused : 0;
 }
 
 } // namespace modern

@@ -4,17 +4,24 @@ This file records only the current durable state. Historical investigations
 belong in focused notes such as `RUNECL_FUNCTION_EXACT_NOTES.md`; live counts
 come from the ledgers, not this prose.
 
-## Experimental solver bridge branch
+## Online solver bridge branch
 
-`solver/linux-lockstep-replay-bridge` is a derived Linux-port integration lane.
+`solver/linux-online-authority` is a derived Linux-port integration lane based
+on the earlier bridge work.
 It does not change the exact-build ledgers and must not be merged as evidence
 of VC7 or whole-image matching. The opt-in backend bridge is documented in
-`docs/LINUX_SOLVER_BRIDGE.md`. The portable i386/fixed-layout verifier passes,
-and a retained Windows-origin Stage-5 replay now has exact compact semantic
-parity across 12,000 samples through replay frames 1--12,494. This is only the
-Windows-to-Linux direction: a normally saved Linux-generated replay and its
-original-v1.00d playback remain pending, so no NMNB or platform-equivalence
-claim follows. Bridge mode preserves lives by default. The diagnostic-only
+`docs/LINUX_SOLVER_BRIDGE.md`. Protocol version 2 never waits for the solver,
+never subtracts solver time from game-visible clocks, and discards late action
+packets instead of applying them to later frames. The portable i386/fixed-
+layout verifier passes, and a retained Windows-origin Stage-5 replay now has
+exact compact semantic parity across 12,000 samples through replay frames
+1--12,494. The reverse gate is also observed for one naturally saved Linux-
+origin Easy Stage-1 replay: the unchanged replay terminates naturally in both
+a fresh Linux process and the unpatched original v1.00d executable, with 2,063
+aligned semantic roots exact from replay frames 100--2,162 after excluding only
+sampler-address provenance. This establishes that bounded trajectory, not
+full-route numerical identity, NMNB, or general platform equivalence. Bridge
+mode preserves lives by default. The diagnostic-only
 `TH08_SOLVER_PRESERVE_LIVES=0` restores retail life decrement and omits the
 wire `LIVES_PRESERVED` flag so a short run can reach the normal replay-save
 path without being confused with an NMNB result.
