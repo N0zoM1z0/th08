@@ -460,10 +460,10 @@ C_ASSERT(TH08_ECL_ENEMY_POSITION_OFFSET == offsetof(Enemy, position));
         u8 *operands = TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands;
         TH08_ECL_CONTEXT_ENEMY(ctx)->attachedEffects[
             TH08_ECL_CONTEXT_ENEMY(ctx)->attachedEffectCount] =
-            reinterpret_cast<Effect *>(g_EffectManager.SpawnEffect(
+            g_EffectManager.SpawnEffect(
                 13, reinterpret_cast<D3DXVECTOR3 *>(
                         &TH08_ECL_CONTEXT_ENEMY(ctx)->position),
-                1, 0xFF6060D0));
+                1, 0xFF6060D0);
         TH08_ECL_CONTEXT_ENEMY(ctx)->attachedEffects[
             TH08_ECL_CONTEXT_ENEMY(ctx)->attachedEffectCount]->vector6 =
             *reinterpret_cast<Float3 *>(operands + 4);
@@ -933,11 +933,11 @@ enter_subroutine:
         if (TH08_ECL_CONTEXT_ENEMY(ctx)->alignmentEffect)
             TH08_ECL_CONTEXT_ENEMY(ctx)->alignmentEffect->active = 0;
         TH08_ECL_CONTEXT_ENEMY(ctx)->alignmentEffect =
-            reinterpret_cast<Effect *>(g_EffectManager.SpawnEffectInSecondaryPool(
+            g_EffectManager.SpawnEffectInSecondaryPool(
                 TH08_ECL_READ_I(ctx, 0) + 0x20,
                 reinterpret_cast<D3DXVECTOR3 *>(
                     &TH08_ECL_CONTEXT_ENEMY(ctx)->worldPosition),
-                1, -1));
+                1, -1);
         TH08_ECL_CONTEXT_ENEMY(ctx)->alignmentEffect->vm.SetInterrupt(
             g_Player.IsYoukai() ? 2 : 1);
         if (TH08_ECL_CONTEXT_ENEMY(ctx)->enemyIndex & 1)

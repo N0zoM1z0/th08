@@ -320,7 +320,7 @@ th08::SpawnEnemiesFromMarkedBullets,0x4250d0,function
 th08::EnterScaledBulletTime,0x4251b0,function
 th08::ExitScaledBulletTime,0x425290,function
 th08::SpawnBombOrExtendItem,0x425390,function
-th08::EffectManager::GetFixedSlotVm,0x4253e0,function
+th08::EffectManager::GetFixedSlotEffect,0x4253e0,function
 th08::EffectManager::ResetEffects,0x425410,function
 th08::EffectManager::SpawnEffect,0x425430,function
 th08::EffectManager::SpawnEffectWithVelocity,0x425650,function

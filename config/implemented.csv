@@ -1043,7 +1043,7 @@ th08::UpdateBouncingEnemyMotion
 th08::WarpBulletsAcrossMediumBarrier
 th08::StopBulletWarpBarrier
 th08::WarpBulletsAcrossWideBarrier
-th08::EffectManager::GetFixedSlotVm
+th08::EffectManager::GetFixedSlotEffect
 th08::DrawBulletWarpBarrier
 th08::SynchronizeOrbitingChildFormation
 th08::UpdateNarrowRotatingLaserHitbox

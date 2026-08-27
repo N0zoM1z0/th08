@@ -768,10 +768,10 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
     }
 
     this->flags &= ~SPELLCARD_FLAG_BONUS_UPDATES_DISABLED;
-    this->spellEffect = reinterpret_cast<Effect *>(g_EffectManager.SpawnEffectInFixedSlot(
+    this->spellEffect = g_EffectManager.SpawnEffectInFixedSlot(
         (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0) ? 52 : 39,
         reinterpret_cast<D3DXVECTOR3 *>(
-            &this->activeEnemy->position), 1, 1, -1));
+            &this->activeEnemy->position), 1, 1, -1);
     this->spellEffect->vm.interpCurrentTimers[AnmInterp_Pos] = 0;
     this->spellEffect->vm.interpEndTimers[AnmInterp_Pos] = 100;
     this->spellEffect->vm.interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOutQuartic;

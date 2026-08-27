@@ -513,10 +513,10 @@ void Player::AwardGraze(Float3 *position, i32 suppressExtraItems)
 }
 
 // FUNCTION: th08 0x44ab40
-#pragma var_order(effectVm)
+#pragma var_order(effect)
 void Player::Die()
 {
-    AnmVm *effectVm;
+    Effect *effect;
 
     utils::DebugPrint("player DEAD");
     g_GameManager.scriptedUpdateFreeze = 0;
@@ -570,25 +570,25 @@ void Player::Die()
             this->mainVm.color2.a = this->mainVm.color1.a;
             this->mainVm.flagsWord |= 0x20000;
 
-            this->deathbombEffectVm =
+            this->deathbombEffect =
                 g_EffectManager.SpawnEffectInFixedSlot(59, reinterpret_cast<D3DXVECTOR3 *>(&this->position),
                                               11, 1, 0xFFF0404F);
-            effectVm = this->deathbombEffectVm;
-            effectVm->interpCurrentTimers[AnmInterp_Pos] = 0;
-            effectVm->interpEndTimers[AnmInterp_Pos] = this->deathbombWindowFrames;
-            effectVm->interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOut;
-            effectVm->posInitial.x = 128.0f;
-            effectVm->posFinal.x = 8.0f;
-            effectVm->posInitial.y = 32.0f;
-            effectVm->posFinal.y = 0.0f;
-            effectVm->pos.x = 128.0f;
-            effectVm->pos.y = 32.0f;
-            reinterpret_cast<Effect *>(effectVm)->vertexSegmentCount = 64;
-            reinterpret_cast<Effect *>(effectVm)->angle = 0.0f;
-            reinterpret_cast<Effect *>(effectVm)->radius = 128.0f;
-            reinterpret_cast<Effect *>(effectVm)->shapeThickness = 15.0f;
-            reinterpret_cast<Effect *>(effectVm)->radialWaveCount = 6.0f;
-            reinterpret_cast<Effect *>(effectVm)->updateDuringFreeze = 1;
+            effect = this->deathbombEffect;
+            effect->vm.interpCurrentTimers[AnmInterp_Pos] = 0;
+            effect->vm.interpEndTimers[AnmInterp_Pos] = this->deathbombWindowFrames;
+            effect->vm.interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOut;
+            effect->vm.posInitial.x = 128.0f;
+            effect->vm.posFinal.x = 8.0f;
+            effect->vm.posInitial.y = 32.0f;
+            effect->vm.posFinal.y = 0.0f;
+            effect->vm.pos.x = 128.0f;
+            effect->vm.pos.y = 32.0f;
+            effect->vertexSegmentCount = 64;
+            effect->angle = 0.0f;
+            effect->radius = 128.0f;
+            effect->shapeThickness = 15.0f;
+            effect->radialWaveCount = 6.0f;
+            effect->updateDuringFreeze = 1;
 
             if (g_Spellcard.IsActive())
                 g_GameManager.flags.deathbombFreezeActive = 1;
@@ -684,8 +684,9 @@ i32 Player::UpdateMovementAndOptions()
             }
             if (this->focusEffect == NULL)
             {
-                this->focusEffect = reinterpret_cast<Effect *>(
-                    g_EffectManager.SpawnEffectInFixedSlot(22, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 2, 1, -1));
+                this->focusEffect =
+                    g_EffectManager.SpawnEffectInFixedSlot(
+                        22, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 2, 1, -1);
             }
             this->focusTransitionFrames = 0;
             this->shootingGaugeChangeRampTimer = 0;
@@ -948,8 +949,9 @@ i32 Player::UpdateMovementAndOptions()
     if ((g_GameManager.GaugeIsExtremelyHuman() || g_GameManager.GaugeIsExtremelyYoukai()) &&
         this->extremeGaugeEffect == NULL)
     {
-        this->extremeGaugeEffect = reinterpret_cast<Effect *>(
-            g_EffectManager.SpawnEffectInFixedSlot(25, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 8, 1, -1));
+        this->extremeGaugeEffect =
+            g_EffectManager.SpawnEffectInFixedSlot(
+                25, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 8, 1, -1);
     }
     if (this->extremeGaugeEffect != NULL)
     {
@@ -1207,10 +1209,10 @@ acceptBomb:
     else
     {
         this->mainVm.flagsWord &= 0xFFFDFFFFu;
-        if (this->deathbombEffectVm != NULL)
+        if (this->deathbombEffect != NULL)
         {
-            reinterpret_cast<Effect *>(this->deathbombEffectVm)->active = 0;
-            this->deathbombEffectVm = NULL;
+            this->deathbombEffect->active = 0;
+            this->deathbombEffect = NULL;
         }
         *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFBFFu;
         g_AnmManager->SetMixColorDefault();
@@ -1292,10 +1294,10 @@ i32 Player::UpdateDeathAndRespawn()
         this->deathbombPending = 1;
         if (this->deathbombWindowFrames == 0)
         {
-            if (this->deathbombEffectVm != NULL)
+            if (this->deathbombEffect != NULL)
             {
-                reinterpret_cast<Effect *>(this->deathbombEffectVm)->active = 0;
-                this->deathbombEffectVm = NULL;
+                this->deathbombEffect->active = 0;
+                this->deathbombEffect = NULL;
             }
             g_EffectManager.SpawnEffectInFixedSlot(12, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 3, 1, 0xFF4040FF);
             g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 16, -1);

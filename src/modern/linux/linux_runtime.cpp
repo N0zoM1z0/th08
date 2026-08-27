@@ -16,21 +16,21 @@ namespace th08
 struct AnmVm;
 struct Effect;
 
-int __fastcall EffectRandomSplashInit(AnmVm *);
-int __fastcall EffectRandomSplashUpdate(AnmVm *);
-int __fastcall EffectRandomSplashBigInit(AnmVm *);
-int __fastcall EffectOrbitInit(AnmVm *);
-int __fastcall EffectOrbitUpdate(AnmVm *);
+int __fastcall EffectRandomSplashInit(Effect *);
+int __fastcall EffectRandomSplashUpdate(Effect *);
+int __fastcall EffectRandomSplashBigInit(Effect *);
+int __fastcall EffectOrbitInit(Effect *);
+int __fastcall EffectOrbitUpdate(Effect *);
 
-int __fastcall UpdateExpandingWavyRadialTrail(AnmVm *);
-int __fastcall UpdateExpandingPositiveDiagonalRadialTrail(AnmVm *);
-int __fastcall UpdateExpandingNegativeDiagonalRadialTrail(AnmVm *);
-int __fastcall UpdateExpandingOctagonalRadialTrail(AnmVm *);
-int __fastcall UpdateExpandingTwelveSegmentRadialTrail(AnmVm *);
-int __fastcall UpdateBarrierRadialEffect(AnmVm *);
-int __fastcall InitializeBarrierRadialEffect(AnmVm *);
-int __fastcall InitializeRotatingBarrierRadialEffect(AnmVm *);
-int __fastcall UpdateExpandingOrthogonalRadialTrail(AnmVm *);
+int __fastcall UpdateExpandingWavyRadialTrail(Effect *);
+int __fastcall UpdateExpandingPositiveDiagonalRadialTrail(Effect *);
+int __fastcall UpdateExpandingNegativeDiagonalRadialTrail(Effect *);
+int __fastcall UpdateExpandingOctagonalRadialTrail(Effect *);
+int __fastcall UpdateExpandingTwelveSegmentRadialTrail(Effect *);
+int __fastcall UpdateBarrierRadialEffect(Effect *);
+int __fastcall InitializeBarrierRadialEffect(Effect *);
+int __fastcall InitializeRotatingBarrierRadialEffect(Effect *);
+int __fastcall UpdateExpandingOrthogonalRadialTrail(Effect *);
 
 int __fastcall InitializeTintedBossTrackingCameraParticle(Effect *);
 int __fastcall UpdateTintedBossTrackingCameraParticle(Effect *);

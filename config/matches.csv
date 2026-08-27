@@ -1038,7 +1038,7 @@ address,name,size,status,match_percent,unit,evidence
 0x00423E20,th08::WarpBulletsAcrossMediumBarrier,784,matching,100.00,ecl-ex-warp-bullets-across-medium-barrier,python3 scripts/compare-function.py ecl-ex-warp-bullets-across-medium-barrier --json
 0x00424130,th08::StopBulletWarpBarrier,64,matching,100.00,ecl-ex-stop-bullet-warp-barrier,python3 scripts/compare-function.py ecl-ex-stop-bullet-warp-barrier --json
 0x004241E0,th08::WarpBulletsAcrossWideBarrier,784,matching,100.00,ecl-ex-warp-bullets-across-wide-barrier,python3 scripts/compare-function.py ecl-ex-warp-bullets-across-wide-barrier --json
-0x004253E0,th08::EffectManager::GetFixedSlotVm,34,matching,100.00,effect-manager-get-fixed-slot-vm,python3 scripts/compare-function.py effect-manager-get-fixed-slot-vm --json
+0x004253E0,th08::EffectManager::GetFixedSlotEffect,34,matching,100.00,effect-manager-get-fixed-slot-effect,python3 scripts/compare-function.py effect-manager-get-fixed-slot-effect --json
 0x004235A0,th08::DrawBulletWarpBarrier,1203,matching,100.00,ecl-ex-draw-bullet-warp-barrier,python3 scripts/compare-function.py ecl-ex-draw-bullet-warp-barrier --json
 0x004244F0,th08::SynchronizeOrbitingChildFormation,494,matching,100.00,ecl-ex-synchronize-orbiting-child-formation,python3 scripts/compare-function.py ecl-ex-synchronize-orbiting-child-formation --json
 0x00424730,th08::UpdateNarrowRotatingLaserHitbox,228,matching,100.00,ecl-ex-update-narrow-rotating-laser-hitbox,python3 scripts/compare-function.py ecl-ex-update-narrow-rotating-laser-hitbox --json

@@ -3419,7 +3419,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x2B75
 type = "REL32"
-symbol = "?SpawnEffectInSecondaryPool@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffectInSecondaryPool@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425B70
 
 [[units.relocations]]
@@ -3503,7 +3503,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x2D25
 type = "REL32"
-symbol = "?SpawnEffectInSecondaryPool@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffectInSecondaryPool@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425B70
 
 [[units.relocations]]
@@ -3593,7 +3593,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x2F2E
 type = "REL32"
-symbol = "?SpawnEffectInSecondaryPool@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffectInSecondaryPool@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425B70
 
 [[units.relocations]]
@@ -4128,7 +4128,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x4198
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -4478,7 +4478,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x4B6E
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -4532,7 +4532,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x4CCA
 type = "REL32"
-symbol = "?SpawnEffectWithVelocity@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@0HH@Z"
+symbol = "?SpawnEffectWithVelocity@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@0HH@Z"
 target = 0x00425650
 
 [[units.relocations]]
@@ -5444,7 +5444,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x6143
 type = "REL32"
-symbol = "?SpawnEffectInSecondaryPool@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffectInSecondaryPool@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425B70
 
 [[units.relocations]]
@@ -10504,7 +10504,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x10E5
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -10516,7 +10516,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x1108
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -10528,7 +10528,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x112B
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -10709,7 +10709,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x139B
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -10721,7 +10721,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x13C1
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -57598,7 +57598,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x9B
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -59495,7 +59495,7 @@ target = 0x0045EA00
 [[units]]
 name = "effect-manager-spawn-effect"
 object = "build/EffectManager.obj"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target_address = 0x00425430
 size = 0x211
 
@@ -59559,7 +59559,7 @@ target = 0x018B8A28
 [[units]]
 name = "effect-manager-spawn-effect-with-velocity"
 object = "build/EffectManager.obj"
-symbol = "?SpawnEffectWithVelocity@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@0HH@Z"
+symbol = "?SpawnEffectWithVelocity@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@0HH@Z"
 target_address = 0x00425650
 size = 0x215
 
@@ -59623,7 +59623,7 @@ target = 0x018B8A28
 [[units]]
 name = "effect-manager-spawn-effect-in-secondary-pool"
 object = "build/EffectManager.obj"
-symbol = "?SpawnEffectInSecondaryPool@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffectInSecondaryPool@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target_address = 0x00425B70
 size = 0x1FD
 
@@ -66266,7 +66266,7 @@ target = 0x00408EA9
 [[units]]
 name = "effect-manager-spawn-effect-in-fixed-slot"
 object = "build/EffectManager.obj"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target_address = 0x00425870
 size = 0x16D
 
@@ -66397,7 +66397,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x88
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target = 0x00425870
 
 [[units.relocations]]
@@ -66931,7 +66931,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x17F4
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -68443,7 +68443,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x368
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target = 0x00425870
 
 [[units.relocations]]
@@ -82051,7 +82051,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 217
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -82439,7 +82439,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 61
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -82605,7 +82605,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 588
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target = 0x00425870
 
 [[units.relocations]]
@@ -83134,7 +83134,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 63
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -83164,7 +83164,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 181
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -85527,7 +85527,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x2AD
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -85539,7 +85539,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x2D5
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target = 0x00425870
 
 [[units.relocations]]
@@ -85614,7 +85614,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x508
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -86468,7 +86468,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x1192
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target = 0x00425870
 
 [[units.relocations]]
@@ -89404,7 +89404,7 @@ target = 0x00404720
 [[units]]
 name = "effect-random-splash-init"
 object = "build/objdiff/reimpl/EffectManager.obj"
-symbol = "?EffectRandomSplashInit@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?EffectRandomSplashInit@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x00425D70
 size = 0xEC
 
@@ -89515,7 +89515,7 @@ target = 0x00423D70
 [[units]]
 name = "effect-random-splash-big-init"
 object = "build/objdiff/reimpl/EffectManager.obj"
-symbol = "?EffectRandomSplashBigInit@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?EffectRandomSplashBigInit@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x00425EA0
 size = 0xF8
 
@@ -89638,7 +89638,7 @@ target = 0x00423D70
 [[units]]
 name = "effect-random-splash-update"
 object = "build/objdiff/reimpl/EffectManager.obj"
-symbol = "?EffectRandomSplashUpdate@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?EffectRandomSplashUpdate@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x00425E60
 size = 0x3F
 
@@ -89657,14 +89657,14 @@ target = 0x00410A70
 [[units]]
 name = "effect-orbit-init"
 object = "build/objdiff/reimpl/EffectManager.obj"
-symbol = "?EffectOrbitInit@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?EffectOrbitInit@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x00425FE0
 size = 0x4B
 
 [[units]]
 name = "effect-orbit-update"
 object = "build/objdiff/reimpl/EffectManager.obj"
-symbol = "?EffectOrbitUpdate@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?EffectOrbitUpdate@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x00426030
 size = 0x24C
 
@@ -89973,7 +89973,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x95
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target = 0x00425870
 
 [[units.relocations]]
@@ -89985,7 +89985,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0xAF
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -92804,7 +92804,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x2C6
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -92924,7 +92924,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x606
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -92936,7 +92936,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x61C
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -93869,7 +93869,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x3C
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target = 0x00425870
 
 [[units.relocations]]
@@ -94197,7 +94197,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x97
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -94209,7 +94209,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0xB6
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target = 0x00425870
 
 [[units.relocations]]
@@ -94417,7 +94417,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x113
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@0HHH@Z"
+symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@0HHH@Z"
 target = 0x004259E0
 
 [[units.relocations]]
@@ -94453,7 +94453,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x1AA
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@0HHH@Z"
+symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@0HHH@Z"
 target = 0x004259E0
 
 [[units.relocations]]
@@ -94501,7 +94501,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x277
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@0HHH@Z"
+symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@0HHH@Z"
 target = 0x004259E0
 
 [[units.relocations]]
@@ -94549,7 +94549,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x345
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@0HHH@Z"
+symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@0HHH@Z"
 target = 0x004259E0
 
 [[units.relocations]]
@@ -94658,7 +94658,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x141
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@0HHH@Z"
+symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@0HHH@Z"
 target = 0x004259E0
 
 [[units.relocations]]
@@ -94694,7 +94694,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x1D6
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@0HHH@Z"
+symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@0HHH@Z"
 target = 0x004259E0
 
 [[units.relocations]]
@@ -94742,7 +94742,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x2A1
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@0HHH@Z"
+symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@0HHH@Z"
 target = 0x004259E0
 
 [[units.relocations]]
@@ -94790,7 +94790,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x36C
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@0HHH@Z"
+symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@0HHH@Z"
 target = 0x004259E0
 
 [[units.relocations]]
@@ -94828,7 +94828,7 @@ size = 0x160
 [[units]]
 name = "player-bomb-effect-update-004114e0"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?UpdateBarrierRadialEffect@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateBarrierRadialEffect@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x004114E0
 size = 0x237
 
@@ -95016,7 +95016,7 @@ target = 0x0044DE60
 [[units]]
 name = "player-bomb-effect-init-00411720"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?InitializeBarrierRadialEffect@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?InitializeBarrierRadialEffect@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x00411720
 size = 0x8B
 
@@ -95029,20 +95029,20 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x5A
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@0HHH@Z"
+symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@0HHH@Z"
 target = 0x004259E0
 
 [[units.relocations]]
 offset = 0x67
 type = "DIR32"
-symbol = "?UpdateBarrierRadialEffect@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateBarrierRadialEffect@th08@@YIHPAUEffect@1@@Z"
 target = 0x004114E0
 
 
 [[units]]
 name = "player-bomb-effect-update-004117b0"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?UpdateRotatingBarrierRadialEffect@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateRotatingBarrierRadialEffect@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x004117B0
 size = 0x2C4
 
@@ -95254,7 +95254,7 @@ target = 0x0044DE60
 [[units]]
 name = "player-bomb-effect-init-00411a80"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?InitializeRotatingBarrierRadialEffect@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?InitializeRotatingBarrierRadialEffect@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x00411A80
 size = 0x8B
 
@@ -95267,13 +95267,13 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x5A
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@0HHH@Z"
+symbol = "?SpawnEffectInFixedSlotWithVelocity@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@0HHH@Z"
 target = 0x004259E0
 
 [[units.relocations]]
 offset = 0x67
 type = "DIR32"
-symbol = "?UpdateRotatingBarrierRadialEffect@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateRotatingBarrierRadialEffect@th08@@YIHPAUEffect@1@@Z"
 target = 0x004117B0
 
 [[units]]
@@ -95400,7 +95400,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x1EC
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -95454,7 +95454,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x2FD
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -95490,7 +95490,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x3B1
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -95520,7 +95520,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x427
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -95562,7 +95562,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x4F4
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -95592,7 +95592,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x56A
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -95634,7 +95634,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x638
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -95664,7 +95664,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x6AE
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -95863,7 +95863,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x1EF
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -95917,7 +95917,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x300
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -95953,7 +95953,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x3B4
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -95983,7 +95983,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x42A
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -96025,7 +96025,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x4F7
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -96055,7 +96055,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x56D
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -96097,7 +96097,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x63B
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -96127,7 +96127,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x6B1
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -96169,7 +96169,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x77E
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -96199,7 +96199,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x7F4
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -96241,7 +96241,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x8C2
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -96271,7 +96271,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x938
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -96313,7 +96313,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0xA08
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -96343,7 +96343,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0xA7E
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -96610,7 +96610,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x555
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -96858,7 +96858,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x555
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -97150,7 +97150,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x70
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -97348,7 +97348,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x620
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -97447,7 +97447,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x70
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -97561,7 +97561,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x3A8
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -97687,7 +97687,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x591
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -97699,7 +97699,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x5AA
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -97886,7 +97886,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x1E7
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -97904,7 +97904,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x21A
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -97922,7 +97922,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x24D
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -97940,7 +97940,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x27F
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -97958,7 +97958,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x2B2
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -97988,7 +97988,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x2F4
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98000,7 +98000,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x310
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98012,7 +98012,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x32D
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98054,7 +98054,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x3DD
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98072,7 +98072,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x412
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98090,7 +98090,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x448
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98108,7 +98108,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x481
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98278,7 +98278,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x1D9
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98296,7 +98296,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x20C
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98314,7 +98314,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x23F
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98332,7 +98332,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x271
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98350,7 +98350,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x2A4
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98380,7 +98380,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x2E6
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98392,7 +98392,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x302
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98404,7 +98404,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x31F
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98422,7 +98422,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x34D
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98434,7 +98434,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x36E
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98446,7 +98446,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x38F
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98458,7 +98458,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x3B0
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98488,7 +98488,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x431
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98506,7 +98506,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x46A
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98524,7 +98524,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x4A3
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98542,7 +98542,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x4DB
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -98693,7 +98693,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x18F
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target = 0x00425870
 
 [[units.relocations]]
@@ -99108,7 +99108,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x519
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target = 0x00425870
 
 [[units.relocations]]
@@ -99512,7 +99512,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x519
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target = 0x00425870
 
 [[units.relocations]]
@@ -99675,7 +99675,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0xBE
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -99933,7 +99933,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x598
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -100013,7 +100013,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0xC1
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -100247,7 +100247,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x45A
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -100289,7 +100289,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x5D3
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -100337,7 +100337,7 @@ target = 0x00406640
 [[units]]
 name = "player-effect-callback-0040e040"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?UpdateExpandingWavyRadialTrail@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateExpandingWavyRadialTrail@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x0040E040
 size = 0xD1
 
@@ -100393,7 +100393,7 @@ target = 0x004B42EC
 [[units]]
 name = "player-effect-callback-0040e120"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?UpdateExpandingPositiveDiagonalRadialTrail@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateExpandingPositiveDiagonalRadialTrail@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x0040E120
 size = 0xD1
 
@@ -100449,7 +100449,7 @@ target = 0x004B4438
 [[units]]
 name = "player-effect-callback-0040e200"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?UpdateExpandingNegativeDiagonalRadialTrail@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateExpandingNegativeDiagonalRadialTrail@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x0040E200
 size = 0xC4
 
@@ -100505,7 +100505,7 @@ target = 0x004B4438
 [[units]]
 name = "player-effect-callback-0040e2d0"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?UpdateExpandingOctagonalRadialTrail@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateExpandingOctagonalRadialTrail@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x0040E2D0
 size = 0x77
 
@@ -100543,7 +100543,7 @@ target = 0x004B4440
 [[units]]
 name = "player-effect-callback-00410bb0"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?UpdateExpandingTwelveSegmentRadialTrail@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateExpandingTwelveSegmentRadialTrail@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x00410BB0
 size = 0x4C
 
@@ -100557,7 +100557,7 @@ target = 0x004B4300
 [[units]]
 name = "player-effect-callback-00413070"
 object = "build/objdiff/reimpl/PlayerBomb.obj"
-symbol = "?UpdateExpandingOrthogonalRadialTrail@th08@@YIHPAUAnmVm@1@@Z"
+symbol = "?UpdateExpandingOrthogonalRadialTrail@th08@@YIHPAUEffect@1@@Z"
 target_address = 0x00413070
 size = 0xCC
 
@@ -102661,7 +102661,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x47
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -102697,7 +102697,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0xBB
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -102721,7 +102721,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0xE7
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -109489,7 +109489,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x23
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target = 0x00425870
 
 [[units.relocations]]
@@ -109501,7 +109501,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x42
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target = 0x00425870
 
 [[units.relocations]]
@@ -109544,7 +109544,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x23
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target = 0x00425870
 
 [[units.relocations]]
@@ -109556,7 +109556,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x42
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target = 0x00425870
 
 [[units.relocations]]
@@ -109599,7 +109599,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x23
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target = 0x00425870
 
 [[units.relocations]]
@@ -109611,7 +109611,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x42
 type = "REL32"
-symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HHH@Z"
+symbol = "?SpawnEffectInFixedSlot@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HHH@Z"
 target = 0x00425870
 
 [[units.relocations]]
@@ -109952,7 +109952,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x14
 type = "REL32"
-symbol = "?GetFixedSlotVm@EffectManager@th08@@QAEPAUAnmVm@2@H@Z"
+symbol = "?GetFixedSlotEffect@EffectManager@th08@@QAEPAUEffect@2@H@Z"
 target = 0x004253E0
 
 [[units.relocations]]
@@ -109964,7 +109964,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x27
 type = "REL32"
-symbol = "?GetFixedSlotVm@EffectManager@th08@@QAEPAUAnmVm@2@H@Z"
+symbol = "?GetFixedSlotEffect@EffectManager@th08@@QAEPAUEffect@2@H@Z"
 target = 0x004253E0
 
 [[units.relocations]]
@@ -110203,9 +110203,9 @@ symbol = "?AddNormalizeAngle@th08@@YIMMM@Z"
 target = 0x0043EDB0
 
 [[units]]
-name = "effect-manager-get-fixed-slot-vm"
+name = "effect-manager-get-fixed-slot-effect"
 object = "build/objdiff/reimpl/EffectManager.obj"
-symbol = "th08::EffectManager::GetFixedSlotVm"
+symbol = "th08::EffectManager::GetFixedSlotEffect"
 target_address = 0x004253E0
 size = 0x22
 
@@ -110237,7 +110237,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x26
 type = "REL32"
-symbol = "?GetFixedSlotVm@EffectManager@th08@@QAEPAUAnmVm@2@H@Z"
+symbol = "?GetFixedSlotEffect@EffectManager@th08@@QAEPAUEffect@2@H@Z"
 target = 0x004253E0
 
 [[units.relocations]]
@@ -110249,7 +110249,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x35
 type = "REL32"
-symbol = "?GetFixedSlotVm@EffectManager@th08@@QAEPAUAnmVm@2@H@Z"
+symbol = "?GetFixedSlotEffect@EffectManager@th08@@QAEPAUEffect@2@H@Z"
 target = 0x004253E0
 
 [[units.relocations]]
@@ -117258,7 +117258,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x3BE
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -117410,7 +117410,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x15D
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -119045,7 +119045,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x2A6
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -119057,7 +119057,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x2C5
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -119207,7 +119207,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x1D5
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -119823,7 +119823,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x257
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units.relocations]]
@@ -119901,7 +119901,7 @@ target = 0x004ECE60
 [[units.relocations]]
 offset = 0x74
 type = "REL32"
-symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUAnmVm@2@HPAUD3DXVECTOR3@@HH@Z"
+symbol = "?SpawnEffect@EffectManager@th08@@QAEPAUEffect@2@HPAUD3DXVECTOR3@@HH@Z"
 target = 0x00425430
 
 [[units]]

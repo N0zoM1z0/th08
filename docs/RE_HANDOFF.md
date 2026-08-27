@@ -2126,3 +2126,24 @@ zero failures; the normal VC7 image and complete Linux i386 image link, and
 the fixed-layout verifier passes.  Continue on `semantic/typed-reconstruction`;
 commit and push stable checkpoints, but do not open a PR or merge until
 explicitly requested.
+
+The Effect lifecycle/ownership checkpoint replaces the remaining false
+`AnmVm *` view of full Effect objects.  Target `OnUpdate @ 0x00427BF0` and
+`OnDraw @ 0x00427F00` pass the Effect address in ECX to their indirect
+callbacks, so the instance and 66-row template tables now carry typed Effect
+update/initialize/draw callbacks.  The splash/orbit and player radial/barrier
+families consume `Effect *` directly; the one
+`AnmVm::UpdatePulsingRadialTrail` table entry remains an explicit member-ABI
+compatibility case.
+
+All five spawn APIs at `0x00425430..0x00425B70` now return the Effect they
+initialize, and `GetFixedSlotEffect @ 0x004253E0` names the same fixed-pool
+owner.  Player deathbomb/work-item fields and ECL/Background/Spellcard callers
+retain `Effect *`, taking `&effect->vm` only at genuine ANM boundaries.  The
+post-change `QAEPAUEffect@2@...` spawn/getter and `PAUEffect@1@@Z` callback
+decorated identities were read from new VC7 objects before migrating every
+configured relocation.  Focused replay passes **26 / 26 exact**; the required
+non-reuse cold aggregate passes **1,106 / 1,106 exact** with zero failures; the
+normal VC7 image and complete Linux i386 image link; and the Linux fixed-layout
+verifier passes.  Continue on `semantic/typed-reconstruction`; commit and push
+stable checkpoints, but do not open a PR or merge until explicitly requested.

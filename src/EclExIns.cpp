@@ -84,10 +84,10 @@ void __fastcall UpdateBouncingEnemyMotion(Enemy *enemy, EclExInstruction *instru
 // FUNCTION: th08 0x423530
 void __fastcall StartNarrowBulletWarpBarrier(Enemy *enemy, EclExInstruction *instruction)
 {
-    AnmVm *effect;
+    Effect *effect;
     effect = g_EffectManager.SpawnEffectInFixedSlot(56, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 9, 1, -1);
     effect = g_EffectManager.SpawnEffectInFixedSlot(56, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 10, 1, -1);
-    g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 97);
+    g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 97);
     g_Background.spellBackgroundDrawCallback = &DrawBulletWarpBarrier;
 }
 
@@ -104,8 +104,8 @@ void __fastcall DrawBulletWarpBarrier()
     Effect *effect10;
     f32 radius10;
 
-    effect9 = reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(9));
-    effect10 = reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(10));
+    effect9 = g_EffectManager.GetFixedSlotEffect(9);
+    effect10 = g_EffectManager.GetFixedSlotEffect(10);
     unusedSpellVm = &g_Background.spellVms[0];
 
     radius9 = effect9->vm.pos.x * 0.7071068286895752f;
@@ -258,10 +258,10 @@ void __fastcall WarpBulletsAcrossNarrowBarrier(Enemy *enemy, EclExInstruction *i
 // FUNCTION: th08 0x423db0
 void __fastcall StartMediumBulletWarpBarrier(Enemy *enemy, EclExInstruction *instruction)
 {
-    AnmVm *effect;
+    Effect *effect;
     effect = g_EffectManager.SpawnEffectInFixedSlot(65, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 9, 1, -1);
     effect = g_EffectManager.SpawnEffectInFixedSlot(65, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 10, 1, -1);
-    g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 99);
+    g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 99);
     g_Background.spellBackgroundDrawCallback = &DrawBulletWarpBarrier;
 }
 
@@ -345,18 +345,18 @@ void __fastcall WarpBulletsAcrossMediumBarrier(Enemy *enemy, EclExInstruction *i
 // FUNCTION: th08 0x424130
 void __fastcall StopBulletWarpBarrier(Enemy *enemy, EclExInstruction *instruction)
 {
-    reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(9))->active = 0;
-    reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(10))->active = 0;
+    g_EffectManager.GetFixedSlotEffect(9)->active = 0;
+    g_EffectManager.GetFixedSlotEffect(10)->active = 0;
     g_Background.spellVmCount = 2;
 }
 
 // FUNCTION: th08 0x424170
 void __fastcall StartWideBulletWarpBarrier(Enemy *enemy, EclExInstruction *instruction)
 {
-    AnmVm *effect;
+    Effect *effect;
     effect = g_EffectManager.SpawnEffectInFixedSlot(58, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 9, 1, -1);
     effect = g_EffectManager.SpawnEffectInFixedSlot(58, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 10, 1, -1);
-    g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 101);
+    g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 101);
     g_Background.spellBackgroundDrawCallback = &DrawBulletWarpBarrier;
 }
 

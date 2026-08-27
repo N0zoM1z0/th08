@@ -12,6 +12,11 @@ namespace th08
 
 struct Enemy;
 struct AnmVm;
+struct Effect;
+
+typedef i32 (__fastcall *EffectUpdateCallback)(Effect *effect);
+typedef i32 (__fastcall *EffectInitializeCallback)(Effect *effect);
+typedef i32 (__fastcall *EffectDrawCallback)(Effect *effect);
 
 struct Effect
 {
@@ -37,8 +42,8 @@ struct Effect
     f32 radialWaveCount;
     ZunTimer timer;
     u32 unconsumedDword344;
-    void *updateCallback;
-    void *drawCallback;
+    EffectUpdateCallback updateCallback;
+    EffectDrawCallback drawCallback;
     i8 active;
     i8 effectId;
     i8 releaseRequested;
@@ -111,12 +116,12 @@ struct EffectManager
     static ZunResult ReleaseEffectResources(EffectManager *effectManager);
     static ZunResult RegisterChain();
     static void CutChain();
-    AnmVm *SpawnEffectInSecondaryPool(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
-    AnmVm *SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
-    AnmVm *SpawnEffectWithVelocity(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 count, i32 color);
-    AnmVm *GetFixedSlotVm(i32 index);
-    AnmVm *SpawnEffectInFixedSlot(i32 id, D3DXVECTOR3 *position, i32 slotIndex, i32 unused, i32 color);
-    AnmVm *SpawnEffectInFixedSlotWithVelocity(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 slotIndex, i32 unused, i32 color);
+    Effect *SpawnEffectInSecondaryPool(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
+    Effect *SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
+    Effect *SpawnEffectWithVelocity(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 count, i32 color);
+    Effect *GetFixedSlotEffect(i32 index);
+    Effect *SpawnEffectInFixedSlot(i32 id, D3DXVECTOR3 *position, i32 slotIndex, i32 unused, i32 color);
+    Effect *SpawnEffectInFixedSlotWithVelocity(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 slotIndex, i32 unused, i32 color);
     i32 DrawBulletLayerEffects();
     i32 DrawBackgroundEffects();
 };

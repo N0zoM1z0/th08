@@ -9,6 +9,7 @@ namespace th08
 {
 
 struct AnmLoaded;
+struct Effect;
 struct PlayerShotDescriptor;
 
 struct PlayerShotPowerLevel
@@ -156,7 +157,7 @@ struct PlayerBombWorkItem
     Float3 motion;
     Float3 auxiliaryMotion;
     AnmVm vms[8];
-    AnmVm *effectVm;
+    Effect *effect;
     ZunTimer timer;
     PlayerCollisionRegion *damageRegion;
     PlayerCollisionRegion *cancelRegion;
@@ -186,7 +187,7 @@ C_ASSERT(offsetof(PlayerBombWorkItem, pathPoints) == 0x20);
 C_ASSERT(offsetof(PlayerBombWorkItem, motion) == 0x1A0);
 C_ASSERT(offsetof(PlayerBombWorkItem, auxiliaryMotion) == 0x1AC);
 C_ASSERT(offsetof(PlayerBombWorkItem, vms) == 0x1B8);
-C_ASSERT(offsetof(PlayerBombWorkItem, effectVm) == 0x16D8);
+C_ASSERT(offsetof(PlayerBombWorkItem, effect) == 0x16D8);
 C_ASSERT(offsetof(PlayerBombWorkItem, timer) == 0x16DC);
 C_ASSERT(offsetof(PlayerBombWorkItem, damageRegion) == 0x16E8);
 C_ASSERT(offsetof(PlayerBombWorkItem, cancelRegion) == 0x16EC);
@@ -405,7 +406,7 @@ struct Player
     Effect *stateEffect;
     u32 unconsumedDwordE2B20;
     Effect *extremeGaugeEffect;
-    AnmVm *deathbombEffectVm;
+    Effect *deathbombEffect;
     i32 damageAccumulatorThreshold;
 
     static ZunResult RegisterChain(u32 playerType);
@@ -520,7 +521,7 @@ C_ASSERT(offsetof(Player, timer) == 0xE2AF4);
 C_ASSERT(offsetof(Player, calcChain) == 0xE2B10);
 C_ASSERT(offsetof(Player, unconsumedDwordE2B20) == 0xE2B20);
 C_ASSERT(offsetof(Player, extremeGaugeEffect) == 0xE2B24);
-C_ASSERT(offsetof(Player, deathbombEffectVm) == 0xE2B28);
+C_ASSERT(offsetof(Player, deathbombEffect) == 0xE2B28);
 C_ASSERT(offsetof(Player, damageAccumulatorThreshold) == 0xE2B2C);
 
 DIFFABLE_EXTERN(Player, g_Player);

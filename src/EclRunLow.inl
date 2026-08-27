@@ -757,19 +757,17 @@ static EclRawInstruction *__fastcall CompareOperands(
 
             if (child->alignmentEffect == 0)
             {
-                child->alignmentEffect = reinterpret_cast<Effect *>(
+                child->alignmentEffect =
                     g_EffectManager.SpawnEffectInSecondaryPool(
                     0x20,
                     reinterpret_cast<D3DXVECTOR3 *>(
                         &child->position),
-                    1, -1));
-                reinterpret_cast<AnmVmBase *>(
-                    child->alignmentEffect)
-                    ->SetInterrupt(
+                    1, -1);
+                child->alignmentEffect->vm.SetInterrupt(
                         g_Player.IsYoukai()
                             ? 2
                             : 1);
-                reinterpret_cast<AnmVm *>(child->alignmentEffect)->flag17 =
+                child->alignmentEffect->vm.flag17 =
                     reinterpret_cast<EnemyFlag1Bits *>(
                         &child->flags1)->
                             collision != 0;
@@ -819,19 +817,17 @@ static EclRawInstruction *__fastcall CompareOperands(
 
             if (child->alignmentEffect == 0)
             {
-                child->alignmentEffect = reinterpret_cast<Effect *>(
+                child->alignmentEffect =
                     g_EffectManager.SpawnEffectInSecondaryPool(
                     0x20,
                     reinterpret_cast<D3DXVECTOR3 *>(
                         &child->position),
-                    1, -1));
-                reinterpret_cast<AnmVmBase *>(
-                    child->alignmentEffect)
-                    ->SetInterrupt(
+                    1, -1);
+                child->alignmentEffect->vm.SetInterrupt(
                         g_Player.IsYoukai()
                             ? 2
                             : 1);
-                reinterpret_cast<AnmVm *>(child->alignmentEffect)->flag17 =
+                child->alignmentEffect->vm.flag17 =
                     reinterpret_cast<EnemyFlag1Bits *>(
                         &child->flags1)->
                             collision != 0;
@@ -892,19 +888,17 @@ static EclRawInstruction *__fastcall CompareOperands(
 
             if (child->alignmentEffect == 0)
             {
-                child->alignmentEffect = reinterpret_cast<Effect *>(
+                child->alignmentEffect =
                     g_EffectManager.SpawnEffectInSecondaryPool(
                     0x20,
                     reinterpret_cast<D3DXVECTOR3 *>(
                         &child->worldPosition),
-                    1, -1));
-                reinterpret_cast<AnmVmBase *>(
-                    child->alignmentEffect)
-                    ->SetInterrupt(
+                    1, -1);
+                child->alignmentEffect->vm.SetInterrupt(
                         g_Player.IsYoukai()
                             ? 2
                             : 1);
-                reinterpret_cast<AnmVm *>(child->alignmentEffect)->flag17 =
+                child->alignmentEffect->vm.flag17 =
                     reinterpret_cast<EnemyFlag1Bits *>(
                         &child->flags1)->
                             collision != 0;

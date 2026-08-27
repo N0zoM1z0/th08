@@ -167,8 +167,9 @@ ChainCallbackResult Background::OnUpdate(Background *background)
         if (background->stageEffect == NULL)
         {
             Float3 zeroVector(0.0f, 0.0f, 0.0f);
-            background->stageEffect = reinterpret_cast<Effect *>(
-                g_EffectManager.SpawnEffectInFixedSlot(0x40, reinterpret_cast<D3DXVECTOR3 *>(&zeroVector), 0xC, 1, -1));
+            background->stageEffect =
+                g_EffectManager.SpawnEffectInFixedSlot(
+                    0x40, reinterpret_cast<D3DXVECTOR3 *>(&zeroVector), 0xC, 1, -1);
             spawnedStageEffect = &background->stageEffect->vm;
             background->stageAnmFile->SetAndExecuteScriptIdx(spawnedStageEffect, 11);
         }
@@ -411,7 +412,7 @@ instructions_done:
     f32 fogInterpRatio;
     i32 i;
     i32 j;
-    AnmVm *spawnedEffect;
+    Effect *spawnedEffect;
     i32 k;
 
     interpolationIndex = 0;
@@ -540,7 +541,7 @@ instructions_done:
         {
             spawnedEffect = g_EffectManager.SpawnEffect(62, reinterpret_cast<D3DXVECTOR3 *>(&background->specialEffectPoints[k]),
                                                         1, 0x20FFFFFF);
-            reinterpret_cast<Effect *>(spawnedEffect)->drawGroup = 4;
+            spawnedEffect->drawGroup = 4;
         }
     }
     background->collectSpecialEffectPoints = 1;
@@ -673,7 +674,7 @@ ChainCallbackResult Background::OnDrawHighPrio(Background *background)
 {
     i32 i;
     D3DVIEWPORT8 viewport;
-    AnmVm *effect;
+    Effect *effect;
     ZunRect rect;
     ZunColor fogColor;
 
@@ -737,9 +738,8 @@ ChainCallbackResult Background::OnDrawHighPrio(Background *background)
         }
         if (background->stageEffect != NULL)
         {
-            effect = &background->stageEffect->vm;
-            (reinterpret_cast<void (__fastcall *)(AnmVm *)>(
-                reinterpret_cast<Effect *>(effect)->drawCallback))(effect);
+            effect = background->stageEffect;
+            effect->drawCallback(effect);
         }
     }
 

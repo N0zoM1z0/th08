@@ -4352,3 +4352,51 @@ Portable oracle: the complete i386 Linux container image links with both typed
 pointers, and `verify-modern-linux.sh` verifies the ELF32 executable and every
 fixed target-owned layout symbol.  No object offset, callback ordering, render
 state, target byte, accepted-unit identity, or aggregate exact total changed.
+
+### Typed Effect lifecycle and spawn ownership — 2026-08-27
+
+Scope: the Effect template/instance callback protocol, all callbacks that were
+still declared against the Effect's leading `AnmVm`, the five Effect allocation
+APIs, the fixed-slot lookup, and callers that retain or mutate the returned
+owner.
+
+Target instructions in `EffectManager::OnUpdate @ 0x00427BF0` load the current
+Effect address into ECX before the indirect update call and compare EAX with
+one.  `EffectManager::OnDraw @ 0x00427F00` likewise supplies the Effect address
+in ECX to the draw callback and ignores its return value.  The instance fields
+at `Effect +0x348` and `+0x34C` therefore carry typed `__fastcall` update and
+draw callbacks, while the template's third field carries the corresponding
+initializer type.  The template storage now expresses all 66 runtime IDs
+(`0..65`) rather than the old 20-row source fiction.  Initializers, update and
+draw dispatchers, the splash/orbit family, and the player radial/barrier family
+all receive `Effect *` directly.  `AnmVm::UpdatePulsingRadialTrail` remains the
+documented compatibility entry whose member ABI intentionally views the same
+leading subobject.
+
+`EffectManager::SpawnEffect @ 0x00425430`, `SpawnEffectWithVelocity @
+0x00425650`, both fixed-slot variants at `0x00425870` and `0x004259E0`, and
+`SpawnEffectInSecondaryPool @ 0x00425B70` now return `Effect *`, the object
+each routine actually scans and initializes.  `GetFixedSlotEffect @
+0x004253E0` returns that same owner.  Callers take `&effect->vm` only when an
+ANM API truly requires the leading animation subobject; Effect fields and
+Enemy attachment pointers are accessed through their real owner.  This also
+types `PlayerBombWorkItem::effect @ +0x16D8` and
+`Player::deathbombEffect @ +0xE2B28` without changing either four-byte field or
+the containing layouts.
+
+The post-change VC7 COFF definitions were read directly from
+`EffectManager.obj`: each spawn/getter identity is `QAEPAUEffect@2@...`.
+Configured definition and caller relocations were migrated to those observed
+symbols, as were the compiler-observed `PAUEffect@1@@Z` callback identities;
+none were hand-inferred.  Focused relocation-aware replay of the getter, five
+spawn routines, lifecycle dispatchers, and migrated callbacks passes **26 / 26
+exact**.  Because the declarations are shared and their decorated identities
+reach callers throughout the game loop, the required single-job non-reuse cold
+build of all 75 comparison objects passes **1,106 / 1,106 exact** with zero
+failures.  The normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container image links with the typed
+Effect protocol and owner returns, and `verify-modern-linux.sh` verifies the
+ELF32 executable and every fixed target-owned layout symbol.  No Effect or
+Player layout, callback calling convention, target byte, accepted-unit
+identity, or aggregate exact total changed.
