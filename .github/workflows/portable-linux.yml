@@ -1,10 +1,8 @@
 name: Portable Linux build
 
-# The semantic reconstruction branch iterates through VC7-focused source
-# changes. Keep the expensive portable package available on demand, but do not
-# run it for every push/PR until automatic Linux packaging is restored before
-# merging this phase back to the release lane.
 on:
+  push:
+  pull_request:
   workflow_dispatch:
 
 permissions:

@@ -20,11 +20,10 @@ exact-code oracle, while the modern build and relevant Linux layout/runtime
 checks remain the portable behavior oracle.  Do not publish candidate counts as
 semantic progress.
 
-The expensive portable Linux package workflow is temporarily manual-only on
-this branch to accelerate push/PR iteration.  Local Linux build, layout, and
-runtime commands remain available and must still be used when a semantic batch
-touches their acceptance surface.  Restore the workflow's automatic
-`push`/`pull_request` triggers before merging this phase into a release lane.
+The portable Linux package workflow is again automatic on `push` and
+`pull_request`, as well as available through `workflow_dispatch`.  It was
+temporarily manual-only during early semantic iteration, but its release-lane
+triggers were restored before publishing this phase to `main`.
 
 The first accepted source batch is the `ScreenEffect +0x18/+0x1C/+0x20`
 variant-parameter family.  A TU-local typed overlay records fade color, shake
