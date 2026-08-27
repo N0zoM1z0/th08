@@ -233,6 +233,18 @@ struct GameManager
 
     ZunBool IsStageClearedWithRetries(i32 stage, i32 character, i32 difficulty);
     ZunBool IsStageClearedWithoutRetries(i32 stage, i32 character, i32 difficulty);
+    inline ZunBool StageClearedWithoutRetries(
+        i32 stage, i32 character, i32 difficulty)
+    {
+        return this->clrdData[character]
+                   .difficultiesClearedWithoutRetries[difficulty] & ZUN_BIT(stage);
+    }
+    inline ZunBool StageClearedWithRetries(
+        i32 stage, i32 character, i32 difficulty)
+    {
+        return this->clrdData[character]
+                   .difficultiesClearedWithRetries[difficulty] & ZUN_BIT(stage);
+    }
 
     ZunBool IsExtraUnlockedForCharacter(i32 character);
     ZunBool IsExtraUnlocked();
@@ -341,19 +353,15 @@ struct GameManager
     u8 showRetryMenu;
     u8 currentDemoReplay;
     u8 replayMode;
-    u8 unk3DBB6;
-    u8 unk3DBB7;
 
     i32 demoFrameCount;
     char replayFilename[512];
     u16 stageRngSeed;
-    u16 unknown3DDBE;
     u32 gameplayFrameCounter;
     i32 currentStage;
     i32 stageAtStart;
-    u32 unk3ddcc;
+    u32 unconsumedDword3DDCC;
     u16 currentStageClearFlag;
-    u16 unk3DDD2;
     Float2 arcadeRegionTopLeftPos;
     Float2 arcadeRegionSize;
     Float2 playerMovementTopLeftPos;
@@ -368,7 +376,7 @@ struct GameManager
 
     i32 stagePlayTimeAll;
     u32 frameSkipCounter;
-    u32 unk3de0c;
+    u32 unconsumedDword3DE0C;
     u32 runActiveFrames;
     u32 stageActiveFrames;
     u32 runExtremeYoukaiFrames;
@@ -394,15 +402,23 @@ C_ASSERT(offsetof(GameManager, flags) == 0x3DBAC);
 C_ASSERT(offsetof(GameManager, currentSpellCardNumber) == 0x3DBB0);
 C_ASSERT(offsetof(GameManager, isInGameMenu) == 0x3DBB2);
 C_ASSERT(offsetof(GameManager, showRetryMenu) == 0x3DBB3);
+C_ASSERT(offsetof(GameManager, currentDemoReplay) == 0x3DBB4);
+C_ASSERT(offsetof(GameManager, replayMode) == 0x3DBB5);
+C_ASSERT(offsetof(GameManager, demoFrameCount) == 0x3DBB8);
+C_ASSERT(offsetof(GameManager, replayFilename) == 0x3DBBC);
 C_ASSERT(offsetof(GameManager, stageRngSeed) == 0x3DDBC);
 C_ASSERT(offsetof(GameManager, gameplayFrameCounter) == 0x3DDC0);
 C_ASSERT(offsetof(GameManager, currentStage) == 0x3DDC4);
 C_ASSERT(offsetof(GameManager, stageAtStart) == 0x3DDC8);
+C_ASSERT(offsetof(GameManager, unconsumedDword3DDCC) == 0x3DDCC);
 C_ASSERT(offsetof(GameManager, currentStageClearFlag) == 0x3DDD0);
 C_ASSERT(offsetof(GameManager, arcadeRegionTopLeftPos) == 0x3DDD4);
 C_ASSERT(offsetof(GameManager, arcadeRegionSize) == 0x3DDDC);
 C_ASSERT(offsetof(GameManager, playerMovementTopLeftPos) == 0x3DDE4);
 C_ASSERT(offsetof(GameManager, playerMovementAreaSize) == 0x3DDEC);
+C_ASSERT(offsetof(GameManager, stagePlayTimeAll) == 0x3DE04);
+C_ASSERT(offsetof(GameManager, frameSkipCounter) == 0x3DE08);
+C_ASSERT(offsetof(GameManager, unconsumedDword3DE0C) == 0x3DE0C);
 C_ASSERT(offsetof(GameManager, runActiveFrames) == 0x3DE10);
 C_ASSERT(offsetof(GameManager, stageActiveFrames) == 0x3DE14);
 C_ASSERT(offsetof(GameManager, runExtremeYoukaiFrames) == 0x3DE18);

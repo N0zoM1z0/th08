@@ -13,7 +13,8 @@ namespace th08
 
 // FUNCTION: th08 0x42a4e0
 #pragma var_order(i, enemy, this)
-void *EnemyManager::SpawnEnemy1(i32 type, const D3DXVECTOR3 *position, i32 a, i32 b, i32 c, i32 flags)
+Enemy *EnemyManager::SpawnEnemy1(i32 eclSubroutineId, const D3DXVECTOR3 *position, i32 life, i32 itemDropType,
+                                 i32 score, i32 mirrorMovementX)
 {
     struct EnemySpawnCopy
     {
@@ -32,12 +33,12 @@ void *EnemyManager::SpawnEnemy1(i32 type, const D3DXVECTOR3 *position, i32 a, i3
         *reinterpret_cast<EnemySpawnCopy *>(enemy) =
             *reinterpret_cast<const EnemySpawnCopy *>(&this->spawnTemplate);
         enemy->enemyIndex = i;
-        reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->mirrorMovementX = flags;
-        if (a >= 0)
-            enemy->life = a;
+        reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->mirrorMovementX = mirrorMovementX;
+        if (life >= 0)
+            enemy->life = life;
         enemy->position = *reinterpret_cast<const Float3 *>(position);
         g_EclManager.CallEclSub(
-            reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage), (i16)type);
+            &enemy->mainEclContextStorage, (i16)eclSubroutineId);
         if (g_EclManager.RunEcl(enemy) == ZUN_ERROR)
         {
             reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->active = 0;
@@ -46,9 +47,9 @@ void *EnemyManager::SpawnEnemy1(i32 type, const D3DXVECTOR3 *position, i32 a, i3
         else
         {
             enemy->displayColor = enemy->vm.color1.d3dColor;
-            enemy->itemDropType = (i8)b;
-            if (c >= 0)
-                enemy->score = c;
+            enemy->itemDropType = (i8)itemDropType;
+            if (score >= 0)
+                enemy->score = score;
             enemy->maxLife = enemy->life;
             enemy->phaseStartingLife = enemy->maxLife;
         }
@@ -60,7 +61,8 @@ void *EnemyManager::SpawnEnemy1(i32 type, const D3DXVECTOR3 *position, i32 a, i3
 
 // FUNCTION: th08 0x42a680
 #pragma var_order(i, enemy, this)
-void *EnemyManager::SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i32 b, i32 c, i32 *contextInts)
+Enemy *EnemyManager::SpawnEnemy2(i32 eclSubroutineId, const D3DXVECTOR3 *position, i32 life, i32 itemDropType,
+                                 i32 score, i32 *contextInts)
 {
     struct EnemySpawnCopy
     {
@@ -83,13 +85,13 @@ void *EnemyManager::SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i3
         *reinterpret_cast<EnemySpawnCopy *>(enemy) =
             *reinterpret_cast<const EnemySpawnCopy *>(&this->spawnTemplate);
         enemy->enemyIndex = i;
-        if (a >= 0)
-            enemy->life = a;
+        if (life >= 0)
+            enemy->life = life;
         enemy->position = *reinterpret_cast<const Float3 *>(position);
         g_EclManager.CallEclSub(
-            reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage), (i16)type);
+            &enemy->mainEclContextStorage, (i16)eclSubroutineId);
         *reinterpret_cast<EnemyContextCopy *>(
-            reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage)->intVariables) =
+            enemy->mainEclContextStorage.intVariables) =
             *reinterpret_cast<const EnemyContextCopy *>(contextInts);
         if (g_EclManager.RunEcl(enemy) == ZUN_ERROR)
         {
@@ -99,11 +101,11 @@ void *EnemyManager::SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i3
         else
         {
             enemy->displayColor = enemy->vm.color1.d3dColor;
-            enemy->itemDropType = (i8)b;
-            if (a >= 0)
-                enemy->life = a;
-            if (c >= 0)
-                enemy->score = c;
+            enemy->itemDropType = (i8)itemDropType;
+            if (life >= 0)
+                enemy->life = life;
+            if (score >= 0)
+                enemy->score = score;
             enemy->maxLife = enemy->life;
             enemy->phaseStartingLife = enemy->maxLife;
         }
@@ -175,8 +177,8 @@ void EclTimeline::Run()
                     position11.x = reinterpret_cast<f32 *>(locals.args11)[1];
                     position11.y = reinterpret_cast<f32 *>(locals.args11)[2];
                     position11.z = 0.0f;
-                    locals.spawned11 = static_cast<Enemy *>(g_EnemyManager.SpawnEnemy1(
-                        locals.args11[0], &position11, locals.args11[3], -1, locals.args11[6], variant));
+                    locals.spawned11 = g_EnemyManager.SpawnEnemy1(
+                        locals.args11[0], &position11, locals.args11[3], -1, locals.args11[6], variant);
                     locals.spawned11->pointItemDropCount = locals.args11[4];
                     locals.spawned11->powerOrPointItemDropCount = locals.args11[5];
                 }

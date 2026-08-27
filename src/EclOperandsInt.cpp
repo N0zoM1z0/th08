@@ -15,15 +15,15 @@ namespace EclOperands
 
 // This target cluster was built with inlining disabled.  Keep direct typed
 // expressions so helper calls and member access retain the retail shape.
-#define ECL_CONTEXT (reinterpret_cast<Enemy *>(enemy)->activeEclContext)
-#define ENEMY_OWNER (reinterpret_cast<Enemy *>(enemy))
+#define ECL_CONTEXT (enemy->activeEclContext)
+#define ENEMY_OWNER (enemy)
 
 
 
 // Observed: 0x0041F420 is __fastcall, with Enemy in ECX and the raw integer
 // operand in EDX. The primary table covers 0x2710 through 0x2774 inclusive.
 // Values 0x275f..0x2762 deliberately share the raw-operand default handler.
-i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
+i32 __fastcall ResolveInt(Enemy *enemy, i32 operand)
 {
     switch (operand)
     {
@@ -35,14 +35,14 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x2715: return ECL_CONTEXT->intVariables[5];
     case 0x2716: return ECL_CONTEXT->intVariables[6];
     case 0x2717: return ECL_CONTEXT->intVariables[7];
-    case 0x2718: return reinterpret_cast<Enemy *>(enemy)->eclIntVariables[0];
-    case 0x2719: return reinterpret_cast<Enemy *>(enemy)->eclIntVariables[1];
-    case 0x271a: return reinterpret_cast<Enemy *>(enemy)->eclIntVariables[2];
-    case 0x271b: return reinterpret_cast<Enemy *>(enemy)->eclIntVariables[3];
-    case 0x271c: return reinterpret_cast<Enemy *>(enemy)->eclIntVariables[4];
-    case 0x271d: return reinterpret_cast<Enemy *>(enemy)->eclIntVariables[5];
-    case 0x271e: return reinterpret_cast<Enemy *>(enemy)->eclIntVariables[6];
-    case 0x271f: return reinterpret_cast<Enemy *>(enemy)->eclIntVariables[7];
+    case 0x2718: return enemy->eclIntVariables[0];
+    case 0x2719: return enemy->eclIntVariables[1];
+    case 0x271a: return enemy->eclIntVariables[2];
+    case 0x271b: return enemy->eclIntVariables[3];
+    case 0x271c: return enemy->eclIntVariables[4];
+    case 0x271d: return enemy->eclIntVariables[5];
+    case 0x271e: return enemy->eclIntVariables[6];
+    case 0x271f: return enemy->eclIntVariables[7];
 
     // Case-body order follows the target jump-table emission order rather
     // than numeric selector order.
@@ -60,8 +60,8 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x2733: return (i32)g_Rng.GetRandomF32Signed();
     case 0x2738: return g_GameManager.difficulty;
     case 0x2739: return g_GameManager.rank;
-    case 0x2741: return reinterpret_cast<Enemy *>(enemy)->bossTimer.current;
-    case 0x2743: return reinterpret_cast<Enemy *>(enemy)->life;
+    case 0x2741: return enemy->bossTimer.current;
+    case 0x2743: return enemy->life;
     case 0x2744: return ::th08::g_GameManager.shotType;
     case 0x276e: return (i32)ECL_CONTEXT->extraFloatVariables[0];
     case 0x276f: return (i32)ECL_CONTEXT->extraFloatVariables[1];
@@ -74,53 +74,53 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x2725: return (i32)ECL_CONTEXT->floatVariables[5];
     case 0x2726: return (i32)ECL_CONTEXT->floatVariables[6];
     case 0x2727: return (i32)ECL_CONTEXT->floatVariables[7];
-    case 0x2728: return (i32)reinterpret_cast<Enemy *>(enemy)->eclFloatVariables[0];
-    case 0x2729: return (i32)reinterpret_cast<Enemy *>(enemy)->eclFloatVariables[1];
-    case 0x272a: return (i32)reinterpret_cast<Enemy *>(enemy)->eclFloatVariables[2];
-    case 0x272b: return (i32)reinterpret_cast<Enemy *>(enemy)->eclFloatVariables[3];
-    case 0x272c: return (i32)reinterpret_cast<Enemy *>(enemy)->eclFloatVariables[4];
-    case 0x272d: return (i32)reinterpret_cast<Enemy *>(enemy)->eclFloatVariables[5];
-    case 0x272e: return (i32)reinterpret_cast<Enemy *>(enemy)->eclFloatVariables[6];
-    case 0x272f: return (i32)reinterpret_cast<Enemy *>(enemy)->eclFloatVariables[7];
+    case 0x2728: return (i32)enemy->eclFloatVariables[0];
+    case 0x2729: return (i32)enemy->eclFloatVariables[1];
+    case 0x272a: return (i32)enemy->eclFloatVariables[2];
+    case 0x272b: return (i32)enemy->eclFloatVariables[3];
+    case 0x272c: return (i32)enemy->eclFloatVariables[4];
+    case 0x272d: return (i32)enemy->eclFloatVariables[5];
+    case 0x272e: return (i32)enemy->eclFloatVariables[6];
+    case 0x272f: return (i32)enemy->eclFloatVariables[7];
     case 0x2749: return (i32)ECL_CONTEXT->callParameterFloats[0];
     case 0x274a: return (i32)ECL_CONTEXT->callParameterFloats[1];
     case 0x274b: return (i32)ECL_CONTEXT->callParameterFloats[2];
     case 0x274c: return (i32)ECL_CONTEXT->callParameterFloats[3];
-    case 0x274d: return EclRunLowProposal::g_EclCallParameters.ints[0];
-    case 0x274e: return EclRunLowProposal::g_EclCallParameters.ints[1];
-    case 0x274f: return EclRunLowProposal::g_EclCallParameters.ints[2];
-    case 0x2750: return EclRunLowProposal::g_EclCallParameters.ints[3];
-    case 0x2751: return (i32)EclRunLowProposal::g_EclCallParameters.floats[0];
-    case 0x2752: return (i32)EclRunLowProposal::g_EclCallParameters.floats[1];
-    case 0x2753: return (i32)EclRunLowProposal::g_EclCallParameters.floats[2];
-    case 0x2754: return (i32)EclRunLowProposal::g_EclCallParameters.floats[3];
-    case 0x273a: return (i32)reinterpret_cast<Enemy *>(enemy)->worldPosition.x;
-    case 0x273b: return (i32)reinterpret_cast<Enemy *>(enemy)->worldPosition.y;
-    case 0x273c: return (i32)reinterpret_cast<Enemy *>(enemy)->worldPosition.z;
+    case 0x274d: return EclRunLow::g_EclCallParameters.ints[0];
+    case 0x274e: return EclRunLow::g_EclCallParameters.ints[1];
+    case 0x274f: return EclRunLow::g_EclCallParameters.ints[2];
+    case 0x2750: return EclRunLow::g_EclCallParameters.ints[3];
+    case 0x2751: return (i32)EclRunLow::g_EclCallParameters.floats[0];
+    case 0x2752: return (i32)EclRunLow::g_EclCallParameters.floats[1];
+    case 0x2753: return (i32)EclRunLow::g_EclCallParameters.floats[2];
+    case 0x2754: return (i32)EclRunLow::g_EclCallParameters.floats[3];
+    case 0x273a: return (i32)enemy->worldPosition.x;
+    case 0x273b: return (i32)enemy->worldPosition.y;
+    case 0x273c: return (i32)enemy->worldPosition.z;
     case 0x273d: return (i32)g_Player.position.x;
     case 0x273e: return (i32)g_Player.position.y;
     case 0x273f: return (i32)g_Player.position.z;
-    case 0x275a: return (i32)reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin.x;
-    case 0x275b: return (i32)reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin.y;
-    case 0x275c: return (i32)reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin.z;
-    case 0x2765: return (i32)reinterpret_cast<Enemy *>(enemy)->lastFrameDisplacement.x;
-    case 0x2766: return (i32)reinterpret_cast<Enemy *>(enemy)->lastFrameDisplacement.y;
-    case 0x2767: return (i32)reinterpret_cast<Enemy *>(enemy)->lastFrameDisplacement.z;
-    case 0x2768: return reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[0];
-    case 0x2769: return reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[1];
-    case 0x276a: return reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[2];
-    case 0x276b: return reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[3];
-    case 0x2755: return (i32)reinterpret_cast<Enemy *>(enemy)->movementAngle;
-    case 0x2756: return (i32)reinterpret_cast<Enemy *>(enemy)->angularVelocity;
-    case 0x2757: return (i32)reinterpret_cast<Enemy *>(enemy)->speed;
-    case 0x2758: return (i32)reinterpret_cast<Enemy *>(enemy)->acceleration;
-    case 0x2759: return (i32)reinterpret_cast<Enemy *>(enemy)->orbitRadius;
-    case 0x275d: return (i32)reinterpret_cast<Enemy *>(enemy)->orbitAngle;
-    case 0x275e: return (i32)reinterpret_cast<Enemy *>(enemy)->orbitAngularVelocity;
-    case 0x2763: return reinterpret_cast<Enemy *>(enemy)->lastDamage;
-    case 0x2764: return reinterpret_cast<Enemy *>(enemy)->bossSlot;
-    case 0x276c: return reinterpret_cast<Enemy *>(enemy)->itemDropType;
-    case 0x276d: return reinterpret_cast<Enemy *>(enemy)->score;
+    case 0x275a: return (i32)enemy->movementInterpolationOrigin.x;
+    case 0x275b: return (i32)enemy->movementInterpolationOrigin.y;
+    case 0x275c: return (i32)enemy->movementInterpolationOrigin.z;
+    case 0x2765: return (i32)enemy->lastFrameDisplacement.x;
+    case 0x2766: return (i32)enemy->lastFrameDisplacement.y;
+    case 0x2767: return (i32)enemy->lastFrameDisplacement.z;
+    case 0x2768: return enemy->lifeCallbackThresholds[0];
+    case 0x2769: return enemy->lifeCallbackThresholds[1];
+    case 0x276a: return enemy->lifeCallbackThresholds[2];
+    case 0x276b: return enemy->lifeCallbackThresholds[3];
+    case 0x2755: return (i32)enemy->movementAngle;
+    case 0x2756: return (i32)enemy->angularVelocity;
+    case 0x2757: return (i32)enemy->speed;
+    case 0x2758: return (i32)enemy->acceleration;
+    case 0x2759: return (i32)enemy->orbitRadius;
+    case 0x275d: return (i32)enemy->orbitAngle;
+    case 0x275e: return (i32)enemy->orbitAngularVelocity;
+    case 0x2763: return enemy->lastDamage;
+    case 0x2764: return enemy->bossSlot;
+    case 0x276c: return enemy->itemDropType;
+    case 0x276d: return enemy->score;
 
     case 0x2770:
         return ENEMY_OWNER->HasParentChain()
@@ -129,10 +129,10 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
                          ? ENEMY_OWNER->parentEnemy->CountParentChain()
                          : 0;
     case 0x2740:
-        return (i32)g_Player.AngleToPoint(&reinterpret_cast<Enemy *>(enemy)->worldPosition);
+        return (i32)g_Player.AngleToPoint(&enemy->worldPosition);
     case 0x2742:
     {
-        Float3 delta = g_Player.position - reinterpret_cast<Enemy *>(enemy)->worldPosition;
+        Float3 delta = g_Player.position - enemy->worldPosition;
         return (i32)D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&delta));
     }
     case 0x2771: return g_Player.IsYoukai();
@@ -153,7 +153,7 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
 // Observed: 0x0041FE10 is __fastcall for ECX/EDX and callee-cleans the two
 // stack arguments (u16 flags, i32 flagIndex). Its selector table covers
 // 0x2710..0x276d; every unlisted value returns the caller's operand pointer.
-i32 *__fastcall ResolveIntLValue(EnemyOverlay *enemy, i32 *operand, u16 flags, i32 flagIndex)
+i32 *__fastcall ResolveIntLValue(Enemy *enemy, i32 *operand, u16 flags, i32 flagIndex)
 {
     if (flagIndex >= 0 && !(flags & (1 << flagIndex)))
     {
@@ -170,14 +170,14 @@ i32 *__fastcall ResolveIntLValue(EnemyOverlay *enemy, i32 *operand, u16 flags, i
     case 0x2715: return &ECL_CONTEXT->intVariables[5];
     case 0x2716: return &ECL_CONTEXT->intVariables[6];
     case 0x2717: return &ECL_CONTEXT->intVariables[7];
-    case 0x2718: return &reinterpret_cast<Enemy *>(enemy)->eclIntVariables[0];
-    case 0x2719: return &reinterpret_cast<Enemy *>(enemy)->eclIntVariables[1];
-    case 0x271a: return &reinterpret_cast<Enemy *>(enemy)->eclIntVariables[2];
-    case 0x271b: return &reinterpret_cast<Enemy *>(enemy)->eclIntVariables[3];
-    case 0x271c: return &reinterpret_cast<Enemy *>(enemy)->eclIntVariables[4];
-    case 0x271d: return &reinterpret_cast<Enemy *>(enemy)->eclIntVariables[5];
-    case 0x271e: return &reinterpret_cast<Enemy *>(enemy)->eclIntVariables[6];
-    case 0x271f: return &reinterpret_cast<Enemy *>(enemy)->eclIntVariables[7];
+    case 0x2718: return &enemy->eclIntVariables[0];
+    case 0x2719: return &enemy->eclIntVariables[1];
+    case 0x271a: return &enemy->eclIntVariables[2];
+    case 0x271b: return &enemy->eclIntVariables[3];
+    case 0x271c: return &enemy->eclIntVariables[4];
+    case 0x271d: return &enemy->eclIntVariables[5];
+    case 0x271e: return &enemy->eclIntVariables[6];
+    case 0x271f: return &enemy->eclIntVariables[7];
     case 0x2745: return &ECL_CONTEXT->callParameterInts[0];
     case 0x2746: return &ECL_CONTEXT->callParameterInts[1];
     case 0x2747: return &ECL_CONTEXT->callParameterInts[2];
@@ -188,14 +188,14 @@ i32 *__fastcall ResolveIntLValue(EnemyOverlay *enemy, i32 *operand, u16 flags, i
     case 0x2737: return &ECL_CONTEXT->extraIntVariables[3];
     case 0x2738: return &g_GameManager.difficulty;
     case 0x2739: return &g_GameManager.rank;
-    case 0x2741: return &reinterpret_cast<Enemy *>(enemy)->bossTimer.current;
-    case 0x2743: return &reinterpret_cast<Enemy *>(enemy)->life;
-    case 0x276c: return &reinterpret_cast<Enemy *>(enemy)->itemDropType;
-    case 0x276d: return &reinterpret_cast<Enemy *>(enemy)->score;
-    case 0x274d: return &EclRunLowProposal::g_EclCallParameters.ints[0];
-    case 0x274e: return &EclRunLowProposal::g_EclCallParameters.ints[1];
-    case 0x274f: return &EclRunLowProposal::g_EclCallParameters.ints[2];
-    case 0x2750: return &EclRunLowProposal::g_EclCallParameters.ints[3];
+    case 0x2741: return &enemy->bossTimer.current;
+    case 0x2743: return &enemy->life;
+    case 0x276c: return &enemy->itemDropType;
+    case 0x276d: return &enemy->score;
+    case 0x274d: return &EclRunLow::g_EclCallParameters.ints[0];
+    case 0x274e: return &EclRunLow::g_EclCallParameters.ints[1];
+    case 0x274f: return &EclRunLow::g_EclCallParameters.ints[2];
+    case 0x2750: return &EclRunLow::g_EclCallParameters.ints[3];
     default: return operand;
     }
 }

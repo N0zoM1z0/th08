@@ -356,7 +356,7 @@ ChainCallbackResult MusicRoom::OnDraw(MusicRoom *musicRoom)
         g_AsciiManager.AddFormatText(&position, "%2d.", i + 1);
     }
 
-    /* again, ???? */
+    // Target-preserved dead increment; the description loop reinitializes i.
     i++;
 
     for (i = 0; i < ARRAY_SIZE_SIGNED(musicRoom->descriptionVms) - 1; i++)

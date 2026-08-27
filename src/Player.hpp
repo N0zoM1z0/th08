@@ -9,6 +9,7 @@ namespace th08
 {
 
 struct AnmLoaded;
+struct Effect;
 struct PlayerShotDescriptor;
 
 struct PlayerShotPowerLevel
@@ -20,7 +21,7 @@ C_ASSERT(sizeof(PlayerShotPowerLevel) == 0x8);
 
 struct PlayerRawShtFile
 {
-    u16 unknownHeaderWord;
+    u16 serializedReserved00;
     u16 shotPowerLevelCount;
     f32 initialBombCount;
     i32 deathbombWindowFrames;
@@ -29,7 +30,7 @@ struct PlayerRawShtFile
     f32 itemAutoCollectSpeed;
     f32 itemCollectionBoxSize;
     f32 pointItemValueLine;
-    unknown_fields(0x20, 0x4);
+    u32 serializedReserved20;
     f32 normalAxisSpeed;
     f32 focusedAxisSpeed;
     f32 normalDiagonalSpeed;
@@ -37,6 +38,7 @@ struct PlayerRawShtFile
     f32 itemMovementSpeed;
     PlayerShotPowerLevel shotPowerLevels[1];
 };
+C_ASSERT(offsetof(PlayerRawShtFile, serializedReserved00) == 0x0);
 C_ASSERT(offsetof(PlayerRawShtFile, shotPowerLevelCount) == 0x2);
 C_ASSERT(offsetof(PlayerRawShtFile, initialBombCount) == 0x4);
 C_ASSERT(offsetof(PlayerRawShtFile, deathbombWindowFrames) == 0x8);
@@ -45,6 +47,7 @@ C_ASSERT(offsetof(PlayerRawShtFile, grazeBoxSize) == 0x10);
 C_ASSERT(offsetof(PlayerRawShtFile, itemAutoCollectSpeed) == 0x14);
 C_ASSERT(offsetof(PlayerRawShtFile, itemCollectionBoxSize) == 0x18);
 C_ASSERT(offsetof(PlayerRawShtFile, pointItemValueLine) == 0x1C);
+C_ASSERT(offsetof(PlayerRawShtFile, serializedReserved20) == 0x20);
 C_ASSERT(offsetof(PlayerRawShtFile, normalAxisSpeed) == 0x24);
 C_ASSERT(offsetof(PlayerRawShtFile, focusedAxisSpeed) == 0x28);
 C_ASSERT(offsetof(PlayerRawShtFile, normalDiagonalSpeed) == 0x2C);
@@ -71,9 +74,10 @@ struct PlayerCollisionRegion
     i32 collisionInterval;
     u8 active;
     u8 mode;
-    unknown_fields(0x3e, 2);
 };
 C_ASSERT(sizeof(PlayerCollisionRegion) == 0x40);
+C_ASSERT(offsetof(PlayerCollisionRegion, active) == 0x3C);
+C_ASSERT(offsetof(PlayerCollisionRegion, mode) == 0x3D);
 
 enum PlayerState
 {
@@ -119,7 +123,7 @@ struct PlayerOptionState
     i32 lifecycleState;
     i32 behaviorState;
     i32 optionIndex;
-    unknown_fields(0x2D4, 4);
+    i32 unconsumedDword2D4;
     f32 orbitAngle;
     f32 facingAngle;
     ZunTimer timer;
@@ -132,6 +136,7 @@ C_ASSERT(sizeof(PlayerOptionState) == 0x2F4);
 C_ASSERT(offsetof(PlayerOptionState, lifecycleState) == 0x2C8);
 C_ASSERT(offsetof(PlayerOptionState, behaviorState) == 0x2CC);
 C_ASSERT(offsetof(PlayerOptionState, optionIndex) == 0x2D0);
+C_ASSERT(offsetof(PlayerOptionState, unconsumedDword2D4) == 0x2D4);
 
 enum PlayerBombWorkItemState
 {
@@ -152,7 +157,7 @@ struct PlayerBombWorkItem
     Float3 motion;
     Float3 auxiliaryMotion;
     AnmVm vms[8];
-    AnmVm *effectVm;
+    Effect *effect;
     ZunTimer timer;
     PlayerCollisionRegion *damageRegion;
     PlayerCollisionRegion *cancelRegion;
@@ -182,7 +187,7 @@ C_ASSERT(offsetof(PlayerBombWorkItem, pathPoints) == 0x20);
 C_ASSERT(offsetof(PlayerBombWorkItem, motion) == 0x1A0);
 C_ASSERT(offsetof(PlayerBombWorkItem, auxiliaryMotion) == 0x1AC);
 C_ASSERT(offsetof(PlayerBombWorkItem, vms) == 0x1B8);
-C_ASSERT(offsetof(PlayerBombWorkItem, effectVm) == 0x16D8);
+C_ASSERT(offsetof(PlayerBombWorkItem, effect) == 0x16D8);
 C_ASSERT(offsetof(PlayerBombWorkItem, timer) == 0x16DC);
 C_ASSERT(offsetof(PlayerBombWorkItem, damageRegion) == 0x16E8);
 C_ASSERT(offsetof(PlayerBombWorkItem, cancelRegion) == 0x16EC);
@@ -209,7 +214,7 @@ struct PlayerBombState
     i32 isInUse;
     i32 callbackVariant;
     i32 duration;
-    unknown_fields(0x00000C, 0x4);
+    i32 unconsumedDword0C;
     i32 bombsConsumed;
     i32 secondaryWorkCursor;
     ZunTimer timer;
@@ -224,6 +229,7 @@ C_ASSERT(sizeof(PlayerBombState) == 0xB7858);
 C_ASSERT(offsetof(PlayerBombState, isInUse) == 0x0);
 C_ASSERT(offsetof(PlayerBombState, callbackVariant) == 0x4);
 C_ASSERT(offsetof(PlayerBombState, duration) == 0x8);
+C_ASSERT(offsetof(PlayerBombState, unconsumedDword0C) == 0xC);
 C_ASSERT(offsetof(PlayerBombState, bombsConsumed) == 0x10);
 C_ASSERT(offsetof(PlayerBombState, timer) == 0x18);
 C_ASSERT(offsetof(PlayerBombState, updateCallbacks) == 0x24);
@@ -302,10 +308,8 @@ struct PlayerShot
     i16 sourceOptionIndex;
     i16 trailSegmentCount;
     u8 focusMode;
-    u8 padding46D;
     i16 animationIndex;
     i8 tintInExtremeYoukai;
-    u8 padding471[3];
     PlayerShotUpdateCallback updateCallback;
     PlayerShotDrawCallback drawCallback;
     PlayerShotCollisionCallback collisionCallback;
@@ -342,12 +346,12 @@ struct Player
 
     i8 playerState;
     u8 playerType;
-    u8 unknown2;
+    u8 unconsumedAddedMarker02;
     u8 focusMode;
     u8 deathbombPending;
     u8 isYoukai;
     u8 forceDeathbombAtWindowEnd;
-    u8 unknown7;
+    u8 unconsumedByte07;
     i32 focusTransitionFrames;
     AnmLoaded *anmFile;
     AnmVm mainVm;
@@ -382,7 +386,6 @@ struct Player
     PlayerShotDescriptor *persistentShotDescriptors[4];
     i32 bulletCancelItemType;
     u8 shotHitEffectCounter;
-    u8 paddingE2A95[3];
     PlayerMovementDirection movementDirection;
     f32 currentHorizontalSpeed;
     f32 currentVerticalSpeed;
@@ -401,9 +404,9 @@ struct Player
     ChainElem *drawChainHighPrio;
     ChainElem *drawChainLowPrio;
     Effect *stateEffect;
-    unknown_fields(0xE2B20, 0x4);
+    u32 unconsumedDwordE2B20;
     Effect *extremeGaugeEffect;
-    AnmVm *deathbombEffectVm;
+    Effect *deathbombEffect;
     i32 damageAccumulatorThreshold;
 
     static ZunResult RegisterChain(u32 playerType);
@@ -414,10 +417,16 @@ struct Player
     static ZunResult DeletedCallback(Player *player);
     static void CutChain();
 
-    PlayerCollisionRegion *CreateRectCancelRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
-    PlayerCollisionRegion *CreateCircleCancelRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
-    PlayerCollisionRegion *CreateRectDamageRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
-    PlayerCollisionRegion *CreateCircleDamageRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
+    PlayerCollisionRegion *CreateRectCancelRegion(const Float3 *center, f32 width, f32 height,
+                                                  i32 collisionValue, i32 lifetime);
+    PlayerCollisionRegion *CreateCircleCancelRegion(const Float3 *center, f32 initialRadius,
+                                                    f32 radiusGrowthPerFrame, i32 lifetime,
+                                                    i32 collisionValue);
+    PlayerCollisionRegion *CreateRectDamageRegion(const Float3 *center, f32 width, f32 height,
+                                                  i32 damage, i32 lifetime);
+    PlayerCollisionRegion *CreateCircleDamageRegion(const Float3 *center, f32 initialRadius,
+                                                    f32 radiusGrowthPerFrame, i32 damage,
+                                                    i32 lifetime);
     void SpawnBombStateEffect();
     void UpdateCollisionRegions();
     void UpdateInvulnerability();
@@ -459,10 +468,11 @@ struct Player
     i32 CheckBulletCancelCollision(Float3 *position, Float3 *position2);
 };
 C_ASSERT(sizeof(Player) == 0xe2b30);
-C_ASSERT(offsetof(Player, unknown2) == 0x2);
+C_ASSERT(offsetof(Player, unconsumedAddedMarker02) == 0x2);
 C_ASSERT(offsetof(Player, focusMode) == 0x3);
 C_ASSERT(offsetof(Player, deathbombPending) == 0x4);
 C_ASSERT(offsetof(Player, forceDeathbombAtWindowEnd) == 0x6);
+C_ASSERT(offsetof(Player, unconsumedByte07) == 0x7);
 C_ASSERT(offsetof(Player, focusTransitionFrames) == 0x8);
 C_ASSERT(offsetof(Player, mainVm) == 0x10);
 C_ASSERT(offsetof(Player, position) == 0x2B4);
@@ -509,8 +519,9 @@ C_ASSERT(offsetof(Player, shootingGaugeChangeRampTimer) == 0xE2AE8);
 C_ASSERT(offsetof(Player, baseShotAngle) == 0xE2B0C);
 C_ASSERT(offsetof(Player, timer) == 0xE2AF4);
 C_ASSERT(offsetof(Player, calcChain) == 0xE2B10);
+C_ASSERT(offsetof(Player, unconsumedDwordE2B20) == 0xE2B20);
 C_ASSERT(offsetof(Player, extremeGaugeEffect) == 0xE2B24);
-C_ASSERT(offsetof(Player, deathbombEffectVm) == 0xE2B28);
+C_ASSERT(offsetof(Player, deathbombEffect) == 0xE2B28);
 C_ASSERT(offsetof(Player, damageAccumulatorThreshold) == 0xE2B2C);
 
 DIFFABLE_EXTERN(Player, g_Player);

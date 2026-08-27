@@ -75,9 +75,7 @@ struct Ending
     i32 lineSkipLockFrames;              // 0x2a8c
     i32 defaultLineWaitFrames;           // 0x2a90
     i32 minimumLineWaitFrames;           // 0x2a94
-
-    unknown_fields(0x2a98, 0x4);
-
+    u32 unconsumedDword2A98;             // 0x2a98
     i32 nextTextVmIndex;      // 0x2a9c
     i32 textColor;            // 0x2aa0
     D3DCOLOR fadeColor;       // 0x2aa4
@@ -94,6 +92,9 @@ C_ASSERT(offsetof(Ending, canSkipChainedEnding) == 0x2a5c);
 C_ASSERT(offsetof(Ending, endingAnm) == 0x2a60);
 C_ASSERT(offsetof(Ending, pageWaitTimer) == 0x2a7c);
 C_ASSERT(offsetof(Ending, pageSkipLockFrames) == 0x2a88);
+C_ASSERT(offsetof(Ending, defaultLineWaitFrames) == 0x2a90);
+C_ASSERT(offsetof(Ending, minimumLineWaitFrames) == 0x2a94);
+C_ASSERT(offsetof(Ending, unconsumedDword2A98) == 0x2a98);
 C_ASSERT(offsetof(Ending, nextTextVmIndex) == 0x2a9c);
 C_ASSERT(offsetof(Ending, scriptCursor) == 0x2ab4);
 

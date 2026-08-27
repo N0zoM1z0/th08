@@ -19,34 +19,27 @@
 namespace th08
 {
 
-// The dispatcher is now source-complete, while target-address service binding
-// remains intentionally separate: subsystem owners can replace provisional
-// adapters without changing the recovered opcode/control-flow core.
+// The low/high opcode bodies are included lexically below so VC7 can reproduce
+// RunEcl's target handler order, shared labels, locals, and stack frame.
 #undef TH08_ECL_CONTEXT_ENEMY
 #undef TH08_ECL_CONTEXT_INSTRUCTION
-#undef TH08_ECL_CONTEXT_API
 #undef TH08_ECL_CONTEXT_CHILD
-#define TH08_ECL_CONTEXT_ENEMY(unusedContext) (reinterpret_cast<u8 *>(enemy))
-#define TH08_ECL_CONTEXT_INSTRUCTION(unusedContext) \
-    (reinterpret_cast<RawInstruction *>(instruction))
-#define TH08_ECL_CONTEXT_API(unusedContext) \
-    (reinterpret_cast<TargetApi *>(this))
+#define TH08_ECL_CONTEXT_ENEMY(unusedContext) (enemy)
+#define TH08_ECL_CONTEXT_INSTRUCTION(unusedContext) (instruction)
 #define TH08_ECL_CONTEXT_CHILD(unusedContext) (activeChildContext)
 
 // FUNCTION: th08 0x004184B0
 ZunResult EclManager::RunEcl(Enemy *enemy)
 {
-    using namespace EclRunLowProposal;
-    using namespace EclRunHighProposal;
+    using namespace EclRunLow;
+    using namespace EclRunHigh;
 
     EclRawInstruction *instruction;
     i32 activeChildContext = -1;
     i32 lhsInt;
 
-    enemy->activeEclCallStack =
-        reinterpret_cast<EnemyEclContext *>(&enemy->mainEclCallStackStorage[0]);
-    enemy->activeEclContext =
-        reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage);
+    enemy->activeEclCallStack = enemy->mainEclCallStackStorage;
+    enemy->activeEclContext = &enemy->mainEclContextStorage;
     enemy->activeEclCallStackDepth = enemy->mainEclCallStackDepth;
 
 restart_context:
@@ -81,9 +74,7 @@ low_redispatch_instruction:
             }
 
             {
-#define enemy reinterpret_cast<EclOperands::EnemyOverlay *>(enemy)
-#define context (reinterpret_cast<Enemy *>(enemy)->activeEclContext)
-#define services (*reinterpret_cast<Services *>(this))
+#define context (enemy->activeEclContext)
 #define ctx unusedContext
 #define TH08_ECL_RUN_LOW_BODY
 #define TH08_ECL_RUN_HIGH_BODY
@@ -103,9 +94,7 @@ low_redispatch_instruction:
 #undef TH08_ECL_RUN_HIGH_BODY
 #undef TH08_ECL_RUN_LOW_BODY
 #undef ctx
-#undef services
 #undef context
-#undef enemy
             }
 
 low_advance_instruction:
@@ -128,13 +117,13 @@ low_advance_instruction:
         i32 i;
         f32 progress;
         i32 restorePosition = 0;
-        Interpolator *entry = reinterpret_cast<Interpolator *>(
-            enemy->activeEclContext->interpolationSlots);
-        Vec3 savedPosition = *reinterpret_cast<Vec3 *>(&enemy->position);
+        EnemyEclInterpolationSlot *entry =
+            enemy->activeEclContext->interpolationSlots;
+        Float3 savedPosition = enemy->position;
 
-        if (enemy->activeEclContext->callback)
-            enemy->activeEclContext->callback(
-                enemy, enemy->activeEclContext->callbackArgument);
+        if (enemy->activeEclContext->perFrameCallback)
+            enemy->activeEclContext->perFrameCallback(
+                enemy, enemy->activeEclContext->perFrameInstruction);
 
         for (i = 0; i < 8; ++i, ++entry)
         {
@@ -183,14 +172,14 @@ low_advance_instruction:
             enemy->velocity.x = enemy->position.x - savedPosition.x;
             enemy->velocity.y = enemy->position.y - savedPosition.y;
             enemy->movementAngle = VectorAngle(enemy->velocity.y, enemy->velocity.x);
-            *reinterpret_cast<Vec3 *>(&enemy->position) = savedPosition;
+            enemy->position = savedPosition;
         }
     }
 
     if (activeChildContext == -1)
         enemy->mainEclCallStackDepth = enemy->activeEclCallStackDepth;
     else
-        *(i16 *)(enemy->childEclBlocks[activeChildContext] + 6) =
+        enemy->childEclBlocks[activeChildContext]->callStackDepth =
             enemy->activeEclCallStackDepth;
 
     enemy->activeEclContext->currentInstr = instruction;
@@ -201,23 +190,19 @@ low_select_next_context:
     {
         if (enemy->childEclBlocks[next])
         {
-            u8 *childContext = enemy->childEclBlocks[next];
-            enemy->activeEclCallStack =
-                reinterpret_cast<EnemyEclContext *>(childContext + 0x230);
-            enemy->activeEclContext =
-                reinterpret_cast<EnemyEclContext *>(childContext + 8);
+            EnemyChildEclBlock *childContext = enemy->childEclBlocks[next];
+            enemy->activeEclCallStack = childContext->callStack;
+            enemy->activeEclContext = &childContext->eclContext;
             instruction = enemy->activeEclContext->currentInstr;
             enemy->activeEclContext->childContextSlot = next + 1;
-            enemy->activeEclCallStackDepth = *(i16 *)(childContext + 6);
+            enemy->activeEclCallStackDepth = childContext->callStackDepth;
             activeChildContext = next;
             goto low_redispatch_instruction;
         }
     }
 
-    enemy->activeEclCallStack =
-        reinterpret_cast<EnemyEclContext *>(&enemy->mainEclCallStackStorage[0]);
-    enemy->activeEclContext =
-        reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage);
+    enemy->activeEclCallStack = enemy->mainEclCallStackStorage;
+    enemy->activeEclContext = &enemy->mainEclContextStorage;
     enemy->UpdateMovement();
     enemy->UpdateShotAndAnm();
 
@@ -226,7 +211,6 @@ low_select_next_context:
 
 #undef TH08_ECL_CONTEXT_ENEMY
 #undef TH08_ECL_CONTEXT_INSTRUCTION
-#undef TH08_ECL_CONTEXT_API
 #undef TH08_ECL_CONTEXT_CHILD
 
 } // namespace th08

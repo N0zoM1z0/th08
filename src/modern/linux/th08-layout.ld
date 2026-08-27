@@ -32,11 +32,8 @@ SECTIONS
     _ZN4th0811g_SpellcardE = 0x004ea670;
     _ZN4th0820g_SpellcardCalcChainE = 0x004eccac;
 
-    /* ECL opcode 155 names Spellcard::scoreLimit as a standalone global. */
-    _ZN4th0819g_EclGlobal004ECCA8E = 0x004ecca8;
-
     _ZN4th0812g_EclManagerE = 0x004eccb8;
-    _ZN4th0817EclRunLowProposal19g_EclCallParametersE = 0x004ece20;
+    _ZN4th089EclRunLow19g_EclCallParametersE = 0x004ece20;
     _ZN4th0815g_EffectManagerE = 0x004ece60;
 
     /*
@@ -92,7 +89,6 @@ SECTIONS
     /* These target globals are overlapping views into aggregate owners. */
     _ZN4th0823g_EclGameTimeScaleFlagsE = 0x017ce8fc;
     _ZN4th088g_PlayerE = 0x017d5ef8;
-    _ZN4th0811EclOperands30g_TargetPlayerPosition017D61ACE = 0x017d61ac;
 
     _ZN4th0822g_SupervisorLoadingVmsE = 0x017ceac0;
     _ZN4th0829g_SupervisorFpsQpcSampleCountE = 0x017cf2ac;

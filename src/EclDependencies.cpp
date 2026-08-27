@@ -5,6 +5,7 @@
 #include "EnemyManager.hpp"
 #include "BulletManager.hpp"
 #include "GameManager.hpp"
+#include "Player.hpp"
 #include "EclOperands.hpp"
 #include "EclManager.hpp"
 #include "utils.hpp"
@@ -35,19 +36,21 @@ C_ASSERT(offsetof(EclSpellCardInstructionArgs, commentLine1) == 0x74);
 C_ASSERT(offsetof(EclSpellCardInstructionArgs, commentLine2) == 0xB4);
 
 // FUNCTION: th08 0x421280
-void __fastcall StartEnemySpell(u8 *enemy, void *instruction)
+void __fastcall StartEnemySpell(
+    Enemy *enemy, EclSpellCardInstructionArgs *instruction)
 {
-    g_Spellcard.StartSpell(static_cast<EclSpellCardInstructionArgs *>(instruction)->spellCardNumber,
-                           static_cast<EclSpellCardInstructionArgs *>(instruction)->encodedName,
-                           static_cast<EclSpellCardInstructionArgs *>(instruction)->enemyFace,
-                           static_cast<EclSpellCardInstructionArgs *>(instruction)->bonus, enemy,
-                           static_cast<EclSpellCardInstructionArgs *>(instruction)->encodedOwner,
-                           static_cast<EclSpellCardInstructionArgs *>(instruction)->commentLine1,
-                           static_cast<EclSpellCardInstructionArgs *>(instruction)->commentLine2);
+    g_Spellcard.StartSpell(instruction->spellCardNumber,
+                           instruction->encodedName,
+                           instruction->enemyFace,
+                           instruction->bonus, enemy,
+                           instruction->encodedOwner,
+                           instruction->commentLine1,
+                           instruction->commentLine2);
 }
 
 // FUNCTION: th08 0x4212e0
-void __fastcall EndEnemySpell(u8 *enemy, void *instruction)
+void __fastcall EndEnemySpell(
+    Enemy *enemy, EclSpellCardInstructionArgs *instruction)
 {
     g_Spellcard.EndSpell();
 }
@@ -79,7 +82,7 @@ void Gui::SetBossLifeMarkerCount(i32 count)
 
 
 
-namespace EclRunLowProposal
+namespace EclRunLow
 {
 
 #define DEP_BYTES(enemy) (reinterpret_cast<u8 *>(enemy))
@@ -94,35 +97,35 @@ namespace EclRunLowProposal
 
 // FUNCTION: th08 0x4222b0
 void __fastcall StartTimedPolarDisplacement(
-    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction, f32 angle)
+    Enemy *enemy, EclRawInstruction *instruction, f32 angle)
 {
-    reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.x =
+    enemy->movementInterpolationDelta.x =
         cosf(angle) * DEP_READ_FLOAT(enemy, instruction, 2) *
         DEP_READ_INT(enemy, instruction, 0);
-    reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.y =
+    enemy->movementInterpolationDelta.y =
         sinf(angle) * DEP_READ_FLOAT(enemy, instruction, 2) *
         DEP_READ_INT(enemy, instruction, 0);
-    reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.z = 0.0f;
-    reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin =
-        reinterpret_cast<Enemy *>(enemy)->worldPosition;
-    reinterpret_cast<Enemy *>(enemy)->movementTimer =
-        (reinterpret_cast<Enemy *>(enemy)->movementDuration =
+    enemy->movementInterpolationDelta.z = 0.0f;
+    enemy->movementInterpolationOrigin =
+        enemy->worldPosition;
+    enemy->movementTimer =
+        (enemy->movementDuration =
              DEP_READ_INT(enemy, instruction, 0));
     reinterpret_cast<EnemyFlag1Bits *>(
-        &reinterpret_cast<Enemy *>(enemy)->flags1)->movementEasing =
+        &enemy->flags1)->movementEasing =
         DEP_READ_INT(enemy, instruction, 1);
     reinterpret_cast<EnemyFlag1Bits *>(
-        &reinterpret_cast<Enemy *>(enemy)->flags1)->movementMode = 2;
+        &enemy->flags1)->movementMode = 2;
 }
 
 // FUNCTION: th08 0x422020
 void __fastcall BeginBoundaryAwareMove(
-    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction)
+    Enemy *enemy, EclRawInstruction *instruction)
 {
     f32 angle;
 
-    if (EclOperands::g_TargetPlayerPosition017D61AC.x <
-        reinterpret_cast<Enemy *>(enemy)->position.x)
+    if (g_Player.position.x <
+        enemy->position.x)
     {
         angle = AddNormalizeAngle(
             g_Rng.GetRandomF32InRange(1.5707964f) + 2.3561945f, 0.0f);
@@ -132,8 +135,8 @@ void __fastcall BeginBoundaryAwareMove(
         angle = g_Rng.GetRandomF32InRange(1.5707964f) - 0.78539819f;
     }
 
-    if (reinterpret_cast<Enemy *>(enemy)->position.operator float *()[0] <
-        reinterpret_cast<Enemy *>(enemy)->movementBounds.lower.x + 96.0f)
+    if (enemy->position.operator float *()[0] <
+        enemy->movementBounds.lower.x + 96.0f)
     {
         if (angle > 1.5707964f)
             angle = 3.1415927f - angle;
@@ -141,24 +144,24 @@ void __fastcall BeginBoundaryAwareMove(
             angle = -3.1415927f - angle;
     }
 
-    if (reinterpret_cast<Enemy *>(enemy)->position.operator float *()[0] >
-        reinterpret_cast<Enemy *>(enemy)->movementBounds.upper.x - 96.0f)
+    if (enemy->position.operator float *()[0] >
+        enemy->movementBounds.upper.x - 96.0f)
     {
         if (angle < 1.5707964f && angle >= 0.0f)
-            angle = 3.1415927f - reinterpret_cast<Enemy *>(enemy)->movementAngle;
+            angle = 3.1415927f - enemy->movementAngle;
         else if (angle > -1.5707964f && angle <= 0.0f)
             angle = -3.1415927f - angle;
     }
 
-    if (reinterpret_cast<Enemy *>(enemy)->position.operator float *()[1] <
-            reinterpret_cast<Enemy *>(enemy)->movementBounds.lower.y + 48.0f &&
+    if (enemy->position.operator float *()[1] <
+            enemy->movementBounds.lower.y + 48.0f &&
         angle < 0.0f)
     {
         angle = -angle;
     }
 
-    if (reinterpret_cast<Enemy *>(enemy)->position.operator float *()[1] >
-            reinterpret_cast<Enemy *>(enemy)->movementBounds.upper.y - 48.0f &&
+    if (enemy->position.operator float *()[1] >
+            enemy->movementBounds.upper.y - 48.0f &&
         angle > 0.0f)
     {
         angle = -angle;
@@ -166,14 +169,14 @@ void __fastcall BeginBoundaryAwareMove(
 
     if (DEP_READ_INT(enemy, instruction, 0) <= 0)
     {
-        reinterpret_cast<Enemy *>(enemy)->movementAngle = angle;
-        reinterpret_cast<Enemy *>(enemy)->speed =
+        enemy->movementAngle = angle;
+        enemy->speed =
             DEP_READ_FLOAT(enemy, instruction, 2);
-        reinterpret_cast<Enemy *>(enemy)->flags1 =
-            (reinterpret_cast<Enemy *>(enemy)->flags1 & ~ENEMY_FLAG_MOVEMENT_MODE_MASK) |
+        enemy->flags1 =
+            (enemy->flags1 & ~ENEMY_FLAG_MOVEMENT_MODE_MASK) |
             0x1000U;
-        reinterpret_cast<Enemy *>(enemy)->movementDuration = 0;
-        reinterpret_cast<Enemy *>(enemy)->movementTimer = 0;
+        enemy->movementDuration = 0;
+        enemy->movementTimer = 0;
     }
     else
     {
@@ -182,14 +185,14 @@ void __fastcall BeginBoundaryAwareMove(
 }
 
 // FUNCTION: th08 0x4224a0
-void __fastcall ApplyRandomBiasedMove(u8 *rawEnemy, void *rawInstruction)
+void __fastcall ApplyRandomBiasedMove(
+    Enemy *enemy, EclRawInstruction *instruction)
 {
     f32 wrappedPlayerX;
     f32 angle;
 
-#define RM_ENEMY (reinterpret_cast<EclOperands::EnemyOverlay *>(rawEnemy))
-#define RM_INSTRUCTION (reinterpret_cast<EclRawInstruction *>(rawInstruction))
-#define RM_FLOAT(offset) (*reinterpret_cast<f32 *>(rawEnemy + (offset)))
+#define RM_ENEMY (enemy)
+#define RM_INSTRUCTION (instruction)
 #define RM_READ_INT(index) \
     ((RM_INSTRUCTION->operandFlags & (1U << (index))) \
          ? EclOperands::ResolveInt(RM_ENEMY, *reinterpret_cast<i32 *>(RM_INSTRUCTION->operands + (index) * 4)) \
@@ -201,11 +204,11 @@ void __fastcall ApplyRandomBiasedMove(u8 *rawEnemy, void *rawInstruction)
 
     if (g_Rng.GetRandomU32InRange(4) != 0)
     {
-        if (EclOperands::g_TargetPlayerPosition017D61AC.x < reinterpret_cast<Enemy *>(rawEnemy)->position.x)
+        if (g_Player.position.x < enemy->position.x)
         {
-            wrappedPlayerX = EclOperands::g_TargetPlayerPosition017D61AC.x + 384.0f;
-            if (reinterpret_cast<Enemy *>(rawEnemy)->position.x - EclOperands::g_TargetPlayerPosition017D61AC.x <
-                wrappedPlayerX - reinterpret_cast<Enemy *>(rawEnemy)->position.x)
+            wrappedPlayerX = g_Player.position.x + 384.0f;
+            if (enemy->position.x - g_Player.position.x <
+                wrappedPlayerX - enemy->position.x)
             {
                 angle = AddNormalizeAngle(
                     g_Rng.GetRandomF32InRange(1.5707964f) + 2.3561945f, 0.0f);
@@ -218,9 +221,9 @@ void __fastcall ApplyRandomBiasedMove(u8 *rawEnemy, void *rawInstruction)
         }
         else
         {
-            wrappedPlayerX = EclOperands::g_TargetPlayerPosition017D61AC.x - 384.0f;
-            if (EclOperands::g_TargetPlayerPosition017D61AC.x - reinterpret_cast<Enemy *>(rawEnemy)->position.x <
-                reinterpret_cast<Enemy *>(rawEnemy)->position.x - wrappedPlayerX)
+            wrappedPlayerX = g_Player.position.x - 384.0f;
+            if (g_Player.position.x - enemy->position.x <
+                enemy->position.x - wrappedPlayerX)
             {
                 angle = g_Rng.GetRandomF32InRange(1.5707964f) - 0.78539819f;
             }
@@ -236,14 +239,14 @@ void __fastcall ApplyRandomBiasedMove(u8 *rawEnemy, void *rawInstruction)
         angle = g_Rng.GetRandomF32SignedInRange(3.1415927f);
     }
 
-    if (reinterpret_cast<Enemy *>(rawEnemy)->position.operator float *()[1] <
-            reinterpret_cast<Enemy *>(rawEnemy)->movementBounds.lower.y + 48.0f &&
+    if (enemy->position.operator float *()[1] <
+            enemy->movementBounds.lower.y + 48.0f &&
         angle < 0.0f)
     {
         angle = -angle;
     }
-    if (reinterpret_cast<Enemy *>(rawEnemy)->position.operator float *()[1] >
-            reinterpret_cast<Enemy *>(rawEnemy)->movementBounds.upper.y - 48.0f &&
+    if (enemy->position.operator float *()[1] >
+            enemy->movementBounds.upper.y - 48.0f &&
         angle > 0.0f)
     {
         angle = -angle;
@@ -251,13 +254,13 @@ void __fastcall ApplyRandomBiasedMove(u8 *rawEnemy, void *rawInstruction)
 
     if (RM_READ_INT(0) <= 0)
     {
-        reinterpret_cast<Enemy *>(rawEnemy)->movementAngle = angle;
-        reinterpret_cast<Enemy *>(rawEnemy)->speed = RM_READ_FLOAT(2);
-        reinterpret_cast<Enemy *>(rawEnemy)->flags1 =
-            (reinterpret_cast<Enemy *>(rawEnemy)->flags1 & ~ENEMY_FLAG_MOVEMENT_MODE_MASK) |
+        enemy->movementAngle = angle;
+        enemy->speed = RM_READ_FLOAT(2);
+        enemy->flags1 =
+            (enemy->flags1 & ~ENEMY_FLAG_MOVEMENT_MODE_MASK) |
             0x1000U;
-        reinterpret_cast<Enemy *>(rawEnemy)->movementDuration = 0;
-        reinterpret_cast<Enemy *>(rawEnemy)->movementTimer = 0;
+        enemy->movementDuration = 0;
+        enemy->movementTimer = 0;
     }
     else
     {
@@ -266,7 +269,6 @@ void __fastcall ApplyRandomBiasedMove(u8 *rawEnemy, void *rawInstruction)
 
 #undef RM_READ_FLOAT
 #undef RM_READ_INT
-#undef RM_FLOAT
 #undef RM_INSTRUCTION
 #undef RM_ENEMY
 }
@@ -275,7 +277,7 @@ void __fastcall ApplyRandomBiasedMove(u8 *rawEnemy, void *rawInstruction)
 
 // FUNCTION: th08 0x421300
 void __fastcall ApplyInterpolationOperation(
-    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction)
+    Enemy *enemy, EclRawInstruction *instruction)
 {
     f32 delta;
 
@@ -288,41 +290,30 @@ void __fastcall ApplyInterpolationOperation(
         DEP_READ_FLOAT(enemy, instruction, 2);
 }
 
-struct InterpolationSlot
-{
-    void *callback;
-    ZunTimer timer;
-    i32 duration;
-    i32 callbackIndex;
-    i32 easing;
-    f32 parameter0;
-    f32 parameter1;
-    f32 parameter2;
-    f32 parameter3;
-    f32 affectedVariable;
-};
-C_ASSERT(sizeof(InterpolationSlot) == 0x30);
-
-extern void *g_EclInterpolatorCallbacks[];
+extern EnemyEclInterpolatorCallback g_EclInterpolatorCallbacks[];
 
 // FUNCTION: th08 0x421120
 #pragma var_order(end, start)
 void __fastcall InterpolateLinear(
-    EclOperands::EnemyOverlay *enemy, InterpolationSlot *slot, f32 t)
+    Enemy *enemy, EnemyEclInterpolationSlot *slot, f32 t)
 {
     f32 start;
     f32 end;
 
-    start = enemy->ResolveFloat(slot->parameter0);
-    end = enemy->ResolveFloat(slot->parameter1);
-    *EclOperands::ResolveFloatLValue(enemy, &slot->affectedVariable, 0, -1) =
+    start = enemy->ResolveFloat(
+        slot->parameters[0]);
+    end = enemy->ResolveFloat(
+        slot->parameters[1]);
+    *EclOperands::ResolveFloatLValue(
+        enemy,
+        &slot->affectedVariable, 0, -1) =
         (end - start) * t + start;
 }
 
 // FUNCTION: th08 0x421180
 #pragma var_order(weight3, parameter3, weight1, parameter2, parameter1, weight2, weight0, parameter0)
 void __fastcall InterpolateHermite(
-    EclOperands::EnemyOverlay *enemy, InterpolationSlot *slot, f32 t)
+    Enemy *enemy, EnemyEclInterpolationSlot *slot, f32 t)
 {
     f32 parameter0;
     f32 parameter1;
@@ -333,17 +324,23 @@ void __fastcall InterpolateHermite(
     f32 weight2;
     f32 weight3;
 
-    parameter0 = enemy->ResolveFloat(slot->parameter0);
-    parameter1 = enemy->ResolveFloat(slot->parameter1);
-    parameter2 = enemy->ResolveFloat(slot->parameter2);
-    parameter3 = enemy->ResolveFloat(slot->parameter3);
+    parameter0 = enemy->ResolveFloat(
+        slot->parameters[0]);
+    parameter1 = enemy->ResolveFloat(
+        slot->parameters[1]);
+    parameter2 = enemy->ResolveFloat(
+        slot->parameters[2]);
+    parameter3 = enemy->ResolveFloat(
+        slot->parameters[3]);
 
     weight0 = (t - 1.0f) * (t - 1.0f) * (2.0f * t + 1.0f);
     weight1 = t * t * (3.0f - 2.0f * t);
     weight2 = (1.0f - t) * (1.0f - t) * t;
     weight3 = (t - 1.0f) * t * t;
 
-    *EclOperands::ResolveFloatLValue(enemy, &slot->affectedVariable, 0, -1) =
+    *EclOperands::ResolveFloatLValue(
+        enemy,
+        &slot->affectedVariable, 0, -1) =
         weight0 * parameter0 + weight1 * parameter1 +
         weight2 * parameter2 + weight3 * parameter3;
 }
@@ -351,13 +348,12 @@ void __fastcall InterpolateHermite(
 
 // FUNCTION: th08 0x4213f0
 void __fastcall InstallInterpolationSlot(
-    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction)
+    Enemy *enemy, EclRawInstruction *instruction)
 {
-    InterpolationSlot *slot;
+    EnemyEclInterpolationSlot *slot;
     i32 i;
 
-    slot = reinterpret_cast<InterpolationSlot *>(
-        reinterpret_cast<Enemy *>(enemy)->activeEclContext->interpolationSlots);
+    slot = enemy->activeEclContext->interpolationSlots;
     for (i = 0; i < 8; i++, slot++)
     {
         if (slot->callback != NULL &&
@@ -371,10 +367,10 @@ void __fastcall InstallInterpolationSlot(
             slot->callbackIndex = DEP_READ_INT(enemy, instruction, 2);
             slot->easing = DEP_READ_INT(enemy, instruction, 3);
             slot->callback = g_EclInterpolatorCallbacks[slot->callbackIndex];
-            slot->parameter0 = DEP_READ_FLOAT(enemy, instruction, 4);
-            slot->parameter1 = DEP_READ_FLOAT(enemy, instruction, 5);
-            slot->parameter2 = DEP_READ_FLOAT(enemy, instruction, 6);
-            slot->parameter3 = DEP_READ_FLOAT(enemy, instruction, 7);
+            slot->parameters[0] = DEP_READ_FLOAT(enemy, instruction, 4);
+            slot->parameters[1] = DEP_READ_FLOAT(enemy, instruction, 5);
+            slot->parameters[2] = DEP_READ_FLOAT(enemy, instruction, 6);
+            slot->parameters[3] = DEP_READ_FLOAT(enemy, instruction, 7);
             break;
         }
     }
@@ -382,7 +378,7 @@ void __fastcall InstallInterpolationSlot(
 
 // FUNCTION: th08 0x4215f0
 EclRawInstruction *__fastcall CompareOperands(
-    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction)
+    Enemy *enemy, EclRawInstruction *instruction)
 {
     switch (instruction->opcode)
     {
@@ -436,7 +432,7 @@ EclRawInstruction *__fastcall CompareOperands(
         goto compare_failure;
 
 compare_success:
-        reinterpret_cast<Enemy *>(enemy)->activeEclContext->time.current =
+        enemy->activeEclContext->time.current =
             *reinterpret_cast<i32 *>(instruction->operands + 8);
         return reinterpret_cast<EclRawInstruction *>(
             reinterpret_cast<u8 *>(instruction) +
@@ -451,16 +447,16 @@ compare_failure:
 
 // FUNCTION: th08 0x421de0
 void __fastcall SetPrimaryAnmScripts(
-    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction,
+    Enemy *enemy, EclRawInstruction *instruction,
     i32 script0, i32 script1, i32 script2, i32 script3, i32 script4, i32 script5)
 {
-    reinterpret_cast<Enemy *>(enemy)->anmScripts.idleInitial = static_cast<i16>(script0);
-    reinterpret_cast<Enemy *>(enemy)->anmScripts.moveLeft = static_cast<i16>(script1);
-    reinterpret_cast<Enemy *>(enemy)->anmScripts.moveRight = static_cast<i16>(script2);
-    reinterpret_cast<Enemy *>(enemy)->anmScripts.idleFromLeft = static_cast<i16>(script3);
-    reinterpret_cast<Enemy *>(enemy)->anmScripts.idleFromRight = static_cast<i16>(script4);
-    reinterpret_cast<Enemy *>(enemy)->anmScripts.special = static_cast<i16>(script5);
-    reinterpret_cast<Enemy *>(enemy)->anmDirection = 0xff;
+    enemy->anmScripts.idleInitial = static_cast<i16>(script0);
+    enemy->anmScripts.moveLeft = static_cast<i16>(script1);
+    enemy->anmScripts.moveRight = static_cast<i16>(script2);
+    enemy->anmScripts.idleFromLeft = static_cast<i16>(script3);
+    enemy->anmScripts.idleFromRight = static_cast<i16>(script4);
+    enemy->anmScripts.special = static_cast<i16>(script5);
+    enemy->anmDirection = 0xff;
 }
 
 
@@ -468,87 +464,87 @@ C_ASSERT(sizeof(EclCallParameterCopy) == 0x20);
 
 // FUNCTION: th08 0x421bd0
 void __fastcall CallSubOnEnemy(
-    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction, i32 rawSubId)
+    Enemy *enemy, EclRawInstruction *instruction, i32 rawSubId)
 {
-    reinterpret_cast<Enemy *>(enemy)->activeEclContext->currentInstr =
+    enemy->activeEclContext->currentInstr =
         reinterpret_cast<EclRawInstruction *>(
             reinterpret_cast<u8 *>(instruction) + instruction->nextOffset);
 
-    if (((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+    if (((enemy->flags1 >>
           ENEMY_FLAG_DISABLE_ECL_CALL_STACK_SHIFT) & 1) == 0)
     {
-        reinterpret_cast<Enemy *>(enemy)->activeEclCallStack[
-            reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth] =
-            *reinterpret_cast<Enemy *>(enemy)->activeEclContext;
+        enemy->activeEclCallStack[
+            enemy->activeEclCallStackDepth] =
+            *enemy->activeEclContext;
     }
 
     g_EclManager.CallEclSub(
-        reinterpret_cast<Enemy *>(enemy)->activeEclContext,
+        enemy->activeEclContext,
         static_cast<i16>(rawSubId));
 
     *reinterpret_cast<EclCallParameterCopy *>(
-        &reinterpret_cast<Enemy *>(enemy)->activeEclContext->callParameterInts[0]) =
+        &enemy->activeEclContext->callParameterInts[0]) =
         g_EclCallParameters;
 
-    if (((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+    if (((enemy->flags1 >>
           ENEMY_FLAG_DISABLE_ECL_CALL_STACK_SHIFT) & 1) == 0 &&
-        reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth < 15)
+        enemy->activeEclCallStackDepth < 15)
     {
-        ++reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth;
+        ++enemy->activeEclCallStackDepth;
     }
 }
 
 
 // FUNCTION: th08 0x421cb0
 int __fastcall PopEclContext(
-    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction)
+    Enemy *enemy, EclRawInstruction *instruction)
 {
     i32 contextIndex;
 
-    if (((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+    if (((enemy->flags1 >>
           ENEMY_FLAG_DISABLE_ECL_CALL_STACK_SHIFT) & 1) != 0)
         utils::DebugPrint("error : no Stack Ret\r\n");
 
-    --reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth;
-    if (reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth < 0)
+    --enemy->activeEclCallStackDepth;
+    if (enemy->activeEclCallStackDepth < 0)
     {
-        contextIndex = reinterpret_cast<Enemy *>(enemy)->activeEclContext->childContextSlot - 1;
-        if (reinterpret_cast<Enemy *>(enemy)->childEclBlocks[contextIndex] != NULL)
-            g_ZunMemory.Free(reinterpret_cast<Enemy *>(enemy)->childEclBlocks[contextIndex]);
-        reinterpret_cast<Enemy *>(enemy)->childEclBlocks[contextIndex] = NULL;
-        reinterpret_cast<Enemy *>(enemy)->activeEclCallStack =
+        contextIndex = enemy->activeEclContext->childContextSlot - 1;
+        if (enemy->childEclBlocks[contextIndex] != NULL)
+            g_ZunMemory.Free(enemy->childEclBlocks[contextIndex]);
+        enemy->childEclBlocks[contextIndex] = NULL;
+        enemy->activeEclCallStack =
             reinterpret_cast<EnemyEclContext *>(
-                &reinterpret_cast<Enemy *>(enemy)->mainEclCallStackStorage[0]);
-        reinterpret_cast<Enemy *>(enemy)->activeEclContext =
+                &enemy->mainEclCallStackStorage[0]);
+        enemy->activeEclContext =
             reinterpret_cast<EnemyEclContext *>(
-                &reinterpret_cast<Enemy *>(enemy)->mainEclContextStorage);
-        reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth =
-            reinterpret_cast<Enemy *>(enemy)->mainEclCallStackDepth;
+                &enemy->mainEclContextStorage);
+        enemy->activeEclCallStackDepth =
+            enemy->mainEclCallStackDepth;
         return 1;
     }
 
-    *reinterpret_cast<Enemy *>(enemy)->activeEclContext =
-        reinterpret_cast<Enemy *>(enemy)->activeEclCallStack[
-            reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth];
+    *enemy->activeEclContext =
+        enemy->activeEclCallStack[
+            enemy->activeEclCallStackDepth];
     return 0;
 }
 
 
 // FUNCTION: th08 0x421e50
 void __fastcall SetExtraAnmScript(
-    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction)
+    Enemy *enemy, EclRawInstruction *instruction)
 {
     if (DEP_READ_INT(enemy, instruction, 0) >= 2)
         utils::DebugPrint("error : sub anim overflow\r\n");
 
     if (DEP_READ_INT(enemy, instruction, 1) >= 0)
     {
-        if (((reinterpret_cast<Enemy *>(enemy)->flags2 >>
+        if (((enemy->flags2 >>
               ENEMY_FLAG2_ALTERNATE_ANM_BANK_SHIFT) & 1) != 0)
         {
             g_EnemyManager.alternateEnemyAnm
                 ->SetAndExecuteScriptIdx(
-                    &reinterpret_cast<Enemy *>(enemy)
+                    &enemy
                          ->secondaryVms[DEP_READ_INT(enemy, instruction, 0)],
                     DEP_READ_INT(enemy, instruction, 1));
         }
@@ -556,14 +552,14 @@ void __fastcall SetExtraAnmScript(
         {
             g_EnemyManager.enemyAnm
                 ->SetAndExecuteScriptIdx(
-                    &reinterpret_cast<Enemy *>(enemy)
+                    &enemy
                          ->secondaryVms[DEP_READ_INT(enemy, instruction, 0)],
                     DEP_READ_INT(enemy, instruction, 1));
         }
     }
     else
     {
-        reinterpret_cast<Enemy *>(enemy)
+        enemy
             ->secondaryVms[DEP_READ_INT(enemy, instruction, 0)]
             .scriptIndex = -1;
     }
@@ -571,44 +567,42 @@ void __fastcall SetExtraAnmScript(
 
 
 // FUNCTION: th08 0x41efc0
-EclOperands::EnemyOverlay *__fastcall FindLinkedChildTail0041EFC0(
-    EclOperands::EnemyOverlay *parent)
+Enemy *__fastcall FindAttachmentChainTail(
+    Enemy *parent)
 {
-    EclOperands::EnemyOverlay *cursor;
+    Enemy *cursor;
 
     cursor = parent;
-    if (reinterpret_cast<Enemy *>(parent)->HasParentChain())
+    if (parent->HasParentChain())
     {
-        while (reinterpret_cast<Enemy *>(cursor)->nextInAttachmentChain != NULL)
-            cursor = reinterpret_cast<EclOperands::EnemyOverlay *>(
-                reinterpret_cast<Enemy *>(cursor)->nextInAttachmentChain);
+        while (cursor->nextInAttachmentChain != NULL)
+            cursor = cursor->nextInAttachmentChain;
     }
     return cursor;
 }
 
 // FUNCTION: th08 0x41f110
-EclOperands::EnemyOverlay *__fastcall SpawnChildStandard0041F110(
-    EclOperands::EnemyOverlay *parent, EclRawInstruction *instruction)
+Enemy *__fastcall SpawnChildAtScriptPosition(
+    Enemy *parent, EclRawInstruction *instruction)
 {
-    EclOperands::EnemyOverlay *child;
+    Enemy *child;
 
-    child = reinterpret_cast<EclOperands::EnemyOverlay *>(&g_EnemyManager.enemies[480]);
-    if (reinterpret_cast<Enemy *>(parent)->life > 0 &&
-        (((reinterpret_cast<Enemy *>(parent)->flags1 >>
+    child = &g_EnemyManager.enemies[480];
+    if (parent->life > 0 &&
+        (((parent->flags1 >>
            ENEMY_FLAG_SUPPRESS_DEATH_EFFECTS_SHIFT) & 1) == 0))
     {
         Float3 position;
         position.x = DEP_READ_FLOAT(parent, instruction, 1);
         position.y = DEP_READ_FLOAT(parent, instruction, 2);
         position.z = 0.0f;
-        child = reinterpret_cast<EclOperands::EnemyOverlay *>(
-            g_EnemyManager.SpawnEnemy2(
-                *reinterpret_cast<i32 *>(instruction->operands),
-                reinterpret_cast<D3DXVECTOR3 *>(&position),
-                DEP_READ_INT(parent, instruction, 3),
-                DEP_READ_INT(parent, instruction, 4),
-                DEP_READ_INT(parent, instruction, 5),
-                reinterpret_cast<Enemy *>(parent)->activeEclContext->intVariables));
+        child = g_EnemyManager.SpawnEnemy2(
+            *reinterpret_cast<i32 *>(instruction->operands),
+            reinterpret_cast<D3DXVECTOR3 *>(&position),
+            DEP_READ_INT(parent, instruction, 3),
+            DEP_READ_INT(parent, instruction, 4),
+            DEP_READ_INT(parent, instruction, 5),
+            parent->activeEclContext->intVariables);
     }
     else
     {
@@ -618,29 +612,28 @@ EclOperands::EnemyOverlay *__fastcall SpawnChildStandard0041F110(
 }
 
 // FUNCTION: th08 0x41f280
-EclOperands::EnemyOverlay *__fastcall SpawnChildAlternate0041F280(
-    EclOperands::EnemyOverlay *parent, EclRawInstruction *instruction)
+Enemy *__fastcall SpawnChildAtParentOffset(
+    Enemy *parent, EclRawInstruction *instruction)
 {
-    EclOperands::EnemyOverlay *child;
+    Enemy *child;
 
-    child = reinterpret_cast<EclOperands::EnemyOverlay *>(&g_EnemyManager.enemies[480]);
-    if (reinterpret_cast<Enemy *>(parent)->life > 0 &&
-        (((reinterpret_cast<Enemy *>(parent)->flags1 >>
+    child = &g_EnemyManager.enemies[480];
+    if (parent->life > 0 &&
+        (((parent->flags1 >>
            ENEMY_FLAG_SUPPRESS_DEATH_EFFECTS_SHIFT) & 1) == 0))
     {
         Float3 position;
         position.x = DEP_READ_FLOAT(parent, instruction, 1);
         position.y = DEP_READ_FLOAT(parent, instruction, 2);
         position.z = 0.0f;
-        position += reinterpret_cast<Enemy *>(parent)->worldPosition;
-        child = reinterpret_cast<EclOperands::EnemyOverlay *>(
-            g_EnemyManager.SpawnEnemy2(
-                *reinterpret_cast<i32 *>(instruction->operands),
-                reinterpret_cast<D3DXVECTOR3 *>(&position),
-                DEP_READ_INT(parent, instruction, 3),
-                DEP_READ_INT(parent, instruction, 4),
-                DEP_READ_INT(parent, instruction, 5),
-                reinterpret_cast<Enemy *>(parent)->activeEclContext->intVariables));
+        position += parent->worldPosition;
+        child = g_EnemyManager.SpawnEnemy2(
+            *reinterpret_cast<i32 *>(instruction->operands),
+            reinterpret_cast<D3DXVECTOR3 *>(&position),
+            DEP_READ_INT(parent, instruction, 3),
+            DEP_READ_INT(parent, instruction, 4),
+            DEP_READ_INT(parent, instruction, 5),
+            parent->activeEclContext->intVariables);
     }
     else
     {
@@ -653,35 +646,24 @@ EclOperands::EnemyOverlay *__fastcall SpawnChildAlternate0041F280(
 #undef DEP_READ_INT
 #undef DEP_BYTES
 
-} // namespace EclRunLowProposal
+} // namespace EclRunLow
 
-namespace EclRunHighProposal
+namespace EclRunHigh
 {
 
 struct SpawnPacketTyped
 {
     SpawnPacketTyped();
 
-    i32 type;
+    i32 eclSubroutineId;
     D3DXVECTOR3 position;
-    i32 arg4;
-    i32 arg5;
-    i32 arg6;
+    i32 life;
+    i32 itemDropType;
+    i32 score;
 };
 
 // FUNCTION: th08 0x41f400
 SpawnPacketTyped::SpawnPacketTyped() {}
-
-struct RawInstruction
-{
-    i32 time;
-    i16 opcode;
-    i16 nextOffset;
-    u8 unknown08;
-    u8 difficultyMask;
-    u16 operandFlags;
-    u8 operands[1];
-};
 
 struct ShotArgs
 {
@@ -702,85 +684,86 @@ C_ASSERT(offsetof(ShotArgs, angle) == 0x14);
 C_ASSERT(offsetof(ShotArgs, transformFlags) == 0x1c);
 
 // FUNCTION: th08 0x422720
-void __fastcall DispatchShotInstruction(u8 *enemy, RawInstruction *instruction)
+void __fastcall DispatchShotInstruction(
+    Enemy *enemy, EclRawInstruction *instruction)
 {
     BulletSpawnDescriptor *descriptor;
     ShotArgs *args;
     i32 packed;
 
     args = reinterpret_cast<ShotArgs *>(instruction->operands);
-    descriptor = &reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor;
+    descriptor = &enemy->bulletSpawnDescriptor;
 
     if (((args->transformFlags & BULLET_TRANSFORM_ONLY_WHEN_PLAYER_YOUKAI) != 0 &&
-         ((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+         ((enemy->flags1 >>
            ENEMY_FLAG_YOUKAI_ALIGNED_SHIFT) & 1) == 0) ||
         ((args->transformFlags & BULLET_TRANSFORM_ONLY_WHEN_PLAYER_HUMAN) != 0 &&
-         ((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+         ((enemy->flags1 >>
            ENEMY_FLAG_YOUKAI_ALIGNED_SHIFT) & 1) != 0))
         return;
-    if ((reinterpret_cast<Enemy *>(enemy)->minimumPlayerDistanceSquared > 0.0f) &&
-        (((reinterpret_cast<Enemy *>(enemy)->worldPosition.x - EclOperands::g_TargetPlayerPosition017D61AC.x) *
-             (reinterpret_cast<Enemy *>(enemy)->worldPosition.x - EclOperands::g_TargetPlayerPosition017D61AC.x) +
-         (reinterpret_cast<Enemy *>(enemy)->worldPosition.y - EclOperands::g_TargetPlayerPosition017D61AC.y) *
-             (reinterpret_cast<Enemy *>(enemy)->worldPosition.y - EclOperands::g_TargetPlayerPosition017D61AC.y)) <
-        reinterpret_cast<Enemy *>(enemy)->minimumPlayerDistanceSquared))
+    if ((enemy->minimumPlayerDistanceSquared > 0.0f) &&
+        (((enemy->worldPosition.x - g_Player.position.x) *
+             (enemy->worldPosition.x - g_Player.position.x) +
+         (enemy->worldPosition.y - g_Player.position.y) *
+             (enemy->worldPosition.y - g_Player.position.y)) <
+        enemy->minimumPlayerDistanceSquared))
         return;
 
             descriptor->position =
-                reinterpret_cast<Enemy *>(enemy)->worldPosition +
-                reinterpret_cast<Enemy *>(enemy)->shootOffset;
+                enemy->worldPosition +
+                enemy->shootOffset;
 
             packed = args->bulletType;
             descriptor->bulletType = (instruction->operandFlags & 1)
                                          ? EclOperands::ResolveInt(
-                                               reinterpret_cast<EclOperands::EnemyOverlay *>(enemy), packed)
+                                               enemy, packed)
                                          : packed;
             descriptor->aimMode = instruction->opcode - 0x60;
             descriptor->count1 = (instruction->operandFlags & 4)
                                      ? EclOperands::ResolveInt(
-                                           reinterpret_cast<EclOperands::EnemyOverlay *>(enemy), args->count1)
+                                           enemy, args->count1)
                                      : args->count1;
             descriptor->count2 = (instruction->operandFlags & 8)
                                      ? EclOperands::ResolveInt(
-                                           reinterpret_cast<EclOperands::EnemyOverlay *>(enemy), args->count2)
+                                           enemy, args->count2)
                                      : args->count2;
             descriptor->angle = (instruction->operandFlags & 0x40)
-                                    ? reinterpret_cast<EclOperands::EnemyOverlay *>(enemy)->ResolveFloat(args->angle)
+                                    ? enemy->ResolveFloat(args->angle)
                                     : args->angle;
             descriptor->speed1 = (instruction->operandFlags & 0x10)
-                                     ? reinterpret_cast<EclOperands::EnemyOverlay *>(enemy)->ResolveFloat(args->speed1)
+                                     ? enemy->ResolveFloat(args->speed1)
                                      : args->speed1;
             descriptor->angleStep = (instruction->operandFlags & 0x80)
-                                        ? reinterpret_cast<EclOperands::EnemyOverlay *>(enemy)->ResolveFloat(args->angleStep)
+                                        ? enemy->ResolveFloat(args->angleStep)
                                         : args->angleStep;
             descriptor->speed2 = (instruction->operandFlags & 0x20)
-                                     ? reinterpret_cast<EclOperands::EnemyOverlay *>(enemy)->ResolveFloat(args->speed2)
+                                     ? enemy->ResolveFloat(args->speed2)
                                      : args->speed2;
 
             if (!g_Spellcard.IsActive())
             {
                 descriptor->count1 += g_GameManager.ScaleIntBasedOnRank(
-                    reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.count1Low,
-                    reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.count1High);
+                    enemy->bulletRankInfluence.count1Low,
+                    enemy->bulletRankInfluence.count1High);
                 if (descriptor->count1 <= 0)
                     descriptor->count1 = 1;
                 descriptor->count2 += g_GameManager.ScaleIntBasedOnRank(
-                    reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.count2Low,
-                    reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.count2High);
+                    enemy->bulletRankInfluence.count2Low,
+                    enemy->bulletRankInfluence.count2High);
                 if (descriptor->count2 <= 0)
                     descriptor->count2 = 1;
 
                 if (descriptor->speed1 != 0.0f)
                 {
                     descriptor->speed1 += g_GameManager.ScaleFloatBasedOnRank(
-                        reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.speedLow,
-                        reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.speedHigh);
+                        enemy->bulletRankInfluence.speedLow,
+                        enemy->bulletRankInfluence.speedHigh);
                     if (descriptor->speed1 < 0.3f)
                         descriptor->speed1 = 0.3f;
                 }
                 descriptor->speed2 += g_GameManager.ScaleFloatBasedOnRank(
-                                          reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.speedLow,
-                                          reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.speedHigh) /
+                                          enemy->bulletRankInfluence.speedLow,
+                                          enemy->bulletRankInfluence.speedHigh) /
                                       2.0f;
                 if (descriptor->speed2 < 0.3f)
                     descriptor->speed2 = 0.3f;
@@ -791,11 +774,11 @@ void __fastcall DispatchShotInstruction(u8 *enemy, RawInstruction *instruction)
             packed = args->color;
             descriptor->color = (instruction->operandFlags & 2)
                                     ? EclOperands::ResolveInt(
-                                          reinterpret_cast<EclOperands::EnemyOverlay *>(enemy), packed)
+                                          enemy, packed)
                                     : packed;
             g_BulletManager.SpawnBulletPattern(descriptor);
 }
-} // namespace EclRunHighProposal
+} // namespace EclRunHigh
 
 // FUNCTION: th08 0x423150
 void Enemy::UpdateShotAndAnm()
@@ -810,9 +793,9 @@ void Enemy::UpdateShotAndAnm()
             this->shootIntervalTimer++;
             if (this->shootIntervalTimer >= this->shootIntervalFrames)
             {
-                EclRunHighProposal::DispatchShotInstruction(
-                    reinterpret_cast<u8 *>(this),
-                    reinterpret_cast<EclRunHighProposal::RawInstruction *>(
+                EclRunHigh::DispatchShotInstruction(
+                    this,
+                    reinterpret_cast<EclRawInstruction *>(
                         this->pendingShotInstruction));
                 this->shootIntervalTimer = 0;
             }

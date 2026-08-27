@@ -15,20 +15,6 @@
 namespace th08
 {
 
-namespace EclOperands
-{
-struct Vector3
-{
-    f32 x;
-    f32 y;
-    f32 z;
-
-    Vector3 operator-(const Vector3 &other) const;
-    f32 Length() const;
-};
-Vector3 g_TargetPlayerPosition017D61AC;
-} // namespace EclOperands
-
 DIFFABLE_STATIC(ChainElem, g_AsciiManagerDrawChainLowPrio);
 DIFFABLE_STATIC(AsciiManager, g_AsciiManager);
 DIFFABLE_STATIC(ChainElem, g_AsciiManagerCalcChain);
@@ -650,7 +636,7 @@ void AsciiManager::CreatePlayerPointPopup(Float3 *position, i32 number, D3DCOLOR
     this->nextPlayerPointPopupIndex++;
 }
 
-void AsciiManager::CreateTimePopup(Float3 *position, i32 number, i32 param3, D3DCOLOR color)
+void AsciiManager::CreateTimePopup(Float3 *position, i32 primaryNumber, i32 secondaryNumber, D3DCOLOR color)
 {
     AsciiManagerPopup *popup;
     int characterCount;
@@ -663,27 +649,27 @@ void AsciiManager::CreateTimePopup(Float3 *position, i32 number, i32 param3, D3D
     popup->inUse = true;
 
     characterCount = 0;
-    if (param3 > 0)
+    if (secondaryNumber > 0)
     {
         popup->text[characterCount] = 15;
         characterCount++;
-        while (param3 != 0)
+        while (secondaryNumber != 0)
         {
-            popup->text[characterCount] = param3 % 10;
+            popup->text[characterCount] = secondaryNumber % 10;
             characterCount++;
-            param3 /= 10;
+            secondaryNumber /= 10;
         }
         popup->text[characterCount] = 14;
         characterCount++;
     }
 
-    if (number > 0)
+    if (primaryNumber > 0)
     {
-        while (number != 0)
+        while (primaryNumber != 0)
         {
-            popup->text[characterCount] = number % 10;
+            popup->text[characterCount] = primaryNumber % 10;
             characterCount++;
-            number /= 10;
+            primaryNumber /= 10;
         }
     }
     else
@@ -706,7 +692,7 @@ void AsciiManager::CreateTimePopup(Float3 *position, i32 number, i32 param3, D3D
     this->nextTimePopupIndex++;
 }
 
-void AsciiManager::CreateFamiliarPopup(Float3 *position, i32 number, i32 param3, D3DCOLOR color)
+void AsciiManager::CreateFamiliarPopup(Float3 *position, i32 primaryNumber, i32 secondaryNumber, D3DCOLOR color)
 {
     AsciiManagerPopup *popup;
     int characterCount;
@@ -719,27 +705,27 @@ void AsciiManager::CreateFamiliarPopup(Float3 *position, i32 number, i32 param3,
     popup->inUse = true;
 
     characterCount = 0;
-    if (param3 > 0)
+    if (secondaryNumber > 0)
     {
         popup->text[characterCount] = 15;
         characterCount++;
-        while (param3 != 0)
+        while (secondaryNumber != 0)
         {
-            popup->text[characterCount] = param3 % 10;
+            popup->text[characterCount] = secondaryNumber % 10;
             characterCount++;
-            param3 /= 10;
+            secondaryNumber /= 10;
         }
         popup->text[characterCount] = 14;
         characterCount++;
     }
 
-    if (number > 0)
+    if (primaryNumber > 0)
     {
-        while (number != 0)
+        while (primaryNumber != 0)
         {
-            popup->text[characterCount] = number % 10;
+            popup->text[characterCount] = primaryNumber % 10;
             characterCount++;
-            number /= 10;
+            primaryNumber /= 10;
         }
     }
     else
@@ -1593,8 +1579,8 @@ void AsciiManager::OnDrawHighPrioImpl()
         this->smallScoreText.pos.y = popup->position.y;
         this->smallScoreText.color1.d3dColor = popup->color;
 
-        dx = EclOperands::g_TargetPlayerPosition017D61AC.x - popup->position.x;
-        dy = EclOperands::g_TargetPlayerPosition017D61AC.y - popup->position.y;
+        dx = g_Player.position.x - popup->position.x;
+        dy = g_Player.position.y - popup->position.y;
         alpha = (i32)(dx * dx + dy * dy);
         if (alpha > 4096)
         {
@@ -1646,14 +1632,16 @@ void AsciiManager::OnDrawHighPrioImpl()
 
         rect.left = 32.0f;
         rect.top = 16.0f;
-        rect.right = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f - this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.x;
+        rect.right = g_Player.position.x + 32.0f - this->nightBlindnessRadius +
+                     g_AnmManager->screenShakeOffset.x;
         rect.bottom = 464.0f;
         if (rect.right > rect.left)
         {
             ScreenEffect::DrawSquare(&rect, alphaColor.d3dColor);
         }
 
-        rect.left = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f + this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.x;
+        rect.left = g_Player.position.x + 32.0f + this->nightBlindnessRadius +
+                    g_AnmManager->screenShakeOffset.x;
         rect.top = 16.0f;
         rect.right = 416.0f;
         rect.bottom = 464.0f;
@@ -1662,24 +1650,28 @@ void AsciiManager::OnDrawHighPrioImpl()
             ScreenEffect::DrawSquare(&rect, alphaColor.d3dColor);
         }
 
-        rect.left = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f - this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.x;
+        rect.left = g_Player.position.x + 32.0f - this->nightBlindnessRadius +
+                    g_AnmManager->screenShakeOffset.x;
         if (rect.left < 32.0f)
         {
             rect.left = 32.0f;
         }
         rect.top = 16.0f;
-        rect.right = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f + this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.x;
+        rect.right = g_Player.position.x + 32.0f + this->nightBlindnessRadius +
+                     g_AnmManager->screenShakeOffset.x;
         if (rect.right > 416.0f)
         {
             rect.right = 416.0f;
         }
-        rect.bottom = EclOperands::g_TargetPlayerPosition017D61AC.y + 16.0f - this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.y;
+        rect.bottom = g_Player.position.y + 16.0f - this->nightBlindnessRadius +
+                      g_AnmManager->screenShakeOffset.y;
         if (rect.bottom > rect.top)
         {
             ScreenEffect::DrawSquare(&rect, alphaColor.d3dColor);
         }
 
-        rect.top = EclOperands::g_TargetPlayerPosition017D61AC.y + 16.0f + this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.y;
+        rect.top = g_Player.position.y + 16.0f + this->nightBlindnessRadius +
+                   g_AnmManager->screenShakeOffset.y;
         rect.bottom = 464.0f;
         if (rect.bottom > rect.top)
         {
@@ -1689,7 +1681,7 @@ void AsciiManager::OnDrawHighPrioImpl()
         g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&this->nightBlindnessVm, 105);
         this->nightBlindnessVm.scale.y = this->nightBlindnessRadius / 63.0f;
         this->nightBlindnessVm.scale.x = this->nightBlindnessVm.scale.y;
-        this->nightBlindnessVm.pos = *(Float3 *)&EclOperands::g_TargetPlayerPosition017D61AC;
+        this->nightBlindnessVm.pos = g_Player.position;
         this->nightBlindnessVm.pos.x += 32.0f;
         this->nightBlindnessVm.pos.y += 16.0f;
         this->nightBlindnessVm.color1.a = this->nightBlindnessAlpha;
@@ -1708,8 +1700,8 @@ void AsciiManager::OnDrawHighPrioImpl()
         this->popupText.pos.y = popup->position.y;
         this->popupText.color1.d3dColor = popup->color;
 
-        dx = EclOperands::g_TargetPlayerPosition017D61AC.x - popup->position.x;
-        dy = EclOperands::g_TargetPlayerPosition017D61AC.y - popup->position.y;
+        dx = g_Player.position.x - popup->position.x;
+        dy = g_Player.position.y - popup->position.y;
         alpha = (i32)(dx * dx + dy * dy);
         if (alpha > 4096)
         {

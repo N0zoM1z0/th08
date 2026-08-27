@@ -681,8 +681,8 @@ ZunResult Spellcard::Init()
     this->portraitOverlayVm.currentInstruction = NULL;
     this->playerSpellNameVm.currentInstruction = NULL;
     this->enemyPortraitVm.currentInstruction = NULL;
-    this->vm90C.currentInstruction = NULL;
-    this->vmE54.currentInstruction = NULL;
+    this->enemyPortraitAuxNoRotationVm.currentInstruction = NULL;
+    this->enemyPortraitAux2dVm.currentInstruction = NULL;
     this->enemySpellNameVm.currentInstruction = NULL;
 
     this->playerPortraitVm.flagsWord &= ~1u;
@@ -690,8 +690,8 @@ ZunResult Spellcard::Init()
     this->portraitOverlayVm.flagsWord &= ~1u;
     this->playerSpellNameVm.flagsWord &= ~1u;
     this->enemyPortraitVm.flagsWord &= ~1u;
-    this->vm90C.flagsWord &= ~1u;
-    this->vmE54.flagsWord &= ~1u;
+    this->enemyPortraitAuxNoRotationVm.flagsWord &= ~1u;
+    this->enemyPortraitAux2dVm.flagsWord &= ~1u;
     this->enemySpellNameVm.flagsWord &= ~1u;
 
     this->playerSpellNameVm.fontWidth = 15;
@@ -704,7 +704,7 @@ ZunResult Spellcard::Init()
 
 // FUNCTION: th08 0x4152a0
 #pragma var_order(i, catk, j, checksum, nameChecksum, ownerName, this)
-void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemyFace, i32 bonus, u8 *enemy,
+void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemyFace, i32 bonus, Enemy *enemy,
                            const u8 *encodedOwner, const char *commentLine1, const char *commentLine2)
 {
     char ownerName[128];
@@ -724,19 +724,19 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
     this->flags &= ~SPELLCARD_FLAG_SUPPRESS_BONUS_PRESENTATION;
     this->spellCardNumber = spellCardNumber;
     this->activeEnemy = enemy;
-    this->activeEnemyIndexSnapshot = reinterpret_cast<Enemy *>(this->activeEnemy)->enemyIndex;
+    this->activeEnemyIndexSnapshot = this->activeEnemy->enemyIndex;
     this->bonusProgress = bonus;
     this->scoreLimit = bonus;
-    if (((reinterpret_cast<Enemy *>(this->activeEnemy)->flags1 >>
+    if (((this->activeEnemy->flags1 >>
           ENEMY_FLAG_TIMEOUT_SPELL_SHIFT) & 1) != 0)
     {
         this->scoreLimit = 99999990;
     }
     this->bonusCounter =
         (this->bonusProgress - this->bonusProgress / 7u) /
-        (reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames / 60);
-    this->timeRemaining = reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames;
-    this->timeLimit = reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames;
+        (this->activeEnemy->timerCallbackThresholdFrames / 60);
+    this->timeRemaining = this->activeEnemy->timerCallbackThresholdFrames;
+    this->timeLimit = this->activeEnemy->timerCallbackThresholdFrames;
 
     for (i = 0; i < 0x30; i++)
     {
@@ -751,7 +751,7 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
                                                          i + g_Background.spellVmScriptBase);
     }
     g_Background.spellBackgroundDrawCallback = NULL;
-    reinterpret_cast<Enemy *>(this->activeEnemy)->ResetBulletRankInfluence();
+    this->activeEnemy->ResetBulletRankInfluence();
     this->mixColor = 0x80808080;
 
     if (((this->flags >> SPELLCARD_FLAG_CAPTURE_REWARD_PENDING_SHIFT) & 1) != 0)
@@ -768,10 +768,10 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
     }
 
     this->flags &= ~SPELLCARD_FLAG_BONUS_UPDATES_DISABLED;
-    this->spellEffect = reinterpret_cast<Effect *>(g_EffectManager.SpawnEffectInFixedSlot(
+    this->spellEffect = g_EffectManager.SpawnEffectInFixedSlot(
         (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0) ? 52 : 39,
         reinterpret_cast<D3DXVECTOR3 *>(
-            &reinterpret_cast<Enemy *>(this->activeEnemy)->position), 1, 1, -1));
+            &this->activeEnemy->position), 1, 1, -1);
     this->spellEffect->vm.interpCurrentTimers[AnmInterp_Pos] = 0;
     this->spellEffect->vm.interpEndTimers[AnmInterp_Pos] = 100;
     this->spellEffect->vm.interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOutQuartic;
@@ -780,7 +780,7 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
     this->spellEffect->vm.posInitial.y = 64.0f;
     this->spellEffect->vm.posFinal.y = 0.0f;
     this->spellEffect->vm.pos.y = 64.0f;
-    this->spellEffect->position = reinterpret_cast<Enemy *>(this->activeEnemy)->position;
+    this->spellEffect->position = this->activeEnemy->position;
     this->spellEffect->vertexSegmentCount = 64;
     this->spellEffect->angle = 0.0f;
     this->spellEffect->radius = 256.0f;
@@ -1027,7 +1027,7 @@ void Spellcard::EndSpell()
             {
                 catk = &g_GameManager.catkData[this->spellCardNumber];
                 this->bonusAward = this->bonusProgress;
-                if (((reinterpret_cast<Enemy *>(this->activeEnemy)->flags1 >>
+                if (((this->activeEnemy->flags1 >>
                       ENEMY_FLAG_TIMEOUT_SPELL_SHIFT) & 1) != 0)
                 {
                     this->pendingTimeOrbs = 700;
@@ -1221,7 +1221,7 @@ void Spellcard::EndSpell()
 
     if (this->activeEnemy != NULL)
     {
-        reinterpret_cast<Enemy *>(this->activeEnemy)->flags1 &= ~ENEMY_FLAG_TIMEOUT_SPELL;
+        this->activeEnemy->flags1 &= ~ENEMY_FLAG_TIMEOUT_SPELL;
     }
     this->activeEnemy = NULL;
     this->flags &= ~SPELLCARD_FLAG_BONUS_UPDATES_DISABLED;
@@ -1272,14 +1272,13 @@ i32 Spellcard::OnUpdateImpl()
 
     if ((this->flags & SPELLCARD_FLAG_ACTIVE) != 0)
     {
-        if ((reinterpret_cast<Enemy *>(this->activeEnemy)->flags1 & ENEMY_FLAG_ACTIVE) == 0 ||
-            this->activeEnemyIndexSnapshot != reinterpret_cast<Enemy *>(this->activeEnemy)->enemyIndex)
+        if ((this->activeEnemy->flags1 & ENEMY_FLAG_ACTIVE) == 0 ||
+            this->activeEnemyIndexSnapshot != this->activeEnemy->enemyIndex)
         {
             this->DeactivateWithoutCleanup();
         }
 
-        if (EclOperands::g_TargetPlayerPosition017D61AC.x >= 64.0f &&
-            EclOperands::g_TargetPlayerPosition017D61AC.y < 64.0f)
+        if (g_Player.position.x >= 64.0f && g_Player.position.y < 64.0f)
         {
             if (reinterpret_cast<u8 *>(&this->mixColor)[3] > 0x20)
             {
@@ -1294,7 +1293,7 @@ i32 Spellcard::OnUpdateImpl()
         if (((this->flags >> SPELLCARD_FLAG_CAPTURE_VALID_SHIFT) & 1) != 0)
         {
             if (((this->flags >> SPELLCARD_FLAG_BONUS_UPDATES_DISABLED_SHIFT) & 1) == 0 &&
-                ((reinterpret_cast<Enemy *>(this->activeEnemy)->flags1 >>
+                ((this->activeEnemy->flags1 >>
                   ENEMY_FLAG_TIMEOUT_SPELL_SHIFT) & 1) == 0)
             {
                 this->bonusProgress -=
@@ -1323,7 +1322,7 @@ i32 Spellcard::OnUpdateImpl()
         {
             this->spellEffect->vm.interpCurrentTimers[AnmInterp_Pos] = 0;
             this->spellEffect->vm.interpEndTimers[AnmInterp_Pos] =
-                reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames - 100;
+                this->activeEnemy->timerCallbackThresholdFrames - 100;
             this->spellEffect->vm.interpModes[AnmInterp_Pos] = AnmInterpMode_Linear;
             this->spellEffect->vm.posInitial.x = 256.0f;
             this->spellEffect->vm.posFinal.x = 8.0f;
@@ -1334,8 +1333,8 @@ i32 Spellcard::OnUpdateImpl()
         if (((this->flags >> SPELLCARD_FLAG_EFFECT_TRACKING_DISABLED_SHIFT) & 1) == 0)
         {
             this->spellEffect->vector5 =
-                ((reinterpret_cast<Enemy *>(this->activeEnemy)->position +
-                  reinterpret_cast<Enemy *>(this->activeEnemy)->positionOffset) -
+                ((this->activeEnemy->position +
+                  this->activeEnemy->positionOffset) -
                  this->spellEffect->vector5) /
                     16.0f +
                 this->spellEffect->vector5;
@@ -1399,8 +1398,7 @@ i32 Spellcard::OnUpdateImpl()
             if (this->rewardEffect->timer <= 80)
             {
                 this->rewardEffect->vector5 =
-                    (reinterpret_cast<const Float3 &>(EclOperands::g_TargetPlayerPosition017D61AC) -
-                     this->rewardEffect->vector5) /
+                    (g_Player.position - this->rewardEffect->vector5) /
                         16.0f +
                     this->rewardEffect->vector5;
                 this->rewardEffect->vector5.z = 0.0f;
@@ -1410,8 +1408,7 @@ i32 Spellcard::OnUpdateImpl()
             else
             {
                 this->rewardEffect->vector5 =
-                    (reinterpret_cast<const Float3 &>(EclOperands::g_TargetPlayerPosition017D61AC) -
-                     this->rewardEffect->vector5) /
+                    (g_Player.position - this->rewardEffect->vector5) /
                         4.0f +
                     this->rewardEffect->vector5;
                 this->rewardEffect->vector5.z = 0.0f;
@@ -1438,7 +1435,8 @@ i32 Spellcard::OnUpdateImpl()
                 itemCount = this->pendingTimeOrbs > 7 ? 7 : this->pendingTimeOrbs;
                 for (i = 0; i < itemCount; i++)
                 {
-                    g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&itemPosition), ITEM_TIME2,
+                    g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&itemPosition),
+                                            ITEM_TIME_APEX_AUTOCOLLECT_REQUEST,
                                             ITEM_STATE_DEFAULT);
                 }
                 this->pendingTimeOrbs -= itemCount;
@@ -1451,7 +1449,8 @@ i32 Spellcard::OnUpdateImpl()
                 itemCount = this->pendingTimeOrbs > 7 ? 7 : this->pendingTimeOrbs;
                 for (i = 0; i < 6; i++)
                 {
-                    g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&itemPosition), ITEM_TIME2,
+                    g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(&itemPosition),
+                                            ITEM_TIME_APEX_AUTOCOLLECT_REQUEST,
                                             ITEM_STATE_DEFAULT);
                 }
                 this->pendingTimeOrbs -= itemCount;
@@ -1469,8 +1468,8 @@ i32 Spellcard::OnUpdateImpl()
     g_AnmManager->ExecuteScript(&this->playerSpellNameVm);
     g_AnmManager->ExecuteScript(&this->playerSpellNameFrameVm);
     g_AnmManager->ExecuteScript(&this->enemyPortraitVm);
-    g_AnmManager->ExecuteScript(&this->vm90C);
-    g_AnmManager->ExecuteScript(&this->vmE54);
+    g_AnmManager->ExecuteScript(&this->enemyPortraitAuxNoRotationVm);
+    g_AnmManager->ExecuteScript(&this->enemyPortraitAux2dVm);
     g_AnmManager->ExecuteScript(&this->enemySpellNameVm);
     g_AnmManager->ExecuteScript(&this->enemySpellNameLayer1Vm);
     g_AnmManager->ExecuteScript(&this->enemySpellNameLayer2Vm);
@@ -1524,8 +1523,8 @@ i32 Spellcard::OnDrawImpl()
         this->enemyPortraitVm.pos += this->enemyPortraitVm.pos2;
         g_AnmManager->DrawNoRotation(&this->enemyPortraitVm);
         *reinterpret_cast<SavedPosition *>(&this->enemyPortraitVm.pos) = savedPos;
-        g_AnmManager->DrawNoRotation(&this->vm90C);
-        g_AnmManager->Draw2D(&this->vmE54);
+        g_AnmManager->DrawNoRotation(&this->enemyPortraitAuxNoRotationVm);
+        g_AnmManager->Draw2D(&this->enemyPortraitAux2dVm);
     }
 
     if (this->playerSpellNameVm.IsVisible())
@@ -1654,12 +1653,10 @@ ZunResult Spellcard::RegisterChain()
 
     spellcard->lifetimeObject = g_Chain.CreateElem((ChainCallback)Spellcard::OnUpdate);
     spellcard->lifetimeChain = g_Chain.CreateElem((ChainCallback)Spellcard::OnDraw);
-    reinterpret_cast<ChainElem *>(spellcard->lifetimeObject)->deletedCallback =
-        (ChainLifetimeCallback)Spellcard::DeletedCallback;
-    reinterpret_cast<ChainElem *>(spellcard->lifetimeObject)->arg = spellcard;
+    spellcard->lifetimeObject->deletedCallback = (ChainLifetimeCallback)Spellcard::DeletedCallback;
+    spellcard->lifetimeObject->arg = spellcard;
     spellcard->lifetimeChain->arg = spellcard;
-    g_Chain.AddToCalcChain(
-        reinterpret_cast<ChainElem *>(spellcard->lifetimeObject), CHAIN_PRIO_CALC_SPELLCARD);
+    g_Chain.AddToCalcChain(spellcard->lifetimeObject, CHAIN_PRIO_CALC_SPELLCARD);
     g_Chain.AddToDrawChain(spellcard->lifetimeChain, CHAIN_PRIO_DRAW_SPELLCARD);
     return ZUN_SUCCESS;
 }
@@ -1694,7 +1691,7 @@ ZunResult Spellcard::DeletedCallback(Spellcard *spellcard)
 
     if (spellcard->lifetimeObject != NULL)
     {
-        reinterpret_cast<ChainElem *>(spellcard->lifetimeObject)->deletedCallback = NULL;
+        spellcard->lifetimeObject->deletedCallback = NULL;
     }
     g_Chain.Cut(spellcard->lifetimeChain);
     spellcard->lifetimeChain = NULL;

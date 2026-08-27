@@ -503,7 +503,8 @@ void BulletManager::RemoveAllBullets(i32 mode)
                                                       &bullet->sprites.collisionSize);
         if (g_Player.CheckBulletCancelCollision(&bullet->position, &bullet->sprites.collisionSize) == 2)
         {
-            g_ItemManager.SpawnItem(&bullet->position, static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
+            g_ItemManager.SpawnItem(&bullet->position, static_cast<ItemType>(g_Player.bulletCancelItemType),
+                                    ITEM_STATE_AUTOCOLLECT);
             memset(bullet, 0, 0x10B8);
         }
         else if (mode != 4)
@@ -591,13 +592,14 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
                                  &bullet->sprites.collisionSize) == 2)
         {
             g_ItemManager.SpawnItem(&bullet->position,
-                                    static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
+                                    static_cast<ItemType>(g_Player.bulletCancelItemType),
+                                    ITEM_STATE_AUTOCOLLECT);
         }
         else
         {
             g_ItemManager.SpawnItem(
                 &bullet->position,
-                static_cast<ItemType>(this->cancelItemType), 1);
+                static_cast<ItemType>(this->cancelItemType), ITEM_STATE_AUTOCOLLECT);
         }
 
         g_AsciiManager.CreateScorePopup(&bullet->position, score,
@@ -632,7 +634,7 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
             {
                 g_ItemManager.SpawnItem(
                     &laser->position,
-                    static_cast<ItemType>(this->cancelItemType), 1);
+                    static_cast<ItemType>(this->cancelItemType), ITEM_STATE_AUTOCOLLECT);
                 radius = laser->startOffset;
                 fsincos(&sine, &cosine, laser->angle);
                 while (laser->endOffset > radius)
@@ -642,7 +644,7 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
                     position[2] = 0.0f;
                     g_ItemManager.SpawnItem(
                         reinterpret_cast<Float3 *>(position),
-                        static_cast<ItemType>(this->cancelItemType), 1);
+                        static_cast<ItemType>(this->cancelItemType), ITEM_STATE_AUTOCOLLECT);
                     radius += 32.0f;
                 }
             }
@@ -673,7 +675,7 @@ void BulletManager::RemoveBulletsInRadius(const Float3 *position, f32 radius)
         delta = bullet->position - *position;
         if (D3DXVec3LengthSq(reinterpret_cast<D3DXVECTOR3 *>(&delta)) > radius)
             continue;
-        g_ItemManager.SpawnItem(&bullet->position, static_cast<ItemType>(6), 1);
+        g_ItemManager.SpawnItem(&bullet->position, ITEM_POINT_STAR, ITEM_STATE_AUTOCOLLECT);
         memset(bullet, 0, sizeof(Bullet));
     }
 }
@@ -724,11 +726,11 @@ Laser *BulletManager::SpawnLaserPattern(BulletSpawnDescriptor *descriptor)
         if (laser->inUse)
             continue;
 
-        this->bulletAnm->SetAndExecuteScriptIdx(&laser->vm0, descriptor->bulletType + 10);
-        this->bulletAnm->SetSprite(&laser->vm0, laser->vm0.activeSpriteIndex + descriptor->color);
+        this->bulletAnm->SetAndExecuteScriptIdx(&laser->bodyVm, descriptor->bulletType + 10);
+        this->bulletAnm->SetSprite(&laser->bodyVm, laser->bodyVm.activeSpriteIndex + descriptor->color);
         this->bulletAnm->InitializeAndSetSprite(
-            &laser->vm1, g_BulletSpriteOffsetSmall[descriptor->color] + 0x92);
-        laser->vm1.blendMode = 1;
+            &laser->startCapVm, g_BulletSpriteOffsetSmall[descriptor->color] + 0x92);
+        laser->startCapVm.blendMode = 1;
         laser->position = descriptor->position;
         laser->color = descriptor->color;
         laser->inUse = 1;
@@ -910,12 +912,13 @@ updateBullet:
                         bullet->state = BULLET_STATE_DESPAWNING;
                         if (g_Player.bulletCancelItemType == 9)
                         {
-                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
-                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
+                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
+                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
                         }
                         else if (g_Player.bulletCancelItemType >= 0)
                             g_ItemManager.SpawnItem(&bullet->position,
-                                                    static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
+                                                    static_cast<ItemType>(g_Player.bulletCancelItemType),
+                                                    ITEM_STATE_AUTOCOLLECT);
                     }
                     goto executeBulletScript;
                 }
@@ -932,12 +935,13 @@ lethalCollision:
                     {
                         if (g_Player.bulletCancelItemType == 9)
                         {
-                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
-                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
+                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
+                            g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
                         }
                         else if (g_Player.bulletCancelItemType >= 0)
                             g_ItemManager.SpawnItem(&bullet->position,
-                                                    static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
+                                                    static_cast<ItemType>(g_Player.bulletCancelItemType),
+                                                    ITEM_STATE_AUTOCOLLECT);
                     }
                 }
             }
@@ -959,12 +963,13 @@ executeBulletScript:
                     bullet->state = BULLET_STATE_DESPAWNING;
                     if (g_Player.bulletCancelItemType == 9)
                     {
-                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
-                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
                     }
                     else if (g_Player.bulletCancelItemType >= 0)
                         g_ItemManager.SpawnItem(&bullet->position,
-                                                static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
+                                                static_cast<ItemType>(g_Player.bulletCancelItemType),
+                                                ITEM_STATE_AUTOCOLLECT);
                 }
                 goto activateBullet;
             case BULLET_STATE_SPAWNING_NORMAL:
@@ -981,12 +986,13 @@ executeBulletScript:
                     bullet->state = BULLET_STATE_DESPAWNING;
                     if (g_Player.bulletCancelItemType == 9)
                     {
-                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
-                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
                     }
                     else if (g_Player.bulletCancelItemType >= 0)
                         g_ItemManager.SpawnItem(&bullet->position,
-                                                static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
+                                                static_cast<ItemType>(g_Player.bulletCancelItemType),
+                                                ITEM_STATE_AUTOCOLLECT);
                 }
                 goto activateBullet;
             case BULLET_STATE_SPAWNING_SLOW:
@@ -1003,12 +1009,13 @@ executeBulletScript:
                     bullet->state = BULLET_STATE_DESPAWNING;
                     if (g_Player.bulletCancelItemType == 9)
                     {
-                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
-                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, 1);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
+                        g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_AUTOCOLLECT);
                     }
                     else if (g_Player.bulletCancelItemType >= 0)
                         g_ItemManager.SpawnItem(&bullet->position,
-                                                static_cast<ItemType>(g_Player.bulletCancelItemType), 1);
+                                                static_cast<ItemType>(g_Player.bulletCancelItemType),
+                                                ITEM_STATE_AUTOCOLLECT);
                 }
                 goto activateBullet;
             case BULLET_STATE_DESPAWNING:
@@ -1061,10 +1068,10 @@ nextBullet:
             laserCenter[0] = (laser->endOffset - laser->startOffset) / 2.0f +
                             laser->startOffset + laser->position.x;
             laserCenter[1] = laser->position.y;
-            laser->vm0.scale.x = laser->width / laser->vm0.loadedSprite->widthPx;
+            laser->bodyVm.scale.x = laser->width / laser->bodyVm.loadedSprite->widthPx;
             currentWidth = laser->endOffset - laser->startOffset;
-            laser->vm0.scale.y = currentWidth / laser->vm0.loadedSprite->heightPx;
-            laser->vm0.SetZRotation(
+            laser->bodyVm.scale.y = currentWidth / laser->bodyVm.loadedSprite->heightPx;
+            laser->bodyVm.SetZRotation(
                 AddNormalizeAngle(ZUN_PI / 2.0f + laser->angle, 0.0f));
 
             switch (laser->state)
@@ -1075,7 +1082,7 @@ nextBullet:
                     alpha = (i32)((f32)laser->timer * 255.0f / laser->startTime);
                     if (alpha > 255)
                         alpha = 255;
-                    laser->vm0.color1.d3dColor = alpha << 24;
+                    laser->bodyVm.color1.d3dColor = alpha << 24;
                 }
                 else
                 {
@@ -1087,7 +1094,7 @@ nextBullet:
                     else
                         currentWidth = 1.2f;
                     laser->currentWidth = currentWidth;
-                    laser->vm0.scale.x = currentWidth / 16.0f;
+                    laser->bodyVm.scale.x = currentWidth / 16.0f;
                     laserSize[0] = currentWidth / 2.0f;
                 }
                 if (laser->timer >= laser->hitboxStartTime)
@@ -1117,13 +1124,13 @@ nextBullet:
                     alpha = (i32)((f32)laser->timer * 255.0f / laser->startTime);
                     if (alpha > 255)
                         alpha = 255;
-                    laser->vm0.color1.d3dColor = alpha << 24;
+                    laser->bodyVm.color1.d3dColor = alpha << 24;
                 }
                 else if (laser->despawnDuration > 0)
                 {
                     currentWidth = laser->width -
                                    (f32)laser->timer * laser->width / laser->despawnDuration;
-                    laser->vm0.scale.x = currentWidth / 16.0f;
+                    laser->bodyVm.scale.x = currentWidth / 16.0f;
                     laserSize[0] = currentWidth / 2.0f;
                 }
                 if (laser->timer < laser->hitboxEndDelay)
@@ -1138,7 +1145,7 @@ nextBullet:
             if (laser->startOffset >= 640.0f)
                 laser->inUse = 0;
             laser->timer++;
-            g_AnmManager->ExecuteScript(&laser->vm0);
+            g_AnmManager->ExecuteScript(&laser->bodyVm);
         }
 
     if (bulletManager->spawnSuppressionFrames != 0)
@@ -1480,41 +1487,42 @@ ChainCallbackResult BulletManager::OnDraw(BulletManager *bulletManager)
         fsincos(&sine, &cosine, laser->angle);
         halfLength = (laser->endOffset - laser->startOffset) / 2.0f + laser->startOffset;
 
-        laser->vm0.pos.operator float *()[0] =
+        laser->bodyVm.pos.operator float *()[0] =
             laser->position.operator float *()[0] + cosine * halfLength;
-        laser->vm0.pos.operator float *()[1] =
+        laser->bodyVm.pos.operator float *()[1] =
             laser->position.operator float *()[1] + sine * halfLength;
-        laser->vm0.pos.operator float *()[2] = 0.06f;
+        laser->bodyVm.pos.operator float *()[2] = 0.06f;
         laser->color = (laser->color & 0xff000000) | 0xffffff;
-        laser->vm0.pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
-        laser->vm0.pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
-        g_AnmManager->Draw2D(&laser->vm0);
+        laser->bodyVm.pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+        laser->bodyVm.pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
+        g_AnmManager->Draw2D(&laser->bodyVm);
 
         if (laser->startOffset < 16.0f || laser->speed == 0.0f)
         {
             if (!laser->hideCapDuringStartup || laser->state != LASER_STATE_STARTING)
             {
-                laser->vm1.pos.operator float *()[0] =
+                laser->startCapVm.pos.operator float *()[0] =
                     laser->position.operator float *()[0] +
                     cosine * laser->startOffset;
-                laser->vm1.pos.operator float *()[1] =
+                laser->startCapVm.pos.operator float *()[1] =
                     laser->position.operator float *()[1] +
                     sine * laser->startOffset;
-                laser->vm1.pos.operator float *()[2] = 0.05f;
-                laser->vm1.color1.d3dColor = laser->vm0.color1.d3dColor;
-                *reinterpret_cast<u32 *>(&laser->vm1.flags) |= 0x40;
-                laser->vm1.color1.d3dColor = (laser->vm1.color1.d3dColor & 0xffffff) | 0xff000000;
-                laser->vm1.scale.x =
+                laser->startCapVm.pos.operator float *()[2] = 0.05f;
+                laser->startCapVm.color1.d3dColor = laser->bodyVm.color1.d3dColor;
+                *reinterpret_cast<u32 *>(&laser->startCapVm.flags) |= 0x40;
+                laser->startCapVm.color1.d3dColor =
+                    (laser->startCapVm.color1.d3dColor & 0xffffff) | 0xff000000;
+                laser->startCapVm.scale.x =
                     laser->width / 10.0f * ((16.0f - laser->startOffset) / 16.0f);
-                laser->vm1.scale.y = laser->vm1.scale.x;
-                if (laser->vm1.scale.y <= 0.0f)
+                laser->startCapVm.scale.y = laser->startCapVm.scale.x;
+                if (laser->startCapVm.scale.y <= 0.0f)
                 {
-                    laser->vm1.scale.x = laser->width / 10.0f;
-                    laser->vm1.scale.y = laser->vm1.scale.x;
+                    laser->startCapVm.scale.x = laser->width / 10.0f;
+                    laser->startCapVm.scale.y = laser->startCapVm.scale.x;
                 }
-                laser->vm1.pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
-                laser->vm1.pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
-                g_AnmManager->Draw2D(&laser->vm1);
+                laser->startCapVm.pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
+                laser->startCapVm.pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
+                g_AnmManager->Draw2D(&laser->startCapVm);
             }
         }
     }

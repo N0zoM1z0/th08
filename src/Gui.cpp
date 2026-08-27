@@ -959,8 +959,7 @@ void Gui::UpdateStageElements()
 
     if (this->impl->clockTimeVm.color1.a)
     {
-        if (EclOperands::g_TargetPlayerPosition017D61AC.x >= 64.0f &&
-            EclOperands::g_TargetPlayerPosition017D61AC.y < 128.0f)
+        if (g_Player.position.x >= 64.0f && g_Player.position.y < 128.0f)
         {
             if (this->impl->clockTimeVm.color1.a > 0x40)
                 this->impl->clockTimeVm.color1.a -= 4;
@@ -2170,7 +2169,7 @@ void Gui::InitStageClearScreen()
 }
 
 // FUNCTION: th08 0x4396f8
-u32 AnmVm::IsStopped()
+ZunBool AnmVm::IsStopped()
 {
     return this->stopped;
 }

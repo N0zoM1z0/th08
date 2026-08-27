@@ -28,7 +28,7 @@ class TextHelper
     bool AllocateBufferWithFallback(i32 width, i32 height, D3DFORMAT format);
     bool TryAllocateBuffer(i32 width, i32 height, D3DFORMAT format);
     FormatInfo *GetFormatInfo(D3DFORMAT format);
-    bool InvertAlpha(i32 x, i32 y, i32 spriteWidth, i32 fontHeight, BOOL para5);
+    bool InvertAlpha(i32 unusedX, i32 y, i32 spriteWidth, i32 fontHeight, BOOL useGentleColorFalloff);
     u8 *GetBuffer();
     u32 GetImageWidthInBytes();
     i32 GetHeight();

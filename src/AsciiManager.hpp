@@ -74,10 +74,12 @@ struct AsciiManagerPopup
     Float2 scale;
     bool inUse;
     BYTE characterCount;
-    u32 unknownDword34;
+    u32 unconsumedDword34;
 };
 
 C_ASSERT(sizeof(AsciiManagerPopup) == 0x38);
+C_ASSERT(offsetof(AsciiManagerPopup, characterCount) == 0x31);
+C_ASSERT(offsetof(AsciiManagerPopup, unconsumedDword34) == 0x34);
 
 struct AsciiManager
 {
@@ -96,8 +98,8 @@ struct AsciiManager
     void OnDrawLowPrioImpl();
     void CreateScorePopup(Float3 *position, i32 number, D3DCOLOR color);
     void CreatePlayerPointPopup(Float3 *position, i32 number, D3DCOLOR color);
-    void CreateTimePopup(Float3 *position, i32 number, i32 param3, D3DCOLOR color);
-    void CreateFamiliarPopup(Float3 *position, i32 number, i32 param3, D3DCOLOR color);
+    void CreateTimePopup(Float3 *position, i32 primaryNumber, i32 secondaryNumber, D3DCOLOR color);
+    void CreateFamiliarPopup(Float3 *position, i32 primaryNumber, i32 secondaryNumber, D3DCOLOR color);
     void OnDrawHighPrioImpl();
     void DrawPercentage(Float3 *position, i32 percentage, D3DCOLOR color);
     void SetBossMarkerInterrupt(i32 slot, i16 state);

@@ -171,9 +171,9 @@ i32 EclManager::GetTimelineCount()
 }
 
 // FUNCTION: th08 0x42dfd0
-u32 EclManager::GetTimeline(i32 index)
+EclTimelineInstruction *EclManager::GetTimeline(i32 index)
 {
-    return this->eclFile->timelineOffsets[index];
+    return reinterpret_cast<EclTimelineInstruction *>(this->eclFile->timelineOffsets[index]);
 }
 
 // FUNCTION: th08 0x0042DFF0

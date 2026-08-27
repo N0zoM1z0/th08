@@ -191,18 +191,9 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotUpdateCallback, 6, g_PlayerShotUpdateCall
     NULL, UpdateHomingShot, NULL, UpdateFallingShot, UpdatePersistentShot, UpdateShotTrail};
 DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotDrawCallback, 2, g_PlayerShotDrawCallbacks) = {
     NULL, DrawShotTrail};
-typedef void *PlayerShotCollisionOrDifficultyEntry;
-DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotCollisionOrDifficultyEntry, 9,
-                             g_PlayerShotCollisionOrDifficultyTable) = {
-    NULL,
-    reinterpret_cast<void *>(ApplyShotHitBehavior),
-    reinterpret_cast<void *>(SpawnPeriodicShotHitEffect),
-    const_cast<char *>("Easy"),
-    const_cast<char *>("Normal"),
-    const_cast<char *>("Hard"),
-    const_cast<char *>("Lunatic"),
-    const_cast<char *>("Extra"),
-    const_cast<char *>("LastWord")};
+DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotCollisionCallback, 3,
+                             g_PlayerShotCollisionCallbacks) = {
+    NULL, ApplyShotHitBehavior, SpawnPeriodicShotHitEffect};
 
 ZunBool IsResourceReloadDisabled();
 void __fastcall PlayerBuildAabb(Float3 *topLeft, Float3 *bottomRight,
@@ -496,12 +487,15 @@ void Player::AwardGraze(Float3 *position, i32 suppressExtraItems)
     {
         if (g_EnemyManager.HasBoss() && g_GameManager.GaugeIsExtremelyYoukai())
         {
-            g_ItemManager.SpawnItem(position, ITEM_TIME2, 1);
+            g_ItemManager.SpawnItem(position, ITEM_TIME_APEX_AUTOCOLLECT_REQUEST,
+                                    ITEM_STATE_AUTOCOLLECT);
             if (!suppressExtraItems && g_Spellcard.IsActive())
             {
-                g_ItemManager.SpawnItem(position, ITEM_TIME2, 1);
+                g_ItemManager.SpawnItem(position, ITEM_TIME_APEX_AUTOCOLLECT_REQUEST,
+                                        ITEM_STATE_AUTOCOLLECT);
                 if (!g_GameManager.IsSoloYoukai())
-                    g_ItemManager.SpawnItem(position, ITEM_TIME2, 1);
+                    g_ItemManager.SpawnItem(position, ITEM_TIME_APEX_AUTOCOLLECT_REQUEST,
+                                            ITEM_STATE_AUTOCOLLECT);
             }
         }
     }
@@ -510,10 +504,10 @@ void Player::AwardGraze(Float3 *position, i32 suppressExtraItems)
 }
 
 // FUNCTION: th08 0x44ab40
-#pragma var_order(effectVm)
+#pragma var_order(effect)
 void Player::Die()
 {
-    AnmVm *effectVm;
+    Effect *effect;
 
     utils::DebugPrint("player DEAD");
     g_GameManager.scriptedUpdateFreeze = 0;
@@ -567,25 +561,25 @@ void Player::Die()
             this->mainVm.color2.a = this->mainVm.color1.a;
             this->mainVm.flagsWord |= 0x20000;
 
-            this->deathbombEffectVm =
+            this->deathbombEffect =
                 g_EffectManager.SpawnEffectInFixedSlot(59, reinterpret_cast<D3DXVECTOR3 *>(&this->position),
                                               11, 1, 0xFFF0404F);
-            effectVm = this->deathbombEffectVm;
-            effectVm->interpCurrentTimers[AnmInterp_Pos] = 0;
-            effectVm->interpEndTimers[AnmInterp_Pos] = this->deathbombWindowFrames;
-            effectVm->interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOut;
-            effectVm->posInitial.x = 128.0f;
-            effectVm->posFinal.x = 8.0f;
-            effectVm->posInitial.y = 32.0f;
-            effectVm->posFinal.y = 0.0f;
-            effectVm->pos.x = 128.0f;
-            effectVm->pos.y = 32.0f;
-            reinterpret_cast<Effect *>(effectVm)->vertexSegmentCount = 64;
-            reinterpret_cast<Effect *>(effectVm)->angle = 0.0f;
-            reinterpret_cast<Effect *>(effectVm)->radius = 128.0f;
-            reinterpret_cast<Effect *>(effectVm)->shapeThickness = 15.0f;
-            reinterpret_cast<Effect *>(effectVm)->radialWaveCount = 6.0f;
-            reinterpret_cast<Effect *>(effectVm)->updateDuringFreeze = 1;
+            effect = this->deathbombEffect;
+            effect->vm.interpCurrentTimers[AnmInterp_Pos] = 0;
+            effect->vm.interpEndTimers[AnmInterp_Pos] = this->deathbombWindowFrames;
+            effect->vm.interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOut;
+            effect->vm.posInitial.x = 128.0f;
+            effect->vm.posFinal.x = 8.0f;
+            effect->vm.posInitial.y = 32.0f;
+            effect->vm.posFinal.y = 0.0f;
+            effect->vm.pos.x = 128.0f;
+            effect->vm.pos.y = 32.0f;
+            effect->vertexSegmentCount = 64;
+            effect->angle = 0.0f;
+            effect->radius = 128.0f;
+            effect->shapeThickness = 15.0f;
+            effect->radialWaveCount = 6.0f;
+            effect->updateDuringFreeze = 1;
 
             if (g_Spellcard.IsActive())
                 g_GameManager.flags.deathbombFreezeActive = 1;
@@ -681,8 +675,9 @@ i32 Player::UpdateMovementAndOptions()
             }
             if (this->focusEffect == NULL)
             {
-                this->focusEffect = reinterpret_cast<Effect *>(
-                    g_EffectManager.SpawnEffectInFixedSlot(22, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 2, 1, -1));
+                this->focusEffect =
+                    g_EffectManager.SpawnEffectInFixedSlot(
+                        22, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 2, 1, -1);
             }
             this->focusTransitionFrames = 0;
             this->shootingGaugeChangeRampTimer = 0;
@@ -945,8 +940,9 @@ i32 Player::UpdateMovementAndOptions()
     if ((g_GameManager.GaugeIsExtremelyHuman() || g_GameManager.GaugeIsExtremelyYoukai()) &&
         this->extremeGaugeEffect == NULL)
     {
-        this->extremeGaugeEffect = reinterpret_cast<Effect *>(
-            g_EffectManager.SpawnEffectInFixedSlot(25, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 8, 1, -1));
+        this->extremeGaugeEffect =
+            g_EffectManager.SpawnEffectInFixedSlot(
+                25, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 8, 1, -1);
     }
     if (this->extremeGaugeEffect != NULL)
     {
@@ -1152,7 +1148,7 @@ void Player::UpdateBombState()
                 {
                     if (g_EnemyManager.bosses[i] != NULL)
                     {
-                        reinterpret_cast<EclOperands::EnemyOverlay *>(
+                        reinterpret_cast<Enemy *>(
                             g_EnemyManager.bosses[i])->DetachEnemyChain(0);
                         g_EnemyManager.bosses[i]->life = 0;
                         g_EnemyManager.bosses[i]->flags1 &= ~ENEMY_FLAG_PAUSE_TIMER;
@@ -1204,10 +1200,10 @@ acceptBomb:
     else
     {
         this->mainVm.flagsWord &= 0xFFFDFFFFu;
-        if (this->deathbombEffectVm != NULL)
+        if (this->deathbombEffect != NULL)
         {
-            reinterpret_cast<Effect *>(this->deathbombEffectVm)->active = 0;
-            this->deathbombEffectVm = NULL;
+            this->deathbombEffect->active = 0;
+            this->deathbombEffect = NULL;
         }
         *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFBFFu;
         g_AnmManager->SetMixColorDefault();
@@ -1289,10 +1285,10 @@ i32 Player::UpdateDeathAndRespawn()
         this->deathbombPending = 1;
         if (this->deathbombWindowFrames == 0)
         {
-            if (this->deathbombEffectVm != NULL)
+            if (this->deathbombEffect != NULL)
             {
-                reinterpret_cast<Effect *>(this->deathbombEffectVm)->active = 0;
-                this->deathbombEffectVm = NULL;
+                this->deathbombEffect->active = 0;
+                this->deathbombEffect = NULL;
             }
             g_EffectManager.SpawnEffectInFixedSlot(12, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 3, 1, 0xFF4040FF);
             g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 16, -1);
@@ -1316,26 +1312,26 @@ i32 Player::UpdateDeathAndRespawn()
                     g_GameManager.SetPower(0);
                 else
                     g_GameManager.AddPower(-16);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_BIG, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_BIG, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_SMALL, ITEM_STATE_DEATH_DROP_SPREAD);
                 if (g_GameManager.GetBombsRemaining() > 0 &&
                     (g_GameManager.shotType == 2 || g_GameManager.shotType == 8 || g_GameManager.shotType == 9))
-                    g_ItemManager.SpawnItem(&this->position, ITEM_BOMB, ITEM_STATE_UNK2);
+                    g_ItemManager.SpawnItem(&this->position, ITEM_BOMB, ITEM_STATE_DEATH_DROP_SPREAD);
                 g_Gui.flags.powerDisplayUpdateFrames = 2;
                 g_ItemManager.CancelAutoCollect();
             }
             else
             {
                 g_GameManager.SetPower(0);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
-                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_UNK2);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_DEATH_DROP_SPREAD);
+                g_ItemManager.SpawnItem(&this->position, ITEM_POWER_FULL, ITEM_STATE_DEATH_DROP_SPREAD);
                 g_Gui.flags.powerDisplayUpdateFrames = 2;
             }
             g_GameManager.DecreaseSubrank(1600);
@@ -1583,7 +1579,7 @@ ZunResult Player::AddedCallback(Player *player)
     player->movementDirection = PLAYER_DIRECTION_NONE;
     player->playerState = PLAYER_STATE_SPAWNING;
     player->timer = g_GameManager.IsSpellPractice() ? 10 : 120;
-    player->unknown2 = 1;
+    player->unconsumedAddedMarker02 = 1;
 
     shotSlot = player->shots;
     for (i = 0; (i32)i < 0x80; ++i, shotSlot++)
@@ -1745,9 +1741,9 @@ ZunResult Player::LoadShtFile(PlayerRawShtFile **header, const char *path)
             descriptor->drawCallback =
                 g_PlayerShotDrawCallbacks[reinterpret_cast<u32>(descriptor->drawCallback)];
 
-            descriptor->collisionCallback = reinterpret_cast<PlayerShotCollisionCallback>(
-                g_PlayerShotCollisionOrDifficultyTable[
-                    reinterpret_cast<u32>(descriptor->collisionCallback)]);
+            descriptor->collisionCallback =
+                g_PlayerShotCollisionCallbacks[
+                    reinterpret_cast<u32>(descriptor->collisionCallback)];
             descriptor++;
         }
     }
@@ -1757,7 +1753,8 @@ ZunResult Player::LoadShtFile(PlayerRawShtFile **header, const char *path)
 
 #pragma var_order(slot, index)
 // FUNCTION: th08 0x44de60
-PlayerCollisionRegion *Player::CreateRectCancelRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+PlayerCollisionRegion *Player::CreateRectCancelRegion(const Float3 *center, f32 width, f32 height,
+                                                      i32 collisionValue, i32 lifetime)
 {
     PlayerCollisionRegion *slot = this->cancelRegions;
     i32 index;
@@ -1772,17 +1769,19 @@ PlayerCollisionRegion *Player::CreateRectCancelRegion(const Float3 *center, f32 
     slot->active = true;
     slot->center.x = center->x;
     slot->center.y = center->y;
-    slot->size.x = value1;
-    slot->size.y = value2;
-    slot->lifetime = value4;
-    slot->collisionValue = value3;
+    slot->size.x = width;
+    slot->size.y = height;
+    slot->lifetime = lifetime;
+    slot->collisionValue = collisionValue;
 
     return slot;
 }
 
 #pragma var_order(slot, index)
 // FUNCTION: th08 0x44df00
-PlayerCollisionRegion *Player::CreateCircleCancelRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+PlayerCollisionRegion *Player::CreateCircleCancelRegion(const Float3 *center, f32 initialRadius,
+                                                        f32 radiusGrowthPerFrame, i32 lifetime,
+                                                        i32 collisionValue)
 {
     PlayerCollisionRegion *slot = this->cancelRegions;
     i32 index;
@@ -1797,17 +1796,18 @@ PlayerCollisionRegion *Player::CreateCircleCancelRegion(const Float3 *center, f3
     slot->active = true;
     slot->center.x = center->x;
     slot->center.y = center->y;
-    slot->radius = value1;
-    slot->radiusGrowth = value2;
-    slot->lifetime = value3;
-    slot->collisionValue = value4;
+    slot->radius = initialRadius;
+    slot->radiusGrowth = radiusGrowthPerFrame;
+    slot->lifetime = lifetime;
+    slot->collisionValue = collisionValue;
 
     return slot;
 }
 
 #pragma var_order(slot, index)
 // FUNCTION: th08 0x44dfa0
-PlayerCollisionRegion *Player::CreateRectDamageRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+PlayerCollisionRegion *Player::CreateRectDamageRegion(const Float3 *center, f32 width, f32 height,
+                                                      i32 damage, i32 lifetime)
 {
     PlayerCollisionRegion *slot = this->damageRegions;
     i32 index;
@@ -1822,17 +1822,19 @@ PlayerCollisionRegion *Player::CreateRectDamageRegion(const Float3 *center, f32 
     slot->active = true;
     slot->center.x = center->x;
     slot->center.y = center->y;
-    slot->size.x = value1;
-    slot->size.y = value2;
-    slot->lifetime = value4;
-    slot->damage = value3;
+    slot->size.x = width;
+    slot->size.y = height;
+    slot->lifetime = lifetime;
+    slot->damage = damage;
 
     return slot;
 }
 
 #pragma var_order(slot, index)
 // FUNCTION: th08 0x44e040
-PlayerCollisionRegion *Player::CreateCircleDamageRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+PlayerCollisionRegion *Player::CreateCircleDamageRegion(const Float3 *center, f32 initialRadius,
+                                                        f32 radiusGrowthPerFrame, i32 damage,
+                                                        i32 lifetime)
 {
     PlayerCollisionRegion *slot = this->damageRegions;
     i32 index;
@@ -1847,10 +1849,10 @@ PlayerCollisionRegion *Player::CreateCircleDamageRegion(const Float3 *center, f3
     slot->active = true;
     slot->center.x = center->x;
     slot->center.y = center->y;
-    slot->radius = value1;
-    slot->radiusGrowth = value2;
-    slot->lifetime = value4;
-    slot->damage = value3;
+    slot->radius = initialRadius;
+    slot->radiusGrowth = radiusGrowthPerFrame;
+    slot->lifetime = lifetime;
+    slot->damage = damage;
 
     return slot;
 }
@@ -3322,7 +3324,7 @@ i32 Player::CalcDamageToEnemy(Float3 *enemyPosition, Float3 *enemySize, i32 *hit
             if (g_GameManager.GaugeIsExtremelyHuman())
             {
                 if (bullet->descriptor->extremeGaugeBehavior < 0)
-                    g_ItemManager.SpawnItem(&bullet->position, static_cast<ItemType>(7), 3);
+                    g_ItemManager.SpawnItem(&bullet->position, ITEM_TIME, ITEM_STATE_TIME_RISING);
             }
             *hitAccumulator -= g_Player.damageAccumulatorThreshold;
         }

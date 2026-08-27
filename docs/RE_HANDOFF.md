@@ -938,8 +938,8 @@ all Enemy/ECL/GUI callers pass an `Enemy *`.  Their target-neighborhood
 placement in EclManager is retained as TU evidence rather than being confused
 with class ownership.  Both ECL operand resolvers also use typed Enemy chain
 links and `Player::position.x/y/z`; unused raw field macros and a private vector
-shell are gone.  The narrow `EclOperands::EnemyOverlay` remains only where the
-retail resolver/detach symbol ABI still requires it.
+shell are gone.  The temporary resolver/detach adapter described at this
+checkpoint was removed by the later Enemy/ECL owner migration.
 
 Focused replay across the seven affected objects passes **127 / 127 exact**;
 the helper bodies pass **53 / 53**, **28 / 28**, and **70 / 70**, and the
@@ -1854,3 +1854,398 @@ VC7 image and complete Linux i386 image link; and the Linux fixed-layout
 verifier passes.  `EnemyManager.hpp` now has no semantic-router candidates.
 Continue with the ANM residual family while preserving the sole Replay
 near-match as a separately documented Oracle limitation.
+
+The ANM residual checkpoint closes the remaining `AnmManager.hpp` router
+candidates.  Serialized record fields with no consumer are named reserved;
+runtime tails that are only zeroed or aggregate-copied remain explicitly
+unconsumed; and manager `+0x24C6..+0x24C7` is now compiler-owned alignment
+before the asserted `currentSprite @ +0x24C8`.  Focused AnmManager replay
+passes **82 / 82 exact** before and after the edit; the required cold aggregate
+passes **1,106 / 1,106 exact**; the normal VC7 image and complete Linux i386
+image link; and the Linux fixed-layout verifier passes.  Continue on
+`semantic/typed-reconstruction` with Player/ECL/Game residual state.  Do not
+open or merge another PR until explicitly requested; preserve the sole Replay
+near-match as a separate Oracle limitation.
+
+The Player residual checkpoint classifies the last neutral SHT, collision,
+option, Bomb, shot, and Player bytes without inventing consumers.  Four proven
+alignment ranges are now compiler-owned padding, while serialized and runtime
+dwords remain reserved/unconsumed and offset-asserted.  Focused Player plus
+PlayerBomb replay passes **136 / 136 exact** before and after the edit; the
+required cold aggregate passes **1,106 / 1,106 exact**; the normal VC7 image
+and complete Linux i386 image link; and the Linux fixed-layout verifier
+passes.  `Player.hpp` now has no semantic-router candidates.  Continue on the
+branch with ECL/Game residual state, without opening or merging a PR until the
+user explicitly requests it.
+
+The ECL/Effect residual checkpoint classifies only storage with no independent
+consumer and serialized instruction bytes skipped by all exact dispatch
+views.  Context tail alignment stays explicit because whole-context assignment
+is target-visible.  Focused replay across EclManager, EclRun,
+EclDependencies, EclExIns, and EffectManager passes **128 / 128 exact** before
+and after the edit, including full RunEcl; the required cold aggregate passes
+**1,106 / 1,106 exact**; the normal VC7 image and complete Linux i386 image
+link; and the Linux fixed-layout verifier passes.  Continue with Game/GUI/
+Ending residual state on the branch.  Do not open or merge a PR until the user
+explicitly asks.
+
+The GameManager residual checkpoint proves three formerly anonymous ranges as
+compiler alignment and retains only two independently unconsumed dwords.  All
+surrounding replay, RNG, stage, playtime, frame-skip, and active-frame fields
+are offset-asserted.  Focused GameManager replay passes **42 / 42 exact**
+before and after the edit; the required cold aggregate passes **1,106 / 1,106
+exact**; the normal VC7 image and complete Linux i386 image link; and the Linux
+fixed-layout verifier passes.  Continue with the bounded GUI/Ending residuals
+and audit the Replay constructor-sensitive opaque ranges separately.  Keep all
+work on the branch until the user explicitly requests another PR/merge.
+
+The GUI/Ending residual checkpoint removes the fictitious final message byte
+in favor of compiler-owned tail alignment and classifies the two remaining
+aggregate-cleared dwords as explicitly unconsumed.  Target-pinned packets for
+`GuiMsgVm::GuiMsgVm @ 0x00437CE2`, `Gui::RegisterChain @ 0x00437AD0`,
+`Ending::Ending @ 0x004297B0`, and `Ending::OnUpdate @ 0x00429860` are exact.
+Focused GUI plus Ending replay passes **52 / 52 exact** before and after the
+edit; the required cold aggregate passes **1,106 / 1,106 exact**; the normal
+VC7 image and complete Linux i386 image link; and the Linux fixed-layout
+verifier passes.  Continue with the Replay constructor-sensitive residual
+storage and keep all work on the branch until the user explicitly requests a
+PR/merge.
+
+The Replay residual checkpoint preserves the four target-observed `Float3`
+constructor calls while classifying those objects and the three manager byte
+ranges as explicitly unconsumed; serialized stage byte `+0x23` is reserved
+wire storage rather than false compiler padding.  The now-unused
+`unknown_fields` macro is removed.  Target-pinned Replay constructor and
+RegisterChain packets are exact, focused Replay replay passes **18 / 18
+exact** before and after the edit, the required cold aggregate passes **1,106
+/ 1,106 exact**, the normal VC7 image and complete Linux i386 image link, and
+the Linux fixed-layout verifier passes.  The four-category source router is
+now zero, but this is a layout-routing milestone rather than a whole-program
+semantic-completion claim.  Continue by auditing router-invisible neutral
+function names and evidence-limited state.  Keep all work on the branch until
+the user explicitly requests a PR/merge.
+
+The Effect camera-particle naming checkpoint replaces the last six authored
+`FUN_00426...` identities with three evidence-backed initializer/update pairs:
+tinted Boss-tracking, rising Boss-tracking, and spinning camera particles.
+Template slots 51, 63, and 19 respectively establish the pairings; names stop
+short of guessing the artwork.  Source, portable template mirror, tracking
+ledgers, accepted rows, and VC7 decorated-symbol units move together.  Focused
+`EffectManager.obj` replay passes **52 / 52 exact**, the required cold
+aggregate passes **1,106 / 1,106 exact**, the normal VC7 image and complete
+Linux i386 image link, and the Linux fixed-layout verifier passes.  Continue
+the router-invisible neutral-field audit on the branch; do not open or merge a
+PR until explicitly requested.
+
+The neutral-identifier checkpoint replaces the remaining production-source
+`unknown*`/`unk*` names with evidence-bounded `unconsumed`,
+`constructorCleared`, or `serializedReserved` identities across AsciiManager,
+Background, Midi, SoundPlayer, ScoreDat, ResultScreen, and zwave.  New offset
+assertions pin the affected public and wire layouts.  Focused cold replay of
+the seven affected objects passes **238 / 238 exact** before and after the
+edit; the required cold aggregate passes **1,106 / 1,106 exact**; the normal
+VC7 image and complete Linux i386 image link; and the Linux fixed-layout
+verifier passes.  Production source now has no `unknown*`, `unk*`, or authored
+address-style `FUN_*` identifiers, while the four-category semantic router
+remains zero.  Continue auditing router-invisible weak names and intentionally
+neutral state on `semantic/typed-reconstruction`; do not open or merge a PR
+until explicitly requested.
+
+The Item spawn-state checkpoint replaces the remaining unknown item enums with
+behavior-backed death-drop spread, ordinary time-orb rise, and apex-gated
+time-orb request/state identities; the two unproduced values remain explicitly
+reserved.  All authored constant SpawnItem calls now use typed item/state
+names, while genuinely data-driven ECL/drop/cancel values retain casts.
+Target-pinned packets cover `SpawnItem @ 0x004400A0` and
+`OnUpdate @ 0x00440500`.  Focused cold replay of the eight affected objects
+passes **244 / 244 exact** before and after the edit; the required cold
+aggregate passes **1,106 / 1,106 exact**; the normal VC7 image and complete
+Linux i386 image link; and the Linux fixed-layout verifier passes.  Continue
+the router-invisible semantic audit on `semantic/typed-reconstruction`; do not
+open or merge a PR until explicitly requested.
+
+The Player collision-region API checkpoint replaces all four allocator
+signatures' `value1..value4` parameters with width/height or initial-radius/
+growth plus damage/collision-value/lifetime roles.  It preserves the
+target-observed circle-cancel argument-order asymmetry.  Target-pinned packets
+cover `0x0044DE60`, `0x0044DF00`, `0x0044DFA0`, and `0x0044E040`; focused
+Player replay passes **77 / 77 exact** before and after the edit, with each
+allocator at **153 / 153**; the required cold aggregate passes **1,106 / 1,106
+exact**; the normal VC7 image and complete Linux i386 image link; and the Linux
+fixed-layout verifier passes.  Continue the weak-parameter audit on
+`semantic/typed-reconstruction`; do not open or merge a PR until explicitly
+requested.
+
+The shared-helper parameter checkpoint removes residual `paramN`/decompiler
+locals from seven exact helpers in AsciiManager, TextHelper, Supervisor,
+ScreenEffect, and TitleScreen.  Names are bounded to directly observed roles:
+two popup digit sequences, music preload slot/fade seconds, ScreenEffect
+duration/variant parameters/draw priority, TextHelper's A1R5G5B5 gentle
+falloff selector, and pie fraction/diameter.  Target-pinned packets cover all
+seven addresses; focused replay passes **178 / 178 exact** before and after
+the edit; the required cold aggregate passes **1,106 / 1,106 exact**; the
+normal VC7 image and complete Linux i386 image link; and the Linux fixed-
+layout verifier passes.  Continue the remaining generic-local/API audit on
+`semantic/typed-reconstruction`; do not open or merge a PR until explicitly
+requested.
+
+The background/MIDI/spell-portrait checkpoint closes three high-signal weak-
+identifier families.  Background cubic interpolation now exposes its
+start/end values and tangents, and RegisterChain's stage index is named from
+both production callers and the `registeredStage` write.  MidiOutput::ProcessMsg
+now reads as a running-status MIDI event decoder, including its TH08 loop
+checkpoint/jump controllers and fade-adjusted channel volume.  Spellcard's
+`+0x90C` and `+0xE54` VMs are named only as enemy-portrait auxiliaries with
+their observed draw modes; no absent asset role is guessed.  Target packets
+cover all nine affected exact functions; focused post-edit replay passes
+**94 / 94 exact**; the required cold aggregate passes **1,106 / 1,106 exact**;
+the normal VC7 image and complete Linux i386 image link; and the Linux fixed-
+layout verifier passes.  Continue on `semantic/typed-reconstruction`; commit
+and push stable checkpoints, but do not open or merge a PR until explicitly
+requested.
+
+The runtime-queue checkpoint replaces the last intentionally opaque local
+names in Chain::ReleaseSingleChain and Controller::GetControllerInput with a
+release-snapshot model and explicit WinMM/DirectInput state.  Readable names
+initially exposed VC7's identifier-sensitive stack allocation; target stack
+evidence and `#pragma var_order` now preserve the exact 0x54/0x160 frames
+without returning to `a0/aa/aaa`.  GetControllerState retains and documents
+the original discarded-GetDeviceState-HRESULT quirk.  ResultScreen's VM and
+keyboard animation locals and SoundPlayer's command/SFX queue locals are also
+named by observed roles.  Target packets cover all six functions; focused
+replay passes **106 / 106 exact**; the cold aggregate passes **1,106 / 1,106
+exact**; VC7 and Linux i386 images link; and the Linux fixed-layout verifier
+passes.  Continue on `semantic/typed-reconstruction`; do not open or merge a
+PR until explicitly requested.
+
+The runtime-owner checkpoint names Laser's midpoint-rendered `bodyVm` and
+start-offset `startCapVm`; enemy-spawn ECL subroutine/life/drop/score arguments;
+and DirectSound's current play/write cursors.  The ECL global at `0x004E4B60`
+is proven to be the `g_Background + 0xB30` spell-background view and now exposes
+`spellVmCount`, `spellVmScriptBase`, and `spellVms[2]`.  The synthetic
+`g_TargetPlayerPosition017D61AC` symbol is proven to be `g_Player.position @
++0x2B4`; all production users and COFF relocation manifests now name the real
+owner, and the obsolete Linux linker alias is gone.  ECL helpers at
+`0x0041EFC0`, `0x0041F110`, and `0x0041F280` are now
+`FindAttachmentChainTail`, `SpawnChildAtScriptPosition`, and
+`SpawnChildAtParentOffset`, with source and every tracking ledger migrated
+together.  Focused replays pass **190 / 190**, **182 / 182**, and **25 / 25
+exact** for the three bounded groups; the required cold aggregate passes
+**1,106 / 1,106 exact**; the normal VC7 image and complete Linux i386 image
+link; and the Linux fixed-layout verifier passes.  Continue on
+`semantic/typed-reconstruction`; commit and push stable checkpoints, but do
+not open or merge a PR until explicitly requested.
+
+The ECL spell-background owner checkpoint removes three remaining synthetic
+global identities.  Target address `0x004ECCA8` is
+`g_Spellcard.scoreLimit @ +0x2638`; ECL opcode 155 now writes the same readable
+`99999990` timeout limit as `Spellcard::StartSpell`.  Addresses `0x004E4B60`
+and `0x004EA28C` are respectively `g_Background.spellVmCount @ +0xB30` and
+`g_Background.spellBackgroundDrawCallback @ +0x625C`; all ECL extension and
+Effect users now name the real Background fields directly, and the callback
+slot carries the only assigned target function's `__fastcall` type.  The stale
+DIFFBUILD `_g_Stage` label at the Background base is also corrected.  The
+obsolete
+target/modern bridge declarations, Linux linker alias, global-ledger rows, and
+three synthetic relocation identities are gone; COFF addends continue to
+prove the same absolute target addresses through the real owners.  Focused
+replay passes **86 / 86 exact**, and the required non-reuse cold aggregate
+passes **1,106 / 1,106 exact** with zero failures.  The normal VC7 image and
+complete Linux i386 image link, and the Linux fixed-layout verifier passes.
+Continue on `semantic/typed-reconstruction`; commit and push stable
+checkpoints, but do not open or merge a PR until explicitly requested.
+
+The ECL runtime-type checkpoint promotes the exact low/high interpreter helper
+families from the temporary `EclRunLowProposal` / `EclRunHighProposal`
+namespaces to `EclRunLow` / `EclRunHigh`, migrating all 17 helper identities,
+the call-parameter global, and every source/configuration/COFF/linker reference
+together.  The dead private Player overlay is gone.  `ApplyRandomBiasedMove @
+0x004224A0` and `DispatchShotInstruction @ 0x00422720` now take the real
+`Enemy *` owner and shared `EclRawInstruction`; RunEcl and the high dispatcher no
+longer carry duplicate raw-instruction or vector shells.  The public
+`EnemyEclInterpolationSlot` is now shared by the ECL context, RunEcl,
+`InterpolateLinear @ 0x00421120`, `InterpolateHermite @ 0x00421180`, and slot
+installation, with the callback table at `0x004C6C90` carrying its observed
+`__fastcall` ABI.  Focused replay passes **68 / 68 exact** and the required
+non-reuse cold aggregate passes **1,106 / 1,106 exact** with zero failures.
+The normal VC7 image and complete Linux i386 image link, and the Linux fixed-
+layout verifier passes.  Continue the semantic audit on
+`semantic/typed-reconstruction`; commit and push stable checkpoints, but do
+not open or merge a PR until explicitly requested.
+
+The Enemy/ECL owner checkpoint removes the dormant standalone low/high
+dispatcher harness and its unused `Services`/`TargetApi` abstractions; the two
+`.inl` files now contain only the production lexical opcode bodies compiled by
+`EclManager::RunEcl`.  The temporary `EclOperands::EnemyOverlay` is gone:
+`Enemy::ResolveFloat @ 0x00420120`, `Enemy::DetachEnemyChain @ 0x0042ADB0`,
+both operand resolvers, all ECL helpers, and the EX-instruction family now use
+the real `Enemy *` owner.  Fifty-three function identities and 465 configured
+COFF relocation references move to the corresponding VC7 `Enemy *` symbols
+without changing their target addresses.
+
+`EclExInstruction` is now a shared serialized record, and `g_EclExInsn @
+0x004C6CB0` is a typed `__fastcall` callback table.  Opcode 136 calls that ABI
+directly; opcode 137 keeps an explicit compatibility cast because the target
+reuses the same table with a different second-argument interpretation.
+`StartEnemySpell @ 0x00421280`, `EndEnemySpell @ 0x004212E0`, and
+`Spellcard::StartSpell @ 0x004152A0` carry typed instruction/Enemy arguments,
+while `Spellcard::activeEnemy @ +0x004` names the same owner directly.  Focused
+replay across the 11 affected objects passes **213 / 213 exact**.  The required
+non-reuse cold aggregate passes **1,106 / 1,106 exact** with zero failures;
+the normal VC7 image and complete Linux i386 image link, and the Linux fixed-
+layout verifier passes.  Continue on `semantic/typed-reconstruction`; commit
+and push stable checkpoints, but do not open a PR or merge until explicitly
+requested.
+
+The Enemy spawn/lifecycle checkpoint makes `EnemyManager::SpawnEnemy1 @
+0x0042A4E0` and `SpawnEnemy2 @ 0x0042A680` return `Enemy *`, matching the
+storage they scan and the timeline/ECL callers that immediately consume the
+result as an Enemy.  Their COFF-defined VC7 symbols are
+`QAEPAUEnemy@2@...`, so all six configured references to each old `QAEPAX...`
+identity move with the declaration.  `EnemyManager::Initialize @ 0x00429E00`
+and `KillAllNonBossEnemies @ 0x0042EFB0` now traverse `Enemy *` records rather
+than maintaining a byte cursor and repeating casts; chain cleanup and ECL
+context calls likewise use their real fields directly.  Focused replay across
+the five affected objects passes **101 / 101 exact**.  The required cold
+aggregate passes **1,106 / 1,106 exact** with zero failures; the normal VC7
+image and complete Linux i386 image link, and the fixed-layout verifier passes.
+Continue on `semantic/typed-reconstruction`; commit and push stable
+checkpoints, but do not open a PR or merge until explicitly requested.
+
+The runtime-pointer checkpoint types two residual owner fields with complete
+production-use evidence.  `Spellcard::lifetimeObject @ +0x263C` is a
+`ChainElem *` produced by `Chain::CreateElem`, submitted to the calc chain, and
+cleaned through ChainElem lifetime state; RegisterChain and DeletedCallback no
+longer reinterpret it.  `AnmManager::currentSprite @ +0x24C8` is an
+`AnmLoadedSprite *`, matching the sole value compared and assigned in
+`Draw3D`.  Focused replay passes **175 / 175**, **157 / 157**, and **1,318 /
+1,318 exact** for `Spellcard::RegisterChain @ 0x00417F60`,
+`Spellcard::DeletedCallback @ 0x00418050`, and `AnmManager::Draw3D @
+0x00464470`.  The required cold aggregate passes **1,106 / 1,106 exact** with
+zero failures; the normal VC7 image and complete Linux i386 image link, and
+the fixed-layout verifier passes.  Continue on `semantic/typed-reconstruction`;
+commit and push stable checkpoints, but do not open a PR or merge until
+explicitly requested.
+
+The Effect lifecycle/ownership checkpoint replaces the remaining false
+`AnmVm *` view of full Effect objects.  Target `OnUpdate @ 0x00427BF0` and
+`OnDraw @ 0x00427F00` pass the Effect address in ECX to their indirect
+callbacks, so the instance and 66-row template tables now carry typed Effect
+update/initialize/draw callbacks.  The splash/orbit and player radial/barrier
+families consume `Effect *` directly; the one
+`AnmVm::UpdatePulsingRadialTrail` table entry remains an explicit member-ABI
+compatibility case.
+
+All five spawn APIs at `0x00425430..0x00425B70` now return the Effect they
+initialize, and `GetFixedSlotEffect @ 0x004253E0` names the same fixed-pool
+owner.  Player deathbomb/work-item fields and ECL/Background/Spellcard callers
+retain `Effect *`, taking `&effect->vm` only at genuine ANM boundaries.  The
+post-change `QAEPAUEffect@2@...` spawn/getter and `PAUEffect@1@@Z` callback
+decorated identities were read from new VC7 objects before migrating every
+configured relocation.  Focused replay passes **26 / 26 exact**; the required
+non-reuse cold aggregate passes **1,106 / 1,106 exact** with zero failures; the
+normal VC7 image and complete Linux i386 image link; and the Linux fixed-layout
+verifier passes.  Continue on `semantic/typed-reconstruction`; commit and push
+stable checkpoints, but do not open a PR or merge until explicitly requested.
+
+The core-callback/update-owner checkpoint gives the projected-position ANM
+callback its target-observed `void __fastcall(AnmVm *, D3DXVECTOR3 *)` ABI and
+removes its `void *` call boundary.  Target references also prove that
+`g_PlayerShotCollisionCallbacks @ 0x004C7F24` is a three-entry typed callback
+array and that the replay difficulty strings beginning at `0x004C7F30` are a
+separate `ReplayManager.cpp` owner, retiring the false nine-entry mixed table.
+
+`EnemyManager::OnUpdate @ 0x0042C660` is now the real non-static member proven
+by target ECX use and the rebuilt `?OnUpdate@EnemyManager@th08@@QAEHXZ` COFF
+definition.  The one-byte overlay and whole-object casts are gone; a distinct
+portable Chain callback adapter preserves `RegisterChain` behavior.  All nine
+focused units pass exact, including OnUpdate **6,214 / 6,214 compared bytes**
+and RegisterChain **203 / 203**.  The required cold aggregate passes **1,106 /
+1,106 exact** with zero failures; the normal VC7 image and complete Linux i386
+image link; and the Linux fixed-layout verifier passes.  Continue on
+`semantic/typed-reconstruction`; commit and push stable checkpoints, but do
+not open a PR or merge until explicitly requested.
+
+The residual-owner/Title-parity checkpoint removes Background's last authored
+raw field access, gives the ECL context's opcode-137 per-frame callback and
+instruction real types, preserves EnemyManager's ECL header/subtable through
+their fields, types ReplayManager::LoadReplayData as `ReplayData *`, and moves
+the three Title spell-history queries onto `Catk`.  The mapping ledger now also
+reflects the already exact `ZunResult`/`Enemy *` signatures for RenderObjects,
+RunEcl, and AddedCallback.
+
+A complete production/probe duplicate audit found three real portable Title
+drifts: completion status used `&& cursor > 3` instead of the target's
+independent `|| cursor > 3`, and spell-card selection reversed two cursor
+upper-bound comparisons.  Production now follows the exact probe, and
+completion rendering is single-owned by a shared `.inl`.  Player option/shot,
+score initialization, Stage-menu draw, and Gameplay setup duplicates have no
+behavioral drift.  Focused replay passes **11 / 11 exact**; the required cold
+aggregate passes **1,106 / 1,106 exact** with zero failures; the normal VC7
+image and complete Linux i386 image link; and the Linux fixed-layout verifier
+passes.  Continue the router-invisible API/config signature and intentionally
+neutral-state audit on `semantic/typed-reconstruction`.  Commit and push stable
+checkpoints, but do not open a PR or merge until explicitly requested.
+
+The child-ECL-runtime checkpoint replaces the raw `0x24B0` opcode-135 block
+and its `+0x8/+0x230/+0x6` arithmetic with `EnemyChildEclBlock`: one active
+`EnemyEclContext`, a 16-context call stack, and signed call-stack depth, all
+pinned by layout assertions.  The word at `+0x4` remains explicitly
+unconsumed, and serialized ECL operands remain byte-oriented.  The stale
+AddSpriteToDrawBuffer mapping now records its exact
+`ZunResult (VertexTex1DiffuseXyzrhw *)` API.  The exact Title DrawPieChart probe
+also corrected production's center vertex `w` initialization.  Focused replay
+passes **26,638 / 26,638**, **211 / 211**, and **510 / 510 exact**; the required
+non-reuse cold aggregate passes **1,106 / 1,106 exact** with zero failures;
+the normal VC7 image and complete Linux i386 image link; and the Linux
+fixed-layout verifier passes.  Continue on `semantic/typed-reconstruction`;
+commit and push stable checkpoints, but do not open a PR or merge until
+explicitly requested.
+
+The authored-API-ledger checkpoint aligns 119 stale `config/mapping.csv`
+signatures with the existing typed exact source and rebuilt VC7 COFF symbols.
+It corrects receiver ownership, member/static conventions, return widths,
+const pointer types, missing arguments, and varargs boundaries across the
+major gameplay, UI, rendering, audio, and data APIs.  Focused comparison
+passes **119 / 119 exact**; the required non-reuse cold aggregate passes
+**1,106 / 1,106 exact** with zero failures; the normal VC7 image and complete
+Linux i386 image link; and the fixed-layout verifier passes.  None of the 119
+gameplay/API rows in scope retains an `unknown` convention.  Sixteen accepted
+exact rows remain in the bundled CSound/CWaveFile, PBG, and LZSS helper-source
+families; compiler-runtime, D3DX, initializer, and unselected rows remain
+separate audit lanes.  The single authored allocator residual is unchanged.
+Continue with a bounded semantic-completion audit on
+`semantic/typed-reconstruction`; commit and push stable checkpoints, but do
+not open a PR or merge until explicitly requested.
+
+The bundled-helper closure aligns 54 accepted CSound/CWaveFile, PBG, and LZSS
+mapping signatures with their exact source and VC7 decorated symbols.  The
+accepted implementation/mapping intersection now contains zero `unknown`
+calling conventions.  The two remaining production `m_unk*` fields in
+`CSound` are renamed to honest `unconsumedDword28/2C`; target-pinned evidence
+only proves that Play clears `+0x2C`, so no stronger meaning is invented.
+Focused replay passes **54 / 54 exact**, including Play **236 / 236**; the
+required non-reuse cold aggregate passes **1,106 / 1,106 exact** with zero
+failures; the normal VC7 image and complete Linux i386 image link; and the
+fixed-layout verifier passes.  Continue the repository-wide semantic
+completion audit on `semantic/typed-reconstruction`; commit and push stable
+checkpoints, but do not open a PR or merge until explicitly requested.
+
+The residual-accessor checkpoint completes the authored semantic-readability
+audit.  `EclManager::GetTimeline @ 0x0042DFD0` now returns the rebased
+`EclTimelineInstruction *`, and `EnemyManager::OnUpdate @ 0x0042C660` consumes
+it without an integer cast; the raw header keeps its correct pre-rebase wire
+offset view.  `AnmVm::IsStopped` uses `ZunBool`, and 14 residual API rows gain
+their exact receiver, pointer, callback, Win32, wave, or argument types.
+
+Focused replay passes **15 / 15 exact**; the required non-reuse cold aggregate
+passes **1,106 / 1,106 exact** with zero failures; the normal VC7 image and
+complete Linux i386 image link; and the fixed-layout verifier passes.  The
+production semantic-debt router is zero in all four categories, no bare
+`m_unk*`/decompiler placeholder remains, accepted mappings have zero unknown
+conventions and correct `__thiscall` receivers, and constructor/lifecycle
+families are typed.  Retained reserved/unconsumed storage and runtime/D3DX
+library work are explicit evidence boundaries.  The authored semantic phase
+is therefore broadly complete; remain on `semantic/typed-reconstruction`,
+commit and push the checkpoint, and do not open a PR or merge until explicitly
+requested.

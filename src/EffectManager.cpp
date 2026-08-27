@@ -8,13 +8,10 @@
 #include "ReplayManager.hpp"
 #include "GameManager.hpp"
 #include "EnemyManager.hpp"
+#include "Player.hpp"
 
 namespace th08
 {
-
-#ifdef TH08_MODERN_PORT
-#define g_EclExBarrierRenderState (g_Background.EclExBarrierState())
-#endif
 
 ZunBool IsDisableResourceReload();
 
@@ -77,13 +74,13 @@ extern i32 g_GuiMessageStageMode;
 struct EffectTemplate
 {
     i32 scriptIdx;
-    void *updateCallback;
-    i32 (__fastcall *initializeCallback)(AnmVm *effect);
+    EffectUpdateCallback updateCallback;
+    EffectInitializeCallback initializeCallback;
 };
 C_ASSERT(sizeof(EffectTemplate) == 0xc);
 C_ASSERT(offsetof(EffectTemplate, updateCallback) == 0x4);
 C_ASSERT(offsetof(EffectTemplate, initializeCallback) == 0x8);
-DIFFABLE_STATIC_ARRAY(EffectTemplate, 20, g_EffectTemplates);
+DIFFABLE_STATIC_ARRAY(EffectTemplate, 66, g_EffectTemplates);
 
 // FUNCTION: th08 0x423d70
 Float3 *Float3::operator*=(f32 scalar)
@@ -95,9 +92,9 @@ Float3 *Float3::operator*=(f32 scalar)
 }
 
 // FUNCTION: th08 0x4253e0
-AnmVm *EffectManager::GetFixedSlotVm(i32 index)
+Effect *EffectManager::GetFixedSlotEffect(i32 index)
 {
-    return &this->effects[index + 0x280].vm;
+    return &this->effects[index + 0x280];
 }
 
 // FUNCTION: th08 0x425410
@@ -108,7 +105,7 @@ void EffectManager::ResetEffects()
 
 // FUNCTION: th08 0x425430
 #pragma var_order(effect, i)
-AnmVm *EffectManager::SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 color)
+Effect *EffectManager::SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 color)
 {
     Effect *effect = this->effects + this->nextEffectIndex;
     i32 i;
@@ -153,7 +150,7 @@ AnmVm *EffectManager::SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 
 
         if (g_EffectTemplates[id].initializeCallback != NULL)
         {
-            if (g_EffectTemplates[id].initializeCallback(&effect->vm) != 0)
+            if (g_EffectTemplates[id].initializeCallback(effect) != 0)
             {
                 effect->active = 0;
             }
@@ -176,12 +173,12 @@ AnmVm *EffectManager::SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 
     }
 
     g_ReplayManager->frameEventFlags |= 0x400;
-    return i >= 0x200 ? &this->effects[653].vm : &effect->vm;
+    return i >= 0x200 ? &this->effects[653] : effect;
 }
 
 // FUNCTION: th08 0x425650
 #pragma var_order(effect, i)
-AnmVm *EffectManager::SpawnEffectWithVelocity(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 count, i32 color)
+Effect *EffectManager::SpawnEffectWithVelocity(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 count, i32 color)
 {
     Effect *effect = this->effects + this->nextEffectIndex;
     i32 i;
@@ -226,7 +223,7 @@ AnmVm *EffectManager::SpawnEffectWithVelocity(i32 id, D3DXVECTOR3 *position, D3D
 
         if (g_EffectTemplates[id].initializeCallback != NULL)
         {
-            if (g_EffectTemplates[id].initializeCallback(&effect->vm) != 0)
+            if (g_EffectTemplates[id].initializeCallback(effect) != 0)
             {
                 effect->active = 0;
             }
@@ -249,12 +246,12 @@ AnmVm *EffectManager::SpawnEffectWithVelocity(i32 id, D3DXVECTOR3 *position, D3D
     }
 
     g_ReplayManager->frameEventFlags |= 0x400;
-    return i >= 0x200 ? &this->effects[653].vm : &effect->vm;
+    return i >= 0x200 ? &this->effects[653] : effect;
 }
 
 // FUNCTION: th08 0x425870
 #pragma var_order(effect)
-AnmVm *EffectManager::SpawnEffectInFixedSlot(i32 id, D3DXVECTOR3 *position, i32 slotIndex, i32 unused, i32 color)
+Effect *EffectManager::SpawnEffectInFixedSlot(i32 id, D3DXVECTOR3 *position, i32 slotIndex, i32 unused, i32 color)
 {
     Effect *effect = &this->effects[slotIndex + 0x280];
 
@@ -282,18 +279,18 @@ AnmVm *EffectManager::SpawnEffectInFixedSlot(i32 id, D3DXVECTOR3 *position, i32 
     effect->updateCallback = g_EffectTemplates[id].updateCallback;
 
     if (g_EffectTemplates[id].initializeCallback != NULL &&
-        g_EffectTemplates[id].initializeCallback(&effect->vm) != 0)
+        g_EffectTemplates[id].initializeCallback(effect) != 0)
     {
         effect->active = 0;
     }
 
     g_ReplayManager->frameEventFlags |= 0x400;
-    return &effect->vm;
+    return effect;
 }
 
 // FUNCTION: th08 0x4259e0
 #pragma var_order(effect)
-AnmVm *EffectManager::SpawnEffectInFixedSlotWithVelocity(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 slotIndex,
+Effect *EffectManager::SpawnEffectInFixedSlotWithVelocity(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 slotIndex,
                                    i32 unused, i32 color)
 {
     Effect *effect = &this->effects[slotIndex + 0x280];
@@ -321,18 +318,18 @@ AnmVm *EffectManager::SpawnEffectInFixedSlotWithVelocity(i32 id, D3DXVECTOR3 *po
     effect->updateCallback = g_EffectTemplates[id].updateCallback;
 
     if (g_EffectTemplates[id].initializeCallback != NULL &&
-        g_EffectTemplates[id].initializeCallback(&effect->vm) != 0)
+        g_EffectTemplates[id].initializeCallback(effect) != 0)
     {
         effect->active = 0;
     }
 
     g_ReplayManager->frameEventFlags |= 0x400;
-    return &effect->vm;
+    return effect;
 }
 
 // FUNCTION: th08 0x425b70
 #pragma var_order(effect, i, zeroVector)
-AnmVm *EffectManager::SpawnEffectInSecondaryPool(i32 id, D3DXVECTOR3 *position, i32 count, i32 color)
+Effect *EffectManager::SpawnEffectInSecondaryPool(i32 id, D3DXVECTOR3 *position, i32 count, i32 color)
 {
     Effect *effect = this->effects + 0x200;
     i32 i;
@@ -367,7 +364,7 @@ AnmVm *EffectManager::SpawnEffectInSecondaryPool(i32 id, D3DXVECTOR3 *position, 
 
         if (g_EffectTemplates[id].initializeCallback != NULL)
         {
-            if (g_EffectTemplates[id].initializeCallback(&effect->vm) != 0)
+            if (g_EffectTemplates[id].initializeCallback(effect) != 0)
             {
                 effect->active = 0;
             }
@@ -381,38 +378,38 @@ AnmVm *EffectManager::SpawnEffectInSecondaryPool(i32 id, D3DXVECTOR3 *position, 
     }
 
     g_ReplayManager->frameEventFlags |= 0x400;
-    return i >= 0x80 ? &this->effects[653].vm : &effect->vm;
+    return i >= 0x80 ? &this->effects[653] : effect;
 }
 
 // FUNCTION: th08 0x425d70
-i32 __fastcall EffectRandomSplashInit(AnmVm *effect)
+i32 __fastcall EffectRandomSplashInit(Effect *effect)
 {
-    reinterpret_cast<Effect *>(effect)->vector2.operator float *()[0] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) / 12.0f;
-    reinterpret_cast<Effect *>(effect)->vector2.operator float *()[1] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) / 12.0f;
-    reinterpret_cast<Effect *>(effect)->vector2.operator float *()[2] = 0.0f;
-    reinterpret_cast<Effect *>(effect)->vector3 = -reinterpret_cast<Effect *>(effect)->vector2 / 19.0f;
-    reinterpret_cast<Effect *>(effect)->vector2 *= g_Supervisor.framerateMultiplier;
-    reinterpret_cast<Effect *>(effect)->vector3 *= g_Supervisor.framerateMultiplier;
+    effect->vector2.operator float *()[0] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) / 12.0f;
+    effect->vector2.operator float *()[1] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) / 12.0f;
+    effect->vector2.operator float *()[2] = 0.0f;
+    effect->vector3 = -effect->vector2 / 19.0f;
+    effect->vector2 *= g_Supervisor.framerateMultiplier;
+    effect->vector3 *= g_Supervisor.framerateMultiplier;
     return 0;
 }
 
 // FUNCTION: th08 0x425e60
-i32 __fastcall EffectRandomSplashUpdate(AnmVm *effect)
+i32 __fastcall EffectRandomSplashUpdate(Effect *effect)
 {
-    reinterpret_cast<Effect *>(effect)->position += reinterpret_cast<Effect *>(effect)->vector2;
-    reinterpret_cast<Effect *>(effect)->vector2 += reinterpret_cast<Effect *>(effect)->vector3;
+    effect->position += effect->vector2;
+    effect->vector2 += effect->vector3;
     return 1;
 }
 
 // FUNCTION: th08 0x425ea0
-i32 __fastcall EffectRandomSplashBigInit(AnmVm *effect)
+i32 __fastcall EffectRandomSplashBigInit(Effect *effect)
 {
-    reinterpret_cast<Effect *>(effect)->vector2.operator float *()[0] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) * 4.0f / 33.0f;
-    reinterpret_cast<Effect *>(effect)->vector2.operator float *()[1] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) * 4.0f / 33.0f;
-    reinterpret_cast<Effect *>(effect)->vector2.operator float *()[2] = 0.0f;
-    reinterpret_cast<Effect *>(effect)->vector3 = -reinterpret_cast<Effect *>(effect)->vector2 / 20.0f;
-    reinterpret_cast<Effect *>(effect)->vector2 *= g_Supervisor.framerateMultiplier;
-    reinterpret_cast<Effect *>(effect)->vector3 *= g_Supervisor.framerateMultiplier;
+    effect->vector2.operator float *()[0] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) * 4.0f / 33.0f;
+    effect->vector2.operator float *()[1] = (g_Rng.GetRandomF32InRange(256.0f) - 128.0f) * 4.0f / 33.0f;
+    effect->vector2.operator float *()[2] = 0.0f;
+    effect->vector3 = -effect->vector2 / 20.0f;
+    effect->vector2 *= g_Supervisor.framerateMultiplier;
+    effect->vector3 *= g_Supervisor.framerateMultiplier;
     return 0;
 }
 
@@ -423,19 +420,19 @@ Float3 Float3::operator-() const
 }
 
 // FUNCTION: th08 0x425fe0
-i32 __fastcall EffectOrbitInit(AnmVm *effect)
+i32 __fastcall EffectOrbitInit(Effect *effect)
 {
-    reinterpret_cast<Effect *>(effect)->drawGroup = 2;
-    reinterpret_cast<Effect *>(effect)->vector6.x = 0.0f;
-    reinterpret_cast<Effect *>(effect)->vector6.y = 0.0f;
-    reinterpret_cast<Effect *>(effect)->vector6.z = 0.0f;
-    reinterpret_cast<Effect *>(effect)->radius = 0.0f;
+    effect->drawGroup = 2;
+    effect->vector6.x = 0.0f;
+    effect->vector6.y = 0.0f;
+    effect->vector6.z = 0.0f;
+    effect->radius = 0.0f;
     return 0;
 }
 
 // FUNCTION: th08 0x426030
 #pragma var_order(posOffset, verticalAngle, localMatrix, horizontalAngle, normalizedPos, alpha, this)
-i32 __fastcall EffectOrbitUpdate(AnmVm *effect)
+i32 __fastcall EffectOrbitUpdate(Effect *effect)
 {
     Float3 posOffset;
     f32 verticalAngle;
@@ -443,15 +440,16 @@ i32 __fastcall EffectOrbitUpdate(AnmVm *effect)
     D3DXMATRIX localMatrix;
     f32 horizontalAngle;
     f32 alpha;
-    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&normalizedPos), reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Effect *>(effect)->vector6));
-    verticalAngle = sinf(reinterpret_cast<Effect *>(effect)->angle);
-    horizontalAngle = cosf(reinterpret_cast<Effect *>(effect)->angle);
-    reinterpret_cast<Effect *>(effect)->orientationAxis.x = normalizedPos.x * verticalAngle;
-    reinterpret_cast<Effect *>(effect)->orientationAxis.y = normalizedPos.y * verticalAngle;
-    reinterpret_cast<Effect *>(effect)->orientationAxis.z = normalizedPos.z * verticalAngle;
-    reinterpret_cast<Effect *>(effect)->orientationW = horizontalAngle;
+    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&normalizedPos),
+                      reinterpret_cast<D3DXVECTOR3 *>(&effect->vector6));
+    verticalAngle = sinf(effect->angle);
+    horizontalAngle = cosf(effect->angle);
+    effect->orientationAxis.x = normalizedPos.x * verticalAngle;
+    effect->orientationAxis.y = normalizedPos.y * verticalAngle;
+    effect->orientationAxis.z = normalizedPos.z * verticalAngle;
+    effect->orientationW = horizontalAngle;
     D3DXMatrixRotationQuaternion(
-        &localMatrix, reinterpret_cast<D3DXQUATERNION *>(&reinterpret_cast<Effect *>(effect)->orientationAxis));
+        &localMatrix, reinterpret_cast<D3DXQUATERNION *>(&effect->orientationAxis));
     posOffset.x = normalizedPos.y * 1.0f - normalizedPos.z * 0.0f;
     posOffset.y = normalizedPos.z * 0.0f - normalizedPos.x * 1.0f;
     posOffset.z = normalizedPos.x * 0.0f - normalizedPos.y * 0.0f;
@@ -459,28 +457,28 @@ i32 __fastcall EffectOrbitUpdate(AnmVm *effect)
         normalizedPos = Float3(1.0f, 0.0f, 0.0f);
     else
         D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&posOffset), reinterpret_cast<D3DXVECTOR3 *>(&posOffset));
-    posOffset *= reinterpret_cast<Effect *>(effect)->radius;
+    posOffset *= effect->radius;
     D3DXVec3TransformCoord(reinterpret_cast<D3DXVECTOR3 *>(&posOffset), reinterpret_cast<D3DXVECTOR3 *>(&posOffset), &localMatrix);
     posOffset.z *= 6.0f;
-    reinterpret_cast<Effect *>(effect)->position = posOffset + reinterpret_cast<Effect *>(effect)->vector5;
-    reinterpret_cast<Effect *>(effect)->position.z = 0.0f;
-    if (reinterpret_cast<Effect *>(effect)->releaseRequested != 0)
+    effect->position = posOffset + effect->vector5;
+    effect->position.z = 0.0f;
+    if (effect->releaseRequested != 0)
     {
-        ++reinterpret_cast<Effect *>(effect)->releaseTimer;
-        if (reinterpret_cast<Effect *>(effect)->releaseTimer >= 16)
+        ++effect->releaseTimer;
+        if (effect->releaseTimer >= 16)
             return 0;
-        alpha = 1.0f - (f32)reinterpret_cast<Effect *>(effect)->releaseTimer / 16.0f;
-        effect->color1.d3dColor = (effect->color1.d3dColor & 0xffffff) |
+        alpha = 1.0f - (f32)effect->releaseTimer / 16.0f;
+        effect->vm.color1.d3dColor = (effect->vm.color1.d3dColor & 0xffffff) |
             ((i32)(alpha * 255.0f) << 24);
-        effect->scale.y = 2.0f - alpha;
-        effect->scale.x = effect->scale.y;
+        effect->vm.scale.y = 2.0f - alpha;
+        effect->vm.scale.x = effect->vm.scale.y;
     }
     return 1;
 }
 
 // FUNCTION: th08 0x426280
 #pragma var_order(backgroundOffset, effect)
-i32 __fastcall FUN_00426280(Effect *effect)
+i32 __fastcall InitializeTintedBossTrackingCameraParticle(Effect *effect)
 {
     Float3 backgroundOffset;
 
@@ -512,7 +510,7 @@ i32 __fastcall FUN_00426280(Effect *effect)
 
 // FUNCTION: th08 0x4264f0
 #pragma var_order(delta, dot, effect)
-i32 __fastcall FUN_004264f0(Effect *effect)
+i32 __fastcall UpdateTintedBossTrackingCameraParticle(Effect *effect)
 {
     f32 dot;
 
@@ -556,7 +554,7 @@ i32 __fastcall FUN_004264f0(Effect *effect)
 
 // FUNCTION: th08 0x426720
 #pragma var_order(backgroundOffset, effect)
-i32 __fastcall FUN_00426720(Effect *effect)
+i32 __fastcall InitializeRisingBossTrackingCameraParticle(Effect *effect)
 {
     Float3 backgroundOffset;
 
@@ -588,7 +586,7 @@ i32 __fastcall FUN_00426720(Effect *effect)
 
 // FUNCTION: th08 0x426990
 #pragma var_order(delta, dot, effect)
-i32 __fastcall FUN_00426990(Effect *effect)
+i32 __fastcall UpdateRisingBossTrackingCameraParticle(Effect *effect)
 {
     f32 dot;
 
@@ -657,8 +655,7 @@ i32 __fastcall TrackPlayerUntilAnimationEnds(Effect *effect)
     if (HasAnimationEnded(effect))
         return 0;
 
-    reinterpret_cast<EclOperands::Vector3 &>(effect->position) =
-        EclOperands::g_TargetPlayerPosition017D61AC;
+    effect->position = g_Player.position;
     return 1;
 }
 
@@ -691,7 +688,7 @@ void __fastcall ShiftStageEffectOrigins(Float3 *delta)
 
 // FUNCTION: th08 0x426d70
 #pragma var_order(delta, dot, effect)
-i32 __fastcall FUN_00426d70(Effect *effect)
+i32 __fastcall UpdateSpinningCameraParticle(Effect *effect)
 {
     f32 dot;
 
@@ -715,7 +712,7 @@ i32 __fastcall FUN_00426d70(Effect *effect)
 
 // FUNCTION: th08 0x426e70
 #pragma var_order(backgroundOffset, effect)
-i32 __fastcall FUN_00426e70(Effect *effect)
+i32 __fastcall InitializeSpinningCameraParticle(Effect *effect)
 {
     Float3 backgroundOffset;
 
@@ -811,7 +808,7 @@ i32 __fastcall InitializeRadialTrail(Effect *effect)
 
     g_AnmManager->InitializeHorizontalTextureStrip(&effect->vm, effect->vertices, effect->vertexSegmentCount * 2);
     effect->verticesDirty = 1;
-    effect->drawCallback = reinterpret_cast<void *>(&DrawRadialTrail);
+    effect->drawCallback = DrawRadialTrail;
     effect->secondaryRadius = 0.0f;
     effect->secondaryAngle = 0.0f;
     effect->radialWaveCount = 0.0f;
@@ -1055,8 +1052,7 @@ ChainCallbackResult EffectManager::OnUpdate(EffectManager *effectManager)
         if (!g_GameManager.flags.deathbombFreezeActive ||
             effect->updateDuringFreeze != 0)
         {
-            if (effect->updateCallback != NULL &&
-                reinterpret_cast<i32 (__fastcall *)(Effect *)>(effect->updateCallback)(effect) != 1)
+            if (effect->updateCallback != NULL && effect->updateCallback(effect) != 1)
             {
                 effect->active = 0;
                 continue;
@@ -1120,7 +1116,7 @@ ChainCallbackResult EffectManager::OnDraw(EffectManager *effectManager)
     {
         if (effect->drawCallback != NULL)
         {
-            reinterpret_cast<void (__fastcall *)(Effect *)>(effect->drawCallback)(effect);
+            effect->drawCallback(effect);
         }
         else
         {
@@ -1147,7 +1143,7 @@ ChainCallbackResult EffectManager::OnDraw(EffectManager *effectManager)
     {
         if (effect->drawCallback != NULL)
         {
-            reinterpret_cast<void (__fastcall *)(Effect *)>(effect->drawCallback)(effect);
+            effect->drawCallback(effect);
         }
         else
         {
@@ -1174,7 +1170,7 @@ i32 EffectManager::DrawBulletLayerEffects()
     {
         if (effect->drawCallback != NULL)
         {
-            reinterpret_cast<void (__fastcall *)(Effect *)>(effect->drawCallback)(effect);
+            effect->drawCallback(effect);
         }
         else
         {
@@ -1221,7 +1217,8 @@ i32 EffectManager::DrawBackgroundEffects()
         {
             if (effect->effectId == 0x33 || effect->effectId == 0x3F)
             {
-                g_AnmManager->DrawWithCallback(&effect->vm, (void *)AdjustStageEffectDrawPosition);
+                g_AnmManager->DrawWithCallback(
+                    &effect->vm, AdjustStageEffectDrawPosition);
             }
             else
             {
@@ -1261,7 +1258,7 @@ void __fastcall AdjustStageEffectDrawPosition(AnmVm *effect, D3DXVECTOR3 *base)
             }
         }
 
-        delta = point - reinterpret_cast<const D3DXVECTOR3 &>(EclOperands::g_TargetPlayerPosition017D61AC);
+        delta = point - reinterpret_cast<const D3DXVECTOR3 &>(g_Player.position);
         delta.x -= 32.0f;
         delta.y -= 16.0f;
         delta.z = 0.0f;
@@ -1279,7 +1276,7 @@ ZunResult EffectManager::LoadEffectResources(EffectManager *effectManager)
     effectManager->ResetEffects();
     effectManager->effectAnm = g_AnmManager->GetAnm(6);
     g_GuiMessageStageMode = 0;
-    g_EclExBarrierRenderState.mode = 2;
+    g_Background.spellVmCount = 2;
 
     if (!IsDisableResourceReload())
     {
@@ -1367,9 +1364,5 @@ Effect::Effect()
 {
 }
 
-
-#ifdef TH08_MODERN_PORT
-#undef g_EclExBarrierRenderState
-#endif
 
 } // namespace th08

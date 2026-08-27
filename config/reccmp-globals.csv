@@ -46,7 +46,7 @@ th08::g_LastSpellNumbers,0x4c6b90,global
 th08::g_LastSpellCount,0x4c6c3c,global
 th08::g_SpellcardNumbersPerStage,0x4c6c40,global
 th08::g_SpellcardCountPerStage,0x4c6c68,global
-th08::EclRunLowProposal::g_EclInterpolatorCallbacks,0x4c6c90,global
+th08::EclRunLow::g_EclInterpolatorCallbacks,0x4c6c90,global
 th08::g_EclExInsn,0x4c6cb0,global
 th08::g_EffectTemplates,0x4c6d30,global
 th08::g_StageAnmFiles,0x4c72f8,global
@@ -105,7 +105,7 @@ th08::g_BackgroundCalcChain,0x4ea650,global
 th08::g_Spellcard,0x4ea670,global
 th08::g_SpellcardCalcChain,0x4eccac,global
 th08::g_EclManager,0x4eccb8,global
-th08::EclRunLowProposal::g_EclCallParameters,0x4ece20,global
+th08::EclRunLow::g_EclCallParameters,0x4ece20,global
 th08::g_EffectManager,0x4ece60,global
 th08::g_SpellcardBackgroundAnm,0x577eb8,global
 th08::g_EffectManagerCalcChain,0x577ebc,global
@@ -210,7 +210,7 @@ th08::g_PlayerRoute3ExitRenderCallbacks,0x4c7ed0,global
 th08::g_PlayerShotUpdateCallbacks,0x4c7ee0,global
 th08::g_PlayerShotRenderCallbacks,0x4c7f04,global
 th08::g_PlayerShotTimerCallbacks,0x4c7f1c,global
-th08::g_PlayerShotCollisionOrDifficultyTable,0x4c7f24,global
+th08::g_PlayerShotCollisionCallbacks,0x4c7f24,global
 th08::g_PlayerPlayfieldWidth,0x164d2e4,global
 th08::g_PlayerGaugeBounds,0x164d300,global
 th08::g_PlayerRouteStateFlag,0x164d0b0,global
@@ -229,8 +229,6 @@ th08::g_GuiMessagePaths,0x4c74c0,global
 th08::g_EnemyManagerUpdateTrackedPosition,0x18b899c,global
 th08::g_EnemyTrackedEnemy,0x18b89b4,global
 th08::g_EnemyManagerUpdateTrackedPositionValid,0x18b89b8,global
-th08::g_EclExUpdateCallback,0x4ea28c,global
-th08::g_EclExBarrierRenderState,0x4e4b60,global
 th08::g_EclGameTimeScaleFlags,0x17ce8fc,global
 th08::g_TitleLastWordCommentFormats,0x4c82c8,global
 th08::g_TitleSpellDifficultyNames,0x4c8628,global

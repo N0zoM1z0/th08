@@ -1700,7 +1700,8 @@ ZunResult AnmManager::DrawProjected3DQuad(AnmVm *vm)
 
 // FUNCTION: th08 0x4640e0
 #pragma var_order(halfWidth, halfHeight, yOffset, xOffset, sine, worldMatrix, rotation, projectedReference, projectedPosition, delta, cosine, origin, this)
-ZunResult AnmManager::ProjectCameraFacingQuadWithCallback(AnmVm *vm, void *callback)
+ZunResult AnmManager::ProjectCameraFacingQuadWithCallback(
+    AnmVm *vm, AnmProjectedPositionCallback callback)
 {
     f32 rotation;
     f32 sine;
@@ -1740,7 +1741,7 @@ ZunResult AnmManager::ProjectCameraFacingQuadWithCallback(AnmVm *vm, void *callb
     halfHeight = xOffset * vm->spriteSize.y * vm->scale.y;
 
     if (callback != NULL)
-        reinterpret_cast<void (__fastcall *)(AnmVm *, Float3 *)>(callback)(vm, &projectedPosition);
+        callback(vm, reinterpret_cast<D3DXVECTOR3 *>(&projectedPosition));
 
     xOffset = projectedPosition.x;
     yOffset = projectedPosition.y;
@@ -1772,7 +1773,8 @@ ZunResult AnmManager::ProjectCameraFacingQuadWithCallback(AnmVm *vm, void *callb
 }
 
 // FUNCTION: th08 0x464400
-ZunResult AnmManager::DrawWithCallback(AnmVm *vm, void *callback)
+ZunResult AnmManager::DrawWithCallback(
+    AnmVm *vm, AnmProjectedPositionCallback callback)
 {
     if (!vm->IsVisible())
         return ZUN_ERROR;
@@ -2491,7 +2493,8 @@ AnmLoaded *AnmManager::PostloadAnmEntry(AnmLoaded *anmLoaded)
     i32 currentNumSprites = 0;
     i32 currentEntryNumber = 0;
 
-    /* ??? */
+    // Preserve the first entry as the loaded file owner while rawEntry walks
+    // the continuation chain below.
     anmLoaded->rawData = rawData;
     AnmRawEntry *rawEntry = rawData;
 

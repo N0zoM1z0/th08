@@ -380,7 +380,7 @@ When a near-exact function is short by only a handful of bytes, inspect cold-pat
 
 The death-flow closures at 0x42ADB0, 0x42BEA0, 0x44C650, and 0x44CBA0 add several reusable VC7 rules:
 
-- Constructor placement follows lexical scope under `/Od`. In `EnemyOverlay::DetachEnemyChain`, the first `Float3` must be declared only after the parent-chain test succeeds, while the attached-enemy `Float3` is declared only inside the attached tail path. Declaring both at function entry moves constructors and changes every later stack slot.
+- Constructor placement follows lexical scope under `/Od`. In `Enemy::DetachEnemyChain`, the first `Float3` must be declared only after the parent-chain test succeeds, while the attached-enemy `Float3` is declared only inside the attached tail path. Declaring both at function entry moves constructors and changes every later stack slot.
 - When two independent block locals refuse to occupy the target slots, a trivial local aggregate can express the original ownership without padding. The exact ADB0 shape uses a two-int local struct so `itemCount` and the loop index occupy one contiguous eight-byte allocation while the separate `itemType` remains in the shallow slot. This is source structure, not manual stack padding.
 - Algebraic equivalence is not instruction equivalence on x87. `(f32)itemCount * 2.0f` lowers to target `fild; fadd st,st`; adding two separately cast copies can lower to a longer integer-memory add. Likewise, random coordinate updates in `Enemy::DropItems` must use compound `+=` so the lvalue pointer returned by `Float3::operator float*()` survives the RNG call in the target compiler temporary.
 - Do not deduplicate repeated source bodies just because they are semantically identical. `Player::UpdateBombState` contains two copies of the “consume all remaining Bombs” path under the forced/non-forced deathbomb branches. Combining them with `isForced || bombs < 2` removes 39 target-authored bytes.
@@ -705,7 +705,7 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 ### ECL tail motion/shoot helpers: lexical lifetime and guard-return topology
 
 - `Enemy::UpdateMovement` proves that two observable default constructors do not imply overlapping class-local lifetimes.  VC7 `/Od` assigns the target slots only when the ctor-only legacy `Float3` lives in its own completed block and the used polar-velocity `Float3` is declared afterward.  Hoisting both into one scope swaps their stack slots; wrapping them in a synthetic aggregate creates a new constructor and is not source-equivalent.  Prefer sequential non-overlapping lexical scopes over padding or fake fields when the target proves both ctor calls.
-- When a conditional expression feeds a narrow destination, preserve the conditional's natural wider type until the final store.  In `EclRunHighProposal::DispatchShotInstruction`, casting both `ResolveInt` arms to `i16` made VC7 allocate word temporaries.  Leaving both arms as `i32` lets the compiler merge them in the target dword slots and only then emit the low-word descriptor store.
+- When a conditional expression feeds a narrow destination, preserve the conditional's natural wider type until the final store.  In `EclRunHigh::DispatchShotInstruction`, casting both `ResolveInt` arms to `i16` made VC7 allocate word temporaries.  Leaving both arms as `i32` lets the compiler merge them in the target dword slots and only then emit the low-word descriptor store.
 - Multiple guard conditions can have target-visible return sharing.  The shot helper is exact as one `if (rejectHuman || rejectYoukai) return;` followed by one independent radius guard.  Splitting the two flag rejects into separate returns duplicates a five-byte epilogue jump; spelling the inverse as one large positive `if` instead creates long conditional branches.  Preserve the original guard grouping when the target has one local reject trampoline.
 - Float guard polarity is ABI-visible through x87 status masks.  `if (radius > 0.0f && distanceSquared < radius) return;` emits the target `test ah,0x41` / `test ah,0x05` pattern and also preserves unordered/NaN behavior.  Rewriting the condition as ordered `radius <= 0 || distance >= radius` changes the condition-code sequence even though normal finite inputs look equivalent.
 - TH06/TH07 ECL sources are useful lexical ancestors, not byte evidence.  The TH06 movement-mode block and TH07 `SpawnBulletVariant` exposed the original field/update order for the TH08 helpers, while TH08 target disassembly remained authoritative for new flags, offsets, branch guards, and exact acceptance.
@@ -1491,3 +1491,13 @@ without those explicit fields retain the stricter whole-section ownership rule.
 - `objd/i386/x3d_matx.obj` in the same SHA-pinned prerelease `D3DX8.LIB` now has six independently replayed target owners: MatrixIdentity, MatrixTransformation, MatrixRotationYawPitchRoll, MatrixRotationAxis, MatrixTransformation_K7, and MatrixInverse_K7.
 - Do not assume a uniform calling convention from the family name.  VC7 decoration shows `x3d_D3DXMatrixIdentity` as global `__cdecl` (`YA...`) while the other five use global `__stdcall` (`YG...`).  Preserve the decorated ABI per symbol.
 - The 0x1198-byte MatrixTransformation and 0x1154-byte MatrixTransformation_K7 bodies both replay exactly, so large x3d functions are valid direct archive match units when their own COFF relocation graph is explicit.  Their success does not authorize range-based acceptance of neighboring matrix code.
+
+### Return-type-only VC7 symbol migrations
+
+- A source return-type cleanup can preserve every instruction while changing
+  the VC7 decorated symbol.  Changing `EnemyManager::SpawnEnemy1/2` from
+  `void *` to `Enemy *` leaves the x86 thiscall ABI unchanged but moves the
+  compiler symbol from `QAEPAX...` to `QAEPAUEnemy@2@...`.
+- Read the replacement identity from the rebuilt defining COFF object, then
+  migrate every configured caller relocation together.  Do not guess the
+  class/struct decoration (`PAV` versus `PAU`) from source spelling.

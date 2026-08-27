@@ -293,7 +293,7 @@ ChainCallbackResult ScreenEffect::CalcFadeHold(ScreenEffect *screenEffect)
 
 // FUNCTION: th08 0x45b8b0
 #pragma var_order(calcChain, drawChain, screenEffect)
-ScreenEffect *ScreenEffect::RegisterChain(ScreenEffectType effect, i32 ticks, i32 primaryParameter,
+ScreenEffect *ScreenEffect::RegisterChain(ScreenEffectType effect, i32 durationFrames, i32 primaryParameter,
                                           i32 secondaryParameter, i32 tertiaryParameter, i32 drawPriority)
 {
     ChainElem *calcChain = NULL;
@@ -344,7 +344,7 @@ ScreenEffect *ScreenEffect::RegisterChain(ScreenEffectType effect, i32 ticks, i3
     calcChain->arg = screenEffect;
 
     screenEffect->type = effect;
-    screenEffect->duration = ticks;
+    screenEffect->duration = durationFrames;
     SCREEN_EFFECT_PARAMETERS(screenEffect).raw.primary = primaryParameter;
     SCREEN_EFFECT_PARAMETERS(screenEffect).raw.secondary = secondaryParameter;
     SCREEN_EFFECT_PARAMETERS(screenEffect).raw.tertiary = tertiaryParameter;

@@ -15,44 +15,19 @@
 namespace th08
 {
 
-struct EclExInstruction
-{
-    i32 time;
-    i16 opcode;
-    i16 nextOffset;
-    u8 unknown08;
-    u8 difficultyMask;
-    u16 operandFlags;
-    u8 unknown0C[4];
-    union
-    {
-        i32 value;
-        i8 byteValue;
-    };
-};
-C_ASSERT(offsetof(EclExInstruction, value) == 0x10);
-
 namespace EclExIns
 {
-void __fastcall ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
-void __fastcall MokouResurrection(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
-void __fastcall SetScriptedUpdateFreeze(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
+void __fastcall ReisenFreezeBullets(Enemy *enemy, EclExInstruction *instruction);
+void __fastcall MokouResurrection(Enemy *enemy, EclExInstruction *instruction);
+void __fastcall SetScriptedUpdateFreeze(Enemy *enemy, EclExInstruction *instruction);
 }
-
-// The retail image gives these ECL extension views their own target symbols.
-// The modern port stores the same bytes in Background, so keep one semantic
-// spelling in the instruction bodies while preserving both storage models.
-#ifdef TH08_MODERN_PORT
-#define g_EclExUpdateCallback (g_Background.EclExUpdateCallback())
-#define g_EclExBarrierRenderState (g_Background.EclExBarrierState())
-#endif
 
 void __fastcall DrawBulletWarpBarrier();
 
-#define ECL_EX_CONTEXT(enemy) (reinterpret_cast<Enemy *>(enemy)->activeEclContext)
+#define ECL_EX_CONTEXT(enemy) (enemy->activeEclContext)
 
 // FUNCTION: th08 0x423390
-void __fastcall ConfigureNightBlindness(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall ConfigureNightBlindness(Enemy *enemy, EclExInstruction *instruction)
 {
     g_AsciiManager.nightBlindnessAlpha = ECL_EX_CONTEXT(enemy)->intVariables[0];
     *reinterpret_cast<i32 *>(&g_AsciiManager.nightBlindnessRadius) =
@@ -60,64 +35,64 @@ void __fastcall ConfigureNightBlindness(EclOperands::EnemyOverlay *enemy, EclExI
 }
 
 // FUNCTION: th08 0x4233d0
-void __fastcall TriggerShortScreenPulse(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall TriggerShortScreenPulse(Enemy *enemy, EclExInstruction *instruction)
 {
     ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 60, 1, -1, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
 }
 
 // FUNCTION: th08 0x423400
-void __fastcall UpdateBouncingEnemyMotion(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall UpdateBouncingEnemyMotion(Enemy *enemy, EclExInstruction *instruction)
 {
     i32 changed;
 
     changed = 0;
-    if (reinterpret_cast<Enemy *>(enemy)->position.x <= 0.0f ||
-        reinterpret_cast<Enemy *>(enemy)->position.x >= 384.0f)
+    if (enemy->position.x <= 0.0f ||
+        enemy->position.x >= 384.0f)
     {
-        reinterpret_cast<Enemy *>(enemy)->velocity.x =
-            -reinterpret_cast<Enemy *>(enemy)->velocity.x;
+        enemy->velocity.x =
+            -enemy->velocity.x;
         changed = 1;
     }
 
-    if (reinterpret_cast<Enemy *>(enemy)->velocity.y <
+    if (enemy->velocity.y <
         ECL_EX_CONTEXT(enemy)->floatVariables[7])
     {
-        reinterpret_cast<Enemy *>(enemy)->velocity.y +=
+        enemy->velocity.y +=
             ECL_EX_CONTEXT(enemy)->floatVariables[6];
         changed = 1;
     }
 
-    if (reinterpret_cast<Enemy *>(enemy)->position.y < -64.0f)
+    if (enemy->position.y < -64.0f)
     {
-        reinterpret_cast<Enemy *>(enemy)->velocity.y =
-            -reinterpret_cast<Enemy *>(enemy)->velocity.y;
+        enemy->velocity.y =
+            -enemy->velocity.y;
         changed = 1;
     }
-    else if (reinterpret_cast<Enemy *>(enemy)->position.y >= 480.0f)
+    else if (enemy->position.y >= 480.0f)
     {
-        reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_ALLOW_OFFSCREEN;
+        enemy->flags1 &= ~ENEMY_FLAG_ALLOW_OFFSCREEN;
     }
 
     if (changed)
     {
-        reinterpret_cast<Enemy *>(enemy)->movementAngle =
-            VectorAngle(reinterpret_cast<Enemy *>(enemy)->velocity.y,
-                        reinterpret_cast<Enemy *>(enemy)->velocity.x);
+        enemy->movementAngle =
+            VectorAngle(enemy->velocity.y,
+                        enemy->velocity.x);
     }
 }
 
 // FUNCTION: th08 0x423530
-void __fastcall StartNarrowBulletWarpBarrier(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall StartNarrowBulletWarpBarrier(Enemy *enemy, EclExInstruction *instruction)
 {
-    AnmVm *effect;
-    effect = g_EffectManager.SpawnEffectInFixedSlot(56, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
-    effect = g_EffectManager.SpawnEffectInFixedSlot(56, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
-    g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 97);
-    g_EclExUpdateCallback = reinterpret_cast<void *>(&DrawBulletWarpBarrier);
+    Effect *effect;
+    effect = g_EffectManager.SpawnEffectInFixedSlot(56, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 9, 1, -1);
+    effect = g_EffectManager.SpawnEffectInFixedSlot(56, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 10, 1, -1);
+    g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 97);
+    g_Background.spellBackgroundDrawCallback = &DrawBulletWarpBarrier;
 }
 
 // FUNCTION: th08 0x4235a0
-#pragma var_order(effect9, savedColor, i, radius9, unusedVm, effect10, radius10, vertices)
+#pragma var_order(effect9, savedColor, i, radius9, unusedSpellVm, effect10, radius10, vertices)
 void __fastcall DrawBulletWarpBarrier()
 {
     VertexDiffuseXyzrhw vertices[10];
@@ -125,13 +100,13 @@ void __fastcall DrawBulletWarpBarrier()
     i32 savedColor;
     i32 i;
     f32 radius9;
-    AnmVm *unusedVm;
+    AnmVm *unusedSpellVm;
     Effect *effect10;
     f32 radius10;
 
-    effect9 = reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(9));
-    effect10 = reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(10));
-    unusedVm = &g_EclExBarrierRenderState.vm0;
+    effect9 = g_EffectManager.GetFixedSlotEffect(9);
+    effect10 = g_EffectManager.GetFixedSlotEffect(10);
+    unusedSpellVm = &g_Background.spellVms[0];
 
     radius9 = effect9->vm.pos.x * 0.7071068286895752f;
     radius10 = effect10->vm.pos.x * 0.7071068286895752f;
@@ -179,35 +154,35 @@ void __fastcall DrawBulletWarpBarrier()
     g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
 
     g_Supervisor.SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
-    g_EclExBarrierRenderState.vm0.scale.x = -1.5f;
-    g_EclExBarrierRenderState.vm0.scale.y = -1.75f;
-    g_EclExBarrierRenderState.vm0.pos.z = 0.7f;
-    g_EclExBarrierRenderState.vm0.pos.x = 416.0f;
-    g_EclExBarrierRenderState.vm0.pos.y = 464.0f;
-    savedColor = g_EclExBarrierRenderState.vm0.color1.d3dColor;
-    g_EclExBarrierRenderState.vm0.color1.d3dColor = 0xffe0c0c0;
-    g_AnmManager->Draw2D(&g_EclExBarrierRenderState.vm0);
-    g_EclExBarrierRenderState.vm0.scale.x = 1.5f;
-    g_EclExBarrierRenderState.vm0.scale.y = 1.75f;
-    g_EclExBarrierRenderState.vm0.pos.z = 0.5f;
-    g_EclExBarrierRenderState.vm0.pos.x = 32.0f;
-    g_EclExBarrierRenderState.vm0.pos.y = 16.0f;
-    g_EclExBarrierRenderState.vm0.color1.d3dColor = savedColor;
+    g_Background.spellVms[0].scale.x = -1.5f;
+    g_Background.spellVms[0].scale.y = -1.75f;
+    g_Background.spellVms[0].pos.z = 0.7f;
+    g_Background.spellVms[0].pos.x = 416.0f;
+    g_Background.spellVms[0].pos.y = 464.0f;
+    savedColor = g_Background.spellVms[0].color1.d3dColor;
+    g_Background.spellVms[0].color1.d3dColor = 0xffe0c0c0;
+    g_AnmManager->Draw2D(&g_Background.spellVms[0]);
+    g_Background.spellVms[0].scale.x = 1.5f;
+    g_Background.spellVms[0].scale.y = 1.75f;
+    g_Background.spellVms[0].pos.z = 0.5f;
+    g_Background.spellVms[0].pos.x = 32.0f;
+    g_Background.spellVms[0].pos.y = 16.0f;
+    g_Background.spellVms[0].color1.d3dColor = savedColor;
 
-    g_EclExBarrierRenderState.vm1.rotation.z *= -1.0f;
-    g_EclExBarrierRenderState.vm1.pos.z = 0.6f;
-    savedColor = g_EclExBarrierRenderState.vm1.color1.d3dColor;
-    g_EclExBarrierRenderState.vm1.color1.d3dColor = 0xffe0c0c0;
-    g_AnmManager->Draw2DAndFlush(&g_EclExBarrierRenderState.vm1);
-    g_EclExBarrierRenderState.vm1.rotation.z *= -1.0f;
-    g_EclExBarrierRenderState.vm1.pos.z = 0.5f;
-    g_EclExBarrierRenderState.vm1.color1.d3dColor = savedColor;
+    g_Background.spellVms[1].rotation.z *= -1.0f;
+    g_Background.spellVms[1].pos.z = 0.6f;
+    savedColor = g_Background.spellVms[1].color1.d3dColor;
+    g_Background.spellVms[1].color1.d3dColor = 0xffe0c0c0;
+    g_AnmManager->Draw2DAndFlush(&g_Background.spellVms[1]);
+    g_Background.spellVms[1].rotation.z *= -1.0f;
+    g_Background.spellVms[1].pos.z = 0.5f;
+    g_Background.spellVms[1].color1.d3dColor = savedColor;
     g_Supervisor.SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
 }
 
 // FUNCTION: th08 0x423a60
 #pragma var_order(i, previousZone, bullet, currentZone, previousPosition, enemy, instruction)
-void __fastcall WarpBulletsAcrossNarrowBarrier(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall WarpBulletsAcrossNarrowBarrier(Enemy *enemy, EclExInstruction *instruction)
 {
     i32 i;
     i32 previousZone;
@@ -281,20 +256,20 @@ void __fastcall WarpBulletsAcrossNarrowBarrier(EclOperands::EnemyOverlay *enemy,
 }
 
 // FUNCTION: th08 0x423db0
-void __fastcall StartMediumBulletWarpBarrier(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall StartMediumBulletWarpBarrier(Enemy *enemy, EclExInstruction *instruction)
 {
-    AnmVm *effect;
-    effect = g_EffectManager.SpawnEffectInFixedSlot(65, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
-    effect = g_EffectManager.SpawnEffectInFixedSlot(65, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
-    g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 99);
-    g_EclExUpdateCallback = reinterpret_cast<void *>(&DrawBulletWarpBarrier);
+    Effect *effect;
+    effect = g_EffectManager.SpawnEffectInFixedSlot(65, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 9, 1, -1);
+    effect = g_EffectManager.SpawnEffectInFixedSlot(65, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 10, 1, -1);
+    g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 99);
+    g_Background.spellBackgroundDrawCallback = &DrawBulletWarpBarrier;
 }
 
 
 
 // FUNCTION: th08 0x423e20
 #pragma var_order(i, previousZone, bullet, currentZone, previousPosition, enemy, instruction)
-void __fastcall WarpBulletsAcrossMediumBarrier(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall WarpBulletsAcrossMediumBarrier(Enemy *enemy, EclExInstruction *instruction)
 {
     i32 i;
     i32 previousZone;
@@ -368,27 +343,27 @@ void __fastcall WarpBulletsAcrossMediumBarrier(EclOperands::EnemyOverlay *enemy,
 }
 
 // FUNCTION: th08 0x424130
-void __fastcall StopBulletWarpBarrier(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall StopBulletWarpBarrier(Enemy *enemy, EclExInstruction *instruction)
 {
-    reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(9))->active = 0;
-    reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(10))->active = 0;
-    g_EclExBarrierRenderState.mode = 2;
+    g_EffectManager.GetFixedSlotEffect(9)->active = 0;
+    g_EffectManager.GetFixedSlotEffect(10)->active = 0;
+    g_Background.spellVmCount = 2;
 }
 
 // FUNCTION: th08 0x424170
-void __fastcall StartWideBulletWarpBarrier(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall StartWideBulletWarpBarrier(Enemy *enemy, EclExInstruction *instruction)
 {
-    AnmVm *effect;
-    effect = g_EffectManager.SpawnEffectInFixedSlot(58, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
-    effect = g_EffectManager.SpawnEffectInFixedSlot(58, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
-    g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 101);
-    g_EclExUpdateCallback = reinterpret_cast<void *>(&DrawBulletWarpBarrier);
+    Effect *effect;
+    effect = g_EffectManager.SpawnEffectInFixedSlot(58, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 9, 1, -1);
+    effect = g_EffectManager.SpawnEffectInFixedSlot(58, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 10, 1, -1);
+    g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 101);
+    g_Background.spellBackgroundDrawCallback = &DrawBulletWarpBarrier;
 }
 
 
 // FUNCTION: th08 0x4241e0
 #pragma var_order(i, previousZone, bullet, currentZone, previousPosition, enemy, instruction)
-void __fastcall WarpBulletsAcrossWideBarrier(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall WarpBulletsAcrossWideBarrier(Enemy *enemy, EclExInstruction *instruction)
 {
     i32 i;
     i32 previousZone;
@@ -466,26 +441,24 @@ void __fastcall WarpBulletsAcrossWideBarrier(EclOperands::EnemyOverlay *enemy, E
 
 // FUNCTION: th08 0x4244f0
 #pragma var_order(count, groupId, firstChild, delta, targetAngle, cursor, enemy, instruction)
-void __fastcall SynchronizeOrbitingChildFormation(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall SynchronizeOrbitingChildFormation(Enemy *enemy, EclExInstruction *instruction)
 {
     i32 count;
     i32 groupId;
-    EclOperands::EnemyOverlay *firstChild;
+    Enemy *firstChild;
     f32 delta;
     f32 targetAngle;
-    EclOperands::EnemyOverlay *cursor;
+    Enemy *cursor;
 
     groupId = ECL_EX_CONTEXT(enemy)->extraIntVariables[2];
-    cursor = reinterpret_cast<EclOperands::EnemyOverlay *>(
-        reinterpret_cast<Enemy *>(enemy)->parentEnemy);
+    cursor = enemy->parentEnemy;
     if (cursor == NULL)
         return;
 
     count = 0;
-    while (reinterpret_cast<Enemy *>(cursor)->nextInAttachmentChain != NULL)
+    while (cursor->nextInAttachmentChain != NULL)
     {
-        cursor = reinterpret_cast<EclOperands::EnemyOverlay *>(
-            reinterpret_cast<Enemy *>(cursor)->nextInAttachmentChain);
+        cursor = cursor->nextInAttachmentChain;
         if (ECL_EX_CONTEXT(cursor)->extraIntVariables[2] == groupId)
         {
             ECL_EX_CONTEXT(cursor)->extraIntVariables[1] = count;
@@ -510,25 +483,25 @@ void __fastcall SynchronizeOrbitingChildFormation(EclOperands::EnemyOverlay *ene
     if (groupId != 0)
     {
         targetAngle = AddNormalizeAngle(
-            reinterpret_cast<Enemy *>(firstChild)->orbitAngle,
+            firstChild->orbitAngle,
             static_cast<f32>(groupId) * 6.2831854820251465f / static_cast<f32>(count));
         if (ECL_EX_CONTEXT(firstChild)->intVariables[7] !=
             ECL_EX_CONTEXT(enemy)->intVariables[7])
         {
             targetAngle = AddNormalizeAngle(
-                targetAngle, reinterpret_cast<Enemy *>(firstChild)->orbitAngularVelocity);
+                targetAngle, firstChild->orbitAngularVelocity);
         }
 
-        delta = AddNormalizeAngle(reinterpret_cast<Enemy *>(enemy)->orbitAngle,
-                                  reinterpret_cast<Enemy *>(enemy)->orbitAngularVelocity);
+        delta = AddNormalizeAngle(enemy->orbitAngle,
+                                  enemy->orbitAngularVelocity);
         delta = targetAngle - delta;
         if (fabsf(delta) > ZUN_PI)
         {
             delta = delta > 0.0f ? -6.2831854820251465f + delta : 6.2831854820251465f + delta;
         }
         delta *= 0.02f;
-        reinterpret_cast<Enemy *>(enemy)->orbitAngle =
-            AddNormalizeAngle(reinterpret_cast<Enemy *>(enemy)->orbitAngle, delta);
+        enemy->orbitAngle =
+            AddNormalizeAngle(enemy->orbitAngle, delta);
     }
 }
 
@@ -537,7 +510,7 @@ void __fastcall SynchronizeOrbitingChildFormation(EclOperands::EnemyOverlay *ene
 
 
 // FUNCTION: th08 0x4246e0
-void __fastcall TriggerScreenPulseAndShake(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall TriggerScreenPulseAndShake(Enemy *enemy, EclExInstruction *instruction)
 {
     ScreenEffect::RegisterChain(
         SCREEN_EFFECT_ARCADE_PULSE, 30, 5, 0x40ffffff, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
@@ -546,91 +519,91 @@ void __fastcall TriggerScreenPulseAndShake(EclOperands::EnemyOverlay *enemy, Ecl
 }
 
 // FUNCTION: th08 0x424a00
-void __fastcall SetScreenEffectCounter(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall SetScreenEffectCounter(Enemy *enemy, EclExInstruction *instruction)
 {
     g_ScreenEffectCounter = instruction->value;
 }
 
 // FUNCTION: th08 0x424730
 #pragma var_order(position, outerSize, innerSize, origin, enemy, instruction)
-void __fastcall UpdateNarrowRotatingLaserHitbox(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall UpdateNarrowRotatingLaserHitbox(Enemy *enemy, EclExInstruction *instruction)
 {
     Float3 origin(
-        reinterpret_cast<Enemy *>(enemy)->worldPosition.x -
+        enemy->worldPosition.x -
             ECL_EX_CONTEXT(enemy)->floatVariables[0],
-        reinterpret_cast<Enemy *>(enemy)->worldPosition.y -
+        enemy->worldPosition.y -
             ECL_EX_CONTEXT(enemy)->floatVariables[1],
         0.0f);
     Float3 outerSize(590.0f, 160.0f, 0.0f);
     Float3 innerSize(590.0f, 128.0f, 0.0f);
     Float3 position(outerSize.x / 2.0f + origin.x, origin.y, 0.0f);
 
-    if (reinterpret_cast<Enemy *>(enemy)->bossTimer.IsPeriodic(12))
+    if (enemy->bossTimer.IsPeriodic(12))
     {
         g_Player.CalcLaserHitbox(&position, &innerSize, &origin,
-                                 reinterpret_cast<Enemy *>(enemy)->vm.rotation.z, 1);
+                                 enemy->vm.rotation.z, 1);
     }
     g_Player.CalcLaserHitbox(&position, &outerSize, &origin,
-                             reinterpret_cast<Enemy *>(enemy)->vm.rotation.z, 0);
+                             enemy->vm.rotation.z, 0);
 }
 
 
 
 // FUNCTION: th08 0x424820
 #pragma var_order(position, outerSize, innerSize, origin, enemy, instruction)
-void __fastcall UpdateMediumRotatingLaserHitbox(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall UpdateMediumRotatingLaserHitbox(Enemy *enemy, EclExInstruction *instruction)
 {
     Float3 origin(
-        reinterpret_cast<Enemy *>(enemy)->position.x -
+        enemy->position.x -
             ECL_EX_CONTEXT(enemy)->floatVariables[0],
-        reinterpret_cast<Enemy *>(enemy)->position.y -
+        enemy->position.y -
             ECL_EX_CONTEXT(enemy)->floatVariables[1],
         0.0f);
     Float3 outerSize(590.0f, 240.0f, 0.0f);
     Float3 innerSize(590.0f, 192.0f, 0.0f);
     Float3 position(outerSize.x / 2.0f + origin.x, origin.y, 0.0f);
 
-    if (reinterpret_cast<Enemy *>(enemy)->bossTimer.IsPeriodic(12))
+    if (enemy->bossTimer.IsPeriodic(12))
     {
         g_Player.CalcLaserHitbox(&position, &innerSize, &origin,
-                                 reinterpret_cast<Enemy *>(enemy)->vm.rotation.z, 1);
+                                 enemy->vm.rotation.z, 1);
     }
     g_Player.CalcLaserHitbox(&position, &outerSize, &origin,
-                             reinterpret_cast<Enemy *>(enemy)->vm.rotation.z, 0);
+                             enemy->vm.rotation.z, 0);
 }
 
 
 // FUNCTION: th08 0x424910
 #pragma var_order(position, outerSize, innerSize, origin, enemy, instruction)
-void __fastcall UpdateWideRotatingLaserHitbox(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall UpdateWideRotatingLaserHitbox(Enemy *enemy, EclExInstruction *instruction)
 {
     Float3 origin(
-        reinterpret_cast<Enemy *>(enemy)->worldPosition.x -
+        enemy->worldPosition.x -
             ECL_EX_CONTEXT(enemy)->floatVariables[0],
-        reinterpret_cast<Enemy *>(enemy)->worldPosition.y -
+        enemy->worldPosition.y -
             ECL_EX_CONTEXT(enemy)->floatVariables[1],
         0.0f);
     Float3 outerSize(590.0f, 288.0f, 0.0f);
     Float3 innerSize(590.0f, 224.0f, 0.0f);
     Float3 position(outerSize.x / 2.0f + origin.x, origin.y, 0.0f);
 
-    if (reinterpret_cast<Enemy *>(enemy)->bossTimer.IsPeriodic(12))
+    if (enemy->bossTimer.IsPeriodic(12))
     {
         g_Player.CalcLaserHitbox(&position, &innerSize, &origin,
-                                 reinterpret_cast<Enemy *>(enemy)->vm.rotation.z, 1);
+                                 enemy->vm.rotation.z, 1);
     }
     g_Player.CalcLaserHitbox(&position, &outerSize, &origin,
-                             reinterpret_cast<Enemy *>(enemy)->vm.rotation.z, 0);
+                             enemy->vm.rotation.z, 0);
 }
 
 // FUNCTION: th08 0x424a20
 #pragma var_order(i, bullet, setCursor, clearCursor, enemy, instruction)
-void __fastcall EclExIns::ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall EclExIns::ReisenFreezeBullets(Enemy *enemy, EclExInstruction *instruction)
 {
     i32 i;
     Bullet *bullet = &g_BulletManager.bullets[0];
-    EclOperands::EnemyOverlay *setCursor;
-    EclOperands::EnemyOverlay *clearCursor;
+    Enemy *setCursor;
+    Enemy *clearCursor;
 
     for (i = 0; i < 0x600; ++i, bullet++)
     {
@@ -670,32 +643,30 @@ void __fastcall EclExIns::ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, 
     if (ECL_EX_CONTEXT(enemy)->intVariables[1] == 0)
     {
         setCursor = enemy;
-        while (reinterpret_cast<Enemy *>(setCursor)->nextInAttachmentChain != NULL)
+        while (setCursor->nextInAttachmentChain != NULL)
         {
-            setCursor = reinterpret_cast<EclOperands::EnemyOverlay *>(
-                reinterpret_cast<Enemy *>(setCursor)->nextInAttachmentChain);
-            reinterpret_cast<Enemy *>(setCursor)->flags2 |= ENEMY_FLAG2_FORCE_PAUSE;
+            setCursor = setCursor->nextInAttachmentChain;
+            setCursor->flags2 |= ENEMY_FLAG2_FORCE_PAUSE;
         }
-        g_EclExBarrierRenderState.vm0.SetInterrupt(2);
-        g_EclExBarrierRenderState.vm1.SetInterrupt(2);
+        g_Background.spellVms[0].SetInterrupt(2);
+        g_Background.spellVms[1].SetInterrupt(2);
     }
     else
     {
         clearCursor = enemy;
-        while (reinterpret_cast<Enemy *>(clearCursor)->nextInAttachmentChain != NULL)
+        while (clearCursor->nextInAttachmentChain != NULL)
         {
-            clearCursor = reinterpret_cast<EclOperands::EnemyOverlay *>(
-                reinterpret_cast<Enemy *>(clearCursor)->nextInAttachmentChain);
-            reinterpret_cast<Enemy *>(clearCursor)->flags2 &= ~ENEMY_FLAG2_FORCE_PAUSE;
+            clearCursor = clearCursor->nextInAttachmentChain;
+            clearCursor->flags2 &= ~ENEMY_FLAG2_FORCE_PAUSE;
         }
-        g_EclExBarrierRenderState.vm0.SetInterrupt(1);
-        g_EclExBarrierRenderState.vm1.SetInterrupt(1);
+        g_Background.spellVms[0].SetInterrupt(1);
+        g_Background.spellVms[1].SetInterrupt(1);
     }
 }
 
 // FUNCTION: th08 0x424c40
 #pragma var_order(i, bullet, enemy, instruction)
-void __fastcall AdvanceReisenBulletPhase(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall AdvanceReisenBulletPhase(Enemy *enemy, EclExInstruction *instruction)
 {
     i32 i;
     Bullet *bullet = &g_BulletManager.bullets[0];
@@ -745,13 +716,13 @@ void __fastcall AdvanceReisenBulletPhase(EclOperands::EnemyOverlay *enemy, EclEx
 
 
 // FUNCTION: th08 0x424e00
-void __fastcall ApplyRedBackgroundTint(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall ApplyRedBackgroundTint(Enemy *enemy, EclExInstruction *instruction)
 {
     g_Background.AccumulateTint(0xffc03030U);
 }
 
 // FUNCTION: th08 0x424e20
-void __fastcall TriggerScreenShake(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall TriggerScreenShake(Enemy *enemy, EclExInstruction *instruction)
 {
     ScreenEffect::RegisterChain(
         SCREEN_EFFECT_SHAKE_ENVELOPE, 16, 20, 20, 20, CHAIN_PRIO_DRAW_SCREENEFFECT);
@@ -761,11 +732,11 @@ void __fastcall TriggerScreenShake(EclOperands::EnemyOverlay *enemy, EclExInstru
 
 // FUNCTION: th08 0x424e50
 #pragma var_order(i, bullet, child, delta, enemy, instruction)
-void __fastcall TriggerChildrenNearMarkedBullets(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall TriggerChildrenNearMarkedBullets(Enemy *enemy, EclExInstruction *instruction)
 {
     i32 i;
     Bullet *bullet = &g_BulletManager.bullets[0];
-    EclOperands::EnemyOverlay *child;
+    Enemy *child;
     Float3 delta;
 
     for (i = 0; i < 0x600; ++i, bullet++)
@@ -774,13 +745,12 @@ void __fastcall TriggerChildrenNearMarkedBullets(EclOperands::EnemyOverlay *enem
             continue;
         if ((bullet->transformFlags & BULLET_TRANSFORM_ECL_EX_TRIGGER_MARKER) != 0)
         {
-        child = reinterpret_cast<EclOperands::EnemyOverlay *>(
-            reinterpret_cast<Enemy *>(enemy)->nextInAttachmentChain);
+        child = enemy->nextInAttachmentChain;
         while (child != NULL)
         {
             if (ECL_EX_CONTEXT(child)->extraIntVariables[2] == 0)
             {
-                delta = bullet->position - reinterpret_cast<Enemy *>(child)->position;
+                delta = bullet->position - child->position;
                 if (D3DXVec3LengthSq(reinterpret_cast<D3DXVECTOR3 *>(&delta)) < 4096.0f)
                 {
                     ECL_EX_CONTEXT(child)->extraIntVariables[2] = 60;
@@ -788,15 +758,14 @@ void __fastcall TriggerChildrenNearMarkedBullets(EclOperands::EnemyOverlay *enem
                         ECL_EX_CONTEXT(enemy)->intVariables[7];
                 }
             }
-            child = reinterpret_cast<EclOperands::EnemyOverlay *>(
-                reinterpret_cast<Enemy *>(child)->nextInAttachmentChain);
+            child = child->nextInAttachmentChain;
         }
         }
     }
 }
 
 // FUNCTION: th08 0x424f60
-void __fastcall TriggerLongScreenPulse(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall TriggerLongScreenPulse(Enemy *enemy, EclExInstruction *instruction)
 {
     ScreenEffect::RegisterChain(
         SCREEN_EFFECT_ARCADE_PULSE, 180, 1, -1, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
@@ -804,7 +773,7 @@ void __fastcall TriggerLongScreenPulse(EclOperands::EnemyOverlay *enemy, EclExIn
 
 // FUNCTION: th08 0x424f90
 #pragma var_order(value, scale, enemy, instruction)
-void __fastcall SetFrameRateDivisor(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall SetFrameRateDivisor(Enemy *enemy, EclExInstruction *instruction)
 {
     i32 value;
     f32 scale;
@@ -815,14 +784,14 @@ void __fastcall SetFrameRateDivisor(EclOperands::EnemyOverlay *enemy, EclExInstr
 }
 
 // FUNCTION: th08 0x424fc0
-void __fastcall PublishCurrentSpellCardNumber(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall PublishCurrentSpellCardNumber(Enemy *enemy, EclExInstruction *instruction)
 {
     ECL_EX_CONTEXT(enemy)->intVariables[0] =
         static_cast<i32>(g_GameManager.currentSpellCardNumber);
 }
 
 // FUNCTION: th08 0x424ff0
-void __fastcall EclExIns::MokouResurrection(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall EclExIns::MokouResurrection(Enemy *enemy, EclExInstruction *instruction)
 {
     g_Spellcard.CutInEnemyNoPortrait(
         "\x81\x75\x83\x8a\x83\x55\x83\x8c\x83\x4e\x83\x56\x83\x87\x83\x93\x81\x76",
@@ -830,13 +799,13 @@ void __fastcall EclExIns::MokouResurrection(EclOperands::EnemyOverlay *enemy, Ec
 }
 
 // FUNCTION: th08 0x425020
-void __fastcall HideSpellCardPresentation(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall HideSpellCardPresentation(Enemy *enemy, EclExInstruction *instruction)
 {
     g_Spellcard.HideEnemySpellPresentation();
 }
 
 // FUNCTION: th08 0x425040
-void __fastcall PublishCapturedSpellCardCount(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall PublishCapturedSpellCardCount(Enemy *enemy, EclExInstruction *instruction)
 {
     ECL_EX_CONTEXT(enemy)->intVariables[0] =
         g_GameManager.globals->spellcardsCaptured;
@@ -844,26 +813,26 @@ void __fastcall PublishCapturedSpellCardCount(EclOperands::EnemyOverlay *enemy, 
 
 // FUNCTION: th08 0x425070
 void __fastcall EclExIns::SetScriptedUpdateFreeze(
-    EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+    Enemy *enemy, EclExInstruction *instruction)
 {
     g_GameManager.scriptedUpdateFreeze =
         instruction->byteValue;
     if (g_GameManager.scriptedUpdateFreeze)
     {
-        g_EclExBarrierRenderState.vm0.SetInterrupt(2);
-        g_EclExBarrierRenderState.vm1.SetInterrupt(2);
+        g_Background.spellVms[0].SetInterrupt(2);
+        g_Background.spellVms[1].SetInterrupt(2);
     }
     else
     {
-        g_EclExBarrierRenderState.vm0.SetInterrupt(1);
-        g_EclExBarrierRenderState.vm1.SetInterrupt(1);
+        g_Background.spellVms[0].SetInterrupt(1);
+        g_Background.spellVms[1].SetInterrupt(1);
     }
 }
 
 
 // FUNCTION: th08 0x4250d0
 #pragma var_order(i, bullet, unusedVector, enemy, instruction)
-void __fastcall SpawnEnemiesFromMarkedBullets(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall SpawnEnemiesFromMarkedBullets(Enemy *enemy, EclExInstruction *instruction)
 {
     i32 i;
     Bullet *bullet = &g_BulletManager.bullets[0];
@@ -887,15 +856,15 @@ void __fastcall SpawnEnemiesFromMarkedBullets(EclOperands::EnemyOverlay *enemy, 
 
 // FUNCTION: th08 0x4251b0
 #pragma var_order(i, bullet, enemy, instruction)
-void __fastcall EnterScaledBulletTime(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall EnterScaledBulletTime(Enemy *enemy, EclExInstruction *instruction)
 {
     i32 i;
     Bullet *bullet;
 
     g_Supervisor.framerateMultiplier =
         1.0f / static_cast<f32>(instruction->value);
-    g_EclExBarrierRenderState.vm0.SetInterrupt(2);
-    g_EclExBarrierRenderState.vm1.SetInterrupt(2);
+    g_Background.spellVms[0].SetInterrupt(2);
+    g_Background.spellVms[1].SetInterrupt(2);
 
     bullet = &g_BulletManager.bullets[0];
     for (i = 0; i < 0x600; ++i, bullet++)
@@ -914,7 +883,7 @@ void __fastcall EnterScaledBulletTime(EclOperands::EnemyOverlay *enemy, EclExIns
 
 // FUNCTION: th08 0x425290
 #pragma var_order(i, scale, bullet, enemy, instruction)
-void __fastcall ExitScaledBulletTime(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall ExitScaledBulletTime(Enemy *enemy, EclExInstruction *instruction)
 {
     i32 i;
     f32 scale;
@@ -939,25 +908,22 @@ void __fastcall ExitScaledBulletTime(EclOperands::EnemyOverlay *enemy, EclExInst
     if (g_Supervisor.framerateMultiplier < 1.0f)
         g_EclGameTimeScaleFlags |= 0x20U;
     g_Supervisor.framerateMultiplier = 1.0f;
-    g_EclExBarrierRenderState.vm0.SetInterrupt(1);
-    g_EclExBarrierRenderState.vm1.SetInterrupt(1);
+    g_Background.spellVms[0].SetInterrupt(1);
+    g_Background.spellVms[1].SetInterrupt(1);
 }
 
 
 // FUNCTION: th08 0x425390
-void __fastcall SpawnBombOrExtendItem(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
+void __fastcall SpawnBombOrExtendItem(Enemy *enemy, EclExInstruction *instruction)
 {
     if (g_Player.bombState.isInUse != 0)
-        g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(enemy)->position, ITEM_BOMB, 0);
+        g_ItemManager.SpawnItem(&enemy->position, ITEM_BOMB,
+                                ITEM_STATE_DEFAULT);
     else
-        g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(enemy)->position, ITEM_EXTEND, 0);
+        g_ItemManager.SpawnItem(&enemy->position, ITEM_EXTEND,
+                                ITEM_STATE_DEFAULT);
 }
 
 #undef ECL_EX_CONTEXT
 
 } // namespace th08
-
-#ifdef TH08_MODERN_PORT
-#undef g_EclExUpdateCallback
-#undef g_EclExBarrierRenderState
-#endif

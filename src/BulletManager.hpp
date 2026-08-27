@@ -314,8 +314,8 @@ struct Laser
 {
     Laser();
 
-    AnmVm vm0;
-    AnmVm vm1;
+    AnmVm bodyVm;
+    AnmVm startCapVm;
     Float3 position;
     f32 angle;                 // +0x554
     f32 startOffset;           // +0x558
@@ -338,7 +338,7 @@ struct Laser
     u8 trailingAlignment59A[2];
 };
 C_ASSERT(sizeof(Laser) == 0x59c);
-C_ASSERT(offsetof(Laser, vm1) == 0x2a4);
+C_ASSERT(offsetof(Laser, startCapVm) == 0x2a4);
 C_ASSERT(offsetof(Laser, position) == 0x548);
 C_ASSERT(offsetof(Laser, angle) == 0x554);
 C_ASSERT(offsetof(Laser, startOffset) == 0x558);

@@ -12,7 +12,7 @@
 namespace th08
 {
 ZunBool IsDisableResourceReload();
-f32 __stdcall CubicHermiteInterpolate(f32 value0, f32 value1, f32 value2, f32 value3, f32 time);
+f32 __stdcall CubicHermiteInterpolate(f32 startValue, f32 endValue, f32 startTangent, f32 endTangent, f32 time);
 u8 MixColors(u8 color1, u8 color2);
 
 struct RawStageQuadBasic
@@ -40,10 +40,12 @@ C_ASSERT(sizeof(RawStageObject) == 0x38);
 struct RawStageObjectInstance
 {
     i16 id;
-    i16 unk2;
+    i16 serializedReserved02;
     Float3 position;
 };
 C_ASSERT(sizeof(RawStageObjectInstance) == 0x10);
+C_ASSERT(offsetof(RawStageObjectInstance, serializedReserved02) == 0x2);
+C_ASSERT(offsetof(RawStageObjectInstance, position) == 0x4);
 
 struct RawStageInstr
 {
@@ -165,8 +167,9 @@ ChainCallbackResult Background::OnUpdate(Background *background)
         if (background->stageEffect == NULL)
         {
             Float3 zeroVector(0.0f, 0.0f, 0.0f);
-            background->stageEffect = reinterpret_cast<Effect *>(
-                g_EffectManager.SpawnEffectInFixedSlot(0x40, reinterpret_cast<D3DXVECTOR3 *>(&zeroVector), 0xC, 1, -1));
+            background->stageEffect =
+                g_EffectManager.SpawnEffectInFixedSlot(
+                    0x40, reinterpret_cast<D3DXVECTOR3 *>(&zeroVector), 0xC, 1, -1);
             spawnedStageEffect = &background->stageEffect->vm;
             background->stageAnmFile->SetAndExecuteScriptIdx(spawnedStageEffect, 11);
         }
@@ -409,7 +412,7 @@ instructions_done:
     f32 fogInterpRatio;
     i32 i;
     i32 j;
-    AnmVm *spawnedEffect;
+    Effect *spawnedEffect;
     i32 k;
 
     interpolationIndex = 0;
@@ -538,7 +541,7 @@ instructions_done:
         {
             spawnedEffect = g_EffectManager.SpawnEffect(62, reinterpret_cast<D3DXVECTOR3 *>(&background->specialEffectPoints[k]),
                                                         1, 0x20FFFFFF);
-            reinterpret_cast<Effect *>(spawnedEffect)->drawGroup = 4;
+            spawnedEffect->drawGroup = 4;
         }
     }
     background->collectSpecialEffectPoints = 1;
@@ -557,7 +560,7 @@ instructions_done:
 
 // FUNCTION: th08 0x408d60
 void __fastcall Background::InterpolateCameraVector(i32 index, Float3 *out, const Float3 *start, const Float3 *end,
-                                         const Float3 *control2, const Float3 *control3)
+                                                     const Float3 *startTangent, const Float3 *endTangent)
 {
     f32 time;
 
@@ -605,15 +608,15 @@ void __fastcall Background::InterpolateCameraVector(i32 index, Float3 *out, cons
     }
     else
     {
-        out->x = CubicHermiteInterpolate(start->x, end->x, control2->x, control3->x, time);
-        out->y = CubicHermiteInterpolate(start->y, end->y, control2->y, control3->y, time);
-        out->z = CubicHermiteInterpolate(start->z, end->z, control2->z, control3->z, time);
+        out->x = CubicHermiteInterpolate(start->x, end->x, startTangent->x, endTangent->x, time);
+        out->y = CubicHermiteInterpolate(start->y, end->y, startTangent->y, endTangent->y, time);
+        out->z = CubicHermiteInterpolate(start->z, end->z, startTangent->z, endTangent->z, time);
     }
 }
 
 // FUNCTION: th08 0x408fc0
 #pragma var_order(weight3, weight1, weight2, weight0)
-f32 __stdcall CubicHermiteInterpolate(f32 value0, f32 value1, f32 value2, f32 value3, f32 time)
+f32 __stdcall CubicHermiteInterpolate(f32 startValue, f32 endValue, f32 startTangent, f32 endTangent, f32 time)
 {
     f32 weight0;
     f32 weight1;
@@ -624,7 +627,7 @@ f32 __stdcall CubicHermiteInterpolate(f32 value0, f32 value1, f32 value2, f32 va
     weight1 = time * time * (3.0f - 2.0f * time);
     weight2 = (1.0f - time) * (1.0f - time) * time;
     weight3 = (time - 1.0f) * time * time;
-    return weight0 * value0 + weight1 * value1 + weight2 * value2 + weight3 * value3;
+    return weight0 * startValue + weight1 * endValue + weight2 * startTangent + weight3 * endTangent;
 }
 
 // FUNCTION: th08 0x409080
@@ -671,7 +674,7 @@ ChainCallbackResult Background::OnDrawHighPrio(Background *background)
 {
     i32 i;
     D3DVIEWPORT8 viewport;
-    AnmVm *effect;
+    Effect *effect;
     ZunRect rect;
     ZunColor fogColor;
 
@@ -735,9 +738,8 @@ ChainCallbackResult Background::OnDrawHighPrio(Background *background)
         }
         if (background->stageEffect != NULL)
         {
-            effect = &background->stageEffect->vm;
-            (reinterpret_cast<void (__fastcall *)(AnmVm *)>(
-                reinterpret_cast<Effect *>(effect)->drawCallback))(effect);
+            effect = background->stageEffect;
+            effect->drawCallback(effect);
         }
     }
 
@@ -940,7 +942,7 @@ ZunResult Background::AddedCallback(Background *background)
 
 // FUNCTION: th08 0x409b20
 #pragma var_order(stageData, background)
-ZunResult Background::RegisterChain(i32 param)
+ZunResult Background::RegisterChain(i32 stageIndex)
 {
     Background *background = &g_Background;
     RawStageHeader *stageData;
@@ -958,7 +960,7 @@ ZunResult Background::RegisterChain(i32 param)
     }
 
     background->frameCounter = 0;
-    background->registeredStage = param;
+    background->registeredStage = stageIndex;
 
     g_BackgroundCalcChain.SetCallback((ChainCallback)Background::OnUpdate);
     g_BackgroundCalcChain.addedCallback = (ChainLifetimeCallback)Background::AddedCallback;
@@ -1312,10 +1314,8 @@ ZunResult Background::RenderObjects(i32 mode)
                                     this->skyFog.nearPlane > quadWidth &&
                                     this->collectSpecialEffectPoints != 0)
                                 {
-                                    this->specialEffectPoints[*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) +
-                                                                              0x6478)] = quadPos;
-                                    this->specialEffectPoints[*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) +
-                                                                              0x6478)].z = 0.0f;
+                                    this->specialEffectPoints[this->specialEffectPointCount] = quadPos;
+                                    this->specialEffectPoints[this->specialEffectPointCount].z = 0.0f;
                                     (this->specialEffectPointCount)++;
                                 }
 

@@ -16,32 +16,32 @@ namespace th08
 struct AnmVm;
 struct Effect;
 
-int __fastcall EffectRandomSplashInit(AnmVm *);
-int __fastcall EffectRandomSplashUpdate(AnmVm *);
-int __fastcall EffectRandomSplashBigInit(AnmVm *);
-int __fastcall EffectOrbitInit(AnmVm *);
-int __fastcall EffectOrbitUpdate(AnmVm *);
+int __fastcall EffectRandomSplashInit(Effect *);
+int __fastcall EffectRandomSplashUpdate(Effect *);
+int __fastcall EffectRandomSplashBigInit(Effect *);
+int __fastcall EffectOrbitInit(Effect *);
+int __fastcall EffectOrbitUpdate(Effect *);
 
-int __fastcall UpdateExpandingWavyRadialTrail(AnmVm *);
-int __fastcall UpdateExpandingPositiveDiagonalRadialTrail(AnmVm *);
-int __fastcall UpdateExpandingNegativeDiagonalRadialTrail(AnmVm *);
-int __fastcall UpdateExpandingOctagonalRadialTrail(AnmVm *);
-int __fastcall UpdateExpandingTwelveSegmentRadialTrail(AnmVm *);
-int __fastcall UpdateBarrierRadialEffect(AnmVm *);
-int __fastcall InitializeBarrierRadialEffect(AnmVm *);
-int __fastcall InitializeRotatingBarrierRadialEffect(AnmVm *);
-int __fastcall UpdateExpandingOrthogonalRadialTrail(AnmVm *);
+int __fastcall UpdateExpandingWavyRadialTrail(Effect *);
+int __fastcall UpdateExpandingPositiveDiagonalRadialTrail(Effect *);
+int __fastcall UpdateExpandingNegativeDiagonalRadialTrail(Effect *);
+int __fastcall UpdateExpandingOctagonalRadialTrail(Effect *);
+int __fastcall UpdateExpandingTwelveSegmentRadialTrail(Effect *);
+int __fastcall UpdateBarrierRadialEffect(Effect *);
+int __fastcall InitializeBarrierRadialEffect(Effect *);
+int __fastcall InitializeRotatingBarrierRadialEffect(Effect *);
+int __fastcall UpdateExpandingOrthogonalRadialTrail(Effect *);
 
-int __fastcall FUN_00426280(Effect *);
-int __fastcall FUN_004264f0(Effect *);
-int __fastcall FUN_00426720(Effect *);
-int __fastcall FUN_00426990(Effect *);
+int __fastcall InitializeTintedBossTrackingCameraParticle(Effect *);
+int __fastcall UpdateTintedBossTrackingCameraParticle(Effect *);
+int __fastcall InitializeRisingBossTrackingCameraParticle(Effect *);
+int __fastcall UpdateRisingBossTrackingCameraParticle(Effect *);
 int __fastcall InitializeRandomDirectionalOffset(Effect *);
 int __fastcall UpdateDirectionalOffset60(Effect *);
 int __fastcall TrackPlayerUntilAnimationEnds(Effect *);
 int __fastcall UpdateDirectionalOffset240(Effect *);
-int __fastcall FUN_00426d70(Effect *);
-int __fastcall FUN_00426e70(Effect *);
+int __fastcall UpdateSpinningCameraParticle(Effect *);
+int __fastcall InitializeSpinningCameraParticle(Effect *);
 int __fastcall InitializeDirectionalOffset(Effect *);
 int __fastcall UpdateEasedDirectionalOffset(Effect *);
 int __fastcall KeepTrailAlive(Effect *);
@@ -156,7 +156,7 @@ void InitializeTargetData()
         {0, 0, 0},
         {32, CodeAddress(UpdateDirectionalOffset60), CodeAddress(InitializeRandomDirectionalOffset)},
         {33, CodeAddress(UpdateDirectionalOffset240), CodeAddress(InitializeRandomDirectionalOffset)},
-        {51, CodeAddress(FUN_00426d70), CodeAddress(FUN_00426e70)},
+        {51, CodeAddress(UpdateSpinningCameraParticle), CodeAddress(InitializeSpinningCameraParticle)},
         {56, 0, 0},
         {52, CodeAddress(UpdateEasedDirectionalOffset), CodeAddress(InitializeDirectionalOffset)},
         {54, CodeAddress(TrackPlayerUntilAnimationEnds), 0},
@@ -183,7 +183,8 @@ void InitializeTargetData()
         {85, CodeAddress(UpdateExpandingOrthogonalRadialTrail), CodeAddress(InitializeRadialTrail)},
         {86, CodeAddress(SyncRadialTrailRadius), CodeAddress(InitializeRadialTrail)},
         {80, CodeAddress(UpdateTimedRadialTrail), CodeAddress(InitializeRadialTrail)},
-        {73, CodeAddress(FUN_004264f0), CodeAddress(FUN_00426280)},
+        {73, CodeAddress(UpdateTintedBossTrackingCameraParticle),
+         CodeAddress(InitializeTintedBossTrackingCameraParticle)},
         {77, CodeAddress(SyncRadialTrailRadius), CodeAddress(InitializeRadialTrail)},
         {88, CodeAddress(UpdateFadingRadialTrail), CodeAddress(InitializeRadialTrail)},
         {88, CodeAddress(UpdateFadingRadialTrail), CodeAddress(InitializeRadialTrail)},
@@ -195,7 +196,8 @@ void InitializeTargetData()
         {102, 0, CodeAddress(InitializeTrailOffset)},
         {103, 0, CodeAddress(InitializeTrailOffset)},
         {75, 0, 0},
-        {74, CodeAddress(FUN_00426990), CodeAddress(FUN_00426720)},
+        {74, CodeAddress(UpdateRisingBossTrackingCameraParticle),
+         CodeAddress(InitializeRisingBossTrackingCameraParticle)},
         {77, CodeAddress(SyncAnchoredRadialTrail), CodeAddress(InitializeRadialTrail)},
         {98, CodeAddress(SyncRadialTrailShape), CodeAddress(InitializeAlternateLayerRadialTrail)},
     };

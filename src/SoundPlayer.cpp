@@ -545,20 +545,21 @@ void SoundPlayer::PlaySoundPositionedByIdx(SoundIdx idx, f32 pan)
     this->soundQueueRequestCounts[i]++;
 }
 
-#pragma var_order(bVar5, local_8, i, commandCursor, local_14, j, buffer, name, fmtIdx, buffer2, volumeF)
+#pragma var_order(restartCommandProcessing, averagedPan, i, commandCursor, soundIndex, j, preloadBuffer, bgmPath,     \
+                  bgmFormatIndex, reopenedBuffer, volumeScale)
 i32 SoundPlayer::ProcessQueues()
 {
     SoundPlayerCommand *commandCursor;
-    BOOL bVar5;
-    LPDIRECTSOUNDBUFFER buffer;
-    LPDIRECTSOUNDBUFFER buffer2;
-    char *name;
-    i32 fmtIdx;
+    BOOL restartCommandProcessing;
+    LPDIRECTSOUNDBUFFER preloadBuffer;
+    LPDIRECTSOUNDBUFFER reopenedBuffer;
+    char *bgmPath;
+    i32 bgmFormatIndex;
     i32 i;
     i32 j;
-    i32 local_14;
-    i32 local_8;
-    f32 volumeF;
+    i32 soundIndex;
+    i32 averagedPan;
+    f32 volumeScale;
 
     if (this->manager == NULL)
         return 0;
@@ -566,7 +567,7 @@ i32 SoundPlayer::ProcessQueues()
     commandCursor = this->commandQueue;
 
 loop:
-    bVar5 = FALSE;
+    restartCommandProcessing = FALSE;
 
     switch (commandCursor->opcode)
     {
@@ -582,7 +583,7 @@ loop:
             {
                 this->StopBGM();
                 this->PreloadBGM(commandCursor->argument, commandCursor->path);
-                bVar5 = TRUE;
+                restartCommandProcessing = TRUE;
                 goto next_command;
             }
         }
@@ -590,7 +591,7 @@ loop:
         {
             utils::DebugPrint("Sound : PreLoad Stage\r\n");
             this->PreloadBGM(commandCursor->argument, commandCursor->path);
-            bVar5 = TRUE;
+            restartCommandProcessing = TRUE;
             goto next_command;
         }
         commandCursor->step++;
@@ -620,9 +621,9 @@ loop:
             else if (commandCursor->step == 5)
             {
                 utils::DebugPrint("Sound : Fill Buffer Stage\r\n");
-                buffer = this->bgm->GetBuffer(0);
+                preloadBuffer = this->bgm->GetBuffer(0);
                 commandCursor->argument = this->bgm->GetWaveFile()->GetFormat()->totalLength != 0;
-                if (FAILED(this->bgm->FillBufferWithSound(buffer, commandCursor->argument)))
+                if (FAILED(this->bgm->FillBufferWithSound(preloadBuffer, commandCursor->argument)))
                 {
                     goto next_command;
                 }
@@ -661,17 +662,18 @@ loop:
         else if (commandCursor->step == 2)
         {
             utils::DebugPrint("Sound : ReOpen Stage\r\n");
-            name = commandCursor->argument >= 0 ? this->bgmFileNames[commandCursor->argument] : commandCursor->path;
-            fmtIdx = this->GetFmtIndexByName(name);
-            this->bgm->GetWaveFile()->Reopen(&this->bgmFmtData[fmtIdx]);
+            bgmPath =
+                commandCursor->argument >= 0 ? this->bgmFileNames[commandCursor->argument] : commandCursor->path;
+            bgmFormatIndex = this->GetFmtIndexByName(bgmPath);
+            this->bgm->GetWaveFile()->Reopen(&this->bgmFmtData[bgmFormatIndex]);
         }
         else if (commandCursor->step == 3)
         {
             utils::DebugPrint("Sound : Fill Buffer Stage\r\n");
-            buffer2 = this->bgm->GetBuffer(0);
+            reopenedBuffer = this->bgm->GetBuffer(0);
             this->bgm->Reset();
             commandCursor->argument = this->bgm->GetWaveFile()->GetFormat()->totalLength != 0;
-            if (FAILED(this->bgm->FillBufferWithSound(buffer2, commandCursor->argument)))
+            if (FAILED(this->bgm->FillBufferWithSound(reopenedBuffer, commandCursor->argument)))
             {
                 goto next_command;
             }
@@ -793,7 +795,7 @@ loop:
             CopyMemory(commandCursor, commandCursor + 1, sizeof(*commandCursor));
         }
 
-        if (bVar5)
+        if (restartCommandProcessing)
         {
             goto loop;
         }
@@ -809,39 +811,39 @@ loop:
         {
             break;
         }
-        local_14 = soundQueue[i];
+        soundIndex = soundQueue[i];
         soundQueue[i] = -1;
 
-        local_8 = 0;
+        averagedPan = 0;
         for (j = 0; j < this->soundQueueRequestCounts[i]; j++)
         {
-            local_8 += this->soundQueuePanData[i][j];
+            averagedPan += this->soundQueuePanData[i][j];
         }
-        local_8 /= this->soundQueueRequestCounts[i];
+        averagedPan /= this->soundQueueRequestCounts[i];
         this->soundQueueRequestCounts[i] = 0;
-        if (this->duplicateSoundBuffers[local_14] == NULL)
+        if (this->duplicateSoundBuffers[soundIndex] == NULL)
         {
             continue;
         }
-        this->duplicateSoundBuffers[local_14]->Stop();
-        this->duplicateSoundBuffers[local_14]->SetCurrentPosition(0);
-        this->duplicateSoundBuffers[local_14]->SetPan(local_8);
+        this->duplicateSoundBuffers[soundIndex]->Stop();
+        this->duplicateSoundBuffers[soundIndex]->SetCurrentPosition(0);
+        this->duplicateSoundBuffers[soundIndex]->SetPan(averagedPan);
 
-        volumeF = (f32)g_SoundPlayer.sfxVolume / 100.0f;
+        volumeScale = (f32)g_SoundPlayer.sfxVolume / 100.0f;
 
         if (g_SoundPlayer.sfxVolume != 0)
         {
-            volumeF = 1.0f - volumeF;
-            volumeF = volumeF * volumeF * volumeF;
-            volumeF = 1.0f - volumeF;
-            this->duplicateSoundBuffers[local_14]->SetVolume(
-                (i32)((g_SoundBufferIdxVol[local_14].volume + 5000) * volumeF) - 5000);
+            volumeScale = 1.0f - volumeScale;
+            volumeScale = volumeScale * volumeScale * volumeScale;
+            volumeScale = 1.0f - volumeScale;
+            this->duplicateSoundBuffers[soundIndex]->SetVolume(
+                (i32)((g_SoundBufferIdxVol[soundIndex].volume + 5000) * volumeScale) - 5000);
         }
         else
         {
-            this->duplicateSoundBuffers[local_14]->SetVolume(SOUNDPLAYER_SILENT_VOLUME);
+            this->duplicateSoundBuffers[soundIndex]->SetVolume(SOUNDPLAYER_SILENT_VOLUME);
         }
-        this->duplicateSoundBuffers[local_14]->Play(0, 0, 0);
+        this->duplicateSoundBuffers[soundIndex]->Play(0, 0, 0);
     }
 
     return this->commandQueue[0].opcode;

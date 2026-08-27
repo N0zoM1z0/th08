@@ -12,6 +12,12 @@ namespace th08
 
 struct Enemy;
 struct AnmVm;
+struct Effect;
+struct EclTimelineInstruction;
+
+typedef i32 (__fastcall *EffectUpdateCallback)(Effect *effect);
+typedef i32 (__fastcall *EffectInitializeCallback)(Effect *effect);
+typedef i32 (__fastcall *EffectDrawCallback)(Effect *effect);
 
 struct Effect
 {
@@ -28,7 +34,7 @@ struct Effect
     f32 orientationW;
     f32 radius;
     f32 angle;
-    unknown_fields(0x31c, 4);
+    u32 unconsumedDword31C;
     f32 shapeThickness;
     i32 vertexSegmentCount;
     i32 slotIndex;
@@ -36,9 +42,9 @@ struct Effect
     f32 secondaryAngle;
     f32 radialWaveCount;
     ZunTimer timer;
-    unknown_fields(0x344, 4);
-    void *updateCallback;
-    void *drawCallback;
+    u32 unconsumedDword344;
+    EffectUpdateCallback updateCallback;
+    EffectDrawCallback drawCallback;
     i8 active;
     i8 effectId;
     i8 releaseRequested;
@@ -66,7 +72,9 @@ C_ASSERT(offsetof(Effect, secondaryAngle) == 0x330);
 C_ASSERT(offsetof(Effect, radialWaveCount) == 0x334);
 C_ASSERT(offsetof(Effect, radius) == 0x314);
 C_ASSERT(offsetof(Effect, angle) == 0x318);
+C_ASSERT(offsetof(Effect, unconsumedDword31C) == 0x31c);
 C_ASSERT(offsetof(Effect, timer) == 0x338);
+C_ASSERT(offsetof(Effect, unconsumedDword344) == 0x344);
 C_ASSERT(offsetof(Effect, updateCallback) == 0x348);
 C_ASSERT(offsetof(Effect, drawCallback) == 0x34c);
 C_ASSERT(offsetof(Effect, active) == 0x350);
@@ -85,7 +93,7 @@ struct EffectManager
     EffectManager();
 
     i32 nextEffectIndex;
-    i32 unknown4;
+    i32 unconsumedDword04;
     i32 activeCount;
     f32 scaleX;
     f32 scaleY;
@@ -109,16 +117,17 @@ struct EffectManager
     static ZunResult ReleaseEffectResources(EffectManager *effectManager);
     static ZunResult RegisterChain();
     static void CutChain();
-    AnmVm *SpawnEffectInSecondaryPool(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
-    AnmVm *SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
-    AnmVm *SpawnEffectWithVelocity(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 count, i32 color);
-    AnmVm *GetFixedSlotVm(i32 index);
-    AnmVm *SpawnEffectInFixedSlot(i32 id, D3DXVECTOR3 *position, i32 slotIndex, i32 unused, i32 color);
-    AnmVm *SpawnEffectInFixedSlotWithVelocity(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 slotIndex, i32 unused, i32 color);
+    Effect *SpawnEffectInSecondaryPool(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
+    Effect *SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
+    Effect *SpawnEffectWithVelocity(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 count, i32 color);
+    Effect *GetFixedSlotEffect(i32 index);
+    Effect *SpawnEffectInFixedSlot(i32 id, D3DXVECTOR3 *position, i32 slotIndex, i32 unused, i32 color);
+    Effect *SpawnEffectInFixedSlotWithVelocity(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 slotIndex, i32 unused, i32 color);
     i32 DrawBulletLayerEffects();
     i32 DrawBackgroundEffects();
 };
 C_ASSERT(sizeof(EffectManager) == 0x8b05c);
+C_ASSERT(offsetof(EffectManager, unconsumedDword04) == 0x4);
 C_ASSERT(offsetof(EffectManager, effects) == 0x1c);
 C_ASSERT(offsetof(EffectManager, drawGroupSentinel0) == 0x89f5c);
 C_ASSERT(offsetof(EffectManager, drawGroupSentinel1) == 0x8a2bc);
@@ -134,32 +143,38 @@ void __fastcall ShiftStageEffectOrigins(Float3 *delta);
 DIFFABLE_EXTERN(ChainElem, g_EffectManagerCalcChain);
 DIFFABLE_EXTERN(ChainElem, g_EffectManagerDrawChain);
 
-#ifndef TH08_MODERN_PORT
-DIFFABLE_EXTERN(void *, g_EclExUpdateCallback);
-#endif
-struct EclExBarrierRenderState
-{
-    i32 mode;
-    i32 unknown4;
-    AnmVm vm0;
-    AnmVm vm1;
-};
-C_ASSERT(offsetof(EclExBarrierRenderState, vm0) == 0x8);
-C_ASSERT(offsetof(EclExBarrierRenderState, vm1) == 0x2ac);
-#ifndef TH08_MODERN_PORT
-DIFFABLE_EXTERN(EclExBarrierRenderState, g_EclExBarrierRenderState);
-#endif
 DIFFABLE_EXTERN(u32, g_EclGameTimeScaleFlags);
 struct EclRawInstruction
 {
     i32 time;
     i16 opcode;
     i16 nextOffset;
-    u8 unknown08;
+    u8 serializedReserved08;
     u8 difficultyMask;
     u16 operandFlags;
     u8 operands[1];
 };
+
+struct EclExInstruction
+{
+    i32 time;
+    i16 opcode;
+    i16 nextOffset;
+    u8 serializedReserved08;
+    u8 difficultyMask;
+    u16 operandFlags;
+    u8 serializedReserved0C[4];
+    union
+    {
+        i32 value;
+        i8 byteValue;
+    };
+};
+C_ASSERT(offsetof(EclExInstruction, value) == 0x10);
+
+typedef void (__fastcall *EclExInstructionCallback)(
+    Enemy *enemy, EclExInstruction *instruction);
+extern EclExInstructionCallback g_EclExInsn[32];
 
 // Only the target-observed fixed header is named here. Both pointer tables are
 // stored as file-relative offsets and are rebased in place by Load.
@@ -174,13 +189,15 @@ struct EclRawHeader
 typedef char EclRawHeaderTimelineCountOffsetCheck[offsetof(EclRawHeader, timelineCount) == 0x6 ? 1 : -1];
 typedef char EclRawHeaderSubTableOffsetCheck[offsetof(EclRawHeader, subOffsets) == 0x48 ? 1 : -1];
 
-typedef void (__fastcall *EnemyEclContextCallback)(Enemy *enemy, void *argument);
+struct EnemyEclInterpolationSlot;
+typedef void (__fastcall *EnemyEclInterpolatorCallback)(
+    Enemy *enemy, EnemyEclInterpolationSlot *slot, f32 progress);
 
 struct EnemyEclInterpolationSlot
 {
     EnemyEclInterpolationSlot();
 
-    void *callback;
+    EnemyEclInterpolatorCallback callback;
     ZunTimer timer;
     i32 duration;
     i32 callbackIndex;
@@ -190,6 +207,8 @@ struct EnemyEclInterpolationSlot
 };
 C_ASSERT(sizeof(EnemyEclInterpolationSlot) == 0x30);
 C_ASSERT(offsetof(EnemyEclInterpolationSlot, duration) == 0x10);
+C_ASSERT(offsetof(EnemyEclInterpolationSlot, callbackIndex) == 0x14);
+C_ASSERT(offsetof(EnemyEclInterpolationSlot, parameters) == 0x1c);
 C_ASSERT(offsetof(EnemyEclInterpolationSlot, affectedVariable) == 0x2c);
 
 // Target-observed TH08 per-enemy ECL interpreter context. The constructor-
@@ -201,8 +220,8 @@ struct EnemyEclContext
 
     EclRawInstruction *currentInstr;
     ZunTimer time;
-    EnemyEclContextCallback callback;
-    void *callbackArgument;
+    EclExInstructionCallback perFrameCallback;
+    EclExInstruction *perFrameInstruction;
     i32 intVariables[8];
     f32 floatVariables[8];
     i32 extraIntVariables[4];
@@ -211,12 +230,12 @@ struct EnemyEclContext
     f32 callParameterFloats[4];
     ZunTimer secondaryTime;
     EnemyEclInterpolationSlot interpolationSlots[8];
-    i32 unknown21c;
+    i32 unconsumedDword21C;
     i32 childContextSlot;
     i16 subId;
-    u8 unknown226[2];
+    u8 contextTailAlignment226[2];
 };
-typedef char EnemyEclContextCallbackOffsetCheck[offsetof(EnemyEclContext, callback) == 0x10 ? 1 : -1];
+typedef char EnemyEclContextCallbackOffsetCheck[offsetof(EnemyEclContext, perFrameCallback) == 0x10 ? 1 : -1];
 typedef char EnemyEclContextIntVariablesOffsetCheck[offsetof(EnemyEclContext, intVariables) == 0x18 ? 1 : -1];
 typedef char EnemyEclContextFloatVariablesOffsetCheck[offsetof(EnemyEclContext, floatVariables) == 0x38 ? 1 : -1];
 typedef char EnemyEclContextExtraIntVariablesOffsetCheck[offsetof(EnemyEclContext, extraIntVariables) == 0x58 ? 1 : -1];
@@ -224,17 +243,40 @@ typedef char EnemyEclContextExtraFloatVariablesOffsetCheck[offsetof(EnemyEclCont
 typedef char EnemyEclContextCallParametersOffsetCheck[offsetof(EnemyEclContext, callParameterInts) == 0x70 ? 1 : -1];
 typedef char EnemyEclContextSecondaryTimerOffsetCheck[offsetof(EnemyEclContext, secondaryTime) == 0x90 ? 1 : -1];
 typedef char EnemyEclContextInterpolationSlotsOffsetCheck[offsetof(EnemyEclContext, interpolationSlots) == 0x9c ? 1 : -1];
+typedef char EnemyEclContextUnconsumedOffsetCheck[offsetof(EnemyEclContext, unconsumedDword21C) == 0x21c ? 1 : -1];
 typedef char EnemyEclContextChildSlotOffsetCheck[offsetof(EnemyEclContext, childContextSlot) == 0x220 ? 1 : -1];
 typedef char EnemyEclContextSubIdOffsetCheck[offsetof(EnemyEclContext, subId) == 0x224 ? 1 : -1];
+typedef char EnemyEclContextTailAlignmentOffsetCheck[offsetof(EnemyEclContext, contextTailAlignment226) == 0x226 ? 1 : -1];
 typedef char EnemyEclContextSizeCheck[sizeof(EnemyEclContext) == 0x228 ? 1 : -1];
+
+// Raw-allocated by ECL opcode 135. The target clears the complete block,
+// installs one child context at +0x8, and uses the 16 following contexts as
+// that child's call stack.
+struct EnemyChildEclBlock
+{
+    i32 subId;
+    u16 unconsumedWord04;
+    i16 callStackDepth;
+    EnemyEclContext eclContext;
+    EnemyEclContext callStack[16];
+};
+C_ASSERT(sizeof(EnemyChildEclBlock) == 0x24b0);
+C_ASSERT(offsetof(EnemyChildEclBlock, subId) == 0x0);
+C_ASSERT(offsetof(EnemyChildEclBlock, unconsumedWord04) == 0x4);
+C_ASSERT(offsetof(EnemyChildEclBlock, callStackDepth) == 0x6);
+C_ASSERT(offsetof(EnemyChildEclBlock, eclContext) == 0x8);
+C_ASSERT(offsetof(EnemyChildEclBlock, callStack) == 0x230);
 
 struct EclTimelineState
 {
     EclTimelineState();
 
-    u8 unknown000[0x100];
+    u8 unconsumedBytes000[0x100];
     D3DXVECTOR3 vectors[8];
 };
+C_ASSERT(sizeof(EclTimelineState) == 0x160);
+C_ASSERT(offsetof(EclTimelineState, unconsumedBytes000) == 0x0);
+C_ASSERT(offsetof(EclTimelineState, vectors) == 0x100);
 
 struct EclManager
 {
@@ -244,13 +286,14 @@ struct EclManager
     ZunResult CallEclSub(EnemyEclContext *context, i16 subId);
     ZunResult RunEcl(Enemy *enemy);
     i32 GetTimelineCount();
-    u32 GetTimeline(i32 index);
+    EclTimelineInstruction *GetTimeline(i32 index);
 
     EclRawHeader *eclFile;             // +0x000
     u32 *subTable;                     // +0x004
     EclTimelineState timelineState;    // +0x008
 };
 C_ASSERT(sizeof(EclManager) == 0x168);
+C_ASSERT(offsetof(EclManager, timelineState) == 0x8);
 
 DIFFABLE_EXTERN(EclManager, g_EclManager);
 

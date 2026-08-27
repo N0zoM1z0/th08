@@ -594,7 +594,8 @@ ZunBool GameWindow::InitD3DRendering()
             presentParams.BackBufferFormat = D3DFMT_R5G6B5;
         }
 
-        // ?????? Not sure why this is here
+        // A launch path that differs from the module path disables the fixed
+        // fullscreen-vsync path below.
         if (g_GameWindow.usesRelativePath)
         {
             g_Supervisor.disableVsync = true;

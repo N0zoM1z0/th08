@@ -133,23 +133,23 @@ ZunBool ZunTimer::JustReached(i32 value)
 // FUNCTION: th08 0x40bf00
 void Player::SpawnBombStateEffect()
 {
-    AnmVm *effect;
+    Effect *effect;
     if (this->stateEffect != NULL)
         this->stateEffect->active = false;
 
     effect = g_EffectManager.SpawnEffectInFixedSlot(23, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 0, 1, -1);
-    effect->interpCurrentTimers[AnmInterp_Scale] = 0;
-    effect->interpEndTimers[AnmInterp_Scale] = this->timer;
-    effect->interpModes[AnmInterp_Scale] = AnmInterpMode_Linear;
-    effect->scaleInitial = effect->scale;
-    effect->scaleFinal.x = 0.0625f;
-    effect->scaleFinal.y = 0.0625f;
-    effect->intVar0 = (i32)this->timer;
-    effect->angleVel.z *= -1.0f;
-    effect->color1.r = 0xFF;
-    effect->color1.g = 0x40;
-    effect->color1.b = 0x40;
-    this->stateEffect = reinterpret_cast<Effect *>(effect);
+    effect->vm.interpCurrentTimers[AnmInterp_Scale] = 0;
+    effect->vm.interpEndTimers[AnmInterp_Scale] = this->timer;
+    effect->vm.interpModes[AnmInterp_Scale] = AnmInterpMode_Linear;
+    effect->vm.scaleInitial = effect->vm.scale;
+    effect->vm.scaleFinal.x = 0.0625f;
+    effect->vm.scaleFinal.y = 0.0625f;
+    effect->vm.intVar0 = (i32)this->timer;
+    effect->vm.angleVel.z *= -1.0f;
+    effect->vm.color1.r = 0xFF;
+    effect->vm.color1.g = 0x40;
+    effect->vm.color1.b = 0x40;
+    this->stateEffect = effect;
 }
 
 // FUNCTION: th08 0x40be30
@@ -528,7 +528,7 @@ void __fastcall DrawFantasySealBlinkDeathbomb(Player *player)
 void __fastcall UpdateDissolveSpell(Player *player)
 {
     PlayerBombState *bomb;
-    AnmVm *effect;
+    Effect *effect;
     u32 i;
 
     bomb = &player->bombState;
@@ -546,23 +546,23 @@ void __fastcall UpdateDissolveSpell(Player *player)
         g_EffectManager.SpawnEffect(12, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, 0xff4040ff);
         effect = g_EffectManager.SpawnEffectInFixedSlot(50, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 4, 1,
                                               0xff4040ff);
-        effect->interpCurrentTimers[AnmInterp_Pos] = 0;
+        effect->vm.interpCurrentTimers[AnmInterp_Pos] = 0;
         if (!g_GameManager.IsSpellPractice())
-            effect->interpEndTimers[AnmInterp_Pos] = 90;
+            effect->vm.interpEndTimers[AnmInterp_Pos] = 90;
         else
-            effect->interpEndTimers[AnmInterp_Pos] = 30;
-        effect->interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOutCubic;
-        effect->posInitial.x = 8.0f;
-        effect->posFinal.x = 128.0f;
-        effect->posInitial.y = 64.0f;
-        effect->posFinal.y = 0.0f;
-        effect->pos.x = 8.0f;
-        effect->pos.y = 64.0f;
-        reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 64;
-        reinterpret_cast<Effect *>(effect)->angle = 0.0f;
-        reinterpret_cast<Effect *>(effect)->radius = 8.0f;
-        reinterpret_cast<Effect *>(effect)->shapeThickness = 15.0f;
-        reinterpret_cast<Effect *>(effect)->radialWaveCount = 6.0f;
+            effect->vm.interpEndTimers[AnmInterp_Pos] = 30;
+        effect->vm.interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOutCubic;
+        effect->vm.posInitial.x = 8.0f;
+        effect->vm.posFinal.x = 128.0f;
+        effect->vm.posInitial.y = 64.0f;
+        effect->vm.posFinal.y = 0.0f;
+        effect->vm.pos.x = 8.0f;
+        effect->vm.pos.y = 64.0f;
+        effect->vertexSegmentCount = 64;
+        effect->angle = 0.0f;
+        effect->radius = 8.0f;
+        effect->shapeThickness = 15.0f;
+        effect->radialWaveCount = 6.0f;
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
         player->verticalSpeedMultiplier = 0.0f;
         player->horizontalSpeedMultiplier = 0.0f;
@@ -664,7 +664,7 @@ void __fastcall UpdateArtfulSacrificeBomb(Player *player)
         else if (bomb->timer.JustReached(90))
         {
 #pragma var_order(effect, damageSlot)
-            AnmVm *effect;
+            Effect *effect;
             PlayerCollisionRegion *damageSlot;
             g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(15), 0);
             effect = g_EffectManager.SpawnEffect(42, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
@@ -679,22 +679,22 @@ void __fastcall UpdateArtfulSacrificeBomb(Player *player)
         }
         else if (bomb->timer.JustReached(100))
         {
-            AnmVm *effect100 = g_EffectManager.SpawnEffect(
+            Effect *effect100 = g_EffectManager.SpawnEffect(
                 45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
         }
         else if (bomb->timer.JustReached(110))
         {
-            AnmVm *effect110 = g_EffectManager.SpawnEffect(
+            Effect *effect110 = g_EffectManager.SpawnEffect(
                 45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -12080);
         }
         else if (bomb->timer.JustReached(120))
         {
-            AnmVm *effect120 = g_EffectManager.SpawnEffect(
+            Effect *effect120 = g_EffectManager.SpawnEffect(
                 45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -32640);
         }
         else if (bomb->timer.JustReached(130))
         {
-            AnmVm *effect130 = g_EffectManager.SpawnEffect(
+            Effect *effect130 = g_EffectManager.SpawnEffect(
                 45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -65536);
         }
         else if (bomb->timer.JustReached(150))
@@ -778,7 +778,7 @@ void __fastcall UpdateReturnInanimatenessDeathbomb(Player *player)
         else if (bomb->timer.JustReached(120))
         {
 #pragma var_order(effect, damageSlot, burstPosition)
-            AnmVm *effect;
+            Effect *effect;
             PlayerCollisionRegion *damageSlot;
             g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(15), 0);
             effect = g_EffectManager.SpawnEffect(42, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
@@ -798,22 +798,22 @@ void __fastcall UpdateReturnInanimatenessDeathbomb(Player *player)
         }
         else if (bomb->timer.JustReached(130))
         {
-            AnmVm *effect130 = g_EffectManager.SpawnEffect(
+            Effect *effect130 = g_EffectManager.SpawnEffect(
                 45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
         }
         else if (bomb->timer.JustReached(140))
         {
-            AnmVm *effect140 = g_EffectManager.SpawnEffect(
+            Effect *effect140 = g_EffectManager.SpawnEffect(
                 45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -12080);
         }
         else if (bomb->timer.JustReached(150))
         {
-            AnmVm *effect150 = g_EffectManager.SpawnEffect(
+            Effect *effect150 = g_EffectManager.SpawnEffect(
                 45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -32640);
         }
         else if (bomb->timer.JustReached(160))
         {
-            AnmVm *effect160 = g_EffectManager.SpawnEffect(
+            Effect *effect160 = g_EffectManager.SpawnEffect(
                 45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -65536);
         }
         else if (bomb->timer.JustReached(180))
@@ -887,75 +887,75 @@ void __fastcall DrawReturnInanimatenessDeathbomb(Player *player)
 }
 
 // FUNCTION: th08 0x40e040
-i32 __fastcall UpdateExpandingWavyRadialTrail(AnmVm *effect)
+i32 __fastcall UpdateExpandingWavyRadialTrail(Effect *effect)
 {
-    f32 interp = 1.0f - (f32)reinterpret_cast<Effect *>(effect)->timer / 40.0f;
+    f32 interp = 1.0f - (f32)effect->timer / 40.0f;
     interp *= interp;
     interp = 1.0f - interp;
-    reinterpret_cast<Effect *>(effect)->radius = 256.0f * interp;
-    reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 64;
-    reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
-    reinterpret_cast<Effect *>(effect)->radialWaveCount = 5.0f;
-    reinterpret_cast<Effect *>(effect)->secondaryAngle = 0.0f;
-    if (reinterpret_cast<Effect *>(effect)->timer < 40)
+    effect->radius = 256.0f * interp;
+    effect->vertexSegmentCount = 64;
+    effect->verticesDirty = 1;
+    effect->radialWaveCount = 5.0f;
+    effect->secondaryAngle = 0.0f;
+    if (effect->timer < 40)
     {
-        reinterpret_cast<Effect *>(effect)->shapeThickness = 8.0f;
+        effect->shapeThickness = 8.0f;
     }
     else
     {
-        reinterpret_cast<Effect *>(effect)->secondaryRadius = 64.0f * interp;
-        reinterpret_cast<Effect *>(effect)->shapeThickness += 2.0f;
+        effect->secondaryRadius = 64.0f * interp;
+        effect->shapeThickness += 2.0f;
     }
     return 1;
 }
 
 // FUNCTION: th08 0x40e120
-i32 __fastcall UpdateExpandingPositiveDiagonalRadialTrail(AnmVm *effect)
+i32 __fastcall UpdateExpandingPositiveDiagonalRadialTrail(Effect *effect)
 {
-    f32 interp = 1.0f - (f32)reinterpret_cast<Effect *>(effect)->timer / 40.0f;
+    f32 interp = 1.0f - (f32)effect->timer / 40.0f;
     interp *= interp;
     interp = 1.0f - interp;
-    reinterpret_cast<Effect *>(effect)->radius = 256.0f * interp;
-    reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 48;
-    reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
-    reinterpret_cast<Effect *>(effect)->radialWaveCount = 0.0f;
-    reinterpret_cast<Effect *>(effect)->secondaryRadius = 128.0f * interp;
-    reinterpret_cast<Effect *>(effect)->secondaryAngle = ZUN_PI / 4.0f;
-    if (reinterpret_cast<Effect *>(effect)->timer < 40)
-        reinterpret_cast<Effect *>(effect)->shapeThickness = 8.0f;
+    effect->radius = 256.0f * interp;
+    effect->vertexSegmentCount = 48;
+    effect->verticesDirty = 1;
+    effect->radialWaveCount = 0.0f;
+    effect->secondaryRadius = 128.0f * interp;
+    effect->secondaryAngle = ZUN_PI / 4.0f;
+    if (effect->timer < 40)
+        effect->shapeThickness = 8.0f;
     else
-        reinterpret_cast<Effect *>(effect)->shapeThickness += 1.5f;
+        effect->shapeThickness += 1.5f;
     return 1;
 }
 
 // FUNCTION: th08 0x40e200
-i32 __fastcall UpdateExpandingNegativeDiagonalRadialTrail(AnmVm *effect)
+i32 __fastcall UpdateExpandingNegativeDiagonalRadialTrail(Effect *effect)
 {
-    f32 interp = 1.0f - (f32)reinterpret_cast<Effect *>(effect)->timer / 40.0f;
+    f32 interp = 1.0f - (f32)effect->timer / 40.0f;
     interp *= interp;
     interp = 1.0f - interp;
-    reinterpret_cast<Effect *>(effect)->radius = 256.0f * interp;
-    reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 48;
-    reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
-    reinterpret_cast<Effect *>(effect)->secondaryRadius = 128.0f * interp;
-    reinterpret_cast<Effect *>(effect)->secondaryAngle = -ZUN_PI / 4.0f;
-    if (reinterpret_cast<Effect *>(effect)->timer < 40)
-        reinterpret_cast<Effect *>(effect)->shapeThickness = 8.0f;
+    effect->radius = 256.0f * interp;
+    effect->vertexSegmentCount = 48;
+    effect->verticesDirty = 1;
+    effect->secondaryRadius = 128.0f * interp;
+    effect->secondaryAngle = -ZUN_PI / 4.0f;
+    if (effect->timer < 40)
+        effect->shapeThickness = 8.0f;
     else
-        reinterpret_cast<Effect *>(effect)->shapeThickness += 1.5f;
+        effect->shapeThickness += 1.5f;
     return 1;
 }
 
 // FUNCTION: th08 0x40e2d0
-i32 __fastcall UpdateExpandingOctagonalRadialTrail(AnmVm *effect)
+i32 __fastcall UpdateExpandingOctagonalRadialTrail(Effect *effect)
 {
-    f32 interp = 1.0f - (f32)reinterpret_cast<Effect *>(effect)->timer / 40.0f;
+    f32 interp = 1.0f - (f32)effect->timer / 40.0f;
     interp *= interp;
     interp = 1.0f - interp;
-    reinterpret_cast<Effect *>(effect)->radius = 192.0f * interp;
-    reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 8;
-    reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
-    reinterpret_cast<Effect *>(effect)->shapeThickness = 8.0f;
+    effect->radius = 192.0f * interp;
+    effect->vertexSegmentCount = 8;
+    effect->verticesDirty = 1;
+    effect->shapeThickness = 8.0f;
     return 1;
 }
 
@@ -1071,12 +1071,12 @@ void __fastcall UpdateFinalSparkDeathbomb(Player *player)
     if (bomb->timer.IsPeriodic(10))
     {
 #pragma var_order(effect, position1, position0, scale1, scale0)
-        AnmVm *effect = g_EffectManager.SpawnEffectInFixedSlot(
+        Effect *effect = g_EffectManager.SpawnEffectInFixedSlot(
             53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkCursor % 4 + 4, 1, -1);
         if (bomb->secondaryWorkCursor & 1)
-            g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 92);
-        reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 32;
-        reinterpret_cast<Effect *>(effect)->radialWaveCount = 0;
+            g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 92);
+        effect->vertexSegmentCount = 32;
+        effect->radialWaveCount = 0;
 
         Float3 position0;
         Float3 position1;
@@ -1086,7 +1086,7 @@ void __fastcall UpdateFinalSparkDeathbomb(Player *player)
         position1.x = 128.0f;
         position1.y = 0.0f;
         position1.z = 0.0f;
-        effect->StartPositionInterpolation(30, AnmInterpMode_EaseOut, &position0, &position1);
+        effect->vm.StartPositionInterpolation(30, AnmInterpMode_EaseOut, &position0, &position1);
 
         Float2 scale0;
         Float2 scale1;
@@ -1094,10 +1094,10 @@ void __fastcall UpdateFinalSparkDeathbomb(Player *player)
         scale0.y = 0.0f;
         scale1.x = 64.0f;
         scale1.y = 0.0f;
-        effect->StartScaleInterpolation(30, AnmInterpMode_EaseIn, &scale0, &scale1);
-        effect->StartColor1AlphaInterpolation(30, AnmInterpMode_EaseInQuartic, 255, 0);
-        effect->StartColor1RgbInterpolation(30, AnmInterpMode_Linear, -1, 0xffff0000);
-        g_AnmManager->ExecuteScript(effect);
+        effect->vm.StartScaleInterpolation(30, AnmInterpMode_EaseIn, &scale0, &scale1);
+        effect->vm.StartColor1AlphaInterpolation(30, AnmInterpMode_EaseInQuartic, 255, 0);
+        effect->vm.StartColor1RgbInterpolation(30, AnmInterpMode_Linear, -1, 0xffff0000);
+        g_AnmManager->ExecuteScript(&effect->vm);
         bomb->secondaryWorkCursor++;
         g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(17), player->position.x);
     }
@@ -1201,10 +1201,10 @@ void __fastcall UpdateRedNightlessCastleBomb(Player *player)
         if (bomb->timer.IsPeriodic(10))
         {
 #pragma var_order(effect, position1, position0, scale1, scale0)
-            AnmVm *effect = g_EffectManager.SpawnEffectInFixedSlot(
+            Effect *effect = g_EffectManager.SpawnEffectInFixedSlot(
                 53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkCursor % 4 + 4, 1, -1);
-            reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 32;
-            reinterpret_cast<Effect *>(effect)->radialWaveCount = 4.0f;
+            effect->vertexSegmentCount = 32;
+            effect->radialWaveCount = 4.0f;
 
             Float3 position0;
             Float3 position1;
@@ -1214,7 +1214,7 @@ void __fastcall UpdateRedNightlessCastleBomb(Player *player)
             position1.x = 192.0f;
             position1.y = g_Rng.GetRandomF32InRange(128.0f);
             position1.z = 0.0f;
-            effect->StartPositionInterpolation(30, AnmInterpMode_EaseOut, &position0, &position1);
+            effect->vm.StartPositionInterpolation(30, AnmInterpMode_EaseOut, &position0, &position1);
 
             Float2 scale0;
             Float2 scale1;
@@ -1222,12 +1222,12 @@ void __fastcall UpdateRedNightlessCastleBomb(Player *player)
             scale0.y = 0.0f;
             scale1.x = 64.0f;
             scale1.y = 0.0f;
-            effect->StartScaleInterpolation(30, AnmInterpMode_EaseIn, &scale0, &scale1);
-            effect->StartColor1AlphaInterpolation(30, AnmInterpMode_EaseInQuartic, 255, 0);
-            effect->StartColor1RgbInterpolation(30, AnmInterpMode_Linear, -1, 0xffff0000);
+            effect->vm.StartScaleInterpolation(30, AnmInterpMode_EaseIn, &scale0, &scale1);
+            effect->vm.StartColor1AlphaInterpolation(30, AnmInterpMode_EaseInQuartic, 255, 0);
+            effect->vm.StartColor1RgbInterpolation(30, AnmInterpMode_Linear, -1, 0xffff0000);
             bomb->secondaryWorkCursor++;
             g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(17), player->position.x);
-            g_AnmManager->ExecuteScript(effect);
+            g_AnmManager->ExecuteScript(&effect->vm);
         }
 
         if (player->shotTimer >= 5)
@@ -1332,10 +1332,10 @@ void __fastcall UpdateScarletDevilDeathbomb(Player *player)
         if (bomb->timer.IsPeriodic(10))
         {
 #pragma var_order(effect, position1, position0, scale1, scale0)
-            AnmVm *effect = g_EffectManager.SpawnEffectInFixedSlot(
+            Effect *effect = g_EffectManager.SpawnEffectInFixedSlot(
                 53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkCursor % 4 + 4, 1, -1);
-            reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 32;
-            reinterpret_cast<Effect *>(effect)->radialWaveCount = 4.0f;
+            effect->vertexSegmentCount = 32;
+            effect->radialWaveCount = 4.0f;
 
             Float3 position0;
             Float3 position1;
@@ -1345,7 +1345,7 @@ void __fastcall UpdateScarletDevilDeathbomb(Player *player)
             position1.x = 192.0f;
             position1.y = g_Rng.GetRandomF32InRange(128.0f);
             position1.z = 0.0f;
-            effect->StartPositionInterpolation(30, AnmInterpMode_EaseOut, &position0, &position1);
+            effect->vm.StartPositionInterpolation(30, AnmInterpMode_EaseOut, &position0, &position1);
 
             Float2 scale0;
             Float2 scale1;
@@ -1353,12 +1353,12 @@ void __fastcall UpdateScarletDevilDeathbomb(Player *player)
             scale0.y = 0.0f;
             scale1.x = 128.0f;
             scale1.y = 0.0f;
-            effect->StartScaleInterpolation(30, AnmInterpMode_EaseIn, &scale0, &scale1);
-            effect->StartColor1AlphaInterpolation(30, AnmInterpMode_EaseInQuartic, 255, 0);
-            effect->StartColor1RgbInterpolation(30, AnmInterpMode_Linear, -1, 0xffff0000);
+            effect->vm.StartScaleInterpolation(30, AnmInterpMode_EaseIn, &scale0, &scale1);
+            effect->vm.StartColor1AlphaInterpolation(30, AnmInterpMode_EaseInQuartic, 255, 0);
+            effect->vm.StartColor1RgbInterpolation(30, AnmInterpMode_Linear, -1, 0xffff0000);
             bomb->secondaryWorkCursor++;
             g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(17), player->position.x);
-            g_AnmManager->ExecuteScript(effect);
+            g_AnmManager->ExecuteScript(&effect->vm);
         }
 
         if (player->shotTimer >= 5)
@@ -1408,14 +1408,14 @@ void __fastcall UpdateKillingDollBomb(Player *player)
             workItem->state = PLAYER_BOMB_WORK_ITEM_INACTIVE;
         player->verticalSpeedMultiplier = 0.5f;
         player->horizontalSpeedMultiplier = 0.5f;
-        bomb->workItems[0].effectVm =
+        bomb->workItems[0].effect =
             g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
     }
 
     if (bomb->timer >= 0 && bomb->timer <= 60)
     {
-        reinterpret_cast<Effect *>(bomb->workItems[0].effectVm)->position = player->position;
+        bomb->workItems[0].effect->position = player->position;
     }
 
     if (bomb->timer >= 20 && bomb->timer < 116)
@@ -1531,7 +1531,7 @@ void __fastcall UpdateNightMistPhantomKillerDeathbomb(Player *player)
             workItem->state = PLAYER_BOMB_WORK_ITEM_INACTIVE;
         player->verticalSpeedMultiplier = 0.5f;
         player->horizontalSpeedMultiplier = 0.5f;
-        bomb->workItems[0].effectVm =
+        bomb->workItems[0].effect =
             g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 50, 4, 1, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
@@ -1539,7 +1539,7 @@ void __fastcall UpdateNightMistPhantomKillerDeathbomb(Player *player)
 
     if (bomb->timer >= 0 && bomb->timer <= 60)
     {
-        reinterpret_cast<Effect *>(bomb->workItems[0].effectVm)->position = player->position;
+        bomb->workItems[0].effect->position = player->position;
     }
 
     if (bomb->timer >= 20 && bomb->timer < 148)
@@ -1713,7 +1713,7 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
     if (bomb->timer.JustReached(10))
     {
         PlayerCollisionRegion *slot;
-        AnmVm *effect;
+        Effect *effect;
 
         player->CreateCircleCancelRegion(&player->position, 100.0f, 1.0f, 40, 6);
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
@@ -1721,14 +1721,14 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
         Float3 velocity(ZUN_PI * 3.0f / 8.0f, 1.0f, 4.0f);
         effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 5, 1, -1);
-        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 89);
+        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 89);
         bomb->workItems[1].position = player->position;
     }
 
     if (bomb->timer.JustReached(20))
     {
         PlayerCollisionRegion *slot;
-        AnmVm *effect;
+        Effect *effect;
 
         player->CreateCircleCancelRegion(&player->position, 100.0f, 1.0f, 40, 6);
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
@@ -1736,14 +1736,14 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
         Float3 velocity(ZUN_PI / 2.0f, 1.0f, 4.0f);
         effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 6, 1, -1);
-        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 90);
+        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 90);
         bomb->workItems[2].position = player->position;
     }
 
     if (bomb->timer.JustReached(30))
     {
         PlayerCollisionRegion *slot;
-        AnmVm *effect;
+        Effect *effect;
 
         player->CreateCircleCancelRegion(&player->position, 100.0f, 1.0f, 40, 6);
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
@@ -1751,7 +1751,7 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
         Float3 velocity(1.9634954929351807f, 1.0f, 4.0f);
         effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 7, 1, -1);
-        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 91);
+        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 91);
         bomb->workItems[3].position = player->position;
     }
 
@@ -1760,57 +1760,51 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
 
 // FUNCTION: th08 0x4114e0
 #pragma var_order(interp, i, slot, angle)
-i32 __fastcall UpdateBarrierRadialEffect(AnmVm *effect)
+i32 __fastcall UpdateBarrierRadialEffect(Effect *effect)
 {
     f32 interp;
     i32 i;
     PlayerCollisionRegion *slot;
     f32 angle;
 
-    if (reinterpret_cast<Effect *>(effect)->timer < 40)
+    if (effect->timer < 40)
     {
-        interp = 1.0f - (f32)reinterpret_cast<Effect *>(effect)->timer / 40.0f;
-        reinterpret_cast<Effect *>(effect)->shapeThickness =
-            88.0f - (f32)reinterpret_cast<Effect *>(effect)->timer * 80.0f / 40.0f;
-        reinterpret_cast<Effect *>(effect)->radius =
-            192.0f - 384.0f * interp * interp;
-        --reinterpret_cast<Effect *>(effect)->vertexSegmentCount;
-        reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
+        interp = 1.0f - (f32)effect->timer / 40.0f;
+        effect->shapeThickness = 88.0f - (f32)effect->timer * 80.0f / 40.0f;
+        effect->radius = 192.0f - 384.0f * interp * interp;
+        --effect->vertexSegmentCount;
+        effect->verticesDirty = 1;
     }
     else
     {
-        if (reinterpret_cast<Effect *>(effect)->timer == 40)
+        if (effect->timer == 40)
         {
 #pragma var_order(position, radius)
             f32 radius;
             ScreenEffect::RegisterChain(
                 SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0x8ff08080, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
-            angle = reinterpret_cast<Effect *>(effect)->angle + ZUN_PI / 4.0f;
-            radius = reinterpret_cast<Effect *>(effect)->radius * 0.7071067094802856f;
+            angle = effect->angle + ZUN_PI / 4.0f;
+            radius = effect->radius * 0.7071067094802856f;
             Float3 position;
             g_AnmManager->InitializeVerticalTextureStrip(
-                effect,
-                reinterpret_cast<Effect *>(effect)->vertices,
-                2 * reinterpret_cast<Effect *>(effect)->vertexSegmentCount + 2);
+                &effect->vm, effect->vertices, 2 * effect->vertexSegmentCount + 2);
             for (i = 0; i < 4; i++)
             {
                 if (angle >= ZUN_PI)
                     angle -= ZUN_2PI;
                 position.FromAngleMagnitude(angle, radius);
-                position += reinterpret_cast<Effect *>(effect)->vector5;
+                position += effect->vector5;
                 slot = g_Player.CreateRectDamageRegion(
-                    &position, radius * 8.0f,
-                    reinterpret_cast<Effect *>(effect)->shapeThickness * 4.0f, 60, 70);
+                    &position, radius * 8.0f, effect->shapeThickness * 4.0f, 60, 70);
                 slot->collisionInterval = 4;
                 slot->angle = AddNormalizeAngle(angle, ZUN_PI / 2.0f);
                 angle = slot->angle;
                 slot = g_Player.CreateRectCancelRegion(
-                    &position, radius * 4.0f,
-                    reinterpret_cast<Effect *>(effect)->shapeThickness * 4.0f, 6, 100);
+                    &position, radius * 4.0f, effect->shapeThickness * 4.0f, 6, 100);
                 slot->angle = angle;
             }
         }
-        reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
+        effect->verticesDirty = 1;
     }
     return 1;
 }
@@ -2131,7 +2125,7 @@ void __fastcall UpdateSlashOfPresentWorldBomb(Player *player)
 
 // FUNCTION: th08 0x4117b0
 #pragma var_order(interp, radialBase, i, slot, angle)
-i32 __fastcall UpdateRotatingBarrierRadialEffect(AnmVm *effect)
+i32 __fastcall UpdateRotatingBarrierRadialEffect(Effect *effect)
 {
     f32 interp;
     f32 radialBase;
@@ -2139,92 +2133,87 @@ i32 __fastcall UpdateRotatingBarrierRadialEffect(AnmVm *effect)
     PlayerCollisionRegion *slot;
     f32 angle;
 
-    reinterpret_cast<Effect *>(effect)->angle =
-        AddNormalizeAngle(reinterpret_cast<Effect *>(effect)->angle,
-                          ((reinterpret_cast<Effect *>(effect)->slotIndex & 1) != 0)
+    effect->angle =
+        AddNormalizeAngle(effect->angle,
+                          ((effect->slotIndex & 1) != 0)
                               ? 0.039269909f
                               : -0.039269909f);
-    reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
+    effect->verticesDirty = 1;
 
-    if (reinterpret_cast<Effect *>(effect)->timer < 50)
+    if (effect->timer < 50)
     {
-        interp = 1.0f - (f32)reinterpret_cast<Effect *>(effect)->timer / 50.0f;
-        radialBase = (f32)(reinterpret_cast<Effect *>(effect)->slotIndex - 4) * 32.0f + 384.0f;
-        reinterpret_cast<Effect *>(effect)->shapeThickness =
-            88.0f - (f32)reinterpret_cast<Effect *>(effect)->timer * 80.0f / 50.0f;
-        reinterpret_cast<Effect *>(effect)->radius =
-            (f32)(reinterpret_cast<Effect *>(effect)->slotIndex - 4) * 32.0f + 192.0f -
+        interp = 1.0f - (f32)effect->timer / 50.0f;
+        radialBase = (f32)(effect->slotIndex - 4) * 32.0f + 384.0f;
+        effect->shapeThickness = 88.0f - (f32)effect->timer * 80.0f / 50.0f;
+        effect->radius =
+            (f32)(effect->slotIndex - 4) * 32.0f + 192.0f -
             radialBase * interp * interp;
-        --reinterpret_cast<Effect *>(effect)->vertexSegmentCount;
+        --effect->vertexSegmentCount;
     }
     else
     {
-        if (reinterpret_cast<Effect *>(effect)->timer == 50)
+        if (effect->timer == 50)
         {
 #pragma var_order(position, radius)
             f32 radius;
             ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 16, 8, 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
             ScreenEffect::RegisterChain(
                 SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0x8f6060f0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
-            angle = reinterpret_cast<Effect *>(effect)->angle + ZUN_PI / 4.0f;
-            radius = reinterpret_cast<Effect *>(effect)->radius * 0.7071067094802856f;
+            angle = effect->angle + ZUN_PI / 4.0f;
+            radius = effect->radius * 0.7071067094802856f;
             Float3 position;
             g_AnmManager->InitializeVerticalTextureStrip(
-                effect,
-                reinterpret_cast<Effect *>(effect)->vertices,
-                2 * reinterpret_cast<Effect *>(effect)->vertexSegmentCount + 2);
+                &effect->vm, effect->vertices, 2 * effect->vertexSegmentCount + 2);
             for (i = 0; i < 4; i++)
             {
                 if (angle >= ZUN_PI)
                     angle -= ZUN_2PI;
                 position.FromAngleMagnitude(angle, radius);
-                position += reinterpret_cast<Effect *>(effect)->vector5;
+                position += effect->vector5;
                 slot = g_Player.CreateRectDamageRegion(
-                    &position, radius * 8.0f,
-                    reinterpret_cast<Effect *>(effect)->shapeThickness * 4.0f, 60, 100);
+                    &position, radius * 8.0f, effect->shapeThickness * 4.0f, 60, 100);
                 slot->collisionInterval = 2;
                 slot->angle = AddNormalizeAngle(angle, ZUN_PI / 2.0f);
                 angle = slot->angle;
                 slot = g_Player.CreateRectCancelRegion(
-                    &position, radius * 4.0f,
-                    reinterpret_cast<Effect *>(effect)->shapeThickness * 4.0f, 6, 150);
+                    &position, radius * 4.0f, effect->shapeThickness * 4.0f, 6, 150);
                 slot->angle = angle;
             }
         }
-        reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
+        effect->verticesDirty = 1;
     }
     return 1;
 }
 
 // FUNCTION: th08 0x411720
 #pragma var_order(velocity, position)
-i32 __fastcall InitializeBarrierRadialEffect(AnmVm *effect)
+i32 __fastcall InitializeBarrierRadialEffect(Effect *effect)
 {
-    Float3 position = reinterpret_cast<Effect *>(effect)->position;
-    Float3 velocity = reinterpret_cast<Effect *>(effect)->vector1;
+    Float3 position = effect->position;
+    Float3 velocity = effect->vector1;
 
     g_EffectManager.SpawnEffectInFixedSlotWithVelocity(35, reinterpret_cast<D3DXVECTOR3 *>(&position),
                                  reinterpret_cast<D3DXVECTOR3 *>(&velocity),
-                                 reinterpret_cast<Effect *>(effect)->slotIndex, 1, -1);
-    reinterpret_cast<Effect *>(effect)->updateCallback = reinterpret_cast<void *>(UpdateBarrierRadialEffect);
-    reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 44;
-    reinterpret_cast<Effect *>(effect)->shapeThickness = 4.0f;
+                                 effect->slotIndex, 1, -1);
+    effect->updateCallback = UpdateBarrierRadialEffect;
+    effect->vertexSegmentCount = 44;
+    effect->shapeThickness = 4.0f;
     return 0;
 }
 
 // FUNCTION: th08 0x411a80
 #pragma var_order(velocity, position)
-i32 __fastcall InitializeRotatingBarrierRadialEffect(AnmVm *effect)
+i32 __fastcall InitializeRotatingBarrierRadialEffect(Effect *effect)
 {
-    Float3 position = reinterpret_cast<Effect *>(effect)->position;
-    Float3 velocity = reinterpret_cast<Effect *>(effect)->vector1;
+    Float3 position = effect->position;
+    Float3 velocity = effect->vector1;
 
     g_EffectManager.SpawnEffectInFixedSlotWithVelocity(35, reinterpret_cast<D3DXVECTOR3 *>(&position),
                                  reinterpret_cast<D3DXVECTOR3 *>(&velocity),
-                                 reinterpret_cast<Effect *>(effect)->slotIndex, 1, -1);
-    reinterpret_cast<Effect *>(effect)->updateCallback = reinterpret_cast<void *>(UpdateRotatingBarrierRadialEffect);
-    reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 54;
-    reinterpret_cast<Effect *>(effect)->shapeThickness = 6.0f;
+                                 effect->slotIndex, 1, -1);
+    effect->updateCallback = UpdateRotatingBarrierRadialEffect;
+    effect->vertexSegmentCount = 54;
+    effect->shapeThickness = 6.0f;
     return 0;
 }
 
@@ -2261,7 +2250,7 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
     if (bomb->timer.JustReached(10))
     {
         PlayerCollisionRegion *slot;
-        AnmVm *effect;
+        Effect *effect;
 
         player->CreateCircleCancelRegion(&player->position, 100.0f, 1.0f, 40, 6);
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
@@ -2269,14 +2258,14 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
         Float3 velocity(ZUN_PI * 3.0f / 8.0f, 1.0f, 4.0f);
         effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 5, 1, -1);
-        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 93);
+        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 93);
         bomb->workItems[1].position = player->position;
     }
 
     if (bomb->timer.JustReached(20))
     {
         PlayerCollisionRegion *slot;
-        AnmVm *effect;
+        Effect *effect;
 
         player->CreateCircleCancelRegion(&player->position, 100.0f, 1.0f, 100, 6);
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
@@ -2284,14 +2273,14 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
         Float3 velocity(ZUN_PI / 2.0f, 1.0f, 4.0f);
         effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 6, 1, -1);
-        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 94);
+        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 94);
         bomb->workItems[2].position = player->position;
     }
 
     if (bomb->timer.JustReached(30))
     {
         PlayerCollisionRegion *slot;
-        AnmVm *effect;
+        Effect *effect;
 
         player->CreateCircleCancelRegion(&player->position, 100.0f, 1.0f, 100, 6);
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
@@ -2299,7 +2288,7 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
         Float3 velocity(1.9634954929351807f, 1.0f, 4.0f);
         effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
                                               reinterpret_cast<D3DXVECTOR3 *>(&velocity), 7, 1, -1);
-        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 95);
+        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 95);
         bomb->workItems[3].position = player->position;
     }
 
@@ -2331,36 +2320,36 @@ void __fastcall DrawEternalNightQuadrupleBarrierDeathbomb(Player *player)
 }
 
 // FUNCTION: th08 0x410bb0
-i32 __fastcall UpdateExpandingTwelveSegmentRadialTrail(AnmVm *effect)
+i32 __fastcall UpdateExpandingTwelveSegmentRadialTrail(Effect *effect)
 {
-    reinterpret_cast<Effect *>(effect)->radius += 8.0f;
-    reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
-    reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 12;
-    reinterpret_cast<Effect *>(effect)->shapeThickness = 32.0f;
+    effect->radius += 8.0f;
+    effect->verticesDirty = 1;
+    effect->vertexSegmentCount = 12;
+    effect->shapeThickness = 32.0f;
     return 1;
 }
 
 // FUNCTION: th08 0x413070
-i32 __fastcall UpdateExpandingOrthogonalRadialTrail(AnmVm *effect)
+i32 __fastcall UpdateExpandingOrthogonalRadialTrail(Effect *effect)
 {
     f32 interp;
-    if (reinterpret_cast<Effect *>(effect)->timer < 30)
+    if (effect->timer < 30)
     {
-        reinterpret_cast<Effect *>(effect)->radius = 192.0f;
-        reinterpret_cast<Effect *>(effect)->vertexSegmentCount = 48;
-        reinterpret_cast<Effect *>(effect)->shapeThickness = 3.0f;
-        reinterpret_cast<Effect *>(effect)->secondaryRadius = 0.0001f;
-        reinterpret_cast<Effect *>(effect)->secondaryAngle = ZUN_PI / 2.0f;
+        effect->radius = 192.0f;
+        effect->vertexSegmentCount = 48;
+        effect->shapeThickness = 3.0f;
+        effect->secondaryRadius = 0.0001f;
+        effect->secondaryAngle = ZUN_PI / 2.0f;
     }
     else
     {
-        interp = ((f32)reinterpret_cast<Effect *>(effect)->timer - 30.0f) / 30.0f;
+        interp = ((f32)effect->timer - 30.0f) / 30.0f;
         interp *= interp;
         interp *= interp;
-        reinterpret_cast<Effect *>(effect)->secondaryRadius = 192.0f * interp + 0.0001f;
-        reinterpret_cast<Effect *>(effect)->shapeThickness = 80.0f * interp + 3.0f;
+        effect->secondaryRadius = 192.0f * interp + 0.0001f;
+        effect->shapeThickness = 80.0f * interp + 3.0f;
     }
-    reinterpret_cast<Effect *>(effect)->verticesDirty = 1;
+    effect->verticesDirty = 1;
     return 1;
 }
 
@@ -2446,7 +2435,7 @@ void __fastcall UpdateGhastlyDreamBomb(Player *player)
 
         player->verticalSpeedMultiplier = 0.8f;
         player->horizontalSpeedMultiplier = 0.8f;
-        bomb->workItems[0].effectVm =
+        bomb->workItems[0].effect =
             g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 120, 12, 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
@@ -2576,7 +2565,7 @@ void __fastcall UpdateEternalSleepInDreamlandDeathbomb(Player *player)
 
         player->verticalSpeedMultiplier = 0.8f;
         player->horizontalSpeedMultiplier = 0.8f;
-        bomb->workItems[0].effectVm =
+        bomb->workItems[0].effect =
             g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
         g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 60, 16, 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);

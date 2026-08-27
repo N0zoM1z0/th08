@@ -197,6 +197,8 @@ void __fastcall PrepareSpellcardForTimerCallback(Spellcard *spellcard);
 struct Enemy
 {
     Enemy();
+    f32 ResolveFloat(f32 operand);
+    void DetachEnemyChain(i32 awardRewards);
     void ApplyDamageToParent(i32 amount);
     void Despawn();
     void UpdateEffects();
@@ -284,7 +286,7 @@ struct Enemy
     i32 timerCallbackThresholdFrames;
     i32 timerCallbackSubId;
     i32 linkedChildCount;
-    u8 *childEclBlocks[4];
+    EnemyChildEclBlock *childEclBlocks[4];
     EnemyTrailSample trailSamples[96];
     VertexTex1DiffuseXyzrhw trailVertices[194];
     u8 trailFlags;
@@ -461,14 +463,17 @@ struct EnemyManager
     void Initialize();
     void UpdateSubrank();
     static ZunResult RegisterChain();
-    static ChainCallbackResult OnUpdate(EnemyManager *enemyManager);
+    i32 OnUpdate();
+    static ChainCallbackResult OnUpdateCallback(EnemyManager *enemyManager);
     static ChainCallbackResult OnDrawHighPrio(EnemyManager *enemyManager);
     ChainCallbackResult __fastcall OnDrawImpl(i32 drawGroup, i32 chainPriority);
     static ChainCallbackResult OnDrawLowPrio(EnemyManager *enemyManager);
     static ZunResult AddedCallback(EnemyManager *enemyManager);
     static ZunResult DeletedCallback(EnemyManager *enemyManager);
-    void *SpawnEnemy1(i32 type, const D3DXVECTOR3 *position, i32 a, i32 b, i32 c, i32 flags);
-    void *SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i32 b, i32 c, i32 *contextInts);
+    Enemy *SpawnEnemy1(i32 eclSubroutineId, const D3DXVECTOR3 *position, i32 life, i32 itemDropType, i32 score,
+                       i32 mirrorMovementX);
+    Enemy *SpawnEnemy2(i32 eclSubroutineId, const D3DXVECTOR3 *position, i32 life, i32 itemDropType, i32 score,
+                       i32 *contextInts);
     i32 KillAllNonBossEnemies(i32 maxScore, i32 totalScore);
     i32 HasBoss();
     static void CutChain();

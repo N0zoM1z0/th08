@@ -37,7 +37,7 @@ char *AppendFormat(char *buffer, const char *format, ...);
 } // namespace
 
 #pragma var_order(decodedReplay, i, replayData, obfuscateOffset, obfuscateCursor, checksum, checksumCursor)
-ReplayData *ReplayManager::LoadReplayData(void *data, int fileSize)
+ReplayData *ReplayManager::LoadReplayData(ReplayData *data, int fileSize)
 {
     u8 *obfuscateCursor;
     u8 obfuscateOffset;
@@ -45,7 +45,7 @@ ReplayData *ReplayManager::LoadReplayData(void *data, int fileSize)
     u32 checksum;
     i32 i;
     ReplayData *decodedReplay;
-    ReplayData *replayData = (ReplayData *)data;
+    ReplayData *replayData = data;
 
     if (replayData == NULL)
     {

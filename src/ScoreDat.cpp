@@ -270,7 +270,6 @@ i32 ScoreDat::ParseCATK(ScoreDat *scoreDat, Catk *outCatk)
 {
     Catk *catk;
     i32 bytesToRead;
-    /* ??? maybe the parameter is `void *`? */
     ScoreDat *scoreDat2 = scoreDat;
 
     if (outCatk == NULL)
@@ -440,7 +439,7 @@ i32 ScoreDat::ParsePSCR(ScoreDat *scoreDat, Pscr *outPscr)
     {
         if (pscr->base.magic == PSCR_MAGIC && pscr->base.version == PSCR_VERSION)
         {
-            /* ??? */
+            // Reuse the validated serialized record as the copy source.
             pscr2 = pscr;
 
             if (pscr2->shotNumber >= SHOT_ALL)

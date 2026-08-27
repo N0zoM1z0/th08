@@ -16,8 +16,9 @@ enum ItemType
     ITEM_POINT_STAR,
     ITEM_TIME,
     ITEM_POINT_SMALL,
-    ITEM_UNK9,
-    ITEM_TIME2,
+    ITEM_RESERVED_9,
+    // Spawn request converted immediately to ITEM_TIME with apex-gated collection.
+    ITEM_TIME_APEX_AUTOCOLLECT_REQUEST,
 };
 
 struct ItemTimeOrbTimerStorage
@@ -31,11 +32,10 @@ enum ItemState
 {
     ITEM_STATE_DEFAULT,
     ITEM_STATE_AUTOCOLLECT,
-    // TODO: Document these
-    ITEM_STATE_UNK2,
-    ITEM_STATE_UNK3,
-    ITEM_STATE_UNK4,
-    ITEM_STATE_UNK5,
+    ITEM_STATE_DEATH_DROP_SPREAD,
+    ITEM_STATE_TIME_RISING,
+    ITEM_STATE_RESERVED_4,
+    ITEM_STATE_TIME_RISING_TO_APEX,
 };
 
 struct Item

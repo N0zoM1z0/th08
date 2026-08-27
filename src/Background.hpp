@@ -9,7 +9,6 @@
 
 namespace th08
 {
-struct EclExBarrierRenderState;
 struct Effect;
 struct RawStageInstr;
 struct RawStageObject;
@@ -68,7 +67,7 @@ struct Background
     static ChainCallbackResult OnDrawHighPrio(Background *background);
     static ChainCallbackResult OnDrawLowPrio(Background *background);
     static ZunResult AddedCallback(Background *background);
-    static ZunResult RegisterChain(i32 param);
+    static ZunResult RegisterChain(i32 stageIndex);
     static ZunResult DeletedCallback(Background *background);
     static void CutChain();
     ZunResult LoadStageData(const char *path);
@@ -77,22 +76,12 @@ struct Background
     void SetCamera1();
     void SetCamera2();
     void __fastcall InterpolateCameraVector(i32 index, Float3 *out, const Float3 *start,
-                                            const Float3 *end, const Float3 *tangentStart,
-                                            const Float3 *tangentEnd);
+                                            const Float3 *end, const Float3 *startTangent,
+                                            const Float3 *endTangent);
     void AccumulateTint(D3DCOLOR color);
     u32 UpdateStageObjectVms();
     void StartSpellBackground();
     void StopSpellBackground();
-
-    EclExBarrierRenderState &EclExBarrierState()
-    {
-        return *reinterpret_cast<EclExBarrierRenderState *>(&this->spellVmCount);
-    }
-
-    void *&EclExUpdateCallback()
-    {
-        return *reinterpret_cast<void **>(&this->spellBackgroundDrawCallback);
-    }
 
     AnmVm *stageObjectVms;
     AnmVm stageVm0;
@@ -128,7 +117,7 @@ struct Background
     i32 spellVmScriptBase;
     AnmVm spellVms[0x20];
     AnmVm spellAuxVm;
-    void (*spellBackgroundDrawCallback)();
+    void (__fastcall *spellBackgroundDrawCallback)();
     i32 pendingStageScriptLabel;
     BackgroundCamera cameraTarget;
     BackgroundCamera cameraInterpolationStart;

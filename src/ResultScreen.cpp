@@ -2150,15 +2150,14 @@ i32 ResultScreen::HandleOtherStatsScreen()
     return 0;
 }
 
-#pragma var_order(vm, strPos, unknownFloat, completion, slowdownRate)
+#pragma var_order(vm, strPos, unconsumedPerformanceRating, completion, slowdownRate)
 i32 ResultScreen::DrawFinalStats()
 {
     static const float g_DifficultyWeightList[] = {-30.0f, -10.0f, 20.0f, 30.0f, 30.0f};
     AnmVm *vm;
     Float3 strPos;
     float completion;
-    float unknownFloat; // This variable also exists in EoSD, also unused
-                        // there. Maybe a debugging variable?
+    float unconsumedPerformanceRating;
     float slowdownRate;
 
     switch (this->currentState)
@@ -2167,7 +2166,7 @@ i32 ResultScreen::DrawFinalStats()
     case RESULT_SCREEN_STATE_STATS_TO_SAVE_TRANSITION:
         vm = &this->spriteVms[RESULT_SCRIPT_PLAYER_RESULTS];
         g_AsciiManager.SetColor(vm->color1.d3dColor);
-        unknownFloat = 0.0f;
+        unconsumedPerformanceRating = 0.0f;
 
         completion =
             g_GameManager.difficulty < EXTRA ? g_GameManager.stagePlayTimeAll / 195559.0f : g_GameManager.stagePlayTimeAll / 80000.0f;
@@ -2185,21 +2184,22 @@ i32 ResultScreen::DrawFinalStats()
 
         if (g_GameManager.globals->displayScore < 2000000)
         {
-            unknownFloat -= 20.0f;
+            unconsumedPerformanceRating -= 20.0f;
         }
         else if (g_GameManager.globals->displayScore < 200000000)
         {
-            unknownFloat += (((g_GameManager.globals->displayScore - 2000000) / 198000000.0f) * 60.0f) - 20.0f;
+            unconsumedPerformanceRating +=
+                (((g_GameManager.globals->displayScore - 2000000) / 198000000.0f) * 60.0f) - 20.0f;
         }
         else
         {
-            unknownFloat += 40.0f;
+            unconsumedPerformanceRating += 40.0f;
         }
 
         strPos.y += 22.0f;
         g_AsciiManager.AddString(&strPos, g_RightAlignedDifficultyList[g_GameManager.difficulty]);
 
-        unknownFloat += g_DifficultyWeightList[g_GameManager.difficulty];
+        unconsumedPerformanceRating += g_DifficultyWeightList[g_GameManager.difficulty];
 
         strPos.x += g_AsciiManager.spaceWidth;
         strPos.y += 22.0f;
@@ -2212,30 +2212,31 @@ i32 ResultScreen::DrawFinalStats()
             }
             g_AsciiManager.AddFormatText(&strPos, "    %3.2f%%", completion * 100.0f);
 
-            unknownFloat += completion * 70.0f;
+            unconsumedPerformanceRating += completion * 70.0f;
         }
         else
         {
             g_AsciiManager.AddFormatText(&strPos, "      100%%");
 
-            unknownFloat += 70.0f;
+            unconsumedPerformanceRating += 70.0f;
         }
 
         strPos.y += 22.0f;
         g_AsciiManager.AddFormatText(&strPos, "%9d", g_GameManager.globals->numRetries);
-        unknownFloat -= (g_GameManager.globals->numRetries * 10.0f);
+        unconsumedPerformanceRating -= (g_GameManager.globals->numRetries * 10.0f);
 
         strPos.y += 22.0f;
         g_AsciiManager.AddFormatText(&strPos, "%9d", g_GameManager.GetDeaths());
-        unknownFloat -= (g_GameManager.GetDeaths() * 5.0f) - 10.0f;
+        unconsumedPerformanceRating -= (g_GameManager.GetDeaths() * 5.0f) - 10.0f;
 
         strPos.y += 22.0f;
         g_AsciiManager.AddFormatText(&strPos, "%9d", g_GameManager.GetBombsUsed());
-        unknownFloat -= ((g_GameManager.GetBombsUsed() * 2.0f) - 10.0f);
+        unconsumedPerformanceRating -= ((g_GameManager.GetBombsUsed() * 2.0f) - 10.0f);
 
         strPos.y += 22.0f;
         g_AsciiManager.AddFormatText(&strPos, "%9d", g_GameManager.globals->spellcardsCaptured);
-        unknownFloat += g_GameManager.globals->spellcardsCaptured * g_SpellcardsWeightList[g_GameManager.difficulty];
+        unconsumedPerformanceRating +=
+            g_GameManager.globals->spellcardsCaptured * g_SpellcardsWeightList[g_GameManager.difficulty];
 
         slowdownRate = ((g_Supervisor.lagNumerator / g_Supervisor.lagDenominator) - 0.5f) * 2.0f;
         if (slowdownRate < 0.0f)
@@ -2255,29 +2256,29 @@ i32 ResultScreen::DrawFinalStats()
 
         if (slowdownRate < 50.0f)
         {
-            unknownFloat -= 70.0f * slowdownRate / 100.0f;
+            unconsumedPerformanceRating -= 70.0f * slowdownRate / 100.0f;
         }
         else
         {
-            unknownFloat = -999.0f;
+            unconsumedPerformanceRating = -999.0f;
         }
 
         if (g_GameManager.globals->pointItemsCollected < 800)
         {
-            unknownFloat += 0.01f * g_GameManager.globals->pointItemsCollected;
+            unconsumedPerformanceRating += 0.01f * g_GameManager.globals->pointItemsCollected;
         }
         else
         {
-            unknownFloat += 8.0f;
+            unconsumedPerformanceRating += 8.0f;
         }
 
         if (g_GameManager.globals->graze < 5000)
         {
-            unknownFloat += 0.0025f * g_GameManager.globals->graze;
+            unconsumedPerformanceRating += 0.0025f * g_GameManager.globals->graze;
         }
         else
         {
-            unknownFloat += 12.5f;
+            unconsumedPerformanceRating += 12.5f;
         }
 
         g_AsciiManager.SetColor(COLOR_WHITE);
@@ -2336,11 +2337,11 @@ ZunResult ResultScreen::RegisterChain(u32 registrationMode)
     return ZUN_SUCCESS;
 }
 
-#pragma var_order(vm1, i, vm2)
+#pragma var_order(exitInterruptVm, i, spriteVm)
 ChainCallbackResult ResultScreen::OnUpdate(ResultScreen *result)
 {
-    AnmVm *vm1;
-    AnmVm *vm2;
+    AnmVm *exitInterruptVm;
+    AnmVm *spriteVm;
     i32 i;
 
     switch (result->currentState)
@@ -2366,9 +2367,10 @@ ChainCallbackResult ResultScreen::OnUpdate(ResultScreen *result)
 
             g_Supervisor.SetupLoadingVms(&pos);
 
-            for (vm1 = result->spriteVms, i = 0; i < ARRAY_SIZE_SIGNED(result->spriteVms); i++, vm1++)
+            for (exitInterruptVm = result->spriteVms, i = 0; i < ARRAY_SIZE_SIGNED(result->spriteVms);
+                 i++, exitInterruptVm++)
             {
-                vm1->pendingInterrupt = RESULT_INTERRUPT_EXITING;
+                exitInterruptVm->pendingInterrupt = RESULT_INTERRUPT_EXITING;
             }
         }
 
@@ -2421,9 +2423,9 @@ ChainCallbackResult ResultScreen::OnUpdate(ResultScreen *result)
         }
     }
 
-    for (vm2 = result->spriteVms, i = 0; i < ARRAY_SIZE_SIGNED(result->spriteVms); i++, vm2++)
+    for (spriteVm = result->spriteVms, i = 0; i < ARRAY_SIZE_SIGNED(result->spriteVms); i++, spriteVm++)
     {
-        g_AnmManager->ExecuteScript(vm2);
+        g_AnmManager->ExecuteScript(spriteVm);
     }
 
     result->frameTimer++;
@@ -2433,23 +2435,23 @@ ChainCallbackResult ResultScreen::OnUpdate(ResultScreen *result)
 
 #define RESULT_SCREEN_MAX_DISPLAYED_RESULTS 10
 
-#pragma var_order(local_10, i, name, vm, node, local_2c, pos, x, spellCardIdx, difficulties, currentSpellcardNumber,   \
-                  local_5c, local_60)
+#pragma var_order(keyboardGlyphPosition, i, name, vm, node, keyboardColumn, pos, x, spellCardIdx, difficulties,       \
+                  currentSpellcardNumber, keyboardAnimationValue, keyboardGlyphOffsetY)
 ChainCallbackResult ResultScreen::OnDraw(ResultScreen *result)
 {
     AnmVm *vm = result->spriteVms;
     Float3 pos;
-    Float3 local_10;
+    Float3 keyboardGlyphPosition;
     i32 i;
     ScoreListNode *node;
-    i32 local_2c;
+    i32 keyboardColumn;
     float x;
     char name[9];
     i32 spellCardIdx;
     i32 currentSpellcardNumber;
     const char *difficulties[5];
-    float local_5c;
-    float local_60;
+    float keyboardAnimationValue;
+    float keyboardGlyphOffsetY;
 
     g_AnmManager->FlushVertexBuffer();
     g_Supervisor.viewport.X = 0;
@@ -2696,27 +2698,27 @@ ChainCallbackResult ResultScreen::OnDraw(ResultScreen *result)
 
         for (i = 0; i < RESULT_KEYBOARD_ROWS; i++)
         {
-            for (local_2c = 0; local_2c < RESULT_KEYBOARD_COLUMNS; local_2c++)
+            for (keyboardColumn = 0; keyboardColumn < RESULT_KEYBOARD_COLUMNS; keyboardColumn++)
             {
-                local_5c = 0;
-                local_60 = 0;
+                keyboardAnimationValue = 0;
+                keyboardGlyphOffsetY = 0;
 
-                if (result->keyboardSelection == (i * RESULT_KEYBOARD_COLUMNS) + local_2c)
+                if (result->keyboardSelection == (i * RESULT_KEYBOARD_COLUMNS) + keyboardColumn)
                 {
                     g_AsciiManager.SetColor(0xffffffc0);
 
                     if (result->frameTimer % 64 < 32)
                     {
-                        local_5c = ((result->frameTimer % 32) * 0.8f) / 32.0f + 1.2f;
+                        keyboardAnimationValue = ((result->frameTimer % 32) * 0.8f) / 32.0f + 1.2f;
                     }
                     else
                     {
-                        local_5c = (2.0f - ((result->frameTimer % 32) * 0.8f) / 32.0f);
+                        keyboardAnimationValue = (2.0f - ((result->frameTimer % 32) * 0.8f) / 32.0f);
                     }
 
-                    g_AsciiManager.SetScale(local_5c, local_5c);
+                    g_AsciiManager.SetScale(keyboardAnimationValue, keyboardAnimationValue);
 
-                    local_60 = local_5c = -(local_5c - 1.0f) * 8.0f;
+                    keyboardGlyphOffsetY = keyboardAnimationValue = -(keyboardAnimationValue - 1.0f) * 8.0f;
                 }
                 else
                 {
@@ -2724,30 +2726,30 @@ ChainCallbackResult ResultScreen::OnDraw(ResultScreen *result)
                     g_AsciiManager.SetScale(1.0f, 1.0f);
                 }
 
-                local_10 = pos;
-                local_10.x += local_5c;
-                local_10.y += local_60;
+                keyboardGlyphPosition = pos;
+                keyboardGlyphPosition.x += keyboardAnimationValue;
+                keyboardGlyphPosition.y += keyboardGlyphOffsetY;
 
-                letter[0] = g_AlphabetList[(i * RESULT_KEYBOARD_COLUMNS) + local_2c];
+                letter[0] = g_AlphabetList[(i * RESULT_KEYBOARD_COLUMNS) + keyboardColumn];
                 letter[1] = 0;
 
                 if (i == 5)
                 {
-                    if (local_2c == 14)
+                    if (keyboardColumn == 14)
                     {
                         letter[0] = 128;
                     }
-                    else if (local_2c == 15)
+                    else if (keyboardColumn == 15)
                     {
                         letter[0] = 129;
                     }
                 }
 
-                g_AsciiManager.AddString(&local_10, letter);
+                g_AsciiManager.AddString(&keyboardGlyphPosition, letter);
                 pos[0] += 20.0f;
             }
 
-            pos[0] -= local_2c * 20;
+            pos[0] -= keyboardColumn * 20;
             pos[1] += 18.0f;
         }
     }
