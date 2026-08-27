@@ -4560,3 +4560,46 @@ child-runtime owner and corrected center vertex initialization, and
 `verify-modern-linux.sh` verifies the ELF32 executable and every fixed
 target-owned layout symbol.  No Enemy/EnemyEclContext layout, accepted-unit
 identity, target byte, or aggregate exact total changed.
+
+### Authored API ledger closure — 2026-08-27
+
+Scope: the stale function signatures in `config/mapping.csv` for 119 accepted
+authored functions.  This is a ledger-only correction: the typed production
+declarations and definitions were already present and exact.  Their current
+VC7 COFF decorated symbols, configured comparison identities, and source call
+sites provide the evidence; target addresses alone do not establish C++ types
+or calling conventions.
+
+The corrected rows cover the Background, ECL, GameManager, Effect,
+Spellcard, Gui, global resource, TextHelper, ItemManager, MusicRoom, Player,
+SoundPlayer, ResultScreen, TitleScreen, Supervisor, ScreenEffect, AnmManager,
+AsciiManager, MIDI, and ScoreDat API families.  Material stale descriptions
+included a false `MidiOutput *` receiver for `GameManager::DeletedCallback`,
+missing `const char *` ResultScreen getters, incorrect TitleScreen member and
+static conventions, a missing `Supervisor::LoadMusic` preload-slot parameter,
+the old `AnmFileDesc *` owner for `AnmManager::LoadTextureData`, and flattened
+AsciiManager varargs.  Return values and parameters now preserve the existing
+`ZunResult`, `ZunBool`, `ChainCallbackResult`, typed pointer, constness, and
+real argument boundaries.
+
+None of the 119 gameplay/API rows in this scope now uses the `unknown`
+convention.  Sixteen accepted exact rows still do so in the bundled helper
+source families: CSound/CWaveFile, CPbgFile/PbgArchive, and LZSS.  Compiler
+runtime, D3DX, static-initializer, and otherwise unselected mapping rows also
+retain their existing unknown descriptions.  They are separate audit lanes;
+this checkpoint does not turn a scoped cleanup into a repository-wide
+completion claim or invent unsupported provenance for them.
+
+VC7 oracle: relocation-aware focused comparison passes all **119 / 119**
+affected accepted units.  The required single-job non-reuse cold build of all
+75 comparison objects passes **1,106 / 1,106 exact** with zero failures;
+`TitleScreen::RegisterChain` remains **281 / 281 exact**.  The normal VC7
+production image links.
+
+Portable oracle: the complete i386 Linux container image links, and
+`verify-modern-linux.sh` verifies the ELF32 executable and every fixed
+target-owned layout symbol.  Because this batch changes only the semantic
+ledger, no source body, object identity, accepted-unit result, or aggregate
+exact total changed.  The sole authored-but-unaccepted function remains the
+unchanged natural allocator residual in
+`ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0`.

@@ -2201,3 +2201,19 @@ the normal VC7 image and complete Linux i386 image link; and the Linux
 fixed-layout verifier passes.  Continue on `semantic/typed-reconstruction`;
 commit and push stable checkpoints, but do not open a PR or merge until
 explicitly requested.
+
+The authored-API-ledger checkpoint aligns 119 stale `config/mapping.csv`
+signatures with the existing typed exact source and rebuilt VC7 COFF symbols.
+It corrects receiver ownership, member/static conventions, return widths,
+const pointer types, missing arguments, and varargs boundaries across the
+major gameplay, UI, rendering, audio, and data APIs.  Focused comparison
+passes **119 / 119 exact**; the required non-reuse cold aggregate passes
+**1,106 / 1,106 exact** with zero failures; the normal VC7 image and complete
+Linux i386 image link; and the fixed-layout verifier passes.  None of the 119
+gameplay/API rows in scope retains an `unknown` convention.  Sixteen accepted
+exact rows remain in the bundled CSound/CWaveFile, PBG, and LZSS helper-source
+families; compiler-runtime, D3DX, initializer, and unselected rows remain
+separate audit lanes.  The single authored allocator residual is unchanged.
+Continue with a bounded semantic-completion audit on
+`semantic/typed-reconstruction`; commit and push stable checkpoints, but do
+not open a PR or merge until explicitly requested.
