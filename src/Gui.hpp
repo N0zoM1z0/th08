@@ -196,7 +196,6 @@ struct GuiMsgVm
     u8 currentPortraitIndex;
     u8 textBoxVisible;
     u8 selectedOption;
-    u8 padding156f;
 
     GuiMsgVm();
 };
@@ -205,6 +204,7 @@ C_ASSERT(offsetof(GuiMsgVm, portraits) == 0x20);
 C_ASSERT(offsetof(GuiMsgVm, dialogueLines) == 0xAB0);
 C_ASSERT(offsetof(GuiMsgVm, introLines) == 0xFF8);
 C_ASSERT(offsetof(GuiMsgVm, textColors) == 0x1540);
+C_ASSERT(offsetof(GuiMsgVm, selectedOption) == 0x156e);
 
 struct GuiStageClearData
 {
@@ -342,12 +342,17 @@ struct Gui
     bool bossPresent;
     f32 bossLifeBarTargetSize;
     f32 bossLifeBarDisplayedSize;
-    unknown_fields(0x38, 0x4);
+    u32 unconsumedDword38;
     f32 bossLifeBarSegmentStop[MAX_BOSS_LIFEBAR_SEGMENTS];
     f32 bossLifeBarSegmentStart[MAX_BOSS_LIFEBAR_SEGMENTS];
     i32 bossLifeBarSegmentColor[MAX_BOSS_LIFEBAR_SEGMENTS];
 };
 C_ASSERT(sizeof(Gui) == 0x9c);
+C_ASSERT(offsetof(Gui, bossPresent) == 0x2c);
+C_ASSERT(offsetof(Gui, bossLifeBarTargetSize) == 0x30);
+C_ASSERT(offsetof(Gui, bossLifeBarDisplayedSize) == 0x34);
+C_ASSERT(offsetof(Gui, unconsumedDword38) == 0x38);
+C_ASSERT(offsetof(Gui, bossLifeBarSegmentStop) == 0x3c);
 
 DIFFABLE_EXTERN(Gui, g_Gui);
 DIFFABLE_EXTERN(u16, g_GuiMessageInputCurrent);

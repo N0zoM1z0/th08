@@ -3519,6 +3519,46 @@ review-router categories; repository-wide anonymous/opaque routing moves from
 transform opcode, branch, sound, spawn pattern, target byte, relocation,
 accepted-unit identity, or exact total changed.
 
+### GUI and Ending residual-state closure — 2026-08-27
+
+Scope: the final byte of `GuiMsgVm`, the otherwise unconsumed Boss-HUD dword
+at `Gui +0x38`, and the otherwise unconsumed Ending dword at `+0x2A98`.
+
+The target-pinned `GuiMsgVm::GuiMsgVm @ 0x00437CE2` constructs its timer and
+three ANM-VM arrays through `+0x156E`; the following byte is the natural
+four-byte-alignment tail of the `0x1570` aggregate.  It is now compiler-owned
+padding rather than a fictitious field, while an assertion pins the last real
+message member, `selectedOption @ +0x156E`.  `Gui::RegisterChain @ 0x00437AD0`
+clears all `0x9C` GUI bytes with 39 dword stores on initial-stage load.  No
+exact GUI producer or consumer independently accesses the dword at `+0x38`,
+so it is retained as `unconsumedDword38` between the displayed life-bar size
+and the asserted segment arrays without assigning a Boss-HUD meaning.
+
+`Ending::Ending @ 0x004297B0` constructs the sixteen ANM VMs and three timers,
+then clears all `0x2AB8` bytes with 2,734 dword stores before restoring its
+observed timer/default state.  The exact ending-script and callback corpus has
+no independent access to `+0x2A98`; it therefore remains
+`unconsumedDword2A98` between the asserted line-wait thresholds and next text
+VM index.  These classifications describe only observed aggregate treatment
+and absence of authored scalar consumers; they do not invent latent format or
+runtime roles.
+
+VC7 oracle: target-fact packets for the GUI message constructor, GUI chain
+registration, Ending constructor, and Ending update all report exact against
+their canonical units.  Focused replay of `Gui.obj` and `Ending.obj` passes
+**52 / 52 exact** before and after the edit.  Because both layouts are shared
+through the PCH, the required single-job non-reuse cold build of all 75
+comparison objects passes **1,106 / 1,106 exact** with zero failures, and the
+normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  `Gui.hpp` and `Ending.hpp` now have zero review-router
+candidates; repository-wide anonymous/opaque routing moves from 2/6 to 1/4.
+Those counts remain evidence-routing aids, not proof of whole-program semantic
+completion.  No dialogue, Boss HUD, ending-script behavior, target byte,
+accepted-unit identity, or exact total changed.
+
 ### Enemy residual layout-state classification — 2026-08-27
 
 Scope: the shared `Enemy` and `EnemyManager` layouts and their exact consumers

@@ -1898,3 +1898,15 @@ exact**; the normal VC7 image and complete Linux i386 image link; and the Linux
 fixed-layout verifier passes.  Continue with the bounded GUI/Ending residuals
 and audit the Replay constructor-sensitive opaque ranges separately.  Keep all
 work on the branch until the user explicitly requests another PR/merge.
+
+The GUI/Ending residual checkpoint removes the fictitious final message byte
+in favor of compiler-owned tail alignment and classifies the two remaining
+aggregate-cleared dwords as explicitly unconsumed.  Target-pinned packets for
+`GuiMsgVm::GuiMsgVm @ 0x00437CE2`, `Gui::RegisterChain @ 0x00437AD0`,
+`Ending::Ending @ 0x004297B0`, and `Ending::OnUpdate @ 0x00429860` are exact.
+Focused GUI plus Ending replay passes **52 / 52 exact** before and after the
+edit; the required cold aggregate passes **1,106 / 1,106 exact**; the normal
+VC7 image and complete Linux i386 image link; and the Linux fixed-layout
+verifier passes.  Continue with the Replay constructor-sensitive residual
+storage and keep all work on the branch until the user explicitly requests a
+PR/merge.
