@@ -851,12 +851,19 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
                 goto common_death_mode;
 
             case 2:
+                // Retail's switch table entry is 0x0042D8EE, after the
+                // boss-only GUI/effect-owner cleanup at 0x0042D8C8.  This
+                // defeat mode intentionally preserves opcode-128 effects
+                // across the phase transition.
+                goto post_boss_cleanup;
+
             common_death_mode:
                 if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->boss)
                 {
                     g_Gui.SetBossPresent(false);
                     reinterpret_cast<Enemy *>(enemy)->FUN_0042a820();
                 }
+            post_boss_cleanup:
                 reinterpret_cast<Enemy *>(enemy)->FUN_0042bea0(bombHit);
                 if (reinterpret_cast<EnemyManagerUpdateFlag1Bits *>(enemy->raw + 0x3324)->boss &&
                     !g_Spellcard.IsActive())
