@@ -248,6 +248,24 @@ typedef char EnemyEclContextSubIdOffsetCheck[offsetof(EnemyEclContext, subId) ==
 typedef char EnemyEclContextTailAlignmentOffsetCheck[offsetof(EnemyEclContext, contextTailAlignment226) == 0x226 ? 1 : -1];
 typedef char EnemyEclContextSizeCheck[sizeof(EnemyEclContext) == 0x228 ? 1 : -1];
 
+// Raw-allocated by ECL opcode 135. The target clears the complete block,
+// installs one child context at +0x8, and uses the 16 following contexts as
+// that child's call stack.
+struct EnemyChildEclBlock
+{
+    i32 subId;
+    u16 unconsumedWord04;
+    i16 callStackDepth;
+    EnemyEclContext eclContext;
+    EnemyEclContext callStack[16];
+};
+C_ASSERT(sizeof(EnemyChildEclBlock) == 0x24b0);
+C_ASSERT(offsetof(EnemyChildEclBlock, subId) == 0x0);
+C_ASSERT(offsetof(EnemyChildEclBlock, unconsumedWord04) == 0x4);
+C_ASSERT(offsetof(EnemyChildEclBlock, callStackDepth) == 0x6);
+C_ASSERT(offsetof(EnemyChildEclBlock, eclContext) == 0x8);
+C_ASSERT(offsetof(EnemyChildEclBlock, callStack) == 0x230);
+
 struct EclTimelineState
 {
     EclTimelineState();

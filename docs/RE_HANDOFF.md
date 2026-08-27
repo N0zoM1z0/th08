@@ -2186,3 +2186,18 @@ image and complete Linux i386 image link; and the Linux fixed-layout verifier
 passes.  Continue the router-invisible API/config signature and intentionally
 neutral-state audit on `semantic/typed-reconstruction`.  Commit and push stable
 checkpoints, but do not open a PR or merge until explicitly requested.
+
+The child-ECL-runtime checkpoint replaces the raw `0x24B0` opcode-135 block
+and its `+0x8/+0x230/+0x6` arithmetic with `EnemyChildEclBlock`: one active
+`EnemyEclContext`, a 16-context call stack, and signed call-stack depth, all
+pinned by layout assertions.  The word at `+0x4` remains explicitly
+unconsumed, and serialized ECL operands remain byte-oriented.  The stale
+AddSpriteToDrawBuffer mapping now records its exact
+`ZunResult (VertexTex1DiffuseXyzrhw *)` API.  The exact Title DrawPieChart probe
+also corrected production's center vertex `w` initialization.  Focused replay
+passes **26,638 / 26,638**, **211 / 211**, and **510 / 510 exact**; the required
+non-reuse cold aggregate passes **1,106 / 1,106 exact** with zero failures;
+the normal VC7 image and complete Linux i386 image link; and the Linux
+fixed-layout verifier passes.  Continue on `semantic/typed-reconstruction`;
+commit and push stable checkpoints, but do not open a PR or merge until
+explicitly requested.

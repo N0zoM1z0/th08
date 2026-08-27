@@ -955,7 +955,7 @@ th08::AnmManager::SetRenderStateForVm,0x462790,0x116,__thiscall,,u8,AnmManager*,
 th08::AnmManager::DrawInner,0x4628b0,0x54f,__thiscall,,ZunResult,AnmManager*,AnmVm*,i32
 th08::AnmManager::ClearVertexBuffer,0x462e00,0x3c,__thiscall,,void,AnmManager*
 th08::AnmManager::FlushVertexBuffer,0x462e40,0xc6,__thiscall,,void,AnmManager*
-th08::AnmManager::AddSpriteToDrawBuffer,0x462f10,0xd3,__thiscall,,u8,AnmManager*,void*
+th08::AnmManager::AddSpriteToDrawBuffer,0x462f10,0xd3,__thiscall,,ZunResult,AnmManager*,VertexTex1DiffuseXyzrhw*
 th08::AnmManager::DrawNoRotation,0x462ff0,0x1d5,__thiscall,,u32,AnmManager*,AnmVm*
 th08::AnmManager::TranslateRotation,0x4631d0,0x3a,__thiscall,,void,AnmManager*,VertexTex1DiffuseXyzrhw*,f32,f32,f32,f32,f32,f32
 th08::AnmManager::Draw2D,0x463210,0x258,__thiscall,,ZunResult,AnmManager*,AnmVm*

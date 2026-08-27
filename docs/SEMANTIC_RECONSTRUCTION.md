@@ -4517,3 +4517,46 @@ authored-but-unaccepted function remains
 `ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0`; its natural
 361-byte target versus 362-byte object allocator residual is unchanged and is
 not hidden by this semantic batch.
+
+### Typed child ECL runtime storage and Title pie parity — 2026-08-27
+
+Scope: the raw allocation installed by ECL opcode 135, all RunEcl child-context
+selection/depth accesses, one stale ANM mapping signature, and a production
+Title rendering drift exposed by the exact replay-menu probe.
+
+Target instructions in `EclManager::RunEcl @ 0x004184B0` allocate and clear
+`0x24B0` bytes, store the requested subroutine at `+0x0`, initialize an
+`EnemyEclContext` at `+0x8`, and later select its call stack at `+0x230` while
+loading and storing a signed word at `+0x6`.  `EnemyChildEclBlock` now expresses
+that complete runtime owner as `subId`, an explicitly unconsumed word at
+`+0x4`, signed `callStackDepth`, one active context, and 16 call-stack
+contexts.  Size and offset assertions pin `0x24B0`, `+0x8`, and `+0x230`.
+`Enemy::childEclBlocks @ +0x3384` and both low/high RunEcl paths use that type
+directly; the main context and main call stack likewise no longer pass through
+redundant same-type casts.  The copied variable span is described by the
+`EnemyEclContext` member boundaries rather than the old `0x1E` dword literal.
+Serialized ECL instruction operands remain intentionally byte-oriented, and no
+meaning is claimed for the unconsumed word at `+0x4`.
+
+The mapping ledger for `AnmManager::AddSpriteToDrawBuffer @ 0x00462F10` now
+matches its already exact declaration and configured VC7 symbol:
+`ZunResult (VertexTex1DiffuseXyzrhw *)`, replacing the stale `u8 (void *)`
+description.  `DrawPieChart @ 0x0046FDC2` names its two scalar parameters as
+`fraction` and `diameter`.  Its exact probe also exposed that portable
+production initialized `vertices[1].w`, which the following loop immediately
+overwrote, while leaving the center vertex's reciprocal-homogeneous coordinate
+undefined.  Production now initializes `vertices[0].w`, matching the exact
+target-facing body.
+
+VC7 oracle: focused relocation-aware replay passes RunEcl **26,638 / 26,638**,
+AddSpriteToDrawBuffer **211 / 211**, and DrawPieChart **510 / 510 exact**.
+Because the ECL and Enemy declarations are shared layout headers, the required
+single-job non-reuse cold build of all 75 comparison objects passes **1,106 /
+1,106 exact** with zero failures; `TitleScreen::RegisterChain` remains **281 /
+281 exact**.  The normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container image links with the typed
+child-runtime owner and corrected center vertex initialization, and
+`verify-modern-linux.sh` verifies the ELF32 executable and every fixed
+target-owned layout symbol.  No Enemy/EnemyEclContext layout, accepted-unit
+identity, target byte, or aggregate exact total changed.

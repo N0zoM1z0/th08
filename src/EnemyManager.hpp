@@ -286,7 +286,7 @@ struct Enemy
     i32 timerCallbackThresholdFrames;
     i32 timerCallbackSubId;
     i32 linkedChildCount;
-    u8 *childEclBlocks[4];
+    EnemyChildEclBlock *childEclBlocks[4];
     EnemyTrailSample trailSamples[96];
     VertexTex1DiffuseXyzrhw trailVertices[194];
     u8 trailFlags;

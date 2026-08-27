@@ -1717,7 +1717,7 @@ struct TitlePieVertex
 C_ASSERT(sizeof(TitlePieVertex) == 0x14);
 
 #pragma var_order(center, vm, vertices, i, angle)
-void DrawPieChart(Float3 *position, D3DCOLOR color, f32 param_3, f32 param_4)
+void DrawPieChart(Float3 *position, D3DCOLOR color, f32 fraction, f32 diameter)
 {
     TitlePieVertex vertices[64];
     Float3 center;
@@ -1734,7 +1734,7 @@ void DrawPieChart(Float3 *position, D3DCOLOR color, f32 param_3, f32 param_4)
     vertices[0].pos = *position;
     vertices[0].w = 1.0f;
     angle = -(ZUN_PI / 2.0f);
-    center.x = param_4 / 2.0f;
+    center.x = diameter / 2.0f;
     center.y = 0.0f;
 
     for (i = 1; i < 64; i++)
@@ -1745,7 +1745,7 @@ void DrawPieChart(Float3 *position, D3DCOLOR color, f32 param_3, f32 param_4)
         vertices[i].pos.z = vertices[0].pos.z;
         vertices[i].diffuse = color;
         vertices[i].w = 1.0f;
-        angle = AddNormalizeAngle(angle, (ZUN_PI / 31.0f) * param_3);
+        angle = AddNormalizeAngle(angle, (ZUN_PI / 31.0f) * fraction);
     }
     g_AnmManager->DrawTriangleFan(&vm, reinterpret_cast<VertexDiffuseXyzrhw *>(vertices), 64);
 }

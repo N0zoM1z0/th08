@@ -3018,7 +3018,7 @@ void DrawPieChart(Float3 *position, D3DCOLOR color, float fraction, float diamet
 
     vertices[0].diffuse = color;
     vertices[0].pos = *position;
-    vertices[1].w = 1.0f;
+    vertices[0].w = 1.0f;
     angle = -(ZUN_PI / 2.0f);
 
     center.x = diameter / 2.0f;

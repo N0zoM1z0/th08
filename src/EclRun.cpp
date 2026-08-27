@@ -38,10 +38,8 @@ ZunResult EclManager::RunEcl(Enemy *enemy)
     i32 activeChildContext = -1;
     i32 lhsInt;
 
-    enemy->activeEclCallStack =
-        reinterpret_cast<EnemyEclContext *>(&enemy->mainEclCallStackStorage[0]);
-    enemy->activeEclContext =
-        reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage);
+    enemy->activeEclCallStack = enemy->mainEclCallStackStorage;
+    enemy->activeEclContext = &enemy->mainEclContextStorage;
     enemy->activeEclCallStackDepth = enemy->mainEclCallStackDepth;
 
 restart_context:
@@ -121,7 +119,7 @@ low_advance_instruction:
         i32 restorePosition = 0;
         EnemyEclInterpolationSlot *entry =
             enemy->activeEclContext->interpolationSlots;
-        Float3 savedPosition = *reinterpret_cast<Float3 *>(&enemy->position);
+        Float3 savedPosition = enemy->position;
 
         if (enemy->activeEclContext->perFrameCallback)
             enemy->activeEclContext->perFrameCallback(
@@ -174,14 +172,14 @@ low_advance_instruction:
             enemy->velocity.x = enemy->position.x - savedPosition.x;
             enemy->velocity.y = enemy->position.y - savedPosition.y;
             enemy->movementAngle = VectorAngle(enemy->velocity.y, enemy->velocity.x);
-            *reinterpret_cast<Float3 *>(&enemy->position) = savedPosition;
+            enemy->position = savedPosition;
         }
     }
 
     if (activeChildContext == -1)
         enemy->mainEclCallStackDepth = enemy->activeEclCallStackDepth;
     else
-        *(i16 *)(enemy->childEclBlocks[activeChildContext] + 6) =
+        enemy->childEclBlocks[activeChildContext]->callStackDepth =
             enemy->activeEclCallStackDepth;
 
     enemy->activeEclContext->currentInstr = instruction;
@@ -192,23 +190,19 @@ low_select_next_context:
     {
         if (enemy->childEclBlocks[next])
         {
-            u8 *childContext = enemy->childEclBlocks[next];
-            enemy->activeEclCallStack =
-                reinterpret_cast<EnemyEclContext *>(childContext + 0x230);
-            enemy->activeEclContext =
-                reinterpret_cast<EnemyEclContext *>(childContext + 8);
+            EnemyChildEclBlock *childContext = enemy->childEclBlocks[next];
+            enemy->activeEclCallStack = childContext->callStack;
+            enemy->activeEclContext = &childContext->eclContext;
             instruction = enemy->activeEclContext->currentInstr;
             enemy->activeEclContext->childContextSlot = next + 1;
-            enemy->activeEclCallStackDepth = *(i16 *)(childContext + 6);
+            enemy->activeEclCallStackDepth = childContext->callStackDepth;
             activeChildContext = next;
             goto low_redispatch_instruction;
         }
     }
 
-    enemy->activeEclCallStack =
-        reinterpret_cast<EnemyEclContext *>(&enemy->mainEclCallStackStorage[0]);
-    enemy->activeEclContext =
-        reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage);
+    enemy->activeEclCallStack = enemy->mainEclCallStackStorage;
+    enemy->activeEclContext = &enemy->mainEclContextStorage;
     enemy->UpdateMovement();
     enemy->UpdateShotAndAnm();
 

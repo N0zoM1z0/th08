@@ -588,21 +588,25 @@ enter_subroutine:
         if (TH08_ECL_READ_I(ctx, 1) >= 0)
         {
             TH08_ECL_CONTEXT_ENEMY(ctx)->childEclBlocks[lhsInt] =
-                (u8 *)g_ZunMemory.Alloc(0x24B0, "ECLInt");
+                static_cast<EnemyChildEclBlock *>(
+                    g_ZunMemory.Alloc(sizeof(EnemyChildEclBlock), "ECLInt"));
             if (TH08_ECL_CONTEXT_ENEMY(ctx)->childEclBlocks[lhsInt])
             {
                 memset(
                     TH08_ECL_CONTEXT_ENEMY(ctx)->childEclBlocks[lhsInt],
-                    0, 0x24B0);
-                *(i32 *)TH08_ECL_CONTEXT_ENEMY(ctx)->childEclBlocks[lhsInt] =
+                    0, sizeof(EnemyChildEclBlock));
+                TH08_ECL_CONTEXT_ENEMY(ctx)->childEclBlocks[lhsInt]->subId =
                     TH08_ECL_READ_I(ctx, 1);
                 g_EclManager.CallEclSub(
-                    reinterpret_cast<EnemyEclContext *>(
-                        TH08_ECL_CONTEXT_ENEMY(ctx)->childEclBlocks[lhsInt] + 8),
-                    *(u16 *)TH08_ECL_CONTEXT_ENEMY(ctx)->childEclBlocks[lhsInt]);
-                memcpy(TH08_ECL_CONTEXT_ENEMY(ctx)->childEclBlocks[lhsInt] + 0x20,
+                    &(TH08_ECL_CONTEXT_ENEMY(ctx)
+                          ->childEclBlocks[lhsInt]
+                          ->eclContext),
+                    TH08_ECL_CONTEXT_ENEMY(ctx)->childEclBlocks[lhsInt]->subId);
+                memcpy(TH08_ECL_CONTEXT_ENEMY(ctx)->childEclBlocks[lhsInt]
+                           ->eclContext.intVariables,
                        TH08_ECL_CONTEXT_ENEMY(ctx)->activeEclContext->intVariables,
-                       0x1E * sizeof(i32));
+                       offsetof(EnemyEclContext, secondaryTime) -
+                           offsetof(EnemyEclContext, intVariables));
             }
         }
         break;
