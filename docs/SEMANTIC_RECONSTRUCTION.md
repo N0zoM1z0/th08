@@ -3588,3 +3588,39 @@ review-router categories; repository-wide anonymous/opaque routing moves from
 29/16 to 19/13.  Those counts are review aids, not completion percentages.  No
 ANM decoding, texture creation, sprite loading, render path, target byte,
 accepted-unit identity, or exact total changed.
+
+### Player residual storage and alignment closure — 2026-08-27
+
+Scope: the serialized SHT header, collision/option/Bomb/shot records, and the
+remaining neutral bytes in the shared `Player` layout.
+
+`PlayerRawShtFile +0x00` and `+0x20` enter memory with the complete SHT file
+and have no authored consumer, so they are now `serializedReserved00/20`
+without format guesses.  The dword at `PlayerOptionState +0x2D4`, the Bomb
+dword at `PlayerBombState +0x0C`, and `Player +0xE2B20` likewise have no
+independent producer or reader and remain explicitly `unconsumed`.  Player
+byte `+0x02` is written to one by `AddedCallback` but never read; its name now
+records that limited protocol as `unconsumedAddedMarker02`.  Byte `+0x07` has
+no independent access and remains neutral.
+
+The collision-region tail `+0x3E..+0x3F`, PlayerShot bytes `+0x46D` and
+`+0x471..+0x473`, and Player bytes `+0xE2A95..+0xE2A97` are completely
+determined by the following structure boundary, `i16`, callback-pointer, and
+dword-enum alignments.  They are now compiler-owned padding.  Existing and new
+assertions pin the preceding fields, following semantic members, each neutral
+dword, and every aggregate size.  No serialized offset, array stride, callback
+ABI, constructor sequence, or object extent changed.
+
+VC7 oracle: focused replay of Player and PlayerBomb passes **136 / 136 exact**
+before and after the edit.  Because `Player.hpp` is shared through the PCH, the
+required single-job non-reuse cold build of all 75 comparison objects passes
+**1,106 / 1,106 exact** with zero failures, and the normal VC7 production image
+links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  `Player.hpp` now has zero candidates in all four review-router
+categories; repository-wide anonymous/opaque routing moves from 19/13 to
+16/8.  Those counts are review aids, not completion percentages.  No movement,
+collision, option, Bomb, shot, target byte, accepted-unit identity, or exact
+total changed.

@@ -1583,7 +1583,7 @@ ZunResult Player::AddedCallback(Player *player)
     player->movementDirection = PLAYER_DIRECTION_NONE;
     player->playerState = PLAYER_STATE_SPAWNING;
     player->timer = g_GameManager.IsSpellPractice() ? 10 : 120;
-    player->unknown2 = 1;
+    player->unconsumedAddedMarker02 = 1;
 
     shotSlot = player->shots;
     for (i = 0; (i32)i < 0x80; ++i, shotSlot++)

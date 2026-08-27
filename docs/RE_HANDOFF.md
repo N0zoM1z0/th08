@@ -1866,3 +1866,14 @@ image link; and the Linux fixed-layout verifier passes.  Continue on
 `semantic/typed-reconstruction` with Player/ECL/Game residual state.  Do not
 open or merge another PR until explicitly requested; preserve the sole Replay
 near-match as a separate Oracle limitation.
+
+The Player residual checkpoint classifies the last neutral SHT, collision,
+option, Bomb, shot, and Player bytes without inventing consumers.  Four proven
+alignment ranges are now compiler-owned padding, while serialized and runtime
+dwords remain reserved/unconsumed and offset-asserted.  Focused Player plus
+PlayerBomb replay passes **136 / 136 exact** before and after the edit; the
+required cold aggregate passes **1,106 / 1,106 exact**; the normal VC7 image
+and complete Linux i386 image link; and the Linux fixed-layout verifier
+passes.  `Player.hpp` now has no semantic-router candidates.  Continue on the
+branch with ECL/Game residual state, without opening or merging a PR until the
+user explicitly requests it.
