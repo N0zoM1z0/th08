@@ -1491,3 +1491,13 @@ without those explicit fields retain the stricter whole-section ownership rule.
 - `objd/i386/x3d_matx.obj` in the same SHA-pinned prerelease `D3DX8.LIB` now has six independently replayed target owners: MatrixIdentity, MatrixTransformation, MatrixRotationYawPitchRoll, MatrixRotationAxis, MatrixTransformation_K7, and MatrixInverse_K7.
 - Do not assume a uniform calling convention from the family name.  VC7 decoration shows `x3d_D3DXMatrixIdentity` as global `__cdecl` (`YA...`) while the other five use global `__stdcall` (`YG...`).  Preserve the decorated ABI per symbol.
 - The 0x1198-byte MatrixTransformation and 0x1154-byte MatrixTransformation_K7 bodies both replay exactly, so large x3d functions are valid direct archive match units when their own COFF relocation graph is explicit.  Their success does not authorize range-based acceptance of neighboring matrix code.
+
+### Return-type-only VC7 symbol migrations
+
+- A source return-type cleanup can preserve every instruction while changing
+  the VC7 decorated symbol.  Changing `EnemyManager::SpawnEnemy1/2` from
+  `void *` to `Enemy *` leaves the x86 thiscall ABI unchanged but moves the
+  compiler symbol from `QAEPAX...` to `QAEPAUEnemy@2@...`.
+- Read the replacement identity from the rebuilt defining COFF object, then
+  migrate every configured caller relocation together.  Do not guess the
+  class/struct decoration (`PAV` versus `PAU`) from source spelling.

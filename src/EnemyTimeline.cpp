@@ -13,8 +13,8 @@ namespace th08
 
 // FUNCTION: th08 0x42a4e0
 #pragma var_order(i, enemy, this)
-void *EnemyManager::SpawnEnemy1(i32 eclSubroutineId, const D3DXVECTOR3 *position, i32 life, i32 itemDropType,
-                                i32 score, i32 mirrorMovementX)
+Enemy *EnemyManager::SpawnEnemy1(i32 eclSubroutineId, const D3DXVECTOR3 *position, i32 life, i32 itemDropType,
+                                 i32 score, i32 mirrorMovementX)
 {
     struct EnemySpawnCopy
     {
@@ -38,7 +38,7 @@ void *EnemyManager::SpawnEnemy1(i32 eclSubroutineId, const D3DXVECTOR3 *position
             enemy->life = life;
         enemy->position = *reinterpret_cast<const Float3 *>(position);
         g_EclManager.CallEclSub(
-            reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage), (i16)eclSubroutineId);
+            &enemy->mainEclContextStorage, (i16)eclSubroutineId);
         if (g_EclManager.RunEcl(enemy) == ZUN_ERROR)
         {
             reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->active = 0;
@@ -61,8 +61,8 @@ void *EnemyManager::SpawnEnemy1(i32 eclSubroutineId, const D3DXVECTOR3 *position
 
 // FUNCTION: th08 0x42a680
 #pragma var_order(i, enemy, this)
-void *EnemyManager::SpawnEnemy2(i32 eclSubroutineId, const D3DXVECTOR3 *position, i32 life, i32 itemDropType,
-                                i32 score, i32 *contextInts)
+Enemy *EnemyManager::SpawnEnemy2(i32 eclSubroutineId, const D3DXVECTOR3 *position, i32 life, i32 itemDropType,
+                                 i32 score, i32 *contextInts)
 {
     struct EnemySpawnCopy
     {
@@ -89,9 +89,9 @@ void *EnemyManager::SpawnEnemy2(i32 eclSubroutineId, const D3DXVECTOR3 *position
             enemy->life = life;
         enemy->position = *reinterpret_cast<const Float3 *>(position);
         g_EclManager.CallEclSub(
-            reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage), (i16)eclSubroutineId);
+            &enemy->mainEclContextStorage, (i16)eclSubroutineId);
         *reinterpret_cast<EnemyContextCopy *>(
-            reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage)->intVariables) =
+            enemy->mainEclContextStorage.intVariables) =
             *reinterpret_cast<const EnemyContextCopy *>(contextInts);
         if (g_EclManager.RunEcl(enemy) == ZUN_ERROR)
         {
@@ -177,8 +177,8 @@ void EclTimeline::Run()
                     position11.x = reinterpret_cast<f32 *>(locals.args11)[1];
                     position11.y = reinterpret_cast<f32 *>(locals.args11)[2];
                     position11.z = 0.0f;
-                    locals.spawned11 = static_cast<Enemy *>(g_EnemyManager.SpawnEnemy1(
-                        locals.args11[0], &position11, locals.args11[3], -1, locals.args11[6], variant));
+                    locals.spawned11 = g_EnemyManager.SpawnEnemy1(
+                        locals.args11[0], &position11, locals.args11[3], -1, locals.args11[6], variant);
                     locals.spawned11->pointItemDropCount = locals.args11[4];
                     locals.spawned11->powerOrPointItemDropCount = locals.args11[5];
                 }

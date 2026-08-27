@@ -596,14 +596,13 @@ Enemy *__fastcall SpawnChildAtScriptPosition(
         position.x = DEP_READ_FLOAT(parent, instruction, 1);
         position.y = DEP_READ_FLOAT(parent, instruction, 2);
         position.z = 0.0f;
-        child = reinterpret_cast<Enemy *>(
-            g_EnemyManager.SpawnEnemy2(
-                *reinterpret_cast<i32 *>(instruction->operands),
-                reinterpret_cast<D3DXVECTOR3 *>(&position),
-                DEP_READ_INT(parent, instruction, 3),
-                DEP_READ_INT(parent, instruction, 4),
-                DEP_READ_INT(parent, instruction, 5),
-                parent->activeEclContext->intVariables));
+        child = g_EnemyManager.SpawnEnemy2(
+            *reinterpret_cast<i32 *>(instruction->operands),
+            reinterpret_cast<D3DXVECTOR3 *>(&position),
+            DEP_READ_INT(parent, instruction, 3),
+            DEP_READ_INT(parent, instruction, 4),
+            DEP_READ_INT(parent, instruction, 5),
+            parent->activeEclContext->intVariables);
     }
     else
     {
@@ -628,14 +627,13 @@ Enemy *__fastcall SpawnChildAtParentOffset(
         position.y = DEP_READ_FLOAT(parent, instruction, 2);
         position.z = 0.0f;
         position += parent->worldPosition;
-        child = reinterpret_cast<Enemy *>(
-            g_EnemyManager.SpawnEnemy2(
-                *reinterpret_cast<i32 *>(instruction->operands),
-                reinterpret_cast<D3DXVECTOR3 *>(&position),
-                DEP_READ_INT(parent, instruction, 3),
-                DEP_READ_INT(parent, instruction, 4),
-                DEP_READ_INT(parent, instruction, 5),
-                parent->activeEclContext->intVariables));
+        child = g_EnemyManager.SpawnEnemy2(
+            *reinterpret_cast<i32 *>(instruction->operands),
+            reinterpret_cast<D3DXVECTOR3 *>(&position),
+            DEP_READ_INT(parent, instruction, 3),
+            DEP_READ_INT(parent, instruction, 4),
+            DEP_READ_INT(parent, instruction, 5),
+            parent->activeEclContext->intVariables);
     }
     else
     {

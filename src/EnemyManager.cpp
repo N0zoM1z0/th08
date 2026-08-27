@@ -126,68 +126,68 @@ void Enemy::UpdateMovement()
 #pragma var_order(i, enemy, this)
 void EnemyManager::Initialize()
 {
-    u8 *enemy = reinterpret_cast<u8 *>(&this->enemies[0]);
+    Enemy *enemy = &this->enemies[0];
     i32 i;
 
     memset(this, 0, 0x9DCF10);
     for (i = 0; (u32)i < 4; i++)
         this->timelineEventSlots[i] = -1;
 
-    enemy = reinterpret_cast<u8 *>(&this->spawnTemplate);
+    enemy = &this->spawnTemplate;
     memset(enemy, 0, 0x53D0);
     for (i = 0; i < 2; i++)
-        reinterpret_cast<Enemy *>(enemy)->secondaryVms[i].scriptIndex = -1;
+        enemy->secondaryVms[i].scriptIndex = -1;
     for (i = 0; i < 0x60; i++)
-        reinterpret_cast<Enemy *>(enemy)->trailSamples[i].position.x = -999.0f;
+        enemy->trailSamples[i].position.x = -999.0f;
 
-    reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_ACTIVE;
-    reinterpret_cast<Enemy *>(enemy)->bossTimer = 0;
-    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_HAS_BEEN_IN_BOUNDS;
+    enemy->flags1 |= ENEMY_FLAG_ACTIVE;
+    enemy->bossTimer = 0;
+    enemy->flags1 &= ~ENEMY_FLAG_HAS_BEEN_IN_BOUNDS;
 
-    *reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->hitboxDimensions) = D3DXVECTOR3(24.0f, 24.0f, 24.0f);
-    *reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->velocity) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-    *reinterpret_cast<i32 *>(&reinterpret_cast<Enemy *>(enemy)->angularVelocity) = 0;
-    *reinterpret_cast<i32 *>(&reinterpret_cast<Enemy *>(enemy)->movementAngle) = 0;
-    *reinterpret_cast<i32 *>(&reinterpret_cast<Enemy *>(enemy)->acceleration) = 0;
-    *reinterpret_cast<i32 *>(&reinterpret_cast<Enemy *>(enemy)->speed) = 0;
-    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_MOVEMENT_MODE_MASK;
-    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_DEFER_BULLET_PATTERN;
-    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_MIRROR_MOVEMENT_X;
-    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_BOSS;
-    reinterpret_cast<Enemy *>(enemy)->activeEclCallStackDepth = 0;
-    reinterpret_cast<Enemy *>(enemy)->life = 1;
-    reinterpret_cast<Enemy *>(enemy)->score = 100;
-    reinterpret_cast<Enemy *>(enemy)->deathAnm1 = 0;
-    reinterpret_cast<Enemy *>(enemy)->deathAnm2 = 0;
-    reinterpret_cast<Enemy *>(enemy)->deathAnm3 = 0;
-    reinterpret_cast<Enemy *>(enemy)->shootIntervalFrames = 0;
-    reinterpret_cast<Enemy *>(enemy)->shootIntervalTimer = 0;
-    *reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->shootOffset) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-    reinterpret_cast<Enemy *>(enemy)->anmScripts.moveLeft = -1;
-    reinterpret_cast<Enemy *>(enemy)->anmScripts.moveRight = -1;
-    reinterpret_cast<Enemy *>(enemy)->anmScripts.idleInitial = -1;
-    reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_COLLISION;
-    reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_DAMAGEABLE;
-    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_NO_SPRITE;
-    reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_ACCEPTS_DAMAGE;
-    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_SPECIAL_INTERACTION;
-    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_DEATH_MODE_MASK;
-    reinterpret_cast<Enemy *>(enemy)->deathCallbackSubId = -1;
-    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_CLAMP_POSITION;
-    reinterpret_cast<Enemy *>(enemy)->attachedEffectCount = 0;
-    reinterpret_cast<Enemy *>(enemy)->pendingEclSubroutineIndex = -1;
+    *reinterpret_cast<D3DXVECTOR3 *>(&enemy->hitboxDimensions) = D3DXVECTOR3(24.0f, 24.0f, 24.0f);
+    *reinterpret_cast<D3DXVECTOR3 *>(&enemy->velocity) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+    *reinterpret_cast<i32 *>(&enemy->angularVelocity) = 0;
+    *reinterpret_cast<i32 *>(&enemy->movementAngle) = 0;
+    *reinterpret_cast<i32 *>(&enemy->acceleration) = 0;
+    *reinterpret_cast<i32 *>(&enemy->speed) = 0;
+    enemy->flags1 &= ~ENEMY_FLAG_MOVEMENT_MODE_MASK;
+    enemy->flags1 &= ~ENEMY_FLAG_DEFER_BULLET_PATTERN;
+    enemy->flags1 &= ~ENEMY_FLAG_MIRROR_MOVEMENT_X;
+    enemy->flags1 &= ~ENEMY_FLAG_BOSS;
+    enemy->activeEclCallStackDepth = 0;
+    enemy->life = 1;
+    enemy->score = 100;
+    enemy->deathAnm1 = 0;
+    enemy->deathAnm2 = 0;
+    enemy->deathAnm3 = 0;
+    enemy->shootIntervalFrames = 0;
+    enemy->shootIntervalTimer = 0;
+    *reinterpret_cast<D3DXVECTOR3 *>(&enemy->shootOffset) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+    enemy->anmScripts.moveLeft = -1;
+    enemy->anmScripts.moveRight = -1;
+    enemy->anmScripts.idleInitial = -1;
+    enemy->flags1 |= ENEMY_FLAG_COLLISION;
+    enemy->flags1 |= ENEMY_FLAG_DAMAGEABLE;
+    enemy->flags1 &= ~ENEMY_FLAG_NO_SPRITE;
+    enemy->flags1 |= ENEMY_FLAG_ACCEPTS_DAMAGE;
+    enemy->flags1 &= ~ENEMY_FLAG_SPECIAL_INTERACTION;
+    enemy->flags1 &= ~ENEMY_FLAG_DEATH_MODE_MASK;
+    enemy->deathCallbackSubId = -1;
+    enemy->flags1 &= ~ENEMY_FLAG_CLAMP_POSITION;
+    enemy->attachedEffectCount = 0;
+    enemy->pendingEclSubroutineIndex = -1;
     for (i = 0; i < 4; i++)
-        reinterpret_cast<Enemy *>(enemy)->lifeCallbackThresholds[i] = -1;
-    reinterpret_cast<Enemy *>(enemy)->timerCallbackThresholdFrames = -1;
-    reinterpret_cast<Enemy *>(enemy)->selectedLaserSlot = 0;
-    reinterpret_cast<Enemy *>(enemy)->damageFlashTimer = 0;
-    reinterpret_cast<Enemy *>(enemy)->flags1 &= ~ENEMY_FLAG_ROTATE_ANM_WITH_MOVEMENT;
-    reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.speedLow = -0.15f;
-    reinterpret_cast<Enemy *>(enemy)->bulletRankInfluence.speedHigh = 0.15f;
-    reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor.spawnSound = 7;
-    reinterpret_cast<Enemy *>(enemy)->bulletSpawnDescriptor.transformSound = 25;
-    reinterpret_cast<Enemy *>(enemy)->minimumPlayerDistanceSquared = 1024.0f;
-    reinterpret_cast<Enemy *>(enemy)->playerShotHitAccumulator = g_Player.damageAccumulatorThreshold;
+        enemy->lifeCallbackThresholds[i] = -1;
+    enemy->timerCallbackThresholdFrames = -1;
+    enemy->selectedLaserSlot = 0;
+    enemy->damageFlashTimer = 0;
+    enemy->flags1 &= ~ENEMY_FLAG_ROTATE_ANM_WITH_MOVEMENT;
+    enemy->bulletRankInfluence.speedLow = -0.15f;
+    enemy->bulletRankInfluence.speedHigh = 0.15f;
+    enemy->bulletSpawnDescriptor.spawnSound = 7;
+    enemy->bulletSpawnDescriptor.transformSound = 25;
+    enemy->minimumPlayerDistanceSquared = 1024.0f;
+    enemy->playerShotHitAccumulator = g_Player.damageAccumulatorThreshold;
 }
 
 // FUNCTION: th08 0x42a210
@@ -246,16 +246,16 @@ void Enemy::DetachEnemyChain(i32 awardRewards)
 
         while (enemy != NULL)
         {
-            if (((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+            if (((enemy->flags1 >>
                   ENEMY_FLAG_INHERIT_PARENT_POSITION_SHIFT) & 1) != 0)
-                reinterpret_cast<Enemy *>(enemy)->positionOffset =
+                enemy->positionOffset =
                     this->position;
 
             nextEnemy = enemy->nextInAttachmentChain;
-            reinterpret_cast<Enemy *>(enemy)->flags1 |= ENEMY_FLAG_SUPPRESS_DEATH_EFFECTS;
-            reinterpret_cast<Enemy *>(enemy)->parentEnemy = NULL;
-            reinterpret_cast<Enemy *>(enemy)->nextInAttachmentChain = NULL;
-            reinterpret_cast<Enemy *>(enemy)->previousInAttachmentChain = NULL;
+            enemy->flags1 |= ENEMY_FLAG_SUPPRESS_DEATH_EFFECTS;
+            enemy->parentEnemy = NULL;
+            enemy->nextInAttachmentChain = NULL;
+            enemy->previousInAttachmentChain = NULL;
 
             if (awardRewards != 0)
             {
@@ -272,11 +272,11 @@ void Enemy::DetachEnemyChain(i32 awardRewards)
                     j /= 3;
 
                 g_AsciiManager.CreateTimePopup(
-                    &reinterpret_cast<Enemy *>(enemy)->worldPosition, j, 0, popupColor);
-                reinterpret_cast<Enemy *>(enemy)->worldPosition =
-                    reinterpret_cast<Enemy *>(enemy)->position +
-                    reinterpret_cast<Enemy *>(enemy)->positionOffset;
-                g_Player.CreateCircleCancelRegion(&reinterpret_cast<Enemy *>(enemy)->worldPosition,
+                    &enemy->worldPosition, j, 0, popupColor);
+                enemy->worldPosition =
+                    enemy->position +
+                    enemy->positionOffset;
+                g_Player.CreateCircleCancelRegion(&enemy->worldPosition,
                                       32.0f, 2.0f, 8, itemType);
 
                 for (dropLocals.i = 0; dropLocals.i < dropLocals.itemCount; dropLocals.i++)
@@ -285,23 +285,23 @@ void Enemy::DetachEnemyChain(i32 awardRewards)
                         g_Rng.GetRandomF32SignedInRange(ZUN_PI),
                         g_Rng.GetRandomF32InRange((f32)dropLocals.itemCount * 2.0f));
                     position.z = 0.0f;
-                    position += reinterpret_cast<Enemy *>(enemy)->worldPosition;
+                    position += enemy->worldPosition;
                     g_ItemManager.SpawnItem(&position, ITEM_TIME, ITEM_STATE_TIME_RISING);
                 }
 
                 if (!g_EnemyManager.HasBoss() || g_Spellcard.IsActive())
                 {
-                    reinterpret_cast<Enemy *>(enemy)->itemDropType = 8;
-                    reinterpret_cast<Enemy *>(enemy)->DropItems(0);
+                    enemy->itemDropType = 8;
+                    enemy->DropItems(0);
                 }
                 g_SoundPlayer.PlaySoundPositionedByIdx(
                     static_cast<SoundIdx>(chainIndex % 2 + 2),
-                    reinterpret_cast<Enemy *>(enemy)->worldPosition.x);
+                    enemy->worldPosition.x);
             }
 
-            reinterpret_cast<Enemy *>(enemy)->powerOrPointItemDropCount = 0;
-            reinterpret_cast<Enemy *>(enemy)->pointItemDropCount = 0;
-            reinterpret_cast<Enemy *>(enemy)->itemDropType = -2;
+            enemy->powerOrPointItemDropCount = 0;
+            enemy->pointItemDropCount = 0;
+            enemy->itemDropType = -2;
             enemy = nextEnemy;
             ++chainIndex;
         }
@@ -444,7 +444,7 @@ i32 Enemy::HandleLifeCallback()
             this->life = this->lifeCallbackThresholds[i];
             this->phaseStartingLife = this->life;
             g_EclManager.CallEclSub(
-                reinterpret_cast<EnemyEclContext *>(&this->mainEclContextStorage),
+                &this->mainEclContextStorage,
                 *reinterpret_cast<i16 *>(&this->lifeCallbackSubIds[i]));
             this->lifeCallbackThresholds[i] = -1;
             this->phaseEndTimeRemainingSeconds =
@@ -479,7 +479,7 @@ i32 Enemy::HandleLifeCallback()
                 if (enemyCursor->deathCallbackSubId >= 0)
                 {
                     g_EclManager.CallEclSub(
-                        reinterpret_cast<EnemyEclContext *>(&enemyCursor->mainEclContextStorage),
+                        &enemyCursor->mainEclContextStorage,
                         enemyCursor->deathCallbackSubId);
                     enemyCursor->deathCallbackSubId = -1;
                 }
@@ -614,7 +614,7 @@ i32 Enemy::HandleTimerCallback()
     }
 
     g_EclManager.CallEclSub(
-        reinterpret_cast<EnemyEclContext *>(&this->mainEclContextStorage),
+        &this->mainEclContextStorage,
         *reinterpret_cast<i16 *>(&this->timerCallbackSubId));
     this->timerCallbackThresholdFrames = -1;
     this->timerCallbackSubId =
@@ -646,7 +646,7 @@ i32 Enemy::HandleTimerCallback()
         if (enemyCursor->deathCallbackSubId >= 0)
         {
             g_EclManager.CallEclSub(
-                reinterpret_cast<EnemyEclContext *>(&enemyCursor->mainEclContextStorage),
+                &enemyCursor->mainEclContextStorage,
                 enemyCursor->deathCallbackSubId);
             enemyCursor->deathCallbackSubId = -1;
         }
@@ -1425,38 +1425,38 @@ i32 EnemyManager::KillAllNonBossEnemies(i32 maxScore, i32 initialScore)
 {
     i32 itemIndex;
     i32 enemyIndex;
-    u8 *enemy;
+    Enemy *enemy;
     i32 totalScore;
     i32 score;
 
-    enemy = reinterpret_cast<u8 *>(&this->enemies[0]);
+    enemy = &this->enemies[0];
     totalScore = initialScore;
     score = 2000;
-    for (enemyIndex = 0; enemyIndex < 480; enemyIndex++, enemy += 0x53D0)
+    for (enemyIndex = 0; enemyIndex < 480; enemyIndex++, enemy++)
     {
-        if ((reinterpret_cast<Enemy *>(enemy)->flags1 & ENEMY_FLAG_ACTIVE) == 0)
+        if ((enemy->flags1 & ENEMY_FLAG_ACTIVE) == 0)
         {
             continue;
         }
-        if (((reinterpret_cast<Enemy *>(enemy)->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0)
+        if (((enemy->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0)
         {
             continue;
         }
-        if (((reinterpret_cast<Enemy *>(enemy)->flags2 >> ENEMY_FLAG2_NO_DEATH_SHIFT) & 1) != 0)
+        if (((enemy->flags2 >> ENEMY_FLAG2_NO_DEATH_SHIFT) & 1) != 0)
         {
             continue;
         }
 
-        reinterpret_cast<Enemy *>(enemy)->life = 0;
-        if (((reinterpret_cast<Enemy *>(enemy)->flags1 >>
+        enemy->life = 0;
+        if (((enemy->flags1 >>
               ENEMY_FLAG_SPECIAL_INTERACTION_SHIFT) & 1) != 0)
         {
-            reinterpret_cast<Enemy *>(enemy)->worldPosition =
-                reinterpret_cast<Enemy *>(enemy)->position +
-                reinterpret_cast<Enemy *>(enemy)->positionOffset;
-            g_ItemManager.SpawnItem(&reinterpret_cast<Enemy *>(enemy)->worldPosition, ITEM_POINT_STAR,
+            enemy->worldPosition =
+                enemy->position +
+                enemy->positionOffset;
+            g_ItemManager.SpawnItem(&enemy->worldPosition, ITEM_POINT_STAR,
                                     ITEM_STATE_AUTOCOLLECT);
-            g_AsciiManager.CreateScorePopup(&reinterpret_cast<Enemy *>(enemy)->worldPosition, score,
+            g_AsciiManager.CreateScorePopup(&enemy->worldPosition, score,
                                             score >= maxScore ? -256 : -1);
             totalScore += score;
             score += 30;
@@ -1465,15 +1465,15 @@ i32 EnemyManager::KillAllNonBossEnemies(i32 maxScore, i32 initialScore)
                 score = maxScore;
             }
 
-            if (reinterpret_cast<Enemy *>(enemy)->trailFlags != 0)
+            if (enemy->trailFlags != 0)
             {
-                for (itemIndex = 0; itemIndex < reinterpret_cast<Enemy *>(enemy)->trailHistoryLength; itemIndex += 6)
+                for (itemIndex = 0; itemIndex < enemy->trailHistoryLength; itemIndex += 6)
                 {
                     g_ItemManager.SpawnItem(
-                        &reinterpret_cast<Enemy *>(enemy)->trailSamples[itemIndex].position, ITEM_POINT_STAR,
+                        &enemy->trailSamples[itemIndex].position, ITEM_POINT_STAR,
                         ITEM_STATE_AUTOCOLLECT);
                     g_AsciiManager.CreateScorePopup(
-                        &reinterpret_cast<Enemy *>(enemy)->trailSamples[itemIndex].position, score,
+                        &enemy->trailSamples[itemIndex].position, score,
                         score >= maxScore ? -256 : -1);
                     totalScore += score;
                     score += 30;
@@ -1485,14 +1485,13 @@ i32 EnemyManager::KillAllNonBossEnemies(i32 maxScore, i32 initialScore)
             }
         }
 
-        reinterpret_cast<Enemy *>(enemy)->DetachFromParentChain();
-        if (reinterpret_cast<Enemy *>(enemy)->deathCallbackSubId >= 0)
+        enemy->DetachFromParentChain();
+        if (enemy->deathCallbackSubId >= 0)
         {
             g_EclManager.CallEclSub(
-                reinterpret_cast<EnemyEclContext *>(
-                    &reinterpret_cast<Enemy *>(enemy)->mainEclContextStorage),
-                reinterpret_cast<Enemy *>(enemy)->deathCallbackSubId);
-            reinterpret_cast<Enemy *>(enemy)->deathCallbackSubId = -1;
+                &enemy->mainEclContextStorage,
+                enemy->deathCallbackSubId);
+            enemy->deathCallbackSubId = -1;
         }
     }
 

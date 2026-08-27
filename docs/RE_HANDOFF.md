@@ -2096,3 +2096,18 @@ the normal VC7 image and complete Linux i386 image link, and the Linux fixed-
 layout verifier passes.  Continue on `semantic/typed-reconstruction`; commit
 and push stable checkpoints, but do not open a PR or merge until explicitly
 requested.
+
+The Enemy spawn/lifecycle checkpoint makes `EnemyManager::SpawnEnemy1 @
+0x0042A4E0` and `SpawnEnemy2 @ 0x0042A680` return `Enemy *`, matching the
+storage they scan and the timeline/ECL callers that immediately consume the
+result as an Enemy.  Their COFF-defined VC7 symbols are
+`QAEPAUEnemy@2@...`, so all six configured references to each old `QAEPAX...`
+identity move with the declaration.  `EnemyManager::Initialize @ 0x00429E00`
+and `KillAllNonBossEnemies @ 0x0042EFB0` now traverse `Enemy *` records rather
+than maintaining a byte cursor and repeating casts; chain cleanup and ECL
+context calls likewise use their real fields directly.  Focused replay across
+the five affected objects passes **101 / 101 exact**.  The required cold
+aggregate passes **1,106 / 1,106 exact** with zero failures; the normal VC7
+image and complete Linux i386 image link, and the fixed-layout verifier passes.
+Continue on `semantic/typed-reconstruction`; commit and push stable
+checkpoints, but do not open a PR or merge until explicitly requested.

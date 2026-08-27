@@ -4278,3 +4278,46 @@ callback and Enemy/Spellcard owners, and `verify-modern-linux.sh` verifies the
 ELF32 executable and every fixed target-owned layout symbol.  No serialized
 record layout, callback ABI, Enemy/Spellcard offset, target byte, accepted-unit
 identity, or aggregate exact total changed.
+
+### Typed Enemy spawning and lifecycle traversal — 2026-08-27
+
+Scope: the two EnemyManager spawn constructors, their timeline/ECL callers,
+and the remaining byte cursors in EnemyManager initialization, chain cleanup,
+and bulk non-boss removal.
+
+`EnemyManager::SpawnEnemy1 @ 0x0042A4E0` and `SpawnEnemy2 @ 0x0042A680`
+scan `EnemyManager::enemies[480]`, copy the typed spawn template into the first
+inactive slot, initialize its ECL context, and return that same slot in EAX.
+Timeline opcode 11 immediately writes Enemy drop fields through the returned
+pointer; ECL child spawners use it as an attachment-chain node.  Both APIs now
+return `Enemy *`, and all callers consume that type without `void *` adapters.
+
+This source-only type change preserves the x86 calling convention but changes
+VC7's decorated identity.  The compiler-emitted symbols were read from
+EnemyTimeline.obj as
+`?SpawnEnemy1@EnemyManager@th08@@QAEPAUEnemy@2@HPBUD3DXVECTOR3@@HHHH@Z`
+and
+`?SpawnEnemy2@EnemyManager@th08@@QAEPAUEnemy@2@HPBUD3DXVECTOR3@@HHHPAH@Z`.
+All six configured references to each old `QAEPAX...` symbol were migrated to
+those observed names; no mangling was inferred by hand.
+
+`EnemyManager::Initialize @ 0x00429E00` now initializes its `spawnTemplate`
+through an `Enemy *`.  `KillAllNonBossEnemies @ 0x0042EFB0` advances the same
+typed array cursor with `enemy++`, which VC7 lowers to the existing 0x53D0-byte
+stride.  `Enemy::DetachEnemyChain @ 0x0042ADB0`, life/timer callbacks, and the
+spawn constructors access typed chain links and `mainEclContextStorage`
+directly.  The target-sensitive lexical scopes, `#pragma var_order` names,
+copy aggregates, and dword float stores remain unchanged.
+
+VC7 oracle: focused relocation-aware replay of EnemyManager.obj,
+EnemyTimeline.obj, EclRun.obj, EclDependencies.obj, and EclExIns.obj passes
+**101 / 101 exact**.  Because the return type changes a shared declaration and
+decorated relocation identities, the required single-job non-reuse cold build
+of all 75 comparison objects passes **1,106 / 1,106 exact** with zero failures.
+The normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container image links with the typed
+spawn API and traversals, and `verify-modern-linux.sh` verifies the ELF32
+executable and every fixed target-owned layout symbol.  No Enemy size/stride,
+spawn behavior, ECL context, target byte, accepted-unit identity, or aggregate
+exact total changed.

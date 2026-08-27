@@ -4904,7 +4904,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x53E4
 type = "REL32"
-symbol = "?SpawnEnemy2@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHPAH@Z"
+symbol = "?SpawnEnemy2@EnemyManager@th08@@QAEPAUEnemy@2@HPBUD3DXVECTOR3@@HHHPAH@Z"
 target = 0x0042A680
 
 [[units.relocations]]
@@ -4970,7 +4970,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x55BE
 type = "REL32"
-symbol = "?SpawnEnemy2@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHPAH@Z"
+symbol = "?SpawnEnemy2@EnemyManager@th08@@QAEPAUEnemy@2@HPBUD3DXVECTOR3@@HHHPAH@Z"
 target = 0x0042A680
 
 [[units.relocations]]
@@ -105212,7 +105212,7 @@ size = 0xE
 [[units]]
 name = "enemy-manager-spawn-enemy1-0042a4e0"
 object = "build/EnemyTimeline.obj"
-symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHH@Z"
+symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAUEnemy@2@HPBUD3DXVECTOR3@@HHHH@Z"
 target_address = 0x0042A4E0
 size = 0x199
 
@@ -105257,7 +105257,7 @@ target = 0x004184B0
 [[units]]
 name = "enemy-manager-spawn-enemy2-0042a680"
 object = "build/EnemyTimeline.obj"
-symbol = "?SpawnEnemy2@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHPAH@Z"
+symbol = "?SpawnEnemy2@EnemyManager@th08@@QAEPAUEnemy@2@HPBUD3DXVECTOR3@@HHHPAH@Z"
 target_address = 0x0042A680
 size = 0x19D
 
@@ -105366,7 +105366,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0xFC
 type = "REL32"
-symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHH@Z"
+symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAUEnemy@2@HPBUD3DXVECTOR3@@HHHH@Z"
 target = 0x0042A4E0
 
 [[units.relocations]]
@@ -105384,7 +105384,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x15B
 type = "REL32"
-symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHH@Z"
+symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAUEnemy@2@HPBUD3DXVECTOR3@@HHHH@Z"
 target = 0x0042A4E0
 
 [[units.relocations]]
@@ -105420,7 +105420,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x1D6
 type = "REL32"
-symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHH@Z"
+symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAUEnemy@2@HPBUD3DXVECTOR3@@HHHH@Z"
 target = 0x0042A4E0
 
 [[units.relocations]]
@@ -105468,7 +105468,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x291
 type = "REL32"
-symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHH@Z"
+symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAUEnemy@2@HPBUD3DXVECTOR3@@HHHH@Z"
 target = 0x0042A4E0
 
 [[units.relocations]]
@@ -105516,7 +105516,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x31A
 type = "REL32"
-symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHH@Z"
+symbol = "?SpawnEnemy1@EnemyManager@th08@@QAEPAUEnemy@2@HPBUD3DXVECTOR3@@HHHH@Z"
 target = 0x0042A4E0
 
 [[units.relocations]]
@@ -107372,7 +107372,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x153
 type = "REL32"
-symbol = "?SpawnEnemy2@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHPAH@Z"
+symbol = "?SpawnEnemy2@EnemyManager@th08@@QAEPAUEnemy@2@HPBUD3DXVECTOR3@@HHHPAH@Z"
 target = 0x0042A680
 
 [[units.relocations]]
@@ -107445,7 +107445,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x165
 type = "REL32"
-symbol = "?SpawnEnemy2@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHPAH@Z"
+symbol = "?SpawnEnemy2@EnemyManager@th08@@QAEPAUEnemy@2@HPBUD3DXVECTOR3@@HHHPAH@Z"
 target = 0x0042A680
 
 [[units.relocations]]
@@ -111473,7 +111473,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0xB0
 type = "REL32"
-symbol = "?SpawnEnemy2@EnemyManager@th08@@QAEPAXHPBUD3DXVECTOR3@@HHHPAH@Z"
+symbol = "?SpawnEnemy2@EnemyManager@th08@@QAEPAUEnemy@2@HPBUD3DXVECTOR3@@HHHPAH@Z"
 target = 0x0042A680
 
 [[units]]

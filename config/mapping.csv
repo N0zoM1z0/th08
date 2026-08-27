@@ -388,8 +388,8 @@ th08::BulletSpawnDescriptor::BulletSpawnDescriptor,0x42a410,0x34,__thiscall,,Bul
 th08::EnemyEclContext::EnemyEclContext,0x42a450,0x3e,__thiscall,,EnemyEclContext*,EnemyEclContext*
 th08::EnemyTrailSample::EnemyTrailSample,0x42a490,0x21,__thiscall,,EnemyTrailSample*,EnemyTrailSample*
 th08::EnemyEclInterpolationSlot::EnemyEclInterpolationSlot,0x42a4c0,0x19,__thiscall,,EnemyEclInterpolationSlot*,EnemyEclInterpolationSlot*
-th08::EnemyManager::SpawnEnemy1,0x42a4e0,0x199,__thiscall,,void*,EnemyManager*,i32,const D3DXVECTOR3*,i32,i32,i32,i32
-th08::EnemyManager::SpawnEnemy2,0x42a680,0x19d,__thiscall,,void*,EnemyManager*,i32,const D3DXVECTOR3*,i32,i32,i32,i32*
+th08::EnemyManager::SpawnEnemy1,0x42a4e0,0x199,__thiscall,,Enemy*,EnemyManager*,i32,const D3DXVECTOR3*,i32,i32,i32,i32
+th08::EnemyManager::SpawnEnemy2,0x42a680,0x19d,__thiscall,,Enemy*,EnemyManager*,i32,const D3DXVECTOR3*,i32,i32,i32,i32*
 th08::Enemy::ReleaseAttachedEffects,0x42a820,0x73,__thiscall,,void,Enemy*
 th08::EclTimeline::Run,0x42a8a0,0x4c0,__thiscall,,void,EclTimeline*
 th08::Enemy::DetachEnemyChain,0x42adb0,0x538,__thiscall,,void,Enemy*,i32

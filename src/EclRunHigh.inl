@@ -713,7 +713,7 @@ enter_subroutine:
         if (TH08_ECL_CONTEXT_ENEMY(ctx)->life > 0)
         {
             SpawnPacketTyped packet93;
-            void *spawned93;
+            Enemy *spawned93;
             {
                 D3DXVECTOR3 position93;
                 memcpy(&packet93, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet93));
@@ -742,7 +742,7 @@ enter_subroutine:
         if (TH08_ECL_CONTEXT_ENEMY(ctx)->life > 0)
         {
             SpawnPacketTyped packet94;
-            void *spawned94;
+            Enemy *spawned94;
             {
                 D3DXVECTOR3 position94;
                 memcpy(&packet94, TH08_ECL_CONTEXT_INSTRUCTION(ctx)->operands, sizeof(packet94));
