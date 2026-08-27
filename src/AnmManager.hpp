@@ -442,6 +442,9 @@ C_ASSERT(sizeof(AnmVm) == 0x2a4);
 C_ASSERT(offsetof(AnmVm, pos) == 0x208);
 C_ASSERT(offsetof(AnmVm, unconsumedTail29A) == 0x29A);
 
+typedef void (__fastcall *AnmProjectedPositionCallback)(
+    AnmVm *vm, D3DXVECTOR3 *projectedPosition);
+
 struct AnmLoaded
 {
     i32 anmIdx;
@@ -523,7 +526,8 @@ struct AnmManager
     void SetRenderStateForVm3D(AnmVm *vm);
     ZunResult ProjectCameraFacingQuad(AnmVm *vm);
     void Project3DQuad(AnmVm *vm);
-    ZunResult ProjectCameraFacingQuadWithCallback(AnmVm *vm, void *callback);
+    ZunResult ProjectCameraFacingQuadWithCallback(
+        AnmVm *vm, AnmProjectedPositionCallback callback);
     ZunResult DrawInner(AnmVm *vm, i32 flags);
     ZunResult AddSpriteToDrawBuffer(VertexTex1DiffuseXyzrhw *vertices);
     ZunResult DrawNoRotation(AnmVm *vm);
@@ -534,7 +538,7 @@ struct AnmManager
     void DrawPlayerBullet(AnmVm *vm);
     ZunResult DrawCameraFacingQuad(AnmVm *vm);
     ZunResult DrawProjected3DQuad(AnmVm *vm);
-    ZunResult DrawWithCallback(AnmVm *vm, void *callback);
+    ZunResult DrawWithCallback(AnmVm *vm, AnmProjectedPositionCallback callback);
     void SetCameraMode(i32 mode)
     {
         this->cameraMode = mode;

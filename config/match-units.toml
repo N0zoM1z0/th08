@@ -9646,7 +9646,7 @@ target = 0x00420BFF
 [[units]]
 name = "enemy-manager-on-update"
 object = "build/EnemyManagerUpdate.obj"
-symbol = "?OnUpdate@EnemyManagerUpdateOverlay@th08@@QAEHXZ"
+symbol = "?OnUpdate@EnemyManager@th08@@QAEHXZ"
 target_address = 0x0042C660
 size = 0x1836
 compare_size = 0x1846
@@ -57828,7 +57828,7 @@ target = 0x00429E00
 [[units.relocations]]
 offset = 0x1D
 type = "DIR32"
-symbol = "?OnUpdate@EnemyManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
+symbol = "?OnUpdateCallback@EnemyManager@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z"
 target = 0x0042C660
 
 [[units.relocations]]
@@ -60283,7 +60283,7 @@ target = 0x018BDC90
 [[units.relocations]]
 offset = 0xE2
 type = "REL32"
-symbol = "?DrawWithCallback@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAX@Z"
+symbol = "?DrawWithCallback@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@P6IX0PAUD3DXVECTOR3@@@Z@Z"
 target = 0x00464400
 
 [[units.relocations]]
@@ -60364,7 +60364,7 @@ target = 0x004628B0
 [[units]]
 name = "anm-manager-draw-with-callback"
 object = "build/AnmManager.obj"
-symbol = "?DrawWithCallback@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAX@Z"
+symbol = "?DrawWithCallback@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@P6IX0PAUD3DXVECTOR3@@@Z@Z"
 target_address = 0x00464400
 size = 0x6F
 
@@ -60377,7 +60377,7 @@ target = 0x004066E0
 [[units.relocations]]
 offset = 0x4E
 type = "REL32"
-symbol = "?ProjectCameraFacingQuadWithCallback@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@PAX@Z"
+symbol = "?ProjectCameraFacingQuadWithCallback@AnmManager@th08@@QAE?AW4ZunResult@@PAUAnmVm@2@P6IX0PAUD3DXVECTOR3@@@Z@Z"
 target = 0x004640E0
 
 [[units.relocations]]
@@ -63599,7 +63599,7 @@ target = 0x004C7F1C
 [[units.relocations]]
 offset = 0xCC
 type = "DIR32"
-symbol = "?g_PlayerShotCollisionOrDifficultyTable@th08@@3PAPAXA"
+symbol = "?g_PlayerShotCollisionCallbacks@th08@@3PAP6IHPAUPlayer@1@PAUPlayerShot@1@PAUFloat3@1@@ZA"
 target = 0x004C7F24
 
 [[units]]

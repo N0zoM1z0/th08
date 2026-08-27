@@ -210,7 +210,7 @@ th08::g_PlayerRoute3ExitRenderCallbacks,0x4c7ed0,global
 th08::g_PlayerShotUpdateCallbacks,0x4c7ee0,global
 th08::g_PlayerShotRenderCallbacks,0x4c7f04,global
 th08::g_PlayerShotTimerCallbacks,0x4c7f1c,global
-th08::g_PlayerShotCollisionOrDifficultyTable,0x4c7f24,global
+th08::g_PlayerShotCollisionCallbacks,0x4c7f24,global
 th08::g_PlayerPlayfieldWidth,0x164d2e4,global
 th08::g_PlayerGaugeBounds,0x164d300,global
 th08::g_PlayerRouteStateFlag,0x164d0b0,global

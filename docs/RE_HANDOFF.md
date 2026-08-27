@@ -2147,3 +2147,21 @@ non-reuse cold aggregate passes **1,106 / 1,106 exact** with zero failures; the
 normal VC7 image and complete Linux i386 image link; and the Linux fixed-layout
 verifier passes.  Continue on `semantic/typed-reconstruction`; commit and push
 stable checkpoints, but do not open a PR or merge until explicitly requested.
+
+The core-callback/update-owner checkpoint gives the projected-position ANM
+callback its target-observed `void __fastcall(AnmVm *, D3DXVECTOR3 *)` ABI and
+removes its `void *` call boundary.  Target references also prove that
+`g_PlayerShotCollisionCallbacks @ 0x004C7F24` is a three-entry typed callback
+array and that the replay difficulty strings beginning at `0x004C7F30` are a
+separate `ReplayManager.cpp` owner, retiring the false nine-entry mixed table.
+
+`EnemyManager::OnUpdate @ 0x0042C660` is now the real non-static member proven
+by target ECX use and the rebuilt `?OnUpdate@EnemyManager@th08@@QAEHXZ` COFF
+definition.  The one-byte overlay and whole-object casts are gone; a distinct
+portable Chain callback adapter preserves `RegisterChain` behavior.  All nine
+focused units pass exact, including OnUpdate **6,214 / 6,214 compared bytes**
+and RegisterChain **203 / 203**.  The required cold aggregate passes **1,106 /
+1,106 exact** with zero failures; the normal VC7 image and complete Linux i386
+image link; and the Linux fixed-layout verifier passes.  Continue on
+`semantic/typed-reconstruction`; commit and push stable checkpoints, but do
+not open a PR or merge until explicitly requested.

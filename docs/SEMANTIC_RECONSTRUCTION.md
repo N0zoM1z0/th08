@@ -4400,3 +4400,49 @@ Effect protocol and owner returns, and `verify-modern-linux.sh` verifies the
 ELF32 executable and every fixed target-owned layout symbol.  No Effect or
 Player layout, callback calling convention, target byte, accepted-unit
 identity, or aggregate exact total changed.
+
+### Typed core callbacks and EnemyManager update ownership — 2026-08-27
+
+Scope: the projected-position ANM callback ABI, Player shot collision callback
+storage, and the complete EnemyManager update loop at `0x0042C660`.
+
+`AnmManager::ProjectCameraFacingQuadWithCallback @ 0x004640E0` tests the
+callback, supplies the `AnmVm *` in ECX, and passes the projected position as
+the sole stack argument.  The callback is therefore represented as
+`void __fastcall(AnmVm *, D3DXVECTOR3 *)`; `DrawWithCallback @ 0x00464400` and
+the stage-Effect draw path now carry that type instead of `void *`.  The two
+new VC7 decorated identities were read from the rebuilt `AnmManager.obj` before
+their configured definition/caller relocations were migrated.
+
+The target reference in `Player::LoadShtFile @ 0x0044DCB0` indexes a
+three-entry callback array beginning at `0x004C7F24`.  The next address,
+`0x004C7F30`, belongs to the independently defined five-entry
+`ReplayManager.cpp` difficulty-name array.  The old nine-entry `void *` source
+array that concatenated three callbacks and six strings was therefore a false
+reconstruction boundary.  `g_PlayerShotCollisionCallbacks` now contains only
+the three correctly typed callback entries, and the replay table remains its
+own owner.
+
+Target instructions for `EnemyManager::OnUpdate @ 0x0042C660` home ECX as the
+owner and address the complete EnemyManager state from it.  The one-byte
+`EnemyManagerUpdateOverlay` shell and repeated whole-object reinterpret casts
+are removed; the exact 0x1836-byte body is now the real non-static
+`EnemyManager::OnUpdate()`.  A separately named `OnUpdateCallback` adapts the
+portable `ChainElem::arg` ABI, while `RegisterChain @ 0x0042C590` continues to
+resolve its callback relocation to target address `0x0042C660`.  The rebuilt
+COFF definitions prove the member symbol
+`?OnUpdate@EnemyManager@th08@@QAEHXZ` and the adapter symbol used by the
+portable link.
+
+VC7 oracle: all nine focused configured units pass exact, including the full
+EnemyManager update comparison (**6,214 / 6,214 compared bytes**) and
+RegisterChain (**203 / 203**).  Because the batch changes shared declarations
+and decorated identities, the required single-job non-reuse cold build of all
+75 comparison objects passes **1,106 / 1,106 exact** with zero failures.  The
+normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container image links with the typed
+callbacks and real EnemyManager owner, and `verify-modern-linux.sh` verifies
+the ELF32 executable and every fixed target-owned layout symbol.  No callback
+calling convention, Player/EnemyManager layout, target byte, accepted-unit
+identity, or aggregate exact total changed.

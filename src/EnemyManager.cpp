@@ -910,7 +910,7 @@ ZunResult EnemyManager::RegisterChain()
 
     enemyManager->Initialize();
 
-    g_EnemyManagerCalcChain.SetCallback((ChainCallback)EnemyManager::OnUpdate);
+    g_EnemyManagerCalcChain.SetCallback((ChainCallback)EnemyManager::OnUpdateCallback);
     g_EnemyManagerCalcChain.addedCallback = (ChainLifetimeCallback)EnemyManager::AddedCallback;
     g_EnemyManagerCalcChain.deletedCallback = (ChainLifetimeCallback)EnemyManager::DeletedCallback;
     g_EnemyManagerCalcChain.arg = enemyManager;

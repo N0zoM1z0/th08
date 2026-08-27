@@ -54,18 +54,9 @@ extern "C" f32 __stdcall EnemyManagerUpdateFabs(f32 value);
 
 extern u8 g_EnemyManagerUpdateCombatTemplate[0x210];
 
-struct EnemyManagerUpdateOverlay
-{
-    u8 raw[1];
-
-    void PrepareFrame();
-    i32 ConvertBulletBonus(i32 base, i32 bullets);
-    i32 OnUpdate();
-};
-
-
+// FUNCTION: th08 0x42c660
 #pragma var_order(currentTargetDelta, difficultyScale, bombHit, damage, enemyIndex, secondaryHitbox, extraDamage, trailIndex, damageOccurred, enemy, rankAmount, previousTargetDelta)
-i32 EnemyManagerUpdateOverlay::OnUpdate()
+i32 EnemyManager::OnUpdate()
 {
     i32 bombHit = 0;
     Enemy *enemy;
@@ -85,7 +76,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
     if (!g_Gui.IsDialoguePresent())
     {
         ++g_GameManager.stagePlayTimeAll;
-        if ((i32)reinterpret_cast<EnemyManager *>(this)->timer >= 16)
+        if ((i32)this->timer >= 16)
         {
             ++g_GameManager.humanityRateDenominator;
             if (!g_Player.focusMode)
@@ -97,7 +88,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
         return 1;
 
     if (g_GameManager.flags.suppressPlayerShots &&
-        reinterpret_cast<EnemyManager *>(this)->bosses[0] != 0)
+        this->bosses[0] != 0)
     {
         // These target-pinned identifiers preserve VC7's block-local hash
         // order.  The initializer values and argument order carry the actual
@@ -106,30 +97,30 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
         D3DXVECTOR3 upperBounds(192.0f, 224.0f, 0.0f);
         g_Player.CalcDamageToEnemy(
             reinterpret_cast<Float3 *>(&upperBounds), reinterpret_cast<Float3 *>(&lowerBounds),
-            &reinterpret_cast<EnemyManager *>(this)->bosses[0]->playerShotHitAccumulator,
+            &this->bosses[0]->playerShotHitAccumulator,
             &bombHit);
     }
 
-    reinterpret_cast<EnemyManager *>(this)->UpdateSubrank();
+    this->UpdateSubrank();
 
-    reinterpret_cast<EnemyManager *>(this)->drawGroupHeads[3] = 0;
-    reinterpret_cast<EnemyManager *>(this)->drawGroupHeads[2] = 0;
-    reinterpret_cast<EnemyManager *>(this)->drawGroupHeads[1] = 0;
-    reinterpret_cast<EnemyManager *>(this)->drawGroupHeads[0] = 0;
+    this->drawGroupHeads[3] = 0;
+    this->drawGroupHeads[2] = 0;
+    this->drawGroupHeads[1] = 0;
+    this->drawGroupHeads[0] = 0;
 
     for (enemyIndex = 0; enemyIndex < g_EclManager.GetTimelineCount(); ++enemyIndex)
     {
-        if (reinterpret_cast<EnemyManager *>(this)->timelines[enemyIndex].instruction == 0)
+        if (this->timelines[enemyIndex].instruction == 0)
         {
-            reinterpret_cast<EnemyManager *>(this)->timelines[enemyIndex].instruction =
+            this->timelines[enemyIndex].instruction =
                 reinterpret_cast<EclTimelineInstruction *>(
                     g_EclManager.GetTimeline(enemyIndex));
         }
-        reinterpret_cast<EnemyManager *>(this)->timelines[enemyIndex].Run();
+        this->timelines[enemyIndex].Run();
     }
 
-    enemy = &reinterpret_cast<EnemyManager *>(this)->enemies[0];
-    reinterpret_cast<EnemyManager *>(this)->activeEnemyCount = 0;
+    enemy = &this->enemies[0];
+    this->activeEnemyCount = 0;
     for (enemyIndex = 0; enemyIndex < 480; ++enemyIndex, ++enemy)
     {
         if ((enemy->flags1 & ENEMY_FLAG_ACTIVE) == 0)
@@ -150,7 +141,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
             goto process_enemy_death;
         }
 
-        ++reinterpret_cast<EnemyManager *>(this)->activeEnemyCount;
+        ++this->activeEnemyCount;
 
         if ((reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->pauseTimer &&
              (g_Player.bombState.isInUse || g_Player.playerState)) ||
@@ -680,26 +671,25 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
         if (!reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->noSprite &&
             reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->active)
         {
-            enemy->nextInDrawGroup = reinterpret_cast<EnemyManager *>(this)->drawGroupHeads[
+            enemy->nextInDrawGroup = this->drawGroupHeads[
                 enemy->drawGroup];
-            reinterpret_cast<EnemyManager *>(this)->drawGroupHeads[
+            this->drawGroupHeads[
                 enemy->drawGroup] = enemy;
         }
     }
 
-    if ((reinterpret_cast<EnemyManager *>(this)->timer % 200) == 0 &&
+    if ((this->timer % 200) == 0 &&
         g_GameManager.IsTampered())
         return 4;
 
-    reinterpret_cast<EnemyManager *>(this)->timer++;
+    this->timer++;
     return 1;
 }
 
-// FUNCTION: th08 0x42c660
-ChainCallbackResult EnemyManager::OnUpdate(EnemyManager *enemyManager)
+// The portable chain ABI supplies its owner through ChainElem::arg.
+ChainCallbackResult EnemyManager::OnUpdateCallback(EnemyManager *enemyManager)
 {
-    return static_cast<ChainCallbackResult>(
-        reinterpret_cast<EnemyManagerUpdateOverlay *>(enemyManager)->OnUpdate());
+    return static_cast<ChainCallbackResult>(enemyManager->OnUpdate());
 }
 
 } // namespace th08

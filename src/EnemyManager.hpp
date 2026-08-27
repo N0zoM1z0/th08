@@ -463,7 +463,8 @@ struct EnemyManager
     void Initialize();
     void UpdateSubrank();
     static ZunResult RegisterChain();
-    static ChainCallbackResult OnUpdate(EnemyManager *enemyManager);
+    i32 OnUpdate();
+    static ChainCallbackResult OnUpdateCallback(EnemyManager *enemyManager);
     static ChainCallbackResult OnDrawHighPrio(EnemyManager *enemyManager);
     ChainCallbackResult __fastcall OnDrawImpl(i32 drawGroup, i32 chainPriority);
     static ChainCallbackResult OnDrawLowPrio(EnemyManager *enemyManager);

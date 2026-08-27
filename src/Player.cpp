@@ -191,18 +191,9 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotUpdateCallback, 6, g_PlayerShotUpdateCall
     NULL, UpdateHomingShot, NULL, UpdateFallingShot, UpdatePersistentShot, UpdateShotTrail};
 DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotDrawCallback, 2, g_PlayerShotDrawCallbacks) = {
     NULL, DrawShotTrail};
-typedef void *PlayerShotCollisionOrDifficultyEntry;
-DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotCollisionOrDifficultyEntry, 9,
-                             g_PlayerShotCollisionOrDifficultyTable) = {
-    NULL,
-    reinterpret_cast<void *>(ApplyShotHitBehavior),
-    reinterpret_cast<void *>(SpawnPeriodicShotHitEffect),
-    const_cast<char *>("Easy"),
-    const_cast<char *>("Normal"),
-    const_cast<char *>("Hard"),
-    const_cast<char *>("Lunatic"),
-    const_cast<char *>("Extra"),
-    const_cast<char *>("LastWord")};
+DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotCollisionCallback, 3,
+                             g_PlayerShotCollisionCallbacks) = {
+    NULL, ApplyShotHitBehavior, SpawnPeriodicShotHitEffect};
 
 ZunBool IsResourceReloadDisabled();
 void __fastcall PlayerBuildAabb(Float3 *topLeft, Float3 *bottomRight,
@@ -1750,9 +1741,9 @@ ZunResult Player::LoadShtFile(PlayerRawShtFile **header, const char *path)
             descriptor->drawCallback =
                 g_PlayerShotDrawCallbacks[reinterpret_cast<u32>(descriptor->drawCallback)];
 
-            descriptor->collisionCallback = reinterpret_cast<PlayerShotCollisionCallback>(
-                g_PlayerShotCollisionOrDifficultyTable[
-                    reinterpret_cast<u32>(descriptor->collisionCallback)]);
+            descriptor->collisionCallback =
+                g_PlayerShotCollisionCallbacks[
+                    reinterpret_cast<u32>(descriptor->collisionCallback)];
             descriptor++;
         }
     }

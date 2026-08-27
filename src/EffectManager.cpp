@@ -1217,7 +1217,8 @@ i32 EffectManager::DrawBackgroundEffects()
         {
             if (effect->effectId == 0x33 || effect->effectId == 0x3F)
             {
-                g_AnmManager->DrawWithCallback(&effect->vm, (void *)AdjustStageEffectDrawPosition);
+                g_AnmManager->DrawWithCallback(
+                    &effect->vm, AdjustStageEffectDrawPosition);
             }
             else
             {
