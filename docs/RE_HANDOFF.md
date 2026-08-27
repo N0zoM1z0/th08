@@ -1888,3 +1888,13 @@ and after the edit, including full RunEcl; the required cold aggregate passes
 link; and the Linux fixed-layout verifier passes.  Continue with Game/GUI/
 Ending residual state on the branch.  Do not open or merge a PR until the user
 explicitly asks.
+
+The GameManager residual checkpoint proves three formerly anonymous ranges as
+compiler alignment and retains only two independently unconsumed dwords.  All
+surrounding replay, RNG, stage, playtime, frame-skip, and active-frame fields
+are offset-asserted.  Focused GameManager replay passes **42 / 42 exact**
+before and after the edit; the required cold aggregate passes **1,106 / 1,106
+exact**; the normal VC7 image and complete Linux i386 image link; and the Linux
+fixed-layout verifier passes.  Continue with the bounded GUI/Ending residuals
+and audit the Replay constructor-sensitive opaque ranges separately.  Keep all
+work on the branch until the user explicitly requests another PR/merge.

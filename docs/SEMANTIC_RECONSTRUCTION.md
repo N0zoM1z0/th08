@@ -3663,3 +3663,36 @@ all review-router categories; repository-wide anonymous/opaque routing moves
 from 16/8 to 8/6.  Those counts are review aids, not completion percentages.
 No opcode selection, operand resolution, interpolation, callback, Effect
 behavior, target byte, accepted-unit identity, or exact total changed.
+
+### GameManager residual-state and alignment closure — 2026-08-27
+
+Scope: the six evidence-limited fields retained after the GameManager runtime,
+setup, score, replay, frame-counter, and stage-transition reconstruction.
+
+Bytes `+0x3DBB6..+0x3DBB7` align `demoFrameCount @ +0x3DBB8`; bytes
+`+0x3DDBE..+0x3DDBF` align `gameplayFrameCounter @ +0x3DDC0`; and bytes
+`+0x3DDD2..+0x3DDD3` align `arcadeRegionTopLeftPos @ +0x3DDD4`.  These are now
+compiler-owned padding rather than anonymous state.  The dwords at
+`+0x3DDCC` and `+0x3DE0C` have no independent authored producer or consumer
+beyond whole-manager clearing and remain explicit `unconsumed` storage.
+
+Assertions pin both sides of every alignment range, both neutral dwords, the
+replay filename/seed boundary, current-stage clear flag, playtime/frame-skip
+counters, and all following active/extreme-state counters.  No replay buffer,
+RNG seed, stage state, counter width, Float2 alignment, or manager extent
+changed.
+
+VC7 oracle: focused replay of `GameManager.obj` passes **42 / 42 exact** before
+and after the edit, including OnUpdate, GameplaySetupThread, and
+InitializeScoreData.  Because `GameManager.hpp` is shared through the PCH, the
+required single-job non-reuse cold build of all 75 comparison objects passes
+**1,106 / 1,106 exact** with zero failures, and the normal VC7 production image
+links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  `GameManager.hpp` now has zero candidates in all four
+review-router categories; repository-wide anonymous/opaque routing moves from
+8/6 to 2/6.  Those counts are review aids, not completion percentages.  No
+gameplay state transition, stage setup, replay behavior, target byte,
+accepted-unit identity, or exact total changed.
