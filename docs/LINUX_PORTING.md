@@ -121,6 +121,7 @@ Useful development overrides are:
 | `TH08_LINUX_PKG_CONFIG_LIBDIR` | i386-only pkg-config search path |
 | `TH08_FONT` | Explicit readable Japanese font file |
 | `TH08_SOLVER_SOCKET` | Opt in to the experimental hard-no-bomb lockstep bridge; see `LINUX_SOLVER_BRIDGE.md` |
+| `TH08_SOLVER_PRESERVE_LIVES` | `0` restores retail life decrement for diagnostic replay-save runs; bridge default is `1` |
 
 ## Port boundary
 

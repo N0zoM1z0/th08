@@ -41,7 +41,7 @@ struct BridgeState
 {
     BridgeState()
         : configured(false), initialized(false), failed(false), server(-1),
-          client(-1), epoch(0)
+          client(-1), epoch(0), preserveLives(true)
     {
     }
 
@@ -51,6 +51,7 @@ struct BridgeState
     int server;
     int client;
     uint64_t epoch;
+    bool preserveLives;
 };
 
 BridgeState g_bridge;
@@ -199,6 +200,18 @@ void InitializeBridge()
     if (!g_bridge.configured)
         return;
 
+    const char *preserveLives = getenv("TH08_SOLVER_PRESERVE_LIVES");
+    if (preserveLives != NULL)
+    {
+        if (strcmp(preserveLives, "0") == 0)
+            g_bridge.preserveLives = false;
+        else if (strcmp(preserveLives, "1") != 0)
+        {
+            FailBridge("TH08_SOLVER_PRESERVE_LIVES must be 0 or 1");
+            return;
+        }
+    }
+
     if (strlen(path) >= sizeof(sockaddr_un::sun_path))
     {
         FailBridge("TH08_SOLVER_SOCKET is too long");
@@ -231,7 +244,8 @@ void InitializeBridge()
     // the replay for the canonical target; it is not an ELF identity claim.
     g_Supervisor.exeSize = ORIGINAL_EXE_SIZE;
     g_Supervisor.exeChecksum = ORIGINAL_EXE_CHECKSUM;
-    fprintf(stderr, "th08-modern: solver bridge listening on %s\n", path);
+    fprintf(stderr, "th08-modern: solver bridge listening on %s (preserve lives: %s)\n",
+            path, g_bridge.preserveLives ? "yes" : "no");
 }
 
 bool EnsureClient()
@@ -273,9 +287,10 @@ bool ExchangeInput(uint16_t *inputMask)
     PutU16(request, 16, g_CurFrameInput);
     PutU16(request, 18, g_LastFrameInput);
     PutU16(request, 20, g_Rng.GetSeed());
-    PutU32(request, 24,
-           REQUEST_FLAG_REPLAY_TARGET_STAMPED |
-               REQUEST_FLAG_LIVES_PRESERVED);
+    uint32_t requestFlags = REQUEST_FLAG_REPLAY_TARGET_STAMPED;
+    if (g_bridge.preserveLives)
+        requestFlags |= REQUEST_FLAG_LIVES_PRESERVED;
+    PutU32(request, 24, requestFlags);
     PutU32(request, 28, PausedMilliseconds());
 
     unsigned char response[RESPONSE_SIZE];
@@ -329,7 +344,7 @@ bool SolverBridgeReadInput(uint16_t *inputMask)
 bool SolverBridgePreserveLives()
 {
     InitializeBridge();
-    return g_bridge.configured;
+    return g_bridge.configured && g_bridge.preserveLives;
 }
 
 uint64_t SolverBridgeVirtualMicroseconds(uint64_t realMicroseconds)

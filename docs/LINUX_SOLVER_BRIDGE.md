@@ -31,6 +31,12 @@ TH08_SOLVER_SOCKET=/tmp/owned-run-directory/bridge.sock \
   build/modern-linux/th08-modern --data-dir /path/to/data
 ```
 
+Bridge mode preserves lives by default, matching the analysis patch used for
+full-route hit counting. Set `TH08_SOLVER_PRESERVE_LIVES=0` only for diagnostic
+runs that must reach the retail game-over/result-screen replay-save path. The
+request flags attest which behavior is active; a no-preserve run is not an
+NMNB result.
+
 The runtime creates the socket and blocks at the first input sample until one
 client connects. It never deletes an existing path and does not unlink the
 socket on exit. The launcher must create and later remove its own exact run
@@ -53,7 +59,7 @@ All integers are unsigned little-endian. Requests are 32 bytes:
 | `18` | `u16` | previous input before this sample |
 | `20` | `u16` | current RNG seed |
 | `22` | `u16` | reserved, zero |
-| `24` | `u32` | flags; bit 0 means replay target identity stamped |
+| `24` | `u32` | flags; bit 0 means replay target identity stamped, bit 1 means lives preserved |
 | `28` | `u32` | cumulative solver-wait milliseconds, saturating |
 
 Responses are 24 bytes:

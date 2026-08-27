@@ -9,10 +9,15 @@ come from the ledgers, not this prose.
 `solver/linux-lockstep-replay-bridge` is a derived Linux-port integration lane.
 It does not change the exact-build ledgers and must not be merged as evidence
 of VC7 or whole-image matching. The opt-in backend bridge is documented in
-`docs/LINUX_SOLVER_BRIDGE.md`. Its first source checkpoint compiles and passes
-the portable i386/fixed-layout verifier; a neutral live handshake completed.
-Replay determinism, cross-runtime fingerprints, and original playback remain
-pending, so no NMNB or platform-equivalence claim follows.
+`docs/LINUX_SOLVER_BRIDGE.md`. The portable i386/fixed-layout verifier passes,
+and a retained Windows-origin Stage-5 replay now has exact compact semantic
+parity across 12,000 samples through replay frames 1--12,494. This is only the
+Windows-to-Linux direction: a normally saved Linux-generated replay and its
+original-v1.00d playback remain pending, so no NMNB or platform-equivalence
+claim follows. Bridge mode preserves lives by default. The diagnostic-only
+`TH08_SOLVER_PRESERVE_LIVES=0` restores retail life decrement and omits the
+wire `LIVES_PRESERVED` flag so a short run can reach the normal replay-save
+path without being confused with an NMNB result.
 
 ## Active playable-port branch
 

@@ -12,7 +12,8 @@ namespace modern
 // hard-no-bomb solver run.
 bool SolverBridgeReadInput(uint16_t *inputMask);
 
-// Mirror the retail analysis patch at 0x0044D0FA while bridge mode is active.
+// Mirror the retail analysis patch at 0x0044D0FA while bridge mode is active,
+// unless the diagnostic replay-save mode explicitly restores life decrement.
 // The patched instruction changes AddLives(-1) to AddLives(0), so callers must
 // still execute AddLives to preserve its anti-tamper bookkeeping.
 bool SolverBridgePreserveLives();
