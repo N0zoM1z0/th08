@@ -1936,3 +1936,17 @@ aggregate passes **1,106 / 1,106 exact**, the normal VC7 image and complete
 Linux i386 image link, and the Linux fixed-layout verifier passes.  Continue
 the router-invisible neutral-field audit on the branch; do not open or merge a
 PR until explicitly requested.
+
+The neutral-identifier checkpoint replaces the remaining production-source
+`unknown*`/`unk*` names with evidence-bounded `unconsumed`,
+`constructorCleared`, or `serializedReserved` identities across AsciiManager,
+Background, Midi, SoundPlayer, ScoreDat, ResultScreen, and zwave.  New offset
+assertions pin the affected public and wire layouts.  Focused cold replay of
+the seven affected objects passes **238 / 238 exact** before and after the
+edit; the required cold aggregate passes **1,106 / 1,106 exact**; the normal
+VC7 image and complete Linux i386 image link; and the Linux fixed-layout
+verifier passes.  Production source now has no `unknown*`, `unk*`, or authored
+address-style `FUN_*` identifiers, while the four-category semantic router
+remains zero.  Continue auditing router-invisible weak names and intentionally
+neutral state on `semantic/typed-reconstruction`; do not open or merge a PR
+until explicitly requested.

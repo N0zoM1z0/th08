@@ -74,10 +74,12 @@ struct AsciiManagerPopup
     Float2 scale;
     bool inUse;
     BYTE characterCount;
-    u32 unknownDword34;
+    u32 unconsumedDword34;
 };
 
 C_ASSERT(sizeof(AsciiManagerPopup) == 0x38);
+C_ASSERT(offsetof(AsciiManagerPopup, characterCount) == 0x31);
+C_ASSERT(offsetof(AsciiManagerPopup, unconsumedDword34) == 0x34);
 
 struct AsciiManager
 {

@@ -291,7 +291,7 @@ struct ScoreDat
     static i32 ParsePLST(ScoreDat *score, Plst *outPlst);
     static void ReleaseScore(ScoreDat *score);
 
-    u8 unk0x0;
+    u8 unconsumedHeaderByte00;
     u8 rngValue1;
     u16 checksum;
     u16 version;
@@ -304,5 +304,11 @@ struct ScoreDat
 };
 
 C_ASSERT(sizeof(ScoreDat) == 0x1c);
+C_ASSERT(offsetof(ScoreDat, unconsumedHeaderByte00) == 0x0);
+C_ASSERT(offsetof(ScoreDat, rngValue1) == 0x1);
+C_ASSERT(offsetof(ScoreDat, checksum) == 0x2);
+C_ASSERT(offsetof(ScoreDat, version) == 0x4);
+C_ASSERT(offsetof(ScoreDat, rngValue2) == 0x6);
+C_ASSERT(offsetof(ScoreDat, headerSize) == 0x8);
 
 } /* namespace th08 */

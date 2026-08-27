@@ -2150,15 +2150,14 @@ i32 ResultScreen::HandleOtherStatsScreen()
     return 0;
 }
 
-#pragma var_order(vm, strPos, unknownFloat, completion, slowdownRate)
+#pragma var_order(vm, strPos, unconsumedPerformanceRating, completion, slowdownRate)
 i32 ResultScreen::DrawFinalStats()
 {
     static const float g_DifficultyWeightList[] = {-30.0f, -10.0f, 20.0f, 30.0f, 30.0f};
     AnmVm *vm;
     Float3 strPos;
     float completion;
-    float unknownFloat; // This variable also exists in EoSD, also unused
-                        // there. Maybe a debugging variable?
+    float unconsumedPerformanceRating;
     float slowdownRate;
 
     switch (this->currentState)
@@ -2167,7 +2166,7 @@ i32 ResultScreen::DrawFinalStats()
     case RESULT_SCREEN_STATE_STATS_TO_SAVE_TRANSITION:
         vm = &this->spriteVms[RESULT_SCRIPT_PLAYER_RESULTS];
         g_AsciiManager.SetColor(vm->color1.d3dColor);
-        unknownFloat = 0.0f;
+        unconsumedPerformanceRating = 0.0f;
 
         completion =
             g_GameManager.difficulty < EXTRA ? g_GameManager.stagePlayTimeAll / 195559.0f : g_GameManager.stagePlayTimeAll / 80000.0f;
@@ -2185,21 +2184,22 @@ i32 ResultScreen::DrawFinalStats()
 
         if (g_GameManager.globals->displayScore < 2000000)
         {
-            unknownFloat -= 20.0f;
+            unconsumedPerformanceRating -= 20.0f;
         }
         else if (g_GameManager.globals->displayScore < 200000000)
         {
-            unknownFloat += (((g_GameManager.globals->displayScore - 2000000) / 198000000.0f) * 60.0f) - 20.0f;
+            unconsumedPerformanceRating +=
+                (((g_GameManager.globals->displayScore - 2000000) / 198000000.0f) * 60.0f) - 20.0f;
         }
         else
         {
-            unknownFloat += 40.0f;
+            unconsumedPerformanceRating += 40.0f;
         }
 
         strPos.y += 22.0f;
         g_AsciiManager.AddString(&strPos, g_RightAlignedDifficultyList[g_GameManager.difficulty]);
 
-        unknownFloat += g_DifficultyWeightList[g_GameManager.difficulty];
+        unconsumedPerformanceRating += g_DifficultyWeightList[g_GameManager.difficulty];
 
         strPos.x += g_AsciiManager.spaceWidth;
         strPos.y += 22.0f;
@@ -2212,30 +2212,31 @@ i32 ResultScreen::DrawFinalStats()
             }
             g_AsciiManager.AddFormatText(&strPos, "    %3.2f%%", completion * 100.0f);
 
-            unknownFloat += completion * 70.0f;
+            unconsumedPerformanceRating += completion * 70.0f;
         }
         else
         {
             g_AsciiManager.AddFormatText(&strPos, "      100%%");
 
-            unknownFloat += 70.0f;
+            unconsumedPerformanceRating += 70.0f;
         }
 
         strPos.y += 22.0f;
         g_AsciiManager.AddFormatText(&strPos, "%9d", g_GameManager.globals->numRetries);
-        unknownFloat -= (g_GameManager.globals->numRetries * 10.0f);
+        unconsumedPerformanceRating -= (g_GameManager.globals->numRetries * 10.0f);
 
         strPos.y += 22.0f;
         g_AsciiManager.AddFormatText(&strPos, "%9d", g_GameManager.GetDeaths());
-        unknownFloat -= (g_GameManager.GetDeaths() * 5.0f) - 10.0f;
+        unconsumedPerformanceRating -= (g_GameManager.GetDeaths() * 5.0f) - 10.0f;
 
         strPos.y += 22.0f;
         g_AsciiManager.AddFormatText(&strPos, "%9d", g_GameManager.GetBombsUsed());
-        unknownFloat -= ((g_GameManager.GetBombsUsed() * 2.0f) - 10.0f);
+        unconsumedPerformanceRating -= ((g_GameManager.GetBombsUsed() * 2.0f) - 10.0f);
 
         strPos.y += 22.0f;
         g_AsciiManager.AddFormatText(&strPos, "%9d", g_GameManager.globals->spellcardsCaptured);
-        unknownFloat += g_GameManager.globals->spellcardsCaptured * g_SpellcardsWeightList[g_GameManager.difficulty];
+        unconsumedPerformanceRating +=
+            g_GameManager.globals->spellcardsCaptured * g_SpellcardsWeightList[g_GameManager.difficulty];
 
         slowdownRate = ((g_Supervisor.lagNumerator / g_Supervisor.lagDenominator) - 0.5f) * 2.0f;
         if (slowdownRate < 0.0f)
@@ -2255,29 +2256,29 @@ i32 ResultScreen::DrawFinalStats()
 
         if (slowdownRate < 50.0f)
         {
-            unknownFloat -= 70.0f * slowdownRate / 100.0f;
+            unconsumedPerformanceRating -= 70.0f * slowdownRate / 100.0f;
         }
         else
         {
-            unknownFloat = -999.0f;
+            unconsumedPerformanceRating = -999.0f;
         }
 
         if (g_GameManager.globals->pointItemsCollected < 800)
         {
-            unknownFloat += 0.01f * g_GameManager.globals->pointItemsCollected;
+            unconsumedPerformanceRating += 0.01f * g_GameManager.globals->pointItemsCollected;
         }
         else
         {
-            unknownFloat += 8.0f;
+            unconsumedPerformanceRating += 8.0f;
         }
 
         if (g_GameManager.globals->graze < 5000)
         {
-            unknownFloat += 0.0025f * g_GameManager.globals->graze;
+            unconsumedPerformanceRating += 0.0025f * g_GameManager.globals->graze;
         }
         else
         {
-            unknownFloat += 12.5f;
+            unconsumedPerformanceRating += 12.5f;
         }
 
         g_AsciiManager.SetColor(COLOR_WHITE);

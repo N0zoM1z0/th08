@@ -192,9 +192,9 @@ MidiOutput::MidiOutput()
     this->noteTranspose = 0;
     this->fadeOutVolumeMultiplier = 0;
     this->fadeOutLastSetVolume = 0;
-    this->unknownDword2D0 = 0;
+    this->constructorClearedDword2D0 = 0;
     this->volumeUpdatesSuppressed = 0;
-    this->unknownDword2D8 = 0;
+    this->constructorClearedDword2D8 = 0;
     this->resetOnlyFadeState2DC = 0;
     this->fadeOutActive = FALSE;
 

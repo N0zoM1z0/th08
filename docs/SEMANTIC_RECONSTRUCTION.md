@@ -3830,3 +3830,49 @@ three template pairs, and `verify-modern-linux.sh` verifies the ELF32 image
 and every fixed target-owned layout symbol.  No Effect motion, Boss test,
 color operation, table slot, target address, relocation target, accepted-unit
 identity, or exact total changed.
+
+### Neutral identifier closure — 2026-08-27
+
+Scope: the remaining production-source identifiers whose `unknown`/`unk`
+spelling concealed an already bounded evidence class in AsciiManager,
+Background, Midi, SoundPlayer, ScoreDat, ResultScreen, and zwave.  This pass
+also pins the public or serialized layouts touched by the new names.
+
+The Ascii popup dword at `+0x34`, SoundPlayer dwords at `+0x04`, `+0x61C`,
+and `+0x5210`, and DummyMidiTimer dword at `+0x10` have no scalar consumer
+beyond their enclosing initialization or otherwise observed storage role.
+They are therefore named `unconsumed...`, without inventing gameplay meaning.
+Midi's per-channel bytes at `+0x144` likewise have no authored access, while
+the dwords at `+0x2D0` and `+0x2D8` are distinguished as
+`constructorCleared...` because that is the only observed operation.
+
+ScoreDat header byte `+0x00` is carried through the serialized header but does
+not participate in the checksum, custom XOR transform, or post-decrypt
+protocol.  It becomes `unconsumedHeaderByte00`, rather than an unsupported
+magic/version claim.  The raw stage-object byte at `+0x02`, between the object
+ID and position, is a reserved wire slot and becomes `serializedReserved02`.
+Offset assertions pin both records and their adjacent fields.
+
+ResultScreen's local performance rating still performs the target-observed
+score, difficulty, completion, retry, death, bomb, spell, slowdown, item, and
+graze adjustments, but its final value has no consumer; its name now states
+that boundary.  The two zwave seek results are likewise stored exactly as in
+the target but never tested, so they become `unconsumedSeekResult` rather than
+suggesting meaningful error handling.
+
+VC7 oracle: focused cold replay of the seven affected comparison objects
+passes **238 / 238 exact** before and after the edits.  The required
+single-job non-reuse cold build of all 75 comparison objects passes
+**1,106 / 1,106 exact** with zero failures, and the normal VC7 production
+image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  Production source now has no `unknown*`, `unk*`, or authored
+address-style `FUN_*` identifiers; the two remaining `FUN_` strings are
+target-name comments beside already semantic ECL functions.  The four-category
+semantic router remains zero.  Neutral `unconsumed`, `serializedReserved`, and
+`constructorCleared` names are deliberately retained wherever the corpus does
+not justify a stronger behavioral identity, so this is an identifier-closure
+checkpoint rather than a claim that every recoverable program concept has
+already been named.

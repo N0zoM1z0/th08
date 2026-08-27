@@ -185,14 +185,14 @@ class MidiOutput : MidiTimer
     ULONGLONG elapsedTicksBeforeTempoChange;
     MidiTrack *tracks;
     MidiDevice outputDevice;
-    u8 unknownPerChannelState144[16];
+    u8 unconsumedPerChannelBytes144[16];
     MidiChannel channels[16];
     i8 noteTranspose;
     f32 fadeOutVolumeMultiplier;
     u32 fadeOutLastSetVolume;
-    u32 unknownDword2D0;
+    u32 constructorClearedDword2D0;
     u32 volumeUpdatesSuppressed;
-    u32 unknownDword2D8;
+    u32 constructorClearedDword2D8;
     u32 resetOnlyFadeState2DC;
     BOOL fadeOutActive;
     i32 fadeOutDurationMs;
@@ -209,7 +209,7 @@ class DummyMidiTimer : public MidiTimer
     void OnTimerElapsed();
 
   private:
-    u32 unknownDword10;
+    u32 unconsumedDword10;
 };
 
 C_ASSERT(sizeof(DummyMidiTimer) == 0x14);

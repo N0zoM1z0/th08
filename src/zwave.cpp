@@ -1078,7 +1078,7 @@ DWORD CWaveFile::GetSize()
 //-----------------------------------------------------------------------------
 HRESULT CWaveFile::ResetFile(bool bLoop)
 {
-    DWORD unk;
+    DWORD unconsumedSeekResult;
 
     if (m_bIsReadingFromMemory)
     {
@@ -1103,14 +1103,16 @@ HRESULT CWaveFile::ResetFile(bool bLoop)
 
         if (bLoop && m_pzwf->introLength > 0)
         {
-            unk = SetFilePointer(m_hWaveFile,
-                                 g_SoundPlayer.bgmFileBaseOffset + m_pzwf->introLength + m_pzwf->startOffset, 0,
-                                 FILE_BEGIN);
+            unconsumedSeekResult =
+                SetFilePointer(m_hWaveFile,
+                               g_SoundPlayer.bgmFileBaseOffset + m_pzwf->introLength + m_pzwf->startOffset, 0,
+                               FILE_BEGIN);
             m_ck.cksize = m_pzwf->totalLength - m_pzwf->introLength;
         }
         else
         {
-            unk = SetFilePointer(m_hWaveFile, g_SoundPlayer.bgmFileBaseOffset + m_pzwf->startOffset, 0, FILE_BEGIN);
+            unconsumedSeekResult =
+                SetFilePointer(m_hWaveFile, g_SoundPlayer.bgmFileBaseOffset + m_pzwf->startOffset, 0, FILE_BEGIN);
             m_ck.cksize = m_pzwf->totalLength;
         }
     }

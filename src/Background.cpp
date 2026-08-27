@@ -40,10 +40,12 @@ C_ASSERT(sizeof(RawStageObject) == 0x38);
 struct RawStageObjectInstance
 {
     i16 id;
-    i16 unk2;
+    i16 serializedReserved02;
     Float3 position;
 };
 C_ASSERT(sizeof(RawStageObjectInstance) == 0x10);
+C_ASSERT(offsetof(RawStageObjectInstance, serializedReserved02) == 0x2);
+C_ASSERT(offsetof(RawStageObjectInstance, position) == 0x4);
 
 struct RawStageInstr
 {
