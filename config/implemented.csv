@@ -986,9 +986,9 @@ th08::EclRunLowProposal::CallSubOnEnemy
 th08::EclRunLowProposal::PopEclContext
 th08::EclRunLowProposal::SetPrimaryAnmScripts
 th08::EclRunLowProposal::SetExtraAnmScript
-th08::EclRunLowProposal::FindLinkedChildTail0041EFC0
-th08::EclRunLowProposal::SpawnChildStandard0041F110
-th08::EclRunLowProposal::SpawnChildAlternate0041F280
+th08::EclRunLowProposal::FindAttachmentChainTail
+th08::EclRunLowProposal::SpawnChildAtScriptPosition
+th08::EclRunLowProposal::SpawnChildAtParentOffset
 th08::Spellcard::SetEffectTrackingDisabled
 th08::Spellcard::SetBonusUpdatesDisabled
 th08::BulletManager::RemoveBulletsInRadius

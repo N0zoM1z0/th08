@@ -5,6 +5,7 @@
 #include "EnemyManager.hpp"
 #include "BulletManager.hpp"
 #include "GameManager.hpp"
+#include "Player.hpp"
 #include "EclOperands.hpp"
 #include "EclManager.hpp"
 #include "utils.hpp"
@@ -121,7 +122,7 @@ void __fastcall BeginBoundaryAwareMove(
 {
     f32 angle;
 
-    if (EclOperands::g_TargetPlayerPosition017D61AC.x <
+    if (g_Player.position.x <
         reinterpret_cast<Enemy *>(enemy)->position.x)
     {
         angle = AddNormalizeAngle(
@@ -201,10 +202,10 @@ void __fastcall ApplyRandomBiasedMove(u8 *rawEnemy, void *rawInstruction)
 
     if (g_Rng.GetRandomU32InRange(4) != 0)
     {
-        if (EclOperands::g_TargetPlayerPosition017D61AC.x < reinterpret_cast<Enemy *>(rawEnemy)->position.x)
+        if (g_Player.position.x < reinterpret_cast<Enemy *>(rawEnemy)->position.x)
         {
-            wrappedPlayerX = EclOperands::g_TargetPlayerPosition017D61AC.x + 384.0f;
-            if (reinterpret_cast<Enemy *>(rawEnemy)->position.x - EclOperands::g_TargetPlayerPosition017D61AC.x <
+            wrappedPlayerX = g_Player.position.x + 384.0f;
+            if (reinterpret_cast<Enemy *>(rawEnemy)->position.x - g_Player.position.x <
                 wrappedPlayerX - reinterpret_cast<Enemy *>(rawEnemy)->position.x)
             {
                 angle = AddNormalizeAngle(
@@ -218,8 +219,8 @@ void __fastcall ApplyRandomBiasedMove(u8 *rawEnemy, void *rawInstruction)
         }
         else
         {
-            wrappedPlayerX = EclOperands::g_TargetPlayerPosition017D61AC.x - 384.0f;
-            if (EclOperands::g_TargetPlayerPosition017D61AC.x - reinterpret_cast<Enemy *>(rawEnemy)->position.x <
+            wrappedPlayerX = g_Player.position.x - 384.0f;
+            if (g_Player.position.x - reinterpret_cast<Enemy *>(rawEnemy)->position.x <
                 reinterpret_cast<Enemy *>(rawEnemy)->position.x - wrappedPlayerX)
             {
                 angle = g_Rng.GetRandomF32InRange(1.5707964f) - 0.78539819f;
@@ -571,7 +572,7 @@ void __fastcall SetExtraAnmScript(
 
 
 // FUNCTION: th08 0x41efc0
-EclOperands::EnemyOverlay *__fastcall FindLinkedChildTail0041EFC0(
+EclOperands::EnemyOverlay *__fastcall FindAttachmentChainTail(
     EclOperands::EnemyOverlay *parent)
 {
     EclOperands::EnemyOverlay *cursor;
@@ -587,7 +588,7 @@ EclOperands::EnemyOverlay *__fastcall FindLinkedChildTail0041EFC0(
 }
 
 // FUNCTION: th08 0x41f110
-EclOperands::EnemyOverlay *__fastcall SpawnChildStandard0041F110(
+EclOperands::EnemyOverlay *__fastcall SpawnChildAtScriptPosition(
     EclOperands::EnemyOverlay *parent, EclRawInstruction *instruction)
 {
     EclOperands::EnemyOverlay *child;
@@ -618,7 +619,7 @@ EclOperands::EnemyOverlay *__fastcall SpawnChildStandard0041F110(
 }
 
 // FUNCTION: th08 0x41f280
-EclOperands::EnemyOverlay *__fastcall SpawnChildAlternate0041F280(
+EclOperands::EnemyOverlay *__fastcall SpawnChildAtParentOffset(
     EclOperands::EnemyOverlay *parent, EclRawInstruction *instruction)
 {
     EclOperands::EnemyOverlay *child;
@@ -662,11 +663,11 @@ struct SpawnPacketTyped
 {
     SpawnPacketTyped();
 
-    i32 type;
+    i32 eclSubroutineId;
     D3DXVECTOR3 position;
-    i32 arg4;
-    i32 arg5;
-    i32 arg6;
+    i32 life;
+    i32 itemDropType;
+    i32 score;
 };
 
 // FUNCTION: th08 0x41f400
@@ -719,10 +720,10 @@ void __fastcall DispatchShotInstruction(u8 *enemy, RawInstruction *instruction)
            ENEMY_FLAG_YOUKAI_ALIGNED_SHIFT) & 1) != 0))
         return;
     if ((reinterpret_cast<Enemy *>(enemy)->minimumPlayerDistanceSquared > 0.0f) &&
-        (((reinterpret_cast<Enemy *>(enemy)->worldPosition.x - EclOperands::g_TargetPlayerPosition017D61AC.x) *
-             (reinterpret_cast<Enemy *>(enemy)->worldPosition.x - EclOperands::g_TargetPlayerPosition017D61AC.x) +
-         (reinterpret_cast<Enemy *>(enemy)->worldPosition.y - EclOperands::g_TargetPlayerPosition017D61AC.y) *
-             (reinterpret_cast<Enemy *>(enemy)->worldPosition.y - EclOperands::g_TargetPlayerPosition017D61AC.y)) <
+        (((reinterpret_cast<Enemy *>(enemy)->worldPosition.x - g_Player.position.x) *
+             (reinterpret_cast<Enemy *>(enemy)->worldPosition.x - g_Player.position.x) +
+         (reinterpret_cast<Enemy *>(enemy)->worldPosition.y - g_Player.position.y) *
+             (reinterpret_cast<Enemy *>(enemy)->worldPosition.y - g_Player.position.y)) <
         reinterpret_cast<Enemy *>(enemy)->minimumPlayerDistanceSquared))
         return;
 

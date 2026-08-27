@@ -92,14 +92,13 @@ inline LowResult MakeLowResult(LowControl control,
     return result;
 }
 
-// Observed helper ABIs for opcodes 90..92.  Both constructors receive the
-// parent in ECX and the current instruction in EDX; the list-tail lookup uses
-// only ECX.  Names remain provisional until the owning Enemy layout lands.
-EclOperands::EnemyOverlay *__fastcall FindLinkedChildTail0041EFC0(
+// Observed helper ABIs for opcodes 90..92. Both spawners receive the parent in
+// ECX and the current instruction in EDX; the chain-tail lookup uses only ECX.
+EclOperands::EnemyOverlay *__fastcall FindAttachmentChainTail(
     EclOperands::EnemyOverlay *parent);
-EclOperands::EnemyOverlay *__fastcall SpawnChildStandard0041F110(
+EclOperands::EnemyOverlay *__fastcall SpawnChildAtScriptPosition(
     EclOperands::EnemyOverlay *parent, EclRawInstruction *instruction);
-EclOperands::EnemyOverlay *__fastcall SpawnChildAlternate0041F280(
+EclOperands::EnemyOverlay *__fastcall SpawnChildAtParentOffset(
     EclOperands::EnemyOverlay *parent, EclRawInstruction *instruction);
 void __fastcall ApplyRandomBiasedMove(u8 *enemy, void *instruction);
 
@@ -933,9 +932,9 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     // Case 92 additionally calls D3DXVECTOR3::operator+ at 0x00409080.
     case 90:
     {
-        EclOperands::EnemyOverlay *tail = FindLinkedChildTail0041EFC0(enemy);
+        EclOperands::EnemyOverlay *tail = FindAttachmentChainTail(enemy);
         EclOperands::EnemyOverlay *child =
-            SpawnChildStandard0041F110(enemy, instruction);
+            SpawnChildAtScriptPosition(enemy, instruction);
 
         if (!g_EnemyManager.lastSpawnFailed)
         {
@@ -995,9 +994,9 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     }
     case 91:
     {
-        EclOperands::EnemyOverlay *tail = FindLinkedChildTail0041EFC0(enemy);
+        EclOperands::EnemyOverlay *tail = FindAttachmentChainTail(enemy);
         EclOperands::EnemyOverlay *child =
-            SpawnChildAlternate0041F280(enemy, instruction);
+            SpawnChildAtParentOffset(enemy, instruction);
 
         if (!g_EnemyManager.lastSpawnFailed)
         {
@@ -1057,9 +1056,9 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
     }
     case 92:
     {
-        EclOperands::EnemyOverlay *tail = FindLinkedChildTail0041EFC0(enemy);
+        EclOperands::EnemyOverlay *tail = FindAttachmentChainTail(enemy);
         EclOperands::EnemyOverlay *child =
-            SpawnChildStandard0041F110(enemy, instruction);
+            SpawnChildAtScriptPosition(enemy, instruction);
 
         if (!g_EnemyManager.lastSpawnFailed)
         {

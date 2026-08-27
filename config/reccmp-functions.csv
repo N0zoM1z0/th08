@@ -236,14 +236,14 @@ th08::EclManager::Load,0x418330,function
 th08::EclManager::Unload,0x418420,function
 th08::EclManager::CallEclSub,0x418450,function
 th08::EclManager::RunEcl,0x4184b0,function
-th08::EclRunLowProposal::FindLinkedChildTail0041EFC0,0x41efc0,function
+th08::EclRunLowProposal::FindAttachmentChainTail,0x41efc0,function
 th08::Enemy::HasParentChain,0x41f000,function
 th08::Spellcard::SetStoredVector,0x41f040,function
 fmodf,0x41f090,library
 th08::Spellcard::SetEffectTrackingDisabled,0x41f0b0,function
 th08::Spellcard::SetBonusUpdatesDisabled,0x41f0e0,function
-th08::EclRunLowProposal::SpawnChildStandard0041F110,0x41f110,function
-th08::EclRunLowProposal::SpawnChildAlternate0041F280,0x41f280,function
+th08::EclRunLowProposal::SpawnChildAtScriptPosition,0x41f110,function
+th08::EclRunLowProposal::SpawnChildAtParentOffset,0x41f280,function
 th08::EclRunHighProposal::SpawnPacketTyped::SpawnPacketTyped,0x41f400,function
 th08::EclOperands::ResolveInt,0x41f420,function
 th08::Enemy::HasAttachedEnemy,0x41fd20,function

@@ -102,11 +102,11 @@ struct SpawnPacketTyped
 {
     SpawnPacketTyped();
 
-    i32 type;
+    i32 eclSubroutineId;
     D3DXVECTOR3 position;
-    i32 arg4;
-    i32 arg5;
-    i32 arg6;
+    i32 life;
+    i32 itemDropType;
+    i32 score;
 };
 
 // RunEcl invokes the per-context callback with Enemy in ECX and its opaque
@@ -879,7 +879,7 @@ enter_subroutine:
                         ? reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx))->ResolveFloat(packet93.position.z)
                         : packet93.position.z;
                 spawned93 = g_EnemyManager.SpawnEnemy2(
-                    packet93.type, &position93,
+                    packet93.eclSubroutineId, &position93,
                     TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
                     TH08_ECL_READ_I(ctx, 6),
                     reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclContext->intVariables);
@@ -910,7 +910,7 @@ enter_subroutine:
                 reinterpret_cast<Float3 *>(&position94)->operator+=(
                     reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->position);
                 spawned94 = g_EnemyManager.SpawnEnemy2(
-                    packet94.type, &position94,
+                    packet94.eclSubroutineId, &position94,
                     TH08_ECL_READ_I(ctx, 4), TH08_ECL_READ_I(ctx, 5),
                     TH08_ECL_READ_I(ctx, 6),
                     reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->activeEclContext->intVariables);

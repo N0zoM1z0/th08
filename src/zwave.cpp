@@ -785,8 +785,9 @@ HRESULT CStreamingSound::UpdatePartialFadeOut()
 // Desc: Handle the notification that tell us to put more wav data in the
 //       circular buffer
 //-----------------------------------------------------------------------------
-#pragma var_order(dwDSLockedBufferSize2, pDSLockedBuffer, dwBytesWrittenToBuffer, local_14, pDSLockedBuffer2,          \
-                  bRestored, dwPlayDelta, hr, dwDSLockedBufferSize, dwCurrentPlayPos, local_30, dwReadSoFar)
+#pragma var_order(dwDSLockedBufferSize2, pDSLockedBuffer, dwBytesWrittenToBuffer, currentPlayCursor,                 \
+                  pDSLockedBuffer2, bRestored, dwPlayDelta, hr, dwDSLockedBufferSize, dwCurrentPlayPos,             \
+                  currentWriteCursor, dwReadSoFar)
 HRESULT CStreamingSound::HandleWaveStreamNotification(BOOL bLoopedPlay)
 {
     HRESULT hr;
@@ -797,16 +798,18 @@ HRESULT CStreamingSound::HandleWaveStreamNotification(BOOL bLoopedPlay)
     VOID *pDSLockedBuffer2;
     DWORD dwDSLockedBufferSize;
     DWORD dwDSLockedBufferSize2;
-    DWORD local_14;
-    DWORD local_30;
+    DWORD currentPlayCursor;
+    DWORD currentWriteCursor;
 
     if (m_apDSBuffer == NULL || m_pWaveFile == NULL)
         return CO_E_NOTINITIALIZED;
 
-    m_apDSBuffer[0]->GetCurrentPosition(&local_14, &local_30);
+    m_apDSBuffer[0]->GetCurrentPosition(&currentPlayCursor, &currentWriteCursor);
 
-    if ((m_dwNextWriteOffset >= local_30 - m_dwNotifySize && m_dwNextWriteOffset < local_30) ||
-        (local_30 - m_dwNotifySize < 0 && m_dwNextWriteOffset >= m_dwDSBufferSize - m_dwNotifySize))
+    if ((m_dwNextWriteOffset >= currentWriteCursor - m_dwNotifySize &&
+         m_dwNextWriteOffset < currentWriteCursor) ||
+        (currentWriteCursor - m_dwNotifySize < 0 &&
+         m_dwNextWriteOffset >= m_dwDSBufferSize - m_dwNotifySize))
     {
         utils::DebugPrint("Stream Skip\n");
         return CO_E_FIRST;

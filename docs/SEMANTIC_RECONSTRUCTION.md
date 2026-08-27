@@ -4080,3 +4080,62 @@ Portable oracle: the complete i386 Linux container build links, and
 layout symbol.  No chain callback/destructor order, input bit, retry path,
 original HRESULT quirk, VM interrupt/draw behavior, audio command step, pan,
 volume, target byte, accepted-unit identity, or exact total changed.
+
+### Laser rendering, enemy spawn descriptors, and runtime owner aliases — 2026-08-27
+
+Scope: the remaining neutral Laser VMs, enemy-spawn arguments and packet
+layout, DirectSound stream cursors, the ECL-extension view of spell-background
+state, the duplicated player-position symbol, and three linked-child ECL
+helpers.
+
+Laser target use separates its two animation objects without relying on asset
+guesses.  `bodyVm @ +0x000` is scaled to the laser width and length, rotated,
+executed, and drawn at the segment midpoint.  `startCapVm @ +0x2A4` is drawn at
+`startOffset` under the cap visibility rules.  `SpawnEnemy1/2 @ 0x0042A4E0 /
+0x0042A680` pass their first argument to `CallEclSub` as an `i16`, then consume
+the following arguments as life, item-drop type, and score.  SpawnEnemy1's
+last scalar directly supplies `mirrorMovementX`.  Both serialized
+`SpawnPacketTyped` views now expose that same layout.
+
+`CStreamingSound::HandleWaveStreamNotification @ 0x00472D30` supplies its two
+formerly anonymous locals to DirectSound's play-cursor and write-cursor output
+parameters; only the current write cursor participates in the overwrite guard.
+The ECL extension global at `0x004E4B60` is exactly `g_Background @ 0x004E4030
++ offsetof(Background, spellVmCount) @ 0xB30`.  Its former `mode`, anonymous
+dword, and `vm0/vm1` members therefore become `spellVmCount`,
+`spellVmScriptBase`, and `spellVms[2]`, agreeing with the public Background
+owner rather than inventing a second state model.
+
+The old `EclOperands::g_TargetPlayerPosition017D61AC` symbol is likewise
+exactly `g_Player @ 0x017D5EF8 + offsetof(Player, position) @ 0x2B4`.  All
+aiming, wrap-selection, night-blindness, spell presentation, GUI, and effect
+tracking sites now name `g_Player.position` directly.  The affected COFF
+manifests were migrated from the synthetic position symbol to `g_Player`; the
+object addend continues to encode `+0x2B4`, so the relocation-aware Oracle
+still checks the same target addresses instead of bypassing symbol evidence.
+The obsolete Linux fixed-address alias is removed.
+
+Finally, target behavior at `0x0041EFC0`, `0x0041F110`, and `0x0041F280`
+establishes `FindAttachmentChainTail`, `SpawnChildAtScriptPosition`, and
+`SpawnChildAtParentOffset`.  The latter adds the parent's world position while
+the former spawner uses the resolved script position directly; source,
+mapping, implemented/reccmp ledgers, accepted rows, and decorated-symbol
+manifests move together.
+
+VC7 oracle: target-pinned packets cover the Laser lifecycle at `0x00430F20`,
+`0x00431240`, and `0x00432B50`; both enemy spawners; the stream notifier; the
+spell-background alias users including `0x004284B0` and `0x004235A0`; and all
+three child helpers.  Focused replay passes **190 / 190 exact** for the Laser,
+spawn, spell-background, and audio batch; **182 / 182 exact** for the player-
+position owner migration; and **25 / 25 exact** for the child-helper ledger
+migration.  The required single-job non-reuse cold build of all 75 comparison
+objects passes **1,106 / 1,106 exact** with zero failures, and the normal VC7
+production image links.
+
+Portable oracle: the complete i386 Linux container image links after removal
+of the synthetic player-position linker symbol, and
+`verify-modern-linux.sh` verifies the ELF32 executable and every fixed target-
+owned layout symbol.  No class size/offset, Laser lifecycle, enemy-spawn
+behavior, stream overwrite guard, spell-background state, player coordinate,
+attachment-chain behavior, target byte, accepted-unit identity, or aggregate
+exact total changed.

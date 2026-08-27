@@ -8,6 +8,7 @@
 #include "ReplayManager.hpp"
 #include "GameManager.hpp"
 #include "EnemyManager.hpp"
+#include "Player.hpp"
 
 namespace th08
 {
@@ -657,8 +658,7 @@ i32 __fastcall TrackPlayerUntilAnimationEnds(Effect *effect)
     if (HasAnimationEnded(effect))
         return 0;
 
-    reinterpret_cast<EclOperands::Vector3 &>(effect->position) =
-        EclOperands::g_TargetPlayerPosition017D61AC;
+    effect->position = g_Player.position;
     return 1;
 }
 
@@ -1261,7 +1261,7 @@ void __fastcall AdjustStageEffectDrawPosition(AnmVm *effect, D3DXVECTOR3 *base)
             }
         }
 
-        delta = point - reinterpret_cast<const D3DXVECTOR3 &>(EclOperands::g_TargetPlayerPosition017D61AC);
+        delta = point - reinterpret_cast<const D3DXVECTOR3 &>(g_Player.position);
         delta.x -= 32.0f;
         delta.y -= 16.0f;
         delta.z = 0.0f;
@@ -1279,7 +1279,7 @@ ZunResult EffectManager::LoadEffectResources(EffectManager *effectManager)
     effectManager->ResetEffects();
     effectManager->effectAnm = g_AnmManager->GetAnm(6);
     g_GuiMessageStageMode = 0;
-    g_EclExBarrierRenderState.mode = 2;
+    g_EclExBarrierRenderState.spellVmCount = 2;
 
     if (!IsDisableResourceReload())
     {

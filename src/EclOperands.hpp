@@ -7,17 +7,6 @@ namespace th08
 namespace EclOperands
 {
 
-struct Vector3
-{
-    f32 x;
-    f32 y;
-    f32 z;
-
-    Vector3 operator-(const Vector3 &other) const;
-    f32 Length() const;
-};
-extern Vector3 g_TargetPlayerPosition017D61AC;
-
 // ABI adapter retained for the target resolver and detach-chain symbols.
 // Implementations immediately recover the asserted public Enemy owner.
 struct EnemyOverlay

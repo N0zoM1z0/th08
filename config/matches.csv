@@ -981,9 +981,9 @@ address,name,size,status,match_percent,unit,evidence
 0x00421CB0,th08::EclRunLowProposal::PopEclContext,280,matching,100.00,ecl-pop-context-00421cb0,python3 scripts/compare-function.py ecl-pop-context-00421cb0 --json
 0x00421DE0,th08::EclRunLowProposal::SetPrimaryAnmScripts,112,matching,100.00,ecl-set-primary-anm-scripts-00421de0,python3 scripts/compare-function.py ecl-set-primary-anm-scripts-00421de0 --json
 0x00421E50,th08::EclRunLowProposal::SetExtraAnmScript,454,matching,100.00,ecl-set-extra-anm-script-00421e50,python3 scripts/compare-function.py ecl-set-extra-anm-script-00421e50 --json
-0x0041EFC0,th08::EclRunLowProposal::FindLinkedChildTail0041EFC0,54,matching,100.00,ecl-find-linked-child-tail-0041efc0,python3 scripts/compare-function.py ecl-find-linked-child-tail-0041efc0 --json
-0x0041F110,th08::EclRunLowProposal::SpawnChildStandard0041F110,365,matching,100.00,ecl-spawn-child-standard-0041f110,python3 scripts/compare-function.py ecl-spawn-child-standard-0041f110 --json
-0x0041F280,th08::EclRunLowProposal::SpawnChildAlternate0041F280,383,matching,100.00,ecl-spawn-child-alternate-0041f280,python3 scripts/compare-function.py ecl-spawn-child-alternate-0041f280 --json
+0x0041EFC0,th08::EclRunLowProposal::FindAttachmentChainTail,54,matching,100.00,ecl-find-linked-child-tail-0041efc0,python3 scripts/compare-function.py ecl-find-linked-child-tail-0041efc0 --json
+0x0041F110,th08::EclRunLowProposal::SpawnChildAtScriptPosition,365,matching,100.00,ecl-spawn-child-standard-0041f110,python3 scripts/compare-function.py ecl-spawn-child-standard-0041f110 --json
+0x0041F280,th08::EclRunLowProposal::SpawnChildAtParentOffset,383,matching,100.00,ecl-spawn-child-alternate-0041f280,python3 scripts/compare-function.py ecl-spawn-child-alternate-0041f280 --json
 0x0041F0B0,th08::Spellcard::SetEffectTrackingDisabled,37,matching,100.00,spellcard-set-effect-tracking-disabled,python3 scripts/compare-function.py spellcard-set-effect-tracking-disabled --json
 0x0041F0E0,th08::Spellcard::SetBonusUpdatesDisabled,40,matching,100.00,spellcard-set-bonus-updates-disabled,python3 scripts/compare-function.py spellcard-set-bonus-updates-disabled --json
 0x00430D30,th08::BulletManager::RemoveBulletsInRadius,214,matching,100.00,bullet-manager-remove-bullets-in-radius-00430d30,python3 scripts/compare-function.py bullet-manager-remove-bullets-in-radius-00430d30 --json

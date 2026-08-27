@@ -142,15 +142,13 @@ DIFFABLE_EXTERN(void *, g_EclExUpdateCallback);
 #endif
 struct EclExBarrierRenderState
 {
-    i32 mode;
-    i32 unconsumedDword04;
-    AnmVm vm0;
-    AnmVm vm1;
+    i32 spellVmCount;
+    i32 spellVmScriptBase;
+    AnmVm spellVms[2];
 };
 C_ASSERT(sizeof(EclExBarrierRenderState) == 0x550);
-C_ASSERT(offsetof(EclExBarrierRenderState, unconsumedDword04) == 0x4);
-C_ASSERT(offsetof(EclExBarrierRenderState, vm0) == 0x8);
-C_ASSERT(offsetof(EclExBarrierRenderState, vm1) == 0x2ac);
+C_ASSERT(offsetof(EclExBarrierRenderState, spellVmScriptBase) == 0x4);
+C_ASSERT(offsetof(EclExBarrierRenderState, spellVms) == 0x8);
 #ifndef TH08_MODERN_PORT
 DIFFABLE_EXTERN(EclExBarrierRenderState, g_EclExBarrierRenderState);
 #endif

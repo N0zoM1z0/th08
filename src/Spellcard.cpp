@@ -1278,8 +1278,7 @@ i32 Spellcard::OnUpdateImpl()
             this->DeactivateWithoutCleanup();
         }
 
-        if (EclOperands::g_TargetPlayerPosition017D61AC.x >= 64.0f &&
-            EclOperands::g_TargetPlayerPosition017D61AC.y < 64.0f)
+        if (g_Player.position.x >= 64.0f && g_Player.position.y < 64.0f)
         {
             if (reinterpret_cast<u8 *>(&this->mixColor)[3] > 0x20)
             {
@@ -1399,8 +1398,7 @@ i32 Spellcard::OnUpdateImpl()
             if (this->rewardEffect->timer <= 80)
             {
                 this->rewardEffect->vector5 =
-                    (reinterpret_cast<const Float3 &>(EclOperands::g_TargetPlayerPosition017D61AC) -
-                     this->rewardEffect->vector5) /
+                    (g_Player.position - this->rewardEffect->vector5) /
                         16.0f +
                     this->rewardEffect->vector5;
                 this->rewardEffect->vector5.z = 0.0f;
@@ -1410,8 +1408,7 @@ i32 Spellcard::OnUpdateImpl()
             else
             {
                 this->rewardEffect->vector5 =
-                    (reinterpret_cast<const Float3 &>(EclOperands::g_TargetPlayerPosition017D61AC) -
-                     this->rewardEffect->vector5) /
+                    (g_Player.position - this->rewardEffect->vector5) /
                         4.0f +
                     this->rewardEffect->vector5;
                 this->rewardEffect->vector5.z = 0.0f;

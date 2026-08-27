@@ -2017,3 +2017,21 @@ replay passes **106 / 106 exact**; the cold aggregate passes **1,106 / 1,106
 exact**; VC7 and Linux i386 images link; and the Linux fixed-layout verifier
 passes.  Continue on `semantic/typed-reconstruction`; do not open or merge a
 PR until explicitly requested.
+
+The runtime-owner checkpoint names Laser's midpoint-rendered `bodyVm` and
+start-offset `startCapVm`; enemy-spawn ECL subroutine/life/drop/score arguments;
+and DirectSound's current play/write cursors.  The ECL global at `0x004E4B60`
+is proven to be the `g_Background + 0xB30` spell-background view and now exposes
+`spellVmCount`, `spellVmScriptBase`, and `spellVms[2]`.  The synthetic
+`g_TargetPlayerPosition017D61AC` symbol is proven to be `g_Player.position @
++0x2B4`; all production users and COFF relocation manifests now name the real
+owner, and the obsolete Linux linker alias is gone.  ECL helpers at
+`0x0041EFC0`, `0x0041F110`, and `0x0041F280` are now
+`FindAttachmentChainTail`, `SpawnChildAtScriptPosition`, and
+`SpawnChildAtParentOffset`, with source and every tracking ledger migrated
+together.  Focused replays pass **190 / 190**, **182 / 182**, and **25 / 25
+exact** for the three bounded groups; the required cold aggregate passes
+**1,106 / 1,106 exact**; the normal VC7 image and complete Linux i386 image
+link; and the Linux fixed-layout verifier passes.  Continue on
+`semantic/typed-reconstruction`; commit and push stable checkpoints, but do
+not open or merge a PR until explicitly requested.

@@ -117,7 +117,7 @@ void __fastcall StartNarrowBulletWarpBarrier(EclOperands::EnemyOverlay *enemy, E
 }
 
 // FUNCTION: th08 0x4235a0
-#pragma var_order(effect9, savedColor, i, radius9, unusedVm, effect10, radius10, vertices)
+#pragma var_order(effect9, savedColor, i, radius9, unusedSpellVm, effect10, radius10, vertices)
 void __fastcall DrawBulletWarpBarrier()
 {
     VertexDiffuseXyzrhw vertices[10];
@@ -125,13 +125,13 @@ void __fastcall DrawBulletWarpBarrier()
     i32 savedColor;
     i32 i;
     f32 radius9;
-    AnmVm *unusedVm;
+    AnmVm *unusedSpellVm;
     Effect *effect10;
     f32 radius10;
 
     effect9 = reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(9));
     effect10 = reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(10));
-    unusedVm = &g_EclExBarrierRenderState.vm0;
+    unusedSpellVm = &g_EclExBarrierRenderState.spellVms[0];
 
     radius9 = effect9->vm.pos.x * 0.7071068286895752f;
     radius10 = effect10->vm.pos.x * 0.7071068286895752f;
@@ -179,29 +179,29 @@ void __fastcall DrawBulletWarpBarrier()
     g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
 
     g_Supervisor.SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
-    g_EclExBarrierRenderState.vm0.scale.x = -1.5f;
-    g_EclExBarrierRenderState.vm0.scale.y = -1.75f;
-    g_EclExBarrierRenderState.vm0.pos.z = 0.7f;
-    g_EclExBarrierRenderState.vm0.pos.x = 416.0f;
-    g_EclExBarrierRenderState.vm0.pos.y = 464.0f;
-    savedColor = g_EclExBarrierRenderState.vm0.color1.d3dColor;
-    g_EclExBarrierRenderState.vm0.color1.d3dColor = 0xffe0c0c0;
-    g_AnmManager->Draw2D(&g_EclExBarrierRenderState.vm0);
-    g_EclExBarrierRenderState.vm0.scale.x = 1.5f;
-    g_EclExBarrierRenderState.vm0.scale.y = 1.75f;
-    g_EclExBarrierRenderState.vm0.pos.z = 0.5f;
-    g_EclExBarrierRenderState.vm0.pos.x = 32.0f;
-    g_EclExBarrierRenderState.vm0.pos.y = 16.0f;
-    g_EclExBarrierRenderState.vm0.color1.d3dColor = savedColor;
+    g_EclExBarrierRenderState.spellVms[0].scale.x = -1.5f;
+    g_EclExBarrierRenderState.spellVms[0].scale.y = -1.75f;
+    g_EclExBarrierRenderState.spellVms[0].pos.z = 0.7f;
+    g_EclExBarrierRenderState.spellVms[0].pos.x = 416.0f;
+    g_EclExBarrierRenderState.spellVms[0].pos.y = 464.0f;
+    savedColor = g_EclExBarrierRenderState.spellVms[0].color1.d3dColor;
+    g_EclExBarrierRenderState.spellVms[0].color1.d3dColor = 0xffe0c0c0;
+    g_AnmManager->Draw2D(&g_EclExBarrierRenderState.spellVms[0]);
+    g_EclExBarrierRenderState.spellVms[0].scale.x = 1.5f;
+    g_EclExBarrierRenderState.spellVms[0].scale.y = 1.75f;
+    g_EclExBarrierRenderState.spellVms[0].pos.z = 0.5f;
+    g_EclExBarrierRenderState.spellVms[0].pos.x = 32.0f;
+    g_EclExBarrierRenderState.spellVms[0].pos.y = 16.0f;
+    g_EclExBarrierRenderState.spellVms[0].color1.d3dColor = savedColor;
 
-    g_EclExBarrierRenderState.vm1.rotation.z *= -1.0f;
-    g_EclExBarrierRenderState.vm1.pos.z = 0.6f;
-    savedColor = g_EclExBarrierRenderState.vm1.color1.d3dColor;
-    g_EclExBarrierRenderState.vm1.color1.d3dColor = 0xffe0c0c0;
-    g_AnmManager->Draw2DAndFlush(&g_EclExBarrierRenderState.vm1);
-    g_EclExBarrierRenderState.vm1.rotation.z *= -1.0f;
-    g_EclExBarrierRenderState.vm1.pos.z = 0.5f;
-    g_EclExBarrierRenderState.vm1.color1.d3dColor = savedColor;
+    g_EclExBarrierRenderState.spellVms[1].rotation.z *= -1.0f;
+    g_EclExBarrierRenderState.spellVms[1].pos.z = 0.6f;
+    savedColor = g_EclExBarrierRenderState.spellVms[1].color1.d3dColor;
+    g_EclExBarrierRenderState.spellVms[1].color1.d3dColor = 0xffe0c0c0;
+    g_AnmManager->Draw2DAndFlush(&g_EclExBarrierRenderState.spellVms[1]);
+    g_EclExBarrierRenderState.spellVms[1].rotation.z *= -1.0f;
+    g_EclExBarrierRenderState.spellVms[1].pos.z = 0.5f;
+    g_EclExBarrierRenderState.spellVms[1].color1.d3dColor = savedColor;
     g_Supervisor.SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
 }
 
@@ -372,7 +372,7 @@ void __fastcall StopBulletWarpBarrier(EclOperands::EnemyOverlay *enemy, EclExIns
 {
     reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(9))->active = 0;
     reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(10))->active = 0;
-    g_EclExBarrierRenderState.mode = 2;
+    g_EclExBarrierRenderState.spellVmCount = 2;
 }
 
 // FUNCTION: th08 0x424170
@@ -676,8 +676,8 @@ void __fastcall EclExIns::ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, 
                 reinterpret_cast<Enemy *>(setCursor)->nextInAttachmentChain);
             reinterpret_cast<Enemy *>(setCursor)->flags2 |= ENEMY_FLAG2_FORCE_PAUSE;
         }
-        g_EclExBarrierRenderState.vm0.SetInterrupt(2);
-        g_EclExBarrierRenderState.vm1.SetInterrupt(2);
+        g_EclExBarrierRenderState.spellVms[0].SetInterrupt(2);
+        g_EclExBarrierRenderState.spellVms[1].SetInterrupt(2);
     }
     else
     {
@@ -688,8 +688,8 @@ void __fastcall EclExIns::ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, 
                 reinterpret_cast<Enemy *>(clearCursor)->nextInAttachmentChain);
             reinterpret_cast<Enemy *>(clearCursor)->flags2 &= ~ENEMY_FLAG2_FORCE_PAUSE;
         }
-        g_EclExBarrierRenderState.vm0.SetInterrupt(1);
-        g_EclExBarrierRenderState.vm1.SetInterrupt(1);
+        g_EclExBarrierRenderState.spellVms[0].SetInterrupt(1);
+        g_EclExBarrierRenderState.spellVms[1].SetInterrupt(1);
     }
 }
 
@@ -850,13 +850,13 @@ void __fastcall EclExIns::SetScriptedUpdateFreeze(
         instruction->byteValue;
     if (g_GameManager.scriptedUpdateFreeze)
     {
-        g_EclExBarrierRenderState.vm0.SetInterrupt(2);
-        g_EclExBarrierRenderState.vm1.SetInterrupt(2);
+        g_EclExBarrierRenderState.spellVms[0].SetInterrupt(2);
+        g_EclExBarrierRenderState.spellVms[1].SetInterrupt(2);
     }
     else
     {
-        g_EclExBarrierRenderState.vm0.SetInterrupt(1);
-        g_EclExBarrierRenderState.vm1.SetInterrupt(1);
+        g_EclExBarrierRenderState.spellVms[0].SetInterrupt(1);
+        g_EclExBarrierRenderState.spellVms[1].SetInterrupt(1);
     }
 }
 
@@ -894,8 +894,8 @@ void __fastcall EnterScaledBulletTime(EclOperands::EnemyOverlay *enemy, EclExIns
 
     g_Supervisor.framerateMultiplier =
         1.0f / static_cast<f32>(instruction->value);
-    g_EclExBarrierRenderState.vm0.SetInterrupt(2);
-    g_EclExBarrierRenderState.vm1.SetInterrupt(2);
+    g_EclExBarrierRenderState.spellVms[0].SetInterrupt(2);
+    g_EclExBarrierRenderState.spellVms[1].SetInterrupt(2);
 
     bullet = &g_BulletManager.bullets[0];
     for (i = 0; i < 0x600; ++i, bullet++)
@@ -939,8 +939,8 @@ void __fastcall ExitScaledBulletTime(EclOperands::EnemyOverlay *enemy, EclExInst
     if (g_Supervisor.framerateMultiplier < 1.0f)
         g_EclGameTimeScaleFlags |= 0x20U;
     g_Supervisor.framerateMultiplier = 1.0f;
-    g_EclExBarrierRenderState.vm0.SetInterrupt(1);
-    g_EclExBarrierRenderState.vm1.SetInterrupt(1);
+    g_EclExBarrierRenderState.spellVms[0].SetInterrupt(1);
+    g_EclExBarrierRenderState.spellVms[1].SetInterrupt(1);
 }
 
 

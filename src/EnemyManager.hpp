@@ -467,8 +467,10 @@ struct EnemyManager
     static ChainCallbackResult OnDrawLowPrio(EnemyManager *enemyManager);
     static ZunResult AddedCallback(EnemyManager *enemyManager);
     static ZunResult DeletedCallback(EnemyManager *enemyManager);
-    void *SpawnEnemy1(i32 type, const D3DXVECTOR3 *position, i32 a, i32 b, i32 c, i32 flags);
-    void *SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i32 b, i32 c, i32 *contextInts);
+    void *SpawnEnemy1(i32 eclSubroutineId, const D3DXVECTOR3 *position, i32 life, i32 itemDropType, i32 score,
+                      i32 mirrorMovementX);
+    void *SpawnEnemy2(i32 eclSubroutineId, const D3DXVECTOR3 *position, i32 life, i32 itemDropType, i32 score,
+                      i32 *contextInts);
     i32 KillAllNonBossEnemies(i32 maxScore, i32 totalScore);
     i32 HasBoss();
     static void CutChain();

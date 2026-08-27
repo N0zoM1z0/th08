@@ -3371,13 +3371,13 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x2AAF
 type = "REL32"
-symbol = "?FindLinkedChildTail0041EFC0@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
+symbol = "?FindAttachmentChainTail@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
 target = 0x0041EFC0
 
 [[units.relocations]]
 offset = 0x2ABD
 type = "REL32"
-symbol = "?SpawnChildStandard0041F110@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
+symbol = "?SpawnChildAtScriptPosition@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
 target = 0x0041F110
 
 [[units.relocations]]
@@ -3455,13 +3455,13 @@ target = 0x0045D660
 [[units.relocations]]
 offset = 0x2C5F
 type = "REL32"
-symbol = "?FindLinkedChildTail0041EFC0@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
+symbol = "?FindAttachmentChainTail@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
 target = 0x0041EFC0
 
 [[units.relocations]]
 offset = 0x2C6D
 type = "REL32"
-symbol = "?SpawnChildAlternate0041F280@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
+symbol = "?SpawnChildAtParentOffset@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
 target = 0x0041F280
 
 [[units.relocations]]
@@ -3539,13 +3539,13 @@ target = 0x0045D660
 [[units.relocations]]
 offset = 0x2E0F
 type = "REL32"
-symbol = "?FindLinkedChildTail0041EFC0@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
+symbol = "?FindAttachmentChainTail@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
 target = 0x0041EFC0
 
 [[units.relocations]]
 offset = 0x2E1D
 type = "REL32"
-symbol = "?SpawnChildStandard0041F110@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
+symbol = "?SpawnChildAtScriptPosition@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
 target = 0x0041F110
 
 [[units.relocations]]
@@ -44673,14 +44673,14 @@ target = 0x00448270
 [[units.relocations]]
 offset = 0xb9
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017d61ac
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017d5ef8
 
 [[units.relocations]]
 offset = 0xc8
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017d61ac
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017d5ef8
 
 [[units.relocations]]
 offset = 0xe1
@@ -44739,8 +44739,8 @@ target = 0x004b4300
 [[units.relocations]]
 offset = 0x2b0
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017d61ac
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017d5ef8
 
 [[units.relocations]]
 offset = 0x2b6
@@ -44763,8 +44763,8 @@ target = 0x0045b1e0
 [[units.relocations]]
 offset = 0x2f0
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017d61ac
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017d5ef8
 
 [[units.relocations]]
 offset = 0x2f6
@@ -44787,8 +44787,8 @@ target = 0x0045b1e0
 [[units.relocations]]
 offset = 0x33d
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017d61ac
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017d5ef8
 
 [[units.relocations]]
 offset = 0x343
@@ -44811,8 +44811,8 @@ target = 0x004b42cc
 [[units.relocations]]
 offset = 0x37c
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017d61ac
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017d5ef8
 
 [[units.relocations]]
 offset = 0x382
@@ -44835,8 +44835,8 @@ target = 0x004b42fc
 [[units.relocations]]
 offset = 0x3b4
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017d61ac
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017d5ef8
 
 [[units.relocations]]
 offset = 0x3ba
@@ -44859,8 +44859,8 @@ target = 0x0045b1e0
 [[units.relocations]]
 offset = 0x3ec
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017d61ac
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017d5ef8
 
 [[units.relocations]]
 offset = 0x3f2
@@ -44901,20 +44901,20 @@ target = 0x004b42f8
 [[units.relocations]]
 offset = 0x474
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017d61ac
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017d5ef8
 
 [[units.relocations]]
 offset = 0x47c
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017d61ac
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017d5ef8
 
 [[units.relocations]]
 offset = 0x485
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017d61ac
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017d5ef8
 
 [[units.relocations]]
 offset = 0x497
@@ -44949,14 +44949,14 @@ target = 0x004b42d8
 [[units.relocations]]
 offset = 0x568
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017d61ac
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017d5ef8
 
 [[units.relocations]]
 offset = 0x577
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017d61ac
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017d5ef8
 
 [[units.relocations]]
 offset = 0x590
@@ -61010,8 +61010,8 @@ target = 0x00410A70
 [[units.relocations]]
 offset = 0x110
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x11C
@@ -69286,8 +69286,8 @@ target = 0x00416AF0
 [[units.relocations]]
 offset = 0x83
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x89
@@ -69298,8 +69298,8 @@ target = 0x004B42C8
 [[units.relocations]]
 offset = 0x96
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x9C
@@ -69509,8 +69509,8 @@ target = 0x0040E390
 [[units.relocations]]
 offset = 0x828
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x82D
@@ -69539,8 +69539,8 @@ target = 0x0043EDB0
 [[units.relocations]]
 offset = 0x8E8
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x8ED
@@ -75732,8 +75732,8 @@ target = 4581888
 [[units.relocations]]
 offset = 662
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 24994220
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 24993528
 
 [[units.relocations]]
 offset = 668
@@ -75744,8 +75744,8 @@ target = 4932296
 [[units.relocations]]
 offset = 681
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 24994220
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 24993528
 
 [[units.relocations]]
 offset = 687
@@ -102276,20 +102276,20 @@ target = 0x00428720
 [[units.relocations]]
 offset = 0x21
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x29
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x32
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units]]
 name = "effect-update-directional-offset-240"
@@ -106170,26 +106170,26 @@ target = 0x004B4384
 [[units.relocations]]
 offset = 0x8C
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x9B
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0xAC
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0xBB
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0xF0
@@ -106351,8 +106351,8 @@ size = 0x28A
 [[units.relocations]]
 offset = 0x11
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x2A
@@ -106623,14 +106623,14 @@ target = 0x00406EF0
 [[units.relocations]]
 offset = 0x25
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x38
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x3E
@@ -106641,8 +106641,8 @@ target = 0x004B4528
 [[units.relocations]]
 offset = 0x50
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0x71
@@ -106695,8 +106695,8 @@ target = 0x0043EDB0
 [[units.relocations]]
 offset = 0xB5
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0xBB
@@ -106707,8 +106707,8 @@ target = 0x004B4528
 [[units.relocations]]
 offset = 0xC7
 type = "DIR32"
-symbol = "?g_TargetPlayerPosition017D61AC@EclOperands@th08@@3UVector3@12@A"
-target = 0x017D61AC
+symbol = "?g_Player@th08@@3UPlayer@1@A"
+target = 0x017D5EF8
 
 [[units.relocations]]
 offset = 0xEC
@@ -107304,7 +107304,7 @@ target = 0x0041F420
 [[units]]
 name = "ecl-find-linked-child-tail-0041efc0"
 object = "build/EclDependencies.obj"
-symbol = "?FindLinkedChildTail0041EFC0@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
+symbol = "?FindAttachmentChainTail@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
 target_address = 0x0041EFC0
 size = 0x36
 
@@ -107317,7 +107317,7 @@ target = 0x0041F000
 [[units]]
 name = "ecl-spawn-child-standard-0041f110"
 object = "build/EclDependencies.obj"
-symbol = "?SpawnChildStandard0041F110@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
+symbol = "?SpawnChildAtScriptPosition@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
 target_address = 0x0041F110
 size = 0x16D
 
@@ -107384,7 +107384,7 @@ target = 0x00577F20
 [[units]]
 name = "ecl-spawn-child-alternate-0041f280"
 object = "build/EclDependencies.obj"
-symbol = "?SpawnChildAlternate0041F280@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
+symbol = "?SpawnChildAtParentOffset@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
 target_address = 0x0041F280
 size = 0x17F
 
