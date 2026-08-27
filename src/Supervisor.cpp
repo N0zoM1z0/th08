@@ -1561,7 +1561,7 @@ ZunBool Supervisor::LoadMusic(int param_1, char *path)
 
 // FUNCTION: th08 0x447e47
 #pragma var_order(midiOutput, this)
-ZunBool Supervisor::PlayMusic(int param_1, char *param_2)
+ZunBool Supervisor::PlayMusic(i32 musicIndex, i32 bgmUnlockIndex)
 {
     if (g_Supervisor.cfg.musicMode == MIDI)
     {
@@ -1569,14 +1569,13 @@ ZunBool Supervisor::PlayMusic(int param_1, char *param_2)
         {
             MidiOutput *midiOutput = g_Supervisor.midiOutput;
             midiOutput->StopPlayback();
-            midiOutput->ParseFile(param_1);
+            midiOutput->ParseFile(musicIndex);
             midiOutput->Play();
         }
 
-        if (((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 3) & 1) == 0 &&
-            ((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 1) & 1) == 0)
+        if (!g_GameManager.flags.isReplay && !g_GameManager.flags.isDemoMode)
         {
-            param_2[0x164CF14] = 1;
+            g_GameManager.plst.bgmUnlocked[bgmUnlockIndex] = 1;
         }
         return FALSE;
     }
@@ -1586,11 +1585,10 @@ ZunBool Supervisor::PlayMusic(int param_1, char *param_2)
         {
             g_SoundPlayer.QueueCommand(SOUNDPLAYER_COMMAND_RELEASE_BGM, 0, "dummy");
         }
-        g_SoundPlayer.QueueCommand(SOUNDPLAYER_COMMAND_LOAD_BGM, param_1, "dummy");
-        if (((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 3) & 1) == 0 &&
-            ((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 1) & 1) == 0)
+        g_SoundPlayer.QueueCommand(SOUNDPLAYER_COMMAND_LOAD_BGM, musicIndex, "dummy");
+        if (!g_GameManager.flags.isReplay && !g_GameManager.flags.isDemoMode)
         {
-            param_2[0x164CF14] = 1;
+            g_GameManager.plst.bgmUnlocked[bgmUnlockIndex] = 1;
         }
     }
 
@@ -1599,7 +1597,7 @@ ZunBool Supervisor::PlayMusic(int param_1, char *param_2)
 
 // FUNCTION: th08 0x447f21
 #pragma var_order(periodLoc, wavPathBuf, midiOutput, this)
-ZunResult Supervisor::PlayAudio(char *path, int param_2)
+ZunResult Supervisor::PlayAudio(char *path, i32 bgmUnlockIndex)
 {
     char wavPathBuf[256];
     char *periodLoc;
@@ -1613,10 +1611,9 @@ ZunResult Supervisor::PlayAudio(char *path, int param_2)
             midiOutput->LoadFile(path);
             midiOutput->Play();
         }
-        if (((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 3) & 1) == 0 &&
-            ((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 1) & 1) == 0)
+        if (!g_GameManager.flags.isReplay && !g_GameManager.flags.isDemoMode)
         {
-            ((char *)param_2)[0x164CF14] = 1;
+            g_GameManager.plst.bgmUnlocked[bgmUnlockIndex] = 1;
         }
     }
     else if (g_Supervisor.cfg.musicMode == WAV)
@@ -1629,10 +1626,9 @@ ZunResult Supervisor::PlayAudio(char *path, int param_2)
         periodLoc[3] = 'v';
 
         g_SoundPlayer.QueueCommand(SOUNDPLAYER_COMMAND_LOAD_BGM, -1, wavPathBuf);
-        if (((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 3) & 1) == 0 &&
-            ((*(u32 *)((u8 *)&g_GameManager + 0x3DBAC) >> 1) & 1) == 0)
+        if (!g_GameManager.flags.isReplay && !g_GameManager.flags.isDemoMode)
         {
-            ((char *)param_2)[0x164CF14] = 1;
+            g_GameManager.plst.bgmUnlocked[bgmUnlockIndex] = 1;
         }
     }
     else

@@ -712,7 +712,7 @@ th08::SoundPlayer::UpdateFades,0x447764,0x4d,__thiscall,,u8,SoundPlayer*
 th08::Supervisor::LoadConfig,0x4477b1,0x553,__thiscall,,ZunResult,Supervisor*,char*
 th08::GameManager::IsExtraUnlockedWithAllTeams,0x447d04,0x52,__thiscall,,ZunBool,GameManager*
 th08::Supervisor::LoadMusic,0x447d56,0xf1,__thiscall,,u32,Supervisor*,char*
-th08::Supervisor::PlayMusic,0x447e47,0xda,__thiscall,,ZunBool,Supervisor*,i32,char*
+th08::Supervisor::PlayMusic,0x447e47,0xda,__thiscall,,ZunBool,Supervisor*,i32,i32
 th08::Supervisor::PlayAudio,0x447f21,0x160,__thiscall,,ZunResult,Supervisor*,char*,i32
 th08::Supervisor::StopAudio,0x448081,0x77,__thiscall,,u32,Supervisor*
 th08::Supervisor::FadeOutMusic,0x4480f8,0xb7,__thiscall,,ZunResult,Supervisor*,f32

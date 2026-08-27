@@ -407,7 +407,7 @@ ChainCallbackResult GameManager::OnUpdate(GameManager *gameManager)
             {
                 g_Supervisor.PlayMusic(
                     0,
-                    reinterpret_cast<char *>(g_GuiStageMusicContexts[g_GameManager.currentStage].songNumbers[0]));
+                    g_GuiStageMusicContexts[g_GameManager.currentStage].songNumbers[0]);
             }
             else
             {
@@ -417,7 +417,7 @@ ChainCallbackResult GameManager::OnUpdate(GameManager *gameManager)
                     if (g_GameManager.currentSpellCardNumber <= g_SpellcardMusicInfo[musicIdx].spellcardNumber)
                     {
                         g_Supervisor.PlayMusic(
-                            0, reinterpret_cast<char *>(g_SpellcardMusicInfo[musicIdx].songNumber));
+                            0, g_SpellcardMusicInfo[musicIdx].songNumber);
                         break;
                     }
                     musicIdx++;

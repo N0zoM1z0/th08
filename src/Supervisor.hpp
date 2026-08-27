@@ -149,8 +149,8 @@ struct Supervisor
 
     ZunResult LoadConfig(char *configFile);
     ZunBool LoadMusic(int param_1, char *param_2);
-    ZunBool PlayMusic(int param_1, char *param_2);
-    ZunResult PlayAudio(char *path, int param_2);
+    ZunBool PlayMusic(i32 musicIndex, i32 bgmUnlockIndex);
+    ZunResult PlayAudio(char *path, i32 bgmUnlockIndex);
     ZunResult StopAudio();
     ZunBool IsSlowModeEnabled();
     ZunResult FadeOutMusic(float param_1);

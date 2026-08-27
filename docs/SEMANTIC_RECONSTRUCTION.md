@@ -3147,3 +3147,38 @@ or target-owned layout changed.
 The post-pass router reports **0 / 0 / 100 / 39** candidates including probes
 and modern source, or **0 / 0 / 99 / 39** for production.  The two opaque-range
 reductions are review routing only, not a whole-program completion percentage.
+
+### Supervisor BGM unlock index — 2026-08-27
+
+Scope: `Supervisor::PlayMusic @ 0x00447E47`, `PlayAudio @ 0x00447F21`,
+their production/probe callers, and the score-data owner reached by their
+second argument.
+
+Observed: both target functions load the second stack argument as a dword and
+emit `mov byte ptr [eax + 0x0164CF14], 1` after excluding replay and demo mode.
+`0x0164CF14` is `g_GameManager + 0x3DA0C`, which decomposes as
+`GameManager::plst @ +0x3D804` plus `Plst::bgmUnlocked @ +0x208`.  MusicRoom
+copies that same array to decide which tracks are selectable, and every
+nonzero PlayMusic caller supplies a stage/spell song number.  The former
+`char *` declaration was therefore an artifact of expressing base-plus-index
+machine code, not a pointer-bearing ABI.
+
+The interface now names `musicIndex` and `bgmUnlockIndex` as `i32`; callers no
+longer cast song numbers to pointers, and both functions write
+`g_GameManager.plst.bgmUnlocked[bgmUnlockIndex]`.  Replay/demo gates use the
+existing named flag bits.  Layout assertions pin both owner offsets.  VC7
+still emits the same target instruction bytes, while the COFF object now
+honestly records `g_GameManager + 0x3DA0C` relocations; the exact manifest
+tracks those relocations and the corrected `PlayMusic(i32, i32)` decorated
+symbol.
+
+VC7 oracle: focused replay across Supervisor, GameManager, Gui, Ending,
+TitleScreen, MusicRoom, and the replay-menu probe passes **189 / 189 exact**,
+including PlayMusic **218 / 218** and PlayAudio **352 / 352**.  The required
+single-job cold build of all 75 comparison objects passes **1,106 / 1,106
+exact** with zero failures, and the normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links, and the
+fixed-layout verifier passes with the new `Plst` and `GameManager` assertions.
+No playback branch, unlock index, return value, score-data byte, calling
+convention, target address, or accepted unit changed.

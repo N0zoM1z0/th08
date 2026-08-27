@@ -623,8 +623,8 @@ i32 GuiImpl::RunMsg()
                     this->message.currentInstr->args.music.musicIndex + 3);
                 if (g_Supervisor.PlayMusic(
                         this->message.currentInstr->args.music.musicIndex,
-                        reinterpret_cast<char *>(g_GuiStageMusicContexts[g_GameManager.currentStage]
-                                                    .songNumbers[this->message.currentInstr->args.music.musicIndex])))
+                        g_GuiStageMusicContexts[g_GameManager.currentStage]
+                            .songNumbers[this->message.currentInstr->args.music.musicIndex]))
                 {
                     g_Supervisor.PlayAudio(
                         g_Background.stageData

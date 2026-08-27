@@ -151,6 +151,7 @@ struct Plst
 };
 
 C_ASSERT(sizeof(Plst) == 0x228);
+C_ASSERT(offsetof(Plst, bgmUnlocked) == 0x208);
 
 struct Flsp
 {
