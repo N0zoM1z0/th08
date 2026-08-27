@@ -13,10 +13,6 @@
 namespace th08
 {
 
-#ifdef TH08_MODERN_PORT
-#define g_EclExBarrierRenderState (g_Background.EclExBarrierState())
-#endif
-
 ZunBool IsDisableResourceReload();
 
 void __fastcall AdjustStageEffectDrawPosition(AnmVm *effect, D3DXVECTOR3 *base);
@@ -1279,7 +1275,7 @@ ZunResult EffectManager::LoadEffectResources(EffectManager *effectManager)
     effectManager->ResetEffects();
     effectManager->effectAnm = g_AnmManager->GetAnm(6);
     g_GuiMessageStageMode = 0;
-    g_EclExBarrierRenderState.spellVmCount = 2;
+    g_Background.spellVmCount = 2;
 
     if (!IsDisableResourceReload())
     {
@@ -1367,9 +1363,5 @@ Effect::Effect()
 {
 }
 
-
-#ifdef TH08_MODERN_PORT
-#undef g_EclExBarrierRenderState
-#endif
 
 } // namespace th08

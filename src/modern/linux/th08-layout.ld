@@ -32,9 +32,6 @@ SECTIONS
     _ZN4th0811g_SpellcardE = 0x004ea670;
     _ZN4th0820g_SpellcardCalcChainE = 0x004eccac;
 
-    /* ECL opcode 155 names Spellcard::scoreLimit as a standalone global. */
-    _ZN4th0819g_EclGlobal004ECCA8E = 0x004ecca8;
-
     _ZN4th0812g_EclManagerE = 0x004eccb8;
     _ZN4th0817EclRunLowProposal19g_EclCallParametersE = 0x004ece20;
     _ZN4th0815g_EffectManagerE = 0x004ece60;

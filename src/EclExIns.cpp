@@ -39,14 +39,6 @@ void __fastcall MokouResurrection(EclOperands::EnemyOverlay *enemy, EclExInstruc
 void __fastcall SetScriptedUpdateFreeze(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction);
 }
 
-// The retail image gives these ECL extension views their own target symbols.
-// The modern port stores the same bytes in Background, so keep one semantic
-// spelling in the instruction bodies while preserving both storage models.
-#ifdef TH08_MODERN_PORT
-#define g_EclExUpdateCallback (g_Background.EclExUpdateCallback())
-#define g_EclExBarrierRenderState (g_Background.EclExBarrierState())
-#endif
-
 void __fastcall DrawBulletWarpBarrier();
 
 #define ECL_EX_CONTEXT(enemy) (reinterpret_cast<Enemy *>(enemy)->activeEclContext)
@@ -113,7 +105,7 @@ void __fastcall StartNarrowBulletWarpBarrier(EclOperands::EnemyOverlay *enemy, E
     effect = g_EffectManager.SpawnEffectInFixedSlot(56, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
     effect = g_EffectManager.SpawnEffectInFixedSlot(56, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
     g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 97);
-    g_EclExUpdateCallback = reinterpret_cast<void *>(&DrawBulletWarpBarrier);
+    g_Background.spellBackgroundDrawCallback = &DrawBulletWarpBarrier;
 }
 
 // FUNCTION: th08 0x4235a0
@@ -131,7 +123,7 @@ void __fastcall DrawBulletWarpBarrier()
 
     effect9 = reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(9));
     effect10 = reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(10));
-    unusedSpellVm = &g_EclExBarrierRenderState.spellVms[0];
+    unusedSpellVm = &g_Background.spellVms[0];
 
     radius9 = effect9->vm.pos.x * 0.7071068286895752f;
     radius10 = effect10->vm.pos.x * 0.7071068286895752f;
@@ -179,29 +171,29 @@ void __fastcall DrawBulletWarpBarrier()
     g_Supervisor.d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
 
     g_Supervisor.SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
-    g_EclExBarrierRenderState.spellVms[0].scale.x = -1.5f;
-    g_EclExBarrierRenderState.spellVms[0].scale.y = -1.75f;
-    g_EclExBarrierRenderState.spellVms[0].pos.z = 0.7f;
-    g_EclExBarrierRenderState.spellVms[0].pos.x = 416.0f;
-    g_EclExBarrierRenderState.spellVms[0].pos.y = 464.0f;
-    savedColor = g_EclExBarrierRenderState.spellVms[0].color1.d3dColor;
-    g_EclExBarrierRenderState.spellVms[0].color1.d3dColor = 0xffe0c0c0;
-    g_AnmManager->Draw2D(&g_EclExBarrierRenderState.spellVms[0]);
-    g_EclExBarrierRenderState.spellVms[0].scale.x = 1.5f;
-    g_EclExBarrierRenderState.spellVms[0].scale.y = 1.75f;
-    g_EclExBarrierRenderState.spellVms[0].pos.z = 0.5f;
-    g_EclExBarrierRenderState.spellVms[0].pos.x = 32.0f;
-    g_EclExBarrierRenderState.spellVms[0].pos.y = 16.0f;
-    g_EclExBarrierRenderState.spellVms[0].color1.d3dColor = savedColor;
+    g_Background.spellVms[0].scale.x = -1.5f;
+    g_Background.spellVms[0].scale.y = -1.75f;
+    g_Background.spellVms[0].pos.z = 0.7f;
+    g_Background.spellVms[0].pos.x = 416.0f;
+    g_Background.spellVms[0].pos.y = 464.0f;
+    savedColor = g_Background.spellVms[0].color1.d3dColor;
+    g_Background.spellVms[0].color1.d3dColor = 0xffe0c0c0;
+    g_AnmManager->Draw2D(&g_Background.spellVms[0]);
+    g_Background.spellVms[0].scale.x = 1.5f;
+    g_Background.spellVms[0].scale.y = 1.75f;
+    g_Background.spellVms[0].pos.z = 0.5f;
+    g_Background.spellVms[0].pos.x = 32.0f;
+    g_Background.spellVms[0].pos.y = 16.0f;
+    g_Background.spellVms[0].color1.d3dColor = savedColor;
 
-    g_EclExBarrierRenderState.spellVms[1].rotation.z *= -1.0f;
-    g_EclExBarrierRenderState.spellVms[1].pos.z = 0.6f;
-    savedColor = g_EclExBarrierRenderState.spellVms[1].color1.d3dColor;
-    g_EclExBarrierRenderState.spellVms[1].color1.d3dColor = 0xffe0c0c0;
-    g_AnmManager->Draw2DAndFlush(&g_EclExBarrierRenderState.spellVms[1]);
-    g_EclExBarrierRenderState.spellVms[1].rotation.z *= -1.0f;
-    g_EclExBarrierRenderState.spellVms[1].pos.z = 0.5f;
-    g_EclExBarrierRenderState.spellVms[1].color1.d3dColor = savedColor;
+    g_Background.spellVms[1].rotation.z *= -1.0f;
+    g_Background.spellVms[1].pos.z = 0.6f;
+    savedColor = g_Background.spellVms[1].color1.d3dColor;
+    g_Background.spellVms[1].color1.d3dColor = 0xffe0c0c0;
+    g_AnmManager->Draw2DAndFlush(&g_Background.spellVms[1]);
+    g_Background.spellVms[1].rotation.z *= -1.0f;
+    g_Background.spellVms[1].pos.z = 0.5f;
+    g_Background.spellVms[1].color1.d3dColor = savedColor;
     g_Supervisor.SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
 }
 
@@ -287,7 +279,7 @@ void __fastcall StartMediumBulletWarpBarrier(EclOperands::EnemyOverlay *enemy, E
     effect = g_EffectManager.SpawnEffectInFixedSlot(65, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
     effect = g_EffectManager.SpawnEffectInFixedSlot(65, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
     g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 99);
-    g_EclExUpdateCallback = reinterpret_cast<void *>(&DrawBulletWarpBarrier);
+    g_Background.spellBackgroundDrawCallback = &DrawBulletWarpBarrier;
 }
 
 
@@ -372,7 +364,7 @@ void __fastcall StopBulletWarpBarrier(EclOperands::EnemyOverlay *enemy, EclExIns
 {
     reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(9))->active = 0;
     reinterpret_cast<Effect *>(g_EffectManager.GetFixedSlotVm(10))->active = 0;
-    g_EclExBarrierRenderState.spellVmCount = 2;
+    g_Background.spellVmCount = 2;
 }
 
 // FUNCTION: th08 0x424170
@@ -382,7 +374,7 @@ void __fastcall StartWideBulletWarpBarrier(EclOperands::EnemyOverlay *enemy, Ecl
     effect = g_EffectManager.SpawnEffectInFixedSlot(58, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 9, 1, -1);
     effect = g_EffectManager.SpawnEffectInFixedSlot(58, reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position), 10, 1, -1);
     g_EffectManager.effectAnm->SetAndExecuteScriptIdx(effect, 101);
-    g_EclExUpdateCallback = reinterpret_cast<void *>(&DrawBulletWarpBarrier);
+    g_Background.spellBackgroundDrawCallback = &DrawBulletWarpBarrier;
 }
 
 
@@ -676,8 +668,8 @@ void __fastcall EclExIns::ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, 
                 reinterpret_cast<Enemy *>(setCursor)->nextInAttachmentChain);
             reinterpret_cast<Enemy *>(setCursor)->flags2 |= ENEMY_FLAG2_FORCE_PAUSE;
         }
-        g_EclExBarrierRenderState.spellVms[0].SetInterrupt(2);
-        g_EclExBarrierRenderState.spellVms[1].SetInterrupt(2);
+        g_Background.spellVms[0].SetInterrupt(2);
+        g_Background.spellVms[1].SetInterrupt(2);
     }
     else
     {
@@ -688,8 +680,8 @@ void __fastcall EclExIns::ReisenFreezeBullets(EclOperands::EnemyOverlay *enemy, 
                 reinterpret_cast<Enemy *>(clearCursor)->nextInAttachmentChain);
             reinterpret_cast<Enemy *>(clearCursor)->flags2 &= ~ENEMY_FLAG2_FORCE_PAUSE;
         }
-        g_EclExBarrierRenderState.spellVms[0].SetInterrupt(1);
-        g_EclExBarrierRenderState.spellVms[1].SetInterrupt(1);
+        g_Background.spellVms[0].SetInterrupt(1);
+        g_Background.spellVms[1].SetInterrupt(1);
     }
 }
 
@@ -850,13 +842,13 @@ void __fastcall EclExIns::SetScriptedUpdateFreeze(
         instruction->byteValue;
     if (g_GameManager.scriptedUpdateFreeze)
     {
-        g_EclExBarrierRenderState.spellVms[0].SetInterrupt(2);
-        g_EclExBarrierRenderState.spellVms[1].SetInterrupt(2);
+        g_Background.spellVms[0].SetInterrupt(2);
+        g_Background.spellVms[1].SetInterrupt(2);
     }
     else
     {
-        g_EclExBarrierRenderState.spellVms[0].SetInterrupt(1);
-        g_EclExBarrierRenderState.spellVms[1].SetInterrupt(1);
+        g_Background.spellVms[0].SetInterrupt(1);
+        g_Background.spellVms[1].SetInterrupt(1);
     }
 }
 
@@ -894,8 +886,8 @@ void __fastcall EnterScaledBulletTime(EclOperands::EnemyOverlay *enemy, EclExIns
 
     g_Supervisor.framerateMultiplier =
         1.0f / static_cast<f32>(instruction->value);
-    g_EclExBarrierRenderState.spellVms[0].SetInterrupt(2);
-    g_EclExBarrierRenderState.spellVms[1].SetInterrupt(2);
+    g_Background.spellVms[0].SetInterrupt(2);
+    g_Background.spellVms[1].SetInterrupt(2);
 
     bullet = &g_BulletManager.bullets[0];
     for (i = 0; i < 0x600; ++i, bullet++)
@@ -939,8 +931,8 @@ void __fastcall ExitScaledBulletTime(EclOperands::EnemyOverlay *enemy, EclExInst
     if (g_Supervisor.framerateMultiplier < 1.0f)
         g_EclGameTimeScaleFlags |= 0x20U;
     g_Supervisor.framerateMultiplier = 1.0f;
-    g_EclExBarrierRenderState.spellVms[0].SetInterrupt(1);
-    g_EclExBarrierRenderState.spellVms[1].SetInterrupt(1);
+    g_Background.spellVms[0].SetInterrupt(1);
+    g_Background.spellVms[1].SetInterrupt(1);
 }
 
 
@@ -958,8 +950,3 @@ void __fastcall SpawnBombOrExtendItem(EclOperands::EnemyOverlay *enemy, EclExIns
 #undef ECL_EX_CONTEXT
 
 } // namespace th08
-
-#ifdef TH08_MODERN_PORT
-#undef g_EclExUpdateCallback
-#undef g_EclExBarrierRenderState
-#endif

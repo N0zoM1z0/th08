@@ -9,7 +9,6 @@
 
 namespace th08
 {
-struct EclExBarrierRenderState;
 struct Effect;
 struct RawStageInstr;
 struct RawStageObject;
@@ -84,16 +83,6 @@ struct Background
     void StartSpellBackground();
     void StopSpellBackground();
 
-    EclExBarrierRenderState &EclExBarrierState()
-    {
-        return *reinterpret_cast<EclExBarrierRenderState *>(&this->spellVmCount);
-    }
-
-    void *&EclExUpdateCallback()
-    {
-        return *reinterpret_cast<void **>(&this->spellBackgroundDrawCallback);
-    }
-
     AnmVm *stageObjectVms;
     AnmVm stageVm0;
     AnmVm stageVm1;
@@ -128,7 +117,7 @@ struct Background
     i32 spellVmScriptBase;
     AnmVm spellVms[0x20];
     AnmVm spellAuxVm;
-    void (*spellBackgroundDrawCallback)();
+    void (__fastcall *spellBackgroundDrawCallback)();
     i32 pendingStageScriptLabel;
     BackgroundCamera cameraTarget;
     BackgroundCamera cameraInterpolationStart;

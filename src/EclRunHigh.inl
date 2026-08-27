@@ -43,7 +43,6 @@
 namespace th08
 {
 extern void *g_EclExInsn[];
-extern i32 g_EclGlobal004ECCA8; // target 0x004ECCA8
 void __fastcall StartEnemySpell(u8 *enemy, void *instruction);
 void __fastcall EndEnemySpell(u8 *enemy, void *instruction);
 
@@ -971,7 +970,7 @@ enter_subroutine:
         reinterpret_cast<EnemyFlag1Bits *>(
             &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1)->timeoutSpell =
             TH08_ECL_RAW_BYTE(ctx, 0);
-        g_EclGlobal004ECCA8 = 0x05F5E0F6;
+        g_Spellcard.scoreLimit = 99999990;
         break;
     case 156:
         reinterpret_cast<EnemyFlag1Bits *>(

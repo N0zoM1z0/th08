@@ -2035,3 +2035,22 @@ exact** for the three bounded groups; the required cold aggregate passes
 link; and the Linux fixed-layout verifier passes.  Continue on
 `semantic/typed-reconstruction`; commit and push stable checkpoints, but do
 not open or merge a PR until explicitly requested.
+
+The ECL spell-background owner checkpoint removes three remaining synthetic
+global identities.  Target address `0x004ECCA8` is
+`g_Spellcard.scoreLimit @ +0x2638`; ECL opcode 155 now writes the same readable
+`99999990` timeout limit as `Spellcard::StartSpell`.  Addresses `0x004E4B60`
+and `0x004EA28C` are respectively `g_Background.spellVmCount @ +0xB30` and
+`g_Background.spellBackgroundDrawCallback @ +0x625C`; all ECL extension and
+Effect users now name the real Background fields directly, and the callback
+slot carries the only assigned target function's `__fastcall` type.  The stale
+DIFFBUILD `_g_Stage` label at the Background base is also corrected.  The
+obsolete
+target/modern bridge declarations, Linux linker alias, global-ledger rows, and
+three synthetic relocation identities are gone; COFF addends continue to
+prove the same absolute target addresses through the real owners.  Focused
+replay passes **86 / 86 exact**, and the required non-reuse cold aggregate
+passes **1,106 / 1,106 exact** with zero failures.  The normal VC7 image and
+complete Linux i386 image link, and the Linux fixed-layout verifier passes.
+Continue on `semantic/typed-reconstruction`; commit and push stable
+checkpoints, but do not open or merge a PR until explicitly requested.

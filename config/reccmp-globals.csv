@@ -229,8 +229,6 @@ th08::g_GuiMessagePaths,0x4c74c0,global
 th08::g_EnemyManagerUpdateTrackedPosition,0x18b899c,global
 th08::g_EnemyTrackedEnemy,0x18b89b4,global
 th08::g_EnemyManagerUpdateTrackedPositionValid,0x18b89b8,global
-th08::g_EclExUpdateCallback,0x4ea28c,global
-th08::g_EclExBarrierRenderState,0x4e4b60,global
 th08::g_EclGameTimeScaleFlags,0x17ce8fc,global
 th08::g_TitleLastWordCommentFormats,0x4c82c8,global
 th08::g_TitleSpellDifficultyNames,0x4c8628,global

@@ -4139,3 +4139,44 @@ owned layout symbol.  No class size/offset, Laser lifecycle, enemy-spawn
 behavior, stream overwrite guard, spell-background state, player coordinate,
 attachment-chain behavior, target byte, accepted-unit identity, or aggregate
 exact total changed.
+
+### ECL spell-background state returns to its real owners — 2026-08-27
+
+Scope: three residual globals that named interior addresses of already typed
+production owners, plus every source, ledger, linker, and COFF relocation view
+that depended on those aliases.
+
+ECL opcode 155 writes `0x05F5E0F6` to target address `0x004ECCA8` immediately
+after enabling the Enemy timeout-spell flag.  The address equation is exact:
+`g_Spellcard @ 0x004EA670 + offsetof(Spellcard, scoreLimit) @ 0x2638 =
+0x004ECCA8`.  `Spellcard::StartSpell @ 0x004152A0` independently writes the
+same decimal value, `99999990`, to that field when the timeout flag is active.
+The opcode therefore now names `g_Spellcard.scoreLimit` rather than the
+synthetic `g_EclGlobal004ECCA8` identity.
+
+The other two aliases are likewise interior Background fields:
+`g_Background @ 0x004E4030 + spellVmCount @ 0xB30 = 0x004E4B60`, and
+`g_Background + spellBackgroundDrawCallback @ 0x625C = 0x004EA28C`.  ECL
+extension drawing, ANM interrupts, effect-resource setup, and the three barrier
+startup handlers now access `g_Background.spellVms`, `spellVmCount`, and
+`spellBackgroundDrawCallback` directly.  The callback field uses the
+`__fastcall` ABI of its sole non-null target, `DrawBulletWarpBarrier`, so the
+assignments no longer need a `void *` cast.  The stale DIFFBUILD `_g_Stage`
+symbol at the Background base is corrected to `_g_Background`.  The
+compatibility accessors and
+duplicate two-VM overlay type are no longer needed.  The global ledgers and
+Linux score-limit linker alias are removed, while the COFF match manifests now
+name `g_Spellcard` or `g_Background`; their object relocation addends retain the
+member offsets and therefore resolve to the same target bytes.
+
+VC7 oracle: focused replay of EclRun.obj, EclExIns.obj, EffectManager.obj, and
+EclGlobals.obj passes **86 / 86 exact**.  Because the cleanup changes shared
+headers and relocation ownership, the required single-job non-reuse cold build
+of all 75 comparison objects passes **1,106 / 1,106 exact** with zero failures.
+The normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container image links after the
+obsolete linker alias is removed, and `verify-modern-linux.sh` verifies the
+ELF32 executable and every fixed target-owned layout symbol.  No spell timeout,
+barrier draw callback, ANM VM update, target byte, accepted-unit identity, or
+aggregate exact total changed.

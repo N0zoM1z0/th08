@@ -97,13 +97,6 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(void *, 32, g_EclExInsn) = {
     reinterpret_cast<void *>(&SpawnBombOrExtendItem),
 };
 
-#ifndef TH08_MODERN_PORT
-DIFFABLE_STATIC(void *, g_EclExUpdateCallback);
-#endif
-DIFFABLE_STATIC(i32, g_EclGlobal004ECCA8);
-#ifndef TH08_MODERN_PORT
-DIFFABLE_STATIC(EclExBarrierRenderState, g_EclExBarrierRenderState);
-#endif
 DIFFABLE_STATIC(u32, g_EclGameTimeScaleFlags);
 DIFFABLE_STATIC(EclManager, g_EclManager);
 

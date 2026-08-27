@@ -137,21 +137,6 @@ void __fastcall ShiftStageEffectOrigins(Float3 *delta);
 DIFFABLE_EXTERN(ChainElem, g_EffectManagerCalcChain);
 DIFFABLE_EXTERN(ChainElem, g_EffectManagerDrawChain);
 
-#ifndef TH08_MODERN_PORT
-DIFFABLE_EXTERN(void *, g_EclExUpdateCallback);
-#endif
-struct EclExBarrierRenderState
-{
-    i32 spellVmCount;
-    i32 spellVmScriptBase;
-    AnmVm spellVms[2];
-};
-C_ASSERT(sizeof(EclExBarrierRenderState) == 0x550);
-C_ASSERT(offsetof(EclExBarrierRenderState, spellVmScriptBase) == 0x4);
-C_ASSERT(offsetof(EclExBarrierRenderState, spellVms) == 0x8);
-#ifndef TH08_MODERN_PORT
-DIFFABLE_EXTERN(EclExBarrierRenderState, g_EclExBarrierRenderState);
-#endif
 DIFFABLE_EXTERN(u32, g_EclGameTimeScaleFlags);
 struct EclRawInstruction
 {

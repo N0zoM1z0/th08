@@ -7,9 +7,7 @@ _g_CryptSignature,          0x004c7940
 _g_FormatInfoArray,         0x004c7948
 _g_SoundBufferIdxVol,       0x004c8040
 _g_SFXList,                 0x004c81b0
-_g_Stage,                   0x004e4030
-_g_EclExBarrierRenderState, 0x004e4b60
-_g_EclExUpdateCallback,    0x004ea28c
+_g_Background,              0x004e4030
 _g_Spellcard,               0x004ea670
 _g_SpellcardCalcChain,      0x004eccac
 _g_EffectManager,           0x004ece60

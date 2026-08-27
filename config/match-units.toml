@@ -5066,8 +5066,8 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x594F
 type = "DIR32"
-symbol = "?g_EclGlobal004ECCA8@th08@@3HA"
-target = 0x004ECCA8
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
 
 [[units.relocations]]
 offset = 0x59B9
@@ -81316,8 +81316,8 @@ target = 0x004E4B64
 [[units.relocations]]
 offset = 0x31
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 58
@@ -109519,8 +109519,8 @@ target = 0x004069F0
 [[units.relocations]]
 offset = 0x5C
 type = "DIR32"
-symbol = "?g_EclExUpdateCallback@th08@@3PAXA"
-target = 0x004EA28C
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x60
@@ -109574,8 +109574,8 @@ target = 0x004069F0
 [[units.relocations]]
 offset = 0x5C
 type = "DIR32"
-symbol = "?g_EclExUpdateCallback@th08@@3PAXA"
-target = 0x004EA28C
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x60
@@ -109629,8 +109629,8 @@ target = 0x004069F0
 [[units.relocations]]
 offset = 0x5C
 type = "DIR32"
-symbol = "?g_EclExUpdateCallback@th08@@3PAXA"
-target = 0x004EA28C
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x60
@@ -109970,8 +109970,8 @@ target = 0x004253E0
 [[units.relocations]]
 offset = 0x34
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units]]
 name = "ecl-ex-warp-bullets-across-wide-barrier"
@@ -110255,8 +110255,8 @@ target = 0x004253E0
 [[units.relocations]]
 offset = 0x3F
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x4E
@@ -110561,50 +110561,50 @@ target = 0x00448270
 [[units.relocations]]
 offset = 0x3B1
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x3BB
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x3C5
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x3CF
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x3D9
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x3E2
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x3EB
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x3F4
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x3FA
@@ -110621,44 +110621,44 @@ target = 0x00463210
 [[units.relocations]]
 offset = 0x405
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x40F
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x419
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x423
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x42D
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x43A
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x440
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x446
@@ -110669,32 +110669,32 @@ target = 0x004B438C
 [[units.relocations]]
 offset = 0x44C
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x452
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x45C
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x465
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x46E
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x474
@@ -110711,8 +110711,8 @@ target = 0x0040BAF0
 [[units.relocations]]
 offset = 0x47F
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x485
@@ -110723,20 +110723,20 @@ target = 0x004B438C
 [[units.relocations]]
 offset = 0x48B
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x491
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x49D
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x4A6
@@ -111090,8 +111090,8 @@ target = 0x004286E0
 [[units.relocations]]
 offset = 0x1B4
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x1B9
@@ -111102,8 +111102,8 @@ target = 0x00407120
 [[units.relocations]]
 offset = 0x1C0
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x1C5
@@ -111114,8 +111114,8 @@ target = 0x00407120
 [[units.relocations]]
 offset = 0x1FF
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x204
@@ -111126,8 +111126,8 @@ target = 0x00407120
 [[units.relocations]]
 offset = 0x20B
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x210
@@ -111400,8 +111400,8 @@ addend = 0x2C
 [[units.relocations]]
 offset = 0x26
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x2B
@@ -111412,8 +111412,8 @@ target = 0x00407120
 [[units.relocations]]
 offset = 0x32
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x37
@@ -111424,8 +111424,8 @@ target = 0x00407120
 [[units.relocations]]
 offset = 0x40
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x45
@@ -111436,8 +111436,8 @@ target = 0x00407120
 [[units.relocations]]
 offset = 0x4C
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x51
@@ -111499,8 +111499,8 @@ addend = 0x188
 [[units.relocations]]
 offset = 0x21
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x26
@@ -111511,8 +111511,8 @@ target = 0x00407120
 [[units.relocations]]
 offset = 0x2D
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0x32
@@ -111643,8 +111643,8 @@ addend = 0x188
 [[units.relocations]]
 offset = 0xE6
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0xEB
@@ -111655,8 +111655,8 @@ target = 0x00407120
 [[units.relocations]]
 offset = 0xF2
 type = "DIR32"
-symbol = "?g_EclExBarrierRenderState@th08@@3UEclExBarrierRenderState@1@A"
-target = 0x004E4B60
+symbol = "?g_Background@th08@@3UBackground@1@A"
+target = 0x004E4030
 
 [[units.relocations]]
 offset = 0xF7
