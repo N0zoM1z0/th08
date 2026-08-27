@@ -338,7 +338,7 @@ void EnemyOverlay::DetachEnemyChain(i32 awardRewards)
             }
             g_Player.CreateCircleCancelRegion(&reinterpret_cast<Enemy *>(this)->worldPosition,
                                   32.0f, 1.0f, 16, 7);
-            *reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) = 0;
+            g_Player.timeOrbGaugeChangeSuppressionTimer = 0;
         }
     }
 
@@ -346,9 +346,9 @@ void EnemyOverlay::DetachEnemyChain(i32 awardRewards)
     {
         Float3 attachedPosition;
         g_GameManager.AddToYoukaiGauge(-g_GameManager.GetYoukaiGauge() / 12, 0);
-        *reinterpret_cast<ZunTimer *>(&g_Player.timerE2AE8) = 0;
-        *reinterpret_cast<ZunTimer *>(&g_Player.timerE2AD0) = 30;
-        *reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) = 50;
+        g_Player.shootingGaugeChangeRampTimer = 0;
+        g_Player.gaugeShiftDelayTimer = 30;
+        g_Player.timeOrbGaugeChangeSuppressionTimer = 50;
         reinterpret_cast<Enemy *>(this)->worldPosition =
             reinterpret_cast<Enemy *>(this)->position +
             reinterpret_cast<Enemy *>(this)->positionOffset;

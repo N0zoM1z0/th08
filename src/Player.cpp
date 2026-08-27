@@ -647,7 +647,7 @@ i32 Player::UpdateMovementAndOptions()
 
     if (focus)
     {
-        if (this->optionModeFlag != 1)
+        if (this->focusMode != PLAYER_FOCUS_MODE_FOCUSED)
         {
             if (g_GameManager.shotType <= 3)
             {
@@ -661,13 +661,13 @@ i32 Player::UpdateMovementAndOptions()
                         g_PlayerOptionRenderCallbacks[g_GameManager.shotType].callbacks[optionIndex];
                     if (option->updateCallback != NULL)
                     {
-                        option->state2C8 = 1;
+                        option->lifecycleState = PLAYER_OPTION_INITIALIZING;
                         option->timer = 0;
                         option->optionIndex = optionIndex;
                     }
                     else
                     {
-                        option->state2C8 = 0;
+                        option->lifecycleState = PLAYER_OPTION_INACTIVE;
                     }
                 }
             }
@@ -685,7 +685,7 @@ i32 Player::UpdateMovementAndOptions()
                     g_EffectManager.SpawnEffectInFixedSlot(22, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 2, 1, -1));
             }
             this->focusTransitionFrames = 0;
-            this->timerE2AE8 = 0;
+            this->shootingGaugeChangeRampTimer = 0;
         }
         else
         {
@@ -693,20 +693,21 @@ i32 Player::UpdateMovementAndOptions()
         }
         if (this->focusTransitionFrames >= 7)
             this->isYoukai = 1;
-        this->optionModeFlag = 1;
+        this->focusMode = PLAYER_FOCUS_MODE_FOCUSED;
     }
     else
     {
-        if (this->optionModeFlag != 0)
+        if (this->focusMode != PLAYER_FOCUS_MODE_UNFOCUSED)
         {
             option2 = this->optionStates;
             if (g_GameManager.shotType < 3)
             {
                 for (optionExitIndex = 0; optionExitIndex < 4; optionExitIndex++, option2++)
                 {
-                    if (option2->state2C8 != 0 && option2->state2C8 != 3)
+                    if (option2->lifecycleState != PLAYER_OPTION_INACTIVE &&
+                        option2->lifecycleState != PLAYER_OPTION_EXITING)
                     {
-                        option2->state2C8 = 3;
+                        option2->lifecycleState = PLAYER_OPTION_EXITING;
                         option2->timer = 0;
                     }
                 }
@@ -715,9 +716,10 @@ i32 Player::UpdateMovementAndOptions()
             {
                 for (route3Index = 0; route3Index < 2; route3Index++, option2++)
                 {
-                    if (option2->state2C8 != 0 && option2->state2C8 != 3)
+                    if (option2->lifecycleState != PLAYER_OPTION_INACTIVE &&
+                        option2->lifecycleState != PLAYER_OPTION_EXITING)
                     {
-                        option2->state2C8 = 3;
+                        option2->lifecycleState = PLAYER_OPTION_EXITING;
                         option2->timer = 0;
                     }
                 }
@@ -726,7 +728,7 @@ i32 Player::UpdateMovementAndOptions()
                     g_PlayerRoute3ExitUpdateCallbacks[route3Index];
                 option2->renderCallback =
                     g_PlayerRoute3ExitRenderCallbacks[route3Index];
-                option2->state2C8 = 1;
+                option2->lifecycleState = PLAYER_OPTION_INITIALIZING;
                 option2->timer = 0;
                 option2->optionIndex = route3Index;
                 for (historyInitIndex = 0; historyInitIndex < 16; ++historyInitIndex)
@@ -744,7 +746,7 @@ i32 Player::UpdateMovementAndOptions()
                 this->focusEffect->vm.SetInterrupt(1);
             this->focusEffect = NULL;
             this->focusTransitionFrames = 0;
-            this->timerE2AE8 = 0;
+            this->shootingGaugeChangeRampTimer = 0;
         }
         else
         {
@@ -752,7 +754,7 @@ i32 Player::UpdateMovementAndOptions()
         }
         if (this->focusTransitionFrames >= 7)
             this->isYoukai = 0;
-        this->optionModeFlag = 0;
+        this->focusMode = PLAYER_FOCUS_MODE_UNFOCUSED;
     }
 
     if (g_GameManager.shotType >= 4)
@@ -763,7 +765,7 @@ i32 Player::UpdateMovementAndOptions()
             this->isYoukai = 0;
     }
 
-    if (this->optionModeFlag != 0)
+    if (this->focusMode != PLAYER_FOCUS_MODE_UNFOCUSED)
     {
         switch (this->movementDirection)
         {
@@ -800,7 +802,7 @@ i32 Player::UpdateMovementAndOptions()
 #define SET_PLAYER_SCRIPT(idx) (this->anmFile->SetAndExecuteScriptIdx(&this->mainVm, (idx)))
     if (g_GameManager.shotType < 4)
     {
-        if (this->optionModeFlag == 0)
+        if (this->focusMode == PLAYER_FOCUS_MODE_UNFOCUSED)
         {
             if (horizontalSpeed < 0.0f && this->currentHorizontalSpeed >= 0.0f)
                 SET_PLAYER_SCRIPT(1);
@@ -901,24 +903,24 @@ i32 Player::UpdateMovementAndOptions()
         gaugeDelta = 0;
         if (this->shotTimer >= 0)
         {
-            if (this->timerE2AD0 > 0)
-                this->timerE2AD0--;
+            if (this->gaugeShiftDelayTimer > 0)
+                this->gaugeShiftDelayTimer--;
             else
             {
-                gaugeDelta = (i32)((f32)this->timerE2AE8 > 300.0f
+                gaugeDelta = (i32)((f32)this->shootingGaugeChangeRampTimer > 300.0f
                                        ? 21.0f
-                                       : (f32)this->timerE2AE8 / 15.0f);
-                if (this->optionModeFlag == 0)
+                                       : (f32)this->shootingGaugeChangeRampTimer / 15.0f);
+                if (this->focusMode == PLAYER_FOCUS_MODE_UNFOCUSED)
                     gaugeDelta = -gaugeDelta;
                 g_GameManager.AddToYoukaiGauge((i32)((f32)gaugeDelta * g_Supervisor.framerateMultiplier), 0);
-                this->timerE2AE8++;
+                this->shootingGaugeChangeRampTimer++;
             }
         }
         else
         {
-            if (this->timerE2AD0 >= 4)
-                this->timerE2AE8 = 0;
-            if (this->timerE2AD0 >= 30)
+            if (this->gaugeShiftDelayTimer >= 4)
+                this->shootingGaugeChangeRampTimer = 0;
+            if (this->gaugeShiftDelayTimer >= 30)
             {
                 if (fabs((double)g_GameManager.GetYoukaiGauge()) <= 9.0)
                 {
@@ -936,7 +938,7 @@ i32 Player::UpdateMovementAndOptions()
                 }
             }
             else
-                this->timerE2AD0++;
+                this->gaugeShiftDelayTimer++;
         }
     }
 
@@ -1210,7 +1212,7 @@ acceptBomb:
         *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFBFFu;
         g_AnmManager->SetMixColorDefault();
 
-        this->bombState.callbackVariant = this->optionModeFlag;
+        this->bombState.callbackVariant = this->focusMode;
         if (this->deathbombPending)
             this->bombState.callbackVariant = 1 - this->bombState.callbackVariant;
 
@@ -1359,7 +1361,7 @@ i32 Player::UpdateDeathAndRespawn()
         this->timer = 0;
         this->mainVm.scale.x = 3.0f;
         this->mainVm.scale.y = 3.0f;
-        if ((g_GameManager.shotType < 4 && this->optionModeFlag == 0) ||
+        if ((g_GameManager.shotType < 4 && this->focusMode == PLAYER_FOCUS_MODE_UNFOCUSED) ||
             (g_GameManager.shotType & 1) == 0)
             this->anmFile->SetAndExecuteScriptIdx(&this->mainVm, 0);
         else
@@ -1588,8 +1590,8 @@ ZunResult Player::AddedCallback(Player *player)
         shotSlot->state = PLAYER_SHOT_INACTIVE;
 
     player->shotTimer = -1;
-    player->timerE2AD0 = 0;
-    player->timerE2AE8 = 0;
+    player->gaugeShiftDelayTimer = 0;
+    player->shootingGaugeChangeRampTimer = 0;
 
     player->bombState.updateCallbacks = g_PlayerBombCallbacksByShotType[g_GameManager.shotType * 2];
     player->bombState.drawCallbacks = g_PlayerBombCallbacksByShotType[g_GameManager.shotType * 2 + 1];
@@ -1643,7 +1645,7 @@ ZunResult Player::AddedCallback(Player *player)
     player->extremeGaugeEffect = NULL;
     for (i = 0; i < 16; ++i)
         player->positionHistory[i] = player->position;
-    player->optionModeFlag = 2;
+    player->focusMode = PLAYER_FOCUS_MODE_UNINITIALIZED;
 
     if (g_GameManager.shotType > 3)
     {
@@ -1657,13 +1659,13 @@ ZunResult Player::AddedCallback(Player *player)
                 g_PlayerOptionRenderCallbacks[g_GameManager.shotType].callbacks[m];
             if (option->updateCallback != NULL)
             {
-                option->state2C8 = 1;
+                option->lifecycleState = PLAYER_OPTION_INITIALIZING;
                 option->timer = 0;
                 option->optionIndex = m;
             }
             else
             {
-                option->state2C8 = 0;
+                option->lifecycleState = PLAYER_OPTION_INACTIVE;
             }
         }
     }
@@ -1935,76 +1937,76 @@ void __fastcall UpdateOptionHomingToTarget(Player *player, PlayerOptionState *op
 // FUNCTION: th08 0x44e3a0
 i32 __fastcall UpdateHomingOption(Player *player, PlayerOptionState *option)
 {
-    switch (option->state2C8)
+    switch (option->lifecycleState)
     {
-    case 1:
+    case PLAYER_OPTION_INITIALIZING:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 18);
         option->position = player->position;
         option->position.y -= 96.0f;
         if (option->position.y < 32.0f)
             option->position.y = 32.0f;
-        option->state2C8 = 2;
+        option->lifecycleState = PLAYER_OPTION_ACTIVE;
         player->optionHomingTarget = NULL;
         break;
 
-    case 2:
-        switch (option->substate2CC)
+    case PLAYER_OPTION_ACTIVE:
+        switch (option->behaviorState)
         {
-        case 0:
+        case PLAYER_HOMING_OPTION_FOLLOWING_PLAYER:
             UpdateOptionHomingToPlayer(player, option);
             if (option->velocity.x < 0.0f)
             {
                 option->vm.SetInterrupt(2);
-                option->substate2CC = 1;
+                option->behaviorState = PLAYER_HOMING_OPTION_MOVING_LEFT;
                 if (option->vm.scale.x < 0.0f)
                     option->vm.scale.x = -option->vm.scale.x;
             }
             else if (option->velocity.x > 0.0f)
             {
                 option->vm.SetInterrupt(2);
-                option->substate2CC = 2;
+                option->behaviorState = PLAYER_HOMING_OPTION_MOVING_RIGHT;
                 if (option->vm.scale.x > 0.0f)
                     option->vm.scale.x = -option->vm.scale.x;
             }
             break;
 
-        case 1:
+        case PLAYER_HOMING_OPTION_MOVING_LEFT:
             UpdateOptionHomingToPlayer(player, option);
             if (option->velocity.x == 0.0f)
             {
                 option->vm.SetInterrupt(1);
-                option->substate2CC = 0;
+                option->behaviorState = PLAYER_HOMING_OPTION_FOLLOWING_PLAYER;
                 if (option->vm.scale.x < 0.0f)
                     option->vm.scale.x = -option->vm.scale.x;
             }
             else if (option->velocity.x > 0.0f)
             {
                 option->vm.SetInterrupt(2);
-                option->substate2CC = 2;
+                option->behaviorState = PLAYER_HOMING_OPTION_MOVING_RIGHT;
                 if (option->vm.scale.x > 0.0f)
                     option->vm.scale.x = -option->vm.scale.x;
             }
             break;
 
-        case 2:
+        case PLAYER_HOMING_OPTION_MOVING_RIGHT:
             UpdateOptionHomingToPlayer(player, option);
             if (option->velocity.x == 0.0f)
             {
                 option->vm.SetInterrupt(1);
-                option->substate2CC = 0;
+                option->behaviorState = PLAYER_HOMING_OPTION_FOLLOWING_PLAYER;
                 if (option->vm.scale.x < 0.0f)
                     option->vm.scale.x = -option->vm.scale.x;
             }
             else if (option->velocity.x < 0.0f)
             {
                 option->vm.SetInterrupt(2);
-                option->substate2CC = 1;
+                option->behaviorState = PLAYER_HOMING_OPTION_MOVING_LEFT;
                 if (option->vm.scale.x < 0.0f)
                     option->vm.scale.x = -option->vm.scale.x;
             }
             break;
 
-        case 3:
+        case PLAYER_HOMING_OPTION_TRACKING_TARGET:
             if (player->optionHomingTarget != NULL)
                 UpdateOptionHomingToTarget(player, option);
             if (((player->shotTimer < 0) && ((g_CurFrameInput & 1) == 0)) ||
@@ -2012,7 +2014,7 @@ i32 __fastcall UpdateHomingOption(Player *player, PlayerOptionState *option)
             {
                 player->optionHomingTarget = NULL;
                 option->vm.SetInterrupt(1);
-                option->substate2CC = 0;
+                option->behaviorState = PLAYER_HOMING_OPTION_FOLLOWING_PLAYER;
             }
             break;
 
@@ -2021,12 +2023,12 @@ i32 __fastcall UpdateHomingOption(Player *player, PlayerOptionState *option)
         }
         break;
 
-    case 3:
+    case PLAYER_OPTION_EXITING:
         if (option->timer == 0)
             option->vm.SetInterrupt(5);
         if (option->timer > 16)
         {
-            option->state2C8 = 0;
+            option->lifecycleState = PLAYER_OPTION_INACTIVE;
             option->updateCallback = NULL;
             option->renderCallback = NULL;
         }
@@ -2060,7 +2062,7 @@ void __fastcall UpdateOptionHomingToPlayer(Player *player, PlayerOptionState *op
         option->timer >= 10)
     {
         option->vm.SetInterrupt(3);
-        option->substate2CC = 3;
+        option->behaviorState = PLAYER_HOMING_OPTION_TRACKING_TARGET;
     }
     else
     {
@@ -2101,13 +2103,13 @@ i32 __fastcall DrawPlayerOption(Player *, PlayerOptionState *option)
 // FUNCTION: th08 0x44ea40
 i32 __fastcall UpdateBombAnchorOption(Player *player, PlayerOptionState *option)
 {
-    switch (option->state2C8)
+    switch (option->lifecycleState)
     {
-    case 1:
+    case PLAYER_OPTION_INITIALIZING:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 29);
-        option->state2C8 = 2;
+        option->lifecycleState = PLAYER_OPTION_ACTIVE;
         // Fall through: the option starts following immediately.
-    case 2:
+    case PLAYER_OPTION_ACTIVE:
         if (player->bombState.isInUse == 0)
         {
             option->position = player->position;
@@ -2115,14 +2117,14 @@ i32 __fastcall UpdateBombAnchorOption(Player *player, PlayerOptionState *option)
         }
         break;
 
-    case 3:
+    case PLAYER_OPTION_EXITING:
         option->position = player->position;
         option->position.y -= 32.0f;
         if (option->timer == 0)
             option->vm.SetInterrupt(5);
         if (option->timer > 16)
         {
-            option->state2C8 = 0;
+            option->lifecycleState = PLAYER_OPTION_INACTIVE;
             option->updateCallback = NULL;
             option->renderCallback = NULL;
         }
@@ -2134,11 +2136,11 @@ i32 __fastcall UpdateBombAnchorOption(Player *player, PlayerOptionState *option)
 // FUNCTION: th08 0x44eb70
 i32 __fastcall UpdateOrbitingOption(Player *player, PlayerOptionState *option)
 {
-    switch (option->state2C8)
+    switch (option->lifecycleState)
     {
-    case 1:
+    case PLAYER_OPTION_INITIALIZING:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 24);
-        option->state2C8 = 2;
+        option->lifecycleState = PLAYER_OPTION_ACTIVE;
         option->target = player->position;
         switch (option->optionIndex)
         {
@@ -2166,7 +2168,7 @@ i32 __fastcall UpdateOrbitingOption(Player *player, PlayerOptionState *option)
             break;
         }
         // Fall through to update the orbit immediately.
-    case 2:
+    case PLAYER_OPTION_ACTIVE:
         if (option->timer > 12)
         {
             switch (option->optionIndex)
@@ -2191,12 +2193,12 @@ i32 __fastcall UpdateOrbitingOption(Player *player, PlayerOptionState *option)
         option->position += option->target;
         break;
 
-    case 3:
+    case PLAYER_OPTION_EXITING:
         if (option->timer == 0)
             option->vm.SetInterrupt(5);
         if (option->timer > 16)
         {
-            option->state2C8 = 0;
+            option->lifecycleState = PLAYER_OPTION_INACTIVE;
             option->updateCallback = NULL;
             option->renderCallback = NULL;
         }
@@ -2210,11 +2212,11 @@ i32 __fastcall UpdateModeSensitiveOrbitingOption(Player *player, PlayerOptionSta
 {
     Float3 desired;
 
-    switch (option->state2C8)
+    switch (option->lifecycleState)
     {
-    case 1:
+    case PLAYER_OPTION_INITIALIZING:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 24);
-        option->state2C8 = 2;
+        option->lifecycleState = PLAYER_OPTION_ACTIVE;
         option->target = player->position;
         switch (option->optionIndex)
         {
@@ -2242,7 +2244,7 @@ i32 __fastcall UpdateModeSensitiveOrbitingOption(Player *player, PlayerOptionSta
             break;
         }
         // Fall through into the orbit update.
-    case 2:
+    case PLAYER_OPTION_ACTIVE:
         if (option->timer > 12)
         {
             switch (option->optionIndex)
@@ -2266,7 +2268,7 @@ i32 __fastcall UpdateModeSensitiveOrbitingOption(Player *player, PlayerOptionSta
 
         option->vm.color1.d3dColor = 0xFFFF8080;
         option->position.FromAngleMagnitude(option->orbitAngle, 8.0f);
-        if (player->optionModeFlag == 0)
+        if (player->focusMode == PLAYER_FOCUS_MODE_UNFOCUSED)
         {
             desired = player->position;
             option->vm.color1.d3dColor = 0xFF80FFFF;
@@ -2299,12 +2301,12 @@ i32 __fastcall UpdateModeSensitiveOrbitingOption(Player *player, PlayerOptionSta
             47, reinterpret_cast<D3DXVECTOR3 *>(&option->position), 1, 0x80602050);
         break;
 
-    case 3:
+    case PLAYER_OPTION_EXITING:
         if (option->timer == 0)
             option->vm.SetInterrupt(5);
         if (option->timer > 16)
         {
-            option->state2C8 = 0;
+            option->lifecycleState = PLAYER_OPTION_INACTIVE;
             option->updateCallback = NULL;
             option->renderCallback = NULL;
         }
@@ -2320,16 +2322,16 @@ i32 __fastcall UpdateFacingTrailOption(Player *player, PlayerOptionState *option
     f32 targetAngle;
     f32 angleDifference;
 
-    switch (option->state2C8)
+    switch (option->lifecycleState)
     {
-    case 1:
+    case PLAYER_OPTION_INITIALIZING:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 21);
-        option->state2C8 = 2;
+        option->lifecycleState = PLAYER_OPTION_ACTIVE;
         option->target = player->positionHistory[15];
         option->orbitAngle = 0.0f;
         option->facingAngle = -ZUN_PI / 2.0f;
         // Fall through into the normal update.
-    case 2:
+    case PLAYER_OPTION_ACTIVE:
         option->orbitAngle = AddNormalizeAngle(option->orbitAngle, 0.052359879016876221f);
         option->position.FromAngleMagnitude(option->orbitAngle, 8.0f);
         option->target = (player->positionHistory[15] - option->target) * 0.05f + option->target;
@@ -2388,12 +2390,12 @@ i32 __fastcall UpdateFacingTrailOption(Player *player, PlayerOptionState *option
 optionUpdateDone:
         break;
 
-    case 3:
+    case PLAYER_OPTION_EXITING:
         if (option->timer == 0)
             option->vm.SetInterrupt(5);
         if (option->timer > 16)
         {
-            option->state2C8 = 0;
+            option->lifecycleState = PLAYER_OPTION_INACTIVE;
             option->updateCallback = NULL;
             option->renderCallback = NULL;
         }
@@ -2409,16 +2411,16 @@ i32 __fastcall UpdateModeSensitiveFacingOption(Player *player, PlayerOptionState
     f32 targetAngle;
     f32 angleDifference;
 
-    switch (option->state2C8)
+    switch (option->lifecycleState)
     {
-    case 1:
+    case PLAYER_OPTION_INITIALIZING:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 21);
-        option->state2C8 = 2;
+        option->lifecycleState = PLAYER_OPTION_ACTIVE;
         option->target = player->positionHistory[15];
         option->orbitAngle = 0.0f;
         option->facingAngle = -ZUN_PI / 2.0f;
         // Fall through into the normal update.
-    case 2:
+    case PLAYER_OPTION_ACTIVE:
         option->orbitAngle = AddNormalizeAngle(option->orbitAngle, 0.052359879016876221f);
         option->position.FromAngleMagnitude(option->orbitAngle, 8.0f);
         option->target = (player->positionHistory[15] - option->target) * 0.05f + option->target;
@@ -2426,7 +2428,7 @@ i32 __fastcall UpdateModeSensitiveFacingOption(Player *player, PlayerOptionState
         option->position.z = 0.0f;
         option->vm.color1.d3dColor = 0xFFFF8080;
 
-        if (player->optionModeFlag == 0)
+        if (player->focusMode == PLAYER_FOCUS_MODE_UNFOCUSED)
         {
             option->vm.color1.d3dColor = 0xFFFFFFFF;
             switch (player->movementDirection)
@@ -2488,12 +2490,12 @@ i32 __fastcall UpdateModeSensitiveFacingOption(Player *player, PlayerOptionState
 optionUpdateDone:
         break;
 
-    case 3:
+    case PLAYER_OPTION_EXITING:
         if (option->timer == 0)
             option->vm.SetInterrupt(5);
         if (option->timer > 16)
         {
-            option->state2C8 = 0;
+            option->lifecycleState = PLAYER_OPTION_INACTIVE;
             option->updateCallback = NULL;
             option->renderCallback = NULL;
         }
@@ -2507,11 +2509,11 @@ i32 __fastcall UpdateTwinOrbitingOption(Player *player, PlayerOptionState *optio
 {
     Float3 base = player->position;
 
-    switch (option->state2C8)
+    switch (option->lifecycleState)
     {
-    case 1:
+    case PLAYER_OPTION_INITIALIZING:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 21);
-        option->state2C8 = 2;
+        option->lifecycleState = PLAYER_OPTION_ACTIVE;
         option->target = base;
         switch (option->optionIndex)
         {
@@ -2525,7 +2527,7 @@ i32 __fastcall UpdateTwinOrbitingOption(Player *player, PlayerOptionState *optio
             break;
         }
         // Fall through.
-    case 2:
+    case PLAYER_OPTION_ACTIVE:
         switch (option->optionIndex)
         {
         case 0:
@@ -2548,12 +2550,12 @@ i32 __fastcall UpdateTwinOrbitingOption(Player *player, PlayerOptionState *optio
             47, reinterpret_cast<D3DXVECTOR3 *>(&option->position), 1, 0x80602050);
         break;
 
-    case 3:
+    case PLAYER_OPTION_EXITING:
         if (option->timer == 0)
             option->vm.SetInterrupt(5);
         if (option->timer > 16)
         {
-            option->state2C8 = 0;
+            option->lifecycleState = PLAYER_OPTION_INACTIVE;
             option->updateCallback = NULL;
             option->renderCallback = NULL;
         }
@@ -2587,7 +2589,7 @@ void __fastcall Player::InitializeShot(PlayerShot *slot, PlayerShotDescriptor *e
     slot->velocity.y = sinf(entry->angle) * entry->speed;
 
     slot->timer = 0;
-    slot->optionModeFlag = this->optionModeFlag;
+    slot->focusMode = this->focusMode;
     slot->shotType = entry->shotType;
     slot->damage = entry->damage;
     slot->animationIndex = entry->animationIndex;
@@ -2902,7 +2904,7 @@ i32 __fastcall UpdateShotTrail(Player *player, PlayerShot *slot)
         player->timelines[slot->timelineIndex].instruction = NULL;
         slot->updateCallback = NULL;
     }
-    if (player->optionStates[0].state2C8 == 0)
+    if (player->optionStates[0].lifecycleState == PLAYER_OPTION_INACTIVE)
     {
         player->timelines[slot->timelineIndex].instruction = NULL;
         return 1;
@@ -3030,7 +3032,7 @@ void __fastcall Player::SpawnShots(i32 value)
     i32 result;
     i32 i;
 
-    table = (this->optionModeFlag == 0)
+    table = (this->focusMode == PLAYER_FOCUS_MODE_UNFOCUSED)
                 ? this->primaryShtFile->shotPowerLevels
                 : this->secondaryShtFile->shotPowerLevels;
 

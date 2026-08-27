@@ -88,7 +88,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
         if ((i32)reinterpret_cast<EnemyManager *>(this)->timer >= 16)
         {
             ++g_GameManager.humanityRateDenominator;
-            if (!g_Player.optionModeFlag)
+            if (!g_Player.focusMode)
                 ++g_GameManager.humanityRateNumerator;
         }
     }
@@ -360,17 +360,17 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
 
                 if (damage > 0)
                 {
-                    if ((reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->boss || !g_Player.optionModeFlag) &&
+                    if ((reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->boss || !g_Player.focusMode) &&
                         !g_Player.bombState.isInUse)
                     {
-                        if (reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->boss && !g_Player.optionModeFlag)
+                        if (reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->boss && !g_Player.focusMode)
                             rankAmount = 10 * (damage / (10 - difficultyScale / 3));
                         else
                             rankAmount = 10 * (damage / (30 - difficultyScale));
                         if (rankAmount > 70)
                             rankAmount = 70;
                         if (!rankAmount &&
-                            (!g_Player.optionModeFlag || ((i32)enemy->bossTimer & 1)))
+                            (!g_Player.focusMode || ((i32)enemy->bossTimer & 1)))
                             rankAmount = 10;
                     }
 
@@ -492,7 +492,7 @@ i32 EnemyManagerUpdateOverlay::OnUpdate()
             }
 
             reinterpret_cast<EclOperands::EnemyOverlay *>(enemy)->DetachEnemyChain(1);
-            if (!g_Player.optionModeFlag)
+            if (!g_Player.focusMode)
                 deathPosition = -200;
             else
                 deathPosition = 200;

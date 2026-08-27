@@ -200,7 +200,7 @@ void ItemManager::OnUpdate()
                    g_Player.primaryShtFile->itemCollectionBoxSize, 16.0f);
 
     this->itemCount = 0;
-    speed = g_Player.optionModeFlag ? g_Player.secondaryShtFile->itemMovementSpeed
+    speed = g_Player.focusMode ? g_Player.secondaryShtFile->itemMovementSpeed
                                     : g_Player.primaryShtFile->itemMovementSpeed;
     speed *= g_Supervisor.framerateMultiplier;
 
@@ -267,7 +267,7 @@ void ItemManager::OnUpdate()
             if (item->state == ITEM_STATE_AUTOCOLLECT ||
                 (g_Player.position.y < g_Player.primaryShtFile->pointItemValueLine &&
                  (g_GameManager.GetPower() >= 0.0 ||
-                  g_Player.optionModeFlag != 0 ||
+                  g_Player.focusMode != PLAYER_FOCUS_MODE_UNFOCUSED ||
                   g_GameManager.shotType == 1 || g_GameManager.shotType == 6)))
             {
                 if (g_Player.playerState != PLAYER_STATE_DYING && g_Player.playerState != PLAYER_STATE_SPAWNING)
@@ -387,11 +387,11 @@ executeOnly:
     if (soundIndex != 0)
         g_SoundPlayer.PlaySoundByIdx((SoundIdx)soundIndex, 0);
 
-    if (g_Player.timerE2ADC != 0)
+    if (g_Player.timeOrbGaugeChangeSuppressionTimer != 0)
     {
-        g_Player.timerE2ADC--;
-        if (g_Player.timerE2ADC <= 0)
-            g_Player.timerE2ADC = 0;
+        g_Player.timeOrbGaugeChangeSuppressionTimer--;
+        if (g_Player.timeOrbGaugeChangeSuppressionTimer <= 0)
+            g_Player.timeOrbGaugeChangeSuppressionTimer = 0;
     }
 }
 
@@ -630,11 +630,11 @@ void Item::CollectTimeOrb()
     g_GameManager.AddTimeOrbs(1);
     g_Spellcard.AddBonusProgress(8000);
 
-    if (g_Player.timerE2ADC == 0)
+    if (g_Player.timeOrbGaugeChangeSuppressionTimer == 0)
     {
         score = 111;
         g_GameManager.AddToYoukaiGauge(
-            g_Player.optionModeFlag ? score : -score, 0);
+            g_Player.focusMode ? score : -score, 0);
     }
 }
 

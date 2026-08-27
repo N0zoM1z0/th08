@@ -83,9 +83,32 @@ enum PlayerState
     PLAYER_STATE_INVULNERABLE = 3,
 };
 
+enum PlayerFocusMode
+{
+    PLAYER_FOCUS_MODE_UNFOCUSED = 0,
+    PLAYER_FOCUS_MODE_FOCUSED = 1,
+    PLAYER_FOCUS_MODE_UNINITIALIZED = 2,
+};
+
 struct Player;
 struct PlayerOptionState;
 typedef i32 (__fastcall *PlayerOptionCallback)(Player *, PlayerOptionState *);
+
+enum PlayerOptionLifecycleState
+{
+    PLAYER_OPTION_INACTIVE,
+    PLAYER_OPTION_INITIALIZING,
+    PLAYER_OPTION_ACTIVE,
+    PLAYER_OPTION_EXITING,
+};
+
+enum PlayerHomingOptionState
+{
+    PLAYER_HOMING_OPTION_FOLLOWING_PLAYER,
+    PLAYER_HOMING_OPTION_MOVING_LEFT,
+    PLAYER_HOMING_OPTION_MOVING_RIGHT,
+    PLAYER_HOMING_OPTION_TRACKING_TARGET,
+};
 
 struct PlayerOptionState
 {
@@ -93,8 +116,8 @@ struct PlayerOptionState
     Float3 position;
     Float3 target;
     Float3 velocity;
-    i32 state2C8;
-    i32 substate2CC;
+    i32 lifecycleState;
+    i32 behaviorState;
     i32 optionIndex;
     unknown_fields(0x2D4, 4);
     f32 orbitAngle;
@@ -106,6 +129,9 @@ struct PlayerOptionState
     PlayerOptionState();
 };
 C_ASSERT(sizeof(PlayerOptionState) == 0x2F4);
+C_ASSERT(offsetof(PlayerOptionState, lifecycleState) == 0x2C8);
+C_ASSERT(offsetof(PlayerOptionState, behaviorState) == 0x2CC);
+C_ASSERT(offsetof(PlayerOptionState, optionIndex) == 0x2D0);
 
 enum PlayerBombWorkItemState
 {
@@ -275,11 +301,11 @@ struct PlayerShot
     i16 timelineIndex;
     i16 sourceOptionIndex;
     i16 trailSegmentCount;
-    u8 optionModeFlag;
-    u8 unknown46D;
+    u8 focusMode;
+    u8 padding46D;
     i16 animationIndex;
     i8 tintInExtremeYoukai;
-    u8 unknown471[3];
+    u8 padding471[3];
     PlayerShotUpdateCallback updateCallback;
     PlayerShotDrawCallback drawCallback;
     PlayerShotCollisionCallback collisionCallback;
@@ -302,7 +328,7 @@ C_ASSERT(offsetof(PlayerShot, shotType) == 0x464);
 C_ASSERT(offsetof(PlayerShot, timelineIndex) == 0x466);
 C_ASSERT(offsetof(PlayerShot, sourceOptionIndex) == 0x468);
 C_ASSERT(offsetof(PlayerShot, trailSegmentCount) == 0x46A);
-C_ASSERT(offsetof(PlayerShot, optionModeFlag) == 0x46C);
+C_ASSERT(offsetof(PlayerShot, focusMode) == 0x46C);
 C_ASSERT(offsetof(PlayerShot, animationIndex) == 0x46E);
 C_ASSERT(offsetof(PlayerShot, tintInExtremeYoukai) == 0x470);
 C_ASSERT(offsetof(PlayerShot, updateCallback) == 0x474);
@@ -317,7 +343,7 @@ struct Player
     i8 playerState;
     u8 playerType;
     u8 unknown2;
-    u8 optionModeFlag;
+    u8 focusMode;
     u8 deathbombPending;
     u8 isYoukai;
     u8 forceDeathbombAtWindowEnd;
@@ -356,7 +382,7 @@ struct Player
     PlayerShotDescriptor *persistentShotDescriptors[4];
     i32 bulletCancelItemType;
     u8 shotHitEffectCounter;
-    u8 unknownE2A95[3];
+    u8 paddingE2A95[3];
     PlayerMovementDirection movementDirection;
     f32 currentHorizontalSpeed;
     f32 currentVerticalSpeed;
@@ -365,9 +391,9 @@ struct Player
     Enemy *optionHomingTarget;
     i32 enemyTrackedPositionValid;
     ZunTimer shotTimer;
-    ZunTimer timerE2AD0;
-    ZunTimer timerE2ADC;
-    ZunTimer timerE2AE8;
+    ZunTimer gaugeShiftDelayTimer;
+    ZunTimer timeOrbGaugeChangeSuppressionTimer;
+    ZunTimer shootingGaugeChangeRampTimer;
     ZunTimer timer;
     ZunTimer timerE2B00;
     f32 baseShotAngle;
@@ -434,7 +460,7 @@ struct Player
 };
 C_ASSERT(sizeof(Player) == 0xe2b30);
 C_ASSERT(offsetof(Player, unknown2) == 0x2);
-C_ASSERT(offsetof(Player, optionModeFlag) == 0x3);
+C_ASSERT(offsetof(Player, focusMode) == 0x3);
 C_ASSERT(offsetof(Player, deathbombPending) == 0x4);
 C_ASSERT(offsetof(Player, forceDeathbombAtWindowEnd) == 0x6);
 C_ASSERT(offsetof(Player, focusTransitionFrames) == 0x8);
@@ -477,7 +503,9 @@ C_ASSERT(offsetof(Player, tailPosition0) == 0xE2AA4);
 C_ASSERT(offsetof(Player, optionHomingTarget) == 0xE2ABC);
 C_ASSERT(offsetof(Player, enemyTrackedPositionValid) == 0xE2AC0);
 C_ASSERT(offsetof(Player, shotTimer) == 0xE2AC4);
-C_ASSERT(offsetof(Player, timerE2ADC) == 0xE2ADC);
+C_ASSERT(offsetof(Player, gaugeShiftDelayTimer) == 0xE2AD0);
+C_ASSERT(offsetof(Player, timeOrbGaugeChangeSuppressionTimer) == 0xE2ADC);
+C_ASSERT(offsetof(Player, shootingGaugeChangeRampTimer) == 0xE2AE8);
 C_ASSERT(offsetof(Player, baseShotAngle) == 0xE2B0C);
 C_ASSERT(offsetof(Player, timer) == 0xE2AF4);
 C_ASSERT(offsetof(Player, calcChain) == 0xE2B10);

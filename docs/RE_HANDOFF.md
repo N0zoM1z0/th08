@@ -752,7 +752,7 @@ unknown rather than receiving speculative names.
 The residual raw-member batch closes all five remaining router-selected raw
 offset expressions.  `ItemManager::OnUpdate @ 0x00440500` now reads the
 asserted `PlayerRawShtFile::itemMovementSpeed @ +0x34` from the primary or
-secondary SHT according to `Player::optionModeFlag`; target dataflow uses it as
+secondary SHT according to `Player::focusMode`; target dataflow uses it as
 the ordinary/scattered item movement and gravity step, distinct from
 autocollection speed.  `SpawnSingleBullet @ 0x0042F5F0` addresses the remaining
 `Bullet +0xDBC` and template `+0xD40` bytes through asserted direct members.
@@ -923,7 +923,7 @@ image links, and the complete i386 Linux build plus fixed-layout verifier pass.
 The residual Item/ANM owner pass replaces byte views of Player shot/item
 timers and option mode, GameManager character, the Item sprite z-write bit,
 and AnmManager's texture factor with existing named fields.  Assertions pin
-`Player::timerE2ADC @ +0xE2ADC` and
+`Player::timeOrbGaugeChangeSuppressionTimer @ +0xE2ADC` and
 `AnmManager::currentTextureFactor @ +0x24B8`.  A direct Float3 `.y` trial was
 rejected because retail Item OnDraw calls `Float3::operator float *()` twice;
 the conversion-shaped element accesses remain documented to preserve its
@@ -949,6 +949,25 @@ passes **1,106 / 1,106 exact**, the normal VC7 image links, and the complete
 i386 Linux container build plus fixed-layout verifier passes.  Mapping and
 accepted ledgers now record the real Enemy identities without changing any
 address, size, status, or count.
+
+The Player focus/option/gauge pass closes three gameplay timer roles and the
+shared option state machine.  `focusMode @ +0x03` names unfocused, focused, and
+the initialization sentinel.  `gaugeShiftDelayTimer @ +0xE2AD0`,
+`timeOrbGaugeChangeSuppressionTimer @ +0xE2ADC`, and
+`shootingGaugeChangeRampTimer @ +0xE2AE8` now express the complete observed
+shooting/idle gauge ramp and time-orb suppression protocols across Player,
+Enemy attachment rewards, and Item collection.  The option dwords at
+`+0x2C8/+0x2CC` expose the common inactive/initializing/active/exiting
+lifecycle and the homing-specific behavior state.  Production, Bomb, and
+probe switches use named enums; three unaccessed alignment ranges are marked
+as padding, while unconsumed storage remains neutral.
+
+Focused replay across the five affected production objects passes **200 / 200
+exact**, including `UpdateMovementAndOptions` **4,769 / 4,769**, every option
+callback, and Enemy cleanup **1,336 / 1,336**; the PlayerOption probe compiles.
+The required non-reuse cold replay passes **1,106 / 1,106 exact**, the normal
+VC7 image links, and the complete i386 Linux build plus fixed-layout verifier
+passes.  No ledger identity/count changed.
 
 Whole-executable TU/layout work below remains deferred, not invalidated.
 

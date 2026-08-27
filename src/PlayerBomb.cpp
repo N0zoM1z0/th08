@@ -706,7 +706,7 @@ void __fastcall UpdateArtfulSacrificeBomb(Player *player)
         }
         else if (bomb->timer.JustReached(209))
         {
-            player->optionStates[0].state2C8 = 1;
+            player->optionStates[0].lifecycleState = PLAYER_OPTION_INITIALIZING;
             player->optionStates[0].timer = 0;
         }
     }
@@ -825,7 +825,7 @@ void __fastcall UpdateReturnInanimatenessDeathbomb(Player *player)
         }
         else if (bomb->timer.JustReached(229))
         {
-            player->optionStates[0].state2C8 = 1;
+            player->optionStates[0].lifecycleState = PLAYER_OPTION_INITIALIZING;
             player->optionStates[0].timer = 0;
         }
     }
@@ -1238,13 +1238,13 @@ void __fastcall UpdateRedNightlessCastleBomb(Player *player)
 
         if (bomb->timer.JustReached(239))
         {
-            player->optionStates[0].state2C8 = 1;
+            player->optionStates[0].lifecycleState = PLAYER_OPTION_INITIALIZING;
             player->optionStates[0].timer = 0;
-            player->optionStates[1].state2C8 = 1;
+            player->optionStates[1].lifecycleState = PLAYER_OPTION_INITIALIZING;
             player->optionStates[1].timer = 0;
-            player->optionStates[2].state2C8 = 1;
+            player->optionStates[2].lifecycleState = PLAYER_OPTION_INITIALIZING;
             player->optionStates[2].timer = 0;
-            player->optionStates[3].state2C8 = 1;
+            player->optionStates[3].lifecycleState = PLAYER_OPTION_INITIALIZING;
             player->optionStates[3].timer = 0;
         }
     }
@@ -1369,13 +1369,13 @@ void __fastcall UpdateScarletDevilDeathbomb(Player *player)
 
         if (bomb->timer.JustReached(279))
         {
-            player->optionStates[0].state2C8 = 1;
+            player->optionStates[0].lifecycleState = PLAYER_OPTION_INITIALIZING;
             player->optionStates[0].timer = 0;
-            player->optionStates[1].state2C8 = 1;
+            player->optionStates[1].lifecycleState = PLAYER_OPTION_INITIALIZING;
             player->optionStates[1].timer = 0;
-            player->optionStates[2].state2C8 = 1;
+            player->optionStates[2].lifecycleState = PLAYER_OPTION_INITIALIZING;
             player->optionStates[2].timer = 0;
-            player->optionStates[3].state2C8 = 1;
+            player->optionStates[3].lifecycleState = PLAYER_OPTION_INITIALIZING;
             player->optionStates[3].timer = 0;
         }
     }

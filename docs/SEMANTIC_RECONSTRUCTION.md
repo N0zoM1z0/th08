@@ -1274,10 +1274,10 @@ Names: the collision family is tracked as `CheckBulletCancelCollision`,
 `IsBombShotSuppressed`.  Each mapping, accepted match unit, caller relocation,
 and decorated COFF symbol was updated together.
 
-Inference and unknowns: `position2 @ +0x2C0`, `velocity.z`, the detailed roles
-of `timerE2AD0/timerE2ADC/timerE2AE8`, option state/substate values outside the
-observed transitions, SHT `+0x20`, and most PlayerShot/PlayerBomb work-item
-internals remain deliberately neutral.  The effect type name describes the
+Inference and unknowns: `position2 @ +0x2C0`, `velocity.z`, SHT `+0x20`, and
+most PlayerShot/PlayerBomb work-item internals remain deliberately neutral.
+The later focus/gauge pass closes the three timer roles and option state
+protocol that were still unknown at this point.  The effect type name describes the
 shared target layout used here; it does not assert that all EffectManager
 objects use these fields identically.
 
@@ -2760,7 +2760,7 @@ target-pinned packets replay both complete functions exact.  This is a source-
 readability closure for raw member arithmetic, not a claim that every retained
 anonymous byte is semantically understood.
 
-SHT evidence: target `0x0044054D` reads `Player::optionModeFlag @ +0x03`, then
+SHT evidence: target `0x0044054D` reads `Player::focusMode @ +0x03`, then
 `0x00440558..0x0044056F` selects the dword at `PlayerRawShtFile +0x34` from the
 secondary or primary SHT owner.  `0x00440578` immediately loads it as a float
 and multiplies it by the frame-rate multiplier.  The resulting step scales
@@ -3189,12 +3189,14 @@ Scope: the remaining non-serialized byte views in ItemManager update,
 collection, and draw paths, plus `AnmManager::AnmManager @ 0x00465070`.
 
 The Item paths now use the already established `Player::shotTimer`,
-`timerE2ADC`, and `optionModeFlag` owners, `GameManager::character`, and
+`timeOrbGaugeChangeSuppressionTimer`, and `focusMode` owners,
+`GameManager::character`, and
 `AnmVm::zWriteDisabled`.  The last field is the target-observed bit 13 of
 `AnmVmBase::flagsWord @ +0x1F8`; assigning the named bitfield naturally emits
 the retail dword load/OR/store sequence.  The AnmManager constructor now
 initializes `currentTextureFactor` directly, with a new assertion pinning that
-member to `+0x24B8`.  `Player::timerE2ADC @ +0xE2ADC` is also asserted.
+member to `+0x24B8`.  `Player::timeOrbGaugeChangeSuppressionTimer @ +0xE2ADC`
+is also asserted.
 
 One apparent Float3 cleanup was tested and rejected.  Retail
 `ItemManager::OnDraw @ 0x004415A0` calls `Float3::operator float *()` twice
@@ -3247,3 +3249,48 @@ Portable oracle: the complete i386 Linux container build links, and
 `verify-modern-linux.sh` verifies the ELF32 image and fixed target-owned layout
 symbols.  No attachment traversal, branch, ECL operand value, call target,
 calling convention, target extent, or accepted unit changed.
+
+### Player focus, option, and gauge state — 2026-08-27
+
+Scope: `Player::UpdateMovementAndOptions @ 0x0044AEC0`, the nine option update
+callbacks at `0x0044E3A0..0x0044F4F0`, Bomb paths that reactivate options,
+Enemy attachment rewards, and Item update/collection consumers.
+
+The byte at `Player + 0x03` is now `focusMode`.  Its complete producer set uses
+0 for unfocused, 1 for focused, and writes 2 only during Player initialization
+so the first movement update must enter one of the two setup paths.  The same
+mode selects primary/secondary SHT movement, item behavior, Bomb callback
+variants, Enemy rank/gauge direction, and is copied into spawned PlayerShots.
+`PlayerFocusMode` names all three observed values without changing the byte
+field's ABI.
+
+The three adjacent timers now describe their complete observed protocols.
+`gaugeShiftDelayTimer @ +0xE2AD0` counts down before shooting can move the
+youkai gauge and counts up to the 30-frame idle recenter threshold.
+`shootingGaugeChangeRampTimer @ +0xE2AE8` is reset on focus changes and after
+four idle frames; while shooting it raises the signed gauge delta up to its
+cap.  `timeOrbGaugeChangeSuppressionTimer @ +0xE2ADC` is decremented by
+ItemManager and is the sole gate on a collected time orb changing the gauge;
+Enemy attachment reward paths set or clear that gate.  All three offsets are
+asserted, and redundant casts around their existing `ZunTimer` owners are gone.
+
+`PlayerOptionState +0x2C8` is also a uniform four-state lifecycle across every
+option callback: inactive, initializing, active, and exiting.  The homing
+option's `+0x2CC` behavior state distinguishes following the player, left/right
+motion, and target tracking.  Named lifecycle/homing enums replace the raw
+0/1/2/3 switches in production, Bomb, and probe sources; assertions pin both
+dword fields.  Three unaccessed alignment ranges in Player/PlayerShot are
+marked as padding, while unconsumed SHT/work-item dwords remain explicitly
+unknown.
+
+VC7 oracle: focused replay across Player, PlayerBomb, ItemManager,
+EnemyManager, and EnemyManagerUpdate passes **200 / 200 exact**, including
+Player movement/options **4,769 / 4,769**, all option callbacks, and Enemy
+chain cleanup **1,336 / 1,336**.  The PlayerOption probe compiles under its
+target profile.  The required single-job cold build of all 75 comparison
+objects passes **1,106 / 1,106 exact**, and the normal VC7 image links.
+
+Portable oracle: the complete i386 Linux container build links, and the ELF32
+plus fixed-layout verifier passes.  No focus transition, option callback,
+gauge formula, timer value, item reward, Enemy rank/reward branch, field width,
+or accepted unit changed.

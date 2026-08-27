@@ -24,11 +24,11 @@ i32 __fastcall UpdateModeSensitiveOrbitingOption(Player *player, PlayerOptionSta
 {
     Float3 desired;
 
-    switch (option->state2C8)
+    switch (option->lifecycleState)
     {
-    case 1:
+    case PLAYER_OPTION_INITIALIZING:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 24);
-        option->state2C8 = 2;
+        option->lifecycleState = PLAYER_OPTION_ACTIVE;
         option->target = player->position;
         switch (option->optionIndex)
         {
@@ -56,7 +56,7 @@ i32 __fastcall UpdateModeSensitiveOrbitingOption(Player *player, PlayerOptionSta
             break;
         }
         // Fall through into the orbit update.
-    case 2:
+    case PLAYER_OPTION_ACTIVE:
         if (option->timer > 12)
         {
             switch (option->optionIndex)
@@ -80,7 +80,7 @@ i32 __fastcall UpdateModeSensitiveOrbitingOption(Player *player, PlayerOptionSta
 
         option->vm.color1.d3dColor = 0xFFFF8080;
         option->position.FromAngleMagnitude(option->orbitAngle, 8.0f);
-        if (player->optionModeFlag == 0)
+        if (player->focusMode == PLAYER_FOCUS_MODE_UNFOCUSED)
         {
             desired = player->position;
             option->vm.color1.d3dColor = 0xFF80FFFF;
@@ -113,12 +113,12 @@ i32 __fastcall UpdateModeSensitiveOrbitingOption(Player *player, PlayerOptionSta
             47, reinterpret_cast<D3DXVECTOR3 *>(&option->position), 1, 0x80602050);
         break;
 
-    case 3:
+    case PLAYER_OPTION_EXITING:
         if (option->timer == 0)
             option->vm.SetInterrupt(5);
         if (option->timer > 16)
         {
-            option->state2C8 = 0;
+            option->lifecycleState = PLAYER_OPTION_INACTIVE;
             option->updateCallback = NULL;
             option->renderCallback = NULL;
         }
@@ -133,16 +133,16 @@ i32 __fastcall UpdateFacingTrailOption(Player *player, PlayerOptionState *option
     f32 targetAngle;
     f32 angleDifference;
 
-    switch (option->state2C8)
+    switch (option->lifecycleState)
     {
-    case 1:
+    case PLAYER_OPTION_INITIALIZING:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 21);
-        option->state2C8 = 2;
+        option->lifecycleState = PLAYER_OPTION_ACTIVE;
         option->target = player->positionHistory[15];
         option->orbitAngle = 0.0f;
         option->facingAngle = -ZUN_PI / 2.0f;
         // Fall through into the normal update.
-    case 2:
+    case PLAYER_OPTION_ACTIVE:
         option->orbitAngle = AddNormalizeAngle(option->orbitAngle, 0.052359879016876221f);
         option->position.FromAngleMagnitude(option->orbitAngle, 8.0f);
         option->target = (player->positionHistory[15] - option->target) * 0.05f + option->target;
@@ -201,12 +201,12 @@ i32 __fastcall UpdateFacingTrailOption(Player *player, PlayerOptionState *option
 optionUpdateDone:
         break;
 
-    case 3:
+    case PLAYER_OPTION_EXITING:
         if (option->timer == 0)
             option->vm.SetInterrupt(5);
         if (option->timer > 16)
         {
-            option->state2C8 = 0;
+            option->lifecycleState = PLAYER_OPTION_INACTIVE;
             option->updateCallback = NULL;
             option->renderCallback = NULL;
         }
@@ -222,16 +222,16 @@ i32 __fastcall UpdateModeSensitiveFacingOption(Player *player, PlayerOptionState
     f32 targetAngle;
     f32 angleDifference;
 
-    switch (option->state2C8)
+    switch (option->lifecycleState)
     {
-    case 1:
+    case PLAYER_OPTION_INITIALIZING:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 21);
-        option->state2C8 = 2;
+        option->lifecycleState = PLAYER_OPTION_ACTIVE;
         option->target = player->positionHistory[15];
         option->orbitAngle = 0.0f;
         option->facingAngle = -ZUN_PI / 2.0f;
         // Fall through into the normal update.
-    case 2:
+    case PLAYER_OPTION_ACTIVE:
         option->orbitAngle = AddNormalizeAngle(option->orbitAngle, 0.052359879016876221f);
         option->position.FromAngleMagnitude(option->orbitAngle, 8.0f);
         option->target = (player->positionHistory[15] - option->target) * 0.05f + option->target;
@@ -239,7 +239,7 @@ i32 __fastcall UpdateModeSensitiveFacingOption(Player *player, PlayerOptionState
         option->position.z = 0.0f;
         option->vm.color1.d3dColor = 0xFFFF8080;
 
-        if (player->optionModeFlag == 0)
+        if (player->focusMode == PLAYER_FOCUS_MODE_UNFOCUSED)
         {
             option->vm.color1.d3dColor = 0xFFFFFFFF;
             switch (player->movementDirection)
@@ -301,12 +301,12 @@ i32 __fastcall UpdateModeSensitiveFacingOption(Player *player, PlayerOptionState
 optionUpdateDone:
         break;
 
-    case 3:
+    case PLAYER_OPTION_EXITING:
         if (option->timer == 0)
             option->vm.SetInterrupt(5);
         if (option->timer > 16)
         {
-            option->state2C8 = 0;
+            option->lifecycleState = PLAYER_OPTION_INACTIVE;
             option->updateCallback = NULL;
             option->renderCallback = NULL;
         }
@@ -319,11 +319,11 @@ i32 __fastcall UpdateTwinOrbitingOption(Player *player, PlayerOptionState *optio
 {
     Float3 base = player->position;
 
-    switch (option->state2C8)
+    switch (option->lifecycleState)
     {
-    case 1:
+    case PLAYER_OPTION_INITIALIZING:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 21);
-        option->state2C8 = 2;
+        option->lifecycleState = PLAYER_OPTION_ACTIVE;
         option->target = base;
         switch (option->optionIndex)
         {
@@ -337,7 +337,7 @@ i32 __fastcall UpdateTwinOrbitingOption(Player *player, PlayerOptionState *optio
             break;
         }
         // Fall through.
-    case 2:
+    case PLAYER_OPTION_ACTIVE:
         switch (option->optionIndex)
         {
         case 0:
@@ -360,12 +360,12 @@ i32 __fastcall UpdateTwinOrbitingOption(Player *player, PlayerOptionState *optio
             47, reinterpret_cast<D3DXVECTOR3 *>(&option->position), 1, 0x80602050);
         break;
 
-    case 3:
+    case PLAYER_OPTION_EXITING:
         if (option->timer == 0)
             option->vm.SetInterrupt(5);
         if (option->timer > 16)
         {
-            option->state2C8 = 0;
+            option->lifecycleState = PLAYER_OPTION_INACTIVE;
             option->updateCallback = NULL;
             option->renderCallback = NULL;
         }
@@ -558,7 +558,7 @@ i32 __fastcall UpdateShotTrail(Player *player, PlayerShot *slot)
         player->timelines[slot->timelineIndex].instruction = NULL;
         slot->updateCallback = NULL;
     }
-    if (player->optionStates[0].state2C8 == 0)
+    if (player->optionStates[0].lifecycleState == PLAYER_OPTION_INACTIVE)
     {
         player->timelines[slot->timelineIndex].instruction = NULL;
         return 1;
