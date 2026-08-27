@@ -19,52 +19,42 @@ void *EnemyManager::SpawnEnemy1(i32 type, const D3DXVECTOR3 *position, i32 a, i3
     {
         u32 words[sizeof(Enemy) / sizeof(u32)];
     };
-    struct EnemySpawnFlags
-    {
-        u32 active : 1;
-        u32 pad1_17 : 17;
-        u32 spawnVariant : 1;
-        u32 pad19_31 : 13;
-    };
     i32 i;
     Enemy *enemy;
 
     enemy = &this->enemies[0];
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xda) |= 0x1000;
+    g_ReplayManager->frameEventFlags |= 0x1000;
     for (i = 0; i < 480; i++, enemy++)
     {
-        if ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(enemy) + 0x3324) & 1) != 0)
+        if ((enemy->flags1 & ENEMY_FLAG_ACTIVE) != 0)
             continue;
 
         *reinterpret_cast<EnemySpawnCopy *>(enemy) =
-            *reinterpret_cast<const EnemySpawnCopy *>(&this->firstEnemy);
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e0c) = i;
-        reinterpret_cast<EnemySpawnFlags *>(reinterpret_cast<u8 *>(enemy) + 0x3324)->spawnVariant = flags;
+            *reinterpret_cast<const EnemySpawnCopy *>(&this->spawnTemplate);
+        enemy->enemyIndex = i;
+        reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->mirrorMovementX = flags;
         if (a >= 0)
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2dfc) = a;
-        enemy->vector2d34 = *reinterpret_cast<const Float3 *>(position);
+            enemy->life = a;
+        enemy->position = *reinterpret_cast<const Float3 *>(position);
         g_EclManager.CallEclSub(
-            reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(enemy) + 0x7f8), (i16)type);
+            reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage), (i16)type);
         if (g_EclManager.RunEcl(enemy) == ZUN_ERROR)
         {
-            reinterpret_cast<EnemySpawnFlags *>(reinterpret_cast<u8 *>(enemy) + 0x3324)->active = 0;
+            reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->active = 0;
             i = 480;
         }
         else
         {
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e20) =
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x1fc);
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x3304) = (i8)b;
+            enemy->displayColor = enemy->vm.color1.d3dColor;
+            enemy->itemDropType = (i8)b;
             if (c >= 0)
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e08) = c;
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e00) =
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2dfc);
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e04) =
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e00);
+                enemy->score = c;
+            enemy->maxLife = enemy->life;
+            enemy->phaseStartingLife = enemy->maxLife;
         }
         break;
     }
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x9dcef8) = (i == 480);
+    this->lastSpawnFailed = (i == 480);
     return enemy;
 }
 
@@ -76,11 +66,6 @@ void *EnemyManager::SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i3
     {
         u32 words[sizeof(Enemy) / sizeof(u32)];
     };
-    struct EnemySpawnFlags
-    {
-        u32 active : 1;
-        u32 pad1_31 : 31;
-    };
     struct EnemyContextCopy
     {
         u32 words[0x78 / sizeof(u32)];
@@ -89,44 +74,42 @@ void *EnemyManager::SpawnEnemy2(i32 type, const D3DXVECTOR3 *position, i32 a, i3
     Enemy *enemy;
 
     enemy = &this->enemies[0];
-    *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xda) |= 0x1000;
+    g_ReplayManager->frameEventFlags |= 0x1000;
     for (i = 0; i < 480; i++, enemy++)
     {
-        if ((*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(enemy) + 0x3324) & 1) != 0)
+        if ((enemy->flags1 & ENEMY_FLAG_ACTIVE) != 0)
             continue;
 
         *reinterpret_cast<EnemySpawnCopy *>(enemy) =
-            *reinterpret_cast<const EnemySpawnCopy *>(&this->firstEnemy);
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e0c) = i;
+            *reinterpret_cast<const EnemySpawnCopy *>(&this->spawnTemplate);
+        enemy->enemyIndex = i;
         if (a >= 0)
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2dfc) = a;
-        enemy->vector2d34 = *reinterpret_cast<const Float3 *>(position);
+            enemy->life = a;
+        enemy->position = *reinterpret_cast<const Float3 *>(position);
         g_EclManager.CallEclSub(
-            reinterpret_cast<EnemyEclContext *>(reinterpret_cast<u8 *>(enemy) + 0x7f8), (i16)type);
-        *reinterpret_cast<EnemyContextCopy *>(reinterpret_cast<u8 *>(enemy) + 0x810) =
+            reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage), (i16)type);
+        *reinterpret_cast<EnemyContextCopy *>(
+            reinterpret_cast<EnemyEclContext *>(&enemy->mainEclContextStorage)->intVariables) =
             *reinterpret_cast<const EnemyContextCopy *>(contextInts);
         if (g_EclManager.RunEcl(enemy) == ZUN_ERROR)
         {
-            reinterpret_cast<EnemySpawnFlags *>(reinterpret_cast<u8 *>(enemy) + 0x3324)->active = 0;
+            reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->active = 0;
             i = 480;
         }
         else
         {
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e20) =
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x1fc);
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x3304) = (i8)b;
+            enemy->displayColor = enemy->vm.color1.d3dColor;
+            enemy->itemDropType = (i8)b;
             if (a >= 0)
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2dfc) = a;
+                enemy->life = a;
             if (c >= 0)
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e08) = c;
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e00) =
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2dfc);
-            *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e04) =
-                *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(enemy) + 0x2e00);
+                enemy->score = c;
+            enemy->maxLife = enemy->life;
+            enemy->phaseStartingLife = enemy->maxLife;
         }
         break;
     }
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) + 0x9dcef8) = (i == 480);
+    this->lastSpawnFailed = (i == 480);
     return enemy;
 }
 
@@ -155,7 +138,7 @@ void EclTimeline::Run()
             case 1:
                 variant = 1;
             case 0:
-                if (!g_Gui.IsBossPresent() && EclRunLowProposal::g_EclEnemyTableF54CC0[91] == NULL)
+                if (!g_Gui.IsBossPresent() && g_EnemyManager.suppressTimelineSpawns == 0)
                 {
                     i32 *args1 = this->instruction->args.ints;
                     D3DXVECTOR3 position1;
@@ -180,7 +163,7 @@ void EclTimeline::Run()
             case 12:
                 variant = 1;
             case 11:
-                if (!g_Gui.IsBossPresent() && EclRunLowProposal::g_EclEnemyTableF54CC0[91] == NULL)
+                if (!g_Gui.IsBossPresent() && g_EnemyManager.suppressTimelineSpawns == 0)
                 {
                     struct SpecialSpawnLocals
                     {
@@ -194,15 +177,15 @@ void EclTimeline::Run()
                     position11.z = 0.0f;
                     locals.spawned11 = static_cast<Enemy *>(g_EnemyManager.SpawnEnemy1(
                         locals.args11[0], &position11, locals.args11[3], -1, locals.args11[6], variant));
-                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(locals.spawned11) + 0x3308) = locals.args11[4];
-                    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(locals.spawned11) + 0x330c) = locals.args11[5];
+                    locals.spawned11->pointItemDropCount = locals.args11[4];
+                    locals.spawned11->powerOrPointItemDropCount = locals.args11[5];
                 }
                 break;
 
             case 4:
                 variant = 1;
             case 2:
-                if (!g_Gui.IsBossPresent() && EclRunLowProposal::g_EclEnemyTableF54CC0[91] == NULL)
+                if (!g_Gui.IsBossPresent() && g_EnemyManager.suppressTimelineSpawns == 0)
                 {
                     i32 *argsRange = this->instruction->args.ints;
                     D3DXVECTOR3 positionRange;
@@ -219,7 +202,7 @@ void EclTimeline::Run()
             case 5:
                 variant = 1;
             case 3:
-                if (!g_Gui.IsBossPresent() && EclRunLowProposal::g_EclEnemyTableF54CC0[91] == NULL)
+                if (!g_Gui.IsBossPresent() && g_EnemyManager.suppressTimelineSpawns == 0)
                 {
                     i32 *argsPlay = this->instruction->args.ints;
                     {
@@ -234,7 +217,7 @@ void EclTimeline::Run()
                 break;
 
             case 6:
-                g_Gui.FUN_00439810(this->instruction->args.ints[0]);
+                g_Gui.MsgRead(this->instruction->args.ints[0]);
                 break;
 
             case 7:
@@ -246,8 +229,8 @@ void EclTimeline::Run()
                 break;
 
             case 8:
-                *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(
-                    EclRunLowProposal::g_EclEnemyTableF54CC0[this->instruction->args.ints[0]]) + 0x2d30) =
+                g_EnemyManager.bosses[
+                    this->instruction->args.ints[0]]->pendingEclSubroutineIndex =
                     static_cast<i16>(this->instruction->args.ints[1]);
                 break;
 
@@ -256,9 +239,9 @@ void EclTimeline::Run()
                 break;
 
             case 10:
-                if (EclRunLowProposal::g_EclEnemyTableF54CC0[this->instruction->args.ints[0]] != NULL &&
-                    (*reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(
-                         EclRunLowProposal::g_EclEnemyTableF54CC0[this->instruction->args.ints[0]]) + 0x3324) & 1) != 0)
+                if (g_EnemyManager.bosses[this->instruction->args.ints[0]] != NULL &&
+                    (g_EnemyManager.bosses[this->instruction->args.ints[0]]->flags1 &
+                     ENEMY_FLAG_ACTIVE) != 0)
                 {
                     this->timer--;
                     goto done;
@@ -270,11 +253,11 @@ void EclTimeline::Run()
                 i32 matchCount = 0;
                 for (u32 i = 0; i < 4; i++)
                 {
-                    if (reinterpret_cast<i32 *>(EclRunLowProposal::g_EclEnemyTableF54CC0)[87 + i] ==
+                    if (g_EnemyManager.timelineEventSlots[i] ==
                         this->instruction->args.ints[0])
                     {
                         matchCount++;
-                        reinterpret_cast<i32 *>(EclRunLowProposal::g_EclEnemyTableF54CC0)[87 + i] = -1;
+                        g_EnemyManager.timelineEventSlots[i] = -1;
                     }
                 }
                 if (matchCount == 0)
@@ -289,10 +272,9 @@ void EclTimeline::Run()
             {
                 for (u32 j = 0; j < 4; j++)
                 {
-                    if (reinterpret_cast<i32 *>(EclRunLowProposal::g_EclEnemyTableF54CC0)[87 + j] >= 0)
+                    if (g_EnemyManager.timelineEventSlots[j] >= 0)
                         continue;
-                    reinterpret_cast<i32 *>(EclRunLowProposal::g_EclEnemyTableF54CC0)[87 + j] =
-                        this->instruction->args.ints[0];
+                    g_EnemyManager.timelineEventSlots[j] = this->instruction->args.ints[0];
                 }
                 break;
             }

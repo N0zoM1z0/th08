@@ -23,7 +23,7 @@ id = "vc7-debug-register-home"
 requires = ["register_home"]
 confidence = "target_observation"
 recommendation = "Treat an ECX home only as evidence that incoming ECX was saved. Use the decorated symbol, ledger ABI, and call sites to distinguish a this receiver from fastcall argument zero; preserve real parameter flow and validate shaping with the canonical comparator."
-evidence = "Exact TH08 corpus: ItemManager::AutoCollectAllItems 0x004413E0 plus fastcall callbacks Gui::AddedCallback 0x00437A2F, ScreenEffect::AddedCallback 0x0045C0E0, and BulletManager::DeletedCallback 0x00433820"
+evidence = "Exact TH08 corpus: ItemManager::AutoCollectAllItems 0x004413E0 plus fastcall callbacks Gui::AddedCallback 0x00437A2F, ScreenEffect::InitializeTimer 0x0045C0E0, and BulletManager::DeletedCallback 0x00433820"
 
 [[rules]]
 id = "vc7-nonfolded-idiv"

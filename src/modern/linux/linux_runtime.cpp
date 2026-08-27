@@ -22,45 +22,63 @@ int __fastcall EffectRandomSplashBigInit(AnmVm *);
 int __fastcall EffectOrbitInit(AnmVm *);
 int __fastcall EffectOrbitUpdate(AnmVm *);
 
-int __fastcall FUN_0040e040(AnmVm *);
-int __fastcall FUN_0040e120(AnmVm *);
-int __fastcall FUN_0040e200(AnmVm *);
-int __fastcall FUN_0040e2d0(AnmVm *);
-int __fastcall FUN_00410bb0(AnmVm *);
-int __fastcall FUN_004114e0(AnmVm *);
-int __fastcall FUN_00411720(AnmVm *);
-int __fastcall FUN_00411a80(AnmVm *);
-int __fastcall FUN_00413070(AnmVm *);
+int __fastcall UpdateExpandingWavyRadialTrail(AnmVm *);
+int __fastcall UpdateExpandingPositiveDiagonalRadialTrail(AnmVm *);
+int __fastcall UpdateExpandingNegativeDiagonalRadialTrail(AnmVm *);
+int __fastcall UpdateExpandingOctagonalRadialTrail(AnmVm *);
+int __fastcall UpdateExpandingTwelveSegmentRadialTrail(AnmVm *);
+int __fastcall UpdateBarrierRadialEffect(AnmVm *);
+int __fastcall InitializeBarrierRadialEffect(AnmVm *);
+int __fastcall InitializeRotatingBarrierRadialEffect(AnmVm *);
+int __fastcall UpdateExpandingOrthogonalRadialTrail(AnmVm *);
 
 int __fastcall FUN_00426280(Effect *);
 int __fastcall FUN_004264f0(Effect *);
 int __fastcall FUN_00426720(Effect *);
 int __fastcall FUN_00426990(Effect *);
-int __fastcall FUN_00426b20(Effect *);
-int __fastcall FUN_00426bb0(Effect *);
-int __fastcall FUN_00426c40(Effect *);
-int __fastcall FUN_00426c90(Effect *);
+int __fastcall InitializeRandomDirectionalOffset(Effect *);
+int __fastcall UpdateDirectionalOffset60(Effect *);
+int __fastcall TrackPlayerUntilAnimationEnds(Effect *);
+int __fastcall UpdateDirectionalOffset240(Effect *);
 int __fastcall FUN_00426d70(Effect *);
 int __fastcall FUN_00426e70(Effect *);
-int __fastcall FUN_004270c0(Effect *);
-int __fastcall FUN_004271a0(Effect *);
-int __fastcall FUN_00427250(Effect *);
-int __fastcall FUN_00427260(Effect *);
-int __fastcall FUN_004272e0(Effect *);
-int __fastcall FUN_00427970(Effect *);
-int __fastcall FUN_00427990(Effect *);
-int __fastcall FUN_004279d0(Effect *);
-int __fastcall FUN_00427a60(Effect *);
-int __fastcall FUN_00427ae0(Effect *);
-int __fastcall FUN_00427b50(Effect *);
+int __fastcall InitializeDirectionalOffset(Effect *);
+int __fastcall UpdateEasedDirectionalOffset(Effect *);
+int __fastcall KeepTrailAlive(Effect *);
+int __fastcall InitializeTrailOffset(Effect *);
+int __fastcall InitializeRadialTrail(Effect *);
+int __fastcall InitializeAlternateLayerRadialTrail(Effect *);
+int __fastcall SyncRadialTrailRadius(Effect *);
+int __fastcall SyncRadialTrailShape(Effect *);
+int __fastcall UpdateTimedRadialTrail(Effect *);
+int __fastcall UpdateFadingRadialTrail(Effect *);
+int __fastcall SyncAnchoredRadialTrail(Effect *);
 
 // This retail table entry points at an AnmVm member. On the 32-bit Linux ABI
 // its code entry receives `this` as the first stack argument, matching the
 // reconstructed effect callback invocation.
-extern "C" int AnmVmUpdate0040eb50(AnmVm *) asm("_ZN4th085AnmVm12FUN_0040eb50Ev");
+extern "C" int UpdatePulsingRadialTrailCallback(AnmVm *) asm("_ZN4th085AnmVm24UpdatePulsingRadialTrailEv");
 
 namespace modern
 {
+struct ModernEffectTemplate
+{
+    int32_t scriptIdx;
+    uintptr_t update;
+    uintptr_t initialize;
+};
+
+// These aliases bind the semantic target globals exported at fixed addresses
+// by th08-layout.ld.  Keep the compatibility storage types local to the Linux
+// runtime: the reconstructed VC7 declarations retain their original owners.
+extern int32_t g_ModernLastSpellCountStorage asm("_ZN4th0816g_LastSpellCountE");
+extern ModernEffectTemplate g_ModernEffectTemplatesStorage[66]
+    asm("_ZN4th0817g_EffectTemplatesE");
+extern int32_t g_ModernGuiStageClearBonusesStorage[9]
+    asm("_ZN4th0822g_GuiStageClearBonusesE");
+extern uint32_t g_ModernGuiMessageTextColorsStorage[12][4]
+    asm("_ZN4th0822g_GuiMessageTextColorsE");
+
 namespace
 {
 int g_argumentCount;
@@ -108,22 +126,6 @@ void InstallSignalHandler(int signalNumber)
     sigaction(signalNumber, &action, NULL);
 }
 
-struct SpellPracticeMusic
-{
-    int32_t lastSpell;
-    int32_t track;
-    const char *path;
-    int32_t visible;
-    int32_t alternate;
-};
-
-struct ModernEffectTemplate
-{
-    int32_t scriptIdx;
-    uintptr_t update;
-    uintptr_t initialize;
-};
-
 uintptr_t CodeAddress(int (__fastcall *callback)(AnmVm *))
 {
     return reinterpret_cast<uintptr_t>(callback);
@@ -132,11 +134,6 @@ uintptr_t CodeAddress(int (__fastcall *callback)(AnmVm *))
 uintptr_t CodeAddress(int (__fastcall *callback)(Effect *))
 {
     return reinterpret_cast<uintptr_t>(callback);
-}
-
-void CopyTargetString(uintptr_t address, const char *value)
-{
-    memcpy(reinterpret_cast<void *>(address), value, strlen(value) + 1);
 }
 
 void InitializeTargetData()
@@ -157,50 +154,50 @@ void InitializeTargetData()
         {45, CodeAddress(EffectOrbitUpdate), CodeAddress(EffectOrbitInit)},
         {45, CodeAddress(EffectOrbitUpdate), CodeAddress(EffectOrbitInit)},
         {0, 0, 0},
-        {32, CodeAddress(FUN_00426bb0), CodeAddress(FUN_00426b20)},
-        {33, CodeAddress(FUN_00426c90), CodeAddress(FUN_00426b20)},
+        {32, CodeAddress(UpdateDirectionalOffset60), CodeAddress(InitializeRandomDirectionalOffset)},
+        {33, CodeAddress(UpdateDirectionalOffset240), CodeAddress(InitializeRandomDirectionalOffset)},
         {51, CodeAddress(FUN_00426d70), CodeAddress(FUN_00426e70)},
         {56, 0, 0},
-        {52, CodeAddress(FUN_004271a0), CodeAddress(FUN_004270c0)},
-        {54, CodeAddress(FUN_00426c40), 0},
-        {104, CodeAddress(FUN_00427250), 0},
-        {104, CodeAddress(FUN_00427250), 0},
+        {52, CodeAddress(UpdateEasedDirectionalOffset), CodeAddress(InitializeDirectionalOffset)},
+        {54, CodeAddress(TrackPlayerUntilAnimationEnds), 0},
+        {104, CodeAddress(KeepTrailAlive), 0},
+        {104, CodeAddress(KeepTrailAlive), 0},
         {35, 0, 0},
-        {53, CodeAddress(FUN_004271a0), CodeAddress(FUN_004270c0)},
-        {34, CodeAddress(FUN_00426bb0), CodeAddress(FUN_00426b20)},
+        {53, CodeAddress(UpdateEasedDirectionalOffset), CodeAddress(InitializeDirectionalOffset)},
+        {34, CodeAddress(UpdateDirectionalOffset60), CodeAddress(InitializeRandomDirectionalOffset)},
         {57, 0, 0}, {58, 0, 0}, {59, 0, 0}, {60, 0, 0},
         {48, 0, 0}, {49, 0, 0}, {50, 0, 0},
-        {88, CodeAddress(FUN_00427990), CodeAddress(FUN_004272e0)},
-        {88, CodeAddress(FUN_004114e0), CodeAddress(FUN_00411720)},
-        {92, CodeAddress(FUN_004114e0), CodeAddress(FUN_00411a80)},
+        {88, CodeAddress(SyncRadialTrailRadius), CodeAddress(InitializeRadialTrail)},
+        {88, CodeAddress(UpdateBarrierRadialEffect), CodeAddress(InitializeBarrierRadialEffect)},
+        {92, CodeAddress(UpdateBarrierRadialEffect), CodeAddress(InitializeRotatingBarrierRadialEffect)},
         {71, 0, 0},
-        {76, CodeAddress(FUN_00427990), CodeAddress(FUN_004272e0)},
-        {81, CodeAddress(FUN_004279d0), CodeAddress(FUN_004272e0)},
-        {82, CodeAddress(AnmVmUpdate0040eb50), CodeAddress(FUN_004272e0)},
-        {83, CodeAddress(FUN_0040e040), CodeAddress(FUN_004272e0)},
-        {83, CodeAddress(FUN_0040e120), CodeAddress(FUN_004272e0)},
-        {83, CodeAddress(FUN_0040e200), CodeAddress(FUN_004272e0)},
-        {83, CodeAddress(FUN_0040e2d0), CodeAddress(FUN_004272e0)},
-        {84, CodeAddress(FUN_00410bb0), CodeAddress(FUN_004272e0)},
+        {76, CodeAddress(SyncRadialTrailRadius), CodeAddress(InitializeRadialTrail)},
+        {81, CodeAddress(SyncRadialTrailShape), CodeAddress(InitializeRadialTrail)},
+        {82, CodeAddress(UpdatePulsingRadialTrailCallback), CodeAddress(InitializeRadialTrail)},
+        {83, CodeAddress(UpdateExpandingWavyRadialTrail), CodeAddress(InitializeRadialTrail)},
+        {83, CodeAddress(UpdateExpandingPositiveDiagonalRadialTrail), CodeAddress(InitializeRadialTrail)},
+        {83, CodeAddress(UpdateExpandingNegativeDiagonalRadialTrail), CodeAddress(InitializeRadialTrail)},
+        {83, CodeAddress(UpdateExpandingOctagonalRadialTrail), CodeAddress(InitializeRadialTrail)},
+        {84, CodeAddress(UpdateExpandingTwelveSegmentRadialTrail), CodeAddress(InitializeRadialTrail)},
         {72, 0, 0},
-        {85, CodeAddress(FUN_00413070), CodeAddress(FUN_004272e0)},
-        {86, CodeAddress(FUN_00427990), CodeAddress(FUN_004272e0)},
-        {80, CodeAddress(FUN_00427a60), CodeAddress(FUN_004272e0)},
+        {85, CodeAddress(UpdateExpandingOrthogonalRadialTrail), CodeAddress(InitializeRadialTrail)},
+        {86, CodeAddress(SyncRadialTrailRadius), CodeAddress(InitializeRadialTrail)},
+        {80, CodeAddress(UpdateTimedRadialTrail), CodeAddress(InitializeRadialTrail)},
         {73, CodeAddress(FUN_004264f0), CodeAddress(FUN_00426280)},
-        {77, CodeAddress(FUN_00427990), CodeAddress(FUN_004272e0)},
-        {88, CodeAddress(FUN_00427ae0), CodeAddress(FUN_004272e0)},
-        {88, CodeAddress(FUN_00427ae0), CodeAddress(FUN_004272e0)},
-        {87, CodeAddress(FUN_004279d0), CodeAddress(FUN_004272e0)},
-        {96, CodeAddress(FUN_004279d0), CodeAddress(FUN_00427970)},
+        {77, CodeAddress(SyncRadialTrailRadius), CodeAddress(InitializeRadialTrail)},
+        {88, CodeAddress(UpdateFadingRadialTrail), CodeAddress(InitializeRadialTrail)},
+        {88, CodeAddress(UpdateFadingRadialTrail), CodeAddress(InitializeRadialTrail)},
+        {87, CodeAddress(SyncRadialTrailShape), CodeAddress(InitializeRadialTrail)},
+        {96, CodeAddress(SyncRadialTrailShape), CodeAddress(InitializeAlternateLayerRadialTrail)},
         {55, 0, 0},
-        {100, CodeAddress(FUN_004279d0), CodeAddress(FUN_00427970)},
-        {78, CodeAddress(FUN_00427990), CodeAddress(FUN_004272e0)},
-        {102, 0, CodeAddress(FUN_00427260)},
-        {103, 0, CodeAddress(FUN_00427260)},
+        {100, CodeAddress(SyncRadialTrailShape), CodeAddress(InitializeAlternateLayerRadialTrail)},
+        {78, CodeAddress(SyncRadialTrailRadius), CodeAddress(InitializeRadialTrail)},
+        {102, 0, CodeAddress(InitializeTrailOffset)},
+        {103, 0, CodeAddress(InitializeTrailOffset)},
         {75, 0, 0},
         {74, CodeAddress(FUN_00426990), CodeAddress(FUN_00426720)},
-        {77, CodeAddress(FUN_00427b50), CodeAddress(FUN_004272e0)},
-        {98, CodeAddress(FUN_004279d0), CodeAddress(FUN_00427970)},
+        {77, CodeAddress(SyncAnchoredRadialTrail), CodeAddress(InitializeRadialTrail)},
+        {98, CodeAddress(SyncRadialTrailShape), CodeAddress(InitializeAlternateLayerRadialTrail)},
     };
     static const int32_t stageScoreTables[9] = {
         1000000, 1500000, 2000000, 2500000, 2500000, 3000000, 4000000, 6000000, 6660000,
@@ -219,39 +216,10 @@ void InitializeTargetData()
         {0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0},
         {0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0},
     };
-    static const int32_t stageMusicContexts[9][3] = {
-        {1, 2, 0}, {3, 4, 0}, {5, 6, 0}, {7, 8, 0}, {7, 9, 0},
-        {10, 11, 0}, {12, 13, 15}, {12, 14, 15}, {16, 17, 0},
-    };
-    static const SpellPracticeMusic spellPracticeMusic[] = {
-        {1, 1, "th08_00.mid", 0, 0}, {12, 2, "th08_03.mid", 1, 0},
-        {16, 3, "th08_04.mid", 0, 0}, {31, 4, "th08_05.mid", 1, 0},
-        {35, 5, "th08_06.mid", 0, 0}, {53, 6, "th08_07.mid", 1, 0},
-        {76, 8, "th08_09.mid", 1, 0}, {99, 9, "th08_10.mid", 1, 0},
-        {118, 11, "th08_12.mid", 1, 0}, {122, 12, "th08_13.mid", 0, 0},
-        {142, 13, "th08_14.mid", 1, 0}, {146, 15, "th08_13b.mid", 2, 1},
-        {150, 12, "th08_13.mid", 0, 0}, {170, 14, "th08_15.mid", 1, 0},
-        {190, 15, "th08_13b.mid", 2, 1}, {193, 16, "th08_18.mid", 0, 0},
-        {204, 17, "th08_19.mid", 1, 0}, {222, 20, "th08_20.mid", 2, 0},
-        {-1, 0, "", 0, 0},
-    };
-
-    *reinterpret_cast<int32_t *>(0x004c6c3c) = 43;
-    memcpy(reinterpret_cast<void *>(0x004c6d30), effectTemplates, sizeof(effectTemplates));
-    memcpy(reinterpret_cast<void *>(0x004c7158), stageScoreTables, sizeof(stageScoreTables));
-    memcpy(reinterpret_cast<void *>(0x004c7180), messageTextColors, sizeof(messageTextColors));
-    memcpy(reinterpret_cast<void *>(0x004c7240), stageMusicContexts, sizeof(stageMusicContexts));
-    memcpy(reinterpret_cast<void *>(0x004c7670), spellPracticeMusic, sizeof(spellPracticeMusic));
-
-    CopyTargetString(0x004b4ca0, "etama.anm");
-    CopyTargetString(0x004b5820, "replay/th8_00.rpy");
-    CopyTargetString(0x004b5834, "error: spell card initialization failed\n");
-    CopyTargetString(0x004b5864, "error: 2D initialization failed\n");
-    CopyTargetString(0x004b588c, "error: effect initialization failed\n");
-    CopyTargetString(0x004b58b8, "error: enemy initialization failed\n");
-    CopyTargetString(0x004b58dc, "error: bullet initialization failed\n");
-    CopyTargetString(0x004b5904, "error: background initialization failed\n");
-    CopyTargetString(0x004b5930, "error: player initialization failed\n");
+    g_ModernLastSpellCountStorage = 43;
+    memcpy(g_ModernEffectTemplatesStorage, effectTemplates, sizeof(effectTemplates));
+    memcpy(g_ModernGuiStageClearBonusesStorage, stageScoreTables, sizeof(stageScoreTables));
+    memcpy(g_ModernGuiMessageTextColorsStorage, messageTextColors, sizeof(messageTextColors));
 }
 }
 

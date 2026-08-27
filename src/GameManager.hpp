@@ -26,19 +26,25 @@ void __fastcall IncrementTruncate(u32 *value, i32 unused);
 
 struct GameManagerFlags
 {
+    enum
+    {
+        PLAYER_DEATH_DISSOLVE_SHIFT = 7,
+        PLAYER_DEATH_DISSOLVE_MASK = 3,
+    };
+
     u32 isPracticeMode : 1;
     u32 isDemoMode : 1;
-    u32 unk2 : 1;
+    u32 replayInputEnabled : 1;
     u32 isReplay : 1;
-    u32 unk4 : 1;
+    u32 gameCleared : 1;
     // Observed as a two-bit state at bits 5..6 by GameManager::OnDraw.
-    u32 unk5_6 : 2;
-    u32 unk7 : 1;
-    u32 unk8 : 1;
-    u32 unk9 : 1;
-    u32 unk10 : 1;
-    u32 isGoingToFinalB : 2; // why 2 bits?
-    u32 unk13 : 1;
+    u32 stageTransitionState : 2;
+    // Nonzero selects the alternate player-death dissolve path.
+    u32 playerDeathDissolveMode : 2;
+    u32 stageClearSequenceActive : 1;
+    u32 deathbombFreezeActive : 1;
+    u32 finalStageRoute : 2;
+    u32 suppressPlayerShots : 1;
     u32 isSpellPractice : 1;
 
     u32 isExtraUnlocked : 1;
@@ -53,9 +59,38 @@ enum
     REPLAY_MODE_BOSS,
 };
 
+enum GameplaySetupState
+{
+    GAMEPLAY_SETUP_COMPLETE,
+    GAMEPLAY_SETUP_IN_PROGRESS,
+    GAMEPLAY_SETUP_FAILED,
+};
+
+enum StageStartupMode
+{
+    STAGE_STARTUP_NONE,
+    STAGE_STARTUP_PLAY_MUSIC,
+    STAGE_STARTUP_WITHOUT_MUSIC,
+};
+
+struct SpellcardMusicEntry
+{
+    i32 spellcardNumber;
+    i32 songNumber;
+    const char *songPath;
+    i32 songNameSpriteIdx;
+    ZunBool musicPausesInSpellPractice;
+};
+C_ASSERT(sizeof(SpellcardMusicEntry) == 0x14);
+
+DIFFABLE_EXTERN_ARRAY(SpellcardMusicEntry, 19, g_SpellcardMusicInfo);
+
 struct GameManager
 {
     GameManager();
+
+    static ZunBool ShouldPauseMusicInSpellPractice(i32 spellcardNumber);
+    static i32 GetSongNameSpriteIdx(i32 spellcardNumber);
 
     ZunBool IsWithinPlayfield(f32 x, f32 y, f32 width, f32 height);
     i32 CalcAntiTamperChecksum();
@@ -269,37 +304,37 @@ struct GameManager
 
     void InitArcadeRegionParams();
 
-    ZunBool IsUnknown()
+    ZunBool ShouldSkipCurrentFrame()
     {
-        return this->unk2D;
+        return this->skipCurrentFrame;
     }
 
-    i32 unk0x0;
+    i32 antiTamperHeapJitterAllocation;
     GameConfiguration *cfg;
     ZunGlobals *globals;
     Flsp flsp;
-    i8 unk2C;
-    i8 unk2D;
+    i8 scriptedUpdateFreeze;
+    i8 skipCurrentFrame;
     /* 2 bytes pad */
     i32 difficulty;
     i32 difficultyMask;
-    u32 unk38;
-    i32 unk3c;
+    u32 gameplaySetupState;
+    i32 gameplaySetupWaitFrames;
     Catk catkData[SPELLCARD_COUNT_SPELLCARDS];
     Catk catkData2[SPELLCARD_COUNT_SPELLCARDS];
     Clrd clrdData[SHOT_ALL + 1];
     Pscr pscrData[SHOT_ALL];
     Plst plst;
     Hscr hscr;
-    i32 unk3DB94;
-    i32 unk3DB98;
-    i32 unk3DB9C;
-    i32 unk3DBA0;
-    i32 unk3DBA4;
+    i32 playtimeFrames;
+    i32 replayPauseRecorded;
+    i32 nextSupervisorState;
+    i32 humanityRateNumerator;
+    i32 humanityRateDenominator;
     u8 character;
     u8 shotType;
     u8 fullShotType;
-    u8 unk3dbaa;
+    u8 characterListIndex;
     GameManagerFlags flags;
     i16 currentSpellCardNumber;
     u8 isInGameMenu;
@@ -311,12 +346,13 @@ struct GameManager
 
     i32 demoFrameCount;
     char replayFilename[512];
-    u32 unk3ddbc;
-    u32 unk3ddc0;
+    u16 stageRngSeed;
+    u16 unknown3DDBE;
+    u32 gameplayFrameCounter;
     i32 currentStage;
-    i32 currentStage2;
+    i32 stageAtStart;
     u32 unk3ddcc;
-    u16 unk3DDD0;
+    u16 currentStageClearFlag;
     u16 unk3DDD2;
     Float2 arcadeRegionTopLeftPos;
     Float2 arcadeRegionSize;
@@ -330,16 +366,16 @@ struct GameManager
     i16 youkaiGaugeHumanTintThreshold;
     i16 youkaiGaugeYoukaiTintThreshold;
 
-    i32 unk3de04;
-    u32 unk3de08;
+    i32 stagePlayTimeAll;
+    u32 frameSkipCounter;
     u32 unk3de0c;
-    u32 unk3de10;
-    u32 unk3de14;
-    u32 unk3de18;
-    u32 unk3de1c;
-    u32 unk3de20;
-    u32 unk3de24;
-    u32 unk3de28;
+    u32 runActiveFrames;
+    u32 stageActiveFrames;
+    u32 runExtremeYoukaiFrames;
+    u32 runExtremeHumanFrames;
+    u32 stageExtremeYoukaiFrames;
+    u32 stageExtremeHumanFrames;
+    u32 stageStartupMode;
 
     i32 rank;
     i32 maxRank;
@@ -348,16 +384,32 @@ struct GameManager
 };
 
 C_ASSERT(sizeof(GameManager) == 0x3de3c);
+C_ASSERT(offsetof(GameManager, antiTamperHeapJitterAllocation) == 0x0);
+C_ASSERT(offsetof(GameManager, scriptedUpdateFreeze) == 0x2c);
+C_ASSERT(offsetof(GameManager, catkData) == 0x40);
+C_ASSERT(offsetof(GameManager, plst) == 0x3D804);
 C_ASSERT(offsetof(GameManager, character) == 0x3DBA8);
 C_ASSERT(offsetof(GameManager, shotType) == 0x3DBA9);
 C_ASSERT(offsetof(GameManager, flags) == 0x3DBAC);
 C_ASSERT(offsetof(GameManager, currentSpellCardNumber) == 0x3DBB0);
 C_ASSERT(offsetof(GameManager, isInGameMenu) == 0x3DBB2);
 C_ASSERT(offsetof(GameManager, showRetryMenu) == 0x3DBB3);
+C_ASSERT(offsetof(GameManager, stageRngSeed) == 0x3DDBC);
+C_ASSERT(offsetof(GameManager, gameplayFrameCounter) == 0x3DDC0);
+C_ASSERT(offsetof(GameManager, currentStage) == 0x3DDC4);
+C_ASSERT(offsetof(GameManager, stageAtStart) == 0x3DDC8);
+C_ASSERT(offsetof(GameManager, currentStageClearFlag) == 0x3DDD0);
 C_ASSERT(offsetof(GameManager, arcadeRegionTopLeftPos) == 0x3DDD4);
 C_ASSERT(offsetof(GameManager, arcadeRegionSize) == 0x3DDDC);
 C_ASSERT(offsetof(GameManager, playerMovementTopLeftPos) == 0x3DDE4);
 C_ASSERT(offsetof(GameManager, playerMovementAreaSize) == 0x3DDEC);
+C_ASSERT(offsetof(GameManager, runActiveFrames) == 0x3DE10);
+C_ASSERT(offsetof(GameManager, stageActiveFrames) == 0x3DE14);
+C_ASSERT(offsetof(GameManager, runExtremeYoukaiFrames) == 0x3DE18);
+C_ASSERT(offsetof(GameManager, runExtremeHumanFrames) == 0x3DE1C);
+C_ASSERT(offsetof(GameManager, stageExtremeYoukaiFrames) == 0x3DE20);
+C_ASSERT(offsetof(GameManager, stageExtremeHumanFrames) == 0x3DE24);
+C_ASSERT(offsetof(GameManager, stageStartupMode) == 0x3DE28);
 
 DIFFABLE_EXTERN(GameManager, g_GameManager);
 }; // Namespace th08

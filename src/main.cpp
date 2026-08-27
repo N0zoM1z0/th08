@@ -208,7 +208,7 @@ restart:
                     }
 
                     GameWindow::ResetRenderState();
-                    g_Supervisor.unk174 = 3;
+                    g_Supervisor.screenTransitionCountdown = 3;
                     g_Supervisor.flags.d3dDevDisconnectFlag = 1;
                 }
             }
@@ -218,7 +218,7 @@ restart:
 awfulConditionalBreak:
     if (g_GameManager.plst.base.magic != 0)
     {
-        ResultScreen::RegisterChain(2);
+        ResultScreen::RegisterChain(RESULT_SCREEN_REGISTER_SAVE_DATA);
     }
 
     g_Chain.Release();
@@ -387,7 +387,7 @@ void GameWindow::Present()
         g_Supervisor.d3dDevice->Reset(&g_Supervisor.presentParameters);
         ResetRenderState();
 
-        g_Supervisor.unk174 = 2;
+        g_Supervisor.screenTransitionCountdown = 2;
     }
 
     g_AnmManager->TakeScreencaptures();
@@ -412,9 +412,9 @@ void GameWindow::Present()
         }
     }
 
-    if (g_Supervisor.unk174 != 0 && !g_GameManager.isInGameMenu)
+    if (g_Supervisor.screenTransitionCountdown != 0 && !g_GameManager.isInGameMenu)
     {
-        g_Supervisor.unk174--;
+        g_Supervisor.screenTransitionCountdown--;
     }
 }
 
@@ -636,7 +636,7 @@ ZunBool GameWindow::InitD3DRendering()
     presentParams.AutoDepthStencilFormat = D3DFMT_D16;
     presentParams.Flags = D3DPRESENTFLAG_LOCKABLE_BACKBUFFER;
 
-    g_Supervisor.flags.unk1 = true;
+    g_Supervisor.flags.lockableBackbuffer = true;
     g_Supervisor.couldSetRefreshRate = true;
     failedToSetFramerate = false;
 
@@ -1034,11 +1034,11 @@ ZunResult GameWindow::CheckForRunningGameInstance(HINSTANCE hInstance)
             }
         }
 
-        g_Supervisor.flags.unk6 = false;
+        g_Supervisor.flags.dummyMidiTimerEnabled = false;
     }
     else
     {
-        g_Supervisor.flags.unk6 = true;
+        g_Supervisor.flags.dummyMidiTimerEnabled = true;
     }
 
     if (g_ExclusiveMutex == NULL)

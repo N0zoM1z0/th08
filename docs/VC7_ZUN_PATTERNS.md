@@ -8,9 +8,9 @@ Several target functions materialize a `this` local and a result local even when
 
 Verified examples:
 
-- `EclOperands::TargetEnemyHelpersOverlay::HasParentChain` at `0x0041F000`
-- `Spellcard::GetActiveState` at `0x0041FD90`
-- `Spellcard::FUN_00417860` at `0x00417860`
+- `Enemy::HasParentChain` at `0x0041F000`
+- `Spellcard::IsCaptureValid` at `0x0041FD90`
+- `Spellcard::UsesAlternateEffectStyle` at `0x00417860`
 
 Shape:
 
@@ -51,14 +51,14 @@ For a conservative review artifact from existing objects, use
 ## Optimize pragma for `leave` epilogues
 
 Verified examples: `AsciiManager::SetIsGuiMode` (0x004398FF) and
-`AnmVm::FUN_004396f8` (0x004396F8).  Some tiny state helpers only match the
+`AnmVm::IsStopped` (0x004396F8).  Some tiny state helpers only match the
 target when compiled under `#pragma optimize("s", on)`, which makes VC7 emit
 `leave` instead of `mov esp, ebp; pop ebp`.  Prefer proving this with a real
 comparator before changing a function globally.
 
 ## Raw-width flag loads
 
-Verified example: `AnmVm::FUN_004396f8`.  If target reads a flags word as a
+Verified example: `AnmVm::IsStopped`.  If target reads a flags word as a
 32-bit dword (`mov eax, [this+off]; shr eax, imm`) but the public field is a
 bitfield or narrower typed member, use an explicit raw-width access in the
 small helper.  Typed access may emit `movzx`/`sar` and miss the target even when
@@ -140,7 +140,7 @@ the declaration point.
 
 ## Reused effect fields and integer width are part of the source shape
 
-Verified with `ScreenEffect::CalcPartialFadeOut` and `ScreenEffect::FUN_0045bd70`.
+Verified with `ScreenEffect::CalcFadeHold` and `ScreenEffect::DrawArcadePulse`.
 `ScreenEffect` reuses parameter slots differently for different effect types, so avoid renaming a field globally from a single callback. For effect-specific callbacks, raw offset access can be clearer and safer until all variants are understood.
 
 When target uses `fild qword`, cast the integer multiplicand to a 64-bit integer before the floating expression. Otherwise VC7 may generate `fild dword` or a shorter float-only sequence.
@@ -195,9 +195,9 @@ When a structure begins with the field required by an API, VC7 may pass the stru
 - **Constructor body after member construction may intentionally zero the whole object.** Verified with `AnmManager::AnmManager`: VC7 emits member/vector constructors first, then ZUN calls `memset(this, 0, sizeof(T))`, then restores global quad defaults and sentinel fields. Preserve this apparently redundant order.
 - **Stride-separated quad globals**: `AnmManager::SetupVertexBuffer` proved that adjacent quad buffers can share component names but not stride. `g_AnmManagerUntexturedQuadVertices` and `g_BackgroundQuadVertices` are both `VertexTex0Xyzrhw[4]` globals with 0x18 stride, while `AnmManager::untexturedVector` is copied to the D3D vertex buffer as 0x14-stride data. Type globals from relocation/addend spacing before reusing a seemingly similar vertex struct.
 - **Shared pause/retry guards may cover multiple loops.** Verified in `AsciiManager::OnUpdate`: `GameManager.flags` bit 10 skips both score/player popup and time popup update loops. Keeping the second loop outside the guard gives the right logic for normal play but produces a short conditional jump instead of the target near jump.
-- **Split repeated VM execution into an out-of-line helper when target does.** Verified in `AsciiManager::OnUpdate` / `FUN_00406fd0`: even though the header has an inline `UpdateVms()` helper, the target emits a separate helper that calls `g_AnmManager->ExecuteScript` for each VM. Keep the caller as a call to the helper and recover the helper separately.
+- **Split repeated VM execution into an out-of-line helper when target does.** Verified in `AsciiManager::OnUpdate` / `UpdateVms`: even though the header has an inline `UpdateVms()` helper, the target emits a separate helper that calls `g_AnmManager->ExecuteScript` for each VM. Keep the caller as a call to the helper and recover the helper separately.
 - **Pool spawn helpers can avoid explicit return locals.** Verified in `EffectManager::SpawnEffect` and variants: writing the final return as a ternary expression (`i >= limit ? fallback : slot`) lets VC7 create the target return-temp stack slot naturally. An explicit `ret` local swaps that slot with the implicit `this` save and mismatches.
-- **Temporary vector assignment can depend on constructor return reuse.** Verified in `EffectManager::SpawnEffect00425B70`: `dst = D3DXVECTOR3(0, 0, 0)` reuses the constructor's returned pointer in `eax` and matches target; declaring a named `zeroVector` and then assigning it is one byte longer.
+- **Temporary vector assignment can depend on constructor return reuse.** Verified in `EffectManager::SpawnEffectInSecondaryPool`: `dst = D3DXVECTOR3(0, 0, 0)` reuses the constructor's returned pointer in `eax` and matches target; declaring a named `zeroVector` and then assigning it is one byte longer.
 - **Avoid default constructors when target only calls a conversion/helper on stack storage.** Verified in `BulletManager::RemoveAllBullets`: declaring `Float3 position;` emitted an unwanted default-ctor call. Using `f32 position[3]` and `reinterpret_cast<Float3 *>(position)->operator float *();` preserved the target stack storage and the lone `Float3::operator float*` call without inline asm.
 - **Constructor member grouping matters**: do not convert consecutive individually constructed members into an array unless the target uses the vector-constructor iterator. Verified in `Background::Background`: the first three `AnmVm` members are separate constructor calls, while the `anmVmArray[0x20]`, `timers63f4[5]`, and `vectors6480[0x20]` members use vector-constructor iterator calls. `Spellcard::Spellcard` is a stronger example: two `ZunTimer` members followed by fourteen consecutive `AnmVm` objects are still fourteen distinct members because the target emits fourteen direct `AnmVm` constructor calls; declaring `AnmVm[14]` changes the ABI/code shape to the vector-constructor iterator.
 - For target callback fields that are invoked as `mov ecx, owner; call [ecx+field]`, type the field as a no-argument function pointer and call `owner->callback()`; adding an explicit owner argument forces an extra register move.
@@ -216,13 +216,13 @@ When a structure begins with the field required by an API, VC7 may pass the stru
 - Debug-codegen initializer loops can match target stack homes by listing hidden `this` after explicit locals in `#pragma var_order`; `BulletManager::Initialize` uses `#pragma var_order(i, bullet, this)` to get `i@-4`, `bullet@-8`, and `this@-0xC` with the target `rep stosd` zero-fill and one global-array relocation.
 - VC7 array-member constructors emit `??_H` vector-constructor iterator calls with element constructor DIR32 relocations; verify and list both relocation kinds when promoting owning constructors.  Verified by `BulletManager::BulletManager`.
 - When target default constructors call same-sized members one-by-one, declare them as distinct fields rather than a fixed array; a member array makes VC7 emit vector-constructor iterator instead. Verified by `BulletTypeSprites` and `Laser` constructors.
-- Wrap-around float helpers can need double literals for comparisons but float literals for arithmetic: `x < 0.0` / `x > 384.0` with `x += 384.0f` preserves VC7 `fcomp qword` tests while keeping `fadd/fsub dword` constants. Verified by `Bullet::FUN_004329f0` and `Bullet::FUN_00432aa0`.
-- When arithmetic with `ZunTimer` should call `operator float`, cast explicitly to `f32` before multiplying; otherwise VC7 sees both int and float conversions as ambiguous. Verified by `Bullet::FUN_00432210` matching the target `ZunTimer::operator float` call.
+- Wrap-around float helpers can need double literals for comparisons but float literals for arithmetic: `x < 0.0` / `x > 384.0` with `x += 384.0f` preserves VC7 `fcomp qword` tests while keeping `fadd/fsub dword` constants. Verified by `Bullet::UpdateHorizontalWrap` and `Bullet::UpdateVerticalWrap`.
+- When arithmetic with `ZunTimer` should call `operator float`, cast explicitly to `f32` before multiplying; otherwise VC7 sees both int and float conversions as ambiguous. Verified by `Bullet::UpdateDeceleration` matching the target `ZunTimer::operator float` call.
 
-- When a thiscall helper returns `ret 4` but a surrounding call needs one original stack argument to remain for the next call, spell the outer expression naturally so VC7 pushes the second argument first. `Bullet::FUN_004326e0` uses `AddNormalizeAngle(g_Player.FUN_0044c1b0(pos), angle)` to preserve `angle` on the stack across the player-angle call.
-- VC7 can materialize a hidden return-value `Float3` temporary without a named local when an expression such as `position += velocity * dt` is used; naming the temporary adds a `lea`/copy and breaks `Bullet::FUN_004322b0`.
+- When a thiscall helper returns `ret 4` but a surrounding call needs one original stack argument to remain for the next call, spell the outer expression naturally so VC7 pushes the second argument first. `Bullet::UpdateAimedDirectionChange` uses `AddNormalizeAngle(g_Player.AngleToPoint(pos), angle)` to preserve `angle` on the stack across the player-angle call.
+- VC7 can materialize a hidden return-value `Float3` temporary without a named local when an expression such as `position += velocity * dt` is used; naming the temporary adds a `lea`/copy and breaks `Bullet::UpdateVectorAcceleration`.
 - With `/Gr`, free functions taking only floats (for example `VectorAngle(f32 y, f32 x)`) still pass float arguments on the stack and return with `ret 8`; using `atan2` rather than `atan2f` emits the target x87 `__CIatan2` helper wrapper.
-- Boundary-bounce helpers may need explicit `Float3::operator float *()` calls when the target fetches `pos.x`/`pos.y` through the conversion operator; `Bullet::FUN_00432830` also shows the flag only guards the high-Y bounce, not the low-Y bounce.
+- Boundary-bounce helpers may need explicit `Float3::operator float *()` calls when the target fetches `pos.x`/`pos.y` through the conversion operator; `Bullet::UpdateBoundaryBounce` also shows the flag only guards the high-Y bounce, not the low-Y bounce.
 - VC7 will allocate the hidden `this` home before an implicit integer-to-float `fild` temporary when the integer expression is cast directly; `GameManager::SetBombCount` matches only as `(f32)(checksum + rng7[3])`, while a named `expectedValue` local moves `this` from `-4` to `-8`.
 - Do not treat a donor-local optimizer workaround as ownership evidence.
   `AddToDeaths` and `AddToBombsUsed` were first made exact in the `/Os`
@@ -239,24 +239,27 @@ When a structure begins with the field required by an API, VC7 may pass the stru
   the GameManager setters.
 - Fastcall helpers with an unused `edx` home can require an explicit dummy second parameter; for `IncrementTruncate(u32 *value, i32 unused)`, use an unsigned pointer and do not force `optimize("t")` so VC7 emits the target `push ecx; push ecx`, unsigned `jae`, and `inc eax` store-back shape.
 - Header inline predicates can be promoted to out-of-line definitions when the target has a standalone copy: verified `GameManager::IsStageClearedWithoutRetries` / `IsStageClearedWithRetries`; keep the same macro expression so VC7 emits `xor edx; inc edx; shl edx, cl` instead of a boolean normalize sequence.
-- Fastcall helpers may need an unused register dummy parameter to home `ecx`; for top-tested table scans, write `i = 0; while (...) { ...; i++; }` rather than `for`, or VC7 emits an entry `jmp`. Verified by `FUN_00439916` and `FUN_00439961`.
+- Fastcall helpers may need an unused register dummy parameter to home `ecx`; for top-tested table scans, write `i = 0; while (...) { ...; i++; }` rather than `for`, or VC7 emits an entry `jmp`. Verified by `GameManager::ShouldPauseMusicInSpellPractice` and `GameManager::GetSongNameSpriteIdx`.
 - `CALLBACK`/`__stdcall` functions using global struct members can match natural COM calls with relocation addends; verified `Supervisor::EnumGameControllersCb` emits `g_Supervisor + 0x14` and `+0x0C` DIR32 addends for `controller` and `dInputIface` without raw absolute addresses.
-- Player VM slot draw loops can match naturally with raw `u8 *slot` plus `#pragma var_order(i, slot, this)`: use a `for (i = 0; i < count; i++, slot += stride)` shape for the entry `jmp` loop and direct raw writes for VM position/color fields; verified by `Player::FUN_00451400`.
-- For Player slot loops that update `Float3::operator float *()` components, avoid explicit pointer locals; direct `operator float *()[0/1] += ...` lets VC7 allocate target expression temporaries beyond hidden `this`. Verified by `Player::FUN_00451150`.
-- Repeated raw `reinterpret_cast<ZunTimer *>(this + offset)` calls avoid introducing a cached timer pointer local and preserve the single hidden-`this` stack slot in timer state machines; verified by `Player::FUN_00451500`.
+- Player shot draw loops can match naturally with typed `PlayerShot *slot` plus `#pragma var_order(i, slot, this)`: use a `for (i = 0; i < ARRAY_SIZE_SIGNED(shots); i++, slot++)` shape for the entry `jmp` loop and direct named VM position/color fields; verified by `Player::DrawHitShots`.
+- For Player shot loops that update `Float3::operator float *()` components, avoid explicit pointer locals; direct `operator float *()[0/1] += ...` lets VC7 allocate target expression temporaries beyond hidden `this`. Verified by `Player::UpdateShots`.
+- Repeated direct `this->shotTimer` expressions avoid introducing a cached timer pointer local and preserve the single hidden-`this` stack slot in timer state machines; verified by `Player::UpdateShooting`. A named member is source-shape neutral here; the rejected shape is the extra pointer local, not the semantic field name.
 - DirectInput callbacks may need an explicit unused `pvRef` local to home the second stdcall argument before initializing stack structs. Verified by `Supervisor::ControllerCallback`, where `LPVOID context = pvRef;` creates the target `-0x1c` slot before `DIPROPRANGE` fields.
-- Player slot initialization helpers should update `Float3::operator float *()[0/1]` directly instead of naming `f32 *xPtr/yPtr`; explicit pointer locals shift fastcall `this`/`slot` homes, while direct expressions preserve target `this@-4`, `slot@-8` and synthesize component pointer temporaries. Verified by `Player::FUN_0044fb70`.
+- Player shot initialization helpers should update `Float3::operator float *()[0/1]` directly instead of naming `f32 *xPtr/yPtr`; explicit pointer locals shift fastcall `this`/`slot` homes, while direct expressions preserve target `this@-4`, `slot@-8` and synthesize component pointer temporaries. Verified by `Player::InitializeShot`.
 
-- Player shot-table pointer indexing can require a ternary table index rather than boolean arithmetic: `table += ((flags & 2) ? 7 : 6)` keeps VC7 from folding the `+6` into `lea [base+index*8+0x30]` and instead emits the target `add ecx, 6; lea eax, [edx+ecx*8]`. Verified by `Player::FUN_00450f60`.
+- Player shot-table pointer indexing can require a ternary table index rather than boolean arithmetic: `table += ((flags & 2) ? 7 : 6)` keeps VC7 from folding the `+6` into `lea [base+index*8+0x30]` and instead emits the target `add ecx, 6; lea eax, [edx+ecx*8]`. Verified by `Player::SpawnShots`.
 
 - Player high-priority draw callbacks that index a callback table should call the table entry as a single-argument `__fastcall` function; adding a dummy second argument zeroes `edx` and breaks the target where `edx` remains the table index. Verified by `Player::OnDrawHighPrio`.
 
-- For gauge-interrupt position gates, explicit `goto` structure can be required to force repeated reads and x87 comparison masks. `Player::FUN_0044d420` matches with `x < 160.0f` setting interrupt 2, a second `GetGaugeInterrupt()` read, and `x > 160.0f` setting interrupt 3.
+- For gauge-interrupt position gates, explicit `goto` structure can be required to force repeated reads and x87 comparison masks. `Player::UpdateGaugePosition` matches with `x < 160.0f` setting interrupt 2, a second `GetGaugeInterrupt()` read, and `x > 160.0f` setting interrupt 3.
 - For file-loaded tables with relative offsets, use an in-place relocation update (`*relativePtr += (u32)base`) rather than `base + *relativePtr`; verified by `Player::LoadShtFile`, where the latter makes VC7 commute the add and breaks the target reload order.
-- When assigning from a global pointer and the target evaluates the destination object before the global, prefer the named global (`g_PlayerPrimaryShtFile`) over a raw absolute address; verified by `Player::FUN_0044d180`, which needs `mov eax,this` before `mov ecx,[g_PlayerPrimaryShtFile]`.
+- When the SHT loader local is promoted from `u8 *entry` to `PlayerShotDescriptor *descriptor`, update its `#pragma var_order` spelling too.  VC7 silently ignores the stale name and swaps the `i`/descriptor stack homes even though both locals remain four bytes.
+- For the PlayerShot VM setup, assign the named bitfield `vm.zWriteDisabled = 1`; assigning through the public 16-bit `vm.flags` field emits word loads/stores and grows `SpawnShots` by two bytes, while the bitfield preserves the target dword `OR 0x2000`.
+- Preserve `PlayerShot::tintInExtremeYoukai` as signed `i8`.  Testing an unsigned byte emits `movzx`; the target draw loops use `movsx`, and signedness is the only byte difference once the three named color stores are ordered `r`, `g`, `b`.
+- When assigning from a global pointer and the target evaluates the destination object before the global, prefer the named global (`g_PlayerPrimaryShtFile`) over a raw absolute address; verified by `Player::UpdateRespawnAnimation`, which needs `mov eax,this` before `mov ecx,[g_PlayerPrimaryShtFile]`.
 
-- Fastcall Player SHT callbacks with two explicit locals can require `#pragma var_order(index, i, this, slot)` to keep the decoded SHT index at `-4`, loop index at `-8`, hidden `this` at `-0xC`, and slot at `-0x10`; verified by `Player::FUN_0044fe20`.
-- For homing-angle shot callbacks, write `AddNormalizeAngle(VectorAngle(y_delta, x_delta), entry_angle + ZUN_PI / 2.0f)` as one expression so VC7 preserves the pending second `AddNormalizeAngle` argument across the `VectorAngle` call; verified by `Player::FUN_0044ffa0`.
+- Fastcall Player SHT callbacks with two explicit locals can require `#pragma var_order(index, i, this, slot)` to keep the decoded SHT index at `-4`, loop index at `-8`, hidden `this` at `-0xC`, and slot at `-0x10`; verified by `Player::SpawnPersistentShot`.
+- For homing-angle shot callbacks, write `AddNormalizeAngle(VectorAngle(y_delta, x_delta), descriptor_angle + ZUN_PI / 2.0f)` as one expression so VC7 preserves the pending second `AddNormalizeAngle` argument across the `VectorAngle` call; verified by `Player::SpawnShotAimedAtTrackedPoint`.
 
 
 - RunEcl high-opcode helpers that target a known singleton should bind the call-site `this` to that singleton, not to the EclManager service adapter.  Use `reinterpret_cast<TargetApi *>(&g_Gui)` for boss-gauge GUI calls, `reinterpret_cast<TargetApi *>(&g_EffectManager)` for effect spawns, and `reinterpret_cast<TargetApi *>(&g_Spellcard)` for spellcard state calls when the target loads those absolute objects into `ecx`.  Verified in `EclManager::RunEcl` opcodes 140, 158, and 164.
@@ -294,7 +297,7 @@ When a structure begins with the field required by an API, VC7 may pass the stru
 
 - In RunEcl's shared post-dispatch tail, source-level `continue` can be too compact even when semantically natural.  For the interpolator callback scan, spelling the live path as `if (entry->callback) { ... }` preserves a target-like near branch around the large body.  For the child-context scan, keep the slot-table test and later slot rereads lexical instead of caching `child` before an early `continue`; this retains real behavior while moving opcode 3/84/85's shared tail span much closer to target.  Do not generalize this to inert rereads or fake locals: the repeated expression must be the actual slot lookup used by each following store/load.
 - RunEcl movement handlers 66 and 69 should only inline the timer-reset tail, not the whole movement-state update.  Keeping `SetMovementState1(enemy)` as the semantic helper while spelling the timer assignment as direct field/`ZunTimer` stores brought op66/op69 close to target; fully expanding the movement-state flags overgrows both handlers into large positive spans.
-- RunEcl remote-register opcodes 86 and 87 benefit from reusing the dispatcher integer scratch for the remote enemy selector before indexing `g_EclEnemyTableF54CC0`.  For opcode 87, keep the target-observed second selector resolve in the flagged `ResolveFloat` branch; caching the enemy pointer instead compiles differently or overgrows nearby stack layout.
+- RunEcl remote-register opcodes 86 and 87 benefit from reusing the dispatcher integer scratch for the remote Boss selector before indexing `g_EnemyManager.bosses`.  For opcode 87, keep the target-observed second selector resolve in the flagged `ResolveFloat` branch; caching the Enemy pointer instead compiles differently or overgrows nearby stack layout.
 - RunEcl opcode 79's bit replacement is not uniform.  The positive bit writes for `0x10` and the secondary `0x40` bit should be written as boolean shifts (`(((lhsInt & mask) != 0) << shift)`), while applying that same simple boolean-shift form to the inverted low bits over-shrinks the handler.
 - For RunEcl opcode group 96-104, give the memcpy path its own `break` before the shot-dispatch call.  This is a real control-flow distinction and prevents VC7 from collapsing both arms into a shorter shared jump that misses the target span.
 - RunEcl opcode 79 can be made exact only when the first inverted bit write is both lexically local and still assigned back to the shared dispatcher scratch: `i32 flags = (lhsInt = ReadInt(...));` followed by `((1 - ((flags & 1) != 0)) << 6)`.  This form by itself perturbs nearby allocation, so keep it coupled with the opcode 135 stack layout that re-stabilizes op80/op81.

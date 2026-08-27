@@ -14,11 +14,11 @@ enum ScreenEffectType
     SCREEN_EFFECT_FULL_FADE_IN,
     SCREEN_EFFECT_SHAKE,
     SCREEN_EFFECT_ARCADE_FADE_OUT,
-    SCREEN_EFFECT_UNK3,
+    SCREEN_EFFECT_ARCADE_PULSE,
     SCREEN_EFFECT_FULL_FADE_OUT,
-    SCREEN_EFFECT_UNK5,
-    SCREEN_EFFECT_UNK6,
-    SCREEN_EFFECT_UNK7,
+    SCREEN_EFFECT_FULL_FADE_HOLD,
+    SCREEN_EFFECT_ARCADE_FADE_HOLD,
+    SCREEN_EFFECT_SHAKE_ENVELOPE,
 };
 
 struct ScreenEffect
@@ -33,7 +33,7 @@ struct ScreenEffect
     static void DrawSquareShaded(ZunRect *rect, D3DCOLOR topLeft, D3DCOLOR topRight, D3DCOLOR bottomLeft,
                                  D3DCOLOR bottomRight);
     static ChainCallbackResult CalcFadeOut(ScreenEffect *screenEffect);
-    static ChainCallbackResult CalcPartialFadeOut(ScreenEffect *screenEffect);
+    static ChainCallbackResult CalcFadeHold(ScreenEffect *screenEffect);
 
     static ScreenEffect *RegisterChain(ScreenEffectType effect, i32 ticks, i32 param_3, i32 param_4, i32 param_5,
                                        i32 param_6);
@@ -42,29 +42,34 @@ struct ScreenEffect
     static ChainCallbackResult DrawPartialFade(ScreenEffect *screenEffect);
 
     static ChainCallbackResult DrawArcadeFade(ScreenEffect *screenEffect);
-    static ChainCallbackResult FUN_0045bc90(ScreenEffect *screenEffect);
-    static ChainCallbackResult FUN_0045bd70(ScreenEffect *screenEffect);
+    static ChainCallbackResult CalcArcadePulse(ScreenEffect *screenEffect);
+    static ChainCallbackResult DrawArcadePulse(ScreenEffect *screenEffect);
     static ChainCallbackResult CalcShake(ScreenEffect *screenEffect);
-    static ChainCallbackResult FUN_0045bf10(ScreenEffect *screenEffect);
+    static ChainCallbackResult CalcShakeEnvelope(ScreenEffect *screenEffect);
 
-    static ZunResult AddedCallback(ScreenEffect *screenEffect);
-    static ZunResult DeletedCallback(ScreenEffect *screenEffect);
-    void FUN_0045c160();
+    static ZunResult InitializeTimer(ScreenEffect *screenEffect);
+    static ZunResult DeleteScreenEffect(ScreenEffect *screenEffect);
+    void BeginFadeRelease();
 
-    i32 type;
+    ScreenEffectType type;
     ChainElem *calcChainElement;
     ChainElem *drawChainElement;
     i32 unk0c;
-    i32 arcadeFadeAlpha;
+    i32 overlayAlpha;
     i32 duration;
-    D3DCOLOR arcadeFadeColor;
-    i32 shakeStart;
-    i32 shakeEnd;
-    i32 unk24;
+    D3DCOLOR rawParameter0;
+    i32 rawParameter1;
+    i32 rawParameter2;
+    i32 fadeReleaseRequested;
     ZunTimer timer;
 };
 
 C_ASSERT(sizeof(ScreenEffect) == 0x34);
+C_ASSERT(offsetof(ScreenEffect, type) == 0x0);
+C_ASSERT(offsetof(ScreenEffect, overlayAlpha) == 0x10);
+C_ASSERT(offsetof(ScreenEffect, rawParameter0) == 0x18);
+C_ASSERT(offsetof(ScreenEffect, fadeReleaseRequested) == 0x24);
+C_ASSERT(offsetof(ScreenEffect, timer) == 0x28);
 
 DIFFABLE_EXTERN(i32, g_ScreenEffectCounter);
 

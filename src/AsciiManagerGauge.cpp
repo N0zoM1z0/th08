@@ -9,7 +9,7 @@ namespace th08
 // before Background code. It cannot remain in the current early AsciiManager
 // object if that object's 0x00402000 layout is to match.
 // FUNCTION: th08 0x406fd0
-void AsciiManager::FUN_00406fd0()
+void AsciiManager::UpdateVms()
 {
     g_AnmManager->ExecuteScript(&this->youkaiGauge);
     g_AnmManager->ExecuteScript(&this->youkaiGaugeHumanIcon);

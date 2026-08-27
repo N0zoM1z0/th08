@@ -2,6 +2,7 @@
 
 #include "AsciiManager.hpp"
 #include "GameManager.hpp"
+#include "ResultScreen.hpp"
 #include "ScoreDat.hpp"
 #include "ScreenEffect.hpp"
 #include "SoundPlayer.hpp"
@@ -180,6 +181,8 @@ DIFFABLE_STATIC_ASSIGN(const char *, g_FullWidthDigits[]) = {
     TH_TITLE_FULLWIDTH_DIGIT_4, TH_TITLE_FULLWIDTH_DIGIT_5, TH_TITLE_FULLWIDTH_DIGIT_6, TH_TITLE_FULLWIDTH_DIGIT_7,
     TH_TITLE_FULLWIDTH_DIGIT_8, TH_TITLE_FULLWIDTH_DIGIT_9,
 };
+
+DIFFABLE_STATIC_ARRAY(char, 64, g_FullWidthNumberBuffer);
 
 DIFFABLE_STATIC_ASSIGN(const char *, g_StartMenuHelpText[]) = {
     TH_TITLE_STARTMENU_HELPTEXT0, TH_TITLE_STARTMENU_HELPTEXT1, TH_TITLE_STARTMENU_HELPTEXT2,
@@ -2312,7 +2315,7 @@ ChainCallbackResult TitleScreen::OnUpdateSpellCardSelect()
             }
 
             this->FormatSpellCardInfo();
-            this->unk0xc29c = 0;
+            this->spellCardInfoRevealCountdown = 0;
         }
 
         if (this->stateTimer2 == 8)
@@ -2437,7 +2440,7 @@ ChainCallbackResult TitleScreen::OnUpdateSpellCardSelect()
                 this->spellCardInfoVms[i2].color1.a = 0;
             }
 
-            this->unk0xc29c = 21;
+            this->spellCardInfoRevealCountdown = 21;
         }
 
         this->FormatSpellCardInfo();
@@ -2539,11 +2542,7 @@ ChainCallbackResult TitleScreen::OnUpdateSpellCardSelect()
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-/* This function checks the conditions needed to unlock certain Last Word spell cards. */
-// STUB: th08 0x46cbbb
-void TitleScreen::UnlockLastWordSpellCards()
-{
-}
+#include "TitleUnlockLastWords.inl"
 
 #pragma var_order(vm, i2, i, position)
 ChainCallbackResult TitleScreen::DrawReplayMenu()
@@ -3204,10 +3203,9 @@ i32 TitleScreen::MoveCursorHorizontal(i32 menuLength)
     return 0;
 }
 
-// STUB: th08 0x46d7f9
-void TitleScreen::FormatSpellCardInfo()
-{
-}
+#include "TitleFullWidthDigits.inl"
+#include "TitleFormatSpellCardInfo.inl"
+#include "TitleSpellCardData.inl"
 
 // This function is 100% matching except for stack nonsense cause by AnmLoaded::InitializeAndSetSprite.
 #pragma var_order(i, firstFile, replayCount, fileSize, replayData, path, findData, fileSize2)
@@ -3853,11 +3851,13 @@ void TitleScreen::TitleSetupThread(TitleScreen *titleScreen)
         }
         if (g_Supervisor.totalPlayTime == 0)
         {
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_FULL_FADE_IN, 70, RGB(255, 255, 255), 0, 0, 21);
+            ScreenEffect::RegisterChain(
+                SCREEN_EFFECT_FULL_FADE_IN, 70, RGB(255, 255, 255), 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
         }
         else
         {
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_FULL_FADE_IN, 70, RGB(255, 255, 255), 0, 0, 21);
+            ScreenEffect::RegisterChain(
+                SCREEN_EFFECT_FULL_FADE_IN, 70, RGB(255, 255, 255), 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
         }
     }
 
@@ -3866,7 +3866,7 @@ void TitleScreen::TitleSetupThread(TitleScreen *titleScreen)
     g_Supervisor.HideLoadingVms();
     g_Supervisor.runningSubthreadHandle = NULL;
     g_Supervisor.subthreadCloseRequestActive = FALSE;
-    g_Supervisor.unk290 = 0;
+    g_Supervisor.subthreadActive = 0;
 }
 
 #define TITLE_IMAGE_INFO_MAX_FRAMES 6000
@@ -3965,9 +3965,12 @@ ZunResult TitleScreen::Release()
     return ZUN_SUCCESS;
 }
 
-ZunResult TitleScreen::RegisterChain(int param)
+ZunResult TitleScreen::RegisterChain(i32 registrationReason)
 {
-    TitleScreen *titleScreen = new TitleScreen();
+    // GensokyoClub commit 1b630bb supplied this retail-exact allocation
+    // shape. The registry label is compiled out of the non-DEBUG target, so
+    // "TitleInf" remains upstream provenance rather than a target observation.
+    TitleScreen *titleScreen = ZUN_NEW(TitleScreen, "TitleInf");
     g_TitleScreen = titleScreen;
 
     memset(titleScreen, 0, sizeof(TitleScreen));
@@ -3978,14 +3981,14 @@ ZunResult TitleScreen::RegisterChain(int param)
     titleScreen->calcChain->addedCallback = (ChainLifetimeCallback)TitleScreen::AddedCallback;
     titleScreen->calcChain->deletedCallback = (ChainLifetimeCallback)TitleScreen::DeletedCallback;
 
-    if (g_Chain.AddToCalcChain(titleScreen->calcChain, 4) != ZUN_SUCCESS)
+    if (g_Chain.AddToCalcChain(titleScreen->calcChain, CHAIN_PRIO_CALC_TITLESCREEN) != ZUN_SUCCESS)
     {
         return ZUN_ERROR;
     }
 
     titleScreen->drawChain = g_Chain.CreateElem((ChainCallback)TitleScreen::OnDraw);
     titleScreen->drawChain->arg = titleScreen;
-    g_Chain.AddToDrawChain(titleScreen->drawChain, 3);
+    g_Chain.AddToDrawChain(titleScreen->drawChain, CHAIN_PRIO_DRAW_TITLESCREEN);
 
     return ZUN_SUCCESS;
 }

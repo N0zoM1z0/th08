@@ -254,6 +254,7 @@ claim. Generated source-presence and strict-match figures are recorded in
 - [Native macOS user guide and status](docs/PLAY_MACOS.md)
 - [Architecture and binary inventory](docs/ARCHITECTURE.md)
 - [Reverse-engineering workflow](docs/RE_WORKFLOW.md)
+- [Semantic reconstruction and two-oracle acceptance](docs/SEMANTIC_RECONSTRUCTION.md)
 - [IDA and analysis safety](docs/IDA_MCP.md)
 - [Build and exact matching](docs/BUILD_MATCHING.md)
 - [Playable reconstruction ports](docs/PORTING.md)

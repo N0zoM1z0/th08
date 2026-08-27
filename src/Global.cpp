@@ -36,7 +36,7 @@ ChainElem::ChainElem()
     this->prev = NULL;
     this->next = NULL;
     this->callback = NULL;
-    this->unkPtr = this;
+    this->releaseTarget = this;
     this->addedCallback = NULL;
     this->deletedCallback = NULL;
     this->priority = 0;
@@ -290,7 +290,7 @@ void Chain::ReleaseSingleChain(ChainElem *root)
     current = root;
     while (current != NULL)
     {
-        tmp->unkPtr = current;
+        tmp->releaseTarget = current;
         tmp->next = (ChainElem *)g_ZunMemory.AddToRegistry(new ChainElem(), sizeof(ChainElem), "funcChainInf");
         tmp = tmp->next;
         current = current->next;
@@ -299,7 +299,7 @@ void Chain::ReleaseSingleChain(ChainElem *root)
     current = &a0;
     while (current != NULL)
     {
-        Cut(current->unkPtr);
+        Cut(current->releaseTarget);
         current = current->next;
     }
 

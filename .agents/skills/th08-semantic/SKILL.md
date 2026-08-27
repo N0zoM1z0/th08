@@ -1,0 +1,93 @@
+---
+name: th08-semantic
+description: Replace raw TH08 object offsets, anonymous fields, and absolute field views with evidence-backed C++ types and names while preserving accepted VC7 bytes and playable modern-port behavior. Use for semantic cleanup of already-authored source; do not use for new function recovery or target-linked library work.
+---
+
+# TH08 semantic reconstruction
+
+Work only from the verified Japanese TH08 1.00d target and the current authored
+source.  Read `AGENTS.md`, `docs/ARCHITECTURE.md`, `docs/RE_WORKFLOW.md`,
+`docs/RE_HANDOFF.md`, and `docs/SEMANTIC_RECONSTRUCTION.md` before editing.
+
+## Preflight
+
+Run the target/tracking preflight and keep `config/claims.csv` header-only.  Use
+`scripts/analysis/report-semantic-debt.py` as a candidate router, never as a
+completion metric.  Select one structure and one coherent field family.
+
+Confirm every touched function in `config/mapping.csv`,
+`config/reccmp-functions.csv`, and `config/match-units.toml`.  Establish the
+current accepted-unit baseline for every affected object before changing a
+shared declaration.
+
+## Recover meaning
+
+Record target facts, corroboration, inference, and unknowns separately.  Inspect
+all reads and writes, widths, signedness, bit operations, callers, strings, and
+canonical object ownership.  TH06/TH07 and upstream names are corroboration
+only when TH08 evidence agrees.  IDA evidence remains blocked until the active
+database passes `docs/IDA_MCP.md`.
+
+Prefer real fields, aggregates, enums, bitfields, and member/index expressions.
+Preserve opaque storage when only its extent is known.  Add focused `C_ASSERT`
+checks for relied-on sizes and offsets, remembering that layout assertions do
+not prove names.
+
+When one fixed storage range has several target-proven roles selected by a
+discriminator, a translation-unit-local typed union overlay may be safer than
+changing a widely included VC7 header.  Anchor the single cast boundary to a
+real member with `offsetof`/`sizeof` assertions, keep generic initialization
+explicit, and use role-specific members everywhere else.  This exception is
+for evidenced variant storage, not a way to assign meaning to unknown bytes.
+
+Do not create a new global for a view inside an existing aggregate, change
+field width/signedness, hide uncertainty behind a union/accessor, or combine a
+typed cleanup with unrelated control-flow refactoring.  Serialization,
+instruction decoding, and platform ABI glue may be correctly byte-oriented.
+
+## Reconcile post-port aggregate drift
+
+When a portable-owner change breaks a previously accepted cold aggregate,
+classify every failure before editing source: function extent, non-relocation
+bytes, or relocation metadata.  For relocation failures, mask the relocation
+fields on both sides and require zero remaining byte differences before
+migrating the manifest.  Infer each target symbol base independently from the
+target field value and COFF addend, then reject the migration if it conflicts
+with an existing accepted base or lacks mapping/global-ledger evidence.  Keep
+intentional nonzero addends; do not normalize them merely because a modern
+owner provides a more convenient spelling.
+
+An unoptimized VC7 translation unit may need a direct logical target symbol
+even when the portable build stores that state inside a canonical aggregate.
+In that case, keep the direct target declaration/storage and use a TU-local
+`TH08_MODERN_PORT` macro bridge so the function body has one semantic spelling.
+Do not replace a target-observed direct access with a non-inlined accessor.
+
+Likewise, target-adjacent globals may support one typed contiguous operation
+without promising adjacency in the portable linker.  Use the target operation
+only in the VC7 build and explicit per-object operations in the portable build.
+Both forms must describe the same initialized state and pass their respective
+oracles.
+
+## Validate and record
+
+Use `$th08-matching` for the smallest VC7 object build and replay every accepted
+unit in affected objects.  A shared header, PCH, inline-body, layout, or object-
+owner change requires cold aggregate replay.
+
+If a cold aggregate replay contradicts the accepted ledger, record the exact
+command and generated failure set as a branch-baseline blocker.  Do not publish
+the ledger total as a fresh exact result, broaden the semantic batch to repair
+unrelated units, or weaken the focused oracle that covers the edited object.
+
+Compile and link the modern target for shared-source changes.  Run the Linux
+layout verifier and a relevant state-transition smoke when the batch changes
+global identity, initialization, callback state, persistence, rendering, or
+fixed-address ownership.  VC7 exactness and Linux behavior are complementary;
+neither proves the English field name without the evidence record.
+
+Append an accepted batch to `docs/SEMANTIC_RECONSTRUCTION.md` with addresses,
+evidence classes, layout assertions, exact replay results, portable result, and
+retained unknowns.  Update `docs/RE_HANDOFF.md` only for a phase/focus/blocker
+change.  End with tracking validation, `scripts/ci.py`, and
+`git diff --check`.

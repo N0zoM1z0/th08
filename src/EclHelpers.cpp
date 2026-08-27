@@ -1,5 +1,6 @@
 #include "EclManager.hpp"
 #include "EclOperands.hpp"
+#include "EnemyManager.hpp"
 #include "ZunMath.hpp"
 
 #include <math.h>
@@ -10,20 +11,6 @@ namespace EclHelpers
 {
 
 using EclOperands::EnemyOverlay;
-
-#define FloatField(enemy, offset) ((f32 *)((enemy)->bytes + (offset)))
-
-struct EnemyMotionFlags
-{
-    u32 lowBits : 12;
-    u32 interpolationMode : 2;
-    u32 motionMode : 3;
-    u32 bit17 : 1;
-    u32 mirrorX : 1;
-    u32 highBits : 13;
-};
-
-#define MotionFlags(enemy) (*reinterpret_cast<EnemyMotionFlags *>((enemy)->bytes + 0x3324))
 
 #define ReadInt(enemy, instruction, index)                                                   \
     ((instruction)->operandFlags & (1 << (index))                                           \
@@ -43,22 +30,29 @@ void __fastcall ConfigurePolarMotion(EnemyOverlay *enemy, EclRawInstruction *ins
 {
     f32 angle = AddNormalizeAngle(ReadFloat(enemy, instruction, 2), 0.0f);
 
-    *FloatField(enemy, 0x2DC4) = cosf(angle) *
+    reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.x = cosf(angle) *
                                  ReadFloat(enemy, instruction, 3) *
                                  ReadInt(enemy, instruction, 0);
-    *FloatField(enemy, 0x2DC8) = sinf(angle) *
+    reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.y = sinf(angle) *
                                  ReadFloat(enemy, instruction, 3) *
                                  ReadInt(enemy, instruction, 0);
-    *FloatField(enemy, 0x2DCC) = 0.0f;
-    *reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2DD0) =
-        *reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2D88);
-    *(ZunTimer *)(enemy->bytes + 0x2DDC) =
-        (*(i32 *)(enemy->bytes + 0x2DE8) = ReadInt(enemy, instruction, 0));
+    reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.z = 0.0f;
+    *reinterpret_cast<D3DXVECTOR3 *>(
+        &reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin) =
+        *reinterpret_cast<D3DXVECTOR3 *>(
+            &reinterpret_cast<Enemy *>(enemy)->worldPosition);
+    reinterpret_cast<Enemy *>(enemy)->movementTimer =
+        (reinterpret_cast<Enemy *>(enemy)->movementDuration = ReadInt(enemy, instruction, 0));
 
-    MotionFlags(enemy).motionMode = ReadInt(enemy, instruction, 1);
-    MotionFlags(enemy).interpolationMode = 2;
-    if (MotionFlags(enemy).mirrorX)
-        *FloatField(enemy, 0x2DC4) = -*FloatField(enemy, 0x2DC4);
+    reinterpret_cast<EnemyFlag1Bits *>(
+        &reinterpret_cast<Enemy *>(enemy)->flags1)->movementEasing =
+        ReadInt(enemy, instruction, 1);
+    reinterpret_cast<EnemyFlag1Bits *>(
+        &reinterpret_cast<Enemy *>(enemy)->flags1)->movementMode = 2;
+    if (reinterpret_cast<EnemyFlag1Bits *>(
+            &reinterpret_cast<Enemy *>(enemy)->flags1)->mirrorMovementX)
+        reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.x =
+            -reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.x;
 }
 
 // Target 0x00420F40. The requested point is converted to a displacement from
@@ -71,25 +65,30 @@ void __fastcall ConfigureRelativeMotion(EnemyOverlay *enemy, EclRawInstruction *
     target.y = ReadFloat(enemy, instruction, 3);
     target.z = 0.0f;
 
-    *reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2DC4) =
-        target - *reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2D88);
-    *reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2DD0) =
-        *reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2D34);
-    *(ZunTimer *)(enemy->bytes + 0x2DDC) =
-        (*(i32 *)(enemy->bytes + 0x2DE8) = ReadInt(enemy, instruction, 0));
+    *reinterpret_cast<D3DXVECTOR3 *>(
+        &reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta) =
+        target - *reinterpret_cast<D3DXVECTOR3 *>(
+                     &reinterpret_cast<Enemy *>(enemy)->worldPosition);
+    *reinterpret_cast<D3DXVECTOR3 *>(
+        &reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin) =
+        *reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->position);
+    reinterpret_cast<Enemy *>(enemy)->movementTimer =
+        (reinterpret_cast<Enemy *>(enemy)->movementDuration = ReadInt(enemy, instruction, 0));
 
-    MotionFlags(enemy).motionMode = ReadInt(enemy, instruction, 1);
-    MotionFlags(enemy).interpolationMode = 2;
-    *reinterpret_cast<D3DXVECTOR3 *>(enemy->bytes + 0x2D4C) =
+    reinterpret_cast<EnemyFlag1Bits *>(
+        &reinterpret_cast<Enemy *>(enemy)->flags1)->movementEasing =
+        ReadInt(enemy, instruction, 1);
+    reinterpret_cast<EnemyFlag1Bits *>(
+        &reinterpret_cast<Enemy *>(enemy)->flags1)->movementMode = 2;
+    *reinterpret_cast<D3DXVECTOR3 *>(&reinterpret_cast<Enemy *>(enemy)->velocity) =
         D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-    if (MotionFlags(enemy).mirrorX)
-        *FloatField(enemy, 0x2DC4) = -*FloatField(enemy, 0x2DC4);
+    if (reinterpret_cast<EnemyFlag1Bits *>(
+            &reinterpret_cast<Enemy *>(enemy)->flags1)->mirrorMovementX)
+        reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.x =
+            -reinterpret_cast<Enemy *>(enemy)->movementInterpolationDelta.x;
 }
 
 #undef ReadFloat
 #undef ReadInt
-#undef MotionFlags
-#undef FloatField
-
 } // namespace EclHelpers
 } // namespace th08

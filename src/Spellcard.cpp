@@ -16,7 +16,6 @@
 namespace th08
 {
 ZunBool IsDisableResourceReload();
-DIFFABLE_EXTERN(AnmLoaded *, g_AsciiManagerDemoAnm0577EB4);
 DIFFABLE_STATIC(Spellcard, g_Spellcard);
 DIFFABLE_STATIC(ChainElem *, g_SpellcardCalcChain);
 DIFFABLE_STATIC(i32, g_LastSpellCount);
@@ -24,43 +23,19 @@ DIFFABLE_STATIC(AnmLoaded *, g_SpellcardBackgroundAnm);
 
 struct SpellcardFlagBits
 {
-    u32 lowBits : 5;
-    u32 unk5 : 1;
+    u32 bits0To4 : 5;
+    u32 alternateEffectStyle : 1;
     u32 highBits : 26;
 };
 
 struct SpellcardResetFlagBits
 {
-    u32 bit0 : 1;
+    u32 active : 1;
     u32 bits1To6 : 6;
-    u32 bit7 : 1;
+    u32 bombDamageEnabled : 1;
     u32 rest : 24;
 };
 
-struct SpellEffectDword
-{
-    u32 value;
-};
-
-struct SpellEffectCopyOverlay
-{
-    u8 pad000[0x208];
-    SpellEffectDword field208;
-    SpellEffectDword field20C;
-    u8 pad210[0x28];
-    SpellEffectDword field238;
-    SpellEffectDword field23C;
-    u8 pad240[0x28];
-    SpellEffectDword field268;
-    u8 pad26C[0xC];
-    SpellEffectDword field278;
-    u8 pad27C[0x98];
-    SpellEffectDword field314;
-    u8 pad318[0x8];
-    SpellEffectDword field320;
-    u8 pad324[0x8];
-    SpellEffectDword field32C;
-};
 // clang-format off
 // TODO: stop clang-format from fucking with whitespace formatting
 
@@ -406,9 +381,9 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(i32, 10, g_SpellcardCountPerStage) = {
 
 
 // FUNCTION: th08 0x00405260
-i32 Spellcard::GetInactiveState()
+i32 Spellcard::WasCaptured()
 {
-    return (this->flags >> 9) & 1;
+    return (this->flags >> SPELLCARD_FLAG_CAPTURED_SHIFT) & 1;
 }
 
 
@@ -690,39 +665,39 @@ ZunResult Spellcard::Init()
 
     if (this->playerFaceAnm0 != NULL)
     {
-        this->playerFaceAnm0->SetAndExecuteScriptIdx(&this->vm120, 0);
-        this->playerFaceAnm0->SetAndExecuteScriptIdx(&this->vm3C4, 0);
+        this->playerFaceAnm0->SetAndExecuteScriptIdx(&this->playerPortraitVm, 0);
+        this->playerFaceAnm0->SetAndExecuteScriptIdx(&this->enemyPortraitVm, 0);
     }
 
-    g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->vm10F8, 4);
-    g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->vm139C, 5);
-    g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->vm1B88, 1);
-    g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->vm1E2C, 0);
-    g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->vm2374, 2);
-    g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->vm20D0, 4);
+    g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->playerSpellNameVm, 4);
+    g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->enemySpellNameVm, 5);
+    g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->playerSpellNameFrameVm, 1);
+    g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->enemySpellNameFrameVm, 0);
+    g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->spellBonusFrameVm, 2);
+    g_AsciiManager.asciiAnm->SetAndExecuteScriptIdx(&this->spellBonusDigitsVm, 4);
 
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm120) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm668) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vmBB0) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm10F8) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm3C4) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm90C) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vmE54) + 0x220) = 0;
-    *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&this->vm139C) + 0x220) = 0;
+    this->playerPortraitVm.currentInstruction = NULL;
+    this->portraitBackdropVm.currentInstruction = NULL;
+    this->portraitOverlayVm.currentInstruction = NULL;
+    this->playerSpellNameVm.currentInstruction = NULL;
+    this->enemyPortraitVm.currentInstruction = NULL;
+    this->vm90C.currentInstruction = NULL;
+    this->vmE54.currentInstruction = NULL;
+    this->enemySpellNameVm.currentInstruction = NULL;
 
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm120) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm668) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vmBB0) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm10F8) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm3C4) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm90C) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vmE54) + 0x1F8) &= ~1u;
-    *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(&this->vm139C) + 0x1F8) &= ~1u;
+    this->playerPortraitVm.flagsWord &= ~1u;
+    this->portraitBackdropVm.flagsWord &= ~1u;
+    this->portraitOverlayVm.flagsWord &= ~1u;
+    this->playerSpellNameVm.flagsWord &= ~1u;
+    this->enemyPortraitVm.flagsWord &= ~1u;
+    this->vm90C.flagsWord &= ~1u;
+    this->vmE54.flagsWord &= ~1u;
+    this->enemySpellNameVm.flagsWord &= ~1u;
 
-    this->vm10F8.fontWidth = 15;
-    this->vm10F8.fontHeight = 15;
-    this->vm139C.fontWidth = 15;
-    this->vm139C.fontHeight = 15;
+    this->playerSpellNameVm.fontWidth = 15;
+    this->playerSpellNameVm.fontHeight = 15;
+    this->enemySpellNameVm.fontWidth = 15;
+    this->enemySpellNameVm.fontHeight = 15;
     this->pendingTimeOrbs = 0;
     return ZUN_SUCCESS;
 }
@@ -739,50 +714,52 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
     Catk *catk;
     u32 i;
 
-    this->flags &= ~0x200;
-    this->flags |= 1;
-    this->flags |= 4;
+    this->flags &= ~SPELLCARD_FLAG_CAPTURED;
+    this->flags |= SPELLCARD_FLAG_ACTIVE;
+    this->flags |= SPELLCARD_FLAG_CAPTURE_VALID;
     this->flags &= ~0x10;
-    this->flags &= ~8;
-    this->flags &= ~0x40;
-    this->flags &= ~0x80;
-    this->flags &= ~0x400;
+    this->flags &= ~SPELLCARD_FLAG_TIMER_CALLBACK_TRANSITION;
+    this->flags &= ~SPELLCARD_FLAG_EFFECT_TRACKING_DISABLED;
+    this->flags &= ~SPELLCARD_FLAG_BOMB_DAMAGE_ENABLED;
+    this->flags &= ~SPELLCARD_FLAG_SUPPRESS_BONUS_PRESENTATION;
     this->spellCardNumber = spellCardNumber;
     this->activeEnemy = enemy;
-    this->enemySpellFlagsSnapshot = *reinterpret_cast<u32 *>(this->activeEnemy + 0x2E0C);
+    this->activeEnemyIndexSnapshot = reinterpret_cast<Enemy *>(this->activeEnemy)->enemyIndex;
     this->bonusProgress = bonus;
     this->scoreLimit = bonus;
-    if (((*reinterpret_cast<u32 *>(this->activeEnemy + 0x3324) >> 27) & 1) != 0)
+    if (((reinterpret_cast<Enemy *>(this->activeEnemy)->flags1 >>
+          ENEMY_FLAG_TIMEOUT_SPELL_SHIFT) & 1) != 0)
     {
         this->scoreLimit = 99999990;
     }
     this->bonusCounter =
-        (this->bonusProgress - this->bonusProgress / 7u) / (*reinterpret_cast<i32 *>(this->activeEnemy + 0x3378) / 60);
-    this->timer108 = *reinterpret_cast<i32 *>(this->activeEnemy + 0x3378);
-    this->timer114 = *reinterpret_cast<i32 *>(this->activeEnemy + 0x3378);
+        (this->bonusProgress - this->bonusProgress / 7u) /
+        (reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames / 60);
+    this->timeRemaining = reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames;
+    this->timeLimit = reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames;
 
     for (i = 0; i < 0x30; i++)
     {
         this->spellName[i] = encodedName[i] ^ 0xAA;
     }
     this->CutInEnemy(enemyFace, this->spellName, 0);
-    g_BulletManager.bulletmanager_fun_00415c60();
-    g_Background.background_fun_00415ce0();
+    g_BulletManager.ClearBulletsForTransition();
+    g_Background.StartSpellBackground();
     for (i = 0; (i32)i < g_Background.spellVmCount; i++)
     {
-        g_SpellcardBackgroundAnm->SetAndExecuteScriptIdx(&g_Background.anmVmArray[i],
+        g_SpellcardBackgroundAnm->SetAndExecuteScriptIdx(&g_Background.spellVms[i],
                                                          i + g_Background.spellVmScriptBase);
     }
-    g_Background.onDrawLowPrioCallback = NULL;
-    reinterpret_cast<Enemy *>(this->activeEnemy)->enemy_fun_00415c80();
+    g_Background.spellBackgroundDrawCallback = NULL;
+    reinterpret_cast<Enemy *>(this->activeEnemy)->ResetBulletRankInfluence();
     this->mixColor = 0x80808080;
 
-    if (((this->flags >> 8) & 1) != 0)
+    if (((this->flags >> SPELLCARD_FLAG_CAPTURE_REWARD_PENDING_SHIFT) & 1) != 0)
     {
         this->rewardEffect = NULL;
-        g_Gui.gui_fun_00437edc(this->bonusAward);
+        g_Gui.ShowSpellcardBonus(this->bonusAward);
         g_GameManager.AddScore(this->bonusAward);
-        this->flags &= ~0x100;
+        this->flags &= ~SPELLCARD_FLAG_CAPTURE_REWARD_PENDING;
         if (this->pendingTimeOrbs > 0)
         {
             g_GameManager.AddTimeOrbs(this->pendingTimeOrbs);
@@ -790,30 +767,31 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
         }
     }
 
-    this->flags &= ~0x800;
-    this->spellEffect = reinterpret_cast<u8 *>(g_EffectManager.FUN_00425870(
+    this->flags &= ~SPELLCARD_FLAG_BONUS_UPDATES_DISABLED;
+    this->spellEffect = reinterpret_cast<Effect *>(g_EffectManager.SpawnEffectInFixedSlot(
         (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0) ? 52 : 39,
-        reinterpret_cast<D3DXVECTOR3 *>(this->activeEnemy + 0x2D34), 1, 1, -1));
-    *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x50) = 0;
-    *reinterpret_cast<ZunTimer *>(this->spellEffect + 0xA4) = 100;
-    *reinterpret_cast<u8 *>(this->spellEffect + 0xF8) = 6;
-    *reinterpret_cast<f32 *>(this->spellEffect + 0x238) = 8.0f;
-    *reinterpret_cast<f32 *>(this->spellEffect + 0x244) = 256.0f;
-    *reinterpret_cast<f32 *>(this->spellEffect + 0x23C) = 64.0f;
-    *reinterpret_cast<f32 *>(this->spellEffect + 0x248) = 0.0f;
-    *reinterpret_cast<f32 *>(this->spellEffect + 0x20C) = 64.0f;
-    *reinterpret_cast<D3DXVECTOR3 *>(this->spellEffect + 0x2A4) = *reinterpret_cast<D3DXVECTOR3 *>(this->activeEnemy + 0x2D34);
-    *reinterpret_cast<i32 *>(this->spellEffect + 0x324) = 64;
-    *reinterpret_cast<i32 *>(this->spellEffect + 0x318) = 0;
-    *reinterpret_cast<f32 *>(this->spellEffect + 0x314) = 256.0f;
-    *reinterpret_cast<f32 *>(this->spellEffect + 0x320) = 15.0f;
-    *reinterpret_cast<f32 *>(this->spellEffect + 0x334) = 6.0f;
+        reinterpret_cast<D3DXVECTOR3 *>(
+            &reinterpret_cast<Enemy *>(this->activeEnemy)->position), 1, 1, -1));
+    this->spellEffect->vm.interpCurrentTimers[AnmInterp_Pos] = 0;
+    this->spellEffect->vm.interpEndTimers[AnmInterp_Pos] = 100;
+    this->spellEffect->vm.interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOutQuartic;
+    this->spellEffect->vm.posInitial.x = 8.0f;
+    this->spellEffect->vm.posFinal.x = 256.0f;
+    this->spellEffect->vm.posInitial.y = 64.0f;
+    this->spellEffect->vm.posFinal.y = 0.0f;
+    this->spellEffect->vm.pos.y = 64.0f;
+    this->spellEffect->position = reinterpret_cast<Enemy *>(this->activeEnemy)->position;
+    this->spellEffect->vertexSegmentCount = 64;
+    this->spellEffect->angle = 0.0f;
+    this->spellEffect->radius = 256.0f;
+    this->spellEffect->shapeThickness = 15.0f;
+    this->spellEffect->radialWaveCount = 6.0f;
 
-    reinterpret_cast<SpellcardFlagBits *>(&this->flags)->unk5 =
+    reinterpret_cast<SpellcardFlagBits *>(&this->flags)->alternateEffectStyle =
         (*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3;
     g_Gui.flags.bombDisplayUpdateFrames = 3;
     g_Gui.flags.lifeDisplayUpdateFrames = 3;
-    this->flags &= ~0x40;
+    this->flags &= ~SPELLCARD_FLAG_EFFECT_TRACKING_DISABLED;
 
     if (!g_GameManager.IsReplay())
     {
@@ -851,7 +829,7 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
             checksum += catk->spellPracticeHistory.maxBonus[j];
         }
 
-        if (catk->unk0xe != (u8)checksum)
+        if (catk->historyChecksum != (u8)checksum)
         {
             for (j = 0; j < SHOT_ALL + 1; j++)
             {
@@ -897,29 +875,29 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
             nameChecksum += catk->spellPracticeHistory.maxBonus[j];
         }
         catk->difficulty = (u8)g_GameManager.difficulty;
-        catk->unk0xe = (u8)nameChecksum;
+        catk->historyChecksum = (u8)nameChecksum;
     }
 }
 
 // FUNCTION: th08 0x415c60
-void BulletManager::bulletmanager_fun_00415c60()
+void BulletManager::ClearBulletsForTransition()
 {
     this->RemoveAllBullets(1);
 }
 
 // FUNCTION: th08 0x415c80
-void Enemy::enemy_fun_00415c80()
+void Enemy::ResetBulletRankInfluence()
 {
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2DEC) = -0.5f;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(this) + 0x2DF0) = 0.5f;
-    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2DF4) = 0;
-    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2DF6) = 0;
-    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2DF8) = 0;
-    *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(this) + 0x2DFA) = 0;
+    this->bulletRankInfluence.speedLow = -0.5f;
+    this->bulletRankInfluence.speedHigh = 0.5f;
+    this->bulletRankInfluence.count1Low = 0;
+    this->bulletRankInfluence.count1High = 0;
+    this->bulletRankInfluence.count2Low = 0;
+    this->bulletRankInfluence.count2High = 0;
 }
 
 // FUNCTION: th08 0x415ce0
-void Background::background_fun_00415ce0()
+void Background::StartSpellBackground()
 {
     this->spellBackgroundState = 1;
     this->spellBackgroundTimer = 0;
@@ -928,8 +906,8 @@ void Background::background_fun_00415ce0()
 // FUNCTION: th08 0x415d10
 void Spellcard::CutInEnemyNoPortrait(const char *name, i32 unused)
 {
-    this->flags |= 0x400;
-    this->flags &= ~1;
+    this->flags |= SPELLCARD_FLAG_SUPPRESS_BONUS_PRESENTATION;
+    this->flags &= ~SPELLCARD_FLAG_ACTIVE;
     this->flags &= ~0x10;
     this->CutInEnemy(-1, name, 1);
 }
@@ -939,23 +917,23 @@ void Spellcard::CutInPlayer(i32 playerFace, const char *name, i32 sprite)
 {
     if (playerFace == 0)
     {
-        this->playerFaceAnm0->SetAndExecuteScriptIdx(&this->vm120, 0);
-        this->playerFaceAnm0->SetSprite(&this->vm120, 0);
+        this->playerFaceAnm0->SetAndExecuteScriptIdx(&this->playerPortraitVm, 0);
+        this->playerFaceAnm0->SetSprite(&this->playerPortraitVm, 0);
     }
     else if (playerFace == 1)
     {
-        this->playerFaceAnm1->SetAndExecuteScriptIdx(&this->vm120, 0);
-        this->playerFaceAnm1->SetSprite(&this->vm120, 0);
+        this->playerFaceAnm1->SetAndExecuteScriptIdx(&this->playerPortraitVm, 0);
+        this->playerFaceAnm1->SetSprite(&this->playerPortraitVm, 0);
     }
 
-    this->commonFaceAnm->SetAndExecuteScriptIdx(&this->vm668, 0);
-    this->commonFaceAnm->SetAndExecuteScriptIdx(&this->vmBB0, 2);
-    this->commonFaceAnm->SetSprite(&this->vm668, sprite);
-    this->commonFaceAnm->SetSprite(&this->vmBB0, sprite);
-    g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->vm10F8, 4);
-    g_AnmManager->DrawTextLeft(&this->vm10F8, 0x00F0F0FF, 0, name);
+    this->commonFaceAnm->SetAndExecuteScriptIdx(&this->portraitBackdropVm, 0);
+    this->commonFaceAnm->SetAndExecuteScriptIdx(&this->portraitOverlayVm, 2);
+    this->commonFaceAnm->SetSprite(&this->portraitBackdropVm, sprite);
+    this->commonFaceAnm->SetSprite(&this->portraitOverlayVm, sprite);
+    g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->playerSpellNameVm, 4);
+    g_AnmManager->DrawTextLeft(&this->playerSpellNameVm, 0x00F0F0FF, 0, name);
     this->playerSpellNameWidth = strlen(name) * 0xf / 2.0f + 16;
-    this->vm1B88.SetInterrupt(1);
+    this->playerSpellNameFrameVm.SetInterrupt(1);
     g_SoundPlayer.PlaySoundByIdx((SoundIdx)14, 0);
     g_GuiFullPowerModeFrames = 2;
 }
@@ -965,54 +943,54 @@ void Spellcard::CutInEnemy(i32 enemyFace, const char *name, i32 sprite)
 {
     if (enemyFace >= 0)
     {
-        this->enemyFaceAnm0->SetAndExecuteScriptIdx(&this->vm3C4, 0);
-        this->enemyFaceAnm0->SetSprite(&this->vm3C4, enemyFace);
+        this->enemyFaceAnm0->SetAndExecuteScriptIdx(&this->enemyPortraitVm, 0);
+        this->enemyFaceAnm0->SetSprite(&this->enemyPortraitVm, enemyFace);
     }
 
-    this->commonFaceAnm->SetAndExecuteScriptIdx(&this->vm668, 1);
-    this->commonFaceAnm->SetSprite(&this->vm668, sprite);
-    this->commonFaceAnm->SetAndExecuteScriptIdx(&this->vmBB0, 3);
-    this->commonFaceAnm->SetSprite(&this->vmBB0, sprite);
+    this->commonFaceAnm->SetAndExecuteScriptIdx(&this->portraitBackdropVm, 1);
+    this->commonFaceAnm->SetSprite(&this->portraitBackdropVm, sprite);
+    this->commonFaceAnm->SetAndExecuteScriptIdx(&this->portraitOverlayVm, 3);
+    this->commonFaceAnm->SetSprite(&this->portraitOverlayVm, sprite);
 
     if (g_GameManager.IsSpellNumberInRange(205, 221))
     {
-        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->vm139C, 6);
-        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->vm1640, 7);
-        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->vm18E4, 8);
-        g_AnmManager->DrawTextRight(&this->vm1640, 0x00fff0f0, 0, name);
-        g_AnmManager->DrawTextRight(&this->vm18E4, 0x00fff0f0, 0, name);
+        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->enemySpellNameVm, 6);
+        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->enemySpellNameLayer1Vm, 7);
+        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->enemySpellNameLayer2Vm, 8);
+        g_AnmManager->DrawTextRight(&this->enemySpellNameLayer1Vm, 0x00fff0f0, 0, name);
+        g_AnmManager->DrawTextRight(&this->enemySpellNameLayer2Vm, 0x00fff0f0, 0, name);
     }
     else
     {
-        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->vm139C, 5);
+        g_Supervisor.textAnm->SetAndExecuteScriptIdx(&this->enemySpellNameVm, 5);
     }
-    g_AnmManager->DrawTextRight(&this->vm139C, 0x00fff0f0, 0, name);
+    g_AnmManager->DrawTextRight(&this->enemySpellNameVm, 0x00fff0f0, 0, name);
 
     this->enemySpellNameWidth = strlen(name) * 0xf / 2.0f + 16;
-    this->vm1E2C.SetInterrupt(1);
-    if (((this->flags >> 10) & 1) == 0)
+    this->enemySpellNameFrameVm.SetInterrupt(1);
+    if (((this->flags >> SPELLCARD_FLAG_SUPPRESS_BONUS_PRESENTATION_SHIFT) & 1) == 0)
     {
-        this->vm2374.SetInterrupt(1);
+        this->spellBonusFrameVm.SetInterrupt(1);
     }
     g_SoundPlayer.PlaySoundByIdx((SoundIdx)14, 0);
     g_GuiFullPowerModeFrames = 2;
 }
 
 // FUNCTION: th08 0x416130
-void Spellcard::spellcard_fun_00416130()
+void Spellcard::HidePlayerSpellPresentation()
 {
-    this->vm10F8.pendingInterrupt = 1;
-    this->vm1B88.SetInterrupt(2);
+    this->playerSpellNameVm.pendingInterrupt = 1;
+    this->playerSpellNameFrameVm.SetInterrupt(2);
 }
 
 // FUNCTION: th08 0x416160
-void Spellcard::spellcard_fun_00416160()
+void Spellcard::HideEnemySpellPresentation()
 {
-    this->vm139C.pendingInterrupt = 1;
-    this->vm1E2C.SetInterrupt(2);
-    if (((this->flags >> 10) & 1) == 0)
+    this->enemySpellNameVm.pendingInterrupt = 1;
+    this->enemySpellNameFrameVm.SetInterrupt(2);
+    if (((this->flags >> SPELLCARD_FLAG_SUPPRESS_BONUS_PRESENTATION_SHIFT) & 1) == 0)
     {
-        this->vm2374.SetInterrupt(2);
+        this->spellBonusFrameVm.SetInterrupt(2);
     }
 }
 
@@ -1028,41 +1006,42 @@ void Spellcard::EndSpell()
     i32 captured;
     i32 enemyScore;
 
-    g_EclCallbackPublishedEnemyField24 = 0;
-    if ((this->flags & 1) != 0)
+    g_AsciiManager.nightBlindnessAlpha = 0;
+    if ((this->flags & SPELLCARD_FLAG_ACTIVE) != 0)
     {
         captured = 0;
-        this->flags &= ~1;
-        this->spellcard_fun_00416160();
+        this->flags &= ~SPELLCARD_FLAG_ACTIVE;
+        this->HideEnemySpellPresentation();
 
-        if (((this->flags >> 3) & 1) == 0)
+        if (((this->flags >> SPELLCARD_FLAG_TIMER_CALLBACK_TRANSITION_SHIFT) & 1) == 0)
         {
             enemyScore = g_BulletManager.DespawnBullets(8000, 1);
-            enemyScore = g_EnemyManager.FUN_0042efb0(8000, enemyScore);
+            enemyScore = g_EnemyManager.KillAllNonBossEnemies(8000, enemyScore);
             if (enemyScore != 0)
             {
                 g_GameManager.AddScore(enemyScore);
-                g_Gui.FUN_00437ddd(enemyScore);
+                g_Gui.ShowBonusScore(enemyScore);
             }
 
-            if (((this->flags >> 2) & 1) != 0)
+            if (((this->flags >> SPELLCARD_FLAG_CAPTURE_VALID_SHIFT) & 1) != 0)
             {
                 catk = &g_GameManager.catkData[this->spellCardNumber];
                 this->bonusAward = this->bonusProgress;
-                if (((*reinterpret_cast<u32 *>(this->activeEnemy + 0x3324) >> 27) & 1) != 0)
+                if (((reinterpret_cast<Enemy *>(this->activeEnemy)->flags1 >>
+                      ENEMY_FLAG_TIMEOUT_SPELL_SHIFT) & 1) != 0)
                 {
                     this->pendingTimeOrbs = 700;
                 }
                 else
                 {
-                    i = (i32)this->timer114 - (i32)this->timer114 / 7;
-                    if ((i32)this->timer108 >= i)
+                    i = (i32)this->timeLimit - (i32)this->timeLimit / 7;
+                    if ((i32)this->timeRemaining >= i)
                     {
                         this->pendingTimeOrbs = 1000;
                     }
-                    else if ((i32)this->timer108 >= 180)
+                    else if ((i32)this->timeRemaining >= 180)
                     {
-                        this->pendingTimeOrbs = 900 * ((i32)this->timer108 - 180) / (i - 180) + 100;
+                        this->pendingTimeOrbs = 900 * ((i32)this->timeRemaining - 180) / (i - 180) + 100;
                     }
                     else
                     {
@@ -1070,7 +1049,7 @@ void Spellcard::EndSpell()
                     }
                 }
 
-                this->flags |= 0x200;
+                this->flags |= SPELLCARD_FLAG_CAPTURED;
                 if (!g_GameManager.IsReplay())
                 {
                     checksum = 0;
@@ -1091,7 +1070,7 @@ void Spellcard::EndSpell()
                         checksum += catk->spellPracticeHistory.maxBonus[i];
                     }
 
-                    if (catk->unk0xe != (u8)checksum)
+                    if (catk->historyChecksum != (u8)checksum)
                     {
                         for (i = 0; i < SHOT_ALL + 1; i++)
                         {
@@ -1164,7 +1143,7 @@ void Spellcard::EndSpell()
                         baseChecksum += catk->spellPracticeHistory.attempts[i];
                         baseChecksum += catk->spellPracticeHistory.maxBonus[i];
                     }
-                    catk->unk0xe = (u8)baseChecksum;
+                    catk->historyChecksum = (u8)baseChecksum;
                     g_GameManager.hscr.spellCounters[this->spellCardNumber]++;
                 }
 
@@ -1182,44 +1161,45 @@ void Spellcard::EndSpell()
                 {
                     *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFE7F;
                 }
-                *reinterpret_cast<u8 *>(this->spellEffect + 0x350) = 0;
+                this->spellEffect->active = 0;
                 this->spellEffect = NULL;
-                g_Gui.FUN_00437e5d(0, (((this->flags >> 5) & 1) != 0) + 5);
+                g_Gui.ShowPopupText(
+                    0,
+                    (((this->flags >> SPELLCARD_FLAG_ALTERNATE_EFFECT_STYLE_SHIFT) & 1) != 0) + 5);
             }
             else
             {
-                this->flags |= 0x100;
+                this->flags |= SPELLCARD_FLAG_CAPTURE_REWARD_PENDING;
                 if (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0)
                 {
                     *reinterpret_cast<u32 *>(&g_GameManager.flags) =
                         (*reinterpret_cast<u32 *>(&g_GameManager.flags) & 0xFFFFFE7F) | 0x100;
                 }
 
-                *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x50) = 0;
-                *reinterpret_cast<ZunTimer *>(this->spellEffect + 0xA4) = 30;
-                *reinterpret_cast<u8 *>(this->spellEffect + 0xF8) = 6;
-                *reinterpret_cast<u32 *>(this->spellEffect + 0x238) =
-                    *reinterpret_cast<u32 *>(this->spellEffect + 0x314);
-                *reinterpret_cast<f32 *>(this->spellEffect + 0x244) = 256.0f;
-                *reinterpret_cast<u32 *>(this->spellEffect + 0x23C) =
-                    *reinterpret_cast<u32 *>(this->spellEffect + 0x32C);
-                *reinterpret_cast<u32 *>(this->spellEffect + 0x248) = 0;
-                *reinterpret_cast<u32 *>(this->spellEffect + 0x208) =
-                    *reinterpret_cast<u32 *>(this->spellEffect + 0x314);
-                *reinterpret_cast<u32 *>(this->spellEffect + 0x20C) =
-                    *reinterpret_cast<u32 *>(this->spellEffect + 0x32C);
+                this->spellEffect->vm.interpCurrentTimers[AnmInterp_Pos] = 0;
+                this->spellEffect->vm.interpEndTimers[AnmInterp_Pos] = 30;
+                this->spellEffect->vm.interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOutQuartic;
+                *reinterpret_cast<u32 *>(&this->spellEffect->vm.posInitial.x) =
+                    *reinterpret_cast<u32 *>(&this->spellEffect->radius);
+                this->spellEffect->vm.posFinal.x = 256.0f;
+                *reinterpret_cast<u32 *>(&this->spellEffect->vm.posInitial.y) =
+                    *reinterpret_cast<u32 *>(&this->spellEffect->secondaryRadius);
+                *reinterpret_cast<u32 *>(&this->spellEffect->vm.posFinal.y) = 0;
+                *reinterpret_cast<u32 *>(&this->spellEffect->vm.pos.x) =
+                    *reinterpret_cast<u32 *>(&this->spellEffect->radius);
+                *reinterpret_cast<u32 *>(&this->spellEffect->vm.pos.y) =
+                    *reinterpret_cast<u32 *>(&this->spellEffect->secondaryRadius);
 
-                *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x5C) = 0;
-                *reinterpret_cast<ZunTimer *>(this->spellEffect + 0xB0) = 60;
-                *reinterpret_cast<u8 *>(this->spellEffect + 0xF9) = 3;
-                reinterpret_cast<AnmVm *>(this->spellEffect)->color1Initial =
-                    reinterpret_cast<AnmVm *>(this->spellEffect)->color1;
-                *reinterpret_cast<u8 *>(this->spellEffect + 0x27E) = 0xD0;
-                *reinterpret_cast<u8 *>(this->spellEffect + 0x27D) = 0x80;
-                *reinterpret_cast<u8 *>(this->spellEffect + 0x27C) = 0xA0;
-                *reinterpret_cast<u8 *>(this->spellEffect + 0x27F) = 0x20;
-                *reinterpret_cast<f32 *>(this->spellEffect + 0x334) = 6.0f;
-                *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x338) = 0;
+                this->spellEffect->vm.interpCurrentTimers[AnmInterp_RGB1] = 0;
+                this->spellEffect->vm.interpEndTimers[AnmInterp_RGB1] = 60;
+                this->spellEffect->vm.interpModes[AnmInterp_RGB1] = AnmInterpMode_EaseInQuartic;
+                this->spellEffect->vm.color1Initial = this->spellEffect->vm.color1;
+                this->spellEffect->vm.color1Final.r = 0xD0;
+                this->spellEffect->vm.color1Final.g = 0x80;
+                this->spellEffect->vm.color1Final.b = 0xA0;
+                this->spellEffect->vm.color1Final.a = 0x20;
+                this->spellEffect->radialWaveCount = 6.0f;
+                this->spellEffect->timer = 0;
 
                 this->rewardEffect = this->spellEffect;
                 this->spellEffect = NULL;
@@ -1227,43 +1207,43 @@ void Spellcard::EndSpell()
             }
         }
 
-        *reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(&g_Player) + 0xE2A6C) = 16;
+        g_Player.bombInputLockFrames = 16;
         if (g_Player.playerState == PLAYER_STATE_ALIVE)
         {
             g_Player.timer = 70;
-            g_Player.playerState = PLAYER_STATE_DEAD;
+            g_Player.playerState = PLAYER_STATE_INVULNERABLE;
         }
         g_Gui.flags.bombDisplayUpdateFrames = 3;
         g_Gui.flags.lifeDisplayUpdateFrames = 3;
         g_SoundPlayer.PlaySoundByIdx((SoundIdx)15, 0);
-        g_Background.background_fun_00416ad0();
+        g_Background.StopSpellBackground();
     }
 
     if (this->activeEnemy != NULL)
     {
-        *reinterpret_cast<u32 *>(this->activeEnemy + 0x3324) &= 0xF7FFFFFF;
+        reinterpret_cast<Enemy *>(this->activeEnemy)->flags1 &= ~ENEMY_FLAG_TIMEOUT_SPELL;
     }
     this->activeEnemy = NULL;
-    this->flags &= ~0x800;
+    this->flags &= ~SPELLCARD_FLAG_BONUS_UPDATES_DISABLED;
 }
 
 // FUNCTION: th08 0x416ad0
-void Background::background_fun_00416ad0()
+void Background::StopSpellBackground()
 {
     this->spellBackgroundState = 0;
 }
 
 // FUNCTION: th08 0x416af0
-void Spellcard::spellcard_fun_00416af0()
+void Spellcard::DeactivateWithoutCleanup()
 {
-    this->flags &= ~1;
-    this->spellcard_fun_00416160();
+    this->flags &= ~SPELLCARD_FLAG_ACTIVE;
+    this->HideEnemySpellPresentation();
 }
 
 // FUNCTION: th08 0x416b10
-void Spellcard::spellcard_fun_00416b10(i32 amount)
+void Spellcard::AddBonusProgress(i32 amount)
 {
-    if (((this->flags >> 11) & 1) == 0)
+    if (((this->flags >> SPELLCARD_FLAG_BONUS_UPDATES_DISABLED_SHIFT) & 1) == 0)
     {
         this->bonusProgress += amount;
         if ((u32)this->bonusProgress >= (u32)this->scoreLimit)
@@ -1285,17 +1265,17 @@ i32 Spellcard::OnUpdateImpl()
     i32 i;
     i32 itemCount;
 
-    if (g_GameManager.flags.unk10 || g_EclScriptedGlobalUpdateFreeze)
+    if (g_GameManager.flags.deathbombFreezeActive || g_GameManager.scriptedUpdateFreeze)
     {
         return 1;
     }
 
-    if ((this->flags & 1) != 0)
+    if ((this->flags & SPELLCARD_FLAG_ACTIVE) != 0)
     {
-        if ((*reinterpret_cast<u32 *>(this->activeEnemy + 0x3324) & 1) == 0 ||
-            this->enemySpellFlagsSnapshot != *reinterpret_cast<u32 *>(this->activeEnemy + 0x2E0C))
+        if ((reinterpret_cast<Enemy *>(this->activeEnemy)->flags1 & ENEMY_FLAG_ACTIVE) == 0 ||
+            this->activeEnemyIndexSnapshot != reinterpret_cast<Enemy *>(this->activeEnemy)->enemyIndex)
         {
-            this->spellcard_fun_00416af0();
+            this->DeactivateWithoutCleanup();
         }
 
         if (EclOperands::g_TargetPlayerPosition017D61AC.x >= 64.0f &&
@@ -1311,100 +1291,101 @@ i32 Spellcard::OnUpdateImpl()
             reinterpret_cast<u8 *>(&this->mixColor)[3] += 4;
         }
 
-        if (((this->flags >> 2) & 1) != 0)
+        if (((this->flags >> SPELLCARD_FLAG_CAPTURE_VALID_SHIFT) & 1) != 0)
         {
-            if (((this->flags >> 11) & 1) == 0 &&
-                ((*reinterpret_cast<u32 *>(this->activeEnemy + 0x3324) >> 27) & 1) == 0)
+            if (((this->flags >> SPELLCARD_FLAG_BONUS_UPDATES_DISABLED_SHIFT) & 1) == 0 &&
+                ((reinterpret_cast<Enemy *>(this->activeEnemy)->flags1 >>
+                  ENEMY_FLAG_TIMEOUT_SPELL_SHIFT) & 1) == 0)
             {
                 this->bonusProgress -=
-                    (i32)((f64)((u32)this->bonusCounter / 60u) * g_EclGameTimeScale);
+                    (i32)((f64)((u32)this->bonusCounter / 60u) * g_Supervisor.framerateMultiplier);
                 this->bonusProgress -= (u32)this->bonusProgress % 10u;
             }
         }
-        else if (*reinterpret_cast<i16 *>(this->spellEffect + 0x214) == 221)
+        else if (this->spellEffect->vm.activeSpriteIndex == 221)
         {
-            g_AsciiManagerDemoAnm0577EB4->SetSprite(reinterpret_cast<AnmVm *>(this->spellEffect), 222);
-            *reinterpret_cast<f32 *>(this->spellEffect + 0x270) = 4.0f;
-            *reinterpret_cast<f32 *>(this->spellEffect + 0x18) = 4.0f;
+            g_EffectManager.effectAnm->SetSprite(&this->spellEffect->vm, 222);
+            this->spellEffect->vm.scaleFinal.x = 4.0f;
+            this->spellEffect->vm.scale.x = 4.0f;
         }
 
-        if (*reinterpret_cast<f32 *>(this->spellEffect + 0x334) != 0.0f)
+        if (this->spellEffect->radialWaveCount != 0.0f)
         {
-            *reinterpret_cast<u32 *>(this->spellEffect + 0x32C) =
-                *reinterpret_cast<u32 *>(this->spellEffect + 0x20C);
-            if (*reinterpret_cast<f32 *>(this->spellEffect + 0x32C) == 0.0f)
+            *reinterpret_cast<u32 *>(&this->spellEffect->secondaryRadius) =
+                *reinterpret_cast<u32 *>(&this->spellEffect->vm.pos.y);
+            if (this->spellEffect->secondaryRadius == 0.0f)
             {
-                *reinterpret_cast<f32 *>(this->spellEffect + 0x334) = 0.0f;
+                this->spellEffect->radialWaveCount = 0.0f;
             }
         }
 
-        if ((i32)*reinterpret_cast<ZunTimer *>(this->spellEffect + 0xA4) == 0)
+        if ((i32)this->spellEffect->vm.interpEndTimers[AnmInterp_Pos] == 0)
         {
-            *reinterpret_cast<ZunTimer *>(this->spellEffect + 0x50) = 0;
-            *reinterpret_cast<ZunTimer *>(this->spellEffect + 0xA4) =
-                *reinterpret_cast<i32 *>(this->activeEnemy + 0x3378) - 100;
-            *reinterpret_cast<u8 *>(this->spellEffect + 0xF8) = 0;
-            *reinterpret_cast<f32 *>(this->spellEffect + 0x238) = 256.0f;
-            *reinterpret_cast<f32 *>(this->spellEffect + 0x244) = 8.0f;
-            *reinterpret_cast<f32 *>(this->spellEffect + 0x23C) = 0.0f;
-            *reinterpret_cast<f32 *>(this->spellEffect + 0x248) = 0.0f;
+            this->spellEffect->vm.interpCurrentTimers[AnmInterp_Pos] = 0;
+            this->spellEffect->vm.interpEndTimers[AnmInterp_Pos] =
+                reinterpret_cast<Enemy *>(this->activeEnemy)->timerCallbackThresholdFrames - 100;
+            this->spellEffect->vm.interpModes[AnmInterp_Pos] = AnmInterpMode_Linear;
+            this->spellEffect->vm.posInitial.x = 256.0f;
+            this->spellEffect->vm.posFinal.x = 8.0f;
+            this->spellEffect->vm.posInitial.y = 0.0f;
+            this->spellEffect->vm.posFinal.y = 0.0f;
         }
 
-        if (((this->flags >> 6) & 1) == 0)
+        if (((this->flags >> SPELLCARD_FLAG_EFFECT_TRACKING_DISABLED_SHIFT) & 1) == 0)
         {
-        *reinterpret_cast<Float3 *>(this->spellEffect + 0x2E0) =
-            ((*reinterpret_cast<Float3 *>(this->activeEnemy + 0x2D34) +
-              *reinterpret_cast<Float3 *>(this->activeEnemy + 0x2D40)) -
-             *reinterpret_cast<Float3 *>(this->spellEffect + 0x2E0)) /
-                16.0f +
-            *reinterpret_cast<Float3 *>(this->spellEffect + 0x2E0);
-        *reinterpret_cast<f32 *>(this->spellEffect + 0x2E8) = 0.0f;
+            this->spellEffect->vector5 =
+                ((reinterpret_cast<Enemy *>(this->activeEnemy)->position +
+                  reinterpret_cast<Enemy *>(this->activeEnemy)->positionOffset) -
+                 this->spellEffect->vector5) /
+                    16.0f +
+                this->spellEffect->vector5;
+            this->spellEffect->vector5.z = 0.0f;
         }
 
-        *reinterpret_cast<f32 *>(this->spellEffect + 0x318) = AddNormalizeAngle(
-            *reinterpret_cast<f32 *>(this->spellEffect + 0x318),
-            this->FUN_00417860() ? -0.031415928f : 0.015707964f);
+        this->spellEffect->angle = AddNormalizeAngle(
+            this->spellEffect->angle,
+            this->UsesAlternateEffectStyle() ? -0.031415928f : 0.015707964f);
     }
     else if (this->rewardEffect != NULL)
     {
-        if (*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) == 30)
+        if (this->rewardEffect->timer == 30)
         {
-            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x80) = 0;
-            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0xD4) = 20;
-            *reinterpret_cast<u8 *>(this->rewardEffect + 0xFC) = 1;
-            *reinterpret_cast<u32 *>(this->rewardEffect + 0x268) =
-                *reinterpret_cast<u32 *>(this->rewardEffect + 0x320);
-            *reinterpret_cast<f32 *>(this->rewardEffect + 0x270) = 64.0f;
-            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x50) = 0;
-            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0xA4) = 100;
-            *reinterpret_cast<u8 *>(this->rewardEffect + 0xF8) = 4;
-            *reinterpret_cast<u32 *>(this->rewardEffect + 0x238) =
-                *reinterpret_cast<u32 *>(this->rewardEffect + 0x314);
-            *reinterpret_cast<f32 *>(this->rewardEffect + 0x244) = 0.0f;
-            *reinterpret_cast<u32 *>(this->rewardEffect + 0x23C) =
-                *reinterpret_cast<u32 *>(this->rewardEffect + 0x32C);
-            *reinterpret_cast<f32 *>(this->rewardEffect + 0x248) = 60.0f;
-            *reinterpret_cast<u32 *>(this->rewardEffect + 0x208) =
-                *reinterpret_cast<u32 *>(this->rewardEffect + 0x314);
-            *reinterpret_cast<u32 *>(this->rewardEffect + 0x20C) =
-                *reinterpret_cast<u32 *>(this->rewardEffect + 0x32C);
+            this->rewardEffect->vm.interpCurrentTimers[AnmInterp_Scale] = 0;
+            this->rewardEffect->vm.interpEndTimers[AnmInterp_Scale] = 20;
+            this->rewardEffect->vm.interpModes[AnmInterp_Scale] = AnmInterpMode_EaseIn;
+            *reinterpret_cast<u32 *>(&this->rewardEffect->vm.scaleInitial.x) =
+                *reinterpret_cast<u32 *>(&this->rewardEffect->shapeThickness);
+            this->rewardEffect->vm.scaleFinal.x = 64.0f;
+            this->rewardEffect->vm.interpCurrentTimers[AnmInterp_Pos] = 0;
+            this->rewardEffect->vm.interpEndTimers[AnmInterp_Pos] = 100;
+            this->rewardEffect->vm.interpModes[AnmInterp_Pos] = AnmInterpMode_EaseOut;
+            *reinterpret_cast<u32 *>(&this->rewardEffect->vm.posInitial.x) =
+                *reinterpret_cast<u32 *>(&this->rewardEffect->radius);
+            this->rewardEffect->vm.posFinal.x = 0.0f;
+            *reinterpret_cast<u32 *>(&this->rewardEffect->vm.posInitial.y) =
+                *reinterpret_cast<u32 *>(&this->rewardEffect->secondaryRadius);
+            this->rewardEffect->vm.posFinal.y = 60.0f;
+            *reinterpret_cast<u32 *>(&this->rewardEffect->vm.pos.x) =
+                *reinterpret_cast<u32 *>(&this->rewardEffect->radius);
+            *reinterpret_cast<u32 *>(&this->rewardEffect->vm.pos.y) =
+                *reinterpret_cast<u32 *>(&this->rewardEffect->secondaryRadius);
         }
-        else if (*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) == 60)
+        else if (this->rewardEffect->timer == 60)
         {
-            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x80) = 0;
-            *reinterpret_cast<ZunTimer *>(this->rewardEffect + 0xD4) = 70;
-            *reinterpret_cast<u8 *>(this->rewardEffect + 0xFC) = 1;
-            *reinterpret_cast<u32 *>(this->rewardEffect + 0x268) =
-                *reinterpret_cast<u32 *>(this->rewardEffect + 0x320);
-            *reinterpret_cast<f32 *>(this->rewardEffect + 0x270) = 0.0f;
+            this->rewardEffect->vm.interpCurrentTimers[AnmInterp_Scale] = 0;
+            this->rewardEffect->vm.interpEndTimers[AnmInterp_Scale] = 70;
+            this->rewardEffect->vm.interpModes[AnmInterp_Scale] = AnmInterpMode_EaseIn;
+            *reinterpret_cast<u32 *>(&this->rewardEffect->vm.scaleInitial.x) =
+                *reinterpret_cast<u32 *>(&this->rewardEffect->shapeThickness);
+            this->rewardEffect->vm.scaleFinal.x = 0.0f;
         }
-        else if (*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) == 130)
+        else if (this->rewardEffect->timer == 130)
         {
-            *reinterpret_cast<u8 *>(this->rewardEffect + 0x350) = 0;
+            this->rewardEffect->active = 0;
             this->rewardEffect = NULL;
-            g_Gui.gui_fun_00437edc(this->bonusAward);
+            g_Gui.ShowSpellcardBonus(this->bonusAward);
             g_GameManager.AddScore(this->bonusAward);
-            this->flags &= ~0x100;
+            this->flags &= ~SPELLCARD_FLAG_CAPTURE_REWARD_PENDING;
             if (this->pendingTimeOrbs > 0)
             {
                 g_GameManager.AddTimeOrbs(this->pendingTimeOrbs);
@@ -1415,44 +1396,43 @@ i32 Spellcard::OnUpdateImpl()
 
         if (this->rewardEffect != NULL)
         {
-            if (*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) <= 80)
+            if (this->rewardEffect->timer <= 80)
             {
-                *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0) =
+                this->rewardEffect->vector5 =
                     (reinterpret_cast<const Float3 &>(EclOperands::g_TargetPlayerPosition017D61AC) -
-                     *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0)) /
+                     this->rewardEffect->vector5) /
                         16.0f +
-                    *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0);
-                *reinterpret_cast<f32 *>(this->rewardEffect + 0x2E8) = 0.0f;
-                *reinterpret_cast<f32 *>(this->rewardEffect + 0x318) = AddNormalizeAngle(
-                    *reinterpret_cast<f32 *>(this->rewardEffect + 0x318), -0.015707964f);
+                    this->rewardEffect->vector5;
+                this->rewardEffect->vector5.z = 0.0f;
+                this->rewardEffect->angle = AddNormalizeAngle(
+                    this->rewardEffect->angle, -0.015707964f);
             }
             else
             {
-                *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0) =
+                this->rewardEffect->vector5 =
                     (reinterpret_cast<const Float3 &>(EclOperands::g_TargetPlayerPosition017D61AC) -
-                     *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0)) /
+                     this->rewardEffect->vector5) /
                         4.0f +
-                    *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0);
-                *reinterpret_cast<f32 *>(this->rewardEffect + 0x2E8) = 0.0f;
-                *reinterpret_cast<f32 *>(this->rewardEffect + 0x318) = AddNormalizeAngle(
-                    *reinterpret_cast<f32 *>(this->rewardEffect + 0x318), -0.05235988f);
+                    this->rewardEffect->vector5;
+                this->rewardEffect->vector5.z = 0.0f;
+                this->rewardEffect->angle = AddNormalizeAngle(
+                    this->rewardEffect->angle, -0.05235988f);
             }
 
-            *reinterpret_cast<u32 *>(this->rewardEffect + 0x32C) =
-                *reinterpret_cast<u32 *>(this->rewardEffect + 0x20C);
+            *reinterpret_cast<u32 *>(&this->rewardEffect->secondaryRadius) =
+                *reinterpret_cast<u32 *>(&this->rewardEffect->vm.pos.y);
 
-            if (*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) > 8 &&
+            if (this->rewardEffect->timer > 8 &&
                 this->pendingTimeOrbs > 0)
             {
                 D3DXVECTOR3 itemPosition;
                 f32 angle =
-                    ((f32)*reinterpret_cast<ZunTimer *>(this->rewardEffect + 0x338) - 10.0f) *
+                    ((f32)this->rewardEffect->timer - 10.0f) *
                         6.2831855f / 40.0f -
                     1.5707964f;
                 angle = AddNormalizeAngle(angle, 0.0f);
                 reinterpret_cast<Float3 *>(&itemPosition)->FromAngleMagnitude(angle, 128.0f);
-                *reinterpret_cast<Float3 *>(&itemPosition) +=
-                    *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0);
+                *reinterpret_cast<Float3 *>(&itemPosition) += this->rewardEffect->vector5;
                 itemPosition.z = 0.0f;
 
                 itemCount = this->pendingTimeOrbs > 7 ? 7 : this->pendingTimeOrbs;
@@ -1465,8 +1445,7 @@ i32 Spellcard::OnUpdateImpl()
 
                 angle = AddNormalizeAngle(angle, 3.1415927f);
                 reinterpret_cast<Float3 *>(&itemPosition)->FromAngleMagnitude(angle, 128.0f);
-                *reinterpret_cast<Float3 *>(&itemPosition) +=
-                    *reinterpret_cast<Float3 *>(this->rewardEffect + 0x2E0);
+                *reinterpret_cast<Float3 *>(&itemPosition) += this->rewardEffect->vector5;
                 itemPosition.z = 0.0f;
 
                 itemCount = this->pendingTimeOrbs > 7 ? 7 : this->pendingTimeOrbs;
@@ -1484,34 +1463,35 @@ i32 Spellcard::OnUpdateImpl()
         }
     }
 
-    g_AnmManager->ExecuteScript(&this->vm120);
-    g_AnmManager->ExecuteScript(&this->vm668);
-    g_AnmManager->ExecuteScript(&this->vmBB0);
-    g_AnmManager->ExecuteScript(&this->vm10F8);
-    g_AnmManager->ExecuteScript(&this->vm1B88);
-    g_AnmManager->ExecuteScript(&this->vm3C4);
+    g_AnmManager->ExecuteScript(&this->playerPortraitVm);
+    g_AnmManager->ExecuteScript(&this->portraitBackdropVm);
+    g_AnmManager->ExecuteScript(&this->portraitOverlayVm);
+    g_AnmManager->ExecuteScript(&this->playerSpellNameVm);
+    g_AnmManager->ExecuteScript(&this->playerSpellNameFrameVm);
+    g_AnmManager->ExecuteScript(&this->enemyPortraitVm);
     g_AnmManager->ExecuteScript(&this->vm90C);
     g_AnmManager->ExecuteScript(&this->vmE54);
-    g_AnmManager->ExecuteScript(&this->vm139C);
-    g_AnmManager->ExecuteScript(&this->vm1640);
-    g_AnmManager->ExecuteScript(&this->vm18E4);
-    g_AnmManager->ExecuteScript(&this->vm1E2C);
-    g_AnmManager->ExecuteScript(&this->vm2374);
-    this->timer108--;
+    g_AnmManager->ExecuteScript(&this->enemySpellNameVm);
+    g_AnmManager->ExecuteScript(&this->enemySpellNameLayer1Vm);
+    g_AnmManager->ExecuteScript(&this->enemySpellNameLayer2Vm);
+    g_AnmManager->ExecuteScript(&this->enemySpellNameFrameVm);
+    g_AnmManager->ExecuteScript(&this->spellBonusFrameVm);
+    this->timeRemaining--;
 
     return 1;
 }
 
 // FUNCTION: th08 0x00417860
-i32 Spellcard::FUN_00417860()
+i32 Spellcard::UsesAlternateEffectStyle()
 {
-    return this->IsActive() && ((this->flags >> 5) & 1);
+    return this->IsActive() &&
+           ((this->flags >> SPELLCARD_FLAG_ALTERNATE_EFFECT_STYLE_SHIFT) & 1);
 }
 
 // FUNCTION: th08 0x004178A0
 i32 Spellcard::IsActive()
 {
-    return this->flags & 1;
+    return this->flags & SPELLCARD_FLAG_ACTIVE;
 }
 
 // FUNCTION: th08 0x4178c0
@@ -1531,55 +1511,55 @@ i32 Spellcard::OnDrawImpl()
         f32 z;
     } savedPos;
 
-    if (this->vm120.IsVisible())
+    if (this->playerPortraitVm.IsVisible())
     {
-        g_AnmManager->DrawNoRotation(&this->vm120);
-        g_AnmManager->DrawNoRotation(&this->vm668);
-        g_AnmManager->Draw2D(&this->vmBB0);
+        g_AnmManager->DrawNoRotation(&this->playerPortraitVm);
+        g_AnmManager->DrawNoRotation(&this->portraitBackdropVm);
+        g_AnmManager->Draw2D(&this->portraitOverlayVm);
     }
 
-    if (this->vm3C4.IsVisible())
+    if (this->enemyPortraitVm.IsVisible())
     {
-        savedPos = *reinterpret_cast<SavedPosition *>(&this->vm3C4.pos);
-        this->vm3C4.pos += this->vm3C4.pos2;
-        g_AnmManager->DrawNoRotation(&this->vm3C4);
-        *reinterpret_cast<SavedPosition *>(&this->vm3C4.pos) = savedPos;
+        savedPos = *reinterpret_cast<SavedPosition *>(&this->enemyPortraitVm.pos);
+        this->enemyPortraitVm.pos += this->enemyPortraitVm.pos2;
+        g_AnmManager->DrawNoRotation(&this->enemyPortraitVm);
+        *reinterpret_cast<SavedPosition *>(&this->enemyPortraitVm.pos) = savedPos;
         g_AnmManager->DrawNoRotation(&this->vm90C);
         g_AnmManager->Draw2D(&this->vmE54);
     }
 
-    if (this->vm10F8.IsVisible())
+    if (this->playerSpellNameVm.IsVisible())
     {
-        this->vm1B88.pos = this->vm10F8.pos;
-        this->vm1B88.pos.x -= 32.0f;
-        g_AnmManager->DrawNoRotation(&this->vm1B88);
-        g_AnmManager->Draw2D(&this->vm10F8);
+        this->playerSpellNameFrameVm.pos = this->playerSpellNameVm.pos;
+        this->playerSpellNameFrameVm.pos.x -= 32.0f;
+        g_AnmManager->DrawNoRotation(&this->playerSpellNameFrameVm);
+        g_AnmManager->Draw2D(&this->playerSpellNameVm);
     }
 
-    if (this->vm139C.IsVisible())
+    if (this->enemySpellNameVm.IsVisible())
     {
         g_AnmManager->SetMixColor(this->mixColor);
-        this->vm1E2C.pos = this->vm139C.pos;
-        g_AnmManager->DrawNoRotation(&this->vm1E2C);
-        g_AnmManager->Draw2D(&this->vm139C);
-        g_AnmManager->Draw2D(&this->vm1640);
-        g_AnmManager->Draw2D(&this->vm18E4);
-        g_AnmManager->DrawNoRotation(&this->vm2374);
+        this->enemySpellNameFrameVm.pos = this->enemySpellNameVm.pos;
+        g_AnmManager->DrawNoRotation(&this->enemySpellNameFrameVm);
+        g_AnmManager->Draw2D(&this->enemySpellNameVm);
+        g_AnmManager->Draw2D(&this->enemySpellNameLayer1Vm);
+        g_AnmManager->Draw2D(&this->enemySpellNameLayer2Vm);
+        g_AnmManager->DrawNoRotation(&this->spellBonusFrameVm);
 
-        if (((this->flags >> 10) & 1) == 0)
+        if (((this->flags >> SPELLCARD_FLAG_SUPPRESS_BONUS_PRESENTATION_SHIFT) & 1) == 0)
         {
             score = this->bonusProgress;
             divisor = 10000000;
             leading = 0;
             catk = &g_GameManager.catkData[this->spellCardNumber];
-            if (((this->flags >> 2) & 1) == 0)
+            if (((this->flags >> SPELLCARD_FLAG_CAPTURE_VALID_SHIFT) & 1) == 0)
             {
                 score = 0;
             }
 
-            this->vm20D0.pos = this->vm2374.pos;
-            this->vm20D0.pos.x -= 40.0f;
-            this->vm20D0.pos.y += 1.0f;
+            this->spellBonusDigitsVm.pos = this->spellBonusFrameVm.pos;
+            this->spellBonusDigitsVm.pos.x -= 40.0f;
+            this->spellBonusDigitsVm.pos.y += 1.0f;
             for (i = 0; i < 8; i++)
             {
                 value = score / divisor;
@@ -1589,11 +1569,11 @@ i32 Spellcard::OnDrawImpl()
                 }
                 if (leading != 0 || divisor == 1)
                 {
-                    this->vm20D0.loadedSprite =
+                    this->spellBonusDigitsVm.loadedSprite =
                         g_AsciiManager.asciiAnm->GetSprite(value + 136);
-                    g_AnmManager->DrawNoRotation(&this->vm20D0);
+                    g_AnmManager->DrawNoRotation(&this->spellBonusDigitsVm);
                 }
-                this->vm20D0.pos.x += 7.0f;
+                this->spellBonusDigitsVm.pos.x += 7.0f;
                 score %= divisor;
                 divisor /= 10;
             }
@@ -1605,27 +1585,27 @@ i32 Spellcard::OnDrawImpl()
             {
                 value = 999;
             }
-            this->vm20D0.pos.x += 32.0f;
+            this->spellBonusDigitsVm.pos.x += 32.0f;
             leading = 0;
             if (value / 100 != 0)
             {
-                this->vm20D0.loadedSprite =
+                this->spellBonusDigitsVm.loadedSprite =
                     g_AsciiManager.asciiAnm->GetSprite(value / 100 + 136);
-                g_AnmManager->DrawNoRotation(&this->vm20D0);
+                g_AnmManager->DrawNoRotation(&this->spellBonusDigitsVm);
                 value %= 100;
                 leading = 1;
             }
-            this->vm20D0.pos.x += 7.0f;
+            this->spellBonusDigitsVm.pos.x += 7.0f;
             if (value / 10 != 0 || leading != 0)
             {
-                this->vm20D0.loadedSprite =
+                this->spellBonusDigitsVm.loadedSprite =
                     g_AsciiManager.asciiAnm->GetSprite(value / 10 + 136);
-                g_AnmManager->DrawNoRotation(&this->vm20D0);
+                g_AnmManager->DrawNoRotation(&this->spellBonusDigitsVm);
                 value %= 10;
             }
-            this->vm20D0.pos.x += 7.0f;
-            this->vm20D0.loadedSprite = g_AsciiManager.asciiAnm->GetSprite(value + 136);
-            g_AnmManager->DrawNoRotation(&this->vm20D0);
+            this->spellBonusDigitsVm.pos.x += 7.0f;
+            this->spellBonusDigitsVm.loadedSprite = g_AsciiManager.asciiAnm->GetSprite(value + 136);
+            g_AnmManager->DrawNoRotation(&this->spellBonusDigitsVm);
 
             value = g_GameManager.IsSpellPractice()
                         ? catk->spellPracticeHistory.attempts[g_GameManager.shotType]
@@ -1634,27 +1614,27 @@ i32 Spellcard::OnDrawImpl()
             {
                 value = 999;
             }
-            this->vm20D0.pos.x += 13.0f;
+            this->spellBonusDigitsVm.pos.x += 13.0f;
             if (value / 100 != 0)
             {
-                this->vm20D0.loadedSprite =
+                this->spellBonusDigitsVm.loadedSprite =
                     g_AsciiManager.asciiAnm->GetSprite(value / 100 + 136);
-                g_AnmManager->DrawNoRotation(&this->vm20D0);
+                g_AnmManager->DrawNoRotation(&this->spellBonusDigitsVm);
                 value %= 100;
                 leading = 1;
             }
-            this->vm20D0.pos.x += 7.0f;
+            this->spellBonusDigitsVm.pos.x += 7.0f;
             if (value / 10 != 0 || leading != 0)
             {
-                this->vm20D0.loadedSprite =
+                this->spellBonusDigitsVm.loadedSprite =
                     g_AsciiManager.asciiAnm->GetSprite(value / 10 + 136);
-                g_AnmManager->DrawNoRotation(&this->vm20D0);
+                g_AnmManager->DrawNoRotation(&this->spellBonusDigitsVm);
                 value %= 10;
             }
-            this->vm20D0.pos.x += 7.0f;
-            this->vm20D0.loadedSprite =
+            this->spellBonusDigitsVm.pos.x += 7.0f;
+            this->spellBonusDigitsVm.loadedSprite =
                 g_AsciiManager.asciiAnm->GetSprite(value % 10 + 136);
-            g_AnmManager->DrawNoRotation(&this->vm20D0);
+            g_AnmManager->DrawNoRotation(&this->spellBonusDigitsVm);
         }
         g_AnmManager->SetMixColorDefault();
     }
@@ -1678,8 +1658,9 @@ ZunResult Spellcard::RegisterChain()
         (ChainLifetimeCallback)Spellcard::DeletedCallback;
     reinterpret_cast<ChainElem *>(spellcard->lifetimeObject)->arg = spellcard;
     spellcard->lifetimeChain->arg = spellcard;
-    g_Chain.AddToCalcChain(reinterpret_cast<ChainElem *>(spellcard->lifetimeObject), 12);
-    g_Chain.AddToDrawChain(spellcard->lifetimeChain, 15);
+    g_Chain.AddToCalcChain(
+        reinterpret_cast<ChainElem *>(spellcard->lifetimeObject), CHAIN_PRIO_CALC_SPELLCARD);
+    g_Chain.AddToDrawChain(spellcard->lifetimeChain, CHAIN_PRIO_DRAW_SPELLCARD);
     return ZUN_SUCCESS;
 }
 
@@ -1738,18 +1719,18 @@ void Spellcard::CutChain()
 
 
 // FUNCTION: th08 0x44cba0
-void Spellcard::FUN_0044cba0()
+void Spellcard::InvalidateCaptureAndEnableBombDamage()
 {
-    this->flags &= ~4u;
+    this->flags &= ~SPELLCARD_FLAG_CAPTURE_VALID;
     this->bonusProgress = 0;
-    reinterpret_cast<SpellcardResetFlagBits *>(&this->flags)->bit7 =
-        reinterpret_cast<SpellcardResetFlagBits *>(&this->flags)->bit0;
+    reinterpret_cast<SpellcardResetFlagBits *>(&this->flags)->bombDamageEnabled =
+        reinterpret_cast<SpellcardResetFlagBits *>(&this->flags)->active;
 }
 
 // FUNCTION: th08 0x44d150
-void Spellcard::FUN_0044d150()
+void Spellcard::InvalidateCapture()
 {
-    this->flags &= ~4u;
+    this->flags &= ~SPELLCARD_FLAG_CAPTURE_VALID;
     this->bonusProgress = 0;
 }
 

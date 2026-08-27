@@ -92,7 +92,7 @@ struct AsciiManager
     void AddString(Float3 *position, const char *string);
     void AddFormatText(Float3 *position, const char *fmt, ...);
     int AddFormatText2(Float3 *position, const char *fmt, ...);
-    void FUN_00406fd0();
+    void UpdateVms();
     void OnDrawLowPrioImpl();
     void CreateScorePopup(Float3 *position, i32 number, D3DCOLOR color);
     void CreatePlayerPointPopup(Float3 *position, i32 number, D3DCOLOR color);
@@ -100,8 +100,8 @@ struct AsciiManager
     void CreateFamiliarPopup(Float3 *position, i32 number, i32 param3, D3DCOLOR color);
     void OnDrawHighPrioImpl();
     void DrawPercentage(Float3 *position, i32 percentage, D3DCOLOR color);
-    void FUN_00422bb0(i32 slot, i16 state);
-    void FUN_0042f2d0(i32 index, u32 value);
+    void SetBossMarkerInterrupt(i32 slot, i16 state);
+    void SetBossMarkerState(i32 index, u32 value);
     void SetBossMarkerPosition(i32 slot, D3DXVECTOR3 *position);
 
     void Reset();
@@ -118,20 +118,6 @@ struct AsciiManager
     }
 
     void SetScale(float scaleX, float scaleY);
-
-    void UpdateVms()
-    {
-        g_AnmManager->ExecuteScript(&this->youkaiGauge);
-        g_AnmManager->ExecuteScript(&this->youkaiGaugeHumanIcon);
-        g_AnmManager->ExecuteScript(&this->youkaiGaugeYoukaiIcon);
-        g_AnmManager->ExecuteScript(&this->youkaiGaugeCursor);
-        g_AnmManager->ExecuteScript(&this->percentageText);
-        g_AnmManager->ExecuteScript(&this->bossMarkers[0]);
-        g_AnmManager->ExecuteScript(&this->bossMarkers[1]);
-        g_AnmManager->ExecuteScript(&this->bossMarkers[2]);
-        g_AnmManager->ExecuteScript(&this->bossMarkers[3]);
-        g_AnmManager->ExecuteScript(&this->unk_1520);
-    }
 
     void SetGaugeInterrupt(i32 interrupt);
 
@@ -165,7 +151,7 @@ struct AsciiManager
 
     i32 gaugeInterrupt;
     i32 spaceWidth;
-    u32 unk_8284;
+    u32 frameTimer;
 
     AnmLoaded *asciiAnm;
     AnmLoaded *captureAnm;
@@ -184,13 +170,18 @@ struct AsciiManager
     AsciiManagerPopup scorePopups[ASCII_MAX_SCORE_POPUPS + ASCII_MAX_PLAYER_POPUPS];
     AsciiManagerPopup timePopups[ASCII_MAX_TIME_POPUPS];
 
-    f32 unk_16f04;
-    i32 unk_16f08;
+    f32 nightBlindnessRadius;
+    i32 nightBlindnessAlpha;
 
-    AnmVm unk_16f0c;
+    AnmVm nightBlindnessVm;
 };
 
 C_ASSERT(sizeof(AsciiManager) == 0x171b0);
+C_ASSERT(offsetof(AsciiManager, bossMarkerStates) == 0x2254);
+C_ASSERT(offsetof(AsciiManager, frameTimer) == 0x8284);
+C_ASSERT(offsetof(AsciiManager, nightBlindnessRadius) == 0x16f04);
+C_ASSERT(offsetof(AsciiManager, nightBlindnessAlpha) == 0x16f08);
+C_ASSERT(offsetof(AsciiManager, nightBlindnessVm) == 0x16f0c);
 DIFFABLE_EXTERN(AsciiManager, g_AsciiManager);
 
 } // namespace th08

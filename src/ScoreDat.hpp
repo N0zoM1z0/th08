@@ -84,15 +84,24 @@ enum Stage
     MAX_STAGES_AND_LAST_WORD
 };
 
+enum Th8kRuntimeMarker
+{
+    TH8K_RUNTIME_MARKER_NONE = 0,
+    TH8K_RUNTIME_MARKER_CURRENT_RUN_SCORE = 1,
+};
+
 struct Th8k
 {
     u32 magic;
-    u16 th8kLen;
-    u16 unkLen;
+    u16 chapterSize;
+    u16 chapterSizeCopy;
     u8 version;
-    u8 unk_9;
+    u8 runtimeMarker;
 };
 C_ASSERT(sizeof(Th8k) == 0xC);
+C_ASSERT(offsetof(Th8k, chapterSize) == 0x4);
+C_ASSERT(offsetof(Th8k, chapterSizeCopy) == 0x6);
+C_ASSERT(offsetof(Th8k, runtimeMarker) == 0x9);
 
 struct PlstPlayCounts
 {
@@ -100,7 +109,7 @@ struct PlstPlayCounts
 
     u32 attemptsTotal;
     i32 attemptsPerCharacter[SHOT_ALL];
-    unknown_fields(0x34, 0x4);
+    u32 restarts;
     i32 clears;
     i32 continues;
     i32 practices;
@@ -111,7 +120,7 @@ struct PlstPlayCountsLegacy
 {
     u32 attemptsTotal;
     u32 attemptsPerCharacter[SHOT_ALL];
-    unknown_fields(0x34, 0x4);
+    u32 restarts;
     u32 clears;
     u32 continues;
     u32 practices;
@@ -142,6 +151,7 @@ struct Plst
 };
 
 C_ASSERT(sizeof(Plst) == 0x228);
+C_ASSERT(offsetof(Plst, bgmUnlocked) == 0x208);
 
 struct Flsp
 {
@@ -157,12 +167,13 @@ struct CatkHistory
     u32 attempts[SHOT_ALL + 1];
     u32 captures[SHOT_ALL + 1];
 };
+C_ASSERT(offsetof(CatkHistory, maxBonus) == 0x0);
 
 struct Catk
 {
     Th8k base;
     u16 spellcardNumber;
-    u8 unk0xe;
+    u8 historyChecksum;
     u8 difficulty;
 
     char spellName[48];
@@ -177,17 +188,20 @@ struct Catk
 };
 
 C_ASSERT(sizeof(Catk) == 0x22c);
+C_ASSERT(offsetof(Catk, historyChecksum) == 0xe);
+C_ASSERT(offsetof(Catk, inGameHistory) == 0xf0);
 
 struct Clrd
 {
     Th8k base;
     u16 difficultiesClearedWithoutRetries[5];
     u16 difficultiesClearedWithRetries[5];
-    bool unk_20;
+    bool pendingEndingSkip;
     u8 shotNumber;
 };
 
 C_ASSERT(sizeof(Clrd) == 0x24);
+C_ASSERT(offsetof(Clrd, pendingEndingSkip) == 0x20);
 
 struct Pscr
 {
@@ -196,10 +210,11 @@ struct Pscr
     i32 attempts[MAX_STAGES][MAX_DIFFICULTIES];
     i32 highScores[MAX_STAGES][MAX_DIFFICULTIES];
     u8 shotNumber;
-    u8 unk0x175;
+    u8 shouldSerialize;
 };
 
 C_ASSERT(sizeof(Pscr) == 0x178);
+C_ASSERT(offsetof(Pscr, shouldSerialize) == 0x175);
 
 struct Hscr
 {
@@ -259,8 +274,8 @@ C_ASSERT(sizeof(ScoreListNode) == 0xc);
 
 struct ScoreDat
 {
-    static i32 LinkScore(ScoreListNode *prevNode, Hscr *newScore);
-    static void FreeAllScores(ScoreListNode *score);
+    static i32 InsertScore(ScoreListNode *prevNode, Hscr *newScore);
+    static void FreeScoreNodes(ScoreListNode *score);
     static ScoreDat *OpenScore(const char *filename);
     static u32 GetHighScore(ScoreDat *score, ScoreListNode *node, u32 character, u32 difficulty, u8 *continuesUsed);
     static i32 ParseCATK(ScoreDat *score, Catk *outCatk);

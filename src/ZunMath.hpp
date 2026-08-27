@@ -4,7 +4,7 @@
 #include <math.h>
 #endif
 
-#define ZUN_MIN(x, y) ((x) > (y) ? (y) : (x))
+#define ZUN_MIN(x, y) ((x) < (y) ? (x) : (y))
 #define ZUN_MAX(x, y) ((x) > (y) ? (x) : (y))
 #define ZUN_PI ((f32)(3.14159265358979323846))
 #define ZUN_2PI ((f32)(ZUN_PI * 2.0f))

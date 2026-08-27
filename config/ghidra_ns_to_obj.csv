@@ -1,7 +1,7 @@
 Background,th08::Background
 EnemyManager,th08::EnemyManager,th08::Enemy
 Global,th08::Chain,th08::ChainElem,th08::Controller,th08::FileSystem,th08::GameErrorContext,th08::Rng,th08::ZunMemory,th08::Rotate,th08::AddNormalizeAngle
-GameManager,th08::GameManager
+GameManager,th08::GameManager,th08::g_SpellcardMusicInfo
 Gui,th08::Gui,th08::g_Gui,th08::g_GuiCalcChain,th08::g_GuiDrawChain,th08::g_GuiAnmReleaseRequired,th08::g_GuiResourceReloadEnabled,th08::g_GuiFullPowerModeFrames
 SpellCard,th08::Spellcard
 ItemManager,th08::ItemManager,th08::Item,th08::g_ItemManager,th08::g_MaxValuePointItemsCollected,th08::g_ItemAnmManagerScreenShakeOffset
@@ -26,7 +26,6 @@ utils,th08::utils
 zwave,th08::CSoundManager,th08::CSound,th08::CStreamingSound,th08::CWaveFile
 BulletManager,th08::BulletManager,th08::g_BulletManager,th08::g_BulletManagerCalcChain,th08::g_BulletManagerDrawChain,th08::g_BulletManagerAnmReleaseRequired,th08::IsBulletManagerAnmReleaseRequired,th08::g_BulletCancelItemType
 EclManager,th08::EclManager,th08::EclTimelineState
-EclGlobals,th08::g_EclCallbackPublishedEnemyField24
 EffectManager,th08::EffectManager,th08::g_EffectManager,th08::g_EffectTemplates
 MusicRoom,th08::MusicRoom,th08::g_MusicRoom
 ReplayManager,th08::ReplayManager,th08::g_ReplayManager

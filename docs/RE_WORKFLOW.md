@@ -124,14 +124,38 @@ remain available for later diagnosis in `config/match-units.toml`; see
 `docs/RE_HANDOFF.md` for the bounded list. Do not treat a configured unit as an
 accepted result.
 
-The primary lane is now whole-executable reconstruction. Authored source is
-complete, all library inventory rows have bounded extents, exact archives are
-hash-pinned, and a reviewed subset of library members has a separate accepted
-ledger. Broad library/runtime scanning is paused: a normal executable already
-links, so additional library work must be requested by a concrete whole-image
-difference rather than by inventory percentage alone.
+The active lane on `semantic/typed-reconstruction` is semantic source recovery.
+Replace raw object offsets, anonymous fields, and absolute field views one
+coherent structure family at a time, following
+`docs/SEMANTIC_RECONSTRUCTION.md`. Existing accepted VC7 units are the binary
+oracle; the modern Windows/Linux source products are the portability and
+behavior oracle. Candidate counts from
+`scripts/analysis/report-semantic-debt.py` select work but are not a progress
+percentage or proof that every match should be rewritten.
 
-1. Start from a single-job cold normal build:
+Whole-executable layout reconstruction remains a valid deferred lane. Authored
+source is complete, all library inventory rows have bounded extents, exact
+archives are hash-pinned, and a reviewed subset of library members has a
+separate accepted ledger. Broad library/runtime scanning remains paused: a
+normal executable already links, so additional library work must be requested
+by a concrete whole-image difference rather than by inventory percentage alone.
+
+For one semantic batch:
+
+1. select one structure/field family and record the target users, offsets,
+   widths, evidence classes, affected exact units, and portable surface;
+2. add or preserve focused `sizeof`/`offsetof` assertions, then replace only
+   the layout-shaped expressions supported by that evidence;
+3. replay all affected accepted VC7 units and compile/link the modern target;
+4. after a shared layout, PCH, inline, owner, or fixed-address change, run the
+   cold aggregate VC7 gate and the applicable Linux layout/runtime checks;
+5. record the accepted batch in `docs/SEMANTIC_RECONSTRUCTION.md`, without
+   changing authored/exact totals for a naming-only improvement.
+
+For the deferred whole-executable lane, start from a single-job cold normal
+build:
+
+1. Run:
 
    ```bash
    python3 scripts/build.py --fresh
@@ -254,7 +278,7 @@ frame on the first complete pass; the remaining 10-byte size error came from onl
 ancestor-style integer-plus-zero-float expressions.
 
 
-When a newly reconstructed production function uses a target global that previously existed only as an `extern` in a probe-only ECL lane, promote the storage to a production-linked TU before accepting the function. `Gui::FUN_0043741d` calls through `g_EclEnemyTableF54CC0`; the target span to the next known global proves 92 pointer entries, so its storage now lives in `EclGlobals.cpp` while probes and GUI share the `EclOperands.hpp` declaration. This is the same dependency-first rule used for probe-only Enemy helpers: strict object matching is not enough if the normal link would otherwise have no owner for the symbol.
+When a newly reconstructed production function uses a target global that previously existed only as an `extern` in a probe-only lane, first provide a production owner so the normal link is testable, then revisit that provisional identity when the enclosing aggregate is recovered.  The early ECL name `g_EclEnemyTableF54CC0` was useful for bringing `Gui::FUN_0043741d` into the production link, but later whole-owner evidence proved `0x00F54CC0 == g_EnemyManager + 0x9DCDA0`.  Its apparent indices crossed Boss pointers and unrelated integer fields, so the alias was retired in favor of typed `EnemyManager` members and manager-base relocations.  Strict object matching proves emitted addresses, not that a provisional global boundary is semantically final.
 
 
 The GUI updater at `0x435900` is now a strict 2,397-byte match. Its proven state model links the boss-gauge fade state (`impl+0x2a40`), VM update batches, three `GuiFormattedText` timers, stage-result score calculation, and the animated clock-result tail. Reuse the local `GuiStageResultUpdateOverlay` at `impl+0x22dec` instead of rediscovering those ten dwords in later GUI work; do not cache a pointer to the overlay unless the target does so.

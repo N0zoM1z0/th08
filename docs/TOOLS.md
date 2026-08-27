@@ -23,6 +23,7 @@ repeating target analysis or compiler-shape probes.
 | --- | --- | --- |
 | Is this the one supported executable? | `python3 scripts/verify-target.py` | Verifies size and hashes; no reconstruction claim. |
 | What authored/library work remains? | `python3 scripts/analysis/report-reconstruction-status.py --summary` | Ledger-derived totals. Omit `--summary` for the default authored non-exact rows. |
+| Which source locations still encode candidate semantic debt? | `python3 scripts/analysis/report-semantic-debt.py` | Heuristic routing for raw member offsets, absolute views, anonymous identifiers, and opaque storage. Counts are not progress and matches may be legitimate byte-oriented code. |
 | Which library rows still lack mapping extents? | `python3 scripts/analysis/report-reconstruction-status.py --category library --state missing-size --sort address` | Machine-derived selector for any future extent repair; it currently returns zero. Do not copy the prose count into scripts. |
 | Is library provenance/config structurally valid? | `python3 scripts/validate-library.py` | Public target-independent schema/ledger validation. Add `--require-archives` locally to hash-check configured private archives. |
 | Is one configured library/archive unit exact? | `python3 scripts/compare-library.py UNIT --json` | Local target-required archive hash + member identity + COFF relocation replay + full `compare_size` target comparison. |

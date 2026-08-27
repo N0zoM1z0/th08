@@ -1,0 +1,4 @@
+interface:
+  display_name: "TH08 Semantic Reconstruction"
+  short_description: "Recover typed names without losing exactness"
+  default_prompt: "Use $th08-semantic to recover one evidence-backed TH08 field family while preserving both VC7 and portable oracles."

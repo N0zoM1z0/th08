@@ -196,14 +196,13 @@ void ItemManager::OnUpdate()
     f32 angle;
     i32 soundIndex = 0;
     Item *item = this->itemListHead.next;
-    Float3 itemBox(*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x18),
-                   *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x18), 16.0f);
+    Float3 itemBox(g_Player.primaryShtFile->itemCollectionBoxSize,
+                   g_Player.primaryShtFile->itemCollectionBoxSize, 16.0f);
 
     this->itemCount = 0;
-    speed = *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&g_Player) + 3)
-                ? *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.secondaryShtFile) + 0x34)
-                : *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x34);
-    speed *= g_EclGameTimeScale;
+    speed = g_Player.focusMode ? g_Player.secondaryShtFile->itemMovementSpeed
+                                    : g_Player.primaryShtFile->itemMovementSpeed;
+    speed *= g_Supervisor.framerateMultiplier;
 
     while (item != NULL)
     {
@@ -227,9 +226,9 @@ void ItemManager::OnUpdate()
         }
         else if (item->state == ITEM_STATE_UNK3)
         {
-            item->startPositionOrVelocity.y += 0.05f * g_EclGameTimeScale;
+            item->startPositionOrVelocity.y += 0.05f * g_Supervisor.framerateMultiplier;
             if (item->startPositionOrVelocity.y > 0.0f ||
-                *reinterpret_cast<ZunTimer *>(&g_Player.timerE2AC4) < 0)
+                g_Player.shotTimer < 0)
             {
                 item->state = ITEM_STATE_AUTOCOLLECT;
             }
@@ -244,7 +243,7 @@ void ItemManager::OnUpdate()
         }
         else if (item->state == ITEM_STATE_UNK5)
         {
-            item->startPositionOrVelocity.y += 0.05f * g_EclGameTimeScale;
+            item->startPositionOrVelocity.y += 0.05f * g_Supervisor.framerateMultiplier;
             item->currentPosition += item->startPositionOrVelocity * speed;
             if (item->startPositionOrVelocity.y > 0.0f)
             {
@@ -268,16 +267,16 @@ void ItemManager::OnUpdate()
             if (item->state == ITEM_STATE_AUTOCOLLECT ||
                 (g_Player.position.y < g_Player.primaryShtFile->pointItemValueLine &&
                  (g_GameManager.GetPower() >= 0.0 ||
-                  *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&g_Player) + 3) != 0 ||
+                  g_Player.focusMode != PLAYER_FOCUS_MODE_UNFOCUSED ||
                   g_GameManager.shotType == 1 || g_GameManager.shotType == 6)))
             {
                 if (g_Player.playerState != PLAYER_STATE_DYING && g_Player.playerState != PLAYER_STATE_SPAWNING)
                 {
-                    angle = g_Player.FUN_0044c1b0(&item->currentPosition);
+                    angle = g_Player.AngleToPoint(&item->currentPosition);
                     item->startPositionOrVelocity.FromAngleMagnitude(
-                        angle, *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(g_Player.primaryShtFile) + 0x14));
+                        angle, g_Player.primaryShtFile->itemAutoCollectSpeed);
                     item->state = ITEM_STATE_AUTOCOLLECT;
-                    item->currentPosition += item->startPositionOrVelocity * g_EclGameTimeScale;
+                    item->currentPosition += item->startPositionOrVelocity * g_Supervisor.framerateMultiplier;
                     goto pickup;
                 }
                 item->startPositionOrVelocity.y = -0.7f;
@@ -310,7 +309,7 @@ moveItem:
 pickup:
         if (item->state != ITEM_STATE_UNK3 && g_Player.CalcItemBoxCollision(&item->currentPosition, &itemBox))
         {
-            *reinterpret_cast<u16 *>(reinterpret_cast<u8 *>(g_ReplayManager) + 0xda) |= 0x40;
+            g_ReplayManager->frameEventFlags |= 0x40;
             switch (item->itemType)
             {
             case ITEM_POWER_SMALL:
@@ -339,8 +338,8 @@ pickup:
             case ITEM_POWER_FULL:
                 if (g_GameManager.GetPower() < 128)
                 {
-                    g_BulletManager.bulletmanager_fun_00415c60();
-                    g_Gui.FUN_00437e5d(0, 1);
+                    g_BulletManager.ClearBulletsForTransition();
+                    g_Gui.ShowPopupText(0, 1);
                     g_SoundPlayer.PlaySoundByIdx(SOUND_POWERUP, 0);
                     g_AsciiManager.CreatePlayerPointPopup(&item->currentPosition, -1, 0xffffc0a0);
                     this->ConvertAllPowerItemsToTimeOrbs(item);
@@ -388,11 +387,11 @@ executeOnly:
     if (soundIndex != 0)
         g_SoundPlayer.PlaySoundByIdx((SoundIdx)soundIndex, 0);
 
-    if (*reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) != 0)
+    if (g_Player.timeOrbGaugeChangeSuppressionTimer != 0)
     {
-        (*reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC))--;
-        if (*reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) <= 0)
-            *reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) = 0;
+        g_Player.timeOrbGaugeChangeSuppressionTimer--;
+        if (g_Player.timeOrbGaugeChangeSuppressionTimer <= 0)
+            g_Player.timeOrbGaugeChangeSuppressionTimer = 0;
     }
 }
 
@@ -415,7 +414,7 @@ void Item::CollectPowerSmall()
     }
     oldPowerLevel = powerLevel;
 
-    *(u8 *)((u8 *)&g_GameManager + 0x3DBA8) = 0;
+    g_GameManager.character = 0;
     g_GameManager.AddPower(1);
 
     if (g_GameManager.GetPower() >= 0x80)
@@ -423,9 +422,9 @@ void Item::CollectPowerSmall()
         g_GameManager.SetPower(0x80);
         if (!g_Spellcard.IsActive())
         {
-            g_BulletManager.bulletmanager_fun_00415c60();
+            g_BulletManager.ClearBulletsForTransition();
         }
-        g_Gui.FUN_00437e5d(0, 1);
+        g_Gui.ShowPopupText(0, 1);
         g_ItemManager.ConvertAllPowerItemsToTimeOrbs(this);
     }
 
@@ -570,9 +569,9 @@ void Item::CollectPowerBig()
         g_GameManager.SetPower(0x80);
         if (!g_Spellcard.IsActive())
         {
-            g_BulletManager.bulletmanager_fun_00415c60();
+            g_BulletManager.ClearBulletsForTransition();
         }
-        g_Gui.FUN_00437e5d(0, 1);
+        g_Gui.ShowPopupText(0, 1);
         g_ItemManager.ConvertAllPowerItemsToTimeOrbs(this);
     }
 
@@ -629,13 +628,13 @@ void Item::CollectTimeOrb()
     g_Gui.flags.timeDisplayUpdateFrames = 2;
     g_GameManager.AddScore(score);
     g_GameManager.AddTimeOrbs(1);
-    g_Spellcard.spellcard_fun_00416b10(8000);
+    g_Spellcard.AddBonusProgress(8000);
 
-    if (*reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) == 0)
+    if (g_Player.timeOrbGaugeChangeSuppressionTimer == 0)
     {
         score = 111;
         g_GameManager.AddToYoukaiGauge(
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&g_Player) + 3) ? score : -score, 0);
+            g_Player.focusMode ? score : -score, 0);
     }
 }
 
@@ -704,6 +703,8 @@ void ItemManager::OnDraw()
         item->sprite.pos.y = g_GameManager.arcadeRegionTopLeftPos.y + item->currentPosition.y;
         item->sprite.pos.z = 0.15f;
 
+        // Keep the target's Float3::operator float *() call shape: direct .y
+        // access removes both calls and changes the VC7 function extent.
         if (((f32 *)item->currentPosition)[1] < -8.0f)
         {
             item->sprite.pos.y = 8.0f + g_GameManager.arcadeRegionTopLeftPos.y;
@@ -711,7 +712,7 @@ void ItemManager::OnDraw()
             {
                 g_BulletManager.bulletAnm->SetSprite(&item->sprite, item->itemType + 0xb6);
                 item->isOnscreen = false;
-                *(u32 *)((u8 *)&item->sprite + 0x1f8) |= 0x2000;
+                item->sprite.zWriteDisabled = true;
             }
 
             alpha = 255 - (i32)(((8.0f - ((f32 *)item->currentPosition)[1]) * 255.0f) / 128.0f);
@@ -728,7 +729,7 @@ void ItemManager::OnDraw()
                 g_BulletManager.bulletAnm->SetSprite(&item->sprite, item->itemType + 0xac);
                 item->isOnscreen = true;
                 item->sprite.color1.d3dColor = 0xffffffff;
-                *(u32 *)((u8 *)&item->sprite + 0x1f8) |= 0x2000;
+                item->sprite.zWriteDisabled = true;
             }
         }
 

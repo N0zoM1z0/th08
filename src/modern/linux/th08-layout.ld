@@ -14,13 +14,11 @@ SECTIONS
 
     _ZN4th0816g_LastSpellCountE = 0x004c6c3c;
     _ZN4th0817g_EffectTemplatesE = 0x004c6d30;
-    _ZN4th0821g_GuiStageScoreTablesE = 0x004c7158;
+    _ZN4th0822g_GuiStageClearBonusesE = 0x004c7158;
     _ZN4th0822g_GuiMessageTextColorsE = 0x004c7180;
     _ZN4th0823g_GuiStageMusicContextsE = 0x004c7240;
     _ZN4th0830g_AsciiManagerDrawChainLowPrioE = 0x004cce00;
     _ZN4th0814g_AsciiManagerE = 0x004cce20;
-    _ZN4th0834g_EclCallbackPublishedEnemyField56E = 0x004e3d24;
-    _ZN4th0834g_EclCallbackPublishedEnemyField24E = 0x004e3d28;
     _ZN4th0823g_AsciiManagerCalcChainE = 0x004e3fd0;
     _ZN4th0831g_AsciiManagerDrawChainHighPrioE = 0x004e3ff0;
     _ZN4th0829g_BackgroundDrawChainHighPrioE = 0x004e4010;
@@ -30,7 +28,6 @@ SECTIONS
     _ZN4th0821g_BackgroundCalcChainE = 0x004ea650;
 
     /* ECL opcode 147 names Background::unk6260 as a standalone global. */
-    _ZN4th0819g_EclGlobal004EA290E = 0x004ea290;
 
     _ZN4th0811g_SpellcardE = 0x004ea670;
     _ZN4th0820g_SpellcardCalcChainE = 0x004eccac;
@@ -43,21 +40,16 @@ SECTIONS
     _ZN4th0815g_EffectManagerE = 0x004ece60;
 
     /*
-     * The original linker laid the two EffectManager ANM pointers at the end
-     * of the aggregate directly before its chain elements.  Spellcard.cpp
-     * names the second pointer as a separate global, while EffectManager.cpp
-     * writes it through g_EffectManager + 0x8b058.  Keep those views aliased.
+     * The original linker placed EffectManager::stageEffectAnm at the
+     * aggregate tail directly before its chain elements.  Spellcard.cpp
+     * names that pointer as a separate global, so keep both views aliased.
      */
-    _ZN4th0828g_AsciiManagerDemoAnm0577EB4E = 0x00577eb4;
     _ZN4th0824g_SpellcardBackgroundAnmE = 0x00577eb8;
     _ZN4th0824g_EffectManagerCalcChainE = 0x00577ebc;
     _ZN4th0824g_EffectManagerDrawChainE = 0x00577edc;
 
     _ZN4th0831g_EnemyManagerDrawChainHighPrioE = 0x00577f00;
     _ZN4th0814g_EnemyManagerE = 0x00577f20;
-    _ZN4th0817EclRunLowProposal21g_EclEnemyTableF54CC0E = 0x00f54cc0;
-    _ZN4th0818g_EnemyDropCounterE = 0x00f54ce0;
-    _ZN4th0824g_EnemyDropScheduleIndexE = 0x00f54ce2;
     _ZN4th0823g_EnemyManagerCalcChainE = 0x00f54e30;
     _ZN4th0830g_EnemyManagerDrawChainLowPrioE = 0x00f54e50;
     _ZN4th0824g_BulletManagerDrawChainE = 0x00f54e70;
@@ -67,7 +59,6 @@ SECTIONS
     _ZN4th0814g_GuiDrawChainE = 0x0160f4c4;
     _ZN4th0814g_GuiCalcChainE = 0x0160f4e4;
     _ZN4th0813g_GameManagerE = 0x0160f508;
-    _ZN4th0831g_EclScriptedGlobalUpdateFreezeE = 0x0160f534;
     _ZN4th0823g_PlayerNormalBombCountE = 0x0164cfa8;
     _ZN4th0822g_PlayerDeathbombCountE = 0x0164cfac;
     _ZN4th0829g_MaxValuePointItemsCollectedE = 0x0164cf9c;
@@ -99,7 +90,6 @@ SECTIONS
     _ZN4th0832g_GuiMessageScreenEffectDurationE = 0x017ce8cc;
 
     /* These target globals are overlapping views into aggregate owners. */
-    _ZN4th0818g_EclGameTimeScaleE = 0x017ce8e0;
     _ZN4th0823g_EclGameTimeScaleFlagsE = 0x017ce8fc;
     _ZN4th088g_PlayerE = 0x017d5ef8;
     _ZN4th0811EclOperands30g_TargetPlayerPosition017D61ACE = 0x017d61ac;

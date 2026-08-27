@@ -82,19 +82,22 @@ struct GameConfiguration
     i8 unk29[15];
     GameConfigOpts opts;
 };
+C_ASSERT(offsetof(GameConfiguration, lifeCount) == 0x1C);
+C_ASSERT(offsetof(GameConfiguration, slowMode) == 0x25);
 
 struct SupervisorFlags
 {
     u32 usingHardwareTL : 1;
-    u32 unk1 : 1; // Unconditionally set in InitD3DRendering. Never cleared?
+    u32 lockableBackbuffer : 1;
     u32 using32BitGraphics : 1;
     u32 speedhackDetected : 1; // Leftover from PCB. Is never set in IN, but is used.
     u32 d3dDevDisconnectFlag : 1;
     u32 unk5 : 1;
-    u32 unk6 : 1; // Set if LPTITLE is NULL in the startup info, which seems to never be true?
+    u32 dummyMidiTimerEnabled : 1;
     u32 receivedCloseMsg : 1;
-    u32 unk8 : 1;
+    u32 scoreBackupPending : 1;
 };
+C_ASSERT(sizeof(SupervisorFlags) == 0x4);
 
 enum SupervisorState
 {
@@ -112,6 +115,13 @@ enum SupervisorState
     SupervisorState_GameManagerRestartFromBeginning = 10,
     SupervisorState_SpellcardPracticeRestart = 11,
     SupervisorState_GameManagerNextStageWeird = 12,
+};
+
+enum SupervisorStartupThreadState
+{
+    SupervisorStartupThreadState_Idle = 0,
+    SupervisorStartupThreadState_Running = 1,
+    SupervisorStartupThreadState_Failed = 2,
 };
 
 /* This forward declaration is to prevent including AnmManager.hpp */
@@ -139,8 +149,8 @@ struct Supervisor
 
     ZunResult LoadConfig(char *configFile);
     ZunBool LoadMusic(int param_1, char *param_2);
-    ZunBool PlayMusic(int param_1, char *param_2);
-    ZunResult PlayAudio(char *path, int param_2);
+    ZunBool PlayMusic(i32 musicIndex, i32 bgmUnlockIndex);
+    ZunResult PlayAudio(char *path, i32 bgmUnlockIndex);
     ZunResult StopAudio();
     ZunBool IsSlowModeEnabled();
     ZunResult FadeOutMusic(float param_1);
@@ -148,7 +158,7 @@ struct Supervisor
     void ThreadClose();
     void SetupLoadingVms(Float3 *position);
     void HideLoadingVms(void);
-    void FUN_00448972();
+    void BeginLoadingCompletion();
     void SetupLoadingVmsAndInitCapture(Float3 *position);
     void StartEffect(i32 idx);
     void InitializeCriticalSections();
@@ -165,7 +175,7 @@ struct Supervisor
 
     void ResetUnknownStuff()
     {
-        this->unk0x338 = 0;
+        this->recordingFpsWarning = 0;
         this->unk0x340 = 0;
         this->unk0x34c = 0;
         this->unk0x344 = 0;
@@ -279,13 +289,13 @@ struct Supervisor
     i32 wantedState;
     i32 curState;
     i32 wantedState2;
-    i32 unk164;
-    i32 unk168;
-    i32 unk16c;
+    i32 isInitialStageLoad;
+    i32 releaseResourcesOnRestart;
+    i32 keepStageResources;
     i32 unk170;
-    i32 unk174; // Commonly set for screen transitions and decremented once per frame, but never actually used for
+    i32 screenTransitionCountdown; // Commonly set for screen transitions and decremented once per frame, but never actually used for
                 // anything
-    i32 unk178;
+    i32 suppressFpsDisplay;
     BOOL disableVsync;
     ZunBool couldSetRefreshRate;
     i32 lastFrameTime; // Unused in IN
@@ -293,7 +303,8 @@ struct Supervisor
     MidiOutput *midiOutput;
     float lagNumerator;
     float lagDenominator;
-    u32 unk198;
+    i16 recordedFps;
+    u16 padding19a;
     AnmLoaded *textAnm;
     AnmLoaded *loadingAnm;
     SupervisorFlags flags;
@@ -303,8 +314,8 @@ struct Supervisor
     HANDLE runningSubthreadHandle;
     DWORD runningSubthreadID;
     BOOL subthreadCloseRequestActive;
-    BOOL unk290;
-    u32 unk294;
+    BOOL subthreadActive;
+    SupervisorStartupThreadState startupThreadState;
     CRITICAL_SECTION criticalSections[4];
     u8 lockCounts[4];
     i32 loadingVmsHaveBeenSetup;
@@ -313,8 +324,8 @@ struct Supervisor
     u32 fpsPerformanceFrequency;
     unknown_fields(0x304, 0x34);
 
-    u32 unk0x338;
-    u32 unk0x33c;
+    u32 recordingFpsWarning;
+    u32 playbackFpsWarning;
     u32 unk0x340;
     u32 unk0x344;
     u32 unk0x348;
@@ -328,6 +339,18 @@ struct Supervisor
     char *versionData;
 };
 C_ASSERT(sizeof(Supervisor) == 0x364);
+C_ASSERT(offsetof(Supervisor, isInitialStageLoad) == 0x164);
+C_ASSERT(offsetof(Supervisor, releaseResourcesOnRestart) == 0x168);
+C_ASSERT(offsetof(Supervisor, keepStageResources) == 0x16c);
+C_ASSERT(offsetof(Supervisor, suppressFpsDisplay) == 0x178);
+C_ASSERT(offsetof(Supervisor, framerateMultiplier) == 0x188);
+C_ASSERT(offsetof(Supervisor, recordedFps) == 0x198);
+C_ASSERT(offsetof(Supervisor, flags) == 0x1a4);
+C_ASSERT(offsetof(Supervisor, loadingVmsHaveBeenSetup) == 0x2fc);
+C_ASSERT(offsetof(Supervisor, subthreadActive) == 0x290);
+C_ASSERT(offsetof(Supervisor, startupThreadState) == 0x294);
+C_ASSERT(offsetof(Supervisor, recordingFpsWarning) == 0x338);
+C_ASSERT(offsetof(Supervisor, playbackFpsWarning) == 0x33c);
 DIFFABLE_EXTERN(Supervisor, g_Supervisor);
 
 #define CRASH_GAME() memset(&g_Supervisor, -1, sizeof(g_Supervisor))
@@ -367,9 +390,9 @@ struct ZunTimer
         return this->current;
     }
 
-    ZunBool FUN_0040d3d0();
-    ZunBool FUN_0040e350(i32 value);
-    ZunBool FUN_0040ebc0(i32 interval);
+    ZunBool HasTicked();
+    ZunBool JustReached(i32 value);
+    ZunBool IsPeriodic(i32 interval);
 
     operator float()
     {

@@ -1,5 +1,7 @@
 #pragma once
 #include "Supervisor.hpp"
+
+#include <stddef.h>
 #include "ZunColor.hpp"
 #include "ZunMath.hpp"
 #include "ZunResult.hpp"
@@ -340,6 +342,7 @@ struct AnmVmBase
     ZunColor color2;
     union {
         u16 flags;
+        u32 flagsWord;
         struct
         {
             u32 visible : 1;
@@ -368,6 +371,10 @@ struct AnmVmBase
 };
 
 C_ASSERT(sizeof(AnmVmBase) == 0x208);
+C_ASSERT(offsetof(AnmVmBase, scale) == 0x18);
+C_ASSERT(offsetof(AnmVmBase, color1) == 0x1F0);
+C_ASSERT(offsetof(AnmVmBase, color2) == 0x1F4);
+C_ASSERT(offsetof(AnmVmBase, flagsWord) == 0x1F8);
 
 struct AnmVm : AnmVmBase
 {
@@ -411,12 +418,12 @@ struct AnmVm : AnmVmBase
         this->activeSpriteIndex = -1;
     }
 
-    u32 FUN_004396f8();
-    i32 FUN_0040eb50();
-    void FUN_0040ec30(i32 duration, i32 mode, Float3 *value0, Float3 *value1);
-    void FUN_0040eca0(i32 duration, i32 mode, u32 color0, u32 color1);
-    void FUN_0040ed50(i32 duration, i32 mode, i32 alpha0, i32 alpha1);
-    void FUN_0040eda0(i32 duration, i32 mode, Float2 *value0, Float2 *value1);
+    u32 IsStopped();
+    i32 UpdatePulsingRadialTrail();
+    void StartPositionInterpolation(i32 duration, i32 mode, Float3 *initial, Float3 *final);
+    void StartColor1RgbInterpolation(i32 duration, i32 mode, u32 initial, u32 final);
+    void StartColor1AlphaInterpolation(i32 duration, i32 mode, i32 initial, i32 final);
+    void StartScaleInterpolation(i32 duration, i32 mode, Float2 *initial, Float2 *final);
 
     f32 GetFloatVar(f32 varId);
     i32 GetIntVar(i32 varId);
@@ -425,6 +432,7 @@ struct AnmVm : AnmVmBase
 };
 
 C_ASSERT(sizeof(AnmVm) == 0x2a4);
+C_ASSERT(offsetof(AnmVm, pos) == 0x208);
 
 struct AnmLoaded
 {
@@ -505,20 +513,19 @@ struct AnmManager
     void ExecuteScriptArray(AnmVm *sprites, int count);
     void SetRenderStateForVm(AnmVm *vm);
     void SetRenderStateForVm3D(AnmVm *vm);
-    ZunResult FUN_004639e0(AnmVm *vm);
-    void FUN_00463d60(AnmVm *vm);
-    ZunResult FUN_004640e0(AnmVm *vm, void *callback);
+    ZunResult ProjectCameraFacingQuad(AnmVm *vm);
+    void Project3DQuad(AnmVm *vm);
+    ZunResult ProjectCameraFacingQuadWithCallback(AnmVm *vm, void *callback);
     ZunResult DrawInner(AnmVm *vm, i32 flags);
     ZunResult AddSpriteToDrawBuffer(VertexTex1DiffuseXyzrhw *vertices);
     ZunResult DrawNoRotation(AnmVm *vm);
-    ZunResult FUN_00463470(AnmVm *vm);
+    ZunResult Draw2DRotatedOrAxisAligned(AnmVm *vm);
     void TranslateRotation(VertexTex1DiffuseXyzrhw *vertex, float x, float y, float sine, float cosine, float xOffset,
                            float yOffset);
     ZunResult Draw2D(AnmVm *vm);
     void DrawPlayerBullet(AnmVm *vm);
-    ZunResult FUN_00463cf0(AnmVm *vm);
-    ZunResult FUN_00464070(AnmVm *vm);
-    ZunResult FUN_004649a0(AnmVm *vm, void *state, i32 count);
+    ZunResult DrawCameraFacingQuad(AnmVm *vm);
+    ZunResult DrawProjected3DQuad(AnmVm *vm);
     ZunResult DrawWithCallback(AnmVm *vm, void *callback);
     void SetCameraMode(i32 mode)
     {
@@ -532,9 +539,9 @@ struct AnmManager
     ZunResult DrawNoRotationNoRound(AnmVm *vm);
     ZunResult Draw3D(AnmVm *vm);
     ZunResult DrawVertices(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount);
-    ZunResult FUN_004649a0(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount);
-    ZunResult FUN_00464b00(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount);
-    ZunResult FUN_00464dd0(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices);
+    ZunResult InitializeHorizontalTextureStrip(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount);
+    ZunResult InitializeVerticalTextureStrip(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices, i32 vertexCount);
+    ZunResult QueueSpriteQuad(AnmVm *vm, VertexTex1DiffuseXyzrhw *vertices);
     ZunResult DrawTriangleFan(AnmVm *vm, VertexDiffuseXyzrhw *vertices, i32 vertexCount);
     ZunResult CreateTextureFromFile(AnmEntry *entry, i32 format, i32 colorKey);
     ZunResult CreateTextureFromAnm(IDirect3DTexture8 **outTexture, AnmTextureHeader *textureData, i32 format);
@@ -766,6 +773,7 @@ struct AnmManager
     i32 surfaceCaptureDstH;
 };
 C_ASSERT(sizeof(AnmManager) == 0x2a2570);
+C_ASSERT(offsetof(AnmManager, currentTextureFactor) == 0x24B8);
 
 DIFFABLE_EXTERN(AnmManager *, g_AnmManager);
 

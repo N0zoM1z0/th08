@@ -15,9 +15,6 @@
 namespace th08
 {
 
-// Placeholder for the unledgered global AnmLoaded* observed at 0x00577eb4.
-DIFFABLE_STATIC(AnmLoaded *, g_AsciiManagerDemoAnm0577EB4);
-
 namespace EclOperands
 {
 struct Vector3
@@ -109,15 +106,6 @@ enum
     RETRY_MENU_STATE_EXIT_TO_TITLE = 4,
 };
 
-// Recovered target 0x00439916; /Gr makes this fastcall in this TU.
-i32 FUN_00439916(i32 unused);
-
-struct PauseRetryShtFileView
-{
-    unknown_fields(0x0, 4);
-    f32 bombCount;
-};
-
 // FUNCTION: th08 0x402000
 AsciiManager::AsciiManager()
 {
@@ -194,7 +182,7 @@ ChainCallbackResult AsciiManager::OnUpdate(AsciiManager *ascii)
         ascii->retryMenu.OnUpdate();
     }
 
-    ascii->FUN_00406fd0();
+    ascii->UpdateVms();
     if (g_GameManager.IsDemoMode())
     {
         if (ascii->demoIcon.scriptIndex == 0)
@@ -207,7 +195,7 @@ ChainCallbackResult AsciiManager::OnUpdate(AsciiManager *ascii)
     {
         ascii->demoIcon.scriptIndex = 0;
     }
-    ascii->unk_8284++;
+    ascii->frameTimer++;
 
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
@@ -293,18 +281,18 @@ ZunResult AsciiManager::RegisterChain()
     g_AsciiManagerCalcChain.addedCallback = (ChainLifetimeCallback)AsciiManager::AddedCallback;
     g_AsciiManagerCalcChain.deletedCallback = (ChainLifetimeCallback)AsciiManager::DeletedCallback;
     g_AsciiManagerCalcChain.arg = ascii;
-    if (g_Chain.AddToCalcChain(&g_AsciiManagerCalcChain, 1) != ZUN_SUCCESS)
+    if (g_Chain.AddToCalcChain(&g_AsciiManagerCalcChain, CHAIN_PRIO_CALC_ASCIIMANAGER) != ZUN_SUCCESS)
     {
         return ZUN_ERROR;
     }
 
     g_AsciiManagerDrawChainLowPrio.SetCallback((ChainCallback)AsciiManager::OnDrawLowPrio);
     g_AsciiManagerDrawChainLowPrio.arg = ascii;
-    g_Chain.AddToDrawChain(&g_AsciiManagerDrawChainLowPrio, 20);
+    g_Chain.AddToDrawChain(&g_AsciiManagerDrawChainLowPrio, CHAIN_PRIO_DRAW_ASCIIMANAGER_LOW_PRIO);
 
     g_AsciiManagerDrawChainHighPrio.SetCallback((ChainCallback)AsciiManager::OnDrawHighPrio);
     g_AsciiManagerDrawChainHighPrio.arg = ascii;
-    g_Chain.AddToDrawChain(&g_AsciiManagerDrawChainHighPrio, 14);
+    g_Chain.AddToDrawChain(&g_AsciiManagerDrawChainHighPrio, CHAIN_PRIO_DRAW_ASCIIMANAGER_HIGH_PRIO);
 
     return ZUN_SUCCESS;
 }
@@ -528,7 +516,7 @@ void AsciiManager::OnDrawLowPrioImpl()
                 this->bossMarkers[i].color1.b = 64;
                 break;
             case 2:
-                if (this->unk_8284 % 8 == 0)
+                if (this->frameTimer % 8 == 0)
                 {
                     this->bossMarkers[i].loadedSprite = this->asciiAnm->GetSprite(158);
                     this->bossMarkers[i].color1.a = 255;
@@ -542,7 +530,7 @@ void AsciiManager::OnDrawLowPrioImpl()
                 }
                 break;
             case 3:
-                if (this->unk_8284 % 4 == 0)
+                if (this->frameTimer % 4 == 0)
                 {
                     this->bossMarkers[i].loadedSprite = this->asciiAnm->GetSprite(158);
                     this->bossMarkers[i].color1.a = 255;
@@ -556,7 +544,7 @@ void AsciiManager::OnDrawLowPrioImpl()
                 }
                 break;
             case 4:
-                if (this->unk_8284 % 2 == 0)
+                if (this->frameTimer % 2 == 0)
                 {
                     this->bossMarkers[i].loadedSprite = this->asciiAnm->GetSprite(158);
                     this->bossMarkers[i].color1.a = 255;
@@ -871,7 +859,7 @@ i32 PauseMenu::OnUpdate()
         this->curState++;
         this->numFrames = 0;
 
-        if (g_Supervisor.flags.unk1)
+        if (g_Supervisor.flags.lockableBackbuffer)
         {
             g_AsciiManager.captureAnm->SetAndExecuteScriptIdx(&this->menuBackground, CAPTURE_SCRIPT_MENU_BACKGROUND);
 
@@ -1152,7 +1140,7 @@ i32 PauseMenu::OnUpdate()
             g_GameManager.isInGameMenu = FALSE;
             g_Supervisor.systemTime = timeGetTime();
 
-            ResultScreen::RegisterChain(2);
+            ResultScreen::RegisterChain(RESULT_SCREEN_REGISTER_SAVE_DATA);
         }
         break;
     case PAUSE_MENU_STATE_RESTART_GAME:
@@ -1167,7 +1155,8 @@ i32 PauseMenu::OnUpdate()
             }
             else
             {
-                if (g_GameManager.IsSpellPractice() && !FUN_00439916(g_GameManager.currentSpellCardNumber))
+                if (g_GameManager.IsSpellPractice() &&
+                    !GameManager::ShouldPauseMusicInSpellPractice(g_GameManager.currentSpellCardNumber))
                 {
                     g_SoundPlayer.UnPause();
                     g_SoundPlayer.FadeIn(2.0f);
@@ -1179,7 +1168,7 @@ i32 PauseMenu::OnUpdate()
 
                 g_Supervisor.curState = SupervisorState_SpellcardPracticeRestart;
 
-                g_Gui.FUN_00438f58();
+                g_Gui.CaptureArcade();
 
                 g_GameManager.isInGameMenu = FALSE;
                 g_Supervisor.systemTime = timeGetTime();
@@ -1195,7 +1184,7 @@ i32 PauseMenu::OnUpdate()
         g_AnmManager->ExecuteScript(&this->menuSprites[i]);
     }
 
-    if (g_Supervisor.flags.unk1)
+    if (g_Supervisor.flags.lockableBackbuffer)
     {
         g_AnmManager->ExecuteScript(&this->menuBackground);
     }
@@ -1278,14 +1267,15 @@ i32 RetryMenu::OnUpdate()
                 }
                 else
                 {
-                    g_GameManager.flags.unk4 = FALSE;
+                    g_GameManager.flags.gameCleared = FALSE;
                     g_Supervisor.curState = SupervisorState_Ending;
                 }
 
                 return 1;
             }
 
-            if (g_GameManager.IsSpellPractice() && !FUN_00439916(g_GameManager.currentSpellCardNumber))
+            if (g_GameManager.IsSpellPractice() &&
+                !GameManager::ShouldPauseMusicInSpellPractice(g_GameManager.currentSpellCardNumber))
             {
                 g_SoundPlayer.PartialFadeOut(1.0f);
             }
@@ -1303,7 +1293,7 @@ i32 RetryMenu::OnUpdate()
             g_Gui.timesAnm->SetAndExecuteScriptIdx(&this->menuSprites[RETRY_SPRITE_CLOCKTIME], 1);
             g_Gui.timesAnm->SetSprite(&this->menuSprites[RETRY_SPRITE_CLOCKTIME], (i8)g_GameManager.GetClockTime());
 
-            if (g_Supervisor.flags.unk1)
+            if (g_Supervisor.flags.lockableBackbuffer)
             {
                 g_AsciiManager.captureAnm->SetAndExecuteScriptIdx(&this->menuBackground, 0);
 
@@ -1384,8 +1374,8 @@ i32 RetryMenu::OnUpdate()
                 }
                 else
                 {
-                    if (g_GameManager.IsSpellPractice()
-                        && !FUN_00439916(g_GameManager.currentSpellCardNumber))
+                    if (g_GameManager.IsSpellPractice() &&
+                        !GameManager::ShouldPauseMusicInSpellPractice(g_GameManager.currentSpellCardNumber))
                     {
                         g_GameManager.showRetryMenu = FALSE;
                         g_SoundPlayer.UnPause();
@@ -1397,7 +1387,7 @@ i32 RetryMenu::OnUpdate()
                     }
 
                     g_Supervisor.curState = SupervisorState_SpellcardPracticeRestart;
-                    g_Gui.FUN_00438f58();
+                    g_Gui.CaptureArcade();
                     g_GameManager.showRetryMenu = FALSE;
                     g_Supervisor.systemTime = timeGetTime();
 
@@ -1490,12 +1480,12 @@ selected_no:
             // multiple of 10, so the last digit of your score is the number
             // of continues/retries used.
             g_GameManager.globals->displayScore = g_GameManager.globals->numRetries;
-            g_GameManager.globals->unk0x10 = 0;
+            g_GameManager.globals->scoreDisplayStep = 0;
             g_GameManager.globals->score = g_GameManager.globals->displayScore;
 
             g_GameManager.SetLives(g_GameManager.cfg->lifeCount);
 
-            g_GameManager.SetBombCount(reinterpret_cast<PauseRetryShtFileView *>(g_Player.primaryShtFile)->bombCount);
+            g_GameManager.SetBombCount(g_Player.primaryShtFile->initialBombCount);
 
             g_GameManager.globals->grazeInStage = 0;
             g_GameManager.globals->pointItemsCollectedInStage = 0;
@@ -1506,7 +1496,7 @@ selected_no:
             g_GameManager.globals->pointItemExtendsSoFar = 0;
             g_GameManager.globals->nextPointItemExtendThreshold = 100;
 
-            g_Supervisor.unk174 = 8;
+            g_Supervisor.screenTransitionCountdown = 8;
 
             IncrementIfBelow(&g_GameManager.plst.playData[g_GameManager.difficulty].attemptsTotal, 999999);
             IncrementIfBelow(&g_GameManager.plst.playData[MAX_DIFFICULTIES + 1].attemptsTotal, 999999);
@@ -1529,7 +1519,7 @@ selected_no:
         g_AnmManager->ExecuteScript(&this->menuSprites[i]);
     }
 
-    if (g_Supervisor.flags.unk1)
+    if (g_Supervisor.flags.lockableBackbuffer)
     {
         g_AnmManager->ExecuteScript(&this->menuBackground);
     }
@@ -1647,23 +1637,23 @@ void AsciiManager::OnDrawHighPrioImpl()
         }
     }
 
-    if (this->unk_16f08 > 0)
+    if (this->nightBlindnessAlpha > 0)
     {
-        alphaColor.a = this->unk_16f08;
+        alphaColor.a = this->nightBlindnessAlpha;
         alphaColor.r = 0;
         alphaColor.g = 0;
         alphaColor.b = 0;
 
         rect.left = 32.0f;
         rect.top = 16.0f;
-        rect.right = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f - this->unk_16f04 + g_AnmManager->screenShakeOffset.x;
+        rect.right = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f - this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.x;
         rect.bottom = 464.0f;
         if (rect.right > rect.left)
         {
             ScreenEffect::DrawSquare(&rect, alphaColor.d3dColor);
         }
 
-        rect.left = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f + this->unk_16f04 + g_AnmManager->screenShakeOffset.x;
+        rect.left = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f + this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.x;
         rect.top = 16.0f;
         rect.right = 416.0f;
         rect.bottom = 464.0f;
@@ -1672,38 +1662,38 @@ void AsciiManager::OnDrawHighPrioImpl()
             ScreenEffect::DrawSquare(&rect, alphaColor.d3dColor);
         }
 
-        rect.left = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f - this->unk_16f04 + g_AnmManager->screenShakeOffset.x;
+        rect.left = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f - this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.x;
         if (rect.left < 32.0f)
         {
             rect.left = 32.0f;
         }
         rect.top = 16.0f;
-        rect.right = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f + this->unk_16f04 + g_AnmManager->screenShakeOffset.x;
+        rect.right = EclOperands::g_TargetPlayerPosition017D61AC.x + 32.0f + this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.x;
         if (rect.right > 416.0f)
         {
             rect.right = 416.0f;
         }
-        rect.bottom = EclOperands::g_TargetPlayerPosition017D61AC.y + 16.0f - this->unk_16f04 + g_AnmManager->screenShakeOffset.y;
+        rect.bottom = EclOperands::g_TargetPlayerPosition017D61AC.y + 16.0f - this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.y;
         if (rect.bottom > rect.top)
         {
             ScreenEffect::DrawSquare(&rect, alphaColor.d3dColor);
         }
 
-        rect.top = EclOperands::g_TargetPlayerPosition017D61AC.y + 16.0f + this->unk_16f04 + g_AnmManager->screenShakeOffset.y;
+        rect.top = EclOperands::g_TargetPlayerPosition017D61AC.y + 16.0f + this->nightBlindnessRadius + g_AnmManager->screenShakeOffset.y;
         rect.bottom = 464.0f;
         if (rect.bottom > rect.top)
         {
             ScreenEffect::DrawSquare(&rect, alphaColor.d3dColor);
         }
 
-        g_AsciiManagerDemoAnm0577EB4->SetAndExecuteScriptIdx(&this->unk_16f0c, 105);
-        this->unk_16f0c.scale.y = this->unk_16f04 / 63.0f;
-        this->unk_16f0c.scale.x = this->unk_16f0c.scale.y;
-        this->unk_16f0c.pos = *(Float3 *)&EclOperands::g_TargetPlayerPosition017D61AC;
-        this->unk_16f0c.pos.x += 32.0f;
-        this->unk_16f0c.pos.y += 16.0f;
-        this->unk_16f0c.color1.a = this->unk_16f08;
-        g_AnmManager->DrawNoRotation(&this->unk_16f0c);
+        g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&this->nightBlindnessVm, 105);
+        this->nightBlindnessVm.scale.y = this->nightBlindnessRadius / 63.0f;
+        this->nightBlindnessVm.scale.x = this->nightBlindnessVm.scale.y;
+        this->nightBlindnessVm.pos = *(Float3 *)&EclOperands::g_TargetPlayerPosition017D61AC;
+        this->nightBlindnessVm.pos.x += 32.0f;
+        this->nightBlindnessVm.pos.y += 16.0f;
+        this->nightBlindnessVm.color1.a = this->nightBlindnessAlpha;
+        g_AnmManager->DrawNoRotation(&this->nightBlindnessVm);
     }
 
     popup = this->timePopups;
@@ -1756,7 +1746,7 @@ void AsciiManager::OnDrawHighPrioImpl()
     {
         this->youkaiGaugeCursor.pos.x =
             (f32)g_GameManager.GetYoukaiGauge() * 112.0f / 2.0f / 10000.0f + this->youkaiGauge.pos.x + 64.0f;
-        g_AnmManager->FUN_00463470(&this->youkaiGaugeCursor);
+        g_AnmManager->Draw2DRotatedOrAxisAligned(&this->youkaiGaugeCursor);
 
         this->percentageText.pos.x =
             (f32)g_GameManager.GetYoukaiGauge() * 80.0f / 2.0f / 10000.0f + this->youkaiGauge.pos.x + 64.0f;

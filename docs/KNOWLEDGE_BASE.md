@@ -11,6 +11,7 @@ before repeating target analysis or compiler-shape probes.
 | Target identity, sections, inventory classes, repository layout | [ARCHITECTURE.md](ARCHITECTURE.md) | Stable project facts and evidence boundaries. |
 | Current milestone, deferred work, next bounded lane | [RE_HANDOFF.md](RE_HANDOFF.md) | Short, replaceable current state only. |
 | Evidence ranking and reconstruction loop | [RE_WORKFLOW.md](RE_WORKFLOW.md) | Durable operating method and acceptance language. |
+| Semantic field/type recovery and two-oracle acceptance | [SEMANTIC_RECONSTRUCTION.md](SEMANTIC_RECONSTRUCTION.md) | Evidence classes, bounded batch format, typed-layout rules, and VC7/portable validation matrix. |
 | Command selection and scratch lifecycle | [TOOLS.md](TOOLS.md) | Public entry points, copyable recipes, and tool limits. |
 | Exact authored totals | [PROGRESS.md](PROGRESS.md) and `config/matches.csv` | Generated totals and accepted per-address evidence. |
 | Target mappings and types | `config/mapping.csv`, `config/reccmp-*.csv` | Imported/reconciled leads; mapping alone is not exactness. |
@@ -38,11 +39,12 @@ before repeating target analysis or compiler-shape probes.
 | Translation-unit partition candidates | `scripts/analysis/report-tu-partition-candidates.py` | Deterministic ranking by target-order inversions/drift jumps, plus bounded per-object anchor details. This is routing evidence, not a boundary claim. |
 | Library candidate discovery | `scripts/analysis/propose-library-units.py` | Conservative review queue from one pinned archive; candidate status is not exact acceptance and must be promoted through an explicit unit plus `compare-library.py`. |
 | Stale object/PCH exact-state failures | Search `BUILD_MATCHING.md` for `cold-build` | Why focused historical successes cannot be promoted to a current aggregate without a cold full replay. |
+| Raw offsets, anonymous fields, and semantic naming | [SEMANTIC_RECONSTRUCTION.md](SEMANTIC_RECONSTRUCTION.md), `$th08-semantic`, then `scripts/analysis/report-semantic-debt.py` | Candidate scans are routing only. Accept one field family from target evidence plus applicable VC7 and portable oracle results. |
 
 Fast lookup recipes:
 
 ```bash
-rg -n "0x004526C0|OnUpdateHighPrioDemo2" docs config src
+rg -n "0x004526C0|PlaybackExtendedInputAndFps" docs config src
 rg -n "compare_size|COMDAT|DIR32|REL32" docs/BUILD_MATCHING.md
 rg -n "pragma var_order|frame|stack home" docs/VC7_ZUN_PATTERNS.md
 rg -n "cold-build|stale object|aggregate exact" docs/BUILD_MATCHING.md docs/RE_WORKFLOW.md
@@ -325,7 +327,7 @@ reset without changing function behavior. Necessary forward declarations are
 preferable to wrappers when an earlier caller now precedes a file-local helper.
 
 That residual also refines the inline-ownership rule.
-`AnmVm::FUN_004396f8 @ 0x004396F8` had the correct production owner (`Gui.obj`)
+`AnmVm::IsStopped @ 0x004396F8` had the correct production owner (`Gui.obj`)
 but header visibility forced VC7 to emit it at first use. Its production caller
 set is Gui-only, while two exact PlayerOption probe callers prove real REL32
 call boundaries. Converting the header body to a declaration and placing the

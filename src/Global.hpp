@@ -6,6 +6,7 @@
 #include "pbg/PbgArchive.hpp"
 #include "utils.hpp"
 #include <d3dx8.h>
+#include <stddef.h>
 #include <windows.h>
 
 namespace th08
@@ -46,7 +47,54 @@ enum ChainCallbackResult
 typedef ChainCallbackResult (*ChainCallback)(void *);
 typedef ZunResult (*ChainLifetimeCallback)(void *);
 
-// TODO: rename to funcChainInf
+enum ChainCalcPriority
+{
+    CHAIN_PRIO_CALC_SUPERVISOR = 0,
+    CHAIN_PRIO_CALC_ASCIIMANAGER = 1,
+    CHAIN_PRIO_CALC_GAMEMANAGER = 2,
+    CHAIN_PRIO_CALC_SCREENEFFECT = 3,
+    CHAIN_PRIO_CALC_TITLESCREEN = 4,
+    CHAIN_PRIO_CALC_MUSICROOM = 4,
+    CHAIN_PRIO_CALC_ENDING = 5,
+    CHAIN_PRIO_CALC_REPLAYMANAGER_PLAYBACK_HIGH_PRIO = 6,
+    CHAIN_PRIO_CALC_REPLAYMANAGER_LOW_PRIO = 7,
+    CHAIN_PRIO_CALC_BACKGROUND = 8,
+    CHAIN_PRIO_CALC_PLAYER = 9,
+    CHAIN_PRIO_CALC_ENEMYMANAGER = 11,
+    CHAIN_PRIO_CALC_SPELLCARD = 12,
+    CHAIN_PRIO_CALC_EFFECTMANAGER = 13,
+    CHAIN_PRIO_CALC_BULLETMANAGER = 14,
+    CHAIN_PRIO_CALC_GUI = 15,
+    CHAIN_PRIO_CALC_RESULTSCREEN = 16,
+    CHAIN_PRIO_CALC_REPLAYMANAGER_RECORD_HIGH_PRIO = 17,
+    CHAIN_PRIO_CALC_REPLAYMANAGER_SKIP_FRAMES = 18,
+};
+
+enum ChainDrawPriority
+{
+    CHAIN_PRIO_DRAW_SUPERVISOR = 0,
+    CHAIN_PRIO_DRAW_SUPERVISOR_LOADING_VMS = 2,
+    CHAIN_PRIO_DRAW_MUSICROOM = 3,
+    CHAIN_PRIO_DRAW_TITLESCREEN = 3,
+    CHAIN_PRIO_DRAW_ENDING = 4,
+    CHAIN_PRIO_DRAW_GAMEMANAGER = 5,
+    CHAIN_PRIO_DRAW_BACKGROUND_HIGH_PRIO = 6,
+    CHAIN_PRIO_DRAW_BACKGROUND_LOW_PRIO = 7,
+    CHAIN_PRIO_DRAW_ENEMYMANAGER_HIGH_PRIO = 8,
+    CHAIN_PRIO_DRAW_PLAYER_HIGH_PRIO = 9,
+    CHAIN_PRIO_DRAW_PLAYER_LOW_PRIO = 10,
+    CHAIN_PRIO_DRAW_ENEMYMANAGER_LOW_PRIO = 11,
+    CHAIN_PRIO_DRAW_EFFECTMANAGER = 12,
+    CHAIN_PRIO_DRAW_BULLETMANAGER = 13,
+    CHAIN_PRIO_DRAW_ASCIIMANAGER_HIGH_PRIO = 14,
+    CHAIN_PRIO_DRAW_SPELLCARD = 15,
+    CHAIN_PRIO_DRAW_SUPERVISOR_DRAW_FPS_COUNTER = 16,
+    CHAIN_PRIO_DRAW_GUI = 17,
+    CHAIN_PRIO_DRAW_RESULTSCREEN = 18,
+    CHAIN_PRIO_DRAW_ASCIIMANAGER_LOW_PRIO = 20,
+    CHAIN_PRIO_DRAW_SCREENEFFECT = 21,
+};
+
 class ChainElem
 {
   public:
@@ -67,9 +115,11 @@ class ChainElem
     ChainLifetimeCallback deletedCallback;
     struct ChainElem *prev;
     struct ChainElem *next;
-    struct ChainElem *unkPtr;
+    struct ChainElem *releaseTarget;
     void *arg;
 };
+C_ASSERT(sizeof(ChainElem) == 0x20);
+C_ASSERT(offsetof(ChainElem, releaseTarget) == 0x18);
 
 class Chain
 {
@@ -196,6 +246,16 @@ class Rng
     void SetSeed(u16 newSeed);
     u16 GetSeed();
 
+    void SaveSeed()
+    {
+        this->seedBackup = this->seed;
+    }
+
+    void RestoreSavedSeed()
+    {
+        this->seed = this->seedBackup;
+    }
+
     u16 GetRandomU16InRange(u16 range)
     {
         return range != 0 ? GetRandomU16() % range : 0;
@@ -307,7 +367,7 @@ struct ZunGlobals
     i32 grazeInStage;
     u32 score;
     i32 graze;
-    i32 unk0x10;
+    i32 scoreDisplayStep;
     u32 displayedHighScore;
     u8 continuesUsedInHighScore;
     /* 3 bytes pad */
@@ -345,6 +405,31 @@ struct ZunGlobals
 };
 
 C_ASSERT(sizeof(ZunGlobals) == 0xe4);
+C_ASSERT(offsetof(ZunGlobals, displayScore) == 0x0);
+C_ASSERT(offsetof(ZunGlobals, grazeInStage) == 0x4);
+C_ASSERT(offsetof(ZunGlobals, score) == 0x8);
+C_ASSERT(offsetof(ZunGlobals, graze) == 0xC);
+C_ASSERT(offsetof(ZunGlobals, scoreDisplayStep) == 0x10);
+C_ASSERT(offsetof(ZunGlobals, displayedHighScore) == 0x14);
+C_ASSERT(offsetof(ZunGlobals, spellcardsCaptured) == 0x1C);
+C_ASSERT(offsetof(ZunGlobals, youkaiGaugeCopy) == 0x20);
+C_ASSERT(offsetof(ZunGlobals, youkaiGauge) == 0x22);
+C_ASSERT(offsetof(ZunGlobals, pointItemValue) == 0x24);
+C_ASSERT(offsetof(ZunGlobals, clockTime) == 0x28);
+C_ASSERT(offsetof(ZunGlobals, numRetries) == 0x29);
+C_ASSERT(offsetof(ZunGlobals, pointItemsCollectedInStage) == 0x2C);
+C_ASSERT(offsetof(ZunGlobals, pointItemsCollected) == 0x30);
+C_ASSERT(offsetof(ZunGlobals, pointItemExtendsSoFar) == 0x34);
+C_ASSERT(offsetof(ZunGlobals, currentTimeOrbs) == 0x3C);
+C_ASSERT(offsetof(ZunGlobals, lastSpellTimeOrbThreshold) == 0x40);
+C_ASSERT(offsetof(ZunGlobals, totalTimeOrbs) == 0x44);
+C_ASSERT(offsetof(ZunGlobals, deaths) == 0x64);
+C_ASSERT(offsetof(ZunGlobals, deathInStage) == 0x68);
+C_ASSERT(offsetof(ZunGlobals, livesRemaining) == 0x74);
+C_ASSERT(offsetof(ZunGlobals, bombsRemaining) == 0x80);
+C_ASSERT(offsetof(ZunGlobals, bombsUsed) == 0x84);
+C_ASSERT(offsetof(ZunGlobals, bombsUsedInStage) == 0x88);
+C_ASSERT(offsetof(ZunGlobals, playerPower) == 0x98);
 
 DIFFABLE_EXTERN(Rng, g_Rng);
 DIFFABLE_EXTERN(u16, g_CurFrameInput);

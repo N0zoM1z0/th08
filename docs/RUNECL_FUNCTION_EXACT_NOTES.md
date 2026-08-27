@@ -253,7 +253,7 @@ than an opcode-127-local expression problem.
 ## Opcode 87: a hidden float temporary is the RunEcl frame-size hinge
 
 The decisive frame mismatch was not caused by the tail.  Target opcode 87
-performs `if (enemyTable[ReadInt(2)])` directly, then assigns a conditional
+performs `if (bosses[ReadInt(2)])` directly, then assigns a conditional
 float expression straight into `*WriteFloat(...)`.  This makes VC7 allocate a
 hidden float result home at `[ebp-0x370]` after the two existing integer
 resolver homes at `-0x368/-0x36C`.
@@ -268,10 +268,11 @@ home bytes.
 Target-faithful source shape:
 
 ```cpp
-if (g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)])
+if (g_EnemyManager.bosses[ReadInt(enemy, instruction, 2)])
     *WriteFloat(enemy, instruction, 0) =
         (instruction->operandFlags & 2U)
-            ? g_EclEnemyTableF54CC0[ReadInt(enemy, instruction, 2)]
+            ? reinterpret_cast<EclOperands::EnemyOverlay *>(
+                  g_EnemyManager.bosses[ReadInt(enemy, instruction, 2)])
                   ->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 1));
 ```
@@ -523,7 +524,7 @@ another opcode-local source-shape fact, not a global raw-float rule.
 ## Opcode 140: all three vector components use explicit raw-dword branches
 
 Opcode 140 constructs a local `Float3` from operands 3, 4, and 5 before calling
-`SpawnEffectAngle`. The target unresolved branches for all three components copy
+`SpawnEffectWithVelocity`. The target unresolved branches for all three components copy
 the raw operand dword into the compiler float result homes with integer moves;
 the resolved branches still call `ResolveFloat` and store the x87 result.
 
@@ -731,7 +732,7 @@ byte-exact and rotates opcode 157 into its target ECX/EDX/EAX phase.
 Opcode 157's final call is also owned by the real animation manager, not the
 RunEcl/EclManager provisional adapter.  Target 0x4649A0 is a thiscall with ECX
 =`g_AnmManager`, three stack arguments, and `ret 0x0C`; declare it as
-`AnmManager::FUN_004649a0(AnmVm *, void *, i32)` and call it through
+`AnmManager::InitializeHorizontalTextureStrip(AnmVm *, void *, i32)` and call it through
 `g_AnmManager`.
 
 The complete trio keeps function/code extents and all handler span deltas at

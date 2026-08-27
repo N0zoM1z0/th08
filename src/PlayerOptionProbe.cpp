@@ -20,15 +20,15 @@ namespace th08
 {
 
 // Claim-safe exact owners for the in-progress Player TU.
-i32 __fastcall FUN_0044ee70(Player *player, PlayerOptionState *option)
+i32 __fastcall UpdateModeSensitiveOrbitingOption(Player *player, PlayerOptionState *option)
 {
     Float3 desired;
 
-    switch (option->state2C8)
+    switch (option->lifecycleState)
     {
-    case 1:
+    case PLAYER_OPTION_INITIALIZING:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 24);
-        option->state2C8 = 2;
+        option->lifecycleState = PLAYER_OPTION_ACTIVE;
         option->target = player->position;
         switch (option->optionIndex)
         {
@@ -56,7 +56,7 @@ i32 __fastcall FUN_0044ee70(Player *player, PlayerOptionState *option)
             break;
         }
         // Fall through into the orbit update.
-    case 2:
+    case PLAYER_OPTION_ACTIVE:
         if (option->timer > 12)
         {
             switch (option->optionIndex)
@@ -80,7 +80,7 @@ i32 __fastcall FUN_0044ee70(Player *player, PlayerOptionState *option)
 
         option->vm.color1.d3dColor = 0xFFFF8080;
         option->position.FromAngleMagnitude(option->orbitAngle, 8.0f);
-        if (player->optionModeFlag == 0)
+        if (player->focusMode == PLAYER_FOCUS_MODE_UNFOCUSED)
         {
             desired = player->position;
             option->vm.color1.d3dColor = 0xFF80FFFF;
@@ -113,12 +113,12 @@ i32 __fastcall FUN_0044ee70(Player *player, PlayerOptionState *option)
             47, reinterpret_cast<D3DXVECTOR3 *>(&option->position), 1, 0x80602050);
         break;
 
-    case 3:
+    case PLAYER_OPTION_EXITING:
         if (option->timer == 0)
             option->vm.SetInterrupt(5);
         if (option->timer > 16)
         {
-            option->state2C8 = 0;
+            option->lifecycleState = PLAYER_OPTION_INACTIVE;
             option->updateCallback = NULL;
             option->renderCallback = NULL;
         }
@@ -128,24 +128,24 @@ i32 __fastcall FUN_0044ee70(Player *player, PlayerOptionState *option)
 }
 
 #pragma var_order(angleDifference, targetAngle)
-i32 __fastcall FUN_0044f2d0(Player *player, PlayerOptionState *option)
+i32 __fastcall UpdateFacingTrailOption(Player *player, PlayerOptionState *option)
 {
     f32 targetAngle;
     f32 angleDifference;
 
-    switch (option->state2C8)
+    switch (option->lifecycleState)
     {
-    case 1:
+    case PLAYER_OPTION_INITIALIZING:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 21);
-        option->state2C8 = 2;
-        option->target = player->vectors2CC[15];
+        option->lifecycleState = PLAYER_OPTION_ACTIVE;
+        option->target = player->positionHistory[15];
         option->orbitAngle = 0.0f;
         option->facingAngle = -ZUN_PI / 2.0f;
         // Fall through into the normal update.
-    case 2:
+    case PLAYER_OPTION_ACTIVE:
         option->orbitAngle = AddNormalizeAngle(option->orbitAngle, 0.052359879016876221f);
         option->position.FromAngleMagnitude(option->orbitAngle, 8.0f);
-        option->target = (player->vectors2CC[15] - option->target) * 0.05f + option->target;
+        option->target = (player->positionHistory[15] - option->target) * 0.05f + option->target;
         option->position += option->target;
         option->position.z = 0.0f;
         g_EffectManager.SpawnEffect(
@@ -153,30 +153,30 @@ i32 __fastcall FUN_0044f2d0(Player *player, PlayerOptionState *option)
 
         switch (player->movementDirection)
         {
-        case 0:
+        case PLAYER_DIRECTION_NONE:
             goto optionUpdateDone;
-        case 1:
+        case PLAYER_DIRECTION_UP:
             targetAngle = ZUN_PI / 2.0f;
             break;
-        case 2:
+        case PLAYER_DIRECTION_DOWN:
             targetAngle = -ZUN_PI / 2.0f;
             break;
-        case 3:
+        case PLAYER_DIRECTION_LEFT:
             targetAngle = 0.0f;
             break;
-        case 4:
+        case PLAYER_DIRECTION_RIGHT:
             targetAngle = ZUN_PI;
             break;
-        case 5:
+        case PLAYER_DIRECTION_UP_LEFT:
             targetAngle = ZUN_PI / 4.0f;
             break;
-        case 6:
+        case PLAYER_DIRECTION_UP_RIGHT:
             targetAngle = 3.0f * ZUN_PI / 4.0f;
             break;
-        case 7:
+        case PLAYER_DIRECTION_DOWN_LEFT:
             targetAngle = -ZUN_PI / 4.0f;
             break;
-        case 8:
+        case PLAYER_DIRECTION_DOWN_RIGHT:
             targetAngle = -3.0f * ZUN_PI / 4.0f;
             break;
         default:
@@ -201,12 +201,12 @@ i32 __fastcall FUN_0044f2d0(Player *player, PlayerOptionState *option)
 optionUpdateDone:
         break;
 
-    case 3:
+    case PLAYER_OPTION_EXITING:
         if (option->timer == 0)
             option->vm.SetInterrupt(5);
         if (option->timer > 16)
         {
-            option->state2C8 = 0;
+            option->lifecycleState = PLAYER_OPTION_INACTIVE;
             option->updateCallback = NULL;
             option->renderCallback = NULL;
         }
@@ -217,57 +217,57 @@ optionUpdateDone:
 
 
 #pragma var_order(angleDifference, targetAngle)
-i32 __fastcall FUN_0044f5e0(Player *player, PlayerOptionState *option)
+i32 __fastcall UpdateModeSensitiveFacingOption(Player *player, PlayerOptionState *option)
 {
     f32 targetAngle;
     f32 angleDifference;
 
-    switch (option->state2C8)
+    switch (option->lifecycleState)
     {
-    case 1:
+    case PLAYER_OPTION_INITIALIZING:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 21);
-        option->state2C8 = 2;
-        option->target = player->vectors2CC[15];
+        option->lifecycleState = PLAYER_OPTION_ACTIVE;
+        option->target = player->positionHistory[15];
         option->orbitAngle = 0.0f;
         option->facingAngle = -ZUN_PI / 2.0f;
         // Fall through into the normal update.
-    case 2:
+    case PLAYER_OPTION_ACTIVE:
         option->orbitAngle = AddNormalizeAngle(option->orbitAngle, 0.052359879016876221f);
         option->position.FromAngleMagnitude(option->orbitAngle, 8.0f);
-        option->target = (player->vectors2CC[15] - option->target) * 0.05f + option->target;
+        option->target = (player->positionHistory[15] - option->target) * 0.05f + option->target;
         option->position += option->target;
         option->position.z = 0.0f;
         option->vm.color1.d3dColor = 0xFFFF8080;
 
-        if (player->optionModeFlag == 0)
+        if (player->focusMode == PLAYER_FOCUS_MODE_UNFOCUSED)
         {
             option->vm.color1.d3dColor = 0xFFFFFFFF;
             switch (player->movementDirection)
             {
-            case 0:
+            case PLAYER_DIRECTION_NONE:
                 goto optionUpdateDone;
-            case 1:
+            case PLAYER_DIRECTION_UP:
                 targetAngle = ZUN_PI / 2.0f;
                 break;
-            case 2:
+            case PLAYER_DIRECTION_DOWN:
                 targetAngle = -ZUN_PI / 2.0f;
                 break;
-            case 3:
+            case PLAYER_DIRECTION_LEFT:
                 targetAngle = 0.0f;
                 break;
-            case 4:
+            case PLAYER_DIRECTION_RIGHT:
                 targetAngle = ZUN_PI;
                 break;
-            case 5:
+            case PLAYER_DIRECTION_UP_LEFT:
                 targetAngle = ZUN_PI / 4.0f;
                 break;
-            case 6:
+            case PLAYER_DIRECTION_UP_RIGHT:
                 targetAngle = 3.0f * ZUN_PI / 4.0f;
                 break;
-            case 7:
+            case PLAYER_DIRECTION_DOWN_LEFT:
                 targetAngle = -ZUN_PI / 4.0f;
                 break;
-            case 8:
+            case PLAYER_DIRECTION_DOWN_RIGHT:
                 targetAngle = -3.0f * ZUN_PI / 4.0f;
                 break;
             default:
@@ -301,12 +301,12 @@ i32 __fastcall FUN_0044f5e0(Player *player, PlayerOptionState *option)
 optionUpdateDone:
         break;
 
-    case 3:
+    case PLAYER_OPTION_EXITING:
         if (option->timer == 0)
             option->vm.SetInterrupt(5);
         if (option->timer > 16)
         {
-            option->state2C8 = 0;
+            option->lifecycleState = PLAYER_OPTION_INACTIVE;
             option->updateCallback = NULL;
             option->renderCallback = NULL;
         }
@@ -315,15 +315,15 @@ optionUpdateDone:
     return 0;
 }
 
-i32 __fastcall FUN_0044f930(Player *player, PlayerOptionState *option)
+i32 __fastcall UpdateTwinOrbitingOption(Player *player, PlayerOptionState *option)
 {
     Float3 base = player->position;
 
-    switch (option->state2C8)
+    switch (option->lifecycleState)
     {
-    case 1:
+    case PLAYER_OPTION_INITIALIZING:
         player->anmFile->SetAndExecuteScriptIdx(&option->vm, 21);
-        option->state2C8 = 2;
+        option->lifecycleState = PLAYER_OPTION_ACTIVE;
         option->target = base;
         switch (option->optionIndex)
         {
@@ -337,7 +337,7 @@ i32 __fastcall FUN_0044f930(Player *player, PlayerOptionState *option)
             break;
         }
         // Fall through.
-    case 2:
+    case PLAYER_OPTION_ACTIVE:
         switch (option->optionIndex)
         {
         case 0:
@@ -360,12 +360,12 @@ i32 __fastcall FUN_0044f930(Player *player, PlayerOptionState *option)
             47, reinterpret_cast<D3DXVECTOR3 *>(&option->position), 1, 0x80602050);
         break;
 
-    case 3:
+    case PLAYER_OPTION_EXITING:
         if (option->timer == 0)
             option->vm.SetInterrupt(5);
         if (option->timer > 16)
         {
-            option->state2C8 = 0;
+            option->lifecycleState = PLAYER_OPTION_INACTIVE;
             option->updateCallback = NULL;
             option->renderCallback = NULL;
         }
@@ -376,77 +376,76 @@ i32 __fastcall FUN_0044f930(Player *player, PlayerOptionState *option)
 
 
 #pragma var_order(magnitude, angle)
-i32 __fastcall FUN_00450080(Player *player, PlayerShot *slot, i32 value, u8 *entry)
+i32 __fastcall SpawnShotAlongPlayerAngle(Player *player, PlayerShot *slot, i32 value,
+                                         PlayerShotDescriptor *entry)
 {
     f32 angle;
     f32 magnitude;
 
-    if (value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
+    if (value % entry->fireInterval == entry->fireFrame)
     {
-        player->FUN_0044fb70(reinterpret_cast<u8 *>(slot), entry);
-        angle = AddNormalizeAngle(
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(player) + 0xE2B0C),
-            *reinterpret_cast<f32 *>(entry + 0x14) + ZUN_PI / 2.0f);
-        magnitude = *reinterpret_cast<f32 *>(entry + 0x18);
+        player->InitializeShot(slot, entry);
+        angle = AddNormalizeAngle(player->baseShotAngle, entry->angle + ZUN_PI / 2.0f);
+        magnitude = entry->speed;
         reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x450) = angle;
+        slot->angle = angle;
         return 1;
     }
     return 0;
 }
 
 #pragma var_order(magnitude, angle)
-i32 __fastcall FUN_00450110(Player *player, PlayerShot *slot, i32 value, u8 *entry)
+i32 __fastcall SpawnShotAlongOptionAngle(Player *player, PlayerShot *slot, i32 value,
+                                         PlayerShotDescriptor *entry)
 {
     f32 angle;
     f32 magnitude;
 
-    if (player->bombState.frameStop == 0 &&
-        value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
+    if (player->bombState.isInUse == 0 &&
+        value % entry->fireInterval == entry->fireFrame)
     {
-        player->FUN_0044fb70(reinterpret_cast<u8 *>(slot), entry);
-        angle = AddNormalizeAngle(player->optionStates[2].facingAngle, *reinterpret_cast<f32 *>(entry + 0x14));
-        magnitude = *reinterpret_cast<f32 *>(entry + 0x18);
+        player->InitializeShot(slot, entry);
+        angle = AddNormalizeAngle(player->optionStates[2].facingAngle, entry->angle);
+        magnitude = entry->speed;
         reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x450) = angle;
+        slot->angle = angle;
         return 1;
     }
     return 0;
 }
 
-i32 __fastcall FUN_004501b0(Player *player, PlayerShot *slot, i32 value, u8 *entry)
+i32 __fastcall SpawnRandomizedShot(Player *player, PlayerShot *slot, i32 value,
+                                   PlayerShotDescriptor *entry)
 {
-    if (value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
+    if (value % entry->fireInterval == entry->fireFrame)
     {
-        player->FUN_0044fb70(reinterpret_cast<u8 *>(slot), entry);
-        *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x450) =
-            g_Rng.GetRandomF32() * ZUN_PI / 48.0f - ZUN_PI / 2.0f;
-        reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x450),
-            *reinterpret_cast<f32 *>(entry + 0x18));
+        player->InitializeShot(slot, entry);
+        slot->angle = g_Rng.GetRandomF32() * ZUN_PI / 48.0f - ZUN_PI / 2.0f;
+        reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(slot->angle, entry->speed);
         return 1;
     }
     return 0;
 }
 
 #pragma var_order(magnitude, angle)
-i32 __fastcall FUN_00450240(Player *player, PlayerShot *slot, i32 value, u8 *entry)
+i32 __fastcall SpawnHomingShot(Player *player, PlayerShot *slot, i32 value,
+                               PlayerShotDescriptor *entry)
 {
     f32 angle;
     f32 magnitude;
 
-    if (value % *reinterpret_cast<i16 *>(entry) == *reinterpret_cast<i16 *>(entry + 2))
+    if (value % entry->fireInterval == entry->fireFrame)
     {
-        player->FUN_0044fb70(reinterpret_cast<u8 *>(slot), entry);
+        player->InitializeShot(slot, entry);
         if (player->optionHomingTarget != NULL)
         {
             angle = AddNormalizeAngle(
-                VectorAngle(player->optionHomingTarget->vector2d34.y - slot->position.y,
-                            player->optionHomingTarget->vector2d34.x - slot->position.x),
-                *reinterpret_cast<f32 *>(entry + 0x14) + ZUN_PI / 2.0f);
-            magnitude = *reinterpret_cast<f32 *>(entry + 0x18) * 1.5f;
+                VectorAngle(player->optionHomingTarget->position.y - slot->position.y,
+                            player->optionHomingTarget->position.x - slot->position.x),
+                entry->angle + ZUN_PI / 2.0f);
+            magnitude = entry->speed * 1.5f;
             reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x450) = angle;
+            slot->angle = angle;
         }
         return 1;
     }
@@ -455,43 +454,43 @@ i32 __fastcall FUN_00450240(Player *player, PlayerShot *slot, i32 value, u8 *ent
 
 
 #pragma var_order(yDelta, xDelta, magnitude)
-i32 __fastcall FUN_00450320(Player *player, PlayerShot *slot)
+i32 __fastcall UpdateHomingShot(Player *player, PlayerShot *slot)
 {
     f32 xDelta;
     f32 yDelta;
     f32 magnitude;
     if (slot->state == 1)
     {
-        if (player->tailPosition0.x > -100.0f && (i32)slot->timer < 40 && slot->timer.FUN_0040d3d0())
+        if (player->tailPosition0.x > -100.0f && (i32)slot->timer < 40 && slot->timer.HasTicked())
         {
             xDelta = player->tailPosition0.x - slot->position.operator float *()[0];
             yDelta = player->tailPosition0.y - slot->position.operator float *()[1];
-            magnitude = sqrtf(xDelta * xDelta + yDelta * yDelta) / (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) / 4.0f);
+            magnitude = sqrtf(xDelta * xDelta + yDelta * yDelta) / (slot->speed / 4.0f);
             if (magnitude < 1.0f) magnitude = 1.0f;
             xDelta = xDelta / magnitude + slot->velocity.x;
             yDelta = yDelta / magnitude + slot->velocity.y;
             magnitude = sqrtf(xDelta * xDelta + yDelta * yDelta);
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) = magnitude > 10.0f ? 10.0f : magnitude;
-            if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) < 1.0f) *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) = 1.0f;
-            slot->velocity.x = xDelta * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) / magnitude;
-            slot->velocity.y = yDelta * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) / magnitude;
+            slot->speed = magnitude > 10.0f ? 10.0f : magnitude;
+            if (slot->speed < 1.0f) slot->speed = 1.0f;
+            slot->velocity.x = xDelta * slot->speed / magnitude;
+            slot->velocity.y = yDelta * slot->speed / magnitude;
         }
-        else if (*reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) < 10.0f)
+        else if (slot->speed < 10.0f)
         {
-            *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) += 1.0f / 3.0f;
+            slot->speed += 1.0f / 3.0f;
             xDelta = slot->velocity.x;
             yDelta = slot->velocity.y;
             magnitude = sqrtf(xDelta * xDelta + yDelta * yDelta);
-            slot->velocity.x = xDelta * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) / magnitude;
-            slot->velocity.y = yDelta * *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x44C) / magnitude;
+            slot->velocity.x = xDelta * slot->speed / magnitude;
+            slot->velocity.y = yDelta * slot->speed / magnitude;
         }
     }
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x450) = VectorAngle(slot->velocity.y, slot->velocity.x);
+    slot->angle = VectorAngle(slot->velocity.y, slot->velocity.x);
     return 0;
 }
 
 
-i32 __fastcall FUN_00450580(Player *player, PlayerShot *slot)
+i32 __fastcall UpdateFallingShot(Player *player, PlayerShot *slot)
 {
     if (slot->state == 1)
         slot->velocity.y -= g_Rng.GetRandomF32InRange(0.1f) + 0.27f;
@@ -499,37 +498,37 @@ i32 __fastcall FUN_00450580(Player *player, PlayerShot *slot)
 }
 
 
-i32 __fastcall FUN_004505d0(Player *player, PlayerShot *slot)
+i32 __fastcall UpdatePersistentShot(Player *player, PlayerShot *slot)
 {
-    if (player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].instruction !=
+    if (player->timelines[slot->timelineIndex].instruction !=
         reinterpret_cast<EclTimelineInstruction *>(slot))
     {
-        if (slot->vm.FUN_004396f8()) slot->vm.pendingInterrupt = 1;
+        if (slot->vm.IsStopped()) slot->vm.pendingInterrupt = 1;
     }
-    if (g_Gui.IsDialogPresent() || player->bombState.frameStop != 0 || g_GameManager.flags.unk13)
+    if (g_Gui.IsDialoguePresent() || player->bombState.isInUse != 0 || g_GameManager.flags.suppressPlayerShots)
     {
-        if ((i32)player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer > 20)
-            player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer = 20;
+        if ((i32)player->timelines[slot->timelineIndex].timer > 20)
+            player->timelines[slot->timelineIndex].timer = 20;
     }
-    if (player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer <= 0)
+    if (player->timelines[slot->timelineIndex].timer <= 0)
     {
-        player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer = 0;
-        player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].instruction = NULL;
+        player->timelines[slot->timelineIndex].timer = 0;
+        player->timelines[slot->timelineIndex].instruction = NULL;
         slot->state = 0;
         return 1;
     }
-    if (player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer <= 70)
+    if (player->timelines[slot->timelineIndex].timer <= 70)
     {
-        if (slot->vm.FUN_004396f8()) slot->vm.pendingInterrupt = 1;
+        if (slot->vm.IsStopped()) slot->vm.pendingInterrupt = 1;
     }
-    slot->position.x += *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x444);
+    slot->position.x += slot->velocity.z;
     slot->position.z = 0.44f;
     if (player->playerState == PLAYER_STATE_DYING) return 1;
-    *reinterpret_cast<f32 *>(reinterpret_cast<u8 *>(slot) + 0x1C) = slot->position.y / 14.0f;
+    slot->vm.scale.y = slot->position.y / 14.0f;
     slot->hitboxSize.y = slot->position.y;
     slot->position.y /= 2.0f;
-    if (player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer < 100)
-        player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].timer--;
+    if (player->timelines[slot->timelineIndex].timer < 100)
+        player->timelines[slot->timelineIndex].timer--;
     if (g_GameManager.GaugeIsExtremelyYoukai())
     {
         slot->vm.color1.r = 0xFF; slot->vm.color1.g = 0xD0; slot->vm.color1.b = 0xB0;
@@ -543,41 +542,41 @@ i32 __fastcall FUN_004505d0(Player *player, PlayerShot *slot)
 
 
 #pragma var_order(damageSlot, i)
-i32 __fastcall FUN_00450840(Player *player, PlayerShot *slot)
+i32 __fastcall UpdateShotTrail(Player *player, PlayerShot *slot)
 {
-    PlayerUnkStruct0x40 *damageSlot;
+    PlayerCollisionRegion *damageSlot;
     i32 i;
-    if (player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].instruction !=
+    if (player->timelines[slot->timelineIndex].instruction !=
             reinterpret_cast<EclTimelineInstruction *>(slot) ||
-        g_Gui.IsDialogPresent() ||
-        (i32)player->timerE2AC4 < 0 ||
+        g_Gui.IsDialoguePresent() ||
+        (i32)player->shotTimer < 0 ||
         player->playerState == PLAYER_STATE_DYING ||
-        player->bombState.frameStop != 0 ||
-        g_GameManager.flags.unk13)
+        player->bombState.isInUse != 0 ||
+        g_GameManager.flags.suppressPlayerShots)
     {
         slot->vm.pendingInterrupt = 1;
-        player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].instruction = NULL;
-        *reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(slot) + 0x474) = 0;
+        player->timelines[slot->timelineIndex].instruction = NULL;
+        slot->updateCallback = NULL;
     }
-    if (player->optionStates[0].state2C8 == 0)
+    if (player->optionStates[0].lifecycleState == PLAYER_OPTION_INACTIVE)
     {
-        player->timelines[*reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x466)].instruction = NULL;
+        player->timelines[slot->timelineIndex].instruction = NULL;
         return 1;
     }
-    for (i = 0; i < *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x46A); i++)
+    for (i = 0; i < slot->trailSegmentCount; i++)
     {
-        if (slot->vectors[i * 2].x >= -900.0f)
+        if (slot->positionHistory[i * 2].x >= -900.0f)
         {
-            damageSlot = player->FUN_0044dfa0(&slot->vectors[i * 2], 16.0f, 448.0f, 1, 0);
-            reinterpret_cast<u8 *>(damageSlot)[0x3D] = 1;
+            damageSlot = player->CreateRectDamageRegion(&slot->positionHistory[i * 2], 16.0f, 448.0f, 1, 0);
+            damageSlot->mode = 1;
         }
     }
     for (i = 31; i > 0; i--)
     {
-        slot->vectors[i] = slot->vectors[i - 1];
-        slot->vectors[i].y -= 1.0f;
+        slot->positionHistory[i] = slot->positionHistory[i - 1];
+        slot->positionHistory[i].y -= 1.0f;
     }
-    slot->vectors[0] = slot->position;
+    slot->positionHistory[0] = slot->position;
     slot->position = player->optionStates[0].position;
     slot->position.z = 0.44f;
     slot->hitboxSize.y = 448.0f;
@@ -595,7 +594,7 @@ i32 __fastcall FUN_00450840(Player *player, PlayerShot *slot)
 
 
 #pragma var_order(color, i, originalColor)
-i32 __fastcall FUN_00450ad0(Player *player, PlayerShot *slot)
+i32 __fastcall DrawShotTrail(Player *player, PlayerShot *slot)
 {
     i32 color;
     i32 i;
@@ -604,15 +603,15 @@ i32 __fastcall FUN_00450ad0(Player *player, PlayerShot *slot)
     color = slot->vm.color1.a;
     originalColor = color;
     color = color * 3 / 4;
-    for (i = 0; i < *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x46A) * 2; i += 2)
+    for (i = 0; i < slot->trailSegmentCount * 2; i += 2)
     {
-        if (slot->vectors[i].x == -999.0f)
+        if (slot->positionHistory[i].x == -999.0f)
             break;
-        slot->vm.pos.x = slot->vectors[i].x;
-        slot->vm.pos.y = slot->vectors[i].y;
-        slot->vm.pos.z = slot->vectors[i].z;
+        slot->vm.pos.x = slot->positionHistory[i].x;
+        slot->vm.pos.y = slot->positionHistory[i].y;
+        slot->vm.pos.z = slot->positionHistory[i].z;
         if (i != 0)
-            slot->vm.color1.a = color - ((color / 2) * i) / *reinterpret_cast<i16 *>(reinterpret_cast<u8 *>(slot) + 0x46A);
+            slot->vm.color1.a = color - ((color / 2) * i) / slot->trailSegmentCount;
         slot->vm.pos.x += g_GameManager.arcadeRegionTopLeftPos.x;
         slot->vm.pos.y += g_GameManager.arcadeRegionTopLeftPos.y;
         if (g_GameManager.GaugeIsExtremelyYoukai())
@@ -628,7 +627,7 @@ i32 __fastcall FUN_00450ad0(Player *player, PlayerShot *slot)
 }
 
 
-i32 __fastcall FUN_00450c50(Player *player, PlayerShot *slot, Float3 *effectPosition)
+i32 __fastcall ApplyShotHitBehavior(Player *player, PlayerShot *slot, Float3 *effectPosition)
 {
     f32 angle;
 
@@ -663,10 +662,11 @@ i32 __fastcall FUN_00450c50(Player *player, PlayerShot *slot, Float3 *effectPosi
 }
 
 
-i32 __fastcall FUN_00450ee0(Player *player, PlayerShot *slot, Float3 *effectPosition)
+i32 __fastcall SpawnPeriodicShotHitEffect(Player *player, PlayerShot *slot,
+                                          Float3 *effectPosition)
 {
-    (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(player) + 0xE2A94))++;
-    if (*reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(player) + 0xE2A94) % 8 == 0)
+    player->shotHitEffectCounter++;
+    if (player->shotHitEffectCounter % 8 == 0)
     {
         Float3 position;
         position = *effectPosition;
