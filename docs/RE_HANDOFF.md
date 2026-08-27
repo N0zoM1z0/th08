@@ -823,6 +823,16 @@ python3 scripts/analysis/report-semantic-debt.py --include-probes --include-mode
 python3 scripts/analysis/verify-title-spell-card-data.py
 ```
 
+A final production-symbol audit also corrects twelve ledger-only namespace
+identities.  Eleven PlayerShot free callbacks and `InitializeScoreData` were
+already emitted in `Player.obj`/`GameManager.obj` as `th08::...`, but four
+canonical CSVs still used unqualified names.  Qualifying those rows removes all
+twelve false "not present in detour input objects" warnings.  Focused replay
+remains Player **51 / 51 exact** and GameManager **33 / 33 exact**; no source,
+address, layout, match-unit symbol, or accepted count changed.  The remaining
+20 detour warnings are limited to the generator's unsupported operator and
+compiler-generated deleting-destructor spellings.
+
 Whole-executable TU/layout work below remains deferred, not invalidated.
 
 ## Active playable-port branch

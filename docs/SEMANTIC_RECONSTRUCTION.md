@@ -2903,3 +2903,31 @@ production-only is **0 / 0 / 99 / 41**.  The remaining anonymous/opaque entries
 were reviewed as padding, reset-only or unconsumed slots, reserved serialized
 bytes, or otherwise evidence-limited storage.  They are retained neutrally;
 these heuristic totals are not a completion percentage.
+
+### Production free-function identity closure — 2026-08-27
+
+Scope: compare every authored `implemented.csv` identity against the symbols
+actually exported by the normal production object set through `build/th08.def`.
+This is a ledger-identity batch; it changes no source expression, ABI, object,
+address, or accepted unit.
+
+Evidence: VC7 emits the eleven PlayerShot callbacks from `Player.cpp` and the
+score initializer from `GameManager.cpp` as namespace members such as
+`?UpdateHomingShot@th08@@...` and `?InitializeScoreData@th08@@...`.
+`mapping.csv`, `reccmp-functions.csv`, `implemented.csv`, and `matches.csv`
+had retained unqualified names for exactly those twelve functions.  The
+detour generator therefore reported them absent even though `build/th08.def`
+contained their real mangled symbols.  All four ledgers now use
+`th08::SpawnShotAlongPlayerAngle` through
+`th08::SpawnPeriodicShotHitEffect` and `th08::InitializeScoreData`, matching
+the source namespace and production COFF identity.
+
+Oracle: production-symbol audit warnings fall from 32 to 20; none of the
+remaining warnings names an ordinary authored free function.  They are the
+generator's existing unsupported operator/deleting-destructor spellings.
+Focused accepted replay remains Player **51 / 51 exact** and GameManager
+**33 / 33 exact**, including all twelve corrected identities.  Tracking still
+reports **1,106 implemented / 1,106 accepted exact**, with no claim rows.  The
+normal VC7 image and previously built identical-source Linux image remain
+valid; this batch only makes the canonical semantic names agree with their
+already verified machine symbols.
