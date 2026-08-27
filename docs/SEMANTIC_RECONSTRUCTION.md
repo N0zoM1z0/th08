@@ -3553,3 +3553,38 @@ review-router categories; repository-wide anonymous/opaque routing moves from
 30/25 to 29/16.  Those counts remain review aids, not completion percentages.
 No enemy behavior, ECL dispatch, target address, relocation, accepted-unit
 identity, or exact total changed.
+
+### ANM serialized and residual storage closure — 2026-08-27
+
+Scope: the on-disk `AnmRawEntry` and `AnmTextureHeader` records, the runtime
+`AnmLoadedSprite` tail, `AnmVm` tail, and residual `AnmManager` storage.
+
+The ANM entry dword at `+0x3C` and texture-header words at `+0x04`, `+0x0C`,
+and `+0x0E` enter memory as part of their complete serialized records but have
+no authored consumer.  They are therefore named `serializedReserved*` without
+assigning unsupported format meanings.  `AnmLoadedSprite +0x40` is carried by
+the temporary sprite aggregate into the loaded array but has no reader, so it
+remains an explicitly `unconsumedDword40` rather than a guessed render flag.
+
+`AnmVm +0x29A..+0x2A3` and `AnmManager +0x1F08..+0x2037` are covered by their
+owners' complete zeroing but have no independent producer or consumer.  Their
+names now state that evidence boundary.  The two bytes at manager
+`+0x24C6..+0x24C7` are proven structural padding before the four-byte-aligned
+`currentSprite @ +0x24C8`; compiler-owned alignment reproduces them without an
+invented member.  Size and offset assertions pin every record, residual range,
+following surface array, render-state byte, and pointer.  No serialized extent,
+aggregate size, pointer offset, or constructor-visible zeroing range changed.
+
+VC7 oracle: focused replay of `AnmManager.obj` passes **82 / 82 exact** before
+and after the change.  Because the layout is shared through the PCH, the
+required single-job non-reuse cold build of all 75 comparison objects passes
+**1,106 / 1,106 exact** with zero failures, and the normal VC7 production image
+links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  `AnmManager.hpp` now has zero candidates in all four
+review-router categories; repository-wide anonymous/opaque routing moves from
+29/16 to 19/13.  Those counts are review aids, not completion percentages.  No
+ANM decoding, texture creation, sprite loading, render path, target byte,
+accepted-unit identity, or exact total changed.

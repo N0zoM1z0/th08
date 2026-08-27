@@ -242,27 +242,27 @@ struct AnmRawEntry
     u8 hasData;
     /* 3 bytes pad for alignment */
     u32 nextOffset;
-    u32 unknown3C;
+    u32 serializedReserved3C;
 };
 
 C_ASSERT(sizeof(AnmRawEntry) == 0x40);
-C_ASSERT(offsetof(AnmRawEntry, unknown3C) == 0x3C);
+C_ASSERT(offsetof(AnmRawEntry, serializedReserved3C) == 0x3C);
 
 struct AnmTextureHeader
 {
     char magic[4]; /* THTX */
-    u16 unknown04;
+    u16 serializedReserved04;
     i16 format;
     i16 width;
     i16 height;
-    u16 unknown0C;
-    u16 unknown0E;
+    u16 serializedReserved0C;
+    u16 serializedReserved0E;
 };
 
 C_ASSERT(sizeof(AnmTextureHeader) == 0x10);
-C_ASSERT(offsetof(AnmTextureHeader, unknown04) == 0x04);
-C_ASSERT(offsetof(AnmTextureHeader, unknown0C) == 0x0C);
-C_ASSERT(offsetof(AnmTextureHeader, unknown0E) == 0x0E);
+C_ASSERT(offsetof(AnmTextureHeader, serializedReserved04) == 0x04);
+C_ASSERT(offsetof(AnmTextureHeader, serializedReserved0C) == 0x0C);
+C_ASSERT(offsetof(AnmTextureHeader, serializedReserved0E) == 0x0E);
 
 struct AnmLoadedSprite
 {
@@ -277,11 +277,11 @@ struct AnmLoadedSprite
     float heightPx;
     float widthPx;
     Float2 scaleFactor;
-    u32 unknown40;
+    u32 unconsumedDword40;
 };
 
 C_ASSERT(sizeof(AnmLoadedSprite) == 0x44);
-C_ASSERT(offsetof(AnmLoadedSprite, unknown40) == 0x40);
+C_ASSERT(offsetof(AnmLoadedSprite, unconsumedDword40) == 0x40);
 
 #define ANM_MAX_ARGS 10
 
@@ -417,7 +417,7 @@ struct AnmVm : AnmVmBase
     i32 timeOfLastSpriteSet;
     u8 fontWidth;
     u8 fontHeight;
-    unknown_fields(0x29a, 0xa);
+    u8 unconsumedTail29A[0xA];
 
     AnmVm()
     {
@@ -440,6 +440,7 @@ struct AnmVm : AnmVmBase
 
 C_ASSERT(sizeof(AnmVm) == 0x2a4);
 C_ASSERT(offsetof(AnmVm, pos) == 0x208);
+C_ASSERT(offsetof(AnmVm, unconsumedTail29A) == 0x29A);
 
 struct AnmLoaded
 {
@@ -736,7 +737,7 @@ struct AnmManager
     AnmLoaded anmFiles[256];
     D3DXMATRIX cachedWorldMatrix;
     AnmVm unconsumedVm1C64;
-    unknown_fields(0x1f08, 0x130);
+    u8 unconsumedBytes1F08[0x130];
 
     IDirect3DSurface8 *surfaces[32];
     IDirect3DSurface8 *surfacesBis[32];
@@ -753,7 +754,6 @@ struct AnmManager
     u8 disableZWrite;
     u8 cameraMode;
     u8 needsTextureFactorSetup;
-    unknown_fields(0x24c6, 2); // Padding?
     void *currentSprite;
     IDirect3DVertexBuffer8 *quadVertexBuffer;
     VertexDiffuseXyzrhw untexturedVector[4];
@@ -783,6 +783,10 @@ C_ASSERT(sizeof(AnmManager) == 0x2a2570);
 C_ASSERT(offsetof(AnmManager, currentTextureFactor) == 0x24B8);
 C_ASSERT(offsetof(AnmManager, scriptsStartedThisFrame) == 0x0C);
 C_ASSERT(offsetof(AnmManager, unconsumedVm1C64) == 0x1C64);
+C_ASSERT(offsetof(AnmManager, unconsumedBytes1F08) == 0x1F08);
+C_ASSERT(offsetof(AnmManager, surfaces) == 0x2038);
+C_ASSERT(offsetof(AnmManager, needsTextureFactorSetup) == 0x24C5);
+C_ASSERT(offsetof(AnmManager, currentSprite) == 0x24C8);
 
 DIFFABLE_EXTERN(AnmManager *, g_AnmManager);
 

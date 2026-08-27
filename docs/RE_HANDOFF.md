@@ -1854,3 +1854,15 @@ VC7 image and complete Linux i386 image link; and the Linux fixed-layout
 verifier passes.  `EnemyManager.hpp` now has no semantic-router candidates.
 Continue with the ANM residual family while preserving the sole Replay
 near-match as a separately documented Oracle limitation.
+
+The ANM residual checkpoint closes the remaining `AnmManager.hpp` router
+candidates.  Serialized record fields with no consumer are named reserved;
+runtime tails that are only zeroed or aggregate-copied remain explicitly
+unconsumed; and manager `+0x24C6..+0x24C7` is now compiler-owned alignment
+before the asserted `currentSprite @ +0x24C8`.  Focused AnmManager replay
+passes **82 / 82 exact** before and after the edit; the required cold aggregate
+passes **1,106 / 1,106 exact**; the normal VC7 image and complete Linux i386
+image link; and the Linux fixed-layout verifier passes.  Continue on
+`semantic/typed-reconstruction` with Player/ECL/Game residual state.  Do not
+open or merge another PR until explicitly requested; preserve the sole Replay
+near-match as a separate Oracle limitation.
