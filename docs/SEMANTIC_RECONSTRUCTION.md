@@ -4034,3 +4034,49 @@ Portable oracle: the complete i386 Linux container build links, and
 layout symbol.  No class size/offset, parser branch, running-status behavior,
 loop cursor, volume byte, camera interpolation, stage selection, target byte,
 accepted-unit identity, or exact total changed.
+
+### Chain release, controller input, result drawing, and audio queues — 2026-08-27
+
+Scope: six exact runtime helpers across Global.cpp, ResultScreen.cpp, and
+SoundPlayer.cpp whose remaining local names came directly from decompiler
+placeholders or stack-matching experiments.
+
+Chain::ReleaseSingleChain constructs a temporary snapshot list so callbacks
+may unlink the real calc/draw chain without invalidating its traversal.  Its
+stack object and cursors are now `releaseSnapshotHead`,
+`releaseSnapshotCursor`, and `nextSnapshotEntry`.  Controller input now names
+the WinMM joystick state, per-axis deadzone, shot/focus conflict result,
+DirectInput state, and HRESULT path.  GetControllerState uses the same
+vocabulary.  It intentionally preserves a target-observed original quirk:
+GetDeviceState's HRESULT is discarded and the following check reuses the
+previous Poll/Acquire result.
+
+The old identifiers had also been accidental VC7 code-generation inputs.
+Target stack evidence established explicit `#pragma var_order` contracts for
+the release snapshot and controller state, separating readable source names
+from their required physical homes.  The first readable build exposed this
+dependency by failing the focused Oracle; the corrected order restores the
+original 0x54-byte release frame and 0x160-byte controller frame without
+reintroducing opaque names.
+
+ResultScreen::OnUpdate now distinguishes the VM receiving the exit interrupt
+from the normal sprite-script iterator.  Its draw callback names the keyboard
+column, animated glyph position/value, and vertical glyph offset.  The reused
+animation scalar remains one source local because VC7 and the target use the
+same home first for scale and then for horizontal offset.  SoundPlayer's queue
+state machine now exposes immediate command restart, preload/reopen buffers,
+BGM format lookup, queued SFX index, averaged positional pan, and nonlinear
+volume scale.
+
+VC7 oracle: target-pinned packets pass at `0x0043CC60`, `0x0043D120`,
+`0x0043D7E0`, `0x004584B0`, `0x004586B4`, and `0x0045D790`.  Focused replay of
+Global.obj, ResultScreen.obj, and SoundPlayer.obj passes **106 / 106 exact**.
+The six function extents remain 408, 1,457, 392, 424, 3,993, and 2,358 bytes.
+The required single-job non-reuse cold aggregate passes **1,106 / 1,106
+exact** with zero failures, and the normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  No chain callback/destructor order, input bit, retry path,
+original HRESULT quirk, VM interrupt/draw behavior, audio command step, pan,
+volume, target byte, accepted-unit identity, or exact total changed.

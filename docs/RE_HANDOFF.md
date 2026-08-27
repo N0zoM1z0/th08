@@ -2003,3 +2003,17 @@ the normal VC7 image and complete Linux i386 image link; and the Linux fixed-
 layout verifier passes.  Continue on `semantic/typed-reconstruction`; commit
 and push stable checkpoints, but do not open or merge a PR until explicitly
 requested.
+
+The runtime-queue checkpoint replaces the last intentionally opaque local
+names in Chain::ReleaseSingleChain and Controller::GetControllerInput with a
+release-snapshot model and explicit WinMM/DirectInput state.  Readable names
+initially exposed VC7's identifier-sensitive stack allocation; target stack
+evidence and `#pragma var_order` now preserve the exact 0x54/0x160 frames
+without returning to `a0/aa/aaa`.  GetControllerState retains and documents
+the original discarded-GetDeviceState-HRESULT quirk.  ResultScreen's VM and
+keyboard animation locals and SoundPlayer's command/SFX queue locals are also
+named by observed roles.  Target packets cover all six functions; focused
+replay passes **106 / 106 exact**; the cold aggregate passes **1,106 / 1,106
+exact**; VC7 and Linux i386 images link; and the Linux fixed-layout verifier
+passes.  Continue on `semantic/typed-reconstruction`; do not open or merge a
+PR until explicitly requested.
