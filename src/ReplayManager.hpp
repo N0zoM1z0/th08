@@ -174,7 +174,7 @@ struct ReplayManager
     static ZunResult DeleteReplayManager(ReplayManager *replayManager);
 
     static void SaveReplay(const char *replayPath, const char *replayName);
-    static ReplayData *LoadReplayData(void *replayData, int fileSize);
+    static ReplayData *LoadReplayData(ReplayData *replayData, int fileSize);
     static void StopRecording();
 
     i32 IsDemo();

@@ -2493,7 +2493,8 @@ AnmLoaded *AnmManager::PostloadAnmEntry(AnmLoaded *anmLoaded)
     i32 currentNumSprites = 0;
     i32 currentEntryNumber = 0;
 
-    /* ??? */
+    // Preserve the first entry as the loaded file owner while rawEntry walks
+    // the continuation chain below.
     anmLoaded->rawData = rawData;
     AnmRawEntry *rawEntry = rawData;
 

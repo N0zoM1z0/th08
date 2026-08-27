@@ -690,13 +690,14 @@ enter_subroutine:
     case 137:
         if (TH08_ECL_READ_I(ctx, 0) >= 0)
         {
-            TH08_ECL_CONTEXT_ENEMY(ctx)->activeEclContext->callback =
-                reinterpret_cast<EnemyEclContextCallback>(g_EclExInsn[TH08_ECL_READ_I(ctx, 0)]);
-            TH08_ECL_CONTEXT_ENEMY(ctx)->activeEclContext->callbackArgument =
-                TH08_ECL_CONTEXT_INSTRUCTION(ctx);
+            TH08_ECL_CONTEXT_ENEMY(ctx)->activeEclContext->perFrameCallback =
+                g_EclExInsn[TH08_ECL_READ_I(ctx, 0)];
+            TH08_ECL_CONTEXT_ENEMY(ctx)->activeEclContext->perFrameInstruction =
+                reinterpret_cast<EclExInstruction *>(
+                    TH08_ECL_CONTEXT_INSTRUCTION(ctx));
         }
         else
-            TH08_ECL_CONTEXT_ENEMY(ctx)->activeEclContext->callback = 0;
+            TH08_ECL_CONTEXT_ENEMY(ctx)->activeEclContext->perFrameCallback = 0;
         break;
     case 146:
         TH08_ECL_CONTEXT_ENEMY(ctx)->activeEclContext->time +=

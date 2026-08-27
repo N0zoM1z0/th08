@@ -16498,7 +16498,7 @@ target = 0x0043ECC0
 [[units]]
 name = "replay-manager-load-replay-data"
 object = "build/ReplayManager.obj"
-symbol = "?LoadReplayData@ReplayManager@th08@@SIPAUReplayData@2@PAXH@Z"
+symbol = "?LoadReplayData@ReplayManager@th08@@SIPAUReplayData@2@PAU32@H@Z"
 target_address = 0x00451D90
 size = 0x1FF
 
@@ -33574,7 +33574,7 @@ target = 0x0043E660
 [[units.relocations]]
 offset = 0x451
 type = "REL32"
-symbol = "?LoadReplayData@ReplayManager@th08@@SIPAUReplayData@2@PAXH@Z"
+symbol = "?LoadReplayData@ReplayManager@th08@@SIPAUReplayData@2@PAU32@H@Z"
 target = 0x00451D90
 
 [[units.relocations]]
@@ -104209,7 +104209,7 @@ target = 0x0043E660
 [[units.relocations]]
 offset = 0x50
 type = "REL32"
-symbol = "?LoadReplayData@ReplayManager@th08@@SIPAUReplayData@2@PAXH@Z"
+symbol = "?LoadReplayData@ReplayManager@th08@@SIPAUReplayData@2@PAU32@H@Z"
 target = 0x00451D90
 
 [[units.relocations]]
@@ -113557,7 +113557,7 @@ target = 0x0043E660
 [[units.relocations]]
 offset = 0x13D
 type = "REL32"
-symbol = "?LoadReplayData@ReplayManager@th08@@SIPAUReplayData@2@PAXH@Z"
+symbol = "?LoadReplayData@ReplayManager@th08@@SIPAUReplayData@2@PAU32@H@Z"
 target = 0x00451D90
 
 [[units.relocations]]
@@ -113629,7 +113629,7 @@ target = 0x0043E660
 [[units.relocations]]
 offset = 0x22A
 type = "REL32"
-symbol = "?LoadReplayData@ReplayManager@th08@@SIPAUReplayData@2@PAXH@Z"
+symbol = "?LoadReplayData@ReplayManager@th08@@SIPAUReplayData@2@PAU32@H@Z"
 target = 0x00451D90
 
 [[units.relocations]]
@@ -113827,7 +113827,7 @@ target = 0x0043E660
 [[units.relocations]]
 offset = 0x598
 type = "REL32"
-symbol = "?LoadReplayData@ReplayManager@th08@@SIPAUReplayData@2@PAXH@Z"
+symbol = "?LoadReplayData@ReplayManager@th08@@SIPAUReplayData@2@PAU32@H@Z"
 target = 0x00451D90
 
 [[units.relocations]]
@@ -114483,7 +114483,7 @@ target = 0x0043E660
 [[units.relocations]]
 offset = 0x652
 type = "REL32"
-symbol = "?LoadReplayData@ReplayManager@th08@@SIPAUReplayData@2@PAXH@Z"
+symbol = "?LoadReplayData@ReplayManager@th08@@SIPAUReplayData@2@PAU32@H@Z"
 target = 0x00451D90
 
 [[units.relocations]]

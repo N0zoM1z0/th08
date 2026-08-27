@@ -4446,3 +4446,74 @@ callbacks and real EnemyManager owner, and `verify-modern-linux.sh` verifies
 the ELF32 executable and every fixed target-owned layout symbol.  No callback
 calling convention, Player/EnemyManager layout, target byte, accepted-unit
 identity, or aggregate exact total changed.
+
+### Residual runtime owners and Title portable parity — 2026-08-27
+
+Scope: five remaining false cast boundaries in Background, ECL, EnemyManager,
+Replay, and Title spell-history code; a bounded audit of every target-facing
+probe that duplicates production behavior; and three Title control-flow
+differences found by that audit.
+
+`Background::RenderObjects @ 0x0040A1B0` now indexes
+`specialEffectPoints` through the already offset-asserted
+`specialEffectPointCount @ +0x6478` instead of reconstructing the same field
+with `this + 0x6478`.  `EnemyEclContext +0x10/+0x14` now carries the typed
+`EclExInstructionCallback` and the serialized `EclExInstruction *` retained
+by opcode 137; `EclManager::RunEcl @ 0x004184B0` invokes that per-frame pair
+without a `void *` callback boundary.  The table entry remains evidenced by
+the same target-observed `__fastcall(Enemy *, EclExInstruction *)` ABI.
+
+`EnemyManager::AddedCallback @ 0x0042EBF0` preserves and restores
+`g_EclManager.eclFile` and `subTable` through their real `EclRawHeader *` and
+`u32 *` fields rather than treating the manager's first two dwords as
+anonymous integers.  `ReplayManager::LoadReplayData @ 0x00451D90` now accepts
+the `ReplayData *` that every production caller supplies.  Its rebuilt VC7
+definition is
+`?LoadReplayData@ReplayManager@th08@@SIPAUReplayData@2@PAU32@H@Z`; all seven
+configured definition/caller identities were migrated to that observed COFF
+symbol.  The mapping ledger also catches up with the already exact
+`ZunResult Background::RenderObjects(i32)`,
+`ZunResult EclManager::RunEcl(Enemy *)`, and
+`ZunResult EnemyManager::AddedCallback(EnemyManager *)` source ABIs.
+
+The temporary Title-only `TitleCatkView` is removed.  Its three proven queries
+are now inline `Catk` members: spell-practice capture, any capture, and any
+attempt for a shot slot.  `UnlockLastWordSpellCards @ 0x0046CBBB` and
+`FormatSpellCardInfo @ 0x0046D7F9` therefore read the real persisted spell
+history owner directly.
+
+The repository's complete duplicated-source audit covers all four
+`*Probe.cpp` files plus `GameManagerSetup.cpp`.  The fifteen Player option/shot
+bodies are token-identical to production after normalizing only the local
+parameter spelling; `InitializeScoreData` and both Stage-menu draw bodies are
+source-identical; Gameplay setup differs only between a cached
+`gameManager == &g_GameManager` spelling and the same global owner.  The Title
+probe exposed three genuine portable-source differences.  Production
+`DrawCompletionStatusText @ 0x0047052D` incorrectly bound `cursor > 3` only to
+the Lunatic clear test; the exact behavior is the four clear tests **or**
+`cursor > 3`.  Production `OnUpdateSpellCardSelect @ 0x0046BBC0` also reversed
+two upper-bound tests as `count >= cursor`; both now use the exact
+`cursor >= count` relation.  Completion rendering is single-owned by
+`TitleCompletionStatus.inl`, shared by production and its strict VC7 probe,
+with a target-shaped inline ANM initializer.  The target-facing spell-card
+select probe remains exact at **4,047 / 4,047** compared bytes.
+
+VC7 oracle: focused relocation-aware replay passes all **11 / 11** selected
+units, including Background RenderObjects (**4,746 / 4,746**), complete RunEcl
+(**26,638 / 26,638**), EnemyManager AddedCallback (**642 / 642**), Replay load
+(**511 / 511**), Last Word unlock (**2,984 / 2,984**), spell-card formatting
+(**2,365 / 2,365**), and completion status (**850 / 850**).  Because the batch
+changes shared headers and inline bodies, the required single-job non-reuse
+cold build of all 75 comparison objects passes **1,106 / 1,106 exact** with
+zero failures; `TitleScreen::RegisterChain` remains **281 / 281 exact**.  The
+normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container image links after the
+Title behavior corrections and typed callback/API changes, and
+`verify-modern-linux.sh` verifies the ELF32 executable and every fixed
+target-owned layout symbol.  The audit does not turn source similarity into an
+exact claim: only configured target-facing units carry that status.  The sole
+authored-but-unaccepted function remains
+`ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0`; its natural
+361-byte target versus 362-byte object allocator residual is unchanged and is
+not hidden by this semantic batch.

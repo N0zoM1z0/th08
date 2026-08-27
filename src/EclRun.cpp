@@ -123,9 +123,9 @@ low_advance_instruction:
             enemy->activeEclContext->interpolationSlots;
         Float3 savedPosition = *reinterpret_cast<Float3 *>(&enemy->position);
 
-        if (enemy->activeEclContext->callback)
-            enemy->activeEclContext->callback(
-                enemy, enemy->activeEclContext->callbackArgument);
+        if (enemy->activeEclContext->perFrameCallback)
+            enemy->activeEclContext->perFrameCallback(
+                enemy, enemy->activeEclContext->perFrameInstruction);
 
         for (i = 0; i < 8; ++i, ++entry)
         {

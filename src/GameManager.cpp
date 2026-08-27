@@ -1512,7 +1512,8 @@ void GameManager::AdvanceToNextStage()
         this->currentStage = g_GameManager.flags.finalStageRoute ? STAGE6B : STAGE6A;
         break;
     case STAGE6A:
-        this->currentStage = STAGE6B; // Was Kaguya meant to be a TLB at one point???
+        // Advance from the first final-stage route to the alternate route.
+        this->currentStage = STAGE6B;
         break;
     }
 }

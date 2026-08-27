@@ -55,7 +55,7 @@ void TitleScreen::FormatSpellCardInfo()
 
     if (Spellcard::GetDifficultyFromSpellCard(spellCardNumber) <= EXTRA)
     {
-        if (!reinterpret_cast<TitleCatkView *>(&g_GameManager.catkData[spellCardNumber])->AttemptedAny(SHOT_ALL))
+        if (!g_GameManager.catkData[spellCardNumber].AttemptedAny(SHOT_ALL))
         {
             if (this->currentScreenState == TitleCurrentScreenState_Init || this->spellCardInfoRevealCountdown == 7)
                 g_AnmManager->DrawTextLeft(&this->spellCardInfoVms[3], COLOR_TEXT_WHITE, 0,
@@ -79,7 +79,7 @@ void TitleScreen::FormatSpellCardInfo()
     }
     else
     {
-        if (!reinterpret_cast<TitleCatkView *>(&g_GameManager.catkData[spellCardNumber])->AttemptedAny(SHOT_ALL))
+        if (!g_GameManager.catkData[spellCardNumber].AttemptedAny(SHOT_ALL))
         {
             if (this->currentScreenState == TitleCurrentScreenState_Init || this->spellCardInfoRevealCountdown == 7)
                 g_AnmManager->DrawTextLeft(&this->spellCardInfoVms[3], COLOR_TEXT_WHITE, 0,
@@ -104,7 +104,7 @@ void TitleScreen::FormatSpellCardInfo()
 
     if (this->currentScreenState == TitleCurrentScreenState_Init || this->spellCardInfoRevealCountdown == 5)
     {
-        if (!reinterpret_cast<TitleCatkView *>(&g_GameManager.catkData[spellCardNumber])->AttemptedAny(SHOT_ALL) &&
+        if (!g_GameManager.catkData[spellCardNumber].AttemptedAny(SHOT_ALL) &&
             spellCardNumber >= SPELLCARD_LAST_WORD_START - 1 && spellCardNumber <= SPELLCARD_LW_YUKARI &&
             !g_GameManager.IsLastWordSpellCardAttempted(spellCardNumber))
         {
@@ -125,7 +125,7 @@ void TitleScreen::FormatSpellCardInfo()
 
     if (this->currentScreenState == TitleCurrentScreenState_Init || this->spellCardInfoRevealCountdown == 3)
     {
-        if (!reinterpret_cast<TitleCatkView *>(&g_GameManager.catkData[spellCardNumber])->AttemptedAny(SHOT_ALL) &&
+        if (!g_GameManager.catkData[spellCardNumber].AttemptedAny(SHOT_ALL) &&
             spellCardNumber >= SPELLCARD_LAST_WORD_START - 1 && spellCardNumber <= SPELLCARD_LW_YUKARI &&
             !g_GameManager.IsLastWordSpellCardAttempted(spellCardNumber))
         {

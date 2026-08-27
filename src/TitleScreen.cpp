@@ -575,7 +575,8 @@ ChainCallbackResult TitleScreen::OnUpdateStartMenu()
                 this->currentHelpTextVm->SetInterrupt(2);
                 return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
             case TITLE_MENU_ITEM_START_OPTION:
-                /* ??? */
+                // Enter the options initializer immediately, then leave its
+                // cursor on the first row for the next title update.
                 this->currentScreenState = TitleCurrentScreenState_Init;
                 this->cursor = 0;
                 this->stateTimer2 = 0;
@@ -2146,7 +2147,8 @@ ChainCallbackResult TitleScreen::OnUpdateSpellStageSelect()
 
             g_GameManager.currentStage = this->cursor;
 
-            /* ??? */
+            // The target enqueues the select sound a second time and flushes
+            // the queue before entering spell-card selection.
             g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
             g_SoundPlayer.ProcessQueues();
 
@@ -2340,7 +2342,7 @@ ChainCallbackResult TitleScreen::OnUpdateSpellCardSelect()
                 {
                     this->cursor = this->currentNumberOfSpellCards - 1;
                 }
-                if (this->currentNumberOfSpellCards >= this->cursor)
+                if (this->cursor >= this->currentNumberOfSpellCards)
                 {
                     this->cursor = 0;
                 }
@@ -2361,7 +2363,7 @@ ChainCallbackResult TitleScreen::OnUpdateSpellCardSelect()
                     {
                         this->cursor = currentNumberOfSpellCards - 1;
                     }
-                    if (this->currentNumberOfSpellCards >= this->cursor)
+                    if (this->cursor >= this->currentNumberOfSpellCards)
                     {
                         this->cursor = currentNumberOfSpellCards - 1;
                     }
@@ -2948,7 +2950,7 @@ ChainCallbackResult TitleScreen::DrawSpellStageSelect()
     pieChartPosition.x = 530.0f;
     pieChartPosition.y = 420.0f;
 
-    /* ??? */
+    // Offset the all-shot chart from the per-shot chart drawn above.
     pieChartPosition.x += 32.0f;
     pieChartPosition.y += 18.0f;
 
@@ -3545,62 +3547,7 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
     return CHAIN_CALLBACK_RESULT_CONTINUE;
 }
 
-/* This is matching functionally but there is some unexplained stack nonsense
- * from AnmLoaded::InitializeAndSetSprite.
- */
-ChainCallbackResult TitleScreen::DrawCompletionStatusText()
-{
-    ZunBool showVm = FALSE;
-
-    if (this->stateTimer2 > 8)
-    {
-        if (g_GameManager.IsStageClearedWithoutRetries(STAGE6B, this->cursor, g_Supervisor.cfg.defaultDifficulty) &&
-            g_GameManager.IsStageClearedWithRetries(STAGE6A, this->cursor, g_Supervisor.cfg.defaultDifficulty))
-        {
-            showVm = TRUE;
-            this->titleAnm->InitializeAndSetSprite(&this->spellCardNameVms[0], 146);
-        }
-        else if (g_GameManager.IsStageClearedWithoutRetries(STAGE6B, this->cursor, g_Supervisor.cfg.defaultDifficulty))
-        {
-            showVm = TRUE;
-            this->titleAnm->InitializeAndSetSprite(&this->spellCardNameVms[0], 148);
-        }
-        else if (g_GameManager.IsStageClearedWithoutRetries(STAGE6B, this->cursor, EASY) ||
-                 g_GameManager.IsStageClearedWithoutRetries(STAGE6B, this->cursor, NORMAL) ||
-                 g_GameManager.IsStageClearedWithoutRetries(STAGE6B, this->cursor, HARD) ||
-                 g_GameManager.IsStageClearedWithoutRetries(STAGE6B, this->cursor, LUNATIC) && this->cursor > 3)
-        {
-            showVm = TRUE;
-            this->titleAnm->InitializeAndSetSprite(&this->spellCardNameVms[0], 147);
-        }
-        else if (g_GameManager.IsStageClearedWithRetries(STAGE6A, this->cursor, EASY) ||
-                 g_GameManager.IsStageClearedWithRetries(STAGE6A, this->cursor, NORMAL) ||
-                 g_GameManager.IsStageClearedWithRetries(STAGE6A, this->cursor, HARD) ||
-                 g_GameManager.IsStageClearedWithRetries(STAGE6A, this->cursor, LUNATIC))
-        {
-            showVm = TRUE;
-            this->titleAnm->InitializeAndSetSprite(&this->spellCardNameVms[0], 145);
-        }
-    }
-
-    if (showVm)
-    {
-        this->spellCardNameVms[0].anchor = 3;
-
-        this->spellCardNameVms[0].color1.a = 255;
-        this->spellCardNameVms[0].color1.r = 255;
-        this->spellCardNameVms[0].color1.g = 255;
-        this->spellCardNameVms[0].color1.b = 255;
-
-        this->spellCardNameVms[0].pos.x = 400.0f;
-        this->spellCardNameVms[0].pos.y = 170.0f;
-        this->spellCardNameVms[0].pos.z = 0.0f;
-
-        g_AnmManager->DrawNoRotation(&this->spellCardNameVms[0]);
-    }
-
-    return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
-}
+#include "TitleCompletionStatus.inl"
 
 #pragma var_order(i, vm, position)
 ChainCallbackResult TitleScreen::OnDraw(TitleScreen *titleScreen)

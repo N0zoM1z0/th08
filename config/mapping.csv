@@ -101,7 +101,7 @@ th08::Background::DeletedCallback,0x409c20,0x7a,__fastcall,,u32,Background*
 th08::Background::CutChain,0x409ca0,0x32,__cdecl,,void
 th08::Background::LoadStageData,0x409ce0,0x256,__thiscall,,u32,Background*,char*
 th08::Background::UpdateStageObjectVms,0x409f40,0x262,__thiscall,,u32,Background*
-th08::Background::RenderObjects,0x40a1b0,0x128a,__thiscall,,void,Background*,i32
+th08::Background::RenderObjects,0x40a1b0,0x128a,__thiscall,,ZunResult,Background*,i32
 _sqrtf,0x40b440,0x15,__fastcall,,f32,f32
 th08::Float3::Float3,0x40b460,0xe,__thiscall,,Float3*,Float3*
 th08::Float3::operator/=,0x40b470,0x49,__thiscall,,Float3*,Float3*,f32
@@ -234,7 +234,7 @@ th08::EclTimelineState::EclTimelineState,0x418300,0x25,__thiscall,,EclTimelineSt
 th08::EclManager::Load,0x418330,0xef,__thiscall,,u32,EclManager*,char*
 th08::EclManager::Unload,0x418420,0x2c,__thiscall,,void,EclManager*
 th08::EclManager::CallEclSub,0x418450,0x58,__thiscall,,u32,EclManager*,EnemyEclContext*,i16
-th08::EclManager::RunEcl,0x4184b0,0x680e,__thiscall,,u32,EclManager*,void*
+th08::EclManager::RunEcl,0x4184b0,0x680e,__thiscall,,ZunResult,EclManager*,Enemy*
 th08::EclRunLow::FindAttachmentChainTail,0x41efc0,0x36,__fastcall,,Enemy*,Enemy*
 th08::Enemy::HasParentChain,0x41f000,0x35,__thiscall,,i32,Enemy*
 th08::Spellcard::SetStoredVector,0x41f040,0x43,__thiscall,,void,Spellcard*,f32,f32,f32
@@ -416,7 +416,7 @@ th08::EnemyManager::OnDrawHighPrio,0x42e120,0x17,__fastcall,,ChainCallbackResult
 th08::EnemyManager::OnDrawImpl,0x42e140,0x9c8,__fastcall,,ChainCallbackResult,EnemyManager*,i32,i32
 th08::InterpolateWrappedAngle,0x42eb10,0x72,__stdcall,,f32,f32,f32,f32
 th08::EnemyManager::OnDrawLowPrio,0x42eb90,0x5c,__fastcall,,ChainCallbackResult,EnemyManager*
-th08::EnemyManager::AddedCallback,0x42ebf0,0x282,__thiscall,,u32,EnemyManager*
+th08::EnemyManager::AddedCallback,0x42ebf0,0x282,__thiscall,,ZunResult,EnemyManager*
 th08::EnemyManager::DeletedCallback,0x42ee80,0xe1,__fastcall,,ZunResult,EnemyManager*
 th08::EnemyManager::CutChain,0x42ef70,0x32,__cdecl,,void
 th08::EnemyManager::KillAllNonBossEnemies,0x42efb0,0x23f,__thiscall,,i32,EnemyManager*,i32,i32
@@ -822,7 +822,7 @@ th08::Player::StartShooting,0x451640,0x2d,__thiscall,,void,Player*
 th08::Player::CalcDamageToEnemy,0x451670,0x66e,__thiscall,,i32,Player*,Float3*,Float3*,i32*,i32*
 th08::PlayerBuildAabb,0x451ce0,0x6c,__fastcall,,void,Float3*,Float3*,Float3*,Float3*
 th08::Player::IsBombShotSuppressed,0x451d50,0x38,__thiscall,,i32,Player*
-th08::ReplayManager::LoadReplayData,0x451d90,0x1ff,__fastcall,,ReplayData*,void*,i32
+th08::ReplayManager::LoadReplayData,0x451d90,0x1ff,__fastcall,,ReplayData*,ReplayData*,i32
 th08::ReplayManager::RegisterChain,0x451f90,0x309,__fastcall,,ZunResult,i32,const char*
 th08::ReplayManager::CaptureFrameSyncState,0x4522a0,0x66,__fastcall,,ChainCallbackResult,ReplayManager*
 th08::ReplayManager::RecordInputAndFps,0x452310,0x174,__fastcall,,ChainCallbackResult,ReplayManager*

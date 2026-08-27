@@ -185,6 +185,24 @@ struct Catk
     i32 unconsumedTailDword228;
 
     ZunBool WasAttemptedWithShot(i32 shotType);
+    inline ZunBool SpellPracticeCaptured(i32 shotType) const
+    {
+        return this->spellPracticeHistory.captures[shotType] > 0 ? TRUE : FALSE;
+    }
+    inline ZunBool CapturedAny(i32 shotType) const
+    {
+        return (this->inGameHistory.captures[shotType] > 0 ||
+                this->spellPracticeHistory.captures[shotType] > 0)
+                   ? TRUE
+                   : FALSE;
+    }
+    inline ZunBool AttemptedAny(i32 shotType) const
+    {
+        return (this->inGameHistory.attempts[shotType] > 0 ||
+                this->spellPracticeHistory.attempts[shotType] != 0)
+                   ? TRUE
+                   : FALSE;
+    }
 };
 
 C_ASSERT(sizeof(Catk) == 0x22c);

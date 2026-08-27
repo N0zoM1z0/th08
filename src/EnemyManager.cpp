@@ -1268,12 +1268,12 @@ ChainCallbackResult EnemyManager::OnDrawLowPrio(EnemyManager *enemyManager)
 }
 
 // FUNCTION: th08 0x42ebf0
-#pragma var_order(enemy, savedEcl0, savedEcl1, markerPosition, enemyManager)
+#pragma var_order(enemy, savedEclFile, savedSubTable, markerPosition, enemyManager)
 ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
 {
     Enemy *enemy = &enemyManager->enemies[0];
-    i32 savedEcl0;
-    i32 savedEcl1;
+    EclRawHeader *savedEclFile;
+    u32 *savedSubTable;
 
     if (IsResourceReloadEnabled())
     {
@@ -1354,8 +1354,8 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
     }
     else
     {
-        savedEcl0 = reinterpret_cast<i32 *>(&g_EclManager)[0];
-        savedEcl1 = reinterpret_cast<i32 *>(&g_EclManager)[1];
+        savedEclFile = g_EclManager.eclFile;
+        savedSubTable = g_EclManager.subTable;
 #ifdef TH08_MODERN_PORT
         memset(&g_EclManager, 0, sizeof(g_EclManager));
         memset(&EclRunLow::g_EclCallParameters, 0,
@@ -1364,8 +1364,8 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
         memset(&g_EclManager, 0,
                sizeof(g_EclManager) + sizeof(EclRunLow::g_EclCallParameters));
 #endif
-        reinterpret_cast<i32 *>(&g_EclManager)[0] = savedEcl0;
-        reinterpret_cast<i32 *>(&g_EclManager)[1] = savedEcl1;
+        g_EclManager.eclFile = savedEclFile;
+        g_EclManager.subTable = savedSubTable;
     }
 
     enemyManager->enemyDropCounter = g_Rng.GetRandomU16InRange(3);

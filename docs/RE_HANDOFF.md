@@ -2165,3 +2165,24 @@ and RegisterChain **203 / 203**.  The required cold aggregate passes **1,106 /
 image link; and the Linux fixed-layout verifier passes.  Continue on
 `semantic/typed-reconstruction`; commit and push stable checkpoints, but do
 not open a PR or merge until explicitly requested.
+
+The residual-owner/Title-parity checkpoint removes Background's last authored
+raw field access, gives the ECL context's opcode-137 per-frame callback and
+instruction real types, preserves EnemyManager's ECL header/subtable through
+their fields, types ReplayManager::LoadReplayData as `ReplayData *`, and moves
+the three Title spell-history queries onto `Catk`.  The mapping ledger now also
+reflects the already exact `ZunResult`/`Enemy *` signatures for RenderObjects,
+RunEcl, and AddedCallback.
+
+A complete production/probe duplicate audit found three real portable Title
+drifts: completion status used `&& cursor > 3` instead of the target's
+independent `|| cursor > 3`, and spell-card selection reversed two cursor
+upper-bound comparisons.  Production now follows the exact probe, and
+completion rendering is single-owned by a shared `.inl`.  Player option/shot,
+score initialization, Stage-menu draw, and Gameplay setup duplicates have no
+behavioral drift.  Focused replay passes **11 / 11 exact**; the required cold
+aggregate passes **1,106 / 1,106 exact** with zero failures; the normal VC7
+image and complete Linux i386 image link; and the Linux fixed-layout verifier
+passes.  Continue the router-invisible API/config signature and intentionally
+neutral-state audit on `semantic/typed-reconstruction`.  Commit and push stable
+checkpoints, but do not open a PR or merge until explicitly requested.

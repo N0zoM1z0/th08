@@ -233,6 +233,18 @@ struct GameManager
 
     ZunBool IsStageClearedWithRetries(i32 stage, i32 character, i32 difficulty);
     ZunBool IsStageClearedWithoutRetries(i32 stage, i32 character, i32 difficulty);
+    inline ZunBool StageClearedWithoutRetries(
+        i32 stage, i32 character, i32 difficulty)
+    {
+        return this->clrdData[character]
+                   .difficultiesClearedWithoutRetries[difficulty] & ZUN_BIT(stage);
+    }
+    inline ZunBool StageClearedWithRetries(
+        i32 stage, i32 character, i32 difficulty)
+    {
+        return this->clrdData[character]
+                   .difficultiesClearedWithRetries[difficulty] & ZUN_BIT(stage);
+    }
 
     ZunBool IsExtraUnlockedForCharacter(i32 character);
     ZunBool IsExtraUnlocked();

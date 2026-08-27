@@ -1314,10 +1314,8 @@ ZunResult Background::RenderObjects(i32 mode)
                                     this->skyFog.nearPlane > quadWidth &&
                                     this->collectSpecialEffectPoints != 0)
                                 {
-                                    this->specialEffectPoints[*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) +
-                                                                              0x6478)] = quadPos;
-                                    this->specialEffectPoints[*reinterpret_cast<i32 *>(reinterpret_cast<u8 *>(this) +
-                                                                              0x6478)].z = 0.0f;
+                                    this->specialEffectPoints[this->specialEffectPointCount] = quadPos;
+                                    this->specialEffectPoints[this->specialEffectPointCount].z = 0.0f;
                                     (this->specialEffectPointCount)++;
                                 }
 

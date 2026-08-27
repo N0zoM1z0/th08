@@ -188,8 +188,6 @@ struct EclRawHeader
 typedef char EclRawHeaderTimelineCountOffsetCheck[offsetof(EclRawHeader, timelineCount) == 0x6 ? 1 : -1];
 typedef char EclRawHeaderSubTableOffsetCheck[offsetof(EclRawHeader, subOffsets) == 0x48 ? 1 : -1];
 
-typedef void (__fastcall *EnemyEclContextCallback)(Enemy *enemy, void *argument);
-
 struct EnemyEclInterpolationSlot;
 typedef void (__fastcall *EnemyEclInterpolatorCallback)(
     Enemy *enemy, EnemyEclInterpolationSlot *slot, f32 progress);
@@ -221,8 +219,8 @@ struct EnemyEclContext
 
     EclRawInstruction *currentInstr;
     ZunTimer time;
-    EnemyEclContextCallback callback;
-    void *callbackArgument;
+    EclExInstructionCallback perFrameCallback;
+    EclExInstruction *perFrameInstruction;
     i32 intVariables[8];
     f32 floatVariables[8];
     i32 extraIntVariables[4];
@@ -236,7 +234,7 @@ struct EnemyEclContext
     i16 subId;
     u8 contextTailAlignment226[2];
 };
-typedef char EnemyEclContextCallbackOffsetCheck[offsetof(EnemyEclContext, callback) == 0x10 ? 1 : -1];
+typedef char EnemyEclContextCallbackOffsetCheck[offsetof(EnemyEclContext, perFrameCallback) == 0x10 ? 1 : -1];
 typedef char EnemyEclContextIntVariablesOffsetCheck[offsetof(EnemyEclContext, intVariables) == 0x18 ? 1 : -1];
 typedef char EnemyEclContextFloatVariablesOffsetCheck[offsetof(EnemyEclContext, floatVariables) == 0x38 ? 1 : -1];
 typedef char EnemyEclContextExtraIntVariablesOffsetCheck[offsetof(EnemyEclContext, extraIntVariables) == 0x58 ? 1 : -1];
