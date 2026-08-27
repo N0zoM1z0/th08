@@ -3307,7 +3307,7 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
             FindClose(firstFile);
             _chdir("../");
             this->replayCount = replayCount;
-            this->unk0xc284 = 0;
+            this->replayEnumerationResetState = 0;
         }
 
         if (this->stateTimer2 >= 8)

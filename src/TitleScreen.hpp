@@ -160,7 +160,7 @@ struct TitleScreen
     i32 cursor2;
     i32 currentScreenState;
     i32 stateTimer;
-    i32 unk0x14;
+    i32 unconsumedDword14;
     u8 padding[80];
 
     TitleCurrentScreen previousScreen;
@@ -170,7 +170,7 @@ struct TitleScreen
     char replayNumbers[TITLE_MAX_REPLAYS][8];
     ReplayData replays[TITLE_MAX_REPLAYS];
     ReplayData *currentReplay;
-    i32 unk0xc284;
+    i32 replayEnumerationResetState;
     i32 replayCount;
     i32 selectedReplay;
     i32 selectedReplayStage;
@@ -200,6 +200,8 @@ struct TitleScreen
     ControllerMapping controllerMapping;
     GameConfiguration currentGameConfig;
 };
+C_ASSERT(offsetof(TitleScreen, unconsumedDword14) == 0x14);
+C_ASSERT(offsetof(TitleScreen, replayEnumerationResetState) == 0xC284);
 C_ASSERT(offsetof(TitleScreen, spellCardInfoRevealCountdown) == 0xc29c);
 
 } // namespace th08

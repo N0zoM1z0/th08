@@ -2305,6 +2305,43 @@ anonymous-identifier, and 44 opaque-storage candidates.  This five-candidate
 drop reflects names made explicit in the replay protocol; it is not a semantic
 completion percentage.
 
+### Result and score persistence tails — 2026-08-27
+
+Scope: `ResultScreen::AddedCallback @ 0x0045964D`,
+`TitleScreen::OnUpdateReplayMenu @ 0x0046E136`, and the serialized `Hscr` and
+`Catk` score chapters.
+
+The ResultScreen dword at `+0x20` is cleared immediately before `OpenScore` and
+has no observed reader, so it is `scoreLoadResetWord20`; the VM at `+0x10EF8`
+has only its active sprite reset to -1 and is `resetOnlyVm10EF8`.  Two completely
+unconsumed ResultScreen dwords remain explicitly classified as such.  The
+TitleScreen dword at `+0xC284` is cleared after replay-file enumeration and has
+no later consumer, giving it the bounded `replayEnumerationResetState` name;
+the unaccessed `+0x14` dword is not assigned a menu meaning.
+
+`Hscr` and `Catk` are copied as complete score.dat chapters, so their residual
+bytes cannot be discarded merely because gameplay does not read them.  The
+alignment byte before `Hscr::cfg` and final byte are named reserved serialized
+storage, the `+0x6C` Hscr dword and `+0x228` Catk tail remain unconsumed, and
+`Hscr + 0x166` is `defaultScoreMarker` because the synthetic leaderboard
+records are its sole producer and write 1.  This does not claim a load-time
+consumer that the authored corpus does not contain.  Assertions pin every
+renamed owner and serialized offset.
+
+VC7 oracle: focused replay of ResultScreen, ScoreDat, TitleScreen, and
+GameManager passes **113 / 113 exact**.  The required single-job cold build of
+all 75 comparison objects passes **1,106 / 1,106 exact**, and the normal VC7
+production image links.  In particular, the current
+`TitleScreen::RegisterChain @ 0x0047146D` source independently replays **281 /
+281 exact**; the old 1105-era blocker snapshot is no longer current.
+
+Portable oracle: the complete i386 Linux container build links, and its ELF32
+and fixed-layout verifier passes.  The only authored row not represented by an
+accepted exact unit is now `ReplayManager::PlaybackExtendedInputAndFps @
+0x004526C0` (361 bytes), because it has no configured match unit; it is not a
+reported byte mismatch.  That ledger gap remains a separate bounded Oracle
+task.
+
 ### ScreenEffect lifecycle and visual modes — 2026-08-27
 
 Scope: `CalcFadeHold @ 0x0045B800`, `RegisterChain @ 0x0045B8B0`,

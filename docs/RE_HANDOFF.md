@@ -1811,3 +1811,21 @@ the normal VC7 image links, and the complete i386 Linux container build plus
 fixed-layout verifier pass.  Continue treating the remaining heuristic
 anonymous/opaque list as evidence-routing work: it is neither an exactness
 regression nor proof that every residual byte has a recoverable semantic name.
+
+The following score/result checkpoint classifies the remaining ResultScreen,
+TitleScreen replay-enumeration, `Hscr`, and `Catk` tail state.  Reset-only and
+unconsumed runtime fields are named only for their observed protocols, while
+serialized alignment/tail bytes remain explicit reserved storage.  The byte at
+`Hscr + 0x166` is now `defaultScoreMarker`: only the synthetic leaderboard
+producer writes it, and no unobserved consumer is claimed.  All renamed owner
+offsets are asserted.
+
+Focused replay across ResultScreen, ScoreDat, TitleScreen, and GameManager
+passes **113 / 113 exact**; cold aggregate replay passes **1,106 / 1,106
+exact**; the normal VC7 image and complete i386 Linux image both link; and the
+Linux fixed-layout verifier passes.  `TitleScreen::RegisterChain @ 0x0047146D`
+is currently **281 / 281 exact** under the repository Oracle.  The sole
+authored/non-accepted row is instead
+`ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0` (361 bytes), which
+has no configured match unit.  Treat adding and proving that unit as a
+separate Oracle-ledger closure task, not as evidence of a current mismatch.

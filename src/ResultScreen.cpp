@@ -2871,7 +2871,7 @@ ZunResult ResultScreen::AddedCallback(ResultScreen *result)
                 result->defaultScore[i][shotType][stage].stage = STAGE1;
                 result->defaultScore[i][shotType][stage].base.runtimeMarker = TH8K_RUNTIME_MARKER_NONE;
                 result->defaultScore[i][shotType][stage].numRetries = 0;
-                result->defaultScore[i][shotType][stage].unk0x166 = 1;
+                result->defaultScore[i][shotType][stage].defaultScoreMarker = 1;
 
                 result->InsertScore(&result->defaultScore[i][shotType][stage], i, shotType);
 
@@ -2930,7 +2930,7 @@ ZunResult ResultScreen::AddedCallback(ResultScreen *result)
         }
     }
 
-    result->unk0x20 = 0;
+    result->scoreLoadResetWord20 = 0;
     result->scoreDat = ScoreDat::OpenScore("score.dat");
 
     for (i = 0; i < MAX_DIFFICULTIES; i++)
@@ -3024,7 +3024,7 @@ ZunResult ResultScreen::AddedCallback(ResultScreen *result)
     result->shotTypeCursor = SHOT_ALL;
     result->previousShotType = SHOT_ALL;
     result->updateSpellcardResults = FALSE;
-    result->unk_10ef8.activeSpriteIndex = -1;
+    result->resetOnlyVm10EF8.activeSpriteIndex = -1;
 
     g_GameManager.plst.playDataTotals.continues = g_GameManager.plst.playDataByDifficulty[EASY].continues +
                                                   g_GameManager.plst.playDataByDifficulty[NORMAL].continues +
