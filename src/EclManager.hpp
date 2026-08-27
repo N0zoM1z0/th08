@@ -164,11 +164,15 @@ typedef char EclRawHeaderSubTableOffsetCheck[offsetof(EclRawHeader, subOffsets) 
 
 typedef void (__fastcall *EnemyEclContextCallback)(Enemy *enemy, void *argument);
 
+struct EnemyEclInterpolationSlot;
+typedef void (__fastcall *EnemyEclInterpolatorCallback)(
+    Enemy *enemy, EnemyEclInterpolationSlot *slot, f32 progress);
+
 struct EnemyEclInterpolationSlot
 {
     EnemyEclInterpolationSlot();
 
-    void *callback;
+    EnemyEclInterpolatorCallback callback;
     ZunTimer timer;
     i32 duration;
     i32 callbackIndex;
@@ -178,6 +182,8 @@ struct EnemyEclInterpolationSlot
 };
 C_ASSERT(sizeof(EnemyEclInterpolationSlot) == 0x30);
 C_ASSERT(offsetof(EnemyEclInterpolationSlot, duration) == 0x10);
+C_ASSERT(offsetof(EnemyEclInterpolationSlot, callbackIndex) == 0x14);
+C_ASSERT(offsetof(EnemyEclInterpolationSlot, parameters) == 0x1c);
 C_ASSERT(offsetof(EnemyEclInterpolationSlot, affectedVariable) == 0x2c);
 
 // Target-observed TH08 per-enemy ECL interpreter context. The constructor-

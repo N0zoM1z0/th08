@@ -6,23 +6,24 @@
 namespace th08
 {
 
-namespace EclRunLowProposal
+namespace EclRunLow
 {
-struct InterpolationSlot;
-void __fastcall InterpolateLinear(EclOperands::EnemyOverlay *enemy, InterpolationSlot *slot, f32 t);
-void __fastcall InterpolateHermite(EclOperands::EnemyOverlay *enemy, InterpolationSlot *slot, f32 t);
+void __fastcall InterpolateLinear(
+    Enemy *enemy, EnemyEclInterpolationSlot *slot, f32 t);
+void __fastcall InterpolateHermite(
+    Enemy *enemy, EnemyEclInterpolationSlot *slot, f32 t);
 
-DIFFABLE_STATIC_ARRAY_ASSIGN(void *, 8, g_EclInterpolatorCallbacks) = {
-    reinterpret_cast<void *>(&InterpolateLinear),
-    reinterpret_cast<void *>(&InterpolateLinear),
-    reinterpret_cast<void *>(&InterpolateLinear),
-    reinterpret_cast<void *>(&InterpolateLinear),
-    reinterpret_cast<void *>(&InterpolateLinear),
-    reinterpret_cast<void *>(&InterpolateLinear),
-    reinterpret_cast<void *>(&InterpolateLinear),
-    reinterpret_cast<void *>(&InterpolateHermite),
+DIFFABLE_STATIC_ARRAY_ASSIGN(EnemyEclInterpolatorCallback, 8, g_EclInterpolatorCallbacks) = {
+    &InterpolateLinear,
+    &InterpolateLinear,
+    &InterpolateLinear,
+    &InterpolateLinear,
+    &InterpolateLinear,
+    &InterpolateLinear,
+    &InterpolateLinear,
+    &InterpolateHermite,
 };
-} // namespace EclRunLowProposal
+} // namespace EclRunLow
 
 struct EclExInstruction;
 namespace EclExIns
@@ -100,9 +101,9 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(void *, 32, g_EclExInsn) = {
 DIFFABLE_STATIC(u32, g_EclGameTimeScaleFlags);
 DIFFABLE_STATIC(EclManager, g_EclManager);
 
-namespace EclRunLowProposal
+namespace EclRunLow
 {
 DIFFABLE_STATIC(EclCallParameterCopy, g_EclCallParameters);
-} // namespace EclRunLowProposal
+} // namespace EclRunLow
 
 } // namespace th08

@@ -33,7 +33,7 @@ SECTIONS
     _ZN4th0820g_SpellcardCalcChainE = 0x004eccac;
 
     _ZN4th0812g_EclManagerE = 0x004eccb8;
-    _ZN4th0817EclRunLowProposal19g_EclCallParametersE = 0x004ece20;
+    _ZN4th089EclRunLow19g_EclCallParametersE = 0x004ece20;
     _ZN4th0815g_EffectManagerE = 0x004ece60;
 
     /*

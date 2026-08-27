@@ -46,26 +46,8 @@ extern void *g_EclExInsn[];
 void __fastcall StartEnemySpell(u8 *enemy, void *instruction);
 void __fastcall EndEnemySpell(u8 *enemy, void *instruction);
 
-namespace EclRunHighProposal
+namespace EclRunHigh
 {
-
-struct Vec3
-{
-    f32 x;
-    f32 y;
-    f32 z;
-};
-
-struct RawInstruction
-{
-    i32 time;
-    i16 opcode;
-    i16 nextOffset;
-    u8 serializedReserved08;
-    u8 difficultyMask;
-    u16 operandFlags;
-    u8 operands[1];
-};
 
 struct LaserSpawnArgs
 {
@@ -92,10 +74,10 @@ C_ASSERT(offsetof(LaserSpawnArgs, startTime) == 0x1c);
 C_ASSERT(offsetof(LaserSpawnArgs, hitboxStartTime) == 0x28);
 C_ASSERT(offsetof(LaserSpawnArgs, transformFlags) == 0x30);
 
-// Provisional semantic name for target FUN_00422720.  Both its caller and
-// callee establish Enemy in ECX and the current ECL instruction in EDX.
-void __fastcall DispatchShotInstruction(u8 *enemy,
-                                        RawInstruction *instruction);
+// Target behavior at 0x00422720 establishes this as the Enemy bullet-spawn
+// descriptor dispatcher.
+void __fastcall DispatchShotInstruction(EclOperands::EnemyOverlay *enemy,
+                                        EclRawInstruction *instruction);
 
 struct SpawnPacketTyped
 {
@@ -107,27 +89,6 @@ struct SpawnPacketTyped
     i32 itemDropType;
     i32 score;
 };
-
-// RunEcl invokes the per-context callback with Enemy in ECX and its opaque
-// context argument in EDX.  Interpolator callbacks receive Enemy in ECX and
-// their progress value on the stack.
-typedef void (__fastcall *EclContextCallback)(Enemy *enemy, void *argument);
-struct Interpolator;
-typedef void (__fastcall *EclInterpolatorCallback)(Enemy *enemy, Interpolator *entry, f32 progress);
-
-struct Interpolator
-{
-    EclInterpolatorCallback callback; // +0x00, target calls with Enemy in ECX and entry in EDX
-    ZunTimer timer;                 // +0x04
-    i32 duration;         // +0x10
-    i32 callbackIndex;    // +0x14
-    i32 easing;           // +0x18, accepted values 1..6
-    f32 parameters[4];    // +0x1C
-    f32 affectedVariable; // +0x2C; 10042..10044 mean position motion
-};
-typedef char InterpolatorSizeCheck[sizeof(Interpolator) == 0x30 ? 1 : -1];
-typedef char InterpolatorCallbackIndexOffsetCheck[offsetof(Interpolator, callbackIndex) == 0x14 ? 1 : -1];
-typedef char InterpolatorParametersOffsetCheck[offsetof(Interpolator, parameters) == 0x1c ? 1 : -1];
 
 enum DispatchResult
 {
@@ -149,7 +110,7 @@ struct TargetApi
 struct Context
 {
     u8 *enemy;
-    RawInstruction *instruction;
+    EclRawInstruction *instruction;
     TargetApi *api;
     i32 activeChildContext;
 
@@ -285,7 +246,7 @@ C_ASSERT(TH08_ECL_ENEMY_POSITION_OFFSET == offsetof(Enemy, position));
     (((((*reinterpret_cast<u32 *>(&g_GameManager.flags)) >> 14) & 1) == 0) || \
      ((((*reinterpret_cast<u32 *>(&g_GameManager.flags)) >> 7) & 3) == 0))
 
-} // namespace EclRunHighProposal
+} // namespace EclRunHigh
 } // namespace th08
 
 #endif // TH08_ECL_RUN_HIGH_DECLARATIONS
@@ -299,7 +260,7 @@ C_ASSERT(TH08_ECL_ENEMY_POSITION_OFFSET == offsetof(Enemy, position));
 
 namespace th08
 {
-namespace EclRunHighProposal
+namespace EclRunHigh
 {
 
 #define TH08_ECL_RUN_HIGH_YIELD(value) return (value)
@@ -335,7 +296,8 @@ static DispatchResult DispatchOpcode93To184(Context &ctx)
                    sizeof(reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->pendingShotInstruction));
             break;
         }
-        DispatchShotInstruction(TH08_ECL_CONTEXT_ENEMY(ctx),
+        DispatchShotInstruction(
+                                reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx)),
                                 TH08_ECL_CONTEXT_INSTRUCTION(ctx));
         break;
 
@@ -834,7 +796,7 @@ enter_subroutine:
         reinterpret_cast<EnemyFlag1Bits *>(
             &reinterpret_cast<Enemy *>(TH08_ECL_CONTEXT_ENEMY(ctx))->flags1)->rotateAnmWithMovement = TH08_ECL_RAW_BYTE(ctx, 0);
         break;
-    case 136: reinterpret_cast<void (__fastcall *)(u8 *, RawInstruction *)>(g_EclExInsn[TH08_ECL_READ_I(ctx, 0)])(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_CONTEXT_INSTRUCTION(ctx)); break;
+    case 136: reinterpret_cast<void (__fastcall *)(u8 *, EclRawInstruction *)>(g_EclExInsn[TH08_ECL_READ_I(ctx, 0)])(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_CONTEXT_INSTRUCTION(ctx)); break;
     case 137:
         if (TH08_ECL_READ_I(ctx, 0) >= 0)
         {
@@ -1025,8 +987,8 @@ enter_subroutine:
         break;
     case 169:
         if (
-            reinterpret_cast<Vec3 *>(&g_Player.position)->x <
-                TH08_ECL_AT(ctx, Vec3, TH08_ECL_ENEMY_POSITION_OFFSET).x &&
+            reinterpret_cast<Float3 *>(&g_Player.position)->x <
+                TH08_ECL_AT(ctx, Float3, TH08_ECL_ENEMY_POSITION_OFFSET).x &&
             96.0f < TH08_ECL_AT(ctx, f32, TH08_ECL_ENEMY_POSITION_OFFSET) ||
             288.0f < TH08_ECL_AT(ctx, f32, TH08_ECL_ENEMY_POSITION_OFFSET))
             *TH08_ECL_WRITE_F(ctx, 0) = AddNormalizeAngle(
@@ -1134,7 +1096,7 @@ high_dispatch_complete: ;
 #else
 }
 
-} // namespace EclRunHighProposal
+} // namespace EclRunHigh
 } // namespace th08
 #endif
 
@@ -1145,9 +1107,9 @@ high_dispatch_complete: ;
 
 namespace th08
 {
-namespace EclRunHighProposal
+namespace EclRunHigh
 {
 
-} // namespace EclRunHighProposal
+} // namespace EclRunHigh
 } // namespace th08
 #endif // !TH08_ECL_RUN_HIGH_BODY

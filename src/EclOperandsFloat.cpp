@@ -66,14 +66,14 @@ f32 EnemyOverlay::ResolveFloat(f32 operand)
     case 0x2744: return (f32)::th08::g_GameManager.shotType;
     case 0x276C: return (f32)reinterpret_cast<Enemy *>(this)->itemDropType;
     case 0x276D: return (f32)reinterpret_cast<Enemy *>(this)->score;
-    case 0x274D: return (f32)EclRunLowProposal::g_EclCallParameters.ints[0];
-    case 0x274E: return (f32)EclRunLowProposal::g_EclCallParameters.ints[1];
-    case 0x274F: return (f32)EclRunLowProposal::g_EclCallParameters.ints[2];
-    case 0x2750: return (f32)EclRunLowProposal::g_EclCallParameters.ints[3];
-    case 0x2751: return EclRunLowProposal::g_EclCallParameters.floats[0];
-    case 0x2752: return EclRunLowProposal::g_EclCallParameters.floats[1];
-    case 0x2753: return EclRunLowProposal::g_EclCallParameters.floats[2];
-    case 0x2754: return EclRunLowProposal::g_EclCallParameters.floats[3];
+    case 0x274D: return (f32)EclRunLow::g_EclCallParameters.ints[0];
+    case 0x274E: return (f32)EclRunLow::g_EclCallParameters.ints[1];
+    case 0x274F: return (f32)EclRunLow::g_EclCallParameters.ints[2];
+    case 0x2750: return (f32)EclRunLow::g_EclCallParameters.ints[3];
+    case 0x2751: return EclRunLow::g_EclCallParameters.floats[0];
+    case 0x2752: return EclRunLow::g_EclCallParameters.floats[1];
+    case 0x2753: return EclRunLow::g_EclCallParameters.floats[2];
+    case 0x2754: return EclRunLow::g_EclCallParameters.floats[3];
 
     case 0x2720: return ECL_CONTEXT(this)->floatVariables[0];
     case 0x2721: return ECL_CONTEXT(this)->floatVariables[1];
@@ -190,10 +190,10 @@ f32 *__fastcall ResolveFloatLValue(EnemyOverlay *enemy, f32 *operand, u16 flags,
     case 0x273F: return &g_Player.position.z;
     case 0x276E: return &ECL_CONTEXT(enemy)->extraFloatVariables[0];
     case 0x276F: return &ECL_CONTEXT(enemy)->extraFloatVariables[1];
-    case 0x2751: return &EclRunLowProposal::g_EclCallParameters.floats[0];
-    case 0x2752: return &EclRunLowProposal::g_EclCallParameters.floats[1];
-    case 0x2753: return &EclRunLowProposal::g_EclCallParameters.floats[2];
-    case 0x2754: return &EclRunLowProposal::g_EclCallParameters.floats[3];
+    case 0x2751: return &EclRunLow::g_EclCallParameters.floats[0];
+    case 0x2752: return &EclRunLow::g_EclCallParameters.floats[1];
+    case 0x2753: return &EclRunLow::g_EclCallParameters.floats[2];
+    case 0x2754: return &EclRunLow::g_EclCallParameters.floats[3];
 
     case 0x275A: return &reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin.x;
     case 0x275B: return &reinterpret_cast<Enemy *>(enemy)->movementInterpolationOrigin.y;

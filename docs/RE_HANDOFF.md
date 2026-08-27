@@ -2054,3 +2054,21 @@ passes **1,106 / 1,106 exact** with zero failures.  The normal VC7 image and
 complete Linux i386 image link, and the Linux fixed-layout verifier passes.
 Continue on `semantic/typed-reconstruction`; commit and push stable
 checkpoints, but do not open or merge a PR until explicitly requested.
+
+The ECL runtime-type checkpoint promotes the exact low/high interpreter helper
+families from the temporary `EclRunLowProposal` / `EclRunHighProposal`
+namespaces to `EclRunLow` / `EclRunHigh`, migrating all 17 helper identities,
+the call-parameter global, and every source/configuration/COFF/linker reference
+together.  The dead private Player overlay is gone.  `ApplyRandomBiasedMove @
+0x004224A0` and `DispatchShotInstruction @ 0x00422720` now take the typed Enemy
+overlay and shared `EclRawInstruction`; RunEcl and the high dispatcher no
+longer carry duplicate raw-instruction or vector shells.  The public
+`EnemyEclInterpolationSlot` is now shared by the ECL context, RunEcl,
+`InterpolateLinear @ 0x00421120`, `InterpolateHermite @ 0x00421180`, and slot
+installation, with the callback table at `0x004C6C90` carrying its observed
+`__fastcall` ABI.  Focused replay passes **68 / 68 exact** and the required
+non-reuse cold aggregate passes **1,106 / 1,106 exact** with zero failures.
+The normal VC7 image and complete Linux i386 image link, and the Linux fixed-
+layout verifier passes.  Continue the semantic audit on
+`semantic/typed-reconstruction`; commit and push stable checkpoints, but do
+not open or merge a PR until explicitly requested.

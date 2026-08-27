@@ -28,7 +28,7 @@ namespace th08
 #undef TH08_ECL_CONTEXT_CHILD
 #define TH08_ECL_CONTEXT_ENEMY(unusedContext) (reinterpret_cast<u8 *>(enemy))
 #define TH08_ECL_CONTEXT_INSTRUCTION(unusedContext) \
-    (reinterpret_cast<RawInstruction *>(instruction))
+    (reinterpret_cast<EclRawInstruction *>(instruction))
 #define TH08_ECL_CONTEXT_API(unusedContext) \
     (reinterpret_cast<TargetApi *>(this))
 #define TH08_ECL_CONTEXT_CHILD(unusedContext) (activeChildContext)
@@ -36,8 +36,8 @@ namespace th08
 // FUNCTION: th08 0x004184B0
 ZunResult EclManager::RunEcl(Enemy *enemy)
 {
-    using namespace EclRunLowProposal;
-    using namespace EclRunHighProposal;
+    using namespace EclRunLow;
+    using namespace EclRunHigh;
 
     EclRawInstruction *instruction;
     i32 activeChildContext = -1;
@@ -128,9 +128,9 @@ low_advance_instruction:
         i32 i;
         f32 progress;
         i32 restorePosition = 0;
-        Interpolator *entry = reinterpret_cast<Interpolator *>(
-            enemy->activeEclContext->interpolationSlots);
-        Vec3 savedPosition = *reinterpret_cast<Vec3 *>(&enemy->position);
+        EnemyEclInterpolationSlot *entry =
+            enemy->activeEclContext->interpolationSlots;
+        Float3 savedPosition = *reinterpret_cast<Float3 *>(&enemy->position);
 
         if (enemy->activeEclContext->callback)
             enemy->activeEclContext->callback(
@@ -183,7 +183,7 @@ low_advance_instruction:
             enemy->velocity.x = enemy->position.x - savedPosition.x;
             enemy->velocity.y = enemy->position.y - savedPosition.y;
             enemy->movementAngle = VectorAngle(enemy->velocity.y, enemy->velocity.x);
-            *reinterpret_cast<Vec3 *>(&enemy->position) = savedPosition;
+            *reinterpret_cast<Float3 *>(&enemy->position) = savedPosition;
         }
     }
 

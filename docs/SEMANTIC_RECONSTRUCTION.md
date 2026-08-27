@@ -2844,7 +2844,7 @@ word that bounds and indexes the file's timeline-offset table.
 transition, `EnemyOverlay::DetachEnemyChain @ 0x0042ADB0` separates an Enemy
 attachment chain and conditionally awards its death rewards,
 `InterpolateWrappedAngle @ 0x0042EB10` interpolates across the shortest wrapped
-angular path, and `EclRunLowProposal::ApplyRandomBiasedMove @ 0x004224A0`
+angular path, and `EclRunLow::ApplyRandomBiasedMove @ 0x004224A0`
 applies the ECL instruction's randomized, bias-adjusted movement.  The names
 state directly observed state transitions and arithmetic rather than inferred
 script or presentation identities.
@@ -4180,3 +4180,50 @@ obsolete linker alias is removed, and `verify-modern-linux.sh` verifies the
 ELF32 executable and every fixed target-owned layout symbol.  No spell timeout,
 barrier draw callback, ANM VM update, target byte, accepted-unit identity, or
 aggregate exact total changed.
+
+### ECL interpreter namespaces and shared runtime types — 2026-08-27
+
+Scope: the low/high ECL helper families that retained reconstruction-phase
+namespace names, their weak raw-pointer ABIs, and three independent structural
+views of the same instruction and interpolation records.
+
+The 17 exact helpers formerly under `EclRunLowProposal` and
+`EclRunHighProposal` now live under the production-facing `EclRunLow` and
+`EclRunHigh` namespaces.  The migration includes source declarations and
+definitions, all implementation/mapping/reccmp/match ledgers, decorated COFF
+symbols, `g_EclCallParameters @ 0x004ECE20`, and the Linux fixed-address alias.
+This is an identity migration only: each accepted function retains its target
+address and relocation-aware comparison.  The unused private
+`TargetPlayerOverlay` declaration is removed because current production users
+already access the public `g_Player` owner and its exact members directly.
+
+`ApplyRandomBiasedMove @ 0x004224A0` and `DispatchShotInstruction @
+0x00422720` now express their actual fastcall inputs as
+`EclOperands::EnemyOverlay *` and `EclRawInstruction *`, replacing `u8 *`,
+`void *`, and the high dispatcher's duplicate `RawInstruction`.  The main
+interpreter and opcode 169 likewise use the shared `Float3` instead of a local
+three-float shell.  These types make operand flags, serialized operands, Enemy
+state, and saved positions readable without changing the target-observed
+loads or call convention.
+
+The ECL context, RunEcl update loop, slot installer, and interpolation helpers
+now share the public `EnemyEclInterpolationSlot`.  Its callback is typed as
+`void (__fastcall *)(Enemy *, EnemyEclInterpolationSlot *, f32)`, matching the
+register/stack ABI used by `InterpolateLinear @ 0x00421120` and
+`InterpolateHermite @ 0x00421180`.  The callback table at `0x004C6C90` carries
+that same function-pointer type.  Size `0x30` and the observed duration,
+callback-index, parameter-array, and affected-variable offsets remain guarded
+by compile-time assertions.
+
+VC7 oracle: focused relocation-aware replay of EclDependencies.obj,
+EclGlobals.obj, EclOperandsInt.obj, EclOperandsFloat.obj, EclRun.obj, and
+EnemyManager.obj passes **68 / 68 exact**.  Because the batch changes a shared
+header and decorated identities, the required single-job non-reuse cold build
+of all 75 comparison objects passes **1,106 / 1,106 exact** with zero failures.
+The normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container image links with the new
+namespace symbol, and `verify-modern-linux.sh` verifies the ELF32 executable
+and every fixed target-owned layout symbol.  No instruction layout,
+interpolation slot offset, callback ABI, target byte, accepted-unit identity,
+or aggregate exact total changed.

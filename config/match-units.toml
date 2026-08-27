@@ -2609,13 +2609,13 @@ target = 0x00420950
 [[units.relocations]]
 offset = 0x10EC
 type = "REL32"
-symbol = "?ApplyInterpolationOperation@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
+symbol = "?ApplyInterpolationOperation@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target = 0x00421300
 
 [[units.relocations]]
 offset = 0x10FC
 type = "REL32"
-symbol = "?InstallInterpolationSlot@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
+symbol = "?InstallInterpolationSlot@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target = 0x004213F0
 
 [[units.relocations]]
@@ -2699,19 +2699,19 @@ target = 0x00420950
 [[units.relocations]]
 offset = 0x1315
 type = "REL32"
-symbol = "?CompareOperands@EclRunLowProposal@th08@@YIPAUEclRawInstruction@2@PAUEnemyOverlay@EclOperands@2@PAU32@@Z"
+symbol = "?CompareOperands@EclRunLow@th08@@YIPAUEclRawInstruction@2@PAUEnemyOverlay@EclOperands@2@PAU32@@Z"
 target = 0x004215F0
 
 [[units.relocations]]
 offset = 0x1340
 type = "REL32"
-symbol = "?CallSubOnEnemy@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@H@Z"
+symbol = "?CallSubOnEnemy@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@H@Z"
 target = 0x00421BD0
 
 [[units.relocations]]
 offset = 0x1350
 type = "REL32"
-symbol = "?PopEclContext@EclRunLowProposal@th08@@YIHPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
+symbol = "?PopEclContext@EclRunLow@th08@@YIHPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target = 0x00421CB0
 
 [[units.relocations]]
@@ -2741,7 +2741,7 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x142C
 type = "REL32"
-symbol = "?SetPrimaryAnmScripts@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@HHHHHH@Z"
+symbol = "?SetPrimaryAnmScripts@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@HHHHHH@Z"
 target = 0x00421DE0
 
 [[units.relocations]]
@@ -2783,13 +2783,13 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x159B
 type = "REL32"
-symbol = "?SetPrimaryAnmScripts@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@HHHHHH@Z"
+symbol = "?SetPrimaryAnmScripts@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@HHHHHH@Z"
 target = 0x00421DE0
 
 [[units.relocations]]
 offset = 0x15C0
 type = "REL32"
-symbol = "?SetExtraAnmScript@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
+symbol = "?SetExtraAnmScript@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target = 0x00421E50
 
 [[units.relocations]]
@@ -2819,7 +2819,7 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x16A8
 type = "REL32"
-symbol = "?SetPrimaryAnmScripts@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@HHHHHH@Z"
+symbol = "?SetPrimaryAnmScripts@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@HHHHHH@Z"
 target = 0x00421DE0
 
 [[units.relocations]]
@@ -2861,13 +2861,13 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x1817
 type = "REL32"
-symbol = "?SetPrimaryAnmScripts@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@HHHHHH@Z"
+symbol = "?SetPrimaryAnmScripts@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@HHHHHH@Z"
 target = 0x00421DE0
 
 [[units.relocations]]
 offset = 0x1851
 type = "REL32"
-symbol = "?SetExtraAnmScript@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
+symbol = "?SetExtraAnmScript@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target = 0x00421E50
 
 [[units.relocations]]
@@ -2981,13 +2981,13 @@ target = 0x00420D10
 [[units.relocations]]
 offset = 0x1B37
 type = "REL32"
-symbol = "?BeginBoundaryAwareMove@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
+symbol = "?BeginBoundaryAwareMove@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target = 0x00422020
 
 [[units.relocations]]
 offset = 0x1B47
 type = "REL32"
-symbol = "?ApplyRandomBiasedMove@EclRunLowProposal@th08@@YIXPAEPAX@Z"
+symbol = "?ApplyRandomBiasedMove@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target = 0x004224A0
 
 [[units.relocations]]
@@ -3335,7 +3335,7 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x29E2
 type = "REL32"
-symbol = "?CallSubOnEnemy@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@H@Z"
+symbol = "?CallSubOnEnemy@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@H@Z"
 target = 0x00421BD0
 
 [[units.relocations]]
@@ -3371,13 +3371,13 @@ target = 0x00577F20
 [[units.relocations]]
 offset = 0x2AAF
 type = "REL32"
-symbol = "?FindAttachmentChainTail@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
+symbol = "?FindAttachmentChainTail@EclRunLow@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
 target = 0x0041EFC0
 
 [[units.relocations]]
 offset = 0x2ABD
 type = "REL32"
-symbol = "?SpawnChildAtScriptPosition@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
+symbol = "?SpawnChildAtScriptPosition@EclRunLow@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
 target = 0x0041F110
 
 [[units.relocations]]
@@ -3455,13 +3455,13 @@ target = 0x0045D660
 [[units.relocations]]
 offset = 0x2C5F
 type = "REL32"
-symbol = "?FindAttachmentChainTail@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
+symbol = "?FindAttachmentChainTail@EclRunLow@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
 target = 0x0041EFC0
 
 [[units.relocations]]
 offset = 0x2C6D
 type = "REL32"
-symbol = "?SpawnChildAtParentOffset@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
+symbol = "?SpawnChildAtParentOffset@EclRunLow@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
 target = 0x0041F280
 
 [[units.relocations]]
@@ -3539,13 +3539,13 @@ target = 0x0045D660
 [[units.relocations]]
 offset = 0x2E0F
 type = "REL32"
-symbol = "?FindAttachmentChainTail@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
+symbol = "?FindAttachmentChainTail@EclRunLow@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
 target = 0x0041EFC0
 
 [[units.relocations]]
 offset = 0x2E1D
 type = "REL32"
-symbol = "?SpawnChildAtScriptPosition@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
+symbol = "?SpawnChildAtScriptPosition@EclRunLow@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
 target = 0x0041F110
 
 [[units.relocations]]
@@ -3629,7 +3629,7 @@ target = 0x0045D660
 [[units.relocations]]
 offset = 0x3070
 type = "REL32"
-symbol = "?DispatchShotInstruction@EclRunHighProposal@th08@@YIXPAEPAURawInstruction@12@@Z"
+symbol = "?DispatchShotInstruction@EclRunHigh@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target = 0x00422720
 
 [[units.relocations]]
@@ -4850,7 +4850,7 @@ target = 0x01649508
 [[units.relocations]]
 offset = 0x5245
 type = "REL32"
-symbol = "??0SpawnPacketTyped@EclRunHighProposal@th08@@QAE@XZ"
+symbol = "??0SpawnPacketTyped@EclRunHigh@th08@@QAE@XZ"
 target = 0x0041F400
 
 [[units.relocations]]
@@ -4910,7 +4910,7 @@ target = 0x0042A680
 [[units.relocations]]
 offset = 0x540A
 type = "REL32"
-symbol = "??0SpawnPacketTyped@EclRunHighProposal@th08@@QAE@XZ"
+symbol = "??0SpawnPacketTyped@EclRunHigh@th08@@QAE@XZ"
 target = 0x0041F400
 
 [[units.relocations]]
@@ -7143,34 +7143,34 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x413
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 
 [[units.relocations]]
 offset = 0x41D
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x4
 
 [[units.relocations]]
 offset = 0x427
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x8
 
 [[units.relocations]]
 offset = 0x431
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0xC
 
 [[units.relocations]]
 offset = 0x43C
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x10
 
@@ -7183,7 +7183,7 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x44C
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x14
 
@@ -7196,7 +7196,7 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x45C
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x18
 
@@ -7209,7 +7209,7 @@ target = 0x004A3E70
 [[units.relocations]]
 offset = 0x46C
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x1C
 
@@ -8172,27 +8172,27 @@ addend = 0x3DE2C
 [[units.relocations]]
 offset = 0x200
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 
 [[units.relocations]]
 offset = 0x207
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x4
 
 [[units.relocations]]
 offset = 0x20E
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x8
 
 [[units.relocations]]
 offset = 0x215
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0xC
 
@@ -8516,55 +8516,55 @@ addend = 0x3DBA9
 [[units.relocations]]
 offset = 0x283
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 
 [[units.relocations]]
 offset = 0x28E
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x4
 
 [[units.relocations]]
 offset = 0x299
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x8
 
 [[units.relocations]]
 offset = 0x2A4
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0xC
 
 [[units.relocations]]
 offset = 0x2AF
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x10
 
 [[units.relocations]]
 offset = 0x2BA
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x14
 
 [[units.relocations]]
 offset = 0x2C5
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x18
 
 [[units.relocations]]
 offset = 0x2D0
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x1C
 
@@ -9342,28 +9342,28 @@ addend = 0x2B4
 [[units.relocations]]
 offset = 0x206
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x10
 
 [[units.relocations]]
 offset = 0x210
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x14
 
 [[units.relocations]]
 offset = 0x21A
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x18
 
 [[units.relocations]]
 offset = 0x224
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 addend = 0x1C
 
@@ -106079,7 +106079,7 @@ target = 0x0040B8E0
 [[units.relocations]]
 offset = 0x5E
 type = "REL32"
-symbol = "?DispatchShotInstruction@EclRunHighProposal@th08@@YIXPAEPAURawInstruction@12@@Z"
+symbol = "?DispatchShotInstruction@EclRunHigh@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target = 0x00422720
 
 [[units.relocations]]
@@ -106157,7 +106157,7 @@ target = 0x004069F0
 [[units]]
 name = "ecl-dispatch-shot-instruction-00422720"
 object = "build/EclDependencies.obj"
-symbol = "?DispatchShotInstruction@EclRunHighProposal@th08@@YIXPAEPAURawInstruction@12@@Z"
+symbol = "?DispatchShotInstruction@EclRunHigh@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target_address = 0x00422720
 size = 0x456
 
@@ -106344,7 +106344,7 @@ target = 0x00430E10
 [[units]]
 name = "ecl-boundary-aware-move-00422020"
 object = "build/EclDependencies.obj"
-symbol = "?BeginBoundaryAwareMove@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
+symbol = "?BeginBoundaryAwareMove@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target_address = 0x00422020
 size = 0x28A
 
@@ -106537,13 +106537,13 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x282
 type = "REL32"
-symbol = "?StartTimedPolarDisplacement@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@M@Z"
+symbol = "?StartTimedPolarDisplacement@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@M@Z"
 target = 0x004222B0
 
 [[units]]
 name = "ecl-timed-polar-displacement-004222b0"
 object = "build/EclDependencies.obj"
-symbol = "?StartTimedPolarDisplacement@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@M@Z"
+symbol = "?StartTimedPolarDisplacement@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@M@Z"
 target_address = 0x004222B0
 size = 0x1CD
 
@@ -106604,7 +106604,7 @@ target = 0x0041F420
 [[units]]
 name = "ecl-random-biased-move-004224a0"
 object = "build/EclDependencies.obj"
-symbol = "?ApplyRandomBiasedMove@EclRunLowProposal@th08@@YIXPAEPAX@Z"
+symbol = "?ApplyRandomBiasedMove@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target_address = 0x004224A0
 size = 0x276
 
@@ -106821,13 +106821,13 @@ target = 0x004065F0
 [[units.relocations]]
 offset = 0x26E
 type = "REL32"
-symbol = "?StartTimedPolarDisplacement@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@M@Z"
+symbol = "?StartTimedPolarDisplacement@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@M@Z"
 target = 0x004222B0
 
 [[units]]
 name = "ecl-install-interpolation-slot-004213f0"
 object = "build/EclDependencies.obj"
-symbol = "?InstallInterpolationSlot@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
+symbol = "?InstallInterpolationSlot@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target_address = 0x004213F0
 size = 0x1FA
 
@@ -106858,7 +106858,7 @@ target = 0x0041F420
 [[units.relocations]]
 offset = 0x11E
 type = "DIR32"
-symbol = "?g_EclInterpolatorCallbacks@EclRunLowProposal@th08@@3PAPAXA"
+symbol = "?g_EclInterpolatorCallbacks@EclRunLow@th08@@3PAP6IXPAUEnemy@2@PAUEnemyEclInterpolationSlot@2@M@ZA"
 target = 0x004C6C90
 
 [[units.relocations]]
@@ -106889,7 +106889,7 @@ target = 0x00420120
 [[units]]
 name = "ecl-compare-operands-004215f0"
 object = "build/EclDependencies.obj"
-symbol = "?CompareOperands@EclRunLowProposal@th08@@YIPAUEclRawInstruction@2@PAUEnemyOverlay@EclOperands@2@PAU32@@Z"
+symbol = "?CompareOperands@EclRunLow@th08@@YIPAUEclRawInstruction@2@PAUEnemyOverlay@EclOperands@2@PAU32@@Z"
 target_address = 0x004215F0
 size = 0x53F
 compare_size = 0x56F
@@ -107119,7 +107119,7 @@ target = 0x00421AA5
 [[units]]
 name = "ecl-apply-interpolation-operation-00421300"
 object = "build/EclDependencies.obj"
-symbol = "?ApplyInterpolationOperation@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
+symbol = "?ApplyInterpolationOperation@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target_address = 0x00421300
 size = 0xEE
 
@@ -107156,7 +107156,7 @@ target = 0x00420950
 [[units]]
 name = "ecl-call-sub-on-enemy-00421bd0"
 object = "build/EclDependencies.obj"
-symbol = "?CallSubOnEnemy@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@H@Z"
+symbol = "?CallSubOnEnemy@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@H@Z"
 target_address = 0x00421BD0
 size = 0xD6
 
@@ -107175,13 +107175,13 @@ target = 0x00418450
 [[units.relocations]]
 offset = 0x8E
 type = "DIR32"
-symbol = "?g_EclCallParameters@EclRunLowProposal@th08@@3UEclCallParameterCopy@12@A"
+symbol = "?g_EclCallParameters@EclRunLow@th08@@3UEclCallParameterCopy@12@A"
 target = 0x004ECE20
 
 [[units]]
 name = "ecl-pop-context-00421cb0"
 object = "build/EclDependencies.obj"
-symbol = "?PopEclContext@EclRunLowProposal@th08@@YIHPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
+symbol = "?PopEclContext@EclRunLow@th08@@YIHPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target_address = 0x00421CB0
 size = 0x118
 
@@ -107212,14 +107212,14 @@ target = 0x0040B8A0
 [[units]]
 name = "ecl-set-primary-anm-scripts-00421de0"
 object = "build/EclDependencies.obj"
-symbol = "?SetPrimaryAnmScripts@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@HHHHHH@Z"
+symbol = "?SetPrimaryAnmScripts@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@HHHHHH@Z"
 target_address = 0x00421DE0
 size = 0x70
 
 [[units]]
 name = "ecl-set-extra-anm-script-00421e50"
 object = "build/EclDependencies.obj"
-symbol = "?SetExtraAnmScript@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
+symbol = "?SetExtraAnmScript@EclRunLow@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUEclRawInstruction@2@@Z"
 target_address = 0x00421E50
 size = 0x1C6
 
@@ -107304,7 +107304,7 @@ target = 0x0041F420
 [[units]]
 name = "ecl-find-linked-child-tail-0041efc0"
 object = "build/EclDependencies.obj"
-symbol = "?FindAttachmentChainTail@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
+symbol = "?FindAttachmentChainTail@EclRunLow@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@@Z"
 target_address = 0x0041EFC0
 size = 0x36
 
@@ -107317,7 +107317,7 @@ target = 0x0041F000
 [[units]]
 name = "ecl-spawn-child-standard-0041f110"
 object = "build/EclDependencies.obj"
-symbol = "?SpawnChildAtScriptPosition@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
+symbol = "?SpawnChildAtScriptPosition@EclRunLow@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
 target_address = 0x0041F110
 size = 0x16D
 
@@ -107384,7 +107384,7 @@ target = 0x00577F20
 [[units]]
 name = "ecl-spawn-child-alternate-0041f280"
 object = "build/EclDependencies.obj"
-symbol = "?SpawnChildAtParentOffset@EclRunLowProposal@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
+symbol = "?SpawnChildAtParentOffset@EclRunLow@th08@@YIPAUEnemyOverlay@EclOperands@2@PAU342@PAUEclRawInstruction@2@@Z"
 target_address = 0x0041F280
 size = 0x17F
 
@@ -107616,7 +107616,7 @@ size = 0x1A
 [[units]]
 name = "ecl-spawn-packet-typed-ctor-0041f400"
 object = "build/EclDependencies.obj"
-symbol = "??0SpawnPacketTyped@EclRunHighProposal@th08@@QAE@XZ"
+symbol = "??0SpawnPacketTyped@EclRunHigh@th08@@QAE@XZ"
 target_address = 0x0041F400
 size = 0x19
 
@@ -108766,7 +108766,7 @@ target = 0x0043EDB0
 [[units]]
 name = "ecl-interpolate-linear-00421120"
 object = "build/EclDependencies.obj"
-symbol = "?InterpolateLinear@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUInterpolationSlot@12@M@Z"
+symbol = "?InterpolateLinear@EclRunLow@th08@@YIXPAUEnemy@2@PAUEnemyEclInterpolationSlot@2@M@Z"
 target_address = 0x00421120
 size = 0x59
 
@@ -108791,7 +108791,7 @@ target = 0x00420950
 [[units]]
 name = "ecl-interpolate-hermite-00421180"
 object = "build/EclDependencies.obj"
-symbol = "?InterpolateHermite@EclRunLowProposal@th08@@YIXPAUEnemyOverlay@EclOperands@2@PAUInterpolationSlot@12@M@Z"
+symbol = "?InterpolateHermite@EclRunLow@th08@@YIXPAUEnemy@2@PAUEnemyEclInterpolationSlot@2@M@Z"
 target_address = 0x00421180
 size = 0x100
 

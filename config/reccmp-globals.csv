@@ -46,7 +46,7 @@ th08::g_LastSpellNumbers,0x4c6b90,global
 th08::g_LastSpellCount,0x4c6c3c,global
 th08::g_SpellcardNumbersPerStage,0x4c6c40,global
 th08::g_SpellcardCountPerStage,0x4c6c68,global
-th08::EclRunLowProposal::g_EclInterpolatorCallbacks,0x4c6c90,global
+th08::EclRunLow::g_EclInterpolatorCallbacks,0x4c6c90,global
 th08::g_EclExInsn,0x4c6cb0,global
 th08::g_EffectTemplates,0x4c6d30,global
 th08::g_StageAnmFiles,0x4c72f8,global
@@ -105,7 +105,7 @@ th08::g_BackgroundCalcChain,0x4ea650,global
 th08::g_Spellcard,0x4ea670,global
 th08::g_SpellcardCalcChain,0x4eccac,global
 th08::g_EclManager,0x4eccb8,global
-th08::EclRunLowProposal::g_EclCallParameters,0x4ece20,global
+th08::EclRunLow::g_EclCallParameters,0x4ece20,global
 th08::g_EffectManager,0x4ece60,global
 th08::g_SpellcardBackgroundAnm,0x577eb8,global
 th08::g_EffectManagerCalcChain,0x577ebc,global

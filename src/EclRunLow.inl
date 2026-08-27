@@ -50,21 +50,7 @@ void __fastcall ConfigureRelativeMotion(
     EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction);
 }
 
-// Private resolver overlay already used by EclOperandsInt.cpp and
-// EclOperandsFloat.cpp.  Reusing its IsYoukai symbol keeps the direct target
-// call at 0x0040BC40 distinct from the still-incomplete public Player layout.
-namespace EclOperands
-{
-struct TargetVector3;
-struct TargetPlayerOverlay
-{
-    f32 AngleToPlayer(const TargetVector3 *position);
-    i32 IsYoukai();
-};
-extern TargetPlayerOverlay g_TargetPlayer017D5EF8;
-}
-
-namespace EclRunLowProposal
+namespace EclRunLow
 {
 
 enum LowControl
@@ -100,7 +86,8 @@ EclOperands::EnemyOverlay *__fastcall SpawnChildAtScriptPosition(
     EclOperands::EnemyOverlay *parent, EclRawInstruction *instruction);
 EclOperands::EnemyOverlay *__fastcall SpawnChildAtParentOffset(
     EclOperands::EnemyOverlay *parent, EclRawInstruction *instruction);
-void __fastcall ApplyRandomBiasedMove(u8 *enemy, void *instruction);
+void __fastcall ApplyRandomBiasedMove(
+    EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction);
 
 // The returned effect begins with an ANM VM.  Keep the call out-of-line: the
 // target dispatch calls AnmVm::SetInterrupt at 0x00407120 rather than inlining
@@ -125,8 +112,8 @@ void __fastcall SetPrimaryAnmScripts(
 void __fastcall SetExtraAnmScript(EclOperands::EnemyOverlay *enemy,
                                   EclRawInstruction *instruction);
 
-// Provisional semantic name for target FUN_00422020.  Caller and callee both
-// establish Enemy in ECX and the current ECL instruction in EDX.
+// Target behavior at 0x00422020 establishes Enemy in ECX and the current ECL
+// instruction in EDX for this boundary-aware movement helper.
 void __fastcall BeginBoundaryAwareMove(
     EclOperands::EnemyOverlay *enemy, EclRawInstruction *instruction);
 
@@ -323,7 +310,7 @@ inline void BeginTimedMove(EclOperands::EnemyOverlay *enemy,
                           3);
 }
 
-} // namespace EclRunLowProposal
+} // namespace EclRunLow
 } // namespace th08
 
 #endif // TH08_ECL_RUN_LOW_DECLARATIONS
@@ -377,7 +364,7 @@ inline void BeginTimedMove(EclOperands::EnemyOverlay *enemy,
 
 namespace th08
 {
-namespace EclRunLowProposal
+namespace EclRunLow
 {
 
 #define TH08_ECL_RUN_LOW_YIELD(controlValue, instructionValue) \
@@ -709,7 +696,9 @@ inline LowResult Dispatch(EclOperands::EnemyOverlay *enemy,
 #ifdef TH08_ECL_RUN_LOW_BODY
     // Target physical order places opcode 178 between opcodes 67 and 68.
     case 178:
-        ApplyRandomBiasedMove(TH08_ECL_CONTEXT_ENEMY(ctx), TH08_ECL_CONTEXT_INSTRUCTION(ctx));
+        ApplyRandomBiasedMove(
+            reinterpret_cast<EclOperands::EnemyOverlay *>(TH08_ECL_CONTEXT_ENEMY(ctx)),
+            reinterpret_cast<EclRawInstruction *>(TH08_ECL_CONTEXT_INSTRUCTION(ctx)));
         break;
 #endif
     case 68:
@@ -1145,7 +1134,7 @@ low_dispatch_complete: ;
 #else
 }
 
-} // namespace EclRunLowProposal
+} // namespace EclRunLow
 } // namespace th08
 #endif
 

@@ -1335,11 +1335,11 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
     {
 #ifdef TH08_MODERN_PORT
         memset(&g_EclManager, 0, sizeof(g_EclManager));
-        memset(&EclRunLowProposal::g_EclCallParameters, 0,
-               sizeof(EclRunLowProposal::g_EclCallParameters));
+        memset(&EclRunLow::g_EclCallParameters, 0,
+               sizeof(EclRunLow::g_EclCallParameters));
 #else
         memset(&g_EclManager, 0,
-               sizeof(g_EclManager) + sizeof(EclRunLowProposal::g_EclCallParameters));
+               sizeof(g_EclManager) + sizeof(EclRunLow::g_EclCallParameters));
 #endif
         if (!g_GameManager.flags.isSpellPractice)
         {
@@ -1373,11 +1373,11 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
         savedEcl1 = reinterpret_cast<i32 *>(&g_EclManager)[1];
 #ifdef TH08_MODERN_PORT
         memset(&g_EclManager, 0, sizeof(g_EclManager));
-        memset(&EclRunLowProposal::g_EclCallParameters, 0,
-               sizeof(EclRunLowProposal::g_EclCallParameters));
+        memset(&EclRunLow::g_EclCallParameters, 0,
+               sizeof(EclRunLow::g_EclCallParameters));
 #else
         memset(&g_EclManager, 0,
-               sizeof(g_EclManager) + sizeof(EclRunLowProposal::g_EclCallParameters));
+               sizeof(g_EclManager) + sizeof(EclRunLow::g_EclCallParameters));
 #endif
         reinterpret_cast<i32 *>(&g_EclManager)[0] = savedEcl0;
         reinterpret_cast<i32 *>(&g_EclManager)[1] = savedEcl1;

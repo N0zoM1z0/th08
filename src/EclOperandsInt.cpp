@@ -86,14 +86,14 @@ i32 __fastcall ResolveInt(EnemyOverlay *enemy, i32 operand)
     case 0x274a: return (i32)ECL_CONTEXT->callParameterFloats[1];
     case 0x274b: return (i32)ECL_CONTEXT->callParameterFloats[2];
     case 0x274c: return (i32)ECL_CONTEXT->callParameterFloats[3];
-    case 0x274d: return EclRunLowProposal::g_EclCallParameters.ints[0];
-    case 0x274e: return EclRunLowProposal::g_EclCallParameters.ints[1];
-    case 0x274f: return EclRunLowProposal::g_EclCallParameters.ints[2];
-    case 0x2750: return EclRunLowProposal::g_EclCallParameters.ints[3];
-    case 0x2751: return (i32)EclRunLowProposal::g_EclCallParameters.floats[0];
-    case 0x2752: return (i32)EclRunLowProposal::g_EclCallParameters.floats[1];
-    case 0x2753: return (i32)EclRunLowProposal::g_EclCallParameters.floats[2];
-    case 0x2754: return (i32)EclRunLowProposal::g_EclCallParameters.floats[3];
+    case 0x274d: return EclRunLow::g_EclCallParameters.ints[0];
+    case 0x274e: return EclRunLow::g_EclCallParameters.ints[1];
+    case 0x274f: return EclRunLow::g_EclCallParameters.ints[2];
+    case 0x2750: return EclRunLow::g_EclCallParameters.ints[3];
+    case 0x2751: return (i32)EclRunLow::g_EclCallParameters.floats[0];
+    case 0x2752: return (i32)EclRunLow::g_EclCallParameters.floats[1];
+    case 0x2753: return (i32)EclRunLow::g_EclCallParameters.floats[2];
+    case 0x2754: return (i32)EclRunLow::g_EclCallParameters.floats[3];
     case 0x273a: return (i32)reinterpret_cast<Enemy *>(enemy)->worldPosition.x;
     case 0x273b: return (i32)reinterpret_cast<Enemy *>(enemy)->worldPosition.y;
     case 0x273c: return (i32)reinterpret_cast<Enemy *>(enemy)->worldPosition.z;
@@ -192,10 +192,10 @@ i32 *__fastcall ResolveIntLValue(EnemyOverlay *enemy, i32 *operand, u16 flags, i
     case 0x2743: return &reinterpret_cast<Enemy *>(enemy)->life;
     case 0x276c: return &reinterpret_cast<Enemy *>(enemy)->itemDropType;
     case 0x276d: return &reinterpret_cast<Enemy *>(enemy)->score;
-    case 0x274d: return &EclRunLowProposal::g_EclCallParameters.ints[0];
-    case 0x274e: return &EclRunLowProposal::g_EclCallParameters.ints[1];
-    case 0x274f: return &EclRunLowProposal::g_EclCallParameters.ints[2];
-    case 0x2750: return &EclRunLowProposal::g_EclCallParameters.ints[3];
+    case 0x274d: return &EclRunLow::g_EclCallParameters.ints[0];
+    case 0x274e: return &EclRunLow::g_EclCallParameters.ints[1];
+    case 0x274f: return &EclRunLow::g_EclCallParameters.ints[2];
+    case 0x2750: return &EclRunLow::g_EclCallParameters.ints[3];
     default: return operand;
     }
 }
