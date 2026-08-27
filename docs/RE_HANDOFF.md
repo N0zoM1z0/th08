@@ -833,6 +833,25 @@ address, layout, match-unit symbol, or accepted count changed.  The remaining
 20 detour warnings are limited to the generator's unsupported operator and
 compiler-generated deleting-destructor spellings.
 
+The scheduler follow-up names the complete calc/draw priority protocol instead
+of leaving engine ordering as literals `0..21`.  Every normal owner
+registration now identifies its execution/draw layer, including Replay's four
+separate calc roles and the paired Background, Enemy, Player, and Ascii draw
+layers.  Normal gameplay ScreenEffects identify draw priority 21; the special
+Supervisor-only priority 1 path stays literal pending stronger evidence.
+`ChainElem +0x18` is now the narrowly evidenced `releaseTarget`, with size and
+offset assertions.  TH08 target instructions show it initialized to self,
+filled with live nodes in `ReleaseSingleChain @ 0x0043CC60`, and read back for
+the release pass.
+
+GensokyoClub's priority table was used only as a naming hypothesis; each name
+was checked against the current exact registrant and immediate value.  Focused
+Global replay passes **44 / 44 exact**.  Because `Global.hpp` is shared, a new
+single-job cold build of all 75 comparison objects passes **1,106 / 1,106
+exact**.  The normal VC7 image links, and the complete i386 Linux container
+build plus fixed-layout verifier passes.  Router totals remain **0 / 0 / 100 /
+41** with probes and modern source, or **0 / 0 / 99 / 41** for production.
+
 Whole-executable TU/layout work below remains deferred, not invalidated.
 
 ## Active playable-port branch

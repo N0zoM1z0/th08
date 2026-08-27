@@ -758,14 +758,14 @@ ZunResult BulletManager::RegisterChain(char *bulletAnmPath)
     g_BulletManagerCalcChain.addedCallback = (ChainLifetimeCallback)BulletManager::AddedCallback;
     g_BulletManagerCalcChain.deletedCallback = (ChainLifetimeCallback)BulletManager::DeletedCallback;
     g_BulletManagerCalcChain.arg = bulletManager;
-    if (g_Chain.AddToCalcChain(&g_BulletManagerCalcChain, 14))
+    if (g_Chain.AddToCalcChain(&g_BulletManagerCalcChain, CHAIN_PRIO_CALC_BULLETMANAGER))
     {
         return ZUN_ERROR;
     }
 
     g_BulletManagerDrawChain.SetCallback((ChainCallback)BulletManager::OnDraw);
     g_BulletManagerDrawChain.arg = bulletManager;
-    g_Chain.AddToDrawChain(&g_BulletManagerDrawChain, 13);
+    g_Chain.AddToDrawChain(&g_BulletManagerDrawChain, CHAIN_PRIO_DRAW_BULLETMANAGER);
 
     return ZUN_SUCCESS;
 }

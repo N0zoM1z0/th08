@@ -62,7 +62,7 @@ void __fastcall ConfigureNightBlindness(EclOperands::EnemyOverlay *enemy, EclExI
 // FUNCTION: th08 0x4233d0
 void __fastcall TriggerShortScreenPulse(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 60, 1, -1, 0, 21);
+    ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 60, 1, -1, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
 }
 
 // FUNCTION: th08 0x423400
@@ -538,8 +538,10 @@ void __fastcall SynchronizeOrbitingChildFormation(EclOperands::EnemyOverlay *ene
 // FUNCTION: th08 0x4246e0
 void __fastcall TriggerScreenPulseAndShake(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 30, 5, 0x40ffffff, 0, 21);
-    ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE_ENVELOPE, 4, 120, 190, 60, 21);
+    ScreenEffect::RegisterChain(
+        SCREEN_EFFECT_ARCADE_PULSE, 30, 5, 0x40ffffff, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
+    ScreenEffect::RegisterChain(
+        SCREEN_EFFECT_SHAKE_ENVELOPE, 4, 120, 190, 60, CHAIN_PRIO_DRAW_SCREENEFFECT);
 }
 
 // FUNCTION: th08 0x424a00
@@ -748,7 +750,8 @@ void __fastcall ApplyRedBackgroundTint(EclOperands::EnemyOverlay *enemy, EclExIn
 // FUNCTION: th08 0x424e20
 void __fastcall TriggerScreenShake(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE_ENVELOPE, 16, 20, 20, 20, 21);
+    ScreenEffect::RegisterChain(
+        SCREEN_EFFECT_SHAKE_ENVELOPE, 16, 20, 20, 20, CHAIN_PRIO_DRAW_SCREENEFFECT);
 }
 
 
@@ -790,7 +793,8 @@ void __fastcall TriggerChildrenNearMarkedBullets(EclOperands::EnemyOverlay *enem
 // FUNCTION: th08 0x424f60
 void __fastcall TriggerLongScreenPulse(EclOperands::EnemyOverlay *enemy, EclExInstruction *instruction)
 {
-    ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 180, 1, -1, 0, 21);
+    ScreenEffect::RegisterChain(
+        SCREEN_EFFECT_ARCADE_PULSE, 180, 1, -1, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
 }
 
 // FUNCTION: th08 0x424f90

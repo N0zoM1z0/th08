@@ -148,7 +148,7 @@ ZunResult ReplayManager::RegisterChain(i32 replayMode, const char *replayPath)
             replayManager->calcChain->deletedCallback = (ChainLifetimeCallback)DeleteReplayManager;
             replayManager->calcChain->arg = replayManager;
 
-            if (g_Chain.AddToCalcChain(replayManager->calcChain, 17))
+            if (g_Chain.AddToCalcChain(replayManager->calcChain, CHAIN_PRIO_CALC_REPLAYMANAGER_RECORD_HIGH_PRIO))
             {
                 return ZUN_ERROR;
             }
@@ -156,7 +156,7 @@ ZunResult ReplayManager::RegisterChain(i32 replayMode, const char *replayPath)
             replayManager->playbackFrameControlChain = NULL;
             replayManager->frameSyncChain = g_Chain.CreateElem((ChainCallback)CaptureFrameSyncState);
             replayManager->frameSyncChain->arg = replayManager;
-            g_Chain.AddToCalcChain(replayManager->frameSyncChain, 7);
+            g_Chain.AddToCalcChain(replayManager->frameSyncChain, CHAIN_PRIO_CALC_REPLAYMANAGER_LOW_PRIO);
             CaptureFrameSyncState(replayManager);
             break;
 
@@ -166,7 +166,7 @@ ZunResult ReplayManager::RegisterChain(i32 replayMode, const char *replayPath)
             replayManager->calcChain->deletedCallback = (ChainLifetimeCallback)DeleteReplayManager;
             replayManager->calcChain->arg = replayManager;
 
-            if (g_Chain.AddToCalcChain(replayManager->calcChain, 6))
+            if (g_Chain.AddToCalcChain(replayManager->calcChain, CHAIN_PRIO_CALC_REPLAYMANAGER_PLAYBACK_HIGH_PRIO))
             {
                 return ZUN_ERROR;
             }
@@ -179,14 +179,15 @@ ZunResult ReplayManager::RegisterChain(i32 replayMode, const char *replayPath)
             replayManager->playbackFrameControlChain =
                 g_Chain.CreateElem((ChainCallback)ControlPlaybackFrameAdvance);
             replayManager->playbackFrameControlChain->arg = replayManager;
-            g_Chain.AddToCalcChain(replayManager->playbackFrameControlChain, 18);
+            g_Chain.AddToCalcChain(
+                replayManager->playbackFrameControlChain, CHAIN_PRIO_CALC_REPLAYMANAGER_SKIP_FRAMES);
 
             replayManager->frameSyncChain = NULL;
             if (replayManager->replayData->header.usesExtendedInputRecords != 0)
             {
                 replayManager->frameSyncChain = g_Chain.CreateElem((ChainCallback)CaptureFrameSyncState);
                 replayManager->frameSyncChain->arg = replayManager;
-                g_Chain.AddToCalcChain(replayManager->frameSyncChain, 7);
+                g_Chain.AddToCalcChain(replayManager->frameSyncChain, CHAIN_PRIO_CALC_REPLAYMANAGER_LOW_PRIO);
                 CaptureFrameSyncState(replayManager);
             }
             break;

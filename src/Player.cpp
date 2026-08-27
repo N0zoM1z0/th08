@@ -1012,15 +1012,15 @@ ZunResult Player::RegisterChain(u32 playerType)
     player->calcChain->arg = player;
     player->calcChain->addedCallback = (ChainLifetimeCallback)Player::AddedCallback;
     player->calcChain->deletedCallback = (ChainLifetimeCallback)Player::DeletedCallback;
-    if (g_Chain.AddToCalcChain(player->calcChain, 9))
+    if (g_Chain.AddToCalcChain(player->calcChain, CHAIN_PRIO_CALC_PLAYER))
         return ZUN_ERROR;
 
     player->drawChainHighPrio = g_Chain.CreateElem((ChainCallback)Player::OnDrawHighPrio);
     player->drawChainLowPrio = g_Chain.CreateElem((ChainCallback)Player::OnDrawLowPrio);
     player->drawChainHighPrio->arg = player;
     player->drawChainLowPrio->arg = player;
-    g_Chain.AddToDrawChain(player->drawChainHighPrio, 9);
-    g_Chain.AddToDrawChain(player->drawChainLowPrio, 10);
+    g_Chain.AddToDrawChain(player->drawChainHighPrio, CHAIN_PRIO_DRAW_PLAYER_HIGH_PRIO);
+    g_Chain.AddToDrawChain(player->drawChainLowPrio, CHAIN_PRIO_DRAW_PLAYER_LOW_PRIO);
 
     return ZUN_SUCCESS;
 }
@@ -1156,7 +1156,8 @@ void Player::UpdateBombState()
                         g_EnemyManager.bosses[i]->flags1 &= ~ENEMY_FLAG_PAUSE_TIMER;
                     }
                 }
-                ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_PULSE, 30, 1, -1, 0, 21);
+                ScreenEffect::RegisterChain(
+                    SCREEN_EFFECT_ARCADE_PULSE, 30, 1, -1, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
             }
         }
         else

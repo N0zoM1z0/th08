@@ -964,16 +964,16 @@ ZunResult Background::RegisterChain(i32 param)
     g_BackgroundCalcChain.addedCallback = (ChainLifetimeCallback)Background::AddedCallback;
     g_BackgroundCalcChain.deletedCallback = (ChainLifetimeCallback)Background::DeletedCallback;
     g_BackgroundCalcChain.arg = background;
-    if (g_Chain.AddToCalcChain(&g_BackgroundCalcChain, 8) != ZUN_SUCCESS)
+    if (g_Chain.AddToCalcChain(&g_BackgroundCalcChain, CHAIN_PRIO_CALC_BACKGROUND) != ZUN_SUCCESS)
         return ZUN_ERROR;
 
     g_BackgroundDrawChainHighPrio.SetCallback((ChainCallback)Background::OnDrawHighPrio);
     g_BackgroundDrawChainHighPrio.arg = background;
-    g_Chain.AddToDrawChain(&g_BackgroundDrawChainHighPrio, 6);
+    g_Chain.AddToDrawChain(&g_BackgroundDrawChainHighPrio, CHAIN_PRIO_DRAW_BACKGROUND_HIGH_PRIO);
 
     g_BackgroundDrawChainLowPrio.SetCallback((ChainCallback)Background::OnDrawLowPrio);
     g_BackgroundDrawChainLowPrio.arg = background;
-    g_Chain.AddToDrawChain(&g_BackgroundDrawChainLowPrio, 7);
+    g_Chain.AddToDrawChain(&g_BackgroundDrawChainLowPrio, CHAIN_PRIO_DRAW_BACKGROUND_LOW_PRIO);
 
     return ZUN_SUCCESS;
 }

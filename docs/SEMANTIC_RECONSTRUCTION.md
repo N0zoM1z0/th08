@@ -2931,3 +2931,51 @@ reports **1,106 implemented / 1,106 accepted exact**, with no claim rows.  The
 normal VC7 image and previously built identical-source Linux image remain
 valid; this batch only makes the canonical semantic names agree with their
 already verified machine symbols.
+
+### Calc/draw scheduler priority protocol — 2026-08-27
+
+Scope: the shared `Chain` scheduler in `Global.hpp`/`Global.cpp`, every
+production calc/draw registration, and every ordinary gameplay ScreenEffect
+registration.  This is a source-readability batch: it changes no priority
+value, list operation, callback ABI, object layout, target address, or ledger.
+
+Observed: exact TH08 registration bodies pass integer priorities `0..21` to
+the two sorted scheduler lists.  The registered owner and callback identify
+each stable slot: Supervisor starts calc at 0, Ascii at 1, GameManager at 2,
+ScreenEffect at 3, the gameplay systems follow in execution order, and Replay
+uses distinct playback, frame-sync, record, and frame-control slots.  The draw
+list similarly distinguishes the two Background, Enemy, Player, and Ascii
+layers.  All normal gameplay ScreenEffects use draw priority 21.  The
+Supervisor-only effect construction at priority 1 is deliberately left as a
+literal because no ordinary draw-slot identity is proved for that special
+path.
+
+Upstream evidence: GensokyoClub already proposed the complete constant table.
+It was treated as a naming hypothesis, not an exact claim.  Each imported name
+was reconciled with the current registered object/callback and its already
+exact TH08 immediate value before replacing the literal.  The resulting named
+`ChainCalcPriority` and `ChainDrawPriority` enums make the complete engine
+ordering visible at every registration site.
+
+The last anonymous `ChainElem +0x18` pointer is now `releaseTarget`.  Target
+`ChainElem::ChainElem @ 0x0043C760` initializes it to self.  Target
+`Chain::ReleaseSingleChain @ 0x0043CC60` writes each live node to scratch-node
+`+0x18`, then reads that same field while cutting the captured nodes.  The
+self value on the stack sentinel and terminal scratch node makes their cuts
+no-ops.  Assertions pin `sizeof(ChainElem) == 0x20` and
+`releaseTarget @ +0x18`; the name claims only this observed release-snapshot
+role, not general ownership.
+
+VC7 oracle: focused replay passes `Global.obj` **44 / 44 exact**, including the
+99-byte constructor and 408-byte release routine.  Because the priority table
+and layout assertions live in a shared header, the required single-job cold
+build of all 75 comparison objects was run and passes **1,106 / 1,106 exact**.
+The normal VC7 production image also links.
+
+Portable oracle: the complete i386 Linux container build links all named
+registrations and the fixed-layout verifier passes, including the asserted
+32-byte ChainElem layout.  The semantic router remains **0 raw-member**, **0
+absolute-address**, **100 anonymous-identifier**, and **41 opaque-storage**
+candidates when probes and modern source are included; production-only remains
+**0 / 0 / 99 / 41**.  Those residual totals remain routing hints rather than a
+completion percentage.

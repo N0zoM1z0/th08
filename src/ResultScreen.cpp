@@ -2324,14 +2324,14 @@ ZunResult ResultScreen::RegisterChain(u32 unk)
     resultScreen->calcChain->deletedCallback = (ChainLifetimeCallback)ResultScreen::DeletedCallback;
     resultScreen->calcChain->arg = resultScreen;
 
-    if (g_Chain.AddToCalcChain(resultScreen->calcChain, 16) != ZUN_SUCCESS)
+    if (g_Chain.AddToCalcChain(resultScreen->calcChain, CHAIN_PRIO_CALC_RESULTSCREEN) != ZUN_SUCCESS)
     {
         return ZUN_ERROR;
     }
 
     resultScreen->drawChain = g_Chain.CreateElem((ChainCallback)ResultScreen::OnDraw);
     resultScreen->drawChain->arg = resultScreen;
-    g_Chain.AddToDrawChain(resultScreen->drawChain, 18);
+    g_Chain.AddToDrawChain(resultScreen->drawChain, CHAIN_PRIO_DRAW_RESULTSCREEN);
 
     return ZUN_SUCCESS;
 }

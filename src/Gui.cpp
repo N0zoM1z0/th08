@@ -716,7 +716,8 @@ i32 GuiImpl::RunMsg()
             g_Supervisor.FadeOutMusic(4.0f);
             break;
         case GUI_MSG_FADE_SCREEN:
-            ScreenEffect::RegisterChain((ScreenEffectType)4, 442, 0xffffff, 0, 0, 21);
+            ScreenEffect::RegisterChain(
+                (ScreenEffectType)4, 442, 0xffffff, 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
             g_GuiMessageScreenEffectDuration = 442;
             break;
         case GUI_MSG_END_STAGE:
@@ -1547,12 +1548,12 @@ ZunResult Gui::RegisterChain()
     g_GuiCalcChain.addedCallback = (ChainLifetimeCallback)Gui::AddedCallback;
     g_GuiCalcChain.deletedCallback = (ChainLifetimeCallback)Gui::DeletedCallback;
     g_GuiCalcChain.arg = gui;
-    if (g_Chain.AddToCalcChain(&g_GuiCalcChain, 15) != ZUN_SUCCESS)
+    if (g_Chain.AddToCalcChain(&g_GuiCalcChain, CHAIN_PRIO_CALC_GUI) != ZUN_SUCCESS)
         return ZUN_ERROR;
 
     g_GuiDrawChain.SetCallback((ChainCallback)Gui::OnDraw);
     g_GuiDrawChain.arg = gui;
-    g_Chain.AddToDrawChain(&g_GuiDrawChain, 17);
+    g_Chain.AddToDrawChain(&g_GuiDrawChain, CHAIN_PRIO_DRAW_GUI);
     return ZUN_SUCCESS;
 }
 

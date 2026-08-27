@@ -255,14 +255,14 @@ ZunResult MusicRoom::RegisterChain()
     musicRoom->calcChain->addedCallback = (ChainLifetimeCallback)MusicRoom::AddedCallback;
     musicRoom->calcChain->deletedCallback = (ChainLifetimeCallback)MusicRoom::DeletedCallback;
 
-    if (g_Chain.AddToCalcChain(musicRoom->calcChain, 4) != ZUN_SUCCESS)
+    if (g_Chain.AddToCalcChain(musicRoom->calcChain, CHAIN_PRIO_CALC_MUSICROOM) != ZUN_SUCCESS)
     {
         return ZUN_ERROR;
     }
 
     musicRoom->drawChain = g_Chain.CreateElem((ChainCallback)MusicRoom::OnDraw);
     musicRoom->drawChain->arg = musicRoom;
-    g_Chain.AddToDrawChain(musicRoom->drawChain, 3);
+    g_Chain.AddToDrawChain(musicRoom->drawChain, CHAIN_PRIO_DRAW_MUSICROOM);
 
     return ZUN_SUCCESS;
 }

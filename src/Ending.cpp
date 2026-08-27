@@ -416,14 +416,14 @@ ZunResult Ending::RegisterChain()
     ending->calcChain->addedCallback = (ChainLifetimeCallback)Ending::AddedCallback;
     ending->calcChain->deletedCallback = (ChainLifetimeCallback)Ending::DeletedCallback;
 
-    if (g_Chain.AddToCalcChain(ending->calcChain, 5) != ZUN_SUCCESS)
+    if (g_Chain.AddToCalcChain(ending->calcChain, CHAIN_PRIO_CALC_ENDING) != ZUN_SUCCESS)
     {
         return ZUN_ERROR;
     }
 
     ending->drawChain = g_Chain.CreateElem((ChainCallback)Ending::OnDraw);
     ending->drawChain->arg = ending;
-    g_Chain.AddToDrawChain(ending->drawChain, 4);
+    g_Chain.AddToDrawChain(ending->drawChain, CHAIN_PRIO_DRAW_ENDING);
     return ZUN_SUCCESS;
 }
 

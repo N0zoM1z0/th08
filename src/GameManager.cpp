@@ -479,7 +479,8 @@ ChainCallbackResult GameManager::OnUpdate(GameManager *gameManager)
             (gameManager->currentDemoReplay == 2 && gameManager->demoFrameCount == 4920) ||
             (gameManager->currentDemoReplay == 3 && gameManager->demoFrameCount == 6900))
         {
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_ARCADE_FADE_OUT, 120, 0, 0, 0, 21);
+            ScreenEffect::RegisterChain(
+                SCREEN_EFFECT_ARCADE_FADE_OUT, 120, 0, 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
             g_Supervisor.FadeOutMusic(3.0f);
         }
         if ((gameManager->currentDemoReplay == 0 && gameManager->demoFrameCount >= 6120) ||
@@ -615,7 +616,7 @@ ZunResult GameManager::RegisterChain()
     g_GameManagerCalcChain.deletedCallback = (ChainLifetimeCallback)GameManager::DeletedCallback;
     g_GameManagerCalcChain.arg = mgr;
     mgr->gameplayFrameCounter = 0;
-    if (g_Chain.AddToCalcChain(&g_GameManagerCalcChain, 2))
+    if (g_Chain.AddToCalcChain(&g_GameManagerCalcChain, CHAIN_PRIO_CALC_GAMEMANAGER))
     {
         return ZUN_ERROR;
     }
@@ -624,7 +625,7 @@ ZunResult GameManager::RegisterChain()
     g_GameManagerDrawChain.addedCallback = NULL;
     g_GameManagerDrawChain.deletedCallback = NULL;
     g_GameManagerDrawChain.arg = mgr;
-    g_Chain.AddToDrawChain(&g_GameManagerDrawChain, 5);
+    g_Chain.AddToDrawChain(&g_GameManagerDrawChain, CHAIN_PRIO_DRAW_GAMEMANAGER);
     return ZUN_SUCCESS;
 }
 

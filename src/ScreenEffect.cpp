@@ -349,7 +349,7 @@ ScreenEffect *ScreenEffect::RegisterChain(ScreenEffectType effect, i32 ticks, i3
     SCREEN_EFFECT_PARAMETERS(screenEffect).raw.secondary = secondaryParameter;
     SCREEN_EFFECT_PARAMETERS(screenEffect).raw.tertiary = tertiaryParameter;
 
-    if (g_Chain.AddToCalcChain(calcChain, 3) != ZUN_SUCCESS)
+    if (g_Chain.AddToCalcChain(calcChain, CHAIN_PRIO_CALC_SCREENEFFECT) != ZUN_SUCCESS)
         return NULL;
 
     if (drawChain != NULL)

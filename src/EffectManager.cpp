@@ -1330,12 +1330,12 @@ ZunResult EffectManager::RegisterChain()
     g_EffectManagerCalcChain.addedCallback = (ChainLifetimeCallback)EffectManager::LoadEffectResources;
     g_EffectManagerCalcChain.deletedCallback = (ChainLifetimeCallback)EffectManager::ReleaseEffectResources;
     g_EffectManagerCalcChain.arg = effectManager;
-    if (g_Chain.AddToCalcChain(&g_EffectManagerCalcChain, 13) != ZUN_SUCCESS)
+    if (g_Chain.AddToCalcChain(&g_EffectManagerCalcChain, CHAIN_PRIO_CALC_EFFECTMANAGER) != ZUN_SUCCESS)
         return ZUN_ERROR;
 
     g_EffectManagerDrawChain.SetCallback((ChainCallback)EffectManager::OnDraw);
     g_EffectManagerDrawChain.arg = effectManager;
-    g_Chain.AddToDrawChain(&g_EffectManagerDrawChain, 12);
+    g_Chain.AddToDrawChain(&g_EffectManagerDrawChain, CHAIN_PRIO_DRAW_EFFECTMANAGER);
     return ZUN_SUCCESS;
 }
 

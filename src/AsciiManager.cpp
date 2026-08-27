@@ -281,18 +281,18 @@ ZunResult AsciiManager::RegisterChain()
     g_AsciiManagerCalcChain.addedCallback = (ChainLifetimeCallback)AsciiManager::AddedCallback;
     g_AsciiManagerCalcChain.deletedCallback = (ChainLifetimeCallback)AsciiManager::DeletedCallback;
     g_AsciiManagerCalcChain.arg = ascii;
-    if (g_Chain.AddToCalcChain(&g_AsciiManagerCalcChain, 1) != ZUN_SUCCESS)
+    if (g_Chain.AddToCalcChain(&g_AsciiManagerCalcChain, CHAIN_PRIO_CALC_ASCIIMANAGER) != ZUN_SUCCESS)
     {
         return ZUN_ERROR;
     }
 
     g_AsciiManagerDrawChainLowPrio.SetCallback((ChainCallback)AsciiManager::OnDrawLowPrio);
     g_AsciiManagerDrawChainLowPrio.arg = ascii;
-    g_Chain.AddToDrawChain(&g_AsciiManagerDrawChainLowPrio, 20);
+    g_Chain.AddToDrawChain(&g_AsciiManagerDrawChainLowPrio, CHAIN_PRIO_DRAW_ASCIIMANAGER_LOW_PRIO);
 
     g_AsciiManagerDrawChainHighPrio.SetCallback((ChainCallback)AsciiManager::OnDrawHighPrio);
     g_AsciiManagerDrawChainHighPrio.arg = ascii;
-    g_Chain.AddToDrawChain(&g_AsciiManagerDrawChainHighPrio, 14);
+    g_Chain.AddToDrawChain(&g_AsciiManagerDrawChainHighPrio, CHAIN_PRIO_DRAW_ASCIIMANAGER_HIGH_PRIO);
 
     return ZUN_SUCCESS;
 }

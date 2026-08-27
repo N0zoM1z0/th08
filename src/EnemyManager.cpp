@@ -926,17 +926,17 @@ ZunResult EnemyManager::RegisterChain()
     g_EnemyManagerCalcChain.addedCallback = (ChainLifetimeCallback)EnemyManager::AddedCallback;
     g_EnemyManagerCalcChain.deletedCallback = (ChainLifetimeCallback)EnemyManager::DeletedCallback;
     g_EnemyManagerCalcChain.arg = enemyManager;
-    if (g_Chain.AddToCalcChain(&g_EnemyManagerCalcChain, 11) != ZUN_SUCCESS)
+    if (g_Chain.AddToCalcChain(&g_EnemyManagerCalcChain, CHAIN_PRIO_CALC_ENEMYMANAGER) != ZUN_SUCCESS)
         return ZUN_ERROR;
 
     g_EnemyManagerDrawChainHighPrio.SetCallback((ChainCallback)EnemyManager::OnDrawHighPrio);
     g_EnemyManagerDrawChainHighPrio.arg = enemyManager;
-    if (g_Chain.AddToDrawChain(&g_EnemyManagerDrawChainHighPrio, 8) != ZUN_SUCCESS)
+    if (g_Chain.AddToDrawChain(&g_EnemyManagerDrawChainHighPrio, CHAIN_PRIO_DRAW_ENEMYMANAGER_HIGH_PRIO) != ZUN_SUCCESS)
         return ZUN_ERROR;
 
     g_EnemyManagerDrawChainLowPrio.SetCallback((ChainCallback)EnemyManager::OnDrawLowPrio);
     g_EnemyManagerDrawChainLowPrio.arg = enemyManager;
-    if (g_Chain.AddToDrawChain(&g_EnemyManagerDrawChainLowPrio, 11) != ZUN_SUCCESS)
+    if (g_Chain.AddToDrawChain(&g_EnemyManagerDrawChainLowPrio, CHAIN_PRIO_DRAW_ENEMYMANAGER_LOW_PRIO) != ZUN_SUCCESS)
         return ZUN_ERROR;
 
     return ZUN_SUCCESS;

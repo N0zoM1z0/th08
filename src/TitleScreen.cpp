@@ -3851,11 +3851,13 @@ void TitleScreen::TitleSetupThread(TitleScreen *titleScreen)
         }
         if (g_Supervisor.totalPlayTime == 0)
         {
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_FULL_FADE_IN, 70, RGB(255, 255, 255), 0, 0, 21);
+            ScreenEffect::RegisterChain(
+                SCREEN_EFFECT_FULL_FADE_IN, 70, RGB(255, 255, 255), 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
         }
         else
         {
-            ScreenEffect::RegisterChain(SCREEN_EFFECT_FULL_FADE_IN, 70, RGB(255, 255, 255), 0, 0, 21);
+            ScreenEffect::RegisterChain(
+                SCREEN_EFFECT_FULL_FADE_IN, 70, RGB(255, 255, 255), 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
         }
     }
 
@@ -3979,14 +3981,14 @@ ZunResult TitleScreen::RegisterChain(int param)
     titleScreen->calcChain->addedCallback = (ChainLifetimeCallback)TitleScreen::AddedCallback;
     titleScreen->calcChain->deletedCallback = (ChainLifetimeCallback)TitleScreen::DeletedCallback;
 
-    if (g_Chain.AddToCalcChain(titleScreen->calcChain, 4) != ZUN_SUCCESS)
+    if (g_Chain.AddToCalcChain(titleScreen->calcChain, CHAIN_PRIO_CALC_TITLESCREEN) != ZUN_SUCCESS)
     {
         return ZUN_ERROR;
     }
 
     titleScreen->drawChain = g_Chain.CreateElem((ChainCallback)TitleScreen::OnDraw);
     titleScreen->drawChain->arg = titleScreen;
-    g_Chain.AddToDrawChain(titleScreen->drawChain, 3);
+    g_Chain.AddToDrawChain(titleScreen->drawChain, CHAIN_PRIO_DRAW_TITLESCREEN);
 
     return ZUN_SUCCESS;
 }
