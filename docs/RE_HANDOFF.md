@@ -920,6 +920,17 @@ exact**, including PlayMusic **218 / 218** and PlayAudio **352 / 352**; the
 required cold 75-object replay passes **1,106 / 1,106 exact**.  The normal VC7
 image links, and the complete i386 Linux build plus fixed-layout verifier pass.
 
+The residual Item/ANM owner pass replaces byte views of Player shot/item
+timers and option mode, GameManager character, the Item sprite z-write bit,
+and AnmManager's texture factor with existing named fields.  Assertions pin
+`Player::timerE2ADC @ +0xE2ADC` and
+`AnmManager::currentTextureFactor @ +0x24B8`.  A direct Float3 `.y` trial was
+rejected because retail Item OnDraw calls `Float3::operator float *()` twice;
+the conversion-shaped element accesses remain documented to preserve its
+451-byte extent.  Focused AnmManager/ItemManager replay passes **106 / 106
+exact**, and the required cold 75-object replay passes **1,106 / 1,106 exact**.
+The normal VC7 image links; the complete i386 Linux build and verifier pass.
+
 Whole-executable TU/layout work below remains deferred, not invalidated.
 
 ## Active playable-port branch

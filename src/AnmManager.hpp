@@ -773,6 +773,7 @@ struct AnmManager
     i32 surfaceCaptureDstH;
 };
 C_ASSERT(sizeof(AnmManager) == 0x2a2570);
+C_ASSERT(offsetof(AnmManager, currentTextureFactor) == 0x24B8);
 
 DIFFABLE_EXTERN(AnmManager *, g_AnmManager);
 

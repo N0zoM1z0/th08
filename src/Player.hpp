@@ -477,6 +477,7 @@ C_ASSERT(offsetof(Player, tailPosition0) == 0xE2AA4);
 C_ASSERT(offsetof(Player, optionHomingTarget) == 0xE2ABC);
 C_ASSERT(offsetof(Player, enemyTrackedPositionValid) == 0xE2AC0);
 C_ASSERT(offsetof(Player, shotTimer) == 0xE2AC4);
+C_ASSERT(offsetof(Player, timerE2ADC) == 0xE2ADC);
 C_ASSERT(offsetof(Player, baseShotAngle) == 0xE2B0C);
 C_ASSERT(offsetof(Player, timer) == 0xE2AF4);
 C_ASSERT(offsetof(Player, calcChain) == 0xE2B10);

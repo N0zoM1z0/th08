@@ -3182,3 +3182,35 @@ Portable oracle: the complete i386 Linux container build links, and the
 fixed-layout verifier passes with the new `Plst` and `GameManager` assertions.
 No playback branch, unlock index, return value, score-data byte, calling
 convention, target address, or accepted unit changed.
+
+### Item and ANM residual owner views — 2026-08-27
+
+Scope: the remaining non-serialized byte views in ItemManager update,
+collection, and draw paths, plus `AnmManager::AnmManager @ 0x00465070`.
+
+The Item paths now use the already established `Player::shotTimer`,
+`timerE2ADC`, and `optionModeFlag` owners, `GameManager::character`, and
+`AnmVm::zWriteDisabled`.  The last field is the target-observed bit 13 of
+`AnmVmBase::flagsWord @ +0x1F8`; assigning the named bitfield naturally emits
+the retail dword load/OR/store sequence.  The AnmManager constructor now
+initializes `currentTextureFactor` directly, with a new assertion pinning that
+member to `+0x24B8`.  `Player::timerE2ADC @ +0xE2ADC` is also asserted.
+
+One apparent Float3 cleanup was tested and rejected.  Retail
+`ItemManager::OnDraw @ 0x004415A0` calls `Float3::operator float *()` twice
+before reading element 1.  Replacing those expressions with
+`currentPosition.y` removes both calls and shortens the function from 451 to
+434 bytes.  The conversion-shaped accesses therefore remain, now with an
+exact-source-shape comment; they are not evidence that the field is unknown.
+
+VC7 oracle: focused replay of the complete AnmManager and ItemManager objects
+passes **106 / 106 exact**, including Item OnUpdate **1,989 / 1,989**,
+CollectPowerSmall **334 / 334**, CollectTimeOrb **293 / 293**, Item OnDraw
+**451 / 451**, and the AnmManager constructor **466 / 466**.  The required
+single-job cold build of all 75 comparison objects passes **1,106 / 1,106
+exact**, and the normal VC7 production image links.
+
+Portable oracle: the complete i386 Linux container build links, and its
+fixed-layout verifier passes with both new owner assertions.  No item state,
+score/gauge update, rendering flag, timer operation, constructor value, or
+accepted unit changed.

@@ -2143,7 +2143,7 @@ AnmManager::AnmManager()
     this->currentTexture = NULL;
     this->currentBlendMode = 0;
     this->currentColorOp = 0;
-    *(u32 *)((u8 *)this + 0x24B8) = 1;
+    this->currentTextureFactor = 1;
     this->currentVertexShader = 0;
     this->cameraMode = (AnmCameraMode)0xff;
     this->disableZWrite = (AnmZWriteMode)0;

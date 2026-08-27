@@ -228,7 +228,7 @@ void ItemManager::OnUpdate()
         {
             item->startPositionOrVelocity.y += 0.05f * g_Supervisor.framerateMultiplier;
             if (item->startPositionOrVelocity.y > 0.0f ||
-                *reinterpret_cast<ZunTimer *>(&g_Player.shotTimer) < 0)
+                g_Player.shotTimer < 0)
             {
                 item->state = ITEM_STATE_AUTOCOLLECT;
             }
@@ -267,7 +267,7 @@ void ItemManager::OnUpdate()
             if (item->state == ITEM_STATE_AUTOCOLLECT ||
                 (g_Player.position.y < g_Player.primaryShtFile->pointItemValueLine &&
                  (g_GameManager.GetPower() >= 0.0 ||
-                  *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&g_Player) + 3) != 0 ||
+                  g_Player.optionModeFlag != 0 ||
                   g_GameManager.shotType == 1 || g_GameManager.shotType == 6)))
             {
                 if (g_Player.playerState != PLAYER_STATE_DYING && g_Player.playerState != PLAYER_STATE_SPAWNING)
@@ -387,11 +387,11 @@ executeOnly:
     if (soundIndex != 0)
         g_SoundPlayer.PlaySoundByIdx((SoundIdx)soundIndex, 0);
 
-    if (*reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) != 0)
+    if (g_Player.timerE2ADC != 0)
     {
-        (*reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC))--;
-        if (*reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) <= 0)
-            *reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) = 0;
+        g_Player.timerE2ADC--;
+        if (g_Player.timerE2ADC <= 0)
+            g_Player.timerE2ADC = 0;
     }
 }
 
@@ -414,7 +414,7 @@ void Item::CollectPowerSmall()
     }
     oldPowerLevel = powerLevel;
 
-    *(u8 *)((u8 *)&g_GameManager + 0x3DBA8) = 0;
+    g_GameManager.character = 0;
     g_GameManager.AddPower(1);
 
     if (g_GameManager.GetPower() >= 0x80)
@@ -630,11 +630,11 @@ void Item::CollectTimeOrb()
     g_GameManager.AddTimeOrbs(1);
     g_Spellcard.AddBonusProgress(8000);
 
-    if (*reinterpret_cast<ZunTimer *>(&g_Player.timerE2ADC) == 0)
+    if (g_Player.timerE2ADC == 0)
     {
         score = 111;
         g_GameManager.AddToYoukaiGauge(
-            *reinterpret_cast<u8 *>(reinterpret_cast<u8 *>(&g_Player) + 3) ? score : -score, 0);
+            g_Player.optionModeFlag ? score : -score, 0);
     }
 }
 
@@ -703,6 +703,8 @@ void ItemManager::OnDraw()
         item->sprite.pos.y = g_GameManager.arcadeRegionTopLeftPos.y + item->currentPosition.y;
         item->sprite.pos.z = 0.15f;
 
+        // Keep the target's Float3::operator float *() call shape: direct .y
+        // access removes both calls and changes the VC7 function extent.
         if (((f32 *)item->currentPosition)[1] < -8.0f)
         {
             item->sprite.pos.y = 8.0f + g_GameManager.arcadeRegionTopLeftPos.y;
@@ -710,7 +712,7 @@ void ItemManager::OnDraw()
             {
                 g_BulletManager.bulletAnm->SetSprite(&item->sprite, item->itemType + 0xb6);
                 item->isOnscreen = false;
-                *(u32 *)((u8 *)&item->sprite + 0x1f8) |= 0x2000;
+                item->sprite.zWriteDisabled = true;
             }
 
             alpha = 255 - (i32)(((8.0f - ((f32 *)item->currentPosition)[1]) * 255.0f) / 128.0f);
@@ -727,7 +729,7 @@ void ItemManager::OnDraw()
                 g_BulletManager.bulletAnm->SetSprite(&item->sprite, item->itemType + 0xac);
                 item->isOnscreen = true;
                 item->sprite.color1.d3dColor = 0xffffffff;
-                *(u32 *)((u8 *)&item->sprite + 0x1f8) |= 0x2000;
+                item->sprite.zWriteDisabled = true;
             }
         }
 
