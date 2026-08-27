@@ -3922,3 +3922,34 @@ state transitions, and `verify-modern-linux.sh` verifies the ELF32 image and
 every fixed target-owned layout symbol.  No item value, state value, call ABI,
 drop count, movement step, collection gate, target byte, accepted-unit
 identity, or exact total changed.
+
+### Player collision-region parameter protocol — 2026-08-27
+
+Scope: the public declarations and exact bodies of the four Player collision-
+region allocators at `0x0044DE60`, `0x0044DF00`, `0x0044DFA0`, and
+`0x0044E040`.
+
+The existing typed bodies provide direct ownership evidence for every formerly
+generic `value1..value4` parameter.  Rectangular helpers copy `width` and
+`height` into `size.x/y`; circular helpers copy `initialRadius` and
+`radiusGrowthPerFrame` into `radius/radiusGrowth`.  Damage-pool allocators
+write `damage`, while cancel-pool allocators write `collisionValue`, and all
+four write `lifetime`.
+
+The argument order is intentionally not normalized: circle-cancel receives
+`lifetime` before `collisionValue`, whereas circle-damage receives `damage`
+before `lifetime`.  The declarations now expose those target-observed orders
+to every PlayerBomb, Enemy, and option caller without changing the parameter
+types or decorated VC7 symbols.
+
+VC7 oracle: target-pinned packets pass for all four addresses.  Focused cold
+replay of `Player.obj` passes **77 / 77 exact** before and after the edit, with
+each allocator retaining **153 / 153** bytes.  Because Player.hpp is shared,
+the required single-job non-reuse cold build of all 75 comparison objects
+passes **1,106 / 1,106 exact** with zero failures, and the normal VC7
+production image links.
+
+Portable oracle: the complete i386 Linux container build links, and
+`verify-modern-linux.sh` verifies the ELF32 image and every fixed target-owned
+layout symbol.  No call ABI, argument order, pool selection, field write,
+target byte, accepted-unit identity, or exact total changed.

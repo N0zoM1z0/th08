@@ -416,10 +416,16 @@ struct Player
     static ZunResult DeletedCallback(Player *player);
     static void CutChain();
 
-    PlayerCollisionRegion *CreateRectCancelRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
-    PlayerCollisionRegion *CreateCircleCancelRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
-    PlayerCollisionRegion *CreateRectDamageRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
-    PlayerCollisionRegion *CreateCircleDamageRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4);
+    PlayerCollisionRegion *CreateRectCancelRegion(const Float3 *center, f32 width, f32 height,
+                                                  i32 collisionValue, i32 lifetime);
+    PlayerCollisionRegion *CreateCircleCancelRegion(const Float3 *center, f32 initialRadius,
+                                                    f32 radiusGrowthPerFrame, i32 lifetime,
+                                                    i32 collisionValue);
+    PlayerCollisionRegion *CreateRectDamageRegion(const Float3 *center, f32 width, f32 height,
+                                                  i32 damage, i32 lifetime);
+    PlayerCollisionRegion *CreateCircleDamageRegion(const Float3 *center, f32 initialRadius,
+                                                    f32 radiusGrowthPerFrame, i32 damage,
+                                                    i32 lifetime);
     void SpawnBombStateEffect();
     void UpdateCollisionRegions();
     void UpdateInvulnerability();

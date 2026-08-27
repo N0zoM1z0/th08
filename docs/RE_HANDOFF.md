@@ -1963,3 +1963,15 @@ aggregate passes **1,106 / 1,106 exact**; the normal VC7 image and complete
 Linux i386 image link; and the Linux fixed-layout verifier passes.  Continue
 the router-invisible semantic audit on `semantic/typed-reconstruction`; do not
 open or merge a PR until explicitly requested.
+
+The Player collision-region API checkpoint replaces all four allocator
+signatures' `value1..value4` parameters with width/height or initial-radius/
+growth plus damage/collision-value/lifetime roles.  It preserves the
+target-observed circle-cancel argument-order asymmetry.  Target-pinned packets
+cover `0x0044DE60`, `0x0044DF00`, `0x0044DFA0`, and `0x0044E040`; focused
+Player replay passes **77 / 77 exact** before and after the edit, with each
+allocator at **153 / 153**; the required cold aggregate passes **1,106 / 1,106
+exact**; the normal VC7 image and complete Linux i386 image link; and the Linux
+fixed-layout verifier passes.  Continue the weak-parameter audit on
+`semantic/typed-reconstruction`; do not open or merge a PR until explicitly
+requested.

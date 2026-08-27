@@ -1760,7 +1760,8 @@ ZunResult Player::LoadShtFile(PlayerRawShtFile **header, const char *path)
 
 #pragma var_order(slot, index)
 // FUNCTION: th08 0x44de60
-PlayerCollisionRegion *Player::CreateRectCancelRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+PlayerCollisionRegion *Player::CreateRectCancelRegion(const Float3 *center, f32 width, f32 height,
+                                                      i32 collisionValue, i32 lifetime)
 {
     PlayerCollisionRegion *slot = this->cancelRegions;
     i32 index;
@@ -1775,17 +1776,19 @@ PlayerCollisionRegion *Player::CreateRectCancelRegion(const Float3 *center, f32 
     slot->active = true;
     slot->center.x = center->x;
     slot->center.y = center->y;
-    slot->size.x = value1;
-    slot->size.y = value2;
-    slot->lifetime = value4;
-    slot->collisionValue = value3;
+    slot->size.x = width;
+    slot->size.y = height;
+    slot->lifetime = lifetime;
+    slot->collisionValue = collisionValue;
 
     return slot;
 }
 
 #pragma var_order(slot, index)
 // FUNCTION: th08 0x44df00
-PlayerCollisionRegion *Player::CreateCircleCancelRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+PlayerCollisionRegion *Player::CreateCircleCancelRegion(const Float3 *center, f32 initialRadius,
+                                                        f32 radiusGrowthPerFrame, i32 lifetime,
+                                                        i32 collisionValue)
 {
     PlayerCollisionRegion *slot = this->cancelRegions;
     i32 index;
@@ -1800,17 +1803,18 @@ PlayerCollisionRegion *Player::CreateCircleCancelRegion(const Float3 *center, f3
     slot->active = true;
     slot->center.x = center->x;
     slot->center.y = center->y;
-    slot->radius = value1;
-    slot->radiusGrowth = value2;
-    slot->lifetime = value3;
-    slot->collisionValue = value4;
+    slot->radius = initialRadius;
+    slot->radiusGrowth = radiusGrowthPerFrame;
+    slot->lifetime = lifetime;
+    slot->collisionValue = collisionValue;
 
     return slot;
 }
 
 #pragma var_order(slot, index)
 // FUNCTION: th08 0x44dfa0
-PlayerCollisionRegion *Player::CreateRectDamageRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+PlayerCollisionRegion *Player::CreateRectDamageRegion(const Float3 *center, f32 width, f32 height,
+                                                      i32 damage, i32 lifetime)
 {
     PlayerCollisionRegion *slot = this->damageRegions;
     i32 index;
@@ -1825,17 +1829,19 @@ PlayerCollisionRegion *Player::CreateRectDamageRegion(const Float3 *center, f32 
     slot->active = true;
     slot->center.x = center->x;
     slot->center.y = center->y;
-    slot->size.x = value1;
-    slot->size.y = value2;
-    slot->lifetime = value4;
-    slot->damage = value3;
+    slot->size.x = width;
+    slot->size.y = height;
+    slot->lifetime = lifetime;
+    slot->damage = damage;
 
     return slot;
 }
 
 #pragma var_order(slot, index)
 // FUNCTION: th08 0x44e040
-PlayerCollisionRegion *Player::CreateCircleDamageRegion(const Float3 *center, f32 value1, f32 value2, i32 value3, i32 value4)
+PlayerCollisionRegion *Player::CreateCircleDamageRegion(const Float3 *center, f32 initialRadius,
+                                                        f32 radiusGrowthPerFrame, i32 damage,
+                                                        i32 lifetime)
 {
     PlayerCollisionRegion *slot = this->damageRegions;
     i32 index;
@@ -1850,10 +1856,10 @@ PlayerCollisionRegion *Player::CreateCircleDamageRegion(const Float3 *center, f3
     slot->active = true;
     slot->center.x = center->x;
     slot->center.y = center->y;
-    slot->radius = value1;
-    slot->radiusGrowth = value2;
-    slot->lifetime = value4;
-    slot->damage = value3;
+    slot->radius = initialRadius;
+    slot->radiusGrowth = radiusGrowthPerFrame;
+    slot->lifetime = lifetime;
+    slot->damage = damage;
 
     return slot;
 }
