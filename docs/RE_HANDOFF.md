@@ -2249,3 +2249,38 @@ library work are explicit evidence boundaries.  The authored semantic phase
 is therefore broadly complete; remain on `semantic/typed-reconstruction`,
 commit and push the checkpoint, and do not open a PR or merge until explicitly
 requested.
+
+## Portable native-layout checkpoint (2026-08-29)
+
+Branch `port/portable-64bit` adds a real native-layout Linux 64-bit product
+without replacing the exact VC7 or fixed-layout Linux i386 products.  The
+portable ELF is a PIE and uses native pointers/alignment; serialized STD, ECL,
+SHT, MSG, and version-6 replay records retain their target-observed 32-bit
+offsets and wire sizes.  Target fixed-address aliases are expressed through
+their real native C++ owners.  The implementation and reproducible build,
+verification, smoke-test, cross-build, and packaging entry points are captured
+by commits `f738e6d`, `89e01a5`, `55b8be7`, `a1c7fa4`, `c5a1647`, `4eb2b8b`,
+and `2f302d9`; all are pushed to `origin/port/portable-64bit`.
+
+The x86_64 artifact is an ELF64 AMD64 PIE and passed a 40-second isolated
+Xvfb/Mesa run against the original data archives.  The request log proves the
+route reached the title, `demo/demorpy0.rpy`, and Stage 5 gameplay resources,
+including `ply00a.sht`, `stage5.std`, `ecldata5.ecl`, and `msg5a.dat`, with no
+`modern-crash.txt`.  The AArch64 artifact is an ELF64 AArch64 PIE linked only
+against AArch64 libraries; QEMU user mode executed it through configuration,
+DAT, and `nowloading.anm` initialization without a crash report.  QEMU software
+OpenGL was too slow for an honest gameplay result, so a graphical run on real
+AArch64 hardware remains explicitly unverified.
+
+The canonical target remains Japanese TH08 1.00d at SHA-256
+`330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924`.
+`Background::LoadStageData` at `0x00409CE0`, `ReplayManager::SaveReplay` at
+`0x004531F0`, and the replay formatter at `0x00453B80` were focused with
+target-pinned COFF/relocation comparisons after separating the portable source
+shape; they pass 598/598, 2445/2445, and 88/88 bytes respectively.  The required
+single-job cold aggregate passes **1,106 / 1,106 exact** with zero failures.
+The normal VC7 PE32 image links, the Linux i386 ET_EXEC build and fixed global
+checks pass, `scripts/ci.py` passes, and `config/claims.csv` remains header-only.
+The only portability assumption not verified on its native hardware is the
+AArch64 graphical gameplay route.  Do not merge or open a PR until explicitly
+requested.
