@@ -1036,11 +1036,11 @@ ZunResult Background::LoadStageData(const char *path)
 
     this->stageObjectCount = this->stageData->objectCount;
     this->stageQuadCount = this->stageData->quadCount;
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
     this->stageObjectInstances = reinterpret_cast<RawStageObjectInstance *>(
         reinterpret_cast<u8 *>(this->stageData) + this->stageData->objectInstancesOffset);
     this->stageScript = reinterpret_cast<RawStageInstr *>(
         reinterpret_cast<u8 *>(this->stageData) + this->stageData->scriptOffset);
-#ifdef TH08_PORTABLE_NATIVE_LAYOUT
     this->stageObjects = reinterpret_cast<RawStageObject **>(
         g_ZunMemory.Alloc(this->stageObjectCount * sizeof(*this->stageObjects), "stage object table"));
     if (this->stageObjects == NULL)
@@ -1055,6 +1055,10 @@ ZunResult Background::LoadStageData(const char *path)
             reinterpret_cast<u8 *>(this->stageData) + stageObjectOffsets[i]);
     }
 #else
+    this->stageObjectInstances = reinterpret_cast<RawStageObjectInstance *>(
+        this->stageData->objectInstancesOffset + (i32)this->stageData);
+    this->stageScript = reinterpret_cast<RawStageInstr *>(
+        this->stageData->scriptOffset + (i32)this->stageData);
     this->stageObjects = reinterpret_cast<RawStageObject **>(
         (u8 *)this->stageData + sizeof(RawStageHeader));
 

@@ -1320,7 +1320,7 @@ target = 0x0160F508
 [[units]]
 name = "replay-append-format"
 object = "build/ReplayManager.obj"
-symbol = "?AppendFormat@?A0xb3f6a42d@th08@@YAPADPADPBDZZ"
+symbol = "?AppendFormat@?A0xcf32fbbc@th08@@YAPADPADPBDZZ"
 target_address = 0x00453B80
 size = 0x58
 
@@ -14239,7 +14239,7 @@ target = 0x004B717C
 [[units.relocations]]
 offset = 0x309
 type = "REL32"
-symbol = "?AppendFormat@?A0xb3f6a42d@th08@@YAPADPADPBDZZ"
+symbol = "?AppendFormat@?A0xcf32fbbc@th08@@YAPADPADPBDZZ"
 target = 0x00453B80
 
 [[units.relocations]]
@@ -14275,7 +14275,7 @@ target = 0x004B7158
 [[units.relocations]]
 offset = 0x365
 type = "REL32"
-symbol = "?AppendFormat@?A0xb3f6a42d@th08@@YAPADPADPBDZZ"
+symbol = "?AppendFormat@?A0xcf32fbbc@th08@@YAPADPADPBDZZ"
 target = 0x00453B80
 
 [[units.relocations]]
@@ -14299,7 +14299,7 @@ target = 0x004B7148
 [[units.relocations]]
 offset = 0x386
 type = "REL32"
-symbol = "?AppendFormat@?A0xb3f6a42d@th08@@YAPADPADPBDZZ"
+symbol = "?AppendFormat@?A0xcf32fbbc@th08@@YAPADPADPBDZZ"
 target = 0x00453B80
 
 [[units.relocations]]
@@ -14317,7 +14317,7 @@ target = 0x004B7138
 [[units.relocations]]
 offset = 0x3A2
 type = "REL32"
-symbol = "?AppendFormat@?A0xb3f6a42d@th08@@YAPADPADPBDZZ"
+symbol = "?AppendFormat@?A0xcf32fbbc@th08@@YAPADPADPBDZZ"
 target = 0x00453B80
 
 [[units.relocations]]
@@ -14329,7 +14329,7 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0x3B4
 type = "DIR32"
-symbol = "?g_ReplayDifficultyList@?A0xb3f6a42d@th08@@3PAPBDA"
+symbol = "?g_ReplayDifficultyList@?A0xcf32fbbc@th08@@3PAPBDA"
 target = 0x004C7F30
 
 [[units.relocations]]
@@ -14341,7 +14341,7 @@ target = 0x004B7128
 [[units.relocations]]
 offset = 0x3C3
 type = "REL32"
-symbol = "?AppendFormat@?A0xb3f6a42d@th08@@YAPADPADPBDZZ"
+symbol = "?AppendFormat@?A0xcf32fbbc@th08@@YAPADPADPBDZZ"
 target = 0x00453B80
 
 [[units.relocations]]
@@ -14353,7 +14353,7 @@ target = 0x004B7110
 [[units.relocations]]
 offset = 0x3F4
 type = "REL32"
-symbol = "?AppendFormat@?A0xb3f6a42d@th08@@YAPADPADPBDZZ"
+symbol = "?AppendFormat@?A0xcf32fbbc@th08@@YAPADPADPBDZZ"
 target = 0x00453B80
 
 [[units.relocations]]
@@ -14389,7 +14389,7 @@ target = 0x004B70F4
 [[units.relocations]]
 offset = 0x43E
 type = "REL32"
-symbol = "?AppendFormat@?A0xb3f6a42d@th08@@YAPADPADPBDZZ"
+symbol = "?AppendFormat@?A0xcf32fbbc@th08@@YAPADPADPBDZZ"
 target = 0x00453B80
 
 [[units.relocations]]
@@ -14413,7 +14413,7 @@ target = 0x004B70E4
 [[units.relocations]]
 offset = 0x45D
 type = "REL32"
-symbol = "?AppendFormat@?A0xb3f6a42d@th08@@YAPADPADPBDZZ"
+symbol = "?AppendFormat@?A0xcf32fbbc@th08@@YAPADPADPBDZZ"
 target = 0x00453B80
 
 [[units.relocations]]
@@ -14437,7 +14437,7 @@ target = 0x004B70D4
 [[units.relocations]]
 offset = 0x47C
 type = "REL32"
-symbol = "?AppendFormat@?A0xb3f6a42d@th08@@YAPADPADPBDZZ"
+symbol = "?AppendFormat@?A0xcf32fbbc@th08@@YAPADPADPBDZZ"
 target = 0x00453B80
 
 [[units.relocations]]
@@ -14449,7 +14449,7 @@ target = 0x004B70C0
 [[units.relocations]]
 offset = 0x499
 type = "REL32"
-symbol = "?AppendFormat@?A0xb3f6a42d@th08@@YAPADPADPBDZZ"
+symbol = "?AppendFormat@?A0xcf32fbbc@th08@@YAPADPADPBDZZ"
 target = 0x00453B80
 
 [[units.relocations]]
@@ -14503,7 +14503,7 @@ target = 0x004B70AC
 [[units.relocations]]
 offset = 0x4DB
 type = "REL32"
-symbol = "?AppendFormat@?A0xb3f6a42d@th08@@YAPADPADPBDZZ"
+symbol = "?AppendFormat@?A0xcf32fbbc@th08@@YAPADPADPBDZZ"
 target = 0x00453B80
 
 [[units.relocations]]
@@ -14515,7 +14515,7 @@ target = 0x004B708C
 [[units.relocations]]
 offset = 0x4F5
 type = "REL32"
-symbol = "?AppendFormat@?A0xb3f6a42d@th08@@YAPADPADPBDZZ"
+symbol = "?AppendFormat@?A0xcf32fbbc@th08@@YAPADPADPBDZZ"
 target = 0x00453B80
 
 [[units.relocations]]
