@@ -235,6 +235,7 @@ struct EnemyEclContext
     i16 subId;
     u8 contextTailAlignment226[2];
 };
+#ifndef TH08_PORTABLE_NATIVE_LAYOUT
 typedef char EnemyEclContextCallbackOffsetCheck[offsetof(EnemyEclContext, perFrameCallback) == 0x10 ? 1 : -1];
 typedef char EnemyEclContextIntVariablesOffsetCheck[offsetof(EnemyEclContext, intVariables) == 0x18 ? 1 : -1];
 typedef char EnemyEclContextFloatVariablesOffsetCheck[offsetof(EnemyEclContext, floatVariables) == 0x38 ? 1 : -1];
@@ -248,6 +249,7 @@ typedef char EnemyEclContextChildSlotOffsetCheck[offsetof(EnemyEclContext, child
 typedef char EnemyEclContextSubIdOffsetCheck[offsetof(EnemyEclContext, subId) == 0x224 ? 1 : -1];
 typedef char EnemyEclContextTailAlignmentOffsetCheck[offsetof(EnemyEclContext, contextTailAlignment226) == 0x226 ? 1 : -1];
 typedef char EnemyEclContextSizeCheck[sizeof(EnemyEclContext) == 0x228 ? 1 : -1];
+#endif
 
 // Raw-allocated by ECL opcode 135. The target clears the complete block,
 // installs one child context at +0x8, and uses the 16 following contexts as

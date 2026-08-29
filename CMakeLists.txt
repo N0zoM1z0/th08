@@ -2,8 +2,10 @@ cmake_minimum_required(VERSION 3.20)
 
 project(th08-modern LANGUAGES CXX)
 
-if(NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
-    message(FATAL_ERROR "TH08 currently requires a 32-bit toolchain.")
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(TH08_PORTABLE_NATIVE_LAYOUT ON)
+elseif(NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
+    message(FATAL_ERROR "TH08 requires a 32-bit or 64-bit toolchain.")
 endif()
 
 find_package(Python3 REQUIRED COMPONENTS Interpreter)
@@ -96,6 +98,9 @@ target_compile_definitions(th08-modern PRIVATE
     TH08_MODERN_PORT
     WIN32_LEAN_AND_MEAN
 )
+if(TH08_PORTABLE_NATIVE_LAYOUT)
+    target_compile_definitions(th08-modern PRIVATE TH08_PORTABLE_NATIVE_LAYOUT)
+endif()
 target_include_directories(th08-modern PRIVATE
     "${CMAKE_SOURCE_DIR}/src"
     "${TH08_GENERATED_DIR}"
@@ -186,18 +191,20 @@ elseif(UNIX AND NOT APPLE)
         -fpermissive
         -fdata-sections
         -fno-omit-frame-pointer
-        -fno-pie
         -Wno-write-strings
         "-include${CMAKE_SOURCE_DIR}/src/modern/linux/linux_compat.hpp"
     )
-    target_link_options(th08-modern PRIVATE
-        -no-pie
-        -rdynamic
-        "-Wl,-T,${CMAKE_SOURCE_DIR}/src/modern/linux/th08-layout.ld"
-    )
-    set_property(TARGET th08-modern APPEND PROPERTY LINK_DEPENDS
-        "${CMAKE_SOURCE_DIR}/src/modern/linux/th08-layout.ld"
-    )
+    target_link_options(th08-modern PRIVATE -rdynamic)
+    if(NOT TH08_PORTABLE_NATIVE_LAYOUT)
+        target_compile_options(th08-modern PRIVATE -fno-pie)
+        target_link_options(th08-modern PRIVATE
+            -no-pie
+            "-Wl,-T,${CMAKE_SOURCE_DIR}/src/modern/linux/th08-layout.ld"
+        )
+        set_property(TARGET th08-modern APPEND PROPERTY LINK_DEPENDS
+            "${CMAKE_SOURCE_DIR}/src/modern/linux/th08-layout.ld"
+        )
+    endif()
     target_include_directories(th08-modern BEFORE PRIVATE
         "${CMAKE_SOURCE_DIR}/src/modern/linux/include"
     )

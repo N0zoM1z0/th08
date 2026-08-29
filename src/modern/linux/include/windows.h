@@ -190,7 +190,13 @@ typedef const GUID &REFIID;
 #define ZeroMemory(d, n) memset((d), 0, (n))
 #define CopyMemory(d, s, n) memcpy((d), (s), (n))
 #define FillMemory(d, n, v) memset((d), (v), (n))
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+// Runtime classes intentionally use native pointer alignment in the portable
+// 64-bit build. The exact/i386 build keeps checking the original VC7 layout.
+#define C_ASSERT(e)
+#else
 #define C_ASSERT(e) typedef char __C_ASSERT__[(e) ? 1 : -1]
+#endif
 #define RGB(r, g, b) ((COLORREF)(((BYTE)(r)) | ((WORD)((BYTE)(g)) << 8) | ((DWORD)(BYTE)(b) << 16)))
 
 #define GENERIC_READ 0x80000000u
