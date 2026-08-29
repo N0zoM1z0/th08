@@ -9,6 +9,13 @@
 #include <stddef.h>
 #include <windows.h>
 
+// Serialized file structures keep their original byte contract on every
+// target. The Linux compatibility header supplies a distinct assertion in
+// native-layout builds; VC7 can use its normal compile-time C_ASSERT.
+#ifndef TH08_FILE_ASSERT
+#define TH08_FILE_ASSERT(e) C_ASSERT(e)
+#endif
+
 namespace th08
 {
 
