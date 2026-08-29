@@ -25,7 +25,7 @@ source. Strict comparison currently accepts 1,105 of those functions, covering
 | Strict authored comparison | **99.86% by bytes** | 1,105 / 1,107 functions are accepted as exact |
 | Whole executable | **In progress** | PE layout, linked runtime/library code, and two authored near matches remain |
 | Web | **Playable** | Public WebAssembly/WebGL 2 build |
-| Linux | **Playable** | Native i386 ELF and portable CI package |
+| Linux | **Playable** | Native i386 and x86_64 ELFs; AArch64 build available for hardware validation |
 | Windows | **In progress** | Native startup and redistributable packaging are incomplete |
 | macOS | **In progress** | Native backend and packaging have not been implemented |
 
@@ -100,6 +100,7 @@ usually slower.
 
 - [Download, installation, and player guide](docs/PLAY_LINUX.md)
 - [Native Linux porting architecture and validation](docs/LINUX_PORTING.md)
+- [Native 64-bit build and validation](docs/PORTABLE_64BIT.md)
 - [Portable Linux build workflow](.github/workflows/portable-linux.yml)
 
 On Debian or Ubuntu, build and run against the original game-data directory:
@@ -125,6 +126,11 @@ The native i386 ELF has been exercised under WSLg and in a Kali Linux x86-64
 virtual machine. It requires only `th08.dat` and `thbgm.dat`; it does not open
 or execute the original `th08.exe`. Settings, scores, replays, and backups stay
 in the selected data directory.
+
+The native-layout product also builds as x86_64 and AArch64 ELF64 PIE. Build
+either architecture with `scripts/build-portable-linux.sh`; the x86_64 build
+has been smoke-tested from the title into the Stage 5 demo, while AArch64 is
+cross-build/loader verified and still needs a gameplay run on real hardware.
 
 <p align="center">
   <img

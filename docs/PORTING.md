@@ -10,12 +10,15 @@ authored game sources without making an exact-code claim.
 | Platform | Status | Notes |
 | --- | --- | --- |
 | Linux i386 | **Done** | Source build, one-command setup/run, and CI artifact are available |
+| Linux x86_64 | **Playable** | Native-layout ELF64 PIE reaches demo gameplay; CI package is available |
+| Linux AArch64 | **Validation** | ELF64 PIE cross-build and QEMU startup pass; real-hardware gameplay remains |
 | Windows x86 | **In progress** | Current native build/launcher is not yet a reliable distributable product |
 | macOS | **In progress** | Platform backend and packaging are pending |
 
-The ports compile the same production-authored game sources. A 32-bit build is
-currently required because reconstructed layouts, target-owned global
-addresses, and some behavior still depend on the original x86 pointer width.
+The ports compile the same production-authored game sources. The exact VC7 and
+Linux i386 products retain the original pointer width and target-owned address
+model. The 64-bit Linux products select a separate native runtime layout while
+keeping serialized game and replay formats at their original byte widths.
 
 ### Native Windows
 
@@ -58,9 +61,10 @@ Windows release artifact.
 Linux uses repository-owned compatibility backends: SDL2 for the window,
 keyboard, timing, images, and PCM audio, plus fixed-function OpenGL for the
 Direct3D 8 drawing surface. It does not use Wine, the original executable, or
-the legacy DirectX SDK. A linker script preserves the original addresses of
-target-owned global objects that exact reconstructed translation units still
-reference directly; this avoids changing gameplay source for the port.
+the legacy DirectX SDK. The i386 product uses a linker script to preserve
+target-owned global addresses. The x86_64/AArch64 products use native pointers,
+PIE, explicit runtime ownership for target aliases, and 32-bit wire offsets for
+retail data formats.
 
 The first-time Debian/Ubuntu path needs only the original game-data directory:
 
@@ -80,6 +84,16 @@ The output is `build/modern-linux/th08-modern`. The build script uses a
 repository CMake toolchain that passes `-m32` and constrains pkg-config to the
 i386 package directory; CMake rejects a non-32-bit result. Docker is not part
 of this default build or runtime path.
+
+Build the native-layout products independently:
+
+```bash
+scripts/build-portable-linux.sh x86_64
+scripts/build-portable-linux.sh aarch64
+```
+
+See [the 64-bit guide](PORTABLE_64BIT.md) for cross dependencies, architecture
+verification, packaging, and the isolated title-to-gameplay smoke test.
 
 For CI or a host whose package manager cannot provide a clean multilib
 development environment, an optional i386 container can compile the same ELF:
@@ -135,10 +149,10 @@ the reusable lessons from the bring-up.
 
 ## Remaining port sequence
 
-1. Keep Linux i386 regression-covered and close the optional MIDI/controller
-   gaps without changing replay-visible simulation behavior.
-2. Finish a redistributable Windows x86 backend/package and validate startup
+1. Run the AArch64 artifact through demo gameplay on a real Linux AArch64
+   desktop and add hardware results to the validation matrix.
+2. Keep Linux i386/x86_64 regression-covered and close the optional
+   MIDI/controller gaps without changing replay-visible simulation behavior.
+3. Finish a redistributable Windows x86 backend/package and validate startup
    on a clean native Windows host.
-3. Add and validate the macOS backend after the portable boundary is stable.
-4. Consider wider architectures only after removing pointer-width and fixed-
-   address assumptions from the shared runtime.
+4. Add and validate the macOS backend after the portable boundary is stable.

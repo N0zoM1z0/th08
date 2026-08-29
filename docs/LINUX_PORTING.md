@@ -40,6 +40,17 @@ scripts/build-modern-linux.sh
 scripts/run-modern-linux.sh "/path/to/the/original/TH08 directory"
 ```
 
+The native-layout 64-bit products have a separate build entry point so the
+fixed-layout i386 release remains regression-testable:
+
+```bash
+scripts/build-portable-linux.sh x86_64
+scripts/build-portable-linux.sh aarch64
+```
+
+See [Native 64-bit Linux port](PORTABLE_64BIT.md) for dependency, packaging,
+wire-format, and runtime-verification details.
+
 The selected directory becomes the process working directory. The original
 relative-file behavior therefore reads and writes configuration, score,
 replay, screenshots, and diagnostic files there. The original executable is
@@ -92,6 +103,10 @@ so the executable bit and the expected launcher/binary layout survive download
 and extraction. `scripts/package-modern-linux.sh` creates the same artifact
 locally from any verified `th08-modern` ELF.
 
+The workflow also builds x86_64 and AArch64 ELF64 PIE in an architecture
+matrix. It rejects fixed-address TH08 globals in those binaries and publishes
+`th08-portable-linux-x86_64` and `th08-portable-linux-aarch64` artifacts.
+
 ### Other distributions and isolated builds
 
 Automatic package installation currently supports Debian and Ubuntu on x86 or
@@ -119,6 +134,9 @@ Useful development overrides are:
 | `TH08_LINUX_BUILD_JOBS` | Parallel build job count; defaults to one |
 | `TH08_LINUX_BINARY` | Executable selected by `run-modern-linux.sh` |
 | `TH08_LINUX_PKG_CONFIG_LIBDIR` | i386-only pkg-config search path |
+| `TH08_PORTABLE_BUILD_DIR` | Repository-relative x86_64/AArch64 build directory |
+| `TH08_PORTABLE_BUILD_JOBS` | Native-layout parallel build count; defaults to one |
+| `TH08_PORTABLE_PKG_CONFIG_LIBDIR` | Architecture-specific native-layout pkg-config path |
 | `TH08_FONT` | Explicit readable Japanese font file |
 
 ## Port boundary
@@ -134,7 +152,10 @@ under `src/modern/linux/` and selected only by the independent CMake product:
 - SDL_ttf, Fontconfig, and CP932-to-UTF-8 conversion implement the GDI text
   boundary used for Japanese dialogue and dynamic labels;
 - a non-PIE i386 ELF plus `th08-layout.ld` preserves target-owned data
-  addresses that reconstructed source still references directly.
+  addresses that reconstructed source still references directly;
+- x86_64 and AArch64 are PIE and resolve serialized 32-bit offsets into native
+  pointer tables while expressing overlapping target symbols as aggregate
+  fields rather than absolute linker aliases.
 
 This separation matters. A portable backend fix must not be expressed as an
 `#ifdef` inside an already reconstructed gameplay function when it can be
@@ -269,11 +290,21 @@ unusually slow, but the game started and ran. A physical Linux desktop with
 hardware OpenGL remains useful final release coverage rather than a prerequisite
 for calling the existing WSLg and Kali paths validated.
 
+The native-layout x86_64 PIE was also run for 40 seconds under Xvfb and Mesa
+software OpenGL in an isolated two-DAT directory. It created configuration and
+score state, reached the title, decoded the bundled demo replay, and loaded the
+Stage 5 SHT, STD, ECL, message, player, enemy, background, and effect resources
+without a fatal signal. The AArch64 PIE has been cross-linked exclusively
+against arm64 libraries and reaches DAT/version/logo/loading initialization
+under QEMU user-mode. Emulated software OpenGL is too slow here to represent a
+real-hardware gameplay result.
+
 ## Current limitations
 
 - MIDI output is a compatibility stub; normal WAV-mode gameplay is the
   validated audio path.
 - Controller mapping is not yet a compatibility target; keyboard input is.
-- The current product remains i386 and is not yet a native 64-bit port.
+- AArch64 gameplay has not yet been exercised on real hardware; current
+  coverage is cross-build, ELF ownership checks, and QEMU loader/startup.
 - Windows and macOS remain in progress; neither currently has a release-ready
   native package.

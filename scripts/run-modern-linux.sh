@@ -28,7 +28,7 @@ fi
 
 if [[ ! -x "${binary}" ]]; then
     echo "Linux executable not found: ${binary}" >&2
-    echo "Build it with scripts/build-modern-linux.sh or extract the complete CI package." >&2
+    echo "Build it with scripts/build-modern-linux.sh, scripts/build-portable-linux.sh, or extract a complete CI package." >&2
     exit 1
 fi
 

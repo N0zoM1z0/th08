@@ -28,12 +28,24 @@ for archive in th08.dat thbgm.dat; do
         exit 1
     fi
 done
-for command_name in xvfb-run timeout; do
+for command_name in file xvfb-run timeout; do
     if ! command -v "${command_name}" >/dev/null 2>&1; then
         echo "Required smoke-test command not found: ${command_name}" >&2
         exit 1
     fi
 done
+
+runtime_command=("${binary}")
+binary_description="$(LC_ALL=C file -L "${binary}")"
+case "$(uname -m):${binary_description}" in
+    x86_64:*'ARM aarch64'*|amd64:*'ARM aarch64'*)
+        if ! command -v qemu-aarch64 >/dev/null 2>&1; then
+            echo "qemu-aarch64 is required to smoke-test AArch64 on this host." >&2
+            exit 1
+        fi
+        runtime_command=(qemu-aarch64 -L / "${binary}")
+        ;;
+esac
 
 install -d "${repo_root}/build"
 runtime_dir="$(mktemp -d "${repo_root}/build/portable-smoke.XXXXXX")"
@@ -49,10 +61,10 @@ ln -s "${data_dir}/th08.dat" "${runtime_dir}/th08.dat"
 ln -s "${data_dir}/thbgm.dat" "${runtime_dir}/thbgm.dat"
 
 set +e
-env SDL_AUDIODRIVER=dummy LIBGL_ALWAYS_SOFTWARE=1 \
+env SDL_AUDIODRIVER=dummy LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe \
     xvfb-run -a -s '-screen 0 1024x768x24' \
     timeout --signal=TERM --kill-after=5s "${duration}s" \
-    "${binary}" --data-dir "${runtime_dir}"
+    "${runtime_command[@]}" --data-dir "${runtime_dir}"
 status=$?
 set -e
 

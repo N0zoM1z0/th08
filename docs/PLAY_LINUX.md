@@ -1,9 +1,9 @@
 # Download, install, and play on Linux
 
-The native Linux reconstruction is the current playable release target. It is
-a 32-bit x86 ELF application tested under WSLg and a Kali Linux x86-64 GUI
-virtual machine. Wine, Docker, and the original `th08.exe` are not runtime
-requirements.
+The native Linux reconstruction is the current playable release target. The
+release lane includes the established 32-bit x86 product and a native-layout
+x86_64 product; an AArch64 build is available for hardware validation. Wine,
+Docker, and the original `th08.exe` are not runtime requirements.
 
 ## What you need
 
@@ -110,6 +110,18 @@ After the initial setup, use the incremental path:
 scripts/play-modern-linux.sh "/path/to/original/TH08 directory"
 ```
 
+Those commands retain the fixed-layout i386 product. For native ELF64 PIE,
+build and verify with:
+
+```bash
+scripts/build-portable-linux.sh x86_64
+scripts/build-portable-linux.sh aarch64
+```
+
+The AArch64 command cross-builds on x86_64 when the documented arm64
+development packages are installed. See [Native 64-bit Linux
+port](PORTABLE_64BIT.md) for package, launch, and smoke-test commands.
+
 Docker is available only as an optional reproducible build environment; it is
 not required to run the resulting game. See [Native Linux playable
 reconstruction](LINUX_PORTING.md) for backend architecture, build isolation,
@@ -149,6 +161,7 @@ files, or replays unless they are specifically needed and safe to share.
 - MIDI output is a compatibility stub; the normal WAV BGM path is validated.
 - Keyboard input is validated; controller compatibility is not yet a release
   target.
-- The executable is currently i386 rather than a native 64-bit port.
+- AArch64 has build and emulated-loader coverage; gameplay validation on a real
+  AArch64 desktop remains pending.
 - A known Stage 4-to-5 dynamic-text texture can tile across the outer frame and
   HUD. Gameplay can continue past it; see the screenshot in the main README.
