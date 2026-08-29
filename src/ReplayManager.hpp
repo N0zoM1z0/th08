@@ -141,8 +141,8 @@ struct ReplayData
 #else
 #define TH08_REPLAY_HEADER_SIZE sizeof(ReplayDataHeader)
 #define TH08_REPLAY_DATA_SIZE sizeof(ReplayData)
-#define TH08_REPLAY_STAGE_DATA(replay, stage) replay->header.stageReplayData[stage]
-#define TH08_REPLAY_FPS_DATA(replay, stage) replay->header.stageFpsData[stage]
+#define TH08_REPLAY_STAGE_DATA(replay, stage) ((replay)->header.stageReplayData[(stage)])
+#define TH08_REPLAY_FPS_DATA(replay, stage) ((replay)->header.stageFpsData[(stage)])
 #endif
 
 TH08_FILE_ASSERT(offsetof(ReplayData, randomPayloadByte) == 0x68);
