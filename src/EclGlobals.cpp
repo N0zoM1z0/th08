@@ -97,7 +97,9 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(EclExInstructionCallback, 32, g_EclExInsn) = {
     &SpawnBombOrExtendItem,
 };
 
+#ifndef TH08_PORTABLE_NATIVE_LAYOUT
 DIFFABLE_STATIC(u32, g_EclGameTimeScaleFlags);
+#endif
 DIFFABLE_STATIC(EclManager, g_EclManager);
 
 namespace EclRunLow

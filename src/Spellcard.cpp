@@ -19,7 +19,11 @@ ZunBool IsDisableResourceReload();
 DIFFABLE_STATIC(Spellcard, g_Spellcard);
 DIFFABLE_STATIC(ChainElem *, g_SpellcardCalcChain);
 DIFFABLE_STATIC(i32, g_LastSpellCount);
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+#define g_SpellcardBackgroundAnm g_EffectManager.stageEffectAnm
+#else
 DIFFABLE_STATIC(AnmLoaded *, g_SpellcardBackgroundAnm);
+#endif
 
 struct SpellcardFlagBits
 {

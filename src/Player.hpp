@@ -14,10 +14,14 @@ struct PlayerShotDescriptor;
 
 struct PlayerShotPowerLevel
 {
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    u32 descriptorsOffset;
+#else
     PlayerShotDescriptor *descriptors;
+#endif
     i32 minimumPower;
 };
-C_ASSERT(sizeof(PlayerShotPowerLevel) == 0x8);
+TH08_FILE_ASSERT(sizeof(PlayerShotPowerLevel) == 0x8);
 
 struct PlayerRawShtFile
 {
@@ -38,22 +42,22 @@ struct PlayerRawShtFile
     f32 itemMovementSpeed;
     PlayerShotPowerLevel shotPowerLevels[1];
 };
-C_ASSERT(offsetof(PlayerRawShtFile, serializedReserved00) == 0x0);
-C_ASSERT(offsetof(PlayerRawShtFile, shotPowerLevelCount) == 0x2);
-C_ASSERT(offsetof(PlayerRawShtFile, initialBombCount) == 0x4);
-C_ASSERT(offsetof(PlayerRawShtFile, deathbombWindowFrames) == 0x8);
-C_ASSERT(offsetof(PlayerRawShtFile, hurtboxSize) == 0xC);
-C_ASSERT(offsetof(PlayerRawShtFile, grazeBoxSize) == 0x10);
-C_ASSERT(offsetof(PlayerRawShtFile, itemAutoCollectSpeed) == 0x14);
-C_ASSERT(offsetof(PlayerRawShtFile, itemCollectionBoxSize) == 0x18);
-C_ASSERT(offsetof(PlayerRawShtFile, pointItemValueLine) == 0x1C);
-C_ASSERT(offsetof(PlayerRawShtFile, serializedReserved20) == 0x20);
-C_ASSERT(offsetof(PlayerRawShtFile, normalAxisSpeed) == 0x24);
-C_ASSERT(offsetof(PlayerRawShtFile, focusedAxisSpeed) == 0x28);
-C_ASSERT(offsetof(PlayerRawShtFile, normalDiagonalSpeed) == 0x2C);
-C_ASSERT(offsetof(PlayerRawShtFile, focusedDiagonalSpeed) == 0x30);
-C_ASSERT(offsetof(PlayerRawShtFile, itemMovementSpeed) == 0x34);
-C_ASSERT(offsetof(PlayerRawShtFile, shotPowerLevels) == 0x38);
+TH08_FILE_ASSERT(offsetof(PlayerRawShtFile, serializedReserved00) == 0x0);
+TH08_FILE_ASSERT(offsetof(PlayerRawShtFile, shotPowerLevelCount) == 0x2);
+TH08_FILE_ASSERT(offsetof(PlayerRawShtFile, initialBombCount) == 0x4);
+TH08_FILE_ASSERT(offsetof(PlayerRawShtFile, deathbombWindowFrames) == 0x8);
+TH08_FILE_ASSERT(offsetof(PlayerRawShtFile, hurtboxSize) == 0xC);
+TH08_FILE_ASSERT(offsetof(PlayerRawShtFile, grazeBoxSize) == 0x10);
+TH08_FILE_ASSERT(offsetof(PlayerRawShtFile, itemAutoCollectSpeed) == 0x14);
+TH08_FILE_ASSERT(offsetof(PlayerRawShtFile, itemCollectionBoxSize) == 0x18);
+TH08_FILE_ASSERT(offsetof(PlayerRawShtFile, pointItemValueLine) == 0x1C);
+TH08_FILE_ASSERT(offsetof(PlayerRawShtFile, serializedReserved20) == 0x20);
+TH08_FILE_ASSERT(offsetof(PlayerRawShtFile, normalAxisSpeed) == 0x24);
+TH08_FILE_ASSERT(offsetof(PlayerRawShtFile, focusedAxisSpeed) == 0x28);
+TH08_FILE_ASSERT(offsetof(PlayerRawShtFile, normalDiagonalSpeed) == 0x2C);
+TH08_FILE_ASSERT(offsetof(PlayerRawShtFile, focusedDiagonalSpeed) == 0x30);
+TH08_FILE_ASSERT(offsetof(PlayerRawShtFile, itemMovementSpeed) == 0x34);
+TH08_FILE_ASSERT(offsetof(PlayerRawShtFile, shotPowerLevels) == 0x38);
 
 struct PlayerCollisionRegion
 {
@@ -258,22 +262,36 @@ struct PlayerShotDescriptor
     i16 shotType;
     i16 animationIndex;
     i16 soundIndex;
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    u32 spawnCallbackIndex;
+    u32 updateCallbackIndex;
+    u32 drawCallbackIndex;
+    u32 collisionCallbackIndex;
+#else
     PlayerShotSpawnCallback spawnCallback;
     PlayerShotUpdateCallback updateCallback;
     PlayerShotDrawCallback drawCallback;
     PlayerShotCollisionCallback collisionCallback;
+#endif
 };
-C_ASSERT(sizeof(PlayerShotDescriptor) == 0x38);
-C_ASSERT(offsetof(PlayerShotDescriptor, positionOffset) == 0x4);
-C_ASSERT(offsetof(PlayerShotDescriptor, hitboxSize) == 0xC);
-C_ASSERT(offsetof(PlayerShotDescriptor, angle) == 0x14);
-C_ASSERT(offsetof(PlayerShotDescriptor, speed) == 0x18);
-C_ASSERT(offsetof(PlayerShotDescriptor, damage) == 0x1C);
-C_ASSERT(offsetof(PlayerShotDescriptor, sourceOptionIndex) == 0x20);
-C_ASSERT(offsetof(PlayerShotDescriptor, spawnCallback) == 0x28);
-C_ASSERT(offsetof(PlayerShotDescriptor, updateCallback) == 0x2C);
-C_ASSERT(offsetof(PlayerShotDescriptor, drawCallback) == 0x30);
-C_ASSERT(offsetof(PlayerShotDescriptor, collisionCallback) == 0x34);
+TH08_FILE_ASSERT(sizeof(PlayerShotDescriptor) == 0x38);
+TH08_FILE_ASSERT(offsetof(PlayerShotDescriptor, positionOffset) == 0x4);
+TH08_FILE_ASSERT(offsetof(PlayerShotDescriptor, hitboxSize) == 0xC);
+TH08_FILE_ASSERT(offsetof(PlayerShotDescriptor, angle) == 0x14);
+TH08_FILE_ASSERT(offsetof(PlayerShotDescriptor, speed) == 0x18);
+TH08_FILE_ASSERT(offsetof(PlayerShotDescriptor, damage) == 0x1C);
+TH08_FILE_ASSERT(offsetof(PlayerShotDescriptor, sourceOptionIndex) == 0x20);
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+TH08_FILE_ASSERT(offsetof(PlayerShotDescriptor, spawnCallbackIndex) == 0x28);
+TH08_FILE_ASSERT(offsetof(PlayerShotDescriptor, updateCallbackIndex) == 0x2C);
+TH08_FILE_ASSERT(offsetof(PlayerShotDescriptor, drawCallbackIndex) == 0x30);
+TH08_FILE_ASSERT(offsetof(PlayerShotDescriptor, collisionCallbackIndex) == 0x34);
+#else
+TH08_FILE_ASSERT(offsetof(PlayerShotDescriptor, spawnCallback) == 0x28);
+TH08_FILE_ASSERT(offsetof(PlayerShotDescriptor, updateCallback) == 0x2C);
+TH08_FILE_ASSERT(offsetof(PlayerShotDescriptor, drawCallback) == 0x30);
+TH08_FILE_ASSERT(offsetof(PlayerShotDescriptor, collisionCallback) == 0x34);
+#endif
 
 enum PlayerShotState
 {

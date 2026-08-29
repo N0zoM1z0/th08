@@ -143,7 +143,11 @@ void __fastcall ShiftStageEffectOrigins(Float3 *delta);
 DIFFABLE_EXTERN(ChainElem, g_EffectManagerCalcChain);
 DIFFABLE_EXTERN(ChainElem, g_EffectManagerDrawChain);
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+#define g_EclGameTimeScaleFlags reinterpret_cast<u32 &>(g_Supervisor.flags)
+#else
 DIFFABLE_EXTERN(u32, g_EclGameTimeScaleFlags);
+#endif
 struct EclRawInstruction
 {
     i32 time;
@@ -291,7 +295,11 @@ struct EclManager
     EclTimelineInstruction *GetTimeline(i32 index);
 
     EclRawHeader *eclFile;             // +0x000
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    uintptr_t *subTable;
+#else
     u32 *subTable;                     // +0x004
+#endif
     EclTimelineState timelineState;    // +0x008
 };
 C_ASSERT(sizeof(EclManager) == 0x168);

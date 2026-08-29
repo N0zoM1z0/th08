@@ -893,7 +893,11 @@ err:
 // FUNCTION: th08 0x446a37
 ZunResult Supervisor::SetupDInput()
 {
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    HINSTANCE instance = this->hInstance;
+#else
     HINSTANCE instance = (HINSTANCE)GetWindowLongA(this->hwndGameWindow, GWL_HINSTANCE);
+#endif
 
     if (this->cfg.opts.dontUseDirectInput != 0)
     {

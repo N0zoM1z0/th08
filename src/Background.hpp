@@ -25,10 +25,10 @@ struct RawStageHeader
     char songNames[4][128];
     char songPaths[4][128];
 };
-C_ASSERT(sizeof(RawStageHeader) == 0x490);
-C_ASSERT(offsetof(RawStageHeader, unconsumedDword0C) == 0x0C);
-C_ASSERT(offsetof(RawStageHeader, songNames) == 0x90);
-C_ASSERT(offsetof(RawStageHeader, songPaths) == 0x290);
+TH08_FILE_ASSERT(sizeof(RawStageHeader) == 0x490);
+TH08_FILE_ASSERT(offsetof(RawStageHeader, unconsumedDword0C) == 0x0C);
+TH08_FILE_ASSERT(offsetof(RawStageHeader, songNames) == 0x90);
+TH08_FILE_ASSERT(offsetof(RawStageHeader, songPaths) == 0x290);
 
 struct BackgroundCamera
 {

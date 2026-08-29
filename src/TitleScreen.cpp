@@ -459,7 +459,7 @@ ChainCallbackResult TitleScreen::OnUpdateStartMenu()
 
                 i = 0;
 
-                while (this->currentReplay->header.stageReplayData[i] == NULL)
+                while (TH08_REPLAY_STAGE_DATA(this->currentReplay, i) == NULL)
                 {
                     i++;
                 }
@@ -2642,10 +2642,10 @@ ChainCallbackResult TitleScreen::DrawReplayMenu()
 
                 position = vm->pos;
 
-                if (this->currentReplay->header.stageReplayData[i2] != NULL)
+                if (TH08_REPLAY_STAGE_DATA(this->currentReplay, i2) != NULL)
                 {
                     g_AsciiManager.AddFormatText(&position, "%s %9d0", g_StageNames[i2],
-                                                 this->currentReplay->header.stageReplayData[i2]->score);
+                                                 TH08_REPLAY_STAGE_DATA(this->currentReplay, i2)->score);
                 }
                 else
                 {
@@ -3366,6 +3366,7 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
                 (ReplayData *)FileSystem::OpenFile(this->replayFilePaths[this->selectedReplay], &fileSize2, TRUE);
             this->currentReplay = ReplayManager::LoadReplayData(this->currentReplay, fileSize2);
 
+#ifndef TH08_PORTABLE_NATIVE_LAYOUT
             for (i = 0; i < MAX_STAGES; i++)
             {
                 if (this->currentReplay->header.stageReplayData[i] != NULL)
@@ -3375,10 +3376,11 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
                                             (u32)this->currentReplay->header.stageReplayData[i]);
                 }
             }
+#endif
 
             this->cursor = 0;
 
-            while (this->replays[this->selectedReplay].header.stageReplayData[this->cursor] == NULL)
+            while (TH08_REPLAY_STAGE_DATA(&this->replays[this->selectedReplay], this->cursor) == NULL)
             {
                 this->cursor++;
                 if (this->cursor > EXTRASTAGE)
@@ -3420,7 +3422,7 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
         i = this->MoveCursorVertical(9);
         if (i < 0)
         {
-            while (this->replays[this->selectedReplay].header.stageReplayData[this->cursor] == NULL)
+            while (TH08_REPLAY_STAGE_DATA(&this->replays[this->selectedReplay], this->cursor) == NULL)
             {
                 this->cursor--;
                 if (this->cursor < 0)
@@ -3431,7 +3433,7 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
         }
         else if (i > 0)
         {
-            while (this->replays[this->selectedReplay].header.stageReplayData[this->cursor] == NULL)
+            while (TH08_REPLAY_STAGE_DATA(&this->replays[this->selectedReplay], this->cursor) == NULL)
             {
                 this->cursor++;
                 if (this->cursor >= ARRAY_SIZE(g_StageNames))

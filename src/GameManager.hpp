@@ -321,7 +321,11 @@ struct GameManager
         return this->skipCurrentFrame;
     }
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    void *antiTamperHeapJitterAllocation;
+#else
     i32 antiTamperHeapJitterAllocation;
+#endif
     GameConfiguration *cfg;
     ZunGlobals *globals;
     Flsp flsp;

@@ -1273,7 +1273,11 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
 {
     Enemy *enemy = &enemyManager->enemies[0];
     EclRawHeader *savedEclFile;
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    uintptr_t *savedSubTable;
+#else
     u32 *savedSubTable;
+#endif
 
     if (IsResourceReloadEnabled())
     {

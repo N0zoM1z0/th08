@@ -46,11 +46,11 @@ struct StageReplayData
     u8 inputStream[0x1c];
 };
 
-C_ASSERT(sizeof(StageReplayData) == 0x40);
-C_ASSERT(offsetof(StageReplayData, spellcardsCaptured) == 0x21);
-C_ASSERT(offsetof(StageReplayData, clockTime) == 0x22);
-C_ASSERT(offsetof(StageReplayData, serializedReserved23) == 0x23);
-C_ASSERT(offsetof(StageReplayData, inputStream) == 0x24);
+TH08_FILE_ASSERT(sizeof(StageReplayData) == 0x40);
+TH08_FILE_ASSERT(offsetof(StageReplayData, spellcardsCaptured) == 0x21);
+TH08_FILE_ASSERT(offsetof(StageReplayData, clockTime) == 0x22);
+TH08_FILE_ASSERT(offsetof(StageReplayData, serializedReserved23) == 0x23);
+TH08_FILE_ASSERT(offsetof(StageReplayData, inputStream) == 0x24);
 
 struct ReplayDataHeader
 {
@@ -71,15 +71,25 @@ struct ReplayDataHeader
     i32 compressedSize;
     i32 decompressedSize;
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    u32 stageReplayDataOffsets[MAX_STAGES];
+    u32 stageFpsDataOffsets[MAX_STAGES];
+#else
     StageReplayData *stageReplayData[MAX_STAGES];
     u8 *stageFpsData[MAX_STAGES];
+#endif
 };
-C_ASSERT(sizeof(ReplayDataHeader) == 0x68);
-C_ASSERT(offsetof(ReplayDataHeader, usesExtendedInputRecords) == 0x6);
-C_ASSERT(offsetof(ReplayDataHeader, hasUserDataSection) == 0x7);
-C_ASSERT(offsetof(ReplayDataHeader, obfuscationKey) == 0x15);
-C_ASSERT(offsetof(ReplayDataHeader, stageReplayData) == 0x20);
-C_ASSERT(offsetof(ReplayDataHeader, stageFpsData) == 0x44);
+TH08_FILE_ASSERT(sizeof(ReplayDataHeader) == 0x68);
+TH08_FILE_ASSERT(offsetof(ReplayDataHeader, usesExtendedInputRecords) == 0x6);
+TH08_FILE_ASSERT(offsetof(ReplayDataHeader, hasUserDataSection) == 0x7);
+TH08_FILE_ASSERT(offsetof(ReplayDataHeader, obfuscationKey) == 0x15);
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+TH08_FILE_ASSERT(offsetof(ReplayDataHeader, stageReplayDataOffsets) == 0x20);
+TH08_FILE_ASSERT(offsetof(ReplayDataHeader, stageFpsDataOffsets) == 0x44);
+#else
+TH08_FILE_ASSERT(offsetof(ReplayDataHeader, stageReplayData) == 0x20);
+TH08_FILE_ASSERT(offsetof(ReplayDataHeader, stageFpsData) == 0x44);
+#endif
 
 struct ReplayData
 {
@@ -116,12 +126,33 @@ struct ReplayData
     i32 exeSize;
     i32 exeChecksum;
     char exeVersion[6];
+
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    StageReplayData *runtimeStageReplayData[MAX_STAGES];
+    u8 *runtimeStageFpsData[MAX_STAGES];
+#endif
 };
 
-C_ASSERT(sizeof(ReplayData) == 0x134);
-C_ASSERT(offsetof(ReplayData, randomPayloadByte) == 0x68);
-C_ASSERT(offsetof(ReplayData, reservedF0) == 0xF0);
-C_ASSERT(offsetof(ReplayData, unconsumedConstant30) == 0x120);
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+#define TH08_REPLAY_HEADER_SIZE 0x68
+#define TH08_REPLAY_DATA_SIZE 0x134
+#define TH08_REPLAY_STAGE_DATA(replay, stage) ((replay)->runtimeStageReplayData[(stage)])
+#define TH08_REPLAY_FPS_DATA(replay, stage) ((replay)->runtimeStageFpsData[(stage)])
+#else
+#define TH08_REPLAY_HEADER_SIZE sizeof(ReplayDataHeader)
+#define TH08_REPLAY_DATA_SIZE sizeof(ReplayData)
+#define TH08_REPLAY_STAGE_DATA(replay, stage) ((replay)->header.stageReplayData[(stage)])
+#define TH08_REPLAY_FPS_DATA(replay, stage) ((replay)->header.stageFpsData[(stage)])
+#endif
+
+TH08_FILE_ASSERT(offsetof(ReplayData, randomPayloadByte) == 0x68);
+TH08_FILE_ASSERT(offsetof(ReplayData, reservedF0) == 0xF0);
+TH08_FILE_ASSERT(offsetof(ReplayData, unconsumedConstant30) == 0x120);
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+TH08_FILE_ASSERT(offsetof(ReplayData, runtimeStageReplayData) >= 0x134);
+#else
+TH08_FILE_ASSERT(sizeof(ReplayData) == 0x134);
+#endif
 
 struct ReplayInputSync
 {
@@ -130,9 +161,9 @@ struct ReplayInputSync
     u16 rngSeed;
 };
 
-C_ASSERT(sizeof(ReplayInputSync) == 0x6);
-C_ASSERT(offsetof(ReplayInputSync, eventFlags) == 0x2);
-C_ASSERT(offsetof(ReplayInputSync, rngSeed) == 0x4);
+TH08_FILE_ASSERT(sizeof(ReplayInputSync) == 0x6);
+TH08_FILE_ASSERT(offsetof(ReplayInputSync, eventFlags) == 0x2);
+TH08_FILE_ASSERT(offsetof(ReplayInputSync, rngSeed) == 0x4);
 
 struct ReplayManager
 {

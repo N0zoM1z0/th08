@@ -195,6 +195,26 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(PlayerShotCollisionCallback, 3,
                              g_PlayerShotCollisionCallbacks) = {
     NULL, ApplyShotHitBehavior, SpawnPeriodicShotHitEffect};
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+#define TH08_SHT_DESCRIPTORS(file, level)                                             \
+    reinterpret_cast<PlayerShotDescriptor *>(reinterpret_cast<u8 *>(file) +          \
+                                             (level)->descriptorsOffset)
+#define TH08_SHOT_SPAWN_CALLBACK(descriptor)                                          \
+    g_PlayerShotSpawnCallbacks[(descriptor)->spawnCallbackIndex]
+#define TH08_SHOT_UPDATE_CALLBACK(descriptor)                                         \
+    g_PlayerShotUpdateCallbacks[(descriptor)->updateCallbackIndex]
+#define TH08_SHOT_DRAW_CALLBACK(descriptor)                                           \
+    g_PlayerShotDrawCallbacks[(descriptor)->drawCallbackIndex]
+#define TH08_SHOT_COLLISION_CALLBACK(descriptor)                                      \
+    g_PlayerShotCollisionCallbacks[(descriptor)->collisionCallbackIndex]
+#else
+#define TH08_SHT_DESCRIPTORS(file, level) ((level)->descriptors)
+#define TH08_SHOT_SPAWN_CALLBACK(descriptor) ((descriptor)->spawnCallback)
+#define TH08_SHOT_UPDATE_CALLBACK(descriptor) ((descriptor)->updateCallback)
+#define TH08_SHOT_DRAW_CALLBACK(descriptor) ((descriptor)->drawCallback)
+#define TH08_SHOT_COLLISION_CALLBACK(descriptor) ((descriptor)->collisionCallback)
+#endif
+
 ZunBool IsResourceReloadDisabled();
 void __fastcall PlayerBuildAabb(Float3 *topLeft, Float3 *bottomRight,
                                 const Float3 *center, const Float3 *size);
@@ -1728,12 +1748,17 @@ ZunResult Player::LoadShtFile(PlayerRawShtFile **header, const char *path)
 
     for (i = 0; i < (*header)->shotPowerLevelCount; i++)
     {
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+        descriptor = TH08_SHT_DESCRIPTORS(*header, &(*header)->shotPowerLevels[i]);
+#else
         reinterpret_cast<u32 &>((*header)->shotPowerLevels[i].descriptors) +=
             reinterpret_cast<u32>(*header);
         descriptor = (*header)->shotPowerLevels[i].descriptors;
+#endif
 
         while (descriptor->fireInterval >= 0)
         {
+#ifndef TH08_PORTABLE_NATIVE_LAYOUT
             descriptor->spawnCallback =
                 g_PlayerShotSpawnCallbacks[reinterpret_cast<u32>(descriptor->spawnCallback)];
             descriptor->updateCallback =
@@ -1744,6 +1769,7 @@ ZunResult Player::LoadShtFile(PlayerRawShtFile **header, const char *path)
             descriptor->collisionCallback =
                 g_PlayerShotCollisionCallbacks[
                     reinterpret_cast<u32>(descriptor->collisionCallback)];
+#endif
             descriptor++;
         }
     }
@@ -3054,7 +3080,10 @@ void __fastcall Player::SpawnShots(i32 value)
         }
     }
 
-    entry = table->descriptors;
+    entry = TH08_SHT_DESCRIPTORS(
+        (this->focusMode == PLAYER_FOCUS_MODE_UNFOCUSED) ? this->primaryShtFile
+                                                        : this->secondaryShtFile,
+        table);
     slot = this->shots;
     for (i = 0; i < ARRAY_SIZE_SIGNED(this->shots); i++, slot++)
     {
@@ -3064,9 +3093,9 @@ void __fastcall Player::SpawnShots(i32 value)
         }
 
 processEntry:
-        if (entry->spawnCallback != NULL)
+        if (TH08_SHOT_SPAWN_CALLBACK(entry) != NULL)
         {
-            result = entry->spawnCallback(this, slot, value, entry);
+            result = TH08_SHOT_SPAWN_CALLBACK(entry)(this, slot, value, entry);
         }
         else
         {
@@ -3078,9 +3107,9 @@ processEntry:
             slot->vm.zWriteDisabled = 1;
             slot->state = PLAYER_SHOT_ACTIVE;
             slot->descriptor = entry;
-            slot->updateCallback = slot->descriptor->updateCallback;
-            slot->drawCallback = slot->descriptor->drawCallback;
-            slot->collisionCallback = slot->descriptor->collisionCallback;
+            slot->updateCallback = TH08_SHOT_UPDATE_CALLBACK(slot->descriptor);
+            slot->drawCallback = TH08_SHOT_DRAW_CALLBACK(slot->descriptor);
+            slot->collisionCallback = TH08_SHOT_COLLISION_CALLBACK(slot->descriptor);
         }
 
         entry++;

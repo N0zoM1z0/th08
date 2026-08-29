@@ -43,22 +43,44 @@ ZunResult EclManager::Load(char *path)
         return ZUN_ERROR;
     }
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    this->subTable = reinterpret_cast<uintptr_t *>(
+        g_ZunMemory.Alloc(this->eclFile->subCount * sizeof(*this->subTable), "ecl sub table"));
+    if (this->subTable == NULL)
+    {
+        g_ZunMemory.Free(this->eclFile);
+        this->eclFile = NULL;
+        return ZUN_ERROR;
+    }
+    for (index = 0; index < this->eclFile->subCount; index++)
+    {
+        this->subTable[index] = reinterpret_cast<uintptr_t>(this->eclFile) +
+                                this->eclFile->subOffsets[index];
+    }
+#else
     for (index = 0; index < 16; index++)
     {
         this->eclFile->timelineOffsets[index] += (u32)this->eclFile;
     }
-
     this->subTable = this->eclFile->subOffsets;
     for (index = 0; index < this->eclFile->subCount; index++)
     {
         this->subTable[index] += (u32)this->eclFile;
     }
+#endif
 
     return ZUN_SUCCESS;
 }
 
 void EclManager::Unload()
 {
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    if (this->subTable != NULL)
+    {
+        g_ZunMemory.Free(this->subTable);
+        this->subTable = NULL;
+    }
+#endif
     if (this->eclFile != NULL)
     {
         g_ZunMemory.Free(this->eclFile);
@@ -173,7 +195,12 @@ i32 EclManager::GetTimelineCount()
 // FUNCTION: th08 0x42dfd0
 EclTimelineInstruction *EclManager::GetTimeline(i32 index)
 {
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    return reinterpret_cast<EclTimelineInstruction *>(
+        reinterpret_cast<u8 *>(this->eclFile) + this->eclFile->timelineOffsets[index]);
+#else
     return reinterpret_cast<EclTimelineInstruction *>(this->eclFile->timelineOffsets[index]);
+#endif
 }
 
 // FUNCTION: th08 0x0042DFF0

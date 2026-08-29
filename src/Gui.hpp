@@ -170,9 +170,13 @@ C_ASSERT(sizeof(GuiMessageInstruction) == 0x18);
 struct GuiMessageFile
 {
     i32 messageCount;
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    u32 messageOffsets[1];
+#else
     GuiMessageInstruction *messages[1];
+#endif
 };
-C_ASSERT(offsetof(GuiMessageFile, messages) == 0x4);
+TH08_FILE_ASSERT(sizeof(GuiMessageFile) == 0x8);
 
 struct GuiMsgVm
 {

@@ -795,7 +795,11 @@ void __fastcall EclExIns::MokouResurrection(Enemy *enemy, EclExInstruction *inst
 {
     g_Spellcard.CutInEnemyNoPortrait(
         "\x81\x75\x83\x8a\x83\x55\x83\x8c\x83\x4e\x83\x56\x83\x87\x83\x93\x81\x76",
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+        0);
+#else
         reinterpret_cast<i32>(enemy));
+#endif
 }
 
 // FUNCTION: th08 0x425020

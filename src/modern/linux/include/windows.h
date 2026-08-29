@@ -197,6 +197,8 @@ typedef const GUID &REFIID;
 #else
 #define C_ASSERT(e) typedef char __C_ASSERT__[(e) ? 1 : -1]
 #endif
+// Serialized file structures keep their original byte contract on every host.
+#define TH08_FILE_ASSERT(e) typedef char __TH08_FILE_ASSERT__[(e) ? 1 : -1]
 #define RGB(r, g, b) ((COLORREF)(((BYTE)(r)) | ((WORD)((BYTE)(g)) << 8) | ((DWORD)(BYTE)(b) << 16)))
 
 #define GENERIC_READ 0x80000000u

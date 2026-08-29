@@ -28,7 +28,11 @@ DIFFABLE_STATIC(i32, g_GuiFullPowerModeFrames);
 DIFFABLE_STATIC(i32, g_GuiMessageStageMode);
 DIFFABLE_STATIC(u16, g_GuiMessageInputCurrent);
 DIFFABLE_STATIC(u16, g_GuiMessageInputPrevious);
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+#define g_GuiMessageScreenEffectDuration g_GuiFullPowerModeFrames
+#else
 DIFFABLE_STATIC(i32, g_GuiMessageScreenEffectDuration);
+#endif
 DIFFABLE_STATIC_ARRAY(i32, MAX_STAGES, g_GuiStageClearBonuses);
 struct GuiMessageTextColorSet
 {
@@ -219,7 +223,13 @@ void GuiImpl::StartMessage(i32 messageIndex)
     }
 
     this->message.currentMsgIdx = messageIndex;
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    this->message.currentInstr = reinterpret_cast<GuiMessageInstruction *>(
+        reinterpret_cast<u8 *>(this->message.msgFile) +
+        this->message.msgFile->messageOffsets[messageIndex]);
+#else
     this->message.currentInstr = this->message.msgFile->messages[messageIndex];
+#endif
     this->message.dialogueLines[0].scriptIndex = -1;
     this->message.dialogueLines[1].scriptIndex = -1;
     this->message.textBoxVisible = 1;
@@ -738,7 +748,11 @@ i32 GuiImpl::RunMsg()
 
         this->message.currentInstr =
             reinterpret_cast<GuiMessageInstruction *>(
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+                reinterpret_cast<u8 *>(&this->message.currentInstr->args) +
+#else
                 reinterpret_cast<i32>(&this->message.currentInstr->args) +
+#endif
                 this->message.currentInstr->instructionSize);
     }
 
@@ -2187,10 +2201,12 @@ ZunResult Gui::LoadMsg(const char *path)
     }
     this->impl->message.currentMsgIdx = -1;
     this->impl->message.currentInstr = NULL;
+#ifndef TH08_PORTABLE_NATIVE_LAYOUT
     for (i32 i = 0; i < this->impl->message.msgFile->messageCount; ++i)
     {
         ((i32 *)this->impl->message.msgFile)[i + 1] += (i32)this->impl->message.msgFile;
     }
+#endif
     return ZUN_SUCCESS;
 }
 
