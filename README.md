@@ -101,6 +101,7 @@ usually slower.
 - [Download, installation, and player guide](docs/PLAY_LINUX.md)
 - [Native Linux porting architecture and validation](docs/LINUX_PORTING.md)
 - [Native 64-bit build and validation](docs/PORTABLE_64BIT.md)
+- [Replay-driven headless render audit](docs/RENDER_AUDIT.md)
 - [Portable Linux build workflow](.github/workflows/portable-linux.yml)
 
 On Debian or Ubuntu, build and run against the original game-data directory:
@@ -128,9 +129,10 @@ or execute the original `th08.exe`. Settings, scores, replays, and backups stay
 in the selected data directory.
 
 The native-layout product also builds as x86_64 and AArch64 ELF64 PIE. Build
-either architecture with `scripts/build-portable-linux.sh`; the x86_64 build
-has been smoke-tested from the title into the Stage 5 demo, while AArch64 is
-cross-build/loader verified and still needs a gameplay run on real hardware.
+either architecture with `scripts/build-portable-linux.sh`. The x86_64 build
+has completed a Sakuya/Remilia Lunatic route through Stage 6A, ending, results,
+and return to title; AArch64 is cross-build/loader verified and still needs a
+gameplay run on real hardware.
 
 <p align="center">
   <img

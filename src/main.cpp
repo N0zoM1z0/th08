@@ -424,6 +424,12 @@ f64 GameWindow::GetTimestamp()
     LARGE_INTEGER performanceCounterValue;
     f64 timestamp;
 
+#ifdef TH08_MODERN_PORT
+    const char *fastReplay = getenv("TH08_RENDER_AUDIT_FAST");
+    if (fastReplay != NULL && fastReplay[0] != '\0' && strcmp(fastReplay, "0") != 0)
+        return this->lastFrameTime + (1.0 / 60.0);
+#endif
+
     if (g_GameWindow.pcFrequency.LowPart != 0)
     {
         QueryPerformanceCounter(&performanceCounterValue);

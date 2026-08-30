@@ -260,6 +260,7 @@ bool ConfigureDataDirectory()
     unlink("modern-files.txt");
     unlink("modern-crash.txt");
     unlink("modern-render.txt");
+    unlink("modern-enemy-render.csv");
     return true;
 }
 

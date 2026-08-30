@@ -12,6 +12,7 @@ before repeating target analysis or compiler-shape probes.
 | Current milestone, deferred work, next bounded lane | [RE_HANDOFF.md](RE_HANDOFF.md) | Short, replaceable current state only. |
 | Evidence ranking and reconstruction loop | [RE_WORKFLOW.md](RE_WORKFLOW.md) | Durable operating method and acceptance language. |
 | Semantic field/type recovery and two-oracle acceptance | [SEMANTIC_RECONSTRUCTION.md](SEMANTIC_RECONSTRUCTION.md) | Evidence classes, bounded batch format, typed-layout rules, and VC7/portable validation matrix. |
+| Portable visual regression and replay-driven framebuffer probes | [RENDER_AUDIT.md](RENDER_AUDIT.md) | Versioned CSV contract, structural/pixel acceptance policy, and backend adapter boundary. |
 | Command selection and scratch lifecycle | [TOOLS.md](TOOLS.md) | Public entry points, copyable recipes, and tool limits. |
 | Exact authored totals | [PROGRESS.md](PROGRESS.md) and `config/matches.csv` | Generated totals and accepted per-address evidence. |
 | Target mappings and types | `config/mapping.csv`, `config/reccmp-*.csv` | Imported/reconciled leads; mapping alone is not exactness. |

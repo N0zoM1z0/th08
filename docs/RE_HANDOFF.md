@@ -2284,3 +2284,35 @@ checks pass, `scripts/ci.py` passes, and `config/claims.csv` remains header-only
 The only portability assumption not verified on its native hardware is the
 AArch64 graphical gameplay route.  Do not merge or open a PR until explicitly
 requested.
+
+### x86_64 full-route and render-oracle follow-up (2026-08-30)
+
+The native-layout x86_64 build subsequently completed a user-driven
+Sakuya/Remilia Lunatic route through Stages 1–6A, ending, results, and return to
+title under WSLg. A fixed-size initialization bug discovered during that run is
+guarded to the native layout: `EnemyManager::Initialize` clears the expanded
+manager and spawn-template objects with `sizeof`, while the target/fixed-layout
+source still uses `0x9DCF10` and `0x53D0`. GDB confirmation showed the full
+clear restored natural Stage 3 and later transitions.
+
+An opt-in replay render oracle now samples primary enemy/boss ANM source
+regions and the framebuffer delta produced by the exact draw. It records VM
+geometry and effective color modulation to CSV, allowing missing resources,
+empty sprites, invalid geometry, no-op draws, and scripted low-light tinting to
+be distinguished headlessly. A Stage 6A replay audit localized the reported
+small-enemy appearance to loaded `enemy.anm` sprites 77–84 under active
+`color2`/global ANM modulation; the texture regions, geometry, draw queue, and
+framebuffer writes were present. This is evidence against a missing-resource
+or native-pointer fault, not a claim of full pixel-exact visual parity.
+
+The Stage 4 oracle also reproduced the missing final boss without visual
+inspection: the old x86_64 build emitted 29 consecutive `invalid-geometry`
+samples from frame 16379 because trail rendering restored `scale.y` as NaN.
+The source used `reinterpret_cast<Float2 *>(&savedScaleX)` across two scalar
+locals whose adjacency was only established by the VC7 stack layout. Modern
+builds now use a real `Float2`; the target path retains the original source
+shape. The fixed x86_64 report reached frame 20515 with 4,188 samples, no hard
+failure, and finite 80-pixel boss height throughout the former failure window.
+The same replay on i386 produced 3,485 finite-geometry samples. All no-life and
+direct-stage workarounds remain external GDB test actions; packaged builds use
+normal life rules.

@@ -13,6 +13,10 @@
 #include "Player.hpp"
 #include "ReplayManager.hpp"
 
+#ifdef TH08_MODERN_LINUX
+#include "modern/linux/render_audit.hpp"
+#endif
+
 namespace th08
 {
 
@@ -129,12 +133,20 @@ void EnemyManager::Initialize()
     Enemy *enemy = &this->enemies[0];
     i32 i;
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    memset(this, 0, sizeof(*this));
+#else
     memset(this, 0, 0x9DCF10);
+#endif
     for (i = 0; (u32)i < 4; i++)
         this->timelineEventSlots[i] = -1;
 
     enemy = &this->spawnTemplate;
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    memset(enemy, 0, sizeof(*enemy));
+#else
     memset(enemy, 0, 0x53D0);
+#endif
     for (i = 0; i < 2; i++)
         enemy->secondaryVms[i].scriptIndex = -1;
     for (i = 0; i < 0x60; i++)
@@ -1001,6 +1013,9 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
     f32 angle;
     f32 cosAngle;
     f32 uvSpan;
+#ifdef TH08_MODERN_PORT
+    Float2 portableSavedScale;
+#endif
 
     for (i = drawGroup; i < chainPriority; ++i)
     {
@@ -1042,7 +1057,11 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
 
             if (enemy->trailFlags)
             {
+#ifdef TH08_MODERN_PORT
+                portableSavedScale = enemy->vm.scale;
+#else
                 *reinterpret_cast<Float2 *>(&savedScaleX) = enemy->vm.scale;
+#endif
                 savedColor = enemy->vm.color1.d3dColor;
 
                 if ((enemy->trailFlags & ENEMY_TRAIL_RENDER_AS_STRIP) == 0)
@@ -1059,9 +1078,15 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                                     enemy->trailSamples[k].angle);
 
                             if ((enemy->trailFlags & ENEMY_TRAIL_TAPER) != 0)
+#ifdef TH08_MODERN_PORT
+                                enemy->vm.scale.x =
+                                    portableSavedScale.x - (f32)k * portableSavedScale.x /
+                                                               (f32)enemy->trailHistoryLength;
+#else
                                 enemy->vm.scale.x =
                                     savedScaleX - (f32)k * savedScaleX /
                                                       (f32)enemy->trailHistoryLength;
+#endif
 
                             if ((enemy->trailFlags & ENEMY_TRAIL_FADE) != 0)
                                 enemy->vm.color1.a =
@@ -1137,8 +1162,13 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                             sinAngle = sinf(angle);
                             cosAngle = cosf(angle);
                             halfCenter = 0.0f;
+#ifdef TH08_MODERN_PORT
+                            halfWidth = portableSavedScale.y *
+                                        enemy->vm.loadedSprite->heightPx / 2.0f;
+#else
                             halfWidth = savedScaleY *
                                         enemy->vm.loadedSprite->heightPx / 2.0f;
+#endif
                             if ((enemy->trailFlags & ENEMY_TRAIL_TAPER) != 0)
                             {
                                 angle = 1.0f - (f32)k / (f32)enemy->trailHistoryLength;
@@ -1184,7 +1214,11 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                     }
                 }
 
+#ifdef TH08_MODERN_PORT
+                enemy->vm.scale = portableSavedScale;
+#else
                 enemy->vm.scale = *reinterpret_cast<Float2 *>(&savedScaleX);
+#endif
                 enemy->vm.color1.d3dColor = savedColor;
             }
 
@@ -1192,6 +1226,11 @@ ChainCallbackResult __fastcall EnemyManager::OnDrawImpl(i32 drawGroup, i32 chain
                 ((enemy->flags1 >>
                   ENEMY_FLAG_HIDE_PRIMARY_ANM_SHIFT) & 1) == 0)
             {
+#ifdef TH08_MODERN_LINUX
+                if (modern::IsEnemyRenderAuditEnabled())
+                    modern::AuditEnemyPrimaryDraw(enemy);
+                else
+#endif
                 g_AnmManager->Draw2D(&enemy->vm);
             }
 

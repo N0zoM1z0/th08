@@ -50,6 +50,10 @@ def main() -> int:
         if not python_files:
             raise RuntimeError("no tracked Python scripts found")
         run("Compile tracked Python", [sys.executable, "-m", "py_compile", *python_files])
+        run(
+            "Test render-audit checker contract",
+            [sys.executable, "scripts/test-render-audit.py"],
+        )
 
         shell_files = tracked("scripts/*.sh")
         shell_files.extend(
