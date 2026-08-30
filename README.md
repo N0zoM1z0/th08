@@ -11,21 +11,27 @@
   <img src="resources/progress.svg" alt="TH08 exact-source and playable-platform progress">
 </p>
 
+> [!IMPORTANT]
+> 🌙 The authored reconstruction is complete and Linux is playable. Native
+> x86_64/AArch64 development and CI artifacts currently live on
+> [`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit);
+> Windows and macOS ports remain in progress.
+
 ## Repository status
 
 This repository reconstructs the source code of the original Japanese
 `東方永夜抄 ～ Imperishable Night` version 1.00d executable. The authored-source
 recovery milestone is complete: all 1,107 authored functions are present in
-source. Strict comparison currently accepts 1,105 of those functions, covering
-459,115 of 459,757 authored bytes.
+source. Strict comparison currently accepts 1,106 of those functions, covering
+459,396 of 459,757 authored bytes.
 
 | Area | Status | Current position |
 | --- | --- | --- |
 | Authored source | **Complete** | 1,107 / 1,107 functions are present in source |
-| Strict authored comparison | **99.86% by bytes** | 1,105 / 1,107 functions are accepted as exact |
-| Whole executable | **In progress** | PE layout, linked runtime/library code, and two authored near matches remain |
+| Strict authored comparison | **99.92% by bytes** | 1,106 / 1,107 functions are accepted as exact |
+| Whole executable | **In progress** | PE layout, linked runtime/library code, and one authored near match remain |
 | Web | **Playable** | Public WebAssembly/WebGL 2 build |
-| Linux | **Playable** | Native i386 ELF and portable CI package |
+| Linux | **Playable** | Native i386; x86_64/AArch64 work on `port/portable-64bit` |
 | Windows | **In progress** | Native startup and redistributable packaging are incomplete |
 | macOS | **In progress** | Native backend and packaging have not been implemented |
 
@@ -34,8 +40,8 @@ Running on a modern platform is not an exactness claim, and source presence is
 not counted as a byte-exact result. The progress bar above visualizes accepted
 authored bytes only; its platform cards report delivery status separately.
 
-Current reconstruction work focuses on the two remaining authored near
-matches, whole-image layout, and target-linked compiler/runtime and D3DX code.
+Current reconstruction work focuses on the remaining authored near match,
+whole-image layout, and target-linked compiler/runtime and D3DX code.
 Live authored and library figures come from the repository ledgers rather than
 this README.
 
@@ -100,6 +106,7 @@ usually slower.
 
 - [Download, installation, and player guide](docs/PLAY_LINUX.md)
 - [Native Linux porting architecture and validation](docs/LINUX_PORTING.md)
+- [Native 64-bit branch, build, and validation](https://github.com/N0zoM1z0/th08/blob/port/portable-64bit/docs/PORTABLE_64BIT.md)
 - [Portable Linux build workflow](.github/workflows/portable-linux.yml)
 
 On Debian or Ubuntu, build and run against the original game-data directory:
@@ -126,6 +133,23 @@ virtual machine. It requires only `th08.dat` and `thbgm.dat`; it does not open
 or execute the original `th08.exe`. Settings, scores, replays, and backups stay
 in the selected data directory.
 
+The native-layout x86_64 PIE is developed on
+[`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
+It has completed a Lunatic Stage 1–6A route, ending, results, return to title,
+and additional Stage 4A/6B Practice validation under WSLg. The same branch
+publishes x86_64 and AArch64 Actions artifacts; AArch64 remains cross-build and
+loader verified pending a gameplay run on real hardware.
+
+<p align="center">
+  <img
+    src="https://raw.githubusercontent.com/N0zoM1z0/th08/port/portable-64bit/resources/portable64-kaguya-lunatic.png"
+    width="800"
+    alt="Native x86_64 TH08 running Kaguya's Lunatic Princess spell under WSLg">
+</p>
+
+> Maintainer bias, openly declared: Kaguya is my favorite, and
+> **竹取飛翔 ～ Lunatic Princess** is my favorite track. XD
+
 <p align="center">
   <img
     src="resources/kali-linux-port.gif"
@@ -139,18 +163,21 @@ from the original executable. On software-rendered systems, a fresh
 configuration's fullscreen FPS/vsync calibration can be slow; reusing an
 existing `th08.cfg` is optional.
 
-#### Known Linux issue
+#### Earlier Linux renderer regression
 
-During the Stage 4-to-5 transition, a dynamic text texture can tile across the
-outer frame and HUD, most visibly as repeated `Yakumo Yukari` text. This is a
-renderer/texture-state bug rather than a damaged DAT archive; gameplay can
-continue past it.
+An earlier Linux bring-up build could tile a dynamic text texture across the
+outer frame and HUD during the Stage 4-to-5 transition, most visibly as
+repeated `Yakumo Yukari` text. The same period exposed missing enemy/boss art
+and incomplete effects. These regressions were not reproduced in the final
+x86_64 full-route and Practice passes after the native-layout and renderer
+fixes. The screenshot remains as a historical regression sample; please report
+it if it returns on another driver or desktop.
 
 <p align="center">
   <img
     src="resources/linux-stage5-texture-tiling.png"
     width="640"
-    alt="Known Linux Stage 5 dynamic text texture tiling bug">
+    alt="Historical Linux Stage 5 dynamic text texture tiling regression">
 </p>
 
 ### Windows
