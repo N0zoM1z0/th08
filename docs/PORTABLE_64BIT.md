@@ -5,16 +5,33 @@ fixed-layout i386 port. Both products compile the reconstructed authored game
 sources and use the repository SDL2/OpenGL backend. Neither product executes
 or bundles the original `th08.exe`.
 
+Active development and CI artifacts are on
+[`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
+The default branch links here so users do not have to discover the port among
+the repository's other development branches.
+
 ## Architecture status
 
 | Architecture | Build verification | Runtime verification |
 | --- | --- | --- |
-| x86_64 | ELF64 little-endian PIE; native globals; no fixed-address TH08 symbols | Complete Sakuya/Remilia Lunatic route through Stages 1–6A, ending, results, and return to title under WSLg; deterministic replay audits under Xvfb/Mesa |
+| x86_64 | ELF64 little-endian PIE; native globals; no fixed-address TH08 symbols | Complete Sakuya/Remilia Lunatic route through Stages 1–6A, ending, results, and return to title under WSLg; additional Stage 4A and Stage 6B Practice validation; deterministic replay audits under Xvfb/Mesa |
 | AArch64 | Cross-built ELF64 little-endian PIE with only AArch64 libraries | QEMU user-mode reaches DAT/version/logo/loading initialization; a real AArch64 desktop gameplay run remains required |
 
 The x86_64 result is a playable 64-bit port, not merely a successful link. The
 AArch64 artifact is build- and loader-verified, but emulated software OpenGL is
 too slow to substitute honestly for a gameplay test on AArch64 hardware.
+
+<p align="center">
+  <img
+    src="../resources/portable64-kaguya-lunatic.png"
+    width="800"
+    alt="Native x86_64 TH08 running Kaguya's Lunatic Princess spell under WSLg">
+</p>
+
+The image above is from the product-ready x86_64 build in Stage 6B, with normal
+life rules and no render-audit or automation patch. Maintainer bias, openly
+declared: Kaguya is my favorite, and **竹取飛翔 ～ Lunatic Princess** is
+my favorite track. XD
 
 ## Runtime data
 
@@ -58,6 +75,7 @@ sudo apt-get install \
 Then build and verify x86_64:
 
 ```bash
+git switch port/portable-64bit
 scripts/build-portable-linux.sh x86_64
 ```
 
@@ -164,6 +182,12 @@ background (`.std`), ECL, player shot (`.sht`), message, and replay data. Replay
 save/load keeps the version-6 wire format compatible while maintaining a
 native pointer table outside the serialized `0x134`-byte record.
 
+The same separation now covers `score.dat`. Its original `0x1c`-byte wire
+header remains fixed while the live native score-list pointer is stored after
+that header. Existing retail/i386 saves therefore load without being rejected
+or silently recreated, and Practice unlock masks survive a 64-bit load/save
+round trip.
+
 Three target symbols were alternate names for bytes inside other objects. The
 fixed i386 linker script supplied that identity automatically. Native layout
 expresses the same ownership in C++: ECL time-scale flags are the Supervisor
@@ -184,6 +208,13 @@ Treating `&savedScaleX` as an eight-byte vector happened to work on VC7/i386;
 on x86_64 GCC, a boss trail restored an unrelated stack value as `scale.y`,
 making the boss geometry NaN and invisible. The replay oracle caught the first
 bad frame and verified the bounded modern-only correction.
+
+Earlier Linux bring-up runs also exposed missing enemy/boss sprites, incomplete
+effects, Stage 4-to-5 dynamic-text tiling, and later-stage transition stalls.
+The final x86_64 full-route and Practice passes did not reproduce those issues
+after the native-layout and render fixes. This is broad runtime evidence rather
+than a promise that every GPU/driver combination is identical; regressions
+should still include the runtime diagnostics described in `PLAY_LINUX.md`.
 
 The VC7 build and comparison path never defines the native-layout macro. These
 port changes do not claim new exact matches and must continue to pass the
