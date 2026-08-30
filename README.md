@@ -12,9 +12,10 @@
 </p>
 
 > [!IMPORTANT]
-> 🌙 The authored reconstruction is complete and Linux is playable. Native
-> x86_64/AArch64 development and CI artifacts currently live on
-> [`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit);
+> 🌙 The authored reconstruction is complete and Linux is playable. Download
+> [TH08 Reconstruction v0.2.0 — Native Linux 64-bit](https://github.com/N0zoM1z0/th08/releases/latest);
+> active ELF64 source lives on
+> [`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
 > Windows and macOS ports remain in progress.
 
 ## Repository status
@@ -104,6 +105,7 @@ usually slower.
 
 **Status: Playable**
 
+- [Download the latest native Linux release](https://github.com/N0zoM1z0/th08/releases/latest)
 - [Download, installation, and player guide](docs/PLAY_LINUX.md)
 - [Native Linux porting architecture and validation](docs/LINUX_PORTING.md)
 - [Native 64-bit branch, build, and validation](https://github.com/N0zoM1z0/th08/blob/port/portable-64bit/docs/PORTABLE_64BIT.md)
@@ -121,8 +123,9 @@ After first-time setup, use the incremental launcher:
 scripts/play-modern-linux.sh "/path/to/the/original/TH08 directory"
 ```
 
-The CI workflow publishes `th08-modern-linux-i386.tar.gz` as a portable
-Actions artifact. Extract it and pass the original data directory:
+The latest release provides x86_64, i386, and experimental AArch64 portable
+packages. Extract the package for your architecture and pass the original data
+directory:
 
 ```bash
 ./run-th08.sh "/path/to/the/original/TH08 directory"
@@ -133,12 +136,11 @@ virtual machine. It requires only `th08.dat` and `thbgm.dat`; it does not open
 or execute the original `th08.exe`. Settings, scores, replays, and backups stay
 in the selected data directory.
 
-The native-layout x86_64 PIE is developed on
+The native-layout x86_64 PIE is the recommended Linux package. Its source is on
 [`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
 It has completed a Lunatic Stage 1–6A route, ending, results, return to title,
-and additional Stage 4A/6B Practice validation under WSLg. The same branch
-publishes x86_64 and AArch64 Actions artifacts; AArch64 remains cross-build and
-loader verified pending a gameplay run on real hardware.
+and additional Stage 4A/6B Practice validation under WSLg. AArch64 remains
+cross-build and loader verified pending a gameplay run on real hardware.
 
 <p align="center">
   <img
