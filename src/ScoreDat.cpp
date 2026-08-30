@@ -108,12 +108,22 @@ ScoreDat *ScoreDat::OpenScore(const char *filename)
             g_ZunMemory.Free(scoreDat);
         }
         scoreDat = (ScoreDat *)g_ZunMemory.Alloc(sizeof(ScoreDat), "scorefile");
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+        scoreDat->headerSize = TH08_SCORE_DAT_WIRE_SIZE;
+        scoreDat->decompressedFileSize = TH08_SCORE_DAT_WIRE_SIZE;
+        scoreDat->serializedScores = 0;
+#else
         scoreDat->headerSize = sizeof(ScoreDat);
         scoreDat->decompressedFileSize = sizeof(ScoreDat);
+#endif
         goto out;
     }
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    if (fileSize < TH08_SCORE_DAT_WIRE_SIZE)
+#else
     if (fileSize < sizeof(ScoreDat))
+#endif
     {
         utils::DebugPrint("warning : score.dat size is short\r\n");
         g_ZunMemory.Free(scoreDat);
@@ -155,7 +165,11 @@ ScoreDat *ScoreDat::OpenScore(const char *filename)
         goto recreate_score_file;
     }
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    if (scoreDat->headerSize != TH08_SCORE_DAT_WIRE_SIZE)
+#else
     if (scoreDat->headerSize != sizeof(ScoreDat))
+#endif
     {
         utils::DebugPrint("warning : header size is mismatch\r\n");
         goto recreate_score_file;
@@ -168,15 +182,26 @@ ScoreDat *ScoreDat::OpenScore(const char *filename)
     }
 
     scoreDat2 = (ScoreDat *)g_ZunMemory.Alloc(sizeof(ScoreDat) + 0xa0000, "scorefile2");
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    memcpy(scoreDat2, scoreDat, TH08_SCORE_DAT_WIRE_SIZE);
+    Lzss::Decode(TH08_SCORE_DAT_WIRE_PAYLOAD(scoreDat), scoreDat->compressedFileSize,
+                 TH08_SCORE_DAT_DECODED_PAYLOAD(scoreDat2),
+                 scoreDat->decompressedFileSizeMinusHeader);
+#else
     memcpy(scoreDat2, scoreDat, sizeof(ScoreDat));
     Lzss::Decode((u8 *)(scoreDat + 1), scoreDat->compressedFileSize, (u8 *)(scoreDat2 + 1),
                  scoreDat->decompressedFileSizeMinusHeader);
+#endif
     g_ZunMemory.Free(scoreDat);
     scoreDat = scoreDat2;
 
     bytesToRead = scoreDat->decompressedFileSize;
     hasFoundTH8K = FALSE;
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    chapter = (Th8k *)TH08_SCORE_DAT_CHAPTER_PAYLOAD(scoreDat);
+#else
     chapter = (Th8k *)(((u8 *)scoreDat) + scoreDat->headerSize);
+#endif
     bytesToRead -= scoreDat->headerSize;
 
     while (bytesToRead > 0)
@@ -235,7 +260,11 @@ u32 ScoreDat::GetHighScore(ScoreDat *scoreDat, ScoreListNode *node, u32 characte
     }
 
     bytesToRead = scoreDat2->decompressedFileSize;
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    hscr = (Hscr *)TH08_SCORE_DAT_CHAPTER_PAYLOAD(scoreDat2);
+#else
     hscr = (Hscr *)(((u8 *)scoreDat2) + scoreDat2->headerSize);
+#endif
     bytesToRead -= scoreDat2->headerSize;
 
     while (bytesToRead > 0)
@@ -277,7 +306,11 @@ i32 ScoreDat::ParseCATK(ScoreDat *scoreDat, Catk *outCatk)
         return ZUN_ERROR;
     }
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    catk = (Catk *)TH08_SCORE_DAT_CHAPTER_PAYLOAD(scoreDat2);
+#else
     catk = (Catk *)((u8 *)scoreDat2 + scoreDat2->headerSize);
+#endif
     bytesToRead = scoreDat2->decompressedFileSize - scoreDat2->headerSize;
 
     while (bytesToRead > 0)
@@ -306,7 +339,11 @@ i32 ScoreDat::ParseLSNM(ScoreDat *scoreDat, Lsnm *outLsnm)
     i32 bytesToRead;
     ScoreDat *scoreDat2 = scoreDat;
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    lsnm = (Lsnm *)TH08_SCORE_DAT_CHAPTER_PAYLOAD(scoreDat2);
+#else
     lsnm = (Lsnm *)((u8 *)scoreDat2 + scoreDat2->headerSize);
+#endif
     bytesToRead = scoreDat2->decompressedFileSize - scoreDat2->headerSize;
 
     while (bytesToRead > 0)
@@ -331,7 +368,11 @@ i32 ScoreDat::ParseFLSP(ScoreDat *scoreDat, Flsp *outFlsp)
     i32 bytesToRead;
     ScoreDat *scoreDat2 = scoreDat;
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    flsp = (Flsp *)TH08_SCORE_DAT_CHAPTER_PAYLOAD(scoreDat2);
+#else
     flsp = (Flsp *)((u8 *)scoreDat2 + scoreDat2->headerSize);
+#endif
     bytesToRead = scoreDat2->decompressedFileSize - scoreDat2->headerSize;
 
     while (bytesToRead > 0)
@@ -382,7 +423,11 @@ i32 ScoreDat::ParseCLRD(ScoreDat *scoreDat, Clrd *outClrd)
         }
     }
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    clrd = (Clrd *)TH08_SCORE_DAT_CHAPTER_PAYLOAD(scoreDat2);
+#else
     clrd = (Clrd *)((u8 *)scoreDat2 + scoreDat2->headerSize);
+#endif
     bytesToRead = scoreDat2->decompressedFileSize - scoreDat2->headerSize;
 
     while (bytesToRead > 0)
@@ -432,7 +477,11 @@ i32 ScoreDat::ParsePSCR(ScoreDat *scoreDat, Pscr *outPscr)
         pscr2->shouldSerialize = 0;
     }
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    pscr = (Pscr *)TH08_SCORE_DAT_CHAPTER_PAYLOAD(scoreDat2);
+#else
     pscr = (Pscr *)((u8 *)scoreDat2 + scoreDat2->headerSize);
+#endif
     bytesToRead = scoreDat2->decompressedFileSize - scoreDat2->headerSize;
 
     while (bytesToRead > 0)
@@ -466,7 +515,11 @@ i32 ScoreDat::ParsePLST(ScoreDat *scoreDat, Plst *outPlst)
 
     /* no NULL check here? */
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    plst = (Plst *)TH08_SCORE_DAT_CHAPTER_PAYLOAD(scoreDat2);
+#else
     plst = (Plst *)((u8 *)scoreDat2 + scoreDat2->headerSize);
+#endif
     bytesToRead = scoreDat2->decompressedFileSize - scoreDat2->headerSize;
 
     while (bytesToRead > 0)

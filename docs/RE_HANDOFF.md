@@ -4,6 +4,36 @@ This file records only the current durable state. Historical investigations
 belong in focused notes such as `RUNECL_FUNCTION_EXACT_NOTES.md`; live counts
 come from the ledgers, not this prose.
 
+## Portable x86_64 score compatibility checkpoint
+
+The `fix/portable64-enemy-render-oracle` follow-up to
+`port/portable-64bit` now keeps the `score.dat` wire header at its original
+`0x1c` bytes while placing the live native `ScoreListNode *` after that fixed
+header.  The affected authored functions are
+`ResultScreen::WriteScore @ 0x00453D0D` and the ScoreDat family at
+`0x0045A5E0..0x0045AFC0`; their exact/fixed-layout source expressions remain
+the target-observed forms, while `TH08_PORTABLE_NATIVE_LAYOUT` uses explicit
+wire and decoded-payload addresses.
+
+Portable runtime evidence used a copied retail/i386-format save in an isolated
+x86_64 WSLg/Xvfb data directory.  The rebuilt product read `headerSize=28`, a
+40-byte live `ScoreDat`, and Lunatic Practice masks `0xFFFF/0xFFFF` without
+rewriting the input file.  User-driven WSLg validation covered the complete
+Sakuya/Remilia Lunatic Stage 1–6A route plus product-ready Stage 4A and Stage 6B
+Practice starts under normal life rules.  The earlier missing-enemy/boss,
+incomplete-effect, dynamic-text-tiling, and later-stage transition regressions
+were not reproduced in the final x86_64 passes.  AArch64 still has only
+cross-build and loader evidence; gameplay on real AArch64 hardware remains
+unverified.
+
+The shared header renumbered the VC7 compiler-local ReplayManager anonymous
+namespace from `cf32fbbc` to `0e38121d`.  The match manifest update changes only
+that local symbol identity: relocation offsets, types, destinations, and the
+full target bytes remain unchanged.  Focused ResultScreen/ScoreDat replay
+passed **43 / 43**, including `WriteScore` at **1,372 / 1,372 bytes**.  The final
+single-job non-reuse cold replay passed **1,106 / 1,106 exact** accepted units
+with no failures.  No authored or exact ledger totals changed.
+
 ## Active semantic reconstruction branch
 
 `semantic/typed-reconstruction` starts from `main@4cffb2a` and makes semantic
