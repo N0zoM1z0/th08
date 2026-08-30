@@ -1,13 +1,13 @@
 # Download, install, and play on Linux
 
-The native Linux reconstruction is the current playable release target. It is
-a 32-bit x86 ELF application tested under WSLg and a Kali Linux x86-64 GUI
-virtual machine. Wine, Docker, and the original `th08.exe` are not runtime
-requirements.
+The native Linux reconstruction is the current playable release target. The
+release includes the established 32-bit x86 product and a native-layout x86_64
+product; an AArch64 build is available for hardware validation. Wine, Docker,
+and the original `th08.exe` are not runtime requirements.
 
 ## What you need
 
-- an x86 or x86-64 Linux desktop with working OpenGL and audio;
+- a Linux desktop with working OpenGL and audio;
 - the runtime packages listed below;
 - a legally obtained original Japanese TH08 1.00d data directory containing:
   - `th08.dat`
@@ -20,18 +20,33 @@ backups, and diagnostic logs there.
 
 ## 1. Download the portable release
 
-Open the [TH08 releases page](https://github.com/N0zoM1z0/th08/releases) and
-download both Linux assets from the newest Linux Preview release:
+Open the [latest TH08 release](https://github.com/N0zoM1z0/th08/releases/latest)
+and download the archive and matching `.sha256` file for your architecture:
 
-- `th08-modern-linux-i386.tar.gz`
-- `th08-modern-linux-i386.tar.gz.sha256`
+| Host | Status | Archive |
+| --- | --- | --- |
+| x86_64 / AMD64 | **Recommended; full-route tested** | `th08-portable-linux-x86_64.tar.gz` |
+| i386 / 32-bit x86 | Compatibility build | `th08-modern-linux-i386.tar.gz` |
+| AArch64 / ARM64 | **Experimental; real-hardware gameplay not yet verified** | `th08-portable-linux-aarch64.tar.gz` |
 
-The GitHub Actions artifact is useful for development snapshots, but the
-Release assets are the stable download entry point for players.
+Most Intel and AMD Linux computers should use the x86_64 package. Check an
+unfamiliar machine with `uname -m`; it normally prints `x86_64`, `i686`, or
+`aarch64`. GitHub Actions artifacts are development snapshots, while Release
+assets are the stable player download.
 
-## 2. Install the 32-bit runtime libraries
+## 2. Install the runtime libraries
 
-On Debian, Ubuntu, Kali Linux, or a compatible derivative running on x86-64:
+On an x86_64 Debian, Ubuntu, Kali Linux, or compatible system, install:
+
+```bash
+sudo apt-get update
+sudo apt-get install \
+  libstdc++6 libgl1 libfontconfig1 \
+  libsdl2-2.0-0 libsdl2-image-2.0-0 libsdl2-ttf-2.0-0 \
+  fonts-vlgothic
+```
+
+The i386 compatibility package needs the corresponding 32-bit libraries:
 
 ```bash
 sudo dpkg --add-architecture i386
@@ -42,21 +57,24 @@ sudo apt-get install \
   fonts-vlgothic
 ```
 
-Other distributions need equivalent i386 packages for the C++ runtime,
-OpenGL, Fontconfig, SDL2, SDL2_image, and SDL2_ttf, plus a Japanese font. The
-launcher itself never invokes `sudo`.
+On a native AArch64 Debian-family system, install the same unqualified package
+names as x86_64. Other distributions need equivalent native packages for the
+C++ runtime, OpenGL, Fontconfig, SDL2, SDL2_image, and SDL2_ttf, plus a Japanese
+font. The launcher itself never invokes `sudo`.
 
 ## 3. Verify and extract the package
 
-Run these commands in the directory containing the two downloaded files:
+For the recommended x86_64 package, run these commands in the directory
+containing the two downloaded files:
 
 ```bash
-sha256sum -c th08-modern-linux-i386.tar.gz.sha256
-tar -xzf th08-modern-linux-i386.tar.gz
-cd th08-modern-linux-i386
+sha256sum -c th08-portable-linux-x86_64.tar.gz.sha256
+tar -xzf th08-portable-linux-x86_64.tar.gz
+cd th08-portable-linux-x86_64
 ```
 
-Do not continue if the checksum command reports a mismatch.
+For i386 or AArch64, substitute the exact archive and checksum names from the
+table above. Do not continue if the checksum command reports a mismatch.
 
 ## 4. Start TH08
 
@@ -72,7 +90,7 @@ For example, if the extracted package is a child of the data directory:
 TH08/
 ├── th08.dat
 ├── thbgm.dat
-└── th08-modern-linux-i386/
+└── th08-portable-linux-x86_64/
 ```
 
 start it from inside the package with:
@@ -149,6 +167,9 @@ files, or replays unless they are specifically needed and safe to share.
 - MIDI output is a compatibility stub; the normal WAV BGM path is validated.
 - Keyboard input is validated; controller compatibility is not yet a release
   target.
-- The executable is currently i386 rather than a native 64-bit port.
-- A known Stage 4-to-5 dynamic-text texture can tile across the outer frame and
-  HUD. Gameplay can continue past it; see the screenshot in the main README.
+- AArch64 has build and emulated-loader coverage; gameplay validation on a real
+  AArch64 desktop remains pending.
+- Stage 4-to-5 dynamic-text tiling and missing enemy/boss art were observed in
+  earlier bring-up builds, but were not reproduced in the final x86_64
+  full-route and Practice passes. Preserve diagnostics if either regression
+  returns on another driver or desktop.
