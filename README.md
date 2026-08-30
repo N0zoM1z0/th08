@@ -13,8 +13,10 @@
 
 > [!IMPORTANT]
 > 🌙 The authored reconstruction is complete, and native Linux play now covers
-> both i386 and x86_64. Active ELF64 work and downloadable CI artifacts live on
-> [`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit);
+> both i386 and x86_64. Download the
+> [latest native Linux release](https://github.com/N0zoM1z0/th08/releases/latest);
+> active ELF64 source lives on
+> [`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
 > Windows and macOS ports are still in progress.
 
 ## Repository status
@@ -104,6 +106,7 @@ usually slower.
 
 **Status: Playable**
 
+- [Download the latest native Linux release](https://github.com/N0zoM1z0/th08/releases/latest)
 - [Download, installation, and player guide](docs/PLAY_LINUX.md)
 - [Native Linux porting architecture and validation](docs/LINUX_PORTING.md)
 - [Native 64-bit build and validation](docs/PORTABLE_64BIT.md)
@@ -122,8 +125,8 @@ After first-time setup, use the incremental launcher:
 scripts/play-modern-linux.sh "/path/to/the/original/TH08 directory"
 ```
 
-The CI workflow publishes i386, x86_64, and AArch64 portable Actions artifacts.
-The 64-bit artifacts are currently built from
+Release assets and the CI workflow provide i386, x86_64, and AArch64 portable
+packages. The 64-bit packages are built from
 [`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
 Extract the package for your architecture and pass the original data directory:
 

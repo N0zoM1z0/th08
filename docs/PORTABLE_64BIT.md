@@ -5,7 +5,9 @@ fixed-layout i386 port. Both products compile the reconstructed authored game
 sources and use the repository SDL2/OpenGL backend. Neither product executes
 or bundles the original `th08.exe`.
 
-Active development and CI artifacts are on
+Stable packages are available from the
+[latest TH08 release](https://github.com/N0zoM1z0/th08/releases/latest).
+Active development and CI snapshots remain on
 [`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
 The default branch links here so users do not have to discover the port among
 the repository's other development branches.
