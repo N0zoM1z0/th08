@@ -124,9 +124,10 @@ remain available for later diagnosis in `config/match-units.toml`; see
 `docs/RE_HANDOFF.md` for the bounded list. Do not treat a configured unit as an
 accepted result.
 
-The active lane on `semantic/typed-reconstruction` is semantic source recovery.
-Replace raw object offsets, anonymous fields, and absolute field views one
-coherent structure family at a time, following
+The semantic source-recovery phase formerly carried on
+`semantic/typed-reconstruction` is complete and was merged into `main` through
+PR #4; that remote branch has been retired. Start any newly bounded semantic
+maintenance from current `main` on a fresh short-lived branch and follow
 `docs/SEMANTIC_RECONSTRUCTION.md`. Existing accepted VC7 units are the binary
 oracle; the modern Windows/Linux source products are the portability and
 behavior oracle. Candidate counts from
