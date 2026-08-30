@@ -418,7 +418,8 @@ class LinuxDevice : public IDirect3DDevice8
         : refs(1), window(window_), context(NULL), backbuffer(NULL), texture(NULL), vertexBuffer(NULL),
           fvf(0), streamStride(0), renderFramebuffer(0), renderColorTexture(0), renderDepthBuffer(0),
           dialogueSnapshotTexture(0), framebufferReady(false), dialogueSnapshotReady(false),
-          wasDialogPresent(false), presentCount(0)
+          wasDialogPresent(false), presentCount(0), probeLeft(0), probeBottom(0),
+          probeWidth(0), probeHeight(0)
     {
         memset(renderStates, 0, sizeof(renderStates)); memset(textureStates, 0, sizeof(textureStates));
         Identity(&world); Identity(&view); Identity(&projection); Identity(&textureTransform);
@@ -665,6 +666,74 @@ class LinuxDevice : public IDirect3DDevice8
         return S_OK;
     }
     HRESULT ResourceManagerDiscardBytes(DWORD) { return S_OK; }
+
+    bool BeginFramebufferProbe(int left, int top, int right, int bottom)
+    {
+        if (backbuffer == NULL || left >= right || top >= bottom)
+            return false;
+        if (left < 0) left = 0;
+        if (top < 0) top = 0;
+        if (right > static_cast<int>(backbuffer->width)) right = backbuffer->width;
+        if (bottom > static_cast<int>(backbuffer->height)) bottom = backbuffer->height;
+        if (left >= right || top >= bottom)
+            return false;
+
+        probeLeft = left;
+        probeBottom = static_cast<int>(backbuffer->height) - bottom;
+        probeWidth = right - left;
+        probeHeight = bottom - top;
+        probePixels.resize(probeWidth * probeHeight * 4);
+        glReadPixels(probeLeft, probeBottom, probeWidth, probeHeight, GL_RGBA,
+                     GL_UNSIGNED_BYTE, probePixels.empty() ? NULL : &probePixels[0]);
+        return !probePixels.empty();
+    }
+
+    bool EndFramebufferProbe(LinuxFramebufferDeltaStats *stats)
+    {
+        if (stats == NULL || probePixels.empty() || probeWidth <= 0 || probeHeight <= 0)
+            return false;
+
+        std::vector<BYTE> after(probePixels.size());
+        glReadPixels(probeLeft, probeBottom, probeWidth, probeHeight, GL_RGBA,
+                     GL_UNSIGNED_BYTE, after.empty() ? NULL : &after[0]);
+        memset(stats, 0, sizeof(*stats));
+        stats->sampledPixels = probeWidth * probeHeight;
+        for (UINT index = 0; index < stats->sampledPixels; ++index)
+        {
+            const BYTE *beforePixel = &probePixels[index * 4];
+            const BYTE *afterPixel = &after[index * 4];
+            const int redDifference = abs(static_cast<int>(afterPixel[0]) - beforePixel[0]);
+            const int greenDifference = abs(static_cast<int>(afterPixel[1]) - beforePixel[1]);
+            const int blueDifference = abs(static_cast<int>(afterPixel[2]) - beforePixel[2]);
+            const int alphaDifference = abs(static_cast<int>(afterPixel[3]) - beforePixel[3]);
+            if (redDifference == 0 && greenDifference == 0 && blueDifference == 0 && alphaDifference == 0)
+                continue;
+
+            ++stats->changedPixels;
+            stats->absoluteRgbDifference += redDifference + greenDifference + blueDifference;
+            const BYTE maximum = afterPixel[0] > afterPixel[1]
+                ? (afterPixel[0] > afterPixel[2] ? afterPixel[0] : afterPixel[2])
+                : (afterPixel[1] > afterPixel[2] ? afterPixel[1] : afterPixel[2]);
+            const BYTE minimum = afterPixel[0] < afterPixel[1]
+                ? (afterPixel[0] < afterPixel[2] ? afterPixel[0] : afterPixel[2])
+                : (afterPixel[1] < afterPixel[2] ? afterPixel[1] : afterPixel[2]);
+            if (maximum - minimum >= 32)
+                ++stats->colorfulChangedPixels;
+            const int maximumDifference = redDifference > greenDifference
+                ? (redDifference > blueDifference ? redDifference : blueDifference)
+                : (greenDifference > blueDifference ? greenDifference : blueDifference);
+            const int minimumDifference = redDifference < greenDifference
+                ? (redDifference < blueDifference ? redDifference : blueDifference)
+                : (greenDifference < blueDifference ? greenDifference : blueDifference);
+            if (maximumDifference - minimumDifference >= 8)
+                ++stats->chromaticChangedPixels;
+            if (afterPixel[0] >= 240 && afterPixel[1] >= 240 && afterPixel[2] >= 240)
+                ++stats->nearWhiteChangedPixels;
+        }
+        probePixels.clear();
+        probeWidth = probeHeight = 0;
+        return true;
+    }
 
   private:
     HRESULT CreateSurface(UINT width, UINT height, D3DFORMAT format, IDirect3DSurface8 **result)
@@ -967,6 +1036,8 @@ class LinuxDevice : public IDirect3DDevice8
     GLuint renderFramebuffer, renderColorTexture, renderDepthBuffer, dialogueSnapshotTexture;
     bool framebufferReady, dialogueSnapshotReady, wasDialogPresent;
     unsigned long presentCount;
+    std::vector<BYTE> probePixels;
+    int probeLeft, probeBottom, probeWidth, probeHeight;
     DWORD renderStates[256], textureStates[32];
     D3DMATRIX world, view, projection, textureTransform;
     D3DVIEWPORT8 viewport;
@@ -1014,6 +1085,109 @@ void th08_linux_surface_changed(IDirect3DSurface8 *surfaceRaw)
     surface->dirty = true;
     if (surface->owner != NULL) surface->owner->uploaded = false;
     surface->FlushBackbuffer();
+}
+
+bool th08_linux_texture_region_stats(IDirect3DTexture8 *textureRaw, float u0, float v0,
+                                     float u1, float v1, D3DCOLOR diffuse,
+                                     LinuxTextureRegionStats *stats)
+{
+    if (textureRaw == NULL || stats == NULL)
+        return false;
+    LinuxTexture *texture = static_cast<LinuxTexture *>(textureRaw);
+    LinuxSurface *surface = texture->surface;
+    if (surface == NULL || surface->pixels.empty() || surface->width == 0 || surface->height == 0)
+        return false;
+    if (u0 != u0 || v0 != v0 || u1 != u1 || v1 != v1 ||
+        fabsf(u0) > 16.0f || fabsf(v0) > 16.0f ||
+        fabsf(u1) > 16.0f || fabsf(v1) > 16.0f)
+        return false;
+
+    if (u0 > u1) { const float swap = u0; u0 = u1; u1 = swap; }
+    if (v0 > v1) { const float swap = v0; v0 = v1; v1 = swap; }
+    int left = static_cast<int>(floorf(u0 * surface->width));
+    int top = static_cast<int>(floorf(v0 * surface->height));
+    int right = static_cast<int>(ceilf(u1 * surface->width));
+    int bottom = static_cast<int>(ceilf(v1 * surface->height));
+    if (left >= right || top >= bottom || right - left > static_cast<int>(surface->width) * 4 ||
+        bottom - top > static_cast<int>(surface->height) * 4)
+        return false;
+
+    memset(stats, 0, sizeof(*stats));
+    const UINT bytes = BytesPerPixel(surface->format);
+    const BYTE diffuseAlpha = (diffuse >> 24) & 0xff;
+    const BYTE diffuseRed = (diffuse >> 16) & 0xff;
+    const BYTE diffuseGreen = (diffuse >> 8) & 0xff;
+    const BYTE diffuseBlue = diffuse & 0xff;
+    for (int y = top; y < bottom; ++y)
+    {
+        for (int x = left; x < right; ++x)
+        {
+            const int textureWidth = static_cast<int>(surface->width);
+            const int textureHeight = static_cast<int>(surface->height);
+            const int wrappedX = ((x % textureWidth) + textureWidth) % textureWidth;
+            const int wrappedY = ((y % textureHeight) + textureHeight) % textureHeight;
+            BYTE rgba[4];
+            DecodePixel(&surface->pixels[wrappedY * surface->pitch + wrappedX * bytes],
+                        surface->format, rgba);
+            ++stats->sampledPixels;
+            if (rgba[3] <= 8)
+                continue;
+            ++stats->visiblePixels;
+            const BYTE maximum = rgba[0] > rgba[1]
+                ? (rgba[0] > rgba[2] ? rgba[0] : rgba[2])
+                : (rgba[1] > rgba[2] ? rgba[1] : rgba[2]);
+            const BYTE minimum = rgba[0] < rgba[1]
+                ? (rgba[0] < rgba[2] ? rgba[0] : rgba[2])
+                : (rgba[1] < rgba[2] ? rgba[1] : rgba[2]);
+            if (maximum - minimum >= 32)
+                ++stats->colorfulPixels;
+            if (rgba[0] >= 240 && rgba[1] >= 240 && rgba[2] >= 240)
+                ++stats->nearWhitePixels;
+            if (x == left || x == right - 1 || y == top || y == bottom - 1)
+                ++stats->visibleEdgePixels;
+
+            const BYTE modulatedAlpha = static_cast<BYTE>(rgba[3] * diffuseAlpha / 255U);
+            if (modulatedAlpha <= 8)
+                continue;
+            ++stats->modulatedVisiblePixels;
+            const BYTE modulatedRed = static_cast<BYTE>(rgba[0] * diffuseRed / 255U);
+            const BYTE modulatedGreen = static_cast<BYTE>(rgba[1] * diffuseGreen / 255U);
+            const BYTE modulatedBlue = static_cast<BYTE>(rgba[2] * diffuseBlue / 255U);
+            const BYTE contributionRed =
+                static_cast<BYTE>(modulatedRed * modulatedAlpha / 255U);
+            const BYTE contributionGreen =
+                static_cast<BYTE>(modulatedGreen * modulatedAlpha / 255U);
+            const BYTE contributionBlue =
+                static_cast<BYTE>(modulatedBlue * modulatedAlpha / 255U);
+            const BYTE contributionMaximum = contributionRed > contributionGreen
+                ? (contributionRed > contributionBlue ? contributionRed : contributionBlue)
+                : (contributionGreen > contributionBlue ? contributionGreen : contributionBlue);
+            const BYTE contributionMinimum = contributionRed < contributionGreen
+                ? (contributionRed < contributionBlue ? contributionRed : contributionBlue)
+                : (contributionGreen < contributionBlue ? contributionGreen : contributionBlue);
+            if (contributionMaximum - contributionMinimum >= 8)
+                ++stats->modulatedColorfulPixels;
+            if (modulatedRed >= 240 && modulatedGreen >= 240 && modulatedBlue >= 240)
+                ++stats->modulatedNearWhitePixels;
+        }
+    }
+    return true;
+}
+
+bool th08_linux_begin_framebuffer_probe(IDirect3DDevice8 *deviceRaw, int left, int top,
+                                        int right, int bottom)
+{
+    if (deviceRaw == NULL)
+        return false;
+    return static_cast<LinuxDevice *>(deviceRaw)->BeginFramebufferProbe(left, top, right, bottom);
+}
+
+bool th08_linux_end_framebuffer_probe(IDirect3DDevice8 *deviceRaw,
+                                      LinuxFramebufferDeltaStats *stats)
+{
+    if (deviceRaw == NULL)
+        return false;
+    return static_cast<LinuxDevice *>(deviceRaw)->EndFramebufferProbe(stats);
 }
 
 extern "C" IDirect3D8 *Direct3DCreate8(UINT sdkVersion)

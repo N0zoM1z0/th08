@@ -10,7 +10,7 @@ authored game sources without making an exact-code claim.
 | Platform | Status | Notes |
 | --- | --- | --- |
 | Linux i386 | **Done** | Source build, one-command setup/run, and CI artifact are available |
-| Linux x86_64 | **Playable** | Native-layout ELF64 PIE reaches demo gameplay; CI package is available |
+| Linux x86_64 | **Playable** | Native-layout ELF64 PIE completed a Stage 1–6A Lunatic story route; CI package is available |
 | Linux AArch64 | **Validation** | ELF64 PIE cross-build and QEMU startup pass; real-hardware gameplay remains |
 | Windows x86 | **In progress** | Current native build/launcher is not yet a reliable distributable product |
 | macOS | **In progress** | Platform backend and packaging are pending |
@@ -93,7 +93,9 @@ scripts/build-portable-linux.sh aarch64
 ```
 
 See [the 64-bit guide](PORTABLE_64BIT.md) for cross dependencies, architecture
-verification, packaging, and the isolated title-to-gameplay smoke test.
+verification, packaging, and the isolated title-to-gameplay smoke test. The
+[render-audit guide](RENDER_AUDIT.md) documents deterministic replay autoplay,
+the versioned CSV contract, and the framebuffer-probe adapter for later ports.
 
 For CI or a host whose package manager cannot provide a clean multilib
 development environment, an optional i386 container can compile the same ELF:

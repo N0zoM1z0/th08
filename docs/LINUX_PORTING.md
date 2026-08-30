@@ -290,14 +290,53 @@ unusually slow, but the game started and ran. A physical Linux desktop with
 hardware OpenGL remains useful final release coverage rather than a prerequisite
 for calling the existing WSLg and Kali paths validated.
 
-The native-layout x86_64 PIE was also run for 40 seconds under Xvfb and Mesa
-software OpenGL in an isolated two-DAT directory. It created configuration and
-score state, reached the title, decoded the bundled demo replay, and loaded the
-Stage 5 SHT, STD, ECL, message, player, enemy, background, and effect resources
-without a fatal signal. The AArch64 PIE has been cross-linked exclusively
-against arm64 libraries and reaches DAT/version/logo/loading initialization
-under QEMU user-mode. Emulated software OpenGL is too slow here to represent a
-real-hardware gameplay result.
+The native-layout x86_64 PIE completed a user-driven Sakuya/Remilia Lunatic
+route under WSLg: Stages 1 through 6A, the ending, results, and return to title.
+The Stage 4-to-5 transition that had failed in an earlier fixed-layout build
+completed normally. Isolated Xvfb/Mesa smoke tests still cover the bundled
+Stage 5 demo, while replay-driven render audits can start a selected recorded
+stage and compare enemy ANM source regions with the pixels changed by each draw.
+The AArch64 PIE has been cross-linked exclusively against arm64 libraries and
+reaches DAT/version/logo/loading initialization under QEMU user-mode. Emulated
+software OpenGL is too slow here to represent a real-hardware gameplay result.
+
+### Native clears and render oracles
+
+Serialized records keep target wire sizes, but bulk initialization of live
+objects must use the selected runtime layout. A fixed 32-bit `memset` size can
+compile and survive startup on x86_64 while silently leaving pointer-expanded
+tail fields stale. The resulting failure may appear much later—for example, an
+uncleared enemy timeline prevented natural stage transitions. Keep the target
+constant in the exact/fixed-layout branch and use `sizeof` only for the native
+layout.
+
+Visual diagnostics should separate three questions instead of relying on a
+screenshot alone:
+
+1. Does the VM reference a loaded sprite and texture with valid geometry?
+2. Does the source UV region contain visible pixels after the VM/global ANM
+   color modulation is applied?
+3. Does flushing that exact draw change the expected framebuffer region?
+
+`TH08_RENDER_AUDIT=1` enables this sampled oracle, and
+`scripts/audit-render-replay-linux.sh` combines it with a user replay and
+software-rendered Xvfb session. The CSV preserves stage/frame, enemy and boss
+identity, ANM script/sprite, both VM colors, selected render color, texture
+statistics, and framebuffer deltas. This makes missing assets, stale pointers,
+off-screen draws, scripted fades, and post-texture rendering failures distinct
+enough to triage without watching an entire route.
+See [Replay-driven render audit](RENDER_AUDIT.md) for the schema and the small
+backend contract intended for reuse by later ports. Its cross-report comparator
+aligns the same replay frames across architectures without requiring identical
+edge rasterization.
+
+Do not preserve a multi-field value by casting the address of one scalar local
+to an aggregate pointer. VC7 `#pragma var_order` can make adjacent floats act
+like a `Float2`, but a modern compiler may separate or reverse those locals.
+`EnemyManager::OnDrawImpl` requires a real portable `Float2` when saving and
+restoring the scale around trail drawing; otherwise x86_64 can restore NaN as
+the Y scale and make a valid boss texture disappear. Keep the scalar source
+shape only in the target comparison branch.
 
 ## Current limitations
 

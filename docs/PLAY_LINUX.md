@@ -29,6 +29,12 @@ download both Linux assets from the newest Linux Preview release:
 The GitHub Actions artifact is useful for development snapshots, but the
 Release assets are the stable download entry point for players.
 
+Native x86_64 and AArch64 snapshots currently live on
+[`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
+Open that branch's
+[Portable Linux workflow](https://github.com/N0zoM1z0/th08/actions/workflows/portable-linux.yml?query=branch%3Aport%2Fportable-64bit),
+select a successful run, and download the artifact matching your architecture.
+
 ## 2. Install the 32-bit runtime libraries
 
 On Debian, Ubuntu, Kali Linux, or a compatible derivative running on x86-64:
@@ -163,5 +169,7 @@ files, or replays unless they are specifically needed and safe to share.
   target.
 - AArch64 has build and emulated-loader coverage; gameplay validation on a real
   AArch64 desktop remains pending.
-- A known Stage 4-to-5 dynamic-text texture can tile across the outer frame and
-  HUD. Gameplay can continue past it; see the screenshot in the main README.
+- Stage 4-to-5 dynamic-text tiling and missing enemy/boss art were observed in
+  earlier bring-up builds, but were not reproduced in the final x86_64
+  full-route and Practice passes. Preserve diagnostics if either regression
+  returns on another driver or desktop.

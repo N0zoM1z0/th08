@@ -159,7 +159,11 @@ void ResultScreen::WriteScore(ResultScreen *result)
     memcpy(scoreData + currentOffset, data, size);                                                                     \
     currentOffset += size;
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    COPY(result->scoreDat, TH08_SCORE_DAT_WIRE_SIZE);
+#else
     COPY(result->scoreDat, sizeof(*result->scoreDat));
+#endif
 
     result->fileHeader.magic = TH8K_MAGIC;
     result->fileHeader.chapterSizeCopy = sizeof(result->fileHeader);
@@ -256,18 +260,36 @@ void ResultScreen::WriteScore(ResultScreen *result)
     COPY(&vrsm, sizeof(Vrsm));
     header = (ScoreDat *)scoreData;
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    header->decompressedFileSizeMinusHeader = currentOffset - TH08_SCORE_DAT_WIRE_SIZE;
+#else
     header->decompressedFileSizeMinusHeader = currentOffset - sizeof(ScoreDat);
+#endif
     header->decompressedFileSize = currentOffset;
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    compressedData = Lzss::Encode(TH08_SCORE_DAT_WIRE_PAYLOAD(header), header->decompressedFileSizeMinusHeader,
+                                  (i32 *)&header->compressedFileSize);
+    memcpy(TH08_SCORE_DAT_WIRE_PAYLOAD(header), compressedData, header->compressedFileSize);
+#else
     compressedData = Lzss::Encode(scoreData + sizeof(ScoreDat), header->decompressedFileSizeMinusHeader,
                                   (i32 *)&header->compressedFileSize);
     memcpy(scoreData + sizeof(ScoreDat), compressedData, header->compressedFileSize);
+#endif
     GlobalFree(compressedData);
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    currentOffset = header->compressedFileSize + TH08_SCORE_DAT_WIRE_SIZE;
+#else
     currentOffset = header->compressedFileSize + sizeof(ScoreDat);
+#endif
 
     header2 = (ScoreDat *)scoreData;
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    header2->headerSize = TH08_SCORE_DAT_WIRE_SIZE;
+#else
     header2->headerSize = sizeof(ScoreDat);
+#endif
     header2->checksum = 0;
     header2->rngValue1 = g_Rng.GetRandomU16InRange(0x100);
     header2->rngValue2 = g_Rng.GetRandomU16InRange(0x100);

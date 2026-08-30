@@ -315,12 +315,36 @@ struct ScoreDat
     u16 version;
     u8 rngValue2;
     u32 headerSize;
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    // The original score.dat header stores a 32-bit runtime pointer here.
+    // Keep that wire slot fixed and place the live native pointer after the
+    // serialized header instead.
+    u32 serializedScores;
+#else
     ScoreListNode *scores;
+#endif
     u32 decompressedFileSize;
     u32 decompressedFileSizeMinusHeader;
     u32 compressedFileSize;
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+    ScoreListNode *scores;
+#endif
 };
 
+#ifdef TH08_PORTABLE_NATIVE_LAYOUT
+#define TH08_SCORE_DAT_WIRE_SIZE 0x1c
+#define TH08_SCORE_DAT_WIRE_PAYLOAD(score) ((u8 *)(score) + TH08_SCORE_DAT_WIRE_SIZE)
+#define TH08_SCORE_DAT_DECODED_PAYLOAD(score) ((u8 *)(score) + sizeof(ScoreDat))
+#define TH08_SCORE_DAT_CHAPTER_PAYLOAD(score) ((u8 *)(score) + sizeof(ScoreDat))
+TH08_FILE_ASSERT(offsetof(ScoreDat, unconsumedHeaderByte00) == 0x0);
+TH08_FILE_ASSERT(offsetof(ScoreDat, rngValue1) == 0x1);
+TH08_FILE_ASSERT(offsetof(ScoreDat, checksum) == 0x2);
+TH08_FILE_ASSERT(offsetof(ScoreDat, version) == 0x4);
+TH08_FILE_ASSERT(offsetof(ScoreDat, rngValue2) == 0x6);
+TH08_FILE_ASSERT(offsetof(ScoreDat, headerSize) == 0x8);
+TH08_FILE_ASSERT(offsetof(ScoreDat, serializedScores) == 0xc);
+TH08_FILE_ASSERT(offsetof(ScoreDat, scores) >= TH08_SCORE_DAT_WIRE_SIZE);
+#else
 C_ASSERT(sizeof(ScoreDat) == 0x1c);
 C_ASSERT(offsetof(ScoreDat, unconsumedHeaderByte00) == 0x0);
 C_ASSERT(offsetof(ScoreDat, rngValue1) == 0x1);
@@ -328,5 +352,6 @@ C_ASSERT(offsetof(ScoreDat, checksum) == 0x2);
 C_ASSERT(offsetof(ScoreDat, version) == 0x4);
 C_ASSERT(offsetof(ScoreDat, rngValue2) == 0x6);
 C_ASSERT(offsetof(ScoreDat, headerSize) == 0x8);
+#endif
 
 } /* namespace th08 */
