@@ -72,6 +72,20 @@ jobs:
       - name: Install AArch64 cross-development libraries
         if: matrix.arch == 'aarch64'
         run: |
+          source /etc/os-release
+          native_arch="$(dpkg --print-architecture)"
+          sudo sed -i \
+            -e '/^Architectures:/d' \
+            -e "/^Types:/a Architectures: ${native_arch}" \
+            /etc/apt/sources.list.d/ubuntu.sources
+          sudo tee /etc/apt/sources.list.d/ubuntu-ports-arm64.sources >/dev/null <<EOF
+          Types: deb
+          URIs: http://ports.ubuntu.com/ubuntu-ports
+          Suites: ${VERSION_CODENAME} ${VERSION_CODENAME}-updates ${VERSION_CODENAME}-backports ${VERSION_CODENAME}-security
+          Components: main restricted universe multiverse
+          Architectures: arm64
+          Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+          EOF
           sudo dpkg --add-architecture arm64
           sudo apt-get update
           sudo apt-get install -y \
