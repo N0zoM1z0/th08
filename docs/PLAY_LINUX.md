@@ -7,7 +7,7 @@ Docker, and the original `th08.exe` are not runtime requirements.
 
 ## What you need
 
-- an x86 or x86-64 Linux desktop with working OpenGL and audio;
+- a Linux desktop with working OpenGL and audio;
 - the runtime packages listed below;
 - a legally obtained original Japanese TH08 1.00d data directory containing:
   - `th08.dat`
@@ -20,24 +20,33 @@ backups, and diagnostic logs there.
 
 ## 1. Download the portable release
 
-Open the [TH08 releases page](https://github.com/N0zoM1z0/th08/releases) and
-download both Linux assets from the newest Linux Preview release:
+Open the [latest TH08 release](https://github.com/N0zoM1z0/th08/releases/latest)
+and download the archive and matching `.sha256` file for your architecture:
 
-- `th08-modern-linux-i386.tar.gz`
-- `th08-modern-linux-i386.tar.gz.sha256`
+| Host | Status | Archive |
+| --- | --- | --- |
+| x86_64 / AMD64 | **Recommended; full-route tested** | `th08-portable-linux-x86_64.tar.gz` |
+| i386 / 32-bit x86 | Compatibility build | `th08-modern-linux-i386.tar.gz` |
+| AArch64 / ARM64 | **Experimental; real-hardware gameplay not yet verified** | `th08-portable-linux-aarch64.tar.gz` |
 
-The GitHub Actions artifact is useful for development snapshots, but the
-Release assets are the stable download entry point for players.
+Most Intel and AMD Linux computers should use the x86_64 package. Check an
+unfamiliar machine with `uname -m`; it normally prints `x86_64`, `i686`, or
+`aarch64`. GitHub Actions artifacts are development snapshots, while Release
+assets are the stable player download.
 
-Native x86_64 and AArch64 snapshots currently live on
-[`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
-Open that branch's
-[Portable Linux workflow](https://github.com/N0zoM1z0/th08/actions/workflows/portable-linux.yml?query=branch%3Aport%2Fportable-64bit),
-select a successful run, and download the artifact matching your architecture.
+## 2. Install the runtime libraries
 
-## 2. Install the 32-bit runtime libraries
+On an x86_64 Debian, Ubuntu, Kali Linux, or compatible system, install:
 
-On Debian, Ubuntu, Kali Linux, or a compatible derivative running on x86-64:
+```bash
+sudo apt-get update
+sudo apt-get install \
+  libstdc++6 libgl1 libfontconfig1 \
+  libsdl2-2.0-0 libsdl2-image-2.0-0 libsdl2-ttf-2.0-0 \
+  fonts-vlgothic
+```
+
+The i386 compatibility package needs the corresponding 32-bit libraries:
 
 ```bash
 sudo dpkg --add-architecture i386
@@ -48,21 +57,24 @@ sudo apt-get install \
   fonts-vlgothic
 ```
 
-Other distributions need equivalent i386 packages for the C++ runtime,
-OpenGL, Fontconfig, SDL2, SDL2_image, and SDL2_ttf, plus a Japanese font. The
-launcher itself never invokes `sudo`.
+On a native AArch64 Debian-family system, install the same unqualified package
+names as x86_64. Other distributions need equivalent native packages for the
+C++ runtime, OpenGL, Fontconfig, SDL2, SDL2_image, and SDL2_ttf, plus a Japanese
+font. The launcher itself never invokes `sudo`.
 
 ## 3. Verify and extract the package
 
-Run these commands in the directory containing the two downloaded files:
+For the recommended x86_64 package, run these commands in the directory
+containing the two downloaded files:
 
 ```bash
-sha256sum -c th08-modern-linux-i386.tar.gz.sha256
-tar -xzf th08-modern-linux-i386.tar.gz
-cd th08-modern-linux-i386
+sha256sum -c th08-portable-linux-x86_64.tar.gz.sha256
+tar -xzf th08-portable-linux-x86_64.tar.gz
+cd th08-portable-linux-x86_64
 ```
 
-Do not continue if the checksum command reports a mismatch.
+For i386 or AArch64, substitute the exact archive and checksum names from the
+table above. Do not continue if the checksum command reports a mismatch.
 
 ## 4. Start TH08
 
@@ -78,7 +90,7 @@ For example, if the extracted package is a child of the data directory:
 TH08/
 ├── th08.dat
 ├── thbgm.dat
-└── th08-modern-linux-i386/
+└── th08-portable-linux-x86_64/
 ```
 
 start it from inside the package with:

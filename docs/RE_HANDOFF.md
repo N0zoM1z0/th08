@@ -6,8 +6,9 @@ come from the ledgers, not this prose.
 
 ## Portable x86_64 score compatibility checkpoint
 
-The `fix/portable64-enemy-render-oracle` follow-up to
-`port/portable-64bit` now keeps the `score.dat` wire header at its original
+The completed `fix/portable64-enemy-render-oracle` follow-up was merged into
+`port/portable-64bit` through PR #5 and its short-lived branch was retired. It
+keeps the `score.dat` wire header at its original
 `0x1c` bytes while placing the live native `ScoreListNode *` after that fixed
 header.  The affected authored functions are
 `ResultScreen::WriteScore @ 0x00453D0D` and the ScoreDat family at
@@ -34,11 +35,12 @@ passed **43 / 43**, including `WriteScore` at **1,372 / 1,372 bytes**.  The fina
 single-job non-reuse cold replay passed **1,106 / 1,106 exact** accepted units
 with no failures.  No authored or exact ledger totals changed.
 
-## Active semantic reconstruction branch
+## Completed semantic reconstruction branch
 
-`semantic/typed-reconstruction` starts from `main@4cffb2a` and makes semantic
-source recovery the active bounded lane.  The bootstrap scope changes no game
-layout, function mapping, authored ledger, or accepted exact unit.  It adds the
+The former `semantic/typed-reconstruction` lane started from `main@4cffb2a`,
+completed its authored readability audit, and was merged into `main` through
+PR #4. Its remote branch has been retired. The bootstrap scope changed no game
+layout, function mapping, authored ledger, or accepted exact unit. It added the
 evidence/acceptance guide in `docs/SEMANTIC_RECONSTRUCTION.md`, the
 `$th08-semantic` workflow, and the read-only
 `scripts/analysis/report-semantic-debt.py` candidate router.
