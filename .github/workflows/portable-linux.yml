@@ -46,14 +46,10 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-  build-linux-64:
-    name: Build Linux ${{ matrix.arch }} package
+  build-linux-x86_64:
+    name: Build Linux x86_64 package
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    strategy:
-      fail-fast: false
-      matrix:
-        arch: [x86_64, aarch64]
     steps:
       - uses: actions/checkout@v7
 
@@ -61,7 +57,6 @@ jobs:
         run: bash -n scripts/*portable-linux*.sh
 
       - name: Install x86_64 development libraries
-        if: matrix.arch == 'x86_64'
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -69,16 +64,57 @@ jobs:
             libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev \
             libfontconfig1-dev libgl-dev
 
-      - name: Install AArch64 cross-development libraries
-        if: matrix.arch == 'aarch64'
+      - name: Build and verify native-layout ELF
+        run: scripts/build-portable-linux.sh x86_64
+
+      - name: Create portable archive
         run: |
-          source /etc/os-release
+          scripts/package-portable-linux.sh \
+            build/portable-linux-x86_64/th08-modern \
+            x86_64
+
+      - name: Record archive checksum
+        working-directory: build
+        run: |
+          sha256sum th08-portable-linux-x86_64.tar.gz \
+            > th08-portable-linux-x86_64.tar.gz.sha256
+
+      - name: Upload portable Linux package
+        uses: actions/upload-artifact@v4
+        with:
+          name: th08-portable-linux-x86_64
+          path: |
+            build/th08-portable-linux-x86_64.tar.gz
+            build/th08-portable-linux-x86_64.tar.gz.sha256
+          if-no-files-found: error
+          retention-days: 14
+
+  build-linux-aarch64:
+    name: Build Linux aarch64 package
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    container:
+      image: ubuntu:24.04
+    steps:
+      - name: Bootstrap checkout dependencies
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates git
+
+      - uses: actions/checkout@v7
+
+      - name: Validate native-layout scripts
+        run: bash -n scripts/*portable-linux*.sh
+
+      - name: Install AArch64 cross-development libraries
+        run: |
+          . /etc/os-release
           native_arch="$(dpkg --print-architecture)"
-          sudo sed -i \
+          sed -i \
             -e '/^Architectures:/d' \
             -e "/^Types:/a Architectures: ${native_arch}" \
             /etc/apt/sources.list.d/ubuntu.sources
-          sudo tee /etc/apt/sources.list.d/ubuntu-ports-arm64.sources >/dev/null <<EOF
+          tee /etc/apt/sources.list.d/ubuntu-ports-arm64.sources >/dev/null <<EOF
           Types: deb
           URIs: http://ports.ubuntu.com/ubuntu-ports
           Suites: ${VERSION_CODENAME} ${VERSION_CODENAME}-updates ${VERSION_CODENAME}-backports ${VERSION_CODENAME}-security
@@ -86,34 +122,34 @@ jobs:
           Architectures: arm64
           Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
           EOF
-          sudo dpkg --add-architecture arm64
-          sudo apt-get update
-          sudo apt-get install -y \
-            g++-aarch64-linux-gnu ninja-build pkg-config \
+          dpkg --add-architecture arm64
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            binutils cmake file g++-aarch64-linux-gnu ninja-build pkg-config python3 \
             libsdl2-dev:arm64 libsdl2-image-dev:arm64 libsdl2-ttf-dev:arm64 \
             libfontconfig1-dev:arm64 libgl-dev:arm64
 
       - name: Build and verify native-layout ELF
-        run: scripts/build-portable-linux.sh "${{ matrix.arch }}"
+        run: scripts/build-portable-linux.sh aarch64
 
       - name: Create portable archive
         run: |
           scripts/package-portable-linux.sh \
-            "build/portable-linux-${{ matrix.arch }}/th08-modern" \
-            "${{ matrix.arch }}"
+            build/portable-linux-aarch64/th08-modern \
+            aarch64
 
       - name: Record archive checksum
         working-directory: build
         run: |
-          sha256sum "th08-portable-linux-${{ matrix.arch }}.tar.gz" \
-            > "th08-portable-linux-${{ matrix.arch }}.tar.gz.sha256"
+          sha256sum th08-portable-linux-aarch64.tar.gz \
+            > th08-portable-linux-aarch64.tar.gz.sha256
 
       - name: Upload portable Linux package
         uses: actions/upload-artifact@v4
         with:
-          name: th08-portable-linux-${{ matrix.arch }}
+          name: th08-portable-linux-aarch64
           path: |
-            build/th08-portable-linux-${{ matrix.arch }}.tar.gz
-            build/th08-portable-linux-${{ matrix.arch }}.tar.gz.sha256
+            build/th08-portable-linux-aarch64.tar.gz
+            build/th08-portable-linux-aarch64.tar.gz.sha256
           if-no-files-found: error
           retention-days: 14
