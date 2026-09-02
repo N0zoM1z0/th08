@@ -12,6 +12,7 @@ import sys
 import tomllib
 
 from coff import ObjectModule
+from match_literals import attested_real_literal_bytes
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -252,6 +253,34 @@ def apply_relocations(
     return report
 
 
+def attest_relocation_literals(
+    expected: list[dict[str, object]], target_data: bytes
+) -> list[dict[str, object]]:
+    report = []
+    for index, relocation in enumerate(expected, start=1):
+        try:
+            declared = attested_real_literal_bytes(relocation)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"relocation {index}: {exc}") from exc
+        if declared is None:
+            continue
+        address = int(relocation["target"])
+        actual = pe_bytes_at(target_data, address, len(declared))
+        if actual != declared:
+            raise ValueError(
+                f"relocation {index}: target literal at 0x{address:08X} is "
+                f"{actual.hex()}, not declared {declared.hex()}"
+            )
+        report.append(
+            {
+                "symbol": str(relocation["symbol"]),
+                "target": f"0x{address:08X}",
+                "data_hex": declared.hex(),
+            }
+        )
+    return report
+
+
 def compare(unit: dict[str, object], target_path: Path) -> dict[str, object]:
     target_data = verify_target(target_path)
     object_path = repository_path(str(unit["object"]))
@@ -275,10 +304,14 @@ def compare(unit: dict[str, object], target_path: Path) -> dict[str, object]:
         )
     target_address = int(unit["target_address"])
     target = pe_bytes_at(target_data, target_address, compare_size)
+    expected_relocations = list(unit.get("relocations", []))
+    literal_attestations = attest_relocation_literals(
+        expected_relocations, target_data
+    )
     relocations = apply_relocations(
         code,
         actual_relocations,
-        list(unit.get("relocations", [])),
+        expected_relocations,
         target_address,
         target,
     )
@@ -301,6 +334,7 @@ def compare(unit: dict[str, object], target_path: Path) -> dict[str, object]:
         "object": str(object_path.relative_to(ROOT)),
         "symbol": unit["symbol"],
         "relocations": relocations,
+        "literal_attestations": literal_attestations,
         "first_differences": differences[:16],
     }
 

@@ -31,6 +31,11 @@ recorded in notes and handoffs.
    behavior; record disagreements rather than silently choosing one version.
 7. Implement the smallest coherent change while preserving the VC7 x86 ABI.
 8. Build the smallest affected target or object, then run the exact comparator.
+   For a source-significant `__real@...` relocation, record its target bytes as
+   `data_hex` in the match-unit row. Static validation checks that those bytes
+   agree with the COFF literal name, and target-backed validation checks the
+   addressed PE data. A relocated instruction field matching by itself does
+   not attest the value stored at the destination.
 9. Update mapping/progress inputs only to the level proven by the report.
 10. Run `git diff --check` and hand off commands, results, and uncertainty.
 
