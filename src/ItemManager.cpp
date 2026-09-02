@@ -266,7 +266,7 @@ void ItemManager::OnUpdate()
         {
             if (item->state == ITEM_STATE_AUTOCOLLECT ||
                 (g_Player.position.y < g_Player.primaryShtFile->pointItemValueLine &&
-                 (g_GameManager.GetPower() >= 0.0 ||
+                 (g_GameManager.GetPower() >= 128.0 ||
                   g_Player.focusMode != PLAYER_FOCUS_MODE_UNFOCUSED ||
                   g_GameManager.shotType == 1 || g_GameManager.shotType == 6)))
             {
