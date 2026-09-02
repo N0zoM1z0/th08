@@ -1406,7 +1406,7 @@ void Player::UpdateRespawnAnimation()
     f32 value;
 
     this->playerStateSlotCooldown = 60;
-    value = 1.0f - (f32)this->timer / 60.0f;
+    value = 1.0f - (f32)this->timer / 30.0f;
     this->mainVm.scale.y = 2.0f * value + 1.0f;
     this->mainVm.scale.x = 1.0f - 1.0f * value;
     reinterpret_cast<AnmVmBase *>(&this->mainVm)->SetBlendModeAdditive();

@@ -897,7 +897,7 @@ void ReplayManager::SaveReplay(const char *replayPath, const char *replayName)
     infoCursor = AppendFormat(infoCursor, TH_REPLAY_INFO_BOMBS, g_GameManager.GetBombsUsed());
     infoCursor = AppendFormat(infoCursor, TH_REPLAY_INFO_SLOWDOWN, replayCopy.slowDownRate);
 
-    g_GameManager.hscr.humanityRate = (i32)(((float)g_GameManager.humanityRateNumerator / g_GameManager.humanityRateDenominator) * 10.0f);
+    g_GameManager.hscr.humanityRate = (i32)(((float)g_GameManager.humanityRateNumerator / g_GameManager.humanityRateDenominator) * 10000.0f);
     infoCursor =
         AppendFormat(infoCursor, TH_REPLAY_INFO_HUMAN_RATE, (float)g_GameManager.hscr.humanityRate / 100.0f);
     infoCursor = AppendFormat(infoCursor, TH_REPLAY_INFO_VERSION, 1, 0, 'd');
