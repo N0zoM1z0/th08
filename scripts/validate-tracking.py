@@ -11,7 +11,7 @@ import re
 import struct
 import tomllib
 
-from match_literals import attested_real_literal_bytes
+from match_literals import real_literal_bytes
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -332,7 +332,7 @@ def load_match_units(
                 unit.get("relocations", []), start=1
             ):
                 try:
-                    declared = attested_real_literal_bytes(relocation)
+                    declared = real_literal_bytes(relocation)
                 except (KeyError, TypeError, ValueError) as exc:
                     fail(
                         f"match-units.toml: unit {name!r} relocation "
@@ -347,7 +347,8 @@ def load_match_units(
                         fail(
                             f"match-units.toml: unit {name!r} relocation "
                             f"{relocation_index}: target literal at "
-                            f"0x{literal_address:08X} differs from data_hex"
+                            f"0x{literal_address:08X} differs from "
+                            f"{relocation['symbol']}"
                         )
             units[name] = (unit_address, size)
     except (OSError, KeyError, TypeError, ValueError, tomllib.TOMLDecodeError) as exc:

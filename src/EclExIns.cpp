@@ -236,19 +236,19 @@ void __fastcall WarpBulletsAcrossNarrowBarrier(Enemy *enemy, EclExInstruction *i
             {
                 bullet->position.x =
                     (bullet->position.x - 192.0f) *
-                        67.88225555419922f / 135.76451110839844f + 192.0f;
+                        135.76451110839844f / 67.88225555419922f + 192.0f;
                 bullet->position.y =
                     (bullet->position.y - 208.0f) *
-                        67.88225555419922f / 135.76451110839844f + 208.0f;
+                        135.76451110839844f / 67.88225555419922f + 208.0f;
             }
             else
             {
                 bullet->position.x =
                     (bullet->position.x - 192.0f) *
-                        135.76451110839844f / 67.88225555419922f + 192.0f;
+                        67.88225555419922f / 135.76451110839844f + 192.0f;
                 bullet->position.y =
                     (bullet->position.y - 208.0f) *
-                        135.76451110839844f / 67.88225555419922f + 208.0f;
+                        67.88225555419922f / 135.76451110839844f + 208.0f;
             }
             bullet->angle = AddNormalizeAngle(bullet->angle, ZUN_PI);
         }
