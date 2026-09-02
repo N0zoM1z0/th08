@@ -13,11 +13,11 @@
 
 > [!IMPORTANT]
 > 🌙 The authored reconstruction is complete, and native Linux play now covers
-> both i386 and x86_64. Download the
-> [latest native Linux release](https://github.com/N0zoM1z0/th08/releases/latest);
+> both i386 and x86_64. Download
+> [TH08 Reconstruction v0.2.0 — Native Linux 64-bit](https://github.com/N0zoM1z0/th08/releases/latest);
 > active ELF64 source lives on
 > [`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
-> Windows and macOS ports are still in progress.
+> Windows and macOS ports remain in progress.
 
 ## Repository status
 
@@ -125,8 +125,8 @@ After first-time setup, use the incremental launcher:
 scripts/play-modern-linux.sh "/path/to/the/original/TH08 directory"
 ```
 
-Release assets and the CI workflow provide i386, x86_64, and AArch64 portable
-packages. The 64-bit packages are built from
+The latest release and CI workflow provide i386, x86_64, and experimental
+AArch64 portable packages. The 64-bit packages are built from
 [`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
 Extract the package for your architecture and pass the original data directory:
 
