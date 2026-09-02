@@ -34,6 +34,7 @@ before repeating target analysis or compiler-shape probes.
 | Pause/retry stage menus | [STAGE_MENU_MATCHING.md](STAGE_MENU_MATCHING.md) | Known draw/update family and probe ownership. |
 | GUI/title/replay source shapes | Search `BUILD_MATCHING.md` for the symbol or address | Includes switch-table extents, inline ownership, table dimensionality, and frame-shape cases. |
 | Function boundaries, COFF aux extents, relocations | `BUILD_MATCHING.md` | Search for `compare_size`, `COMDAT`, `REL32`, or `DIR32`. |
+| Relocated VC7 floating literals | `BUILD_MATCHING.md`, `scripts/match_literals.py` | Every `__real@...` symbol is decoded and target-checked; `data_hex` records reviewed high-risk values explicitly. |
 | Generic VC7 declaration/branch/local patterns | `VC7_ZUN_PATTERNS.md` | Search this before creating expression or `#pragma var_order` matrices. |
 | Target-linked CRT/D3DX work | `RE_HANDOFF.md`, `$th08-library`, `config/library-provenance.toml`, and `scripts/compare-library.py` | Paused library foundation: archive provenance, relocation-aware match units, and a separate accepted ledger. Resume only for a bounded whole-link dependency. |
 | Whole-executable reconstruction | `scripts/compare-whole-image.py`, [RE_WORKFLOW.md](RE_WORKFLOW.md), then [RE_HANDOFF.md](RE_HANDOFF.md) | Cold-build PE diff, import/resource/debug contracts, section sizes, and accepted-address link anchors. |

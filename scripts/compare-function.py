@@ -12,7 +12,7 @@ import sys
 import tomllib
 
 from coff import ObjectModule
-from match_literals import attested_real_literal_bytes
+from match_literals import real_literal_bytes
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -259,7 +259,7 @@ def attest_relocation_literals(
     report = []
     for index, relocation in enumerate(expected, start=1):
         try:
-            declared = attested_real_literal_bytes(relocation)
+            declared = real_literal_bytes(relocation)
         except (TypeError, ValueError) as exc:
             raise ValueError(f"relocation {index}: {exc}") from exc
         if declared is None:
@@ -276,6 +276,7 @@ def attest_relocation_literals(
                 "symbol": str(relocation["symbol"]),
                 "target": f"0x{address:08X}",
                 "data_hex": declared.hex(),
+                "recorded": "data_hex" in relocation,
             }
         )
     return report

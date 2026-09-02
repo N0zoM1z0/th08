@@ -51,6 +51,10 @@ def main() -> int:
             raise RuntimeError("no tracked Python scripts found")
         run("Compile tracked Python", [sys.executable, "-m", "py_compile", *python_files])
         run(
+            "Test relocation literal validation",
+            [sys.executable, "scripts/test-match-literals.py"],
+        )
+        run(
             "Test render-audit checker contract",
             [sys.executable, "scripts/test-render-audit.py"],
         )

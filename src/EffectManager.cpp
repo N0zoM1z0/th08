@@ -751,7 +751,7 @@ i32 __fastcall InitializeDirectionalOffset(Effect *effect)
     effect->vector6.x = cosf(angle);
     effect->vector6.y = sinf(angle);
     effect->vector6.z = 0.0f;
-    effect->vector6 *= g_Rng.GetRandomF32InRange(1.5f) + 0.0f;
+    effect->vector6 *= g_Rng.GetRandomF32InRange(1.5f) + 1.0f;
     return 0;
 }
 
