@@ -2249,3 +2249,22 @@ library work are explicit evidence boundaries.  The authored semantic phase
 is therefore broadly complete; remain on `semantic/typed-reconstruction`,
 commit and push the checkpoint, and do not open a PR or merge until explicitly
 requested.
+
+The point-of-collection auto-collect correction is tracked by
+`N0zoM1z0/th08#10` on `fix/item-autocollect-power-threshold`.  Target
+`ItemManager::OnUpdate @ 0x00440500` calls `GetPower`, converts its integer
+result, and compares it with the qword at `0x004B5B30`; the canonical target
+bytes `00 00 00 00 00 00 60 40` prove double `128.0`, not the reconstructed
+`0.0`.  Source now uses `128.0`, VC7 naturally emits
+`__real@4060000000000000`, and the match-unit relocation records the target
+literal as `data_hex = "0000000000006040"`.  Shared validation rejects both a
+COFF-symbol/declared-byte mismatch and a declared-byte/target-byte mismatch,
+closing the relocation-replay hole that had hidden the gameplay difference.
+
+Focused ItemManager replay passes **24 / 24 exact**, including the complete
+`OnUpdate` **1,989-byte authored / 2,025-byte code-plus-table** extent.  A
+single-job non-reuse cold replay passes **1,106 / 1,106 exact**; the normal VC7
+image links; target-independent CI and tracking validation pass; and the i386
+Linux container build links and passes the fixed-layout verifier.  Authored
+and accepted counts are unchanged because this corrects the semantic identity
+of an already accepted relocation rather than adding a function or byte range.

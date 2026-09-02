@@ -11,6 +11,8 @@ import re
 import struct
 import tomllib
 
+from match_literals import attested_real_literal_bytes
+
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "config"
@@ -298,9 +300,16 @@ def validate_claims(_mapping_addresses: set[int], errors: list[str]) -> int:
     return 0
 
 
-def load_match_units(errors: list[str]) -> dict[str, tuple[int, int]]:
+def load_match_units(
+    errors: list[str], *, check_target_bytes: bool
+) -> dict[str, tuple[int, int]]:
     units: dict[str, tuple[int, int]] = {}
     try:
+        target_data = (
+            (ROOT / "resources" / "th08.exe").read_bytes()
+            if check_target_bytes
+            else None
+        )
         with (CONFIG / "match-units.toml").open("rb") as stream:
             manifest = tomllib.load(stream)
         if manifest.get("schema_version") != 1:
@@ -309,7 +318,7 @@ def load_match_units(errors: list[str]) -> dict[str, tuple[int, int]]:
             name = str(unit["name"])
             if not name or name in units:
                 fail(f"match-units.toml: unit {index} has an empty or duplicate name")
-            address = int(unit["target_address"])
+            unit_address = int(unit["target_address"])
             size = int(unit["size"])
             if size <= 0:
                 fail(f"match-units.toml: unit {name!r} has a non-positive size")
@@ -319,7 +328,28 @@ def load_match_units(errors: list[str]) -> dict[str, tuple[int, int]]:
                     f"match-units.toml: unit {name!r} has comparison extent "
                     f"smaller than its coverage size"
                 )
-            units[name] = (address, size)
+            for relocation_index, relocation in enumerate(
+                unit.get("relocations", []), start=1
+            ):
+                try:
+                    declared = attested_real_literal_bytes(relocation)
+                except (KeyError, TypeError, ValueError) as exc:
+                    fail(
+                        f"match-units.toml: unit {name!r} relocation "
+                        f"{relocation_index}: {exc}"
+                    )
+                if declared is not None and target_data is not None:
+                    literal_address = int(relocation["target"])
+                    actual = target_bytes_at(
+                        target_data, literal_address, len(declared)
+                    )
+                    if actual != declared:
+                        fail(
+                            f"match-units.toml: unit {name!r} relocation "
+                            f"{relocation_index}: target literal at "
+                            f"0x{literal_address:08X} differs from data_hex"
+                        )
+            units[name] = (unit_address, size)
     except (OSError, KeyError, TypeError, ValueError, tomllib.TOMLDecodeError) as exc:
         errors.append(str(exc))
     return units
@@ -329,12 +359,14 @@ def validate_matches(
     mapping: list[MappingRow],
     implemented_names: set[str],
     errors: list[str],
+    *,
+    check_target_bytes: bool,
 ) -> int:
     count = 0
     seen_addresses: set[int] = set()
     seen_units: set[str] = set()
     mapping_by_address = {row.address: row for row in mapping}
-    units = load_match_units(errors)
+    units = load_match_units(errors, check_target_bytes=check_target_bytes)
     try:
         with (CONFIG / "matches.csv").open(newline="", encoding="utf-8") as stream:
             reader = csv.DictReader(stream)
@@ -460,7 +492,12 @@ def main() -> int:
     mapping, names, addresses = load_mapping(errors)
     implemented, implemented_names = validate_implemented(names, errors)
     claims = validate_claims(addresses, errors)
-    matches = validate_matches(mapping, implemented_names, errors)
+    matches = validate_matches(
+        mapping,
+        implemented_names,
+        errors,
+        check_target_bytes=check_target_bytes,
+    )
     overlap_exceptions = load_mapping_overlap_exceptions(errors)
     overlaps = seed_overlaps(mapping)
     validate_seed_overlaps(overlaps, overlap_exceptions, errors)

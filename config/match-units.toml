@@ -80522,8 +80522,9 @@ target = 0x00422480
 [[units.relocations]]
 offset = 813
 type = "DIR32"
-symbol = "__real@0000000000000000"
+symbol = "__real@4060000000000000"
 target = 0x004B5B30
+data_hex = "0000000000006040"
 
 [[units.relocations]]
 offset = 827
