@@ -31,11 +31,13 @@ recorded in notes and handoffs.
    behavior; record disagreements rather than silently choosing one version.
 7. Implement the smallest coherent change while preserving the VC7 x86 ABI.
 8. Build the smallest affected target or object, then run the exact comparator.
-   For a source-significant `__real@...` relocation, record its target bytes as
-   `data_hex` in the match-unit row. Static validation checks that those bytes
-   agree with the COFF literal name, and target-backed validation checks the
-   addressed PE data. A relocated instruction field matching by itself does
-   not attest the value stored at the destination.
+   Every 32-bit or 64-bit `__real@...` relocation is decoded from its COFF
+   symbol automatically. Static validation requires a `DIR32` relocation with
+   zero addend; target-backed validation compares the decoded little-endian
+   value with the addressed PE data. Record `data_hex` for a
+   source-significant or corrected literal so that the reviewed bytes remain
+   explicit in the match-unit row. A relocated instruction field matching by
+   itself does not attest the value stored at the destination.
 9. Update mapping/progress inputs only to the level proven by the report.
 10. Run `git diff --check` and hand off commands, results, and uncertainty.
 
@@ -121,13 +123,12 @@ full canonical byte comparison.
 
 ## Current phase selection
 
-Authored source is present for the complete authored inventory. The 14 stale
-historical rows exposed by the 2026-08-19 cold replay have been repaired and a
-2026-08-20 cold build now reproduces 1,105 accepted units. Only two authored
-near matches remain outside the accepted exact ledger. Their configured units
-remain available for later diagnosis in `config/match-units.toml`; see
-`docs/RE_HANDOFF.md` for the bounded list. Do not treat a configured unit as an
-accepted result.
+Authored source is present for the complete authored inventory. The current
+ledger contains 1,106 accepted exact units and one authored near match,
+`ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0`, outside the accepted
+ledger. A configured unit is not by itself an accepted result; live counts
+come from `scripts/analysis/report-reconstruction-status.py` and
+`config/matches.csv`, not this prose.
 
 The semantic source-recovery phase formerly carried on
 `semantic/typed-reconstruction` is complete and was merged into `main` through

@@ -4,26 +4,19 @@ This file records only the current durable state. Historical investigations
 belong in focused notes such as `RUNECL_FUNCTION_EXACT_NOTES.md`; live counts
 come from the ledgers, not this prose.
 
-## Active semantic reconstruction branch
+## Current reconstruction status
 
-`semantic/typed-reconstruction` starts from `main@4cffb2a` and makes semantic
-source recovery the active bounded lane.  The bootstrap scope changes no game
-layout, function mapping, authored ledger, or accepted exact unit.  It adds the
-evidence/acceptance guide in `docs/SEMANTIC_RECONSTRUCTION.md`, the
-`$th08-semantic` workflow, and the read-only
-`scripts/analysis/report-semantic-debt.py` candidate router.
+Authored source covers **1,107 / 1,107** authored functions; the accepted exact
+ledger covers **1,106 / 1,107**.  The sole authored near match is
+`ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0`.  Live counts come
+from `scripts/analysis/report-reconstruction-status.py`; `config/claims.csv`
+remains header-only.
 
-The verified starting baseline is authored **1,107 / 1,107** and strict exact
-**1,105 / 1,107**; `config/claims.csv` is header-only.  Work one structure and
-one coherent field family at a time.  VC7 focused/aggregate replay remains the
-exact-code oracle, while the modern build and relevant Linux layout/runtime
-checks remain the portable behavior oracle.  Do not publish candidate counts as
-semantic progress.
-
-The portable Linux package workflow is again automatic on `push` and
-`pull_request`, as well as available through `workflow_dispatch`.  It was
-temporarily manual-only during early semantic iteration, but its release-lane
-triggers were restored before publishing this phase to `main`.
+The authored semantic phase is broadly complete on `main`.  New maintenance
+must use a fresh short-lived branch and preserve two independent oracles: VC7
+focused/cold exact replay for target code and the applicable modern
+Windows/Linux build/runtime checks for portable behavior.  The portable Linux
+package workflow runs on `push`, `pull_request`, and `workflow_dispatch`.
 
 The first accepted source batch is the `ScreenEffect +0x18/+0x1C/+0x20`
 variant-parameter family.  A TU-local typed overlay records fade color, shake
@@ -2268,3 +2261,29 @@ image links; target-independent CI and tracking validation pass; and the i386
 Linux container build links and passes the fixed-layout verifier.  Authored
 and accepted counts are unchanged because this corrects the semantic identity
 of an already accepted relocation rather than adding a function or byte range.
+
+The repository-wide floating-literal follow-up audits every configured 32-bit
+or 64-bit VC7 `__real@...` relocation instead of checking only rows that opted
+into `data_hex`.  All **1,548** current literal relocations now agree with the
+hash-attested target; the audit corrected **12** stale rows in five already
+accepted units:
+
+- `ReplayManager::SaveReplay @ 0x004531F0`: `10000.0f` at `0x004B42A0`;
+- `BulletManager::RemoveAllBullets @ 0x00430830`: `32.0f` at `0x004B42CC`;
+- `Player::UpdateRespawnAnimation @ 0x0044D180`: `30.0f` at `0x004B4534`;
+- `InitializeDirectionalOffset @ 0x004270C0`: `1.0f` at `0x004B4338`;
+- `WarpBulletsAcrossNarrowBarrier @ 0x00423A60`: eight corrected branch-owned
+  references to `67.8822556f @ 0x004B48E8` and
+  `135.7645111f @ 0x004B48EC`.
+
+Those values and branch ownership are direct target observations.  The score,
+laser-item spread, respawn, effect-motion, and mirror-barrier descriptions are
+semantic interpretations of the surrounding exact code.  All accepted units
+in the five affected objects replayed exact (**18 + 37 + 77 + 52 + 33**), and
+the five focused functions replayed exact individually.  A single-job
+non-reuse cold rebuild then passed **1,106 / 1,106 exact** with zero failures.
+The normal VC7 image linked; the complete Linux i386 build linked and passed
+the fixed-layout verifier.  `scripts/test-match-literals.py` protects both
+single- and double-precision decoding plus malformed-manifest rejection, and
+`validate-tracking.py --require-target` now fails on any future `__real`
+symbol/target-data mismatch even when `data_hex` is absent.

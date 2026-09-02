@@ -550,7 +550,7 @@ void BulletManager::RemoveAllBullets(i32 mode)
                     position[2] = 0.0f;
                     g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(position),
                                             static_cast<ItemType>(this->cancelItemType), mode);
-                    radius = radius + 1.0f;
+                    radius = radius + 32.0f;
                 }
             }
         }
