@@ -35,10 +35,18 @@ wrong. We do not assume that an agent is correct because its output looks
 plausible. In this project, an agent writes the hypothesis; the target and the
 toolchain decide whether it survives.
 
+The most important design rule is simple: **the repository—not a person's
+memory and not an AI chat session—is the project's memory.** Knowledge,
+experience, and lessons from failed attempts should accumulate in forms that
+the next contributor can find, review, rerun, and improve. Chat is useful
+scratch space, but a conclusion that lives only in chat is not durable project
+knowledge. If it matters, it must be promoted into source, a ledger, a focused
+evidence note, a script, a test, a guard, or a reusable skill.
+
 ```mermaid
 flowchart TD
     H["Human maintainer<br/>sets scope and release authority"]:::human
-    K[("Repository memory<br/>rules · ledgers · handoff · skills<br/>evidence · guards")]:::memory
+    K[("Cumulative repository memory<br/>rules · ledgers · handoff · skills<br/>evidence · tests · guards")]:::memory
     A["Fresh AI agent<br/>cold-starts from tracked state"]:::agent
 
     H --> A
@@ -56,7 +64,7 @@ flowchart TD
     C --> P
     P --> G{"Every required<br/>gate passes?"}:::gate
     G -->|No| D
-    G -->|Yes| R["Record evidence, unknowns,<br/>guards, and reusable lessons"]:::memory
+    G -->|Yes| R["Promote knowledge back into the repo<br/>evidence · unknowns · guards · lessons"]:::memory
     R --> K
     R --> Q["Commit and push a small,<br/>auditable checkpoint"]:::done
     Q -.->|next agent| A
@@ -81,8 +89,9 @@ ledger. Normal VC7 linking, modern Linux builds, fixed-layout checks, available
 runtime tests, and repository CI catch different classes of failure. A result
 does not become “exact” because an agent—or a maintainer—says that it is.
 
-The other half of the system is repository memory. We do not rely on one long
-chat or on an agent remembering what a previous agent discovered:
+Repository memory is not documentation added after the real work; it is part
+of the working architecture. We do not rely on one long chat or on an agent
+remembering what a previous agent discovered:
 
 - [AGENTS.md](AGENTS.md) holds the non-negotiable target, ABI, safety, and
   acceptance rules.
