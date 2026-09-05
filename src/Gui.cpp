@@ -706,7 +706,7 @@ i32 GuiImpl::RunMsg()
                  g_GameManager.shotType == SHOT_YUYUKO))
             {
                 g_GameManager.AddToBombCount(1);
-                g_SoundPlayer.PlaySoundByIdx((SoundIdx)0x23, 0);
+                g_SoundPlayer.PlaySoundByIdx(SOUND_SPELL_CAPTURE, 0);
                 g_Gui.flags.bombDisplayUpdateFrames = 2;
             }
             break;
@@ -717,7 +717,7 @@ i32 GuiImpl::RunMsg()
             break;
         case GUI_MSG_FADE_SCREEN:
             ScreenEffect::RegisterChain(
-                (ScreenEffectType)4, 442, 0xffffff, 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
+                SCREEN_EFFECT_FULL_FADE_OUT, 442, 0xffffff, 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
             g_GuiMessageScreenEffectDuration = 442;
             break;
         case GUI_MSG_END_STAGE:
@@ -1481,9 +1481,9 @@ void Gui::DrawStageElements()
             if (this->previousSpellcardSecondsRemaining != this->spellcardSecondsRemaining)
             {
                 if (bossValue < 3)
-                    g_SoundPlayer.PlaySoundByIdx((SoundIdx)0x26, 0);
+                    g_SoundPlayer.PlaySoundByIdx(SOUND_TIMEOUT_2, 0);
                 else if (bossValue < 10)
-                    g_SoundPlayer.PlaySoundByIdx((SoundIdx)0x1d, 0);
+                    g_SoundPlayer.PlaySoundByIdx(SOUND_TIMEOUT, 0);
             }
             g_AsciiManager.AddFormatText(&textPos, "%.2d", bossValue);
             g_AsciiManager.SetColor(0xffffffff);

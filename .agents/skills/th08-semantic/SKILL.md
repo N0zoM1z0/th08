@@ -85,6 +85,13 @@ indices, numeric quantities, and visually ambiguous per-file ANM script IDs are
 not automatically protocols and should not receive invented names merely to
 drive a literal count to zero.
 
+At typed call boundaries, guard every spelling of a fixed literal: a direct
+integer, a C-style enum cast, and `static_cast<Enum>(integer)`.  Match the call
+surface rather than banning casts globally, because casts from runtime packet
+fields and calculated indices remain legitimate.  Cover the accepted and
+rejected spellings with a small regression test; otherwise a narrow regex can
+report zero while a different cast form remains in production source.
+
 For serialized operand families, introduce typed wire schemas only after the
 opcode names are stable.  Pin size, offset, width, padding, and signedness with
 `C_ASSERT`.  In a large `/Ob0` interpreter, a compile-time field-index macro is

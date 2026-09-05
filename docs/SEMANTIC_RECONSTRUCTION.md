@@ -4798,7 +4798,7 @@ the reverse numbering of the related ANM families.
 
 Corroborated comparison: the repository's imported TH06 reference contains 25
 named `EclVarId` selectors and six named `StageOpcode` entries; its
-`EnemyManager::RunEclTimeline` retains 11 numeric opcode cases.  TH08's 101,
+`EnemyManager::RunEclTimeline` retains 13 numeric opcode cases.  TH08's 101,
 35, and 17 complete named domains therefore exceed TH06 on these directly
 comparable protocol-readability surfaces.  This is a scoped, source-counted
 comparison, not a claim that every TH08 English interpretation is proved by
@@ -4844,64 +4844,114 @@ UI/gameplay state protocols.  The reusable lesson is recorded in
 operand selectors, sibling streams, mode selectors, and replay flags, while
 leaving ambiguous assets and numeric quantities honestly numeric.
 
-### some100/th07 readability comparison — 2026-09-05
+### TH06/TH07 readability audit and stable-ID closure — 2026-09-05
 
-Reference: the source audit used
-[some100/th07](https://github.com/some100/th07) at commit
-`84963b2e2630b7ef96b0da4b280152d3f689c998`.  The checkout lives under the
-ignored `_references/` tree.  This was a source-level readability comparison;
-TH07 supplied adjacent-version corroboration, while all TH08 accuracy claims
-continue to come from the pinned Japanese 1.00d target and the repository's
-VC7 and portable oracles.
+References: the comparison pins
+[GensokyoClub/th06](https://github.com/GensokyoClub/th06) at
+`cc475a0bc3fef38683b0f02224c87ddba0a021d9` and
+[some100/th07](https://github.com/some100/th07) at
+`84963b2e2630b7ef96b0da4b280152d3f689c998`.  Both checkouts live under the
+ignored `_references/` tree.  They are adjacent-engine readability references;
+the Japanese TH08 1.00d target and this repository's VC7 comparator remain the
+authority for TH08 names, layouts, and exactness.
 
-Comparable protocol coverage: TH07 names all 159 primary ECL opcodes, all 74
-ECL operand selectors (`10000..10073`), and all 31 stage opcodes (`0..30`).
-Its ECL timeline dispatcher retains 13 numeric cases (`0..12`).  The
-corresponding TH08 domains are 184 / 184 primary ECL opcodes, 101 / 101
-operand selectors, 35 / 35 Background opcodes, and 17 / 17 timeline opcodes.
-TH07 is therefore a substantially stronger benchmark than TH06, while TH08
-still has the broader complete coverage across these directly comparable
-interpreter surfaces.
+The comparable protocol inventory is:
 
-ANM is the important exception.  TH07 gives shared opcode 25 the name
-`ANM_SET_AUTO_ROTATE` and opcode 31 the name `ANM_SET_CAMERA_MODE`.  Those
-names agree with TH08 behavior: opcode 25 writes the VM field consulted by
-Bullet, Enemy, and Player drawing when applying motion-angle rotation, while
-opcode 31 writes the field compared with `AnmManager::cameraMode`.  TH07 also
-names the adjacent `skipTransform` and `useColor2` flags and maintains a much
-broader `AnmIdx.hpp` catalogue.  Its index catalogue contains 58 file defines
-(including aliases), 109 script defines, and 23 sprite defines, although 21
-script names remain explicitly unknown.  TH08 has the larger instruction
-domain at 91 opcode members, but neutral names remain for opcodes 25, 31, 83,
-and 88 and for several VM flags.  On ANM readability, TH07 is ahead.  The
-shared opcode names are recorded as corroborated candidates rather than
-accepted TH08 names until TH08 evidence and exact VC7 emission are checked in
-a dedicated batch.
+| Protocol surface | TH08 | TH06 | TH07 |
+| --- | ---: | ---: | ---: |
+| Primary ECL opcodes | 184 / 184 named | 136 / 136 named | 159 / 159 named |
+| ECL operand selectors | 101 / 101 named | 25 named values | 74 / 74 named |
+| Stage/background opcodes | 35 / 35 named | 6 named values | 31 / 31 named |
+| Named ECL timeline opcodes | 17 / 17 | 0 / 13 | 0 / 13 |
+| Stage interpolation modes | 8 | no separate selector | 7 |
+| Named replay event bits | 11 / 11 observed | no comparable domain | 0 / 7 observed |
+| Screen-effect modes | 8 | 3 | 5 |
+| Descriptive sound IDs | 46 / 46-value domain | 16 of 32 entries | 23 sparse entries |
+| Behavior-named effect IDs | 40 | 0 | 0 |
+| Audio command operations | 8 plus `NONE` | no separate enum | 7 |
 
-The wider source audit supports the overall comparison.  TH07 contains 96
-numeric `case` labels; TH08 contains 74, confined to option-array indices,
-damage and life quantities, and per-file animation IDs described above.  A
-lexical scan also found 389 decompiler-style local names, 144 generic
-`param_N` names, and 88 offset-suffixed field names in TH07, compared with
-zero matches for those three patterns in TH08 production source.  These are
-source snapshots rather than semantic-completion percentages, but they expose
-the kind of residue a reader encounters.  The layout record shows the same
-difference in emphasis: TH08 carries 700 `offsetof` assertions and 131 class
-size assertions, while TH07 carries 68 class size assertions and no
-`offsetof` assertions.
+The source-wide snapshot is:
 
-The subsystem comparison is similarly mixed in useful ways.  TH07's sound
-domain has 23 named entries and no fixed numeric `PlaySoundByIdx` calls.  Its
-effect calls still contain 22 fixed numeric IDs and it has no corresponding
-effect-ID domain; TH08 names 46 concrete sound IDs and 40 stable effect IDs,
-with semantic CI checks guarding both call surfaces.  TH07's generic ECL
-operand representation also leaves 33 direct `instr->args[n]` uses, whereas
-TH08 has exact-safe typed wire schemas for the established bullet-transform,
-rank, trail, and laser-spawn families.
+| Target-side source audit | TH08 | TH06 | TH07 |
+| --- | ---: | ---: | ---: |
+| C/C++ files / text lines | 98 / 61,315 | 95 / 31,361 | 75 / 42,979 |
+| Numeric `case` labels | 74 (12.1 per 10k lines) | 95 (30.3 per 10k) | 96 (22.3 per 10k) |
+| Decompiler-style local names | 0 | 581 | 389 |
+| Generic `param_N` names | 0 | 7 | 144 |
+| Anonymous identifiers found by the semantic-debt pattern | 0 | 284 | 78 |
+| `LAB_...` labels | 0 | 2 | 27 |
+| `C_ASSERT(offsetof(...))` layout assertions | 700 | 0 | 0 |
+| Type-size assertions | 135 | 83 | 68 |
+| Automated semantic protocol guard | yes | no | no |
 
-Result: TH08 has the stronger overall readability coverage and the tighter
-connection between semantic names, fixed layouts, and reproducible oracle
-evidence.  TH07 remains the better ANM naming reference.  Keeping both parts
-of that comparison visible makes the benchmark more useful: the overall
-result records the progress already made, and the ANM exception identifies a
-specific area where the adjacent reconstruction communicates intent better.
+Counting method: each tree uses files with the `.c`, `.cc`, `.cpp`, `.h`,
+`.hpp`, or `.inl` suffix below its target source directory.  TH08 excludes
+`src/modern` but includes the four exact-match probe sources stored alongside
+the reconstructed code; reference-specific host support outside `src/th06` or
+`src/th07` is not included.  Text lines are the sum of decoded `splitlines()`
+counts.
+Numeric cases match a decimal or hexadecimal literal immediately after
+`case`.  Decompiler locals match `local_<hex>` and the Ghidra-style
+`[uifpcbscl]+Var<number>` family; parameters match `param_<number>`.
+Anonymous identifiers use the same `unk`/`unknown`/`field`/`unused`/`padding`
+offset pattern as `scripts/analysis/report-semantic-debt.py`.  Layout totals
+count literal `C_ASSERT(offsetof(...))`, `C_ASSERT(sizeof(...))`, and
+`ZUN_ASSERT_SIZE(...)` forms.  These are lexical snapshots, useful for
+comparison but not semantic-completion percentages.
+
+ANM is the clearest exception to TH08's overall lead.  TH06 names all 32 of its
+ANM opcodes and carries 45 file, 131 script, and 29 sprite definitions.  TH07
+has 82 opcode members with one neutral name and 58 file, 109 script, and 23
+sprite definitions; 21 of its script names are explicitly unknown.  TH08 has
+the largest opcode domain at 91 members, but four names remain neutral
+(`25`, `31`, `83`, and `88`) and its asset naming is intentionally partial.
+TH07's `ANM_SET_AUTO_ROTATE` and `ANM_SET_CAMERA_MODE`, together with its VM
+flag names, currently communicate the shared ANM behavior better.  They remain
+strong candidates for a dedicated TH08 evidence and exact-emission pass.
+
+Typed ECL operands are the second exception.  TH06 has 26 explicit packet
+structures, including its timeline packet, while TH08 currently has six
+target-backed instruction families: spell-card, shot, laser-spawn,
+bullet-transform, rank-influence, and trail.  TH07 generally retains a generic
+argument array.  TH06 therefore has the broadest typed packet coverage.  TH08
+keeps extending this surface family by family when field widths, padding,
+signedness, and the VC7 expression tree can all be pinned without losing exact
+output.
+
+This audit also found seven stable IDs that the old CI expression failed to
+see.  `Spellcard::CutInPlayer @ 0x00415D60` and
+`Spellcard::CutInEnemy @ 0x00415F00` now use `SOUND_CAT`;
+`Spellcard::EndSpell @ 0x004161B0` uses `SOUND_BULLET_0_LOUD`;
+`GuiImpl::RunMsg @ 0x00433DB3` uses `SOUND_SPELL_CAPTURE` and
+`SCREEN_EFFECT_FULL_FADE_OUT`; and `Gui::DrawStageElements @ 0x0043741D` uses
+`SOUND_TIMEOUT_2` and `SOUND_TIMEOUT`.  These are enum substitutions for the
+same values, not new behavioral inferences.
+
+The guard previously rejected only `static_cast<SoundIdx>(literal)`, allowing
+the C-style spelling to pass.  It now checks the sound and screen-effect call
+boundaries for direct literals, C-style casts, and `static_cast`, while keeping
+runtime packet fields and calculated indices valid.  A focused regression test
+covers all accepted and rejected forms.  It also pins `SoundIdx` values 0..45,
+`ScreenEffectType` values 0..7, and all eight screen-effect dispatcher cases.
+The same rule is recorded in `.agents/skills/th08-semantic/SKILL.md` for later
+reconstructions.
+
+VC7 oracle: before and after the substitutions, the accepted units configured
+for `SpellCard.obj`, `Gui.obj`, and the canonical objdiff `Gui.obj` passed
+**70 / 70 exact**.  The final single-job cold replay rebuilt all 75 comparison
+objects and passed **1,106 / 1,106 exact** with zero failures.  A separate
+fresh normal VC7 build linked `build/th08.exe`.  The sole authored-but-
+unaccepted `ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0` remains
+unchanged and outside this batch.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` rebuilt and linked
+the complete i386 executable.  `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 and all
+fixed target-owned layout symbols.
+
+Result: TH08 has the strongest overall readability coverage of the three
+source trees across complete script protocols, residual source naming, layout
+documentation, and automated guards.  The ANM and typed-ECL exceptions keep
+the comparison useful: they identify concrete places where an adjacent
+reconstruction currently communicates intent better, without weakening the
+TH08 accuracy boundary.

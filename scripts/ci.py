@@ -54,6 +54,10 @@ def main() -> int:
             "Test relocation literal validation",
             [sys.executable, "scripts/test-match-literals.py"],
         )
+        run(
+            "Test semantic protocol guards",
+            [sys.executable, "scripts/test-semantic-protocols.py"],
+        )
 
         shell_files = tracked("scripts/*.sh")
         shell_files.extend(

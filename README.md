@@ -163,39 +163,54 @@ source still works as portable C++. Shared changes are rebuilt on Linux and
 checked against the fixed-layout verifier, with relevant runtime tests used
 when they are available.
 
-To measure the semantic pass, we audited the repository against two
-adjacent-engine references:
+To measure the semantic pass, we audited the repository against
 [GensokyoClub/th06](https://github.com/GensokyoClub/th06) and
-[some100/th07](https://github.com/some100/th07). TH07 is the stronger of the
-two comparisons: its primary ECL, operand, and stage instruction domains are
-already thoroughly named.
+[some100/th07](https://github.com/some100/th07). The first table compares
+protocols that recur across the three engines; the second looks at the residue
+a reader encounters in the target-side C++.
 
-| Comparable protocol surface | This TH08 reconstruction | GensokyoClub/th06 | some100/th07 |
+| Protocol surface | This TH08 reconstruction | GensokyoClub/th06 | some100/th07 |
 | --- | ---: | ---: | ---: |
-| Primary ECL opcodes | **184 / 184 named** | — | 159 / 159 named |
+| Primary ECL opcodes | **184 / 184 named** | 136 / 136 named | 159 / 159 named |
 | ECL operand selectors | **101 / 101 named** | 25 named values | 74 / 74 named |
 | Stage/background stream opcodes | **35 / 35 named** | 6 named values | 31 / 31 named |
-| ECL timeline opcodes | **17 / 17 named** | 11 numeric cases remain | 13 numeric cases remain |
+| Named ECL timeline opcodes | **17 / 17** | 0 / 13 | 0 / 13 |
+| Stage interpolation modes | **8** | no separate selector | 7 |
+| Named replay event bits | **11 / 11 observed** | no comparable domain | 0 / 7 observed |
+| Screen-effect modes | **8** | 3 | 5 |
+| Descriptive sound IDs | **46 / 46-value domain** | 16 of 32 entries | 23 sparse entries |
+| Behavior-named effect IDs | **40** | 0 | 0 |
+| Audio command operations | **8 plus `NONE`** | no separate enum | 7 |
 
-TH08 now **outperforms both references in overall readability coverage**. In
-addition to the complete domains above, it names the interpolation and camera
-modes, replay event bits, stable sound and resource protocols, and the small
-UI/gameplay state machines found during the audit. Its layouts are documented
-with offset assertions, and CI keeps completed protocol surfaces on named
-dispatch.
+| Target-side source audit | This TH08 reconstruction | GensokyoClub/th06 | some100/th07 |
+| --- | ---: | ---: | ---: |
+| C/C++ files / lines | 98 / 61,315 | 95 / 31,361 | 75 / 42,979 |
+| Numeric `case` labels | **74 (12.1 per 10k lines)** | 95 (30.3 per 10k) | 96 (22.3 per 10k) |
+| Decompiler-style local names | **0** | 581 | 389 |
+| Generic `param_N` names | **0** | 7 | 144 |
+| Anonymous identifiers found by the same debt scan | **0** | 284 | 78 |
+| `LAB_...` labels | **0** | 2 | 27 |
+| `offsetof` layout assertions | **700** | 0 | 0 |
+| Type-size assertions | **135** | 83 | 68 |
+| Automated semantic protocol guard | **yes** | no | no |
 
-TH07 is ahead in one clear area: ANM naming. Its shared opcodes 25 and 31 are
-named `ANM_SET_AUTO_ROTATE` and `ANM_SET_CAMERA_MODE`, and `AnmIdx.hpp` carries
-a broader catalogue of file, script, and sprite IDs. TH08 still uses neutral
-names for those two instructions and several other ANM details whose meaning
-has yet to be established from the TH08 target. We count ANM as a clear TH07
-win and use its names as strong corroboration for future target-backed work.
+On balance, TH08 outperforms both references in overall readability coverage,
+especially across complete script protocols, object naming, and layout
+documentation. There are two useful exceptions. TH07 currently communicates
+ANM behavior better: it has names for shared opcodes 25 and 31, fewer neutral
+opcode names, and a broader file/script/sprite catalogue. TH06 has the widest
+typed ECL packet overlay, with 26 packet structures against six target-backed
+families in TH08; TH07 largely keeps a generic argument array. These are real
+advantages in the reference sources and good directions for further work.
+TH08 promotes the same ideas once its own target evidence and exact VC7 shape
+support them.
 
-The comparison gives us a concrete readability benchmark. The audit also
-classifies the remaining literals by evidence. Its 74 numeric `case` labels are
-option-array indices, damage or life quantities, or per-file animation IDs
-whose visual meaning remains ambiguous. Accuracy first means maximizing
-readability within the available evidence.
+The remaining 74 numeric `case` labels are option-array indices, damage or life
+quantities, or per-file animation IDs whose visual meaning remains ambiguous.
+The audit used target-side C/C++ only (excluding TH08's modern port), with TH06
+at `cc475a0b` and TH07 at `84963b2e`. The [semantic reconstruction
+record](docs/SEMANTIC_RECONSTRUCTION.md) gives the counting rules, full commit
+IDs, exceptions, and Oracle results.
 
 The final pass cold-built all 75 configured comparison objects and reproduced
 all **1,106 / 1,106 accepted exact functions**. The normal VC7 image linked,

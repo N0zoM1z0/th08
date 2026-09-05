@@ -11,6 +11,26 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
 SOURCE_SUFFIXES = {".cpp", ".hpp", ".inl"}
+INTEGER_LITERAL = r"[+-]?(?:0[xX][0-9A-Fa-f]+|[0-9]+)(?:[uUlL]+)?"
+
+
+def numeric_enum_argument(enum_name: str) -> str:
+    """Match a direct or explicitly cast integer literal used as an enum."""
+    return (
+        rf"(?:{INTEGER_LITERAL}"
+        rf"|\(\s*{enum_name}\s*\)\s*{INTEGER_LITERAL}"
+        rf"|static_cast\s*<\s*{enum_name}\s*>\s*\(\s*{INTEGER_LITERAL}\s*\))"
+    )
+
+
+NUMERIC_SOUND_CALL = (
+    r"\bPlaySound(?:Positioned)?ByIdx\s*\(\s*"
+    + numeric_enum_argument("SoundIdx")
+)
+NUMERIC_SCREEN_EFFECT_CALL = (
+    r"\bScreenEffect::RegisterChain\s*\(\s*"
+    + numeric_enum_argument("ScreenEffectType")
+)
 
 
 def fail(message: str) -> None:
@@ -332,6 +352,38 @@ def check_closed_small_dispatches() -> None:
         fail("Screen shake dispatches must reference every named axis sample")
 
 
+def check_stable_id_protocols(paths: list[Path]) -> None:
+    explicit_enum(
+        SRC / "SoundPlayer.hpp",
+        "SoundIdx",
+        "SOUND_",
+        list(range(46)),
+    )
+    screen_effect_names = explicit_enum(
+        SRC / "ScreenEffect.hpp",
+        "ScreenEffectType",
+        "SCREEN_EFFECT_",
+        list(range(8)),
+    )
+    screen_effect_text = (SRC / "ScreenEffect.cpp").read_text(encoding="utf-8")
+    screen_effect_cases = set(
+        re.findall(r"\bcase\s+(SCREEN_EFFECT_[A-Z0-9_]+)\s*:", screen_effect_text)
+    )
+    if screen_effect_cases != set(screen_effect_names):
+        fail("ScreenEffect dispatch must reference every named mode")
+
+    reject_pattern(
+        paths,
+        "numeric fixed sound ID",
+        NUMERIC_SOUND_CALL,
+    )
+    reject_pattern(
+        paths,
+        "numeric fixed screen-effect ID",
+        NUMERIC_SCREEN_EFFECT_CALL,
+    )
+
+
 def main() -> int:
     paths = source_files()
     check_ecl_opcode_protocol()
@@ -340,6 +392,7 @@ def main() -> int:
     check_ecl_timeline_protocol()
     check_replay_frame_event_protocol(paths)
     check_closed_small_dispatches()
+    check_stable_id_protocols(paths)
 
     reject_pattern(
         [path for path in paths if path.name != "ZunMath.hpp"],
@@ -351,11 +404,6 @@ def main() -> int:
         "numeric fixed Effect ID",
         r"\.SpawnEffect(?:InSecondaryPool|InFixedSlot|InFixedSlotWithVelocity|WithVelocity)?"
         r"\s*\(\s*(?:0x[0-9a-f]+|\d+)",
-    )
-    reject_pattern(
-        paths,
-        "numeric fixed SoundIdx cast",
-        r"static_cast\s*<\s*SoundIdx\s*>\s*\(\s*(?:0x[0-9a-f]+|\d+)\s*\)",
     )
     reject_pattern(
         paths,
@@ -371,7 +419,7 @@ def main() -> int:
     print("  replay frame-event writers: 0 raw masks")
     print("  closed UI/gameplay state protocols: guarded")
     print("  raw vector pointer casts: 0 outside exact-safe views")
-    print("  fixed numeric effect/sound/resource IDs: 0")
+    print("  fixed numeric effect/sound/screen-effect/resource IDs: 0")
     return 0
 
 

@@ -938,7 +938,7 @@ void Spellcard::CutInPlayer(i32 playerFace, const char *name, i32 sprite)
     g_AnmManager->DrawTextLeft(&this->playerSpellNameVm, 0x00F0F0FF, 0, name);
     this->playerSpellNameWidth = strlen(name) * 0xf / 2.0f + 16;
     this->playerSpellNameFrameVm.SetInterrupt(1);
-    g_SoundPlayer.PlaySoundByIdx((SoundIdx)14, 0);
+    g_SoundPlayer.PlaySoundByIdx(SOUND_CAT, 0);
     g_GuiFullPowerModeFrames = 2;
 }
 
@@ -976,7 +976,7 @@ void Spellcard::CutInEnemy(i32 enemyFace, const char *name, i32 sprite)
     {
         this->spellBonusFrameVm.SetInterrupt(1);
     }
-    g_SoundPlayer.PlaySoundByIdx((SoundIdx)14, 0);
+    g_SoundPlayer.PlaySoundByIdx(SOUND_CAT, 0);
     g_GuiFullPowerModeFrames = 2;
 }
 
@@ -1226,7 +1226,7 @@ void Spellcard::EndSpell()
         }
         g_Gui.flags.bombDisplayUpdateFrames = 3;
         g_Gui.flags.lifeDisplayUpdateFrames = 3;
-        g_SoundPlayer.PlaySoundByIdx((SoundIdx)15, 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_BULLET_0_LOUD, 0);
         g_Background.StopSpellBackground();
     }
 
