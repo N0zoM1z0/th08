@@ -12,12 +12,11 @@ ledger covers **1,106 / 1,107**.  The sole authored near match is
 from `scripts/analysis/report-reconstruction-status.py`; `config/claims.csv`
 remains header-only.
 
-The authored structural semantic phase is complete on `main`; the current
-router-invisible protocol/readability checkpoint is on
-`semantic/readability-protocols`.  It preserves two independent oracles: VC7
-focused/cold exact replay for target code and the applicable modern
-Windows/Linux build/runtime checks for portable behavior.  The portable Linux
-package workflow runs on `push`, `pull_request`, and `workflow_dispatch`.
+The authored structural semantic and protocol/readability phases are complete
+on `main`.  They preserve two independent oracles: VC7 focused/cold exact
+replay for target code and the applicable modern Windows/Linux build/runtime
+checks for portable behavior.  The portable Linux package workflow runs on
+`push`, `pull_request`, and `workflow_dispatch`.
 
 The current protocol closure goes beyond the imported TH06 readability
 baseline on the comparable interpreter surfaces.  TH08 now names all 184 ECL
@@ -2336,6 +2335,6 @@ image links, the complete i386 Linux image rebuilds and links, and the fixed-
 layout verifier passes.  `scripts/check-semantic-protocols.py`, wired into CI,
 prevents regression to numeric ECL cases, raw vector pointer casts, or fixed
 numeric effect/sound/ANM resource IDs.  The reusable source-shape rules are in
-`.agents/skills/th08-semantic/SKILL.md`.  Continue on
-`semantic/readability-protocols`; commit and push stable checkpoints, but do
-not open or merge a PR until explicitly requested.
+`.agents/skills/th08-semantic/SKILL.md`.  This closes the protocol/readability
+milestone; future reconstruction work begins from the latest `main` on a fresh
+short-lived branch.
