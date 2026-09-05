@@ -18,6 +18,33 @@
 > [`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
 > Windows and macOS ports remain in progress.
 
+## Repository status
+
+This repository reconstructs the original Japanese
+`東方永夜抄 ～ Imperishable Night` version 1.00d executable. Every one of the
+1,107 authored functions now has source. Strict comparison currently accepts
+1,106 of them, covering 459,396 of 459,757 authored bytes.
+
+| Area | Status | Current position |
+| --- | --- | --- |
+| Authored source | **Complete** | 1,107 / 1,107 functions are present in source |
+| Strict authored comparison | **99.92% by bytes** | 1,106 / 1,107 functions are accepted as exact |
+| Whole executable | **In progress** | PE layout, linked runtime/library code, and one authored near match remain |
+| Web | **Playable** | Public WebAssembly/WebGL 2 build |
+| Linux | **Playable** | Native i386; x86_64/AArch64 work on `port/portable-64bit` |
+| Windows | **In progress** | Native startup and redistributable packaging are incomplete |
+| macOS | **In progress** | Native backend and packaging have not been implemented |
+
+Exact reconstruction and the playable ports are tracked separately. Running
+on a modern platform does not make the code byte-exact, and having source for a
+function does not make it a match. The progress bar counts accepted authored
+bytes; the platform cards show which ports are currently usable.
+
+The remaining exact-reconstruction work is the last authored near match,
+whole-image layout, and the compiler/runtime and D3DX code linked into the
+original game. Live counts come from the repository ledgers, not from this
+README.
+
 ## Built by AI agents, judged by reproducible evidence
 
 This is not a conventional human-written decompilation with a little AI help
@@ -107,33 +134,6 @@ The model can still make a bad inference. The architecture is designed around
 that fact: keep the task small, make the claim falsifiable, reject failed
 experiments, preserve uncertainty, and commit the evidence that lets the next
 agent check the work again. That is what we mean here by AI reconstruction.
-
-## Repository status
-
-This repository reconstructs the original Japanese
-`東方永夜抄 ～ Imperishable Night` version 1.00d executable. Every one of the
-1,107 authored functions now has source. Strict comparison currently accepts
-1,106 of them, covering 459,396 of 459,757 authored bytes.
-
-| Area | Status | Current position |
-| --- | --- | --- |
-| Authored source | **Complete** | 1,107 / 1,107 functions are present in source |
-| Strict authored comparison | **99.92% by bytes** | 1,106 / 1,107 functions are accepted as exact |
-| Whole executable | **In progress** | PE layout, linked runtime/library code, and one authored near match remain |
-| Web | **Playable** | Public WebAssembly/WebGL 2 build |
-| Linux | **Playable** | Native i386; x86_64/AArch64 work on `port/portable-64bit` |
-| Windows | **In progress** | Native startup and redistributable packaging are incomplete |
-| macOS | **In progress** | Native backend and packaging have not been implemented |
-
-Exact reconstruction and the playable ports are tracked separately. Running
-on a modern platform does not make the code byte-exact, and having source for a
-function does not make it a match. The progress bar counts accepted authored
-bytes; the platform cards show which ports are currently usable.
-
-The remaining exact-reconstruction work is the last authored near match,
-whole-image layout, and the compiler/runtime and D3DX code linked into the
-original game. Live counts come from the repository ledgers, not from this
-README.
 
 ## What we mean by semantic reconstruction
 
