@@ -44,30 +44,19 @@ knowledge. If it matters, it must be promoted into source, a ledger, a focused
 evidence note, a script, a test, a guard, or a reusable skill.
 
 ```mermaid
-flowchart TD
-    H["Human maintainer<br/>sets scope and release authority"]:::human
-    K[("Cumulative repository memory<br/>rules · ledgers · handoff · skills<br/>evidence · tests · guards")]:::memory
-    A["Fresh AI agent<br/>cold-starts from tracked state"]:::agent
-
-    H --> A
-    K --> A
-    A --> B["Choose one bounded function<br/>or semantic family"]:::agent
-    B --> E["Collect TH08 evidence<br/>verified target · mappings<br/>instructions · callers"]:::evidence
-    E --> I["Write natural C++<br/>preserve ABI and VC7 source shape"]:::work
-    I --> F{"Focused VC7<br/>comparison exact?"}:::gate
-
-    F -->|No| D["Diagnose extent, bytes,<br/>relocations, and source shape"]:::reject
-    D --> I
-    F -->|Yes| W{"Shared or<br/>wide change?"}:::gate
-    W -->|Yes| C["Cold-build every configured object<br/>replay the accepted ledger"]:::oracle
-    W -->|No| P["Run the applicable modern build,<br/>layout, and runtime checks"]:::oracle
-    C --> P
-    P --> G{"Every required<br/>gate passes?"}:::gate
+flowchart LR
+    H["Human<br/>scope & release"]:::human --> A["Fresh AI agent<br/>cold start"]:::agent
+    K[("Repository memory<br/>rules · ledgers · handoff<br/>skills · evidence · guards")]:::memory --> A
+    A --> E["Bounded task<br/>+ TH08 evidence"]:::evidence
+    E --> I["Natural C++<br/>ABI / VC7 shape intact"]:::work
+    I --> F{"Focused VC7<br/>exact?"}:::gate
+    F -->|No| D["Diagnose<br/>and refine"]:::reject --> I
+    F -->|Yes| O["Required aggregate<br/>+ portable Oracles"]:::oracle
+    O --> G{"All gates<br/>pass?"}:::gate
     G -->|No| D
-    G -->|Yes| R["Promote knowledge back into the repo<br/>evidence · unknowns · guards · lessons"]:::memory
-    R --> K
-    R --> Q["Commit and push a small,<br/>auditable checkpoint"]:::done
-    Q -.->|next agent| A
+    G -->|Yes| R["Promote evidence, unknowns,<br/>guards & lessons into repo"]:::memory
+    R --> Q["Commit & push<br/>auditable checkpoint"]:::done
+    R -.->|reusable knowledge| K
 
     classDef human fill:#fff1c2,stroke:#b7791f,color:#3b2f0b,stroke-width:2px;
     classDef agent fill:#ede9fe,stroke:#7c3aed,color:#2e1065,stroke-width:2px;
