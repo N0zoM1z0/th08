@@ -12,19 +12,18 @@
 </p>
 
 > [!IMPORTANT]
-> 🌙 The authored reconstruction is complete and Linux is playable. Download
-> [TH08 Reconstruction v0.2.0 — Native Linux 64-bit](https://github.com/N0zoM1z0/th08/releases/latest);
+> 🌙 The authored reconstruction is complete, and the Linux port is playable.
+> Download [TH08 Reconstruction v0.2.0 — Native Linux 64-bit](https://github.com/N0zoM1z0/th08/releases/latest);
 > active ELF64 source lives on
 > [`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
 > Windows and macOS ports remain in progress.
 
 ## Repository status
 
-This repository reconstructs the source code of the original Japanese
-`東方永夜抄 ～ Imperishable Night` version 1.00d executable. The authored-source
-recovery milestone is complete: all 1,107 authored functions are present in
-source. Strict comparison currently accepts 1,106 of those functions, covering
-459,396 of 459,757 authored bytes.
+This repository reconstructs the original Japanese
+`東方永夜抄 ～ Imperishable Night` version 1.00d executable. Every one of the
+1,107 authored functions now has source. Strict comparison currently accepts
+1,106 of them, covering 459,396 of 459,757 authored bytes.
 
 | Area | Status | Current position |
 | --- | --- | --- |
@@ -36,19 +35,78 @@ source. Strict comparison currently accepts 1,106 of those functions, covering
 | Windows | **In progress** | Native startup and redistributable packaging are incomplete |
 | macOS | **In progress** | Native backend and packaging have not been implemented |
 
-The exact-reconstruction lane and the playable-port lanes are independent.
-Running on a modern platform is not an exactness claim, and source presence is
-not counted as a byte-exact result. The progress bar above visualizes accepted
-authored bytes only; its platform cards report delivery status separately.
+Exact reconstruction and the playable ports are tracked separately. Running
+on a modern platform does not make the code byte-exact, and having source for a
+function does not make it a match. The progress bar counts accepted authored
+bytes; the platform cards show which ports are currently usable.
 
-Current reconstruction work focuses on the remaining authored near match,
-whole-image layout, and target-linked compiler/runtime and D3DX code.
-Live authored and library figures come from the repository ledgers rather than
-this README.
+The remaining exact-reconstruction work is the last authored near match,
+whole-image layout, and the compiler/runtime and D3DX code linked into the
+original game. Live counts come from the repository ledgers, not from this
+README.
 
-### Contributing
+## What we mean by semantic reconstruction
 
-Contributions are welcome. Useful areas include:
+Matching the executable is necessary, but it is not the finish line. Source can
+reproduce every byte and still be miserable to read if it expresses the game
+as object offsets, anonymous fields, bare masks, and numbered interpreter
+cases. Our semantic pass is the work of recovering those meanings and putting
+them back into the C++.
+
+Accuracy comes first. We add a type or name only when TH08 itself supports it
+through reads, writes, callers, or state transitions. TH06, TH07, and the
+inherited upstream names are very useful clues, but they never overrule the
+Japanese TH08 1.00d target. If a meaning is still uncertain, the source says so
+instead of guessing.
+
+There is another wrinkle: two equivalent-looking C++ expressions do not always
+produce the same VC7 code. Under `/Ob0`, even a small helper or a reordered
+`switch` can change the output. We therefore keep the target-shaped expression
+or case order when exact emission depends on it. A prettier rewrite that loses
+an accepted match does not make the cut.
+
+Every semantic batch is checked in both directions. The VC7 comparison makes
+sure accepted target bytes stay exact; the modern builds make sure the same
+source still works as portable C++. Shared changes are rebuilt on Linux and
+checked against the fixed-layout verifier, with runtime tests added when the
+change affects behavior.
+
+To see whether this pass had actually improved the source, we did a best-effort
+audit across the repository and compared the same kinds of interpreter code
+with [GensokyoClub/th06](https://github.com/GensokyoClub/th06), our
+adjacent-engine reference:
+
+| Comparable protocol surface | This TH08 reconstruction | GensokyoClub/th06 reference |
+| --- | ---: | ---: |
+| ECL operand selectors | **101 / 101 named** | 25 named `EclVarId` values |
+| Stage/background stream opcodes | **35 / 35 named** | 6 named `StageOpcode` values |
+| ECL timeline opcodes | **17 / 17 named** | 11 numeric `case` labels remain |
+
+On these measurable surfaces, TH08 now genuinely **outperforms the TH06
+reference in readability coverage**. TH08 also has names for all 184 primary
+ECL opcodes, the complete interpolation and camera-mode domains, replay event
+bits, stable sound and resource protocols, and the small UI/gameplay state
+machines found during the audit. CI guards these finished surfaces so they do
+not quietly drift back to numeric dispatch.
+
+That comparison is a benchmark, not a knock on TH06 or its contributors. We
+also did not turn every remaining number into an enum just to improve a count.
+At the end of the audit, the 74 numeric `case` labels left in the source were
+option-array indices, damage or life quantities, or per-file animation IDs
+whose visual meaning was not securely known. Giving them confident names would
+be guesswork. For us, accuracy first means the most readable source the evidence
+allows—not the source with the most labels.
+
+The final pass cold-built all 75 configured comparison objects and reproduced
+**1,106 / 1,106 accepted exact functions** with no failures. The normal VC7
+image linked, and the full Linux i386 build and fixed-layout check passed. The
+[semantic reconstruction record](docs/SEMANTIC_RECONSTRUCTION.md) has the full
+evidence trail, the exact-safe source-shape rules, the unknowns we kept, and the
+results for each batch.
+
+## Contributing
+
+Contributions are welcome. We are especially interested in:
 
 - evidence-backed exact reconstruction and whole-image layout work;
 - reliable native Windows startup and replacement of the non-redistributable
@@ -67,9 +125,9 @@ analysis databases, or credentials.
 
 ## Platform guides
 
-Playable ports compile the reconstructed authored game code for modern hosts.
-They do not bundle the original executable or game archives; players must
-provide data from a legally obtained copy of TH08.
+The ports compile the reconstructed game code for modern systems. They do not
+include the original executable or game archives, so players must provide data
+from a legally obtained copy of TH08.
 
 ### Web
 
@@ -89,10 +147,10 @@ provide data from a legally obtained copy of TH08.
 [latest release](https://github.com/N0zoM1z0/th08-web/releases/latest) ·
 [engineering the Web port](https://github.com/N0zoM1z0/th08-web/blob/main/docs/WEB_PORTING.md)
 
-TH08 Web compiles the reconstructed C++ game code with Emscripten and runs it
-as WebAssembly on a browser worker. WebGL 2, Web Audio, browser-local files,
-and IndexedDB-backed saves form the platform boundary. It is not a TypeScript
-reimplementation and does not emulate the original executable.
+TH08 Web compiles the reconstructed C++ with Emscripten and runs it as
+WebAssembly in a browser worker. It uses WebGL 2, Web Audio, browser-local
+files, and IndexedDB-backed saves. This is not a TypeScript reimplementation,
+and it does not emulate the original executable.
 
 Select `th08.dat` and `thbgm.dat` from a legal TH08 installation in the
 launcher. `th08.dat` remains in volatile session memory; `thbgm.dat` is
@@ -117,13 +175,13 @@ On Debian or Ubuntu, build and run against the original game-data directory:
 scripts/setup-modern-linux.sh "/path/to/the/original/TH08 directory"
 ```
 
-After first-time setup, use the incremental launcher:
+For later runs, use the incremental launcher:
 
 ```bash
 scripts/play-modern-linux.sh "/path/to/the/original/TH08 directory"
 ```
 
-The latest release provides x86_64, i386, and experimental AArch64 portable
+The latest release includes x86_64, i386, and experimental AArch64 portable
 packages. Extract the package for your architecture and pass the original data
 directory:
 
@@ -131,16 +189,17 @@ directory:
 ./run-th08.sh "/path/to/the/original/TH08 directory"
 ```
 
-The native i386 ELF has been exercised under WSLg and in a Kali Linux x86-64
+The native i386 ELF has been tested under WSLg and in a Kali Linux x86-64
 virtual machine. It requires only `th08.dat` and `thbgm.dat`; it does not open
 or execute the original `th08.exe`. Settings, scores, replays, and backups stay
 in the selected data directory.
 
 The native-layout x86_64 PIE is the recommended Linux package. Its source is on
 [`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
-It has completed a Lunatic Stage 1–6A route, ending, results, return to title,
-and additional Stage 4A/6B Practice validation under WSLg. AArch64 remains
-cross-build and loader verified pending a gameplay run on real hardware.
+It has been played through a Lunatic Stage 1–6A route, including the ending,
+results, and return to title, plus Stage 4A/6B Practice runs under WSLg. The
+AArch64 build and loader have been verified, but it still needs a gameplay run
+on real hardware.
 
 <p align="center">
   <img
@@ -167,13 +226,13 @@ existing `th08.cfg` is optional.
 
 #### Earlier Linux renderer regression
 
-An earlier Linux bring-up build could tile a dynamic text texture across the
-outer frame and HUD during the Stage 4-to-5 transition, most visibly as
-repeated `Yakumo Yukari` text. The same period exposed missing enemy/boss art
-and incomplete effects. These regressions were not reproduced in the final
-x86_64 full-route and Practice passes after the native-layout and renderer
-fixes. The screenshot remains as a historical regression sample; please report
-it if it returns on another driver or desktop.
+An early Linux build sometimes tiled a dynamic text texture across the outer
+frame and HUD during the Stage 4-to-5 transition, most visibly as repeated
+`Yakumo Yukari` text. It also had missing enemy/boss art and incomplete effects.
+After the native-layout and renderer fixes, none of these problems appeared in
+the final x86_64 full-route or Practice runs. We keep the screenshot as a useful
+regression sample; please report it if the bug returns on another driver or
+desktop.
 
 <p align="center">
   <img
@@ -192,17 +251,16 @@ executable, but native startup is not yet reliable and the build still depends
 on a non-redistributable DirectX SDK debug DLL. There is no supported Windows
 release asset yet.
 
-The intended product will run natively, accept an arbitrary legal TH08 data
-directory, and ship without Wine or non-redistributable SDK components.
+The goal is a native build that accepts any legal TH08 data directory and ships
+without Wine or non-redistributable SDK components.
 
 ### macOS
 
 **Status: In progress**
 
-See the [native macOS guide](docs/PLAY_MACOS.md) for the planned platform
-boundary. No native executable or package exists yet. The port needs macOS
-window, input, audio, rendering, and packaging implementations followed by
-validation on real hardware.
+See the [native macOS guide](docs/PLAY_MACOS.md) for the current plan. There is
+no native executable or package yet; the window, input, audio, rendering, and
+packaging work still needs to be implemented and tested on real hardware.
 
 ## Exact reconstruction
 
@@ -258,8 +316,8 @@ build modes, reccmp, objdiff, and acceptance rules.
 
 ### Analysis and live progress
 
-IDA MCP follows whichever database is active in the GUI and has no reliable
-program selector. Use it for TH08 only after the active database passes
+IDA MCP follows whichever database is open in the GUI and cannot reliably
+select a program itself. Use it for TH08 only after the active database passes
 [the documented attestation](docs/IDA_MCP.md). Otherwise use target-safe
 headless tools and the repository's target-pinned analysis scripts.
 
