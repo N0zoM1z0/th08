@@ -110,6 +110,10 @@ def main() -> int:
             "Smoke-test semantic-debt CLI routing",
             [sys.executable, "scripts/analysis/report-semantic-debt.py", "--help"],
         )
+        run(
+            "Check semantic protocol readability",
+            [sys.executable, "scripts/check-semantic-protocols.py"],
+        )
         with tempfile.TemporaryDirectory(prefix="th08-ci-icon-") as directory:
             generated_icon = Path(directory) / "icon.ico"
             run(

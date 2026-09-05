@@ -307,7 +307,7 @@ i32 Player::CheckBulletCollision(Float3 *position, Float3 *size)
         this->hurtboxBoundsMax.y < boundsMin.y)
         return 0;
 
-    g_ReplayManager->frameEventFlags |= 2;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_PLAYER_HIT;
     if (this->playerState != PLAYER_STATE_ALIVE)
         return 1;
     g_GameManager.RandomizeAntiTamper();
@@ -334,7 +334,7 @@ i32 Player::CheckLethalCollision(Float3 *position, Float3 *size)
         this->hurtboxBoundsMax.y < boundsMin.y)
         return 0;
 
-    g_ReplayManager->frameEventFlags |= 2;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_PLAYER_HIT;
     if (this->playerState != PLAYER_STATE_ALIVE)
         return 1;
     g_GameManager.RandomizeAntiTamper();
@@ -444,7 +444,7 @@ grazePath:
     }
 
 lethalPath:
-    g_ReplayManager->frameEventFlags |= 2;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_PLAYER_HIT;
     if (this->playerState != PLAYER_STATE_ALIVE)
         return 0;
     g_GameManager.RandomizeAntiTamper();
@@ -473,10 +473,10 @@ void Player::AwardGraze(Float3 *position, i32 suppressExtraItems)
     }
 
     midpoint = (this->position + *position) / 2.0f;
-    g_EffectManager.SpawnEffect(8, reinterpret_cast<D3DXVECTOR3 *>(&midpoint), 1, -1);
+    g_EffectManager.SpawnEffect(EFFECT_GRAZE, D3DXVECTOR3_PTR(&midpoint), 1, -1);
     g_GameManager.IncreaseSubrank(6);
     g_Gui.flags.grazeDisplayUpdateFrames = 2;
-    g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(30), position->x);
+    g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_GRAZE, position->x);
 
     score = g_GameManager.GaugeIsModeratelyYoukai() ? 4000 : 2000;
     g_GameManager.AddScore(score);
@@ -500,7 +500,7 @@ void Player::AwardGraze(Float3 *position, i32 suppressExtraItems)
         }
     }
 
-    g_ReplayManager->frameEventFlags |= 0x2000;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_PLAYER_GRAZED;
 }
 
 // FUNCTION: th08 0x44ab40
@@ -512,11 +512,11 @@ void Player::Die()
     utils::DebugPrint("player DEAD");
     g_GameManager.scriptedUpdateFreeze = 0;
     g_GameManager.UpdateAntiTamper();
-    g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 16, -1);
+    g_EffectManager.SpawnEffect(EFFECT_DEATH_OR_BOMB_PARTICLE, D3DXVECTOR3_PTR(&this->position), 16, -1);
     this->playerState = PLAYER_STATE_DYING;
     this->timer = 0;
     g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_PICHUN, this->position.x);
-    g_ReplayManager->frameEventFlags |= 0x200;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_PLAYER_DYING_STARTED;
 
     // VC7 lowers the two-bit field read as two independent tests at /Od.
     // Read the typed flag storage once so the target's single extraction is
@@ -562,7 +562,7 @@ void Player::Die()
             this->mainVm.flagsWord |= 0x20000;
 
             this->deathbombEffect =
-                g_EffectManager.SpawnEffectInFixedSlot(59, reinterpret_cast<D3DXVECTOR3 *>(&this->position),
+                g_EffectManager.SpawnEffectInFixedSlot(EFFECT_PLAYER_DEATH_FIXED_SLOT, D3DXVECTOR3_PTR(&this->position),
                                               11, 1, 0xFFF0404F);
             effect = this->deathbombEffect;
             effect->vm.interpCurrentTimers[AnmInterp_Pos] = 0;
@@ -668,16 +668,16 @@ i32 Player::UpdateMovementAndOptions()
 
             if (g_GameManager.shotType < 4)
             {
-                this->anmFile->SetAndExecuteScriptIdx(&this->mainVm, 5);
+                this->anmFile->SetAndExecuteScriptIdx(&this->mainVm, PLAYER_MAIN_ANM_IDLE_FOCUSED);
                 this->currentHorizontalSpeed = 0.0f;
                 if (this->focusTransitionFrames >= 4)
-                    g_EffectManager.SpawnEffect(29, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 1, 0x80FF8080);
+                    g_EffectManager.SpawnEffect(EFFECT_FOCUS_ENTER, D3DXVECTOR3_PTR(&this->position), 1, 0x80FF8080);
             }
             if (this->focusEffect == NULL)
             {
                 this->focusEffect =
                     g_EffectManager.SpawnEffectInFixedSlot(
-                        22, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 2, 1, -1);
+                        EFFECT_FOCUS_AURA, D3DXVECTOR3_PTR(&this->position), 2, 1, -1);
             }
             this->focusTransitionFrames = 0;
             this->shootingGaugeChangeRampTimer = 0;
@@ -732,10 +732,10 @@ i32 Player::UpdateMovementAndOptions()
 
             if (g_GameManager.shotType < 4)
             {
-                this->anmFile->SetAndExecuteScriptIdx(&this->mainVm, 0);
+                this->anmFile->SetAndExecuteScriptIdx(&this->mainVm, PLAYER_MAIN_ANM_IDLE_UNFOCUSED);
                 this->currentHorizontalSpeed = 0.0f;
                 if (this->focusTransitionFrames >= 4)
-                    g_EffectManager.SpawnEffect(28, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 1, 0x808080FF);
+                    g_EffectManager.SpawnEffect(EFFECT_FOCUS_RELEASE, D3DXVECTOR3_PTR(&this->position), 1, 0x808080FF);
             }
             if (this->focusEffect != NULL)
                 this->focusEffect->vm.SetInterrupt(1);
@@ -800,24 +800,24 @@ i32 Player::UpdateMovementAndOptions()
         if (this->focusMode == PLAYER_FOCUS_MODE_UNFOCUSED)
         {
             if (horizontalSpeed < 0.0f && this->currentHorizontalSpeed >= 0.0f)
-                SET_PLAYER_SCRIPT(1);
+                SET_PLAYER_SCRIPT(PLAYER_MAIN_ANM_MOVE_LEFT_UNFOCUSED);
             else if (horizontalSpeed == 0.0f && this->currentHorizontalSpeed < 0.0f)
-                SET_PLAYER_SCRIPT(2);
+                SET_PLAYER_SCRIPT(PLAYER_MAIN_ANM_STOP_LEFT_UNFOCUSED);
             if (horizontalSpeed > 0.0f && this->currentHorizontalSpeed <= 0.0f)
-                SET_PLAYER_SCRIPT(3);
+                SET_PLAYER_SCRIPT(PLAYER_MAIN_ANM_MOVE_RIGHT_UNFOCUSED);
             else if (horizontalSpeed == 0.0f && this->currentHorizontalSpeed > 0.0f)
-                SET_PLAYER_SCRIPT(4);
+                SET_PLAYER_SCRIPT(PLAYER_MAIN_ANM_STOP_RIGHT_UNFOCUSED);
         }
         else
         {
             if (horizontalSpeed < 0.0f && this->currentHorizontalSpeed >= 0.0f)
-                SET_PLAYER_SCRIPT(6);
+                SET_PLAYER_SCRIPT(PLAYER_MAIN_ANM_MOVE_LEFT_FOCUSED);
             else if (horizontalSpeed == 0.0f && this->currentHorizontalSpeed < 0.0f)
-                SET_PLAYER_SCRIPT(7);
+                SET_PLAYER_SCRIPT(PLAYER_MAIN_ANM_STOP_LEFT_FOCUSED);
             if (horizontalSpeed > 0.0f && this->currentHorizontalSpeed <= 0.0f)
-                SET_PLAYER_SCRIPT(8);
+                SET_PLAYER_SCRIPT(PLAYER_MAIN_ANM_MOVE_RIGHT_FOCUSED);
             else if (horizontalSpeed == 0.0f && this->currentHorizontalSpeed > 0.0f)
-                SET_PLAYER_SCRIPT(9);
+                SET_PLAYER_SCRIPT(PLAYER_MAIN_ANM_STOP_RIGHT_FOCUSED);
         }
     }
     else
@@ -825,24 +825,24 @@ i32 Player::UpdateMovementAndOptions()
         if ((g_GameManager.shotType & 1) != 0)
         {
             if (horizontalSpeed < 0.0f && this->currentHorizontalSpeed >= 0.0f)
-                SET_PLAYER_SCRIPT(6);
+                SET_PLAYER_SCRIPT(PLAYER_MAIN_ANM_MOVE_LEFT_FOCUSED);
             else if (horizontalSpeed == 0.0f && this->currentHorizontalSpeed < 0.0f)
-                SET_PLAYER_SCRIPT(7);
+                SET_PLAYER_SCRIPT(PLAYER_MAIN_ANM_STOP_LEFT_FOCUSED);
             if (horizontalSpeed > 0.0f && this->currentHorizontalSpeed <= 0.0f)
-                SET_PLAYER_SCRIPT(8);
+                SET_PLAYER_SCRIPT(PLAYER_MAIN_ANM_MOVE_RIGHT_FOCUSED);
             else if (horizontalSpeed == 0.0f && this->currentHorizontalSpeed > 0.0f)
-                SET_PLAYER_SCRIPT(9);
+                SET_PLAYER_SCRIPT(PLAYER_MAIN_ANM_STOP_RIGHT_FOCUSED);
         }
         else
         {
             if (horizontalSpeed < 0.0f && this->currentHorizontalSpeed >= 0.0f)
-                SET_PLAYER_SCRIPT(1);
+                SET_PLAYER_SCRIPT(PLAYER_MAIN_ANM_MOVE_LEFT_UNFOCUSED);
             else if (horizontalSpeed == 0.0f && this->currentHorizontalSpeed < 0.0f)
-                SET_PLAYER_SCRIPT(2);
+                SET_PLAYER_SCRIPT(PLAYER_MAIN_ANM_STOP_LEFT_UNFOCUSED);
             if (horizontalSpeed > 0.0f && this->currentHorizontalSpeed <= 0.0f)
-                SET_PLAYER_SCRIPT(3);
+                SET_PLAYER_SCRIPT(PLAYER_MAIN_ANM_MOVE_RIGHT_UNFOCUSED);
             else if (horizontalSpeed == 0.0f && this->currentHorizontalSpeed > 0.0f)
-                SET_PLAYER_SCRIPT(4);
+                SET_PLAYER_SCRIPT(PLAYER_MAIN_ANM_STOP_RIGHT_UNFOCUSED);
         }
     }
 #undef SET_PLAYER_SCRIPT
@@ -942,7 +942,7 @@ i32 Player::UpdateMovementAndOptions()
     {
         this->extremeGaugeEffect =
             g_EffectManager.SpawnEffectInFixedSlot(
-                25, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 8, 1, -1);
+                EFFECT_EXTREME_GAUGE, D3DXVECTOR3_PTR(&this->position), 8, 1, -1);
     }
     if (this->extremeGaugeEffect != NULL)
     {
@@ -1143,7 +1143,8 @@ void Player::UpdateBombState()
 
             if (this->bombState.callbackVariant == PLAYER_BOMB_CALLBACK_SPECIAL)
             {
-                *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFE7Fu;
+                *reinterpret_cast<u32 *>(&g_GameManager.flags) &=
+                    ~GameManagerFlags::PLAYER_DEATH_DISSOLVE_WORD_MASK;
                 for (i = 0; i < 8; i++)
                 {
                     if (g_EnemyManager.bosses[i] != NULL)
@@ -1179,21 +1180,26 @@ void Player::UpdateBombState()
         g_GameManager.GetBombsRemaining() > 0 &&
         this->bombInputLockFrames == 0)
     {
-        if ((((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0) ||
-            (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 14) & 1) != 0))
+        if ((((*reinterpret_cast<u32 *>(&g_GameManager.flags) >>
+               GameManagerFlags::PLAYER_DEATH_DISSOLVE_SHIFT) &
+              GameManagerFlags::PLAYER_DEATH_DISSOLVE_MASK) != 0) ||
+            (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >>
+               GameManagerFlags::SPELL_PRACTICE_SHIFT) & 1) != 0))
         {
             if ((g_GuiMessageInputCurrent & 2) != 0)
             {
                 if ((g_GuiMessageInputCurrent & 2) != (g_GuiMessageInputPrevious & 2))
-                    g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(41), 0);
+                    g_SoundPlayer.PlaySoundByIdx(SOUND_INVALID_ACTION, 0);
             }
             goto done;
         }
 
 acceptBomb:
-    g_ReplayManager->frameEventFlags |= 1;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_BOMB_STARTED;
     this->forceDeathbombAtWindowEnd = 0;
-    if (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) != 0)
+    if (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >>
+          GameManagerFlags::PLAYER_DEATH_DISSOLVE_SHIFT) &
+         GameManagerFlags::PLAYER_DEATH_DISSOLVE_MASK) != 0)
     {
         this->bombState.callbackVariant = PLAYER_BOMB_CALLBACK_SPECIAL;
     }
@@ -1205,7 +1211,8 @@ acceptBomb:
             this->deathbombEffect->active = 0;
             this->deathbombEffect = NULL;
         }
-        *reinterpret_cast<u32 *>(&g_GameManager.flags) &= 0xFFFFFBFFu;
+        *reinterpret_cast<u32 *>(&g_GameManager.flags) &=
+            ~GameManagerFlags::DEATHBOMB_FREEZE_ACTIVE_MASK;
         g_AnmManager->SetMixColorDefault();
 
         this->bombState.callbackVariant = this->focusMode;
@@ -1290,13 +1297,14 @@ i32 Player::UpdateDeathAndRespawn()
                 this->deathbombEffect->active = 0;
                 this->deathbombEffect = NULL;
             }
-            g_EffectManager.SpawnEffectInFixedSlot(12, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 3, 1, 0xFF4040FF);
-            g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 16, -1);
-            g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), this->position.x);
-            *reinterpret_cast<u32 *>(&g_GameManager.flags) &= ~0x400u;
+            g_EffectManager.SpawnEffectInFixedSlot(EFFECT_PLAYER_DEATH_OR_BOMB_RING, D3DXVECTOR3_PTR(&this->position), 3, 1, 0xFF4040FF);
+            g_EffectManager.SpawnEffect(EFFECT_DEATH_OR_BOMB_PARTICLE, D3DXVECTOR3_PTR(&this->position), 16, -1);
+            g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_BULLET_0_LOUD, this->position.x);
+            *reinterpret_cast<u32 *>(&g_GameManager.flags) &=
+                ~GameManagerFlags::DEATHBOMB_FREEZE_ACTIVE_MASK;
             g_AnmManager->SetMixColorDefault();
             this->mainVm.flagsWord &= ~0x20000u;
-            g_ReplayManager->frameEventFlags |= 4;
+            g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_PLAYER_DEATH_COMMITTED;
             g_GameManager.character = 0;
             this->deathbombPending = 0;
             g_Spellcard.InvalidateCapture();
@@ -1359,9 +1367,9 @@ i32 Player::UpdateDeathAndRespawn()
         this->mainVm.scale.y = 3.0f;
         if ((g_GameManager.shotType < 4 && this->focusMode == PLAYER_FOCUS_MODE_UNFOCUSED) ||
             (g_GameManager.shotType & 1) == 0)
-            this->anmFile->SetAndExecuteScriptIdx(&this->mainVm, 0);
+            this->anmFile->SetAndExecuteScriptIdx(&this->mainVm, PLAYER_MAIN_ANM_IDLE_UNFOCUSED);
         else
-            this->anmFile->SetAndExecuteScriptIdx(&this->mainVm, 5);
+            this->anmFile->SetAndExecuteScriptIdx(&this->mainVm, PLAYER_MAIN_ANM_IDLE_FOCUSED);
 
         if (g_GameManager.GetLives() <= 0)
         {
@@ -1545,19 +1553,19 @@ ZunResult Player::AddedCallback(Player *player)
             return ZUN_ERROR;
         if (Player::LoadShtFile(&player->secondaryShtFile, g_Player2ShtFile[g_GameManager.shotType]) != ZUN_SUCCESS)
             return ZUN_ERROR;
-        player->anmFile = g_AnmManager->PreloadAnm(5, g_PlayerAnmFilenames[g_GameManager.shotType]);
+        player->anmFile = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_PLAYER, g_PlayerAnmFilenames[g_GameManager.shotType]);
         if (player->anmFile == NULL)
             return ZUN_ERROR;
     }
     else
     {
-        player->anmFile = g_AnmManager->GetAnm(5);
+        player->anmFile = g_AnmManager->GetAnm(ANM_FILE_SLOT_PLAYER);
     }
 
     if (g_GameManager.shotType < 4 || (g_GameManager.shotType & 1) == 0)
-        player->anmFile->SetAndExecuteScriptIdx(&player->mainVm, 0);
+        player->anmFile->SetAndExecuteScriptIdx(&player->mainVm, PLAYER_MAIN_ANM_IDLE_UNFOCUSED);
     else
-        player->anmFile->SetAndExecuteScriptIdx(&player->mainVm, 5);
+        player->anmFile->SetAndExecuteScriptIdx(&player->mainVm, PLAYER_MAIN_ANM_IDLE_FOCUSED);
 
     player->position.operator float *()[0] = g_GameManager.arcadeRegionSize.x / 2.0f;
     player->position.operator float *()[1] = g_GameManager.arcadeRegionSize.y - 64.0f;
@@ -1680,7 +1688,7 @@ ZunResult Player::DeletedCallback(Player *player)
 {
     if (IsBulletManagerAnmReleaseRequired())
     {
-        g_AnmManager->ReleaseAnm(5);
+        g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_PLAYER);
         g_AsciiManager.SetGaugeInterrupt(99);
         g_AsciiManager.SetBossMarkerInterrupt(0, 99);
         g_AsciiManager.SetBossMarkerInterrupt(1, 99);
@@ -2300,7 +2308,7 @@ i32 __fastcall UpdateModeSensitiveOrbitingOption(Player *player, PlayerOptionSta
         option->position += option->target;
         option->position.z = 0.0f;
         g_EffectManager.SpawnEffect(
-            47, reinterpret_cast<D3DXVECTOR3 *>(&option->position), 1, 0x80602050);
+            EFFECT_PLAYER_OPTION, D3DXVECTOR3_PTR(&option->position), 1, 0x80602050);
         break;
 
     case PLAYER_OPTION_EXITING:
@@ -2340,7 +2348,7 @@ i32 __fastcall UpdateFacingTrailOption(Player *player, PlayerOptionState *option
         option->position += option->target;
         option->position.z = 0.0f;
         g_EffectManager.SpawnEffect(
-            47, reinterpret_cast<D3DXVECTOR3 *>(&option->position), 1, 0x80405080);
+            EFFECT_PLAYER_OPTION, D3DXVECTOR3_PTR(&option->position), 1, 0x80405080);
 
         switch (player->movementDirection)
         {
@@ -2482,12 +2490,12 @@ i32 __fastcall UpdateModeSensitiveFacingOption(Player *player, PlayerOptionState
             }
 
             g_EffectManager.SpawnEffect(
-                47, reinterpret_cast<D3DXVECTOR3 *>(&option->position), 1, 0x80405080);
+                EFFECT_PLAYER_OPTION, D3DXVECTOR3_PTR(&option->position), 1, 0x80405080);
         }
         else
         {
             g_EffectManager.SpawnEffect(
-                47, reinterpret_cast<D3DXVECTOR3 *>(&option->position), 1, 0xFFF05080);
+                EFFECT_PLAYER_OPTION, D3DXVECTOR3_PTR(&option->position), 1, 0xFFF05080);
         }
 optionUpdateDone:
         break;
@@ -2549,7 +2557,7 @@ i32 __fastcall UpdateTwinOrbitingOption(Player *player, PlayerOptionState *optio
         option->position += option->target;
         option->position.z = 0.0f;
         g_EffectManager.SpawnEffect(
-            47, reinterpret_cast<D3DXVECTOR3 *>(&option->position), 1, 0x80602050);
+            EFFECT_PLAYER_OPTION, D3DXVECTOR3_PTR(&option->position), 1, 0x80602050);
         break;
 
     case PLAYER_OPTION_EXITING:
@@ -2709,7 +2717,7 @@ i32 __fastcall Player::SpawnShotAimedAtTrackedPoint(PlayerShot *slot, i32 value,
                             this->tailPosition1.x - slot->position.x),
                 entry->angle + ZUN_PI / 2.0f);
             magnitude = entry->speed * 1.5f;
-            reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
+            FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
             *reinterpret_cast<u32 *>(&slot->angle) = *reinterpret_cast<u32 *>(&angle);
         }
         return 1;
@@ -2732,7 +2740,7 @@ i32 __fastcall SpawnShotAlongPlayerAngle(Player *player, PlayerShot *slot, i32 v
         angle = AddNormalizeAngle(
             player->baseShotAngle, entry->angle + ZUN_PI / 2.0f);
         magnitude = entry->speed;
-        reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
+        FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
         slot->angle = angle;
         return 1;
     }
@@ -2753,7 +2761,7 @@ i32 __fastcall SpawnShotAlongOptionAngle(Player *player, PlayerShot *slot, i32 v
         player->InitializeShot(slot, entry);
         angle = AddNormalizeAngle(player->optionStates[2].facingAngle, entry->angle);
         magnitude = entry->speed;
-        reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
+        FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
         slot->angle = angle;
         return 1;
     }
@@ -2768,7 +2776,7 @@ i32 __fastcall SpawnRandomizedShot(Player *player, PlayerShot *slot, i32 value,
     {
         player->InitializeShot(slot, entry);
         slot->angle = g_Rng.GetRandomF32() * ZUN_PI / 48.0f - ZUN_PI / 2.0f;
-        reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(slot->angle, entry->speed);
+        FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(slot->angle, entry->speed);
         return 1;
     }
     return 0;
@@ -2792,7 +2800,7 @@ i32 __fastcall SpawnHomingShot(Player *player, PlayerShot *slot, i32 value,
                             player->optionHomingTarget->position.x - slot->position.x),
                 entry->angle + ZUN_PI / 2.0f);
             magnitude = entry->speed * 1.5f;
-            reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
+            FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
             slot->angle = angle;
         }
         return 1;
@@ -2996,16 +3004,16 @@ i32 __fastcall ApplyShotHitBehavior(Player *player, PlayerShot *slot, Float3 *ef
         angle = g_Rng.GetRandomF32InRange(ZUN_PI / 2.0f) - 3.0f * ZUN_PI / 4.0f;
         switch (slot->vm.scriptIndex)
         {
-        case 12: slot->hitboxSize.x = 48.0f; slot->hitboxSize.y = 48.0f; reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
-        case 14: slot->hitboxSize.x = 64.0f; slot->hitboxSize.y = 64.0f; reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
-        case 16: slot->hitboxSize.x = 80.0f; slot->hitboxSize.y = 80.0f; reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
-        case 18: slot->hitboxSize.x = 96.0f; slot->hitboxSize.y = 96.0f; reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
-        case 20: slot->hitboxSize.x = 128.0f; slot->hitboxSize.y = 128.0f; reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
+        case 12: slot->hitboxSize.x = 48.0f; slot->hitboxSize.y = 48.0f; FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
+        case 14: slot->hitboxSize.x = 64.0f; slot->hitboxSize.y = 64.0f; FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
+        case 16: slot->hitboxSize.x = 80.0f; slot->hitboxSize.y = 80.0f; FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
+        case 18: slot->hitboxSize.x = 96.0f; slot->hitboxSize.y = 96.0f; FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
+        case 20: slot->hitboxSize.x = 128.0f; slot->hitboxSize.y = 128.0f; FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
         default: break;
         }
     }
     if ((i32)slot->timer % 6 == 0)
-        g_EffectManager.SpawnEffect(5, reinterpret_cast<D3DXVECTOR3 *>(effectPosition), 1, -1);
+        g_EffectManager.SpawnEffect(EFFECT_SHOT_HIT, D3DXVECTOR3_PTR(effectPosition), 1, -1);
     return 0;
 }
 
@@ -3019,7 +3027,7 @@ i32 __fastcall SpawnPeriodicShotHitEffect(Player *player, PlayerShot *slot,
         Float3 position;
         position = *effectPosition;
         position.x = slot->position.x;
-        g_EffectManager.SpawnEffect(5, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, -1);
+        g_EffectManager.SpawnEffect(EFFECT_SHOT_HIT, D3DXVECTOR3_PTR(&position), 1, -1);
     }
     return 0;
 }
@@ -3336,7 +3344,7 @@ i32 Player::CalcDamageToEnemy(Float3 *enemyPosition, Float3 *enemySize, i32 *hit
                 savedRotation = *reinterpret_cast<i32 *>(&bullet->vm.rotation.z);
                 this->anmFile->SetAndExecuteScriptIdx(&bullet->vm, bullet->animationIndex + 11);
                 *reinterpret_cast<i32 *>(&bullet->vm.rotation.z) = savedRotation;
-                g_EffectManager.SpawnEffect(5, reinterpret_cast<D3DXVECTOR3 *>(&bullet->position), 1, -1);
+                g_EffectManager.SpawnEffect(EFFECT_SHOT_HIT, D3DXVECTOR3_PTR(&bullet->position), 1, -1);
                 bullet->position.operator float *()[2] = 0.1f;
             }
             bullet->state = PLAYER_SHOT_HIT;
@@ -3399,9 +3407,9 @@ i32 Player::CalcDamageToEnemy(Float3 *enemyPosition, Float3 *enemySize, i32 *hit
             if (region->mode == 0 && (++this->shotHitEffectCounter % 4) == 0)
             {
                 if (i < 192)
-                    g_EffectManager.SpawnEffect(3, reinterpret_cast<D3DXVECTOR3 *>(enemyPosition), 1, -1);
+                    g_EffectManager.SpawnEffect(EFFECT_SHOT_HIT_LARGE, D3DXVECTOR3_PTR(enemyPosition), 1, -1);
                 else
-                    g_EffectManager.SpawnEffect(5, reinterpret_cast<D3DXVECTOR3 *>(enemyPosition), 1, -1);
+                    g_EffectManager.SpawnEffect(EFFECT_SHOT_HIT, D3DXVECTOR3_PTR(enemyPosition), 1, -1);
             }
             if (this->bombState.isInUse != 0 && bombHit != NULL)
                 *bombHit = 1;

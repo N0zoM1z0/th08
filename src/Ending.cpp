@@ -499,7 +499,7 @@ ZunResult Ending::AddedCallback(Ending *ending)
     ScreenEffect::Clear(COLOR_WHITE);
     g_Supervisor.suppressFpsDisplay = TRUE;
 
-    ending->endingAnm = g_AnmManager->LoadAnm(0x18, "staff01.anm");
+    ending->endingAnm = g_AnmManager->LoadAnm(ANM_FILE_SLOT_ENDING, "staff01.anm");
 
     if (g_GameManager.flags.gameCleared)
     {
@@ -588,7 +588,7 @@ execute_anms:
 
 ZunResult Ending::DeletedCallback(Ending *ending)
 {
-    g_AnmManager->ReleaseAnm(24);
+    g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_ENDING);
     g_Supervisor.curState = SupervisorState_ResultScreenFromGame;
     g_AnmManager->ReleaseSurface(0);
     g_ZunMemory.Free(ending->scriptData);

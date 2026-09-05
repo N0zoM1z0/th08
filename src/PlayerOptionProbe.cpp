@@ -110,7 +110,7 @@ i32 __fastcall UpdateModeSensitiveOrbitingOption(Player *player, PlayerOptionSta
         option->position += option->target;
         option->position.z = 0.0f;
         g_EffectManager.SpawnEffect(
-            47, reinterpret_cast<D3DXVECTOR3 *>(&option->position), 1, 0x80602050);
+            EFFECT_PLAYER_OPTION, D3DXVECTOR3_PTR(&option->position), 1, 0x80602050);
         break;
 
     case PLAYER_OPTION_EXITING:
@@ -149,7 +149,7 @@ i32 __fastcall UpdateFacingTrailOption(Player *player, PlayerOptionState *option
         option->position += option->target;
         option->position.z = 0.0f;
         g_EffectManager.SpawnEffect(
-            47, reinterpret_cast<D3DXVECTOR3 *>(&option->position), 1, 0x80405080);
+            EFFECT_PLAYER_OPTION, D3DXVECTOR3_PTR(&option->position), 1, 0x80405080);
 
         switch (player->movementDirection)
         {
@@ -291,12 +291,12 @@ i32 __fastcall UpdateModeSensitiveFacingOption(Player *player, PlayerOptionState
             }
 
             g_EffectManager.SpawnEffect(
-                47, reinterpret_cast<D3DXVECTOR3 *>(&option->position), 1, 0x80405080);
+                EFFECT_PLAYER_OPTION, D3DXVECTOR3_PTR(&option->position), 1, 0x80405080);
         }
         else
         {
             g_EffectManager.SpawnEffect(
-                47, reinterpret_cast<D3DXVECTOR3 *>(&option->position), 1, 0xFFF05080);
+                EFFECT_PLAYER_OPTION, D3DXVECTOR3_PTR(&option->position), 1, 0xFFF05080);
         }
 optionUpdateDone:
         break;
@@ -357,7 +357,7 @@ i32 __fastcall UpdateTwinOrbitingOption(Player *player, PlayerOptionState *optio
         option->position += option->target;
         option->position.z = 0.0f;
         g_EffectManager.SpawnEffect(
-            47, reinterpret_cast<D3DXVECTOR3 *>(&option->position), 1, 0x80602050);
+            EFFECT_PLAYER_OPTION, D3DXVECTOR3_PTR(&option->position), 1, 0x80602050);
         break;
 
     case PLAYER_OPTION_EXITING:
@@ -387,7 +387,7 @@ i32 __fastcall SpawnShotAlongPlayerAngle(Player *player, PlayerShot *slot, i32 v
         player->InitializeShot(slot, entry);
         angle = AddNormalizeAngle(player->baseShotAngle, entry->angle + ZUN_PI / 2.0f);
         magnitude = entry->speed;
-        reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
+        FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
         slot->angle = angle;
         return 1;
     }
@@ -407,7 +407,7 @@ i32 __fastcall SpawnShotAlongOptionAngle(Player *player, PlayerShot *slot, i32 v
         player->InitializeShot(slot, entry);
         angle = AddNormalizeAngle(player->optionStates[2].facingAngle, entry->angle);
         magnitude = entry->speed;
-        reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
+        FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
         slot->angle = angle;
         return 1;
     }
@@ -421,7 +421,7 @@ i32 __fastcall SpawnRandomizedShot(Player *player, PlayerShot *slot, i32 value,
     {
         player->InitializeShot(slot, entry);
         slot->angle = g_Rng.GetRandomF32() * ZUN_PI / 48.0f - ZUN_PI / 2.0f;
-        reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(slot->angle, entry->speed);
+        FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(slot->angle, entry->speed);
         return 1;
     }
     return 0;
@@ -444,7 +444,7 @@ i32 __fastcall SpawnHomingShot(Player *player, PlayerShot *slot, i32 value,
                             player->optionHomingTarget->position.x - slot->position.x),
                 entry->angle + ZUN_PI / 2.0f);
             magnitude = entry->speed * 1.5f;
-            reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
+            FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(angle, magnitude);
             slot->angle = angle;
         }
         return 1;
@@ -648,16 +648,16 @@ i32 __fastcall ApplyShotHitBehavior(Player *player, PlayerShot *slot, Float3 *ef
         angle = g_Rng.GetRandomF32InRange(ZUN_PI / 2.0f) - 3.0f * ZUN_PI / 4.0f;
         switch (slot->vm.scriptIndex)
         {
-        case 12: slot->hitboxSize.x = 48.0f; slot->hitboxSize.y = 48.0f; reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
-        case 14: slot->hitboxSize.x = 64.0f; slot->hitboxSize.y = 64.0f; reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
-        case 16: slot->hitboxSize.x = 80.0f; slot->hitboxSize.y = 80.0f; reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
-        case 18: slot->hitboxSize.x = 96.0f; slot->hitboxSize.y = 96.0f; reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
-        case 20: slot->hitboxSize.x = 128.0f; slot->hitboxSize.y = 128.0f; reinterpret_cast<Float3 *>(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
+        case 12: slot->hitboxSize.x = 48.0f; slot->hitboxSize.y = 48.0f; FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
+        case 14: slot->hitboxSize.x = 64.0f; slot->hitboxSize.y = 64.0f; FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
+        case 16: slot->hitboxSize.x = 80.0f; slot->hitboxSize.y = 80.0f; FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
+        case 18: slot->hitboxSize.x = 96.0f; slot->hitboxSize.y = 96.0f; FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
+        case 20: slot->hitboxSize.x = 128.0f; slot->hitboxSize.y = 128.0f; FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(angle, 6.0f); break;
         default: break;
         }
     }
     if ((i32)slot->timer % 6 == 0)
-        g_EffectManager.SpawnEffect(5, reinterpret_cast<D3DXVECTOR3 *>(effectPosition), 1, -1);
+        g_EffectManager.SpawnEffect(EFFECT_SHOT_HIT, D3DXVECTOR3_PTR(effectPosition), 1, -1);
     return 0;
 }
 
@@ -671,7 +671,7 @@ i32 __fastcall SpawnPeriodicShotHitEffect(Player *player, PlayerShot *slot,
         Float3 position;
         position = *effectPosition;
         position.x = slot->position.x;
-        g_EffectManager.SpawnEffect(5, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, -1);
+        g_EffectManager.SpawnEffect(EFFECT_SHOT_HIT, D3DXVECTOR3_PTR(&position), 1, -1);
     }
     return 0;
 }

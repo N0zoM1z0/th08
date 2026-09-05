@@ -104,6 +104,16 @@ struct Float3
     float z;
 };
 
+// Exact-safe ABI views for the two layout-compatible three-float vector
+// families used by the original game.  These remain macros deliberately:
+// their expansion is the original reinterpret_cast expression, so /Ob0 code
+// cannot gain an out-of-line accessor call merely for readability.
+#define D3DXVECTOR3_PTR(pointer) reinterpret_cast<D3DXVECTOR3 *>(pointer)
+#define D3DXVECTOR3_CONST_PTR(pointer) \
+    reinterpret_cast<const D3DXVECTOR3 *>(pointer)
+#define FLOAT3_PTR(pointer) reinterpret_cast<Float3 *>(pointer)
+#define FLOAT3_CONST_PTR(pointer) reinterpret_cast<const Float3 *>(pointer)
+
 /* ZUN name: FVector2 */
 struct Float2
 {

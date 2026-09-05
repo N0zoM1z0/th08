@@ -60,17 +60,18 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
 
     gameManager->currentStageClearFlag = static_cast<u16>(1 << gameManager->currentStage);
     gameManager->stageAtStart = gameManager->currentStage;
-    if (gameManager->difficulty < 4)
+    if (gameManager->difficulty < EXTRA)
         gameManager->difficultyMask = 1 << gameManager->difficulty;
     else
         gameManager->difficultyMask = 0xf;
 
     gameManager->characterListIndex = gameManager->shotType + gameManager->fullShotType;
     g_Supervisor.framerateMultiplier = 1.0f;
-    GM_FLAGS_WORD(gameManager) &= ~0x400U;
+    GM_FLAGS_WORD(gameManager) &=
+        ~GameManagerFlags::DEATHBOMB_FREEZE_ACTIVE_MASK;
 
     if (g_Supervisor.isInitialStageLoad || gameManager->flags.isSpellPractice ||
-        g_GameManager.flags.isPracticeMode || g_GameManager.difficulty >= 4)
+        g_GameManager.flags.isPracticeMode || g_GameManager.difficulty >= EXTRA)
     {
         if (gameManager->cfg)
         {
@@ -98,12 +99,12 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
 
         gameManager->character = 0;
         gameManager->globals->youkaiGauge = 0;
-        if (g_GameManager.currentStage == 8)
+        if (g_GameManager.currentStage == EXTRASTAGE)
             stageMode = 6;
         else
             stageMode = 0;
         gameManager->globals->clockTime = static_cast<u8>(stageMode);
-        if (g_GameManager.difficulty >= 4)
+        if (g_GameManager.difficulty >= EXTRA)
             gameManager->cfg->lifeCount = 2;
         if (g_GameManager.flags.isPracticeMode)
             gameManager->cfg->lifeCount = 8;
@@ -139,25 +140,25 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
         gameManager->globals->graze = 0;
         gameManager->globals->pointItemsCollected = 0;
 
-        if (gameManager->difficulty >= 4 || gameManager->flags.isPracticeMode ||
+        if (gameManager->difficulty >= EXTRA || gameManager->flags.isPracticeMode ||
             gameManager->flags.isSpellPractice)
             gameManager->cfg->slowMode = 0;
 
         switch (g_GameManager.difficulty)
         {
-        case 0:
+        case EASY:
             gameManager->globals->pointItemValue = 60000;
             break;
-        case 1:
+        case NORMAL:
             gameManager->globals->pointItemValue = 100000;
             break;
-        case 2:
+        case HARD:
             gameManager->globals->pointItemValue = 200000;
             break;
-        case 3:
+        case LUNATIC:
             gameManager->globals->pointItemValue = 300000;
             break;
-        case 4:
+        case EXTRA:
             gameManager->globals->pointItemValue = 300000;
             break;
         }
@@ -224,8 +225,10 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
     gameManager->globals->pointItemsCollectedInStage = 0;
     gameManager->globals->grazeInStage = 0;
     gameManager->isInGameMenu = 0;
-    GM_FLAGS_WORD(gameManager) &= ~0x180U;
-    GM_FLAGS_WORD(gameManager) &= ~0x2000U;
+    GM_FLAGS_WORD(gameManager) &=
+        ~GameManagerFlags::PLAYER_DEATH_DISSOLVE_WORD_MASK;
+    GM_FLAGS_WORD(gameManager) &=
+        ~GameManagerFlags::SUPPRESS_PLAYER_SHOTS_MASK;
     gameManager->stageActiveFrames = 0;
     gameManager->stageExtremeYoukaiFrames = 0;
     gameManager->stageExtremeHumanFrames = 0;
@@ -243,11 +246,11 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
         {
             switch (gameManager->currentStage)
             {
-            case 0:
+            case STAGE1:
                 gameManager->globals->playerPower = 0.0f;
                 gameManager->UpdateAntiTamper();
                 break;
-            case 1:
+            case STAGE2:
                 gameManager->globals->playerPower = 112.0f;
                 gameManager->UpdateAntiTamper();
                 break;
@@ -337,18 +340,18 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
     {
         switch (g_GameManager.currentStage)
         {
-        case 5:
+        case STAGE5:
             g_GameManager.IsSpellNumberEqualTo(212);
             break;
-        case 6:
+        case STAGE6A:
             if (!g_GameManager.IsSpellNumberInRange(119, 122))
                 g_GuiMessageStageMode = 2;
             break;
-        case 7:
+        case STAGE6B:
             if (!g_GameManager.IsSpellNumberInRange(147, 150))
                 g_GuiMessageStageMode = 2;
             break;
-        case 8:
+        case EXTRASTAGE:
             if (!g_GameManager.IsSpellNumberInRange(191, 193) &&
                 !g_GameManager.IsSpellNumberEqualTo(213))
                 g_GuiMessageStageMode = 2;
@@ -382,7 +385,8 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
     }
 
     gameManager->showRetryMenu = 0;
-    GM_FLAGS_WORD(gameManager) |= 4U;
+    GM_FLAGS_WORD(gameManager) |=
+        GameManagerFlags::REPLAY_INPUT_ENABLED_MASK;
     if (g_Supervisor.keepStageResources && g_GameManager.flags.isSpellPractice &&
         !GameManager::ShouldPauseMusicInSpellPractice(g_GameManager.currentSpellCardNumber))
         gameManager->stageStartupMode = STAGE_STARTUP_WITHOUT_MUSIC;
@@ -397,7 +401,7 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
 
     gameManager->scriptedUpdateFreeze = 0;
     gameManager->globals->score = 0;
-    GM_FLAGS_WORD(gameManager) &= ~0x10U;
+    GM_FLAGS_WORD(gameManager) &= ~GameManagerFlags::GAME_CLEARED_MASK;
     g_AsciiManager.Reset();
     g_AsciiManager.InitializeVms();
     g_GameManager.skipCurrentFrame = 0;
@@ -424,7 +428,8 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
     g_Supervisor.subthreadCloseRequestActive = FALSE;
     g_Supervisor.subthreadActive = FALSE;
     g_Supervisor.screenTransitionCountdown = 60;
-    GM_FLAGS_WORD(gameManager) &= ~0x200U;
+    GM_FLAGS_WORD(gameManager) &=
+        ~GameManagerFlags::STAGE_CLEAR_SEQUENCE_ACTIVE_MASK;
     g_Supervisor.keepStageResources = 0;
     g_ScreenEffectCounter = 2;
     goto thread_done;

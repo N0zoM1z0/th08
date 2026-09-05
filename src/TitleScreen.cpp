@@ -3221,10 +3221,10 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
     ReplayData *replayData;
     char path[64];
 
-    // Yeah, the enum doesn't work well here so, it's cast into an int
+    // This screen stores its replay-specific state in the shared state field.
     switch ((i32)this->currentScreenState)
     {
-    case 0:
+    case TITLE_REPLAY_MENU_ENUMERATE_REPLAYS:
         if (this->stateTimer2 == 0)
         {
             if (this->previousScreen != TitleCurrentScreen_Replay)
@@ -3313,11 +3313,12 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
 
         if (this->stateTimer2 >= 8)
         {
-            this->currentScreenState = (TitleCurrentScreenState)1;
+            this->currentScreenState =
+                static_cast<TitleCurrentScreenState>(TITLE_REPLAY_MENU_SELECT_REPLAY);
             this->stateTimer = 0;
         }
         break;
-    case 1:
+    case TITLE_REPLAY_MENU_SELECT_REPLAY:
         this->MoveCursorVertical(this->replayCount);
         if (this->replayCount > TITLE_REPLAYS_PER_PAGE)
         {
@@ -3357,7 +3358,8 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
 
             g_SoundPlayer.PlaySoundByIdx(SOUND_SELECT, 0);
 
-            this->currentScreenState = (TitleCurrentScreenState)2;
+            this->currentScreenState =
+                static_cast<TitleCurrentScreenState>(TITLE_REPLAY_MENU_SELECT_STAGE);
 
             g_AnmManager->SetInterruptArray(this->vms, this->vmCount, 15);
             this->vms[this->selectedReplay % TITLE_REPLAYS_PER_PAGE + 80].SetInterrupt(17);
@@ -3410,13 +3412,14 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
         if (WAS_PRESSED(TH_BUTTON_BOMB | TH_BUTTON_MENU))
         {
             g_SoundPlayer.PlaySoundByIdx(SOUND_BACK, 0);
-            this->currentScreenState = (TitleCurrentScreenState)4;
+            this->currentScreenState =
+                static_cast<TitleCurrentScreenState>(TITLE_REPLAY_MENU_EXIT);
             this->stateTimer = 0;
             g_AnmManager->SetInterruptArray(this->vms, this->vmCount, 16);
         }
 
         break;
-    case 2:
+    case TITLE_REPLAY_MENU_SELECT_STAGE:
         i = this->MoveCursorVertical(9);
         if (i < 0)
         {
@@ -3448,7 +3451,8 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
             g_AnmManager->SetInterruptArray(this->vms, this->vmCount, 19);
             this->vms[this->selectedReplay % TITLE_REPLAYS_PER_PAGE + 80].SetInterrupt(17);
 
-            this->currentScreenState = (TitleCurrentScreenState)3;
+            this->currentScreenState =
+                static_cast<TitleCurrentScreenState>(TITLE_REPLAY_MENU_SELECT_PLAYBACK_MODE);
             this->cursor = 0;
 
             this->vms[108].pendingInterrupt = 21;
@@ -3469,14 +3473,15 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
         {
             g_ZunMemory.Free(this->currentReplay);
             this->currentReplay = NULL;
-            this->currentScreenState = (TitleCurrentScreenState)1;
+            this->currentScreenState =
+                static_cast<TitleCurrentScreenState>(TITLE_REPLAY_MENU_SELECT_REPLAY);
             this->stateTimer2 = 0;
             g_AnmManager->SetInterruptArray(this->vms, this->vmCount, 14);
             this->cursor = this->selectedReplay;
             break;
         }
         break;
-    case 3:
+    case TITLE_REPLAY_MENU_SELECT_PLAYBACK_MODE:
         i = this->MoveCursorVertical((this->currentReplay->spellcardNumber < 0) ? 3 : 2);
         if (i != 0)
         {
@@ -3519,7 +3524,8 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
 
         if (WAS_PRESSED(TH_BUTTON_BOMB | TH_BUTTON_MENU))
         {
-            this->currentScreenState = (TitleCurrentScreenState)2;
+            this->currentScreenState =
+                static_cast<TitleCurrentScreenState>(TITLE_REPLAY_MENU_SELECT_STAGE);
             this->stateTimer2 = 0;
             this->cursor = this->selectedReplayStage;
 
@@ -3529,7 +3535,7 @@ ChainCallbackResult TitleScreen::OnUpdateReplayMenu()
             break;
         }
         break;
-    case 4:
+    case TITLE_REPLAY_MENU_EXIT:
         if (this->stateTimer >= 30)
         {
             this->ChangeCurrentScreen(TitleCurrentScreen_StartMenu);
@@ -3737,14 +3743,14 @@ void TitleScreen::TitleSetupThread(TitleScreen *titleScreen)
         Sleep(1);
     }
 
-    g_TitleScreen->titleAnm = g_AnmManager->PreloadAnm(20, "title01.anm");
+    g_TitleScreen->titleAnm = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_TITLE, "title01.anm");
     if (g_TitleScreen->titleAnm == NULL)
     {
         g_TitleScreen->state = TitleScreenState_Close;
         return;
     }
 
-    g_TitleScreen->resultTextAnm = g_AnmManager->PreloadAnm(22, "resulttext.anm");
+    g_TitleScreen->resultTextAnm = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_RESULT_TEXT, "resulttext.anm");
     if (g_TitleScreen->resultTextAnm == NULL)
     {
         g_TitleScreen->state = TitleScreenState_Close;
@@ -3948,8 +3954,8 @@ ZunResult TitleScreen::DeletedCallback(TitleScreen *titleScreen)
 {
     g_Supervisor.d3dDevice->ResourceManagerDiscardBytes(0);
 
-    g_AnmManager->ReleaseAnm(20);
-    g_AnmManager->ReleaseAnm(22);
+    g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_TITLE);
+    g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_RESULT_TEXT);
     g_AnmManager->ReleaseSurface(0);
 
     g_Chain.Cut(titleScreen->drawChain);

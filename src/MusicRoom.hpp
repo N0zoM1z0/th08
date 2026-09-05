@@ -23,6 +23,12 @@ struct TrackDescriptor
 
 C_ASSERT(sizeof(TrackDescriptor) == 0x292);
 
+enum MusicRoomInputState
+{
+    MUSIC_ROOM_INPUT_WAITING_FOR_ENABLE = 0,
+    MUSIC_ROOM_INPUT_ACTIVE = 1,
+};
+
 struct MusicRoom
 {
     MusicRoom()

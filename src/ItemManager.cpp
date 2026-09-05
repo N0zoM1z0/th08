@@ -159,7 +159,7 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(i32, 4, g_ExPointItemExtendThresholds) = {200, 666,
 
 void ItemManager::UpdatePointItemExtendThreshold()
 {
-    if (g_GameManager.difficulty < 4)
+    if (g_GameManager.difficulty < EXTRA)
     {
         if (g_GameManager.globals->pointItemExtendsSoFar < 6)
         {
@@ -310,7 +310,7 @@ pickup:
         if (item->state != ITEM_STATE_TIME_RISING &&
             g_Player.CalcItemBoxCollision(&item->currentPosition, &itemBox))
         {
-            g_ReplayManager->frameEventFlags |= 0x40;
+            g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_ITEM_COLLECTED;
             switch (item->itemType)
             {
             case ITEM_POWER_SMALL:
@@ -372,7 +372,7 @@ pickup:
             }
 
             if (soundIndex <= SOUND_ITEM)
-                soundIndex = item->isMaxValue ? SOUND_2C : SOUND_ITEM;
+                soundIndex = item->isMaxValue ? SOUND_ITEM_MAX_VALUE : SOUND_ITEM;
             item->Delete();
             item = item->next;
             continue;
@@ -666,7 +666,7 @@ void ItemManager::ConvertAllPowerItemsToTimeOrbs(Item *item)
                 current->startPositionOrVelocity.y = -0.5f;
                 current->startPositionOrVelocity.z = 0.0f;
             }
-            g_EffectManager.SpawnEffect(0, reinterpret_cast<D3DXVECTOR3 *>(&current->currentPosition), 1, -1);
+            g_EffectManager.SpawnEffect(EFFECT_ANM_SCRIPT_28, D3DXVECTOR3_PTR(&current->currentPosition), 1, -1);
             current->itemType = ITEM_POINT_SMALL;
             g_BulletManager.bulletAnm->SetAndExecuteScriptIdx(&current->sprite, ITEM_POINT_SMALL + 61);
         }

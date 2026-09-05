@@ -1570,18 +1570,18 @@ ZunResult AnmManager::ProjectCameraFacingQuad(AnmVm *vm)
     worldMatrix._42 = vm->pos.operator float *()[1];
     worldMatrix._43 = vm->pos.operator float *()[2];
 
-    D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectedPosition),
-                    reinterpret_cast<D3DXVECTOR3 *>(&origin), &g_Supervisor.viewport,
+    D3DXVec3Project(D3DXVECTOR3_PTR(&projectedPosition),
+                    D3DXVECTOR3_PTR(&origin), &g_Supervisor.viewport,
                     &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldMatrix);
     if (projectedPosition.z < 0.0f || projectedPosition.z > 1.0f)
         return ZUN_ERROR;
 
-    D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectedReference),
-                    reinterpret_cast<D3DXVECTOR3 *>(&g_Background.cameraCurrent.right),
+    D3DXVec3Project(D3DXVECTOR3_PTR(&projectedReference),
+                    D3DXVECTOR3_PTR(&g_Background.cameraCurrent.right),
                     &g_Supervisor.viewport, &g_Supervisor.projectionMatrix,
                     &g_Supervisor.viewMatrix, &worldMatrix);
     delta = projectedReference - projectedPosition;
-    xOffset = D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&delta)) * 0.5f;
+    xOffset = D3DXVec3Length(D3DXVECTOR3_PTR(&delta)) * 0.5f;
     halfWidth = xOffset * vm->spriteSize.x * vm->scale.x;
     halfHeight = xOffset * vm->spriteSize.y * vm->scale.y;
     xOffset = projectedPosition.x;
@@ -1673,13 +1673,13 @@ void AnmManager::Project3DQuad(AnmVm *vm)
 
     worldTransformMatrix._43 = vm->pos.z;
 
-    D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&g_QuadVertices[0].pos), reinterpret_cast<D3DXVECTOR3 *>(&this->untexturedVector[0].pos), &g_Supervisor.viewport,
+    D3DXVec3Project(D3DXVECTOR3_PTR(&g_QuadVertices[0].pos), D3DXVECTOR3_PTR(&this->untexturedVector[0].pos), &g_Supervisor.viewport,
                     &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldTransformMatrix);
-    D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&g_QuadVertices[1].pos), reinterpret_cast<D3DXVECTOR3 *>(&this->untexturedVector[1].pos), &g_Supervisor.viewport,
+    D3DXVec3Project(D3DXVECTOR3_PTR(&g_QuadVertices[1].pos), D3DXVECTOR3_PTR(&this->untexturedVector[1].pos), &g_Supervisor.viewport,
                     &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldTransformMatrix);
-    D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&g_QuadVertices[2].pos), reinterpret_cast<D3DXVECTOR3 *>(&this->untexturedVector[2].pos), &g_Supervisor.viewport,
+    D3DXVec3Project(D3DXVECTOR3_PTR(&g_QuadVertices[2].pos), D3DXVECTOR3_PTR(&this->untexturedVector[2].pos), &g_Supervisor.viewport,
                     &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldTransformMatrix);
-    D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&g_QuadVertices[3].pos), reinterpret_cast<D3DXVECTOR3 *>(&this->untexturedVector[3].pos), &g_Supervisor.viewport,
+    D3DXVec3Project(D3DXVECTOR3_PTR(&g_QuadVertices[3].pos), D3DXVECTOR3_PTR(&this->untexturedVector[3].pos), &g_Supervisor.viewport,
                     &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldTransformMatrix);
 
     this->cachedWorldMatrix = worldTransformMatrix;
@@ -1725,23 +1725,23 @@ ZunResult AnmManager::ProjectCameraFacingQuadWithCallback(
     worldMatrix._42 = vm->pos.operator float *()[1];
     worldMatrix._43 = vm->pos.operator float *()[2];
 
-    D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectedPosition),
-                    reinterpret_cast<D3DXVECTOR3 *>(&origin), &g_Supervisor.viewport,
+    D3DXVec3Project(D3DXVECTOR3_PTR(&projectedPosition),
+                    D3DXVECTOR3_PTR(&origin), &g_Supervisor.viewport,
                     &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldMatrix);
     if (projectedPosition.z < 0.0f || projectedPosition.z > 1.0f)
         return ZUN_ERROR;
 
-    D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectedReference),
-                    reinterpret_cast<D3DXVECTOR3 *>(&g_Background.cameraCurrent.right),
+    D3DXVec3Project(D3DXVECTOR3_PTR(&projectedReference),
+                    D3DXVECTOR3_PTR(&g_Background.cameraCurrent.right),
                     &g_Supervisor.viewport, &g_Supervisor.projectionMatrix,
                     &g_Supervisor.viewMatrix, &worldMatrix);
     delta = projectedReference - projectedPosition;
-    xOffset = D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&delta)) * 0.5f;
+    xOffset = D3DXVec3Length(D3DXVECTOR3_PTR(&delta)) * 0.5f;
     halfWidth = xOffset * vm->spriteSize.x * vm->scale.x;
     halfHeight = xOffset * vm->spriteSize.y * vm->scale.y;
 
     if (callback != NULL)
-        callback(vm, reinterpret_cast<D3DXVECTOR3 *>(&projectedPosition));
+        callback(vm, D3DXVECTOR3_PTR(&projectedPosition));
 
     xOffset = projectedPosition.x;
     yOffset = projectedPosition.y;
@@ -3170,22 +3170,22 @@ void AnmManager::DrawPlayerBullet(AnmVm *vm)
 {
     switch (vm->playerBulletHitAnimationType)
     {
-    case 0:
+    case ANM_PLAYER_BULLET_DRAW_NO_ROTATION:
         this->DrawNoRotation(vm);
         break;
-    case 1:
+    case ANM_PLAYER_BULLET_DRAW_NO_ROTATION_NO_ROUND:
         this->DrawNoRotationNoRound(vm);
         break;
-    case 2:
+    case ANM_PLAYER_BULLET_DRAW_2D:
         this->Draw2D(vm);
         break;
-    case 3:
+    case ANM_PLAYER_BULLET_DRAW_2D_ROTATED_OR_AXIS_ALIGNED:
         this->Draw2DRotatedOrAxisAligned(vm);
         break;
-    case 4:
+    case ANM_PLAYER_BULLET_DRAW_CAMERA_FACING_QUAD:
         this->DrawCameraFacingQuad(vm);
         break;
-    case 5:
+    case ANM_PLAYER_BULLET_DRAW_PROJECTED_3D_QUAD:
         this->DrawProjected3DQuad(vm);
         break;
     }

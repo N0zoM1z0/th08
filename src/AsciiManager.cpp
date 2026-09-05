@@ -127,7 +127,8 @@ ChainCallbackResult AsciiManager::OnUpdate(AsciiManager *ascii)
     if (g_GameManager.isInGameMenu == 0 && g_GameManager.showRetryMenu == 0)
     {
         popup = &ascii->scorePopups[0];
-        if (((*(u32 *)&g_GameManager.flags >> 10) & 1) == 0)
+        if (((*(u32 *)&g_GameManager.flags >>
+              GameManagerFlags::DEATHBOMB_FREEZE_ACTIVE_SHIFT) & 1) == 0)
         {
             for (i = 0; i < ASCII_MAX_SCORE_POPUPS + ASCII_MAX_PLAYER_POPUPS; i++, popup++)
             {
@@ -287,13 +288,13 @@ ZunResult AsciiManager::AddedCallback(AsciiManager *ascii)
 {
     memset(ascii, 0, sizeof(AsciiManager));
 
-    ascii->asciiAnm = g_AnmManager->PreloadAnm(1, "ascii.anm");
+    ascii->asciiAnm = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_ASCII, "ascii.anm");
     if (ascii->asciiAnm == NULL)
     {
         return ZUN_ERROR;
     }
 
-    ascii->captureAnm = g_AnmManager->PreloadAnm(3, "capture.anm");
+    ascii->captureAnm = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_CAPTURE, "capture.anm");
     if (ascii->captureAnm == NULL)
     {
         return ZUN_ERROR;
@@ -308,8 +309,8 @@ ZunResult AsciiManager::AddedCallback(AsciiManager *ascii)
 // FUNCTION: th08 0x4028c0
 ZunResult AsciiManager::DeletedCallback(AsciiManager *ascii)
 {
-    g_AnmManager->ReleaseAnm(1);
-    g_AnmManager->ReleaseAnm(3);
+    g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_ASCII);
+    g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_CAPTURE);
 
     return ZUN_SUCCESS;
 }
@@ -481,7 +482,7 @@ void AsciiManager::OnDrawLowPrioImpl()
 
             switch (this->bossMarkerStates[i])
             {
-            case 0:
+            case BOSS_MARKER_NORMAL:
             no_flicker:
                 this->bossMarkers[i].color1.r = 255;
                 this->bossMarkers[i].color1.g = 255;
@@ -495,13 +496,13 @@ void AsciiManager::OnDrawLowPrioImpl()
                     this->bossMarkers[i].color1.a = 160;
                 }
                 break;
-            case 1:
+            case BOSS_MARKER_RED:
                 this->bossMarkers[i].color1.a = 128;
                 this->bossMarkers[i].color1.r = 255;
                 this->bossMarkers[i].color1.g = 64;
                 this->bossMarkers[i].color1.b = 64;
                 break;
-            case 2:
+            case BOSS_MARKER_BLINK_EVERY_8_FRAMES:
                 if (this->frameTimer % 8 == 0)
                 {
                     this->bossMarkers[i].loadedSprite = this->asciiAnm->GetSprite(158);
@@ -515,7 +516,7 @@ void AsciiManager::OnDrawLowPrioImpl()
                     goto no_flicker;
                 }
                 break;
-            case 3:
+            case BOSS_MARKER_BLINK_EVERY_4_FRAMES:
                 if (this->frameTimer % 4 == 0)
                 {
                     this->bossMarkers[i].loadedSprite = this->asciiAnm->GetSprite(158);
@@ -529,7 +530,7 @@ void AsciiManager::OnDrawLowPrioImpl()
                     goto no_flicker;
                 }
                 break;
-            case 4:
+            case BOSS_MARKER_BLINK_EVERY_2_FRAMES:
                 if (this->frameTimer % 2 == 0)
                 {
                     this->bossMarkers[i].loadedSprite = this->asciiAnm->GetSprite(158);
