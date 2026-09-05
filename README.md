@@ -18,6 +18,98 @@
 > [`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
 > Windows and macOS ports remain in progress.
 
+## Built by AI agents, judged by reproducible evidence
+
+This is not a conventional human-written decompilation with a little AI help
+around the edges. All new engineering in this continuation—reverse
+engineering, source matching, semantic recovery, tooling, documentation, and
+porting—is carried out by AI coding agents. The human maintainer sets the
+direction, controls what is published or merged, and supplies the legally
+obtained target and game data. The imported GensokyoClub history remains the
+work of its original contributors; we do not relabel their authorship.
+
+Our starting point in 2026 is that frontier coding agents are capable of
+sustained native-code reconstruction, provided they work inside an environment
+with good memory, narrow tasks, strong tools, and feedback that can prove them
+wrong. We do not assume that an agent is correct because its output looks
+plausible. In this project, an agent writes the hypothesis; the target and the
+toolchain decide whether it survives.
+
+```mermaid
+flowchart TD
+    H["Human maintainer<br/>sets scope and release authority"]:::human
+    K[("Repository memory<br/>rules · ledgers · handoff · skills<br/>evidence · guards")]:::memory
+    A["Fresh AI agent<br/>cold-starts from tracked state"]:::agent
+
+    H --> A
+    K --> A
+    A --> B["Choose one bounded function<br/>or semantic family"]:::agent
+    B --> E["Collect TH08 evidence<br/>verified target · mappings<br/>instructions · callers"]:::evidence
+    E --> I["Write natural C++<br/>preserve ABI and VC7 source shape"]:::work
+    I --> F{"Focused VC7<br/>comparison exact?"}:::gate
+
+    F -->|No| D["Diagnose extent, bytes,<br/>relocations, and source shape"]:::reject
+    D --> I
+    F -->|Yes| W{"Shared or<br/>wide change?"}:::gate
+    W -->|Yes| C["Cold-build every configured object<br/>replay the accepted ledger"]:::oracle
+    W -->|No| P["Run the applicable modern build,<br/>layout, and runtime checks"]:::oracle
+    C --> P
+    P --> G{"Every required<br/>gate passes?"}:::gate
+    G -->|No| D
+    G -->|Yes| R["Record evidence, unknowns,<br/>guards, and reusable lessons"]:::memory
+    R --> K
+    R --> Q["Commit and push a small,<br/>auditable checkpoint"]:::done
+    Q -.->|next agent| A
+
+    classDef human fill:#fff1c2,stroke:#b7791f,color:#3b2f0b,stroke-width:2px;
+    classDef agent fill:#ede9fe,stroke:#7c3aed,color:#2e1065,stroke-width:2px;
+    classDef memory fill:#dbeafe,stroke:#2563eb,color:#172554,stroke-width:2px;
+    classDef evidence fill:#cffafe,stroke:#0891b2,color:#083344,stroke-width:2px;
+    classDef work fill:#fef3c7,stroke:#d97706,color:#451a03,stroke-width:2px;
+    classDef oracle fill:#dcfce7,stroke:#16a34a,color:#052e16,stroke-width:2px;
+    classDef gate fill:#f3f4f6,stroke:#4b5563,color:#111827,stroke-width:2px;
+    classDef reject fill:#fee2e2,stroke:#dc2626,color:#450a0a,stroke-width:2px;
+    classDef done fill:#ccfbf1,stroke:#0f766e,color:#042f2e,stroke-width:2px;
+```
+
+The “Oracle” in that diagram is a stack of checks, not an agent's confidence
+score. We pin the exact Japanese 1.00d executable by size and SHA-256, compare
+the smallest affected VC7 function or object, and verify relocations as well as
+instruction bytes. A shared change then triggers a clean, single-job rebuild
+of every configured comparison object and a replay of the whole accepted
+ledger. Normal VC7 linking, modern Linux builds, fixed-layout checks, available
+runtime tests, and repository CI catch different classes of failure. A result
+does not become “exact” because an agent—or a maintainer—says that it is.
+
+The other half of the system is repository memory. We do not rely on one long
+chat or on an agent remembering what a previous agent discovered:
+
+- [AGENTS.md](AGENTS.md) holds the non-negotiable target, ABI, safety, and
+  acceptance rules.
+- The CSV/TOML ledgers and status scripts hold live mappings and accepted
+  results; prose never overrides them.
+- [The current handoff](docs/RE_HANDOFF.md) says what is complete, what is
+  blocked, and what should happen next.
+- [Task-specific skills](.agents/skills/) and
+  [the knowledge map](docs/KNOWLEDGE_BASE.md) preserve tool recipes, VC7 source
+  patterns, evidence boundaries, and lessons from failed experiments.
+- Focused evidence documents explain why a name, layout, function boundary, or
+  compiler shape was accepted, while CI guards completed surfaces against
+  regression.
+
+That makes agents interchangeable without making the work uncontrolled. A new
+agent can verify the target, read the tracked state, run the live reports, and
+resume from a clean checkout without needing the previous conversation. The
+project may pass through many agents over time, but reconstruction writes and
+Wine/VC7 matching are deliberately single-writer and serial. This avoids
+overlapping edits, stale objects, and shared-toolchain contamination while
+keeping handoffs cheap.
+
+The model can still make a bad inference. The architecture is designed around
+that fact: keep the task small, make the claim falsifiable, reject failed
+experiments, preserve uncertainty, and commit the evidence that lets the next
+agent check the work again. That is what we mean here by AI reconstruction.
+
 ## Repository status
 
 This repository reconstructs the original Japanese
@@ -68,8 +160,8 @@ an accepted match does not make the cut.
 Every semantic batch is checked in both directions. The VC7 comparison makes
 sure accepted target bytes stay exact; the modern builds make sure the same
 source still works as portable C++. Shared changes are rebuilt on Linux and
-checked against the fixed-layout verifier, with runtime tests added when the
-change affects behavior.
+checked against the fixed-layout verifier, with relevant runtime tests used
+when they are available.
 
 To see whether this pass had actually improved the source, we did a best-effort
 audit across the repository and compared the same kinds of interpreter code
