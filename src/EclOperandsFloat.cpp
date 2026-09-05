@@ -133,7 +133,7 @@ f32 Enemy::ResolveFloat(f32 operand)
     case 0x2742:
     {
         Float3 delta = g_Player.position - this->worldPosition;
-        return D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&delta));
+        return D3DXVec3Length(D3DXVECTOR3_PTR(&delta));
     }
     case 0x2771: return (f32)g_Player.IsYoukai();
     case 0x2773:

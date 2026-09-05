@@ -35,9 +35,9 @@ void __fastcall ConfigurePolarMotion(Enemy *enemy, EclRawInstruction *instructio
                                  ReadFloat(enemy, instruction, 3) *
                                  ReadInt(enemy, instruction, 0);
     enemy->movementInterpolationDelta.z = 0.0f;
-    *reinterpret_cast<D3DXVECTOR3 *>(
+    *D3DXVECTOR3_PTR(
         &enemy->movementInterpolationOrigin) =
-        *reinterpret_cast<D3DXVECTOR3 *>(
+        *D3DXVECTOR3_PTR(
             &enemy->worldPosition);
     enemy->movementTimer =
         (enemy->movementDuration = ReadInt(enemy, instruction, 0));
@@ -63,13 +63,13 @@ void __fastcall ConfigureRelativeMotion(Enemy *enemy, EclRawInstruction *instruc
     target.y = ReadFloat(enemy, instruction, 3);
     target.z = 0.0f;
 
-    *reinterpret_cast<D3DXVECTOR3 *>(
+    *D3DXVECTOR3_PTR(
         &enemy->movementInterpolationDelta) =
-        target - *reinterpret_cast<D3DXVECTOR3 *>(
+        target - *D3DXVECTOR3_PTR(
                      &enemy->worldPosition);
-    *reinterpret_cast<D3DXVECTOR3 *>(
+    *D3DXVECTOR3_PTR(
         &enemy->movementInterpolationOrigin) =
-        *reinterpret_cast<D3DXVECTOR3 *>(&enemy->position);
+        *D3DXVECTOR3_PTR(&enemy->position);
     enemy->movementTimer =
         (enemy->movementDuration = ReadInt(enemy, instruction, 0));
 
@@ -78,7 +78,7 @@ void __fastcall ConfigureRelativeMotion(Enemy *enemy, EclRawInstruction *instruc
         ReadInt(enemy, instruction, 1);
     reinterpret_cast<EnemyFlag1Bits *>(
         &enemy->flags1)->movementMode = 2;
-    *reinterpret_cast<D3DXVECTOR3 *>(&enemy->velocity) =
+    *D3DXVECTOR3_PTR(&enemy->velocity) =
         D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     if (reinterpret_cast<EnemyFlag1Bits *>(
             &enemy->flags1)->mirrorMovementX)

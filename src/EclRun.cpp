@@ -51,9 +51,9 @@ restart_context:
             goto enter_subroutine;
 
 low_redispatch_instruction:
-        *reinterpret_cast<D3DXVECTOR3 *>(&enemy->worldPosition) =
-            *reinterpret_cast<D3DXVECTOR3 *>(&enemy->position) +
-            *reinterpret_cast<D3DXVECTOR3 *>(&enemy->positionOffset);
+        *D3DXVECTOR3_PTR(&enemy->worldPosition) =
+            *D3DXVECTOR3_PTR(&enemy->position) +
+            *D3DXVECTOR3_PTR(&enemy->positionOffset);
 
         if ((int)enemy->activeEclContext->secondaryTime > 0)
         {

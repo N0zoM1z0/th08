@@ -132,9 +132,9 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 15, g_EffectAnms) = {
 Background::Background()
 {
     memset(this, 0, sizeof(Background));
-    *reinterpret_cast<D3DXVECTOR3 *>(&this->cameraCurrent.position) = D3DXVECTOR3(0, 0, 1000.0f);
-    *reinterpret_cast<D3DXVECTOR3 *>(&this->cameraCurrent.lookAtOffset) = D3DXVECTOR3(0, 0, 0);
-    *reinterpret_cast<D3DXVECTOR3 *>(&this->cameraCurrent.up) = D3DXVECTOR3(0, 1.0f, 0);
+    *D3DXVECTOR3_PTR(&this->cameraCurrent.position) = D3DXVECTOR3(0, 0, 1000.0f);
+    *D3DXVECTOR3_PTR(&this->cameraCurrent.lookAtOffset) = D3DXVECTOR3(0, 0, 0);
+    *D3DXVECTOR3_PTR(&this->cameraCurrent.up) = D3DXVECTOR3(0, 1.0f, 0);
     this->cameraCurrent.fieldOfView = 0.5235987901687622f;
     this->cameraTarget = this->cameraCurrent;
     this->cameraInterpolationStart = this->cameraCurrent;
@@ -169,7 +169,7 @@ ChainCallbackResult Background::OnUpdate(Background *background)
             Float3 zeroVector(0.0f, 0.0f, 0.0f);
             background->stageEffect =
                 g_EffectManager.SpawnEffectInFixedSlot(
-                    0x40, reinterpret_cast<D3DXVECTOR3 *>(&zeroVector), 0xC, 1, -1);
+                    EFFECT_STAGE_ANM_HOST, D3DXVECTOR3_PTR(&zeroVector), 0xC, 1, -1);
             spawnedStageEffect = &background->stageEffect->vm;
             background->stageAnmFile->SetAndExecuteScriptIdx(spawnedStageEffect, 11);
         }
@@ -246,22 +246,22 @@ read_instruction:
     case 0:
         if (curInsn->frame == -1)
         {
-            background->stagePositionInitial = *reinterpret_cast<Float3 *>(curInsn->args);
+            background->stagePositionInitial = *FLOAT3_PTR(curInsn->args);
             background->stagePosition.x = background->stagePositionInitial.x;
             background->stagePosition.y = background->stagePositionInitial.y;
             background->stagePosition.z = background->stagePositionInitial.z;
         }
         else
         {
-            pos = *reinterpret_cast<D3DXVECTOR3 *>(curInsn->args);
+            pos = *D3DXVECTOR3_PTR(curInsn->args);
             background->stagePosition.x = pos.x;
             background->stagePosition.y = pos.y;
             background->stagePosition.z = pos.z;
-            background->stagePositionInitial = *reinterpret_cast<Float3 *>(&pos);
+            background->stagePositionInitial = *FLOAT3_PTR(&pos);
             background->stagePositionStartFrame = curInsn->frame;
             curInsn++;
             background->stagePositionEndFrame = curInsn->frame;
-            background->stagePositionTarget = *reinterpret_cast<Float3 *>(curInsn->args);
+            background->stagePositionTarget = *FLOAT3_PTR(curInsn->args);
         }
         break;
     case 1:
@@ -278,14 +278,14 @@ read_instruction:
     case 5:
         if (background->compensateCameraJump)
         {
-            Float3 cameraDelta = *reinterpret_cast<Float3 *>(curInsn->args) - background->cameraTarget.position;
+            Float3 cameraDelta = *FLOAT3_PTR(curInsn->args) - background->cameraTarget.position;
             ShiftStageEffectOrigins(&cameraDelta);
             background->compensateCameraJump = 0;
         }
         background->cameraInterpolationStart.position = background->cameraTarget.position;
-        background->cameraTarget.position = *reinterpret_cast<Float3 *>(curInsn->args);
+        background->cameraTarget.position = *FLOAT3_PTR(curInsn->args);
         if (background->cameraInterpolationDuration[0] == 0)
-            background->cameraCurrent.position = *reinterpret_cast<Float3 *>(curInsn->args);
+            background->cameraCurrent.position = *FLOAT3_PTR(curInsn->args);
         break;
     case 6:
         background->cameraInterpolationDuration[0] = curInsn->args[0];
@@ -294,9 +294,9 @@ read_instruction:
         break;
     case 7:
         background->cameraInterpolationStart.lookAtOffset = background->cameraTarget.lookAtOffset;
-        background->cameraTarget.lookAtOffset = *reinterpret_cast<Float3 *>(curInsn->args);
+        background->cameraTarget.lookAtOffset = *FLOAT3_PTR(curInsn->args);
         if (background->cameraInterpolationDuration[1] == 0)
-            background->cameraCurrent.lookAtOffset = *reinterpret_cast<Float3 *>(curInsn->args);
+            background->cameraCurrent.lookAtOffset = *FLOAT3_PTR(curInsn->args);
         break;
     case 8:
         background->cameraInterpolationDuration[1] = curInsn->args[0];
@@ -305,9 +305,9 @@ read_instruction:
         break;
     case 9:
         background->cameraInterpolationStart.up = background->cameraTarget.up;
-        background->cameraTarget.up = *reinterpret_cast<Float3 *>(curInsn->args);
+        background->cameraTarget.up = *FLOAT3_PTR(curInsn->args);
         if (background->cameraInterpolationDuration[2] == 0)
-            background->cameraCurrent.up = *reinterpret_cast<Float3 *>(curInsn->args);
+            background->cameraCurrent.up = *FLOAT3_PTR(curInsn->args);
         break;
     case 10:
         background->cameraInterpolationDuration[2] = curInsn->args[0];
@@ -341,28 +341,28 @@ read_instruction:
         background->cameraInterpolationDuration[0] = 0;
         background->compensateCameraJump = 1;
         goto read_instruction;
-    case 14: background->cameraInterpolationStart.position = *reinterpret_cast<Float3 *>(curInsn->args); break;
-    case 15: background->cameraTarget.position = *reinterpret_cast<Float3 *>(curInsn->args); break;
-    case 16: background->cameraInterpolationTangentStart.position = *reinterpret_cast<Float3 *>(curInsn->args); break;
-    case 17: background->cameraInterpolationTangentEnd.position = *reinterpret_cast<Float3 *>(curInsn->args); break;
+    case 14: background->cameraInterpolationStart.position = *FLOAT3_PTR(curInsn->args); break;
+    case 15: background->cameraTarget.position = *FLOAT3_PTR(curInsn->args); break;
+    case 16: background->cameraInterpolationTangentStart.position = *FLOAT3_PTR(curInsn->args); break;
+    case 17: background->cameraInterpolationTangentEnd.position = *FLOAT3_PTR(curInsn->args); break;
     case 18:
         background->cameraInterpolationDuration[0] = curInsn->args[0];
         background->cameraInterpolationTimers[0] = 0;
         background->cameraInterpolationModes[0] = 7;
         break;
-    case 19: background->cameraInterpolationStart.lookAtOffset = *reinterpret_cast<Float3 *>(curInsn->args); break;
-    case 20: background->cameraTarget.lookAtOffset = *reinterpret_cast<Float3 *>(curInsn->args); break;
-    case 21: background->cameraInterpolationTangentStart.lookAtOffset = *reinterpret_cast<Float3 *>(curInsn->args); break;
-    case 22: background->cameraInterpolationTangentEnd.lookAtOffset = *reinterpret_cast<Float3 *>(curInsn->args); break;
+    case 19: background->cameraInterpolationStart.lookAtOffset = *FLOAT3_PTR(curInsn->args); break;
+    case 20: background->cameraTarget.lookAtOffset = *FLOAT3_PTR(curInsn->args); break;
+    case 21: background->cameraInterpolationTangentStart.lookAtOffset = *FLOAT3_PTR(curInsn->args); break;
+    case 22: background->cameraInterpolationTangentEnd.lookAtOffset = *FLOAT3_PTR(curInsn->args); break;
     case 23:
         background->cameraInterpolationDuration[1] = curInsn->args[0];
         background->cameraInterpolationTimers[1] = 0;
         background->cameraInterpolationModes[1] = 7;
         break;
-    case 24: background->cameraInterpolationStart.up = *reinterpret_cast<Float3 *>(curInsn->args); break;
-    case 25: background->cameraTarget.up = *reinterpret_cast<Float3 *>(curInsn->args); break;
-    case 26: background->cameraInterpolationTangentStart.up = *reinterpret_cast<Float3 *>(curInsn->args); break;
-    case 27: background->cameraInterpolationTangentEnd.up = *reinterpret_cast<Float3 *>(curInsn->args); break;
+    case 24: background->cameraInterpolationStart.up = *FLOAT3_PTR(curInsn->args); break;
+    case 25: background->cameraTarget.up = *FLOAT3_PTR(curInsn->args); break;
+    case 26: background->cameraInterpolationTangentStart.up = *FLOAT3_PTR(curInsn->args); break;
+    case 27: background->cameraInterpolationTangentEnd.up = *FLOAT3_PTR(curInsn->args); break;
     case 28:
         background->cameraInterpolationDuration[2] = curInsn->args[0];
         background->cameraInterpolationTimers[2] = 0;
@@ -383,7 +383,7 @@ read_instruction:
         background->cameraInterpolationModes[4] = 0;
         break;
     case 32:
-        background->cameraCurrent.positionOffset = *reinterpret_cast<Float3 *>(curInsn->args);
+        background->cameraCurrent.positionOffset = *FLOAT3_PTR(curInsn->args);
         break;
     case 34:
         if (curInsn->args[0] >= 0) background->stageAnmFile->ExecuteAnmIdx(&background->stageVm2, curInsn->args[0]);
@@ -455,8 +455,8 @@ instructions_done:
         background->cameraCurrent.fieldOfView = interpolationDelta * interpolationTime + background->cameraInterpolationStart.fieldOfView;
     }
 
-    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&background->cameraCurrent.forward),
-                      reinterpret_cast<D3DXVECTOR3 *>(&background->cameraCurrent.lookAtOffset));
+    D3DXVec3Normalize(D3DXVECTOR3_PTR(&background->cameraCurrent.forward),
+                      D3DXVECTOR3_PTR(&background->cameraCurrent.lookAtOffset));
 
     if (background->cameraMotionMode != 0)
     {
@@ -539,7 +539,7 @@ instructions_done:
     {
         for (k = 0; k < 12; k++)
         {
-            spawnedEffect = g_EffectManager.SpawnEffect(62, reinterpret_cast<D3DXVECTOR3 *>(&background->specialEffectPoints[k]),
+            spawnedEffect = g_EffectManager.SpawnEffect(EFFECT_BACKGROUND_SPECIAL, D3DXVECTOR3_PTR(&background->specialEffectPoints[k]),
                                                         1, 0x20FFFFFF);
             spawnedEffect->drawGroup = 4;
         }
@@ -881,7 +881,7 @@ ZunResult Background::AddedCallback(Background *background)
 
     if (!IsDisableResourceReload())
     {
-        background->stageAnmFile = g_AnmManager->PreloadAnm(4, g_StageAnmFiles[g_GameManager.currentStage]);
+        background->stageAnmFile = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_STAGE_BACKGROUND, g_StageAnmFiles[g_GameManager.currentStage]);
         if (background->stageAnmFile == NULL)
         {
             return ZUN_ERROR;
@@ -889,7 +889,7 @@ ZunResult Background::AddedCallback(Background *background)
     }
     else
     {
-        background->stageAnmFile = g_AnmManager->GetAnm(4);
+        background->stageAnmFile = g_AnmManager->GetAnm(ANM_FILE_SLOT_STAGE_BACKGROUND);
     }
 
     if (!g_GameManager.IsSpellPractice())
@@ -911,10 +911,10 @@ ZunResult Background::AddedCallback(Background *background)
     background->skyFog.nearPlane = 200.0f;
     background->skyFog.farPlane = 500.0f;
 
-    *reinterpret_cast<D3DXVECTOR3 *>(&background->cameraCurrent.position) = D3DXVECTOR3(0.0f, 0.0f, 1000.0f);
-    *reinterpret_cast<D3DXVECTOR3 *>(&background->cameraCurrent.lookAtOffset) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-    *reinterpret_cast<D3DXVECTOR3 *>(&background->cameraCurrent.positionOffset) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-    *reinterpret_cast<D3DXVECTOR3 *>(&background->cameraCurrent.up) = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+    *D3DXVECTOR3_PTR(&background->cameraCurrent.position) = D3DXVECTOR3(0.0f, 0.0f, 1000.0f);
+    *D3DXVECTOR3_PTR(&background->cameraCurrent.lookAtOffset) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+    *D3DXVECTOR3_PTR(&background->cameraCurrent.positionOffset) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+    *D3DXVECTOR3_PTR(&background->cameraCurrent.up) = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
     background->cameraCurrent.fieldOfView = 0.5235987901687622f;
     background->cameraTarget = background->cameraCurrent;
     background->cameraInterpolationStart = background->cameraCurrent;
@@ -985,7 +985,7 @@ ZunResult Background::DeletedCallback(Background *background)
 {
     if (!IsDisableResourceReload())
     {
-        g_AnmManager->ReleaseAnm(4);
+        g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_STAGE_BACKGROUND);
     }
     if (background->stageObjectVms != NULL)
     {
@@ -1183,9 +1183,9 @@ ZunResult Background::RenderObjects(i32 mode)
     this->SetCamera2();
     g_AnmManager->SetCameraMode(1);
     D3DXMatrixIdentity(&worldMatrix);
-    cameraVec = *reinterpret_cast<Float3 *>(&g_Supervisor.viewMatrix);
-    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&cameraVec),
-                      reinterpret_cast<D3DXVECTOR3 *>(&cameraVec));
+    cameraVec = *FLOAT3_PTR(&g_Supervisor.viewMatrix);
+    D3DXVec3Normalize(D3DXVECTOR3_PTR(&cameraVec),
+                      D3DXVECTOR3_PTR(&cameraVec));
 
     while (instance->id >= 0)
     {
@@ -1200,14 +1200,14 @@ ZunResult Background::RenderObjects(i32 mode)
             quadPos = quadPos - (this->cameraCurrent.position + this->cameraCurrent.positionOffset);
 
             if (this->cullingDistanceSq <
-                D3DXVec3LengthSq(reinterpret_cast<D3DXVECTOR3 *>(&quadPos)))
+                D3DXVec3LengthSq(D3DXVECTOR3_PTR(&quadPos)))
             {
                 goto skip;
             }
 
-            objectDistance = D3DXVec3Dot(reinterpret_cast<D3DXVECTOR3 *>(&quadPos),
-                                         reinterpret_cast<D3DXVECTOR3 *>(&this->cameraCurrent.forward));
-            radius = D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&obj->size)) / 2.0f + 960.0f;
+            objectDistance = D3DXVec3Dot(D3DXVECTOR3_PTR(&quadPos),
+                                         D3DXVECTOR3_PTR(&this->cameraCurrent.forward));
+            radius = D3DXVec3Length(D3DXVECTOR3_PTR(&obj->size)) / 2.0f + 960.0f;
             if ((objectDistance > radius) || (objectDistance < 80.0f))
             {
                 goto skip;
@@ -1241,8 +1241,8 @@ ZunResult Background::RenderObjects(i32 mode)
                                 worldMatrix._41 = curQuadVm->pos[0];
                                 worldMatrix._42 = curQuadVm->pos[1];
                                 worldMatrix._43 = curQuadVm->pos[2];
-                                D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&quadPos),
-                                                reinterpret_cast<D3DXVECTOR3 *>(&projectSrc), &g_Supervisor.viewport,
+                                D3DXVec3Project(D3DXVECTOR3_PTR(&quadPos),
+                                                D3DXVECTOR3_PTR(&projectSrc), &g_Supervisor.viewport,
                                                 &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldMatrix);
 
                                 if (curQuad->size.x != 0.0f)
@@ -1257,12 +1257,12 @@ ZunResult Background::RenderObjects(i32 mode)
                                 worldMatrix._41 = cameraVec.x * quadWidth * curQuadVm->scale.x + worldMatrix._41;
                                 worldMatrix._42 = cameraVec.y * quadWidth * curQuadVm->scale.x + worldMatrix._42;
                                 worldMatrix._43 = cameraVec.z * quadWidth * curQuadVm->scale.x + worldMatrix._43;
-                                D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectDest),
-                                                reinterpret_cast<D3DXVECTOR3 *>(&projectSrc), &g_Supervisor.viewport,
+                                D3DXVec3Project(D3DXVECTOR3_PTR(&projectDest),
+                                                D3DXVECTOR3_PTR(&projectSrc), &g_Supervisor.viewport,
                                                 &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldMatrix);
                                 projectDest = projectDest - quadPos;
                                 curQuadVm->scale.x =
-                                    D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&projectDest)) / quadWidth;
+                                    D3DXVec3Length(D3DXVECTOR3_PTR(&projectDest)) / quadWidth;
                                 curQuadVm->scale.y = curQuadVm->scale.x;
                                 if (quadWidth < 0.0f)
                                 {
@@ -1270,7 +1270,7 @@ ZunResult Background::RenderObjects(i32 mode)
                                 }
 
                                 projectDest = curQuadVm->pos - (this->cameraCurrent.position + this->cameraCurrent.positionOffset);
-                                quadWidth = D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&projectDest));
+                                quadWidth = D3DXVec3Length(D3DXVECTOR3_PTR(&projectDest));
                                 originalColor = curQuadVm->color1;
                                 if (this->skyFog.nearPlane < quadWidth)
                                 {
@@ -1353,8 +1353,8 @@ ZunResult Background::RenderObjects(i32 mode)
                             worldMatrix._41 = type1World.x;
                             worldMatrix._42 = type1World.y;
                             worldMatrix._43 = type1World.z;
-                            D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&quadPos),
-                                            reinterpret_cast<D3DXVECTOR3 *>(&projectSrc), &g_Supervisor.viewport,
+                            D3DXVec3Project(D3DXVECTOR3_PTR(&quadPos),
+                                            D3DXVECTOR3_PTR(&projectSrc), &g_Supervisor.viewport,
                                             &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldMatrix);
 
                             if (objQuadType1->width != 0.0f)
@@ -1368,15 +1368,15 @@ ZunResult Background::RenderObjects(i32 mode)
                             worldMatrix._41 = cameraVec.x * type1Width + worldMatrix._41;
                             worldMatrix._42 = cameraVec.y * type1Width + worldMatrix._42;
                             worldMatrix._43 = cameraVec.z * type1Width + worldMatrix._43;
-                            D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectDest),
-                                            reinterpret_cast<D3DXVECTOR3 *>(&projectSrc), &g_Supervisor.viewport,
+                            D3DXVec3Project(D3DXVECTOR3_PTR(&projectDest),
+                                            D3DXVECTOR3_PTR(&projectSrc), &g_Supervisor.viewport,
                                             &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldMatrix);
                             projectDest = projectDest - quadPos;
                             halfWidthFirst =
-                                D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&projectDest)) / 2.0f;
+                                D3DXVec3Length(D3DXVECTOR3_PTR(&projectDest)) / 2.0f;
 
                             projectDest = type1World - (this->cameraCurrent.position + this->cameraCurrent.positionOffset);
-                            type1Width = D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&projectDest));
+                            type1Width = D3DXVec3Length(D3DXVECTOR3_PTR(&projectDest));
                             if (this->skyFog.nearPlane < type1Width)
                             {
                                 type1Width = (this->skyFog.nearPlane -
@@ -1419,8 +1419,8 @@ ZunResult Background::RenderObjects(i32 mode)
                             worldMatrix._41 = type1World.x;
                             worldMatrix._42 = type1World.y;
                             worldMatrix._43 = type1World.z;
-                            D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectedSecond),
-                                            reinterpret_cast<D3DXVECTOR3 *>(&projectSrc), &g_Supervisor.viewport,
+                            D3DXVec3Project(D3DXVECTOR3_PTR(&projectedSecond),
+                                            D3DXVECTOR3_PTR(&projectSrc), &g_Supervisor.viewport,
                                             &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldMatrix);
 
                             if (objQuadType1->width != 0.0f)
@@ -1434,15 +1434,15 @@ ZunResult Background::RenderObjects(i32 mode)
                             worldMatrix._41 = cameraVec.x * type1Width + worldMatrix._41;
                             worldMatrix._42 = cameraVec.y * type1Width + worldMatrix._42;
                             worldMatrix._43 = cameraVec.z * type1Width + worldMatrix._43;
-                            D3DXVec3Project(reinterpret_cast<D3DXVECTOR3 *>(&projectDest),
-                                            reinterpret_cast<D3DXVECTOR3 *>(&projectSrc), &g_Supervisor.viewport,
+                            D3DXVec3Project(D3DXVECTOR3_PTR(&projectDest),
+                                            D3DXVECTOR3_PTR(&projectSrc), &g_Supervisor.viewport,
                                             &g_Supervisor.projectionMatrix, &g_Supervisor.viewMatrix, &worldMatrix);
                             projectDest = projectDest - projectedSecond;
                             halfWidthSecond =
-                                D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&projectDest)) / 2.0f;
+                                D3DXVec3Length(D3DXVECTOR3_PTR(&projectDest)) / 2.0f;
 
                             projectDest = type1World - (this->cameraCurrent.position + this->cameraCurrent.positionOffset);
-                            type1Width = D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&projectDest));
+                            type1Width = D3DXVec3Length(D3DXVECTOR3_PTR(&projectDest));
                             if (this->skyFog.nearPlane < type1Width)
                             {
                                 type1Width = (this->skyFog.nearPlane -
@@ -1591,18 +1591,18 @@ void Background::SetCamera2()
 {
     Float3 atVec = this->cameraCurrent.lookAtOffset + this->cameraCurrent.position;
     Float3 eyeVec = this->cameraCurrent.positionOffset + this->cameraCurrent.position;
-    D3DXMatrixLookAtLH(&g_Supervisor.viewMatrix, reinterpret_cast<D3DXVECTOR3 *>(&eyeVec),
-                       reinterpret_cast<D3DXVECTOR3 *>(&atVec),
-                       reinterpret_cast<D3DXVECTOR3 *>(&this->cameraCurrent.up));
+    D3DXMatrixLookAtLH(&g_Supervisor.viewMatrix, D3DXVECTOR3_PTR(&eyeVec),
+                       D3DXVECTOR3_PTR(&atVec),
+                       D3DXVECTOR3_PTR(&this->cameraCurrent.up));
     D3DXMatrixPerspectiveFovLH(&g_Supervisor.projectionMatrix, this->cameraCurrent.fieldOfView,
                                (f32)g_Supervisor.viewport.Width / (f32)g_Supervisor.viewport.Height, 30.0f, 1800.0f);
     g_Supervisor.d3dDevice->SetTransform(D3DTS_VIEW, &g_Supervisor.viewMatrix);
     g_Supervisor.d3dDevice->SetTransform(D3DTS_PROJECTION, &g_Supervisor.projectionMatrix);
-    D3DXVec3Cross(reinterpret_cast<D3DXVECTOR3 *>(&this->cameraCurrent.right),
-                  reinterpret_cast<D3DXVECTOR3 *>(&this->cameraCurrent.lookAtOffset),
-                  reinterpret_cast<D3DXVECTOR3 *>(&this->cameraCurrent.up));
-    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&this->cameraCurrent.right),
-                      reinterpret_cast<D3DXVECTOR3 *>(&this->cameraCurrent.right));
+    D3DXVec3Cross(D3DXVECTOR3_PTR(&this->cameraCurrent.right),
+                  D3DXVECTOR3_PTR(&this->cameraCurrent.lookAtOffset),
+                  D3DXVECTOR3_PTR(&this->cameraCurrent.up));
+    D3DXVec3Normalize(D3DXVECTOR3_PTR(&this->cameraCurrent.right),
+                      D3DXVECTOR3_PTR(&this->cameraCurrent.right));
 }
 
 // FUNCTION: th08 0x40b900

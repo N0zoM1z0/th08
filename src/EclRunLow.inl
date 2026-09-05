@@ -134,7 +134,8 @@ static EclRawInstruction *__fastcall CompareOperands(
     Enemy *enemy, EclRawInstruction *instruction)
 {
     bool takeBranch = false;
-    const i32 operation = instruction->opcode - 40;
+    const i32 operation =
+        instruction->opcode - ECL_OPCODE_JUMP_IF_INT_EQUAL;
     if (operation == 0)
         takeBranch = ReadInt(enemy, instruction, 0) == ReadInt(enemy, instruction, 1);
     else if (operation == 1)
@@ -220,40 +221,40 @@ static EclRawInstruction *__fastcall CompareOperands(
     f32 angle;
     f32 magnitude;
 
-    case 1:
+    case ECL_OPCODE_TERMINATE:
         return ZUN_ERROR;
 
-    case 2:
+    case ECL_OPCODE_SET_SECONDARY_TIME:
         context->secondaryTime = ReadInt(enemy, instruction, 0);
         break;
 
-    case 3:
+    case ECL_OPCODE_NOP:
         break; // dispatch-table entry is the ordinary advance path
 
-    case 5:
+    case ECL_OPCODE_JUMP_DEC:
         --*WriteInt(enemy, instruction, 2);
         if (ReadInt(enemy, instruction, 2) <= 0)
             goto low_advance_instruction;
 
-    case 4:
+    case ECL_OPCODE_JUMP:
         context->time.current = RawInt(instruction, 0);
         instruction = reinterpret_cast<EclRawInstruction *>(
             reinterpret_cast<u8 *>(instruction) + RawInt(instruction, 1));
         goto low_redispatch_instruction;
 
-    case 6:
+    case ECL_OPCODE_SET_INT:
         *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1);
         break;
-    case 7:
+    case ECL_OPCODE_SET_FLOAT:
         *WriteFloat(enemy, instruction, 0) = ((instruction->operandFlags & (1U << 1))
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
         break;
-    case 8:
+    case ECL_OPCODE_SET_INT_RANDOM_SIGN:
         *WriteInt(enemy, instruction, 0) =
             (g_Rng.GetRandomU16() & 1U ? 1 : -1) * ReadInt(enemy, instruction, 1);
         break;
-    case 9:
+    case ECL_OPCODE_SET_FLOAT_RANDOM_SIGN:
         *WriteFloat(enemy, instruction, 0) =
             (g_Rng.GetRandomU16() & 1U ? 1.0f : -1.0f) *
             ((instruction->operandFlags & (1U << 1))
@@ -261,24 +262,24 @@ static EclRawInstruction *__fastcall CompareOperands(
                 : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
         break;
 
-    case 10: *WriteInt(enemy, instruction, 0) += ReadInt(enemy, instruction, 1); break;
-    case 15: *WriteFloat(enemy, instruction, 0) += ((instruction->operandFlags & (1U << 1))
+    case ECL_OPCODE_INT_ADD_ASSIGN: *WriteInt(enemy, instruction, 0) += ReadInt(enemy, instruction, 1); break;
+    case ECL_OPCODE_FLOAT_ADD_ASSIGN: *WriteFloat(enemy, instruction, 0) += ((instruction->operandFlags & (1U << 1))
         ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
         : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))); break;
-    case 11: *WriteInt(enemy, instruction, 0) -= ReadInt(enemy, instruction, 1); break;
-    case 16: *WriteFloat(enemy, instruction, 0) -= ((instruction->operandFlags & (1U << 1))
+    case ECL_OPCODE_INT_SUBTRACT_ASSIGN: *WriteInt(enemy, instruction, 0) -= ReadInt(enemy, instruction, 1); break;
+    case ECL_OPCODE_FLOAT_SUBTRACT_ASSIGN: *WriteFloat(enemy, instruction, 0) -= ((instruction->operandFlags & (1U << 1))
         ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
         : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))); break;
-    case 12: *WriteInt(enemy, instruction, 0) *= ReadInt(enemy, instruction, 1); break;
-    case 17: *WriteFloat(enemy, instruction, 0) *= ((instruction->operandFlags & (1U << 1))
+    case ECL_OPCODE_INT_MULTIPLY_ASSIGN: *WriteInt(enemy, instruction, 0) *= ReadInt(enemy, instruction, 1); break;
+    case ECL_OPCODE_FLOAT_MULTIPLY_ASSIGN: *WriteFloat(enemy, instruction, 0) *= ((instruction->operandFlags & (1U << 1))
         ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
         : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))); break;
-    case 13: *WriteInt(enemy, instruction, 0) /= ReadInt(enemy, instruction, 1); break;
-    case 18: *WriteFloat(enemy, instruction, 0) /= ((instruction->operandFlags & (1U << 1))
+    case ECL_OPCODE_INT_DIVIDE_ASSIGN: *WriteInt(enemy, instruction, 0) /= ReadInt(enemy, instruction, 1); break;
+    case ECL_OPCODE_FLOAT_DIVIDE_ASSIGN: *WriteFloat(enemy, instruction, 0) /= ((instruction->operandFlags & (1U << 1))
         ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
         : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))); break;
-    case 14: *WriteInt(enemy, instruction, 0) %= ReadInt(enemy, instruction, 1); break;
-    case 19:
+    case ECL_OPCODE_INT_MODULO_ASSIGN: *WriteInt(enemy, instruction, 0) %= ReadInt(enemy, instruction, 1); break;
+    case ECL_OPCODE_FLOAT_MODULO_ASSIGN:
         *WriteFloat(enemy, instruction, 0) =
             fmodf(((instruction->operandFlags & (1U << 0))
                        ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0)))
@@ -288,40 +289,40 @@ static EclRawInstruction *__fastcall CompareOperands(
                        : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))));
         break;
 
-    case 20: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) + ReadInt(enemy, instruction, 2); break;
-    case 25: *WriteFloat(enemy, instruction, 0) =
+    case ECL_OPCODE_INT_ADD: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) + ReadInt(enemy, instruction, 2); break;
+    case ECL_OPCODE_FLOAT_ADD: *WriteFloat(enemy, instruction, 0) =
         ((instruction->operandFlags & (1U << 1))
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))) +
         ((instruction->operandFlags & (1U << 2))
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))); break;
-    case 21: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) - ReadInt(enemy, instruction, 2); break;
-    case 26: *WriteFloat(enemy, instruction, 0) =
+    case ECL_OPCODE_INT_SUBTRACT: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) - ReadInt(enemy, instruction, 2); break;
+    case ECL_OPCODE_FLOAT_SUBTRACT: *WriteFloat(enemy, instruction, 0) =
         ((instruction->operandFlags & (1U << 1))
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))) -
         ((instruction->operandFlags & (1U << 2))
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))); break;
-    case 22: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) * ReadInt(enemy, instruction, 2); break;
-    case 27: *WriteFloat(enemy, instruction, 0) =
+    case ECL_OPCODE_INT_MULTIPLY: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) * ReadInt(enemy, instruction, 2); break;
+    case ECL_OPCODE_FLOAT_MULTIPLY: *WriteFloat(enemy, instruction, 0) =
         ((instruction->operandFlags & (1U << 1))
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))) *
         ((instruction->operandFlags & (1U << 2))
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))); break;
-    case 23: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) / ReadInt(enemy, instruction, 2); break;
-    case 28: *WriteFloat(enemy, instruction, 0) =
+    case ECL_OPCODE_INT_DIVIDE: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) / ReadInt(enemy, instruction, 2); break;
+    case ECL_OPCODE_FLOAT_DIVIDE: *WriteFloat(enemy, instruction, 0) =
         ((instruction->operandFlags & (1U << 1))
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))) /
         ((instruction->operandFlags & (1U << 2))
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))); break;
-    case 24: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) % ReadInt(enemy, instruction, 2); break;
-    case 29:
+    case ECL_OPCODE_INT_MODULO: *WriteInt(enemy, instruction, 0) = ReadInt(enemy, instruction, 1) % ReadInt(enemy, instruction, 2); break;
+    case ECL_OPCODE_FLOAT_MODULO:
         *WriteFloat(enemy, instruction, 0) =
             fmodf(((instruction->operandFlags & (1U << 1))
                        ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
@@ -330,15 +331,15 @@ static EclRawInstruction *__fastcall CompareOperands(
                        ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2)))
                        : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))));
         break;
-    case 30: ++*WriteInt(enemy, instruction, 0); break;
-    case 31: --*WriteInt(enemy, instruction, 0); break;
-    case 32: *WriteFloat(enemy, instruction, 0) = sinf(((instruction->operandFlags & (1U << 1))
+    case ECL_OPCODE_INT_INCREMENT: ++*WriteInt(enemy, instruction, 0); break;
+    case ECL_OPCODE_INT_DECREMENT: --*WriteInt(enemy, instruction, 0); break;
+    case ECL_OPCODE_FLOAT_SINE: *WriteFloat(enemy, instruction, 0) = sinf(((instruction->operandFlags & (1U << 1))
         ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
         : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)))); break;
-    case 33: *WriteFloat(enemy, instruction, 0) = cosf(((instruction->operandFlags & (1U << 1))
+    case ECL_OPCODE_FLOAT_COSINE: *WriteFloat(enemy, instruction, 0) = cosf(((instruction->operandFlags & (1U << 1))
         ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
         : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)))); break;
-    case 34:
+    case ECL_OPCODE_POINT_ANGLE:
         *WriteFloat(enemy, instruction, 0) = VectorAngle((((instruction->operandFlags & (1U << 4))
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 4)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 4))) - ((instruction->operandFlags & (1U << 2))
@@ -350,29 +351,29 @@ static EclRawInstruction *__fastcall CompareOperands(
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)))));
         break;
 
-    case 37:
+    case ECL_OPCODE_NORMALIZE_ANGLE:
         *WriteFloat(enemy, instruction, 0) =
             AddNormalizeAngle(((instruction->operandFlags & (1U << 0))
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 0))), 0.0f);
         break;
 
-    case 35:
+    case ECL_OPCODE_INTERPOLATE_VALUE:
         ApplyInterpolationOperation(enemy, instruction);
         break;
 
-    case 36:
+    case ECL_OPCODE_INSTALL_INTERPOLATION:
         InstallInterpolationSlot(enemy, instruction);
         break;
 
-    case 38:
+    case ECL_OPCODE_POLAR_TO_CARTESIAN:
         angle = AddNormalizeAngle(((instruction->operandFlags & (1U << 2)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))), 0.0f);
         magnitude = ((instruction->operandFlags & (1U << 3)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
         *WriteFloat(enemy, instruction, 0) = cosf(angle) * magnitude;
         *WriteFloat(enemy, instruction, 1) = sinf(angle) * magnitude;
         break;
 
-    case 39:
+    case ECL_OPCODE_POINT_DISTANCE:
         lhsFloat = ((instruction->operandFlags & (1U << 1))
                 ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
                 : *reinterpret_cast<f32 *>(&RawInt(instruction, 1))) - ((instruction->operandFlags & (1U << 3))
@@ -390,18 +391,18 @@ static EclRawInstruction *__fastcall CompareOperands(
     // 0x004215F0 comparison order is ==, !=, <, <=, >, >=, with integer
     // and float variants interleaved.  Successful branches use raw operands
     // 2 and 3 for the replacement time and signed bytecode displacement.
-    case 40:
-    case 41:
-    case 42:
-    case 43:
-    case 44:
-    case 45:
-    case 46:
-    case 47:
-    case 48:
-    case 49:
-    case 50:
-    case 51:
+    case ECL_OPCODE_JUMP_IF_INT_EQUAL:
+    case ECL_OPCODE_JUMP_IF_FLOAT_EQUAL:
+    case ECL_OPCODE_JUMP_IF_INT_NOT_EQUAL:
+    case ECL_OPCODE_JUMP_IF_FLOAT_NOT_EQUAL:
+    case ECL_OPCODE_JUMP_IF_INT_LESS:
+    case ECL_OPCODE_JUMP_IF_FLOAT_LESS:
+    case ECL_OPCODE_JUMP_IF_INT_LESS_EQUAL:
+    case ECL_OPCODE_JUMP_IF_FLOAT_LESS_EQUAL:
+    case ECL_OPCODE_JUMP_IF_INT_GREATER:
+    case ECL_OPCODE_JUMP_IF_FLOAT_GREATER:
+    case ECL_OPCODE_JUMP_IF_INT_GREATER_EQUAL:
+    case ECL_OPCODE_JUMP_IF_FLOAT_GREATER_EQUAL:
     {
         EclRawInstruction *branch = CompareOperands(enemy, instruction);
         if (branch)
@@ -412,30 +413,30 @@ static EclRawInstruction *__fastcall CompareOperands(
         break;
     }
 
-    case 52:
+    case ECL_OPCODE_CALL:
         CallSubOnEnemy(enemy, instruction, RawInt(instruction, 0));
         TH08_ECL_RUN_LOW_YIELD(LOW_RESTART_RUN_LOOP, 0);
 
-    case 53:
+    case ECL_OPCODE_RETURN:
         if (!PopEclContext(enemy, instruction))
             TH08_ECL_RUN_LOW_YIELD(LOW_RESTART_RUN_LOOP, 0);
         TH08_ECL_RUN_LOW_YIELD(LOW_SELECT_NEXT_CONTEXT, 0);
 
-    case 54:
+    case ECL_OPCODE_SET_MAIN_ANM:
         g_EnemyManager.enemyAnm
             ->SetAndExecuteScriptIdx(
             &enemy->vm,
             ReadInt(enemy, instruction, 0));
-        enemy->flags2 &= ~4U;
+        enemy->flags2 &= ~ENEMY_FLAG2_ALTERNATE_ANM_BANK;
         break;
-    case 55:
+    case ECL_OPCODE_SET_PRIMARY_ANM_SEQUENCE:
         lhsInt = ReadInt(enemy, instruction, 0);
         SetPrimaryAnmScripts(enemy, instruction, lhsInt, lhsInt + 1,
                              lhsInt + 2, lhsInt + 3, lhsInt + 4,
                              lhsInt + 5);
-        enemy->flags2 &= ~4U;
+        enemy->flags2 &= ~ENEMY_FLAG2_ALTERNATE_ANM_BANK;
         break;
-    case 56:
+    case ECL_OPCODE_SET_PRIMARY_ANM_SCRIPTS:
         SetPrimaryAnmScripts(enemy, instruction,
                              ReadInt(enemy, instruction, 0),
                              ReadInt(enemy, instruction, 1),
@@ -443,26 +444,26 @@ static EclRawInstruction *__fastcall CompareOperands(
                              ReadInt(enemy, instruction, 3),
                              ReadInt(enemy, instruction, 4),
                              ReadInt(enemy, instruction, 5));
-        enemy->flags2 &= ~4U;
+        enemy->flags2 &= ~ENEMY_FLAG2_ALTERNATE_ANM_BANK;
         break;
-    case 57:
+    case ECL_OPCODE_SET_EXTRA_ANM_SCRIPT:
         SetExtraAnmScript(enemy, instruction);
-        enemy->flags2 &= ~4U;
+        enemy->flags2 &= ~ENEMY_FLAG2_ALTERNATE_ANM_BANK;
         break;
-    case 58:
+    case ECL_OPCODE_SET_MAIN_ANM_ALTERNATE:
         g_EnemyManager.alternateEnemyAnm
             ->SetAndExecuteScriptIdx(
             &enemy->vm,
             ReadInt(enemy, instruction, 0));
-        enemy->flags2 |= 4U;
+        enemy->flags2 |= ENEMY_FLAG2_ALTERNATE_ANM_BANK;
         break;
-    case 59:
+    case ECL_OPCODE_SET_PRIMARY_ANM_SEQUENCE_ALTERNATE:
         lhsInt = ReadInt(enemy, instruction, 0);
         SetPrimaryAnmScripts(enemy, instruction, lhsInt, lhsInt + 1, lhsInt + 2,
                              lhsInt + 3, lhsInt + 4, lhsInt + 5);
-        enemy->flags2 |= 4U;
+        enemy->flags2 |= ENEMY_FLAG2_ALTERNATE_ANM_BANK;
         break;
-    case 60:
+    case ECL_OPCODE_SET_PRIMARY_ANM_SCRIPTS_ALTERNATE:
         SetPrimaryAnmScripts(enemy, instruction,
                              ReadInt(enemy, instruction, 0),
                              ReadInt(enemy, instruction, 1),
@@ -470,14 +471,14 @@ static EclRawInstruction *__fastcall CompareOperands(
                              ReadInt(enemy, instruction, 3),
                              ReadInt(enemy, instruction, 4),
                              ReadInt(enemy, instruction, 5));
-        enemy->flags2 |= 4U;
+        enemy->flags2 |= ENEMY_FLAG2_ALTERNATE_ANM_BANK;
         break;
-    case 61:
-        enemy->flags2 |= 4U;
+    case ECL_OPCODE_SET_EXTRA_ANM_SCRIPT_ALTERNATE:
+        enemy->flags2 |= ENEMY_FLAG2_ALTERNATE_ANM_BANK;
         SetExtraAnmScript(enemy, instruction);
         break;
-    case 62:
-        if (((enemy->flags2 >> 2) & 1U) == 0)
+    case ECL_OPCODE_PLAY_SPECIAL_ANM:
+        if (((enemy->flags2 >> ENEMY_FLAG2_ALTERNATE_ANM_BANK_SHIFT) & 1U) == 0)
         {
             g_EnemyManager.enemyAnm
                 ->SetAndExecuteScriptIdx(
@@ -493,45 +494,47 @@ static EclRawInstruction *__fastcall CompareOperands(
         }
         break;
 
-    case 63:
+    case ECL_OPCODE_SET_POSITION:
         enemy->position.x = ((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0)));
         enemy->position.y = ((instruction->operandFlags & (1U << 1)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
         enemy->position.z = 0.0f;
         enemy->ClampPosition();
         break;
-    case 64:
+    case ECL_OPCODE_MOVE_TO:
         EclHelpers::ConfigureRelativeMotion(enemy, instruction);
         break;
-    case 65:
+    case ECL_OPCODE_SET_DIRECTION_AND_SPEED:
         enemy->movementAngle = AddNormalizeAngle(((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0))), 0.0f);
         enemy->speed = ((instruction->operandFlags & (1U << 1)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
-        enemy->flags1 = (enemy->flags1 & ~0x3000U) | 0x1000U;
+        enemy->flags1 = (enemy->flags1 & ~ENEMY_FLAG_MOVEMENT_MODE_MASK) |
+                        ENEMY_FLAG_MOVEMENT_MODE_POLAR;
         enemy->movementDuration = 0;
         enemy->movementTimer = 0;
         break;
-    case 66:
+    case ECL_OPCODE_MOVE_IN_DIRECTION:
         if (ReadInt(enemy, instruction, 0) <= 0)
         {
             enemy->movementAngle = AddNormalizeAngle(((instruction->operandFlags & (1U << 2)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 2))), 0.0f);
             enemy->speed = ((instruction->operandFlags & (1U << 3)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
-            enemy->flags1 = (enemy->flags1 & 0xFFFFCFFFU) | 0x1000U;
+            enemy->flags1 = (enemy->flags1 & ~ENEMY_FLAG_MOVEMENT_MODE_MASK) |
+                            ENEMY_FLAG_MOVEMENT_MODE_POLAR;
             enemy->movementDuration = 0;
             enemy->movementTimer = 0;
         }
         else EclHelpers::ConfigurePolarMotion(enemy, instruction);
         break;
-    case 67:
+    case ECL_OPCODE_MOVE_RANDOM_IN_BOUNDS:
         BeginBoundaryAwareMove(enemy, instruction);
         break;
 #ifdef TH08_ECL_RUN_LOW_BODY
     // Target physical order places opcode 178 between opcodes 67 and 68.
-    case 178:
+    case ECL_OPCODE_MOVE_RANDOM_BIASED:
         ApplyRandomBiasedMove(
             TH08_ECL_CONTEXT_ENEMY(ctx),
             reinterpret_cast<EclRawInstruction *>(TH08_ECL_CONTEXT_INSTRUCTION(ctx)));
         break;
 #endif
-    case 68:
+    case ECL_OPCODE_SET_AIMED_DIRECTION_AND_SPEED:
         enemy->movementAngle =
             AddNormalizeAngle(
                 ((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0))),
@@ -539,7 +542,7 @@ static EclRawInstruction *__fastcall CompareOperands(
                     &enemy->position));
         enemy->speed = ((instruction->operandFlags & (1U << 1)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
         break;
-    case 69:
+    case ECL_OPCODE_MOVE_IN_AIMED_DIRECTION:
         if (ReadInt(enemy, instruction, 0) <= 0)
         {
             enemy->movementAngle =
@@ -549,7 +552,8 @@ static EclRawInstruction *__fastcall CompareOperands(
                         &enemy->position));
             enemy->speed = ((instruction->operandFlags & (1U << 3)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
             enemy->flags1 =
-                (enemy->flags1 & 0xFFFFCFFFU) | 0x1000U;
+                (enemy->flags1 & ~ENEMY_FLAG_MOVEMENT_MODE_MASK) |
+                ENEMY_FLAG_MOVEMENT_MODE_POLAR;
             // The target resolves operand 0 again before timer assignment.
             enemy->movementTimer =
                 (enemy->movementDuration = ReadInt(enemy, instruction, 0));
@@ -560,15 +564,17 @@ static EclRawInstruction *__fastcall CompareOperands(
         }
         break;
 
-    case 70:
+    case ECL_OPCODE_SET_ANGULAR_VELOCITY:
         enemy->angularVelocity = ((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0)));
-        enemy->flags1 = (enemy->flags1 & 0xFFFFCFFFU) | 0x1000U;
+        enemy->flags1 = (enemy->flags1 & ~ENEMY_FLAG_MOVEMENT_MODE_MASK) |
+                        ENEMY_FLAG_MOVEMENT_MODE_POLAR;
         break;
-    case 71:
+    case ECL_OPCODE_SET_ACCELERATION:
         enemy->acceleration = ((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0)));
-        enemy->flags1 = (enemy->flags1 & 0xFFFFCFFFU) | 0x1000U;
+        enemy->flags1 = (enemy->flags1 & ~ENEMY_FLAG_MOVEMENT_MODE_MASK) |
+                        ENEMY_FLAG_MOVEMENT_MODE_POLAR;
         break;
-    case 72:
+    case ECL_OPCODE_ORBIT_AROUND_POINT:
         enemy->movementTimer =
             (enemy->movementDuration = ReadInt(enemy, instruction, 0));
         enemy->movementInterpolationOrigin.x = ((instruction->operandFlags & (1U << 1)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
@@ -587,14 +593,14 @@ static EclRawInstruction *__fastcall CompareOperands(
         enemy->radialVelocity = ((instruction->operandFlags & (1U << 6))
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 6)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 6)));
-        enemy->flags1 |= 0x3000U;
+        enemy->flags1 |= ENEMY_FLAG_MOVEMENT_MODE_ORBIT;
         break;
-    case 73:
+    case ECL_OPCODE_ORBIT_AROUND_CURRENT_POSITION:
         enemy->movementTimer =
             (enemy->movementDuration = ReadInt(enemy, instruction, 0));
-        *reinterpret_cast<D3DXVECTOR3 *>(
+        *D3DXVECTOR3_PTR(
             &enemy->movementInterpolationOrigin) =
-            *reinterpret_cast<D3DXVECTOR3 *>(&enemy->position);
+            *D3DXVECTOR3_PTR(&enemy->position);
         enemy->orbitAngle = ((instruction->operandFlags & (1U << 1))
                 ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
                 : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
@@ -605,16 +611,16 @@ static EclRawInstruction *__fastcall CompareOperands(
         enemy->radialVelocity = ((instruction->operandFlags & (1U << 3))
                 ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3)))
                 : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
-        enemy->flags1 |= 0x3000U;
+        enemy->flags1 |= ENEMY_FLAG_MOVEMENT_MODE_ORBIT;
         break;
-    case 74:
+    case ECL_OPCODE_SET_ORBIT_VELOCITIES:
         enemy->movementTimer =
             (enemy->movementDuration = ReadInt(enemy, instruction, 0));
         enemy->orbitAngularVelocity = ((instruction->operandFlags & (1U << 1)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
         enemy->radialVelocity = ((instruction->operandFlags & (1U << 2)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 2))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 2)));
-        enemy->flags1 |= 0x3000U;
+        enemy->flags1 |= ENEMY_FLAG_MOVEMENT_MODE_ORBIT;
         break;
-    case 75:
+    case ECL_OPCODE_SET_MOVEMENT_BOUNDS:
         enemy->movementBounds.lower.x = ((instruction->operandFlags & (1U << 0)) ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0))) : *reinterpret_cast<f32 *>(&RawInt(instruction, 0)));
         enemy->movementBounds.lower.y = ((instruction->operandFlags & (1U << 1))
                 ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
@@ -625,12 +631,12 @@ static EclRawInstruction *__fastcall CompareOperands(
         enemy->movementBounds.upper.y = ((instruction->operandFlags & (1U << 3))
                 ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 3)))
                 : *reinterpret_cast<f32 *>(&RawInt(instruction, 3)));
-        enemy->flags1 |= 0x80000U;
+        enemy->flags1 |= ENEMY_FLAG_CLAMP_POSITION;
         break;
-    case 76:
-        enemy->flags1 &= ~0x80000U;
+    case ECL_OPCODE_DISABLE_MOVEMENT_BOUNDS:
+        enemy->flags1 &= ~ENEMY_FLAG_CLAMP_POSITION;
         break;
-    case 77:
+    case ECL_OPCODE_SET_HITBOX:
         enemy->hitboxDimensions.x = ((instruction->operandFlags & (1U << 0))
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 0)));
@@ -638,7 +644,7 @@ static EclRawInstruction *__fastcall CompareOperands(
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 1)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
         break;
-    case 78:
+    case ECL_OPCODE_SET_SECONDARY_HITBOX:
         enemy->secondaryHitboxDimensions.x = ((instruction->operandFlags & (1U << 0))
             ? enemy->ResolveFloat(*reinterpret_cast<f32 *>(&RawInt(instruction, 0)))
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 0)));
@@ -647,51 +653,67 @@ static EclRawInstruction *__fastcall CompareOperands(
             : *reinterpret_cast<f32 *>(&RawInt(instruction, 1)));
         break;
 
-    case 79:
+    case ECL_OPCODE_SET_INTERACTION_FLAGS:
         lhsInt = ReadInt(enemy, instruction, 0);
-        reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->acceptsDamage = (lhsInt & 1) == 0;
-        reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->collision = (lhsInt & 2) == 0;
-        reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->damageable = (lhsInt & 4) == 0;
-        reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->noSprite = (lhsInt & 8) != 0;
-        reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->allowOffscreen = (lhsInt & 0x10) != 0;
-        reinterpret_cast<EnemyFlag2Bits *>(&enemy->flags2)->noDeath = (lhsInt & 0x20) != 0;
+        reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->acceptsDamage =
+            (lhsInt & ECL_INTERACTION_ACCEPTS_DAMAGE) == 0;
+        reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->collision =
+            (lhsInt & ECL_INTERACTION_COLLISION) == 0;
+        reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->damageable =
+            (lhsInt & ECL_INTERACTION_DAMAGEABLE) == 0;
+        reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->noSprite =
+            (lhsInt & ECL_INTERACTION_NO_SPRITE) != 0;
+        reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->allowOffscreen =
+            (lhsInt & ECL_INTERACTION_ALLOW_OFFSCREEN) != 0;
+        reinterpret_cast<EnemyFlag2Bits *>(&enemy->flags2)->noDeath =
+            (lhsInt & ECL_INTERACTION_NO_DEATH) != 0;
         break;
 
-    case 80:
+    case ECL_OPCODE_DISABLE_INTERACTION_FLAGS:
         lhsInt = ReadInt(enemy, instruction, 0);
-        if (lhsInt & 1) enemy->flags1 &= ~ENEMY_FLAG_ACCEPTS_DAMAGE;
-        if (lhsInt & 2)
+        if (lhsInt & ECL_INTERACTION_ACCEPTS_DAMAGE)
+            enemy->flags1 &= ~ENEMY_FLAG_ACCEPTS_DAMAGE;
+        if (lhsInt & ECL_INTERACTION_COLLISION)
         {
             enemy->flags1 &= ~ENEMY_FLAG_COLLISION;
             if (enemy->alignmentEffect)
                 enemy->alignmentEffect->vm.flag17 = 0;
         }
-        if (lhsInt & 4) enemy->flags1 &= ~ENEMY_FLAG_DAMAGEABLE;
-        if (lhsInt & 8) enemy->flags1 |= ENEMY_FLAG_NO_SPRITE;
-        if (lhsInt & 0x10) enemy->flags1 |= ENEMY_FLAG_ALLOW_OFFSCREEN;
-        if (lhsInt & 0x20) enemy->flags2 |= ENEMY_FLAG2_NO_DEATH;
+        if (lhsInt & ECL_INTERACTION_DAMAGEABLE)
+            enemy->flags1 &= ~ENEMY_FLAG_DAMAGEABLE;
+        if (lhsInt & ECL_INTERACTION_NO_SPRITE)
+            enemy->flags1 |= ENEMY_FLAG_NO_SPRITE;
+        if (lhsInt & ECL_INTERACTION_ALLOW_OFFSCREEN)
+            enemy->flags1 |= ENEMY_FLAG_ALLOW_OFFSCREEN;
+        if (lhsInt & ECL_INTERACTION_NO_DEATH)
+            enemy->flags2 |= ENEMY_FLAG2_NO_DEATH;
         break;
 
-    case 81:
+    case ECL_OPCODE_ENABLE_INTERACTION_FLAGS:
         lhsInt = ReadInt(enemy, instruction, 0);
-        if (lhsInt & 1) enemy->flags1 |= ENEMY_FLAG_ACCEPTS_DAMAGE;
-        if (lhsInt & 2)
+        if (lhsInt & ECL_INTERACTION_ACCEPTS_DAMAGE)
+            enemy->flags1 |= ENEMY_FLAG_ACCEPTS_DAMAGE;
+        if (lhsInt & ECL_INTERACTION_COLLISION)
         {
             enemy->flags1 |= ENEMY_FLAG_COLLISION;
             if (enemy->alignmentEffect)
                 enemy->alignmentEffect->vm.flag17 = 1;
         }
-        if (lhsInt & 4) enemy->flags1 |= ENEMY_FLAG_DAMAGEABLE;
-        if (lhsInt & 8) enemy->flags1 &= ~ENEMY_FLAG_NO_SPRITE;
-        if (lhsInt & 0x10) enemy->flags1 &= ~ENEMY_FLAG_ALLOW_OFFSCREEN;
-        if (lhsInt & 0x20) enemy->flags2 &= ~ENEMY_FLAG2_NO_DEATH;
+        if (lhsInt & ECL_INTERACTION_DAMAGEABLE)
+            enemy->flags1 |= ENEMY_FLAG_DAMAGEABLE;
+        if (lhsInt & ECL_INTERACTION_NO_SPRITE)
+            enemy->flags1 &= ~ENEMY_FLAG_NO_SPRITE;
+        if (lhsInt & ECL_INTERACTION_ALLOW_OFFSCREEN)
+            enemy->flags1 &= ~ENEMY_FLAG_ALLOW_OFFSCREEN;
+        if (lhsInt & ECL_INTERACTION_NO_DEATH)
+            enemy->flags2 &= ~ENEMY_FLAG2_NO_DEATH;
         break;
 
-    case 84:
-    case 85:
+    case ECL_OPCODE_NOP_84:
+    case ECL_OPCODE_NOP_85:
         break; // both target entries are 0x0041E7E4 (ordinary advance)
 
-    case 86:
+    case ECL_OPCODE_SET_REMOTE_INT:
         *WriteInt(enemy, instruction, 0) =
             (instruction->operandFlags & 2U)
                 ? EclOperands::ResolveInt(
@@ -700,7 +722,7 @@ static EclRawInstruction *__fastcall CompareOperands(
                 : RawInt(instruction, 1);
         break;
 
-    case 87:
+    case ECL_OPCODE_SET_REMOTE_FLOAT:
         if (g_EnemyManager.bosses[ReadInt(enemy, instruction, 2)])
             *WriteFloat(enemy, instruction, 0) =
                 (instruction->operandFlags & 2U)
@@ -709,7 +731,7 @@ static EclRawInstruction *__fastcall CompareOperands(
                     : *reinterpret_cast<f32 *>(&RawInt(instruction, 1));
         break;
 
-    case 88:
+    case ECL_OPCODE_CALL_REMOTE:
         lhsInt = ReadInt(enemy, instruction, 0);
         CallSubOnEnemy(
             g_EnemyManager.bosses[lhsInt],
@@ -717,7 +739,7 @@ static EclRawInstruction *__fastcall CompareOperands(
             RawInt(instruction, 1));
         break;
 
-    case 89:
+    case ECL_OPCODE_SCHEDULE_REMOTE_SUBROUTINE:
         if (g_EnemyManager.bosses[ReadInt(enemy, instruction, 0)])
         {
             // Target resolves operand 0 a second time before the store.
@@ -734,7 +756,7 @@ static EclRawInstruction *__fastcall CompareOperands(
     // initialization is enabled, 0x00425B70 and 0x00407120 when no effect is
     // attached, and unconditionally plays sound 0x24 through 0x0045D660.
     // Case 92 additionally calls D3DXVECTOR3::operator+ at 0x00409080.
-    case 90:
+    case ECL_OPCODE_SPAWN_FAMILIAR_AT_POSITION:
     {
         Enemy *tail = FindAttachmentChainTail(enemy);
         Enemy *child =
@@ -759,8 +781,8 @@ static EclRawInstruction *__fastcall CompareOperands(
             {
                 child->alignmentEffect =
                     g_EffectManager.SpawnEffectInSecondaryPool(
-                    0x20,
-                    reinterpret_cast<D3DXVECTOR3 *>(
+                    EFFECT_ALIGNMENT_BASE,
+                    D3DXVECTOR3_PTR(
                         &child->position),
                     1, -1);
                 child->alignmentEffect->vm.SetInterrupt(
@@ -794,7 +816,7 @@ static EclRawInstruction *__fastcall CompareOperands(
             enemy->position.x);
         break;
     }
-    case 91:
+    case ECL_OPCODE_SPAWN_FAMILIAR_AT_OFFSET:
     {
         Enemy *tail = FindAttachmentChainTail(enemy);
         Enemy *child =
@@ -819,8 +841,8 @@ static EclRawInstruction *__fastcall CompareOperands(
             {
                 child->alignmentEffect =
                     g_EffectManager.SpawnEffectInSecondaryPool(
-                    0x20,
-                    reinterpret_cast<D3DXVECTOR3 *>(
+                    EFFECT_ALIGNMENT_BASE,
+                    D3DXVECTOR3_PTR(
                         &child->position),
                     1, -1);
                 child->alignmentEffect->vm.SetInterrupt(
@@ -854,7 +876,7 @@ static EclRawInstruction *__fastcall CompareOperands(
             enemy->position.x);
         break;
     }
-    case 92:
+    case ECL_OPCODE_SPAWN_FAMILIAR_INHERITING_POSITION:
     {
         Enemy *tail = FindAttachmentChainTail(enemy);
         Enemy *child =
@@ -874,15 +896,15 @@ static EclRawInstruction *__fastcall CompareOperands(
                                  -2) +
                                 2);
 
-            *reinterpret_cast<D3DXVECTOR3 *>(
+            *D3DXVECTOR3_PTR(
                 &child->positionOffset) =
-                *reinterpret_cast<D3DXVECTOR3 *>(
+                *D3DXVECTOR3_PTR(
                     &enemy->position);
-            *reinterpret_cast<D3DXVECTOR3 *>(
+            *D3DXVECTOR3_PTR(
                 &child->worldPosition) =
-                *reinterpret_cast<D3DXVECTOR3 *>(
+                *D3DXVECTOR3_PTR(
                     &child->positionOffset) +
-                *reinterpret_cast<D3DXVECTOR3 *>(
+                *D3DXVECTOR3_PTR(
                     &child->position);
             child->flags1 &= ~ENEMY_FLAG_COLLISION;
 
@@ -890,8 +912,8 @@ static EclRawInstruction *__fastcall CompareOperands(
             {
                 child->alignmentEffect =
                     g_EffectManager.SpawnEffectInSecondaryPool(
-                    0x20,
-                    reinterpret_cast<D3DXVECTOR3 *>(
+                    EFFECT_ALIGNMENT_BASE,
+                    D3DXVECTOR3_PTR(
                         &child->worldPosition),
                     1, -1);
                 child->alignmentEffect->vm.SetInterrupt(

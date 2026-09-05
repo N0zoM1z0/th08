@@ -4699,3 +4699,67 @@ the typed pointer-return ABI and boolean accessor, and
 `verify-modern-linux.sh` verifies the ELF32 executable and every fixed
 target-owned layout symbol.  No accepted target bytes, layout, or aggregate
 exact total changed.
+
+### Interpreter protocols and stable runtime IDs — 2026-09-05
+
+Scope: router-invisible readability debt across the complete ECL dispatch,
+Enemy/Player/GameManager flag expressions, `Float3`/`D3DXVECTOR3` ABI views,
+stable sound/effect/ANM resource IDs, Player main-VM scripts, and the most
+important remaining ECL operand families.  `EclManager::RunEcl @ 0x004184B0`
+and `EclRunHigh::DispatchShotInstruction @ 0x00422720` are the central exact
+functions; resource ownership is corroborated by each manager's paired
+load/get/release paths.  No mapping, accepted-unit, relocation, or authored
+progress ledger changes in this batch.
+
+Observed: TH08's serialized ECL protocol has exactly 184 dispatched values,
+1..184.  All 91 low and 93 high dispatch labels now use explicit
+`EclOpcode` values; opcode comparisons and range arithmetic use the same
+namespace without moving the target-observed physical handler order.  The
+target call sites distinguish ECL interaction-selector bits from physical
+Enemy flags, and require several GameManager values to remain shift/mask or
+whole-dword expressions.  The ANM manager has 25 stable ownership slots,
+0..24, established by resource filenames and paired lifetime operations.
+Production roles establish all 46 sound IDs, ten Player main movement/focus
+scripts, and 40 reusable entries of the 66-row Effect template table.
+
+Corroborated: TH06 supports several sound and ANM ownership names only where
+TH08 production behavior agrees.  The TH08 Effect template callbacks and
+call-site roles are primary evidence; entries without a stable reusable role
+remain unnamed.  `typed-re.py 0x004184B0` independently pins the hash-attested
+target, `__thiscall(EclManager *, Enemy *)` ABI, 26,638-byte extent, 1,476-byte
+frame, and 7,157 decoded instructions without relying on IDA state.
+
+Inference: neutral names are retained for protocol-only behavior, including
+opcode 163 and the two observed no-ops.  Stage-provided script numbers and
+dynamic ECL effect/sound operands are data, not stable global IDs.  The
+`Float3`/`D3DXVECTOR3` view macros cover 380 former cast sites in 20 source
+files and deliberately expand to the original cast, avoiding a new `/Ob0`
+accessor call.  Bullet transform, bullet-rank influence, and trail packets now
+have size/offset-asserted wire schemas.  Their named fields feed the original
+resolver expressions through compile-time `offsetof / 4` indices.
+
+Exact-shape finding: an initial generic float-field macro shortened RunEcl
+from the required `0x6B06` bytes to `0x6B05`.  The experiment was rejected.
+Preserving the original `*reinterpret_cast<f32 *>(&raw_i)` expression tree in
+the field macro restored **26,638 / 26,638 exact**; transform, rank, and trail
+were then enabled and verified one family at a time.  This `/Ob0` rule is now
+recorded in the repository semantic skill.
+
+VC7 oracle: the final non-reuse single-job cold replay rebuilt all 75
+configured objects and passed **1,106 / 1,106 exact** with zero failures.  The
+normal VC7 production image also links.  The sole authored-but-unaccepted
+`ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0` allocator residual
+is unchanged and was deliberately outside this batch.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` rebuilt and linked
+the complete i386 executable; `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 and all
+fixed target-owned layout symbols.
+
+Result: the structural semantic router remains zero in all four production
+categories, while the new `scripts/check-semantic-protocols.py` closes the
+previous blind spot.  It requires 184/184 named ECL cases and rejects raw
+vector pointer casts outside the exact-safe view plus fixed numeric effect,
+sound, and ANM resource calls.  `scripts/ci.py` runs that guard.  This is a
+readability/protocol checkpoint, not a claim that ambiguous visual assets or
+serialized unknown bytes have acquired names.

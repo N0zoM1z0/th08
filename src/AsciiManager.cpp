@@ -127,7 +127,8 @@ ChainCallbackResult AsciiManager::OnUpdate(AsciiManager *ascii)
     if (g_GameManager.isInGameMenu == 0 && g_GameManager.showRetryMenu == 0)
     {
         popup = &ascii->scorePopups[0];
-        if (((*(u32 *)&g_GameManager.flags >> 10) & 1) == 0)
+        if (((*(u32 *)&g_GameManager.flags >>
+              GameManagerFlags::DEATHBOMB_FREEZE_ACTIVE_SHIFT) & 1) == 0)
         {
             for (i = 0; i < ASCII_MAX_SCORE_POPUPS + ASCII_MAX_PLAYER_POPUPS; i++, popup++)
             {
@@ -287,13 +288,13 @@ ZunResult AsciiManager::AddedCallback(AsciiManager *ascii)
 {
     memset(ascii, 0, sizeof(AsciiManager));
 
-    ascii->asciiAnm = g_AnmManager->PreloadAnm(1, "ascii.anm");
+    ascii->asciiAnm = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_ASCII, "ascii.anm");
     if (ascii->asciiAnm == NULL)
     {
         return ZUN_ERROR;
     }
 
-    ascii->captureAnm = g_AnmManager->PreloadAnm(3, "capture.anm");
+    ascii->captureAnm = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_CAPTURE, "capture.anm");
     if (ascii->captureAnm == NULL)
     {
         return ZUN_ERROR;
@@ -308,8 +309,8 @@ ZunResult AsciiManager::AddedCallback(AsciiManager *ascii)
 // FUNCTION: th08 0x4028c0
 ZunResult AsciiManager::DeletedCallback(AsciiManager *ascii)
 {
-    g_AnmManager->ReleaseAnm(1);
-    g_AnmManager->ReleaseAnm(3);
+    g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_ASCII);
+    g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_CAPTURE);
 
     return ZUN_SUCCESS;
 }

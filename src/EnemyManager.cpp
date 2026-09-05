@@ -33,7 +33,7 @@ void Enemy::UpdateMovement()
 {
     switch ((this->flags1 >> ENEMY_FLAG_MOVEMENT_MODE_SHIFT) & 3)
     {
-    case 3:
+    case ENEMY_MOVEMENT_MODE_ORBIT:
     {
         {
             Float3 legacyWork;
@@ -60,7 +60,7 @@ void Enemy::UpdateMovement()
         break;
     }
 
-    case 1:
+    case ENEMY_MOVEMENT_MODE_POLAR:
         this->movementAngle =
             AddNormalizeAngle(
                 this->movementAngle,
@@ -77,7 +77,7 @@ void Enemy::UpdateMovement()
         }
         break;
 
-    case 2:
+    case ENEMY_MOVEMENT_MODE_INTERPOLATED:
     {
         f32 progress;
 
@@ -144,8 +144,8 @@ void EnemyManager::Initialize()
     enemy->bossTimer = 0;
     enemy->flags1 &= ~ENEMY_FLAG_HAS_BEEN_IN_BOUNDS;
 
-    *reinterpret_cast<D3DXVECTOR3 *>(&enemy->hitboxDimensions) = D3DXVECTOR3(24.0f, 24.0f, 24.0f);
-    *reinterpret_cast<D3DXVECTOR3 *>(&enemy->velocity) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+    *D3DXVECTOR3_PTR(&enemy->hitboxDimensions) = D3DXVECTOR3(24.0f, 24.0f, 24.0f);
+    *D3DXVECTOR3_PTR(&enemy->velocity) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     *reinterpret_cast<i32 *>(&enemy->angularVelocity) = 0;
     *reinterpret_cast<i32 *>(&enemy->movementAngle) = 0;
     *reinterpret_cast<i32 *>(&enemy->acceleration) = 0;
@@ -162,7 +162,7 @@ void EnemyManager::Initialize()
     enemy->deathAnm3 = 0;
     enemy->shootIntervalFrames = 0;
     enemy->shootIntervalTimer = 0;
-    *reinterpret_cast<D3DXVECTOR3 *>(&enemy->shootOffset) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+    *D3DXVECTOR3_PTR(&enemy->shootOffset) = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
     enemy->anmScripts.moveLeft = -1;
     enemy->anmScripts.moveRight = -1;
     enemy->anmScripts.idleInitial = -1;
@@ -712,7 +712,7 @@ void Enemy::Despawn()
             this->bossSlot, 2);
         g_AsciiManager.SetBossMarkerPosition(
             this->bossSlot,
-            reinterpret_cast<D3DXVECTOR3 *>(&Float3(-999.0f, -999.0f, 0.0f)));
+            D3DXVECTOR3_PTR(&Float3(-999.0f, -999.0f, 0.0f)));
     }
 
     if (this->attachedEffectCount != 0)
@@ -748,7 +748,7 @@ void Enemy::DropItems(i32 mode)
     {
         g_EffectManager.SpawnEffect(
             this->deathAnm2 + 4,
-            reinterpret_cast<D3DXVECTOR3 *>(&this->worldPosition), 3, -1);
+            D3DXVECTOR3_PTR(&this->worldPosition), 3, -1);
         g_ItemManager.SpawnItem(&this->worldPosition,
                                 static_cast<ItemType>(this->itemDropType),
                                 mode != 0);
@@ -759,7 +759,7 @@ void Enemy::DropItems(i32 mode)
         {
             g_EffectManager.SpawnEffect(
                 this->deathAnm2 + 4,
-                reinterpret_cast<D3DXVECTOR3 *>(&this->worldPosition), 6, -1);
+                D3DXVECTOR3_PTR(&this->worldPosition), 6, -1);
             g_ItemManager.SpawnItem(&this->worldPosition,
                                     static_cast<ItemType>(g_EnemyDropSchedule[g_EnemyManager.enemyDropScheduleIndex]),
                                     mode != 0);
@@ -803,15 +803,15 @@ void Enemy::ClampPosition()
 {
     if (((this->flags1 >> ENEMY_FLAG_CLAMP_POSITION_SHIFT) & 1) != 0)
     {
-        if ((*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[0] < this->movementBounds.lower.x)
-            (*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[0] = this->movementBounds.lower.x;
-        else if ((*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[0] > this->movementBounds.upper.x)
-            (*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[0] = this->movementBounds.upper.x;
+        if ((*D3DXVECTOR3_PTR(&this->position))[0] < this->movementBounds.lower.x)
+            (*D3DXVECTOR3_PTR(&this->position))[0] = this->movementBounds.lower.x;
+        else if ((*D3DXVECTOR3_PTR(&this->position))[0] > this->movementBounds.upper.x)
+            (*D3DXVECTOR3_PTR(&this->position))[0] = this->movementBounds.upper.x;
 
-        if ((*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[1] < this->movementBounds.lower.y)
-            (*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[1] = this->movementBounds.lower.y;
-        else if ((*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[1] > this->movementBounds.upper.y)
-            (*reinterpret_cast<D3DXVECTOR3 *>(&this->position))[1] = this->movementBounds.upper.y;
+        if ((*D3DXVECTOR3_PTR(&this->position))[1] < this->movementBounds.lower.y)
+            (*D3DXVECTOR3_PTR(&this->position))[1] = this->movementBounds.lower.y;
+        else if ((*D3DXVECTOR3_PTR(&this->position))[1] > this->movementBounds.upper.y)
+            (*D3DXVECTOR3_PTR(&this->position))[1] = this->movementBounds.upper.y;
     }
 }
 
@@ -872,27 +872,27 @@ void Enemy::UpdateYoukaiAlignment()
     {
         if (g_Player.IsYoukai())
         {
-            g_EffectManager.SpawnEffect(31, reinterpret_cast<D3DXVECTOR3 *>(&this->worldPosition), 1, 0x80303080);
+            g_EffectManager.SpawnEffect(EFFECT_FAMILIAR_HIDE, D3DXVECTOR3_PTR(&this->worldPosition), 1, 0x80303080);
             if (this->alignmentEffect != NULL)
                 this->alignmentEffect->vm.SetInterrupt(2);
-            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(40), 0);
+            g_SoundPlayer.PlaySoundByIdx(SOUND_FAMILIAR_HIDE, 0);
             this->drawGroup = 0;
         }
 
         if (((this->flags2 >> ENEMY_FLAG2_FORM_EFFECT_SHIFT) & 1) != 0 &&
             this->bossTimer.IsPeriodic(2))
         {
-            g_EffectManager.SpawnEffect(38, reinterpret_cast<D3DXVECTOR3 *>(&this->worldPosition), 1, -1);
+            g_EffectManager.SpawnEffect(EFFECT_FAMILIAR_FORM, D3DXVECTOR3_PTR(&this->worldPosition), 1, -1);
         }
     }
     else
     {
         if (!g_Player.IsYoukai())
         {
-            g_EffectManager.SpawnEffect(30, reinterpret_cast<D3DXVECTOR3 *>(&this->worldPosition), 1, 0x80803030);
+            g_EffectManager.SpawnEffect(EFFECT_FAMILIAR_UNHIDE, D3DXVECTOR3_PTR(&this->worldPosition), 1, 0x80803030);
             if (this->alignmentEffect != NULL)
                 this->alignmentEffect->vm.SetInterrupt(1);
-            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(39), 0);
+            g_SoundPlayer.PlaySoundByIdx(SOUND_FAMILIAR_UNHIDE, 0);
             this->drawGroup = 2;
         }
     }
@@ -1277,7 +1277,7 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
 
     if (IsResourceReloadEnabled())
     {
-        enemyManager->enemyAnm = g_AnmManager->PreloadAnm(7, "enemy.anm");
+        enemyManager->enemyAnm = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_ENEMY_COMMON, "enemy.anm");
         if (enemyManager->enemyAnm == NULL)
         {
             return ZUN_ERROR;
@@ -1285,7 +1285,7 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
     }
     else
     {
-        enemyManager->enemyAnm = g_AnmManager->GetAnm(7);
+        enemyManager->enemyAnm = g_AnmManager->GetAnm(ANM_FILE_SLOT_ENEMY_COMMON);
     }
 
     if (!IsDisableResourceReload())
@@ -1294,7 +1294,7 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
             g_GameManager.currentSpellCardNumber < 0xCD)
         {
             enemyManager->alternateEnemyAnm =
-                g_AnmManager->PreloadAnm(8, g_StageEnemyAnms[g_GameManager.currentStage]);
+                g_AnmManager->PreloadAnm(ANM_FILE_SLOT_ENEMY_STAGE, g_StageEnemyAnms[g_GameManager.currentStage]);
             if (enemyManager->alternateEnemyAnm == NULL)
             {
                 return ZUN_ERROR;
@@ -1304,7 +1304,7 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
         {
             enemyManager->alternateEnemyAnm =
                 g_AnmManager->PreloadAnm(
-                    8, g_SpellEnemyAnms[g_GameManager.currentSpellCardNumber - 0xCD]);
+                    ANM_FILE_SLOT_ENEMY_STAGE, g_SpellEnemyAnms[g_GameManager.currentSpellCardNumber - 0xCD]);
             if (enemyManager->alternateEnemyAnm == NULL)
             {
                 return ZUN_ERROR;
@@ -1313,7 +1313,7 @@ ZunResult EnemyManager::AddedCallback(EnemyManager *enemyManager)
     }
     else
     {
-        enemyManager->alternateEnemyAnm = g_AnmManager->GetAnm(8);
+        enemyManager->alternateEnemyAnm = g_AnmManager->GetAnm(ANM_FILE_SLOT_ENEMY_STAGE);
     }
 
     if (!IsDisableResourceReload())
@@ -1392,11 +1392,11 @@ ZunResult EnemyManager::DeletedCallback(EnemyManager *enemyManager)
 
     if (!IsDisableResourceReload())
     {
-        g_AnmManager->ReleaseAnm(8);
+        g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_ENEMY_STAGE);
     }
     if (IsBulletManagerAnmReleaseRequired())
     {
-        g_AnmManager->ReleaseAnm(7);
+        g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_ENEMY_COMMON);
     }
     if (!IsDisableResourceReload())
     {

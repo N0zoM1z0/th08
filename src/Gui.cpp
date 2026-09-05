@@ -1248,7 +1248,10 @@ void Gui::DrawGameScene()
         }
     }
     if ((this->flags.bombDisplayUpdateFrames || this->flags.lifeDisplayUpdateFrames) &&
-        (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 7) & 3) == 1) && g_Spellcard.IsActive())
+        (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >>
+           GameManagerFlags::PLAYER_DEATH_DISSOLVE_SHIFT) &
+          GameManagerFlags::PLAYER_DEATH_DISSOLVE_MASK) == 1) &&
+        g_Spellcard.IsActive())
     {
         g_AnmManager->DrawNoRotation(&this->impl->spellNullifyVm);
     }
@@ -1514,17 +1517,17 @@ ZunResult Gui::DeletedCallback(Gui *gui)
 {
     if (!KeepStageResources())
     {
-        g_AnmManager->ReleaseAnm(13);
+        g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_STAGE_TEXT);
     }
 
     gui->FreeMsgFile();
 
     if (ReleaseResourcesOnRestart())
     {
-        g_AnmManager->ReleaseAnm(10);
-        g_AnmManager->ReleaseAnm(12);
-        g_AnmManager->ReleaseAnm(11);
-        g_AnmManager->ReleaseAnm(14);
+        g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_GUI_FRONT);
+        g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_LOADING_PORTRAIT);
+        g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_GUI_AUXILIARY);
+        g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_CLOCK);
         ZUN_DELETE(gui->impl);
     }
 
@@ -2047,17 +2050,17 @@ ZunResult Gui::ActualAddedCallback()
     {
         memset(this->impl, 0, sizeof(GuiImpl));
 
-        this->frontAnm = g_AnmManager->PreloadAnm(10, "front.anm");
+        this->frontAnm = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_GUI_FRONT, "front.anm");
         if (this->frontAnm == NULL)
             return ZUN_ERROR;
 
         this->InitStageClearScreen();
 
-        this->timesAnm = g_AnmManager->PreloadAnm(14, "times.anm");
+        this->timesAnm = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_CLOCK, "times.anm");
         if (this->timesAnm == NULL)
             return ZUN_ERROR;
 
-        this->loadingPortraitAnm = g_AnmManager->PreloadAnm(12, g_GuiLoadingAnmPaths[g_GameManager.shotType]);
+        this->loadingPortraitAnm = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_LOADING_PORTRAIT, g_GuiLoadingAnmPaths[g_GameManager.shotType]);
         if (this->loadingPortraitAnm == NULL)
             return ZUN_ERROR;
 
@@ -2102,13 +2105,13 @@ ZunResult Gui::ActualAddedCallback()
     {
         if (!g_GameManager.flags.isSpellPractice || g_GameManager.currentSpellCardNumber < 205)
         {
-            this->stageTextAnm = g_AnmManager->PreloadAnm(13, g_GuiStageTextAnmPaths[g_GameManager.currentStage]);
+            this->stageTextAnm = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_STAGE_TEXT, g_GuiStageTextAnmPaths[g_GameManager.currentStage]);
             if (this->stageTextAnm == NULL)
                 return ZUN_ERROR;
         }
         else
         {
-            this->stageTextAnm = g_AnmManager->PreloadAnm(13, g_GuiStageTextAnmPaths[MAX_STAGES - 1]);
+            this->stageTextAnm = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_STAGE_TEXT, g_GuiStageTextAnmPaths[MAX_STAGES - 1]);
             if (this->stageTextAnm == NULL)
                 return ZUN_ERROR;
         }

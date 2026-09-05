@@ -520,7 +520,7 @@ void BulletManager::RemoveAllBullets(i32 mode)
     }
 
     laser = &this->lasers[0];
-    reinterpret_cast<Float3 *>(position)->operator float *();
+    FLOAT3_PTR(position)->operator float *();
     for (bulletIndex = 0; bulletIndex < 0x100; bulletIndex++, laser++)
     {
         if (laser->inUse == 0)
@@ -548,7 +548,7 @@ void BulletManager::RemoveAllBullets(i32 mode)
                     position[0] = cosine * radius + laser->position.x;
                     position[1] = sine * radius + laser->position.y;
                     position[2] = 0.0f;
-                    g_ItemManager.SpawnItem(reinterpret_cast<Float3 *>(position),
+                    g_ItemManager.SpawnItem(FLOAT3_PTR(position),
                                             static_cast<ItemType>(this->cancelItemType), mode);
                     radius = radius + 32.0f;
                 }
@@ -615,7 +615,7 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
     }
 
     laser = &this->lasers[0];
-    reinterpret_cast<Float3 *>(position)->operator float *();
+    FLOAT3_PTR(position)->operator float *();
     for (bulletIndex = 0; bulletIndex < 0x100; bulletIndex++, laser++)
     {
         if (laser->inUse == 0)
@@ -643,7 +643,7 @@ i32 BulletManager::DespawnBullets(i32 maxScore, i32 awardLaserItems)
                     position[1] = sine * radius + laser->position.y;
                     position[2] = 0.0f;
                     g_ItemManager.SpawnItem(
-                        reinterpret_cast<Float3 *>(position),
+                        FLOAT3_PTR(position),
                         static_cast<ItemType>(this->cancelItemType), ITEM_STATE_AUTOCOLLECT);
                     radius += 32.0f;
                 }
@@ -673,7 +673,7 @@ void BulletManager::RemoveBulletsInRadius(const Float3 *position, f32 radius)
             bullet->state == BULLET_STATE_DESPAWNING)
             continue;
         delta = bullet->position - *position;
-        if (D3DXVec3LengthSq(reinterpret_cast<D3DXVECTOR3 *>(&delta)) > radius)
+        if (D3DXVec3LengthSq(D3DXVECTOR3_PTR(&delta)) > radius)
             continue;
         g_ItemManager.SpawnItem(&bullet->position, ITEM_POINT_STAR, ITEM_STATE_AUTOCOLLECT);
         memset(bullet, 0, sizeof(Bullet));
@@ -801,7 +801,8 @@ ChainCallbackResult BulletManager::OnUpdate(BulletManager *bulletManager)
 
     bucketIndex = 0;
     bullet = &bulletManager->bullets[0];
-    if (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >> 10) & 1) != 0)
+    if (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >>
+          GameManagerFlags::DEATHBOMB_FREEZE_ACTIVE_SHIFT) & 1) != 0)
         return CHAIN_CALLBACK_RESULT_CONTINUE;
 
     g_ItemManager.OnUpdate();
@@ -1047,8 +1048,8 @@ nextBullet:
     }
 
     laser = &bulletManager->lasers[0];
-    reinterpret_cast<Float3 *>(laserCenter)->operator float *();
-    reinterpret_cast<Float3 *>(laserSize)->operator float *();
+    FLOAT3_PTR(laserCenter)->operator float *();
+    FLOAT3_PTR(laserSize)->operator float *();
     for (i = 0; i < 0x100; i++, laser++)
     {
             if (laser->inUse == 0)
@@ -1098,7 +1099,7 @@ nextBullet:
                     laserSize[0] = currentWidth / 2.0f;
                 }
                 if (laser->timer >= laser->hitboxStartTime)
-                    g_Player.CalcLaserHitbox(reinterpret_cast<Float3 *>(laserCenter), reinterpret_cast<Float3 *>(laserSize),
+                    g_Player.CalcLaserHitbox(FLOAT3_PTR(laserCenter), FLOAT3_PTR(laserSize),
                                              &laser->position, laser->angle, 0);
                 if (laser->timer < laser->startTime)
                     break;
@@ -1106,7 +1107,7 @@ nextBullet:
                 ++laser->state;
                 laser->currentWidth = laser->width;
             case LASER_STATE_ACTIVE:
-                g_Player.CalcLaserHitbox(reinterpret_cast<Float3 *>(laserCenter), reinterpret_cast<Float3 *>(laserSize),
+                g_Player.CalcLaserHitbox(FLOAT3_PTR(laserCenter), FLOAT3_PTR(laserSize),
                                          &laser->position, laser->angle,
                                          ((i32)laser->timer) % 20 == 0);
                 if (laser->timer < laser->duration)
@@ -1134,7 +1135,7 @@ nextBullet:
                     laserSize[0] = currentWidth / 2.0f;
                 }
                 if (laser->timer < laser->hitboxEndDelay)
-                    g_Player.CalcLaserHitbox(reinterpret_cast<Float3 *>(laserCenter), reinterpret_cast<Float3 *>(laserSize),
+                    g_Player.CalcLaserHitbox(FLOAT3_PTR(laserCenter), FLOAT3_PTR(laserSize),
                                              &laser->position, laser->angle, 0);
                 if (laser->timer < laser->despawnDuration)
                     break;
@@ -1592,14 +1593,14 @@ ZunResult BulletManager::AddedCallback(BulletManager *bulletManager)
 
     if (IsResourceReloadEnabled())
     {
-        g_EffectManager.effectAnm = g_AnmManager->PreloadAnm(6, "etama.anm");
+        g_EffectManager.effectAnm = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_BULLET_AND_EFFECT, "etama.anm");
         bulletManager->bulletAnm = g_EffectManager.effectAnm;
         if (bulletManager->bulletAnm == NULL)
             return ZUN_ERROR;
     }
     else
     {
-        bulletManager->bulletAnm = g_AnmManager->GetAnm(6);
+        bulletManager->bulletAnm = g_AnmManager->GetAnm(ANM_FILE_SLOT_BULLET_AND_EFFECT);
     }
 
     for (i = 0; i < 21; i++)
@@ -1709,7 +1710,7 @@ ZunResult BulletManager::DeletedCallback(BulletManager *bulletManager)
 {
     if (IsBulletManagerAnmReleaseRequired())
     {
-        g_AnmManager->ReleaseAnm(6);
+        g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_BULLET_AND_EFFECT);
     }
 
     return ZUN_SUCCESS;

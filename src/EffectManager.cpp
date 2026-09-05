@@ -139,7 +139,7 @@ Effect *EffectManager::SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32
         memset(effect, 0, sizeof(Effect));
         effect->active = 1;
         effect->effectId = id;
-        effect->position = *reinterpret_cast<Float3 *>(position);
+        effect->position = *FLOAT3_PTR(position);
         this->effectAnm->SetAndExecuteScriptIdx(&effect->vm, g_EffectTemplates[id].scriptIdx);
         *reinterpret_cast<u32 *>(&effect->vm.flags) |= 0x2000;
         effect->vm.color1.d3dColor = color;
@@ -212,14 +212,14 @@ Effect *EffectManager::SpawnEffectWithVelocity(i32 id, D3DXVECTOR3 *position, D3
         memset(effect, 0, sizeof(Effect));
         effect->active = 1;
         effect->effectId = id;
-        effect->position = *reinterpret_cast<Float3 *>(position);
+        effect->position = *FLOAT3_PTR(position);
         this->effectAnm->SetAndExecuteScriptIdx(&effect->vm, g_EffectTemplates[id].scriptIdx);
         effect->vm.color1.d3dColor = color;
         effect->vm.pos2.x = 0.0f;
         effect->vm.pos2.y = 0.0f;
         effect->vm.pos2.z = 0.0f;
         effect->updateCallback = g_EffectTemplates[id].updateCallback;
-        effect->vector1 = *reinterpret_cast<Float3 *>(velocity);
+        effect->vector1 = *FLOAT3_PTR(velocity);
 
         if (g_EffectTemplates[id].initializeCallback != NULL)
         {
@@ -264,7 +264,7 @@ Effect *EffectManager::SpawnEffectInFixedSlot(i32 id, D3DXVECTOR3 *position, i32
     effect->slotIndex = slotIndex;
     effect->active = 1;
     effect->effectId = id;
-    effect->position = *reinterpret_cast<Float3 *>(position);
+    effect->position = *FLOAT3_PTR(position);
 
     if (g_EffectTemplates[id].scriptIdx >= 0)
     {
@@ -300,10 +300,10 @@ Effect *EffectManager::SpawnEffectInFixedSlotWithVelocity(i32 id, D3DXVECTOR3 *p
 
     memset(effect, 0, sizeof(Effect));
     effect->slotIndex = slotIndex;
-    effect->vector1 = *reinterpret_cast<Float3 *>(velocity);
+    effect->vector1 = *FLOAT3_PTR(velocity);
     effect->active = 1;
     effect->effectId = id;
-    effect->position = *reinterpret_cast<Float3 *>(position);
+    effect->position = *FLOAT3_PTR(position);
 
     if (g_EffectTemplates[id].scriptIdx >= 0)
     {
@@ -350,7 +350,7 @@ Effect *EffectManager::SpawnEffectInSecondaryPool(i32 id, D3DXVECTOR3 *position,
         effect->drawGroup = 0;
         effect->active = 1;
         effect->effectId = id;
-        effect->position = *reinterpret_cast<Float3 *>(position);
+        effect->position = *FLOAT3_PTR(position);
         this->effectAnm->SetAndExecuteScriptIdx(&effect->vm, g_EffectTemplates[id].scriptIdx);
         effect->vm.color1.d3dColor = color;
         effect->vm.pos2.x = 0.0f;
@@ -360,7 +360,7 @@ Effect *EffectManager::SpawnEffectInSecondaryPool(i32 id, D3DXVECTOR3 *position,
         effect->timer = 0;
         effect->releaseRequested = 0;
         effect->releaseTimer = 0;
-        *reinterpret_cast<D3DXVECTOR3 *>(&effect->vector1) = D3DXVECTOR3(0, 0, 0);
+        *D3DXVECTOR3_PTR(&effect->vector1) = D3DXVECTOR3(0, 0, 0);
 
         if (g_EffectTemplates[id].initializeCallback != NULL)
         {
@@ -440,8 +440,8 @@ i32 __fastcall EffectOrbitUpdate(Effect *effect)
     D3DXMATRIX localMatrix;
     f32 horizontalAngle;
     f32 alpha;
-    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&normalizedPos),
-                      reinterpret_cast<D3DXVECTOR3 *>(&effect->vector6));
+    D3DXVec3Normalize(D3DXVECTOR3_PTR(&normalizedPos),
+                      D3DXVECTOR3_PTR(&effect->vector6));
     verticalAngle = sinf(effect->angle);
     horizontalAngle = cosf(effect->angle);
     effect->orientationAxis.x = normalizedPos.x * verticalAngle;
@@ -453,12 +453,12 @@ i32 __fastcall EffectOrbitUpdate(Effect *effect)
     posOffset.x = normalizedPos.y * 1.0f - normalizedPos.z * 0.0f;
     posOffset.y = normalizedPos.z * 0.0f - normalizedPos.x * 1.0f;
     posOffset.z = normalizedPos.x * 0.0f - normalizedPos.y * 0.0f;
-    if (D3DXVec3LengthSq(reinterpret_cast<D3DXVECTOR3 *>(&posOffset)) < 0.00001f)
+    if (D3DXVec3LengthSq(D3DXVECTOR3_PTR(&posOffset)) < 0.00001f)
         normalizedPos = Float3(1.0f, 0.0f, 0.0f);
     else
-        D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&posOffset), reinterpret_cast<D3DXVECTOR3 *>(&posOffset));
+        D3DXVec3Normalize(D3DXVECTOR3_PTR(&posOffset), D3DXVECTOR3_PTR(&posOffset));
     posOffset *= effect->radius;
-    D3DXVec3TransformCoord(reinterpret_cast<D3DXVECTOR3 *>(&posOffset), reinterpret_cast<D3DXVECTOR3 *>(&posOffset), &localMatrix);
+    D3DXVec3TransformCoord(D3DXVECTOR3_PTR(&posOffset), D3DXVECTOR3_PTR(&posOffset), &localMatrix);
     posOffset.z *= 6.0f;
     effect->position = posOffset + effect->vector5;
     effect->position.z = 0.0f;
@@ -520,9 +520,9 @@ i32 __fastcall UpdateTintedBossTrackingCameraParticle(Effect *effect)
 
     Float3 delta;
     delta = effect->position - g_Background.cameraCurrent.position;
-    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&delta), reinterpret_cast<D3DXVECTOR3 *>(&delta));
-    dot = D3DXVec3Dot(reinterpret_cast<D3DXVECTOR3 *>(&g_Background.cameraCurrent.forward),
-                      reinterpret_cast<D3DXVECTOR3 *>(&delta));
+    D3DXVec3Normalize(D3DXVECTOR3_PTR(&delta), D3DXVECTOR3_PTR(&delta));
+    dot = D3DXVec3Dot(D3DXVECTOR3_PTR(&g_Background.cameraCurrent.forward),
+                      D3DXVECTOR3_PTR(&delta));
     if (dot < 0.94f)
         return 0;
 
@@ -596,9 +596,9 @@ i32 __fastcall UpdateRisingBossTrackingCameraParticle(Effect *effect)
 
     Float3 delta;
     delta = effect->position - g_Background.cameraCurrent.position;
-    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&delta), reinterpret_cast<D3DXVECTOR3 *>(&delta));
-    dot = D3DXVec3Dot(reinterpret_cast<D3DXVECTOR3 *>(&g_Background.cameraCurrent.forward),
-                      reinterpret_cast<D3DXVECTOR3 *>(&delta));
+    D3DXVec3Normalize(D3DXVECTOR3_PTR(&delta), D3DXVECTOR3_PTR(&delta));
+    dot = D3DXVec3Dot(D3DXVECTOR3_PTR(&g_Background.cameraCurrent.forward),
+                      D3DXVECTOR3_PTR(&delta));
     if (dot < 0.94f)
         return 0;
 
@@ -679,7 +679,7 @@ void __fastcall ShiftStageEffectOrigins(Float3 *delta)
 
     for (i = 0; i < 0x200; i++, effect++)
     {
-        if (effect->effectId == 0x33)
+        if (effect->effectId == EFFECT_TINTED_BOSS_TRACKING_PARTICLE)
         {
             effect->vector4 += *delta;
         }
@@ -698,9 +698,9 @@ i32 __fastcall UpdateSpinningCameraParticle(Effect *effect)
 
     Float3 delta;
     delta = effect->position - g_Background.cameraCurrent.position;
-    D3DXVec3Normalize(reinterpret_cast<D3DXVECTOR3 *>(&delta), reinterpret_cast<D3DXVECTOR3 *>(&delta));
-    dot = D3DXVec3Dot(reinterpret_cast<D3DXVECTOR3 *>(&g_Background.cameraCurrent.forward),
-                      reinterpret_cast<D3DXVECTOR3 *>(&delta));
+    D3DXVec3Normalize(D3DXVECTOR3_PTR(&delta), D3DXVECTOR3_PTR(&delta));
+    dot = D3DXVec3Dot(D3DXVECTOR3_PTR(&g_Background.cameraCurrent.forward),
+                      D3DXVECTOR3_PTR(&delta));
     if (dot < 0.94f)
         return 0;
 
@@ -1066,7 +1066,7 @@ ChainCallbackResult EffectManager::OnUpdate(EffectManager *effectManager)
         }
 
         effect->nextInDrawGroup = NULL;
-        if (effect->effectId == 0x40)
+        if (effect->effectId == EFFECT_STAGE_ANM_HOST)
             continue;
 
         if (effect->drawGroup == 1 || effect->drawGroup >= 3)
@@ -1215,7 +1215,8 @@ i32 EffectManager::DrawBackgroundEffects()
         }
         else if (effect->drawGroup == 1)
         {
-            if (effect->effectId == 0x33 || effect->effectId == 0x3F)
+            if (effect->effectId == EFFECT_TINTED_BOSS_TRACKING_PARTICLE ||
+                effect->effectId == EFFECT_RISING_BOSS_TRACKING_PARTICLE)
             {
                 g_AnmManager->DrawWithCallback(
                     &effect->vm, AdjustStageEffectDrawPosition);
@@ -1244,8 +1245,8 @@ void __fastcall AdjustStageEffectDrawPosition(AnmVm *effect, D3DXVECTOR3 *base)
 
     if (!g_GameManager.isInGameMenu && !g_GameManager.showRetryMenu)
     {
-        point = *base + *reinterpret_cast<D3DXVECTOR3 *>(&effect->posFinal);
-        delta = *reinterpret_cast<D3DXVECTOR3 *>(&effect->pos2) - point;
+        point = *base + *D3DXVECTOR3_PTR(&effect->posFinal);
+        delta = *D3DXVECTOR3_PTR(&effect->pos2) - point;
         if (effect->pos2.x > -9999.0f)
         {
             delta.x += 32.0f;
@@ -1254,7 +1255,7 @@ void __fastcall AdjustStageEffectDrawPosition(AnmVm *effect, D3DXVECTOR3 *base)
             if (D3DXVec3LengthSq(&delta) < 25600.0f)
             {
                 effect->posInitial.x += 0.0005000000237487257f;
-                *reinterpret_cast<D3DXVECTOR3 *>(&effect->posFinal) += delta * effect->posInitial.x;
+                *D3DXVECTOR3_PTR(&effect->posFinal) += delta * effect->posInitial.x;
             }
         }
 
@@ -1264,17 +1265,17 @@ void __fastcall AdjustStageEffectDrawPosition(AnmVm *effect, D3DXVECTOR3 *base)
         delta.z = 0.0f;
         if (D3DXVec3LengthSq(&delta) < 7744.0f)
         {
-            *reinterpret_cast<D3DXVECTOR3 *>(&effect->posFinal) += delta * 0.019999999552965164f;
+            *D3DXVECTOR3_PTR(&effect->posFinal) += delta * 0.019999999552965164f;
         }
     }
-    *base += *reinterpret_cast<D3DXVECTOR3 *>(&effect->posFinal);
+    *base += *D3DXVECTOR3_PTR(&effect->posFinal);
 }
 
 // FUNCTION: th08 0x4284b0
 ZunResult EffectManager::LoadEffectResources(EffectManager *effectManager)
 {
     effectManager->ResetEffects();
-    effectManager->effectAnm = g_AnmManager->GetAnm(6);
+    effectManager->effectAnm = g_AnmManager->GetAnm(ANM_FILE_SLOT_BULLET_AND_EFFECT);
     g_GuiMessageStageMode = 0;
     g_Background.spellVmCount = 2;
 
@@ -1282,19 +1283,19 @@ ZunResult EffectManager::LoadEffectResources(EffectManager *effectManager)
     {
         if (!g_GameManager.IsSpellPractice() || g_GameManager.currentSpellCardNumber < 216)
         {
-            effectManager->stageEffectAnm = g_AnmManager->PreloadAnm(9, g_EffectAnms[g_GameManager.currentStage]);
+            effectManager->stageEffectAnm = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_STAGE_EFFECT, g_EffectAnms[g_GameManager.currentStage]);
         }
         else
         {
             effectManager->stageEffectAnm =
-                g_AnmManager->PreloadAnm(9, g_EffectAnms[g_GameManager.currentSpellCardNumber - 216 + 9]);
+                g_AnmManager->PreloadAnm(ANM_FILE_SLOT_STAGE_EFFECT, g_EffectAnms[g_GameManager.currentSpellCardNumber - 216 + 9]);
         }
         if (effectManager->stageEffectAnm == NULL)
             return ZUN_ERROR;
     }
     else
     {
-        effectManager->stageEffectAnm = g_AnmManager->GetAnm(9);
+        effectManager->stageEffectAnm = g_AnmManager->GetAnm(ANM_FILE_SLOT_STAGE_EFFECT);
     }
     return ZUN_SUCCESS;
 }
@@ -1314,7 +1315,7 @@ ZunResult EffectManager::ReleaseEffectResources(EffectManager *effectManager)
         }
     }
     if (!IsDisableResourceReload())
-        g_AnmManager->ReleaseAnm(9);
+        g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_STAGE_EFFECT);
     return ZUN_SUCCESS;
 }
 

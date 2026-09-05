@@ -3737,14 +3737,14 @@ void TitleScreen::TitleSetupThread(TitleScreen *titleScreen)
         Sleep(1);
     }
 
-    g_TitleScreen->titleAnm = g_AnmManager->PreloadAnm(20, "title01.anm");
+    g_TitleScreen->titleAnm = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_TITLE, "title01.anm");
     if (g_TitleScreen->titleAnm == NULL)
     {
         g_TitleScreen->state = TitleScreenState_Close;
         return;
     }
 
-    g_TitleScreen->resultTextAnm = g_AnmManager->PreloadAnm(22, "resulttext.anm");
+    g_TitleScreen->resultTextAnm = g_AnmManager->PreloadAnm(ANM_FILE_SLOT_RESULT_TEXT, "resulttext.anm");
     if (g_TitleScreen->resultTextAnm == NULL)
     {
         g_TitleScreen->state = TitleScreenState_Close;
@@ -3948,8 +3948,8 @@ ZunResult TitleScreen::DeletedCallback(TitleScreen *titleScreen)
 {
     g_Supervisor.d3dDevice->ResourceManagerDiscardBytes(0);
 
-    g_AnmManager->ReleaseAnm(20);
-    g_AnmManager->ReleaseAnm(22);
+    g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_TITLE);
+    g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_RESULT_TEXT);
     g_AnmManager->ReleaseSurface(0);
 
     g_Chain.Cut(titleScreen->drawChain);

@@ -36,7 +36,7 @@ Enemy *EnemyManager::SpawnEnemy1(i32 eclSubroutineId, const D3DXVECTOR3 *positio
         reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->mirrorMovementX = mirrorMovementX;
         if (life >= 0)
             enemy->life = life;
-        enemy->position = *reinterpret_cast<const Float3 *>(position);
+        enemy->position = *FLOAT3_CONST_PTR(position);
         g_EclManager.CallEclSub(
             &enemy->mainEclContextStorage, (i16)eclSubroutineId);
         if (g_EclManager.RunEcl(enemy) == ZUN_ERROR)
@@ -87,7 +87,7 @@ Enemy *EnemyManager::SpawnEnemy2(i32 eclSubroutineId, const D3DXVECTOR3 *positio
         enemy->enemyIndex = i;
         if (life >= 0)
             enemy->life = life;
-        enemy->position = *reinterpret_cast<const Float3 *>(position);
+        enemy->position = *FLOAT3_CONST_PTR(position);
         g_EclManager.CallEclSub(
             &enemy->mainEclContextStorage, (i16)eclSubroutineId);
         *reinterpret_cast<EnemyContextCopy *>(

@@ -133,7 +133,7 @@ i32 __fastcall ResolveInt(Enemy *enemy, i32 operand)
     case 0x2742:
     {
         Float3 delta = g_Player.position - enemy->worldPosition;
-        return (i32)D3DXVec3Length(reinterpret_cast<D3DXVECTOR3 *>(&delta));
+        return (i32)D3DXVec3Length(D3DXVECTOR3_PTR(&delta));
     }
     case 0x2771: return g_Player.IsYoukai();
     case 0x2772:

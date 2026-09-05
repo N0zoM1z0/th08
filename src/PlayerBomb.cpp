@@ -137,7 +137,7 @@ void Player::SpawnBombStateEffect()
     if (this->stateEffect != NULL)
         this->stateEffect->active = false;
 
-    effect = g_EffectManager.SpawnEffectInFixedSlot(23, reinterpret_cast<D3DXVECTOR3 *>(&this->position), 0, 1, -1);
+    effect = g_EffectManager.SpawnEffectInFixedSlot(EFFECT_BOMB_STATE, D3DXVECTOR3_PTR(&this->position), 0, 1, -1);
     effect->vm.interpCurrentTimers[AnmInterp_Scale] = 0;
     effect->vm.interpEndTimers[AnmInterp_Scale] = this->timer;
     effect->vm.interpModes[AnmInterp_Scale] = AnmInterpMode_Linear;
@@ -189,7 +189,7 @@ void __fastcall UpdateFantasyOrbBomb(Player *player)
         BeginBombSpell(player, 0,
                      "\x97\xEC\x95\x84\x81\x75\x96\xB2\x91\x7A\x96\xAD\x8E\xEC\x81\x76",
                      200, 260, 0);
-        g_EffectManager.SpawnEffect(12, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, 0xFF4040FF);
+        g_EffectManager.SpawnEffect(EFFECT_PLAYER_DEATH_OR_BOMB_RING, D3DXVECTOR3_PTR(&player->position), 1, 0xFF4040FF);
         angle = -ZUN_PI;
         workItem = bomb->workItems;
         for (i = 0; i < 16; i++, workItem++)
@@ -207,7 +207,7 @@ void __fastcall UpdateFantasyOrbBomb(Player *player)
             workItem->damageRegion->hitCap = 200;
             workItem->damageRegion->mode = 1;
         }
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_GUN, 0);
     }
 
     if (bomb->timer < 40)
@@ -285,11 +285,11 @@ void __fastcall UpdateFantasyOrbBomb(Player *player)
                         slot = player->CreateCircleDamageRegion(&workItem->position, 64.0f, 12.800000190734863f, 500, 12);
                         slot->collisionInterval = 4;
                         slot->hitCap = 0;
-                        g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position), 8, -1);
+                        g_EffectManager.SpawnEffect(EFFECT_DEATH_OR_BOMB_PARTICLE, D3DXVECTOR3_PTR(&workItem->position), 8, -1);
                         workItem->state = PLAYER_BOMB_WORK_ITEM_FINISHING;
                         workItem->vms[0].pendingInterrupt = 1;
                         workItem->motion / 8.0f;
-                        g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), workItem->position.x);
+                        g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_BULLET_0_LOUD, workItem->position.x);
                         ScreenEffect::RegisterChain(
                             SCREEN_EFFECT_SHAKE, 16, 8, 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
                     }
@@ -382,7 +382,7 @@ void __fastcall UpdateFantasySealBlinkDeathbomb(Player *player)
         BeginBombSpell(player, 0,
                      "\x90\x5F\x97\xEC\x81\x75\x96\xB2\x91\x7A\x95\x95\x88\xF3\x81\x40\x8F\x75\x81\x76",
                      200, 260, 1);
-        g_EffectManager.SpawnEffect(12, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, 0xFF4040FF);
+        g_EffectManager.SpawnEffect(EFFECT_PLAYER_DEATH_OR_BOMB_RING, D3DXVECTOR3_PTR(&player->position), 1, 0xFF4040FF);
         angle = -ZUN_PI;
         workItem = bomb->workItems;
         for (i = 0; i < 16; i++, workItem++)
@@ -401,7 +401,7 @@ void __fastcall UpdateFantasySealBlinkDeathbomb(Player *player)
             workItem->damageRegion->mode = 1;
         }
         bomb->secondaryWorkCursor = 0;
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_GUN, 0);
     }
 
     Float3 previousPosition;
@@ -433,11 +433,11 @@ void __fastcall UpdateFantasySealBlinkDeathbomb(Player *player)
                     player->CreateCircleDamageRegion(&workItem->position, 64.0f, 8.533333778381348f, 25, 15);
                 slot->collisionInterval = 5;
                 slot->hitCap = 50;
-                g_EffectManager.SpawnEffect(6, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position), 8, -1);
+                g_EffectManager.SpawnEffect(EFFECT_DEATH_OR_BOMB_PARTICLE, D3DXVECTOR3_PTR(&workItem->position), 8, -1);
                 workItem->state = PLAYER_BOMB_WORK_ITEM_FINISHING;
                 workItem->vms[0].pendingInterrupt = 1;
                 workItem->motion / 8.0f;
-                g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), workItem->position.x);
+                g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_BULLET_0_LOUD, workItem->position.x);
                 ScreenEffect::RegisterChain(
                     SCREEN_EFFECT_SHAKE, 16, 8, 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
             }
@@ -472,13 +472,13 @@ void __fastcall UpdateFantasySealBlinkDeathbomb(Player *player)
                 spawnPosition.z = 0.0f;
             }
             workItem->position = spawnPosition;
-            g_EffectManager.SpawnEffect(49, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position), 1, color);
-            g_EffectManager.SpawnEffect(55, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position), 1, color);
+            g_EffectManager.SpawnEffect(EFFECT_DREAM_SEAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&workItem->position), 1, color);
+            g_EffectManager.SpawnEffect(EFFECT_DREAM_SEAL_FLASH, D3DXVECTOR3_PTR(&workItem->position), 1, color);
             workItem->cancelRegion = player->CreateCircleCancelRegion(&spawnPosition, 64.0f, 4.266666889190674f, 30, 6);
             workItem->damageRegion = player->CreateCircleDamageRegion(&spawnPosition, 64.0f, 8.533333778381348f, 400, 15);
             slot = workItem->damageRegion;
             slot->collisionInterval = 2;
-            g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), workItem->position.x);
+            g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_BULLET_0_LOUD, workItem->position.x);
             ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 16, 8, 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
             ScreenEffect::RegisterChain(
                 SCREEN_EFFECT_ARCADE_PULSE, 8, 1, color, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
@@ -543,8 +543,8 @@ void __fastcall UpdateDissolveSpell(Player *player)
                          "\x81\x75\x83\x66\x83\x42\x83\x5D\x83\x8B\x83\x75\x83\x58\x83\x79\x83\x8B\x81\x76",
                          40, 200, 0);
 
-        g_EffectManager.SpawnEffect(12, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, 0xff4040ff);
-        effect = g_EffectManager.SpawnEffectInFixedSlot(50, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 4, 1,
+        g_EffectManager.SpawnEffect(EFFECT_PLAYER_DEATH_OR_BOMB_RING, D3DXVECTOR3_PTR(&player->position), 1, 0xff4040ff);
+        effect = g_EffectManager.SpawnEffectInFixedSlot(EFFECT_DISSOLVE_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->position), 4, 1,
                                               0xff4040ff);
         effect->vm.interpCurrentTimers[AnmInterp_Pos] = 0;
         if (!g_GameManager.IsSpellPractice())
@@ -563,7 +563,7 @@ void __fastcall UpdateDissolveSpell(Player *player)
         effect->radius = 8.0f;
         effect->shapeThickness = 15.0f;
         effect->radialWaveCount = 6.0f;
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_GUN, 0);
         player->verticalSpeedMultiplier = 0.0f;
         player->horizontalSpeedMultiplier = 0.0f;
 
@@ -617,9 +617,9 @@ void __fastcall UpdateArtfulSacrificeBomb(Player *player)
         BeginBombSpell(player, 1,
                      "\x96\x82\x95\x84\x81\x75\x83\x41\x81\x5B\x83\x65\x83\x42\x83\x74\x83\x8B\x83\x54\x83\x4E\x83\x8A\x83\x74\x83\x40\x83\x43\x83\x58\x81\x76",
                      210, 250, 0);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_GUN, 0);
         workItem->position = player->optionStates[0].position;
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_POWER_1, 0);
     }
 
     if (bomb->timer < 60)
@@ -643,33 +643,33 @@ void __fastcall UpdateArtfulSacrificeBomb(Player *player)
 
         if (bomb->timer.JustReached(60))
         {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
+            g_EffectManager.SpawnEffect(EFFECT_BOMB_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -1);
         }
         else if (bomb->timer.JustReached(64))
         {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -12080);
+            g_EffectManager.SpawnEffect(EFFECT_BOMB_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -12080);
         }
         else if (bomb->timer.JustReached(68))
         {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -20304);
+            g_EffectManager.SpawnEffect(EFFECT_BOMB_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -20304);
         }
         else if (bomb->timer.JustReached(72))
         {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -32640);
+            g_EffectManager.SpawnEffect(EFFECT_BOMB_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -32640);
         }
         else if (bomb->timer.JustReached(76))
         {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -49088);
+            g_EffectManager.SpawnEffect(EFFECT_BOMB_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -49088);
         }
         else if (bomb->timer.JustReached(90))
         {
 #pragma var_order(effect, damageSlot)
             Effect *effect;
             PlayerCollisionRegion *damageSlot;
-            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(15), 0);
-            effect = g_EffectManager.SpawnEffect(42, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
-            effect = g_EffectManager.SpawnEffect(43, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
-            effect = g_EffectManager.SpawnEffect(44, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
+            g_SoundPlayer.PlaySoundByIdx(SOUND_BULLET_0_LOUD, 0);
+            effect = g_EffectManager.SpawnEffect(EFFECT_EXPANDING_WAVY_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -1);
+            effect = g_EffectManager.SpawnEffect(EFFECT_EXPANDING_POSITIVE_DIAGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -1);
+            effect = g_EffectManager.SpawnEffect(EFFECT_EXPANDING_NEGATIVE_DIAGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -1);
             player->CreateCircleCancelRegion(&player->optionStates[0].position, 1.0f, 5.0f, 110, 6);
             damageSlot = player->CreateCircleDamageRegion(&player->optionStates[0].position, 1.0f, 5.0f, 70, 110);
             damageSlot->collisionInterval = 5;
@@ -680,29 +680,29 @@ void __fastcall UpdateArtfulSacrificeBomb(Player *player)
         else if (bomb->timer.JustReached(100))
         {
             Effect *effect100 = g_EffectManager.SpawnEffect(
-                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
+                EFFECT_EXPANDING_OCTAGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -1);
         }
         else if (bomb->timer.JustReached(110))
         {
             Effect *effect110 = g_EffectManager.SpawnEffect(
-                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -12080);
+                EFFECT_EXPANDING_OCTAGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -12080);
         }
         else if (bomb->timer.JustReached(120))
         {
             Effect *effect120 = g_EffectManager.SpawnEffect(
-                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -32640);
+                EFFECT_EXPANDING_OCTAGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -32640);
         }
         else if (bomb->timer.JustReached(130))
         {
             Effect *effect130 = g_EffectManager.SpawnEffect(
-                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -65536);
+                EFFECT_EXPANDING_OCTAGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -65536);
         }
         else if (bomb->timer.JustReached(150))
         {
             ScreenEffect::RegisterChain(
                 SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0x8fffffff, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
             ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 24, 8, 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
-            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(25), 0);
+            g_SoundPlayer.PlaySoundByIdx(SOUND_SPARKLE_0, 0);
         }
         else if (bomb->timer.JustReached(209))
         {
@@ -732,7 +732,7 @@ void __fastcall UpdateReturnInanimatenessDeathbomb(Player *player)
         BeginBombSpell(player, 1,
                      "\x96\x82\x91\x80\x81\x75\x83\x8A\x83\x5E\x81\x5B\x83\x93\x83\x43\x83\x69\x83\x6A\x83\x81\x83\x67\x83\x6C\x83\x58\x81\x76",
                      230, 280, 1);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_GUN, 0);
         workItem->position = player->position;
     }
 
@@ -757,41 +757,41 @@ void __fastcall UpdateReturnInanimatenessDeathbomb(Player *player)
 
         if (bomb->timer.JustReached(60))
         {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
+            g_EffectManager.SpawnEffect(EFFECT_BOMB_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -1);
         }
         else if (bomb->timer.JustReached(64))
         {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -12080);
+            g_EffectManager.SpawnEffect(EFFECT_BOMB_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -12080);
         }
         else if (bomb->timer.JustReached(68))
         {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -20304);
+            g_EffectManager.SpawnEffect(EFFECT_BOMB_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -20304);
         }
         else if (bomb->timer.JustReached(72))
         {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -32640);
+            g_EffectManager.SpawnEffect(EFFECT_BOMB_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -32640);
         }
         else if (bomb->timer.JustReached(76))
         {
-            g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -49088);
+            g_EffectManager.SpawnEffect(EFFECT_BOMB_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -49088);
         }
         else if (bomb->timer.JustReached(120))
         {
 #pragma var_order(effect, damageSlot, burstPosition)
             Effect *effect;
             PlayerCollisionRegion *damageSlot;
-            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(15), 0);
-            effect = g_EffectManager.SpawnEffect(42, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
-            effect = g_EffectManager.SpawnEffect(43, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
-            effect = g_EffectManager.SpawnEffect(44, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
+            g_SoundPlayer.PlaySoundByIdx(SOUND_BULLET_0_LOUD, 0);
+            effect = g_EffectManager.SpawnEffect(EFFECT_EXPANDING_WAVY_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -1);
+            effect = g_EffectManager.SpawnEffect(EFFECT_EXPANDING_POSITIVE_DIAGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -1);
+            effect = g_EffectManager.SpawnEffect(EFFECT_EXPANDING_NEGATIVE_DIAGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -1);
             Float3 burstPosition(64.0f, 96.0f, 0.0f);
-            effect = g_EffectManager.SpawnEffect(45, reinterpret_cast<D3DXVECTOR3 *>(&burstPosition), 1, 0xff0000f0);
+            effect = g_EffectManager.SpawnEffect(EFFECT_EXPANDING_OCTAGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&burstPosition), 1, 0xff0000f0);
             burstPosition.y = 352.0f;
-            effect = g_EffectManager.SpawnEffect(45, reinterpret_cast<D3DXVECTOR3 *>(&burstPosition), 1, 0xfff00000);
+            effect = g_EffectManager.SpawnEffect(EFFECT_EXPANDING_OCTAGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&burstPosition), 1, 0xfff00000);
             burstPosition.x = 320.0f;
-            effect = g_EffectManager.SpawnEffect(45, reinterpret_cast<D3DXVECTOR3 *>(&burstPosition), 1, 0xff00f000);
+            effect = g_EffectManager.SpawnEffect(EFFECT_EXPANDING_OCTAGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&burstPosition), 1, 0xff00f000);
             burstPosition.y = 96.0f;
-            effect = g_EffectManager.SpawnEffect(45, reinterpret_cast<D3DXVECTOR3 *>(&burstPosition), 1, 0xff00f0f0);
+            effect = g_EffectManager.SpawnEffect(EFFECT_EXPANDING_OCTAGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&burstPosition), 1, 0xff00f0f0);
             player->CreateCircleCancelRegion(&player->optionStates[0].position, 1.0f, 5.0f, 110, 6);
             damageSlot = player->CreateCircleDamageRegion(&player->optionStates[0].position, 1.0f, 5.0f, 70, 110);
             damageSlot->collisionInterval = 5;
@@ -799,29 +799,29 @@ void __fastcall UpdateReturnInanimatenessDeathbomb(Player *player)
         else if (bomb->timer.JustReached(130))
         {
             Effect *effect130 = g_EffectManager.SpawnEffect(
-                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -1);
+                EFFECT_EXPANDING_OCTAGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -1);
         }
         else if (bomb->timer.JustReached(140))
         {
             Effect *effect140 = g_EffectManager.SpawnEffect(
-                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -12080);
+                EFFECT_EXPANDING_OCTAGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -12080);
         }
         else if (bomb->timer.JustReached(150))
         {
             Effect *effect150 = g_EffectManager.SpawnEffect(
-                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -32640);
+                EFFECT_EXPANDING_OCTAGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -32640);
         }
         else if (bomb->timer.JustReached(160))
         {
             Effect *effect160 = g_EffectManager.SpawnEffect(
-                45, reinterpret_cast<D3DXVECTOR3 *>(&player->optionStates[0].position), 1, -65536);
+                EFFECT_EXPANDING_OCTAGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->optionStates[0].position), 1, -65536);
         }
         else if (bomb->timer.JustReached(180))
         {
             ScreenEffect::RegisterChain(
                 SCREEN_EFFECT_ARCADE_PULSE, 8, 1, -1, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
             ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 24, 8, 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
-            g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(25), 0);
+            g_SoundPlayer.PlaySoundByIdx(SOUND_SPARKLE_0, 0);
         }
         else if (bomb->timer.JustReached(229))
         {
@@ -976,7 +976,7 @@ void __fastcall UpdateMasterSparkBomb(Player *player)
                      300, 350, 0);
         angle = -ZUN_PI;
         workItem = &bomb->workItems[0];
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(19), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_MASTER_SPARK, 0);
         workItem->position = player->position;
         player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[0], 30);
         player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[1], 31);
@@ -1053,8 +1053,8 @@ void __fastcall UpdateFinalSparkDeathbomb(Player *player)
                      350, 380, 1);
         angle = -ZUN_PI;
         workItem = &bomb->workItems[0];
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(19), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_GUN, 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_MASTER_SPARK, 0);
         workItem->position = player->position;
         player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[0], 35);
         player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[1], 36);
@@ -1072,7 +1072,7 @@ void __fastcall UpdateFinalSparkDeathbomb(Player *player)
     {
 #pragma var_order(effect, position1, position0, scale1, scale0)
         Effect *effect = g_EffectManager.SpawnEffectInFixedSlot(
-            53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkCursor % 4 + 4, 1, -1);
+            EFFECT_FADING_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->position), bomb->secondaryWorkCursor % 4 + 4, 1, -1);
         if (bomb->secondaryWorkCursor & 1)
             g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 92);
         effect->vertexSegmentCount = 32;
@@ -1099,7 +1099,7 @@ void __fastcall UpdateFinalSparkDeathbomb(Player *player)
         effect->vm.StartColor1RgbInterpolation(30, AnmInterpMode_Linear, -1, 0xffff0000);
         g_AnmManager->ExecuteScript(&effect->vm);
         bomb->secondaryWorkCursor++;
-        g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(17), player->position.x);
+        g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_LASER_1, player->position.x);
     }
 
     if (player->bombState.timer.HasTicked() && ((i32)player->bombState.timer % 4) != 0)
@@ -1138,12 +1138,12 @@ void __fastcall UpdateRedNightlessCastleBomb(Player *player)
         BeginBombSpell(player, 1,
                      "\x8D\x67\x95\x84\x81\x75\x95\x73\x96\xE9\x8F\xE9\x83\x8C\x83\x62\x83\x68\x81\x76",
                      240, 290, 0);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_GUN, 0);
         workItem[0].position = player->optionStates[0].target;
         workItem[1].position = player->optionStates[1].target;
         workItem[2].position = player->optionStates[2].target;
         workItem[3].position = player->optionStates[3].target;
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_POWER_1, 0);
         bomb->secondaryWorkCursor = 0;
         player->verticalSpeedMultiplier = 0.0f;
         player->horizontalSpeedMultiplier = 0.0f;
@@ -1202,7 +1202,7 @@ void __fastcall UpdateRedNightlessCastleBomb(Player *player)
         {
 #pragma var_order(effect, position1, position0, scale1, scale0)
             Effect *effect = g_EffectManager.SpawnEffectInFixedSlot(
-                53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkCursor % 4 + 4, 1, -1);
+                EFFECT_FADING_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->position), bomb->secondaryWorkCursor % 4 + 4, 1, -1);
             effect->vertexSegmentCount = 32;
             effect->radialWaveCount = 4.0f;
 
@@ -1226,7 +1226,7 @@ void __fastcall UpdateRedNightlessCastleBomb(Player *player)
             effect->vm.StartColor1AlphaInterpolation(30, AnmInterpMode_EaseInQuartic, 255, 0);
             effect->vm.StartColor1RgbInterpolation(30, AnmInterpMode_Linear, -1, 0xffff0000);
             bomb->secondaryWorkCursor++;
-            g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(17), player->position.x);
+            g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_LASER_1, player->position.x);
             g_AnmManager->ExecuteScript(&effect->vm);
         }
 
@@ -1270,12 +1270,12 @@ void __fastcall UpdateScarletDevilDeathbomb(Player *player)
         BeginBombSpell(player, 1,
                      "\x8D\x67\x96\x82\x81\x75\x83\x58\x83\x4A\x81\x5B\x83\x8C\x83\x62\x83\x67\x83\x66\x83\x72\x83\x8B\x81\x76",
                      280, 320, 1);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_GUN, 0);
         workItem[0].position = player->optionStates[0].target;
         workItem[1].position = player->optionStates[1].target;
         workItem[2].position = player->optionStates[2].target;
         workItem[3].position = player->optionStates[3].target;
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_POWER_1, 0);
         bomb->secondaryWorkCursor = 0;
         player->verticalSpeedMultiplier = 0.0f;
         player->horizontalSpeedMultiplier = 0.0f;
@@ -1333,7 +1333,7 @@ void __fastcall UpdateScarletDevilDeathbomb(Player *player)
         {
 #pragma var_order(effect, position1, position0, scale1, scale0)
             Effect *effect = g_EffectManager.SpawnEffectInFixedSlot(
-                53, reinterpret_cast<D3DXVECTOR3 *>(&player->position), bomb->secondaryWorkCursor % 4 + 4, 1, -1);
+                EFFECT_FADING_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->position), bomb->secondaryWorkCursor % 4 + 4, 1, -1);
             effect->vertexSegmentCount = 32;
             effect->radialWaveCount = 4.0f;
 
@@ -1357,7 +1357,7 @@ void __fastcall UpdateScarletDevilDeathbomb(Player *player)
             effect->vm.StartColor1AlphaInterpolation(30, AnmInterpMode_EaseInQuartic, 255, 0);
             effect->vm.StartColor1RgbInterpolation(30, AnmInterpMode_Linear, -1, 0xffff0000);
             bomb->secondaryWorkCursor++;
-            g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(17), player->position.x);
+            g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_LASER_1, player->position.x);
             g_AnmManager->ExecuteScript(&effect->vm);
         }
 
@@ -1409,8 +1409,8 @@ void __fastcall UpdateKillingDollBomb(Player *player)
         player->verticalSpeedMultiplier = 0.5f;
         player->horizontalSpeedMultiplier = 0.5f;
         bomb->workItems[0].effect =
-            g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
+            g_EffectManager.SpawnEffect(EFFECT_BOMB_PARTICLE, D3DXVECTOR3_PTR(&player->position), 1, -1);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_POWER_0, 0);
     }
 
     if (bomb->timer >= 0 && bomb->timer <= 60)
@@ -1444,7 +1444,7 @@ void __fastcall UpdateKillingDollBomb(Player *player)
                 workItem->cancelRegion = player->CreateCircleCancelRegion(&workItem->position, 32.0f, 0.0f, 500, 6);
             workItem->damageRegion = player->CreateCircleDamageRegion(&workItem->position, 32.0f, 0.0f, 20, 500);
         }
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_POWER_1, 0);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 120, 4, 1, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
     }
 
@@ -1495,12 +1495,12 @@ void __fastcall UpdateKillingDollBomb(Player *player)
             {
                 player->anmFile->ExecuteAnmIdx(&workItem->vms[0], 23);
                 g_EffectManager.SpawnEffect(
-                    0, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[i].position), 1, 0xffff80ff);
+                    EFFECT_ANM_SCRIPT_28, D3DXVECTOR3_PTR(&bomb->workItems[i].position), 1, 0xffff80ff);
                 workItem->damageRegion->active = 0;
                 workItem->cancelRegion->active = 0;
                 workItem->cancelRegion = NULL;
                 workItem->damageRegion = NULL;
-                g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(43), workItem->position.x);
+                g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_SLASH_QUIET, workItem->position.x);
             }
         }
 
@@ -1532,8 +1532,8 @@ void __fastcall UpdateNightMistPhantomKillerDeathbomb(Player *player)
         player->verticalSpeedMultiplier = 0.5f;
         player->horizontalSpeedMultiplier = 0.5f;
         bomb->workItems[0].effect =
-            g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
+            g_EffectManager.SpawnEffect(EFFECT_BOMB_PARTICLE, D3DXVECTOR3_PTR(&player->position), 1, -1);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_POWER_0, 0);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 50, 4, 1, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
     }
 
@@ -1568,7 +1568,7 @@ void __fastcall UpdateNightMistPhantomKillerDeathbomb(Player *player)
             workItem->cancelRegion = player->CreateCircleCancelRegion(&workItem->position, 32.0f, 0.0f, 500, 6);
             workItem->damageRegion = player->CreateCircleDamageRegion(&workItem->position, 32.0f, 0.0f, 30, 500);
         }
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_POWER_1, 0);
     }
 
     workItem = bomb->workItems;
@@ -1590,7 +1590,7 @@ void __fastcall UpdateNightMistPhantomKillerDeathbomb(Player *player)
                 }
                 workItem->speed = 14.0f;
                 g_EffectManager.SpawnEffect(
-                    46, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position), 1, -1);
+                    EFFECT_EXPANDING_TWELVE_SEGMENT_RADIAL_TRAIL, D3DXVECTOR3_PTR(&workItem->position), 1, -1);
             }
             workItem->speed += workItem->motionStep;
             workItem->motion.x = cosf(workItem->angle) * workItem->speed;
@@ -1622,13 +1622,13 @@ void __fastcall UpdateNightMistPhantomKillerDeathbomb(Player *player)
                     ScreenEffect::RegisterChain(
                         SCREEN_EFFECT_ARCADE_PULSE, 2, 1, 0x208080ff, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
                 g_EffectManager.SpawnEffect(
-                    0, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position), 1, 0xffff80ff);
+                    EFFECT_ANM_SCRIPT_28, D3DXVECTOR3_PTR(&workItem->position), 1, 0xffff80ff);
                 player->anmFile->ExecuteAnmIdx(&workItem->vms[0], 21);
                 workItem->damageRegion->active = 0;
                 workItem->cancelRegion->active = 0;
                 workItem->cancelRegion = NULL;
                 workItem->damageRegion = NULL;
-                g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(43), workItem->position.x);
+                g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_SLASH_QUIET, workItem->position.x);
             }
         }
 
@@ -1700,14 +1700,14 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
                      150, 200, 0);
         angle = -ZUN_PI;
         workItem = &bomb->workItems[0];
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_GUN, 0);
         workItem->position = player->position;
         player->CreateCircleCancelRegion(&player->position, 100.0f, 1.0f, 40, 6);
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI / 4.0f, 1.0f, 4.0f);
-        g_EffectManager.SpawnEffectInFixedSlotWithVelocity(36, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position),
-                                     reinterpret_cast<D3DXVECTOR3 *>(&velocity), 4, 1, -1);
+        g_EffectManager.SpawnEffectInFixedSlotWithVelocity(EFFECT_QUADRUPLE_BARRIER, D3DXVECTOR3_PTR(&workItem->position),
+                                     D3DXVECTOR3_PTR(&velocity), 4, 1, -1);
     }
 
     if (bomb->timer.JustReached(10))
@@ -1719,8 +1719,8 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI * 3.0f / 8.0f, 1.0f, 4.0f);
-        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
-                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 5, 1, -1);
+        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(EFFECT_QUADRUPLE_BARRIER, D3DXVECTOR3_PTR(&player->position),
+                                              D3DXVECTOR3_PTR(&velocity), 5, 1, -1);
         g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 89);
         bomb->workItems[1].position = player->position;
     }
@@ -1734,8 +1734,8 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI / 2.0f, 1.0f, 4.0f);
-        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
-                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 6, 1, -1);
+        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(EFFECT_QUADRUPLE_BARRIER, D3DXVECTOR3_PTR(&player->position),
+                                              D3DXVECTOR3_PTR(&velocity), 6, 1, -1);
         g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 90);
         bomb->workItems[2].position = player->position;
     }
@@ -1749,8 +1749,8 @@ void __fastcall UpdateQuadrupleBarrierBomb(Player *player)
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(1.9634954929351807f, 1.0f, 4.0f);
-        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(36, reinterpret_cast<D3DXVECTOR3 *>(&player->position),
-                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 7, 1, -1);
+        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(EFFECT_QUADRUPLE_BARRIER, D3DXVECTOR3_PTR(&player->position),
+                                              D3DXVECTOR3_PTR(&velocity), 7, 1, -1);
         g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 91);
         bomb->workItems[3].position = player->position;
     }
@@ -1829,11 +1829,11 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         BeginBombSpell(player, 0,
                      "\x90\x6C\x8B\x53\x81\x75\x96\xA2\x97\x88\x89\x69\x8D\x85\x8E\x61\x81\x76",
                      250, 300, 0);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_GUN, 0);
         player->verticalSpeedMultiplier = 0.0f;
         player->horizontalSpeedMultiplier = 0.0f;
-        player->anmFile->SetAndExecuteScriptIdx(&player->mainVm, 0);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
+        player->anmFile->SetAndExecuteScriptIdx(&player->mainVm, PLAYER_MAIN_ANM_IDLE_UNFOCUSED);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_POWER_1, 0);
         workItem->position = player->position;
         workItem->motion = workItem->position;
         workItem->motion.y = 416.0f;
@@ -1850,7 +1850,7 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
     }
     else if (bomb->timer.JustReached(40))
     {
-        g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, 0xffff8080);
+        g_EffectManager.SpawnEffect(EFFECT_BOMB_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->position), 1, 0xffff8080);
         return;
     }
     else if (bomb->timer.JustReached(70))
@@ -1860,12 +1860,12 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         position.y = 224.0f;
         ScreenEffect::RegisterChain(
             SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0xefffffff, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(42), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_SLASH, 0);
         workItem->cancelRegion = player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 500, 0);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 60);
         workItem->damageRegion->collisionInterval = 5;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xffff8080);
         return;
     }
     else if (bomb->timer.JustReached(80))
@@ -1876,12 +1876,12 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xffff8080);
         position.x += 64.0f;
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xffff8080);
         ScreenEffect::RegisterChain(
             SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0xcfffffff, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
         return;
@@ -1894,12 +1894,12 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xffff8080);
         position.x += 128.0f;
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xffff8080);
         ScreenEffect::RegisterChain(
             SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0xafffffff, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
         return;
@@ -1912,12 +1912,12 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 80, 40);
         workItem->damageRegion->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xffff8080);
         position.x += 192.0f;
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 80, 40);
         workItem->damageRegion->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xffff8080);
         ScreenEffect::RegisterChain(
             SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0x8fffffff, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
         return;
@@ -1930,12 +1930,12 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 60, 40);
         workItem->damageRegion->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xffff8080);
         position.x += 256.0f;
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 60, 40);
         workItem->damageRegion->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xffff8080);
         ScreenEffect::RegisterChain(
             SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0x6fffffff, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
         return;
@@ -1948,12 +1948,12 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 50, 40);
         workItem->damageRegion->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xffff8080);
         position.x += 320.0f;
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 50, 40);
         workItem->damageRegion->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xffff8080);
         ScreenEffect::RegisterChain(
             SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0x5fffffff, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
         return;
@@ -1966,12 +1966,12 @@ void __fastcall UpdateSlashOfFutureEternityDeathbomb(Player *player)
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 40, 40);
         workItem->damageRegion->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xffff8080);
         position.x += 384.0f;
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 40, 40);
         workItem->damageRegion->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xffff8080);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xffff8080);
         ScreenEffect::RegisterChain(
             SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0x5fffffff, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
         workItem->motion = player->position;
@@ -2013,11 +2013,11 @@ void __fastcall UpdateSlashOfPresentWorldBomb(Player *player)
         BeginBombSpell(player, 0,
                      "\x90\x6C\x95\x84\x81\x75\x8C\xBB\x90\xA2\x8E\x61\x81\x76",
                      220, 270, 0);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_GUN, 0);
         player->verticalSpeedMultiplier = 0.0f;
         player->horizontalSpeedMultiplier = 0.0f;
-        player->anmFile->SetAndExecuteScriptIdx(&player->mainVm, 0);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(6), 0);
+        player->anmFile->SetAndExecuteScriptIdx(&player->mainVm, PLAYER_MAIN_ANM_IDLE_UNFOCUSED);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_POWER_1, 0);
         workItem->position = player->position;
         workItem->motion = workItem->position;
         workItem->motion.y = 416.0f;
@@ -2034,7 +2034,7 @@ void __fastcall UpdateSlashOfPresentWorldBomb(Player *player)
     }
     else if (bomb->timer.JustReached(40))
     {
-        g_EffectManager.SpawnEffect(40, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, 0xff8080ff);
+        g_EffectManager.SpawnEffect(EFFECT_BOMB_RADIAL_TRAIL, D3DXVECTOR3_PTR(&player->position), 1, 0xff8080ff);
         return;
     }
     else if (bomb->timer.JustReached(70))
@@ -2044,12 +2044,12 @@ void __fastcall UpdateSlashOfPresentWorldBomb(Player *player)
         position.y = 224.0f;
         ScreenEffect::RegisterChain(
             SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0xefffffff, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(42), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_SLASH, 0);
         workItem->cancelRegion = player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 300, 10);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 80, 60);
         workItem->damageRegion->collisionInterval = 5;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xff8080ff);
         return;
     }
     else if (bomb->timer.JustReached(80))
@@ -2060,12 +2060,12 @@ void __fastcall UpdateSlashOfPresentWorldBomb(Player *player)
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xff8080ff);
         position.x += 64.0f;
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xff8080ff);
         ScreenEffect::RegisterChain(
             SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0xcfffffff, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
         return;
@@ -2078,12 +2078,12 @@ void __fastcall UpdateSlashOfPresentWorldBomb(Player *player)
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xff8080ff);
         position.x += 128.0f;
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 100, 40);
         workItem->damageRegion->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xff8080ff);
         ScreenEffect::RegisterChain(
             SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0xbfffffff, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
         return;
@@ -2096,12 +2096,12 @@ void __fastcall UpdateSlashOfPresentWorldBomb(Player *player)
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 80, 40);
         workItem->damageRegion->collisionInterval = 2;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xff8080ff);
         position.x += 192.0f;
         player->CreateRectCancelRegion(&position, 96.0f, 448.0f, 6, 60);
         workItem->damageRegion = player->CreateRectDamageRegion(&position, 96.0f, 448.0f, 80, 40);
         workItem->damageRegion->collisionInterval = 3;
-        g_EffectManager.SpawnEffect(48, reinterpret_cast<D3DXVECTOR3 *>(&position), 1, 0xff8080ff);
+        g_EffectManager.SpawnEffect(EFFECT_EXPANDING_ORTHOGONAL_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position), 1, 0xff8080ff);
         ScreenEffect::RegisterChain(
             SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0x8fffffff, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
         workItem->motion = player->position;
@@ -2192,8 +2192,8 @@ i32 __fastcall InitializeBarrierRadialEffect(Effect *effect)
     Float3 position = effect->position;
     Float3 velocity = effect->vector1;
 
-    g_EffectManager.SpawnEffectInFixedSlotWithVelocity(35, reinterpret_cast<D3DXVECTOR3 *>(&position),
-                                 reinterpret_cast<D3DXVECTOR3 *>(&velocity),
+    g_EffectManager.SpawnEffectInFixedSlotWithVelocity(EFFECT_BARRIER_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position),
+                                 D3DXVECTOR3_PTR(&velocity),
                                  effect->slotIndex, 1, -1);
     effect->updateCallback = UpdateBarrierRadialEffect;
     effect->vertexSegmentCount = 44;
@@ -2208,8 +2208,8 @@ i32 __fastcall InitializeRotatingBarrierRadialEffect(Effect *effect)
     Float3 position = effect->position;
     Float3 velocity = effect->vector1;
 
-    g_EffectManager.SpawnEffectInFixedSlotWithVelocity(35, reinterpret_cast<D3DXVECTOR3 *>(&position),
-                                 reinterpret_cast<D3DXVECTOR3 *>(&velocity),
+    g_EffectManager.SpawnEffectInFixedSlotWithVelocity(EFFECT_BARRIER_RADIAL_TRAIL, D3DXVECTOR3_PTR(&position),
+                                 D3DXVECTOR3_PTR(&velocity),
                                  effect->slotIndex, 1, -1);
     effect->updateCallback = UpdateRotatingBarrierRadialEffect;
     effect->vertexSegmentCount = 54;
@@ -2235,7 +2235,7 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
                      250, 300, 1);
         angle = -ZUN_PI;
         workItem = &bomb->workItems[0];
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(13), 0);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_GUN, 0);
         workItem->position = player->position;
         player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[0], 21);
         player->anmFile->SetAndExecuteScriptIdx(&bomb->workItems[0].vms[1], 22);
@@ -2243,8 +2243,8 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI / 4.0f, 1.0f, 4.0f);
-        g_EffectManager.SpawnEffectInFixedSlotWithVelocity(37, reinterpret_cast<D3DXVECTOR3 *>(&workItem->position),
-                                     reinterpret_cast<D3DXVECTOR3 *>(&velocity), 4, 1, -1);
+        g_EffectManager.SpawnEffectInFixedSlotWithVelocity(EFFECT_QUADRUPLE_BARRIER_ROTATING, D3DXVECTOR3_PTR(&workItem->position),
+                                     D3DXVECTOR3_PTR(&velocity), 4, 1, -1);
     }
 
     if (bomb->timer.JustReached(10))
@@ -2256,8 +2256,8 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI * 3.0f / 8.0f, 1.0f, 4.0f);
-        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
-                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 5, 1, -1);
+        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(EFFECT_QUADRUPLE_BARRIER_ROTATING, D3DXVECTOR3_PTR(&bomb->workItems[0].position),
+                                              D3DXVECTOR3_PTR(&velocity), 5, 1, -1);
         g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 93);
         bomb->workItems[1].position = player->position;
     }
@@ -2271,8 +2271,8 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(ZUN_PI / 2.0f, 1.0f, 4.0f);
-        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
-                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 6, 1, -1);
+        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(EFFECT_QUADRUPLE_BARRIER_ROTATING, D3DXVECTOR3_PTR(&bomb->workItems[0].position),
+                                              D3DXVECTOR3_PTR(&velocity), 6, 1, -1);
         g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 94);
         bomb->workItems[2].position = player->position;
     }
@@ -2286,8 +2286,8 @@ void __fastcall UpdateEternalNightQuadrupleBarrierDeathbomb(Player *player)
         slot = player->CreateCircleDamageRegion(&player->position, 100.0f, 1.0f, 70, 40);
         slot->collisionInterval = 5;
         Float3 velocity(1.9634954929351807f, 1.0f, 4.0f);
-        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(37, reinterpret_cast<D3DXVECTOR3 *>(&bomb->workItems[0].position),
-                                              reinterpret_cast<D3DXVECTOR3 *>(&velocity), 7, 1, -1);
+        effect = g_EffectManager.SpawnEffectInFixedSlotWithVelocity(EFFECT_QUADRUPLE_BARRIER_ROTATING, D3DXVECTOR3_PTR(&bomb->workItems[0].position),
+                                              D3DXVECTOR3_PTR(&velocity), 7, 1, -1);
         g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 95);
         bomb->workItems[3].position = player->position;
     }
@@ -2436,8 +2436,8 @@ void __fastcall UpdateGhastlyDreamBomb(Player *player)
         player->verticalSpeedMultiplier = 0.8f;
         player->horizontalSpeedMultiplier = 0.8f;
         bomb->workItems[0].effect =
-            g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
+            g_EffectManager.SpawnEffect(EFFECT_BOMB_PARTICLE, D3DXVECTOR3_PTR(&player->position), 1, -1);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_POWER_0, 0);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 120, 12, 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
     }
 
@@ -2566,8 +2566,8 @@ void __fastcall UpdateEternalSleepInDreamlandDeathbomb(Player *player)
         player->verticalSpeedMultiplier = 0.8f;
         player->horizontalSpeedMultiplier = 0.8f;
         bomb->workItems[0].effect =
-            g_EffectManager.SpawnEffect(20, reinterpret_cast<D3DXVECTOR3 *>(&player->position), 1, -1);
-        g_SoundPlayer.PlaySoundByIdx(static_cast<SoundIdx>(5), 0);
+            g_EffectManager.SpawnEffect(EFFECT_BOMB_PARTICLE, D3DXVECTOR3_PTR(&player->position), 1, -1);
+        g_SoundPlayer.PlaySoundByIdx(SOUND_POWER_0, 0);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 60, 16, 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
     }
 
@@ -2594,7 +2594,7 @@ void __fastcall UpdateEternalSleepInDreamlandDeathbomb(Player *player)
             if (++spawned >= 16)
                 break;
         }
-        g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(15), workItem->position.x);
+        g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_BULLET_0_LOUD, workItem->position.x);
         ScreenEffect::RegisterChain(SCREEN_EFFECT_SHAKE, 30, 8, 0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);
         ScreenEffect::RegisterChain(
             SCREEN_EFFECT_ARCADE_PULSE, 8, 1, 0xe0f0f0f0, 0, CHAIN_PRIO_DRAW_SCREENEFFECT);

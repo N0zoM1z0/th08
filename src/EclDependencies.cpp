@@ -174,7 +174,7 @@ void __fastcall BeginBoundaryAwareMove(
             DEP_READ_FLOAT(enemy, instruction, 2);
         enemy->flags1 =
             (enemy->flags1 & ~ENEMY_FLAG_MOVEMENT_MODE_MASK) |
-            0x1000U;
+            ENEMY_FLAG_MOVEMENT_MODE_POLAR;
         enemy->movementDuration = 0;
         enemy->movementTimer = 0;
     }
@@ -258,7 +258,7 @@ void __fastcall ApplyRandomBiasedMove(
         enemy->speed = RM_READ_FLOAT(2);
         enemy->flags1 =
             (enemy->flags1 & ~ENEMY_FLAG_MOVEMENT_MODE_MASK) |
-            0x1000U;
+            ENEMY_FLAG_MOVEMENT_MODE_POLAR;
         enemy->movementDuration = 0;
         enemy->movementTimer = 0;
     }
@@ -382,51 +382,51 @@ EclRawInstruction *__fastcall CompareOperands(
 {
     switch (instruction->opcode)
     {
-    case 40:
+    case ECL_OPCODE_JUMP_IF_INT_EQUAL:
         if (DEP_READ_INT(enemy, instruction, 0) == DEP_READ_INT(enemy, instruction, 1))
             goto compare_success;
         goto compare_failure;
-    case 41:
+    case ECL_OPCODE_JUMP_IF_FLOAT_EQUAL:
         if (DEP_READ_FLOAT(enemy, instruction, 0) == DEP_READ_FLOAT(enemy, instruction, 1))
             goto compare_success;
         goto compare_failure;
-    case 42:
+    case ECL_OPCODE_JUMP_IF_INT_NOT_EQUAL:
         if (DEP_READ_INT(enemy, instruction, 0) != DEP_READ_INT(enemy, instruction, 1))
             goto compare_success;
         goto compare_failure;
-    case 43:
+    case ECL_OPCODE_JUMP_IF_FLOAT_NOT_EQUAL:
         if (DEP_READ_FLOAT(enemy, instruction, 0) != DEP_READ_FLOAT(enemy, instruction, 1))
             goto compare_success;
         goto compare_failure;
-    case 44:
+    case ECL_OPCODE_JUMP_IF_INT_LESS:
         if (DEP_READ_INT(enemy, instruction, 0) < DEP_READ_INT(enemy, instruction, 1))
             goto compare_success;
         goto compare_failure;
-    case 45:
+    case ECL_OPCODE_JUMP_IF_FLOAT_LESS:
         if (DEP_READ_FLOAT(enemy, instruction, 0) < DEP_READ_FLOAT(enemy, instruction, 1))
             goto compare_success;
         goto compare_failure;
-    case 46:
+    case ECL_OPCODE_JUMP_IF_INT_LESS_EQUAL:
         if (DEP_READ_INT(enemy, instruction, 0) <= DEP_READ_INT(enemy, instruction, 1))
             goto compare_success;
         goto compare_failure;
-    case 47:
+    case ECL_OPCODE_JUMP_IF_FLOAT_LESS_EQUAL:
         if (DEP_READ_FLOAT(enemy, instruction, 0) <= DEP_READ_FLOAT(enemy, instruction, 1))
             goto compare_success;
         goto compare_failure;
-    case 48:
+    case ECL_OPCODE_JUMP_IF_INT_GREATER:
         if (DEP_READ_INT(enemy, instruction, 0) > DEP_READ_INT(enemy, instruction, 1))
             goto compare_success;
         goto compare_failure;
-    case 49:
+    case ECL_OPCODE_JUMP_IF_FLOAT_GREATER:
         if (DEP_READ_FLOAT(enemy, instruction, 0) > DEP_READ_FLOAT(enemy, instruction, 1))
             goto compare_success;
         goto compare_failure;
-    case 50:
+    case ECL_OPCODE_JUMP_IF_INT_GREATER_EQUAL:
         if (DEP_READ_INT(enemy, instruction, 0) >= DEP_READ_INT(enemy, instruction, 1))
             goto compare_success;
         goto compare_failure;
-    case 51:
+    case ECL_OPCODE_JUMP_IF_FLOAT_GREATER_EQUAL:
         if (DEP_READ_FLOAT(enemy, instruction, 0) >= DEP_READ_FLOAT(enemy, instruction, 1))
             goto compare_success;
         goto compare_failure;
@@ -598,7 +598,7 @@ Enemy *__fastcall SpawnChildAtScriptPosition(
         position.z = 0.0f;
         child = g_EnemyManager.SpawnEnemy2(
             *reinterpret_cast<i32 *>(instruction->operands),
-            reinterpret_cast<D3DXVECTOR3 *>(&position),
+            D3DXVECTOR3_PTR(&position),
             DEP_READ_INT(parent, instruction, 3),
             DEP_READ_INT(parent, instruction, 4),
             DEP_READ_INT(parent, instruction, 5),
@@ -629,7 +629,7 @@ Enemy *__fastcall SpawnChildAtParentOffset(
         position += parent->worldPosition;
         child = g_EnemyManager.SpawnEnemy2(
             *reinterpret_cast<i32 *>(instruction->operands),
-            reinterpret_cast<D3DXVECTOR3 *>(&position),
+            D3DXVECTOR3_PTR(&position),
             DEP_READ_INT(parent, instruction, 3),
             DEP_READ_INT(parent, instruction, 4),
             DEP_READ_INT(parent, instruction, 5),
@@ -718,7 +718,8 @@ void __fastcall DispatchShotInstruction(
                                          ? EclOperands::ResolveInt(
                                                enemy, packed)
                                          : packed;
-            descriptor->aimMode = instruction->opcode - 0x60;
+            descriptor->aimMode =
+                instruction->opcode - ECL_OPCODE_SHOOT_FAN_AIMED;
             descriptor->count1 = (instruction->operandFlags & 4)
                                      ? EclOperands::ResolveInt(
                                            enemy, args->count1)

@@ -67,7 +67,8 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
 
     gameManager->characterListIndex = gameManager->shotType + gameManager->fullShotType;
     g_Supervisor.framerateMultiplier = 1.0f;
-    GM_FLAGS_WORD(gameManager) &= ~0x400U;
+    GM_FLAGS_WORD(gameManager) &=
+        ~GameManagerFlags::DEATHBOMB_FREEZE_ACTIVE_MASK;
 
     if (g_Supervisor.isInitialStageLoad || gameManager->flags.isSpellPractice ||
         g_GameManager.flags.isPracticeMode || g_GameManager.difficulty >= 4)
@@ -224,8 +225,10 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
     gameManager->globals->pointItemsCollectedInStage = 0;
     gameManager->globals->grazeInStage = 0;
     gameManager->isInGameMenu = 0;
-    GM_FLAGS_WORD(gameManager) &= ~0x180U;
-    GM_FLAGS_WORD(gameManager) &= ~0x2000U;
+    GM_FLAGS_WORD(gameManager) &=
+        ~GameManagerFlags::PLAYER_DEATH_DISSOLVE_WORD_MASK;
+    GM_FLAGS_WORD(gameManager) &=
+        ~GameManagerFlags::SUPPRESS_PLAYER_SHOTS_MASK;
     gameManager->stageActiveFrames = 0;
     gameManager->stageExtremeYoukaiFrames = 0;
     gameManager->stageExtremeHumanFrames = 0;
@@ -382,7 +385,8 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
     }
 
     gameManager->showRetryMenu = 0;
-    GM_FLAGS_WORD(gameManager) |= 4U;
+    GM_FLAGS_WORD(gameManager) |=
+        GameManagerFlags::REPLAY_INPUT_ENABLED_MASK;
     if (g_Supervisor.keepStageResources && g_GameManager.flags.isSpellPractice &&
         !GameManager::ShouldPauseMusicInSpellPractice(g_GameManager.currentSpellCardNumber))
         gameManager->stageStartupMode = STAGE_STARTUP_WITHOUT_MUSIC;
@@ -397,7 +401,7 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
 
     gameManager->scriptedUpdateFreeze = 0;
     gameManager->globals->score = 0;
-    GM_FLAGS_WORD(gameManager) &= ~0x10U;
+    GM_FLAGS_WORD(gameManager) &= ~GameManagerFlags::GAME_CLEARED_MASK;
     g_AsciiManager.Reset();
     g_AsciiManager.InitializeVms();
     g_GameManager.skipCurrentFrame = 0;
@@ -424,7 +428,8 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
     g_Supervisor.subthreadCloseRequestActive = FALSE;
     g_Supervisor.subthreadActive = FALSE;
     g_Supervisor.screenTransitionCountdown = 60;
-    GM_FLAGS_WORD(gameManager) &= ~0x200U;
+    GM_FLAGS_WORD(gameManager) &=
+        ~GameManagerFlags::STAGE_CLEAR_SEQUENCE_ACTIVE_MASK;
     g_Supervisor.keepStageResources = 0;
     g_ScreenEffectCounter = 2;
     goto thread_done;

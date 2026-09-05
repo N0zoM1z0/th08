@@ -85,8 +85,8 @@ void __fastcall UpdateBouncingEnemyMotion(Enemy *enemy, EclExInstruction *instru
 void __fastcall StartNarrowBulletWarpBarrier(Enemy *enemy, EclExInstruction *instruction)
 {
     Effect *effect;
-    effect = g_EffectManager.SpawnEffectInFixedSlot(56, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 9, 1, -1);
-    effect = g_EffectManager.SpawnEffectInFixedSlot(56, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 10, 1, -1);
+    effect = g_EffectManager.SpawnEffectInFixedSlot(EFFECT_NARROW_BULLET_WARP_BARRIER, D3DXVECTOR3_PTR(&enemy->position), 9, 1, -1);
+    effect = g_EffectManager.SpawnEffectInFixedSlot(EFFECT_NARROW_BULLET_WARP_BARRIER, D3DXVECTOR3_PTR(&enemy->position), 10, 1, -1);
     g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 97);
     g_Background.spellBackgroundDrawCallback = &DrawBulletWarpBarrier;
 }
@@ -259,8 +259,8 @@ void __fastcall WarpBulletsAcrossNarrowBarrier(Enemy *enemy, EclExInstruction *i
 void __fastcall StartMediumBulletWarpBarrier(Enemy *enemy, EclExInstruction *instruction)
 {
     Effect *effect;
-    effect = g_EffectManager.SpawnEffectInFixedSlot(65, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 9, 1, -1);
-    effect = g_EffectManager.SpawnEffectInFixedSlot(65, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 10, 1, -1);
+    effect = g_EffectManager.SpawnEffectInFixedSlot(EFFECT_MEDIUM_BULLET_WARP_BARRIER, D3DXVECTOR3_PTR(&enemy->position), 9, 1, -1);
+    effect = g_EffectManager.SpawnEffectInFixedSlot(EFFECT_MEDIUM_BULLET_WARP_BARRIER, D3DXVECTOR3_PTR(&enemy->position), 10, 1, -1);
     g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 99);
     g_Background.spellBackgroundDrawCallback = &DrawBulletWarpBarrier;
 }
@@ -354,8 +354,8 @@ void __fastcall StopBulletWarpBarrier(Enemy *enemy, EclExInstruction *instructio
 void __fastcall StartWideBulletWarpBarrier(Enemy *enemy, EclExInstruction *instruction)
 {
     Effect *effect;
-    effect = g_EffectManager.SpawnEffectInFixedSlot(58, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 9, 1, -1);
-    effect = g_EffectManager.SpawnEffectInFixedSlot(58, reinterpret_cast<D3DXVECTOR3 *>(&enemy->position), 10, 1, -1);
+    effect = g_EffectManager.SpawnEffectInFixedSlot(EFFECT_WIDE_BULLET_WARP_BARRIER, D3DXVECTOR3_PTR(&enemy->position), 9, 1, -1);
+    effect = g_EffectManager.SpawnEffectInFixedSlot(EFFECT_WIDE_BULLET_WARP_BARRIER, D3DXVECTOR3_PTR(&enemy->position), 10, 1, -1);
     g_EffectManager.effectAnm->SetAndExecuteScriptIdx(&effect->vm, 101);
     g_Background.spellBackgroundDrawCallback = &DrawBulletWarpBarrier;
 }
@@ -751,7 +751,7 @@ void __fastcall TriggerChildrenNearMarkedBullets(Enemy *enemy, EclExInstruction 
             if (ECL_EX_CONTEXT(child)->extraIntVariables[2] == 0)
             {
                 delta = bullet->position - child->position;
-                if (D3DXVec3LengthSq(reinterpret_cast<D3DXVECTOR3 *>(&delta)) < 4096.0f)
+                if (D3DXVec3LengthSq(D3DXVECTOR3_PTR(&delta)) < 4096.0f)
                 {
                     ECL_EX_CONTEXT(child)->extraIntVariables[2] = 60;
                     ECL_EX_CONTEXT(child)->intVariables[7] =
@@ -847,7 +847,7 @@ void __fastcall SpawnEnemiesFromMarkedBullets(Enemy *enemy, EclExInstruction *in
             ECL_EX_CONTEXT(enemy)->floatVariables[0] = bullet->angle;
             g_EnemyManager.SpawnEnemy2(
                 ECL_EX_CONTEXT(enemy)->extraIntVariables[2],
-                reinterpret_cast<D3DXVECTOR3 *>(&bullet->position), 800, -2, 10,
+                D3DXVECTOR3_PTR(&bullet->position), 800, -2, 10,
                 ECL_EX_CONTEXT(enemy)->intVariables);
             bullet->transformFlags &= ~BULLET_TRANSFORM_ECL_EX_TRIGGER_MARKER;
         }

@@ -12,8 +12,9 @@ ledger covers **1,106 / 1,107**.  The sole authored near match is
 from `scripts/analysis/report-reconstruction-status.py`; `config/claims.csv`
 remains header-only.
 
-The authored semantic phase is broadly complete on `main`.  New maintenance
-must use a fresh short-lived branch and preserve two independent oracles: VC7
+The authored structural semantic phase is complete on `main`; the current
+router-invisible protocol/readability checkpoint is on
+`semantic/readability-protocols`.  It preserves two independent oracles: VC7
 focused/cold exact replay for target code and the applicable modern
 Windows/Linux build/runtime checks for portable behavior.  The portable Linux
 package workflow runs on `push`, `pull_request`, and `workflow_dispatch`.
@@ -2287,3 +2288,25 @@ the fixed-layout verifier.  `scripts/test-match-literals.py` protects both
 single- and double-precision decoding plus malformed-manifest rejection, and
 `validate-tracking.py --require-target` now fails on any future `__real`
 symbol/target-data mismatch even when `data_hex` is absent.
+
+The latest protocol-readability checkpoint names all 184 ECL opcodes and
+removes numeric dispatch labels without changing their physical handler order.
+It separates ECL interaction selector flags from Enemy storage flags, names
+stable GameManager raw masks, adds exact-expanding `Float3`/`D3DXVECTOR3`
+views, and names the complete sound and ANM resource-slot protocols plus the
+evidence-supported portion of the Effect table and Player main VM scripts.
+Bullet transform, rank-influence, and trail instructions use asserted wire
+schemas with compile-time field indices while retaining the exact `/Ob0`
+resolver expression tree.  A generic float-view trial changed RunEcl from
+`0x6B06` to `0x6B05` and was rejected; the accepted bit-cast field view keeps
+RunEcl **26,638 / 26,638 exact**.
+
+The required single-job non-reuse cold replay rebuilt all 75 comparison
+objects and passed **1,106 / 1,106 exact** with zero failures.  The normal VC7
+image links, the complete i386 Linux image rebuilds and links, and the fixed-
+layout verifier passes.  `scripts/check-semantic-protocols.py`, wired into CI,
+prevents regression to numeric ECL cases, raw vector pointer casts, or fixed
+numeric effect/sound/ANM resource IDs.  The reusable source-shape rules are in
+`.agents/skills/th08-semantic/SKILL.md`.  Continue on
+`semantic/readability-protocols`; commit and push stable checkpoints, but do
+not open or merge a PR until explicitly requested.
