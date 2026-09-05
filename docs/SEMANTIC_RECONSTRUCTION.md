@@ -4843,3 +4843,65 @@ UI/gameplay state protocols.  The reusable lesson is recorded in
 `.agents/skills/th08-semantic/SKILL.md`: a protocol audit must continue through
 operand selectors, sibling streams, mode selectors, and replay flags, while
 leaving ambiguous assets and numeric quantities honestly numeric.
+
+### some100/th07 readability comparison — 2026-09-05
+
+Reference: the source audit used
+[some100/th07](https://github.com/some100/th07) at commit
+`84963b2e2630b7ef96b0da4b280152d3f689c998`.  The checkout lives under the
+ignored `_references/` tree.  This was a source-level readability comparison;
+TH07 supplied adjacent-version corroboration, while all TH08 accuracy claims
+continue to come from the pinned Japanese 1.00d target and the repository's
+VC7 and portable oracles.
+
+Comparable protocol coverage: TH07 names all 159 primary ECL opcodes, all 74
+ECL operand selectors (`10000..10073`), and all 31 stage opcodes (`0..30`).
+Its ECL timeline dispatcher retains 13 numeric cases (`0..12`).  The
+corresponding TH08 domains are 184 / 184 primary ECL opcodes, 101 / 101
+operand selectors, 35 / 35 Background opcodes, and 17 / 17 timeline opcodes.
+TH07 is therefore a substantially stronger benchmark than TH06, while TH08
+still has the broader complete coverage across these directly comparable
+interpreter surfaces.
+
+ANM is the important exception.  TH07 gives shared opcode 25 the name
+`ANM_SET_AUTO_ROTATE` and opcode 31 the name `ANM_SET_CAMERA_MODE`.  Those
+names agree with TH08 behavior: opcode 25 writes the VM field consulted by
+Bullet, Enemy, and Player drawing when applying motion-angle rotation, while
+opcode 31 writes the field compared with `AnmManager::cameraMode`.  TH07 also
+names the adjacent `skipTransform` and `useColor2` flags and maintains a much
+broader `AnmIdx.hpp` catalogue.  Its index catalogue contains 58 file defines
+(including aliases), 109 script defines, and 23 sprite defines, although 21
+script names remain explicitly unknown.  TH08 has the larger instruction
+domain at 91 opcode members, but neutral names remain for opcodes 25, 31, 83,
+and 88 and for several VM flags.  On ANM readability, TH07 is ahead.  The
+shared opcode names are recorded as corroborated candidates rather than
+accepted TH08 names until TH08 evidence and exact VC7 emission are checked in
+a dedicated batch.
+
+The wider source audit supports the overall comparison.  TH07 contains 96
+numeric `case` labels; TH08 contains 74, confined to option-array indices,
+damage and life quantities, and per-file animation IDs described above.  A
+lexical scan also found 389 decompiler-style local names, 144 generic
+`param_N` names, and 88 offset-suffixed field names in TH07, compared with
+zero matches for those three patterns in TH08 production source.  These are
+source snapshots rather than semantic-completion percentages, but they expose
+the kind of residue a reader encounters.  The layout record shows the same
+difference in emphasis: TH08 carries 700 `offsetof` assertions and 131 class
+size assertions, while TH07 carries 68 class size assertions and no
+`offsetof` assertions.
+
+The subsystem comparison is similarly mixed in useful ways.  TH07's sound
+domain has 23 named entries and no fixed numeric `PlaySoundByIdx` calls.  Its
+effect calls still contain 22 fixed numeric IDs and it has no corresponding
+effect-ID domain; TH08 names 46 concrete sound IDs and 40 stable effect IDs,
+with semantic CI checks guarding both call surfaces.  TH07's generic ECL
+operand representation also leaves 33 direct `instr->args[n]` uses, whereas
+TH08 has exact-safe typed wire schemas for the established bullet-transform,
+rank, trail, and laser-spawn families.
+
+Result: TH08 has the stronger overall readability coverage and the tighter
+connection between semantic names, fixed layouts, and reproducible oracle
+evidence.  TH07 remains the better ANM naming reference.  Keeping both parts
+of that comparison visible makes the benchmark more useful: the overall
+result records the progress already made, and the ANM exception identifies a
+specific area where the adjacent reconstruction communicates intent better.

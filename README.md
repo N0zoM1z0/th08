@@ -163,23 +163,33 @@ source still works as portable C++. Shared changes are rebuilt on Linux and
 checked against the fixed-layout verifier, with relevant runtime tests used
 when they are available.
 
-To measure the semantic pass, we audited the repository and compared the same
-kinds of interpreter code with
-[GensokyoClub/th06](https://github.com/GensokyoClub/th06), our adjacent-engine
-reference:
+To measure the semantic pass, we audited the repository against two
+adjacent-engine references:
+[GensokyoClub/th06](https://github.com/GensokyoClub/th06) and
+[some100/th07](https://github.com/some100/th07). TH07 is the stronger of the
+two comparisons: its primary ECL, operand, and stage instruction domains are
+already thoroughly named.
 
-| Comparable protocol surface | This TH08 reconstruction | GensokyoClub/th06 reference |
-| --- | ---: | ---: |
-| ECL operand selectors | **101 / 101 named** | 25 named `EclVarId` values |
-| Stage/background stream opcodes | **35 / 35 named** | 6 named `StageOpcode` values |
-| ECL timeline opcodes | **17 / 17 named** | 11 numeric `case` labels remain |
+| Comparable protocol surface | This TH08 reconstruction | GensokyoClub/th06 | some100/th07 |
+| --- | ---: | ---: | ---: |
+| Primary ECL opcodes | **184 / 184 named** | — | 159 / 159 named |
+| ECL operand selectors | **101 / 101 named** | 25 named values | 74 / 74 named |
+| Stage/background stream opcodes | **35 / 35 named** | 6 named values | 31 / 31 named |
+| ECL timeline opcodes | **17 / 17 named** | 11 numeric cases remain | 13 numeric cases remain |
 
-On these measured surfaces, TH08 now **outperforms the TH06 reference in
-readability coverage**. TH08 also has names for all 184 primary
-ECL opcodes, the complete interpolation and camera-mode domains, replay event
-bits, stable sound and resource protocols, and the small UI/gameplay state
-machines found during the audit. CI keeps these finished surfaces on named
+TH08 now **outperforms both references in overall readability coverage**. In
+addition to the complete domains above, it names the interpolation and camera
+modes, replay event bits, stable sound and resource protocols, and the small
+UI/gameplay state machines found during the audit. Its layouts are documented
+with offset assertions, and CI keeps completed protocol surfaces on named
 dispatch.
+
+TH07 is ahead in one clear area: ANM naming. Its shared opcodes 25 and 31 are
+named `ANM_SET_AUTO_ROTATE` and `ANM_SET_CAMERA_MODE`, and `AnmIdx.hpp` carries
+a broader catalogue of file, script, and sprite IDs. TH08 still uses neutral
+names for those two instructions and several other ANM details whose meaning
+has yet to be established from the TH08 target. We count ANM as a clear TH07
+win and use its names as strong corroboration for future target-backed work.
 
 The comparison gives us a concrete readability benchmark. The audit also
 classifies the remaining literals by evidence. Its 74 numeric `case` labels are
