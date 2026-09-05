@@ -482,7 +482,7 @@ void AsciiManager::OnDrawLowPrioImpl()
 
             switch (this->bossMarkerStates[i])
             {
-            case 0:
+            case BOSS_MARKER_NORMAL:
             no_flicker:
                 this->bossMarkers[i].color1.r = 255;
                 this->bossMarkers[i].color1.g = 255;
@@ -496,13 +496,13 @@ void AsciiManager::OnDrawLowPrioImpl()
                     this->bossMarkers[i].color1.a = 160;
                 }
                 break;
-            case 1:
+            case BOSS_MARKER_RED:
                 this->bossMarkers[i].color1.a = 128;
                 this->bossMarkers[i].color1.r = 255;
                 this->bossMarkers[i].color1.g = 64;
                 this->bossMarkers[i].color1.b = 64;
                 break;
-            case 2:
+            case BOSS_MARKER_BLINK_EVERY_8_FRAMES:
                 if (this->frameTimer % 8 == 0)
                 {
                     this->bossMarkers[i].loadedSprite = this->asciiAnm->GetSprite(158);
@@ -516,7 +516,7 @@ void AsciiManager::OnDrawLowPrioImpl()
                     goto no_flicker;
                 }
                 break;
-            case 3:
+            case BOSS_MARKER_BLINK_EVERY_4_FRAMES:
                 if (this->frameTimer % 4 == 0)
                 {
                     this->bossMarkers[i].loadedSprite = this->asciiAnm->GetSprite(158);
@@ -530,7 +530,7 @@ void AsciiManager::OnDrawLowPrioImpl()
                     goto no_flicker;
                 }
                 break;
-            case 4:
+            case BOSS_MARKER_BLINK_EVERY_2_FRAMES:
                 if (this->frameTimer % 2 == 0)
                 {
                     this->bossMarkers[i].loadedSprite = this->asciiAnm->GetSprite(158);

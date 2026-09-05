@@ -60,7 +60,7 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
 
     gameManager->currentStageClearFlag = static_cast<u16>(1 << gameManager->currentStage);
     gameManager->stageAtStart = gameManager->currentStage;
-    if (gameManager->difficulty < 4)
+    if (gameManager->difficulty < EXTRA)
         gameManager->difficultyMask = 1 << gameManager->difficulty;
     else
         gameManager->difficultyMask = 0xf;
@@ -71,7 +71,7 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
         ~GameManagerFlags::DEATHBOMB_FREEZE_ACTIVE_MASK;
 
     if (g_Supervisor.isInitialStageLoad || gameManager->flags.isSpellPractice ||
-        g_GameManager.flags.isPracticeMode || g_GameManager.difficulty >= 4)
+        g_GameManager.flags.isPracticeMode || g_GameManager.difficulty >= EXTRA)
     {
         if (gameManager->cfg)
         {
@@ -99,12 +99,12 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
 
         gameManager->character = 0;
         gameManager->globals->youkaiGauge = 0;
-        if (g_GameManager.currentStage == 8)
+        if (g_GameManager.currentStage == EXTRASTAGE)
             stageMode = 6;
         else
             stageMode = 0;
         gameManager->globals->clockTime = static_cast<u8>(stageMode);
-        if (g_GameManager.difficulty >= 4)
+        if (g_GameManager.difficulty >= EXTRA)
             gameManager->cfg->lifeCount = 2;
         if (g_GameManager.flags.isPracticeMode)
             gameManager->cfg->lifeCount = 8;
@@ -140,25 +140,25 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
         gameManager->globals->graze = 0;
         gameManager->globals->pointItemsCollected = 0;
 
-        if (gameManager->difficulty >= 4 || gameManager->flags.isPracticeMode ||
+        if (gameManager->difficulty >= EXTRA || gameManager->flags.isPracticeMode ||
             gameManager->flags.isSpellPractice)
             gameManager->cfg->slowMode = 0;
 
         switch (g_GameManager.difficulty)
         {
-        case 0:
+        case EASY:
             gameManager->globals->pointItemValue = 60000;
             break;
-        case 1:
+        case NORMAL:
             gameManager->globals->pointItemValue = 100000;
             break;
-        case 2:
+        case HARD:
             gameManager->globals->pointItemValue = 200000;
             break;
-        case 3:
+        case LUNATIC:
             gameManager->globals->pointItemValue = 300000;
             break;
-        case 4:
+        case EXTRA:
             gameManager->globals->pointItemValue = 300000;
             break;
         }
@@ -246,11 +246,11 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
         {
             switch (gameManager->currentStage)
             {
-            case 0:
+            case STAGE1:
                 gameManager->globals->playerPower = 0.0f;
                 gameManager->UpdateAntiTamper();
                 break;
-            case 1:
+            case STAGE2:
                 gameManager->globals->playerPower = 112.0f;
                 gameManager->UpdateAntiTamper();
                 break;
@@ -340,18 +340,18 @@ void __fastcall GameplaySetupThread0043ABD7(void *unused)
     {
         switch (g_GameManager.currentStage)
         {
-        case 5:
+        case STAGE5:
             g_GameManager.IsSpellNumberEqualTo(212);
             break;
-        case 6:
+        case STAGE6A:
             if (!g_GameManager.IsSpellNumberInRange(119, 122))
                 g_GuiMessageStageMode = 2;
             break;
-        case 7:
+        case STAGE6B:
             if (!g_GameManager.IsSpellNumberInRange(147, 150))
                 g_GuiMessageStageMode = 2;
             break;
-        case 8:
+        case EXTRASTAGE:
             if (!g_GameManager.IsSpellNumberInRange(191, 193) &&
                 !g_GameManager.IsSpellNumberEqualTo(213))
                 g_GuiMessageStageMode = 2;

@@ -4763,3 +4763,83 @@ vector pointer casts outside the exact-safe view plus fixed numeric effect,
 sound, and ANM resource calls.  `scripts/ci.py` runs that guard.  This is a
 readability/protocol checkpoint, not a claim that ambiguous visual assets or
 serialized unknown bytes have acquired names.
+
+### Complete secondary protocols and TH06 readability audit — 2026-09-05
+
+Scope: the protocol surfaces that remain invisible after both structural debt
+routing and primary ECL opcode naming.  This pass covers the complete ECL
+operand-selector domain, Background/STD and ECL timeline instruction streams,
+curve and camera modes, replay frame-event flags, stage/difficulty symbols,
+and bounded UI/gameplay state machines.  No mapping, accepted-unit,
+relocation, claims, or authored-progress ledger changes are part of the batch.
+IDA remained blocked and unused.
+
+Observed: the TH08 integer and float operand resolvers collectively dispatch
+every selector from `0x2710` through `0x2774`, exactly 101 values.  Their names
+are now one explicit `EclOperandId` domain covering local/enemy variables,
+random values, difficulty/rank, positions, boss/player state, call parameters,
+movement/interpolation/orbit state, damage/drop/score state, parent context,
+and time-orb/spell state.  The complete Background stream has 35 opcodes
+(`0..34`), eight interpolation modes, and four camera-motion modes.  The ECL
+timeline stream has 17 opcodes (`0..16`).  Physical case order and the original
+control-flow expression tree were retained throughout because VC7 switch
+emission and `/Ob0` resolver output are source-shape sensitive.
+
+Observed secondary protocols now also use explicit domains: ECL easing,
+player-bullet draw paths, replay frame events, Enemy death modes and animation
+direction, Boss marker cadence, MusicRoom input gating, Title replay-menu
+states, ResultScreen phase/category, GUI portrait slots, ScreenEffect shake
+axis samples, Background stage-object flags, and Win32 wait results.  Existing
+`Stage`, `Difficulty`, and GUI display-mode values replace duplicate literals.
+The `PHANTASM` spelling is a display-only alias for the GUI rank table and does
+not alter the five-entry persisted difficulty count.  Background curve values
+remain their own namespace: modes 1..3 implement ease-out and 4..6 ease-in,
+the reverse numbering of the related ANM families.
+
+Corroborated comparison: the repository's imported TH06 reference contains 25
+named `EclVarId` selectors and six named `StageOpcode` entries; its
+`EnemyManager::RunEclTimeline` retains 11 numeric opcode cases.  TH08's 101,
+35, and 17 complete named domains therefore exceed TH06 on these directly
+comparable protocol-readability surfaces.  This is a scoped, source-counted
+comparison, not a claim that every TH08 English interpretation is proved by
+TH06.  All final names come from TH08 producer/consumer behavior; TH06 is
+corroboration only where that behavior agrees.
+
+Inference boundary: 74 numeric case labels deliberately remain.  Player and
+the exact Player-option probe use option array indices and bullet-damage
+quantities; BulletManager uses per-file etama ANM script IDs whose visual roles
+are not stable enough to name; GUI switches on configured life-count
+quantities.  Those values are array/data/quantity selectors rather than
+unclosed protocol domains.  Inventing symbolic artwork or gameplay names for
+them would make the source less trustworthy, not more readable.  The original
+Background opcode-30 negative path, including its asymmetric VM clear, is also
+preserved rather than silently treated as a reconstruction bug.
+
+VC7 oracle: the four ECL resolver functions passed exact comparison at
+`0x0041F420` (**1,899 / 1,899**), `0x0041FE10` (**548 / 548**), `0x00420120`
+(**1,687 / 1,687**), and `0x00420950` (**696 / 696**).  `Background::OnUpdate
+@ 0x00407400` passed **6,455 / 6,455** compared bytes, and
+`EclTimeline::Run @ 0x0042A8A0` passed **1,284 / 1,284**.  Affected-object
+replays passed replay events **252 / 252**, ECL easing **40 / 40**,
+Background/ANM draw **111 / 111**, stage/difficulty symbols **115 / 115**,
+small state machines **100 / 100**, Title replay menu **11 / 11**,
+ResultScreen phases **33 / 33**, GUI protocols **41 / 41**, Enemy death modes
+**40 / 40**, screen shake **21 / 21**, and sound wait results **25 / 25**.
+The required single-job non-reuse replay then cold-built all 75 comparison
+objects and passed **1,106 / 1,106 exact** with zero failures.  The fresh normal
+VC7 production image linked.  The sole authored-but-unaccepted
+`ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0` remains unchanged and
+outside this batch.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` rebuilt and linked
+the complete i386 executable, and `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 and all
+fixed target-owned layout symbols.
+
+Result: `scripts/check-semantic-protocols.py` now verifies the exact value sets
+and decoder coverage for the primary and secondary streams, rejects numeric
+dispatch/writer regressions on those surfaces, and protects the newly closed
+UI/gameplay state protocols.  The reusable lesson is recorded in
+`.agents/skills/th08-semantic/SKILL.md`: a protocol audit must continue through
+operand selectors, sibling streams, mode selectors, and replay flags, while
+leaving ambiguous assets and numeric quantities honestly numeric.

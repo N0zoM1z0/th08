@@ -57,6 +57,12 @@ Audit those surfaces explicitly after field/layout cleanup:
    Preserve the handler's physical order because VC7 switch emission can depend
    on lexical placement.  Use a neutral protocol name when the handler proves
    storage or control flow but not a narrower gameplay term.
+   Do not stop after the primary opcode table: inventory operand selectors,
+   timeline opcodes, stage/background streams, curve/mode selectors, replay
+   synchronization flags, and other sibling dispatch tables.  TH08's primary
+   ECL opcodes were readable while all 101 operand selectors and both secondary
+   script streams were still raw; the structural debt router did not report
+   any of them.
 2. Separate instruction selector bits from physical object flag bits.  Two
    masks with the same numeric value are not interchangeable namespaces.  Name
    shifts and whole-word masks when target code requires a shift/test or raw
@@ -71,6 +77,13 @@ Audit those surfaces explicitly after field/layout cleanup:
    `D3DXVECTOR3 *`, prefer a macro whose expansion is the already accepted cast.
    A normal inline accessor can introduce a call under `/Ob0`.  Keep the cast at
    a named boundary and validate both VC7 and the modern compiler.
+
+Once a protocol surface is complete, add a source guard that checks its exact
+value set, rejects numeric dispatch labels/writers on that surface, and proves
+that every enum member is referenced by the decoder.  Keep this scoped: array
+indices, numeric quantities, and visually ambiguous per-file ANM script IDs are
+not automatically protocols and should not receive invented names merely to
+drive a literal count to zero.
 
 For serialized operand families, introduce typed wire schemas only after the
 opcode names are stable.  Pin size, offset, width, padding, and signedness with

@@ -78,6 +78,17 @@ enum AnmCameraMode
     AnmCameraMode_Unset = -1
 };
 
+// Draw dispatch selected by ANM opcode 37 for player bullet hit animations.
+enum AnmPlayerBulletDrawMode
+{
+    ANM_PLAYER_BULLET_DRAW_NO_ROTATION = 0,
+    ANM_PLAYER_BULLET_DRAW_NO_ROTATION_NO_ROUND = 1,
+    ANM_PLAYER_BULLET_DRAW_2D = 2,
+    ANM_PLAYER_BULLET_DRAW_2D_ROTATED_OR_AXIS_ALIGNED = 3,
+    ANM_PLAYER_BULLET_DRAW_CAMERA_FACING_QUAD = 4,
+    ANM_PLAYER_BULLET_DRAW_PROJECTED_3D_QUAD = 5,
+};
+
 enum AnmZWriteMode
 {
     AnmZWriteMode_Unset = -1

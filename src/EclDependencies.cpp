@@ -456,7 +456,7 @@ void __fastcall SetPrimaryAnmScripts(
     enemy->anmScripts.idleFromLeft = static_cast<i16>(script3);
     enemy->anmScripts.idleFromRight = static_cast<i16>(script4);
     enemy->anmScripts.special = static_cast<i16>(script5);
-    enemy->anmDirection = 0xff;
+    enemy->anmDirection = ENEMY_ANM_DIRECTION_UNINITIALIZED;
 }
 
 
@@ -804,20 +804,20 @@ void Enemy::UpdateShotAndAnm()
 
         if (this->anmScripts.moveLeft >= 0)
         {
-            direction = 0;
+            direction = ENEMY_ANM_DIRECTION_IDLE;
             if (((this->flags1 >> ENEMY_FLAG_MIRROR_MOVEMENT_X_SHIFT) & 1) == 0)
             {
                 if (this->velocity.x < -0.01f)
-                    direction = 1;
+                    direction = ENEMY_ANM_DIRECTION_LEFT;
                 else if (this->velocity.x > 0.01f)
-                    direction = 2;
+                    direction = ENEMY_ANM_DIRECTION_RIGHT;
             }
             else
             {
                 if (this->velocity.x < -0.01f)
-                    direction = 2;
+                    direction = ENEMY_ANM_DIRECTION_RIGHT;
                 else if (this->velocity.x > 0.01f)
-                    direction = 1;
+                    direction = ENEMY_ANM_DIRECTION_LEFT;
             }
 
             if (this->anmDirection != direction)
@@ -828,22 +828,22 @@ void Enemy::UpdateShotAndAnm()
 
                 switch (direction)
                 {
-                case 0:
-                    if (this->anmDirection == 0xff)
+                case ENEMY_ANM_DIRECTION_IDLE:
+                    if (this->anmDirection == ENEMY_ANM_DIRECTION_UNINITIALIZED)
                         anm->SetAndExecuteScriptIdx(
                             &this->vm, this->anmScripts.idleInitial);
-                    else if (this->anmDirection == 1)
+                    else if (this->anmDirection == ENEMY_ANM_DIRECTION_LEFT)
                         anm->SetAndExecuteScriptIdx(
                             &this->vm, this->anmScripts.idleFromLeft);
                     else
                         anm->SetAndExecuteScriptIdx(
                             &this->vm, this->anmScripts.idleFromRight);
                     break;
-                case 1:
+                case ENEMY_ANM_DIRECTION_LEFT:
                     anm->SetAndExecuteScriptIdx(
                         &this->vm, this->anmScripts.moveLeft);
                     break;
-                case 2:
+                case ENEMY_ANM_DIRECTION_RIGHT:
                     anm->SetAndExecuteScriptIdx(
                         &this->vm, this->anmScripts.moveRight);
                     break;

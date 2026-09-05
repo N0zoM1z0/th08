@@ -3170,22 +3170,22 @@ void AnmManager::DrawPlayerBullet(AnmVm *vm)
 {
     switch (vm->playerBulletHitAnimationType)
     {
-    case 0:
+    case ANM_PLAYER_BULLET_DRAW_NO_ROTATION:
         this->DrawNoRotation(vm);
         break;
-    case 1:
+    case ANM_PLAYER_BULLET_DRAW_NO_ROTATION_NO_ROUND:
         this->DrawNoRotationNoRound(vm);
         break;
-    case 2:
+    case ANM_PLAYER_BULLET_DRAW_2D:
         this->Draw2D(vm);
         break;
-    case 3:
+    case ANM_PLAYER_BULLET_DRAW_2D_ROTATED_OR_AXIS_ALIGNED:
         this->Draw2DRotatedOrAxisAligned(vm);
         break;
-    case 4:
+    case ANM_PLAYER_BULLET_DRAW_CAMERA_FACING_QUAD:
         this->DrawCameraFacingQuad(vm);
         break;
-    case 5:
+    case ANM_PLAYER_BULLET_DRAW_PROJECTED_3D_QUAD:
         this->DrawProjected3DQuad(vm);
         break;
     }

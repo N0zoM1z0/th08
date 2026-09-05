@@ -172,7 +172,7 @@ Effect *EffectManager::SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32
         }
     }
 
-    g_ReplayManager->frameEventFlags |= 0x400;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_EFFECT_SPAWNED;
     return i >= 0x200 ? &this->effects[653] : effect;
 }
 
@@ -245,7 +245,7 @@ Effect *EffectManager::SpawnEffectWithVelocity(i32 id, D3DXVECTOR3 *position, D3
         }
     }
 
-    g_ReplayManager->frameEventFlags |= 0x400;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_EFFECT_SPAWNED;
     return i >= 0x200 ? &this->effects[653] : effect;
 }
 
@@ -284,7 +284,7 @@ Effect *EffectManager::SpawnEffectInFixedSlot(i32 id, D3DXVECTOR3 *position, i32
         effect->active = 0;
     }
 
-    g_ReplayManager->frameEventFlags |= 0x400;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_EFFECT_SPAWNED;
     return effect;
 }
 
@@ -323,7 +323,7 @@ Effect *EffectManager::SpawnEffectInFixedSlotWithVelocity(i32 id, D3DXVECTOR3 *p
         effect->active = 0;
     }
 
-    g_ReplayManager->frameEventFlags |= 0x400;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_EFFECT_SPAWNED;
     return effect;
 }
 
@@ -377,7 +377,7 @@ Effect *EffectManager::SpawnEffectInSecondaryPool(i32 id, D3DXVECTOR3 *position,
         }
     }
 
-    g_ReplayManager->frameEventFlags |= 0x400;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_EFFECT_SPAWNED;
     return i >= 0x80 ? &this->effects[653] : effect;
 }
 

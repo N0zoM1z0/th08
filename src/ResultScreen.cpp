@@ -548,7 +548,7 @@ i32 ResultScreen::HandleCategorySelectScreen()
 
     switch (this->statePhase)
     {
-    case 0:
+    case RESULT_SCREEN_PHASE_ENTERING:
         if (this->statePhaseTimer == 0)
         {
             vm = this->spriteVms;
@@ -579,7 +579,7 @@ i32 ResultScreen::HandleCategorySelectScreen()
         }
         this->statePhase++;
         this->statePhaseTimer = 0;
-    case 1:
+    case RESULT_SCREEN_PHASE_INTERACTIVE:
         i = ResultScreen::MoveCursor(this, 4);
         if (i != 0)
         {
@@ -601,12 +601,12 @@ i32 ResultScreen::HandleCategorySelectScreen()
         }
         if (WAS_PRESSED(TH_BUTTON_RETURNMENU))
         {
-            if (this->cursor == 3)
+            if (this->cursor == RESULT_SCREEN_CATEGORY_BACK_TO_TITLE)
             {
                 goto exit;
             }
 
-            this->cursor = 3;
+            this->cursor = RESULT_SCREEN_CATEGORY_BACK_TO_TITLE;
 
             g_SoundPlayer.PlaySoundByIdx(SOUND_BACK, 0);
 
@@ -630,7 +630,7 @@ i32 ResultScreen::HandleCategorySelectScreen()
 
             switch (this->cursor)
             {
-            case 0:
+            case RESULT_SCREEN_CATEGORY_HIGH_SCORES:
                 this->SetState(RESULT_SCREEN_STATE_BEST_SCORES_CHOOSING_DIFFICULTY);
                 for (i = RESULT_SCRIPT_CATEGORY_HIGHSCORE; i <= RESULT_SCRIPT_CATEGORY_BACK_TO_TITLE; i++)
                 {
@@ -644,7 +644,7 @@ i32 ResultScreen::HandleCategorySelectScreen()
                     }
                 }
                 break;
-            case 1:
+            case RESULT_SCREEN_CATEGORY_SPELLCARDS:
                 this->SetState(RESULT_SCREEN_STATE_SPELLCARDS_CHOOSING_DIFFICULTY);
                 for (i = RESULT_SCRIPT_CATEGORY_HIGHSCORE; i <= RESULT_SCRIPT_CATEGORY_BACK_TO_TITLE; i++)
                 {
@@ -658,7 +658,7 @@ i32 ResultScreen::HandleCategorySelectScreen()
                     }
                 }
                 break;
-            case 2:
+            case RESULT_SCREEN_CATEGORY_OTHER_STATS:
                 for (i = RESULT_SCRIPT_CATEGORY_HIGHSCORE; i <= RESULT_SCRIPT_CATEGORY_BACK_TO_TITLE; i++)
                 {
                     if (i == this->cursor)
@@ -672,7 +672,7 @@ i32 ResultScreen::HandleCategorySelectScreen()
                 }
                 this->SetState(RESULT_SCREEN_STATE_OTHER_STATS_SCREEN_INIT);
                 break;
-            case 3:
+            case RESULT_SCREEN_CATEGORY_BACK_TO_TITLE:
             exit:
                 this->SetState(RESULT_SCREEN_STATE_EXITING);
                 g_SoundPlayer.PlaySoundByIdx(SOUND_BACK, 0);
@@ -700,7 +700,7 @@ i32 ResultScreen::HandleHighScoreDifficultySelect()
 
     switch (this->statePhase)
     {
-    case 0:
+    case RESULT_SCREEN_PHASE_ENTERING:
         if (this->statePhaseTimer == 0)
         {
             this->cursor = this->selectedDifficulty;
@@ -726,7 +726,7 @@ i32 ResultScreen::HandleHighScoreDifficultySelect()
         }
         this->statePhase++;
         this->statePhaseTimer = 0;
-    case 1:
+    case RESULT_SCREEN_PHASE_INTERACTIVE:
         i = ResultScreen::MoveCursor(this, MAX_DIFFICULTIES);
         if (i != 0)
         {
@@ -867,7 +867,7 @@ i32 ResultScreen::HandleHighScoreCharacterSelect()
 
     switch (this->statePhase)
     {
-    case 0:
+    case RESULT_SCREEN_PHASE_ENTERING:
         if (this->statePhaseTimer == 0)
         {
             this->cursor = this->selectedHighScoreCharacter;
@@ -893,7 +893,7 @@ i32 ResultScreen::HandleHighScoreCharacterSelect()
         }
         this->statePhase++;
         this->statePhaseTimer = 0;
-    case 1:
+    case RESULT_SCREEN_PHASE_INTERACTIVE:
         i = ResultScreen::MoveCursor(this, SHOT_ALL);
         if (i != 0)
         {
@@ -1007,7 +1007,7 @@ i32 ResultScreen::HandleSpellCardDifficultySelect()
 
     switch (this->statePhase)
     {
-    case 0:
+    case RESULT_SCREEN_PHASE_ENTERING:
         if (this->statePhaseTimer == 0)
         {
             this->cursor = this->selectedSpellcardDifficulty;
@@ -1033,7 +1033,7 @@ i32 ResultScreen::HandleSpellCardDifficultySelect()
         }
         this->statePhase++;
         this->statePhaseTimer = 0;
-    case 1:
+    case RESULT_SCREEN_PHASE_INTERACTIVE:
         i = ResultScreen::MoveCursor(this, MAX_DIFFICULTIES + 1);
         if (i != 0)
         {
@@ -1098,7 +1098,7 @@ i32 ResultScreen::HandleSpellCardCharacterSelect()
 
     switch (this->statePhase)
     {
-    case 0:
+    case RESULT_SCREEN_PHASE_ENTERING:
         if (this->statePhaseTimer == 0)
         {
             this->cursor = this->shotTypeCursor;
@@ -1124,7 +1124,7 @@ i32 ResultScreen::HandleSpellCardCharacterSelect()
         }
         this->statePhase++;
         this->statePhaseTimer = 0;
-    case 1:
+    case RESULT_SCREEN_PHASE_INTERACTIVE:
         i = ResultScreen::MoveCursor(this, SHOT_ALL + 1);
         if (i != 0)
         {

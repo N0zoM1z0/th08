@@ -159,7 +159,7 @@ DIFFABLE_STATIC_ARRAY_ASSIGN(i32, 4, g_ExPointItemExtendThresholds) = {200, 666,
 
 void ItemManager::UpdatePointItemExtendThreshold()
 {
-    if (g_GameManager.difficulty < 4)
+    if (g_GameManager.difficulty < EXTRA)
     {
         if (g_GameManager.globals->pointItemExtendsSoFar < 6)
         {
@@ -310,7 +310,7 @@ pickup:
         if (item->state != ITEM_STATE_TIME_RISING &&
             g_Player.CalcItemBoxCollision(&item->currentPosition, &itemBox))
         {
-            g_ReplayManager->frameEventFlags |= 0x40;
+            g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_ITEM_COLLECTED;
             switch (item->itemType)
             {
             case ITEM_POWER_SMALL:

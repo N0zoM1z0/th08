@@ -227,9 +227,9 @@ ChainCallbackResult Supervisor::OnUpdate(Supervisor *s)
                 break;
             case SupervisorState_GameManagerRestartFromBeginning:
                 GameManager::CutChain();
-                if (!g_GameManager.IsPracticeMode() && g_GameManager.difficulty < 4)
+                if (!g_GameManager.IsPracticeMode() && g_GameManager.difficulty < EXTRA)
                 {
-                    g_GameManager.currentStage = 0;
+                    g_GameManager.currentStage = STAGE1;
                 }
                 ReplayManager::SaveReplay(NULL, NULL);
                 if (GameManager::RegisterChain() != ZUN_SUCCESS)

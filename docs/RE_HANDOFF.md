@@ -19,6 +19,35 @@ focused/cold exact replay for target code and the applicable modern
 Windows/Linux build/runtime checks for portable behavior.  The portable Linux
 package workflow runs on `push`, `pull_request`, and `workflow_dispatch`.
 
+The current protocol closure goes beyond the imported TH06 readability
+baseline on the comparable interpreter surfaces.  TH08 now names all 184 ECL
+opcodes, all 101 ECL operand selectors (`0x2710..0x2774`), all 35 Background
+stream opcodes, and all 17 ECL timeline opcodes.  The local TH06 reference has
+25 named ECL variables and six named stage opcodes, while its timeline
+dispatcher retains 11 numeric cases.  TH08 additionally names the complete
+Background interpolation/camera-motion and ECL easing domains, replay frame
+event bits, and the stable UI/gameplay state protocols encountered in this
+audit.  These are evidence-bounded names, not names inferred merely from a
+numeric value.
+
+Only 74 numeric `case` labels remain in production/probe source: Player option
+array indices and damage quantities, per-file Bullet ANM script IDs whose
+visual roles remain ambiguous, and GUI life-count quantities.  They are data
+or quantities rather than unnamed protocol domains and are deliberately not
+given speculative enum names.  `scripts/check-semantic-protocols.py` now
+guards the complete named value sets and their dispatch/writer use, including
+the secondary streams and closed UI/gameplay states that the structural debt
+router cannot see.
+
+Focused VC7 comparison passed the four ECL operand resolvers, complete
+Background update, complete ECL timeline runner, and every affected-object
+batch.  The final single-job non-reuse replay cold-built all 75 configured
+objects and passed **1,106 / 1,106 exact** with zero failures.  A fresh normal
+VC7 production image linked, the complete Linux i386 image rebuilt and linked,
+and the fixed-layout verifier passed.  The sole authored-but-unaccepted
+`ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0` remains unchanged and
+outside this semantic checkpoint.
+
 The first accepted source batch is the `ScreenEffect +0x18/+0x1C/+0x20`
 variant-parameter family.  A TU-local typed overlay records fade color, shake
 amplitude, pulse repeat/color, and three-phase shake-envelope views while

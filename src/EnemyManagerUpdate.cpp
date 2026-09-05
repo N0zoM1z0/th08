@@ -490,12 +490,12 @@ i32 EnemyManager::OnUpdate()
             switch ((enemy->flags1 >> ENEMY_FLAG_DEATH_MODE_SHIFT) &
                     (ENEMY_FLAG_DEATH_MODE_MASK >> ENEMY_FLAG_DEATH_MODE_SHIFT))
             {
-            case 3:
+            case ENEMY_DEATH_MODE_END_BOSS_PHASE:
                 enemy->life = 1;
                 enemy->flags1 &= ~ENEMY_FLAG_DAMAGEABLE;
                 enemy->flags1 &= ~ENEMY_FLAG_DEATH_MODE_MASK;
                 g_Gui.SetBossPresent(false);
-                g_ReplayManager->frameEventFlags |= 0x20;
+                g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_ENEMY_REMOVED;
                 if (enemy->deathAnm1 >= 0)
                 {
                     g_EffectManager.SpawnEffect(enemy->deathAnm1, D3DXVECTOR3_PTR(&enemy->worldPosition), 1, -1);
@@ -516,7 +516,7 @@ i32 EnemyManager::OnUpdate()
                 enemy->flags1 &= ~ENEMY_FLAG_NO_DAMAGE_DURING_STOP;
                 goto death_audio_and_callback;
 
-            case 1:
+            case ENEMY_DEATH_MODE_PERSIST_NONINTERACTIVE:
                 g_GameManager.AddScore(enemy->score);
                 enemy->flags1 |= ENEMY_FLAG_PERSIST_AFTER_DEATH;
                 enemy->flags1 &= ~ENEMY_FLAG_COLLISION;
@@ -524,7 +524,7 @@ i32 EnemyManager::OnUpdate()
                 enemy->flags1 &= ~ENEMY_FLAG_ACCEPTS_DAMAGE;
                 goto common_death_mode;
 
-            case 0:
+            case ENEMY_DEATH_MODE_DEACTIVATE:
                 g_GameManager.AddScore(enemy->score);
                 enemy->flags1 &= ~ENEMY_FLAG_ACTIVE;
                 if (enemy->alignmentEffect != 0)
@@ -534,7 +534,7 @@ i32 EnemyManager::OnUpdate()
                 }
                 goto common_death_mode;
 
-            case 2:
+            case ENEMY_DEATH_MODE_KEEP_RUNTIME_STATE:
             common_death_mode:
                 if (reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->boss)
                 {
@@ -554,7 +554,7 @@ i32 EnemyManager::OnUpdate()
                     }
                 }
                 enemy->life = 0;
-                g_ReplayManager->frameEventFlags |= 0x20;
+                g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_ENEMY_REMOVED;
                 break;
             }
 

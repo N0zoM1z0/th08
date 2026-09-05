@@ -24,124 +24,124 @@ f32 Enemy::ResolveFloat(f32 operand)
 {
     switch ((i32)operand)
     {
-    case 0x2710: return (f32)ECL_CONTEXT(this)->intVariables[0];
-    case 0x2711: return (f32)ECL_CONTEXT(this)->intVariables[1];
-    case 0x2712: return (f32)ECL_CONTEXT(this)->intVariables[2];
-    case 0x2713: return (f32)ECL_CONTEXT(this)->intVariables[3];
-    case 0x2714: return (f32)ECL_CONTEXT(this)->intVariables[4];
-    case 0x2715: return (f32)ECL_CONTEXT(this)->intVariables[5];
-    case 0x2716: return (f32)ECL_CONTEXT(this)->intVariables[6];
-    case 0x2717: return (f32)ECL_CONTEXT(this)->intVariables[7];
-    case 0x2718: return (f32)this->eclIntVariables[0];
-    case 0x2719: return (f32)this->eclIntVariables[1];
-    case 0x271A: return (f32)this->eclIntVariables[2];
-    case 0x271B: return (f32)this->eclIntVariables[3];
-    case 0x271C: return (f32)this->eclIntVariables[4];
-    case 0x271D: return (f32)this->eclIntVariables[5];
-    case 0x271E: return (f32)this->eclIntVariables[6];
-    case 0x271F: return (f32)this->eclIntVariables[7];
+    case ECL_OPERAND_LOCAL_INT_0: return (f32)ECL_CONTEXT(this)->intVariables[0];
+    case ECL_OPERAND_LOCAL_INT_1: return (f32)ECL_CONTEXT(this)->intVariables[1];
+    case ECL_OPERAND_LOCAL_INT_2: return (f32)ECL_CONTEXT(this)->intVariables[2];
+    case ECL_OPERAND_LOCAL_INT_3: return (f32)ECL_CONTEXT(this)->intVariables[3];
+    case ECL_OPERAND_LOCAL_INT_4: return (f32)ECL_CONTEXT(this)->intVariables[4];
+    case ECL_OPERAND_LOCAL_INT_5: return (f32)ECL_CONTEXT(this)->intVariables[5];
+    case ECL_OPERAND_LOCAL_INT_6: return (f32)ECL_CONTEXT(this)->intVariables[6];
+    case ECL_OPERAND_LOCAL_INT_7: return (f32)ECL_CONTEXT(this)->intVariables[7];
+    case ECL_OPERAND_ENEMY_INT_0: return (f32)this->eclIntVariables[0];
+    case ECL_OPERAND_ENEMY_INT_1: return (f32)this->eclIntVariables[1];
+    case ECL_OPERAND_ENEMY_INT_2: return (f32)this->eclIntVariables[2];
+    case ECL_OPERAND_ENEMY_INT_3: return (f32)this->eclIntVariables[3];
+    case ECL_OPERAND_ENEMY_INT_4: return (f32)this->eclIntVariables[4];
+    case ECL_OPERAND_ENEMY_INT_5: return (f32)this->eclIntVariables[5];
+    case ECL_OPERAND_ENEMY_INT_6: return (f32)this->eclIntVariables[6];
+    case ECL_OPERAND_ENEMY_INT_7: return (f32)this->eclIntVariables[7];
 
-    case 0x2745: return (f32)ECL_CONTEXT(this)->callParameterInts[0];
-    case 0x2746: return (f32)ECL_CONTEXT(this)->callParameterInts[1];
-    case 0x2747: return (f32)ECL_CONTEXT(this)->callParameterInts[2];
-    case 0x2748: return (f32)ECL_CONTEXT(this)->callParameterInts[3];
-    case 0x2734: return (f32)ECL_CONTEXT(this)->extraIntVariables[0];
-    case 0x2735: return (f32)ECL_CONTEXT(this)->extraIntVariables[1];
-    case 0x2736: return (f32)ECL_CONTEXT(this)->extraIntVariables[2];
-    case 0x2737: return (f32)ECL_CONTEXT(this)->extraIntVariables[3];
-    case 0x2730: return (f32)(g_Rng.GetRandomU32() & 0x7FFFFFFF);
-    case 0x2731: return g_Rng.GetRandomF32();
-    case 0x2732: return (f32)(i32)g_Rng.GetRandomU32();
-    case 0x2733: return g_Rng.GetRandomF32Signed();
-    case 0x2762: return g_Rng.GetRandomF32InRange(6.2831855f) - 3.1415927f;
-    case 0x2738: return (f32)g_GameManager.difficulty;
-    case 0x2739: return (f32)g_GameManager.rank;
-    case 0x2741: return (f32)this->bossTimer.current;
-    case 0x2743: return (f32)this->life;
-    case 0x2744: return (f32)::th08::g_GameManager.shotType;
-    case 0x276C: return (f32)this->itemDropType;
-    case 0x276D: return (f32)this->score;
-    case 0x274D: return (f32)EclRunLow::g_EclCallParameters.ints[0];
-    case 0x274E: return (f32)EclRunLow::g_EclCallParameters.ints[1];
-    case 0x274F: return (f32)EclRunLow::g_EclCallParameters.ints[2];
-    case 0x2750: return (f32)EclRunLow::g_EclCallParameters.ints[3];
-    case 0x2751: return EclRunLow::g_EclCallParameters.floats[0];
-    case 0x2752: return EclRunLow::g_EclCallParameters.floats[1];
-    case 0x2753: return EclRunLow::g_EclCallParameters.floats[2];
-    case 0x2754: return EclRunLow::g_EclCallParameters.floats[3];
+    case ECL_OPERAND_CALL_INT_0: return (f32)ECL_CONTEXT(this)->callParameterInts[0];
+    case ECL_OPERAND_CALL_INT_1: return (f32)ECL_CONTEXT(this)->callParameterInts[1];
+    case ECL_OPERAND_CALL_INT_2: return (f32)ECL_CONTEXT(this)->callParameterInts[2];
+    case ECL_OPERAND_CALL_INT_3: return (f32)ECL_CONTEXT(this)->callParameterInts[3];
+    case ECL_OPERAND_EXTRA_INT_0: return (f32)ECL_CONTEXT(this)->extraIntVariables[0];
+    case ECL_OPERAND_EXTRA_INT_1: return (f32)ECL_CONTEXT(this)->extraIntVariables[1];
+    case ECL_OPERAND_EXTRA_INT_2: return (f32)ECL_CONTEXT(this)->extraIntVariables[2];
+    case ECL_OPERAND_EXTRA_INT_3: return (f32)ECL_CONTEXT(this)->extraIntVariables[3];
+    case ECL_OPERAND_RANDOM_NONNEGATIVE_INT: return (f32)(g_Rng.GetRandomU32() & 0x7FFFFFFF);
+    case ECL_OPERAND_RANDOM_UNIT_FLOAT: return g_Rng.GetRandomF32();
+    case ECL_OPERAND_RANDOM_RAW_INT: return (f32)(i32)g_Rng.GetRandomU32();
+    case ECL_OPERAND_RANDOM_SIGNED_UNIT_FLOAT: return g_Rng.GetRandomF32Signed();
+    case ECL_OPERAND_RANDOM_ANGLE: return g_Rng.GetRandomF32InRange(6.2831855f) - 3.1415927f;
+    case ECL_OPERAND_DIFFICULTY: return (f32)g_GameManager.difficulty;
+    case ECL_OPERAND_RANK: return (f32)g_GameManager.rank;
+    case ECL_OPERAND_BOSS_TIMER: return (f32)this->bossTimer.current;
+    case ECL_OPERAND_LIFE: return (f32)this->life;
+    case ECL_OPERAND_SHOT_TYPE: return (f32)::th08::g_GameManager.shotType;
+    case ECL_OPERAND_ITEM_DROP_TYPE: return (f32)this->itemDropType;
+    case ECL_OPERAND_SCORE: return (f32)this->score;
+    case ECL_OPERAND_SHARED_CALL_INT_0: return (f32)EclRunLow::g_EclCallParameters.ints[0];
+    case ECL_OPERAND_SHARED_CALL_INT_1: return (f32)EclRunLow::g_EclCallParameters.ints[1];
+    case ECL_OPERAND_SHARED_CALL_INT_2: return (f32)EclRunLow::g_EclCallParameters.ints[2];
+    case ECL_OPERAND_SHARED_CALL_INT_3: return (f32)EclRunLow::g_EclCallParameters.ints[3];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_0: return EclRunLow::g_EclCallParameters.floats[0];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_1: return EclRunLow::g_EclCallParameters.floats[1];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_2: return EclRunLow::g_EclCallParameters.floats[2];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_3: return EclRunLow::g_EclCallParameters.floats[3];
 
-    case 0x2720: return ECL_CONTEXT(this)->floatVariables[0];
-    case 0x2721: return ECL_CONTEXT(this)->floatVariables[1];
-    case 0x2722: return ECL_CONTEXT(this)->floatVariables[2];
-    case 0x2723: return ECL_CONTEXT(this)->floatVariables[3];
-    case 0x2724: return ECL_CONTEXT(this)->floatVariables[4];
-    case 0x2725: return ECL_CONTEXT(this)->floatVariables[5];
-    case 0x2726: return ECL_CONTEXT(this)->floatVariables[6];
-    case 0x2727: return ECL_CONTEXT(this)->floatVariables[7];
-    case 0x2728: return this->eclFloatVariables[0];
-    case 0x2729: return this->eclFloatVariables[1];
-    case 0x272A: return this->eclFloatVariables[2];
-    case 0x272B: return this->eclFloatVariables[3];
-    case 0x272C: return this->eclFloatVariables[4];
-    case 0x272D: return this->eclFloatVariables[5];
-    case 0x272E: return this->eclFloatVariables[6];
-    case 0x272F: return this->eclFloatVariables[7];
-    case 0x2749: return ECL_CONTEXT(this)->callParameterFloats[0];
-    case 0x274A: return ECL_CONTEXT(this)->callParameterFloats[1];
-    case 0x274B: return ECL_CONTEXT(this)->callParameterFloats[2];
-    case 0x274C: return ECL_CONTEXT(this)->callParameterFloats[3];
-    case 0x273A: return this->worldPosition.x;
-    case 0x273B: return this->worldPosition.y;
-    case 0x273C: return this->worldPosition.z;
-    case 0x273D: return g_Player.position.x;
-    case 0x273E: return g_Player.position.y;
-    case 0x273F: return g_Player.position.z;
-    case 0x276E: return ECL_CONTEXT(this)->extraFloatVariables[0];
-    case 0x276F: return ECL_CONTEXT(this)->extraFloatVariables[1];
-    case 0x275A: return this->movementInterpolationOrigin.x;
-    case 0x275B: return this->movementInterpolationOrigin.y;
-    case 0x275C: return this->movementInterpolationOrigin.z;
-    case 0x275F: return this->movementInterpolationDelta.x;
-    case 0x2760: return this->movementInterpolationDelta.y;
-    case 0x2761: return this->movementInterpolationDelta.z;
-    case 0x2765: return this->lastFrameDisplacement.x;
-    case 0x2766: return this->lastFrameDisplacement.y;
-    case 0x2767: return this->lastFrameDisplacement.z;
-    case 0x2768: return (f32)this->lifeCallbackThresholds[0];
-    case 0x2769: return (f32)this->lifeCallbackThresholds[1];
-    case 0x276A: return (f32)this->lifeCallbackThresholds[2];
-    case 0x276B: return (f32)this->lifeCallbackThresholds[3];
-    case 0x2740:
+    case ECL_OPERAND_LOCAL_FLOAT_0: return ECL_CONTEXT(this)->floatVariables[0];
+    case ECL_OPERAND_LOCAL_FLOAT_1: return ECL_CONTEXT(this)->floatVariables[1];
+    case ECL_OPERAND_LOCAL_FLOAT_2: return ECL_CONTEXT(this)->floatVariables[2];
+    case ECL_OPERAND_LOCAL_FLOAT_3: return ECL_CONTEXT(this)->floatVariables[3];
+    case ECL_OPERAND_LOCAL_FLOAT_4: return ECL_CONTEXT(this)->floatVariables[4];
+    case ECL_OPERAND_LOCAL_FLOAT_5: return ECL_CONTEXT(this)->floatVariables[5];
+    case ECL_OPERAND_LOCAL_FLOAT_6: return ECL_CONTEXT(this)->floatVariables[6];
+    case ECL_OPERAND_LOCAL_FLOAT_7: return ECL_CONTEXT(this)->floatVariables[7];
+    case ECL_OPERAND_ENEMY_FLOAT_0: return this->eclFloatVariables[0];
+    case ECL_OPERAND_ENEMY_FLOAT_1: return this->eclFloatVariables[1];
+    case ECL_OPERAND_ENEMY_FLOAT_2: return this->eclFloatVariables[2];
+    case ECL_OPERAND_ENEMY_FLOAT_3: return this->eclFloatVariables[3];
+    case ECL_OPERAND_ENEMY_FLOAT_4: return this->eclFloatVariables[4];
+    case ECL_OPERAND_ENEMY_FLOAT_5: return this->eclFloatVariables[5];
+    case ECL_OPERAND_ENEMY_FLOAT_6: return this->eclFloatVariables[6];
+    case ECL_OPERAND_ENEMY_FLOAT_7: return this->eclFloatVariables[7];
+    case ECL_OPERAND_CALL_FLOAT_0: return ECL_CONTEXT(this)->callParameterFloats[0];
+    case ECL_OPERAND_CALL_FLOAT_1: return ECL_CONTEXT(this)->callParameterFloats[1];
+    case ECL_OPERAND_CALL_FLOAT_2: return ECL_CONTEXT(this)->callParameterFloats[2];
+    case ECL_OPERAND_CALL_FLOAT_3: return ECL_CONTEXT(this)->callParameterFloats[3];
+    case ECL_OPERAND_ENEMY_POSITION_X: return this->worldPosition.x;
+    case ECL_OPERAND_ENEMY_POSITION_Y: return this->worldPosition.y;
+    case ECL_OPERAND_ENEMY_POSITION_Z: return this->worldPosition.z;
+    case ECL_OPERAND_PLAYER_POSITION_X: return g_Player.position.x;
+    case ECL_OPERAND_PLAYER_POSITION_Y: return g_Player.position.y;
+    case ECL_OPERAND_PLAYER_POSITION_Z: return g_Player.position.z;
+    case ECL_OPERAND_EXTRA_FLOAT_0: return ECL_CONTEXT(this)->extraFloatVariables[0];
+    case ECL_OPERAND_EXTRA_FLOAT_1: return ECL_CONTEXT(this)->extraFloatVariables[1];
+    case ECL_OPERAND_INTERPOLATION_ORIGIN_X: return this->movementInterpolationOrigin.x;
+    case ECL_OPERAND_INTERPOLATION_ORIGIN_Y: return this->movementInterpolationOrigin.y;
+    case ECL_OPERAND_INTERPOLATION_ORIGIN_Z: return this->movementInterpolationOrigin.z;
+    case ECL_OPERAND_INTERPOLATION_DELTA_X: return this->movementInterpolationDelta.x;
+    case ECL_OPERAND_INTERPOLATION_DELTA_Y: return this->movementInterpolationDelta.y;
+    case ECL_OPERAND_INTERPOLATION_DELTA_Z: return this->movementInterpolationDelta.z;
+    case ECL_OPERAND_LAST_FRAME_DISPLACEMENT_X: return this->lastFrameDisplacement.x;
+    case ECL_OPERAND_LAST_FRAME_DISPLACEMENT_Y: return this->lastFrameDisplacement.y;
+    case ECL_OPERAND_LAST_FRAME_DISPLACEMENT_Z: return this->lastFrameDisplacement.z;
+    case ECL_OPERAND_LIFE_CALLBACK_THRESHOLD_0: return (f32)this->lifeCallbackThresholds[0];
+    case ECL_OPERAND_LIFE_CALLBACK_THRESHOLD_1: return (f32)this->lifeCallbackThresholds[1];
+    case ECL_OPERAND_LIFE_CALLBACK_THRESHOLD_2: return (f32)this->lifeCallbackThresholds[2];
+    case ECL_OPERAND_LIFE_CALLBACK_THRESHOLD_3: return (f32)this->lifeCallbackThresholds[3];
+    case ECL_OPERAND_ANGLE_TO_PLAYER:
         return g_Player.AngleToPoint(&this->worldPosition);
-    case 0x2755: return this->movementAngle;
-    case 0x2756: return this->angularVelocity;
-    case 0x2757: return this->speed;
-    case 0x2758: return this->acceleration;
-    case 0x2759: return this->orbitRadius;
-    case 0x275D: return this->orbitAngle;
-    case 0x275E: return this->orbitAngularVelocity;
-    case 0x2764: return (f32)this->bossSlot;
-    case 0x2763: return (f32)this->lastDamage;
+    case ECL_OPERAND_MOVEMENT_ANGLE: return this->movementAngle;
+    case ECL_OPERAND_ANGULAR_VELOCITY: return this->angularVelocity;
+    case ECL_OPERAND_SPEED: return this->speed;
+    case ECL_OPERAND_ACCELERATION: return this->acceleration;
+    case ECL_OPERAND_ORBIT_RADIUS: return this->orbitRadius;
+    case ECL_OPERAND_ORBIT_ANGLE: return this->orbitAngle;
+    case ECL_OPERAND_ORBIT_ANGULAR_VELOCITY: return this->orbitAngularVelocity;
+    case ECL_OPERAND_BOSS_SLOT: return (f32)this->bossSlot;
+    case ECL_OPERAND_LAST_DAMAGE: return (f32)this->lastDamage;
 
-    case 0x2770:
+    case ECL_OPERAND_PARENT_CHAIN_DEPTH:
         return (f32)(ENEMY_OWNER(this)->HasParentChain()
                          ? ENEMY_OWNER(this)->CountParentChain()
                          : ENEMY_OWNER(this)->HasAttachedEnemy()
                                ? ENEMY_OWNER(this)->parentEnemy->CountParentChain()
                                : 0);
 
-    case 0x2742:
+    case ECL_OPERAND_DISTANCE_TO_PLAYER:
     {
         Float3 delta = g_Player.position - this->worldPosition;
         return D3DXVec3Length(D3DXVECTOR3_PTR(&delta));
     }
-    case 0x2771: return (f32)g_Player.IsYoukai();
-    case 0x2773:
+    case ECL_OPERAND_PLAYER_IS_YOUKAI: return (f32)g_Player.IsYoukai();
+    case ECL_OPERAND_SPELL_CAPTURE_STATE:
         return (f32)(g_Spellcard.IsActive()
                          ? g_Spellcard.IsCaptureValid()
                          : g_Spellcard.WasCaptured());
 
-    case 0x2772:
+    case ECL_OPERAND_TIME_ORB_THRESHOLD_STATE:
     default: return operand;
     }
 }
@@ -159,53 +159,53 @@ f32 *__fastcall ResolveFloatLValue(Enemy *enemy, f32 *operand, u16 flags, i32 fl
 
     switch ((i32)*operand)
     {
-    case 0x2720: return &ECL_CONTEXT(enemy)->floatVariables[0];
-    case 0x2721: return &ECL_CONTEXT(enemy)->floatVariables[1];
-    case 0x2722: return &ECL_CONTEXT(enemy)->floatVariables[2];
-    case 0x2723: return &ECL_CONTEXT(enemy)->floatVariables[3];
-    case 0x2724: return &ECL_CONTEXT(enemy)->floatVariables[4];
-    case 0x2725: return &ECL_CONTEXT(enemy)->floatVariables[5];
-    case 0x2726: return &ECL_CONTEXT(enemy)->floatVariables[6];
-    case 0x2727: return &ECL_CONTEXT(enemy)->floatVariables[7];
-    case 0x2728: return &enemy->eclFloatVariables[0];
-    case 0x2729: return &enemy->eclFloatVariables[1];
-    case 0x272A: return &enemy->eclFloatVariables[2];
-    case 0x272B: return &enemy->eclFloatVariables[3];
-    case 0x272C: return &enemy->eclFloatVariables[4];
-    case 0x272D: return &enemy->eclFloatVariables[5];
-    case 0x272E: return &enemy->eclFloatVariables[6];
-    case 0x272F: return &enemy->eclFloatVariables[7];
+    case ECL_OPERAND_LOCAL_FLOAT_0: return &ECL_CONTEXT(enemy)->floatVariables[0];
+    case ECL_OPERAND_LOCAL_FLOAT_1: return &ECL_CONTEXT(enemy)->floatVariables[1];
+    case ECL_OPERAND_LOCAL_FLOAT_2: return &ECL_CONTEXT(enemy)->floatVariables[2];
+    case ECL_OPERAND_LOCAL_FLOAT_3: return &ECL_CONTEXT(enemy)->floatVariables[3];
+    case ECL_OPERAND_LOCAL_FLOAT_4: return &ECL_CONTEXT(enemy)->floatVariables[4];
+    case ECL_OPERAND_LOCAL_FLOAT_5: return &ECL_CONTEXT(enemy)->floatVariables[5];
+    case ECL_OPERAND_LOCAL_FLOAT_6: return &ECL_CONTEXT(enemy)->floatVariables[6];
+    case ECL_OPERAND_LOCAL_FLOAT_7: return &ECL_CONTEXT(enemy)->floatVariables[7];
+    case ECL_OPERAND_ENEMY_FLOAT_0: return &enemy->eclFloatVariables[0];
+    case ECL_OPERAND_ENEMY_FLOAT_1: return &enemy->eclFloatVariables[1];
+    case ECL_OPERAND_ENEMY_FLOAT_2: return &enemy->eclFloatVariables[2];
+    case ECL_OPERAND_ENEMY_FLOAT_3: return &enemy->eclFloatVariables[3];
+    case ECL_OPERAND_ENEMY_FLOAT_4: return &enemy->eclFloatVariables[4];
+    case ECL_OPERAND_ENEMY_FLOAT_5: return &enemy->eclFloatVariables[5];
+    case ECL_OPERAND_ENEMY_FLOAT_6: return &enemy->eclFloatVariables[6];
+    case ECL_OPERAND_ENEMY_FLOAT_7: return &enemy->eclFloatVariables[7];
 
-    case 0x2749: return &ECL_CONTEXT(enemy)->callParameterFloats[0];
-    case 0x274A: return &ECL_CONTEXT(enemy)->callParameterFloats[1];
-    case 0x274B: return &ECL_CONTEXT(enemy)->callParameterFloats[2];
-    case 0x274C: return &ECL_CONTEXT(enemy)->callParameterFloats[3];
-    case 0x273A: return &enemy->position.x;
-    case 0x273B: return &enemy->position.y;
-    case 0x273C: return &enemy->position.z;
-    case 0x273D: return &g_Player.position.x;
-    case 0x273E: return &g_Player.position.y;
-    case 0x273F: return &g_Player.position.z;
-    case 0x276E: return &ECL_CONTEXT(enemy)->extraFloatVariables[0];
-    case 0x276F: return &ECL_CONTEXT(enemy)->extraFloatVariables[1];
-    case 0x2751: return &EclRunLow::g_EclCallParameters.floats[0];
-    case 0x2752: return &EclRunLow::g_EclCallParameters.floats[1];
-    case 0x2753: return &EclRunLow::g_EclCallParameters.floats[2];
-    case 0x2754: return &EclRunLow::g_EclCallParameters.floats[3];
+    case ECL_OPERAND_CALL_FLOAT_0: return &ECL_CONTEXT(enemy)->callParameterFloats[0];
+    case ECL_OPERAND_CALL_FLOAT_1: return &ECL_CONTEXT(enemy)->callParameterFloats[1];
+    case ECL_OPERAND_CALL_FLOAT_2: return &ECL_CONTEXT(enemy)->callParameterFloats[2];
+    case ECL_OPERAND_CALL_FLOAT_3: return &ECL_CONTEXT(enemy)->callParameterFloats[3];
+    case ECL_OPERAND_ENEMY_POSITION_X: return &enemy->position.x;
+    case ECL_OPERAND_ENEMY_POSITION_Y: return &enemy->position.y;
+    case ECL_OPERAND_ENEMY_POSITION_Z: return &enemy->position.z;
+    case ECL_OPERAND_PLAYER_POSITION_X: return &g_Player.position.x;
+    case ECL_OPERAND_PLAYER_POSITION_Y: return &g_Player.position.y;
+    case ECL_OPERAND_PLAYER_POSITION_Z: return &g_Player.position.z;
+    case ECL_OPERAND_EXTRA_FLOAT_0: return &ECL_CONTEXT(enemy)->extraFloatVariables[0];
+    case ECL_OPERAND_EXTRA_FLOAT_1: return &ECL_CONTEXT(enemy)->extraFloatVariables[1];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_0: return &EclRunLow::g_EclCallParameters.floats[0];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_1: return &EclRunLow::g_EclCallParameters.floats[1];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_2: return &EclRunLow::g_EclCallParameters.floats[2];
+    case ECL_OPERAND_SHARED_CALL_FLOAT_3: return &EclRunLow::g_EclCallParameters.floats[3];
 
-    case 0x275A: return &enemy->movementInterpolationOrigin.x;
-    case 0x275B: return &enemy->movementInterpolationOrigin.y;
-    case 0x275C: return &enemy->movementInterpolationOrigin.z;
-    case 0x275F: return &enemy->movementInterpolationDelta.x;
-    case 0x2760: return &enemy->movementInterpolationDelta.y;
-    case 0x2761: return &enemy->movementInterpolationDelta.z;
-    case 0x2755: return &enemy->movementAngle;
-    case 0x2756: return &enemy->angularVelocity;
-    case 0x2757: return &enemy->speed;
-    case 0x2758: return &enemy->acceleration;
-    case 0x2759: return &enemy->orbitRadius;
-    case 0x275D: return &enemy->orbitAngle;
-    case 0x275E: return &enemy->orbitAngularVelocity;
+    case ECL_OPERAND_INTERPOLATION_ORIGIN_X: return &enemy->movementInterpolationOrigin.x;
+    case ECL_OPERAND_INTERPOLATION_ORIGIN_Y: return &enemy->movementInterpolationOrigin.y;
+    case ECL_OPERAND_INTERPOLATION_ORIGIN_Z: return &enemy->movementInterpolationOrigin.z;
+    case ECL_OPERAND_INTERPOLATION_DELTA_X: return &enemy->movementInterpolationDelta.x;
+    case ECL_OPERAND_INTERPOLATION_DELTA_Y: return &enemy->movementInterpolationDelta.y;
+    case ECL_OPERAND_INTERPOLATION_DELTA_Z: return &enemy->movementInterpolationDelta.z;
+    case ECL_OPERAND_MOVEMENT_ANGLE: return &enemy->movementAngle;
+    case ECL_OPERAND_ANGULAR_VELOCITY: return &enemy->angularVelocity;
+    case ECL_OPERAND_SPEED: return &enemy->speed;
+    case ECL_OPERAND_ACCELERATION: return &enemy->acceleration;
+    case ECL_OPERAND_ORBIT_RADIUS: return &enemy->orbitRadius;
+    case ECL_OPERAND_ORBIT_ANGLE: return &enemy->orbitAngle;
+    case ECL_OPERAND_ORBIT_ANGULAR_VELOCITY: return &enemy->orbitAngularVelocity;
 
     default: return operand;
     }

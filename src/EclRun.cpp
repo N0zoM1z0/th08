@@ -136,20 +136,20 @@ low_advance_instruction:
                 progress = static_cast<f32>(entry->timer) / entry->duration;
                 switch (entry->easing)
                 {
-                case 1: progress = progress * progress; break;
-                case 2: progress = progress * progress * progress; break;
-                case 3: progress = progress * progress * progress * progress; break;
-                case 4:
+                case ECL_EASING_IN_QUADRATIC: progress = progress * progress; break;
+                case ECL_EASING_IN_CUBIC: progress = progress * progress * progress; break;
+                case ECL_EASING_IN_QUARTIC: progress = progress * progress * progress * progress; break;
+                case ECL_EASING_OUT_QUADRATIC:
                     progress = 1.0f - progress;
                     progress = progress * progress;
                     progress = 1.0f - progress;
                     break;
-                case 5:
+                case ECL_EASING_OUT_CUBIC:
                     progress = 1.0f - progress;
                     progress = progress * progress * progress;
                     progress = 1.0f - progress;
                     break;
-                case 6:
+                case ECL_EASING_OUT_QUARTIC:
                     progress = 1.0f - progress;
                     progress = progress * progress * progress * progress;
                     progress = 1.0f - progress;

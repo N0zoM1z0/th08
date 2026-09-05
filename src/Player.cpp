@@ -307,7 +307,7 @@ i32 Player::CheckBulletCollision(Float3 *position, Float3 *size)
         this->hurtboxBoundsMax.y < boundsMin.y)
         return 0;
 
-    g_ReplayManager->frameEventFlags |= 2;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_PLAYER_HIT;
     if (this->playerState != PLAYER_STATE_ALIVE)
         return 1;
     g_GameManager.RandomizeAntiTamper();
@@ -334,7 +334,7 @@ i32 Player::CheckLethalCollision(Float3 *position, Float3 *size)
         this->hurtboxBoundsMax.y < boundsMin.y)
         return 0;
 
-    g_ReplayManager->frameEventFlags |= 2;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_PLAYER_HIT;
     if (this->playerState != PLAYER_STATE_ALIVE)
         return 1;
     g_GameManager.RandomizeAntiTamper();
@@ -444,7 +444,7 @@ grazePath:
     }
 
 lethalPath:
-    g_ReplayManager->frameEventFlags |= 2;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_PLAYER_HIT;
     if (this->playerState != PLAYER_STATE_ALIVE)
         return 0;
     g_GameManager.RandomizeAntiTamper();
@@ -500,7 +500,7 @@ void Player::AwardGraze(Float3 *position, i32 suppressExtraItems)
         }
     }
 
-    g_ReplayManager->frameEventFlags |= 0x2000;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_PLAYER_GRAZED;
 }
 
 // FUNCTION: th08 0x44ab40
@@ -516,7 +516,7 @@ void Player::Die()
     this->playerState = PLAYER_STATE_DYING;
     this->timer = 0;
     g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_PICHUN, this->position.x);
-    g_ReplayManager->frameEventFlags |= 0x200;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_PLAYER_DYING_STARTED;
 
     // VC7 lowers the two-bit field read as two independent tests at /Od.
     // Read the typed flag storage once so the target's single extraction is
@@ -1195,7 +1195,7 @@ void Player::UpdateBombState()
         }
 
 acceptBomb:
-    g_ReplayManager->frameEventFlags |= 1;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_BOMB_STARTED;
     this->forceDeathbombAtWindowEnd = 0;
     if (((*reinterpret_cast<u32 *>(&g_GameManager.flags) >>
           GameManagerFlags::PLAYER_DEATH_DISSOLVE_SHIFT) &
@@ -1304,7 +1304,7 @@ i32 Player::UpdateDeathAndRespawn()
                 ~GameManagerFlags::DEATHBOMB_FREEZE_ACTIVE_MASK;
             g_AnmManager->SetMixColorDefault();
             this->mainVm.flagsWord &= ~0x20000u;
-            g_ReplayManager->frameEventFlags |= 4;
+            g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_PLAYER_DEATH_COMMITTED;
             g_GameManager.character = 0;
             this->deathbombPending = 0;
             g_Spellcard.InvalidateCapture();

@@ -87,20 +87,20 @@ void Enemy::UpdateMovement()
             progress = 0.0f;
         switch ((this->flags1 >> ENEMY_FLAG_MOVEMENT_EASING_SHIFT) & 7)
         {
-        case 1: progress *= progress; break;
-        case 2: progress = progress * progress * progress; break;
-        case 3: progress = progress * progress * progress * progress; break;
-        case 4:
+        case ECL_EASING_IN_QUADRATIC: progress *= progress; break;
+        case ECL_EASING_IN_CUBIC: progress = progress * progress * progress; break;
+        case ECL_EASING_IN_QUARTIC: progress = progress * progress * progress * progress; break;
+        case ECL_EASING_OUT_QUADRATIC:
             progress = 1.0f - progress;
             progress *= progress;
             progress = 1.0f - progress;
             break;
-        case 5:
+        case ECL_EASING_OUT_CUBIC:
             progress = 1.0f - progress;
             progress = progress * progress * progress;
             progress = 1.0f - progress;
             break;
-        case 6:
+        case ECL_EASING_OUT_QUARTIC:
             progress = 1.0f - progress;
             progress = progress * progress * progress * progress;
             progress = 1.0f - progress;
@@ -700,7 +700,9 @@ void Enemy::Despawn()
 
     this->DetachEnemyChain(0);
 
-    if (((this->flags1 >> ENEMY_FLAG_DEATH_MODE_SHIFT) & 7) == 0)
+    if (((this->flags1 >> ENEMY_FLAG_DEATH_MODE_SHIFT) &
+         (ENEMY_FLAG_DEATH_MODE_MASK >> ENEMY_FLAG_DEATH_MODE_SHIFT)) ==
+        ENEMY_DEATH_MODE_DEACTIVATE)
         this->flags1 &= ~ENEMY_FLAG_ACTIVE;
 
     if (((this->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0 && this->bossSlot < 4)
@@ -721,7 +723,7 @@ void Enemy::Despawn()
     if (((this->flags1 >> ENEMY_FLAG_BOSS_SHIFT) & 1) != 0)
         g_EnemyManager.bosses[this->bossSlot] = NULL;
 
-    g_ReplayManager->frameEventFlags |= 0x20;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_ENEMY_REMOVED;
 
     if (this->alignmentEffect != NULL)
     {

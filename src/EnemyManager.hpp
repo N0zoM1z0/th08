@@ -53,6 +53,17 @@ enum EnemyMovementMode
     ENEMY_MOVEMENT_MODE_ORBIT = 3,
 };
 
+// Values stored in EnemyFlag1Bits::deathMode.  Names stop at the state changes
+// performed by the death dispatcher; scripts can use the modes for many enemy
+// types, so they do not assume a particular stage or character.
+enum EnemyDeathMode
+{
+    ENEMY_DEATH_MODE_DEACTIVATE = 0,
+    ENEMY_DEATH_MODE_PERSIST_NONINTERACTIVE = 1,
+    ENEMY_DEATH_MODE_KEEP_RUNTIME_STATE = 2,
+    ENEMY_DEATH_MODE_END_BOSS_PHASE = 3,
+};
+
 enum EnemyFlag1Mask
 {
     ENEMY_FLAG_ACTIVE = 1U << 0,
@@ -196,6 +207,14 @@ struct EnemyAnmScripts
     i16 special;
 };
 C_ASSERT(sizeof(EnemyAnmScripts) == 0xc);
+
+enum EnemyAnmDirection
+{
+    ENEMY_ANM_DIRECTION_IDLE = 0,
+    ENEMY_ANM_DIRECTION_LEFT = 1,
+    ENEMY_ANM_DIRECTION_RIGHT = 2,
+    ENEMY_ANM_DIRECTION_UNINITIALIZED = 0xFF,
+};
 
 struct EnemyMovementBounds
 {
@@ -427,6 +446,29 @@ C_ASSERT(offsetof(Enemy, attachedEffectCount) == 0x53c0);
 C_ASSERT(offsetof(Enemy, attachedEffectDistance) == 0x53c4);
 C_ASSERT(offsetof(Enemy, alignmentEffect) == 0x53c8);
 C_ASSERT(offsetof(Enemy, phaseEndTimeRemainingSeconds) == 0x53cc);
+
+// Opcodes serialized in the ECL timeline stream.  The spawn variants encode
+// both their X-coordinate source and whether SpawnEnemy1 mirrors movement.
+enum EclTimelineOpcode
+{
+    ECL_TIMELINE_OPCODE_SPAWN_ENEMY = 0,
+    ECL_TIMELINE_OPCODE_SPAWN_ENEMY_MIRRORED = 1,
+    ECL_TIMELINE_OPCODE_SPAWN_ENEMY_RANDOM_X_RANGE = 2,
+    ECL_TIMELINE_OPCODE_SPAWN_ENEMY_RANDOM_PLAYFIELD_X = 3,
+    ECL_TIMELINE_OPCODE_SPAWN_ENEMY_RANDOM_X_RANGE_MIRRORED = 4,
+    ECL_TIMELINE_OPCODE_SPAWN_ENEMY_RANDOM_PLAYFIELD_X_MIRRORED = 5,
+    ECL_TIMELINE_OPCODE_START_MESSAGE = 6,
+    ECL_TIMELINE_OPCODE_WAIT_FOR_MESSAGE = 7,
+    ECL_TIMELINE_OPCODE_SET_BOSS_PENDING_ECL_SUBROUTINE = 8,
+    ECL_TIMELINE_OPCODE_SET_POWER = 9,
+    ECL_TIMELINE_OPCODE_WAIT_FOR_BOSS_DEFEAT = 10,
+    ECL_TIMELINE_OPCODE_SPAWN_ENEMY_WITH_DROP_COUNTS = 11,
+    ECL_TIMELINE_OPCODE_SPAWN_ENEMY_WITH_DROP_COUNTS_MIRRORED = 12,
+    ECL_TIMELINE_OPCODE_WAIT_FOR_EVENT = 13,
+    ECL_TIMELINE_OPCODE_PUBLISH_EVENT = 14,
+    ECL_TIMELINE_OPCODE_SPAWN_ENEMY_UNCONDITIONALLY = 15,
+    ECL_TIMELINE_OPCODE_SHOW_RETRY_MENU = 16,
+};
 
 struct EclTimelineInstruction
 {

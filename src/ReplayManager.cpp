@@ -211,13 +211,13 @@ ZunResult ReplayManager::RegisterChain(i32 replayMode, const char *replayPath)
 
 ChainCallbackResult ReplayManager::CaptureFrameSyncState(ReplayManager *replayManager)
 {
-    replayManager->frameEventFlags = 0;
+    replayManager->frameEventFlags = REPLAY_FRAME_EVENT_NONE;
     replayManager->frameRngSeed = g_Rng.GetSeed();
     g_Rng.ResetGenerationCount();
 
     if (g_GameManager.replayPauseRecorded != 0)
     {
-        replayManager->frameEventFlags |= 0x100;
+        replayManager->frameEventFlags |= REPLAY_FRAME_EVENT_PAUSE_RECORDED;
     }
 
     g_GameManager.replayPauseRecorded = 0;
