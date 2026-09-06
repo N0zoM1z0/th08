@@ -464,10 +464,35 @@ Generated source-presence and strict-match figures are recorded in
 
 ## Credits and provenance
 
-This continuation exists because of the reconstruction and tooling work by the
-contributors to [GensokyoClub/th08](https://github.com/GensokyoClub/th08).
-Their commits retain their original author/committer metadata. The upstream
-project also credits @EstexNT for porting its `var_order` pragma to MSVC7.
+This repository preserves the public
+[GensokyoClub/th08](https://github.com/GensokyoClub/th08) history through
+[`7ad3792`](https://github.com/N0zoM1z0/th08/commit/7ad379297baf4ff07f117747ea4edf8c7ed739d4),
+the merge of upstream pull request #77 on August 10, 2026. The independent
+continuation begins at its direct child,
+[`001bf3e`](https://github.com/N0zoM1z0/th08/commit/001bf3e9c91cc35b79c7a0e36b3565b86f494362),
+on August 13, 2026. The imported commits retain their original author and
+committer metadata. The upstream project also credits @EstexNT for porting its
+`var_order` pragma to MSVC7.
+
+Work after that boundary has been developed from the imported public source,
+the legally obtained Japanese TH08 1.00d executable, and other public
+references. This project has had no access to, and does not incorporate, later
+private GensokyoClub work.
+
+The imported snapshot was published under the
+[MIT License](https://github.com/N0zoM1z0/th08/blob/7ad379297baf4ff07f117747ea4edf8c7ed739d4/LICENSE),
+and this continuation remains under the same license. [LICENSE](LICENSE)
+preserves the original copyright notice and records the continuation
+separately.
+
+The upstream project's [current public
+notice](https://github.com/GensokyoClub/th08) places its active reconstruction
+in private development in response to AI decompilations and ports. This
+project's engineering is predominantly agent-produced and is developed in the
+open, so the two projects now have different contribution models.
+Accordingly, this work is maintained as an independent continuation rather
+than as a stream of upstream pull requests, while preserving upstream history,
+credit, and license terms.
 
 The [N0zoM1z0/th07 reconstruction](https://github.com/N0zoM1z0/th07) supplies
 this repository's workflow, structure, target gates, matching, and
