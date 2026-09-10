@@ -871,7 +871,7 @@ DWORD WINAPI SoundPlayer::BGMPlayerThread(LPVOID lpThreadParameter)
         }
         switch (waitObj)
         {
-        case 0:
+        case WAIT_OBJECT_0:
             if (g_SoundPlayer.bgm != NULL && g_SoundPlayer.bgm->m_bIsPlaying)
             {
                 g_SoundPlayer.bgm->m_bIsLocked = TRUE;
@@ -879,7 +879,7 @@ DWORD WINAPI SoundPlayer::BGMPlayerThread(LPVOID lpThreadParameter)
                 g_SoundPlayer.bgm->m_bIsLocked = FALSE;
             }
             break;
-        case 1:
+        case WAIT_OBJECT_0 + 1:
             while (PeekMessageA(&msg, NULL, 0, 0, PM_REMOVE) != 0)
             {
                 if (msg.message == WM_QUIT)

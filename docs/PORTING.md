@@ -27,6 +27,13 @@ The Windows bring-up target keeps the original Win32, Direct3D 8, DirectInput
 runtime path, but the current native build and launcher have not produced a
 reliable user-facing Windows package. Treat this target as development-only.
 
+The separate pinned-VC7 Windows i386 compile/link/play prerequisite is
+complete and no longer blocks this port. It found source-owner, final-link,
+startup, and runtime defects that modern-port work could not validate. See
+[Native Windows i386 reconstruction runtime](WINDOWS_I386_RUNTIME.md) for its
+serial reproduction and acceptance procedure; that VC7 artifact is not a
+redistributable release.
+
 After creating the repository's existing DirectX 8 development prefix, build
 the Windows executable from Linux with:
 
@@ -53,8 +60,9 @@ remaining Windows work is complete:
 
 The MinGW executable and `d3dx8d.dll` must currently be kept together. The
 user-supplied data directory need not contain either reconstructed runtime
-file. The SDK DLL dependency and reported native startup failure both block a
-Windows release artifact.
+file. The SDK DLL dependency and the reported **modern MinGW** startup failure
+both block a Windows release artifact; the completed VC7 prerequisite does not
+constitute modern-port release validation.
 
 ### Native Linux
 

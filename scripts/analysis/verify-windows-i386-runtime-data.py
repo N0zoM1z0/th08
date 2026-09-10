@@ -1,0 +1,662 @@
+#!/usr/bin/env python3
+"""Verify native Windows i386 whole-link owners and runtime call targets.
+
+This is a whole-link runtime prerequisite check, not an authored-function
+comparison and not a source of exact-match credit.  It verifies the canonical
+Japanese TH08 1.00d target, then checks that the rebuilt PE owns the four data
+families recovered during native Windows playtesting, selects the correct
+aggregate fields in the enemy-name and spell-background paths, and calls the
+correct GUI predicate from the Background draw gates.  Function pointers in
+the Effect table are compared through linker-map symbols instead of preferred
+virtual addresses.
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+from pathlib import Path
+import re
+import struct
+import sys
+import tomllib
+
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from pe_image import PEImage  # noqa: E402
+
+
+EFFECT_TEMPLATES_VA = 0x004C6D30
+EFFECT_TEMPLATE_COUNT = 66
+LAST_SPELL_COUNT_VA = 0x004C6C3C
+GUI_STAGE_CLEAR_BONUSES_VA = 0x004C7158
+GUI_MESSAGE_TEXT_COLORS_VA = 0x004C7180
+GUI_COPY_ENEMY_NAME_TEXTURE_VA = 0x00437F5C
+GUI_COPY_ENEMY_NAME_TEXTURE_SIZE = 0xEA
+GUI_FRONT_ANM_OFFSET = 0x0C
+GUI_STAGE_TEXT_ANM_OFFSET = 0x10
+SPELLCARD_START_SPELL_VA = 0x004152A0
+SPELLCARD_START_SPELL_SIZE = 0x9B3
+EFFECT_MANAGER_VA = 0x004ECE60
+EFFECT_MANAGER_STAGE_EFFECT_ANM_OFFSET = 0x8B058
+GAME_MANAGER_VA = 0x0160F508
+PLAYER_ADDED_CALLBACK_VA = 0x0044D650
+PLAYER_ADDED_CALLBACK_SIZE = 0x601
+PLAYER_GAUGE_OWNER_WRITES = (
+    (0x3A1, 0x3DDF8, -10000),
+    (0x3AA, 0x3DDFC, -8000),
+    (0x3B3, 0x3DE00, -2000),
+    (0x3BC, 0x3DDFA, 10000),
+    (0x3C5, 0x3DDFE, 8000),
+    (0x3CE, 0x3DE02, 2000),
+    (0x3E3, 0x3DDF8, -5000),
+    (0x3EC, 0x3DDFC, -3000),
+    (0x3F5, 0x3DE00, -2000),
+    (0x40F, 0x3DDF8, -5000),
+    (0x418, 0x3DDFC, -3000),
+    (0x421, 0x3DE00, -2000),
+    (0x42A, 0x3DDFA, 5000),
+    (0x433, 0x3DDFE, 3000),
+    (0x43C, 0x3DE02, 2000),
+    (0x455, 0x3DDFA, 2000),
+    (0x45E, 0x3DDFE, 8000),
+    (0x467, 0x3DE02, 2001),
+    (0x480, 0x3DDF8, -2000),
+    (0x489, 0x3DDFC, -8000),
+    (0x492, 0x3DE00, -2001),
+)
+BACKGROUND_DRAW_HIGH_VA = 0x00409200
+BACKGROUND_DRAW_HIGH_SIZE = 0x43F
+BACKGROUND_DRAW_HIGH_STAGE_GATE_CALLS = (0x1F4, 0x419)
+BACKGROUND_DRAW_LOW_VA = 0x00409640
+BACKGROUND_DRAW_LOW_SIZE = 0x210
+BACKGROUND_DRAW_LOW_STAGE_GATE_CALLS = (0x1E,)
+GUI_IS_STAGE_FINISHED_VA = 0x00437D87
+GUI_IS_DIALOGUE_PRESENT_VA = 0x004358BB
+PLAYER_SHOT_CALLBACK_TABLES = (
+    (
+        "g_PlayerShotSpawnCallbacks",
+        0x004C7EE0,
+        (
+            (0x00000000, None),
+            (0x00450240, "SpawnHomingShot"),
+            (0x0044FDD0, "SpawnShotUnlessBombingCallback"),
+            (0x0044FDD0, "SpawnShotUnlessBombingCallback"),
+            (0x0044FE20, "SpawnPersistentShotCallback"),
+            (0x0044FFA0, "SpawnShotAimedAtTrackedPointCallback"),
+            (0x00450080, "SpawnShotAlongPlayerAngle"),
+            (0x004501B0, "SpawnRandomizedShot"),
+            (0x00450110, "SpawnShotAlongOptionAngle"),
+        ),
+    ),
+    (
+        "g_PlayerShotUpdateCallbacks",
+        0x004C7F04,
+        (
+            (0x00000000, None),
+            (0x00450320, "UpdateHomingShot"),
+            (0x00000000, None),
+            (0x00450580, "UpdateFallingShot"),
+            (0x004505D0, "UpdatePersistentShot"),
+            (0x00450840, "UpdateShotTrail"),
+        ),
+    ),
+    (
+        "g_PlayerShotDrawCallbacks",
+        0x004C7F1C,
+        ((0x00000000, None), (0x00450AD0, "DrawShotTrail")),
+    ),
+    (
+        "g_PlayerShotCollisionCallbacks",
+        0x004C7F24,
+        (
+            (0x00000000, None),
+            (0x00450C50, "ApplyShotHitBehavior"),
+            (0x00450EE0, "SpawnPeriodicShotHitEffect"),
+        ),
+    ),
+)
+
+MAP_PUBLIC_RE = re.compile(
+    r"^\s+[0-9A-Fa-f]{4}:[0-9A-Fa-f]{8}\s+(\S+)\s+([0-9A-Fa-f]{8})(?:\s|$)"
+)
+UNINITIALIZED_OWNER_RE = re.compile(
+    r"DIFFABLE_STATIC(?:_ARRAY)?\s*\(([^;\n]+)\)\s*;?"
+)
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--target", type=Path, default=ROOT / "resources" / "th08.exe"
+    )
+    parser.add_argument(
+        "--rebuild", type=Path, default=ROOT / "build" / "th08.exe"
+    )
+    parser.add_argument(
+        "--map", dest="map_path", type=Path, default=ROOT / "build" / "th08.map"
+    )
+    return parser.parse_args()
+
+
+def verify_target(image: PEImage) -> None:
+    with (ROOT / "config" / "target.toml").open("rb") as stream:
+        expected = tomllib.load(stream)["target"]
+    if len(image.data) != int(expected["size"]) or image.sha256 != expected["sha256"]:
+        raise ValueError(
+            "target identity mismatch: expected "
+            f"{expected['size']} bytes/{expected['sha256']}, got "
+            f"{len(image.data)} bytes/{image.sha256}"
+        )
+
+
+def read_va(image: PEImage, va: int, size: int) -> bytes:
+    return image.read_rva(va - image.image_base, size)
+
+
+def parse_publics(path: Path) -> dict[str, set[int]]:
+    publics: dict[str, set[int]] = {}
+    for line in path.read_text(encoding="cp1252", errors="replace").splitlines():
+        match = MAP_PUBLIC_RE.match(line)
+        if match:
+            publics.setdefault(match.group(1), set()).add(int(match.group(2), 16))
+    if not publics:
+        raise ValueError(f"no public symbols found in linker map {path}")
+    return publics
+
+
+def public_va(publics: dict[str, set[int]], unqualified_name: str) -> int:
+    prefix = f"?{unqualified_name}@"
+    values = {
+        value
+        for symbol, addresses in publics.items()
+        if symbol.startswith(prefix)
+        for value in addresses
+    }
+    if len(values) != 1:
+        rendered = ", ".join(f"{value:#010x}" for value in sorted(values)) or "none"
+        raise ValueError(
+            f"expected one linked address for {unqualified_name}, found {rendered}"
+        )
+    return next(iter(values))
+
+
+def exact_public_va(publics: dict[str, set[int]], symbol: str) -> int:
+    values = publics.get(symbol, set())
+    if len(values) != 1:
+        rendered = ", ".join(f"{value:#010x}" for value in sorted(values)) or "none"
+        raise ValueError(f"expected one linked address for {symbol}, found {rendered}")
+    return next(iter(values))
+
+
+def mapped_target_names() -> dict[int, list[str]]:
+    result: dict[int, list[str]] = {}
+    with (ROOT / "config" / "mapping.csv").open(newline="") as stream:
+        for row in csv.reader(stream):
+            result.setdefault(int(row[1], 16), []).append(row[0])
+    return result
+
+
+def verify_plain_data(
+    target: PEImage,
+    rebuild: PEImage,
+    publics: dict[str, set[int]],
+    target_va: int,
+    rebuild_name: str,
+    size: int,
+) -> None:
+    rebuilt_va = public_va(publics, rebuild_name)
+    expected = read_va(target, target_va, size)
+    actual = read_va(rebuild, rebuilt_va, size)
+    if actual != expected:
+        raise ValueError(
+            f"{rebuild_name} differs from target {target_va:#010x} "
+            f"({size:#x} bytes)"
+        )
+
+
+def verify_gui_enemy_name_owner(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Reject a relocation-normalized match that selects the wrong Gui field."""
+    rebuilt_function_va = public_va(publics, "CopyEnemyNameTexture")
+    rebuilt_gui_va = public_va(publics, "g_Gui")
+    cases = (
+        (
+            "target",
+            read_va(
+                target,
+                GUI_COPY_ENEMY_NAME_TEXTURE_VA,
+                GUI_COPY_ENEMY_NAME_TEXTURE_SIZE,
+            ),
+            0x0160F428,
+        ),
+        (
+            "rebuild",
+            read_va(
+                rebuild,
+                rebuilt_function_va,
+                GUI_COPY_ENEMY_NAME_TEXTURE_SIZE,
+            ),
+            rebuilt_gui_va,
+        ),
+    )
+    for label, body, gui_va in cases:
+        front_load = b"\x8b\x0d" + struct.pack("<I", gui_va + GUI_FRONT_ANM_OFFSET)
+        stage_text_load = b"\x8b\x0d" + struct.pack(
+            "<I", gui_va + GUI_STAGE_TEXT_ANM_OFFSET
+        )
+        front_count = body.count(front_load)
+        stage_text_count = body.count(stage_text_load)
+        if front_count != 8 or stage_text_count != 0:
+            raise ValueError(
+                f"{label} Gui::CopyEnemyNameTexture has {front_count} frontAnm "
+                f"loads and {stage_text_count} stageTextAnm loads; expected 8/0"
+            )
+
+
+def verify_spellcard_background_owner(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Require spell backgrounds to use EffectManager's loaded stage ANM."""
+    legacy_prefix = "?g_SpellcardBackgroundAnm@"
+    legacy_symbols = [name for name in publics if name.startswith(legacy_prefix)]
+    if legacy_symbols:
+        raise ValueError(
+            "linked image still owns standalone g_SpellcardBackgroundAnm: "
+            + ", ".join(sorted(legacy_symbols))
+        )
+
+    rebuilt_function_va = public_va(publics, "StartSpell")
+    rebuilt_effect_manager_va = public_va(publics, "g_EffectManager")
+    cases = (
+        (
+            "target",
+            read_va(target, SPELLCARD_START_SPELL_VA, SPELLCARD_START_SPELL_SIZE),
+            EFFECT_MANAGER_VA,
+        ),
+        (
+            "rebuild",
+            read_va(rebuild, rebuilt_function_va, SPELLCARD_START_SPELL_SIZE),
+            rebuilt_effect_manager_va,
+        ),
+    )
+    for label, body, effect_manager_va in cases:
+        stage_anm_load = b"\x8b\x0d" + struct.pack(
+            "<I", effect_manager_va + EFFECT_MANAGER_STAGE_EFFECT_ANM_OFFSET
+        )
+        count = body.count(stage_anm_load)
+        if count != 1:
+            raise ValueError(
+                f"{label} Spellcard::StartSpell has {count} "
+                "EffectManager::stageEffectAnm loads; expected 1"
+            )
+
+
+def verify_player_gauge_bounds_owner(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Require Player setup to initialize GameManager's six gauge-bound fields."""
+    legacy_prefix = "?g_PlayerGaugeBounds@"
+    legacy_symbols = [name for name in publics if name.startswith(legacy_prefix)]
+    if legacy_symbols:
+        raise ValueError(
+            "linked image still owns standalone g_PlayerGaugeBounds: "
+            + ", ".join(sorted(legacy_symbols))
+        )
+
+    rebuilt_function_va = exact_public_va(
+        publics, "?AddedCallback@Player@th08@@SI?AW4ZunResult@@PAU12@@Z"
+    )
+    rebuilt_game_manager_va = exact_public_va(
+        publics, "?g_GameManager@th08@@3UGameManager@1@A"
+    )
+    for label, image, function_va, game_manager_va in (
+        ("target", target, PLAYER_ADDED_CALLBACK_VA, GAME_MANAGER_VA),
+        ("rebuild", rebuild, rebuilt_function_va, rebuilt_game_manager_va),
+    ):
+        body = read_va(image, function_va, PLAYER_ADDED_CALLBACK_SIZE)
+        for operand_offset, field_offset, expected_value in PLAYER_GAUGE_OWNER_WRITES:
+            address = struct.unpack_from("<I", body, operand_offset)[0]
+            value = struct.unpack_from("<h", body, operand_offset + 4)[0]
+            expected_address = game_manager_va + field_offset
+            if address != expected_address or value != expected_value:
+                raise ValueError(
+                    f"{label} Player::AddedCallback + {operand_offset:#x} writes "
+                    f"{value} to {address:#010x}; expected {expected_value} to "
+                    f"GameManager + {field_offset:#x} ({expected_address:#010x})"
+                )
+
+
+def rel32_call(source_va: int, target_va: int) -> bytes:
+    return b"\xe8" + struct.pack("<i", target_va - (source_va + 5))
+
+
+def verify_background_stage_gate(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Require Background draw callbacks to call IsStageFinished, not dialogue state."""
+    rebuilt_stage_gate_va = exact_public_va(
+        publics, "?IsStageFinished@Gui@th08@@QAEHXZ"
+    )
+    rebuilt_dialogue_gate_va = exact_public_va(
+        publics, "?IsDialoguePresent@Gui@th08@@QAEHXZ"
+    )
+    callback_cases = (
+        (
+            "Background::OnDrawHighPrio",
+            BACKGROUND_DRAW_HIGH_VA,
+            BACKGROUND_DRAW_HIGH_SIZE,
+            BACKGROUND_DRAW_HIGH_STAGE_GATE_CALLS,
+            "?OnDrawHighPrio@Background@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z",
+        ),
+        (
+            "Background::OnDrawLowPrio",
+            BACKGROUND_DRAW_LOW_VA,
+            BACKGROUND_DRAW_LOW_SIZE,
+            BACKGROUND_DRAW_LOW_STAGE_GATE_CALLS,
+            "?OnDrawLowPrio@Background@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z",
+        ),
+    )
+    for name, target_va, size, call_offsets, rebuilt_symbol in callback_cases:
+        rebuilt_va = exact_public_va(publics, rebuilt_symbol)
+        for label, image, function_va, stage_gate_va, dialogue_gate_va in (
+            (
+                "target",
+                target,
+                target_va,
+                GUI_IS_STAGE_FINISHED_VA,
+                GUI_IS_DIALOGUE_PRESENT_VA,
+            ),
+            (
+                "rebuild",
+                rebuild,
+                rebuilt_va,
+                rebuilt_stage_gate_va,
+                rebuilt_dialogue_gate_va,
+            ),
+        ):
+            body = read_va(image, function_va, size)
+            for offset in call_offsets:
+                actual = body[offset : offset + 5]
+                expected = rel32_call(function_va + offset, stage_gate_va)
+                stale = rel32_call(function_va + offset, dialogue_gate_va)
+                if actual == stale:
+                    raise ValueError(
+                        f"{label} {name} + {offset:#x} calls Gui::IsDialoguePresent; "
+                        "expected Gui::IsStageFinished"
+                    )
+                if actual != expected:
+                    raise ValueError(
+                        f"{label} {name} + {offset:#x} does not call "
+                        "Gui::IsStageFinished"
+                    )
+
+
+def verify_additional_runtime_callees(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Verify the remaining REL32 callees repaired by the native audit."""
+    cases = (
+        (
+            "ItemManager::OnUpdate",
+            0x00440500,
+            0x7C5,
+            "?OnUpdate@ItemManager@th08@@QAEXXZ",
+            (
+                (
+                    0x638,
+                    0x00403200,
+                    "?CreateScorePopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z",
+                ),
+                (
+                    0x67D,
+                    0x00403200,
+                    "?CreateScorePopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z",
+                ),
+                (
+                    0x6E4,
+                    0x00403330,
+                    "?CreatePlayerPointPopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z",
+                ),
+            ),
+        ),
+        (
+            "Item::CollectTimeOrb",
+            0x004412B0,
+            0x125,
+            "?CollectTimeOrb@Item@th08@@QAEXXZ",
+            (
+                (
+                    0x98,
+                    0x00403330,
+                    "?CreatePlayerPointPopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z",
+                ),
+            ),
+        ),
+        (
+            "AnmVm::UpdatePulsingRadialTrail",
+            0x0040EB50,
+            0x70,
+            "?UpdatePulsingRadialTrail@AnmVm@th08@@QAEHXZ",
+            ((0x36, 0x0040D3B0, "??BZunTimer@th08@@QAEHXZ"),),
+        ),
+        (
+            "UpdateFantasyOrbBomb",
+            0x0040C010,
+            0x795,
+            "?UpdateFantasyOrbBomb@th08@@YIXPAUPlayer@1@@Z",
+            ((0x2F1, 0x0040D3F0, "??8ZunTimer@th08@@QAEIH@Z"),),
+        ),
+        (
+            "SpawnRandomizedShot",
+            0x004501B0,
+            0x85,
+            "?SpawnRandomizedShot@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@HPAUPlayerShotDescriptor@1@@Z",
+            ((0x37, 0x0043ED80, "?GetRandomF32Signed@Rng@th08@@QAEMXZ"),),
+        ),
+        (
+            "RetryMenu::OnDraw",
+            0x004052B0,
+            0x16C,
+            "?OnDraw@RetryMenu@th08@@QAEXXZ",
+            ((0xB6, 0x00406C70, "?IsSpellPractice@GameManager@th08@@QAEIXZ"),),
+        ),
+    )
+    for name, target_va, size, rebuilt_symbol, calls in cases:
+        rebuilt_va = exact_public_va(publics, rebuilt_symbol)
+        target_body = read_va(target, target_va, size)
+        rebuilt_body = read_va(rebuild, rebuilt_va, size)
+        for offset, target_callee_va, rebuilt_callee_symbol in calls:
+            rebuilt_callee_va = exact_public_va(publics, rebuilt_callee_symbol)
+            for label, body, function_va, callee_va in (
+                ("target", target_body, target_va, target_callee_va),
+                ("rebuild", rebuilt_body, rebuilt_va, rebuilt_callee_va),
+            ):
+                expected = rel32_call(function_va + offset, callee_va)
+                if body[offset : offset + 5] != expected:
+                    raise ValueError(
+                        f"{label} {name} + {offset:#x} does not call "
+                        f"{rebuilt_callee_symbol}"
+                    )
+
+
+def verify_player_shot_callback_tables(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Require all serialized SHT callback indices to resolve like the target."""
+    for table_name, target_va, expected_rows in PLAYER_SHOT_CALLBACK_TABLES:
+        size = len(expected_rows) * 4
+        target_values = struct.unpack(f"<{len(expected_rows)}I", read_va(target, target_va, size))
+        expected_target_values = tuple(row[0] for row in expected_rows)
+        if target_values != expected_target_values:
+            raise ValueError(
+                f"target {table_name} differs from its attested callback layout"
+            )
+
+        rebuilt_va = public_va(publics, table_name)
+        rebuilt_values = struct.unpack(
+            f"<{len(expected_rows)}I", read_va(rebuild, rebuilt_va, size)
+        )
+        expected_rebuilt_values = tuple(
+            0 if callback_name is None else public_va(publics, callback_name)
+            for _, callback_name in expected_rows
+        )
+        if rebuilt_values != expected_rebuilt_values:
+            raise ValueError(
+                f"rebuild {table_name} differs from its target callback ownership"
+            )
+
+
+def verify_effect_templates(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    size = EFFECT_TEMPLATE_COUNT * 12
+    target_rows = struct.iter_unpack("<III", read_va(target, EFFECT_TEMPLATES_VA, size))
+    rebuilt_va = public_va(publics, "g_EffectTemplates")
+    rebuilt_rows = struct.iter_unpack("<III", read_va(rebuild, rebuilt_va, size))
+    names_by_va = mapped_target_names()
+
+    for index, (expected, actual) in enumerate(zip(target_rows, rebuilt_rows)):
+        expected_script, expected_update, expected_initialize = expected
+        actual_script, actual_update, actual_initialize = actual
+        if actual_script != expected_script:
+            raise ValueError(
+                f"g_EffectTemplates[{index}] script is {actual_script}, "
+                f"expected {expected_script}"
+            )
+
+        for role, target_callback, rebuilt_callback in (
+            ("update", expected_update, actual_update),
+            ("initialize", expected_initialize, actual_initialize),
+        ):
+            if target_callback == 0:
+                expected_callback = 0
+                expected_name = "NULL"
+            else:
+                mapped = names_by_va.get(target_callback, [])
+                if len(mapped) != 1:
+                    raise ValueError(
+                        f"Effect row {index} {role} target {target_callback:#010x} "
+                        f"has {len(mapped)} mapping names"
+                    )
+                expected_name = mapped[0].rsplit("::", 1)[-1]
+                # Target row 41 stores the ABI-compatible AnmVm member body.
+                # A normal VC7 C++ function-pointer initializer cannot express
+                # that member/free-function conversion, so production owns a
+                # relocatable Effect callback adapter which invokes the exact
+                # member implementation.
+                if target_callback == 0x0040EB50:
+                    expected_name = "UpdatePulsingRadialTrailEffectCallback"
+                expected_callback = public_va(publics, expected_name)
+
+            if rebuilt_callback != expected_callback:
+                raise ValueError(
+                    f"g_EffectTemplates[{index}] {role} is "
+                    f"{rebuilt_callback:#010x}, expected {expected_name} at "
+                    f"{expected_callback:#010x}"
+                )
+
+
+def raw_backed_section(image: PEImage, va: int):
+    rva = va - image.image_base
+    for section in image.sections:
+        if section.rva <= rva < section.rva + section.raw_size:
+            return section
+    return None
+
+
+def uninitialized_raw_owner_candidates(target: PEImage) -> list[str]:
+    addresses: dict[str, set[int]] = {}
+    with (ROOT / "config" / "reccmp-globals.csv").open(newline="") as stream:
+        for row in csv.DictReader(stream):
+            name = row["name"].rsplit("::", 1)[-1]
+            addresses.setdefault(name, set()).add(int(row["address"], 16))
+
+    candidates: list[str] = []
+    for path in sorted((ROOT / "src").glob("*")):
+        if path.suffix not in {".cpp", ".inl"}:
+            continue
+        source = path.read_text(encoding="utf-8", errors="replace")
+        for match in UNINITIALIZED_OWNER_RE.finditer(source):
+            macro = match.group(0)
+            if "_ASSIGN" in macro:
+                continue
+            name_match = re.search(r"\b(g_[A-Za-z0-9_]+)\s*$", match.group(1))
+            if name_match is None:
+                continue
+            name = name_match.group(1)
+            for va in sorted(addresses.get(name, set())):
+                section = raw_backed_section(target, va)
+                if section is not None:
+                    line = source.count("\n", 0, match.start()) + 1
+                    candidates.append(
+                        f"{path.relative_to(ROOT)}:{line}: {name} at {va:#010x} "
+                        f"lies in raw-backed target {section.name}"
+                    )
+    return candidates
+
+
+def main() -> int:
+    args = parse_args()
+    try:
+        target = PEImage(args.target)
+        rebuild = PEImage(args.rebuild)
+        verify_target(target)
+        publics = parse_publics(args.map_path)
+
+        candidates = uninitialized_raw_owner_candidates(target)
+        if candidates:
+            raise ValueError(
+                "uninitialized production owner(s) overlap target raw data:\n  "
+                + "\n  ".join(candidates)
+            )
+
+        verify_plain_data(
+            target, rebuild, publics, LAST_SPELL_COUNT_VA, "g_LastSpellCount", 4
+        )
+        verify_effect_templates(target, rebuild, publics)
+        verify_plain_data(
+            target,
+            rebuild,
+            publics,
+            GUI_STAGE_CLEAR_BONUSES_VA,
+            "g_GuiStageClearBonuses",
+            9 * 4,
+        )
+        verify_plain_data(
+            target,
+            rebuild,
+            publics,
+            GUI_MESSAGE_TEXT_COLORS_VA,
+            "g_GuiMessageTextColors",
+            12 * 16,
+        )
+        verify_gui_enemy_name_owner(target, rebuild, publics)
+        verify_spellcard_background_owner(target, rebuild, publics)
+        verify_player_gauge_bounds_owner(target, rebuild, publics)
+        verify_background_stage_gate(target, rebuild, publics)
+        verify_additional_runtime_callees(target, rebuild, publics)
+        verify_player_shot_callback_tables(target, rebuild, publics)
+    except (OSError, UnicodeError, ValueError, struct.error) as exc:
+        print(f"Windows i386 runtime-data verification failed: {exc}", file=sys.stderr)
+        return 1
+
+    print(
+        "Windows i386 runtime data OK: 0 raw-data zero-owner candidates; "
+        "Last Spell count, 66 Effect templates, 9 stage bonuses, and "
+        "12 dialogue palettes match the target; enemy-name copy selects "
+        "Gui::frontAnm in all 8 linked loads; spell backgrounds select "
+        "EffectManager::stageEffectAnm; all 21 player gauge-bound writes select "
+        "the six GameManager fields; all 3 Background draw gates call "
+        "Gui::IsStageFinished; 8 additional repaired REL32 calls select their "
+        "target-mapped callees; all 20 player-shot callback entries resolve "
+        "through their target-owned tables"
+    )
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

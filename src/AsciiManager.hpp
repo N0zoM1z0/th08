@@ -81,6 +81,15 @@ C_ASSERT(sizeof(AsciiManagerPopup) == 0x38);
 C_ASSERT(offsetof(AsciiManagerPopup, characterCount) == 0x31);
 C_ASSERT(offsetof(AsciiManagerPopup, unconsumedDword34) == 0x34);
 
+enum BossMarkerState
+{
+    BOSS_MARKER_NORMAL = 0,
+    BOSS_MARKER_RED = 1,
+    BOSS_MARKER_BLINK_EVERY_8_FRAMES = 2,
+    BOSS_MARKER_BLINK_EVERY_4_FRAMES = 3,
+    BOSS_MARKER_BLINK_EVERY_2_FRAMES = 4,
+};
+
 struct AsciiManager
 {
     AsciiManager();

@@ -154,6 +154,24 @@ TH08_FILE_ASSERT(offsetof(ReplayData, runtimeStageReplayData) >= 0x134);
 TH08_FILE_ASSERT(sizeof(ReplayData) == 0x134);
 #endif
 
+// Per-frame synchronization events accumulated by gameplay systems.  They are
+// a serialized replay bit protocol; gaps are values with no recovered writer.
+enum ReplayFrameEventFlag
+{
+    REPLAY_FRAME_EVENT_NONE = 0x0000,
+    REPLAY_FRAME_EVENT_BOMB_STARTED = 0x0001,
+    REPLAY_FRAME_EVENT_PLAYER_HIT = 0x0002,
+    REPLAY_FRAME_EVENT_PLAYER_DEATH_COMMITTED = 0x0004,
+    REPLAY_FRAME_EVENT_ENEMY_REMOVED = 0x0020,
+    REPLAY_FRAME_EVENT_ITEM_COLLECTED = 0x0040,
+    REPLAY_FRAME_EVENT_PAUSE_RECORDED = 0x0100,
+    REPLAY_FRAME_EVENT_PLAYER_DYING_STARTED = 0x0200,
+    REPLAY_FRAME_EVENT_EFFECT_SPAWNED = 0x0400,
+    REPLAY_FRAME_EVENT_BULLET_PATTERN_SPAWNED = 0x0800,
+    REPLAY_FRAME_EVENT_ENEMY_SPAWNED = 0x1000,
+    REPLAY_FRAME_EVENT_PLAYER_GRAZED = 0x2000,
+};
+
 struct ReplayInputSync
 {
     u16 input;

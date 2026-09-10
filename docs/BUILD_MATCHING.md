@@ -55,6 +55,40 @@ These modes serve different runtime and comparison purposes. Success in a
 bugfix, DLL, or object build does not establish that the normal
 executable matches the original.
 
+| Mode | Primary use | Acceptance boundary |
+| --- | --- | --- |
+| `normal` | Exact-facing production compile/link and whole-image diagnostics | Supplies normal objects and link evidence; a successful link is not whole-image exactness |
+| `bugfix` | Playable native VC7 Windows runtime | Enables narrow `FIX_REALLY_BAD_BUGS` paths; never supplies exact-match credit |
+| `objdiffbuild` | Focused and aggregate COFF comparison | Supplies configured function/object evidence only |
+| `diffbuild` | Inherited executable comparison instrumentation | Diagnostic, not an accepted-unit substitute |
+| `dllbuild` | Optional Detours reconstruction DLL | Not part of the target-linked production runtime gate |
+
+### Reproduce the native Windows i386 prerequisite
+
+The completed whole-program gate is stricter than invoking `build.py` once. Its
+serial order matters because the cold accepted-unit replay and both executable
+modes share and clean `build/` outputs:
+
+```bash
+python3 scripts/verify-target.py resources/th08.exe
+python3 scripts/validate-tracking.py --require-target
+python3 scripts/analysis/verify-exact-units.py --all
+python3 scripts/build.py --build-type normal --fresh -j 1
+python3 scripts/analysis/verify-windows-i386-runtime-data.py
+python3 scripts/ci.py
+python3 scripts/progress.py --check
+git diff --check
+python3 scripts/build.py --build-type bugfix --fresh -j 1
+python3 scripts/analysis/verify-windows-i386-runtime-data.py
+```
+
+Build `bugfix` last: both modes write `build/th08.exe`, and only the final
+bugfix image is suitable for isolated Windows playtesting with reconstructed
+score/replay headers. Do not run concurrent Wine/VC7 jobs. The complete
+environment bootstrap, artifact hashes, safe deployment recipe, windowed
+configuration, runtime matrix, and normal-versus-bugfix rationale are in
+[Native Windows i386 reconstruction runtime](WINDOWS_I386_RUNTIME.md).
+
 ## Target detection
 
 Place the privately supplied exact target at `resources/th08.exe` and verify
@@ -386,6 +420,9 @@ The death-flow closures at 0x42ADB0, 0x42BEA0, 0x44C650, and 0x44CBA0 add severa
 - Algebraic equivalence is not instruction equivalence on x87. `(f32)itemCount * 2.0f` lowers to target `fild; fadd st,st`; adding two separately cast copies can lower to a longer integer-memory add. Likewise, random coordinate updates in `Enemy::DropItems` must use compound `+=` so the lvalue pointer returned by `Float3::operator float*()` survives the RNG call in the target compiler temporary.
 - Do not deduplicate repeated source bodies just because they are semantically identical. `Player::UpdateBombState` contains two copies of the “consume all remaining Bombs” path under the forced/non-forced deathbomb branches. Combining them with `isForced || bombs < 2` removes 39 target-authored bytes.
 - A probe alias is not automatically a production global. The analysis name `g_EclEnemyTableF54CC0` resolves to `g_EnemyManager + 0x9DCDA0` in the shipped image. Production code should reference the real `EnemyManager` storage and let the COFF relocation carry the field addend instead of creating a second global at the same address.
+- A mapped absolute address is not automatically standalone storage. The former `g_SpellcardBackgroundAnm @ 0x00577EB8` is exactly `g_EffectManager @ 0x004ECE60 + stageEffectAnm @ 0x8B058`; target `LoadEffectResources` writes that member before `Spellcard::StartSpell` reads it. A relocation-normalized unit could remain exact while a native link allocated the invented global elsewhere as null zero-fill. Check candidate globals against established aggregate extents and member offsets, name the aggregate base in the relocation manifest, and preserve the field offset as the addend.
+- An apparent array can likewise be a contiguous view of named aggregate fields. Target `g_PlayerGaugeBounds[6] @ 0x0164D300` is exactly `g_GameManager @ 0x0160F508 + 0x3DDF8`, spanning the six signed 16-bit gauge limit/effect/tint thresholds. Relocation replay accepted `Player::AddedCallback` while the native linker allocated a separate initialized array and left the predicate-visible manager fields zero. That made gauge zero extreme-human, adding score every frame and tripling ordinary graze. Prefer the established aggregate members, record their individual addends in every relocation, reject the false linked public, and verify the final writes.
+- REL32 calls require the same semantic-owner check as data relocations. The former Background draw source called `Gui::IsDialoguePresent @ 0x004358BB`, while its three match relocations declared target `Gui::IsStageFinished @ 0x00437D87`. Relocation replay replaced the wrong source displacement with the declared target displacement and reported both callbacks exact; the native linker correctly followed the source symbol instead, suppressing stage drawing throughout dialogue and producing flat/black backgrounds plus accumulated portrait trails. Require the manifest symbol and target address to describe the same mapped callee, and inspect or automatically verify the final linked calls for runtime-critical gates. `validate-tracking.py` rejects a decorated REL32 symbol assigned to more than one target address; the native linked verifier additionally decodes the repaired runtime-critical call sites.
 - Bitfield-to-bitfield assignment can be target-visible. `Spellcard::InvalidateCaptureAndEnableBombDamage` only reproduces VC7's redundant-looking mask sequence when bit 7 is assigned from bit 0 through a one-bit overlay; simplifying it to whole-word arithmetic changes register ownership and bytes.
 
 If a header change is correct but VC7 reports a newly declared member as absent, verify the precompiled header timestamp. This repository's object-only path can reuse a stale `build/th_pch.pch`; forcing a PCH rebuild is preferable to changing valid declarations to satisfy stale compiler state.
@@ -418,6 +455,7 @@ The Player closure around `0x44AEC0`, `0x44D650`, and `0x451640` adds several us
 ### Canonical relocation owners and local-array extent
 
 - Raw bytes are not enough to justify a field owner. `Supervisor::CalculateFps` initially matched with source expressions that referenced the wrong members while a generated relocation manifest compensated by shifting the global base. Always verify each recovered relocation base against `config/reccmp-globals.csv`; the exact owners here are `g_GameManager + 0x2D`, `g_Supervisor + 0x300`, `+0x178`, and `+0x33C`. Exact source should make both bytes and relocation ownership canonical.
+- Native RT-002 exposed the same compensating-error pattern in accepted production code. `Gui::CopyEnemyNameTexture @ 0x00437F5C` used stale `stageTextAnm @ g_Gui + 0x10`, while its eight DIR32 rows declared false base `0x0160F424`; relocation replay therefore reached target field `0x0160F434`. The shipped owner is canonical `g_Gui @ 0x0160F428` plus `frontAnm @ +0x0C`. Validate the independently mapped base and the COFF field addend separately, then inspect the linked PE: a correct final address can be the sum of two wrong claims.
 - An IDA stack-gap inference can overestimate a local array. `Supervisor::CheckFps` looked like `float samples[31]` from the decompiled frame, but VC7 only reproduced the target `0xA4` frame and `[ebp+index*4-0x88]` addressing with `float samples[29]`. Preserve target-visible dead locals (the elapsed-seconds calculation), then use fresh compiler stack allocation as stronger evidence than decompiler array guesses.
 - For `/Os` control flow with a shared success epilogue, lexical ownership matters. `CheckFps` matches as `if (!disableVsync) { diagnostics; if (average >= 65) { ... return -2; } } return 0;`; spelling the two success paths as separate early returns adds a short inverse branch plus a trampoline.
 - Commutative integer addition can determine register ownership. `CalculateFps` requires `currentQpc >= lastQpc + (frequency >> 1)` in that operand order to emit `eax=frequency/2; ecx=last; add ecx,eax; cmp current,ecx; jb`. Equivalent orderings folded one operand into memory or reversed the compare.

@@ -28,8 +28,22 @@ struct GameManagerFlags
 {
     enum
     {
+        REPLAY_INPUT_ENABLED_MASK = 1 << 2,
+        GAME_CLEARED_MASK = 1 << 4,
+        STAGE_TRANSITION_STATE_SHIFT = 5,
+        STAGE_TRANSITION_STATE_MASK = 3 << STAGE_TRANSITION_STATE_SHIFT,
         PLAYER_DEATH_DISSOLVE_SHIFT = 7,
         PLAYER_DEATH_DISSOLVE_MASK = 3,
+        PLAYER_DEATH_DISSOLVE_WORD_MASK =
+            PLAYER_DEATH_DISSOLVE_MASK << PLAYER_DEATH_DISSOLVE_SHIFT,
+        PLAYER_DEATH_DISSOLVE_MODE_1 = 1 << PLAYER_DEATH_DISSOLVE_SHIFT,
+        PLAYER_DEATH_DISSOLVE_MODE_2 = 2 << PLAYER_DEATH_DISSOLVE_SHIFT,
+        STAGE_CLEAR_SEQUENCE_ACTIVE_MASK = 1 << 9,
+        DEATHBOMB_FREEZE_ACTIVE_SHIFT = 10,
+        DEATHBOMB_FREEZE_ACTIVE_MASK = 1 << 10,
+        SPELL_PRACTICE_SHIFT = 14,
+        SUPPRESS_PLAYER_SHOTS_MASK = 1 << 13,
+        SPELL_PRACTICE_MASK = 1 << 14,
     };
 
     u32 isPracticeMode : 1;
@@ -420,6 +434,12 @@ C_ASSERT(offsetof(GameManager, arcadeRegionTopLeftPos) == 0x3DDD4);
 C_ASSERT(offsetof(GameManager, arcadeRegionSize) == 0x3DDDC);
 C_ASSERT(offsetof(GameManager, playerMovementTopLeftPos) == 0x3DDE4);
 C_ASSERT(offsetof(GameManager, playerMovementAreaSize) == 0x3DDEC);
+C_ASSERT(offsetof(GameManager, youkaiGaugeHumanLimit) == 0x3DDF8);
+C_ASSERT(offsetof(GameManager, youkaiGaugeYoukaiLimit) == 0x3DDFA);
+C_ASSERT(offsetof(GameManager, youkaiGaugeHumanEffectsThreshold) == 0x3DDFC);
+C_ASSERT(offsetof(GameManager, youkaiGaugeYoukaiEffectsThreshold) == 0x3DDFE);
+C_ASSERT(offsetof(GameManager, youkaiGaugeHumanTintThreshold) == 0x3DE00);
+C_ASSERT(offsetof(GameManager, youkaiGaugeYoukaiTintThreshold) == 0x3DE02);
 C_ASSERT(offsetof(GameManager, stagePlayTimeAll) == 0x3DE04);
 C_ASSERT(offsetof(GameManager, frameSkipCounter) == 0x3DE08);
 C_ASSERT(offsetof(GameManager, unconsumedDword3DE0C) == 0x3DE0C);

@@ -48,7 +48,9 @@ enum Difficulty
     HARD,
     LUNATIC,
     EXTRA,
-    MAX_DIFFICULTIES
+    MAX_DIFFICULTIES,
+    // Display-only GUI rank label; not a persisted sixth difficulty.
+    PHANTASM = MAX_DIFFICULTIES,
 };
 
 enum ShotType

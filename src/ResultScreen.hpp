@@ -45,6 +45,20 @@ enum ResultScreenRegistrationMode
     RESULT_SCREEN_REGISTER_SAVE_DATA = 2,
 };
 
+enum ResultScreenPhase
+{
+    RESULT_SCREEN_PHASE_ENTERING = 0,
+    RESULT_SCREEN_PHASE_INTERACTIVE = 1,
+};
+
+enum ResultScreenCategory
+{
+    RESULT_SCREEN_CATEGORY_HIGH_SCORES = 0,
+    RESULT_SCREEN_CATEGORY_SPELLCARDS = 1,
+    RESULT_SCREEN_CATEGORY_OTHER_STATS = 2,
+    RESULT_SCREEN_CATEGORY_BACK_TO_TITLE = 3,
+};
+
 #define RESULT_REPLAY_MAX_RESULTS 15
 
 struct ResultScreen
@@ -72,7 +86,7 @@ struct ResultScreen
         this->previousState = this->currentState;
         this->currentState = state;
         this->currentState2 = state;
-        this->statePhase = 0;
+        this->statePhase = RESULT_SCREEN_PHASE_ENTERING;
         this->statePhaseTimer = 0;
         this->frameTimer = 0;
         this->isExitingSpellcardResults = 0;

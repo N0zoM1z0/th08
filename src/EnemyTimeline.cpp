@@ -24,7 +24,7 @@ Enemy *EnemyManager::SpawnEnemy1(i32 eclSubroutineId, const D3DXVECTOR3 *positio
     Enemy *enemy;
 
     enemy = &this->enemies[0];
-    g_ReplayManager->frameEventFlags |= 0x1000;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_ENEMY_SPAWNED;
     for (i = 0; i < 480; i++, enemy++)
     {
         if ((enemy->flags1 & ENEMY_FLAG_ACTIVE) != 0)
@@ -36,7 +36,7 @@ Enemy *EnemyManager::SpawnEnemy1(i32 eclSubroutineId, const D3DXVECTOR3 *positio
         reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->mirrorMovementX = mirrorMovementX;
         if (life >= 0)
             enemy->life = life;
-        enemy->position = *reinterpret_cast<const Float3 *>(position);
+        enemy->position = *FLOAT3_CONST_PTR(position);
         g_EclManager.CallEclSub(
             &enemy->mainEclContextStorage, (i16)eclSubroutineId);
         if (g_EclManager.RunEcl(enemy) == ZUN_ERROR)
@@ -76,7 +76,7 @@ Enemy *EnemyManager::SpawnEnemy2(i32 eclSubroutineId, const D3DXVECTOR3 *positio
     Enemy *enemy;
 
     enemy = &this->enemies[0];
-    g_ReplayManager->frameEventFlags |= 0x1000;
+    g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_ENEMY_SPAWNED;
     for (i = 0; i < 480; i++, enemy++)
     {
         if ((enemy->flags1 & ENEMY_FLAG_ACTIVE) != 0)
@@ -87,7 +87,7 @@ Enemy *EnemyManager::SpawnEnemy2(i32 eclSubroutineId, const D3DXVECTOR3 *positio
         enemy->enemyIndex = i;
         if (life >= 0)
             enemy->life = life;
-        enemy->position = *reinterpret_cast<const Float3 *>(position);
+        enemy->position = *FLOAT3_CONST_PTR(position);
         g_EclManager.CallEclSub(
             &enemy->mainEclContextStorage, (i16)eclSubroutineId);
         *reinterpret_cast<EnemyContextCopy *>(
@@ -133,13 +133,13 @@ void EclTimeline::Run()
 
             switch (this->instruction->opcode)
             {
-            case 16:
+            case ECL_TIMELINE_OPCODE_SHOW_RETRY_MENU:
                 g_GameManager.showRetryMenu = 1;
                 break;
 
-            case 1:
+            case ECL_TIMELINE_OPCODE_SPAWN_ENEMY_MIRRORED:
                 variant = 1;
-            case 0:
+            case ECL_TIMELINE_OPCODE_SPAWN_ENEMY:
                 if (!g_Gui.IsBossPresent() && g_EnemyManager.suppressTimelineSpawns == 0)
                 {
                     i32 *args1 = this->instruction->args.ints;
@@ -151,7 +151,7 @@ void EclTimeline::Run()
                 }
                 break;
 
-            case 15:
+            case ECL_TIMELINE_OPCODE_SPAWN_ENEMY_UNCONDITIONALLY:
             {
                 i32 *args15 = this->instruction->args.ints;
                 D3DXVECTOR3 position15;
@@ -162,9 +162,9 @@ void EclTimeline::Run()
                 break;
             }
 
-            case 12:
+            case ECL_TIMELINE_OPCODE_SPAWN_ENEMY_WITH_DROP_COUNTS_MIRRORED:
                 variant = 1;
-            case 11:
+            case ECL_TIMELINE_OPCODE_SPAWN_ENEMY_WITH_DROP_COUNTS:
                 if (!g_Gui.IsBossPresent() && g_EnemyManager.suppressTimelineSpawns == 0)
                 {
                     struct SpecialSpawnLocals
@@ -184,9 +184,9 @@ void EclTimeline::Run()
                 }
                 break;
 
-            case 4:
+            case ECL_TIMELINE_OPCODE_SPAWN_ENEMY_RANDOM_X_RANGE_MIRRORED:
                 variant = 1;
-            case 2:
+            case ECL_TIMELINE_OPCODE_SPAWN_ENEMY_RANDOM_X_RANGE:
                 if (!g_Gui.IsBossPresent() && g_EnemyManager.suppressTimelineSpawns == 0)
                 {
                     i32 *argsRange = this->instruction->args.ints;
@@ -201,9 +201,9 @@ void EclTimeline::Run()
                 }
                 break;
 
-            case 5:
+            case ECL_TIMELINE_OPCODE_SPAWN_ENEMY_RANDOM_PLAYFIELD_X_MIRRORED:
                 variant = 1;
-            case 3:
+            case ECL_TIMELINE_OPCODE_SPAWN_ENEMY_RANDOM_PLAYFIELD_X:
                 if (!g_Gui.IsBossPresent() && g_EnemyManager.suppressTimelineSpawns == 0)
                 {
                     i32 *argsPlay = this->instruction->args.ints;
@@ -218,11 +218,11 @@ void EclTimeline::Run()
                 }
                 break;
 
-            case 6:
+            case ECL_TIMELINE_OPCODE_START_MESSAGE:
                 g_Gui.MsgRead(this->instruction->args.ints[0]);
                 break;
 
-            case 7:
+            case ECL_TIMELINE_OPCODE_WAIT_FOR_MESSAGE:
                 if (g_Gui.MsgWait())
                 {
                     this->timer--;
@@ -230,17 +230,17 @@ void EclTimeline::Run()
                 }
                 break;
 
-            case 8:
+            case ECL_TIMELINE_OPCODE_SET_BOSS_PENDING_ECL_SUBROUTINE:
                 g_EnemyManager.bosses[
                     this->instruction->args.ints[0]]->pendingEclSubroutineIndex =
                     static_cast<i16>(this->instruction->args.ints[1]);
                 break;
 
-            case 9:
+            case ECL_TIMELINE_OPCODE_SET_POWER:
                 g_GameManager.SetPower(this->instruction->args.ints[0]);
                 break;
 
-            case 10:
+            case ECL_TIMELINE_OPCODE_WAIT_FOR_BOSS_DEFEAT:
                 if (g_EnemyManager.bosses[this->instruction->args.ints[0]] != NULL &&
                     (g_EnemyManager.bosses[this->instruction->args.ints[0]]->flags1 &
                      ENEMY_FLAG_ACTIVE) != 0)
@@ -250,7 +250,7 @@ void EclTimeline::Run()
                 }
                 break;
 
-            case 13:
+            case ECL_TIMELINE_OPCODE_WAIT_FOR_EVENT:
             {
                 i32 matchCount = 0;
                 for (u32 i = 0; i < 4; i++)
@@ -270,7 +270,7 @@ void EclTimeline::Run()
                 break;
             }
 
-            case 14:
+            case ECL_TIMELINE_OPCODE_PUBLISH_EVENT:
             {
                 for (u32 j = 0; j < 4; j++)
                 {

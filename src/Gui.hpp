@@ -47,6 +47,14 @@ enum GuiDisplayMode
     GUI_DISPLAY_LAST_SPELL_FAILED = 6,
 };
 
+enum GuiPortraitSlot
+{
+    GUI_PORTRAIT_PLAYER_PRIMARY = 0,
+    GUI_PORTRAIT_PLAYER_SECONDARY = 1,
+    GUI_PORTRAIT_ENEMY_PRIMARY = 2,
+    GUI_PORTRAIT_ENEMY_SECONDARY = 3,
+};
+
 enum GuiMessageOpcode
 {
     GUI_MSG_DELETE = 0,

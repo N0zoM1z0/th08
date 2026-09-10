@@ -4699,3 +4699,259 @@ the typed pointer-return ABI and boolean accessor, and
 `verify-modern-linux.sh` verifies the ELF32 executable and every fixed
 target-owned layout symbol.  No accepted target bytes, layout, or aggregate
 exact total changed.
+
+### Interpreter protocols and stable runtime IDs — 2026-09-05
+
+Scope: router-invisible readability debt across the complete ECL dispatch,
+Enemy/Player/GameManager flag expressions, `Float3`/`D3DXVECTOR3` ABI views,
+stable sound/effect/ANM resource IDs, Player main-VM scripts, and the most
+important remaining ECL operand families.  `EclManager::RunEcl @ 0x004184B0`
+and `EclRunHigh::DispatchShotInstruction @ 0x00422720` are the central exact
+functions; resource ownership is corroborated by each manager's paired
+load/get/release paths.  No mapping, accepted-unit, relocation, or authored
+progress ledger changes in this batch.
+
+Observed: TH08's serialized ECL protocol has exactly 184 dispatched values,
+1..184.  All 91 low and 93 high dispatch labels now use explicit
+`EclOpcode` values; opcode comparisons and range arithmetic use the same
+namespace without moving the target-observed physical handler order.  The
+target call sites distinguish ECL interaction-selector bits from physical
+Enemy flags, and require several GameManager values to remain shift/mask or
+whole-dword expressions.  The ANM manager has 25 stable ownership slots,
+0..24, established by resource filenames and paired lifetime operations.
+Production roles establish all 46 sound IDs, ten Player main movement/focus
+scripts, and 40 reusable entries of the 66-row Effect template table.
+
+Corroborated: TH06 supports several sound and ANM ownership names only where
+TH08 production behavior agrees.  The TH08 Effect template callbacks and
+call-site roles are primary evidence; entries without a stable reusable role
+remain unnamed.  `typed-re.py 0x004184B0` independently pins the hash-attested
+target, `__thiscall(EclManager *, Enemy *)` ABI, 26,638-byte extent, 1,476-byte
+frame, and 7,157 decoded instructions without relying on IDA state.
+
+Inference: neutral names are retained for protocol-only behavior, including
+opcode 163 and the two observed no-ops.  Stage-provided script numbers and
+dynamic ECL effect/sound operands are data, not stable global IDs.  The
+`Float3`/`D3DXVECTOR3` view macros cover 380 former cast sites in 20 source
+files and deliberately expand to the original cast, avoiding a new `/Ob0`
+accessor call.  Bullet transform, bullet-rank influence, and trail packets now
+have size/offset-asserted wire schemas.  Their named fields feed the original
+resolver expressions through compile-time `offsetof / 4` indices.
+
+Exact-shape finding: an initial generic float-field macro shortened RunEcl
+from the required `0x6B06` bytes to `0x6B05`.  The experiment was rejected.
+Preserving the original `*reinterpret_cast<f32 *>(&raw_i)` expression tree in
+the field macro restored **26,638 / 26,638 exact**; transform, rank, and trail
+were then enabled and verified one family at a time.  This `/Ob0` rule is now
+recorded in the repository semantic skill.
+
+VC7 oracle: the final non-reuse single-job cold replay rebuilt all 75
+configured objects and passed **1,106 / 1,106 exact** with zero failures.  The
+normal VC7 production image also links.  The sole authored-but-unaccepted
+`ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0` allocator residual
+is unchanged and was deliberately outside this batch.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` rebuilt and linked
+the complete i386 executable; `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 and all
+fixed target-owned layout symbols.
+
+Result: the structural semantic router remains zero in all four production
+categories, while the new `scripts/check-semantic-protocols.py` closes the
+previous blind spot.  It requires 184/184 named ECL cases and rejects raw
+vector pointer casts outside the exact-safe view plus fixed numeric effect,
+sound, and ANM resource calls.  `scripts/ci.py` runs that guard.  This is a
+readability/protocol checkpoint, not a claim that ambiguous visual assets or
+serialized unknown bytes have acquired names.
+
+### Complete secondary protocols and TH06 readability audit — 2026-09-05
+
+Scope: the protocol surfaces that remain invisible after both structural debt
+routing and primary ECL opcode naming.  This pass covers the complete ECL
+operand-selector domain, Background/STD and ECL timeline instruction streams,
+curve and camera modes, replay frame-event flags, stage/difficulty symbols,
+and bounded UI/gameplay state machines.  No mapping, accepted-unit,
+relocation, claims, or authored-progress ledger changes are part of the batch.
+IDA remained blocked and unused.
+
+Observed: the TH08 integer and float operand resolvers collectively dispatch
+every selector from `0x2710` through `0x2774`, exactly 101 values.  Their names
+are now one explicit `EclOperandId` domain covering local/enemy variables,
+random values, difficulty/rank, positions, boss/player state, call parameters,
+movement/interpolation/orbit state, damage/drop/score state, parent context,
+and time-orb/spell state.  The complete Background stream has 35 opcodes
+(`0..34`), eight interpolation modes, and four camera-motion modes.  The ECL
+timeline stream has 17 opcodes (`0..16`).  Physical case order and the original
+control-flow expression tree were retained throughout because VC7 switch
+emission and `/Ob0` resolver output are source-shape sensitive.
+
+Observed secondary protocols now also use explicit domains: ECL easing,
+player-bullet draw paths, replay frame events, Enemy death modes and animation
+direction, Boss marker cadence, MusicRoom input gating, Title replay-menu
+states, ResultScreen phase/category, GUI portrait slots, ScreenEffect shake
+axis samples, Background stage-object flags, and Win32 wait results.  Existing
+`Stage`, `Difficulty`, and GUI display-mode values replace duplicate literals.
+The `PHANTASM` spelling is a display-only alias for the GUI rank table and does
+not alter the five-entry persisted difficulty count.  Background curve values
+remain their own namespace: modes 1..3 implement ease-out and 4..6 ease-in,
+the reverse numbering of the related ANM families.
+
+Corroborated comparison: the repository's imported TH06 reference contains 25
+named `EclVarId` selectors and six named `StageOpcode` entries; its
+`EnemyManager::RunEclTimeline` retains 13 numeric opcode cases.  TH08's 101,
+35, and 17 complete named domains therefore exceed TH06 on these directly
+comparable protocol-readability surfaces.  This is a scoped, source-counted
+comparison, not a claim that every TH08 English interpretation is proved by
+TH06.  All final names come from TH08 producer/consumer behavior; TH06 is
+corroboration only where that behavior agrees.
+
+Inference boundary: 74 numeric case labels deliberately remain.  Player and
+the exact Player-option probe use option array indices and bullet-damage
+quantities; BulletManager uses per-file etama ANM script IDs whose visual roles
+are not stable enough to name; GUI switches on configured life-count
+quantities.  Those values are array/data/quantity selectors rather than
+unclosed protocol domains.  Inventing symbolic artwork or gameplay names for
+them would make the source less trustworthy, not more readable.  The original
+Background opcode-30 negative path, including its asymmetric VM clear, is also
+preserved rather than silently treated as a reconstruction bug.
+
+VC7 oracle: the four ECL resolver functions passed exact comparison at
+`0x0041F420` (**1,899 / 1,899**), `0x0041FE10` (**548 / 548**), `0x00420120`
+(**1,687 / 1,687**), and `0x00420950` (**696 / 696**).  `Background::OnUpdate
+@ 0x00407400` passed **6,455 / 6,455** compared bytes, and
+`EclTimeline::Run @ 0x0042A8A0` passed **1,284 / 1,284**.  Affected-object
+replays passed replay events **252 / 252**, ECL easing **40 / 40**,
+Background/ANM draw **111 / 111**, stage/difficulty symbols **115 / 115**,
+small state machines **100 / 100**, Title replay menu **11 / 11**,
+ResultScreen phases **33 / 33**, GUI protocols **41 / 41**, Enemy death modes
+**40 / 40**, screen shake **21 / 21**, and sound wait results **25 / 25**.
+The required single-job non-reuse replay then cold-built all 75 comparison
+objects and passed **1,106 / 1,106 exact** with zero failures.  The fresh normal
+VC7 production image linked.  The sole authored-but-unaccepted
+`ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0` remains unchanged and
+outside this batch.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` rebuilt and linked
+the complete i386 executable, and `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 and all
+fixed target-owned layout symbols.
+
+Result: `scripts/check-semantic-protocols.py` now verifies the exact value sets
+and decoder coverage for the primary and secondary streams, rejects numeric
+dispatch/writer regressions on those surfaces, and protects the newly closed
+UI/gameplay state protocols.  The reusable lesson is recorded in
+`.agents/skills/th08-semantic/SKILL.md`: a protocol audit must continue through
+operand selectors, sibling streams, mode selectors, and replay flags, while
+leaving ambiguous assets and numeric quantities honestly numeric.
+
+### TH06/TH07 readability audit and stable-ID closure — 2026-09-05
+
+References: the comparison pins
+[GensokyoClub/th06](https://github.com/GensokyoClub/th06) at
+`cc475a0bc3fef38683b0f02224c87ddba0a021d9` and
+[some100/th07](https://github.com/some100/th07) at
+`84963b2e2630b7ef96b0da4b280152d3f689c998`.  Both checkouts live under the
+ignored `_references/` tree.  They are adjacent-engine readability references;
+the Japanese TH08 1.00d target and this repository's VC7 comparator remain the
+authority for TH08 names, layouts, and exactness.
+
+The comparable protocol inventory is:
+
+| Protocol surface | TH08 | TH06 | TH07 |
+| --- | ---: | ---: | ---: |
+| Primary ECL opcodes | 184 / 184 named | 136 / 136 named | 159 / 159 named |
+| ECL operand selectors | 101 / 101 named | 25 named values | 74 / 74 named |
+| Stage/background opcodes | 35 / 35 named | 6 named values | 31 / 31 named |
+| Named ECL timeline opcodes | 17 / 17 | 0 / 13 | 0 / 13 |
+| Stage interpolation modes | 8 | no separate selector | 7 |
+| Named replay event bits | 11 / 11 observed | no comparable domain | 0 / 7 observed |
+| Screen-effect modes | 8 | 3 | 5 |
+| Descriptive sound IDs | 46 / 46-value domain | 16 of 32 entries | 23 sparse entries |
+| Behavior-named effect IDs | 40 | 0 | 0 |
+| Audio command operations | 8 plus `NONE` | no separate enum | 7 |
+
+The source-wide snapshot is:
+
+| Target-side source audit | TH08 | TH06 | TH07 |
+| --- | ---: | ---: | ---: |
+| C/C++ files / text lines | 98 / 61,315 | 95 / 31,361 | 75 / 42,979 |
+| Numeric `case` labels | 74 (12.1 per 10k lines) | 95 (30.3 per 10k) | 96 (22.3 per 10k) |
+| Decompiler-style local names | 0 | 581 | 389 |
+| Generic `param_N` names | 0 | 7 | 144 |
+| Anonymous identifiers found by the semantic-debt pattern | 0 | 284 | 78 |
+| `LAB_...` labels | 0 | 2 | 27 |
+| `C_ASSERT(offsetof(...))` layout assertions | 700 | 0 | 0 |
+| Type-size assertions | 135 | 83 | 68 |
+| Automated semantic protocol guard | yes | no | no |
+
+Counting method: each tree uses files with the `.c`, `.cc`, `.cpp`, `.h`,
+`.hpp`, or `.inl` suffix below its target source directory.  TH08 excludes
+`src/modern` but includes the four exact-match probe sources stored alongside
+the reconstructed code; reference-specific host support outside `src/th06` or
+`src/th07` is not included.  Text lines are the sum of decoded `splitlines()`
+counts.
+Numeric cases match a decimal or hexadecimal literal immediately after
+`case`.  Decompiler locals match `local_<hex>` and the Ghidra-style
+`[uifpcbscl]+Var<number>` family; parameters match `param_<number>`.
+Anonymous identifiers use the same `unk`/`unknown`/`field`/`unused`/`padding`
+offset pattern as `scripts/analysis/report-semantic-debt.py`.  Layout totals
+count literal `C_ASSERT(offsetof(...))`, `C_ASSERT(sizeof(...))`, and
+`ZUN_ASSERT_SIZE(...)` forms.  These are lexical snapshots, useful for
+comparison but not semantic-completion percentages.
+
+ANM is the clearest exception to TH08's overall lead.  TH06 names all 32 of its
+ANM opcodes and carries 45 file, 131 script, and 29 sprite definitions.  TH07
+has 82 opcode members with one neutral name and 58 file, 109 script, and 23
+sprite definitions; 21 of its script names are explicitly unknown.  TH08 has
+the largest opcode domain at 91 members, but four names remain neutral
+(`25`, `31`, `83`, and `88`) and its asset naming is intentionally partial.
+TH07's `ANM_SET_AUTO_ROTATE` and `ANM_SET_CAMERA_MODE`, together with its VM
+flag names, currently communicate the shared ANM behavior better.  They remain
+strong candidates for a dedicated TH08 evidence and exact-emission pass.
+
+Typed ECL operands are the second exception.  TH06 has 26 explicit packet
+structures, including its timeline packet, while TH08 currently has six
+target-backed instruction families: spell-card, shot, laser-spawn,
+bullet-transform, rank-influence, and trail.  TH07 generally retains a generic
+argument array.  TH06 therefore has the broadest typed packet coverage.  TH08
+keeps extending this surface family by family when field widths, padding,
+signedness, and the VC7 expression tree can all be pinned without losing exact
+output.
+
+This audit also found seven stable IDs that the old CI expression failed to
+see.  `Spellcard::CutInPlayer @ 0x00415D60` and
+`Spellcard::CutInEnemy @ 0x00415F00` now use `SOUND_CAT`;
+`Spellcard::EndSpell @ 0x004161B0` uses `SOUND_BULLET_0_LOUD`;
+`GuiImpl::RunMsg @ 0x00433DB3` uses `SOUND_SPELL_CAPTURE` and
+`SCREEN_EFFECT_FULL_FADE_OUT`; and `Gui::DrawStageElements @ 0x0043741D` uses
+`SOUND_TIMEOUT_2` and `SOUND_TIMEOUT`.  These are enum substitutions for the
+same values, not new behavioral inferences.
+
+The guard previously rejected only `static_cast<SoundIdx>(literal)`, allowing
+the C-style spelling to pass.  It now checks the sound and screen-effect call
+boundaries for direct literals, C-style casts, and `static_cast`, while keeping
+runtime packet fields and calculated indices valid.  A focused regression test
+covers all accepted and rejected forms.  It also pins `SoundIdx` values 0..45,
+`ScreenEffectType` values 0..7, and all eight screen-effect dispatcher cases.
+The same rule is recorded in `.agents/skills/th08-semantic/SKILL.md` for later
+reconstructions.
+
+VC7 oracle: before and after the substitutions, the accepted units configured
+for `SpellCard.obj`, `Gui.obj`, and the canonical objdiff `Gui.obj` passed
+**70 / 70 exact**.  The final single-job cold replay rebuilt all 75 comparison
+objects and passed **1,106 / 1,106 exact** with zero failures.  A separate
+fresh normal VC7 build linked `build/th08.exe`.  The sole authored-but-
+unaccepted `ReplayManager::PlaybackExtendedInputAndFps @ 0x004526C0` remains
+unchanged and outside this batch.
+
+Portable oracle: `scripts/build-modern-linux-container.sh` rebuilt and linked
+the complete i386 executable.  `scripts/verify-modern-linux.sh
+build/modern-linux-container/th08-modern` verified ELF32/ET_EXEC/i386 and all
+fixed target-owned layout symbols.
+
+Result: TH08 has the strongest overall readability coverage of the three
+source trees across complete script protocols, residual source naming, layout
+documentation, and automated guards.  The ANM and typed-ECL exceptions keep
+the comparison useful: they identify concrete places where an adjacent
+reconstruction currently communicates intent better, without weakening the
+TH08 accuracy boundary.

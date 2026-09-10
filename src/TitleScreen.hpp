@@ -56,6 +56,17 @@ enum TitleCurrentScreenState
     TitleCurrentScreenState_Changing = 3,
 };
 
+// OnUpdateReplayMenu reuses currentScreenState storage for a five-state flow
+// whose values 2 and 3 have replay-specific meanings.
+enum TitleReplayMenuState
+{
+    TITLE_REPLAY_MENU_ENUMERATE_REPLAYS = 0,
+    TITLE_REPLAY_MENU_SELECT_REPLAY = 1,
+    TITLE_REPLAY_MENU_SELECT_STAGE = 2,
+    TITLE_REPLAY_MENU_SELECT_PLAYBACK_MODE = 3,
+    TITLE_REPLAY_MENU_EXIT = 4,
+};
+
 #define TITLE_MAX_REPLAYS 60
 
 struct TitleScreen

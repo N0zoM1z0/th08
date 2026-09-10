@@ -78,6 +78,17 @@ enum AnmCameraMode
     AnmCameraMode_Unset = -1
 };
 
+// Draw dispatch selected by ANM opcode 37 for player bullet hit animations.
+enum AnmPlayerBulletDrawMode
+{
+    ANM_PLAYER_BULLET_DRAW_NO_ROTATION = 0,
+    ANM_PLAYER_BULLET_DRAW_NO_ROTATION_NO_ROUND = 1,
+    ANM_PLAYER_BULLET_DRAW_2D = 2,
+    ANM_PLAYER_BULLET_DRAW_2D_ROTATED_OR_AXIS_ALIGNED = 3,
+    ANM_PLAYER_BULLET_DRAW_CAMERA_FACING_QUAD = 4,
+    ANM_PLAYER_BULLET_DRAW_PROJECTED_3D_QUAD = 5,
+};
+
 enum AnmZWriteMode
 {
     AnmZWriteMode_Unset = -1
@@ -118,6 +129,37 @@ enum AnmInterpMode
     AnmInterpMode_EaseOut = 4,
     AnmInterpMode_EaseOutCubic = 5,
     AnmInterpMode_EaseOutQuartic = 6
+};
+
+// Stable slots in AnmManager::anmFiles.  A slot describes resource ownership,
+// not a sprite or script index inside the loaded ANM file.
+enum AnmFileSlot
+{
+    ANM_FILE_SLOT_TEXT = 0,
+    ANM_FILE_SLOT_ASCII = 1,
+    ANM_FILE_SLOT_NOW_LOADING = 2,
+    ANM_FILE_SLOT_CAPTURE = 3,
+    ANM_FILE_SLOT_STAGE_BACKGROUND = 4,
+    ANM_FILE_SLOT_PLAYER = 5,
+    ANM_FILE_SLOT_BULLET_AND_EFFECT = 6,
+    ANM_FILE_SLOT_ENEMY_COMMON = 7,
+    ANM_FILE_SLOT_ENEMY_STAGE = 8,
+    ANM_FILE_SLOT_STAGE_EFFECT = 9,
+    ANM_FILE_SLOT_GUI_FRONT = 10,
+    ANM_FILE_SLOT_GUI_AUXILIARY = 11,
+    ANM_FILE_SLOT_LOADING_PORTRAIT = 12,
+    ANM_FILE_SLOT_STAGE_TEXT = 13,
+    ANM_FILE_SLOT_CLOCK = 14,
+    ANM_FILE_SLOT_FACE_COMMON = 15,
+    ANM_FILE_SLOT_FACE_PLAYER_PRIMARY = 16,
+    ANM_FILE_SLOT_FACE_PLAYER_SECONDARY = 17,
+    ANM_FILE_SLOT_FACE_ENEMY_PRIMARY = 18,
+    ANM_FILE_SLOT_FACE_ENEMY_SECONDARY = 19,
+    ANM_FILE_SLOT_TITLE = 20,
+    ANM_FILE_SLOT_RESULT = 21,
+    ANM_FILE_SLOT_RESULT_TEXT = 22,
+    ANM_FILE_SLOT_MUSIC_ROOM = 23,
+    ANM_FILE_SLOT_ENDING = 24,
 };
 
 enum AnmOpcode

@@ -197,22 +197,24 @@ target data arena as `NOLOAD` so it does not inflate the executable.
 Keep this initialization at the port boundary and document its provenance.
 Do not replace it with gameplay defaults scattered through authored source.
 
-### Backbuffer semantics are gameplay-visible
+### Do not compensate for a wrong target callee in the renderer
 
-TH08 used Direct3D 8 copy-swap behavior and does not redraw every visual layer
-on every frame. In particular, authored dialogue rendering deliberately skips
-the 3D background. SDL/Wayland swapchain contents are not stable enough to
-inherit this behavior accidentally.
+TH08's Direct3D 8 copy-swap behavior is gameplay-visible, but ordinary
+dialogue is not implemented by retaining or restoring a frozen backbuffer.
+Target `Background::OnDrawHighPrio @ 0x00409200` and
+`Background::OnDrawLowPrio @ 0x00409640` gate their stage layers with
+`Gui::IsStageFinished @ 0x00437D87`. They do not call
+`Gui::IsDialoguePresent @ 0x004358BB`; the stage therefore continues to draw
+behind portraits and dialogue text.
 
-The Linux renderer owns a texture-backed 640x480 framebuffer. At dialogue
-entry it captures a clean scene snapshot and restores that same snapshot
-before every dialogue frame. This preserves the paused background without
-accumulating bullets, items, portraits, or text from later frames. A persistent
-framebuffer alone is insufficient: it retains moving foreground layers too.
-
-A common portability shortcut is to force a complete redraw on every frame.
-TH08 instead needs the more specific snapshot because its authored dialogue
-path intentionally omits background drawing.
+An earlier reconstruction called `IsDialoguePresent` at those three sites.
+Its match manifest assigned the call relocations to target `0x00437D87`, so
+relocation replay normalized the wrong source symbol into exact target bytes.
+The Linux renderer then added a dialogue snapshot to hide the resulting flat
+or black background and accumulated portrait trails. Native Windows i386
+playtesting exposed that source error. The renderer no longer owns a dialogue
+snapshot path: preserve the target caller/callee relationship instead of
+adding a backend workaround for reconstructed behavior.
 
 ### Fixed-function state must be translated component by component
 

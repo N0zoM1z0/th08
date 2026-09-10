@@ -58,6 +58,10 @@ def main() -> int:
             "Test render-audit checker contract",
             [sys.executable, "scripts/test-render-audit.py"],
         )
+        run(
+            "Test semantic protocol guards",
+            [sys.executable, "scripts/test-semantic-protocols.py"],
+        )
 
         shell_files = tracked("scripts/*.sh")
         shell_files.extend(
@@ -113,6 +117,10 @@ def main() -> int:
         run(
             "Smoke-test semantic-debt CLI routing",
             [sys.executable, "scripts/analysis/report-semantic-debt.py", "--help"],
+        )
+        run(
+            "Check semantic protocol readability",
+            [sys.executable, "scripts/check-semantic-protocols.py"],
         )
         with tempfile.TemporaryDirectory(prefix="th08-ci-icon-") as directory:
             generated_icon = Path(directory) / "icon.ico"

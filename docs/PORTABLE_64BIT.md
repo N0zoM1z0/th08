@@ -22,6 +22,10 @@ the repository's other development branches.
 The x86_64 result is a playable 64-bit port, not merely a successful link. The
 AArch64 artifact is build- and loader-verified, but emulated software OpenGL is
 too slow to substitute honestly for a gameplay test on AArch64 hardware.
+After integrating the native Windows i386 prerequisite, the x86_64 artifact was
+rebuilt and smoke-tested again. The AArch64 row retains the preceding portable
+branch evidence; the integrated head has not been rebuilt on this workstation
+because its AArch64 cross compiler is unavailable.
 
 <p align="center">
   <img
@@ -132,6 +136,29 @@ scripts/smoke-test-portable-linux.sh \
 
 The check fails on an early exit, `modern-crash.txt`, or failure to request the
 title, replay, SHT, STD, ECL, and message resources used by that route.
+
+### Issue-driven prerequisite regression gate
+
+The native Windows i386 prerequisite recovered production-source defects that
+also feed the 64-bit build. The current portable branch therefore checks the
+real shared repairs rather than recreating them as backend patches:
+
+- dialogue and stage rendering share the target's stage-finished draw gate;
+- boss names select the GUI front-ANM owner;
+- player gauge thresholds reside in the live `GameManager` object;
+- spell backgrounds select the EffectManager stage-effect ANM;
+- target-initialized effect, Last Spell, bonus, and palette tables have normal
+  C++ owners;
+- player-shot RNG and numeric-popup callees match their target mappings.
+
+These paths correspond to several symptoms reported in
+[th08 issue #16](https://github.com/N0zoM1z0/th08/issues/16) and
+[th08-web issue #1](https://github.com/N0zoM1z0/th08-web/issues/1). The native
+x86_64 smoke test reaches the bundled Stage 5 demo and guards early exits and
+resource requests. It does **not** establish exact replay input/RNG parity,
+subjective rendering parity, performance on browser backends, or closure of
+the post-spell gauge, result-screen, and negative-bonus reports. Those require
+their own bounded runtime evidence.
 
 ### Deterministic replay render audit
 

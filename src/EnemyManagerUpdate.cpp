@@ -96,7 +96,7 @@ i32 EnemyManager::OnUpdate()
         D3DXVECTOR3 lowerBounds(384.0f, 448.0f, 0.0f);
         D3DXVECTOR3 upperBounds(192.0f, 224.0f, 0.0f);
         g_Player.CalcDamageToEnemy(
-            reinterpret_cast<Float3 *>(&upperBounds), reinterpret_cast<Float3 *>(&lowerBounds),
+            FLOAT3_PTR(&upperBounds), FLOAT3_PTR(&lowerBounds),
             &this->bosses[0]->playerShotHitAccumulator,
             &bombHit);
     }
@@ -132,9 +132,9 @@ i32 EnemyManager::OnUpdate()
 
         if (reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->suppressDeathEffects)
         {
-            *reinterpret_cast<D3DXVECTOR3 *>(&enemy->worldPosition) =
-                *reinterpret_cast<D3DXVECTOR3 *>(&enemy->position) +
-                *reinterpret_cast<D3DXVECTOR3 *>(&enemy->positionOffset);
+            *D3DXVECTOR3_PTR(&enemy->worldPosition) =
+                *D3DXVECTOR3_PTR(&enemy->position) +
+                *D3DXVECTOR3_PTR(&enemy->positionOffset);
             enemy->worldPosition.z = 0.0f;
             goto process_enemy_death;
         }
@@ -156,7 +156,7 @@ i32 EnemyManager::OnUpdate()
     run_enemy_ecl_after_pause:
         if (g_EclManager.RunEcl(enemy) == -1)
         {
-            enemy->flags1 &= ~1U;
+            enemy->flags1 &= ~ENEMY_FLAG_ACTIVE;
             enemy->Despawn();
             continue;
         }
@@ -170,29 +170,29 @@ i32 EnemyManager::OnUpdate()
             if (enemy->parentEnemy != 0 &&
                 reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->inheritParentPosition)
             {
-                *reinterpret_cast<D3DXVECTOR3 *>(&enemy->positionOffset) =
-                    *reinterpret_cast<D3DXVECTOR3 *>(
+                *D3DXVECTOR3_PTR(&enemy->positionOffset) =
+                    *D3DXVECTOR3_PTR(
                         &enemy->parentEnemy->position);
             }
 
-            *reinterpret_cast<D3DXVECTOR3 *>(&enemy->worldPosition) =
-                *reinterpret_cast<D3DXVECTOR3 *>(&enemy->position) +
-                *reinterpret_cast<D3DXVECTOR3 *>(&enemy->positionOffset);
+            *D3DXVECTOR3_PTR(&enemy->worldPosition) =
+                *D3DXVECTOR3_PTR(&enemy->position) +
+                *D3DXVECTOR3_PTR(&enemy->positionOffset);
             enemy->worldPosition.z = 0.0f;
         }
         else
         {
-            *reinterpret_cast<D3DXVECTOR3 *>(&enemy->worldPosition) =
-                *reinterpret_cast<D3DXVECTOR3 *>(&enemy->position) +
-                *reinterpret_cast<D3DXVECTOR3 *>(&enemy->positionOffset);
+            *D3DXVECTOR3_PTR(&enemy->worldPosition) =
+                *D3DXVECTOR3_PTR(&enemy->position) +
+                *D3DXVECTOR3_PTR(&enemy->positionOffset);
             enemy->worldPosition.z = 0.0f;
         }
 
         if (enemy->alignmentEffect != 0)
         {
-            *reinterpret_cast<D3DXVECTOR3 *>(
+            *D3DXVECTOR3_PTR(
                 &enemy->alignmentEffect->position) =
-                *reinterpret_cast<D3DXVECTOR3 *>(&enemy->worldPosition);
+                *D3DXVECTOR3_PTR(&enemy->worldPosition);
         }
 
         if (enemy->trailFlags)
@@ -200,24 +200,24 @@ i32 EnemyManager::OnUpdate()
             for (trailIndex = enemy->trailHistoryLength - 1;
                  trailIndex > 0; --trailIndex)
             {
-                *reinterpret_cast<D3DXVECTOR3 *>(
+                *D3DXVECTOR3_PTR(
                     &enemy->trailSamples[trailIndex].position) =
-                    *reinterpret_cast<D3DXVECTOR3 *>(
+                    *D3DXVECTOR3_PTR(
                         &enemy->trailSamples[trailIndex - 1].position);
-                *reinterpret_cast<D3DXVECTOR3 *>(
+                *D3DXVECTOR3_PTR(
                     &enemy->trailSamples[trailIndex].velocity) =
-                    *reinterpret_cast<D3DXVECTOR3 *>(
+                    *D3DXVECTOR3_PTR(
                         &enemy->trailSamples[trailIndex - 1].velocity);
                 enemy->trailSamples[trailIndex].angle =
                     enemy->trailSamples[trailIndex - 1].angle;
             }
 
-            *reinterpret_cast<D3DXVECTOR3 *>(
+            *D3DXVECTOR3_PTR(
                 &enemy->trailSamples[0].position) =
-                *reinterpret_cast<D3DXVECTOR3 *>(&enemy->worldPosition);
-            *reinterpret_cast<D3DXVECTOR3 *>(
+                *D3DXVECTOR3_PTR(&enemy->worldPosition);
+            *D3DXVECTOR3_PTR(
                 &enemy->trailSamples[0].velocity) =
-                *reinterpret_cast<D3DXVECTOR3 *>(&enemy->velocity);
+                *D3DXVECTOR3_PTR(&enemy->velocity);
             enemy->trailSamples[0].angle =
                 enemy->movementAngle;
         }
@@ -228,8 +228,8 @@ i32 EnemyManager::OnUpdate()
         if (!reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->noSprite &&
             !reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->hasBeenInBounds &&
             g_GameManager.IsWithinPlayfield(
-                (*reinterpret_cast<D3DXVECTOR3 *>(&enemy->worldPosition))[0],
-                (*reinterpret_cast<D3DXVECTOR3 *>(&enemy->worldPosition))[1],
+                (*D3DXVECTOR3_PTR(&enemy->worldPosition))[0],
+                (*D3DXVECTOR3_PTR(&enemy->worldPosition))[1],
                 enemy->vm.loadedSprite->widthPx,
                 enemy->vm.loadedSprite->heightPx))
         {
@@ -259,7 +259,7 @@ i32 EnemyManager::OnUpdate()
                      enemy->vm.loadedSprite->widthPx,
                      enemy->vm.loadedSprite->heightPx)))
             {
-                enemy->flags1 &= ~1U;
+                enemy->flags1 &= ~ENEMY_FLAG_ACTIVE;
                 enemy->Despawn();
                 continue;
             }
@@ -296,21 +296,21 @@ i32 EnemyManager::OnUpdate()
                     &enemy->hitboxDimensions);
                 if (enemy->trailFlags)
                 {
-                    secondaryHitbox = *reinterpret_cast<D3DXVECTOR3 *>(
+                    secondaryHitbox = *D3DXVECTOR3_PTR(
                         &enemy->hitboxDimensions);
                     for (trailIndex = 1; trailIndex < enemy->trailCollisionLength; trailIndex += 6)
                     {
                         if (enemy->trailFlags & ENEMY_TRAIL_TAPER)
                         {
-                            secondaryHitbox = *reinterpret_cast<D3DXVECTOR3 *>(
+                            secondaryHitbox = *D3DXVECTOR3_PTR(
                                                   &enemy->hitboxDimensions) -
-                                (*reinterpret_cast<D3DXVECTOR3 *>(
+                                (*D3DXVECTOR3_PTR(
                                      &enemy->hitboxDimensions) *
                                  (f32)trailIndex / (f32)enemy->trailCollisionLength);
                         }
                         enemy->CheckPlayerCollision(
                             &enemy->trailSamples[trailIndex].position,
-                            reinterpret_cast<Float3 *>(&secondaryHitbox));
+                            FLOAT3_PTR(&secondaryHitbox));
                     }
                 }
             }
@@ -407,11 +407,11 @@ i32 EnemyManager::OnUpdate()
                 if (reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->boss)
                 {
                     previousTargetDelta =
-                        *reinterpret_cast<D3DXVECTOR3 *>(&g_Player.tailPosition0) -
-                        *reinterpret_cast<D3DXVECTOR3 *>(&g_Player.position);
-                    currentTargetDelta = *reinterpret_cast<D3DXVECTOR3 *>(
+                        *D3DXVECTOR3_PTR(&g_Player.tailPosition0) -
+                        *D3DXVECTOR3_PTR(&g_Player.position);
+                    currentTargetDelta = *D3DXVECTOR3_PTR(
                                              &enemy->worldPosition) -
-                        *reinterpret_cast<D3DXVECTOR3 *>(&g_Player.position);
+                        *D3DXVECTOR3_PTR(&g_Player.position);
                     if (!g_Player.enemyTrackedPositionValid ||
                         fabsf(previousTargetDelta.x) >
                             fabsf(currentTargetDelta.x))
@@ -423,7 +423,7 @@ i32 EnemyManager::OnUpdate()
 
                 if (!g_Player.enemyTrackedPositionValid &&
                     g_Player.tailPosition0[1] <
-                        (*reinterpret_cast<D3DXVECTOR3 *>(
+                        (*D3DXVECTOR3_PTR(
                             &enemy->worldPosition))[1])
                 {
                     g_Player.tailPosition0 = enemy->worldPosition;
@@ -431,7 +431,7 @@ i32 EnemyManager::OnUpdate()
 
                 if (fabsf(
                         enemy->worldPosition.x -
-                        reinterpret_cast<D3DXVECTOR3 *>(&g_Player.position)->x) < 64.0f &&
+                        D3DXVECTOR3_PTR(&g_Player.position)->x) < 64.0f &&
                     !enemy->HasAttachedEnemy() &&
                     (g_Player.optionHomingTarget == 0 ||
                      reinterpret_cast<Enemy *>(g_Player.optionHomingTarget)->position.y >
@@ -487,19 +487,20 @@ i32 EnemyManager::OnUpdate()
                 deathPosition = 200;
             g_GameManager.AddToYoukaiGauge(deathPosition, 0);
 
-            switch ((enemy->flags1 >> 20) & 7)
+            switch ((enemy->flags1 >> ENEMY_FLAG_DEATH_MODE_SHIFT) &
+                    (ENEMY_FLAG_DEATH_MODE_MASK >> ENEMY_FLAG_DEATH_MODE_SHIFT))
             {
-            case 3:
+            case ENEMY_DEATH_MODE_END_BOSS_PHASE:
                 enemy->life = 1;
                 enemy->flags1 &= ~ENEMY_FLAG_DAMAGEABLE;
                 enemy->flags1 &= ~ENEMY_FLAG_DEATH_MODE_MASK;
                 g_Gui.SetBossPresent(false);
-                g_ReplayManager->frameEventFlags |= 0x20;
+                g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_ENEMY_REMOVED;
                 if (enemy->deathAnm1 >= 0)
                 {
-                    g_EffectManager.SpawnEffect(enemy->deathAnm1, reinterpret_cast<D3DXVECTOR3 *>(&enemy->worldPosition), 1, -1);
-                    g_EffectManager.SpawnEffect(enemy->deathAnm1, reinterpret_cast<D3DXVECTOR3 *>(&enemy->worldPosition), 1, -1);
-                    g_EffectManager.SpawnEffect(enemy->deathAnm1, reinterpret_cast<D3DXVECTOR3 *>(&enemy->worldPosition), 1, -1);
+                    g_EffectManager.SpawnEffect(enemy->deathAnm1, D3DXVECTOR3_PTR(&enemy->worldPosition), 1, -1);
+                    g_EffectManager.SpawnEffect(enemy->deathAnm1, D3DXVECTOR3_PTR(&enemy->worldPosition), 1, -1);
+                    g_EffectManager.SpawnEffect(enemy->deathAnm1, D3DXVECTOR3_PTR(&enemy->worldPosition), 1, -1);
                 }
                 if (enemy->alignmentEffect != 0)
                 {
@@ -515,7 +516,7 @@ i32 EnemyManager::OnUpdate()
                 enemy->flags1 &= ~ENEMY_FLAG_NO_DAMAGE_DURING_STOP;
                 goto death_audio_and_callback;
 
-            case 1:
+            case ENEMY_DEATH_MODE_PERSIST_NONINTERACTIVE:
                 g_GameManager.AddScore(enemy->score);
                 enemy->flags1 |= ENEMY_FLAG_PERSIST_AFTER_DEATH;
                 enemy->flags1 &= ~ENEMY_FLAG_COLLISION;
@@ -523,9 +524,9 @@ i32 EnemyManager::OnUpdate()
                 enemy->flags1 &= ~ENEMY_FLAG_ACCEPTS_DAMAGE;
                 goto common_death_mode;
 
-            case 0:
+            case ENEMY_DEATH_MODE_DEACTIVATE:
                 g_GameManager.AddScore(enemy->score);
-                enemy->flags1 &= ~1U;
+                enemy->flags1 &= ~ENEMY_FLAG_ACTIVE;
                 if (enemy->alignmentEffect != 0)
                 {
                     enemy->alignmentEffect->vm.SetInterrupt(3);
@@ -533,7 +534,7 @@ i32 EnemyManager::OnUpdate()
                 }
                 goto common_death_mode;
 
-            case 2:
+            case ENEMY_DEATH_MODE_KEEP_RUNTIME_STATE:
             common_death_mode:
                 if (reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->boss)
                 {
@@ -553,7 +554,7 @@ i32 EnemyManager::OnUpdate()
                     }
                 }
                 enemy->life = 0;
-                g_ReplayManager->frameEventFlags |= 0x20;
+                g_ReplayManager->frameEventFlags |= REPLAY_FRAME_EVENT_ENEMY_REMOVED;
                 break;
             }
 
@@ -564,8 +565,8 @@ i32 EnemyManager::OnUpdate()
                     static_cast<SoundIdx>(enemyIndex % 2 + 2), enemy->worldPosition.x);
                 if (enemy->deathAnm1 >= 0)
                 {
-                    g_EffectManager.SpawnEffect(enemy->deathAnm1, reinterpret_cast<D3DXVECTOR3 *>(&enemy->worldPosition), 1, -1);
-                    g_EffectManager.SpawnEffect(enemy->deathAnm2 + 4, reinterpret_cast<D3DXVECTOR3 *>(&enemy->worldPosition), 4, -1);
+                    g_EffectManager.SpawnEffect(enemy->deathAnm1, D3DXVECTOR3_PTR(&enemy->worldPosition), 1, -1);
+                    g_EffectManager.SpawnEffect(enemy->deathAnm2 + 4, D3DXVECTOR3_PTR(&enemy->worldPosition), 4, -1);
                 }
                 if (g_GameManager.GaugeIsExtremelyHuman() ||
                     g_GameManager.GaugeIsExtremelyYoukai())
@@ -607,9 +608,9 @@ i32 EnemyManager::OnUpdate()
             else if (damageOccurred)
             {
                 if (reinterpret_cast<EnemyFlag2Bits *>(&enemy->flags2)->damageFeedbackLevel < 2)
-                    g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(20), enemy->worldPosition.x);
+                    g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_DAMAGE, enemy->worldPosition.x);
                 else
-                    g_SoundPlayer.PlaySoundPositionedByIdx(static_cast<SoundIdx>(37), enemy->worldPosition.x);
+                    g_SoundPlayer.PlaySoundPositionedByIdx(SOUND_DAMAGE_LOW_HEALTH, enemy->worldPosition.x);
 
                 enemy->vm.color2.r = 0xFF;
                 enemy->vm.color2.g = 0x60;

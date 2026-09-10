@@ -54,6 +54,13 @@ union ScreenEffectParameters
     ScreenEffectShakeEnvelopeParameters shakeEnvelope;
 };
 
+enum ScreenShakeAxisSample
+{
+    SCREEN_SHAKE_AXIS_ZERO = 0,
+    SCREEN_SHAKE_AXIS_POSITIVE = 1,
+    SCREEN_SHAKE_AXIS_NEGATIVE = 2,
+};
+
 C_ASSERT(sizeof(ScreenEffectParameters) == 0xc);
 C_ASSERT(sizeof(ScreenEffectRawParameters) == 0xc);
 C_ASSERT(offsetof(ScreenEffect, rawParameter0) == 0x18);
@@ -494,26 +501,26 @@ ChainCallbackResult ScreenEffect::CalcShake(ScreenEffect *screenEffect)
 
     switch (g_Rng.GetRandomU32InRange(3))
     {
-    case 0:
+    case SCREEN_SHAKE_AXIS_ZERO:
         g_AnmManager->screenShakeOffset.x = 0.0f;
         break;
-    case 1:
+    case SCREEN_SHAKE_AXIS_POSITIVE:
         g_AnmManager->screenShakeOffset.x = shakeAmount;
         break;
-    case 2:
+    case SCREEN_SHAKE_AXIS_NEGATIVE:
         g_AnmManager->screenShakeOffset.x = -shakeAmount;
         break;
     }
 
     switch (g_Rng.GetRandomU32InRange(3))
     {
-    case 0:
+    case SCREEN_SHAKE_AXIS_ZERO:
         g_AnmManager->screenShakeOffset.y = 0.0f;
         break;
-    case 1:
+    case SCREEN_SHAKE_AXIS_POSITIVE:
         g_AnmManager->screenShakeOffset.y = shakeAmount;
         break;
-    case 2:
+    case SCREEN_SHAKE_AXIS_NEGATIVE:
         g_AnmManager->screenShakeOffset.y = -shakeAmount;
         break;
     }
@@ -569,26 +576,26 @@ ChainCallbackResult ScreenEffect::CalcShakeEnvelope(ScreenEffect *screenEffect)
 
     switch (g_Rng.GetRandomU32InRange(3))
     {
-    case 0:
+    case SCREEN_SHAKE_AXIS_ZERO:
         g_AnmManager->screenShakeOffset.x = 0.0f;
         break;
-    case 1:
+    case SCREEN_SHAKE_AXIS_POSITIVE:
         g_AnmManager->screenShakeOffset.x = shakeAmount;
         break;
-    case 2:
+    case SCREEN_SHAKE_AXIS_NEGATIVE:
         g_AnmManager->screenShakeOffset.x = -shakeAmount;
         break;
     }
 
     switch (g_Rng.GetRandomU32InRange(3))
     {
-    case 0:
+    case SCREEN_SHAKE_AXIS_ZERO:
         g_AnmManager->screenShakeOffset.y = 0.0f;
         break;
-    case 1:
+    case SCREEN_SHAKE_AXIS_POSITIVE:
         g_AnmManager->screenShakeOffset.y = shakeAmount;
         break;
-    case 2:
+    case SCREEN_SHAKE_AXIS_NEGATIVE:
         g_AnmManager->screenShakeOffset.y = -shakeAmount;
         break;
     }

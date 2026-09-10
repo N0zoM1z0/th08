@@ -59,7 +59,6 @@ SECTIONS
     _ZN4th0823g_PlayerNormalBombCountE = 0x0164cfa8;
     _ZN4th0822g_PlayerDeathbombCountE = 0x0164cfac;
     _ZN4th0829g_MaxValuePointItemsCollectedE = 0x0164cf9c;
-    _ZN4th0819g_PlayerGaugeBoundsE = 0x0164d300;
     _ZN4th0822g_GameManagerCalcChainE = 0x0164d344;
     _ZN4th0822g_GameManagerDrawChainE = 0x0164d364;
     _ZN4th0814g_JoystickCapsE = 0x0164d388;

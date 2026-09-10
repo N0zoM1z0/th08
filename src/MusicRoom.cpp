@@ -41,7 +41,7 @@ ZunResult MusicRoom::CheckInputEnable()
 
     if (this->frameCount >= 8)
     {
-        this->inputState = 1;
+        this->inputState = MUSIC_ROOM_INPUT_ACTIVE;
     }
 
     return ZUN_SUCCESS;
@@ -276,14 +276,14 @@ ChainCallbackResult MusicRoom::OnUpdate(MusicRoom *musicRoom)
 start:
     switch (musicRoom->inputState)
     {
-    case 0:
+    case MUSIC_ROOM_INPUT_WAITING_FOR_ENABLE:
         if (musicRoom->CheckInputEnable() == ZUN_SUCCESS)
         {
             break;
         }
 
         goto start;
-    case 1:
+    case MUSIC_ROOM_INPUT_ACTIVE:
         if (musicRoom->ProcessInput())
         {
             return CHAIN_CALLBACK_RESULT_CONTINUE_AND_REMOVE_JOB;
@@ -396,7 +396,7 @@ ZunResult MusicRoom::AddedCallback(MusicRoom *musicRoom)
         return ZUN_ERROR;
     }
 
-    musicRoom->musicAnm = g_AnmManager->LoadAnm(23, "music00.anm");
+    musicRoom->musicAnm = g_AnmManager->LoadAnm(ANM_FILE_SLOT_MUSIC_ROOM, "music00.anm");
     if (musicRoom->musicAnm == NULL)
     {
         return ZUN_ERROR;
@@ -557,7 +557,7 @@ ZunResult MusicRoom::DeletedCallback(MusicRoom *musicRoom)
     ZUN_DELETE(musicRoom->trackDescriptors);
 
     g_AnmManager->ReleaseSurface(0);
-    g_AnmManager->ReleaseAnm(23);
+    g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_MUSIC_ROOM);
 
     g_Chain.Cut(musicRoom->drawChain);
     musicRoom->drawChain = NULL;
