@@ -18,6 +18,47 @@ replay for target code and the applicable modern Windows/Linux build/runtime
 checks for portable behavior.  The portable Linux package workflow runs on
 `push`, `pull_request`, and `workflow_dispatch`.
 
+## Active native Windows i386 prerequisite
+
+Work continues on `reconstruction/windows-i386-runtime`. This phase deliberately
+precedes further modern-port work: `build/th08.exe` is compiled and linked from
+the production source with pinned VC7, then run on a real Windows host from an
+isolated data directory. The modern MinGW/Linux artifacts are independent
+portability evidence and cannot substitute for this owner/TU/link/lifetime
+oracle. The complete procedure and evidence language are in
+`docs/WINDOWS_I386_RUNTIME.md`.
+
+The first native owner audit recovered four target-initialized data families
+which the modern Linux startup path had masked with runtime initialization:
+`g_LastSpellCount @ 0x004C6C3C`, `g_EffectTemplates[66] @
+0x004C6D30..0x004C7047`, `g_GuiStageClearBonuses[9] @
+0x004C7158..0x004C717B`, and `g_GuiMessageTextColors[12] @
+0x004C7180..0x004C723F`. Their real production owners now live in
+`Spellcard.cpp`, `EffectManager.cpp`, and `Gui.cpp`. The full target Effect
+table explains the reported missing Remilia X-bomb trail: row 53 selects script
+88 plus `UpdateFadingRadialTrail` and `InitializeRadialTrail`, whereas the prior
+native link supplied script 0 and null callbacks. Sakuya's knife path did not
+depend on that row.
+
+The linked-data verifier reports zero uninitialized production macros mapped
+into target raw-backed sections and validates all four repaired families.
+Focused accepted-unit replay for `EffectManager.obj`, `Gui.obj`, and
+`SpellCard.obj` passes **125 / 125 exact**. Remilia's reported path is **fixed /
+confirmation pending** until it is replayed on the repaired native artifact.
+The earlier `Gui::CopyEnemyNameTexture` access violation was symbolized only in
+the MinGW executable and remains a separate open candidate; do not change VC7
+production lifetime code unless the native executable reproduces it. See
+`docs/OWNER_AUDIT.md` and `docs/RUNTIME_ISSUES.md`.
+
+The required single-job cold replay rebuilt all 75 configured objects and
+passed **1,106 / 1,106 exact**. A subsequent fresh normal VC7 build linked a
+902,144-byte PE32 i386 GUI executable with SHA-256
+`db11de130f007bdcb793550c2a4b937f30968d17787e5acf511fe89b80bf9a20`.
+The hash-pinned `scripts/run-preserve-lives-test.ps1` changes only the live
+`push -1` argument immediately before `GameManager::AddLives` in
+`Player::UpdateDeathAndRespawn` to `push 0`; it preserves the death/effect/drop/
+respawn/UI paths and never modifies the executable on disk.
+
 The current protocol closure goes beyond the imported TH06 readability
 baseline on the comparable interpreter surfaces.  TH08 now names all 184 ECL
 opcodes, all 101 ECL operand selectors (`0x2710..0x2774`), all 35 Background

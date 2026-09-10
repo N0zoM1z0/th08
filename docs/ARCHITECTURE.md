@@ -20,6 +20,22 @@ Function starts and extents in Ghidra, IDA, and CSV exports are analysis
 artifacts. Tail chunks, alignment, shared code, and missed instructions must be
 reconciled against the exact target before they become comparison boundaries.
 
+## Build and runtime order
+
+The pinned-VC7 Windows i386 production image is the first whole-program runtime
+oracle for the reconstructed source. It must compile every production
+translation unit, link a real PE32 executable without unresolved-symbol forcing,
+and survive native Windows playtesting before a modern compiler/backend is used
+as a replacement runtime.
+
+This ordering is architectural, not merely a release preference. A port may
+introduce compatibility startup code, duplicate/fixed-layout storage bridges,
+different static initialization, or compiler-specific ABI adapters. Those can
+hide a missing source owner, translation-unit boundary, link dependency, or
+lifetime defect. Portability builds remain a second independent oracle; they do
+not satisfy the native reconstruction prerequisite. See
+`WINDOWS_I386_RUNTIME.md`, `OWNER_AUDIT.md`, and `RUNTIME_ISSUES.md`.
+
 ## Provenance
 
 The repository is a history-preserving continuation of

@@ -18,7 +18,8 @@ namespace th08
 ZunBool IsDisableResourceReload();
 DIFFABLE_STATIC(Spellcard, g_Spellcard);
 DIFFABLE_STATIC(ChainElem *, g_SpellcardCalcChain);
-DIFFABLE_STATIC(i32, g_LastSpellCount);
+// Target .data 0x004C6C3C: number of entries in g_LastSpellNumbers.
+DIFFABLE_STATIC_ASSIGN(i32, g_LastSpellCount) = 43;
 DIFFABLE_STATIC(AnmLoaded *, g_SpellcardBackgroundAnm);
 
 struct SpellcardFlagBits

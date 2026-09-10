@@ -27,6 +27,7 @@
 | Read our accuracy and readability philosophy | [What we mean by semantic reconstruction](#what-we-mean-by-semantic-reconstruction) |
 | Contribute | [Contributing](#contributing) |
 | Play or build a port | [Platform guides](#platform-guides) |
+| Validate the native VC7 runtime | [Windows i386 reconstruction runtime](docs/WINDOWS_I386_RUNTIME.md) |
 | Reproduce the exact comparison | [Exact reconstruction](#exact-reconstruction) |
 | Browse the technical documentation | [Project map](#project-map) |
 | Review upstream history and attribution | [Credits and provenance](#credits-and-provenance) |
@@ -51,6 +52,13 @@ This repository reconstructs the original Japanese
 Exact reconstruction and playable ports are separate milestones. The progress
 bar counts authored bytes accepted by strict comparison; the platform cards
 show where the reconstructed source is currently playable.
+
+The VC7-built Windows i386 reconstruction is also the prerequisite
+whole-program runtime oracle before modern-port stabilization. It catches
+production translation-unit, link, global-owner, static-initialization, and
+lifetime defects which a modern compiler or compatibility startup path can
+hide. See the [native reconstruction runtime workflow](docs/WINDOWS_I386_RUNTIME.md)
+and [runtime issue ledger](docs/RUNTIME_ISSUES.md).
 
 The remaining exact-reconstruction work is the last authored near match,
 whole-image layout, and the compiler/runtime and D3DX code linked into the
@@ -356,10 +364,11 @@ from additional drivers and desktops are welcome.
 **Status: In progress**
 
 See the [native Windows guide](docs/PLAY_WINDOWS.md) for the current build and
-release requirements. The source produces a 32-bit MinGW bring-up executable.
-Current work focuses on reliable native startup and replacing the DirectX SDK
-debug DLL with redistributable components before publishing a supported
-Windows release.
+release requirements. Before that modern MinGW packaging lane proceeds, the
+production source is undergoing the separate
+[VC7 Windows i386 compile/link/play prerequisite](docs/WINDOWS_I386_RUNTIME.md).
+Current port work also includes replacing the DirectX SDK debug DLL with
+redistributable components before publishing a supported Windows release.
 
 The goal is a self-contained native build that accepts any legal TH08 data
 directory and ships with redistributable components.
@@ -448,6 +457,9 @@ Generated source-presence and strict-match figures are recorded in
 - [TH08 Web browser port and engineering documentation](https://github.com/N0zoM1z0/th08-web)
 - [Linux download, installation, and play guide](docs/PLAY_LINUX.md)
 - [Native Windows user guide and status](docs/PLAY_WINDOWS.md)
+- [VC7 Windows i386 reconstruction runtime](docs/WINDOWS_I386_RUNTIME.md)
+- [Native runtime data-owner audit](docs/OWNER_AUDIT.md)
+- [Native Windows runtime issue ledger](docs/RUNTIME_ISSUES.md)
 - [Native macOS user guide and status](docs/PLAY_MACOS.md)
 - [Architecture and binary inventory](docs/ARCHITECTURE.md)
 - [Reverse-engineering workflow](docs/RE_WORKFLOW.md)
