@@ -44,8 +44,10 @@ python3 scripts/analysis/verify-windows-i386-runtime-data.py
 At this checkpoint it reports zero `DIFFABLE_STATIC`/array owners mapped into a
 raw-backed target section without an initializer. It also checks the four
 families above in the linked reconstruction and verifies that all eight linked
-loads in `Gui::CopyEnemyNameTexture` select `Gui::frontAnm`. This is
-deliberately stricter than checking source text alone.
+loads in `Gui::CopyEnemyNameTexture` select `Gui::frontAnm`. It also rejects a
+standalone spell-background ANM symbol and requires `Spellcard::StartSpell` to
+load `EffectManager::stageEffectAnm`. This is deliberately stricter than
+checking source text alone.
 
 ## Remilia X-bomb incident
 
@@ -94,6 +96,30 @@ and rejects any stage-text load. This incident is why a relocation-normalized
 function result and a successful link are necessary but insufficient runtime
 evidence.
 
+## Spell-background field disguised as a global
+
+The later native gameplay exit exposed the complementary alias failure. Source
+declared `g_SpellcardBackgroundAnm` as standalone zero-fill storage and
+`Spellcard::StartSpell` dereferenced it. Nothing assigned that storage, so CDB
+stopped in `AnmLoaded::SetAndExecuteScriptIdx` with null `this` when the ECL
+started a spell card.
+
+Target address `0x00577EB8` had been labeled as that standalone global, but the
+independently established manager layout proves
+`g_EffectManager @ 0x004ECE60 + stageEffectAnm @ 0x8B058 = 0x00577EB8`.
+Target `EffectManager::LoadEffectResources @ 0x004284B0` writes the field after
+preloading the stage effect ANM, and target `Spellcard::StartSpell @
+0x004152A0` reads the same address. The address is therefore an interior field,
+not an independent storage owner.
+
+Production now uses `g_EffectManager.stageEffectAnm`; the standalone
+declaration and global-ledger row are removed. The match relocation names the
+manager base and records field addend `0x8B058`, resolving to the unchanged
+target address. Focused replay remains **2,483 / 2,483 exact**. The linked
+verifier additionally fails if the legacy public symbol reappears or if either
+the target or rebuilt `StartSpell` lacks exactly one load of the canonical
+field.
+
 ## Static verification checkpoint
 
 - the native VC7 link succeeds without unresolved-symbol forcing;
@@ -101,29 +127,29 @@ evidence.
 - every non-null callback resolves through `build/th08.map` to its intended
   semantic function, with the documented row-41 adapter;
 - the Last Spell count, nine stage bonuses, and twelve dialogue palettes match
-  the target byte-for-byte; and
-- focused accepted-unit replay for `EffectManager.obj`, `Gui.obj`, and
-  `SpellCard.obj` passes **125 / 125 exact**.
+  the target byte-for-byte;
+- `Spellcard::StartSpell` loads the stage-effect ANM through its canonical
+  manager field and has no standalone background-ANM storage; and
+- focused `Spellcard::StartSpell` replay passes **2,483 / 2,483 exact**.
 
 A subsequent single-job cold replay rebuilt all 75 configured objects and
 passed **1,106 / 1,106 exact**. The fresh normal link produced a 902,144-byte
 PE32 i386 GUI executable with SHA-256
-`46b7fa54b96e76ad11dbde86d56f582e96dfd5121c758f90caea8f865efd70e7`.
+`beab5f36302c8334551dd6f86fa4f65d3fbc0d2e5055f4a73f86dcc5bd77240c`.
 That normal artifact remains exact-facing build evidence. The native playtest
 artifact is rebuilt with `--build-type bugfix` so reconstructed score/replay
 headers are accepted by version rather than an impossible retail executable
 size/checksum identity. The current bugfix link is an 898,048-byte PE32 i386
 GUI executable with SHA-256
-`a583f9a5748ae2d112243c957e013e04f7265224e97ab9d911429a6f5756dcad`; it
+`e8b7107a0d45c9e319345d131ec5d7f713d38d7a2707d61f52eed0d12161d73d`; it
 passes the expanded linked owner/data verifier. Its preserve-lives patch gate
 passed on Windows and the process remained alive for a 12-second startup smoke;
-the exact gameplay selection that exposed RT-002 remains the runtime
-confirmation gate.
+spell-card entry remains the RT-005 runtime confirmation gate.
 
-The exact user interactions remain runtime confirmation gates. Until Remilia's
-X bomb and the gameplay selection are replayed on the repaired native VC7
-executable, RT-001 and RT-002 remain **fixed / confirmation pending** in
-`RUNTIME_ISSUES.md`.
+The user confirmed Remilia's X bomb and continued gameplay past the repaired
+selection transition on hash `a583f9a5...56dcad`, closing RT-001 and RT-002.
+The later spell-background repair remains **fixed / confirmation pending** as
+RT-005 in `RUNTIME_ISSUES.md`.
 
 ## Audit limits
 

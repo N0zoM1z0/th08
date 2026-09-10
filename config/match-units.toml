@@ -68374,8 +68374,8 @@ target = 0x004E4030
 [[units.relocations]]
 offset = 0x256
 type = "DIR32"
-symbol = "?g_SpellcardBackgroundAnm@th08@@3PAUAnmLoaded@1@A"
-target = 0x00577EB8
+symbol = "?g_EffectManager@th08@@3UEffectManager@1@A"
+target = 0x004ECE60
 
 [[units.relocations]]
 offset = 0x25B

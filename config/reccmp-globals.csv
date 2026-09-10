@@ -107,7 +107,6 @@ th08::g_SpellcardCalcChain,0x4eccac,global
 th08::g_EclManager,0x4eccb8,global
 th08::EclRunLow::g_EclCallParameters,0x4ece20,global
 th08::g_EffectManager,0x4ece60,global
-th08::g_SpellcardBackgroundAnm,0x577eb8,global
 th08::g_EffectManagerCalcChain,0x577ebc,global
 th08::g_EffectManagerDrawChain,0x577edc,global
 th08::g_EnemyManagerDrawChainHighPrio,0x577f00,global

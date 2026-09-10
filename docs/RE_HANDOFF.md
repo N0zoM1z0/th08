@@ -43,8 +43,8 @@ depend on that row.
 The linked-data verifier reports zero uninitialized production macros mapped
 into target raw-backed sections and validates all four repaired families.
 Focused accepted-unit replay for `EffectManager.obj`, `Gui.obj`, and
-`SpellCard.obj` passes **125 / 125 exact**. Remilia's reported path is **fixed /
-confirmation pending** until it is replayed on the repaired native artifact.
+`SpellCard.obj` passes **125 / 125 exact**. The user confirmed Remilia's X-bomb
+effect on native hash `a583f9a5...56dcad`, so RT-001 is closed.
 The subsequent native artifact reproduced the `Gui::CopyEnemyNameTexture`
 access violation at linked `0x00429589` after a run was selected. CDB proved
 that live `stageTextAnm` owned six Stage 1 text sprites while the function
@@ -52,8 +52,22 @@ requested sprite `0x10`; target instructions instead select `frontAnm @
 g_Gui + 0x0C`, whose two entries own 33 sprites. The source owner is repaired,
 the eight match-unit DIR32 bases now use canonical `g_Gui @ 0x0160F428`
 instead of the compensating false base `0x0160F424`, and the linked verifier
-guards the final loads. RT-002 is **fixed / confirmation pending** on the new
-artifact. See `docs/OWNER_AUDIT.md` and `docs/RUNTIME_ISSUES.md`.
+guards the final loads. The user then entered and continued gameplay on repaired
+hash `a583f9a5...56dcad`, closing the original RT-002 transition path.
+
+That longer run exposed RT-005 independently. Windows reported
+`0xC0000005` at bugfix RVA `0x6994`; CDB stopped at linked
+`AnmLoaded::SetAndExecuteScriptIdx + 0x24` with null `this` and traced the call
+through `Spellcard::StartSpell + 0x25F`. Source had invented standalone
+`g_SpellcardBackgroundAnm`, which no code initialized. Target address
+`0x00577EB8` is instead canonical `g_EffectManager @ 0x004ECE60 +
+stageEffectAnm @ 0x8B058`, populated by `EffectManager::LoadEffectResources`.
+Production and the relocation manifest now name that aggregate owner/addend;
+the duplicate declaration and global row are gone. Focused `StartSpell` replay
+passes **2,483 / 2,483 exact**, and the linked verifier rejects either a legacy
+standalone public or a missing aggregate-field load. RT-005 is **fixed /
+confirmation pending** on the new artifact. See `docs/OWNER_AUDIT.md` and
+`docs/RUNTIME_ISSUES.md`.
 
 A separate native normal-build startup exit is now diagnosed and closed. CDB
 caught `0xC0000005` in linked VC7 `strncmp @ 0x004ABA5F`, reached from
@@ -69,10 +83,10 @@ workaround or an exactness claim.
 The required single-job cold replay rebuilt all 75 configured objects and
 passed **1,106 / 1,106 exact**. A subsequent fresh normal VC7 build linked a
 902,144-byte PE32 i386 GUI executable with SHA-256
-`46b7fa54b96e76ad11dbde86d56f582e96dfd5121c758f90caea8f865efd70e7`.
+`beab5f36302c8334551dd6f86fa4f65d3fbc0d2e5055f4a73f86dcc5bd77240c`.
 The subsequent fresh bugfix VC7 runtime build linked an 898,048-byte PE32 i386
 GUI executable with SHA-256
-`a583f9a5748ae2d112243c957e013e04f7265224e97ab9d911429a6f5756dcad`. The
+`e8b7107a0d45c9e319345d131ec5d7f713d38d7a2707d61f52eed0d12161d73d`. The
 hash-pinned `scripts/run-preserve-lives-test.ps1` targets this bugfix artifact
 and changes only the live `push -1` argument immediately before
 `GameManager::AddLives` in
@@ -81,7 +95,7 @@ respawn/UI paths and never modifies the executable on disk. RVA `0x3EA19` and
 the complete 12-byte instruction sequence are unchanged; the launcher is
 repinned to the new hash. Its patch/read-back gate passed on Windows and the
 spawned process remained alive for a 12-second startup smoke. The repaired
-gameplay-selection path still requires manual confirmation.
+spell-card entry path still requires manual confirmation.
 
 The current protocol closure goes beyond the imported TH06 readability
 baseline on the comparable interpreter surfaces.  TH08 now names all 184 ECL

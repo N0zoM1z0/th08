@@ -80,7 +80,10 @@ owners in target raw-backed sections, compares the Last Spell count, stage
 bonuses, and dialogue palettes byte-for-byte, and resolves all 66 Effect-table
 callback pointers through the current linker map. It also decodes the linked
 `Gui::CopyEnemyNameTexture` body and requires all eight GUI pointer loads to
-select `frontAnm @ Gui + 0x0C`, never `stageTextAnm @ Gui + 0x10`.
+select `frontAnm @ Gui + 0x0C`, never `stageTextAnm @ Gui + 0x10`. It also
+rejects standalone `g_SpellcardBackgroundAnm` storage and requires
+`Spellcard::StartSpell` to select
+`stageEffectAnm @ g_EffectManager + 0x8B058`.
 
 Source or shared-owner changes also require the normal exact gates:
 
@@ -142,6 +145,16 @@ canonical `g_Gui @ 0x0160F428`, and checks the linked loads separately. Treat
 every relocation as a three-part claim: semantic owner, field addend, and
 target base. A byte-exact normalized function proves none of those parts in
 isolation when compensating errors are possible.
+
+RT-005 showed a second failure mode: a target address already inside a mapped
+aggregate had been modeled as standalone storage. The old
+`g_SpellcardBackgroundAnm @ 0x00577EB8` symbol could normalize an exact
+`Spellcard::StartSpell` relocation, but the production linker allocated a new
+zero-filled pointer because no target-address layout exists in an ordinary PE
+link. The target address is actually `g_EffectManager @ 0x004ECE60 +
+stageEffectAnm @ 0x8B058`; the manager's resource loader initializes that
+field. Before accepting any apparent global, test its address against the
+known extents and member offsets of adjacent aggregate owners.
 
 ## Runtime matrix
 

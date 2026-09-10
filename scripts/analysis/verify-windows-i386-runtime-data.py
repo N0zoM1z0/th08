@@ -5,8 +5,9 @@ This is a whole-link runtime prerequisite check, not an authored-function
 comparison and not a source of exact-match credit.  It verifies the canonical
 Japanese TH08 1.00d target, then checks that the rebuilt PE owns the four data
 families recovered during native Windows playtesting and selects the correct
-GUI field in the enemy-name copy path.  Function pointers in the Effect table
-are compared through linker-map symbols instead of preferred virtual addresses.
+aggregate fields in the enemy-name and spell-background paths.  Function
+pointers in the Effect table are compared through linker-map symbols instead
+of preferred virtual addresses.
 """
 
 from __future__ import annotations
@@ -35,6 +36,10 @@ GUI_COPY_ENEMY_NAME_TEXTURE_VA = 0x00437F5C
 GUI_COPY_ENEMY_NAME_TEXTURE_SIZE = 0xEA
 GUI_FRONT_ANM_OFFSET = 0x0C
 GUI_STAGE_TEXT_ANM_OFFSET = 0x10
+SPELLCARD_START_SPELL_VA = 0x004152A0
+SPELLCARD_START_SPELL_SIZE = 0x9B3
+EFFECT_MANAGER_VA = 0x004ECE60
+EFFECT_MANAGER_STAGE_EFFECT_ANM_OFFSET = 0x8B058
 
 MAP_PUBLIC_RE = re.compile(
     r"^\s+[0-9A-Fa-f]{4}:[0-9A-Fa-f]{8}\s+(\S+)\s+([0-9A-Fa-f]{8})(?:\s|$)"
@@ -166,6 +171,44 @@ def verify_gui_enemy_name_owner(
             )
 
 
+def verify_spellcard_background_owner(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Require spell backgrounds to use EffectManager's loaded stage ANM."""
+    legacy_prefix = "?g_SpellcardBackgroundAnm@"
+    legacy_symbols = [name for name in publics if name.startswith(legacy_prefix)]
+    if legacy_symbols:
+        raise ValueError(
+            "linked image still owns standalone g_SpellcardBackgroundAnm: "
+            + ", ".join(sorted(legacy_symbols))
+        )
+
+    rebuilt_function_va = public_va(publics, "StartSpell")
+    rebuilt_effect_manager_va = public_va(publics, "g_EffectManager")
+    cases = (
+        (
+            "target",
+            read_va(target, SPELLCARD_START_SPELL_VA, SPELLCARD_START_SPELL_SIZE),
+            EFFECT_MANAGER_VA,
+        ),
+        (
+            "rebuild",
+            read_va(rebuild, rebuilt_function_va, SPELLCARD_START_SPELL_SIZE),
+            rebuilt_effect_manager_va,
+        ),
+    )
+    for label, body, effect_manager_va in cases:
+        stage_anm_load = b"\x8b\x0d" + struct.pack(
+            "<I", effect_manager_va + EFFECT_MANAGER_STAGE_EFFECT_ANM_OFFSET
+        )
+        count = body.count(stage_anm_load)
+        if count != 1:
+            raise ValueError(
+                f"{label} Spellcard::StartSpell has {count} "
+                "EffectManager::stageEffectAnm loads; expected 1"
+            )
+
+
 def verify_effect_templates(
     target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
 ) -> None:
@@ -291,6 +334,7 @@ def main() -> int:
             12 * 16,
         )
         verify_gui_enemy_name_owner(target, rebuild, publics)
+        verify_spellcard_background_owner(target, rebuild, publics)
     except (OSError, UnicodeError, ValueError, struct.error) as exc:
         print(f"Windows i386 runtime-data verification failed: {exc}", file=sys.stderr)
         return 1
@@ -299,7 +343,8 @@ def main() -> int:
         "Windows i386 runtime data OK: 0 raw-data zero-owner candidates; "
         "Last Spell count, 66 Effect templates, 9 stage bonuses, and "
         "12 dialogue palettes match the target; enemy-name copy selects "
-        "Gui::frontAnm in all 8 linked loads"
+        "Gui::frontAnm in all 8 linked loads; spell backgrounds select "
+        "EffectManager::stageEffectAnm"
     )
     return 0
 
