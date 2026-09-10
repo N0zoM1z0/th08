@@ -10,7 +10,7 @@ authored game sources without making an exact-code claim.
 | Platform | Status | Notes |
 | --- | --- | --- |
 | Linux i386 | **Done** | Source build, one-command setup/run, and CI artifact are available |
-| Windows x86 | **In progress** | Current native build/launcher is not yet a reliable distributable product |
+| Windows x86 | **In progress** | Native windowed startup is verified; gameplay coverage and redistributable D3DX remain open |
 | macOS | **In progress** | Platform backend and packaging are pending |
 
 The ports compile the same production-authored game sources. A 32-bit build is
@@ -20,17 +20,16 @@ addresses, and some behavior still depend on the original x86 pointer width.
 ### Native Windows
 
 The Windows bring-up target keeps the original Win32, Direct3D 8, DirectInput
-8, DirectSound, and WinMM backends. Wine is not intended to be part of its
-runtime path, but the current native build and launcher have not produced a
-reliable user-facing Windows package. Treat this target as development-only.
+8, DirectSound, and WinMM backends. Wine is not part of its runtime path. The
+current build, isolated-data deployment, windowed launcher, and native-host
+startup smoke are verified, but gameplay coverage and a redistributable
+package are not complete. Treat this target as development-only.
 
 After creating the repository's existing DirectX 8 development prefix, build
 the Windows executable from Linux with:
 
 ```bash
-cmake -S . -B build/modern-windows \
-  -DCMAKE_TOOLCHAIN_FILE=cmake/mingw32-toolchain.cmake
-cmake --build build/modern-windows --parallel
+scripts/build-modern-windows.sh
 ```
 
 The MinGW bring-up build uses the SDK-only `d3dx8d.dll` because the retail
@@ -39,19 +38,32 @@ This debug DLL is copied only from the developer's local SDK into `build/`; it
 is not a redistributable project artifact. Replacing the remaining D3DX calls
 is required before a distributable MinGW build.
 
+To create a separate local playtest directory from WSL, use:
+
+```bash
+scripts/deploy-modern-windows-playtest.sh \
+  "/mnt/d/path/to/original-th08-directory" \
+  "/mnt/d/path/to/th08-reconstruct"
+```
+
+The copied BAT launcher requests windowed mode by default. The deployment does
+not copy the original executable or modify the source installation. See
+[`PLAY_WINDOWS.md`](PLAY_WINDOWS.md) for the native smoke and manual test
+boundary.
+
 On Windows with MSVC, the intended build is to configure with a Win32 generator and point
 `TH08_DX8_SDK_ROOT` at a DirectX 8 SDK containing `include/` and `lib/`. Run it
 natively from PowerShell with an arbitrary original-data directory once the
 remaining Windows work is complete:
 
 ```powershell
-& '.\th08-modern.exe' --data-dir 'D:\path\to\the\original\TH08 directory'
+& '.\th08-modern.exe' --windowed --data-dir 'D:\path\to\the\original\TH08 directory'
 ```
 
 The MinGW executable and `d3dx8d.dll` must currently be kept together. The
 user-supplied data directory need not contain either reconstructed runtime
-file. The SDK DLL dependency and reported native startup failure both block a
-Windows release artifact.
+file. The SDK DLL dependency and incomplete manual gameplay coverage both
+block a Windows release artifact.
 
 ### Native Linux
 
@@ -137,8 +149,8 @@ the reusable lessons from the bring-up.
 
 1. Keep Linux i386 regression-covered and close the optional MIDI/controller
    gaps without changing replay-visible simulation behavior.
-2. Finish a redistributable Windows x86 backend/package and validate startup
-   on a clean native Windows host.
+2. Complete native Windows gameplay/endurance validation and replace the
+   SDK-only D3DX dependency before packaging a redistributable x86 build.
 3. Add and validate the macOS backend after the portable boundary is stable.
 4. Consider wider architectures only after removing pointer-width and fixed-
    address assumptions from the shared runtime.

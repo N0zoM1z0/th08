@@ -106,14 +106,26 @@ if(MINGW)
     # libraries, but not D3DX8. Search the legacy SDK only after the toolchain
     # headers so its old Windows SDK does not shadow modern system headers.
     set(TH08_DX8_SANITIZED_INCLUDE "${CMAKE_BINARY_DIR}/dx8-include")
-    file(COPY "${TH08_DX8_SDK_ROOT}/include/" DESTINATION "${TH08_DX8_SANITIZED_INCLUDE}")
-    file(GLOB TH08_DX8_HEADERS "${TH08_DX8_SANITIZED_INCLUDE}/*")
+    file(GLOB_RECURSE TH08_DX8_HEADERS
+        LIST_DIRECTORIES false
+        RELATIVE "${TH08_DX8_SDK_ROOT}/include"
+        "${TH08_DX8_SDK_ROOT}/include/*"
+    )
     string(ASCII 26 TH08_DOS_EOF)
     foreach(TH08_DX8_HEADER IN LISTS TH08_DX8_HEADERS)
-        if(NOT IS_DIRECTORY "${TH08_DX8_HEADER}")
-            file(READ "${TH08_DX8_HEADER}" TH08_DX8_HEADER_CONTENT)
-            string(REPLACE "${TH08_DOS_EOF}" "" TH08_DX8_HEADER_CONTENT "${TH08_DX8_HEADER_CONTENT}")
-            file(WRITE "${TH08_DX8_HEADER}" "${TH08_DX8_HEADER_CONTENT}")
+        set(TH08_DX8_SOURCE_HEADER "${TH08_DX8_SDK_ROOT}/include/${TH08_DX8_HEADER}")
+        set(TH08_DX8_OUTPUT_HEADER "${TH08_DX8_SANITIZED_INCLUDE}/${TH08_DX8_HEADER}")
+        file(READ "${TH08_DX8_SOURCE_HEADER}" TH08_DX8_HEADER_CONTENT)
+        string(REPLACE "${TH08_DOS_EOF}" "" TH08_DX8_HEADER_CONTENT "${TH08_DX8_HEADER_CONTENT}")
+
+        set(TH08_DX8_EXISTING_CONTENT "")
+        if(EXISTS "${TH08_DX8_OUTPUT_HEADER}")
+            file(READ "${TH08_DX8_OUTPUT_HEADER}" TH08_DX8_EXISTING_CONTENT)
+        endif()
+        if(NOT TH08_DX8_EXISTING_CONTENT STREQUAL TH08_DX8_HEADER_CONTENT)
+            get_filename_component(TH08_DX8_OUTPUT_DIRECTORY "${TH08_DX8_OUTPUT_HEADER}" DIRECTORY)
+            file(MAKE_DIRECTORY "${TH08_DX8_OUTPUT_DIRECTORY}")
+            file(WRITE "${TH08_DX8_OUTPUT_HEADER}" "${TH08_DX8_HEADER_CONTENT}")
         endif()
     endforeach()
 

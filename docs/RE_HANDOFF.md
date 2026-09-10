@@ -994,20 +994,49 @@ Whole-executable TU/layout work below remains deferred, not invalidated.
 
 ## Active playable-port branch
 
-`port/modern-windows-linux` is the independent playable reconstruction lane.
-It does not replace the VC7 exact build or change authored/library ledgers.
+`port/windows-i386-playtest` is the current short-lived native Windows
+validation lane. It builds on the independent playable reconstruction work and
+does not replace the VC7 exact build or change authored/library ledgers.
 
-Playable-port state on 2026-08-24:
+Windows checkpoint on 2026-09-10:
 
 - CMake compiles and links the complete production-authored source set with the
   32-bit MinGW toolchain into `build/modern-windows/th08-modern.exe`;
-- the output is an i386 Windows GUI PE and has no MinGW support-DLL dependency,
-  but the user reports that the current native BAT/startup path does not launch
-  a usable application. Prior smoke observations are insufficient to call the
-  Windows product verified; Windows remains in progress;
+- a clean build first exposed a real ABI declaration defect:
+  `Gui::CopyEnemyNameTexture @ 0x00437F5C` was defined and mapped as
+  `__fastcall` but declared without it. Target instructions pass the sprite
+  index in ECX, and the accepted COFF symbol is
+  `?CopyEnemyNameTexture@Gui@th08@@SIXH@Z`. Both this function and the adjacent
+  `CopyCurrentStageEnemyNameTexture @ 0x00438046` now carry explicit fastcall
+  declarations/definitions. Focused VC7 replay remains 234/234 and 549/549
+  compared bytes exact;
+- the output is an i386 Windows GUI PE at image base `0x00400000`, has no MinGW
+  support-DLL dependency, and passes the new PE/import verifier. The build
+  sanitizes DirectX 8 headers content-conditionally, so repeated CMake
+  configure/build passes correctly report `ninja: no work to do` instead of
+  recompiling all translation units because of rewritten timestamps;
+- `scripts/deploy-modern-windows-playtest.sh` prepares an isolated directory
+  containing the reconstructed executable, local SDK debug DLL, DAT archives,
+  configuration/score copies, replay data, an empty backup directory, and a
+  sibling-only BAT launcher. The original executable and private analysis
+  material are not copied, and the source game installation is not modified;
+- `--windowed` is a native modern-port launch override applied after loading
+  `th08.cfg`. The BAT and PowerShell smoke helper request it by default. The
+  native Windows host observed the top-level TH08 1.00d window, title and audio
+  resource loading, DirectSound/keyboard initialization, 15 seconds of process
+  liveness, and a normal WM_CLOSE exit code of zero without a crash report.
+  The playtest cfg persisted windowed mode;
+- the final synchronized playtest executable has SHA-256
+  `2123f5319f465c960f19084a45f52d4e0edf3d0495f01ad2ce3f8669450ceb0d`.
+  `scripts/analysis/verify-exact-units.py --all` cold-built every comparison
+  object and reported 1106/1106 configured units exact, the full VC7 image
+  linked, and the complete i386 Linux container build plus fixed-layout
+  verifier passed after the shared declaration change;
+- broader manual gameplay, input, transition, replay, and ending validation is
+  still pending, so Windows remains in progress and is not labeled playable;
 - `--data-dir <directory>` is the intended Windows interface for a Unicode
-  directory containing `th08.dat` and `thbgm.dat`, but it must be revalidated
-  as part of the native startup fix;
+  directory containing `th08.dat` and `thbgm.dat`; both spaced Unicode path
+  parsing and runtime directory selection passed the native smoke;
 - the playable lane restores target-proven global ownership for the active
   `GameManager` state and playfield bounds, uses relocatable function symbols
   for Player option/shot/bomb callback tables, and connects the complete

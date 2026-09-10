@@ -13,6 +13,8 @@ namespace modern
 namespace
 {
 
+bool g_forceWindowedMode = false;
+
 void WriteLine(HANDLE file, const char *line)
 {
     DWORD written;
@@ -110,6 +112,10 @@ bool ConfigureDataDirectory()
         {
             dataDirectory = arguments[index] + sizeof(optionPrefix) / sizeof(optionPrefix[0]) - 1;
         }
+        else if (wcscmp(arguments[index], L"--windowed") == 0)
+        {
+            g_forceWindowedMode = true;
+        }
     }
 
     if (dataDirectory == NULL)
@@ -145,6 +151,11 @@ bool ConfigureDataDirectory()
     if (attributes == INVALID_FILE_ATTRIBUTES || (attributes & FILE_ATTRIBUTE_DIRECTORY) != 0)
         return ShowDataDirectoryError(L"The selected directory does not contain th08.dat.", NULL);
     return true;
+}
+
+bool ShouldForceWindowedMode()
+{
+    return g_forceWindowedMode;
 }
 
 void InstallCrashReporter()

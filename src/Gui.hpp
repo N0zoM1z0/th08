@@ -333,8 +333,8 @@ struct Gui
     void DrawStageClearScreen();
     void DrawAsciiText();
     ZunResult CaptureArcade();
-    static void CopyEnemyNameTexture(i32 spriteIndex);
-    static void CopyCurrentStageEnemyNameTexture();
+    static void __fastcall CopyEnemyNameTexture(i32 spriteIndex);
+    static void __fastcall CopyCurrentStageEnemyNameTexture();
 
     u32 frameCounter;
     GuiFlags flags;

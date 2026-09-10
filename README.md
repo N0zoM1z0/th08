@@ -356,10 +356,11 @@ from additional drivers and desktops are welcome.
 **Status: In progress**
 
 See the [native Windows guide](docs/PLAY_WINDOWS.md) for the current build and
-release requirements. The source produces a 32-bit MinGW bring-up executable.
-Current work focuses on reliable native startup and replacing the DirectX SDK
-debug DLL with redistributable components before publishing a supported
-Windows release.
+release requirements. The source produces a validated 32-bit MinGW bring-up
+executable, and a native Windows windowed startup/title smoke now passes with
+normal exit. Current work focuses on broader manual gameplay coverage and
+replacing the DirectX SDK debug DLL with redistributable components before
+publishing a supported Windows release.
 
 The goal is a self-contained native build that accepts any legal TH08 data
 directory and ships with redistributable components.

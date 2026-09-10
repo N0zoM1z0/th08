@@ -1644,7 +1644,7 @@ void __fastcall Gui::CopyEnemyNameTexture(i32 spriteIdx)
 }
 
 // FUNCTION: th08 0x438046
-void Gui::CopyCurrentStageEnemyNameTexture()
+void __fastcall Gui::CopyCurrentStageEnemyNameTexture()
 {
     switch (g_GameManager.currentStage)
     {

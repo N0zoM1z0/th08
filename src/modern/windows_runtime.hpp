@@ -6,6 +6,7 @@ namespace modern
 {
 
 bool ConfigureDataDirectory();
+bool ShouldForceWindowedMode();
 void InstallCrashReporter();
 void LogArchiveRequest(const char *path);
 

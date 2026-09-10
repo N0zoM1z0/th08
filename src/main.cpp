@@ -123,6 +123,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR pCmdLine
         goto stop;
     }
 
+#if defined(TH08_MODERN_PORT) && !defined(TH08_MODERN_LINUX)
+    if (modern::ShouldForceWindowedMode())
+        g_Supervisor.cfg.windowed = true;
+#endif
+
     GameWindow::CalcExecutableChecksum();
     QueryPerformanceFrequency(&g_GameWindow.pcFrequency);
 
