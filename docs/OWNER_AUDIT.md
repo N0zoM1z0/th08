@@ -43,8 +43,9 @@ python3 scripts/analysis/verify-windows-i386-runtime-data.py
 
 At this checkpoint it reports zero `DIFFABLE_STATIC`/array owners mapped into a
 raw-backed target section without an initializer. It also checks the four
-families above in the linked reconstruction. This is deliberately stricter
-than checking source text alone.
+families above in the linked reconstruction and verifies that all eight linked
+loads in `Gui::CopyEnemyNameTexture` select `Gui::frontAnm`. This is
+deliberately stricter than checking source text alone.
 
 ## Remilia X-bomb incident
 
@@ -69,6 +70,30 @@ uses a normal relocatable Effect callback adapter which calls the exact member
 implementation on `effect->vm`; it does not embed the target preferred-base
 address or manufacture machine code.
 
+## Enemy-name texture owner and the double-error trap
+
+Native hash `c394035e...f9ce7` faulted at `Gui::CopyEnemyNameTexture + 0x77`
+immediately after the user selected a run. The source used
+`g_Gui.stageTextAnm`, whose loaded Stage 1 file has six sprites, while the
+function requested sprite `0x10`. CDB proved that the resulting pointer was in
+reserved, uncommitted memory. `front.anm` has two entries and 33 total sprites;
+its sprite `0x10` was committed and initialized.
+
+The exact target resolves every one of the function's eight GUI pointer loads
+to `0x0160F434`, which is canonical `g_Gui @ 0x0160F428` plus the asserted
+`frontAnm @ +0x0C`. The old match manifest instead declared `g_Gui @
+0x0160F424`, while the old source emitted the `stageTextAnm @ +0x10` addend.
+Those two four-byte errors canceled and produced the right absolute target
+field, so relocation replay could report an exact instruction stream while
+preserving the wrong semantic owner in the rebuilt link.
+
+Production now names `frontAnm`, and the match unit names the independently
+mapped `g_Gui` base. The focused result remains **234 / 234 exact**, now with
+the correct base and addend. The linked verifier counts eight front-owner loads
+and rejects any stage-text load. This incident is why a relocation-normalized
+function result and a successful link are necessary but insufficient runtime
+evidence.
+
 ## Static verification checkpoint
 
 - the native VC7 link succeeds without unresolved-symbol forcing;
@@ -83,19 +108,22 @@ address or manufacture machine code.
 A subsequent single-job cold replay rebuilt all 75 configured objects and
 passed **1,106 / 1,106 exact**. The fresh normal link produced a 902,144-byte
 PE32 i386 GUI executable with SHA-256
-`db11de130f007bdcb793550c2a4b937f30968d17787e5acf511fe89b80bf9a20`.
+`46b7fa54b96e76ad11dbde86d56f582e96dfd5121c758f90caea8f865efd70e7`.
 That normal artifact remains exact-facing build evidence. The native playtest
 artifact is rebuilt with `--build-type bugfix` so reconstructed score/replay
 headers are accepted by version rather than an impossible retail executable
 size/checksum identity. The current bugfix link is an 898,048-byte PE32 i386
 GUI executable with SHA-256
-`c394035eb81237dd1fa8884549d7cea4f4e9901348a1a4e6c2b80e1cd02f9ce7`; it
-passes the same linked owner-data verifier and remained alive through a
-12-second Windows startup smoke test.
+`a583f9a5748ae2d112243c957e013e04f7265224e97ab9d911429a6f5756dcad`; it
+passes the expanded linked owner/data verifier. Its preserve-lives patch gate
+passed on Windows and the process remained alive for a 12-second startup smoke;
+the exact gameplay selection that exposed RT-002 remains the runtime
+confirmation gate.
 
-The exact user interaction remains a runtime confirmation gate. Until Remilia's
-X bomb is replayed on the repaired native VC7 executable, the issue is recorded
-as **fixed / confirmation pending** in `RUNTIME_ISSUES.md`.
+The exact user interactions remain runtime confirmation gates. Until Remilia's
+X bomb and the gameplay selection are replayed on the repaired native VC7
+executable, RT-001 and RT-002 remain **fixed / confirmation pending** in
+`RUNTIME_ISSUES.md`.
 
 ## Audit limits
 

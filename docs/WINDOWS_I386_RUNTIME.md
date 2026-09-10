@@ -78,7 +78,9 @@ python3 scripts/analysis/verify-windows-i386-runtime-data.py
 That check verifies the target hash, rejects mapped uninitialized production
 owners in target raw-backed sections, compares the Last Spell count, stage
 bonuses, and dialogue palettes byte-for-byte, and resolves all 66 Effect-table
-callback pointers through the current linker map.
+callback pointers through the current linker map. It also decodes the linked
+`Gui::CopyEnemyNameTexture` body and requires all eight GUI pointer loads to
+select `frontAnm @ Gui + 0x0C`, never `stageTextAnm @ Gui + 0x10`.
 
 Source or shared-owner changes also require the normal exact gates:
 
@@ -123,6 +125,23 @@ original installation and its configuration untouched.
 Before replacing or launching the executable, make sure no prior TH08 process
 is running. Do not rebuild with Wine/VC7 while a Windows-host runtime test is
 active; this repository uses one writable build/runtime session at a time.
+
+## Why function exactness does not replace this pass
+
+RT-002 demonstrated a relocation-specific false sense of safety. The stale
+source selected `g_Gui.stageTextAnm @ +0x10`, while the match unit declared a
+`g_Gui` target base four bytes before the independently mapped object. The two
+errors canceled to the target absolute address, so relocation replay could
+accept every instruction byte even though the rebuilt linker resolved the
+reference to the wrong field. On Windows, Stage 1 supplied only six stage-text
+sprites and the first selection requested sprite `0x10`, producing an access
+violation in reserved memory.
+
+The repair names `frontAnm @ +0x0C`, restores the match relocation base to
+canonical `g_Gui @ 0x0160F428`, and checks the linked loads separately. Treat
+every relocation as a three-part claim: semantic owner, field addend, and
+target base. A byte-exact normalized function proves none of those parts in
+isolation when compensating errors are possible.
 
 ## Runtime matrix
 

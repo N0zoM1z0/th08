@@ -1647,15 +1647,15 @@ void __fastcall Gui::CopyEnemyNameTexture(i32 spriteIdx)
     RECT destRect;
     RECT srcRect;
 
-    destRect.left = (i32)g_Gui.stageTextAnm->GetSprite(10)->startPixelInclusive.x;
-    destRect.top = (i32)g_Gui.stageTextAnm->GetSprite(10)->startPixelInclusive.y;
-    destRect.right = (i32)g_Gui.stageTextAnm->GetSprite(10)->endPixelInclusive.x;
-    destRect.bottom = (i32)g_Gui.stageTextAnm->GetSprite(10)->endPixelInclusive.y;
+    destRect.left = (i32)g_Gui.frontAnm->GetSprite(10)->startPixelInclusive.x;
+    destRect.top = (i32)g_Gui.frontAnm->GetSprite(10)->startPixelInclusive.y;
+    destRect.right = (i32)g_Gui.frontAnm->GetSprite(10)->endPixelInclusive.x;
+    destRect.bottom = (i32)g_Gui.frontAnm->GetSprite(10)->endPixelInclusive.y;
 
-    srcRect.left = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->startPixelInclusive.x;
-    srcRect.top = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->startPixelInclusive.y;
-    srcRect.right = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->endPixelInclusive.x;
-    srcRect.bottom = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->endPixelInclusive.y;
+    srcRect.left = (i32)g_Gui.frontAnm->GetSprite(spriteIdx)->startPixelInclusive.x;
+    srcRect.top = (i32)g_Gui.frontAnm->GetSprite(spriteIdx)->startPixelInclusive.y;
+    srcRect.right = (i32)g_Gui.frontAnm->GetSprite(spriteIdx)->endPixelInclusive.x;
+    srcRect.bottom = (i32)g_Gui.frontAnm->GetSprite(spriteIdx)->endPixelInclusive.y;
 
     g_AnmManager->CopyTextureRect(10, 0, 10, 1, &destRect, &srcRect);
 }

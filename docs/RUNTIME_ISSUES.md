@@ -17,31 +17,38 @@ Status meanings:
 | ID | Status | User-visible symptom | Evidence and disposition |
 | --- | --- | --- | --- |
 | RT-001 | fixed / confirmation pending | Remilia's X-bomb trail did not render, while Sakuya's did. | Native production owned a zero-filled `g_EffectTemplates[66]`; target row 53 requires script 88 plus `UpdateFadingRadialTrail` and `InitializeRadialTrail`. The complete target table is now owned by `EffectManager.cpp` and passes linked-data verification. Repeat the Remilia path on the repaired VC7 image. |
-| RT-002 | open | The earlier modern game process exited after a title/gameplay transition. | The symbolized fault belongs to the MinGW modern executable: an access violation in `Gui::CopyEnemyNameTexture`, consistent with a stale `AnmLoadedSprite` view. It is separate from RT-004 and is not yet a proven VC7 reconstruction defect. Preserve the modern crash evidence, then reproduce or disprove that transition on the native artifact before changing production lifetime logic. |
+| RT-002 | fixed / confirmation pending | Selecting a team/run exited the native game at the gameplay transition. | Native hash `c394035e...f9ce7` reproduced `0xC0000005` at linked `Gui::CopyEnemyNameTexture + 0x77` (`0x00429589`). The function selected sprite `0x10` from six-sprite `stg1txt.anm`; the resulting pointer lay in reserved, uncommitted memory. Target instructions instead read `g_Gui + 0x0C` (`frontAnm`), whose two entries provide 33 sprites. Production now uses `frontAnm`, all eight DIR32 relocations name the real `g_Gui @ 0x0160F428` base, and the linked verifier guards the owner. Repeat the selection on hash `a583f9a5...56dcad`. |
 | RT-003 | fixed / confirmation pending | No specific symptom was isolated; the owner audit found additional latent data defects. | `g_LastSpellCount`, nine stage-clear bonuses, and twelve dialogue palettes were zero-filled in the native link. Their target initializers now live in `Spellcard.cpp`/`Gui.cpp` and match the target bytes. Exercise Last Spell selection, stage-clear calculation, and dialogue across multiple shot types. |
 | RT-004 | closed | The normal VC7 reconstruction exited about three seconds after startup. | CDB caught `0xC0000005` at linked CRT `strncmp + 0x1F` (`0x004ABA5F`), called by `Supervisor::CheckVersion + 0xC4`. Archive open/decryption returned valid data. The normal executable's non-retail size/checksum made the original whitelist scan pass the final `0100d` record; its unchecked `strchr(..., '\n') + 1` then produced `0x1`. The native `bugfix` build uses the already reconstructed `FIX_REALLY_BAD_BUGS` version-string acceptance path. Hash `c394035e...f9ce7` remained alive at title for a 12-second Windows smoke test. |
 
-## Evidence separation for the unexpected exit
+## Native enemy-name texture exit
 
-The earlier crash report identified a MinGW-linked instruction in
-`Gui::CopyEnemyNameTexture`, not a target or current VC7-linked address. The
-modern executable also had startup initialization and ownership bridges that
-the native reconstruction does not share. The report is useful as a candidate
-lifetime path, but it cannot justify a VC7 source change by itself.
+The earlier MinGW report was candidate evidence only. The same transition was
+then reproduced on the native VC7/i386 artifact, making the failure an RT-002
+production defect. Windows Application Error recorded fault RVA `0x29589` for
+hash `c394035e...f9ce7`; CDB stopped at linked VA `0x00429589` and resolved the
+stack to `Gui::CopyEnemyNameTexture`, called with sprite index `0x10`.
 
-For the native run, record:
+The stopped process separated a stale lifetime hypothesis from the actual
+owner error:
 
-1. the SHA-256 of `th08-reconstructed.exe`;
-2. the character/team, mode, stage, and exact transition;
-3. whether the last action was death, bomb, dialogue, pause/ESC, retry, or a
-   title restart;
-4. the last correctly rendered frame and whether audio continued; and
-5. Windows Application Error/WER or debugger exception address and module.
+1. `g_Gui.stageTextAnm` was live and identified `data/text/stg1txt.png`, but
+   its ANM header declared only six sprites;
+2. `GetSprite(0x10)` therefore returned an address in an uncommitted part of
+   the allocation, and the first coordinate read faulted;
+3. `g_Gui.frontAnm` identified `data/front/front.png`; its two ANM entries
+   declared `0x10 + 0x11 = 33` sprites, and sprite `0x10` was committed and
+   initialized; and
+4. target `Gui::CopyEnemyNameTexture @ 0x00437F5C` loads absolute address
+   `0x0160F434` eight times: canonical `g_Gui @ 0x0160F428` plus `0x0C`, the
+   asserted offset of `frontAnm`.
 
-If the native image remains alive through the same transition, keep the modern
-failure in the port lane. If it faults, resolve the exception RVA through the
-matching `build/th08.map`, inspect the target lifetime, and repair only the
-bounded owner/publication/teardown family supported by that evidence.
+The accepted match unit had encoded the false base `0x0160F424`. Together with
+the stale source addend `+0x10`, that produced the right target field address
+and concealed the semantic error. The corrected source emits addend `+0x0C`,
+and all eight unit relocations now use the independently mapped `g_Gui @
+0x0160F428` base. This remains **fixed / confirmation pending** until the user
+repeats the exact selection on the repaired artifact.
 
 ## Native normal-build startup exit
 
@@ -66,18 +73,19 @@ lane; the bugfix mode remains native prerequisite evidence, not port evidence.
 
 ## Current static checkpoint
 
-The current source checkpoint has passed the focused native link and
-`EffectManager.obj`/`Gui.obj`/`SpellCard.obj` replay (**125 / 125 exact**), the
-linked runtime-data verifier, and a single-job cold rebuild/replay of all 75
-configured objects (**1,106 / 1,106 exact**). The fresh normal link is a
-902,144-byte PE32 i386 GUI executable with SHA-256
-`db11de130f007bdcb793550c2a4b937f30968d17787e5acf511fe89b80bf9a20`.
+The current source checkpoint has passed focused
+`Gui::CopyEnemyNameTexture` replay (**234 / 234 exact**), the linked runtime
+owner/data verifier, and a single-job cold rebuild/replay of all 75 configured
+objects (**1,106 / 1,106 exact**). The fresh normal link is a 902,144-byte PE32
+i386 GUI executable with SHA-256
+`46b7fa54b96e76ad11dbde86d56f582e96dfd5121c758f90caea8f865efd70e7`.
 The fresh bugfix runtime link is an 898,048-byte PE32 i386 GUI executable with
 SHA-256
-`c394035eb81237dd1fa8884549d7cea4f4e9901348a1a4e6c2b80e1cd02f9ce7`.
-It passed linked runtime-data verification and remained alive for the native
-Windows startup smoke test. The hash-pinned preserve-lives launcher also
-installed its one-byte process patch successfully and the spawned process
-remained alive for a separate 12-second smoke test; the old normal artifact was
-rejected before launch by its hash gate. Broader manual confirmation uses the
-isolated deployment described in `WINDOWS_I386_RUNTIME.md`.
+`a583f9a5748ae2d112243c957e013e04f7265224e97ab9d911429a6f5756dcad`.
+It passes linked runtime verification, including all eight enemy-name owner
+loads. The preserve-lives launcher is repinned to this hash and the unchanged
+RVA/instruction bytes; its patch/read-back gate passed and the process remained
+alive through a 12-second Windows startup smoke. The exact RT-002 selection
+remains the runtime confirmation gate on the repaired image; broader manual
+confirmation uses the isolated deployment described in
+`WINDOWS_I386_RUNTIME.md`.

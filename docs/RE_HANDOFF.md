@@ -45,10 +45,15 @@ into target raw-backed sections and validates all four repaired families.
 Focused accepted-unit replay for `EffectManager.obj`, `Gui.obj`, and
 `SpellCard.obj` passes **125 / 125 exact**. Remilia's reported path is **fixed /
 confirmation pending** until it is replayed on the repaired native artifact.
-The earlier `Gui::CopyEnemyNameTexture` access violation was symbolized only in
-the MinGW executable and remains a separate open candidate; do not change VC7
-production lifetime code unless the native executable reproduces it. See
-`docs/OWNER_AUDIT.md` and `docs/RUNTIME_ISSUES.md`.
+The subsequent native artifact reproduced the `Gui::CopyEnemyNameTexture`
+access violation at linked `0x00429589` after a run was selected. CDB proved
+that live `stageTextAnm` owned six Stage 1 text sprites while the function
+requested sprite `0x10`; target instructions instead select `frontAnm @
+g_Gui + 0x0C`, whose two entries own 33 sprites. The source owner is repaired,
+the eight match-unit DIR32 bases now use canonical `g_Gui @ 0x0160F428`
+instead of the compensating false base `0x0160F424`, and the linked verifier
+guards the final loads. RT-002 is **fixed / confirmation pending** on the new
+artifact. See `docs/OWNER_AUDIT.md` and `docs/RUNTIME_ISSUES.md`.
 
 A separate native normal-build startup exit is now diagnosed and closed. CDB
 caught `0xC0000005` in linked VC7 `strncmp @ 0x004ABA5F`, reached from
@@ -64,19 +69,19 @@ workaround or an exactness claim.
 The required single-job cold replay rebuilt all 75 configured objects and
 passed **1,106 / 1,106 exact**. A subsequent fresh normal VC7 build linked a
 902,144-byte PE32 i386 GUI executable with SHA-256
-`db11de130f007bdcb793550c2a4b937f30968d17787e5acf511fe89b80bf9a20`.
+`46b7fa54b96e76ad11dbde86d56f582e96dfd5121c758f90caea8f865efd70e7`.
 The subsequent fresh bugfix VC7 runtime build linked an 898,048-byte PE32 i386
 GUI executable with SHA-256
-`c394035eb81237dd1fa8884549d7cea4f4e9901348a1a4e6c2b80e1cd02f9ce7` and
-remained alive at the title screen for a 12-second Windows smoke test. The
+`a583f9a5748ae2d112243c957e013e04f7265224e97ab9d911429a6f5756dcad`. The
 hash-pinned `scripts/run-preserve-lives-test.ps1` targets this bugfix artifact
 and changes only the live `push -1` argument immediately before
 `GameManager::AddLives` in
 `Player::UpdateDeathAndRespawn` to `push 0`; it preserves the death/effect/drop/
-respawn/UI paths and never modifies the executable on disk. Its patch/read-back
-gate passed on Windows and the spawned process remained alive for a separate
-12-second smoke test; the previous normal artifact failed closed at the hash
-gate.
+respawn/UI paths and never modifies the executable on disk. RVA `0x3EA19` and
+the complete 12-byte instruction sequence are unchanged; the launcher is
+repinned to the new hash. Its patch/read-back gate passed on Windows and the
+spawned process remained alive for a 12-second startup smoke. The repaired
+gameplay-selection path still requires manual confirmation.
 
 The current protocol closure goes beyond the imported TH06 readability
 baseline on the comparable interpreter surfaces.  TH08 now names all 184 ECL

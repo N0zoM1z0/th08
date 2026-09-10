@@ -4,9 +4,9 @@
 This is a whole-link runtime prerequisite check, not an authored-function
 comparison and not a source of exact-match credit.  It verifies the canonical
 Japanese TH08 1.00d target, then checks that the rebuilt PE owns the four data
-families recovered during native Windows playtesting.  Function pointers in
-the Effect table are compared through linker-map symbols instead of preferred
-virtual addresses.
+families recovered during native Windows playtesting and selects the correct
+GUI field in the enemy-name copy path.  Function pointers in the Effect table
+are compared through linker-map symbols instead of preferred virtual addresses.
 """
 
 from __future__ import annotations
@@ -31,6 +31,10 @@ EFFECT_TEMPLATE_COUNT = 66
 LAST_SPELL_COUNT_VA = 0x004C6C3C
 GUI_STAGE_CLEAR_BONUSES_VA = 0x004C7158
 GUI_MESSAGE_TEXT_COLORS_VA = 0x004C7180
+GUI_COPY_ENEMY_NAME_TEXTURE_VA = 0x00437F5C
+GUI_COPY_ENEMY_NAME_TEXTURE_SIZE = 0xEA
+GUI_FRONT_ANM_OFFSET = 0x0C
+GUI_STAGE_TEXT_ANM_OFFSET = 0x10
 
 MAP_PUBLIC_RE = re.compile(
     r"^\s+[0-9A-Fa-f]{4}:[0-9A-Fa-f]{8}\s+(\S+)\s+([0-9A-Fa-f]{8})(?:\s|$)"
@@ -120,6 +124,46 @@ def verify_plain_data(
             f"{rebuild_name} differs from target {target_va:#010x} "
             f"({size:#x} bytes)"
         )
+
+
+def verify_gui_enemy_name_owner(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Reject a relocation-normalized match that selects the wrong Gui field."""
+    rebuilt_function_va = public_va(publics, "CopyEnemyNameTexture")
+    rebuilt_gui_va = public_va(publics, "g_Gui")
+    cases = (
+        (
+            "target",
+            read_va(
+                target,
+                GUI_COPY_ENEMY_NAME_TEXTURE_VA,
+                GUI_COPY_ENEMY_NAME_TEXTURE_SIZE,
+            ),
+            0x0160F428,
+        ),
+        (
+            "rebuild",
+            read_va(
+                rebuild,
+                rebuilt_function_va,
+                GUI_COPY_ENEMY_NAME_TEXTURE_SIZE,
+            ),
+            rebuilt_gui_va,
+        ),
+    )
+    for label, body, gui_va in cases:
+        front_load = b"\x8b\x0d" + struct.pack("<I", gui_va + GUI_FRONT_ANM_OFFSET)
+        stage_text_load = b"\x8b\x0d" + struct.pack(
+            "<I", gui_va + GUI_STAGE_TEXT_ANM_OFFSET
+        )
+        front_count = body.count(front_load)
+        stage_text_count = body.count(stage_text_load)
+        if front_count != 8 or stage_text_count != 0:
+            raise ValueError(
+                f"{label} Gui::CopyEnemyNameTexture has {front_count} frontAnm "
+                f"loads and {stage_text_count} stageTextAnm loads; expected 8/0"
+            )
 
 
 def verify_effect_templates(
@@ -246,6 +290,7 @@ def main() -> int:
             "g_GuiMessageTextColors",
             12 * 16,
         )
+        verify_gui_enemy_name_owner(target, rebuild, publics)
     except (OSError, UnicodeError, ValueError, struct.error) as exc:
         print(f"Windows i386 runtime-data verification failed: {exc}", file=sys.stderr)
         return 1
@@ -253,7 +298,8 @@ def main() -> int:
     print(
         "Windows i386 runtime data OK: 0 raw-data zero-owner candidates; "
         "Last Spell count, 66 Effect templates, 9 stage bonuses, and "
-        "12 dialogue palettes match the target"
+        "12 dialogue palettes match the target; enemy-name copy selects "
+        "Gui::frontAnm in all 8 linked loads"
     )
     return 0
 
