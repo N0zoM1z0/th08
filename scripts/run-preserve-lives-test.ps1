@@ -7,13 +7,13 @@ $ErrorActionPreference = "Stop"
 # This is a test-only, process-local patch for one VC7 reconstruction.  The
 # original Japanese executable must never be patched, and every native rebuild
 # can move the instruction or change the image hash.  Refuse unknown images.
-$ExpectedSha256 = "db11de130f007bdcb793550c2a4b937f30968d17787e5acf511fe89b80bf9a20"
-$InstructionRva = 0x0003E9E9
+$ExpectedSha256 = "c394035eb81237dd1fa8884549d7cea4f4e9901348a1a4e6c2b80e1cd02f9ce7"
+$InstructionRva = 0x0003EA19
 $ImmediateOffset = 1
 $ExpectedInstruction = [byte[]]@(
     0x6A, 0xFF,                         # push -1
-    0xB9, 0xB0, 0xD7, 0x61, 0x01,     # mov ecx, g_GameManager
-    0xE8, 0x6F, 0xF2, 0xFE, 0xFF      # call GameManager::AddLives
+    0xB9, 0xB0, 0xC7, 0x61, 0x01,     # mov ecx, g_GameManager
+    0xE8, 0xAF, 0xF2, 0xFE, 0xFF      # call GameManager::AddLives
 )
 $PatchedInstruction = [byte[]]$ExpectedInstruction.Clone()
 $PatchedInstruction[$ImmediateOffset] = 0x00

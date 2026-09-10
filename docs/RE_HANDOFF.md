@@ -50,14 +50,33 @@ the MinGW executable and remains a separate open candidate; do not change VC7
 production lifetime code unless the native executable reproduces it. See
 `docs/OWNER_AUDIT.md` and `docs/RUNTIME_ISSUES.md`.
 
+A separate native normal-build startup exit is now diagnosed and closed. CDB
+caught `0xC0000005` in linked VC7 `strncmp @ 0x004ABA5F`, reached from
+`Supervisor::CheckVersion`. `LoadDat` had stored a valid decrypted version-table
+pointer; no owner overwrite occurred. Because a reconstructed EXE cannot match
+the retail `0100d` size/checksum pair, the original whitelist loop advanced
+past its final record and converted a null `strchr` result into pointer `0x1`.
+Windows playtesting therefore uses the repository's native VC7 `bugfix` mode,
+which accepts the matching version string. Normal mode remains the exact-facing
+comparison/link lane. This is a native build-mode boundary, not a modern-port
+workaround or an exactness claim.
+
 The required single-job cold replay rebuilt all 75 configured objects and
 passed **1,106 / 1,106 exact**. A subsequent fresh normal VC7 build linked a
 902,144-byte PE32 i386 GUI executable with SHA-256
 `db11de130f007bdcb793550c2a4b937f30968d17787e5acf511fe89b80bf9a20`.
-The hash-pinned `scripts/run-preserve-lives-test.ps1` changes only the live
-`push -1` argument immediately before `GameManager::AddLives` in
+The subsequent fresh bugfix VC7 runtime build linked an 898,048-byte PE32 i386
+GUI executable with SHA-256
+`c394035eb81237dd1fa8884549d7cea4f4e9901348a1a4e6c2b80e1cd02f9ce7` and
+remained alive at the title screen for a 12-second Windows smoke test. The
+hash-pinned `scripts/run-preserve-lives-test.ps1` targets this bugfix artifact
+and changes only the live `push -1` argument immediately before
+`GameManager::AddLives` in
 `Player::UpdateDeathAndRespawn` to `push 0`; it preserves the death/effect/drop/
-respawn/UI paths and never modifies the executable on disk.
+respawn/UI paths and never modifies the executable on disk. Its patch/read-back
+gate passed on Windows and the spawned process remained alive for a separate
+12-second smoke test; the previous normal artifact failed closed at the hash
+gate.
 
 The current protocol closure goes beyond the imported TH06 readability
 baseline on the comparable interpreter surfaces.  TH08 now names all 184 ECL

@@ -84,6 +84,14 @@ A subsequent single-job cold replay rebuilt all 75 configured objects and
 passed **1,106 / 1,106 exact**. The fresh normal link produced a 902,144-byte
 PE32 i386 GUI executable with SHA-256
 `db11de130f007bdcb793550c2a4b937f30968d17787e5acf511fe89b80bf9a20`.
+That normal artifact remains exact-facing build evidence. The native playtest
+artifact is rebuilt with `--build-type bugfix` so reconstructed score/replay
+headers are accepted by version rather than an impossible retail executable
+size/checksum identity. The current bugfix link is an 898,048-byte PE32 i386
+GUI executable with SHA-256
+`c394035eb81237dd1fa8884549d7cea4f4e9901348a1a4e6c2b80e1cd02f9ce7`; it
+passes the same linked owner-data verifier and remained alive through a
+12-second Windows startup smoke test.
 
 The exact user interaction remains a runtime confirmation gate. Until Remilia's
 X bomb is replayed on the repaired native VC7 executable, the issue is recorded

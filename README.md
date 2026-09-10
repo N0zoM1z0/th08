@@ -57,8 +57,11 @@ The VC7-built Windows i386 reconstruction is also the prerequisite
 whole-program runtime oracle before modern-port stabilization. It catches
 production translation-unit, link, global-owner, static-initialization, and
 lifetime defects which a modern compiler or compatibility startup path can
-hide. See the [native reconstruction runtime workflow](docs/WINDOWS_I386_RUNTIME.md)
-and [runtime issue ledger](docs/RUNTIME_ISSUES.md).
+hide. Exact-facing checks use the native `normal` build; Windows playtesting
+uses the equally native VC7 `bugfix` build because a reconstructed executable
+cannot satisfy the retail executable-size/checksum whitelist. See the [native
+reconstruction runtime workflow](docs/WINDOWS_I386_RUNTIME.md) and [runtime
+issue ledger](docs/RUNTIME_ISSUES.md).
 
 The remaining exact-reconstruction work is the last authored near match,
 whole-image layout, and the compiler/runtime and D3DX code linked into the

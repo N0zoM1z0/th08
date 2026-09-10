@@ -17,7 +17,8 @@ initialization, callback ABI, or lifetime defect.
 | Artifact | Purpose | What it can prove |
 | --- | --- | --- |
 | `resources/th08.exe` | Canonical Japanese 1.00d target | Target bytes and behavior; never modified or distributed |
-| `build/th08.exe` | Native VC7 production reconstruction | Native i386 compile, link, ownership, initialization, and runtime behavior |
+| `build/th08.exe` from `normal` | Exact-facing native VC7 reconstruction | Native i386 compile/link and comparator input; not a playable artifact when its non-retail file identity reaches the original version whitelist |
+| `build/th08.exe` from `bugfix` | Native VC7 runtime reconstruction | The same native production graph with the repository's narrow `FIX_REALLY_BAD_BUGS` branches enabled; use this artifact for Windows playtesting |
 | `th08-modern.exe` or a Linux/macOS binary | Portability product | Behavior under its own compiler/backend; cannot substitute for `build/th08.exe` |
 | preserve-lives launcher | Process-only endurance aid | Wider runtime coverage for one hash-pinned reconstruction; no correctness or exact-match credit |
 
@@ -35,15 +36,38 @@ python3 scripts/verify-target.py resources/th08.exe
 python3 scripts/analysis/report-reconstruction-status.py --summary
 ```
 
-Cold-build the complete production image with one VC7 job:
+Cold-build the exact-facing production image with one VC7 job:
 
 ```bash
 python3 scripts/build.py --build-type normal --fresh -j 1
 ```
 
 The link must produce `build/th08.exe` without unresolved-symbol forcing. The
-output is expected to be a PE32 i386 GUI executable; merely producing a file is
-not a runtime pass.
+output is expected to be a PE32 i386 GUI executable. This is the artifact used
+for normal-object comparison and link evidence; merely producing it is not a
+runtime pass.
+
+Then cold-build the native runtime artifact:
+
+```bash
+python3 scripts/build.py --build-type bugfix --fresh -j 1
+```
+
+The bugfix build is still a Microsoft VC7 PE32/i386 compile and link of the
+production translation units. It is not a modern port, binary patch, forced
+link, or compatibility startup shim. `FIX_REALLY_BAD_BUGS` is required here
+because the original `Supervisor::CheckVersion` accepts serialized score and
+replay headers only when their version, executable size, and checksum occur in
+the retail `th08_0100d.ver` table. A reconstructed executable cannot possess a
+retail executable identity. In a normal reconstruction the final `0100d`
+record therefore fails its size/checksum comparison; the original loop then
+walks beyond the table and dereferences `0x1`. The bugfix branch accepts the
+matching version string before that impossible file-identity comparison.
+
+Exact status continues to come only from the normal comparison objects. Never
+claim target exactness from a bugfix object or from the playable executable.
+Because both modes write `build/th08.exe`, rebuild `bugfix` last before copying
+the runtime artifact to Windows.
 
 For the initialized-data families recovered by this phase, run:
 
@@ -77,16 +101,19 @@ directory, for example:
 D:\Entertainment\Game\Touhou\th08-reconstruct
 ```
 
-Copy `build/th08.exe` there as `th08-reconstructed.exe`, then copy the legally
-owned runtime data (`th08.dat`, `thbgm.dat`, and any other files required by the
-original installation). Do not commit those files. Preserve old executable,
-log, replay, score, and crash artifacts when changing builds so a failure can
-be tied to the exact executable hash that produced it.
+Copy the freshly built **bugfix** `build/th08.exe` there as
+`th08-reconstructed.exe`, then copy the legally owned runtime data (`th08.dat`,
+`thbgm.dat`, and any other files required by the original installation). Do not
+commit those files. Preserve old executable, log, replay, score, and crash
+artifacts when changing builds so a failure can be tied to the exact executable
+hash that produced it. Do not deploy the normal exact-facing artifact as the
+playtest executable: its retail-identity check is expected to reject the
+reconstruction and can run off the end of the version table.
 
-Copy `scripts/run-windows-i386-reconstruction.bat` beside the executable for a
-normal run, or copy both `run-preserve-lives-test.*` files for the endurance
-mode described below. These launchers intentionally pass no modern-port
-arguments.
+Copy `scripts/run-windows-i386-reconstruction.bat` beside the executable for an
+unpatched runtime run, or copy both `run-preserve-lives-test.*` files for the
+endurance mode described below. These launchers intentionally pass no
+modern-port arguments.
 
 TH08 stores fullscreen/windowed selection in `th08.cfg`; the reconstructed VC7
 image does not need a modern command-line override. Use a known windowed
@@ -136,6 +163,9 @@ modifies the executable on disk and is never a production or release mode.
 
 - A successful VC7 compile/link is a **native production build**, not a runtime
   pass or a whole-image exact claim.
+- `normal` is the exact-facing build mode; `bugfix` is the native playable mode.
+  Both use VC7 and the production link graph, but only normal objects are exact
+  evidence.
 - A manually exercised interaction is a **runtime observation** tied to one
   artifact hash.
 - A repaired issue is **fixed / confirmation pending** until the originally
