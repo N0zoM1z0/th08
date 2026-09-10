@@ -20,7 +20,9 @@ Status meanings:
 | RT-002 | closed | Selecting a team/run exited the native game at the gameplay transition. | Native hash `c394035e...f9ce7` reproduced `0xC0000005` at linked `Gui::CopyEnemyNameTexture + 0x77` (`0x00429589`). The function selected sprite `0x10` from six-sprite `stg1txt.anm`; the resulting pointer lay in reserved, uncommitted memory. Target instructions instead read `g_Gui + 0x0C` (`frontAnm`), whose two entries provide 33 sprites. Production now uses `frontAnm`, all eight DIR32 relocations name the real `g_Gui @ 0x0160F428` base, and the linked verifier guards the owner. The user entered and continued gameplay on repaired hash `a583f9a5...56dcad`, closing the original transition path. |
 | RT-003 | fixed / confirmation pending | No specific symptom was isolated; the owner audit found additional latent data defects. | `g_LastSpellCount`, nine stage-clear bonuses, and twelve dialogue palettes were zero-filled in the native link. Their target initializers now live in `Spellcard.cpp`/`Gui.cpp` and match the target bytes. Exercise Last Spell selection, stage-clear calculation, and dialogue across multiple shot types. |
 | RT-004 | closed | The normal VC7 reconstruction exited about three seconds after startup. | CDB caught `0xC0000005` at linked CRT `strncmp + 0x1F` (`0x004ABA5F`), called by `Supervisor::CheckVersion + 0xC4`. Archive open/decryption returned valid data. The normal executable's non-retail size/checksum made the original whitelist scan pass the final `0100d` record; its unchecked `strchr(..., '\n') + 1` then produced `0x1`. The native `bugfix` build uses the already reconstructed `FIX_REALLY_BAD_BUGS` version-string acceptance path. Hash `c394035e...f9ce7` remained alive at title for a 12-second Windows smoke test. |
-| RT-005 | fixed / confirmation pending | Gameplay exited later, after the repaired selection and X-bomb paths had run. | Native hash `a583f9a5...56dcad` reproduced `0xC0000005` at linked `AnmLoaded::SetAndExecuteScriptIdx + 0x24` (`0x00406994`) with null `this`. CDB traced the call through `Spellcard::StartSpell`: source referenced a never-assigned standalone `g_SpellcardBackgroundAnm`, but target `0x00577EB8` is `g_EffectManager + 0x8B058`, the asserted `stageEffectAnm` field populated by `EffectManager::LoadEffectResources`. Production and the relocation manifest now use the aggregate owner, the standalone storage/mapping is gone, and the linked verifier guards the load. Repeat a spell-card start on hash `e8b7107a...161d73d`. |
+| RT-005 | closed | Gameplay exited later, after the repaired selection and X-bomb paths had run. | Native hash `a583f9a5...56dcad` reproduced `0xC0000005` at linked `AnmLoaded::SetAndExecuteScriptIdx + 0x24` (`0x00406994`) with null `this`. CDB traced the call through `Spellcard::StartSpell`: source referenced a never-assigned standalone `g_SpellcardBackgroundAnm`, but target `0x00577EB8` is `g_EffectManager + 0x8B058`, the asserted `stageEffectAnm` field populated by `EffectManager::LoadEffectResources`. Production and the relocation manifest now use the aggregate owner, the standalone storage/mapping is gone, and the linked verifier guards the load. The user subsequently completed the repaired `e8b7107a...161d73d` run through Final and saved replay slot 3, exercising repeated spell-card starts without recurrence. |
+| RT-006 | fixed / confirmation pending | Dialogue showed a flat `RGB(64,64,96)` or black playfield; later frames accumulated player and portrait trails. | Target Background draw callbacks call `Gui::IsStageFinished @ 0x00437D87` at all three stage-layer gates. Source called `Gui::IsDialoguePresent @ 0x004358BB`, while the match manifest declared the target address and normalized the wrong source call into an exact result. The linked repair passes the native call verifier on hash `87edf9dc...1832d73`; repeat the reported dialogue with that artifact. |
+| RT-007 | fixed / confirmation pending | Near the final Last Spell, self-shot emission looked wrong and dense white digit-like textures covered the playfield edges. | The old source called unsigned RNG from target `SpawnRandomizedShot`'s signed-RNG site and sent point-star/time-orb values to a 720-entry score-popup pool instead of the target's three-entry player-point pool. The corrected callees are exact and pass final-link verification on hash `87edf9dc...1832d73`. Replay slot 3 (`1ec94058...4fbc7`) preserves the reported run for confirmation. |
 
 ## Native enemy-name texture exit
 
@@ -74,7 +76,102 @@ Production now names the aggregate member directly. The relocation at
 `0x8B058`; the resolved target address remains `0x00577EB8`. The false global
 and its global-ledger row are removed. Focused replay remains **2,483 / 2,483
 exact**, and the linked verifier rejects a resurrected standalone symbol or a
-missing aggregate-field load.
+missing aggregate-field load. The user then completed the repaired native run
+through Final and saved replay slot 3; repeated spell-card starts did not
+reproduce the crash, so RT-005 is closed.
+
+## Native dialogue background and accumulated portraits
+
+Four screenshots from the native hash `e8b7107a...161d73d` established one
+coherent rendering failure. Stage 2 dialogue reduced the playfield to the
+stage clear color `RGB(64,64,96)`; another dialogue showed black; later frames
+retained many historical positions of Reimu's player sprite and moving
+portraits over a white playfield. The portraits and text themselves loaded,
+so this was not a missing dialogue texture.
+
+Target-safe disassembly resolves the three stage-layer gate calls at
+`Background::OnDrawHighPrio + 0x1F4`, `+0x419`, and
+`Background::OnDrawLowPrio + 0x1E` to
+`Gui::IsStageFinished @ 0x00437D87`. The old linked reconstruction instead
+resolved the same calls to its `Gui::IsDialoguePresent`. That predicate became
+true during ordinary dialogue, so all four Background object layers and the
+stage VMs stopped drawing while later player/portrait layers continued to
+composite onto prior backbuffer contents.
+
+The match units had the source symbol `IsDialoguePresent` but target address
+`0x00437D87`. Relocation replay therefore replaced the source displacement
+with the declared target displacement and accepted the surrounding exact
+instructions, concealing the wrong final-link call. Production now calls
+`IsStageFinished`, the three relocation symbols agree with the independently
+mapped target, and the linked verifier decodes all three calls. The modern
+Linux dialogue-snapshot workaround has also been removed: it compensated for
+the wrong reconstruction semantics, while the target continues drawing the
+stage during dialogue.
+
+The same-symbol REL32 audit found eight additional latent call mismatches: four
+item popup-pool selections, pulsing-trail timer parity, Fantasy Orb frame-40
+equality, randomized-shot signed RNG, and the Retry menu's Spell Practice
+gate. Their source callees and manifests now name the target-mapped functions.
+`validate-tracking.py` rejects any future decorated REL32 symbol assigned to
+multiple target addresses, and the native linked verifier checks all eleven
+repaired calls. These latent sites are static repairs until exercised on a new
+native artifact; only the user-observed dialogue path belongs to RT-006.
+
+## Native final-stage self-shot and popup corruption
+
+The final screenshot from native hash `e8b7107a...161d73d` was captured at a
+failed Last Spell. The user reported incorrect self-shot emission/rendering,
+while the image showed dense white digit-like texture clusters around the
+playfield edges. Replay slot 3 was saved as `th8_03.rpy`; its retained test-copy
+SHA-256 is `1ec940587868f40f30dd1ec9249c0f3f08f08ea597bb8c79e16931179024fbc7`.
+
+Two independently target-confirmed REL32 errors in the old artifact align with
+the observation. `SpawnRandomizedShot @ 0x004501B0 + 0x37` calls
+`Rng::GetRandomF32Signed @ 0x0043ED80` in the target, but the old source called
+the unsigned `GetRandomF32`; this shifts the randomized self-shot angle range.
+For the visual flood, target point-star pickup and `Item::CollectTimeOrb` use
+`CreatePlayerPointPopup`, whose pool has only three rotating slots. The old
+source used the 720-entry ordinary score-popup pool, allowing many transient
+numeric sprites to remain visible simultaneously during dense collection.
+The two full-power notices had the inverse pool error.
+
+Production and all affected relocation symbols now select the target callees.
+Focused replay and the cold aggregate comparison are exact. The native verifier
+decodes the eight repaired REL32 calls and additionally checks the target-owned
+9-entry spawn, 6-entry update, 2-entry draw, and 3-entry collision callback
+tables in the final PE. `config/reccmp-globals.csv` now names those four tables
+at their actual target addresses rather than the former shifted
+update/render/timer labels. The screenshot-to-popup explanation remains a
+strong causal inference until replay slot 3 is exercised on the repaired hash,
+so RT-007 is not closed yet.
+
+## Target-confirmed score movement while idle
+
+A playtest observation that the score rose by several thousand points per
+second while the player did not move is expected TH08 1.00d behavior when the
+human/youkai gauge is at either extreme. It is not tracked as a runtime defect.
+Target `Player::OnUpdate @ 0x0044C390` calls
+`GameManager::AddScore(100)` once per active, non-dialogue frame from both the
+extremely-human branch (`+0x1CC`) and extremely-youkai branch (`+0x204`). At 60
+frames per second, the visible score therefore rises by approximately 6,000
+points per second without requiring movement, shooting, collection, or graze.
+
+Internally, `GameManager::AddScore @ 0x004181F0` divides awards by ten. The GUI
+prints that nine-digit internal score and then prints the continue count as the
+visible final digit, so the on-screen value still reflects a 100-point award
+per frame. `GameManager::OnUpdate @ 0x00439BC7` also advances `displayScore`
+toward the authoritative `score` using a retained `scoreDisplayStep`; after a
+large item, enemy, spell-card, or stage-clear award, the visible digits can
+temporarily roll much faster even though no new award is being generated.
+
+Target-safe disassembly found 18 direct calls to target `AddScore`; the deployed
+native hash `e8b7107a...161d73d` likewise has 18 direct calls, all resolving to
+its linked `GameManager::AddScore`. Both `Player::OnUpdate` and
+`GameManager::OnUpdate` are independently configured as 100% exact functions,
+and their final linked instructions retain the target scoring and display-
+catch-up behavior. A future scoring report should distinguish the authoritative
+score from the animated display and record the gauge position before treating
+idle digit movement as a regression.
 
 ## Native normal-build startup exit
 
@@ -99,19 +196,22 @@ lane; the bugfix mode remains native prerequisite evidence, not port evidence.
 
 ## Current static checkpoint
 
-The current source checkpoint has passed focused
-`Spellcard::StartSpell` replay (**2,483 / 2,483 exact**), the linked runtime
-owner/data verifier, and a single-job cold rebuild/replay of all 75 configured
-objects (**1,106 / 1,106 exact**). The fresh normal link is a 902,144-byte PE32
-i386 GUI executable with SHA-256
-`beab5f36302c8334551dd6f86fa4f65d3fbc0d2e5055f4a73f86dcc5bd77240c`.
+The current source checkpoint has passed focused replay for all eight corrected
+callers, the linked runtime owner/call verifier, and a single-job cold rebuild/
+replay of all 75 configured objects (**1,106 / 1,106 exact**). The fresh normal
+link is a 902,144-byte PE32 i386 GUI executable with SHA-256
+`134405118d7c842f9f4015504b33d4d05e2289a95b51cf24a9bf38d8bbb2a59d`.
 The fresh bugfix runtime link is an 898,048-byte PE32 i386 GUI executable with
 SHA-256
-`e8b7107a0d45c9e319345d131ec5d7f713d38d7a2707d61f52eed0d12161d73d`.
-It passes linked runtime verification, including all eight enemy-name owner
-loads and the spell-background aggregate load. The preserve-lives launcher is
-repinned to this hash and the unchanged RVA/instruction bytes; its patch/read-
-back gate passed and the process remained responsive through a 12-second
-Windows startup smoke. Spell-card entry is the RT-005 confirmation gate on the
-repaired image; broader manual confirmation uses the isolated deployment in
-`WINDOWS_I386_RUNTIME.md`.
+`87edf9dc051e71fadb0d5ac5f77a663ac9dab2c91fdf48d03288ecab11832d73`.
+It passes linked runtime verification for the initialized owners, all eight
+enemy-name loads, spell-background aggregate load, three dialogue gates, eight
+additional corrected REL32 calls, and all 20 player-shot callback entries. The
+complete Linux i386 container image also links after removal of the obsolete
+dialogue snapshot and passes its fixed-layout verifier. The preserve-lives
+launcher is repinned to this hash and the unchanged RVA/instruction bytes;
+the bugfix executable and launcher are deployed in the isolated Windows data
+directory. The launcher verified the complete 12-byte instruction sequence,
+patched only the live `push -1` immediate to `push 0`, read the patch back, and
+left the game running. Manual repetition of RT-006/RT-007 on replay slot 3 is
+the remaining confirmation gate.

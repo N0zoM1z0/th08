@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-"""Verify target-initialized data restored for the native Windows i386 image.
+"""Verify native Windows i386 whole-link owners and runtime call targets.
 
 This is a whole-link runtime prerequisite check, not an authored-function
 comparison and not a source of exact-match credit.  It verifies the canonical
 Japanese TH08 1.00d target, then checks that the rebuilt PE owns the four data
-families recovered during native Windows playtesting and selects the correct
-aggregate fields in the enemy-name and spell-background paths.  Function
-pointers in the Effect table are compared through linker-map symbols instead
-of preferred virtual addresses.
+families recovered during native Windows playtesting, selects the correct
+aggregate fields in the enemy-name and spell-background paths, and calls the
+correct GUI predicate from the Background draw gates.  Function pointers in
+the Effect table are compared through linker-map symbols instead of preferred
+virtual addresses.
 """
 
 from __future__ import annotations
@@ -40,6 +41,57 @@ SPELLCARD_START_SPELL_VA = 0x004152A0
 SPELLCARD_START_SPELL_SIZE = 0x9B3
 EFFECT_MANAGER_VA = 0x004ECE60
 EFFECT_MANAGER_STAGE_EFFECT_ANM_OFFSET = 0x8B058
+BACKGROUND_DRAW_HIGH_VA = 0x00409200
+BACKGROUND_DRAW_HIGH_SIZE = 0x43F
+BACKGROUND_DRAW_HIGH_STAGE_GATE_CALLS = (0x1F4, 0x419)
+BACKGROUND_DRAW_LOW_VA = 0x00409640
+BACKGROUND_DRAW_LOW_SIZE = 0x210
+BACKGROUND_DRAW_LOW_STAGE_GATE_CALLS = (0x1E,)
+GUI_IS_STAGE_FINISHED_VA = 0x00437D87
+GUI_IS_DIALOGUE_PRESENT_VA = 0x004358BB
+PLAYER_SHOT_CALLBACK_TABLES = (
+    (
+        "g_PlayerShotSpawnCallbacks",
+        0x004C7EE0,
+        (
+            (0x00000000, None),
+            (0x00450240, "SpawnHomingShot"),
+            (0x0044FDD0, "SpawnShotUnlessBombingCallback"),
+            (0x0044FDD0, "SpawnShotUnlessBombingCallback"),
+            (0x0044FE20, "SpawnPersistentShotCallback"),
+            (0x0044FFA0, "SpawnShotAimedAtTrackedPointCallback"),
+            (0x00450080, "SpawnShotAlongPlayerAngle"),
+            (0x004501B0, "SpawnRandomizedShot"),
+            (0x00450110, "SpawnShotAlongOptionAngle"),
+        ),
+    ),
+    (
+        "g_PlayerShotUpdateCallbacks",
+        0x004C7F04,
+        (
+            (0x00000000, None),
+            (0x00450320, "UpdateHomingShot"),
+            (0x00000000, None),
+            (0x00450580, "UpdateFallingShot"),
+            (0x004505D0, "UpdatePersistentShot"),
+            (0x00450840, "UpdateShotTrail"),
+        ),
+    ),
+    (
+        "g_PlayerShotDrawCallbacks",
+        0x004C7F1C,
+        ((0x00000000, None), (0x00450AD0, "DrawShotTrail")),
+    ),
+    (
+        "g_PlayerShotCollisionCallbacks",
+        0x004C7F24,
+        (
+            (0x00000000, None),
+            (0x00450C50, "ApplyShotHitBehavior"),
+            (0x00450EE0, "SpawnPeriodicShotHitEffect"),
+        ),
+    ),
+)
 
 MAP_PUBLIC_RE = re.compile(
     r"^\s+[0-9A-Fa-f]{4}:[0-9A-Fa-f]{8}\s+(\S+)\s+([0-9A-Fa-f]{8})(?:\s|$)"
@@ -102,6 +154,14 @@ def public_va(publics: dict[str, set[int]], unqualified_name: str) -> int:
         raise ValueError(
             f"expected one linked address for {unqualified_name}, found {rendered}"
         )
+    return next(iter(values))
+
+
+def exact_public_va(publics: dict[str, set[int]], symbol: str) -> int:
+    values = publics.get(symbol, set())
+    if len(values) != 1:
+        rendered = ", ".join(f"{value:#010x}" for value in sorted(values)) or "none"
+        raise ValueError(f"expected one linked address for {symbol}, found {rendered}")
     return next(iter(values))
 
 
@@ -206,6 +266,186 @@ def verify_spellcard_background_owner(
             raise ValueError(
                 f"{label} Spellcard::StartSpell has {count} "
                 "EffectManager::stageEffectAnm loads; expected 1"
+            )
+
+
+def rel32_call(source_va: int, target_va: int) -> bytes:
+    return b"\xe8" + struct.pack("<i", target_va - (source_va + 5))
+
+
+def verify_background_stage_gate(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Require Background draw callbacks to call IsStageFinished, not dialogue state."""
+    rebuilt_stage_gate_va = exact_public_va(
+        publics, "?IsStageFinished@Gui@th08@@QAEHXZ"
+    )
+    rebuilt_dialogue_gate_va = exact_public_va(
+        publics, "?IsDialoguePresent@Gui@th08@@QAEHXZ"
+    )
+    callback_cases = (
+        (
+            "Background::OnDrawHighPrio",
+            BACKGROUND_DRAW_HIGH_VA,
+            BACKGROUND_DRAW_HIGH_SIZE,
+            BACKGROUND_DRAW_HIGH_STAGE_GATE_CALLS,
+            "?OnDrawHighPrio@Background@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z",
+        ),
+        (
+            "Background::OnDrawLowPrio",
+            BACKGROUND_DRAW_LOW_VA,
+            BACKGROUND_DRAW_LOW_SIZE,
+            BACKGROUND_DRAW_LOW_STAGE_GATE_CALLS,
+            "?OnDrawLowPrio@Background@th08@@SI?AW4ChainCallbackResult@2@PAU12@@Z",
+        ),
+    )
+    for name, target_va, size, call_offsets, rebuilt_symbol in callback_cases:
+        rebuilt_va = exact_public_va(publics, rebuilt_symbol)
+        for label, image, function_va, stage_gate_va, dialogue_gate_va in (
+            (
+                "target",
+                target,
+                target_va,
+                GUI_IS_STAGE_FINISHED_VA,
+                GUI_IS_DIALOGUE_PRESENT_VA,
+            ),
+            (
+                "rebuild",
+                rebuild,
+                rebuilt_va,
+                rebuilt_stage_gate_va,
+                rebuilt_dialogue_gate_va,
+            ),
+        ):
+            body = read_va(image, function_va, size)
+            for offset in call_offsets:
+                actual = body[offset : offset + 5]
+                expected = rel32_call(function_va + offset, stage_gate_va)
+                stale = rel32_call(function_va + offset, dialogue_gate_va)
+                if actual == stale:
+                    raise ValueError(
+                        f"{label} {name} + {offset:#x} calls Gui::IsDialoguePresent; "
+                        "expected Gui::IsStageFinished"
+                    )
+                if actual != expected:
+                    raise ValueError(
+                        f"{label} {name} + {offset:#x} does not call "
+                        "Gui::IsStageFinished"
+                    )
+
+
+def verify_additional_runtime_callees(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Verify the remaining REL32 callees repaired by the native audit."""
+    cases = (
+        (
+            "ItemManager::OnUpdate",
+            0x00440500,
+            0x7C5,
+            "?OnUpdate@ItemManager@th08@@QAEXXZ",
+            (
+                (
+                    0x638,
+                    0x00403200,
+                    "?CreateScorePopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z",
+                ),
+                (
+                    0x67D,
+                    0x00403200,
+                    "?CreateScorePopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z",
+                ),
+                (
+                    0x6E4,
+                    0x00403330,
+                    "?CreatePlayerPointPopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z",
+                ),
+            ),
+        ),
+        (
+            "Item::CollectTimeOrb",
+            0x004412B0,
+            0x125,
+            "?CollectTimeOrb@Item@th08@@QAEXXZ",
+            (
+                (
+                    0x98,
+                    0x00403330,
+                    "?CreatePlayerPointPopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z",
+                ),
+            ),
+        ),
+        (
+            "AnmVm::UpdatePulsingRadialTrail",
+            0x0040EB50,
+            0x70,
+            "?UpdatePulsingRadialTrail@AnmVm@th08@@QAEHXZ",
+            ((0x36, 0x0040D3B0, "??BZunTimer@th08@@QAEHXZ"),),
+        ),
+        (
+            "UpdateFantasyOrbBomb",
+            0x0040C010,
+            0x795,
+            "?UpdateFantasyOrbBomb@th08@@YIXPAUPlayer@1@@Z",
+            ((0x2F1, 0x0040D3F0, "??8ZunTimer@th08@@QAEIH@Z"),),
+        ),
+        (
+            "SpawnRandomizedShot",
+            0x004501B0,
+            0x85,
+            "?SpawnRandomizedShot@th08@@YIHPAUPlayer@1@PAUPlayerShot@1@HPAUPlayerShotDescriptor@1@@Z",
+            ((0x37, 0x0043ED80, "?GetRandomF32Signed@Rng@th08@@QAEMXZ"),),
+        ),
+        (
+            "RetryMenu::OnDraw",
+            0x004052B0,
+            0x16C,
+            "?OnDraw@RetryMenu@th08@@QAEXXZ",
+            ((0xB6, 0x00406C70, "?IsSpellPractice@GameManager@th08@@QAEIXZ"),),
+        ),
+    )
+    for name, target_va, size, rebuilt_symbol, calls in cases:
+        rebuilt_va = exact_public_va(publics, rebuilt_symbol)
+        target_body = read_va(target, target_va, size)
+        rebuilt_body = read_va(rebuild, rebuilt_va, size)
+        for offset, target_callee_va, rebuilt_callee_symbol in calls:
+            rebuilt_callee_va = exact_public_va(publics, rebuilt_callee_symbol)
+            for label, body, function_va, callee_va in (
+                ("target", target_body, target_va, target_callee_va),
+                ("rebuild", rebuilt_body, rebuilt_va, rebuilt_callee_va),
+            ):
+                expected = rel32_call(function_va + offset, callee_va)
+                if body[offset : offset + 5] != expected:
+                    raise ValueError(
+                        f"{label} {name} + {offset:#x} does not call "
+                        f"{rebuilt_callee_symbol}"
+                    )
+
+
+def verify_player_shot_callback_tables(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Require all serialized SHT callback indices to resolve like the target."""
+    for table_name, target_va, expected_rows in PLAYER_SHOT_CALLBACK_TABLES:
+        size = len(expected_rows) * 4
+        target_values = struct.unpack(f"<{len(expected_rows)}I", read_va(target, target_va, size))
+        expected_target_values = tuple(row[0] for row in expected_rows)
+        if target_values != expected_target_values:
+            raise ValueError(
+                f"target {table_name} differs from its attested callback layout"
+            )
+
+        rebuilt_va = public_va(publics, table_name)
+        rebuilt_values = struct.unpack(
+            f"<{len(expected_rows)}I", read_va(rebuild, rebuilt_va, size)
+        )
+        expected_rebuilt_values = tuple(
+            0 if callback_name is None else public_va(publics, callback_name)
+            for _, callback_name in expected_rows
+        )
+        if rebuilt_values != expected_rebuilt_values:
+            raise ValueError(
+                f"rebuild {table_name} differs from its target callback ownership"
             )
 
 
@@ -335,6 +575,9 @@ def main() -> int:
         )
         verify_gui_enemy_name_owner(target, rebuild, publics)
         verify_spellcard_background_owner(target, rebuild, publics)
+        verify_background_stage_gate(target, rebuild, publics)
+        verify_additional_runtime_callees(target, rebuild, publics)
+        verify_player_shot_callback_tables(target, rebuild, publics)
     except (OSError, UnicodeError, ValueError, struct.error) as exc:
         print(f"Windows i386 runtime-data verification failed: {exc}", file=sys.stderr)
         return 1
@@ -344,7 +587,10 @@ def main() -> int:
         "Last Spell count, 66 Effect templates, 9 stage bonuses, and "
         "12 dialogue palettes match the target; enemy-name copy selects "
         "Gui::frontAnm in all 8 linked loads; spell backgrounds select "
-        "EffectManager::stageEffectAnm"
+        "EffectManager::stageEffectAnm; all 3 Background draw gates call "
+        "Gui::IsStageFinished; 8 additional repaired REL32 calls select their "
+        "target-mapped callees; all 20 player-shot callback entries resolve "
+        "through their target-owned tables"
     )
     return 0
 

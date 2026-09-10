@@ -7,7 +7,7 @@ $ErrorActionPreference = "Stop"
 # This is a test-only, process-local patch for one VC7 reconstruction.  The
 # original Japanese executable must never be patched, and every native rebuild
 # can move the instruction or change the image hash.  Refuse unknown images.
-$ExpectedSha256 = "e8b7107a0d45c9e319345d131ec5d7f713d38d7a2707d61f52eed0d12161d73d"
+$ExpectedSha256 = "87edf9dc051e71fadb0d5ac5f77a663ac9dab2c91fdf48d03288ecab11832d73"
 $InstructionRva = 0x0003EA19
 $ImmediateOffset = 1
 $ExpectedInstruction = [byte[]]@(

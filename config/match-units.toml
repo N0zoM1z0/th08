@@ -59975,7 +59975,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x1F
 type = "REL32"
-symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
+symbol = "?IsStageFinished@Gui@th08@@QAEHXZ"
 target = 0x00437D87
 
 [[units.relocations]]
@@ -64290,7 +64290,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x1F5
 type = "REL32"
-symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
+symbol = "?IsStageFinished@Gui@th08@@QAEHXZ"
 target = 0x00437D87
 
 [[units.relocations]]
@@ -64494,7 +64494,7 @@ target = 0x0160F428
 [[units.relocations]]
 offset = 0x41A
 type = "REL32"
-symbol = "?IsDialoguePresent@Gui@th08@@QAEHXZ"
+symbol = "?IsStageFinished@Gui@th08@@QAEHXZ"
 target = 0x00437D87
 
 [[units.relocations]]
@@ -80176,7 +80176,7 @@ target = 0x004CCE20
 [[units.relocations]]
 offset = 153
 type = "REL32"
-symbol = "?CreateScorePopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z"
+symbol = "?CreatePlayerPointPopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z"
 target = 0x00403330
 
 [[units.relocations]]
@@ -80846,7 +80846,7 @@ target = 0x004CCE20
 [[units.relocations]]
 offset = 1593
 type = "REL32"
-symbol = "?CreatePlayerPointPopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z"
+symbol = "?CreateScorePopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z"
 target = 0x00403200
 
 [[units.relocations]]
@@ -80888,7 +80888,7 @@ target = 0x004CCE20
 [[units.relocations]]
 offset = 1662
 type = "REL32"
-symbol = "?CreatePlayerPointPopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z"
+symbol = "?CreateScorePopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z"
 target = 0x00403200
 
 [[units.relocations]]
@@ -80928,7 +80928,7 @@ target = 0x004CCE20
 [[units.relocations]]
 offset = 1765
 type = "REL32"
-symbol = "?CreateScorePopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z"
+symbol = "?CreatePlayerPointPopup@AsciiManager@th08@@QAEXPAUFloat3@2@HK@Z"
 target = 0x00403330
 
 [[units.relocations]]
@@ -97025,7 +97025,7 @@ size = 0x70
 [[units.relocations]]
 offset = 0x37
 type = "REL32"
-symbol = "?HasTicked@ZunTimer@th08@@QAEIXZ"
+symbol = "??BZunTimer@th08@@QAEHXZ"
 target = 0x0040D3B0
 
 [[units.relocations]]
@@ -97244,7 +97244,7 @@ target = 0x0040B460
 [[units.relocations]]
 offset = 0x2F2
 type = "REL32"
-symbol = "?JustReached@ZunTimer@th08@@QAEIH@Z"
+symbol = "??8ZunTimer@th08@@QAEIH@Z"
 target = 0x0040D3F0
 
 [[units.relocations]]
@@ -119316,7 +119316,7 @@ target = 0x0164D520
 [[units.relocations]]
 offset = 0x38
 type = "REL32"
-symbol = "?GetRandomF32@Rng@th08@@QAEMXZ"
+symbol = "?GetRandomF32Signed@Rng@th08@@QAEMXZ"
 target = 0x0043ED80
 
 [[units.relocations]]
@@ -120492,7 +120492,7 @@ target = 0x0160F508
 [[units.relocations]]
 offset = 0xB7
 type = "REL32"
-symbol = "?IsPracticeMode@GameManager@th08@@QAEIXZ"
+symbol = "?IsSpellPractice@GameManager@th08@@QAEIXZ"
 target = 0x00406C70
 
 [[units.relocations]]

@@ -83,7 +83,11 @@ callback pointers through the current linker map. It also decodes the linked
 select `frontAnm @ Gui + 0x0C`, never `stageTextAnm @ Gui + 0x10`. It also
 rejects standalone `g_SpellcardBackgroundAnm` storage and requires
 `Spellcard::StartSpell` to select
-`stageEffectAnm @ g_EffectManager + 0x8B058`.
+`stageEffectAnm @ g_EffectManager + 0x8B058`. Finally, it decodes all three
+stage-layer gates in the linked Background draw callbacks and requires them to
+call `Gui::IsStageFinished`, never `Gui::IsDialoguePresent`. The same verifier
+checks the eight other REL32 callees uncovered by that audit and all 20 entries
+of the target-owned player-shot spawn/update/draw/collision callback tables.
 
 Source or shared-owner changes also require the normal exact gates:
 
@@ -156,6 +160,37 @@ stageEffectAnm @ 0x8B058`; the manager's resource loader initializes that
 field. Before accepting any apparent global, test its address against the
 known extents and member offsets of adjacent aggregate owners.
 
+RT-006 exposed the REL32 form of the same false assurance. Source
+`Background::OnDrawHighPrio` and `Background::OnDrawLowPrio` called
+`Gui::IsDialoguePresent @ 0x004358BB`, but their three relocation entries
+declared target `Gui::IsStageFinished @ 0x00437D87`. The object comparator
+therefore replayed the target displacement and accepted the callbacks, while
+the production linker followed the actual source symbol. The rebuilt game
+stopped drawing all stage layers during dialogue, leaving solid clear colors
+or black and accumulating moving player/portrait images. Native verification
+now checks the three final linked call instructions as well as data owners.
+
+The follow-up REL32 audit found eight more call sites with the same
+source-symbol/target-address contradiction. Target item collection sends the
+two full-power notices to `CreateScorePopup` but point-star and time-orb values
+to `CreatePlayerPointPopup`; the stale source selected the opposite popup pool
+at all four sites. Target `AnmVm::UpdatePulsingRadialTrail` reads the current
+timer value for its parity pulse, not `HasTicked`; `UpdateFantasyOrbBomb` uses
+plain timer equality at frame 40, not the edge-detecting `JustReached` helper;
+`SpawnRandomizedShot` uses `GetRandomF32Signed`; and `RetryMenu::OnDraw` gates
+the fourth menu VM on Spell Practice rather than the broader practice-mode
+flag. Their signatures let every wrong call preserve surrounding instruction
+shape while relocation replay substituted the declared target. The tracking
+validator now rejects any decorated REL32 symbol assigned to multiple target
+addresses, and the linked verifier checks all eight repaired instructions.
+
+The player-shot callback global ledger previously shifted three table names:
+target `0x004C7EE0`, `0x004C7F04`, and `0x004C7F1C` are respectively the
+9-entry spawn, 6-entry update, and 2-entry draw tables, followed by the 3-entry
+collision table at `0x004C7F24`. The final-link verifier resolves all 20
+entries, including the ABI adapters used where a serialized SHT callback index
+selects a Player member implementation.
+
 ## Runtime matrix
 
 A minimum manual pass should exercise ownership and lifetime boundaries, not
@@ -172,6 +207,17 @@ only reach the title screen:
    texture replacement;
 7. save and replay a run when the preceding paths are stable; and
 8. close the game normally and record whether the process exits unexpectedly.
+
+The long-run regression replay saved during RT-007 is slot 3 (`th8_03.rpy`,
+SHA-256 `1ec94058...4fbc7`). Use it to revisit the Final/Last Spell self-shot
+and dense popup paths without overwriting the replay or score files.
+
+At either extreme of the human/youkai gauge, the original game awards 100
+visible score points per active frame, or approximately 6,000 points per second
+at 60 FPS, even while the player is stationary. Large awards are also presented
+through a short display-score catch-up animation. Neither observation alone is
+a scoring failure; record gauge position and whether the increase stops before
+opening a runtime issue.
 
 Track every observation in [the runtime issue ledger](RUNTIME_ISSUES.md).
 Record the executable SHA-256, exact interaction, last visible frame, whether

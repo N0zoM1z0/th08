@@ -65,9 +65,32 @@ stageEffectAnm @ 0x8B058`, populated by `EffectManager::LoadEffectResources`.
 Production and the relocation manifest now name that aggregate owner/addend;
 the duplicate declaration and global row are gone. Focused `StartSpell` replay
 passes **2,483 / 2,483 exact**, and the linked verifier rejects either a legacy
-standalone public or a missing aggregate-field load. RT-005 is **fixed /
-confirmation pending** on the new artifact. See `docs/OWNER_AUDIT.md` and
-`docs/RUNTIME_ISSUES.md`.
+standalone public or a missing aggregate-field load. The user subsequently
+completed the repaired `e8b7107a...161d73d` run through Final and saved replay
+slot 3, exercising repeated spell-card starts without recurrence; RT-005 is
+closed. See `docs/OWNER_AUDIT.md` and `docs/RUNTIME_ISSUES.md`.
+
+The completed long run then exposed RT-006 and RT-007. Dialogue rendered only
+the stage clear color or black and accumulated player/portrait trails because
+all three Background draw gates called `Gui::IsDialoguePresent`; target
+instructions call `Gui::IsStageFinished @ 0x00437D87`, so ordinary dialogue
+continues drawing the stage. The same REL32-symbol audit found eight additional
+wrong source callees hidden by target-address relocation replay. Of those,
+`SpawnRandomizedShot` used unsigned instead of signed RNG, shifting self-shot
+angles, while point-star/time-orb values used the 720-entry score-popup pool
+instead of the target's three-entry player-point pool. The latter permits the
+dense numeric-sprite flood seen in the final Last Spell screenshot. Replay slot
+3 preserves that run with SHA-256 `1ec94058...4fbc7`.
+
+All eleven corrected REL32 sites now name their independently mapped target
+callees. `validate-tracking.py` rejects a decorated REL32 symbol assigned to
+multiple target addresses, and the native verifier decodes the final linked
+calls. The player-shot global ledger also now correctly names the 9/6/2/3
+spawn/update/draw/collision tables at `0x004C7EE0..0x004C7F2F`; final-link
+verification resolves all 20 entries. RT-006 and RT-007 are **fixed /
+confirmation pending** on the new artifact. Idle score growth was separately
+ruled target behavior: an extreme human/youkai gauge awards 100 visible points
+per active frame, approximately 6,000 points per second at 60 FPS.
 
 A separate native normal-build startup exit is now diagnosed and closed. CDB
 caught `0xC0000005` in linked VC7 `strncmp @ 0x004ABA5F`, reached from
@@ -83,19 +106,23 @@ workaround or an exactness claim.
 The required single-job cold replay rebuilt all 75 configured objects and
 passed **1,106 / 1,106 exact**. A subsequent fresh normal VC7 build linked a
 902,144-byte PE32 i386 GUI executable with SHA-256
-`beab5f36302c8334551dd6f86fa4f65d3fbc0d2e5055f4a73f86dcc5bd77240c`.
+`134405118d7c842f9f4015504b33d4d05e2289a95b51cf24a9bf38d8bbb2a59d`.
 The subsequent fresh bugfix VC7 runtime build linked an 898,048-byte PE32 i386
 GUI executable with SHA-256
-`e8b7107a0d45c9e319345d131ec5d7f713d38d7a2707d61f52eed0d12161d73d`. The
+`87edf9dc051e71fadb0d5ac5f77a663ac9dab2c91fdf48d03288ecab11832d73`. The
 hash-pinned `scripts/run-preserve-lives-test.ps1` targets this bugfix artifact
 and changes only the live `push -1` argument immediately before
 `GameManager::AddLives` in
 `Player::UpdateDeathAndRespawn` to `push 0`; it preserves the death/effect/drop/
 respawn/UI paths and never modifies the executable on disk. RVA `0x3EA19` and
 the complete 12-byte instruction sequence are unchanged; the launcher is
-repinned to the new hash. Its patch/read-back gate passed on Windows and the
-spawned process remained alive for a 12-second startup smoke. The repaired
-spell-card entry path still requires manual confirmation.
+repinned to the new hash. The complete Linux i386 container build links after
+the obsolete dialogue-snapshot workaround was removed, and its fixed-layout
+verifier passes. The bugfix artifact and repinned launcher are deployed to the
+isolated `D:\Entertainment\Game\Touhou\th08-reconstruct` directory; the launcher
+verified and patched the complete expected instruction in memory, read it back,
+and left the game process running. Replay slot 3 confirmation of RT-006 and
+RT-007 remains pending at this checkpoint.
 
 The current protocol closure goes beyond the imported TH06 readability
 baseline on the comparable interpreter surfaces.  TH08 now names all 184 ECL

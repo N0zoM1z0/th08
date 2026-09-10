@@ -2775,7 +2775,7 @@ i32 __fastcall SpawnRandomizedShot(Player *player, PlayerShot *slot, i32 value,
     if (value % entry->fireInterval == entry->fireFrame)
     {
         player->InitializeShot(slot, entry);
-        slot->angle = g_Rng.GetRandomF32() * ZUN_PI / 48.0f - ZUN_PI / 2.0f;
+        slot->angle = g_Rng.GetRandomF32Signed() * ZUN_PI / 48.0f - ZUN_PI / 2.0f;
         FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(slot->angle, entry->speed);
         return 1;
     }
