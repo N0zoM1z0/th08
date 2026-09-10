@@ -18,31 +18,41 @@ ZunBool IsDisableResourceReload();
 void __fastcall AdjustStageEffectDrawPosition(AnmVm *effect, D3DXVECTOR3 *base);
 i32 __fastcall HasAnimationEnded(Effect *effect);
 i32 __fastcall DrawRadialTrail(Effect *effect);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+i32 __fastcall UpdateExpandingWavyRadialTrail(Effect *effect);
+i32 __fastcall UpdateExpandingPositiveDiagonalRadialTrail(Effect *effect);
+i32 __fastcall UpdateExpandingNegativeDiagonalRadialTrail(Effect *effect);
+i32 __fastcall UpdateExpandingOctagonalRadialTrail(Effect *effect);
+i32 __fastcall UpdateExpandingTwelveSegmentRadialTrail(Effect *effect);
+i32 __fastcall UpdateBarrierRadialEffect(Effect *effect);
+i32 __fastcall InitializeBarrierRadialEffect(Effect *effect);
+i32 __fastcall InitializeRotatingBarrierRadialEffect(Effect *effect);
+i32 __fastcall UpdateExpandingOrthogonalRadialTrail(Effect *effect);
+i32 __fastcall EffectRandomSplashInit(Effect *effect);
+i32 __fastcall EffectRandomSplashUpdate(Effect *effect);
+i32 __fastcall EffectRandomSplashBigInit(Effect *effect);
+i32 __fastcall EffectOrbitInit(Effect *effect);
+i32 __fastcall EffectOrbitUpdate(Effect *effect);
+i32 __fastcall InitializeTintedBossTrackingCameraParticle(Effect *effect);
+i32 __fastcall UpdateTintedBossTrackingCameraParticle(Effect *effect);
+i32 __fastcall InitializeRisingBossTrackingCameraParticle(Effect *effect);
+i32 __fastcall UpdateRisingBossTrackingCameraParticle(Effect *effect);
+i32 __fastcall InitializeRandomDirectionalOffset(Effect *effect);
+i32 __fastcall UpdateDirectionalOffset60(Effect *effect);
+i32 __fastcall TrackPlayerUntilAnimationEnds(Effect *effect);
+i32 __fastcall UpdateDirectionalOffset240(Effect *effect);
+i32 __fastcall UpdateSpinningCameraParticle(Effect *effect);
+i32 __fastcall InitializeSpinningCameraParticle(Effect *effect);
+i32 __fastcall InitializeDirectionalOffset(Effect *effect);
+i32 __fastcall UpdateEasedDirectionalOffset(Effect *effect);
+i32 __fastcall KeepTrailAlive(Effect *effect);
+i32 __fastcall InitializeTrailOffset(Effect *effect);
+i32 __fastcall InitializeRadialTrail(Effect *effect);
+i32 __fastcall InitializeAlternateLayerRadialTrail(Effect *effect);
+i32 __fastcall SyncRadialTrailRadius(Effect *effect);
+i32 __fastcall SyncRadialTrailShape(Effect *effect);
+i32 __fastcall UpdateTimedRadialTrail(Effect *effect);
+i32 __fastcall UpdateFadingRadialTrail(Effect *effect);
+i32 __fastcall SyncAnchoredRadialTrail(Effect *effect);
 
 DIFFABLE_STATIC(EffectManager, g_EffectManager);
 DIFFABLE_STATIC(ChainElem, g_EffectManagerCalcChain);
@@ -80,7 +90,87 @@ struct EffectTemplate
 C_ASSERT(sizeof(EffectTemplate) == 0xc);
 C_ASSERT(offsetof(EffectTemplate, updateCallback) == 0x4);
 C_ASSERT(offsetof(EffectTemplate, initializeCallback) == 0x8);
-DIFFABLE_STATIC_ARRAY(EffectTemplate, 66, g_EffectTemplates);
+
+// The target's one compatibility entry is authored as an AnmVm member even
+// though the Effect callback ABI supplies the same leading subobject in ECX.
+// Keep that exact member identity and use a normal production adapter rather
+// than embedding a preferred-base address in this relocatable table.
+static i32 __fastcall UpdatePulsingRadialTrailEffectCallback(Effect *effect)
+{
+    return effect->vm.UpdatePulsingRadialTrail();
+}
+
+// Target .data 0x004C6D30..0x004C7047: 66 triples of script id, update
+// callback, and initializer.  This is the process-lifetime production owner;
+// every function address remains a relocatable C++ symbol.
+DIFFABLE_STATIC_ARRAY_ASSIGN(EffectTemplate, 66, g_EffectTemplates) = {
+    {28, NULL, NULL},
+    {29, NULL, NULL},
+    {30, NULL, NULL},
+    {31, EffectRandomSplashUpdate, EffectRandomSplashBigInit},
+    {36, EffectRandomSplashUpdate, EffectRandomSplashInit},
+    {37, EffectRandomSplashUpdate, EffectRandomSplashInit},
+    {38, EffectRandomSplashUpdate, EffectRandomSplashInit},
+    {39, EffectRandomSplashUpdate, EffectRandomSplashInit},
+    {40, EffectRandomSplashUpdate, EffectRandomSplashInit},
+    {41, EffectRandomSplashUpdate, EffectRandomSplashInit},
+    {42, EffectRandomSplashUpdate, EffectRandomSplashInit},
+    {43, EffectRandomSplashUpdate, EffectRandomSplashInit},
+    {44, NULL, NULL},
+    {45, EffectOrbitUpdate, EffectOrbitInit},
+    {45, EffectOrbitUpdate, EffectOrbitInit},
+    {45, EffectOrbitUpdate, EffectOrbitInit},
+    {0, NULL, NULL},
+    {32, UpdateDirectionalOffset60, InitializeRandomDirectionalOffset},
+    {33, UpdateDirectionalOffset240, InitializeRandomDirectionalOffset},
+    {51, UpdateSpinningCameraParticle, InitializeSpinningCameraParticle},
+    {56, NULL, NULL},
+    {52, UpdateEasedDirectionalOffset, InitializeDirectionalOffset},
+    {54, TrackPlayerUntilAnimationEnds, NULL},
+    {104, KeepTrailAlive, NULL},
+    {104, KeepTrailAlive, NULL},
+    {35, NULL, NULL},
+    {53, UpdateEasedDirectionalOffset, InitializeDirectionalOffset},
+    {34, UpdateDirectionalOffset60, InitializeRandomDirectionalOffset},
+    {57, NULL, NULL},
+    {58, NULL, NULL},
+    {59, NULL, NULL},
+    {60, NULL, NULL},
+    {48, NULL, NULL},
+    {49, NULL, NULL},
+    {50, NULL, NULL},
+    {88, SyncRadialTrailRadius, InitializeRadialTrail},
+    {88, UpdateBarrierRadialEffect, InitializeBarrierRadialEffect},
+    {92, UpdateBarrierRadialEffect, InitializeRotatingBarrierRadialEffect},
+    {71, NULL, NULL},
+    {76, SyncRadialTrailRadius, InitializeRadialTrail},
+    {81, SyncRadialTrailShape, InitializeRadialTrail},
+    {82, UpdatePulsingRadialTrailEffectCallback, InitializeRadialTrail},
+    {83, UpdateExpandingWavyRadialTrail, InitializeRadialTrail},
+    {83, UpdateExpandingPositiveDiagonalRadialTrail, InitializeRadialTrail},
+    {83, UpdateExpandingNegativeDiagonalRadialTrail, InitializeRadialTrail},
+    {83, UpdateExpandingOctagonalRadialTrail, InitializeRadialTrail},
+    {84, UpdateExpandingTwelveSegmentRadialTrail, InitializeRadialTrail},
+    {72, NULL, NULL},
+    {85, UpdateExpandingOrthogonalRadialTrail, InitializeRadialTrail},
+    {86, SyncRadialTrailRadius, InitializeRadialTrail},
+    {80, UpdateTimedRadialTrail, InitializeRadialTrail},
+    {73, UpdateTintedBossTrackingCameraParticle, InitializeTintedBossTrackingCameraParticle},
+    {77, SyncRadialTrailRadius, InitializeRadialTrail},
+    {88, UpdateFadingRadialTrail, InitializeRadialTrail},
+    {88, UpdateFadingRadialTrail, InitializeRadialTrail},
+    {87, SyncRadialTrailShape, InitializeRadialTrail},
+    {96, SyncRadialTrailShape, InitializeAlternateLayerRadialTrail},
+    {55, NULL, NULL},
+    {100, SyncRadialTrailShape, InitializeAlternateLayerRadialTrail},
+    {78, SyncRadialTrailRadius, InitializeRadialTrail},
+    {102, NULL, InitializeTrailOffset},
+    {103, NULL, InitializeTrailOffset},
+    {75, NULL, NULL},
+    {74, UpdateRisingBossTrackingCameraParticle, InitializeRisingBossTrackingCameraParticle},
+    {77, SyncAnchoredRadialTrail, InitializeRadialTrail},
+    {98, SyncRadialTrailShape, InitializeAlternateLayerRadialTrail},
+};
 
 // FUNCTION: th08 0x423d70
 Float3 *Float3::operator*=(f32 scalar)

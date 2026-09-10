@@ -18,6 +18,139 @@ replay for target code and the applicable modern Windows/Linux build/runtime
 checks for portable behavior.  The portable Linux package workflow runs on
 `push`, `pull_request`, and `workflow_dispatch`.
 
+## Completed native Windows i386 prerequisite
+
+The first native gate is complete on `reconstruction/windows-i386-runtime` and
+is ready for review and merge. This phase deliberately preceded further
+modern-port work: `build/th08.exe` was compiled and linked from the production
+source with pinned VC7, then run on a real Windows host from an isolated data
+directory. The modern MinGW/Linux artifacts are independent portability
+evidence and cannot substitute for this owner/TU/link/lifetime oracle. The
+complete reproducible procedure and evidence language are in
+`docs/WINDOWS_I386_RUNTIME.md`.
+
+The first native owner audit recovered four target-initialized data families
+which the modern Linux startup path had masked with runtime initialization:
+`g_LastSpellCount @ 0x004C6C3C`, `g_EffectTemplates[66] @
+0x004C6D30..0x004C7047`, `g_GuiStageClearBonuses[9] @
+0x004C7158..0x004C717B`, and `g_GuiMessageTextColors[12] @
+0x004C7180..0x004C723F`. Their real production owners now live in
+`Spellcard.cpp`, `EffectManager.cpp`, and `Gui.cpp`. The full target Effect
+table explains the reported missing Remilia X-bomb trail: row 53 selects script
+88 plus `UpdateFadingRadialTrail` and `InitializeRadialTrail`, whereas the prior
+native link supplied script 0 and null callbacks. Sakuya's knife path did not
+depend on that row.
+
+The linked-data verifier reports zero uninitialized production macros mapped
+into target raw-backed sections and validates all four repaired families.
+Focused accepted-unit replay for `EffectManager.obj`, `Gui.obj`, and
+`SpellCard.obj` passes **125 / 125 exact**. The user confirmed Remilia's X-bomb
+effect on native hash `a583f9a5...56dcad`, so RT-001 is closed.
+The subsequent native artifact reproduced the `Gui::CopyEnemyNameTexture`
+access violation at linked `0x00429589` after a run was selected. CDB proved
+that live `stageTextAnm` owned six Stage 1 text sprites while the function
+requested sprite `0x10`; target instructions instead select `frontAnm @
+g_Gui + 0x0C`, whose two entries own 33 sprites. The source owner is repaired,
+the eight match-unit DIR32 bases now use canonical `g_Gui @ 0x0160F428`
+instead of the compensating false base `0x0160F424`, and the linked verifier
+guards the final loads. The user then entered and continued gameplay on repaired
+hash `a583f9a5...56dcad`, closing the original RT-002 transition path.
+
+That longer run exposed RT-005 independently. Windows reported
+`0xC0000005` at bugfix RVA `0x6994`; CDB stopped at linked
+`AnmLoaded::SetAndExecuteScriptIdx + 0x24` with null `this` and traced the call
+through `Spellcard::StartSpell + 0x25F`. Source had invented standalone
+`g_SpellcardBackgroundAnm`, which no code initialized. Target address
+`0x00577EB8` is instead canonical `g_EffectManager @ 0x004ECE60 +
+stageEffectAnm @ 0x8B058`, populated by `EffectManager::LoadEffectResources`.
+Production and the relocation manifest now name that aggregate owner/addend;
+the duplicate declaration and global row are gone. Focused `StartSpell` replay
+passes **2,483 / 2,483 exact**, and the linked verifier rejects either a legacy
+standalone public or a missing aggregate-field load. The user subsequently
+completed the repaired `e8b7107a...161d73d` run through Final and saved replay
+slot 3, exercising repeated spell-card starts without recurrence; RT-005 is
+closed. See `docs/OWNER_AUDIT.md` and `docs/RUNTIME_ISSUES.md`.
+
+The completed long run then exposed RT-006 and RT-007. Dialogue rendered only
+the stage clear color or black and accumulated player/portrait trails because
+all three Background draw gates called `Gui::IsDialoguePresent`; target
+instructions call `Gui::IsStageFinished @ 0x00437D87`, so ordinary dialogue
+continues drawing the stage. The same REL32-symbol audit found eight additional
+wrong source callees hidden by target-address relocation replay. Of those,
+`SpawnRandomizedShot` used unsigned instead of signed RNG, shifting self-shot
+angles, while point-star/time-orb values used the 720-entry score-popup pool
+instead of the target's three-entry player-point pool. The latter permits the
+dense numeric-sprite flood seen in the final Last Spell screenshot. That
+isolated run produced replay slot 3 with SHA-256 `1ec94058...4fbc7`; the replay
+was deliberately not carried into the later clean deployment.
+
+All eleven corrected REL32 sites now name their independently mapped target
+callees. `validate-tracking.py` rejects a decorated REL32 symbol assigned to
+multiple target addresses, and the native verifier decodes the final linked
+calls. The player-shot global ledger also now correctly names the 9/6/2/3
+spawn/update/draw/collision tables at `0x004C7EE0..0x004C7F2F`; final-link
+verification resolves all 20 entries. The user confirmed live dialogue
+backgrounds and corrected Stage 4 Reimu rendering on hash
+`87edf9dc...1832d73`, closing RT-006. RT-007 remains **fixed / confirmation
+pending** on that artifact.
+
+The same run exposed RT-008: score rose approximately 6,000 visible points per
+second from gauge zero in both normal Stage 1 and Stage Practice 2, continued
+after a hit, and graze counts rose too quickly. Read-only process sampling
+proved that the linked `GameManager` gauge bounds were all zero while the
+separately allocated `g_PlayerGaugeBounds` contained the correct values. Target
+`0x0164D300..0x0164D30B` is exactly `g_GameManager @ 0x0160F508 +
+0x3DDF8..0x3DE02`, not standalone storage. The zero extreme-human threshold
+made gauge zero award 100 visible points per frame and made each ordinary graze
+count as 3. A 12-byte process-local diagnostic installed the target values;
+authoritative score immediately stopped, display score caught up to a zero
+step, and the user confirmed normal score behavior. Production now writes the
+six named manager fields, all 21 match relocations name the manager base plus
+field addend, the false global/Linux alias are removed, and the linked verifier
+guards the writes. Focused `Player::AddedCallback` replay now passes **1,537 /
+1,537 exact**; the cold aggregate replay, fresh normal/bugfix links, and clean
+unpatched deployment are also complete. The user then repeated the score/graze
+path on the clean, unpatched hash `cf32bd1f...6c6e26` and confirmed normal
+behavior, closing RT-008.
+
+A separate native normal-build startup exit is now diagnosed and closed. CDB
+caught `0xC0000005` in linked VC7 `strncmp @ 0x004ABA5F`, reached from
+`Supervisor::CheckVersion`. `LoadDat` had stored a valid decrypted version-table
+pointer; no owner overwrite occurred. Because a reconstructed EXE cannot match
+the retail `0100d` size/checksum pair, the original whitelist loop advanced
+past its final record and converted a null `strchr` result into pointer `0x1`.
+Windows playtesting therefore uses the repository's native VC7 `bugfix` mode,
+which accepts the matching version string. Normal mode remains the exact-facing
+comparison/link lane. This is a native build-mode boundary, not a modern-port
+workaround or an exactness claim.
+
+The required single-job cold replay rebuilt all 75 configured objects and
+passed **1,106 / 1,106 exact**. A subsequent fresh normal VC7 PE32 i386 link has
+SHA-256
+`5e217f010c78d3fb1c1459f7127c917dfe039d24a9253f90badb00b8cf556527`.
+The subsequent fresh bugfix VC7 runtime build linked an 898,048-byte PE32 i386
+GUI executable with SHA-256
+`cf32bd1f5202f866a749b40c2aaced94b9c7fe357df0dc5bb20867e1726c6e26`.
+The linked verifier confirms all 21 gauge-bound writes select the six
+`GameManager` fields along with every earlier native owner/callee repair. The
+isolated `D:\Entertainment\Game\Touhou\th08-reconstruct` directory was
+completely cleared and recreated with exactly this executable, hash-verified
+retail `th08.dat`/`thbgm.dat`, a freshly copied windowed retail configuration,
+and `run-windows-i386-reconstruction.bat`. No prior executable, modern port,
+score, replay, log, or preserve-lives helper was carried forward. The optional
+process patch remains pinned to the preceding artifact and refuses the new
+hash. RT-006 and RT-008 are closed. RT-007 remains a non-blocking confirmation
+follow-up because the old slot-3 replay was intentionally excluded from the
+clean deployment. There is no known unfixed native prerequisite defect.
+
+## Next phase
+
+Review and merge `reconstruction/windows-i386-runtime`, then start subsequent
+work on a fresh branch. The modern redistributable Windows port may now resume;
+remaining exact/whole-image work is also independent. Repeat this native gate
+after a shared owner, layout, translation-unit, PCH, compiler, or linker change,
+or when a new native-only symptom is reported.
+
 The current protocol closure goes beyond the imported TH06 readability
 baseline on the comparable interpreter surfaces.  TH08 now names all 184 ECL
 opcodes, all 101 ECL operand selectors (`0x2710..0x2774`), all 35 Background
@@ -992,7 +1125,7 @@ passes.  No ledger identity/count changed.
 
 Whole-executable TU/layout work below remains deferred, not invalidated.
 
-## Active playable-port branch
+## Prior playable-port checkpoint (historical)
 
 `port/modern-windows-linux` is the independent playable reconstruction lane.
 It does not replace the VC7 exact build or change authored/library ledgers.
@@ -1098,7 +1231,7 @@ BGM files. Keep the executable, SDK DLL, generated test data, and runtime
 screenshots under `build/` or outside the repository; never commit the original
 archives.
 
-## Current status
+## Pre-runtime reconstruction checkpoint (historical, 2026-08-26)
 
 As cold-built and replayed on 2026-08-26 against the original Japanese TH08
 1.00d target:
@@ -1219,7 +1352,7 @@ Keep authored `implemented.csv`, `matches.csv`, and authored percentages
 unchanged.  There is intentionally no whole-library scanner until archive
 identity, relocation policy, COMDAT/padding rules, and failure modes are encoded.
 
-## Current milestone: whole-executable reconstruction
+## Deferred whole-executable reconstruction lane
 
 The normal executable links, so whole-image differences now select the work.
 Run the canonical cold baseline with:

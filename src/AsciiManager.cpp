@@ -1532,7 +1532,7 @@ void RetryMenu::OnDraw()
         if (((g_EclGameTimeScaleFlags >> 1) & 1) != 0 && (this->curState != 0 || this->numFrames > 2))
             g_AnmManager->DrawNoRotation(&this->menuBackground);
 
-        if (!g_GameManager.IsPracticeMode() && g_GameManager.difficulty < EXTRA)
+        if (!g_GameManager.IsSpellPractice() && g_GameManager.difficulty < EXTRA)
         {
             for (vmIdx = 0; vmIdx < 4; vmIdx++)
                 if (this->menuSprites[vmIdx].IsVisible())

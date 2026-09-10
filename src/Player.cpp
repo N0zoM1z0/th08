@@ -25,7 +25,6 @@ namespace th08
 DIFFABLE_STATIC(Player, g_Player);
 DIFFABLE_STATIC(i32, g_PlayerNormalBombCount);
 DIFFABLE_STATIC(i32, g_PlayerDeathbombCount);
-DIFFABLE_STATIC_ARRAY(i16, 6, g_PlayerGaugeBounds);
 
 DIFFABLE_STATIC_ARRAY_ASSIGN(const char *, 12, g_PlayerAnmFilenames) = {
     "player00.anm", "player01.anm", "player02.anm", "player03.anm",
@@ -1612,38 +1611,38 @@ ZunResult Player::AddedCallback(Player *player)
     g_AsciiManager.SetBossMarkerInterrupt(1, 2);
     g_AsciiManager.SetBossMarkerInterrupt(2, 2);
 
-    g_PlayerGaugeBounds[0] = -10000;
-    g_PlayerGaugeBounds[2] = -8000;
-    g_PlayerGaugeBounds[4] = -2000;
-    g_PlayerGaugeBounds[1] = 10000;
-    g_PlayerGaugeBounds[3] = 8000;
-    g_PlayerGaugeBounds[5] = 2000;
+    g_GameManager.youkaiGaugeHumanLimit = -10000;
+    g_GameManager.youkaiGaugeHumanEffectsThreshold = -8000;
+    g_GameManager.youkaiGaugeHumanTintThreshold = -2000;
+    g_GameManager.youkaiGaugeYoukaiLimit = 10000;
+    g_GameManager.youkaiGaugeYoukaiEffectsThreshold = 8000;
+    g_GameManager.youkaiGaugeYoukaiTintThreshold = 2000;
     if (g_GameManager.shotType == 3)
     {
-        g_PlayerGaugeBounds[0] = -5000;
-        g_PlayerGaugeBounds[2] = -3000;
-        g_PlayerGaugeBounds[4] = -2000;
+        g_GameManager.youkaiGaugeHumanLimit = -5000;
+        g_GameManager.youkaiGaugeHumanEffectsThreshold = -3000;
+        g_GameManager.youkaiGaugeHumanTintThreshold = -2000;
     }
     else if (g_GameManager.shotType == 10)
     {
-        g_PlayerGaugeBounds[0] = -5000;
-        g_PlayerGaugeBounds[2] = -3000;
-        g_PlayerGaugeBounds[4] = -2000;
-        g_PlayerGaugeBounds[1] = 5000;
-        g_PlayerGaugeBounds[3] = 3000;
-        g_PlayerGaugeBounds[5] = 2000;
+        g_GameManager.youkaiGaugeHumanLimit = -5000;
+        g_GameManager.youkaiGaugeHumanEffectsThreshold = -3000;
+        g_GameManager.youkaiGaugeHumanTintThreshold = -2000;
+        g_GameManager.youkaiGaugeYoukaiLimit = 5000;
+        g_GameManager.youkaiGaugeYoukaiEffectsThreshold = 3000;
+        g_GameManager.youkaiGaugeYoukaiTintThreshold = 2000;
     }
     else if (g_GameManager.IsSoloHuman())
     {
-        g_PlayerGaugeBounds[1] = 2000;
-        g_PlayerGaugeBounds[3] = 8000;
-        g_PlayerGaugeBounds[5] = 2001;
+        g_GameManager.youkaiGaugeYoukaiLimit = 2000;
+        g_GameManager.youkaiGaugeYoukaiEffectsThreshold = 8000;
+        g_GameManager.youkaiGaugeYoukaiTintThreshold = 2001;
     }
     else if (g_GameManager.IsSoloYoukai())
     {
-        g_PlayerGaugeBounds[0] = -2000;
-        g_PlayerGaugeBounds[2] = -8000;
-        g_PlayerGaugeBounds[4] = -2001;
+        g_GameManager.youkaiGaugeHumanLimit = -2000;
+        g_GameManager.youkaiGaugeHumanEffectsThreshold = -8000;
+        g_GameManager.youkaiGaugeHumanTintThreshold = -2001;
     }
 
     player->extremeGaugeEffect = NULL;
@@ -2775,7 +2774,7 @@ i32 __fastcall SpawnRandomizedShot(Player *player, PlayerShot *slot, i32 value,
     if (value % entry->fireInterval == entry->fireFrame)
     {
         player->InitializeShot(slot, entry);
-        slot->angle = g_Rng.GetRandomF32() * ZUN_PI / 48.0f - ZUN_PI / 2.0f;
+        slot->angle = g_Rng.GetRandomF32Signed() * ZUN_PI / 48.0f - ZUN_PI / 2.0f;
         FLOAT3_PTR(&slot->velocity)->FromAngleMagnitude(slot->angle, entry->speed);
         return 1;
     }

@@ -27,6 +27,7 @@
 | Read our accuracy and readability philosophy | [What we mean by semantic reconstruction](#what-we-mean-by-semantic-reconstruction) |
 | Contribute | [Contributing](#contributing) |
 | Play or build a port | [Platform guides](#platform-guides) |
+| Reproduce the native VC7 runtime gate | [Windows i386 reconstruction runtime](docs/WINDOWS_I386_RUNTIME.md) |
 | Reproduce the exact comparison | [Exact reconstruction](#exact-reconstruction) |
 | Browse the technical documentation | [Project map](#project-map) |
 | Review upstream history and attribution | [Credits and provenance](#credits-and-provenance) |
@@ -45,12 +46,24 @@ This repository reconstructs the original Japanese
 | Whole executable | **In progress** | PE layout, linked runtime/library code, and one authored near match remain |
 | Web | **Playable** | Public WebAssembly/WebGL 2 build |
 | Linux | **Playable** | Native i386; x86_64/AArch64 work on `port/portable-64bit` |
-| Windows | **In progress** | Native startup stabilization and redistributable packaging are underway |
+| Windows | **In progress** | VC7 i386 prerequisite complete; modern redistributable packaging remains |
 | macOS | **In progress** | Native backend and packaging are planned |
 
 Exact reconstruction and playable ports are separate milestones. The progress
 bar counts authored bytes accepted by strict comparison; the platform cards
 show where the reconstructed source is currently playable.
+
+The VC7-built Windows i386 reconstruction completed the prerequisite
+whole-program runtime oracle before modern-port stabilization. It caught
+production translation-unit, link, global-owner, static-initialization, and
+lifetime defects which a modern compiler or compatibility startup path can
+hide. Exact-facing checks use the native `normal` build; Windows playtesting
+uses the equally native VC7 `bugfix` build because a reconstructed executable
+cannot satisfy the retail executable-size/checksum whitelist. See the [native
+reconstruction runtime workflow](docs/WINDOWS_I386_RUNTIME.md) and [runtime
+issue ledger](docs/RUNTIME_ISSUES.md) for the reproducible gate and the defects
+found by the completed pass. This developer artifact is not the future
+redistributable Windows port.
 
 The remaining exact-reconstruction work is the last authored near match,
 whole-image layout, and the compiler/runtime and D3DX code linked into the
@@ -224,8 +237,8 @@ for each batch.
 Contributions are welcome. We are especially interested in:
 
 - evidence-backed exact reconstruction and whole-image layout work;
-- reliable native Windows startup and replacement of the D3DX debug dependency
-  with a redistributable component;
+- a supported modern Windows package with a redistributable replacement for
+  the remaining D3DX debug dependency;
 - a native macOS window, input, audio, renderer, and packaging backend;
 - Linux renderer fixes, MIDI support, and testing on additional hardware;
 - browser correctness, performance, and compatibility work in
@@ -356,10 +369,12 @@ from additional drivers and desktops are welcome.
 **Status: In progress**
 
 See the [native Windows guide](docs/PLAY_WINDOWS.md) for the current build and
-release requirements. The source produces a 32-bit MinGW bring-up executable.
-Current work focuses on reliable native startup and replacing the DirectX SDK
-debug DLL with redistributable components before publishing a supported
-Windows release.
+release requirements. The separate
+[VC7 Windows i386 compile/link/play prerequisite](docs/WINDOWS_I386_RUNTIME.md)
+is complete, including cold exact replay, native normal/bugfix links, final-link
+owner checks, and real Windows playtesting. Modern port work may now proceed;
+it still must replace the DirectX SDK debug DLL with redistributable components
+before publishing a supported Windows release.
 
 The goal is a self-contained native build that accepts any legal TH08 data
 directory and ships with redistributable components.
@@ -424,6 +439,12 @@ python scripts/build.py
 See [Build and exact matching](docs/BUILD_MATCHING.md) for dependencies,
 build modes, reccmp, objdiff, and acceptance rules.
 
+To reproduce the completed whole-program native gate rather than only build one
+executable, follow [Native Windows i386 reconstruction runtime](docs/WINDOWS_I386_RUNTIME.md).
+That procedure intentionally cold-replays accepted normal objects first, links
+and verifies the exact-facing normal image, and builds the playable bugfix image
+last so `build/th08.exe` is the artifact intended for isolated Windows testing.
+
 ### Analysis and live progress
 
 IDA MCP follows whichever database is active in the GUI, so TH08 analysis
@@ -448,6 +469,9 @@ Generated source-presence and strict-match figures are recorded in
 - [TH08 Web browser port and engineering documentation](https://github.com/N0zoM1z0/th08-web)
 - [Linux download, installation, and play guide](docs/PLAY_LINUX.md)
 - [Native Windows user guide and status](docs/PLAY_WINDOWS.md)
+- [VC7 Windows i386 reconstruction runtime](docs/WINDOWS_I386_RUNTIME.md)
+- [Native runtime data-owner audit](docs/OWNER_AUDIT.md)
+- [Native Windows runtime issue ledger](docs/RUNTIME_ISSUES.md)
 - [Native macOS user guide and status](docs/PLAY_MACOS.md)
 - [Architecture and binary inventory](docs/ARCHITECTURE.md)
 - [Reverse-engineering workflow](docs/RE_WORKFLOW.md)

@@ -1,5 +1,4 @@
 #include "d3d8_internal.hpp"
-#include "Gui.hpp"
 
 #include <SDL.h>
 #include <GL/gl.h>
@@ -417,8 +416,7 @@ class LinuxDevice : public IDirect3DDevice8
     LinuxDevice(SDL_Window *window_, const D3DPRESENT_PARAMETERS &parameters)
         : refs(1), window(window_), context(NULL), backbuffer(NULL), texture(NULL), vertexBuffer(NULL),
           fvf(0), streamStride(0), renderFramebuffer(0), renderColorTexture(0), renderDepthBuffer(0),
-          dialogueSnapshotTexture(0), framebufferReady(false), dialogueSnapshotReady(false),
-          wasDialogPresent(false), presentCount(0)
+          framebufferReady(false), presentCount(0)
     {
         memset(renderStates, 0, sizeof(renderStates)); memset(textureStates, 0, sizeof(textureStates));
         Identity(&world); Identity(&view); Identity(&projection); Identity(&textureTransform);
@@ -556,12 +554,6 @@ class LinuxDevice : public IDirect3DDevice8
     }
     HRESULT BeginScene()
     {
-        const bool dialogPresent = th08::g_Gui.IsDialoguePresent() != 0;
-        if (dialogPresent && !wasDialogPresent)
-            CaptureDialogueSnapshot();
-        if (dialogPresent && dialogueSnapshotReady)
-            RestoreDialogueSnapshot();
-        wasDialogPresent = dialogPresent;
         return S_OK;
     }
     HRESULT EndScene() { return S_OK; }
@@ -676,17 +668,13 @@ class LinuxDevice : public IDirect3DDevice8
     }
     void DestroyRenderTarget()
     {
-        if (dialogueSnapshotTexture != 0)
-            glDeleteTextures(1, &dialogueSnapshotTexture);
         if (renderDepthBuffer != 0 && g_framebufferApi.deleteRenderbuffers != NULL)
             g_framebufferApi.deleteRenderbuffers(1, &renderDepthBuffer);
         if (renderFramebuffer != 0 && g_framebufferApi.deleteFramebuffers != NULL)
             g_framebufferApi.deleteFramebuffers(1, &renderFramebuffer);
         if (renderColorTexture != 0)
             glDeleteTextures(1, &renderColorTexture);
-        renderDepthBuffer = renderFramebuffer = renderColorTexture = dialogueSnapshotTexture = 0;
-        dialogueSnapshotReady = false;
-        wasDialogPresent = false;
+        renderDepthBuffer = renderFramebuffer = renderColorTexture = 0;
     }
     bool CreateRenderTarget(UINT width, UINT height)
     {
@@ -698,14 +686,6 @@ class LinuxDevice : public IDirect3DDevice8
 
         glGenTextures(1, &renderColorTexture);
         glBindTexture(GL_TEXTURE_2D, renderColorTexture);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-
-        glGenTextures(1, &dialogueSnapshotTexture);
-        glBindTexture(GL_TEXTURE_2D, dialogueSnapshotTexture);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -733,37 +713,6 @@ class LinuxDevice : public IDirect3DDevice8
             return false;
         }
         return true;
-    }
-    void CaptureDialogueSnapshot()
-    {
-        if (dialogueSnapshotTexture == 0 || backbuffer == NULL)
-            return;
-        glBindTexture(GL_TEXTURE_2D, dialogueSnapshotTexture);
-        glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, backbuffer->width, backbuffer->height);
-        dialogueSnapshotReady = true;
-    }
-    void RestoreDialogueSnapshot()
-    {
-        const UINT width = backbuffer->width;
-        const UINT height = backbuffer->height;
-        glPushAttrib(GL_ALL_ATTRIB_BITS);
-        glDisable(GL_ALPHA_TEST); glDisable(GL_BLEND); glDisable(GL_CULL_FACE);
-        glDisable(GL_DEPTH_TEST); glDisable(GL_LIGHTING); glDisable(GL_SCISSOR_TEST);
-        glDepthMask(GL_FALSE);
-        glEnable(GL_TEXTURE_2D); glBindTexture(GL_TEXTURE_2D, dialogueSnapshotTexture);
-        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-        glMatrixMode(GL_PROJECTION); glPushMatrix(); glLoadIdentity();
-        glOrtho(0.0, width, height, 0.0, -1.0, 1.0);
-        glMatrixMode(GL_MODELVIEW); glPushMatrix(); glLoadIdentity();
-        glColor4ub(255, 255, 255, 255);
-        glBegin(GL_TRIANGLE_STRIP);
-        glTexCoord2f(0.0f, 1.0f); glVertex2f(0.0f, 0.0f);
-        glTexCoord2f(1.0f, 1.0f); glVertex2f(static_cast<float>(width), 0.0f);
-        glTexCoord2f(0.0f, 0.0f); glVertex2f(0.0f, static_cast<float>(height));
-        glTexCoord2f(1.0f, 0.0f); glVertex2f(static_cast<float>(width), static_cast<float>(height));
-        glEnd();
-        glPopMatrix(); glMatrixMode(GL_PROJECTION); glPopMatrix(); glMatrixMode(GL_MODELVIEW);
-        glPopAttrib();
     }
     bool ResetInternal(const D3DPRESENT_PARAMETERS &parameters)
     {
@@ -964,8 +913,8 @@ class LinuxDevice : public IDirect3DDevice8
     LinuxVertexBuffer *vertexBuffer;
     DWORD fvf;
     UINT streamStride;
-    GLuint renderFramebuffer, renderColorTexture, renderDepthBuffer, dialogueSnapshotTexture;
-    bool framebufferReady, dialogueSnapshotReady, wasDialogPresent;
+    GLuint renderFramebuffer, renderColorTexture, renderDepthBuffer;
+    bool framebufferReady;
     unsigned long presentCount;
     DWORD renderStates[256], textureStates[32];
     D3DMATRIX world, view, projection, textureTransform;

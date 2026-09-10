@@ -18,8 +18,8 @@ namespace th08
 ZunBool IsDisableResourceReload();
 DIFFABLE_STATIC(Spellcard, g_Spellcard);
 DIFFABLE_STATIC(ChainElem *, g_SpellcardCalcChain);
-DIFFABLE_STATIC(i32, g_LastSpellCount);
-DIFFABLE_STATIC(AnmLoaded *, g_SpellcardBackgroundAnm);
+// Target .data 0x004C6C3C: number of entries in g_LastSpellNumbers.
+DIFFABLE_STATIC_ASSIGN(i32, g_LastSpellCount) = 43;
 
 struct SpellcardFlagBits
 {
@@ -747,8 +747,8 @@ void Spellcard::StartSpell(i32 spellCardNumber, const u8 *encodedName, i32 enemy
     g_Background.StartSpellBackground();
     for (i = 0; (i32)i < g_Background.spellVmCount; i++)
     {
-        g_SpellcardBackgroundAnm->SetAndExecuteScriptIdx(&g_Background.spellVms[i],
-                                                         i + g_Background.spellVmScriptBase);
+        g_EffectManager.stageEffectAnm->SetAndExecuteScriptIdx(
+            &g_Background.spellVms[i], i + g_Background.spellVmScriptBase);
     }
     g_Background.spellBackgroundDrawCallback = NULL;
     this->activeEnemy->ResetBulletRankInfluence();

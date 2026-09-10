@@ -68,8 +68,9 @@ i32 AnmVm::UpdatePulsingRadialTrail()
     reinterpret_cast<Effect *>(this)->verticesDirty = 1;
     reinterpret_cast<Effect *>(this)->vertexSegmentCount = 48;
     reinterpret_cast<Effect *>(this)->shapeThickness = 32.0f;
+    // Pulse from the current timer parity; HasTicked is a distinct predicate.
     reinterpret_cast<Effect *>(this)->radius =
-        64.0f + (f32)((reinterpret_cast<Effect *>(this)->timer.HasTicked() & 1) ? 8 : 0);
+        64.0f + (f32)((reinterpret_cast<Effect *>(this)->timer.operator int() & 1) ? 8 : 0);
     reinterpret_cast<Effect *>(this)->angle = 0.0f;
     return 1;
 }
@@ -233,7 +234,8 @@ void __fastcall UpdateFantasyOrbBomb(Player *player)
         f32 xDelta;
         f32 yDelta;
         PlayerCollisionRegion *slot;
-        if (bomb->timer.JustReached(40))
+        // The target tests the current value, not the JustReached edge.
+        if (bomb->timer == 40)
         {
             workItem = bomb->workItems;
             for (i = 0; i < 16; i++, workItem++)

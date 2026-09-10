@@ -29,12 +29,29 @@ DIFFABLE_STATIC(i32, g_GuiMessageStageMode);
 DIFFABLE_STATIC(u16, g_GuiMessageInputCurrent);
 DIFFABLE_STATIC(u16, g_GuiMessageInputPrevious);
 DIFFABLE_STATIC(i32, g_GuiMessageScreenEffectDuration);
-DIFFABLE_STATIC_ARRAY(i32, MAX_STAGES, g_GuiStageClearBonuses);
+// Target .data 0x004C7158: the per-stage clear-bonus production owner.
+DIFFABLE_STATIC_ARRAY_ASSIGN(i32, MAX_STAGES, g_GuiStageClearBonuses) = {
+    1000000, 1500000, 2000000, 2500000, 2500000, 3000000, 4000000, 6000000, 6660000,
+};
 struct GuiMessageTextColorSet
 {
     u32 colors[4];
 };
-DIFFABLE_STATIC_ARRAY(GuiMessageTextColorSet, SHOT_ALL, g_GuiMessageTextColors);
+// Target .data 0x004C7180: all twelve shot-type dialogue palettes.
+DIFFABLE_STATIC_ARRAY_ASSIGN(GuiMessageTextColorSet, SHOT_ALL, g_GuiMessageTextColors) = {
+    {{0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0}},
+    {{0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0}},
+    {{0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0}},
+    {{0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0}},
+    {{0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0}},
+    {{0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0}},
+    {{0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0}},
+    {{0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0}},
+    {{0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0}},
+    {{0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0}},
+    {{0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0}},
+    {{0x00e8f0ff, 0x00f0e8ff, 0x00ffe8f0, 0x00ffe8f0}},
+};
 
 DIFFABLE_STATIC_ARRAY_ASSIGN(
     GuiStageMusicContextSet, GUI_STAGE_MUSIC_CONTEXT_COUNT, g_GuiStageMusicContexts) = {
@@ -1630,15 +1647,15 @@ void __fastcall Gui::CopyEnemyNameTexture(i32 spriteIdx)
     RECT destRect;
     RECT srcRect;
 
-    destRect.left = (i32)g_Gui.stageTextAnm->GetSprite(10)->startPixelInclusive.x;
-    destRect.top = (i32)g_Gui.stageTextAnm->GetSprite(10)->startPixelInclusive.y;
-    destRect.right = (i32)g_Gui.stageTextAnm->GetSprite(10)->endPixelInclusive.x;
-    destRect.bottom = (i32)g_Gui.stageTextAnm->GetSprite(10)->endPixelInclusive.y;
+    destRect.left = (i32)g_Gui.frontAnm->GetSprite(10)->startPixelInclusive.x;
+    destRect.top = (i32)g_Gui.frontAnm->GetSprite(10)->startPixelInclusive.y;
+    destRect.right = (i32)g_Gui.frontAnm->GetSprite(10)->endPixelInclusive.x;
+    destRect.bottom = (i32)g_Gui.frontAnm->GetSprite(10)->endPixelInclusive.y;
 
-    srcRect.left = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->startPixelInclusive.x;
-    srcRect.top = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->startPixelInclusive.y;
-    srcRect.right = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->endPixelInclusive.x;
-    srcRect.bottom = (i32)g_Gui.stageTextAnm->GetSprite(spriteIdx)->endPixelInclusive.y;
+    srcRect.left = (i32)g_Gui.frontAnm->GetSprite(spriteIdx)->startPixelInclusive.x;
+    srcRect.top = (i32)g_Gui.frontAnm->GetSprite(spriteIdx)->startPixelInclusive.y;
+    srcRect.right = (i32)g_Gui.frontAnm->GetSprite(spriteIdx)->endPixelInclusive.x;
+    srcRect.bottom = (i32)g_Gui.frontAnm->GetSprite(spriteIdx)->endPixelInclusive.y;
 
     g_AnmManager->CopyTextureRect(10, 0, 10, 1, &destRect, &srcRect);
 }

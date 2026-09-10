@@ -778,8 +778,10 @@ ChainCallbackResult Background::OnDrawHighPrio(Background *background)
     background->tint.g = 0x80;
     background->tint.b = 0x80;
 
+    // Ordinary dialogue keeps drawing the live stage. The target gate is the
+    // stopped stage-finish portrait, not Gui::IsDialoguePresent.
     if (background->spellBackgroundState <= SPELL_BACKGROUND_FADING_IN &&
-        !g_Gui.IsDialoguePresent())
+        !g_Gui.IsStageFinished())
     {
         if (background->stageVm0.activeSpriteIndex > 0)
         {
@@ -838,7 +840,7 @@ ChainCallbackResult Background::OnDrawHighPrio(Background *background)
     }
 
     if (background->spellBackgroundState <= SPELL_BACKGROUND_FADING_IN &&
-        !g_Gui.IsDialoguePresent())
+        !g_Gui.IsStageFinished())
     {
         background->RenderObjects(0);
         background->RenderObjects(1);
@@ -856,8 +858,9 @@ ChainCallbackResult Background::OnDrawLowPrio(Background *background)
     i32 alpha;
     f32 zValue;
 
+    // Keep this callee aligned with both gates in OnDrawHighPrio.
     if (background->spellBackgroundState <= SPELL_BACKGROUND_FADING_IN &&
-        !g_Gui.IsDialoguePresent())
+        !g_Gui.IsStageFinished())
     {
         background->RenderObjects(2);
         background->RenderObjects(3);

@@ -304,6 +304,7 @@ def load_match_units(
     errors: list[str], *, check_target_bytes: bool
 ) -> dict[str, tuple[int, int]]:
     units: dict[str, tuple[int, int]] = {}
+    rel32_targets: dict[str, dict[int, list[str]]] = {}
     try:
         target_data = (
             (ROOT / "resources" / "th08.exe").read_bytes()
@@ -350,7 +351,23 @@ def load_match_units(
                             f"0x{literal_address:08X} differs from "
                             f"{relocation['symbol']}"
                         )
+                symbol = str(relocation["symbol"])
+                if relocation.get("type") == "REL32" and symbol.startswith("?"):
+                    target = int(relocation["target"])
+                    site = f"{name}+0x{int(relocation['offset']):X}"
+                    rel32_targets.setdefault(symbol, {}).setdefault(target, []).append(site)
             units[name] = (unit_address, size)
+        for symbol, targets in rel32_targets.items():
+            if len(targets) <= 1:
+                continue
+            details = "; ".join(
+                f"0x{target:08X} at {', '.join(sites)}"
+                for target, sites in sorted(targets.items())
+            )
+            fail(
+                "match-units.toml: REL32 symbol has conflicting target "
+                f"addresses: {symbol}: {details}"
+            )
     except (OSError, KeyError, TypeError, ValueError, tomllib.TOMLDecodeError) as exc:
         errors.append(str(exc))
     return units
