@@ -554,7 +554,7 @@ out:
 
 ZunResult MusicRoom::DeletedCallback(MusicRoom *musicRoom)
 {
-    ZUN_DELETE(musicRoom->trackDescriptors);
+    ZUN_DELETE_ARRAY(musicRoom->trackDescriptors);
 
     g_AnmManager->ReleaseSurface(0);
     g_AnmManager->ReleaseAnm(ANM_FILE_SLOT_MUSIC_ROOM);

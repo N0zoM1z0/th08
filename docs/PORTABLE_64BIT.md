@@ -137,6 +137,78 @@ scripts/smoke-test-portable-linux.sh \
 The check fails on an early exit, `modern-crash.txt`, or failure to request the
 title, replay, SHT, STD, ECL, and message resources used by that route.
 
+### Native-layout performance boundary
+
+The reconstructed game translation units continue to compile with `-O0`.
+That is intentional: their source shape remains shared with the VC7 exact
+build, and changing their optimization policy would blur the reconstruction
+and port boundaries. For native-layout Linux builds only, CMake compiles the
+three handwritten hot adapters at `-O2 -fno-strict-aliasing`:
+
+- `src/modern/linux/d3d8_compat.cpp`;
+- `src/modern/linux/d3dx8_compat.cpp`;
+- `src/modern/linux/linux_compat.cpp`.
+
+These files own the per-vertex renderer, pixel conversion, SDL timing/input,
+and compatibility calls. The fixed-layout i386 build and the game translation
+units retain their preceding flags. Inspect the effective boundary with:
+
+```bash
+ninja -C build/portable-linux-x86_64 -t commands |
+  rg 'src/(modern/linux/(d3d8_compat|d3dx8_compat|linux_compat)|Global)\.cpp'
+```
+
+On the same x86_64 host, data, Xvfb display, and llvmpipe renderer, an external
+`SDL_GL_SwapWindow` counter measured the first 1,200 swaps in the game's FPS
+calibration path at 13.485 seconds with all adapters at `-O0` and 3.442 seconds
+with this bounded policy, a 3.92x improvement. Post-calibration samples remain
+capped at approximately 60 Hz as intended. This measurement demonstrates the
+adapter bottleneck and additional frame-time headroom; it is not a claim that
+every dense bullet pattern, GPU/driver combination, or browser backend has
+been profiled.
+
+### AddressSanitizer runtime audit
+
+Build an isolated sanitizer artifact without changing the normal package:
+
+```bash
+CXXFLAGS='-fsanitize=address -fno-omit-frame-pointer' \
+LDFLAGS='-fsanitize=address' \
+TH08_PORTABLE_BUILD_DIR=build/portable-linux-x86_64-asan \
+  scripts/build-portable-linux.sh x86_64
+```
+
+The Linux crash reporter normally owns the fatal signals. Disable it for the
+sanitizer process so AddressSanitizer can report the first failing access:
+
+```bash
+ASAN_OPTIONS='detect_leaks=0:halt_on_error=1:handle_segv=0:handle_abort=0:handle_sigfpe=0' \
+TH08_DISABLE_CRASH_REPORTER=1 \
+  scripts/smoke-test-portable-linux.sh \
+    build/portable-linux-x86_64-asan/th08-modern \
+    "/path/to/original/TH08 directory" 60
+```
+
+`TH08_DISABLE_CRASH_REPORTER` is diagnostic-only and does not affect packaged
+normal runs. The audit exposed and now guards these modern-runtime hazards:
+
+- the target `Lzss::Decode @ 0x004740E0` fetches a byte before checking the
+  input end; the modern path checks the bound first while the VC7 path retains
+  the target order;
+- encrypted resources lose a four-byte signature during decryption, but the
+  target leaves the reported size unchanged; the modern path now reports the
+  actual returned allocation size, preventing SDL_image from reading past a
+  complete JPEG's `FF D9` terminator;
+- legacy arrays with trivial element destruction in streaming audio, the title
+  VM pool, Music Room, and shortcut resolution were allocated with `new[]` and
+  released through scalar `delete`; modern builds now pair those allocations
+  with `delete[]` while the target-facing path retains its observed
+  scalar-delete calls.
+
+The 60-second sanitizer smoke covers title, bundled replay, Stage 5 resource
+loading, BGM startup, and return-to-title cleanup. It is a bounded regression
+gate, not exhaustive coverage of every menu, route, or replay file.
+
 ### Issue-driven prerequisite regression gate
 
 The native Windows i386 prerequisite recovered production-source defects that

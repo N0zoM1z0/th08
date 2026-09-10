@@ -82,13 +82,19 @@ if(WIN32)
     list(APPEND TH08_GAME_SOURCES src/modern/windows_runtime.cpp)
     add_executable(th08-modern WIN32 ${TH08_GAME_SOURCES})
 elseif(UNIX AND NOT APPLE)
-    list(APPEND TH08_GAME_SOURCES
+    set(TH08_LINUX_ADAPTER_SOURCES
         src/modern/linux/d3d8_compat.cpp
         src/modern/linux/d3dx8_compat.cpp
         src/modern/linux/linux_compat.cpp
         src/modern/linux/linux_runtime.cpp
         src/modern/linux/render_audit.cpp
     )
+    set(TH08_LINUX_HOT_ADAPTER_SOURCES
+        src/modern/linux/d3d8_compat.cpp
+        src/modern/linux/d3dx8_compat.cpp
+        src/modern/linux/linux_compat.cpp
+    )
+    list(APPEND TH08_GAME_SOURCES ${TH08_LINUX_ADAPTER_SOURCES})
     add_executable(th08-modern ${TH08_GAME_SOURCES})
 else()
     message(FATAL_ERROR "The modern target currently supports Windows and Linux.")
@@ -195,6 +201,16 @@ elseif(UNIX AND NOT APPLE)
         -Wno-write-strings
         "-include${CMAKE_SOURCE_DIR}/src/modern/linux/linux_compat.hpp"
     )
+    # The sources above this adapter boundary are reconstructed VC7 game TUs
+    # and deliberately retain -O0. These files are the new SDL/OpenGL platform
+    # implementation, including the per-vertex renderer and pixel converters;
+    # compiling those handwritten hot paths at -O0 needlessly consumes the
+    # frame-time budget needed to sustain the port's 60 Hz target under load.
+    if(TH08_PORTABLE_NATIVE_LAYOUT)
+        set_source_files_properties(${TH08_LINUX_HOT_ADAPTER_SOURCES} PROPERTIES
+            COMPILE_OPTIONS "-O2;-fno-strict-aliasing"
+        )
+    endif()
     target_link_options(th08-modern PRIVATE -rdynamic)
     if(NOT TH08_PORTABLE_NATIVE_LAYOUT)
         target_compile_options(th08-modern PRIVATE -fno-pie)

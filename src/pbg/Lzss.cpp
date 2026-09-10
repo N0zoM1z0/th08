@@ -216,6 +216,22 @@ u8 *Lzss::Encode(u8 *in, i32 inSize, i32 *outSize)
 /**
  * \brief Fetch a new byte from the input buffer if the current byte has been fully decoded.
  */
+#ifdef TH08_MODERN_PORT
+#define DECODE_HANDLE_FETCH                                                                                            \
+    if (inBitMask == 0x80)                                                                                             \
+    {                                                                                                                  \
+        if (inCursor - in >= size)                                                                                     \
+        {                                                                                                              \
+            currByte = 0;                                                                                              \
+        }                                                                                                              \
+        else                                                                                                           \
+        {                                                                                                              \
+            currByte = *inCursor;                                                                                      \
+            inCursor++;                                                                                                \
+        }                                                                                                              \
+        checksum += currByte;                                                                                          \
+    }
+#else
 #define DECODE_HANDLE_FETCH                                                                                            \
     if (inBitMask == 0x80)                                                                                             \
     {                                                                                                                  \
@@ -230,6 +246,7 @@ u8 *Lzss::Encode(u8 *in, i32 inSize, i32 *outSize)
         }                                                                                                              \
         checksum += currByte;                                                                                          \
     }
+#endif
 
 /**
  * \brief Read and unpack a single bit from the input buffer.

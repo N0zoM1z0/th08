@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -267,6 +268,8 @@ bool ConfigureDataDirectory()
 void InstallCrashReporter()
 {
     InitializeTargetData();
+    if (getenv("TH08_DISABLE_CRASH_REPORTER") != NULL)
+        return;
     InstallSignalHandler(SIGSEGV);
     InstallSignalHandler(SIGABRT);
     InstallSignalHandler(SIGFPE);

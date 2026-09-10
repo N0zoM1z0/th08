@@ -58,9 +58,25 @@ AArch64 rebuild of the integrated head is pending because this workstation
 does not currently have `aarch64-linux-gnu-g++`; the table in
 `docs/PORTABLE_64BIT.md` records the earlier branch evidence and the distinction.
 
-Open portable investigations remain performance, full replay parity, the
-post-spell boss/familiar gauges, result-screen status, and negative spell-bonus
-reports. Do not close the broad
+The first native-layout follow-up removes two port-specific failure classes.
+The handwritten D3D8/D3DX8/SDL compatibility hot paths now use bounded `-O2`
+only in native-layout builds; reconstructed game TUs and fixed-layout i386 stay
+at `-O0`. Under identical Xvfb/llvmpipe conditions, the first 1,200 FPS-check
+swaps fell from 13.485 to 3.442 seconds (3.92x). AddressSanitizer then exposed
+the target's one-byte LZSS end read, a stale four-byte encrypted-resource size,
+and scalar deletion of arrays owned by streaming audio, TitleScreen, MusicRoom,
+and shortcut resolution. Modern-only bounds/length/delete pairing repairs keep
+the target-facing source exact. A 60-second ASan run completed title, bundled
+demo, Stage 5 loading, and return-to-title cleanup without another report. The
+normal x86_64 build and the container-built fixed-layout i386 build passed the
+same 60-second route. A cold replay verified all **1,106 / 1,106** configured
+exact units, the normal VC7 image linked, and the Windows i386 runtime-data
+verifier passed. Reproduction commands and evidence limits are in
+`docs/PORTABLE_64BIT.md`.
+
+Open portable investigations remain full replay parity, dense-pattern and
+browser performance, the post-spell boss/familiar gauges, result-screen status,
+and negative spell-bonus reports. Do not close the broad
 [th08 issue #18](https://github.com/N0zoM1z0/th08/issues/18) from the smoke test
 alone: it does not yet provide a sufficiently bounded reproduction.
 

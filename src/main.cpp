@@ -1159,7 +1159,11 @@ ZunBool GameWindow::ResolveIt(char *shortcutPath, char *dstPath, i32 maxPathLen)
                 }
             }
 
+#ifdef TH08_MODERN_PORT
+            delete[] wPath;
+#else
             delete wPath;
+#endif
             ppf->Release();
         }
 

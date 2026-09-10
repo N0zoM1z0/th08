@@ -20,6 +20,13 @@
 #include <mmsystem.h>
 #include <windows.h>
 
+#ifdef TH08_MODERN_PORT
+#define SAFE_DELETE_LEGACY_ARRAY(p) SAFE_DELETE_ARRAY(p)
+#else
+// TH08 1.00d releases these element-trivial arrays through scalar operator delete.
+#define SAFE_DELETE_LEGACY_ARRAY(p) SAFE_DELETE(p)
+#endif
+
 namespace th08
 {
 //-----------------------------------------------------------------------------
@@ -175,12 +182,12 @@ HRESULT CSoundManager::CreateStreaming(CStreamingSound **ppStreamingSound, LPTST
     if (FAILED(hr = pDSNotify->SetNotificationPositions(dwNotifyCount, aPosNotify)))
     {
         SAFE_RELEASE(pDSNotify);
-        SAFE_DELETE(aPosNotify);
+        SAFE_DELETE_LEGACY_ARRAY(aPosNotify);
         return DXTRACE_ERR(TEXT("SetNotificationPositions"), E_FAIL);
     }
 
     SAFE_RELEASE(pDSNotify);
-    SAFE_DELETE(aPosNotify);
+    SAFE_DELETE_LEGACY_ARRAY(aPosNotify);
 
     // Create the sound
     *ppStreamingSound = new CStreamingSound(pDSBuffer, dwDSBufferSize, pWaveFile, dwNotifySize);
@@ -254,12 +261,12 @@ HRESULT CSoundManager::CreateStreamingFromMemory(CStreamingSound **ppStreamingSo
     if (FAILED(hr = pDSNotify->SetNotificationPositions(dwNotifyCount, aPosNotify)))
     {
         SAFE_RELEASE(pDSNotify);
-        SAFE_DELETE(aPosNotify);
+        SAFE_DELETE_LEGACY_ARRAY(aPosNotify);
         return DXTRACE_ERR(TEXT("SetNotificationPositions"), E_FAIL);
     }
 
     SAFE_RELEASE(pDSNotify);
-    SAFE_DELETE(aPosNotify);
+    SAFE_DELETE_LEGACY_ARRAY(aPosNotify);
 
     // Create the sound
     *ppStreamingSound = new CStreamingSound(pDSBuffer, dwDSBufferSize, pWaveFile, dwNotifySize);
@@ -312,7 +319,7 @@ HRESULT CStreamingSound::InitSoundBuffers()
     for (i = 0; i < m_dwNumBuffers; i++)
         SAFE_RELEASE(m_apDSBuffer[i]);
 
-    SAFE_DELETE(m_apDSBuffer);
+    SAFE_DELETE_LEGACY_ARRAY(m_apDSBuffer);
 
     DSBPOSITIONNOTIFY *aPosNotify = NULL;
     LPDIRECTSOUNDNOTIFY pDSNotify = NULL;
@@ -340,12 +347,12 @@ HRESULT CStreamingSound::InitSoundBuffers()
         if (FAILED(pDSNotify->SetNotificationPositions(16, aPosNotify)))
         {
             SAFE_RELEASE(pDSNotify);
-            SAFE_DELETE(aPosNotify);
+            SAFE_DELETE_LEGACY_ARRAY(aPosNotify);
             return DXTRACE_ERR(TEXT("SetNotificationPositions"), E_FAIL);
         }
 
         SAFE_RELEASE(pDSNotify);
-        SAFE_DELETE(aPosNotify);
+        SAFE_DELETE_LEGACY_ARRAY(aPosNotify);
     }
 
     return S_OK;
@@ -1191,3 +1198,5 @@ HRESULT CWaveFile::Close()
     return S_OK;
 }
 }; // namespace th08
+
+#undef SAFE_DELETE_LEGACY_ARRAY

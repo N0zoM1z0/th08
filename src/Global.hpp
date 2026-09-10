@@ -32,9 +32,28 @@ namespace th08
     g_ZunMemory.RemoveFromRegistry(p);                                                                                 \
     delete p;                                                                                                          \
     p = NULL;
+#ifdef TH08_MODERN_PORT
+#define ZUN_DELETE_ARRAY(p)                                                                                            \
+    g_ZunMemory.RemoveFromRegistry(p);                                                                                 \
+    delete[] p;                                                                                                        \
+    p = NULL;
+#else
+// Preserve target scalar-delete emission for registered legacy arrays whose
+// current element types have trivial destruction.
+#define ZUN_DELETE_ARRAY(p) ZUN_DELETE(p)
+#endif
 #define ZUN_DELETE2(p)                                                                                                 \
     delete p;                                                                                                          \
     p = NULL;
+#ifdef TH08_MODERN_PORT
+#define ZUN_DELETE_ARRAY2(p)                                                                                           \
+    delete[] p;                                                                                                        \
+    p = NULL;
+#else
+// Preserve target scalar-delete emission for unregistered legacy arrays whose
+// current element types have trivial destruction.
+#define ZUN_DELETE_ARRAY2(p) ZUN_DELETE2(p)
+#endif
 
 #define ZUN_FREE(p)                                                                                                    \
     g_ZunMemory.Free(p);                                                                                               \
@@ -198,7 +217,7 @@ void ResetKeyboard();
 namespace FileSystem
 {
 LPBYTE Decrypt(LPBYTE inData, i32 size, u8 xorValue, u8 xorValueInc, i32 chunkSize, i32 maxBytes);
-LPBYTE TryDecryptFromTable(LPBYTE inData, LPINT unused, i32 size);
+LPBYTE TryDecryptFromTable(LPBYTE inData, LPINT fileSize, i32 size);
 LPBYTE Encrypt(LPBYTE inData, i32 size, u8 xorValue, u8 xorValueInc, i32 chunkSize, i32 maxBytes);
 LPBYTE OpenFile(LPCSTR path, i32 *fileSize, BOOL isExternalResource);
 BOOL CheckIfFileAlreadyExists(LPCSTR path);

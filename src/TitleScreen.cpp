@@ -677,7 +677,7 @@ ChainCallbackResult TitleScreen::OnUpdateStartMenu()
     case TitleCurrentScreenState_Exit:
         if (stateTimer >= 60)
         {
-            ZUN_DELETE2(this->vms);
+            ZUN_DELETE_ARRAY2(this->vms);
             // Yes, this->vms is set to NULL twice.
             this->vms = NULL;
 
@@ -3978,7 +3978,7 @@ ZunResult TitleScreen::Release()
 
     if (this->vms != NULL)
     {
-        ZUN_DELETE2(this->vms);
+        ZUN_DELETE_ARRAY2(this->vms);
         /* Again, double NULL set. */
         this->vms = NULL;
     }
