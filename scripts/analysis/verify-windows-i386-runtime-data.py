@@ -41,6 +41,32 @@ SPELLCARD_START_SPELL_VA = 0x004152A0
 SPELLCARD_START_SPELL_SIZE = 0x9B3
 EFFECT_MANAGER_VA = 0x004ECE60
 EFFECT_MANAGER_STAGE_EFFECT_ANM_OFFSET = 0x8B058
+GAME_MANAGER_VA = 0x0160F508
+PLAYER_ADDED_CALLBACK_VA = 0x0044D650
+PLAYER_ADDED_CALLBACK_SIZE = 0x601
+PLAYER_GAUGE_OWNER_WRITES = (
+    (0x3A1, 0x3DDF8, -10000),
+    (0x3AA, 0x3DDFC, -8000),
+    (0x3B3, 0x3DE00, -2000),
+    (0x3BC, 0x3DDFA, 10000),
+    (0x3C5, 0x3DDFE, 8000),
+    (0x3CE, 0x3DE02, 2000),
+    (0x3E3, 0x3DDF8, -5000),
+    (0x3EC, 0x3DDFC, -3000),
+    (0x3F5, 0x3DE00, -2000),
+    (0x40F, 0x3DDF8, -5000),
+    (0x418, 0x3DDFC, -3000),
+    (0x421, 0x3DE00, -2000),
+    (0x42A, 0x3DDFA, 5000),
+    (0x433, 0x3DDFE, 3000),
+    (0x43C, 0x3DE02, 2000),
+    (0x455, 0x3DDFA, 2000),
+    (0x45E, 0x3DDFE, 8000),
+    (0x467, 0x3DE02, 2001),
+    (0x480, 0x3DDF8, -2000),
+    (0x489, 0x3DDFC, -8000),
+    (0x492, 0x3DE00, -2001),
+)
 BACKGROUND_DRAW_HIGH_VA = 0x00409200
 BACKGROUND_DRAW_HIGH_SIZE = 0x43F
 BACKGROUND_DRAW_HIGH_STAGE_GATE_CALLS = (0x1F4, 0x419)
@@ -267,6 +293,41 @@ def verify_spellcard_background_owner(
                 f"{label} Spellcard::StartSpell has {count} "
                 "EffectManager::stageEffectAnm loads; expected 1"
             )
+
+
+def verify_player_gauge_bounds_owner(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Require Player setup to initialize GameManager's six gauge-bound fields."""
+    legacy_prefix = "?g_PlayerGaugeBounds@"
+    legacy_symbols = [name for name in publics if name.startswith(legacy_prefix)]
+    if legacy_symbols:
+        raise ValueError(
+            "linked image still owns standalone g_PlayerGaugeBounds: "
+            + ", ".join(sorted(legacy_symbols))
+        )
+
+    rebuilt_function_va = exact_public_va(
+        publics, "?AddedCallback@Player@th08@@SI?AW4ZunResult@@PAU12@@Z"
+    )
+    rebuilt_game_manager_va = exact_public_va(
+        publics, "?g_GameManager@th08@@3UGameManager@1@A"
+    )
+    for label, image, function_va, game_manager_va in (
+        ("target", target, PLAYER_ADDED_CALLBACK_VA, GAME_MANAGER_VA),
+        ("rebuild", rebuild, rebuilt_function_va, rebuilt_game_manager_va),
+    ):
+        body = read_va(image, function_va, PLAYER_ADDED_CALLBACK_SIZE)
+        for operand_offset, field_offset, expected_value in PLAYER_GAUGE_OWNER_WRITES:
+            address = struct.unpack_from("<I", body, operand_offset)[0]
+            value = struct.unpack_from("<h", body, operand_offset + 4)[0]
+            expected_address = game_manager_va + field_offset
+            if address != expected_address or value != expected_value:
+                raise ValueError(
+                    f"{label} Player::AddedCallback + {operand_offset:#x} writes "
+                    f"{value} to {address:#010x}; expected {expected_value} to "
+                    f"GameManager + {field_offset:#x} ({expected_address:#010x})"
+                )
 
 
 def rel32_call(source_va: int, target_va: int) -> bytes:
@@ -575,6 +636,7 @@ def main() -> int:
         )
         verify_gui_enemy_name_owner(target, rebuild, publics)
         verify_spellcard_background_owner(target, rebuild, publics)
+        verify_player_gauge_bounds_owner(target, rebuild, publics)
         verify_background_stage_gate(target, rebuild, publics)
         verify_additional_runtime_callees(target, rebuild, publics)
         verify_player_shot_callback_tables(target, rebuild, publics)
@@ -587,7 +649,8 @@ def main() -> int:
         "Last Spell count, 66 Effect templates, 9 stage bonuses, and "
         "12 dialogue palettes match the target; enemy-name copy selects "
         "Gui::frontAnm in all 8 linked loads; spell backgrounds select "
-        "EffectManager::stageEffectAnm; all 3 Background draw gates call "
+        "EffectManager::stageEffectAnm; all 21 player gauge-bound writes select "
+        "the six GameManager fields; all 3 Background draw gates call "
         "Gui::IsStageFinished; 8 additional repaired REL32 calls select their "
         "target-mapped callees; all 20 player-shot callback entries resolve "
         "through their target-owned tables"

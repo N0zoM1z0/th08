@@ -86955,38 +86955,44 @@ target = 0x00422BB0
 [[units.relocations]]
 offset = 0x3A1
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDF8
 
 [[units.relocations]]
 offset = 0x3AA
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDFC
 
 [[units.relocations]]
 offset = 0x3B3
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DE00
 
 [[units.relocations]]
 offset = 0x3BC
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDFA
 
 [[units.relocations]]
 offset = 0x3C5
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDFE
 
 [[units.relocations]]
 offset = 0x3CE
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DE02
 
 [[units.relocations]]
 offset = 0x3D7
@@ -86998,20 +87004,23 @@ addend = 0x3DBA9
 [[units.relocations]]
 offset = 0x3E3
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDF8
 
 [[units.relocations]]
 offset = 0x3EC
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDFC
 
 [[units.relocations]]
 offset = 0x3F5
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DE00
 
 [[units.relocations]]
 offset = 0x403
@@ -87023,38 +87032,44 @@ addend = 0x3DBA9
 [[units.relocations]]
 offset = 0x40F
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDF8
 
 [[units.relocations]]
 offset = 0x418
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDFC
 
 [[units.relocations]]
 offset = 0x421
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DE00
 
 [[units.relocations]]
 offset = 0x42A
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDFA
 
 [[units.relocations]]
 offset = 0x433
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDFE
 
 [[units.relocations]]
 offset = 0x43C
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DE02
 
 [[units.relocations]]
 offset = 0x445
@@ -87071,20 +87086,23 @@ target = 0x0042F230
 [[units.relocations]]
 offset = 0x455
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDFA
 
 [[units.relocations]]
 offset = 0x45E
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDFE
 
 [[units.relocations]]
 offset = 0x467
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DE02
 
 [[units.relocations]]
 offset = 0x470
@@ -87101,20 +87119,23 @@ target = 0x0042F270
 [[units.relocations]]
 offset = 0x480
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDF8
 
 [[units.relocations]]
 offset = 0x489
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DDFC
 
 [[units.relocations]]
 offset = 0x492
 type = "DIR32"
-symbol = "?g_PlayerGaugeBounds@th08@@3PAFA"
-target = 0x0164D300
+symbol = "?g_GameManager@th08@@3UGameManager@1@A"
+target = 0x0160F508
+addend = 0x3DE00
 
 [[units.relocations]]
 offset = 0x4F1

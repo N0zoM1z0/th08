@@ -5,7 +5,9 @@ Windows i386 playtesting on 2026-09-10. The only target is the original Japanese
 TH08 1.00d executable, SHA-256
 `330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924`.
 
-The audit is whole-program reconstruction evidence. It does not grant new
+The audit covers both initialized target data and mutable aggregate fields that
+were incorrectly modeled as independent linker storage. It is whole-program
+reconstruction evidence. It does not grant new
 function exactness and it does not claim that every runtime path has been
 exercised.
 
@@ -46,8 +48,9 @@ raw-backed target section without an initializer. It also checks the four
 families above in the linked reconstruction and verifies that all eight linked
 loads in `Gui::CopyEnemyNameTexture` select `Gui::frontAnm`. It also rejects a
 standalone spell-background ANM symbol and requires `Spellcard::StartSpell` to
-load `EffectManager::stageEffectAnm`. This is deliberately stricter than
-checking source text alone.
+load `EffectManager::stageEffectAnm`. It also rejects standalone player gauge-
+bound storage and checks all 21 linked writes into the six real `GameManager`
+fields. This is deliberately stricter than checking source text alone.
 
 ## Remilia X-bomb incident
 
@@ -120,6 +123,43 @@ verifier additionally fails if the legacy public symbol reappears or if either
 the target or rebuilt `StartSpell` lacks exactly one load of the canonical
 field.
 
+## Player gauge fields disguised as an array
+
+Normal Stage 1 and Stage Practice 2 exposed a third aggregate-owner failure:
+score rose by approximately 6,000 visible points per second at gauge zero,
+continued after a hit, and ordinary graze counts increased too quickly. Target
+address arithmetic establishes the owner without relying on those symptoms:
+
+```text
+g_GameManager                          0x0160F508
++ offsetof(GameManager,
+    youkaiGaugeHumanLimit)             0x003DDF8
+= first gauge-bound field              0x0164D300
+```
+
+The next five signed 16-bit members end at `0x0164D30B`, exactly covering the
+former `g_PlayerGaugeBounds[6]` range. Target `Player::AddedCallback @
+0x0044D650` writes its 21 default and shot-specific values to those six
+addresses. The target `GaugeIsExtremelyHuman`, `GaugeIsExtremelyYoukai`, and
+moderate variants read the corresponding `GameManager` member offsets.
+
+In native hash `87edf9dc...1832d73`, linker-map and live-process evidence
+showed the false standalone array at `0x017E3128` with correct default values,
+but the actual manager fields at `0x0165A5A8` were all zero. Thus gauge zero
+satisfied the extreme-human comparison. `Player::OnUpdate` awarded 100 visible
+points each active frame, and `Player::AwardGraze` used its extreme-human gain
+of 3 instead of its ordinary gain of 1. `Player::Die` setting the gauge back to
+zero could not stop the error.
+
+A hash-pinned diagnostic wrote the 12 target bytes only to the live manager
+fields and read them back. Read-only sampling then showed authoritative score
+stop, display score catch up to a zero step, and the user confirmed the visible
+score was normal. This isolates the owner causally but does not replace a
+production rebuild. Source now writes the six named members directly; the
+match unit records `g_GameManager` plus the individual field addends, the false
+global and Linux fixed-layout alias are gone, and the linked verifier rejects
+their return.
+
 ## Static verification checkpoint
 
 - the native VC7 link succeeds without unresolved-symbol forcing;
@@ -130,26 +170,33 @@ field.
   the target byte-for-byte;
 - `Spellcard::StartSpell` loads the stage-effect ANM through its canonical
   manager field and has no standalone background-ANM storage; and
-- focused `Spellcard::StartSpell` replay passes **2,483 / 2,483 exact**.
+- `Player::AddedCallback` directs all 21 gauge-bound writes to the six
+  contiguous `GameManager` fields and has no standalone gauge-bound storage;
+  and
+- focused `Spellcard::StartSpell` replay passes **2,483 / 2,483 exact**, while
+  focused `Player::AddedCallback` replay passes **1,537 / 1,537 exact**.
 
 A subsequent single-job cold replay rebuilt all 75 configured objects and
-passed **1,106 / 1,106 exact**. The fresh normal link produced a 902,144-byte
-PE32 i386 GUI executable with SHA-256
-`beab5f36302c8334551dd6f86fa4f65d3fbc0d2e5055f4a73f86dcc5bd77240c`.
+passed **1,106 / 1,106 exact**. The fresh normal PE32 i386 GUI link has SHA-256
+`5e217f010c78d3fb1c1459f7127c917dfe039d24a9253f90badb00b8cf556527`.
 That normal artifact remains exact-facing build evidence. The native playtest
 artifact is rebuilt with `--build-type bugfix` so reconstructed score/replay
 headers are accepted by version rather than an impossible retail executable
 size/checksum identity. The current bugfix link is an 898,048-byte PE32 i386
 GUI executable with SHA-256
-`e8b7107a0d45c9e319345d131ec5d7f713d38d7a2707d61f52eed0d12161d73d`; it
-passes the expanded linked owner/data verifier. Its preserve-lives patch gate
-passed on Windows and the process remained alive for a 12-second startup smoke;
-spell-card entry remains the RT-005 runtime confirmation gate.
+`cf32bd1f5202f866a749b40c2aaced94b9c7fe357df0dc5bb20867e1726c6e26`; it
+passes the expanded linked owner/data verifier. The isolated Windows directory
+was completely cleared before this artifact, the retail DAT files, a fresh
+windowed configuration, and the ordinary unpatched launcher were deployed.
+No preserve-lives helper or earlier score/replay state was copied.
 
 The user confirmed Remilia's X bomb and continued gameplay past the repaired
 selection transition on hash `a583f9a5...56dcad`, closing RT-001 and RT-002.
-The later spell-background repair remains **fixed / confirmation pending** as
-RT-005 in `RUNTIME_ISSUES.md`.
+The later completed run closed RT-005, and the current live-stage/Stage 4 test
+closed RT-006. RT-007 remains **fixed / confirmation pending**. The RT-008
+gauge-bound repair described above has passed the fresh VC7 build, focused/cold
+exact replay, linked verification, and clean deployment; it is **fixed /
+confirmation pending** until the original score/graze paths are repeated.
 
 ## Audit limits
 

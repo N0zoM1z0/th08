@@ -16,13 +16,14 @@ Status meanings:
 
 | ID | Status | User-visible symptom | Evidence and disposition |
 | --- | --- | --- | --- |
-| RT-001 | closed | Remilia's X-bomb trail did not render, while Sakuya's did. | Native production owned a zero-filled `g_EffectTemplates[66]`; target row 53 requires script 88 plus `UpdateFadingRadialTrail` and `InitializeRadialTrail`. The complete target table is now owned by `EffectManager.cpp`, passes linked-data verification, and the user confirmed Remilia's X-bomb effect on native hash `a583f9a5...56dcad`. |
+| RT-001 | closed | Remilia's X-bomb trail did not render, while Sakuya's did. | Native production owned a zero-filled `g_EffectTemplates[66]`; target row 53 requires script 88 plus `UpdateFadingRadialTrail` and `InitializeRadialTrail`. The complete target table is now owned by `EffectManager.cpp`, passes linked-data verification, and the user confirmed Remilia's X-bomb effect on native hash `a583f9a5...56dcad`. Follow-up testing also confirmed the Reimu/Yukari, Marisa/Alice, and Sakuya/Remilia X-bomb paths. |
 | RT-002 | closed | Selecting a team/run exited the native game at the gameplay transition. | Native hash `c394035e...f9ce7` reproduced `0xC0000005` at linked `Gui::CopyEnemyNameTexture + 0x77` (`0x00429589`). The function selected sprite `0x10` from six-sprite `stg1txt.anm`; the resulting pointer lay in reserved, uncommitted memory. Target instructions instead read `g_Gui + 0x0C` (`frontAnm`), whose two entries provide 33 sprites. Production now uses `frontAnm`, all eight DIR32 relocations name the real `g_Gui @ 0x0160F428` base, and the linked verifier guards the owner. The user entered and continued gameplay on repaired hash `a583f9a5...56dcad`, closing the original transition path. |
 | RT-003 | fixed / confirmation pending | No specific symptom was isolated; the owner audit found additional latent data defects. | `g_LastSpellCount`, nine stage-clear bonuses, and twelve dialogue palettes were zero-filled in the native link. Their target initializers now live in `Spellcard.cpp`/`Gui.cpp` and match the target bytes. Exercise Last Spell selection, stage-clear calculation, and dialogue across multiple shot types. |
 | RT-004 | closed | The normal VC7 reconstruction exited about three seconds after startup. | CDB caught `0xC0000005` at linked CRT `strncmp + 0x1F` (`0x004ABA5F`), called by `Supervisor::CheckVersion + 0xC4`. Archive open/decryption returned valid data. The normal executable's non-retail size/checksum made the original whitelist scan pass the final `0100d` record; its unchecked `strchr(..., '\n') + 1` then produced `0x1`. The native `bugfix` build uses the already reconstructed `FIX_REALLY_BAD_BUGS` version-string acceptance path. Hash `c394035e...f9ce7` remained alive at title for a 12-second Windows smoke test. |
 | RT-005 | closed | Gameplay exited later, after the repaired selection and X-bomb paths had run. | Native hash `a583f9a5...56dcad` reproduced `0xC0000005` at linked `AnmLoaded::SetAndExecuteScriptIdx + 0x24` (`0x00406994`) with null `this`. CDB traced the call through `Spellcard::StartSpell`: source referenced a never-assigned standalone `g_SpellcardBackgroundAnm`, but target `0x00577EB8` is `g_EffectManager + 0x8B058`, the asserted `stageEffectAnm` field populated by `EffectManager::LoadEffectResources`. Production and the relocation manifest now use the aggregate owner, the standalone storage/mapping is gone, and the linked verifier guards the load. The user subsequently completed the repaired `e8b7107a...161d73d` run through Final and saved replay slot 3, exercising repeated spell-card starts without recurrence. |
-| RT-006 | fixed / confirmation pending | Dialogue showed a flat `RGB(64,64,96)` or black playfield; later frames accumulated player and portrait trails. | Target Background draw callbacks call `Gui::IsStageFinished @ 0x00437D87` at all three stage-layer gates. Source called `Gui::IsDialoguePresent @ 0x004358BB`, while the match manifest declared the target address and normalized the wrong source call into an exact result. The linked repair passes the native call verifier on hash `87edf9dc...1832d73`; repeat the reported dialogue with that artifact. |
-| RT-007 | fixed / confirmation pending | Near the final Last Spell, self-shot emission looked wrong and dense white digit-like textures covered the playfield edges. | The old source called unsigned RNG from target `SpawnRandomizedShot`'s signed-RNG site and sent point-star/time-orb values to a 720-entry score-popup pool instead of the target's three-entry player-point pool. The corrected callees are exact and pass final-link verification on hash `87edf9dc...1832d73`. Replay slot 3 (`1ec94058...4fbc7`) preserves the reported run for confirmation. |
+| RT-006 | closed | Dialogue showed a flat `RGB(64,64,96)` or black playfield; later frames accumulated player and portrait trails. | Target Background draw callbacks call `Gui::IsStageFinished @ 0x00437D87` at all three stage-layer gates. Source called `Gui::IsDialoguePresent @ 0x004358BB`, while the match manifest declared the target address and normalized the wrong source call into an exact result. The linked repair passes the native call verifier, and the user confirmed the live stage background plus corrected Stage 4 Reimu rendering on native hash `87edf9dc...1832d73`. |
+| RT-007 | fixed / confirmation pending | Near the final Last Spell, self-shot emission looked wrong and dense white digit-like textures covered the playfield edges. | The old source called unsigned RNG from target `SpawnRandomizedShot`'s signed-RNG site and sent point-star/time-orb values to a 720-entry score-popup pool instead of the target's three-entry player-point pool. The corrected callees are exact and pass final-link verification on hash `87edf9dc...1832d73`. The previous isolated run's replay slot 3 had SHA-256 `1ec94058...4fbc7`; it was deliberately not carried into the later clean deployment, so confirmation now requires a fresh run. |
+| RT-008 | fixed / confirmation pending | Score rose by about 6,000 points per second from the start of normal and Stage Practice runs, continued after a player hit, and graze counts increased too quickly. | Target `g_PlayerGaugeBounds @ 0x0164D300` is not standalone storage: it is exactly the six contiguous gauge limit/threshold fields at `g_GameManager @ 0x0160F508 + 0x3DDF8..0x3DE02`. The native linker split the source array from those fields, leaving the predicates' manager thresholds zero. Read-only process sampling proved the split; a 12-byte process-local field repair immediately stopped authoritative score growth at gauge zero. The production repair passes focused and cold exact replay plus final-link owner verification and is deployed unpatched as native hash `cf32bd1f...6c6e26`; repeat normal Stage 1 and Stage Practice from gauge zero. |
 
 ## Native enemy-name texture exit
 
@@ -142,15 +143,60 @@ decodes the eight repaired REL32 calls and additionally checks the target-owned
 tables in the final PE. `config/reccmp-globals.csv` now names those four tables
 at their actual target addresses rather than the former shifted
 update/render/timer labels. The screenshot-to-popup explanation remains a
-strong causal inference until replay slot 3 is exercised on the repaired hash,
-so RT-007 is not closed yet.
+strong causal inference until the repaired path is exercised again. The old
+slot-3 replay was intentionally excluded when the isolated directory was
+cleaned, so RT-007 is not closed yet.
+
+## Native gauge-bound owner and inflated score/graze
+
+Normal Stage 1 and Stage Practice 2 both reproduced stable score growth of
+approximately 6,000 visible points per second from their initial gauge state.
+The score continued after a player hit, and ordinary grazing increased the
+counter much faster than expected. This was not display interpolation alone:
+read-only `ReadProcessMemory` sampling of native hash
+`87edf9dc...1832d73` showed its authoritative internal score increasing by
+approximately 600 units per second while `playerState` crossed dying, spawning,
+invulnerable, and alive with gauge zero.
+
+The owner error is exact. Target `g_GameManager @ 0x0160F508` has six contiguous
+signed 16-bit fields at offsets `0x3DDF8..0x3DE02`. Their addresses are
+`0x0164D300..0x0164D30B`, exactly the range formerly mapped as standalone
+`g_PlayerGaugeBounds[6]`. Target `Player::AddedCallback @ 0x0044D650` writes all
+21 initial/default/shot-specific values to those addresses. The target gauge
+predicates then read `GameManager + 0x3DDFC`, `+0x3DDFE`, `+0x3DE00`, and
+`+0x3DE02`.
+
+The old production source instead wrote a separately linked
+`g_PlayerGaugeBounds` array. In the deployed PE that array lived at
+`0x017E3128` and contained the correct default values
+`[-10000, 10000, -8000, 8000, -2000, 2000]`, while the actual fields at
+`g_GameManager + 0x3DDF8` remained `[0, 0, 0, 0, 0, 0]`. Gauge zero therefore
+satisfied `GaugeIsExtremelyHuman()` (`0 <= 0`). `Player::OnUpdate` awarded 100
+visible points every active frame, including after `Player::Die` restored the
+gauge to zero, and `Player::AwardGraze` selected its extreme-human gain of 3
+instead of the ordinary gain of 1.
+
+A hash-pinned, process-local diagnostic wrote only the six target values into
+the real manager fields and read them back. On the next samples, authoritative
+score stopped at internal value `3994801`; `displayScore` caught up, its step
+became zero, and score remained unchanged across the same player states at
+gauge zero. This runtime experiment is causal evidence, not the production
+repair. Production now writes the six named `GameManager` fields directly,
+removes the false global and Linux fixed-address alias, and records the manager
+base plus field addend in all 21 match relocations. The native linked verifier
+rejects a resurrected standalone symbol and checks every final write. A fresh
+VC7 build now passes focused `Player::AddedCallback` replay (**1,537 / 1,537
+exact**), the required single-job cold replay (**1,106 / 1,106 exact**), and the
+final-link owner verifier. The unpatched bugfix artifact with SHA-256
+`cf32bd1f5202f866a749b40c2aaced94b9c7fe357df0dc5bb20867e1726c6e26`
+is deployed for native repetition, so RT-008 is fixed with confirmation pending.
 
 ## Target-confirmed score movement while idle
 
-A playtest observation that the score rose by several thousand points per
-second while the player did not move is expected TH08 1.00d behavior when the
-human/youkai gauge is at either extreme. It is not tracked as a runtime defect.
-Target `Player::OnUpdate @ 0x0044C390` calls
+A score increase while the player does not move is expected TH08 1.00d behavior
+only when the correctly initialized human/youkai gauge is at either extreme.
+It is not expected at the ordinary gauge-zero start of a team run. Target
+`Player::OnUpdate @ 0x0044C390` calls
 `GameManager::AddScore(100)` once per active, non-dialogue frame from both the
 extremely-human branch (`+0x1CC`) and extremely-youkai branch (`+0x204`). At 60
 frames per second, the visible score therefore rises by approximately 6,000
@@ -169,9 +215,11 @@ native hash `e8b7107a...161d73d` likewise has 18 direct calls, all resolving to
 its linked `GameManager::AddScore`. Both `Player::OnUpdate` and
 `GameManager::OnUpdate` are independently configured as 100% exact functions,
 and their final linked instructions retain the target scoring and display-
-catch-up behavior. A future scoring report should distinguish the authoritative
-score from the animated display and record the gauge position before treating
-idle digit movement as a regression.
+catch-up behavior. The deployed build's zero threshold fields made gauge zero
+look extreme and created RT-008; that owner defect is separate from the real
+extreme-gauge rule. A future scoring report should distinguish the authoritative
+score from the animated display and record both gauge value and initialized
+thresholds.
 
 ## Native normal-build startup exit
 
@@ -196,22 +244,23 @@ lane; the bugfix mode remains native prerequisite evidence, not port evidence.
 
 ## Current static checkpoint
 
-The current source checkpoint has passed focused replay for all eight corrected
-callers, the linked runtime owner/call verifier, and a single-job cold rebuild/
-replay of all 75 configured objects (**1,106 / 1,106 exact**). The fresh normal
-link is a 902,144-byte PE32 i386 GUI executable with SHA-256
-`134405118d7c842f9f4015504b33d4d05e2289a95b51cf24a9bf38d8bbb2a59d`.
+The current source checkpoint has passed focused
+`Player::AddedCallback @ 0x0044D650` replay (**1,537 / 1,537 exact**), the
+linked runtime owner/call verifier, and a single-job cold rebuild/replay of all
+75 configured objects (**1,106 / 1,106 exact**). The fresh normal PE32 i386 GUI
+link has SHA-256
+`5e217f010c78d3fb1c1459f7127c917dfe039d24a9253f90badb00b8cf556527`.
 The fresh bugfix runtime link is an 898,048-byte PE32 i386 GUI executable with
 SHA-256
-`87edf9dc051e71fadb0d5ac5f77a663ac9dab2c91fdf48d03288ecab11832d73`.
+`cf32bd1f5202f866a749b40c2aaced94b9c7fe357df0dc5bb20867e1726c6e26`.
 It passes linked runtime verification for the initialized owners, all eight
-enemy-name loads, spell-background aggregate load, three dialogue gates, eight
-additional corrected REL32 calls, and all 20 player-shot callback entries. The
-complete Linux i386 container image also links after removal of the obsolete
-dialogue snapshot and passes its fixed-layout verifier. The preserve-lives
-launcher is repinned to this hash and the unchanged RVA/instruction bytes;
-the bugfix executable and launcher are deployed in the isolated Windows data
-directory. The launcher verified the complete 12-byte instruction sequence,
-patched only the live `push -1` immediate to `push 0`, read the patch back, and
-left the game running. Manual repetition of RT-006/RT-007 on replay slot 3 is
-the remaining confirmation gate.
+enemy-name loads, spell-background aggregate load, all 21 player gauge-bound
+writes, three dialogue gates, eight additional corrected REL32 calls, and all
+20 player-shot callback entries. The isolated Windows directory was then
+completely cleared and recreated with exactly the new executable, the two
+hash-verified retail DAT files, a freshly copied windowed retail configuration,
+and the ordinary unpatched launcher. No old executable, score, replay, log,
+modern-port artifact, or preserve-lives script was carried forward. The
+optional preserve-lives helper remains pinned to the preceding hash and safely
+refuses this image. RT-007 and RT-008 now require ordinary unpatched native
+repetition.

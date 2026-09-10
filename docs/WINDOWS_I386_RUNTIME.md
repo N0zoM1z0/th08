@@ -87,7 +87,9 @@ rejects standalone `g_SpellcardBackgroundAnm` storage and requires
 stage-layer gates in the linked Background draw callbacks and requires them to
 call `Gui::IsStageFinished`, never `Gui::IsDialoguePresent`. The same verifier
 checks the eight other REL32 callees uncovered by that audit and all 20 entries
-of the target-owned player-shot spawn/update/draw/collision callback tables.
+of the target-owned player-shot spawn/update/draw/collision callback tables. It
+also rejects standalone `g_PlayerGaugeBounds` storage and checks all 21 setup
+writes against the six gauge fields at `g_GameManager + 0x3DDF8..0x3DE02`.
 
 Source or shared-owner changes also require the normal exact gates:
 
@@ -191,6 +193,18 @@ collision table at `0x004C7F24`. The final-link verifier resolves all 20
 entries, including the ABI adapters used where a serialized SHT callback index
 selects a Player member implementation.
 
+RT-008 exposed the same aggregate-owner failure in mutable setup data. Target
+`g_PlayerGaugeBounds @ 0x0164D300` is exactly the first of six contiguous
+signed 16-bit fields at `g_GameManager @ 0x0160F508 + 0x3DDF8`; it is not an
+independent array. `Player::AddedCallback` writes 21 default and shot-specific
+values across those six fields, while the gauge predicates read the same
+manager members. The old native link allocated the apparent array separately,
+leaving the real manager thresholds zero. Gauge zero then qualified as extreme
+human, awarding 100 visible score points every active frame and tripling the
+ordinary graze count. The production fix names all six manager members,
+removes the false global and fixed-layout port alias, and requires the final
+linked writes to resolve through `g_GameManager`.
+
 ## Runtime matrix
 
 A minimum manual pass should exercise ownership and lifetime boundaries, not
@@ -208,16 +222,18 @@ only reach the title screen:
 7. save and replay a run when the preceding paths are stable; and
 8. close the game normally and record whether the process exits unexpectedly.
 
-The long-run regression replay saved during RT-007 is slot 3 (`th8_03.rpy`,
-SHA-256 `1ec94058...4fbc7`). Use it to revisit the Final/Last Spell self-shot
-and dense popup paths without overwriting the replay or score files.
+The earlier long-run regression replay saved during RT-007 was slot 3
+(`th8_03.rpy`, SHA-256 `1ec94058...4fbc7`). The later explicitly requested
+clean deployment did not carry any prior replay or score state forward; repeat
+the Final/Last Spell self-shot and dense popup paths in a fresh run.
 
-At either extreme of the human/youkai gauge, the original game awards 100
-visible score points per active frame, or approximately 6,000 points per second
-at 60 FPS, even while the player is stationary. Large awards are also presented
-through a short display-score catch-up animation. Neither observation alone is
-a scoring failure; record gauge position and whether the increase stops before
-opening a runtime issue.
+At either real extreme of the correctly initialized human/youkai gauge, the
+original game awards 100 visible score points per active frame, or approximately
+6,000 points per second at 60 FPS, even while the player is stationary. Gauge
+zero at the start of an ordinary team run is not extreme and must not receive
+that award. Large awards are also presented through a short display-score
+catch-up animation. Record the authoritative score, display score, gauge, and
+six initialized thresholds when distinguishing these paths.
 
 Track every observation in [the runtime issue ledger](RUNTIME_ISSUES.md).
 Record the executable SHA-256, exact interaction, last visible frame, whether

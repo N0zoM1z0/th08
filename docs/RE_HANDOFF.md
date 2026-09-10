@@ -87,10 +87,28 @@ callees. `validate-tracking.py` rejects a decorated REL32 symbol assigned to
 multiple target addresses, and the native verifier decodes the final linked
 calls. The player-shot global ledger also now correctly names the 9/6/2/3
 spawn/update/draw/collision tables at `0x004C7EE0..0x004C7F2F`; final-link
-verification resolves all 20 entries. RT-006 and RT-007 are **fixed /
-confirmation pending** on the new artifact. Idle score growth was separately
-ruled target behavior: an extreme human/youkai gauge awards 100 visible points
-per active frame, approximately 6,000 points per second at 60 FPS.
+verification resolves all 20 entries. The user confirmed live dialogue
+backgrounds and corrected Stage 4 Reimu rendering on hash
+`87edf9dc...1832d73`, closing RT-006. RT-007 remains **fixed / confirmation
+pending** on that artifact.
+
+The same run exposed RT-008: score rose approximately 6,000 visible points per
+second from gauge zero in both normal Stage 1 and Stage Practice 2, continued
+after a hit, and graze counts rose too quickly. Read-only process sampling
+proved that the linked `GameManager` gauge bounds were all zero while the
+separately allocated `g_PlayerGaugeBounds` contained the correct values. Target
+`0x0164D300..0x0164D30B` is exactly `g_GameManager @ 0x0160F508 +
+0x3DDF8..0x3DE02`, not standalone storage. The zero extreme-human threshold
+made gauge zero award 100 visible points per frame and made each ordinary graze
+count as 3. A 12-byte process-local diagnostic installed the target values;
+authoritative score immediately stopped, display score caught up to a zero
+step, and the user confirmed normal score behavior. Production now writes the
+six named manager fields, all 21 match relocations name the manager base plus
+field addend, the false global/Linux alias are removed, and the linked verifier
+guards the writes. Focused `Player::AddedCallback` replay now passes **1,537 /
+1,537 exact**; the cold aggregate replay, fresh normal/bugfix links, and clean
+unpatched deployment are also complete. RT-008 is **fixed / confirmation
+pending** on the new artifact.
 
 A separate native normal-build startup exit is now diagnosed and closed. CDB
 caught `0xC0000005` in linked VC7 `strncmp @ 0x004ABA5F`, reached from
@@ -104,25 +122,21 @@ comparison/link lane. This is a native build-mode boundary, not a modern-port
 workaround or an exactness claim.
 
 The required single-job cold replay rebuilt all 75 configured objects and
-passed **1,106 / 1,106 exact**. A subsequent fresh normal VC7 build linked a
-902,144-byte PE32 i386 GUI executable with SHA-256
-`134405118d7c842f9f4015504b33d4d05e2289a95b51cf24a9bf38d8bbb2a59d`.
+passed **1,106 / 1,106 exact**. A subsequent fresh normal VC7 PE32 i386 link has
+SHA-256
+`5e217f010c78d3fb1c1459f7127c917dfe039d24a9253f90badb00b8cf556527`.
 The subsequent fresh bugfix VC7 runtime build linked an 898,048-byte PE32 i386
 GUI executable with SHA-256
-`87edf9dc051e71fadb0d5ac5f77a663ac9dab2c91fdf48d03288ecab11832d73`. The
-hash-pinned `scripts/run-preserve-lives-test.ps1` targets this bugfix artifact
-and changes only the live `push -1` argument immediately before
-`GameManager::AddLives` in
-`Player::UpdateDeathAndRespawn` to `push 0`; it preserves the death/effect/drop/
-respawn/UI paths and never modifies the executable on disk. RVA `0x3EA19` and
-the complete 12-byte instruction sequence are unchanged; the launcher is
-repinned to the new hash. The complete Linux i386 container build links after
-the obsolete dialogue-snapshot workaround was removed, and its fixed-layout
-verifier passes. The bugfix artifact and repinned launcher are deployed to the
-isolated `D:\Entertainment\Game\Touhou\th08-reconstruct` directory; the launcher
-verified and patched the complete expected instruction in memory, read it back,
-and left the game process running. Replay slot 3 confirmation of RT-006 and
-RT-007 remains pending at this checkpoint.
+`cf32bd1f5202f866a749b40c2aaced94b9c7fe357df0dc5bb20867e1726c6e26`.
+The linked verifier confirms all 21 gauge-bound writes select the six
+`GameManager` fields along with every earlier native owner/callee repair. The
+isolated `D:\Entertainment\Game\Touhou\th08-reconstruct` directory was
+completely cleared and recreated with exactly this executable, hash-verified
+retail `th08.dat`/`thbgm.dat`, a freshly copied windowed retail configuration,
+and `run-windows-i386-reconstruction.bat`. No prior executable, modern port,
+score, replay, log, or preserve-lives helper was carried forward. The optional
+process patch remains pinned to the preceding artifact and refuses the new
+hash. RT-006 is closed; RT-007 and RT-008 await ordinary unpatched repetition.
 
 The current protocol closure goes beyond the imported TH06 readability
 baseline on the comparable interpreter surfaces.  TH08 now names all 184 ECL
