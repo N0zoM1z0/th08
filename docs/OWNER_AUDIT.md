@@ -194,9 +194,10 @@ The user confirmed Remilia's X bomb and continued gameplay past the repaired
 selection transition on hash `a583f9a5...56dcad`, closing RT-001 and RT-002.
 The later completed run closed RT-005, and the current live-stage/Stage 4 test
 closed RT-006. RT-007 remains **fixed / confirmation pending**. The RT-008
-gauge-bound repair described above has passed the fresh VC7 build, focused/cold
-exact replay, linked verification, and clean deployment; it is **fixed /
-confirmation pending** until the original score/graze paths are repeated.
+gauge-bound repair described above passed the fresh VC7 build, focused/cold
+exact replay, linked verification, and clean deployment. The user then repeated
+the score/graze path on the clean, unpatched hash `cf32bd1f...6c6e26` and
+confirmed normal behavior, closing RT-008.
 
 ## Audit limits
 

@@ -23,7 +23,7 @@ Status meanings:
 | RT-005 | closed | Gameplay exited later, after the repaired selection and X-bomb paths had run. | Native hash `a583f9a5...56dcad` reproduced `0xC0000005` at linked `AnmLoaded::SetAndExecuteScriptIdx + 0x24` (`0x00406994`) with null `this`. CDB traced the call through `Spellcard::StartSpell`: source referenced a never-assigned standalone `g_SpellcardBackgroundAnm`, but target `0x00577EB8` is `g_EffectManager + 0x8B058`, the asserted `stageEffectAnm` field populated by `EffectManager::LoadEffectResources`. Production and the relocation manifest now use the aggregate owner, the standalone storage/mapping is gone, and the linked verifier guards the load. The user subsequently completed the repaired `e8b7107a...161d73d` run through Final and saved replay slot 3, exercising repeated spell-card starts without recurrence. |
 | RT-006 | closed | Dialogue showed a flat `RGB(64,64,96)` or black playfield; later frames accumulated player and portrait trails. | Target Background draw callbacks call `Gui::IsStageFinished @ 0x00437D87` at all three stage-layer gates. Source called `Gui::IsDialoguePresent @ 0x004358BB`, while the match manifest declared the target address and normalized the wrong source call into an exact result. The linked repair passes the native call verifier, and the user confirmed the live stage background plus corrected Stage 4 Reimu rendering on native hash `87edf9dc...1832d73`. |
 | RT-007 | fixed / confirmation pending | Near the final Last Spell, self-shot emission looked wrong and dense white digit-like textures covered the playfield edges. | The old source called unsigned RNG from target `SpawnRandomizedShot`'s signed-RNG site and sent point-star/time-orb values to a 720-entry score-popup pool instead of the target's three-entry player-point pool. The corrected callees are exact and pass final-link verification on hash `87edf9dc...1832d73`. The previous isolated run's replay slot 3 had SHA-256 `1ec94058...4fbc7`; it was deliberately not carried into the later clean deployment, so confirmation now requires a fresh run. |
-| RT-008 | fixed / confirmation pending | Score rose by about 6,000 points per second from the start of normal and Stage Practice runs, continued after a player hit, and graze counts increased too quickly. | Target `g_PlayerGaugeBounds @ 0x0164D300` is not standalone storage: it is exactly the six contiguous gauge limit/threshold fields at `g_GameManager @ 0x0160F508 + 0x3DDF8..0x3DE02`. The native linker split the source array from those fields, leaving the predicates' manager thresholds zero. Read-only process sampling proved the split; a 12-byte process-local field repair immediately stopped authoritative score growth at gauge zero. The production repair passes focused and cold exact replay plus final-link owner verification and is deployed unpatched as native hash `cf32bd1f...6c6e26`; repeat normal Stage 1 and Stage Practice from gauge zero. |
+| RT-008 | closed | Score rose by about 6,000 points per second from the start of normal and Stage Practice runs, continued after a player hit, and graze counts increased too quickly. | Target `g_PlayerGaugeBounds @ 0x0164D300` is not standalone storage: it is exactly the six contiguous gauge limit/threshold fields at `g_GameManager @ 0x0160F508 + 0x3DDF8..0x3DE02`. The native linker split the source array from those fields, leaving the predicates' manager thresholds zero. Read-only process sampling proved the split; a 12-byte process-local field repair immediately stopped authoritative score growth at gauge zero. The production repair passes focused and cold exact replay plus final-link owner verification. The user repeated the score/graze path on the clean, unpatched native hash `cf32bd1f...6c6e26` and confirmed normal behavior, closing the issue. |
 
 ## Native enemy-name texture exit
 
@@ -189,7 +189,8 @@ VC7 build now passes focused `Player::AddedCallback` replay (**1,537 / 1,537
 exact**), the required single-job cold replay (**1,106 / 1,106 exact**), and the
 final-link owner verifier. The unpatched bugfix artifact with SHA-256
 `cf32bd1f5202f866a749b40c2aaced94b9c7fe357df0dc5bb20867e1726c6e26`
-is deployed for native repetition, so RT-008 is fixed with confirmation pending.
+was deployed from a clean directory. The user repeated the score/graze path on
+that artifact and confirmed normal behavior, so RT-008 is closed.
 
 ## Target-confirmed score movement while idle
 
@@ -242,7 +243,7 @@ repository's native VC7 `bugfix` mode, whose existing evidence-backed branch
 accepts a matching `0100d` version. The normal mode remains the comparator/link
 lane; the bugfix mode remains native prerequisite evidence, not port evidence.
 
-## Current static checkpoint
+## Completed native checkpoint
 
 The current source checkpoint has passed focused
 `Player::AddedCallback @ 0x0044D650` replay (**1,537 / 1,537 exact**), the
@@ -262,5 +263,6 @@ hash-verified retail DAT files, a freshly copied windowed retail configuration,
 and the ordinary unpatched launcher. No old executable, score, replay, log,
 modern-port artifact, or preserve-lives script was carried forward. The
 optional preserve-lives helper remains pinned to the preceding hash and safely
-refuses this image. RT-007 and RT-008 now require ordinary unpatched native
-repetition.
+refuses this image. The user confirmed the repaired score/graze behavior on
+this clean, unpatched artifact, closing RT-008. RT-007 remains a non-blocking
+confirmation follow-up; there is no known unfixed native prerequisite defect.

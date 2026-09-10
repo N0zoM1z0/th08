@@ -36,6 +36,15 @@ lifetime defect. Portability builds remain a second independent oracle; they do
 not satisfy the native reconstruction prerequisite. See
 `WINDOWS_I386_RUNTIME.md`, `OWNER_AUDIT.md`, and `RUNTIME_ISSUES.md`.
 
+The first native Windows i386 prerequisite pass completed on 2026-09-10. It
+found and repaired target-data initialization, aggregate ownership, final-link
+callee identity, callback-table ownership, and runtime lifetime failures that
+had survived function-level comparison and modern-port testing. This completion
+unblocks later port stabilization; it does not make the VC7 bugfix image a
+redistributable product. Re-run the documented native gate after any shared
+owner, layout, translation-unit, PCH, compiler-profile, or production link-graph
+change that could invalidate the checkpoint.
+
 ## Provenance
 
 The repository is a history-preserving continuation of

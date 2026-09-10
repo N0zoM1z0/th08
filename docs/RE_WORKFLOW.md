@@ -147,16 +147,23 @@ separate accepted ledger. Broad library/runtime scanning remains paused: a
 normal executable already links, so additional library work must be requested
 by a concrete whole-image difference rather than by inventory percentage alone.
 
-Native Windows i386 compile/link/play validation is now the prerequisite
-whole-program lane before further modern-port stabilization. Follow
-`docs/WINDOWS_I386_RUNTIME.md`: cold-build the real VC7 production image, audit
-target-initialized owners, deploy it with retail data only in an isolated test
-directory, and exercise repeated gameplay/front-end/lifetime transitions. A
-modern MinGW/Linux success or compatibility initializer cannot close this gate.
-When the native run exposes a defect, repair one target-supported production
-owner, ABI, TU, link, or lifetime family and keep the observation in
-`docs/RUNTIME_ISSUES.md`; do not transplant a port-only patch into the native
-image.
+Native Windows i386 compile/link/play validation completed its prerequisite
+whole-program pass on 2026-09-10. The reproducible order, final artifacts, and
+runtime evidence are retained in `docs/WINDOWS_I386_RUNTIME.md`; the discovered
+defects and dispositions remain in `docs/RUNTIME_ISSUES.md`. This closes the
+gate that had blocked further modern-port stabilization. A modern MinGW/Linux
+success or compatibility initializer still cannot substitute for this oracle,
+and a future shared owner, ABI, TU, layout, PCH, compiler-profile, or production
+link-graph change must rerun the native gate before claiming it remains valid.
+When a new native run exposes a defect, repair one target-supported production
+family and record the observation; do not transplant a port-only patch into the
+native image.
+
+New work should now select a fresh bounded lane: the modern redistributable
+Windows package, the sole authored near match, or a whole-image difference that
+identifies a concrete layout/library dependency. Do not continue broad native
+runtime auditing without a new reproduction or a shared-source change that
+invalidates the completed checkpoint.
 
 For one semantic batch:
 

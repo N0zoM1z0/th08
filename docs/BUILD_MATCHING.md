@@ -55,6 +55,40 @@ These modes serve different runtime and comparison purposes. Success in a
 bugfix, DLL, or object build does not establish that the normal
 executable matches the original.
 
+| Mode | Primary use | Acceptance boundary |
+| --- | --- | --- |
+| `normal` | Exact-facing production compile/link and whole-image diagnostics | Supplies normal objects and link evidence; a successful link is not whole-image exactness |
+| `bugfix` | Playable native VC7 Windows runtime | Enables narrow `FIX_REALLY_BAD_BUGS` paths; never supplies exact-match credit |
+| `objdiffbuild` | Focused and aggregate COFF comparison | Supplies configured function/object evidence only |
+| `diffbuild` | Inherited executable comparison instrumentation | Diagnostic, not an accepted-unit substitute |
+| `dllbuild` | Optional Detours reconstruction DLL | Not part of the target-linked production runtime gate |
+
+### Reproduce the native Windows i386 prerequisite
+
+The completed whole-program gate is stricter than invoking `build.py` once. Its
+serial order matters because the cold accepted-unit replay and both executable
+modes share and clean `build/` outputs:
+
+```bash
+python3 scripts/verify-target.py resources/th08.exe
+python3 scripts/validate-tracking.py --require-target
+python3 scripts/analysis/verify-exact-units.py --all
+python3 scripts/build.py --build-type normal --fresh -j 1
+python3 scripts/analysis/verify-windows-i386-runtime-data.py
+python3 scripts/ci.py
+python3 scripts/progress.py --check
+git diff --check
+python3 scripts/build.py --build-type bugfix --fresh -j 1
+python3 scripts/analysis/verify-windows-i386-runtime-data.py
+```
+
+Build `bugfix` last: both modes write `build/th08.exe`, and only the final
+bugfix image is suitable for isolated Windows playtesting with reconstructed
+score/replay headers. Do not run concurrent Wine/VC7 jobs. The complete
+environment bootstrap, artifact hashes, safe deployment recipe, windowed
+configuration, runtime matrix, and normal-versus-bugfix rationale are in
+[Native Windows i386 reconstruction runtime](WINDOWS_I386_RUNTIME.md).
+
 ## Target detection
 
 Place the privately supplied exact target at `resources/th08.exe` and verify

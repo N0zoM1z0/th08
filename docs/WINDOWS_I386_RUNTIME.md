@@ -12,6 +12,52 @@ not. A modern executable can therefore be useful portability evidence while
 still hiding a missing VC7 data owner, translation-unit boundary, static
 initialization, callback ABI, or lifetime defect.
 
+## Completion status
+
+The first prerequisite pass completed on 2026-09-10 on branch
+`reconstruction/windows-i386-runtime`. The accepted authored ledger cold-replays
+**1,106 / 1,106 exact** units, both production modes link as PE32 i386, the
+final-link owner/callee verifier passes, and the phase exercised title,
+selection, story/practice, dialogue, stage, X-bomb, normal-death, score, and
+graze paths on attributable native artifacts. The final clean, unpatched image
+also passed the reported score/graze and all three team X-bomb checks. The phase
+found RT-001 through RT-008; the issue ledger keeps each causal repair and its
+runtime disposition. RT-007's old Final/Last Spell screenshot path retains a
+non-blocking confirmation follow-up, but there is no known unfixed native defect
+at this checkpoint.
+
+Completion means later port work may proceed. It does not make the VC7 image a
+supported download, and it does not permanently waive this gate. Repeat the
+serial procedure below after any shared owner/layout/TU/PCH/compiler-profile or
+production link-graph change, or when a new native failure is reported.
+
+## Environment bootstrap
+
+The exact target and retail data are private inputs and must never be committed.
+Place the original Japanese 1.00d executable at `resources/th08.exe`; its
+required size and SHA-256 are listed in `docs/ARCHITECTURE.md`.
+
+On Linux or macOS, install Python 3.11 or newer, Wine, and `msiextract`, then
+create the pinned Visual Studio .NET 2002/DirectX 8 environment:
+
+```bash
+git submodule update --init --recursive
+./scripts/create_th08_prefix
+```
+
+The helper downloads hash-pinned historical inputs into ignored paths, prepares
+`scripts/prefix`, and uses `~/.wineth08` as its default Wine prefix. Set `WINE`
+before running it only when a different compatible runner is required. On a
+native Windows development host, prepare the same ignored environment with:
+
+```text
+git submodule update --init --recursive
+python scripts/create_devenv.py scripts/dls scripts/prefix
+```
+
+See `docs/BUILD_MATCHING.md` for dependency details and focused comparison
+workflows. Use one writable session and one Wine/VC7 job throughout this gate.
+
 ## Artifact boundary
 
 | Artifact | Purpose | What it can prove |
@@ -29,28 +75,62 @@ owner, ABI, translation unit, link input, or lifetime instead.
 
 ## Reproducible build and static gates
 
-First verify the private target and current ledgers:
+Run this sequence from the repository root. Start by proving the input and
+ledger state; `config/claims.csv` must contain only its header:
 
 ```bash
+git status --short
 python3 scripts/verify-target.py resources/th08.exe
+python3 scripts/validate-tracking.py --require-target
 python3 scripts/analysis/report-reconstruction-status.py --summary
+test "$(wc -l < config/claims.csv)" -eq 1
 ```
 
-Cold-build the exact-facing production image with one VC7 job:
+First cold-build and replay every accepted normal comparison object. This step
+cleans generated Ninja and known VC7/linker side outputs, so it intentionally
+precedes both complete executable links:
+
+```bash
+python3 scripts/analysis/verify-exact-units.py --all --json \
+  > build/accepted-unit-replay.json
+```
+
+Require `result: exact`, `checked: 1106`, `exact: 1106`, and no failures for
+the recorded checkpoint. Those counts are a snapshot; later contributors must
+use the live ledgers rather than hard-code them into tools.
+
+Next cold-build the exact-facing production image with one VC7 job, identify the
+artifact, and run the final-link owner/callee verifier against its map:
 
 ```bash
 python3 scripts/build.py --build-type normal --fresh -j 1
+file build/th08.exe
+sha256sum build/th08.exe
+python3 scripts/analysis/verify-windows-i386-runtime-data.py
 ```
 
 The link must produce `build/th08.exe` without unresolved-symbol forcing. The
 output is expected to be a PE32 i386 GUI executable. This is the artifact used
 for normal-object comparison and link evidence; merely producing it is not a
-runtime pass.
+runtime pass. On native Windows, use `Get-Item` and `Get-FileHash -Algorithm
+SHA256` instead of `file` and `sha256sum`.
 
-Then cold-build the native runtime artifact:
+Run the repository gates while the normal build evidence is current:
+
+```bash
+python3 scripts/ci.py
+python3 scripts/progress.py --check
+git diff --check
+```
+
+Finally, cold-build the native runtime artifact and verify the actual file that
+will be copied to Windows:
 
 ```bash
 python3 scripts/build.py --build-type bugfix --fresh -j 1
+file build/th08.exe
+sha256sum build/th08.exe
+python3 scripts/analysis/verify-windows-i386-runtime-data.py
 ```
 
 The bugfix build is still a Microsoft VC7 PE32/i386 compile and link of the
@@ -66,18 +146,13 @@ matching version string before that impossible file-identity comparison.
 
 Exact status continues to come only from the normal comparison objects. Never
 claim target exactness from a bugfix object or from the playable executable.
-Because both modes write `build/th08.exe`, rebuild `bugfix` last before copying
-the runtime artifact to Windows.
+Because the cold aggregate replay and both production modes reuse and clean the
+same `build/` graph, do not reorder or parallelize them. Build `bugfix` last and
+copy only that final `build/th08.exe` to the isolated Windows directory.
 
-For the initialized-data families recovered by this phase, run:
-
-```bash
-python3 scripts/analysis/verify-windows-i386-runtime-data.py
-```
-
-That check verifies the target hash, rejects mapped uninitialized production
-owners in target raw-backed sections, compares the Last Spell count, stage
-bonuses, and dialogue palettes byte-for-byte, and resolves all 66 Effect-table
+The linked verifier checks the target hash, rejects mapped uninitialized
+production owners in target raw-backed sections, compares the Last Spell count,
+stage bonuses, and dialogue palettes byte-for-byte, and resolves all 66 Effect-table
 callback pointers through the current linker map. It also decodes the linked
 `Gui::CopyEnemyNameTexture` body and requires all eight GUI pointer loads to
 select `frontAnm @ Gui + 0x0C`, never `stageTextAnm @ Gui + 0x10`. It also
@@ -90,18 +165,28 @@ checks the eight other REL32 callees uncovered by that audit and all 20 entries
 of the target-owned player-shot spawn/update/draw/collision callback tables. It
 also rejects standalone `g_PlayerGaugeBounds` storage and checks all 21 setup
 writes against the six gauge fields at `g_GameManager + 0x3DDF8..0x3DE02`.
+It must pass for the final bugfix artifact as well as the normal link. A reused
+object tree or `--reuse-build` result cannot support aggregate exact status
+after an owner, header, compiler-profile, or link-graph change.
 
-Source or shared-owner changes also require the normal exact gates:
+### Completed checkpoint identities
 
-```bash
-python3 scripts/analysis/verify-exact-units.py --all
-python3 scripts/ci.py
-git diff --check
-```
+The completed pass used the source checkpoint at commit `318fec8b` plus the
+documentation-only closure that follows it. These hashes make later runtime
+reports attributable; they are not release downloads:
 
-The `--all` replay is intentionally cold and single-job. A reused object tree
-cannot support an aggregate exact statement after owner, header, compiler
-profile, or link-graph changes.
+| File | Size | SHA-256 |
+| --- | ---: | --- |
+| canonical `resources/th08.exe` | 840,704 | `330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924` |
+| fresh `normal` reconstruction | 902,144 | `5e217f010c78d3fb1c1459f7127c917dfe039d24a9253f90badb00b8cf556527` |
+| fresh `bugfix` reconstruction | 898,048 | `cf32bd1f5202f866a749b40c2aaced94b9c7fe357df0dc5bb20867e1726c6e26` |
+| tested retail `th08.dat` | 46,838,025 | `9d7edf43b8ddd347cbb641836f6b5050745dd936f688daebbf9382ca557043bb` |
+| tested retail `thbgm.dat` | 449,961,024 | `2c2ef05f9ff6f43f752dae5da519a2477372c3f8875b7b44996a8f69fdad4d89` |
+
+Only the executable hash/size in `docs/ARCHITECTURE.md` defines the accepted
+reverse-engineering target. The two DAT hashes identify the legally owned data
+used for this runtime pass; they are recorded for reproduction, not promoted to
+the target ledger.
 
 ## Isolated Windows deployment
 
@@ -113,23 +198,63 @@ D:\Entertainment\Game\Touhou\th08-reconstruct
 ```
 
 Copy the freshly built **bugfix** `build/th08.exe` there as
-`th08-reconstructed.exe`, then copy the legally owned runtime data (`th08.dat`,
-`thbgm.dat`, and any other files required by the original installation). Do not
-commit those files. Preserve old executable, log, replay, score, and crash
-artifacts when changing builds so a failure can be tied to the exact executable
-hash that produced it. Do not deploy the normal exact-facing artifact as the
-playtest executable: its retail-identity check is expected to reject the
-reconstruction and can run off the end of the version table.
+`th08-reconstructed.exe`, then copy the legally owned `th08.dat` and
+`thbgm.dat`. Do not commit any of those files. Do not deploy the normal
+exact-facing artifact as the playtest executable: its retail-identity check is
+expected to reject the reconstruction and can run off the end of the version
+table.
 
-Copy `scripts/run-windows-i386-reconstruction.bat` beside the executable for an
-unpatched runtime run, or copy both `run-preserve-lives-test.*` files for the
-endurance mode described below. These launchers intentionally pass no
-modern-port arguments.
+For a new empty directory, the following PowerShell example is deliberately
+fail-closed: it refuses an existing destination instead of deleting or mixing
+old artifacts. Run it from a Windows-visible repository root and replace the
+two example paths:
+
+```powershell
+$Repo = (Resolve-Path '.').Path
+$Retail = 'D:\path\to\the\original Japanese TH08 1.00d'
+$Deploy = 'D:\path\to\a\new\th08-reconstruct'
+
+if (Get-Process -Name 'th08*' -ErrorAction SilentlyContinue) {
+    throw 'Close every TH08 process before deployment.'
+}
+if (Test-Path -LiteralPath $Deploy) {
+    throw "Choose a new or separately emptied deployment directory: $Deploy"
+}
+
+New-Item -ItemType Directory -Path $Deploy | Out-Null
+Copy-Item -LiteralPath (Join-Path $Repo 'build\th08.exe') `
+    -Destination (Join-Path $Deploy 'th08-reconstructed.exe')
+Copy-Item -LiteralPath (Join-Path $Repo 'scripts\run-windows-i386-reconstruction.bat') `
+    -Destination $Deploy
+Copy-Item -LiteralPath (Join-Path $Retail 'th08.dat') -Destination $Deploy
+Copy-Item -LiteralPath (Join-Path $Retail 'thbgm.dat') -Destination $Deploy
+Copy-Item -LiteralPath (Join-Path $Retail 'th08.cfg') -Destination $Deploy
+
+Get-ChildItem -LiteralPath $Deploy
+Get-FileHash -Algorithm SHA256 -LiteralPath `
+    (Join-Path $Deploy 'th08-reconstructed.exe'), `
+    (Join-Path $Deploy 'th08.dat'), `
+    (Join-Path $Deploy 'thbgm.dat')
+```
+
+The expected clean baseline contains exactly five files: the renamed bugfix
+EXE, two DATs, one configuration, and the ordinary launcher. It contains no
+previous score, replay, backup, log, crash record, modern-port executable, SDK
+debug DLL, or runtime-patch helper. When investigating a failure instead of
+establishing a clean baseline, move the old directory aside first so its exact
+EXE hash and artifacts remain attributable.
 
 TH08 stores fullscreen/windowed selection in `th08.cfg`; the reconstructed VC7
 image does not need a modern command-line override. Use a known windowed
-configuration in the isolated directory for compatibility testing. Keep the
-original installation and its configuration untouched.
+configuration in the isolated directory for compatibility testing. In the
+60-byte retail configuration used by this pass, byte `0x22` was `1` for windowed
+mode. Copy an already configured file; do not modify the original installation
+as part of deployment.
+
+Launch only `run-windows-i386-reconstruction.bat` for the ordinary acceptance
+run. It sets the deployment directory as the working directory, checks the EXE
+and both DATs, waits for the process, and reports a nonzero exit. It passes no
+modern-port arguments and installs no runtime patch.
 
 Before replacing or launching the executable, make sure no prior TH08 process
 is running. Do not rebuild with Wine/VC7 while a Windows-host runtime test is
@@ -211,7 +336,7 @@ A minimum manual pass should exercise ownership and lifetime boundaries, not
 only reach the title screen:
 
 1. start in windowed mode and enter gameplay with the copied retail data;
-2. use Sakuya's and Remilia's X bombs and compare the complete effect paths;
+2. exercise the Reimu/Yukari, Marisa/Alice, and Sakuya/Remilia X-bomb paths;
 3. die normally, observe death effects, item/power changes, respawn, and the
    life display;
 4. return from gameplay to the title, start another run, and repeat;
@@ -239,7 +364,7 @@ Track every observation in [the runtime issue ledger](RUNTIME_ISSUES.md).
 Record the executable SHA-256, exact interaction, last visible frame, whether
 Windows still reports the process alive, and any crash/event-log evidence.
 
-## Preserve-lives endurance launcher
+## Optional historical preserve-lives diagnostic
 
 `scripts/run-preserve-lives-test.bat` and its PowerShell helper are
 intentionally narrower than a "no-death" patch. The player must still enter
@@ -252,6 +377,10 @@ The helper must be regenerated or reviewed after every executable change. It
 is pinned to a SHA-256, a map-derived RVA, and expected instruction bytes; it
 must refuse the canonical target and every unknown reconstruction. It never
 modifies the executable on disk and is never a production or release mode.
+The completed final deployment intentionally omitted both helper files and used
+ordinary life decrement. The checked-in helper remains pinned to an earlier
+artifact and must refuse the completed `cf32bd1f...6c6e26` image; do not copy it
+for reproduction of the final acceptance run.
 
 ## Acceptance language
 
@@ -267,3 +396,6 @@ modifies the executable on disk and is never a production or release mode.
 - Function exactness remains governed only by the configured target comparator.
 - A runtime repair does not add exact credit, and a function-level exact result
   does not prove correct whole-program ownership or lifetime.
+- The 2026-09-10 prerequisite checkpoint is complete; later work may call it
+  complete only while the source/link assumptions listed above remain unchanged
+  or after this serial gate is repeated.

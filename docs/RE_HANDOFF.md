@@ -18,14 +18,15 @@ replay for target code and the applicable modern Windows/Linux build/runtime
 checks for portable behavior.  The portable Linux package workflow runs on
 `push`, `pull_request`, and `workflow_dispatch`.
 
-## Active native Windows i386 prerequisite
+## Completed native Windows i386 prerequisite
 
-Work continues on `reconstruction/windows-i386-runtime`. This phase deliberately
-precedes further modern-port work: `build/th08.exe` is compiled and linked from
-the production source with pinned VC7, then run on a real Windows host from an
-isolated data directory. The modern MinGW/Linux artifacts are independent
-portability evidence and cannot substitute for this owner/TU/link/lifetime
-oracle. The complete procedure and evidence language are in
+The first native gate is complete on `reconstruction/windows-i386-runtime` and
+is ready for review and merge. This phase deliberately preceded further
+modern-port work: `build/th08.exe` was compiled and linked from the production
+source with pinned VC7, then run on a real Windows host from an isolated data
+directory. The modern MinGW/Linux artifacts are independent portability
+evidence and cannot substitute for this owner/TU/link/lifetime oracle. The
+complete reproducible procedure and evidence language are in
 `docs/WINDOWS_I386_RUNTIME.md`.
 
 The first native owner audit recovered four target-initialized data families
@@ -79,8 +80,9 @@ wrong source callees hidden by target-address relocation replay. Of those,
 `SpawnRandomizedShot` used unsigned instead of signed RNG, shifting self-shot
 angles, while point-star/time-orb values used the 720-entry score-popup pool
 instead of the target's three-entry player-point pool. The latter permits the
-dense numeric-sprite flood seen in the final Last Spell screenshot. Replay slot
-3 preserves that run with SHA-256 `1ec94058...4fbc7`.
+dense numeric-sprite flood seen in the final Last Spell screenshot. That
+isolated run produced replay slot 3 with SHA-256 `1ec94058...4fbc7`; the replay
+was deliberately not carried into the later clean deployment.
 
 All eleven corrected REL32 sites now name their independently mapped target
 callees. `validate-tracking.py` rejects a decorated REL32 symbol assigned to
@@ -107,8 +109,9 @@ six named manager fields, all 21 match relocations name the manager base plus
 field addend, the false global/Linux alias are removed, and the linked verifier
 guards the writes. Focused `Player::AddedCallback` replay now passes **1,537 /
 1,537 exact**; the cold aggregate replay, fresh normal/bugfix links, and clean
-unpatched deployment are also complete. RT-008 is **fixed / confirmation
-pending** on the new artifact.
+unpatched deployment are also complete. The user then repeated the score/graze
+path on the clean, unpatched hash `cf32bd1f...6c6e26` and confirmed normal
+behavior, closing RT-008.
 
 A separate native normal-build startup exit is now diagnosed and closed. CDB
 caught `0xC0000005` in linked VC7 `strncmp @ 0x004ABA5F`, reached from
@@ -136,7 +139,17 @@ retail `th08.dat`/`thbgm.dat`, a freshly copied windowed retail configuration,
 and `run-windows-i386-reconstruction.bat`. No prior executable, modern port,
 score, replay, log, or preserve-lives helper was carried forward. The optional
 process patch remains pinned to the preceding artifact and refuses the new
-hash. RT-006 is closed; RT-007 and RT-008 await ordinary unpatched repetition.
+hash. RT-006 and RT-008 are closed. RT-007 remains a non-blocking confirmation
+follow-up because the old slot-3 replay was intentionally excluded from the
+clean deployment. There is no known unfixed native prerequisite defect.
+
+## Next phase
+
+Review and merge `reconstruction/windows-i386-runtime`, then start subsequent
+work on a fresh branch. The modern redistributable Windows port may now resume;
+remaining exact/whole-image work is also independent. Repeat this native gate
+after a shared owner, layout, translation-unit, PCH, compiler, or linker change,
+or when a new native-only symptom is reported.
 
 The current protocol closure goes beyond the imported TH06 readability
 baseline on the comparable interpreter surfaces.  TH08 now names all 184 ECL
@@ -1112,7 +1125,7 @@ passes.  No ledger identity/count changed.
 
 Whole-executable TU/layout work below remains deferred, not invalidated.
 
-## Active playable-port branch
+## Prior playable-port checkpoint (historical)
 
 `port/modern-windows-linux` is the independent playable reconstruction lane.
 It does not replace the VC7 exact build or change authored/library ledgers.
@@ -1218,7 +1231,7 @@ BGM files. Keep the executable, SDK DLL, generated test data, and runtime
 screenshots under `build/` or outside the repository; never commit the original
 archives.
 
-## Current status
+## Pre-runtime reconstruction checkpoint (historical, 2026-08-26)
 
 As cold-built and replayed on 2026-08-26 against the original Japanese TH08
 1.00d target:
@@ -1339,7 +1352,7 @@ Keep authored `implemented.csv`, `matches.csv`, and authored percentages
 unchanged.  There is intentionally no whole-library scanner until archive
 identity, relocation policy, COMDAT/padding rules, and failure modes are encoded.
 
-## Current milestone: whole-executable reconstruction
+## Deferred whole-executable reconstruction lane
 
 The normal executable links, so whole-image differences now select the work.
 Run the canonical cold baseline with:
