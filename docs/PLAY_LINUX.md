@@ -5,6 +5,13 @@ release lane includes the established 32-bit x86 product and a native-layout
 x86_64 product; an AArch64 build is available for hardware validation. Wine,
 Docker, and the original `th08.exe` are not runtime requirements.
 
+Release v0.2.1 refreshes all three packages after the native Windows i386
+prerequisite recovered shared source-ownership and initialization defects. It
+also adds bounded optimization and memory-safety repairs to the handwritten
+native-layout compatibility code. These changes do not alter the exact-facing
+VC7 source path or make the experimental AArch64 package a gameplay-validated
+product.
+
 ## What you need
 
 - a Linux desktop with working OpenGL and audio;

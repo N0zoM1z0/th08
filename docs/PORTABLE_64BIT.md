@@ -23,9 +23,10 @@ The x86_64 result is a playable 64-bit port, not merely a successful link. The
 AArch64 artifact is build- and loader-verified, but emulated software OpenGL is
 too slow to substitute honestly for a gameplay test on AArch64 hardware.
 After integrating the native Windows i386 prerequisite, the x86_64 artifact was
-rebuilt and smoke-tested again. The AArch64 row retains the preceding portable
-branch evidence; the integrated head has not been rebuilt on this workstation
-because its AArch64 cross compiler is unavailable.
+rebuilt and smoke-tested again. The portable package workflow also rebuilt the
+integrated AArch64 head using only AArch64 libraries. That closes the packaging
+gap but does not replace the still-pending gameplay run on real AArch64
+hardware.
 
 <p align="center">
   <img

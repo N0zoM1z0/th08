@@ -18,7 +18,7 @@ replay for target code and the applicable modern Windows/Linux build/runtime
 checks for portable behavior.  The portable Linux package workflow runs on
 `push`, `pull_request`, and `workflow_dispatch`.
 
-## Active portable 64-bit follow-up
+## Portable 64-bit v0.2.1 release checkpoint
 
 `port/portable-64bit` now integrates the completed native Windows i386
 prerequisite from `main`. This is a source-level integration, not a modern-only
@@ -48,15 +48,18 @@ strong source-level candidates, but an overlap is not by itself closure for a
 different frontend or runtime. Work on `th08-web` remains deliberately out of
 scope until the native 64-bit branch is settled.
 
-The integrated x86_64 head builds as an ELF64 PIE and passes native ownership
+The v0.2.1 Linux runtime refresh is prepared from the integrated portable head.
+The x86_64 product builds as an ELF64 PIE and passes native ownership
 verification. An isolated 40-second smoke run progressed from title through
 the bundled demo route to the Stage 5 resources. That proves loading and
 progression, not complete replay/input determinism or visual parity. The cold
 VC7 replay remains **1,106 / 1,106 exact**, a fresh normal VC7 image links, the
-Windows i386 runtime-data verifier passes, and `scripts/ci.py` passes. A fresh
-AArch64 rebuild of the integrated head is pending because this workstation
-does not currently have `aarch64-linux-gnu-g++`; the table in
-`docs/PORTABLE_64BIT.md` records the earlier branch evidence and the distinction.
+Windows i386 runtime-data verifier passes, and `scripts/ci.py` passes. Portable
+Linux workflow run `34501198228` rebuilt and packaged the integrated i386,
+x86_64, and AArch64 heads successfully. The downloaded artifacts pass their
+published SHA-256 checks, have the expected ELF machine/type, contain the
+documented launchers, and remain free of original game data. Real-hardware
+AArch64 gameplay remains pending.
 
 The first native-layout follow-up removes two port-specific failure classes.
 The handwritten D3D8/D3DX8/SDL compatibility hot paths now use bounded `-O2`
@@ -76,7 +79,13 @@ verifier passed. Reproduction commands and evidence limits are in
 
 Open portable investigations remain full replay parity, dense-pattern and
 browser performance, the post-spell boss/familiar gauges, result-screen status,
-and negative spell-bonus reports. Do not close the broad
+negative spell-bonus reports, and the one-line invisible-laser report in
+[th08 issue #20](https://github.com/N0zoM1z0/th08/issues/20). The target-facing
+laser spawn/update/draw functions are exact, while issue #20 currently omits
+the boss, stage or spell, platform, package version, screenshot, and replay.
+Do not change laser behavior or claim closure until the report is reproduced
+and localized to either shared game state or a portable renderer boundary.
+Likewise, do not close the broad
 [th08 issue #18](https://github.com/N0zoM1z0/th08/issues/18) from the smoke test
 alone: it does not yet provide a sufficiently bounded reproduction.
 
@@ -207,13 +216,13 @@ clean deployment. There is no known unfixed native prerequisite defect.
 
 ## Next phase
 
-Checkpoint and publish the validated prerequisite integration on
-`port/portable-64bit`, then investigate the remaining bounded native 64-bit
-runtime symptoms above one at a time. Repeat the native Windows gate after a
-shared owner, layout, translation-unit, PCH, compiler, or linker change, or
-when a new native-only symptom is reported. Keep `th08-web` changes on a later
-separate phase so native runtime evidence is not confused with browser-specific
-constraints.
+Publish the validated portable head as `v0.2.1-linux-64bit`, then investigate
+the remaining bounded runtime symptoms above one at a time. Issue #20 needs a
+platform/build identifier and a boss/stage/spell or replay before it becomes an
+actionable renderer audit. Repeat the native Windows gate after a shared owner,
+layout, translation-unit, PCH, compiler, or linker change, or when a new
+native-only symptom is reported. Keep browser-specific evidence separate from
+native runtime conclusions.
 
 The current protocol closure goes beyond the imported TH06 readability
 baseline on the comparable interpreter surfaces.  TH08 now names all 184 ECL
