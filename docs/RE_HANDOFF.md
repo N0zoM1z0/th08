@@ -29,6 +29,24 @@ and [issue ledger](RUNTIME_ISSUES.md) for evidence.
 Native 64-bit work is on `port/portable-64bit`; Web work is in `th08-web`.
 Each port has its own build and runtime validation alongside the VC7 path.
 
+## Native replay parity investigation
+
+Current work compares muted bundled demos against the canonical retail image,
+using the [unattended replay procedure](REPLAY_TESTING.md). Web investigation
+is deferred until native replay parity is established.
+
+The first repair restores the sine/cosine call order in Fantasy Seal bomb and
+deathbomb and corrects four relocation bindings that had concealed it.
+PlayerBomb's 54 accepted units pass, the fresh playable VC7 link passes its
+owner/callee check, and the diagnostic window at demo 0 frames 5200–5270
+agrees for all collected pools and collision regions. See
+[RT-009](RUNTIME_ISSUES.md#rt-009).
+
+The full 6120-frame trace now agrees through frame 5907. The next bounded
+investigation is the extra RNG consumption at frame 5908; capture RNG caller
+events and compare the earliest producer. Keep temporary Wine prefixes and
+diagnostic data small, and leave GitHub issues without comments.
+
 <a id="documentation-batch-for-local-review"></a>
 
 ## Completed human and agent documentation batch

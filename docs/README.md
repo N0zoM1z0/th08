@@ -46,6 +46,7 @@ The [conceptual guide](PROJECT_GUIDE.md) is available for orientation.
 | Which command answers my question? | [Tool recipes](TOOLS.md#choose-the-command-by-question) |
 | How do names and types get accepted? | [Semantic reconstruction policy](SEMANTIC_RECONSTRUCTION.md) |
 | How do I reproduce the native Windows prerequisite? | [Windows i386 runtime procedure](WINDOWS_I386_RUNTIME.md) |
+| How do I compare native replay behavior with retail? | [Unattended replay comparison](REPLAY_TESTING.md) |
 | Where are reusable compiler and link lessons? | [Knowledge map](KNOWLEDGE_BASE.md#existing-subject-index) |
 
 ## Agent session route

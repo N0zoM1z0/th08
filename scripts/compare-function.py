@@ -13,6 +13,7 @@ import tomllib
 
 from coff import ObjectModule
 from match_literals import real_literal_bytes
+from match_callees import validate_math_callee
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -306,6 +307,8 @@ def compare(unit: dict[str, object], target_path: Path) -> dict[str, object]:
     target_address = int(unit["target_address"])
     target = pe_bytes_at(target_data, target_address, compare_size)
     expected_relocations = list(unit.get("relocations", []))
+    for relocation in expected_relocations:
+        validate_math_callee(relocation)
     literal_attestations = attest_relocation_literals(
         expected_relocations, target_data
     )

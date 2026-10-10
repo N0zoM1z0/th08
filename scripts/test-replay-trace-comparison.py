@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+"""Guard against false passes when replay evidence is missing or mismatched."""
+import importlib.util
+import json
+from pathlib import Path
+import tempfile
+import unittest
+
+spec = importlib.util.spec_from_file_location("compare", Path(__file__).with_name("compare-replay-traces.py"))
+compare = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(compare)
+
+
+class ComparisonTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.reference = Path(self.temp.name) / "reference"
+        self.candidate = Path(self.temp.name) / "candidate"
+        schema = json.loads(Path(__file__).with_name("replay-schema.json").read_text())
+        self.metadata = dict(schema=schema, fixture="demo/demorpy0.rpy", gameDataSha256="data",
+                             targetSha256="target", configSha256="config", muted=True)
+        self.rows = [[frame] + [0] * (len(schema["fields"]) - 1) for frame in range(1, 4)]
+        self.write(self.reference)
+        self.write(self.candidate)
+
+    def write(self, directory, rows=None, ended=True, metadata=None):
+        directory.mkdir(exist_ok=True)
+        rows = self.rows if rows is None else rows
+        (directory / "metadata.json").write_text(json.dumps(metadata or self.metadata))
+        (directory / "complete.json").write_text(json.dumps(dict(rows=len(rows), lastFrame=rows[-1][0], ended=ended)))
+        (directory / "rows.jsonl").write_text("\n".join(map(json.dumps, rows)) + "\n")
+
+    def test_equal_complete_capture(self):
+        self.assertEqual(compare.compare(self.reference, self.candidate)["result"], "equal")
+
+    def test_one_float_bit_is_reported(self):
+        rows = [row[:] for row in self.rows]
+        rows[1][self.metadata["schema"]["fields"].index("x")] = 1
+        self.write(self.candidate, rows=rows)
+        result = compare.compare(self.reference, self.candidate)
+        self.assertEqual(result["firstDifference"]["frame"], 2)
+        self.assertEqual(result["firstDifference"]["differingFields"], ["x"])
+
+    def test_missing_or_duplicate_frame_is_rejected(self):
+        for rows in (self.rows[1:], [self.rows[0], self.rows[2]], [self.rows[0]] * 3):
+            with self.subTest(rows=rows):
+                self.write(self.candidate, rows=rows)
+                with self.assertRaises(ValueError):
+                    compare.compare(self.reference, self.candidate)
+
+    def test_timeout_is_rejected(self):
+        self.write(self.candidate, ended=False)
+        with self.assertRaises(ValueError):
+            compare.compare(self.reference, self.candidate)
+
+    def test_mismatched_data_is_rejected(self):
+        self.write(self.candidate, metadata={**self.metadata, "gameDataSha256": "other"})
+        with self.assertRaises(ValueError):
+            compare.compare(self.reference, self.candidate)
+
+    def test_different_duration_cannot_pass(self):
+        self.write(self.candidate, rows=self.rows[:2])
+        self.assertEqual(compare.compare(self.reference, self.candidate)["result"], "different")
+
+    def test_wrong_completion_frame_is_rejected(self):
+        (self.candidate / "complete.json").write_text(json.dumps(dict(rows=3, lastFrame=2, ended=True)))
+        with self.assertRaises(ValueError):
+            compare.compare(self.reference, self.candidate)
+
+    def test_unmuted_capture_is_rejected(self):
+        self.write(self.candidate, metadata={**self.metadata, "muted": False})
+        with self.assertRaises(ValueError):
+            compare.compare(self.reference, self.candidate)
+
+    def test_multiple_demos_have_separate_frame_sequences(self):
+        rows = [row[:] for row in self.rows] + [row[:] for row in self.rows]
+        demo_column = self.metadata["schema"]["fields"].index("demo")
+        for row in rows[3:]:
+            row[demo_column] = 1
+        metadata = {**self.metadata, "demoIndexes": [0, 1],
+                    "fixture": ["demo/demorpy0.rpy", "demo/demorpy1.rpy"]}
+        self.write(self.reference, rows=rows, metadata=metadata)
+        self.write(self.candidate, rows=rows, metadata=metadata)
+        self.assertEqual(compare.compare(self.reference, self.candidate)["result"], "equal")
+        self.write(self.candidate, rows=rows[:3], metadata=metadata)
+        with self.assertRaisesRegex(ValueError, "Missing or out-of-order demos"):
+            compare.compare(self.reference, self.candidate)
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -97235,13 +97235,13 @@ target = 0x0043EDB0
 [[units.relocations]]
 offset = 0x265
 type = "REL32"
-symbol = "@cosf@4"
+symbol = "@sinf@4"
 target = 0x00409060
 
 [[units.relocations]]
 offset = 0x283
 type = "REL32"
-symbol = "@sinf@4"
+symbol = "@cosf@4"
 target = 0x00408D40
 
 [[units.relocations]]
@@ -97526,13 +97526,13 @@ target = 0x0043EDB0
 [[units.relocations]]
 offset = 0x266
 type = "REL32"
-symbol = "@cosf@4"
+symbol = "@sinf@4"
 target = 0x00409060
 
 [[units.relocations]]
 offset = 0x284
 type = "REL32"
-symbol = "@sinf@4"
+symbol = "@cosf@4"
 target = 0x00408D40
 
 [[units.relocations]]

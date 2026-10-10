@@ -23,6 +23,39 @@ Status meanings:
 | RT-006 | closed | Dialogue showed a flat `RGB(64,64,96)` or black playfield; later frames accumulated player and portrait trails. | Target Background draw callbacks call `Gui::IsStageFinished @ 0x00437D87` at all three stage-layer gates. Source called `Gui::IsDialoguePresent @ 0x004358BB`, while the match manifest declared the target address and normalized the wrong source call into an exact result. The linked repair passes the native call verifier, and the user confirmed the live stage background plus corrected Stage 4 Reimu rendering on native hash `87edf9dc...1832d73`. |
 | RT-007 | fixed / confirmation pending | Near the final Last Spell, self-shot emission looked wrong and dense white digit-like textures covered the playfield edges. | The old source called unsigned RNG from target `SpawnRandomizedShot`'s signed-RNG site and sent point-star/time-orb values to a 720-entry score-popup pool instead of the target's three-entry player-point pool. The corrected callees are exact and pass final-link verification on hash `87edf9dc...1832d73`. The previous isolated run's replay slot 3 had SHA-256 `1ec94058...4fbc7`; it was deliberately not carried into the later clean deployment, so confirmation now requires a fresh run. |
 | RT-008 | closed | Score rose by about 6,000 points per second from the start of normal and Stage Practice runs, continued after a player hit, and graze counts increased too quickly. | Target `g_PlayerGaugeBounds @ 0x0164D300` is not standalone storage: it is exactly the six contiguous gauge limit/threshold fields at `g_GameManager @ 0x0160F508 + 0x3DDF8..0x3DE02`. The native linker split the source array from those fields, leaving the predicates' manager thresholds zero. Read-only process sampling proved the split; a 12-byte process-local field repair immediately stopped authoritative score growth at gauge zero. The production repair passes focused and cold exact replay plus final-link owner verification. The user repeated the score/graze path on the clean, unpatched native hash `cf32bd1f...6c6e26` and confirmed normal behavior, closing the issue. |
+| RT-009 | closed | The bundled Stage 5 demo diverged in score, then RNG, time orbs, and gauge after a deathbomb. | Fantasy Seal bomb/deathbomb used cosine for X and sine for Y; the target uses sine for X and cosine for Y. Four reversed relocation bindings hid the wrong callees. The repaired PlayerBomb object passes all 54 accepted units, and the 71-frame diagnostic window agrees for bomb state, collision regions, bullets, items, shots, and enemies. Full-demo recorded state now agrees through frame 5907; the later RNG divergence is a separate investigation. |
+
+<a id="rt-009"></a>
+
+## Fantasy Seal replay divergence
+
+Muted Wine/GDB captures of `demo/demorpy0.rpy` found the first score difference
+at frame 5218. A narrow diagnostic capture traced it to a bullet converted
+into a point-star one frame late, at 5210 instead of 5209. The replay uses
+Fantasy Seal Blink deathbomb at frame 5202, callback variant 2.
+
+Target `UpdateFantasySealBlinkDeathbomb @ 0x0040C910` calls the sine wrapper
+at `0x00409060` for X (`+0x266` relocation), then the cosine wrapper at
+`0x00408D40` for Y (`+0x284`). `UpdateFantasyOrbBomb @ 0x0040C010` uses the
+same order at `+0x265` and `+0x283`. The wrappers themselves call
+`__CIsin @ 0x004A3FA0` and `__CIcos @ 0x004A3EF0` respectively.
+
+Source called the opposite functions, while the comparison manifest assigned
+`@cosf@4` to the sine address and `@sinf@4` to the cosine address. Relocation
+replay therefore accepted the surrounding instructions despite the reversed
+native calls. Source and all four relocation symbols now follow the target.
+Both the comparator and tracking validator check these wrapper identities;
+the validator also checks consistent destinations for fastcall symbols.
+
+The repaired native build agrees with retail for every recorded field through
+frame 5907. In frames 5200–5270, all collected item, shot, enemy, bullet, bomb,
+collision-region, point-value, and FPU-control state agrees. The complete
+6120-frame demo still exposes a later RNG difference beginning at 5908,
+which remains under investigation. The original demo's death at frame 4575
+is present in both traces.
+
+See [REPLAY_TESTING.md](REPLAY_TESTING.md) for the unattended procedure,
+comparison scope, diagnostics, and cleanup.
 
 ## Native enemy-name texture exit
 
