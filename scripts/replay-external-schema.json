@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "boundary": "playback-control entry, after gameplay calculation",
+  "fields": ["calc", "stage", "frame", "gameFrame", "score", "graze", "deaths", "lives", "bombs", "power", "x", "y", "z", "playerState", "rngSeed", "rngGeneration", "input", "pointItems", "timeOrbs", "gauge", "clock", "pointValue", "character", "shot", "difficulty"],
+  "floatFields": ["deaths", "lives", "bombs", "power", "x", "y", "z"],
+  "rngGeneration": "Generations since GameManager::OnUpdate entry for the first input frame; raw initial counter retained in completion metadata",
+  "stageIndexes": ["Stage 1", "Stage 2", "Stage 3", "Stage 4A", "Stage 4B", "Stage 5", "Final A", "Final B", "Extra"]
+}

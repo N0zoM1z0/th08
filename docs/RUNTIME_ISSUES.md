@@ -25,6 +25,34 @@ Status meanings:
 | RT-008 | closed | Score rose by about 6,000 points per second from the start of normal and Stage Practice runs, continued after a player hit, and graze counts increased too quickly. | Target `g_PlayerGaugeBounds @ 0x0164D300` is not standalone storage: it is exactly the six contiguous gauge limit/threshold fields at `g_GameManager @ 0x0160F508 + 0x3DDF8..0x3DE02`. The native linker split the source array from those fields, leaving the predicates' manager thresholds zero. Read-only process sampling proved the split; a 12-byte process-local field repair immediately stopped authoritative score growth at gauge zero. The production repair passes focused and cold exact replay plus final-link owner verification. The user repeated the score/graze path on the clean, unpatched native hash `cf32bd1f...6c6e26` and confirmed normal behavior, closing the issue. |
 | RT-009 | closed | The bundled Stage 5 demo diverged in score, then RNG, time orbs, and gauge after a deathbomb. | Fantasy Seal bomb/deathbomb used cosine for X and sine for Y; the target uses sine for X and cosine for Y. Four reversed relocation bindings hid the wrong callees. The repaired PlayerBomb object passes all 54 accepted units, and the 71-frame diagnostic window agrees for bomb state, collision regions, bullets, items, shots, and enemies. After the RT-010 repair, all 22 recorded fields agree over the complete 6,120-frame demo. |
 | RT-010 | closed | The same demo's RNG diverged at frame 5908, followed by score and time-orb differences. | Death mode 2 entered the boss cleanup block and released six spellcard orbits at frame 5549. The target switch enters after that block. Missing orbits freed six primary effect slots, allowing 60 extra RNG calls at frame 5908. The corrected case entry passes focused comparison and the cold replay of all accepted units. All 22 recorded fields now agree over the complete 6,120-frame native/retail demo. |
+| RT-011 | closed | A full main-run replay diverged after entering Stage 2, generating duplicate spell rewards. | `CutChain` selected standalone storage instead of `g_Spellcard.lifetimeObject`, leaving an old update callback registered. The field expression preserves target bytes and fixes the duplicated update. Both complete first stages now agree with retail; a later independent Stage 3 score difference remains under investigation. |
+
+<a id="rt-011"></a>
+
+## Spellcard callback cleanup across stages
+
+The Border Team Easy Final B fixture `th8_ud2cdc.rpy` first diverged at
+Stage 2 frame 6,756: the candidate consumed 52 extra RNG values. Hardware
+breakpoints traced 104 calls through item spawning, compared with 52 in retail.
+`Spellcard::OnUpdateImpl` ran twice, creating two copies of the seven-orb and
+six-orb reward loops.
+
+Target `Spellcard::RegisterChain @ 0x00417F60` stores its update callback at
+`g_Spellcard @ 0x004EA670 + 0x263C`. `CutChain @ 0x004180F0` reads the same
+address, `0x004ECCAC`. The reconstruction allocated a separate global for that
+address, so stage cleanup read an unused null pointer. `CutChain` now accesses
+the asserted `lifetimeObject` field. Its two relocations select the Spellcard
+owner with addend `0x263C`; the final-link guard verifies both operands and
+rejects standalone storage.
+
+All 29 accepted SpellCard functions and all 1,106 accepted authored units pass
+their VC7 comparisons after a cold build. The Linux link and a callback
+register/cut smoke pass. The muted native replay now agrees with retail for
+37,016 calculations, including the complete first two stages. At Stage 3
+frame 14,350 it encounters a separate score difference of 156; the full replay
+and route matrix remain in progress. Raw evidence is under
+`build/replay-suite/`, with fixture provenance in
+[replay-fixtures.json](../config/replay-fixtures.json).
 
 <a id="rt-010"></a>
 

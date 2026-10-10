@@ -5030,3 +5030,24 @@ documentation, and automated guards.  The ANM and typed-ECL exceptions keep
 the comparison useful: they identify concrete places where an adjacent
 reconstruction currently communicates intent better, without weakening the
 TH08 accuracy boundary.
+
+### Spellcard update callback ownership — 2026-10-10
+
+Target `Spellcard::RegisterChain @ 0x00417F60` stores its calculation callback
+in `g_Spellcard @ 0x004EA670 + 0x263C`; `CutChain @ 0x004180F0` reads that same
+field. The standalone `g_SpellcardCalcChain` source global split this ownership
+in the native VC7 link, leaving old stage callbacks active. Production now
+uses `g_Spellcard.lifetimeObject`, with assertions for offsets `0x263C` and
+`0x2640`. The independent storage, mapping, and Linux linker alias are removed.
+Both DIR32 operands naturally emit the Spellcard base plus `0x263C`, preserving
+all 30 target bytes. A final-link guard checks the real owner before runtime
+validation.
+
+All 29 accepted SpellCard units pass before and after the change. The shared
+header/global change passes a cold build and comparison of all 1,106 accepted
+authored units (`build/replay-suite/chain-fix-exact.json`). The Linux container
+build and fixed-address verifier pass; a GDB smoke registers a calculation
+callback in the real chain and removes it through `Spellcard::CutChain`.
+The full retail replay now agrees through 37,016 calculations, including the
+complete first two stages; its later independent score divergence is tracked
+in [RT-011](RUNTIME_ISSUES.md#rt-011). The complete route suite is still running.

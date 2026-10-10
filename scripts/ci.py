@@ -57,6 +57,7 @@ def main() -> int:
         run("Test math callee validation", [sys.executable, "scripts/test-match-callees.py"])
         run("Test local relocation validation", [sys.executable, "scripts/test-match-local-relocations.py"])
         run("Test replay trace comparison", [sys.executable, "scripts/test-replay-trace-comparison.py"])
+        run("Test replay file validation", [sys.executable, "scripts/test-replay-file.py"])
         run(
             "Test semantic protocol guards",
             [sys.executable, "scripts/test-semantic-protocols.py"],

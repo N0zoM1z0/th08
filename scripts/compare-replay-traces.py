@@ -3,14 +3,22 @@
 import argparse
 import json
 import struct
+import gzip
 from pathlib import Path
 
 
 def load(directory):
     metadata = json.loads((directory / "metadata.json").read_text())
     complete = json.loads((directory / "complete.json").read_text())
-    rows = [json.loads(line) for line in (directory / "rows.jsonl").read_text().splitlines()]
-    if metadata["schema"].get("version") != 2 or not metadata["schema"].get("demoEndFrames"):
+    trace = directory / "rows.jsonl"
+    opener = open
+    if not trace.exists():
+        trace = directory / "rows.jsonl.gz"
+        opener = gzip.open
+    with opener(trace, "rt") as stream:
+        rows = [json.loads(line) for line in stream]
+    version = metadata["schema"].get("version")
+    if version not in (2, 4) or (version == 2 and not metadata["schema"].get("demoEndFrames")):
         raise ValueError(f"Capture uses an older schema; recapture it: {directory}")
     if not complete.get("ended") or complete.get("errors"):
         raise ValueError(f"Incomplete or failed capture: {directory}")
@@ -23,6 +31,36 @@ def load(directory):
         raise ValueError(f"Invalid trace values: {directory}")
     if any(len(row) != len(metadata["schema"]["fields"]) for row in rows):
         raise ValueError(f"Invalid row width: {directory}")
+    if version == 4:
+        expected = [stage["index"] for stage in metadata["replay"]["stages"] if stage["index"] >= metadata["startStage"]]
+        stages = []
+        previous = None
+        for index, row in enumerate(rows, 1):
+            if row[0] != index:
+                raise ValueError(f"Missing or out-of-order calculation frames: {directory}")
+            if previous is None or row[1] != previous[1]:
+                stages.append(row[1])
+                if row[2] != 1 or row[3] != 1:
+                    raise ValueError(f"Stage did not start at replay frame 1: {directory}")
+            elif row[2] not in (previous[2], previous[2] + 1):
+                raise ValueError(f"Missing or out-of-order replay input frames: {directory}")
+            elif row[3] != previous[3] + 1:
+                raise ValueError(f"Missing gameplay calculation frames: {directory}")
+            previous = row
+        if stages != expected or complete.get("stages") != expected:
+            raise ValueError(f"Missing or out-of-order replay stages: {directory}")
+        for stage in metadata["replay"]["stages"]:
+            if stage["index"] not in expected:
+                continue
+            captured = [row for row in rows if row[1] == stage["index"]]
+            if complete["stageFrames"].get(str(stage["index"])) != captured[-1][2]:
+                raise ValueError(f"Stage completion frame differs from trace: {directory}")
+            expected_tail = 7 if stage["index"] == expected[-1] else 3
+            if stage["inputRecords"] - captured[-1][2] != expected_tail:
+                raise ValueError(f"Stage ended before consuming its recorded inputs: {directory}")
+            if captured[-1][4] != stage["endScore"] or complete["endScores"].get(str(stage["index"])) != stage["endScore"]:
+                raise ValueError(f"Stage end score differs from the original recording: {directory}")
+        return metadata, rows
     if complete.get("lastFrame") != rows[-1][0]:
         raise ValueError(f"Completion frame differs from trace: {directory}")
     demo_column = metadata["schema"]["fields"].index("demo")
@@ -48,11 +86,17 @@ def load(directory):
     return metadata, rows
 
 
-def compare(reference, candidate):
+def compare(reference, candidate, allow_pacing_difference=False):
     ref_meta, ref = load(reference)
     got_meta, got = load(candidate)
     for field in ("schema", "fixture", "targetSha256", "gameDataSha256", "configSha256", "muted"):
         if ref_meta[field] != got_meta[field]:
+            raise ValueError(f"Capture metadata differs: {field}")
+    for field, default in (("startStage", None), ("playbackMode", None),
+                           ("clockRate", 1), ("rasterization", True)):
+        if allow_pacing_difference and field in ("clockRate", "rasterization"):
+            continue
+        if ref_meta.get(field, default) != got_meta.get(field, default):
             raise ValueError(f"Capture metadata differs: {field}")
     fields = ref_meta["schema"]["fields"]
     def decoded(row):
@@ -85,9 +129,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("reference", type=Path)
     parser.add_argument("candidate", type=Path)
+    parser.add_argument("--allow-pacing-difference", action="store_true",
+                        help="Validate an accelerated capture against ordinary pacing")
     args = parser.parse_args()
     try:
-        result = compare(args.reference, args.candidate)
+        result = compare(args.reference, args.candidate, args.allow_pacing_difference)
     except (ValueError, OSError, KeyError, json.JSONDecodeError) as error:
         result = dict(result="incomplete", error=str(error))
     if args.candidate.is_dir():

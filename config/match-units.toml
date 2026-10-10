@@ -44083,14 +44083,14 @@ size = 0x1E
 [[units.relocations]]
 offset = 0x5
 type = "DIR32"
-symbol = "?g_SpellcardCalcChain@th08@@3PAVChainElem@1@A"
-target = 0x004ECCAC
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
 
 [[units.relocations]]
 offset = 0xD
 type = "DIR32"
-symbol = "?g_SpellcardCalcChain@th08@@3PAVChainElem@1@A"
-target = 0x004ECCAC
+symbol = "?g_Spellcard@th08@@3USpellcard@1@A"
+target = 0x004EA670
 
 [[units.relocations]]
 offset = 0x13

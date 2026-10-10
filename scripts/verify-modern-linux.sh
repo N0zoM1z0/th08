@@ -70,7 +70,6 @@ check_absolute_symbol() {
 }
 
 check_absolute_symbol 004ea670 'th08::g_Spellcard'
-check_absolute_symbol 004eccac 'th08::g_SpellcardCalcChain'
 check_absolute_symbol 0160f508 'th08::g_GameManager'
 check_absolute_symbol 0164f548 'th08::g_Chain'
 check_absolute_symbol 018bdc90 'th08::g_AnmManager'

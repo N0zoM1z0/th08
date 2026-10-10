@@ -103,5 +103,69 @@ class ComparisonTests(unittest.TestCase):
             compare.compare(self.reference, self.candidate)
 
 
+class ExternalComparisonTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.reference = Path(self.temp.name) / "reference"
+        self.candidate = Path(self.temp.name) / "candidate"
+        schema = json.loads(Path(__file__).with_name("replay-external-schema.json").read_text())
+        self.metadata = dict(schema=schema, fixture="pinned replay", gameDataSha256="data",
+                             targetSha256="target", configSha256="config", muted=True, startStage=0,
+                             replay=dict(stages=[dict(index=0, inputRecords=5, endScore=99),
+                                                 dict(index=1, inputRecords=10, endScore=199)]))
+        self.rows = []
+        for stage, frames, score in ((0, 2, 99), (1, 3, 199)):
+            for frame in range(1, frames + 1):
+                self.rows.append([len(self.rows) + 1, stage, frame, frame, score] + [0] * (len(schema["fields"]) - 5))
+        self.complete = dict(rows=5, ended=True, stages=[0, 1], stageFrames={"0": 2, "1": 3},
+                             endScores={"0": 99, "1": 199})
+        self.write(self.reference)
+        self.write(self.candidate)
+
+    def write(self, directory):
+        directory.mkdir(exist_ok=True)
+        (directory / "metadata.json").write_text(json.dumps(self.metadata))
+        (directory / "complete.json").write_text(json.dumps(self.complete))
+        (directory / "rows.jsonl").write_text("\n".join(map(json.dumps, self.rows)) + "\n")
+
+    def test_complete_cross_stage_trace(self):
+        self.assertEqual(compare.compare(self.reference, self.candidate)["result"], "equal")
+
+    def test_missing_stage(self):
+        self.rows = self.rows[:2]
+        self.complete.update(rows=2, stages=[0])
+        self.write(self.candidate)
+        with self.assertRaisesRegex(ValueError, "stages"):
+            compare.compare(self.reference, self.candidate)
+
+    def test_premature_end_with_matching_scores(self):
+        self.rows.pop()
+        self.complete.update(rows=4, stageFrames={"0": 2, "1": 2})
+        self.write(self.candidate)
+        with self.assertRaisesRegex(ValueError, "recorded inputs"):
+            compare.compare(self.reference, self.candidate)
+
+    def test_frozen_input_does_not_hide_missing_calc(self):
+        self.rows[1][2] = 1
+        self.rows[1][3] = 3
+        self.write(self.candidate)
+        with self.assertRaisesRegex(ValueError, "calculation frames"):
+            compare.compare(self.reference, self.candidate)
+
+    def test_end_score_must_match_recording(self):
+        self.rows[-1][4] = 200
+        self.write(self.candidate)
+        with self.assertRaisesRegex(ValueError, "end score"):
+            compare.compare(self.reference, self.candidate)
+
+    def test_pacing_difference_requires_explicit_validation(self):
+        self.metadata["clockRate"] = 128
+        self.write(self.candidate)
+        with self.assertRaisesRegex(ValueError, "clockRate"):
+            compare.compare(self.reference, self.candidate)
+        self.assertEqual(compare.compare(self.reference, self.candidate, allow_pacing_difference=True)["result"], "equal")
+
+
 if __name__ == "__main__":
     unittest.main()

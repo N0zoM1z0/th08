@@ -6,6 +6,80 @@ sequence, records each calculation frame, and reports the first difference.
 BGM and sound effects are off throughout. The run needs no menu input or
 supervision.
 
+`test-replay-suite.py` extends the comparison to standard replay files. The
+[fixture manifest](../config/replay-fixtures.json) pins 108 public 1.00d
+recordings: each of the 12 shot types on Easy, Normal, Hard, and Lunatic through
+Final A and Final B, plus Extra. Stage 4A and 4B follow the recorded shot's
+route. The manifest includes download URLs, recorder credits, hashes, and
+stage input counts. Replay files remain under `build/`.
+
+## Full route suite
+
+The suite needs `xdotool` for menu input. It creates an isolated runtime with
+one replay file, opens the Replay menu, selects the first recorded stage, and
+plays through the recorded route. Wine audio drivers are disabled; replay
+bytes and their saved configuration stay intact.
+
+```bash
+python3 scripts/test-replay-suite.py \
+  --game-data build/modern-runtime/th08.dat \
+  --bgm-data build/modern-runtime/thbgm.dat \
+  --output-dir build/replay-suite-check
+```
+
+The runner downloads and verifies each fixture, captures retail playback,
+then compares the native build. Cases run serially. `suite.json` records each
+result and its first difference. Run the same command again to resume with
+the same build and settings. `--cases easy-0-b,extra-0-extra` selects individual
+cases; the number is the shot index listed in the manifest. `--fetch-only`
+checks the input files without launching Wine.
+
+For a new build, use a fresh output directory and
+`--reference-dir build/replay-suite-check` to reuse validated retail captures.
+The runner checks replay, executable, game-data, and pacing identities before
+reuse. Completed traces and debugger logs are compressed; temporary runtimes
+and Wine prefixes are removed after each capture.
+
+For a long serial batch, `--wine-prefix build/replay-suite-wine` reuses a
+prefix marked as owned by this runner. It stays under `build/` until removed
+after the batch; an existing unmarked prefix is rejected. Captures still
+remove their individual runtimes.
+
+The optional `--clock-rate 128 --no-rasterization` profile scales Wine's raw
+monotonic clock and uses Mesa llvmpipe's
+[profiling switch](https://docs.mesa3d.org/envvars.html#envvar-LP_NO_RAST) to
+skip pixel rasterization. Game calculation and draw callbacks still run.
+The profile matched the ordinary retail trace over all 16,080 bundled-demo
+frames. `--observer-backend ptrace` uses Linux hardware execute breakpoints
+with the same observer as GDB; it requires a Linux x86-64 host. Keep ordinary
+pacing and GDB available for profile validation and investigations.
+
+External traces use schema version 4. They record every calculation, including
+stage-clear calculations with frozen replay input. Both replay input and game
+frame counters must remain continuous. Each stage must reach its recorded end
+score and consume its input stream through the recording's trailer: three
+records for an intermediate stage, seven for the final recorded stage.
+Completion comes from the game's replay exit.
+
+The 25 compared fields include the demo trace's gameplay state, plus point
+value, character, shot type, and difficulty. RNG generations are measured from
+the first gameplay calculation of each stage; raw starting counters remain
+in completion metadata. This keeps title/loading activity separate from
+gameplay RNG consumption. Floating-point values retain exact bit comparison.
+
+The candidate compares against the reference while running. At the first
+difference it saves `first-difference.json`, recent frames, and a compressed
+player-state snapshot, then stops. Use `--keep-going` to investigate other
+cases in the same batch. A timeout or incomplete stage records a failure.
+Rendering comparisons use rasterization and separate image evidence.
+
+To investigate an external replay, pass `--detail-stage`, `--detail-start`,
+and `--detail-end` to `capture-replay.py` with the GDB backend. The window
+records RNG callers and attached-effect releases, then saves object state.
+Add `--watch-score` to collect score writes and their call stacks instead.
+Diagnostic captures stop at the requested frame and remain incomplete;
+only playback through the game's replay exit can pass the parity gate.
+
 ## Run the comparison
 
 Prepare the VC7 environment and your own game data using
@@ -82,8 +156,8 @@ The 2026-10-10 muted Wine/GDB comparison passed on VC7 build
 | Fixture | Stage | Frames | Recorded state |
 | --- | --- | ---: | --- |
 | `demo/demorpy0.rpy` | 5 | 6,120 | All 22 fields equal |
-| `demo/demorpy1.rpy` | 3 | 4,920 | All 22 fields equal |
-| `demo/demorpy2.rpy` | 2 | 5,040 | All 22 fields equal |
+| `demo/demorpy1.rpy` | 4A | 4,920 | All 22 fields equal |
+| `demo/demorpy2.rpy` | 3 | 5,040 | All 22 fields equal |
 
 The local evidence is in `build/native-replay-parity-final/`; both captures
 completed naturally. The source repairs also passed a single-job cold

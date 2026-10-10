@@ -295,6 +295,28 @@ def verify_spellcard_background_owner(
             )
 
 
+def verify_spellcard_calc_chain_owner(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Bind stage cleanup to the callback created in Spellcard::RegisterChain."""
+    if any(name.startswith("?g_SpellcardCalcChain@") for name in publics):
+        raise ValueError("linked image still owns standalone g_SpellcardCalcChain")
+    rebuilt_function = exact_public_va(publics, "?CutChain@Spellcard@th08@@SIXXZ")
+    rebuilt_owner = exact_public_va(publics, "?g_Spellcard@th08@@3USpellcard@1@A")
+    for label, image, function, owner in (
+        ("target", target, 0x004180F0, 0x004EA670),
+        ("rebuild", rebuild, rebuilt_function, rebuilt_owner),
+    ):
+        body = read_va(image, function, 0x1E)
+        for offset in (5, 13):
+            address = struct.unpack_from("<I", body, offset)[0]
+            if address != owner + 0x263C:
+                raise ValueError(
+                    f"{label} Spellcard::CutChain + {offset:#x} selects {address:#010x}; "
+                    f"expected Spellcard::lifetimeObject at {owner + 0x263C:#010x}"
+                )
+
+
 def verify_player_gauge_bounds_owner(
     target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
 ) -> None:
@@ -665,6 +687,7 @@ def main() -> int:
         )
         verify_gui_enemy_name_owner(target, rebuild, publics)
         verify_spellcard_background_owner(target, rebuild, publics)
+        verify_spellcard_calc_chain_owner(target, rebuild, publics)
         verify_player_gauge_bounds_owner(target, rebuild, publics)
         verify_background_stage_gate(target, rebuild, publics)
         verify_additional_runtime_callees(target, rebuild, publics)
@@ -679,7 +702,8 @@ def main() -> int:
         "Last Spell count, 66 Effect templates, 9 stage bonuses, and "
         "12 dialogue palettes match the target; enemy-name copy selects "
         "Gui::frontAnm in all 8 linked loads; spell backgrounds select "
-        "EffectManager::stageEffectAnm; all 21 player gauge-bound writes select "
+        "EffectManager::stageEffectAnm; spellcard cleanup selects its registered "
+        "lifetimeObject; all 21 player gauge-bound writes select "
         "the six GameManager fields; all 3 Background draw gates call "
         "Gui::IsStageFinished; 12 additional repaired REL32 calls select their "
         "target-mapped callees; all 20 player-shot callback entries resolve "

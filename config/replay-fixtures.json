@@ -1,0 +1,6234 @@
+{
+  "version": 1,
+  "targetSha256": "330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924",
+  "fixtures": [
+    {
+      "id": "easy-0-b",
+      "file": "th8_ud2cdc.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cdc.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "79739491e1cb1d735ef9a14814a79dfe8e2c4872d5f2bf0174c79f40ada36989",
+      "bytes": 30418,
+      "shot": 0,
+      "shotName": "Border Team",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 8637,
+          "endScore": 2863926
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13891,
+          "endScore": 10601045
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 14518,
+          "endScore": 24476356
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 20991,
+          "endScore": 37621145
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 20207,
+          "endScore": 58514214
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 28222,
+          "endScore": 100043139
+        }
+      ],
+      "player": "AAA     ",
+      "recordedBy": "dgart",
+      "submittedAt": "2021/11/14 13:19:32"
+    },
+    {
+      "id": "easy-1-b",
+      "file": "th8_ud2c0a.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c0a.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "c63b543bffd26513fd15b99c75d3c79dfad362b3cd1ceb375a79ec7e9db9f191",
+      "bytes": 36559,
+      "shot": 1,
+      "shotName": "Magic Team",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 10375,
+          "endScore": 3952028
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 15677,
+          "endScore": 15658897
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16343,
+          "endScore": 37404945
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 28038,
+          "endScore": 85074878
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 23507,
+          "endScore": 130153249
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 32049,
+          "endScore": 256744255
+        }
+      ],
+      "player": "LuYC25.6",
+      "recordedBy": "LuYC",
+      "submittedAt": "2020/03/13 11:23:14"
+    },
+    {
+      "id": "easy-2-b",
+      "file": "th8_ud2b76.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b76.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "8ef34203e090213e0d5e27df27e538c4d962424868c875c8b1a5b0754456652e",
+      "bytes": 27609,
+      "shot": 2,
+      "shotName": "Scarlet Team",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 8863,
+          "endScore": 2610208
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 12564,
+          "endScore": 10409295
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 12022,
+          "endScore": 24331827
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 18313,
+          "endScore": 45843691
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 17920,
+          "endScore": 68760143
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 27632,
+          "endScore": 151942320
+        }
+      ],
+      "player": "GHS     ",
+      "recordedBy": "GHS",
+      "submittedAt": "2018/10/11 22:10:32"
+    },
+    {
+      "id": "easy-3-b",
+      "file": "th8_ud2cde.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cde.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "4a705df9b4db462ea894bf780aa619f6decbe63629c5862aae51e3293e27eafc",
+      "bytes": 29364,
+      "shot": 3,
+      "shotName": "Ghost Team",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 8635,
+          "endScore": 1469518
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 12473,
+          "endScore": 9546966
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 12632,
+          "endScore": 22050399
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 20780,
+          "endScore": 41329623
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 19840,
+          "endScore": 57532708
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 28730,
+          "endScore": 108824632
+        }
+      ],
+      "player": "AAA     ",
+      "recordedBy": "dgart",
+      "submittedAt": "2021/11/15 00:34:29"
+    },
+    {
+      "id": "easy-4-b",
+      "file": "th8_ud2b78.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b78.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "d58acc71d94233530ed23f9a28fb0996f3e02a36c778b01e8ea84fb8b1ac4bd9",
+      "bytes": 32044,
+      "shot": 4,
+      "shotName": "Reimu",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 9284,
+          "endScore": 3861243
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13652,
+          "endScore": 15099797
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 14171,
+          "endScore": 34087894
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 24190,
+          "endScore": 64304498
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 21416,
+          "endScore": 94459372
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 34874,
+          "endScore": 203874828
+        }
+      ],
+      "player": "GHS     ",
+      "recordedBy": "GHS",
+      "submittedAt": "2018/10/13 21:30:51"
+    },
+    {
+      "id": "easy-5-b",
+      "file": "th8_ud2c0e.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c0e.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "1c51a494a5ef7d54acb846d4ebd51e97a394d2c18b6050e846d76f7bae5d0736",
+      "bytes": 38447,
+      "shot": 5,
+      "shotName": "Yukari",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 11132,
+          "endScore": 3122351
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 15506,
+          "endScore": 11472004
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16992,
+          "endScore": 24576395
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 23330,
+          "endScore": 46797784
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 26540,
+          "endScore": 73134359
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 38234,
+          "endScore": 173549547
+        }
+      ],
+      "player": "garbiale",
+      "recordedBy": "ガブリエラ",
+      "submittedAt": "2020/03/14 21:09:27"
+    },
+    {
+      "id": "easy-6-b",
+      "file": "th8_ud2bb6.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2bb6.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "045e08226687c4011f77060885af83096e3b35b1023a71c1e5e7ab89ea2fa234",
+      "bytes": 36229,
+      "shot": 6,
+      "shotName": "Marisa",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 10947,
+          "endScore": 4325040
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 15754,
+          "endScore": 18604751
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16960,
+          "endScore": 46232816
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 21467,
+          "endScore": 98051759
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 22902,
+          "endScore": 151842124
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 33889,
+          "endScore": 300139005
+        }
+      ],
+      "player": "garbiale",
+      "recordedBy": "夏花火",
+      "submittedAt": "2019/06/12 15:28:25"
+    },
+    {
+      "id": "easy-7-b",
+      "file": "th8_ud2b7b.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b7b.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "a225ed083f7a120976346f02842c13d9e7a7c1f8d4bbb517be3b164a97ad290f",
+      "bytes": 30637,
+      "shot": 7,
+      "shotName": "Alice",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 9395,
+          "endScore": 2311422
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13068,
+          "endScore": 9099108
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 13161,
+          "endScore": 20293968
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 21539,
+          "endScore": 38270892
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 20445,
+          "endScore": 56902633
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 31096,
+          "endScore": 132067697
+        }
+      ],
+      "player": "GHS     ",
+      "recordedBy": "GHS",
+      "submittedAt": "2018/10/15 18:59:08"
+    },
+    {
+      "id": "easy-8-b",
+      "file": "th8_ud2b7c.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b7c.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "254e54b2d32094d97495ee82ab6c8ebcf300436d2f253c252d8d1f9a34ec6ba3",
+      "bytes": 34574,
+      "shot": 8,
+      "shotName": "Sakuya",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 9945,
+          "endScore": 2162446
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 15321,
+          "endScore": 9425879
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 14385,
+          "endScore": 22562379
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 23612,
+          "endScore": 40908184
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 23414,
+          "endScore": 58605947
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 36061,
+          "endScore": 133533918
+        }
+      ],
+      "player": "GHS     ",
+      "recordedBy": "GHS",
+      "submittedAt": "2018/10/17 22:11:01"
+    },
+    {
+      "id": "easy-9-b",
+      "file": "th8_ud2cb3.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cb3.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "575423ac31cb62a8d82ec8cbfb6cc055d34390245077829b8cb4dcfb5c401ba6",
+      "bytes": 37534,
+      "shot": 9,
+      "shotName": "Remilia",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 10760,
+          "endScore": 3147971
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13971,
+          "endScore": 11874516
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 15329,
+          "endScore": 26932100
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 27352,
+          "endScore": 62161060
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 25701,
+          "endScore": 92299123
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 35247,
+          "endScore": 195440084
+        }
+      ],
+      "player": "garbiale",
+      "recordedBy": "夏花火",
+      "submittedAt": "2021/04/22 11:16:43"
+    },
+    {
+      "id": "easy-10-b",
+      "file": "th8_ud2cc3.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cc3.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "f93f5af22076d41825d559c050f5946e9439536337ba15774e690ced2491a18d",
+      "bytes": 34417,
+      "shot": 10,
+      "shotName": "Youmu",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 11389,
+          "endScore": 4306407
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 12857,
+          "endScore": 18323718
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16632,
+          "endScore": 46536164
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 22421,
+          "endScore": 98361085
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 21857,
+          "endScore": 153935036
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 31669,
+          "endScore": 314625444
+        }
+      ],
+      "player": "garbiale",
+      "recordedBy": "夏花火",
+      "submittedAt": "2021/06/04 01:14:35"
+    },
+    {
+      "id": "easy-11-b",
+      "file": "th8_ud2bff.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2bff.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "6f62f5c29589f5e7fb52f5fc0a1d775d419be6f6cfed7d081233d39995f68417",
+      "bytes": 36634,
+      "shot": 11,
+      "shotName": "Yuyuko",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 10955,
+          "endScore": 3177398
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 14943,
+          "endScore": 10658066
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 15237,
+          "endScore": 25707060
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 21033,
+          "endScore": 48166659
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 27232,
+          "endScore": 75097585
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 37288,
+          "endScore": 173391261
+        }
+      ],
+      "player": "garbiale",
+      "recordedBy": "夏花火",
+      "submittedAt": "2020/03/11 01:27:19"
+    },
+    {
+      "id": "normal-0-b",
+      "file": "th8_ud2cd5.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cd5.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "ba9ca721a8fe80d015c2b99461804f12891d3fbad842ed5b12829887177d49ba",
+      "bytes": 28870,
+      "shot": 0,
+      "shotName": "Border Team",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 9203,
+          "endScore": 1802425
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13738,
+          "endScore": 6700435
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 14490,
+          "endScore": 12693788
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 19235,
+          "endScore": 20122485
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 18423,
+          "endScore": 27118624
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 24936,
+          "endScore": 36407046
+        }
+      ],
+      "player": "        ",
+      "recordedBy": "こうちゃん",
+      "submittedAt": "2021/10/14 13:46:15"
+    },
+    {
+      "id": "normal-1-b",
+      "file": "th8_ud2b32.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b32.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "94fb464bfe85232034114b9ab85ef4f6593166b23c29afc5c518a68ca87fb2d9",
+      "bytes": 38980,
+      "shot": 1,
+      "shotName": "Magic Team",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13720,
+          "endScore": 7863537
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 16690,
+          "endScore": 25181128
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16878,
+          "endScore": 59166982
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 28456,
+          "endScore": 107636449
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 25570,
+          "endScore": 165950082
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 30004,
+          "endScore": 303506026
+        }
+      ],
+      "player": "garbiela",
+      "recordedBy": "ガブリエラ",
+      "submittedAt": "2018/10/25 20:48:53"
+    },
+    {
+      "id": "normal-2-b",
+      "file": "th8_ud2c88.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c88.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "e2725bb5ddd0d5fe852b3920bb6969b7ae1dbf5175071f136d0f5a989064dd84",
+      "bytes": 36343,
+      "shot": 2,
+      "shotName": "Scarlet Team",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13322,
+          "endScore": 6977650
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 16271,
+          "endScore": 20308805
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 17076,
+          "endScore": 46814741
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 20997,
+          "endScore": 82847016
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 23587,
+          "endScore": 121920122
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 31733,
+          "endScore": 238195382
+        }
+      ],
+      "player": "Ari     ",
+      "recordedBy": "Ari",
+      "submittedAt": "2020/11/27 17:47:30"
+    },
+    {
+      "id": "normal-3-b",
+      "file": "th8_ud2ccc.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2ccc.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "69fbf4598a08f3a561db578861d101d0e1033da9550b6bf0727b087c5de6ee63",
+      "bytes": 31557,
+      "shot": 3,
+      "shotName": "Ghost Team",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 10707,
+          "endScore": 3134774
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13476,
+          "endScore": 9496778
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 18110,
+          "endScore": 21213683
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 20970,
+          "endScore": 33031202
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 20490,
+          "endScore": 49200411
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 29128,
+          "endScore": 75921590
+        }
+      ],
+      "player": "Elzer   ",
+      "recordedBy": "Elzer",
+      "submittedAt": "2021/07/30 21:52:25"
+    },
+    {
+      "id": "normal-4-b",
+      "file": "th8_ud2b49.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b49.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "4460f56cb9747c81aaf2d4c449509003d2ae08e6b8ef3a7ea61993e227227155",
+      "bytes": 38775,
+      "shot": 4,
+      "shotName": "Reimu",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 11684,
+          "endScore": 7107211
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 16646,
+          "endScore": 25230092
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 19978,
+          "endScore": 61311415
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 25698,
+          "endScore": 103208735
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 26005,
+          "endScore": 156920426
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 33325,
+          "endScore": 275210618
+        }
+      ],
+      "player": "garbiela",
+      "recordedBy": "ガブリエラ",
+      "submittedAt": "2018/12/23 22:58:25"
+    },
+    {
+      "id": "normal-5-b",
+      "file": "th8_ud279f.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud279f.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "efe80a1318599636c31de24dc0aa497cd4fcb0e7f37d88f67df71dd00108ab5a",
+      "bytes": 35705,
+      "shot": 5,
+      "shotName": "Yukari",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13159,
+          "endScore": 5553928
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 16634,
+          "endScore": 18466472
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 15332,
+          "endScore": 40947952
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 22123,
+          "endScore": 68093412
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 27848,
+          "endScore": 102597327
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 30231,
+          "endScore": 233646484
+        }
+      ],
+      "player": "Ferir   ",
+      "recordedBy": "ferir",
+      "submittedAt": "2014/03/24 00:26:51"
+    },
+    {
+      "id": "normal-6-b",
+      "file": "th8_ud2922.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2922.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "06bb7bdcc8eb955dc97249ce2b75fa24107f80dea783ab8056bd18b89bd97d25",
+      "bytes": 39949,
+      "shot": 6,
+      "shotName": "Marisa",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13189,
+          "endScore": 7057773
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 17437,
+          "endScore": 26494085
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 18427,
+          "endScore": 64891676
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 28045,
+          "endScore": 122640982
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 24689,
+          "endScore": 189250329
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 33006,
+          "endScore": 357018146
+        }
+      ],
+      "player": "K@G NoMa",
+      "recordedBy": "Ｋ・Ｇ",
+      "submittedAt": "2016/06/04 13:14:47"
+    },
+    {
+      "id": "normal-7-b",
+      "file": "th8_ud2603.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2603.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "f8b76942908511e103126dceb96cd8e9a4d1aa91ba9ff66f0034b2f54e2f4701",
+      "bytes": 35590,
+      "shot": 7,
+      "shotName": "Alice",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 11686,
+          "endScore": 5227906
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 17350,
+          "endScore": 17106226
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16080,
+          "endScore": 37889153
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 29621,
+          "endScore": 65732741
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 22390,
+          "endScore": 96189743
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 31350,
+          "endScore": 193352882
+        }
+      ],
+      "player": "mahinu  ",
+      "recordedBy": "mahinu",
+      "submittedAt": "2013/01/24 23:18:33"
+    },
+    {
+      "id": "normal-8-b",
+      "file": "th8_ud2c2c.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c2c.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "ab537484ca7a577f0ca16c6f95d16d519a0afda02f79a832b35ceeb13105a7ff",
+      "bytes": 43813,
+      "shot": 8,
+      "shotName": "Sakuya",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13419,
+          "endScore": 7099387
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 20070,
+          "endScore": 23726912
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 20592,
+          "endScore": 60890180
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 28325,
+          "endScore": 107008976
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 28193,
+          "endScore": 164561561
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 37187,
+          "endScore": 323126135
+        }
+      ],
+      "player": "KIS NoSa",
+      "recordedBy": "Ｋ・Ｇ",
+      "submittedAt": "2020/05/17 13:28:07"
+    },
+    {
+      "id": "normal-9-b",
+      "file": "th8_ud22fe.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud22fe.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "7a5a4d1a55ad9e168bad4d085922468df368faf32a124bcf765fbe4015f7af69",
+      "bytes": 31693,
+      "shot": 9,
+      "shotName": "Remilia",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 11450,
+          "endScore": 4497737
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 15031,
+          "endScore": 16245532
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 14137,
+          "endScore": 37160285
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 19669,
+          "endScore": 65826101
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 20444,
+          "endScore": 94950961
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 29095,
+          "endScore": 169825330
+        }
+      ],
+      "player": "PARU    ",
+      "recordedBy": "PARU",
+      "submittedAt": "2011/12/15 21:44:39"
+    },
+    {
+      "id": "normal-10-b",
+      "file": "th8_ud2b9c.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b9c.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "494c4ca29f897a06113f2861bc66db106f0194b5e9110dd4784595352f0f10b8",
+      "bytes": 36053,
+      "shot": 10,
+      "shotName": "Youmu",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 12887,
+          "endScore": 8085177
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 16334,
+          "endScore": 28560351
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 17927,
+          "endScore": 70608055
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 23308,
+          "endScore": 130777542
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 22974,
+          "endScore": 204700725
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 28413,
+          "endScore": 367107333
+        }
+      ],
+      "player": "garbiale",
+      "recordedBy": "ガブリエラ",
+      "submittedAt": "2019/05/10 00:29:26"
+    },
+    {
+      "id": "normal-11-b",
+      "file": "th8_ud23d6.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud23d6.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "e99c8ec69ef8c93e45f25eabf731e8eebe9d412ccaa7126642bce098d84fea92",
+      "bytes": 35939,
+      "shot": 11,
+      "shotName": "Yuyuko",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13255,
+          "endScore": 6858826
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 15969,
+          "endScore": 19547174
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16611,
+          "endScore": 41001810
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 22750,
+          "endScore": 67119255
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 27907,
+          "endScore": 104706278
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 32219,
+          "endScore": 214211568
+        }
+      ],
+      "player": "HANPEN  ",
+      "recordedBy": "はんぺん",
+      "submittedAt": "2012/03/23 17:48:02"
+    },
+    {
+      "id": "hard-0-b",
+      "file": "th8_ud2c44.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c44.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "e69bc42b444bc7e15a1371df26fcb89b028a08a5bb1b816ca38ed1732ee5add6",
+      "bytes": 33625,
+      "shot": 0,
+      "shotName": "Border Team",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13455,
+          "endScore": 10652102
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 15913,
+          "endScore": 29308326
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 15815,
+          "endScore": 65799998
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 23906,
+          "endScore": 111632398
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 21693,
+          "endScore": 161098727
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 31199,
+          "endScore": 306544775
+        }
+      ],
+      "player": "rikue471",
+      "recordedBy": "いもむし",
+      "submittedAt": "2020/07/07 23:20:28"
+    },
+    {
+      "id": "hard-1-b",
+      "file": "th8_ud2933.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2933.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "9aa0e13b18c8cf68a66d453b1b9d9ef92cd6871eb61ddf42eb8af2dd587d597f",
+      "bytes": 42683,
+      "shot": 1,
+      "shotName": "Magic Team",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 15641,
+          "endScore": 12653211
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 17626,
+          "endScore": 36891202
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 18555,
+          "endScore": 85129691
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 28104,
+          "endScore": 151781881
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 26985,
+          "endScore": 223775752
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 31858,
+          "endScore": 416726723
+        }
+      ],
+      "player": "K@G HaMA",
+      "recordedBy": "Ｋ・Ｇ",
+      "submittedAt": "2016/07/16 22:21:59"
+    },
+    {
+      "id": "hard-2-b",
+      "file": "th8_ud2919.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2919.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "ec7139a0ee0885f4c28404a0c08890a545af05443bab419a282668b20e288955",
+      "bytes": 38347,
+      "shot": 2,
+      "shotName": "Scarlet Team",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 15978,
+          "endScore": 11488278
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 16755,
+          "endScore": 33182554
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 17249,
+          "endScore": 75970575
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 26568,
+          "endScore": 133945795
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 25037,
+          "endScore": 199772641
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 29186,
+          "endScore": 369011752
+        }
+      ],
+      "player": "K       ",
+      "recordedBy": "Koishi",
+      "submittedAt": "2016/05/14 21:59:33"
+    },
+    {
+      "id": "hard-3-b",
+      "file": "th8_ud2a62.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2a62.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "962fe253d70e293108c128c25f16786fbb74fc7447a5285faf5b641d2989b490",
+      "bytes": 33130,
+      "shot": 3,
+      "shotName": "Ghost Team",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13242,
+          "endScore": 11332691
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 14664,
+          "endScore": 31919787
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 15543,
+          "endScore": 65965638
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 22127,
+          "endScore": 112379817
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 22527,
+          "endScore": 163693328
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 29412,
+          "endScore": 297635139
+        }
+      ],
+      "player": "homo    ",
+      "recordedBy": "西野君",
+      "submittedAt": "2017/10/06 14:50:55"
+    },
+    {
+      "id": "hard-4-b",
+      "file": "th8_ud28b8.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud28b8.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "16d95701dbf30c4fa456f74f46db870b848c93b50b079cabe71f969b68452943",
+      "bytes": 34791,
+      "shot": 4,
+      "shotName": "Reimu",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 14225,
+          "endScore": 6795516
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 14852,
+          "endScore": 15304447
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 17047,
+          "endScore": 31597985
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 23833,
+          "endScore": 56528043
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 22336,
+          "endScore": 71209826
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 32981,
+          "endScore": 117384857
+        }
+      ],
+      "player": "REIMU H ",
+      "recordedBy": "LISTIR",
+      "submittedAt": "2016/01/15 03:40:03"
+    },
+    {
+      "id": "hard-5-b",
+      "file": "th8_ud2227.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2227.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "d3438bf3b5c830e23a9b8600b5b6fd0ed47aa161cc700f540041a19e9d3cb45a",
+      "bytes": 33779,
+      "shot": 5,
+      "shotName": "Yukari",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 12674,
+          "endScore": 8806761
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 15040,
+          "endScore": 23681487
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16449,
+          "endScore": 48688609
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 21889,
+          "endScore": 75858795
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 20967,
+          "endScore": 107665749
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 32221,
+          "endScore": 221186909
+        }
+      ],
+      "player": "K@G HaNB",
+      "recordedBy": "Ｋ・Ｇ",
+      "submittedAt": "2011/08/22 18:40:27"
+    },
+    {
+      "id": "hard-6-b",
+      "file": "th8_ud2abc.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2abc.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "b88dea5d0918748c73ca8412798eafc95f475cbe4607aec3788904b28163f200",
+      "bytes": 38336,
+      "shot": 6,
+      "shotName": "Marisa",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13390,
+          "endScore": 9608163
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 17302,
+          "endScore": 33215332
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 18215,
+          "endScore": 81597610
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 24995,
+          "endScore": 148865686
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 23920,
+          "endScore": 221848012
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 31748,
+          "endScore": 394323121
+        }
+      ],
+      "player": "K@G HaMa",
+      "recordedBy": "Ｋ・Ｇ",
+      "submittedAt": "2018/04/21 19:40:09"
+    },
+    {
+      "id": "hard-7-b",
+      "file": "th8_ud267e.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud267e.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "21d8acafe071b972f15835846740a43c398b594d6a054da164b769bfec9ff901",
+      "bytes": 34847,
+      "shot": 7,
+      "shotName": "Alice",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13504,
+          "endScore": 6796628
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13278,
+          "endScore": 16704174
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16295,
+          "endScore": 27692454
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 25632,
+          "endScore": 49503627
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 21753,
+          "endScore": 77788200
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 33727,
+          "endScore": 149159577
+        }
+      ],
+      "player": "YM      ",
+      "recordedBy": "YM",
+      "submittedAt": "2013/03/31 21:29:18"
+    },
+    {
+      "id": "hard-8-b",
+      "file": "th8_ud24f9.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud24f9.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "1b7fe41fb2cb967ef005a13870a75b766562f1ca4d554759c118d166aa10f033",
+      "bytes": 38968,
+      "shot": 8,
+      "shotName": "Sakuya",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 15122,
+          "endScore": 8737037
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 19959,
+          "endScore": 27118050
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 19277,
+          "endScore": 62151624
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 24741,
+          "endScore": 99613625
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 26442,
+          "endScore": 138603032
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 37415,
+          "endScore": 234255229
+        }
+      ],
+      "player": "BDR     ",
+      "recordedBy": "BDR",
+      "submittedAt": "2012/09/08 20:43:07"
+    },
+    {
+      "id": "hard-9-b",
+      "file": "th8_ud2469.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2469.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "3bbed6cee330c7ebb7482932d8cf78d329d82bbcfc274be907eec44cf823fe9e",
+      "bytes": 37453,
+      "shot": 9,
+      "shotName": "Remilia",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 15084,
+          "endScore": 11213382
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 17856,
+          "endScore": 29047616
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 14822,
+          "endScore": 61490523
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 26496,
+          "endScore": 102548398
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 25366,
+          "endScore": 146425158
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 29075,
+          "endScore": 290305811
+        }
+      ],
+      "player": "kazu    ",
+      "recordedBy": "NEU",
+      "submittedAt": "2012/06/11 01:08:48"
+    },
+    {
+      "id": "hard-10-b",
+      "file": "th8_ud2ac5.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2ac5.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "011882ffbe550f91e31da94003fdf891be33761d6d9ed24b7ca3ce801a23b806",
+      "bytes": 39941,
+      "shot": 10,
+      "shotName": "Youmu",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 15571,
+          "endScore": 12051029
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 15958,
+          "endScore": 38094433
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 19158,
+          "endScore": 93827506
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 24661,
+          "endScore": 168053780
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 27821,
+          "endScore": 247828899
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 30669,
+          "endScore": 452951980
+        }
+      ],
+      "player": "K@G HaYo",
+      "recordedBy": "Ｋ・Ｇ",
+      "submittedAt": "2018/05/12 22:52:51"
+    },
+    {
+      "id": "hard-11-b",
+      "file": "th8_ud2854.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2854.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "3381cd4a872d36065aaeab41f2e508032f52467ef10b9c2c22189c29584513ab",
+      "bytes": 34127,
+      "shot": 11,
+      "shotName": "Yuyuko",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 12597,
+          "endScore": 6150208
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 16724,
+          "endScore": 18419891
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16668,
+          "endScore": 35787162
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 21129,
+          "endScore": 55797835
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 23254,
+          "endScore": 82108674
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 30173,
+          "endScore": 128310180
+        }
+      ],
+      "player": "PDZ     ",
+      "recordedBy": "PDZ",
+      "submittedAt": "2015/01/31 23:33:27"
+    },
+    {
+      "id": "lunatic-0-b",
+      "file": "th8_ud2ce5.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2ce5.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "004f58e1b95655664087d6613780f3e6e16e25d0c55e5c17b2e2291d5446ae6b",
+      "bytes": 31356,
+      "shot": 0,
+      "shotName": "Border Team",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 10546,
+          "endScore": 12108221
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13881,
+          "endScore": 36180334
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 14949,
+          "endScore": 76577371
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 21994,
+          "endScore": 122110099
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 20614,
+          "endScore": 163454084
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 30364,
+          "endScore": 316224075
+        }
+      ],
+      "player": "LNNFS   ",
+      "recordedBy": "てーる",
+      "submittedAt": "2022/01/03 13:02:30"
+    },
+    {
+      "id": "lunatic-1-b",
+      "file": "th8_ud2c70.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c70.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "be66fc4670f46c472d149c5f8d12b85165c82b027388cce0ff67fa80671b5c8f",
+      "bytes": 29667,
+      "shot": 1,
+      "shotName": "Magic Team",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 9968,
+          "endScore": 11279740
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13217,
+          "endScore": 34755813
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 12520,
+          "endScore": 75614578
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 22696,
+          "endScore": 130467309
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 19484,
+          "endScore": 183971267
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 27349,
+          "endScore": 339190420
+        }
+      ],
+      "player": "ATM     ",
+      "recordedBy": "ATM",
+      "submittedAt": "2020/10/13 13:30:08"
+    },
+    {
+      "id": "lunatic-2-b",
+      "file": "th8_ud2c5a.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c5a.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "25ea06bcac61991170ae2df3d68179048997758fc8ccbd1fdd0245453397ebd6",
+      "bytes": 32424,
+      "shot": 2,
+      "shotName": "Scarlet Team",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 11921,
+          "endScore": 12660319
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 14561,
+          "endScore": 38961118
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 13824,
+          "endScore": 78059783
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 23190,
+          "endScore": 131860076
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 20286,
+          "endScore": 186315453
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 28068,
+          "endScore": 343543955
+        }
+      ],
+      "player": "CWC     ",
+      "recordedBy": "CWC",
+      "submittedAt": "2020/08/27 23:34:40"
+    },
+    {
+      "id": "lunatic-3-b",
+      "file": "th8_ud2cd4.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cd4.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "82c7ed2668d9d7c1087fea5f3047e37731b6279256691006298121cc21fb38bb",
+      "bytes": 43917,
+      "shot": 3,
+      "shotName": "Ghost Team",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 16642,
+          "endScore": 19277860
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 20266,
+          "endScore": 61528208
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 20948,
+          "endScore": 142779950
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 23816,
+          "endScore": 252673540
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 29978,
+          "endScore": 370351664
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 37397,
+          "endScore": 662083832
+        }
+      ],
+      "player": "Levea   ",
+      "recordedBy": "Levea",
+      "submittedAt": "2021/09/29 22:38:05"
+    },
+    {
+      "id": "lunatic-4-b",
+      "file": "th8_ud2bf5.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2bf5.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "91050d4ca7a54dc19e00e9084b97dc2dd5dc1325170e11690b45a1ed604e34f7",
+      "bytes": 38126,
+      "shot": 4,
+      "shotName": "Reimu",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 12990,
+          "endScore": 8050615
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 15003,
+          "endScore": 22003751
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 17597,
+          "endScore": 48922293
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 26543,
+          "endScore": 78223668
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 23496,
+          "endScore": 109515817
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 40594,
+          "endScore": 224346776
+        }
+      ],
+      "player": "EEg_fNb ",
+      "recordedBy": "EEg",
+      "submittedAt": "2020/02/20 12:10:17"
+    },
+    {
+      "id": "lunatic-5-b",
+      "file": "th8_ud2cc2.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cc2.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "2e2a677ccaff0f9ffe871f81d337900e87f9cfe5daaa60342ca9f4c27a3f014c",
+      "bytes": 31204,
+      "shot": 5,
+      "shotName": "Yukari",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 10575,
+          "endScore": 10116171
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13891,
+          "endScore": 22901266
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 13967,
+          "endScore": 55821518
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 22492,
+          "endScore": 92550686
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 22269,
+          "endScore": 137313597
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 29621,
+          "endScore": 294295444
+        }
+      ],
+      "player": "WXQ     ",
+      "recordedBy": "绿绿可柚",
+      "submittedAt": "2021/05/26 11:47:02"
+    },
+    {
+      "id": "lunatic-6-b",
+      "file": "th8_ud2b8e.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b8e.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "e0093724ab12bc26d48230d2c54c4febf3b188fb52bda58c84771b5daec82aaf",
+      "bytes": 33263,
+      "shot": 6,
+      "shotName": "Marisa",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 11526,
+          "endScore": 11937091
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 14952,
+          "endScore": 32906210
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 15183,
+          "endScore": 67391329
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 23276,
+          "endScore": 105550557
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 22427,
+          "endScore": 150999666
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 32304,
+          "endScore": 310843320
+        }
+      ],
+      "player": "CSWHRDF ",
+      "recordedBy": "1",
+      "submittedAt": "2019/03/29 19:39:25"
+    },
+    {
+      "id": "lunatic-7-b",
+      "file": "th8_ud2c82.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c82.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "4e775927f40d2473e309edf211a8adfb1774c784678c47421cc9dd90a8f5c650",
+      "bytes": 35963,
+      "shot": 7,
+      "shotName": "Alice",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 12415,
+          "endScore": 7540068
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 14587,
+          "endScore": 18611462
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16558,
+          "endScore": 43178152
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 26053,
+          "endScore": 67550713
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 22470,
+          "endScore": 103961082
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 34059,
+          "endScore": 158017780
+        }
+      ],
+      "player": "ANCHOR  ",
+      "recordedBy": "ANCHOR",
+      "submittedAt": "2020/11/07 16:51:08"
+    },
+    {
+      "id": "lunatic-8-b",
+      "file": "th8_ud2cc9.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cc9.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "2a4eab1ca12bc6856a86eba810bec13b7fae5104469c614cc262cfba682aa1c2",
+      "bytes": 40142,
+      "shot": 8,
+      "shotName": "Sakuya",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13439,
+          "endScore": 11575889
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 18228,
+          "endScore": 34645069
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 18575,
+          "endScore": 74490984
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 26657,
+          "endScore": 128179947
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 27128,
+          "endScore": 181440303
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 38779,
+          "endScore": 321244633
+        }
+      ],
+      "player": "KIM_OT  ",
+      "recordedBy": "Kim_OT",
+      "submittedAt": "2021/06/20 03:43:36"
+    },
+    {
+      "id": "lunatic-9-b",
+      "file": "th8_ud2945.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2945.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "a4e7998a1c3213fb5c95f2e11cf8f9c7978cb6d4d90d88b69b4335a114e491cb",
+      "bytes": 39443,
+      "shot": 9,
+      "shotName": "Remilia",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 15475,
+          "endScore": 14032716
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 17806,
+          "endScore": 38001684
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16684,
+          "endScore": 84141892
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 26986,
+          "endScore": 142544999
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 25795,
+          "endScore": 207588435
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 28798,
+          "endScore": 372741962
+        }
+      ],
+      "player": "K@G LuRe",
+      "recordedBy": "Ｋ・Ｇ",
+      "submittedAt": "2016/09/10 12:21:12"
+    },
+    {
+      "id": "lunatic-10-b",
+      "file": "th8_ud2cac.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cac.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "6e7a55ca45bb198113db5597d554d7fc7b5c0dd2951d9559e9532482678bd4be",
+      "bytes": 32689,
+      "shot": 10,
+      "shotName": "Youmu",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 10703,
+          "endScore": 14621152
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13276,
+          "endScore": 42416340
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 15318,
+          "endScore": 91066151
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 21854,
+          "endScore": 146471521
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 21017,
+          "endScore": 212663309
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 30641,
+          "endScore": 404392532
+        }
+      ],
+      "player": "Rivers  ",
+      "recordedBy": "Rivers",
+      "submittedAt": "2021/03/29 00:16:41"
+    },
+    {
+      "id": "lunatic-11-b",
+      "file": "th8_ud2c7b.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c7b.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "c5925735712174a2165da39de800cf6939e5daf88a3e5420ddb4665455c4246e",
+      "bytes": 40618,
+      "shot": 11,
+      "shotName": "Yuyuko",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 15559,
+          "endScore": 14215085
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 20333,
+          "endScore": 40967456
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 19406,
+          "endScore": 90106415
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 25418,
+          "endScore": 145381004
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 29765,
+          "endScore": 213803242
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 33727,
+          "endScore": 407834260
+        }
+      ],
+      "player": "WXQ     ",
+      "recordedBy": "绿绿可柚",
+      "submittedAt": "2020/10/30 21:11:52"
+    },
+    {
+      "id": "extra-0-extra",
+      "file": "th8_ud2cd8.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cd8.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "55f818cfccdc328ca0f9bf697c5598a05e9aadb23f048b8f5dfdf1d651630c31",
+      "bytes": 13748,
+      "shot": 0,
+      "shotName": "Border Team",
+      "difficulty": 4,
+      "difficultyName": "Extra",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 8,
+          "name": "Extra",
+          "inputRecords": 48536,
+          "endScore": 178817190
+        }
+      ],
+      "player": "NNFS    ",
+      "recordedBy": "COMIT",
+      "submittedAt": "2021/11/06 15:43:43"
+    },
+    {
+      "id": "extra-1-extra",
+      "file": "th8_ud2c67.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c67.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "91c378539347f4ffbc57698b094e0f3ee71bc587d74976c0b45b445067bba01c",
+      "bytes": 12856,
+      "shot": 1,
+      "shotName": "Magic Team",
+      "difficulty": 4,
+      "difficultyName": "Extra",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 8,
+          "name": "Extra",
+          "inputRecords": 43612,
+          "endScore": 191883105
+        }
+      ],
+      "player": "NNFS    ",
+      "recordedBy": "ふすま",
+      "submittedAt": "2020/10/16 11:24:35"
+    },
+    {
+      "id": "extra-2-extra",
+      "file": "th8_ud2c65.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c65.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "6b2edd1370effa30f6c69c0668420415cfeaf5d1dc703075ffeeca363a669d13",
+      "bytes": 12629,
+      "shot": 2,
+      "shotName": "Scarlet Team",
+      "difficulty": 4,
+      "difficultyName": "Extra",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 8,
+          "name": "Extra",
+          "inputRecords": 44060,
+          "endScore": 188810015
+        }
+      ],
+      "player": "NNFS    ",
+      "recordedBy": "ふすま",
+      "submittedAt": "2020/10/13 23:01:41"
+    },
+    {
+      "id": "extra-3-extra",
+      "file": "th8_ud2ce0.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2ce0.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "7ea81e986bef0e5b19ac99e9bad4bcf424dcfc36c31dc705609ea3d28d000cc0",
+      "bytes": 12859,
+      "shot": 3,
+      "shotName": "Ghost Team",
+      "difficulty": 4,
+      "difficultyName": "Extra",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 8,
+          "name": "Extra",
+          "inputRecords": 45329,
+          "endScore": 203473376
+        }
+      ],
+      "player": "zvs     ",
+      "recordedBy": "zvs",
+      "submittedAt": "2021/12/06 02:07:57"
+    },
+    {
+      "id": "extra-4-extra",
+      "file": "th8_ud2ce4.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2ce4.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "4fcb9f9c906454c7fef27965930ced02c35c04f39dac339ba797f4619bad0a3e",
+      "bytes": 22097,
+      "shot": 4,
+      "shotName": "Reimu",
+      "difficulty": 4,
+      "difficultyName": "Extra",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 8,
+          "name": "Extra",
+          "inputRecords": 76588,
+          "endScore": 16829177
+        }
+      ],
+      "player": "LOWSCORE",
+      "recordedBy": "MELON",
+      "submittedAt": "2021/12/17 15:00:52"
+    },
+    {
+      "id": "extra-5-extra",
+      "file": "th8_ud2cca.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cca.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "83808490e9ccc8e6b23481925e0cd9e102c8c407d849a7dcd6d30a76bce1e452",
+      "bytes": 13696,
+      "shot": 5,
+      "shotName": "Yukari",
+      "difficulty": 4,
+      "difficultyName": "Extra",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 8,
+          "name": "Extra",
+          "inputRecords": 48071,
+          "endScore": 155207705
+        }
+      ],
+      "player": "LSYSHXX ",
+      "recordedBy": "FF0000",
+      "submittedAt": "2021/06/27 14:03:32"
+    },
+    {
+      "id": "extra-6-extra",
+      "file": "th8_ud2cbc.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cbc.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "db24aa93a43f49cfaa311cd93d9361db1cda0271feced4cb09e5ab0c411b8db9",
+      "bytes": 14884,
+      "shot": 6,
+      "shotName": "Marisa",
+      "difficulty": 4,
+      "difficultyName": "Extra",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 8,
+          "name": "Extra",
+          "inputRecords": 50591,
+          "endScore": 263960960
+        }
+      ],
+      "player": "LET     ",
+      "recordedBy": "LET",
+      "submittedAt": "2021/05/02 21:58:19"
+    },
+    {
+      "id": "extra-7-extra",
+      "file": "th8_ud2c0b.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c0b.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "383b64ced93017a63beb51af3e6325cc298794cd3999ea50bf4a7ea56a05c8ec",
+      "bytes": 13213,
+      "shot": 7,
+      "shotName": "Alice",
+      "difficulty": 4,
+      "difficultyName": "Extra",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 8,
+          "name": "Extra",
+          "inputRecords": 47774,
+          "endScore": 153223132
+        }
+      ],
+      "player": "CSWHRDF ",
+      "recordedBy": "1",
+      "submittedAt": "2020/03/13 16:16:02"
+    },
+    {
+      "id": "extra-8-extra",
+      "file": "th8_ud2cdf.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cdf.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "7d910af009ed34b66bd602c08320839501d0d2160cfc126ddecebbc51d67278d",
+      "bytes": 15794,
+      "shot": 8,
+      "shotName": "Sakuya",
+      "difficulty": 4,
+      "difficultyName": "Extra",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 8,
+          "name": "Extra",
+          "inputRecords": 54278,
+          "endScore": 187414628
+        }
+      ],
+      "player": "NMNBFS  ",
+      "recordedBy": "ふすま",
+      "submittedAt": "2021/11/23 22:15:07"
+    },
+    {
+      "id": "extra-9-extra",
+      "file": "th8_ud2c47.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c47.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "774bc55075762ad64630da46fef1952fc89a648c14c6ee6c62ff2c8c04ddd77b",
+      "bytes": 12697,
+      "shot": 9,
+      "shotName": "Remilia",
+      "difficulty": 4,
+      "difficultyName": "Extra",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 8,
+          "name": "Extra",
+          "inputRecords": 44273,
+          "endScore": 160356179
+        }
+      ],
+      "player": "NMNBFS  ",
+      "recordedBy": "ふすま",
+      "submittedAt": "2020/07/17 01:09:17"
+    },
+    {
+      "id": "extra-10-extra",
+      "file": "th8_ud2c7a.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c7a.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "fb58c94272040299b569352217eab9763a338c5ab2350afdcd6c2b5d94de48e6",
+      "bytes": 12596,
+      "shot": 10,
+      "shotName": "Youmu",
+      "difficulty": 4,
+      "difficultyName": "Extra",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 8,
+          "name": "Extra",
+          "inputRecords": 44277,
+          "endScore": 200500985
+        }
+      ],
+      "player": "NNFS    ",
+      "recordedBy": "ふすま",
+      "submittedAt": "2020/10/30 12:02:30"
+    },
+    {
+      "id": "extra-11-extra",
+      "file": "th8_ud2cc0.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cc0.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "15c05db95de4da016ff3352e5ebbf81a5fd9ed33d5a838809a51b5b9138eaea8",
+      "bytes": 13425,
+      "shot": 11,
+      "shotName": "Yuyuko",
+      "difficulty": 4,
+      "difficultyName": "Extra",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 8,
+          "name": "Extra",
+          "inputRecords": 46679,
+          "endScore": 160776869
+        }
+      ],
+      "player": "NMNBFS  ",
+      "recordedBy": "ふすま",
+      "submittedAt": "2021/05/16 16:07:34"
+    },
+    {
+      "id": "easy-0-a",
+      "file": "th8_ud2cd2.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cd2.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "6e80fc7b752b458aa6e74d63333fb1ddd09e6b1da658fd1e9a61a2c1c6296146",
+      "bytes": 27310,
+      "shot": 0,
+      "shotName": "Border Team",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 9389,
+          "endScore": 2447070
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13118,
+          "endScore": 10352151
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 13175,
+          "endScore": 23602972
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 20123,
+          "endScore": 42644410
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 20158,
+          "endScore": 59772037
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 22292,
+          "endScore": 90941860
+        }
+      ],
+      "player": "SKLemon ",
+      "recordedBy": "SKLemon",
+      "submittedAt": "2021/09/23 15:16:39"
+    },
+    {
+      "id": "easy-1-a",
+      "file": "th8_ud2c68.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c68.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "0f77922f9f08e1d008dbade2cac059d20688029167c4447e1dac3309eb8a51f9",
+      "bytes": 36785,
+      "shot": 1,
+      "shotName": "Magic Team",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 10488,
+          "endScore": 3924232
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 14406,
+          "endScore": 15931121
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16300,
+          "endScore": 38172721
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 27571,
+          "endScore": 84666078
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 22444,
+          "endScore": 131122795
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 33988,
+          "endScore": 220894786
+        }
+      ],
+      "player": "garbiale",
+      "recordedBy": "ガブリエラ",
+      "submittedAt": "2020/10/17 14:45:47"
+    },
+    {
+      "id": "easy-2-a",
+      "file": "th8_ud2b6c.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b6c.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "8424818cb4fab19dcb1a127d421df2650b2411db76a1069900cca92c0eba42c0",
+      "bytes": 27001,
+      "shot": 2,
+      "shotName": "Scarlet Team",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 9005,
+          "endScore": 2364408
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 11902,
+          "endScore": 10709234
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 11529,
+          "endScore": 23735923
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 17986,
+          "endScore": 46192653
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 17989,
+          "endScore": 68502513
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 27743,
+          "endScore": 120077387
+        }
+      ],
+      "player": "GHS     ",
+      "recordedBy": "GHS",
+      "submittedAt": "2018/10/01 13:34:35"
+    },
+    {
+      "id": "easy-3-a",
+      "file": "th8_ud2c54.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c54.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "1ff7e0eb6a58b85cfd44112b9ec1f9f7168bbee5f74166d29a458012c03cde6d",
+      "bytes": 34868,
+      "shot": 3,
+      "shotName": "Ghost Team",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 10772,
+          "endScore": 3969741
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 14730,
+          "endScore": 16320834
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16539,
+          "endScore": 39019976
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 22888,
+          "endScore": 80835829
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 23679,
+          "endScore": 124278059
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 31990,
+          "endScore": 215124904
+        }
+      ],
+      "player": "garbiale",
+      "recordedBy": "ガブリエラ",
+      "submittedAt": "2020/08/12 00:33:22"
+    },
+    {
+      "id": "easy-4-a",
+      "file": "th8_ud2cc4.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cc4.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "c114c04ccf75cfe27b2f14bec58a7ec6b0e1886965fe070f7ad2d3e97780a784",
+      "bytes": 38252,
+      "shot": 4,
+      "shotName": "Reimu",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 11619,
+          "endScore": 4198858
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 15752,
+          "endScore": 17271764
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16492,
+          "endScore": 42383406
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 25922,
+          "endScore": 88866329
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 24439,
+          "endScore": 136352907
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 36339,
+          "endScore": 232878058
+        }
+      ],
+      "player": "garbiale",
+      "recordedBy": "夏花火",
+      "submittedAt": "2021/02/06 23:36:14"
+    },
+    {
+      "id": "easy-5-a",
+      "file": "th8_ud2b6f.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b6f.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "cb7f0a96f7d61bf22d3f151c4dd5d8f276e40103fe42fa2ba52bf7ccf7cde553",
+      "bytes": 27338,
+      "shot": 5,
+      "shotName": "Yukari",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 8836,
+          "endScore": 2556950
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 12440,
+          "endScore": 9587617
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 12107,
+          "endScore": 21084426
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 18879,
+          "endScore": 38237757
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 18828,
+          "endScore": 58008707
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 27009,
+          "endScore": 103617668
+        }
+      ],
+      "player": "GHS     ",
+      "recordedBy": "GHS",
+      "submittedAt": "2018/10/13 22:16:59"
+    },
+    {
+      "id": "easy-6-a",
+      "file": "th8_ud2b70.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b70.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "99fb183006c7432a88c3a1d9174f285d05a29c579af5f67a0da042d9c333670f",
+      "bytes": 29355,
+      "shot": 6,
+      "shotName": "Marisa",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 8717,
+          "endScore": 3920365
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 12764,
+          "endScore": 15267955
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 12438,
+          "endScore": 36182942
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 21746,
+          "endScore": 68546380
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 19717,
+          "endScore": 101830333
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 31570,
+          "endScore": 167700901
+        }
+      ],
+      "player": "GHS     ",
+      "recordedBy": "GHS",
+      "submittedAt": "2018/10/14 11:22:47"
+    },
+    {
+      "id": "easy-7-a",
+      "file": "th8_ud2b71.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b71.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "9058a3460ea331d37f8ad4bb6f99fbc0ec3b1a2a185f960d73bd2f62412f3ca8",
+      "bytes": 29886,
+      "shot": 7,
+      "shotName": "Alice",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 9239,
+          "endScore": 2381610
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13382,
+          "endScore": 9384666
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 12885,
+          "endScore": 20610178
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 20669,
+          "endScore": 39373301
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 20655,
+          "endScore": 59420669
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 29105,
+          "endScore": 104637835
+        }
+      ],
+      "player": "GHS     ",
+      "recordedBy": "GHS",
+      "submittedAt": "2018/10/15 18:26:22"
+    },
+    {
+      "id": "easy-8-a",
+      "file": "th8_ud2b72.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b72.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "6d78699da1de0235cb96797e0115b3c903a74ae1aba0cc27e58e68bcce5d38df",
+      "bytes": 34378,
+      "shot": 8,
+      "shotName": "Sakuya",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 10041,
+          "endScore": 3039293
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 15062,
+          "endScore": 10945847
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 14378,
+          "endScore": 24873102
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 23012,
+          "endScore": 48012941
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 23628,
+          "endScore": 66557738
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 36709,
+          "endScore": 113728353
+        }
+      ],
+      "player": "GHS     ",
+      "recordedBy": "GHS",
+      "submittedAt": "2018/10/16 22:08:17"
+    },
+    {
+      "id": "easy-9-a",
+      "file": "th8_ud2b73.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b73.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "fd194281b2889525cb900d443da148ece53a03b651cb9774e3244a3e38e7ffd0",
+      "bytes": 26127,
+      "shot": 9,
+      "shotName": "Remilia",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 8659,
+          "endScore": 2543840
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 11724,
+          "endScore": 9861759
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 11501,
+          "endScore": 21534217
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 17186,
+          "endScore": 41390103
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 18202,
+          "endScore": 61472596
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 25097,
+          "endScore": 109120913
+        }
+      ],
+      "player": "GHS     ",
+      "recordedBy": "GHS",
+      "submittedAt": "2018/10/18 12:05:12"
+    },
+    {
+      "id": "easy-10-a",
+      "file": "th8_ud2b74.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b74.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "38e6b1707aa55870485c1328171b153126b5e53afee63a6432b10ab2c7b4d405",
+      "bytes": 26414,
+      "shot": 10,
+      "shotName": "Youmu",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 8226,
+          "endScore": 3104491
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 11880,
+          "endScore": 14433631
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 11311,
+          "endScore": 32082680
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 18639,
+          "endScore": 53896376
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 17704,
+          "endScore": 76792929
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 26863,
+          "endScore": 129791224
+        }
+      ],
+      "player": "GHS     ",
+      "recordedBy": "GHS",
+      "submittedAt": "2018/10/18 18:11:35"
+    },
+    {
+      "id": "easy-11-a",
+      "file": "th8_ud2b75.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b75.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "9fe2a9a228aa65611390767af8e1a843feb73afa8f61816d8ca9fb09f923c965",
+      "bytes": 29614,
+      "shot": 11,
+      "shotName": "Yuyuko",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 8918,
+          "endScore": 2454548
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13078,
+          "endScore": 9015024
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 12993,
+          "endScore": 19925303
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 19814,
+          "endScore": 37503625
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 20123,
+          "endScore": 56902755
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 30823,
+          "endScore": 100710623
+        }
+      ],
+      "player": "GHS     ",
+      "recordedBy": "GHS",
+      "submittedAt": "2018/10/18 19:14:22"
+    },
+    {
+      "id": "normal-0-a",
+      "file": "th8_ud2b3c.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b3c.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "3a5d0a76fbc335647e1aeca852155251e256cf12c18723bc4f5280260eabdfc6",
+      "bytes": 37539,
+      "shot": 0,
+      "shotName": "Border Team",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13893,
+          "endScore": 7651444
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 16327,
+          "endScore": 24326198
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 17845,
+          "endScore": 57570117
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 25711,
+          "endScore": 103092259
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 25541,
+          "endScore": 156495701
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 27804,
+          "endScore": 235355431
+        }
+      ],
+      "player": "garbiela",
+      "recordedBy": "ガブリエラ",
+      "submittedAt": "2018/11/15 01:39:50"
+    },
+    {
+      "id": "normal-1-a",
+      "file": "th8_ud2b86.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b86.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "16552f4027a0cee38213954345bee5fd0b75f83ead812a454d9bda7f2ca4054b",
+      "bytes": 37937,
+      "shot": 1,
+      "shotName": "Magic Team",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 12976,
+          "endScore": 7737943
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 16809,
+          "endScore": 23468146
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 17211,
+          "endScore": 57669206
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 29726,
+          "endScore": 104027980
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 24306,
+          "endScore": 157770216
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 26542,
+          "endScore": 248034856
+        }
+      ],
+      "player": "hanabi  ",
+      "recordedBy": "ガブリエラ",
+      "submittedAt": "2019/03/07 01:17:58"
+    },
+    {
+      "id": "normal-2-a",
+      "file": "th8_ud2b92.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b92.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "ad2dc7dcf21ed0b68d43d6a74b70e87b6dec34f6dd6708dee4a5076da3070261",
+      "bytes": 37327,
+      "shot": 2,
+      "shotName": "Scarlet Team",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 14254,
+          "endScore": 6024260
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 16283,
+          "endScore": 20254209
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 17320,
+          "endScore": 52049845
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 23411,
+          "endScore": 96215288
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 25295,
+          "endScore": 148036857
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 30963,
+          "endScore": 231320551
+        }
+      ],
+      "player": "hanabi  ",
+      "recordedBy": "ガブリエラ",
+      "submittedAt": "2019/04/01 11:54:34"
+    },
+    {
+      "id": "normal-3-a",
+      "file": "th8_ud2bd8.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2bd8.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "1a9b9466a59896feb2e765f691107b6ae7a74dce48805852fcd31ddd37b7854c",
+      "bytes": 37483,
+      "shot": 3,
+      "shotName": "Ghost Team",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13275,
+          "endScore": 7685151
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 16582,
+          "endScore": 25631657
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16414,
+          "endScore": 59745984
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 21871,
+          "endScore": 102253469
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 24469,
+          "endScore": 161562500
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 34156,
+          "endScore": 247694186
+        }
+      ],
+      "player": "garbiale",
+      "recordedBy": "ガブリエラ",
+      "submittedAt": "2019/09/19 01:30:04"
+    },
+    {
+      "id": "normal-4-a",
+      "file": "th8_ud2ab0.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2ab0.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "52221850b9baf0720fffd0407f20b65afbb6518f5a54c7fac6cfd976dc261087",
+      "bytes": 38949,
+      "shot": 4,
+      "shotName": "Reimu",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 12043,
+          "endScore": 6001917
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 18432,
+          "endScore": 23798883
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 20486,
+          "endScore": 57897698
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 27137,
+          "endScore": 99212067
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 24876,
+          "endScore": 145840803
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 30507,
+          "endScore": 214532757
+        }
+      ],
+      "player": "garbiela",
+      "recordedBy": "ガブリエラ",
+      "submittedAt": "2018/03/30 17:57:27"
+    },
+    {
+      "id": "normal-5-a",
+      "file": "th8_ud2cc5.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cc5.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "7ff2c1b08b7b29860b4ccd15c954d1ac645d07eee2c5cf788e225f9449ee04cd",
+      "bytes": 31686,
+      "shot": 5,
+      "shotName": "Yukari",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 10061,
+          "endScore": 5045933
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 14921,
+          "endScore": 16032824
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 14221,
+          "endScore": 35718431
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 20939,
+          "endScore": 58814554
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 20691,
+          "endScore": 87578413
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 28303,
+          "endScore": 149507971
+        }
+      ],
+      "player": "UMZ     ",
+      "recordedBy": "UMZ",
+      "submittedAt": "2021/03/27 19:00:16"
+    },
+    {
+      "id": "normal-6-a",
+      "file": "th8_ud2991.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2991.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "be87a19943c75148fffe3797953ded8d18d79a0635cc76486b009127b82dccc1",
+      "bytes": 35493,
+      "shot": 6,
+      "shotName": "Marisa",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13727,
+          "endScore": 1113196
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 20194,
+          "endScore": 2956521
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 18524,
+          "endScore": 6519369
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 22214,
+          "endScore": 11362988
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 25473,
+          "endScore": 16513735
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 25881,
+          "endScore": 24101073
+        }
+      ],
+      "player": "KURO    ",
+      "recordedBy": "サグパンのクロさん",
+      "submittedAt": "2017/01/29 11:16:36"
+    },
+    {
+      "id": "normal-7-a",
+      "file": "th8_ud2879.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2879.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "6aacd4f6c85192fb5506c1dd5a2357b931f34a83807e1b6161df8e1a607f11bb",
+      "bytes": 37606,
+      "shot": 7,
+      "shotName": "Alice",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 14122,
+          "endScore": 6266425
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 18352,
+          "endScore": 17959619
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16211,
+          "endScore": 39780600
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 28965,
+          "endScore": 72535894
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 25209,
+          "endScore": 112254294
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 26356,
+          "endScore": 179356868
+        }
+      ],
+      "player": "K@G NoAl",
+      "recordedBy": "Ｋ・Ｇ",
+      "submittedAt": "2015/04/21 21:36:27"
+    },
+    {
+      "id": "normal-8-a",
+      "file": "th8_ud2c2d.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c2d.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "c9f25529584bcdeb5c13685b3d69dc70250c484a8da50226060a0e87f2836f4b",
+      "bytes": 43250,
+      "shot": 8,
+      "shotName": "Sakuya",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13603,
+          "endScore": 7052248
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 18943,
+          "endScore": 21984898
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 20306,
+          "endScore": 58638409
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 29702,
+          "endScore": 105277278
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 27772,
+          "endScore": 164389525
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 37336,
+          "endScore": 259080175
+        }
+      ],
+      "player": "K@G NASa",
+      "recordedBy": "Ｋ・Ｇ",
+      "submittedAt": "2020/05/17 19:44:15"
+    },
+    {
+      "id": "normal-9-a",
+      "file": "th8_ud22fb.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud22fb.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "2cd34a64d9af1b50c96f678a84204910671c4713b727973e5c36ed4d0eeae038",
+      "bytes": 30827,
+      "shot": 9,
+      "shotName": "Remilia",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 12207,
+          "endScore": 5910369
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 14196,
+          "endScore": 15069235
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 13999,
+          "endScore": 33214048
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 20700,
+          "endScore": 59100626
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 20663,
+          "endScore": 84511486
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 25991,
+          "endScore": 133023214
+        }
+      ],
+      "player": "PARU    ",
+      "recordedBy": "PARU",
+      "submittedAt": "2011/12/12 23:33:53"
+    },
+    {
+      "id": "normal-10-a",
+      "file": "th8_ud2bd4.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2bd4.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "bf64406bccffaba1dfa9bb933c74c5e87e4cfa49099969e0139ba7b6a3207ee7",
+      "bytes": 35072,
+      "shot": 10,
+      "shotName": "Youmu",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13068,
+          "endScore": 6981053
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 16351,
+          "endScore": 27072868
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 17177,
+          "endScore": 66712722
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 22866,
+          "endScore": 127836063
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 22395,
+          "endScore": 199283867
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 26439,
+          "endScore": 306151876
+        }
+      ],
+      "player": "garbiale",
+      "recordedBy": "ガブリエラ",
+      "submittedAt": "2019/08/27 00:12:27"
+    },
+    {
+      "id": "normal-11-a",
+      "file": "th8_ud247c.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud247c.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "7c5b064ad4b7bbda660ed0dd42e213abfba964ce716a5687758fd892a04b52f1",
+      "bytes": 35817,
+      "shot": 11,
+      "shotName": "Yuyuko",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13100,
+          "endScore": 6901513
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 15826,
+          "endScore": 19230831
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16417,
+          "endScore": 40796052
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 23847,
+          "endScore": 67625413
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 27225,
+          "endScore": 105146014
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 32066,
+          "endScore": 164663961
+        }
+      ],
+      "player": "HANPEN A",
+      "recordedBy": "はんぺん",
+      "submittedAt": "2012/07/01 19:46:02"
+    },
+    {
+      "id": "hard-0-a",
+      "file": "th8_ud2b1d.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b1d.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "1b9256f192b8b74d6aeb3498fe276962d4cce24e01127e1c55272eb925d1e11e",
+      "bytes": 32806,
+      "shot": 0,
+      "shotName": "Border Team",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 12256,
+          "endScore": 8885192
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13224,
+          "endScore": 26745720
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 15065,
+          "endScore": 57708815
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 23358,
+          "endScore": 96581757
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 21145,
+          "endScore": 135750314
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 31677,
+          "endScore": 192972847
+        }
+      ],
+      "player": "Dzm NB  ",
+      "recordedBy": "Dzm",
+      "submittedAt": "2018/09/01 09:44:16"
+    },
+    {
+      "id": "hard-1-a",
+      "file": "th8_ud28a0.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud28a0.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "5d8d3c02a417edacf8dd2a0262168b58f8a895baaaf5c95696f75f0669127209",
+      "bytes": 29714,
+      "shot": 1,
+      "shotName": "Magic Team",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 12767,
+          "endScore": 6273215
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13090,
+          "endScore": 16356483
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 12941,
+          "endScore": 27361047
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 18839,
+          "endScore": 40748462
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 18599,
+          "endScore": 55206795
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 24848,
+          "endScore": 85877842
+        }
+      ],
+      "player": "ROSA2015",
+      "recordedBy": "まあ、まったりと",
+      "submittedAt": "2015/11/12 21:21:23"
+    },
+    {
+      "id": "hard-2-a",
+      "file": "th8_ud27df.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud27df.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "c205ca07f4c89c0809c9a324478ed044b13a9d751b2e3c7cba2bad910b0dff4c",
+      "bytes": 32945,
+      "shot": 2,
+      "shotName": "Scarlet Team",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 14453,
+          "endScore": 10063286
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 16978,
+          "endScore": 23551543
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 15284,
+          "endScore": 54955605
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 21301,
+          "endScore": 100033002
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 21080,
+          "endScore": 137810870
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 27874,
+          "endScore": 201323435
+        }
+      ],
+      "player": "sia     ",
+      "recordedBy": "sia",
+      "submittedAt": "2014/06/23 01:26:59"
+    },
+    {
+      "id": "hard-3-a",
+      "file": "th8_ud239d.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud239d.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "c8786d593311a15247b95a73d5575b029be817d3d171e6addad22fe55844aefd",
+      "bytes": 30835,
+      "shot": 3,
+      "shotName": "Ghost Team",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 10468,
+          "endScore": 8341509
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13293,
+          "endScore": 24753605
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 15629,
+          "endScore": 51428787
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 22786,
+          "endScore": 86278707
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 21742,
+          "endScore": 129669039
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 24282,
+          "endScore": 173208435
+        }
+      ],
+      "player": "PARU    ",
+      "recordedBy": "PARU",
+      "submittedAt": "2012/02/21 02:52:57"
+    },
+    {
+      "id": "hard-4-a",
+      "file": "th8_ud239c.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud239c.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "98443889453ebcffde0a68322040bf8491802c4a64dc46b6d47291dec450c078",
+      "bytes": 36050,
+      "shot": 4,
+      "shotName": "Reimu",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 11677,
+          "endScore": 7674186
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 16590,
+          "endScore": 26470965
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 17769,
+          "endScore": 57338517
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 27401,
+          "endScore": 96901934
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 22630,
+          "endScore": 127588450
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 31443,
+          "endScore": 178354452
+        }
+      ],
+      "player": "PARU    ",
+      "recordedBy": "PARU",
+      "submittedAt": "2012/02/20 02:33:12"
+    },
+    {
+      "id": "hard-5-a",
+      "file": "th8_ud2c30.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c30.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "32adf11c10d04e1aafc73ba253492fe3e586765ac034cc9ea6b0a14439efb233",
+      "bytes": 31207,
+      "shot": 5,
+      "shotName": "Yukari",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 10687,
+          "endScore": 9268617
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13752,
+          "endScore": 26679803
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 15013,
+          "endScore": 53704917
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 20785,
+          "endScore": 90023515
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 20733,
+          "endScore": 133281733
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 27585,
+          "endScore": 217522654
+        }
+      ],
+      "player": "KIS NNFS",
+      "recordedBy": "Ｋ・Ｇ",
+      "submittedAt": "2020/05/23 18:49:28"
+    },
+    {
+      "id": "hard-6-a",
+      "file": "th8_ud2212.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2212.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "11c7dd2f86cf790091b8d67859e5c444d4ed703a11b429bc8c527fc99430b413",
+      "bytes": 33340,
+      "shot": 6,
+      "shotName": "Marisa",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13056,
+          "endScore": 10331659
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 16660,
+          "endScore": 28929073
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 14633,
+          "endScore": 53377833
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 20088,
+          "endScore": 75209392
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 22566,
+          "endScore": 105809851
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 30227,
+          "endScore": 149522180
+        }
+      ],
+      "player": "PARU    ",
+      "recordedBy": "PARU",
+      "submittedAt": "2011/08/11 20:38:44"
+    },
+    {
+      "id": "hard-7-a",
+      "file": "th8_ud2848.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2848.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "47a455b5c8f0efcb6b0a8b35d37b59ee7b3044ec5203025d9097a5f1fc334c12",
+      "bytes": 38161,
+      "shot": 7,
+      "shotName": "Alice",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 14772,
+          "endScore": 9247362
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 17393,
+          "endScore": 25368425
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16136,
+          "endScore": 53973425
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 27008,
+          "endScore": 91501001
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 25301,
+          "endScore": 134122095
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 31229,
+          "endScore": 208192985
+        }
+      ],
+      "player": "K@G HaAl",
+      "recordedBy": "Ｋ・Ｇ",
+      "submittedAt": "2015/01/16 23:43:15"
+    },
+    {
+      "id": "hard-8-a",
+      "file": "th8_ud262e.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud262e.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "00039689f8019bb16e12868e32680d57e54b86354641872deabdf006df678b0e",
+      "bytes": 38695,
+      "shot": 8,
+      "shotName": "Sakuya",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 14671,
+          "endScore": 9958699
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 19050,
+          "endScore": 26700702
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 18661,
+          "endScore": 53052931
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 25500,
+          "endScore": 81596212
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 26208,
+          "endScore": 111331767
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 36155,
+          "endScore": 163151876
+        }
+      ],
+      "player": "mahinu  ",
+      "recordedBy": "mahinu",
+      "submittedAt": "2013/02/20 23:36:51"
+    },
+    {
+      "id": "hard-9-a",
+      "file": "th8_ud286e.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud286e.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "c976ea18e84d9927887b1986b345cf5b8eabf29a431af0913b667a2331019e80",
+      "bytes": 30867,
+      "shot": 9,
+      "shotName": "Remilia",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 12330,
+          "endScore": 6963149
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13154,
+          "endScore": 15763556
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 13583,
+          "endScore": 33363038
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 24119,
+          "endScore": 60027974
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 21028,
+          "endScore": 90403938
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 23055,
+          "endScore": 129368419
+        }
+      ],
+      "player": "PDZ     ",
+      "recordedBy": "PDZ",
+      "submittedAt": "2015/03/27 23:22:43"
+    },
+    {
+      "id": "hard-10-a",
+      "file": "th8_ud238c.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud238c.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "e168d2502bad19196fe316bb8f4ecf5918836a1eb65282944b6ff25c9ee2aaa2",
+      "bytes": 31457,
+      "shot": 10,
+      "shotName": "Youmu",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13070,
+          "endScore": 9746871
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 14758,
+          "endScore": 28061778
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 14680,
+          "endScore": 53985322
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 22128,
+          "endScore": 85123349
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 19931,
+          "endScore": 120502188
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 26608,
+          "endScore": 173533427
+        }
+      ],
+      "player": "PARU    ",
+      "recordedBy": "PARU",
+      "submittedAt": "2012/02/12 23:57:16"
+    },
+    {
+      "id": "hard-11-a",
+      "file": "th8_ud248d.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud248d.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "b2c39aad6255b274c4514e0760e8cd24e6b3689fb92799b250feecd0839cbbac",
+      "bytes": 35466,
+      "shot": 11,
+      "shotName": "Yuyuko",
+      "difficulty": 2,
+      "difficultyName": "Hard",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 12093,
+          "endScore": 8184964
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 15678,
+          "endScore": 21800176
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 18234,
+          "endScore": 43318663
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 25921,
+          "endScore": 67818770
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 23004,
+          "endScore": 101821070
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 31547,
+          "endScore": 138796537
+        }
+      ],
+      "player": "K@G HaNB",
+      "recordedBy": "Ｋ・Ｇ",
+      "submittedAt": "2012/07/11 16:37:04"
+    },
+    {
+      "id": "lunatic-0-a",
+      "file": "th8_ud2ccf.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2ccf.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "331095af8dc920ed1d8bfb8abedafeb46493c0fa2af9eae1509575ce8d4ca056",
+      "bytes": 31585,
+      "shot": 0,
+      "shotName": "Border Team",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 11130,
+          "endScore": 11839183
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13774,
+          "endScore": 33840487
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 15052,
+          "endScore": 72175790
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 21180,
+          "endScore": 115234389
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 21235,
+          "endScore": 154313505
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 30594,
+          "endScore": 245806904
+        }
+      ],
+      "player": "LNNFS   ",
+      "recordedBy": "儚符",
+      "submittedAt": "2021/08/18 02:07:13"
+    },
+    {
+      "id": "lunatic-1-a",
+      "file": "th8_ud2cd7.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cd7.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "71a24fb2925b96be3f5600c07755aa3cf92cae96366a4ad9d8725b09defe7fa6",
+      "bytes": 35813,
+      "shot": 1,
+      "shotName": "Magic Team",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 12473,
+          "endScore": 13218975
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13359,
+          "endScore": 38573905
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 13953,
+          "endScore": 83312341
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 23716,
+          "endScore": 144833901
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 24822,
+          "endScore": 196937494
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 30489,
+          "endScore": 309319473
+        }
+      ],
+      "player": "Asahi   ",
+      "recordedBy": "Asahi",
+      "submittedAt": "2021/10/23 13:51:40"
+    },
+    {
+      "id": "lunatic-2-a",
+      "file": "th8_ud2bdd.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2bdd.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "d19bf725fb9476c945e9a119000a07d8b8df5b2d05a38ec5857fcda908c48465",
+      "bytes": 30365,
+      "shot": 2,
+      "shotName": "Scarlet Team",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 11177,
+          "endScore": 9913629
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13033,
+          "endScore": 30613142
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 14139,
+          "endScore": 67880934
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 21552,
+          "endScore": 118687288
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 22646,
+          "endScore": 166560017
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 26692,
+          "endScore": 267269186
+        }
+      ],
+      "player": "WXQ     ",
+      "recordedBy": "绿绿可柚",
+      "submittedAt": "2019/11/12 15:13:18"
+    },
+    {
+      "id": "lunatic-3-a",
+      "file": "th8_ud2cce.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cce.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "8cff40dd8ccce499788f2f140dc46b61dce4ee8a0140964113cd33ef71fc2400",
+      "bytes": 33919,
+      "shot": 3,
+      "shotName": "Ghost Team",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 10493,
+          "endScore": 11553232
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 14461,
+          "endScore": 29060727
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 15019,
+          "endScore": 61093151
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 22149,
+          "endScore": 98326156
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 21346,
+          "endScore": 137605460
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 28670,
+          "endScore": 234665105
+        }
+      ],
+      "player": "GZZ NN  ",
+      "recordedBy": "GZZ",
+      "submittedAt": "2021/08/12 22:07:37"
+    },
+    {
+      "id": "lunatic-4-a",
+      "file": "th8_ud2c9d.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c9d.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "921d365ad5212aff58d4ea88bdc911020e098b58a1410caeef1079e1a264edc2",
+      "bytes": 36054,
+      "shot": 4,
+      "shotName": "Reimu",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 12826,
+          "endScore": 11071770
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 16201,
+          "endScore": 28898957
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 18707,
+          "endScore": 59754987
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 28761,
+          "endScore": 92337697
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 24007,
+          "endScore": 126910002
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 29205,
+          "endScore": 211681327
+        }
+      ],
+      "player": "Goodra  ",
+      "recordedBy": "goodra",
+      "submittedAt": "2021/01/23 17:36:00"
+    },
+    {
+      "id": "lunatic-5-a",
+      "file": "th8_ud2cd6.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cd6.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "d08cc08ee4cd5bc9bf9e8e8654e015535dcef2ad93a99f776779b8ba48b18449",
+      "bytes": 38538,
+      "shot": 5,
+      "shotName": "Yukari",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 16209,
+          "endScore": 13763487
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 17835,
+          "endScore": 37308165
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 17005,
+          "endScore": 82245514
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 22449,
+          "endScore": 134971430
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 27692,
+          "endScore": 197145292
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 28225,
+          "endScore": 293727796
+        }
+      ],
+      "player": "KIS LAYu",
+      "recordedBy": "Ｋ・Ｇ",
+      "submittedAt": "2021/10/22 23:56:16"
+    },
+    {
+      "id": "lunatic-6-a",
+      "file": "th8_ud2c66.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c66.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "dbe19219b7fcf261c3fd9edb8993754ee613e6aa1439162bec7ea4a00c8a2bb7",
+      "bytes": 33177,
+      "shot": 6,
+      "shotName": "Marisa",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 11482,
+          "endScore": 12927831
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 15412,
+          "endScore": 38676796
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 15643,
+          "endScore": 77150101
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 24160,
+          "endScore": 118400288
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 21476,
+          "endScore": 167224090
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 31769,
+          "endScore": 275933021
+        }
+      ],
+      "player": "WXQ     ",
+      "recordedBy": "绿绿可柚",
+      "submittedAt": "2020/10/14 14:35:06"
+    },
+    {
+      "id": "lunatic-7-a",
+      "file": "th8_ud2cc8.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2cc8.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "f964db8b5b9e2ebb4fb31fd9545b06728f655e851cda4bda6926d5fb858b7ab9",
+      "bytes": 35111,
+      "shot": 7,
+      "shotName": "Alice",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 12786,
+          "endScore": 9927807
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 16642,
+          "endScore": 22230544
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 15889,
+          "endScore": 47314513
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 25600,
+          "endScore": 84405934
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 25878,
+          "endScore": 117937969
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 29662,
+          "endScore": 204591043
+        }
+      ],
+      "player": "WXQ     ",
+      "recordedBy": "绿绿可柚",
+      "submittedAt": "2021/06/15 17:24:46"
+    },
+    {
+      "id": "lunatic-8-a",
+      "file": "th8_ud2c8b.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c8b.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "57f9c15168b1f407a3cace74d5eefa32242f992135a674bfb57b595e4a4475b2",
+      "bytes": 40959,
+      "shot": 8,
+      "shotName": "Sakuya",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 14748,
+          "endScore": 11863577
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 19492,
+          "endScore": 31148980
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 19919,
+          "endScore": 66262218
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 27922,
+          "endScore": 104702375
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 28105,
+          "endScore": 145228569
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 38071,
+          "endScore": 239903752
+        }
+      ],
+      "player": "WXQ     ",
+      "recordedBy": "绿绿可柚",
+      "submittedAt": "2020/12/03 22:46:13"
+    },
+    {
+      "id": "lunatic-9-a",
+      "file": "th8_ud2c74.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c74.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "c009ad721a5e6c40b8f1f9409ff72c5d04ebb42c0ce03acc45a88c2dc58f4375",
+      "bytes": 29495,
+      "shot": 9,
+      "shotName": "Remilia",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 10406,
+          "endScore": 11107334
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 12616,
+          "endScore": 32524090
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 14069,
+          "endScore": 68106384
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 20089,
+          "endScore": 111862093
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 18865,
+          "endScore": 154187713
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 25412,
+          "endScore": 246602300
+        }
+      ],
+      "player": "SOC NNFS",
+      "recordedBy": "SOC",
+      "submittedAt": "2020/10/25 14:01:51"
+    },
+    {
+      "id": "lunatic-10-a",
+      "file": "th8_ud2ca6.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2ca6.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "51773929525a9a68466b4733d21879094d32a7bf0a88373e48d384d2b7d60d65",
+      "bytes": 41341,
+      "shot": 10,
+      "shotName": "Youmu",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13794,
+          "endScore": 4979168
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 17044,
+          "endScore": 13956737
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 21239,
+          "endScore": 28665858
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 29087,
+          "endScore": 42805304
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 28832,
+          "endScore": 67899570
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 36345,
+          "endScore": 130719663
+        }
+      ],
+      "player": "WXQ     ",
+      "recordedBy": "绿绿可柚",
+      "submittedAt": "2021/03/13 20:43:20"
+    },
+    {
+      "id": "lunatic-11-a",
+      "file": "th8_ud2c77.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2c77.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "b97a4808fdd11e4a061a3a4558f4e815fdda02bc279333166f14401649556369",
+      "bytes": 33011,
+      "shot": 11,
+      "shotName": "Yuyuko",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 10356,
+          "endScore": 11066000
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 14000,
+          "endScore": 33188236
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 15845,
+          "endScore": 69485303
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 22723,
+          "endScore": 110689125
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 22456,
+          "endScore": 155232548
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 30110,
+          "endScore": 246141646
+        }
+      ],
+      "player": "SOC NNFS",
+      "recordedBy": "SOC",
+      "submittedAt": "2020/10/28 05:42:15"
+    }
+  ]
+}

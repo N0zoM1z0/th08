@@ -60,11 +60,28 @@ value. Both temporary Wine prefixes were removed; retained evidence is under
 `build/native-replay-parity-final/`. The trace-comparison tests, repository CI,
 and whitespace checks pass.
 
-Further native coverage needs standard retail replays for the remaining teams,
-Stage 4 routes, Final A/B, and Extra. Record each fixture's provenance and
-completion condition before extending the runner beyond bundled demos.
-Keep captures and VC7 builds sequential, clean temporary artifacts, and leave
-GitHub issues without comments.
+The full route suite now pins 108 public canonical-version replays: 12 shots,
+four main difficulties through both Final routes, and Extra. It runs serially,
+muted, with automated menu input, complete-stage guards, compressed traces,
+resume support, and candidate stop at the first difference. The accelerated
+profile agrees with ordinary playback for all three bundled demos.
+
+The first complete retail fixture (`easy-0-b`, `th8_ud2cdc.rpy`) records
+107,296 calculations through Stage 1/2/3/4B/5/Final B. It exposed a standalone
+`g_SpellcardCalcChain` allocation that failed to remove the previous stage's
+spellcard callback. `CutChain @ 0x004180F0` now reads
+`g_Spellcard + 0x263C` (`lifetimeObject`); all 29 SpellCard units and the cold
+replay of all 1,106 accepted authored units pass. The repaired candidate agrees
+through calculation 37,016, including both complete first stages. At Stage 3
+frame 14,350, score alone differs by 156. The next task is a score-write
+diagnostic window for this frame, then the remaining 108-case matrix.
+See [RT-011](RUNTIME_ISSUES.md#rt-011). No full-suite pass is recorded yet.
+
+Current evidence is in `build/replay-suite/ptrace-reference-v4/`,
+`chain-fix-candidate/`, and `chain-fix-exact.json`. Keep captures and VC7 builds
+sequential. Preserve a tested executable/map under the suite before cold builds,
+which clear link outputs. Clean temporary artifacts and leave GitHub issues
+without comments. Web testing remains deferred.
 
 <a id="documentation-batch-for-local-review"></a>
 
