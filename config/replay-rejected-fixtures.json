@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "targetSha256": "330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924",
+  "fixtures": [
+    {
+      "id": "easy-8-b-retail-incomplete",
+      "file": "th8_ud2b7c.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b7c.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08",
+      "sha256": "254e54b2d32094d97495ee82ab6c8ebcf300436d2f253c252d8d1f9a34ec6ba3",
+      "bytes": 34574,
+      "shot": 8,
+      "shotName": "Sakuya",
+      "difficulty": 0,
+      "difficultyName": "Easy",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 9945,
+          "endScore": 2162446
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 15321,
+          "endScore": 9425879
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 14385,
+          "endScore": 22562379
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 23612,
+          "endScore": 40908184
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 23414,
+          "endScore": 58605947
+        },
+        {
+          "index": 7,
+          "name": "Final B",
+          "inputRecords": 36061,
+          "endScore": 133533918
+        }
+      ],
+      "player": "GHS     ",
+      "recordedBy": "GHS",
+      "playedAt": "2018/10/17 22:11:01",
+      "submittedAt": "2019/02/16",
+      "retailFailure": {
+        "stage": 3,
+        "frame": 19840,
+        "unconsumedInputRecords": 3772,
+        "expectedEndScore": 40908184,
+        "observedEndScore": 31688942,
+        "fullRunCalculations": 59706,
+        "cause": "Unresolved retail replay desynchronization in the recorded Wine environment"
+      }
+    }
+  ]
+}

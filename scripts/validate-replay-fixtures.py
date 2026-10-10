@@ -10,7 +10,7 @@ from replay_file import RETAIL_IDENTITY, SHOTS, DIFFICULTIES
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def validate(manifest):
+def validate(manifest, complete=True):
     target = tomllib.loads((ROOT / "config/target.toml").read_text())["target"]
     if manifest["version"] != 1 or manifest["targetSha256"] != target["sha256"]:
         raise ValueError("Replay manifest target or version differs")
@@ -49,6 +49,8 @@ def validate(manifest):
             raise ValueError(f"Invalid recording hash or size: {case}")
         if not fixture.get("recordedBy") or not fixture["url"].startswith("https://"):
             raise ValueError(f"Missing recording provenance: {case}")
+        if not re.fullmatch(r"\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2}", fixture["playedAt"]):
+            raise ValueError(f"Invalid recording date: {case}")
         for stage in fixture["stages"]:
             if type(stage["inputRecords"]) is not int or stage["inputRecords"] < 1 or not 0 <= stage["endScore"] <= 0xffffffff:
                 raise ValueError(f"Invalid stage input count or score: {case}")
@@ -58,7 +60,19 @@ def validate(manifest):
                     or trace["calculationFrames"] < 1 or not re.fullmatch(r"[0-9a-f]{64}", trace["sha256"])):
                 raise ValueError(f"Invalid published trace expectation: {case}")
             accepted += 1
-    if seen != expected:
+        if not complete:
+            failure = fixture["retailFailure"]
+            stage = next(s for s in fixture["stages"] if s["index"] == failure["stage"])
+            if ("retailTrace" in fixture or not 0 < failure["frame"] < stage["inputRecords"]
+                    or failure["unconsumedInputRecords"] != stage["inputRecords"] - failure["frame"]
+                    or failure["expectedEndScore"] != stage["endScore"]
+                    or not 0 <= failure["observedEndScore"] <= 0xffffffff
+                    or failure["observedEndScore"] == failure["expectedEndScore"]
+                    or failure["fullRunCalculations"] < failure["frame"] or not failure["cause"]):
+                raise ValueError(f"Invalid rejected retail reference observation: {case}")
+        elif "retailFailure" in fixture:
+            raise ValueError(f"Rejected retail reference appears in the active corpus: {case}")
+    if complete and seen != expected:
         raise ValueError(f"Replay corpus is missing coverage cells: {sorted(expected - seen)}")
     return accepted
 
@@ -66,9 +80,13 @@ def validate(manifest):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("manifest", nargs="?", type=Path, default=ROOT / "config/replay-fixtures.json")
+    parser.add_argument("--rejected", type=Path, default=ROOT / "config/replay-rejected-fixtures.json")
     args = parser.parse_args()
     accepted = validate(json.loads(args.manifest.read_text()))
     print(f"Replay corpus verified: 108 fixtures, 12 shots, both Final routes on four difficulties, Extra; {accepted} published expectations")
+    rejected = json.loads(args.rejected.read_text())
+    validate(rejected, complete=False)
+    print(f"Rejected reference manifest verified: {len(rejected['fixtures'])} documented capture failures")
 
 
 if __name__ == "__main__":

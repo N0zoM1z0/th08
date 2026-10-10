@@ -61,12 +61,12 @@
       ],
       "player": "AAA     ",
       "recordedBy": "dgart",
-      "submittedAt": "2021/11/14 13:19:32",
       "retailTrace": {
         "schemaVersion": 4,
         "calculationFrames": 107296,
         "sha256": "da8a6a0de9a79263a2ad13a9351eb467c2d0c2961585aa474149cecb010bbf67"
-      }
+      },
+      "playedAt": "2021/11/14 13:19:32"
     },
     {
       "id": "easy-1-b",
@@ -127,12 +127,12 @@
       ],
       "player": "LuYC25.6",
       "recordedBy": "LuYC",
-      "submittedAt": "2020/03/13 11:23:14",
       "retailTrace": {
         "schemaVersion": 4,
         "calculationFrames": 126803,
         "sha256": "e0d221643d7215e6e79b6da96af7d47f61fcef90495c83b3705086625dcbfaf2"
-      }
+      },
+      "playedAt": "2020/03/13 11:23:14"
     },
     {
       "id": "easy-2-b",
@@ -193,12 +193,12 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "submittedAt": "2018/10/11 22:10:32",
       "retailTrace": {
         "schemaVersion": 4,
         "calculationFrames": 98098,
         "sha256": "80ba53f51c9edd14c15f32e6e8d48bfb7bf374f7a64f63140a8e57490449615d"
-      }
+      },
+      "playedAt": "2018/10/11 22:10:32"
     },
     {
       "id": "easy-3-b",
@@ -259,12 +259,12 @@
       ],
       "player": "AAA     ",
       "recordedBy": "dgart",
-      "submittedAt": "2021/11/15 00:34:29",
       "retailTrace": {
         "schemaVersion": 4,
         "calculationFrames": 103875,
         "sha256": "5cace0702c237969dbda29f417115527302a44b6ef4806785a2468078ece228b"
-      }
+      },
+      "playedAt": "2021/11/15 00:34:29"
     },
     {
       "id": "easy-4-b",
@@ -325,12 +325,12 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "submittedAt": "2018/10/13 21:30:51",
       "retailTrace": {
         "schemaVersion": 4,
         "calculationFrames": 118416,
         "sha256": "27c81a4b5c93f7a973ea611e5488d56117e31a7ad01ff3414ab3e55003b2a398"
-      }
+      },
+      "playedAt": "2018/10/13 21:30:51"
     },
     {
       "id": "easy-5-b",
@@ -391,12 +391,12 @@
       ],
       "player": "garbiale",
       "recordedBy": "ガブリエラ",
-      "submittedAt": "2020/03/14 21:09:27",
       "retailTrace": {
         "schemaVersion": 4,
         "calculationFrames": 132629,
         "sha256": "f12ba36893dbdb8e82653873ca95e7d547ea9e40887666af88517562285c4fa9"
-      }
+      },
+      "playedAt": "2020/03/14 21:09:27"
     },
     {
       "id": "easy-6-b",
@@ -457,12 +457,12 @@
       ],
       "player": "garbiale",
       "recordedBy": "夏花火",
-      "submittedAt": "2019/06/12 15:28:25",
       "retailTrace": {
         "schemaVersion": 4,
         "calculationFrames": 122814,
         "sha256": "b3c71ef1d6fa95fe615546f1d1d042b49019ad99811cd0abfb6014e3b0c44643"
-      }
+      },
+      "playedAt": "2019/06/12 15:28:25"
     },
     {
       "id": "easy-7-b",
@@ -523,20 +523,20 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "submittedAt": "2018/10/15 18:59:08",
       "retailTrace": {
         "schemaVersion": 4,
         "calculationFrames": 109495,
         "sha256": "9b844b56c1541235beef7036b6e91b36eec260bb2b9d13b725ceb8e133eb7cc9"
-      }
+      },
+      "playedAt": "2018/10/15 18:59:08"
     },
     {
       "id": "easy-8-b",
-      "file": "th8_ud2b7c.rpy",
-      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2b7c.rpy",
+      "file": "th8_ud1051.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud1051.rpy",
       "archive": "https://maribelhearn.com/royalflare/th08",
-      "sha256": "254e54b2d32094d97495ee82ab6c8ebcf300436d2f253c252d8d1f9a34ec6ba3",
-      "bytes": 34574,
+      "sha256": "b2f765751ea87e9ab1fe46da64ee2df7f53b9d2ddde8f0e44522007ef5fb47c3",
+      "bytes": 37914,
       "shot": 8,
       "shotName": "Sakuya",
       "difficulty": 0,
@@ -549,47 +549,53 @@
         "checksum": 2724749753,
         "version": "0100d"
       },
+      "player": "Fenrir  ",
+      "recordedBy": "Fenrir",
       "stages": [
         {
           "index": 0,
           "name": "Stage 1",
-          "inputRecords": 9945,
-          "endScore": 2162446
+          "inputRecords": 11239,
+          "endScore": 3894129
         },
         {
           "index": 1,
           "name": "Stage 2",
-          "inputRecords": 15321,
-          "endScore": 9425879
+          "inputRecords": 16087,
+          "endScore": 15723476
         },
         {
           "index": 2,
           "name": "Stage 3",
-          "inputRecords": 14385,
-          "endScore": 22562379
+          "inputRecords": 16491,
+          "endScore": 35697190
         },
         {
           "index": 3,
           "name": "Stage 4A",
-          "inputRecords": 23612,
-          "endScore": 40908184
+          "inputRecords": 25520,
+          "endScore": 68600869
         },
         {
           "index": 5,
           "name": "Stage 5",
-          "inputRecords": 23414,
-          "endScore": 58605947
+          "inputRecords": 25848,
+          "endScore": 103055823
         },
         {
           "index": 7,
           "name": "Final B",
-          "inputRecords": 36061,
-          "endScore": 133533918
+          "inputRecords": 38050,
+          "endScore": 219137479
         }
       ],
-      "player": "GHS     ",
-      "recordedBy": "GHS",
-      "submittedAt": "2018/10/17 22:11:01"
+      "playedAt": "2008/06/26 14:52:44",
+      "submittedAt": "2008/06/23",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 134146,
+        "sha256": "457faafabc461bd5745fbaeac8ce58fdbf053d086137ca7302226979014c5802"
+      }
     },
     {
       "id": "easy-9-b",
@@ -650,7 +656,7 @@
       ],
       "player": "garbiale",
       "recordedBy": "夏花火",
-      "submittedAt": "2021/04/22 11:16:43"
+      "playedAt": "2021/04/22 11:16:43"
     },
     {
       "id": "easy-10-b",
@@ -711,7 +717,7 @@
       ],
       "player": "garbiale",
       "recordedBy": "夏花火",
-      "submittedAt": "2021/06/04 01:14:35"
+      "playedAt": "2021/06/04 01:14:35"
     },
     {
       "id": "easy-11-b",
@@ -772,7 +778,7 @@
       ],
       "player": "garbiale",
       "recordedBy": "夏花火",
-      "submittedAt": "2020/03/11 01:27:19"
+      "playedAt": "2020/03/11 01:27:19"
     },
     {
       "id": "normal-0-b",
@@ -833,7 +839,7 @@
       ],
       "player": "        ",
       "recordedBy": "こうちゃん",
-      "submittedAt": "2021/10/14 13:46:15"
+      "playedAt": "2021/10/14 13:46:15"
     },
     {
       "id": "normal-1-b",
@@ -894,7 +900,7 @@
       ],
       "player": "garbiela",
       "recordedBy": "ガブリエラ",
-      "submittedAt": "2018/10/25 20:48:53"
+      "playedAt": "2018/10/25 20:48:53"
     },
     {
       "id": "normal-2-b",
@@ -955,7 +961,7 @@
       ],
       "player": "Ari     ",
       "recordedBy": "Ari",
-      "submittedAt": "2020/11/27 17:47:30"
+      "playedAt": "2020/11/27 17:47:30"
     },
     {
       "id": "normal-3-b",
@@ -1016,7 +1022,7 @@
       ],
       "player": "Elzer   ",
       "recordedBy": "Elzer",
-      "submittedAt": "2021/07/30 21:52:25"
+      "playedAt": "2021/07/30 21:52:25"
     },
     {
       "id": "normal-4-b",
@@ -1077,7 +1083,7 @@
       ],
       "player": "garbiela",
       "recordedBy": "ガブリエラ",
-      "submittedAt": "2018/12/23 22:58:25"
+      "playedAt": "2018/12/23 22:58:25"
     },
     {
       "id": "normal-5-b",
@@ -1138,7 +1144,7 @@
       ],
       "player": "Ferir   ",
       "recordedBy": "ferir",
-      "submittedAt": "2014/03/24 00:26:51"
+      "playedAt": "2014/03/24 00:26:51"
     },
     {
       "id": "normal-6-b",
@@ -1199,7 +1205,7 @@
       ],
       "player": "K@G NoMa",
       "recordedBy": "Ｋ・Ｇ",
-      "submittedAt": "2016/06/04 13:14:47"
+      "playedAt": "2016/06/04 13:14:47"
     },
     {
       "id": "normal-7-b",
@@ -1260,7 +1266,7 @@
       ],
       "player": "mahinu  ",
       "recordedBy": "mahinu",
-      "submittedAt": "2013/01/24 23:18:33"
+      "playedAt": "2013/01/24 23:18:33"
     },
     {
       "id": "normal-8-b",
@@ -1321,7 +1327,7 @@
       ],
       "player": "KIS NoSa",
       "recordedBy": "Ｋ・Ｇ",
-      "submittedAt": "2020/05/17 13:28:07"
+      "playedAt": "2020/05/17 13:28:07"
     },
     {
       "id": "normal-9-b",
@@ -1382,7 +1388,7 @@
       ],
       "player": "PARU    ",
       "recordedBy": "PARU",
-      "submittedAt": "2011/12/15 21:44:39"
+      "playedAt": "2011/12/15 21:44:39"
     },
     {
       "id": "normal-10-b",
@@ -1443,7 +1449,7 @@
       ],
       "player": "garbiale",
       "recordedBy": "ガブリエラ",
-      "submittedAt": "2019/05/10 00:29:26"
+      "playedAt": "2019/05/10 00:29:26"
     },
     {
       "id": "normal-11-b",
@@ -1504,7 +1510,7 @@
       ],
       "player": "HANPEN  ",
       "recordedBy": "はんぺん",
-      "submittedAt": "2012/03/23 17:48:02"
+      "playedAt": "2012/03/23 17:48:02"
     },
     {
       "id": "hard-0-b",
@@ -1565,7 +1571,7 @@
       ],
       "player": "rikue471",
       "recordedBy": "いもむし",
-      "submittedAt": "2020/07/07 23:20:28"
+      "playedAt": "2020/07/07 23:20:28"
     },
     {
       "id": "hard-1-b",
@@ -1626,7 +1632,7 @@
       ],
       "player": "K@G HaMA",
       "recordedBy": "Ｋ・Ｇ",
-      "submittedAt": "2016/07/16 22:21:59"
+      "playedAt": "2016/07/16 22:21:59"
     },
     {
       "id": "hard-2-b",
@@ -1687,7 +1693,7 @@
       ],
       "player": "K       ",
       "recordedBy": "Koishi",
-      "submittedAt": "2016/05/14 21:59:33"
+      "playedAt": "2016/05/14 21:59:33"
     },
     {
       "id": "hard-3-b",
@@ -1748,7 +1754,7 @@
       ],
       "player": "homo    ",
       "recordedBy": "西野君",
-      "submittedAt": "2017/10/06 14:50:55"
+      "playedAt": "2017/10/06 14:50:55"
     },
     {
       "id": "hard-4-b",
@@ -1809,7 +1815,7 @@
       ],
       "player": "REIMU H ",
       "recordedBy": "LISTIR",
-      "submittedAt": "2016/01/15 03:40:03"
+      "playedAt": "2016/01/15 03:40:03"
     },
     {
       "id": "hard-5-b",
@@ -1870,7 +1876,7 @@
       ],
       "player": "K@G HaNB",
       "recordedBy": "Ｋ・Ｇ",
-      "submittedAt": "2011/08/22 18:40:27"
+      "playedAt": "2011/08/22 18:40:27"
     },
     {
       "id": "hard-6-b",
@@ -1931,7 +1937,7 @@
       ],
       "player": "K@G HaMa",
       "recordedBy": "Ｋ・Ｇ",
-      "submittedAt": "2018/04/21 19:40:09"
+      "playedAt": "2018/04/21 19:40:09"
     },
     {
       "id": "hard-7-b",
@@ -1992,7 +1998,7 @@
       ],
       "player": "YM      ",
       "recordedBy": "YM",
-      "submittedAt": "2013/03/31 21:29:18"
+      "playedAt": "2013/03/31 21:29:18"
     },
     {
       "id": "hard-8-b",
@@ -2053,7 +2059,7 @@
       ],
       "player": "BDR     ",
       "recordedBy": "BDR",
-      "submittedAt": "2012/09/08 20:43:07"
+      "playedAt": "2012/09/08 20:43:07"
     },
     {
       "id": "hard-9-b",
@@ -2114,7 +2120,7 @@
       ],
       "player": "kazu    ",
       "recordedBy": "NEU",
-      "submittedAt": "2012/06/11 01:08:48"
+      "playedAt": "2012/06/11 01:08:48"
     },
     {
       "id": "hard-10-b",
@@ -2175,7 +2181,7 @@
       ],
       "player": "K@G HaYo",
       "recordedBy": "Ｋ・Ｇ",
-      "submittedAt": "2018/05/12 22:52:51"
+      "playedAt": "2018/05/12 22:52:51"
     },
     {
       "id": "hard-11-b",
@@ -2236,7 +2242,7 @@
       ],
       "player": "PDZ     ",
       "recordedBy": "PDZ",
-      "submittedAt": "2015/01/31 23:33:27"
+      "playedAt": "2015/01/31 23:33:27"
     },
     {
       "id": "lunatic-0-b",
@@ -2297,7 +2303,7 @@
       ],
       "player": "LNNFS   ",
       "recordedBy": "てーる",
-      "submittedAt": "2022/01/03 13:02:30"
+      "playedAt": "2022/01/03 13:02:30"
     },
     {
       "id": "lunatic-1-b",
@@ -2358,7 +2364,7 @@
       ],
       "player": "ATM     ",
       "recordedBy": "ATM",
-      "submittedAt": "2020/10/13 13:30:08"
+      "playedAt": "2020/10/13 13:30:08"
     },
     {
       "id": "lunatic-2-b",
@@ -2419,7 +2425,7 @@
       ],
       "player": "CWC     ",
       "recordedBy": "CWC",
-      "submittedAt": "2020/08/27 23:34:40"
+      "playedAt": "2020/08/27 23:34:40"
     },
     {
       "id": "lunatic-3-b",
@@ -2480,7 +2486,7 @@
       ],
       "player": "Levea   ",
       "recordedBy": "Levea",
-      "submittedAt": "2021/09/29 22:38:05"
+      "playedAt": "2021/09/29 22:38:05"
     },
     {
       "id": "lunatic-4-b",
@@ -2541,7 +2547,7 @@
       ],
       "player": "EEg_fNb ",
       "recordedBy": "EEg",
-      "submittedAt": "2020/02/20 12:10:17"
+      "playedAt": "2020/02/20 12:10:17"
     },
     {
       "id": "lunatic-5-b",
@@ -2602,7 +2608,7 @@
       ],
       "player": "WXQ     ",
       "recordedBy": "绿绿可柚",
-      "submittedAt": "2021/05/26 11:47:02"
+      "playedAt": "2021/05/26 11:47:02"
     },
     {
       "id": "lunatic-6-b",
@@ -2663,7 +2669,7 @@
       ],
       "player": "CSWHRDF ",
       "recordedBy": "1",
-      "submittedAt": "2019/03/29 19:39:25"
+      "playedAt": "2019/03/29 19:39:25"
     },
     {
       "id": "lunatic-7-b",
@@ -2724,7 +2730,7 @@
       ],
       "player": "ANCHOR  ",
       "recordedBy": "ANCHOR",
-      "submittedAt": "2020/11/07 16:51:08"
+      "playedAt": "2020/11/07 16:51:08"
     },
     {
       "id": "lunatic-8-b",
@@ -2785,7 +2791,7 @@
       ],
       "player": "KIM_OT  ",
       "recordedBy": "Kim_OT",
-      "submittedAt": "2021/06/20 03:43:36"
+      "playedAt": "2021/06/20 03:43:36"
     },
     {
       "id": "lunatic-9-b",
@@ -2846,7 +2852,7 @@
       ],
       "player": "K@G LuRe",
       "recordedBy": "Ｋ・Ｇ",
-      "submittedAt": "2016/09/10 12:21:12"
+      "playedAt": "2016/09/10 12:21:12"
     },
     {
       "id": "lunatic-10-b",
@@ -2907,7 +2913,7 @@
       ],
       "player": "Rivers  ",
       "recordedBy": "Rivers",
-      "submittedAt": "2021/03/29 00:16:41"
+      "playedAt": "2021/03/29 00:16:41"
     },
     {
       "id": "lunatic-11-b",
@@ -2968,7 +2974,7 @@
       ],
       "player": "WXQ     ",
       "recordedBy": "绿绿可柚",
-      "submittedAt": "2020/10/30 21:11:52"
+      "playedAt": "2020/10/30 21:11:52"
     },
     {
       "id": "extra-0-extra",
@@ -2999,7 +3005,7 @@
       ],
       "player": "NNFS    ",
       "recordedBy": "COMIT",
-      "submittedAt": "2021/11/06 15:43:43"
+      "playedAt": "2021/11/06 15:43:43"
     },
     {
       "id": "extra-1-extra",
@@ -3030,7 +3036,7 @@
       ],
       "player": "NNFS    ",
       "recordedBy": "ふすま",
-      "submittedAt": "2020/10/16 11:24:35"
+      "playedAt": "2020/10/16 11:24:35"
     },
     {
       "id": "extra-2-extra",
@@ -3061,7 +3067,7 @@
       ],
       "player": "NNFS    ",
       "recordedBy": "ふすま",
-      "submittedAt": "2020/10/13 23:01:41"
+      "playedAt": "2020/10/13 23:01:41"
     },
     {
       "id": "extra-3-extra",
@@ -3092,7 +3098,7 @@
       ],
       "player": "zvs     ",
       "recordedBy": "zvs",
-      "submittedAt": "2021/12/06 02:07:57"
+      "playedAt": "2021/12/06 02:07:57"
     },
     {
       "id": "extra-4-extra",
@@ -3123,7 +3129,7 @@
       ],
       "player": "LOWSCORE",
       "recordedBy": "MELON",
-      "submittedAt": "2021/12/17 15:00:52"
+      "playedAt": "2021/12/17 15:00:52"
     },
     {
       "id": "extra-5-extra",
@@ -3154,7 +3160,7 @@
       ],
       "player": "LSYSHXX ",
       "recordedBy": "FF0000",
-      "submittedAt": "2021/06/27 14:03:32"
+      "playedAt": "2021/06/27 14:03:32"
     },
     {
       "id": "extra-6-extra",
@@ -3185,7 +3191,7 @@
       ],
       "player": "LET     ",
       "recordedBy": "LET",
-      "submittedAt": "2021/05/02 21:58:19"
+      "playedAt": "2021/05/02 21:58:19"
     },
     {
       "id": "extra-7-extra",
@@ -3216,7 +3222,7 @@
       ],
       "player": "CSWHRDF ",
       "recordedBy": "1",
-      "submittedAt": "2020/03/13 16:16:02"
+      "playedAt": "2020/03/13 16:16:02"
     },
     {
       "id": "extra-8-extra",
@@ -3247,7 +3253,7 @@
       ],
       "player": "NMNBFS  ",
       "recordedBy": "ふすま",
-      "submittedAt": "2021/11/23 22:15:07"
+      "playedAt": "2021/11/23 22:15:07"
     },
     {
       "id": "extra-9-extra",
@@ -3278,7 +3284,7 @@
       ],
       "player": "NMNBFS  ",
       "recordedBy": "ふすま",
-      "submittedAt": "2020/07/17 01:09:17"
+      "playedAt": "2020/07/17 01:09:17"
     },
     {
       "id": "extra-10-extra",
@@ -3309,7 +3315,7 @@
       ],
       "player": "NNFS    ",
       "recordedBy": "ふすま",
-      "submittedAt": "2020/10/30 12:02:30"
+      "playedAt": "2020/10/30 12:02:30"
     },
     {
       "id": "extra-11-extra",
@@ -3340,7 +3346,7 @@
       ],
       "player": "NMNBFS  ",
       "recordedBy": "ふすま",
-      "submittedAt": "2021/05/16 16:07:34"
+      "playedAt": "2021/05/16 16:07:34"
     },
     {
       "id": "easy-0-a",
@@ -3401,7 +3407,7 @@
       ],
       "player": "SKLemon ",
       "recordedBy": "SKLemon",
-      "submittedAt": "2021/09/23 15:16:39"
+      "playedAt": "2021/09/23 15:16:39"
     },
     {
       "id": "easy-1-a",
@@ -3462,7 +3468,7 @@
       ],
       "player": "garbiale",
       "recordedBy": "ガブリエラ",
-      "submittedAt": "2020/10/17 14:45:47"
+      "playedAt": "2020/10/17 14:45:47"
     },
     {
       "id": "easy-2-a",
@@ -3523,7 +3529,7 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "submittedAt": "2018/10/01 13:34:35"
+      "playedAt": "2018/10/01 13:34:35"
     },
     {
       "id": "easy-3-a",
@@ -3584,7 +3590,7 @@
       ],
       "player": "garbiale",
       "recordedBy": "ガブリエラ",
-      "submittedAt": "2020/08/12 00:33:22"
+      "playedAt": "2020/08/12 00:33:22"
     },
     {
       "id": "easy-4-a",
@@ -3645,7 +3651,7 @@
       ],
       "player": "garbiale",
       "recordedBy": "夏花火",
-      "submittedAt": "2021/02/06 23:36:14"
+      "playedAt": "2021/02/06 23:36:14"
     },
     {
       "id": "easy-5-a",
@@ -3706,7 +3712,7 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "submittedAt": "2018/10/13 22:16:59"
+      "playedAt": "2018/10/13 22:16:59"
     },
     {
       "id": "easy-6-a",
@@ -3767,7 +3773,7 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "submittedAt": "2018/10/14 11:22:47"
+      "playedAt": "2018/10/14 11:22:47"
     },
     {
       "id": "easy-7-a",
@@ -3828,7 +3834,7 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "submittedAt": "2018/10/15 18:26:22"
+      "playedAt": "2018/10/15 18:26:22"
     },
     {
       "id": "easy-8-a",
@@ -3889,7 +3895,7 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "submittedAt": "2018/10/16 22:08:17"
+      "playedAt": "2018/10/16 22:08:17"
     },
     {
       "id": "easy-9-a",
@@ -3950,7 +3956,7 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "submittedAt": "2018/10/18 12:05:12"
+      "playedAt": "2018/10/18 12:05:12"
     },
     {
       "id": "easy-10-a",
@@ -4011,7 +4017,7 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "submittedAt": "2018/10/18 18:11:35"
+      "playedAt": "2018/10/18 18:11:35"
     },
     {
       "id": "easy-11-a",
@@ -4072,7 +4078,7 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "submittedAt": "2018/10/18 19:14:22"
+      "playedAt": "2018/10/18 19:14:22"
     },
     {
       "id": "normal-0-a",
@@ -4133,7 +4139,7 @@
       ],
       "player": "garbiela",
       "recordedBy": "ガブリエラ",
-      "submittedAt": "2018/11/15 01:39:50"
+      "playedAt": "2018/11/15 01:39:50"
     },
     {
       "id": "normal-1-a",
@@ -4194,7 +4200,7 @@
       ],
       "player": "hanabi  ",
       "recordedBy": "ガブリエラ",
-      "submittedAt": "2019/03/07 01:17:58"
+      "playedAt": "2019/03/07 01:17:58"
     },
     {
       "id": "normal-2-a",
@@ -4255,7 +4261,7 @@
       ],
       "player": "hanabi  ",
       "recordedBy": "ガブリエラ",
-      "submittedAt": "2019/04/01 11:54:34"
+      "playedAt": "2019/04/01 11:54:34"
     },
     {
       "id": "normal-3-a",
@@ -4316,7 +4322,7 @@
       ],
       "player": "garbiale",
       "recordedBy": "ガブリエラ",
-      "submittedAt": "2019/09/19 01:30:04"
+      "playedAt": "2019/09/19 01:30:04"
     },
     {
       "id": "normal-4-a",
@@ -4377,7 +4383,7 @@
       ],
       "player": "garbiela",
       "recordedBy": "ガブリエラ",
-      "submittedAt": "2018/03/30 17:57:27"
+      "playedAt": "2018/03/30 17:57:27"
     },
     {
       "id": "normal-5-a",
@@ -4438,7 +4444,7 @@
       ],
       "player": "UMZ     ",
       "recordedBy": "UMZ",
-      "submittedAt": "2021/03/27 19:00:16"
+      "playedAt": "2021/03/27 19:00:16"
     },
     {
       "id": "normal-6-a",
@@ -4499,7 +4505,7 @@
       ],
       "player": "KURO    ",
       "recordedBy": "サグパンのクロさん",
-      "submittedAt": "2017/01/29 11:16:36"
+      "playedAt": "2017/01/29 11:16:36"
     },
     {
       "id": "normal-7-a",
@@ -4560,7 +4566,7 @@
       ],
       "player": "K@G NoAl",
       "recordedBy": "Ｋ・Ｇ",
-      "submittedAt": "2015/04/21 21:36:27"
+      "playedAt": "2015/04/21 21:36:27"
     },
     {
       "id": "normal-8-a",
@@ -4621,7 +4627,7 @@
       ],
       "player": "K@G NASa",
       "recordedBy": "Ｋ・Ｇ",
-      "submittedAt": "2020/05/17 19:44:15"
+      "playedAt": "2020/05/17 19:44:15"
     },
     {
       "id": "normal-9-a",
@@ -4682,7 +4688,7 @@
       ],
       "player": "PARU    ",
       "recordedBy": "PARU",
-      "submittedAt": "2011/12/12 23:33:53"
+      "playedAt": "2011/12/12 23:33:53"
     },
     {
       "id": "normal-10-a",
@@ -4743,7 +4749,7 @@
       ],
       "player": "garbiale",
       "recordedBy": "ガブリエラ",
-      "submittedAt": "2019/08/27 00:12:27"
+      "playedAt": "2019/08/27 00:12:27"
     },
     {
       "id": "normal-11-a",
@@ -4804,7 +4810,7 @@
       ],
       "player": "HANPEN A",
       "recordedBy": "はんぺん",
-      "submittedAt": "2012/07/01 19:46:02"
+      "playedAt": "2012/07/01 19:46:02"
     },
     {
       "id": "hard-0-a",
@@ -4865,7 +4871,7 @@
       ],
       "player": "Dzm NB  ",
       "recordedBy": "Dzm",
-      "submittedAt": "2018/09/01 09:44:16"
+      "playedAt": "2018/09/01 09:44:16"
     },
     {
       "id": "hard-1-a",
@@ -4926,7 +4932,7 @@
       ],
       "player": "ROSA2015",
       "recordedBy": "まあ、まったりと",
-      "submittedAt": "2015/11/12 21:21:23"
+      "playedAt": "2015/11/12 21:21:23"
     },
     {
       "id": "hard-2-a",
@@ -4987,7 +4993,7 @@
       ],
       "player": "sia     ",
       "recordedBy": "sia",
-      "submittedAt": "2014/06/23 01:26:59"
+      "playedAt": "2014/06/23 01:26:59"
     },
     {
       "id": "hard-3-a",
@@ -5048,7 +5054,7 @@
       ],
       "player": "PARU    ",
       "recordedBy": "PARU",
-      "submittedAt": "2012/02/21 02:52:57"
+      "playedAt": "2012/02/21 02:52:57"
     },
     {
       "id": "hard-4-a",
@@ -5109,7 +5115,7 @@
       ],
       "player": "PARU    ",
       "recordedBy": "PARU",
-      "submittedAt": "2012/02/20 02:33:12"
+      "playedAt": "2012/02/20 02:33:12"
     },
     {
       "id": "hard-5-a",
@@ -5170,7 +5176,7 @@
       ],
       "player": "KIS NNFS",
       "recordedBy": "Ｋ・Ｇ",
-      "submittedAt": "2020/05/23 18:49:28"
+      "playedAt": "2020/05/23 18:49:28"
     },
     {
       "id": "hard-6-a",
@@ -5231,7 +5237,7 @@
       ],
       "player": "PARU    ",
       "recordedBy": "PARU",
-      "submittedAt": "2011/08/11 20:38:44"
+      "playedAt": "2011/08/11 20:38:44"
     },
     {
       "id": "hard-7-a",
@@ -5292,7 +5298,7 @@
       ],
       "player": "K@G HaAl",
       "recordedBy": "Ｋ・Ｇ",
-      "submittedAt": "2015/01/16 23:43:15"
+      "playedAt": "2015/01/16 23:43:15"
     },
     {
       "id": "hard-8-a",
@@ -5353,7 +5359,7 @@
       ],
       "player": "mahinu  ",
       "recordedBy": "mahinu",
-      "submittedAt": "2013/02/20 23:36:51"
+      "playedAt": "2013/02/20 23:36:51"
     },
     {
       "id": "hard-9-a",
@@ -5414,7 +5420,7 @@
       ],
       "player": "PDZ     ",
       "recordedBy": "PDZ",
-      "submittedAt": "2015/03/27 23:22:43"
+      "playedAt": "2015/03/27 23:22:43"
     },
     {
       "id": "hard-10-a",
@@ -5475,7 +5481,7 @@
       ],
       "player": "PARU    ",
       "recordedBy": "PARU",
-      "submittedAt": "2012/02/12 23:57:16"
+      "playedAt": "2012/02/12 23:57:16"
     },
     {
       "id": "hard-11-a",
@@ -5536,7 +5542,7 @@
       ],
       "player": "K@G HaNB",
       "recordedBy": "Ｋ・Ｇ",
-      "submittedAt": "2012/07/11 16:37:04"
+      "playedAt": "2012/07/11 16:37:04"
     },
     {
       "id": "lunatic-0-a",
@@ -5597,7 +5603,7 @@
       ],
       "player": "LNNFS   ",
       "recordedBy": "儚符",
-      "submittedAt": "2021/08/18 02:07:13"
+      "playedAt": "2021/08/18 02:07:13"
     },
     {
       "id": "lunatic-1-a",
@@ -5658,7 +5664,7 @@
       ],
       "player": "Asahi   ",
       "recordedBy": "Asahi",
-      "submittedAt": "2021/10/23 13:51:40"
+      "playedAt": "2021/10/23 13:51:40"
     },
     {
       "id": "lunatic-2-a",
@@ -5719,7 +5725,7 @@
       ],
       "player": "WXQ     ",
       "recordedBy": "绿绿可柚",
-      "submittedAt": "2019/11/12 15:13:18"
+      "playedAt": "2019/11/12 15:13:18"
     },
     {
       "id": "lunatic-3-a",
@@ -5780,7 +5786,7 @@
       ],
       "player": "GZZ NN  ",
       "recordedBy": "GZZ",
-      "submittedAt": "2021/08/12 22:07:37"
+      "playedAt": "2021/08/12 22:07:37"
     },
     {
       "id": "lunatic-4-a",
@@ -5841,7 +5847,7 @@
       ],
       "player": "Goodra  ",
       "recordedBy": "goodra",
-      "submittedAt": "2021/01/23 17:36:00"
+      "playedAt": "2021/01/23 17:36:00"
     },
     {
       "id": "lunatic-5-a",
@@ -5902,7 +5908,7 @@
       ],
       "player": "KIS LAYu",
       "recordedBy": "Ｋ・Ｇ",
-      "submittedAt": "2021/10/22 23:56:16"
+      "playedAt": "2021/10/22 23:56:16"
     },
     {
       "id": "lunatic-6-a",
@@ -5963,7 +5969,7 @@
       ],
       "player": "WXQ     ",
       "recordedBy": "绿绿可柚",
-      "submittedAt": "2020/10/14 14:35:06"
+      "playedAt": "2020/10/14 14:35:06"
     },
     {
       "id": "lunatic-7-a",
@@ -6024,7 +6030,7 @@
       ],
       "player": "WXQ     ",
       "recordedBy": "绿绿可柚",
-      "submittedAt": "2021/06/15 17:24:46"
+      "playedAt": "2021/06/15 17:24:46"
     },
     {
       "id": "lunatic-8-a",
@@ -6085,7 +6091,7 @@
       ],
       "player": "WXQ     ",
       "recordedBy": "绿绿可柚",
-      "submittedAt": "2020/12/03 22:46:13"
+      "playedAt": "2020/12/03 22:46:13"
     },
     {
       "id": "lunatic-9-a",
@@ -6146,7 +6152,7 @@
       ],
       "player": "SOC NNFS",
       "recordedBy": "SOC",
-      "submittedAt": "2020/10/25 14:01:51"
+      "playedAt": "2020/10/25 14:01:51"
     },
     {
       "id": "lunatic-10-a",
@@ -6207,7 +6213,7 @@
       ],
       "player": "WXQ     ",
       "recordedBy": "绿绿可柚",
-      "submittedAt": "2021/03/13 20:43:20"
+      "playedAt": "2021/03/13 20:43:20"
     },
     {
       "id": "lunatic-11-a",
@@ -6268,7 +6274,7 @@
       ],
       "player": "SOC NNFS",
       "recordedBy": "SOC",
-      "submittedAt": "2020/10/28 05:42:15"
+      "playedAt": "2020/10/28 05:42:15"
     }
   ]
 }

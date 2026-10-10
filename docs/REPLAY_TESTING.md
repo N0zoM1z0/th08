@@ -12,6 +12,8 @@ recordings: each of the 12 shot types on Easy, Normal, Hard, and Lunatic through
 Final A and Final B, plus Extra. Stage 4A and 4B follow the recorded shot's
 route. The manifest includes download URLs, recorder credits, hashes, and
 stage input counts. Replay files remain under `build/`.
+`playedAt` preserves the archive's Play Date; `submittedAt`, when present,
+records its upload date.
 
 ## Full route suite
 
@@ -197,7 +199,7 @@ do not affect it. `comparison.json` prints both fingerprints.
 The first full-route checkpoint used Ubuntu 24.04 on WSL2 x86-64, Wine 9.0,
 Mesa llvmpipe 25.2.8, Python 3.13.5, and Xvfb 21.1.12. Compiler and library
 pins are in the [native build procedure](WINDOWS_I386_RUNTIME.md).
-All eight published cases passed at source checkpoint `25c101f9`, including a
+All nine published cases passed at source checkpoint `25c101f9`, including a
 rerun of the first five cases after the replay-input repair. Build the `bugfix`
 profile from this branch or a later revision containing its repairs.
 Capture metadata records executable, map, data and configuration hashes,
@@ -219,7 +221,7 @@ candidate executable and map, and the recorded calculation counts. It rejects
 changes to existing expectations. Only the acceptance hashes and counts enter
 the manifest; generated reports and recordings remain under `build/`.
 
-Eight complete Easy Final B cases have published expectations:
+Nine complete Easy Final B cases have published expectations:
 
 | Shot | Stage 4 route | Calculations |
 | --- | --- | ---: |
@@ -231,10 +233,44 @@ Eight complete Easy Final B cases have published expectations:
 | Yukari | B | 132,629 |
 | Marisa | A | 122,814 |
 | Alice | A | 109,495 |
+| Sakuya | A | 134,146 |
 
-All 25 fields agree over 919,426 calculations on that source checkpoint.
+All 25 fields agree over 1,053,572 calculations on that source checkpoint.
 The current batch continues through the remaining corpus. Repository CI validates
 the manifest's complete 108-case grid and published expectation format.
+
+## Reference fixture failures
+
+[replay-rejected-fixtures.json](../config/replay-rejected-fixtures.json) retains
+recordings that failed the retail completeness check, with their download
+URLs, hashes, and observed failures. For Sakuya's `th8_ud2b7c.rpy`, normal and
+built-in fast-forward playback produce the same 59,706-calculation prefix,
+ending in Stage 4A at frame 19,840. Ordinary pacing with rasterization also
+reproduces that stage's 19,840 calculations. The retail desynchronization's
+cause is unresolved. The active `easy-8-b` fixture is `th8_ud1051.rpy`, which
+completes all six stages and recorded end scores in retail.
+
+Fetch the retained fixture, then reproduce the Stage 4A failure with ordinary
+pacing and rendering:
+
+```bash
+python3 scripts/test-replay-suite.py \
+  --manifest config/replay-rejected-fixtures.json --fetch-only \
+  --game-data build/modern-runtime/th08.dat \
+  --bgm-data build/modern-runtime/thbgm.dat \
+  --output-dir build/replay-rejected-inputs
+python3 scripts/capture-replay.py \
+  --target resources/th08.exe \
+  --replay build/replay-fixtures/th8_ud2b7c.rpy \
+  --start-stage 3 --playback-mode 0 --observer-backend ptrace \
+  --game-data build/modern-runtime/th08.dat \
+  --bgm-data build/modern-runtime/thbgm.dat \
+  --output-dir build/replay-retail-failure
+```
+
+In the recorded Wine/Mesa environment, this exits nonzero with 3,772 input
+records left and score 31,688,942 instead of the recorded 40,908,184.
+The active matrix requires a complete retail reference for each coverage cell.
 
 ## Native checkpoint
 
