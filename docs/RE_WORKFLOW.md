@@ -1,5 +1,10 @@
 # Reverse-engineering workflow
 
+Use this page for evidence ranking, bounded reconstruction, and acceptance.
+For orientation, see the [project guide](PROJECT_GUIDE.md); for session-start
+commands, see [TOOLS.md](TOOLS.md#start-every-writable-session). Current work
+is selected through the [handoff](RE_HANDOFF.md) and live ledgers.
+
 ## Sources of truth
 
 Use evidence in this order:
@@ -92,9 +97,9 @@ Use precise terms in reviews and commits:
 | `matching` | the accepted comparator proves exact target code/data for the stated scope |
 | `blocked` | a concrete missing input, boundary, mapping, or tool is named |
 
-Source resemblance, a successful link, a Ghidra function name, or inclusion in
-`config/implemented.csv` is not sufficient for `matching`. Do not publish a
-matching percentage unless it is generated from a current reproducible report.
+Record `matching` from the configured target comparator and generate
+published percentages from current reproducible results. Mappings,
+source-selection rows, and builds each retain their separate tracking roles.
 
 ## Adjacent-version acceleration
 
@@ -198,48 +203,43 @@ build:
    flags, section layout, resource tree/metadata, import set and descriptor
    order, object/archive order, globals, or static initialization. Rebuild cold
    after changing the link graph or a build-internal generator.
-3. Use accepted function addresses as link-layout anchors. A large drift range
-   within one current production object means that its source likely combines
-   code that occupied multiple target translation units or was interleaved with
-   other objects; simply permuting the current object list cannot repair that
-   shape. Recover target translation-unit ownership before tuning padding or
-   global order. Rank a detailed report with
-   `scripts/analysis/report-tu-partition-candidates.py`, then inspect only one
-   current production object at a time. A target-order run reset is routing
-   evidence, not a boundary claim: inspect mapped non-anchor neighbors as well.
-   If one distant cluster is separated by other subsystems, move its real
-   definitions to a same-profile production TU and update all match-unit and
-   namespace-map ownership. If a distant exact helper is a plausible
-   header-inline COMDAT, inspect section-defined and undefined symbols in the
-   production objects: a target-neighbor consumer may be the natural emitter,
-   even when the class's nominal implementation TU uses a different compiler
-   profile. Restore the header body, clean the PCH, and compare the emitted
-   consumer copy plus affected callers, including optimized production and
-   probe callers. If global body visibility changes an accepted caller, keep a
-   declaration-only header and place the exact body explicitly in the
-   target-neighbor consumer TU. Conversely, retain a proven inline contract
-   when a target caller contains the body and no call relocation, even if VC7
-   defers the standalone COMDAT to an inconvenient object position. An
-   alternating target sequence of forwarding wrappers and their callees can be
-   evidence for paired consumer-triggered header COMDATs; verify the outer
-   production caller and replay both layers. If several helper families first
-   emit from the same PCH consumer, treat header include order as a candidate
-   part of the link contract and verify the complete target family order after
-   a clean PCH build. A target-contiguous block may contain explicit
-   definitions from several classes; preserve that local sequence when mapped
-   neighbors, compile profile, and exact donor/recipient replay all agree,
-   rather than routing every method to its nominal class TU. A deferred tiny
-   accessor may be made explicit to restore order only after its full caller
-   set is bounded and target relocations prove that removing inline visibility
-   preserves the call boundary. Do not
-   manufacture an owner for a helper with no production caller. If the retained
-   target neighborhood is continuous, restore lexical function order inside
-   that TU instead of manufacturing a source file for every run. Replay donor
-   and recipients together. Moving a caller or explicit shared-helper body may
-   also remove an otherwise implicit COMDAT from the donor; inspect
-   section-defined symbols in every affected object and change its canonical
-   owner only when target neighborhood and natural production emission agree.
-   Then cold link and measure the new runs/drift before the aggregate replay.
+3. Recover emission ownership before tuning padding or global order. Use
+   accepted function addresses as link-layout anchors and rank candidates with
+   `scripts/analysis/report-tu-partition-candidates.py`. Inspect one production
+   object at a time:
+
+   - **Target neighborhoods:** order resets and large drift jumps suggest TU
+     partitions. Inspect mapped non-anchor neighbors to establish boundaries.
+     Object-list permutations alone cannot repair code interleaved inside an
+     object.
+   - **Distant clusters:** move real definitions to a same-profile production
+     TU when target neighbors establish a separate owner. Update match-unit
+     and namespace-map ownership and replay donor and recipient together.
+   - **Consumer COMDATs:** inspect defined and undefined production symbols for
+     plausible header helpers. A target-neighbor consumer may emit the exact
+     copy under a different profile from the nominal class TU. Restore the
+     header body, clean the PCH, and compare the consumer copy and affected
+     production/probe callers.
+   - **Body visibility:** if a shared header body changes an accepted caller,
+     keep its declaration in the header and place the exact definition in the
+     target-neighbor consumer. Preserve inline visibility when a target caller
+     contains the body without a call relocation.
+   - **Header order:** alternating wrappers and callees can indicate paired
+     consumer-emitted COMDATs. Verify the outer caller and both helper layers.
+     When several families first emit from one PCH consumer, test header include
+     order and compare the complete family sequence after a clean PCH build.
+   - **Explicit blocks:** a target-contiguous block can contain several classes.
+     Preserve its local sequence when neighbors, profile, and exact replay
+     agree. Making a deferred accessor explicit also requires a bounded caller
+     set and relocations proving that the call boundary remains intact.
+   - **Production use:** require a production caller before assigning a helper
+     an owner. Restore lexical order within a continuous target neighborhood;
+     create a separate TU when the target partition supports it.
+
+   Moving a caller or helper may remove an implicit COMDAT from the donor.
+   Inspect defined symbols in every affected object and update its canonical
+   owner when target neighbors and natural emission agree. Cold-link and measure
+   the new runs/drift, then run the aggregate replay.
 4. Return to one CRT/D3DX/compiler-runtime member only when the whole-image
    report or a bounded link-provenance trace identifies that member as an
    import, extent, relocation, or layout dependency. For rebuild-only imports,
@@ -286,6 +286,12 @@ history or `.analysis/` filenames as the only explanation of current state.
 Route reusable conclusions through `docs/KNOWLEDGE_BASE.md` and remove scratch
 that has been superseded by tracked evidence.
 
+## Source-recovery examples
+
+These examples come from completed reconstruction batches. Use the ledgers for
+current acceptance and the [compiler-pattern corpus](BUILD_MATCHING.md#compiler-pattern-corpus)
+for the detailed evidence.
+
 For large switch interpreters, treat the jump table as a structural checksum before
 fine byte matching. Resolve each COFF local-label relocation and compare the ordered
 case entry addresses with the target. A uniform displacement across all later cases
@@ -302,17 +308,12 @@ time-orb row. In `Gui::DrawGameScene`, the TH08-first ordering yielded an exact 
 frame on the first complete pass; the remaining 10-byte size error came from only two
 ancestor-style integer-plus-zero-float expressions.
 
-
 When a newly reconstructed production function uses a target global that previously existed only as an `extern` in a probe-only lane, first provide a production owner so the normal link is testable, then revisit that provisional identity when the enclosing aggregate is recovered.  The early ECL name `g_EclEnemyTableF54CC0` was useful for bringing `Gui::FUN_0043741d` into the production link, but later whole-owner evidence proved `0x00F54CC0 == g_EnemyManager + 0x9DCDA0`.  Its apparent indices crossed Boss pointers and unrelated integer fields, so the alias was retired in favor of typed `EnemyManager` members and manager-base relocations.  Strict object matching proves emitted addresses, not that a provisional global boundary is semantically final.
 
+The GUI updater at `0x435900` was accepted as a strict 2,397-byte match. Its proven state model links the boss-gauge fade state (`impl+0x2a40`), VM update batches, three `GuiFormattedText` timers, stage-result score calculation, and the animated clock-result tail. Reuse the local `GuiStageResultUpdateOverlay` at `impl+0x22dec` instead of rediscovering those ten dwords in later GUI work; do not cache a pointer to the overlay unless the target does so.
 
-The GUI updater at `0x435900` is now a strict 2,397-byte match. Its proven state model links the boss-gauge fade state (`impl+0x2a40`), VM update batches, three `GuiFormattedText` timers, stage-result score calculation, and the animated clock-result tail. Reuse the local `GuiStageResultUpdateOverlay` at `impl+0x22dec` instead of rediscovering those ten dwords in later GUI work; do not cache a pointer to the overlay unless the target does so.
+`GuiImpl::DrawDialogue @ 0x43542B` was accepted as a strict 1,107-byte match. For this family of GUI drawing routines, the TH06 source is especially useful for local declaration order and D3D state restoration, but TH08-specific portrait ordering must still be read from the target. The exact TH08 routine keeps two explicit if/else z-order pairs for four portrait VMs, so preserve lexical duplicate draw calls rather than abstracting them into a sort/loop.
 
+`Gui::FUN_0043826b @ 0x43826B` was accepted as a strict 1,982-byte result-overlay draw. It independently reuses the `GuiStageResultUpdateOverlay` fields proven by the 0x435900 updater, so those offsets now have both update-side and draw-side evidence. For result screens, preserve each lexical `AsciiManager::AddFormatText` call and its Y advance; visually equivalent string consolidation is not compiler-equivalent.
 
-`GuiImpl::DrawDialogue @ 0x43542B` is now a strict 1,107-byte match. For this family of GUI drawing routines, the TH06 source is especially useful for local declaration order and D3D state restoration, but TH08-specific portrait ordering must still be read from the target. The exact TH08 routine keeps two explicit if/else z-order pairs for four portrait VMs, so preserve lexical duplicate draw calls rather than abstracting them into a sort/loop.
-
-
-`Gui::FUN_0043826b @ 0x43826B` is now a strict 1,982-byte result-overlay draw. It independently reuses the `GuiStageResultUpdateOverlay` fields proven by the 0x435900 updater, so those offsets now have both update-side and draw-side evidence. For result screens, preserve each lexical `AsciiManager::AddFormatText` call and its Y advance; visually equivalent string consolidation is not compiler-equivalent.
-
-
-`Gui::FUN_00438A89` is now a strict 1,231-byte formatted-popup draw. The TH06 `Gui::OnDraw` popup block is a useful source-shape ancestor: TH08 keeps the same spell-card bonus centering logic, while expanding the full-power popup into a six-state switch. When an ancestor uses `strlen` of a string literal in a centering formula, preserve that call spelling instead of substituting the known length; the old compiler's partial constant folding can be target-visible.
+`Gui::FUN_00438A89` was accepted as a strict 1,231-byte formatted-popup draw. The TH06 `Gui::OnDraw` popup block is a useful source-shape ancestor: TH08 keeps the same spell-card bonus centering logic, while expanding the full-power popup into a six-state switch. When an ancestor uses `strlen` of a string literal in a centering formula, preserve that call spelling instead of substituting the known length; the old compiler's partial constant folding can be target-visible.

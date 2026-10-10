@@ -2,9 +2,10 @@
 
 This archive preserves completed semantic batch records through 2026-09-19,
 including the policy text under which the early batches were accepted. Use
-`SEMANTIC_RECONSTRUCTION.md` for the current compact policy and
-`SEMANTIC_INDEX.md` for subsystem navigation. New completed batches belong
-under `Completed batches` below.
+[SEMANTIC_RECONSTRUCTION.md](SEMANTIC_RECONSTRUCTION.md) for the current compact
+policy and [SEMANTIC_INDEX.md](SEMANTIC_INDEX.md#subsystems) for direct subsystem
+links. New completed batches belong under [Completed batches](#completed-batches)
+below. The policy sections in this archive preserve their historical wording.
 
 This phase turns layout-shaped reconstruction source into evidence-backed C++
 without giving up either accepted VC7 code generation or the playable modern

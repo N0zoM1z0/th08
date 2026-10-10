@@ -1,9 +1,7 @@
 # TH08 modern Linux i386 package
 
-This archive contains the native Linux playable reconstruction. It does not
-contain the original TH08 executable, DAT archives, music, or other copyrighted
-game assets. `th08-modern.png` is the project-owned application icon used by
-the SDL window; it is not extracted from the original game.
+This archive contains the native Linux i386 executable, launcher, and
+project-owned window icon. Supply the game data from your own TH08 installation.
 
 ## Run
 
@@ -29,13 +27,10 @@ selected directory becomes the working directory, so configuration, score,
 replay, screenshot, and crash-diagnostic files are read or written there.
 The original `th08.exe` is not read or executed.
 
-A directory containing only the two DAT files is sufficient and the port will
-create `th08.cfg`, `score.dat`, and the score-backup directory. The Linux
-backend treats an empty backup search with Win32-compatible invalid-handle
-semantics, so a fresh directory does not need any pre-existing backup file. On
-a VM without accelerated OpenGL, fullscreen startup and first-run FPS/vsync
-calibration may still be slow. Reusing an existing `th08.cfg` can avoid that
-delay, but neither that file nor the original EXE is a data requirement.
+A directory containing only the two DAT files is sufficient. The game creates
+`th08.cfg`, `score.dat`, and the score-backup directory on first launch.
+On a VM without accelerated OpenGL, fullscreen startup and FPS/vsync calibration
+may be slow. An existing `th08.cfg` can avoid that delay.
 
 ## Runtime requirements
 
@@ -53,8 +48,7 @@ sudo apt-get install \
 
 Equivalent i386 SDL2, SDL2_image, SDL2_ttf, Fontconfig, OpenGL, and C++ runtime
 packages are required on other distributions. A graphical desktop and working
-OpenGL/audio sessions are required; Docker is used only to make the CI build
-reproducible and is not part of the runtime.
+OpenGL/audio sessions are required. The executable runs directly on the host.
 
 See `PORTING.md` in this archive for implementation details, known limitations,
 and debugging notes.

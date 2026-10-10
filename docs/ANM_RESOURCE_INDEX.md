@@ -1,16 +1,16 @@
 # ANM resource namespaces
 
-ANM integers are meaningful only inside their namespace.  This page prevents
-the common mistake of treating a manager file slot, a script number, a sprite
-number, and an `AnmVm` array index as one global resource ID space.
+ANM uses separate namespaces for manager file slots, resource-local scripts
+and sprites, and `AnmVm` array indices. Identify the owner and receiving API
+before interpreting a number.
 
 ## Manager file slots
 
-`AnmFileSlot` in `AnmManager.hpp` names all 25 stable entries in
+`AnmFileSlot` in [AnmManager.hpp](../src/AnmManager.hpp) names all 25 stable entries in
 `AnmManager::anmFiles`: text, ASCII, loading/capture, stage background, player,
 bullet/effect, common and stage enemies, stage effects, GUI resources, portrait
-and face resources, title/result/music room, and ending.  These values identify
-a loaded `AnmLoaded` owner.  They do not identify a script or sprite within it.
+and face resources, title/result/music room, and ending. These values identify
+the loaded `AnmLoaded` owner; scripts and sprites have their own local IDs.
 
 ## Local IDs
 
@@ -22,11 +22,9 @@ a loaded `AnmLoaded` owner.  They do not identify a script or sprite within it.
 | GUI sprites | `frontAnm`, auxiliary GUI ANM, stage text ANM, or clock ANM | Follow the concrete `AnmLoaded` receiver in `Gui.cpp`/`AsciiManager*.cpp`; the native owner audit shows why a visually related GUI object is not sufficient evidence. |
 | Enemy/stage scripts | Common enemy, stage enemy, background, or stage-effect owner | ECL operands and callbacks select the owner separately from the raw script value. Preserve that selection in names and documentation. |
 
-The raw Player option script calls remain documented rather than guessed:
-their numeric use is observed, but the shipped ANM asset does not provide a
-source-level symbolic name.  A future rename should record the owning loaded
-file, every TH08 call site, the observed animation role, and the exact/portable
-validation result.
+Player option scripts retain their observed numeric IDs. A descriptive rename
+needs the owning loaded file, TH08 call sites, animation role, and exact/portable
+validation results; the shipped asset provides no source-level symbolic names.
 
 ## ANM opcode evidence queue
 
@@ -37,5 +35,5 @@ validation result.
 | 83 | Writes the value consumed only by `DrawPlayerBullet`, which dispatches the six named `AnmPlayerBulletDrawMode` values. | Named `AnmOpcode_SetPlayerBulletDrawMode` / `playerBulletDrawMode`; acceptance is recorded in the semantic batch log. |
 | 88 | Copies `byteArgs[1]` to `flag17`; render paths choose `color2` instead of `color1` while set. | Behavior documented; keep the byte-width protocol and defer a shared-layout rename. |
 
-Adjacent TH06/TH07 opcode names may corroborate a TH08 interpretation but do
-not replace the TH08 read/write and exact-code evidence above.
+TH06/TH07 opcode names provide corroboration. TH08 reads, writes, and exact
+comparison establish the interpretation for this target.

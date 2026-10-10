@@ -19,10 +19,9 @@ from those batches live in [SEMANTIC_PLAYBOOK.md](SEMANTIC_PLAYBOOK.md).
   independently. State the confidence.
 - **Unknown:** only storage, width, or alignment is known. Keep it opaque.
 
-IDA evidence remains blocked until the active database satisfies
-`IDA_MCP.md`. Lack of IDA does not lower the evidence bar; use the verified
-target, target-safe disassembly, typed fact packets, mappings, and strict
-comparison.
+Use IDA after [attesting the active database](IDA_MCP.md). Other sessions use
+the verified target, target-safe disassembly, typed fact packets, mappings,
+and strict comparison.
 
 ## Bounded batch workflow
 
@@ -44,16 +43,15 @@ comparison.
 - Preserve VC7 x86 ABI, field offsets and widths, packing, bitfield behavior,
   class size, construction order, translation-unit ownership, and target-shaped
   expressions where code generation depends on them.
-- Use `sizeof`/`offsetof` assertions for relied-on layout facts. An assertion
-  attests layout, not the English member name.
-- Prefer the real aggregate owner. Never invent a second global for an address
-  inside an existing object.
+- Use `sizeof`/`offsetof` assertions for relied-on layout facts and record the
+  evidence for member names separately.
+- Address fields through their real aggregate owner.
 - Keep serialization, instruction streams, tagged unions, and platform ABI
   glue byte-oriented where byte addressing is their true representation.
-- Do not rename from a numeric offset, one screenshot, one decompiler label, or
-  an adjacent game's source alone.
-- Do not add aliases, overlays, accessors, or casts merely to make the source
-  look typed; they must express an evidenced representation or ownership fact.
+- Choose names from TH08 producers, consumers, and transitions. Offsets,
+  screenshots, decompiler labels, and adjacent-game names are leads.
+- Use aliases, overlays, accessors, or casts when they express an evidenced
+  representation or ownership fact.
 
 ## Two-oracle acceptance
 
@@ -61,12 +59,11 @@ comparison.
 | --- | --- | --- |
 | Private rename/expression in one object | Build the smallest object and replay every accepted unit in it. | Compile/link the configured modern target. |
 | Shared header, class layout, inline, PCH, or owner | Replay affected objects, then cold-run `verify-exact-units.py --all`. | Clean compile/link; run fixed-layout/runtime checks when ownership or behavior is involved. |
-| Behavior, initialization, persistence, callback, or rendering interpretation | Strictly compare every touched function; a byte regression is not a semantic improvement. | Run the smallest relevant state-transition smoke. |
+| Behavior, initialization, persistence, callback, or rendering interpretation | Strictly compare every touched function and preserve accepted bytes. | Run the smallest relevant state-transition smoke. |
 
-VC7 exactness proves configured code/data identity, not the chosen English
-name. Portable success proves usability on a second implementation, not the
-original semantics. Acceptance needs both applicable oracles plus the evidence
-record.
+VC7 comparison establishes configured code/data identity; portable checks
+establish build and runtime behavior on another platform. The evidence record
+supports the names and semantic interpretation. Acceptance combines all three.
 
 ## Batch record
 
@@ -81,7 +78,7 @@ Inference: chosen names/types and confidence; unknowns retained
 Layout: sizeof/offsetof assertions added or already present
 VC7 oracle: focused and required aggregate commands/results
 Portable oracle: build/layout/runtime command and result, or not applicable
-Result: bounded change; no repository-wide claim
+Result: accepted change and its scope
 ```
 
 Promote a compiler pattern to `VC7_ZUN_PATTERNS.md` or `BUILD_MATCHING.md` only

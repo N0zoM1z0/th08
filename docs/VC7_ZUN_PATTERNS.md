@@ -1,6 +1,9 @@
 # Verified VC7 / ZUN source-shape patterns
 
-These notes collect source-shape patterns verified by `compare-function.py` against the hash-checked TH08 1.00d target. Treat them as starting points for probes, not as proof for a new function until the comparator is exact.
+These notes collect VC7 source patterns from comparisons against the verified
+TH08 1.00d target. Start with an example that resembles the target instructions,
+then verify the full function with `compare-function.py`. The
+[build guide](BUILD_MATCHING.md#object-comparison) explains that procedure.
 
 ## Direct boolean return can create the target result local
 
@@ -164,7 +167,12 @@ Verified with `ItemManager::ConvertAllPowerItemsToTimeOrbs`: when a target walks
 Some structs declare narrow flag fields for convenience, but target code may load and store the containing dword.
 For item sprite visibility updates, `AnmVmBase::flags` must be updated through raw `u32` access at `AnmVm+0x1F8`; using the typed `u16 flags` field emits `movzx`/word stores and is 2 bytes larger per update.
 
-When target code uses an absolute field inside a statically allocated manager object, model it as a narrow alias global first rather than forcing the public manager pointer path. `ItemManager::OnDraw` reads the screen-shake `Float2` at `0x164D2DC` directly, so `g_ItemAnmManagerScreenShakeOffset` is a field alias used for exact codegen.
+Early `ItemManager::OnDraw` recovery modeled the screen-shake `Float2` at
+`0x164D2DC` as `g_ItemAnmManagerScreenShakeOffset` to reproduce a direct absolute
+load. For subsequent work, establish the aggregate owner and field addend,
+then verify the expression in both the comparison object and production link.
+See the [owner audit](OWNER_AUDIT.md) for the consequences of allocating an
+interior field as separate storage.
 
 
 ### Inline COMDAT owner choice
@@ -202,7 +210,7 @@ When a structure begins with the field required by an API, VC7 may pass the stru
 - **Constructor member grouping matters**: do not convert consecutive individually constructed members into an array unless the target uses the vector-constructor iterator. Verified in `Background::Background`: the first three `AnmVm` members are separate constructor calls, while the `anmVmArray[0x20]`, `timers63f4[5]`, and `vectors6480[0x20]` members use vector-constructor iterator calls. `Spellcard::Spellcard` is a stronger example: two `ZunTimer` members followed by fourteen consecutive `AnmVm` objects are still fourteen distinct members because the target emits fourteen direct `AnmVm` constructor calls; declaring `AnmVm[14]` changes the ABI/code shape to the vector-constructor iterator.
 - For target callback fields that are invoked as `mov ecx, owner; call [ecx+field]`, type the field as a no-argument function pointer and call `owner->callback()`; adding an explicit owner argument forces an extra register move.
 - Target draw helper wrappers may be semantically void even if an earlier guess used `ZunResult`; match the target epilogue/register behavior, then update all relocation manifests to the new decorated symbol.
-- Thin AnmManager draw wrappers can stay exact by calling unrecovered transform helpers as stubs; keep the gate sequence as `IsVisible`, raw dword flag bit 1, raw byte +0x1F3, then the transform helper and `DrawInner(vm, 0)`.
+- Thin AnmManager draw wrappers preserve the gate sequence `IsVisible`, raw dword flag bit 1, raw byte +0x1F3, then the transform helper and `DrawInner(vm, 0)`. Recover and validate the callee behavior separately from the wrapper's call sequence.
 - Candidate scans can be polluted by stale probe objects. Rebuild the selected
   Ninja object from current source before running `scripts/analysis/propose-exact-units.py`.
 - For local D3DXVECTOR3 temporaries copied into fields, prefer direct temporary assignment (`dst = D3DXVECTOR3(...)`) over a named local; VC7 then copies from the constructor return pointer in `eax`, matching ZUN camera/background setup code.
@@ -261,6 +269,14 @@ When a structure begins with the field required by an API, VC7 may pass the stru
 - Fastcall Player SHT callbacks with two explicit locals can require `#pragma var_order(index, i, this, slot)` to keep the decoded SHT index at `-4`, loop index at `-8`, hidden `this` at `-0xC`, and slot at `-0x10`; verified by `Player::SpawnPersistentShot`.
 - For homing-angle shot callbacks, write `AddNormalizeAngle(VectorAngle(y_delta, x_delta), descriptor_angle + ZUN_PI / 2.0f)` as one expression so VC7 preserves the pending second `AddNormalizeAngle` argument across the `VectorAngle` call; verified by `Player::SpawnShotAimedAtTrackedPoint`.
 
+
+## RunEcl convergence examples
+
+These examples record intermediate source shapes and span measurements from
+the completed RunEcl investigation. Later stack and ownership changes sometimes
+superseded an earlier improvement. Use the
+[formal final result](RUNECL_FUNCTION_EXACT_NOTES.md#formal-relocation-manifest)
+and [current source map](SOURCE_MAP.md#reading-eclrun) for the accepted form.
 
 - RunEcl high-opcode helpers that target a known singleton should call the concrete singleton directly.  The earlier service overlays were retired once `Gui`, `EffectManager`, and `Spellcard` exposed the exact methods.  Verified in `EclManager::RunEcl` opcodes 140, 158, and 164.
 - For RunEcl boolean writes to the current ECL context, an explicit `if/else` can preserve target branch/store structure where a ternary collapses the assignment into a larger expression.  Verified by opcode 120's object-active test writing `currentContext + 0x60`.
