@@ -4,7 +4,7 @@
 
 ## Production ownership and order
 
-The class name is not the production-object contract. Current exact owners are:
+GameManager methods are emitted by several production objects:
 
 - early setters `SetLives`, `UpdateAntiTamper`, `SetBombCount`, and `SetPower`:
   `AsciiManager.obj`;
@@ -17,6 +17,7 @@ The class name is not the production-object contract. Current exact owners are:
   `AddLives` between the constructor and arcade initializer: `GameManager.obj`.
 
 These owners are backed by mapped target neighborhoods, production callers,
-and strict replay, not just byte-identical duplicate sections. See the combined
-case study in `KNOWLEDGE_BASE.md` before changing header visibility, PCH include
-order, or an owner in `match-units.toml`.
+and strict replay. See the combined
+case study in [whole-image lessons](WHOLE_IMAGE_RECONSTRUCTION.md#gamemanager-ownership-case)
+before changing header visibility, PCH include order, or an owner in
+`match-units.toml`.

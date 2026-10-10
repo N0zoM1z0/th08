@@ -1,9 +1,9 @@
 # Reconstruction handoff archive
 
-This is the preserved pre-2026-09-19 handoff chronology. Statements about
-"current" branches, artifacts, and next steps below are historical snapshots,
-not live project state. Use `RE_HANDOFF.md` for the replaceable current handoff
-and the repository ledgers for live counts.
+This archive preserves handoffs before 2026-09-19. Branches, artifacts, counts,
+and next steps below describe those checkpoints. For current work, use
+[RE_HANDOFF.md](RE_HANDOFF.md), the live ledgers, and the
+[documentation index](README.md).
 
 ## Current reconstruction status
 

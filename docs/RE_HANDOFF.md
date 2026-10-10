@@ -1,8 +1,7 @@
 # Current reconstruction handoff
 
-This file is deliberately short and replaceable. Historical checkpoints are
-preserved in [RE_HANDOFF_HISTORY.md](RE_HANDOFF_HISTORY.md); live counts come
-from the ledgers rather than either prose file.
+This page records the current phase and next task. Earlier checkpoints are in
+[RE_HANDOFF_HISTORY.md](RE_HANDOFF_HISTORY.md); the ledgers supply live counts.
 
 ## Current status
 
@@ -23,12 +22,29 @@ The native Windows i386 prerequisite is complete and merged. Its clean VC7
 bugfix build was playtested through Final with normal score/graze behavior,
 dialogue/background rendering, Stage 4 Reimu rendering, spell effects, and
 replay save. The exact-facing native `normal` build and playable `bugfix` build
-remain separate by design. See `WINDOWS_I386_RUNTIME.md`, `OWNER_AUDIT.md`, and
-`RUNTIME_ISSUES.md` for the reproducible evidence.
+serve comparison and runtime testing respectively. See the
+[runtime procedure](WINDOWS_I386_RUNTIME.md), [owner audit](OWNER_AUDIT.md),
+and [issue ledger](RUNTIME_ISSUES.md) for evidence.
 
-Portable 64-bit and Web follow-up work is maintained on their corresponding
-branches/repositories; it does not replace the native VC7 prerequisite or the
-strict target comparison.
+Native 64-bit work is on `port/portable-64bit`; Web work is in `th08-web`.
+Each port has its own build and runtime validation alongside the VC7 path.
+
+## Documentation batch for local review
+
+The `docs/human-agent-reading-paths` branch implements the documentation scope
+of [issue #24](https://github.com/N0zoM1z0/th08/issues/24). The homepage retains
+its AI agent workflow and explains exact reconstruction, reimplementation,
+and ports. [docs/README.md](README.md) provides human and agent
+reading routes; [PROJECT_GUIDE.md](PROJECT_GUIDE.md) explains runtime concepts
+and terminology. Source/semantic indexes link directly to files and evidence,
+Linux instructions identify their branch/product scope, and whole-image case
+studies have moved from the knowledge map to
+[WHOLE_IMAGE_RECONSTRUCTION.md](WHOLE_IMAGE_RECONSTRUCTION.md). Active guides
+use direct, concise wording; experimental records retain their evidence and
+checkpoint scope. The homepage also invites bug reports across gameplay routes.
+
+This is a documentation-only batch. The reconstruction results below describe
+the earlier checkpoint.
 
 ## Completed maintainer-navigation batch
 
@@ -51,7 +67,10 @@ changing target behavior:
 
 ## Validation
 
-Focused results already established in this batch:
+The following reconstruction results were established in the 2026-09-19
+maintainer-navigation batch.
+
+Focused results from that checkpoint:
 
 - `EclManager::RunEcl @ 0x004184B0`: exact, 26,638 authored bytes and 27,398
   compared bytes;
@@ -63,12 +82,23 @@ The shared-header gate was run from a cold state with one build job and passed
 target compiled and linked with one job; `verify-modern-linux.sh` confirmed
 ELF32/ET_EXEC/i386 and every fixed target-owned layout symbol. The normal VC7
 production image linked successfully. `python3 scripts/ci.py`, documentation
-link validation, and `git diff --check` all pass.
+link validation, and `git diff --check` passed.
+
+### Documentation validation
+
+The local documentation batch passed target identity verification,
+`python3 scripts/ci.py`, local file/heading link checks, and `git diff --check`.
+Existing section headings remain available, and the extracted whole-image
+cases retain their recorded evidence. Source, configuration, and ledgers are
+unchanged.
 
 ## Next bounded work
 
-With this documentation/readability batch complete, select one evidence-backed
-family at a time. The current ANM queue intentionally leaves opcodes 25, 31,
-and 88 neutral until their complete TH08 consumer sets justify a shared-layout
-rename. Whole-image/library work remains independent and should resume only for
-a bounded link dependency.
+Review the documentation branch locally before publication. Start at
+[docs/README.md](README.md), follow a human route and the agent session route,
+and inspect the homepage's retained workflow section.
+
+For later reconstruction work, select one evidence-backed family at a time.
+The ANM queue keeps opcodes 25, 31, and 88 neutral until their
+complete TH08 consumer sets justify a shared-layout rename. Whole-image/library
+work remains independent and should resume only for a bounded link dependency.

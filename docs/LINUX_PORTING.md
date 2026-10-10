@@ -1,10 +1,18 @@
 # Native Linux playable reconstruction
 
+Scope: the **Linux i386 source build on `main`**. For release installation,
+start with [PLAY_LINUX.md](PLAY_LINUX.md). The native x86_64/AArch64 source
+product is developed on [a separate branch](https://github.com/N0zoM1z0/th08/blob/port/portable-64bit/docs/PORTABLE_64BIT.md).
+
 This document records the operational path and the engineering lessons from
 bringing the reconstructed TH08 sources up as a native Linux executable. The
-Linux product is separate from the VC7 exact-comparison build: it reuses the
-authored game sources, but its platform compatibility code and modern compiler
-output do not make a binary-exact claim.
+Linux product reuses the authored game source with platform compatibility code
+and a modern compiler. VC7 builds provide the separate exact-comparison path.
+
+Read [one-command setup](#one-command-setup-and-play) to build this product.
+The later bring-up observations describe their recorded test environments and
+failures; use the [player guide's current limitations](PLAY_LINUX.md#current-limitations)
+for release-facing guidance.
 
 ## One-command setup and play
 
@@ -24,8 +32,8 @@ On Debian or Ubuntu, this command:
 4. configures and incrementally builds `build/modern-linux/th08-modern`;
 5. runs the native ELF with the selected directory as `--data-dir`.
 
-The script uses `sudo` only for missing system packages. It never embeds,
-copies, moves, or links the original archives. Once dependencies are present,
+The script uses `sudo` for missing system packages and reads game data from the
+selected directory. Once dependencies are present,
 the shorter normal entry point is:
 
 ```bash
@@ -79,8 +87,8 @@ bind mount.
 
 The archive contains `th08-modern`, a sibling-aware `run-th08.sh`, the
 project-owned `th08-modern.png` application icon, focused runtime instructions,
-and these porting notes. It intentionally contains no original game executable
-or data. After installing the documented i386 runtime libraries, an artifact
+and these porting notes. Players supply the original game data. After
+installing the documented i386 runtime libraries, an artifact
 user only needs:
 
 ```bash
@@ -108,8 +116,8 @@ TH08_LINUX_BINARY=build/modern-linux-container/th08-modern \
   scripts/run-modern-linux.sh "/path/to/the/original/TH08 directory"
 ```
 
-The container is never the runtime. The resulting ELF still executes on the
-host and needs 32-bit runtime libraries and a real GUI/audio session.
+The resulting ELF executes directly on the host with 32-bit runtime libraries
+and a GUI/audio session.
 
 Useful development overrides are:
 
@@ -136,9 +144,8 @@ under `src/modern/linux/` and selected only by the independent CMake product:
 - a non-PIE i386 ELF plus `th08-layout.ld` preserves target-owned data
   addresses that reconstructed source still references directly.
 
-This separation matters. A portable backend fix must not be expressed as an
-`#ifdef` inside an already reconstructed gameplay function when it can be
-implemented at the platform API or link boundary.
+Implement backend fixes at the platform API or link boundary where possible,
+so the recovered gameplay source stays shared with VC7 builds.
 
 ## Lessons from the reconstruction
 
@@ -174,7 +181,6 @@ tables and string data needed by authored code, while the linker reserves the
 target data arena as `NOLOAD` so it does not inflate the executable.
 
 Keep this initialization at the port boundary and document its provenance.
-Do not replace it with gameplay defaults scattered through authored source.
 
 ### Do not compensate for a wrong target callee in the renderer
 
@@ -268,14 +274,14 @@ The downloadable portable package was also user-tested successfully in a Kali
 Linux x86-64 GUI virtual machine using native filesystem data. That VM had low
 memory and no 3D acceleration, making initial software-rendered calibration
 unusually slow, but the game started and ran. A physical Linux desktop with
-hardware OpenGL remains useful final release coverage rather than a prerequisite
-for calling the existing WSLg and Kali paths validated.
+hardware OpenGL would extend the recorded WSLg and Kali coverage.
 
 ## Current limitations
 
 - MIDI output is a compatibility stub; normal WAV-mode gameplay is the
   validated audio path.
-- Controller mapping is not yet a compatibility target; keyboard input is.
-- The current product remains i386 and is not yet a native 64-bit port.
+- Keyboard input is validated; controller mapping remains a follow-up.
+- This branch's source build uses i386. Native 64-bit work is on
+  `port/portable-64bit`.
 - Windows and macOS remain in progress; neither currently has a release-ready
   native package.

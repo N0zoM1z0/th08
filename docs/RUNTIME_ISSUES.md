@@ -1,9 +1,8 @@
 # Native Windows runtime issue ledger
 
 This ledger tracks whole-program failures in the VC7-built Windows i386
-reconstruction separately from function exactness and from modern-port
-behavior. A successful link or accepted object comparison does not close a
-runtime issue.
+reconstruction. Closing an issue requires repeating the repaired native path.
+Function exactness and modern-port behavior have their own validation records.
 
 Status meanings:
 
@@ -237,15 +236,13 @@ identified the source condition:
 4. the table had no next newline, so `strchr` returned null, `+1` became `0x1`,
    and the next `strncmp` faulted.
 
-This does not justify altering the exact-facing implementation or pretending
-that the reconstruction has the retail checksum. Runtime deployment uses the
-repository's native VC7 `bugfix` mode, whose existing evidence-backed branch
-accepts a matching `0100d` version. The normal mode remains the comparator/link
-lane; the bugfix mode remains native prerequisite evidence, not port evidence.
+Runtime deployment uses the native VC7 `bugfix` mode, whose existing branch
+accepts a matching `0100d` version. Keep the target's size/checksum logic in
+`normal` for comparison and link validation.
 
 ## Completed native checkpoint
 
-The current source checkpoint has passed focused
+The 2026-09-10 source checkpoint passed focused
 `Player::AddedCallback @ 0x0044D650` replay (**1,537 / 1,537 exact**), the
 linked runtime owner/call verifier, and a single-job cold rebuild/replay of all
 75 configured objects (**1,106 / 1,106 exact**). The fresh normal PE32 i386 GUI
