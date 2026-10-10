@@ -22,9 +22,9 @@ TARGET_SHA = "330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924"
 def observer_config(candidate, map_path):
     if candidate is None:
         return dict(gameManager=0x0160F508, player=0x017D5EF8, rng=0x0164D520, input=0x0164D52C,
-                    replayManager=0x018B8A28, titleScreen=0x018BDE08,
+                    replayManager=0x018B8A28, titleScreen=0x018BDE08, spellcard=0x004EA670,
                     stageStartBoundary=0x00439BC7, deleteReplay=0x00453080,
-                    itemManager=0x01653648,
+                    itemManager=0x01653648, spawnItem=0x004400A0,
                     bulletManager=0x00F54E90,
                     effectManager=0x004ECE60, anmExecute=0x0045EA00,
                     releaseEffects=0x0042A820,
@@ -58,9 +58,9 @@ def observer_config(candidate, map_path):
     attest = call - 5
     frame_control = address("ControlPlaybackFrameAdvance@ReplayManager")
     return dict(gameManager=address("g_GameManager"), player=address("g_Player"), rng=address("g_Rng"),
-                replayManager=address("g_ReplayManager"), titleScreen=address("g_TitleScreen"),
+                replayManager=address("g_ReplayManager"), titleScreen=address("g_TitleScreen"), spellcard=address("g_Spellcard"),
                 stageStartBoundary=address("OnUpdate@GameManager"), deleteReplay=address("DeleteReplayManager@ReplayManager"),
-                input=address("g_GuiMessageInputCurrent"), itemManager=address("g_ItemManager"),
+                input=address("g_GuiMessageInputCurrent"), itemManager=address("g_ItemManager"), spawnItem=address("SpawnItem@ItemManager"),
                 bulletManager=address("g_BulletManager"),
                 effectManager=address("g_EffectManager"), anmExecute=address("ExecuteScript@AnmManager"),
                 releaseEffects=address("ReleaseAttachedEffects@Enemy"),
@@ -134,10 +134,10 @@ def main():
         parser.error("--reference-trace requires --replay")
     if replay and args.watch_effect:
         parser.error("Use an external diagnostic window to record attached-effect release events")
-    if replay and args.detail_start and (args.detail_stage is None or args.observer_backend != "gdb"):
-        parser.error("External diagnostic windows require --detail-stage and the GDB backend")
-    if args.watch_score and (not replay or not args.detail_start or args.observer_backend != "gdb"):
-        parser.error("--watch-score requires an external GDB diagnostic window")
+    if replay and args.detail_start and args.detail_stage is None:
+        parser.error("External diagnostic windows require --detail-stage")
+    if args.watch_score and (not replay or not args.detail_start):
+        parser.error("--watch-score requires an external diagnostic window")
     if args.start_stage is not None and not replay:
         parser.error("--start-stage requires --replay")
     if replay:

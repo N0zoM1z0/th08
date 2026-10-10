@@ -55,18 +55,19 @@ class Inferior:
 
 
 BREAKPOINTS = []
+REGISTERS = None
 
 
 class Breakpoint:
-    def __init__(self, location, kind):
-        self.address = int(location[1:], 16)
+    def __init__(self, location, kind, wp_class=None):
+        self.address = int(location.rsplit("0x", 1)[-1], 16)
+        self.watch = wp_class is not None
         self.enabled = True
-        if len(BREAKPOINTS) == 4:
-            raise ValueError("x86 provides four hardware breakpoint slots")
         BREAKPOINTS.append(self)
 
 
 def main():
+    global REGISTERS
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--wine", required=True)
     parser.add_argument("--executable", type=Path, required=True)
@@ -133,6 +134,12 @@ def main():
                     shim = types.ModuleType("gdb")
                     shim.Breakpoint = Breakpoint
                     shim.BP_HARDWARE_BREAKPOINT = 1
+                    shim.BP_WATCHPOINT = 2
+                    shim.WP_WRITE = 1
+                    shim.MemoryError = OSError
+                    shim.parse_and_eval = lambda expression: getattr(REGISTERS, {
+                        "$esp": "rsp", "$ebp": "rbp", "$ecx": "rcx", "$eip": "rip"
+                    }[expression]) & 0xffffffff
                     shim.selected_inferior = lambda: inferior
                     sys.modules["gdb"] = shim
                     spec = importlib.util.spec_from_file_location("observer", Path(__file__).with_name("replay-external-observer.py"))
@@ -145,10 +152,11 @@ def main():
                     raise TimeoutError("Wine did not map the attested target instructions")
             elif stopped_signal == signal.SIGTRAP and not event:
                 debug_status = ptrace(3, child.pid, 848 + 6 * 8)  # PEEKUSER DR6
-                registers = Registers()
+                registers = REGISTERS = Registers()
                 ptrace(12, child.pid, 0, ctypes.addressof(registers))
-                hits = [bp for index, bp in enumerate(BREAKPOINTS)
-                        if bp.enabled and debug_status & (1 << index) and registers.rip == bp.address]
+                hits = [bp for index, bp in enumerate(active)
+                        if bp.enabled and debug_status & (1 << index)
+                        and (bp.watch or registers.rip == bp.address)]
                 if hits:
                     for breakpoint in hits:
                         breakpoint.stop()
@@ -159,18 +167,23 @@ def main():
                         ptrace(13, child.pid, 0, ctypes.addressof(registers))
                     stopped_signal = 0
             if installed:
-                configuration = tuple(bp.address if bp.enabled else 0 for bp in BREAKPOINTS)
+                active = [bp for bp in BREAKPOINTS if bp.enabled]
+                if len(active) > 4:
+                    raise ValueError("x86 provides four active hardware breakpoint slots")
+                configuration = tuple((bp.address, bp.watch) for bp in active)
                 if configuration != last_registers:
-                    for index, address in enumerate(configuration):
-                        ptrace(6, child.pid, 848 + index * 8, address)
-                    control = sum(1 << (index * 2) for index, address in enumerate(configuration) if address)
+                    for index in range(4):
+                        ptrace(6, child.pid, 848 + index * 8,
+                               configuration[index][0] if index < len(configuration) else 0)
+                    control = sum((1 << (index * 2)) | ((0xd << (16 + index * 4)) if watch else 0)
+                                  for index, (address, watch) in enumerate(configuration))
                     ptrace(6, child.pid, 848 + 7 * 8, control)
                     last_registers = configuration
                 complete = output / "complete.json"
                 if complete.exists():
                     report = json.loads(complete.read_text())
                     print(json.dumps(report), flush=True)
-                    return 0 if report.get("ended") and not report.get("errors") else 1
+                    return 0 if (report.get("ended") or report.get("diagnosticComplete")) and not report.get("errors") else 1
                 now = time.monotonic()
                 if now - last_progress >= 10:
                     print(f"Captured {observer_module.observer.count} calculation frames", flush=True)

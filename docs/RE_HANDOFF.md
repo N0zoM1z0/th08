@@ -71,14 +71,28 @@ The first complete retail fixture (`easy-0-b`, `th8_ud2cdc.rpy`) records
 `g_SpellcardCalcChain` allocation that failed to remove the previous stage's
 spellcard callback. `CutChain @ 0x004180F0` now reads
 `g_Spellcard + 0x263C` (`lifetimeObject`); all 29 SpellCard units and the cold
-replay of all 1,106 accepted authored units pass. The repaired candidate agrees
-through calculation 37,016, including both complete first stages. At Stage 3
-frame 14,350, score alone differs by 156. The next task is a score-write
-diagnostic window for this frame, then the remaining 108-case matrix.
-See [RT-011](RUNTIME_ISSUES.md#rt-011). No full-suite pass is recorded yet.
+replay of all 1,106 accepted authored units pass. See
+[RT-011](RUNTIME_ISSUES.md#rt-011).
+
+The next divergence, at Stage 3 frame 14,350, came from an empty `fsincos`
+runtime helper. It left laser-cancel item positions uninitialized. A C++
+sin/cos implementation preserves all 37 accepted BulletManager comparisons
+and restores complete playback parity for `easy-0-b`: all 25 fields over
+107,296 calculations, six recorded end scores, and a natural replay exit.
+The helper remains an unaccepted library entry: its runtime implementation is
+44 bytes, while target `0x00433880` is 33 bytes; original archive provenance
+is unresolved. See [RT-012](RUNTIME_ISSUES.md#rt-012).
+
+The 108-case batch is running under `build/replay-suite/matrix-v1/`, using
+the archived playable executable/map in `candidate-sincos/`. The executable
+SHA-256 is `64f6c5e0295701985b9380fb43872bd02003e0004366e3bef4e1b7b0a509c2f2`.
+Resume the same build/settings with the suite runner; `suite.json` supplies
+live results. The first case passes; the rest of the matrix remains in progress.
 
 Current evidence is in `build/replay-suite/ptrace-reference-v4/`,
-`chain-fix-candidate/`, and `chain-fix-exact.json`. Keep captures and VC7 builds
+`chain-fix-candidate/`, `chain-fix-exact.json`, and the score/item diagnostic
+windows. Both GDB and ptrace diagnostic prefixes agree for 37,016 frames.
+Keep captures and VC7 builds
 sequential. Preserve a tested executable/map under the suite before cold builds,
 which clear link outputs. Clean temporary artifacts and leave GitHub issues
 without comments. Web testing remains deferred.

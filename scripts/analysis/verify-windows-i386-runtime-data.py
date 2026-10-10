@@ -519,6 +519,18 @@ def verify_additional_runtime_callees(
                     )
 
 
+def verify_runtime_sincos(rebuild: PEImage, publics: dict[str, set[int]]) -> None:
+    """Require the C++ fallback to write both outputs through the CRT math cores."""
+    helper = exact_public_va(publics, "?fsincos@th08@@YIXPAM0M@Z")
+    body = read_va(rebuild, helper, 0x2C)
+    for offset, symbol in ((0xF, "__CIsin"), (0x1C, "__CIcos")):
+        expected = rel32_call(helper + offset, exact_public_va(publics, symbol))
+        if body[offset:offset + 5] != expected:
+            raise ValueError(f"runtime fsincos + {offset:#x} does not call {symbol}")
+    if body[0x14:0x19] != b"\x8b\x45\xfc\xd9\x18" or body[0x21:0x26] != b"\x8b\x4d\xf8\xd9\x19":
+        raise ValueError("runtime fsincos does not store both output values")
+
+
 def verify_player_shot_callback_tables(
     target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
 ) -> None:
@@ -693,6 +705,7 @@ def main() -> int:
         verify_additional_runtime_callees(target, rebuild, publics)
         verify_player_shot_callback_tables(target, rebuild, publics)
         verify_enemy_death_dispatch(target, rebuild, publics)
+        verify_runtime_sincos(rebuild, publics)
     except (OSError, UnicodeError, ValueError, struct.error) as exc:
         print(f"Windows i386 runtime-data verification failed: {exc}", file=sys.stderr)
         return 1
@@ -708,7 +721,8 @@ def main() -> int:
         "Gui::IsStageFinished; 12 additional repaired REL32 calls select their "
         "target-mapped callees; all 20 player-shot callback entries resolve "
         "through their target-owned tables; all 4 enemy death-mode switch "
-        "entries preserve their target-relative destinations"
+        "entries preserve their target-relative destinations; runtime sincos "
+        "calls both CRT cores and writes both outputs"
     )
     return 0
 

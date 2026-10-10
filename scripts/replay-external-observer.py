@@ -17,6 +17,7 @@ menu_log = (output / "menu.jsonl").open("w")
 events = (output / "rng-events.jsonl").open("w")
 releases = (output / "effect-events.jsonl").open("w")
 score_events = (output / "score-events.jsonl").open("w")
+item_events = (output / "item-events.jsonl").open("w")
 GM = settings["gameManager"]
 
 
@@ -26,6 +27,14 @@ def block(address, size):
 
 def read(address):
     return struct.unpack("<I", block(address, 4))[0]
+
+
+def snapshot():
+    return {name: block(settings[name], size).hex() for name, size in (
+        ("player", 0xe2b30), ("spellcard", 0x2644), ("bulletManager", 0x6ba578),
+        ("enemyManager", 0x9dcf10), ("itemManager", 0x17b094),
+        ("effectManager", 0x8b05c)
+    )}
 
 
 for address_key, bytes_key in (("attestAddress", "attestBytes"),
@@ -65,6 +74,7 @@ class Observer(gdb.Breakpoint):
         stream.close()
         menu_log.close()
         score_events.close()
+        item_events.close()
         if self.reference_stream:
             if not error and self.reference_stream.readline():
                 error = "Candidate ended before the retail trace"
@@ -164,13 +174,12 @@ class Observer(gdb.Breakpoint):
                 begin_observer.enabled = True
             if settings.get("detailStart") and stage == settings["detailStage"]:
                 if frame == settings["detailStart"] - 1:
-                    self.diagnostic_breakpoints = ([ScoreObserver()] if settings.get("watchScore")
+                    self.diagnostic_breakpoints = ([ScoreObserver(), ItemSpawnObserver()] if settings.get("watchScore")
                                                    else [RngObserver(), ReleaseObserver()])
                 if frame == settings["detailEnd"]:
                     with gzip.open(output / "window-state.json.gz", "wt") as state_stream:
-                        json.dump(dict(player=block(settings["player"], 0xe2b30).hex(),
-                                       effects=block(settings["effectManager"] + 0x1c, 654 * 0x360).hex()), state_stream)
-                    for handle in (stream, menu_log, events, releases, score_events):
+                        json.dump(snapshot(), state_stream)
+                    for handle in (stream, menu_log, events, releases, score_events, item_events):
                         handle.close()
                     (output / "complete.json").write_text(json.dumps(dict(rows=self.count, ended=False,
                         diagnosticComplete=True, stage=stage, frame=frame, errors=[])) + "\n")
@@ -212,10 +221,10 @@ class Observer(gdb.Breakpoint):
                     (output / "first-difference.json").write_text(json.dumps(difference, indent=2) + "\n")
                     # Preserve the relevant object state at the first differing frame.
                     # Raw pointers remain image-specific; compare positions/flags by slot.
-                    snapshot = dict(player=block(settings["player"], 0xe2b30).hex(),
-                                    globals=globals_data.hex(), gameManager=gm.hex(), rng=rng.hex())
+                    state = snapshot()
+                    state.update(globals=globals_data.hex(), gameManager=gm.hex(), rng=rng.hex())
                     with gzip.open(output / "first-difference-state.json.gz", "wt") as state_stream:
-                        json.dump(snapshot, state_stream)
+                        json.dump(state, state_stream)
                     raise RuntimeError("Replay diverged; see first-difference.json")
                 self.previous_rows = (self.previous_rows + [dict(zip(FIELDS, row))])[-2:]
             if self.count % 120 == 0:
@@ -304,6 +313,19 @@ class RngObserver(gdb.Breakpoint):
                 break
         events.write(json.dumps(dict(stage=read(GM + 0x3ddc4), frame=read(read(settings["replayManager"])),
                                      callers=callers, vm=vm_info)) + "\n")
+        return False
+
+
+class ItemSpawnObserver(gdb.Breakpoint):
+    def __init__(self):
+        super().__init__(f"*0x{settings['spawnItem']:08X}", gdb.BP_HARDWARE_BREAKPOINT)
+
+    def stop(self):
+        sp = int(gdb.parse_and_eval("$esp"))
+        caller, position, kind, state = struct.unpack("<4I", block(sp, 16))
+        item_events.write(json.dumps(dict(stage=read(GM + 0x3ddc4),
+            frame=read(read(settings["replayManager"])), caller=hex(caller),
+            kind=kind, state=state, position=struct.unpack("<3f", block(position, 12)))) + "\n")
         return False
 
 

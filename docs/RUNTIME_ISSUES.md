@@ -25,7 +25,36 @@ Status meanings:
 | RT-008 | closed | Score rose by about 6,000 points per second from the start of normal and Stage Practice runs, continued after a player hit, and graze counts increased too quickly. | Target `g_PlayerGaugeBounds @ 0x0164D300` is not standalone storage: it is exactly the six contiguous gauge limit/threshold fields at `g_GameManager @ 0x0160F508 + 0x3DDF8..0x3DE02`. The native linker split the source array from those fields, leaving the predicates' manager thresholds zero. Read-only process sampling proved the split; a 12-byte process-local field repair immediately stopped authoritative score growth at gauge zero. The production repair passes focused and cold exact replay plus final-link owner verification. The user repeated the score/graze path on the clean, unpatched native hash `cf32bd1f...6c6e26` and confirmed normal behavior, closing the issue. |
 | RT-009 | closed | The bundled Stage 5 demo diverged in score, then RNG, time orbs, and gauge after a deathbomb. | Fantasy Seal bomb/deathbomb used cosine for X and sine for Y; the target uses sine for X and cosine for Y. Four reversed relocation bindings hid the wrong callees. The repaired PlayerBomb object passes all 54 accepted units, and the 71-frame diagnostic window agrees for bomb state, collision regions, bullets, items, shots, and enemies. After the RT-010 repair, all 22 recorded fields agree over the complete 6,120-frame demo. |
 | RT-010 | closed | The same demo's RNG diverged at frame 5908, followed by score and time-orb differences. | Death mode 2 entered the boss cleanup block and released six spellcard orbits at frame 5549. The target switch enters after that block. Missing orbits freed six primary effect slots, allowing 60 extra RNG calls at frame 5908. The corrected case entry passes focused comparison and the cold replay of all accepted units. All 22 recorded fields now agree over the complete 6,120-frame native/retail demo. |
-| RT-011 | closed | A full main-run replay diverged after entering Stage 2, generating duplicate spell rewards. | `CutChain` selected standalone storage instead of `g_Spellcard.lifetimeObject`, leaving an old update callback registered. The field expression preserves target bytes and fixes the duplicated update. Both complete first stages now agree with retail; a later independent Stage 3 score difference remains under investigation. |
+| RT-011 | closed | A full main-run replay diverged after entering Stage 2, generating duplicate spell rewards. | `CutChain` selected standalone storage instead of `g_Spellcard.lifetimeObject`, leaving an old update callback registered. The field expression preserves target bytes and fixes the duplicated update. After the RT-012 repair, the complete six-stage route agrees with retail for all 25 recorded fields. |
+| RT-012 | closed | The same full-run replay lost 156 score units when Stage 3 lasers were cancelled. | The native `fsincos` helper was empty, leaving laser direction outputs uninitialized. A C++ sin/cos implementation restores the star positions and scoring. All 25 recorded fields now agree through the complete 107,296-calculation route. The helper's separate library exact status remains unchanged. |
+
+<a id="rt-012"></a>
+
+## Laser cancellation and the empty sincos helper
+
+After the callback repair, `easy-0-b` first differed at Stage 3 frame 14,350.
+Retail collected three point stars worth 52 score units each; the candidate
+missed those writes. Both called `SpawnItem` 353 times in the diagnostic window,
+including 66 laser origins and 264 positions along their beams. All 264 beam
+positions differed. The source `fsincos` definition was empty, leaving its two
+output variables uninitialized.
+
+Target `fsincos @ 0x00433880` is a 33-byte fastcall math helper. It takes the
+sine/cosine output pointers in ECX/EDX, reads the float angle from the stack,
+executes x87 `fsincos`, stores both outputs, and returns with four-byte cleanup.
+The runtime C++ implementation computes both outputs through CRT sin/cos;
+VC7 emits 44 bytes. The library inventory keeps this entry unaccepted while
+its original archive provenance remains unresolved.
+
+All 37 accepted BulletManager units retain exact comparisons. Normal and
+playable VC7 links pass the new check for both CRT calls and both output
+stores; the former empty implementation fails it. The Linux build, layout
+verification, and output smoke pass. The repaired playable image has SHA-256
+`64f6c5e0295701985b9380fb43872bd02003e0004366e3bef4e1b7b0a509c2f2`.
+Its muted full-route comparison passes all 25 fields over 107,296 calculations,
+with all six stage end scores matching the recording and a natural replay exit.
+Evidence is in `build/replay-suite/matrix-v1/easy-0-b/` and the score/item
+diagnostic directories. The remaining fixture matrix is in progress.
 
 <a id="rt-011"></a>
 
@@ -49,8 +78,9 @@ All 29 accepted SpellCard functions and all 1,106 accepted authored units pass
 their VC7 comparisons after a cold build. The Linux link and a callback
 register/cut smoke pass. The muted native replay now agrees with retail for
 37,016 calculations, including the complete first two stages. At Stage 3
-frame 14,350 it encounters a separate score difference of 156; the full replay
-and route matrix remain in progress. Raw evidence is under
+frame 14,350 it then exposed a separate score difference of 156, repaired in
+[RT-012](#rt-012). The full 107,296-calculation replay now passes; the remaining
+route matrix is in progress. Raw evidence is under
 `build/replay-suite/`, with fixture provenance in
 [replay-fixtures.json](../config/replay-fixtures.json).
 

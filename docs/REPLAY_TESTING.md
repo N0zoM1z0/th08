@@ -74,9 +74,12 @@ cases in the same batch. A timeout or incomplete stage records a failure.
 Rendering comparisons use rasterization and separate image evidence.
 
 To investigate an external replay, pass `--detail-stage`, `--detail-start`,
-and `--detail-end` to `capture-replay.py` with the GDB backend. The window
+and `--detail-end` to `capture-replay.py`. The window
 records RNG callers and attached-effect releases, then saves object state.
-Add `--watch-score` to collect score writes and their call stacks instead.
+Add `--watch-score` to collect score writes, their call stacks, and item spawns
+instead. Both GDB and ptrace support these windows; ptrace reallocates the four
+hardware slots as callbacks are enabled or disabled. Window and failure
+snapshots include player, spellcard, bullet, enemy, item, and effect objects.
 Diagnostic captures stop at the requested frame and remain incomplete;
 only playback through the game's replay exit can pass the parity gate.
 
