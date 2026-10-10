@@ -61,7 +61,12 @@
       ],
       "player": "AAA     ",
       "recordedBy": "dgart",
-      "submittedAt": "2021/11/14 13:19:32"
+      "submittedAt": "2021/11/14 13:19:32",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 107296,
+        "sha256": "da8a6a0de9a79263a2ad13a9351eb467c2d0c2961585aa474149cecb010bbf67"
+      }
     },
     {
       "id": "easy-1-b",
@@ -122,7 +127,12 @@
       ],
       "player": "LuYC25.6",
       "recordedBy": "LuYC",
-      "submittedAt": "2020/03/13 11:23:14"
+      "submittedAt": "2020/03/13 11:23:14",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 126803,
+        "sha256": "e0d221643d7215e6e79b6da96af7d47f61fcef90495c83b3705086625dcbfaf2"
+      }
     },
     {
       "id": "easy-2-b",
@@ -183,7 +193,12 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "submittedAt": "2018/10/11 22:10:32"
+      "submittedAt": "2018/10/11 22:10:32",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 98098,
+        "sha256": "80ba53f51c9edd14c15f32e6e8d48bfb7bf374f7a64f63140a8e57490449615d"
+      }
     },
     {
       "id": "easy-3-b",

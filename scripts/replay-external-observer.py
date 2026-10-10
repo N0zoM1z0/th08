@@ -7,7 +7,10 @@ import json
 import struct
 import subprocess
 import gzip
+import sys
 from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from replay_file import valid_input_tail
 
 output = Path.cwd().parent
 settings = json.loads((output / "observer.json").read_text())
@@ -89,8 +92,7 @@ class Observer(gdb.Breakpoint):
             if stage["index"] not in self.stages or key not in self.stage_frames:
                 continue
             remaining = stage["inputRecords"] - self.stage_frames[key]
-            expected_tail = 7 if stage["index"] == expected[-1] else 3
-            if remaining != expected_tail:
+            if not valid_input_tail(remaining, stage["index"] == expected[-1]):
                 errors.append(f"Stage {key} ended with {remaining} unconsumed input records")
             if self.end_scores.get(key) != stage["endScore"]:
                 errors.append(f"Stage {key} score differs from the original recording")

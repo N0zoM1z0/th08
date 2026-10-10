@@ -57,9 +57,12 @@ pacing and GDB available for profile validation and investigations.
 External traces use schema version 4. They record every calculation, including
 stage-clear calculations with frozen replay input. Both replay input and game
 frame counters must remain continuous. Each stage must reach its recorded end
-score and consume its input stream through the recording's trailer: three
-records for an intermediate stage, seven for the final recorded stage.
-Completion comes from the game's replay exit.
+score and consume its input stream through the recording's trailer. Complete
+retail captures leave two or three records at an intermediate stage and six
+or seven at the final stage. The recording callbacks append stage-clear and
+stop-recording inputs; playback establishes the exact frame count for each
+fixture. Completion comes from the game's replay exit. The comparison requires
+both traces to contain the same complete sequence of calculations.
 
 The 25 compared fields include the demo trace's gameplay state, plus point
 value, character, shot type, and difficulty. RNG generations are measured from
@@ -150,6 +153,66 @@ A passing result establishes equality for these fields over the selected
 fixtures. Rendering, audio output, and gameplay routes beyond those fixtures
 need their own evidence. Function-level exact comparisons remain a separate
 gate.
+
+## Reproduce published results
+
+The fixture manifest's `retailTrace` entries are the published expectations.
+Each records the complete calculation count and a SHA-256 of the canonical
+retail trace. A fixture without that entry is planned coverage. The suite
+checks published expectations against both captures, so equality between two
+new traces alone does not reproduce an earlier result.
+
+After preparing the VC7 build and game data as above, run:
+
+```bash
+python3 scripts/test-replay-suite.py \
+  --claims-only \
+  --game-data build/modern-runtime/th08.dat \
+  --bgm-data build/modern-runtime/thbgm.dat \
+  --output-dir build/replay-published-check \
+  --wine-prefix build/replay-published-wine \
+  --observer-backend ptrace --clock-rate 128 --no-rasterization
+```
+
+This downloads the pinned recordings and captures both executables locally.
+It needs no private reference trace. Omit `--claims-only` to run the full
+108-case corpus. Use `--cases` to reproduce one case. A nonzero exit status
+means a difference, an invalid capture, or a failed published expectation;
+inspect `suite.json` and the case's logs. Resuming revalidates retained traces.
+
+The trace fingerprint hashes the schema as compact JSON with sorted keys,
+followed by a newline and every row serialized as little-endian unsigned
+32-bit values in schema field order. JSON indentation and gzip compression
+do not affect it. `comparison.json` prints both fingerprints.
+
+The first full-route checkpoint used Ubuntu 24.04 on WSL2 x86-64, Wine 9.0,
+Mesa llvmpipe 25.2.8, Python 3.13.5, and Xvfb 21.1.12. Compiler and library
+pins are in the [native build procedure](WINDOWS_I386_RUNTIME.md).
+The runtime source checkpoint is `e9bd425a`; build the `bugfix` profile from
+this branch or a later revision containing its repairs.
+Capture metadata records executable, map, data and configuration hashes,
+source revision, observer backend, clock rate, rasterization, and host/Wine
+versions. Preserve `suite.json`, comparison files, metadata, completion files,
+and compressed traces when sharing an independent result. Delete the owned
+Wine prefix after the batch; game assets and replay files stay local.
+
+To review a completed batch and publish additional expectations:
+
+```bash
+python3 scripts/analysis/record-replay-expectations.py \
+  --suite build/replay-suite-check
+# Add --write after reviewing the verified cases.
+```
+
+This rechecks retained traces, fixture identities, the canonical reference,
+candidate executable and map, and the recorded calculation counts. It rejects
+changes to existing expectations. Only the acceptance hashes and counts enter
+the manifest; generated reports and recordings remain under `build/`.
+
+The checkpoint currently publishes three complete Easy Final B cases: Border
+Team (107,296 calculations, Stage 4B), Magic Team (126,803 calculations,
+Stage 4A), and Scarlet Team (98,098 calculations, Stage 4A). All 25 fields
+agree over 332,197 calculations. The remaining corpus is under test.
 
 ## Native checkpoint
 

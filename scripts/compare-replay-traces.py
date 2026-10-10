@@ -4,7 +4,29 @@ import argparse
 import json
 import struct
 import gzip
+import hashlib
 from pathlib import Path
+from replay_file import valid_input_tail
+
+
+def trace_sha256(metadata, rows):
+    """Hash the schema and little-endian uint32 rows, independent of JSON spacing."""
+    digest = hashlib.sha256()
+    digest.update(json.dumps(metadata["schema"], sort_keys=True, separators=(",", ":")).encode() + b"\n")
+    pack = struct.Struct("<" + "I" * len(metadata["schema"]["fields"])).pack
+    for row in rows:
+        digest.update(pack(*row))
+    return digest.hexdigest()
+
+
+def verify_expectation(report, fixture):
+    expected = fixture.get("retailTrace")
+    if expected is None:
+        return
+    if report["comparedFrames"] != expected["calculationFrames"]:
+        raise ValueError("Calculation count differs from the published retail expectation")
+    if any(report.get(field) != expected["sha256"] for field in ("referenceTraceSha256", "candidateTraceSha256")):
+        raise ValueError("Trace differs from the published retail expectation")
 
 
 def load(directory):
@@ -55,8 +77,7 @@ def load(directory):
             captured = [row for row in rows if row[1] == stage["index"]]
             if complete["stageFrames"].get(str(stage["index"])) != captured[-1][2]:
                 raise ValueError(f"Stage completion frame differs from trace: {directory}")
-            expected_tail = 7 if stage["index"] == expected[-1] else 3
-            if stage["inputRecords"] - captured[-1][2] != expected_tail:
+            if not valid_input_tail(stage["inputRecords"] - captured[-1][2], stage["index"] == expected[-1]):
                 raise ValueError(f"Stage ended before consuming its recorded inputs: {directory}")
             if captured[-1][4] != stage["endScore"] or complete["endScores"].get(str(stage["index"])) != stage["endScore"]:
                 raise ValueError(f"Stage end score differs from the original recording: {directory}")
@@ -121,6 +142,7 @@ def compare(reference, candidate, allow_pacing_difference=False):
             counts[field] += 1
     return dict(result="equal" if first is None and len(ref) == len(got) else "different",
                 comparedFrames=min(len(ref), len(got)), referenceFrames=len(ref), candidateFrames=len(got),
+                referenceTraceSha256=trace_sha256(ref_meta, ref), candidateTraceSha256=trace_sha256(got_meta, got),
                 firstDifference=first, differingFramesByField=counts,
                 floatComparison="exact IEEE-754 bits; no tolerance or ignored fields")
 

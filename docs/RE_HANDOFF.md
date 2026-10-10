@@ -87,7 +87,18 @@ The 108-case batch is running under `build/replay-suite/matrix-v1/`, using
 the archived playable executable/map in `candidate-sincos/`. The executable
 SHA-256 is `64f6c5e0295701985b9380fb43872bd02003e0004366e3bef4e1b7b0a509c2f2`.
 Resume the same build/settings with the suite runner; `suite.json` supplies
-live results. The first case passes; the rest of the matrix remains in progress.
+live results. Three Easy Final B cases pass: Border, Magic, and Scarlet Team,
+with all 25 fields equal over 332,197 calculations. The rest of the matrix
+remains in progress. The manifest records these cases' complete retail trace
+fingerprints; `--claims-only` reproduces published expectations with fresh
+captures. The expectation-recording tool revalidates retained evidence before
+adding a case. See [REPLAY_TESTING.md](REPLAY_TESTING.md#reproduce-published-results).
+
+Complete retail playback of the first two fixtures leaves different input
+tails: 3/7 and 2/6 intermediate/final records. The trailer guard accepts those
+observed variants while retaining continuous frames, recorded scores, natural
+exit, and complete paired-trace comparison. Regression tests cover a missing
+terminal row and two equal captures that differ from a published expectation.
 
 Current evidence is in `build/replay-suite/ptrace-reference-v4/`,
 `chain-fix-candidate/`, `chain-fix-exact.json`, and the score/item diagnostic

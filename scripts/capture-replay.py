@@ -13,6 +13,7 @@ import struct
 import subprocess
 import threading
 import time
+import platform
 from pe_image import PEImage
 from replay_file import inspect as inspect_replay
 
@@ -194,6 +195,10 @@ def main():
                     clockRate=args.clock_rate,
                     rasterization=not args.no_rasterization,
                     gameDataSha256=sha(args.game_data), configSha256=hashlib.sha256(config).hexdigest(),
+                    bgmDataSha256=sha(args.bgm_data),
+                    environment=dict(python=platform.python_version(), host=platform.platform(),
+                                     wine=subprocess.check_output([args.wine, "--version"], text=True).strip(),
+                                     observerBackend=args.observer_backend),
                     muted=True, executableSha256=sha(executable),
                     product="native-vc7-bugfix" if args.candidate else "retail",
                     observer=dict(type="GDB hardware breakpoints",

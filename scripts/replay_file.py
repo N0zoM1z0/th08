@@ -15,6 +15,14 @@ DIFFICULTIES = ("Easy", "Normal", "Hard", "Lunatic", "Extra")
 RETAIL_IDENTITY = (840704, 2724749753, "0100d")
 
 
+def valid_input_tail(remaining, final_stage):
+    # RecordInputAndFps (0x452310) keeps three stage-clear inputs.
+    # StopRecording (0x4531a0), also called by SaveReplay, extends the final
+    # stream. Complete retail captures of the pinned fixtures leave 2/3 and
+    # 6/7 records respectively; an exact count is established by playback.
+    return remaining in ((6, 7) if final_stage else (2, 3))
+
+
 def decompress(data, expected_size):
     if not 0 <= expected_size <= 0x400000:
         raise ValueError("Replay decompressed size exceeds the game's 4 MiB buffer")

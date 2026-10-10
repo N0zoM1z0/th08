@@ -82,6 +82,7 @@ def main():
     parser.add_argument("--wine-prefix", type=Path, help="Reuse a runner-owned prefix for this serial batch")
     parser.add_argument("--reference-dir", type=Path, help="Retail captures from an earlier suite directory")
     parser.add_argument("--cases", help="Comma-separated case IDs; default: every manifest case")
+    parser.add_argument("--claims-only", action="store_true", help="Reproduce cases with published retail trace expectations")
     parser.add_argument("--fetch-only", action="store_true")
     parser.add_argument("--clock-rate", type=int, default=1)
     parser.add_argument("--no-rasterization", action="store_true")
@@ -105,6 +106,10 @@ def main():
         fixtures = [f for f in fixtures if f["id"] in selected]
         if {f["id"] for f in fixtures} != set(selected):
             parser.error("Unknown replay case ID")
+    if args.claims_only:
+        fixtures = [f for f in fixtures if "retailTrace" in f]
+        if not fixtures:
+            parser.error("No published retail trace expectations in the selected cases")
     ledger_path = output / "suite.json"
     ledger = json.loads(ledger_path.read_text()) if ledger_path.exists() else dict(version=1, cases={})
     if not args.fetch_only:
@@ -122,10 +127,13 @@ def main():
         case_id = fixture["id"]
         previous = ledger["cases"].get(case_id, {})
         if previous.get("result") == "equal" and previous.get("fixtureSha256") == fixture["sha256"]:
-            report = json.loads((output / case_id / "comparison.json").read_text())
-            if report.get("result") != "equal" or report.get("comparedFrames") != previous["comparedFrames"]:
+            reference = ROOT / previous["reference"]
+            report = comparison.compare(reference, output / case_id / "candidate")
+            comparison.verify_expectation(report, fixture)
+            if report["result"] != "equal" or report["comparedFrames"] != previous["comparedFrames"]:
                 raise ValueError(f"Completed comparison is missing or differs: {case_id}")
-            print(f"[{index}/{len(fixtures)}] {case_id}: cached equal", flush=True)
+            write_json(output / case_id / "comparison.json", report)
+            print(f"[{index}/{len(fixtures)}] {case_id}: verified cached equal", flush=True)
             continue
         print(f"[{index}/{len(fixtures)}] {case_id}", flush=True)
         result = dict(fixtureSha256=fixture["sha256"], shot=fixture["shot"], difficulty=fixture["difficulty"],
@@ -179,6 +187,7 @@ def main():
                         subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, check=True)
                     compress(capture)
                 report = comparison.compare(reference, case / "candidate")
+                comparison.verify_expectation(report, fixture)
                 write_json(case / "comparison.json", report)
                 result.update(result=report["result"], comparedFrames=report["comparedFrames"],
                               firstDifference=report["firstDifference"])

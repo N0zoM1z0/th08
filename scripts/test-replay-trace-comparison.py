@@ -42,6 +42,24 @@ class ComparisonTests(unittest.TestCase):
         result = compare.compare(self.reference, self.candidate)
         self.assertEqual(result["firstDifference"]["frame"], 2)
         self.assertEqual(result["firstDifference"]["differingFields"], ["x"])
+        self.assertNotEqual(result["referenceTraceSha256"], result["candidateTraceSha256"])
+
+    def test_trace_digest_ignores_json_whitespace(self):
+        (self.candidate / "rows.jsonl").write_text("\n".join(json.dumps(row, separators=(",", ":")) for row in self.rows))
+        result = compare.compare(self.reference, self.candidate)
+        self.assertEqual(result["referenceTraceSha256"], result["candidateTraceSha256"])
+
+    def test_published_expectation_rejects_equal_but_changed_traces(self):
+        result = compare.compare(self.reference, self.candidate)
+        fixture = dict(retailTrace=dict(calculationFrames=3, sha256=result["referenceTraceSha256"]))
+        compare.verify_expectation(result, fixture)
+        self.rows[1][self.metadata["schema"]["fields"].index("score")] += 1
+        self.write(self.reference)
+        self.write(self.candidate)
+        changed = compare.compare(self.reference, self.candidate)
+        self.assertEqual(changed["result"], "equal")
+        with self.assertRaisesRegex(ValueError, "published retail expectation"):
+            compare.verify_expectation(changed, fixture)
 
     def test_missing_or_duplicate_frame_is_rejected(self):
         for rows in (self.rows[1:], [self.rows[0], self.rows[2]], [self.rows[0]] * 3):
@@ -140,11 +158,27 @@ class ExternalComparisonTests(unittest.TestCase):
             compare.compare(self.reference, self.candidate)
 
     def test_premature_end_with_matching_scores(self):
-        self.rows.pop()
-        self.complete.update(rows=4, stageFrames={"0": 2, "1": 2})
+        self.rows = self.rows[:3]
+        self.complete.update(rows=3, stageFrames={"0": 2, "1": 1})
         self.write(self.candidate)
         with self.assertRaisesRegex(ValueError, "recorded inputs"):
             compare.compare(self.reference, self.candidate)
+
+    def test_second_retail_trailer_length(self):
+        for stage in self.metadata["replay"]["stages"]:
+            stage["inputRecords"] -= 1
+        self.write(self.reference)
+        self.write(self.candidate)
+        self.assertEqual(compare.compare(self.reference, self.candidate)["result"], "equal")
+
+    def test_missing_last_row_in_shorter_trailer_cannot_match_retail(self):
+        for stage in self.metadata["replay"]["stages"]:
+            stage["inputRecords"] -= 1
+        self.write(self.reference)
+        self.rows.pop()
+        self.complete.update(rows=4, stageFrames={"0": 2, "1": 2})
+        self.write(self.candidate)
+        self.assertEqual(compare.compare(self.reference, self.candidate)["result"], "different")
 
     def test_frozen_input_does_not_hide_missing_calc(self):
         self.rows[1][2] = 1
