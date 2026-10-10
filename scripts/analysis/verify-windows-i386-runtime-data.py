@@ -317,6 +317,21 @@ def verify_spellcard_calc_chain_owner(
                 )
 
 
+def verify_homing_replay_input(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Require Yukari's homing option to consume the replay-fed input word."""
+    function = exact_public_va(publics, "?UpdateHomingOption@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z")
+    replay_input = exact_public_va(publics, "?g_GuiMessageInputCurrent@th08@@3GA")
+    for label, image, address, expected in (
+        ("target", target, 0x0044E3A0, 0x0164D52C),
+        ("rebuild", rebuild, function, replay_input),
+    ):
+        instruction = read_va(image, address + 0x316, 7)
+        if instruction[:3] != b"\x0f\xb7\x05" or struct.unpack_from("<I", instruction, 3)[0] != expected:
+            raise ValueError(f"{label} UpdateHomingOption must read the replay-fed input word")
+
+
 def verify_player_gauge_bounds_owner(
     target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
 ) -> None:
@@ -700,6 +715,7 @@ def main() -> int:
         verify_gui_enemy_name_owner(target, rebuild, publics)
         verify_spellcard_background_owner(target, rebuild, publics)
         verify_spellcard_calc_chain_owner(target, rebuild, publics)
+        verify_homing_replay_input(target, rebuild, publics)
         verify_player_gauge_bounds_owner(target, rebuild, publics)
         verify_background_stage_gate(target, rebuild, publics)
         verify_additional_runtime_callees(target, rebuild, publics)
@@ -716,7 +732,8 @@ def main() -> int:
         "12 dialogue palettes match the target; enemy-name copy selects "
         "Gui::frontAnm in all 8 linked loads; spell backgrounds select "
         "EffectManager::stageEffectAnm; spellcard cleanup selects its registered "
-        "lifetimeObject; all 21 player gauge-bound writes select "
+        "lifetimeObject; homing options read replay-fed gameplay input; "
+        "all 21 player gauge-bound writes select "
         "the six GameManager fields; all 3 Background draw gates call "
         "Gui::IsStageFinished; 12 additional repaired REL32 calls select their "
         "target-mapped callees; all 20 player-shot callback entries resolve "

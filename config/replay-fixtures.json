@@ -259,7 +259,12 @@
       ],
       "player": "AAA     ",
       "recordedBy": "dgart",
-      "submittedAt": "2021/11/15 00:34:29"
+      "submittedAt": "2021/11/15 00:34:29",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 103875,
+        "sha256": "5cace0702c237969dbda29f417115527302a44b6ef4806785a2468078ece228b"
+      }
     },
     {
       "id": "easy-4-b",
@@ -320,7 +325,12 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "submittedAt": "2018/10/13 21:30:51"
+      "submittedAt": "2018/10/13 21:30:51",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 118416,
+        "sha256": "27c81a4b5c93f7a973ea611e5488d56117e31a7ad01ff3414ab3e55003b2a398"
+      }
     },
     {
       "id": "easy-5-b",

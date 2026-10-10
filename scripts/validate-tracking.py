@@ -13,6 +13,7 @@ import tomllib
 
 from match_literals import real_literal_bytes
 from match_callees import validate_math_callee
+from match_inputs import validate_input_global
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -335,6 +336,7 @@ def load_match_units(
             ):
                 try:
                     validate_math_callee(relocation)
+                    validate_input_global(relocation)
                     declared = real_literal_bytes(relocation)
                 except (KeyError, TypeError, ValueError) as exc:
                     fail(

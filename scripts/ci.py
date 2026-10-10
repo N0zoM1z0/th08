@@ -55,6 +55,7 @@ def main() -> int:
             [sys.executable, "scripts/test-match-literals.py"],
         )
         run("Test math callee validation", [sys.executable, "scripts/test-match-callees.py"])
+        run("Test replay input binding validation", [sys.executable, "scripts/test-match-inputs.py"])
         run("Test local relocation validation", [sys.executable, "scripts/test-match-local-relocations.py"])
         run("Test replay trace comparison", [sys.executable, "scripts/test-replay-trace-comparison.py"])
         run("Test replay file validation", [sys.executable, "scripts/test-replay-file.py"])

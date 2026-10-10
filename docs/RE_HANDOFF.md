@@ -83,16 +83,30 @@ The helper remains an unaccepted library entry: its runtime implementation is
 44 bytes, while target `0x00433880` is 33 bytes; original archive provenance
 is unresolved. See [RT-012](RUNTIME_ISSUES.md#rt-012).
 
-The 108-case batch is running under `build/replay-suite/matrix-v1/`, using
+The first 108-case batch is under `build/replay-suite/matrix-v1/`, using
 the archived playable executable/map in `candidate-sincos/`. The executable
 SHA-256 is `64f6c5e0295701985b9380fb43872bd02003e0004366e3bef4e1b7b0a509c2f2`.
 Resume the same build/settings with the suite runner; `suite.json` supplies
-live results. Three Easy Final B cases pass: Border, Magic, and Scarlet Team,
-with all 25 fields equal over 332,197 calculations. The rest of the matrix
+live results. Five Easy Final B cases pass: Border, Magic, Scarlet, and Ghost
+Team, plus Reimu, with all 25 fields equal over 554,488 calculations. The rest of the matrix
 remains in progress. The manifest records these cases' complete retail trace
 fingerprints; `--claims-only` reproduces published expectations with fresh
 captures. The expectation-recording tool revalidates retained evidence before
 adding a case. See [REPLAY_TESTING.md](REPLAY_TESTING.md#reproduce-published-results).
+
+The batch stopped on Solo Yukari (`easy-5-b`): Stage 3 frame 6,751, score
+minus 7 and RNG generations minus 8. Target `UpdateHomingOption @ 0x0044E3A0`
+uses gameplay input at `0x0164D52C`; source read physical input at
+`0x0164D528`, concealed by a relocation override. Source and the manifest
+now select `g_GuiMessageInputCurrent`. The focused comparison and a cold
+replay of all 1,106 accepted units pass. The old manifest and playable link
+fail the new input-binding guards. Fresh normal/bugfix links and the Linux32
+build/layout check pass. Full native replay confirmation is next; see
+[RT-013](RUNTIME_ISSUES.md#rt-013). The new playable executable/map is archived
+in `build/replay-suite/candidate-replay-input/`; executable SHA-256
+`3cf82cf0345c9de8f7aed883f144526df6e170c3a08f6e41c800a1b44b04916d`.
+Use a fresh suite directory with `--reference-dir build/replay-suite/matrix-v1`
+to retain the six complete retail captures and replay the repaired candidate.
 
 Complete retail playback of the first two fixtures leaves different input
 tails: 3/7 and 2/6 intermediate/final records. The trailer guard accepts those

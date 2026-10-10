@@ -96,6 +96,9 @@ def main():
     output.mkdir(parents=True, exist_ok=True)
     args.fixtures_dir.mkdir(parents=True, exist_ok=True)
     manifest = json.loads(args.manifest.read_text())
+    reference_cases = {}
+    if args.reference_dir and (args.reference_dir / "suite.json").exists():
+        reference_cases = json.loads((args.reference_dir / "suite.json").read_text())["cases"]
     fixtures = manifest["fixtures"]
     if any(not re.fullmatch(r"[a-z0-9-]+", f["id"]) or Path(f["file"]).name != f["file"] for f in fixtures):
         raise ValueError("Unsafe fixture ID/path in manifest")
@@ -150,6 +153,11 @@ def main():
                 reference = case / "reference"
                 if args.reference_dir:
                     cached_reference = args.reference_dir.resolve() / case_id / "reference"
+                    recorded_reference = reference_cases.get(case_id, {}).get("reference")
+                    if not cached_reference.exists() and recorded_reference:
+                        cached_reference = (ROOT / recorded_reference).resolve()
+                        if not cached_reference.is_relative_to(ROOT / "build"):
+                            raise ValueError("Reused reference path must remain under build/")
                     if cached_reference.exists():
                         reference = cached_reference
                 result["reference"] = str(reference.relative_to(ROOT))

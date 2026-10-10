@@ -209,10 +209,11 @@ candidate executable and map, and the recorded calculation counts. It rejects
 changes to existing expectations. Only the acceptance hashes and counts enter
 the manifest; generated reports and recordings remain under `build/`.
 
-The checkpoint currently publishes three complete Easy Final B cases: Border
+The checkpoint currently publishes five complete Easy Final B cases: Border
 Team (107,296 calculations, Stage 4B), Magic Team (126,803 calculations,
-Stage 4A), and Scarlet Team (98,098 calculations, Stage 4A). All 25 fields
-agree over 332,197 calculations. The remaining corpus is under test.
+Stage 4A), Scarlet Team (98,098 calculations, Stage 4A), Ghost Team (103,875
+calculations, Stage 4B), and Reimu (118,416 calculations, Stage 4B). All 25
+fields agree over 554,488 calculations. The remaining corpus is under test.
 
 ## Native checkpoint
 
