@@ -2438,7 +2438,12 @@
       ],
       "player": "LNNFS   ",
       "recordedBy": "てーる",
-      "playedAt": "2022/01/03 13:02:30"
+      "playedAt": "2022/01/03 13:02:30",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 113221,
+        "sha256": "5e5d1c21e430d188da2215a9497e41ff68ad8ee85d10ccecc4594de133d18642"
+      }
     },
     {
       "id": "lunatic-1-b",
@@ -2499,7 +2504,12 @@
       ],
       "player": "ATM     ",
       "recordedBy": "ATM",
-      "playedAt": "2020/10/13 13:30:08"
+      "playedAt": "2020/10/13 13:30:08",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 106063,
+        "sha256": "868d7cb1d42234d7a89cd838266f76fc722882fac5b232c53be05298fa3dd253"
+      }
     },
     {
       "id": "lunatic-2-b",
@@ -2560,7 +2570,12 @@
       ],
       "player": "CWC     ",
       "recordedBy": "CWC",
-      "playedAt": "2020/08/27 23:34:40"
+      "playedAt": "2020/08/27 23:34:40",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 112701,
+        "sha256": "b738225ecef66eaa034da4d08dcf18b212dc86feedabc24cd23f8fe139a41a50"
+      }
     },
     {
       "id": "lunatic-3-b",
@@ -2621,7 +2636,12 @@
       ],
       "player": "Levea   ",
       "recordedBy": "Levea",
-      "playedAt": "2021/09/29 22:38:05"
+      "playedAt": "2021/09/29 22:38:05",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 149986,
+        "sha256": "a2c5ca73f6f4b47f86562ab38a52885c0ec3ba5bcd05fc102a0961393404c03e"
+      }
     },
     {
       "id": "lunatic-4-b",
@@ -2682,7 +2702,12 @@
       ],
       "player": "EEg_fNb ",
       "recordedBy": "EEg",
-      "playedAt": "2020/02/20 12:10:17"
+      "playedAt": "2020/02/20 12:10:17",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 137112,
+        "sha256": "e7a633014d2a05e4be479e34e95c945a18a6372af9b57576e5e70e6f5ecd2b60"
+      }
     },
     {
       "id": "lunatic-5-b",
@@ -2743,7 +2768,12 @@
       ],
       "player": "WXQ     ",
       "recordedBy": "绿绿可柚",
-      "playedAt": "2021/05/26 11:47:02"
+      "playedAt": "2021/05/26 11:47:02",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 113666,
+        "sha256": "fde13d2ccf021e81687d313b80069084d480051a3eff90894e5bee2ef1f78317"
+      }
     },
     {
       "id": "lunatic-6-b",
@@ -2804,7 +2834,12 @@
       ],
       "player": "CSWHRDF ",
       "recordedBy": "1",
-      "playedAt": "2019/03/29 19:39:25"
+      "playedAt": "2019/03/29 19:39:25",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 120438,
+        "sha256": "0145c482d44b26086446e99911293bfe670edad718ed9f38824f083a2ebea285"
+      }
     },
     {
       "id": "lunatic-7-b",
@@ -2865,7 +2900,12 @@
       ],
       "player": "ANCHOR  ",
       "recordedBy": "ANCHOR",
-      "playedAt": "2020/11/07 16:51:08"
+      "playedAt": "2020/11/07 16:51:08",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 127016,
+        "sha256": "ff8aa7516e870480cf199eb1dae48af2c269ac855596bafe15462f65cc81c092"
+      }
     },
     {
       "id": "lunatic-8-b",
@@ -2926,7 +2966,12 @@
       ],
       "player": "KIM_OT  ",
       "recordedBy": "Kim_OT",
-      "playedAt": "2021/06/20 03:43:36"
+      "playedAt": "2021/06/20 03:43:36",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 143679,
+        "sha256": "b6840cca5449a452e2616f3137edefbe3325c827502f624b174acfee6affc45b"
+      }
     },
     {
       "id": "lunatic-9-b",
@@ -2987,7 +3032,12 @@
       ],
       "player": "K@G LuRe",
       "recordedBy": "Ｋ・Ｇ",
-      "playedAt": "2016/09/10 12:21:12"
+      "playedAt": "2016/09/10 12:21:12",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 132477,
+        "sha256": "d2e3abce4d3c234fb29c1f1f075e4202e39fd59522066a0a9d4a97d28e4169fd"
+      }
     },
     {
       "id": "lunatic-10-b",
@@ -3048,7 +3098,12 @@
       ],
       "player": "Rivers  ",
       "recordedBy": "Rivers",
-      "playedAt": "2021/03/29 00:16:41"
+      "playedAt": "2021/03/29 00:16:41",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 113660,
+        "sha256": "3483c6d65acfea833a60f398a9c1bfa54910d913c98767e19473f60bae7173eb"
+      }
     },
     {
       "id": "lunatic-11-b",
@@ -3109,7 +3164,12 @@
       ],
       "player": "WXQ     ",
       "recordedBy": "绿绿可柚",
-      "playedAt": "2020/10/30 21:11:52"
+      "playedAt": "2020/10/30 21:11:52",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 145103,
+        "sha256": "a82ed2bbb0e959444e2c44e52c4b850467d7f14b6e36c52bede4df415e8cc09e"
+      }
     },
     {
       "id": "extra-0-extra",

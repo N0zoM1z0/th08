@@ -86,11 +86,10 @@ is unresolved. See [RT-012](RUNTIME_ISSUES.md#rt-012).
 The first 108-case batch is under `build/replay-suite/matrix-v1/`, using
 the archived playable executable/map in `candidate-sincos/`. The executable
 SHA-256 is `64f6c5e0295701985b9380fb43872bd02003e0004366e3bef4e1b7b0a509c2f2`.
-Resume the same build/settings with the suite runner; `suite.json` supplies
-live results. Five Easy Final B cases pass: Border, Magic, Scarlet, and Ghost
-Team, plus Reimu, with all 25 fields equal over 554,488 calculations. The rest of the matrix
-remains in progress. The manifest records these cases' complete retail trace
-fingerprints; `--claims-only` reproduces published expectations with fresh
+Five Easy Final B cases passed: Border, Magic, Scarlet, and Ghost
+Team, plus Reimu, with all 25 fields equal over 554,488 calculations. This
+batch stopped at Yukari and was superseded by `matrix-v2/`. The manifest records
+these cases' complete retail trace fingerprints; `--claims-only` reproduces published expectations with fresh
 captures. The expectation-recording tool revalidates retained evidence before
 adding a case. See [REPLAY_TESTING.md](REPLAY_TESTING.md#reproduce-published-results).
 
@@ -108,11 +107,12 @@ in `build/replay-suite/candidate-replay-input/`; executable SHA-256
 `3cf82cf0345c9de8f7aed883f144526df6e170c3a08f6e41c800a1b44b04916d`.
 Use a fresh suite directory with `--reference-dir build/replay-suite/matrix-v1`
 to retain the six complete retail captures and replay the repaired candidate.
-The new batch is `matrix-v2/`. All 36 Easy, Normal, and Hard Final B cases pass on
-this executable, including the earlier five cases revalidated after the
-repair. The published retail expectations cover 4,479,937 calculations. The
-batch has reached Lunatic Final B. `suite.json` supplies the live count; use
-`scripts/analysis/report-replay-suite.py` for a brief status report.
+The new batch is `matrix-v2/`. All 48 Final B cases pass on this executable
+across Easy, Normal, Hard, and Lunatic, including the earlier five cases
+revalidated after the repair. The published retail expectations cover
+5,995,059 calculations. The batch has reached Extra; Final A follows.
+`suite.json` supplies the live count; use `scripts/analysis/report-replay-suite.py`
+for a brief status report.
 
 The original Solo Sakuya selection (`th8_ud2b7c.rpy`) stopped in retail
 at Stage 4A frame 19,840 with 3,772 input records left and score 31,688,942
