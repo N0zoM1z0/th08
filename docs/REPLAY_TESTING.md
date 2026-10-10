@@ -199,7 +199,7 @@ do not affect it. `comparison.json` prints both fingerprints.
 The first full-route checkpoint used Ubuntu 24.04 on WSL2 x86-64, Wine 9.0,
 Mesa llvmpipe 25.2.8, Python 3.13.5, and Xvfb 21.1.12. Compiler and library
 pins are in the [native build procedure](WINDOWS_I386_RUNTIME.md).
-All nine published cases passed at source checkpoint `25c101f9`, including a
+All twelve published cases passed at source checkpoint `25c101f9`, including a
 rerun of the first five cases after the replay-input repair. Build the `bugfix`
 profile from this branch or a later revision containing its repairs.
 Capture metadata records executable, map, data and configuration hashes,
@@ -221,7 +221,7 @@ candidate executable and map, and the recorded calculation counts. It rejects
 changes to existing expectations. Only the acceptance hashes and counts enter
 the manifest; generated reports and recordings remain under `build/`.
 
-Nine complete Easy Final B cases have published expectations:
+All twelve shot types have complete Easy Final B expectations:
 
 | Shot | Stage 4 route | Calculations |
 | --- | --- | ---: |
@@ -234,8 +234,11 @@ Nine complete Easy Final B cases have published expectations:
 | Marisa | A | 122,814 |
 | Alice | A | 109,495 |
 | Sakuya | A | 134,146 |
+| Remilia | A | 129,211 |
+| Youmu | B | 117,698 |
+| Yuyuko | B | 127,605 |
 
-All 25 fields agree over 1,053,572 calculations on that source checkpoint.
+All 25 fields agree over 1,428,086 calculations on that source checkpoint.
 The current batch continues through the remaining corpus. Repository CI validates
 the manifest's complete 108-case grid and published expectation format.
 
