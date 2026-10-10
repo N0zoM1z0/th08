@@ -27,8 +27,8 @@ def main():
     if not args.output_dir.is_relative_to(ROOT / "build"):
         parser.error("Generated evidence must be under build/")
     args.output_dir.mkdir(parents=True, exist_ok=False)
-    common = ["--target", str(args.target.resolve()), "--game-data", str(args.game_data.resolve()),
-              "--bgm-data", str(args.bgm_data.resolve()), "--demos", args.demos]
+    common = ["--target", str(args.target.resolve()), "--game-data", str(args.game_data.absolute()),
+              "--bgm-data", str(args.bgm_data.absolute()), "--demos", args.demos]
     if args.timeout:
         common += ["--timeout", str(args.timeout)]
     if args.display:

@@ -139,4 +139,4 @@ if __name__ == "__main__":
     parser.add_argument("replay", type=Path)
     parser.add_argument("--allow-other-version", action="store_true")
     args = parser.parse_args()
-    print(json.dumps(inspect(args.replay, not args.allow_other_version), indent=2, ensure_ascii=False))
+    print(json.dumps(inspect(args.replay, not args.allow_other_version), indent=2, ensure_ascii=True))
