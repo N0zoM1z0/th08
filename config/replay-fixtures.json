@@ -5247,7 +5247,12 @@
       ],
       "player": "Dzm NB  ",
       "recordedBy": "Dzm",
-      "playedAt": "2018/09/01 09:44:16"
+      "playedAt": "2018/09/01 09:44:16",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 117598,
+        "sha256": "6a9f1ecdfca975b66054fc95882386e75444203d309ae3afe3f4880bfce0127d"
+      }
     },
     {
       "id": "hard-1-a",
@@ -5308,7 +5313,12 @@
       ],
       "player": "ROSA2015",
       "recordedBy": "まあ、まったりと",
-      "playedAt": "2015/11/12 21:21:23"
+      "playedAt": "2015/11/12 21:21:23",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 101936,
+        "sha256": "91405d8163731ba625f1abbe13189db95dbe8408d037ca69ed3338ebdfa7c1de"
+      }
     },
     {
       "id": "hard-2-a",
@@ -5369,7 +5379,12 @@
       ],
       "player": "sia     ",
       "recordedBy": "sia",
-      "playedAt": "2014/06/23 01:26:59"
+      "playedAt": "2014/06/23 01:26:59",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 117783,
+        "sha256": "620a7dd1abc4a4ea7acb767642d09e7cbc98914a7ff59b6c0c35c993db928b81"
+      }
     },
     {
       "id": "hard-3-a",
@@ -5430,7 +5445,12 @@
       ],
       "player": "PARU    ",
       "recordedBy": "PARU",
-      "playedAt": "2012/02/21 02:52:57"
+      "playedAt": "2012/02/21 02:52:57",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 108947,
+        "sha256": "3420197205cd7cdf41591103a823b66b7ea700b9f2cada490c1f987fc0b2aa7c"
+      }
     },
     {
       "id": "hard-4-a",
@@ -5491,7 +5511,12 @@
       ],
       "player": "PARU    ",
       "recordedBy": "PARU",
-      "playedAt": "2012/02/20 02:33:12"
+      "playedAt": "2012/02/20 02:33:12",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 128362,
+        "sha256": "2d14960826bfbab6df2b3e90f3385cb737305920bcc44ec96c9441ab82b7dc3f"
+      }
     },
     {
       "id": "hard-5-a",
@@ -5552,7 +5577,12 @@
       ],
       "player": "KIS NNFS",
       "recordedBy": "Ｋ・Ｇ",
-      "playedAt": "2020/05/23 18:49:28"
+      "playedAt": "2020/05/23 18:49:28",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 109488,
+        "sha256": "3df00c89afd1d1c4e4ad5ca0abf10355d1b27838831e02e77cc4f9936198348c"
+      }
     },
     {
       "id": "hard-6-a",
@@ -5613,7 +5643,12 @@
       ],
       "player": "PARU    ",
       "recordedBy": "PARU",
-      "playedAt": "2011/08/11 20:38:44"
+      "playedAt": "2011/08/11 20:38:44",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 118134,
+        "sha256": "0e00e40277539c63efc17cee40fa27fbf29208dfab8e3aaa56b095cc53183eb4"
+      }
     },
     {
       "id": "hard-7-a",
@@ -5674,7 +5709,12 @@
       ],
       "player": "K@G HaAl",
       "recordedBy": "Ｋ・Ｇ",
-      "playedAt": "2015/01/16 23:43:15"
+      "playedAt": "2015/01/16 23:43:15",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 132772,
+        "sha256": "272b60132a716413223985c97db88e5eb5ca9fd0fbe6784b95b6c5b7094c0f56"
+      }
     },
     {
       "id": "hard-8-a",
@@ -5735,7 +5775,12 @@
       ],
       "player": "mahinu  ",
       "recordedBy": "mahinu",
-      "playedAt": "2013/02/20 23:36:51"
+      "playedAt": "2013/02/20 23:36:51",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 140962,
+        "sha256": "7c15753eebf98d3e7549506cb74f3030ac97bf5b18b1bbbe87532b96d8ca739d"
+      }
     },
     {
       "id": "hard-9-a",
@@ -5796,7 +5841,12 @@
       ],
       "player": "PDZ     ",
       "recordedBy": "PDZ",
-      "playedAt": "2015/03/27 23:22:43"
+      "playedAt": "2015/03/27 23:22:43",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 108075,
+        "sha256": "dc2f169b5730eafda60b57e2e014fa81bee13d0ce409fdd1035cdab5a30671f7"
+      }
     },
     {
       "id": "hard-10-a",
@@ -5857,7 +5907,12 @@
       ],
       "player": "PARU    ",
       "recordedBy": "PARU",
-      "playedAt": "2012/02/12 23:57:16"
+      "playedAt": "2012/02/12 23:57:16",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 111944,
+        "sha256": "de098aea8b090f9ffc35cb23157d746759a64003c8ba650bc1daae4a8d50be7a"
+      }
     },
     {
       "id": "hard-11-a",
@@ -5918,7 +5973,12 @@
       ],
       "player": "K@G HaNB",
       "recordedBy": "Ｋ・Ｇ",
-      "playedAt": "2012/07/11 16:37:04"
+      "playedAt": "2012/07/11 16:37:04",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 127290,
+        "sha256": "0e845ab3fbcf4cf069a6ca24628e071cd38b7c5347f330b924f679dcf46b60ed"
+      }
     },
     {
       "id": "lunatic-0-a",
