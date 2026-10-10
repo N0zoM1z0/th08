@@ -142,6 +142,17 @@ scores in retail over 112,101 calculations. Its native comparison passes
 for all 25 fields.
 The earlier failure evidence is in `build/replay-suite/yuyuko-normal-stage1-*/`.
 
+The batch reached 98 complete candidate passes before the original Lunatic
+Scarlet Team Final A recording (`th8_ud2bdd.rpy`) stopped in retail at Stage 5
+frame 15,401, with 7,245 input records left and score 136,118,016 instead of
+166,560,017. The first four recorded end scores match. Direct Stage 5 playback
+reproduces that stage's full-run prefix; ordinary pacing with rasterization
+also matches all 25 fields over 15,401 calculations. Its cause is unresolved.
+The rejected manifest and replay guide retain provenance and a fresh reproducer.
+The replacement, `th8_ud2bca.rpy`, completes all six stages and recorded scores
+in retail over 114,724 calculations. Its native comparison is next. Failure
+evidence is in `build/replay-suite/scarlet-lunatic-*/`.
+
 Complete retail playback of the first two fixtures leaves different input
 tails: 3/7 and 2/6 intermediate/final records. The trailer guard accepts those
 observed variants while retaining continuous frames, recorded scores, natural

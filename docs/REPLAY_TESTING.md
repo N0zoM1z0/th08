@@ -271,14 +271,18 @@ URLs, hashes, and observed failures:
 | --- | --- | --- | ---: | ---: | ---: |
 | Easy Sakuya Final B | `th8_ud2b7c.rpy` | 4A / 19,840 | 40,908,184 | 31,688,942 | 3,772 |
 | Normal Yuyuko Final A | `th8_ud247c.rpy` | 1 / 8,152 | 6,901,513 | 931,816 | 4,948 |
+| Lunatic Scarlet Team Final A | `th8_ud2bdd.rpy` | 5 / 15,401 | 166,560,017 | 136,118,016 | 7,245 |
 
 Sakuya's normal and built-in fast-forward playback produce the same
 59,706-calculation prefix. Ordinary pacing with rasterization also reproduces
 the failing Stage 4A's 19,840 calculations. Yuyuko's ordinary and accelerated
 playback agree for all 25 fields over the same 8,152-calculation Stage 1 prefix.
-Both desynchronization causes remain unresolved in the recorded Wine environment.
-The replacements, `th8_ud1051.rpy` and `th8_ud21f9.rpy`, complete all six stages
-and recorded end scores in retail.
+Scarlet Team's full playback matches the first four recorded end scores, then
+stops during Stage 5. Starting directly at Stage 5 produces the same 15,401
+calculations; ordinary pacing with rasterization also matches all 25 fields.
+The desynchronization causes remain unresolved in the recorded Wine environment.
+The replacements, `th8_ud1051.rpy`, `th8_ud21f9.rpy`, and `th8_ud2bca.rpy`,
+complete all six stages and recorded end scores in retail.
 
 Fetch the retained fixture, then reproduce the Stage 4A failure with ordinary
 pacing and rendering:
@@ -303,6 +307,9 @@ records left and score 31,688,942 instead of the recorded 40,908,184.
 To reproduce Yuyuko's failure, use `--replay build/replay-fixtures/th8_ud247c.rpy`,
 `--start-stage 0`, and a fresh output directory in the capture command. It exits
 nonzero with 4,948 input records left and score 931,816 instead of 6,901,513.
+For Scarlet Team, use `--replay build/replay-fixtures/th8_ud2bdd.rpy`,
+`--start-stage 5`, and another fresh output directory. It exits nonzero with
+7,245 input records left and score 136,118,016 instead of 166,560,017.
 The active matrix requires a complete retail reference for each coverage cell.
 
 ## Native checkpoint

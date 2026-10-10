@@ -6104,11 +6104,11 @@
     },
     {
       "id": "lunatic-2-a",
-      "file": "th8_ud2bdd.rpy",
-      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2bdd.rpy",
+      "file": "th8_ud2bca.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2bca.rpy",
       "archive": "https://maribelhearn.com/royalflare/th08a",
-      "sha256": "d19bf725fb9476c945e9a119000a07d8b8df5b2d05a38ec5857fcda908c48465",
-      "bytes": 30365,
+      "sha256": "026d145e9a7342a766050cf1edfdee955449319696d53228c79af90f0f84f8f5",
+      "bytes": 31706,
       "shot": 2,
       "shotName": "Scarlet Team",
       "difficulty": 3,
@@ -6125,43 +6125,44 @@
         {
           "index": 0,
           "name": "Stage 1",
-          "inputRecords": 11177,
-          "endScore": 9913629
+          "inputRecords": 12158,
+          "endScore": 10836463
         },
         {
           "index": 1,
           "name": "Stage 2",
-          "inputRecords": 13033,
-          "endScore": 30613142
+          "inputRecords": 14179,
+          "endScore": 31512359
         },
         {
           "index": 2,
           "name": "Stage 3",
-          "inputRecords": 14139,
-          "endScore": 67880934
+          "inputRecords": 15881,
+          "endScore": 73483914
         },
         {
           "index": 3,
           "name": "Stage 4A",
-          "inputRecords": 21552,
-          "endScore": 118687288
+          "inputRecords": 20622,
+          "endScore": 110549192
         },
         {
           "index": 5,
           "name": "Stage 5",
-          "inputRecords": 22646,
-          "endScore": 166560017
+          "inputRecords": 20497,
+          "endScore": 159374027
         },
         {
           "index": 6,
           "name": "Final A",
-          "inputRecords": 26692,
-          "endScore": 267269186
+          "inputRecords": 30662,
+          "endScore": 224380214
         }
       ],
-      "player": "WXQ     ",
-      "recordedBy": "绿绿可柚",
-      "playedAt": "2019/11/12 15:13:18"
+      "player": "DK      ",
+      "recordedBy": "DK",
+      "playedAt": "2019/08/02 01:54:02",
+      "submittedAt": "2019/07/28"
     },
     {
       "id": "lunatic-3-a",

@@ -143,6 +143,77 @@
         "fullRunCalculations": 8152,
         "cause": "Unresolved retail replay desynchronization in the recorded Wine environment"
       }
+    },
+    {
+      "id": "lunatic-2-a-retail-incomplete",
+      "file": "th8_ud2bdd.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud2bdd.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "d19bf725fb9476c945e9a119000a07d8b8df5b2d05a38ec5857fcda908c48465",
+      "bytes": 30365,
+      "shot": 2,
+      "shotName": "Scarlet Team",
+      "difficulty": 3,
+      "difficultyName": "Lunatic",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 11177,
+          "endScore": 9913629
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 13033,
+          "endScore": 30613142
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 14139,
+          "endScore": 67880934
+        },
+        {
+          "index": 3,
+          "name": "Stage 4A",
+          "inputRecords": 21552,
+          "endScore": 118687288
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 22646,
+          "endScore": 166560017
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 26692,
+          "endScore": 267269186
+        }
+      ],
+      "player": "WXQ     ",
+      "recordedBy": "绿绿可柚",
+      "playedAt": "2019/11/12 15:13:18",
+      "submittedAt": "2019/09/24",
+      "retailFailure": {
+        "stage": 5,
+        "frame": 15401,
+        "unconsumedInputRecords": 7245,
+        "expectedEndScore": 166560017,
+        "observedEndScore": 136118016,
+        "fullRunCalculations": 75592,
+        "cause": "Unresolved retail replay desynchronization in the recorded Wine environment"
+      }
     }
   ]
 }
