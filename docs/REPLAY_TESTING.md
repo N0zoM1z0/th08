@@ -188,9 +188,9 @@ do not affect it. `comparison.json` prints both fingerprints.
 The first full-route checkpoint used Ubuntu 24.04 on WSL2 x86-64, Wine 9.0,
 Mesa llvmpipe 25.2.8, Python 3.13.5, and Xvfb 21.1.12. Compiler and library
 pins are in the [native build procedure](WINDOWS_I386_RUNTIME.md).
-The first five cases passed at source checkpoint `e9bd425a`; Solo Yukari
-passed with the replay-input repair in `25c101f9`. Build the `bugfix` profile
-from this branch or a later revision containing both repairs.
+All six published cases passed at source checkpoint `25c101f9`, including a
+rerun of the first five cases after the replay-input repair. Build the `bugfix`
+profile from this branch or a later revision containing its repairs.
 Capture metadata records executable, map, data and configuration hashes,
 source revision, observer backend, clock rate, rasterization, and host/Wine
 versions. Preserve `suite.json`, comparison files, metadata, completion files,
@@ -221,9 +221,8 @@ Six complete Easy Final B cases have published expectations:
 | Reimu | B | 118,416 |
 | Yukari | B | 132,629 |
 
-All 25 fields agree over 687,117 calculations across the two source
-checkpoints above. The current batch replays the earlier cases on the repaired
-build and continues through the remaining corpus. Repository CI validates
+All 25 fields agree over 687,117 calculations on that source checkpoint.
+The current batch continues through the remaining corpus. Repository CI validates
 the manifest's complete 108-case grid and published expectation format.
 
 ## Native checkpoint

@@ -108,10 +108,10 @@ in `build/replay-suite/candidate-replay-input/`; executable SHA-256
 `3cf82cf0345c9de8f7aed883f144526df6e170c3a08f6e41c800a1b44b04916d`.
 Use a fresh suite directory with `--reference-dir build/replay-suite/matrix-v1`
 to retain the six complete retail captures and replay the repaired candidate.
-The new batch is `matrix-v2/`; Solo Yukari passes, and the full matrix rerun
-will revalidate the earlier five cases on this executable. Six complete retail
-expectations are published, covering 687,117 calculations across the two
-runtime checkpoints.
+The new batch is `matrix-v2/`. All six completed cases pass on this executable,
+including the earlier five cases revalidated after the repair. The published
+retail expectations cover 687,117 calculations. The batch continues with Solo
+Marisa; `suite.json` supplies the live count.
 
 Complete retail playback of the first two fixtures leaves different input
 tails: 3/7 and 2/6 intermediate/final records. The trailer guard accepts those
