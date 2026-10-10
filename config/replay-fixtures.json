@@ -5067,12 +5067,8 @@
       "playedAt": "2019/08/27 00:12:27"
     },
     {
-      "id": "normal-11-a",
-      "file": "th8_ud247c.rpy",
-      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud247c.rpy",
-      "archive": "https://maribelhearn.com/royalflare/th08a",
-      "sha256": "7c5b064ad4b7bbda660ed0dd42e213abfba964ce716a5687758fd892a04b52f1",
-      "bytes": 35817,
+      "sha256": "f7997a64f0b45d6b15cce4e01ee90a7acea1fa45ccf10b2c23a4923f4e184713",
+      "bytes": 31588,
       "shot": 11,
       "shotName": "Yuyuko",
       "difficulty": 1,
@@ -5085,47 +5081,52 @@
         "checksum": 2724749753,
         "version": "0100d"
       },
+      "player": "PARU    ",
+      "id": "normal-11-a",
+      "file": "th8_ud21f9.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud21f9.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
       "stages": [
         {
           "index": 0,
           "name": "Stage 1",
-          "inputRecords": 13100,
-          "endScore": 6901513
+          "inputRecords": 11745,
+          "endScore": 2981384
         },
         {
           "index": 1,
           "name": "Stage 2",
-          "inputRecords": 15826,
-          "endScore": 19230831
+          "inputRecords": 13292,
+          "endScore": 10172915
         },
         {
           "index": 2,
           "name": "Stage 3",
-          "inputRecords": 16417,
-          "endScore": 40796052
+          "inputRecords": 14669,
+          "endScore": 24464017
         },
         {
           "index": 4,
           "name": "Stage 4B",
-          "inputRecords": 23847,
-          "endScore": 67625413
+          "inputRecords": 21001,
+          "endScore": 45879045
         },
         {
           "index": 5,
           "name": "Stage 5",
-          "inputRecords": 27225,
-          "endScore": 105146014
+          "inputRecords": 23242,
+          "endScore": 71776928
         },
         {
           "index": 6,
           "name": "Final A",
-          "inputRecords": 32066,
-          "endScore": 164663961
+          "inputRecords": 27294,
+          "endScore": 112180081
         }
       ],
-      "player": "HANPEN A",
-      "recordedBy": "はんぺん",
-      "playedAt": "2012/07/01 19:46:02"
+      "recordedBy": "PARU",
+      "playedAt": "2011/08/05 22:14:09",
+      "submittedAt": "2011/08/10"
     },
     {
       "id": "hard-0-a",

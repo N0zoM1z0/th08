@@ -72,6 +72,77 @@
         "fullRunCalculations": 59706,
         "cause": "Unresolved retail replay desynchronization in the recorded Wine environment"
       }
+    },
+    {
+      "id": "normal-11-a-retail-incomplete",
+      "file": "th8_ud247c.rpy",
+      "url": "https://maribelhearn.com/replays/royalflare/th08/th8_ud247c.rpy",
+      "archive": "https://maribelhearn.com/royalflare/th08a",
+      "sha256": "7c5b064ad4b7bbda660ed0dd42e213abfba964ce716a5687758fd892a04b52f1",
+      "bytes": 35817,
+      "shot": 11,
+      "shotName": "Yuyuko",
+      "difficulty": 1,
+      "difficultyName": "Normal",
+      "extended": false,
+      "practice": false,
+      "spellcard": -1,
+      "executable": {
+        "size": 840704,
+        "checksum": 2724749753,
+        "version": "0100d"
+      },
+      "stages": [
+        {
+          "index": 0,
+          "name": "Stage 1",
+          "inputRecords": 13100,
+          "endScore": 6901513
+        },
+        {
+          "index": 1,
+          "name": "Stage 2",
+          "inputRecords": 15826,
+          "endScore": 19230831
+        },
+        {
+          "index": 2,
+          "name": "Stage 3",
+          "inputRecords": 16417,
+          "endScore": 40796052
+        },
+        {
+          "index": 4,
+          "name": "Stage 4B",
+          "inputRecords": 23847,
+          "endScore": 67625413
+        },
+        {
+          "index": 5,
+          "name": "Stage 5",
+          "inputRecords": 27225,
+          "endScore": 105146014
+        },
+        {
+          "index": 6,
+          "name": "Final A",
+          "inputRecords": 32066,
+          "endScore": 164663961
+        }
+      ],
+      "player": "HANPEN A",
+      "recordedBy": "はんぺん",
+      "playedAt": "2012/07/01 19:46:02",
+      "submittedAt": "2012/06/30",
+      "retailFailure": {
+        "stage": 0,
+        "frame": 8152,
+        "unconsumedInputRecords": 4948,
+        "expectedEndScore": 6901513,
+        "observedEndScore": 931816,
+        "fullRunCalculations": 8152,
+        "cause": "Unresolved retail replay desynchronization in the recorded Wine environment"
+      }
     }
   ]
 }

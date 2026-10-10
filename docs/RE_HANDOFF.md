@@ -131,6 +131,16 @@ batch continues through the remaining fixtures. Evidence is under
 `build/replay-suite/sakuya-*/` and `matrix-v2/easy-8-b/`. The earlier fast-forward
 failure is retained in `sakuya-full-fast-forward/`.
 
+The batch reached 83 complete candidate passes before the original Normal
+Yuyuko Final A recording (`th8_ud247c.rpy`) stopped in retail at Stage 1 frame
+8,152, with 4,948 input records left and score 931,816 instead of 6,901,513.
+Ordinary pacing with rasterization reproduces the accelerated capture's
+8,152 calculations for all 25 fields. Its cause is unresolved; the rejected
+manifest retains its provenance and the replay guide gives a fresh reproducer.
+The replacement, `th8_ud21f9.rpy`, completes all six stages and recorded end
+scores in retail over 112,101 calculations. Its native comparison is next.
+The earlier failure evidence is in `build/replay-suite/yuyuko-normal-stage1-*/`.
+
 Complete retail playback of the first two fixtures leaves different input
 tails: 3/7 and 2/6 intermediate/final records. The trailer guard accepts those
 observed variants while retaining continuous frames, recorded scores, natural

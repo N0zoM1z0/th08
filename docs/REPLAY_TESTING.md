@@ -265,12 +265,20 @@ complete 108-case grid and published expectation format.
 
 [replay-rejected-fixtures.json](../config/replay-rejected-fixtures.json) retains
 recordings that failed the retail completeness check, with their download
-URLs, hashes, and observed failures. For Sakuya's `th8_ud2b7c.rpy`, normal and
-built-in fast-forward playback produce the same 59,706-calculation prefix,
-ending in Stage 4A at frame 19,840. Ordinary pacing with rasterization also
-reproduces that stage's 19,840 calculations. The retail desynchronization's
-cause is unresolved. The active `easy-8-b` fixture is `th8_ud1051.rpy`, which
-completes all six stages and recorded end scores in retail.
+URLs, hashes, and observed failures:
+
+| Coverage cell | Recording | Retail stage/frame | Expected end score | Observed score | Unplayed input records |
+| --- | --- | --- | ---: | ---: | ---: |
+| Easy Sakuya Final B | `th8_ud2b7c.rpy` | 4A / 19,840 | 40,908,184 | 31,688,942 | 3,772 |
+| Normal Yuyuko Final A | `th8_ud247c.rpy` | 1 / 8,152 | 6,901,513 | 931,816 | 4,948 |
+
+Sakuya's normal and built-in fast-forward playback produce the same
+59,706-calculation prefix. Ordinary pacing with rasterization also reproduces
+the failing Stage 4A's 19,840 calculations. Yuyuko's ordinary and accelerated
+playback agree for all 25 fields over the same 8,152-calculation Stage 1 prefix.
+Both desynchronization causes remain unresolved in the recorded Wine environment.
+The replacements, `th8_ud1051.rpy` and `th8_ud21f9.rpy`, complete all six stages
+and recorded end scores in retail.
 
 Fetch the retained fixture, then reproduce the Stage 4A failure with ordinary
 pacing and rendering:
@@ -292,6 +300,9 @@ python3 scripts/capture-replay.py \
 
 In the recorded Wine/Mesa environment, this exits nonzero with 3,772 input
 records left and score 31,688,942 instead of the recorded 40,908,184.
+To reproduce Yuyuko's failure, use `--replay build/replay-fixtures/th8_ud247c.rpy`,
+`--start-stage 0`, and a fresh output directory in the capture command. It exits
+nonzero with 4,948 input records left and score 931,816 instead of 6,901,513.
 The active matrix requires a complete retail reference for each coverage cell.
 
 ## Native checkpoint
