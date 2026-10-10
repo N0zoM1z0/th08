@@ -4454,7 +4454,12 @@
       ],
       "player": "garbiela",
       "recordedBy": "ガブリエラ",
-      "playedAt": "2018/11/15 01:39:50"
+      "playedAt": "2018/11/15 01:39:50",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 127972,
+        "sha256": "60564efdb95668b3f4c45e7489dd492795981f1dd888b48d7258cd4e500df646"
+      }
     },
     {
       "id": "normal-1-a",
@@ -4515,7 +4520,12 @@
       ],
       "player": "hanabi  ",
       "recordedBy": "ガブリエラ",
-      "playedAt": "2019/03/07 01:17:58"
+      "playedAt": "2019/03/07 01:17:58",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 128399,
+        "sha256": "4601dc44863fc33244eff0436cca765657d13fdd740f8105db5564533b07035f"
+      }
     },
     {
       "id": "normal-2-a",
@@ -4576,7 +4586,12 @@
       ],
       "player": "hanabi  ",
       "recordedBy": "ガブリエラ",
-      "playedAt": "2019/04/01 11:54:34"
+      "playedAt": "2019/04/01 11:54:34",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 128279,
+        "sha256": "f8be173e90123978e0c43b8ad4618413b4f0b90e838dda080a977a550175daf9"
+      }
     },
     {
       "id": "normal-3-a",
@@ -4637,7 +4652,12 @@
       ],
       "player": "garbiale",
       "recordedBy": "ガブリエラ",
-      "playedAt": "2019/09/19 01:30:04"
+      "playedAt": "2019/09/19 01:30:04",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 127542,
+        "sha256": "c2f9c469538e63bddf97b818d3db40785eebc77f4584a760e5c0ee2c01eb65c5"
+      }
     },
     {
       "id": "normal-4-a",
@@ -4698,7 +4718,12 @@
       ],
       "player": "garbiela",
       "recordedBy": "ガブリエラ",
-      "playedAt": "2018/03/30 17:57:27"
+      "playedAt": "2018/03/30 17:57:27",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 134376,
+        "sha256": "4d624ddc53d74862c045486e6ccd35b270559b194b95adf011fc54a25cc37663"
+      }
     },
     {
       "id": "normal-5-a",
@@ -4759,7 +4784,12 @@
       ],
       "player": "UMZ     ",
       "recordedBy": "UMZ",
-      "playedAt": "2021/03/27 19:00:16"
+      "playedAt": "2021/03/27 19:00:16",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 109987,
+        "sha256": "f09de641fb1bbaa2077e4ae59195b6e7d610ab08165c305a4964d1cbfa17bbdd"
+      }
     },
     {
       "id": "normal-6-a",
@@ -4820,7 +4850,12 @@
       ],
       "player": "KURO    ",
       "recordedBy": "サグパンのクロさん",
-      "playedAt": "2017/01/29 11:16:36"
+      "playedAt": "2017/01/29 11:16:36",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 127006,
+        "sha256": "75621a8d15d619e9a1d485a37935e75bcd2589845c38e945a7df25f8ccbc071b"
+      }
     },
     {
       "id": "normal-7-a",
@@ -4881,7 +4916,12 @@
       ],
       "player": "K@G NoAl",
       "recordedBy": "Ｋ・Ｇ",
-      "playedAt": "2015/04/21 21:36:27"
+      "playedAt": "2015/04/21 21:36:27",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 130148,
+        "sha256": "fa41b696deab76385530b05bf5501c60a3a29ce8affcfb704c493681834a4028"
+      }
     },
     {
       "id": "normal-8-a",
@@ -4942,7 +4982,12 @@
       ],
       "player": "K@G NASa",
       "recordedBy": "Ｋ・Ｇ",
-      "playedAt": "2020/05/17 19:44:15"
+      "playedAt": "2020/05/17 19:44:15",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 148475,
+        "sha256": "ffa6ed12c068a6a43729bb5565249f1edbb5f411ffa89c97943cc028b157d61b"
+      }
     },
     {
       "id": "normal-9-a",
@@ -5003,7 +5048,12 @@
       ],
       "player": "PARU    ",
       "recordedBy": "PARU",
-      "playedAt": "2011/12/12 23:33:53"
+      "playedAt": "2011/12/12 23:33:53",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 108555,
+        "sha256": "827fa40f79881ff68ee0655261b747bcd96387cbda5cb352c80765222bc92406"
+      }
     },
     {
       "id": "normal-10-a",
@@ -5064,7 +5114,12 @@
       ],
       "player": "garbiale",
       "recordedBy": "ガブリエラ",
-      "playedAt": "2019/08/27 00:12:27"
+      "playedAt": "2019/08/27 00:12:27",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 119049,
+        "sha256": "b5b26553e125d20d8d824348224b1e041e3a6923af02d29b795bde61b57e6344"
+      }
     },
     {
       "sha256": "f7997a64f0b45d6b15cce4e01ee90a7acea1fa45ccf10b2c23a4923f4e184713",
@@ -5126,7 +5181,12 @@
       ],
       "recordedBy": "PARU",
       "playedAt": "2011/08/05 22:14:09",
-      "submittedAt": "2011/08/10"
+      "submittedAt": "2011/08/10",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 112101,
+        "sha256": "f3b09268225bbcaddfe9a2f5b976d345fe05e988023c0959ee3c36101668f2dd"
+      }
     },
     {
       "id": "hard-0-a",

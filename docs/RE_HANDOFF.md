@@ -108,10 +108,10 @@ in `build/replay-suite/candidate-replay-input/`; executable SHA-256
 Use a fresh suite directory with `--reference-dir build/replay-suite/matrix-v1`
 to retain the six complete retail captures and replay the repaired candidate.
 The new batch is `matrix-v2/`. All 48 Final B cases across the four main
-difficulties, all 12 Extra cases, and all 12 Easy Final A cases pass on this
-executable, including the earlier five cases revalidated after the repair.
-The 72 published retail expectations cover 7,901,561 calculations. The batch
-has reached Normal Final A.
+difficulties, all 12 Extra cases, and all 24 Easy/Normal Final A cases pass on
+this executable, including the earlier five cases revalidated after the repair.
+The 84 published retail expectations cover 9,403,450 calculations. The batch
+has reached Hard Final A.
 `suite.json` supplies the live count; use `scripts/analysis/report-replay-suite.py`
 for a brief status report.
 
@@ -138,7 +138,8 @@ Ordinary pacing with rasterization reproduces the accelerated capture's
 8,152 calculations for all 25 fields. Its cause is unresolved; the rejected
 manifest retains its provenance and the replay guide gives a fresh reproducer.
 The replacement, `th8_ud21f9.rpy`, completes all six stages and recorded end
-scores in retail over 112,101 calculations. Its native comparison is next.
+scores in retail over 112,101 calculations. Its native comparison passes
+for all 25 fields.
 The earlier failure evidence is in `build/replay-suite/yuyuko-normal-stage1-*/`.
 
 Complete retail playback of the first two fixtures leaves different input
