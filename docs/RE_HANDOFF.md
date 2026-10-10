@@ -101,12 +101,17 @@ uses gameplay input at `0x0164D52C`; source read physical input at
 now select `g_GuiMessageInputCurrent`. The focused comparison and a cold
 replay of all 1,106 accepted units pass. The old manifest and playable link
 fail the new input-binding guards. Fresh normal/bugfix links and the Linux32
-build/layout check pass. Full native replay confirmation is next; see
+build/layout check pass. The complete native Yukari replay now agrees for all
+25 fields over 132,629 calculations, closing
 [RT-013](RUNTIME_ISSUES.md#rt-013). The new playable executable/map is archived
 in `build/replay-suite/candidate-replay-input/`; executable SHA-256
 `3cf82cf0345c9de8f7aed883f144526df6e170c3a08f6e41c800a1b44b04916d`.
 Use a fresh suite directory with `--reference-dir build/replay-suite/matrix-v1`
 to retain the six complete retail captures and replay the repaired candidate.
+The new batch is `matrix-v2/`; Solo Yukari passes, and the full matrix rerun
+will revalidate the earlier five cases on this executable. Six complete retail
+expectations are published, covering 687,117 calculations across the two
+runtime checkpoints.
 
 Complete retail playback of the first two fixtures leaves different input
 tails: 3/7 and 2/6 intermediate/final records. The trailer guard accepts those

@@ -27,7 +27,7 @@ Status meanings:
 | RT-010 | closed | The same demo's RNG diverged at frame 5908, followed by score and time-orb differences. | Death mode 2 entered the boss cleanup block and released six spellcard orbits at frame 5549. The target switch enters after that block. Missing orbits freed six primary effect slots, allowing 60 extra RNG calls at frame 5908. The corrected case entry passes focused comparison and the cold replay of all accepted units. All 22 recorded fields now agree over the complete 6,120-frame native/retail demo. |
 | RT-011 | closed | A full main-run replay diverged after entering Stage 2, generating duplicate spell rewards. | `CutChain` selected standalone storage instead of `g_Spellcard.lifetimeObject`, leaving an old update callback registered. The field expression preserves target bytes and fixes the duplicated update. After the RT-012 repair, the complete six-stage route agrees with retail for all 25 recorded fields. |
 | RT-012 | closed | The same full-run replay lost 156 score units when Stage 3 lasers were cancelled. | The native `fsincos` helper was empty, leaving laser direction outputs uninitialized. A C++ sin/cos implementation restores the star positions and scoring. All 25 recorded fields now agree through the complete 107,296-calculation route. The helper's separate library exact status remains unchanged. |
-| RT-013 | fixed / confirmation pending | Solo Yukari's Easy replay lost 7 score units and delayed two shot hits by one frame in Stage 3. | The homing option read physical keyboard input instead of the replay-fed gameplay word. A relocation override concealed the wrong source global. The corrected expression matches the target; binding and linked-image guards reject the old implementation. Full native replay validation is pending. |
+| RT-013 | closed | Solo Yukari's Easy replay lost 7 score units and delayed two shot hits by one frame in Stage 3. | The homing option read physical keyboard input instead of the replay-fed gameplay word. A relocation override concealed the wrong source global. The corrected expression matches the target; binding and linked-image guards reject the old implementation. The complete six-stage replay now agrees for all 25 fields over 132,629 calculations. |
 
 <a id="rt-013"></a>
 
@@ -50,12 +50,17 @@ comparison manifest overrode that symbol's address to `0x0164D52C`, allowing
 the wrong source reference to compare as exact.
 
 Source and the relocation now name `g_GuiMessageInputCurrent`. The focused
-VC7 comparison passes. The input-binding validator rejects the old manifest,
-and the final-link guard rejects the old playable image. Full-route
-confirmation remains in progress. Evidence is under
-`build/replay-suite/yukari-rng-reference/`, `yukari-rng-candidate/`, and
-`matrix-v1/easy-5-b/`; the fixture manifest supplies the public recording
-and SHA-256.
+VC7 comparison and the cold replay of all 1,106 accepted units pass. The
+input-binding validator rejects the old manifest, and the final-link guard
+rejects the old playable image. Fresh normal/bugfix links and the Linux32
+build/layout check pass. The complete native replay now agrees for all 25
+fields over 132,629 calculations, through its natural exit and all six
+recorded end scores. The repaired source checkpoint is `25c101f9`; playable
+SHA-256 is `3cf82cf0345c9de8f7aed883f144526df6e170c3a08f6e41c800a1b44b04916d`.
+Evidence is under `build/replay-suite/yukari-rng-reference/`,
+`yukari-rng-candidate/`, `matrix-v1/easy-5-b/`, and `matrix-v2/easy-5-b/`.
+The fixture manifest supplies the public recording, its SHA-256, and the
+complete retail trace expectation.
 
 <a id="rt-012"></a>
 

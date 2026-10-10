@@ -188,8 +188,9 @@ do not affect it. `comparison.json` prints both fingerprints.
 The first full-route checkpoint used Ubuntu 24.04 on WSL2 x86-64, Wine 9.0,
 Mesa llvmpipe 25.2.8, Python 3.13.5, and Xvfb 21.1.12. Compiler and library
 pins are in the [native build procedure](WINDOWS_I386_RUNTIME.md).
-The runtime source checkpoint is `e9bd425a`; build the `bugfix` profile from
-this branch or a later revision containing its repairs.
+The first five cases passed at source checkpoint `e9bd425a`; Solo Yukari
+passed with the replay-input repair in `25c101f9`. Build the `bugfix` profile
+from this branch or a later revision containing both repairs.
 Capture metadata records executable, map, data and configuration hashes,
 source revision, observer backend, clock rate, rasterization, and host/Wine
 versions. Preserve `suite.json`, comparison files, metadata, completion files,
@@ -209,11 +210,21 @@ candidate executable and map, and the recorded calculation counts. It rejects
 changes to existing expectations. Only the acceptance hashes and counts enter
 the manifest; generated reports and recordings remain under `build/`.
 
-The checkpoint currently publishes five complete Easy Final B cases: Border
-Team (107,296 calculations, Stage 4B), Magic Team (126,803 calculations,
-Stage 4A), Scarlet Team (98,098 calculations, Stage 4A), Ghost Team (103,875
-calculations, Stage 4B), and Reimu (118,416 calculations, Stage 4B). All 25
-fields agree over 554,488 calculations. The remaining corpus is under test.
+Six complete Easy Final B cases have published expectations:
+
+| Shot | Stage 4 route | Calculations |
+| --- | --- | ---: |
+| Border Team | B | 107,296 |
+| Magic Team | A | 126,803 |
+| Scarlet Team | A | 98,098 |
+| Ghost Team | B | 103,875 |
+| Reimu | B | 118,416 |
+| Yukari | B | 132,629 |
+
+All 25 fields agree over 687,117 calculations across the two source
+checkpoints above. The current batch replays the earlier cases on the repaired
+build and continues through the remaining corpus. Repository CI validates
+the manifest's complete 108-case grid and published expectation format.
 
 ## Native checkpoint
 

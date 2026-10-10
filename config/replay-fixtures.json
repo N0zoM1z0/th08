@@ -391,7 +391,12 @@
       ],
       "player": "garbiale",
       "recordedBy": "ガブリエラ",
-      "submittedAt": "2020/03/14 21:09:27"
+      "submittedAt": "2020/03/14 21:09:27",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 132629,
+        "sha256": "f12ba36893dbdb8e82653873ca95e7d547ea9e40887666af88517562285c4fa9"
+      }
     },
     {
       "id": "easy-6-b",
