@@ -34,6 +34,15 @@ the same build and settings. `--cases easy-0-b,extra-0-extra` selects individual
 cases; the number is the shot index listed in the manifest. `--fetch-only`
 checks the input files without launching Wine.
 
+Inspect a running or completed batch without opening its capture logs:
+
+```bash
+python3 scripts/analysis/report-replay-suite.py --suite build/replay-suite-check
+```
+
+This reads the ledger and latest capture progress. To verify retained results,
+resume the suite or use the expectation-recording command below.
+
 For a new build, use a fresh output directory and
 `--reference-dir build/replay-suite-check` to reuse validated retail captures.
 The runner checks replay, executable, game-data, and pacing identities before
