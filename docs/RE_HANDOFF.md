@@ -108,10 +108,19 @@ in `build/replay-suite/candidate-replay-input/`; executable SHA-256
 `3cf82cf0345c9de8f7aed883f144526df6e170c3a08f6e41c800a1b44b04916d`.
 Use a fresh suite directory with `--reference-dir build/replay-suite/matrix-v1`
 to retain the six complete retail captures and replay the repaired candidate.
-The new batch is `matrix-v2/`. All six completed cases pass on this executable,
+The new batch is `matrix-v2/`. All eight completed cases pass on this executable,
 including the earlier five cases revalidated after the repair. The published
-retail expectations cover 687,117 calculations. The batch continues with Solo
-Marisa; `suite.json` supplies the live count.
+retail expectations cover 919,426 calculations. `suite.json` supplies the live
+count; use `scripts/analysis/report-replay-suite.py` for a brief status report.
+
+The next fixture, Solo Sakuya (`easy-8-b`, `th8_ud2b7c.rpy`), stopped in retail
+at Stage 4A frame 19,840 with 3,772 input records left and score 31,688,942
+instead of the recorded 40,908,184. Normal and built-in fast-forward playback
+produce the same 59,706-calculation prefix. Starting directly at Stage 4A
+also produces the same 19,840 calculations after rebasing the calculation
+index. This is an incomplete reference, so no candidate pass is recorded.
+Ordinary pacing with rasterization is under investigation; evidence is under
+`build/replay-suite/sakuya-*/` and `matrix-v2/easy-8-b/`.
 
 Complete retail playback of the first two fixtures leaves different input
 tails: 3/7 and 2/6 intermediate/final records. The trailer guard accepts those

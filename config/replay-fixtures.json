@@ -457,7 +457,12 @@
       ],
       "player": "garbiale",
       "recordedBy": "夏花火",
-      "submittedAt": "2019/06/12 15:28:25"
+      "submittedAt": "2019/06/12 15:28:25",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 122814,
+        "sha256": "b3c71ef1d6fa95fe615546f1d1d042b49019ad99811cd0abfb6014e3b0c44643"
+      }
     },
     {
       "id": "easy-7-b",
@@ -518,7 +523,12 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "submittedAt": "2018/10/15 18:59:08"
+      "submittedAt": "2018/10/15 18:59:08",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 109495,
+        "sha256": "9b844b56c1541235beef7036b6e91b36eec260bb2b9d13b725ceb8e133eb7cc9"
+      }
     },
     {
       "id": "easy-8-b",

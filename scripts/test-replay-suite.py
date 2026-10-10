@@ -180,7 +180,7 @@ def main():
                             continue
                     command = [sys.executable, str(ROOT / "scripts/capture-replay.py"),
                                "--target", str(args.target.resolve()), "--replay", str(replay.resolve()),
-                               "--game-data", str(args.game_data.resolve()), "--bgm-data", str(args.bgm_data.resolve()),
+                               "--game-data", str(args.game_data.absolute()), "--bgm-data", str(args.bgm_data.absolute()),
                                "--output-dir", str(capture), "--clock-rate", str(args.clock_rate),
                                "--observer-backend", args.observer_backend,
                                "--timeout", str(args.timeout)]
