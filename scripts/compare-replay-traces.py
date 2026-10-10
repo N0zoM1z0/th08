@@ -14,8 +14,6 @@ def load(directory):
         raise ValueError(f"Incomplete or failed capture: {directory}")
     if not rows or complete["rows"] != len(rows):
         raise ValueError(f"Missing trace rows: {directory}")
-    if complete.get("lastFrame") != rows[-1][0]:
-        raise ValueError(f"Completion frame differs from trace: {directory}")
     if not metadata.get("muted"):
         raise ValueError(f"Capture was not muted: {directory}")
     if any(not isinstance(row, list) or any(type(value) is not int or not 0 <= value <= 0xffffffff
@@ -23,6 +21,8 @@ def load(directory):
         raise ValueError(f"Invalid trace values: {directory}")
     if any(len(row) != len(metadata["schema"]["fields"]) for row in rows):
         raise ValueError(f"Invalid row width: {directory}")
+    if complete.get("lastFrame") != rows[-1][0]:
+        raise ValueError(f"Completion frame differs from trace: {directory}")
     demo_column = metadata["schema"]["fields"].index("demo")
     indexes = metadata.get("demoIndexes", [0])
     seen = []

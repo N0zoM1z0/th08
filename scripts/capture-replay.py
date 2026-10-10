@@ -23,6 +23,8 @@ def observer_config(candidate, map_path):
         return dict(gameManager=0x0160F508, player=0x017D5EF8, rng=0x0164D520, input=0x0164D528,
                     itemManager=0x01653648,
                     bulletManager=0x00F54E90,
+                    effectManager=0x004ECE60, anmExecute=0x0045EA00,
+                    releaseEffects=0x0042A820,
                     enemyManager=0x00577F20, addScore=0x004181F0, randomU16=0x0043ECC0,
                     boundary=0x00441F52, attestAddress=0x00441F48,
                     attestBytes="b948f56401e8feaaffff8945fc")
@@ -52,6 +54,8 @@ def observer_config(candidate, map_path):
     return dict(gameManager=address("g_GameManager"), player=address("g_Player"), rng=address("g_Rng"),
                 input=address("g_CurFrameInput"), itemManager=address("g_ItemManager"),
                 bulletManager=address("g_BulletManager"),
+                effectManager=address("g_EffectManager"), anmExecute=address("ExecuteScript@AnmManager"),
+                releaseEffects=address("ReleaseAttachedEffects@Enemy"),
                 enemyManager=address("g_EnemyManager"), addScore=address("AddScore@GameManager"),
                 randomU16=address("GetRandomU16@Rng"),
                 boundary=call + 5, attestAddress=attest,
@@ -87,6 +91,8 @@ def main():
     parser.add_argument("--keep-runtime", action="store_true", help="Keep the isolated Wine prefix for debugging")
     parser.add_argument("--detail-start", type=int, default=0, help="First frame for item/point-value diagnostics")
     parser.add_argument("--detail-end", type=int, default=0, help="Last frame for item/point-value diagnostics")
+    parser.add_argument("--watch-effect", type=int, action="append", default=[],
+                        help="Trace this effect ID's lifetime, including inactive slots; repeat as needed")
     parser.add_argument("--display", help="Existing X display; default: a private Xvfb display")
     args = parser.parse_args()
     try:
@@ -101,6 +107,8 @@ def main():
         parser.error("--candidate and --map must be supplied together")
     if (args.detail_start or args.detail_end) and not 1 <= args.detail_start <= args.detail_end <= 6120:
         parser.error("Detail window must satisfy 1 <= start <= end <= 6120")
+    if any(value not in range(66) for value in args.watch_effect):
+        parser.error("--watch-effect requires an ID from 0 to 65")
     if args.candidate:
         args.candidate = args.candidate.resolve()
         args.map_path = args.map_path.resolve()
@@ -113,7 +121,8 @@ def main():
     runtime.mkdir()
     executable = args.candidate or args.target
     observer_settings = observer_config(args.candidate, args.map_path)
-    observer_settings.update(detailStart=args.detail_start, detailEnd=args.detail_end, demoIndexes=demos)
+    observer_settings.update(detailStart=args.detail_start, detailEnd=args.detail_end, demoIndexes=demos,
+                             watchEffects=args.watch_effect)
     shutil.copyfile(executable, runtime / "th08.exe")
     for name, data in (("th08.dat", args.game_data), ("thbgm.dat", args.bgm_data)):
         (runtime / name).symlink_to(data)

@@ -167,6 +167,8 @@ def object_function(
                     "symbol": referenced.get_name(module.string_table).decode(
                         "ascii", errors="strict"
                     ),
+                    "local_symbol_offset": referenced.value - symbol.value
+                    if referenced.section_number == symbol.section_number else None,
                 }
             )
     return function, relocations
@@ -226,12 +228,23 @@ def apply_relocations(
         )
 
     report = []
+    actual_by_offset = {int(row["offset"]): row for row in actual}
     for relocation in normalized_expected:
         offset = relocation["offset"]
         if offset < 0 or offset + 4 > len(code):
             raise ValueError(f"relocation offset outside function: {offset:#x}")
         object_field_before = struct.unpack_from("<I", code, offset)[0]
         addend = object_field_before
+        # Internal labels must keep their actual offset in the COFF function.
+        # Substituting a manifest address here can conceal a wrong case entry.
+        local_offset = actual_by_offset[offset].get("local_symbol_offset")
+        if local_offset is not None and target_address <= relocation["target"] < target_address + len(code):
+            actual_target = target_address + int(local_offset)
+            if actual_target != relocation["target"]:
+                raise ValueError(
+                    f"local relocation at {offset:#x} resolves to {actual_target:#x}, "
+                    f"manifest declares {relocation['target']:#x}"
+                )
         if relocation["type"] == "DIR32":
             value = relocation["target"] + addend
         else:

@@ -42,10 +42,17 @@ owner/callee check, and the diagnostic window at demo 0 frames 5200–5270
 agrees for all collected pools and collision regions. See
 [RT-009](RUNTIME_ISSUES.md#rt-009).
 
-The full 6120-frame trace now agrees through frame 5907. The next bounded
-investigation is the extra RNG consumption at frame 5908; capture RNG caller
-events and compare the earliest producer. Keep temporary Wine prefixes and
-diagnostic data small, and leave GitHub issues without comments.
+The second repair moves death mode 2 past the boss cleanup block, preserving
+six spellcard orbits. Their premature release caused the extra RNG consumption
+at demo 0 frame 5908. COFF local-label destinations are now checked before
+relocation normalization; all 1,106 accepted authored units passed a cold
+build and replay with this check. The fresh playable link also verifies the
+four death-mode switch entries and Fantasy Seal math callees. See
+[RT-010](RUNTIME_ISSUES.md#rt-010).
+
+The next gate is the strict full comparison of all three bundled demos.
+Keep temporary Wine prefixes and diagnostic data small, and leave GitHub
+issues without comments.
 
 <a id="documentation-batch-for-local-review"></a>
 

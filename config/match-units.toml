@@ -10957,7 +10957,7 @@ target = 0x0042D809
 [[units.relocations]]
 offset = 0x183E
 type = "DIR32"
-symbol = "$common_death_mode$61524"
+symbol = "$L*"
 target = 0x0042D8EE
 
 [[units.relocations]]

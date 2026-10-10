@@ -534,13 +534,13 @@ i32 EnemyManager::OnUpdate()
                 }
                 goto common_death_mode;
 
-            case ENEMY_DEATH_MODE_KEEP_RUNTIME_STATE:
             common_death_mode:
                 if (reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->boss)
                 {
                     g_Gui.SetBossPresent(false);
                     enemy->ReleaseAttachedEffects();
                 }
+            case ENEMY_DEATH_MODE_KEEP_RUNTIME_STATE:
                 enemy->DropItems(bombHit);
                 if (reinterpret_cast<EnemyFlag1Bits *>(&enemy->flags1)->boss &&
                     !g_Spellcard.IsActive())

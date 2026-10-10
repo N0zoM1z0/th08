@@ -448,7 +448,21 @@ def verify_additional_runtime_callees(
             0x0040C010,
             0x795,
             "?UpdateFantasyOrbBomb@th08@@YIXPAUPlayer@1@@Z",
-            ((0x2F1, 0x0040D3F0, "??8ZunTimer@th08@@QAEIH@Z"),),
+            (
+                (0x264, 0x00409060, "@sinf@4"),
+                (0x282, 0x00408D40, "@cosf@4"),
+                (0x2F1, 0x0040D3F0, "??8ZunTimer@th08@@QAEIH@Z"),
+            ),
+        ),
+        (
+            "UpdateFantasySealBlinkDeathbomb",
+            0x0040C910,
+            0x6FE,
+            "?UpdateFantasySealBlinkDeathbomb@th08@@YIXPAUPlayer@1@@Z",
+            (
+                (0x265, 0x00409060, "@sinf@4"),
+                (0x283, 0x00408D40, "@cosf@4"),
+            ),
         ),
         (
             "SpawnRandomizedShot",
@@ -568,6 +582,21 @@ def raw_backed_section(image: PEImage, va: int):
     return None
 
 
+def verify_enemy_death_dispatch(target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]) -> None:
+    """Check the linked switch entries that control attached-effect cleanup."""
+    target_start = 0x0042C660
+    rebuilt_start = public_va(publics, "OnUpdate@EnemyManager")
+    entries = []
+    for image, start in ((target, target_start), (rebuild, rebuilt_start)):
+        dispatch = read_va(image, start + 0x104F, 7)
+        if dispatch[:3] != b"\xff\x24\x85":
+            raise ValueError("EnemyManager::OnUpdate death dispatcher is not jmp [eax*4+table]")
+        table = struct.unpack_from("<I", dispatch, 3)[0]
+        entries.append(tuple(destination - start for destination in struct.unpack("<4I", read_va(image, table, 16))))
+    if entries[0] != entries[1]:
+        raise ValueError(f"EnemyManager::OnUpdate death-mode destinations differ: target={entries[0]}, rebuild={entries[1]}")
+
+
 def uninitialized_raw_owner_candidates(target: PEImage) -> list[str]:
     addresses: dict[str, set[int]] = {}
     with (ROOT / "config" / "reccmp-globals.csv").open(newline="") as stream:
@@ -640,6 +669,7 @@ def main() -> int:
         verify_background_stage_gate(target, rebuild, publics)
         verify_additional_runtime_callees(target, rebuild, publics)
         verify_player_shot_callback_tables(target, rebuild, publics)
+        verify_enemy_death_dispatch(target, rebuild, publics)
     except (OSError, UnicodeError, ValueError, struct.error) as exc:
         print(f"Windows i386 runtime-data verification failed: {exc}", file=sys.stderr)
         return 1
@@ -651,9 +681,10 @@ def main() -> int:
         "Gui::frontAnm in all 8 linked loads; spell backgrounds select "
         "EffectManager::stageEffectAnm; all 21 player gauge-bound writes select "
         "the six GameManager fields; all 3 Background draw gates call "
-        "Gui::IsStageFinished; 8 additional repaired REL32 calls select their "
+        "Gui::IsStageFinished; 12 additional repaired REL32 calls select their "
         "target-mapped callees; all 20 player-shot callback entries resolve "
-        "through their target-owned tables"
+        "through their target-owned tables; all 4 enemy death-mode switch "
+        "entries preserve their target-relative destinations"
     )
     return 0
 

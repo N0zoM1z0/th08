@@ -9,14 +9,63 @@ stream = (output / "rows.jsonl").open("w")
 detail_stream = (output / "items.jsonl").open("w")
 score_stream = (output / "score-events.jsonl").open("w")
 rng_stream = (output / "rng-events.jsonl").open("w")
+effect_stream = (output / "effects.jsonl").open("w")
+effect_event_stream = (output / "effect-events.jsonl").open("w")
 settings = json.loads((output / "observer.json").read_text())
 GM = settings["gameManager"]
 PLAYER = settings["player"]
 RNG = settings["rng"]
+seen_effect_slots = {}
 
 
 def read(address, size=4, signed=False):
     return int.from_bytes(gdb.selected_inferior().read_memory(address, size), "little", signed=signed)
+
+
+def capture_effects(watched_only=False):
+    effects = []
+    data = bytes(gdb.selected_inferior().read_memory(settings["effectManager"] + 0x1c, 654 * 0x360))
+    for index in range(654):
+        base = index * 0x360
+        effect_id = data[base + 0x351]
+        if effect_id in settings.get("watchEffects", []) and data[base + 0x350]:
+            seen_effect_slots[index] = effect_id
+        elif seen_effect_slots.get(index) != effect_id:
+            seen_effect_slots.pop(index, None)
+        # ID 0 also occurs in never-used, zero-initialized slots.
+        watched = index in seen_effect_slots
+        if not (watched if watched_only else data[base + 0x350] or watched):
+            continue
+        beginning, current = struct.unpack_from("<II", data, base + 0x21c)
+        effects.append(dict(slot=index, id=data[base + 0x351], active=data[base + 0x350],
+                            position=list(struct.unpack_from("<3f", data, base + 0x2a4)),
+                            timer=struct.unpack_from("<i", data, base + 0x340)[0],
+                            releaseRequested=data[base + 0x352], releaseTimer=data[base + 0x353],
+                            anmTime=struct.unpack_from("<i", data, base + 0x40)[0],
+                            flags=struct.unpack_from("<I", data, base + 0x1f8)[0],
+                            pendingInterrupt=struct.unpack_from("<h", data, base + 0x1fe)[0],
+                            instructionOffset=current - beginning if current else None,
+                            file=struct.unpack_from("<h", data, base + 0x216)[0],
+                            script=struct.unpack_from("<h", data, base + 0x21a)[0]))
+    return effects
+
+
+def attached_effects(enemy):
+    count = read(enemy + 0x53c0)
+    if count > 24:
+        raise RuntimeError("Invalid attached-effect count")
+    return [(read(enemy + 0x5360 + index * 4) - settings["effectManager"] - 0x1c) // 0x360
+            if read(enemy + 0x5360 + index * 4) else None for index in range(count)]
+
+
+def capture_effect_owners():
+    owners = []
+    for slot in range(8):
+        enemy = read(settings["enemyManager"] + 0x9dcda0 + slot * 4)
+        if enemy:
+            owners.append(dict(boss=slot, enemySlot=(enemy - settings["enemyManager"] - 0x53d0) // 0x53d0,
+                               attachedSlots=attached_effects(enemy), flags=read(enemy + 0x3324)))
+    return owners
 
 
 # Attest the actual loaded instruction sequence before setting a hardware BP.
@@ -40,7 +89,7 @@ class Observer(gdb.Breakpoint):
         try:
             return self.capture_frame()
         except Exception as error:
-            for handle in (stream, detail_stream, score_stream, rng_stream):
+            for handle in (stream, detail_stream, score_stream, rng_stream, effect_stream, effect_event_stream):
                 if not handle.closed:
                     handle.close()
             (output / "complete.json").write_text(json.dumps(dict(
@@ -60,6 +109,8 @@ class Observer(gdb.Breakpoint):
                 detail_stream.close()
                 score_stream.close()
                 rng_stream.close()
+                effect_stream.close()
+                effect_event_stream.close()
                 (output / "complete.json").write_text(json.dumps(dict(
                     rows=self.count, lastFrame=self.last_frame, completedDemos=self.completed_demos, ended=True)) + "\n")
                 self.enabled = False
@@ -73,6 +124,7 @@ class Observer(gdb.Breakpoint):
             if demo == 0 and read(GM + 0x3DDC4) != 5:
                 raise RuntimeError("Expected Stage 5 for demo 0")
             self.demo = demo
+            seen_effect_slots.clear()
         globals_address = read(GM + 8)
         row = [frame, read(GM + 0x3DDC4), read(GM + 0x3DBB4, 1), read(GM + 0x3DDC0),
                read(globals_address + 8), read(globals_address + 12)]
@@ -83,6 +135,9 @@ class Observer(gdb.Breakpoint):
                 read(globals_address + 0x22, 2, signed=True) & 0xffffffff,
                 read(globals_address + 0x28, 1), (flags >> 1) & 1]
         stream.write(json.dumps(row) + "\n")
+        if settings.get("watchEffects"):
+            effect_stream.write(json.dumps(dict(frame=frame, demo=demo, effects=capture_effects(True),
+                                                owners=capture_effect_owners())) + "\n")
         if settings["detailStart"] and frame == settings["detailStart"]:
             self.score_observer = ScoreObserver()
             self.rng_observer = RngObserver()
@@ -156,10 +211,12 @@ class Observer(gdb.Breakpoint):
                                         velocity=list(struct.unpack_from("<3f", data, base + 0xd50)),
                                         angle=struct.unpack_from("<f", data, base + 0xd74)[0],
                                         grazed=data[base + 0xdbd]))
+            effects = capture_effects()
             detail_stream.write(json.dumps(dict(frame=frame, demo=demo, pointValue=read(globals_address + 0x24),
                                                fpuControl=int(gdb.parse_and_eval("$fctrl")),
                                                bombState=[read(bomb + offset) for offset in (0, 4, 8, 0x20)],
                                                workItems=work_items, regions=regions, bullets=bullets,
+                                               effects=effects,
                                                items=items, shots=shots, enemies=enemies)) + "\n")
         self.count += 1
         self.last_frame = frame
@@ -168,6 +225,8 @@ class Observer(gdb.Breakpoint):
             detail_stream.flush()
             score_stream.flush()
             rng_stream.flush()
+            effect_stream.flush()
+            effect_event_stream.flush()
         return False
 
 
@@ -190,20 +249,59 @@ class RngObserver(gdb.Breakpoint):
         sp = int(gdb.parse_and_eval("$esp"))
         bp = int(gdb.parse_and_eval("$ebp"))
         callers = [hex(read(sp))]
+        vm_info = None
         for _ in range(3):
             if not bp:
                 break
             try:
-                callers.append(hex(read(bp + 4)))
+                caller = read(bp + 4)
+                callers.append(hex(caller))
                 next_bp = read(bp)
+                anm = settings.get("anmExecute", 0)
+                if anm and anm <= caller < anm + 0x366d:
+                    vm = read(next_bp + 8)
+                    kind, slot, offset = "other", 0, vm
+                    for name, base, stride, count in (
+                        ("bullet", settings["bulletManager"] + 0x1a880, 0x10b8, 1536),
+                        ("effect", settings["effectManager"] + 0x1c, 0x360, 654),
+                        ("enemy", settings["enemyManager"] + 0x53d0, 0x53d0, 480),
+                        ("player", PLAYER, 0xe2b2c, 1),
+                    ):
+                        if base <= vm < base + stride * count:
+                            kind = name
+                            slot, offset = divmod(vm - base, stride)
+                            break
+                    vm_info = dict(kind=kind, slot=slot, offset=offset,
+                                   file=read(vm + 0x216, 2, signed=True), script=read(vm + 0x21a, 2, signed=True),
+                                   instructionOffset=read(vm + 0x220) - read(vm + 0x21c))
                 if next_bp <= bp or next_bp > bp + 0x100000:
                     break
                 bp = next_bp
             except gdb.MemoryError:
                 break
         rng_stream.write(json.dumps(dict(frame=read(GM + 0x3dbb8), demo=read(GM + 0x3dbb4, 1),
-                                         seed=read(RNG, 2), generation=read(RNG + 4), callers=callers)) + "\n")
+                                         seed=read(RNG, 2), generation=read(RNG + 4), callers=callers, vm=vm_info)) + "\n")
+        return False
+
+
+class EffectReleaseObserver(gdb.Breakpoint):
+    def __init__(self):
+        super().__init__(f"*0x{settings['releaseEffects']:08X}", gdb.BP_HARDWARE_BREAKPOINT)
+
+    def stop(self):
+        if effect_event_stream.closed or not read(GM + 0x3dbac) & 8:
+            return False
+        demo = read(GM + 0x3dbb4, 1)
+        if demo not in settings.get("demoIndexes", [0]):
+            return False
+        enemy = int(gdb.parse_and_eval("$ecx"))
+        sp = int(gdb.parse_and_eval("$esp"))
+        effect_event_stream.write(json.dumps(dict(frame=read(GM + 0x3dbb8), demo=demo, caller=hex(read(sp)),
+                                                 enemySlot=(enemy - settings["enemyManager"] - 0x53d0) // 0x53d0,
+                                                 attachedSlots=attached_effects(enemy))) + "\n")
         return False
 
 
 Observer()
+if settings.get("watchEffects"):
+    EffectReleaseObserver()

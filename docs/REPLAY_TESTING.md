@@ -80,11 +80,24 @@ python3 scripts/capture-replay.py \
 
 Omit `--candidate` and `--map` for the retail capture. `items.jsonl` adds active
 items, player shots, enemies, enemy bullets, bomb work items, collision
-regions, point value, and FPU control for the selected window.
+regions, effects, point value, and FPU control for the selected window.
 `score-events.jsonl` records `AddScore` arguments and return addresses. Resolve
 retail callers through the target mappings and candidate callers through the
 linker map. Allocation slots make pool entries comparable across the two
 images.
+
+`rng-events.jsonl` records RNG consumption and caller frames. When the call
+comes from an ANM instruction, it also identifies the VM's object pool,
+allocation slot, file, and script. This distinguishes an extra gameplay
+decision from extra animation instances that consume the shared RNG.
+
+To follow an effect across the whole replay, add `--watch-effect 13` for
+spellcard orbits, or another ID from `EffectId`. `effects.jsonl` records only
+the selected IDs, including inactive slots, animation flags, script position,
+and release state, alongside boss attachment lists. `effect-events.jsonl`
+records `ReleaseAttachedEffects` callers and the slots they release.
+This capture needs no detail window and keeps long
+lifetime investigations small.
 
 Start with the earliest differing state, follow its producer back to target
 instructions, and fix one bounded cause. Rebuild and compare the affected
@@ -92,5 +105,6 @@ object, verify the final playable link, then rerun the complete fixtures.
 Keep the small summary and required trace; delete duplicate captures and
 diagnostic windows after recording their conclusions.
 
-The first use of this procedure found the Fantasy Seal bomb/deathbomb sine
-and cosine binding error recorded as [RT-009](RUNTIME_ISSUES.md#rt-009).
+This procedure found the Fantasy Seal sine/cosine binding error in
+[RT-009](RUNTIME_ISSUES.md#rt-009) and the death-mode switch entry that
+prematurely released spellcard orbits in [RT-010](RUNTIME_ISSUES.md#rt-010).
