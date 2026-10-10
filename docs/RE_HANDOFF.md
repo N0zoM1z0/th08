@@ -29,10 +29,12 @@ and [issue ledger](RUNTIME_ISSUES.md) for evidence.
 Native 64-bit work is on `port/portable-64bit`; Web work is in `th08-web`.
 Each port has its own build and runtime validation alongside the VC7 path.
 
-## Documentation batch for local review
+<a id="documentation-batch-for-local-review"></a>
 
-The `docs/human-agent-reading-paths` branch implements the documentation scope
-of [issue #24](https://github.com/N0zoM1z0/th08/issues/24). The homepage retains
+## Completed human and agent documentation batch
+
+The documentation update for [issue #24](https://github.com/N0zoM1z0/th08/issues/24)
+has passed local review. The homepage retains
 its AI agent workflow and explains exact reconstruction, reimplementation,
 and ports. [docs/README.md](README.md) provides human and agent
 reading routes; [PROJECT_GUIDE.md](PROJECT_GUIDE.md) explains runtime concepts
@@ -94,11 +96,8 @@ unchanged.
 
 ## Next bounded work
 
-Review the documentation branch locally before publication. Start at
-[docs/README.md](README.md), follow a human route and the agent session route,
-and inspect the homepage's retained workflow section.
-
-For later reconstruction work, select one evidence-backed family at a time.
+Start future sessions at [docs/README.md](README.md) and use the appropriate
+reading route. For reconstruction work, select one evidence-backed family at a time.
 The ANM queue keeps opcodes 25, 31, and 88 neutral until their
 complete TH08 consumer sets justify a shared-layout rename. Whole-image/library
 work remains independent and should resume only for a bounded link dependency.
