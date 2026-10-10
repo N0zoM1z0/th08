@@ -107,10 +107,10 @@ in `build/replay-suite/candidate-replay-input/`; executable SHA-256
 `3cf82cf0345c9de8f7aed883f144526df6e170c3a08f6e41c800a1b44b04916d`.
 Use a fresh suite directory with `--reference-dir build/replay-suite/matrix-v1`
 to retain the six complete retail captures and replay the repaired candidate.
-The new batch is `matrix-v2/`. All 48 Final B cases pass on this executable
-across Easy, Normal, Hard, and Lunatic, including the earlier five cases
-revalidated after the repair. The published retail expectations cover
-5,995,059 calculations. The batch has reached Extra; Final A follows.
+The new batch is `matrix-v2/`. All 48 Final B cases across the four main
+difficulties and all 12 Extra cases pass on this executable, including the
+earlier five cases revalidated after the repair. The 60 published retail
+expectations cover 6,595,054 calculations. The batch has reached Easy Final A.
 `suite.json` supplies the live count; use `scripts/analysis/report-replay-suite.py`
 for a brief status report.
 

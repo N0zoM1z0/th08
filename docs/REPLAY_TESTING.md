@@ -199,7 +199,7 @@ do not affect it. `comparison.json` prints both fingerprints.
 The first full-route checkpoint used Ubuntu 24.04 on WSL2 x86-64, Wine 9.0,
 Mesa llvmpipe 25.2.8, Python 3.13.5, and Xvfb 21.1.12. Compiler and library
 pins are in the [native build procedure](WINDOWS_I386_RUNTIME.md).
-The 48 published cases passed at source checkpoint `25c101f9`, including a
+The 60 published cases passed at source checkpoint `25c101f9`, including a
 rerun of the first five cases after the replay-input repair. Build the `bugfix`
 profile from this branch or a later revision containing its repairs.
 Capture metadata records executable, map, data and configuration hashes,
@@ -221,25 +221,27 @@ candidate executable and map, and the recorded calculation counts. It rejects
 changes to existing expectations. Only the acceptance hashes and counts enter
 the manifest; generated reports and recordings remain under `build/`.
 
-All twelve shot types have complete Final B expectations on all four main difficulties:
+All twelve shot types have complete Final B expectations on all four main
+difficulties, plus Extra:
 
-| Shot | Stage 4 route | Easy calculations | Normal calculations | Hard calculations | Lunatic calculations |
-| --- | --- | ---: | ---: | ---: | ---: |
-| Border Team | B | 107,296 | 100,979 | 122,914 | 113,221 |
-| Magic Team | A | 126,803 | 132,235 | 139,702 | 106,063 |
-| Scarlet Team | A | 98,098 | 123,844 | 131,706 | 112,701 |
-| Ghost Team | B | 103,875 | 113,791 | 118,338 | 149,986 |
-| Reimu | B | 118,416 | 134,128 | 126,126 | 137,112 |
-| Yukari | B | 132,629 | 126,201 | 120,173 | 113,666 |
-| Marisa | A | 122,814 | 135,726 | 130,503 | 120,438 |
-| Alice | A | 109,495 | 129,300 | 125,026 | 127,016 |
-| Sakuya | A | 134,146 | 148,719 | 143,785 | 143,679 |
-| Remilia | A | 129,211 | 110,715 | 129,463 | 132,477 |
-| Youmu | B | 117,698 | 122,716 | 134,771 | 113,660 |
-| Yuyuko | B | 127,605 | 129,556 | 121,434 | 145,103 |
+| Shot | Stage 4 route | Easy B | Normal B | Hard B | Lunatic B | Extra |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Border Team | B | 107,296 | 100,979 | 122,914 | 113,221 | 49,029 |
+| Magic Team | A | 126,803 | 132,235 | 139,702 | 106,063 | 44,106 |
+| Scarlet Team | A | 98,098 | 123,844 | 131,706 | 112,701 | 44,554 |
+| Ghost Team | B | 103,875 | 113,791 | 118,338 | 149,986 | 45,822 |
+| Reimu | B | 118,416 | 134,128 | 126,126 | 137,112 | 77,082 |
+| Yukari | B | 132,629 | 126,201 | 120,173 | 113,666 | 48,567 |
+| Marisa | A | 122,814 | 135,726 | 130,503 | 120,438 | 51,084 |
+| Alice | A | 109,495 | 129,300 | 125,026 | 127,016 | 48,268 |
+| Sakuya | A | 134,146 | 148,719 | 143,785 | 143,679 | 54,772 |
+| Remilia | A | 129,211 | 110,715 | 129,463 | 132,477 | 44,767 |
+| Youmu | B | 117,698 | 122,716 | 134,771 | 113,660 | 44,771 |
+| Yuyuko | B | 127,605 | 129,556 | 121,434 | 145,103 | 47,173 |
 
-All 25 fields agree over 5,995,059 calculations on that source checkpoint.
-The current batch continues through Extra and Final A. Repository CI validates
+The table gives complete calculation counts. All 25 fields agree over
+6,595,054 calculations on that source checkpoint. The batch continues through
+Final A. Repository CI validates
 the manifest's complete 108-case grid and published expectation format.
 
 ## Reference fixture failures

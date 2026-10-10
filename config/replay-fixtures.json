@@ -3200,7 +3200,12 @@
       ],
       "player": "NNFS    ",
       "recordedBy": "COMIT",
-      "playedAt": "2021/11/06 15:43:43"
+      "playedAt": "2021/11/06 15:43:43",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 49029,
+        "sha256": "ba34340119e4c9cd1af83ec9c04a472771c0f72d6e6aeb80332b4b80465be75d"
+      }
     },
     {
       "id": "extra-1-extra",
@@ -3231,7 +3236,12 @@
       ],
       "player": "NNFS    ",
       "recordedBy": "ふすま",
-      "playedAt": "2020/10/16 11:24:35"
+      "playedAt": "2020/10/16 11:24:35",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 44106,
+        "sha256": "3c69ae01ef72b5cd0e0a43e3d45d0d584e7fc157aed4669993455dc532530072"
+      }
     },
     {
       "id": "extra-2-extra",
@@ -3262,7 +3272,12 @@
       ],
       "player": "NNFS    ",
       "recordedBy": "ふすま",
-      "playedAt": "2020/10/13 23:01:41"
+      "playedAt": "2020/10/13 23:01:41",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 44554,
+        "sha256": "d48351bfe2d5e873a12ce956d03f6d35b420cab65ca134a687ba7b4c3c58765f"
+      }
     },
     {
       "id": "extra-3-extra",
@@ -3293,7 +3308,12 @@
       ],
       "player": "zvs     ",
       "recordedBy": "zvs",
-      "playedAt": "2021/12/06 02:07:57"
+      "playedAt": "2021/12/06 02:07:57",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 45822,
+        "sha256": "3a478286db00f38e16363959966e1e7700c906d9fca568357822744ffcccf49d"
+      }
     },
     {
       "id": "extra-4-extra",
@@ -3324,7 +3344,12 @@
       ],
       "player": "LOWSCORE",
       "recordedBy": "MELON",
-      "playedAt": "2021/12/17 15:00:52"
+      "playedAt": "2021/12/17 15:00:52",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 77082,
+        "sha256": "028147a8f8127879652ca363080a308553fc5cfd1db436ba20c7543a0418400f"
+      }
     },
     {
       "id": "extra-5-extra",
@@ -3355,7 +3380,12 @@
       ],
       "player": "LSYSHXX ",
       "recordedBy": "FF0000",
-      "playedAt": "2021/06/27 14:03:32"
+      "playedAt": "2021/06/27 14:03:32",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 48567,
+        "sha256": "566f75316e2ed1460df449114e97c00def4b911a6fd36108e5152b2b90ce5958"
+      }
     },
     {
       "id": "extra-6-extra",
@@ -3386,7 +3416,12 @@
       ],
       "player": "LET     ",
       "recordedBy": "LET",
-      "playedAt": "2021/05/02 21:58:19"
+      "playedAt": "2021/05/02 21:58:19",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 51084,
+        "sha256": "b618a4c28684ca6dc67e12e04eee097ab433303f0777d69a65c1252fa3333fbf"
+      }
     },
     {
       "id": "extra-7-extra",
@@ -3417,7 +3452,12 @@
       ],
       "player": "CSWHRDF ",
       "recordedBy": "1",
-      "playedAt": "2020/03/13 16:16:02"
+      "playedAt": "2020/03/13 16:16:02",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 48268,
+        "sha256": "c6fefb9bd189f3db32df2be109771dfaf8705a093a6d1a2b8488525ec79c559a"
+      }
     },
     {
       "id": "extra-8-extra",
@@ -3448,7 +3488,12 @@
       ],
       "player": "NMNBFS  ",
       "recordedBy": "ふすま",
-      "playedAt": "2021/11/23 22:15:07"
+      "playedAt": "2021/11/23 22:15:07",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 54772,
+        "sha256": "9c1223ef5256da887a23fa58da9e5bf1953f5f45b6950ab75a5ea52efcc24ea1"
+      }
     },
     {
       "id": "extra-9-extra",
@@ -3479,7 +3524,12 @@
       ],
       "player": "NMNBFS  ",
       "recordedBy": "ふすま",
-      "playedAt": "2020/07/17 01:09:17"
+      "playedAt": "2020/07/17 01:09:17",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 44767,
+        "sha256": "446f304b547290e1b29486f86c73c13ba7983d61f3c35dda252bd7dd86217dfe"
+      }
     },
     {
       "id": "extra-10-extra",
@@ -3510,7 +3560,12 @@
       ],
       "player": "NNFS    ",
       "recordedBy": "ふすま",
-      "playedAt": "2020/10/30 12:02:30"
+      "playedAt": "2020/10/30 12:02:30",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 44771,
+        "sha256": "ddca7cf69f8517f95734d4651fd0fcca5ec26d09eb9807b4843fd8323e254b2c"
+      }
     },
     {
       "id": "extra-11-extra",
@@ -3541,7 +3596,12 @@
       ],
       "player": "NMNBFS  ",
       "recordedBy": "ふすま",
-      "playedAt": "2021/05/16 16:07:34"
+      "playedAt": "2021/05/16 16:07:34",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 47173,
+        "sha256": "7f5c48504a5cf5556abaa6348866dd4ecbbc9584e5907bd46dc27135c729c86c"
+      }
     },
     {
       "id": "easy-0-a",
