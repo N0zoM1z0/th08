@@ -3662,7 +3662,12 @@
       ],
       "player": "SKLemon ",
       "recordedBy": "SKLemon",
-      "playedAt": "2021/09/23 15:16:39"
+      "playedAt": "2021/09/23 15:16:39",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 99113,
+        "sha256": "81f535e3e01743255fe1edbe71740f0b27050702ce4d28848ce934d38be1643c"
+      }
     },
     {
       "id": "easy-1-a",
@@ -3723,7 +3728,12 @@
       ],
       "player": "garbiale",
       "recordedBy": "ガブリエラ",
-      "playedAt": "2020/10/17 14:45:47"
+      "playedAt": "2020/10/17 14:45:47",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 126114,
+        "sha256": "0bd51f5c799d531cbe5a3eeec2a719b43d750e92f0e5de48dfa9850825420526"
+      }
     },
     {
       "id": "easy-2-a",
@@ -3784,7 +3794,12 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "playedAt": "2018/10/01 13:34:35"
+      "playedAt": "2018/10/01 13:34:35",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 96825,
+        "sha256": "d2042fa505374c0d58fcc34df3d83c7b5726418261afc80b3dea5d891dcb76ef"
+      }
     },
     {
       "id": "easy-3-a",
@@ -3845,7 +3860,12 @@
       ],
       "player": "garbiale",
       "recordedBy": "ガブリエラ",
-      "playedAt": "2020/08/12 00:33:22"
+      "playedAt": "2020/08/12 00:33:22",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 121373,
+        "sha256": "9ec8b1ac38cb6b23d2aff7553f017a5e4c035134a85784194bad83a359010f05"
+      }
     },
     {
       "id": "easy-4-a",
@@ -3906,7 +3926,12 @@
       ],
       "player": "garbiale",
       "recordedBy": "夏花火",
-      "playedAt": "2021/02/06 23:36:14"
+      "playedAt": "2021/02/06 23:36:14",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 131458,
+        "sha256": "9601eec4c73e943c313b3ea2f6150560b98e291416723c757a68dd0ba611a9a9"
+      }
     },
     {
       "id": "easy-5-a",
@@ -3967,7 +3992,12 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "playedAt": "2018/10/13 22:16:59"
+      "playedAt": "2018/10/13 22:16:59",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 98897,
+        "sha256": "6ddeee05582978c6e8db5a8d48396436bc33cad9a033a2e57557f172dfe13054"
+      }
     },
     {
       "id": "easy-6-a",
@@ -4028,7 +4058,12 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "playedAt": "2018/10/14 11:22:47"
+      "playedAt": "2018/10/14 11:22:47",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 107722,
+        "sha256": "a2a86ef4445da61439ab2271af397d1f63bd216ac0a755eea6034199a3337dc2"
+      }
     },
     {
       "id": "easy-7-a",
@@ -4089,7 +4124,12 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "playedAt": "2018/10/15 18:26:22"
+      "playedAt": "2018/10/15 18:26:22",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 106778,
+        "sha256": "04a90cf54f9ebfd207e8597d15dc2f8aa8fb69a061f22b075cebf93dc004ddec"
+      }
     },
     {
       "id": "easy-8-a",
@@ -4150,7 +4190,12 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "playedAt": "2018/10/16 22:08:17"
+      "playedAt": "2018/10/16 22:08:17",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 123487,
+        "sha256": "d75b76a079c136ffade8608b5fe73da8f02c4dbe1efd6d65822c9c0586714a09"
+      }
     },
     {
       "id": "easy-9-a",
@@ -4211,7 +4256,12 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "playedAt": "2018/10/18 12:05:12"
+      "playedAt": "2018/10/18 12:05:12",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 93040,
+        "sha256": "0fca1bf1a974f7f8c2359c855761959e882e091be2bef64673fba880df402de6"
+      }
     },
     {
       "id": "easy-10-a",
@@ -4272,7 +4322,12 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "playedAt": "2018/10/18 18:11:35"
+      "playedAt": "2018/10/18 18:11:35",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 95280,
+        "sha256": "abb02eaa232f92aa497095e3fdbfee0571f5d3a81b3820666422ff7b729f4650"
+      }
     },
     {
       "id": "easy-11-a",
@@ -4333,7 +4388,12 @@
       ],
       "player": "GHS     ",
       "recordedBy": "GHS",
-      "playedAt": "2018/10/18 19:14:22"
+      "playedAt": "2018/10/18 19:14:22",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 106420,
+        "sha256": "46f34d3b51ae92777042a33e719788353af0be71a09e3ebe21602fa87d97f3d0"
+      }
     },
     {
       "id": "normal-0-a",

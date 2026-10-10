@@ -199,7 +199,7 @@ do not affect it. `comparison.json` prints both fingerprints.
 The first full-route checkpoint used Ubuntu 24.04 on WSL2 x86-64, Wine 9.0,
 Mesa llvmpipe 25.2.8, Python 3.13.5, and Xvfb 21.1.12. Compiler and library
 pins are in the [native build procedure](WINDOWS_I386_RUNTIME.md).
-The 60 published cases passed at source checkpoint `25c101f9`, including a
+The 72 published cases passed at source checkpoint `25c101f9`, including a
 rerun of the first five cases after the replay-input repair. Build the `bugfix`
 profile from this branch or a later revision containing its repairs.
 Capture metadata records executable, map, data and configuration hashes,
@@ -239,10 +239,27 @@ difficulties, plus Extra:
 | Youmu | B | 117,698 | 122,716 | 134,771 | 113,660 | 44,771 |
 | Yuyuko | B | 127,605 | 129,556 | 121,434 | 145,103 | 47,173 |
 
-The table gives complete calculation counts. All 25 fields agree over
-6,595,054 calculations on that source checkpoint. The batch continues through
-Final A. Repository CI validates
-the manifest's complete 108-case grid and published expectation format.
+Easy Final A also has complete expectations for all twelve shots:
+
+| Shot | Easy A calculations |
+| --- | ---: |
+| Border Team | 99,113 |
+| Magic Team | 126,114 |
+| Scarlet Team | 96,825 |
+| Ghost Team | 121,373 |
+| Reimu | 131,458 |
+| Yukari | 98,897 |
+| Marisa | 107,722 |
+| Alice | 106,778 |
+| Sakuya | 123,487 |
+| Remilia | 93,040 |
+| Youmu | 95,280 |
+| Yuyuko | 106,420 |
+
+The tables give complete calculation counts. All 25 fields agree over
+7,901,561 calculations on that source checkpoint. The batch continues through
+Normal, Hard, and Lunatic Final A. Repository CI validates the manifest's
+complete 108-case grid and published expectation format.
 
 ## Reference fixture failures
 
