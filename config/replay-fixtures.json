@@ -1646,7 +1646,12 @@
       ],
       "player": "rikue471",
       "recordedBy": "いもむし",
-      "playedAt": "2020/07/07 23:20:28"
+      "playedAt": "2020/07/07 23:20:28",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 122914,
+        "sha256": "ec9473a205dd98a99f8d561a70e59a44a7c187325e3fa916826fa4333c6bac47"
+      }
     },
     {
       "id": "hard-1-b",
@@ -1707,7 +1712,12 @@
       ],
       "player": "K@G HaMA",
       "recordedBy": "Ｋ・Ｇ",
-      "playedAt": "2016/07/16 22:21:59"
+      "playedAt": "2016/07/16 22:21:59",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 139702,
+        "sha256": "d4ec661b9c717b72bc77f97025762279e932c17c1acf109db28643d23568ab91"
+      }
     },
     {
       "id": "hard-2-b",
@@ -1768,7 +1778,12 @@
       ],
       "player": "K       ",
       "recordedBy": "Koishi",
-      "playedAt": "2016/05/14 21:59:33"
+      "playedAt": "2016/05/14 21:59:33",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 131706,
+        "sha256": "4582367fa906c28cb89868f35017d0c27a7d24342d35530b39326e3577145a42"
+      }
     },
     {
       "id": "hard-3-b",
@@ -1829,7 +1844,12 @@
       ],
       "player": "homo    ",
       "recordedBy": "西野君",
-      "playedAt": "2017/10/06 14:50:55"
+      "playedAt": "2017/10/06 14:50:55",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 118338,
+        "sha256": "61766db0233ca3015b3dd9fc533a9a96396e1d2d9ba388dcfa11928638d4bffe"
+      }
     },
     {
       "id": "hard-4-b",
@@ -1890,7 +1910,12 @@
       ],
       "player": "REIMU H ",
       "recordedBy": "LISTIR",
-      "playedAt": "2016/01/15 03:40:03"
+      "playedAt": "2016/01/15 03:40:03",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 126126,
+        "sha256": "292597b626fc27af2209cd6fa2b982836048b35eaa229c8c121bd4a8da9548d1"
+      }
     },
     {
       "id": "hard-5-b",
@@ -1951,7 +1976,12 @@
       ],
       "player": "K@G HaNB",
       "recordedBy": "Ｋ・Ｇ",
-      "playedAt": "2011/08/22 18:40:27"
+      "playedAt": "2011/08/22 18:40:27",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 120173,
+        "sha256": "201f52bc0608bd90693173e95ca9e96ef14233ef349dbc7630ec47607bbf9ebd"
+      }
     },
     {
       "id": "hard-6-b",
@@ -2012,7 +2042,12 @@
       ],
       "player": "K@G HaMa",
       "recordedBy": "Ｋ・Ｇ",
-      "playedAt": "2018/04/21 19:40:09"
+      "playedAt": "2018/04/21 19:40:09",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 130503,
+        "sha256": "8cbb452fe8d9c5ebdb73692d8a3ca51078d8dafd680ccbb44c3622d27e5d79dd"
+      }
     },
     {
       "id": "hard-7-b",
@@ -2073,7 +2108,12 @@
       ],
       "player": "YM      ",
       "recordedBy": "YM",
-      "playedAt": "2013/03/31 21:29:18"
+      "playedAt": "2013/03/31 21:29:18",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 125026,
+        "sha256": "338b7b73a304910964912e93f5917b7907cdda44d03807343fffe3a3d6697f9b"
+      }
     },
     {
       "id": "hard-8-b",
@@ -2134,7 +2174,12 @@
       ],
       "player": "BDR     ",
       "recordedBy": "BDR",
-      "playedAt": "2012/09/08 20:43:07"
+      "playedAt": "2012/09/08 20:43:07",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 143785,
+        "sha256": "2b85ed3cddf3b6f38e8d290f6c06deb5d895e7fc35b498030ee4d324df19fd48"
+      }
     },
     {
       "id": "hard-9-b",
@@ -2195,7 +2240,12 @@
       ],
       "player": "kazu    ",
       "recordedBy": "NEU",
-      "playedAt": "2012/06/11 01:08:48"
+      "playedAt": "2012/06/11 01:08:48",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 129463,
+        "sha256": "6f861d273a98d6254696288797625bc7546dd275f395e74e9558f692daf8193b"
+      }
     },
     {
       "id": "hard-10-b",
@@ -2256,7 +2306,12 @@
       ],
       "player": "K@G HaYo",
       "recordedBy": "Ｋ・Ｇ",
-      "playedAt": "2018/05/12 22:52:51"
+      "playedAt": "2018/05/12 22:52:51",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 134771,
+        "sha256": "542bc9725a4a17a26cbb799d92a230104614aaad96de16ed6b6465ff172eb045"
+      }
     },
     {
       "id": "hard-11-b",
@@ -2317,7 +2372,12 @@
       ],
       "player": "PDZ     ",
       "recordedBy": "PDZ",
-      "playedAt": "2015/01/31 23:33:27"
+      "playedAt": "2015/01/31 23:33:27",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 121434,
+        "sha256": "d0c4d93b035eed3f32a8d25d986ed9cdfd7382965c2c6b8c9a947f6894840017"
+      }
     },
     {
       "id": "lunatic-0-b",

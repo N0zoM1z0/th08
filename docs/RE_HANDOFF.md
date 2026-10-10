@@ -108,10 +108,10 @@ in `build/replay-suite/candidate-replay-input/`; executable SHA-256
 `3cf82cf0345c9de8f7aed883f144526df6e170c3a08f6e41c800a1b44b04916d`.
 Use a fresh suite directory with `--reference-dir build/replay-suite/matrix-v1`
 to retain the six complete retail captures and replay the repaired candidate.
-The new batch is `matrix-v2/`. All 24 Easy and Normal Final B cases pass on
+The new batch is `matrix-v2/`. All 36 Easy, Normal, and Hard Final B cases pass on
 this executable, including the earlier five cases revalidated after the
-repair. The published retail expectations cover 2,935,996 calculations. The
-batch has reached Hard Final B. `suite.json` supplies the live count; use
+repair. The published retail expectations cover 4,479,937 calculations. The
+batch has reached Lunatic Final B. `suite.json` supplies the live count; use
 `scripts/analysis/report-replay-suite.py` for a brief status report.
 
 The original Solo Sakuya selection (`th8_ud2b7c.rpy`) stopped in retail

@@ -199,7 +199,7 @@ do not affect it. `comparison.json` prints both fingerprints.
 The first full-route checkpoint used Ubuntu 24.04 on WSL2 x86-64, Wine 9.0,
 Mesa llvmpipe 25.2.8, Python 3.13.5, and Xvfb 21.1.12. Compiler and library
 pins are in the [native build procedure](WINDOWS_I386_RUNTIME.md).
-All twenty-four published cases passed at source checkpoint `25c101f9`, including a
+The 36 published cases passed at source checkpoint `25c101f9`, including a
 rerun of the first five cases after the replay-input repair. Build the `bugfix`
 profile from this branch or a later revision containing its repairs.
 Capture metadata records executable, map, data and configuration hashes,
@@ -221,24 +221,24 @@ candidate executable and map, and the recorded calculation counts. It rejects
 changes to existing expectations. Only the acceptance hashes and counts enter
 the manifest; generated reports and recordings remain under `build/`.
 
-All twelve shot types have complete Easy and Normal Final B expectations:
+All twelve shot types have complete Easy, Normal, and Hard Final B expectations:
 
-| Shot | Stage 4 route | Easy calculations | Normal calculations |
-| --- | --- | ---: | ---: |
-| Border Team | B | 107,296 | 100,979 |
-| Magic Team | A | 126,803 | 132,235 |
-| Scarlet Team | A | 98,098 | 123,844 |
-| Ghost Team | B | 103,875 | 113,791 |
-| Reimu | B | 118,416 | 134,128 |
-| Yukari | B | 132,629 | 126,201 |
-| Marisa | A | 122,814 | 135,726 |
-| Alice | A | 109,495 | 129,300 |
-| Sakuya | A | 134,146 | 148,719 |
-| Remilia | A | 129,211 | 110,715 |
-| Youmu | B | 117,698 | 122,716 |
-| Yuyuko | B | 127,605 | 129,556 |
+| Shot | Stage 4 route | Easy calculations | Normal calculations | Hard calculations |
+| --- | --- | ---: | ---: | ---: |
+| Border Team | B | 107,296 | 100,979 | 122,914 |
+| Magic Team | A | 126,803 | 132,235 | 139,702 |
+| Scarlet Team | A | 98,098 | 123,844 | 131,706 |
+| Ghost Team | B | 103,875 | 113,791 | 118,338 |
+| Reimu | B | 118,416 | 134,128 | 126,126 |
+| Yukari | B | 132,629 | 126,201 | 120,173 |
+| Marisa | A | 122,814 | 135,726 | 130,503 |
+| Alice | A | 109,495 | 129,300 | 125,026 |
+| Sakuya | A | 134,146 | 148,719 | 143,785 |
+| Remilia | A | 129,211 | 110,715 | 129,463 |
+| Youmu | B | 117,698 | 122,716 | 134,771 |
+| Yuyuko | B | 127,605 | 129,556 | 121,434 |
 
-All 25 fields agree over 2,935,996 calculations on that source checkpoint.
+All 25 fields agree over 4,479,937 calculations on that source checkpoint.
 The current batch continues through the remaining corpus. Repository CI validates
 the manifest's complete 108-case grid and published expectation format.
 
