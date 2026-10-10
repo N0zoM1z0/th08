@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Capture muted retail/native demos sequentially and compare every recorded frame."""
 import argparse
+import importlib.util
+import json
 from pathlib import Path
 import subprocess
 import sys
@@ -35,6 +37,19 @@ def main():
     reference = args.reference.resolve() if args.reference else args.output_dir / "reference"
     if args.reference is None:
         subprocess.run(capture + common + ["--output-dir", str(reference)], cwd=ROOT, check=True)
+    spec = importlib.util.spec_from_file_location("replay_traces", ROOT / "scripts/compare-replay-traces.py")
+    traces = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(traces)
+    try:
+        metadata, _ = traces.load(reference)
+        if metadata.get("product") != "retail" or metadata.get("executableSha256") != metadata["targetSha256"]:
+            raise ValueError("Reference must be a capture of the canonical retail executable")
+        if metadata["schema"] != json.loads((ROOT / "scripts/replay-schema.json").read_text()):
+            raise ValueError("Reference uses an older capture boundary; recapture it")
+        if metadata.get("demoIndexes", [0]) != [int(value) for value in args.demos.split(",")]:
+            raise ValueError("Reference does not cover the requested demos")
+    except (ValueError, OSError, KeyError) as error:
+        parser.error(str(error))
     candidate = args.output_dir / "candidate"
     subprocess.run(capture + common + ["--candidate", str(args.candidate.resolve()), "--map", str(args.map_path.resolve()),
                                        "--output-dir", str(candidate)], cwd=ROOT, check=True)

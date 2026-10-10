@@ -38,6 +38,10 @@ checks the fixture, game-data hash, muted configuration, schema, complete
 demo sequence, and continuous frame coverage. Its exit status is zero only
 when every recorded value agrees.
 
+References from schema version 1 need a fresh capture: that observer missed
+intermediate dialogue fast-forward frames. The runner validates a reused
+reference before launching the candidate.
+
 ## Read the evidence
 
 `candidate/comparison.json` contains the result, differing-frame counts, and
@@ -47,22 +51,43 @@ hash, source commit, and whether source/configuration changes were present.
 `rows.jsonl` uses the field order in
 [replay-schema.json](../scripts/replay-schema.json).
 
-The observer reads memory at a hardware breakpoint immediately after
-`Chain::RunCalcChain` returns from `GameWindow::Render`. It verifies the loaded
-instruction bytes first. Candidate addresses come from the candidate's
-linker map. Neither executable is patched, and gameplay receives its input
-from the bundled replay.
+The observer reads memory at entry to `ControlPlaybackFrameAdvance`, after
+the gameplay calculation callbacks. Dialogue fast-forward restarts the
+calculation chain up to three times per rendered frame; this position records
+each logical frame. At the terminal demo frame, `GameManager::OnUpdate`
+breaks the chain before the playback-control callback. A second hardware
+breakpoint after `RunCalcChain` records that exit state and detects completion.
+The schema requires all 6,120, 4,920, and 5,040 frames respectively, including
+those terminal records. Both locations are verified against the loaded
+instruction bytes. Candidate addresses come from its linker map; gameplay
+receives its input from the bundled replay.
 
 The trace compares stage, replay and game frames, input, score, graze, deaths,
 lives, bombs, power, player position/state, RNG seed/generation, point items,
-time orbs, gauge, and clock. Floating-point values are compared by their exact
-IEEE-754 bits. A death or score change is a failure only when the retail trace
-differs. Demo 0 includes a death in the original game.
+time orbs, gauge, and clock. Input is the replay-fed value consumed by player
+gameplay (`g_GuiMessageInputCurrent`). Floating-point values are compared by
+their exact IEEE-754 bits. A death or score change is a failure only when the
+retail trace differs. Demo 0 includes a death in the original game.
 
 A passing result establishes equality for these fields over the selected
 fixtures. Rendering, audio output, and gameplay routes beyond those fixtures
 need their own evidence. Function-level exact comparisons remain a separate
 gate.
+
+## Native checkpoint
+
+The 2026-10-10 muted Wine/GDB comparison passed on VC7 build
+`94b35a71...bcf58f`, using schema version 2:
+
+| Fixture | Stage | Frames | Recorded state |
+| --- | --- | ---: | --- |
+| `demo/demorpy0.rpy` | 5 | 6,120 | All 22 fields equal |
+| `demo/demorpy1.rpy` | 3 | 4,920 | All 22 fields equal |
+| `demo/demorpy2.rpy` | 2 | 5,040 | All 22 fields equal |
+
+The local evidence is in `build/native-replay-parity-final/`; both captures
+completed naturally. The source repairs also passed a single-job cold
+comparison of all 1,106 accepted authored units and final-link verification.
 
 ## Investigate a difference
 
@@ -98,6 +123,8 @@ and release state, alongside boss attachment lists. `effect-events.jsonl`
 records `ReleaseAttachedEffects` callers and the slots they release.
 This capture needs no detail window and keeps long
 lifetime investigations small.
+Use separate captures for effect watching and detail windows, which together
+would exceed x86's four hardware breakpoint slots.
 
 Start with the earliest differing state, follow its producer back to target
 instructions, and fix one bounded cause. Rebuild and compare the affected

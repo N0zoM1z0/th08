@@ -68,11 +68,13 @@ def capture_effect_owners():
     return owners
 
 
-# Attest the actual loaded instruction sequence before setting a hardware BP.
-# This is mov ecx,g_Chain; call RunCalcChain; mov [ebp-4],eax.
-expected = bytes.fromhex(settings["attestBytes"])
-if bytes(gdb.selected_inferior().read_memory(settings["attestAddress"], len(expected))) != expected:
-    raise RuntimeError("Mapped TH08 Render bytes do not match the supplied executable")
+# Attest the frame callback and the Render completion boundary before trapping.
+for prefix in ("", "completion"):
+    address_key = "attestAddress" if not prefix else "completionAttestAddress"
+    bytes_key = "attestBytes" if not prefix else "completionAttestBytes"
+    expected = bytes.fromhex(settings[bytes_key])
+    if bytes(gdb.selected_inferior().read_memory(settings[address_key], len(expected))) != expected:
+        raise RuntimeError("Mapped TH08 capture bytes do not match the supplied executable")
 
 
 class Observer(gdb.Breakpoint):
@@ -84,10 +86,11 @@ class Observer(gdb.Breakpoint):
         self.rng_observer = None
         self.demo = None
         self.completed_demos = []
+        self.completion_observer = None
 
-    def stop(self):
+    def stop(self, completion_only=False):
         try:
-            return self.capture_frame()
+            return self.capture_frame(completion_only)
         except Exception as error:
             for handle in (stream, detail_stream, score_stream, rng_stream, effect_stream, effect_event_stream):
                 if not handle.closed:
@@ -95,13 +98,17 @@ class Observer(gdb.Breakpoint):
             (output / "complete.json").write_text(json.dumps(dict(
                 rows=self.count, lastFrame=self.last_frame, ended=False, errors=[str(error)])) + "\n")
             self.enabled = False
+            if self.completion_observer:
+                self.completion_observer.enabled = False
             return False
 
-    def capture_frame(self):
+    def capture_frame(self, completion_only=False):
         flags = read(GM + 0x3DBAC)
         frame = read(GM + 0x3DBB8)
         if not flags & 8 or not frame:
             if self.demo is not None:
+                if self.last_frame != settings["demoEndFrames"][str(self.demo)]:
+                    raise RuntimeError(f"Demo {self.demo} ended early at frame {self.last_frame}")
                 self.completed_demos.append(self.demo)
                 self.demo = None
             if self.completed_demos == settings.get("demoIndexes", [0]):
@@ -114,17 +121,27 @@ class Observer(gdb.Breakpoint):
                 (output / "complete.json").write_text(json.dumps(dict(
                     rows=self.count, lastFrame=self.last_frame, completedDemos=self.completed_demos, ended=True)) + "\n")
                 self.enabled = False
+                self.completion_observer.enabled = False
+            return False
+        if completion_only and frame == self.last_frame:
             return False
         demo = read(GM + 0x3DBB4, 1)
         if demo not in settings.get("demoIndexes", [0]) or demo in self.completed_demos:
             return False
+        # At the terminal frame GameManager breaks the chain before the
+        # playback-control callback. Read that exit state after RunCalcChain.
+        if completion_only and frame != settings["demoEndFrames"][str(demo)]:
+            raise RuntimeError(f"Playback-control callback missed frame {frame} of demo {demo}")
         if self.demo is None:
             if frame != 1 or not flags & 2:
                 raise RuntimeError("Expected frame 1 of a bundled demo")
             if demo == 0 and read(GM + 0x3DDC4) != 5:
                 raise RuntimeError("Expected Stage 5 for demo 0")
             self.demo = demo
+            self.last_frame = 0
             seen_effect_slots.clear()
+        if frame != self.last_frame + 1:
+            raise RuntimeError(f"Missing or duplicated logical frame: expected {self.last_frame + 1}, observed {frame}")
         globals_address = read(GM + 8)
         row = [frame, read(GM + 0x3DDC4), read(GM + 0x3DBB4, 1), read(GM + 0x3DDC0),
                read(globals_address + 8), read(globals_address + 12)]
@@ -284,6 +301,15 @@ class RngObserver(gdb.Breakpoint):
         return False
 
 
+class CompletionObserver(gdb.Breakpoint):
+    def __init__(self, observer):
+        super().__init__(f"*0x{settings['completionBoundary']:08X}", gdb.BP_HARDWARE_BREAKPOINT)
+        self.observer = observer
+
+    def stop(self):
+        return self.observer.stop(completion_only=True)
+
+
 class EffectReleaseObserver(gdb.Breakpoint):
     def __init__(self):
         super().__init__(f"*0x{settings['releaseEffects']:08X}", gdb.BP_HARDWARE_BREAKPOINT)
@@ -302,6 +328,7 @@ class EffectReleaseObserver(gdb.Breakpoint):
         return False
 
 
-Observer()
+observer = Observer()
+observer.completion_observer = CompletionObserver(observer)
 if settings.get("watchEffects"):
     EffectReleaseObserver()

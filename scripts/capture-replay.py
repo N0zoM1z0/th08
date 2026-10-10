@@ -20,14 +20,16 @@ TARGET_SHA = "330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924"
 
 def observer_config(candidate, map_path):
     if candidate is None:
-        return dict(gameManager=0x0160F508, player=0x017D5EF8, rng=0x0164D520, input=0x0164D528,
+        return dict(gameManager=0x0160F508, player=0x017D5EF8, rng=0x0164D520, input=0x0164D52C,
                     itemManager=0x01653648,
                     bulletManager=0x00F54E90,
                     effectManager=0x004ECE60, anmExecute=0x0045EA00,
                     releaseEffects=0x0042A820,
                     enemyManager=0x00577F20, addScore=0x004181F0, randomU16=0x0043ECC0,
-                    boundary=0x00441F52, attestAddress=0x00441F48,
-                    attestBytes="b948f56401e8feaaffff8945fc")
+                    boundary=0x00452490, attestAddress=0x00452490,
+                    attestBytes="558bec51894dfca1b4d06401c1",
+                    completionBoundary=0x00441F52, completionAttestAddress=0x00441F48,
+                    completionAttestBytes="b948f56401e8feaaffff8945fc")
     image = PEImage(candidate)
     symbols = {}
     for line in map_path.read_text(encoding="cp1252").splitlines():
@@ -51,15 +53,18 @@ def observer_config(candidate, map_path):
         raise ValueError("Expected one mov ecx,g_Chain / call RunCalcChain in Render")
     call = calls[0]
     attest = call - 5
+    frame_control = address("ControlPlaybackFrameAdvance@ReplayManager")
     return dict(gameManager=address("g_GameManager"), player=address("g_Player"), rng=address("g_Rng"),
-                input=address("g_CurFrameInput"), itemManager=address("g_ItemManager"),
+                input=address("g_GuiMessageInputCurrent"), itemManager=address("g_ItemManager"),
                 bulletManager=address("g_BulletManager"),
                 effectManager=address("g_EffectManager"), anmExecute=address("ExecuteScript@AnmManager"),
                 releaseEffects=address("ReleaseAttachedEffects@Enemy"),
                 enemyManager=address("g_EnemyManager"), addScore=address("AddScore@GameManager"),
                 randomU16=address("GetRandomU16@Rng"),
-                boundary=call + 5, attestAddress=attest,
-                attestBytes=image.read_rva(attest - image.image_base, 13).hex())
+                boundary=frame_control, attestAddress=frame_control,
+                attestBytes=image.read_rva(frame_control - image.image_base, 13).hex(),
+                completionBoundary=call + 5, completionAttestAddress=attest,
+                completionAttestBytes=image.read_rva(attest - image.image_base, 13).hex())
 
 
 def sha(path):
@@ -109,6 +114,8 @@ def main():
         parser.error("Detail window must satisfy 1 <= start <= end <= 6120")
     if any(value not in range(66) for value in args.watch_effect):
         parser.error("--watch-effect requires an ID from 0 to 65")
+    if args.watch_effect and args.detail_start:
+        parser.error("Use separate captures for --watch-effect and detail windows: x86 has four hardware breakpoint slots")
     if args.candidate:
         args.candidate = args.candidate.resolve()
         args.map_path = args.map_path.resolve()
@@ -129,12 +136,15 @@ def main():
     config = muted_config()
     (runtime / "th08.cfg").write_bytes(config)
     schema = json.loads(Path(__file__).with_name("replay-schema.json").read_text())
+    observer_settings["demoEndFrames"] = schema["demoEndFrames"]
     fixture = "demo/demorpy0.rpy" if demos == [0] else [f"demo/demorpy{index}.rpy" for index in demos]
     metadata = dict(schema=schema, fixture=fixture, demoIndexes=demos, targetSha256=TARGET_SHA,
                     gameDataSha256=sha(args.game_data), configSha256=hashlib.sha256(config).hexdigest(),
                     muted=True, executableSha256=sha(executable),
                     product="native-vc7-bugfix" if args.candidate else "retail",
-                    observer=f"GDB hardware breakpoint at 0x{observer_settings['boundary']:08X}")
+                    observer=dict(type="GDB hardware breakpoints",
+                                  frame=f"0x{observer_settings['boundary']:08X}",
+                                  completion=f"0x{observer_settings['completionBoundary']:08X}"))
     if args.candidate:
         metadata["mapSha256"] = sha(args.map_path)
         metadata["sourceCommit"] = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
@@ -228,7 +238,7 @@ def main():
                         break
                     command("-exec-continue")
                 else:
-                    raise RuntimeError("Executable did not map its attested Render instructions")
+                    raise RuntimeError("Executable did not map its attested capture instructions")
                 observer = Path(__file__).with_name("replay-observer.py")
                 command('-interpreter-exec console ' + json.dumps("source " + str(observer)))
                 command("-exec-continue")

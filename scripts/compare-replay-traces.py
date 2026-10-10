@@ -10,6 +10,8 @@ def load(directory):
     metadata = json.loads((directory / "metadata.json").read_text())
     complete = json.loads((directory / "complete.json").read_text())
     rows = [json.loads(line) for line in (directory / "rows.jsonl").read_text().splitlines()]
+    if metadata["schema"].get("version") != 2 or not metadata["schema"].get("demoEndFrames"):
+        raise ValueError(f"Capture uses an older schema; recapture it: {directory}")
     if not complete.get("ended") or complete.get("errors"):
         raise ValueError(f"Incomplete or failed capture: {directory}")
     if not rows or complete["rows"] != len(rows):
@@ -26,6 +28,7 @@ def load(directory):
     demo_column = metadata["schema"]["fields"].index("demo")
     indexes = metadata.get("demoIndexes", [0])
     seen = []
+    end_frames = {}
     last_demo = None
     last_frame = 0
     for row in rows:
@@ -36,8 +39,12 @@ def load(directory):
         if row[0] != last_frame + 1:
             raise ValueError(f"Missing, duplicated, or out-of-order frames: {directory}")
         last_frame = row[0]
+        end_frames[str(last_demo)] = last_frame
     if seen != indexes or complete.get("completedDemos", indexes) != indexes:
         raise ValueError(f"Missing or out-of-order demos: {directory}")
+    expected_ends = metadata["schema"]["demoEndFrames"]
+    if any(end_frames[str(demo)] != expected_ends[str(demo)] for demo in indexes):
+        raise ValueError(f"Demo ended before its expected terminal frame: {directory}")
     return metadata, rows
 
 

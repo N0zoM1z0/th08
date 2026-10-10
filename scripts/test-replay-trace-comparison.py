@@ -18,6 +18,7 @@ class ComparisonTests(unittest.TestCase):
         self.reference = Path(self.temp.name) / "reference"
         self.candidate = Path(self.temp.name) / "candidate"
         schema = json.loads(Path(__file__).with_name("replay-schema.json").read_text())
+        schema["demoEndFrames"] = {"0": 3, "1": 3}
         self.metadata = dict(schema=schema, fixture="demo/demorpy0.rpy", gameDataSha256="data",
                              targetSha256="target", configSha256="config", muted=True)
         self.rows = [[frame] + [0] * (len(schema["fields"]) - 1) for frame in range(1, 4)]
@@ -61,7 +62,21 @@ class ComparisonTests(unittest.TestCase):
 
     def test_different_duration_cannot_pass(self):
         self.write(self.candidate, rows=self.rows[:2])
-        self.assertEqual(compare.compare(self.reference, self.candidate)["result"], "different")
+        with self.assertRaisesRegex(ValueError, "terminal frame"):
+            compare.compare(self.reference, self.candidate)
+
+    def test_identically_truncated_captures_cannot_pass(self):
+        self.write(self.reference, rows=self.rows[:2])
+        self.write(self.candidate, rows=self.rows[:2])
+        with self.assertRaisesRegex(ValueError, "terminal frame"):
+            compare.compare(self.reference, self.candidate)
+
+    def test_older_schema_is_rejected(self):
+        metadata = {**self.metadata, "schema": {**self.metadata["schema"], "version": 1}}
+        self.write(self.reference, metadata=metadata)
+        self.write(self.candidate, metadata=metadata)
+        with self.assertRaisesRegex(ValueError, "older schema"):
+            compare.compare(self.reference, self.candidate)
 
     def test_wrong_completion_frame_is_rejected(self):
         (self.candidate / "complete.json").write_text(json.dumps(dict(rows=3, lastFrame=2, ended=True)))

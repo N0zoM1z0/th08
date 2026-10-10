@@ -31,9 +31,12 @@ Each port has its own build and runtime validation alongside the VC7 path.
 
 ## Native replay parity investigation
 
-Current work compares muted bundled demos against the canonical retail image,
-using the [unattended replay procedure](REPLAY_TESTING.md). Web investigation
-is deferred until native replay parity is established.
+The 2026-10-10 native checkpoint passes the complete muted comparison of all
+three bundled demos against the canonical retail image: 16,080 frames, with
+all 22 recorded fields equal. The playable VC7 executable has SHA-256
+`94b35a71abe632dd2d72ba460cb964d543fe7da4a68c052889ec6d255ebcf58f`.
+Use the [unattended replay procedure](REPLAY_TESTING.md) to reproduce the gate.
+Web investigation remains deferred for this batch.
 
 The first repair restores the sine/cosine call order in Fantasy Seal bomb and
 deathbomb and corrects four relocation bindings that had concealed it.
@@ -50,9 +53,18 @@ build and replay with this check. The fresh playable link also verifies the
 four death-mode switch entries and Fantasy Seal math callees. See
 [RT-010](RUNTIME_ISSUES.md#rt-010).
 
-The next gate is the strict full comparison of all three bundled demos.
-Keep temporary Wine prefixes and diagnostic data small, and leave GitHub
-issues without comments.
+The observer records each calculation pass during dialogue fast-forward and
+the terminal demo state. Schema version 2 rejects older baselines and requires
+the complete per-demo frame counts. Input now records the replay-fed player
+value. Both temporary Wine prefixes were removed; retained evidence is under
+`build/native-replay-parity-final/`. The trace-comparison tests, repository CI,
+and whitespace checks pass.
+
+Further native coverage needs standard retail replays for the remaining teams,
+Stage 4 routes, Final A/B, and Extra. Record each fixture's provenance and
+completion condition before extending the runner beyond bundled demos.
+Keep captures and VC7 builds sequential, clean temporary artifacts, and leave
+GitHub issues without comments.
 
 <a id="documentation-batch-for-local-review"></a>
 

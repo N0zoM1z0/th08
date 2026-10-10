@@ -1,6 +1,8 @@
 {
-  "version": 1,
-  "boundary": "after-calc-chain-before-sound-and-draw",
+  "version": 2,
+  "boundary": "after-gameplay-calc-or-demo-exit",
+  "demoEndFrames": {"0": 6120, "1": 4920, "2": 5040},
+  "inputSource": "g_GuiMessageInputCurrent: input consumed by replay gameplay",
   "fields": [
     "frame", "stage", "demo", "gameFrame", "score", "graze",
     "deaths", "lives", "bombs", "power", "x", "y", "z", "playerState",
