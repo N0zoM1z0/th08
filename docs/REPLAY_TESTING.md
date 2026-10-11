@@ -208,6 +208,14 @@ pins are in the [native build procedure](WINDOWS_I386_RUNTIME.md).
 All 108 published cases passed at source checkpoint `25c101f9`, including a
 rerun of the first five cases after the replay-input repair. Build the `bugfix`
 profile from this branch or a later revision containing its repairs.
+The 2026-10-11 gate rebuilt normal and bugfix images from a cold state and
+captured all 108 retail/native pairs afresh. Every published fingerprint and
+calculation count reproduced. The candidate executable SHA-256 was
+`19b24c3a1d06de5414114ff5f224576f5047d9a0d9c38d7bf5c4ec3612d6723e`;
+its map SHA-256 was
+`2289537ed1d5edd556a7afbd166eb36333c2851ba61e0cf82a59a09fef242ec7`.
+Local evidence is under `build/replay-cold-20261011/`, with the archived
+executable/map in `candidate/` and complete captures in `matrix/`.
 Capture metadata records executable, map, data and configuration hashes,
 source revision, observer backend, clock rate, rasterization, and host/Wine
 versions. Preserve `suite.json`, comparison files, metadata, completion files,
@@ -267,8 +275,9 @@ Final A has complete expectations for the same twelve shots and four difficultie
 The complete 108-case corpus passes all 25 fields over 12,311,460 calculations.
 Each case reaches its recorded stage-end scores and natural replay exit.
 The tables give calculation counts; the manifest supplies individual trace
-fingerprints. Repository CI validates the complete coverage grid and expectation
-format. The four earliest retail references were recaptured with BGM hash
+fingerprints. Repository CI validates the coverage grid, expectation format,
+committed recording bytes and metadata, and author credit index. The four
+earliest retail references were recaptured with BGM hash
 attestation and reproduced their published fingerprints.
 
 ## Reference fixture failures
@@ -294,7 +303,7 @@ The desynchronization causes remain unresolved in the recorded Wine environment.
 The replacements, `th8_ud1051.rpy`, `th8_ud21f9.rpy`, and `th8_ud2bca.rpy`,
 complete all six stages and recorded end scores in retail.
 
-Fetch the retained fixture, then reproduce the Stage 4A failure with ordinary
+Verify the retained fixtures, then reproduce the Stage 4A failure with ordinary
 pacing and rendering:
 
 ```bash
@@ -326,7 +335,7 @@ The active matrix requires a complete retail reference for each coverage cell.
 
 ## Native checkpoint
 
-The current playable VC7 build (`3cf82cf0...04916d`) also passes the three
+The cold playable VC7 build (`19b24c3a...6723e`) also passes the three
 bundled demos against a fresh muted retail capture with ordinary pacing and
 rasterization, using schema version 2:
 
@@ -339,8 +348,9 @@ rasterization, using schema version 2:
 The combined 16,080-frame trace has SHA-256
 `9481fa99b1a9d9bfeda397d3a5051ab0a9f8ad9818d2ed90e7c822d86e3ce9b0`.
 Both captures completed naturally. The current local evidence is in
-`build/replay-suite/current-build-demos/`; the earlier native checkpoint is in
-`build/native-replay-parity-final/`. The source repairs also passed a single-job
+`build/replay-cold-20261011/demos/`; earlier checkpoints are in
+`build/replay-suite/current-build-demos/` and `build/native-replay-parity-final/`.
+The source repairs also passed a single-job
 cold comparison of all 1,106 accepted authored units and final-link verification.
 
 ## Investigate a difference

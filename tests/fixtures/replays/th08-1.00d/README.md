@@ -17,7 +17,9 @@ published trace expectations, and diagnostic commands.
 
 ## Credits and provenance
 
-Recordings come from the [Royalflare Archive at Maribel Hearn](https://maribelhearn.com/royalflare/th08).
+Recordings come from the Royalflare Archive at Maribel Hearn, using its
+[Final A](https://maribelhearn.com/royalflare/th08a) and
+[Final B / Extra](https://maribelhearn.com/royalflare/th08) indexes.
 [CREDITS.md](CREDITS.md) lists every recording's author, play date, upload date
 when available, and original download link. Author names preserve the archive's
 credit, including capitalization and spelling.

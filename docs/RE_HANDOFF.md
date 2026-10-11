@@ -31,15 +31,20 @@ Each port has its own build and runtime validation alongside the VC7 path.
 
 ## Native replay parity investigation
 
-A fresh cold gate is in progress under `build/replay-cold-20261011/`.
-Cold normal/bugfix links and all 1,106 accepted authored units passed. The
-new 108-case suite is continuing with fresh retail/native captures. A completed
-retail capture hit an Xvfb shutdown timeout; cleanup now kills and reaps a
-stalled child. The resumed pair passed all 113,660 calculations. Process tests
-cover graceful, stalled, and completed children, and resumed captures are
-validated and compressed. Resume with the archived candidate in this batch.
-Merge into main and sync
-`port/portable-64bit` after the full replay and ordinary-demo gates pass.
+The 2026-10-11 cold gate is recorded under `build/replay-cold-20261011/`.
+Fresh normal/bugfix links and all 1,106 accepted authored units passed.
+All 108 fresh retail/native pairs agree on 25 fields over 12,311,460
+calculations, including recorded stage-end scores and natural replay exits.
+All three fresh ordinary-paced demos, with rasterization, agree on 22 fields
+over 16,080 frames. Their published trace fingerprints remain unchanged.
+Use this checkpoint when syncing `port/portable-64bit`; validate the portable
+builds and runtime separately.
+
+A completed retail capture hit an Xvfb shutdown timeout; cleanup now kills and
+reaps a stalled child. The resumed pair passed all 113,660 calculations.
+Process tests cover graceful, stalled, and completed children. Resuming
+validates retained traces and compresses completed captures. The cold batch
+retains both its original interruption log and the successful resume.
 
 The [committed replay corpus](../tests/fixtures/replays/th08-1.00d/README.md)
 preserves all 108 accepted recordings and three retail-incomplete diagnostic
@@ -49,9 +54,10 @@ files offline; CI verifies their bytes, metadata, and generated credit index.
 The current playable VC7 build passes all three bundled demos against a fresh
 muted retail capture with ordinary pacing and rasterization: 16,080 frames,
 with all 22 recorded fields equal. Its executable SHA-256 is
-`3cf82cf0345c9de8f7aed883f144526df6e170c3a08f6e41c800a1b44b04916d`.
-Evidence is in `build/replay-suite/current-build-demos/`; the earlier
-`94b35a71...bcf58f` checkpoint is in `build/native-replay-parity-final/`.
+`19b24c3a1d06de5414114ff5f224576f5047d9a0d9c38d7bf5c4ec3612d6723e`.
+Its executable/map is in `build/replay-cold-20261011/candidate/`, with demo
+evidence in `build/replay-cold-20261011/demos/`. Earlier demo checkpoints are
+in `build/replay-suite/current-build-demos/` and `build/native-replay-parity-final/`.
 Use the [unattended replay procedure](REPLAY_TESTING.md) to reproduce the gate.
 Web investigation remains deferred for this batch.
 
@@ -111,9 +117,11 @@ were recaptured with BGM hashes and reproduced their existing fingerprints.
 Regression tests reject mismatched or missing BGM identities, equal traces with
 changed suite settings, and stale candidate maps.
 
-The completed batch is in `build/replay-suite/matrix-v2/`. Its archived playable
-executable/map is in `build/replay-suite/candidate-replay-input/`.
-Use `matrix-v2/` as the retail reference directory for a fresh build. The older
+The current complete batch is in `build/replay-cold-20261011/matrix/`.
+Use it as the retail reference directory when testing a new build. The first
+full checkpoint remains in `build/replay-suite/matrix-v2/`, with its executable/map
+in `build/replay-suite/candidate-replay-input/`. Identical old and fresh trace
+files share storage after byte verification; both batches revalidate. The older
 `matrix-v1/` stopped at Yukari and remains historical evidence.
 `scripts/analysis/report-replay-suite.py` prints a concise ledger summary.
 
