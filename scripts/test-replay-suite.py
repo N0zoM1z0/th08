@@ -179,6 +179,7 @@ def main():
                                 raise ValueError(f"Reused retail capture is missing or invalid: {capture}")
                             shutil.rmtree(capture)
                         else:
+                            compress(capture)
                             continue
                     command = [sys.executable, str(ROOT / "scripts/capture-replay.py"),
                                "--target", str(args.target.resolve()), "--replay", str(replay.resolve()),
