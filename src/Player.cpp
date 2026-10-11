@@ -2018,7 +2018,7 @@ i32 __fastcall UpdateHomingOption(Player *player, PlayerOptionState *option)
         case PLAYER_HOMING_OPTION_TRACKING_TARGET:
             if (player->optionHomingTarget != NULL)
                 UpdateOptionHomingToTarget(player, option);
-            if (((player->shotTimer < 0) && ((g_CurFrameInput & 1) == 0)) ||
+            if (((player->shotTimer < 0) && ((g_GuiMessageInputCurrent & 1) == 0)) ||
                 player->optionHomingTarget == NULL)
             {
                 player->optionHomingTarget = NULL;

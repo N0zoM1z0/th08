@@ -13,6 +13,8 @@ import tomllib
 
 from coff import ObjectModule
 from match_literals import real_literal_bytes
+from match_callees import validate_math_callee
+from match_inputs import validate_input_global
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -166,6 +168,8 @@ def object_function(
                     "symbol": referenced.get_name(module.string_table).decode(
                         "ascii", errors="strict"
                     ),
+                    "local_symbol_offset": referenced.value - symbol.value
+                    if referenced.section_number == symbol.section_number else None,
                 }
             )
     return function, relocations
@@ -225,12 +229,23 @@ def apply_relocations(
         )
 
     report = []
+    actual_by_offset = {int(row["offset"]): row for row in actual}
     for relocation in normalized_expected:
         offset = relocation["offset"]
         if offset < 0 or offset + 4 > len(code):
             raise ValueError(f"relocation offset outside function: {offset:#x}")
         object_field_before = struct.unpack_from("<I", code, offset)[0]
         addend = object_field_before
+        # Internal labels must keep their actual offset in the COFF function.
+        # Substituting a manifest address here can conceal a wrong case entry.
+        local_offset = actual_by_offset[offset].get("local_symbol_offset")
+        if local_offset is not None and target_address <= relocation["target"] < target_address + len(code):
+            actual_target = target_address + int(local_offset)
+            if actual_target != relocation["target"]:
+                raise ValueError(
+                    f"local relocation at {offset:#x} resolves to {actual_target:#x}, "
+                    f"manifest declares {relocation['target']:#x}"
+                )
         if relocation["type"] == "DIR32":
             value = relocation["target"] + addend
         else:
@@ -306,6 +321,9 @@ def compare(unit: dict[str, object], target_path: Path) -> dict[str, object]:
     target_address = int(unit["target_address"])
     target = pe_bytes_at(target_data, target_address, compare_size)
     expected_relocations = list(unit.get("relocations", []))
+    for relocation in expected_relocations:
+        validate_math_callee(relocation)
+        validate_input_global(relocation)
     literal_attestations = attest_relocation_literals(
         expected_relocations, target_data
     )

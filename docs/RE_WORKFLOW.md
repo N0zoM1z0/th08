@@ -43,6 +43,10 @@ recorded in notes and handoffs.
    source-significant or corrected literal so that the reviewed bytes remain
    explicit in the match-unit row. A relocated instruction field matching by
    itself does not attest the value stored at the destination.
+   For an internal label or switch entry, the COFF label's actual offset must
+   agree with the target destination. Normalizing a label's generated name
+   preserves this check; replacing its offset with a configured address can
+   conceal a different control-flow path.
 9. Update mapping/progress inputs only to the level proven by the report.
 10. Run `git diff --check` and hand off commands, results, and uncertainty.
 
