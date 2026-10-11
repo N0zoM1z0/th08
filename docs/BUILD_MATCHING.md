@@ -1,5 +1,19 @@
 # Build and exact matching
 
+## Reading routes
+
+For a first build, follow [toolchain setup](#toolchain), then choose a
+[build mode](#builds). For a bounded verification, use
+[object comparison](#object-comparison) and the [acceptance rules](#acceptance-rules).
+The [tool table](TOOLS.md#choose-the-command-by-question) routes current tasks.
+
+The [compiler-pattern corpus](#compiler-pattern-corpus) records specific
+source-shape lessons and their evidence. Its measurements belong to the
+recorded examples; live accepted state comes from the ledgers and
+[current handoff](RE_HANDOFF.md). See the [glossary](PROJECT_GUIDE.md#glossary)
+for terminology and [whole-image lessons](WHOLE_IMAGE_RECONSTRUCTION.md#reading-map)
+for final-link ownership cases.
+
 ## Toolchain
 
 The inherited build reproduces the upstream Visual Studio .NET 2002 (VC7) and
@@ -31,7 +45,8 @@ a compatible alternative runner is required. On Windows:
 python scripts/create_devenv.py scripts/dls scripts/prefix
 ```
 
-Do not commit downloaded compilers, SDKs, prefixes, or original game files.
+Keep downloaded compilers, SDKs, prefixes, and original game files in ignored
+local storage.
 
 ## Builds
 
@@ -51,23 +66,19 @@ python3 ./scripts/build.py --build-type dllbuild
 python3 ./scripts/build.py --build-type objdiffbuild
 ```
 
-These modes serve different runtime and comparison purposes. Success in a
-bugfix, DLL, or object build does not establish that the normal
-executable matches the original.
-
-| Mode | Primary use | Acceptance boundary |
+| Mode | Primary use | Validation role |
 | --- | --- | --- |
-| `normal` | Exact-facing production compile/link and whole-image diagnostics | Supplies normal objects and link evidence; a successful link is not whole-image exactness |
-| `bugfix` | Playable native VC7 Windows runtime | Enables narrow `FIX_REALLY_BAD_BUGS` paths; never supplies exact-match credit |
-| `objdiffbuild` | Focused and aggregate COFF comparison | Supplies configured function/object evidence only |
-| `diffbuild` | Inherited executable comparison instrumentation | Diagnostic, not an accepted-unit substitute |
-| `dllbuild` | Optional Detours reconstruction DLL | Not part of the target-linked production runtime gate |
+| `normal` | Production compile/link and whole-image diagnostics | Objects and executable used for exact comparison |
+| `bugfix` | Playable native VC7 Windows runtime | Runtime testing with narrow `FIX_REALLY_BAD_BUGS` branches |
+| `objdiffbuild` | Focused and aggregate COFF comparison | Configured function/object comparison |
+| `diffbuild` | Inherited executable comparison instrumentation | Diagnostic reports |
+| `dllbuild` | Optional Detours reconstruction DLL | Detour-based testing |
 
 ### Reproduce the native Windows i386 prerequisite
 
-The completed whole-program gate is stricter than invoking `build.py` once. Its
-serial order matters because the cold accepted-unit replay and both executable
-modes share and clean `build/` outputs:
+Whole-program validation includes cold ledger replay, final-link checks, and
+native playtesting. Run the builds in order because both executable modes and
+the cold replay share and clean `build/` outputs:
 
 ```bash
 python3 scripts/verify-target.py resources/th08.exe
@@ -118,9 +129,9 @@ reccmp-reccmp --target th08 --html report.html
 
 The report consumes the mappings in `config/reccmp-functions.csv`,
 `config/reccmp-globals.csv`, `config/reccmp-floats.csv`, and
-`config/reccmp-strings.csv`. A mapped symbol is not necessarily implemented or
-exact. Preserve the report as local evidence under `build/`; publish numerical
-progress only through a reproducible generation path.
+`config/reccmp-strings.csv`. Mappings select addresses for analysis;
+implementation and exact results are tracked separately. Keep reports under
+`build/` and generate published progress from the ledgers.
 
 The progress generator reports source presence and exact matching separately:
 
@@ -153,8 +164,8 @@ python3 scripts/compare-function.py item-auto-collect --json
 
 The comparator requires the symbol, target address, size, and every COFF
 relocation to agree with `config/match-units.toml`. Missing or extra
-relocations fail closed. It reports exactness only for that configured function
-range; it does not imply an object- or executable-wide match.
+relocations fail comparison. An exact result covers the configured function
+range. Object and executable identity require their own comparisons.
 
 VC7 may include compiler-owned switch tables in a function's COFF auxiliary
 extent. Such units keep `size` as authored code coverage and use `compare_size`
@@ -164,7 +175,7 @@ associated byte and relocation; table bytes do not increase authored progress.
 ### VC7 source-shape notes
 
 The following `/Od` behaviors are confirmed by small VC7 probes and by strict
-TH08 matches; use them as diagnostics, not as permission to force bytes:
+TH08 matches. Use them to diagnose natural C++ source shapes:
 
 - `#pragma var_order(a, b, c)` assigns listed function-scope locals from the
   least-negative stack slot downward in list order. Nested block locals are not
@@ -339,6 +350,25 @@ TH08-specific archives, relocation policy, and canonical comparator replay.
   the exact scope demonstrated by the accepted report and command.
 - Do not infer a repository-wide percentage from source coverage, mapping rows,
   or adjacent-version similarity.
+
+## Compiler-pattern corpus
+
+These address-backed examples explain compiler behavior observed during
+specific comparisons. Start with the relevant family, then search by symbol
+or target address when a case needs more detail. Apply the
+[acceptance rules](#acceptance-rules) to any new claim.
+
+| Question | Example family |
+| --- | --- |
+| How do locals, branch placement, and lexical scopes affect emission? | [VC7 source-shape notes](#vc7-source-shape-notes), [dispatcher locals](#vc7-dispatcher-locals-and-lexical-branch-placement) |
+| Why does aggregate storage or constructor timing matter? | [Structure-copy order](#vc7-structure-copy-order-signed-bit-extraction-and-compiler-owned-dispatch-data), [constructor/global ABI](#constructor-families-can-recover-object-and-global-abi-together) |
+| Which production owner supplies a relocated helper? | [Canonical relocation identity](#canonical-relocation-identity-and-header-inline-comdat-ownership) |
+| How do Replay callback shapes differ? | [Replay callbacks](#replay-callbacks-hidden-new-temporaries-legacy-arithmetic-and-caller-proven-abi) |
+| Why can PCH or stale objects invalidate a focused result? | [Title PCH recovery](#cold-pch-recovery-of-titlescreen-tu-specific-inline-contracts), [aggregate cold replay](#aggregate-exact-state-requires-a-cold-build-replay) |
+| How is physical final-link ownership recovered? | [Whole-image case studies](WHOLE_IMAGE_RECONSTRUCTION.md#reading-map) |
+
+### Additional source-shape examples
+
 - Cache-vs-direct-object access can be target-visible under `/Os`. In the GUI message
   initializer, caching `&this->msgVm` in a local pointer moved `this` from `-0x10` to
   `-0x14` and shortened every later large-offset access. The target repeatedly forms

@@ -1,9 +1,8 @@
 # Native Windows runtime issue ledger
 
 This ledger tracks whole-program failures in the VC7-built Windows i386
-reconstruction separately from function exactness and from modern-port
-behavior. A successful link or accepted object comparison does not close a
-runtime issue.
+reconstruction. Closing an issue requires repeating the repaired native path.
+Function exactness and modern-port behavior have their own validation records.
 
 Status meanings:
 
@@ -24,6 +23,159 @@ Status meanings:
 | RT-006 | closed | Dialogue showed a flat `RGB(64,64,96)` or black playfield; later frames accumulated player and portrait trails. | Target Background draw callbacks call `Gui::IsStageFinished @ 0x00437D87` at all three stage-layer gates. Source called `Gui::IsDialoguePresent @ 0x004358BB`, while the match manifest declared the target address and normalized the wrong source call into an exact result. The linked repair passes the native call verifier, and the user confirmed the live stage background plus corrected Stage 4 Reimu rendering on native hash `87edf9dc...1832d73`. |
 | RT-007 | fixed / confirmation pending | Near the final Last Spell, self-shot emission looked wrong and dense white digit-like textures covered the playfield edges. | The old source called unsigned RNG from target `SpawnRandomizedShot`'s signed-RNG site and sent point-star/time-orb values to a 720-entry score-popup pool instead of the target's three-entry player-point pool. The corrected callees are exact and pass final-link verification on hash `87edf9dc...1832d73`. The previous isolated run's replay slot 3 had SHA-256 `1ec94058...4fbc7`; it was deliberately not carried into the later clean deployment, so confirmation now requires a fresh run. |
 | RT-008 | closed | Score rose by about 6,000 points per second from the start of normal and Stage Practice runs, continued after a player hit, and graze counts increased too quickly. | Target `g_PlayerGaugeBounds @ 0x0164D300` is not standalone storage: it is exactly the six contiguous gauge limit/threshold fields at `g_GameManager @ 0x0160F508 + 0x3DDF8..0x3DE02`. The native linker split the source array from those fields, leaving the predicates' manager thresholds zero. Read-only process sampling proved the split; a 12-byte process-local field repair immediately stopped authoritative score growth at gauge zero. The production repair passes focused and cold exact replay plus final-link owner verification. The user repeated the score/graze path on the clean, unpatched native hash `cf32bd1f...6c6e26` and confirmed normal behavior, closing the issue. |
+| RT-009 | closed | The bundled Stage 5 demo diverged in score, then RNG, time orbs, and gauge after a deathbomb. | Fantasy Seal bomb/deathbomb used cosine for X and sine for Y; the target uses sine for X and cosine for Y. Four reversed relocation bindings hid the wrong callees. The repaired PlayerBomb object passes all 54 accepted units, and the 71-frame diagnostic window agrees for bomb state, collision regions, bullets, items, shots, and enemies. After the RT-010 repair, all 22 recorded fields agree over the complete 6,120-frame demo. |
+| RT-010 | closed | The same demo's RNG diverged at frame 5908, followed by score and time-orb differences. | Death mode 2 entered the boss cleanup block and released six spellcard orbits at frame 5549. The target switch enters after that block. Missing orbits freed six primary effect slots, allowing 60 extra RNG calls at frame 5908. The corrected case entry passes focused comparison and the cold replay of all accepted units. All 22 recorded fields now agree over the complete 6,120-frame native/retail demo. |
+| RT-011 | closed | A full main-run replay diverged after entering Stage 2, generating duplicate spell rewards. | `CutChain` selected standalone storage instead of `g_Spellcard.lifetimeObject`, leaving an old update callback registered. The field expression preserves target bytes and fixes the duplicated update. After the RT-012 repair, the complete six-stage route agrees with retail for all 25 recorded fields. |
+| RT-012 | closed | The same full-run replay lost 156 score units when Stage 3 lasers were cancelled. | The native `fsincos` helper was empty, leaving laser direction outputs uninitialized. A C++ sin/cos implementation restores the star positions and scoring. All 25 recorded fields now agree through the complete 107,296-calculation route. The helper's separate library exact status remains unchanged. |
+| RT-013 | closed | Solo Yukari's Easy replay lost 7 score units and delayed two shot hits by one frame in Stage 3. | The homing option read physical keyboard input instead of the replay-fed gameplay word. A relocation override concealed the wrong source global. The corrected expression matches the target; binding and linked-image guards reject the old implementation. The complete six-stage replay now agrees for all 25 fields over 132,629 calculations. |
+
+<a id="rt-013"></a>
+
+## Yukari homing options and replay input
+
+The full-route suite first diverged on `easy-5-b`, Solo Yukari,
+`th8_ud2c0e.rpy`: Stage 3 frame 6,751, calculation 33,545. The reconstruction
+had 7 fewer score units and 8 fewer RNG generations. Player position, input,
+power, lives, bombs, and graze still agreed. Five earlier full runs passed.
+
+Target RNG call stacks identify two shot-hit effects from
+`Player::CalcDamageToEnemy + 0x2CA` (`0x0045193A`). The reconstruction spawned
+them at frame 6,752. Object snapshots show the homing option following a
+different path while both images track the same boss, at the same position.
+
+`UpdateHomingOption @ 0x0044E3A0` reads `0x0164D52C` at offset `0x319`:
+the gameplay input populated by `PlaybackInputAndFps`. Source instead used
+`g_CurFrameInput @ 0x0164D528`, the physical input read by recording. The
+comparison manifest overrode that symbol's address to `0x0164D52C`, allowing
+the wrong source reference to compare as exact.
+
+Source and the relocation now name `g_GuiMessageInputCurrent`. The focused
+VC7 comparison and the cold replay of all 1,106 accepted units pass. The
+input-binding validator rejects the old manifest, and the final-link guard
+rejects the old playable image. Fresh normal/bugfix links and the Linux32
+build/layout check pass. The complete native replay now agrees for all 25
+fields over 132,629 calculations, through its natural exit and all six
+recorded end scores. The repaired source checkpoint is `25c101f9`; playable
+SHA-256 is `3cf82cf0345c9de8f7aed883f144526df6e170c3a08f6e41c800a1b44b04916d`.
+Evidence is under `build/replay-suite/yukari-rng-reference/`,
+`yukari-rng-candidate/`, `matrix-v1/easy-5-b/`, and `matrix-v2/easy-5-b/`.
+The fixture manifest supplies the public recording, its SHA-256, and the
+complete retail trace expectation.
+
+<a id="rt-012"></a>
+
+## Laser cancellation and the empty sincos helper
+
+After the callback repair, `easy-0-b` first differed at Stage 3 frame 14,350.
+Retail collected three point stars worth 52 score units each; the candidate
+missed those writes. Both called `SpawnItem` 353 times in the diagnostic window,
+including 66 laser origins and 264 positions along their beams. All 264 beam
+positions differed. The source `fsincos` definition was empty, leaving its two
+output variables uninitialized.
+
+Target `fsincos @ 0x00433880` is a 33-byte fastcall math helper. It takes the
+sine/cosine output pointers in ECX/EDX, reads the float angle from the stack,
+executes x87 `fsincos`, stores both outputs, and returns with four-byte cleanup.
+The runtime C++ implementation computes both outputs through CRT sin/cos;
+VC7 emits 44 bytes. The library inventory keeps this entry unaccepted while
+its original archive provenance remains unresolved.
+
+All 37 accepted BulletManager units retain exact comparisons. Normal and
+playable VC7 links pass the new check for both CRT calls and both output
+stores; the former empty implementation fails it. The Linux build, layout
+verification, and output smoke pass. The repaired playable image has SHA-256
+`64f6c5e0295701985b9380fb43872bd02003e0004366e3bef4e1b7b0a509c2f2`.
+Its muted full-route comparison passes all 25 fields over 107,296 calculations,
+with all six stage end scores matching the recording and a natural replay exit.
+Evidence is in `build/replay-suite/matrix-v1/easy-0-b/` and the score/item
+diagnostic directories. The remaining fixture matrix is in progress.
+
+<a id="rt-011"></a>
+
+## Spellcard callback cleanup across stages
+
+The Border Team Easy Final B fixture `th8_ud2cdc.rpy` first diverged at
+Stage 2 frame 6,756: the candidate consumed 52 extra RNG values. Hardware
+breakpoints traced 104 calls through item spawning, compared with 52 in retail.
+`Spellcard::OnUpdateImpl` ran twice, creating two copies of the seven-orb and
+six-orb reward loops.
+
+Target `Spellcard::RegisterChain @ 0x00417F60` stores its update callback at
+`g_Spellcard @ 0x004EA670 + 0x263C`. `CutChain @ 0x004180F0` reads the same
+address, `0x004ECCAC`. The reconstruction allocated a separate global for that
+address, so stage cleanup read an unused null pointer. `CutChain` now accesses
+the asserted `lifetimeObject` field. Its two relocations select the Spellcard
+owner with addend `0x263C`; the final-link guard verifies both operands and
+rejects standalone storage.
+
+All 29 accepted SpellCard functions and all 1,106 accepted authored units pass
+their VC7 comparisons after a cold build. The Linux link and a callback
+register/cut smoke pass. The muted native replay now agrees with retail for
+37,016 calculations, including the complete first two stages. At Stage 3
+frame 14,350 it then exposed a separate score difference of 156, repaired in
+[RT-012](#rt-012). The full 107,296-calculation replay now passes; the remaining
+route matrix is in progress. Raw evidence is under
+`build/replay-suite/`, with fixture provenance in
+[replay-fixtures.json](../config/replay-fixtures.json).
+
+<a id="rt-010"></a>
+
+## Spellcard orbit lifetime and RNG divergence
+
+The repaired Fantasy Seal build agreed with retail through demo 0 frame 5907.
+At 5908 it spawned 28 familiar-form effects instead of 22, consuming 60 extra
+16-bit RNG values through ANM file 6, script 71. Retail still held six
+spellcard orbits in the primary effect pool; the reconstruction had released
+them at 5549 and removed them at 5564. The release call came from
+`EnemyManager::OnUpdate` for enemy slot 0.
+
+Target `EnemyManager::OnUpdate @ 0x0042C660` dispatches death mode 2 to
+`0x0042D8EE`, starting at `DropItems`. Source placed that case at the
+`common_death_mode` label, corresponding to `0x0042D8C8`, which first clears
+boss presentation and releases attached effects. Moving the case after this
+block preserves the target path.
+
+The old comparator replaced the local COFF label with the manifest address,
+concealing the wrong switch entry at function offset `0x183E`. It now checks
+the actual section-relative label offset before normalization. The old object
+fails this check; the repaired object passes. A single-job cold build and
+comparison passed all 1,106 accepted authored units with the new check.
+
+The repaired native VC7 build (`94b35a71...bcf58f`) and retail agree for all
+22 recorded fields over the complete 6,120-frame demo, including the terminal
+record. Both captures were muted. See [REPLAY_TESTING.md](REPLAY_TESTING.md)
+for effect-lifetime tracing, release callers, and the comparison procedure.
+
+<a id="rt-009"></a>
+
+## Fantasy Seal replay divergence
+
+Muted Wine/GDB captures of `demo/demorpy0.rpy` found the first score difference
+at frame 5218. A narrow diagnostic capture traced it to a bullet converted
+into a point-star one frame late, at 5210 instead of 5209. The replay uses
+Fantasy Seal Blink deathbomb at frame 5202, callback variant 2.
+
+Target `UpdateFantasySealBlinkDeathbomb @ 0x0040C910` calls the sine wrapper
+at `0x00409060` for X (`+0x266` relocation), then the cosine wrapper at
+`0x00408D40` for Y (`+0x284`). `UpdateFantasyOrbBomb @ 0x0040C010` uses the
+same order at `+0x265` and `+0x283`. The wrappers themselves call
+`__CIsin @ 0x004A3FA0` and `__CIcos @ 0x004A3EF0` respectively.
+
+Source called the opposite functions, while the comparison manifest assigned
+`@cosf@4` to the sine address and `@sinf@4` to the cosine address. Relocation
+replay therefore accepted the surrounding instructions despite the reversed
+native calls. Source and all four relocation symbols now follow the target.
+Both the comparator and tracking validator check these wrapper identities;
+the validator also checks consistent destinations for fastcall symbols.
+
+In frames 5200–5270, all collected item, shot, enemy, bullet, bomb,
+collision-region, point-value, and FPU-control state agrees. The original
+demo's death at frame 4575 is present in both traces. This repair and the
+RT-010 death-mode correction restore agreement for all 22 recorded fields
+over the complete 6,120-frame fixture.
+
+See [REPLAY_TESTING.md](REPLAY_TESTING.md) for the unattended procedure,
+comparison scope, diagnostics, and cleanup.
 
 ## Native enemy-name texture exit
 
@@ -237,15 +389,13 @@ identified the source condition:
 4. the table had no next newline, so `strchr` returned null, `+1` became `0x1`,
    and the next `strncmp` faulted.
 
-This does not justify altering the exact-facing implementation or pretending
-that the reconstruction has the retail checksum. Runtime deployment uses the
-repository's native VC7 `bugfix` mode, whose existing evidence-backed branch
-accepts a matching `0100d` version. The normal mode remains the comparator/link
-lane; the bugfix mode remains native prerequisite evidence, not port evidence.
+Runtime deployment uses the native VC7 `bugfix` mode, whose existing branch
+accepts a matching `0100d` version. Keep the target's size/checksum logic in
+`normal` for comparison and link validation.
 
 ## Completed native checkpoint
 
-The current source checkpoint has passed focused
+The 2026-09-10 source checkpoint passed focused
 `Player::AddedCallback @ 0x0044D650` replay (**1,537 / 1,537 exact**), the
 linked runtime owner/call verifier, and a single-job cold rebuild/replay of all
 75 configured objects (**1,106 / 1,106 exact**). The fresh normal PE32 i386 GUI

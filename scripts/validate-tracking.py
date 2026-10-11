@@ -12,6 +12,8 @@ import struct
 import tomllib
 
 from match_literals import real_literal_bytes
+from match_callees import validate_math_callee
+from match_inputs import validate_input_global
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -333,6 +335,8 @@ def load_match_units(
                 unit.get("relocations", []), start=1
             ):
                 try:
+                    validate_math_callee(relocation)
+                    validate_input_global(relocation)
                     declared = real_literal_bytes(relocation)
                 except (KeyError, TypeError, ValueError) as exc:
                     fail(
@@ -352,7 +356,7 @@ def load_match_units(
                             f"{relocation['symbol']}"
                         )
                 symbol = str(relocation["symbol"])
-                if relocation.get("type") == "REL32" and symbol.startswith("?"):
+                if relocation.get("type") == "REL32" and symbol.startswith(("?", "@")):
                     target = int(relocation["target"])
                     site = f"{name}+0x{int(relocation['offset']):X}"
                     rel32_targets.setdefault(symbol, {}).setdefault(target, []).append(site)

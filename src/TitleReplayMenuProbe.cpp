@@ -17,6 +17,11 @@
 namespace th08
 {
 
+// Exact-only owner for selected title/replay menu functions whose production
+// implementations live in TitleScreen.cpp.  Shared inline fragments are kept
+// in the Title*.inl files; this probe is selected only by scripts/configure.py
+// and is never linked into a playable target.
+
 inline Float3::Float3(float x, float y, float z)
 {
     this->x = x;

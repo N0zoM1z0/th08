@@ -20,7 +20,12 @@ void __fastcall CopyBulletAnmVmCore(AnmVm *dst, const AnmVm *src);
 void __fastcall SelectBulletSprite(AnmVm *dst, AnmVm *base, AnmVm *sizeSource, i32 offset);
 
 
-void __fastcall fsincos(f32 *sine, f32 *cosine, f32 angle) {}
+// Runtime implementation for the target x87 helper at 0x00433880.
+void __fastcall fsincos(f32 *sine, f32 *cosine, f32 angle)
+{
+    *sine = (f32)sin((f64)angle);
+    *cosine = (f32)cos((f64)angle);
+}
 
 // FUNCTION: th08 0x42a410
 BulletSpawnDescriptor::BulletSpawnDescriptor()

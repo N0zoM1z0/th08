@@ -6,10 +6,9 @@ TH08 1.00d executable, SHA-256
 `330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924`.
 
 The audit covers both initialized target data and mutable aggregate fields that
-were incorrectly modeled as independent linker storage. It is whole-program
-reconstruction evidence. It does not grant new
-function exactness and it does not claim that every runtime path has been
-exercised.
+were incorrectly modeled as independent linker storage. The findings describe
+the 2026-09-10 whole-program checkpoint. Function results are recorded in the
+exact ledger; live work is in the [current handoff](RE_HANDOFF.md).
 
 ## Why the port did not expose the source defect cleanly
 
@@ -19,9 +18,9 @@ native VC7 production link emitted zero-filled owners. The native link was
 complete and individual functions remained exact, but callbacks and values
 read by those exact functions were wrong at process scope.
 
-The repair belongs in each semantic production translation unit. The modern
-startup initialization is corroborating evidence for the intended values, not
-the owner or the fix.
+The repair belongs in each production translation unit. Modern startup
+initialization helps identify the intended values; target data and native
+linking establish their owners.
 
 ## Recovered initialized owners
 
@@ -46,11 +45,11 @@ python3 scripts/analysis/verify-windows-i386-runtime-data.py
 At this checkpoint it reports zero `DIFFABLE_STATIC`/array owners mapped into a
 raw-backed target section without an initializer. It also checks the four
 families above in the linked reconstruction and verifies that all eight linked
-loads in `Gui::CopyEnemyNameTexture` select `Gui::frontAnm`. It also rejects a
+loads in `Gui::CopyEnemyNameTexture` select `Gui::frontAnm`. It rejects a
 standalone spell-background ANM symbol and requires `Spellcard::StartSpell` to
-load `EffectManager::stageEffectAnm`. It also rejects standalone player gauge-
+load `EffectManager::stageEffectAnm`, rejects standalone player gauge-
 bound storage and checks all 21 linked writes into the six real `GameManager`
-fields. This is deliberately stricter than checking source text alone.
+fields.
 
 ## Remilia X-bomb incident
 
@@ -201,11 +200,8 @@ confirmed normal behavior, closing RT-008.
 
 ## Audit limits
 
-This initialized-data scan catches one important owner class; it cannot prove
-that two valid objects with identical layouts are not confused, that an
-asynchronous publication/teardown is ordered correctly, or that a private
-switch-table relocation names the correct destination. Native runtime testing
-must continue across repeated title/gameplay transitions, stage loads, replay
-save/load, and process shutdown. New failures are evidence for a bounded owner,
-lifetime, ABI, or TU investigation—not permission to add speculative guards or
-duplicate storage.
+The initialized-data scan covers static owners. Object selection, asynchronous
+publication/teardown, and switch-table destinations need separate evidence.
+After a relevant source change or new failure, exercise title/gameplay
+transitions, stage loads, replay save/load, and shutdown. Use each reproduction
+to select a bounded owner, lifetime, ABI, or TU investigation.

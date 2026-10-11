@@ -6,6 +6,11 @@
 
 namespace th08
 {
+
+// Exact-only pause/retry draw probe for the production AsciiManager.cpp menu
+// code.  Its compact local layouts reproduce the target VC7 frame without
+// adding probe-only types to shared headers; playable builds do not link it.
+
 struct PauseMenuProbe
 {
     u32 curState;

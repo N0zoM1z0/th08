@@ -2,15 +2,13 @@
 
 TH08 now has a native-layout 64-bit Linux build alongside the original
 fixed-layout i386 port. Both products compile the reconstructed authored game
-sources and use the repository SDL2/OpenGL backend. Neither product executes
-or bundles the original `th08.exe`.
+sources and use the repository SDL2/OpenGL backend. Supply your own original
+game data to run them.
 
 Stable packages are available from the
 [latest TH08 release](https://github.com/N0zoM1z0/th08/releases/latest).
 Active development and CI snapshots remain on
 [`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
-The default branch links here so users do not have to discover the port among
-the repository's other development branches.
 
 ## Architecture status
 
@@ -19,14 +17,9 @@ the repository's other development branches.
 | x86_64 | ELF64 little-endian PIE; native globals; no fixed-address TH08 symbols | Complete Sakuya/Remilia Lunatic route through Stages 1–6A, ending, results, and return to title under WSLg; additional Stage 4A and Stage 6B Practice validation; deterministic replay audits under Xvfb/Mesa |
 | AArch64 | Cross-built ELF64 little-endian PIE with only AArch64 libraries | QEMU user-mode reaches DAT/version/logo/loading initialization; a real AArch64 desktop gameplay run remains required |
 
-The x86_64 result is a playable 64-bit port, not merely a successful link. The
-AArch64 artifact is build- and loader-verified, but emulated software OpenGL is
-too slow to substitute honestly for a gameplay test on AArch64 hardware.
-After integrating the native Windows i386 prerequisite, the x86_64 artifact was
-rebuilt and smoke-tested again. The portable package workflow also rebuilt the
-integrated AArch64 head using only AArch64 libraries. That closes the packaging
-gap but does not replace the still-pending gameplay run on real AArch64
-hardware.
+Native x86_64 gameplay and replay audits have run under WSLg and Xvfb/Mesa.
+AArch64 has cross-build, packaging, and QEMU startup evidence; gameplay on real
+AArch64 hardware remains the next gate.
 
 <p align="center">
   <img
@@ -164,9 +157,8 @@ On the same x86_64 host, data, Xvfb display, and llvmpipe renderer, an external
 calibration path at 13.485 seconds with all adapters at `-O0` and 3.442 seconds
 with this bounded policy, a 3.92x improvement. Post-calibration samples remain
 capped at approximately 60 Hz as intended. This measurement demonstrates the
-adapter bottleneck and additional frame-time headroom; it is not a claim that
-every dense bullet pattern, GPU/driver combination, or browser backend has
-been profiled.
+adapter bottleneck and additional frame-time headroom under those conditions.
+Dense patterns and other GPU/driver combinations need separate profiling.
 
 ### AddressSanitizer runtime audit
 
@@ -207,14 +199,14 @@ normal runs. The audit exposed and now guards these modern-runtime hazards:
   scalar-delete calls.
 
 The 60-second sanitizer smoke covers title, bundled replay, Stage 5 resource
-loading, BGM startup, and return-to-title cleanup. It is a bounded regression
-gate, not exhaustive coverage of every menu, route, or replay file.
+loading, BGM startup, and return-to-title cleanup. Extend it with selected
+replay windows to check later stages and routes.
 
 ### Issue-driven prerequisite regression gate
 
 The native Windows i386 prerequisite recovered production-source defects that
 also feed the 64-bit build. The current portable branch therefore checks the
-real shared repairs rather than recreating them as backend patches:
+shared repairs:
 
 - dialogue and stage rendering share the target's stage-finished draw gate;
 - boss names select the GUI front-ANM owner;
@@ -228,10 +220,59 @@ These paths correspond to several symptoms reported in
 [th08 issue #16](https://github.com/N0zoM1z0/th08/issues/16) and
 [th08-web issue #1](https://github.com/N0zoM1z0/th08-web/issues/1). The native
 x86_64 smoke test reaches the bundled Stage 5 demo and guards early exits and
-resource requests. It does **not** establish exact replay input/RNG parity,
-subjective rendering parity, performance on browser backends, or closure of
-the post-spell gauge, result-screen, and negative-bonus reports. Those require
-their own bounded runtime evidence.
+resource requests. The [native replay gate](REPLAY_TESTING.md) checks complete
+input/RNG traces on the VC7 product. Portable visual reports and the post-spell
+gauge, result-screen, and negative-bonus symptoms need a stage, replay, and
+runtime capture of their own.
+
+### Native replay repair checks
+
+The branch includes [main PR #26](https://github.com/N0zoM1z0/th08/pull/26):
+Fantasy Seal trajectories, death-mode orbit lifetime, spellcard callback
+ownership, laser-cancel trigonometry, and Solo Yukari's replay-fed input.
+The [committed corpus](../tests/fixtures/replays/th08-1.00d/README.md) preserves
+the original recordings, author credits, and pinned provenance.
+
+Build the portable artifact, then run the six bounded replay windows:
+
+```bash
+scripts/build-portable-linux.sh x86_64
+python3 scripts/test-portable-replay-repairs.py \
+  --candidate build/portable-linux-x86_64/th08-modern \
+  --game-data-dir "/path/to/original/TH08 directory" \
+  --output-dir build/portable-replay-check
+```
+
+| Window | Replay case | Start stage | Seconds |
+| --- | --- | --- | ---: |
+| `border-transitions` | `easy-0-b` | Stage 1 | 90 |
+| `yukari-stage3` | `easy-5-b` | Stage 3 | 90 |
+| `border-stage5` | `lunatic-0-b` | Stage 5 | 90 |
+| `magic-final-a` | `lunatic-1-a` | Final A | 60 |
+| `ghost-final-b` | `lunatic-3-b` | Final B | 60 |
+| `scarlet-extra` | `extra-2-extra` | Extra | 60 |
+
+The runner verifies recording bytes, disables audio, uses normal life rules,
+and checks enemy texture, geometry, and framebuffer evidence. It records the
+binary/data hashes and playback settings, retains compressed per-window reports,
+and removes each temporary runtime. A failure stops the batch with its evidence
+retained. `--windows yukari-stage3,border-stage5` selects individual checks;
+use a new output directory for each run.
+
+These windows establish bounded portable replay/render coverage. The full
+108-case, 25-field parity claim belongs to the separate VC7 replay gate.
+
+The 2026-10-12 run at source commit `2c253eb2` passed all six windows, with
+5,231 samples. Fresh x86_64 ownership checks, normal and AddressSanitizer
+60-second smoke runs, and repository CI also passed. The merged source retained
+all 1,106 accepted VC7 units after a cold build and passed fresh normal/bugfix
+link checks. Reports and compressed logs are in `build/replay-cold-20261011/`.
+
+The Stage 5 window contains one `color-loss-suspect` sample at frame 6,166,
+enemy 14, sprite 77, alongside 72 `ok` samples for the same animation/script/
+sprite. The checker reports isolated suspects and fails structural errors or
+repeated zero-pixel draws. This sample needs visual confirmation; the retained
+CSV records its texture, tint, geometry, and framebuffer delta.
 
 ### Deterministic replay render audit
 
@@ -260,9 +301,8 @@ audit launcher applies its endurance patch externally through GDB; set
 `TH08_RENDER_AUDIT_KEEP_LIVES=0` to audit with normal life rules. Neither mode
 modifies the executable or the behavior of a packaged build.
 
-This is deliberately a semantic and pixel oracle, not image recognition. It
-currently covers primary enemy and boss VMs; backgrounds, bullets, secondary
-VMs, and subjective visual parity still need a real graphical run.
+The audit checks primary enemy and boss VM state and pixels. Use graphical
+captures for backgrounds, bullets, secondary VMs, and broader visual comparisons.
 The [render-audit guide](RENDER_AUDIT.md) defines the versioned CSV contract,
 acceptance policy, cross-port comparator, and adapter boundary for future
 platform backends.
@@ -313,11 +353,9 @@ bad frame and verified the bounded modern-only correction.
 
 Earlier Linux bring-up runs also exposed missing enemy/boss sprites, incomplete
 effects, Stage 4-to-5 dynamic-text tiling, and later-stage transition stalls.
-The final x86_64 full-route and Practice passes did not reproduce those issues
-after the native-layout and render fixes. This is broad runtime evidence rather
-than a promise that every GPU/driver combination is identical; regressions
-should still include the runtime diagnostics described in `PLAY_LINUX.md`.
+The final x86_64 full-route and Practice passes completed with those fixes.
+Reports from other runtimes should include the diagnostics described in
+[PLAY_LINUX.md](PLAY_LINUX.md).
 
-The VC7 build and comparison path never defines the native-layout macro. These
-port changes do not claim new exact matches and must continue to pass the
-repository's target-pinned comparison checks independently.
+The VC7 comparison path uses the original layout and remains a separate gate
+for the shared source.

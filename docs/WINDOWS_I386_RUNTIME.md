@@ -5,7 +5,8 @@ Japanese TH08 1.00d source. It builds the production translation units with the
 pinned Visual C++ .NET 2002 toolchain, links a real PE32 GUI executable, and
 runs that executable with the original game data on Windows.
 
-It must precede modern Windows/Linux/macOS port work. A modern compiler can
+Run this validation before stabilizing modern Windows/Linux/macOS ports. A
+modern compiler can
 accept different declarations, choose different owners, add compatibility
 initialization, or tolerate a link graph that the VC7 production image does
 not. A modern executable can therefore be useful portability evidence while
@@ -26,16 +27,15 @@ runtime disposition. RT-007's old Final/Last Spell screenshot path retains a
 non-blocking confirmation follow-up, but there is no known unfixed native defect
 at this checkpoint.
 
-Completion means later port work may proceed. It does not make the VC7 image a
-supported download, and it does not permanently waive this gate. Repeat the
-serial procedure below after any shared owner/layout/TU/PCH/compiler-profile or
-production link-graph change, or when a new native failure is reported.
+This checkpoint permits later port work. Repeat the serial procedure after
+shared owner/layout/TU/PCH/compiler-profile or production link-graph changes,
+or after a new native failure. The VC7 image remains a developer test artifact.
 
 ## Environment bootstrap
 
-The exact target and retail data are private inputs and must never be committed.
+Keep the exact target and retail data as private inputs.
 Place the original Japanese 1.00d executable at `resources/th08.exe`; its
-required size and SHA-256 are listed in `docs/ARCHITECTURE.md`.
+required size and SHA-256 are listed in [ARCHITECTURE.md](ARCHITECTURE.md#exact-target).
 
 On Linux or macOS, install Python 3.11 or newer, Wine, and `msiextract`, then
 create the pinned Visual Studio .NET 2002/DirectX 8 environment:
@@ -55,7 +55,7 @@ git submodule update --init --recursive
 python scripts/create_devenv.py scripts/dls scripts/prefix
 ```
 
-See `docs/BUILD_MATCHING.md` for dependency details and focused comparison
+See [BUILD_MATCHING.md](BUILD_MATCHING.md#toolchain) for dependencies and focused comparison
 workflows. Use one writable session and one Wine/VC7 job throughout this gate.
 
 ## Artifact boundary
@@ -87,7 +87,7 @@ test "$(wc -l < config/claims.csv)" -eq 1
 ```
 
 First cold-build and replay every accepted normal comparison object. This step
-cleans generated Ninja and known VC7/linker side outputs, so it intentionally
+cleans generated Ninja and known VC7/linker side outputs, so it
 precedes both complete executable links:
 
 ```bash
@@ -190,8 +190,7 @@ the target ledger.
 
 ## Isolated Windows deployment
 
-Never test by overwriting the canonical installation. Create a separate
-directory, for example:
+Test in a separate directory and preserve the canonical installation. For example:
 
 ```text
 D:\Entertainment\Game\Touhou\th08-reconstruct
@@ -204,9 +203,8 @@ exact-facing artifact as the playtest executable: its retail-identity check is
 expected to reject the reconstruction and can run off the end of the version
 table.
 
-For a new empty directory, the following PowerShell example is deliberately
-fail-closed: it refuses an existing destination instead of deleting or mixing
-old artifacts. Run it from a Windows-visible repository root and replace the
+The PowerShell recipe requires a new directory and refuses an existing
+destination. Run it from a Windows-visible repository root and replace the
 two example paths:
 
 ```powershell
@@ -332,8 +330,7 @@ linked writes to resolve through `g_GameManager`.
 
 ## Runtime matrix
 
-A minimum manual pass should exercise ownership and lifetime boundaries, not
-only reach the title screen:
+A minimum manual pass exercises ownership and lifetime transitions:
 
 1. start in windowed mode and enter gameplay with the copied retail data;
 2. exercise the Reimu/Yukari, Marisa/Alice, and Sakuya/Remilia X-bomb paths;
@@ -384,8 +381,7 @@ for reproduction of the final acceptance run.
 
 ## Acceptance language
 
-- A successful VC7 compile/link is a **native production build**, not a runtime
-  pass or a whole-image exact claim.
+- A successful VC7 compile/link establishes a **native production build**.
 - `normal` is the exact-facing build mode; `bugfix` is the native playable mode.
   Both use VC7 and the production link graph, but only normal objects are exact
   evidence.
@@ -394,8 +390,8 @@ for reproduction of the final acceptance run.
 - A repaired issue is **fixed / confirmation pending** until the originally
   reported path has been repeated on the repaired native image.
 - Function exactness remains governed only by the configured target comparator.
-- A runtime repair does not add exact credit, and a function-level exact result
-  does not prove correct whole-program ownership or lifetime.
+- Runtime testing establishes exercised behavior and lifetime paths; exact
+  credit is recorded separately in the comparison ledgers.
 - The 2026-09-10 prerequisite checkpoint is complete; later work may call it
   complete only while the source/link assumptions listed above remain unchanged
   or after this serial gate is repeated.

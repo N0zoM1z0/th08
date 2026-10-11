@@ -220,8 +220,8 @@ void __fastcall UpdateFantasyOrbBomb(Player *player)
             workItem->angle = AddNormalizeAngle(
                 workItem->angle, (i & 1) ? 0.052359879016876221f : -0.052359879016876221f);
             previousPosition = workItem->position;
-            workItem->position.x = cosf(workItem->angle) * workItem->motionStep + workItem->pathPoints[0].x;
-            workItem->position.y = sinf(workItem->angle) * workItem->motionStep + workItem->pathPoints[0].y;
+            workItem->position.x = sinf(workItem->angle) * workItem->motionStep + workItem->pathPoints[0].x;
+            workItem->position.y = cosf(workItem->angle) * workItem->motionStep + workItem->pathPoints[0].y;
             workItem->motionStep += 3.2f;
             workItem->motion = workItem->position - previousPosition;
         }
@@ -415,8 +415,8 @@ void __fastcall UpdateFantasySealBlinkDeathbomb(Player *player)
             workItem->angle = AddNormalizeAngle(
                 workItem->angle, (i & 1) ? 0.052359879016876221f : -0.052359879016876221f);
             previousPosition = workItem->position;
-            workItem->position.x = cosf(workItem->angle) * workItem->motionStep + workItem->pathPoints[0].x;
-            workItem->position.y = sinf(workItem->angle) * workItem->motionStep + workItem->pathPoints[0].y;
+            workItem->position.x = sinf(workItem->angle) * workItem->motionStep + workItem->pathPoints[0].x;
+            workItem->position.y = cosf(workItem->angle) * workItem->motionStep + workItem->pathPoints[0].y;
             if (bomb->timer < 40)
             {
                 if (i & 1)

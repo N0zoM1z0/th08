@@ -78,7 +78,7 @@ enum AnmCameraMode
     AnmCameraMode_Unset = -1
 };
 
-// Draw dispatch selected by ANM opcode 37 for player bullet hit animations.
+// Draw dispatch selected by ANM opcode 83 for player-bullet VMs.
 enum AnmPlayerBulletDrawMode
 {
     ANM_PLAYER_BULLET_DRAW_NO_ROTATION = 0,
@@ -248,7 +248,7 @@ enum AnmOpcode
     AnmOpcode_UScroll = 80,
     AnmOpcode_VScroll = 81,
     AnmOpcode_BlendMode = 82,
-    AnmOpcode_Ins83 = 83,
+    AnmOpcode_SetPlayerBulletDrawMode = 83,
     AnmOpcode_Color2 = 84,
     AnmOpcode_Alpha2 = 85,
     AnmOpcode_Color2Time = 86,
@@ -415,7 +415,7 @@ struct AnmVmBase
     };
     i16 type;
     i16 pendingInterrupt;
-    i32 playerBulletHitAnimationType;
+    i32 playerBulletDrawMode;
     AnmLoaded *anmFile;
 };
 

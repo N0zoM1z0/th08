@@ -12,6 +12,12 @@ native-layout compatibility code. These changes do not alter the exact-facing
 VC7 source path or make the experimental AArch64 package a gameplay-validated
 product.
 
+This is the release-package guide. The
+[source-checkout instructions](#build-and-run-from-a-source-checkout) below
+build i386 from `main`; x86_64/AArch64 source builds use the
+[64-bit branch guide](https://github.com/N0zoM1z0/th08/blob/port/portable-64bit/docs/PORTABLE_64BIT.md).
+See [port scope and products](PORTING.md#scope-and-products) for the distinction.
+
 ## What you need
 
 - a Linux desktop with working OpenGL and audio;
@@ -20,8 +26,7 @@ product.
   - `th08.dat`
   - `thbgm.dat`
 
-Those two DAT archives are the only copyrighted game files required by the
-port. They are not included in the release. The selected data directory must
+Supply the two DAT archives from your own game installation. The selected data directory must
 be writable because TH08 creates `th08.cfg`, `score.dat`, replays, screenshots,
 backups, and diagnostic logs there.
 
@@ -67,7 +72,7 @@ sudo apt-get install \
 On a native AArch64 Debian-family system, install the same unqualified package
 names as x86_64. Other distributions need equivalent native packages for the
 C++ runtime, OpenGL, Fontconfig, SDL2, SDL2_image, and SDL2_ttf, plus a Japanese
-font. The launcher itself never invokes `sudo`.
+font. Install these packages before running the launcher.
 
 ## 3. Verify and extract the package
 
@@ -106,8 +111,8 @@ start it from inside the package with:
 ./run-th08.sh ..
 ```
 
-The path is resolved at launch and is never hard-coded into the executable.
-Spaces and non-ASCII characters are supported when the path is quoted.
+The launcher resolves the path at startup. Quote paths containing spaces or
+non-ASCII characters.
 
 ## First launch
 
@@ -116,11 +121,11 @@ backup directory, and logs automatically. An existing `th08.cfg` is optional.
 On a low-resource VM without 3D acceleration, the first fullscreen FPS/vsync
 calibration can be slow and may temporarily look stalled.
 
-The empty-backup startup path is covered by a regression test: the Linux Win32
-compatibility layer now rejects an invalid file-search handle harmlessly,
-creates the first score backup, and continues into the title and stage assets.
-
 ## Build and run from a source checkout
+
+These commands apply to the i386 checkout on `main`, even when the host is
+x86_64. For a native x86_64/AArch64 build, follow the
+[64-bit branch procedure](https://github.com/N0zoM1z0/th08/blob/port/portable-64bit/docs/PORTABLE_64BIT.md).
 
 On Debian or Ubuntu, the one-command developer path installs missing build
 dependencies, builds the native i386 executable, and launches it:
@@ -147,8 +152,8 @@ The AArch64 command cross-builds on x86_64 when the documented arm64
 development packages are installed. See [Native 64-bit Linux
 port](PORTABLE_64BIT.md) for package, launch, and smoke-test commands.
 
-Docker is available only as an optional reproducible build environment; it is
-not required to run the resulting game. See [Native Linux playable
+An optional Docker environment provides reproducible builds; the resulting
+game runs directly on the host. See [Native Linux playable
 reconstruction](LINUX_PORTING.md) for backend architecture, build isolation,
 validation coverage, and porting lessons.
 
@@ -176,10 +181,13 @@ Runtime diagnostics are written inside the selected data directory:
 - `backup/modern-crash.txt`: possible early-startup report while score backups
   are being rotated.
 
-If the program exits unexpectedly, preserve those files and report the exit
-code, distribution, desktop session, GPU/OpenGL environment, and the exact
-launch command. Do not upload the DAT archives, original executable, score
-files, or replays unless they are specifically needed and safe to share.
+If the program exits unexpectedly, [open an issue](https://github.com/N0zoM1z0/th08/issues)
+with those diagnostics, your package version, exit code, distribution,
+desktop session, GPU/OpenGL environment, and launch command. For a gameplay or
+rendering bug, include the exact stage/route, mode, difficulty, team, reproduction
+steps, and screenshots or video. The [bug report checklist](../README.md#reporting-bugs)
+has the full format. Keep original game files private; share score files or
+replays when needed to reproduce the issue.
 
 ## Current limitations
 

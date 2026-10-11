@@ -19,7 +19,11 @@
 namespace th08
 {
 
-// Claim-safe exact owners for the in-progress Player TU.
+// Exact-only owner of selected Player option callbacks duplicated from the
+// production Player.cpp translation unit.  scripts/configure.py applies the
+// Player VC7 profile; playable builds do not link this file.  Edit the runtime
+// owner first, keep this probe synchronized, then replay its configured units.
+
 i32 __fastcall UpdateModeSensitiveOrbitingOption(Player *player, PlayerOptionState *option)
 {
     Float3 desired;
