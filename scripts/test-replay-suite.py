@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch pinned 1.00d replays and compare native playback with retail, serially.
+"""Compare pinned 1.00d replay playback with retail, serially.
 
 The ledger is updated after each case. Re-running the same command reuses
 completed captures and comparisons whose executable and fixture hashes agree.
@@ -16,7 +16,7 @@ import subprocess
 import sys
 import urllib.request
 
-from replay_file import inspect
+from replay_file import CORPUS, verify_fixture
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("comparison", ROOT / "scripts/compare-replay-traces.py")
@@ -38,24 +38,19 @@ def write_json(path, value):
 def fetch(fixture, directory):
     path = directory / fixture["file"]
     if not path.exists():
+        for group in ("accepted", "retail-incomplete"):
+            bundled = CORPUS / group / fixture["file"]
+            if bundled.exists():
+                verify_fixture(bundled, fixture)
+                return bundled
+    if not path.exists():
         request = urllib.request.Request(fixture["url"], headers={"User-Agent": "TH08-replay-parity/1"})
         with urllib.request.urlopen(request, timeout=60) as response:
             data = response.read(4 * 1024 * 1024 + 1)
         if hashlib.sha256(data).hexdigest() != fixture["sha256"]:
             raise ValueError(f"Downloaded replay hash differs: {fixture['id']}")
         path.write_bytes(data)
-    info = inspect(path)
-    if info["sha256"] != fixture["sha256"]:
-        raise ValueError(f"Cached replay hash differs: {path}")
-    for field in ("shot", "difficulty", "extended", "practice", "spellcard", "executable"):
-        if info[field] != fixture[field]:
-            raise ValueError(f"Replay metadata differs: {fixture['id']} / {field}")
-    if info["bytes"] != fixture["bytes"]:
-        raise ValueError(f"Replay size differs: {fixture['id']}")
-    if [{key: s[key] for key in ("index", "inputRecords", "endScore")} for s in info["stages"]] != [
-        {key: s[key] for key in ("index", "inputRecords", "endScore")} for s in fixture["stages"]
-    ]:
-        raise ValueError(f"Replay stages differ: {fixture['id']}")
+    verify_fixture(path, fixture)
     return path
 
 

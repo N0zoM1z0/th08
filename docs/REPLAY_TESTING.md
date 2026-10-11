@@ -11,7 +11,8 @@ supervision.
 recordings: each of the 12 shot types on Easy, Normal, Hard, and Lunatic through
 Final A and Final B, plus Extra. Stage 4A and 4B follow the recorded shot's
 route. The manifest includes download URLs, recorder credits, hashes, and
-stage input counts. Replay files remain under `build/`.
+stage input counts. The original replay files and per-recording credits are
+committed in the [replay corpus](../tests/fixtures/replays/th08-1.00d/README.md).
 `playedAt` preserves the archive's Play Date; `submittedAt`, when present,
 records its upload date.
 
@@ -29,12 +30,14 @@ python3 scripts/test-replay-suite.py \
   --output-dir build/replay-suite-check
 ```
 
-The runner downloads and verifies each fixture, captures retail playback,
+The runner verifies each committed fixture, captures retail playback,
 then compares the native build. Cases run serially. `suite.json` records each
 result and its first difference. Run the same command again to resume with
 the same build and settings. `--cases easy-0-b,extra-0-extra` selects individual
 cases; the number is the shot index listed in the manifest. `--fetch-only`
-checks the input files without launching Wine.
+checks the input files without launching Wine. The committed corpus works
+offline. A validated file in `build/replay-fixtures/` takes precedence;
+additional manifest entries download into that cache when needed.
 
 Inspect a running or completed batch without opening its capture logs:
 
@@ -188,7 +191,7 @@ python3 scripts/test-replay-suite.py \
   --observer-backend ptrace --clock-rate 128 --no-rasterization
 ```
 
-This downloads the pinned recordings and captures both executables locally.
+This uses the committed recordings and captures both executables locally.
 It needs no private reference trace. Omit `--claims-only` to run the full
 108-case corpus. Use `--cases` to reproduce one case. A nonzero exit status
 means a difference, an invalid capture, or a failed published expectation;
@@ -209,7 +212,8 @@ Capture metadata records executable, map, data and configuration hashes,
 source revision, observer backend, clock rate, rasterization, and host/Wine
 versions. Preserve `suite.json`, comparison files, metadata, completion files,
 and compressed traces when sharing an independent result. Delete the owned
-Wine prefix after the batch; game assets and replay files stay local.
+Wine prefix after the batch. Keep original game assets local; share the compact
+reports and compressed traces as independent playback evidence.
 
 To review a completed batch and publish additional expectations:
 
@@ -222,8 +226,8 @@ python3 scripts/analysis/record-replay-expectations.py \
 This rechecks retained traces, fixture identities, the canonical reference,
 candidate executable and map, DAT/BGM hashes, playback settings, observer schema,
 and the recorded calculation counts. It rejects changes to existing expectations.
-Only the acceptance hashes and counts enter
-the manifest; generated reports and recordings remain under `build/`.
+The acceptance hashes and counts enter the manifest. Public recordings and
+credits stay in the committed corpus; generated reports remain under `build/`.
 
 All twelve shot types have complete Final B expectations on all four main
 difficulties, plus Extra:
@@ -301,7 +305,7 @@ python3 scripts/test-replay-suite.py \
   --output-dir build/replay-rejected-inputs
 python3 scripts/capture-replay.py \
   --target resources/th08.exe \
-  --replay build/replay-fixtures/th8_ud2b7c.rpy \
+  --replay tests/fixtures/replays/th08-1.00d/retail-incomplete/th8_ud2b7c.rpy \
   --start-stage 3 --playback-mode 0 --observer-backend ptrace \
   --game-data build/modern-runtime/th08.dat \
   --bgm-data build/modern-runtime/thbgm.dat \
@@ -310,10 +314,12 @@ python3 scripts/capture-replay.py \
 
 In the recorded Wine/Mesa environment, this exits nonzero with 3,772 input
 records left and score 31,688,942 instead of the recorded 40,908,184.
-To reproduce Yuyuko's failure, use `--replay build/replay-fixtures/th8_ud247c.rpy`,
+To reproduce Yuyuko's failure, use
+`--replay tests/fixtures/replays/th08-1.00d/retail-incomplete/th8_ud247c.rpy`,
 `--start-stage 0`, and a fresh output directory in the capture command. It exits
 nonzero with 4,948 input records left and score 931,816 instead of 6,901,513.
-For Scarlet Team, use `--replay build/replay-fixtures/th8_ud2bdd.rpy`,
+For Scarlet Team, use
+`--replay tests/fixtures/replays/th08-1.00d/retail-incomplete/th8_ud2bdd.rpy`,
 `--start-stage 5`, and another fresh output directory. It exits nonzero with
 7,245 input records left and score 136,118,016 instead of 166,560,017.
 The active matrix requires a complete retail reference for each coverage cell.

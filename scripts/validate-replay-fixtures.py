@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import re
 import tomllib
-from replay_file import RETAIL_IDENTITY, SHOTS, DIFFICULTIES
+from replay_file import CORPUS, RETAIL_IDENTITY, SHOTS, DIFFICULTIES, verify_fixture
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -77,16 +77,60 @@ def validate(manifest, complete=True):
     return accepted
 
 
+def validate_files(manifest, group):
+    directory = CORPUS / group
+    expected = {fixture["file"] for fixture in manifest["fixtures"]}
+    if {path.name for path in directory.iterdir()} != expected:
+        raise ValueError(f"Committed replay files differ from the {group} manifest")
+    for fixture in manifest["fixtures"]:
+        path = directory / fixture["file"]
+        if path.is_symlink() or not path.is_file():
+            raise ValueError(f"Expected a regular committed replay: {fixture['id']}")
+        verify_fixture(path, fixture)
+
+
+def credits(manifests):
+    lines = ["# Replay credits", "",
+             "Generated from the [accepted](../../../../config/replay-fixtures.json) and",
+             "[retail-incomplete](../../../../config/replay-rejected-fixtures.json) manifests.",
+             "These manifests also retain each recording's SHA-256, size, original URL,",
+             "header player name, and decoded stage metadata. See [README.md](README.md)",
+             "for provenance and reuse.", ""]
+    for group, manifest in manifests:
+        title = "Accepted recordings" if group == "accepted" else "Retail-incomplete diagnostic recordings"
+        lines += [f"## {title}", "",
+                  "| Case | Recording | Recorded by | Play date | Upload date | Archive download |",
+                  "| --- | --- | --- | --- | --- | --- |"]
+        for fixture in manifest["fixtures"]:
+            author = fixture["recordedBy"].replace("|", "\\|")
+            lines.append(f"| `{fixture['id']}` | [{fixture['file']}]({group}/{fixture['file']}) "
+                         f"| {author} | {fixture['playedAt']} | {fixture.get('submittedAt', '')} "
+                         f"| [Source]({fixture['url']}) |")
+        lines.append("")
+    return "\n".join(lines)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("manifest", nargs="?", type=Path, default=ROOT / "config/replay-fixtures.json")
     parser.add_argument("--rejected", type=Path, default=ROOT / "config/replay-rejected-fixtures.json")
+    parser.add_argument("--write-credits", action="store_true", help="Regenerate the committed attribution index")
     args = parser.parse_args()
-    accepted = validate(json.loads(args.manifest.read_text()))
+    manifest = json.loads(args.manifest.read_text())
+    accepted = validate(manifest)
+    validate_files(manifest, "accepted")
     print(f"Replay corpus verified: 108 fixtures, 12 shots, both Final routes on four difficulties, Extra; {accepted} published expectations")
     rejected = json.loads(args.rejected.read_text())
     validate(rejected, complete=False)
+    validate_files(rejected, "retail-incomplete")
     print(f"Rejected reference manifest verified: {len(rejected['fixtures'])} documented capture failures")
+    attribution = credits((("accepted", manifest), ("retail-incomplete", rejected)))
+    path = CORPUS / "CREDITS.md"
+    if args.write_credits:
+        path.write_text(attribution)
+    elif path.read_text() != attribution:
+        raise ValueError("Replay credits differ; run scripts/validate-replay-fixtures.py --write-credits")
+    print("Committed replay bytes, metadata, and author credits verified")
 
 
 if __name__ == "__main__":

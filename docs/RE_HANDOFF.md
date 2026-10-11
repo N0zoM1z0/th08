@@ -33,12 +33,18 @@ Each port has its own build and runtime validation alongside the VC7 path.
 
 A fresh cold gate is in progress under `build/replay-cold-20261011/`.
 Cold normal/bugfix links and all 1,106 accepted authored units passed. The
-new 108-case suite has 46 complete retail/native pairs with equal traces.
-The next retail capture completed all 113,660 calculations, then failed on
-an Xvfb shutdown timeout. Capture cleanup now kills and reaps a stalled
-Xvfb child; process tests cover graceful, stalled, and completed children.
-Resume with the archived candidate in this batch. Merge into main and sync
+new 108-case suite is continuing with fresh retail/native captures. A completed
+retail capture hit an Xvfb shutdown timeout; cleanup now kills and reaps a
+stalled child. The resumed pair passed all 113,660 calculations. Process tests
+cover graceful, stalled, and completed children, and resumed captures are
+validated and compressed. Resume with the archived candidate in this batch.
+Merge into main and sync
 `port/portable-64bit` after the full replay and ordinary-demo gates pass.
+
+The [committed replay corpus](../tests/fixtures/replays/th08-1.00d/README.md)
+preserves all 108 accepted recordings and three retail-incomplete diagnostic
+recordings, with per-file author credits and provenance. The suite reads these
+files offline; CI verifies their bytes, metadata, and generated credit index.
 
 The current playable VC7 build passes all three bundled demos against a fresh
 muted retail capture with ordinary pacing and rasterization: 16,080 frames,

@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """Target-independent corruption and layout checks for the replay reader."""
+import copy
+import importlib.util
+import json
 import struct
 import tempfile
 import unittest
 from pathlib import Path
-from replay_file import decode, inspect, RETAIL_IDENTITY
+from unittest.mock import patch
+from replay_file import CORPUS, decode, inspect, RETAIL_IDENTITY, verify_fixture
 
 
 def pack_replay(change=None):
@@ -76,6 +80,37 @@ class ReplayFileTests(unittest.TestCase):
     def test_invalid_input_encoding(self):
         with self.assertRaisesRegex(ValueError, "encoding"):
             self.inspect(pack_replay(lambda data: data.__setitem__(6, 2)))
+
+
+class CommittedReplayTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        root = Path(__file__).resolve().parents[1]
+        cls.fixture = json.loads((root / "config/replay-fixtures.json").read_text())["fixtures"][0]
+        spec = importlib.util.spec_from_file_location("suite", root / "scripts/test-replay-suite.py")
+        cls.suite = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.suite)
+
+    def test_offline_fixture_reuse(self):
+        with tempfile.TemporaryDirectory() as directory, patch(
+            "urllib.request.urlopen", side_effect=AssertionError("Network access attempted")
+        ):
+            path = self.suite.fetch(self.fixture, Path(directory))
+            self.assertEqual(path, CORPUS / "accepted" / self.fixture["file"])
+            self.assertEqual(list(Path(directory).iterdir()), [])
+
+    def test_invalid_cache_is_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / self.fixture["file"]
+            path.write_bytes(b"damaged recording")
+            with self.assertRaises(ValueError):
+                self.suite.fetch(self.fixture, Path(directory))
+
+    def test_manifest_stage_score_is_verified(self):
+        fixture = copy.deepcopy(self.fixture)
+        fixture["stages"][0]["endScore"] += 1
+        with self.assertRaisesRegex(ValueError, "stages differ"):
+            verify_fixture(CORPUS / "accepted" / fixture["file"], fixture)
 
 
 if __name__ == "__main__":

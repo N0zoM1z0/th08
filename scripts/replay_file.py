@@ -13,6 +13,7 @@ SHOTS = ("Border Team", "Magic Team", "Scarlet Team", "Ghost Team", "Reimu", "Yu
          "Marisa", "Alice", "Sakuya", "Remilia", "Youmu", "Yuyuko")
 DIFFICULTIES = ("Easy", "Normal", "Hard", "Lunatic", "Extra")
 RETAIL_IDENTITY = (840704, 2724749753, "0100d")
+CORPUS = Path(__file__).resolve().parents[1] / "tests/fixtures/replays/th08-1.00d"
 
 
 def valid_input_tail(remaining, final_stage):
@@ -130,6 +131,20 @@ def inspect(path, require_retail=True):
                 practice=bool(data[0x7b]), spellcard=struct.unpack_from("<h", data, 0x7c)[0],
                 clearState=data[0x11c], executable=dict(size=identity[0], checksum=identity[1], version=identity[2]),
                 stages=stages, player=data[0x72:0x7a].rstrip(b"\0").decode("cp932", errors="replace"))
+
+
+def verify_fixture(path, fixture):
+    """Check original recording bytes and decoded metadata against provenance."""
+    info = inspect(path)
+    for field in ("sha256", "bytes", "shot", "difficulty", "extended", "practice",
+                  "spellcard", "executable", "player"):
+        if info[field] != fixture[field]:
+            raise ValueError(f"Replay {field} differs: {fixture['id']}")
+    stage_fields = ("index", "inputRecords", "endScore")
+    if [{key: stage[key] for key in stage_fields} for stage in info["stages"]] != [
+        {key: stage[key] for key in stage_fields} for stage in fixture["stages"]
+    ]:
+        raise ValueError(f"Replay stages differ: {fixture['id']}")
 
 
 if __name__ == "__main__":
