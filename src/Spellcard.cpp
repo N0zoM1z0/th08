@@ -17,7 +17,6 @@ namespace th08
 {
 ZunBool IsDisableResourceReload();
 DIFFABLE_STATIC(Spellcard, g_Spellcard);
-DIFFABLE_STATIC(ChainElem *, g_SpellcardCalcChain);
 // Target .data 0x004C6C3C: number of entries in g_LastSpellNumbers.
 DIFFABLE_STATIC_ASSIGN(i32, g_LastSpellCount) = 43;
 
@@ -1712,9 +1711,9 @@ ZunResult Spellcard::DeletedCallback(Spellcard *spellcard)
 // FUNCTION: th08 0x4180f0
 void Spellcard::CutChain()
 {
-    if (g_SpellcardCalcChain != NULL)
+    if (g_Spellcard.lifetimeObject != NULL)
     {
-        g_Chain.Cut(g_SpellcardCalcChain);
+        g_Chain.Cut(g_Spellcard.lifetimeObject);
     }
 }
 

@@ -3,7 +3,20 @@
 The binary-exact VC7 build and the playable modern ports are separate build
 products. The existing Ninja/VC7 path remains the evidence path for the
 original Japanese 1.00d executable. CMake builds `th08-modern` from the same
-authored game sources without making an exact-code claim.
+authored game sources for platform testing and play.
+
+## Scope and products
+
+This page describes the **i386 source builds on `main`**. Its CMake commands,
+fixed-address Linux layout, and 32-bit dependency requirements apply to that
+development path.
+
+The [Linux player guide](PLAY_LINUX.md) covers published packages, including
+native x86_64 and experimental AArch64 products developed on
+[`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit).
+For their source build and validation procedure, use that branch's
+[64-bit guide](https://github.com/N0zoM1z0/th08/blob/port/portable-64bit/docs/PORTABLE_64BIT.md).
+The [Web port](https://github.com/N0zoM1z0/th08-web) has its own repository.
 
 ## Platform status
 
@@ -23,9 +36,8 @@ keeping serialized game and replay formats at their original byte widths.
 ### Native Windows
 
 The Windows bring-up target keeps the original Win32, Direct3D 8, DirectInput
-8, DirectSound, and WinMM backends. Wine is not intended to be part of its
-runtime path, but the current native build and launcher have not produced a
-reliable user-facing Windows package. Treat this target as development-only.
+8, DirectSound, and WinMM backends. The native build and launcher are development
+tools while startup validation and packaging remain in progress.
 
 The separate pinned-VC7 Windows i386 compile/link/play prerequisite is
 complete and no longer blocks this port. It found source-owner, final-link,
@@ -58,13 +70,13 @@ remaining Windows work is complete:
 & '.\th08-modern.exe' --data-dir 'D:\path\to\the\original\TH08 directory'
 ```
 
-The MinGW executable and `d3dx8d.dll` must currently be kept together. The
-user-supplied data directory need not contain either reconstructed runtime
-file. The SDK DLL dependency and the reported **modern MinGW** startup failure
-both block a Windows release artifact; the completed VC7 prerequisite does not
-constitute modern-port release validation.
+Keep the MinGW executable and `d3dx8d.dll` together and select the game data
+directory separately. A Windows release needs both the D3DX replacement and
+resolution of the reported modern MinGW startup failure.
 
 ### Native Linux
+
+The following backend and commands describe the `main` i386 build.
 
 Linux uses repository-owned compatibility backends: SDL2 for the window,
 keyboard, timing, images, and PCM audio, plus fixed-function OpenGL for the
@@ -138,9 +150,8 @@ failure instead of dereferencing the sentinel. On low-resource virtual machines
 without accelerated OpenGL, first-run fullscreen FPS/vsync calibration can
 still appear stalled; reusing `th08.cfg` is an optional performance convenience.
 
-The Linux renderer keeps the D3D8 backbuffer in an OpenGL framebuffer object
-and restores a clean scene snapshot while dialogue deliberately pauses
-background redraw. Its fixed-function mapping handles eye-space linear fog and
+The Linux renderer keeps the D3D8 backbuffer in an OpenGL framebuffer object.
+Its fixed-function mapping handles eye-space linear fog and
 independent RGB/alpha texture-stage combiners. SDL_ttf, Fontconfig, and CP932
 conversion provide the GDI text path used by Japanese dialogue.
 

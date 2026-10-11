@@ -4,15 +4,20 @@ Target: Japanese TH08 1.00d `resources/th08.exe` at `0x004184B0`.
 
 > **Completed historical investigation.** `th08::EclManager::RunEcl` is an
 > accepted strict match: 26,638 authored bytes, 27,398 compared bytes including
-> its jump table, and 799 explicit relocations. Words such as “current”,
-> “remaining”, and “not exact” below describe dated intermediate snapshots, not
-> current repository status. Use the final formal result at the end of this
-> document and `config/matches.csv` as the publication record.
+> its jump table, and 799 explicit relocations. The notes below describe
+> intermediate snapshots; the [formal final result](#formal-relocation-manifest)
+> and [accepted ledger](../config/matches.csv) record acceptance.
 
 These chronological notes preserve reproducible observations and rejected
-natural C++ probes so the accepted result can be audited without repeating the
-investigation. The associated scripts now live under
-`scripts/analysis/historical/` and are not current work selectors.
+natural C++ probes for review and reproduction. Associated scripts live under
+`scripts/analysis/historical/`.
+
+## Reading routes
+
+- [Formal relocation manifest](#formal-relocation-manifest): the publication result and reproduction command.
+- [Final closure](#final-closure-target-lvalues-and-bitfields-take-97---0): the final source corrections.
+- [Historical baseline](#historical-intermediate-baseline): the starting point of the investigation.
+- [RunEcl ownership](SOURCE_MAP.md#reading-eclrun): the current production source and include protocol.
 
 ## Historical intermediate baseline
 
@@ -28,18 +33,15 @@ absolute_delta=0
 max_positive_delta=0
 ```
 
-This is **shape / extent exact**, not strict function exact.  The strict
-comparator still fails before byte comparison unless a relocation manifest is
-provided, because the RunEcl unit currently has no `[[units.relocations]]` rows
-while the COFF object has hundreds of real relocations.
-
-Do not call this function exact until:
+At this checkpoint the **shape and extent aligned**. Strict comparison still
+needed a relocation manifest: the unit had no `[[units.relocations]]` rows,
+while the COFF object contained hundreds of relocations. Acceptance required:
 
 ```bash
 python3 scripts/compare-function.py ecl-manager-run-ecl --json
 ```
 
-returns `"result": "exact"` with the canonical manifest.
+to return `"result": "exact"` with the reviewed manifest.
 
 ## Temporary strict-compare workflow
 

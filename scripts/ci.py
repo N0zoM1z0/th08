@@ -54,6 +54,14 @@ def main() -> int:
             "Test relocation literal validation",
             [sys.executable, "scripts/test-match-literals.py"],
         )
+        run("Test math callee validation", [sys.executable, "scripts/test-match-callees.py"])
+        run("Test replay input binding validation", [sys.executable, "scripts/test-match-inputs.py"])
+        run("Test local relocation validation", [sys.executable, "scripts/test-match-local-relocations.py"])
+        run("Test replay trace comparison", [sys.executable, "scripts/test-replay-trace-comparison.py"])
+        run("Test replay file validation", [sys.executable, "scripts/test-replay-file.py"])
+        run("Test replay capture cleanup", [sys.executable, "scripts/test-replay-capture-cleanup.py"])
+        run("Validate replay route coverage", [sys.executable, "scripts/validate-replay-fixtures.py"])
+        run("Smoke-test portable replay repair CLI", [sys.executable, "scripts/test-portable-replay-repairs.py", "--help"])
         run(
             "Test render-audit checker contract",
             [sys.executable, "scripts/test-render-audit.py"],

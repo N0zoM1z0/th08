@@ -2,22 +2,20 @@
 
 ## Session boundary
 
-The IDA MCP bridge is attached to the file open in the IDA GUI; it has no
-program selector. Fail closed until the active database is established as TH08.
-Never reinterpret a response from another game database as TH08, and never
-patch bytes with IDA, MCP, Ghidra, or another tool.
+The IDA MCP bridge queries the file open in the GUI. Attest that database as
+TH08 before using its responses, and repeat the check after a database switch.
+Keep target bytes unchanged in every analysis tool.
 
-IDA decompilation, names, types, and function extents are semantic/navigation
-evidence only. They never establish an exact match; that remains a reproducible
-comparison against the canonical `resources/th08.exe`.
+IDA provides semantic and navigation evidence: decompilation, names, types,
+and proposed function extents. Exact acceptance uses reproducible comparison
+against the canonical `resources/th08.exe`.
 
 ## Required IDA preflight
 
 IDA MCP may be used for TH08 only after the canonical file is verified and the
 active database's mapped image passes one of the two attestation paths below.
-The bridge may report an IDB/loader input hash rather than the canonical PE
-file hash, so a different reported database hash is not automatically a
-different mapped image.
+The bridge may report an IDB or loader hash. Use mapped-byte attestation below
+when that hash differs from the canonical PE file hash.
 
 | Gate | Required value |
 | --- | --- |

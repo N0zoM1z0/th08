@@ -165,9 +165,15 @@ struct EffectManager
     static ZunResult ReleaseEffectResources(EffectManager *effectManager);
     static ZunResult RegisterChain();
     static void CutChain();
+    // Spawn results are borrowed pointers into this manager's storage.  The
+    // primary and secondary scans return effects[653] when their pool is
+    // exhausted; a non-NULL result can also be inactive when initialization
+    // rejects the selected entry.  Callers must never free these pointers.
     Effect *SpawnEffectInSecondaryPool(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
     Effect *SpawnEffect(i32 id, D3DXVECTOR3 *position, i32 count, i32 color);
     Effect *SpawnEffectWithVelocity(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 count, i32 color);
+    // Fixed slots begin at effects[0x280].  The target performs no bounds
+    // check, so index/slotIndex must identify one of the 13 fixed entries.
     Effect *GetFixedSlotEffect(i32 index);
     Effect *SpawnEffectInFixedSlot(i32 id, D3DXVECTOR3 *position, i32 slotIndex, i32 unused, i32 color);
     Effect *SpawnEffectInFixedSlotWithVelocity(i32 id, D3DXVECTOR3 *position, D3DXVECTOR3 *velocity, i32 slotIndex, i32 unused, i32 color);

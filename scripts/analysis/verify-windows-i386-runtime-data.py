@@ -295,6 +295,43 @@ def verify_spellcard_background_owner(
             )
 
 
+def verify_spellcard_calc_chain_owner(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Bind stage cleanup to the callback created in Spellcard::RegisterChain."""
+    if any(name.startswith("?g_SpellcardCalcChain@") for name in publics):
+        raise ValueError("linked image still owns standalone g_SpellcardCalcChain")
+    rebuilt_function = exact_public_va(publics, "?CutChain@Spellcard@th08@@SIXXZ")
+    rebuilt_owner = exact_public_va(publics, "?g_Spellcard@th08@@3USpellcard@1@A")
+    for label, image, function, owner in (
+        ("target", target, 0x004180F0, 0x004EA670),
+        ("rebuild", rebuild, rebuilt_function, rebuilt_owner),
+    ):
+        body = read_va(image, function, 0x1E)
+        for offset in (5, 13):
+            address = struct.unpack_from("<I", body, offset)[0]
+            if address != owner + 0x263C:
+                raise ValueError(
+                    f"{label} Spellcard::CutChain + {offset:#x} selects {address:#010x}; "
+                    f"expected Spellcard::lifetimeObject at {owner + 0x263C:#010x}"
+                )
+
+
+def verify_homing_replay_input(
+    target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
+) -> None:
+    """Require Yukari's homing option to consume the replay-fed input word."""
+    function = exact_public_va(publics, "?UpdateHomingOption@th08@@YIHPAUPlayer@1@PAUPlayerOptionState@1@@Z")
+    replay_input = exact_public_va(publics, "?g_GuiMessageInputCurrent@th08@@3GA")
+    for label, image, address, expected in (
+        ("target", target, 0x0044E3A0, 0x0164D52C),
+        ("rebuild", rebuild, function, replay_input),
+    ):
+        instruction = read_va(image, address + 0x316, 7)
+        if instruction[:3] != b"\x0f\xb7\x05" or struct.unpack_from("<I", instruction, 3)[0] != expected:
+            raise ValueError(f"{label} UpdateHomingOption must read the replay-fed input word")
+
+
 def verify_player_gauge_bounds_owner(
     target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]
 ) -> None:
@@ -448,7 +485,21 @@ def verify_additional_runtime_callees(
             0x0040C010,
             0x795,
             "?UpdateFantasyOrbBomb@th08@@YIXPAUPlayer@1@@Z",
-            ((0x2F1, 0x0040D3F0, "??8ZunTimer@th08@@QAEIH@Z"),),
+            (
+                (0x264, 0x00409060, "@sinf@4"),
+                (0x282, 0x00408D40, "@cosf@4"),
+                (0x2F1, 0x0040D3F0, "??8ZunTimer@th08@@QAEIH@Z"),
+            ),
+        ),
+        (
+            "UpdateFantasySealBlinkDeathbomb",
+            0x0040C910,
+            0x6FE,
+            "?UpdateFantasySealBlinkDeathbomb@th08@@YIXPAUPlayer@1@@Z",
+            (
+                (0x265, 0x00409060, "@sinf@4"),
+                (0x283, 0x00408D40, "@cosf@4"),
+            ),
         ),
         (
             "SpawnRandomizedShot",
@@ -481,6 +532,18 @@ def verify_additional_runtime_callees(
                         f"{label} {name} + {offset:#x} does not call "
                         f"{rebuilt_callee_symbol}"
                     )
+
+
+def verify_runtime_sincos(rebuild: PEImage, publics: dict[str, set[int]]) -> None:
+    """Require the C++ fallback to write both outputs through the CRT math cores."""
+    helper = exact_public_va(publics, "?fsincos@th08@@YIXPAM0M@Z")
+    body = read_va(rebuild, helper, 0x2C)
+    for offset, symbol in ((0xF, "__CIsin"), (0x1C, "__CIcos")):
+        expected = rel32_call(helper + offset, exact_public_va(publics, symbol))
+        if body[offset:offset + 5] != expected:
+            raise ValueError(f"runtime fsincos + {offset:#x} does not call {symbol}")
+    if body[0x14:0x19] != b"\x8b\x45\xfc\xd9\x18" or body[0x21:0x26] != b"\x8b\x4d\xf8\xd9\x19":
+        raise ValueError("runtime fsincos does not store both output values")
 
 
 def verify_player_shot_callback_tables(
@@ -568,6 +631,21 @@ def raw_backed_section(image: PEImage, va: int):
     return None
 
 
+def verify_enemy_death_dispatch(target: PEImage, rebuild: PEImage, publics: dict[str, set[int]]) -> None:
+    """Check the linked switch entries that control attached-effect cleanup."""
+    target_start = 0x0042C660
+    rebuilt_start = public_va(publics, "OnUpdate@EnemyManager")
+    entries = []
+    for image, start in ((target, target_start), (rebuild, rebuilt_start)):
+        dispatch = read_va(image, start + 0x104F, 7)
+        if dispatch[:3] != b"\xff\x24\x85":
+            raise ValueError("EnemyManager::OnUpdate death dispatcher is not jmp [eax*4+table]")
+        table = struct.unpack_from("<I", dispatch, 3)[0]
+        entries.append(tuple(destination - start for destination in struct.unpack("<4I", read_va(image, table, 16))))
+    if entries[0] != entries[1]:
+        raise ValueError(f"EnemyManager::OnUpdate death-mode destinations differ: target={entries[0]}, rebuild={entries[1]}")
+
+
 def uninitialized_raw_owner_candidates(target: PEImage) -> list[str]:
     addresses: dict[str, set[int]] = {}
     with (ROOT / "config" / "reccmp-globals.csv").open(newline="") as stream:
@@ -636,10 +714,14 @@ def main() -> int:
         )
         verify_gui_enemy_name_owner(target, rebuild, publics)
         verify_spellcard_background_owner(target, rebuild, publics)
+        verify_spellcard_calc_chain_owner(target, rebuild, publics)
+        verify_homing_replay_input(target, rebuild, publics)
         verify_player_gauge_bounds_owner(target, rebuild, publics)
         verify_background_stage_gate(target, rebuild, publics)
         verify_additional_runtime_callees(target, rebuild, publics)
         verify_player_shot_callback_tables(target, rebuild, publics)
+        verify_enemy_death_dispatch(target, rebuild, publics)
+        verify_runtime_sincos(rebuild, publics)
     except (OSError, UnicodeError, ValueError, struct.error) as exc:
         print(f"Windows i386 runtime-data verification failed: {exc}", file=sys.stderr)
         return 1
@@ -649,11 +731,15 @@ def main() -> int:
         "Last Spell count, 66 Effect templates, 9 stage bonuses, and "
         "12 dialogue palettes match the target; enemy-name copy selects "
         "Gui::frontAnm in all 8 linked loads; spell backgrounds select "
-        "EffectManager::stageEffectAnm; all 21 player gauge-bound writes select "
+        "EffectManager::stageEffectAnm; spellcard cleanup selects its registered "
+        "lifetimeObject; homing options read replay-fed gameplay input; "
+        "all 21 player gauge-bound writes select "
         "the six GameManager fields; all 3 Background draw gates call "
-        "Gui::IsStageFinished; 8 additional repaired REL32 calls select their "
+        "Gui::IsStageFinished; 12 additional repaired REL32 calls select their "
         "target-mapped callees; all 20 player-shot callback entries resolve "
-        "through their target-owned tables"
+        "through their target-owned tables; all 4 enemy death-mode switch "
+        "entries preserve their target-relative destinations; runtime sincos "
+        "calls both CRT cores and writes both outputs"
     )
     return 0
 

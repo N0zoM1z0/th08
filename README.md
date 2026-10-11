@@ -11,6 +11,16 @@
   <img src="resources/progress.svg" alt="TH08 exact-source and playable-platform progress">
 </p>
 
+Our goal is an **exact reconstruction** of the original Japanese TH08 1.00d
+executable: recover C++ that, with the original Visual C++ .NET 2002 toolchain,
+reproduces its machine code, binary interfaces, and executable layout.
+
+A reimplementation recreates a game's behavior with a new implementation.
+Here, the original binary guides both the behavior and the source structure.
+The playable ports build on that recovered source, adapting it to modern
+systems. Exact reconstruction and port compatibility have separate validation
+paths; whole-executable identity is still in progress.
+
 > [!IMPORTANT]
 > 🌙 The authored reconstruction is complete, and native Linux play now covers
 > both i386 and x86_64. Download
@@ -23,6 +33,7 @@
 
 | I want to... | Start here |
 | --- | --- |
+| Understand the project and how the engine fits together | [Project and engine guide](docs/PROJECT_GUIDE.md) |
 | Check reconstruction progress | [Repository status](#repository-status) |
 | Understand how AI agents work on the project | [AI agent workflow](#ai-agent-workflow) |
 | Read our accuracy and readability philosophy | [What we mean by semantic reconstruction](#what-we-mean-by-semantic-reconstruction) |
@@ -30,8 +41,16 @@
 | Play or build a port | [Platform guides](#platform-guides) |
 | Reproduce the native VC7 runtime gate | [Windows i386 reconstruction runtime](docs/WINDOWS_I386_RUNTIME.md) |
 | Reproduce the exact comparison | [Exact reconstruction](#exact-reconstruction) |
-| Browse the technical documentation | [Project map](#project-map) |
+| Find the production owner of a source symbol | [Source and build ownership map](docs/SOURCE_MAP.md) |
+| Browse current subsystem semantics | [Current semantic index](docs/SEMANTIC_INDEX.md) |
+| Reuse the semantic/readability method in another title | [Semantic and readability playbook](docs/SEMANTIC_PLAYBOOK.md) |
+| Choose a human or agent reading route | [Documentation index](docs/README.md) |
+| Browse the technical references | [Project map](#project-map) |
 | Review upstream history and attribution | [Credits and provenance](#credits-and-provenance) |
+
+For a first read, start with the [project guide](docs/PROJECT_GUIDE.md).
+For an engineering session, use the [agent session route](docs/README.md#agent-session-route).
+Both routes lead to the same authoritative evidence and project rules.
 
 ## Repository status
 
@@ -54,17 +73,13 @@ Exact reconstruction and playable ports are separate milestones. The progress
 bar counts authored bytes accepted by strict comparison; the platform cards
 show where the reconstructed source is currently playable.
 
-The VC7-built Windows i386 reconstruction completed the prerequisite
-whole-program runtime oracle before modern-port stabilization. It caught
-production translation-unit, link, global-owner, static-initialization, and
-lifetime defects which a modern compiler or compatibility startup path can
-hide. Exact-facing checks use the native `normal` build; Windows playtesting
-uses the equally native VC7 `bugfix` build because a reconstructed executable
-cannot satisfy the retail executable-size/checksum whitelist. See the [native
-reconstruction runtime workflow](docs/WINDOWS_I386_RUNTIME.md) and [runtime
-issue ledger](docs/RUNTIME_ISSUES.md) for the reproducible gate and the defects
-found by the completed pass. This developer artifact is not the future
-redistributable Windows port.
+The VC7 Windows i386 build has completed its whole-program runtime validation.
+That pass caught source-ownership, linking, initialization, and lifetime defects
+beyond function-level matching. Exact checks use the `normal` build;
+playtesting uses `bugfix`, which accommodates the retail size/checksum check.
+See the [native runtime procedure](docs/WINDOWS_I386_RUNTIME.md) and
+[issue ledger](docs/RUNTIME_ISSUES.md) for the results. A redistributable modern
+Windows package remains a separate milestone.
 
 The remaining exact-reconstruction work is the last authored near match,
 whole-image layout, and the compiler/runtime and D3DX code linked into the
@@ -73,23 +88,16 @@ counts.
 
 ## AI agent workflow
 
-All new engineering in this continuation—reverse engineering, source matching,
-semantic recovery, tooling, documentation, and porting—is carried out by AI
-coding agents. The human maintainer sets the direction, decides what is
-published or merged, and supplies the legally obtained target and game data.
-The imported GensokyoClub history retains its original authorship and
-contribution record.
+AI coding agents carry out the new engineering in this continuation: reverse
+engineering, matching, semantic recovery, tooling, documentation, and porting.
+The human maintainer sets direction, reviews releases and merges, and supplies
+the legally obtained target and game data. The imported GensokyoClub history
+retains its original authorship and contribution record.
 
-Our premise in 2026 is that frontier coding agents can sustain native-code
-reconstruction when they work with durable project memory, bounded tasks,
-strong tools, and fast empirical feedback. Each agent contribution begins as a
-testable hypothesis. The verified target and toolchain provide the verdict.
-
-The most important design rule is simple: **the repository is the project's
-shared memory.** Personal memory and chat sessions are temporary workspaces.
-Durable knowledge, experience, and lessons belong in forms that the next
-contributor can find, review, rerun, and improve: source, ledgers, focused
-evidence notes, scripts, tests, guards, and reusable skills.
+Agents work on bounded tasks and check their conclusions against the verified
+target. **The repository is the project's shared memory:** source, ledgers,
+evidence notes, scripts, tests, and skills let the next session reproduce a
+result and continue from it.
 
 ```mermaid
 flowchart LR
@@ -117,17 +125,12 @@ flowchart LR
     classDef done fill:#ccfbf1,stroke:#0f766e,color:#042f2e,stroke-width:2px;
 ```
 
-The “Oracle” in that diagram is a stack of reproducible checks. We pin the
-exact Japanese 1.00d executable by size and SHA-256, compare the smallest
-affected VC7 function or object, and verify relocations alongside instruction
-bytes. A shared change then triggers a clean, single-job rebuild of every
-configured comparison object and a replay of the whole accepted ledger.
-Normal VC7 linking, modern Linux builds, fixed-layout checks, available runtime
-tests, and repository CI cover different classes of regression. “Exact” is a
-recorded, comparator-backed repository state.
+An “oracle” is a reproducible check. We verify the target's size and SHA-256,
+compare the affected VC7 code and relocations, and cold-replay accepted units
+after shared changes. Native linking and playtesting, modern builds, layout
+checks, and CI test the source from complementary angles.
 
-Repository memory is part of the working architecture. Each durable result has
-a canonical home:
+Each part of the working state has a home:
 
 - [AGENTS.md](AGENTS.md) holds the target, ABI, safety, and acceptance rules.
 - The CSV/TOML ledgers and status scripts hold live mappings and accepted
@@ -137,21 +140,13 @@ a canonical home:
 - [Task-specific skills](.agents/skills/) and
   [the knowledge map](docs/KNOWLEDGE_BASE.md) preserve tool recipes, VC7 source
   patterns, evidence boundaries, and lessons from failed experiments.
-- Focused evidence documents explain why a name, layout, function boundary, or
-  compiler shape was accepted, while CI guards completed surfaces against
-  regression.
+- Evidence notes explain accepted names, layouts, boundaries, and compiler
+  patterns; automated checks catch regressions.
 
-That structure makes agents interchangeable while keeping writes controlled.
-A fresh agent can verify the target, read the tracked state, run the live
-reports, and resume from a clean checkout with the repository as its complete
-starting context. Reconstruction writes and Wine/VC7 matching remain
-single-writer and serial, keeping edits, object freshness, and shared toolchain
-state deterministic while making handoffs inexpensive.
-
-The architecture treats every model inference as falsifiable: tasks stay
-small, failed experiments feed the knowledge base, uncertainty remains
-explicit, and each checkpoint carries the evidence needed to reproduce it.
-That is what AI reconstruction means in this project.
+A fresh session starts from [the agent reading route](docs/README.md#agent-session-route),
+checks live state, and resumes one bounded task. Reconstruction uses one writer
+and serial Wine/VC7 builds. Results, failed experiments, and unresolved questions
+are recorded before handoff.
 
 ## What we mean by semantic reconstruction
 
@@ -208,28 +203,25 @@ a reader encounters in the target-side C++.
 | Type-size assertions | **135** | 83 | 68 |
 | Automated semantic protocol guard | **yes** | no | no |
 
-On balance, TH08 outperforms both references in overall readability coverage,
-especially across complete script protocols, object naming, and layout
-documentation. There are two useful exceptions. TH07 currently communicates
-ANM behavior better: it has names for shared opcodes 25 and 31, fewer neutral
-opcode names, and a broader file/script/sprite catalogue. TH06 has the widest
-typed ECL packet overlay, with 26 packet structures against six target-backed
-families in TH08; TH07 largely keeps a generic argument array. These are real
-advantages in the reference sources and good directions for further work.
-TH08 promotes the same ideas once its own target evidence and exact VC7 shape
-support them.
+This audit shows broad naming coverage in TH08's script protocols, objects,
+and layouts. The reference projects also offer useful directions: TH07 has
+names for shared ANM opcodes 25 and 31 and a broader resource catalogue; TH06
+has 26 typed ECL packet structures against six target-backed families in TH08.
+Further work can adopt those ideas as TH08 evidence and VC7 comparison support
+them.
 
 The remaining 74 numeric `case` labels are option-array indices, damage or life
 quantities, or per-file animation IDs whose visual meaning remains ambiguous.
 The audit used target-side C/C++ only (excluding TH08's modern port), with TH06
-at `cc475a0b` and TH07 at `84963b2e`. The [semantic reconstruction
-record](docs/SEMANTIC_RECONSTRUCTION.md) gives the counting rules, full commit
-IDs, exceptions, and Oracle results.
+at `cc475a0b` and TH07 at `84963b2e`. These are fixed review baselines and do
+not move with the current heads of either reference. The [semantic
+reconstruction history](docs/SEMANTIC_HISTORY.md) gives the counting rules,
+full commit IDs, exceptions, and Oracle results.
 
 The final pass cold-built all 75 configured comparison objects and reproduced
 all **1,106 / 1,106 accepted exact functions**. The normal VC7 image linked,
 and the full Linux i386 build and fixed-layout check passed. The [semantic
-reconstruction record](docs/SEMANTIC_RECONSTRUCTION.md) has the full evidence
+reconstruction history](docs/SEMANTIC_HISTORY.md) has the full evidence
 trail, the exact-safe source-shape rules, the unknowns we kept, and the results
 for each batch.
 
@@ -252,10 +244,38 @@ supported by reproducible comparison against the specified target. Keep the
 original executable, DAT archives, extracted retail assets, private analysis
 databases, and credentials outside the repository.
 
+### Reporting bugs
+
+TH08 has many teams, difficulties, and branching stage routes to test. Gameplay
+and port bug reports are welcome. Please [open an issue](https://github.com/N0zoM1z0/th08/issues)
+with:
+
+- **Build and platform:** release version, or branch and commit for a source
+  build; operating system and architecture. Include GPU/driver details for
+  rendering problems.
+- **Game context:** mode (Story, Practice, or Spell Practice), difficulty,
+  team or solo character, exact stage and route (for example, Stage 4A or 6B),
+  and spell name/number when relevant.
+- **Reproduction:** steps from the menu to the failure, expected behavior,
+  actual behavior, and whether it happens consistently.
+- **Evidence:** screenshots or a short video showing the problem, plus logs
+  or a crash trace for an unexpected exit. A replay can help reproduce a
+  gameplay issue; note the point where it occurs.
+
+For browser bugs, use the [Web project's issues](https://github.com/N0zoM1z0/th08-web/issues).
+The [Linux troubleshooting guide](docs/PLAY_LINUX.md#troubleshooting) lists
+diagnostic files. Keep original game data and executables private.
+
 ## Platform guides
 
 The ports compile the reconstructed game code for modern systems. Players
 provide the original game data from a legally obtained copy of TH08.
+
+| Development location | Scope |
+| --- | --- |
+| `main` | Exact reconstruction and modern i386 builds |
+| [`port/portable-64bit`](https://github.com/N0zoM1z0/th08/tree/port/portable-64bit) | Native x86_64 and AArch64 ports |
+| [th08-web](https://github.com/N0zoM1z0/th08-web) | Browser port in a separate repository |
 
 ### Web
 
@@ -295,6 +315,10 @@ frame pacing; Firefox is also supported and is usually slower.
 - [Native 64-bit build and validation](docs/PORTABLE_64BIT.md)
 - [Replay-driven headless render audit](docs/RENDER_AUDIT.md)
 - [Portable Linux build workflow](.github/workflows/portable-linux.yml)
+
+The source commands below build the i386 product from `main`. For x86_64 or
+AArch64 source builds, follow the linked 64-bit branch guide. Release packages
+have their own architecture-specific runtime requirements in the player guide.
 
 On Debian or Ubuntu, build and run against the original game-data directory:
 
@@ -397,10 +421,9 @@ the remaining milestones.
 The exact target is one binary: the original Japanese TH08 version 1.00d. A
 localized, patched, trial, or earlier executable is a different target.
 
-This repository is a history-preserving continuation of
+This repository continues
 [GensokyoClub/th08](https://github.com/GensokyoClub/th08). Its complete Git
-history was imported rather than squashed, preserving the original authorship
-and contribution record.
+history preserves the original authorship and contribution record.
 
 ### Target executable
 
@@ -444,11 +467,10 @@ python scripts/build.py
 See [Build and exact matching](docs/BUILD_MATCHING.md) for dependencies,
 build modes, reccmp, objdiff, and acceptance rules.
 
-To reproduce the completed whole-program native gate rather than only build one
-executable, follow [Native Windows i386 reconstruction runtime](docs/WINDOWS_I386_RUNTIME.md).
-That procedure intentionally cold-replays accepted normal objects first, links
-and verifies the exact-facing normal image, and builds the playable bugfix image
-last so `build/th08.exe` is the artifact intended for isolated Windows testing.
+For whole-program validation, follow the
+[native Windows i386 runtime procedure](docs/WINDOWS_I386_RUNTIME.md).
+It cold-replays accepted normal objects, verifies the normal image, and builds
+bugfix last, leaving `build/th08.exe` ready for isolated Windows testing.
 
 ### Analysis and live progress
 
@@ -471,25 +493,22 @@ Generated source-presence and strict-match figures are recorded in
 
 ## Project map
 
-- [TH08 Web browser port and engineering documentation](https://github.com/N0zoM1z0/th08-web)
-- [Linux download, installation, and play guide](docs/PLAY_LINUX.md)
-- [Native Windows user guide and status](docs/PLAY_WINDOWS.md)
-- [VC7 Windows i386 reconstruction runtime](docs/WINDOWS_I386_RUNTIME.md)
-- [Native runtime data-owner audit](docs/OWNER_AUDIT.md)
-- [Native Windows runtime issue ledger](docs/RUNTIME_ISSUES.md)
-- [Native macOS user guide and status](docs/PLAY_MACOS.md)
-- [Architecture and binary inventory](docs/ARCHITECTURE.md)
-- [Reverse-engineering workflow](docs/RE_WORKFLOW.md)
-- [Semantic reconstruction and two-oracle acceptance](docs/SEMANTIC_RECONSTRUCTION.md)
-- [IDA and analysis safety](docs/IDA_MCP.md)
-- [Build and exact matching](docs/BUILD_MATCHING.md)
-- [Playable reconstruction ports](docs/PORTING.md)
-- [Native Linux playable reconstruction](docs/LINUX_PORTING.md)
-- [Tool selection and command recipes](docs/TOOLS.md)
-- [Reusable knowledge map and contribution policy](docs/KNOWLEDGE_BASE.md)
-- [Current handoff and next milestones](docs/RE_HANDOFF.md)
-- [Generated reconstruction progress](docs/PROGRESS.md)
-- [Agent operating rules](AGENTS.md)
+The [documentation index](docs/README.md) provides reading routes and a
+reference catalog. Use the links below for a direct lookup.
+
+| Need | Start here |
+| --- | --- |
+| Understand runtime relationships and terminology | [Project and engine guide](docs/PROJECT_GUIDE.md) |
+| Current state and next bounded work | [Current handoff](docs/RE_HANDOFF.md) and [generated progress](docs/PROGRESS.md) |
+| Repository/target structure | [Architecture and binary inventory](docs/ARCHITECTURE.md) |
+| Find the production TU, exact probe, shared include, or build selector | [Source and build ownership map](docs/SOURCE_MAP.md) |
+| Find current declarations and semantic evidence by subsystem | [Current semantic index](docs/SEMANTIC_INDEX.md) |
+| Reverse engineering and acceptance | [RE workflow](docs/RE_WORKFLOW.md), [semantic reconstruction](docs/SEMANTIC_RECONSTRUCTION.md), [cross-title semantic playbook](docs/SEMANTIC_PLAYBOOK.md), and [build/matching](docs/BUILD_MATCHING.md) |
+| ANM/effect protocol references | [ANM resource namespaces](docs/ANM_RESOURCE_INDEX.md) and [Effect storage/callback roles](docs/EFFECT_STORAGE.md) |
+| Analysis safety and commands | [IDA safety](docs/IDA_MCP.md), [tool recipes](docs/TOOLS.md), and [agent rules](AGENTS.md) |
+| Reusable evidence and prior lessons | [Knowledge map](docs/KNOWLEDGE_BASE.md) |
+| Native VC7 runtime evidence | [Windows i386 workflow](docs/WINDOWS_I386_RUNTIME.md), [owner audit](docs/OWNER_AUDIT.md), and [runtime issues](docs/RUNTIME_ISSUES.md) |
+| Playable ports | [Port overview](docs/PORTING.md), [Linux engineering](docs/LINUX_PORTING.md), [Linux play guide](docs/PLAY_LINUX.md), [Windows](docs/PLAY_WINDOWS.md), [macOS](docs/PLAY_MACOS.md), and [Web project](https://github.com/N0zoM1z0/th08-web) |
 
 ## Credits and provenance
 
@@ -505,8 +524,7 @@ committer metadata. The upstream project also credits @EstexNT for porting its
 
 Work after that boundary has been developed from the imported public source,
 the legally obtained Japanese TH08 1.00d executable, and other public
-references. This project has had no access to, and does not incorporate, later
-private GensokyoClub work.
+references.
 
 The imported snapshot was published under the
 [MIT License](https://github.com/N0zoM1z0/th08/blob/7ad379297baf4ff07f117747ea4edf8c7ed739d4/LICENSE),

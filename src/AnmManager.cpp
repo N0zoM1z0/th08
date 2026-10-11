@@ -564,8 +564,8 @@ ZunBool AnmManager::ExecuteScript(AnmVm *vm)
             vm->scaleFinal.y = GET_FLOAT_VAR(3);
             vm->updateScale = true;
             break;
-        case AnmOpcode_Ins83:
-            vm->playerBulletHitAnimationType = instruction->intArgs[0];
+        case AnmOpcode_SetPlayerBulletDrawMode:
+            vm->playerBulletDrawMode = instruction->intArgs[0];
             break;
         case AnmOpcode_ISet:
             *GET_INT_VAR_PTR(0) = GET_INT_VAR(1);
@@ -3168,7 +3168,7 @@ out:
 // FUNCTION: th08 0x45e960
 void AnmManager::DrawPlayerBullet(AnmVm *vm)
 {
-    switch (vm->playerBulletHitAnimationType)
+    switch (vm->playerBulletDrawMode)
     {
     case ANM_PLAYER_BULLET_DRAW_NO_ROTATION:
         this->DrawNoRotation(vm);

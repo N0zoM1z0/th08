@@ -223,6 +223,10 @@ struct ReplayManager
     static ZunResult DeleteReplayManager(ReplayManager *replayManager);
 
     static void SaveReplay(const char *replayPath, const char *replayName);
+    // Consumes the allocator-owned encoded buffer on every return path and may
+    // modify it while decoding.  Success returns a distinct g_ZunMemory
+    // allocation owned by the caller; failure returns NULL.  Do not reuse or
+    // free replayData after this call.
     static ReplayData *LoadReplayData(ReplayData *replayData, int fileSize);
     static void StopRecording();
 

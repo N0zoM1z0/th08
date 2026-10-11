@@ -13,6 +13,12 @@
 namespace th08
 {
 
+// Production owner for the Effect pool, template callbacks, and draw groups.
+// Public Effect/EffectManager declarations intentionally remain in
+// EclManager.hpp because that is the target-shaped shared owner.  Callback
+// vector fields are protocol-local scratch, not one global semantic layout;
+// see docs/EFFECT_STORAGE.md before renaming one across callback families.
+
 ZunBool IsDisableResourceReload();
 
 void __fastcall AdjustStageEffectDrawPosition(AnmVm *effect, D3DXVECTOR3 *base);

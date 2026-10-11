@@ -15,6 +15,12 @@
 namespace th08
 {
 
+// Production owner for target-local routines called by the ECL interpreter
+// but emitted outside EclRun.obj: spell lifecycle adapters, boss-gauge
+// setters, shot helpers, and Enemy update/ANM dependencies.  Keep ownership
+// here target-shaped; validate this object when an ECL-facing declaration or
+// shared layout changes.
+
 struct EclSpellCardInstructionArgs
 {
     u8 header[0xC];

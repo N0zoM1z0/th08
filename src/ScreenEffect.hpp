@@ -35,6 +35,14 @@ struct ScreenEffect
     static ChainCallbackResult CalcFadeOut(ScreenEffect *screenEffect);
     static ChainCallbackResult CalcFadeHold(ScreenEffect *screenEffect);
 
+    // Parameter roles are selected by effect:
+    //   fade in/out: durationFrames, color, -, -
+    //   shake: durationFrames, initial amplitude, final amplitude, -
+    //   arcade pulse: frames/pulse, repeat count, ARGB color, -
+    //   fade hold: ramp-in frames, color, -, -; BeginFadeRelease is 8 frames
+    //   shake envelope: amplitude, ramp-up frames, hold frames, ramp-down frames
+    // Thus durationFrames is deliberately generic storage for the envelope
+    // amplitude in SCREEN_EFFECT_SHAKE_ENVELOPE.
     static ScreenEffect *RegisterChain(ScreenEffectType effect, i32 durationFrames, i32 primaryParameter,
                                        i32 secondaryParameter, i32 tertiaryParameter, i32 drawPriority);
 

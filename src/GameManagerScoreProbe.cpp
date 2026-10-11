@@ -9,6 +9,11 @@
 namespace th08
 {
 
+// Exact-only probe for the production implementation in GameManager.cpp.
+// scripts/configure.py compiles this file with the GameManager VC7 profile;
+// it is not part of either playable executable.  Keep duplicate behavior in
+// sync and validate the configured probe unit after edits.
+
 // FUNCTION: th08 0x43bbe1
 #pragma var_order(catk, i, scoreDat, j)
 i32 InitializeScoreData()

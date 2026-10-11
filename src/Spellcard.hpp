@@ -377,6 +377,8 @@ struct Spellcard
 };
 C_ASSERT(offsetof(Spellcard, timeRemaining) == 0x108);
 C_ASSERT(offsetof(Spellcard, timeLimit) == 0x114);
+C_ASSERT(offsetof(Spellcard, lifetimeObject) == 0x263C);
+C_ASSERT(offsetof(Spellcard, lifetimeChain) == 0x2640);
 C_ASSERT(sizeof(Spellcard) == 0x2644);
 
 DIFFABLE_EXTERN_ARRAY(i32 *, 6, g_SpellcardNumbersPerDifficulty);
@@ -384,7 +386,6 @@ DIFFABLE_EXTERN_ARRAY(i32, 6, g_SpellcardCountsPerDifficulty);
 DIFFABLE_EXTERN_ARRAY(i32, 43, g_LastSpellNumbers);
 DIFFABLE_EXTERN(i32, g_LastSpellCount);
 DIFFABLE_EXTERN(Spellcard, g_Spellcard);
-DIFFABLE_EXTERN(ChainElem *, g_SpellcardCalcChain);
 DIFFABLE_EXTERN_ARRAY(i32 *, 10, g_SpellcardNumbersPerStage)
 DIFFABLE_EXTERN_ARRAY(i32, 10, g_SpellcardCountPerStage)
 

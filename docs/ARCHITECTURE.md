@@ -1,10 +1,14 @@
 # Architecture and binary inventory
 
+This reference records target identity, repository structure, and validation
+order. For runtime relationships and terminology, start with the
+[project and engine guide](PROJECT_GUIDE.md). The
+[documentation index](README.md) provides human and agent reading routes.
+
 ## Exact target
 
-The only accepted target is the original Japanese TH08 v1.00d executable. Its
-identity is recorded by the SHA-256 in `reccmp-project.yml`; every analysis or
-comparison must resolve to these facts:
+The target is the original Japanese TH08 v1.00d executable, identified by the
+SHA-256 in [reccmp-project.yml](../reccmp-project.yml):
 
 | Property | Value |
 | --- | --- |
@@ -28,30 +32,30 @@ translation unit, link a real PE32 executable without unresolved-symbol forcing,
 and survive native Windows playtesting before a modern compiler/backend is used
 as a replacement runtime.
 
-This ordering is architectural, not merely a release preference. A port may
+This order exposes defects that platform adaptations can hide. A port may
 introduce compatibility startup code, duplicate/fixed-layout storage bridges,
 different static initialization, or compiler-specific ABI adapters. Those can
 hide a missing source owner, translation-unit boundary, link dependency, or
-lifetime defect. Portability builds remain a second independent oracle; they do
-not satisfy the native reconstruction prerequisite. See
-`WINDOWS_I386_RUNTIME.md`, `OWNER_AUDIT.md`, and `RUNTIME_ISSUES.md`.
+lifetime defect. Portability builds provide a second independent check after
+native validation. See the [runtime procedure](WINDOWS_I386_RUNTIME.md),
+[owner audit](OWNER_AUDIT.md), and [runtime issues](RUNTIME_ISSUES.md).
 
 The first native Windows i386 prerequisite pass completed on 2026-09-10. It
 found and repaired target-data initialization, aggregate ownership, final-link
 callee identity, callback-table ownership, and runtime lifetime failures that
 had survived function-level comparison and modern-port testing. This completion
-unblocks later port stabilization; it does not make the VC7 bugfix image a
-redistributable product. Re-run the documented native gate after any shared
+unblocks port stabilization. Redistributable packaging is a separate milestone.
+Re-run the documented native gate after any shared
 owner, layout, translation-unit, PCH, compiler-profile, or production link-graph
 change that could invalidate the checkpoint.
 
 ## Provenance
 
-The repository is a history-preserving continuation of
+The repository continues
 [GensokyoClub/th08](https://github.com/GensokyoClub/th08). The upstream source,
 configuration, build tools, and contributor commits form the initial baseline.
-Continuation changes should be additive commits by their actual authors; do
-not squash or re-author the imported history.
+Keep the imported history intact and record continuation changes as new
+commits by their actual authors.
 
 ## Runtime subsystems
 
@@ -64,6 +68,10 @@ The current `src/` layout follows the upstream engine responsibilities:
 - sound/MIDI and the `zwave` implementation;
 - PBG archive, file, memory, and LZSS support under `src/pbg/`.
 
+Read the [frame walkthrough](PROJECT_GUIDE.md#a-frame-through-the-engine) for
+how these responsibilities interact, then use the
+[semantic index](SEMANTIC_INDEX.md#subsystems) for declarations and evidence.
+
 These filenames are useful source-ownership hypotheses. Only target evidence
 and linked-object comparison can establish original translation-unit
 boundaries.
@@ -73,22 +81,20 @@ boundaries.
 - `src/`: reconstructed C++ and ABI-facing headers.
 - `config/mapping.csv`: address/type mapping used by upstream analysis tools.
 - `config/reccmp-*.csv`: function, global, float, string, and comparison maps.
-  `reccmp-relocations.csv` is a relocation-only allowlist for attested IAT
-  slots, import thunks, and data symbols; its rows are not function inventory
-  and never contribute authored progress.
-- `config/implemented.csv`: symbols with authored source; inclusion is not
-  itself an exact-match result.
+  `reccmp-relocations.csv` is a separate allowlist for attested IAT slots,
+  import thunks, and data-symbol relocations.
+- `config/implemented.csv`: source-selection ledger.
 - `config/match-units.toml` and `config/matches.csv`: strict function-level
   comparison definitions and accepted exact results.
 - `config/library-provenance.toml`, `config/library-match-units.toml`, and
   `config/library-matches.csv`: SHA-pinned target-linked archive provenance,
   library-specific comparison definitions, and accepted library exact results.
-  They are intentionally separate from authored progress.
+  Library progress is tracked separately from authored functions.
 - `config/mapping-overlaps.csv`: explicit target-proven nested-funclet overlap
   exceptions; stale or unclassified overlap state is rejected/reported by the
   tracking validator.
 - `config/claims.csv`: retired claim schema, kept header-only for compatibility
-  with earlier history; it is not current task state.
+  with earlier history.
 - `scripts/`: environment acquisition, Ninja generation, target verification,
   focused matching, typed target facts, and progress helpers. Reusable read-only
   investigations live under `scripts/analysis/`; completed phase-specific
@@ -99,8 +105,8 @@ boundaries.
 - `resources/`: non-source inputs and progress artwork; the private target is
   expected here but must not be committed.
 - `build/`: generated executables, objects, maps, and reports.
-- `.analysis/`: ignored, disposable scratch evidence for the active bounded
-  investigation. It must not be treated as status or durable instructions.
+- `.analysis/`: ignored, disposable scratch evidence for the active investigation.
+  Promote conclusions to tracked documents or ledgers before handoff.
 
 `scripts/progress.py` derives source-presence and strict exact-match views in
 `docs/PROGRESS.md`. Its SVG uses authored exact bytes for the progress bar and
@@ -110,10 +116,8 @@ in `config/matches.csv`. CI checks these generated files but cannot replay
 private target comparisons.
 
 The `library` rows in `config/reccmp-functions.csv` describe code linked into
-the original TH08 image, principally VC7 CRT/runtime and D3DX bodies. They are
-not the same thing as repository dependencies under `3rdparty/`. Detours is
-used by the optional DLL build and is not a target library-reconstruction
-milestone.
+the original TH08 image, principally VC7 CRT/runtime and D3DX bodies.
+`3rdparty/Detours` instead supports this repository's optional DLL build.
 
 ## Evidence relationship to adjacent games
 

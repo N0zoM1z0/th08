@@ -21,6 +21,10 @@
 namespace th08
 {
 
+// Exact-only probe for the production setup callback in GameManager.cpp.
+// It preserves the target's otherwise-unused fastcall home and surrounding
+// VC7 frame shape; neither playable build links this translation unit.
+
 extern i32 InitializeScoreData();
 extern i32 g_GuiMessageStageMode;
 extern i32 g_TimeRequirementParams[][4];

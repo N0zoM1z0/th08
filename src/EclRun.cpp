@@ -19,8 +19,10 @@
 namespace th08
 {
 
-// The low/high opcode bodies are included lexically below so VC7 can reproduce
-// RunEcl's target handler order, shared labels, locals, and stack frame.
+// Production generic-profile owner for RunEcl. The low/high opcode bodies are
+// included lexically below so VC7 can reproduce the target handler order,
+// shared labels, outer identifiers, and stack frame. See docs/SOURCE_MAP.md
+// for the include protocol, opcode ranges, and validation entry point.
 #undef TH08_ECL_CONTEXT_ENEMY
 #undef TH08_ECL_CONTEXT_INSTRUCTION
 #undef TH08_ECL_CONTEXT_CHILD
@@ -160,9 +162,9 @@ low_advance_instruction:
                 if (entry->timer >= entry->duration)
                     entry->callback = 0;
 
-                if (entry->affectedVariable == 10042.0f ||
-                    entry->affectedVariable == 10043.0f ||
-                    entry->affectedVariable == 10044.0f)
+                if (entry->affectedVariable == static_cast<f32>(ECL_OPERAND_ENEMY_POSITION_X) ||
+                    entry->affectedVariable == static_cast<f32>(ECL_OPERAND_ENEMY_POSITION_Y) ||
+                    entry->affectedVariable == static_cast<f32>(ECL_OPERAND_ENEMY_POSITION_Z))
                     restorePosition = 1;
             }
         }

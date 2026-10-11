@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+"""Capture muted retail/native demos sequentially and compare every recorded frame."""
+import argparse
+import importlib.util
+import json
+from pathlib import Path
+import subprocess
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--game-data", type=Path, required=True)
+    parser.add_argument("--bgm-data", type=Path, required=True)
+    parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--target", type=Path, default=ROOT / "resources/th08.exe")
+    parser.add_argument("--candidate", type=Path, default=ROOT / "build/th08.exe")
+    parser.add_argument("--map", dest="map_path", type=Path, default=ROOT / "build/th08.map")
+    parser.add_argument("--reference", type=Path, help="Reuse an existing complete retail capture")
+    parser.add_argument("--demos", default="0,1,2", help="Ordered bundled demo indexes; default: all three")
+    parser.add_argument("--timeout", type=float, help="Deadline for each capture")
+    parser.add_argument("--display", help="Existing X display; otherwise each capture starts private Xvfb")
+    args = parser.parse_args()
+    args.output_dir = args.output_dir.resolve()
+    if not args.output_dir.is_relative_to(ROOT / "build"):
+        parser.error("Generated evidence must be under build/")
+    args.output_dir.mkdir(parents=True, exist_ok=False)
+    common = ["--target", str(args.target.resolve()), "--game-data", str(args.game_data.absolute()),
+              "--bgm-data", str(args.bgm_data.absolute()), "--demos", args.demos]
+    if args.timeout:
+        common += ["--timeout", str(args.timeout)]
+    if args.display:
+        common += ["--display", args.display]
+    capture = [sys.executable, str(ROOT / "scripts/capture-replay.py")]
+    reference = args.reference.resolve() if args.reference else args.output_dir / "reference"
+    if args.reference is None:
+        subprocess.run(capture + common + ["--output-dir", str(reference)], cwd=ROOT, check=True)
+    spec = importlib.util.spec_from_file_location("replay_traces", ROOT / "scripts/compare-replay-traces.py")
+    traces = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(traces)
+    try:
+        metadata, _ = traces.load(reference)
+        if metadata.get("product") != "retail" or metadata.get("executableSha256") != metadata["targetSha256"]:
+            raise ValueError("Reference must be a capture of the canonical retail executable")
+        if metadata["schema"] != json.loads((ROOT / "scripts/replay-schema.json").read_text()):
+            raise ValueError("Reference uses an older capture boundary; recapture it")
+        if metadata.get("demoIndexes", [0]) != [int(value) for value in args.demos.split(",")]:
+            raise ValueError("Reference does not cover the requested demos")
+        if "bgmDataSha256" not in metadata:
+            raise ValueError("Reference does not record a BGM hash; recapture it")
+    except (ValueError, OSError, KeyError) as error:
+        parser.error(str(error))
+    candidate = args.output_dir / "candidate"
+    subprocess.run(capture + common + ["--candidate", str(args.candidate.resolve()), "--map", str(args.map_path.resolve()),
+                                       "--output-dir", str(candidate)], cwd=ROOT, check=True)
+    return subprocess.run([sys.executable, str(ROOT / "scripts/compare-replay-traces.py"),
+                           str(reference), str(candidate)], cwd=ROOT).returncode
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

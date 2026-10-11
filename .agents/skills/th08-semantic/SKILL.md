@@ -7,7 +7,8 @@ description: Replace raw TH08 object offsets, anonymous fields, protocol numbers
 
 Work only from the verified Japanese TH08 1.00d target and the current authored
 source.  Read `AGENTS.md`, `docs/ARCHITECTURE.md`, `docs/RE_WORKFLOW.md`,
-`docs/RE_HANDOFF.md`, and `docs/SEMANTIC_RECONSTRUCTION.md` before editing.
+`docs/RE_HANDOFF.md`, `docs/SEMANTIC_RECONSTRUCTION.md`, and
+`docs/SEMANTIC_PLAYBOOK.md` before editing.
 
 ## Preflight
 
@@ -27,6 +28,11 @@ all reads and writes, widths, signedness, bit operations, callers, strings, and
 canonical object ownership.  TH06/TH07 and upstream names are corroboration
 only when TH08 evidence agrees.  IDA evidence remains blocked until the active
 database passes `docs/IDA_MCP.md`.
+
+Treat ownership as four separate questions: storage owner, semantic owner,
+translation-unit/COMDAT emission owner, and production/probe/portable build
+owner.  Evidence for one does not establish the others.  Close the relevant
+producer, consumer, and state-transition set before changing any of them.
 
 Prefer real fields, aggregates, enums, bitfields, and member/index expressions.
 Preserve opaque storage when only its extent is known.  Add focused `C_ASSERT`
@@ -148,7 +154,7 @@ global identity, initialization, callback state, persistence, rendering, or
 fixed-address ownership.  VC7 exactness and Linux behavior are complementary;
 neither proves the English field name without the evidence record.
 
-Append an accepted batch to `docs/SEMANTIC_RECONSTRUCTION.md` with addresses,
+Append an accepted batch to `docs/SEMANTIC_HISTORY.md` with addresses,
 evidence classes, layout assertions, exact replay results, portable result, and
 retained unknowns.  Update `docs/RE_HANDOFF.md` only for a phase/focus/blocker
 change.  End with tracking validation, `scripts/ci.py`, and
