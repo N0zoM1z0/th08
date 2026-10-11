@@ -31,6 +31,15 @@ Each port has its own build and runtime validation alongside the VC7 path.
 
 ## Native replay parity investigation
 
+A fresh cold gate is in progress under `build/replay-cold-20261011/`.
+Cold normal/bugfix links and all 1,106 accepted authored units passed. The
+new 108-case suite has 46 complete retail/native pairs with equal traces.
+The next retail capture completed all 113,660 calculations, then failed on
+an Xvfb shutdown timeout. Capture cleanup now kills and reaps a stalled
+Xvfb child; process tests cover graceful, stalled, and completed children.
+Resume with the archived candidate in this batch. Merge into main and sync
+`port/portable-64bit` after the full replay and ordinary-demo gates pass.
+
 The current playable VC7 build passes all three bundled demos against a fresh
 muted retail capture with ordinary pacing and rasterization: 16,080 frames,
 with all 22 recorded fields equal. Its executable SHA-256 is

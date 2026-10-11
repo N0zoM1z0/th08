@@ -20,6 +20,18 @@ from replay_file import inspect as inspect_replay
 TARGET_SHA = "330fbdbf58a710829d65277b4f312cfbb38d5448b3df523e79350b879213d924"
 
 
+def stop_process(process, timeout=5):
+    """Terminate and reap an owned child, killing it if shutdown stalls."""
+    if process.poll() is not None:
+        return
+    process.terminate()
+    try:
+        process.wait(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        process.wait(timeout=timeout)
+
+
 def observer_config(candidate, map_path):
     if candidate is None:
         return dict(gameManager=0x0160F508, player=0x017D5EF8, rng=0x0164D520, input=0x0164D52C,
@@ -388,9 +400,7 @@ def main():
                 shutil.copyfile(runtime / "log.txt", args.output_dir / "game.log")
             shutil.rmtree(runtime, ignore_errors=True)
         if xvfb:
-            if xvfb.poll() is None:
-                xvfb.terminate()
-                xvfb.wait(timeout=5)
+            stop_process(xvfb)
         if xvfb_log:
             xvfb_log.close()
 
