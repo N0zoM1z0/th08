@@ -36,13 +36,21 @@ including the native replay repairs, comparison guards, and credited offline
 corpus. Native pointer layouts, 32-bit serialized formats, backend optimization,
 and modern parser/lifetime repairs remain part of the portable product.
 
-The cold native-layout x86_64 build and ownership verifier passed, as did all
-1,106 accepted VC7 units and a fresh normal link with its owner/data/callee
-checks. Portable runtime checks are in progress. The native 108-case result below
-belongs to the VC7 product; portable replay and rendering need their own checks.
-See [PORTABLE_64BIT.md](PORTABLE_64BIT.md) for the portable procedures. The earlier
-v0.2.1 checkpoint is retained in [RE_HANDOFF_HISTORY.md](RE_HANDOFF_HISTORY.md).
-Web work remains deferred.
+The 2026-10-12 synchronization gate passed at source commit `2c253eb2`: a fresh
+native-layout x86_64 build and ownership verifier, all 1,106 accepted VC7 units
+from a cold build, and fresh normal/bugfix links with their owner/data/callee
+checks. All six muted portable replay windows passed the structural render
+checks, retaining 5,231 samples. Normal and AddressSanitizer builds each passed
+a 60-second title/demo/Stage 5 smoke check. Repository CI passed.
+
+Stage 5 has one `color-loss-suspect` sample at frame 6,166, enemy 14, sprite 77.
+The same animation/script/sprite has 72 `ok` samples; this observation remains
+unconfirmed and is retained in the report. The portable gate checks bounded
+runtime/render windows; the native 108-case parity result below belongs to the
+VC7 product. See [PORTABLE_64BIT.md](PORTABLE_64BIT.md) for reproduction and
+coverage. Local evidence is in `build/replay-cold-20261011/portable-replays/`;
+build and smoke logs are compressed alongside it. The earlier v0.2.1 checkpoint
+is in [RE_HANDOFF_HISTORY.md](RE_HANDOFF_HISTORY.md). Web work remains deferred.
 
 ## Native replay parity investigation
 

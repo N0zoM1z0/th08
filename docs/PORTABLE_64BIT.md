@@ -262,6 +262,18 @@ use a new output directory for each run.
 These windows establish bounded portable replay/render coverage. The full
 108-case, 25-field parity claim belongs to the separate VC7 replay gate.
 
+The 2026-10-12 run at source commit `2c253eb2` passed all six windows, with
+5,231 samples. Fresh x86_64 ownership checks, normal and AddressSanitizer
+60-second smoke runs, and repository CI also passed. The merged source retained
+all 1,106 accepted VC7 units after a cold build and passed fresh normal/bugfix
+link checks. Reports and compressed logs are in `build/replay-cold-20261011/`.
+
+The Stage 5 window contains one `color-loss-suspect` sample at frame 6,166,
+enemy 14, sprite 77, alongside 72 `ok` samples for the same animation/script/
+sprite. The checker reports isolated suspects and fails structural errors or
+repeated zero-pixel draws. This sample needs visual confirmation; the retained
+CSV records its texture, tint, geometry, and framebuffer delta.
+
 ### Deterministic replay render audit
 
 For regressions that are difficult to recognize from a crash log, the native
