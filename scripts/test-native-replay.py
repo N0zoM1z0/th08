@@ -48,6 +48,8 @@ def main():
             raise ValueError("Reference uses an older capture boundary; recapture it")
         if metadata.get("demoIndexes", [0]) != [int(value) for value in args.demos.split(",")]:
             raise ValueError("Reference does not cover the requested demos")
+        if "bgmDataSha256" not in metadata:
+            raise ValueError("Reference does not record a BGM hash; recapture it")
     except (ValueError, OSError, KeyError) as error:
         parser.error(str(error))
     candidate = args.output_dir / "candidate"

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Guard against false passes when replay evidence is missing or mismatched."""
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 import tempfile
@@ -19,7 +20,7 @@ class ComparisonTests(unittest.TestCase):
         self.candidate = Path(self.temp.name) / "candidate"
         schema = json.loads(Path(__file__).with_name("replay-schema.json").read_text())
         schema["demoEndFrames"] = {"0": 3, "1": 3}
-        self.metadata = dict(schema=schema, fixture="demo/demorpy0.rpy", gameDataSha256="data",
+        self.metadata = dict(schema=schema, fixture="demo/demorpy0.rpy", gameDataSha256="data", bgmDataSha256="bgm",
                              targetSha256="target", configSha256="config", muted=True)
         self.rows = [[frame] + [0] * (len(schema["fields"]) - 1) for frame in range(1, 4)]
         self.write(self.reference)
@@ -78,6 +79,15 @@ class ComparisonTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             compare.compare(self.reference, self.candidate)
 
+    def test_mismatched_or_unrecorded_bgm_is_rejected(self):
+        for value in ("other", None):
+            metadata = {**self.metadata, "bgmDataSha256": value}
+            if value is None:
+                del metadata["bgmDataSha256"]
+            self.write(self.candidate, metadata=metadata)
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, "bgmDataSha256"):
+                compare.compare(self.reference, self.candidate)
+
     def test_different_duration_cannot_pass(self):
         self.write(self.candidate, rows=self.rows[:2])
         with self.assertRaisesRegex(ValueError, "terminal frame"):
@@ -128,7 +138,7 @@ class ExternalComparisonTests(unittest.TestCase):
         self.reference = Path(self.temp.name) / "reference"
         self.candidate = Path(self.temp.name) / "candidate"
         schema = json.loads(Path(__file__).with_name("replay-external-schema.json").read_text())
-        self.metadata = dict(schema=schema, fixture="pinned replay", gameDataSha256="data",
+        self.metadata = dict(schema=schema, fixture="pinned replay", gameDataSha256="data", bgmDataSha256="bgm",
                              targetSha256="target", configSha256="config", muted=True, startStage=0,
                              replay=dict(stages=[dict(index=0, inputRecords=5, endScore=99),
                                                  dict(index=1, inputRecords=10, endScore=199)]))
@@ -199,6 +209,26 @@ class ExternalComparisonTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "clockRate"):
             compare.compare(self.reference, self.candidate)
         self.assertEqual(compare.compare(self.reference, self.candidate, allow_pacing_difference=True)["result"], "equal")
+
+    def test_equal_traces_do_not_validate_changed_suite_assets_or_settings(self):
+        schema = Path(__file__).with_name("replay-external-schema.json").read_bytes()
+        identity = dict(targetSha256="target", candidateSha256="candidate", mapSha256="map",
+                        gameDataSha256="data", bgmDataSha256="bgm", clockRate=1, rasterization=True,
+                        traceSchemaSha256=hashlib.sha256(schema).hexdigest())
+        base = {**self.metadata, "clockRate": 1, "rasterization": True,
+                "executableSha256": "target", "product": "retail"}
+        compare.verify_suite_capture(base, identity, base["fixture"])
+        for field, value in (("bgmDataSha256", "other"), ("clockRate", 128), ("rasterization", False)):
+            self.metadata = {**base, field: value}
+            self.write(self.reference)
+            self.write(self.candidate)
+            self.assertEqual(compare.compare(self.reference, self.candidate)["result"], "equal")
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, field):
+                compare.verify_suite_capture(self.metadata, identity, base["fixture"])
+        candidate = {**base, "executableSha256": "candidate", "product": "native-vc7-bugfix", "mapSha256": "map"}
+        compare.verify_suite_capture(candidate, identity, base["fixture"], candidate=True)
+        with self.assertRaisesRegex(ValueError, "mapSha256"):
+            compare.verify_suite_capture({**candidate, "mapSha256": "other"}, identity, base["fixture"], candidate=True)
 
 
 if __name__ == "__main__":

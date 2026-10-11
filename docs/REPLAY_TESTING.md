@@ -47,9 +47,11 @@ resume the suite or use the expectation-recording command below.
 
 For a new build, use a fresh output directory and
 `--reference-dir build/replay-suite-check` to reuse validated retail captures.
-The runner checks replay, executable, game-data, and pacing identities before
-reuse. Completed traces and debugger logs are compressed; temporary runtimes
-and Wine prefixes are removed after each capture.
+The runner checks the replay, executable, linker map, DAT/BGM hashes, observer
+schema, clock rate, and rasterization setting before reuse. Captures that omit
+these identity fields need a fresh recording. Completed traces and debugger
+logs are compressed; temporary runtimes and Wine prefixes are removed after
+each capture.
 
 For a long serial batch, `--wine-prefix build/replay-suite-wine` reuses a
 prefix marked as owned by this runner. It stays under `build/` until removed
@@ -131,7 +133,8 @@ when every recorded value agrees.
 
 References from schema version 1 need a fresh capture: that observer missed
 intermediate dialogue fast-forward frames. The runner validates a reused
-reference before launching the candidate.
+reference before launching the candidate. Early references without a BGM hash
+also need a fresh capture.
 
 ## Read the evidence
 
@@ -199,7 +202,7 @@ do not affect it. `comparison.json` prints both fingerprints.
 The first full-route checkpoint used Ubuntu 24.04 on WSL2 x86-64, Wine 9.0,
 Mesa llvmpipe 25.2.8, Python 3.13.5, and Xvfb 21.1.12. Compiler and library
 pins are in the [native build procedure](WINDOWS_I386_RUNTIME.md).
-The 96 published cases passed at source checkpoint `25c101f9`, including a
+All 108 published cases passed at source checkpoint `25c101f9`, including a
 rerun of the first five cases after the replay-input repair. Build the `bugfix`
 profile from this branch or a later revision containing its repairs.
 Capture metadata records executable, map, data and configuration hashes,
@@ -217,8 +220,9 @@ python3 scripts/analysis/record-replay-expectations.py \
 ```
 
 This rechecks retained traces, fixture identities, the canonical reference,
-candidate executable and map, and the recorded calculation counts. It rejects
-changes to existing expectations. Only the acceptance hashes and counts enter
+candidate executable and map, DAT/BGM hashes, playback settings, observer schema,
+and the recorded calculation counts. It rejects changes to existing expectations.
+Only the acceptance hashes and counts enter
 the manifest; generated reports and recordings remain under `build/`.
 
 All twelve shot types have complete Final B expectations on all four main
@@ -239,33 +243,35 @@ difficulties, plus Extra:
 | Youmu | B | 117,698 | 122,716 | 134,771 | 113,660 | 44,771 |
 | Yuyuko | B | 127,605 | 129,556 | 121,434 | 145,103 | 47,173 |
 
-Easy, Normal, and Hard Final A also have complete expectations for all twelve shots:
+Final A has complete expectations for the same twelve shots and four difficulties:
 
-| Shot | Easy A calculations | Normal A calculations | Hard A calculations |
-| --- | ---: | ---: | ---: |
-| Border Team | 99,113 | 127,972 | 117,598 |
-| Magic Team | 126,114 | 128,399 | 101,936 |
-| Scarlet Team | 96,825 | 128,279 | 117,783 |
-| Ghost Team | 121,373 | 127,542 | 108,947 |
-| Reimu | 131,458 | 134,376 | 128,362 |
-| Yukari | 98,897 | 109,987 | 109,488 |
-| Marisa | 107,722 | 127,006 | 118,134 |
-| Alice | 106,778 | 130,148 | 132,772 |
-| Sakuya | 123,487 | 148,475 | 140,962 |
-| Remilia | 93,040 | 108,555 | 108,075 |
-| Youmu | 95,280 | 119,049 | 111,944 |
-| Yuyuko | 106,420 | 112,101 | 127,290 |
+| Shot | Easy A | Normal A | Hard A | Lunatic A |
+| --- | ---: | ---: | ---: | ---: |
+| Border Team | 99,113 | 127,972 | 117,598 | 113,882 |
+| Magic Team | 126,114 | 128,399 | 101,936 | 119,685 |
+| Scarlet Team | 96,825 | 128,279 | 117,783 | 114,724 |
+| Ghost Team | 121,373 | 127,542 | 108,947 | 112,876 |
+| Reimu | 131,458 | 134,376 | 128,362 | 130,506 |
+| Yukari | 98,897 | 109,987 | 109,488 | 130,348 |
+| Marisa | 107,722 | 127,006 | 118,134 | 120,771 |
+| Alice | 106,778 | 130,148 | 132,772 | 127,286 |
+| Sakuya | 123,487 | 148,475 | 140,962 | 148,988 |
+| Remilia | 93,040 | 108,555 | 108,075 | 102,204 |
+| Youmu | 95,280 | 119,049 | 111,944 | 147,168 |
+| Yuyuko | 106,420 | 112,101 | 127,290 | 116,281 |
 
-The tables give complete calculation counts. All 25 fields agree over
-10,826,741 calculations on that source checkpoint. The batch continues through
-Lunatic Final A. Repository CI validates the manifest's complete 108-case grid
-and published expectation format.
+The complete 108-case corpus passes all 25 fields over 12,311,460 calculations.
+Each case reaches its recorded stage-end scores and natural replay exit.
+The tables give calculation counts; the manifest supplies individual trace
+fingerprints. Repository CI validates the complete coverage grid and expectation
+format. The four earliest retail references were recaptured with BGM hash
+attestation and reproduced their published fingerprints.
 
 ## Reference fixture failures
 
 [replay-rejected-fixtures.json](../config/replay-rejected-fixtures.json) retains
 recordings that failed the retail completeness check, with their download
-URLs, hashes, and observed failures:
+URLs, hashes, and observed failures. Scores use the stored game/replay counter:
 
 | Coverage cell | Recording | Retail stage/frame | Expected end score | Observed score | Unplayed input records |
 | --- | --- | --- | ---: | ---: | ---: |
@@ -314,8 +320,9 @@ The active matrix requires a complete retail reference for each coverage cell.
 
 ## Native checkpoint
 
-The 2026-10-10 muted Wine/GDB comparison passed on VC7 build
-`94b35a71...bcf58f`, using schema version 2:
+The current playable VC7 build (`3cf82cf0...04916d`) also passes the three
+bundled demos against a fresh muted retail capture with ordinary pacing and
+rasterization, using schema version 2:
 
 | Fixture | Stage | Frames | Recorded state |
 | --- | --- | ---: | --- |
@@ -323,9 +330,12 @@ The 2026-10-10 muted Wine/GDB comparison passed on VC7 build
 | `demo/demorpy1.rpy` | 4A | 4,920 | All 22 fields equal |
 | `demo/demorpy2.rpy` | 3 | 5,040 | All 22 fields equal |
 
-The local evidence is in `build/native-replay-parity-final/`; both captures
-completed naturally. The source repairs also passed a single-job cold
-comparison of all 1,106 accepted authored units and final-link verification.
+The combined 16,080-frame trace has SHA-256
+`9481fa99b1a9d9bfeda397d3a5051ab0a9f8ad9818d2ed90e7c822d86e3ce9b0`.
+Both captures completed naturally. The current local evidence is in
+`build/replay-suite/current-build-demos/`; the earlier native checkpoint is in
+`build/native-replay-parity-final/`. The source repairs also passed a single-job
+cold comparison of all 1,106 accepted authored units and final-link verification.
 
 ## Investigate a difference
 

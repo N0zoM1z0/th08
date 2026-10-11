@@ -31,10 +31,12 @@ Each port has its own build and runtime validation alongside the VC7 path.
 
 ## Native replay parity investigation
 
-The 2026-10-10 native checkpoint passes the complete muted comparison of all
-three bundled demos against the canonical retail image: 16,080 frames, with
-all 22 recorded fields equal. The playable VC7 executable has SHA-256
-`94b35a71abe632dd2d72ba460cb964d543fe7da4a68c052889ec6d255ebcf58f`.
+The current playable VC7 build passes all three bundled demos against a fresh
+muted retail capture with ordinary pacing and rasterization: 16,080 frames,
+with all 22 recorded fields equal. Its executable SHA-256 is
+`3cf82cf0345c9de8f7aed883f144526df6e170c3a08f6e41c800a1b44b04916d`.
+Evidence is in `build/replay-suite/current-build-demos/`; the earlier
+`94b35a71...bcf58f` checkpoint is in `build/native-replay-parity-final/`.
 Use the [unattended replay procedure](REPLAY_TESTING.md) to reproduce the gate.
 Web investigation remains deferred for this batch.
 
@@ -56,8 +58,8 @@ four death-mode switch entries and Fantasy Seal math callees. See
 The observer records each calculation pass during dialogue fast-forward and
 the terminal demo state. Schema version 2 rejects older baselines and requires
 the complete per-demo frame counts. Input now records the replay-fed player
-value. Both temporary Wine prefixes were removed; retained evidence is under
-`build/native-replay-parity-final/`. The trace-comparison tests, repository CI,
+value. Temporary Wine prefixes were removed; the current and historical evidence
+locations are listed above. The trace-comparison tests, repository CI,
 and whitespace checks pass.
 
 The full route suite now pins 108 public canonical-version replays: 12 shots,
@@ -83,17 +85,24 @@ The helper remains an unaccepted library entry: its runtime implementation is
 44 bytes, while target `0x00433880` is 33 bytes; original archive provenance
 is unresolved. See [RT-012](RUNTIME_ISSUES.md#rt-012).
 
-The first 108-case batch is under `build/replay-suite/matrix-v1/`, using
-the archived playable executable/map in `candidate-sincos/`. The executable
-SHA-256 is `64f6c5e0295701985b9380fb43872bd02003e0004366e3bef4e1b7b0a509c2f2`.
-Five Easy Final B cases passed: Border, Magic, Scarlet, and Ghost
-Team, plus Reimu, with all 25 fields equal over 554,488 calculations. This
-batch stopped at Yukari and was superseded by `matrix-v2/`. The manifest records
-these cases' complete retail trace fingerprints; `--claims-only` reproduces published expectations with fresh
-captures. The expectation-recording tool revalidates retained evidence before
-adding a case. See [REPLAY_TESTING.md](REPLAY_TESTING.md#reproduce-published-results).
+The complete corpus now passes on the repaired build: all 108 cases and all
+25 fields over 12,311,460 calculations, including every recorded stage-end score
+and natural replay exit. Source checkpoint `25c101f9` supplies the C++ repairs.
+Each fixture has a published retail trace fingerprint and count; `--claims-only`
+captures both images afresh and checks those expectations. The acceptance tool
+revalidates complete traces and the executable, map, DAT/BGM, observer schema,
+and playback settings before publishing them. The earliest four retail traces
+were recaptured with BGM hashes and reproduced their existing fingerprints.
+Regression tests reject mismatched or missing BGM identities, equal traces with
+changed suite settings, and stale candidate maps.
 
-The batch stopped on Solo Yukari (`easy-5-b`): Stage 3 frame 6,751, score
+The completed batch is in `build/replay-suite/matrix-v2/`. Its archived playable
+executable/map is in `build/replay-suite/candidate-replay-input/`.
+Use `matrix-v2/` as the retail reference directory for a fresh build. The older
+`matrix-v1/` stopped at Yukari and remains historical evidence.
+`scripts/analysis/report-replay-suite.py` prints a concise ledger summary.
+
+The earlier batch stopped on Solo Yukari (`easy-5-b`): Stage 3 frame 6,751, score
 minus 7 and RNG generations minus 8. Target `UpdateHomingOption @ 0x0044E3A0`
 uses gameplay input at `0x0164D52C`; source read physical input at
 `0x0164D528`, concealed by a relocation override. Source and the manifest
@@ -105,53 +114,15 @@ build/layout check pass. The complete native Yukari replay now agrees for all
 [RT-013](RUNTIME_ISSUES.md#rt-013). The new playable executable/map is archived
 in `build/replay-suite/candidate-replay-input/`; executable SHA-256
 `3cf82cf0345c9de8f7aed883f144526df6e170c3a08f6e41c800a1b44b04916d`.
-Use a fresh suite directory with `--reference-dir build/replay-suite/matrix-v1`
-to retain the six complete retail captures and replay the repaired candidate.
-The new batch is `matrix-v2/`. All 48 Final B cases across the four main
-difficulties, all 12 Extra cases, and all 36 Easy/Normal/Hard Final A cases pass
-on this executable, including the earlier five cases revalidated after the repair.
-The 96 published retail expectations cover 10,826,741 calculations. The batch
-has reached Lunatic Final A.
-`suite.json` supplies the live count; use `scripts/analysis/report-replay-suite.py`
-for a brief status report.
 
-The original Solo Sakuya selection (`th8_ud2b7c.rpy`) stopped in retail
-at Stage 4A frame 19,840 with 3,772 input records left and score 31,688,942
-instead of the recorded 40,908,184. Normal and built-in fast-forward playback
-produce the same 59,706-calculation prefix. Starting directly at Stage 4A
-also produces the same 19,840 calculations after rebasing the calculation
-index. This is an incomplete reference, so no candidate pass is recorded.
-Ordinary pacing with rasterization also reproduces the same Stage 4A prefix
-and failure. Its cause is unresolved. The rejected-fixture manifest retains
-the recording and observed failure; the replay guide gives a fresh reproducer.
-The replacement, `th8_ud1051.rpy`, completes all six stages in retail over
-134,146 calculations, matching every recorded end score. It is now the active
-`easy-8-b` fixture and passes the native comparison for all 25 fields. The
-batch continues through the remaining fixtures. Evidence is under
-`build/replay-suite/sakuya-*/` and `matrix-v2/easy-8-b/`. The earlier fast-forward
-failure is retained in `sakuya-full-fast-forward/`.
-
-The batch reached 83 complete candidate passes before the original Normal
-Yuyuko Final A recording (`th8_ud247c.rpy`) stopped in retail at Stage 1 frame
-8,152, with 4,948 input records left and score 931,816 instead of 6,901,513.
-Ordinary pacing with rasterization reproduces the accelerated capture's
-8,152 calculations for all 25 fields. Its cause is unresolved; the rejected
-manifest retains its provenance and the replay guide gives a fresh reproducer.
-The replacement, `th8_ud21f9.rpy`, completes all six stages and recorded end
-scores in retail over 112,101 calculations. Its native comparison passes
-for all 25 fields.
-The earlier failure evidence is in `build/replay-suite/yuyuko-normal-stage1-*/`.
-
-The batch reached 98 complete candidate passes before the original Lunatic
-Scarlet Team Final A recording (`th8_ud2bdd.rpy`) stopped in retail at Stage 5
-frame 15,401, with 7,245 input records left and score 136,118,016 instead of
-166,560,017. The first four recorded end scores match. Direct Stage 5 playback
-reproduces that stage's full-run prefix; ordinary pacing with rasterization
-also matches all 25 fields over 15,401 calculations. Its cause is unresolved.
-The rejected manifest and replay guide retain provenance and a fresh reproducer.
-The replacement, `th8_ud2bca.rpy`, completes all six stages and recorded scores
-in retail over 114,724 calculations. Its native comparison is next. Failure
-evidence is in `build/replay-suite/scarlet-lunatic-*/`.
+The replay guide and `config/replay-rejected-fixtures.json` retain three
+recordings that fail completeness in retail: Easy Sakuya Final B,
+Normal Yuyuko Final A, and Lunatic Scarlet Team Final A. Ordinary pacing with
+rasterization reproduces each failing stage's accelerated prefix. Their causes
+remain unresolved in the recorded Wine environment. Replacement recordings
+complete every recorded stage and score in retail and pass the native comparison.
+Failure evidence is in `build/replay-suite/sakuya-*/`,
+`yuyuko-normal-stage1-*/`, and `scarlet-lunatic-*/`.
 
 Complete retail playback of the first two fixtures leaves different input
 tails: 3/7 and 2/6 intermediate/final records. The trailer guard accepts those
@@ -159,13 +130,15 @@ observed variants while retaining continuous frames, recorded scores, natural
 exit, and complete paired-trace comparison. Regression tests cover a missing
 terminal row and two equal captures that differ from a published expectation.
 
-Current evidence is in `build/replay-suite/ptrace-reference-v4/`,
+Repair diagnostics include `build/replay-suite/ptrace-reference-v4/`,
 `chain-fix-candidate/`, `chain-fix-exact.json`, and the score/item diagnostic
 windows. Both GDB and ptrace diagnostic prefixes agree for 37,016 frames.
-Keep captures and VC7 builds
-sequential. Preserve a tested executable/map under the suite before cold builds,
-which clear link outputs. Clean temporary artifacts and leave GitHub issues
-without comments. Web testing remains deferred.
+Keep captures and VC7 builds sequential. Preserve a tested executable/map
+under the suite before cold builds, which clear link outputs. The completed
+batch retains compressed traces and reports; its owned 581 MiB Wine prefix
+and temporary clock libraries were removed. Leave GitHub issues without
+comments. Web testing remains deferred. Rendering reports, including RT-007,
+retain their separate image-evidence requirements.
 
 <a id="documentation-batch-for-local-review"></a>
 

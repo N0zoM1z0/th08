@@ -6039,7 +6039,12 @@
       ],
       "player": "LNNFS   ",
       "recordedBy": "儚符",
-      "playedAt": "2021/08/18 02:07:13"
+      "playedAt": "2021/08/18 02:07:13",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 113882,
+        "sha256": "7dcf45d86e8ccb2d416fce42262ddbdd38282676e73cd21b54d096c877e76462"
+      }
     },
     {
       "id": "lunatic-1-a",
@@ -6100,7 +6105,12 @@
       ],
       "player": "Asahi   ",
       "recordedBy": "Asahi",
-      "playedAt": "2021/10/23 13:51:40"
+      "playedAt": "2021/10/23 13:51:40",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 119685,
+        "sha256": "c8003876b1bc3c2e525fae66f620b74d76dbedcd1f2364c906a292fbc9e91ddf"
+      }
     },
     {
       "id": "lunatic-2-a",
@@ -6162,7 +6172,12 @@
       "player": "DK      ",
       "recordedBy": "DK",
       "playedAt": "2019/08/02 01:54:02",
-      "submittedAt": "2019/07/28"
+      "submittedAt": "2019/07/28",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 114724,
+        "sha256": "0ee33b7b84f6524786d3f5571cdf74486c659c54546a55946e08f726847dabad"
+      }
     },
     {
       "id": "lunatic-3-a",
@@ -6223,7 +6238,12 @@
       ],
       "player": "GZZ NN  ",
       "recordedBy": "GZZ",
-      "playedAt": "2021/08/12 22:07:37"
+      "playedAt": "2021/08/12 22:07:37",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 112876,
+        "sha256": "487b2dd8ad888cd97c4ec69353c1e24fab3bdaff2aa41aca213d321183c10ac5"
+      }
     },
     {
       "id": "lunatic-4-a",
@@ -6284,7 +6304,12 @@
       ],
       "player": "Goodra  ",
       "recordedBy": "goodra",
-      "playedAt": "2021/01/23 17:36:00"
+      "playedAt": "2021/01/23 17:36:00",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 130506,
+        "sha256": "1b42762fdd95841030b196bad0b465c66b72e8032ab76f9d13007942fac979d1"
+      }
     },
     {
       "id": "lunatic-5-a",
@@ -6345,7 +6370,12 @@
       ],
       "player": "KIS LAYu",
       "recordedBy": "Ｋ・Ｇ",
-      "playedAt": "2021/10/22 23:56:16"
+      "playedAt": "2021/10/22 23:56:16",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 130348,
+        "sha256": "c974a52f2b5aad70ceaacd34beae01cbb0d1948ab64eca30ba3079c2b80c2314"
+      }
     },
     {
       "id": "lunatic-6-a",
@@ -6406,7 +6436,12 @@
       ],
       "player": "WXQ     ",
       "recordedBy": "绿绿可柚",
-      "playedAt": "2020/10/14 14:35:06"
+      "playedAt": "2020/10/14 14:35:06",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 120771,
+        "sha256": "9d2151f7a459fbe5de4eb21e2d73fb2772cbf468f06dc0c69a9ff0e37fcf81c0"
+      }
     },
     {
       "id": "lunatic-7-a",
@@ -6467,7 +6502,12 @@
       ],
       "player": "WXQ     ",
       "recordedBy": "绿绿可柚",
-      "playedAt": "2021/06/15 17:24:46"
+      "playedAt": "2021/06/15 17:24:46",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 127286,
+        "sha256": "2880c54613b5daec183cf20667ab7f3602d08c6c766a091b30f311610fdbff23"
+      }
     },
     {
       "id": "lunatic-8-a",
@@ -6528,7 +6568,12 @@
       ],
       "player": "WXQ     ",
       "recordedBy": "绿绿可柚",
-      "playedAt": "2020/12/03 22:46:13"
+      "playedAt": "2020/12/03 22:46:13",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 148988,
+        "sha256": "a0cbf4a40afd4df0dd9e9738db0e187f5bd2ac23ff472f9a79a471ca2b46c0ff"
+      }
     },
     {
       "id": "lunatic-9-a",
@@ -6589,7 +6634,12 @@
       ],
       "player": "SOC NNFS",
       "recordedBy": "SOC",
-      "playedAt": "2020/10/25 14:01:51"
+      "playedAt": "2020/10/25 14:01:51",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 102204,
+        "sha256": "af14df2f4df00157c210b60544c0e6bf3f3d14672c38e50237489ad6f444d273"
+      }
     },
     {
       "id": "lunatic-10-a",
@@ -6650,7 +6700,12 @@
       ],
       "player": "WXQ     ",
       "recordedBy": "绿绿可柚",
-      "playedAt": "2021/03/13 20:43:20"
+      "playedAt": "2021/03/13 20:43:20",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 147168,
+        "sha256": "6408ba1719de5f82da16336f173e71f6c28455f977897744104268c43664145e"
+      }
     },
     {
       "id": "lunatic-11-a",
@@ -6711,7 +6766,12 @@
       ],
       "player": "SOC NNFS",
       "recordedBy": "SOC",
-      "playedAt": "2020/10/28 05:42:15"
+      "playedAt": "2020/10/28 05:42:15",
+      "retailTrace": {
+        "schemaVersion": 4,
+        "calculationFrames": 116281,
+        "sha256": "edde8f0825b735b42e9053328ec10d4bb6fa03406e1e730a34e39b27760a1b9c"
+      }
     }
   ]
 }

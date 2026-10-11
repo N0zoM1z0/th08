@@ -43,17 +43,14 @@ def main():
             raise ValueError(f"Case has no matching completed result: {case}")
         reference = ROOT / entry["reference"]
         candidate = suite / case / "candidate"
+        for is_candidate, capture in ((False, reference), (True, candidate)):
+            metadata = json.loads((capture / "metadata.json").read_text())
+            comparison.verify_suite_capture(metadata, ledger["identity"], fixture["sha256"], is_candidate)
         report = comparison.compare(reference, candidate)
         if report["result"] != "equal" or report["comparedFrames"] != entry["comparedFrames"]:
             raise ValueError(f"Retained traces differ from the suite result: {case}")
         comparison.verify_expectation(report, fixture)
         ref = json.loads((reference / "metadata.json").read_text())
-        got = json.loads((candidate / "metadata.json").read_text())
-        if (ref["product"] != "retail" or ref["executableSha256"] != manifest["targetSha256"]
-                or got["executableSha256"] != ledger["identity"]["candidateSha256"]
-                or ref["fixture"] != fixture["sha256"] or ref["gameDataSha256"] != ledger["identity"]["gameDataSha256"]
-                or got["mapSha256"] != ledger["identity"]["mapSha256"]):
-            raise ValueError(f"Capture identity differs from the recorded checkpoint: {case}")
         expected = dict(schemaVersion=ref["schema"]["version"], calculationFrames=report["comparedFrames"],
                         sha256=report["referenceTraceSha256"])
         if "retailTrace" not in fixture:

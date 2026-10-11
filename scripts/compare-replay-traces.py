@@ -29,6 +29,23 @@ def verify_expectation(report, fixture):
         raise ValueError("Trace differs from the published retail expectation")
 
 
+def verify_suite_capture(metadata, identity, fixture_sha, candidate=False):
+    """Bind retained captures to the suite's executable, assets, and playback settings."""
+    expected = {field: identity[field] for field in
+                ("targetSha256", "gameDataSha256", "bgmDataSha256", "clockRate", "rasterization")}
+    expected.update(fixture=fixture_sha, product="native-vc7-bugfix" if candidate else "retail",
+                    executableSha256=identity["candidateSha256" if candidate else "targetSha256"])
+    if candidate:
+        expected["mapSha256"] = identity["mapSha256"]
+    schema = Path(__file__).with_name("replay-external-schema.json").read_bytes()
+    if hashlib.sha256(schema).hexdigest() != identity["traceSchemaSha256"]:
+        raise ValueError("Suite schema differs from the current observer schema")
+    expected["schema"] = json.loads(schema)
+    for field, value in expected.items():
+        if metadata.get(field) != value:
+            raise ValueError(f"Capture identity differs from the suite: {field}")
+
+
 def load(directory):
     metadata = json.loads((directory / "metadata.json").read_text())
     complete = json.loads((directory / "complete.json").read_text())
@@ -110,7 +127,9 @@ def load(directory):
 def compare(reference, candidate, allow_pacing_difference=False):
     ref_meta, ref = load(reference)
     got_meta, got = load(candidate)
-    for field in ("schema", "fixture", "targetSha256", "gameDataSha256", "configSha256", "muted"):
+    for field in ("schema", "fixture", "targetSha256", "gameDataSha256", "bgmDataSha256", "configSha256", "muted"):
+        if field not in ref_meta or field not in got_meta:
+            raise ValueError(f"Capture metadata is missing {field}; recapture it")
         if ref_meta[field] != got_meta[field]:
             raise ValueError(f"Capture metadata differs: {field}")
     for field, default in (("startStage", None), ("playbackMode", None),

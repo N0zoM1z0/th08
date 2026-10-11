@@ -130,7 +130,14 @@ def main():
         case_id = fixture["id"]
         previous = ledger["cases"].get(case_id, {})
         if previous.get("result") == "equal" and previous.get("fixtureSha256") == fixture["sha256"]:
+            if args.fetch_only:
+                fetch(fixture, args.fixtures_dir)
+                print(f"[{index}/{len(fixtures)}] {case_id}: verified cached replay", flush=True)
+                continue
             reference = ROOT / previous["reference"]
+            for is_candidate, capture in ((False, reference), (True, output / case_id / "candidate")):
+                metadata = json.loads((capture / "metadata.json").read_text())
+                comparison.verify_suite_capture(metadata, identity, fixture["sha256"], is_candidate)
             report = comparison.compare(reference, output / case_id / "candidate")
             comparison.verify_expectation(report, fixture)
             if report["result"] != "equal" or report["comparedFrames"] != previous["comparedFrames"]:
@@ -166,12 +173,7 @@ def main():
                     if capture.exists():
                         try:
                             meta, _ = comparison.load(capture)
-                            expected_sha = identity["targetSha256" if product == "reference" else "candidateSha256"]
-                            if (meta["fixture"] != fixture["sha256"] or meta["executableSha256"] != expected_sha
-                                    or meta["gameDataSha256"] != identity["gameDataSha256"]
-                                    or meta.get("clockRate", 1) != args.clock_rate
-                                    or meta.get("rasterization", True) == args.no_rasterization):
-                                raise ValueError("Cached capture identity differs")
+                            comparison.verify_suite_capture(meta, identity, fixture["sha256"], product == "candidate")
                         except (OSError, ValueError, KeyError):
                             if capture != case / product:
                                 raise ValueError(f"Reused retail capture is missing or invalid: {capture}")
