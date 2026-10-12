@@ -97,6 +97,12 @@ as a full replay pass. The accelerated profile retains draw callbacks and
 uses Mesa's rasterization switch; every accepted state trace still has to match
 the retail fingerprint.
 
+Use a prefix from the first recorded stage to diagnose a cross-stage failure.
+Selecting a later stage restores its replay header; cumulative fields can
+differ from a full-run reference. For example, starting Stage 5 directly
+resets the death count in a recording that reaches it with two deaths.
+`--max-calculations` preserves the preceding stages and their state.
+
 ## Coverage
 
 The vector-precision checkpoint at `5b537b4c` passed six complete x86_64
@@ -121,9 +127,17 @@ window.
 
 Border Team Normal Stage 1 traced to
 [D3DX normalization rounding](PORTABLE_NORMALIZATION.md); its repaired full
-recording passes 100,979 calculations. Solo Youmu Easy and Normal remain
-under investigation. `matrix-fixed/` retains the preceding candidate's
-results; `matrix-normalization/` records the new candidate's checks.
+recording passes 100,979 calculations. The two Solo Youmu failures traced to
+[polar motion precision](PORTABLE_POLAR_MOTION.md). The latest candidate
+passes all three full recordings over 358,140 calculations.
+`matrix-fixed/` and `matrix-normalization/` retain the preceding candidates;
+`matrix-polar/` records that checkpoint.
+
+The [i386 device precision repair](PORTABLE_I386_FLOATING_POINT.md) passes the
+complete Border Team Normal recording and an independent 60,797-calculation
+GDB prefix. The final x86_64 build is running all 108 recordings in
+`matrix-final/`; `final-full-suite.log` records progress. Previous candidates'
+results remain separate checkpoints.
 
 State parity covers the selected recordings and fields. Use the
 [rendering gate](PORTABLE_RENDERING.md) for frame comparisons, HOME screenshots,

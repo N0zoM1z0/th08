@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#if defined(__i386__)
+#include <fenv.h>
+#include <fpu_control.h>
+#endif
 
 namespace
 {
@@ -13,6 +17,35 @@ IDirect3DSurface8 *backbuffer;
 void Require(bool ok, const char *message)
 {
     if (!ok) { fprintf(stderr, "FAIL: %s\n", message); exit(1); }
+}
+
+void CheckDeviceFloatEnvironment(IDirect3D8 *d3d, HWND window, D3DPRESENT_PARAMETERS *parameters)
+{
+#if defined(__i386__)
+    fenv_t original, environment;
+    Require(fegetenv(&original) == 0, "read caller floating-point environment");
+    environment = original;
+    environment.__control_word = (environment.__control_word & ~_FPU_EXTENDED) | _FPU_EXTENDED;
+    Require(fesetenv(&environment) == 0 && fesetround(FE_DOWNWARD) == 0, "set caller extended precision and rounding");
+    IDirect3DDevice8 *created = NULL;
+    Require(d3d->CreateDevice(0, D3DDEVTYPE_HAL, window, 0, parameters, &created) == S_OK, "default device for FPU contract");
+    Require(fegetenv(&environment) == 0 && (environment.__control_word & _FPU_EXTENDED) == _FPU_SINGLE,
+            "device uses retail single-precision x87 mode");
+    Require(fegetround() == FE_TONEAREST && fegetexcept() == 0, "default device selects nearest rounding and masks exceptions");
+    created->Release();
+    environment = original;
+    environment.__control_word = (environment.__control_word & ~_FPU_EXTENDED) | _FPU_EXTENDED;
+    Require(fesetenv(&environment) == 0 && fesetround(FE_DOWNWARD) == 0, "reset caller environment for preservation");
+    Require(d3d->CreateDevice(0, D3DDEVTYPE_HAL, window, D3DCREATE_FPU_PRESERVE, parameters, &created) == S_OK,
+            "preserving device for FPU contract");
+    Require(fegetenv(&environment) == 0 && (environment.__control_word & _FPU_EXTENDED) == _FPU_EXTENDED &&
+            fegetround() == FE_DOWNWARD, "FPU_PRESERVE retains caller precision and rounding");
+    created->Release();
+    Require(fesetenv(&original) == 0, "restore caller environment after FPU contract");
+    puts("PASS: device precision defaults and FPU_PRESERVE");
+#else
+    puts("SKIP: x87 device precision contracts require i386");
+#endif
 }
 
 D3DCOLOR Pixel(UINT x, UINT y)
@@ -205,7 +238,7 @@ int main(int argc, char **argv)
 {
     const char *test = argc == 2 ? argv[1] : "all";
     Require(argc <= 2 && (!strcmp(test, "all") || !strcmp(test, "locks") || !strcmp(test, "perspective") ||
-                          !strcmp(test, "clipping") || !strcmp(test, "fog")), "unknown contract case");
+                          !strcmp(test, "clipping") || !strcmp(test, "fog") || !strcmp(test, "fpu")), "unknown contract case");
     HWND window = CreateWindowExA(0, "TEST", "TH08 renderer contract", WS_VISIBLE,
                                  0, 0, 640, 480, NULL, NULL, NULL, NULL);
     Require(window != NULL, "SDL window");
@@ -216,6 +249,12 @@ int main(int argc, char **argv)
     parameters.BackBufferFormat = D3DFMT_X8R8G8B8;
     parameters.Windowed = TRUE;
     parameters.FullScreen_PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+    if (!strcmp(test, "fpu"))
+    {
+        CheckDeviceFloatEnvironment(d3d, window, &parameters);
+        d3d->Release(); DestroyWindow(window);
+        return 0;
+    }
     Require(d3d->CreateDevice(0, D3DDEVTYPE_HAL, window, 0, &parameters, &device) == S_OK, "OpenGL device");
     device->GetBackBuffer(0, D3DBACKBUFFER_TYPE_MONO, &backbuffer);
     if (!strcmp(test, "all") || !strcmp(test, "locks")) CheckLocks();

@@ -110,16 +110,25 @@ completed 29 recordings and found three differences before it was paused.
 `matrix-fixed/` retains that candidate's results. Border Team Normal Stage 1
 traced to [D3DX normalization rounding](PORTABLE_NORMALIZATION.md); the repaired
 recording passes all 100,979 calculations. Ordinary GDB playback passes its
-2,517-calculation prefix. Solo Youmu Easy and Normal still diverge at Stage 2
-frames 6,825 and 11,573 respectively. Continue with those failures before
-restarting the full corpus using the new candidate in `matrix-normalization/`.
+2,517-calculation prefix. The two Solo Youmu failures traced to
+[polar motion precision](PORTABLE_POLAR_MOTION.md). The latest x86_64 candidate
+passes all three complete recordings over 358,140 calculations. Its GDB
+Youmu Easy prefix passes 6,826 calculations and 6,824 shared enemy-motion
+records. The final x86_64 build is running all 108 recordings in `matrix-final/`
+with `final-x86_64-candidate/th08-modern`.
+`build/portable-state-20261012/final-full-suite.log` records progress.
 
-The i386 normalization contracts and fixed-layout ownership verifier pass.
-Its full Border Team run now reaches calculation 60,796 before diverging at
-Stage 5 frame 3,789: score +4 and four extra RNG generations. Evidence is in
-`i386-matrix-normalization/`. Keep that investigation separate from the two
-x86_64 Solo Youmu failures. The x86_64 and i386 compiler trees were removed
-after their tested binaries and provenance were retained.
+The i386 [device precision repair](PORTABLE_I386_FLOATING_POINT.md) resolves
+the Stage 5 frame 3,789 drift. Its full Border Team recording passes 100,979
+calculations in `i386-matrix-fpu/`; GDB independently passes 60,797 calculations
+and records retail's `0x007F` control word. Asset-free device defaults and
+FPU-preservation contracts pass and reproduce the old backend's failure.
+Expand i386 replay coverage after the x86_64 batch; captures remain serial.
+
+The accepted VC7 ledger passes all 1,106 units from a new cold build after
+the motion repair. Fresh normal/bugfix links and their owner/data/callee
+checks pass. All four retail frame checks pass after the motion repair.
+Retain tested binaries and provenance when removing owned compiler trees.
 
 At that checkpoint the ordinary build passed the 14,566-calculation Stage 4A prefix.
 All four retail frame/camera checks pass after the math repair, and Stage 5

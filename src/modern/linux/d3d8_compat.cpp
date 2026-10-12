@@ -9,6 +9,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <vector>
+#if defined(__i386__)
+#include <fenv.h>
+#include <fpu_control.h>
+#endif
 
 namespace
 {
@@ -1021,13 +1025,24 @@ class LinuxDirect3D : public IDirect3D8
         mode->Width = 640; mode->Height = 480; mode->RefreshRate = 60; mode->Format = D3DFMT_X8R8G8B8; return S_OK;
     }
     HRESULT CheckDeviceFormat(UINT, D3DDEVTYPE, D3DFORMAT, DWORD, D3DRESOURCETYPE, D3DFORMAT) { return S_OK; }
-    HRESULT CreateDevice(UINT, D3DDEVTYPE, HWND window, DWORD, D3DPRESENT_PARAMETERS *parameters,
+    HRESULT CreateDevice(UINT, D3DDEVTYPE, HWND window, DWORD behaviorFlags, D3DPRESENT_PARAMETERS *parameters,
                          IDirect3DDevice8 **result)
     {
         if (window == NULL || parameters == NULL || result == NULL) return E_INVALIDARG;
         LinuxDevice *device = new(std::nothrow) LinuxDevice(reinterpret_cast<SDL_Window *>(window), *parameters);
         if (device == NULL) return E_OUTOFMEMORY;
         if (!device->Ready()) { delete device; *result = NULL; return E_FAIL; }
+#if defined(__i386__)
+        if ((behaviorFlags & D3DCREATE_FPU_PRESERVE) == 0)
+        {
+            fenv_t environment;
+            if (fegetenv(&environment) != 0)
+            { delete device; *result = NULL; return E_FAIL; }
+            environment.__control_word = (environment.__control_word & ~_FPU_EXTENDED) | _FPU_SINGLE;
+            if (fesetenv(&environment) != 0 || fesetround(FE_TONEAREST) != 0 || fedisableexcept(FE_ALL_EXCEPT) < 0)
+            { delete device; *result = NULL; return E_FAIL; }
+        }
+#endif
         *result = device; return S_OK;
     }
   private: ULONG refs;

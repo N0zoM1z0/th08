@@ -105,12 +105,19 @@ namespace EclRunLow
 void __fastcall StartTimedPolarDisplacement(
     Enemy *enemy, EclRawInstruction *instruction, f32 angle)
 {
+#ifdef TH08_MODERN_PORT
+    f32 xSpeed = static_cast<f32>(cos(static_cast<f64>(angle)) * DEP_READ_FLOAT(enemy, instruction, 2));
+    enemy->movementInterpolationDelta.x = static_cast<f32>(static_cast<f64>(xSpeed) * DEP_READ_INT(enemy, instruction, 0));
+    f32 ySpeed = static_cast<f32>(sin(static_cast<f64>(angle)) * DEP_READ_FLOAT(enemy, instruction, 2));
+    enemy->movementInterpolationDelta.y = static_cast<f32>(static_cast<f64>(ySpeed) * DEP_READ_INT(enemy, instruction, 0));
+#else
     enemy->movementInterpolationDelta.x =
         cosf(angle) * DEP_READ_FLOAT(enemy, instruction, 2) *
         DEP_READ_INT(enemy, instruction, 0);
     enemy->movementInterpolationDelta.y =
         sinf(angle) * DEP_READ_FLOAT(enemy, instruction, 2) *
         DEP_READ_INT(enemy, instruction, 0);
+#endif
     enemy->movementInterpolationDelta.z = 0.0f;
     enemy->movementInterpolationOrigin =
         enemy->worldPosition;

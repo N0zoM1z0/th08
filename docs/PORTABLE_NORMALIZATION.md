@@ -96,8 +96,9 @@ RNG callers by default in an external detail window.
 
 The repaired x86_64 recorder passes the complete Border Team Normal Final B
 recording: **100,979 calculations**, all 25 fields, stage-end scores, and natural
-replay completion agree with retail. Solo Youmu Easy and Normal still diverge
-at their preceding frames and remain active investigations.
+replay completion agree with retail. The subsequent
+[polar motion repair](PORTABLE_POLAR_MOTION.md) resolves the Solo Youmu
+Easy and Normal failures.
 
 The ordinary GDB build passes 2,517 calculations. Its first 2,516 pool records
 agree with retail, including every slot's active/ID pair and allocation cursor.
@@ -105,7 +106,8 @@ agree with retail, including every slot's active/ID pair and allocation cursor.
 Evidence is under `build/portable-state-20261012/`, including the original
 normalized vectors, pool traces, old-build controls, and `matrix-normalization/`.
 The i386 build passes the same asset-free contracts and ownership checks.
-Its Border Team recording advances past the repaired failure, then differs
+At `92f9bbb5`, its Border Team recording advances past the repaired failure, then differs
 at calculation 60,796, Stage 5 frame 3,789: internal score +4 and four extra
-RNG generations. That case remains open in `i386-matrix-normalization/`.
+RNG generations. The subsequent
+[i386 device precision repair](PORTABLE_I386_FLOATING_POINT.md) resolves it.
 AArch64 hardware gameplay is pending; ARM retains scalar normalization.

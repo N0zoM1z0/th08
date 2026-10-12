@@ -69,7 +69,8 @@ def save_state(name):
     snapshot["sseControl"] = str(gdb.parse_and_eval("$mxcsr"))
     snapshot["layouts"] = {}
     for type_name in ("Player", "PlayerShot", "PlayerCollisionRegion", "Enemy", "EnemyManager", "Item", "ItemManager",
-                      "Bullet", "BulletManager", "Effect", "EffectManager", "Background", "BackgroundCamera", "AnmVm", "AnmVmBase"):
+                      "Bullet", "BulletManager", "Effect", "EffectManager", "Background", "BackgroundCamera", "AnmVm", "AnmVmBase",
+                      "EnemyEclContext", "EnemyEclInterpolationSlot"):
         try:
             snapshot["layouts"][type_name] = [dict(name=field.name, offset=field.bitpos // 8,
                 bytes=field.type.sizeof, type=str(field.type)) for field in gdb.lookup_type("th08::" + type_name).fields()]
@@ -95,7 +96,7 @@ class Observer(gdb.Breakpoint):
             return True
         self.finished = True
         errors = [error] if error else []
-        if diagnostic and pool_stream:
+        if diagnostic:
             save_state("window-state.json.gz")
         expected = [entry["index"] for entry in settings["replay"]["stages"]]
         if not diagnostic and not error:
